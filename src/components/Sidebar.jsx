@@ -1,12 +1,25 @@
 import React from 'react';
 import { curriculum, SECTIONS } from '../data/curriculum';
 
-export default function Sidebar({ activeSection, setActiveSection, activeLesson, openLesson, completed }) {
+export default function Sidebar({ activeSection, setActiveSection, activeLesson, openLesson, completed, setSidebarOpen }) {
+  // Siz so'ragan Layout Icon (SVG ko'rinishida)
+  const LayoutIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ cursor: 'pointer', opacity: 0.8 }}>
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="9" y1="3" x2="9" y2="21"></line>
+    </svg>
+  );
+
   return (
-    <div style={{ width: 240, background: "#201a12", borderRight: "1px solid #3a2e1e", display: "flex", flexDirection: "column", overflowY: "auto" }}>
-      <div style={{ padding: "20px 16px 12px", borderBottom: "1px solid #3a2e1e" }}>
-        <div style={{ fontSize: 18, fontWeight: 700, color: "#c8a96e", letterSpacing: 0.5 }}>JS Academy</div>
-        <div style={{ fontSize: 11, color: "#8a7a5a", marginTop: 2 }}>O'zbek tilida</div>
+    <div style={{ width: 260, background: "#201a12", borderRight: "1px solid #3a2e1e", display: "flex", flexDirection: "column", overflowY: "auto" }}>
+      <div style={{ padding: "20px 16px 12px", borderBottom: "1px solid #3a2e1e", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: "#c8a96e", letterSpacing: 0.5 }}>JS Academy</div>
+          <div style={{ fontSize: 11, color: "#8a7a5a", marginTop: 2 }}>O'zbek tilida</div>
+        </div>
+        <div onClick={() => setSidebarOpen(false)} title="Sidebar-ni yopish">
+          <LayoutIcon />
+        </div>
       </div>
       {SECTIONS.map(key => {
         const s = curriculum[key];

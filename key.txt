@@ -1,0 +1,7 @@
+# Git foydalanuvchi sozlamalari
+git config user.name "Farhodoff"
+git config user.email "fsoyilovv@gmail.com"
+
+# Eslatma:
+# Loyihani masofaviy serverga (Push) yuborishda 
+# har doim "Farhodoff" nomidan foydalanilsin.

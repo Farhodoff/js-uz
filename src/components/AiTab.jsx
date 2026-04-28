@@ -17,7 +17,17 @@ export default function AiTab({ aiQuestion, setAiQuestion, askAI, aiLoading, aiA
         {aiLoading ? "⏳ Javob tayyorlanmoqda..." : "📨 Savol yuborish"}
       </button>
       {aiAnswer && (
-        <div style={{ marginTop: 16, background: "#1a1f2a", border: "1px solid #2a3a5a", borderRadius: 10, padding: 20, fontSize: 14, color: "#c8d8f0", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>
+        <div style={{ 
+          marginTop: 16, 
+          background: "#1a1f2a", 
+          border: "1px solid #2a3a5a", 
+          borderRadius: 10, 
+          padding: 20, 
+          fontSize: 14, 
+          color: "#c8d8f0", 
+          lineHeight: 1.8, 
+          whiteSpace: "pre-wrap" // Markdown o'rniga hozircha pre-wrap ishlatamiz
+        }}>
           {aiAnswer}
         </div>
       )}
