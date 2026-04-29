@@ -2,34 +2,47 @@ export const variables = {
   id: "b1",
   title: "O'zgaruvchilar va Ma'lumot turlari",
   theory: `## O'zgaruvchilar
-Ma'lumotlarni saqlash uchun idishlar:
-- \`let\`: Qiymati o'zgarishi mumkin bo'lgan o'zgaruvchilar.
-- \`const\`: Qiymati o'zgarmas o'zgaruvchilar.
+O'zgaruvchi - qiymat saqlaydigan konteyner. Loyihada foydalanuvchi nomi, narx, status yoki sozlama kabi ma'lumotlar o'zgaruvchida saqlanadi.
 
-## Ma'lumot turlari (Data Types)
-JavaScriptda 8 ta ma'lumot turi mavjud:
-1. **String**: Matnlar ("Salom")
-2. **Number**: Sonlar (25, 3.14)
-3. **Boolean**: Mantiqiy (true, false)
-4. **Undefined**: Qiymat berilmagan
-5. **Null**: Bo'sh qiymat
-6. **Object**: Murakkab tuzilmalar
-7. **Symbol**: Unikal ID'lar
-8. **BigInt**: Juda katta sonlar
+- \`let\` - keyin qiymati o'zgarishi mumkin.
+- \`const\` - qayta tayinlanmaydi.
 
-\`typeof\` operatori orqali turini aniqlash mumkin.`,
-  task: `// 1. 'let' yordamida 'name' va 'age' o'zgaruvchilarini yarating
-// 2. 'const' yordamida 'pi' (3.14) o'zgaruvchisini yarating
-// 3. typeof yordamida 5 ta har xil tipdagi qiymatlarni konsolga chiqaring
+## Ma'lumot turlari
+Asosiy turlar:
+1. \`string\` - matn
+2. \`number\` - son
+3. \`boolean\` - true/false
+4. \`undefined\` - qiymat berilmagan
+5. \`null\` - ataylab bo'sh
+6. \`object\` - murakkab tuzilma
 
-let name = "Ali";
-// Davom ettiring...`,
+## Misol
+\`\`\`javascript
+let ism = "Ali";
+const yosh = 21;
+let faol = true;
+
+console.log(typeof ism);
+console.log(typeof yosh);
+console.log(typeof faol);
+\`\`\`
+
+## Quiz
+1. \`let\` va \`const\` farqi nima?
+2. \`undefined\` qachon chiqadi?
+3. \`typeof null\` nima uchun \`object\` qaytaradi?`,
+  task: `// 1. name, age va isStudent o'zgaruvchilarini yarating.
+// 2. Har birining turini console.log bilan chiqaring.
+// 3. Sevimli 3 ta narsangizdan const massiv yarating.
+
+// Kodingizni shu yerga yozing`,
   hint: `let name = "Ali";
 let age = 25;
-const pi = 3.14;
-console.log(typeof "text");
-console.log(typeof 10);
-console.log(typeof true);
-console.log(typeof undefined);
-console.log(typeof null);`
+let isStudent = true;
+const favorites = ["JavaScript", "kitob", "futbol"];
+
+console.log(typeof name);
+console.log(typeof age);
+console.log(typeof isStudent);
+console.log(favorites);`
 };

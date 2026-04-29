@@ -1,30 +1,43 @@
 export const operators = {
   id: "b2",
   title: "Operatorlar va Shartlar",
-  theory: `## Arifmetik Operatorlar
-\`+\`, \`-\`, \`*\`, \`/\`, \`%\` (qoldiq), \`**\` (daraja).
+  theory: `## Operatorlar
+Operatorlar yordamida qiymatlar ustida amal bajariladi.
 
-## Shartli Operatorlar (if/else)
-Dasturda qaror qabul qilish uchun ishlatiladi.
+- \`+\` qo'shadi
+- \`-\` ayiradi
+- \`*\` ko'paytiradi
+- \`/\` bo'ladi
+- \`%\` qoldiqni qaytaradi
+- \`**\` darajaga oshiradi
+
+## Shartlar
+\`if / else\` dasturga qaror qabul qildirish uchun ishlatiladi.
 
 \`\`\`javascript
+const yosh = 19;
+
 if (yosh >= 18) {
-  console.log("Ruxsat");
+  console.log("Ruxsat beriladi");
 } else {
-  console.log("Taqiq");
+  console.log("Ruxsat berilmaydi");
 }
 \`\`\`
 
-## Ternary Operator
-Qisqacha if/else:
-\`shart ? to'g'ri : noto'g'ri;\``,
+## Ternary operator
+Qisqa yozuv: \`shart ? to'g'ri : noto'g'ri\`.
+
+## Quiz
+1. \`%\` operatori nima qiladi?
+2. \`===\` nima uchun \`==\` dan afzal?
+3. Ternary operator qachon qulay?`,
   task: `// 1. Ikkita sonning ko'paytmasini hisoblang.
-// 2. 'if/else' yordamida berilgan son juft yoki toqligini aniqlang.
-// 3. Ternary operator yordamida ball 50 dan katta bo'lsa "O'tdi", aks holda "Yiqildi" deb chiqaring.
+// 2. Juft/toq tekshiruvini yozing.
+// 3. Ball 50 dan katta bo'lsa "O'tdi", aks holda "Yiqildi" chiqaring.
 
 let x = 10;
 let y = 5;
-// ...`,
+// Davom ettiring`,
   hint: `let x = 10;
 let y = 5;
 console.log(x * y);

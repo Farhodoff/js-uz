@@ -2,26 +2,38 @@ export const arrays = {
   id: "b5",
   title: "Massivlar (Arrays)",
   theory: `## Massivlar
-Bir nechta qiymatni bitta o'zgaruvchida saqlash usuli.
+Massiv bir nechta qiymatni tartibli saqlaydi. Ro'yxatlar, mahsulotlar va vazifalar ko'pincha massiv shaklida bo'ladi.
 
-**Asosiy metodlar:**
-- \`push(item)\`: Oxiriga element qo'shadi.
-- \`pop()\`: Oxirgi elementni o'chiradi.
-- \`unshift(item)\`: Boshiga element qo'shadi.
-- \`shift()\`: Birinchi elementni o'chiradi.
+## Asosiy metodlar
+- \`push()\` - oxiriga qo'shadi
+- \`pop()\` - oxiridan oladi
+- \`unshift()\` - boshiga qo'shadi
+- \`shift()\` - boshidan oladi
 
-**Transformatsiya:**
-- \`map()\`: Har bir elementni o'zgartirib yangi massiv qaytaradi.
-- \`filter()\`: Shartga mos elementlarni saralab oladi.
-- \`reduce()\`: Massivni bitta qiymatga keltiradi (masalan, yig'indi).
-- \`forEach()\`: Har bir element uchun funksiya bajaradi.`,
+## O'zgartirish va filtrlash
+- \`map()\` - yangi massiv qaytaradi
+- \`filter()\` - shartga mos elementlarni qoldiradi
+- \`reduce()\` - bitta natijaga yig'adi
+
+\`\`\`javascript
+const sonlar = [1, 2, 3, 4];
+const kvadratlar = sonlar.map((son) => son * son);
+const juftlar = sonlar.filter((son) => son % 2 === 0);
+\`\`\`
+
+## Quiz
+1. \`map\` nima qaytaradi?
+2. \`filter\` qachon ishlatiladi?
+3. Nima uchun massivlar loyihada muhim?`,
   task: `// 1. 5 ta meva nomidan iborat massiv yarating.
-// 2. 'map' yordamida mevalarning har biriga " mevasi" so'zini qo'shing.
-// 3. 'filter' yordamida harf soni 5 dan ko'p bo'lgan mevalarni ajratib oling.
+// 2. Har biriga " mevasi" qo'shib yangi massiv oling.
+// 3. Harf soni 5 dan katta bo'lgan mevalarni ajrating.
 
 let mevalar = [];
-// ...`,
+// Davom ettiring`,
   hint: `let mevalar = ["olma", "banan", "shaftoli", "anor", "uzum"];
-let yangiMevalar = mevalar.map(m => m + " mevasi");
-let saralangan = mevalar.filter(m => m.length > 5);`
+let yangiMevalar = mevalar.map((m) => m + " mevasi");
+let saralangan = mevalar.filter((m) => m.length > 5);
+console.log(yangiMevalar);
+console.log(saralangan);`
 };
