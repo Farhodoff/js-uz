@@ -1,25 +1,33 @@
 export const functions = {
-  id: "b2", title: "Funksiyalar",
-  theory: `## Funksiyalar
-
-Funksiya — bir necha marta ishlatiladigan kod bloki.
+  id: "b4",
+  title: "Funksiya asoslari",
+  theory: `## Funksiya nima?
+Bir martta yozilib, ko'p martta ishlatiladigan kod blogi.
 
 **E'lon qilish:**
-\`\`\`js
-function salom(ism) {
-  return "Salom, " + ism + "!";
+\`\`\`javascript
+function salomBer(ism) {
+  return "Salom " + ism;
 }
 \`\`\`
 
-**Chaqirish:**
-\`\`\`js
-salom("Ali"); // "Salom, Ali!"
-\`\`\`
+**Parametr va Argument:**
+- \`ism\` — parametr (o'zgaruvchi).
+- \`"Ali"\` — argument (haqiqiy qiymat).`,
+  task: `// 1. Ikkita sonni qo'shib beruvchi 'sum' funksiyasini yozing.
+// 2. Berilgan sonning kvadratini qaytaruvchi funksiya yozing.
+// 3. Ism va familiyani bitta string qilib qaytaruvchi funksiya yozing.
 
-**Arrow function (ES6):**
-\`\`\`js
-const salom = (ism) => "Salom, " + ism + "!";
-\`\`\``,
-  task: "// 2-topshiriq: Ikki sonni qo'shadigan funksiya yozing\n// Natijani console.log() bilan chiqaring\n\nfunction qoshish(a, b) {\n  // shu yerga yozing\n}\n\nconsole.log(qoshish(5, 3));",
-  hint: "function qoshish(a, b) { return a + b; } console.log(qoshish(5, 3));"
+// ...`,
+  hint: `function sum(a, b) {
+  return a + b;
+}
+
+function kvadrat(son) {
+  return son * son;
+}
+
+function toliqIsm(ism, familiya) {
+  return ism + " " + familiya;
+}`
 };

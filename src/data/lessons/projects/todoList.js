@@ -1,18 +1,35 @@
 export const todoList = {
-  id: "p1", title: "Todo List",
-  theory: `## Todo List Loyihasi
+  id: "p1",
+  title: "Todo List Loyihasi",
+  theory: `## Yakuniy Loyiha: Todo List
+Ushbu loyihada siz barcha o'rgangan bilimlaringizni jamlaysiz.
 
-Bu loyihada quyidagilarni o'rganamiz:
-- DOM manipulyatsiya
-- Event listeners
-- Array metodlari
-- localStorage
+**Asosiy funksionallik:**
+- Yangi vazifa qo'shish.
+- Vazifani o'chirish.
+- Vazifani bajarilgan deb belgilash.
+- Ma'lumotlarni **LocalStorage**'da saqlash.
 
-**Loyiha tuzilmasi:**
-1. Vazifalar ro'yxatini saqlash
-2. Qo'shish / o'chirish funksiyalari
-3. Bajarilgan/bajarilmagan holat
-4. LocalStorage'ga saqlash`,
-  task: "// Mini Todo: Vazifalar massiviga qo'shish va o'chirish\n\nlet vazifalar = ['Dars o\\'qish', 'Kod yozish'];\n\nfunction qoshish(yangi_vazifa) {\n  // yozing\n}\n\nfunction ochirish(index) {\n  // yozing\n}\n\nqoshish('Sport qilish');\nochirish(0);\nconsole.log(vazifalar);",
-  hint: "function qoshish(v) { vazifalar.push(v); } function ochirish(i) { vazifalar.splice(i, 1); }"
+**Kod tuzilishi tavsiyasi:**
+1. \`todos\` massivini yarating.
+2. \`renderTodos()\` funksiyasini yozing (ekranga chiqarish uchun).
+3. \`addTodo()\` funksiyasi.
+4. \`saveToLocal()\` funksiyasi.`,
+  task: `// 1. 'todos' massivi yarating.
+// 2. 'addTodo' funksiyasini yozing, u ob'ekt qabul qilsin { id, text, completed }.
+// 3. 'toggleTodo' funksiyasini yozing (completed holatini o'zgartirish).
+// 4. 'deleteTodo' funksiyasini yozing.
+
+let todos = [];
+// ...`,
+  hint: `let todos = [];
+function addTodo(text) {
+  todos.push({ id: Date.now(), text, completed: false });
+}
+function toggleTodo(id) {
+  todos = todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+}
+function deleteTodo(id) {
+  todos = todos.filter(t => t.id !== id);
+}`
 };
