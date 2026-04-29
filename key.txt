@@ -5,3 +5,4 @@ git config user.email "fsoyilovv@gmail.com"
 # Eslatma:
 # Loyihani masofaviy serverga (Push) yuborishda 
 # har doim "Farhodoff" nomidan foydalanilsin.
+# doimo o'zbek tilida javob berilsin.
