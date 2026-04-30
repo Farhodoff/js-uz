@@ -41,7 +41,7 @@ const pattern = /hello/i; // "hello"ni katta-kichik harfga qaramasdan qidiradi
 - **str.replace(regex, newStr):** Matnni almashtiradi.
 
 \`\`\`javascript
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
 console.log(emailRegex.test("ali@gmail.com")); // true
 \`\`\`
 
@@ -66,17 +66,17 @@ console.log(emailRegex.test("ali@gmail.com")); // true
 
 // Kodingizni shu yerga yozing`,
   hint: `// 1. Check numbers
-/\d/.test("Salom 123");
+/\\d/.test("Salom 123");
 
 // 2. Phone validation
-const phoneRegex = /^\+998\d{9}$/;
+const phoneRegex = /^\\+998\\d{9}$/;
 
 // 3. Replace all
 "Javascript juda zo'r".replace(/javascript/gi, "JS");
 
 // 4. Password validation
-const passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+const passRegex = /^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$/;
 
 // 5. Get all numbers
-"12 olma va 34 anor".match(/\d+/g);`
+"12 olma va 34 anor".match(/\\d+/g);`
 };

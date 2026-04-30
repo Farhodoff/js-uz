@@ -20,8 +20,8 @@ DOM yordamida sahifa faqat ko'rinadigan emas, balki foydalanuvchiga javob qaytar
 
 ## Quiz
 1. DOM nima?
-2. `querySelector` va `getElementById` farqi nima?
-3. `textContent` va `innerHTML` farqi nima?`,
+2. \`querySelector\` va \`getElementById\` farqi nima?
+3. \`textContent\` va \`innerHTML\` farqi nima?`,
   task: `// 1. ID'si 'title' bo'lgan elementni tanlab oling.
 // 2. Uning matnini "Salom DOM" ga o'zgartiring.
 // 3. Uning rangini ko'k (blue) qiling.

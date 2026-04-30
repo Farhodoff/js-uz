@@ -22,9 +22,9 @@ bajar(() => console.log("Tugadi!"));
 \`\`\`
 
 ## Qachon ehtiyot bo'lish kerak?
-- Arrow function o'zining alohida `this` kontekstini yaratmaydi.
+- Arrow function o'zining alohida \`this\` kontekstini yaratmaydi.
 - Katta blokli mantiqda oddiy function ba'zan o'qilishi osonroq bo'ladi.
-- `map`, `filter`, `setTimeout` kabi joylarda arrow function juda qulay.
+- \`map\`, \`filter\`, \`setTimeout\` kabi joylarda arrow function juda qulay.
 
 ## Quiz
 1. Arrow function nima uchun qisqa?

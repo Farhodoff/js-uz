@@ -22,8 +22,8 @@ Eventlar yordamida hisoblagich, input preview, modal, dropdown va form validatsi
 
 ## Quiz
 1. Event nima?
-2. `click` va `input` hodisalari nimasi bilan farq qiladi?
-3. `submit` eventda nima uchun `preventDefault()` ishlatiladi?`,
+2. \`click\` va \`input\` hodisalari nimasi bilan farq qiladi?
+3. \`submit\` eventda nima uchun \`preventDefault()\` ishlatiladi?`,
   task: `// 1. Tugmani (button) tanlab oling.
 // 2. Unga click event qo'shing.
 // 3. Har safar bosilganda konsolga "Sana: " va joriy vaqtni chiqaring.
