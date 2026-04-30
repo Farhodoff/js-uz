@@ -2,7 +2,12 @@
 git config user.name "Farhodoff"
 git config user.email "fsoyilovv@gmail.com"
 
-# Eslatma:
-# Loyihani masofaviy serverga (Push) yuborishda 
-# har doim "Farhodoff" nomidan foydalanilsin.
-# doimo o'zbek tilida javob berilsin.
+# Qoida (Rule):
+# 1. Har doim commit va push ishlari "Farhodoff" nomidan bajarilsin.
+# 2. Har bir yangilanish (update) kiritilgandan so‘ng darhol commit va push qilinsin.
+# 3. Barcha izohlar va yozuvlar o‘zbek tilida bo‘lsin.
+
+# Ish tartibi:
+git add .
+git commit -m "Yangilanish: qisqacha o‘zbekcha izoh yoziladi"
+git push origin main

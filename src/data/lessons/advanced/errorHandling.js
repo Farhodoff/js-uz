@@ -1,33 +1,85 @@
 export const errorHandling = {
   id: "a5",
-  title: "Xatolar bilan ishlash (Error Handling)",
-  theory: `## Try...Catch
-Dastur ishlayotgan paytda yuzaga keladigan xatolarni "tutib olish" uchun ishlatiladi.
+  title: "Error Handling (Xatoliklarni boshqarish)",
+  theory: `## Error Handling (Xatoliklarni boshqarish)
 
+JavaScriptda xatoliklar kod bajarilishini to‘xtatib qo‘ymasligi uchun \`try...catch...finally\` va \`throw\` ishlatiladi.
+
+---
+
+### 1. try...catch...finally
 \`\`\`javascript
 try {
-  // xato bo'lishi mumkin bo'lgan kod
-  let x = y + 1;
-} catch (error) {
-  console.log("Xato yuz berdi: " + error.message);
+  // xatolik yuz berishi mumkin bo‘lgan kod
+  JSON.parse("{ invalid }");
+} catch (err) {
+  console.log("Xato:", err.message);
 } finally {
   console.log("Har doim ishlaydi");
 }
 \`\`\`
 
-**Throw:**
-O'zimiz xato yaratishimiz mumkin:
-\`throw new Error("Ma'lumot noto'g'ri");\``,
-  task: `// 1. 'json' stringni 'JSON.parse' qilishga harakat qiling.
-// 2. Uni 'try...catch' ichiga oling.
-// 3. Xato bo'lsa, konsolga "Format noto'g'ri" deb chiqaring.
+### 2. Error turlari
+- **ReferenceError:** E’lon qilinmagan o‘zgaruvchi.
+- **TypeError:** Qiymat turi noto‘g‘ri (masalan, \`null.toString()\`).
+- **SyntaxError:** Sintaksis xato.
+- **RangeError:** Qiymat diapazondan tashqarida.
 
-let json = "{ ism: 'Ali' }"; // Noto'g'ri JSON (kalitlar " " ichida bo'lishi kerak)
-// ...`,
-  hint: `let json = "{ ism: 'Ali' }";
-try {
-  let user = JSON.parse(json);
-} catch (e) {
-  console.log("Format noto'g'ri");
+### 3. throw – Xatolikni tashlash
+Dasturchi o‘zi xohlagan joyda xatolikni yuzaga keltirishi mumkin.
+\`\`\`javascript
+function checkAge(age) {
+  if (age < 0) throw new Error("Yosh manfiy bo'lmasin!");
+}
+\`\`\`
+
+### 4. Asinxron xatoliklar
+Asinxron kodda (\`setTimeout\`) \`try...catch\` to'g'ridan-to'g'ri ishlamaydi. Uni \`await\` yoki \`.catch()\` bilan ishlatish kerak.
+\`\`\`javascript
+async function getData() {
+  try {
+    let res = await fetch(url);
+  } catch (err) {
+    console.error(err);
+  }
+}
+\`\`\`
+
+---
+
+## Intervyu savollari (Junior & Middle)
+
+### Junior daraja
+1. **try...catch nima uchun kerak?**
+2. **finally bloki qachon ishlaydi?**
+3. **throw orqali nimalarni tashlash (throw) mumkin?**
+
+### Middle daraja
+4. **setTimeout ichidagi xatoni tashqaridagi try...catch bilan tutish mumkinmi?**
+5. **Promise reject bo'lganda try...catch ishlaydimi?**
+6. **Custom Error klassini qanday yaratish mumkin?**`,
+  task: `// 1. JSON.parse ni try...catch bilan o'rab, xato bo'lsa "Xato format" deb xabar chiqaring.
+// 2. Funksiya yozing: unga son berilmasa TypeError tashlasin (throw).
+// 3. O'zingizning "ValidationError" klassingizni yarating.
+// 4. async funksiya ichida fetch so'rovini try...catch bilan boshqaring.
+// 5. finally blokida yuklash indikatori tugaganini bildiruvchi xabar chiqaring.
+
+// Kodingizni shu yerga yozing`,
+  hint: `// 1. JSON parse
+try { JSON.parse("invalid"); } catch(e) { console.log("Xato format"); }
+
+// 2. Custom throw
+function onlyNumber(n) {
+  if (typeof n !== "number") throw new TypeError("Faqat son!");
+}
+
+// 3. ValidationError
+class ValidationError extends Error {
+  constructor(m) { super(m); this.name = "ValidationError"; }
+}
+
+// 4. Async catch
+async function test() {
+  try { await fetch("invalid-url"); } catch(e) { console.log("Tarmoq xatosi"); }
 }`
 };
