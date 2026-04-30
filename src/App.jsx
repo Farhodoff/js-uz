@@ -55,25 +55,25 @@ export default function App() {
 
   async function askAI() {
     if (!aiQuestion.trim()) return;
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    if (!apiKey) {
-      setAiAnswer("Xato: API kalit topilmadi.");
-      return;
-    }
     setAiLoading(true);
     setAiAnswer("");
     try {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent`, {
+      const res = await fetch("/api/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: `Siz JavaScript o'qituvchisisiz. Mavzu: ${activeLesson?.title}. Savol: ${aiQuestion}. O'zbek tilida javob bering.` }] }]
+          question: aiQuestion,
+          lesson: activeLesson?.title
         })
       });
       const data = await res.json();
-      setAiAnswer(data.candidates?.[0]?.content?.parts?.[0]?.text || "Xatolik.");
+      if (res.ok) {
+        setAiAnswer(data.answer || "Xatolik.");
+      } else {
+        setAiAnswer(data.error || "Xatolik yuz berdi.");
+      }
     } catch (e) {
-      setAiAnswer("Tarmoq xatosi.");
+      setAiAnswer("Tarmoq xatosi: " + e.message);
     }
     setAiLoading(false);
   }

@@ -1,5 +1,5 @@
 export const operators = {
-  id: "b5",
+  id: "b16",
   title: "Operatorlar (Operators)",
   theory: `## JavaScript Operatorlari
 

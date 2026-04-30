@@ -1,5 +1,5 @@
 export const typeConversionLesson = {
-  id: "b4",
+  id: "b15",
   title: "Type Conversion (Tiplarni o'zgartirish)",
   theory: `## Type Conversion (Tiplarni o‘zgartirish)
 
