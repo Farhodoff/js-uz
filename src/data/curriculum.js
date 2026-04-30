@@ -2,6 +2,7 @@ import { jsWhat } from "./lessons/beginner/js-what";
 import { variables } from "./lessons/beginner/variables";
 import { dataTypesLesson } from "./lessons/beginner/dataTypes";
 import { moreDataTypesLesson } from "./lessons/beginner/moreDataTypes";
+import { typeConversionLesson } from "./lessons/beginner/typeConversion";
 import { primitivesVsObjects } from "./lessons/beginner/primitivesVsObjects";
 import { scopeLesson } from "./lessons/beginner/scope";
 import { functionScopeLesson } from "./lessons/beginner/functionScope";
@@ -28,10 +29,8 @@ import { promises } from "./lessons/advanced/promises";
 import { asyncAwait } from "./lessons/advanced/asyncAwait";
 import { fetchApi } from "./lessons/advanced/fetch";
 import { localStorageLesson } from "./lessons/advanced/localStorage";
-import { moreDataTypesLesson } from "./lessons/beginner/moreDataTypes";
-import { typeConversionLesson } from "./lessons/beginner/typeConversion";
-import { primitivesVsObjects } from "./lessons/beginner/primitivesVsObjects";
-...
+import { errorHandling } from "./lessons/advanced/errorHandling";
+import { modulesLesson } from "./lessons/advanced/modules";
 import { debugging } from "./lessons/advanced/debugging";
 import { closuresLesson } from "./lessons/advanced/closures";
 import { eventLoopLesson } from "./lessons/advanced/eventLoop";
@@ -58,6 +57,7 @@ export const curriculum = {
     icon: "🔴",
     lessons: [callbacksLesson, promises, asyncAwait, fetchApi, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson]
   },
+  projects: {
     label: "Loyihalar",
     color: "#7a9e7e",
     icon: "🏗️",
