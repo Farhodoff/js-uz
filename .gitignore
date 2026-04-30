@@ -67,3 +67,4 @@ typings/
 
 # Vite
 dist
+.vercel
