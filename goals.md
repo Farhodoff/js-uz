@@ -22,8 +22,8 @@ Har hafta 4-6 soat ajrating. Har band qisqa amaliyot bilan yakunlansin.
 - [x] DOM tanlash va o'zgartirish (querySelector, textContent, classList) - amaliyot: 3 element.
 - [x] Event listenerlar (click, input, submit) - amaliyot: counter.
 - [x] Forma va oddiy validatsiya - amaliyot: bo'sh maydon tekshirish.
-- [ ] Promise asoslari (then/catch/finally) - amaliyot: 2s timeout.
-- [ ] Async/await - amaliyot: timeout kutish.
+- [x] Promise asoslari (then/catch/finally) - amaliyot: 2s timeout.
+- [x] Async/await - amaliyot: timeout kutish.
 - [ ] Fetch API (GET, JSON) - amaliyot: public API dan ma'lumot olish.
 
 ## Hafta 4: Modul, xatolar, loyiha

@@ -1,75 +1,83 @@
 export const asyncAwait = {
   id: "a2",
-  title: "async/await (Sintaktik shakar)",
-  theory: `## async/await (ES2017)
+  title: "Async / Await (Asinxronlik cho'qqisi)",
+  theory: `## 1. ASYNC / AWAIT NIMA?
+\`async/await\` — bu asinxron kodni xuddi sinxron (ketma-ket) kod kabi yozish imkonini beruvchi zamonaviy usul. Bu metod Promiselar ustiga qurilgan, lekin uni o'qish va tushunish ancha oson.
 
-**async/await** – Promise ustida ishlaydigan sintaktik shakar (syntactic sugar). Kodni sinxron ko‘rinishda yozish imkonini beradi.
+### Kalit so'zlar:
+- **async:** Funksiya oldidan yoziladi va u doim Promise qaytarishini bildiradi.
+- **await:** Faqat \`async\` funksiya ichida ishlaydi. U Promisening natijasini kutadi va kodni o'sha joyda "to'xtatib" turadi (boshqa kodlar ishlashiga xalaqit bermasdan).
 
-- **async** funksiya har doim **Promise** qaytaradi.
-- **await** faqat **async** funksiya ichida ishlatiladi va Promise bajarilguncha kutadi.
+---
 
-### Misol:
+## 2. KOD TUZILISHI
+
 \`\`\`javascript
-async function fetchData() {
+async function ma'lumotOl() {
+  console.log("Yuklanmoqda...");
+  
+  // 2 sekund kutadi va natijani oladi
+  const natija = await new Promise(res => setTimeout(() => res("Ma'lumot keldi!"), 2000));
+  
+  console.log(natija);
+}
+
+ma'lumotOl();
+\`\`\`
+
+\`\`\`mermaid
+sequenceDiagram
+    participant JS as Call Stack
+    participant Web as Web API (Timer)
+    JS->>Web: await setTimeout (2s)
+    Note over JS: JS boshqa ishlarni qilishi mumkin
+    Web-->>JS: Vaqt tugadi!
+    JS->>JS: Kod davom etadi
+\`\`\`
+
+---
+
+## 3. XATOLARNI BOSHQARISH (try...catch)
+Promiselarda \`.catch()\` ishlatgan bo'lsak, \`async/await\`da biz oddiy \`try...catch\` blokidan foydalanamiz.
+
+\`\`\`javascript
+async function xatoliAmal() {
   try {
-    const user = await getUser(1);
-    const orders = await getOrders(user.id);
-    console.log(orders);
-  } catch (error) {
-    console.error("Xato:", error);
+    const r = await Promise.reject("Xato sodir bo'ldi!");
+  } catch (err) {
+    console.log("Ushlangan xato:", err);
   }
 }
 \`\`\`
 
-**Xatolarni tutish:** \`try...catch\` bloki eng xavfsiz va tushunarli usul hisoblanadi.
-
-### Callback vs Promise vs async/await
-| Xususiyat | Callback | Promise | async/await |
-|-----------|----------|---------|--------------|
-| Kod o‘qilishi | Yomon | Yaxshi | Eng yaxshi |
-| Xato tutish | Qiyin | .catch() | try/catch |
-| Parallel ishlash | Murakkab | Promise.all() | await Promise.all() |
-
 ---
 
-## Intervyu savollari (Junior & Middle)
+## 4. INTERVYU SAVOLLARI (Middle)
 
-### Junior daraja
-1. **async funksiya har doim nimani qaytaradi?**
-2. **await nima vazifani bajaradi va qayerda ishlatish mumkin?**
-3. **async/await ishlatilganda xatolarni qanday tutish kerak?**
+1. **Top-level await nima?**
+   *Javob:* Bu \`async\` funksiya tashqarisida ham \`await\` ishlatish imkoniyati (modern brauzerlar va modullarda ishlaydi).
 
-### Middle daraja
-4. **Nima uchun oddiy for loop ichida await ishlatish xavfli bo'lishi mumkin?**
-5. **async/await va Promise.all() ni qanday birga ishlatish mumkin?**
-6. **Top-level await nima va u qachon ishlaydi?**`,
-  task: `// 1. async funksiya yarating: u 1 sekund kutib, keyin "Bajarildi" matnini qaytarsin.
-// 2. try/catch yordamida xatoni tutuvchi async funksiya yozing (Promise.reject() dan foydalaning).
-// 3. Ketma-ket 2 ta asinxron amalni (masalan, 2 ta setTimeout) await yordamida bajaring.
-// 4. Parallel bajarish: Promise.all va await yordamida 2 ta funksiyani bir vaqtda ishga tushiring.
+2. **await ishlatilganda asosiy oqim (main thread) qotib qoladimi?**
+   *Javob:* Yo'q, JS faqat o'sha funksiya ijrosini to'xtatib turadi, qolgan hamma narsa (masalan, UI animatsiyalari) ishlashda davom etadi.
 
-// Kodingizni shu yerga yozing`,
-  hint: `// 1. Basic async
-async function sayDone() {
-  await new Promise(r => setTimeout(r, 1000));
-  return "Bajarildi";
-}
-
-// 2. try/catch
-async function handleError() {
-  try {
-    await Promise.reject("Xato!");
-  } catch(e) {
-    console.log("Ushlandi:", e);
-  }
-}
-
-// 3. Parallel
-async function parallel() {
-  const [res1, res2] = await Promise.all([
-    new Promise(r => setTimeout(() => r(1), 1000)),
-    new Promise(r => setTimeout(() => r(2), 1000))
-  ]);
-  console.log(res1, res2);
-}`
+3. **Promise.all() va await'ni qanday birga ishlatish mumkin?**
+   *Javob:* \`const [res1, res2] = await Promise.all([p1, p2]);\` ko'rinishida parallel kutish mumkin.`,
+  exercises: [
+    {
+      id: 1,
+      title: "Async funksiya",
+      instruction: "'getData' nomli async funksiya yarating va u 1 sekund kutib 'Tayyor' matnini qaytarsin.",
+      startingCode: "// Funksiyani yarating\n",
+      hint: "async function getData() { await new Promise(r => setTimeout(r, 1000)); return 'Tayyor'; }",
+      test: "if (code.includes('async') && code.includes('await')) return null; return 'async va await ishlating';"
+    },
+    {
+      id: 2,
+      title: "try...catch mashqi",
+      instruction: "Async funksiya ichida xato beradigan Promiseni 'try...catch' orqali ushlang va xatoni konsolga chiqaring.",
+      startingCode: "async function runner() {\n  // try catch shu yerga\n}\nrunner();",
+      hint: "try { await Promise.reject('Fail'); } catch(e) { console.log(e); }",
+      test: "if (code.includes('try') && code.includes('catch')) return null; return 'try va catch ishlatilmadi';"
+    }
+  ]
 };
