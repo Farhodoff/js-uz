@@ -57,17 +57,32 @@ const onScroll = throttle(() => {
 }, 1000);
 \`\`\`
 
+### Misol 3 — Lazy Loading (Kechikib yuklash) ⭐
+**Maqsad:** Resurslarni (rasmlar, modullar) faqat kerak bo'lganda yuklash.
+\`\`\`javascript
+// Rasm ko'rinishga kelganda yuklash
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const img = entry.target;
+      img.src = img.dataset.src; // Asl rasmni yuklash
+      observer.unobserve(img);
+    }
+  });
+});
+\`\`\`
+
 ---
 
 ## 4. VIZUAL TUSHUNTIRISH
-### Debounce vs Throttle Oqimi
-\`\`\`
-Vaqt: ────0ms────200ms────400ms────600ms────800ms──▶
-Calls:    X  X  X  X  X
-         
-Debounce: ────────────────────────────✅ (Oxirida 1 ta)
-
-Throttle: ✅────────────────✅───────────────✅ (Har N ms da)
+### Lazy Loading Oqimi
+\`\`\`mermaid
+sequenceDiagram
+    Foydalanuvchi->>Sahifa: Pastga scroll qiladi
+    Sahifa->>IntersectionObserver: Rasm ko'rindimi?
+    IntersectionObserver-->>Sahifa: Ha, ko'rindi!
+    Sahifa->>Server: Rasmni yuklab ber
+    Server-->>Foydalanuvchi: Rasm ko'rinadi
 \`\`\`
 
 ---

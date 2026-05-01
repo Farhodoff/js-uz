@@ -81,7 +81,19 @@ graph TD
 
 ---
 
-## 6. MINI LOYIHA: "Theme Manager"
+## 6. DIQQAT: OVER-ENGINEERING OGOHLANTIRISHI ⭐
+Senior dasturchi sifatida siz nafaqat qoliplarni bilishingiz, balki ularni **qachon ishlatmaslikni** ham bilishingiz kerak.
+
+### Qachon Design Pattern ishlatmaslik kerak?
+1. **Kod haddan tashqari murakkablashsa:** Agar oddiy \`if/else\` yoki obyekt bilan yechiladigan muammoga murakkab \`Factory\` yoki \`Strategy\` qurayotgan bo'lsangiz - to'xtang.
+2. **Loyiha kichik bo'lsa:** Kichik landing sahifa uchun \`Singleton\` yoki \`Observer\` tizimini qurish vaqtni behuda sarflashdir.
+3. **KISS tamoyili (Keep It Simple, Stupid):** Har doim eng sodda yechimdan boshlang. Patternlar loyiha o'sgan sari va muammolar murakkablashgan sari qo'shilishi kerak.
+
+> **Qoida:** Pattern - bu dori. Dori kasallik bo'lsagina ichiladi. Sog'lom kodga dori ichirish uni "kasal" qiladi.
+
+---
+
+## 7. MINI LOYIHA: "Theme Manager"
 **Vazifa:** Singleton yordamida sayt mavzusini (dark/light) boshqaruvchi obyekt yarating.
 
 \`\`\`javascript
