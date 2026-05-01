@@ -1,96 +1,136 @@
 export const stringMethods = {
-  id: "b15",
-  title: "String (Matn) metodlari",
-  theory: `## 1. KIRISH
-Dasturlashda matnlar (Strings) bilan ishlash juda ko'p uchraydi. Masalan, foydalanuvchi ismining bosh harfini katta qilish, paroldagi bo'shliqlarni olib tashlash yoki email ichida "@" belgisi borligini tekshirish.
+  id: "b10",
+  title: "String Metodlari - Matnlar bilan sehrgarlik",
+  theory: `## 1. NEGA VA NIMA?
+Tasavvur qiling, foydalanuvchi ismini "  aLi  " deb yozdi. Sizga esa uni bazaga "Ali" ko'rinishida saqlash kerak. Matnning boshidagi bo'shliqlarni qanday o'chirasiz? Birinchi harfni qanday katta qilasiz?
 
-## 2. TUSHUNCHA
-
-### Sodda ta'rif
-String metodlari - bu matnlar ustida turli amallar bajarish (qirqish, o'zgartirish, qidirish) uchun tayyor funksiyalardir.
-
-### Real hayot o'xshashlik
-Matn metodlarini **matn muharririga (Word)** o'xshatish mumkin: qidirish (Ctrl+F), o'zgartirish (Replace) yoki nusxa olish.
+**String Metodlari** — bu matnlar ustida turli "operatsiyalar" bajarish uchun tayyor asboblardir.
 
 ---
 
-## 3. ASOSIY METODLAR
+## 2. ASOSIY METODLAR (Tushuntir → Ko'rsat → Bajartir)
 
-### Qidirish va Tekshirish
-- \`includes("so'z")\`: Matn ichida qidirilayotgan so'z bormi? (true/false)
-- \`startsWith("...")\`: Matn nima bilan boshlanadi?
-- \`indexOf("a")\`: Belgining nechanchi o'rinda turganini aytadi.
+### A. Kattalashtirish va Kichiklashtirish
+Matnni hamma harflarini katta yoki kichik qilish.
 
-### O'zgartirish (Transform)
-- \`toUpperCase()\` / \`toLowerCase()\`: Hammasini KATTA yoki kichik harf qilish.
-- \`trim()\`: Ikki chetdagi bo'shliqlarni o'chiradi.
-- \`replace("eski", "yangi")\`: So'zni almashtiradi.
-
-### Qirqish va Bo'lish
-- \`slice(start, end)\`: Matnning bir qismini kesib oladi.
-- \`split(" ")\`: Matnni massivga bo'lib beradi.
-
----
-
-## 4. KOD MISOLLARI
-
-### Misol 1 — Email tekshirish
+**Ko'rsat:**
 \`\`\`javascript
-const email = "  farkhod@gmail.com  ";
-const cleanEmail = email.trim();
-
-if (cleanEmail.includes("@")) {
-  console.log("To'g'ri email");
-}
-// → To'g'ri email
+const matn = "Salom Dunyo";
+console.log(matn.toUpperCase()); // "SALOM DUNYO"
+console.log(matn.toLowerCase()); // "salom dunyo"
 \`\`\`
 
-### Misol 2 — Ismni formatlash
+**Mashq:** Ismingizni hamma harfini kichik qilib konsolga chiqaring.
+
+### B. Qirqib olish (slice)
+Matnning ma'lum bir qismini kesib olish.
+
+**Ko'rsat:**
 \`\`\`javascript
-let ism = "ali";
-let formatlangan = ism[0].toUpperCase() + ism.slice(1);
-console.log(formatlangan); // → "Ali"
+const meva = "Olmaxon";
+console.log(meva.slice(0, 4)); // "Olma" (0 dan boshlab 4-gacha, lekin 4 o'zi kirmaydi)
 \`\`\`
 
----
+**Mashq:** "JavaScript" so'zidan "Script" qismini kesib oling.
 
-## 5. VIZUAL TUSHUNTIRISH
-### .slice(0, 5) qanday ishlaydi?
-\`\`\`
- Matn:  J  a  v  a  S  c  r  i  p  t
- Index: 0  1  2  3  4  5  6  7  8  9
-        └───────────┘
-          kesib olish
-\`\`\`
+### C. Almashtirish (replace)
+Matndagi so'zni boshqasiga almashtirish.
 
----
-
-## 6. INTERVYU SAVOLLARI
-1. **Stringlar o'zgaruvchanmi (mutable)?** - Yo'q, JSda stringlar **immutable**. Metodlar originalni o'zgartirmaydi, yangi string qaytaradi.
-2. **slice() va substring() farqi?** - \`slice()\` manfiy indexlar bilan ishlay oladi (orqadan sanash), \`substring()\` esa yo'q.
-
----
-
-## 7. MINI LOYIHA: "Ism Tozalagich"
-**Vazifa:** Foydalanuvchi kiritgan "  toshkentoV fArhoD  " matnini "Toshkentov Farhod" holatiga keltiring.
-
+**Ko'rsat:**
 \`\`\`javascript
-let xomMatn = "  toshkentoV fArhoD  ";
-let toza = xomMatn.trim().toLowerCase();
-let qismlar = toza.split(" ");
-
-let natija = qismlar.map(s => s[0].toUpperCase() + s.slice(1)).join(" ");
-console.log(natija); // → "Toshkentov Farhod"
+const xabar = "Bugun havo issiq";
+console.log(xabar.replace("issiq", "zo'r")); // "Bugun havo zo'r"
 \`\`\`
+
+---
+
+## 3. KO'P UCHRAYDIGAN XATOLAR ⚠️
+
+1.  **Asl matnni o'zgardi deb o'ylash:** String metodlari asl matnni o'zgartirmaydi, ular har doim **yangi matn** qaytaradi!
+    \`\`\`javascript
+    let name = "ali";
+    name.toUpperCase();
+    console.log(name); // Hali ham "ali"! ❌
+    name = name.toUpperCase(); // Endi "ALI" ✅
+    \`\`\`
+2.  **Indeks adashtirish:** \`slice(1, 3)\` qilganda 3-indeksdagi harf kirmaydi.
+
+---
+
+## 4. BUZIB KO'RISH 🧐
+**Nima bo'ladi agar \`slice()\` metodiga manfiy son bersak?**
+\`\`\`javascript
+const str = "Frontend";
+console.log(str.slice(-3)); // "end"
+\`\`\`
+**Xulosa:** Manfiy son orqadan sanashni boshlaydi. Bu oxirgi harflarni olish uchun juda qulay!
+
+---
+
+## 5. TOP 12: INTERVYU SAVOLLARI VA AMALIYOT (Junior/Middle) 🎯
+
+1. **String (matn) ning uzunligini qanday bilamiz? (Junior)**
+   *Javob:* \`.length\` xususiyati orqali.
+
+2. **Trim() nima qiladi? (Junior - Amaliy)**
+   *Vazifa:* "  Hello  " matnining ikki tarafidagi bo'shliqlarni o'chirib bering.
+
+3. **Matn ichidan so'z qidirish. (Junior)**
+   *Javob:* \`includes("so'z")\` metodi \`true\` yoki \`false\` qaytaradi.
+
+4. **Matnning birinchi harfini olish. (Junior)**
+   *Javob:* \`str[0]\` yoki \`str.at(0)\`.
+
+5. **Repeat() metodi nima uchun? (Junior - Amaliy)**
+   *Vazifa:* "Yulduz" so'zini 3 marta ketma-ket chiqaring.
+
+6. **Split() nima qaytaradi? (Middle)**
+   *Javob:* Matnni berilgan belgi bo'yicha bo'lib, **massiv** qaytaradi.
+
+7. **Matn boshlanishini tekshirish. (Junior)**
+   *Javob:* \`startsWith("prefiks")\` metodi orqali.
+
+8. **PadStart() nima uchun kerak? (Middle)**
+   *Javob:* Matnning boshiga ma'lum bir belgini qo'shib, uzunligini to'ldirish uchun (Masalan: karta raqamlarini yashirishda).
+
+9. **IndexOf vs LastIndexOf? (Middle)**
+   *Javob:* \`indexOf\` birinchi uchragan, \`lastIndexOf\` esa oxirgi uchragan indeksni qaytaradi.
+
+10. **String immutability (o'zgarmaslik) nima? (Middle)**
+    *Javob:* String yaratilgandan keyin uning ichidagi birorta harfni to'g'ridan-to'g'ri o'zgartirib bo'lmaydi (\`str[0] = "A"\` ishlamaydi).
+
+11. **Matnni teskari qilish (Reverse). (Middle - Amaliy)**
+    *Vazifa:* "Salom" ni "molaS" qiling. (Maslahat: split -> reverse -> join).
+
+12. **CharAt() va [ ] orasidagi farq? (Middle)**
+    *Javob:* \`charAt()\` agar indeks topilmasa bo'sh matn qaytaradi, \`[ ]\` esa \`undefined\`.
+
+---
+
+## 6. CHALLENGE 🏆
+Foydalanuvchi kiritgan har qanday gapning birinchi harfini katta qiling, qolganlarini esa kichik qiling. (Masalan: "jAvAsCrIpT o'RgAnAmAn" -> "Javascript o'rganaman").
+
+---
+
+## 7. XULOSA
+Siz endi matnlarni xuddi plastilin kabi xohlagan ko'rinishga keltira olasiz!
 `,
   exercises: [
     {
       id: 1,
-      title: " includes() mashqi",
-      instruction: "Matn ichida 'JS' so'zi borligini tekshiring va natijani chiqaring.",
-      startingCode: "const text = 'Men JSni o\\'rganyapman';\n// Bu yerga yozing\n",
-      hint: "text.includes('JS')",
-      test: "if (logs.includes('true')) return null; return 'true chiqishi kerak';"
+      title: "Trim va Katta harf",
+      instruction: "Bo'shliqlarni o'chiring va hamma harflarni katta qiling.",
+      startingCode: "const word = '  hello  ';\nconst result = // Bu yerga yozing\n",
+      hint: "word.trim().toUpperCase()",
+      test: "if (result === 'HELLO') return null; return 'Xato bajardingiz';"
+    },
+    {
+      id: 2,
+      title: "Qidiruv",
+      instruction: "Matn ichida 'JS' so'zi borligini tekshiring.",
+      startingCode: "const txt = 'I love JS';\nconst hasJS = // Bu yerda tekshiring\n",
+      hint: "txt.includes('JS')",
+      test: "if (hasJS === true) return null; return 'includes ishlatilmadi';"
     }
   ]
 };
