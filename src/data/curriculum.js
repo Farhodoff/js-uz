@@ -52,6 +52,7 @@ import { prototypesLesson } from "./lessons/advanced/prototypes";
 import { advancedFetch } from "./lessons/advanced/advancedFetch";
 import { closuresDeepDive } from "./lessons/advanced/closuresDeepDive";
 import { securityLesson } from "./lessons/advanced/security";
+import { unitTesting } from "./lessons/advanced/unitTesting";
 import { regexLesson } from "./lessons/advanced/regex";
 
 import { todoList } from "./lessons/projects/todoList";
@@ -74,7 +75,7 @@ export const curriculum = {
     label: "Advanced",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [interviewQuestionsAdvanced, securityLesson, advancedFetch, closuresDeepDive, callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, prototypesLesson, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson]
+    lessons: [interviewQuestionsAdvanced, securityLesson, unitTesting, advancedFetch, closuresDeepDive, callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, prototypesLesson, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson]
   },
   projects: {
     label: "Loyihalar",
