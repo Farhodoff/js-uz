@@ -1,82 +1,74 @@
 export const scopeLesson = {
   id: "b8",
-  title: "Scope: O'zgaruvchilarning 'Yashash joyi'",
-  theory: `## 1. KIRISH
-Tasavvur qiling, sizning ismingiz "Ali". Uyda sizni hamma taniydi, lekin ko'chaga chiqsangiz, begona odamlar sizni tanimasligi mumkin. JavaScriptda ham o'zgaruvchilarning xuddi shunday "tanish doirasi" bor. Bu **Scope** (doira) deb ataladi.
+  title: "Scope va Closure (Doira va Yopilish)",
+  theory: `## 1. SCOPE NIMA?
+**Scope** (doira) — bu o'zgaruvchi va funksiyalarning kodingizda qayerda "ko'rinishi" va "ishlatilishi" mumkinligini belgilaydigan hududdir.
 
-## 2. TUSHUNCHA
-
-### Sodda ta'rif
-Scope - bu o'zgaruvchi "yashaydigan" va "taniladigan" hudud. Agar o'zgaruvchi biror doiradan tashqarida bo'lsa, uni ishlatib bo'lmaydi.
-
-### Real hayot o'xshashlik (Viloyat va Uy)
-- **Global Scope (Ko'cha)**: Hamma ko'rishi va ishlatishi mumkin bo'lgan narsalar (masalan, haykal).
-- **Local Scope (Sizning uyingiz)**: Faqat uyingizdagilar ko'ra oladigan narsalar (masalan, sizning tish cho'tkangiz).
+### Scope turlari:
+1.  **Global Scope:** Hujjatning eng yuqori qismida e'lon qilingan o'zgaruvchilar. Ularni istalgan joyda ishlatish mumkin.
+2.  **Function Scope:** Faqat funksiya ichida e'lon qilingan o'zgaruvchilar.
+3.  **Block Scope:** \`let\` va \`const\` bilan \`{ }\` jingalak qavslar ichida yaratilgan o'zgaruvchilar.
 
 ---
 
-## 3. SCOPE TURLARI
+## 2. SCOPE CHAIN (Doiralar zanjiri)
+Agar JavaScript o'zgaruvchini joriy doirada topa olmasa, u bitta yuqoriga chiqadi va o'sha yerdan qidiradi. Bu jarayon o'zgaruvchi topilguncha yoki global doiraga yetguncha davom etadi.
 
-### 1. Global Scope
-Dasturning eng yuqorisida e'lon qilingan o'zgaruvchilar. Ularni istalgan joyda (funksiya ichida ham) ishlatish mumkin.
-
-### 2. Function Scope
-Faqat funksiya ichida yashaydigan o'zgaruvchilar. Ular funksiya tugashi bilan "o'ladi".
-
-### 3. Block Scope (let va const uchun)
-Faqat jingalak qavslar \`{ }\` ichida yashaydigan o'zgaruvchilar.
-
----
-
-## 4. VIZUAL TUSHUNTIRISH
-### Doiralar zanjiri
 \`\`\`mermaid
 graph TD
-    A["DUNYO (Global Scope)"] --> B["UY (Function Scope)"]
-    B --> C["XONA (Block Scope)"]
-    C -.-> |"ko'ra oladi"| B
-    B -.-> |"ko'ra oladi"| A
-    A -.- x |"KO'RA OLMAYDI"| B
-    B -.- x |"KO'RA OLMAYDI"| C
+    A[Global Scope] --> B[Function Scope]
+    B --> C[Block Scope]
+    C -.-> |"Qidiruv tepaga"| B
+    B -.-> |"Qidiruv tepaga"| A
 \`\`\`
-*Muhim qoida: Ichkaridagilar tashqarini ko'radi, lekin tashkaridagilar ichkarini ko'ra olmaydi!*
 
 ---
 
-## 5. INTERVYU SAVOLLARI
-1. **Scope nima?** - O'zgaruvchilarning ko'rinish doirasi.
-2. **Scope Chain (Zanjir) nima?** - Agar o'zgaruvchi ichki doirada topilmasa, JS uni tashqi doiralardan qidirishidir.
-
----
-
-## 6. MINI LOYIHA: "Dahshatli Qidiruv"
-**Vazifa:** Ichma-ich funksiyalar yozing va qaysi o'zgaruvchi qayerda ko'rinishini tekshiring.
+## 3. CLOSURE (Yopilish) NIMA? ⭐
+**Closure** — bu ichki funksiyaning tashqi funksiya o'zgaruvchilariga kirish huquqiga ega bo'lishi. Hatto tashqi funksiya o'z ishini tugatgan bo'lsa ham, ichki funksiya o'sha o'zgaruvchilarni "eslab qoladi".
 
 \`\`\`javascript
-const shahar = "Toshkent"; // Global
-
-function uy() {
-  const xona = "Mehmonxona"; // Function scope
-  
-  if (true) {
-    const buyum = "Televizor"; // Block scope
-    console.log(shahar, xona, buyum); // Hammasini ko'radi ✅
+function tashqi() {
+  let sanoq = 0;
+  return function ichki() {
+    sanoq++;
+    console.log(sanoq);
   }
-  
-  // console.log(buyum); // ❌ XATO! buyum blok ichida qolib ketgan
 }
 
-uy();
+const counter = tashqi();
+counter(); // 1
+counter(); // 2
 \`\`\`
-`,
+
+---
+
+## 4. INTERVYU SAVOLLARI (Junior & Middle)
+
+1. **let va var ning scope bo'yicha farqi nima?**
+   *Javob:* \`var\` function-scoped, \`let\` esa block-scoped hisoblanadi.
+
+2. **Closure nima uchun kerak?**
+   *Javob:* Ma'lumotlarni yashirish (private variables) va funksiyalarga "xotira" berish uchun.
+
+3. **Global o'zgaruvchilar ko'p bo'lishi nega yomon?**
+   *Javob:* "Global namespace pollution" — ya'ni turli qismlarda bir xil nomli o'zgaruvchilar to'qnashib qolishi mumkin.`,
   exercises: [
     {
       id: 1,
-      title: "Global vs Local",
-      instruction: "Funksiya tashqarisida 'name' o'zgaruvchisini yarating va uni funksiya ichida consolega chiqaring.",
-      startingCode: "// Bu yerda yarating\n\nfunction showName() {\n  // Bu yerda chiqaring\n}",
-      hint: "const name = 'Ali'; console.log(name);",
-      test: "if (logs.length > 0) return null; return 'Funksiyani chaqiring va log chiqaring';"
+      title: "Block Scope",
+      instruction: "Blok ichida 'const x = 10' yarating va uni blokdan tashqarida log qilib ko'ring (xato bo'lishi kerak).",
+      startingCode: "if (true) {\n  // x ni yarating\n}\nconsole.log(x);",
+      hint: "const x = 10;",
+      test: "if (output.includes('ReferenceError')) return null; return 'Xato chiqishi kerak (ReferenceError)';"
+    },
+    {
+      id: 2,
+      title: "Oddiy Closure",
+      instruction: "createSecret funksiyasi 'secret' o'zgaruvchisini qaytaradigan funksiya qaytarsin.",
+      startingCode: "function createSecret(msg) {\n  const secret = 'Yashirin: ' + msg;\n  return function() {\n    // secretni qaytaring\n  }\n}",
+      hint: "return secret;",
+      test: "const fn = new Function('msg', code + ' return createSecret(msg);')('test'); if (fn() === 'Yashirin: test') return null; return 'Closure to\\'g\\'ri ishlamadi';"
     }
   ]
 };

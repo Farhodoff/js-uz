@@ -1,94 +1,76 @@
 export const modulesLesson = {
   id: "a6",
-  title: "Modullar (ES6 Modules: import/export)",
-  theory: `## ES6 Modullari – JavaScriptni qismlarga bo‘lish
+  title: "Modullar (import va export)",
+  theory: `## 1. MODULLAR NIMA?
+Loyiha kattalashgani sari hamma kodni bitta faylda saqlash imkonsiz bo'lib qoladi. **Modullar** — bu kodni mantiqiy bo'laklarga (alohida fayllarga) bo'lish va ularni bir-biriga ulash usulidir.
 
-ES6 modullari – kodni alohida fayllarga bo‘lib, ular orasida funksiya, obyekt, o‘zgaruvchilarni import/export qilish imkonini beradi. Har bir modul o‘z **scope** (doira) ga ega, global scope’ni ifloslantirmaydi.
-
-### Muhim xususiyatlar:
-- Modul faylida \`"use strict"\` avtomatik yoqiladi.
-- Import/export faqat modul ichida ishlaydi (HTML da \`<script type="module">\`).
-- Modullar **defer** kabi yuklanadi (kechiktirilgan, lekin tartibli).
-- **Live Binding:** Import qilingan o'zgaruvchining qiymati eksport qiluvchi faylda o'zgarsa, import qiluvchi faylda ham o'zgaradi.
+### Afzalliklari:
+- **Tartib:** Har bir fayl bitta vazifaga javob beradi.
+- **Qayta ishlatish:** Bir marta yozilgan kodni boshqa fayllarda ham ishlatish mumkin.
+- **Xavfsizlik:** Modullar o'z xususiy doirasiga (scope) ega, global o'zgaruvchilar bilan to'qnashmaydi.
 
 ---
 
-### 1. Export (Eksport qilish)
+## 2. EXPORT VA IMPORT
 
-**Named export (nomli eksport):**
+### A. Named Export (Nomli eksport)
+Bitta fayldan bir nechta narsani eksport qilish mumkin. Import qilganda aynan o'sha nom bilan jingalak qavs ichida olish kerak.
+
 \`\`\`javascript
-export const PI = 3.14159;
-export function add(a, b) { return a + b; }
+// math.js
+export const PI = 3.14;
+export function sum(a, b) { return a + b; }
+
+// main.js
+import { PI, sum } from './math.js';
 \`\`\`
 
-**Default export (bitta asosiy eksport):**
+### B. Default Export (Asosiy eksport)
+Fayldan faqat bitta asosiy narsani eksport qilish uchun. Import qilganda istalgan nom berish mumkin.
+
 \`\`\`javascript
+// user.js
 export default class User { ... }
+
+// main.js
+import MyUser from './user.js';
+\`\`\`
+
+\`\`\`mermaid
+graph LR
+    A[Modul A] -- export --> B(Exported Data)
+    B -- import --> C[Modul B]
+    style B fill:#f9f,stroke:#333
 \`\`\`
 
 ---
 
-### 2. Import (Import qilish)
+## 3. INTERVYU SAVOLLARI (Junior & Middle)
 
-**Named import:**
-\`\`\`javascript
-import { PI, add } from './math.js';
-\`\`\`
+1. **Named export va Default export farqi?**
+   *Javob:* Named export bir nechta bo'lishi mumkin va nomi bir xil bo'lishi shart. Default export bitta bo'ladi va nomini importda o'zgartirish mumkin.
 
-**Default import:**
-\`\`\`javascript
-import User from './user.js'; // nom ixtiyoriy
-\`\`\`
+2. **Dinamik import nima?**
+   *Javob:* Modulni kodning istalgan joyida (masalan, \`if\` ichida) \`import()\` funksiyasi orqali yuklash. Bu \`Promise\` qaytaradi.
 
-**Rename (nom o‘zgartirish):**
-\`\`\`javascript
-import { add as sum } from './math.js';
-\`\`\`
-
----
-
-### 3. Dynamic import (Dinamik import)
-Modulni shartli yoki kerak bo‘lganda yuklash. \`Promise\` qaytaradi.
-\`\`\`javascript
-async function load() {
-  const module = await import('./math.js');
-  console.log(module.add(2, 3));
-}
-\`\`\`
-
----
-
-## Intervyu savollari (Junior & Middle)
-
-### Junior daraja
-1. **ES6 modullari nima uchun kerak?**
-2. **Named export va default export farqi nimada?**
-3. **Brauzerda modulni qanday ulash mumkin? (\`type="module"\`)**
-
-### Middle daraja
-4. **Live Binding nima va u qanday ishlaydi?**
-5. **Dynamic import qayerda va nima uchun foydali?**
-6. **Re-export nima? Misol keltiring.**
-7. **CommonJS (require) va ES Modules (import) farqi?**`,
-  task: `// 1. greeting.js faylidan "sayHi(name)" funksiyasini named export qiling va main.js da import qilib ishlating.
-// 2. calculator.js faylida default export qilib Calculator klassini yarating (metodlari: add, subtract).
-// 3. math.js dagi funksiyani import qilayotganda nomini "sum"ga o'zgartiring (as operatori).
-// 4. Dinamik import yordamida modulni faqat shartli ravishda (if bloki ichida) yuklang.
-// 5. Re-export yordamida index.js faylida boshqa modullardagi funksiyalarni jamlang.
-
-// Kodingizni shu yerga yozing`,
-  hint: `// 1. Named Export
-// greeting.js: export const sayHi = (n) => "Salom " + n;
-// main.js: import { sayHi } from './greeting.js';
-
-// 3. Rename
-import { add as sum } from './math.js';
-
-// 4. Dynamic Import
-if (true) {
-  import('./lazy.js').then(m => m.start());
-}
-
-// 5. Re-export
-// index.js: export { add, PI } from './math.js';`
+3. **Modullarda 'use strict' yozish shartmi?**
+   *Javob:* Yo'q, modullar avtomatik ravishda qat'iy rejimda (strict mode) ishlaydi.`,
+  exercises: [
+    {
+      id: 1,
+      title: "Named Import",
+      instruction: "'math' modulidan 'PI' va 'add' ni import qilish kodini yozing.",
+      startingCode: "// Import kodini yozing\n",
+      hint: "import { PI, add } from './math.js';",
+      test: "if (code.includes('import') && code.includes('{') && code.includes('}')) return null; return 'Named import sintaksisi noto\\'g\\'ri';"
+    },
+    {
+      id: 2,
+      title: "Default Export",
+      instruction: "'Person' klassini default sifatida eksport qiling.",
+      startingCode: "class Person {}\n// Bu yerda eksport qiling\n",
+      hint: "export default Person;",
+      test: "if (code.includes('export default')) return null; return 'export default ishlatilmadi';"
+    }
+  ]
 };

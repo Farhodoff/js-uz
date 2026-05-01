@@ -27,9 +27,9 @@ Har hafta 4-6 soat ajrating. Har band qisqa amaliyot bilan yakunlansin.
 - [x] Fetch API (GET, JSON) - amaliyot: public API dan ma'lumot olish.
 
 ## Hafta 4: Modul, xatolar, loyiha
-- [ ] Modullar (import/export) va fayl tuzilma - amaliyot: 2 modul.
-- [ ] Xatolar bilan ishlash (try/catch, throw) - amaliyot: validate funksiya.
+- [x] Modullar (import/export) va fayl tuzilma - amaliyot: 2 modul.
+- [x] Xatolar bilan ishlash (try/catch, throw) - amaliyot: validate funksiya.
 - [ ] Debugging (devtools, breakpoint, console) - amaliyot: bug topish.
-- [ ] LocalStorage (set/get, JSON) - amaliyot: sozlamani saqlash.
+- [x] LocalStorage (set/get, JSON) - amaliyot: sozlamani saqlash.
 - [ ] Todo List loyihasi - vazifa qo'shish/o'chirish/bajarildi.
 - [ ] Yakuniy refaktor va README - kod tozaligi va qisqa izoh.

@@ -1,30 +1,40 @@
 export const switchLesson = {
   id: "b22",
   title: "Switch Operatori",
-  theory: `## 1. SWITCH NIMA?
-\`switch\` — bir o'zgaruvchi yoki ifodaning qiymatiga qarab, bir nechta **case** (holat) dan birini bajarish imkonini beradi. U ko'pincha juda ko'p \`if...else if\` yozishdan qochish uchun ishlatiladi.
+  theory: `## 1. SWITCH ASOSLARI
+\`switch\` — bir o‘zgaruvchi yoki ifodaning qiymatiga qarab, bir nechta **case** (holat) dan birini bajarish imkonini beradi. Bu operator ko'pincha juda ko'p \`if...else if\` yozishdan qochish uchun ishlatiladi.
 
 ### Sintaksis
 \`\`\`javascript
 switch (ifoda) {
   case qiymat1:
-    // kod
+    // agar ifoda === qiymat1 bo'lsa
     break;
   case qiymat2:
-    // kod
+    // agar ifoda === qiymat2 bo'lsa
     break;
   default:
-    // hech biri mos kelmasa
+    // hech bir case mos kelmasa
 }
 \`\`\`
 
 ---
 
-## 2. ASOSIY QOIDALAR
+## 2. BREAK VA FALL-THROUGH
+\`break\` — switch blokidan chiqishni ta’minlaydi. Agar \`break\` yozilmasa, bajarilish keyingi case’larga ham o‘tib ketadi (**fall-through**).
 
-- **Strict Equality (===):** Switch qiymatlarni taqqoslaganda ham turi, ham qiymati bir xil bo'lishini talab qiladi.
-- **break:** Bu juda muhim! Agar \`break\` qo'yilmasa, JS keyingi case'larga ham o'tib ketadi (**fall-through**).
-- **default:** Agar hech bir case mos kelmasa, shu qism ishlaydi. Bu \`else\` ga o'xshash.
+\`\`\`javascript
+let a = 1;
+switch (a) {
+  case 1:
+    console.log("Bir");
+    // break yo'q!
+  case 2:
+    console.log("Ikki");
+    break;
+}
+// Natija: "Bir", "Ikki"
+\`\`\`
 
 \`\`\`mermaid
 graph TD
@@ -32,39 +42,58 @@ graph TD
     B -- Case 1 --> C[Blok 1 bajariladi]
     B -- Case 2 --> D[Blok 2 bajariladi]
     B -- Default --> E[Default blok]
-    C --> F[break: Blokdan chiqish]
-    D --> F
-    E --> F
+    C --> F{break bormi?}
+    F -- Ha --> G[Blokdan chiqish]
+    F -- Yo'q --> D
+    D --> G
+    E --> G
 \`\`\`
 
 ---
 
-## 3. FALL-THROUGH (O'tib ketish)
-Ba'zan ataylab \`break\` yozilmaydi, agar bir nechta holat uchun bir xil kod kerak bo'lsa:
+## 3. BIR NECHTA CASE — BIR XIL KOD
+Agar bir nechta holat uchun bitta natija kerak bo'lsa, ularni ketma-ket yozish mumkin:
 
 \`\`\`javascript
-let oy = 1;
+let oy = 4;
 switch (oy) {
-  case 12:
-  case 1:
-  case 2:
-    console.log("Qish");
+  case 3:
+  case 4:
+  case 5:
+    console.log("Bahor");
     break;
 }
 \`\`\`
 
 ---
 
-## 4. INTERVYU SAVOLLARI (Junior)
+## 4. SWITCH(TRUE) — MANTIQIY SHARTLAR
+\`switch\` asosan aniq tenglik (\`===\`) uchun ishlasa-da, \`switch(true)\` usuli orqali mantiqiy shartlarni (>, <) ham tekshirish mumkin:
 
-1. **switch da qiymatlar qanday tekshiriladi?**
-   *Javob:* Strict equality (\`===\`) orqali. Ya'ni \`"1"\` va \`1\` bir-biriga teng deb olinmaydi.
+\`\`\`javascript
+let score = 85;
+switch (true) {
+  case score >= 90:
+    console.log("A");
+    break;
+  case score >= 80:
+    console.log("B");
+    break;
+}
+\`\`\`
 
-2. **break yozish shartmi?**
-   *Javob:* Texnik jihatdan shart emas, lekin yozilmasa, dastur keyingi case'larni ham bajarib yuboradi, bu esa xatoga olib kelishi mumkin.
+---
 
-3. **default har doim oxirida bo'lishi kerakmi?**
-   *Javob:* Odatda oxirida yoziladi, lekin istalgan joyda bo'lishi mumkin. Baribir hech narsa mos kelmasa ishlaydi.`,
+## 5. INTERVYU SAVOLLARI (Junior & Middle)
+
+1. **switch qanday solishtirish operatoridan foydalanadi?**
+   *Javob:* Strict equality (\`===\`).
+
+2. **Fall-through qachon foydali bo'lishi mumkin?**
+   *Javob:* Bir nechta case'lar bir xil kodni bajarishi kerak bo'lganda (masalan, fasllarni aniqlashda).
+
+3. **switch ichida return ishlatsa bo'ladimi?**
+   *Javob:* Ha, agar switch funksiya ichida bo'lsa, \`return\` ham switch'ni, ham funksiyani to'xtatadi.`,
   exercises: [
     {
       id: 1,

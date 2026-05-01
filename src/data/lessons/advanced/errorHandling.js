@@ -1,85 +1,77 @@
 export const errorHandling = {
   id: "a5",
-  title: "Error Handling (Xatoliklarni boshqarish)",
-  theory: `## Error Handling (Xatoliklarni boshqarish)
-
-JavaScriptda xatoliklar kod bajarilishini to‘xtatib qo‘ymasligi uchun \`try...catch...finally\` va \`throw\` ishlatiladi.
+  title: "Xatolar bilan ishlash (Error Handling)",
+  theory: `## 1. KIRISH
+Dasturlashda xatolar (bugs) muqarrar. Muhimi — xato sodir bo'lganda butun dastur to'xtab qolmasligini ta'minlash. Buning uchun JavaScriptda \`try...catch\` konstruktsiyasi ishlatiladi.
 
 ---
 
-### 1. try...catch...finally
+## 2. TRY...CATCH...FINALLY
+- **try:** Xato sodir bo'lishi mumkin bo'lgan kod bloki.
+- **catch:** Agar xato bo'lsa, ushbu blok ishga tushadi.
+- **finally:** Xato bo'ladimi yoki yo'qmi, baribir oxirida ishlaydigan blok.
+
 \`\`\`javascript
 try {
-  // xatolik yuz berishi mumkin bo‘lgan kod
-  JSON.parse("{ invalid }");
+  let natija = 10 / x; // x topilmasa xato beradi
 } catch (err) {
-  console.log("Xato:", err.message);
+  console.log("Xato ushlandi: " + err.message);
 } finally {
-  console.log("Har doim ishlaydi");
+  console.log("Amaliyot yakunlandi.");
 }
 \`\`\`
 
-### 2. Error turlari
-- **ReferenceError:** E’lon qilinmagan o‘zgaruvchi.
-- **TypeError:** Qiymat turi noto‘g‘ri (masalan, \`null.toString()\`).
-- **SyntaxError:** Sintaksis xato.
-- **RangeError:** Qiymat diapazondan tashqarida.
-
-### 3. throw – Xatolikni tashlash
-Dasturchi o‘zi xohlagan joyda xatolikni yuzaga keltirishi mumkin.
-\`\`\`javascript
-function checkAge(age) {
-  if (age < 0) throw new Error("Yosh manfiy bo'lmasin!");
-}
+\`\`\`mermaid
+graph TD
+    A[Boshlash] --> B[try bloki]
+    B --> C{Xato bormi?}
+    C -- Ha --> D[catch bloki]
+    C -- Yo'q --> E[finally bloki]
+    D --> E
+    E --> F[Tugash]
 \`\`\`
 
-### 4. Asinxron xatoliklar
-Asinxron kodda (\`setTimeout\`) \`try...catch\` to'g'ridan-to'g'ri ishlamaydi. Uni \`await\` yoki \`.catch()\` bilan ishlatish kerak.
+---
+
+## 3. THROW — XATONI ATAYLAB CHIQARISH
+Biz o'zimiz xohlagan shart asosida xatolik yuzaga keltirishimiz mumkin:
+
 \`\`\`javascript
-async function getData() {
-  try {
-    let res = await fetch(url);
-  } catch (err) {
-    console.error(err);
+function tekshir(yosh) {
+  if (age < 18) {
+    throw new Error("Siz juda yoshsiz!");
   }
 }
 \`\`\`
 
 ---
 
-## Intervyu savollari (Junior & Middle)
+## 4. INTERVYU SAVOLLARI (Junior & Middle)
 
-### Junior daraja
-1. **try...catch nima uchun kerak?**
-2. **finally bloki qachon ishlaydi?**
-3. **throw orqali nimalarni tashlash (throw) mumkin?**
+1. **finally bloki nima uchun kerak?**
+   *Javob:* Odatda "tozalash" ishlari uchun. Masalan, faylni yopish yoki yuklash indikatorini (spinner) to'xtatish uchun.
 
-### Middle daraja
-4. **setTimeout ichidagi xatoni tashqaridagi try...catch bilan tutish mumkinmi?**
-5. **Promise reject bo'lganda try...catch ishlaydimi?**
-6. **Custom Error klassini qanday yaratish mumkin?**`,
-  task: `// 1. JSON.parse ni try...catch bilan o'rab, xato bo'lsa "Xato format" deb xabar chiqaring.
-// 2. Funksiya yozing: unga son berilmasa TypeError tashlasin (throw).
-// 3. O'zingizning "ValidationError" klassingizni yarating.
-// 4. async funksiya ichida fetch so'rovini try...catch bilan boshqaring.
-// 5. finally blokida yuklash indikatori tugaganini bildiruvchi xabar chiqaring.
+2. **Error obyektining qanday asosiy xususiyatlari bor?**
+   *Javob:* \`name\` (xato turi) va \`message\` (xato haqida xabar).
 
-// Kodingizni shu yerga yozing`,
-  hint: `// 1. JSON parse
-try { JSON.parse("invalid"); } catch(e) { console.log("Xato format"); }
-
-// 2. Custom throw
-function onlyNumber(n) {
-  if (typeof n !== "number") throw new TypeError("Faqat son!");
-}
-
-// 3. ValidationError
-class ValidationError extends Error {
-  constructor(m) { super(m); this.name = "ValidationError"; }
-}
-
-// 4. Async catch
-async function test() {
-  try { await fetch("invalid-url"); } catch(e) { console.log("Tarmoq xatosi"); }
-}`
+3. **Asinxron kodda try...catch qanday ishlaydi?**
+   *Javob:* \`setTimeout\` ichidagi xatoni tashqaridagi \`try...catch\` ushlay olmaydi. Lekin \`async/await\` bilan ishlatilsa, hammasi joyida bo'ladi.`,
+  exercises: [
+    {
+      id: 1,
+      title: "Xatoni ushlash",
+      instruction: "JSON.parse('not-json') xatosini try...catch orqali ushlang va 'Error' deb chiqaring.",
+      startingCode: "try {\n  // Bu yerda JSON.parse ishlating\n} catch (e) {\n  // Chiqaring\n}",
+      hint: "JSON.parse('...'); console.log('Error');",
+      test: "if (logs.includes('Error')) return null; return 'Error deb chiqishi kerak';"
+    },
+    {
+      id: 2,
+      title: "Ataylab xato chiqarish",
+      instruction: "Agar 'val' 0 dan kichik bo'lsa 'throw' yordamida Error tashlang.",
+      startingCode: "const val = -1;\n// Bu yerga yozing\n",
+      hint: "if (val < 0) throw new Error('Minus');",
+      test: "if (output.includes('Minus')) return null; return 'Error tashlanishi kerak';"
+    }
+  ]
 };
