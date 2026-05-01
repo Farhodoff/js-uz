@@ -38,6 +38,8 @@ import { debugging } from "./lessons/advanced/debugging";
 import { closuresLesson } from "./lessons/advanced/closures";
 import { eventLoopLesson } from "./lessons/advanced/eventLoop";
 import { eventLoopDeep } from "./lessons/advanced/eventLoopDeep";
+import { designPatterns } from "./lessons/advanced/designPatterns";
+import { functionalProgramming } from "./lessons/advanced/functionalProgramming";
 import { regexLesson } from "./lessons/advanced/regex";
 
 import { todoList } from "./lessons/projects/todoList";
@@ -60,7 +62,7 @@ export const curriculum = {
     label: "Advanced",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson]
+    lessons: [callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, designPatterns, functionalProgramming, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson]
   },
   projects: {
     label: "Loyihalar",
