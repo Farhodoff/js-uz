@@ -1,71 +1,84 @@
 export const equalityAlgorithms = {
   id: "b20",
-  title: "Object.is() va Tenglik algoritmlari",
-  theory: `## 1. KIRISH
-JavaScriptda qiymatlarni solishtirishning bir necha usuli va orqasida turgan algoritmlar mavjud. Siz allaqachon \`==\` va \`===\` ni bilasiz. Endi qo‘shimcha: **\`Object.is()\`** va **SameValue**, **SameValueZero** algoritmlari haqida o'rganamiz.
+  title: "Tenglik Operatorlari (Equality)",
+  theory: `## 1. LOOSE EQUALITY (==) — YUMSHOQ TENGLIK
+\`==\` operatori solishtirishdan oldin operandlarning **tiplarini avtomatik o‘zgartiradi** (type coercion). Qiymatlar bir xil bo‘lsa \`true\` qaytaradi.
 
-## 2. Object.is() – Eng aniq tenglik
-\`Object.is(v1, v2)\` ES6 da qo‘shilgan. U \`===\` ga o‘xshaydi, lekin ikkita muhim farq bor:
-- **NaN bilan ishlash**: \`Object.is(NaN, NaN)\` → \`true\` (\`===\` da false)
-- **-0 va +0 bilan ishlash**: \`Object.is(-0, +0)\` → \`false\` (\`===\` da true)
+### Coercion qoidalari:
+- **String vs Number:** string numberga aylanadi: \`"5" == 5\` → \`true\`
+- **Boolean vs Number:** boolean numberga (\`true\` → 1, \`false\` → 0): \`true == 1\` → \`true\`
+- **Null vs Undefined:** Ular faqat bir-biriga teng: \`null == undefined\` → \`true\`
+- **NaN:** Hech narsaga teng emas (hatto o‘ziga ham): \`NaN == NaN\` → \`false\`
 
 \`\`\`javascript
-console.log(NaN === NaN);         // false
-console.log(Object.is(NaN, NaN)); // true
-
-console.log(-0 === +0);           // true
-console.log(Object.is(-0, +0));   // false
+console.log(5 == "5");  // true
+console.log(0 == false); // true
+console.log([] == "");   // true
 \`\`\`
 
 ---
 
-## 3. TENGLIK ALGORITMLARI JADVALI
-
-| Algoritm | Ishlatiladigan joy | Misol |
-|----------|-------------------|-------|
-| **Abstract Equality** | \`==\` | \`5 == "5"\` → true |
-| **Strict Equality** | \`===\`, \`indexOf\` | \`NaN === NaN\` → false |
-| **SameValue** | \`Object.is()\` | \`Object.is(-0, +0)\` → false |
-| **SameValueZero** | \`Map\`, \`Set\`, \`includes\` | \`[NaN].includes(NaN)\` → true |
-
-### SameValueZero nima uchun muhim? ⭐
-\`Map\` va \`Set\` ichki qismda **SameValueZero** ishlatadi. Bu algoritmda \`NaN\` o'ziga teng deb hisoblanadi, lekin \`-0\` va \`+0\` teng deb olinadi.
+## 2. STRICT EQUALITY (===) — QATTIQ TENGLIK
+\`===\` hech qanday tip o'zgarishini (coercion) amalga oshirmaydi. **Ham turi, ham qiymati** bir xil bo‘lishi kerak.
 
 \`\`\`javascript
-let set = new Set();
-set.add(NaN);
-set.add(NaN);
-console.log(set.size); // 1 (chunki NaN takrorlanmaydi)
+console.log(5 === "5");  // false (number vs string)
+console.log(0 === false); // false (number vs boolean)
+\`\`\`
+
+**Best Practice:** Har doim \`===\` ishlatish tavsiya etiladi.
+
+---
+
+## 3. Object.is() — ENG ANIQ TENGLIK
+\`Object.is()\` ES6 da qo‘shilgan bo'lib, u \`===\` ga juda o'xshash, lekin ikkita muhim farqi bor:
+
+- **NaN bilan:** \`Object.is(NaN, NaN)\` → \`true\`
+- **-0 va +0 bilan:** \`Object.is(-0, +0)\` → \`false\`
+
+\`\`\`mermaid
+graph TD
+    A[Solishtirish Usullari] --> B[==: Coercion qiladi]
+    A --> C[===: Tipni ham tekshiradi]
+    A --> D["Object.is: Eng aniq (NaN, -0/+0)"]
 \`\`\`
 
 ---
 
 ## 4. INTERVYU SAVOLLARI (Junior & Middle)
 
-### Nazariy (Junior)
-1. **Object.is() nima va u === dan qanday farq qiladi?** - U SameValue algoritmini ishlatadi. Farqi: NaN ni o'ziga teng deb biladi va -0 bilan +0 ni farqlaydi.
-2. **Nima uchun Map va Set da -0 va +0 bir xil kalit hisoblanadi?** - Chunki ular SameValueZero ishlatadi, bu algoritmda ular teng.
+1. **== va === farqi nima?**
+   *Javob:* \`==\` tiplarni bir xil qilib solishtiradi (coercion), \`===\` esa tiplar har xil bo'lsa darhol \`false\` qaytaradi.
 
-### Amaliy (Middle) ⭐
-**Savol:** \`Array.prototype.indexOf\` va \`Array.prototype.includes\` farqi nimada?
-**Javob:** \`indexOf\` Strict Equality (\`===\`) ishlatadi, shuning uchun massiv ichidagi \`NaN\` ni topa olmaydi. \`includes\` esa SameValueZero ishlatadi va \`NaN\` ni topa oladi.
-`,
+2. **Nima uchun NaN === NaN false qaytaradi?**
+   *Javob:* JavaScript spetsifikatsiyasiga ko'ra, NaN (son emas) unikal qiymat va u o'z-o'ziga ham teng emas. Uni tekshirish uchun \`isNaN()\` yoki \`Object.is()\` kerak.
+
+3. **null == undefined nega true?**
+   *Javob:* Bu JavaScriptdagi maxsus qoida. Ular qiymat yo'qligini anglatgani uchun loose equalityda teng deb hisoblanadi.`,
   exercises: [
     {
       id: 1,
-      title: "NaN solishtirish",
-      instruction: "Object.is() yordamida ikkita NaN qiymatini solishtiring va natijani ko'ring.",
-      startingCode: "// Object.is bilan NaN ni tekshiring\n",
-      hint: "console.log(Object.is(NaN, NaN));",
+      title: "Coercion sinovi",
+      instruction: "0 ni 'false' bilan '==' yordamida solishtiring va natijani ko'ring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "console.log(0 == false);",
       test: "if (logs.includes('true')) return null; return 'true chiqishi kerak';"
     },
     {
       id: 2,
-      title: "Set va NaN",
-      instruction: "Set yarating va unga ikki marta NaN qo'shing. Set o'lchamini (size) ko'ring.",
-      startingCode: "const s = new Set();\n// NaN qo'shing\nconsole.log(s.size);",
-      hint: "s.add(NaN); s.add(NaN);",
-      test: "if (logs.includes('1')) return null; return 'Set o\\'lchami 1 bo\\'lishi kerak';"
+      title: "Strict Equality",
+      instruction: "10 ni '10' stringi bilan '===' yordamida solishtiring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "console.log(10 === '10');",
+      test: "if (logs.includes('false')) return null; return 'false chiqishi kerak (turlari har xil)';"
+    },
+    {
+      id: 3,
+      title: "NaN va Object.is",
+      instruction: "Object.is yordamida NaN ni o'zi bilan solishtiring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "console.log(Object.is(NaN, NaN));",
+      test: "if (logs.includes('true')) return null; return 'Object.is(NaN, NaN) true bo\\'lishi kerak';"
     }
   ]
 };
