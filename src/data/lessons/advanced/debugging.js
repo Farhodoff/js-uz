@@ -1,73 +1,124 @@
 export const debugging = {
   id: "a7",
-  title: "Debugging (Xatolarni topish va tuzatish)",
-  theory: `## Debugging – Professional dasturchi mahorati
+  title: "Debugging - Xatolarni ovlash san'ati",
+  theory: `## 1. NEGA VA NIMA?
+Dasturchi vaqtining 70% qismi kod yozishga emas, balki yozilgan koddagi xatolarni topishga (ovlashga) ketadi. **Debugging** — bu dasturdagi "bug" (qo'ng'iz) larni aniqlash va ularni yo'qotish jarayonidir.
 
-**Debugging** – dasturdagi xatolarni (bug) aniqlash, tahlil qilish va ularni bartaraf etish jarayoni. Professional dasturchi vaqtining 50-70% qismi aynan debugging bilan o'tadi.
-
----
-
-### 1. Xatolik turlari
-- **Syntax Errors:** Kod yozish qoidalarining buzilishi (masalan, qavs yopilmasligi). Brauzer kodni o'qishdayoq aniqlaydi.
-- **Runtime Errors:** Kod bajarilayotgan paytda yuz beradigan xatolar (masalan, mavjud bo'lmagan funksiyani chaqirish).
-- **Logic Errors:** Kod ishlaydi, xatolik chiqmaydi, lekin natija noto'g'ri bo'ladi. Eng qiyin topiladigan xatolar.
-
-### 2. Console metodlari (Faqat log emas!)
-- \`console.table()\`: Massiv yoki obyektlarni jadval ko'rinishida chiqarish.
-- \`console.error()\` / \`console.warn()\`: Xato va ogohlantirishlarni alohida rangda chiqarish.
-- \`console.time()\` / \`console.timeEnd()\`: Kod qancha vaqtda bajarilishini o'lchash.
-- \`console.trace()\`: Funksiya qayerdan chaqirilganini (Call Stack) ko'rish.
-
-### 3. "debugger" va Brauzer DevTools
-Kodingizning istalgan joyiga \`debugger;\` so'zini yozsangiz, brauzer o'sha satrda kodni to'xtatadi.
-- **Sources Tab:** Brauzerda breakpointlar qo'yish, o'zgaruvchilar qiymatini qadam-baqadam kuzatish.
-- **Watch:** Ma'lum bir o'zgaruvchini doimiy kuzatib turish.
-- **Call Stack:** Funksiyalar zanjirini ko'rish.
+Dastur ishlamay qolsa asabiylashmang, bu yangi narsa o'rganish uchun imkoniyat!
 
 ---
 
-## Intervyu savollari (Junior & Middle)
+## 2. CONSOLE METODLARI (Tushuntir → Ko'rsat → Bajartir)
+Faqat \`console.log\` bilan cheklanib qolmang. JSda boshqa foydali qurollar ham bor.
 
-### Junior daraja
-1. **Debugging nima?**
-2. **console.log va debugger o'rtasidagi farq nima?**
-3. **Sinxron va asinxron kodni debug qilishda qanday farq bor?**
+**Ko'rsat:**
+\`\`\`javascript
+const user = { id: 1, name: "Ali", role: "admin" };
+console.table(user); // Ma'lumotni chiroyli jadval qilib chiqaradi
+console.error("Bu xato xabari!");
+console.warn("Bu ogohlantirish!");
+\`\`\`
 
-### Middle daraja
-4. **"Rubber Duck Debugging" (Kauchuk o'rdak usuli) nima?**
-5. **Memory Leak (xotira sizishi) qanday aniqlanadi?**
-6. **Breakpoint turlari (Conditional, Logpoint) haqida gapiring.**`,
-  task: `// 1. console.table yordamida quyidagi foydalanuvchilar massivini chiqaring.
-const users = [{id: 1, name: "Ali"}, {id: 2, name: "Vali"}];
+**Mashq:** O'zingiz yoqtirgan 3 ta kitob obyekti bor massiv yarating va uni \`console.table\` orqali chiqaring.
 
-// 2. console.time yordamida 1 milliongacha bo'lgan sonlar yig'indisini hisoblash qancha vaqt olishini o'lchang.
+---
 
-// 3. Quyidagi mantiqiy xatoni 'debugger' yordamida toping va tuzating. 
-// Funksiya massivdagi eng katta sonni topishi kerak.
-function findMax(arr) {
-  let max = 0; // Bu yerda mantiqiy xato bo'lishi mumkin (manfiy sonlar bo'lsa-chi?)
-  for(let i = 0; i < arr.length; i++) {
-    if(arr[i] > max) {
-      max = arr[i];
-    }
-  }
-  return max;
+## 3. DEBUGGER KALIT SO'ZI
+Kodning istalgan joyiga \`debugger;\` deb yozsangiz, brauzer o'sha nuqtada kodni to'xtatadi. Siz o'sha paytdagi o'zgaruvchilar qiymatini qadam-baqadam tekshirishingiz mumkin.
+
+**Ko'rsat:**
+\`\`\`javascript
+function hisobla(a, b) {
+  let natija = a + b;
+  debugger; // Brauzer shu yerda "pauza" qiladi
+  return natija;
 }
-// console.log(findMax([-10, -5, -2])); 
+\`\`\`
 
-// 4. console.trace yordamida funksiya qaysi zanjir orqali chaqirilayotganini tekshiring.`,
-  hint: `// 3. Max logic fix
+---
+
+## 4. KO'P UCHRAYDIGAN XATOLAR ⚠️
+1.  **Syntax Error:** Qavs yoki nuqtali vergulni unutish. Kod umuman ishlamaydi.
+2.  **Reference Error:** Mavjud bo'lmagan o'zgaruvchini ishlatishga urinish.
+3.  **Logic Error:** Kod ishlaydi, lekin natija siz kutgandek emas (Eng xavflisi!).
+
+---
+
+## 5. BUZIB KO'RISH 🧐
+**Nima bo'ladi agar \`console.log\` ichida bajariladigan funksiya yozsak?**
+\`\`\`javascript
+console.log("Natija:", (function() { return 5 + 5 })());
+\`\`\`
+**Xulosa:** Log ichida ham kod bajarilishi mumkin, lekin bu debuggingni qiyinlashtirishi mumkin.
+
+---
+
+## 6. TOP 12: INTERVYU SAVOLLARI VA AMALIYOT (Junior/Middle) 🎯
+
+1. **"Bug" so'zi qayerdan kelgan? (Junior)**
+   *Javob:* 1947-yilda kompyuter ichiga haqiqiy kuya (bug) kirib qolib, tizimni to'xtatib qo'yganidan keyin ishlatila boshlangan.
+
+2. **Console.time() va Console.timeEnd() nima uchun? (Junior - Amaliy)**
+   *Vazifa:* Kod necha millisekundda bajarilishini o'lchang.
+
+3. **Breakpoint nima? (Junior)**
+   *Javob:* Brauzer DevTools'da kodni to'xtatish uchun qo'yiladigan "to'xtash nuqtasi".
+
+4. **Watch (Kuzatuv) oynasi nima? (Middle)**
+   *Javob:* Debugging paytida ma'lum o'zgaruvchilarni doimiy nazorat qilib turish oynasi.
+
+5. **Call Stack nima? (Middle)**
+   *Javob:* Funksiyalar bir-birini qaysi tartibda chaqirganini ko'rsatuvchi iyerarxiya.
+
+6. **Conditional Breakpoint nima? (Middle)**
+   *Javob:* Faqat ma'lum bir shart bajarilgandagina to'xtaydigan breakpoint.
+
+7. **Console.trace() nima qiladi? (Middle - Amaliy)**
+   *Vazifa:* Funksiya qayerdan chaqirilganini zanjir ko'rinishida chiqaring.
+
+8. **Runtime va Compile-time xatosi farqi? (Junior)**
+   *Javob:* Compile-time kod o'qilayotganda, Runtime kod ishlayotgan paytda chiqadi.
+
+9. **Try...Catch debugging uchun foydalimi? (Junior)**
+   *Javob:* Ha, xatoni ushlash va dastur o'chib qolmasligini ta'minlash uchun.
+
+10. **Network tabida nimalarni debug qilish mumkin? (Junior)**
+    *Javob:* API so'rovlar, ularning tezligi va kelayotgan javoblarni.
+
+11. **Memory leak (Xotira sizishi) nima? (Middle)**
+    *Javob:* Ishlatilmayotgan o'zgaruvchilar xotirada qolib ketishi va kompyuterni sekinlashtirishi.
+
+12. **Mantiqiy xatoni qanday topish mumkin? (Middle - Amaliy)**
+    *Vazifa:* Noto'g'ri hisoblayotgan funksiyaga \`debugger\` qo'yib, har bir qadamni tekshiring.
+
+---
+
+## 7. CHALLENGE 🏆
+Quyidagi kodda mantiqiy xato bor. Funksiya massivdagi eng katta sonni topishi kerak, lekin u manfiy sonlar bilan ishlamayapti. Debugger yordamida xatoni toping va tuzating.
+\`\`\`javascript
 function findMax(arr) {
-  if (arr.length === 0) return null;
-  let max = arr[0]; // Birinchi elementdan boshlash xavfsizroq
-  for(let i = 1; i < arr.length; i++) {
+  let max = 0; 
+  for(let i = 0; i < arr.length; i++) {
     if(arr[i] > max) max = arr[i];
   }
   return max;
 }
+console.log(findMax([-10, -5, -2])); // 0 chiqmoqda, aslida -2 chiqishi kerak!
+\`\`\`
 
-// 2. Timer
-console.time("SumTimer");
-// loop...
-console.timeEnd("SumTimer");`
+---
+
+## 8. XULOSA
+Endi siz xatolardan qo'rqmaysiz va ularni professional dasturchidek "ovlay" olasiz!
+`,
+  exercises: [
+    {
+      id: 1,
+      title: "Console Table",
+      instruction: "Obyektni jadval ko'rinishida chiqaring.",
+      startingCode: "const car = { model: 'Tesla', year: 2023 };\n// Bu yerda console.table ishlating\n",
+      hint: "console.table(car);",
+      test: "if (code.includes('console.table')) return null; return 'console.table ishlatilmadi';"
+    }
+  ]
 };
