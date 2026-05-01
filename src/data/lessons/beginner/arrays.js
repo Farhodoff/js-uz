@@ -1,91 +1,121 @@
 export const arrays = {
   id: "b5",
-  title: "Massivlar (Arrays) - To'liq qo'llanma",
-  theory: `## 1. MASSIVLAR NIMA?
-Massiv — bu ma'lumotlarni tartiblangan ro'yxat ko'rinishida saqlash usulidir. Bitta o'zgaruvchida yuzlab qiymatlarni saqlashingiz mumkin.
+  title: "Massivlar - Ma'lumotlar poezdi",
+  theory: `## 1. NEGA VA NIMA?
+Tasavvur qiling, sizda 10 ta meva bor. Har biri uchun alohida o'zgaruvchi ochasizmi?
+\`\`\`javascript
+let m1 = "Olma"; let m2 = "Banan"...
+\`\`\`
+Bu juda noqulay! **Massiv** (Array) — bu bitta o'zgaruvchida bir nechta ma'lumotlarni ketma-ket (xuddi poezd vagonlari kabi) saqlash usulidir.
 
+---
+
+## 2. MASSIV YARATISH (Tushuntir → Ko'rsat → Bajartir)
+Massiv kvadrat qavslar \`[ ]\` ichida yoziladi. Har bir elementning o'z o'rni (indeksi) bor. **Sanoq 0 dan boshlanadi!**
+
+**Ko'rsat:**
 \`\`\`javascript
 const mevalar = ["Olma", "Banan", "Gilos"];
-console.log(mevalar.length); // 3
+console.log(mevalar[0]); // "Olma"
 \`\`\`
+
+**Mashq:** 5 ta shahar nomidan iborat \`shaharlar\` massivini yarating.
 
 ---
 
-## 2. ASOSIY METODLAR (Mutatsiya qiluvchi)
-Bu metodlar massivning o'zini o'zgartiradi:
-- **push / pop:** Oxiridan qo'shish / olish.
-- **unshift / shift:** Boshidan qo'shish / olish.
-- **splice:** Elementlarni o'chirish yoki yangisini qo'shish.
+## 3. METODLAR: QO'SHISH VA O'CHIRISH
+- **push:** Oxiriga qo'shish.
+- **pop:** Oxiridan olish.
+- **unshift:** Boshiga qo'shish.
+- **shift:** Boshidan olish.
 
-\`\`\`mermaid
-graph LR
-    A[Massiv] -- push/pop --> B[Oxiri]
-    A -- unshift/shift --> C[Boshi]
-    A -- splice --> D[Istalgan joyi]
-    style A fill:#f9f,stroke:#333
-\`\`\`
-
----
-
-## 3. MASSIVNI KESISH VA BIRLASHTIRISH
-- **slice:** Massivdan nusxa ko'chirib olish (aslini o'zgartirmaydi).
-- **join:** Massiv elementlarini bitta matnga (string) aylantirish.
-- **concat:** Ikki massivni birlashtirish.
-
+**Ko'rsat:**
 \`\`\`javascript
-const qisqa = mevalar.slice(0, 2); // ["Olma", "Banan"]
-const matn = mevalar.join(", "); // "Olma, Banan, Gilos"
+mevalar.push("Anor"); // ["Olma", "Banan", "Gilos", "Anor"]
 \`\`\`
 
 ---
 
-## 4. AYLANIB CHIQISH (Iteration)
-Massiv elementlari bilan birma-bir ishlash uchun quyidagi usullar bor:
-- **for...of:** Qiymatlarni olish uchun eng qulay usul.
-- **forEach:** Har bir element uchun funksiya ishga tushirish.
+## 4. KO'P UCHRAYDIGAN XATOLAR ⚠️
+1.  **Sanoqni 1 dan boshlash:** \`arr[1]\` — bu aslida ikkinchi element!
+2.  **Mavjud bo'lmagan indeks:** \`arr[100]\` qilsangiz, JS xato bermaydi, shunchaki \`undefined\` qaytaradi.
 
+---
+
+## 5. BUZIB KO'RISH 🧐
+**Nima bo'ladi agar massivning uzunligini (\`length\`) qo'lda o'zgartirsak?**
 \`\`\`javascript
-for (let meva of mevalar) {
-  console.log(meva);
-}
+const sonlar = [1, 2, 3, 4, 5];
+sonlar.length = 2;
+console.log(sonlar); // [1, 2] -> Qolganlari o'chib ketdi! 😱
 \`\`\`
 
 ---
 
-## 5. INTERVYU SAVOLLARI (Junior & Middle)
+## 6. TOP 12: INTERVYU SAVOLLARI VA AMALIYOT (Junior/Middle) 🎯
 
-1. **Massiv va Obyekt farqi nima?**
-   *Javob:* Massiv — tartiblangan (indexga ega), Obyekt — tartiblanmagan (kalit-qiymat).
+1. **Massiv uzunligini qanday bilamiz? (Junior)**
+   *Javob:* \`.length\` xususiyati orqali.
 
-2. **slice() va splice() farqi nima? ⭐**
-   *Javob:* \`slice\` asl massivni o'zgartirmaydi (nusxa oladi), \`splice\` esa asl massivdan elementlarni o'chiradi yoki qo'shadi.
+2. **Massivning oxirgi elementini qanday olish mumkin? (Junior)**
+   *Javob:* \`arr[arr.length - 1]\` yoki \`arr.at(-1)\`.
 
-3. **Massivdagi elementni qanday o'chirish mumkin?**
-   *Javob:* \`pop\`, \`shift\` yoki \`splice\` yordamida.`,
+3. **Massivni matnga aylantirish. (Junior - Amaliy)**
+   *Vazifa:* \`join(", ")\` yordamida massivni vergul bilan ajratilgan matn qiling.
+
+4. **Split() va Join() farqi? (Junior)**
+   *Javob:* Split matnni massivga bo'ladi, Join massivni matnga birlashtiradi.
+
+5. **Massivda element borligini tekshirish. (Junior)**
+   *Javob:* \`includes("qiymat")\` metodi \`true\` yoki \`false\` qaytaradi.
+
+6. **Indeksni topish. (Junior)**
+   *Javob:* \`indexOf("qiymat")\` birinchi topilgan indeksni qaytaradi.
+
+7. **Splice() nima qiladi? (Middle)**
+   *Javob:* Massivning istalgan joyidan element o'chiradi yoki qo'shadi (asl massivni o'zgartiradi).
+
+8. **Slice() nima qiladi? (Middle)**
+   *Javob:* Massivdan nusxa ko'chirib oladi (asl massiv o'zgarmaydi).
+
+9. **Massivni teskari qilish. (Junior - Amaliy)**
+   *Vazifa:* \`reverse()\` metodi orqali elementlar tartibini o'zgartiring.
+
+10. **Ikki massivni birlashtirish. (Junior)**
+    *Javob:* \`concat()\` yoki Spread \`[...a, ...b]\` orqali.
+
+11. **Massiv ichidan qidirish (Find). (Middle)**
+    *Javob:* \`find()\` shartga mos birinchi elementning o'zini qaytaradi.
+
+12. **Massivni tozalash. (Junior - Amaliy)**
+    *Vazifa:* \`arr.length = 0\` qilib massivni bo'shating.
+
+---
+
+## 7. CHALLENGE 🏆
+Foydalanuvchi ismlari massivini yarating. Oxiriga yangi ism qo'shing, boshidan bittasini o'chiring va natijani "Ismlar: Ali, Vali" ko'rinishida konsolga chiqaring.
+
+---
+
+## 8. XULOSA
+Siz endi ma'lumotlar bilan "poezd" yasashni va ularni boshqarishni bilasiz!
+`,
   exercises: [
     {
       id: 1,
-      title: "Element qo'shish",
-      instruction: "'colors' massiviga 'blue' ni oxiridan, 'white' ni boshidan qo'shing.",
-      startingCode: "const colors = ['red'];\n// Bu yerga yozing\n\nconsole.log(colors);",
-      hint: "colors.push('blue'); colors.unshift('white');",
-      test: "if (logs[0].includes('white') && logs[0].includes('blue')) return null; return 'white va blue qo\\'shilmadi';"
+      title: "Massiv yaratish",
+      instruction: "3 ta rangdan iborat 'ranglar' massivini yarating.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "const ranglar = ['qizil', 'yashil', 'ko\\'k'];",
+      test: "if (Array.isArray(result)) return null; return 'Massiv yarating';"
     },
     {
       id: 2,
-      title: "Massivdan nusxa olish",
-      instruction: "slice() yordamida massivning birinchi 2 ta elementini 'firstTwo' o'zgaruvchisiga oling.",
-      startingCode: "const arr = [1, 2, 3, 4];\nconst firstTwo = // bu yerga yozing\n\nconsole.log(firstTwo);",
-      hint: "arr.slice(0, 2);",
-      test: "if (logs[0].includes('1,2') || logs[0].includes('1, 2')) return null; return 'Faqat birinchi 2 ta element bo\\'lishi kerak';"
-    },
-    {
-      id: 3,
-      title: "Matnga aylantirish",
-      instruction: "Massiv elementlarini '-' belgisi bilan birlashtirib konsolga chiqaring.",
-      startingCode: "const words = ['A', 'B', 'C'];\n// join ishlating\n",
-      hint: "console.log(words.join('-'));",
-      test: "if (logs.includes('A-B-C')) return null; return 'A-B-C chiqishi kerak';"
+      title: "Oxiriga qo'shish",
+      instruction: "Push yordamida massivga 'sariq' rangini qo'shing.",
+      startingCode: "const colors = ['oq'];\n// Qo'shing\n",
+      hint: "colors.push('sariq');",
+      test: "if (colors.includes('sariq')) return null; return 'Sariq qo\\'shilmadi';"
     }
   ]
 };
