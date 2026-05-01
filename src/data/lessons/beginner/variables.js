@@ -46,10 +46,10 @@ let shahar = "Toshkent";
 
 \`\`\`mermaid
 graph TD
-    A[O'zgaruvchi Turlari] --> B(var)
-    A --> C(let / const)
-    B --> B1[Function Scope: Blokdan {} chiqib ketadi]
-    C --> C1[Block Scope: Faqat {} ichida yashaydi]
+    A[O'zgaruvchi Turlari] --> B("var")
+    A --> C("let / const")
+    B --> B1["Function Scope: Blokdan {} chiqib ketadi"]
+    C --> C1["Block Scope: Faqat {} ichida yashaydi"]
 \`\`\`
 
 ---
