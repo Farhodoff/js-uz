@@ -87,16 +87,65 @@ mashina.model = "Tesla"; // Bu ishlaydi! ✅
 
 ---
 
-## 7. CHALLENGE 🏆
-\`kalkulyator\` nomli obyekt yarating. Unda \`a\` va \`b\` sonlari bo'lsin. Shuningdek, \`hisobla\` degan metod bo'lsin. U \`a\` va \`b\` ning yig'indisini konsolga chiqarsin. (Maslahat: metod ichida \`this.a\` va \`this.b\` ishlating).
+## 7. TOP 12: INTERVYU SAVOLLARI VA AMALIYOT (Junior/Middle) 🎯
+
+### 1. Obyekt va massiv farqi nima? (Junior)
+**Javob:** Massiv — tartiblangan ro'yxat (index orqali), Obyekt — tartiblanmagan kalit-qiymat to'plami.
+
+### 2. Dot (\`.\`) va Bracket (\`[]\`) notation farqi? (Junior)
+**Javob:** Dot — oddiy holatlar uchun. Bracket — agar kalit nomi o'zgaruvchida bo'lsa yoki maxsus belgilar (\`-\`, bo'sh joy) bo'lsa ishlatiladi.
+\`\`\`javascript
+const key = "yosh";
+shaxs[key] = 25; // Bracket shart!
+\`\`\`
+
+### 3. Obyekt ichida metod yarating. (Junior - Amaliy)
+**Vazifa:** \`user\` obyekti yarating, ichida \`name\` va \`sayHello\` metodi bo'lsin.
+
+### 4. Ichma-ich (Nested) obyektlar bilan ishlash. (Junior - Amaliy)
+**Vazifa:** \`shahar\` obyektini yarating, uning ichida \`kocha\` obyekti bo'lsin.
+
+### 5. "this" kalit so'zi obyekt metodida nimaga teng? (Middle)
+**Javob:** Metodni chaqirayotgan o'sha obyektning o'ziga teng.
+
+### 6. Obyektni nusxalash (Cloning). (Middle - Amaliy)
+**Vazifa:** \`obj1\` dan \`obj2\` ga nusxa oling (Spread \`...\` operatori yordamida).
+
+### 7. "Object.keys()" metodi nima qaytaradi? (Junior)
+**Javob:** Obyektning barcha kalitlarini massiv ko'rinishida qaytaradi.
+
+### 8. Dinamik kalit qo'shish. (Middle - Amaliy)
+**Vazifa:** O'zgaruvchi qiymatini obyektga kalit qilib bering.
+\`\`\`javascript
+const prop = "status";
+const statusObj = { [prop]: "online" };
+\`\`\`
+
+### 9. Obyektni qanday qilib butunlay o'zgarmas (immutable) qilish mumkin? (Middle)
+**Javob:** \`Object.freeze(obj)\` yordamida.
+
+### 10. "Reference vs Value" tushunchasi. (Middle)
+**Javob:** Obyektlar xotiradagi manzili orqali uzatiladi. Ya'ni \`objA = objB\` qilsangiz, bittasini o'zgartirsangiz ikkinchisi ham o'zgaradi.
+
+### 11. Obyekt ichida property borligini qanday tekshirish mumkin? (Junior)
+**Javob:** \`"key" in obj\` yoki \`obj.hasOwnProperty("key")\` orqali.
+
+### 12. "Short-hand" property yozish. (Junior - Amaliy)
+**Vazifa:** O'zgaruvchi nomi va kalit nomi bir xil bo'lsa, qisqa yozing: \`{ name, age }\`.
 
 ---
 
-## 8. XULOSA
+## 8. CHALLENGE 🏆
+\`kalkulyator\` nomli obyekt yarating. Unda \`a\` va \`b\` sonlari bo'lsin. Shuningdek, \`hisobla\` degan metod bo'lsin. U \`a\` va \`b\` ning yig'indisini konsolga chiqarsin.
+
+---
+
+## 9. XULOSA
 Endi siz:
 1.  Bog'liq ma'lumotlarni obyektga guruhlashni.
 2.  Obyekt ichidagi ma'lumotni o'qish va yangilashni.
 3.  Obyektlarga metodlar (funksiyalar) qo'shishni qila olasiz.
+4.  Intervyularda tushadigan 12 ta asosiy savol va topshiriqlarni bilasiz.
 `,
   exercises: [
     {

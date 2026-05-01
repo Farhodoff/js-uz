@@ -19,3 +19,4 @@
 #  - XATOLAR: Ko'p uchraydigan xatolar va "Buzib ko'rish" (Edge cases) bo'limlarini qo'shing.
 #  - BOSQICHMA-BOSQICH: Osondan qiyinga qarab boring.
 #  - USLUB: Do'stona, qisqa va aniq.
+#  - SAVOLLAR: Har bir dars oxirida 12 ta amaliy/nazariy savol va kod topshiriqlari (Junior/Middle darajasida) bo'lishi shart.
