@@ -6,6 +6,8 @@ import { dataTypesLesson } from "./lessons/beginner/dataTypes";
 import { moreDataTypesLesson } from "./lessons/beginner/moreDataTypes";
 import { typeConversionLesson } from "./lessons/beginner/typeConversion";
 import { primitivesVsObjects } from "./lessons/beginner/primitivesVsObjects";
+import { stringMethods } from "./lessons/beginner/stringMethods";
+import { mathObject } from "./lessons/beginner/mathObject";
 import { scopeLesson } from "./lessons/beginner/scope";
 import { functionScopeLesson } from "./lessons/beginner/functionScope";
 import { blockScopeLesson } from "./lessons/beginner/blockScope";
@@ -52,7 +54,7 @@ export const curriculum = {
     label: "Boshlang'ich",
     color: "#c8a96e",
     icon: "🟢",
-    lessons: [cheatSheet, interviewQuestionsBeginner, jsWhat, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, primitivesVsObjects, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, typeofLesson, operators, loops, functions, arrays, objects]
+    lessons: [cheatSheet, interviewQuestionsBeginner, jsWhat, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, primitivesVsObjects, stringMethods, mathObject, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, typeofLesson, operators, loops, functions, arrays, objects]
   },
   intermediate: {
     label: "O'rta daraja",
