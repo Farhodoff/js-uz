@@ -11,11 +11,11 @@ Har hafta 4-6 soat ajrating. Har band qisqa amaliyot bilan yakunlansin.
 - [x] Funksiya asoslari (param, return) - amaliyot: 3 funksiya yozish.
 
 ## Hafta 2: Massiv va ob'ektlar
-- [ ] Massivlar (push/pop/length/index) - amaliyot: 5 shahar ro'yxati.
+- [x] Massivlar (push/pop/length/index) - amaliyot: 5 shahar ro'yxati.
 - [x] Array metodlari (map/filter/forEach/reduce) - amaliyot: 3 ta transform.
-- [ ] Ob'ektlar (property, nested) - amaliyot: user profil ob'ekti.
-- [ ] Destructuring (object/array) - amaliyot: qiymatlarni ajratish.
-- [ ] Spread/Rest (...) - amaliyot: massiv va ob'ekt birlashtirish.
+- [x] Ob'ektlar (property, nested) - amaliyot: user profil ob'ekti.
+- [x] Destructuring (object/array) - amaliyot: qiymatlarni ajratish.
+- [x] Spread/Rest (...) - amaliyot: massiv va ob'ekt birlashtirish.
 - [x] Arrow function va callbacklar - amaliyot: map bilan ishlatish.
 
 ## Hafta 3: DOM va asinxronlik
