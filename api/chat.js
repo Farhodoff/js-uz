@@ -16,18 +16,24 @@ export default async function handler(req, res) {
   const { question, lesson } = req.body;
 
   if (!question || !question.trim()) {
-    return res.status(400).json({ error: 'Savol bo\'sh bo\'lishi mumkin emas' });
+    return res.status(400).json({ error: "Savol bo'sh bo'lishi mumkin emas" });
   }
 
-  const apiKey = process.env.VITE_GEMINI_API_KEY;
+  // Savol uzunligini cheklash
+  if (question.length > 2000) {
+    return res.status(400).json({ error: "Savol juda uzun (max 2000 belgi)" });
+  }
+
+  // VITE_ prefikssiz — faqat server-side'da mavjud
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    console.error('VITE_GEMINI_API_KEY missing');
+    console.error('GEMINI_API_KEY missing');
     return res.status(500).json({ error: 'Server taraflama xato' });
   }
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -36,7 +42,7 @@ export default async function handler(req, res) {
             {
               parts: [
                 {
-                  text: `Siz JavaScript o'qituvchisisiz. Mavzu: ${lesson || 'Umumiy'}. Savol: ${question}. O'zbek tilida javob bering.`
+                  text: `Siz JavaScript o'qituvchisisiz. Mavzu: ${lesson || 'Umumiy'}. Savol: ${question}. O'zbek tilida javob bering. Javobni Markdown formatida yozing.`
                 }
               ]
             }
@@ -46,7 +52,7 @@ export default async function handler(req, res) {
     );
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData = await response.json().catch(() => ({}));
       console.error('Gemini API error:', errorData);
       return res.status(response.status).json({ error: 'Gemini API xatosi' });
     }
