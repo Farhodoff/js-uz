@@ -1,193 +1,163 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import TheoryTab from "./components/TheoryTab";
 import PracticeTab from "./components/PracticeTab";
 import AiTab from "./components/AiTab";
-import { curriculum } from "./data/curriculum";
+import { useLesson } from "./hooks/useLesson";
+import { useCodeRunner } from "./hooks/useCodeRunner";
+import { useAI } from "./hooks/useAI";
+import { useProgress } from "./hooks/useProgress";
 
-export default function App() {
-  const [activeSection, setActiveSection] = useState("beginner");
-  const [activeLesson, setActiveLesson] = useState(null);
-  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-  const [code, setCode] = useState("");
-  const [output, setOutput] = useState("");
+function LessonPage() {
   const [showHint, setShowHint] = useState(false);
-  const [completed, setCompleted] = useState({});
-  const [aiQuestion, setAiQuestion] = useState("");
-  const [aiAnswer, setAiAnswer] = useState("");
-  const [aiLoading, setAiLoading] = useState(false);
-  const [tab, setTab] = useState("theory");
+  const [showAI, setShowAI] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const outputRef = useRef(null);
 
-  useEffect(() => {
-    const sec = curriculum[activeSection];
-    if (sec.lessons.length > 0) {
-      openLesson(sec.lessons[0]);
-    }
-  }, [activeSection]);
+  const lesson = useLesson();
+  const { output, runCode, resetOutput } = useCodeRunner();
+  const ai = useAI();
+  const progress = useProgress();
 
-  function openLesson(lesson) {
-    setActiveLesson(lesson);
-    setCurrentExerciseIndex(0);
-    const initialCode = lesson.exercises?.[0]?.startingCode || lesson.task || "";
-    setCode(initialCode);
-    setOutput("");
+  const {
+    activeSection, setActiveSection,
+    activeLesson, openLesson,
+    currentExerciseIndex, setCurrentExerciseIndex,
+    code, setCode, sec
+  } = lesson;
+
+  function handleRunCode() {
+    runCode(code, activeLesson, currentExerciseIndex, () => {
+      // Mark exercise complete
+      progress.markComplete(`${activeLesson.id}_${currentExerciseIndex}`);
+      // Check if all exercises done
+      const exercises = activeLesson.exercises;
+      if (exercises) {
+        const allDone = exercises.every((_, i) =>
+          i === currentExerciseIndex || progress.isComplete(`${activeLesson.id}_${i}`)
+        );
+        if (allDone) {
+          progress.markComplete(activeLesson.id);
+        }
+      } else {
+        progress.markComplete(activeLesson.id);
+      }
+    });
     setShowHint(false);
   }
 
-  function runCode() {
-    let logs = [];
-    const origLog = console.log;
-    const origError = console.error;
-    console.log = (...args) => logs.push(args.map(a => typeof a === "object" ? JSON.stringify(a) : String(a)).join(" "));
-    console.error = (...args) => logs.push("❌ " + args.join(" "));
-    
-    try {
-      // Execute the code
-      const result = new Function(code)();
-      
-      let validationResult = "✅ Kod muvaffaqiyatli ishladi";
-      let isCorrect = true;
-
-      // Validation logic for structured exercises
-      const currentExercise = activeLesson.exercises?.[currentExerciseIndex];
-      if (currentExercise?.test) {
-        try {
-          const testFn = new Function("code", "logs", "result", currentExercise.test);
-          const errorMsg = testFn(code, logs, result);
-          if (errorMsg) {
-            validationResult = "❌ " + errorMsg;
-            isCorrect = false;
-          }
-        } catch (testError) {
-          console.error("Test error:", testError.message);
-        }
-      }
-
-      setOutput(logs.length ? logs.join("\n") + "\n\n" + validationResult : validationResult);
-      
-      if (isCorrect) {
-        setCompleted(p => ({ ...p, [`${activeLesson.id}_${currentExerciseIndex}`]: true }));
-        // If all exercises in lesson are completed, mark lesson as completed
-        const allExercisesCompleted = activeLesson.exercises 
-          ? activeLesson.exercises.every((_, i) => i === currentExerciseIndex || completed[`${activeLesson.id}_${i}`])
-          : true;
-        if (allExercisesCompleted) {
-          setCompleted(p => ({ ...p, [activeLesson.id]: true }));
-        }
-      }
-    } catch (e) {
-      setOutput("❌ Xato: " + e.message);
-    }
-    console.log = origLog;
-    console.error = origError;
+  function handleOpenLesson(l) {
+    openLesson(l);
+    resetOutput();
+    setShowHint(false);
   }
-
-  async function askAI() {
-    if (!aiQuestion.trim()) return;
-    setAiLoading(true);
-    setAiAnswer("");
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          question: aiQuestion,
-          lesson: activeLesson?.title
-        })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setAiAnswer(data.answer || "Xatolik.");
-      } else {
-        setAiAnswer(data.error || "Xatolik yuz berdi.");
-      }
-    } catch (e) {
-      setAiAnswer("Tarmoq xatosi: " + e.message);
-    }
-    setAiLoading(false);
-  }
-
-  const sec = curriculum[activeSection];
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#1a1510", color: "#e8d5b0", fontFamily: "'Segoe UI', sans-serif" }}>
+    <div className="app-layout">
+      {/* Mobile backdrop */}
       {sidebarOpen && (
-        <Sidebar 
-          activeSection={activeSection} 
-          setActiveSection={setActiveSection} 
-          activeLesson={activeLesson} 
-          openLesson={openLesson} 
-          completed={completed} 
-          setSidebarOpen={setSidebarOpen}
+        <div
+          className="sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+          style={{ display: 'none' }}
         />
       )}
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <Header activeLesson={activeLesson} sec={sec} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+        activeLesson={activeLesson}
+        openLesson={handleOpenLesson}
+        completed={progress.completed}
+        getStats={progress.getStats}
+        totalCompleted={progress.totalCompleted}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
 
-        {/* Split Screen Layout */}
+      <div className="app-main">
+        <Header
+          activeLesson={activeLesson}
+          sec={sec}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
+
         <div className="split-layout">
-          
-          {/* Chap tomon: Nazariya */}
+          {/* Left: Theory */}
           <div className="pane pane-theory">
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 15, color: "#c8a96e", fontWeight: 600 }}>
-              📖 Nazariya
-            </div>
-            <TheoryTab activeLesson={activeLesson} sec={sec} />
+            <div className="pane-label">📖 Nazariya</div>
+            <TheoryTab activeLesson={activeLesson} />
           </div>
 
-          {/* O'ng tomon: Amaliyot */}
-          <div className="pane pane-practice">
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 15, color: "#c8a96e", fontWeight: 600 }}>
-              💻 Amaliyot
-            </div>
-            <PracticeTab 
-              code={code} 
-              setCode={setCode} 
-              runCode={runCode} 
-              showHint={showHint} 
-              setShowHint={setShowHint} 
-              activeLesson={activeLesson} 
+          {/* Right: Practice */}
+          <div className="pane">
+            <div className="pane-label">💻 Amaliyot</div>
+            <PracticeTab
+              code={code}
+              setCode={setCode}
+              runCode={handleRunCode}
+              showHint={showHint}
+              setShowHint={setShowHint}
+              activeLesson={activeLesson}
               currentExerciseIndex={currentExerciseIndex}
               setCurrentExerciseIndex={setCurrentExerciseIndex}
-              output={output} 
-              outputRef={outputRef} 
+              output={output}
+              outputRef={outputRef}
             />
           </div>
         </div>
 
-        {/* AI Yordam Floating Button (O'ng pastda) */}
-        <div style={{ position: "fixed", bottom: 20, right: 20 }}>
-          <button 
-            onClick={() => setTab(tab === "ai" ? "theory" : "ai")}
-            style={{ padding: "10px 20px", background: "#2a2015", color: "#c8a96e", border: "1px solid #c8a96e", borderRadius: 30, cursor: "pointer", fontWeight: 600, display: "flex", alignItems: "center", gap: 8, boxShadow: "0 4px 15px rgba(0,0,0,0.5)" }}
+        {/* AI Floating Button */}
+        <div className="ai-fab">
+          <button
+            className="ai-fab-btn"
+            onClick={() => setShowAI(!showAI)}
+            aria-label="AI Yordamchi"
           >
             🤖 AI Yordam
           </button>
         </div>
 
-        {/* AI Modal/Overlay */}
-        {tab === "ai" && (
-          <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.8)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 100 }}>
-            <div style={{ background: "#201a12", width: "90%", maxWidth: 600, padding: 30, borderRadius: 15, border: "1px solid #3a2e1e" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
-                <h3>Robotdan so'rash</h3>
-                <button onClick={() => setTab("theory")} style={{ background: "none", border: "none", color: "#c8a96e", cursor: "pointer", fontSize: 20 }}>✕</button>
+        {/* AI Modal */}
+        {showAI && (
+          <div className="ai-overlay" onClick={(e) => {
+            if (e.target === e.currentTarget) setShowAI(false);
+          }}>
+            <div className="ai-modal" role="dialog" aria-label="AI Yordamchi">
+              <div className="ai-modal-header">
+                <h3>🤖 Robotdan so'rash</h3>
+                <button
+                  className="ai-close-btn"
+                  onClick={() => setShowAI(false)}
+                  aria-label="Yopish"
+                >
+                  ✕
+                </button>
               </div>
-              <AiTab 
-                aiQuestion={aiQuestion} 
-                setAiQuestion={setAiQuestion} 
-                askAI={askAI} 
-                aiLoading={aiLoading} 
-                aiAnswer={aiAnswer} 
+              <AiTab
+                aiQuestion={ai.aiQuestion}
+                setAiQuestion={ai.setAiQuestion}
+                askAI={() => ai.askAI(activeLesson?.title)}
+                aiLoading={ai.aiLoading}
+                aiAnswer={ai.aiAnswer}
               />
             </div>
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/:section/:lessonId" element={<LessonPage />} />
+      <Route path="/:section" element={<LessonPage />} />
+      <Route path="*" element={<Navigate to="/beginner" replace />} />
+    </Routes>
   );
 }

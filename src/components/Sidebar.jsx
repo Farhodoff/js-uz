@@ -1,54 +1,77 @@
 import React from 'react';
 import { curriculum, SECTIONS } from '../data/curriculum';
+import LayoutIcon from './icons/LayoutIcon';
 
-export default function Sidebar({ activeSection, setActiveSection, activeLesson, openLesson, completed, setSidebarOpen }) {
-  // Siz so'ragan Layout Icon (SVG ko'rinishida)
-  const LayoutIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ cursor: 'pointer', opacity: 0.8 }}>
-      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-      <line x1="9" y1="3" x2="9" y2="21"></line>
-    </svg>
-  );
+export default function Sidebar({
+  activeSection, setActiveSection, activeLesson, openLesson,
+  completed, getStats, totalCompleted, sidebarOpen, setSidebarOpen
+}) {
+  if (!sidebarOpen) return null;
 
   return (
-    <div style={{ width: 260, background: "#201a12", borderRight: "1px solid #3a2e1e", display: "flex", flexDirection: "column", overflowY: "auto" }}>
-      <div style={{ padding: "20px 16px 12px", borderBottom: "1px solid #3a2e1e", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <nav className="sidebar" role="navigation" aria-label="Darslar navigatsiyasi">
+      <div className="sidebar-header">
         <div>
-          <div style={{ fontSize: 18, fontWeight: 700, color: "#c8a96e", letterSpacing: 0.5 }}>JS Academy</div>
-          <div style={{ fontSize: 11, color: "#8a7a5a", marginTop: 2 }}>O'zbek tilida</div>
+          <div className="sidebar-brand">JS Academy</div>
+          <div className="sidebar-subtitle">O'zbek tilida</div>
         </div>
-        <div onClick={() => setSidebarOpen(false)} title="Sidebar-ni yopish">
+        <button
+          className="header-toggle"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Sidebar-ni yopish"
+        >
           <LayoutIcon />
-        </div>
+        </button>
       </div>
-      {SECTIONS.map(key => {
-        const s = curriculum[key];
-        const doneCount = s.lessons.filter(l => completed[l.id]).length;
-        return (
-          <div key={key}>
-            <div
-              onClick={() => setActiveSection(key)}
-              style={{ padding: "12px 16px", cursor: "pointer", background: activeSection === key ? "#2a2015" : "transparent", borderLeft: activeSection === key ? `3px solid ${s.color}` : "3px solid transparent", transition: "all .2s" }}
-            >
-              <div style={{ fontSize: 13, fontWeight: 600, color: activeSection === key ? s.color : "#a08060" }}>{s.icon} {s.label}</div>
-              <div style={{ fontSize: 11, color: "#6a5a3a", marginTop: 2 }}>{doneCount}/{s.lessons.length} bajarildi</div>
-            </div>
-            {activeSection === key && s.lessons.map(l => (
-              <div
-                key={l.id}
-                onClick={() => openLesson(l)}
-                style={{ padding: "8px 16px 8px 28px", cursor: "pointer", background: activeLesson?.id === l.id ? "#2e2418" : "transparent", fontSize: 12, color: activeLesson?.id === l.id ? "#e8d5b0" : "#7a6a4a", display: "flex", alignItems: "center", gap: 6 }}
+
+      <div className="sidebar-content">
+        {SECTIONS.map(key => {
+          const s = curriculum[key];
+          const stats = getStats(s.lessons);
+          const isActive = activeSection === key;
+
+          return (
+            <div key={key}>
+              <button
+                className={`section-item ${isActive ? 'active' : ''}`}
+                onClick={() => setActiveSection(key)}
+                style={isActive ? { borderLeftColor: s.color } : undefined}
+                aria-expanded={isActive}
               >
-                <span style={{ fontSize: 10 }}>{completed[l.id] ? "✅" : "○"}</span>
-                {l.title}
-              </div>
-            ))}
-          </div>
-        );
-      })}
-      <div style={{ marginTop: "auto", padding: "12px 16px", borderTop: "1px solid #3a2e1e", fontSize: 11, color: "#5a4a2a" }}>
-        Jami: {Object.keys(completed).length} dars bajarildi
+                <div className="section-label" style={isActive ? { color: s.color } : undefined}>
+                  {s.icon} {s.label}
+                </div>
+                <div className="section-progress">
+                  {stats.done}/{stats.total} bajarildi
+                </div>
+                <div className="section-progress-bar">
+                  <div
+                    className="section-progress-fill"
+                    style={{ width: `${stats.percent}%`, background: s.color }}
+                  />
+                </div>
+              </button>
+
+              {isActive && s.lessons.map(l => (
+                <button
+                  key={l.id}
+                  className={`lesson-item ${activeLesson?.id === l.id ? 'active' : ''}`}
+                  onClick={() => openLesson(l)}
+                >
+                  <span className="lesson-status">
+                    {completed[l.id] ? '✅' : '○'}
+                  </span>
+                  {l.title}
+                </button>
+              ))}
+            </div>
+          );
+        })}
       </div>
-    </div>
+
+      <div className="sidebar-footer">
+        Jami: {totalCompleted} dars bajarildi
+      </div>
+    </nav>
   );
 }

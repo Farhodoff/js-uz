@@ -1,27 +1,27 @@
 import React from 'react';
+import LayoutIcon from './icons/LayoutIcon';
 
 export default function Header({ activeLesson, sec, sidebarOpen, setSidebarOpen }) {
-  const LayoutIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ cursor: 'pointer', opacity: 0.8 }}>
-      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-      <line x1="9" y1="3" x2="9" y2="21"></line>
-    </svg>
-  );
-
   return (
-    <div style={{ padding: "14px 24px", borderBottom: "1px solid #3a2e1e", background: "#1e1810", display: "flex", alignItems: "center", gap: 16 }}>
+    <header className="app-header">
       {!sidebarOpen && (
-        <div onClick={() => setSidebarOpen(true)} title="Sidebar-ni ochish" style={{ display: "flex", alignItems: "center" }}>
+        <button
+          className="header-toggle"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Sidebar-ni ochish"
+        >
           <LayoutIcon />
-        </div>
+        </button>
       )}
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <span style={{ color: sec.color, fontSize: 18 }}>{sec.icon}</span>
+      <div className="header-info">
+        <span className="header-icon" style={{ color: sec.color }}>{sec.icon}</span>
         <div>
-          <div style={{ fontWeight: 600, fontSize: 16 }}>{activeLesson?.title || "Dars tanlang"}</div>
-          <div style={{ fontSize: 11, color: "#8a7a5a" }}>{sec.label}</div>
+          <div className="header-title">
+            {activeLesson?.title || 'Dars tanlang'}
+          </div>
+          <div className="header-section">{sec.label}</div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
