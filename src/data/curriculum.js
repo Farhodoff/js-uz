@@ -8,6 +8,7 @@ import { typeConversionLesson } from "./lessons/beginner/typeConversion";
 import { typeCasting } from "./lessons/beginner/typeCasting";
 import { implicitCasting } from "./lessons/beginner/implicitCasting";
 import { ifElseLesson } from "./lessons/beginner/ifElse";
+import { switchLesson } from "./lessons/beginner/switch";
 import { equalityAlgorithms } from "./lessons/beginner/equalityAlgorithms";
 import { primitivesVsObjects } from "./lessons/beginner/primitivesVsObjects";
 import { stringMethods } from "./lessons/beginner/stringMethods";
@@ -30,6 +31,7 @@ import { spreadRest } from "./lessons/intermediate/spreadRest";
 import { arrowFunctions } from "./lessons/intermediate/arrowFunctions";
 import { domBasics } from "./lessons/intermediate/dom";
 import { events } from "./lessons/intermediate/events";
+import { formsLesson } from "./lessons/intermediate/forms";
 import { higherOrderArrays } from "./lessons/intermediate/higherOrderArrays";
 import { classesLesson } from "./lessons/intermediate/classes";
 import { optionalChaining } from "./lessons/intermediate/optionalChaining";
@@ -68,13 +70,13 @@ export const curriculum = {
     label: "Boshlang'ich",
     color: "#c8a96e",
     icon: "🟢",
-    lessons: [cheatSheet, interviewQuestionsBeginner, jsWhat, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, typeCasting, implicitCasting, ifElseLesson, equalityAlgorithms, primitivesVsObjects, stringMethods, mathObject, jsGotchas, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, typeofLesson, operators, loops, functions, arrays, objects]
+    lessons: [cheatSheet, interviewQuestionsBeginner, jsWhat, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, typeCasting, implicitCasting, ifElseLesson, switchLesson, equalityAlgorithms, primitivesVsObjects, stringMethods, mathObject, jsGotchas, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, typeofLesson, operators, loops, functions, arrays, objects]
   },
   intermediate: {
     label: "O'rta daraja",
     color: "#e5b84f",
     icon: "🟡",
-    lessons: [interviewQuestionsIntermediate, thisKeyword, destructuring, spreadRest, arrowFunctions, domBasics, events, higherOrderArrays, optionalChaining, classesLesson]
+    lessons: [interviewQuestionsIntermediate, thisKeyword, destructuring, spreadRest, arrowFunctions, domBasics, events, formsLesson, higherOrderArrays, optionalChaining, classesLesson]
   },
   advanced: {
     label: "Advanced",

@@ -1,99 +1,89 @@
 export const loops = {
   id: "b14",
-  title: "Sikllar: for, while, do-while",
+  title: "Sikllar: for, while",
   theory: `## 1. KIRISH
-Tasavvur qiling, sizga 100 marta "Salom" deb yozish topshirildi. Har safar o'zingiz yozib chiqmaysiz-ku? Sikllar (loops) - bu ma'lum bir amalni bir necha marta takrorlash uchun ishlatiladigan mexanizm.
+Dasturlashda eng ko'p bajariladigan ish — bu takrorlash. Masalan, 1000 ta mahsulot ro'yxatini chiqarish yoki 1 dan 100 gacha sonlarni qo'shib chiqish. Buning uchun biz **Sikllar (Loops)** dan foydalanamiz.
 
 ## 2. TUSHUNCHA
 
-### Sodda ta'rif
-Sikl - bu berilgan shart to'g'ri (true) bo'lguncha kodni qayta-qayta ishga tushirishdir.
+### for sikli
+Eng ko'p ishlatiladigan sikl. U uchta qismdan iborat:
+1. **Boshlanish:** O'zgaruvchi yaratish (\`let i = 0\`).
+2. **Shart:** Sikl qachongacha davom etishi (\`i < 10\`).
+3. **Qadam:** Har safar o'zgaruvchini yangilash (\`i++\`).
 
-### Real hayot o'xshashlik
-Siklni **stadion atrofida yugurishga** o'xshatish mumkin. Shart: "10 ta aylana urguncha yugur". Har aylanada siz bitta sanaysiz.
-
-### Sintaksis
 \`\`\`javascript
-// for sikli
-for (boshlang'ich; shart; qadam) {
-  // kod
+for (let i = 0; i < 5; i++) {
+  console.log("Qadam:", i);
 }
+\`\`\`
 
-// while sikli
-while (shart) {
-  // kod
+### while sikli
+Bu sikl shart to'g'ri bo'lguncha ishlayveradi. Qadamni blok ichida o'zingiz yozishingiz kerak.
+\`\`\`javascript
+let i = 0;
+while (i < 5) {
+  console.log(i);
+  i++;
 }
 \`\`\`
 
 ---
 
-## 3. KOD MISOLLARI
-
-### Misol 1 — 1 dan 5 gacha sanash
-**Maqsad:** Eng ko'p ishlatiladigan \`for\` siklini ko'rsatish.
-\`\`\`javascript
-for (let i = 1; i <= 5; i++) {
-  console.log("Sanoq:", i);
-}
-// → 1, 2, 3, 4, 5
-\`\`\`
-
-### Misol 2 — Massivni aylanib chiqish
-**Maqsad:** Ro'yxatdagi elementlarni birma-bir chiqarish.
-\`\`\`javascript
-const mevalar = ["Olma", "Banan", "Gilos"];
-for (let i = 0; i < mevalar.length; i++) {
-  console.log("Meva:", mevalar[i]);
-}
-\`\`\`
-
----
-
-## 4. VIZUAL TUSHUNTIRISH
-### Sikl oqimi (Flowchart)
+## 3. VIZUAL TUSHUNTIRISH
+### Sikl qanday aylanadi?
 \`\`\`mermaid
 graph TD
-    A[Sikl Boshi] --> B{Shart To'grimi?}
+    A[Sikl Boshi] --> B{Shart: i < 5?}
     B -- Ha --> C[Kod Blokini bajar]
-    C --> D[Qadamni oshir]
+    C --> D[i ni 1 ga oshir]
     D --> B
     B -- Yo'q --> E[Sikl Tugashi]
 \`\`\`
 
 ---
 
-## 5. UMUMIY XATOLAR
-### ❌ Cheksiz sikl (Infinite loop)
-\`\`\`javascript
-let i = 0;
-while (i < 5) {
-  console.log(i);
-  // i++ unutilgan! Sikl hech qachon tugamaydi va kompyuter qotadi.
-}
-\`\`\`
+## 4. INTERVYU SAVOLLARI (Junior)
+
+1. **for va while farqi nima?**
+   *Javob:* \`for\` da takrorlanishlar soni aniq bo'lganda ishlatish qulay. \`while\` esa shartga ko'ra qachon to'xtashini bilmaganimizda ishlatiladi.
+
+2. **Cheksiz sikl (Infinite loop) nima?**
+   *Javob:* Agar sikl sharti hech qachon \`false\` bo'lmasa, dastur to'xtovsiz ishlayveradi va brauzerni qotirib qo'yadi.
+
+3. **break va continue farqi nima?**
+   *Javob:* \`break\` — siklni butunlay to'xtatadi. \`continue\` — hozirgi qadamni tashlab ketib, keyingisiga o'tadi.
 
 ---
 
-## 6. MINI LOYIHA: "Yulduzchalar generatori"
-**Vazifa:** Berilgan son marta yulduzchalar chiqaring.
+## 5. MINI LOYIHA: "1 dan N gacha yig'indi"
+**Vazifa:** Foydalanuvchi bergan songacha bo'lgan barcha sonlar yig'indisini hisoblash.
 
 \`\`\`javascript
-let n = 5;
-let natija = "";
-for (let i = 0; i < n; i++) {
-  natija += "*";
+let n = 10;
+let sum = 0;
+for (let i = 1; i <= n; i++) {
+  sum += i;
 }
-console.log(natija); // → *****
+console.log("Yig'indi:", sum); // → 55
 \`\`\`
 `,
   exercises: [
     {
       id: 1,
-      title: "for mashqi",
-      instruction: "0 dan 4 gacha bo'lgan sonlarni consolega chiqaring.",
-      startingCode: "for (let i = 0; i < 5; i++) {\n  // Kodni yozing\n}",
-      hint: "console.log(i);",
-      test: "if (logs.length === 5 && logs[0] === '0') return null; return '0 dan 4 gacha sonlar chiqishi kerak';"
+      title: "1 dan 100 gacha yig'indi",
+      instruction: "for sikli yordamida 1 dan 100 gacha bo'lgan barcha sonlar yig'indisini hisoblang va konsolga chiqaring.",
+      startingCode: "let sum = 0;\n// Bu yerda for siklini yozing\n\nconsole.log(sum);",
+      hint: "for (let i = 1; i <= 100; i++) { sum += i; }",
+      test: "if (logs.includes('5050')) return null; return 'Natija 5050 bo\\'lishi kerak';"
+    },
+    {
+      id: 2,
+      title: "Juft sonlar",
+      instruction: "while sikli yordamida 2 dan 10 gacha bo'lgan faqat juft sonlarni chiqaring.",
+      startingCode: "let i = 2;\nwhile (i <= 10) {\n  // Bu yerda i ni chiqaring va 2 taga oshiring\n}",
+      hint: "console.log(i); i += 2;",
+      test: "if (logs.includes('2') && logs.includes('10') && logs.length === 5) return null; return 'Faqat 2, 4, 6, 8, 10 chiqishi kerak';"
     }
   ]
 };

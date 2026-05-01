@@ -1,72 +1,90 @@
 export const dataTypesLesson = {
   id: "b2",
   title: "Ma'lumotlar Turlari (Data Types)",
-  theory: `## JavaScriptda Ma'lumotlar Turlari
+  theory: `## 1. JAVASCRIPTDA MA'LUMOTLAR TURLARI
+JavaScriptda ma'lumotlar ikki katta guruhga bo'linadi: **Primitiv** va **Murakkab (Reference)**.
 
-JavaScriptda 8 ta asosiy ma’lumot turi mavjud. Shundan 7 tasi **primitive** (oddiy) va 1 tasi **complex** (murakkab - Object).
+### A. Primitiv turlar (7 ta)
+Bular xotirada to'g'ridan-to'g'ri qiymatni saqlaydi:
+1.  **String:** Matnlar (\`"Salom"\`, \`'JS'\`).
+2.  **Number:** Sonlar (butun, kasr, \`NaN\`, \`Infinity\`).
+3.  **Boolean:** Rost (\`true\`) yoki Yolg'on (\`false\`).
+4.  **Undefined:** Qiymati berilmagan o'zgaruvchi.
+5.  **Null:** Ataylab bo'sh qoldirilgan qiymat.
+6.  **BigInt:** Juda katta sonlar uchun.
+7.  **Symbol:** Unikal identifikatorlar.
 
-### 1. String (Matn)
-Matnli ma’lumotlarni saqlash uchun. Qo‘shtirnoq (\`"\`), birtirnoq (\`'\`), yoki backtick (\` \` \`) bilan yoziladi.
-- Uzunligi: \`.length\`
-- Metodlar: \`.toUpperCase()\`, \`.slice()\` va b.
+### B. Murakkab tur (1 ta)
+1.  **Object:** Obyektlar, massivlar (Array) va funksiyalar.
 
-### 2. Number (Son)
-Butun va kasr sonlar. 
-- Maxsus qiymatlar: \`Infinity\`, \`-Infinity\`, \`NaN\` (Not a Number).
-- \`"salom" * 5\` natijasi \`NaN\` bo‘ladi.
+---
 
-### 3. Boolean (Mantiqiy)
-Faqat ikkita qiymat: \`true\` (rost) yoki \`false\` (yolg‘on).
+## 2. CHUQURROQ KO'Z YUGURTAMIZ
 
-### 4. Undefined
-O‘zgaruvchi e’lon qilingan, lekin qiymat berilmagan holat. JavaScript avtomatik beradi.
-
-### 5. Null
-\`null\` – “bo‘sh” degan ma’noni dasturchi **o‘zi** beradi.
-- **Diqqat:** \`typeof null\` natijasi \`"object"\` chiqadi (JS dagi eski xatolik).
-
-### Ma'lumot turlarini tekshirish: \`typeof\`
+### Number va NaN
+\`NaN\` (Not a Number) — bu son emas degani, lekin uning turi \`number\` bo'lib chiqadi. G'alati, a?
 \`\`\`javascript
-typeof "Ali"      // "string"
-typeof 42         // "number"
-typeof true       // "boolean"
-typeof undefined  // "undefined"
-typeof null       // "object"
+console.log("Olma" * 5); // → NaN
+\`\`\`
+
+### Null vs Undefined
+- **Undefined:** "Men hali e'lon qilinmadim yoki menga qiymat berilmadi".
+- **Null:** "Men boraman, lekin ichim bo'sh (ataylab)".
+
+\`\`\`mermaid
+graph TD
+    A[Ma'lumot Turlari] --> B[Primitiv]
+    A --> C[Object]
+    B --> B1[String]
+    B --> B2[Number]
+    B --> B3[Boolean]
+    B --> B4[Null/Undefined]
+    C --> C1[Array]
+    C --> C2[Function]
+    C --> C3[Object]
 \`\`\`
 
 ---
 
-## Intervyu savollari (Junior & Middle)
+## 3. typeof OPERATORI
+Bu operator o'zgaruvchining turini aniqlab beradi.
 
-### Junior daraja
-1. **JavaScriptda nechta primitiv ma’lumot turi bor?**
-2. **undefined va null farqi nimada?**
-3. **typeof null nima qaytaradi va nega?**
+\`\`\`javascript
+typeof 42;          // "number"
+typeof "Salom";     // "string"
+typeof true;        // "boolean"
+typeof undefined;   // "undefined"
+typeof null;        // "object" (JS dagi mashhur xato)
+\`\`\`
 
-### Middle daraja
-4. **NaN nima va uni qanday to‘g‘ri tekshirish mumkin?**
-5. **"+" operatori string va number bilan qanday ishlaydi?**
-6. **BigInt nima va u qachon kerak?**`,
-  task: `// 1. Har xil turdagi (string, number, boolean, undefined, null) o'zgaruvchilar yarating.
-// 2. typeof operatori yordamida ularning turlarini konsolga chiqaring.
-// 3. Stringni numberga o'tkazishning 3 xil usulini ko'rsating (Number(), parseInt, +).
-// 4. NaN natijasini beruvchi matematik amal yozing va uni isNaN() bilan tekshiring.
-// 5. "5" + 3 va "5" - 3 amallarini bajarib, natijalarni va sababini izohlang.
+---
 
-// Kodingizni shu yerga yozing`,
-  hint: `// 1 & 2. Types
-let s = "JS"; let n = 10; let b = true; let u; let nl = null;
-console.log(typeof s, typeof n, typeof b, typeof u, typeof nl);
+## 4. INTERVYU SAVOLLARI (Junior)
 
-// 3. Conversion
-let str = "100";
-console.log(Number(str), parseInt(str), +str);
+1. **JavaScriptda nechta primitiv tur bor?**
+   *Javob:* 7 ta.
 
-// 4. NaN
-let wrong = "olma" / 2;
-console.log(isNaN(wrong)); // true
+2. **null va undefined farqi nimada?**
+   *Javob:* Undefined — avtomatik holat, Null — dasturchi tomonidan qo'yilgan bo'sh qiymat.
 
-// 5. Coercion
-console.log("5" + 3); // "53" (string concatenation)
-console.log("5" - 3); // 2 (mathematical subtraction)`
+3. **typeof null nima qaytaradi?**
+   *Javob:* "object". Bu til yaratilgandagi texnik xatolik hisoblanadi.`,
+  exercises: [
+    {
+      id: 1,
+      title: "Turlarni aniqlash",
+      instruction: "O'zgaruvchi 'x' yarating, unga son bering va uning turini 'typeof' bilan konsolga chiqaring.",
+      startingCode: "let x = 25;\n// typeof x ni konsolga chiqaring\n",
+      hint: "console.log(typeof x);",
+      test: "if (logs.includes('number')) return null; return 'Sonning turi \"number\" bo\\'lishi kerak';"
+    },
+    {
+      id: 2,
+      title: "String yaratish",
+      instruction: "Yangi 'ism' o'zgaruvchisini yarating va unga o'z ismingizni string sifatida bering.",
+      startingCode: "// Ismingizni yozing\n",
+      hint: 'let ism = "Ali";',
+      test: "if (typeof code.split('=')[1]?.trim().replace(/['\"]/g, '') === 'string') return null; return 'String to\\'g\\'ri e\\'lon qilinmagan';"
+    }
+  ]
 };
