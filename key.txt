@@ -1,4 +1,3 @@
-
 # ================================================
 # Git ish tartibi – “Farhodoff” qoidasiga ko‘ra
 # ================================================
@@ -9,20 +8,14 @@
 #  - Barcha izohlar va yozuvlar o‘zbek tilida bo‘lsin.
 
 # 2. Git foydalanuvchi ma’lumotini sozlash (faqat bir marta kerak)
-git config user.name "Farhodoff"
-git config user.email "fsoyilovv@gmail.com"
+# git config user.name "Farhodoff"
+# git config user.email "fsoyilovv@gmail.com"
 
-# 3. O‘zgarishlarni tayyorlash (staging)
-git add .
-
-# 4. Commit yaratish
-# Qisqacha izoh yozish (o‘zbek tilida):
-# Masalan: "Yangilanish: login funksiyasi qo‘shildi"
-read -p "Commit uchun izoh yozing (o‘zbek tilida): " commit_msg
-git commit -m "Yangilanish: $commit_msg"
-
-# 5. O‘zgarishlarni masofaviy repozitoriyaga yuborish (push)
-git push
-
-# 6. Tugadi
-echo "Git update tugallandi! Commit va push bajarildi."
+# 3. Pedagogik ish tartibi (O'qitish qoidalari)
+#  - NEGA: Har bir mavzuni "Bu nima va nima uchun kerak?" degan savolga javob bilan boshlang.
+#  - SODDALIK: Analogiyalar (hayotiy misollar) va qisqa gaplar ishlashing.
+#  - STRUKTURA: Tushuntir -> Ko'rsat -> Bajartir (Mashq ber).
+#  - AMALIYOT: Nazariya 20-30%, Amaliyot 70-80% bo'lsin.
+#  - XATOLAR: Ko'p uchraydigan xatolar va "Buzib ko'rish" (Edge cases) bo'limlarini qo'shing.
+#  - BOSQICHMA-BOSQICH: Osondan qiyinga qarab boring.
+#  - USLUB: Do'stona, qisqa va aniq.
