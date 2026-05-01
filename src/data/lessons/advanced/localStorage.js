@@ -1,94 +1,92 @@
 export const localStorageLesson = {
-  id: "a4",
-  title: "Web Storage (LocalStorage va SessionStorage)",
-  theory: `## Web Storage API
+  id: "a15",
+  title: "LocalStorage va SessionStorage",
+  theory: `## 1. KIRISH
+Tasavvur qiling, saytingizda "Dark Mode" yoqilgan. Foydalanuvchi sahifani yangilasa (refresh), bu holat yo'qolib qolmasligi kerak. Buning uchun bizga brauzer xotirasi yordam beradi.
 
-Web Storage brauzerda ma'lumotlarni kalit-qiymat (key-value) juftligi ko'rinishida saqlash imkonini beradi. Uning ikkita asosiy turi bor: **LocalStorage** va **SessionStorage**.
+## 2. TUSHUNCHA
+
+### LocalStorage
+- **Muddati**: Cheksiz (foydalanuvchi o'zi o'chirmaguncha).
+- **Hajmi**: ~5-10 MB.
+- **Scope**: Barcha tablar (sahifalar) uchun umumiy.
+
+### SessionStorage
+- **Muddati**: Faqat joriy tab yopilguncha.
+- **Scope**: Faqat o'sha tab uchun xususiy.
 
 ---
 
-### 1. LocalStorage vs SessionStorage
+## 3. KOD MISOLLARI
 
-| Xususiyat | LocalStorage | SessionStorage |
-|-----------|--------------|----------------|
-| **Muddati** | Ma'lumotlar o'chirilmaguncha saqlanadi. | Tab yoki brauzer yopilguncha saqlanadi. |
-| **Qamrovi** | Barcha tablar va oynalarda bir xil (same origin). | Faqat ochilgan tab ichida amal qiladi. |
-| **Hajmi** | Odatda 5MB - 10MB gacha. | Odatda 5MB gacha. |
-
----
-
-### 2. Asosiy Metodlar
-
-Ikkala storage ham bir xil metodlarga ega:
-
-- \`setItem(key, value)\` – Ma'lumotni saqlash.
-- \`getItem(key)\` – Kalit bo'yicha ma'lumotni olish.
-- \`removeItem(key)\` – Kalit bo'yicha ma'lumotni o'chirish.
-- \`clear()\` – Barcha ma'lumotlarni tozalash.
-- \`key(index)\` – Indeks bo'yicha kalit nomini olish.
-- \`length\` – Saqlangan elementlar soni.
-
-### 3. Obyektlarni saqlash (JSON)
-Web Storage faqat **string** qabul qiladi. Obyekt yoki massivlarni saqlash uchun ularni JSON formatiga o'tkazish kerak.
-
+### Misol 1 — Ma'lumot saqlash va olish
 \`\`\`javascript
-const user = { name: "Ali", age: 25 };
-
 // Saqlash
-localStorage.setItem("user", JSON.stringify(user));
+localStorage.setItem("theme", "dark");
 
 // Olish
+const theme = localStorage.getItem("theme");
+console.log(theme); // → "dark"
+
+// O'chirish
+// localStorage.removeItem("theme");
+\`\`\`
+
+### Misol 2 — Obyektlarni saqlash (JSON) ⭐
+Storage faqat **string** saqlay oladi. Obyekt saqlash uchun uni \`JSON.stringify\` qilish shart.
+\`\`\`javascript
+const user = { name: "Ali", age: 25 };
+localStorage.setItem("user", JSON.stringify(user));
+
 const savedUser = JSON.parse(localStorage.getItem("user"));
-console.log(savedUser.name); // "Ali"
+console.log(savedUser.name); // → "Ali"
 \`\`\`
 
 ---
 
-### 4. Storage Event
-Bitta oynada storage o'zgarganda, boshqa oynalarda (xuddi shu sayt ochilgan tablarda) \`storage\` hodisasi yuz beradi.
+## 4. VIZUAL TUSHUNTIRISH
+### Xotira turlari farqi
+| Xususiyat | LocalStorage | SessionStorage | Cookies |
+|---|---|---|---|
+| Muddati | Doimiy | Tab yopilguncha | Belgilangan vaqtgacha |
+| Hajmi | 5MB+ | 5MB | 4KB |
+| Serverga boradimi? | Yo'q | Yo'q | Ha ✅ |
+
+---
+
+## 5. INTERVYU SAVOLLARI
+1. **LocalStorage va SessionStorage farqi?** - Asosiy farq saqlash muddati va tablar orasidagi ko'rinish doirasida.
+2. **Obyektni Storage'ga qanday saqlash kerak?** - \`JSON.stringify\` orqali stringga o'girib, olinganda \`JSON.parse\` qilinadi.
+3. **Storage xavfsizimi?** - Yo'q, u yerda parollar yoki bank kartalari kabi maxfiy ma'lumotlarni saqlash mutlaqo taqiqlangan!
+
+---
+
+## 6. MINI LOYIHA: "Ism Eslab Qoluvchi"
+**Vazifa:** Foydalanuvchi ismini saqlab qoling va keyingi safar kirganda uni tabriklang.
 
 \`\`\`javascript
-window.addEventListener('storage', (e) => {
-  console.log(\`Kalit: \${e.key}, Eski: \${e.oldValue}, Yangi: \${e.newValue}\`);
-});
+function welcomeUser(name) {
+  if (name) {
+    localStorage.setItem("username", name);
+    console.log("Xush kelibsiz, " + name);
+  } else {
+    const saved = localStorage.getItem("username");
+    console.log(saved ? "Yana bir bor salom, " + saved : "Sizni tanimadim");
+  }
+}
+
+welcomeUser("Farhod"); // Birinchi marta
+welcomeUser(); // Ikkinchi marta (Refreshdan keyin)
 \`\`\`
-
----
-
-## Intervyu savollari (Junior & Middle)
-
-### Junior daraja
-1. **LocalStorage va SessionStorage orasidagi farq nima?**
-2. **Web Storage'da obyektlarni qanday saqlash mumkin?**
-3. **Storage'dan barcha ma'lumotlarni qanday tozalash mumkin?**
-
-### Middle daraja
-4. **Cookies va LocalStorage farqi nimada? Qaysi biri xavfsizroq?**
-5. **Storage limitidan oshib ketganda nima sodir bo'ladi?** (Javob: \`QuotaExceededError\`)
-6. **XSS hujumlari va LocalStorage o'rtasidagi bog'liqlik nima?**`,
-  task: `// 1. LocalStorage'ga "theme" kaliti bilan "dark" qiymatini saqlang.
-// 2. SessionStorage'ga foydalanuvchi "session_id"sini (ixtiyoriy son) saqlang.
-// 3. Quyidagi massivni LocalStorage'ga saqlang va qayta o'qib oling:
-const colors = ["red", "green", "blue"];
-
-// 4. "user_settings" nomli obyekt yarating va uni storage'ga saqlang.
-// 5. Biror kalitni o'chiring va storage bo'shligini tekshiring.
-
-// Kodingizni shu yerga yozing`,
-  hint: `// 1 & 2. Simple storage
-localStorage.setItem("theme", "dark");
-sessionStorage.setItem("session_id", "12345");
-
-// 3. Array in Storage
-const colors = ["red", "green", "blue"];
-localStorage.setItem("colors", JSON.stringify(colors));
-const retrievedColors = JSON.parse(localStorage.getItem("colors"));
-
-// 4. Object in Storage
-const settings = { lang: "uz", fontSize: 16 };
-localStorage.setItem("user_settings", JSON.stringify(settings));
-
-// 5. Remove
-localStorage.removeItem("theme");
-console.log(localStorage.length);`
+`,
+  exercises: [
+    {
+      id: 1,
+      title: "JSON saqlash",
+      instruction: "Berilgan 'settings' obyektini localStorage'ga JSON shaklida saqlang.",
+      startingCode: "const settings = { lang: 'uz' };\n// Saqlang\n",
+      hint: "localStorage.setItem('settings', JSON.stringify(settings))",
+      test: "if (code.includes('JSON.stringify')) return null; return 'JSON.stringify ishlating';"
+    }
+  ]
 };
