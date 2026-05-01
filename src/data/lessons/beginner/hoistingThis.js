@@ -1,54 +1,82 @@
 export const hoistingThisLesson = {
   id: "b13",
-  title: "Hoisting va 'this' kalit so'zi",
-  theory: `## 1. Hoisting (Ko‘tarilish)
+  title: "Hoisting: JSning 'ko'z yugurtirish' siri",
+  theory: `## 1. KIRISH
+JavaScript — o'ta "aqlli" til. U kodni o'qishni boshlashdan oldin, xuddi imtihonga kirishdan oldin varaqqa **ko'z yugurtirgandek**, hamma o'zgaruvchi va funksiyalarni qidirib chiqadi. Bu jarayon **Hoisting** (ko'tarilish) deb ataladi.
 
-**Hoisting** – JavaScriptning o‘zgaruvchi va funksiya e’lonlarini ularning scope’ining **yuqorisiga ko‘tarish** mexanizmi.
+## 2. TUSHUNCHA
 
-### var, let va const bilan hoisting
-- **var**: E’lon ko‘tariladi, lekin qiymati \`undefined\` bo‘ladi.
-- **let/const**: Hoisting bo‘ladi, lekin **Temporal Dead Zone (TDZ)** tufayli e’lon qilinishidan oldin ishlatilsa xato beradi.
+### Sodda ta'rif
+Hoisting - bu JavaScript kodni ishga tushirishdan oldin hamma e'lonlarni (declarations) kodning eng tepasiga ko'chirib qo'yishidir.
 
-### Funksiyalarda hoisting
-- **Function Declaration**: To‘liq (tanasi bilan) ko‘tariladi. Uni e’lon qilishdan oldin chaqirish mumkin.
-- **Function Expression**: O'zgaruvchi kabi hoisting bo'ladi (agar \`var\` bo'lsa \`undefined\`, \`let\` bo'lsa TDZ).
+### Real hayot o'xshashlik
+Siz ovqat pishirmoqchisiz. Retseptni o'qishdan oldin hamma kerakli narsalarni (tuz, piyoz, go'sht) stol ustiga **tayyorlab qo'yasiz**. JS ham e'lonlarni shunday tayyorlab oladi.
 
 ---
 
-## 2. 'this' kalit so‘zi
+## 3. QOIDALAR (Nima qanday ko'tariladi?)
 
-**this** – hozirgi bajarilayotgan kontekstni (obyektni) ko‘rsatadi. Qiymati funksiya **qayerda va qanday chaqirilganiga** qarab o'zgaradi.
+### 1. var: "Borman, lekin bo'shman"
+\`var\` bilan e'lon qilingan o'zgaruvchi tepaga ko'tariladi, lekin uning ichi bo'sh (\`undefined\`) bo'ladi.
+\`\`\`javascript
+console.log(a); // → undefined
+var a = 10;
+\`\`\`
 
-### Asosiy qoidalar:
-1. **Global kontekst:** Brauzerda \`this\` – \`window\` obyektini ko‘rsatadi.
-2. **Obyekt metodi:** Metod ichida \`this\` o'sha obyektning o'zini ko'rsatadi.
-3. **Arrow funksiyalari:** O'zining \`this\`iga ega emas, tashqi (lexical) scope'dagi \`this\`ni oladi.
-4. **Constructor:** \`new\` bilan chaqirilganda \`this\` yangi yaratilgan obyektni ko'rsatadi.
+### 2. let va const: "O'lik hudud" (TDZ)
+Bular ham ko'tariladi, lekin JS ularni "ishlatish taqiqlangan" deb belgilab qo'yadi. E'lon qilingan qatorga yetmaguningizcha ishlatsangiz, dastur "o'ladi" (error).
 
-### call, apply, bind
-Ushbu metodlar funksiyaning \`this\` kontekstini qo'lda (manually) belgilash uchun ishlatiladi:
-- **call/apply:** Funksiyani darhol yangi kontekst bilan chaqiradi.
-- **bind:** Yangi funksiya qaytaradi, lekin uni darhol chaqirmaydi.`,
-  task: `// 1. Hoisting: Funksiya deklaratsiyasini u e'lon qilinishidan oldin chaqirib ko'ring. Keyin funksiya ifodasi (expression) bilan ham shuni qilib ko'ring va farqni ko'ring.
-// 2. this: Obyekt yarating va uning metodida "this.name"ni konsolga chiqaring.
-// 3. Arrow function: Obyekt ichida arrow function yarating va unda "this" nima ekanini tekshiring.
-// 4. call/bind: Bitta funksiyani ikki xil obyekt bilan "call" va "bind" yordamida bog'lab ishlating.
+### 3. Funksiyalar: "To'liq tayyor"
+Oddiy funksiyalar tepaga to'liq ko'chadi. Uni e'lon qilishdan oldin ham ishlatsa bo'ladi.
+\`\`\`javascript
+salom(); // → "Salom!" ishlaydi ✅
+function salom() { console.log("Salom!"); }
+\`\`\`
 
-// Kodingizni shu yerga yozing`,
-  hint: `// 1. Hoisting
-sayHi(); // Ishlaydi
-function sayHi() { console.log("Hi"); }
+---
 
-// 2 & 3. this context
-const user = {
-  name: "Ali",
-  regular: function() { console.log(this.name); },
-  arrow: () => { console.log(this.name); }
-};
-user.regular(); // "Ali"
-user.arrow();   // undefined (yoki window.name)
+## 4. VIZUAL TUSHUNTIRISH
+### Kod va JSning ko'zi
+\`\`\`
+Siz yozgan kod:          JS o'qigan kod:
+------------------      ------------------
+                        var a; // Hoisted!
+console.log(a);   -->   console.log(a); // undefined
+var a = 5;              a = 5;
+\`\`\`
 
-// 4. call
-function greet() { console.log(this.name); }
-greet.call({name: "Vali"});`
+---
+
+## 5. INTERVYU SAVOLLARI
+1. **Hoisting nima?** - E'lonlarning kod tepasiga ko'tarilishi.
+2. **Temporal Dead Zone (TDZ) nima?** - \`let\` va \`const\` e'lon qilinmaguncha ularni ishlatib bo'lmaydigan vaqt/hudud.
+3. **Funksiyalar qanday hoist bo'ladi?** - To'liq hoist bo'ladi (tanasi bilan).
+
+---
+
+## 6. MINI LOYIHA: "Hoisting Test"
+**Vazifa:** Quyidagi kod nima chiqarishini taxmin qiling va keyin muharrirda tekshiring.
+
+\`\`\`javascript
+var x = "Salom";
+
+function test() {
+  console.log(x); // undefined yoki "Salom"?
+  var x = "Xayr";
+}
+
+test();
+\`\`\`
+*Javob: undefined chiqadi. Chunki funksiya ichidagi 'x' hoist bo'lib, tashqaridagisini yopib qo'yadi.*
+`,
+  exercises: [
+    {
+      id: 1,
+      title: "Funksiya hoisting",
+      instruction: "Funksiyani u e'lon qilinishidan oldin chaqiring.",
+      startingCode: "// 1. Bu yerda chaqiring\n\n// 2. Bu yerda e'lon qiling\n",
+      hint: "sayHi(); function sayHi() { ... }",
+      test: "if (logs.length > 0) return null; return 'Funksiyani chaqiring va biror narsa chiqaring';"
+    }
+  ]
 };

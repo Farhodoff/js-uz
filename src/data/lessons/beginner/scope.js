@@ -1,74 +1,82 @@
 export const scopeLesson = {
   id: "b8",
-  title: "O‘zgaruvchi doirasi (Scope)",
-  theory: `## Scope – JavaScriptda ko‘rinish sohasi
+  title: "Scope: O'zgaruvchilarning 'Yashash joyi'",
+  theory: `## 1. KIRISH
+Tasavvur qiling, sizning ismingiz "Ali". Uyda sizni hamma taniydi, lekin ko'chaga chiqsangiz, begona odamlar sizni tanimasligi mumkin. JavaScriptda ham o'zgaruvchilarning xuddi shunday "tanish doirasi" bor. Bu **Scope** (doira) deb ataladi.
 
-Scope – o‘zgaruvchi, funksiya yoki obyektning qayerda mavjudligi va qayerdan kirish mumkinligini belgilaydi. JavaScriptda 3 turdagi scope bor:
+## 2. TUSHUNCHA
 
-### 1. Global Scope
-- Eng tashqi daraja (funksiya yoki blokdan tashqarida e’lon qilingan o‘zgaruvchi).
-- Har qanday joydan (shu jumladan funksiya ichidan) kirish mumkin.
-- Brauzerda \`var\` bilan e’lon qilingan global o‘zgaruvchi \`window\` obyektiga birikadi.
+### Sodda ta'rif
+Scope - bu o'zgaruvchi "yashaydigan" va "taniladigan" hudud. Agar o'zgaruvchi biror doiradan tashqarida bo'lsa, uni ishlatib bo'lmaydi.
 
-### 2. Function Scope (Lokal scope)
-- Funksiya ichida \`var\`, \`let\`, \`const\` bilan e’lon qilingan o‘zgaruvchi faqat o‘sha funksiya ichida mavjud.
-- Tashqaridan kirish mumkin emas.
-
-### 3. Block Scope
-- \`{}\` (if, for, while, switch) ichida \`let\` va \`const\` bilan e’lon qilingan o‘zgaruvchilar faqat shu blok ichida mavjud.
-- \`var\` **blok scopega bo‘ysunmaydi** (faqat funksiya scopega bo‘ysunadi).
-
-### Lexical Scope (Static Scope)
-- Funksiyalar qayerda e’lon qilingan bo‘lsa, o‘sha joydagi o‘zgaruvchilarga kirish huquqiga ega (qayerda chaqirilganiga qaramasdan).
-
-### Scope Chain
-- Ichki funksiya o‘z scope’ida topa olmagan o‘zgaruvchini tashqi (parent) scope’lardan qidirib topadi. Bu zanjir global scope’gacha davom etadi.
+### Real hayot o'xshashlik (Viloyat va Uy)
+- **Global Scope (Ko'cha)**: Hamma ko'rishi va ishlatishi mumkin bo'lgan narsalar (masalan, haykal).
+- **Local Scope (Sizning uyingiz)**: Faqat uyingizdagilar ko'ra oladigan narsalar (masalan, sizning tish cho'tkangiz).
 
 ---
 
-## Intervyu savollari (Junior & Middle)
+## 3. SCOPE TURLARI
 
-### Junior daraja
-1. **Scope nima? Global va lokal scope farqi?**
-2. **var va let scope jihatidan qanday farq qiladi?**
-3. **Lexical scope nima?**
+### 1. Global Scope
+Dasturning eng yuqorisida e'lon qilingan o'zgaruvchilar. Ularni istalgan joyda (funksiya ichida ham) ishlatish mumkin.
 
-### Middle daraja
-4. **Scope chain qanday ishlaydi?**
-5. **IIFE (Immediately Invoked Function Expression) nima va u scope bilan qanday bog‘liq?**
-6. **var bilan e’lon qilingan o‘zgaruvchi for loop ichida va tashqarisida qanday farq qiladi?**`,
-  task: `// 1. Global o'zgaruvchi yarating va uni funksiya ichida ishlating.
-// 2. Funksiya ichida o'zgaruvchi yarating va unga funksiyadan tashqarida murojaat qilib ko'ring (xatoni kuzating).
-// 3. if bloki ichida var va let bilan o'zgaruvchilar yarating. Ularning blokdan tashqarida ko'rinishini tekshiring.
-// 4. Lexical scope: Tashqi funksiyada o'zgaruvchi yarating va ichki funksiyada uni konsolga chiqaring.
-// 5. Scope Chain: Global, Outer va Inner darajalarda o'zgaruvchilar yarating va eng ichki funksiyada hammasini ishlating.
+### 2. Function Scope
+Faqat funksiya ichida yashaydigan o'zgaruvchilar. Ular funksiya tugashi bilan "o'ladi".
 
-// Kodingizni shu yerga yozing`,
-  hint: `// 1 & 2. Global vs Local
-let globalVar = "Global";
-function checkScope() {
-  let localVar = "Local";
-  console.log(globalVar); // Ishlaydi
-}
-// console.log(localVar); // ReferenceError
+### 3. Block Scope (let va const uchun)
+Faqat jingalak qavslar \`{ }\` ichida yashaydigan o'zgaruvchilar.
 
-// 3. Block Scope
-if (true) {
-  var v = "var";
-  let l = "let";
-}
-console.log(v); // "var"
-// console.log(l); // ReferenceError
+---
 
-// 4 & 5. Lexical Scope & Chain
-let name = "Global Scope";
-function outer() {
-  let outerVal = "Outer Scope";
-  function inner() {
-    let innerVal = "Inner Scope";
-    console.log(innerVal, outerVal, name);
+## 4. VIZUAL TUSHUNTIRISH
+### Doiralar zanjiri
+\`\`\`mermaid
+graph TD
+    A["DUNYO (Global Scope)"] --> B["UY (Function Scope)"]
+    B --> C["XONA (Block Scope)"]
+    C -.-> |"ko'ra oladi"| B
+    B -.-> |"ko'ra oladi"| A
+    A -.- x |"KO'RA OLMAYDI"| B
+    B -.- x |"KO'RA OLMAYDI"| C
+\`\`\`
+*Muhim qoida: Ichkaridagilar tashqarini ko'radi, lekin tashkaridagilar ichkarini ko'ra olmaydi!*
+
+---
+
+## 5. INTERVYU SAVOLLARI
+1. **Scope nima?** - O'zgaruvchilarning ko'rinish doirasi.
+2. **Scope Chain (Zanjir) nima?** - Agar o'zgaruvchi ichki doirada topilmasa, JS uni tashqi doiralardan qidirishidir.
+
+---
+
+## 6. MINI LOYIHA: "Dahshatli Qidiruv"
+**Vazifa:** Ichma-ich funksiyalar yozing va qaysi o'zgaruvchi qayerda ko'rinishini tekshiring.
+
+\`\`\`javascript
+const shahar = "Toshkent"; // Global
+
+function uy() {
+  const xona = "Mehmonxona"; // Function scope
+  
+  if (true) {
+    const buyum = "Televizor"; // Block scope
+    console.log(shahar, xona, buyum); // Hammasini ko'radi ✅
   }
-  inner();
+  
+  // console.log(buyum); // ❌ XATO! buyum blok ichida qolib ketgan
 }
-outer();`
+
+uy();
+\`\`\`
+`,
+  exercises: [
+    {
+      id: 1,
+      title: "Global vs Local",
+      instruction: "Funksiya tashqarisida 'name' o'zgaruvchisini yarating va uni funksiya ichida consolega chiqaring.",
+      startingCode: "// Bu yerda yarating\n\nfunction showName() {\n  // Bu yerda chiqaring\n}",
+      hint: "const name = 'Ali'; console.log(name);",
+      test: "if (logs.length > 0) return null; return 'Funksiyani chaqiring va log chiqaring';"
+    }
+  ]
 };

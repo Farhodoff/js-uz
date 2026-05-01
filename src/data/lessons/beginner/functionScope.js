@@ -1,86 +1,90 @@
 export const functionScopeLesson = {
   id: "b9",
-  title: "Function Scope (Funksiya doirasi)",
-  theory: `## Function Scope – o‘zgaruvchining funksiya ichida mavjudligi
+  title: "Function Scope: Xona sirlari",
+  theory: `## 1. KIRISH
+Tasavvur qiling, har bir funksiya — bu bitta alohida **xona**. Xona ichida nima sodir bo'layotganini tashqaridagilar ko'rmaydi. Bu o'zgaruvchilarni xavfsiz saqlashning eng oson usuli.
 
-Function Scope – o‘zgaruvchining faqat **funksiya ichida** mavjud bo‘lishi va tashqaridan kirish mumkin emasligi. JavaScriptda \`var\`, \`let\`, \`const\` bilan funksiya ichida e’lon qilingan har qanday o‘zgaruvchi – **function-scoped** hisoblanadi.
+## 2. TUSHUNCHA
 
-### Muhim qoidalar:
-1. **Funksiya ichida e’lon qilingan o‘zgaruvchi** – tashqaridan ko‘rinmaydi.
-2. **Funksiya parametrlari** ham function scope’ga kiradi.
-3. **var** – funksiya ichida qayerda e’lon qilinsa, butun funksiya bo‘ylab mavjud (hoisting tufayli).
-4. **let va const** – funksiya ichida ham blok scope’ga bo‘ysunadi, lekin baribir funksiyadan tashqariga chiqmaydi.
+### Sodda ta'rif
+Function Scope - bu o'zgaruvchining faqat funksiya ichida "yashashi". Funksiya tugashi bilan uning ichidagi hamma o'zgaruvchilar "o'chib ketadi".
 
-### Misol:
+### Real hayot o'xshashlik
+Xona ichidagi **shaxsiy kundalik**. Siz uni xonangizda o'qishingiz mumkin, lekin ko'chaga chiqqanda u xonada qolib ketadi. Begona odamlar uni ko'ra olmaydi.
+
+### Sintaksis
 \`\`\`javascript
-function example() {
-  var a = 1;
-  let b = 2;
-  if (true) {
-    var d = 4;    // function-scoped
-    let e = 5;    // block-scoped
-  }
-  console.log(a, b, d); // 1, 2, 4
-  // console.log(e); // ReferenceError
+function meningXonam() {
+  const sir = "Men JSni yaxshi ko'raman"; // Function Scope
+  console.log(sir); // Ishlaydi ✅
 }
-\`\`\`
 
-### Funksiya ichidagi funksiya (Nested function):
-\`\`\`javascript
-function outer() {
-  let outerVar = "tashqi";
-  function inner() {
-    console.log(outerVar); // "tashqi" – lexical scopedan oladi
-  }
-  inner();
-}
+// console.log(sir); // ❌ XATO! sir tashqarida tanilmaydi
 \`\`\`
 
 ---
 
-## Intervyu savollari (Junior & Middle)
+## 3. KOD MISOLLARI
 
-### Junior daraja
-1. **Function scope deganda nima tushuniladi?**
-2. **var va let funksiya ichida qanday farq qiladi?**
-3. **Hoisting function scope ichida qanday ishlaydi?**
+### Misol 1 — Tashqaridan kirib bo'lmaydi
+\`\`\`javascript
+function pishiriq() {
+  const mazasi = "Shirin";
+}
+pishiriq();
+// console.log(mazasi); // ❌ ReferenceError
+\`\`\`
 
-### Middle daraja
-4. **Nested funksiya tashqi funksiyaning o‘zgaruvchilariga qanday kirish huquqiga ega?**
-5. **IIFE (Immediately Invoked Function Expression) function scope dan qanday foydalanadi?**
-6. **Funksiya parametrlari bilan funksiya ichidagi o‘zgaruvchilar o‘rtasida nom ziddiyati bo‘lsa nima bo‘ladi?**`,
-  task: `// 1. Funksiya yarating: uning ichida var, let, const bilan 3 xil o‘zgaruvchi e’lon qiling va ularni funksiyadan tashqarida chaqirib ko‘ring.
-// 2. Funksiya ichida if bloki yarating va uning ichida var bilan o'zgaruvchi e'lon qiling. Ushbu o'zgaruvchini if blokidan tashqarida (lekin funksiya ichida) ishlating.
-// 3. Nested function (ichma-ich funksiya) yarating va tashqi funksiya o'zgaruvchisini ichki funksiyada konsolga chiqaring.
-// 4. Funksiya parametri bilan bir xil nomli o'zgaruvchini funksiya ichida let bilan e'lon qilib ko'ring. Nima sodir bo'lishini kuzating.
-
-// Kodingizni shu yerga yozing`,
-  hint: `// 1. Function Scope isolation
+### Misol 2 — Funksiya ichida var va let
+Funksiya ichida bo'lsa, \`var\` ham, \`let\` ham funksiyadan tashqariga chiqolmaydi.
+\`\`\`javascript
 function test() {
-  var x = "var";
-  let y = "let";
+  var x = 10;
+  let y = 20;
 }
-// console.log(x); // ReferenceError
+// Na x, na y tashqarida ko'rinadi.
+\`\`\`
 
-// 2. var in function block
-function varTest() {
-  if (true) {
-    var secret = 42;
-  }
-  console.log(secret); // 42 (chunki var function-scoped)
+---
+
+## 4. VIZUAL TUSHUNTIRISH
+### Xona Metaforasi
+\`\`\`mermaid
+graph LR
+    A["TASHQARI (Global)"] -- ko'ra olmaydi --> B["FUNKSIYA (Xona)"]
+    B -- ko'ra oladi --> A
+    B1["O'zgaruvchi"] --- B
+\`\`\`
+
+---
+
+## 5. INTERVYU SAVOLLARI
+1. **Function Scope nima?** - O'zgaruvchining faqat funksiya ichida ko'rinishi.
+2. **Nega function scope kerak?** - Kodning boshqa qismlari bilan nomlar to'qnashib ketmasligi uchun (Global scope-ni "ifloslantirmaslik").
+
+---
+
+## 6. MINI LOYIHA: "Maxfiy Kod"
+**Vazifa:** Funksiya ichida maxfiy son yarating va uni faqat o'sha funksiya ichida ishlating.
+
+\`\`\`javascript
+function bankAmali() {
+  const pinCode = 7777;
+  console.log("PIN tekshirilmoqda: " + pinCode);
 }
 
-// 3. Nested function
-function parent() {
-  let money = 1000;
-  function child() {
-    console.log("Dadamda " + money + "$ bor");
-  }
-  child();
-}
-
-// 4. Parameter conflict
-function greet(name) {
-  // let name = "Ali"; // SyntaxError: Identifier 'name' has already been declared
-}`
+bankAmali();
+// pinCode bu yerda yo'q
+\`\`\`
+`,
+  exercises: [
+    {
+      id: 1,
+      title: "Xona ichida qolish",
+      instruction: "Funksiya ichida 'secret' o'zgaruvchisini yarating. Uni funksiya tashqarisida consolega chiqarishga urunib ko'ring (commentda qoldiring).",
+      startingCode: "function hideMe() {\n  // secret yarating\n}\n// console.log(secret);",
+      hint: "const secret = 123;",
+      test: "if (code.includes('secret')) return null; return 'O\\'zgaruvchi yarating';"
+    }
+  ]
 };

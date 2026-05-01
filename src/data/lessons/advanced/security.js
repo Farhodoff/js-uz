@@ -11,7 +11,7 @@ Bu JavaScriptdagi eng ko'p uchraydigan hujum turi. Haker sizning saytingizga o'z
 Hech qachon foydalanuvchi kiritgan ma'lumotni \`innerHTML\` orqali chiqarmang!
 \`\`\`javascript
 // XAVFLI KOD ❌
-const input = "<img src=x onerror='alert(\"Haked!\")'>";
+const input = "<img src=x onerror='alert(1)'>";
 document.body.innerHTML = input; // Script ishga tushib ketadi!
 \`\`\`
 

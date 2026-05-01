@@ -1,80 +1,93 @@
 export const blockScopeLesson = {
   id: "b10",
-  title: "Block Scope vs Function Scope",
-  theory: `## Scope turlari: Function vs Block
+  title: "Block Scope: {} belgilarining kuchi",
+  theory: `## 1. KIRISH
+O'rta asrlarda uylarning atrofida **devorlar** bo'lgan. JavaScriptda \`{ }\` jingalak qavslar xuddi o'sha devorlardir. Ular \`let\` va \`const\` o'zgaruvchilarini tashqi olamdan himoya qiladi.
 
-Scope – o‘zgaruvchining qayerda ko‘rinishi va qayerda ishlatilishi mumkinligini belgilaydi.
+## 2. TUSHUNCHA
 
-### 1. Function Scope (Funksiya doirasi)
-**Qoida:** Funksiya ichida e’lon qilingan o‘zgaruvchi **faqat shu funksiya ichida** mavjud. Tashqaridan uni ko‘rib bo‘lmaydi.
-- Funksiya ichidagi barcha o‘zgaruvchilar (\`var\`, \`let\`, \`const\`) – funksiyadan tashqariga chiqmaydi.
+### Sodda ta'rif
+Block Scope - bu jingalak qavslar \`{ }\` ichida e'lon qilingan o'zgaruvchilarning faqat shu qavslar ichida yashashidir. Bu \`if\`, \`for\` yoki shunchaki bo'sh qavslar bo'lishi mumkin.
 
-### 2. Block Scope (Blok doirasi)
-**Blok** – bu \`{ ... }\` jingalak qavslar orasidagi qism (masalan, \`if\`, \`for\`, \`while\`).
-- **Qoida:** \`let\` va \`const\` bilan e’lon qilingan o‘zgaruvchi **faqat o‘sha blok ichida** mavjud.
-- **var** esa blokga bo‘ysunmaydi – u faqat funksiyaga bo‘ysunadi.
+### Muhim Farq: var vs let ⭐
+- **let / const**: Blokni (devorni) tan oladi. Ichkarida qoladi.
+- **var**: Blokni (devorni) tan olmaydi! U devordan oshib o'tib ketadi.
 
-### Qiyosiy jadval
-
-| Turi | Qayerda e’lon qilingan | Qayerdan kirish mumkin |
-|------|------------------------|------------------------|
-| **Function scope** (\`var, let, const\`) | Funksiya ichida | Faqat shu funksiya ichida |
-| **Block scope** (\`let, const\`) | Blok \`{}\` ichida | Faqat shu blok ichida |
-| **var** blok ichida | Blok \`{}\` ichida | Butun funksiya bo‘ylab |
-
-### Misol – farqni ko‘rish uchun:
+### Sintaksis
 \`\`\`javascript
-function misol() {
-  if (true) {
-    var a = 1;   // function scope (var)
-    let b = 2;   // block scope
-    const c = 3; // block scope
-  }
-  console.log(a); // 1 (var blokdan tashqarida ham bor)
-  // console.log(b); // XATO! b faqat if blokida
+if (true) {
+  let x = 1; // Block Scope
+  var y = 2; // Block Scope-da emas!
 }
+
+// console.log(x); // ❌ XATO
+console.log(y); // ✅ 2 (var devordan oshib o'tdi)
 \`\`\`
 
 ---
 
-## Nega bu muhim? (Real misol)
+## 3. KOD MISOLLARI
+
+### Misol 1 — if bloki
 \`\`\`javascript
-for (var i = 0; i < 3; i++) {
-  setTimeout(() => console.log(i), 100);
+if (true) {
+  const meva = "Olma";
 }
-// Natija: 3, 3, 3 (var blokni tanimaydi)
+// console.log(meva); // ❌ ReferenceError
+\`\`\`
 
-for (let i = 0; i < 3; i++) {
-  setTimeout(() => console.log(i), 100);
+### Misol 2 — for loop (Eng mashhur muammo)
+\`\`\`javascript
+for (let i = 0; i < 5; i++) {
+  // i faqat shu yerda yashaydi
 }
-// Natija: 0, 1, 2 (let har iteratsiyada yangi scope yaratadi)
-\`\`\``,
-  task: `// 1-savol: Quyidagi kodda nima chiqadi? Nega?
-function testVar() {
-  var x = 5;
-  if (true) {
-    var x = 10;
-    console.log("ichida var: " + x);
-  }
-  console.log("tashqarida var: " + x);
+// console.log(i); // ❌ i o'lib bo'lgan
+\`\`\`
+
+---
+
+## 4. VIZUAL TUSHUNTIRISH
+### var va let devorga qarshi
+\`\`\`mermaid
+graph TD
+    A["Tashqari"] --- B["Devor { }"]
+    B --- C("let: Ichkarida qoldi")
+    B -.-> D("var: Devordan o'tib ketdi")
+    style B fill:#f9f,stroke:#333,stroke-width:4px
+\`\`\`
+
+---
+
+## 5. INTERVYU SAVOLLARI
+1. **Block Scope nima?** - Jingalak qavslar ichidagi hudud.
+2. **Qaysi kalit so'zlar block scope-ni tan oladi?** - \`let\` va \`const\`.
+3. **var nega yomon?** - Chunki u bloklardan chiqib ketib, global o'zgaruvchilar bilan to'qnashib ketishi mumkin.
+
+---
+
+## 6. MINI LOYIHA: "Vaqtinchalik O'zgaruvchi"
+**Vazifa:** Hisob-kitob uchun vaqtinchalik o'zgaruvchi ishlating va u tashqariga chiqib ketmasligini ta'minlang.
+
+\`\`\`javascript
+let natija = 0;
+
+{
+  let temp = 10 * 5;
+  natija = temp + 5;
 }
-// testVar();
 
-// 2-savol: Agar var o‘rniga let ishlatsangiz, nima o‘zgaradi?
-function testLet() {
-  let x = 5;
-  if (true) {
-    let x = 10;
-    console.log("ichida let: " + x);
-  }
-  console.log("tashqarida let: " + x);
-}
-// testLet();
-
-// Amaliy: if bloki ichida const bilan obyekt yarating va unga blokdan tashqarida murojaat qilib ko'ring.`,
-  hint: `// 1. var ishlatilganda x = 10 bo'lib o'zgaradi, chunki var blokni tanimaydi. 
-// Natija: 10, 10
-
-// 2. let ishlatilganda ichkaridagi x faqat blok ichida, tashqaridagisi o'z holicha qoladi.
-// Natija: 10, 5`
+console.log(natija); // 55
+// console.log(temp); // temp bu yerda yo'q, xavfsiz ✅
+\`\`\`
+`,
+  exercises: [
+    {
+      id: 1,
+      title: "Blok ichida saqlash",
+      instruction: "if bloki ichida const bilan 'data' yarating. Uni blokdan tashqarida ishlatib bo'lmasligiga ishonch hosil qiling.",
+      startingCode: "if (true) {\n  // data yarating\n}\n",
+      hint: "const data = 'test';",
+      test: "if (code.includes('const data')) return null; return 'data o\\'zgaruvchisini yarating';"
+    }
+  ]
 };
