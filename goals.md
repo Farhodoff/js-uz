@@ -31,5 +31,5 @@ Har hafta 4-6 soat ajrating. Har band qisqa amaliyot bilan yakunlansin.
 - [x] Xatolar bilan ishlash (try/catch, throw) - amaliyot: validate funksiya.
 - [x] Debugging (devtools, breakpoint, console) - amaliyot: bug topish.
 - [x] LocalStorage (set/get, JSON) - amaliyot: sozlamani saqlash.
-- [ ] Todo List loyihasi - vazifa qo'shish/o'chirish/bajarildi.
-- [ ] Yakuniy refaktor va README - kod tozaligi va qisqa izoh.
+- [x] Todo List loyihasi - vazifa qo'shish/o'chirish/bajarildi.
+- [x] Yakuniy refaktor va README - kod tozaligi va qisqa izoh.
