@@ -9,6 +9,7 @@ import { curriculum } from "./data/curriculum";
 export default function App() {
   const [activeSection, setActiveSection] = useState("beginner");
   const [activeLesson, setActiveLesson] = useState(null);
+  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
   const [showHint, setShowHint] = useState(false);
@@ -29,7 +30,9 @@ export default function App() {
 
   function openLesson(lesson) {
     setActiveLesson(lesson);
-    setCode(lesson.task);
+    setCurrentExerciseIndex(0);
+    const initialCode = lesson.exercises?.[0]?.startingCode || lesson.task || "";
+    setCode(initialCode);
     setOutput("");
     setShowHint(false);
   }
@@ -40,11 +43,40 @@ export default function App() {
     const origError = console.error;
     console.log = (...args) => logs.push(args.map(a => typeof a === "object" ? JSON.stringify(a) : String(a)).join(" "));
     console.error = (...args) => logs.push("❌ " + args.join(" "));
+    
     try {
-      new Function(code)();
-      setOutput(logs.length ? logs.join("\n") : "✅ Kod muvaffaqiyatli ishladi");
-      if (logs.length || code.trim() !== "") {
-        setCompleted(p => ({ ...p, [activeLesson.id]: true }));
+      // Execute the code
+      const result = new Function(code)();
+      
+      let validationResult = "✅ Kod muvaffaqiyatli ishladi";
+      let isCorrect = true;
+
+      // Validation logic for structured exercises
+      const currentExercise = activeLesson.exercises?.[currentExerciseIndex];
+      if (currentExercise?.test) {
+        try {
+          const testFn = new Function("code", "logs", "result", currentExercise.test);
+          const errorMsg = testFn(code, logs, result);
+          if (errorMsg) {
+            validationResult = "❌ " + errorMsg;
+            isCorrect = false;
+          }
+        } catch (testError) {
+          console.error("Test error:", testError.message);
+        }
+      }
+
+      setOutput(logs.length ? logs.join("\n") + "\n\n" + validationResult : validationResult);
+      
+      if (isCorrect) {
+        setCompleted(p => ({ ...p, [`${activeLesson.id}_${currentExerciseIndex}`]: true }));
+        // If all exercises in lesson are completed, mark lesson as completed
+        const allExercisesCompleted = activeLesson.exercises 
+          ? activeLesson.exercises.every((_, i) => i === currentExerciseIndex || completed[`${activeLesson.id}_${i}`])
+          : true;
+        if (allExercisesCompleted) {
+          setCompleted(p => ({ ...p, [activeLesson.id]: true }));
+        }
       }
     } catch (e) {
       setOutput("❌ Xato: " + e.message);
@@ -97,10 +129,10 @@ export default function App() {
         <Header activeLesson={activeLesson} sec={sec} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         {/* Split Screen Layout */}
-        <div style={{ flex: 1, display: "flex", overflow: "hidden", padding: "10px 20px 20px" }}>
+        <div className="split-layout">
           
           {/* Chap tomon: Nazariya */}
-          <div style={{ flex: 1, overflowY: "auto", paddingRight: 20, borderRight: "1px solid #3a2e1e" }}>
+          <div className="pane pane-theory">
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 15, color: "#c8a96e", fontWeight: 600 }}>
               📖 Nazariya
             </div>
@@ -108,7 +140,7 @@ export default function App() {
           </div>
 
           {/* O'ng tomon: Amaliyot */}
-          <div style={{ flex: 1, overflowY: "auto", paddingLeft: 20, display: "flex", flexDirection: "column" }}>
+          <div className="pane pane-practice">
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 15, color: "#c8a96e", fontWeight: 600 }}>
               💻 Amaliyot
             </div>
@@ -119,6 +151,8 @@ export default function App() {
               showHint={showHint} 
               setShowHint={setShowHint} 
               activeLesson={activeLesson} 
+              currentExerciseIndex={currentExerciseIndex}
+              setCurrentExerciseIndex={setCurrentExerciseIndex}
               output={output} 
               outputRef={outputRef} 
             />

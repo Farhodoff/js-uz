@@ -2,32 +2,55 @@ export const domBasics = {
   id: "m4",
   title: "DOM Asoslari",
   theory: `## DOM nima?
-Document Object Model - HTML hujjatining brauzer ichidagi daraxt ko'rinishi. JavaScript DOM orqali elementlarni topadi, matnini o'zgartiradi, style qo'shadi va foydalanuvchi bilan interaktiv ishlaydi.
+Document Object Model (DOM) - HTML hujjatining brauzer ichidagi daraxt (tree) ko'rinishidagi strukturasi.
 
-## Element tanlash
-- \`document.getElementById('id')\`
-- \`document.querySelector('.class')\`
-- \`document.querySelectorAll('div')\`
+### DOM Daraxti
+\`\`\`mermaid
+graph TD
+    A[Window] --> B[Document]
+    B --> C[HTML]
+    C --> D[Head]
+    C --> E[Body]
+    E --> F[Header]
+    E --> G[Main]
+    G --> H[H1]
+    G --> I[P]
+\`\`\`
 
-## O'zgartirish
-- \`element.textContent = "Yangi matn"\`
-- \`element.innerHTML = "<b>Qalin matn</b>"\`
-- \`element.style.color = "red"\`
-- \`element.classList.add('active')\`
+## Elementlarni tanlash
+Eng ko'p ishlatiladigan usullar:
+- \`document.querySelector('.class')\` - birinchi topilgan elementni oladi.
+- \`document.querySelectorAll('div')\` - barcha topilgan elementlarni massivga o'xshash (NodeList) shaklda oladi.
+- \`document.getElementById('id')\` - ID bo'yicha oladi.
 
-## Nima uchun muhim?
-DOM yordamida sahifa faqat ko'rinadigan emas, balki foydalanuvchiga javob qaytaradigan tizimga aylanadi. Shu sababli frontendning katta qismi aynan DOM bilan ishlashdan iborat.
-
-## Quiz
-1. DOM nima?
-2. \`querySelector\` va \`getElementById\` farqi nima?
-3. \`textContent\` va \`innerHTML\` farqi nima?`,
-  task: `// 1. ID'si 'title' bo'lgan elementni tanlab oling.
-// 2. Uning matnini "Salom DOM" ga o'zgartiring.
-// 3. Uning rangini ko'k (blue) qiling.
-
-// ...`,
-  hint: `const title = document.getElementById('title');
-title.textContent = "Salom DOM";
-title.style.color = "blue";`
+## Kontentni o'zgartirish
+- \`textContent\` - faqat matnni o'zgartiradi.
+- \`innerHTML\` - HTML teglari bilan birga o'zgartiradi.
+- \`style\` - CSS xususiyatlarini o'zgartiradi.`,
+  exercises: [
+    {
+      id: 1,
+      title: "Elementni tanlash",
+      instruction: "querySelector yordamida 'h1' elementini tanlab oling va uni 'title' o'zgaruvchisiga saqlang.",
+      startingCode: "// Kodni shu yerga yozing\n",
+      hint: "const title = document.querySelector('h1');",
+      test: "if (!code.includes('document.querySelector')) return 'querySelector ishlatilmagan'; if (!code.includes('h1')) return 'h1 tegini tanlang';"
+    },
+    {
+      id: 2,
+      title: "Matnni o'zgartirish",
+      instruction: "O'zgaruvchi 'title' ning textContent xususiyatini 'Salom JS' ga o'zgartiring.",
+      startingCode: "const title = { textContent: '' }; // Mock element\n// Kodni shu yerga yozing\n",
+      hint: "title.textContent = 'Salom JS';",
+      test: "if (!code.includes('textContent')) return 'textContent ishlatilmadi'; if (title.textContent !== 'Salom JS') return 'Matn noto\\'g\\'ri';"
+    },
+    {
+      id: 3,
+      title: "Style o'zgartirish",
+      instruction: "title obyektining style.color xususiyatini 'red' ga o'zgartiring.",
+      startingCode: "const title = { style: { color: '' } }; // Mock element\n// Kodni shu yerga yozing\n",
+      hint: "title.style.color = 'red';",
+      test: "if (title.style.color !== 'red') return 'Rang noto\\'g\\'ri';"
+    }
+  ]
 };

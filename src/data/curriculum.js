@@ -1,4 +1,5 @@
 import { jsWhat } from "./lessons/beginner/js-what";
+import { cheatSheet } from "./lessons/beginner/cheatSheet";
 import { variables } from "./lessons/beginner/variables";
 import { dataTypesLesson } from "./lessons/beginner/dataTypes";
 import { moreDataTypesLesson } from "./lessons/beginner/moreDataTypes";
@@ -37,13 +38,14 @@ import { eventLoopLesson } from "./lessons/advanced/eventLoop";
 import { regexLesson } from "./lessons/advanced/regex";
 
 import { todoList } from "./lessons/projects/todoList";
+import { weatherApp } from "./lessons/projects/weatherApp";
 
 export const curriculum = {
   beginner: {
     label: "Boshlang'ich",
     color: "#c8a96e",
     icon: "🟢",
-    lessons: [jsWhat, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, primitivesVsObjects, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, typeofLesson, operators, loops, functions, arrays, objects]
+    lessons: [cheatSheet, jsWhat, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, primitivesVsObjects, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, typeofLesson, operators, loops, functions, arrays, objects]
   },
   intermediate: {
     label: "O'rta daraja",
@@ -61,7 +63,7 @@ export const curriculum = {
     label: "Loyihalar",
     color: "#7a9e7e",
     icon: "🏗️",
-    lessons: [todoList]
+    lessons: [todoList, weatherApp]
   }
 };
 
