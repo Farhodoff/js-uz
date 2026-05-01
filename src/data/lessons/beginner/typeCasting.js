@@ -1,99 +1,95 @@
 export const typeCasting = {
   id: "b18",
-  title: "Type Casting vs Coercion: JSning 'ayyorliklari'",
+  title: "Explicit Type Casting (Aniq tiplarni o'zgartirish)",
   theory: `## 1. KIRISH
-JavaScript — xameleon til. U ba'zida sonni matnga, matnni esa booleanga (true/false) sizdan so'ramasdan o'zgartirib yuboradi. Buni tushunmaslik dasturda kutilmagan buglarga va intervyuda yiqilishga sabab bo'ladi.
+**Explicit Type Casting** – dasturchi tomonidan ma’lumot turini **aniq**, o‘zi yozgan kod orqali bir turdan boshqasiga o‘tkazish. JavaScriptda buning uchun maxsus funksiyalar va operatorlar mavjud.
 
-## 2. CHUQUR TUSHUNCHALAR
-
-### Explicit Casting (Siz xohlagan o'zgarish)
-Dasturchi o'zi atayin bir turdan boshqasiga o'tkazishi.
-\`\`\`javascript
-let son = String(100); // Sonni matnga o'tkazdik
-let matn = Number("12.5"); // Matnni songa o'tkazdik
-\`\`\`
-
-### Implicit Coercion (JSning o'zi qiladigan o'zgarish) ⭐
-JavaScript amalni bajarish uchun turlarni o'zi avtomatik moslashtirishi.
-- **Qo'shish (+)**: Agar bitta taraf matn bo'lsa, hamma narsani **matnga** aylantiradi.
-- **Boshqa amallar (-, *, /)**: Hamma narsani **songa** aylantirishga harakat qiladi.
+Farqli o‘laroq, **Implicit Coercion** (avtomatik) JavaScriptning o‘zi tomonidan amalga oshiriladi.
 
 ---
 
-## 3. KOD MISOLLARI
-
-### Misol 1 — Qo'shish vs Ayirish (Tuzoq!)
-**Maqsad:** \`+\` va \`-\` operatorlari turlarga qanday ta'sir qilishini ko'rsatish.
-\`\`\`javascript
-console.log("5" + 2); // → "52" (Matnga qo'shib yubordi)
-console.log("5" - 2); // → 3 (Ayirishda songa aylantirdi)
-console.log("5" * "2"); // → 10 (Ko'paytirishda ham son bo'ladi)
-\`\`\`
-
-### Misol 2 — Mantiqiy Coercion (Truthy & Falsy)
-JavaScriptda ba'zi qiymatlar har doim \`false\` deb hisoblanadi:
-\`0\`, \`""\` (bo'sh matn), \`null\`, \`undefined\`, \`NaN\`, \`false\`.
-Qolgan hamma narsa — \`true\`!
+## 2. STRING GA O'TKAZISH
+- \`String(value)\` — eng xavfsiz usul.
+- \`value.toString()\` — \`null\` va \`undefined\` da xato beradi.
 
 \`\`\`javascript
-if ("") {
-  console.log("Bu ishlamaydi"); // Bo'sh matn - falsy
-}
-if (" ") {
-  console.log("Bu ishlaydi!"); // Bo'shliq bor matn - truthy
-}
+console.log(String(123));       // "123"
+console.log(String(null));      // "null"
+console.log(String(undefined)); // "undefined"
+
+let num = 456;
+console.log(num.toString());    // "456"
 \`\`\`
 
 ---
 
-## 4. VIZUAL JADVAL
-### "G'alati" Coercionlar (Intervyu savollari)
-| Amal | Natija | Tushuntirish |
-|---|---|---|
-| \`true + 1\` | \`2\` | true = 1 |
-| \`false + 1\` | \`1\` | false = 0 |
-| \`!! "Salom"\` | \`true\` | Matnni booleanga o'girish |
-| \`+ "50"\` | \`5\` | Matn boshidagi \`+\` uni songa o'giradi |
-
----
-
-## 5. INTERVYU SAVOLLARI
-1. **Implicit va Explicit casting farqi?** - Explicit - dasturchi tomonidan, Implicit - JS tomonidan avtomatik bajariladi.
-2. **"5" - "2" nima beradi?** - 3 qaytaradi (son sifatida).
-3. **Truthy va Falsy qiymatlar nima?** - Boolean kontekstida (if ichida) true yoki false deb olinadigan qiymatlar.
-
----
-
-## 6. MINI LOYIHA: "Input Calculator"
-**Vazifa:** Foydalanuvchi kiritgan ikkita matnli sonni to'g'ri qo'shing.
+## 3. NUMBER GA O'TKAZISH
+- \`Number(value)\` — to'liq songa o'tkazadi.
+- \`parseInt(string)\` — matn boshidagi butun sonni ajratib oladi.
+- \`parseFloat(string)\` — kasr sonlar uchun.
+- \`+value\` — qisqa "unary plus" operatori.
 
 \`\`\`javascript
-let a = "10";
-let b = "20";
-
-// Xato: console.log(a + b); // "1020"
-
-// To'g'ri (Explicit casting):
-let natija = Number(a) + Number(b);
-console.log("Natija:", natija); // → 30
+console.log(Number("123.45"));  // 123.45
+console.log(parseInt("123px"));   // 123
+console.log(+"500");              // 500
 \`\`\`
+
+---
+
+## 4. BOOLEAN GA O'TKAZISH
+- \`Boolean(value)\`
+- \`!!value\` — qisqa "double NOT" usuli.
+
+**Falsy qiymatlar (6 ta):** \`false\`, \`0\`, \`""\`, \`null\`, \`undefined\`, \`NaN\`. Qolgan hamma narsa — \`true\`.
+
+---
+
+## 5. TYPE CASTING JADVALI
+| Qiymat | String | Number | Boolean |
+|--------|--------|--------|---------|
+| \`0\` | \`"0"\` | \`0\` | \`false\` |
+| \`""\` | \`""\` | \`0\` | \`false\` |
+| \`null\` | \`"null"\` | \`0\` | \`false\` |
+| \`[]\` | \`""\` | \`0\` | \`true\` |
+| \`{}\` | \`"[object Object]"\` | \`NaN\` | \`true\` |
+
+---
+
+## 6. INTERVYU SAVOLLARI (Junior & Middle)
+
+### Nazariy (Junior)
+1. **String() va .toString() farqi?** - \`String()\` null/undefined bilan ishlaydi, \`.toString()\` esa xato (TypeError) beradi.
+2. **parseInt() va parseFloat() farqi?** - \`parseInt\` butun sonni oladi, \`parseFloat\` esa nuqtadan keyingi qismini ham saqlaydi.
+
+### Amaliy (Middle) ⭐
+**Savol:** \`parseInt(0.0000005)\` nima beradi?
+**Javob:** \`5\`. Chunki \`0.0000005\` stringga o'tganda \`"5e-7"\` bo'ladi va \`parseInt\` birinchi raqamni (\`5\`) oladi. Bu mashhur intervyu savoli!
 `,
   exercises: [
     {
       id: 1,
-      title: "Coercion sinovi",
-      instruction: "Matnli '10' va '5' sonlarini ayiring va natijani ko'ring.",
-      startingCode: "// '10' dan '5' ni ayiring\n",
-      hint: "console.log('10' - '5')",
-      test: "if (logs.includes('5')) return null; return 'Natija 5 chiqishi kerak';"
+      title: "String dan Number ga",
+      instruction: "parseInt yordamida '123px' matnidan sonni ajratib oling va consolega chiqaring.",
+      startingCode: "const val = '123px';\n// Bu yerga yozing\n",
+      hint: "console.log(parseInt(val));",
+      test: "if (logs.includes('123')) return null; return 'Natija 123 chiqishi kerak';"
     },
     {
       id: 2,
-      title: "Truthy tekshiruvi",
-      instruction: "Bo'sh massiv [] 'truthy'mi yoki 'falsy'? if yordamida tekshiring.",
-      startingCode: "if ([]) {\n  console.log('Massiv truthy');\n}",
-      hint: "Bo'sh massiv har doim true beradi.",
-      test: "if (logs.includes('Massiv truthy')) return null; return 'Massiv truthy chiqishi kerak';"
+      title: "Safe Integer Funksiyasi",
+      instruction: "toSafeInteger(value) funksiyasini yozing. U Number(value) qaytarsin, agar natija NaN bo'lsa 0 qaytarsin.",
+      startingCode: "function toSafeInteger(value) {\n  const n = Number(value);\n  // Bu yerda tekshiring\n}\n\nconsole.log(toSafeInteger('abc'));",
+      hint: "isNaN(n) dan foydalaning.",
+      test: "if (typeof toSafeInteger === 'function' && logs.includes('0')) return null; return 'NaN o\\'rniga 0 qaytishi kerak';"
+    },
+    {
+      id: 3,
+      title: "Safe ToString",
+      instruction: "null va undefined da ham ishlaydigan safeToString(value) funksiyasini yozing.",
+      startingCode: "function safeToString(value) {\n  // Bu yerga yozing\n}\n\nconsole.log(safeToString(null));",
+      hint: "String(value) dan foydalaning.",
+      test: "if (logs.includes('null')) return null; return 'null stringga o\\'tishi kerak';"
     }
   ]
 };
