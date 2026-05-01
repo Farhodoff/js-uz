@@ -25,6 +25,7 @@ import { domBasics } from "./lessons/intermediate/dom";
 import { events } from "./lessons/intermediate/events";
 import { higherOrderArrays } from "./lessons/intermediate/higherOrderArrays";
 import { classesLesson } from "./lessons/intermediate/classes";
+import { optionalChaining } from "./lessons/intermediate/optionalChaining";
 
 import { callbacksLesson } from "./lessons/advanced/callbacks";
 import { promises } from "./lessons/advanced/promises";
@@ -36,6 +37,7 @@ import { modulesLesson } from "./lessons/advanced/modules";
 import { debugging } from "./lessons/advanced/debugging";
 import { closuresLesson } from "./lessons/advanced/closures";
 import { eventLoopLesson } from "./lessons/advanced/eventLoop";
+import { eventLoopDeep } from "./lessons/advanced/eventLoopDeep";
 import { regexLesson } from "./lessons/advanced/regex";
 
 import { todoList } from "./lessons/projects/todoList";
@@ -52,13 +54,13 @@ export const curriculum = {
     label: "O'rta daraja",
     color: "#e5b84f",
     icon: "🟡",
-    lessons: [destructuring, spreadRest, arrowFunctions, domBasics, events, higherOrderArrays, classesLesson]
+    lessons: [destructuring, spreadRest, arrowFunctions, domBasics, events, higherOrderArrays, optionalChaining, classesLesson]
   },
   advanced: {
     label: "Advanced",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [callbacksLesson, promises, asyncAwait, fetchApi, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson]
+    lessons: [callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson]
   },
   projects: {
     label: "Loyihalar",
