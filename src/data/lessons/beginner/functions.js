@@ -1,77 +1,98 @@
 export const functions = {
   id: "b4",
-  title: "Funksiya asoslari",
-  theory: `## 1. FUNKSIYA NIMA?
-Funksiya — bu bir marta yozib, ko'p marta ishlatish mumkin bo'lgan kod bloki. Uni "ishchi" deb tasavvur qiling: siz unga topshiriq berasiz, u bajaradi va natijani qaytaradi.
+  title: "Funksiya: Deklaratsiya va Arrow",
+  theory: `## 1. FUNKSIYA DEKLARATSIYASI
+Funksiya — bu ma'lum bir vazifani bajaradigan kod bo'lagi. Uni bir marta yozib, istalgancha qayta ishlatish mumkin.
 
-### Nega kerak?
-1. **Takrorlanishni oldini oladi (DRY - Don't Repeat Yourself):** Bir xil kodni qayta-qayta yozmaysiz.
-2. **Tartib:** Kodni kichik, tushunarli bo'laklarga bo'ladi.
-3. **Parametrlar:** Funksiyaga turli ma'lumotlar yuborib, turlicha natija olish mumkin.
+### Hoisting (Ko'tarilish)
+Funksiya deklaratsiyasining eng katta ustunligi — uni e'lon qilishdan **oldin** ham chaqirish mumkin.
 
----
-
-## 2. FUNKSIYA TUZILISHI
-
-### Declaring (E'lon qilish)
 \`\`\`javascript
-function salomBer(ism) {
-  return "Salom " + ism + "!";
+salomBer(); // Ishlaydi!
+
+function salomBer() {
+  console.log("Salom!");
 }
 \`\`\`
 
-### Calling (Chaqirish)
+---
+
+## 2. ARROW FUNCTIONS (Zamonaviy usul)
+ES6 versiyasida qo'shilgan bu usul funksiyalarni qisqaroq yozish imkonini beradi.
+
 \`\`\`javascript
-let xabar = salomBer("Ali");
-console.log(xabar); // → "Salom Ali!"
+// Oddiy funksiya
+const kvadrat = function(x) {
+  return x * x;
+};
+
+// Arrow funksiya
+const kvadratArrow = x => x * x;
+\`\`\`
+
+### Arrow funksiya xususiyatlari:
+- Agar funksiya bitta qatordan iborat bo'lsa, \`return\` va \`{}\` shart emas.
+- \`this\` konteksti bilan boshqacha ishlaydi (keyinchalik o'rganamiz).
+
+---
+
+## 3. PARAMETR VA RETURN
+- **Parametr:** Funksiyaga tashqaridan keladigan ma'lumot (o'zgaruvchi).
+- **Default parametr:** Agar qiymat berilmasa, ishlatiladigan standart qiymat.
+- **Return:** Funksiya natijasini qaytaradi.
+
+\`\`\`javascript
+function ko'paytir(a, b = 1) {
+  return a * b;
+}
+
+console.log(ko'paytir(5, 3)); // 15
+console.log(ko'paytir(10));    // 10 (b default 1 bo'ldi)
 \`\`\`
 
 \`\`\`mermaid
 graph LR
-    A[Input: Argument] --> B(Function)
-    B --> C[Output: Return Value]
-    style B fill:#f9f,stroke:#333,stroke-width:2px
+    A[Parametrlar] --> B(Funksiya)
+    B --> C[Return: Natija]
+    style B fill:#f9f,stroke:#333
 \`\`\`
 
 ---
 
-## 3. PARAMETR VS ARGUMENT
-- **Parametr:** Funksiya yaratilganda qavs ichida yozilgan o'zgaruvchi (xuddi quti kabi).
-- **Argument:** Funksiya chaqirilganda o'sha qutiga solingan real qiymat.
+## 4. INTERVYU SAVOLLARI (Junior)
 
----
+1. **Hoisting funksiyalarda qanday ishlaydi?**
+   *Javob:* Function declaration butunligicha tepaga ko'tariladi, shuning uchun e'lon qilinishidan oldin ham ishlaydi.
 
-## 4. return KALIT SO'ZI ⭐
-Funksiya ichida \`return\` bajarilganda, funksiya o'z ishini to'xtatadi va natijani tashqariga chiqarib beradi. Agar \`return\` yozilmasa, funksiya \`undefined\` qaytaradi.
+2. **Arrow funksiyada 'return' qachon yozilmaydi?**
+   *Javob:* Funksiya tanasi bir qatordan iborat bo'lganda va \`{}\` qavslar ishlatilmaganda.
 
----
-
-## 5. INTERVYU SAVOLLARI (Junior)
-
-1. **return va console.log farqi nima?**
-   *Javob:* \`console.log\` shunchaki ekranga chiqaradi. \`return\` esa qiymatni funksiyadan tashqariga qaytaradi, uni o'zgaruvchiga saqlash mumkin.
-
-2. **Parametrsiz funksiya bo'lishi mumkinmi?**
-   *Javob:* Ha, masalan \`function sayHi() { console.log("Hi"); }\`.
-
-3. **Arrow function nima?**
-   *Javob:* Bu funksiya yozishning qisqaroq va zamonaviy usuli (keyingi darslarda chuqurroq o'rganamiz).`,
+3. **Funksiya 'return' qilmasa nima qaytaradi?**
+   *Javob:* Har doim \`undefined\` qaytaradi.`,
   exercises: [
     {
       id: 1,
-      title: "Yig'indi funksiyasi",
-      instruction: "Ikkita sonni (a va b) qabul qilib, ularning yig'indisini qaytaruvchi (return) 'sum' funksiyasini yozing.",
-      startingCode: "function sum(a, b) {\n  // Bu yerda natijani qaytaring\n}\n\nconsole.log(sum(5, 10));",
-      hint: "return a + b;",
-      test: "if (logs.includes('15')) return null; return '5 + 10 natijasi 15 bo\\'lishi kerak';"
+      title: "Juft sonni tekshirish",
+      instruction: "Son juft bo'lsa true, toq bo'lsa false qaytaradigan 'isEven' funksiyasini yozing.",
+      startingCode: "function isEven(n) {\n  // Bu yerga yozing\n}\n\nconsole.log(isEven(4));",
+      hint: "return n % 2 === 0;",
+      test: "if (logs.includes('true')) return null; return '4 uchun true qaytarishi kerak';"
     },
     {
       id: 2,
-      title: "Kvadrat hisoblagich",
-      instruction: "Bitta son qabul qilib, uning kvadratini qaytaruvchi 'kvadrat' funksiyasini yozing.",
-      startingCode: "// Funksiyani shu yerda yarating\n\nconsole.log(kvadrat(4));",
-      hint: "function kvadrat(n) { return n * n; }",
-      test: "if (logs.includes('16')) return null; return '4 ning kvadrati 16 bo\\'lishi kerak';"
+      title: "Arrow Square",
+      instruction: "Arrow funksiya yordamida sonning kvadratini qaytaradigan 'square' funksiyasini bir qatorda yozing.",
+      startingCode: "const square = \n\nconsole.log(square(5));",
+      hint: "const square = n => n * n;",
+      test: "if (logs.includes('25')) return null; return 'Natija 25 bo\\'lishi kerak';"
+    },
+    {
+      id: 3,
+      title: "Default Greet",
+      instruction: "'name' va 'msg' qabul qiladigan funksiya yozing. 'msg' ning default qiymati 'Salom' bo'lsin.",
+      startingCode: "function greet(name, msg = 'Salom') {\n  return msg + ', ' + name;\n}\n\nconsole.log(greet('Ali'));",
+      hint: "Parametrlarda msg = 'Salom' deb yozing.",
+      test: "if (logs.includes('Salom, Ali')) return null; return 'Default qiymat bilan Salom, Ali chiqishi kerak';"
     }
   ]
 };
