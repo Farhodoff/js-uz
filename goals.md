@@ -29,7 +29,7 @@ Har hafta 4-6 soat ajrating. Har band qisqa amaliyot bilan yakunlansin.
 ## Hafta 4: Modul, xatolar, loyiha
 - [x] Modullar (import/export) va fayl tuzilma - amaliyot: 2 modul.
 - [x] Xatolar bilan ishlash (try/catch, throw) - amaliyot: validate funksiya.
-- [ ] Debugging (devtools, breakpoint, console) - amaliyot: bug topish.
+- [x] Debugging (devtools, breakpoint, console) - amaliyot: bug topish.
 - [x] LocalStorage (set/get, JSON) - amaliyot: sozlamani saqlash.
 - [ ] Todo List loyihasi - vazifa qo'shish/o'chirish/bajarildi.
 - [ ] Yakuniy refaktor va README - kod tozaligi va qisqa izoh.
