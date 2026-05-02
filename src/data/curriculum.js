@@ -1,6 +1,7 @@
 import { jsWhat } from "./lessons/beginner/js-what";
 import { cheatSheet } from "./lessons/beginner/cheatSheet";
 import { interviewQuestionsBeginner } from "./lessons/beginner/interviewQuestions";
+import { templateLiterals } from "./lessons/beginner/templateLiterals";
 import { variables } from "./lessons/beginner/variables";
 import { dataTypesLesson } from "./lessons/beginner/dataTypes";
 import { moreDataTypesLesson } from "./lessons/beginner/moreDataTypes";
@@ -71,7 +72,7 @@ export const curriculum = {
     label: "Boshlang'ich",
     color: "#c8a96e",
     icon: "🟢",
-    lessons: [cheatSheet, interviewQuestionsBeginner, jsWhat, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, typeCasting, implicitCasting, ifElseLesson, switchLesson, equalityAlgorithms, primitivesVsObjects, stringMethods, mathObject, jsGotchas, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, typeofLesson, operators, loops, breakContinue, functions, arrays, objects]
+    lessons: [cheatSheet, interviewQuestionsBeginner, jsWhat, templateLiterals, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, typeCasting, implicitCasting, ifElseLesson, switchLesson, equalityAlgorithms, primitivesVsObjects, stringMethods, mathObject, jsGotchas, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, typeofLesson, operators, loops, breakContinue, functions, arrays, objects]
   },
   intermediate: {
     label: "O'rta daraja",
