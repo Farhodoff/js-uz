@@ -1,90 +1,78 @@
 export const functionScopeLesson = {
-  id: "b9",
-  title: "Function Scope: Xona sirlari",
-  theory: `## 1. KIRISH
-Tasavvur qiling, har bir funksiya — bu bitta alohida **xona**. Xona ichida nima sodir bo'layotganini tashqaridagilar ko'rmaydi. Bu o'zgaruvchilarni xavfsiz saqlashning eng oson usuli.
+  id: "function-scope",
+  title: "Funksiya doirasi (Function Scope)",
+  level: "Beginner",
+  description: "O'zgaruvchilarning funksiya ichida 'yashirinishi' va tashqaridan ko'rinmasligi haqida.",
+  theory: `
+# Function Scope – Bu nima va nima uchun kerak?
 
-## 2. TUSHUNCHA
+**Function Scope** — bu o'zgaruvchining faqat funksiya ichida "yashashi" va ishlatilishidir. Funksiya tugashi bilan uning ichidagi hamma o'zgaruvchilar o'chib ketadi.
 
-### Sodda ta'rif
-Function Scope - bu o'zgaruvchining faqat funksiya ichida "yashashi". Funksiya tugashi bilan uning ichidagi hamma o'zgaruvchilar "o'chib ketadi".
+## 1. NEGA kerak?
+Tasavvur qiling, har bir funksiyada bir xil nomli o'zgaruvchi (\`count\`) ishlatmoqchisiz. Agar "funksiya doirasi" bo'lmaganda edi, barcha funksiyalar bir-birining o'zgaruvchisini o'zgartirib yuborar edi. Scope bizga har bir funksiya uchun "shaxsiy hudud" yaratadi.
 
-### Real hayot o'xshashlik
-Xona ichidagi **shaxsiy kundalik**. Siz uni xonangizda o'qishingiz mumkin, lekin ko'chaga chiqqanda u xonada qolib ketadi. Begona odamlar uni ko'ra olmaydi.
+## 2. SODDALIK (Analogiya)
+Funksiyani alohida bir **xona** deb tasavvur qiling. Xona ichida nima sodir bo'layotganini ko'chada (globalda) turganlar ko'rmaydi. Xona ichidagi shaxsiy kundalikni (o'zgaruvchini) faqat o'sha xonaga kirganlar o'qiy oladi.
 
-### Sintaksis
+## 3. STRUKTURA
+
+### A. Funksiya ichidagi o'zgaruvchi
 \`\`\`javascript
-function meningXonam() {
-  const sir = "Men JSni yaxshi ko'raman"; // Function Scope
-  console.log(sir); // Ishlaydi ✅
+function xona() {
+  let sir = "Maxfiy";
+  console.log(sir); // Xona ichida ko'rinadi ✅
 }
-
-// console.log(sir); // ❌ XATO! sir tashqarida tanilmaydi
+xona();
+console.log(sir); // Xato! ❌ (Xonadan tashqarida ko'rinmaydi)
 \`\`\`
 
----
-
-## 3. KOD MISOLLARI
-
-### Misol 1 — Tashqaridan kirib bo'lmaydi
-\`\`\`javascript
-function pishiriq() {
-  const mazasi = "Shirin";
-}
-pishiriq();
-// console.log(mazasi); // ❌ ReferenceError
-\`\`\`
-
-### Misol 2 — Funksiya ichida var va let
-Funksiya ichida bo'lsa, \`var\` ham, \`let\` ham funksiyadan tashqariga chiqolmaydi.
+### B. var, let va const farqi
+Funksiya ichida e'lon qilingan bo'lsa, uchalasi ham tashqariga chiqolmaydi:
 \`\`\`javascript
 function test() {
-  var x = 10;
-  let y = 20;
+  var a = 1;
+  let b = 2;
+  const c = 3;
 }
-// Na x, na y tashqarida ko'rinadi.
+// a, b, c - hech biri tashqarida yo'q!
 \`\`\`
 
----
-
-## 4. VIZUAL TUSHUNTIRISH
-### Xona Metaforasi
-\`\`\`mermaid
-graph LR
-    A["TASHQARI (Global)"] -- ko'ra olmaydi --> B["FUNKSIYA (Xona)"]
-    B -- ko'ra oladi --> A
-    B1["O'zgaruvchi"] --- B
-\`\`\`
-
----
-
-## 5. INTERVYU SAVOLLARI
-1. **Function Scope nima?** - O'zgaruvchining faqat funksiya ichida ko'rinishi.
-2. **Nega function scope kerak?** - Kodning boshqa qismlari bilan nomlar to'qnashib ketmasligi uchun (Global scope-ni "ifloslantirmaslik").
-
----
-
-## 6. MINI LOYIHA: "Maxfiy Kod"
-**Vazifa:** Funksiya ichida maxfiy son yarating va uni faqat o'sha funksiya ichida ishlating.
-
+## 4. AMALIYOT (Mashq)
 \`\`\`javascript
-function bankAmali() {
-  const pinCode = 7777;
-  console.log("PIN tekshirilmoqda: " + pinCode);
+let ism = "Ali"; // Global
+function salom() {
+  let ism = "Vali"; // Local (shaxsiy)
+  console.log("Salom, " + ism);
 }
-
-bankAmali();
-// pinCode bu yerda yo'q
+salom(); // Salom, Vali
+console.log(ism); // Ali (Global ism o'zgarmadi!)
 \`\`\`
-`,
+
+## 5. XATOLAR (Common mistakes)
+1. **Kalit so'zsiz o'zgaruvchi:** Funksiya ichida \`let/const\` ishlatmasdan o'zgaruvchi yaratsangiz (\`x = 10\`), u avtomatik ravishda **Global** bo'lib qoladi va boshqa joylarga xalaqit beradi. Doim \`let\` yoki \`const\` ishlating!
+2. **E'lon qilishdan oldin ishlatish:** O'zgaruvchini funksiya oxirida e'lon qilib, boshida ishlatsangiz xato beradi (let/const bilan).
+
+## 6. SAVOLLAR (12 ta)
+1. Function Scope nima?
+2. O'zgaruvchi funksiya ichida yaratilsa nima deyiladi?
+3. Nima uchun funksiya ichidagi o'zgaruvchi tashqarida ko'rinmaydi?
+4. Funksiya ichida \`var\` ishlatsa u tashqarida ko'rinadimi?
+5. Funksiya tugaganidan keyin uning ichidagi o'zgaruvchilar nima bo'ladi?
+6. Global scope va Local scope farqi nima?
+7. "Lexical Scope" nima degani?
+8. Funksiya ichida \`let\` ishlatishning afzalligi nimada?
+9. Bir xil nomli global va local o'zgaruvchi bo'lsa, funksiya qaysi birini birinchi oladi?
+10. Kalit so'zsiz (let/const/var) o'zgaruvchi yaratilsa nima bo'ladi?
+11. Funksiya ichidagi funksiya (nested) tashqi funksiya o'zgaruvchisini ko'radimi?
+12. "Namespace pollution" nima va scope uni qanday hal qiladi?`,
   exercises: [
     {
       id: 1,
-      title: "Xona ichida qolish",
-      instruction: "Funksiya ichida 'secret' o'zgaruvchisini yarating. Uni funksiya tashqarisida consolega chiqarishga urunib ko'ring (commentda qoldiring).",
-      startingCode: "function hideMe() {\n  // secret yarating\n}\n// console.log(secret);",
-      hint: "const secret = 123;",
-      test: "if (code.includes('secret')) return null; return 'O\\'zgaruvchi yarating';"
+      title: "Scope mashqi",
+      instruction: "Funksiya ichida 'msg' o'zgaruvchisini yarating va uni faqat funksiya ichida chiqaring.",
+      startingCode: "function show() {\n  // Bu yerda yarating\n}\nshow();",
+      hint: "let msg = 'Salom';",
+      test: "if (code.includes('msg')) return null; return 'O\\'zgaruvchi yaratilmadi!';"
     }
   ]
 };
