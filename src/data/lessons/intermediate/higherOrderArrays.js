@@ -1,136 +1,73 @@
 export const higherOrderArrays = {
-  id: "i6",
+  id: "higher-order-arrays",
   title: "Massiv metodlari (Map, Filter, Reduce)",
-  theory: `## 1. NEGA VA NIMA?
-Tasavvur qiling, sizda 1000 ta mahsulot bor va har birining narxini 10% ga oshirishingiz kerak. \`for\` sikli bilan bu uzoq va zerikarli kod bo'ladi.
+  level: "Intermediate",
+  description: "Massivlar bilan professional darajada ishlash: saralash, o'zgartirish va jamlash.",
+  theory: `
+# Massiv metodlari – Bu nima va nima uchun kerak?
 
-**Higher Order Array Methods** — bu massivlar bilan ishlashni 10 barobar osonlashtiradigan, kodni qisqa va tushunarli qiladigan "sehrli" asboblardir.
+**Higher Order Array Methods** — bu massivlar bilan ishlashni 10 barobar osonlashtiradigan "sehrli" asboblardir.
 
----
+## 1. NEGA kerak?
+Tasavvur qiling, sizda 100 ta son bor va ularning hammasini 2 barobarga oshirish kerak. Oddiy \`for\` sikli bilan bu 4-5 qator kod bo'ladi. \`map()\` bilan esa bu 1 qator! Bu kodni toza va tushunarli qiladi.
 
-## 2. MAP — O'ZGARTIRISH (Tushuntir → Ko'rsat → Bajartir)
-\`map()\` massivdagi har bir elementni birma-bir olib, uni o'zgartiradi va **yangi massiv** qaytaradi.
+## 2. SODDALIK (Analogiya)
+- **Map (O'zgartirish):** Bu xuddi zavod konveyeriga o'xshaydi. Har bir mahsulot (element) kiradi, unga biror narsa qo'shiladi va u yangi holda chiqadi.
+- **Filter (Saralash):** Bu xuddi elakka o'xshaydi. Faqat siz aytgan shartga mos keladigan elementlar o'tadi, qolganlari qolib ketadi.
+- **Reduce (Jamlash):** Bu xuddi kassa apparatiga o'xshaydi. Hamma narxlarni qo'shib, oxirida bitta umumiy summani chiqaradi.
 
-**Ko'rsat:**
+## 3. STRUKTURA
+
+### A. map() – Yangi massiv yaratadi
 \`\`\`javascript
 const sonlar = [1, 2, 3];
-const kvadratlar = sonlar.map(n => n * n);
-console.log(kvadratlar); // [1, 4, 9]
+const kvadratlar = sonlar.map(n => n * n); // [1, 4, 9]
 \`\`\`
 
-**Mashq:** \`ismlar\` massividagi har bir ismni bosh harfga o'tkazing (\`.toUpperCase()\`).
-
----
-
-## 3. FILTER — SARALASH
-\`filter()\` massivdan faqat sizga kerakli (shartga mos) elementlarni ajratib oladi va **yangi massiv** yaratadi.
-
-**Ko'rsat:**
+### B. filter() – Saralab oladi
 \`\`\`javascript
 const yoshlar = [15, 22, 18, 30];
-const kattalar = yoshlar.filter(y => y >= 18);
-console.log(kattalar); // [22, 18, 30]
+const kattalar = yoshlar.filter(y => y >= 18); // [22, 18, 30]
 \`\`\`
 
-**Mashq:** Massivdan faqat juft sonlarni ajratib oling.
-
----
-
-## 4. REDUCE — JAMLASH (Bitta natija)
-\`reduce()\` butun massivni bitta qiymatga (masalan, yig'indiga) aylantiradi.
-
-**Ko'rsat:**
+### C. reduce() – Bitta qiymatga aylantiradi
 \`\`\`javascript
 const narxlar = [100, 200, 300];
-const jami = narxlar.reduce((sum, n) => sum + n, 0);
-console.log(jami); // 600
+const jami = narxlar.reduce((sum, n) => sum + n, 0); // 600
 \`\`\`
 
----
-
-## 5. KO'P UCHRAYDIGAN XATOLAR ⚠️
-1.  **Returnni unutish:** Agar \`{ }\` qavs ishlatilsa, \`return\` yozish shart!
-    \`\`\`javascript
-    const x = arr.map(n => { n * 2 }); // undefined! ❌
-    const y = arr.map(n => { return n * 2 }); // ✅
-    \`\`\`
-2.  **Yangi massivni saqlamaslik:** Bu metodlar asl massivni o'zgartirmaydi, natijani yangi o'zgaruvchiga olish kerak.
-
----
-
-## 6. BUZIB KO'RISH 🧐
-**Nima bo'ladi agar bo'sh massivda \`reduce\` ishlatsak va boshlang'ich qiymat bermasak?**
+## 4. AMALIYOT (Mashq)
 \`\`\`javascript
-[].reduce((a, b) => a + b); // ❌ Xato beradi!
+const ismlar = ["ali", "vali"];
+const kattaIsmlar = ismlar.map(ism => ism.toUpperCase());
+console.log(kattaIsmlar); // ["ALI", "VALI"]
 \`\`\`
-**Yechim:** Har doim oxirida \`0\` yoki \`[]\` kabi boshlang'ich qiymat bering.
 
----
+## 5. XATOLAR (Common mistakes)
+1. **Returnni unutish:** Agar arrow funksiyada \`{ }\` ishlatilsa, \`return\` yozish shart!
+2. **Asl massiv:** Bu metodlar asl massivni o'zgartirmaydi, doim yangi massiv qaytaradi.
 
-## 7. TOP 12: INTERVYU SAVOLLARI VA AMALIYOT (Junior/Middle) 🎯
-
-1. **map() va forEach() farqi nima? (Junior)**
-   *Javob:* map() yangi massiv qaytaradi, forEach() esa hech narsa qaytarmaydi (faqat ish bajaradi).
-
-2. **filter() metodi bo'sh massiv qaytarishi mumkinmi? (Junior)**
-   *Javob:* Ha, agar hech bir element shartga mos kelmasa.
-
-3. **reduce() dagi 'accumulator' nima? (Middle)**
-   *Javob:* U har bir qadamdagi natijani o'zida yig'ib boruvchi "xotira".
-
-4. **Massivdan obyekt yasash. (Middle - Amaliy)**
-   *Vazifa:* \`reduce\` orqali massivni obyektga aylantiring.
-
-5. **Chain (Zanjir) usuli. (Junior - Amaliy)**
-   *Vazifa:* Avval \`filter\` qiling, keyin \`map\` qilib natijani oling.
-
-6. **Find() va Filter() farqi? (Junior)**
-   *Javob:* Find faqat birinchi topilgan elementni, filter esa barcha moslarini massiv qilib beradi.
-
-7. **Some() va Every() nima? (Middle)**
-   *Javob:* Some — kamida bittasi, Every — hammasi shartga mosligini tekshiradi (boolean).
-
-8. **Massiv ichidagi massivlarni yoyish. (Middle - Amaliy)**
-   *Vazifa:* \`flatMap\` yoki \`reduce\` bilan \`[[1,2], [3]]\` ni \`[1,2,3]\` qiling.
-
-9. **Eng qimmat mahsulotni topish. (Middle - Amaliy)**
-   *Vazifa:* Obyektlar massividan \`reduce\` orqali narxi eng balandini toping.
-
-10. **Metodlar asl massivni o'zgartiradimi? (Junior)**
-    *Javob:* Yo'q (immutability).
-
-11. **Sort() metodi haqida. (Middle)**
-    *Javob:* U asl massivni o'zgartiradi va default bo'yicha string sifatida saralaydi.
-
-12. **Nollarni o'chirish. (Junior - Amaliy)**
-    *Vazifa:* Massivdan barcha \`0\` va \`false\` qiymatlarni \`filter\` orqali olib tashlang.
-
----
-
-## 8. CHALLENGE 🏆
-Foydalanuvchilar massivi berilgan. Faqat 18 yoshdan kattalarning ismini oling va ularni bitta matnga birlashtiring (Masalan: "Ali, Vali").
-
----
-
-## 9. XULOSA
-Endi siz massivlarni professional darajada transformatsiya qilishni va saralashni bilasiz!
-`,
+## 6. SAVOLLAR (12 ta)
+1. \`map()\` va \`forEach()\` farqi nima?
+2. \`filter()\` shartga mos narsa topmasa nima qaytaradi?
+3. \`reduce()\` dagi \`0\` (oxiridagi raqam) nima?
+4. \`find()\` va \`filter()\` farqi nima?
+5. \`some()\` metodi nima qaytaradi?
+6. \`every()\` metodi nima qaytaradi?
+7. \`map()\` asl massivni o'zgartiradimi?
+8. Bir nechta metodni zanjir (chain) qilib ishlatsa bo'ladimi?
+9. \`sort()\` metodi qanday ishlaydi?
+10. Massiv ichidan bitta elementni qidirish uchun qaysi metod qulay?
+11. \`reduce\` yordamida obyekt yasasa bo'ladimi?
+12. Bo'sh massivda \`reduce\` ishlatilsa nima bo'ladi?`,
   exercises: [
     {
       id: 1,
-      title: "map() mashqi",
-      instruction: "Berilgan 'prices' massividagi har bir narxni 1.2 barobarga oshiring va natijani consolega chiqaring.",
-      startingCode: "const prices = [100, 200, 300];\n// Kodni shu yerga yozing\n",
-      hint: "const newPrices = prices.map(p => p * 1.2);",
-      test: "if (logs.includes('120') && logs.includes('360')) return null; return 'Natija noto\\'g\\'ri';"
-    },
-    {
-      id: 2,
-      title: "filter() mashqi",
-      instruction: "Massivdan faqat 10 dan katta sonlarni ajrating.",
-      startingCode: "const numbers = [5, 12, 130, 8];\n// Bu yerga yozing\n",
-      hint: "numbers.filter(n => n > 10)",
-      test: "if (logs[0].includes('130')) return null; return 'Faqat 10 dan kattalar qolsin';"
+      title: "Map mashqi",
+      instruction: "Massivdagi har bir sonni 10 ga ko'paytiring.",
+      startingCode: "const nums = [1, 2, 3];\nconst res = // Bu yerga yozing",
+      hint: "nums.map(n => n * 10);",
+      test: "if (res[0] === 10) return null; return 'Noto\\'g\\'ri';"
     }
   ]
 };
