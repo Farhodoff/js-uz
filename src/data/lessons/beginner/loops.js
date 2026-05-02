@@ -1,110 +1,86 @@
 export const loops = {
-  id: "b14",
-  title: "Looplar va Iteratsiyalar",
-  theory: `## 1. LOOPLAR NIMA?
-Looplar (sikllar) — bir xil kodni ma'lum bir shart asosida qayta-qayta bajarish uchun ishlatiladi. JavaScriptda 5 xil asosiy loop turi mavjud.
+  id: "loops",
+  title: "Sikllar (Loops)",
+  level: "Beginner",
+  description: "Bir xil kodni ko'p marta takrorlash usullari: for, while va boshqalar.",
+  theory: `
+# Sikllar – Bu nima va nima uchun kerak?
 
----
+**Loops** (Sikllar) — bu bir xil kod bo'lagini ma'lum bir shart asosida qayta-qayta bajarish usulidir.
 
-## 2. ASOSIY LOOP TURLARI
+## 1. NEGA kerak?
+Tasavvur qiling, sizga konsolga 100 marta "Salom" deb yozish kerak. Buni qo'lda yozish juda uzoq vaqt oladi. Sikllar yordamida buni 3 qator kod bilan hal qilish mumkin. Shuningdek, minglab foydalanuvchilar ro'yxati bilan ishlashda ham sikllar ajralmas yordamchidir.
 
-### A. for loop — Eng keng tarqalgan
-Takrorlanishlar soni aniq bo'lganda ishlatiladi.
+## 2. SODDALIK (Analogiya)
+Buni **stadionda yugurishga** o'xshatish mumkin:
+- **Sikl boshlanishi:** Siz start chizig'idasiz (i = 0).
+- **Shart:** 10 ta aylana yugurishingiz kerak (i < 10).
+- **Qadam:** Har bir aylana oxirida bittaga oshirasiz (i++).
+- **Sikl tugashi:** 10 ta aylana bitgach, to'xtaysiz.
+
+## 3. STRUKTURA
+
+### A. for sikli (Eng ko'p ishlatiladigani)
+Takrorlanish soni aniq bo'lganda:
 \`\`\`javascript
 for (let i = 1; i <= 5; i++) {
-  console.log(i); // 1, 2, 3, 4, 5
+  console.log(i + "-aylana");
 }
 \`\`\`
 
-### B. while loop — Shartga bog'liq
-Shart to'g'ri bo'lguncha ishlaydi. Takrorlanish soni noma'lum bo'lganda qulay.
+### B. while sikli
+Shart to'g'ri bo'lguncha ishlaydi:
 \`\`\`javascript
-let i = 1;
-while (i <= 5) {
-  console.log(i);
-  i++;
+let count = 1;
+while (count <= 5) {
+  console.log(count);
+  count++;
 }
 \`\`\`
 
-### C. do...while — Kamida bir marta ishlaydi
-Shart oxirida tekshirilgani uchun, kod kamida bir marta bajarilishi kafolatlanadi.
+### C. for...of (Massivlar uchun)
 \`\`\`javascript
-let i = 1;
-do {
-  console.log(i);
-  i++;
-} while (i > 10); // Shart noto'g'ri, lekin 1 marta ishlaydi
-\`\`\`
-
----
-
-## 3. ZAMONAVIY LOOPLAR
-
-### D. for...in — Obyekt kalitlari uchun
-Obyekt ichidagi xususiyatlarni (property) aylanib chiqish uchun ishlatiladi.
-\`\`\`javascript
-const user = { name: "Ali", age: 25 };
-for (let key in user) {
-  console.log(key + ": " + user[key]);
+const mevalar = ["Olma", "Banan", "Uzum"];
+for (let meva of mevalar) {
+  console.log(meva);
 }
 \`\`\`
 
-### E. for...of — Qiymatlar uchun
-Massiv yoki string kabi iterable (aylanish mumkin bo'lgan) obyektlarning qiymatlari bo'ylab yuradi.
+## 4. AMALIYOT (Mashq)
+1 dan 10 gacha bo'lgan faqat juft sonlarni chiqarish:
 \`\`\`javascript
-const ranglar = ["qizil", "yashil"];
-for (let rang of ranglar) {
-  console.log(rang);
+for (let i = 1; i <= 10; i++) {
+  if (i % 2 === 0) {
+    console.log(i);
+  }
 }
 \`\`\`
 
----
+## 5. XATOLAR (Common mistakes)
+1. **Cheksiz sikl (Infinite Loop):** Agar shartni doim \`true\` qilib qo'ysangiz yoki sanoqni oshirishni (\`i++\`) unutsangiz, dastur qotib qoladi.
+2. **Indeks xatosi:** 0 dan boshlashni unutib, 1 dan boshlash (massivlar bilan ishlaganda).
 
-## 4. TAQQOSLASH JADVALI
-
-| Loop | Nima uchun? | Nimani aylantiradi? |
-|---|---|---|
-| **for** | Sanoq aniq bo'lsa | Indekslarni |
-| **while** | Shartga bog'liq bo'lsa | - |
-| **for...in** | Obyektlar uchun | Kalitlarni (key) |
-| **for...of** | Massivlar uchun | Qiymatlarni (value) |
-
----
-
-## 5. INTERVYU SAVOLLARI (Middle)
-
-1. **for...in va for...of farqi nima?**
-   *Javob:* \`for...in\` indekslarni yoki kalitlarni qaytaradi, \`for...of\` esa qiymatlarni qaytaradi.
-
-2. **Obyektda for...of ishlatsa bo'ladimi?**
-   *Javob:* Yo'q, chunki oddiy obyektlar iterable emas. Buning uchun \`Object.keys()\` yoki \`Object.entries()\` ishlatish kerak.
-
-3. **do...while qachon kerak bo'ladi?**
-   *Javob:* Qachonki biz shartdan qat'iy nazar kod blokini kamida bir marta ishga tushirishimiz shart bo'lganda.`,
+## 6. SAVOLLAR (12 ta)
+1. Sikl (Loop) nima?
+2. JavaScriptda qaysi sikl turlari bor?
+3. \`for\` siklining 3 ta qismi nima vazifani bajaradi?
+4. \`while\` va \`do...while\` farqi nimada?
+5. \`for...of\` nima uchun ishlatiladi?
+6. Cheksiz sikl nima va u qanday hosil bo'ladi?
+7. \`i++\` yozishni unutsak nima bo'ladi?
+8. \`for\` siklida \`let\` o'rniga \`const\` ishlatsa bo'ladimi? (Nima uchun?)
+9. Sikl ichida \`if\` shartini ishlatsa bo'ladimi?
+10. Massiv elementlarini aylanish uchun eng qulay sikl qaysi?
+11. Obyekt kalitlarini aylanish uchun qaysi sikl ishlatiladi (\`for...in\`)?
+12. 10 dan 1 gacha teskari sanaydigan sikl qanday yoziladi?`,
   exercises: [
     {
       id: 1,
-      title: "1 dan 100 gacha yig'indi",
-      instruction: "for sikli yordamida 1 dan 100 gacha bo'lgan sonlar yig'indisini 'sum' o'zgaruvchisiga hisoblang.",
-      startingCode: "let sum = 0;\n// Bu yerga yozing\n\nconsole.log(sum);",
-      hint: "for (let i = 1; i <= 100; i++) { sum += i; }",
-      test: "if (logs.includes('5050')) return null; return 'Natija 5050 bo\\'lishi kerak';"
-    },
-    {
-      id: 2,
-      title: "Obyektni aylanish",
-      instruction: "for...in yordamida 'car' obyektining hamma qiymatlarini konsolga chiqaring.",
-      startingCode: "const car = { model: 'Tesla', year: 2023 };\n// for...in ishlatib value larni chiqaring\n",
-      hint: "for (let key in car) { console.log(car[key]); }",
-      test: "if (logs.includes('Tesla') && logs.includes('2023')) return null; return 'Tesla va 2023 chiqishi kerak';"
-    },
-    {
-      id: 3,
-      title: "Massiv qiymatlari",
-      instruction: "for...of yordamida 'fruits' massivi elementlarini chiqaring.",
-      startingCode: "const fruits = ['Olma', 'Banan', 'Anor'];\n// Bu yerga yozing\n",
-      hint: "for (let f of fruits) { console.log(f); }",
-      test: "if (logs.includes('Olma') && logs.includes('Anor')) return null; return 'Hamma mevalar chiqishi kerak';"
+      title: "Takrorlash mashqi",
+      instruction: "for sikli yordamida 1 dan 5 gacha bo'lgan sonlarni chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "for (let i = 1; i <= 5; i++) { console.log(i); }",
+      test: "if (logs.length === 5 && logs[0] === 1) return null; return 'Sikl xato!';"
     }
   ]
 };
