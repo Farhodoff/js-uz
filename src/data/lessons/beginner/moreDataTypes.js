@@ -1,63 +1,79 @@
 export const moreDataTypesLesson = {
-  id: "b7",
-  title: "Ma'lumotlar Turlari: Null, Symbol, BigInt",
-  theory: `## Ma'lumotlar Turlari: Null, Symbol, BigInt
+  id: "more-data-types",
+  title: "Boshqa ma'lumot turlari (Null, Symbol, BigInt)",
+  level: "Beginner",
+  description: "JavaScriptdagi maxsus ma'lumot turlari bilan tanishamiz: bo'sh qiymatlar, unikal belgilar va juda katta sonlar.",
+  theory: `
+# Null, Symbol va BigInt – Bular nima va nima uchun kerak?
 
-JavaScriptda 8 ta ma’lumot turi mavjud. Oldingi darsda **String, Number, Boolean, Undefined** ni ko‘rdik. Endi qolgan primitiv turlarni ko‘ramiz.
+Oldingi darsda biz eng ko'p ishlatiladigan turlarni ko'rdik. Endi esa JavaScriptning biroz "maxsus" turlari haqida gaplashamiz.
 
-### 1. Null
-**null** – “hech narsa”, “bo‘sh”, “qiymat yo‘q” degan ma’noni **dasturchi o‘zi ataylab** beradigan qiymat.
-- \`typeof null\` → \`"object"\` (JavaScriptning mashhur xatosi).
-- \`null\` vs \`undefined\`: \`undefined\` – JS avtomatik beradi, \`null\` – dasturchi beradi.
+## 1. NEGA kerak?
+- **Null:** Ba'zan biz o'zgaruvchi borligini, lekin uning ichi bo'shligini ataylab aytishimiz kerak.
+- **BigInt:** Oddiy \`Number\` turi ma'lum bir kattalikdagi sonlardan keyin xato hisoblashni boshlaydi. Juda katta sonlar (masalan, koinotdagi atomlar soni) uchun \`BigInt\` kerak.
+- **Symbol:** Obyektlar ichida bir-biriga o'xshamaydigan, mutlaqo unikal (yagona) kalitlar yaratish uchun ishlatiladi.
 
-### 2. Symbol (ES6)
-**Symbol** – **unikal** (takrorlanmaydigan) va **o‘zgarmas** qiymat yaratish uchun ishlatiladi. 
-- Asosan obyektlarning **maxfiy kalitlari** yoki nomlar to‘qnashuvining oldini olish uchun ishlatiladi.
-- \`let sym1 = Symbol("id"); let sym2 = Symbol("id");\` – \`sym1 === sym2\` har doim \`false\`.
+## 2. SODDALIK (Analogiya)
+- **Null:** Bu xuddi bo'sh **suv shishasiga** o'xshaydi. Shisha bor, lekin ichida suv yo'q. (\`Undefined\` esa — shishaning o'zi ham yo'qligi).
+- **BigInt:** Oddiy kalkulyator sig'maydigan juda uzun **chek** yoki raqam deb tasavvur qiling.
+- **Symbol:** Bu har bir insonga beriladigan **pasport seriyasi** kabi. Ikki kishining ismi bir xil bo'lishi mumkin, lekin pasport seriyasi (Symbol) doim boshqa-boshqa bo'ladi.
 
-### 3. BigInt (ES2020)
-**BigInt** – juda katta butun sonlar bilan ishlash uchun (\`2^53 - 1\` dan katta sonlar).
-- Yaratish: Son oxiriga \`n\` qo‘yiladi: \`9007199254740991n\` yoki \`BigInt()\` funksiyasi.
-- **Qoida:** \`BigInt\` va \`Number\` ni to‘g‘ridan-to‘g‘ri aralashtirib (qo'shib, ayirib) bo‘lmaydi.
+## 3. STRUKTURA
 
-### 4. Object (Murakkab tur)
-**Object** – primitiv bo‘lmagan, bir nechta qiymatlarni (xususiyat va metodlarni) o‘z ichiga oladi. Keyingi darslarda batafsil to'xtalamiz.
+### A. Null (Ataylab bo'shatish)
+\`\`\`javascript
+let foydalanuvchi = null; // Hozircha foydalanuvchi yo'q
+\`\`\`
 
----
+### B. BigInt (Katta sonlar)
+Son oxiriga \`n\` harfi qo'shiladi:
+\`\`\`javascript
+let kattaSon = 9007199254740991n;
+let yanaBir = BigInt("12345678901234567890");
+\`\`\`
 
-## Intervyu savollari (Junior & Middle)
+### C. Symbol (Yagona belgi)
+\`\`\`javascript
+let id1 = Symbol("id");
+let id2 = Symbol("id");
+console.log(id1 === id2); // false (nomi bir xil bo'lsa ham, o'zlari boshqa-boshqa!)
+\`\`\`
 
-### Junior daraja
-1. **null va undefined o‘rtasidagi asosiy farqni ayting.**
-2. **typeof null nima qaytaradi va nega?**
-3. **Symbol nima va u qayerda ishlatiladi?**
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+const shaxs = {
+  ism: "Ali"
+};
+const ID = Symbol("shaxsiy_id");
+shaxs[ID] = 12345;
+console.log(shaxs[ID]); // 12345
+\`\`\`
 
-### Middle daraja
-4. **Symbol.for() va Symbol() farqi nimada?**
-5. **Nima uchun BigInt kerak? Oddiy Number yetarli emasmi?**
-6. **BigInt bilan ishlaganda bo'lish (division) natijasi qanday bo'ladi?**`,
-  task: `// 1. null va undefined o'rtasidagi farqni == va === operatorlari bilan tekshiring.
-// 2. Ikkita bir xil tavsifli Symbol yarating va ularni solishtiring.
-// 3. Symbol yordamida obyektda "yashirin" xususiyat yarating.
-// 4. Number.MAX_SAFE_INTEGER dan katta son yarating (BigInt yordamida).
-// 5. BigInt sonni oddiy Numberga o'tkazib ko'ring va aksincha.
+## 5. XATOLAR (Common mistakes)
+1. **BigInt va Numberni aralashtirish:** \`10n + 5\` — Xato! ❌ BigIntni faqat BigInt bilan qo'shish mumkin. (\`10n + BigInt(5)\` ✅).
+2. **typeof null:** Yana bir bor eslatamiz, bu \`"object"\` chiqadi, lekin u aslida Primitiv tur.
 
-// Kodingizni shu yerga yozing`,
-  hint: `// 1. Equality
-console.log(null == undefined); // true
-console.log(null === undefined); // false
-
-// 2. Symbols
-let s1 = Symbol("id");
-let s2 = Symbol("id");
-console.log(s1 === s2); // false
-
-// 3. Hidden property
-const ID = Symbol("id");
-let user = { [ID]: 1, name: "Ali" };
-console.log(user[ID]);
-
-// 4. BigInt
-let big = 123456789012345678901234567890n;
-let alsoBig = BigInt("999999999999999999");`
+## 6. SAVOLLAR (12 ta)
+1. \`null\` va \`undefined\` farqi nimada?
+2. Nima uchun \`null\` primitiv tur bo'lsa ham \`object\` qaytaradi?
+3. \`BigInt\` qachon kerak bo'ladi?
+4. \`BigInt\` son yaratishning 2 xil usulini ayting.
+5. \`Number.MAX_SAFE_INTEGER\` nima?
+6. \`Symbol\` nima vazifani bajaradi?
+7. Ikki xil \`Symbol("a")\` bir-biriga tengmi?
+8. \`BigInt\` va \`Number\`ni birga qo'shsa bo'ladimi?
+9. Obyekt ichida \`Symbol\`ni qanday kalit qilib ishlatish mumkin?
+10. \`Symbol.description\` nima qaytaradi?
+11. \`null == undefined\` natijasi nima bo'ladi?
+12. \`null === undefined\` natijasi nima bo'ladi?`,
+  exercises: [
+    {
+      id: 1,
+      title: "BigInt mashqi",
+      instruction: "Son oxiriga 'n' qo'shish orqali bitta BigInt son yarating.",
+      startingCode: "// Bu yerda yarating\nconst big = ",
+      hint: "const big = 100n;",
+      test: "if (typeof big === 'bigint') return null; return 'BigInt yaratilmadi!';"
+    }
+  ]
 };
