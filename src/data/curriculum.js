@@ -39,6 +39,7 @@ import { classesLesson } from "./lessons/intermediate/classes";
 import { optionalChaining } from "./lessons/intermediate/optionalChaining";
 import { interviewQuestionsIntermediate } from "./lessons/intermediate/interviewQuestions";
 import { thisKeyword } from "./lessons/intermediate/thisKeyword";
+import { timersLesson } from "./lessons/intermediate/timers";
 
 import { callbacksLesson } from "./lessons/advanced/callbacks";
 import { promises } from "./lessons/advanced/promises";
@@ -78,7 +79,7 @@ export const curriculum = {
     label: "O'rta daraja",
     color: "#e5b84f",
     icon: "🟡",
-    lessons: [interviewQuestionsIntermediate, thisKeyword, destructuring, spreadRest, arrowFunctions, domBasics, events, formsLesson, higherOrderArrays, optionalChaining, classesLesson]
+    lessons: [interviewQuestionsIntermediate, thisKeyword, timersLesson, destructuring, spreadRest, arrowFunctions, domBasics, events, formsLesson, higherOrderArrays, optionalChaining, classesLesson]
   },
   advanced: {
     label: "Advanced",
