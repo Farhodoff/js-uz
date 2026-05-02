@@ -1,82 +1,68 @@
 export const memoryManagement = {
-  id: "a16",
+  id: "memory-management",
   title: "Memory Management (Xotira boshqaruvi)",
-  theory: `## 1. KIRISH
-Dastur qancha ko'p xotira (RAM) ishlatsa, u shunchalik sekinlashadi va oxir-oqibat "qotib" qoladi. JavaScriptda xotira boshqaruvi avtomatlashtirilgan, lekin bu biz uni tushunmasligimiz kerak degani emas.
+  level: "Advanced",
+  description: "JavaScript xotirani qanday boshqaradi va 'Memory Leak' (Xotira oqishi) nima?",
+  theory: `
+# Memory Management – Bu nima va nima uchun kerak?
 
-## 2. TUSHUNCHA
+Dastur qancha ko'p xotira (RAM) ishlatsa, u shunchalik sekinlashadi va oxir-oqibat "qotib" qoladi. JavaScriptda xotira boshqaruvi avtomatlashtirilgan, lekin biz uni qanday ishlashini bilishimiz shart.
 
-### Garbage Collection (Chiqindilarni yig'ish)
-JavaScript ishlatilmayotgan xotirani avtomatik ravishda bo'shatadi. Buning uchun asosiy algoritm - **Mark-and-Sweep** ishlatiladi.
-**Sodda ta'rif:** Agar biror obyektga hech qanday yo'l (ko'rsatkich) qolmagan bo'lsa, u "chiqindi" deb hisoblanadi va o'chiriladi.
+## 1. NEGA kerak?
+Agar biz xotira qanday ishlashini tushunmasak, bilmasdan "Memory Leak" (xotira oqishi) yaratib qo'yamiz. Bu dasturimizning vaqt o'tishi bilan ko'proq RAM yeyishiga va foydalanuvchi kompyuterini sekinlashtirishiga olib keladi.
 
-### Memory Leaks (Xotira oqishi)
-Dasturchi e'tiborsizligi tufayli xotira bo'shamay qolishi. Bu dasturning vaqt o'tishi bilan ko'p RAM yeyishiga sabab bo'ladi.
+## 2. SODDALIK (Analogiya)
+Buni **ijaraga olingan uy** deb tasavvur qiling:
+1. Siz uyga ko'chib kirasiz (Xotira ajratish - Allocation).
+2. Uyda yashaysiz (Ma'lumotlarni ishlatish).
+3. Uydan ko'chib ketasiz va kalitni topshirasiz (Xotirani bo'shatish - Release).
+Agar siz ko'chib ketsangiz-u, lekin "kalitni topshirmasangiz", u uy band bo'lib turaveradi. Bu — Memory Leak.
 
----
+## 3. STRUKTURA
 
-## 3. ASOSIY SABABLAR (Memory Leaks)
+### A. Garbage Collection (Chiqindi yig'uvchi)
+JavaScriptda **Garbage Collector** bor. U kodingizda ishlatilmayotgan (hech kim unga murojaat qilmayotgan) obyektlarni qidiradi va ularni o'chirib, xotirani bo'shatadi. Eng ko'p ishlatiladigan algoritm: **Mark-and-Sweep**.
 
-### 1. Global o'zgaruvchilar
-\`var\` yoki kalit so'zsiz yaratilgan o'zgaruvchilar window obyektiga birikib qoladi va hech qachon o'chmaydi.
+### B. Memory Leak sabablari
+1. **Global o'zgaruvchilar:** Unutilgan \`var\`lar xotirada doimiy qoladi.
+2. **Unutilgan Taymerlar:** \`setInterval\`ni to'xtatmasangiz, u ichidagi hamma narsani xotirada ushlab turadi.
+3. **Closures:** Keraksiz closurelar katta ma'lumotlarni xotirada qulflab qo'yishi mumkin.
 
-### 2. Unutilgan taymerlar
-\`setInterval\` ishga tushirilsa va to'xtatish unutilsa, u ichidagi obyektlarni xotirada ushlab turadi.
-
-### 3. Closure (Yashirin bog'lanish)
-Ichki funksiya tashqi funksiyaning katta obyektini keraksiz bo'lsa ham ushlab turishi mumkin.
-
----
-
-## 4. VIZUAL TUSHUNTIRISH
-### Mark-and-Sweep Algoritmi
-\`\`\`mermaid
-graph TD
-    Root[Root: window/global] --> A[Obyekt A]
-    Root --> B[Obyekt B]
-    A --> C[Obyekt C]
-    D[Obyekt D: Bog'lanmagan] -- X --▶ Root
-    E[Obyekt E: Bog'lanmagan] -- X --▶ Root
-    style D fill:#f66,stroke:#333
-    style E fill:#f66,stroke:#333
-\`\`\`
-*Qizil obyektlar navbatdagi "chiqindi yig'ish" paytida o'chiriladi.*
-
----
-
-## 5. INTERVYU SAVOLLARI
-1. **Garbage Collection qanday ishlaydi?** - Mark-and-Sweep algoritmi yordamida "root" obyektidan yetib bo'lmaydigan obyektlarni topadi va o'chiradi.
-2. **WeakMap va WeakSet nima uchun kerak?** - Ular obyektlarga "kuchsiz" bog'lanadi, bu esa Garbage Collectorga o'sha obyektlarni bemalol o'chirishga imkon beradi.
-3. **Memory Leakni qanday topish mumkin?** - Brauzerning **DevTools -> Memory** bo'limida "Heap Snapshot" olish orqali.
-
----
-
-## 6. MINI LOYIHA: "Leak Detector"
-**Vazifa:** Taymerni to'g'ri to'xtatish orqali xotira oqishini oldini oling.
-
+## 4. AMALIYOT (Mashq)
 \`\`\`javascript
-function startWork() {
-  const bigData = new Array(1000000).fill("💾");
-  const interval = setInterval(() => {
-    console.log("Ishlayapti...");
-  }, 1000);
-
-  // 5 soniyadan keyin to'xtatish shart!
-  setTimeout(() => {
-    clearInterval(interval);
-    console.log("Xotira bo'shatildi");
-  }, 5000);
+function createLeak() {
+  const bigArray = new Array(1000000).fill("📦"); // Katta ma'lumot
+  return () => console.log(bigArray.length); // Closure orqali xotirada qoladi
 }
+const leak = createLeak();
+// leak o'zgaruvchisi ochiq tursa, bigArray o'chmaydi.
 \`\`\`
-`,
+
+## 5. XATOLAR (Common mistakes)
+1. **EventListener'larni o'chirmaslik:** Element o'chib ketgan bo'lsa ham, unga biriktirilgan listener xotirada qolishi mumkin.
+2. **Katta massivlarni globalda saqlash:** Ma'lumot kerak bo'lmaganda uni \`null\` qilib qo'yishni unutmang.
+
+## 6. SAVOLLAR (12 ta)
+1. Memory Management nima?
+2. Garbage Collector nima ish qiladi?
+3. Allocation (Ajratish) va Release (Bo'shatish) nima?
+4. Mark-and-Sweep algoritmi qanday ishlaydi?
+5. Memory Leak (Xotira oqishi) nima?
+6. Nima uchun global o'zgaruvchilar xotira uchun xavfli?
+7. \`setInterval\` qanday qilib memory leakka sabab bo'lishi mumkin?
+8. Closure xotiraga qanday ta'sir qiladi?
+9. "Root" obyekt degani nima (\`window\`)?
+10. Obyektga bo'lgan bog'liqlik (reference) qolmasa nima bo'ladi?
+11. Memory Leakni brauzerda qanday aniqlash mumkin (Chrome DevTools)?
+12. \`WeakMap\` va \`WeakSet\` xotira uchun qanday foyda beradi?`,
   exercises: [
     {
       id: 1,
-      title: "Intervalni to'xtatish",
-      instruction: "setInterval() funksiyasini to'xtatuvchi kalit funksiyani yozing.",
-      startingCode: "const id = setInterval(() => {}, 1000);\n// Bu yerda to'xtating\n",
-      hint: "clearInterval(id)",
-      test: "if (code.includes('clearInterval')) return null; return 'clearInterval ishlatilishi shart';"
+      title: "Xotira mashqi",
+      instruction: "Intervalni to'xtatish orqali xotira oqishining oldini oling.",
+      startingCode: "const id = setInterval(() => {}, 1000);\n// Bu yerda to'xtating",
+      hint: "clearInterval(id);",
+      test: "if (code.includes('clearInterval')) return null; return 'clearInterval ishlatilmadi';"
     }
   ]
 };
