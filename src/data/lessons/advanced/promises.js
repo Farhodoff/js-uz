@@ -1,79 +1,75 @@
 export const promises = {
-  id: "a1",
-  title: "Promise (Vaqtinchalik va'da)",
-  theory: `## 1. PROMISE NIMA?
-Promise — bu asinxron operatsiyaning kelajakdagi natijasi uchun ishlatiladigan obyektdir. Oddiy qilib aytganda, bu "va'da". Masalan, siz restoranda ovqat buyurtma qilsangiz, sizga kvitansiya berishadi. Bu kvitansiya — **Promise**. Ovqat tayyor bo'lgach (resolve) siz uni olasiz, agar masalliq tugab qolgan bo'lsa (reject) rad etishadi.
+  id: "promises",
+  title: "Promises (Va'dalar)",
+  level: "Advanced",
+  description: "Asinxron amallarni tartibga solish: va'da berish va uni bajarish haqida.",
+  theory: `
+# Promises – Bu nima va nima uchun kerak?
 
----
+**Promise** — bu asinxron operatsiyaning kelajakdagi natijasi (yoki xatosi) uchun ishlatiladigan obyektdir. Oddiy qilib aytganda, bu JSdagi "va'da".
 
-## 2. PROMISE HOLATLARI
-Promise har doim 3 ta holatdan birida bo'ladi:
+## 1. NEGA kerak?
+Eski usulda (callbacklar bilan) asinxron ishlar ichma-ich kirib ketib, "Callback Hell" (Piramida) muammosini yaratar edi. Promiselar esa kodni zanjir ko'rinishida yozishga va xatolarni bitta joyda (catch) ushlashga imkon beradi.
 
-1.  **Pending (Kutilmoqda):** Boshlang'ich holat, hali natija yo'q.
-2.  **Fulfilled (Bajarildi):** Operatsiya muvaffaqiyatli yakunlandi (\`resolve\` chaqirildi).
-3.  **Rejected (Rad etildi):** Operatsiyada xato yuz berdi (\`reject\` chaqirildi).
+## 2. SODDALIK (Analogiya)
+Buni restorandagi **pult** (buzzer) deb tasavvur qiling:
+1. Siz ovqat buyurtma qilasiz (Asinxron amal boshlandi).
+2. Sizga pult berishadi (Bu — **Promise**). U hozircha jim (**Pending**).
+3. Ovqat tayyor bo'lsa, pult yonadi (**Fulfilled/Resolve**).
+4. Agar ovqat qolmagan bo'lsa, pult qizil yonadi yoki ofitsiant kelib uzr so'raydi (**Rejected**).
 
-\`\`\`mermaid
-stateDiagram-v2
-    [*] --> Pending
-    Pending --> Fulfilled: resolve() ✅
-    Pending --> Rejected: reject() ❌
-    Fulfilled --> [*]
-    Rejected --> [*]
-\`\`\`
+## 3. STRUKTURA
 
----
+### A. Promise holatlari
+- **Pending:** Kutilmoqda (natija hali yo'q).
+- **Fulfilled (Resolved):** Muvaffaqiyatli yakunlandi.
+- **Rejected:** Xatolik bilan yakunlandi.
 
-## 3. PROMISE BILAN ISHLASH (.then, .catch)
-
-Natijani olish uchun biz quyidagi metodlardan foydalanamiz:
-- **.then():** Muvaffaqiyatli natijani olish uchun.
-- **.catch():** Xatoni ushlash uchun.
-- **.finally():** Nima bo'lishidan qat'iy nazar oxirida bajariladigan kod uchun.
-
+### B. Ishlatish usuli (.then, .catch)
 \`\`\`javascript
-const va'da = new Promise((resolve, reject) => {
-  let hammasiJoyida = true;
-  if (hammasiJoyida) {
-    resolve("Muvaffaqiyat!");
-  } else {
-    reject("Xatolik yuz berdi");
-  }
+const vadda = new Promise((resolve, reject) => {
+  let success = true;
+  if (success) resolve("Bajarildi! ✅");
+  else reject("Xato! ❌");
 });
 
-va'da
-  .then(res => console.log(res))
-  .catch(err => console.error(err));
+vadda
+  .then(res => console.log(res)) // Muvaffaqiyat bo'lsa
+  .catch(err => console.log(err)) // Xato bo'lsa
+  .finally(() => console.log("Tugadi")); // Har doim
 \`\`\`
 
----
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+const wait = (ms) => new Promise(res => setTimeout(res, ms));
+wait(2000).then(() => console.log("2 soniya o'tdi!"));
+\`\`\`
 
-## 4. INTERVYU SAVOLLARI (Junior & Middle)
+## 5. XATOLAR (Common mistakes)
+1. **.catch()ni unutish:** Agar promise reject bo'lsa va sizda \`.catch()\` bo'lmasa, brauzerda qizil xato chiqadi (\`Uncaught in Promise\`).
+2. **Promise ichida returnni unutish:** Chaining (zanjir) qilayotganda keyingi \`.then()\`ga ma'lumot o'tishi uchun oldingisida \`return\` bo'lishi shart.
 
-1. **Promise.all() nima vazifani bajaradi?**
-   *Javob:* Bir nechta Promiselarni parallel ishga tushiradi va hammasi bajarilgandan keyin natijalarni massiv ko'rinishida qaytaradi.
-
-2. **Callback Hell va Promisening farqi nimada?**
-   *Javob:* Callbacklarda kod ichma-ich kirib ketadi (piramida). Promiselar esa zanjir (chaining) ko'rinishida yoziladi, bu kodni o'qishni osonlashtiradi.
-
-3. **Promise.race() nima?**
-   *Javob:* Bir nechta Promiselardan qaysi biri birinchi bo'lib yakunlansa (xoh resolve, xoh reject), o'shaning natijasini qaytaradi.`,
+## 6. SAVOLLAR (12 ta)
+1. Promise nima?
+2. Promisening 3 ta holatini ayting.
+3. \`resolve\` va \`reject\` funksiyalari nima uchun kerak?
+4. \`.then()\` qachon ishlaydi?
+5. \`.catch()\` qachon ishlaydi?
+6. \`.finally()\` metodi nima vazifani bajaradi?
+7. Callback Hell va Promise farqi nimada?
+8. \`Promise.all()\` nima ish qiladi?
+9. \`Promise.race()\` nima ish qiladi?
+10. \`Promise.resolve("OK")\` nima qaytaradi?
+11. Promise ichida boshqa promise ishlatish mumkinmi?
+12. Promise asinxronlikni qanday tartibga soladi?`,
   exercises: [
     {
       id: 1,
-      title: "Vaqtinchalik va'da",
-      instruction: "2 soniyadan keyin 'Salom Asinxron' matnini resolve qiladigan Promise yarating va natijani .then orqali konsolga chiqaring.",
-      startingCode: "// Promiseni shu yerda yarating\n",
-      hint: "new Promise(res => setTimeout(() => res('Salom Asinxron'), 2000)).then(console.log);",
-      test: "if (code.includes('new Promise') && code.includes('then')) return null; return 'Promise va .then ishlating';"
-    },
-    {
-      id: 2,
-      title: "Xatoni ushlash",
-      instruction: "Darhol reject('Xato') qiladigan Promise yozing va xatoni .catch orqali konsolga chiqaring.",
-      startingCode: "// Kodni yozing\n",
-      hint: "new Promise((res, rej) => rej('Xato')).catch(console.log);",
-      test: "if (code.includes('reject') || code.includes('rej')) return null; return 'reject ishlatilmadi';"
+      title: "Promise mashqi",
+      instruction: "Darhol resolve('Salom') bo'ladigan promise yozing va uni .then orqali chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "Promise.resolve('Salom').then(console.log);",
+      test: "if (code.includes('then')) return null; return 'then ishlating';"
     }
   ]
 };
