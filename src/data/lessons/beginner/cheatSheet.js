@@ -1,57 +1,84 @@
 export const cheatSheet = {
-  id: "b0",
-  title: "⚡ JS Cheat Sheet (Tezkor ma'lumotnoma)",
-  theory: `## JavaScript Tezkor Ma'lumotnoma
+  id: "cheat-sheet",
+  title: "⚡ JS Cheat Sheet",
+  level: "Beginner",
+  description: "JavaScriptning eng ko'p ishlatiladigan qismlari bitta sahifada.",
+  theory: `
+# JavaScript Cheat Sheet – Tezkor eslatma
 
-Bu sahifada eng ko'p ishlatiladigan sintaksislar jamlangan.
+Bu sahifa sizga darslar davomida o'rgangan eng muhim narsalarni eslatib turish uchun yaratildi.
 
-### 1. O'zgaruvchilar
-| Kalit so'z | Scope | O'zgarish |
-|---|---|---|
-| \`var\` | Function | Ha |
-| \`let\` | Block | Ha |
-| \`const\` | Block | Yo'q |
+## 1. O'zgaruvchilar
+- \`let x = 10;\` — o'zgaradigan qiymat.
+- \`const y = 20;\` — o'zgarmas qiymat.
+- \`var z = 30;\` — eski usul (ishlatmang).
 
-### 2. Ma'lumot turlari
-- **Primitive**: String, Number, Boolean, Null, Undefined, Symbol, BigInt
-- **Reference**: Object, Array, Function
+## 2. Ma'lumot turlari
+- **String:** \`"Matn"\`
+- **Number:** \`123\`
+- **Boolean:** \`true / false\`
+- **Null:** \`null\` (bo'sh)
+- **Undefined:** \`undefined\` (noma'lum)
 
-### 3. Massiv Metodlari
-- \`push()\` / \`pop()\` - oxiridan qo'shish/olish
-- \`shift()\` / \`unshift()\` - boshidan olish/qo'shish
-- \`map()\` - o'zgartirib yangi massiv beradi
-- \`filter()\` - saralab yangi massiv beradi
-
-### 4. Funktsiyalar
+## 3. Shartli operatorlar
 \`\`\`javascript
-// Oddiy funktsiya
-function sayHi(name) {
-  return "Salom " + name;
+if (shart) {
+  // bajariladi
+} else {
+  // aks holda
 }
 
-// Arrow funktsiya (ES6)
-const sayHi = (name) => \`Salom \${name}\`;
+// Ternary:
+let res = (yosh >= 18) ? "Katta" : "Kichik";
 \`\`\`
 
-### 5. Shartlar
+## 4. Sikllar (Loops)
 \`\`\`javascript
-if (age > 18) {
-  console.log("Kattasiz");
-} else {
-  console.log("Kichiksiz");
+for (let i = 0; i < 5; i++) {
+  console.log(i);
 }
 
-// Ternary operator
-const status = age > 18 ? "Katta" : "Kichik";
-\`\`\``,
+for (let item of massiv) {
+  console.log(item);
+}
+\`\`\`
+
+## 5. Funksiyalar
+\`\`\`javascript
+function salom(ism) {
+  return "Salom " + ism;
+}
+
+const salomArrow = (ism) => "Salom " + ism;
+\`\`\`
+
+## 6. Obyektlar va Massivlar
+\`\`\`javascript
+const user = { name: "Ali", age: 25 }; // Obyekt
+const mevalar = ["Olma", "Banan"]; // Massiv
+\`\`\`
+
+## 7. SAVOLLAR (12 ta)
+1. \`let\` va \`const\` farqi nima?
+2. JavaScriptda nechta primitiv tur bor?
+3. \`==\` va \`===\` farqi nima?
+4. \`if\` ichida \`0\` bo'lsa nima bo'ladi?
+5. \`for\` loop qachon to'xtaydi?
+6. Arrow funksiya nima?
+7. \`typeof null\` natijasi nima?
+8. \`typeof NaN\` natijasi nima?
+9. Massivning 1-elementi indeksi necha?
+10. Obyekt xususiyatini qanday o'qiymiz?
+11. \`break\` nima ish qiladi?
+12. \`continue\` nima ish qiladi?`,
   exercises: [
     {
       id: 1,
-      title: "Bilimlarni sinash",
-      instruction: "O'zingiz haqingizda ma'lumot beruvchi 'me' obyektini yarating (name, age) va consolega chiqaring.",
-      startingCode: "// Kodni shu yerga yozing\n",
-      hint: "const me = { name: 'Ali', age: 20 }; console.log(me);",
-      test: "if (!code.includes('{') || !code.includes('}')) return 'Obyekt yarating'; if (!logs.length) return 'Consolega chiqaring';"
+      title: "Tezkor sinov",
+      instruction: "Konstanta 'PI' yarating (3.14) va konsolga chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "const PI = 3.14; console.log(PI);",
+      test: "if (logs.includes(3.14)) return null; return 'PI chiqmagan!';"
     }
   ]
 };
