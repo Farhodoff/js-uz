@@ -1,97 +1,84 @@
 export const classesLesson = {
-  id: "i7",
-  title: "Klasslar (Classes - ES6)",
-  theory: `## JavaScriptda Klasslar (Classes)
+  id: "classes",
+  title: "Klasslar (Classes)",
+  level: "Intermediate",
+  description: "Obyektlar yaratish uchun zamonaviy qoliplar (shablonlar) bilan tanishamiz.",
+  theory: `
+# Klasslar – Bu nima va nima uchun kerak?
 
-JavaScriptda **class** – obyektlarni yaratish uchun shablon (template). Ular prototype-based inheritance uchun qulayroq sintaksis (syntactic sugar) hisoblanadi.
+**Class** (Klass) — bu obyektlar yaratish uchun tayyor qolip (shablon). JavaScriptda klasslar prototiplar asosida ishlaydi, lekin ularni yozish ancha oson va tushunarli.
 
----
+## 1. NEGA kerak?
+Tasavvur qiling, sizga 100 ta "Mashina" obyekti kerak. Har biri uchun alohida obyekt yozish o'rniga, bitta "Mashina" klassini yaratasiz va undan istalgancha nusxa olasiz. Bu kodni tartibli va qayta ishlatiladigan qiladi.
 
-### 1. Class e’lon qilish
+## 2. SODDALIK (Analogiya)
+Klassni **pechenye qolipi** (forma) deb tasavvur qiling. Obyektlar esa o'sha qolipdan chiqqan **pechenyelar**. Qolip bitta, lekin pechenyelar ko'p bo'lishi mumkin.
+
+## 3. STRUKTURA
+
+### A. Klass yaratish
 \`\`\`javascript
-class Person {
-  constructor(name, age) {
-    this.name = name;
-    this.age = age;
+class Shaxs {
+  constructor(ism, yosh) { // Yangi obyekt yaratilganda birinchi ishlaydi
+    this.ism = ism;
+    this.yosh = yosh;
   }
-  
-  greet() {
-    console.log("Salom, ismim " + this.name);
-  }
-}
-let ali = new Person("Ali", 25);
-ali.greet();
-\`\`\`
 
-### 2. Meros olish (Inheritance) – extends
-\`extends\` yordamida bir klass boshqa klassdan meros olishi mumkin. \`super()\` parent klass constructorini chaqirish uchun ishlatiladi.
-\`\`\`javascript
-class Dog extends Animal {
-  constructor(name, breed) {
-    super(name); // majburiy
-    this.breed = breed;
+  salomBer() { // Metod
+    console.log("Salom, " + this.ism);
   }
 }
+const ali = new Shaxs("Ali", 25);
+ali.salomBer();
 \`\`\`
 
-### 3. Statik metodlar (static)
-\`static\` metodlar klassning o‘ziga tegishli, obyektga emas.
+### B. Meros olish (Inheritance)
+Bir klass boshqa klassning xususiyatlarini olishi mumkin:
 \`\`\`javascript
-class MathUtils {
-  static add(a, b) { return a + b; }
-}
-console.log(MathUtils.add(5, 10));
-\`\`\`
-
-### 4. Private (maxfiy) maydonlar – #
-\`#\` belgisi bilan boshlanadigan xususiyatlar klassdan tashqarida ko‘rinmaydi.
-\`\`\`javascript
-class BankAccount {
-  #balance = 0;
-  deposit(m) { this.#balance += m; }
+class Talaba extends Shaxs {
+  constructor(ism, yosh, kurs) {
+    super(ism, yosh); // Ota klassning constructorini chaqirish
+    this.kurs = kurs;
+  }
 }
 \`\`\`
 
----
-
-## Intervyu savollari (Junior & Middle)
-
-### Junior daraja
-1. **JavaScript class nima?**
-2. **constructor metodi nima vazifani bajaradi?**
-3. **extends va super() farqi nimada?**
-
-### Middle daraja
-4. **Nima uchun klasslar "syntactic sugar" deyiladi?**
-5. **Private (#) maydonlar qanday afzallik beradi?**
-6. **static metod bilan oddiy metod farqi nimada?**`,
-  task: `// 1. "Car" klassini yarating: brand, year xususiyatlari va getInfo() metodi bo'lsin.
-// 2. "ElectricCar" klassini yarating, u "Car"dan meros olsin va batteryCapacity qo'shimcha xususiyati bo'lsin.
-// 3. getInfo() metodini "ElectricCar"da override qilib, batareya quvvatini ham chiqaring.
-// 4. "Rectangle" klassida "area" getter metodini yarating (width * height).
-// 5. Private maydon "#id" bo'lgan "User" klassini yarating va unga faqat ichki metod orqali qiymat bering.
-
-// Kodingizni shu yerga yozing`,
-  hint: `// 1 & 2. Classes and Inheritance
-class Car {
-  constructor(brand, year) {
-    this.brand = brand;
-    this.year = year;
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+class Mashina {
+  constructor(model) {
+    this.model = model;
   }
-  getInfo() { return this.brand + " " + this.year; }
 }
+const myCar = new Mashina("Tesla");
+console.log(myCar.model);
+\`\`\`
 
-class ElectricCar extends Car {
-  constructor(brand, year, battery) {
-    super(brand, year);
-    this.battery = battery;
-  }
-  getInfo() { return super.getInfo() + " Battery: " + this.battery; }
-}
+## 5. XATOLAR (Common mistakes)
+1.  **constructor'ni unutish:** Ma'lumotlarni qabul qilish uchun \`constructor\` shart.
+2.  **super()'ni unutish:** Meros olganda (extends), \`super()\` chaqirilmasa \`this\` ishlamaydi.
 
-// 4. Getter
-class Rectangle {
-  constructor(w, h) { this.w = w; this.h = h; }
-  get area() { return this.w * this.h; }
-}`
+## 6. SAVOLLAR (12 ta)
+1. Klass (Class) nima?
+2. \`constructor\` nima vazifani bajaradi?
+3. Yangi obyekt yaratishda qaysi kalit so'z ishlatiladi (\`new\`)?
+4. Klass ichidagi funksiya nima deyiladi?
+5. Meros olish uchun qaysi kalit so'z ishlatiladi (\`extends\`)?
+6. \`super()\` nima uchun kerak?
+7. Klasslar va Prototiplar farqi nima?
+8. Statik metod (\`static\`) nima?
+9. Private (#) maydonlar nima uchun kerak?
+10. Klass nomi qanday harf bilan boshlanishi tavsiya etiladi (Katta)?
+11. Bitta klassdan nechta obyekt olish mumkin?
+12. Klasslar JSga qachon qo'shilgan (ES6)?`,
+  exercises: [
+    {
+      id: 1,
+      title: "Klass yaratish",
+      instruction: "'Car' klassini yarating, unda 'model' xususiyati bo'lsin.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "class Car { constructor(model) { this.model = model; } }",
+      test: "const c = new result('Test'); if (c.model === 'Test') return null; return 'Klass noto\\'g\\'ri';"
+    }
+  ]
 };
