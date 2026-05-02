@@ -1,76 +1,74 @@
 export const modulesLesson = {
-  id: "a6",
+  id: "modules",
   title: "Modullar (import va export)",
-  theory: `## 1. MODULLAR NIMA?
-Loyiha kattalashgani sari hamma kodni bitta faylda saqlash imkonsiz bo'lib qoladi. **Modullar** — bu kodni mantiqiy bo'laklarga (alohida fayllarga) bo'lish va ularni bir-biriga ulash usulidir.
+  level: "Advanced",
+  description: "Kodni mantiqiy bo'laklarga (fayllarga) bo'lish va ularni bir-biriga ulash.",
+  theory: `
+# Modullar – Bu nima va nima uchun kerak?
 
-### Afzalliklari:
-- **Tartib:** Har bir fayl bitta vazifaga javob beradi.
-- **Qayta ishlatish:** Bir marta yozilgan kodni boshqa fayllarda ham ishlatish mumkin.
-- **Xavfsizlik:** Modullar o'z xususiy doirasiga (scope) ega, global o'zgaruvchilar bilan to'qnashmaydi.
+**Module** (Modul) — bu shunchaki bitta JavaScript fayli. Loyiha kattalashgani sari barcha kodni bitta faylda saqlash imkonsiz bo'lib qoladi. Modullar bizga kodni bo'laklarga bo'lishga yordam beradi.
 
----
+## 1. NEGA kerak?
+1. **Tartib:** Har bir fayl bitta vazifaga javob beradi (masalan, \`auth.js\`, \`api.js\`).
+2. **Qayta ishlatish:** Bir marta yozilgan kodni bir nechta faylda ishlatish mumkin.
+3. **Xavfsizlik:** Modullar o'z xususiy doirasiga (scope) ega, ular global o'zgaruvchilar bilan to'qnashmaydi.
 
-## 2. EXPORT VA IMPORT
+## 2. SODDALIK (Analogiya)
+Buni **Lego konstruktori** deb tasavvur qiling. Sizda har xil rangli va shaklli bo'laklar bor. Siz ularni alohida-alohida saqlaysiz va kerak bo'lganda bir-biriga ulab, katta bino (loyiha) qurasiz.
 
-### A. Named Export (Nomli eksport)
-Bitta fayldan bir nechta narsani eksport qilish mumkin. Import qilganda aynan o'sha nom bilan jingalak qavs ichida olish kerak.
+## 3. STRUKTURA
 
+### A. Export (Eksport qilish)
+Fayldagi ma'lumotni tashqariga chiqarish:
 \`\`\`javascript
 // math.js
-export const PI = 3.14;
-export function sum(a, b) { return a + b; }
-
-// main.js
-import { PI, sum } from './math.js';
+export const PI = 3.14; // Nomli eksport
+export default function sum(a, b) { return a + b; } // Default eksport
 \`\`\`
 
-### B. Default Export (Asosiy eksport)
-Fayldan faqat bitta asosiy narsani eksport qilish uchun. Import qilganda istalgan nom berish mumkin.
-
+### B. Import (Import qilish)
+Boshqa fayldan ma'lumotni olib kelish:
 \`\`\`javascript
-// user.js
-export default class User { ... }
-
 // main.js
-import MyUser from './user.js';
+import qo'shish, { PI } from './math.js';
+console.log(qo'shish(2, 2)); // 4
 \`\`\`
 
-\`\`\`mermaid
-graph LR
-    A[Modul A] -- export --> B(Exported Data)
-    B -- import --> C[Modul B]
-    style B fill:#f9f,stroke:#333
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+// lib.js
+export const version = "1.0.0";
+
+// app.js
+import { version } from "./lib.js";
+console.log("Versiya: " + version);
 \`\`\`
 
----
+## 5. XATOLAR (Common mistakes)
+1. **Default export'da jingalak qavs ishlatish:** \`import { myDefault } from ...\` — Xato! ❌ Default export jingalak qavssiz import qilinadi.
+2. **Fayl yo'lini unutish:** \`./\` yoki \`../\` kabi yo'llarni (path) to'g'ri ko'rsatish shart.
 
-## 3. INTERVYU SAVOLLARI (Junior & Middle)
-
-1. **Named export va Default export farqi?**
-   *Javob:* Named export bir nechta bo'lishi mumkin va nomi bir xil bo'lishi shart. Default export bitta bo'ladi va nomini importda o'zgartirish mumkin.
-
-2. **Dinamik import nima?**
-   *Javob:* Modulni kodning istalgan joyida (masalan, \`if\` ichida) \`import()\` funksiyasi orqali yuklash. Bu \`Promise\` qaytaradi.
-
-3. **Modullarda 'use strict' yozish shartmi?**
-   *Javob:* Yo'q, modullar avtomatik ravishda qat'iy rejimda (strict mode) ishlaydi.`,
+## 6. SAVOLLAR (12 ta)
+1. Modul nima?
+2. Nomli eksport (Named export) va Default eksport farqi nima?
+3. Bitta faylda nechta default eksport bo'lishi mumkin?
+4. Bitta faylda nechta nomli eksport bo'lishi mumkin?
+5. Import qilishda o'zgaruvchi nomini o'zgartirsa bo'ladimi (\`as\` orqali)?
+6. Modullar avtomatik ravishda \`use strict\` rejimida ishlaydimi?
+7. \`import * as math from './math.js'\` nima vazifani bajaradi?
+8. Dinamik import (\`import()\`) nima?
+9. Modul ichidagi o'zgaruvchi globalda ko'rinadimi?
+10. Nima uchun modullar xavfsizroq deb hisoblanadi?
+11. HTML faylda modulni qanday ulash mumkin (\`type="module"\`)?
+12. Modullar keshlanadimi (bir marta yuklanadimi)?`,
   exercises: [
     {
       id: 1,
-      title: "Named Import",
-      instruction: "'math' modulidan 'PI' va 'add' ni import qilish kodini yozing.",
-      startingCode: "// Import kodini yozing\n",
-      hint: "import { PI, add } from './math.js';",
-      test: "if (code.includes('import') && code.includes('{') && code.includes('}')) return null; return 'Named import sintaksisi noto\\'g\\'ri';"
-    },
-    {
-      id: 2,
-      title: "Default Export",
-      instruction: "'Person' klassini default sifatida eksport qiling.",
-      startingCode: "class Person {}\n// Bu yerda eksport qiling\n",
-      hint: "export default Person;",
-      test: "if (code.includes('export default')) return null; return 'export default ishlatilmadi';"
+      title: "Export mashqi",
+      instruction: "'sayHello' funksiyasini nomli eksport (named export) qiling.",
+      startingCode: "function sayHello() {\n  console.log('Salom');\n}\n// Bu yerda eksport qiling",
+      hint: "export { sayHello };",
+      test: "if (code.includes('export')) return null; return 'Export ishlatilmadi';"
     }
   ]
 };
