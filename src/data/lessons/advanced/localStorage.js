@@ -1,63 +1,67 @@
 export const localStorageLesson = {
   id: "a15",
-  title: "Brauzer xotirasi (LocalStorage)",
-  theory: `## 1. KIRISH
-Veb-saytga kirganingizda, ba'zida sayt sizning tanlagan tilingizni yoki tungi rejim (dark mode) sozlamangizni eslab qoladi. Buning uchun brauzerning maxsus xotirasi — **LocalStorage** ishlatiladi.
+  title: "Brauzer xotirasi (LocalStorage va SessionStorage)",
+  theory: `
+# Brauzer xotirasi – Bu nima va nima uchun kerak?
 
----
+Veb-saytga kirganingizda, ba'zida sayt sizning tanlagan tilingizni yoki tungi rejim (dark mode) sozlamangizni eslab qoladi. Buning uchun brauzerning maxsus xotiralari — **LocalStorage** va **SessionStorage** ishlatiladi.
 
-## 2. LOCALSTORAGE XUSUSIYATLARI
-- **Muddati:** Ma'lumotlar foydalanuvchi o'zi o'chirmaguncha saqlanib qoladi (hatto kompyuter o'chib yonsa ham).
-- **Hajmi:** Taxminan 5-10 MB gacha ma'lumot sig'adi.
-- **Turi:** Faqat **matn (string)** ko'rinishidagi ma'lumotlarni saqlay oladi.
+## 1. NEGA kerak?
+Tasavvur qiling, foydalanuvchi saytingizda tilni "O'zbekcha"ga o'zgartirdi. Agar siz buni hech qayerda saqlamasangiz, sahifa yangilanganda yana "English" bo'lib qoladi. Ma'lumotlar bazasiga (Database) yozish esa har doim ham shart emas. Shunday kichik sozlamalar uchun brauzer xotirasi ideal joy.
 
-### Asosiy metodlar:
-1.  **setItem(key, value):** Ma'lumotni saqlash.
-2.  **getItem(key):** Ma'lumotni o'qish.
-3.  **removeItem(key):** Bittasini o'chirish.
-4.  **clear():** Hammasini tozalash.
+## 2. SODDALIK (Analogiya)
+- **LocalStorage:** Bu sizning shaxsiy daftarchangizga o'xshaydi. Unga yozilgan narsa siz uni o'chirmaguningizcha turaveradi (uyquga ketib tursangiz ham).
+- **SessionStorage:** Bu esa o'qituvchi doskaga yozgan narsasiga o'xshaydi. Dars tugashi (tab yopilishi) bilan hammasi o'chib ketadi.
 
+## 3. STRUKTURA
+
+### A. LocalStorage (Doimiy xotira)
+Hatto brauzerni yopib ochsangiz ham ma'lumot saqlanib qoladi.
 \`\`\`javascript
-localStorage.setItem("ism", "Ali");
-console.log(localStorage.getItem("ism")); // "Ali"
+localStorage.setItem("rang", "qizil"); // Saqlash
+let r = localStorage.getItem("rang"); // Olish
+localStorage.removeItem("rang"); // Bittasini o'chirish
+localStorage.clear(); // Hammasini tozalash
 \`\`\`
 
----
-
-## 3. OBYEKTLAR BILAN ISHLASH ⭐
-LocalStorage faqat matn saqlagani uchun, obyektlarni avval matnga aylantirish kerak:
-
+### B. SessionStorage (Vaqtinchalik xotira)
+Faqat joriy tab (vkladka) ochiq turguncha saqlanadi. Metodlari xuddi LocalStorage bilan bir xil:
 \`\`\`javascript
-const user = { name: "Ali", age: 25 };
-
-// Saqlash (JSON.stringify)
-localStorage.setItem("user", JSON.stringify(user));
-
-// Olish (JSON.parse)
-const savedUser = JSON.parse(localStorage.getItem("user"));
+sessionStorage.setItem("tabID", "123");
 \`\`\`
 
-\`\`\`mermaid
-graph LR
-    A[Obyekt] -- stringify --> B(JSON String)
-    B -- setItem --> C[LocalStorage]
-    C -- getItem --> D(JSON String)
-    D -- parse --> E[Obyekt]
-    style C fill:#f9f,stroke:#333
+### C. Obyektlarni saqlash (JSON.stringify)
+Xotira faqat **matn (string)** saqlay oladi. Obyekt saqlash uchun:
+\`\`\`javascript
+const user = { name: "Ali" };
+localStorage.setItem("user", JSON.stringify(user)); // Stringga o'girish
+const data = JSON.parse(localStorage.getItem("user")); // Obyektga qaytarish
 \`\`\`
 
----
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+localStorage.setItem("auth", "true");
+console.log("Saqlandi: " + localStorage.getItem("auth"));
+\`\`\`
 
-## 4. INTERVYU SAVOLLARI (Junior & Middle)
+## 5. XATOLAR (Common mistakes)
+1. **Obyektni to'g'ridan-to'g'ri saqlash:** \`localStorage.setItem("u", user)\` qilsangiz, u \`"[object Object]"\` bo'lib qoladi. JSON ishlatishni unutmang!
+2. **Xavfsizlik:** LocalStorage xavfsiz emas! U yerda parollar yoki bank karta ma'lumotlarini aslo saqlamang.
 
-1. **LocalStorage va SessionStorage farqi nima?**
-   *Javob:* LocalStorage ma'lumotni doimiy saqlaydi, SessionStorage esa faqat tab yopilguncha saqlaydi.
+## 6. SAVOLLAR (12 ta)
+1. LocalStorage va SessionStorage farqi nima?
+2. LocalStorage'da necha MB gacha ma'lumot saqlash mumkin?
+3. Ma'lumotni o'qish uchun qaysi metod ishlatiladi?
+4. \`JSON.stringify\` nima uchun kerak?
+5. \`JSON.parse\` qachon ishlatiladi?
+6. Brauzer yopilganda qaysi xotira o'chib ketadi?
+7. Xotiradagi barcha ma'lumotlarni qanday tozalash mumkin?
+8. LocalStorage faqat string saqlashining sababi nima?
+9. Xotirada maxfiy ma'lumotlarni saqlash mumkinmi?
+10. \`localStorage.length\` nima qaytaradi?
+11. Kompyuter o'chib yonsa LocalStorage o'chadimi?
+12. SessionStorage qachon tozalanadi?`,
 
-2. **LocalStorage xavfsizmi?**
-   *Javob:* Yo'q, LocalStorage'dagi ma'lumotlarni istalgan skript o'qishi mumkin (XSS). Shuning uchun u yerda parollar yoki tokenlarni saqlash tavsiya etilmaydi.
-
-3. **Storage to'lib qolsa nima bo'ladi?**
-   *Javob:* Brauzer \`QuotaExceededError\` xatosini beradi.`,
   exercises: [
     {
       id: 1,
