@@ -1,93 +1,70 @@
 export const mathObject = {
-  id: "b16",
-  title: "Math (Matematika) obyekti",
-  theory: `## 1. KIRISH
-O'yinlar yaratishda (tasodifiy dushmanlar paydo bo'lishi), narxlarni yaxlitlashda yoki murakkab hisob-kitoblarda bizga \`Math\` obyekti yordamga keladi.
+  id: "math",
+  title: "Math obyekti (Matematika)",
+  level: "Beginner",
+  description: "Murakkab hisob-kitoblar, yaxlitlash va tasodifiy sonlar bilan ishlashni o'rganamiz.",
+  theory: `
+# Math obyekti – Bu nima va nima uchun kerak?
 
-## 2. TUSHUNCHA
+JavaScriptda oddiy hisob-kitoblar (\`+\`, \`-\`) dan tashqari, murakkabroq matematik amallar uchun maxsus **Math** obyekti bor.
 
-### Sodda ta'rif
-\`Math\` - bu JavaScriptning ichki obyekti bo'lib, u barcha matematik o'zgarmaslar (masalan, PI) va funksiyalarni o'z ichiga oladi. Uni \`new\` kalit so'zi bilan yaratish shart emas.
+## 1. NEGA kerak?
+Tasavvur qiling, sizga o'yinda dushman tasodifiy (random) joydan chiqishi kerak. Yoki mahsulot narxi 12.99 bo'lsa, uni 13 ga yaxlitlash kerak. Mana shunday amallar uchun \`Math\` obyekti tayyor asboblarni taqdim etadi.
 
-### Real hayot o'xshashlik
-\`Math\` obyektini **muhandislik kalkulyatoriga** o'xshatish mumkin. Unda oddiy arifmetikadan tashqari murakkab amallar (kvadrat ildiz, sinus, yaxlitlash) tayyor holda turadi.
+## 2. SODDALIK (Analogiya)
+\`Math\` — bu sizning **muhandislik kalkulyatoringiz**. Unda oddiy arifmetikadan tashqari, kvadrat ildiz, tasodifiy son chiqarish va yaxlitlash kabi tugmalar bor. Eng muhimi, uni sotib olish (yaratish) shart emas, u JSda doim bor!
 
----
+## 3. STRUKTURA (Asosiy metodlar)
 
-## 3. ASOSIY METODLAR
+### A. Yaxlitlash (Rounding)
+- **Math.round(4.5):** Eng yaqin butun songa (→ 5).
+- **Math.floor(4.9):** Har doim pastga (yerga) qarab (→ 4).
+- **Math.ceil(4.1):** Har doim tepaga (shiftga) qarab (→ 5).
 
-### Yaxlitlash (Rounding)
-- \`Math.round(4.5)\`: Eng yaqin butun songa (→ 5).
-- \`Math.floor(4.9)\`: Har doim **pastga** qarab (→ 4).
-- \`Math.ceil(4.1)\`: Har doim **tepaga** qarab (→ 5).
-- \`Math.trunc(4.9)\`: Kasr qismini shunchaki olib tashlaydi (→ 4).
-
-### Boshqa muhimlar
-- \`Math.random()\`: 0 va 1 oralig'ida tasodifiy son beradi.
-- \`Math.max(1, 10, 5)\`: Eng katta sonni topadi (→ 10).
-- \`Math.min(...)\`: Eng kichik sonni topadi.
-- \`Math.pow(2, 3)\`: Darajaga ko'tarish (2 ning 3-darajasi = 8).
-- \`Math.sqrt(16)\`: Kvadrat ildiz (→ 4).
-
----
-
-## 4. KOD MISOLLARI
-
-### Misol 1 — Tasodifiy son generatori
-**Maqsad:** 1 dan 10 gacha tasodifiy butun son olish.
+### B. Tasodifiy sonlar (Random)
+\`Math.random()\` — 0 va 1 oralig'ida tasodifiy son beradi. 1 dan 10 gacha son olish uchun:
 \`\`\`javascript
-const randomNum = Math.floor(Math.random() * 10) + 1;
-console.log(randomNum); 
+let r = Math.floor(Math.random() * 10) + 1;
 \`\`\`
 
-### Misol 2 — Narxni yaxlitlash
+### C. Max va Min
 \`\`\`javascript
-const narx = 12.99;
-console.log("Xarid uchun:", Math.ceil(narx)); // → 13
+Math.max(1, 10, 5); // 10 (eng kattasi)
+Math.min(1, 10, 5); // 1 (eng kichigi)
 \`\`\`
 
----
-
-## 5. VIZUAL TUSHUNTIRISH
-### Yaxlitlash farqlari
-\`\`\`
-  3.2   3.5   3.8
-   │     │     │
-   ▼     ▼     ▼
-  [3]   [4]   [4]  <-- Math.round()
-  [3]   [3]   [3]  <-- Math.floor()
-  [4]   [4]   [4]  <-- Math.ceil()
-\`\`\`
-
----
-
-## 6. INTERVYU SAVOLLARI
-1. **Math.floor() va Math.trunc() farqi?** - Musbat sonlarda bir xil, lekin manfiy sonlarda farq qiladi. \`floor(-4.1)\` pastga qarab -5 beradi, \`trunc(-4.1)\` esa shunchaki kasrni olib -4 beradi.
-2. **0 va 100 oralig'ida random son qanday olinadi?** - \`Math.floor(Math.random() * 101)\`.
-
----
-
-## 7. MINI LOYIHA: "Omadli Chipta"
-**Vazifa:** 1000 dan 9999 gacha bo'lgan tasodifiy 4 xonali chipta raqamini chiqaring.
-
+## 4. AMALIYOT (Mashq)
 \`\`\`javascript
-function generateTicket() {
-  const min = 1000;
-  const max = 9999;
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-console.log("Sizning chiptangiz:", generateTicket());
+console.log(Math.sqrt(16)); // 4 (kvadrat ildiz)
+console.log(Math.pow(2, 3)); // 8 (2 ning 3-darajasi)
+console.log(Math.abs(-5)); // 5 (modul - har doim musbat)
 \`\`\`
-`,
+
+## 5. XATOLAR (Common mistakes)
+1. **Math.random() diapazoni:** U hech qachon aniq 1 qaytarmaydi (faqat 0 dan 0.999... gacha).
+2. **Katta harf:** \`math\` deb kichik harfda yozmang, doim **\`Math\`** (katta harf bilan) bo'lishi shart.
+
+## 6. SAVOLLAR (12 ta)
+1. \`Math\` obyekti nima vazifani bajaradi?
+2. \`Math.floor()\` va \`Math.ceil()\` farqi nimada?
+3. Eng yaqin songa yaxlitlash metodi qaysi?
+4. \`Math.random()\` qanday son qaytaradi?
+5. Tasodifiy sonni butun songa aylantirish uchun nima qilish kerak?
+6. Bir nechta son ichidan eng kattasini qaysi metod topadi?
+7. \`Math.sqrt(25)\` natijasi nima?
+8. \`Math.abs(-10)\` natijasi nima?
+9. Darajaga ko'tarish metodini ayting (\`pow\`).
+10. \`Math.PI\` nima qaytaradi?
+11. Nima uchun \`math.floor()\` deb yozish xato?
+12. Kasr qismini shunchaki olib tashlaydigan metod qaysi (\`trunc\`)?`,
   exercises: [
     {
       id: 1,
-      title: "Random butun son",
-      instruction: "1 dan 6 gacha (kubik tashlash kabi) tasodifiy butun son chiqaring.",
-      startingCode: "// Kodni shu yerga yozing\n",
-      hint: "Math.floor(Math.random() * 6) + 1",
-      test: "if (logs[0] >= 1 && logs[0] <= 6) return null; return '1 va 6 oralig\\'ida bo\\'lishi kerak';"
+      title: "Random mashqi",
+      instruction: "1 dan 6 gacha tasodifiy butun son chiqaring (kubik tashlagandek).",
+      startingCode: "// Bu yerga yozing\nlet dice = ",
+      hint: "let dice = Math.floor(Math.random() * 6) + 1;",
+      test: "if (dice >= 1 && dice <= 6) return null; return '1 va 6 oralig\\'ida bo\\'lishi kerak!';"
     }
   ]
 };
