@@ -1,86 +1,70 @@
 export const arrowFunctions = {
-  id: "m3",
-  title: "Arrow functions & Callbacks",
-  theory: `## 1. ARROW FUNCTIONS (Arrow funksiyalar)
-Arrow function — bu ES6 (2015) versiyasida qo'shilgan, funksiyalarni yozishning qisqa va zamonaviy usuli.
+  id: "arrow-functions",
+  title: "Arrow Functions (Arrow funksiyalar)",
+  level: "Intermediate",
+  description: "Funksiyalarni yozishning zamonaviy, qisqa va qulay usuli.",
+  theory: `
+# Arrow Functions – Bu nima va nima uchun kerak?
 
-### Sintaksis farqi
+**Arrow Functions** (Ko'rsatkichli funksiyalar) — bu ES6 versiyasida qo'shilgan, funksiyalarni yozishning yangicha sintaksisi.
+
+## 1. NEGA kerak?
+Kodning qisqaligi va o'qishga osonligi uchun. Ayniqsa, callback funksiyalarda (massiv metodlarida) arrow funksiyalar kodni 3-4 barobar qisqartiradi. Shuningdek, \`this\` konteksti bilan ishlashda ham o'ziga xos qulayligi bor.
+
+## 2. SODDALIK (Analogiya)
+Buni **SMS tili** deb tasavvur qiling. "Assalomu alaykum" deyish o'rniga "ASAL" yoki "Salom" deyish kabi. Ma'no bir xil, lekin yozish tezroq.
+
+## 3. STRUKTURA
+
+### A. Sintaksis farqi
 \`\`\`javascript
-// Oddiy funksiya
-function sum(a, b) {
-  return a + b;
-}
+// Eski usul
+const kvadrat = function(n) {
+  return n * n;
+};
 
-// Arrow function
-const sum = (a, b) => a + b;
+// Yangi usul (Arrow)
+const kvadrat = (n) => n * n; // Qavslar va return shart emas!
 \`\`\`
 
-### Asosiy xususiyatlari:
-1. **Implicit Return:** Agar funksiya faqat bitta qatordan iborat bo'lsa, \`return\` va \`{}\` qavslarni yozmasa ham bo'ladi.
-2. **this konteksti:** Arrow function o'zining \`this\`iga ega emas (buni keyingi darslarda chuqurroq o'rganamiz).
+### B. Implicit Return (Avtomatik qaytarish)
+Agar funksiya faqat bitta qatordan iborat bo'sa, jingalak qavs \`{ }\` va \`return\` so'zi yozilmasa ham bo'ladi. JS natijani avtomatik qaytaradi.
 
----
+### C. this konteksti
+**Muhim!** Arrow funksiyalarda o'zining \`this\`i yo'q. U \`this\`ni o'zi yozilgan joydan meros oladi.
 
-## 2. CALLBACK FUNCTIONS (Qayta qo'ng'iroq funksiyalari)
-Callback — bu boshqa bir funksiyaga **argument** sifatida berib yuboriladigan funksiya.
-
+## 4. AMALIYOT (Mashq)
 \`\`\`javascript
-function xabar(callback) {
-  console.log("Xabar yuborilmoqda...");
-  callback(); // Callback funksiyani ichkarida chaqiramiz
-}
-
-xabar(() => {
-  console.log("Xabar muvaffaqiyatli yuborildi!");
-});
+const sonlar = [1, 2, 3, 4];
+const ikkiBarobar = sonlar.map(n => n * 2);
+console.log(ikkiBarobar); // [2, 4, 6, 8]
 \`\`\`
 
-\`\`\`mermaid
-graph TD
-    A[Main Function] --> B{Callback bormi?}
-    B -- Ha --> C[Callbackni chaqirish]
-    B -- Yo'q --> D[Tugatish]
-    C --> D
-\`\`\`
+## 5. XATOLAR (Common mistakes)
+1.  **Obyekt qaytarishda xato:** \`const getObj = () => { name: "Ali" }\` — bu xato beradi! Obyektni qaytarish uchun uni qavsga olish shart: \`const getObj = () => ({ name: "Ali" })\`.
+2.  **Konstruktor sifatida ishlatish:** Arrow funksiyalarni \`new\` kalit so'zi bilan ishlatib bo'lmaydi.
 
----
-
-## 3. REAL MISOL: Massiv metodlarida
-Callbacklar asosan \`map\`, \`filter\`, \`forEach\` kabi massiv metodlarida ishlatiladi.
-
-\`\`\`javascript
-const sonlar = [1, 2, 3];
-const kvadratlar = sonlar.map(n => n * n); // Bu yerda (n => n * n) callback funksiyadir
-\`\`\`
-
----
-
-## 4. INTERVYU SAVOLLARI (Middle)
-
-1. **Arrow function va oddiy funksiya farqi nima?**
-   *Javob:* Sintaksis qisqaligi, \`this\` bog'lanishi (arrowda o'ziniki yo'q) va \`arguments\` obyekti yo'qligi.
-
-2. **Qachon arrow function ishlata olmaymiz?**
-   *Javob:* Konstruktor funksiyalar (new bilan) va ba'zi \`this\` ga bog'liq bo'lgan metodlarda.
-
-3. **Callback hell nima?**
-   *Javob:* Callbacklar ichma-ich haddan tashqari ko'payib ketishi natijasida kodning o'qilishi qiyinlashib ketishi.`,
+## 6. SAVOLLAR (12 ta)
+1. Arrow function qachon paydo bo'lgan?
+2. Arrow function va oddiy funksiyaning sintaksis farqi nima?
+3. Implicit return nima?
+4. Arrow funksiyada qachon \`return\` yozish shart?
+5. \`this\` kalit so'zi arrow funksiyada qanday ishlaydi?
+6. Bitta parametr bo'lsa qavslarni yozish shartmi?
+7. Arrow funksiyani \`new\` bilan ishlatish mumkinmi?
+8. \`arguments\` obyekti arrow funksiyada bormi?
+9. Callback sifatida nima uchun arrow funksiya tavsiya etiladi?
+10. Obyekt qaytarishda arrow funksiya sintaksisi qanday bo'ladi?
+11. Hoisting arrow funksiyalarda qanday ishlaydi?
+12. Qachon arrow funksiyadan ko'ra oddiy funksiya yaxshiroq?`,
   exercises: [
     {
       id: 1,
-      title: "Arrow sum",
-      instruction: "Arrow function yordamida ikkita sonni ko'paytiruvchi 'multiply' funksiyasini yozing (bitta qatorda).",
-      startingCode: "const multiply = // bu yerga yozing\n\nconsole.log(multiply(4, 5));",
+      title: "Arrow Multiply",
+      instruction: "Ikkita sonni ko'paytiradigan arrow funksiya yozing (bitta qatorda).",
+      startingCode: "const multiply = \n\nconsole.log(multiply(3, 4));",
       hint: "const multiply = (a, b) => a * b;",
-      test: "if (logs.includes('20')) return null; return 'Natija 20 bo\\'lishi kerak';"
-    },
-    {
-      id: 2,
-      title: "Simple Callback",
-      instruction: "'greet' funksiyasi bitta callback qabul qilsin va uni ichkarida chaqirsin.",
-      startingCode: "function greet(callback) {\n  // callbackni chaqiring\n}\n\ngreet(() => console.log('Salom Callback'));",
-      hint: "callback();",
-      test: "if (logs.includes('Salom Callback')) return null; return 'Callback chaqirilmadi';"
+      test: "if (multiply(3, 4) === 12) return null; return 'Ko\\'paytirish noto\\'g\\'ri';"
     }
   ]
 };
