@@ -1,68 +1,66 @@
 export const domBasics = {
   id: "m4",
-  title: "DOM bilan ishlash",
-  theory: `## 1. DOM NIMA?
-**DOM** (Document Object Model) — bu HTML hujjatining brauzer ichidagi daraxtsimon (tree) ko'rinishi. JavaScript orqali biz ushbu daraxtdagi istalgan elementni topishimiz, o'zgartirishimiz yoki o'chirib tashlashimiz mumkin.
+  title: "DOM bilan ishlash (Document Object Model)",
+  level: "Intermediate",
+  description: "JavaScript orqali HTML elementlarini boshqarish: tanlash, o'zgartirish va bezash.",
+  theory: `
+# DOM – Bu nima va nima uchun kerak?
 
-\`\`\`mermaid
-graph TD
-    A[Window] --> B[Document]
-    B --> C[HTML]
-    C --> D[Head]
-    C --> E[Body]
-    E --> F[Header]
-    E --> G[Main]
-    G --> H[H1]
-    G --> I[P]
-\`\`\`
+**DOM** (Document Object Model) — bu HTML hujjatining brauzer ichidagi daraxtsimon (tree) ko'rinishi. Oddiyroq aytsak, bu JavaScript va HTML o'rtasidagi "ko'prik".
 
----
+## 1. NEGA kerak?
+HTML o'zi "o'lik" (statik) narsa. U shunchaki matn va teglardan iborat. JavaScript orqali biz o'sha matnlarni o'zgartirishimiz, tugmalar bosilganda ranglarni almashtirishimiz yoki yangi elementlar qo'shishimiz mumkin. DOM bo'lmasa, saytlar shunchaki zerikarli gazeta bo'lib qolardi.
 
-## 2. ELEMENTLARNI TANLASH
-Elementlar bilan ishlash uchun avval ularni "ushlab" olishimiz kerak:
+## 2. SODDALIK (Analogiya)
+Tasavvur qiling, HTML — bu uyning chizmasi (proyekti). Uy bitganidan keyin siz uning devorini bo'yashingiz, mebellarini o'zgartirishingiz mumkin. DOM — bu sizning uydagi narsalarni "ushlab" o'zgartira olish qobiliyatingizdir.
 
-- **querySelector:** Har qanday CSS selektor orqali birinchi topilgan elementni oladi.
-- **querySelectorAll:** Barcha mos keladigan elementlarni ro'yxat (NodeList) shaklida oladi.
-- **getElementById:** Faqat ID orqali juda tez qidiradi.
+## 3. STRUKTURA
 
+### A. Elementlarni tanlash
+Elementni o'zgartirishdan oldin uni "topib" olish kerak:
 \`\`\`javascript
-const title = document.querySelector("#main-title");
-const items = document.querySelectorAll(".list-item");
+const sarlavha = document.getElementById("title"); // ID orqali (tezkor)
+const tugma = document.querySelector(".btn"); // CSS selektor orqali (eng qulay)
+const hammaListlar = document.querySelectorAll("li"); // Hammasini olish
 \`\`\`
 
----
+### B. Elementlarni o'zgartirish
+\`\`\`javascript
+const el = document.querySelector("h1");
 
-## 3. ELEMENTLARNI O'ZGARTIRISH
+el.textContent = "Yangi sarlavha"; // Matnni o'zgartirish
+el.innerHTML = "<span>Salom</span>"; // HTML qo'shish
+el.style.color = "red"; // Style berish
+el.classList.add("active"); // Class qo'shish
+\`\`\`
 
-### Matn va Kontent
-- **textContent:** Faqat ichidagi matnni o'zgartiradi (xavfsiz usul).
-- **innerHTML:** HTML teglari bilan birga o'zgartiradi (ehtiyotkorlik bilan ishlating!).
-
-### Style va Class
+## 4. AMALIYOT (Mashq)
 \`\`\`javascript
 const box = document.querySelector(".box");
-
-// To'g'ridan-to'g'ri style berish
-box.style.backgroundColor = "red";
-
-// Classlar bilan ishlash (Tavsiya etiladi)
-box.classList.add("active");
-box.classList.remove("old");
-box.classList.toggle("highlight");
+box.style.width = "100px";
+box.style.height = "100px";
+box.style.backgroundColor = "green";
 \`\`\`
 
----
+## 5. XATOLAR (Common mistakes)
+1. **querySelector bilan nuqtani unutish:** \`document.querySelector("my-class")\` ishlamaydi, \`".my-class"\` bo'lishi shart.
+2. **Style nomlari:** JSda CSS xususiyatlari \`camelCase\` yoziladi: \`background-color\` emas, \`backgroundColor\`.
+3. **Script joylashuvi:** Agar JS fayl HTML tepasida (\`<head>\`) bo'lsa va \`defer\` ishlatilmasa, DOM hali tayyor bo'lmagani uchun elementlarni topolmaydi.
 
-## 4. INTERVYU SAVOLLARI (Junior & Middle)
+## 6. SAVOLLAR (12 ta)
+1. DOM nima degani?
+2. HTML va DOM o'rtasidagi farq nima?
+3. Elementni ID orqali tanlash uchun qaysi metod ishlatiladi?
+4. \`querySelector\` va \`querySelectorAll\` farqi nima?
+5. \`textContent\` va \`innerHTML\` farqini ayting.
+6. JSda CSS style'lari qanday nomlanadi (camelCase)?
+7. \`classList.toggle()\` nima ish bajaradi?
+8. \`document.body\` nima qaytaradi?
+9. Elementni o'chirish uchun qaysi metod ishlatiladi?
+10. Yangi element yaratish metodini ayting (\`createElement\`).
+11. Nima uchun style'ni to'g'ridan-to'g'ri JSda berishdan ko'ra class qo'shish yaxshi?
+12. DOM daraxtida "ota" elementni qanday topish mumkin (\`parentElement\`)?`,
 
-1. **textContent va innerHTML farqi nima?**
-   *Javob:* \`textContent\` faqat matnni o'qiydi/yozadi. \`innerHTML\` esa matn ichidagi HTML teglarni ham tushunadi va render qiladi.
-
-2. **querySelectorAll qanday natija qaytaradi?**
-   *Javob:* \`NodeList\` qaytaradi. Bu massivga o'xshash obyekt bo'lib, unda \`forEach\` ishlatish mumkin.
-
-3. **Nega style.backgroundColor = "red" dan ko'ra classList.add("red-bg") yaxshi?**
-   *Javob:* Dizaynni CSS faylda saqlash va faqat classlarni boshqarish kodni toza va tushunarli qiladi.`,
   exercises: [
     {
       id: 1,
