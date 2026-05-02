@@ -1,58 +1,67 @@
 export const fetchApi = {
   id: "a3",
-  title: "Fetch API (Server bilan aloqa)",
-  theory: `## 1. FETCH API NIMA?
-**Fetch API** — bu brauzer orqali tarmoq (network) so'rovlarini amalga oshirish uchun ishlatiladigan zamonaviy interfeys. U yordamida biz serverdan ma'lumot olishimiz (GET) yoki ma'lumot yuborishimiz (POST) mumkin.
+  title: "Fetch API va AJAX (Server bilan aloqa)",
+  level: "Advanced",
+  description: "Brauzer orqali serverga so'rov yuborish: zamonaviy Fetch va eski AJAX usullari.",
+  theory: `
+# Fetch API – Bu nima va nima uchun kerak?
 
----
+**Fetch API** — bu brauzer orqali serverga tarmoq (network) so'rovlarini yuborish uchun ishlatiladigan zamonaviy vosita. U yordamida biz serverdan ma'lumot olishimiz (GET) yoki ma'lumot yuborishimiz (POST) mumkin.
 
-## 2. ISHLASH PRINSIPI
-Fetch har doim **Promise** qaytaradi. Ma'lumotni olish jarayoni ikki bosqichdan iborat:
-1.  **Response:** Serverdan javob kelishi (status, headers).
-2.  **Data:** Kelgan javobni o'qish (odatda \`.json()\` orqali).
+## 1. NEGA kerak?
+Tasavvur qiling, saytingizda ob-havo ma'lumotini ko'rsatmoqchisiz. Buning uchun sizga boshqa bir serverdan ma'lumot kerak. Fetch sizga sahifani yangilamasdan (backgroundda) server bilan "gaplashish" imkonini beradi.
 
-### Oddiy misol (Async/Await):
+## 2. SODDALIK (Analogiya)
+Fetch — bu restorandagi ofitsiantga o'xshaydi. Siz unga buyurtma berasiz (fetch call), u oshxonaga (server) boradi va ovqatni (ma'lumotni) olib keladi. Siz esa u kelguncha o'z ishingizni qilib turaverasiz (Asinxronlik).
+
+## 3. STRUKTURA
+
+### A. Fetch ishlatish (Async/Await)
+Fetch har doim **Promise** qaytaradi:
 \`\`\`javascript
-async function getData() {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts/1');
-  const data = await response.json();
-  console.log(data);
+async function getPosts() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+  const data = await res.json(); // Matnni JSON obyektga o'girish
+  console.log(data.title);
 }
 \`\`\`
 
-\`\`\`mermaid
-sequenceDiagram
-    participant B as Brauzer
-    participant S as Server
-    B->>S: fetch(url) - So'rov
-    S-->>B: Response (status 200)
-    B->>B: response.json()
-    B-->>B: Ma'lumot tayyor!
-\`\`\`
-
----
-
-## 3. STATUS KODLAR VA XATOLAR
-Fetch faqat tarmoq xatosi bo'lgandagina (masalan, internet uzilsa) \`catch\` blokiga tushadi. Agar server 404 yoki 500 xatosini qaytarsa, Fetch buni xato deb hisoblamaydi. Shuning uchun \`response.ok\` ni tekshirish kerak.
-
+### B. AJAX (Eski usul - XMLHttpRequest)
+Fetch'dan oldin dasturchilar \`XMLHttpRequest\` (AJAX) ishlatishgan. U juda noqulay bo'lgan:
 \`\`\`javascript
-if (!response.ok) {
-  throw new Error("Xatolik: " + response.status);
-}
+const xhr = new XMLHttpRequest();
+xhr.open("GET", "url");
+xhr.onload = function() { console.log(xhr.responseText); };
+xhr.send();
+\`\`\`
+Bugungi kunda Fetch (yoki Axios) ishlatish standart hisoblanadi.
+
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+fetch("https://jsonplaceholder.typicode.com/todos/1")
+  .then(res => res.json())
+  .then(json => console.log(json));
 \`\`\`
 
----
+## 5. XATOLAR (Common mistakes)
+1. **JSONni unutish:** \`fetch\` qaytargan \`res\` bu hali ma'lumot emas, bu "javob". Uni \`res.json()\` deb o'girish shart.
+2. **Double Await:** \`res.json()\` ham Promise qaytaradi, shuning uchun uning oldida ham \`await\` bo'lishi kerak.
+3. **Network Errors:** Fetch faqat internet uzilsagina \`catch\`ga tushadi. 404 xatolarida \`catch\`ga tushmaydi, \`res.ok\`ni tekshirish kerak.
 
-## 4. INTERVYU SAVOLLARI (Middle)
+## 6. SAVOLLAR (12 ta)
+1. Fetch API nima?
+2. AJAX (Asynchronous JavaScript and XML) nima?
+3. Fetch va XMLHttpRequest farqi nimada?
+4. \`res.json()\` metodi nima qaytaradi?
+5. Fetch default holatda qaysi metodni ishlatadi (GET)?
+6. POST so'rov yuborishda \`body\` nima uchun kerak?
+7. \`res.ok\` qachon \`true\` bo'ladi?
+8. Nima uchun fetch asinxron ishlaydi?
+9. Fetch status kodlari 404 bo'lganda \`catch\`ga tushadimi?
+10. \`headers\` (sarlavhalar) nima uchun kerak?
+11. API nima degani?
+12. Fetch orqali rasm yoki fayl yuklasa bo'ladimi?`,
 
-1. **Nega fetch() da xatolarni tutish uchun faqat catch etarli emas?**
-   *Javob:* Chunki Fetch HTTP xatolarni (404, 500) xato deb hisoblamaydi, u faqat tarmoq uzilishidagina catch'ga tushadi.
-
-2. **JSON() metodi nima qaytaradi?**
-   *Javob:* U ham Promise qaytaradi, chunki katta ma'lumotlarni o'qish vaqt olishi mumkin.
-
-3. **Fetch bilan qanday qilib POST so'rov yuboriladi?**
-   *Javob:* \`fetch(url, { method: 'POST', body: JSON.stringify(data), headers: { ... } })\` ko'rinishida.`,
   exercises: [
     {
       id: 1,
