@@ -313,11 +313,9 @@ body {
   display: flex;
   overflow: hidden;
   padding: var(--space-3) var(--space-5) var(--space-5);
-  gap: var(--space-5);
 }
 
 .pane {
-  flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -325,8 +323,47 @@ body {
 }
 
 .pane-theory {
-  border-right: 1px solid var(--border-primary);
-  padding-right: var(--space-5);
+  padding-right: var(--space-2);
+}
+
+.pane-divider {
+  width: 12px;
+  cursor: col-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  position: relative;
+  z-index: 10;
+  margin: 0 -4px;
+}
+
+.pane-divider::after {
+  content: '';
+  width: 1px;
+  height: 100%;
+  background: var(--border-primary);
+  transition: all var(--transition-fast);
+}
+
+.pane-divider:hover::after {
+  background: var(--accent);
+  width: 2px;
+}
+
+.pane-divider-handle {
+  width: 4px;
+  height: 40px;
+  background: var(--border-secondary);
+  border-radius: var(--radius-full);
+  position: absolute;
+  opacity: 0;
+  transition: all var(--transition-fast);
+}
+
+.pane-divider:hover .pane-divider-handle {
+  opacity: 1;
+  background: var(--accent);
 }
 
 .pane-label {
@@ -828,6 +865,10 @@ body {
     border-bottom: 1px solid var(--border-primary);
     padding-right: 0;
     padding-bottom: var(--space-5);
+  }
+
+  .pane-divider {
+    display: none;
   }
 
   .ai-modal {

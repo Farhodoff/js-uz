@@ -21,6 +21,35 @@ function LessonPage() {
   const ai = useAI();
   const progress = useProgress();
 
+  // Resizing state
+  const [leftWidth, setLeftWidth] = useState(50); // percentage
+  const isResizing = useRef(false);
+
+  const startResizing = () => {
+    isResizing.current = true;
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", stopResizing);
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  };
+
+  const stopResizing = () => {
+    isResizing.current = false;
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", stopResizing);
+    document.body.style.cursor = "default";
+    document.body.style.userSelect = "auto";
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isResizing.current) return;
+    const offsetLeft = sidebarOpen && window.innerWidth > 768 ? 270 : 0;
+    const newWidth = ((e.clientX - offsetLeft) / (window.innerWidth - offsetLeft)) * 100;
+    if (newWidth > 20 && newWidth < 80) {
+      setLeftWidth(newWidth);
+    }
+  };
+
   const {
     activeSection, setActiveSection,
     activeLesson, openLesson,
@@ -87,13 +116,18 @@ function LessonPage() {
 
         <div className="split-layout">
           {/* Left: Theory */}
-          <div className="pane pane-theory">
+          <div className="pane pane-theory" style={{ flex: `0 0 ${leftWidth}%` }}>
             <div className="pane-label">📖 Nazariya</div>
             <TheoryTab activeLesson={activeLesson} />
           </div>
 
+          {/* Divider handle */}
+          <div className="pane-divider" onMouseDown={startResizing}>
+            <div className="pane-divider-handle"></div>
+          </div>
+
           {/* Right: Practice */}
-          <div className="pane">
+          <div className="pane" style={{ flex: `1 1 auto` }}>
             <div className="pane-label">💻 Amaliyot</div>
             <PracticeTab
               code={code}
