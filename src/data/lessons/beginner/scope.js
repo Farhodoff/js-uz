@@ -1,74 +1,85 @@
 export const scopeLesson = {
-  id: "b8",
-  title: "Scope va Closure (Doira va Yopilish)",
-  theory: `## 1. SCOPE NIMA?
-**Scope** (doira) — bu o'zgaruvchi va funksiyalarning kodingizda qayerda "ko'rinishi" va "ishlatilishi" mumkinligini belgilaydigan hududdir.
+  id: "scope",
+  title: "Scope (Ko'rinish sohasi)",
+  level: "Beginner",
+  description: "O'zgaruvchilar kodingizning qaysi qismida 'yashashi' va qayerda 'ko'rinishi' haqida.",
+  theory: `
+# Scope – Bu nima va nima uchun kerak?
 
-### Scope turlari:
-1.  **Global Scope:** Hujjatning eng yuqori qismida e'lon qilingan o'zgaruvchilar. Ularni istalgan joyda ishlatish mumkin.
-2.  **Function Scope:** Faqat funksiya ichida e'lon qilingan o'zgaruvchilar.
-3.  **Block Scope:** \`let\` va \`const\` bilan \`{ }\` jingalak qavslar ichida yaratilgan o'zgaruvchilar.
+**Scope** (Ko'rinish sohasi) — bu o'zgaruvchilar va funksiyalarning kodingizda qayerda ishlatilishi mumkinligini belgilaydigan hududdir.
 
----
+## 1. NEGA kerak?
+Tasavvur qiling, hamma o'zgaruvchilar "global" (hamma joyda ko'rinadigan) bo'lsa, kodingiz juda tartibsiz bo'lib ketadi. Biror funksiya ichidagi o'zgaruvchi boshqa funksiyadagi o'zgaruvchi bilan to'qnashib ketishi mumkin. Scope bizga kodni tartibga solish va "xavfsiz hududlar" yaratishga yordam beradi.
 
-## 2. SCOPE CHAIN (Doiralar zanjiri)
-Agar JavaScript o'zgaruvchini joriy doirada topa olmasa, u bitta yuqoriga chiqadi va o'sha yerdan qidiradi. Bu jarayon o'zgaruvchi topilguncha yoki global doiraga yetguncha davom etadi.
+## 2. SODDALIK (Analogiya)
+Buni uyingizdagi xonalar deb tasavvur qiling:
+- **Global Scope:** Bu uyning hovlisi. Hovlidagi narsani hamma xonadan ko'rish mumkin.
+- **Local Scope (Xona):** Bu sizning yotoqxonangiz. U yerdagi narsalarni faqat o'sha xonada o'tirganlar ko'radi. Tashqaridagilar (globaldagilar) ichkarida nima borligini bilmaydi.
 
-\`\`\`mermaid
-graph TD
-    A[Global Scope] --> B[Function Scope]
-    B --> C[Block Scope]
-    C -.-> |"Qidiruv tepaga"| B
-    B -.-> |"Qidiruv tepaga"| A
-\`\`\`
+## 3. STRUKTURA
 
----
-
-## 3. CLOSURE (Yopilish) NIMA? ⭐
-**Closure** — bu ichki funksiyaning tashqi funksiya o'zgaruvchilariga kirish huquqiga ega bo'lishi. Hatto tashqi funksiya o'z ishini tugatgan bo'lsa ham, ichki funksiya o'sha o'zgaruvchilarni "eslab qoladi".
-
+### A. Global Scope
+Hamma joyda ishlaydigan o'zgaruvchilar:
 \`\`\`javascript
-function tashqi() {
-  let sanoq = 0;
-  return function ichki() {
-    sanoq++;
-    console.log(sanoq);
-  }
+let hovli = "Daraxt";
+function xona() {
+  console.log(hovli); // Daraxtni ko'rsa bo'ladi
 }
-
-const counter = tashqi();
-counter(); // 1
-counter(); // 2
 \`\`\`
 
----
+### B. Function Scope
+Faqat funksiya ichida ko'rinadigan o'zgaruvchilar:
+\`\`\`javascript
+function xona() {
+  let kravat = "Yumshoq";
+}
+console.log(kravat); // Xato! (ReferenceError)
+\`\`\`
 
-## 4. INTERVYU SAVOLLARI (Junior & Middle)
+### C. Block Scope (let va const)
+\`if\`, \`for\` yoki \`{ }\` ichidagi o'zgaruvchilar:
+\`\`\`javascript
+if (true) {
+  let sir = "Maxfiy";
+}
+console.log(sir); // Xato!
+\`\`\`
 
-1. **let va var ning scope bo'yicha farqi nima?**
-   *Javob:* \`var\` function-scoped, \`let\` esa block-scoped hisoblanadi.
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+let ism = "Farhod"; // Global
+function salom() {
+  let xabar = "Assalomu alaykum"; // Local
+  console.log(xabar + ", " + ism);
+}
+salom();
+\`\`\`
 
-2. **Closure nima uchun kerak?**
-   *Javob:* Ma'lumotlarni yashirish (private variables) va funksiyalarga "xotira" berish uchun.
+## 5. XATOLAR (Common mistakes)
+1.  **Global o'zgaruvchilarni ko'p ishlatish:** Bu "Global Namespace Pollution" deyiladi va xatolarga sabab bo'ladi.
+2.  **var va Block Scope:** \`var\` block scope'ni tushunmaydi! \`if\` ichidagi \`var\` tashqarida ham ko'rinadi. Doim \`let\` va \`const\` ishlating.
 
-3. **Global o'zgaruvchilar ko'p bo'lishi nega yomon?**
-   *Javob:* "Global namespace pollution" — ya'ni turli qismlarda bir xil nomli o'zgaruvchilar to'qnashib qolishi mumkin.`,
+## 6. SAVOLLAR (12 ta)
+1. Scope nima?
+2. Global scope nima?
+3. Local (Function) scope nima?
+4. Block scope nima?
+5. \`let\`, \`const\` va \`var\`ning scope bo'yicha farqi nima?
+6. Scope Chain (zanjiri) nima?
+7. Nima uchun global o'zgaruvchilardan qochish kerak?
+8. Funksiya ichidagi o'zgaruvchi global o'zgaruvchi bilan bir xil nomda bo'lsa nima bo'ladi?
+9. "Lexical scope" nima degani?
+10. O'zgaruvchi e'lon qilinmagan bo'lsa, JS uni qayerdan qidiradi?
+11. Block scope \`if\` va \`for\`dan tashqari qayerda bo'lishi mumkin?
+12. Nesting (ichma-ich) scopelar qanday ishlaydi?`,
   exercises: [
     {
       id: 1,
-      title: "Block Scope",
-      instruction: "Blok ichida 'const x = 10' yarating va uni blokdan tashqarida log qilib ko'ring (xato bo'lishi kerak).",
-      startingCode: "if (true) {\n  // x ni yarating\n}\nconsole.log(x);",
-      hint: "const x = 10;",
-      test: "if (output.includes('ReferenceError')) return null; return 'Xato chiqishi kerak (ReferenceError)';"
-    },
-    {
-      id: 2,
-      title: "Oddiy Closure",
-      instruction: "createSecret funksiyasi 'secret' o'zgaruvchisini qaytaradigan funksiya qaytarsin.",
-      startingCode: "function createSecret(msg) {\n  const secret = 'Yashirin: ' + msg;\n  return function() {\n    // secretni qaytaring\n  }\n}",
-      hint: "return secret;",
-      test: "const fn = new Function('msg', code + ' return createSecret(msg);')('test'); if (fn() === 'Yashirin: test') return null; return 'Closure to\\'g\\'ri ishlamadi';"
+      title: "Local scope mashqi",
+      instruction: "Funksiya ichida o'zgaruvchi yarating va uni tashqarida chiqarishga urinib xato (ReferenceError) oling.",
+      startingCode: "function test() {\n  // Bu yerda let x = 5 yarating\n}\ntest();\n// Bu yerda console.log(x) qiling",
+      hint: "console.log(x) ni test() dan tashqarida yozing.",
+      test: "if (output.includes('ReferenceError')) return null; return 'Xato chiqishi kerak edi';"
     }
   ]
 };
