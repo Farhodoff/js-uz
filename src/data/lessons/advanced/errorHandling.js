@@ -1,77 +1,79 @@
 export const errorHandling = {
-  id: "a5",
-  title: "Xatolar bilan ishlash (Error Handling)",
-  theory: `## 1. KIRISH
-Dasturlashda xatolar (bugs) muqarrar. Muhimi — xato sodir bo'lganda butun dastur to'xtab qolmasligini ta'minlash. Buning uchun JavaScriptda \`try...catch\` konstruktsiyasi ishlatiladi.
+  id: "error-handling",
+  title: "Error Handling (Xatolar bilan ishlash)",
+  level: "Advanced",
+  description: "Dasturingiz 'portlab' ketmasligi uchun xatolarni oldindan ushlash va boshqarish.",
+  theory: `
+# Error Handling – Bu nima va nima uchun kerak?
 
----
+Dasturlashda xatolar (bugs) muqarrar. Muhimi — xato sodir bo'lganda butun dastur (sayt) to'xtab qolmasligini ta'minlash. Buning uchun JSda **try...catch** ishlatiladi.
 
-## 2. TRY...CATCH...FINALLY
-- **try:** Xato sodir bo'lishi mumkin bo'lgan kod bloki.
-- **catch:** Agar xato bo'lsa, ushbu blok ishga tushadi.
-- **finally:** Xato bo'ladimi yoki yo'qmi, baribir oxirida ishlaydigan blok.
+## 1. NEGA kerak?
+Tasavvur qiling, foydalanuvchi noto'g'ri JSON yubordi. Agar siz uni shunchaki \`JSON.parse()\` qilsangiz va u xato bersa, butun sayt ishlamay qoladi (oq ekran). Xatoni ushlasangiz, foydalanuvchiga chiroyli qilib "Ma'lumotda xato bor" deb xabar ko'rsata olasiz.
 
+## 2. SODDALIK (Analogiya)
+Buni **xavfsizlik kamari** deb tasavvur qiling. Siz mashina haydayapsiz (kod ishlayapti). Agar kutilmagan holat (xato) bo'lsa, xavfsizlik kamari (try...catch) sizni jarohatdan (dastur o'chib qolishidan) saqlab qoladi.
+
+## 3. STRUKTURA
+
+### A. try...catch...finally
+- **try:** Xato bo'lishi mumkin bo'lgan kod.
+- **catch:** Agar xato bo'lsa, ushbu blok ishlaydi.
+- **finally:** Xato bo'lishi yoki bo'lmasligidan qat'iy nazar oxirida ishlaydi.
 \`\`\`javascript
 try {
-  let natija = 10 / x; // x topilmasa xato beradi
+  let natija = 10 / x; // x topilmasa xato
 } catch (err) {
-  console.log("Xato ushlandi: " + err.message);
+  console.log("Xato: " + err.message);
 } finally {
-  console.log("Amaliyot yakunlandi.");
+  console.log("Har doim ishlayman");
 }
 \`\`\`
 
-\`\`\`mermaid
-graph TD
-    A[Boshlash] --> B[try bloki]
-    B --> C{Xato bormi?}
-    C -- Ha --> D[catch bloki]
-    C -- Yo'q --> E[finally bloki]
-    D --> E
-    E --> F[Tugash]
-\`\`\`
-
----
-
-## 3. THROW — XATONI ATAYLAB CHIQARISH
-Biz o'zimiz xohlagan shart asosida xatolik yuzaga keltirishimiz mumkin:
-
+### B. throw (Xatoni ataylab chiqarish)
+O'zingiz xohlagan shartda xato yaratishingiz mumkin:
 \`\`\`javascript
 function tekshir(yosh) {
-  if (age < 18) {
-    throw new Error("Siz juda yoshsiz!");
+  if (yosh < 0) {
+    throw new Error("Yosh minus bo'lishi mumkin emas!");
   }
 }
 \`\`\`
 
----
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+try {
+  const data = JSON.parse("not a json");
+} catch (e) {
+  console.log("Xato ushlandi!");
+}
+\`\`\`
 
-## 4. INTERVYU SAVOLLARI (Junior & Middle)
+## 5. XATOLAR (Common mistakes)
+1. **Asinxron xatolar:** \`try...catch\` oddiy \`setTimeout\` ichidagi xatoni ushlay olmaydi. Buning uchun \`async/await\` shart.
+2. **Bo'sh catch:** Xatoni ushlab, uni hech narsa qilmaslik (jim qolish) yomon odat. Hech bo'lmasa \`console.error\` qiling.
 
-1. **finally bloki nima uchun kerak?**
-   *Javob:* Odatda "tozalash" ishlari uchun. Masalan, faylni yopish yoki yuklash indikatorini (spinner) to'xtatish uchun.
-
-2. **Error obyektining qanday asosiy xususiyatlari bor?**
-   *Javob:* \`name\` (xato turi) va \`message\` (xato haqida xabar).
-
-3. **Asinxron kodda try...catch qanday ishlaydi?**
-   *Javob:* \`setTimeout\` ichidagi xatoni tashqaridagi \`try...catch\` ushlay olmaydi. Lekin \`async/await\` bilan ishlatilsa, hammasi joyida bo'ladi.`,
+## 6. SAVOLLAR (12 ta)
+1. Error Handling nima?
+2. \`try\` bloki nima uchun kerak?
+3. \`catch\` bloki qachon ishga tushadi?
+4. \`finally\` blokining vazifasi nima?
+5. \`throw\` kalit so'zi nima qiladi?
+6. \`Error\` obyektining qanday xususiyatlari bor (\`message\`, \`name\`)?
+7. \`try...catch\` asinxron kodda (async/await) qanday ishlaydi?
+8. Nima uchun barcha kodni \`try...catch\`ga o'rab tashlash tavsiya etilmaydi?
+9. Sintaksis xatolarini (SyntaxError) \`try...catch\` ushlay oladimi?
+10. \`ReferenceError\` va \`TypeError\` farqi nima?
+11. O'zimizning shaxsiy xato turimizni (Custom Error) yaratsa bo'ladimi?
+12. Xatolar haqida foydalanuvchiga qanday xabar berish to'g'ri?`,
   exercises: [
     {
       id: 1,
-      title: "Xatoni ushlash",
-      instruction: "JSON.parse('not-json') xatosini try...catch orqali ushlang va 'Error' deb chiqaring.",
-      startingCode: "try {\n  // Bu yerda JSON.parse ishlating\n} catch (e) {\n  // Chiqaring\n}",
-      hint: "JSON.parse('...'); console.log('Error');",
-      test: "if (logs.includes('Error')) return null; return 'Error deb chiqishi kerak';"
-    },
-    {
-      id: 2,
-      title: "Ataylab xato chiqarish",
-      instruction: "Agar 'val' 0 dan kichik bo'lsa 'throw' yordamida Error tashlang.",
-      startingCode: "const val = -1;\n// Bu yerga yozing\n",
-      hint: "if (val < 0) throw new Error('Minus');",
-      test: "if (output.includes('Minus')) return null; return 'Error tashlanishi kerak';"
+      title: "try-catch mashqi",
+      instruction: "JSON.parse('salom') xatosini ushlang va konsolga 'Xato' deb chiqaring.",
+      startingCode: "try {\n  // Bu yerda yozing\n} catch (e) {\n  // Bu yerda\n}",
+      hint: "JSON.parse('...'); console.log('Xato');",
+      test: "if (logs.includes('Xato')) return null; return 'Xato ushlanmadi';"
     }
   ]
 };
