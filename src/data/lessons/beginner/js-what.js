@@ -1,115 +1,63 @@
 export const jsWhat = {
-  id: "b0",
-  title: "JavaScriptga Kirish",
-  theory: `## 1. NEGA VA NIMA?
-Tasavvur qiling, sizda chiroyli mashina bor (bu **HTML** va **CSS**). Lekin u yurmaydi, chiroqlari yonmaydi va signali ishlamaydi. Uni "jonlantirish" uchun sizga dvigatel va miya kerak. Veb-saytlar uchun bu "miya" — **JavaScript**dir!
+  id: "js-what",
+  title: "JavaScript nima?",
+  level: "Beginner",
+  description: "Dunyodagi eng mashhur dasturlash tili bilan tanishuv. U nima uchun kerak va qanday ishlaydi?",
+  theory: `
+# JavaScript – Bu nima va nima uchun kerak?
 
-**JavaScript** — bu veb-sahifalarni interaktiv (jonli) qiladigan dunyodagi eng mashhur dasturlash tili.
+**JavaScript** (JS) — bu veb-sahifalarni "jonlantiradigan" dasturlash tilidir. Agar saytni bir odam deb tasavvur qilsak, HTML — uning suyagi, CSS — uning kiyimi va tashqi ko'rinishi, JavaScript esa uning **miyasi** va harakatlaridir.
 
----
+## 1. NEGA kerak?
+Tasavvur qiling, sizda chiroyli mashina bor (bu HTML va CSS). Lekin u yurmaydi, chiroqlari yonmaydi va signali ishlamaydi. Uni harakatga keltirish uchun sizga dvigatel kerak. Saytlarda bu vazifani JavaScript bajaradi. Tugmalar bosilganda nima sodir bo'lishi, animatsiyalar, ma'lumotlarni yuklash — hammasi JS orqali qilinadi.
 
-## 2. ISHLASH MUHITI (Tushuntir → Ko'rsat → Bajartir)
-JavaScriptni yozish uchun sizga hech qanday maxsus dastur shart emas, brauzerning o'zi yetarli!
+## 2. SODDALIK (Analogiya)
+JSni **sehrli tayoqcha** deb tasavvur qiling. Saytdagi istalgan elementga tegib, uni o'zgartirishingiz, yo'qotib yuborishingiz yoki harakatga keltirishingiz mumkin. Eng yaxshi tomoni — bu tayoqchani ishlatish uchun sizga faqat **Brauzer** (Chrome, Safari) kerak, xolos!
+
+## 3. STRUKTURA (Qayerda ishlaydi?)
 
 ### A. Brauzer Konsoli
-Bu eng tezkor "laboratoriya".
-1. Brauzerni oching (Chrome).
-2. Sichqonchaning o'ng tugmasini bosib **"Inspect"** (Tekshirish) ni tanlang.
-3. **"Console"** bo'limiga o'ting.
+Bu eng tezkor kod yozish joyi. Brauzerda \`F12\`ni bosib, "Console" bo'limiga o'tsangiz, darhol JS kodini yozishingiz mumkin.
 
-**Ko'rsat:**
+### B. console.log() – Sizning birinchi buyrug'ingiz
+Bu buyruq kompyuterga: "Menga mana shu ma'lumotni ko'rsat!" degan ma'noni beradi.
 \`\`\`javascript
-console.log("Salom, Farhodoff!");
+console.log("Assalomu alaykum, JS olami!");
+console.log(10 + 20); // 30
 \`\`\`
 
-**Mashq:** Konsolga o'z ismingizni \`console.log\` yordamida chiqaring.
-
----
-
-## 3. ASOSIY QURILMA: console.log()
-Bu komanda kompyuterga: "Menga mana shu ma'lumotni ko'rsat!" degan buyruqdir.
-
-**Ko'rsat:**
+## 4. AMALIYOT (Mashq)
+Hozirroq brauzer konsolini oching va quyidagi kodni yozing:
 \`\`\`javascript
-console.log(100 + 200); // 300
+alert("Men JS o'rganishni boshladim!");
 \`\`\`
+Ekranda oyna chiqdimi? Tabriklayman, siz birinchi JS kodingizni yozdingiz!
 
----
+## 5. XATOLAR (Common mistakes)
+1. **Harfga sezgirlik:** \`Console.log\` (Katta harf bilan) deb yozsangiz, JS uni tushunmaydi. Doim kichik harfda \`console.log\` deb yozing.
+2. **Qo'shtirnoqlar:** Matnlarni doim \`" "\` yoki \`' '\` ichiga oling. Agar \`console.log(Salom)\` deb yozsangiz (qo'shtirnoqsiz), JS \`Salom\`ni o'zgaruvchi deb o'ylaydi va xato beradi.
 
-## 4. KO'P UCHRAYDIGAN XATOLAR ⚠️
-1.  **Harf xatosi:** \`Console.log\` (Katta harf bilan) — Xato! ❌ JavaScript harflarga juda sezgir.
-2.  **Qo'shtirnoqni unutish:** \`console.log(Salom)\` — Xato! ❌ Matnlar doim \`""\` yoki \`''\` ichida bo'lishi shart.
-
----
-
-## 5. BUZIB KO'RISH 🧐
-**Nima bo'ladi agar sonni qo'shtirnoq ichiga olsak?**
-\`\`\`javascript
-console.log("10" + "20"); // "1020" chiqadi, 30 emas!
-\`\`\`
-**Nega?** Chunki qo'shtirnoq ichidagi narsa JavaScript uchun shunchaki "matn" (string). U ularni matematik hisoblamaydi, shunchaki bir-biriga yopishtiradi.
-
----
-
-## 6. TOP 12: INTERVYU SAVOLLARI VA AMALIYOT (Junior/Middle) 🎯
-
-1. **JavaScript nima? (Junior)**
-   *Javob:* Veb-sahifalarni jonlantiruvchi dasturlash tili.
-
-2. **console.log() vazifasi nima? (Junior)**
-   *Javob:* Ma'lumotlarni konsolga (ekranga) chiqarish va debugging uchun.
-
-3. **JS faqat brauzerda ishlaydimi? (Junior)**
-   *Javob:* Yo'q, Node.js orqali serverlarda, robotlarda va mobil ilovalarda ham ishlaydi.
-
-4. **Katta va kichik harflarning farqi bormi? (Junior)**
-   *Javob:* Ha, \`name\` va \`Name\` — bu ikki xil narsa.
-
-5. **Matn chiqarish. (Junior - Amaliy)**
-   *Vazifa:* Konsolga "Men dasturchiman" matnini chiqaring.
-
-6. **Oddiy matematika. (Junior - Amaliy)**
-   *Vazifa:* 50 ko'paytirilgan 2 ni konsolga chiqaring.
-
-7. **Xato bilan ishlash. (Junior - Amaliy)**
-   *Vazifa:* \`console.error("Xato sodir bo'ldi")\` kodini yozib ko'ring va natijani ko'ring.
-
-8. **Script tegi nima? (Junior)**
-   *Javob:* HTML ichida JavaScript kodini yozish uchun ishlatiladigan teg.
-
-9. **Interpreter tili nima degani? (Middle)**
-   *Javob:* JS kodi qatorma-qatar o'qiladi va darhol bajariladi (kompilyatsiya qilinmaydi).
-
-10. **Brendan Eich kim? (Junior)**
-    *Javob:* JavaScript tilining asoschisi (1995-yil).
-
-11. **Matnlarni birlashtirish. (Junior - Amaliy)**
-    *Vazifa:* "Salom" va "Dunyo" so'zlarini bitta \`console.log\`da birlashtiring.
-
-12. **Alert() va Console.log() farqi? (Junior)**
-    *Javob:* Alert ekranda oyna chiqaradi, Console.log esa faqat ichki konsolda ko'rinadi.
-
----
-
-## 7. CHALLENGE 🏆
-Konsolga o'zingiz haqingizda 3 ta ma'lumotni (ism, yosh, shahar) alohida \`console.log\`larda chiqaring. Keyin bitta \`console.error\` bilan "Tugadi" deb yozing.
-
----
-
-## 8. XULOSA
-Endi siz:
-1. JavaScript nima ekanini bilasiz.
-2. Brauzer konsolida kod yozishni o'rgandingiz.
-3. Ma'lumotlarni ekranga chiqarishni qila olasiz.
-`,
+## 6. SAVOLLAR (12 ta)
+1. JavaScript nima?
+2. Sayt qurilishida JSning o'rni qanday?
+3. JS faqat brauzerdami yoki serverda ham ishlaydimi?
+4. \`console.log()\` nima uchun kerak?
+5. \`alert()\` funksiyasi nima qiladi?
+6. JS kodi qayerda (qaysi faylda) yoziladi?
+7. Brendan Eich kim va u nima qilgan?
+8. Nima uchun JS "Dynamic" til deyiladi?
+9. JS harflar (katta/kichik) farqiga boradimi?
+10. \`console.error()\` nima uchun ishlatiladi?
+11. Matnni qo'shtirnoqsiz yozsa nima bo'ladi?
+12. Birinchi JS versiyasi nechanchi yilda chiqqan?`,
   exercises: [
     {
       id: 1,
-      title: "Birinchi Salom",
-      instruction: "Konsolga 'Salom JS' matnini chiqaring.",
-      startingCode: "// Kodingizni shu yerga yozing\n",
-      hint: 'console.log("Salom JS");',
-      test: "if (logs.includes('Salom JS')) return null; return 'Konsolga \"Salom JS\" deb yozishingiz kerak';"
+      title: "Salom Berish",
+      instruction: "Konsolga 'Salom Dunyo' matnini chiqaring.",
+      startingCode: "// Kodni shu yerda yozing\n",
+      hint: "console.log('Salom Dunyo');",
+      test: "if (logs.includes('Salom Dunyo')) return null; return 'Konsolga chiqmagan!';"
     }
   ]
 };
