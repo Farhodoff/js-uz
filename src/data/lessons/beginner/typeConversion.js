@@ -1,56 +1,78 @@
 export const typeConversionLesson = {
-  id: "b15",
-  title: "Type Conversion (Tiplarni o'zgartirish)",
-  theory: `## Type Conversion (Tiplarni o‘zgartirish)
+  id: "type-conversion",
+  title: "Turni o'zgartirish (Type Conversion)",
+  level: "Beginner",
+  description: "JavaScriptda ma'lumot turlarini biridan ikkinchisiga o'tkazishni o'rganamiz.",
+  theory: `
+# Turni o'zgartirish – Bu nima va nima uchun kerak?
 
-JavaScript – dinamik tipli til. O‘zgaruvchining turi avtomatik (implicit) yoki qo‘lda (explicit) o‘zgarishi mumkin.
+JavaScriptda ba'zan bir turdagi ma'lumotni boshqa turga o'tkazish kerak bo'ladi. Masalan, foydalanuvchi saytda yoshini yozsa, u bizga **matn** bo'lib keladi, biz esa uni **son**ga aylantirib hisob-kitob qilishimiz kerak.
 
-### 1. Avtomatik (Implicit) Conversion
-JavaScript operatorlar va kontekstga qarab tiplarni o‘zi o‘zgartiradi.
-- **String + anything → string:** \`"5" + 3\` → \`"53"\`
-- **Arifmetik amallar (-, *, /, %) → number:** \`"10" - 2\` → \`8\`, \`"5" * "2"\` → \`10\`
+## 1. NEGA kerak?
+Tasavvur qiling, sizda \`"5"\` (matn) va \`5\` (son) bor. Agar ularni qo'shsangiz:
+\`"5" + 5 = "55"\` bo'lib qoladi.
+Bizga esa natija \`10\` bo'lishi kerak. Buning uchun biz matnni songa o'tkazib olishimiz shart.
 
-### 2. Qo‘lda (Explicit) Conversion
-- **String ga o‘tkazish:** \`String(123)\`, \`(456).toString()\`
-- **Number ga o‘tkazish:** \`Number("123")\`, \`parseInt("123px")\`, \`+"123"\`
-- **Boolean ga o‘tkazish:** \`Boolean(1)\` → \`true\`, \`Boolean(0)\` → \`false\`
+## 2. SODDALIK (Analogiya)
+Buni **tarjimonlikka** o'xshatish mumkin. Ingliz tilidagi so'zni o'zbekchaga tarjima qilsangiz, ma'nosi bir xil qoladi, lekin shakli o'zgaradi. Ma'lumotlarni o'zgartirish ham shunday — qiymat o'sha-o'sha, faqat "kiyimi" (turi) o'zgaradi.
 
-### Falsy (yolg‘on) qiymatlar (6 ta):
-\`false\`, \`0\`, \`""\` (bo‘sh string), \`null\`, \`undefined\`, \`NaN\` – hammasi Boolean kontekstida \`false\` hisoblanadi. Rest (qolgan hamma narsa) – **truthy**.
+## 3. STRUKTURA (Qo'lda o'zgartirish - Explicit)
 
----
+### A. String'ga o'tkazish (Matn qilish)
+\`\`\`javascript
+let son = 100;
+let matn = String(son); // "100"
+// yoki
+let matn2 = son.toString(); // "100"
+\`\`\`
 
-## Intervyu savollari (Junior & Middle)
+### B. Number'ga o'tkazish (Son qilish)
+\`\`\`javascript
+let matn = "25";
+let son = Number(matn); // 25
+// Qisqa usuli (+)
+let son2 = +matn; // 25
+\`\`\`
 
-### Junior daraja
-1. **Implicit va explicit conversion farqi nima?**
-2. **Falsy qiymatlarni sanab bering.**
-3. **"5" - 3 va "5" + 3 natijasi nima chiqadi?**
+### C. Boolean'ga o'tkazish (Mantiqiy qilish)
+\`\`\`javascript
+Boolean(1); // true
+Boolean(0); // false
+Boolean(""); // false (bo'sh matn - yolg'on)
+\`\`\`
 
-### Middle daraja
-4. **[] + [] natijasi nima?** (Javob: "")
-5. **Nima uchun "0" truthy, lekin 0 falsy?**
-6. **Double bang (!!) operatori nima uchun ishlatiladi?**`,
-  task: `// 1. Sonni stringga o'tkazishning 2 xil usulini yozing.
-// 2. Stringni ("123.45") songa o'tkazing (kasr qismi bilan).
-// 3. Quyidagi qiymatlarni Boolean() orqali tekshiring: 0, "0", "", " ", null, undefined.
-// 4. "10" / "2" va "10" + "2" natijalarini ko'ring.
-// 5. Implicit conversion yordamida boolean qiymatni stringga qo'shing.
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+let a = "10";
+let b = "20";
+console.log(Number(a) + Number(b)); // 30
+\`\`\`
 
-// Kodingizni shu yerga yozing`,
-  hint: `// 1. To String
-let n = 10;
-console.log(String(n), n.toString());
+## 5. XATOLAR (Common mistakes)
+1. **NaN xatosi:** Agar matn ichida harf bo'lsa va uni songa o'tkazmoqchi bo'lsangiz, natija \`NaN\` chiqadi: \`Number("salom")\` — \`NaN\` ❌.
+2. **Bo'sh joy:** \`Number("  ")\` natijasi \`0\` bo'ladi. Bu g'alati, lekin JS shunday ishlaydi.
 
-// 2. To Number
-let s = "123.45";
-console.log(parseFloat(s), +s);
-
-// 3. Boolean
-console.log(Boolean(0)); // false
-console.log(Boolean("0")); // true (bo'sh emas)
-
-// 4. Coercion
-console.log("10" / "2"); // 5
-console.log("10" + "2"); // "102"`
+## 6. SAVOLLAR (12 ta)
+1. Turni o'zgartirish (Type Conversion) nima?
+2. Nima uchun "5" + 5 natijasi 55 chiqadi?
+3. Qo'lda (Explicit) va Avtomatik (Implicit) o'zgartirish farqi nima?
+4. Sonni matnga o'tkazishning 2 ta usulini ayting.
+5. Matnni songa o'tkazishning eng qisqa usuli qaysi (+)?
+6. \`parseInt()\` va \`Number()\` farqi nimada?
+7. \`Boolean(0)\` natijasi nima bo'ladi?
+8. \`Boolean("0")\` natijasi nima bo'ladi? (Diqqat!)
+9. Falsy (yolg'on) qiymatlarni sanab bering.
+10. \`Number(null)\` natijasi nima bo'ladi?
+11. \`Number(undefined)\` natijasi nima bo'ladi?
+12. \`String(true)\` natijasi nima bo'ladi?`,
+  exercises: [
+    {
+      id: 1,
+      title: "Son qilish",
+      instruction: "'str' o'zgaruvchisini songa o'tkazing va 'num' o'zgaruvchisiga saqlang.",
+      startingCode: "let str = '123';\n// Bu yerga yozing\nlet num = ",
+      hint: "let num = Number(str); yoki let num = +str;",
+      test: "if (typeof num === 'number' && num === 123) return null; return 'Noto\\'g\\'ri o\\'tkazildi!';"
+    }
+  ]
 };
