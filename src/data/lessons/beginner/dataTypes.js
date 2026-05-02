@@ -1,90 +1,74 @@
 export const dataTypesLesson = {
-  id: "b2",
-  title: "Ma'lumotlar Turlari (Data Types)",
-  theory: `## 1. JAVASCRIPTDA MA'LUMOTLAR TURLARI
-JavaScriptda ma'lumotlar ikki katta guruhga bo'linadi: **Primitiv** va **Murakkab (Reference)**.
+  id: "data-types",
+  title: "Ma'lumot turlari",
+  level: "Beginner",
+  description: "JavaScriptda qanday ma'lumotlar bor? Sonlar, matnlar va boshqalar haqida gaplashamiz.",
+  theory: `
+# Ma'lumot turlari – Bu nima va nima uchun kerak?
 
-### A. Primitiv turlar (7 ta)
-Bular xotirada to'g'ridan-to'g'ri qiymatni saqlaydi:
-1.  **String:** Matnlar (\`"Salom"\`, \`'JS'\`).
-2.  **Number:** Sonlar (butun, kasr, \`NaN\`, \`Infinity\`).
-3.  **Boolean:** Rost (\`true\`) yoki Yolg'on (\`false\`).
-4.  **Undefined:** Qiymati berilmagan o'zgaruvchi.
-5.  **Null:** Ataylab bo'sh qoldirilgan qiymat.
-6.  **BigInt:** Juda katta sonlar uchun.
-7.  **Symbol:** Unikal identifikatorlar.
+JavaScriptda har bir ma'lumotning o'z turi bo'ladi. Xuddi hayotda mevalar, sabzavotlar va ichimliklar alohida bo'lganidek, JSda ham sonlar, matnlar va mantiqiy qiymatlar alohida ajratiladi.
 
-### B. Murakkab tur (1 ta)
-1.  **Object:** Obyektlar, massivlar (Array) va funksiyalar.
+## 1. NEGA kerak?
+Tasavvur qiling, sizga ikkita sonni qo'shish kerak: \`5 + 5\`. JS buni \`10\` deb hisoblaydi. Lekin agar siz "matn" va "son"ni qo'shmoqchi bo'lsangiz (\`"5" + 5\`), natija butunlay boshqacha bo'ladi. Kompyuter adashib ketmasligi uchun biz unga qaysi turdagi ma'lumot bilan ishlayotganimizni aytishimiz kerak.
 
----
+## 2. SODDALIK (Analogiya)
+Buni **oshxona idishlari** deb tasavvur qiling:
+- **String (Matn):** Bu xuddi choynakka o'xshaydi, ichiga faqat suyuqlik (harflar) quyiladi.
+- **Number (Son):** Bu likopcha, unga faqat ovqat (sonlar) qo'yiladi.
+- **Boolean:** Bu chiroq yoqgichi (vkluchatel), u yoki yoniq (\`true\`), yoki o'chiq (\`false\`) bo'ladi.
 
-## 2. CHUQURROQ KO'Z YUGURTAMIZ
+## 3. STRUKTURA (Asosiy turlar)
 
-### Number va NaN
-\`NaN\` (Not a Number) — bu son emas degani, lekin uning turi \`number\` bo'lib chiqadi. G'alati, a?
+### A. Primitiv turlar (Oddiy)
+1. **Number:** Hamma sonlar (5, 3.14, -10).
+2. **String:** Qo'shtirnoq ichidagi matnlar ("Salom", 'JS').
+3. **Boolean:** Faqat ikkita qiymat: \`true\` (ha/rost) yoki \`false\` (yo'q/yolg'on).
+4. **Undefined:** O'zgaruvchi bor, lekin qiymati yo'q.
+5. **Null:** Ataylab "bo'sh" qilib qo'yilgan qiymat.
+
+### B. typeof operatori
+O'zgaruvchining turini bilish uchun ishlatiladi:
 \`\`\`javascript
-console.log("Olma" * 5); // → NaN
+let yosh = 25;
+console.log(typeof yosh); // "number"
+
+let ism = "Farhod";
+console.log(typeof ism); // "string"
 \`\`\`
 
-### Null vs Undefined
-- **Undefined:** "Men hali e'lon qilinmadim yoki menga qiymat berilmadi".
-- **Null:** "Men boraman, lekin ichim bo'sh (ataylab)".
-
-\`\`\`mermaid
-graph TD
-    A[Ma'lumot Turlari] --> B[Primitiv]
-    A --> C[Object]
-    B --> B1[String]
-    B --> B2[Number]
-    B --> B3[Boolean]
-    B --> B4[Null/Undefined]
-    C --> C1[Array]
-    C --> C2[Function]
-    C --> C3[Object]
-\`\`\`
-
----
-
-## 3. typeof OPERATORI
-Bu operator o'zgaruvchining turini aniqlab beradi.
-
+## 4. AMALIYOT (Mashq)
 \`\`\`javascript
-typeof 42;          // "number"
-typeof "Salom";     // "string"
-typeof true;        // "boolean"
-typeof undefined;   // "undefined"
-typeof null;        // "object" (JS dagi mashhur xato)
+let x = 100;
+let y = "100";
+console.log(typeof x); // number
+console.log(typeof y); // string
 \`\`\`
 
----
+## 5. XATOLAR (Common mistakes)
+1. **typeof null:** JSda \`typeof null\` qilsangiz, u \`"object"\` qaytaradi. Bu JS tarixidagi eng mashhur xato (bug), lekin uni o'zgartirib bo'lmaydi.
+2. **NaN (Not a Number):** Agar matnni songa ko'paytirsangiz (\`"olma" * 5\`), JS \`NaN\` qaytaradi. G'alati tomoni, \`typeof NaN\` baribir \`"number"\` chiqadi!
 
-## 4. INTERVYU SAVOLLARI (Junior)
-
-1. **JavaScriptda nechta primitiv tur bor?**
-   *Javob:* 7 ta.
-
-2. **null va undefined farqi nimada?**
-   *Javob:* Undefined — avtomatik holat, Null — dasturchi tomonidan qo'yilgan bo'sh qiymat.
-
-3. **typeof null nima qaytaradi?**
-   *Javob:* "object". Bu til yaratilgandagi texnik xatolik hisoblanadi.`,
+## 6. SAVOLLAR (12 ta)
+1. Ma'lumot turi nima?
+2. JavaScriptda nechta asosiy ma'lumot turi bor?
+3. Primitiv va Murakkab (Reference) turlar farqi nima?
+4. \`Number\` turiga misollar keltiring.
+5. \`String\` yaratishda qaysi qo'shtirnoqlar ishlatiladi?
+6. \`Boolean\` nima degani?
+7. \`undefined\` va \`null\` o'rtasidagi farq nima?
+8. \`typeof\` operatori nima vazifani bajaradi?
+9. \`typeof "123"\` natijasi nima bo'ladi?
+10. \`NaN\` nima degani va uning turi nima?
+11. Nima uchun \`typeof null\` obekt chiqadi?
+12. \`BigInt\` turi nima uchun kerak?`,
   exercises: [
     {
       id: 1,
-      title: "Turlarni aniqlash",
-      instruction: "O'zgaruvchi 'x' yarating, unga son bering va uning turini 'typeof' bilan konsolga chiqaring.",
-      startingCode: "let x = 25;\n// typeof x ni konsolga chiqaring\n",
-      hint: "console.log(typeof x);",
-      test: "if (logs.includes('number')) return null; return 'Sonning turi \"number\" bo\\'lishi kerak';"
-    },
-    {
-      id: 2,
-      title: "String yaratish",
-      instruction: "Yangi 'ism' o'zgaruvchisini yarating va unga o'z ismingizni string sifatida bering.",
-      startingCode: "// Ismingizni yozing\n",
-      hint: 'let ism = "Ali";',
-      test: "if (typeof code.split('=')[1]?.trim().replace(/['\"]/g, '') === 'string') return null; return 'String to\\'g\\'ri e\\'lon qilinmagan';"
+      title: "Turini aniqlang",
+      instruction: "'age' o'zgaruvchisining turini konsolga chiqaring.",
+      startingCode: "let age = 20;\n// Bu yerga yozing\n",
+      hint: "console.log(typeof age);",
+      test: "if (logs.includes('number')) return null; return 'typeof ishlatilmadi!';"
     }
   ]
 };
