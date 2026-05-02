@@ -1,101 +1,81 @@
 export const breakContinue = {
-  id: "b15",
+  id: "break-continue",
   title: "Break va Continue",
-  theory: `## 1. KIRISH
-Sikllar (loops) bilan ishlaganda, ba'zida bizga siklni muddatidan oldin to'xtatish yoki ma'lum bir qadamni tashlab ketish kerak bo'ladi. Buning uchun JavaScriptda \`break\` va \`continue\` kalit so'zlari ishlatiladi.
+  level: "Beginner",
+  description: "Sikl oqimini nazorat qilish: to'xtatish yoki ma'lum bir qadamni sakrab o'tish.",
+  theory: `
+# Break va Continue – Bu nima va nima uchun kerak?
 
----
+Sikllar bilan ishlaganda ba'zida bizga siklni muddatidan oldin to'xtatish yoki ma'lum bir qadamni (iteratsiyani) tashlab o'tib ketish kerak bo'ladi. Buning uchun **break** va **continue** ishlatiladi.
 
-## 2. BREAK (To'xtatish)
-\`break\` — siklni butunlay to'xtatadi va undan chiqib ketadi. Xuddi favqulodda tormoz kabi!
+## 1. NEGA kerak?
+- **Break:** Tasavvur qiling, sizga 1000 ta mahsulot ichidan bittasini topish kerak. Uni 10-chi o'rinda topdingiz. Qolgan 990 tasini tekshirib o'tirish vaqtni yo'qotishdir. \`break\` orqali qidiruvni darhol to'xtatamiz.
+- **Continue:** Masalan, 1 dan 10 gacha sonlarni chiqaryapsiz, lekin faqat toq sonlar kerak. Juft son kelganda uni "tashlab o'tib ketish" uchun \`continue\` kerak.
 
-### Misol:
+## 2. SODDALIK (Analogiya)
+- **Break:** Bu xuddi **favqulodda tormozga** o'xshaydi. Poezd manziligacha bormay, o'rtada to'xtaydi.
+- **Continue:** Bu esa **navbatdan sakrab o'tish** kabi. Siz navbatdasiz, lekin bitta odamni (shartga mosini) o'tkazib yuborib, o'zingiz keyingi odam bilan gaplashishda davom etasiz.
+
+## 3. STRUKTURA
+
+### A. Break (Sikldan chiqish)
 \`\`\`javascript
 for (let i = 1; i <= 10; i++) {
   if (i === 5) {
-    break; // 5 ga yetganda to'xtaydi
+    break; // 5 ga yetganda butunlay to'xtaydi
   }
-  console.log(i);
+  console.log(i); // 1, 2, 3, 4
 }
-// Natija: 1, 2, 3, 4
 \`\`\`
 
----
-
-## 3. CONTINUE (Tashlab ketish)
-\`continue\` — joriy qadamni (iteratsiyani) to'xtatadi va darhol keyingi qadamga o'tib ketadi. Ya'ni, o'sha qadamdagi qolgan kodlar bajarilmaydi.
-
-### Misol:
+### B. Continue (Qadamdan sakrash)
 \`\`\`javascript
 for (let i = 1; i <= 5; i++) {
   if (i === 3) {
     continue; // 3 ni tashlab o'tib ketadi
   }
-  console.log(i);
+  console.log(i); // 1, 2, 4, 5
 }
-// Natija: 1, 2, 4, 5
 \`\`\`
 
----
-
-## 4. VIZUAL TAQQOSLASH
-
-\`\`\`mermaid
-graph LR
-    A[Sikl] --> B{Shart?}
-    B -- break --> C[Sikldan chiqish 🛑]
-    B -- continue --> D[Keyingi qadamga o'tish ⏭️]
-    style C fill:#f99,stroke:#333
-    style D fill:#9f9,stroke:#333
-\`\`\`
-
----
-
-## 5. INTERVYU SAVOLLARI (Junior)
-
-1. **break va continue farqi nima?**
-   *Javob:* \`break\` siklni butunlay to'xtatadi, \`continue\` esa faqat joriy qadamni o'tkazib yuboradi.
-
-2. **switch ichida continue ishlatsa bo'ladimi?**
-   *Javob:* Yo'q, \`continue\` faqat sikllar (for, while) ichida ishlaydi.
-
-3. **while siklida continue ishlatganda nima xavf bor?**
-   *Javob:* Agar hisoblagich (i++) \`continue\`dan keyin yozilgan bo'lsa, sikl cheksiz bo'lib qolishi mumkin.
-
----
-
-## 6. MINI LOYIHA: "Qidiruv tizimi"
-**Vazifa:** Massiv ichidan kerakli sonni toping va topilgan zahoti qidiruvni to'xtating.
-
+## 4. AMALIYOT (Mashq)
+Ismlar massividan "Ali"ni qidirish:
 \`\`\`javascript
-const sonlar = [10, 25, 38, 45, 50];
-const target = 38;
-
-for (let i = 0; i < sonlar.length; i++) {
-  console.log("Tekshirilmoqda:", sonlar[i]);
-  if (sonlar[i] === target) {
-    console.log("Topildi!");
-    break; // Topilgandan keyin qolganlarini tekshirish shart emas
+let ismlar = ["Vali", "G'ani", "Ali", "Hasan"];
+for (let ism of ismlar) {
+  if (ism === "Ali") {
+    console.log("Ali topildi!");
+    break;
   }
+  console.log("Tekshirildi: " + ism);
 }
 \`\`\`
-`,
+
+## 5. XATOLAR (Common mistakes)
+1. **switch ichida continue:** \`continue\` faqat sikllarda ishlaydi, \`switch\` ichida ishlamaydi.
+2. **Infinite Loop (while bilan):** \`while\` siklida \`continue\` ishlatganda ehtiyot bo'ling! Agar sanoqni (\`i++\`) \`continue\`dan keyin qo'ysangiz, u hech qachon ishlamaydi va sikl cheksiz bo'lib qoladi.
+
+## 6. SAVOLLAR (12 ta)
+1. \`break\` va \`continue\` farqi nimada?
+2. Siklni butunlay to'xtatish uchun qaysi biri ishlatiladi?
+3. Faqat bitta qadamni o'tkazib yuborish uchun-chi?
+4. \`break\` ishlatilgandan keyin sikldan keyingi kodlar ishlaydimi?
+5. \`continue\` ishlatilganda keyingi iteratsiyaga o'tiladimi?
+6. Qidiruv algoritmlarida qaysi biri ko'p ishlatiladi?
+7. \`if\` shartisiz \`break\` ishlatsa nima bo'ladi?
+8. \`while\` siklida \`continue\` ishlatishdagi asosiy xavf nima?
+9. Nested (ichma-ich) sikllarda \`break\` qaysi siklni to'xtatadi?
+10. Labels (yorliqlar) nima va \`break\` bilan qanday ishlatiladi?
+11. \`break\`ni \`switch\`dan tashqarida ishlatish mumkinmi?
+12. O'quvchi uchun \`break\` tushunarliroqmi yoki \`if...else\`?`,
   exercises: [
     {
       id: 1,
-      title: "Break mashqi",
-      instruction: "0 dan 10 gacha sonlarni chiqaring, lekin son 7 ga teng bo'lganda siklni to'xtating.",
-      startingCode: "for (let i = 0; i <= 10; i++) {\n  // Bu yerda tekshiring\n  console.log(i);\n}",
+      title: "Break sinovi",
+      instruction: "0 dan 10 gacha sonlarni chiqaring, lekin 7 ga yetganda to'xtating.",
+      startingCode: "for (let i = 0; i <= 10; i++) {\n  // Bu yerda\n  console.log(i);\n}",
       hint: "if (i === 7) break;",
-      test: "if (logs.includes('6') && !logs.includes('7')) return null; return '7 da to\\'xtashi kerak';"
-    },
-    {
-      id: 2,
-      title: "Continue mashqi",
-      instruction: "1 dan 10 gacha bo'lgan sonlarni chiqaring, lekin 5 sonini tashlab o'tib keting.",
-      startingCode: "for (let i = 1; i <= 10; i++) {\n  // Bu yerda tekshiring\n  console.log(i);\n}",
-      hint: "if (i === 5) continue;",
-      test: "if (!logs.includes('5') && logs.includes('4') && logs.includes('6')) return null; return '5 tashlab ketilishi kerak';"
+      test: "if (logs.includes(6) && !logs.includes(7)) return null; return '7 da to\\'xtamadi!';"
     }
   ]
 };
