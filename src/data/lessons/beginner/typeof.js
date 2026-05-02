@@ -1,66 +1,71 @@
 export const typeofLesson = {
-  id: "b14",
+  id: "typeof",
   title: "typeof operatori",
-  theory: `## typeof – Ma’lumot turini aniqlash
+  level: "Beginner",
+  description: "Ma'lumot turini aniqlashning eng oson usuli.",
+  theory: `
+# typeof – Bu nima va nima uchun kerak?
 
-\`typeof\` – JavaScriptda operandning **ma’lumot turini** aniqlaydigan va natijani **string** sifatida qaytaradigan operator.
+**typeof** — bu o'zgaruvchi yoki qiymatning turini (number, string, boolean va h.k.) aniqlab beradigan operator.
 
----
+## 1. NEGA kerak?
+Tasavvur qiling, sizga birorta ma'lumot keldi, lekin siz uning ichida nima borligini bilmaysiz. Agar u son bo'lsa — hisoblashingiz, agar matn bo'lsa — kesishingiz kerak. \`typeof\` yordamida biz "bu nima o'zi?" deb so'rab olamiz.
 
-### Qaytariladigan qiymatlar:
+## 2. SODDALIK (Analogiya)
+Buni **detektorga** o'xshatish mumkin. Sizda noma'lum metall bor, uni detektordan o'tkazasiz va u sizga "bu oltin" yoki "bu kumush" deb aytadi. \`typeof\` ham shunday detektor.
+
+## 3. STRUKTURA (Natijalar jadvali)
+
 | Qiymat | typeof natijasi |
-|--------|-------------------|
-| "salom" | "string" |
-| 42, 3.14, NaN | "number" |
-| true, false | "boolean" |
+|--------|-----------------|
+| 100 | "number" |
+| "Salom" | "string" |
+| true | "boolean" |
 | undefined | "undefined" |
-| **null** | **"object"** (Mashhur bug!) |
-| {}, [], Date | "object" |
+| null | "object" (Bug!) |
+| { } | "object" |
+| [ ] | "object" |
 | function() {} | "function" |
 
-### Muhim eslatmalar:
-1. **typeof null === "object"**: Bu JavaScriptning eng qadimgi xatolaridan biridir. Null primitiv bo'lsa-da, typeof uni "object" deb qaytaradi.
-2. **typeof [] === "object"**: Massivlar ham obyektlar oilasiga kirgani uchun typeof ularni ajratib bera olmaydi. Buning uchun \`Array.isArray()\` ishlatiladi.
-3. **typeof NaN === "number"**: "Not a Number" (Son emas) qiymati ham sonlar turiga kiradi.
+### Muhim: G'alati holatlar
+- **null:** Primitiv bo'lsa ham \`object\` qaytaradi.
+- **NaN:** Son bo'lmasa ham \`number\` qaytaradi.
+- **Massivlar:** Ular ham obyektdir, shuning uchun \`object\` qaytaradi.
 
-### E’lon qilinmagan o‘zgaruvchi:
-\`typeof\` e'lon qilinmagan o'zgaruvchiga murojaat qilganda xato bermaydi, balki \`"undefined"\` qaytaradi. Bu o'zgaruvchi bor-yo'qligini tekshirishning xavfsiz usuli.
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+let x = "JS";
+console.log(typeof x); // "string"
 
----
+console.log(typeof (5 + 5)); // "number"
+console.log(typeof true); // "boolean"
+\`\`\`
 
-## Intervyu savollari (Junior & Middle)
+## 5. XATOLAR (Common mistakes)
+1. **typeof(x):** \`typeof\` funksiya emas, u operator. Uni qavssiz yozish to'g'riroq: \`typeof x\`.
+2. **Double typeof:** \`typeof typeof 100\` har doim **"string"** qaytaradi. Chunki \`typeof 100\` — \`"number"\` (matn), uning turi esa \`string\`.
 
-### Junior daraja
-1. **typeof operatori nima qaytaradi?**
-2. **typeof null natijasi nima?**
-3. **typeof [] va typeof {} farqi bormi?**
-
-### Middle daraja
-4. **typeof NaN nima uchun "number" qaytaradi?**
-5. **Qanday qilib massivni obyektdan typeof yordamida ajratish mumkin emasligini isbotlang va yechim ayting.**
-6. **typeof typeof 42 natijasi nima bo'ladi?**`,
-  task: `// 1. Har xil turdagi (string, number, boolean, null, undefined, function) o'zgaruvchilar yarating va ularning turini typeof bilan ko'ring.
-// 2. typeof yordamida biror o'zgaruvchi "undefined" ekanligini tekshiruvchi funksiya yozing.
-// 3. Array.isArray() va typeof dan foydalanib, berilgan qiymat massiv yoki obyekt ekanini aniqlang.
-// 4. typeof null === "object" ekanligini konsolda tekshiring.
-// 5. typeof typeof 100 ifodasining natijasini ko'ring va nega shunday bo'lishini tushuntiring.
-
-// Kodingizni shu yerga yozing`,
-  hint: `// 1. Types
-console.log(typeof "JS", typeof 10, typeof true, typeof null);
-
-// 2. Safe check
-function isDefined(v) {
-  return typeof v !== "undefined";
-}
-
-// 3. Array vs Object
-let data = [];
-if (typeof data === "object" && Array.isArray(data)) {
-  console.log("Bu massiv");
-}
-
-// 5. Double typeof
-// typeof 100 -> "number"
-// typeof "number" -> "string"`
+## 6. SAVOLLAR (12 ta)
+1. \`typeof\` operatori nima qaytaradi?
+2. \`typeof\` natijasi qaysi ma'lumot turida bo'ladi (string)?
+3. Nima uchun \`typeof null\` "object" chiqadi?
+4. Massivning turini \`typeof\` orqali aniqlab bo'ladimi?
+5. \`typeof NaN\` natijasi nima?
+6. \`typeof 10 + " apples"\` natijasi nima bo'ladi?
+7. \`typeof (10 + " apples")\` natijasi-chi?
+8. \`typeof undefined\` natijasi nima?
+9. Funksiyalarning turi nima deb chiqadi?
+10. \`typeof true === "boolean"\` natijasi nima bo'ladi?
+11. \`typeof typeof 42\` natijasi nima?
+12. E'lon qilinmagan o'zgaruvchiga \`typeof\` ishlatsa xato beradimi?`,
+  exercises: [
+    {
+      id: 1,
+      title: "Turini tekshiring",
+      instruction: "100 sonining turini konsolga chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "console.log(typeof 100);",
+      test: "if (logs.includes('number')) return null; return 'Xato chiqdi!';"
+    }
+  ]
 };
