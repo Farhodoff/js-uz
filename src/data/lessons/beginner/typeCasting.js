@@ -1,95 +1,75 @@
 export const typeCasting = {
-  id: "b18",
-  title: "Explicit Type Casting (Aniq tiplarni o'zgartirish)",
-  theory: `## 1. KIRISH
-**Explicit Type Casting** – dasturchi tomonidan ma’lumot turini **aniq**, o‘zi yozgan kod orqali bir turdan boshqasiga o‘tkazish. JavaScriptda buning uchun maxsus funksiyalar va operatorlar mavjud.
+  id: "type-casting",
+  title: "Aniq turni o'zgartirish (Type Casting)",
+  level: "Beginner",
+  description: "Dasturchi tomonidan ma'lumot turini ataylab (aniq) o'zgartirish usullari.",
+  theory: `
+# Type Casting – Bu nima va nima uchun kerak?
 
-Farqli o‘laroq, **Implicit Coercion** (avtomatik) JavaScriptning o‘zi tomonidan amalga oshiriladi.
+**Type Casting** (yoki Explicit Conversion) — bu dasturchi o'z xohishi bilan bir turdagi ma'lumotni boshqa turga o'zgartirishidir. Bu "avtomatik" emas, balki "buyruq" asosida sodir bo'ladi.
 
----
+## 1. NEGA kerak?
+Ba'zan JS avtomatik ravishda turni noto'g'ri o'zgartirishi mumkin. Xatolarni oldini olish va natija aniq bo'lishi uchun biz o'zimiz "mana shu o'zgaruvchi hozir son bo'lsin" deb buyruq beramiz.
 
-## 2. STRING GA O'TKAZISH
-- \`String(value)\` — eng xavfsiz usul.
-- \`value.toString()\` — \`null\` va \`undefined\` da xato beradi.
+## 2. SODDALIK (Analogiya)
+Buni **plastilin (loy)** deb tasavvur qiling. Plastilin o'zi bir shaklda turibdi, lekin siz uni qo'lingiz bilan ezib, yangi shakl (masalan, koptok) yasaysiz. Siz unga o'zingiz shakl berasiz.
 
+## 3. STRUKTURA (Asosiy funksiyalar)
+
+### A. Number() – Songa o'tkazish
+Hammasini songa aylantirishga harakat qiladi:
 \`\`\`javascript
-console.log(String(123));       // "123"
-console.log(String(null));      // "null"
-console.log(String(undefined)); // "undefined"
-
-let num = 456;
-console.log(num.toString());    // "456"
+Number("123"); // 123
+Number("12.5"); // 12.5
+Number("abc"); // NaN
 \`\`\`
 
----
-
-## 3. NUMBER GA O'TKAZISH
-- \`Number(value)\` — to'liq songa o'tkazadi.
-- \`parseInt(string)\` — matn boshidagi butun sonni ajratib oladi.
-- \`parseFloat(string)\` — kasr sonlar uchun.
-- \`+value\` — qisqa "unary plus" operatori.
-
+### B. String() – Matnga o'tkazish
+Istalgan narsani matn qiladi:
 \`\`\`javascript
-console.log(Number("123.45"));  // 123.45
-console.log(parseInt("123px"));   // 123
-console.log(+"500");              // 500
+String(100); // "100"
+String(true); // "true"
+String(null); // "null"
 \`\`\`
 
----
+### C. Boolean() – Mantiqiy qiymatga o'tkazish
+\`\`\`javascript
+Boolean(1); // true
+Boolean(0); // false
+\`\`\`
 
-## 4. BOOLEAN GA O'TKAZISH
-- \`Boolean(value)\`
-- \`!!value\` — qisqa "double NOT" usuli.
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+let r = "50.5px";
+console.log(parseFloat(r)); // 50.5 (son qismini oladi)
+console.log(parseInt(r));   // 50 (faqat butun qismini oladi)
+\`\`\`
 
-**Falsy qiymatlar (6 ta):** \`false\`, \`0\`, \`""\`, \`null\`, \`undefined\`, \`NaN\`. Qolgan hamma narsa — \`true\`.
+## 5. XATOLAR (Common mistakes)
+1. **.toString() va null:** \`null.toString()\` deb yozsangiz xato (Error) beradi. Lekin \`String(null)\` xato bermaydi, shunchaki \`"null"\` matnini qaytaradi. Har doim \`String()\` ishlatish xavfsizroq.
+2. **Bo'sh massiv:** \`Number([])\` natijasi \`0\` bo'ladi. Bu kutilmagan natija bo'lishi mumkin!
 
----
-
-## 5. TYPE CASTING JADVALI
-| Qiymat | String | Number | Boolean |
-|--------|--------|--------|---------|
-| \`0\` | \`"0"\` | \`0\` | \`false\` |
-| \`""\` | \`""\` | \`0\` | \`false\` |
-| \`null\` | \`"null"\` | \`0\` | \`false\` |
-| \`[]\` | \`""\` | \`0\` | \`true\` |
-| \`{}\` | \`"[object Object]"\` | \`NaN\` | \`true\` |
-
----
-
-## 6. INTERVYU SAVOLLARI (Junior & Middle)
-
-### Nazariy (Junior)
-1. **String() va .toString() farqi?** - \`String()\` null/undefined bilan ishlaydi, \`.toString()\` esa xato (TypeError) beradi.
-2. **parseInt() va parseFloat() farqi?** - \`parseInt\` butun sonni oladi, \`parseFloat\` esa nuqtadan keyingi qismini ham saqlaydi.
-
-### Amaliy (Middle) ⭐
-**Savol:** \`parseInt(0.0000005)\` nima beradi?
-**Javob:** \`5\`. Chunki \`0.0000005\` stringga o'tganda \`"5e-7"\` bo'ladi va \`parseInt\` birinchi raqamni (\`5\`) oladi. Bu mashhur intervyu savoli!
-`,
+## 6. SAVOLLAR (12 ta)
+1. Type Casting (Aniq o'zgartirish) nima?
+2. \`Number()\` va \`parseInt()\` farqi nimada?
+3. \`parseFloat()\` qachon ishlatiladi?
+4. \`String()\` va \`.toString()\` farqi nimada?
+5. Nima uchun \`null.toString()\` ishlamaydi?
+6. Unary plus (\`+\`) operatori nima qiladi?
+7. \`Boolean(undefined)\` natijasi nima bo'ladi?
+8. \`Number(true)\` natijasi nima bo'ladi?
+9. \`Number(false)\` natijasi nima bo'ladi?
+10. Matn ichida raqamdan keyin harf bo'lsa (\`"100kg"\`), \`Number()\` nima qaytaradi?
+11. \`parseInt("100kg")\` nima qaytaradi?
+12. "Double bang" (\`!!\`) operatori nima vazifani bajaradi?`,
   exercises: [
     {
       id: 1,
-      title: "String dan Number ga",
-      instruction: "parseInt yordamida '123px' matnidan sonni ajratib oling va consolega chiqaring.",
-      startingCode: "const val = '123px';\n// Bu yerga yozing\n",
-      hint: "console.log(parseInt(val));",
-      test: "if (logs.includes('123')) return null; return 'Natija 123 chiqishi kerak';"
-    },
-    {
-      id: 2,
-      title: "Safe Integer Funksiyasi",
-      instruction: "toSafeInteger(value) funksiyasini yozing. U Number(value) qaytarsin, agar natija NaN bo'lsa 0 qaytarsin.",
-      startingCode: "function toSafeInteger(value) {\n  const n = Number(value);\n  // Bu yerda tekshiring\n}\n\nconsole.log(toSafeInteger('abc'));",
-      hint: "isNaN(n) dan foydalaning.",
-      test: "if (typeof toSafeInteger === 'function' && logs.includes('0')) return null; return 'NaN o\\'rniga 0 qaytishi kerak';"
-    },
-    {
-      id: 3,
-      title: "Safe ToString",
-      instruction: "null va undefined da ham ishlaydigan safeToString(value) funksiyasini yozing.",
-      startingCode: "function safeToString(value) {\n  // Bu yerga yozing\n}\n\nconsole.log(safeToString(null));",
-      hint: "String(value) dan foydalaning.",
-      test: "if (logs.includes('null')) return null; return 'null stringga o\\'tishi kerak';"
+      title: "Butun sonni olish",
+      instruction: "'100px' matnidan faqat butun son qismini ajratib oling.",
+      startingCode: "let val = '100px';\n// Bu yerda yozing\nlet res = ",
+      hint: "let res = parseInt(val);",
+      test: "if (res === 100) return null; return 'Faqat 100 chiqishi kerak!';"
     }
   ]
 };
