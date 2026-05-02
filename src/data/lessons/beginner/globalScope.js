@@ -1,70 +1,76 @@
 export const globalScopeLesson = {
-  id: "b11",
-  title: "Global Scope (Global doira)",
-  theory: `## Global Scope – JavaScriptning eng tashqi darajasi
+  id: "global-scope",
+  title: "Global doira (Global Scope)",
+  level: "Beginner",
+  description: "Dasturning hamma joyida ko'rinadigan o'zgaruvchilar haqida sirlar.",
+  theory: `
+# Global Scope – Bu nima va nima uchun kerak?
 
-Global scope’da e’lon qilingan o‘zgaruvchi, funksiya yoki obyekt **dasturning istalgan joyidan** kirish mumkin.
+**Global Scope** (Umumiy doira) — bu JavaScript kodining eng tashqi qismidir. Bu yerda e'lon qilingan o'zgaruvchilar va funksiyalar dasturning istalgan joyidan (xohlagan funksiya yoki blok ichidan) ko'rinadi.
 
-### Global Scope turlari:
-1. **Brauzer muhiti** – global obyekt \`window\` (yoki \`globalThis\`).
-2. **Node.js muhiti** – global obyekt \`global\`.
+## 1. NEGA kerak?
+Ba'zan bizga butun dastur davomida kerak bo'ladigan ma'lumotlar zarur bo'ladi. Masalan, foydalanuvchining tanlagan tili yoki dastur versiyasi. Bunday ma'lumotlarni globalda saqlash qulay.
 
-### 1. Global Scope’da o‘zgaruvchi e’lon qilish
+## 2. SODDALIK (Analogiya)
+Global doirani **shahar maydoni** deb tasavvur qiling. Maydon o'rtasida turgan soatni (global o'zgaruvchini) shahardagi barcha odamlar (hamma funksiyalar) ko'ra oladi. Local scope esa — uyingiz ichidagi soat, uni faqat uydagilar ko'radi.
+
+## 3. STRUKTURA
+
+### A. Global o'zgaruvchi yaratish
+Hech qanday funksiya yoki blok ichida bo'lmagan o'zgaruvchi global hisoblanadi:
 \`\`\`javascript
-var globalVar = "var bilan global";
-let globalLet = "let bilan global";
+let til = "O'zbekcha"; // Global
 
-function showGlobals() {
-  console.log(globalVar);   // ishlaydi
-  console.log(globalLet);   // ishlaydi
+function salomBer() {
+  console.log("Til: " + til); // Global o'zgaruvchini funksiya ichida ishlatish ✅
 }
+salomBer();
 \`\`\`
 
-### Global obyektga birikish (brauzerda):
-- \`var\` bilan e’lon qilingan global o‘zgaruvchi \`window\` obyektiga birikadi.
-- \`let\` va \`const\` bilan e’lon qilinganlar **birikmaydi**.
+### B. Global Obyekt (window)
+Brauzerda barcha global narsalar \`window\` obyektining ichida bo'ladi:
+\`\`\`javascript
+var ism = "Farhod";
+console.log(window.ism); // "Farhod"
+\`\`\`
+*(Eslatma: let va const bilan yaratilgan global o'zgaruvchilar window'ga qo'shilmaydi).*
 
-### 2. Global Scope xatarlari
-1. **Nom to‘qnashuvi** – turli fayllardagi o‘zgaruvchilar bir-birini ustiga yozishi mumkin.
-2. **Kodni qayta ishlatish qiyin** – funksiyalar global o‘zgaruvchilarga bog‘lanib qoladi.
-3. **Xatolarni topish qiyin** – global o‘zgaruvchini qayerda o‘zgartirilganini kuzatish qiyin.
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+let x = 10; // Global
 
----
-
-## Intervyu savollari (Junior & Middle)
-
-### Junior daraja
-1. **Global scope nima?**
-2. **Brauzerda global obyekt qanday nomlanadi?**
-3. **var va let bilan e’lon qilingan global o‘zgaruvchilar farqi?**
-
-### Middle daraja
-4. **globalThis nima va u qachon foydali?**
-5. **Strict mode ("use strict") global scope’ga qanday ta’sir qiladi?**
-6. **Namespace pattern nima uchun ishlatiladi?**`,
-  task: `// 1. var va let yordamida global o'zgaruvchilar yarating va ularni window obyekti orqali ko'rishga harakat qiling.
-// 2. Global o'zgaruvchini funksiya ichida o'zgartiring va funksiyadan tashqarida uning qiymatini tekshiring.
-// 3. E'lon qilinmagan o'zgaruvchiga qiymat bering (masalan, x = 100). U globalga aylanadimi? (strict mode yo'qligida tekshiring).
-// 4. Namespace pattern: Bitta asosiy obyekt yarating (masalan, APP_DATA) va barcha global o'zgaruvchilarni uning ichida saqlang.
-
-// Kodingizni shu yerga yozing`,
-  hint: `// 1. Global window
-var a = "Men windowdaman";
-let b = "Men windowda emasman";
-// console.log(window.a); // "Men windowdaman"
-// console.log(window.b); // undefined
-
-// 2. Global pollution risk
-let userName = "Ali";
-function changeName() {
-  userName = "Vali"; 
+function o'zgartir() {
+  x = 20; // Global o'zgaruvchini funksiya ichida yangilash
 }
-changeName();
-console.log(userName); // "Vali"
+o'zgartir();
+console.log(x); // 20
+\`\`\`
 
-// 4. Namespace Pattern
-const MY_APP = {
-  config: { lang: "uz" },
-  user: { id: 1, name: "Farhod" }
-};`
+## 5. XATOLAR (Common mistakes)
+1. **Global ifloslanish (Global Pollution):** Juda ko'p global o'zgaruvchi yaratmang! Agar ikki xil faylda bir xil nomli global o'zgaruvchi bo'lsa, ular bir-birini buzib qo'yadi.
+2. **E'lonsiz o'zgaruvchi:** Funksiya ichida \`let/const\` yozishni unutsangiz (\`y = 5\`), JS uni avtomatik global qilib yuboradi. Bu juda yomon odat!
+
+## 6. SAVOLLAR (12 ta)
+1. Global Scope nima?
+2. Qayerda e'lon qilingan o'zgaruvchilar global hisoblanadi?
+3. Global o'zgaruvchini funksiya ichida ishlatsa bo'ladimi?
+4. \`window\` obyekti nima?
+5. Nima uchun global o'zgaruvchilar xavfli bo'lishi mumkin?
+6. \`let\` va \`var\` global e'lon qilinganda nima farqi bor?
+7. "Global Namespace Pollution" nima degani?
+8. Funksiya ichida \`let\` ishlatmasdan o'zgaruvchi yaratsak nima bo'ladi?
+9. Global o'zgaruvchini qachon ishlatish tavsiya etiladi?
+10. Global doira faqat brauzerdami yoki Node.js'da ham bormi?
+11. \`globalThis\` nima uchun kerak?
+12. Qanday qilib global o'zgaruvchilar sonini kamaytirish mumkin?`,
+  exercises: [
+    {
+      id: 1,
+      title: "Global mashqi",
+      instruction: "Global o'zgaruvchi yarating va uni funksiya ichida 1 ga oshiring.",
+      startingCode: "let count = 0;\nfunction inc() {\n  // Bu yerda countni oshiring\n}\ninc();",
+      hint: "count++;",
+      test: "if (count === 1) return null; return 'O\\'zgaruvchi oshmadi!';"
+    }
+  ]
 };
