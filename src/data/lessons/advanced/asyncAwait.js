@@ -1,83 +1,79 @@
 export const asyncAwait = {
-  id: "a2",
-  title: "Async / Await (Asinxronlik cho'qqisi)",
-  theory: `## 1. ASYNC / AWAIT NIMA?
-\`async/await\` — bu asinxron kodni xuddi sinxron (ketma-ket) kod kabi yozish imkonini beruvchi zamonaviy usul. Bu metod Promiselar ustiga qurilgan, lekin uni o'qish va tushunish ancha oson.
+  id: "async-await",
+  title: "Async / Await",
+  level: "Advanced",
+  description: "Asinxron kodni xuddi sinxron koddek oson va tushunarli yozish usuli.",
+  theory: `
+# Async / Await – Bu nima va nima uchun kerak?
 
-### Kalit so'zlar:
-- **async:** Funksiya oldidan yoziladi va u doim Promise qaytarishini bildiradi.
-- **await:** Faqat \`async\` funksiya ichida ishlaydi. U Promisening natijasini kutadi va kodni o'sha joyda "to'xtatib" turadi (boshqa kodlar ishlashiga xalaqit bermasdan).
+**Async/Await** — bu Promiselar bilan ishlashni yanada osonlashtiradigan "shirin" sintaksis (syntactic sugar). U asinxron kodni xuddi ketma-ket (sinxron) yozilgan koddek o'qishga imkon beradi.
 
----
+## 1. NEGA kerak?
+Hatto Promiselar ham zanjir (\`.then().then().then()\`) bo'lib ketganda o'qish qiyinlashishi mumkin. \`async/await\` bu zanjirlarni yo'qotib, kodni chiroyli va toza holatga keltiradi.
 
-## 2. KOD TUZILISHI
+## 2. SODDALIK (Analogiya)
+Buni **navbatda turish** deb tasavvur qiling:
+- \`async\`: "Men navbatga turdim" degani.
+- \`await\`: "Mening navbatim kelguncha kutib turaman, lekin boshqa odamlarga xalaqit bermayman" degani. Siz kutayotganingizda hayot (boshqa kodlar) to'xtab qolmaydi.
 
+## 3. STRUKTURA
+
+### A. Ishlatish qoidasi
+1. Funksiya oldida \`async\` so'zi bo'lishi shart.
+2. Promisening natijasini kutish uchun \`await\` ishlatiladi.
 \`\`\`javascript
 async function ma'lumotOl() {
-  console.log("Yuklanmoqda...");
-  
-  // 2 sekund kutadi va natijani oladi
-  const natija = await new Promise(res => setTimeout(() => res("Ma'lumot keldi!"), 2000));
-  
-  console.log(natija);
+  const res = await fetch("url");
+  const data = await res.json();
+  console.log(data);
 }
-
-ma'lumotOl();
 \`\`\`
 
-\`\`\`mermaid
-sequenceDiagram
-    participant JS as Call Stack
-    participant Web as Web API (Timer)
-    JS->>Web: await setTimeout (2s)
-    Note over JS: JS boshqa ishlarni qilishi mumkin
-    Web-->>JS: Vaqt tugadi!
-    JS->>JS: Kod davom etadi
-\`\`\`
-
----
-
-## 3. XATOLARNI BOSHQARISH (try...catch)
-Promiselarda \`.catch()\` ishlatgan bo'lsak, \`async/await\`da biz oddiy \`try...catch\` blokidan foydalanamiz.
-
+### B. Xatolarni ushlash (try...catch)
+Async funksiyalarda \`.catch()\` o'rniga oddiy \`try...catch\` ishlatiladi:
 \`\`\`javascript
-async function xatoliAmal() {
+async function runner() {
   try {
-    const r = await Promise.reject("Xato sodir bo'ldi!");
+    const data = await ba'zanXatoBeradiganFunksiya();
   } catch (err) {
-    console.log("Ushlangan xato:", err);
+    console.log("Xato ushlandi: " + err);
   }
 }
 \`\`\`
 
----
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+async function salom() {
+  return "Assalomu alaykum!";
+}
+salom().then(res => console.log(res)); // Async funksiya har doim Promise qaytaradi
+\`\`\`
 
-## 4. INTERVYU SAVOLLARI (Middle)
+## 5. XATOLAR (Common mistakes)
+1. **await'ni funksiya tashqarisida ishlatish:** Faqat \`async\` funksiya ichida ishlatish mumkin (Top-level await modullarda ishlaydi).
+2. **Kodni keraksiz kutib turish:** Agar ikkita bir-biriga bog'liq bo'lmagan so'rov bo'lsa, ularni alohida \`await\` qilib vaqt yo'qotmang, \`Promise.all()\` ishlating.
 
-1. **Top-level await nima?**
-   *Javob:* Bu \`async\` funksiya tashqarisida ham \`await\` ishlatish imkoniyati (modern brauzerlar va modullarda ishlaydi).
-
-2. **await ishlatilganda asosiy oqim (main thread) qotib qoladimi?**
-   *Javob:* Yo'q, JS faqat o'sha funksiya ijrosini to'xtatib turadi, qolgan hamma narsa (masalan, UI animatsiyalari) ishlashda davom etadi.
-
-3. **Promise.all() va await'ni qanday birga ishlatish mumkin?**
-   *Javob:* \`const [res1, res2] = await Promise.all([p1, p2]);\` ko'rinishida parallel kutish mumkin.`,
+## 6. SAVOLLAR (12 ta)
+1. \`async\` kalit so'zi nima vazifani bajaradi?
+2. \`await\` nima vazifani bajaradi?
+3. \`async\` funksiya har doim nima qaytaradi?
+4. \`await\`ni oddiy funksiya ichida ishlatsa bo'ladimi?
+5. Async funksiyalarda xatolar qanday ushlanadi?
+6. \`await\` ishlatilganda asosiy oqim (main thread) to'xtab qoladimi?
+7. \`async/await\` Promiselardan butunlay voz kechishmi?
+8. Bir vaqtda bir nechta \`await\` ishlatsa nima bo'ladi?
+9. \`Promise.all()\` bilan \`await\`ni qanday birga ishlatish mumkin?
+10. Top-level await nima?
+11. Async funksiya ichida \`return 5\` yozsak, u nima qaytaradi (\`Promise { 5 }\`)?
+12. Nima uchun \`async/await\` callbacklardan ko'ra yaxshiroq?`,
   exercises: [
     {
       id: 1,
-      title: "Async funksiya",
-      instruction: "'getData' nomli async funksiya yarating va u 1 sekund kutib 'Tayyor' matnini qaytarsin.",
-      startingCode: "// Funksiyani yarating\n",
-      hint: "async function getData() { await new Promise(r => setTimeout(r, 1000)); return 'Tayyor'; }",
-      test: "if (code.includes('async') && code.includes('await')) return null; return 'async va await ishlating';"
-    },
-    {
-      id: 2,
-      title: "try...catch mashqi",
-      instruction: "Async funksiya ichida xato beradigan Promiseni 'try...catch' orqali ushlang va xatoni konsolga chiqaring.",
-      startingCode: "async function runner() {\n  // try catch shu yerga\n}\nrunner();",
-      hint: "try { await Promise.reject('Fail'); } catch(e) { console.log(e); }",
-      test: "if (code.includes('try') && code.includes('catch')) return null; return 'try va catch ishlatilmadi';"
+      title: "Async mashqi",
+      instruction: "Async funksiya yarating va unda 1 soniya kutib 'Tayyor' matnini qaytaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "async function test() { await new Promise(r => setTimeout(r, 1000)); return 'Tayyor'; }",
+      test: "if (code.includes('async') && code.includes('await')) return null; return 'async/await ishlating';"
     }
   ]
 };
