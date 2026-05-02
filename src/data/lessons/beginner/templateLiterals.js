@@ -3,7 +3,7 @@ export const templateLiterals = {
   title: "Template Literals (Backticks)",
   level: "Beginner",
   description: "Stringlarni birlashtirishning eng zamonaviy va qulay usuli - Backticks (``) bilan tanishamiz.",
-  content: `
+  theory: `
 # Template Literals – Bu nima va nima uchun kerak?
 
 Oldinlari biz stringlarni (matnlarni) birlashtirish uchun \`+\` belgisidan foydalanardik. Bu juda noqulay edi, ayniqsa matn uzun bo'lsa yoki ichida o'zgaruvchilar ko'p bo'lsa. **Template Literals** (Backticks) bu muammoni hal qildi.
@@ -20,7 +20,6 @@ Bu usulda doim qo'shtirnoqlar va \`+\` bilan adashib ketish oson.
 \`\`\`javascript
 let gap = \`Mening ismim \${ism}. Men \${yosh} yoshdaman va \${shahar}da yashayman.\`;
 \`\`\`
-Ko'rib turganingizdek, kod ancha toza va o'qishga oson!
 
 ## 2. SODDALIK (Analogiya)
 Buni bir xat deb tasavvur qiling. Eski usulda siz xatni bo'lak-bo'lak qilib qog'ozlarga yozib, ularni yelim bilan yopishtirib chiqasiz. Template Literals esa – tayyor blanka, siz shunchaki kerakli joylarga (\${...}) kerakli ma'lumotlarni yozib qo'yasiz.
@@ -39,47 +38,41 @@ console.log(\`Jami: \${narx * soni} so'm\`); // Jami: 15000 so'm
 Eski usulda yangi qatorga o'tish uchun \`\\n\` ishlatilardi. Backticks bilan shunchaki "Enter"ni bossangiz kifoya:
 \`\`\`javascript
 let matn = \`Bu birinchi qator.
-Bu ikkinchi qator.
-Bu esa uchinchi qator.\`;
+Bu ikkinchi qator.\`;
 \`\`\`
 
 ## 4. AMALIYOT (Mashq)
-Quyidagi kodni konsolda sinab ko'ring:
 \`\`\`javascript
 const user = "Farhodoff";
 const balance = 1000000;
-const message = \`Assalomu alaykum, \${user}! Sizning hisobingizda \${balance.toLocaleString()} so'm bor.\`;
-console.log(message);
+console.log(\`Assalomu alaykum, \${user}!\`);
 \`\`\`
 
 ## 5. XATOLAR (Common mistakes)
-1.  **Qo'shtirnoqlar bilan adashtirish:** \`'\` (yoki \`"\`) o'rniga doim \` \` \` (backtick) ishlating.
-2.  **Belgini noto'g'ri yozish:** \`\${}\` o'rniga \`$\{\}\` (dollardan keyin bo'sh joy) yozib qo'ymang.
+1.  **Qo'shtirnoqlar bilan adashtirish:** \`'\` yoki \`"\` emas, \` \` \` ishlatish shart.
+2.  **Sintaksis:** \`\${}\` ichida faqat ifodalar (expressions) yoziladi, \`if/for\` kabi bloklarni yozib bo'lmaydi.
 
 ## 6. SAVOLLAR (12 ta)
-
-### Nazariy savollar:
-1. Template Literals JSning qaysi versiyasida (ES...) kiritilgan?
-2. Backtick belgisi klaviaturada qayerda joylashgan?
-3. Eski \`+\` usuli va Backtick o'rtasidagi asosiy farq nima?
-4. \`\${}\` ichida arifmetik amallar bajarish mumkinmi?
-5. Backticks ichida funksiyalarni chaqirsa bo'ladimi?
-6. Ko'p qatorli matn yozganda \`\\n\` ishlatish shartmi?
-
-### Amaliy savollar (Junior/Middle):
-7. Ikki sonni qo'shib, natijani "Natija: X" ko'rinishida Template Literal orqali chiqaring.
-8. Biror foydalanuvchining ismi va familiyasini bitta string qilib yasang.
-9. Obekt ichidagi ma'lumotni (masalan, \`car.model\`) matnga qo'shing.
-10. Shartli operatorni (ternary operator) \`\${}\` ichida ishlatib ko'ring (masalan, \`\${yosh >= 18 ? 'Kattasiz' : 'Kichiksiz'}\`).
-11. HTML teglarini (\`<div>\`, \`<h1>\`) o'z ichiga olgan backtick matn yasang.
-12. String metodlarini (masalan, \`.toUpperCase()\`) backtick ichida o'zgaruvchiga qo'llang.
-`,
-  practice: [
+1. Template Literals qaysi belgilar bilan yoziladi?
+2. \`\${}\` belgisi nima vazifani bajaradi?
+3. Backtick ichida yangi qatorga o'tish uchun nima qilish kerak?
+4. Eski \`+\` usulining asosiy kamchiligi nima?
+5. \`\${}\` ichida ternary operator ishlatsa bo'ladimi?
+6. Nima uchun bu usul "Template" deb ataladi?
+7. JSning qaysi versiyasida bu xususiyat qo'shilgan?
+8. \`\${2 + 2}\` natijasi nima bo'ladi?
+9. Backtick ichida oddiy qo'shtirnoq ishlatish mumkinmi?
+10. HTML elementlarini backtick bilan yasash qulaymi?
+11. Matnni bir nechta o'zgaruvchidan tashkil qilish misolini keltiring.
+12. Backtick ichida funksiya chaqirish mumkinmi?`,
+  exercises: [
     {
-      id: "template-1",
-      task: "O'zingiz haqingizda ma'lumot bering (ism, yosh, kasb) va ularni template literals orqali bitta matnga jamlang.",
-      initialCode: "const name = '';\nconst age = 0;\nconst job = '';\n\n// Kodni shu yerda yozing\nconst result = ``;\nconsole.log(result);",
-      answer: "const name = 'Farhod';\nconst age = 25;\nconst job = 'Dasturchi';\nconst result = `Mening ismim ${name}, yoshim ${age}da va men ${job}man.`;\nconsole.log(result);"
+      id: 1,
+      title: "O'zingizni tanishtiring",
+      instruction: "Name, Age o'zgaruvchilarini template literal orqali 'Mening ismim ... yoshim ...da' ko'rinishida chiqaring.",
+      startingCode: "const name = 'Farhod';\nconst age = 25;\n// Kodni shu yerda yozing\nconst result = ``;\nconsole.log(result);",
+      hint: "result = `Mening ismim ${name}, yoshim ${age}da`;",
+      test: "if (code.includes('${name}') && code.includes('${age}')) return null; return 'Template literals ishlatilmadi';"
     }
   ]
 };

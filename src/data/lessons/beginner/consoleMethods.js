@@ -3,86 +3,75 @@ export const consoleMethods = {
   title: "Console Metodlari (log, table, error, warn)",
   level: "Beginner",
   description: "Dasturni tekshirish (debugging) uchun faqat console.log kifoya qilmaydi. Boshqa foydali metodlarni o'rganamiz.",
-  content: `
+  theory: `
 # Console Metodlari – Bu nima va nima uchun kerak?
 
 Dasturchi sifatida ish vaqtingizning 50% qismi kod yozish bilan o'tsa, qolgan 50% qismi xatolarni qidirish (debugging) bilan o'tadi. **Console** obyekti bizga kodimiz ichida nima bo'layotganini ko'rishga yordam beradi.
 
 ## 1. NEGA kerak?
-Faqat \`console.log\` ishlatish ba'zan tartibsizlikka olib keladi. Agar sizda katta massiv yoki obekt bo'lsa, uni oddiy \`log\` bilan ko'rish qiyin. Yoki xatolarni alohida rangda (qizil) ko'rsatish kerak bo'lsa, maxsus metodlar kerak bo'ladi.
+Faqat \`console.log\` ishlatish ba'zan tartibsizlikka olib keladi. Agar sizda katta massiv yoki obekt bo'lsa, uni oddiy \`log\` bilan ko'rish qiyin.
 
 ## 2. SODDALIK (Analogiya)
 Tasavvur qiling, sizda asboblar qutisi bor.
-*   \`console.log\`: Bu oddiy chiroq (fonar), hamma joyni yoritadi.
-*   \`console.table\`: Bu lupa (mikroskop), hamma narsani jadval ichida tartibli ko'rsatadi.
-*   \`console.error\`: Bu "qizil signal", xavf haqida ogohlantiradi.
-*   \`console.warn\`: Bu "sariq signal", ehtiyot bo'lishni aytadi.
+*   \`console.log\`: Oddiy chiroq (fonar).
+*   \`console.table\`: Lupa, jadval qilib ko'rsatadi.
+*   \`console.error\`: Qizil signal, xavf!
+*   \`console.warn\`: Sariq signal, ehtiyot bo'ling!
 
 ## 3. STRUKTURA
 
-### A. console.log() – Oddiy xabar
-Hamma biladigan metod. Istalgan turdagi ma'lumotni chiqaradi.
-
-### B. console.table() – Jadval ko'rinishi
-Obektlar yoki massivlarni chiroyli jadval qilib chiqaradi:
+### A. console.table()
+Obektlar yoki massivlarni jadval qilib chiqaradi:
 \`\`\`javascript
-const users = [
-  { ism: "Ali", yosh: 25 },
-  { ism: "Vali", yosh: 20 }
-];
+const users = [{ ism: "Ali", yosh: 25 }];
 console.table(users);
 \`\`\`
 
-### C. console.error() va console.warn()
-Xato va ogohlantirishlar uchun:
+### B. console.error() va console.warn()
 \`\`\`javascript
-console.error("Vay! Xato yuz berdi."); // Qizil rangda chiqadi
-console.warn("Diqqat! Bu funksiya tez orada o'chiriladi."); // Sariq rangda chiqadi
+console.error("Xato!");
+console.warn("Ogohlantirish!");
 \`\`\`
 
-### D. console.time() va console.timeEnd()
-Kodning qancha vaqt davomida ishlaganini o'lchash uchun:
+### C. console.time() va console.timeEnd()
+Vaqtni o'lchash:
 \`\`\`javascript
-console.time("Loop-vaqti");
-for(let i=0; i<1000000; i++) {}
-console.timeEnd("Loop-vaqti"); // Loop-vaqti: 2.34ms
+console.time("T1");
+// ...kod
+console.timeEnd("T1");
 \`\`\`
 
 ## 4. AMALIYOT (Mashq)
-Quyidagi obektni jadval ko'rinishida chiqarib ko'ring:
 \`\`\`javascript
-const meva = { nomi: "Olma", narxi: 12000, rangi: "Qizil" };
+const meva = { nomi: "Olma", narxi: 12000 };
 console.table(meva);
 \`\`\`
 
 ## 5. XATOLAR (Common mistakes)
-1.  **Productionda qoldirish:** Saytni foydalanuvchiga topshirayotganda \`console.log\`larni o'chirib tashlash kerak (yoki maxsus kutubxona ishlatish kerak).
-2.  **Sintaksis:** \`console\` kichik harf bilan yoziladi. \`Console.log\` ishlamaydi.
+1. \`Console.log\` (katta harf bilan) deb yozish.
+2. Production kodda konsollarni qoldirish.
 
 ## 6. SAVOLLAR (12 ta)
-
-### Nazariy savollar:
-1. \`console\` obyekti brauzerning bir qismimi yoki JS tiliningmi?
-2. Massivlarni chiroyli ko'rsatish uchun qaysi metod ishlatiladi?
-3. \`console.error\` va \`console.log\` o'rtasidagi asosiy farq nima?
-4. Kodning tezligini qanday o'lchash mumkin?
-5. \`console.clear()\` nima ish bajaradi?
-6. \`console.group()\` metodi nima uchun kerak?
-
-### Amaliy savollar (Junior/Middle):
-7. Bir vaqtning o'zida 3 ta o'zgaruvchini bitta \`console.log\` ichida chiqaring.
-8. Matnni CSS bilan bezab chiqaring (Ha, JS konsolida ham CSS ishlatsa bo'ladi! \`console.log('%c Salom', 'color: red')\`).
-9. Xatolik yuz berganda foydalanuvchiga \`console.error\` orqali xabar bering.
-10. Tasodifiy sonli massiv yarating va uni \`console.table\`da ko'ring.
-11. 1 million marta takrorlanadigan siklning ishlash vaqtini o'lchang.
-12. O'zingiz haqingizda obekt yarating va barcha ma'lumotlarni konsolga guruhlab (\`group\`) chiqaring.
-`,
-  practice: [
+1. \`console.table\` nima uchun kerak?
+2. \`console.error\` qanday rangda chiqadi?
+3. Vaqtni o'lchash uchun qaysi metodlar ishlatiladi?
+4. \`console.clear()\` nima qiladi?
+5. Bir nechta qiymatni bitta logda chiqarsa bo'ladimi?
+6. \`console.group()\` nima?
+7. \`console.warn\` qachon ishlatiladi?
+8. \`console.log\` JS tilidami yoki brauzerda?
+9. Konsolga CSS bersa bo'ladimi?
+10. \`console.count()\` nima vazifani bajaradi?
+11. Obektni konsolda qanday qulay ko'rish mumkin?
+12. Debugging nima?`,
+  exercises: [
     {
-      id: "console-1",
-      task: "Quyidagi massivni jadval ko'rinishida konsolga chiqaring: ['BMW', 'Tesla', 'Audi']",
-      initialCode: "const cars = ['BMW', 'Tesla', 'Audi'];\n// Kodni shu yerda yozing",
-      answer: "const cars = ['BMW', 'Tesla', 'Audi'];\nconsole.table(cars);"
+      id: 1,
+      title: "Table mashqi",
+      instruction: "['BMW', 'Audi'] massivini jadval ko'rinishida chiqaring.",
+      startingCode: "const cars = ['BMW', 'Audi'];\n// Kodni yozing",
+      hint: "console.table(cars);",
+      test: "if (code.includes('console.table')) return null; return 'console.table ishlatilmadi';"
     }
   ]
 };
