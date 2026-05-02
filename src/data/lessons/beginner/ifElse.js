@@ -1,111 +1,86 @@
 export const ifElseLesson = {
-  id: "b21",
-  title: "Shartli Operatorlar: if...else",
-  theory: `## 1. KIRISH
-Dasturlashda qaror qabul qilish — eng muhim jarayon. Masalan, **Payme** ilovasida pul o'tkazmoqchi bo'lsangiz: "Agar (if) balansda pul yetarli bo'lsa — o'tkaz, aks holda (else) — xatolik ko'rsat". 
+  id: "if-else",
+  title: "Shartli operatorlar (if...else)",
+  level: "Beginner",
+  description: "Dasturingizni 'fikrlashga' o'rgatamiz: shartga qarab har xil amallarni bajarish.",
+  theory: `
+# Shartli operatorlar – Bu nima va nima uchun kerak?
 
-Dars oxirida siz dasturingizni "fikrlashga" va sharoitga qarab ish tutishga o'rgatasiz.
+Dasturlashda qaror qabul qilish juda muhim. Masalan, saytga kirayotgan foydalanuvchidan: "Agar paroling to'g'ri bo'lsa — kir, aks holda — xato ko'rsat" deb so'rashimiz kerak. Buning uchun **if...else** ishlatiladi.
 
-## 2. TUSHUNCHA
+## 1. NEGA kerak?
+Shartlarsiz dastur shunchaki ketma-ket buyruqlar to'plami bo'lib qoladi. Shartlar esa dasturni "aqlli" qiladi, u vaziyatga qarab o'zgaradi.
 
-### Sodda ta'rif
-Shartli operatorlar — dasturda ma’lum bir shartga qarab turli kod bloklarini bajarish imkonini beradi.
-
-### Real hayot o'xshashlik
+## 2. SODDALIK (Analogiya)
 Buni **svetoforga** o'xshatish mumkin:
-- Agar **Yashil** bo'lsa -> Yur!
-- Agar **Sariq** bo'lsa -> Tayyorlan!
-- Aks holda (**Qizil**) -> To'xta!
+- **Agar (if)** chiroq yashil bo'lsa — yur.
+- **Aks holda (else)** — to'xta.
 
----
+## 3. STRUKTURA
 
-## 3. ASOSIY OPERATORLAR
-
-### if...else (Agar... aks holda)
-\`\`\`javascript
-let harorat = 25;
-if (harorat > 30) {
-  console.log("Issiq");
-} else {
-  console.log("Zo'r havo");
-}
-\`\`\`
-
-### Ternary operator (? :) ⭐
-Qisqa \`if...else\` yozish uchun. 
-Sintaksis: \`shart ? rost_bo'lsa : yolg'on_bo'lsa\`
+### A. Oddiy if...else
 \`\`\`javascript
 let yosh = 20;
-let ruxsat = yosh >= 18 ? "Kir" : "To'xta";
-console.log(ruxsat); // "Kir"
-\`\`\`
-
----
-
-## 4. VIZUAL TUSHUNTIRISH
-### if...else Oqimi
-\`\`\`mermaid
-graph TD
-    A[Boshlash] --> B{Shart: yosh >= 18?}
-    B -- Ha --> C["Kirish mumkin ✅"]
-    B -- Yo'q --> D["Taqiqlangan ❌"]
-    C --> E[Tugash]
-    D --> E
-\`\`\`
-
----
-
-## 5. INTERVYU SAVOLLARI (Junior & Middle)
-
-### Q1. Truthy va Falsy qiymatlar nima? ⭐
-**Javob:**
-Boolean kontekstida (if ichida) \`true\` ga aylanadigan qiymatlar — **truthy**, \`false\` ga aylanadiganlari — **falsy** deyiladi.
-**Falsy (6 ta):** \`false\`, \`0\`, \`""\` (bo'sh matn), \`null\`, \`undefined\`, \`NaN\`. Qolgan hammasi (hatto \`[]\` va \`{}\`) — truthy!
-
-### Q2. if(value) va if(value === true) farqi nima?
-**Javob:**
-\`if(value)\` har qanday truthy qiymatda (masalan: 1, "salom") ishlaydi. \`if(value === true)\` esa faqat qiymat aniq boolean turidagi \`true\` bo'lsagina ishlaydi.
-
----
-
-## 6. MINI LOYIHA: "Ballarni Baholash"
-**Vazifa:** Talaba to'plagan ballga qarab unga baxo bering.
-
-\`\`\`javascript
-function baholash(ball) {
-  if (ball >= 90) return "A - Alo";
-  if (ball >= 80) return "B - Yaxshi";
-  if (ball >= 70) return "C - Qoniqarli";
-  return "F - Yiqildi";
+if (yosh >= 18) {
+  console.log("Sizga ruxsat berildi ✅");
+} else {
+  console.log("Siz hali kichiksiz ❌");
 }
-
-console.log(baholash(85)); // → "B - Yaxshi"
 \`\`\`
-`,
+
+### B. Bir nechta shartlar (else if)
+\`\`\`javascript
+let ball = 85;
+if (ball >= 90) {
+  console.log("Alochi");
+} else if (ball >= 70) {
+  console.log("Yaxshi");
+} else {
+  console.log("Yomon");
+}
+\`\`\`
+
+### C. Qisqa usul (Ternary operator)
+Bitta qatorda yozish uchun:
+\`\`\`javascript
+let res = (yosh >= 18) ? "Katta" : "Kichik";
+\`\`\`
+
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+let harorat = 35;
+if (harorat > 30) {
+  console.log("Bugun juda issiq! ☀️");
+} else {
+  console.log("Bugun havo zo'r! ☁️");
+}
+\`\`\`
+
+## 5. XATOLAR (Common mistakes)
+1. **Solishtirish o'rniga berish:** \`if (x = 5)\` deb yozish — bu xato ❌. Doim \`==\` yoki \`===\` ishlating: \`if (x === 5)\`.
+2. **Qavslarni unutish:** \`if x > 5\` deb yozib bo'lmaydi, shart doim \`( )\` ichida bo'lishi shart.
+
+## 6. SAVOLLAR (12 ta)
+1. Shartli operator nima uchun kerak?
+2. \`if\` so'zining ma'nosi nima?
+3. \`else\` qachon ishga tushadi?
+4. \`else if\` nima vazifani bajaradi?
+5. Ternary operator (\`? :\`) qanday tuzilgan?
+6. Bir nechta shartni birlashtirish uchun qaysi belgilar ishlatiladi (\`&&\`, \`||\`)?
+7. \`if (10 > 5)\` natijasi nima bo'ladi?
+8. Truthy va Falsy qiymatlar farqi nima?
+9. \`if ("")\` ishlaydimi? (Falsy)
+10. \`if (" ")\` ishlaydimi? (Truthy)
+11. Shart ichida shart (Nested if) yozish mumkinmi?
+12. \`switch\` va \`if...else\` o'rtasidagi asosiy farq nima?`,
   exercises: [
     {
       id: 1,
-      title: "if...else mashqi",
-      instruction: "Yosh 18 dan katta bo'lsa 'Xush kelibsiz', aks holda 'Kichiksiz' deb consolega chiqaring.",
-      startingCode: "const age = 20;\n// Bu yerga yozing\n",
-      hint: "if (age >= 18) { console.log('Xush kelibsiz'); }",
-      test: "if (logs.includes('Xush kelibsiz')) return null; return 'Xush kelibsiz chiqishi kerak';"
-    },
-    {
-      id: 2,
-      title: "Musbat yoki Manfiy",
-      instruction: "Son musbat bo'lsa 'Positive', manfiy bo'lsa 'Negative', nol bo'lsa 'Zero' deb chiqaring.",
-      startingCode: "const n = -5;\n// Bu yerda tekshiring\n",
-      hint: "else if ishlatishingiz kerak.",
-      test: "if (logs.includes('Negative')) return null; return 'Negative chiqishi kerak';"
-    },
-    {
-      id: 3,
-      title: "Ternary operator",
-      instruction: "Ternary operator yordamida 'score' 50 dan katta bo'lsa 'Pass', aks holda 'Fail' degan o'zgaruvchi yarating va chiqaring.",
-      startingCode: "const score = 60;\nconst result = // bu yerga yozing\nconsole.log(result);",
-      hint: "score > 50 ? 'Pass' : 'Fail'",
-      test: "if (logs.includes('Pass')) return null; return 'Pass chiqishi kerak';"
+      title: "Yoshni tekshirish",
+      instruction: "Agar 'age' 18 dan kichik bo'lsa 'Kichik', aks holda 'Katta' deb chiqaring.",
+      startingCode: "let age = 15;\n// Bu yerga yozing\n",
+      hint: "if (age < 18) { console.log('Kichik'); } else { ... }",
+      test: "if (logs.includes('Kichik')) return null; return 'Noto\\'g\\'ri xabar chiqdi!';"
     }
   ]
 };
