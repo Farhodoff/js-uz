@@ -1,74 +1,84 @@
 export const thisKeyword = {
-  id: "i11",
-  title: "this kalit so'zi (this keyword)",
-  theory: `## 1. KIRISH
-\`this\` — bu JavaScriptda funksiya chaqirilayotgan **kontekstga** (sharoitga) ishora qiluvchi ko'rsatkichdir. Uning qiymati funksiya qanday chaqirilganiga qarab o'zgaradi.
+  id: "this-keyword",
+  title: "this kaliti va Kontekst",
+  level: "Intermediate",
+  description: "JavaScriptdagi eng ko'p tushunmovchilikka sabab bo'ladigan 'this' kalit so'zini o'rganamiz.",
+  theory: `
+# this kalit so'zi – Bu nima va nima uchun kerak?
 
----
+JavaScriptda **this** kalit so'zi funksiya qaysi obyektdan turib chaqirilayotganiga ishora qiladi. U har doim "kim haqida gapiryapmiz?" degan savolga javob beradi.
 
-## 2. TO'RTTA BOG'LANISH QOIDASI
+## 1. NEGA kerak?
+Tasavvur qiling, sizda mingta foydalanuvchi obyekti bor. Ularning har biri uchun alohida "salom berish" funksiyasini yozish xotirani band qiladi. Bitta funksiya yozib, \`this\` orqali "shu foydalanuvchining ismini ol" deyish ancha aqlli yechimdir.
 
-1.  **Global Binding:** Funksiya oddiy chaqirilganda, \`this\` global obyektga (window) teng.
-2.  **Implicit Binding:** Funksiya obyekt ichida metod sifatida chaqirilganda (\`obj.metod()\`), \`this\` o'sha obyektga teng.
-3.  **Explicit Binding:** \`call\`, \`apply\` yoki \`bind\` yordamida \`this\`ni o'zimiz belgilaymiz.
-4.  **New Binding:** Konstruktor funksiya (\`new\`) ishlatilganda, \`this\` yangi obyektga teng bo'ladi.
+## 2. SODDALIK (Analogiya)
+Siz "Mening ismim Farhod" deganingizda, "mening" so'zi Farhodga tegishli. Agar boshqa odam "Mening ismim Ali" desa, "mening" so'zi Aliga tegishli. \`this\` — bu JSdagi "mening" yoki "o'zimning" degan so'zdir.
 
-\`\`\`mermaid
-graph TD
-    A[this nimaga teng?] --> B{new bormi?}
-    B -- Ha --> C[Yangi obyekt]
-    B -- Yo'q --> D{call/apply/bind?}
-    D -- Ha --> E[Belgilangan obyekt]
-    D -- Yo'q --> F{Obyekt metodi?}
-    F -- Ha --> G[O'sha obyekt]
-    F -- Yo'q --> H[Global / undefined]
+## 3. STRUKTURA
+
+### A. Global kontekstda
+Agar \`this\` hech qanday obyekt ichida bo'lmasa, u global obyektga (\`window\`) ishora qiladi:
+\`\`\`javascript
+console.log(this); // window (brauzerda)
 \`\`\`
 
----
+### B. Obyekt ichida (Method)
+Metod ichida \`this\` o'sha obyektning o'ziga ishora qiladi:
+\`\`\`javascript
+const user = {
+  name: "Farhod",
+  sayHi() {
+    console.log("Salom, " + this.name);
+  }
+};
+user.sayHi(); // Salom, Farhod
+\`\`\`
 
-## 3. ARROW FUNCTION VA THIS ⭐
-Arrow funksiyalarda o'zining \`this\` konteksti yo'q. Ular \`this\`ni o'zi yozilgan joydagi tashqi muhitdan (lexical scope) oladi.
-
+### C. Arrow functions
+**Muhim!** Arrow funksiyalarda o'zining \`this\`i bo'lmaydi. U o'zidan tepasidagi (parent) \`this\`ni oladi:
 \`\`\`javascript
 const user = {
   name: "Ali",
-  sayHi: () => {
-    console.log(this.name); // ❌ undefined (chunki arrow function windowga qaraydi)
-  },
-  sayHello() {
-    console.log(this.name); // ✅ Ali
-  }
+  hi: () => console.log(this.name) // window.name ni qidiradi
 };
 \`\`\`
 
----
+## 4. AMALIYOT (Mashq)
+\`\`\`javascript
+const mashina = {
+  model: "Tesla",
+  start() {
+    console.log(this.model + " o't oldi!");
+  }
+};
+mashina.start();
+\`\`\`
 
-## 4. INTERVYU SAVOLLARI (Junior & Middle)
+## 5. XATOLAR (Common mistakes)
+1.  **Yo'qotilgan kontekst:** Funksiyani o'zgaruvchiga saqlab, keyin chaqirsangiz \`this\` yo'qoladi.
+2.  **Arrow functions metod sifatida:** Obyekt metodlarini yozishda arrow funksiya ishlatmang, aks holda \`this\` ishlamaydi.
 
-1. **call va apply farqi nima?**
-   *Javob:* \`call\` argumentlarni bittalab qabul qiladi, \`apply\` esa massiv ko'rinishida.
-
-2. **bind() nima qaytaradi?**
-   *Javob:* U funksiyani darhol ishlatmaydi, balki \`this\` bog'langan yangi funksiya qaytaradi.
-
-3. **'use strict' ishlatilganda global this nima bo'ladi?**
-   *Javob:* \`window\` emas, \`undefined\` bo'ladi. Bu xavfsizlik uchun qilingan.`,
+## 6. SAVOLLAR (12 ta)
+1. \`this\` so'zining asosiy ma'nosi nima?
+2. Global kontekstda \`this\` nima qaytaradi?
+3. Obyekt metodida \`this\` nimaga teng?
+4. Arrow funksiyalarda \`this\` bormi?
+5. \`strict mode\`da global \`this\` nima bo'ladi (\`undefined\`)?
+6. \`bind\`, \`call\`, \`apply\` nima uchun kerak?
+7. Nima uchun arrow funksiyani obyekt metodi qilib ishlatmaslik kerak?
+8. \`setTimeout\` ichidagi \`this\` muammosini qanday hal qilish mumkin?
+9. "Context" (Kontekst) nima?
+10. \`new\` kalit so'zi bilan chaqirilgan funksiyada \`this\` nima bo'ladi?
+11. \`this\`ning qiymati funksiya yozilganda aniqlanadimi yoki chaqirilgandami?
+12. HTML eventlarida (masalan, \`onclick\`) \`this\` nimaga ishora qiladi?`,
   exercises: [
     {
       id: 1,
-      title: "Implicit Binding",
-      instruction: "Obyekt ichida 'this.name' ni qaytaradigan metod yozing.",
-      startingCode: "const person = { name: 'Ali', getName() { /* bu yerda return qiling */ } };\nconsole.log(person.getName());",
+      title: "This mashqi",
+      instruction: "Obekt ichidagi 'name'ni 'this' orqali qaytaradigan metod yozing.",
+      startingCode: "const obj = {\n  name: 'Loyiha',\n  getName() {\n    // Bu yerga yozing\n  }\n};",
       hint: "return this.name;",
-      test: "if (logs.includes('Ali')) return null; return 'Ali chiqishi kerak';"
-    },
-    {
-      id: 2,
-      title: "Explicit Binding",
-      instruction: "call() yordamida 'greet' funksiyasini 'user' obyekti bilan chaqiring.",
-      startingCode: "const user = { name: 'Vali' };\nfunction greet() { console.log('Salom ' + this.name); }\n// Bu yerda call ishlating\n",
-      hint: "greet.call(user);",
-      test: "if (logs.includes('Salom Vali')) return null; return 'Salom Vali chiqishi kerak';"
+      test: "if (obj.getName() === 'Loyiha') return null; return 'this.name ishlatilmadi';"
     }
   ]
 };
