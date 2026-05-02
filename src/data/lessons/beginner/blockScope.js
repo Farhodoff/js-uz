@@ -1,93 +1,75 @@
 export const blockScopeLesson = {
-  id: "b10",
-  title: "Block Scope: {} belgilarining kuchi",
-  theory: `## 1. KIRISH
-O'rta asrlarda uylarning atrofida **devorlar** bo'lgan. JavaScriptda \`{ }\` jingalak qavslar xuddi o'sha devorlardir. Ular \`let\` va \`const\` o'zgaruvchilarini tashqi olamdan himoya qiladi.
+  id: "block-scope",
+  title: "Blok doirasi (Block Scope)",
+  level: "Beginner",
+  description: "Jingalak qavslar { } ichida e'lon qilingan o'zgaruvchilarning siri.",
+  theory: `
+# Block Scope – Bu nima va nima uchun kerak?
 
-## 2. TUSHUNCHA
+**Block Scope** — bu jingalak qavslar \`{ }\` ichida e'lon qilingan o'zgaruvchilarning faqat shu qavslar ichida ko'rinishidir. Bu asosan \`if\`, \`for\` yoki \`switch\` bloklariga tegishli.
 
-### Sodda ta'rif
-Block Scope - bu jingalak qavslar \`{ }\` ichida e'lon qilingan o'zgaruvchilarning faqat shu qavslar ichida yashashidir. Bu \`if\`, \`for\` yoki shunchaki bo'sh qavslar bo'lishi mumkin.
+## 1. NEGA kerak?
+Tasavvur qiling, sizda \`if\` sharti bor va uning ichida vaqtinchalik bir hisob-kitob qilyapsiz. Bu vaqtinchalik o'zgaruvchi shart tugagandan keyin kerak emas. Block scope yordamida biz o'sha o'zgaruvchini blokdan tashqariga "chiqarib yubormaslik" imkoniga egamiz. Bu xotirani tejaydi va tartibsizlikni oldini oladi.
 
-### Muhim Farq: var vs let ⭐
-- **let / const**: Blokni (devorni) tan oladi. Ichkarida qoladi.
-- **var**: Blokni (devorni) tan olmaydi! U devordan oshib o'tib ketadi.
+## 2. SODDALIK (Analogiya)
+Jingalak qavslarni \`{ }\` bir **qafas** deb tasavvur qiling. \`let\` va \`const\` bu qafas ichidagi qushlardir. Ular qafasdan tashqariga uchib chiqolmaydi. \`var\` esa — bu "arvoh", u devorlar va qafaslardan bemalol o'tib ketadi (shuning uchun u xavfli).
 
-### Sintaksis
+## 3. STRUKTURA
+
+### A. let va const (Blokni tan oladi)
 \`\`\`javascript
 if (true) {
-  let x = 1; // Block Scope
-  var y = 2; // Block Scope-da emas!
+  let qush = "Bulbul";
+  console.log(qush); // Blok ichida ko'rinadi ✅
 }
-
-// console.log(x); // ❌ XATO
-console.log(y); // ✅ 2 (var devordan oshib o'tdi)
+console.log(qush); // Xato! ❌ (Qush qafasdan chiqolmaydi)
 \`\`\`
 
----
-
-## 3. KOD MISOLLARI
-
-### Misol 1 — if bloki
+### B. var (Blokni tan olmaydi)
 \`\`\`javascript
 if (true) {
-  const meva = "Olma";
+  var arvoh = "Kasper";
 }
-// console.log(meva); // ❌ ReferenceError
+console.log(arvoh); // "Kasper" ✅ (Blokdan chiqib ketdi!)
 \`\`\`
 
-### Misol 2 — for loop (Eng mashhur muammo)
+## 4. AMALIYOT (Mashq)
 \`\`\`javascript
-for (let i = 0; i < 5; i++) {
-  // i faqat shu yerda yashaydi
-}
-// console.log(i); // ❌ i o'lib bo'lgan
-\`\`\`
-
----
-
-## 4. VIZUAL TUSHUNTIRISH
-### var va let devorga qarshi
-\`\`\`mermaid
-graph TD
-    A["Tashqari"] --- B["Devor { }"]
-    B --- C("let: Ichkarida qoldi")
-    B -.-> D("var: Devordan o'tib ketdi")
-    style B fill:#f9f,stroke:#333,stroke-width:4px
-\`\`\`
-
----
-
-## 5. INTERVYU SAVOLLARI
-1. **Block Scope nima?** - Jingalak qavslar ichidagi hudud.
-2. **Qaysi kalit so'zlar block scope-ni tan oladi?** - \`let\` va \`const\`.
-3. **var nega yomon?** - Chunki u bloklardan chiqib ketib, global o'zgaruvchilar bilan to'qnashib ketishi mumkin.
-
----
-
-## 6. MINI LOYIHA: "Vaqtinchalik O'zgaruvchi"
-**Vazifa:** Hisob-kitob uchun vaqtinchalik o'zgaruvchi ishlating va u tashqariga chiqib ketmasligini ta'minlang.
-
-\`\`\`javascript
-let natija = 0;
-
 {
-  let temp = 10 * 5;
-  natija = temp + 5;
+  let x = 10;
+  const y = 20;
+  var z = 30;
 }
-
-console.log(natija); // 55
-// console.log(temp); // temp bu yerda yo'q, xavfsiz ✅
+console.log(z); // 30
+// console.log(x); // Xato!
+// console.log(y); // Xato!
 \`\`\`
-`,
+
+## 5. XATOLAR (Common mistakes)
+1. **Loop ichida var ishlatish:** \`for\` loop ichida \`var i\` ishlatsangiz, u loop tugagandan keyin ham globalda qolib ketadi va boshqa kodlarni buzishi mumkin.
+2. **E'lon qilish:** Blok ichida yaratilgan o'zgaruvchini blokdan tashqarida ishlatishga urinish.
+
+## 6. SAVOLLAR (12 ta)
+1. Block Scope nima?
+2. Qaysi belgilar blokni bildiradi?
+3. \`let\` va \`const\` blok doirasiga kiradimi?
+4. \`var\` blok doirasiga kiradimi?
+5. Nima uchun \`var\` xavfli hisoblanadi?
+6. \`if\` blokidan tashqarida uning ichidagi \`let\` o'zgaruvchisini ishlatsa nima bo'ladi?
+7. \`for\` loop ichida \`let\` ishlatish nima uchun yaxshi?
+8. Bo'sh jingalak qavslar \`{ }\` ham alohida scope yaratadimi?
+9. Global scope va Block scope farqi nima?
+10. Blok ichida blok (Nested blocks) bo'lishi mumkinmi?
+11. Ichki blok tashqi blok o'zgaruvchisini ko'radimi?
+12. Tashqi blok ichki blok o'zgaruvchisini ko'radimi?`,
   exercises: [
     {
       id: 1,
-      title: "Blok ichida saqlash",
-      instruction: "if bloki ichida const bilan 'data' yarating. Uni blokdan tashqarida ishlatib bo'lmasligiga ishonch hosil qiling.",
-      startingCode: "if (true) {\n  // data yarating\n}\n",
-      hint: "const data = 'test';",
-      test: "if (code.includes('const data')) return null; return 'data o\\'zgaruvchisini yarating';"
+      title: "Blok testi",
+      instruction: "Blok { } oching, uning ichida 'x' o'zgaruvchisini yarating va tashqarida uni ishlatib xato oling.",
+      startingCode: "// { } oching\n",
+      hint: "{ let x = 5; } console.log(x);",
+      test: "if (output.includes('ReferenceError')) return null; return 'Xato chiqishi kerak edi!';"
     }
   ]
 };
