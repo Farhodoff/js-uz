@@ -131,8 +131,15 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: transform var(--transition-base);
+  transition: transform var(--transition-base), width var(--transition-base), margin var(--transition-base);
   z-index: 50;
+  flex-shrink: 0;
+}
+
+.sidebar:not(.open) {
+  width: 0;
+  border-right: none;
+  transform: translateX(-100%);
 }
 
 .sidebar-header {
@@ -786,6 +793,22 @@ body {
 }
 
 /* --- Mobile Responsive --- */
+/* --- Loading Container --- */
+.loading-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--text-muted);
+}
+
+/* --- Mobile backdrop --- */
+.sidebar-backdrop {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
@@ -801,6 +824,7 @@ body {
   }
 
   .sidebar-backdrop {
+    display: block;
     position: fixed;
     top: 0;
     left: 0;
@@ -834,6 +858,25 @@ body {
     width: 96%;
     padding: var(--space-4);
   }
+}
+
+/* --- Lesson item refinement --- */
+.lesson-item {
+  display: flex;
+  align-items: flex-start; /* gap dars nomi ko'p qatorli bo'lsa tepaga moslashishi uchun */
+  gap: var(--space-2);
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-8);
+  cursor: pointer;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-family: inherit;
+  transition: all var(--transition-fast);
+  line-height: 1.4;
+  word-break: break-word; /* uzun so'zlar bo'lsa sindirish */
 }
 
 /* --- Loading Animation --- */

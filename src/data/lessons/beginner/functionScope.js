@@ -1,5 +1,5 @@
 export const functionScopeLesson = {
-  id: "b9",
+  id: "function-scope",
   title: "Function Scope: Xona sirlari",
   theory: `## 1. KIRISH
 Tasavvur qiling, har bir funksiya — bu bitta alohida **xona**. Xona ichida nima sodir bo'layotganini tashqaridagilar ko'rmaydi. Bu o'zgaruvchilarni xavfsiz saqlashning eng oson usuli.

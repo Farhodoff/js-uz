@@ -1,5 +1,5 @@
 export const globalScopeLesson = {
-  id: "b11",
+  id: "global-scope",
   title: "Global Scope (Global doira)",
   theory: `## Global Scope – JavaScriptning eng tashqi darajasi
 

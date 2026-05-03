@@ -1,5 +1,5 @@
 export const primitivesVsObjects = {
-  id: "b12",
+  id: "primitives-vs-objects",
   title: "Primitivlar vs Obyektlar va Prototype",
   theory: `## Primitive Types vs Objects
 

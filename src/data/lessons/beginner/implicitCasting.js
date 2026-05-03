@@ -1,5 +1,5 @@
 export const implicitCasting = {
-  id: "b19",
+  id: "implicit-casting",
   title: "Implicit Type Casting (Avtomatik o'zgarishlar)",
   theory: `## 1. KIRISH
 **Implicit Type Casting** (yoki **Coercion**) – JavaScriptning o‘zining operatorlar va kontekstga qarab, qiymatlarni bir turdan boshqasiga **avtomatik** o‘zgartirishi. Bu dasturchi aralashuvisiz sodir bo‘ladi.

@@ -1,5 +1,5 @@
 export const jsGotchas = {
-  id: "b17",
+  id: "js-gotchas",
   title: "JS Tuzoqlari: Gotchas & Traps",
   theory: `## 1. KIRISH
 JavaScript — juda moslashuvchan, lekin ba'zida "mantiqsiz" tuyuladigan til. Bu darsda biz intervyularda eng ko'p so'raladigan va juniorlarni "chuv tushiradigan" g'alati holatlarni ko'rib chiqamiz.

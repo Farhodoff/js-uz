@@ -1,5 +1,5 @@
 export const typeofLesson = {
-  id: "b14",
+  id: "typeof",
   title: "typeof operatori",
   theory: `## typeof – Ma’lumot turini aniqlash
 

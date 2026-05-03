@@ -1,5 +1,5 @@
 export const stringMethods = {
-  id: "b10",
+  id: "string-methods",
   title: "String Metodlari - Matnlar bilan sehrgarlik",
   theory: `## 1. NEGA VA NIMA?
 Tasavvur qiling, foydalanuvchi ismini "  aLi  " deb yozdi. Sizga esa uni bazaga "Ali" ko'rinishida saqlash kerak. Matnning boshidagi bo'shliqlarni qanday o'chirasiz? Birinchi harfni qanday katta qilasiz?

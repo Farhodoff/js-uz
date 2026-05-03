@@ -1,5 +1,5 @@
 export const ifElseLesson = {
-  id: "b21",
+  id: "if-else",
   title: "Shartli Operatorlar: if...else",
   theory: `## 1. KIRISH
 Dasturlashda qaror qabul qilish — eng muhim jarayon. Masalan, **Payme** ilovasida pul o'tkazmoqchi bo'lsangiz: "Agar (if) balansda pul yetarli bo'lsa — o'tkaz, aks holda (else) — xatolik ko'rsat". 

@@ -1,5 +1,5 @@
 export const equalityAlgorithms = {
-  id: "b20",
+  id: "equality-algorithms",
   title: "Tenglik Operatorlari (Equality)",
   theory: `## 1. LOOSE EQUALITY (==) — YUMSHOQ TENGLIK
 \`==\` operatori solishtirishdan oldin operandlarning **tiplarini avtomatik o‘zgartiradi** (type coercion). Qiymatlar bir xil bo‘lsa \`true\` qaytaradi.

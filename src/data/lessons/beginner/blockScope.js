@@ -1,5 +1,5 @@
 export const blockScopeLesson = {
-  id: "b10",
+  id: "block-scope",
   title: "Block Scope: {} belgilarining kuchi",
   theory: `## 1. KIRISH
 O'rta asrlarda uylarning atrofida **devorlar** bo'lgan. JavaScriptda \`{ }\` jingalak qavslar xuddi o'sha devorlardir. Ular \`let\` va \`const\` o'zgaruvchilarini tashqi olamdan himoya qiladi.

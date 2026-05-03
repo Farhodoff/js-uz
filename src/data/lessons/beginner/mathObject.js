@@ -1,5 +1,5 @@
 export const mathObject = {
-  id: "b16",
+  id: "math-object",
   title: "Math (Matematika) obyekti",
   theory: `## 1. KIRISH
 O'yinlar yaratishda (tasodifiy dushmanlar paydo bo'lishi), narxlarni yaxlitlashda yoki murakkab hisob-kitoblarda bizga \`Math\` obyekti yordamga keladi.

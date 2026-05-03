@@ -1,5 +1,5 @@
 export const variables = {
-  id: "b1",
+  id: "variables",
   title: "O'zgaruvchilar: var, let, const",
   theory: `## 1. KIRISH
 JavaScriptda o'zgaruvchilar - bu ma'lumotlarni saqlash uchun "qutilar". Tasavvur qiling, **Payme** yoki **Click** ilovasida sizning balansiningiz, ismingiz yoki tanlangan kartangiz doimiy o'zgarib turadi. Bu ma'lumotlarning hammasi o'zgaruvchilarda saqlanadi.

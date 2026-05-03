@@ -6,10 +6,8 @@ export default function Sidebar({
   activeSection, setActiveSection, activeLesson, openLesson,
   completed, getStats, totalCompleted, sidebarOpen, setSidebarOpen
 }) {
-  if (!sidebarOpen) return null;
-
   return (
-    <nav className="sidebar" role="navigation" aria-label="Darslar navigatsiyasi">
+    <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`} role="navigation" aria-label="Darslar navigatsiyasi">
       <div className="sidebar-header">
         <div>
           <div className="sidebar-brand">JS Academy</div>

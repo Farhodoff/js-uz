@@ -1,5 +1,5 @@
 export const cheatSheet = {
-  id: "b0",
+  id: "cheat-sheet",
   title: "⚡ JS Cheat Sheet (Tezkor ma'lumotnoma)",
   theory: `## JavaScript Tezkor Ma'lumotnoma
 

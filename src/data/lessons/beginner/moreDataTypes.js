@@ -1,5 +1,5 @@
 export const moreDataTypesLesson = {
-  id: "b7",
+  id: "more-data-types",
   title: "Ma'lumotlar Turlari: Null, Symbol, BigInt",
   theory: `## Ma'lumotlar Turlari: Null, Symbol, BigInt
 

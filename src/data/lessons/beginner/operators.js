@@ -1,5 +1,5 @@
 export const operators = {
-  id: "b13",
+  id: "operators",
   title: "Operatorlar: Taqqoslash va Mantiqiy",
   theory: `## 1. KIRISH
 Dasturlashda qaror qabul qilish uchun bizga operatorlar kerak. Masalan, foydalanuvchi kiritgan parol to'g'rimi? Yoki foydalanuvchining balansi xarid uchun yetarlimi? Bularning hammasi taqqoslash operatorlari orqali amalga oshiriladi.

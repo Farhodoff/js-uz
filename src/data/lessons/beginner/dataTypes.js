@@ -1,5 +1,5 @@
 export const dataTypesLesson = {
-  id: "b2",
+  id: "data-types",
   title: "Ma'lumotlar Turlari (Data Types)",
   theory: `## 1. JAVASCRIPTDA MA'LUMOTLAR TURLARI
 JavaScriptda ma'lumotlar ikki katta guruhga bo'linadi: **Primitiv** va **Murakkab (Reference)**.

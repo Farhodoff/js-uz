@@ -1,5 +1,5 @@
 export const loops = {
-  id: "b14",
+  id: "loops",
   title: "Looplar va Iteratsiyalar",
   theory: `## 1. LOOPLAR NIMA?
 Looplar (sikllar) — bir xil kodni ma'lum bir shart asosida qayta-qayta bajarish uchun ishlatiladi. JavaScriptda 5 xil asosiy loop turi mavjud.

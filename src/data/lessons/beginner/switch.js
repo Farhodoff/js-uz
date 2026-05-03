@@ -1,5 +1,5 @@
 export const switchLesson = {
-  id: "b22",
+  id: "switch",
   title: "Switch Operatori",
   theory: `## 1. SWITCH ASOSLARI
 \`switch\` — bir o‘zgaruvchi yoki ifodaning qiymatiga qarab, bir nechta **case** (holat) dan birini bajarish imkonini beradi. Bu operator ko'pincha juda ko'p \`if...else if\` yozishdan qochish uchun ishlatiladi.

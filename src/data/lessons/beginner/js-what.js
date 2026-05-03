@@ -1,5 +1,5 @@
 export const jsWhat = {
-  id: "b0",
+  id: "js-introduction",
   title: "JavaScriptga Kirish",
   theory: `## 1. NEGA VA NIMA?
 Tasavvur qiling, sizda chiroyli mashina bor (bu **HTML** va **CSS**). Lekin u yurmaydi, chiroqlari yonmaydi va signali ishlamaydi. Uni "jonlantirish" uchun sizga dvigatel va miya kerak. Veb-saytlar uchun bu "miya" — **JavaScript**dir!

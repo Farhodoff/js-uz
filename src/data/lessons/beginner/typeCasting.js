@@ -1,5 +1,5 @@
 export const typeCasting = {
-  id: "b18",
+  id: "type-casting",
   title: "Explicit Type Casting (Aniq tiplarni o'zgartirish)",
   theory: `## 1. KIRISH
 **Explicit Type Casting** – dasturchi tomonidan ma’lumot turini **aniq**, o‘zi yozgan kod orqali bir turdan boshqasiga o‘tkazish. JavaScriptda buning uchun maxsus funksiyalar va operatorlar mavjud.

@@ -61,7 +61,6 @@ function LessonPage() {
         <div
           className="sidebar-backdrop"
           onClick={() => setSidebarOpen(false)}
-          style={{ display: 'none' }}
         />
       )}
 
@@ -85,30 +84,39 @@ function LessonPage() {
           setSidebarOpen={setSidebarOpen}
         />
 
-        <div className="split-layout">
-          {/* Left: Theory */}
-          <div className="pane pane-theory">
-            <div className="pane-label">📖 Nazariya</div>
-            <TheoryTab activeLesson={activeLesson} />
+        {!activeLesson ? (
+          <div className="loading-container">
+            <div className="loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <p>Dars yuklanmoqda...</p>
           </div>
+        ) : (
+          <div className="split-layout">
+            {/* Left: Theory */}
+            <div className="pane pane-theory">
+              <div className="pane-label">📖 Nazariya</div>
+              <TheoryTab activeLesson={activeLesson} />
+            </div>
 
-          {/* Right: Practice */}
-          <div className="pane">
-            <div className="pane-label">💻 Amaliyot</div>
-            <PracticeTab
-              code={code}
-              setCode={setCode}
-              runCode={handleRunCode}
-              showHint={showHint}
-              setShowHint={setShowHint}
-              activeLesson={activeLesson}
-              currentExerciseIndex={currentExerciseIndex}
-              setCurrentExerciseIndex={setCurrentExerciseIndex}
-              output={output}
-              outputRef={outputRef}
-            />
+            {/* Right: Practice */}
+            <div className="pane">
+              <div className="pane-label">💻 Amaliyot</div>
+              <PracticeTab
+                code={code}
+                setCode={setCode}
+                runCode={handleRunCode}
+                showHint={showHint}
+                setShowHint={setShowHint}
+                activeLesson={activeLesson}
+                currentExerciseIndex={currentExerciseIndex}
+                setCurrentExerciseIndex={setCurrentExerciseIndex}
+                output={output}
+                outputRef={outputRef}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* AI Floating Button */}
         <div className="ai-fab">

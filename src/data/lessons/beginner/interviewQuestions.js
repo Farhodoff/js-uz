@@ -1,5 +1,5 @@
 export const interviewQuestionsBeginner = {
-  id: "q1",
+  id: "interview-beginner",
   title: "🟢 Interview Savollar (Boshlang'ich)",
   theory: `## Kirish
 Bu sahifa JavaScriptdan junior lavozimiga tayyorlanayotganlar uchun mo'ljallangan. 

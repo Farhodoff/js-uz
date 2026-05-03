@@ -1,5 +1,5 @@
 export const breakContinue = {
-  id: "b15",
+  id: "break-continue",
   title: "Break va Continue",
   theory: `## 1. KIRISH
 Sikllar (loops) bilan ishlaganda, ba'zida bizga siklni muddatidan oldin to'xtatish yoki ma'lum bir qadamni tashlab ketish kerak bo'ladi. Buning uchun JavaScriptda \`break\` va \`continue\` kalit so'zlari ishlatiladi.
