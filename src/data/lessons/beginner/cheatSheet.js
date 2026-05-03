@@ -1,81 +1,158 @@
 export const cheatSheet = {
   id: "cheat-sheet",
-  title: "⚡ JS Cheat Sheet (Tezkor ma'lumotnoma)",
-  theory: `## JavaScript Tezkor Ma'lumotnoma
+  title: "⚡ JS Cheat Sheet (To'liq ma'lumotnoma)",
+  theory: `## JS Cheat Sheet: Hammasi bir joyda! 🚀
 
-Bu sahifa sizga darslar davomida o'rgangan eng muhim narsalarni eslatib turish uchun yaratildi.
+**NEGA:** Dasturlashni o'rganayotganda hamma narsani yodda saqlash qiyin. Bu ma'lumotnoma — sizning "shpargalkangiz". Bu yerda JavaScript-ning eng muhim qismlari jamlangan.
 
-## 1. O'zgaruvchilar
-- \`let x = 10;\` — o'zgaradigan qiymat.
-- \`const y = 20;\` — o'zgarmas qiymat.
-- \`var z = 30;\` — eski usul (ishlatmang).
+---
 
-## 2. Ma'lumot turlari
-- **String:** \`"Matn"\`
-- **Number:** \`123\`
-- **Boolean:** \`true / false\`
-- **Null:** \`null\` (bo'sh)
-- **Undefined:** \`undefined\` (noma'lum)
+### 1. Asoslar va O'zgaruvchilar
+JavaScript-ni HTML-ga qo'shish:
+\`\`\`html
+<script src="script.js"></script>
+\`\`\`
 
-## 3. Shartli operatorlar
+**O'zgaruvchilar:**
+- \`let\` — o'zgaradigan qiymatlar uchun (zamonaviy).
+- \`const\` — o'zgarmas (konstanta) qiymatlar uchun.
+- \`var\` — eski usul, asosan ishlatilmaydi.
+
+**Ma'lumot turlari:**
+- \`Number\`: \`23\`, \`3.14\`
+- \`String\`: \`"Salom"\`, \`'Dunyo'\`
+- \`Boolean\`: \`true\`, \`false\`
+- \`Object\`: \`{name: "Ali", age: 20}\`
+- \`Array\`: \`[1, 2, 3]\`
+
+---
+
+### 2. Operatorlar (Hisob-kitob)
+- **Arifmetik:** \`+\`, \`-\`, \`*\`, \`/\`, \`%\` (qoldiq), \`++\` (1 qo'shish), \`--\` (1 ayirish).
+- **Solishtirish:** \`==\` (qiymat), \`===\` (qiymat va tur), \`!=\`, \`>\`, \`<\`, \`>=\`, \`<=\`.
+- **Mantiqiy:** \`&&\` (VA), \`||\` (YOKI), \`!\` (EMAS).
+
+---
+
+### 3. Satrlar (Strings) bilan ishlash
+- \`str.length\` — uzunligi.
+- \`str.indexOf("matn")\` — qidirish.
+- \`str.slice(start, end)\` — kesib olish.
+- \`str.replace("eski", "yangi")\` — almashtirish.
+- \`str.toUpperCase()\` / \`str.toLowerCase()\` — harf shakli.
+
+---
+
+### 4. Massivlar (Arrays)
 \`\`\`javascript
-if (shart) {
-  // bajariladi
+const mevalar = ["Olma", "Banan", "Nok"];
+\`\`\`
+- \`push("Gilos")\` — oxiriga qo'shish.
+- \`pop()\` — oxiridan o'chirish.
+- \`shift()\` — boshidan o'chirish.
+- \`unshift("Uzum")\` — boshiga qo'shish.
+- \`join(", ")\` — matnga aylantirish.
+- \`sort()\` — alifbo bo'yicha saralash.
+
+---
+
+### 5. Funksiyalar va Shartlar
+**Shartlar:**
+\`\`\`javascript
+if (yosh >= 18) {
+  console.log("Ruxsat");
 } else {
-  // aks holda
+  console.log("Taqiq");
 }
-
-// Ternary:
-let res = (yosh >= 18) ? "Katta" : "Kichik";
 \`\`\`
 
-## 4. Sikllar (Loops)
+**Funksiya:**
 \`\`\`javascript
-for (let i = 0; i < 5; i++) {
-  console.log(i);
+function kvadrat(son) {
+  return son * son;
 }
-
-for (let item of massiv) {
-  console.log(item);
-}
+// Arrow function:
+const kvadrat = (son) => son * son;
 \`\`\`
 
-## 5. Funksiyalar
+---
+
+### 6. Sikllar (Loops)
+- \`for\` — ma'lum marta takrorlash uchun.
+- \`while\` — shart bajarilguncha.
+- \`do while\` — kamida bir marta ishlaydi.
+- \`break\` — siklni to'xtatish.
+- \`continue\` — bitta qadamni tashlab o'tish.
+
+---
+
+### 7. Math (Matematika) va Sana
+- \`Math.random()\` — 0 va 1 oralig'ida tasodifiy son.
+- \`Math.floor(x)\` — pastga yaxlitlash.
+- \`Math.ceil(x)\` — tepaga yaxlitlash.
+- \`Math.round(x)\` — eng yaqin songa yaxlitlash.
+- \`new Date()\` — hozirgi vaqtni olish.
+
+---
+
+### 8. DOM (Veb-sahifa bilan ishlash)
+- \`document.getElementById("id")\` — elementni olish.
+- \`document.querySelector(".class")\` — tanlab olish.
+- \`element.innerHTML = "Yangi matn"\` — ichidagi matnni o'zgartirish.
+- \`element.style.color = "red"\` — rangini o'zgartirish.
+
+---
+
+### 9. Hodisalar (Events)
+- \`onclick\` — chertilganda.
+- \`onmouseover\` — sichqoncha ustiga kelganda.
+- \`onkeydown\` — klavish bosilganda.
+- \`onload\` — sahifa yuklanganda.
+
+---
+
+### 10. Xatolar (Errors)
 \`\`\`javascript
-function salom(ism) {
-  return "Salom " + ism;
+try {
+  // xavfli kod
+} catch (err) {
+  console.log("Xato yuz berdi: " + err.message);
+} finally {
+  // baribir ishlaydi
 }
-
-const salomArrow = (ism) => "Salom " + ism;
 \`\`\`
 
-## 6. Obyektlar va Massivlar
-\`\`\`javascript
-const user = { name: "Ali", age: 25 }; // Obyekt
-const mevalar = ["Olma", "Banan"]; // Massiv
-\`\`\`
+---
 
-## 7. SAVOLLAR (12 ta)
-1. \`let\` va \`const\` farqi nima?
-2. JavaScriptda nechta primitiv tur bor?
-3. \`==\` va \`===\` farqi nima?
-4. \`if\` ichida \`0\` bo'lsa nima bo'ladi?
-5. \`for\` loop qachon to'xtaydi?
-6. Arrow funksiya nima?
-7. \`typeof null\` natijasi nima?
-8. \`typeof NaN\` natijasi nima?
-9. Massivning 1-elementi indeksi necha?
-10. Obyekt xususiyatini qanday o'qiymiz?
-11. \`break\` nima ish qiladi?
-12. \`continue\` nima ish qiladi?`,
+### 11. SAVOLLAR (12 ta)
+1. \`const\` bilan e'lon qilingan massivga yangi element qo'shsa bo'ladimi?
+2. \`Math.random()\` 1 sonini qaytara oladimi?
+3. \`"5" + 2\` natijasi nima?
+4. \`"5" - 2\` natijasi nima?
+5. \`alert()\` va \`confirm()\` farqi nima?
+6. \`null\` va \`undefined\` farqi nima?
+7. \`push()\` massivning qayeriga ma'lumot qo'shadi?
+8. \`slice()\` asl massivni o'zgartiradimi?
+9. \`document.write()\` nima uchun xavfli bo'lishi mumkin?
+10. \`try...catch\` nima uchun ishlatiladi?
+11. \`==\` va \`===\` operatorlari o'rtasidagi farqni tushuntiring.
+12. \`for\` siklining uchta qismini sanab bering.`,
   exercises: [
     {
       id: 1,
-      title: "Tezkor sinov",
-      instruction: "Konstanta 'PI' yarating (3.14) va konsolga chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "const PI = 3.14; console.log(PI);",
-      test: "if (logs.includes(3.14)) return null; return 'PI chiqmagan!';"
+      title: "Massivlar bilan ishlash",
+      instruction: "'mevalar' massiviga 'Olma' va 'Uzum' qo'shing, so'ngra 'Olma'ni o'chirib tashlang va natijani konsolga chiqaring.",
+      startingCode: "const mevalar = [];\n// Bu yerga yozing\n",
+      hint: "push() qo'shadi, shift() boshidan o'chiradi.",
+      test: "if (logs.includes('Uzum') && !logs.includes('Olma')) return null; return 'Natija noto\\'g\\'ri!';"
+    },
+    {
+      id: 2,
+      title: "Matematika",
+      instruction: "0 dan 10 gacha bo'lgan tasodifiy butun son yaratuvchi kod yozing va konsolga chiqaring.",
+      startingCode: "// Math.random va Math.floor ishlating\n",
+      hint: "Math.floor(Math.random() * 11);",
+      test: "const n = logs[0]; if (typeof n === 'number' && n >= 0 && n <= 10) return null; return '0-10 oralig\\'idagi son chiqishi kerak!';"
     }
   ]
 };
