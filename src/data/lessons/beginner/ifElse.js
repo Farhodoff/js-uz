@@ -1,10 +1,8 @@
 export const ifElseLesson = {
   id: "if-else",
-  title: "Shartli operatorlar (if...else)",
-  level: "Beginner",
-  description: "Dasturingizni 'fikrlashga' o'rgatamiz: shartga qarab har xil amallarni bajarish.",
-  theory: `
-# Shartli operatorlar – Bu nima va nima uchun kerak?
+  title: "Shartli Operatorlar: if...else",
+  theory: `## 1. KIRISH
+Dasturlashda qaror qabul qilish — eng muhim jarayon. Masalan, **Payme** ilovasida pul o'tkazmoqchi bo'lsangiz: "Agar (if) balansda pul yetarli bo'lsa — o'tkaz, aks holda (else) — xatolik ko'rsat". 
 
 Dasturlashda qaror qabul qilish juda muhim. Masalan, saytga kirayotgan foydalanuvchidan: "Agar paroling to'g'ri bo'lsa — kir, aks holda — xato ko'rsat" deb so'rashimiz kerak. Buning uchun **if...else** ishlatiladi.
 

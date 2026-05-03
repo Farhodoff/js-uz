@@ -1,10 +1,7 @@
 export const moreDataTypesLesson = {
   id: "more-data-types",
-  title: "Boshqa ma'lumot turlari (Null, Symbol, BigInt)",
-  level: "Beginner",
-  description: "JavaScriptdagi maxsus ma'lumot turlari bilan tanishamiz: bo'sh qiymatlar, unikal belgilar va juda katta sonlar.",
-  theory: `
-# Null, Symbol va BigInt – Bular nima va nima uchun kerak?
+  title: "Ma'lumotlar Turlari: Null, Symbol, BigInt",
+  theory: `## Ma'lumotlar Turlari: Null, Symbol, BigInt
 
 Oldingi darsda biz eng ko'p ishlatiladigan turlarni ko'rdik. Endi esa JavaScriptning biroz "maxsus" turlari haqida gaplashamiz.
 

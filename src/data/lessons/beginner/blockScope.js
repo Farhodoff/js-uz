@@ -1,10 +1,8 @@
 export const blockScopeLesson = {
   id: "block-scope",
-  title: "Blok doirasi (Block Scope)",
-  level: "Beginner",
-  description: "Jingalak qavslar { } ichida e'lon qilingan o'zgaruvchilarning siri.",
-  theory: `
-# Block Scope – Bu nima va nima uchun kerak?
+  title: "Block Scope: {} belgilarining kuchi",
+  theory: `## 1. KIRISH
+O'rta asrlarda uylarning atrofida **devorlar** bo'lgan. JavaScriptda \`{ }\` jingalak qavslar xuddi o'sha devorlardir. Ular \`let\` va \`const\` o'zgaruvchilarini tashqi olamdan himoya qiladi.
 
 **Block Scope** — bu jingalak qavslar \`{ }\` ichida e'lon qilingan o'zgaruvchilarning faqat shu qavslar ichida ko'rinishidir. Bu asosan \`if\`, \`for\` yoki \`switch\` bloklariga tegishli.
 

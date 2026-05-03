@@ -1,10 +1,7 @@
 export const primitivesVsObjects = {
-  id: "primitives-objects",
-  title: "Primitivlar vs Obyektlar",
-  level: "Beginner",
-  description: "JavaScriptda ma'lumotlar xotirada qanday saqlanadi? Qiymat vs Manzil haqida.",
-  theory: `
-# Primitiv va Murakkab turlar – Bu nima va nima uchun kerak?
+  id: "primitives-vs-objects",
+  title: "Primitivlar vs Obyektlar va Prototype",
+  theory: `## Primitive Types vs Objects
 
 JavaScriptda ma'lumotlar ikki guruhga bo'linadi: **Primitiv** (oddiy) va **Obyektlar** (murakkab). Bularning eng katta farqi ularning kompyuter xotirasida qanday saqlanishidadir.
 

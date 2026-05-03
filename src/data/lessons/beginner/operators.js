@@ -1,10 +1,8 @@
 export const operators = {
   id: "operators",
-  title: "Operatorlar (Matematik va Mantiqiy)",
-  level: "Beginner",
-  description: "JavaScriptda hisob-kitob qilish, solishtirish va mantiqiy xulosalar chiqarish.",
-  theory: `
-# Operatorlar – Bu nima va nima uchun kerak?
+  title: "Operatorlar: Taqqoslash va Mantiqiy",
+  theory: `## 1. KIRISH
+Dasturlashda qaror qabul qilish uchun bizga operatorlar kerak. Masalan, foydalanuvchi kiritgan parol to'g'rimi? Yoki foydalanuvchining balansi xarid uchun yetarlimi? Bularning hammasi taqqoslash operatorlari orqali amalga oshiriladi.
 
 Dasturlashda ma'lumotlar ustida ish bajarish uchun **Operatorlar** kerak. Ular xuddi matematikadagi ishoralarga o'xshaydi.
 

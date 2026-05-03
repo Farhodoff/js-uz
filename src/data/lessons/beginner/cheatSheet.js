@@ -1,10 +1,7 @@
 export const cheatSheet = {
   id: "cheat-sheet",
-  title: "⚡ JS Cheat Sheet",
-  level: "Beginner",
-  description: "JavaScriptning eng ko'p ishlatiladigan qismlari bitta sahifada.",
-  theory: `
-# JavaScript Cheat Sheet – Tezkor eslatma
+  title: "⚡ JS Cheat Sheet (Tezkor ma'lumotnoma)",
+  theory: `## JavaScript Tezkor Ma'lumotnoma
 
 Bu sahifa sizga darslar davomida o'rgangan eng muhim narsalarni eslatib turish uchun yaratildi.
 

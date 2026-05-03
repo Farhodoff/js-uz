@@ -1,10 +1,8 @@
 export const variables = {
   id: "variables",
-  title: "O'zgaruvchilar (var, let, const)",
-  level: "Beginner",
-  description: "Ma'lumotlarni saqlash uchun 'qutilar' bilan tanishamiz: var, let va const farqi.",
-  theory: `
-# O'zgaruvchilar – Bu nima va nima uchun kerak?
+  title: "O'zgaruvchilar: var, let, const",
+  theory: `## 1. KIRISH
+JavaScriptda o'zgaruvchilar - bu ma'lumotlarni saqlash uchun "qutilar". Tasavvur qiling, **Payme** yoki **Click** ilovasida sizning balansiningiz, ismingiz yoki tanlangan kartangiz doimiy o'zgarib turadi. Bu ma'lumotlarning hammasi o'zgaruvchilarda saqlanadi.
 
 JavaScriptda **o'zgaruvchilar** — bu ma'lumotlarni (son, matn va h.k.) vaqtincha saqlash uchun mo'ljallangan "qutilar"dir.
 

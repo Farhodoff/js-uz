@@ -1,10 +1,7 @@
 export const typeConversionLesson = {
   id: "type-conversion",
-  title: "Turni o'zgartirish (Type Conversion)",
-  level: "Beginner",
-  description: "JavaScriptda ma'lumot turlarini biridan ikkinchisiga o'tkazishni o'rganamiz.",
-  theory: `
-# Turni o'zgartirish – Bu nima va nima uchun kerak?
+  title: "Type Conversion (Tiplarni o'zgartirish)",
+  theory: `## Type Conversion (Tiplarni o‘zgartirish)
 
 JavaScriptda ba'zan bir turdagi ma'lumotni boshqa turga o'tkazish kerak bo'ladi. Masalan, foydalanuvchi saytda yoshini yozsa, u bizga **matn** bo'lib keladi, biz esa uni **son**ga aylantirib hisob-kitob qilishimiz kerak.
 

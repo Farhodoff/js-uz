@@ -1,10 +1,8 @@
 export const dataTypesLesson = {
   id: "data-types",
-  title: "Ma'lumot turlari",
-  level: "Beginner",
-  description: "JavaScriptda qanday ma'lumotlar bor? Sonlar, matnlar va boshqalar haqida gaplashamiz.",
-  theory: `
-# Ma'lumot turlari – Bu nima va nima uchun kerak?
+  title: "Ma'lumotlar Turlari (Data Types)",
+  theory: `## 1. JAVASCRIPTDA MA'LUMOTLAR TURLARI
+JavaScriptda ma'lumotlar ikki katta guruhga bo'linadi: **Primitiv** va **Murakkab (Reference)**.
 
 JavaScriptda har bir ma'lumotning o'z turi bo'ladi. Xuddi hayotda mevalar, sabzavotlar va ichimliklar alohida bo'lganidek, JSda ham sonlar, matnlar va mantiqiy qiymatlar alohida ajratiladi.
 

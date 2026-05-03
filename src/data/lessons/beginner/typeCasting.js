@@ -1,10 +1,8 @@
 export const typeCasting = {
   id: "type-casting",
-  title: "Aniq turni o'zgartirish (Type Casting)",
-  level: "Beginner",
-  description: "Dasturchi tomonidan ma'lumot turini ataylab (aniq) o'zgartirish usullari.",
-  theory: `
-# Type Casting – Bu nima va nima uchun kerak?
+  title: "Explicit Type Casting (Aniq tiplarni o'zgartirish)",
+  theory: `## 1. KIRISH
+**Explicit Type Casting** – dasturchi tomonidan ma’lumot turini **aniq**, o‘zi yozgan kod orqali bir turdan boshqasiga o‘tkazish. JavaScriptda buning uchun maxsus funksiyalar va operatorlar mavjud.
 
 **Type Casting** (yoki Explicit Conversion) — bu dasturchi o'z xohishi bilan bir turdagi ma'lumotni boshqa turga o'zgartirishidir. Bu "avtomatik" emas, balki "buyruq" asosida sodir bo'ladi.
 

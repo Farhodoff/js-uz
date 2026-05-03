@@ -15,10 +15,12 @@ export function useLesson() {
 
   // Initialize from URL params
   useEffect(() => {
-    const sec = SECTIONS.includes(urlSection) ? urlSection : 'beginner';
-    setActiveSectionState(sec);
+    const secKey = SECTIONS.includes(urlSection) ? urlSection : 'beginner';
+    setActiveSectionState(secKey);
 
-    const sectionData = curriculum[sec];
+    const sectionData = curriculum[secKey];
+    if (!sectionData || !sectionData.lessons || sectionData.lessons.length === 0) return;
+
     if (urlLessonId) {
       const lesson = sectionData.lessons.find(l => l.id === urlLessonId);
       if (lesson) {
@@ -28,13 +30,15 @@ export function useLesson() {
         return;
       }
     }
-    // Fallback to first lesson
-    if (sectionData.lessons.length > 0) {
-      const first = sectionData.lessons[0];
+
+    // Fallback: If lessonId not found or missing, go to first lesson
+    const first = sectionData.lessons[0];
+    if (first) {
       setActiveLesson(first);
       setCurrentExerciseIndex(0);
       setCode(first.exercises?.[0]?.startingCode || first.task || '');
-      navigate(`/${sec}/${first.id}`, { replace: true });
+      // Update URL to match first lesson ID
+      navigate(`/${secKey}/${first.id}`, { replace: true });
     }
   }, [urlSection, urlLessonId, navigate]);
 

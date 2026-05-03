@@ -1,10 +1,8 @@
 export const jsGotchas = {
-  id: "gotchas",
-  title: "JS G'alatiliklari (Gotchas)",
-  level: "Beginner",
-  description: "JavaScript tilidagi eng g'alati va kutilmagan natijalar haqida.",
-  theory: `
-# JavaScript G'alatiliklari – Bu nima va nima uchun kerak?
+  id: "js-gotchas",
+  title: "JS Tuzoqlari: Gotchas & Traps",
+  theory: `## 1. KIRISH
+JavaScript — juda moslashuvchan, lekin ba'zida "mantiqsiz" tuyuladigan til. Bu darsda biz intervyularda eng ko'p so'raladigan va juniorlarni "chuv tushiradigan" g'alati holatlarni ko'rib chiqamiz.
 
 JavaScript juda moslashuvchan til, lekin ba'zida uning mantiqi sizni hayron qoldirishi mumkin. Bu "g'alatiliklar" (gotchas) ko'pincha intervyularda o'quvchilarni chuv tushirish uchun so'raladi.
 

@@ -1,10 +1,7 @@
 export const globalScopeLesson = {
   id: "global-scope",
-  title: "Global doira (Global Scope)",
-  level: "Beginner",
-  description: "Dasturning hamma joyida ko'rinadigan o'zgaruvchilar haqida sirlar.",
-  theory: `
-# Global Scope – Bu nima va nima uchun kerak?
+  title: "Global Scope (Global doira)",
+  theory: `## Global Scope – JavaScriptning eng tashqi darajasi
 
 **Global Scope** (Umumiy doira) — bu JavaScript kodining eng tashqi qismidir. Bu yerda e'lon qilingan o'zgaruvchilar va funksiyalar dasturning istalgan joyidan (xohlagan funksiya yoki blok ichidan) ko'rinadi.
 

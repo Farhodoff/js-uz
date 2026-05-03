@@ -1,10 +1,8 @@
 export const switchLesson = {
   id: "switch",
-  title: "Switch operatori",
-  level: "Beginner",
-  description: "Ko'p shartli vaziyatlarda if...else o'rniga ishlatiladigan qulay operator.",
-  theory: `
-# Switch operatori – Bu nima va nima uchun kerak?
+  title: "Switch Operatori",
+  theory: `## 1. SWITCH ASOSLARI
+\`switch\` — bir o‘zgaruvchi yoki ifodaning qiymatiga qarab, bir nechta **case** (holat) dan birini bajarish imkonini beradi. Bu operator ko'pincha juda ko'p \`if...else if\` yozishdan qochish uchun ishlatiladi.
 
 **Switch** — bu bitta o'zgaruvchining bir nechta holatlarini (qiymatlarini) tekshirish uchun ishlatiladigan operator. U asosan juda ko'p \`if...else if\` yozishdan qochish uchun kerak.
 

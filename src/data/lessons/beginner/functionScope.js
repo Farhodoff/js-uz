@@ -1,10 +1,8 @@
 export const functionScopeLesson = {
   id: "function-scope",
-  title: "Funksiya doirasi (Function Scope)",
-  level: "Beginner",
-  description: "O'zgaruvchilarning funksiya ichida 'yashirinishi' va tashqaridan ko'rinmasligi haqida.",
-  theory: `
-# Function Scope – Bu nima va nima uchun kerak?
+  title: "Function Scope: Xona sirlari",
+  theory: `## 1. KIRISH
+Tasavvur qiling, har bir funksiya — bu bitta alohida **xona**. Xona ichida nima sodir bo'layotganini tashqaridagilar ko'rmaydi. Bu o'zgaruvchilarni xavfsiz saqlashning eng oson usuli.
 
 **Function Scope** — bu o'zgaruvchining faqat funksiya ichida "yashashi" va ishlatilishidir. Funksiya tugashi bilan uning ichidagi hamma o'zgaruvchilar o'chib ketadi.
 

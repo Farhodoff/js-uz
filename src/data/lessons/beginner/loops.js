@@ -1,10 +1,8 @@
 export const loops = {
   id: "loops",
-  title: "Sikllar (Loops)",
-  level: "Beginner",
-  description: "Bir xil kodni ko'p marta takrorlash usullari: for, while va boshqalar.",
-  theory: `
-# Sikllar – Bu nima va nima uchun kerak?
+  title: "Looplar va Iteratsiyalar",
+  theory: `## 1. LOOPLAR NIMA?
+Looplar (sikllar) — bir xil kodni ma'lum bir shart asosida qayta-qayta bajarish uchun ishlatiladi. JavaScriptda 5 xil asosiy loop turi mavjud.
 
 **Loops** (Sikllar) — bu bir xil kod bo'lagini ma'lum bir shart asosida qayta-qayta bajarish usulidir.
 

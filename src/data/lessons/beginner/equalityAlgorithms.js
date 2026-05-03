@@ -1,10 +1,8 @@
 export const equalityAlgorithms = {
-  id: "equality",
-  title: "Tenglik algoritmlari (== vs ===)",
-  level: "Beginner",
-  description: "JavaScriptda qiymatlarni solishtirishning turli usullari va ular orasidagi farqlar.",
-  theory: `
-# Tenglik – Bu nima va nima uchun kerak?
+  id: "equality-algorithms",
+  title: "Tenglik Operatorlari (Equality)",
+  theory: `## 1. LOOSE EQUALITY (==) — YUMSHOQ TENGLIK
+\`==\` operatori solishtirishdan oldin operandlarning **tiplarini avtomatik o‘zgartiradi** (type coercion). Qiymatlar bir xil bo‘lsa \`true\` qaytaradi.
 
 JavaScriptda ikkita qiymatni solishtirish uchun bir nechta usul bor. Eng ko'p ishlatiladiganlari \`==\` (yumshoq tenglik) va \`===\` (qat'iy tenglik).
 

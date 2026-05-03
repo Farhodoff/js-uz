@@ -1,10 +1,8 @@
 export const jsWhat = {
-  id: "js-what",
-  title: "JavaScript nima?",
-  level: "Beginner",
-  description: "Dunyodagi eng mashhur dasturlash tili bilan tanishuv. U nima uchun kerak va qanday ishlaydi?",
-  theory: `
-# JavaScript – Bu nima va nima uchun kerak?
+  id: "js-introduction",
+  title: "JavaScriptga Kirish",
+  theory: `## 1. NEGA VA NIMA?
+Tasavvur qiling, sizda chiroyli mashina bor (bu **HTML** va **CSS**). Lekin u yurmaydi, chiroqlari yonmaydi va signali ishlamaydi. Uni "jonlantirish" uchun sizga dvigatel va miya kerak. Veb-saytlar uchun bu "miya" — **JavaScript**dir!
 
 **JavaScript** (JS) — bu veb-sahifalarni "jonlantiradigan" dasturlash tilidir. Agar saytni bir odam deb tasavvur qilsak, HTML — uning suyagi, CSS — uning kiyimi va tashqi ko'rinishi, JavaScript esa uning **miyasi** va harakatlaridir.
 

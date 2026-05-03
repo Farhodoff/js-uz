@@ -90,7 +90,6 @@ function LessonPage() {
         <div
           className="sidebar-backdrop"
           onClick={() => setSidebarOpen(false)}
-          style={{ display: 'none' }}
         />
       )}
 
@@ -114,35 +113,39 @@ function LessonPage() {
           setSidebarOpen={setSidebarOpen}
         />
 
-        <div className="split-layout">
-          {/* Left: Theory */}
-          <div className="pane pane-theory" style={{ flex: `0 0 ${leftWidth}%` }}>
-            <div className="pane-label">📖 Nazariya</div>
-            <TheoryTab activeLesson={activeLesson} />
+        {!activeLesson ? (
+          <div className="loading-container">
+            <div className="loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <p>Dars yuklanmoqda...</p>
           </div>
+        ) : (
+          <div className="split-layout">
+            {/* Left: Theory */}
+            <div className="pane pane-theory">
+              <div className="pane-label">📖 Nazariya</div>
+              <TheoryTab activeLesson={activeLesson} />
+            </div>
 
-          {/* Divider handle */}
-          <div className="pane-divider" onMouseDown={startResizing}>
-            <div className="pane-divider-handle"></div>
+            {/* Right: Practice */}
+            <div className="pane">
+              <div className="pane-label">💻 Amaliyot</div>
+              <PracticeTab
+                code={code}
+                setCode={setCode}
+                runCode={handleRunCode}
+                showHint={showHint}
+                setShowHint={setShowHint}
+                activeLesson={activeLesson}
+                currentExerciseIndex={currentExerciseIndex}
+                setCurrentExerciseIndex={setCurrentExerciseIndex}
+                output={output}
+                outputRef={outputRef}
+              />
+            </div>
           </div>
-
-          {/* Right: Practice */}
-          <div className="pane" style={{ flex: `1 1 auto` }}>
-            <div className="pane-label">💻 Amaliyot</div>
-            <PracticeTab
-              code={code}
-              setCode={setCode}
-              runCode={handleRunCode}
-              showHint={showHint}
-              setShowHint={setShowHint}
-              activeLesson={activeLesson}
-              currentExerciseIndex={currentExerciseIndex}
-              setCurrentExerciseIndex={setCurrentExerciseIndex}
-              output={output}
-              outputRef={outputRef}
-            />
-          </div>
-        </div>
+        )}
 
         {/* AI Floating Button */}
         <div className="ai-fab">

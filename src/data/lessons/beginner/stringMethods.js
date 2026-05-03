@@ -1,10 +1,8 @@
 export const stringMethods = {
   id: "string-methods",
-  title: "Matn metodlari (String Methods)",
-  level: "Beginner",
-  description: "Matnlar bilan ishlash san'ati: kesish, o'zgartirish, qidirish va boshqalar.",
-  theory: `
-# Matn metodlari – Bu nima va nima uchun kerak?
+  title: "String Metodlari - Matnlar bilan sehrgarlik",
+  theory: `## 1. NEGA VA NIMA?
+Tasavvur qiling, foydalanuvchi ismini "  aLi  " deb yozdi. Sizga esa uni bazaga "Ali" ko'rinishida saqlash kerak. Matnning boshidagi bo'shliqlarni qanday o'chirasiz? Birinchi harfni qanday katta qilasiz?
 
 JavaScriptda matnlar (stringlar) bilan ishlash uchun juda ko'p tayyor funksiyalar mavjud. Bular **String Metodlari** deb ataladi.
 

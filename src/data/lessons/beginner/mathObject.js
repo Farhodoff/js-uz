@@ -1,10 +1,8 @@
 export const mathObject = {
-  id: "math",
-  title: "Math obyekti (Matematika)",
-  level: "Beginner",
-  description: "Murakkab hisob-kitoblar, yaxlitlash va tasodifiy sonlar bilan ishlashni o'rganamiz.",
-  theory: `
-# Math obyekti – Bu nima va nima uchun kerak?
+  id: "math-object",
+  title: "Math (Matematika) obyekti",
+  theory: `## 1. KIRISH
+O'yinlar yaratishda (tasodifiy dushmanlar paydo bo'lishi), narxlarni yaxlitlashda yoki murakkab hisob-kitoblarda bizga \`Math\` obyekti yordamga keladi.
 
 JavaScriptda oddiy hisob-kitoblar (\`+\`, \`-\`) dan tashqari, murakkabroq matematik amallar uchun maxsus **Math** obyekti bor.
 

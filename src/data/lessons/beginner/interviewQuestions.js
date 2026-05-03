@@ -1,10 +1,12 @@
 export const interviewQuestionsBeginner = {
   id: "interview-beginner",
-  title: "🟢 Intervyu savollari (Junior)",
-  level: "Beginner",
-  description: "Junior darajasi uchun JavaScript intervyularida eng ko'p so'raladigan savollar.",
-  theory: `
-# Junior Intervyu Savollari – Tayyorgarlik
+  title: "🟢 Interview Savollar (Boshlang'ich)",
+  theory: `## Kirish
+Bu sahifa JavaScriptdan junior lavozimiga tayyorlanayotganlar uchun mo'ljallangan. 
+Intervyuda muvaffaqiyat qozonish uchun quyidagilarga e'tibor bering:
+1. **Asoslarni biling:** Faqat kod yozish emas, tushuntira olish muhim.
+2. **Kodni ovoz chiqarib tushuntiring:** Fikrlash jarayoningizni ko'rsating.
+3. **Edge caselarni o'ylang:** Masalan, null yoki undefined kelsa nima bo'ladi?
 
 Junior darajasidagi intervyularda asosan JavaScriptning asoslari (fundament) so'raladi. Sizdan kodni nafaqat yozish, balki u qanday ishlashini tushuntirib berish talab qilinadi.
 

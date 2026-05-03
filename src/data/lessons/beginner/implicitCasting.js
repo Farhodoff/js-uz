@@ -1,10 +1,8 @@
 export const implicitCasting = {
   id: "implicit-casting",
-  title: "Avtomatik turni o'zgartirish (Coercion)",
-  level: "Beginner",
-  description: "JavaScriptning o'zi (sizdan so'ramasdan) turlarni qanday o'zgartirishi haqida jumboqlar.",
-  theory: `
-# Coercion – Bu nima va nima uchun kerak?
+  title: "Implicit Type Casting (Avtomatik o'zgarishlar)",
+  theory: `## 1. KIRISH
+**Implicit Type Casting** (yoki **Coercion**) – JavaScriptning o‘zining operatorlar va kontekstga qarab, qiymatlarni bir turdan boshqasiga **avtomatik** o‘zgartirishi. Bu dasturchi aralashuvisiz sodir bo‘ladi.
 
 **Implicit Coercion** (Avtomatik o'zgartirish) — bu JavaScriptning operatorlar (masalan, \`+\`, \`-\`) ishlatilganda ma'lumot turlarini o'zi xohlagandek o'zgartirib yuborishidir.
 
