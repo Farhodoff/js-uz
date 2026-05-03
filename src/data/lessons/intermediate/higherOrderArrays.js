@@ -1,73 +1,120 @@
 export const higherOrderArrays = {
   id: "higher-order-arrays",
-  title: "Massiv metodlari (Map, Filter, Reduce)",
+  title: "🚀 Massiv Metodlari (Deep Dive)",
   level: "Intermediate",
-  description: "Massivlar bilan professional darajada ishlash: saralash, o'zgartirish va jamlash.",
-  theory: `
-# Massiv metodlari – Bu nima va nima uchun kerak?
+  description: "Massivlar bilan professional darajada ishlash: map, filter, reduce va boshqa zamonaviy metodlar.",
+  theory: `## Massiv Metodlari (Advanced)
 
-**Higher Order Array Methods** — bu massivlar bilan ishlashni 10 barobar osonlashtiradigan "sehrli" asboblardir.
+**NEGA:** Tasavvur qiling, sizda minglab foydalanuvchilar ro'yxati bor. Sizga faqat 18 yoshdan kattalarning ismlari kerak. Eskicha \`for\` sikli bilan bu juda ko'p kod va xatolar ehtimolini tug'diradi. Zamonaviy metodlar (Higher Order Functions) esa bu vazifani bir necha qatorda, "toza" (clean code) uslubda bajarishga imkon beradi.
 
-## 1. NEGA kerak?
-Tasavvur qiling, sizda 100 ta son bor va ularning hammasini 2 barobarga oshirish kerak. Oddiy \`for\` sikli bilan bu 4-5 qator kod bo'ladi. \`map()\` bilan esa bu 1 qator! Bu kodni toza va tushunarli qiladi.
+---
 
-## 2. SODDALIK (Analogiya)
-- **Map (O'zgartirish):** Bu xuddi zavod konveyeriga o'xshaydi. Har bir mahsulot (element) kiradi, unga biror narsa qo'shiladi va u yangi holda chiqadi.
-- **Filter (Saralash):** Bu xuddi elakka o'xshaydi. Faqat siz aytgan shartga mos keladigan elementlar o'tadi, qolganlari qolib ketadi.
-- **Reduce (Jamlash):** Bu xuddi kassa apparatiga o'xshaydi. Hamma narxlarni qo'shib, oxirida bitta umumiy summani chiqaradi.
+### 1. map() — O'zgartirish Zavodi 🏭
+\`map()\` massivdagi har bir elementni oladi, uni o'zgartiradi va **yangi massiv** qaytaradi.
 
-## 3. STRUKTURA
+**Analogiya:** Xomashyo kiradi -> Ishlov beriladi -> Tayyor mahsulot chiqadi.
 
-### A. map() – Yangi massiv yaratadi
 \`\`\`javascript
-const sonlar = [1, 2, 3];
-const kvadratlar = sonlar.map(n => n * n); // [1, 4, 9]
+const narxlar = [10, 20, 30];
+const dollarNarxlar = narxlar.map(narx => narx * 12600); 
+// [126000, 252000, 378000]
 \`\`\`
 
-### B. filter() – Saralab oladi
+---
+
+### 2. filter() — Aqlli Elak 筛选
+\`filter()\` berilgan shartga mos keladigan elementlarni saralab, **yangi massiv** yasaydi.
+
+**Analogiya:** Choynakdagi elak — faqat choy suvi o'tadi, shingil (shartga mos kelmaganlar) qolib ketadi.
+
 \`\`\`javascript
-const yoshlar = [15, 22, 18, 30];
-const kattalar = yoshlar.filter(y => y >= 18); // [22, 18, 30]
+const ballar = [45, 80, 55, 90, 30];
+const imtihondanOtdi = ballar.filter(ball => ball >= 60);
+// [80, 90]
 \`\`\`
 
-### C. reduce() – Bitta qiymatga aylantiradi
+---
+
+### 3. reduce() — Jamlovchi Akkumulyator 🧮
+Bu eng kuchli metodlardan biri. U butun massivni bitta qiymatga (son, satr, obyekt, hatto boshqa massiv) aylantiradi.
+
+**Tuzilishi:** \`reduce((yig'indi, joriy), boshlang'ich_qiymat)\`
+
 \`\`\`javascript
-const narxlar = [100, 200, 300];
-const jami = narxlar.reduce((sum, n) => sum + n, 0); // 600
+const savat = [500, 1200, 300];
+const jamiSumma = savat.reduce((sum, narx) => sum + narx, 0);
+// 2000
 \`\`\`
 
-## 4. AMALIYOT (Mashq)
+---
+
+### 4. find() va findIndex() — Izquvarlar 🔍
+- \`find()\` — shartga mos **birinchi** elementning o'zini qaytaradi.
+- \`findIndex()\` — o'sha elementning **indeksini** qaytaradi.
+
 \`\`\`javascript
-const ismlar = ["ali", "vali"];
-const kattaIsmlar = ismlar.map(ism => ism.toUpperCase());
-console.log(kattaIsmlar); // ["ALI", "VALI"]
+const users = [{id: 1, name: "Ali"}, {id: 2, name: "Vali"}];
+const user = users.find(u => u.id === 2); // {id: 2, name: "Vali"}
 \`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **Returnni unutish:** Agar arrow funksiyada \`{ }\` ishlatilsa, \`return\` yozish shart!
-2. **Asl massiv:** Bu metodlar asl massivni o'zgartirmaydi, doim yangi massiv qaytaradi.
+---
 
-## 6. SAVOLLAR (12 ta)
-1. \`map()\` va \`forEach()\` farqi nima?
-2. \`filter()\` shartga mos narsa topmasa nima qaytaradi?
-3. \`reduce()\` dagi \`0\` (oxiridagi raqam) nima?
-4. \`find()\` va \`filter()\` farqi nima?
-5. \`some()\` metodi nima qaytaradi?
-6. \`every()\` metodi nima qaytaradi?
-7. \`map()\` asl massivni o'zgartiradimi?
-8. Bir nechta metodni zanjir (chain) qilib ishlatsa bo'ladimi?
-9. \`sort()\` metodi qanday ishlaydi?
-10. Massiv ichidan bitta elementni qidirish uchun qaysi metod qulay?
-11. \`reduce\` yordamida obyekt yasasa bo'ladimi?
-12. Bo'sh massivda \`reduce\` ishlatilsa nima bo'ladi?`,
+### 5. some() va every() — Tekshiruvchilar ✅
+- \`some()\` — massivda **kamida bitta** element shartga mos kelsa \`true\` qaytaradi.
+- \`every()\` — **barcha** elementlar shartga mos kelishi shart.
+
+\`\`\`javascript
+const yoshlar = [15, 20, 18];
+console.log(yoshlar.some(y => y < 18)); // true
+console.log(yoshlar.every(y => y >= 18)); // false
+\`\`\`
+
+---
+
+### 6. "Buzib Ko'rish" va Muhim Eslatmalar (Edge Cases) ⚠️
+- **Asl massiv:** Bu metodlarning deyarli hammasi asl massivni o'zgartirmaydi (immutability).
+- **Bo'sh massiv:** Bo'sh massivda \`reduce\` ishlatganda boshlang'ich qiymat bermasangiz, xato (\`TypeError\`) beradi!
+- **Return:** Arrow funksiyada \`{ }\` ishlatsangiz, \`return\` yozishni unutmang. Aks holda \`undefined\` qaytadi.
+
+---
+
+### 7. SAVOLLAR (12 ta) — Junior/Middle darajasida
+1. \`map()\` qaytargan massiv uzunligi asl massiv bilan bir xil bo'ladimi?
+2. \`filter()\` shartga mos hech narsa topmasa nima qaytaradi?
+3. \`reduce()\` dagi akkumulyatorning vazifasi nima?
+4. \`find()\` va \`filter()\` o'rtasidagi asosiy farq nima?
+5. Massivda xatolik bormi-yo'qligini tekshirish uchun (\`every\` yoki \`some\`) qaysi biri ma'qul?
+6. \`map()\` metodini \`forEach()\` bilan almashtirsa bo'ladimi? Nega?
+7. \`reduce()\` yordamida massivni obyektga aylantirish mumkinmi?
+8. \`find()\` metodi bir nechta element topsa nima bo'ladi?
+9. Chaining (zanjir) nima va u qanday ishlaydi?
+10. \`sort()\` metodi asl massivni o'zgartiradimi?
+11. \`numbers.map(parseInt)\` natijasi nima bo'ladi va nega? (Mashhur intervyu savoli)
+12. Massiv elementlarini qidirishda \`includes()\` va \`some()\` farqi nima?`,
   exercises: [
     {
       id: 1,
-      title: "Map mashqi",
-      instruction: "Massivdagi har bir sonni 10 ga ko'paytiring.",
-      startingCode: "const nums = [1, 2, 3];\nconst res = // Bu yerga yozing",
-      hint: "nums.map(n => n * 10);",
-      test: "if (res[0] === 10) return null; return 'Noto\\'g\\'ri';"
+      title: "Map: Narxlarni yangilash",
+      instruction: "Sizda mahsulotlar narxlari berilgan. Ularga 15% QQS qo'shib, yangi massiv yarating va konsolga chiqaring.",
+      startingCode: "const prices = [100, 200, 300];\n// Kodni shu yerda yozing\n",
+      hint: "prices.map(p => p * 1.15)",
+      test: "if (logs.some(l => Array.isArray(l) && l[0] === 115)) return null; return 'Narxlar noto\\'g\\'ri hisoblangan!';"
+    },
+    {
+      id: 2,
+      title: "Filter: Faqat juft sonlar",
+      instruction: "Berilgan massivdan faqat juft sonlarni saralab oling va natijani chiqaring.",
+      startingCode: "const numbers = [1, 2, 3, 4, 5, 6, 7, 8];\n",
+      hint: "numbers.filter(n => n % 2 === 0)",
+      test: "if (logs.some(l => Array.isArray(l) && l.length === 4 && l[0] === 2)) return null; return 'Faqat juft sonlar qolishi kerak!';"
+    },
+    {
+      id: 3,
+      title: "Reduce: Umumiy ball",
+      instruction: "O'quvchilarning ballari berilgan. Ularning umumiy yig'indisini \`reduce\` orqali hisoblang.",
+      startingCode: "const scores = [85, 90, 70, 100];\n",
+      hint: "scores.reduce((total, s) => total + s, 0)",
+      test: "if (logs.includes(345)) return null; return 'Umumiy ball 345 chiqishi kerak!';"
     }
   ]
 };
