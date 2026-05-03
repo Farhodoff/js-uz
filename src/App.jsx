@@ -123,13 +123,17 @@ function LessonPage() {
         ) : (
           <div className="split-layout">
             {/* Left: Theory */}
-            <div className="pane pane-theory">
+            <div className="pane pane-theory" style={{ width: `${leftWidth}%` }}>
               <div className="pane-label">📖 Nazariya</div>
               <TheoryTab activeLesson={activeLesson} />
             </div>
 
+            <div className="pane-divider" onMouseDown={startResizing}>
+              <div className="pane-divider-handle"></div>
+            </div>
+
             {/* Right: Practice */}
-            <div className="pane">
+            <div className="pane" style={{ width: `${100 - leftWidth}%` }}>
               <div className="pane-label">💻 Amaliyot</div>
               <PracticeTab
                 code={code}

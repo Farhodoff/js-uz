@@ -522,6 +522,34 @@ body {
   border-radius: var(--radius-md);
   overflow: hidden;
   background: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-resizer {
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-top: 1px solid var(--border-primary);
+  cursor: row-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+}
+
+.editor-resizer:hover {
+  background: var(--bg-hover);
+}
+
+.editor-resizer span {
+  width: 30px;
+  height: 3px;
+  background: var(--border-secondary);
+  border-radius: var(--radius-full);
+}
+
+.editor-resizer:hover span {
+  background: var(--accent);
 }
 
 .action-bar {
