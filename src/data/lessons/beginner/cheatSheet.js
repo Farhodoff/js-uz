@@ -24,6 +24,8 @@ JavaScript-ni HTML-ga qo'shish:
 - \`Boolean\`: \`true\`, \`false\`
 - \`Object\`: \`{name: "Ali", age: 20}\`
 - \`Array\`: \`[1, 2, 3]\`
+- \`typeof null\`: \`"object"\` (JS xatosi, intervyuda so'raladi!)
+- \`typeof NaN\`: \`"number"\` (NaN - "Son emas", lekin turi son)
 
 ---
 

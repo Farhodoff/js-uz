@@ -26,11 +26,12 @@ Buni **detektorga** o'xshatish mumkin. Sizda noma'lum metall bor, uni detektorda
 | { } | "object" |
 | [ ] | "object" |
 | function() {} | "function" |
+| NaN | "number" |
 
-### Muhim: G'alati holatlar
-- **null:** Primitiv bo'lsa ham \`object\` qaytaradi.
-- **NaN:** Son bo'lmasa ham \`number\` qaytaradi.
-- **Massivlar:** Ular ham obyektdir, shuning uchun \`object\` qaytaradi.
+### Muhim: G'alati holatlar (Intervyu savollari)
+- **null:** Primitiv (oddiy) ma'lumot turi bo'lsa ham \`typeof null\` doim **"object"** qaytaradi. Bu JavaScript yaratilgandagi xato (bug) bo'lib, hozirda uni o'zgartirib bo'lmaydi (ko'plab saytlar buzilib ketishi mumkinligi uchun).
+- **NaN (Not a Number):** "Son emas" degan ma'noni bersa-da, \`typeof NaN\` doim **"number"** qaytaradi. Chunki NaN raqamli amallar natijasida hosil bo'ladigan maxsus qiymatdir.
+- **Massivlar:** JavaScriptda massivlar ham aslida obyektdir, shuning uchun \`typeof []\` ham **"object"** qaytaradi. Uni massiv ekanini bilish uchun \`Array.isArray()\` ishlatiladi.
 
 ## 4. AMALIYOT (Mashq)
 \`\`\`javascript

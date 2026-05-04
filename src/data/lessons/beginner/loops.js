@@ -36,13 +36,25 @@ while (count <= 5) {
 }
 \`\`\`
 
-### C. for...of (Massivlar uchun)
+### C. for...of (Qiymatlar uchun)
+Massiv elementlarini aylanish uchun eng qulay usul. U elementning **qiymatini** beradi:
 \`\`\`javascript
 const mevalar = ["Olma", "Banan", "Uzum"];
 for (let meva of mevalar) {
-  console.log(meva);
+  console.log(meva); // "Olma", "Banan"...
 }
 \`\`\`
+
+### D. for...in (Kalitlar/Indekslar uchun)
+Obyekt xususiyatlarini yoki massiv **indekslarini** aylanish uchun ishlatiladi:
+\`\`\`javascript
+const user = {ism: "Ali", yosh: 25};
+for (let kalit in user) {
+  console.log(kalit + ": " + user[kalit]); // ism: Ali...
+}
+\`\`\`
+
+> **MUHIM FARQI:** \`for...of\` — **O**bject (massiv) ichidagi **qiymatlarni** (values) oladi. \`for...in\` — **I**ndex (yoki kalit) larni oladi. Massivlarda doim \`for...of\` ishlatish tavsiya etiladi!
 
 ## 4. AMALIYOT (Mashq)
 1 dan 10 gacha bo'lgan faqat juft sonlarni chiqarish:
