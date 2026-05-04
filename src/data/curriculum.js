@@ -33,6 +33,7 @@ import { destructuring } from "./lessons/intermediate/destructuring";
 import { spreadRest } from "./lessons/intermediate/spreadRest";
 import { arrowFunctions } from "./lessons/intermediate/arrowFunctions";
 import { domBasics } from "./lessons/intermediate/dom";
+import { domManipulation } from "./lessons/intermediate/domManipulation";
 import { events } from "./lessons/intermediate/events";
 import { formsLesson } from "./lessons/intermediate/forms";
 import { higherOrderArrays } from "./lessons/intermediate/higherOrderArrays";
@@ -80,7 +81,7 @@ export const curriculum = {
     label: "O'rta daraja",
     color: "#e5b84f",
     icon: "🟡",
-    lessons: [interviewQuestionsIntermediate, thisKeyword, timersLesson, destructuring, spreadRest, arrowFunctions, domBasics, events, formsLesson, higherOrderArrays, optionalChaining, classesLesson]
+    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, domBasics, domManipulation, events, formsLesson, timersLesson, optionalChaining, classesLesson, interviewQuestionsIntermediate]
   },
   advanced: {
     label: "Murakkab",
