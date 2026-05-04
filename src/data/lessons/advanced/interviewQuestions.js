@@ -1,6 +1,6 @@
 export const interviewQuestionsAdvanced = {
   id: "q3",
-  title: "🔴 Interview Savollar (Advanced)",
+  title: "🔴 Interview Savollar (Murakkab)",
   theory: `## Kirish
 Ilg'or darajadagi intervyular asosan arxitektura, optimizatsiya va JavaScriptning eng murakkab qismlari haqida bo'ladi.
 

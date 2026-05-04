@@ -17,23 +17,35 @@ export function useCodeRunner() {
     };
 
     try {
-      const result = new Function(code)();
+      // Foydalanuvchi kodi va test kodini bitta funksiya ichiga birlashtiramiz.
+      // Bu foydalanuvchi yaratgan funksiyalar test uchun ko'rinadigan bo'lishini ta'minlaydi.
+      const currentExercise = activeLesson?.exercises?.[currentExerciseIndex];
+      const testCode = currentExercise?.test || 'return null;';
+
+      const combinedCode = `
+        "use strict";
+        try {
+          // Foydalanuvchi kodi
+          ${code}
+          
+          // Testni ishga tushirish (IIFE ichida)
+          return (function(code, logs) {
+            ${testCode}
+          })(arguments[0], arguments[1]);
+        } catch (e) {
+          return "Runtime Error: " + e.message;
+        }
+      `;
+
+      const runner = new Function('code', 'logs', combinedCode);
+      const errorMsg = runner(code, logs);
 
       let validationResult = '✅ Kod muvaffaqiyatli ishladi';
       let isCorrect = true;
 
-      const currentExercise = activeLesson?.exercises?.[currentExerciseIndex];
-      if (currentExercise?.test) {
-        try {
-          const testFn = new Function('code', 'logs', 'result', currentExercise.test);
-          const errorMsg = testFn(code, logs, result);
-          if (errorMsg) {
-            validationResult = '❌ ' + errorMsg;
-            isCorrect = false;
-          }
-        } catch (testError) {
-          origError('Test error:', testError.message);
-        }
+      if (errorMsg) {
+        validationResult = '❌ ' + errorMsg;
+        isCorrect = false;
       }
 
       const outputText = logs.length
@@ -46,7 +58,7 @@ export function useCodeRunner() {
         onSuccess();
       }
     } catch (e) {
-      setOutput('❌ Xato: ' + e.message);
+      setOutput('❌ Sintaksis xatosi: ' + e.message);
     } finally {
       console.log = origLog;
       console.error = origError;

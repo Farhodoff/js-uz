@@ -1,7 +1,7 @@
 export const asyncAwait = {
   id: "async-await",
   title: "Async / Await",
-  level: "Advanced",
+  level: "Murakkab",
   description: "Asinxron kodni xuddi sinxron koddek oson va tushunarli yozish usuli.",
   theory: `
 # Async / Await – Bu nima va nima uchun kerak?

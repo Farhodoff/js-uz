@@ -83,7 +83,7 @@ export const curriculum = {
     lessons: [interviewQuestionsIntermediate, thisKeyword, timersLesson, destructuring, spreadRest, arrowFunctions, domBasics, events, formsLesson, higherOrderArrays, optionalChaining, classesLesson]
   },
   advanced: {
-    label: "Advanced",
+    label: "Murakkab",
     color: "#e07b5a",
     icon: "🔴",
     lessons: [interviewQuestionsAdvanced, securityLesson, unitTesting, metaprogramming, advancedFetch, closuresDeepDive, callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, prototypesLesson, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson]

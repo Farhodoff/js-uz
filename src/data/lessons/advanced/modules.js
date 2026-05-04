@@ -1,7 +1,7 @@
 export const modulesLesson = {
   id: "modules",
   title: "Modullar (import va export)",
-  level: "Advanced",
+  level: "Murakkab",
   description: "Kodni mantiqiy bo'laklarga (fayllarga) bo'lish va ularni bir-biriga ulash.",
   theory: `
 # Modullar – Bu nima va nima uchun kerak?

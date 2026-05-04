@@ -1,7 +1,7 @@
 export const closuresLesson = {
   id: "closures",
   title: "Closures (Yopilishlar)",
-  level: "Advanced",
+  level: "Murakkab",
   description: "JavaScriptning eng sehrli va kuchli xususiyati - funksiyalarning 'eslab qolish' qobiliyati.",
   theory: `
 # Closures – Bu nima va nima uchun kerak?

@@ -1,7 +1,7 @@
 export const fetchApi = {
   id: "a3",
   title: "Fetch API va AJAX (Server bilan aloqa)",
-  level: "Advanced",
+  level: "Murakkab",
   description: "Brauzer orqali serverga so'rov yuborish: zamonaviy Fetch va eski AJAX usullari.",
   theory: `
 # Fetch API – Bu nima va nima uchun kerak?

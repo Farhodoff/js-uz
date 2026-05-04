@@ -1,7 +1,7 @@
 export const memoryManagement = {
   id: "memory-management",
   title: "Memory Management (Xotira boshqaruvi)",
-  level: "Advanced",
+  level: "Murakkab",
   description: "JavaScript xotirani qanday boshqaradi va 'Memory Leak' (Xotira oqishi) nima?",
   theory: `
 # Memory Management – Bu nima va nima uchun kerak?

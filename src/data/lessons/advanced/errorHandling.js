@@ -1,7 +1,7 @@
 export const errorHandling = {
   id: "error-handling",
   title: "Error Handling (Xatolar bilan ishlash)",
-  level: "Advanced",
+  level: "Murakkab",
   description: "Dasturingiz 'portlab' ketmasligi uchun xatolarni oldindan ushlash va boshqarish.",
   theory: `
 # Error Handling – Bu nima va nima uchun kerak?

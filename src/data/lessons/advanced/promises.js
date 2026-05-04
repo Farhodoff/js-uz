@@ -1,7 +1,7 @@
 export const promises = {
   id: "promises",
   title: "Promises (Va'dalar)",
-  level: "Advanced",
+  level: "Murakkab",
   description: "Asinxron amallarni tartibga solish: va'da berish va uni bajarish haqida.",
   theory: `
 # Promises – Bu nima va nima uchun kerak?

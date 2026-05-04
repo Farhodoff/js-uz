@@ -75,10 +75,26 @@ for (let i = 1; i <= 10; i++) {
     {
       id: 1,
       title: "Takrorlash mashqi",
-      instruction: "for sikli yordamida 1 dan 5 gacha bo'lgan sonlarni chiqaring.",
+      instruction: "for sikli yordamida 1 dan 5 gacha bo'lgan sonlarni chiqaring (console.log ishlatib).",
       startingCode: "// Bu yerga yozing\n",
       hint: "for (let i = 1; i <= 5; i++) { console.log(i); }",
-      test: "if (logs.length === 5 && logs[0] === 1) return null; return 'Sikl xato!';"
+      test: "if (logs.length >= 5 && logs.includes('1') && logs.includes('5')) return null; return '1 dan 5 gacha sonlar chiqishi kerak!';"
+    },
+    {
+      id: 2,
+      title: "Juft sonlar",
+      instruction: "for sikli yordamida 1 dan 10 gacha bo'lgan faqat juft sonlarni chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "for (let i = 2; i <= 10; i += 2) { console.log(i); }",
+      test: "if (logs.includes('2') && logs.includes('10') && !logs.includes('1')) return null; return 'Faqat juft sonlar chiqishi kerak!';"
+    },
+    {
+      id: 3,
+      title: "Yig'indi",
+      instruction: "1 dan 100 gacha bo'lgan barcha sonlar yig'indisini hisoblang va konsolga chiqaring.",
+      startingCode: "let sum = 0;\n// Bu yerga yozing\n",
+      hint: "for (let i = 1; i <= 100; i++) { sum += i; } console.log(sum);",
+      test: "if (logs.includes('5050')) return null; return 'Yig\\'indi 5050 chiqishi kerak!';"
     }
   ]
 };

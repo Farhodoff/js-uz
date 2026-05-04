@@ -73,7 +73,31 @@ console.log(natija); // 25
       instruction: "Ikkita sonni qo'shib natijani qaytaradigan 'add' funksiyasini yozing.",
       startingCode: "function add(a, b) {\n  // Bu yerga yozing\n}",
       hint: "return a + b;",
-      test: "if (add(2, 3) === 5) return null; return 'Natija noto\\'g\\'ri';"
+      test: "if (typeof add !== 'function') return 'add funksiyasi topilmadi'; if (add(2, 3) === 5 && add(-1, 1) === 0) return null; return 'Natija noto\\'g\\'ri';"
+    },
+    {
+      id: 2,
+      title: "Kvadratni hisoblash",
+      instruction: "Sonning kvadratini hisoblaydigan 'square' funksiyasini yozing.",
+      startingCode: "function square(n) {\n  // Bu yerga yozing\n}",
+      hint: "return n * n;",
+      test: "if (typeof square !== 'function') return 'square funksiyasi topilmadi'; if (square(4) === 16 && square(0) === 0) return null; return 'Kvadrat noto\\'g\\'ri hisoblandi';"
+    },
+    {
+      id: 3,
+      title: "Salomlashish",
+      instruction: "Ismni qabul qilib, 'Salom, [ism]' matnini qaytaradigan 'greet' funksiyasini yozing.",
+      startingCode: "function greet(name) {\n  // Bu yerga yozing\n}",
+      hint: "return 'Salom, ' + name;",
+      test: "if (typeof greet !== 'function') return 'greet funksiyasi topilmadi'; if (greet('Ali') === 'Salom, Ali') return null; return 'Matn noto\\'g\\'ri qaytarildi';"
+    },
+    {
+      id: 4,
+      title: "Eng katta son",
+      instruction: "Ikkita sondan eng kattasini qaytaradigan 'max' funksiyasini yozing.",
+      startingCode: "function max(a, b) {\n  // Bu yerga yozing\n}",
+      hint: "if (a > b) return a; else return b;",
+      test: "if (typeof max !== 'function') return 'max funksiyasi topilmadi'; if (max(10, 5) === 10 && max(3, 8) === 8) return null; return 'Eng katta son noto\\'g\\'ri topildi';"
     }
   ]
 };

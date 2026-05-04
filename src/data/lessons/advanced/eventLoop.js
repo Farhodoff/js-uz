@@ -1,7 +1,7 @@
 export const eventLoopLesson = {
   id: "event-loop",
   title: "Event Loop (JavaScript qanday ishlaydi?)",
-  level: "Advanced",
+  level: "Murakkab",
   description: "JavaScript qanday qilib bir vaqtda bir nechta ishni bajarishini (Concurrency) tushunib olamiz.",
   theory: `
 # Event Loop – Bu nima va nima uchun kerak?

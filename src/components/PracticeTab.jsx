@@ -16,7 +16,7 @@ export default function PracticeTab({
   const currentExercise = exercises[currentExerciseIndex] || null;
   const hasMultipleExercises = exercises.length > 1;
 
-  const startResizingHeight = (e) => {
+  const startResizingHeight = () => {
     isResizingHeight.current = true;
     document.addEventListener('mousemove', handleMouseMoveHeight);
     document.addEventListener('mouseup', stopResizingHeight);

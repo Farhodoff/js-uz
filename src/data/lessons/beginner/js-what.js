@@ -1,61 +1,74 @@
 export const jsWhat = {
   id: "js-introduction",
   title: "JavaScriptga Kirish",
-  theory: `## 1. NEGA VA NIMA?
-Tasavvur qiling, sizda chiroyli mashina bor (bu **HTML** va **CSS**). Lekin u yurmaydi, chiroqlari yonmaydi va signali ishlamaydi. Uni "jonlantirish" uchun sizga dvigatel va miya kerak. Veb-saytlar uchun bu "miya" — **JavaScript**dir!
+  theory: `## JavaScript: Miya va Dvigatel
 
-**JavaScript** (JS) — bu veb-sahifalarni "jonlantiradigan" dasturlash tilidir. Agar saytni bir odam deb tasavvur qilsak, HTML — uning suyagi, CSS — uning kiyimi va tashqi ko'rinishi, JavaScript esa uning **miyasi** va harakatlaridir.
-
-## 1. NEGA kerak?
+### 1. NEGA kerak?
 Tasavvur qiling, sizda chiroyli mashina bor (bu HTML va CSS). Lekin u yurmaydi, chiroqlari yonmaydi va signali ishlamaydi. Uni harakatga keltirish uchun sizga dvigatel kerak. Saytlarda bu vazifani JavaScript bajaradi. Tugmalar bosilganda nima sodir bo'lishi, animatsiyalar, ma'lumotlarni yuklash — hammasi JS orqali qilinadi.
 
-## 2. SODDALIK (Analogiya)
-JSni **sehrli tayoqcha** deb tasavvur qiling. Saytdagi istalgan elementga tegib, uni o'zgartirishingiz, yo'qotib yuborishingiz yoki harakatga keltirishingiz mumkin. Eng yaxshi tomoni — bu tayoqchani ishlatish uchun sizga faqat **Brauzer** (Chrome, Safari) kerak, xolos!
+### 2. SODDALIK (Analogiya)
+Saytni bir odam deb tasavvur qilsak:
+- **HTML** — uning suyagi va tanasi.
+- **CSS** — uning kiyimi va pardoz-andozi.
+- **JavaScript** — uning miyasi va harakatlari (gapirish, yurish).
 
-## 3. STRUKTURA (Qayerda ishlaydi?)
+### 3. STRUKTURA
 
-### A. Brauzer Konsoli
-Bu eng tezkor kod yozish joyi. Brauzerda \`F12\`ni bosib, "Console" bo'limiga o'tsangiz, darhol JS kodini yozishingiz mumkin.
-
-### B. console.log() – Sizning birinchi buyrug'ingiz
+#### A. console.log() — Konsolga chiqarish
 Bu buyruq kompyuterga: "Menga mana shu ma'lumotni ko'rsat!" degan ma'noni beradi.
 \`\`\`javascript
-console.log("Assalomu alaykum, JS olami!");
-console.log(10 + 20); // 30
+console.log("Assalomu alaykum!");
 \`\`\`
 
-## 4. AMALIYOT (Mashq)
-Hozirroq brauzer konsolini oching va quyidagi kodni yozing:
+#### B. alert() — Oyna chiqarish
+Foydalanuvchiga xabar ko'rsatuvchi kichik oyna.
 \`\`\`javascript
-alert("Men JS o'rganishni boshladim!");
+alert("Salom!");
 \`\`\`
-Ekranda oyna chiqdimi? Tabriklayman, siz birinchi JS kodingizni yozdingiz!
 
-## 5. XATOLAR (Common mistakes)
-1. **Harfga sezgirlik:** \`Console.log\` (Katta harf bilan) deb yozsangiz, JS uni tushunmaydi. Doim kichik harfda \`console.log\` deb yozing.
-2. **Qo'shtirnoqlar:** Matnlarni doim \`" "\` yoki \`' '\` ichiga oling. Agar \`console.log(Salom)\` deb yozsangiz (qo'shtirnoqsiz), JS \`Salom\`ni o'zgaruvchi deb o'ylaydi va xato beradi.
+### 4. AMALIYOT (Mashqlar pastda)
 
-## 6. SAVOLLAR (12 ta)
+### 5. XATOLAR (Common mistakes)
+1. **Katta-kichik harf:** \`Console.log\` xato ❌. Doim kichik harfda: \`console.log\` ✅.
+2. **Qo'shtirnoqlar:** Matnlarni doim \`" "\` yoki \`' '\` ichiga oling. Bo'lmasa xato beradi.
+
+### 6. SAVOLLAR (12 ta)
 1. JavaScript nima?
 2. Sayt qurilishida JSning o'rni qanday?
-3. JS faqat brauzerdami yoki serverda ham ishlaydimi?
+3. JS faqat brauzerdami?
 4. \`console.log()\` nima uchun kerak?
 5. \`alert()\` funksiyasi nima qiladi?
-6. JS kodi qayerda (qaysi faylda) yoziladi?
-7. Brendan Eich kim va u nima qilgan?
+6. JS kodi qayerda yoziladi?
+7. Brendan Eich kim?
 8. Nima uchun JS "Dynamic" til deyiladi?
-9. JS harflar (katta/kichik) farqiga boradimi?
-10. \`console.error()\` nima uchun ishlatiladi?
+9. JS harflar farqiga boradimi (case-sensitive)?
+10. \`console.error()\` nima uchun?
 11. Matnni qo'shtirnoqsiz yozsa nima bo'ladi?
-12. Birinchi JS versiyasi nechanchi yilda chiqqan?`,
+12. JS birinchi marta nechanchi yilda chiqqan?`,
   exercises: [
     {
       id: 1,
-      title: "Salom Berish",
+      title: "Birinchi qadam",
       instruction: "Konsolga 'Salom Dunyo' matnini chiqaring.",
-      startingCode: "// Kodni shu yerda yozing\n",
+      startingCode: "// Bu yerga yozing\n",
       hint: "console.log('Salom Dunyo');",
       test: "if (logs.includes('Salom Dunyo')) return null; return 'Konsolga chiqmagan!';"
+    },
+    {
+      id: 2,
+      title: "Matematika",
+      instruction: "Konsolga 5 va 10 sonlarining yig'indisini chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "console.log(5 + 10);",
+      test: "if (logs.includes('15')) return null; return 'Natija 15 chiqishi kerak!';"
+    },
+    {
+      id: 3,
+      title: "Ism chiqish",
+      instruction: "O'z ismingizni konsolga chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "console.log('Ismingiz');",
+      test: "if (logs.length > 0 && typeof logs[0] === 'string') return null; return 'Ismingizni matn ko\\'rinishida chiqaring!';"
     }
   ]
 };
