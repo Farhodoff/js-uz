@@ -20,23 +20,19 @@ export const closuresDeepDive = {
 #### A. Global Scope (Dunyo darajasi)
 \`\`\`javascript
 const x = 10; // Global
-
 function func() {
-  console.log(x); // 10 - global dan koʻra oladi
+  console.log(x); // 10
 }
 \`\`\`
 
 #### B. Function Scope (Funksiya darajasi)
 \`\`\`javascript
 function tashqi() {
-  const y = 20; // Function scope
-
+  const y = 20;
   function ichki() {
-    console.log(y); // 20 - tashqida topa oladi
+    console.log(y); // 20
   }
-
   ichki();
-  // console.log(y); // ichkida yo'q - ERROR!
 }
 \`\`\`
 
@@ -47,23 +43,17 @@ function tashqi() {
   const b = 2;
   var c = 3;
 }
-
-// a va b: ReferenceError
-// c: 3 (var'da block scope yo'q!)
 \`\`\`
 
-#### D. Lexical Scope (Qoida: ichka funksiyalar tashqa o'zgaruvchilarni ko'ra oladi)
+#### D. Lexical Scope (Qoida)
 \`\`\`javascript
 const global_x = 1;
-
 function tashqi() {
   const tashqi_y = 2;
-
   function ichki() {
     const ichki_z = 3;
     console.log(global_x, tashqi_y, ichki_z); // 1, 2, 3
   }
-
   ichki();
 }
 \`\`\`
@@ -75,12 +65,9 @@ function tashqi() {
 #### A. Closure ta'rifi
 **Closure** = Funksiya + uning lexical environment (atrof o'zgaruvchilar)
 
-Funksiya tashqarida yaratilgan bo'lsa ham, o'zining tashqarisidagi o'zgaruvchilarni "eslab" turadi.
-
 \`\`\`javascript
 function createCounter() {
-  let count = 0; // Closure bu yerda buni eslab turadi
-
+  let count = 0;
   return function() {
     count++;
     return count;
@@ -93,18 +80,11 @@ console.log(counter()); // 2
 console.log(counter()); // 3
 \`\`\`
 
-**Nima bo'lyapti?**
-- `createCounter()` chaqirildi va qaytdi
-- Lekin `count` o'zgaruvchisi **yo'q bo'lmadi** — closure uni bilan olib turdi
-- Har bir chaqiruvda `count` o'sib turadi
-
 #### B. Closure yordamida Private State
 
 \`\`\`javascript
-// 1️⃣ BANK KARTASI MISOLI
 function createBankCard() {
-  let balans = 0; // PRIVATE - tashqaridan o'zgartirib bo'lmaydi
-
+  let balans = 0;
   return {
     pulQoshish(summa) {
       if (summa > 0) balans += summa;
@@ -124,17 +104,13 @@ function createBankCard() {
 }
 
 const karta = createBankCard();
-console.log(karta.pulQoshish(100000)); // Qo'shildi: 100000. Balans: 100000
+console.log(karta.pulQoshish(100000)); // Qo'shildi: 100000
 console.log(karta.balansniKorish()); // 100000
-
-// Hech kim balansni to'g'ridan-to'g'ri o'zgartira olmaydi!
-// karta.balans = 1000000; // Ishlamaydi - private!
 \`\`\`
 
 #### C. Function Factory (Sozlanuvchi Funksiyalar)
 
 \`\`\`javascript
-// Misol 1: Ko'paytirish fabrikasi
 function createMultiplier(factor) {
   return function(num) {
     return num * factor;
@@ -146,41 +122,13 @@ const triple = createMultiplier(3);
 
 console.log(double(5)); // 10
 console.log(triple(5)); // 15
-
-// Misol 2: API URL fabrikasi
-function createAPIClient(baseURL) {
-  return {
-    get(endpoint) {
-      return \`\${baseURL}\${endpoint}\`;
-    },
-    post(endpoint, data) {
-      return \`POST: \${baseURL}\${endpoint}\`;
-    }
-  };
-}
-
-const apiV1 = createAPIClient("https://api.example.com/v1");
-const apiV2 = createAPIClient("https://api.example.com/v2");
-
-console.log(apiV1.get("/users")); // https://api.example.com/v1/users
-console.log(apiV2.get("/users")); // https://api.example.com/v2/users
 \`\`\`
 
 #### D. IIFE (Immediately Invoked Function Expression)
 
 \`\`\`javascript
-// IIFE — funksiyani darhol chaqirish
-(function() {
-  let private_x = 100;
-  console.log(private_x); // 100
-})();
-
-// console.log(private_x); // ReferenceError
-
-// Amaliyotda Module Pattern
 const calculator = (function() {
   let memory = 0;
-
   return {
     add(n) { memory += n; return memory; },
     subtract(n) { memory -= n; return memory; },
@@ -190,18 +138,11 @@ const calculator = (function() {
 
 console.log(calculator.add(5)); // 5
 console.log(calculator.add(3)); // 8
-console.log(calculator.subtract(2)); // 6
 \`\`\`
 
 #### E. Currying (Qisqaviy funksiya)
 
 \`\`\`javascript
-// Oddiy funksiya
-function add(a, b) {
-  return a + b;
-}
-
-// Curry versiyasi
 function curriedAdd(a) {
   return function(b) {
     return a + b;
@@ -209,25 +150,8 @@ function curriedAdd(a) {
 }
 
 console.log(curriedAdd(5)(3)); // 8
-
-// Amaliyotda: Parametrlarni bosqichma-bosqich yuborish
 const add5 = curriedAdd(5);
 console.log(add5(10)); // 15
-console.log(add5(20)); // 25
-
-// Real hayotdagi misol:
-function formatDate(separator) {
-  return function(day) {
-    return function(month) {
-      return function(year) {
-        return \`\${day}\${separator}\${month}\${separator}\${year}\`;
-      };
-    };
-  };
-}
-
-const formatWithSlash = formatDate("/");
-console.log(formatWithSlash(15)(3)(2025)); // 15/3/2025
 \`\`\`
 
 ---
@@ -237,86 +161,43 @@ console.log(formatWithSlash(15)(3)(2025)); // 15/3/2025
 #### A. Closure va Loop Muammosi
 
 \`\`\`javascript
-// ❌ XATO - Bu ko'p ehtimol begona bulga
+// ❌ XATO
 const functions = [];
-
 for (var i = 0; i < 3; i++) {
   functions.push(function() {
-    console.log(i); // Hammasi 3 chiqadi!
+    console.log(i);
   });
 }
+functions[0](); // 3 (0 emas!)
 
-functions[0](); // 3
-functions[1](); // 3
-functions[2](); // 3
-
-// SABABU: var funksiya darajasida scope qiladi. Sikldan keyin i = 3.
-
-// ✅ YECHIMI 1: let ishlatish (block scope)
+// ✅ TO'G'RI - let ishlatish
 const functions = [];
 for (let i = 0; i < 3; i++) {
   functions.push(function() {
     console.log(i);
   });
 }
-
 functions[0](); // 0
-functions[1](); // 1
-functions[2](); // 2
-
-// ✅ YECHIMI 2: Closure yordamida (eski usul)
-const functions = [];
-for (var i = 0; i < 3; i++) {
-  functions.push((function(j) {
-    return function() {
-      console.log(j);
-    };
-  })(i));
-}
-
-functions[0](); // 0
-functions[1](); // 1
-functions[2](); // 2
 \`\`\`
 
 #### B. Closure va Memory Leak
 
 \`\`\`javascript
-// ⚠️ Memory leak ehtimoli
 function createListener() {
   const bigData = new Array(1000000).fill("data");
-
   document.addEventListener("click", function() {
-    console.log(bigData[0]); // bigData closure da qoladi
-  });
-}
-
-// bigData hech qachon "chiqib" ketmaydi, ham foydalanuvchi listener o'chirganda ham.
-
-// ✅ YECHIMI:
-function createListener() {
-  const bigData = new Array(1000000).fill("data");
-
-  const handler = function() {
     console.log(bigData[0]);
-  };
-
-  document.addEventListener("click", handler);
-
-  // Kerak bo'lganda ochirish:
-  // document.removeEventListener("click", handler);
+  });
 }
 \`\`\`
 
-#### C. Hoisting va TDZ (Temporal Dead Zone)
+#### C. Hoisting va TDZ
 
 \`\`\`javascript
-// VAR - Hoisting mavjud
-console.log(x); // undefined (error emas)
+console.log(x); // undefined
 var x = 5;
 
-// LET/CONST - TDZ (Temporal Dead Zone)
-// console.log(y); // ReferenceError! TDZ'da
+// console.log(y); // ReferenceError - TDZ
 let y = 5;
 \`\`\`
 
@@ -324,56 +205,37 @@ let y = 5;
 
 ### 5. REAL HAYOTDAGI MISOLLAR
 
-#### Misol 1: Event Listener Manager
+#### Misol 1: Private Counter
+
 \`\`\`javascript
-function createEventManager() {
-  const listeners = [];
-
+const counter = (function() {
+  let count = 0;
   return {
-    on(event, callback) {
-      listeners.push({ event, callback });
-    },
-    emit(event, data) {
-      listeners
-        .filter(l => l.event === event)
-        .forEach(l => l.callback(data));
-    },
-    off(event) {
-      listeners = listeners.filter(l => l.event !== event);
-    }
+    increment() { return ++count; },
+    decrement() { return --count; },
+    getCount() { return count; }
   };
-}
+})();
 
-const events = createEventManager();
-events.on("login", (user) => console.log("Login:", user));
-events.emit("login", "Ali"); // Login: Ali
+console.log(counter.increment()); // 1
+console.log(counter.increment()); // 2
 \`\`\`
 
-#### Misol 2: Request Rate Limiter
+#### Misol 2: Module Pattern
+
 \`\`\`javascript
-function createRateLimiter(maxRequests, windowMs) {
-  let requestCount = 0;
+const userModule = (function() {
+  let users = [];
 
-  return function() {
-    if (requestCount >= maxRequests) {
-      return "Kotora rasta!";
-    }
-
-    requestCount++;
-
-    setTimeout(() => {
-      requestCount--;
-    }, windowMs);
-
-    return "Requset qabul qilindi";
+  return {
+    addUser(name) { users.push(name); },
+    getUsers() { return [...users]; },
+    userCount() { return users.length; }
   };
-}
+})();
 
-const limit = createRateLimiter(3, 1000); // 3 ta so'rov/1 sekund
-console.log(limit()); // Requset qabul qilindi
-console.log(limit()); // Requset qabul qilindi
-console.log(limit()); // Requset qabul qilindi
-console.log(limit()); // Kotora rasta!
+userModule.addUser("Ali");
+console.log(userModule.userCount()); // 1
 \`\`\`
 
 ---
@@ -386,10 +248,8 @@ Closure = funksiya + uning tashqarisidagi o'zgaruvchilar. Kerak: Data privacy, f
 </details>
 
 <details>
-<summary><b>2. var, let, const farqni batafsilroq tushuntiring.</b></summary>
-- \`var\`: funksiya darajasida scope, hoisting, re-declare mumkin
-- \`let\`: block scope, TDZ, re-declare mumkin emas
-- \`const\`: block scope, TDZ, o'zgartira olmaydi
+<summary><b>2. var, let, const farqini batafsilroq tushuntiring.</b></summary>
+var: funksiya scope, hoisting, let: block scope, TDZ, const: block scope, TDZ, o'zgartira olmaydi.
 </details>
 
 <details>
@@ -399,7 +259,7 @@ Funksiya qaysi yerda yozilgani bo'yicha ko'rining qoida — ichka funksiyalar ta
 
 <details>
 <summary><b>4. for loop bilan var/let farqi nima?</b></summary>
-\`var\` — loop dagi o'zgaruvchi loop tashqarida ham mavjud. \`let\` — faqat block ichida.
+var — loop dagi o'zgaruvchi loop tashqarida ham mavjud. let — faqat block ichida.
 </details>
 
 <details>
@@ -424,12 +284,12 @@ Temporal Dead Zone — let/const bilan o'zgaruvchi initialization dan oldin ishl
 
 <details>
 <summary><b>9. Function Factory nima misol bilan?</b></summary>
-Sozlanuvchi funksiyalar qaytaradigan funksiya. Misol: \`createMultiplier(2)\` → \`multiply by 2\` funksiya.
+Sozlanuvchi funksiyalar qaytaradigan funksiya. Misol: createMultiplier(2) → multiply by 2 funksiya.
 </details>
 
 <details>
 <summary><b>10. Closure va this o'rtasidagi bog'lanish?</b></summary>
-Closure \`this\` ni saqlaydi, lekin \`this\` lexical emas — chaqirish kontekstiga bog'liq.
+Closure this ni saqlaydi, lekin this lexical emas — chaqirish kontekstiga bog'liq.
 </details>
 
 <details>
@@ -439,7 +299,7 @@ Ha! Recursive funksiya closure yaratishi mumkin va uni sanab turishi mumkin.
 
 <details>
 <summary><b>12. Module pattern nima va qanday yoziladi?</b></summary>
-IIFE yordamida public va private API yaratish. Misol: \`const mod = (function() { ... })();\`
+IIFE yordamida public va private API yaratish. Misol: const mod = (function() { ... })();
 </details>`,
   exercises: [
     {
@@ -537,34 +397,6 @@ IIFE yordamida public va private API yaratish. Misol: \`const mod = (function() 
       startingCode: "// Kodni shu yerda yozing\nconst double = createCurriedMultiplier(2);\nconsole.log(double(3)); // 6\nconsole.log(double(5)); // 10",
       hint: "function createCurriedMultiplier(factor) { return function multiply(n) { return factor * n; }; }",
       test: "if (logs.includes(6) && logs.includes(10)) return null; return 'Curry + Factory to\\'g\\'ri emas!';"
-    }
-  ]
-};
-**Vazifa:** Faqat maxfiy kod bilan o'qish mumkin bo'lgan xabar saqlagich yarating.
-
-\`\`\`javascript
-function secretStore(initialMessage) {
-  let message = initialMessage;
-  
-  return (code) => {
-    if (code === "1234") return message;
-    return "Xato kod!";
-  };
-}
-
-const mySecret = secretStore("Yashirin xabar!");
-console.log(mySecret("0000")); // → Xato kod!
-console.log(mySecret("1234")); // → Yashirin xabar!
-\`\`\`
-`,
-  exercises: [
-    {
-      id: 1,
-      title: "Private variable",
-      instruction: "Closure yordamida 'name'ni saqlaydigan va uni faqat 'getName()' orqali qaytaradigan funksiya yozing.",
-      startingCode: "function person(initialName) {\n  let name = initialName;\n  // return qiling\n}",
-      hint: "return { getName: () => name };",
-      test: "const p = person('Ali'); if (p.getName() === 'Ali') return null; return 'getName() funksiyasi name-ni qaytarishi kerak';"
     }
   ]
 };
