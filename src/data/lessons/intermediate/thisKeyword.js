@@ -1,84 +1,535 @@
 export const thisKeyword = {
   id: "this-keyword",
-  title: "this kaliti va Kontekst",
-  level: "Intermediate",
-  description: "JavaScriptdagi eng ko'p tushunmovchilikka sabab bo'ladigan 'this' kalit so'zini o'rganamiz.",
-  theory: `
-# this kalit so'zi – Bu nima va nima uchun kerak?
+  title: "🎯 This Keyword va Context Binding (Chuqur O'rganish)",
+  level: "O'rta",
+  description: "JavaScript'dagi eng murakkab mavzu: this kaliti, binding qoidalari, call/apply/bind, va event listeners.",
+  theory: `## 📌 THIS KEYWORD — MASTER BOSQICHI
 
-JavaScriptda **this** kalit so'zi funksiya qaysi obyektdan turib chaqirilayotganiga ishora qiladi. U har doim "kim haqida gapiryapmiz?" degan savolga javob beradi.
+### 1. NEGA KERAK? (Sabab)
 
-## 1. NEGA kerak?
-Tasavvur qiling, sizda mingta foydalanuvchi obyekti bor. Ularning har biri uchun alohida "salom berish" funksiyasini yozish xotirani band qiladi. Bitta funksiya yozib, \`this\` orqali "shu foydalanuvchining ismini ol" deyish ancha aqlli yechimdir.
-
-## 2. SODDALIK (Analogiya)
-Siz "Mening ismim Farhod" deganingizda, "mening" so'zi Farhodga tegishli. Agar boshqa odam "Mening ismim Ali" desa, "mening" so'zi Aliga tegishli. \`this\` — bu JSdagi "mening" yoki "o'zimning" degan so'zdir.
-
-## 3. STRUKTURA
-
-### A. Global kontekstda
-Agar \`this\` hech qanday obyekt ichida bo'lmasa, u global obyektga (\`window\`) ishora qiladi:
+**Muammo:** Mingta foydalanuvchi uchun alohida funksiya yozaman?
 \`\`\`javascript
-console.log(this); // window (brauzerda)
+// ❌ XATO - Millionlab kod
+const user1 = { ism: "Ali", salomBer: function() { console.log("Salom, Ali"); } };
+const user2 = { ism: "Zara", salomBer: function() { console.log("Salom, Zara"); } };
+const user3 = { ism: "Bobur", salomBer: function() { console.log("Salom, Bobur"); } };
 \`\`\`
 
-### B. Obyekt ichida (Method)
-Metod ichida \`this\` o'sha obyektning o'ziga ishora qiladi:
+**Yechim:** this orqali bitta funksiya
+\`\`\`javascript
+// ✅ TO'G'RI - Bitta funksiya
+function salomBer() {
+  console.log("Salom, " + this.ism);
+}
+
+const user1 = { ism: "Ali", salomBer };
+const user2 = { ism: "Zara", salomBer };
+const user3 = { ism: "Bobur", salomBer };
+
+user1.salomBer(); // "Salom, Ali"
+user2.salomBer(); // "Salom, Zara"
+\`\`\`
+
+---
+
+### 2. SODDALIK (Analogiya)
+
+**"Men" so'zi:**
+- Siz: "Mening ismim Ali" — "Men" = Ali
+- Zara: "Mening ismim Zara" — "Men" = Zara
+
+**this — JavaScript'dagi "Men":**
+- Ishlayotgan kontekstga beroq beradi
+- Funksiya qayerdagi chaqirilganiga bog'liq
+
+---
+
+### 3. THIS BINDING 4 QOIDASI (ASOSIY)
+
+#### A. Default Binding (Oddiy chaqirish)
+
+\`\`\`javascript
+function whoAmI() {
+  console.log(this);
+}
+
+whoAmI(); // window (brauzerda)
+// YOKI undefined (strict mode'da)
+
+// Misol:
+const person = {};
+const sayName = function() {
+  console.log(this === person); // false
+  console.log(this === window); // true (strict mode'da undefined)
+};
+sayName(); // Chaqirish: window
+\`\`\`
+
+#### B. Method Binding (Metod sifatida chaqirish)
+
 \`\`\`javascript
 const user = {
-  name: "Farhod",
-  sayHi() {
-    console.log("Salom, " + this.name);
+  ism: "Ali",
+  yosh: 25,
+
+  salomBer() {
+    console.log("Salom, " + this.ism); // this = user
+  },
+
+  info() {
+    console.log(this.ism + " — " + this.yosh + " yosh");
   }
 };
-user.sayHi(); // Salom, Farhod
+
+user.salomBer(); // "Salom, Ali"
+user.info(); // "Ali — 25 yosh"
+
+// MUHIM: Agar metodni o'zgaruvchiga saqlab, keyin chaqirsak:
+const salomBer = user.salomBer;
+salomBer(); // this = window, "Salom, undefined"
 \`\`\`
 
-### C. Arrow functions
-**Muhim!** Arrow funksiyalarda o'zining \`this\`i bo'lmaydi. U o'zidan tepasidagi (parent) \`this\`ni oladi:
+#### C. Explicit Binding (Aniq qilish: call, apply, bind)
+
+\`\`\`javascript
+// 1. CALL - Darhol chaqirish + this belgilash
+function salomBer(til, emoji) {
+  console.log(emoji + " Salom, " + this.ism + "! " + til);
+}
+
+const user1 = { ism: "Ali" };
+const user2 = { ism: "Zara" };
+
+salomBer.call(user1, "Uzbekcha", "👋"); // 👋 Salom, Ali! Uzbekcha
+salomBer.call(user2, "English", "🙋"); // 🙋 Salom, Zara! English
+
+// 2. APPLY - call kabi, lekin parametrlar array'da
+salomBer.apply(user1, ["Uzbekcha", "👋"]); // 👋 Salom, Ali! Uzbekcha
+
+// 3. BIND - Yangi funksiya qaytaradi (this fixed)
+const aliSalomBer = salomBer.bind(user1);
+aliSalomBer("Uzbekcha", "👋"); // 👋 Salom, Ali! Uzbekcha
+
+// Keyingi chaqiruvlarda ham this = user1 qoladi
+aliSalomBer("English", "🙋"); // 🙋 Salom, Ali! English
+\`\`\`
+
+#### D. New Binding (Konstruktor sifatida)
+
+\`\`\`javascript
+function Robot(ism) {
+  this.ism = ism;
+  this.salamlash = function() {
+    console.log("Salom, men " + this.ism);
+  };
+}
+
+const robot1 = new Robot("R2D2");
+const robot2 = new Robot("C3PO");
+
+robot1.salamlash(); // "Salom, men R2D2"
+robot2.salamlash(); // "Salom, men C3PO"
+
+// new qilmasak:
+Robot("Beysbot"); // this = window (xato!)
+\`\`\`
+
+---
+
+### 4. ARROW FUNCTIONS VA THIS (MUHIM!)
+
+#### Oddiy funksiya: this dynamic
 \`\`\`javascript
 const user = {
-  name: "Ali",
-  hi: () => console.log(this.name) // window.name ni qidiradi
-};
-\`\`\`
-
-## 4. AMALIYOT (Mashq)
-\`\`\`javascript
-const mashina = {
-  model: "Tesla",
-  start() {
-    console.log(this.model + " o't oldi!");
+  ism: "Ali",
+  hiDynamic: function() {
+    console.log("Oddiy:", this.ism); // this = user
   }
 };
-mashina.start();
+
+user.hiDynamic(); // "Oddiy: Ali"
+
+// O'zgaruvchiga saqlasa:
+const saqlangan = user.hiDynamic;
+saqlangan(); // "Oddiy: undefined" (this = window)
 \`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1.  **Yo'qotilgan kontekst:** Funksiyani o'zgaruvchiga saqlab, keyin chaqirsangiz \`this\` yo'qoladi.
-2.  **Arrow functions metod sifatida:** Obyekt metodlarini yozishda arrow funksiya ishlatmang, aks holda \`this\` ishlamaydi.
+#### Arrow funksiya: this lexical (static)
+\`\`\`javascript
+const user = {
+  ism: "Ali",
+  hiArrow: () => {
+    console.log("Arrow:", this.ism); // this = GLOBAL (parent context)
+  }
+};
 
-## 6. SAVOLLAR (12 ta)
-1. \`this\` so'zining asosiy ma'nosi nima?
-2. Global kontekstda \`this\` nima qaytaradi?
-3. Obyekt metodida \`this\` nimaga teng?
-4. Arrow funksiyalarda \`this\` bormi?
-5. \`strict mode\`da global \`this\` nima bo'ladi (\`undefined\`)?
-6. \`bind\`, \`call\`, \`apply\` nima uchun kerak?
-7. Nima uchun arrow funksiyani obyekt metodi qilib ishlatmaslik kerak?
-8. \`setTimeout\` ichidagi \`this\` muammosini qanday hal qilish mumkin?
-9. "Context" (Kontekst) nima?
-10. \`new\` kalit so'zi bilan chaqirilgan funksiyada \`this\` nima bo'ladi?
-11. \`this\`ning qiymati funksiya yozilganda aniqlanadimi yoki chaqirilgandami?
-12. HTML eventlarida (masalan, \`onclick\`) \`this\` nimaga ishora qiladi?`,
+user.hiArrow(); // "Arrow: undefined" (window.ism yo'q)
+
+// SHUNING UCHUN: Metodlar uchun arrow funksiya ishlatma!
+// LEKIN: Callback uchun arrow funksiya juda yaxshi!
+\`\`\`
+
+#### Arrow funksiya nested method ichida
+\`\`\`javascript
+const user = {
+  ism: "Ali",
+  savollar: ["Q1", "Q2"],
+
+  ishlash: function() {
+    // this = user
+    this.savollar.forEach((savol) => {
+      // Arrow: this = user (parent context)
+      console.log(this.ism + " — " + savol);
+    });
+  }
+};
+
+user.ishlash();
+// Ali — Q1
+// Ali — Q2
+\`\`\`
+
+---
+
+### 5. EVENT LISTENERS VA THIS
+
+\`\`\`javascript
+// HTML:
+// <button id="myBtn">Click me</button>
+
+const button = document.getElementById("myBtn");
+
+// ❌ XATO - Arrow: this = window
+button.addEventListener("click", () => {
+  console.log(this); // window (event target emas!)
+});
+
+// ✅ TO'G'RI - Regular: this = button
+button.addEventListener("click", function() {
+  console.log(this); // button element
+  this.style.backgroundColor = "blue";
+});
+
+// ✅ TO'G'RI - bind yordamida
+class Button {
+  constructor(id) {
+    this.button = document.getElementById(id);
+    this.button.addEventListener("click", this.handleClick.bind(this));
+  }
+
+  handleClick() {
+    console.log(this); // Button instance
+  }
+}
+\`\`\`
+
+---
+
+### 6. REAL HAYOTDAGI MISOLLAR
+
+#### Misol 1: User class
+\`\`\`javascript
+class User {
+  constructor(ism, yosh) {
+    this.ism = ism;
+    this.yosh = yosh;
+  }
+
+  info() {
+    return this.ism + " — " + this.yosh + " yosh";
+  }
+
+  // Callback uchun arrow
+  getInfoAsync() {
+    setTimeout(() => {
+      console.log(this.info()); // this = User instance
+    }, 1000);
+  }
+}
+
+const user = new User("Ali", 25);
+user.getInfoAsync(); // "Ali — 25 yosh"
+\`\`\`
+
+#### Misol 2: Event handler
+\`\`\`javascript
+class Form {
+  constructor(formId) {
+    this.form = document.getElementById(formId);
+    this.form.addEventListener("submit", this.handleSubmit.bind(this));
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log("Form submitted by:", this.form.id);
+  }
+}
+\`\`\`
+
+#### Misol 3: Array methods + this
+\`\`\`javascript
+const calculator = {
+  numbers: [1, 2, 3, 4, 5],
+  multiplier: 10,
+
+  // YAXSHI - Arrow: this = calculator
+  getMultiplied() {
+    return this.numbers.map(n => n * this.multiplier);
+  },
+
+  // XATO - Regular: this = undefined
+  getMultipliedBad() {
+    return this.numbers.map(function(n) {
+      return n * this.multiplier; // undefined
+    });
+  }
+};
+
+console.log(calculator.getMultiplied()); // [10, 20, 30, 40, 50]
+\`\`\`
+
+---
+
+### 7. XATOLAR VA EDGE CASES
+
+#### ❌ Xato 1: Lost context
+\`\`\`javascript
+const user = {
+  ism: "Ali",
+  saluding: function() {
+    console.log(this.ism);
+  }
+};
+
+// XATO - this yo'qoladi
+const greet = user.saluding;
+greet(); // undefined
+
+// TO'G'RI - bind yordamida
+const greetFixed = user.saluding.bind(user);
+greetFixed(); // "Ali"
+\`\`\`
+
+#### ❌ Xato 2: Arrow method
+\`\`\`javascript
+// XATO - this = window
+const user = {
+  ism: "Ali",
+  greet: () => {
+    console.log(this.ism); // window.ism
+  }
+};
+
+// TO'G'RI - Regular function
+const user = {
+  ism: "Ali",
+  greet() {
+    console.log(this.ism); // user.ism
+  }
+};
+\`\`\`
+
+#### ❌ Xato 3: setTimeout this
+\`\`\`javascript
+// XATO - this = window
+class Counter {
+  count = 0;
+  increment() {
+    setTimeout(function() {
+      this.count++; // this = window
+    }, 1000);
+  }
+}
+
+// TO'G'RI - Arrow
+class Counter {
+  count = 0;
+  increment() {
+    setTimeout(() => {
+      this.count++; // this = Counter
+    }, 1000);
+  }
+}
+\`\`\`
+
+#### ⚠️ Edge Case: Chained calls
+\`\`\`javascript
+const user = {
+  ism: "Ali",
+
+  greet() {
+    console.log("Salom, " + this.ism);
+    return this; // Chaining uchun
+  },
+
+  wave() {
+    console.log(this.ism + " saloma qo'lyapti");
+    return this;
+  }
+};
+
+user.greet().wave(); // Chaining ishlaydi
+\`\`\`
+
+---
+
+### 8. 12 TA SAVOL VA JAVOBLAR
+
+<details>
+<summary><b>1. this so'zining asosiy ma'nosi nima?</b></summary>
+this — funksiya qaysi kontekstda chaqirilayotganini ko'rsatadi. U "mening" yoki "bu object" degan so'z kabi.
+</details>
+
+<details>
+<summary><b>2. Global kontekstda this nima qaytaradi?</b></summary>
+Brauzerda: window. Node.js'da: global. Strict mode'da: undefined.
+</details>
+
+<details>
+<summary><b>3. Obyekt metodida this nimaga teng?</b></summary>
+O'sha objektning o'ziga teng. Masalan: user.method() qilsa, this = user.
+</details>
+
+<details>
+<summary><b>4. Arrow funksiyalarda this bormi?</b></summary>
+Ha, lekin u o'zining this'i emas — parent context'dan olinadi (lexical this).
+</details>
+
+<details>
+<summary><b>5. call(), apply(), bind() farqi nima?</b></summary>
+call — darhol chaqirish, parametrlar ketma-ketlik. apply — darhol chaqirish, parametrlar array. bind — yangi funksiya qaytarish (keyincha chaqirish mumkin).
+</details>
+
+<details>
+<summary><b>6. Nima uchun arrow funksiyani metodda ishlatmaslik kerak?</b></summary>
+Arrow funksiyada this lexical (parent'dan olinadi), method'da dynamic this kerak.
+</details>
+
+<details>
+<summary><b>7. setTimeout ichidagi this muammosini qanday hal qilish?</b></summary>
+Arrow funksiyani ishlatish yoki bind() qilish. setTimeout(() => { this... }) yoki setTimeout(func.bind(this), 1000).
+</details>
+
+<details>
+<summary><b>8. new kalit so'zi bilan chaqirilganda this nima bo'ladi?</b></summary>
+Yangi omda yaratiladi, this — o'sha omda. Constructor'ning oxirida return undefined bo'lmasa, this qaytariladi.
+</details>
+
+<details>
+<summary><b>9. this qiymati compile-time yoki runtime'da aniqlanarmi?</b></summary>
+Runtime'da! this funksiyaning qanday chaqirilganiga bog'liq, qaysi yerda yozilganiga emas.
+</details>
+
+<details>
+<summary><b>10. Event listener'da this nimaga ishora qiladi?</b></summary>
+Regular funksiyada: event target (button, div, h.k.). Arrow funksiyada: parent context.
+</details>
+
+<details>
+<summary><b>11. Strict mode'da global this nima bo'ladi?</b></summary>
+undefined. Global kontekstda bi-argumentsiz chaqirilgan funksiyada this = undefined.
+</details>
+
+<details>
+<summary><b>12. Chaining pattern'da this qanday qaytariladi?</b></summary>
+Methoddan return this; qilish orqali. Har bir method o'zi qaytariladi, keyingi method chaqiriladi.
+</details>`,
   exercises: [
     {
       id: 1,
-      title: "This mashqi",
-      instruction: "Obekt ichidagi 'name'ni 'this' orqali qaytaradigan metod yozing.",
-      startingCode: "const obj = {\n  name: 'Loyiha',\n  getName() {\n    // Bu yerga yozing\n  }\n};",
-      hint: "return this.name;",
-      test: "if (obj.getName() === 'Loyiha') return null; return 'this.name ishlatilmadi';"
+      title: "1️⃣ Oddiy Metod (Boshlang'ich)",
+      instruction: "Objektda this.ism qaytaradigan metod yozing.",
+      startingCode: "const user = {\n  ism: 'Ali',\n  getName() {\n    // Kodni shu yerda yozing\n  }\n};\n\nconsole.log(user.getName());",
+      hint: "return this.ism;",
+      test: "if (user.getName() === 'Ali') return null; return 'this.ism ishlatilmadi!';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Global This (Boshlang'ich)",
+      instruction: "Global this qanday ekanligi ko'rsating.",
+      startingCode: "function checkThis() {\n  // Kodni shu yerda yozing\n  return this;\n}\n\nconst result = checkThis();\nconsole.log(result === window); // true yoki false?",
+      hint: "return this;",
+      test: "if (typeof checkThis() === 'object' || checkThis() === undefined) return null; return 'This type xato!';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Lost Context (O'rta)",
+      instruction: "Method'ni o'zgaruvchiga saqlasa, this yo'qolishini ko'rsating.",
+      startingCode: "const user = {\n  ism: 'Ali',\n  greet: function() {\n    return this.ism;\n  }\n};\n\nconst greetFunc = user.greet;\nconsole.log(greetFunc()); // nima qaytadi?",
+      hint: "Javob: undefined (this yo'qoladi)",
+      test: "if (greetFunc() === undefined) return null; return 'Context lost o\\'rtildi!';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Call Metodi (O'rta)",
+      instruction: "call() yordamida boshqa object'ning metodini chaqiring.",
+      startingCode: "const user1 = { ism: 'Ali' };\nconst user2 = { ism: 'Zara' };\n\nfunction greet() {\n  return 'Salom, ' + this.ism;\n}\n\n// Kodni shu yerda yozing\nconst result = greet.call(user2);",
+      hint: "greet.call(user2)",
+      test: "if (result === 'Salom, Zara') return null; return 'call() ishlatilmadi!';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Apply Metodi (O'rta)",
+      instruction: "apply() yordamida parametrlarni array bilan o'tkazing.",
+      startingCode: "function introduce(greeting, emoji) {\n  return emoji + ' ' + greeting + ', ' + this.ism;\n}\n\nconst user = { ism: 'Ali' };\n\n// Kodni shu yerda yozing\nconst result = introduce.apply(user, ['Salom', '👋']);",
+      hint: "introduce.apply(user, ['Salom', '👋'])",
+      test: "if (result.includes('Salom') && result.includes('Ali')) return null; return 'apply() xato!';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Bind Metodi (O'rta)",
+      instruction: "bind() yordamida this fixed qilgan yangi funksiya yarating.",
+      startingCode: "const user = { ism: 'Ali' };\n\nfunction getName() {\n  return this.ism;\n}\n\n// Kodni shu yerda yozing\nconst getAliName = getName.bind(user);\nconsole.log(getAliName());",
+      hint: "const getAliName = getName.bind(user);",
+      test: "if (getAliName() === 'Ali') return null; return 'bind() ishlatilmadi!';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Arrow vs Regular (O'rta)",
+      instruction: "Arrow funksiyada this parent context'dan olinishini ko'rsating.",
+      startingCode: "const calculator = {\n  num: 10,\n  // XATO - Arrow\n  getArrow: () => {\n    return this.num;\n  },\n  // TO'G'RI - Regular\n  getRegular: function() {\n    return this.num;\n  }\n};\n\nconsole.log('Arrow:', calculator.getArrow()); // undefined\nconsole.log('Regular:', calculator.getRegular()); // 10",
+      hint: "Arrow: undefined, Regular: 10",
+      test: "if (calculator.getRegular() === 10 && calculator.getArrow() === undefined) return null; return 'Arrow vs Regular xato!';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Constructor va New (O'rta)",
+      instruction: "new yordamida objekt yaratish, this = yangi obje.",
+      startingCode: "function Robot(ism) {\n  // Kodni shu yerda yozing: this.ism = ism\n}\n\nconst robot = new Robot('R2D2');\nconsole.log(robot.ism); // 'R2D2'",
+      hint: "this.ism = ism;",
+      test: "if (robot.ism === 'R2D2') return null; return 'Constructor xato!';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Callback Arrow (O'rta)",
+      instruction: "forEach callback'iga arrow funksiya bersan, this preserved.",
+      startingCode: "const user = {\\n  ism: 'Ali',\\n  hobbies: ['Kitob', 'Futbol', 'Dasturlash'],\\n  printHobbies() {\\n    // Arrow funksiya kerak\\n    this.hobbies.forEach((hobby) => {\\n      console.log(this.ism + ': ' + hobby);\\n    });\\n  }\\n};\\nuser.printHobbies();",
+      hint: "this.hobbies.forEach((hobby) => { ... });",
+      test: "if (code.includes('=>')) return null; return 'Arrow callback ishlatilmadi!';"
+    },
+    {
+      id: 10,
+      title: "🔟 Event Listener (O'rta)",
+      instruction: "Event listener'da this = event target.",
+      startingCode: "// HTML: <button id='btn'>Click</button>\n\nconst btn = document.getElementById('btn');\n\n// YAXSHI - Regular: this = button\nbtn.addEventListener('click', function() {\n  console.log(this); // button element\n  console.log(this.id); // 'btn'\n});\n\n// XATO - Arrow: this = window\n// btn.addEventListener('click', () => {\n//   console.log(this); // window (xato!)\n// });",
+      hint: "Regular funksiyada this = button",
+      test: "if (code.includes('function()')) return null; return 'Event listener xato!';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Method Chaining (Qiyin)",
+      instruction: "return this; orqali chaining qilgan metodlar yarating.",
+      startingCode: "const calculator = {\n  value: 0,\n  \n  add(n) {\n    this.value += n;\n    return this; // Chaining uchun\n  },\n  \n  multiply(n) {\n    this.value *= n;\n    return this; // Chaining uchun\n  },\n  \n  getValue() {\n    return this.value;\n  }\n};\n\n// Kodni shu yerda yozing: Chaining\nconst result = calculator.add(5).multiply(2).getValue();\nconsole.log(result); // (0 + 5) * 2 = 10",
+      hint: "calculator.add(5).multiply(2).getValue()",
+      test: "if (result === 10) return null; return 'Chaining xato!';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Combine: Class + This + Binding (Eng Qiyin)",
+      instruction: "Class'da metodni event listener'ga bind qiling.",
+      startingCode: "class Counter {\n  constructor() {\n    this.count = 0;\n    // Kodni shu yerda yozing: bind\n    // this.button.addEventListener('click', this.increment.bind(this));\n  }\n  \n  increment() {\n    this.count++;\n    console.log('Count: ' + this.count);\n  }\n}\n\nconst counter = new Counter();",
+      hint: "this.increment.bind(this) - this fixed qilish",
+      test: "if (code.includes('bind')) return null; return 'Binding xato!';"
     }
   ]
 };
