@@ -276,7 +276,7 @@ function handleError(error) {
 
 ### L. Global Error Handler
 
-Barcha `catch` qilinmagan xatolarni tulovchi:
+Barcha catch qilinmagan xatolarni tulovchi:
 
 \`\`\`javascript
 // Synchronous xatolar uchun:
