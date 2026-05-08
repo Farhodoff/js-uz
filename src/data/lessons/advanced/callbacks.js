@@ -1,89 +1,480 @@
 export const callbacksLesson = {
   id: "a0",
-  title: "Callback Functions (Qayta chaqiruv)",
-  theory: `## 1. CALLBACK NIMA?
-**Callback** — bu boshqa bir funksiyaga **argument** sifatida berib yuboriladigan funksiya. U asosan asinxron ishlar (masalan: ma'lumot kutish, taymer) tugagandan so'ng bajarilishi uchun ishlatiladi.
+  title: "📞 Callbacks — Asinxronlikga Kirish",
+  level: "Murakkab",
+  description: "Callback funksiyalari, Event Loop, va asinxron ishlarning asosiy mexanizmi.",
+  theory: `## 📌 CALLBACK FUNKSIYALARI — ASOSIY BOSQICH
 
-### Oddiy misol (Sinxron):
+### 1. NEGA KERAK? (Sabab)
+Tasavvur qiling: Siz tomoshabinga bilet olishga kitkasiz. Bilet olish 2-3 minutini oladi. Lekin siz:
+- ❌ 3 minut to'xtab turmaysiz (blokirovka — brauzer to'xtab qoladi)
+- ✅ Navbat nomeri (Promise) olasiz va borish davom etasiz
+
+**JavaScript'da:**
+- Eski usul: Kut, kut, kut... (bloklanish)
+- Zamonaviy usul: Asinxron (asosiy kod davom etadi, vazifa tugagandan so'ng xabar ol)
+
+**Callback:** "Mening vazifasi tugagandan so'ng bu funksiyani chaqir!" — shu bu.
+
+---
+
+### 2. SODDALIK (Haqiqiy Analogiya)
+
+#### Sinxron (Ketma-ketlik)
+\`\`\`
+Restoran ≈ Kod
+Siz buytutasiz → Oshpaz tayyorlaydi → Siz olesiz
+1. then 2. then 3.
+\`\`\`
+
+#### Asinxron (Callback)
+\`\`\`
+Kafé ≈ Kod
+Siz buytutasiz → Navbat nomeri olasiz → Siz o'tirasan, kitob o'qiysiz
+                   → "Ali! 123 raqam tayyor!" (Callback chaqiriladi)
+                   → Siz borasiz, olasiz
+\`\`\`
+
+---
+
+### 3. TUSHUNCHA (BATAFSIL)
+
+#### A. SINXRON vs ASINXRON
+
+**Sinxron (Bloklanadi):**
 \`\`\`javascript
-function salomBer(ism, callback) {
-  console.log("Salom " + ism);
-  callback();
+function maʻlumotOl() {
+  // Bu 5 soniyani oladi
+  return "Ma'lumot"; // TO'LDIRILGUNCHA KOD BO'SHASHADI
 }
 
-salomBer("Ali", () => console.log("Callback ishga tushdi!"));
+console.log("Boshlandi");
+const natija = maʻlumotOl(); // 5 SONIYA KUTILADI
+console.log("Tugadi");
 \`\`\`
 
----
+**Asinxron (Blokirovka yoʻq):**
+\`\`\`javascript
+function maʻlumotOlAsync(callback) {
+  setTimeout(() => {
+    callback("Ma'lumot"); // 5 soniyadan keyin chaqiriladi
+  }, 5000);
+}
 
-## 2. ASINXRON CALLBACK VA TAYMERLAR
-Taymerlar (\`setTimeout\`, \`setInterval\`) JavaScriptda asinxronlikni ko'rsatuvchi eng sodda misollardir.
+console.log("Boshlandi");
+maʻlumotOlAsync((natija) => {
+  console.log(natija); // "Ma'lumot" (5 s keyin)
+});
+console.log("Tugadi"); // DARHOL chiqadi!
+\`\`\`
+
+#### B. ODDIY CALLBACK
 
 \`\`\`javascript
-console.log("1. Boshlanish");
+// 1. Callback qabul qiluvchi funksiya
+function salomBer(ism, callback) {
+  console.log("Salom " + ism);
+  callback(); // Callback chaqir
+}
 
-setTimeout(() => {
-  console.log("2. Taymer tugadi (2 sekundan keyin)");
-}, 2000);
+// 2. Callback funksiyani berish
+salomBer("Ali", () => {
+  console.log("Callback ishga tushdi!");
+});
 
-console.log("3. Tugash");
+// OUTPUT:
+// Salom Ali
+// Callback ishga tushdi!
 \`\`\`
 
-\`\`\`mermaid
-sequenceDiagram
-    participant JS as Call Stack
-    participant Web as Web API (Timer)
-    participant Q as Task Queue
-    JS->>Web: setTimeout(cb, 2s)
-    Note over JS: Boshqa kodlarni bajaradi
-    Web-->>Q: 2s tugadi! cb ni yuborish
-    Q->>JS: cb ni stackka qo'shish
-    JS->>JS: Callback bajariladi
-\`\`\`
-
----
-
-## 3. CALLBACK HELL (Piramida muammosi)
-Agar asinxron ishlar bir-biriga bog'liq bo'lsa, kod ichma-ich kirib ketadi va o'qish juda qiyin bo'ladi. Bu **Callback Hell** deyiladi.
+#### C. CALLBACK PARAMETRLAR BILAN
 
 \`\`\`javascript
-ma'lumotOl(id, (user) => {
-  postlarniOl(user.id, (posts) => {
-    izohlarniOl(posts[0].id, (comments) => {
-      console.log(comments);
-    });
-  });
+function calculatorAsync(a, b, operation, callback) {
+  setTimeout(() => {
+    let natija;
+    if (operation === "+") natija = a + b;
+    else if (operation === "-") natija = a - b;
+    else if (operation === "*") natija = a * b;
+
+    callback(natija); // Natijani callback ga berish
+  }, 1000);
+}
+
+calculatorAsync(5, 3, "+", (result) => {
+  console.log("Natija: " + result); // "Natija: 8"
 });
 \`\`\`
 
 ---
 
-## 4. INTERVYU SAVOLLARI (Junior & Middle)
+### 4. ASINXRONLIKNING MEXANIZMI (Event Loop)
 
-1. **Callback nima?**
-   *Javob:* Funksiyaga argument sifatida uzatiladigan boshqa bir funksiya.
+#### setTimeout qanday ishlaydi?
+\`\`\`javascript
+console.log("1");
 
-2. **setTimeout(fn, 0) nima qiladi?**
-   *Javob:* Funksiyani darhol emas, balki joriy Call Stack bo'shagandan so'ng (navbatdagi birinchi imkoniyatda) bajaradi.
+setTimeout(() => {
+  console.log("2");
+}, 0); // 0 ms bo'lsa ham, navbat kutadi!
 
-3. **Inversion of Control nima?**
-   *Javob:* Callback ishlatganda biz funksiya ijrosini boshqa bir koda (masalan, kutubxonaga) topshiramiz. Bu ba'zan xavfli bo'lishi mumkin (masalan, callback necha marta chaqirilishini nazorat qilolmaymiz).`,
+console.log("3");
+
+// OUTPUT:
+// 1
+// 3
+// 2 (eng oxirida)
+\`\`\`
+
+#### Vizual:
+\`\`\`
+┌─────────────────────────────────────┐
+│  CALL STACK                         │
+│  (Hozircha qaysi kod ishlayotgani)  │
+└─────────────────────────────────────┘
+           ↓
+┌─────────────────────────────────────┐
+│  WEB API (Browser API)              │
+│  - setTimeout                       │
+│  - fetch                            │
+│  - event listener                   │
+└─────────────────────────────────────┘
+           ↓
+┌─────────────────────────────────────┐
+│  CALLBACK QUEUE (Navbat)            │
+│  setTimeout callback navbatni kutadi│
+└─────────────────────────────────────┘
+           ↓
+┌─────────────────────────────────────┐
+│  EVENT LOOP                         │
+│  "Call Stack bo'shmi? Navbattan     │
+│   qabul qil!"                       │
+└─────────────────────────────────────┘
+\`\`\`
+
+---
+
+### 5. CALLBACK HELL (Piramida Muammosi)
+
+#### Muamma:
+\`\`\`javascript
+// ❌ KOD JUDA MURAKKAB VA O'QISHGA QIYIN
+getUserData(userId, (user) => {
+  console.log("Foydalanuvchi:", user);
+
+  getFollowers(user.id, (followers) => {
+    console.log("Kuzatuvchilar:", followers);
+
+    getFollowersPosts(followers[0].id, (posts) => {
+      console.log("Postlar:", posts);
+
+      getComments(posts[0].id, (comments) => {
+        console.log("Izohlar:", comments);
+        // ⬆️ PYRAMID SHAKLIDA BORIB KETADI!
+      });
+    });
+  });
+});
+\`\`\`
+
+#### Yechim (Callback best practice):
+\`\`\`javascript
+// ✅ HARSONINI NOMI BILAN AJRATISH
+function ishlashBoshi() {
+  getUserData(userId, foydalanuvchiTanimadi);
+}
+
+function foydalanuvchiTanimadi(user) {
+  console.log("Foydalanuvchi:", user);
+  getFollowers(user.id, kuzatuvchilarTanimadi);
+}
+
+function kuzatuvchilarTanimadi(followers) {
+  console.log("Kuzatuvchilar:", followers);
+  getFollowersPosts(followers[0].id, postlarTanimadi);
+}
+
+function postlarTanimadi(posts) {
+  console.log("Postlar:", posts);
+  // Va shu tarzda...
+}
+
+ishlashBoshi();
+\`\`\`
+
+---
+
+### 6. CALLBACK XATOLAR VA EDGE CASES
+
+#### ❌ Xato 1: Callback ikki marta chaqirilish
+\`\`\`javascript
+// XATO ❌ - Callback necha marta chaqirilishini nazorat qilolmaymiz
+function fetch_data(callback) {
+  callback("data1");
+  callback("data2"); // Ikki marta! Xato!
+}
+
+// TO'G'RI ✅
+function fetch_data(callback) {
+  callback("data1");
+  // Keyingi chaqirish yoʻq
+}
+\`\`\`
+
+#### ❌ Xato 2: Callback chaqirilmasligi
+\`\`\`javascript
+// XATO ❌
+function fetch_data(callback) {
+  setTimeout(() => {
+    // callback chaqirilmadi!
+  }, 1000);
+}
+
+fetch_data(() => console.log("Done")); // Hech qachon chiqmaydi!
+
+// TO'G'RI ✅
+function fetch_data(callback) {
+  setTimeout(() => {
+    callback("success");
+  }, 1000);
+}
+\`\`\`
+
+#### ❌ Xato 3: Error handling yo'q
+\`\`\`javascript
+// XATO ❌ - Xatolik bo'lganda nima? Hech kim bilmaydi!
+function fetch_data(callback) {
+  try {
+    const data = JSON.parse(invalidJson);
+    callback(data);
+  } catch (e) {
+    // Xato yashiringan!
+  }
+}
+
+// TO'G'RI ✅ - Error callback
+function fetch_data(callback, errorCallback) {
+  try {
+    const data = JSON.parse(validJson);
+    callback(data);
+  } catch (e) {
+    errorCallback(e); // Xatoni bildir
+  }
+}
+
+fetch_data(
+  (data) => console.log(data),
+  (error) => console.error("Xato:", error)
+);
+\`\`\`
+
+---
+
+### 7. REAL HAYOTDAGI MISOLLAR
+
+#### Misol 1: API dan ma'lumot olish
+\`\`\`javascript
+function getUserFromAPI(userId, callback) {
+  setTimeout(() => {
+    const user = {
+      id: userId,
+      ism: "Ali",
+      email: "ali@example.com"
+    };
+    callback(user);
+  }, 1000);
+}
+
+getUserFromAPI(1, (user) => {
+  console.log("Foydalanuvchi:", user.ism);
+});
+\`\`\`
+
+#### Misol 2: File tashkil etish
+\`\`\`javascript
+function readFileAsync(filename, callback) {
+  setTimeout(() => {
+    const content = "Fayl mazmuni...";
+    callback(null, content); // Node.js uslubi: (error, data)
+  }, 1000);
+}
+
+readFileAsync("file.txt", (error, content) => {
+  if (error) {
+    console.error("Xato:", error);
+  } else {
+    console.log("Mazmun:", content);
+  }
+});
+\`\`\`
+
+---
+
+### 8. 12 TA SAVOL VA JAVOBLAR
+
+<details>
+<summary><b>1. Callback nima?</b></summary>
+Funksiyaga argument sifatida uzatiladigan boshqa bir funksiya, odatda asinxron vazifalar tugagandan so'ng bajarilish uchun.
+</details>
+
+<details>
+<summary><b>2. Sinxron vs asinxron farqi?</b></summary>
+Sinxron: Natija kutilguncha kod to'xtadi. Asinxron: Kod davom etadi, natija kelib bo'lganda callback chaqiriladi.
+</details>
+
+<details>
+<summary><b>3. setTimeout(fn, 0) nima qiladi?</b></summary>
+Funksiyani darhol emas, balki joriy call stack bo'shagandan so'ng (navbatdagi) bajaradi.
+</details>
+
+<details>
+<summary><b>4. Event Loop nima?</b></summary>
+JavaScript mexanizmi: "Call stack bo'shmi? Callback queue'dan qabul qil!" deb navbatdagi callbacklarni ishga tushiradi.
+</details>
+
+<details>
+<summary><b>5. Callback Hell (Pyramid) nima?</b></summary>
+Bir-biriga bog'liq ko'p callback'lar bo'lganda, kod ichma-ich kirib, o'qishga og'ir bo'ladi.
+</details>
+
+<details>
+<summary><b>6. Inversion of Control (IoC) nima?</b></summary>
+Biz funksiya ijrosini boshqa kodga topshiramiz. Callback necha marta chaqirilishini yoki error bo'lishini boshqara olmayebdiiz.
+</details>
+
+<details>
+<summary><b>7. Error handling callback'lar bilan qanday bo'ladi?</b></summary>
+Ikki callback: success va error. Yoki Node.js uslubi: (error, data) bitta callback bilan.
+</details>
+
+<details>
+<summary><b>8. Callback va scope o'rtasidagi bog'lanish?</b></summary>
+Callback o'ziga lexical scope'ni saqlaydi (closure). Tashqaridagi o'zgaruvchilarni ko'ra oladi.
+</details>
+
+<details>
+<summary><b>9. setInterval vs setTimeout farqi?</b></summary>
+\`setTimeout\` — bitta marta. \`setInterval\` — har N ms da qayta-qayta.
+</details>
+
+<details>
+<summary><b>10. fetch() dan keyin .then() ishlatish nima?</b></summary>
+\`fetch\` Promise qaytaradi, callback emas. Shuning uchun callback Hell oldini olish uchun Promise ishlatiladi.
+</details>
+
+<details>
+<summary><b>11. Callback'ni necha marta chaqirmaslik uchun qanday pattern?</b></summary>
+Once pattern: callback faqat bir marta chaqiriladi:
+\`\`\`javascript
+function once(callback) {
+  let called = false;
+  return () => {
+    if (!called) { called = true; callback(); }
+  };
+}
+\`\`\`
+</details>
+
+<details>
+<summary><b>12. Callback ASYNC/AWAIT bilan qanday o'zgaradi?</b></summary>
+Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik ko'rinishida yoziladi.
+</details>`,
   exercises: [
     {
       id: 1,
-      title: "setTimeout mashqi",
-      instruction: "1 soniyadan keyin 'Salom' matnini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "setTimeout(() => console.log('Salom'), 1000);",
-      test: "if (code.includes('setTimeout')) return null; return 'setTimeout ishlatilmadi';"
+      title: "1️⃣ Oddiy Callback (Boshlang'ich)",
+      instruction: "greet() funksiyasi callback qabul qilsin va uni darhol chaqirsin.",
+      startingCode: "function greet(name, callback) {\n  // Kodni shu yerda yozing\n}\n\ngreet('Ali', () => console.log('Callback!'));",
+      hint: "callback();",
+      test: "if (logs.includes('Callback!')) return null; return 'Callback chaqirilmadi!';"
     },
     {
       id: 2,
-      title: "Callback yaratish",
-      instruction: "'process' funksiyasi bitta callback qabul qilsin va uni ichkarida chaqirsin.",
-      startingCode: "function process(cb) {\n  // Bu yerda chaqiring\n}\n\nprocess(() => console.log('Done'));",
-      hint: "cb();",
-      test: "if (logs.includes('Done')) return null; return 'Callback chaqirilmadi';"
+      title: "2️⃣ setTimeout (Boshlang'ich)",
+      instruction: "1 soniyadan keyin 'Salom!' konsolga chiqaring.",
+      startingCode: "// Kodni shu yerda yozing\nconsole.log('Boshlandi');\n// setTimeout...\nconsole.log('Tugadi');",
+      hint: "setTimeout(() => console.log('Salom!'), 1000);",
+      test: "if (logs.includes('Boshlandi') && logs.includes('Tugadi')) return null; return 'setTimeout xato!';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Callback Parametrlar (O'rta)",
+      instruction: "calculator(a, b, operation, callback) yarating. Asinxron hisoblansin (setTimeout).",
+      startingCode: "function calculator(a, b, operation, callback) {\n  // Kodni shu yerda yozing\n}\n\ncalculator(5, 3, '+', (result) => console.log('Natija:', result));",
+      hint: "setTimeout(() => { let result = a + b; callback(result); }, 500);",
+      test: "if (logs.some(l => l.includes('Natija: 8'))) return null; return 'Calculator xato!';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Error Callback (O'rta)",
+      instruction: "getData(success_cb, error_cb) yarating. Xatolik bo'lganda error_cb chaqirsin.",
+      startingCode: "function getData(successCb, errorCb) {\n  const error = false; // Xatolik bo'lsa true\n  // Kodni shu yerda yozing\n}\n\ngetData(\n  (data) => console.log('Success:', data),\n  (err) => console.log('Error:', err)\n);",
+      hint: "if (error) errorCb('Xato!'); else successCb('Data');",
+      test: "if (logs.some(l => l.includes('Success'))) return null; return 'Success callback xato!';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ setInterval (O'rta)",
+      instruction: "Har 500ms da raqam chiqaradigan contador yarating. 3 marta chiqargandan so'ng to'xtasing.",
+      startingCode: "// Kodni shu yerda yozing\nlet counter = 0;\nconst interval = setInterval(() => {\n  counter++;\n  console.log(counter);\n  // To'xtash shartini yozing\n}, 500);",
+      hint: "if (counter >= 3) clearInterval(interval);",
+      test: "if (logs.includes(1) && logs.includes(2) && logs.includes(3)) return null; return 'Contador xato!';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Multiple Callbacks (O'rta)",
+      instruction: "processUser(id, onSuccess, onError) yarating. ID 0 bo'lsa error, bo'lmasa success.",
+      startingCode: "function processUser(id, onSuccess, onError) {\n  setTimeout(() => {\n    // Kodni shu yerda yozing\n  }, 500);\n}\n\nprocessUser(1, \n  (user) => console.log('OK:', user),\n  (err) => console.log('ERROR:', err)\n);",
+      hint: "if (id === 0) onError('ID invalidi'); else onSuccess('User' + id);",
+      test: "if (logs.some(l => l.includes('OK'))) return null; return 'Xato!';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Chain Callbacks (O'rta)",
+      instruction: "Ikki callbackni ketma-ketlik qiling: avval login, keyin getData.",
+      startingCode: "function login(username, callback) {\n  setTimeout(() => callback('Token: ABC'), 500);\n}\n\nfunction getData(token, callback) {\n  setTimeout(() => callback('Data...'), 500);\n}\n\n// Kodni shu yerda yozing\nlogin('ali', (token) => {\n  // getData chaqiring\n});",
+      hint: "getData(token, (data) => console.log(data));",
+      test: "if (logs.includes('Data...')) return null; return 'Chain callback xato!';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Callback Hell Example (O'rta)",
+      instruction: "Callback Hell'ni ko'rish uchun 3-qavat callback yozing (emas, but see pattern).",
+      startingCode: "function step1(cb) { setTimeout(() => { console.log('Step 1'); cb(); }, 300); }\nfunction step2(cb) { setTimeout(() => { console.log('Step 2'); cb(); }, 300); }\nfunction step3(cb) { setTimeout(() => { console.log('Step 3'); cb(); }, 300); }\n\n// Kodni shu yerda yozing\nstep1(() => { /* ... */ });",
+      hint: "step1(() => step2(() => step3(() => console.log('Done!'))));",
+      test: "if (logs.includes('Step 1') && logs.includes('Step 2') && logs.includes('Step 3')) return null; return 'Callback hell xato!';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ setTimeout with Variables (Qiyin)",
+      instruction: "Loop bilan 5 marta 'hello' konsolga chiqarish, har 200ms oraliq bilan.",
+      startingCode: "// Kodni shu yerda yozing\nfor (let i = 0; i < 5; i++) {\n  // setTimeout yozing\n}",
+      hint: "setTimeout(() => console.log('hello'), i * 200);",
+      test: "if (logs.filter(l => l === 'hello').length >= 5) return null; return 'Loop timeout xato!';"
+    },
+    {
+      id: 10,
+      title: "🔟 Promise tayyorligiga o'tish (Qiyin)",
+      instruction: "Promise qabul qiluvchi funksiya yarating va Promise qaytaring.",
+      startingCode: "function getData() {\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      // Kodni shu yerda yozing\n    }, 500);\n  });\n}\n\ngetData().then(data => console.log(data));",
+      hint: "resolve('Data alindi');",
+      test: "if (logs.includes('Data alindi')) return null; return 'Promise xato!';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Event Listener with Callback (Qiyin)",
+      instruction: "Button'ga click listener qo'ying, click bo'lganda callback chaqiring.",
+      startingCode: "const button = document.createElement('button');\nbutton.textContent = 'Click me';\n// Kodni shu yerda yozing\nbutton.addEventListener('click', () => {\n  console.log('Clicked!');\n});",
+      hint: "// Ba'zi muhit'larda DOM qo'shimchasi yo'q bo'lishi mumkin, shuni yodda tuting",
+      test: "if (code.includes('addEventListener')) return null; return 'Event listener xato!';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Combine: Loop + setTimeout + Callback (Eng Qiyin)",
+      instruction: "1-5 raqamlari har 300ms oraliq bilan konsolga chiqarting (callback yordamida).",
+      startingCode: "// Kodni shu yerda yozing\nfunction printNumbers(callback) {\n  for (let i = 1; i <= 5; i++) {\n    // setTimeout + callback\n  }\n}\n\nprintNumbers(() => console.log('Done!'));",
+      hint: "setTimeout(() => { console.log(i); callback(); }, i * 300);",
+      test: "if (logs.includes(1) && logs.includes(5) && logs.includes('Done!')) return null; return 'Combine xato!';"
     }
   ]
 };

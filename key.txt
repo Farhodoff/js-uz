@@ -3,6 +3,7 @@
 # ================================================
 
 # 1. Qoida (Rules)
+#  - har doim o‘zbek tilida javob ber
 #  - Har doim commit va push ishlari "Farhodoff" nomidan bajarilsin.
 #  - Har bir yangilanish (update) kiritilgandan so‘ng darhol commit va push qilinsin.
 #  - Barcha izohlar va yozuvlar o‘zbek tilida bo‘lsin.
@@ -12,6 +13,7 @@
 # git config user.email "fsoyilovv@gmail.com"
 
 # 3. Pedagogik ish tartibi (O'qitish qoidalari)
+#  - DESIGN : loyiha design o'zgartirma umuman.
 #  - NEGA: Har bir mavzuni "Bu nima va nima uchun kerak?" degan savolga javob bilan boshlang.
 #  - SODDALIK: Analogiyalar (hayotiy misollar) va qisqa gaplar ishlashing.
 #  - STRUKTURA: Tushuntir -> Ko'rsat -> Bajartir (Mashq ber).
