@@ -9,6 +9,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'maskable-icon.png'],
+      workbox: {
+        maximumFileSizeToCacheInBytes: 4000000,
+      },
       manifest: {
         name: 'JS Academy Mastery',
         short_name: 'JSAcademy',

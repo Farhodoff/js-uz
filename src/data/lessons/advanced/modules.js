@@ -228,7 +228,7 @@ export const unused = () => console.log("Unused");
 import { used } from './utils.js';
 used();
 
-// Bundle'da faqat `used` qo'shiladi, `unused` olib tashlanadi!
+// Bundle'da faqat used qo'shiladi, unused olib tashlanadi!
 // (Agar faqat named export bo'lsa)
 \`\`\`
 
