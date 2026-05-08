@@ -26,9 +26,9 @@ Bu - **Encapsulation** (ma'lumotlarni yashirish) deyiladi.
 ## 2. SODDALIK (Analogiya)
 
 Buni "xazinachining ruxsati" deb tasavvur qiling:
-- **Xazina** (closure ichidagi o'zgaruvchi) `lock` orqali saqlanadi
+- **Xazina** (closure ichidagi o'zgaruvchi) lock orqali saqlanadi
 - **Xazinachi** (qaytarilgan funksiya) faqat o'zi xohlagan tarzda pul olib/qo'yishi mumkin
-- Boshqa kim bo'lmasin, `lock` bo'lmasdan pulga qo'l urusha olmaydi
+- Boshqa kim bo'lmasin, lock bo'lmasdan pulga qo'l urusha olmaydi
 
 ## 3. STRUKTURA
 
@@ -158,7 +158,7 @@ for (var i = 0; i < 3; i++) {
 }
 \`\`\`
 
-**Sabab:** `var` function scope ga ega, `let` block scope ga ega. Har `let` iteratsiyasida yangi scope yarataadi.
+**Sabab:** var function scope ga ega, let block scope ga ega. Har let iteratsiyasida yangi scope yarataadi.
 
 ### F. Closure bilan Caching (Kesh)
 
