@@ -1,13 +1,22 @@
 export const securityLesson = {
   id: "a21",
-  title: "Security 101: XSS va Xavfsiz Kodlash",
-  theory: `## 1. KIRISH
-Dasturchi sifatida bizning vazifamiz nafaqat ishlaydigan kod yozish, balki foydalanuvchi ma'lumotlarini himoya qilishdir. JavaScript moslashuvchan bo'lgani uchun unda xavfsizlik bo'yicha juda ko'p "teshiklar" mavjud.
+  title: "Security: XSS, CSRF, SQL Injection, Authentication",
+  theory: `## 1. NEGA kerak?
 
-## 2. XSS (Cross-Site Scripting)
-Bu JavaScriptdagi eng ko'p uchraydigan hujum turi. Haker sizning saytingizga o'zining "yovuz" scriptini tiqib yuboradi.
+**Real Muammolar:**
+- Foydalanuvchi input'ini <script> qo'yib, haker kodi ishlaydi (XSS)
+- Sayt orqali foydalanuvchining ma'lumotini olib ketish (CSRF)
+- Database'ni buzish (SQL Injection)
 
-### innerHTML xavfi ⭐
+## 2. SODDALIK
+
+**Qal'a himoyasi:** Hech kim ichkariga kirmaslik uchun qal'aning barcha darvozasida guard bo'ladi.
+
+## 3. XAVFSIZLIK TURLARI
+
+### A. XSS (Cross-Site Scripting) - Inject qilingan Javascript
+
+**innerHTML xavfi:**
 Hech qachon foydalanuvchi kiritgan ma'lumotni \`innerHTML\` orqali chiqarmang!
 \`\`\`javascript
 // XAVFLI KOD ❌
