@@ -13,6 +13,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  if (!req.body) {
+    return res.status(400).json({ error: "Savol bo'sh bo'lishi mumkin emas" });
+  }
+
   const { question, lesson } = req.body;
 
   if (!question || !question.trim()) {

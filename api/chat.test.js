@@ -69,6 +69,15 @@ describe('chat.js API handler', () => {
   });
 
   describe('Question validation', () => {
+    it('req.body undefined bo\'lsa 400 qaytarishi kerak', async () => {
+      mockReq.body = undefined;
+      
+      await handler(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ error: "Savol bo'sh bo'lishi mumkin emas" });
+    });
+
     it("Bo'sh savol uchun 400 qaytarishi kerak", async () => {
       mockReq.body.question = '';
       
