@@ -25,7 +25,7 @@ Tasavvur qiling, serverdan ma'lumot olmoqchisiz. Bu vaqt talab qiladi. Agar biz 
 3. **Rejected** - rad etilgan (error).
 
 ### B. Promise Chaining
-`.then()` orqali natijani olish, `.catch()` orqali xatoni ushlash.
+\`.then()\` orqali natijani olish, \`.catch()\` orqali xatoni ushlash.
 
 ### C. Static Metodlar
 \`Promise.all()\`, \`Promise.race()\`, \`Promise.allSettled()\`.
