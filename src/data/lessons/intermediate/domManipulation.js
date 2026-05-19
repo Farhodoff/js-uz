@@ -472,5 +472,67 @@ parentElement — ota element, children — bolalar, nextElementSibling — keyi
       hint: "function addTodo(todoText) { const li = document.createElement('li'); li.textContent = todoText; ul.appendChild(li); }",
       test: "if (code.includes('createElement') && code.includes('appendChild') && code.includes('addTodo')) return null; return 'Kompleks to-do sistemani to\\'g\\'ri yarating';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`document.createElement('div')` metodi chaqirilganda brauzerda nima sodir bo'ladi?",
+      options: [
+        "Yangi `div` elementi yaratiladi va u avtomatik ravishda sahifaning oxiriga qo'shiladi",
+        "Faqat tezkor xotirada (memory) yangi element obyekti yaratiladi, lekin u DOM daraxtiga qo'shilmaguncha sahifada ko'rinmaydi",
+        "Mavjud barcha `div` elementlari o'chirib yuboriladi",
+        "Brauzer konsolida faqat matnli xabar chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "`createElement` metodi elementni faqat xotirada yaratadi. U sahifada ko'rinishi uchun albatta `appendChild()`, `prepend()`, `before()`, yoki `after()` kabi metodlar yordamida DOM daraxtiga ulanishi kerak."
+    },
+    {
+      id: 2,
+      question: "Elementni ota elementning eng boshiga (birinchi farzand sifatida) qo'shish uchun qaysi metoddan foydalaniladi?",
+      options: [
+        "`parent.appendChild(child)`",
+        "`parent.prepend(child)`",
+        "`parent.insertAtFirst(child)`",
+        "`parent.before(child)`"
+      ],
+      correctAnswer: 1,
+      explanation: "`parent.prepend(child)` metodi elementni ko'rsatilgan ota elementning eng boshiga qo'shadi. `appendChild` esa eng oxiriga qo'shadi."
+    },
+    {
+      id: 3,
+      question: "`textContent` va `innerHTML` xususiyatlari (properties) o'rtasidagi asosiy farq nima?",
+      options: [
+        "Hech qanday farqi yo'q, ikkalasi ham bir xil natija beradi",
+        "`textContent` matn ichidagi har qanday HTML teglarni oddiy matn sifatida xavfsiz yozadi; `innerHTML` esa berilgan matnni HTML kodi sifatida parse qilib, element ko'rinishida render qiladi (bu XSS xavfini keltirib chiqarishi mumkin)",
+        "`innerHTML` faqat sonlarni, `textContent` esa faqat harflarni qabul qiladi",
+        "`textContent` uslub stillarini (styles) ham o'zgartiradi, `innerHTML` esa yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "`textContent` matnni xavfsiz saqlaydi va HTML teglarni oddiy matn ko'rinishida ekranga chiqaradi. `innerHTML` esa berilgan stringni HTML sifatida o'qiydi (XSS hujumlariga qarshi zaiflik tug'dirishi mumkin)."
+    },
+    {
+      id: 4,
+      question: "DOM elementini sahifadan butunlay o'chirish uchun qaysi usul eng sodda va zamonaviy (ES6+) hisoblanadi?",
+      options: [
+        "`element.delete()`",
+        "`element.remove()`",
+        "`document.removeChild(element)`",
+        "`element.clear()`"
+      ],
+      correctAnswer: 1,
+      explanation: "Modern JavaScript-da elementning o'zida `.remove()` metodini chaqirish orqali uni sahifadan juda oson va to'g'ridan-to'g'ri o'chirib tashlash mumkin."
+    },
+    {
+      id: 5,
+      question: "Katta miqdordagi elementlarni (masalan, 1000 ta qator) DOM-ga qo'shishda brauzer reflow va repaint (ekranda qayta chizish) yuklamasini kamaytirish hamda ishlash unumdorligini (performance) oshirish uchun nima ishlatiladi?",
+      options: [
+        "`innerHTML += ...` loop ichida ishlatiladi",
+        "`DocumentFragment` (hujjat parchasi) yaratib, barcha elementlarni unga yig'ib, so'ngra bir marta DOM-ga qo'shish",
+        "Har bir elementni alohida `document.body.appendChild()` qilish",
+        "`setTimeout` yordamida har bir elementni 1 millisekund kechiktirib qo'shish"
+      ],
+      correctAnswer: 1,
+      explanation: "`DocumentFragment` - bu virtual DOM bo'lagi bo'lib, xotirada yaratiladi. Unga bir nechta elementlarni qo'shib, keyin bitta operatsiya orqali DOM-ga ulaganda sahifani qayta chizish (repaint) soni kamayadi va tezlik sezilarli darajada oshadi."
+    }
   ]
 };

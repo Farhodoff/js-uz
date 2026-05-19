@@ -83,5 +83,67 @@ el.classList.add("active"); // Class qo'shish
       hint: "el.classList.add('highlight');",
       test: "if (el.className === 'highlight') return null; return 'Class qo\\'shilmadi';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "DOM (Document Object Model) deganda nimani tushunasiz?",
+      options: [
+        "HTML fayllarini serverda saqlash texnologiyasi",
+        "Brauzer tomonidan yaratiladigan, HTML hujjatini daraxtsimon tuzilishda ifodalovchi va JavaScript orqali elementlarni boshqarishga imkon beruvchi obyektlar modeli",
+        "Ma'lumotlar bazasini boshqarish tizimi",
+        "CSS stillarini avtomatik optimallashtirish vositasi"
+      ],
+      correctAnswer: 1,
+      explanation: "DOM - bu brauzer tomonidan HTML hujjatini o'qish paytida tuziladigan va sahifadagi har bir elementni o'zgartirish, o'chirish yoki yangi elementlar qo'shish imkonini beruvchi interfeys/obyektlar daraxtidir."
+    },
+    {
+      id: 2,
+      question: "`document.querySelector` va `document.querySelectorAll` metodlari o'rtasidagi asosiy farq nima?",
+      options: [
+        "`querySelector` faqat rasmlarni, `querySelectorAll` esa barcha teglarni tanlaydi",
+        "`querySelector` CSS selektoriga mos keluvchi faqat birinchi elementni, `querySelectorAll` esa mos keluvchi barcha elementlarni NodeList to'plami ko'rinishida qaytaradi",
+        "`querySelectorAll` tezroq ishlaydi",
+        "Hech qanday farqi yo'q, ikkalasi ham bir xil natija beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "`querySelector` faqat bitta (birinchi mos kelgan) element obyektini, `querySelectorAll` esa barcha mos kelgan elementlarni o'z ichiga olgan NodeList ro'yxatini qaytaradi."
+    },
+    {
+      id: 3,
+      question: "JavaScript yordamida elementning CSS klassini qo'shish yoki o'chirish uchun qaysi metodlar eng to'g'ri va xavfsiz hisoblanadi?",
+      options: [
+        "`element.style.class = 'nom'`",
+        "`element.classList.add('nom')` va `element.classList.remove('nom')`",
+        "`element.setAttribute('class', 'nom')`",
+        "`element.className = 'nom'` (oldingi klasslarni o'chirib yuboradi)"
+      ],
+      correctAnswer: 1,
+      explanation: "`classList` obyekti ichidagi `add`, `remove`, `toggle` metodlari elementning boshqa klasslariga zarar yetkazmagan holda klasslarni xavfsiz boshqarish imkonini beradi."
+    },
+    {
+      id: 4,
+      question: "NodeList va HTMLCollection o'rtasidagi farq haqida qaysi tasdiq to'g'ri?",
+      options: [
+        "Ikkalasi ham oddiy JavaScript massivi (Array) bo'lib, barcha massiv metodlarini to'liq qo'llab-quvvatlaydi",
+        "HTMLCollection faqat element tugunlarini (Element nodes) o'z ichiga oladi va jonli (live) bo'ladi; NodeList esa har qanday tugun turlarini (text, comment) o'z ichiga olishi mumkin va odatda statik (non-live) bo'ladi",
+        "NodeList faqat Internet Explorer brauzerida ishlaydi",
+        "HTMLCollection faqat rasmlar uchun ishlatiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "HTMLCollection har doim jonli (live) bo'lib, DOM o'zgarganda avtomat yangilanadi. NodeList (masalan, querySelectorAll qaytargan ro'yxat) odatda statik (non-live) bo'ladi."
+    },
+    {
+      id: 5,
+      question: "JavaScript-da DOM elementining inline stillarini o'zgartirishda CSS xususiyati nomlari qanday yoziladi (masalan: background-color)?",
+      options: [
+        "`element.style['background-color']` yoki `element.style.backgroundColor` (camelCase formatida)",
+        "Faqat `element.style.background-color` ko'rinishida",
+        "Faqat katta harflarda: `element.style.BACKGROUND_COLOR`",
+        "CSS stillarini JavaScript'da inline o'zgartirib bo'lmaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "JavaScript style obyektida chiziqcha bilan yoziladigan CSS xususiyatlari camelCase formatida yoziladi (backgroundColor, fontSize), yoki qavslar ichida string sifatida `style['background-color']` ko'rinishida yozilishi mumkin."
+    }
   ]
 };

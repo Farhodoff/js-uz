@@ -84,5 +84,67 @@ btn.addEventListener("click", (e) => {
       hint: "img.addEventListener('dblclick', () => console.log('Rasm'));",
       test: "if (typeof img.ondblclick === 'function') { img.ondblclick(); if (logs.includes('Rasm')) return null; } return 'Double click ishlamadi';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`addEventListener('click', myFunc)` chaqirishda `myFunc` funksiyasi oxiriga nima uchun qavslar `()` qo'yilmaydi?",
+      options: [
+        "Chunki qavslar qo'yilsa, funksiya tugma bosilganda emas, balki kod o'qilgan vaqtda darhol ishga tushib ketadi",
+        "Chunki JavaScript sintaksisida funksiyalar hech qachon qavslar bilan chaqirilmaydi",
+        "Bu CSS selektori bilan to'qnashuvni oldini olish uchun kerak",
+        "Qavslar qo'yilganda kod tezroq ishlaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "Agar funksiya oxiriga qavs `()` qo'ysangiz, JavaScript uni o'sha satr o'qilishi bilanoq darhol chaqiradi. Biz esa tugma bosilganda uning callback sifatida (keyinroq) chaqirilishini istaymiz. Shuning uchun faqat funksiyaning nomi (havolasi) uzatiladi."
+    },
+    {
+      id: 2,
+      question: "Hodisa (Event) sodir bo'lganda, foydalanuvchining ayni vaqtda aynan qaysi element ustida klik qilganini aniqlash uchun event obyektining qaysi xususiyatidan foydalaniladi?",
+      options: [
+        "`event.name`",
+        "`event.target`",
+        "`event.type`",
+        "`event.element`"
+      ],
+      correctAnswer: 1,
+      explanation: "`event.target` xususiyati ayni vaqtda foydalanuvchi ta'sir qilgan (masalan, bosgan) haqiqiy DOM elementiga ishora qiladi."
+    },
+    {
+      id: 3,
+      question: "Brauzerning standart harakatlarini (masalan, formadagi submit tugmasi bosilganda sahifani qayta yuklash yoki a-link bosilganda yangi URL-ga o'tish) bekor qilish uchun qaysi metod ishlatiladi?",
+      options: [
+        "`event.stopPropagation()`",
+        "`event.preventDefault()`",
+        "`event.stopImmediatePropagation()`",
+        "`event.cancelBubbling()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`event.preventDefault()` metodi brauzerning har bir hodisa uchun sukut bo'yicha belgilangan standart harakatini to'xtatadi."
+    },
+    {
+      id: 4,
+      question: "JavaScript-da Event Bubbling (hodisaning ko'pirib ko'tarilishi) deganda nimani tushunasiz?",
+      options: [
+        "Hodisa faqat eng tepa ota elementda boshlanib, pastki ichki bolalarga qarab tarqalishi",
+        "Hodisaning eng ichki (eng chuqur joylashgan) elementda ishga tushib, so'ngra uning barcha ota elementlari (ancestors) bo'ylab yuqoriga qarab bosqichma-bosqich tarqalishi",
+        "Xotirada eventlarning haddan tashqari to'lib ketishi va xatolik berishi",
+        "Hodisaning bir vaqtda barcha ochiq sahifalarda tarqalishi"
+      ],
+      correctAnswer: 1,
+      explanation: "Event Bubbling - hodisalarning eng quyidagi elementdan boshlanib, asta-sekin DOM daraxti bo'ylab eng yuqorigacha (`window`gacha) ota elementlar orqali ko'tarilish jarayonidir."
+    },
+    {
+      id: 5,
+      question: "Hodisaning ota elementlarga qarab yuqoriga tarqalishini (bubbling) to'xtatish uchun qaysi metod ishlatiladi?",
+      options: [
+        "`event.preventDefault()`",
+        "`event.stopPropagation()`",
+        "`event.cancel()`",
+        "`event.freeze()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`event.stopPropagation()` metodi joriy hodisaning ota elementlarga o'tib bubbling bo'lishini (yuqoriga qarab tarqalishini) butunlay to'xtatib qo'yadi."
+    }
   ]
 };

@@ -88,5 +88,67 @@ clearInterval(id); // Takrorlanishni to'xtatadi
       hint: "setTimeout(() => console.log('Tugadi'), 3000);",
       test: "if (code.includes('setTimeout') && code.includes('3000')) return null; return '3000ms kutish kerak';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`setTimeout` va `setInterval` funksiyalari o'rtasidagi asosiy farq nimada?",
+      options: [
+        "`setTimeout` kodni ma'lum vaqtdan keyin faqat bir marta ishga tushiradi, `setInterval` esa ko'rsatilgan vaqt oralig'ida to'xtovsiz takrorlab turadi",
+        "`setInterval` faqat soniyalar bilan, `setTimeout` esa millisekundlar bilan ishlaydi",
+        "`setTimeout` asinxron, `setInterval` esa sinxron ishlaydi",
+        "Hech qanday farqi yo'q"
+      ],
+      correctAnswer: 0,
+      explanation: "`setTimeout` taymeri o'rnatilgan vaqt o'tgandan keyin berilgan callback funksiyasini faqat 1 marta bajaradi. `setInterval` esa har safar belgilangan vaqt oralig'i (delay) o'tganda funksiyani takroran chaqiraveradi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kod e'lon qilingandan so'ng, konsolga xabarlar qaysi tartibda chiqadi?\n```javascript\nconsole.log('A');\nsetTimeout(() => console.log('B'), 0);\nconsole.log('C');\n```",
+      options: [
+        "A, B, C",
+        "A, C, B",
+        "B, A, C",
+        "C, A, B"
+      ],
+      correctAnswer: 1,
+      explanation: "Garchi `setTimeout` kechikishi `0` millisekund etib belgilangan bo'lsa ham, u asinxron vazifa (Macrotask) bo'lgani sababli Macrotask navbatiga (Callback Queue) joylashtiriladi va faqat barcha sinxron kodlar (Call Stack) to'liq bajarilib bo'lingandan keyingina ishlaydi. Shuning uchun tartib: A -> C -> B bo'ladi."
+    },
+    {
+      id: 3,
+      question: "Ishga tushirilgan `setInterval` taymerini butunlay to'xtatish uchun qaysi metoddan foydalaniladi?",
+      options: [
+        "`stopInterval()`",
+        "`clearInterval()`",
+        "`clearTimeout()`",
+        "`deleteInterval()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`setInterval` chaqirilganda qaytariladigan maxsus ID raqamni `clearInterval(timerID)` metodiga uzatish orqali takroriy taymer to'xtatiladi."
+    },
+    {
+      id: 4,
+      question: "JavaScript-da timer funksiyalariga (masalan, `setTimeout`) beriladigan vaqt birligi nima?",
+      options: [
+        "Soniya (Seconds)",
+        "Millisekund (Milliseconds) — ya'ni 1 soniya 1000 millisekundga teng",
+        "Mikrosekund (Microseconds)",
+        "Daqiqa (Minutes)"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript taymerlarida vaqt o'lchovi millisekundlarda beriladi. Masalan, 5 soniyani ko'rsatish uchun 5000 qiymati yoziladi."
+    },
+    {
+      id: 5,
+      question: "Agar biz har safar oldingi tsikl to'liq bajarilib bo'lganidan keyingina yangi kutish vaqtini aniq hisoblab boshlamoqchi bo'lsak (ya'ni, takroriy amallar bir-birini bosib ketmasligi uchun), qaysi yondashuv tavsiya etiladi?",
+      options: [
+        "Juda katta kechikish vaqti bilan `setInterval` ishlatish",
+        "Rekursiv `setTimeout` (ya'ni funksiya bajarilib bo'lgach, o'z ichida yangi `setTimeout` chaqirishi)",
+        "`while` siklidan foydalanish",
+        "Hech qanday taymersiz to'g'ridan-to'g'ri chaqirish"
+      ],
+      correctAnswer: 1,
+      explanation: "Rekursiv `setTimeout` yordamida funksiya ichida navbatdagi setTimeout e'lon qilinadi. Bu usul oldingi kodning ishlash muddati qancha cho'zilishidan qat'i nazar, navbatdagi chaqiruvgacha bo'lgan oraliq aniq bo'lishini kafolatlaydi, `setInterval`da esa asinxron amallar kechiksa interval bir-birini bosib ketishi mumkin."
+    }
   ]
 };

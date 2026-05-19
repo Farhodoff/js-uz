@@ -92,5 +92,67 @@ if (ismInput.value === "") {
       hint: "if (pass.value.length < 8) console.log('Kisqa');",
       test: "if (logs.includes('Kisqa')) return null; return 'Uzunlikni tekshiring';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Veb-sahifalardagi formalarni (forms) yuborishda (submit event) `event.preventDefault()` chaqirish nima uchun muhim hisoblanadi?",
+      options: [
+        "Chunki u ma'lumotlarni serverga avtomatik yuboradi",
+        "Chunki u formani tozalab yuboradi (reset)",
+        "Chunki aks holda brauzer sahifani to'liq qayta yuklaydi, natijada barcha JavaScript holati (state) va konsoldagi ma'lumotlar o'chib ketadi",
+        "Bu CSS stillarining buzilmasligi uchun kerak"
+      ],
+      correctAnswer: 2,
+      explanation: "Standart bo'yicha HTML formalari yuborilganda sahifani yangilaydi (action atributidagi URL'ga o'tishga urinadi). Biz asinxron (AJAX) ma'lumot jo'natishimiz uchun `preventDefault()` orqali bu standart amaldan voz kechishimiz zarur."
+    },
+    {
+      id: 2,
+      question: "Oddiy input elementidan olingan qiymat (`input.value`) har doim qaysi ma'lumot turida (data type) bo'ladi?",
+      options: [
+        "Faqat `number` turida",
+        "Faqat `boolean` turida",
+        "Doimo `string` (matn) turida (hatto input turi `type=\"number\"` bo'lsa ham)",
+        "Faqat `object` turida"
+      ],
+      correctAnswer: 2,
+      explanation: "Input maydonidan olingan barcha qiymatlar, hatto raqamli yoki sanali bo'lsa ham, har doim string turida bo'ladi. Ulardan matematik amallarda foydalanishdan avval `Number()` yoki `parseInt()` yordamida o'zgartirib olish lozim."
+    },
+    {
+      id: 3,
+      question: "Checkbox yoki Radio button elementlarining foydalanuvchi tomonidan tanlangan yoki tanlanmaganligini JavaScript-da qanday aniqlash mumkin?",
+      options: [
+        "`element.value` xususiyati orqali",
+        "`element.checked` boolean xususiyati orqali",
+        "`element.selected` xususiyati orqali",
+        "`element.status` xususiyati orqali"
+      ],
+      correctAnswer: 1,
+      explanation: "Checkbox va Radio button elementlari uchun ularning tanlanganlik holati `checked` nomli xususiyatida true yoki false boolean qiymat sifatida saqlanadi."
+    },
+    {
+      id: 4,
+      question: "HTML formadagi barcha input va tanlov qiymatlarini bitta joyda oson to'plab, serverga yuborishga tayyorlash uchun mo'ljallangan maxsus brauzer klassi (API) qaysi?",
+      options: [
+        "`FormCollector`",
+        "`FormData`",
+        "`FormParser`",
+        "`FormSerializer`"
+      ],
+      correctAnswer: 1,
+      explanation: "`FormData` obyekti (masalan: `new FormData(formElement)`) formadagi barcha elementlarning `name` va `value` qiymatlarini avtomatik to'plab beradi va uni fetch so'rovlarida to'g'ridan-to'g'ri jo'natish mumkin."
+    },
+    {
+      id: 5,
+      question: "Input elementlaridagi `input` va `change` hodisalari (events) o'rtasidagi asosiy farq nimada?",
+      options: [
+        "Hech qanday farqi yo'q",
+        "`input` hodisasi foydalanuvchi har bir harfni kiritganda real-vaqtda ishlaydi; `change` esa faqat foydalanuvchi inputdan chiqqanda (focus yo'qolganda) va qiymat o'zgarganda ishga tushadi",
+        "`change` hodisasi faqat server bilan ishlaydi",
+        "`input` hodisasi faqat rasmlar uchun ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`input` event har bir klavish bosilganda (qiymat har safar o'zgarganda) darhol ishga tushadi. `change` event esa foydalanuvchi qiymatni o'zgartirib, input elementini tark etganidan keyingina ishlaydi."
+    }
   ]
 };
