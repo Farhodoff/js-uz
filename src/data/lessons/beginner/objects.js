@@ -426,4 +426,4 @@ Arrow funksiyada this uringan joyning context'ini oladi, fo'nktsiyadagi this'i e
       explanation: "Spread operatori (`...`) ES6 da kiritilgan qulay vosita bo'lib, u obyektlarning barcha xususiyatlarini yangi obyekt blokining ichiga yoyib (nusxalab) beradi."
     }
   ]
-};", file_path:
+};

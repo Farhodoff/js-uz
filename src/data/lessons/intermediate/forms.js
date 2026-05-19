@@ -202,4 +202,4 @@ DOM orqali alohida biror div ga matn yozish.
       explanation: "`input` event har bir klavish bosilganda (qiymat har safar o'zgarganda) darhol ishga tushadi. `change` event esa foydalanuvchi qiymatni o'zgartirib, input elementini tark etganidan keyingina ishlaydi."
     }
   ]
-};", file_path:
+};

@@ -491,4 +491,4 @@ Ha, mutlaqo. Masalan callback pattern'lari, higher-order functions, va boshqalar
       explanation: "Arrow funksiyalar qisqaroq yozilishidan tashqari, o'zining shaxsiy `this` bog'lanishiga ega bo'lmaydi, balki tashqi (o'rab turgan) scope'dagi `this` ni o'zlashtiradi."
     }
   ]
-};", file_path:
+};

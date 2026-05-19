@@ -263,4 +263,4 @@ Obyekt ichida dinamik metodlar (masalan \`obj.sayHi()\`) yaratishda \`this\` obj
       explanation: "Arrow funksiyalar ifoda (Expression) sifatida e'lon qilinadi (odatda `const` yoki `let` bilan). Shuning uchun o'zgaruvchilar kabi ular ham hoisted bo'lmaydi va e'lon qilinishidan oldin ishlatib bo'lmaydi."
     }
   ]
-};", file_path:
+};

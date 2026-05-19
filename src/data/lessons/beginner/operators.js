@@ -139,4 +139,4 @@ console.log(sotibOladi); // true
       explanation: "\`!true\` bizga \`false\` ni beradi. \`false && (istalgan narsa)\` ifodasining natijasi doimo \`false\` bo'ladi, chunki VA operatorida bitta false butun zanjirni false qiladi."
     }
   ]
-};", file_path:
+};

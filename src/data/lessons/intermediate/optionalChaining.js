@@ -152,4 +152,4 @@ console.log("Font Size:", fontSize); // → 16
       explanation: "`data` o'zgaruvchisi `null` bo'lganligi sababli, `data?.user?.name` zanjiri xavfsiz tarzda to'xtab `undefined` qaytaradi. So'ngra `undefined ?? 'Guest'` ifodasi ishga tushib, natijada `'Guest'` qaytadi."
     }
   ]
-};", file_path:
+};

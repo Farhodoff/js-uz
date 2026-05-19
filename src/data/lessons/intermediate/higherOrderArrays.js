@@ -529,4 +529,4 @@ console.log(unique); // [1, 2, 3]
       explanation: "\`some()\` kamida bitta element shartni bajarsa \`true\` qaytaradi. \`every()\` esa faqat barcha elementlar shartni bajargandagina \`true\` beradi."
     }
   ]
-};", file_path:
+};

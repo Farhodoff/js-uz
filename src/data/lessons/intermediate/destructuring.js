@@ -448,4 +448,4 @@ Ha, massivda tartib (index) muhim. Tartibga ko'ra o'zgaruvchilarga chiqariladi.
       explanation: "\`...rest\` operatori birinchi elementdan tashqari barcha qolgan elementlarni o'z ichiga olgan yangi massiv (\`[2, 3]\`) yaratadi."
     }
   ]
-};", file_path:
+};

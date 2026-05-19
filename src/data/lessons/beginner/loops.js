@@ -194,4 +194,4 @@ Siklni darhol to'xtatib, undan chiqib ketadi.
       explanation: "Sikl to'xtashi uchun undagi shart qachondir false bo'lishi kerak. \`i\` o'zgarmasdan 0 ligicha qolganligi sababli \`i < 5\` (0 < 5) har doim \`true\` bo'lib sikl to'xtamaydi."
     }
   ]
-};", file_path:
+};

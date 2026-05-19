@@ -28,7 +28,7 @@ Tasavvur qiling, serverdan ma'lumot olmoqchisiz. Bu vaqt talab qiladi. Agar biz 
 `.then()` orqali natijani olish, `.catch()` orqali xatoni ushlash.
 
 ### C. Static Metodlar
-`Promise.all()`, `Promise.race()`, `Promise.allSettled()`.
+\`Promise.all()\`, \`Promise.race()\`, \`Promise.allSettled()\`.
 
 ## 4. SAVOLLAR VA JAVOBLAR
 

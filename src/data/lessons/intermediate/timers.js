@@ -198,4 +198,4 @@ Monitor yangilanish tezligiga (60fps) mos keladi, animatsiyalar uchun qulay.
       explanation: "Rekursiv `setTimeout` yordamida funksiya ichida navbatdagi setTimeout e'lon qilinadi. Bu usul oldingi kodning ishlash muddati qancha cho'zilishidan qat'i nazar, navbatdagi chaqiruvgacha bo'lgan oraliq aniq bo'lishini kafolatlaydi, `setInterval`da esa asinxron amallar kechiksa interval bir-birini bosib ketishi mumkin."
     }
   ]
-};", file_path:
+};

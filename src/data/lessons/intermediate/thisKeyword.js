@@ -575,4 +575,4 @@ Methoddan return this; qilish orqali. Har bir method o'zi qaytariladi, keyingi m
       explanation: "Arrow funksiyalarda dynamic `this` mavjud emas va ularning lexical `this`ini `call()`, `apply()` yoki `bind()` yordamida qayta bog'lab yoki o'zgartirib bo'lmaydi. Ular chaqirilganda har doim o'zining original lexical contextini (bu yerda global context) ishlataveradi."
     }
   ]
-};", file_path:
+};

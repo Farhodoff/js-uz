@@ -197,4 +197,4 @@ Ha, lekin kod o'qilishini qiyinlashtirgani uchun ehtiyot bo'lish kerak.
       explanation: "JavaScript-da bo'sh bo'lmagan har qanday satr (string) rost (truthy) deb baholanadi, shuning uchun \`if\` bloki ishga tushib, konsolga \`\"ishladi\"\` chiqadi."
     }
   ]
-};", file_path:
+};
