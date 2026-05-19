@@ -450,5 +450,67 @@ Browser fayl keshlasin deb serverdan so'rash (Cache-Control header).
       hint: "Debounce + memoize kombinatsiyasi",
       test: "if (code.includes('debounce') && code.includes('memoize')) return null; return 'Kompleks optimization noto\\'g\\'ri';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "\"Debounce\" va \"Throttle\" optimallashtirish usullari o'rtasidagi asosiy farq nima?",
+      options: [
+        "Debounce funksiyani ma'lum vaqt kutib, faqat oxirgi chaqiriqdan keyin ishga tushiradi; Throttle esa funksiya ketma-ket chaqirilganda ma'lum vaqt oralig'ida faqat bir marta ishlashini ta'minlaydi",
+        "Debounce faqat rasmlarda, Throttle esa faqat videolarda ishlatiladi",
+        "Throttle faqat Internet Explorer brauzerida ishlaydi",
+        "Debounce funksiyani tezlashtiradi, Throttle esa sekinlashtiradi"
+      ],
+      correctAnswer: 0,
+      explanation: "Debounce foydalanuvchi harakatdan to'xtaganidan keyingina funksiyani chaqiradi (masalan, qidiruv tugagach). Throttle esa harakat to'xtovsiz davom etsa ham, ma'lum oraliq bilan chaqirib turadi (masalan, scroll paytida)."
+    },
+    {
+      id: 2,
+      question: "Qidiruv maydoni (Search Input) uchun foydalanuvchi yozib bo'lgandan keyin API so'rov yuborish uchun qaysi usul eng mos keladi?",
+      options: [
+        "Throttle",
+        "Debounce",
+        "Lazy Loading",
+        "Virtual Scrolling"
+      ],
+      correctAnswer: 1,
+      explanation: "Foydalanuvchi har bir harfni kiritganda API ga so'rov yubormaslik uchun Debounce eng optimal yechimdir. U foydalanuvchi yozishdan 300-500ms to'xtaganidan keyingina so'rov yuboradi."
+    },
+    {
+      id: 3,
+      question: "\"Lazy Loading\" (Kechiktirib yuklash) usulining asosiy maqsadi nima?",
+      options: [
+        "Sahifadagi barcha rasmlarni darhol eng yuqori sifatda yuklash",
+        "Foydalanuvchi ekranda ko'rmayotgan resurslarni (masalan, sahifa pastidagi rasmlarni) faqat ular ko'rinadigan sohaga (viewport) yaqinlashganda yuklash",
+        "JavaScript kodlarini sekinroq bajarish",
+        "Dastur xotirasini cheklash"
+      ],
+      correctAnswer: 1,
+      explanation: "Lazy Loading yordamida dastlab faqat foydalanuvchi ko'rib turgan sohadagi (viewport) ma'lumot va rasmlar yuklanadi. Bu tarmoq trafigini tejaydi va saytning dastlabki yuklanish tezligini sezilarli darajada oshiradi."
+    },
+    {
+      id: 4,
+      question: "Nima uchun animatsiyalarni yaratishda `setInterval` yoki `setTimeout` o'rniga `requestAnimationFrame` (rAF) ishlatish tavsiya etiladi?",
+      options: [
+        "Chunki `requestAnimationFrame` monitorning yangilanish tezligiga (refresh rate, odatda 60Hz/120Hz) avtomatik ravishda moslashib, silliq (smooth) animatsiyani ta'minlaydi va batareyani tejaydi",
+        "Chunki u kodni qisqartiradi",
+        "Chunki u CSS yozishni talab qilmaydi",
+        "Chunki u faqat mobil telefonlarda ishlaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "`requestAnimationFrame` brauzerning grafik chizish (paint) sikli bilan sinxron ishlaydi va sahifa faol bo'lmaganda (background tab) ishlashdan to'xtab, CPU resurslarini tejaydi."
+    },
+    {
+      id: 5,
+      question: "\"Memoization\" nima?",
+      options: [
+        "Kompyuter xotirasini tozalash algoritmi",
+        "Qimmat (ko'p vaqt oluvchi) funksiya natijalarini kirish argumentlari bo'yicha keshlab qo'yib, keyingi safar bir xil argumentlar yuborilganda keshdan tezkor qaytarish texnikasi",
+        "Kodlarni avtomatik qismlarga bo'lish (Code splitting)",
+        "Sahifani offlayn rejimda ishlashga tayyorlash"
+      ],
+      correctAnswer: 1,
+      explanation: "Memoization - bu pure funksiyalar natijalarini keshga saqlash orqali qayta hisob-kitoblarni oldini olib, performance'ni oshiruvchi samarali usuldir."
+    }
   ]
 };

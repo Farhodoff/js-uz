@@ -64,5 +64,67 @@ const leak = createLeak();
       hint: "clearInterval(id);",
       test: "if (code.includes('clearInterval')) return null; return 'clearInterval ishlatilmadi';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript'da \"Stack\" va \"Heap\" xotira qismlari o'rtasidagi farq nima?",
+      options: [
+        "Stack'da o'zgarmas oddiy qiymatlar (primitives) va funksiya chaqiruvlari, Heap'da esa dinamik hajmli obyektlar va massivlar saqlanadi",
+        "Stack'da faqat rasmlar, Heap'da esa matnlar saqlanadi",
+        "Stack sekin ishlaydi, Heap esa juda tez ishlaydi",
+        "Ikkalasi ham bir xil xotira turi, hech qanday farqi yo'q"
+      ],
+      correctAnswer: 0,
+      explanation: "Stack xotirasi kichik va tezkor bo'lib, ibtidoiy qiymatlar va joriy chaqiruv kontekstini saqlaydi. Heap esa katta va dinamik bo'lib, murakkab obyektlar va massivlarni saqlashga xizmat qiladi."
+    },
+    {
+      id: 2,
+      question: "Garbage Collector (Chiqindi yig'uvchi) qanday ishlaydi?",
+      options: [
+        "Faqat server yopilganda barcha ma'lumotlarni o'chiradi",
+        "Dasturdagi boshlang'ich nuqtadan (Root) boshlab zanjir bo'ylab yetib bo'lmaydigan (unreachable) bo'lib qolgan obyektlarni aniqlaydi va xotiradan tozalaydi",
+        "Faqat `null` qilingan o'zgaruvchilarni qidiradi",
+        "Koddagi barcha izohlarni o'chirib chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Zamonaviy Garbage Collector (asosan Mark-and-Sweep algoritmi) global obyektdan (Root) boshlab barcha obyektlarni tekshiradi. Root'ga ulanmagan va unga yetib borish imkoni bo'lmagan obyektlar chiqindi deb hisoblanadi."
+    },
+    {
+      id: 3,
+      question: "\"Memory Leak\" (Xotira oqishi) deganda nima tushuniladi?",
+      options: [
+        "Kompyuter xotirasining jismoniy shikastlanishi",
+        "Dasturda ishlatilmayotgan, lekin koddagi reference (bog'liqlik) tufayli Garbage Collector tomonidan o'chirilmasdan xotirani band qilib turgan ma'lumotlar",
+        "Xotiradagi ma'lumotlarni faylga yozib olish",
+        "Sinxron kodlarning bajarilish tartibi buzilishi"
+      ],
+      correctAnswer: 1,
+      explanation: "Xotira oqishi - bu dasturda kerak bo'lmagan ma'lumotlarga qandaydir reference saqlanib qolgani sababli xotiraning bo'shamasligi va natijada RAM keraksiz band bo'lishidir."
+    },
+    {
+      id: 4,
+      question: "Unutilgan va to'xtatilmagan `setInterval` qanday qilib memory leak'ka sabab bo'ladi?",
+      options: [
+        "Chunki u CPU haroratini oshiradi",
+        "Chunki interval to'xtatilmagunicha uning callback funksiyasi ichida ishlatilgan barcha o'zgaruvchilar va obyektlar xotirada ushlab turiladi",
+        "Interval faqat 404 xatosi beradi",
+        "Interval faqat global o'zgaruvchilarni o'chiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "To'xtatilmagan interval doimiy ishlayveradi va u faol bo'lgani sababli uning lexical scope'idagi barcha o'zgaruvchilar Garbage Collector tomonidan tozalab tashlanmaydi."
+    },
+    {
+      id: 5,
+      question: "`WeakMap` va `WeakSet` obyektlarining an'anaviy `Map` va `Set` obyektlaridan xotira boshqaruvi bo'yicha asosiy afzalligi nima?",
+      options: [
+        "Ular ma'lumotlarni siqib saqlaydi",
+        "Ulardagi obyektlarga boshqa hech qanday reference qolmasa, u obyektlar Garbage Collector tomonidan avtomatik o'chirilishi taqiqlanmaydi (kuchsiz bog'liqlik)",
+        "Ular tezroq ishlaydi",
+        "Ular faqat string qiymatlarni qabul qiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "`WeakMap`/`WeakSet` tarkibidagi kalit obyektlarga faqat kuchsiz bog'liqlik (weak reference) bo'ladi. Agar o'sha kalit obyekt boshqa joyda o'chirilsa, map/set uni ushlab qololmaydi va xotira tozalanadi."
+    }
   ]
 };

@@ -66,5 +66,67 @@ console.log(ikkiBarobar); // [2, 4, 6, 8]
       hint: "const multiply = (a, b) => a * b;",
       test: "if (multiply(3, 4) === 12) return null; return 'Ko\\'paytirish noto\\'g\\'ri';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Arrow funksiyalarning an'anaviy `function` kalit so'zi yordamida yaratilgan funksiyalardan asosiy farqi nimada?",
+      options: [
+        "Arrow funksiyalarda o'zining shaxsiy `this` bog'lanishi (binding) mavjud emas, u `this`ni tashqi lexical doiradan meros oladi",
+        "Arrow funksiyalar sekinroq ishlaydi",
+        "Arrow funksiyalarni faqat serverda ishlatish mumkin",
+        "Arrow funksiyalar faqat musbat sonlarni qaytara oladi"
+      ],
+      correctAnswer: 0,
+      explanation: "Arrow funksiyalar o'zining `this` qiymatiga ega emas. Ular `this` ni o'zlarini o'rab turgan tashqi (lexical) kontekstdan qabul qilishadi."
+    },
+    {
+      id: 2,
+      question: "Arrow funksiya yordamida bitta qatorda obyekt qaytarmoqchi bo'lsak, qaysi sintaksis to'g'ri hisoblanadi?",
+      options: [
+        "`const user = () => { name: 'Ali' };`",
+        "`const user = () => ({ name: 'Ali' });`",
+        "`const user = () => return { name: 'Ali' };`",
+        "`const user = () => [ name: 'Ali' ];`"
+      ],
+      correctAnswer: 1,
+      explanation: "Jingalak qavslar `{}` funksiya tanasini (block) anglatgani uchun, obyekt literali qaytarilayotganda chalkashlik yuzaga kelmasligi uchun obyekt qavslar ichiga `({ ... })` olinishi shart."
+    },
+    {
+      id: 3,
+      question: "Arrow funksiyada `arguments` obyekti mavjudmi?",
+      options: [
+        "Ha, u oddiy funksiyadagi kabi to'liq ishlaydi",
+        "Yo'q, arrow funksiyalarda `arguments` obyekti yo'q. Buning o'rniga rest parametrlardan (`...args`) foydalanish kerak",
+        "Ha, lekin faqat massiv ko'rinishida bo'ladi",
+        "Faqat `strict mode` yoqilganda mavjud bo'ladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Arrow funksiyalarda `arguments` maxsus o'zgaruvchisi yo'q. Agar kiruvchi argumentlar oqimini olish kerak bo'lsa, rest `...args` parametrlaridan foydalanish zarur."
+    },
+    {
+      id: 4,
+      question: "Arrow funksiyani `new` kalit so'zi yordamida konstruktor sifatida chaqirsa nima sodir bo'ladi?",
+      options: [
+        "Yangi obyekt muvaffaqiyatli yaratiladi",
+        "TypeError: [FunctionName] is not a constructor xatosi yuz beradi",
+        "Funksiya oddiy funksiya kabi bajariladi, lekin obyekt qaytarmaydi",
+        "Sahifa avtomatik qayta yuklanadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Arrow funksiyalar `prototype` xususiyatiga ega emas, shu sababli ularni `new` kalit so'zi orqali konstruktor sifatida ishlatib bo'lmaydi va xatolik beradi."
+    },
+    {
+      id: 5,
+      question: "Arrow funksiyalar qachon \"hoisted\" bo'ladi (kodning yuqorisiga ko'tariladi)?",
+      options: [
+        "Har doim, chunki them funksiya hisoblanadi",
+        "Ular e'lon qilinish shakliga (masalan, const/let o'zgaruvchisiga biriktirilganiga) bog'liq. Ular hoisted bo'lmaydi va Temporal Dead Zone (TDZ) ga bo'ysunadi",
+        "Faqat var bilan e'lon qilinganda funksiya sifatida hoisted bo'ladi",
+        "Faqat brauzer o'chib yonganda hoisted bo'ladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Arrow funksiyalar ifoda (Expression) sifatida e'lon qilinadi (odatda `const` yoki `let` bilan). Shuning uchun o'zgaruvchilar kabi ular ham hoisted bo'lmaydi va e'lon qilinishidan oldin ishlatib bo'lmaydi."
+    }
   ]
 };
