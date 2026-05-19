@@ -501,5 +501,62 @@ Async/await oson o'qiladi va o'z ketmagani xuddi synchron kod kabi. Yangi kod uc
       hint: "const data = await Promise1; const result = await Promise2(data);",
       test: "if (logs.some(l => typeof l === 'object' && l.count === 5)) return null; return 'Sequential noto\\'g\\'ri';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Promise'ning dastlabki (initial) holati qaysi hisoblanadi?",
+      options: ["fulfilled", "rejected", "pending", "resolved"],
+      correctAnswer: 2,
+      explanation: "Yangi Promise yaratilganda, u ishini yakunlaguncha (resolve yoki reject bo'lgunicha) har doim 'pending' (kutilayotgan) holatida bo'ladi."
+    },
+    {
+      id: 2,
+      question: "`Promise.all()` massividagi promislardan biri rad etilsa (reject bo'lsa) nima sodir bo'ladi?",
+      options: [
+        "Faqat muvaffaqiyatli promislarning natijasi qaytadi",
+        "Butun `Promise.all` zanjiri darhol rad etiladi (reject bo'ladi) va catch bloki ishlaydi",
+        "Xato qilgan promis o'tkazib yuborilib, qolganlari bajarilaveradi",
+        "Kod cheksiz kutish rejimiga o'tadi"
+      ],
+      correctAnswer: 1,
+      explanation: "`Promise.all` 'all-or-nothing' (yoki hammasi, yoki hech narsa) tamoyili bo'yicha ishlaydi. Massivdagi bitta promis reject bo'lsa ham, butun `Promise.all` rad etiladi."
+    },
+    {
+      id: 3,
+      question: "`Promise.race()` static metodi nima vazifani bajaradi?",
+      options: [
+        "Faqat eng birinchi muvaffaqiyatli resolve bo'lgan promisni qaytaradi",
+        "Qaysi promis birinchi bo'lib yakunlansa (resolve yoki reject farqi yo'q), o'shaning qiymatini yoki xatosini qaytaradi",
+        "Barcha promislarning bajarilish tezligini solishtirib jadval chiqaradi",
+        "Promislarni navbatma-navbat ketma-ketlikda ishga tushiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "`Promise.race` (poyga) birinchi bo'lib yakunlangan (xoh u resolve bo'lsin, xoh reject) promis qiymatini yoki xatosini qaytaradi."
+    },
+    {
+      id: 4,
+      question: "Promise zanjiridagi `.then()` bloklarida `return` ishlatilmasa nima sodir bo'ladi?",
+      options: [
+        "Keyingi `.then()` bloki umuman ishlamaydi",
+        "Keyingi `.then()` bloki kiruvchi qiymat sifatida `undefined` qabul qiladi",
+        "Dastur darhol xatolik tashlaydi",
+        "Avtomatik tarzda oldingi natija qayta ishlatiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Har bir `.then()` o'zidan keyingi blokga qiymat uzatishi uchun qiymatni `return` qilishi shart. Aks holda keyingi `.then()` ga `undefined` uzatiladi."
+    },
+    {
+      id: 5,
+      question: "`Promise.allSettled()` ning `Promise.all()` dan asosiy farqi nimada?",
+      options: [
+        "U tezroq ishlaydi",
+        "U massivdagi barcha promislar yakunlanishini (resolve yoki reject) kutadi va har birining statusi va qiymati/sababini obyekt sifatida qaytaradi",
+        "U xatolarni avtomatik tarzda to'g'rilab yuboradi",
+        "U faqat asinxron funksiyalar ichida ishlaydi"
+      ],
+      correctAnswer: 2,
+      explanation: "`Promise.allSettled` rad etilgan (rejected) promislar bo'lsa ham hammasining yakunlanishini to'liq kutadi va `{ status: 'fulfilled', value: ... }` yoki `{ status: 'rejected', reason: ... }` ko'rinishida batafsil ma'lumot qaytaradi."
+    }
   ]
 };

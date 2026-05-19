@@ -435,5 +435,57 @@ API so'rovlari, fayl o'qish, veritabaza operatsiyalari — har qayerda!
       hint: "const results = await Promise.all(items.map(item => process(item)));",
       test: "if (logs.some(l => Array.isArray(l) && l[0] === 2 && l[1] === 4 && l[2] === 6)) return null; return 'Combine xato!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`async` kalit so'zi bilan e'lon qilingan funksiya har doim nima qaytaradi?",
+      options: ["Oddiy qiymat (number, string, etc.)", "Promise obyekti", "Callback funksiya", "undefined"],
+      correctAnswer: 1,
+      explanation: "`async` funksiyalar har doim Promise qaytaradi. Funksiya ichida oddiy qiymat `return` qilinsa ham, u avtomatik ravishda `Promise.resolve(qiymat)` ko'rinishida o'raladi."
+    },
+    {
+      id: 2,
+      question: "`await` kalit so'zini oddiy (async bo'lmagan) funksiyalar ichida ishlatish mumkinmi?",
+      options: [
+        "Ha, cheklov yo'q",
+        "Yo'q, faqat async belgilangan funksiya yoki Top-level await (ES2022) doirasida ishlatilishi shart",
+        "Faqat `setTimeout` ichidagi callbacklarda ruxsat etiladi",
+        "Faqat Node.js muhitida ruxsat berilgan"
+      ],
+      correctAnswer: 1,
+      explanation: "`await` kalit so'zini faqat `async` funksiya ichida yoki ES modullarining eng yuqori qismida (Top-level await) ishlatish mumkin. Oddiy sinxron funksiya ichida yozilsa, `SyntaxError` yuz beradi."
+    },
+    {
+      id: 3,
+      question: "Async/Await'da asinxron operatsiyalar paytida yuz bergan xatolarni (errors) qanday ushlaymiz?",
+      options: [
+        "`.catch()` zanjiri orqali",
+        "try...catch...finally bloklari yordamida",
+        "`window.onerror` hodisasi bilan",
+        "Ular avtomatik tarzda yo'qotiladi, qo'shimcha kod shart emas"
+      ],
+      correctAnswer: 1,
+      explanation: "Async/await sinxron kod ko'rinishida yozilganligi uchun, an'anaviy sinxron xatolarni ushlash mexanizmi — `try...catch` blokidan foydalaniladi."
+    },
+    {
+      id: 4,
+      question: "Parallel bajarilishi mumkin bo'lgan asinxron so'rovlarni async/await yordamida qanday optimallashtiramiz?",
+      options: [
+        "Har bir so'rov oldidan ketma-ket `await` yozish orqali",
+        "Barcha promislarni `Promise.all()` ichiga joylab, faqat bitta umumiy `await` qilish orqali",
+        "Ular avtomatik parallel ishlaydi, qo'shimcha optimallash shartmas",
+        "Asinxron so'rovlarni setTimeout bilan ajratish orqali"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar har bir so'rovni ketma-ket await qilsak (sequential), dastur har safar kutib qoladi (masalan, 1s + 1s + 1s = 3s). `Promise.all` orqali parallel jo'natib, faqat bitta `await` qilsak, barchasi eng uzun so'rov vaqtida (masalan, 1s) bajariladi."
+    },
+    {
+      id: 5,
+      question: "Quyidagi kod ishga tushganda konsolda nima ko'rinadi?\n```javascript\nasync function test() {\n  return 10;\n}\nconsole.log(test());\n```",
+      options: ["10", "Promise { 10 } (yoki kutilayotgan Promise holati)", "undefined", "TypeError: test is not a function"],
+      correctAnswer: 1,
+      explanation: "`test()` funksiyasi chaqirilganda, u asinxron bo'lgani uchun natijani to'g'ridan-to'g'ri `10` emas, balki `Promise { 10 }` ko'rinishidagi Promise obyekti sifatida qaytaradi. Uning ichidagi qiymatni chop etish uchun `await test()` yozish yoki `.then()` zanjiridan foydalanish kerak."
+    }
   ]
 };
