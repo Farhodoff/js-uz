@@ -69,5 +69,42 @@ var ism = "Farhod";
       hint: "salom(); deb yozing.",
       test: "if (logs.includes('Salom')) return null; return 'Funksiya chaqirilmadi';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Quyidagi kod ishga tushganda nima chop etiladi?\n```javascript\nconsole.log(x);\nvar x = 5;\n```",
+      options: ["5", "undefined", "ReferenceError", "TypeError"],
+      correctAnswer: 1,
+      explanation: "`var` yordamida e'lon qilingan o'zgaruvchilar o'zining scope doirasida ko'tariladi (hoisting), lekin ularning qiymat tayinlovi (initialization) joyida qoladi. Shuning uchun qiymat yuklanguniga qadar uning qiymati `undefined` bo'ladi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi `let` o'zgaruvchisi bilan yozilgan kod nima natija beradi?\n```javascript\nconsole.log(y);\nlet y = 10;\n```",
+      options: ["10", "undefined", "ReferenceError (Temporal Dead Zone)", "TypeError"],
+      correctAnswer: 2,
+      explanation: "`let` va `const` o'zgaruvchilari ham hoist bo'ladi, lekin ular TDZ (Temporal Dead Zone - Vaqtinchalik O'lik Hudud) doirasida bo'ladi. Ularga e'lon qilinishidan oldin murojaat qilinsa, `ReferenceError` xatoligi tashlanadi."
+    },
+    {
+      id: 3,
+      question: "Ushbu kodni tahlil qilib natijasini ayting:\n```javascript\ngreet();\nfunction greet() {\n  console.log(\"Salom\");\n}\n```",
+      options: ["\"Salom\"", "TypeError: greet is not a function", "ReferenceError", "undefined"],
+      correctAnswer: 0,
+      explanation: "Function Declarations (oddiy e'lon qilingan funksiyalar) to'liq (tanasi bilan birga) tepaga ko'tariladi. Shuning uchun ularni e'lon qilinishidan oldin ham bemalol chaqirish mumkin."
+    },
+    {
+      id: 4,
+      question: "Function Expression (o'zgaruvchiga yuklangan funksiya) hoisting qoidasiga ko'ra nima natija beradi?\n```javascript\ngreet();\nvar greet = function() {\n  console.log(\"Salom\");\n};\n```",
+      options: ["\"Salom\"", "TypeError: greet is not a function", "ReferenceError", "undefined"],
+      correctAnswer: 1,
+      explanation: "`var greet` o'zgaruvchi sifatida ko'tariladi va unga `undefined` qiymat beriladi. Hali funksiya yuklanmagani sababli, `undefined()` ko'rinishida chaqirilmoqda va bu `TypeError` (greet funksiya emas) xatosiga olib keladi."
+    },
+    {
+      id: 5,
+      question: "Parametr va var o'zgaruvchisi to'qnashuvida nima sodir bo'ladi?\n```javascript\nfunction test(x) {\n  console.log(x);\n  var x = 20;\n}\ntest(10);\n```",
+      options: ["10", "20", "undefined", "ReferenceError"],
+      correctAnswer: 0,
+      explanation: "Funksiya parametrlari funksiya tanasidagi kod bajarilishidan oldin scope'da yaratiladi va qiymatlanadi. `var x` e'lon qilinganda, scope'da allaqachon `x` borligi uchun u shunchaki qayta e'lon qilinadi va qiymat `var x = 20` qatoriga yetib bormaguncha parametrning qiymati (`10`) o'zgarmasdan saqlanib turadi."
+    }
   ]
 };

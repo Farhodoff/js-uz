@@ -26,27 +26,32 @@ JavaScript **single-threaded** til, ya'ni u bir vaqtning o'zida faqat bitta ishn
 
 ### A. JavaScript Runtime Components
 
-\`\`\`
-┌─────────────────────────────────────────────────────┐
-│                 JavaScript Runtime                   │
-├─────────────────────────────────────────────────────┤
-│                                                       │
-│  ┌─────────────────────┐      ┌──────────────────┐  │
-│  │   Call Stack        │      │   Web APIs       │  │
-│  │ (Ishlayotgan kod)   │<────→│ (setTimeout,     │  │
-│  │                     │      │  fetch, events)  │  │
-│  └─────────────────────┘      └──────────────────┘  │
-│           ▲                            │             │
-│           │                            │             │
-│           └─────── Event Loop ─────────┘             │
-│                      ▲                               │
-│                      │                               │
-│           ┌──────────┴──────────┐                   │
-│           │                     │                   │
-│      Microtask Queue      Macrotask Queue            │
-│      (Promises)           (setTimeout)               │
-│                                                       │
-└─────────────────────────────────────────────────────┘
+\`\`\`mermaid
+graph TD
+    subgraph Browser / Web APIs
+        WebAPI["Web APIs<br/>(setTimeout, fetch, events)"]
+    end
+    
+    subgraph JS Engine
+        CallStack["Call Stack<br/>(LIFO - Last In First Out)"]
+        Heap["Memory Heap<br/>(Variables, Objects)"]
+    end
+
+    subgraph Queues
+        Microtask["Microtask Queue (High Priority)<br/>(Promises, async/await)"]
+        Macrotask["Macrotask Queue (Low Priority)<br/>(setTimeout, setInterval)"]
+    end
+
+    EventLoop{{"Event Loop"}}
+
+    %% Connections
+    CallStack -->|Asinxron API chaqiruvi| WebAPI
+    WebAPI -->|Microtask callback| Microtask
+    WebAPI -->|Macrotask callback| Macrotask
+    
+    EventLoop -->|1. Stack bo'shligini tekshirish| CallStack
+    EventLoop -->|2. Microtasklarni Stackka o'tkazish| Microtask
+    EventLoop -->|3. Macrotasklarni Stackka o'tkazish| Macrotask
 \`\`\`
 
 ### B. Call Stack - Ishlayotgan Kod
@@ -502,6 +507,68 @@ Ha. Node.js 6 phase'ga ega (Timers, Pending, Idle, Poll, Check, Close). Browser 
       startingCode: "console.log('1');\nsetTimeout(() => console.log('4'), 0);\nPromise.resolve()\n  .then(() => {\n    console.log('2');\n    setTimeout(() => console.log('5'), 0);\n  })\n  .then(() => console.log('3'));\nconsole.log('6');\n",
       hint: "Sync, Promise Microtask, keyin setTimeout Macrotask",
       test: "if (logs[0] === '1' && logs[1] === '6' && logs[2] === '2') return null; return 'Kompleks noto\\'g\\'ri';"
+    }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Event Loop'da Microtask Queue va Macrotask Queue (Callback Queue) o'rtasidagi ustuvorlik qanday belgilangan?",
+      options: [
+        "Microtask Queue har doim ustuvor va u butunlay bo'shatilmaguncha navbatdagi Macrotask bajarilmaydi",
+        "Macrotask Queue har doim ustuvor",
+        "Ular navbatma-navbat (bir dona microtask, bir dona macrotask) bajariladi",
+        "Foydalanuvchi interfeysining holatiga qarab brauzer o'zi qaror qiladi"
+      ],
+      correctAnswer: 0,
+      explanation: "Event Loop qoidasiga ko'ra, har bir bajarilgan Macrotask (yoki dastlabki sinxron skript) bajarib bo'lingach, Event Loop Microtask Queue'ga o'tadi va undagi BARCHA vazifalar tugamaguncha navbatdagi Macrotask'ga o'tmaydi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kod bajarilganda konsolga nimalar chop etiladi?\n```javascript\nsetTimeout(() => console.log('Timeout'), 0);\nPromise.resolve().then(() => console.log('Promise'));\n```",
+      options: [
+        "Timeout, keyin Promise",
+        "Promise, keyin Timeout",
+        "Ikkalasi bir vaqtda chop etiladi",
+        "Faqat Promise"
+      ],
+      correctAnswer: 1,
+      explanation: "`Promise.resolve().then` callback'i Microtask Queue'ga tushadi. `setTimeout` esa Macrotask Queue'ga tushadi. Microtask'lar har doim Macrotask'lardan oldin bajarilgani uchun konsolga avval 'Promise', keyin ise 'Timeout' chiqadi."
+    },
+    {
+      id: 3,
+      question: "JavaScriptdagi Call Stack qaysi tamoyil asosida ishlaydi?",
+      options: [
+        "FIFO (First In, First Out) - birinchi kelgan, birinchi chiqadi",
+        "LIFO (Last In, First Out) - oxirgi kelgan, birinchi chiqadi",
+        "Tasodifiy tartibda",
+        "Dasturchi tomonidan qo'lda boshqariladigan navbat asosida"
+      ],
+      correctAnswer: 1,
+      explanation: "Call Stack (Funksiyalar to'plami) LIFO (Last In, First Out) tamoyili asosida ishlaydi. Ya'ni, chaqirilgan oxirgi funksiya birinchi bo'lib stackdan bajarilib chiqib ketadi."
+    },
+    {
+      id: 4,
+      question: "`setTimeout(fn, 0)` yozilganda, undagi funksiya qachon ishga tushadi?",
+      options: [
+        "Darhol 0 millisekundda sinxron kod kabi ishga tushadi",
+        "Call Stack to'liq bo'shab, barcha sinxron kodlar bajarib bo'lingandan keyingina ishga tushadi",
+        "Xotira bo'sh bo'lsa ishlaydi",
+        "Brauzer yopilganda ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`setTimeout` asinxron operatsiya bo'lib, u Web API orqali Macrotask navbatiga joylashtiriladi. Hatto kechikish vaqti `0` bo'lsa ham, u Call Stack'da turgan barcha sinxron kodlar bajarilib bo'lgandan keyingina navbatga qarab chaqiriladi."
+    },
+    {
+      id: 5,
+      question: "Quyidagilardan qaysi biri Microtask hisoblanadi?",
+      options: [
+        "`setTimeout` va `setInterval` taymerlari",
+        "`Promise.then()` / `catch()` / `finally()` va `async/await` ifodalari",
+        "DOM elementining `click` event listener hodisasi",
+        "Tarmoq orqali yuborilgan `fetch` so'rovi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScriptda Promiselarning callbacklari (`.then`, `.catch`, `.finally`), `async/await` va `queueMicrotask()` yordamida qo'shilgan vazifalar rasman Microtask deb hisoblanadi va yuqori ustuvorlikka ega."
     }
   ]
 };
