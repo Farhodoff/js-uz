@@ -22,7 +22,7 @@ describe('chat.js API handler', () => {
     };
 
     // Environment variable mock
-    process.env.GEMINI_API_KEY = 'test-api-key';
+    process.env.DEEPSEEK_API_KEY = 'test-api-key';
   });
 
   describe('CORS preflight', () => {
@@ -54,9 +54,9 @@ describe('chat.js API handler', () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
         json: () => Promise.resolve({
-          candidates: [{
-            content: {
-              parts: [{ text: 'JavaScript - bu dasturlash tili' }]
+          choices: [{
+            message: {
+              content: 'JavaScript - bu dasturlash tili'
             }
           }]
         })
@@ -111,9 +111,9 @@ describe('chat.js API handler', () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
         json: () => Promise.resolve({
-          candidates: [{
-            content: {
-              parts: [{ text: 'Javob' }]
+          choices: [{
+            message: {
+              content: 'Javob'
             }
           }]
         })
@@ -127,7 +127,7 @@ describe('chat.js API handler', () => {
 
   describe('API Key validation', () => {
     it("API key bo'lmasa 500 qaytarishi kerak", async () => {
-      delete process.env.GEMINI_API_KEY;
+      delete process.env.DEEPSEEK_API_KEY;
       
       await handler(mockReq, mockRes);
 
@@ -136,14 +136,14 @@ describe('chat.js API handler', () => {
     });
   });
 
-  describe('Gemini API integration', () => {
+  describe('DeepSeek API integration', () => {
     it('Muvaffaqiyatli API call uchun javob qaytarishi kerak', async () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
         json: () => Promise.resolve({
-          candidates: [{
-            content: {
-              parts: [{ text: 'JavaScript - bu dasturlash tili' }]
+          choices: [{
+            message: {
+              content: 'JavaScript - bu dasturlash tili'
             }
           }]
         })
@@ -168,7 +168,7 @@ describe('chat.js API handler', () => {
       await handler(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Gemini API xatosi' });
+      expect(mockRes.json).toHaveBeenCalledWith({ error: 'DeepSeek API xatosi' });
     });
 
     it('Network error uchun 500 qaytarishi kerak', async () => {
@@ -184,7 +184,7 @@ describe('chat.js API handler', () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
         json: () => Promise.resolve({
-          candidates: []
+          choices: []
         })
       });
 
@@ -204,9 +204,9 @@ describe('chat.js API handler', () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
         json: () => Promise.resolve({
-          candidates: [{
-            content: {
-              parts: [{ text: 'Javob' }]
+          choices: [{
+            message: {
+              content: 'Javob'
             }
           }]
         })
@@ -216,7 +216,7 @@ describe('chat.js API handler', () => {
 
       const fetchCall = global.fetch.mock.calls[0];
       const body = JSON.parse(fetchCall[1].body);
-      expect(body.contents[0].parts[0].text).toContain('Umumiy');
+      expect(body.messages[1].content).toContain('Umumiy');
     });
   });
 });
