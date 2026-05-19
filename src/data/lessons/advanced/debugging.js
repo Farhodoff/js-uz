@@ -120,5 +120,67 @@ Endi siz xatolardan qo'rqmaysiz va ularni professional dasturchidek "ovlay" olas
       hint: "console.table(car);",
       test: "if (code.includes('console.table')) return null; return 'console.table ishlatilmadi';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`console.log` metodidan tashqari, murakkab obyektlar va massivlarni chiroyli hamda o'qilishi oson bo'lgan jadval ko'rinishida consolega chiqarish uchun qaysi metoddan foydalaniladi?",
+      options: [
+        "`console.dir()`",
+        "`console.table()`",
+        "`console.group()`",
+        "`console.trace()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`console.table()` metodi uzatilgan obyekt yoki massivni jadval (index, key, value) shaklida render qiladi. Bu katta ma'lumotlar bilan ishlashda va ularni solishtirishda juda qulay."
+    },
+    {
+      id: 2,
+      question: "Brauzerda JavaScript kodini bajarilishini ma'lum bir qatorda to'xtatib (pauza qilib), o'sha joydagi o'zgaruvchilar qiymatini va call stack holatini DevTools yordamida qadam-baqadam tekshirish uchun kodga qaysi maxsus kalit so'z yoziladi?",
+      options: [
+        "`stop;`",
+        "`break;`",
+        "`debugger;`",
+        "`pause;`"
+      ],
+      correctAnswer: 2,
+      explanation: "`debugger;` kalit so'zi brauzer uchun dasturni to'xtatish (breakpoint) buyrug'i hisoblanadi. Agar brauzerda DevTools (inspektor) oynasi ochiq bo'lsa, kod aynan shu qatorda to'xtaydi va dasturchiga har bir qadamni kuzatish imkonini beradi."
+    },
+    {
+      id: 3,
+      question: "Kodning ma'lum bir qismi (masalan, murakkab loop yoki API so'rovi) qancha vaqt ichida bajarilishini millisekundlarda aniq o'lchash uchun qaysi console metodlari juftligidan foydalaniladi?",
+      options: [
+        "`console.start()` va `console.stop()`",
+        "`console.time()` va `console.timeEnd()`",
+        "`console.profile()` va `console.profileEnd()`",
+        "`console.count()` va `console.countReset()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`console.time('label')` taymerni ishga tushiradi, `console.timeEnd('label')` esa taymerni to'xtatadi va uning orasidagi vaqtni millisekundlarda chop etadi. Bu performance (samaradorlik) testlari uchun ishlatiladi."
+    },
+    {
+      id: 4,
+      question: "Dasturdagi funksiyalar bir-birini qaysi tartibda va qaysi fayllardan chaqirib kelganini (Call Stack iyerarxiyasini) konsolda to'liq ko'rish uchun qaysi metod chaqiriladi?",
+      options: [
+        "`console.stack()`",
+        "`console.trace()`",
+        "`console.debug()`",
+        "`console.log(Error.stack)`"
+      ],
+      correctAnswer: 1,
+      explanation: "`console.trace()` funksiya qayerda va qaysi funksiyalar orqali chaqirilganligini ko'rsatadigan stack trace (izlar zanjiri)ni konsolda ko'rsatib beradi."
+    },
+    {
+      id: 5,
+      question: "Brauzer DevTools'dagi \"Conditional Breakpoint\" (Shartli to'xtash nuqtasi) oddiy Breakpoint'dan nimasi bilan farq qiladi?",
+      options: [
+        "U faqat internet uzilib qolsagina ishlaydi",
+        "U kodni faqat biz yozgan ma'lum bir shart (ifoda) `true` bo'lgandagina o'sha qatorda to'xtatadi, boshqa hollarda kod to'xtamasdan o'tib ketadi",
+        "U faqat asinxron funksiyalar ichida ishlaydi",
+        "U faqat CSS stillarining xatolarini aniqlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Shartli breakpointlar juda ko'p marta aylanadigan looplarda yoki ma'lum bir foydalanuvchi IDsi bilan muammo chiqqanda qo'l keladi. Masalan, `user.id === 42` bo'lgandagina kodni to'xtatish shartini qo'yishimiz mumkin."
+    }
   ]
 };

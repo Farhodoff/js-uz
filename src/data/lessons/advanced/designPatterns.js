@@ -302,5 +302,67 @@ class UserRepository {
       hint: "Uchala pattern birgalikda",
       test: "if (code.includes('instance') && code.includes('create')) return null; return 'Kompleks kerak';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Dasturlashda Singleton naqshi (Design Pattern) qanday maqsadlarda ishlatiladi?",
+      options: [
+        "Obyekt yaratish tezligini 10 barobarga oshirish",
+        "Butun dastur davomida ma'lum bir klassdan faqat va faqat bitta namuna (instance) yaratilishini va unga yagona global kirish nuqtasini ta'minlash (masalan, Database connection, Config settings)",
+        "Har xil turdagi obyektlarni bitta joyda guruhlash",
+        "Klasslarni funksiyaga o'zgartirish"
+      ],
+      correctAnswer: 1,
+      explanation: "Singleton klassi o'zining yagona namunasini statik xususiyatda saqlaydi va ikkinchi marta yaratmoqchi bo'lganda yangisini yaratmasdan o'sha birinchisini qaytaradi. Bu resurslarni tejash va umumiy holatni bitta joyda saqlash uchun juda foydali."
+    },
+    {
+      id: 2,
+      question: "Obyekt yaratish jarayonini (new operatorini) to'g'ridan-to'g'ri chaqirish o'rniga, uning turiga qarab alohida maxsus metod (yoki klass) orqali obyektdan nusxa olib beradigan yaratuvchi (creational) naqsh qaysi?",
+      options: [
+        "Observer Pattern",
+        "Factory Pattern",
+        "Decorator Pattern",
+        "Strategy Pattern"
+      ],
+      correctAnswer: 1,
+      explanation: "Factory pattern obyekt yaratish logikasini o'ziga oladi. Dasturchi unga qaysi turdagi obyekt kerakligini string yoki parametr orqali aytadi va Factory kerakli klassdan obyekt yaratib beradi."
+    },
+    {
+      id: 3,
+      question: "JavaScript-da `addEventListener` metodi qaysi mashhur xulq-atvor (behavioral) naqshiga asoslangan holda ishlaydi?",
+      options: [
+        "Singleton Pattern",
+        "Observer (yoki Publish-Subscribe) Pattern",
+        "Facade Pattern",
+        "Adapter Pattern"
+      ],
+      correctAnswer: 1,
+      explanation: "Observer naqshi biror obyektda (subject) o'zgarish bo'lganda, unga obuna bo'lgan boshqa ko'plab obyektlarni (observers) avtomat xabardor qilish uchun ishlatiladi. `addEventListener` aynan klik yoki boshqa hodisalarga obuna bo'lish namunasidir."
+    },
+    {
+      id: 4,
+      question: "Mavjud klassning kodini o'zgartirmasdan yoki undan vorislik (inheritance) olmasdan turib, unga dinamik ravishda yangi funksionallik yoki xatti-harakatlarni qo'shish (o'rash) imkonini beruvchi tarkibiy (structural) naqsh qaysi?",
+      options: [
+        "Decorator Pattern",
+        "Singleton Pattern",
+        "Factory Pattern",
+        "Strategy Pattern"
+      ],
+      correctAnswer: 0,
+      explanation: "Decorator naqshi asl obyektni o'rab oladigan boshqa wrapper-klasslar orqali uning xatti-harakatlarini kengaytiradi (masalan, oddiy qahvaga sut yoki shakar qo'shimchalarini qo'shib uning cost() funksiyasi qiymatini oshirish)."
+    },
+    {
+      id: 5,
+      question: "Bir nechta murakkab va chalkash quyi tizimlar (subsystems) ustidan oddiy va yagona interfeys taqdim etuvchi (masalan, to'lov qilish, email jo'natish va log yozishni bitta methodga birlashtiruvchi) naqsh qaysi?",
+      options: [
+        "Proxy Pattern",
+        "Facade Pattern",
+        "Strategy Pattern",
+        "State Pattern"
+      ],
+      correctAnswer: 1,
+      explanation: "Facade (Tashqi ko'rinish) naqshi murakkab quyi tizimlarni bitta sodda klass yoki metod orqali boshqarish interfeysini yaratib beradi, natijada mijoz (client) ichki detallar bilan chalkashmaydi."
+    }
   ]
 };

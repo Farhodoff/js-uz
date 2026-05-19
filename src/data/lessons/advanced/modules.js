@@ -466,5 +466,67 @@ CommonJS - require/module.exports (eski). ES6 - import/export (zamonaviy).
       hint: "Mavjud",
       test: "if (code.includes('export default') && code.includes('export const')) return null; return 'Mix export noto\\'g\\'ri';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "ES Modules (ESM) va CommonJS (CJS) modullar tizimlari o'rtasidagi asosiy farqlardan biri nimada?",
+      options: [
+        "ES modullari faqat Node.js uchun mo'ljallangan, CommonJS esa faqat brauzerlar uchun",
+        "ES modullari statik (kompilyatsiya yoki parse bosqichida) tahlil qilinadi va `import`/`export` bilan ishlaydi; CommonJS esa dinamik (runtime bosqichida) ishlaydi va `require()`/`module.exports` dan foydalanadi",
+        "ES modullari asinxronlikni qo'llab-quvvatlamaydi",
+        "Ular o'rtasida hech qanday farq yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "ES modullari statik tuzilishga ega, ya'ni qaysi o'zgaruvchilar import/export bo'lishi kod bajarilishidan oldin ma'lum bo'ladi. CommonJS esa dinamik bo'lib, `require()` chaqiruvi kodning istalgan joyida (hatto shartlar ichida) bajarilishi mumkin."
+    },
+    {
+      id: 2,
+      question: "Quyidagi export va import ifodalaridan qaysi biri noto'g'ri (sintaktik xatoga olib keladi)?",
+      options: [
+        "`export const config = { ... }` va `import { config } from './config.js'`",
+        "`export default function App() {}` va `import App from './app.js'`",
+        "`export default const PI = 3.14;`",
+        "`export { add, sub } from './math.js'`"
+      ],
+      correctAnswer: 2,
+      explanation: "`export default` bilan birga to'g'ridan-to'g'ri o'zgaruvchi e'lon qilish (`const`, `let`, `var`) mumkin emas. Sintaktik jihatdan `export default 3.14;` yoki avval e'lon qilib so'ng `export default PI;` deb yozish kerak."
+    },
+    {
+      id: 3,
+      question: "JavaScript-da shartli ravishda (masalan, if-else ichida) yoki foydalanuvchi tugmani bosganda dinamik ravishda modulni yuklash uchun qanday sintaksisdan foydalaniladi?",
+      options: [
+        "`import module from './module.js'`",
+        "`import('./module.js')` funksiyasidek chaqiruvdan foydalaniladi va u Promise qaytaradi",
+        "`require('./module.js')`",
+        "Dinamik import qilishning iloji yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "`import()` funksiyasi modul yo'lini qabul qilib, Promise obyekti qaytaradi. U asenkron yuklash imkonini beradi va asosan veb-ilovaning ishlash tezligini oshirish uchun kerakli sahifani faqat foydalanuvchi kirganida yuklashda qo'llaniladi."
+    },
+    {
+      id: 4,
+      question: "ES Modullarining global scope (global doira) bilan ishlash tabiati qanday?",
+      options: [
+        "Modul ichida e'lon qilingan har qanday o'zgaruvchi avtomatik ravishda global `window` obyektiga yuklanadi",
+        "Har bir modul o'zining shaxsiy doirasiga (module scope) ega. Modul ichidagi o'zgaruvchi faqat `export` kalit so'zi yordamida eksport qilingandagina boshqa modullarga ko'rinadi. Shuningdek, modullar har doim avtomatik ravishda 'strict mode' (qat'iy rejim)da ishlaydi",
+        "Modullarda umuman global o'zgaruvchi ishlatib bo'lmaydi",
+        "Modullar faqat CSS o'zgaruvchilarini ko'ra oladi"
+      ],
+      correctAnswer: 1,
+      explanation: "ES modullari to'liq izolyatsiya qilingan bo'lib, o'zgaruvchilar global muhitni ifloslantirmaydi. Modul ichida yozilgan kodlar default ravishda strict rejimda ishlaydi, shuning uchun `'use strict'` deb yozish shart emas."
+    },
+    {
+      id: 5,
+      question: "Bundler-lar (masalan, Webpack, Vite) yordamida loyihani yig'ishda named export'lardan foydalanish qanday afzallik beradi (Tree-shaking nuqtai nazaridan)?",
+      options: [
+        "Sahifani tezroq yuklaydi, chunki rasmlar hajmi kichrayadi",
+        "Faqat ishlatilgan funksiyalar yakuniy bundlega qo'shiladi va ishlatilmagan (dead) kodlar olib tashlanadi (Tree-shaking), natijada yig'ilgan fayl hajmi sezilarli darajada qisqaradi",
+        "Loyihadagi barcha fayllarni bitta faylga majburlab joylaydi",
+        "Tree-shaking faqat CSS fayllar bilan ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Tree-shaking faqat ES modullarining statik import/export sintaksisi tufayli ishlaydi. Bundler kodni tahlil qilib, umuman chaqirilmagan named export funksiyalarni bundle (tayyor yig'ilgan) faylga qo'shmay tashlab ketadi."
+    }
   ]
 };

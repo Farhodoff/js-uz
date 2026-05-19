@@ -78,5 +78,67 @@ const phoneRegex = /^\\\\+998\\\\d{9}$/;
 const passRegex = /^(?=.*[A-Za-z])(?=.*\\\\d)[A-Za-z\\\\d]{8,}$/;
 
 // 5. Get all numbers
-"12 olma va 34 anor".match(/\\\\d+/g);`
+"12 olma va 34 anor".match(/\\\\d+/g);`,
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da Regular Expressions (RegEx) qanday asosiy maqsadlarda ishlatiladi?",
+      options: [
+        "Faqat matnlarni katta harflarga o'tkazish uchun",
+        "Matnlar ichidan ma'lum andozalar (patterns) bo'yicha qidirish, moslikni tekshirish, kerakli qismlarni ajratib olish va almashtirish uchun",
+        "Obyektlarni massivga o'tkazish uchun",
+        "CSS selektorlarini boshqarish uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "RegEx — bu matnlar bilan ishlashda juda kuchli qurol bo'lib, uning yordamida email, telefon raqami kabilarni tekshirish (validation) va kerakli andozadagi matnlarni izlab topish mumkin."
+    },
+    {
+      id: 2,
+      question: "RegEx-da bayroqlar (flags) ichida `g` va `i` nimani anglatadi?",
+      options: [
+        "`g` - global (barcha mosliklarni qidirish), `i` - ignore case (katta-kichik harflarni farqlamaslik)",
+        "`g` - group (guruhlash), `i` - index (indeks bo'yicha)",
+        "`g` - greedy (ochko'z), `i` - inline (qator ichida)",
+        "`g` - generator, `i` - iterator"
+      ],
+      correctAnswer: 0,
+      explanation: "`g` bayrog'i andozaga mos keladigan birinchi qismni topgach to'xtamasdan, satr oxirigacha qidirishni buyuradi. `i` bayrog'i esa katta va kichik harflarni bir xil deb hisoblaydi."
+    },
+    {
+      id: 3,
+      question: "RegEx andozasida faqat raqamlarni (0-9) topish uchun qaysi maxsus sinfdan (character class) foydalaniladi?",
+      options: [
+        "`\\w`",
+        "`\\s`",
+        "`\\d`",
+        "`.`"
+      ],
+      correctAnswer: 2,
+      explanation: "`\\d` (digit) belgisi har qanday raqam belgisini anglatadi. `\\w` esa so'z belgilari (harf, son va pastki chiziq), `\\s` bo'shliqlar, nuqta esa yangi qatordan boshqa har qanday bitta belgini bildiradi."
+    },
+    {
+      id: 4,
+      question: "RegEx-da `regex.test(str)` va `str.match(regex)` metodlarining farqi nimada?",
+      options: [
+        "Hech qanday farqi yo'q",
+        "`test()` faqat moslik bormi-yo'qligini tekshirib true/false qaytaradi; `match()` esa mos keluvchi qismlarni massiv shaklida ajratib qaytaradi",
+        "`test()` yangi matn qaytaradi, `match()` esa o'zgaruvchini o'chiradi",
+        "`test()` faqat Node.js'da, `match()` faqat brauzerda ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`RegExp.prototype.test()` metodi faqat andoza mosligini boolean shaklda tekshiradi va tezroq ishlaydi. `String.prototype.match()` esa topilgan natijalar ro'yxatini massiv qilib qaytaradi."
+    },
+    {
+      id: 5,
+      question: "RegEx andozasida satr (yoki qator) boshi va oxirini belgilash uchun mos ravishda qaysi anchor (langar) belgilaridan foydalaniladi?",
+      options: [
+        "`^` va `$`",
+        "`[` va `]`",
+        "`(` va `)`",
+        "`*` va `+`"
+      ],
+      correctAnswer: 0,
+      explanation: "`^` belgisi andozaning satr boshidan, `$` esa satr oxiridan boshlab mos kelishini talab qiladi. Ular asosan email yoki telefon raqami kabi to'liq matnli kiritmalarni boshidan oxirigacha aniq tekshirishda ishlatiladi."
+    }
+  ]
 };
