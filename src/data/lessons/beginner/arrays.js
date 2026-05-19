@@ -183,4 +183,4 @@ Ha, u massiv elementlari tartibini teskari qilib qo'yadi.
       explanation: "`join()` metodi barcha elementlarni birlashtirib, bitta string yaratadi. Qavs ichida ajratuvchi belgi berilishi mumkin (agar berilmasa, vergul `,` ishlatiladi)."
     }
   ]
-};
+};", file_path:

@@ -436,7 +436,7 @@ Ha, mutlaqo. Masalan callback pattern'lari, higher-order functions, va boshqalar
       options: [
         "Deklaratsiyada parametrlar ishlatilmaydi",
         "Declaration hoisting-ga bo'ysunadi (uni e'lon qilishdan oldin ham chaqirsa bo'ladi); Expression-da esa hoisting ishlamaydi va uni faqat e'lon qilingandan keyin chaqirish mumkin",
-        "Expression har doim `return` qaytaradi, Declaration esa yo'q",
+        "Expression har doim return qaytaradi, Declaration esa yo'q",
         "Ular o'rtasida hech qanday farq yo'q"
       ],
       correctAnswer: 1,
@@ -491,4 +491,4 @@ Ha, mutlaqo. Masalan callback pattern'lari, higher-order functions, va boshqalar
       explanation: "Arrow funksiyalar qisqaroq yozilishidan tashqari, o'zining shaxsiy `this` bog'lanishiga ega bo'lmaydi, balki tashqi (o'rab turgan) scope'dagi `this` ni o'zlashtiradi."
     }
   ]
-};
+};", file_path:

@@ -135,63 +135,63 @@ Siklni darhol to'xtatib, undan chiqib ketadi.
   quizzes: [
     {
       id: 1,
-      question: "`while` va `do...while` sikllari (loops) o'rtasidagi eng asosiy amaliy farq nimada?",
+      question: "\`while\` va \`do...while\` sikllari (loops) o'rtasidagi eng asosiy amaliy farq nimada?",
       options: [
-        "`while` sikli kamida bir marta ishlaydi, `do...while` esa shart noto'g'ri bo'lsa umuman ishlamaydi",
-        "`do...while` sikli shart noto'g'ri bo'lsa ham kamida bir marta ishlaydi; `while` esa birinchi bo'lib shartni tekshiradi va u bajarilmaguncha kodni ishga tushirmaydi",
+        "\`while\` sikli kamida bir marta ishlaydi, \`do...while\` esa shart noto'g'ri bo'lsa umuman ishlamaydi",
+        "\`do...while\` sikli shart noto'g'ri bo'lsa ham kamida bir marta ishlaydi; \`while\` esa birinchi bo'lib shartni tekshiradi va u bajarilmaguncha kodni ishga tushirmaydi",
         "Ular o'rtasida hech qanday farq yo'q",
-        "`while` faqat sonli shartlar bilan ishlaydi"
+        "\`while\` faqat sonli shartlar bilan ishlaydi"
       ],
       correctAnswer: 1,
-      explanation: "`do...while` siklida avval `do` blokidagi kod bajariladi, keyin shart tekshiriladi. Shuning uchun shart noto'g'ri bo'lsa ham kod kamida 1 marta ishlaydi. `while`-da esa shart boshida tekshiriladi."
+      explanation: "\`do...while\` siklida avval \`do\` blokidagi kod bajariladi, keyin shart tekshiriladi. Shuning uchun shart noto'g'ri bo'lsa ham kod kamida 1 marta ishlaydi. \`while\`-da esa shart boshida tekshiriladi."
     },
     {
       id: 2,
-      question: "Quyidagi `for` siklida `const` ishlatilishi qanday natijaga olib keladi?\n```javascript\nfor (const i = 0; i < 5; i++) {\n  console.log(i);\n}\n```",
+      question: "Quyidagi \`for\` siklida \`const\` ishlatilishi qanday natijaga olib keladi?\\n\`\`\`javascript\\nfor (const i = 0; i < 5; i++) {\\n  console.log(i);\\n}\\n\`\`\`",
       options: [
         "0 dan 4 gacha sonlar ekranga chiqadi",
-        "`TypeError: Assignment to constant variable` xatosi yuz beradi (chunki `i++` har bir aylanishda `i` ning qiymatini o'zgartirishga harakat qiladi, const esa bunga yo'l qo'ymaydi)",
+        "\`TypeError: Assignment to constant variable\` xatosi yuz beradi (chunki \`i++\` har bir aylanishda \`i\` ning qiymatini o'zgartirishga harakat qiladi, const esa bunga yo'l qo'ymaydi)",
         "Tsikl cheksiz davom etadi",
         "Faqat 0 soni chiqadi va tsikl tugaydi"
       ],
       correctAnswer: 1,
-      explanation: "`for` siklida boshqaruvchi o'zgaruvchi har bir qadamda yangilanadi (qiymati qayta yuklanadi). `const` bilan yaratilgan o'zgaruvchilarni qayta o'zgartirib bo'lmagani sababli, `i++` bajarilishida xatolik yuz beradi."
+      explanation: "\`for\` siklida boshqaruvchi o'zgaruvchi har bir qadamda yangilanadi (qiymati qayta yuklanadi). \`const\` bilan yaratilgan o'zgaruvchilarni qayta o'zgartirib bo'lmagani sababli, \`i++\` bajarilishida xatolik yuz beradi."
     },
     {
       id: 3,
       question: "Obyektning kalitlarini (keys) yoki xususiyatlarini (properties) ketma-ket aylanib chiqish (iterate) uchun qaysi sikldan foydalanish eng to'g'ri?",
       options: [
-        "`for...of`",
-        "`for...in`",
-        "`while`",
-        "`do...while`"
+        "\`for...of\`",
+        "\`for...in\`",
+        "\`while\`",
+        "\`do...while\`"
       ],
       correctAnswer: 1,
-      explanation: "`for...in` sikli obyektlarning kalitlarini aylanib chiqish uchun maxsus ishlab chiqilgan. `for...of` esa massivlar va iterable ma'lumotlar qiymatlari uchun ishlatiladi."
+      explanation: "\`for...in\` sikli obyektlarning kalitlarini aylanib chiqish uchun maxsus ishlab chiqilgan. \`for...of\` esa massivlar va iterable ma'lumotlar qiymatlari uchun ishlatiladi."
     },
     {
       id: 4,
       question: "Massiv (Array) qiymatlarini indekslar bilan ishlamasdan, to'g'ridan-to'g'ri elementlarini o'qib chiqish uchun qaysi sikl qulay hisoblanadi?",
       options: [
-        "`for...in`",
-        "`for...of`",
-        "`while`",
-        "`do...while`"
+        "\`for...in\`",
+        "\`for...of\`",
+        "\`while\`",
+        "\`do...while\`"
       ],
       correctAnswer: 1,
-      explanation: "`for...of` sikli massiv elementlari (indeksi emas, qiymatlari) bo'ylab to'g'ridan-to'g'ri aylanish imkonini beradi."
+      explanation: "\`for...of\` sikli massiv elementlari (indeksi emas, qiymatlari) bo'ylab to'g'ridan-to'g'ri aylanish imkonini beradi."
     },
     {
       id: 5,
-      question: "Quyidagi kod ishga tushganda brauzer yoki kompyuter nima uchun qotib qoladi (cheksiz sikl hosil bo'ladi)?\n```javascript\nlet i = 0;\nwhile (i < 5) {\n  console.log(i);\n}\n```",
+      question: "Quyidagi kod ishga tushganda brauzer yoki kompyuter nima uchun qotib qoladi (cheksiz sikl hosil bo'ladi)?\\n\`\`\`javascript\\nlet i = 0;\\nwhile (i < 5) {\\n  console.log(i);\\n}\\n\`\`\`",
       options: [
         "Chunki console.log juda ko'p xotira sarflaydi",
-        "Chunki `i` o'zgaruvchisining qiymatini oshiruvchi qadam (`i++` yoki shunga o'xshash amal) yozilmagan, natijada shart (`i < 5`) doimo true bo'lib qolaveradi",
-        "Chunki `i` global o'zgaruvchi",
-        "Chunki `while` siklida qavslar noto'g'ri yozilgan"
+        "Chunki \`i\` o'zgaruvchisining qiymatini oshiruvchi qadam (\`i++\` yoki shunga o'xshash amal) yozilmagan, natijada shart (\`i < 5\`) doimo true bo'lib qolaveradi",
+        "Chunki \`i\` global o'zgaruvchi",
+        "Chunki \`while\` siklida qavslar noto'g'ri yozilgan"
       ],
       correctAnswer: 1,
-      explanation: "Sikl to'xtashi uchun undagi shart qachondir false bo'lishi kerak. `i` o'zgarmasdan 0 ligicha qolganligi sababli `i < 5` (0 < 5) har doim `true` bo'lib sikl to'xtamaydi."
+      explanation: "Sikl to'xtashi uchun undagi shart qachondir false bo'lishi kerak. \`i\` o'zgarmasdan 0 ligicha qolganligi sababli \`i < 5\` (0 < 5) har doim \`true\` bo'lib sikl to'xtamaydi."
     }
   ]
-};
+};", file_path:
