@@ -14,6 +14,12 @@ module.exports = {
     ecmaFeatures: { jsx: true },
   },
   settings: { react: { version: 'detect' } },
+  overrides: [
+    {
+      files: ['api/**/*.test.js'],
+      env: { node: true },
+    },
+  ],
   rules: {
     'react/prop-types': 'off',
     'react/no-unescaped-entities': 'off',
