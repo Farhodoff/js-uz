@@ -72,5 +72,67 @@ console.log(yangi); // "Bugun havo zo'r"
       hint: "let res = word.trim().toUpperCase();",
       test: "if (res === 'JS') return null; return 'Xato bajardingiz!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da string (matn) metodlari ishlatilganda asl o'zgaruvchi qiymati qanday o'zgaradi?",
+      options: [
+        "Asl o'zgaruvchi avtomatik ravishda yangi qiymatga almashadi",
+        "Asl o'zgaruvchi umuman o'zgarmaydi, chunki stringlar immutable (o'zgarmas) hisoblanadi va metodlar yangi string qaytaradi",
+        "Asl o'zgaruvchi xotiradan butunlay o'chib ketadi",
+        "Faqat `.replace()` ishlatilganda o'zgaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript-da satrlar (stringlar) immutable, ya'ni o'zgarmasdir. Istalgan string metodi mavjud satr ustida bajarilganda asl qiymatni o'zgartirmaydi, balki yangilangan yangi satrni qaytaradi."
+    },
+    {
+      id: 2,
+      question: "`let txt = \"Frontend\"; txt.slice(0, 4)` ifodasidan qanday natija qaytadi?",
+      options: [
+        "`\"Fron\"` (chunki 0-indeksdan 4-indeksgacha bo'lgan belgilarni kesib oladi, 4-indeksning o'zi kirmaydi)",
+        "`\"Front\"`",
+        "`\"tend\"`",
+        "`\"Frontend\"`"
+      ],
+      correctAnswer: 0,
+      explanation: "`.slice(start, end)` metodi ko'rsatilgan `start` indeksidan boshlab `end` indeksigacha bo'lgan qismni kesib oladi, lekin oxirgi ko'rsatilgan indeksdagi belgini o'z ichiga olmaydi."
+    },
+    {
+      id: 3,
+      question: "Foydalanuvchi kiritgan matn boshidagi va oxiridagi bo'shliqlarni olib tashlash (tozalash) uchun qaysi metoddan foydalaniladi?",
+      options: [
+        "`.clean()`",
+        "`.trim()`",
+        "`.sliceSpace()`",
+        "`.clear()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`.trim()` metodi satrning boshi va oxiridagi barcha ortiqcha bo'shliqlarni o'chirib tashlaydi."
+    },
+    {
+      id: 4,
+      question: "Matnni ma'lum bir belgi (masalan, vaqtinchalik bo'sh joy yoki vergul `,`) bo'yicha bo'laklarga ajratib, massivga (array) o'tkazish uchun qaysi metod qo'llaniladi?",
+      options: [
+        "`.slice()`",
+        "`.split()`",
+        "`.join()`",
+        "`.divide()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`.split()` metodi berilgan ajratuvchi (separator) belgi asosida matnni qismlarga bo'lib, massivga aylantirib qaytaradi."
+    },
+    {
+      id: 5,
+      question: "`let code = \"JavaScript\"; console.log(code.includes(\"java\"))` natijasi nima bo'ladi va nima uchun?",
+      options: [
+        "`true`",
+        "`false` (chunki string metodlari harflarning katta-kichikligiga sezgir (case-sensitive) hisoblanadi, shuning uchun 'Java' va 'java' har xil)",
+        "`undefined`",
+        "`TypeError` xatosi kelib chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "String metodlari katta va kichik harflarni farqlaydi (case-sensitive). \"JavaScript\" so'zida kichik harflar bilan yozilgan \"java\" so'zi qatnashmaganligi sababli `.includes(\"java\")` false qaytaradi."
+    }
   ]
 };

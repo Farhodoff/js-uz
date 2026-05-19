@@ -64,5 +64,67 @@ console.log(Math.abs(-5)); // 5 (modul - har doim musbat)
       hint: "let dice = Math.floor(Math.random() * 6) + 1;",
       test: "if (dice >= 1 && dice <= 6) return null; return '1 va 6 oralig\\'ida bo\\'lishi kerak!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`Math.floor(4.9)` va `Math.ceil(4.1)` amallaridan qanday natijalar qaytadi?",
+      options: [
+        "`4` va `4`",
+        "`5` va `5`",
+        "`4` va `5` (chunki floor doim pastga (kichik butun songa), ceil esa har doim yuqoriga yaxlitlaydi)",
+        "`5` va `4`"
+      ],
+      correctAnswer: 2,
+      explanation: "`Math.floor()` kasr sonni o'zidan kichik yoki teng bo'lgan eng yaqin butun songa yaxlitlaydi. `Math.ceil()` (shift) esa o'zidan katta yoki teng eng yaqin butun songa yaxlitlaydi."
+    },
+    {
+      id: 2,
+      question: "Quyidagilardan qaysi biri sonning kasr (nuqtadan keyingi) qismini shunchaki kesib tashlab, butun qismini qaytaradi?",
+      options: [
+        "`Math.trunc()`",
+        "`Math.floor()`",
+        "`Math.round()`",
+        "`Math.cut()`"
+      ],
+      correctAnswer: 0,
+      explanation: "`Math.trunc()` (truncate - kesish) metodi musbat va manfiy sonlarda shunchaki kasr qismini olib tashlab, butun sonni qaytaradi."
+    },
+    {
+      id: 3,
+      question: "JavaScript-da 1 dan 10 gacha bo'lgan (1 va 10 ham kiradigan) tasodifiy butun son yaratish uchun qaysi ifoda to'g'ri hisoblanadi?",
+      options: [
+        "`Math.random() * 10`",
+        "`Math.floor(Math.random() * 10)`",
+        "`Math.floor(Math.random() * 10) + 1` (chunki Math.random() * 10 0.00 dan 9.99 gacha qiymat beradi, floor unga 0..9 qiladi va +1 qo'shish 1..10 oraliqni beradi)",
+        "`Math.ceil(Math.random() * 10) + 1`"
+      ],
+      correctAnswer: 2,
+      explanation: "`Math.random()` 0 (shu jumladan) va 1 (istisno) oralig'idagi sonni beradi. Uni `10` ga ko'paytirib, `Math.floor()` bilan yaxlitlasak `0` dan `9` gacha son olamiz. Unga `1` qo'shish orqali 1 dan 10 gacha bo'lgan to'liq diapazonni hosil qilamiz."
+    },
+    {
+      id: 4,
+      question: "`Math.max(1, -5, 10, \"15\")` ifodasi bajarilganda qanday natija chiqadi va nima uchun?",
+      options: [
+        "`10` (chunki string turidagi \"15\" hisobga olinmaydi)",
+        "`15` (chunki JS solishtirish jarayonida \"15\" stringini avtomatik ravishda 15 soniga aylantiradi (coercion) va u eng katta bo'ladi)",
+        "`NaN` (chunki matn qatnashdi)",
+        "`TypeError` xatosi yuz beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "`Math.max()` va `Math.min()` metodlari o'z argumentlarini taqqoslashdan oldin avtomatik ravishda songa o'zgartiradi (coercion). Shuning uchun `\"15\"` matni `15` soniga o'girilib, eng katta son sifatida qaytariladi."
+    },
+    {
+      id: 5,
+      question: "JavaScript-da `Math` obyekti bilan ishlashda qaysi xatoliklar ko'p uchraydi?",
+      options: [
+        "Uni `new Math()` deb yaratib ishlatish xatosi",
+        "`Math` so'zini kichik harflar bilan `math.floor()` deb yozish (chunki Math global obyekti har doim bosh harfi katta bilan yozilishi shart)",
+        "Math.PI ni funksiya kabi `Math.PI()` deb chaqirish",
+        "Barcha ko'rsatilgan javoblar to'g'ri"
+      ],
+      correctAnswer: 3,
+      explanation: "`Math` konstruktor funksiya emas, shuning uchun `new` kalit so'zi bilan obyekti yaratilmaydi. Shuningdek u JavaScript-ning statik obyektidir — nomi katta harf bilan boshlanadi va undagi o'zgarmas `PI` xususiyatini (`Math.PI`) chaqiriq qavslari `()` bilan chaqirib bo'lmaydi."
+    }
   ]
 };

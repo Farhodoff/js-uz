@@ -76,10 +76,72 @@ salom();
     {
       id: 1,
       title: "Local scope mashqi",
-      instruction: "Funksiya ichida o'zgaruvchi yarating va uni tashqarida chiqarishga urinib xato (ReferenceError) oling.",
+      instruction: "Funksiya ichida o'zgaruvchi yarating va va uni tashqarida chiqarishga urinib xato (ReferenceError) oling.",
       startingCode: "function test() {\n  // Bu yerda let x = 5 yarating\n}\ntest();\n// Bu yerda console.log(x) qiling",
       hint: "console.log(x) ni test() dan tashqarida yozing.",
       test: "if (output.includes('ReferenceError')) return null; return 'Xato chiqishi kerak edi';"
+    }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da scope (ko'rinish sohasi) nima?",
+      options: [
+        "Kodni tezlashtiruvchi maxsus rejim",
+        "O'zgaruvchi va funksiyalarning kodingizda qayerda 'yashashi' (ko'rinishi va ishlatilishi mumkinligi)ni belgilovchi hudud",
+        "Faqat server bilan bog'lanish uchun xizmat qiladigan vosita",
+        "Obyektlar ichidagi metodlar to'plami"
+      ],
+      correctAnswer: 1,
+      explanation: "Scope o'zgaruvchi va funksiyalarning kod hududlaridagi ko'rinish va foydalanish chegaralarini aniqlab beruvchi mantiqiy qobiqdir."
+    },
+    {
+      id: 2,
+      question: "Funksiya yoki block `{}` tashqarisida, ya'ni kodning eng yuqori qismida e'lon qilingan o'zgaruvchi qaysi scope doirasiga kiradi?",
+      options: [
+        "Function Scope",
+        "Block Scope",
+        "Global Scope (u kodning istalgan joyidan, jumladan funksiyalar ichidan ham ko'rinadi)",
+        "Lexical Scope"
+      ],
+      correctAnswer: 2,
+      explanation: "Kodning eng yuqori qismida, hech qanday funksiya yoki blok ichida bo'lmagan o'zgaruvchilar Global Scope-ga tegishli bo'lib, butun dastur bo'yicha ko'rinadi."
+    },
+    {
+      id: 3,
+      question: "`if` sharti yoki `for` sikli bloklari `{}` ichida `let` yoki `const` yordamida yaratilgan o'zgaruvchilarning ko'rinish sohasi qanday bo'ladi?",
+      options: [
+        "Ular butun fayl bo'ylab (global) ko'rinadi",
+        "Ular faqat o'sha jingalak qavslar `{}` ichida ko'rinadi (Block Scope)",
+        "Ular faqat funksiyalar ichida ko'rinadi",
+        "Ular umuman ishlamaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`let` va `const` o'zgaruvchilari Block Scope (blok ko'rinish sohasi) qoidalariga bo'ysunadi, ya'ni ular faqat o'zlari e'lon qilingan jingalak qavslar `{}` blokida ishlaydi."
+    },
+    {
+      id: 4,
+      question: "Nima uchun JavaScript-da global scope-da juda ko'p o'zgaruvchilar yaratish (\"Global Namespace Pollution\") tavsiya etilmaydi?",
+      options: [
+        "Chunki global o'zgaruvchilar dasturning xotira sarfini kamaytiradi",
+        "Kodni o'qish qiyinlashadi va nomlar to'qnashuvi (collision) tufayli kutilmagan xatoliklar (bug) yuz berishi mumkin",
+        "Chunki brauzer global o'zgaruvchilar bilan ishlay olmaydi",
+        "Bunday cheklov mavjud emas"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar ko'p global o'zgaruvchilar bo'lsa, kodni boshqarish qiyinlashadi, shuningdek, turli kutubxonalar yoki funksiyalar bir xil nomdagi o'zgaruvchilarni tasodifan o'zgartirib yuborishi (naming collision) mumkin."
+    },
+    {
+      id: 5,
+      question: "Quyidagi kodda `console.log(b)` chaqirilganda qanday natija olinadi?\n```javascript\nif (true) {\n  var a = 5;\n  let b = 10;\n}\nconsole.log(a);\nconsole.log(b);\n```",
+      options: [
+        "Ikkalasi ham xato beradi",
+        "5 va 10 chiqadi",
+        "a uchun `5` chiqadi, lekin b uchun `ReferenceError` xatosi beradi (chunki var block scope-ni tan olmaydi, let esa block scope-ga ega)",
+        "a uchun `ReferenceError` beradi, b uchun 10 chiqadi"
+      ],
+      correctAnswer: 2,
+      explanation: "`var` kalit so'zi bilan yaratilgan o'zgaruvchilar block scope-ga ega bo'lmaydi, shuning uchun `if` tashqarisida ham ko'rinadi. `let` esa blok sohasi bilan cheklanganligi uchun, block tashqarisida `ReferenceError` beradi."
     }
   ]
 };

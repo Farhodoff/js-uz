@@ -69,5 +69,67 @@ console.log(x); // 20
       hint: "count++;",
       test: "if (count === 1) return null; return 'O\\'zgaruvchi oshmadi!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da global scope (global doira) deb qaysi doiraga aytiladi?",
+      options: [
+        "Faqat `if` sharti bajariladigan blokka",
+        "Kodning eng tashqi qismi bo'lib, unda e'lon qilingan o'zgaruvchi va funksiyalar dasturning istalgan joyidan ko'rinadi",
+        "Faqat server muhiti (Node.js)dagi maxsus doiraga",
+        "Faqat HTML fayliga bog'langan qismga"
+      ],
+      correctAnswer: 1,
+      explanation: "Global doira bu kodning eng yuqori, tashqi qavatidir. Undagi ma'lumotlar local (funksiya yoki blok) scopelar uchun ochiq hisoblanadi."
+    },
+    {
+      id: 2,
+      question: "Brauzer muhitida global doirada `var` yordamida yaratilgan o'zgaruvchi qaysi global obyektning xususiyatiga (property) aylanadi?",
+      options: [
+        "`document`",
+        "`window` (masalan: `var x = 5` yaratilsa, unga `window.x` orqali murojaat qilish mumkin)",
+        "`console`",
+        "`globalThis` faqat Node.js-da"
+      ],
+      correctAnswer: 1,
+      explanation: "Brauzerlarda global ob'ekt `window` hisoblanadi. Global doiradagi har qanday `var` o'zgaruvchisi avtomatik tarzda `window` obyektining xususiyatiga aylanadi."
+    },
+    {
+      id: 3,
+      question: "Global doirada `let` yoki `const` yordamida yaratilgan o'zgaruvchilarning `var` dan eng katta farqi nimada?",
+      options: [
+        "Ular global doiradan ko'rinmaydi",
+        "Ular brauzerning global `window` obyektiga xususiyat bo'lib qo'shilmaydi",
+        "Ularning qiymatini o'zgartirib bo'lmaydi",
+        "Ular xotirani band qilmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`let` va `const` global doirada e'lon qilinsa ham, ular xavfsizlik va yangi standart qoidalariga ko'ra `window` obyektiga xususiyat sifatida biriktirilmaydi."
+    },
+    {
+      id: 4,
+      question: "Nima uchun JavaScript-da global doiradagi o'zgaruvchilardan imkon qadar kamroq foydalanish tavsiya etiladi?",
+      options: [
+        "Chunki global o'zgaruvchilar dasturni sekinlashtiradi",
+        "Chunki turli fayllarda yoki kutubxonalarda bir xil nomli o'zgaruvchilar bir-birining qiymatini kutilmaganda o'zgartirib yuborishi (global pollution/ifloslanish) mumkin",
+        "Ular hech qachon xotiradan o'chmaydi",
+        "To'g'ri javob: ham global ifloslanish xavfi, ham ular dastur ishlayotgan vaqt davomida xotirada saqlanib qolishi sababli"
+      ],
+      correctAnswer: 3,
+      explanation: "Global o'zgaruvchilar butun dastur faoliyati davomida xotirani egallab turadi hamda koddagi nomlar to'qnashuvi xavfini (name collision) sezilarli darajada oshiradi."
+    },
+    {
+      id: 5,
+      question: "Brauzerda ham, Node.js-da ham universal tarzda global obyektga murojaat qilish uchun ES2020 standartida qaysi kalit so'z kiritildi?",
+      options: [
+        "`window`",
+        "`global`",
+        "`globalThis`",
+        "`root`"
+      ],
+      correctAnswer: 2,
+      explanation: "`globalThis` kalit so'zi JavaScript ishlaydigan istalgan muhitda (brauzerda `window`, Node.js-da `global`) global obyektga murojaat qilishning yagona standart usulidir."
+    }
   ]
 };

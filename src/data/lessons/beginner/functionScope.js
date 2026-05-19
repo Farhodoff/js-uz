@@ -72,5 +72,67 @@ console.log(ism); // Ali (Global ism o'zgarmadi!)
       hint: "let msg = 'Salom';",
       test: "if (code.includes('msg')) return null; return 'O\\'zgaruvchi yaratilmadi!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Funksiya ichida e'lon qilingan har qanday o'zgaruvchining hayot davri (lifetime) qachon tugaydi?",
+      options: [
+        "Brauzer yopilganda",
+        "Funksiya o'z ishini bajarib bo'lganidan so'ng (funksiya tugashi bilan uning ichidagi barcha o'zgaruvchilar xotiradan o'chiriladi)",
+        "Hech qachon o'chmaydi",
+        "Faqat sahifa yangilanganda"
+      ],
+      correctAnswer: 1,
+      explanation: "Funksiya chaqirilganda uning lokal o'zgaruvchilari yaratiladi va funksiya o'z ishini tugatishi (return bo'lishi) bilan bu o'zgaruvchilar xotirani band qilmasligi uchun avtomatik ravishda yo'q qilinadi."
+    },
+    {
+      id: 2,
+      question: "Funksiya ichida e'lon qilingan `var`, `let` va `const` o'zgaruvchilaridan qaysi birlarini funksiya tashqarisidan turib chaqirish (ishlatish) mumkin?",
+      options: [
+        "Faqat `var` yordamida yaratilganini",
+        "Faqat `let` va `const` yordamida yaratilganini",
+        "Hech birini (funksiya ichida e'lon qilingan har qanday o'zgaruvchi tashqaridan mutlaqo yopiq bo'ladi)",
+        "Barchasini ishlatish mumkin"
+      ],
+      correctAnswer: 2,
+      explanation: "Qaysi kalit so'z ishlatilishidan qat'iy nazar (`var`, `let`, yoki `const`), funksiya doirasida (Function Scope) yaratilgan o'zgaruvchilar tashqi dunyodan mutlaqo himoyalangan va faqat o'sha funksiya ichida amal qiladi."
+    },
+    {
+      id: 3,
+      question: "Agar funksiya ichida o'zgaruvchi e'lon qilinayotganda hech qanday kalit so'z (`var`, `let` yoki `const`) ishlatilmasdan qiymat berilsa (masalan: `x = 10;`), bu qanday oqibatga olib keladi?",
+      options: [
+        "Bu xatolik (Error) beradi va dastur to'xtaydi",
+        "Ushbu o'zgaruvchi avtomatik ravishda Global Scope-ga qo'shiladi va butun kod bo'ylab o'zgaradi, bu esa namespace pollution xavfini keltirib chiqaradi",
+        "U faqat funksiya ichida block scope bo'ladi",
+        "U o'zgarmas `const` ga aylanadi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript-da kalit so'zsiz o'zgaruvchi e'lon qilinganda (strict mode bo'lmagan holatlarda) u global `window` yoki `global` obyektiga biriktirib qo'yiladi. Bu esa xavfli hisoblanadi."
+    },
+    {
+      id: 4,
+      question: "Agar bir xil nomli ham global o'zgaruvchi, ham funksiya ichida lokal o'zgaruvchi mavjud bo'lsa, funksiya ichida o'sha nom chaqirilganda qaysi biri ustuvor bo'ladi (Variable Shadowing)?",
+      options: [
+        "Global o'zgaruvchi ustuvor bo'ladi",
+        "Lokal o'zgaruvchi (chunki JS birinchi bo'lib o'zining ichki ko'rinish sohasini (local scope) tekshiradi)",
+        "Ikkalasi ham qo'shilib ketadi",
+        "Dastur xatolik beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Buni \"Variable Shadowing\" deb atashadi. Lokal o'zgaruvchi o'sha funksiya ichida tashqaridagi global o'zgaruvchining ko'rinishini to'sib qo'yadi."
+    },
+    {
+      id: 5,
+      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet data = \"A\";\nfunction change() {\n  let data = \"B\";\n}\nchange();\nconsole.log(data);\n```",
+      options: [
+        "`\"B\"`",
+        "`\"A\"` (chunki funksiya ichidagi data o'zgaruvchisi faqat lokal hududda yashaydi va tashqaridagi global data qiymatini o'zgartira olmaydi)",
+        "`undefined`",
+        "`TypeError`"
+      ],
+      correctAnswer: 1,
+      explanation: "`change()` funksiyasi ichida `let data` yordamida mutlaqo yangi lokal o'zgaruvchi yaratildi. Tashqaridagi global `data` o'zgarishsiz `\"A\"` holida qoladi."
+    }
   ]
 };

@@ -69,5 +69,67 @@ console.log(z); // 30
       hint: "{ let x = 5; } console.log(x);",
       test: "if (output.includes('ReferenceError')) return null; return 'Xato chiqishi kerak edi!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da block (blok) deganda aynan qaysi belgilar bilan o'ralgan kod qismi tushuniladi?",
+      options: [
+        "Qavslar `()`",
+        "Jingalak qavslar `{}` (masalan: `if`, `for` yoki shunchaki alohida blok ochilganda)",
+        "Kvadrat qavslar `[]`",
+        "Burchakli qavslar `<>`"
+      ],
+      correctAnswer: 1,
+      explanation: "Jingalak qavslar `{}` JavaScript-da blokni hosil qiladi. Ular yordamida guruhlangan kodlar bloki yasaladi."
+    },
+    {
+      id: 2,
+      question: "Quyidagilardan qaysi biri block scope-ga (blok ko'rinish sohasiga) ega emas?",
+      options: [
+        "`let`",
+        "`const`",
+        "`var` (chunki u faqat global yoki function scope-ga bo'ysunadi, blok devorlaridan o'tib ketadi)",
+        "Barcha ko'rsatilganlar block scope-ga ega"
+      ],
+      correctAnswer: 2,
+      explanation: "`var` o'zgaruvchisi blokni tan olmaydi. Agar u blok (`{}`) ichida e'lon qilinsa, u blokdan tashqarida ham ko'rinadi (agar funksiya ichida bo'lmasa)."
+    },
+    {
+      id: 3,
+      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet num = 5;\n{\n  let num = 10;\n}\nconsole.log(num);\n```",
+      options: [
+        "`10`",
+        "`5` (chunki blok ichida yaratilgan `let num = 10` faqat blok ichida amal qiladi va tashqi block/global hududdagi `num` qiymatini o'zgartirmaydi)",
+        "`TypeError`",
+        "`ReferenceError`"
+      ],
+      correctAnswer: 1,
+      explanation: "Blok ichidagi `let num = 10` tashqaridagi global `num = 5` ni blok ichidagina yashiradi (shadowing). Blok tugashi bilan lokal `num` o'chadi va tashqarida global `num` (5) ko'rinadi."
+    },
+    {
+      id: 4,
+      question: "Blok ichida blok (nested blocks) bo'lgan holatda o'zgaruvchilarning ko'rinishi bo'yicha qaysi qoida to'g'ri?",
+      options: [
+        "Ichki blok o'zidan tashqaridagi (tashqi) blok o'zgaruvchilarini ko'ra oladi, ammo tashqi blok ichki blok o'zgaruvchilarini ko'ra olmaydi",
+        "Tashqi blok ichki blok o'zgaruvchilarini ko'ra oladi",
+        "Ular bir-birini mutlaqo ko'ra olmaydi",
+        "Ikkalasi ham bir-birining o'zgaruvchilarini ko'ra oladi"
+      ],
+      correctAnswer: 0,
+      explanation: "Scope zanjiri (Scope Chain) bo'yicha, ichkaridagi bloklar har doim o'zining tashqi o'rab turgan bloklaridagi o'zgaruvchilardan foydalana oladi. Lekin aksincha (tashqaridan ichkariga) bo'lishi mumkin emas."
+    },
+    {
+      id: 5,
+      question: "Nima uchun `for` tsikli yozayotganda hisoblagich o'zgaruvchini (counter) `var i = 0` emas, `let i = 0` yordamida yaratish tavsiya etiladi?",
+      options: [
+        "Chunki `let` tezroq ishlaydi",
+        "`var` bilan yaratilgan `i` tsikl tugagandan keyin ham globalda qolib ketib, boshqa kodlarga xalaqit berishi (nomlar chalkashishi) mumkin; `let` esa faqat tsikl bloki ichida yashaydi",
+        "Chunki `var` tsikl ichida ishlamaydi",
+        "Ikkalasi o'rtasida hech qanday farq yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "`var i = 0` deb yozilganda `i` o'zgaruvchisi tsikldan tashqarida ham yashaydi. Bu esa xatoliklarga olib kelishi mumkin. `let` tsikl tugashi bilan xotiradan butunlay tozalanadi."
+    }
   ]
 };

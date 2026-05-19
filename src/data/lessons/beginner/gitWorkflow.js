@@ -105,5 +105,67 @@ fsoyilovv@gmail.com
       hint: "git config user.name \"Farhodoff\"",
       test: "if (code.includes('git config user.name') && code.includes('Farhodoff')) return null; return 'Buyruqni to\\'g\\'ri yozing: git config user.name \"Farhodoff\"';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Farhodoff ish tartibiga ko'ra, har bir yangilanish (update) amalga oshirilgandan so'ng qanday chora ko'rilishi shart?",
+      options: [
+        "Faqat haftalik hisobot yuborish kerak",
+        "Darhol o'zgarishlarni commit va push qilish lozim",
+        "Kodni local kompyuterda saqlab, haftaning oxirida push qilish kerak",
+        "Hech qanday chora ko'rish talab etilmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Loyiha qoidalariga binoan (GEMINI.md), har bir yangilanishdan so'ng darhol commit va push qilinishi belgilangan."
+    },
+    {
+      id: 2,
+      question: "Farhodoff loyiha qoidalariga muvofiq, Git commits xabarlari va kod izohlari qaysi tilda bo'lishi shart?",
+      options: [
+        "Ingliz tilida",
+        "O'zbek tilida",
+        "Rus tilida",
+        "Dasturchining ixtiyoriy tanlagan tilida"
+      ],
+      correctAnswer: 1,
+      explanation: "Loyiha qoidalariga binoan, barcha izohlar va Git yozuvlari o'zbek tilida bo'lishi shart."
+    },
+    {
+      id: 3,
+      question: "Pedagogik ish tartibiga muvofiq, nazariya va amaliyot foiz hisobidagi nisbati qanday bo'lishi belgilangan?",
+      options: [
+        "Nazariya 80%, Amaliyot 20%",
+        "Nazariya 20-30%, Amaliyot 70-80%",
+        "Nazariya 50%, Amaliyot 50%",
+        "Faqat amaliyot (100%)"
+      ],
+      correctAnswer: 1,
+      explanation: "Pedagogik qoidalarga ko'ra, darslar nazariyaga emas, balki ko'proq amaliyotga yo'naltirilgan bo'lishi kerak: nazariya 20-30%, amaliyot esa 70-80%."
+    },
+    {
+      id: 4,
+      question: "Git-da loyihaga o'zgarishlar kiritgandan keyin ularni masofaviy (remote) serverga yuborish uchun qaysi buyruq ishlatiladi?",
+      options: [
+        "`git commit`",
+        "`git push`",
+        "`git pull`",
+        "`git init`"
+      ],
+      correctAnswer: 1,
+      explanation: "`git push` buyrug'i mahalliy kompyuterdagi (local) o'zgarishlarni GitHub kabi masofaviy repository'ga yuboradi."
+    },
+    {
+      id: 5,
+      question: "Nima uchun o'zgarishlarni bitta katta commit qilish o'rniga kichik-kichik mantiqiy commitlarga bo'lish tavsiya etiladi?",
+      options: [
+        "Chunki katta commitlar taqiqlangan va Git ularni qabul qilmaydi",
+        "Xatoliklarni (bug) osonroq aniqlash va versiyalar tarixini toza va tushunarli saqlash uchun",
+        "Kichik commitlar tezroq yuklanadi",
+        "Bu dasturchining tezligini oshiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Kichik commitlar loyiha tarixida harakatlanishni (rollback) va qaysi o'zgarish xatoga sabab bo'lganini aniqlashni sezilarli darajada osonlashtiradi."
+    }
   ]
 };
