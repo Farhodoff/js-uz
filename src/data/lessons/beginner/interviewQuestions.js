@@ -66,5 +66,42 @@ console.log(isPalindrom("non")); // true
       hint: "return num % 2 === 0;",
       test: "if (isEven(4) === true && isEven(5) === false) return null; return 'Mantiq xato!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Quyidagi kod nima natija beradi?\n```javascript\nconsole.log(typeof null);\n```",
+      options: ["\"object\"", "\"null\"", "\"undefined\"", "\"NaN\""],
+      correctAnswer: 0,
+      explanation: "JavaScriptda `typeof null` tarixiy xatolik (bug) tufayli `\"object\"` qaytaradi. Bu tilning birinchi versiyasidan beri shunday saqlanib kelmoqda."
+    },
+    {
+      id: 2,
+      question: "Quyidagi taqqoslash nima qaytaradi?\n```javascript\nconsole.log(0.1 + 0.2 === 0.3);\n```",
+      options: ["true", "false", "undefined", "TypeError"],
+      correctAnswer: 1,
+      explanation: "JavaScriptda kasrli sonlar IEEE 754 standarti bo'yicha ikkilik sanoq tizimida saqlanadi. Shuning uchun `0.1 + 0.2` aslida `0.30000000000000004` ga teng bo'lib qoladi va natija false chiqadi."
+    },
+    {
+      id: 3,
+      question: "Quyidagi kod nima natija beradi?\n```javascript\nlet a = 10;\n{\n  console.log(a);\n  let a = 20;\n}\n```",
+      options: ["10", "20", "undefined", "ReferenceError"],
+      correctAnswer: 3,
+      explanation: "Block scope ichida `let` yoki `const` orqali e'lon qilingan o'zgaruvchi hoisting bo'ladi, lekin u e'lon qilingan qatorgacha Temporal Dead Zone (TDZ) holatida bo'ladi. Unga e'lon qilinishidan oldin murojaat qilish `ReferenceError` xatosini beradi."
+    },
+    {
+      id: 4,
+      question: "Quyidagi kodlar konsolga nimalarni chiqaradi?\n```javascript\nconsole.log(\"5\" - 3);\nconsole.log(\"5\" + 3);\n```",
+      options: ["2 va 8", "\"5-3\" va \"53\"", "2 va \"53\"", "NaN va \"53\""],
+      correctAnswer: 2,
+      explanation: "Ayirish (-) operatori matnni avtomatik ravishda songa o'zgartiradi (`\"5\"` -> 5), natijada 5 - 3 = 2. Qo'shish (+) operatori esa matnlarni birlashtiradi (concatenation), shuning uchun `\"5\"` + 3 = `\"53\"`."
+    },
+    {
+      id: 5,
+      question: "NaN taqqoslanganda nima chiqadi?\n```javascript\nconsole.log(NaN === NaN);\n```",
+      options: ["true", "false", "undefined", "TypeError"],
+      correctAnswer: 1,
+      explanation: "`NaN` (Not-a-Number) JavaScriptdagi yagona qiymat bo'lib, u o'z-o'ziga ham, boshqa hech qanday qiymatga ham teng emas."
+    }
   ]
 };

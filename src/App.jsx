@@ -1,9 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import TheoryTab from "./components/TheoryTab";
 import PracticeTab from "./components/PracticeTab";
+import QuizTab from "./components/QuizTab";
 import AiTab from "./components/AiTab";
 import { useLesson } from "./hooks/useLesson";
 import { useCodeRunner } from "./hooks/useCodeRunner";
@@ -57,24 +58,65 @@ function LessonPage() {
     code, setCode, sec
   } = lesson;
 
+  const [activeRightTab, setActiveRightTab] = useState("practice");
+
+  useEffect(() => {
+    if (activeLesson) {
+      const exercisesExist = !!activeLesson.exercises?.length;
+      const quizzesExist = !!activeLesson.quizzes?.length;
+      if (exercisesExist) {
+        setActiveRightTab("practice");
+      } else if (quizzesExist) {
+        setActiveRightTab("quiz");
+      }
+    }
+  }, [activeLesson]);
+
   function handleRunCode() {
     runCode(code, activeLesson, currentExerciseIndex, () => {
       // Mark exercise complete
       progress.markComplete(`${activeLesson.id}_${currentExerciseIndex}`);
+      
       // Check if all exercises done
-      const exercises = activeLesson.exercises;
-      if (exercises) {
-        const allDone = exercises.every((_, i) =>
-          i === currentExerciseIndex || progress.isComplete(`${activeLesson.id}_${i}`)
-        );
-        if (allDone) {
-          progress.markComplete(activeLesson.id);
-        }
-      } else {
+      const exercises = activeLesson.exercises || [];
+      const allExercisesDone = exercises.every((_, i) =>
+        i === currentExerciseIndex || progress.isComplete(`${activeLesson.id}_${i}`)
+      );
+
+      // Check if all quizzes done
+      const quizzes = activeLesson.quizzes || [];
+      const allQuizzesDone = quizzes.every((_, i) =>
+        progress.isComplete(`${activeLesson.id}_quiz_${i}`)
+      );
+
+      if (allExercisesDone && allQuizzesDone) {
         progress.markComplete(activeLesson.id);
       }
     });
     setShowHint(false);
+  }
+
+  function handleCompleteQuiz(quizIndex, isCorrect) {
+    if (!activeLesson) return;
+    if (isCorrect) {
+      progress.markComplete(`${activeLesson.id}_quiz_${quizIndex}`);
+
+      // Check if all quizzes are completed
+      const quizzes = activeLesson.quizzes || [];
+      const allQuizzesDone = quizzes.every((_, i) =>
+        i === quizIndex || progress.isComplete(`${activeLesson.id}_quiz_${i}`)
+      );
+
+      // Check if all exercises are also completed (if any)
+      const exercises = activeLesson.exercises || [];
+      const allExercisesDone = exercises.every((_, i) =>
+        progress.isComplete(`${activeLesson.id}_${i}`)
+      );
+
+      if (allQuizzesDone && allExercisesDone) {
+        progress.markComplete(activeLesson.id);
+      }
+    }
   }
 
   function handleOpenLesson(l) {
@@ -132,21 +174,49 @@ function LessonPage() {
               <div className="pane-divider-handle"></div>
             </div>
 
-            {/* Right: Practice */}
+            {/* Right: Practice / Quiz */}
             <div className="pane" style={{ width: `${100 - leftWidth}%` }}>
-              <div className="pane-label">💻 Amaliyot</div>
-              <PracticeTab
-                code={code}
-                setCode={setCode}
-                runCode={handleRunCode}
-                showHint={showHint}
-                setShowHint={setShowHint}
-                activeLesson={activeLesson}
-                currentExerciseIndex={currentExerciseIndex}
-                setCurrentExerciseIndex={setCurrentExerciseIndex}
-                output={output}
-                outputRef={outputRef}
-              />
+              {activeLesson.exercises?.length > 0 && activeLesson.quizzes?.length > 0 ? (
+                <div className="pane-tabs-header">
+                  <button
+                    className={`pane-tab-btn ${activeRightTab === "practice" ? "active" : ""}`}
+                    onClick={() => setActiveRightTab("practice")}
+                  >
+                    💻 Amaliyot
+                  </button>
+                  <button
+                    className={`pane-tab-btn ${activeRightTab === "quiz" ? "active" : ""}`}
+                    onClick={() => setActiveRightTab("quiz")}
+                  >
+                    📝 Testlar
+                  </button>
+                </div>
+              ) : (
+                <div className="pane-label">
+                  {activeRightTab === "practice" ? "💻 Amaliyot" : "📝 Testlar"}
+                </div>
+              )}
+
+              {activeRightTab === "practice" ? (
+                <PracticeTab
+                  code={code}
+                  setCode={setCode}
+                  runCode={handleRunCode}
+                  showHint={showHint}
+                  setShowHint={setShowHint}
+                  activeLesson={activeLesson}
+                  currentExerciseIndex={currentExerciseIndex}
+                  setCurrentExerciseIndex={setCurrentExerciseIndex}
+                  output={output}
+                  outputRef={outputRef}
+                />
+              ) : (
+                <QuizTab
+                  activeLesson={activeLesson}
+                  completedQuizzes={progress.completed}
+                  onCompleteQuiz={handleCompleteQuiz}
+                />
+              )}
             </div>
           </div>
         )}
