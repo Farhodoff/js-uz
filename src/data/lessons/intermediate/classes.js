@@ -422,5 +422,67 @@ ES6 (ECMAScript 2015). Asli prototip-based, syntactic sugar.
       hint: "constructor(name, radius) { super(name); this.radius = radius; }",
       test: "if (logs.some(l => l.includes('78.50') || l.includes('78.5'))) return null; return 'Combine xato!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript klasslarida (Classes) `constructor` metodining asosiy vazifasi nima?",
+      options: [
+        "Klass uchun yangi metodlarni yaratish",
+        "Klassdan yangi obyekt (instance) olingan vaqtda avtomatik ishga tushib, obyektning boshlang'ich xususiyatlarini (properties) o'rnatish",
+        "HTML elementlarni brauzerda render qilish",
+        "Kodni optimallashtirish va tezligini oshirish"
+      ],
+      correctAnswer: 1,
+      explanation: "`constructor` - yangi obyekt yaratilganda (`new` kalit so'zi bilan chaqirilganda) klass ichida birinchi bo'lib avtomatik ishlaydigan va obyekt property'larini initsializatsiya qiladigan maxsus metoddir."
+    },
+    {
+      id: 2,
+      question: "Merosxo'r klass (subclass) constructor'ida `this` kalit so'zini ishlatishdan oldin nima qilish majburiy hisoblanadi?",
+      options: [
+        "`super()` funksiyasini chaqirib, ota klass (superclass) constructor'ini ishga tushirish",
+        "Klass nomini kichik harflarda yozish",
+        "`this` o'zgaruvchisini `null` qilish",
+        "`super.prototype` ni o'chirish"
+      ],
+      correctAnswer: 0,
+      explanation: "Merosxo'r klassda `this` dan foydalanishdan avval ota klass constructor'ini chaqirish uchun `super()` ishga tushirilishi zarur, aks holda ReferenceError yuz beradi."
+    },
+    {
+      id: 3,
+      question: "`static` kalit so'zi yordamida e'lon qilingan metod (static method) qanday chaqiriladi?",
+      options: [
+        "Faqat `new` orqali yaratilgan obyekt (instance) orqali chaqiriladi",
+        "Klass instansiyasini yaratmasdan, to'g'ridan-to'g'ri klass nomidan chaqiriladi (masalan, `MathHelper.add()`)",
+        "Faqat `super` yordamida chaqiriladi",
+        "Faqat asinxron tarzda `await` bilan chaqiriladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Static metodlar klass instansiyalariga (obyektlarga) bog'lanmagan bo'ladi. Ular faqat klassning o'z nomidan chaqiriladi."
+    },
+    {
+      id: 4,
+      question: "ES6 klasslarida maydon yoki metod nomining oldiga qo'yiladigan panjara (`#`) belgisi nimani anglatadi?",
+      options: [
+        "Ushbu maydon xotiradan butunlay o'chirilishini",
+        "Ushbu maydon mutlaqo shaxsiy (private) ekanligini va unga faqat klass ichidan murojaat qilish mumkinligini (tashqaridan o'qib yoki o'zgartirib bo'lmaydi)",
+        "Ushbu maydon global o'zgaruvchiga aylanganini",
+        "Bu CSS selektorini belgilash uchun ishlatilishini"
+      ],
+      correctAnswer: 1,
+      explanation: "Panjara `#` belgisi bilan boshlanuvchi maydonlar (fields) va metodlar to'liq shaxsiy (private) hisoblanib, ularga klass tashqarisidan to'g'ridan-to'g'ri murojaat qilish taqiqlanadi."
+    },
+    {
+      id: 5,
+      question: "JavaScript'dagi klasslar (Classes) haqida qaysi fikr to'g'ri?",
+      options: [
+        "JavaScript klasslari butunlay yangi mustaqil OOP modelidir",
+        "JavaScript klasslari aslida mavjud prototipli inheritance (prototype-based inheritance) ustiga qurilgan qulay \"syntactic sugar\" (sintaktik bezak) xolos",
+        "Klasslar hoisting bo'ladi va e'lon qilinishidan oldin to'liq ishlatilishi mumkin",
+        "Klasslar faqat server (Node.js) muhitida ishlaydi, brauzerda ishlamaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript tagida baribir prototype inheritance yotadi. ES6 klasslari esa koderlar uchun o'qish va yozishni osonlashtiruvchi sintaktik qobiq (syntactic sugar) vazifasini bajaradi xolos."
+    }
   ]
 };

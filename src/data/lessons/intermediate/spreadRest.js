@@ -72,5 +72,67 @@ console.log(hammasi); // ["behi", "olma", "anor", "uzum"]
       hint: "const combined = [...arr1, ...arr2];",
       test: "if (combined.length === 4) return null; return 'Massivlar birlashmadi';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`Spread` va `Rest` operatorlari sintaktik jihatdan bir xil yozilsa-da, ularni qanday farqlash mumkin?",
+      options: [
+        "Spread massiv/obyekt elementlarini yoyib chiqadi, Rest esa alohida qiymatlarni bitta massivga yig'adi",
+        "Rest faqat sonlarni, Spread esa faqat stringlarni qabul qiladi",
+        "Spread faqat Node.js da, Rest esa faqat brauzerda ishlaydi",
+        "Hech qanday farqi yo'q, sinonim so'zlar"
+      ],
+      correctAnswer: 0,
+      explanation: "Sintaksis bir xil bo'lsa-da, Spread ma'lumotni 'yoyadi' (tarqatadi), Rest esa kelayotgan bir nechta parametrlarni 'yig'ib' bitta massivga aylantiradi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi funksiya parametrlaridagi rest operatoridan foydalanishda qaysi biri xato (SyntaxError) hisoblanadi?",
+      options: [
+        "`function show(a, b, ...c) {}`",
+        "`function show(...c) {}`",
+        "`function show(a, ...b, c) {}`",
+        "`function show(first, second, ...rest) {}`"
+      ],
+      correctAnswer: 2,
+      explanation: "Rest operatori har doim parametrlar ro'yxatining oxirida kelishi shart. O'rtada yoki boshida (oxirida yana parametr bo'lsa) yozilishi taqiqlanadi."
+    },
+    {
+      id: 3,
+      question: "Quyidagi kod chop etilganda konsolga nima chiqadi?\n```javascript\nconst str = 'JS';\nconst arr = [...str];\nconsole.log(arr);\n```",
+      options: [
+        "`['JS']`",
+        "`['J', 'S']`",
+        "`['J S']`",
+        "TypeError: str is not iterable"
+      ],
+      correctAnswer: 1,
+      explanation: "String turi iterable (aylanib chiqiladigan) hisoblanadi. Uni spread qilganda har bir harfi alohida element sifatida massivga yoyiladi."
+    },
+    {
+      id: 4,
+      question: "Spread operatori orqali obyekt yoki massivdan nusxa olinganda (shallow copy), undagi ichki (nested) obyektlar qanday nusxalanadi?",
+      options: [
+        "Ulardan ham to'liq yangi nusxa olinadi (deep copy)",
+        "Ular nusxalanmaydi va tashlab ketiladi",
+        "Ularning faqat xotiradagi manzili (reference) nusxalanadi, natijada asl va nusxa obyektlar bitta ichki obyektga tayanadi",
+        "Har doim xatolik beradi"
+      ],
+      correctAnswer: 2,
+      explanation: "Spread operatori faqat birinchi darajali (shallow) nusxa oladi. Ichma-ich joylashgan obyektlar reference (xotira manzili) bo'yicha bog'lanib qoladi."
+    },
+    {
+      id: 5,
+      question: "`Math.max([1, 5, 2])` xato beradi (chunki massiv qabul qilmaydi). Uni to'g'ri ishlashini ta'minlash uchun qaysi variant mos keladi?",
+      options: [
+        "`Math.max(...[1, 5, 2]);`",
+        "`Math.max(rest[1, 5, 2]);`",
+        "`Math.max([1, 5, 2].toString());`",
+        "`Math.max.apply([1, 5, 2]);`"
+      ],
+      correctAnswer: 0,
+      explanation: "Spread `...` operatori massivni argumentlar ro'yxatiga yoyib yuboradi: `Math.max(1, 5, 2)` ko'rinishida chaqirilishini ta'minlaydi."
+    }
   ]
 };

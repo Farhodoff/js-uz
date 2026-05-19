@@ -549,5 +549,67 @@ window.onerror va onunhandledrejection — barcha catch qilinmagan xatalarni tul
       hint: "Try ichida type tekshir, catch'da handle qil, finally'da hasti qil.",
       test: "if (code.includes('try') && code.includes('catch') && code.includes('finally') && logs.includes('completed')) return null; return 'Kompleks error handling noto\\'g\\'ri';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript'da `finally` blokining asosiy xususiyati nimadan iborat?",
+      options: [
+        "U faqat `try` blokida xatolik yuz bermagan taqdirdagina ishlaydi",
+        "U faqat `catch` blokida xatolik yuz bergan taqdirdagina ishlaydi",
+        "U `try` blokida xatolik yuz berishi yoki bermasligidan qat'iy nazar, hatto `try` yoki `catch` ichida `return` yozilgan bo'lsa ham eng oxirida har doim ishlaydi",
+        "U faqat asinxron funksiyalar ichida ishlaydi"
+      ],
+      correctAnswer: 2,
+      explanation: "`finally` bloki har doim bajariladi. Undan asosan resurslarni tozalash, ulanishlarni yopish yoki yuklanish (loading) holatlarini tugatish kabi muhim yakuniy amallar uchun foydalaniladi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kod asinxron xatolikni ushlay oladimi?\n```javascript\ntry {\n  setTimeout(() => {\n    throw new Error('Xato!');\n  }, 100);\n} catch (e) {\n  console.log('Ushlandi: ' + e.message);\n}\n```",
+      options: [
+        "Ha, catch bloki 'Ushlandi: Xato!' deb konsolga chiqaradi",
+        "Yo'q, asinxron callback funksiya event loop orqali boshqa vaqtda va kontekstda ishga tushgani sababli, bu try-catch uni ushlay olmaydi va dastur crash bo'ladi",
+        "Ha, lekin faqat strict mode o'chiq bo'lsa",
+        "Faqat node.js muhitida ushlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`try...catch` blokidan keyin `setTimeout` o'z vaqtida bajariladi va tugaydi. Undagi callback bajarilganda esa u `try...catch` doirasidan chiqib ketgan bo'ladi. Asinxron kodlarda xatolarni ushlash uchun `async/await` + `try...catch` yoki Promiselarning `.catch()` metodidan foydalanish shart."
+    },
+    {
+      id: 3,
+      question: "Mavjud bo'lmagan o'zgaruvchiga murojaat qilinganda (masalan, e'lon qilinmagan o'zgaruvchini konsolga chiqarishga urinish) JavaScript qanday xatolik tipini hosil qiladi?",
+      options: [
+        "`TypeError`",
+        "`ReferenceError`",
+        "`SyntaxError`",
+        "`RangeError`"
+      ],
+      correctAnswer: 1,
+      explanation: "E'lon qilinmagan, xotirada mavjud bo'lmagan o'zgaruvchi (reference) ga murojaat qilinganda JavaScript `ReferenceError` xatoligini tashlaydi."
+    },
+    {
+      id: 4,
+      question: "Biror xatolikni (Error) kod orqali ataylab hosil qilish va dastur oqimini to'xtatish uchun qaysi kalit so'z ishlatiladi?",
+      options: [
+        "`raise`",
+        "`throw`",
+        "`catch`",
+        "`reject`"
+      ],
+      correctAnswer: 1,
+      explanation: "Ataylab xato tashlash va dastur ishini to'xtatish (yoki uni `catch` blokiga o'tkazish) uchun `throw` kalit so'zi ishlatiladi. Masalan: `throw new Error('Xatolik')`."
+    },
+    {
+      id: 5,
+      question: "Promise zanjirida (Promise Chaining) yoki asinxron operatsiyalarda yuz bergan xatolarni ushlash uchun qaysi usul eng mos keladi?",
+      options: [
+        "Faqat `try...catch` dan foydalanish (asinxron kodda await bo'lmasa ham)",
+        "Promise oxirida `.catch(error => ...)` metodini ulash yoki `async/await` bilan birgalikda `try...catch` ishlatish",
+        "`window.onload` hodisasidan foydalanish",
+        "Hech qanday maxsus usul kerak emas, brauzer o'zi ushlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Promise'lar bilan ishlaganda `.catch()` zanjiri yoki asinxron funksiya ichida `await` yozilgan holda `try...catch` ishlatish eng optimal va to'g'ri yechimdir."
+    }
   ]
 };

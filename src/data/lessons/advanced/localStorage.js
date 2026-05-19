@@ -124,5 +124,67 @@ Faqat o'sha tab yoki brauzer butunlay yopilganda.
       hint: "localStorage.removeItem('user');",
       test: "if (code.includes('removeItem')) return null; return 'removeItem ishlatilmadi';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`LocalStorage` va `SessionStorage` o'rtasidagi eng asosiy farq nima?",
+      options: [
+        "LocalStorage ma'lumotlarni faqat massiv ko'rinishida saqlaydi, SessionStorage esa faqat obyekt ko'rinishida",
+        "LocalStorage'dagi ma'lumotlar foydalanuvchi yoki kod orqali o'chirilmaguncha muddatsiz saqlanadi, SessionStorage esa tab yoki brauzer yopilishi bilan o'chib ketadi",
+        "SessionStorage xavfsizroq va parollarni saqlash uchun mo'ljallangan",
+        "LocalStorage faqat serverda, SessionStorage esa faqat client-side'da ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "LocalStorage doimiy xotira bo'lib, kompyuter o'chib yonsa ham o'chmaydi (kod orqali yoki qo'lda tozalanmaguncha). SessionStorage esa faqat o'sha tab ochiq turganda saqlanib turadi."
+    },
+    {
+      id: 2,
+      question: "`LocalStorage`ga JavaScript obyektini (`const user = { name: 'Ali' }`) saqlamoqchi bo'lsak, nima uchun `JSON.stringify()` ishlatishimiz shart?",
+      options: [
+        "Chunki LocalStorage faqat matnli (string) ma'lumotlarni saqlashga moslashgan, aks holda obyekt `[object Object]` shaklida saqlanib qoladi",
+        "Chunki bu xotirada joyni 10 barobargacha tejaydi",
+        "Chunki u ma'lumotlarni shifrlaydi (encrypt)",
+        "JSON ishlatilmasa brauzer avtomatik ravishda sahifani bloklaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "Veb-xotiraga faqat kalit-qiymat ko'rinishidagi stringlar saqlanadi. Obyektlarni saqlashdan oldin `JSON.stringify` orqali string formatiga aylantirish, o'qiyotganda esa `JSON.parse` yordamida obyekt holiga qaytarish zarur."
+    },
+    {
+      id: 3,
+      question: "`LocalStorage`ning o'rtacha sig'im limiti (storage limit) qancha?",
+      options: [
+        "5-10 KB",
+        "5-10 MB",
+        "1-2 GB",
+        "Cheksiz"
+      ],
+      correctAnswer: 1,
+      explanation: "LocalStorage juda katta hajmdagi ma'lumotlar uchun mo'ljallanmagan. Brauzerlar odatda har bir origin uchun 5 dan 10 MB gacha bo'lgan limit o'rnatishadi."
+    },
+    {
+      id: 4,
+      question: "Brauzer xotirasidan barcha ma'lumotlarni bitta operatsiya bilan butunlay tozalash uchun qaysi metod ishlatiladi?",
+      options: [
+        "`localStorage.removeAll()`",
+        "`localStorage.clear()`",
+        "`localStorage.delete()`",
+        "`localStorage.reset()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`localStorage.clear()` metodi o'sha origin (domen) uchun saqlangan barcha kalit va qiymatlarni butunlay tozalab tashlaydi."
+    },
+    {
+      id: 5,
+      question: "Bir xil domendagi boshqa tab yoki oynada `LocalStorage` ma'lumotlari o'zgarganda, buni real-vaqtda kuzatib borish uchun qaysi hodisadan (event) foydalanish mumkin?",
+      options: [
+        "`change` event",
+        "`storage` event",
+        "`update` event",
+        "`load` event"
+      ],
+      correctAnswer: 1,
+      explanation: "Brauzerda `storage` event hodisasi mavjud. Agar bitta saytning bir nechta tabi ochiq bo'lsa va birida `localStorage` o'zgartirilsa, qolgan tablar buni `window.addEventListener('storage', callback)` orqali eshitib, mos ravishda ish tutishi mumkin."
+    }
   ]
 };
