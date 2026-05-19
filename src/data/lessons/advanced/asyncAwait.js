@@ -4,7 +4,7 @@ export const asyncAwait = {
   level: "Murakkab",
   description: "Async/await orqali asinxron kodni oddiy sinxron kabi yozish.",
   theory: `## 1. NEGA KERAK? (Sabab)
-**Promise Hell (Zanjir uzunligi):** Ketma-ket `.then()`lar kodni o'qishni qiyinlashtiradi. **Async/Await** esa kodni xuddi sinxron (oddiy) kod kabi o'qish imkonini beradi.
+**Promise Hell (Zanjir uzunligi):** Ketma-ket \`.then()\`lar kodni o'qishni qiyinlashtiradi. **Async/Await** esa kodni xuddi sinxron (oddiy) kod kabi o'qish imkonini beradi.
 
 ## 2. SODDALIK (Analogiya)
 
