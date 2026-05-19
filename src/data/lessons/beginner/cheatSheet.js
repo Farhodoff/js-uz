@@ -156,5 +156,67 @@ try {
       hint: "Math.floor(Math.random() * 11);",
       test: "const n = logs[0]; if (typeof n === 'number' && n >= 0 && n <= 10) return null; return '0-10 oralig\\'idagi son chiqishi kerak!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`typeof null` natijasi JavaScript-da nima qaytaradi va bu nima deb hisoblanadi?",
+      options: [
+        "`\"null\"` (to'g'ri qiymat)",
+        "`\"object\"` (JavaScript-dagi tarixiy/sintaktik xato)",
+        "`\"undefined\"`",
+        "`\"empty\"`"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript birinchi marta yaratilayotganda qiymatlar 32-bitli tizimda saqlangan va null obyekt deb hisoblangan. Bu xato hozirda ham saqlanib qolgan, chunki uni to'g'irlash eski saytlar ishini buzishi mumkin."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kod konsolda nima natija qaytaradi: `\"5\" + 2` va `\"5\" - 2`?",
+      options: [
+        "`7` va `3`",
+        "`\"52\"` (string) va `3` (number)",
+        "`\"52\"` va `\"5-2\"`",
+        "`TypeError` xatosi kelib chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "`+` operatori satr (string) bilan kelganda konkatenatsiya (birlashtirish) qiladi, ya'ni `\"5\" + 2` natijasi `\"52\"` bo'ladi. `-` operatori esa matnni songa o'tkazib arifmetik amal bajaradi, shuning uchun `\"5\" - 2` natijasi `3` bo'ladi."
+    },
+    {
+      id: 3,
+      question: "`Math.random()` funksiyasi qanday sonlar oralig'ida tasodifiy qiymat qaytaradi?",
+      options: [
+        "0 va 1 oralig'ida (0 kiradi, 1 kirmaydi: `[0, 1)`)",
+        "0 va 10 oralig'ida",
+        "1 va 100 oralig'ida",
+        "Faqat 0 yoki 1 butun sonini"
+      ],
+      correctAnswer: 0,
+      explanation: "`Math.random()` 0 dan (shu jumladan) 1 gacha (lekin 1 o'zi kirmaydi) bo'lgan o'nli kasr sonlarni qaytaradi."
+    },
+    {
+      id: 4,
+      question: "`const` kalit so'zi yordamida yaratilgan massiv (Array) elementlarini o'zgartirish yoki unga element qo'shish mumkinmi?",
+      options: [
+        "Yo'q, const bilan yaratilgan massiv mutlaqo o'zgarmas bo'ladi va element qo'shib bo'lmaydi",
+        "Ha, massiv xotiradagi havolasi (reference) o'zgarmaydi, lekin massiv tarkibiga `push` yoki indeks orqali yangi element qo'shish va qiymatlarni o'zgartirish mumkin",
+        "Faqat `let` bilan yozilgan massivlarni o'zgartirish mumkin",
+        "Faqat massiv uzunligini qisqartirish mumkin"
+      ],
+      correctAnswer: 1,
+      explanation: "`const` massivni qaytadan boshqa massivga o'zlashtirishni taqiqlaydi (masalan: `mevalar = [...]`), lekin uning ichidagi qiymatlarni o'zgartirishga yoki element qo'shish/o'chirishga to'sqinlik qilmaydi."
+    },
+    {
+      id: 5,
+      question: "Massiv (Array) oxiriga yangi element qo'shish va massivning eng boshidan elementni o'chirish uchun qaysi metodlar juftligidan foydalaniladi?",
+      options: [
+        "`push()` va `pop()`",
+        "`push()` va `shift()`",
+        "`unshift()` va `shift()`",
+        "`push()` va `unshift()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`push()` massiv oxiriga yangi element qo'shadi, `shift()` esa massivning birinchi elementini o'chirib yuboradi."
+    }
   ]
 };

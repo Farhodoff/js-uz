@@ -73,5 +73,67 @@ console.table(meva);
       hint: "console.table(cars);",
       test: "if (code.includes('console.table')) return null; return 'console.table ishlatilmadi';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`console.log()` metodidan tashqari, obyektlar va massivlarni vizual ravishda tushunarli qilish uchun jadval (table) ko'rinishida chop etadigan metod qaysi?",
+      options: [
+        "`console.list()`",
+        "`console.table()`",
+        "`console.grid()`",
+        "`console.dir()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`console.table()` uzatilgan massiv yoki obyekt ma'lumotlarini brauzer konsolida chiroyli jadval ko'rinishida taqdim etadi."
+    },
+    {
+      id: 2,
+      question: "Dasturdagi jiddiy xatoliklarni bildirish va konsolda matnni qizil rangli fon bilan ko'rsatish uchun qaysi metod ishlatiladi?",
+      options: [
+        "`console.warn()`",
+        "`console.error()`",
+        "`console.alert()`",
+        "`console.critical()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`console.error()` xato xabarlarini konsolga qizil rangda va xatolik yuz bergan joyning stack trace ma'lumotlari bilan birga chiqaradi."
+    },
+    {
+      id: 3,
+      question: "Konsoldagi barcha ma'lumotlarni tozalash (clear) va konsolni bo'shatish uchun qaysi metoddan foydalaniladi?",
+      options: [
+        "`console.clean()`",
+        "`console.clear()`",
+        "`console.empty()`",
+        "`console.reset()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`console.clear()` konsol oynasidagi barcha yozuvlarni tozalab yuboradi va konsol tozalanganligi haqida xabar qoldiradi."
+    },
+    {
+      id: 4,
+      question: "Kodning ma'lum bir qismi qancha vaqt ichida bajarilishini hisoblashni boshlash va uni yakunlash uchun mos ravishda qaysi metodlar juftligidan foydalanamiz?",
+      options: [
+        "`console.start()` va `console.stop()`",
+        "`console.time()` va `console.timeEnd()`",
+        "`console.profile()` va `console.profileEnd()`",
+        "`console.timer()` va `console.timerEnd()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`console.time('nom')` berilgan nom bilan taymerni ishga tushiradi, `console.timeEnd('nom')` esa o'sha nomli taymerni to'xtatib, o'tgan vaqtni chop etadi."
+    },
+    {
+      id: 5,
+      question: "Biror kod yoki funksiya necha marta chaqirilganligini sanab borish (counter) uchun qaysi metod qo'llaniladi?",
+      options: [
+        "`console.add()`",
+        "`console.count()`",
+        "`console.sum()`",
+        "`console.number()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`console.count('belgi')` metodi o'ziga uzatilgan kalit so'z necha marta chaqirilganligini konsolda hisoblab boradi."
+    }
   ]
 };

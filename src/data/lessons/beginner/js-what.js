@@ -70,5 +70,67 @@ alert("Salom!");
       hint: "console.log('Ismingiz');",
       test: "if (logs.length > 0 && typeof logs[0] === 'string') return null; return 'Ismingizni matn ko\\'rinishida chiqaring!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Sayt yaratishda HTML va CSS tana va kiyim bo'lsa, JavaScript nima vazifani bajaradi?",
+      options: [
+        "Saytning ranglarini o'zgartiradi",
+        "Saytning miyasi va harakatlarini (dinamik qismini, masalan, tugma bosilganda ishlashini) ta'minlaydi",
+        "Saytni qidiruv tizimlariga qo'shadi",
+        "Faqat rasmlarni tahrirlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript saytga hayot bag'ishlaydi. Tugmalar bosilganda nima sodir bo'lishi, animatsiyalar, ma'lumot yuklashlar va barcha mantiqiy amallar aynan JavaScript yordamida amalga oshiriladi."
+    },
+    {
+      id: 2,
+      question: "Quyidagilardan qaysi biri konsolga ma'lumot chiqarishning to'g'ri yozilgan sintaksisi hisoblanadi?",
+      options: [
+        "`Console.log('Salom');`",
+        "`console.log('Salom');`",
+        "`console.Log('Salom');`",
+        "`print('Salom');`"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript harflarning katta-kichikligiga sezgir (case-sensitive) tildir. `console` va `log` kichik harflarda yozilishi kerak."
+    },
+    {
+      id: 3,
+      question: "JavaScript dasturlash tilining asoschisi kim?",
+      options: [
+        "Tim Berners-Lee",
+        "Brendan Eich",
+        "Bill Gates",
+        "Guido van Rossum"
+      ],
+      correctAnswer: 1,
+      explanation: "Brendan Eich 1995-yilda Netscape kompaniyasida ishlab yurganida JavaScript tilini bor-yo'g'i 10 kun ichida yaratgan."
+    },
+    {
+      id: 4,
+      question: "JavaScript dasturlash tili case-sensitive (harflarning katta-kichikligiga sezgir) hisoblanadimi?",
+      options: [
+        "Yo'q, farqi yo'q",
+        "Ha, katta va kichik harflar alohida farqlanadi (masalan, `console` va `Console` alohida narsalar)",
+        "Faqat string ichidagi harflar farqlanadi",
+        "Faqat Node.js muhitida farqlanadi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScriptda katta va kichik harfning ahamiyati katta. Masalan, `myvar` va `myVar` ikkita alohida o'zgaruvchi deb hisoblanadi."
+    },
+    {
+      id: 5,
+      question: "Foydalanuvchiga ekran markazida ogohlantiruvchi yoki xabar beruvchi kichik modal oyna chiqaradigan funksiya qaysi?",
+      options: [
+        "`console.log()`",
+        "`alert()`",
+        "`prompt()`",
+        "`document.write()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`alert()` brauzerda foydalanuvchi tasdiqlamaguncha sahifadagi boshqa amallarni to'xtatib turadigan maxsus xabar oynasini chiqaradi."
+    }
   ]
 };

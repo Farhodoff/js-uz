@@ -74,5 +74,67 @@ console.log(\`Assalomu alaykum, \${user}!\`);
       hint: "result = `Mening ismim ${name}, yoshim ${age}da`;",
       test: "if (code.includes('${name}') && code.includes('${age}')) return null; return 'Template literals ishlatilmadi';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Template Literals (andoza matnlar) JavaScript-da qaysi maxsus belgilar yordamida yaratiladi?",
+      options: [
+        "Oddiy qo'shtirnoqlar (`' '`)",
+        "Ikkitalik qo'shtirnoqlar (`\" \"`)",
+        "Grave accent / Backticks (`` ` ` ``)",
+        "Qavslar (`( )`)"
+      ],
+      correctAnswer: 2,
+      explanation: "Template Literals klaviaturadagi `Esc` tugmasi ostida joylashgan yordamchi backtick (`` ` ``) belgilari bilan o'rab olinadi."
+    },
+    {
+      id: 2,
+      question: "Template Literals ichida o'zgaruvchi yoki matematik ifodalarni joylashtirish uchun qaysi sintaksis ishlatiladi?",
+      options: [
+        "`#{expression}`",
+        "`${expression}`",
+        "`{{expression}}`",
+        "`[expression]`"
+      ],
+      correctAnswer: 1,
+      explanation: "`Dollar` belgisi va undan keyin jingalak qavslar `${...}` yordamida matn ichiga istalgan JavaScript o'zgaruvchisini yoki hisob-kitob amalini joylashtirish mumkin."
+    },
+    {
+      id: 3,
+      question: "Eski string birlashtirish (`+` operatori) usuli bilan solishtirganda, Backticks (`` ` ``) yordamida ko'p qatorli (multi-line) matnlarni qanday yozish mumkin?",
+      options: [
+        "Faqat `\\n` belgisini qo'shib yozish orqali",
+        "Hech qanday maxsus belgisiz, shunchaki kodda \"Enter\" tugmasini bosib yangi qatorga o'tish orqali",
+        "Har bir qator oxirida `+` belgisini qo'yish orqali",
+        "Ko'p qatorli matnlarni backtick bilan yozib bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Backticks ishlatilganda yangi qatorlar avtomatik tarzda satr tarkibiga qo'shiladi va hech qanday `\\n` kabi belgilarni yozish shart emas."
+    },
+    {
+      id: 4,
+      question: "Quyidagi template literal ifodasi konsolda nima natija qaytaradi: `` `Jami: ${5 + 5}` ``?",
+      options: [
+        "`\"Jami: 5 + 5\"`",
+        "`\"Jami: 10\"`",
+        "`\"Jami: ${5 + 5}\"`",
+        "`TypeError` xatosi yuz beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Jingalak qavslar ichidagi `5 + 5` ifodasi dastur tomonidan bajariladi va uning natijasi (`10`) matnga birlashtiriladi."
+    },
+    {
+      id: 5,
+      question: "Template literal ichidagi `${expression}` qismi qanday ishlaydi?",
+      options: [
+        "U faqat oddiy matnlarni o'zgarishsiz chop etadi",
+        "Uning ichidagi JavaScript kodi (ifoda) bajariladi va natijasi avtomatik ravishda satrga (string) o'girilib, o'sha joyga joylashtiriladi",
+        "U if-else va for looplarini bajarishga mo'ljallangan",
+        "U faqat CSS o'zgaruvchilarini yuklaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Tizim jingalak qavslar ichida yozilgan kodni oddiy JavaScript kodi sifatida bajaradi va hosil bo'lgan qiymatni stringga aylantiradi."
+    }
   ]
 };

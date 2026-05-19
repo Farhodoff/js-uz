@@ -116,5 +116,67 @@ Obyektlar uchun takrorlanmas, unikal kalitlar yaratish uchun.
       hint: "console.log(typeof null);",
       test: "if (logs.includes('object')) return null; return 'null turi object chiqishi kerak!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da primitiv (oddiy) ma'lumot turlari nechta?",
+      options: [
+        "5 ta",
+        "7 ta (String, Number, Boolean, Undefined, Null, Symbol, BigInt)",
+        "3 ta (String, Number, Boolean)",
+        "10 ta"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript-da jami 7 ta primitiv ma'lumot turi mavjud. Obyektlar (Objects) esa murakkab (reference) turga kiradi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kodlardan qaysi biri bajarilganda `NaN` (Not a Number) qiymati kelib chiqadi?",
+      options: [
+        "`10 / 2`",
+        "`\"Hello\" / 2`",
+        "`\"5\" - 2`",
+        "`typeof NaN`"
+      ],
+      correctAnswer: 1,
+      explanation: "Raqam bo'lmagan matnni (`\"Hello\"`) songa bo'lishga urinilganda JavaScript buni hisoblay olmaydi va `NaN` (Not a Number - son emas) qiymatini qaytaradi."
+    },
+    {
+      id: 3,
+      question: "O'zgaruvchi e'lon qilingan, lekin unga hech qanday qiymat berilmagan bo'lsa, uning qiymati va turi nima bo'ladi?",
+      options: [
+        "`null`",
+        "`undefined`",
+        "`\"empty\"`",
+        "`NaN`"
+      ],
+      correctAnswer: 1,
+      explanation: "E'lon qilingan lekin qiymat o'zlashtirilmagan o'zgaruvchining qiymati ham, turi ham default holatda `undefined` hisoblanadi."
+    },
+    {
+      id: 4,
+      question: "JavaScript-da `typeof null` nima qaytaradi va buning sababi nimada?",
+      options: [
+        "`\"null\"`",
+        "`\"object\"` (Bu til yaratilgandagi tarixiy xatodir)",
+        "`\"undefined\"`",
+        "`\"error\"`"
+      ],
+      correctAnswer: 1,
+      explanation: "`typeof null` qiymati `\"object\"` qaytaradi. Bu tilning birinchi versiyalaridagi xatolik bo'lib, keyinchalik uni o'zgartirish mavjud veb-saytlar ishini buzmasligi uchun shundayligicha qoldirilgan."
+    },
+    {
+      id: 5,
+      question: "`typeof NaN` natijasi nima bo'ladi?",
+      options: [
+        "`\"NaN\"`",
+        "`\"number\"`",
+        "`\"undefined\"`",
+        "`\"string\"`"
+      ],
+      correctAnswer: 1,
+      explanation: "`NaN` qisqartmasi 'Not a Number' (son emas) degan ma'noni bildirsa ham, uning texnik turi baribir `number` (son) hisoblanadi."
+    }
   ]
 };

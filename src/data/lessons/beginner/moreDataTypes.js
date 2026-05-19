@@ -72,5 +72,67 @@ console.log(shaxs[ID]); // 12345
       hint: "const big = 100n;",
       test: "if (typeof big === 'bigint') return null; return 'BigInt yaratilmadi!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`null` va `undefined` qiymatlarining bir-biri bilan qat'iy va qat'iy bo'lmagan solishtiruvlari (`==` va `===`) qanday natija beradi?",
+      options: [
+        "`null == undefined` is `false`, `null === undefined` is `true`",
+        "`null == undefined` is `true`, `null === undefined` is `false` (chunki qiymat jihatdan ikkalasi ham bo'shlik, lekin turlari mos ravishda Null va Undefined)",
+        "Ikkalasi ham `true` qaytaradi",
+        "Ikkalasi ham `false` qaytaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "`==` taqqoslash operatori turlarni tenglashtirib tekshiradi (coercion), shuning uchun `true` beradi. Qat'iy tenglik `===` esa qiymat turi (Null va Undefined) har xil bo'lgani uchun `false` beradi."
+    },
+    {
+      id: 2,
+      question: "BigInt turidagi sonlarni oddiy Number turidagi sonlar bilan aralashtirib arifmetik amallar bajarish (masalan, `10n + 5`) mumkinmi?",
+      options: [
+        "Ha, JavaScript avtomatik ravishda Numberni BigIntga o'tkazadi",
+        "Yo'q, `TypeError` yuz beradi. BigIntni faqat boshqa BigInt bilan qo'shish/ayirish mumkin (yoki sonni `BigInt(5)` yordamida o'girish lozim)",
+        "Faqat ko'paytirish va bo'lish amallarini bajarish mumkin",
+        "Ha, lekin natija har doim string bo'ladi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript-da implicit (yashirin) tarzda BigInt va oddiy sonlarni o'zaro hisoblash taqiqlangan, chunki bu sonlarning aniqlik darajasi yo'qolishiga sabab bo'lishi mumkin."
+    },
+    {
+      id: 3,
+      question: "Quyidagi kod bajarilganda konsolga nima chiqadi: `console.log(Symbol('x') === Symbol('x'))`?",
+      options: [
+        "`true` (chunki ikkalasining ham nomi/tavsifi bir xil)",
+        "`false` (chunki har bir yaratilgan Symbol o'ziga xos va mutlaqo yagonadir)",
+        "`undefined`",
+        "`TypeError` xatosi kelib chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Har bir `Symbol()` chaqirilganda, xotirada mutlaqo takrorlanmas yangi unikal qiymat yaratiladi. Ular ichidagi yozuv faqat tavsif (description) xolos."
+    },
+    {
+      id: 4,
+      question: "JavaScript-da xavfsiz ishlatish mumkin bo'lgan eng katta butun son chegarasi (cheklangan qiymat) qaysi o'zgarmasda saqlanadi?",
+      options: [
+        "`Number.MAX_VALUE`",
+        "`Number.MAX_SAFE_INTEGER` (`9007199254740991`)",
+        "`Number.INFINITY`",
+        "`Math.max()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`Number.MAX_SAFE_INTEGER` JavaScript-dagi `2^53 - 1` ga teng xavfsiz va aniq hisoblanadigan eng katta son hisoblanadi. Undan katta sonlarni aniq saqlash uchun `BigInt` ishlatish kerak."
+    },
+    {
+      id: 5,
+      question: "BigInt sonni yaratish uchun qaysi belgi son oxiriga qo'shiladi?",
+      options: [
+        "`b` (masalan: `100b`)",
+        "`n` (masalan: `100n`)",
+        "`L` (masalan: `100L`)",
+        "`g` (masalan: `100g`)"
+      ],
+      correctAnswer: 1,
+      explanation: "Son oxiriga kichik `n` harfini qo'shish orqali JavaScript uni `BigInt` turi sifatida qabul qiladi. Masalan: `1234567890n`."
+    }
   ]
 };

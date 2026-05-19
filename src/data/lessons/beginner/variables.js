@@ -120,5 +120,67 @@ Qiymat keyinchalik o'zgarishi aniq bo'lgan holatlarda (masalan, sikllarda).
       hint: "let ball = 10; ball = 15;",
       test: "if (code.includes('let') && code.split('=')[2]?.trim().includes('15')) return null; return 'Qiymatni to\\'g\\'ri yangilang';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`let` va `const` kalit so'zlari yordamida yaratilgan o'zgaruvchilar qanday ko'rinish doirasiga (scope) ega?",
+      options: [
+        "Global Scope (barcha joyda ko'rinadi)",
+        "Function Scope (faqat funksiya ichida ko'rinadi)",
+        "Block Scope (faqat o'zi yozilgan `{ }` jingalak qavslar ichida ko'rinadi)",
+        "Ular umuman scopega ega emas"
+      ],
+      correctAnswer: 2,
+      explanation: "`let` va `const` block-scoped hisoblanadi, ya'ni ular if bloklari, for sikllari yoki shunchaki `{ }` qavslar ichida e'lon qilinsa, tashqarida ularga murojaat qilib bo'lmaydi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kodlardan qaysi biri sintaktik jihatdan noto'g'ri (Error) va nima uchun?",
+      options: [
+        "`let score;`",
+        "`const price;` (const e'lon qilinganda unga darhol boshlang'ich qiymat berish shart)",
+        "`var x = 10;`",
+        "`let name = 'Ali'; name = 'Vali';`"
+      ],
+      correctAnswer: 1,
+      explanation: "`const` o'zgarmas qiymat bo'lganligi sababli, e'lon qilinayotgan vaqtda uning qiymati aniq ko'rsatilishi lozim. Aks holda `SyntaxError: Missing initializer in const declaration` xatosi yuz beradi."
+    },
+    {
+      id: 3,
+      question: "`var` kalit so'zi yordamida e'lon qilingan o'zgaruvchilarning qaysi tabiati zamonaviy JavaScriptda muammolarga sabab bo'lgan va shuning uchun ishlatilishi tavsiya etilmaydi?",
+      options: [
+        "Unga qiymat berib bo'lmaydi",
+        "U function scopega ega bo'lib, hoisting tufayli e'lon qilinishidan oldin ishlatilsa `undefined` qaytaradi va xato bermaydi, shuningdek bir xil nom bilan qayta-qayta e'lon qilish mumkin",
+        "U faqat raqamlarni saqlay oladi",
+        "U faqat brauzerda ishlaydi, Node.js da ishlamaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`var` block scope qoidalariga rioya qilmaydi va hoisting xususiyati sababli kutilmagan mantiqiy xatolarni keltirib chiqarishi mumkin. Shu sababli ES6 dan boshqa `let` va `const` tavsiya etiladi."
+    },
+    {
+      id: 4,
+      question: "O'zgaruvchilarni nomlash qoidalariga ko'ra, quyidagilardan qaysi biri to'g'ri nomlangan o'zgaruvchi hisoblanadi?",
+      options: [
+        "`let 1stPlace = 'Ali';`",
+        "`let user-name = 'Ali';`",
+        "`let $price = 100;`",
+        "`let my age = 20;`"
+      ],
+      correctAnswer: 2,
+      explanation: "JavaScriptda o'zgaruvchi nomlari raqam bilan boshlanishi mumkin emas, chiziqcha `-` yoki bo'shliq (space) belgisini saqlashi mumkin emas. O'zgaruvchi nomi faqat harf, `$` va `_` bilan boshlanishi mumkin."
+    },
+    {
+      id: 5,
+      question: "\"Temporal Dead Zone\" (TDZ - Vaqtinchalik o'lik hudud) nima?",
+      options: [
+        "Kodni bajarish to'xtab qolgan vaqt",
+        "`let` va `const` o'zgaruvchilari e'lon qilingan qatorgacha bo'lgan hudud bo'lib, unda ushbu o'zgaruvchilarga murojaat qilish `ReferenceError` xatosini beradi",
+        "Faqat `var` bilan bog'liq bo'lgan xotira maydoni",
+        "LocalStorage o'chib ketadigan vaqt oralig'i"
+      ],
+      correctAnswer: 1,
+      explanation: "TDZ — bu blok boshlangan joydan to `let` yoki `const` e'lon qilingan joygacha bo'lgan masofa bo'lib, uning ichida o'zgaruvchi xotirada bo'lsa-da, unga murojaat qilish taqiqlanadi."
+    }
   ]
 };
