@@ -67,5 +67,67 @@ console.log("5" + "5" - 5); // 50 (Chunki "5" + "5" = "55", keyin 55 - 5 = 50)
       hint: "console.log('5' + 5); console.log('5' - 5);",
       test: "if (logs.includes('55') && logs.includes(0)) return null; return 'Natija noto\\'g\\'ri!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da `true + true` va `undefined + 5` amallari qanday natijalarni qaytaradi?",
+      options: [
+        "`\"truetrue\"` va `\"undefined5\"`",
+        "`2` va `NaN` (chunki true son sifatida 1 ga aylanadi, undefined esa songa o'girilganda NaN bo'lib, unga har qanday sonni qo'shish NaN qaytaradi)",
+        "`2` va `5`",
+        "`TypeError` xatoligi yuz beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "`true` mantiqiy qiymati arifmetik amallarda `1` soniga aylanadi, shu sababli `true + true` natijasi `2` dir. `undefined` esa songa o'girilganda `NaN` bo'ladi, `NaN` ga esa har qanday son qo'shilsa natija `NaN` bo'lib qoladi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kod solishtiruvi qanday natija qaytaradi va mantiqan uning sababi nima: `3 > 2 > 1`?",
+      options: [
+        "`true` (chunki matematika bo'yicha 3 katta 2 dan va 2 katta 1 dan)",
+        "`false` (chunki chapdan o'ngga bajarilganda `3 > 2` `true` qaytaradi, so'ng `true > 1` taqqoslanadi va true son sifatida 1 ga aylanib `1 > 1` natijasi false bo'ladi)",
+        "`undefined`",
+        "`TypeError` xatosi kelib chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Taqqoslash chapdan o'ngga bajariladi: `3 > 2` natijasi `true` bo'ladi. Keyin `true > 1` taqqoslanadi. `true` avtomatik tarzda `1` soniga o'girilib, `1 > 1` sharti tekshiriladi va javob `false` chiqadi."
+    },
+    {
+      id: 3,
+      question: "Quyidagi amal bajarilganda konsolga nima chiqadi: `console.log(\"5\" + \"5\" - 5)`?",
+      options: [
+        "`\"555\"`",
+        "`50` (chunki dastlab `\"5\" + \"5\"` matnlari birlashib `\"55\"` stringini hosil qiladi, so'ngra `-` operatori kelganligi sababli u songa aylanib `55 - 5 = 50` bo'ladi)",
+        "`5`",
+        "`NaN`"
+      ],
+      correctAnswer: 1,
+      explanation: "Birinchi navbatda `+` operatori satrlar bilan ishlagani uchun ularni birlashtiradi (`\"55\"`). Keyingi `-` operatori esa faqat sonlar bilan ishlagani bois, satrni avtomatik songa aylantiradi va `55 - 5 = 50` natijasi chiqadi."
+    },
+    {
+      id: 4,
+      question: "`null + 5` ifodasi bajarilganda qanday natija hosil bo'ladi va nima sababdan?",
+      options: [
+        "`5` (chunki implicit coercion paytida `null` avtomatik tarzda `0` soniga aylanadi va `0 + 5 = 5` bo'ladi)",
+        "`\"null5\"` (chunki null matn sifatida o'zlashtiriladi)",
+        "`NaN` (chunki null son emas)",
+        "`TypeError`"
+      ],
+      correctAnswer: 0,
+      explanation: "`null` obyekti arifmetik amallarda va songa avtomatik o'tkazilganda (implicit coercion) har doim `0` soniga tenglashtiriladi."
+    },
+    {
+      id: 5,
+      question: "Nima uchun JavaScript-da ikkitalik tenglik `==` o'rniga qat'iy tenglik `===` ishlatish tavsiya qilinadi?",
+      options: [
+        "`==` faqat raqamlarni solishtiradi, `===` esa matnlarni solishtiradi",
+        "`==` avtomatik turni o'zgartirish (coercion) xususiyatiga ega bo'lib, kutilmagan natijalarga olib kelishi mumkin; `===` esa qiymatni ham, uning turini ham o'zgartirmasdan solishtiradi",
+        "`===` tezroq ishlaydi",
+        "Ikkalasi o'rtasida hech qanday farq yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "`==` taqqoslash operatori turlar har xil bo'lsa, ularni avtomatik bir xil turga keltirib taqqoslaydi (masalan, `[] == 0` yoki `true == 1` rost qaytaradi). Bu esa xatolarga sabab bo'lgani uchun qat'iy tenglik `===` tavsiya etiladi."
+    }
   ]
 };

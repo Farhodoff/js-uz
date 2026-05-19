@@ -69,5 +69,67 @@ console.log(parseInt(r));   // 50 (faqat butun qismini oladi)
       hint: "let res = parseInt(val);",
       test: "if (res === 100) return null; return 'Faqat 100 chiqishi kerak!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`parseInt(\"100px\")` va `Number(\"100px\")` amallarining natijalari mos ravishda qanday bo'ladi?",
+      options: [
+        "`100` va `100`",
+        "`100` va `NaN` (chunki parseInt faqat boshidagi sonni ajratib oladi, Number esa butun boshli satrni son qila olmasa NaN qaytaradi)",
+        "`NaN` va `100`",
+        "`TypeError` xatosi yuz beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "`parseInt()` satr boshidagi sonlarni tahlil qilib, ularni ajratib oladi (`100`). `Number()` esa satrni to'liqligicha songa aylantirishga harakat qiladi va unda raqam bo'lmagan belgilar bo'lsa, `NaN` qaytaradi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kodlardan qaysi biri ishga tushirilganda `TypeError` xatosi (error) yuz beradi?",
+      options: [
+        "`String(null)`",
+        "`null.toString()` (chunki null va undefined qiymatlarida toString() metodi mavjud emas)",
+        "`String(undefined)`",
+        "`+(null)`"
+      ],
+      correctAnswer: 1,
+      explanation: "`null` va `undefined` qiymatlari obyekt bo'lmaganligi uchun ularda `.toString()` metodini chaqirib bo'lmaydi. Lekin `String()` global funksiyasi ularni xatosiz string ko'rinishiga o'tkazadi."
+    },
+    {
+      id: 3,
+      question: "`Number([])` va `Number([5])` o'zgarishlarining natijalari qanday bo'ladi?",
+      options: [
+        "`NaN` va `NaN`",
+        "`0` va `5`",
+        "`0` va `NaN`",
+        "`undefined` va `5`"
+      ],
+      correctAnswer: 1,
+      explanation: "Bo'sh massiv `[]` songa o'girilganda `0` ga aylanadi. Yagona elementli `[5]` massivi esa uning ichidagi elementga qarab `5` soniga o'zgaradi."
+    },
+    {
+      id: 4,
+      question: "JavaScript-da \"Double bang\" (`!!`) operatori qanday vazifani bajaradi?",
+      options: [
+        "Qiymatni ikkala tomonga ko'paytiradi",
+        "Istalgan turdagi qiymatni tez va oson tarzda unga mos Boolean (true/false) turiga o'tkazadi",
+        "Sonlarni solishtiradi",
+        "Matnni tozalaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Birinchi inkor belgisi `!` qiymatni teskari boolean turiga o'tkazadi, ikkinchi `!` esa uni yana asl mantiqiy ko'rinishiga qaytaradi (aslida `Boolean(qiymat)` bilan bir xil ishlaydi)."
+    },
+    {
+      id: 5,
+      question: "`Number(true)` va `Number(false)` natijalari mos ravishda qanday chiqadi?",
+      options: [
+        "`1` va `0`",
+        "`true` va `false`",
+        "`NaN` va `NaN`",
+        "`1` va `-1`"
+      ],
+      correctAnswer: 0,
+      explanation: "Mantiqiy `true` qiymati sonli ifodada `1` ga, mantiqiy `false` qiymati esa `0` ga teng deb hisoblanadi."
+    }
   ]
 };

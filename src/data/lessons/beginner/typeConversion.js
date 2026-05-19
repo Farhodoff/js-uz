@@ -71,5 +71,67 @@ console.log(Number(a) + Number(b)); // 30
       hint: "let num = Number(str); yoki let num = +str;",
       test: "if (typeof num === 'number' && num === 123) return null; return 'Noto\\'g\\'ri o\\'tkazildi!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`Boolean(\"0\")` va `Boolean(\"\")` qiymatlarining natijasi nima bo'ladi?",
+      options: [
+        "`false` va `false`",
+        "`true` va `false` (chunki ichida belgi bor string har doim truthy, bo'sh string esa falsy)",
+        "`true` va `true`",
+        "`TypeError` yuz beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Bo'sh bo'lmagan har qanday satr, hatto u nol belgisi `\"0\"` yoki bo'sh joy `\" \"` bo'lsa ham truthy (rost) hisoblanadi. Mutlaqo bo'sh satr `\"\"` esa falsy (yolg'on) qiymat beradi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kodlardan qaysi biri matn ko'rinishidagi sonni eng qisqa usulda Number turiga o'zgartiradi?",
+      options: [
+        "`Number(str)`",
+        "`parseInt(str)`",
+        "`+str`",
+        "`str.toNumber()`"
+      ],
+      correctAnswer: 2,
+      explanation: "Unary plus (`+`) operatori o'zgaruvchidan oldin qo'yilganda, uni juda tez va qisqa usulda songa o'tkazish imkonini beradi."
+    },
+    {
+      id: 3,
+      question: "Quyidagilardan qaysi biri mantiqiy false (falsy) qiymat hisoblanmaydi?",
+      options: [
+        "`0`",
+        "`null`",
+        "`\" \"` (ichida bo'sh joy bo'lgan string)",
+        "`undefined`"
+      ],
+      correctAnswer: 2,
+      explanation: "JavaScript-da 6 ta falsy qiymat bor: `false`, `0`, `\"\"` (bo'sh string), `null`, `undefined`, va `NaN`. Ichida bo'sh joy bo'lgan string `\" \"` bo'sh hisoblanmaydi va u rost (truthy) qiymat qaytaradi."
+    },
+    {
+      id: 4,
+      question: "`Number(null)` va `Number(undefined)` chaqirilganda qanday qiymatlar hosil bo'ladi?",
+      options: [
+        "`0` va `NaN`",
+        "`NaN` va `0`",
+        "`0` va `0`",
+        "`NaN` va `NaN`"
+      ],
+      correctAnswer: 0,
+      explanation: "`null` obyekti sonli qiymat sifatida `0` ga aylanadi, lekin aniqlanmagan qiymat bo'lgan `undefined` esa songa o'girilganda mantiqan `NaN` (Not a Number) beradi."
+    },
+    {
+      id: 5,
+      question: "`String(true)` metodidan qaytadigan natijaning turi va qiymati qanday?",
+      options: [
+        "Boolean turidagi `true`",
+        "String turidagi `\"true\"`",
+        "Number turidagi `1`",
+        "Undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "`String()` metodi uzatilgan boolean rostlik qiymatini shunchaki harfli matnga aylantiradi, ya'ni natija string turidagi `\"true\"` bo'ladi."
+    }
   ]
 };

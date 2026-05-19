@@ -74,5 +74,67 @@ switch (oy) {
       hint: "switch(day) { case 1: console.log('Dushanba'); break; ... }",
       test: "if (logs.includes('Dushanba')) return null; return 'Break yoki case xato!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`switch` operatori solishtirishlarda qaysi taqqoslash operatoridan foydalanadi?",
+      options: [
+        "Qat'iy bo'lmagan tenglik `==`",
+        "Qat'iy tenglik `===` (qiymatni ham, turni ham tekshiradi, ya'ni `switch(5)` bo'lganda `case \"5\":` mos kelmaydi)",
+        "Faqat `>` yoki `<` operatorlaridan",
+        "Mantiqiy `||` operatoridan"
+      ],
+      correctAnswer: 1,
+      explanation: "`switch` operatori solishtirish uchun qat'iy tenglik `===` dan foydalanadi. Shu sababli son `5` va matn `\"5\"` bir-biriga mos kelmaydi."
+    },
+    {
+      id: 2,
+      question: "`switch` dagi `default` bloki haqida berilgan fikrlardan qaysi biri to'g'ri?",
+      options: [
+        "U har doim eng boshida yozilishi shart",
+        "U hech bir `case` mos kelmagan holatda ishga tushadi va u odatda switch oxirida yoziladi (break qo'yish shart emas)",
+        "U faqat raqamlar bilan ishlaydi",
+        "Uni yozish mutlaqo majburiydir"
+      ],
+      correctAnswer: 1,
+      explanation: "`default` bloki xuddi `if-else` zanjiridagi eng oxirgi `else` kabi ishlaydi — hech bir case sharti bajarilmaganida ishga tushadi. U odatda oxirida yoziladi, lekin majburiy emas."
+    },
+    {
+      id: 3,
+      question: "Quyidagi kod ishga tushirilganda konsolga nima chiqadi:\n```javascript\nlet score = 2;\nswitch (score) {\n  case 1:\n    console.log(\"Bir\");\n  case 2:\n    console.log(\"Ikki\");\n  case 3:\n    console.log(\"Uch\");\n  default:\n    console.log(\"Boshqa\");\n}\n```",
+      options: [
+        "`\"Ikki\"`",
+        "`\"Ikki\"`, `\"Uch\"` va `\"Boshqa\"` (chunki case 2 mos keldi va break bo'lmagani uchun pastdagi barcha kodlar bajarilib ketadi)",
+        "`\"Bir\"` va `\"Ikki\"`",
+        "`TypeError` yuz beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Mos keluvchi `case 2` topilgach, uning kodi bajariladi. Biroq, `break` yozilmaganligi sababli dastur to'xtamaydi va pastdagi `case 3` va `default` bloklarining kodlarini ham birin-ketin bajarib yuboradi."
+    },
+    {
+      id: 4,
+      question: "\"Fall-through\" tushunchasi switch operatorida nimani anglatadi?",
+      options: [
+        "Switch operatoridan xatolik yuz berib chiqib ketishini",
+        "`break` operatori qo'yilmaganligi sababli kodning keyingi case-larga o'tib ketishini",
+        "Default blokining avtomatik ravishda bajarilishini",
+        "Switch ichida cheksiz sikl hosil bo'lishini"
+      ],
+      correctAnswer: 1,
+      explanation: "\"Fall-through\" (orqali o'tish) — bu dasturchi `break` yozishni unutganda, dastur keyingi holatlarni ham avtomatik ravishda bajarib yuboradigan switch operatorining odatiy xatti-harakatidir."
+    },
+    {
+      id: 5,
+      question: "Switch ichida `switch(true)` sintaksisi qanday maqsadlarda qo'llanilishi mumkin?",
+      options: [
+        "Faqat boolean qiymatlarini solishtirish uchun",
+        "`if-else` kabi case-lar ichida shartli diapazonlarni (masalan: `case age > 18:`) tekshirish uchun",
+        "Ushbu sintaksis JavaScript-da umuman ishlamaydi va xato beradi",
+        "Faqat `break` ishlatmaslik uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "`switch(true)` yozilganda, har bir `case` qiymati emas, balki shartli ifoda sifatida hisoblanadi. Agar case ichidagi shart `true` qaytarsa, o'sha blok ishlaydi (masalan, `case score >= 90: ...`)."
+    }
   ]
 };

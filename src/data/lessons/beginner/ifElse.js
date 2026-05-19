@@ -134,5 +134,67 @@ Ha, lekin kod o'qilishini qiyinlashtirgani uchun ehtiyot bo'lish kerak.
       hint: "console.log(a > 0 ? 'Musbat' : 'Manfiy');",
       test: "if (code.includes('?') && logs.includes('Musbat')) return null; return 'Ternary operatorni ishlating';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da `if (x = 5)` yozilishi qanday natijaga olib keladi?",
+      options: [
+        "Xatolik yuz beradi",
+        "`x` o'zgaruvchisiga `5` qiymatini o'zlashtiradi va `5` truthy bo'lgani uchun shart har doim bajariladi",
+        "`x` ning qiymati `5` ga teng yoki teng emasligini solishtiradi",
+        "Hech narsa sodir bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Yagona barobar `=` o'zlashtirish operatori hisoblanadi. Shart ichida `x = 5` yozilsa, `x` ga 5 yuklanadi va shart `if (5)` ga aylanadi. 5 soni esa rost (truthy) bo'lgani uchun shart doim to'g'ri deb baholanadi. Solishtirish uchun `===` ishlatish kerak."
+    },
+    {
+      id: 2,
+      question: "Quyidagilardan qaysi biri ternary (uchlik) operatorining to'g'ri sintaksisi hisoblanadi?",
+      options: [
+        "`shart ? agar rost : agar yolg'on`",
+        "`shart : agar rost ? agar yolg'on`",
+        "`if (shart) ? rost : yolg'on`",
+        "`shart ? agar rost`"
+      ],
+      correctAnswer: 0,
+      explanation: "Ternary operatori shartdan so'ng so'roq belgisi `?`, rost bo'lgandagi qiymat, keyin ikki nuqta `:` va yolg'on bo'lgandagi qiymat ko'rinishida yoziladi."
+    },
+    {
+      id: 3,
+      question: "`switch` operatorida bitta `case` bajarilgandan keyin `break` yozilmasa nima sodir bo'ladi?",
+      options: [
+        "Dastur xatolik berib to'xtaydi",
+        "Keyingi `case`larning shartlari to'g'ri yoki noto'g'ri bo'lishidan qat'iy nazar, to navbatdagi `break` uchramaguncha yoki switch tugamaguncha bajarilib ketaveradi (fall-through)",
+        "Switch avtomatik ravishda tugaydi",
+        "Faqat default qismi ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`break` kalit so'zi switch operatoridan chiqib ketishni ta'minlaydi. U yozilmasa, kod shart bajarilgan joydan boshlab pastdagi barcha case kodlarini ketma-ket bajarib ketadi."
+    },
+    {
+      id: 4,
+      question: "Diapazonlar (masalan: `x > 10` va `x < 20`) bilan ishlashda qaysi shart operatori qulayroq va to'g'ri keladi?",
+      options: [
+        "`switch-case`",
+        "`if...else`",
+        "`while`",
+        "Bunday shartlarni tekshirib bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`if...else` har xil diapazonlar va mantiqiy operatorlar bilan tekshirish uchun moslashuvchan. `switch` esa aniq va qat'iy qiymatlarni solishtirish uchun ishlatiladi."
+    },
+    {
+      id: 5,
+      question: "Quyidagi shart ifodasi bajarilganda nima natija chiqadi: `if (\"salom\") { console.log(\"ishladi\"); } else { console.log(\"ishlamadi\"); }`?",
+      options: [
+        "Konsolda hech narsa chiqmaydi",
+        "`\"ishladi\"` (chunki bo'sh bo'lmagan string truthy qiymat hisoblanadi)",
+        "`\"ishlamadi\"`",
+        "`TypeError` yuz beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript-da bo'sh bo'lmagan har qanday satr (string) rost (truthy) deb baholanadi, shuning uchun `if` bloki ishga tushib, konsolga `\"ishladi\"` chiqadi."
+    }
   ]
 };

@@ -69,5 +69,67 @@ console.log(null === undefined); // false
       hint: "let res = 100 === '100';",
       test: "if (res === false) return null; return 'Solishtirish noto\\'g\\'ri!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da `NaN === NaN` va `Object.is(NaN, NaN)` amallari qanday qiymatlarni qaytaradi?",
+      options: [
+        "`true` va `true`",
+        "`false` va `true` (chunki NaN o'z-o'ziga teng bo'lmagan yagona qiymatdir, lekin Object.is() algoritmi ularni aniq teng deb biladi)",
+        "`true` va `false`",
+        "`false` va `false`"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript IEEE 754 standarti bo'yicha `NaN` qiymatini o'z-o'ziga teng emas deb hisoblaydi (`NaN === NaN` - false). Ammo ES6 da qo'shilgan `Object.is()` metodi bu g'alati qoidani to'g'irlab, `true` qaytaradi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi loose equality (yumshoq tenglik) solishtiruvlaridan qaysi biri `false` qaytaradi?",
+      options: [
+        "`null == undefined`",
+        "`0 == \"\"`",
+        "`false == \"0\"`",
+        "`null == 0` (null faqat undefined bilan == taqqoslanganda true qaytaradi, boshqa falsy qiymatlar bilan false beradi)"
+      ],
+      correctAnswer: 3,
+      explanation: "`null` va `undefined` o'zaro teng deb olingan. Shuningdek `0`, `\"\"` va `\"0\"` solishtirilganda avtomatik ravishda bir xil turga o'tib `true` beradi. Biroq `null` hech qanday boshqa falsy qiymatga (masalan, `0` yoki `false`) `==` operatori orqali teng bo'la olmaydi."
+    },
+    {
+      id: 3,
+      question: "Ikki alohida bo'sh massiv `[] == []` yoki `[] === []` shaklida solishtirilsa, natija nima bo'ladi va nima uchun?",
+      options: [
+        "`true` (chunki ikkalasi ham bo'sh massivlar)",
+        "`false` (chunki massivlar reference (havola) turiga kiradi va xotiradagi har xil manzillarga ishora qiladi, shuning uchun ular hech qachon teng bo'lmaydi)",
+        "`undefined`",
+        "`TypeError` xatosi kelib chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Reference (havola) tipli ma'lumotlar (massivlar, obyektlar) solishtirilayotganda ularning ichki tarkibi emas, balki xotiradagi manzillari solishtiriladi. Ikki alohida massiv xotirada turlicha joylashgani uchun teng emas."
+    },
+    {
+      id: 4,
+      question: "JavaScript-da `Object.is(-0, +0)` ifodasi nima qaytaradi?",
+      options: [
+        "`true` (chunki 0 ning ishorasi farq qilmaydi)",
+        "`false` (chunki Object.is() matematik jihatdan manfiy nol va musbat nolni alohida ajratib tekshiradi)",
+        "`NaN`",
+        "`TypeError`"
+      ],
+      correctAnswer: 1,
+      explanation: "Qat'iy tenglik `===` operatori `-0 === +0` ni `true` deb baholasada, `Object.is()` algoritmi ularning ishorasini farqlab, aniq va qat'iy `false` qaytaradi."
+    },
+    {
+      id: 5,
+      question: "`isNaN(x)` funksiyasi nima uchun kerak?",
+      options: [
+        "Qiymat string ekanligini tekshirish uchun",
+        "Qiymat haqiqatan ham `NaN` (son emas) ekanligini tekshirish uchun, chunki `x === NaN` solishtiruvi har doim false beradi",
+        "Faqat manfiy sonlarni aniqlash uchun",
+        "Qiymatni songa o'tkazish uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "Chunki `NaN` o'z-o'ziga teng emasligi sababli, biror o'zgaruvchining qiymati son emasligini (`NaN` ligini) oddiy tenglik orqali tekshirib bo'lmaydi. Buning uchun maxsus `isNaN()` yoki `Number.isNaN()` funksiyasi ishlatiladi."
+    }
   ]
 };
