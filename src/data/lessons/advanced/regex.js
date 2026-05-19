@@ -39,6 +39,7 @@ const pattern = /hello/i; // "hello"ni katta-kichik harfga qaramasdan qidiradi
 - **regex.test(str):** Moslik bormi? (true/false).
 - **str.match(regex):** Mos keluvchi qismlarni massiv qilib qaytaradi.
 - **str.replace(regex, newStr):** Matnni almashtiradi.
+- **str.split(regex):** Qoidaga mos joyda ajratadi.
 
 \`\`\`javascript
 const emailRegex = /^[^\\\\s@]+@[^\\\\s@]+\\\\.[^\\\\s@]+$/;
@@ -47,38 +48,165 @@ console.log(emailRegex.test("ali@gmail.com")); // true
 
 ---
 
-## Intervyu savollari (Junior & Middle)
+## Savol-Javoblar (12 ta)
 
-### Junior daraja
-1. **RegEx nima va u nima uchun ishlatiladi?**
-2. **test() va match() metodlari farqi nimada?**
-3. **i va g bayroqlari nimani anglatadi?**
+<details>
+<summary><b>1. RegEx nima va u nima uchun ishlatiladi?</b></summary>
+Regular Expression (RegEx) — matn ichidagi naqshlarni (patterns) aniqlash, tekshirish, ajratish va almashtirish uchun ishlatiladigan maxsus belgilar tizimi.
+</details>
 
-### Middle daraja
-4. **Capturing groups (qavslar) nima uchun kerak?**
-5. **Lookahead va Lookbehind (musbat/manfiy) tushunchalari nima?**
-6. **RegEx'da "Greedy" (ochko'z) va "Lazy" (dangasa) qidiruv nima?**`,
-  task: `// 1. Matn ichida raqam borligini tekshiruvchi RegEx yozing.
-// 2. Foydalanuvchi kiritgan telefon raqamini (+998XXXXXXXXX formatida) tekshiruvchi pattern yarating.
-// 3. Matn ichidagi barcha "JavaScript" so'zlarini (katta-kichik harfidan qat'iy nazar) "JS"ga almashtiring.
-// 4. Parol uchun RegEx: kamida 8 ta belgi, kamida bitta harf va bitta raqam bo'lishi shart.
-// 5. match() yordamida matn ichidagi barcha sonlarni ajratib oling.
+<details>
+<summary><b>2. test() va match() metodlari farqi nimada?</b></summary>
+\`test()\` faqat mos kelish bor-yo'qligini \`true/false\` qaytaradi. \`match()\` esa topilgan barcha mos qismlarni massiv qilib qaytaradi.
+</details>
 
-// Kodingizni shu yerga yozing`,
-  hint: `// 1. Check numbers
-/\\\\d/.test("Salom 123");
+<details>
+<summary><b>3. i va g bayroqlari nimani anglatadi?</b></summary>
+\`i\` — katta-kichik harf farqi yo'q (case-insensitive). \`g\` — global, barcha mosliklarni izlaydi, birinchisida to'xtamaydi.
+</details>
 
-// 2. Phone validation
-const phoneRegex = /^\\\\+998\\\\d{9}$/;
+<details>
+<summary><b>4. Capturing groups (qavslar) nima uchun kerak?</b></summary>
+\`()\` qavslar yordamida mos keladigan qismni "guruh" sifatida saqlash mumkin. Masalan, \`/(\\\\d{4})-(\\\\d{2})/\` sanani guruhlab oladi.
+</details>
 
-// 3. Replace all
-"Javascript juda zo'r".replace(/javascript/gi, "JS");
+<details>
+<summary><b>5. \\d, \\w, \\s nimani bildiradi?</b></summary>
+\`\\d\` — raqamlar (0-9). \`\\w\` — harf, raqam va pastki chiziq. \`\\s\` — bo'shliq va tabulyatsiya belgilari.
+</details>
 
-// 4. Password validation
-const passRegex = /^(?=.*[A-Za-z])(?=.*\\\\d)[A-Za-z\\\\d]{8,}$/;
+<details>
+<summary><b>6. RegEx'da "Greedy" va "Lazy" qidiruv farqi nima?</b></summary>
+Greedy (\`+\`, \`*\`) — imkon boricha ko'proq belgini qamrab oladi. Lazy (\`+?\`, \`*?\`) — imkon boricha kam belgini qamrab oladi.
+</details>
 
-// 5. Get all numbers
-"12 olma va 34 anor".match(/\\\\d+/g);`,
+<details>
+<summary><b>7. ^ va $ nima?</b></summary>
+\`^\` — qator yoki satr boshini bildiradi. \`$\` — qator yoki satr oxirini bildiradi. Email yoki telefon kabi to'liq matnni tekshirishda zarur.
+</details>
+
+<details>
+<summary><b>8. replace() bilan RegEx ishlatishda nima afzallik bor?</b></summary>
+\`str.replace(/pattern/g, 'yangi')\` — \`g\` bayrog'i bilan barcha mosliklarni almashtiradi. Oddiy string bilan faqat birinchisi almashtiriladi.
+</details>
+
+<details>
+<summary><b>9. Lookahead nima? Misol keltiring.</b></summary>
+Lookahead (\`(?=...)\`) — hozirgi pozitsiyadan keyin ma'lum naqsh kelishini talab qiladi. Masalan, \`\\d+(?= yil)\` faqat "yil" oldidagi raqamlarni topadi.
+</details>
+
+<details>
+<summary><b>10. Character class [] nima?</b></summary>
+\`[abc]\` — 'a', 'b' yoki 'c' dan birini moslashtiradi. \`[a-z]\` — barcha kichik harflar. \`[^abc]\` — a, b, c dan boshqa istalgan belgi.
+</details>
+
+<details>
+<summary><b>11. Non-capturing group (?:...) nima?</b></summary>
+\`(?:...)\` — guruhlanadi, lekin natijada saqlanmaydi. Miqdor berish uchun ishlatiladi: \`(?:ab)+\` — "ab" bir yoki ko'p marta.
+</details>
+
+<details>
+<summary><b>12. String.prototype.split() da RegEx qanday ishlaydi?</b></summary>
+\`"a1b2c3".split(/\\d/)\` → \`["a", "b", "c", ""]\` — har bir raqam ajratuvchi sifatida ishlatiladi.
+</details>`,
+  exercises: [
+    {
+      id: 1,
+      title: "1️⃣ Raqam borligini tekshirish",
+      instruction: "Matn ichida kamida bitta raqam borligini tekshiruvchi RegEx yozing va test() bilan ishlatib true qaytaring.",
+      startingCode: "const matn = 'Yoshim 25 da';\n// RegEx yozing\nconst regex = ;\nconst result = regex.test(matn);\nconsole.log(result);",
+      hint: "const regex = /\\d/;",
+      test: "if (result === true) return null; return 'Raqam topilmadi';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Telefon raqami validatsiyasi",
+      instruction: "+998XXXXXXXXX formatidagi telefon raqamini tekshiruvchi RegEx yozing.",
+      startingCode: "const phone = '+998901234567';\n// RegEx yozing\nconst phoneRegex = ;\nconsole.log(phoneRegex.test(phone));",
+      hint: "const phoneRegex = /^\\+998\\d{9}$/;",
+      test: "if (phoneRegex.test('+998901234567') === true && phoneRegex.test('998901234567') === false) return null; return 'Telefon regex noto\\'g\\'ri';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Barcha sonlarni ajratib olish",
+      instruction: "Matn ichidagi barcha sonlarni match() yordamida massiv sifatida oling.",
+      startingCode: "const matn = '12 ta olma va 34 ta anor bor';\n// match() ishlatib sonlarni oling\nconst sonlar = ;\nconsole.log(sonlar);",
+      hint: "const sonlar = matn.match(/\\d+/g);",
+      test: "if (Array.isArray(sonlar) && sonlar[0] === '12' && sonlar[1] === '34') return null; return 'Sonlar topilmadi';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ So'zni almashtirish (global replace)",
+      instruction: "Matn ichidagi barcha 'JavaScript' so'zlarini (katta-kichik harfdan qat'iy nazar) 'JS' bilan almashtiring.",
+      startingCode: "const matn = 'Javascript zo\\'r. JAVASCRIPT tili!';\n// replace() ishlating\nconst yangi = ;\nconsole.log(yangi);",
+      hint: "const yangi = matn.replace(/javascript/gi, 'JS');",
+      test: "if (yangi === 'JS zo\\'r. JS tili!') return null; return 'Almashtirish noto\\'g\\'ri';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Email tekshirish",
+      instruction: "Oddiy email manzilini tekshiruvchi RegEx yozing.",
+      startingCode: "const email1 = 'ali@gmail.com';\nconst email2 = 'noto\\'g\\'ri-email';\n// RegEx yozing\nconst emailRegex = ;\nconsole.log(emailRegex.test(email1), emailRegex.test(email2));",
+      hint: "const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;",
+      test: "if (emailRegex.test('ali@gmail.com') === true && emailRegex.test('noto\\'g\\'ri') === false) return null; return 'Email regex noto\\'g\\'ri';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Bosh harfni topish",
+      instruction: "Matn ichidagi barcha so'zlarning bosh harflarini topib massiv qiling.",
+      startingCode: "const matn = 'Ali Bobur Zara';\n// Bosh harflarni toping\nconst boshHarflar = ;\nconsole.log(boshHarflar);",
+      hint: "const boshHarflar = matn.match(/[A-Z]/g);",
+      test: "if (Array.isArray(boshHarflar) && boshHarflar.length === 3) return null; return 'Bosh harflar topilmadi';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Satr boshi va oxiri",
+      instruction: "Faqat 'Salom' so'zidan boshlanadigan va oxirida '!' bilan tugaydigan satrni tekshiring.",
+      startingCode: "const satr1 = 'Salom dunyo!';\nconst satr2 = 'Dunyo Salom!';\n// RegEx yozing\nconst regex = ;\nconsole.log(regex.test(satr1), regex.test(satr2));",
+      hint: "const regex = /^Salom.*!$/;",
+      test: "if (regex.test('Salom dunyo!') === true && regex.test('Dunyo Salom!') === false) return null; return 'Regex noto\\'g\\'ri';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Parol kuchi tekshirish",
+      instruction: "Parol kamida 8 ta belgi, kamida 1 ta raqam va 1 ta harf bo'lishini tekshiring.",
+      startingCode: "const parol1 = 'Salom123';\nconst parol2 = 'qisqa1';\n// RegEx yozing\nconst parolRegex = ;\nconsole.log(parolRegex.test(parol1), parolRegex.test(parol2));",
+      hint: "const parolRegex = /^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$/;",
+      test: "if (parolRegex.test('Salom123') === true && parolRegex.test('qisqa1') === false) return null; return 'Parol regex noto\\'g\\'ri';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Bo'shliqlar bilan ajratish",
+      instruction: "Matnni bir yoki ko'p bo'shliqlar bo'yicha split() qiling.",
+      startingCode: "const matn = 'bir   ikki  uch';\n// RegEx bilan split qiling\nconst qismlar = ;\nconsole.log(qismlar);",
+      hint: "const qismlar = matn.split(/\\s+/);",
+      test: "if (qismlar.length === 3 && qismlar[0] === 'bir') return null; return 'Split noto\\'g\\'ri';"
+    },
+    {
+      id: 10,
+      title: "🔟 Guruh bilan sana ajratish",
+      instruction: "'2024-05-19' formatidagi sanadan yil, oy va kunni capturing groups yordamida ajratib oling.",
+      startingCode: "const sana = '2024-05-19';\n// Capturing groups ishlatib match qiling\nconst natija = sana.match( /* regex */ );\nconsole.log(natija[1], natija[2], natija[3]);",
+      hint: "sana.match(/(\\d{4})-(\\d{2})-(\\d{2})/)",
+      test: "const n = '2024-05-19'.match(/(\\d{4})-(\\d{2})-(\\d{2})/); if (n && n[1] === '2024') return null; return 'Guruh ajratish noto\\'g\\'ri';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ URL dan protokolni ajratish",
+      instruction: "'https://example.com' URL dan faqat protokolni ('https') ajratib oling.",
+      startingCode: "const url = 'https://example.com';\n// Protokolni ajrating\nconst protokol = url.match( /* regex */ )?.[1];\nconsole.log(protokol);",
+      hint: "url.match(/^(https?)/)?.[1]",
+      test: "const p = 'https://example.com'.match(/^(https?)/)?.[1]; if (p === 'https') return null; return 'Protokol ajratilmadi';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Maxfiy ma'lumotlarni yashirish (Eng Qiyin)",
+      instruction: "Matn ichidagi kredit karta raqamini (16 ta raqam) yulduzchalar bilan yashiring (faqat oxirgi 4 ta ko'rinsin).",
+      startingCode: "const matn = 'Karta: 1234567890123456';\n// replace bilan yashiring: **** **** **** 3456\nconst yashirilgan = matn.replace( /* regex */, '****');\nconsole.log(yashirilgan);",
+      hint: "matn.replace(/\\b(\\d{4} ?){3}/, '**** **** **** ')",
+      test: "const y = 'Karta: 1234567890123456'.replace(/\\d(?=\\d{4})/g, '*'); if (y.includes('3456') && y.includes('*')) return null; return 'Yashirish noto\\'g\\'ri';"
+    }
+  ],
   quizzes: [
     {
       id: 1,
