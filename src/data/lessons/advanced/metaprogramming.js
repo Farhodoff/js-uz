@@ -104,5 +104,67 @@ console.log(list[-1]); // → "C" (Massiv oxiri!)
       hint: "if (!(prop in target)) return false;",
       test: "if (code.includes('in target')) return null; return 'In operatoridan foydalaning';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da Metadasturlash (Metaprogramming) deganda nima tushuniladi?",
+      options: [
+        "HTML elementlarini JavaScript yordamida tezkor render qilish",
+        "Kodni o'zini o'zi tahlil qiladigan, o'zgartiradigan yoki boshqa kodning xatti-harakatlarini nazorat qiladigan dasturlar yozish san'ati",
+        "Ma'lumotlar bazasidan ma'lumotlarni meta-taglar yordamida qidirish",
+        "Kodni faqat CSS stillari bilan bog'lash"
+      ],
+      correctAnswer: 1,
+      explanation: "Metadasturlash — bu dasturning boshqa dasturlarni (yoki o'zining xatti-harakatlarini) ma'lumot sifatida qabul qilib, ularni o'zgartira olish qobiliyatidir. JavaScriptda bunga Proxy va Reflect yordamida erishiladi."
+    },
+    {
+      id: 2,
+      question: "Proxy obyektini yaratishda `handler` obyekti ichidagi `get` va `set` kabi maxsus metodlar nima deb ataladi?",
+      options: [
+        "Filters (Filtrlar)",
+        "Traps (Tuzoqlar)",
+        "Listeners (Eshituvchilar)",
+        "Interceptors (To'suvchilar)"
+      ],
+      correctAnswer: 1,
+      explanation: "Proxy'da obyekt ustidagi operatsiyalarni (murojaat, o'zgartirish va h.k.) tutib oluvchi bu metodlar rasmiy ravishda 'traps' (tuzoqlar) deb ataladi."
+    },
+    {
+      id: 3,
+      question: "Proxy yordamida obyektning biror xususiyatini o'chirish (`delete obj.prop`) harakatini tutib qolish uchun qaysi trap (tuzoq) metodidan foydalaniladi?",
+      options: [
+        "`delete()`",
+        "`deleteProperty()`",
+        "`removeProperty()`",
+        "`unset()`"
+      ],
+      correctAnswer: 1,
+      explanation: "Obyekt xususiyatini o'chirish operatsiyasini nazorat qilish va taqiqlash yoki o'zgartirish uchun `deleteProperty(target, prop)` trap funksiyasidan foydalaniladi."
+    },
+    {
+      id: 4,
+      question: "Reflect obyekti nima va u asosan nima uchun ishlatiladi?",
+      options: [
+        "Brauzer oynasini aks ettiruvchi (iframe) yaratish vositasi",
+        "Obyektlar bilan ishlashda uning standart metodlarini (masalan, get, set, defineProperty) sodda, xavfsiz va funksional ko'rinishda chaqirish imkonini beruvchi, hamda true/false natija qaytaruvchi o'rnatilgan obyekt",
+        "Ma'lumotlarni shifrlash klassi",
+        "Serverga so'rov yuborish kutubxonasi"
+      ],
+      correctAnswer: 1,
+      explanation: "Reflect — bu obyektlarning ichki operatsiyalari uchun tayyor metodlar to'plamidir. Masalan, `try/catch` bloklarisiz `Reflect.set()` true/false qaytarib xavfsiz qiymat belgilash imkonini beradi va u Proxy trap metodlari bilan bir xil parametrlarga ega."
+    },
+    {
+      id: 5,
+      question: "Quyidagi kod e'lon qilingandan so'ng, `proxy.age` qiymati consolega nima deb chiqadi?\n```javascript\nconst target = { name: 'Ali' };\nconst proxy = new Proxy(target, {\n  get(target, prop) {\n    return prop in target ? target[prop] : 'Yo\\'q';\n  }\n});\nconsole.log(proxy.age);\n```",
+      options: [
+        "`undefined`",
+        "`\"Yo'q\"`",
+        "`ReferenceError` xatoligi beradi",
+        "`\"Ali\"`"
+      ],
+      correctAnswer: 1,
+      explanation: "Proxy'dagi `get` trap metodi `target` obyektda so'ralgan xususiyat bor-yo'qligini `in` operatori orqali tekshiradi. `age` xususiyati yo'qligi sababli `'Yo\\'q'` qiymati qaytariladi."
+    }
   ]
 };

@@ -372,5 +372,67 @@ debugger; // Brauzer'da break point
       hint: "test('subtract', () => { expect(calc.sub(5,2)).toBe(3); });",
       test: "if (code.includes('beforeEach') && code.includes('describe')) return null; return 'Full suite xato';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Test Pyramidi (Test piramidasi) modeliga ko'ra, qaysi turdagi testlar loyihada eng ko'p (odatda 80% gacha) bo'lishi tavsiya etiladi?",
+      options: [
+        "E2E (End-to-End) Tests — chunki ular butun tizimni sinab beradi",
+        "Unit Tests (Birlik testlari) — chunki ular alohida funksiyalarni juda tez va arzon tekshiradi",
+        "Integration Tests (Integratsiya testlari) — chunki ular modullar bog'lanishini tekshiradi",
+        "Manual Tests (Qo'lda bajariladigan testlar)"
+      ],
+      correctAnswer: 1,
+      explanation: "Unit testlar dasturning eng kichik bo'laklarini (funksiyalarni) boshqa bog'liqliklardan alohida holda tekshiradi. Ular juda tez ishlaydi va yaratish arzon bo'lgani uchun test piramidasining asosini tashkil qilishi shart."
+    },
+    {
+      id: 2,
+      question: "Test yozishda ko'p qo'llaniladigan AAA (Arrange-Act-Assert) andozasi (pattern) deganda nimani tushunasiz?",
+      options: [
+        "Test yozishdan oldin kodni avtomatik formatlash",
+        "Testlarni 3 ta alohida bosqichga bo'lish: 1) Test muhitini va o'zgaruvchilarni tayyorlash (Arrange), 2) Test qilinayotgan funksiyani bajarish (Act), 3) Olingan natija kutilgan natijaga mosligini tasdiqlash/tekshirish (Assert)",
+        "Testlarni Jest, Mocha va Cypress yordamida parallel ishga tushirish",
+        "Test nomi, uning tavsifi va xatolik xabarining bosh harflari"
+      ],
+      correctAnswer: 1,
+      explanation: "AAA pattern test kodining o'qiluvchanligini oshiradi. Arrange - sharoit yaratish (obyektlar, mocklar); Act - sinovdagi funksiyani chaqirish; Assert - natijani tekshirish (`expect` yordamida)."
+    },
+    {
+      id: 3,
+      question: "Jest kutubxonasida `{a: 1}` ko'rinishidagi obyekt yoki massiv ichidagi barcha xususiyatlarni chuqur tekshirish (deep equality) uchun qaysi matcher metodi ishlatiladi?",
+      options: [
+        "`expect(obj).toBe({a: 1})` (chunki obyektlar referensi tekshiriladi)",
+        "`expect(obj).toEqual({a: 1})`",
+        "`expect(obj).toBeSame({a: 1})`",
+        "`expect(obj).toDeepEqual({a: 1})`"
+      ],
+      correctAnswer: 1,
+      explanation: "`toBe` matcheri referenslarni (xotiradagi manzilni) solishtiradi. Obyekt va massivlar tarkibini (qiymatlarini) chuqur taqqoslash uchun Jest'da har doim `toEqual` matcheri ishlatiladi."
+    },
+    {
+      id: 4,
+      question: "Jest frameworkida har bir test ishga tushishidan oldin umumiy ma'lumotlar bazasini tayyorlash yoki o'zgaruvchilarni qayta tozalab boshlang'ich qiymatga keltirish uchun qaysi lifecyle metodidan foydalaniladi?",
+      options: [
+        "`beforeAll()`",
+        "`beforeEach()`",
+        "`afterEach()`",
+        "`initTest()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`beforeEach` har bir test blokidan (`test` yoki `it`) oldin ishga tushadi. Bu testlar bir-birining holatiga ta'sir qilmasligini (test isolation) ta'minlash uchun xizmat qiladi."
+    },
+    {
+      id: 5,
+      question: "Test yozishda Mocking va Spying (Spy) tushunchalari o'rtasidagi asosiy farq nimada?",
+      options: [
+        "Ikkalasi ham mutqalo bir xil narsa, farqi yo'q",
+        "Mock - bu real obyektdan butunlay voz kechib soxta (fake) funksiya ishlatish; Spy esa real obyekt/funksiyani saqlagan holda uning qanday chaqirilganini (necha marta, qanday argumentlar bilan) kuzatishdir",
+        "Spy faqat asinxron funksiyalar bilan ishlaydi",
+        "Mock faqat E2E testlarida ishlatiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "`jest.fn()` soxta (mock) funksiya yaratadi va uning ichki qismi aslini takrorlamaydi. `jest.spyOn()` esa mavjud obyektdagi metodni haqiqiy logikasini saqlab qolgan holda nazorat ostiga oladi va uning chaqirilish parametrlarini kuzatish imkonini beradi."
+    }
   ]
 };

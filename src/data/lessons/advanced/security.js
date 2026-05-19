@@ -193,5 +193,67 @@ console.log(sanitize(input)); // → "&lt;script&gt;steal()&lt;/script&gt; Salom
       hint: "el.textContent = userInput;",
       test: "if (code.includes('textContent')) return null; return 'XSS himoya yoq';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "XSS (Cross-Site Scripting) hujumining asosiy maqsadi va ishlash printsipi nima?",
+      options: [
+        "Ma'lumotlar bazasiga noto'g'ri SQL so'rovlarini yuborib, jadval ma'lumotlarini o'g'irlash",
+        "Foydalanuvchi kiritadigan input maydonlari orqali sahifaga zararli JavaScript kodini kiritish (inject qilish) va uni boshqa foydalanuvchilar brauzerida ishga tushirish",
+        "Serverni judayam ko'p so'rovlar yuborib to'xtatib qo'yish (DDoS)",
+        "Veb-sayt xosting provayderini buzish"
+      ],
+      correctAnswer: 1,
+      explanation: "XSS hujumida haker foydalanuvchi kiritadigan input maydoni, URL query parametrlari yoki boshqa yo'llar bilan sahifaga begona zararli JS kodini joylaydi. Agar sayt bu kodni filtrlarsiz render qilsa, ushbu kod boshqa foydalanuvchilar brauzerida ham ishlab ketib, ularning cookie-fayllari va maxfiy ma'lumotlarini o'g'irlashi mumkin."
+    },
+    {
+      id: 2,
+      question: "Foydalanuvchi tokenlarini (masalan, JWT token) brauzerda XSS hujumlaridan maksimal darajada himoya qilgan holda saqlash uchun qaysi usul eng xavfsiz hisoblanadi?",
+      options: [
+        "`LocalStorage`da saqlash",
+        "`SessionStorage`da saqlash",
+        "`HttpOnly` va `Secure` flaglariga ega bo'lgan kuki (Cookie) fayllarida saqlash",
+        "Global JavaScript o'zgaruvchisida saqlash"
+      ],
+      correctAnswer: 2,
+      explanation: "`HttpOnly` flagi bilan o'rnatilgan kuki fayllarini brauzerdagi JavaScript skriptlari orqali o'qish (masalan, `document.cookie` yordamida) mutqalo imkonsiz bo'ladi. Bu esa XSS hujumi sodir bo'lgan taqdirda ham tokenlarni hakerlar o'g'irlay olmasligini kafolatlaydi."
+    },
+    {
+      id: 3,
+      question: "CSRF (Cross-Site Request Forgery) hujumi nima va undan qanday himoyalanish mumkin?",
+      options: [
+        "Bu foydalanuvchi kompyuterini virus bilan zararlash; undan faqat antivirus orqali himoyalaniladi",
+        "Bu foydalanuvchi nomidan uning xabarisiz soxta so'rovlar yuborish hujumi; undan himoyalanish uchun maxsus CSRF tokenlar va cookie'larda `SameSite=Strict` (yoki `Lax`) sozlamasidan foydalaniladi",
+        "Bu ma'lumotlarni shifrlash; undan himoya qilish uchun SSL sertifikat ishlatiladi",
+        "Bu parollarni brute-force yordamida buzish; undan himoya qilish uchun murakkab parol tanlanadi"
+      ],
+      correctAnswer: 1,
+      explanation: "CSRF hujumida foydalanuvchi bitta xavfsiz saytda auth bo'lib turganida, boshqa zararli saytga kirganda u yerda avtomatik yashirin so'rov yuborish kodi ishlaydi (kuki fayllari avtomatik qo'shib yuborilgani uchun). Buni oldini olishda so'rov faqat o'sha domen ichida yuborilishini tekshiruvchi CSRF tokenlar va `SameSite` cookie siyosati yordam beradi."
+    },
+    {
+      id: 4,
+      question: "SQL Injection (SQL inyeksiyasi) xavfini mutlaqo bartaraf etish uchun ma'lumotlar bazasiga so'rov yuborishda qaysi usuldan foydalanish shart?",
+      options: [
+        "SQL so'rovlarini oddiy string concatenation (satrlarni qo'shish) orqali yig'ish",
+        "Prepared Statements (parametrli so'rovlar) dan foydalanish",
+        "SQL so'rovlarini faqat client-side'da yozish",
+        "SQL o'rniga NoSQL bazalardan foydalanish"
+      ],
+      correctAnswer: 1,
+      explanation: "Prepared Statements yoki Parameterized Queries usulida ma'lumotlar so'rov shablonidan alohida jo'natiladi. Bu orqali ma'lumotlar tarkibidagi SQL buyruqlari (masalan, `' OR '1'='1`) bazaga SQL kodi emas, shunchaki oddiy matn bo'lib boradi va bazani buzib yuborolmaydi."
+    },
+    {
+      id: 5,
+      question: "Veb-sahifada qaysi manbalardan (domenlardan) JavaScript skriptlari, CSS stillari yoki rasmlar yuklanishi mumkinligini qat'iy cheklovchi xavfsizlik chorasi (HTTP header) nima deb ataladi?",
+      options: [
+        "CORS (Cross-Origin Resource Sharing)",
+        "CSP (Content Security Policy)",
+        "HTTPS",
+        "HSTS (HTTP Strict Transport Security)"
+      ],
+      correctAnswer: 1,
+      explanation: "CSP (Content Security Policy) - bu brauzerga qaysi manbalardan kelayotgan resurslar xavfsiz ekanini va ularni ishga tushirish kerakligini aytuvchi HTTP headerdir. U XSS hujumlarini deyarli butunlay zararsizlantirishga yordam beradi."
+    }
   ]
 };
