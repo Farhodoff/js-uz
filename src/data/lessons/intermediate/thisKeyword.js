@@ -531,5 +531,47 @@ Methoddan return this; qilish orqali. Har bir method o'zi qaytariladi, keyingi m
       hint: "this.increment.bind(this) - this fixed qilish",
       test: "if (code.includes('bind')) return null; return 'Binding xato!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Quyidagi kodda obyekt metodi ichida oddiy funksiya chaqirilganda `this` nima natija beradi?\n```javascript\nconst obj = { \n  name: \"Ali\",\n  greet() {\n    function inner() {\n      console.log(this.name);\n    }\n    inner();\n  }\n};\nobj.greet();\n```",
+      options: ["\"Ali\"", "undefined yoki window.name", "ReferenceError", "TypeError"],
+      correctAnswer: 1,
+      explanation: "Metod ichida regular (oddiy) funksiya `inner()` chaqirilganda, u hech qanday obyektsiz chaqirilgan hisoblanadi. JavaScript qoidasiga ko'ra, bi-argumentsiz chaqirilgan oddiy funksiyalarning `this`i global obyektga (window) yoki strict rejimda `undefined`ga ishora qiladi."
+    },
+    {
+      id: 2,
+      question: "Nested method ichida arrow funksiya ishlatilsa nima chiqadi?\n```javascript\nconst obj = { \n  name: \"Ali\",\n  greet() {\n    const inner = () => {\n      console.log(this.name);\n    };\n    inner();\n  }\n};\nobj.greet();\n```",
+      options: ["\"Ali\"", "undefined yoki window.name", "ReferenceError", "TypeError"],
+      correctAnswer: 0,
+      explanation: "Arrow funksiyalarda o'ziga xos `this` bo'lmaydi. U o'zi aniqlangan joydagi tashqi funksiyaning (ya'ni `greet` metodining) `this` kontekstini meros qilib oladi. `greet` metodi `obj` orqali chaqirilgani uchun `this` -> `obj` bo'ladi va `this.name` \"Ali\" ni qaytaradi."
+    },
+    {
+      id: 3,
+      question: "`call` va `apply` metodlarining asosiy farqi nimada?\n```javascript\nfunction greet(msg, emoji) { ... }\n```",
+      options: [
+        "`call` yangi funksiya qaytaradi, `apply` esa darhol chaqiradi",
+        "`call` argumentlarni ketma-ket qabul qiladi, `apply` esa massiv (array) ko'rinishida qabul qiladi",
+        "`call` faqat obyektlarda, `apply` faqat massivlarda ishlaydi",
+        "Hech qanday farqi yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikkala metod ham funksiyadagi `this` kontekstini qo'lda sozlab darhol chaqirishga xizmat qiladi. Ularning yagona farqi: `call` qo'shimcha argumentlarni vergul bilan ketma-ket qabul qilsa (arg1, arg2), `apply` ularni yagona massiv ichida qabul qiladi ([arg1, arg2])."
+    },
+    {
+      id: 4,
+      question: "Ketma-ket bog'langan `bind` metodlari natijasi nima chiqadi?\n```javascript\nfunction f() {\n  console.log(this.x);\n}\nconst bound = f.bind({x: 1}).bind({x: 2});\nbound();\n```",
+      options: ["1", "2", "undefined", "TypeError"],
+      correctAnswer: 0,
+      explanation: "JavaScriptda `bind` yordamida yaratilgan yangi funksiya o'zining kontekstini butunlay bog'lab oladi. Uni keyinchalik boshqa bind yordamida ikkinchi marta qayta bog'lab (re-bind) bo'lmaydi, kontekst har doim birinchi bind bo'lgan obyektga ishora qiladi."
+    },
+    {
+      id: 5,
+      question: "Arrow funksiyaning kontekstini `call` orqali o'zgartirsa nima bo'ladi?\n```javascript\nconst f = () => console.log(this.x);\nf.call({x: 10});\n```",
+      options: ["10", "undefined yoki window.x", "ReferenceError", "TypeError"],
+      correctAnswer: 1,
+      explanation: "Arrow funksiyalarda dynamic `this` mavjud emas va ularning lexical `this`ini `call()`, `apply()` yoki `bind()` yordamida qayta bog'lab yoki o'zgartirib bo'lmaydi. Ular chaqirilganda har doim o'zining original lexical contextini (bu yerda global context) ishlataveradi."
+    }
   ]
 };

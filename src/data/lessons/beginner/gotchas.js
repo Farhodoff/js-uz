@@ -66,5 +66,42 @@ console.log(false - true); // -1
       hint: "console.log('5' + 5); console.log('5' - 5);",
       test: "if (logs.includes('55') && logs.includes(0)) return null; return 'Natija xato!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Kasrli sonlarni solishtirish bo'yicha quyidagi kod nima natija beradi?\n```javascript\nconsole.log(0.1 + 0.2 === 0.3);\n```",
+      options: ["true", "false", "undefined", "TypeError"],
+      correctAnswer: 1,
+      explanation: "JavaScriptda kasrli sonlar IEEE 754 ikki sanoq tizimi formati bo'yicha saqlanadi. Bu formatda `0.1` va `0.2` cheksiz kasrli ko'rinishda bo'ladi, shuning uchun `0.1 + 0.2` aniq qiymati `0.30000000000000004` ga teng bo'lib, natija `false` bo'ladi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kod natijasini toping:\n```javascript\nconsole.log([] + []);\n```",
+      options: ["[]", "bo'sh massiv", "\"\" (bo'sh string)", "undefined"],
+      correctAnswer: 2,
+      explanation: "Massivlar o'rtasida `+` operatori ishlatilganda, JavaScript ularni matnga (string) aylantiradi. Bo'sh massiv `[]` matnga aylanganda bo'sh string `\"\"` bo'ladi, shuning uchun `\"\" + \"\"` natijasi ham bo'sh string `\"\"` bo'ladi."
+    },
+    {
+      id: 3,
+      question: "Massiv va Obyektni qo'shish natijasi nima bo'ladi?\n```javascript\nconsole.log([] + {});\n```",
+      options: ["\"[object Object]\"", "{}", "NaN", "TypeError"],
+      correctAnswer: 0,
+      explanation: "`+` operatori massiv `[]` ni bo'sh string `\"\"` ga, obyekt `{}` ni esa `\"[object Object]\"` ga aylantiradi. Ularning yig'indisi esa `\"[object Object]\"` matnini hosil qiladi."
+    },
+    {
+      id: 4,
+      question: "`typeof NaN` natijasi nima chiqadi?\n```javascript\nconsole.log(typeof NaN);\n```",
+      options: ["\"nan\"", "\"undefined\"", "\"number\"", "\"null\""],
+      correctAnswer: 2,
+      explanation: "`NaN` (Not a Number) nomi 'son emas' bo'lsa ham, texnik jihatdan u hisoblash natijasida hosil bo'ladigan noaniq son qiymatini anglatadi. Shuning uchun uning turi `\"number\"` hisoblanadi."
+    },
+    {
+      id: 5,
+      question: "`null` solishtirish jumboqlari haqidagi ushbu kod natijasini aniqlang:\n```javascript\nconsole.log(null == 0);\nconsole.log(null >= 0);\n```",
+      options: ["false va false", "true va true", "false va true", "true va false"],
+      correctAnswer: 2,
+      explanation: "Oddiy solishtirishda `==` algoritmi `null`ni songa o'girmaydi va u faqat `undefined`ga teng bo'ladi (shuning uchun `null == 0` -> `false`). Ammo solishtirish operatorlari (`>=`, `<=`) ishlaganda `null` son qiymatiga, ya'ni `0` ga aylanadi (shuning uchun `null >= 0` -> `true`)."
+    }
   ]
 };

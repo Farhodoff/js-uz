@@ -522,5 +522,42 @@ JavaScript'ning fundamental kontseptsiya. Scope, Memory management, Encapsulatio
       hint: "let timeoutId; clearTimeout(timeoutId); timeoutId = setTimeout(() => func(...args), delay);",
       test: "if (code.includes('setTimeout') && code.includes('clearTimeout')) return null; return 'Debounce noto\\'g\\'ri';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nfunction makeCounter() {\n  let count = 0;\n  return () => count++;\n}\nconst c1 = makeCounter();\nconst c2 = makeCounter();\nconsole.log(c1(), c1(), c2());\n```",
+      options: ["0 1 2", "0 1 0", "1 2 1", "0 0 0"],
+      correctAnswer: 1,
+      explanation: "Har safar `makeCounter()` chaqirilganda, yangi mustaqil lexical environment (xotira doirasi) yaratiladi va uning ichida o'zining shaxsiy `count` o'zgaruvchisi bo'ladi. `c1` ikki marta chaqirilganda o'z `count`ini `0` keyin `1` qiladi. `c2` esa butunlay yangi context bo'lgani uchun u yana `0` dan boshlaydi."
+    },
+    {
+      id: 2,
+      question: "Tashqi o'zgaruvchi o'zgargandan so'ng chaqirilgan closure funksiyasi natijasini toping:\n```javascript\nlet x = 10;\nfunction f() {\n  console.log(x);\n}\nx = 20;\nf();\n```",
+      options: ["10", "20", "undefined", "ReferenceError"],
+      correctAnswer: 1,
+      explanation: "Closure funksiya tashqi o'zgaruvchilarning nusxasini (value copy) emas, balki ularning o'ziga ishorani (reference) saqlaydi. Funksiya chaqirilgan vaqtda (runtime) `x` o'zgaruvchisining qiymati `20` bo'lgani uchun, konsolga `20` chiqadi."
+    },
+    {
+      id: 3,
+      question: "IIFE closure qoidasi bo'yicha quyidagi kod nima chiqaradi?\n```javascript\nconst fn = (function() {\n  let x = 0;\n  return () => {\n    x++;\n    return x;\n  };\n})();\nconsole.log(fn(), fn());\n```",
+      options: ["1 1", "1 2", "0 1", "undefined undefined"],
+      correctAnswer: 1,
+      explanation: "IIFE (Immediately Invoked Function Expression) darhol bitta scope yaratib ishlaydi. U qaytargan arrow funksiya o'sha yaratilgan `x` o'zgaruvchisi bilan closure hosil qiladi. Har bir `fn()` chaqirilganda, bitta `x` qiymati ortib boradi: avval `1`, keyin `2` bo'ladi."
+    },
+    {
+      id: 4,
+      question: "Parametr va tashqi o'zgaruvchi to'qnashganda (shadowing) qaysi biri ishlaydi?\n```javascript\nlet x = 10;\nfunction factory(x) {\n  return () => console.log(x);\n}\nconst f = factory(20);\nf();\n```",
+      options: ["10", "20", "undefined", "ReferenceError"],
+      correctAnswer: 1,
+      explanation: "Funksiyaning parametri `x` uning ichki scopi hisoblanadi va u tashqi global `x` o'zgaruvchisini soya ostida qoldiradi (shadowing). `factory(20)` chaqirilganda uning scopi ichida `x = 20` bo'ladi va closure shu `x`ni eslab qoladi."
+    },
+    {
+      id: 5,
+      question: "JavaScriptda static (lexical) scoping qoidasi bo'yicha quyidagi kod natijasini toping:\n```javascript\nconst x = 1;\nfunction a() {\n  const x = 2;\n  b();\n}\nfunction b() {\n  console.log(x);\n}\na();\n```",
+      options: ["1", "2", "undefined", "ReferenceError"],
+      correctAnswer: 0,
+      explanation: "JavaScript — statik (lexical) scope ishlatadigan til. Ya'ni funksiyaning scope zanjiri u qayerda chaqirilganiga (`a` ichida) emas, balki qayerda e'lon qilinganiga (global doirada) qarab aniqlanadi. `b` funksiyasi global doirada e'lon qilingan bo'lsa, u global `x = 1` ni ko'radi."
+    }
   ]
 };
