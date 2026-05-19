@@ -195,5 +195,67 @@ console.log(result); // → 25 (10 * 2 + 5)
       hint: "nums.filter(...).map(...).reduce(...);",
       test: "if (code.includes('.filter') && code.includes('.map') && code.includes('.reduce')) return null; return 'Pipeline xato';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Functional Programming (FP) ning asosiy ustunlaridan biri nima?",
+      options: [
+        "Ob'ektlar va vorislikni keng qo'llash (Inheritance)",
+        "O'zgaruvchan holatlardan (mutable state) va yon ta'sirlardan (side-effects) qochish",
+        "Barcha o'zgaruvchilarni global qilish",
+        "Faqat Class constructorlardan foydalanish"
+      ],
+      correctAnswer: 1,
+      explanation: "Functional Programming (Funktsional Dasturlash) ning asosiy g'oyasi yon ta'sirlardan qochish, pure funksiyalar yozish va holatni o'zgartirmaslik (immutability) hisoblanadi."
+    },
+    {
+      id: 2,
+      question: '"Pure Function" (Toza funksiya) nima?',
+      options: [
+        "Faqat bitta qator koddan iborat funksiya",
+        "Bir xil kirish parametrlari uchun har doim bir xil natija qaytaradigan va hech qanday yon ta\'siri (side-effects) bo\'lmagan funksiya",
+        "Faqat sonlar ustida ishlaydigan funksiya",
+        "Hech qanday argument qabul qilmaydigan funksiya"
+      ],
+      correctAnswer: 1,
+      explanation: "Pure funksiya tashqi muhitga ta'sir qilmaydi (side effect yo'q) va har doim bir xil argumentlarga bir xil natijani qaytaradi (deterministik)."
+    },
+    {
+      id: 3,
+      question: '"Immutability" (O\'zgarmaslik) nima degani?',
+      options: [
+        "Ma'lumotlar o'zgartirilganda uning ustiga yozilishi",
+        "Mavjud ma'lumot tuzilmasini to'g'ridan-to'g'ri o'zgartirmasdan, har doim yangi nusxa yaratish va o'shani qaytarish",
+        "Funksiyalarni o'zgartirish taqiqlanganligi",
+        "Faol xotiraning (RAM) o'zgarmasligi"
+      ],
+      correctAnswer: 1,
+      explanation: "Immutability printsipiga ko'ra, mavjud ob'ekt yoki massivlarni to'g'ridan-to'g'ri o'zgartirmaymiz (mutation yo'q), balki yangi nusxa yaratib ishlaymiz (masalan, spread operator yoki `.map()` yordamida)."
+    },
+    {
+      id: 4,
+      question: '"Currying" nima?',
+      options: [
+        "Funksiyaga har doim massiv uzatish usuli",
+        "Bir nechta argument qabul qiladigan funksiyani navbatma-navbat bittadan argument qabul qiladigan funksiyalar zanjiriga aylantirish",
+        "Funksiya bajarilishini ma'lum vaqtga kechiktirish",
+        "Xatolarni avtomatik o'tkazib yuboradigan funksiya"
+      ],
+      correctAnswer: 1,
+      explanation: "Currying `f(a, b, c)` ko'rinishidagi funksiyani `f(a)(b)(c)` ko'rinishida chaqirish imkonini beradi. Har bir funksiya bitta argument olib, navbatdagi funksiyani qaytaradi."
+    },
+    {
+      id: 5,
+      question: '"Function Composition" (Funksiyalar kompozitsiyasi) nima?',
+      options: [
+        "Bir funksiyani boshqa bir nechta funksiyalar yordamida yozish",
+        "Bir funksiyaning chiqish natijasini (output) boshqa funksiyaning kirish parametri (input) sifatida zanjir ko'rinishida ulash",
+        "Funksiyalarni matn sifatida jamlash",
+        "Funksiyalar ichida class'lar yaratish"
+      ],
+      correctAnswer: 1,
+      explanation: "Kompozitsiya funksiyalarni birlashtirish usuli bo'lib, uning yordamida `f(g(x))` kabi zanjirli ishlarni soddalashtirish uchun `compose(f, g)(x)` ko'rinishiga keltiriladi."
+    }
   ]
 };

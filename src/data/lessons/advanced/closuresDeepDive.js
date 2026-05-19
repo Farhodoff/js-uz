@@ -398,5 +398,67 @@ IIFE yordamida public va private API yaratish. Misol: const mod = (function() { 
       hint: "function createCurriedMultiplier(factor) { return function multiply(n) { return factor * n; }; }",
       test: "if (logs.includes(6) && logs.includes(10)) return null; return 'Curry + Factory to\\'g\\'ri emas!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript'da Closure (yopilish) nima?",
+      options: [
+        "Funksiya va uning e'lon qilingan lexical scope (tashqi muhit o'zgaruvchilari) kombinatsiyasi",
+        "Funksiya bajarilishini to'xtatuvchi maxsus runtime xatosi",
+        "Faqat `let` va `const` yordamida yaratilgan o'zgaruvchilar guruhi",
+        "Dasturning xotirasini butunlay tozalovchi maxsus metod"
+      ],
+      correctAnswer: 0,
+      explanation: "Closure funksiya o'zining lexical scope'idagi o'zgaruvchilarni (xoh u tashqi funksiyada bo'lsin) o'zi yopilganidan (tashqi funksiya bajarilib bo'lganidan) keyin ham eslab qolish qobiliyatidir."
+    },
+    {
+      id: 2,
+      question: "Lexical Scope deganda nima tushuniladi?",
+      options: [
+        "Funksiya chaqirilayotgan vaqtdagi dinamik o'zgaruvchilar ko'rinishi",
+        "Funksiya kodda qayerda yozilganligiga qarab uning o'zgaruvchilarni ko'rish doirasi belgilanishi",
+        "Faqat brauzer oynasiga bog'liq bo'lgan global o'zgaruvchilar",
+        "Xatolarni qayd etuvchi loglar to'plami"
+      ],
+      correctAnswer: 1,
+      explanation: "Lexical (yoki Static) Scope - bu o'zgaruvchining ko'rinish doirasi u kodda qayerda e'lon qilinganiga qarab aniqlanishidir. JavaScript dynamic scope emas, lexical scope'dan foydalanadi."
+    },
+    {
+      id: 3,
+      question: "Quyidagi kod bajarilganda konsolda nima chiqadi?\n```javascript\nconst arr = [];\nfor (var i = 0; i < 3; i++) {\n  arr.push(() => console.log(i));\n}\narr[0]();\n```",
+      options: [
+        "0",
+        "3",
+        "undefined",
+        "ReferenceError: i is not defined"
+      ],
+      correctAnswer: 1,
+      explanation: "`var` funksiyaviy/global scope'ga ega bo'lgani uchun, loop davomida bitta umumiy `i` o'zgaruvchisi o'zgarib boradi. Loop tugaganda `i` qiymati `3` bo'ladi va barcha closure funksiyalar shu yagona `i` ga ishora qilgani uchun konsolga `3` chop etiladi."
+    },
+    {
+      id: 4,
+      question: "Nima uchun yuqoridagi kodda `let` ishlatilganda `arr[0]()` chaqirilganda `0` chiqadi?",
+      options: [
+        "`let` ishlatilganda har bir loop iteratsiyasi uchun alohida yangi block scope (o'zgaruvchi bog'lamasi) yaratiladi",
+        "`let` o'zgaruvchilari global scope'ga tushadi",
+        "`let` hoisting'ni umuman taqiqlaydi",
+        "`let` ishlatilganda funksiya sinxron ravishda bajariladi"
+      ],
+      correctAnswer: 0,
+      explanation: "`let` block-scoped bo'lgani tufayli, har bir iteratsiyada yangi `i` o'zgaruvchisi xotirada yaratiladi va o'sha iteratsiyadagi closure aynan o'sha o'ziga tegishli nusxani eslab qoladi."
+    },
+    {
+      id: 5,
+      question: "Closures qanday qilib \"Memory Leak\" (xotira sizib chiqishi) ga sabab bo'lishi mumkin?",
+      options: [
+        "Hech qachon xotira muammosiga sabab bo'lmaydi",
+        "Tashqi funksiyadagi katta hajmli ma'lumotlar (masalan, yirik massivlar) closure funksiya xotirada turgunicha Garbage Collector tomonidan o'chirilmaydi",
+        "Barcha closure'lar avtomatik tarzda cheksiz loop yaratadi",
+        "O'zgaruvchilarni var bilan yaratganda"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar closure funksiya yirik hajmli ma'lumotni ushlab tursa va u closure uzoq vaqt (masalan, global DOM event listener ichida) xotirada yashasa, Garbage Collector u yirik ma'lumotni o'chira olmaydi va natijada xotira band bo'lib qolaveradi."
+    }
   ]
 };

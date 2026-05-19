@@ -476,5 +476,67 @@ Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik k
       hint: "setTimeout(() => { console.log(i); callback(); }, i * 300);",
       test: "if (logs.includes(1) && logs.includes(5) && logs.includes('Done!')) return null; return 'Combine xato!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "Asinxron dasturlashda Callback funksiya nima?",
+      options: [
+        "Faqat `setTimeout` ichida yozilishi shart bo'lgan maxsus o'zgaruvchi",
+        "Boshqa bir funksiyaga argument sifatida uzatiladigan va ma'lum bir asinxron amal yakunlangandan so'ng bajarilishi kutiladigan funksiya",
+        "Funksiyaning xotiradagi nomini o'zgartiradigan metod",
+        "Brauzer oynasi yuklanganda avtomatik ishlaydigan skript"
+      ],
+      correctAnswer: 1,
+      explanation: "Callback (qayta chaqiriladigan funksiya) boshqa funksiyaga parametr sifatida beriladi va asinxron operatsiya tugagach chaqiriladi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kod chop etilganda konsolda qanday ketma-ketlik hosil bo'ladi?\n```javascript\nconsole.log('A');\nsetTimeout(() => console.log('B'), 0);\nconsole.log('C');\n```",
+      options: [
+        "A, B, C",
+        "A, C, B",
+        "B, A, C",
+        "C, A, B"
+      ],
+      correctAnswer: 1,
+      explanation: "'A' va 'C' sinxron bo'lgani uchun ketma-ket bajariladi. `setTimeout` asinxron bo'lgani uchun kechikish vaqti 0 bo'lsa ham Call Stack bo'shashini kutadi va eng oxirida 'B' chiqadi."
+    },
+    {
+      id: 3,
+      question: "Nima uchun kechikish vaqti 0 ms qilib belgilangan bo'lsa ham `setTimeout` callback funksiyasi sinxron kodlardan keyin ishlaydi?",
+      options: [
+        "`setTimeout` har doim xatolik bilan ishlaydi",
+        "Asinxron callback funksiyalar brauzer Web API orqali Callback Queue'ga o'tadi va faqat Call Stack bo'shagandan keyingina Event Loop orqali stackka o'tkaziladi",
+        "JavaScript kodni teskari tartibda o'qiydi",
+        "0 soniya aslida 1 soniyaga tenglashtirilgan"
+      ],
+      correctAnswer: 1,
+      explanation: "Event Loop qoidalariga ko'ra, Callback Queue'dagi vazifalar faqat va faqat Call Stack butunlay bo'shagandan keyingina Stackka yuklanadi."
+    },
+    {
+      id: 4,
+      question: '"Callback Hell" (yoki Piramida muammosi) nima?',
+      options: [
+        "Ko'p sonli bir-biriga bog'liq asinxron operatsiyalar uchun callback funksiyalarni ichma-ich yozish natijasida kodning o'ta chalkash va o'qishga qiyin ko'rinishga kelib qolishi",
+        "Funksiya ichida cheksiz recursiv chaqiruv qilish",
+        "Node.js da serverning haddan tashqari yuklanishi (overload)",
+        "Hech qanday callback chaqirilmasdan qolib ketishi"
+      ],
+      correctAnswer: 0,
+      explanation: "Callback Hell (Callback jahannami) - ketma-ket bog'liq asinxron vazifalar ko'payib ketganda, kod o'ngga qarab o'sib, o'qib bo'lmas darajada chigallashib ketishidir."
+    },
+    {
+      id: 5,
+      question: "Node.js muhitida asinxron callback funksiyalar uchun qabul qilingan standart pattern (qoida) qaysi?",
+      options: [
+        "Birinchi parametr natija (data), ikkinchisi xatolik (error) bo'lishi kerak",
+        "Birinchi parametr har doim xatolik (error) bo'lishi shart (error-first callback)",
+        "Parametrlar faqat string ko'rinishida yuboriladi",
+        "Callback funksiyalar umuman parametr qabul qilmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Node.js ekotizimida xatolarni oson boshqarish maqsadida callback funksiyalarning 1-argumenti sifatida xatolik (`err`), 2-argumentida esa muvaffaqiyatli natija (`data`) uzatiladi."
+    }
   ]
 };

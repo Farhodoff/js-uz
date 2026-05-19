@@ -518,5 +518,67 @@ Internet uzilsa yoki server xatosi bo'lsa, avtomatik qayta urinish. Real loyihal
       hint: "if (!response.ok) throw new Error('HTTP ' + response.status);",
       test: "if (code.includes('response.ok') && code.includes('try') && code.includes('catch')) return null; return 'Robust client noto\\'g\\'ri';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`fetch()` metodi serverga tarmoq so'rovini yuborib default holatda nima qaytaradi?",
+      options: [
+        "JSON matn",
+        "Promise (u hal bo'lganda Response obyekti qaytadi)",
+        "JavaScript obyekti",
+        "Faqat status kodi (masalan, 200)"
+      ],
+      correctAnswer: 1,
+      explanation: "`fetch()` metodi har doim asinxron Promise qaytaradi. U muvaffaqiyatli yakunlanganda ichida `Response` obyektini saqlaydi."
+    },
+    {
+      id: 2,
+      question: "Nima uchun `response.json()` metodidan oldin ham `await` kalit so'zini yozish kerak?",
+      options: [
+        "Brauzer buni majburiy qilgan",
+        "`response.json()` ham asinxron bo'lib, o'qib tugatilgandan keyin Promise qaytaradi",
+        "Hech qanday sabab yo'q, yozmasa ham bo'ladi",
+        "Bu metod sinxron ishlaydi, lekin yozish chiroyli ko'rinadi"
+      ],
+      correctAnswer: 1,
+      explanation: "HTTP oqimidagi butun HTTP body ma'lumotlarini o'qib, ularni JSON sifatida parse qilish vaqti asinxron amalga oshiriladi, shuning uchun u Promise qaytaradi va `await` talab qiladi."
+    },
+    {
+      id: 3,
+      question: "Response obyektining `ok` xususiyati (`response.ok`) qachon `true` qiymatini qaytaradi?",
+      options: [
+        "Faqat so'rov yuborilganda",
+        "HTTP status kodi 200 va 299 oralig'ida bo'lganda (muvaffaqiyatli so'rovlar)",
+        "Har doim true qaytaradi, faqat internet uzilsa false",
+        "Faqat status kodi 404 bo'lganda"
+      ],
+      correctAnswer: 1,
+      explanation: "`response.ok` — bu status kodi 2xx (200-299) oralig'ida bo'lganda `true` qaytaradigan qulay xususiyatdir. Agar xato yuz bersa (masalan, 404 yoki 500), u `false` qaytaradi."
+    },
+    {
+      id: 4,
+      question: "POST so'rovi yuborayotganda, yuborilayotgan obyekt (data) body qismiga qanday ko'rinishda berilishi kerak?",
+      options: [
+        "JavaScript obyektining o'zi (`body: data`)",
+        "JSON formatidagi string ko'rinishida (`body: JSON.stringify(data)`)",
+        "Faqat massiv ko'rinishida (`body: [data]`)",
+        "Faqat matn ko'rinishida (`body: data.toString()`)"
+      ],
+      correctAnswer: 1,
+      explanation: "Serverlar ko'pincha ma'lumotlarni JSON string ko'rinishida qabul qilishadi. Shuning uchun `body` qismida ma'lumotni `JSON.stringify(data)` yordamida stringga o'tkazib uzatish kerak."
+    },
+    {
+      id: 5,
+      question: "`AbortController` asosan nima maqsadda ishlatiladi?",
+      options: [
+        "Xatolarni avtomatik log faylga yozish uchun",
+        "So'rovning ma'lum bir vaqt ichida javob berishini kutib, vaqt tugagach so'rovni bekor qilish (Request Timeout) uchun",
+        "Sahifani to'liq yangilash uchun",
+        "Faqat PUT va DELETE so'rovlarini taqiqlash uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "`AbortController` so'rovni istalgan vaqtda, masalan, belgilangan vaqt (timeout) o'tib ketgandan so'ng bekor qilish uchun ishlatiladi."
+    }
   ]
 };

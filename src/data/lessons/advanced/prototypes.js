@@ -566,5 +566,67 @@ Bir ob'ektning turli mixin'larni (metod guruhlari) "aralashtirib" imkoniyatlarni
       hint: "Vehicle.call(this, type); this.model = model;",
       test: "if (logs.includes('Turi: Mashina') && logs.includes('Model: Tesla')) return null; return 'Kompleks noto\\'g\\'ri';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript'da obyektlar o'rtasida metodlar va xususiyatlar qanday uzatiladi (meros olinadi)?",
+      options: [
+        "Klasslar nusxalanishi orqali (Class copy)",
+        "Prototip zanjiri orqali (Prototype chain)",
+        "Global o'zgaruvchilar orqali",
+        "Faqat funksiyalar chaqirilishi orqali"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript prototiplarga asoslangan til hisoblanadi. Undagi obyektlar boshqa obyektlar bilan yashirin prototip bog'lanishi (Prototype Chain) orqali meros va metodlar almashishadi."
+    },
+    {
+      id: 2,
+      question: "`new` kalit so'zi constructor funksiya bilan chaqirilganda qaysi birini bajarmaydi?",
+      options: [
+        "Yangi bo'sh obyekt yaratadi",
+        "Obyektning internal `__proto__` xususiyatini konstruktorning `prototype`iga bog'laydi",
+        "Konstruktordagi `this`ni ushbu yangi obyektga yo'naltiradi",
+        "Obyektni avtomatik ravishda JSON string formatiga o'giradi"
+      ],
+      correctAnswer: 3,
+      explanation: "`new` kalit so'zi yangi obyekt yaratadi, prototipni bog'laydi, `this`ni yangi obyektga bog'laydi va konstruktorni ishga tushiradi, lekin obyektni JSON string formatiga o'girmaydi."
+    },
+    {
+      id: 3,
+      question: "Obyektning `__proto__` xususiyati va funksiyaning `prototype` xususiyati o'rtasidagi farq nima?",
+      options: [
+        "`__proto__` - yaratilgan obyektning prototipiga ishora qiladi; `prototype` - konstruktor funksiyaning yangi obyektlar yaratishda foydalanadigan xususiyatidir",
+        "Hech qanday farqi yo'q, ikkalasi ham bir xil ishlaydi",
+        "`__proto__` - faqat massivlarda, `prototype` - faqat stringlarda bo'ladi",
+        "`prototype` yashirin, `__proto__` esa ochiq xususiyatdir"
+      ],
+      correctAnswer: 0,
+      explanation: "`__proto__` har bir obyektning o'zida bo'ladi va u prototip zanjiridagi ota obyektga ishora qiladi. `prototype` esa faqat funksiyalarda (ayniqsa konstruktorlarda) bo'lib, uning yordamida yaratiladigan obyektlarga prototip tayinlanadi."
+    },
+    {
+      id: 4,
+      question: "`Object.create(parent)` metodi nima qiladi?",
+      options: [
+        "Yangi bo'sh obyekt yaratadi va uning prototipini `parent` obyektiga tenglashtiradi",
+        "Parent obyektining nusxasini klonlaydi (deep clone)",
+        "Parent obyektini butunlay o'chirib yuboradi",
+        "Parent obyektining barcha metodlarini static metodga aylantiradi"
+      ],
+      correctAnswer: 0,
+      explanation: "`Object.create(parent)` berilgan `parent` obyekti prototip zanjirida ota bo'lgan yangi obyekt yaratishning eng oddiy va to'g'ridan-to'g'ri usulidir."
+    },
+    {
+      id: 5,
+      question: "Nima uchun metodlarni konstruktor ichida `this.methodName = ...` deb yozish o'rniga prototype'ga `Constructor.prototype.methodName = ...` ko'rinishida qo'shgan ma'qul?",
+      options: [
+        "Prototype'ga qo'shilsa metod tezroq ishlaydi",
+        "Prototype'ga qo'shilganda har bir yangi obyekt (instance) uchun metod xotiradan qayta joy olmaydi, bitta nusxadan umumiy foydalaniladi",
+        "Konstruktor ichida metod yozib bo'lmaydi, JavaScript buni taqiqlaydi",
+        "Bu faqat eskirgan brauzerlar uchun kerak"
+      ],
+      correctAnswer: 1,
+      explanation: "Metodlarni `prototype`ga qo'shganda, u xotirada faqat bitta joyni egallaydi. Barcha obyektlar (instance'lar) o'sha yagona nusxaga murojaat qiladi, bu esa xotirani (memory) juda katta miqdorda tejaydi."
+    }
   ]
 };
