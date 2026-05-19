@@ -45,7 +45,7 @@ console.log(ikkiBarobar); // [2, 4, 6, 8]
 2.  **Konstruktor sifatida ishlatish:** Arrow funksiyalarni \`new\` kalit so'zi bilan ishlatib bo'lmaydi.
 
 <details>
-<summary><b>1. Arrow function qachon paydo bo'lgan?</b></summary>
+<summary><b>1. Arrow function qachon paydo bergan?</b></summary>
 U ES6 (ECMAScript 2015) versiyasida JavaScript-ga kiritilgan.
 </details>
 
@@ -189,7 +189,7 @@ Obyekt ichida dinamik metodlar (masalan \`obj.sayHi()\`) yaratishda \`this\` obj
       title: "1️⃣1️⃣ String interpolatsiyasi (Template literal)",
       instruction: "Ismni parametr sifatida qabul qilib, 'Salom, [ism]!' matnini qaytaradigan arrow funksiya yozing.",
       startingCode: "// sayHello funksiyasi\n\nconsole.log(sayHello('Zuhra'));",
-      hint: "const sayHello = name => `Salom, ${name}!`;",
+      hint: "const sayHello = name => \`Salom, ${name}!\`;",
       test: "if (sayHello('Zuhra') === 'Salom, Zuhra!') return null; return 'Matn xato';"
     },
     {
@@ -218,10 +218,10 @@ Obyekt ichida dinamik metodlar (masalan \`obj.sayHi()\`) yaratishda \`this\` obj
       id: 2,
       question: "Arrow funksiya yordamida bitta qatorda obyekt qaytarmoqchi bo'lsak, qaysi sintaksis to'g'ri hisoblanadi?",
       options: [
-        "`const user = () => { name: 'Ali' };`",
-        "`const user = () => ({ name: 'Ali' });`",
-        "`const user = () => return { name: 'Ali' };`",
-        "`const user = () => [ name: 'Ali' ];`"
+        "\`const user = () => { name: 'Ali' };\`",
+        "\`const user = () => ({ name: 'Ali' });\`",
+        "\`const user = () => return { name: 'Ali' };\`",
+        "\`const user = () => [ name: 'Ali' ];\`"
       ],
       correctAnswer: 1,
       explanation: "Jingalak qavslar `{}` funksiya tanasini (block) anglatgani uchun, obyekt literali qaytarilayotganda chalkashlik yuzaga kelmasligi uchun obyekt qavslar ichiga `({ ... })` olinishi shart."
@@ -263,4 +263,4 @@ Obyekt ichida dinamik metodlar (masalan \`obj.sayHi()\`) yaratishda \`this\` obj
       explanation: "Arrow funksiyalar ifoda (Expression) sifatida e'lon qilinadi (odatda `const` yoki `let` bilan). Shuning uchun o'zgaruvchilar kabi ular ham hoisted bo'lmaydi va e'lon qilinishidan oldin ishlatib bo'lmaydi."
     }
   ]
-};
+};", file_path:

@@ -389,7 +389,7 @@ Ha, massivda tartib (index) muhim. Tartibga ko'ra o'zgaruvchilarga chiqariladi.
   quizzes: [
     {
       id: 1,
-      question: "Quyidagi kod chop etilganda konsolga nima chiqadi?\n```javascript\nconst user = { name: 'Ali', age: 25 };\nconst { ism, age } = user;\nconsole.log(ism, age);\n```",
+      question: "Quyidagi kod chop etilganda konsolga nima chiqadi?\n\`\`\`javascript\nconst user = { name: 'Ali', age: 25 };\nconst { ism, age } = user;\nconsole.log(ism, age);\n\`\`\`",
       options: [
         "Ali 25",
         "undefined 25",
@@ -397,23 +397,23 @@ Ha, massivda tartib (index) muhim. Tartibga ko'ra o'zgaruvchilarga chiqariladi.
         "TypeError xatoligi"
       ],
       correctAnswer: 1,
-      explanation: "Obyekt destructuring qilishda o'zgaruvchi nomlari obyekt kalitlari bilan mos kelishi kerak. `user` ichida `ism` degan kalit yo'qligi uchun `ism` o'zgaruvchisi `undefined` bo'lib qoladi."
+      explanation: "Obyekt destructuring qilishda o'zgaruvchi nomlari obyekt kalitlari bilan mos kelishi kerak. \`user\` ichida \`ism\` degan kalit yo'qligi uchun \`ism\` o'zgaruvchisi \`undefined\` bo'lib qoladi."
     },
     {
       id: 2,
       question: "Obyekt destructuring qilish jarayonida kalit nomini yangi nomga (aliasing) o'zgartirish qanday amalga oshiriladi?",
       options: [
-        "`const { name as ism } = user;`",
-        "`const { name: ism } = user;`",
-        "`const { name -> ism } = user;`",
-        "`const { name = ism } = user;`"
+        "\`const { name as ism } = user;\`",
+        "\`const { name: ism } = user;\`",
+        "\`const { name -> ism } = user;\`",
+        "\`const { name = ism } = user;\`"
       ],
       correctAnswer: 1,
-      explanation: "Kalit nomini boshqa nomga aliasing qilish uchun `kalitNomi: yangiNom` sintaksisi ishlatiladi. Masalan: `{ name: ism }`."
+      explanation: "Kalit nomini boshqa nomga aliasing qilish uchun \`kalitNomi: yangiNom\` sintaksisi ishlatiladi. Masalan: \`{ name: ism }\`."
     },
     {
       id: 3,
-      question: "Quyidagi massiv destructuring kodining natijasi nima bo'ladi?\n```javascript\nconst colors = ['qizil', 'yashil', 'ko\\'k'];\nconst [first, , third] = colors;\nconsole.log(first, third);\n```",
+      question: "Quyidagi massiv destructuring kodining natijasi nima bo'ladi?\n\`\`\`javascript\nconst colors = ['qizil', 'yashil', 'ko\\'k'];\nconst [first, , third] = colors;\nconsole.log(first, third);\n\`\`\`",
       options: [
         "qizil yashil",
         "qizil ko'k",
@@ -421,31 +421,31 @@ Ha, massivda tartib (index) muhim. Tartibga ko'ra o'zgaruvchilarga chiqariladi.
         "yashil ko'k"
       ],
       correctAnswer: 1,
-      explanation: "Massiv destructuringda vergullar yordamida elementlarni tashlab ketish mumkin. O'rtadagi element (yashil) tashlab ketilgani uchun `first` = 'qizil' va `third` = 'ko'k' bo'ladi."
+      explanation: "Massiv destructuringda vergullar yordamida elementlarni tashlab ketish mumkin. O'rtadagi element (yashil) tashlab ketilgani uchun \`first\` = 'qizil' va \`third\` = 'ko'k' bo'ladi."
     },
     {
       id: 4,
-      question: "Obyekt destructuringda `const { name } = null;` kodi bajarilganda nima sodir bo'ladi?",
+      question: "Obyekt destructuringda \`const { name } = null;\` kodi bajarilganda nima sodir bo'ladi?",
       options: [
-        "`name` o'zgaruvchisi `undefined` bo'ladi",
-        "`TypeError: Cannot destructure property 'name' of 'null'` xatoligi yuz beradi",
-        "`name` o'zgaruvchisi `null` bo'ladi",
+        "\`name\` o'zgaruvchisi \`undefined\` bo'ladi",
+        "\`TypeError: Cannot destructure property 'name' of 'null'\` xatoligi yuz beradi",
+        "\`name\` o'zgaruvchisi \`null\` bo'ladi",
         "Kod hech qanday xatosiz shunchaki o'tib ketadi"
       ],
       correctAnswer: 1,
-      explanation: "`null` yoki `undefined` qiymatlarini destructure qilishga urinish har doim run-time `TypeError` xatoligiga sabab bo'ladi. Xavfsiz bo'lishi uchun `null || {}` kabi default qiymat berish kerak."
+      explanation: "\`null\` yoki \`undefined\` qiymatlarini destructure qilishga urinish har doim run-time \`TypeError\` xatoligiga sabab bo'ladi. Xavfsiz bo'lishi uchun \`null || {}\` kabi default qiymat berish kerak."
     },
     {
       id: 5,
-      question: "Massiv destructuring'da `const [first, ...rest] = [1, 2, 3];` kodidan keyin `rest` o'zgaruvchisi qanday qiymatga ega bo'ladi?",
+      question: "Massiv destructuring'da \`const [first, ...rest] = [1, 2, 3];\` kodidan keyin \`rest\` o'zgaruvchisi qanday qiymatga ega bo'ladi?",
       options: [
-        "`2`",
-        "`[2, 3]`",
-        "`[1, 2, 3]`",
-        "`undefined`"
+        "\`2\`",
+        "\`[2, 3]\`",
+        "\`[1, 2, 3]\`",
+        "\`undefined\`"
       ],
       correctAnswer: 1,
-      explanation: "`...rest` operatori birinchi elementdan tashqari barcha qolgan elementlarni o'z ichiga olgan yangi massiv (`[2, 3]`) yaratadi."
+      explanation: "\`...rest\` operatori birinchi elementdan tashqari barcha qolgan elementlarni o'z ichiga olgan yangi massiv (\`[2, 3]\`) yaratadi."
     }
   ]
-};
+};", file_path:

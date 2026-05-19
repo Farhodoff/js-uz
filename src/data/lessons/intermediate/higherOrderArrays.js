@@ -470,43 +470,43 @@ console.log(unique); // [1, 2, 3]
   quizzes: [
     {
       id: 1,
-      question: "`map()` va `forEach()` metodlari o'rtasidagi asosiy farq nimada?",
+      question: "\`map()\` va \`forEach()\` metodlari o'rtasidagi asosiy farq nimada?",
       options: [
-        "`map()` har bir element uchun amal bajarib, natijalardan iborat mutlaqo yangi massiv qaytaradi; `forEach()` esa natija qaytarmaydi (`undefined` qaytaradi) va faqat elementlarni aylanib chiqish uchun ishlatiladi",
-        "`forEach()` yangi massiv qaytaradi, `map()` esa qaytarmaydi",
-        "`map()` faqat sonlar bilan, `forEach()` esa faqat stringlar bilan ishlaydi",
+        "\`map()\` har bir element uchun amal bajarib, natijalardan iborat mutlaqo yangi massiv qaytaradi; \`forEach()\` esa natija qaytarmaydi (\`undefined\` qaytaradi) va faqat elementlarni aylanib chiqish uchun ishlatiladi",
+        "\`forEach()\` yangi massiv qaytaradi, \`map()\` esa qaytarmaydi",
+        "\`map()\` faqat sonlar bilan, \`forEach()\` esa faqat stringlar bilan ishlaydi",
         "Hech qanday farqi yo'q, ikkalasi ham bir xil ishlaydi"
       ],
       correctAnswer: 0,
-      explanation: "`map()` har doim asl massiv bilan bir xil uzunlikdagi yangi o'zgartirilgan massiv qaytaradi. `forEach` esa shunchaki har bir element uchun callback funksiyani bajaradi, lekin hech qanday qiymat qaytarmaydi."
+      explanation: "\`map()\` har doim asl massiv bilan bir xil uzunlikdagi yangi o'zgartirilgan massiv qaytaradi. \`forEach\` esa shunchaki har bir element uchun callback funksiyani bajaradi, lekin hech qanday qiymat qaytarmaydi."
     },
     {
       id: 2,
-      question: "`filter()` metodi qidiruv natijasida hech qanday mos element topa olmasa nima qaytaradi?",
+      question: "\`filter()\` metodi qidiruv natijasida hech qanday mos element topa olmasa nima qaytaradi?",
       options: [
-        "`undefined`",
-        "`null`",
-        "Bo'sh massiv (`[]`)",
+        "\`undefined\`",
+        "\`null\`",
+        "Bo'sh massiv (\`[]\`)",
         "Xatolik (Error) beradi"
       ],
       correctAnswer: 2,
-      explanation: "`filter()` shartga mos keluvchi barcha elementlar to'plamini (massiv) qaytaradi. Agar hech qanday element shartni bajarmasa, natija baribir massiv bo'ladi, faqat bo'sh (`[]`)."
+      explanation: "\`filter()\` shartga mos keluvchi barcha elementlar to'plamini (massiv) qaytaradi. Agar hech qanday element shartni bajarmasa, natija baribir massiv bo'ladi, faqat bo'sh (\`[]\`)."
     },
     {
       id: 3,
-      question: "`reduce()` metodida boshlang'ich qiymat (initial value) berilmagan bo'lsa va massiv bo'sh bo'lsa nima yuz beradi?",
+      question: "\`reduce()\` metodida boshlang'ich qiymat (initial value) berilmagan bo'lsa va massiv bo'sh bo'lsa nima yuz beradi?",
       options: [
-        "`0` qaytaradi",
-        "`undefined` qaytaradi",
-        "`TypeError: Reduce of empty array with no initial value` xatosi yuz beradi",
-        "Bo'sh massiv `[]` qaytaradi"
+        "\`0\` qaytaradi",
+        "\`undefined\` qaytaradi",
+        "\`TypeError: Reduce of empty array with no initial value\` xatosi yuz beradi",
+        "Bo'sh massiv \`[]\` qaytaradi"
       ],
       correctAnswer: 2,
-      explanation: "Bo'sh massiv ustida boshlang'ich qiymatsiz `reduce` bajarilganda, akkumulyatorni nimadan boshlashni bilmagani uchun JavaScript `TypeError` xatoligini tashlaydi."
+      explanation: "Bo'sh massiv ustida boshlang'ich qiymatsiz \`reduce\` bajarilganda, akkumulyatorni nimadan boshlashni bilmagani uchun JavaScript \`TypeError\` xatoligini tashlaydi."
     },
     {
       id: 4,
-      question: "`sort()` metodi haqida qaysi tasdiq to'g'ri?",
+      question: "\`sort()\` metodi haqida qaysi tasdiq to'g'ri?",
       options: [
         "U har doim yangi saralangan massiv qaytaradi va asl massivni o'zgartirmaydi",
         "U asl massivning o'zini o'zgartiradi (mutable) va elementlarni string sifatida taqqoslaydi (shuning uchun sonlarni saralashda taqqoslash funksiyasi yozilishi kerak)",
@@ -514,19 +514,19 @@ console.log(unique); // [1, 2, 3]
         "U faqat asinxron ishlaydi"
       ],
       correctAnswer: 1,
-      explanation: "`sort()` asl massivning joylashuvini o'zgartiradi. Agar solishtirish (compare) funksiyasi berilmasa, sonlarni ham string kabi tartiblaydi (masalan, 10 soni 2 dan oldin keladi, chunki '1' < '2')."
+      explanation: "\`sort()\` asl massivning joylashuvini o'zgartiradi. Agar solishtirish (compare) funksiyasi berilmasa, sonlarni ham string kabi tartiblaydi (masalan, 10 soni 2 dan oldin keladi, chunki '1' < '2')."
     },
     {
       id: 5,
       question: "Massivdagi hammasi emas, balki kamida bitta element berilgan shartga mos kelishini tekshirish uchun qaysi metod ishlatiladi?",
       options: [
-        "`every()`",
-        "`some()`",
-        "`find()`",
-        "`filter()`"
+        "\`every()\`",
+        "\`some()\`",
+        "\`find()\`",
+        "\`filter()\`"
       ],
       correctAnswer: 1,
-      explanation: "`some()` kamida bitta element shartni bajarsa `true` qaytaradi. `every()` esa faqat barcha elementlar shartni bajargandagina `true` beradi."
+      explanation: "\`some()\` kamida bitta element shartni bajarsa \`true\` qaytaradi. \`every()\` esa faqat barcha elementlar shartni bajargandagina \`true\` beradi."
     }
   ]
-};
+};", file_path:
