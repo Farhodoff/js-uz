@@ -120,5 +120,67 @@ Ha, u massiv elementlari tartibini teskari qilib qo'yadi.
       hint: "const len = items.length;",
       test: "if (code.includes('.length')) return null; return 'length xususiyatidan foydalaning';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da massiv (array) elementlari indekslanishi qaysi sondan boshlanadi va oxirgi elementning indeksi qanday topiladi?",
+      options: [
+        "1 dan boshlanadi; oxirgi element indeksi `length` ga teng",
+        "0 dan boshlanadi; oxirgi element indeksi `length - 1` ga teng (chunki birinchi element 0-indeksda turadi)",
+        "0 dan boshlanadi; oxirgi element indeksi `length` ga teng",
+        "1 dan boshlanadi; oxirgi element indeksi `length - 1` ga teng"
+      ],
+      correctAnswer: 1,
+      explanation: "Sanoq noldan (0) boshlangani sababli, `N` ta elementdan iborat massivning oxirgi elementi `N - 1`-indeksda joylashgan bo'ladi. Masalan, 3 ta elementli massivda oxirgi element indeksi 2 bo'ladi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi metodlardan qaysi biri massivning boshiga (birinchi o'ringa) yangi element qo'shadi?",
+      options: [
+        "`push()`",
+        "`unshift()` (boshiga qo'shish uchun, `push` esa oxiriga qo'shish uchun ishlatiladi)",
+        "`pop()`",
+        "`shift()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`unshift()` metodi massiv boshiga elementlar qo'shadi va yangi uzunlikni qaytaradi. `push()` esa oxiriga qo'shadi. `shift()` va `pop()` o'chirish uchun."
+    },
+    {
+      id: 3,
+      question: "Massivdan muayyan qiymatga ega elementning indeksini topmoqchisiz. Agar u element massivda mavjud bo'lmasa, `indexOf()` metodi qanday qiymat qaytaradi?",
+      options: [
+        "`null`",
+        "`undefined`",
+        "`-1` (har doim izlanayotgan qiymat massivda topilmaganda -1 qaytadi)",
+        "`false`"
+      ],
+      correctAnswer: 2,
+      explanation: "`indexOf()` metodi qidirilayotgan element massiv ichida yo'q bo'lsa, har doim `-1` sonini qaytaradi."
+    },
+    {
+      id: 4,
+      question: "`const` kalit so'zi yozilgan massiv bilan ishlash bo'yicha qaysi qoida to'g'ri?",
+      options: [
+        "Massiv ichidagi elementlarni umuman o'zgartirib bo'lmaydi (o'qishgina mumkin)",
+        "Massiv elementlarini push, pop yoki indeks orqali o'zgartirish mumkin, lekin o'zgaruvchining o'ziga butunlay boshqa yangi massivni qayta biriktirib (reassign) bo'lmaydi",
+        "Massiv uzunligini o'zgartirib bo'lmaydi",
+        "Hech qanday cheklov yo'q, xuddi let kabi ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`const` massivning xotiradagi manzilini (reference) o'zgarmas qiladi. Ammo uning ichidagi ma'lumotlarni o'zgartirish (mutatsiya) taqiqlanmaydi."
+    },
+    {
+      id: 5,
+      question: "Massiv elementlarini bitta satrga (string) birlashtirish va har bir element o'rtasida ma'lum bir ajratuvchi belgi (separator) qo'yish uchun qaysi metod ishlatiladi?",
+      options: [
+        "`concat()`",
+        "`join()` (masalan: `['a', 'b'].join('-')` natijasi `\"a-b\"` bo'ladi)",
+        "`split()`",
+        "`slice()`"
+      ],
+      correctAnswer: 1,
+      explanation: "`join()` metodi barcha elementlarni birlashtirib, bitta string yaratadi. Qavs ichida ajratuvchi belgi berilishi mumkin (agar berilmasa, vergul `,` ishlatiladi)."
+    }
   ]
 };

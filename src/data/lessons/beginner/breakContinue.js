@@ -77,5 +77,67 @@ for (let ism of ismlar) {
       hint: "if (i === 7) break;",
       test: "if (logs.includes(6) && !logs.includes(7)) return null; return '7 da to\\'xtamadi!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`break` va `continue` operatorlarining asosiy vazifalari farqi nimada?",
+      options: [
+        "`break` tsiklni keyingi qadamga o'tkazadi, `continue` esa tsiklni butunlay tugatadi",
+        "`break` tsiklni darhol va butunlay to'xtatadi; `continue` esa joriy qadamni (iteratsiyani) tashlab yuborib, tsiklning keyingi qadamidan davom ettiradi",
+        "Ular o'rtasida farq yo'q, ikkalasi ham tsikldan chiqaradi",
+        "`continue` faqat `while` tsiklida, `break` esa faqat `for` tsiklida ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`break` (buzish) butun tsikl faoliyatini butunlay tugatib yuboradi. `continue` (davom etish) esa joriy iteratsiyani yakunlab, tsiklning navbatdagi aylanishiga o'tadi."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kod bajarilganda konsolda qanday natijalar ko'rinadi?\n```javascript\nfor (let i = 1; i <= 5; i++) {\n  if (i === 3) continue;\n  console.log(i);\n}\n```",
+      options: [
+        "`1, 2`",
+        "`1, 2, 4, 5` (chunki i === 3 bo'lganda console.log bajarilmasdan keyingi iteratsiyaga o'tiladi)",
+        "`1, 2, 3, 4, 5`",
+        "`4, 5`"
+      ],
+      correctAnswer: 1,
+      explanation: "`i === 3` bo'lganda `continue` operatori ishlaydi va o'sha qadamdagi qolgan kodlar (ya'ni `console.log(i)`) bajarilmasdan tsikl `i = 4` qadamiga sakraydi."
+    },
+    {
+      id: 3,
+      question: "Ichma-ich joylashgan (nested) tsikllarda eng ichki tsikl ichida `break` ishlatilsa, u qaysi tsiklni to'xtatadi?",
+      options: [
+        "Barcha tsikllarni (ham ichki, ham tashqi tsiklni)",
+        "Faqat o'zi yozilgan eng yaqin ichki tsiklni (tashqi tsikl esa o'z faoliyatini davom ettiraveradi)",
+        "Hech qaysinisini to'xtatmaydi, xato beradi",
+        "Faqat tashqi tsiklni"
+      ],
+      correctAnswer: 1,
+      explanation: "`break` har doim o'zining eng yaqin o'rab turgan bitta tsiklini to'xtatadi. Tashqaridagi tsikllar ishini davom ettiradi."
+    },
+    {
+      id: 4,
+      question: "`while` tsiklida `continue` ishlatganda dasturchilar eng ko'p yo'l qo'yadigan xatolik qaysi?",
+      options: [
+        "Tsiklni yopishni unutish",
+        "Sanoq o'zgartiruvchini (i++) `continue`dan keyin yozish (chunki `continue` bajarilganda bu satr bajarilmay qoladi va tsikl cheksiz aylanib qoladi)",
+        "Shartni noto'g'ri qo'yish",
+        "`var` o'rniga `let` ishlatish"
+      ],
+      correctAnswer: 1,
+      explanation: "`while` tsiklida `continue` chaqirilganda, tsikl boshiga qaytiladi. Agar sanoq o'zgaruvchisi `continue`dan pastda bo'lsa, u hech qachon oshmaydi va shart har doim true bo'lib cheksiz sikl yuzaga keladi."
+    },
+    {
+      id: 5,
+      question: "Quyidagi bloklardan qaysi birining ichida `continue` ishlatilsa (agar u tsikl ichida bo'lmasa), sintaktik xatolik (SyntaxError) yuz beradi?",
+      options: [
+        "`for` tsikli",
+        "`while` tsikli",
+        "`switch` bloki ichida",
+        "`do...while` tsikli"
+      ],
+      correctAnswer: 2,
+      explanation: "`continue` faqat tsikllar (`for`, `while`, `do...while`) ichida ishlatilishi shart. Uni oddiy `switch` yoki `if` bloklari ichida mustaqil ishlatish taqiqlangan."
+    }
   ]
 };

@@ -363,5 +363,67 @@ Arrow funksiyada this uringan joyning context'ini oladi, fo'nktsiyadagi this'i e
       hint: "shaxs.manzil.shahar = 'Samarqand'; console.log(shaxs.manzil.shahar);",
       test: "if (logs.includes('Samarqand')) return null; return 'Shaharni to\\'g\\'ri o\\'zgartiring va chiqaring';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da obyekt xususiyatiga murojaat qilishning Dot notation (`obj.prop`) va Bracket notation (`obj['prop']`) usullari o'rtasidagi farq haqida qaysi fikr noto'g'ri?",
+      options: [
+        "Bracket notation yordamida kalit nomi o'zgaruvchida saqlangan bo'lsa ham murojaat qilsa bo'ladi",
+        "Dot notation orqali kalit nomida bo'sh joy bo'lgan xususiyatlarni o'qib bo'lmaydi",
+        "Bracket notation faqat obyekt ichida funksiyalar (metodlar) bo'lmaganda ishlatilishi shart",
+        "Dot notation orqali raqam bilan boshlanadigan kalit nomlariga murojaat qibly bo'lmaydi"
+      ],
+      correctAnswer: 2,
+      explanation: "Bracket notation har qanday holatda (metodlar bo'lsa ham) ishlaydi. Uning asosiy ustunligi - dinamik kalitlar va maxsus belgilarga ega bo'lgan kalitlar bilan ishlay olishidir."
+    },
+    {
+      id: 2,
+      question: "Obyekt metodi (method) ichida o'sha obyektning o'ziga va uning xususiyatlariga murojaat qilish uchun qaysi kalit so'zdan foydalaniladi?",
+      options: [
+        "`object`",
+        "`this` (masalan: `this.name` orqali obyektning `name` xususiyati qiymati olinadi)",
+        "`self`",
+        "`parent`"
+      ],
+      correctAnswer: 1,
+      explanation: "`this` kalit so'zi metod chaqirilgan vaqtdagi joriy obyektga ishora qiladi va uning yordamida obyektning istalgan boshqa xususiyatiga murojaat qilish mumkin."
+    },
+    {
+      id: 3,
+      question: "Obyekt metodini arrow (o'qsimon) funksiya ko'rinishida yozish nima uchun tavsiya etilmaydi?",
+      options: [
+        "Chunki arrow funksiyalar obyekt ichida umuman ishlamaydi",
+        "Chunki arrow funksiyalar o'zining shaxsiy `this` bog'lanishiga ega bo'lmaydi (tashqi global yoki lexical `this` ni oladi) va `this.property` orqali obyekt xususiyatini o'qib bo'lmaydi",
+        "Chunki arrow funksiyalarda parametr uzatish imkoni yo'q",
+        "Chunki arrow funksiyalar doimo faqat `undefined` qaytaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Arrow funksiyalarda shaxsiy `this` bo'lmaydi. Ular `this` ni o'zining tashqi o'rab turgan scopesidan meros qilib oladi. Natijada metod ichida `this` kutilgan obyektni emas, balki global obyektni (masalan, `window` ni) ko'rsatib qoladi."
+    },
+    {
+      id: 4,
+      question: "Obyektning faqat kalitlarini (keys) yoki faqat qiymatlarini (values) massiv ko'rinishida olish uchun qaysi standart metodlar ishlatiladi?",
+      options: [
+        "`Object.keys(obj)` va `Object.values(obj)`",
+        "`obj.getKeys()` va `obj.getValues()`",
+        "`Object.toKeys(obj)` va `Object.toValues(obj)`",
+        "`keysOf(obj)` va `valuesOf(obj)`"
+      ],
+      correctAnswer: 0,
+      explanation: "`Object.keys()` obyekt kalitlari nomlaridan iborat massiv, `Object.values()` esa ularning qiymatlaridan iborat massiv qaytaradi."
+    },
+    {
+      id: 5,
+      question: "Bir nechta mustaqil obyektlarni bitta yangi obyektga birlashtirish yoki obyektning nusxasini spread operatori yordamida yaratish qanday yoziladi?",
+      options: [
+        "`const newObj = obj1 + obj2;`",
+        "`const newObj = { ...obj1, ...obj2 };` (spread operatori yordamida barcha xususiyatlarni yangi obyektga yoyish orqali)",
+        "`const newObj = [obj1, obj2];`",
+        "`const newObj = merge(obj1, obj2);`"
+      ],
+      correctAnswer: 1,
+      explanation: "Spread operatori (`...`) ES6 da kiritilgan qulay vosita bo'lib, u obyektlarning barcha xususiyatlarini yangi obyekt blokining ichiga yoyib (nusxalab) beradi."
+    }
   ]
 };

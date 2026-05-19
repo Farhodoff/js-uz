@@ -68,5 +68,67 @@ console.log(typeof true); // "boolean"
       hint: "console.log(typeof 100);",
       test: "if (logs.includes('number')) return null; return 'Xato chiqdi!';"
     }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "`typeof` operatori qaytaradigan qiymat har doim qaysi ma'lumot turida (data type) bo'ladi?",
+      options: [
+        "Number",
+        "String (ya'ni matn ko'rinishida, masalan: \"number\", \"string\")",
+        "Boolean",
+        "Object"
+      ],
+      correctAnswer: 1,
+      explanation: "`typeof` har doim aniqlangan turning nomini satr (string) ko'rinishida qaytaradi (masalan, `\"number\"`, `\"boolean\"`, `\"undefined\"`)."
+    },
+    {
+      id: 2,
+      question: "Quyidagi kodlardan qaysi biri JavaScript-ning dastlabki yaratilishidagi tarixiy xatolik (bug) hisoblanadi va unga ko'ra primitiv ma'lumot turi bo'lsa-da, javob `\"object\"` deb qaytadi?",
+      options: [
+        "`typeof undefined`",
+        "`typeof null`",
+        "`typeof NaN`",
+        "`typeof []`"
+      ],
+      correctAnswer: 1,
+      explanation: "`typeof null` ning `\"object\"` qaytarishi JSning birinchi versiyalaridan qolib ketgan mashhur xatolikdir. `null` aslida primitiv tur hisoblanadi."
+    },
+    {
+      id: 3,
+      question: "`typeof typeof 99` ifodasi bajarilganda qanday natija qaytadi?",
+      options: [
+        "`\"number\"`",
+        "`\"string\"` (chunki birinchi `typeof 99` bizga \"number\" stringini qaytaradi, ikkinchi typeof esa uning turini string deb topadi)",
+        "`\"object\"`",
+        "`NaN`"
+      ],
+      correctAnswer: 1,
+      explanation: "`typeof 99` bizga `\"number\"` satrini beradi. Satrning ma'lumot turi esa `string` bo'lgani sababli `typeof \"number\"` natijasi `\"string\"` bo'ladi."
+    },
+    {
+      id: 4,
+      question: "JavaScript-da massiv (array) va obyekt (object) ustida alohida `typeof` ishlatilganda, ularning ikkalasidan ham qanday natija qaytadi?",
+      options: [
+        "`\"array\"` va `\"object\"`",
+        "`\"object\"` va `\"object\"` (chunki JS-da massivlar ham mohiyatan obyektdir, massivni farqlash uchun Array.isArray() ishlatiladi)",
+        "`\"list\"` va `\"dict\"`",
+        "`\"collection\"` va `\"object\"`"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript-da massivlar (arrays) alohida ma'lumot turi emas, ular obyektlarning bir ko'rinishidir. Shuning uchun `typeof []` ham `\"object\"` beradi."
+    },
+    {
+      id: 5,
+      question: "`typeof NaN` natijasi nima bo'ladi?",
+      options: [
+        "`\"NaN\"`",
+        "`\"number\"` (chunki NaN (Not a Number) son bo'lmasa ham, sonli amallar natijasida chiqadigan qiymat sifatida sonlar oilasiga kiradi)",
+        "`\"undefined\"`",
+        "`TypeError` xatosi"
+      ],
+      correctAnswer: 1,
+      explanation: "`NaN` — bu maxsus matematik qiymat bo'lib, 'Raqam Emas' (Not a Number) degan ma'noni beradi. Biroq, u raqamli tiplar doirasida ishlatilgani uchun uning turi `\"number\"` hisoblanadi."
+    }
   ]
 };

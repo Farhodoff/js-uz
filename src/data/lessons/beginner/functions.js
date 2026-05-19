@@ -423,10 +423,72 @@ Ha, mutlaqo. Masalan callback pattern'lari, higher-order functions, va boshqalar
     {
       id: 12,
       title: "Kompleks - Parametrlarni validatsiya qilish",
-      instruction: "'validateAge' funksiyasini yarating. Yosh qabul qilsin. Agar 0-100 orasida bo'lsa true, aks holda false qaytarsin.",
+      instruction: "O'quvchi yoshini validatsiya qiladigan funksiya yozing.",
       startingCode: "// validateAge funksiyasini yozing\n\n// Tekshirish:\nconsole.log(validateAge(25));\nconsole.log(validateAge(-5));\nconsole.log(validateAge(150));\n",
       hint: "function validateAge(age) { return age >= 0 && age <= 100; }",
       test: "if (typeof validateAge !== 'function') return 'validateAge funksiyasi topilmadi'; if (validateAge(25) === true && validateAge(-5) === false && validateAge(150) === false) return null; return 'Validatsiya noto\\'g\\'ri';"
+    }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "JavaScript-da funksiya deklaratsiyasi (Function Declaration) va funksiya ifodasi (Function Expression) o'rtasidagi eng katta amaliy farq nima?",
+      options: [
+        "Deklaratsiyada parametrlar ishlatilmaydi",
+        "Declaration hoisting-ga bo'ysunadi (uni e'lon qilishdan oldin ham chaqirsa bo'ladi); Expression-da esa hoisting ishlamaydi va uni faqat e'lon qilingandan keyin chaqirish mumkin",
+        "Expression har doim `return` qaytaradi, Declaration esa yo'q",
+        "Ular o'rtasida hech qanday farq yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "Function Declaration brauzer tomonidan kod bajarilishidan oldin yuklanadi (hoisting). Function Expression esa oddiy o'zgaruvchi kabi faqat kod o'sha qatorga yetib kelgandagina yaratiladi."
+    },
+    {
+      id: 2,
+      question: "Funksiya chaqirilganda qavslar ichida beriladigan haqiqiy qiymatlar nima deyiladi va funksiya ta'riflangan (yozilgan) vaqtda qabul qilinadigan o'zgaruvchi nomlari nima deyiladi?",
+      options: [
+        "Ikkalasi ham Parametrlar deyiladi",
+        "Haqiqiy qiymatlar - Argumentlar, o'zgaruvchi nomlari - Parametrlar deyiladi",
+        "Haqiqiy qiymatlar - Parametrlar, o'zgaruvchi nomlari - Argumentlar deyiladi",
+        "Ikkalasi ham Argumentlar deyiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Parametr — bu funksiya e'lon qilinayotganda qavs ichiga yoziladigan vaqtinchalik o'zgaruvchi nomi. Argument esa funksiya chaqirilayotganda o'sha parametrga beriladigan haqiqiy qiymatdir."
+    },
+    {
+      id: 3,
+      question: "Agar funksiya tanasi ichida `return` kalit so'zi yozilmasa yoki shunchaki bo'sh `return;` yozib qo'yilsa, u holda ushbu funksiyadan qanday qiymat qaytadi?",
+      options: [
+        "`null`",
+        "`undefined` (chunki JS-da hech narsa qaytarmaydigan funksiyalar sukut bo'yicha undefined qaytaradi)",
+        "`0`",
+        "`false`"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript-da agar funksiyadan aniq qiymat `return` orqali qaytarilmasa, u sukut bo'yicha (by default) `undefined` qiymat qaytaradi."
+    },
+    {
+      id: 4,
+      question: "Noma'lum sondagi barcha kiruvchi argumentlarni bitta o'zgaruvchiga massiv (array) ko'rinishida yig'ib olish uchun qaysi sintaksisdan (Rest parameters) foydalaniladi?",
+      options: [
+        "`function sum(args)`",
+        "`function sum(...numbers)` (uchta nuqta bilan belgilangan rest operatori yordamida)",
+        "`function sum(numbers...)`",
+        "`function sum(numbers[])`"
+      ],
+      correctAnswer: 1,
+      explanation: "Rest parametrlari (`...`) funksiyaga uzatilgan cheksiz miqdordagi argumentlarni massivga birlashtirish imkonini beradi."
+    },
+    {
+      id: 5,
+      question: "Arrow (o'qsimon) funksiyalarning qaysi xususiyati ularni oddiy funksiyalardan ajratib turadi?",
+      options: [
+        "Ular qisqa sintaksisga ega va o'zlarining shaxsiy `this` kontekstiga ega bo'lmaydi (lexical `this` ga ega)",
+        "Ularda `return` ishlatib bo'lmaydi",
+        "Ular doimo hoisting qilinadi",
+        "Ular obyektdagi metodlar bo'la olmaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "Arrow funksiyalar qisqaroq yozilishidan tashqari, o'zining shaxsiy `this` bog'lanishiga ega bo'lmaydi, balki tashqi (o'rab turgan) scope'dagi `this` ni o'zlashtiradi."
     }
   ]
 };
