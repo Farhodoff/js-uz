@@ -70,13 +70,13 @@
 ### 4. Destructuring Advanced (`intermediate/destructuring.js`)
 **Hozirgi holati:** Asosiy (2 mashq)
 **Kerak:**
-- [ ] Array destructuring (basic, nested, rest)
-- [ ] Object destructuring (basic, nested, rename, defaults)
-- [ ] Function parameter destructuring
-- [ ] Destructuring in loops (for...of)
-- [ ] Practical use cases
-- [ ] 12 mashq: Array → Object → Nested → Complex
-- [ ] 12 Q&A: Defaults, rest, nested, common mistakes
+- [x] Array destructuring (basic, nested, rest)
+- [x] Object destructuring (basic, nested, rename, defaults)
+- [x] Function parameter destructuring
+- [x] Destructuring in loops (for...of)
+- [x] Practical use cases
+- [x] 12 mashq: Array → Object → Nested → Complex
+- [x] 12 Q&A: Defaults, rest, nested, common mistakes
 
 **Qo'shimcha:**
 - Misol: API response destructuring
@@ -88,14 +88,14 @@
 ### 5. Spread & Rest (`intermediate/spreadRest.js`)
 **Hozirgi holati:** Asosiy (1-2 mashq)
 **Kerak:**
-- [ ] Spread for arrays (copying, merging, unpacking)
-- [ ] Spread for objects (copying, merging, overriding)
-- [ ] Rest parameters in functions (...args)
-- [ ] Spread in function calls vs function definitions
-- [ ] Combining with destructuring
-- [ ] Performance considerations
-- [ ] 12 mashq: Array spread → Object spread → Rest params
-- [ ] 12 Q&A: Shallow copy, immutability, edge cases
+- [x] Spread for arrays (copying, merging, unpacking)
+- [x] Spread for objects (copying, merging, overriding)
+- [x] Rest parameters in functions (...args)
+- [x] Spread in function calls vs function definitions
+- [x] Combining with destructuring
+- [x] Performance considerations
+- [x] 12 mashq: Array spread → Object spread → Rest params
+- [x] 12 Q&A: Shallow copy, immutability, edge cases
 
 **Qo'shimcha:**
 - Misol: Immutable state updates
@@ -107,13 +107,13 @@
 ### 6. Arrow Functions Deep (`intermediate/arrowFunctions.js`)
 **Hozirgi holati:** Asosiy (2 mashq)
 **Kerak:**
-- [ ] Syntax variations (implicit return, {})
-- [ ] this binding (lexical scope)
-- [ ] When NOT to use arrow functions
-- [ ] Arrow functions in callbacks vs methods
-- [ ] Currying with arrow functions
-- [ ] 12 mashq: Basic → this binding → Complex patterns
-- [ ] 12 Q&A: this context, implicit return, performance
+- [x] Syntax variations (implicit return, {})
+- [x] this binding (lexical scope)
+- [x] When NOT to use arrow functions
+- [x] Arrow functions in callbacks vs methods
+- [x] Currying with arrow functions
+- [x] 12 mashq: Basic → this binding → Complex patterns
+- [x] 12 Q&A: this context, implicit return, performance
 
 **Qo'shimcha:**
 - Misol: Event listener (arrow vs regular)
