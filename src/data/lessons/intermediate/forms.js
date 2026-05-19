@@ -46,25 +46,72 @@ if (ismInput.value === "") {
 1. **preventDefault ni unutish:** Agar buni yozmasangiz, forma yuborilganda sahifa yangilanib ketadi va JS kodlaringiz ishlamay qoladi.
 2. **value va elementni adashtirish:** \`console.log(input)\` elementni o'zini chiqaradi, \`console.log(input.value)\` esa ichidagi matnni.
 
-## 6. SAVOLLAR (12 ta)
-1. Formaning asosiy hodisasi (event) qaysi?
-2. \`event.preventDefault()\` nima uchun shart?
-3. Input ichidagi matnni qanday olamiz?
-4. Validatsiya nima?
-5. Input qiymati har doim qaysi turda (string) bo'ladi?
-6. Checkbox tanlanganini qanday bilamiz (\`.checked\`)?
-7. \`reset()\` metodi nima qiladi?
-8. \`required\` atributi va JS validatsiya farqi?
-9. Radio button qiymatini qanday olamiz?
-10. \`input\` va \`change\` eventlari farqi nima?
-11. Formani tugma bosmasdan qanday yuborsa bo'ladi (\`.submit()\`)?
-12. Xatolik matnini ekranda ko'rsatish uchun nima qilish kerak?`,
+## 6. SAVOLLAR VA JAVOBLAR
+<details>
+<summary>1. Formaning asosiy hodisasi (event) qaysi?</summary>
+submit
+</details>
+
+<details>
+<summary>2. event.preventDefault() nima uchun shart?</summary>
+Sahifani yangilanib ketishini to'xtatish uchun.
+</details>
+
+<details>
+<summary>3. Input ichidagi matnni qanday olamiz?</summary>
+element.value xususiyati orqali.
+</details>
+
+<details>
+<summary>4. Validatsiya nima?</summary>
+Ma'lumotlarning to'g'ri to'ldirilganligini tekshirish jarayoni.
+</details>
+
+<details>
+<summary>5. Input qiymati har doim qaysi turda (string) bo'ladi?</summary>
+String turida.
+</details>
+
+<details>
+<summary>6. Checkbox tanlanganini qanday bilamiz?</summary>
+.checked xususiyati orqali (true/false).
+</details>
+
+<details>
+<summary>7. reset() metodi nima qiladi?</summary>
+Formani tozalaydi.
+</details>
+
+<details>
+<summary>8. required atributi va JS validatsiya farqi?</summary>
+required — HTML tarafidan, JS validatsiya — murakkabroq mantqiy tekshiruv uchun.
+</details>
+
+<details>
+<summary>9. Radio button qiymatini qanday olamiz?</summary>
+Tanlangan radioga murojaat qilib .value orqali.
+</details>
+
+<details>
+<summary>10. input va change eventlari farqi nima?</summary>
+input — yozish jarayonida, change — yozib bo'lib fokus chiqqanda.
+</details>
+
+<details>
+<summary>11. Formani tugma bosmasdan qanday yuborsa bo'ladi?</summary>
+form.submit() metodi orqali.
+</details>
+
+<details>
+<summary>12. Xatolik matnini ekranda ko'rsatish uchun nima qilish kerak?</summary>
+DOM orqali alohida biror div ga matn yozish.
+</details>`,
   exercises: [
     {
       id: 1,
       title: "Submitni to'xtatish",
       instruction: "Forma yuborilganda sahifa yangilanmasligi uchun kerakli metodni chaqiring.",
-      startingCode: "const event = { preventDefault: () => event.done = true };\nfunction handleSubmit(e) {\n  // Bu yerda chaqiring\n}\nhandleSubmit(event);",
+      startingCode: "const event = { preventDefault: () => event.done = true };\nfunction handleSubmit(e) {\n  // Bu yerda chaqiring\n}\nhandler(event);",
       hint: "e.preventDefault();",
       test: "if (event.done) return null; return 'event.preventDefault() chaqirilmadi';"
     },
@@ -155,4 +202,4 @@ if (ismInput.value === "") {
       explanation: "`input` event har bir klavish bosilganda (qiymat har safar o'zgarganda) darhol ishga tushadi. `change` event esa foydalanuvchi qiymatni o'zgartirib, input elementini tark etganidan keyingina ishlaydi."
     }
   ]
-};
+};", file_path:

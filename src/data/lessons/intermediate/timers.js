@@ -42,19 +42,66 @@ clearInterval(id); // Takrorlanishni to'xtatadi
 1.  **Vaqt o'lchovi:** Vaqt millisekundda beriladi (1000 = 1 soniya).
 2.  **To'xtatishni unutish:** \`setInterval\`ni to'xtatmasangiz, u sayt yopilguncha ishlayveradi (performance uchun yomon).
 
-## 6. SAVOLLAR (12 ta)
-1. \`setTimeout\` va \`setInterval\` farqi nima?
-2. 1 soniya necha millisekund?
-3. Taymerni qanday to'xtatish mumkin?
-4. \`clearTimeout\` nima uchun kerak?
-5. Taymer ID-si nima?
-6. \`setTimeout(() => {}, 0)\` nima qiladi?
-7. Taymerlar brauzerda qanday navbatga qo'yiladi?
-8. \`setInterval\` ichida \`clearInterval\` ishlatsa bo'ladimi?
-9. Bir vaqtda nechta taymer ishlatish mumkin?
-10. Taymer vaqtini o'zgaruvchida saqlash mumkinmi?
-11. Rekursiv \`setTimeout\` nima?
-12. \`requestAnimationFrame\` taymerlardan nimasi bilan farq qiladi?`,
+## 6. SAVOLLAR VA JAVOBLAR
+<details>
+<summary>1. setTimeout va setInterval farqi nima?</summary>
+setTimeout — bir marta, setInterval — takroriy.
+</details>
+
+<details>
+<summary>2. 1 soniya necha millisekund?</summary>
+1000 ms.
+</details>
+
+<details>
+<summary>3. Taymerni qanday to'xtatish mumkin?</summary>
+clearInterval(id) yoki clearTimeout(id).
+</details>
+
+<details>
+<summary>4. clearTimeout nima uchun kerak?</summary>
+setTimeout ni to'xtatish uchun.
+</details>
+
+<details>
+<summary>5. Taymer ID-si nima?</summary>
+Taymerni o'zgartirish yoki to'xtatish uchun unga berilgan unikal raqam.
+</details>
+
+<details>
+<summary>6. setTimeout(() => {}, 0) nima qiladi?</summary>
+Kod bajarilishini hozirgi Call Stackdan keyinga suradi (asinxron).
+</details>
+
+<details>
+<summary>7. Taymerlar brauzerda qanday navbatga qo'yiladi?</summary>
+Callback Queue (MacroTask).
+</details>
+
+<details>
+<summary>8. setInterval ichida clearInterval ishlatsa bo'ladimi?</summary>
+Ha, shart qanoatlantirilganda to'xtatish uchun.
+</details>
+
+<details>
+<summary>9. Bir vaqtda nechta taymer ishlatish mumkin?</summary>
+Cheksiz, lekin ko'p bo'lsa sayt qotishi mumkin.
+</details>
+
+<details>
+<summary>10. Taymer vaqtini o'zgaruvchida saqlash mumkinmi?</summary>
+Ha.
+</details>
+
+<details>
+<summary>11. Rekursiv setTimeout nima?</summary>
+setTimeout ichida yana setTimeout chaqirish.
+</details>
+
+<details>
+<summary>12. requestAnimationFrame taymerlardan nimasi bilan farq qiladi?</summary>
+Monitor yangilanish tezligiga (60fps) mos keladi, animatsiyalar uchun qulay.
+</details>`,
   exercises: [
     {
       id: 1,
@@ -151,4 +198,4 @@ clearInterval(id); // Takrorlanishni to'xtatadi
       explanation: "Rekursiv `setTimeout` yordamida funksiya ichida navbatdagi setTimeout e'lon qilinadi. Bu usul oldingi kodning ishlash muddati qancha cho'zilishidan qat'i nazar, navbatdagi chaqiruvgacha bo'lgan oraliq aniq bo'lishini kafolatlaydi, `setInterval`da esa asinxron amallar kechiksa interval bir-birini bosib ketishi mumkin."
     }
   ]
-};
+};", file_path:

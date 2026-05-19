@@ -276,4 +276,4 @@ Massivda: \`const [bir, ...qolganlari] = [1, 2, 3];\`. Obyektda: \`const { ism, 
       explanation: "Spread `...` operatori massivni argumentlar ro'yxatiga yoyib yuboradi: `Math.max(1, 5, 2)` ko'rinishida chaqirilishini ta'minlaydi."
     }
   ]
-};
+};", file_path:
