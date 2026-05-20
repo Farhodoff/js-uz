@@ -45,18 +45,69 @@ console.log(isPalindrom("non")); // true
 2. **Jim qolish:** Agar savolga javob bilmasangiz, o'z fikringizni ayting, mantiqiy fikrlashni ko'rsating.
 
 ## 6. SAVOLLAR (12 ta)
-1. JavaScript nima va u qachon yaratilgan?
-2. \`typeof null\` natijasi nima va nega?
-3. "Temporal Dead Zone" (TDZ) nima?
-4. \`NaN\` nima va uni qanday tekshiramiz?
-5. Hoisting nima?
-6. Closures (Yopilishlar) nima?
-7. "use strict" nima uchun ishlatiladi?
-8. Bir vaqtda bir nechta shartni qanday tekshirish mumkin?
-9. Massivdan oxirgi elementni qanday o'chiramiz?
-10. \`map()\` va \`forEach()\` farqi nima?
-11. Obyekt ichidagi funksiya (metod) qanday yoziladi?
-12. JSda asinxronlik nima degani?`,
+Quyida eng ko'p so'raladigan savollar va ularning qisqa javoblari keltirilgan. Javobni ko'rish uchun savol ustiga bosing.
+
+## 7. SAVOLLARGA JAVOBLAR
+
+<details>
+<summary>1. JavaScript nima va u qachon yaratilgan?</summary>
+JavaScript — web-sahifalarni interaktiv qilish uchun ishlatiladigan dasturlash tili. U 1995-yilda Brendan Eich tomonidan 10 kunda yaratilgan.
+</details>
+
+<details>
+<summary>2. typeof null natijasi nima va nega?</summary>
+Natija `"object"`. Bu JSning birinchi versiyasidagi xatolik (bug) bo'lib, keyinchalik moslikni saqlab qolish uchun o'zgartirilmagan.
+</details>
+
+<details>
+<summary>3. "Temporal Dead Zone" (TDZ) nima?</summary>
+TDZ — `let` va `const` o'zgaruvchilari e'lon qilingan qatorgacha bo'lgan hudud. Unga murojaat qilish `ReferenceError` beradi.
+</details>
+
+<details>
+<summary>4. NaN nima va uni qanday tekshiramiz?</summary>
+`NaN` (Not-a-Number) — noto'g'ri matematik amallar natijasi. Uni `Number.isNaN()` yoki `isNaN()` bilan tekshiramiz.
+</details>
+
+<details>
+<summary>5. Hoisting nima?</summary>
+Hoisting — o'zgaruvchi va funksiyalar e'lonining kod tepasiga "ko'tarilishi". `var` undefined qaytaradi, `let/const` xato beradi.
+</details>
+
+<details>
+<summary>6. Closures (Yopilishlar) nima?</summary>
+Ichki funksiyaning tashqi funksiya o'zgaruvchilariga kirish huquqiga ega bo'lishi, hatto tashqi funksiya tugaganidan keyin ham.
+</details>
+
+<details>
+<summary>7. "use strict" nima uchun ishlatiladi?</summary>
+JSni "qat'iy rejim"da ishlashga majburlaydi, bu xatolarni tezroq topishga va xavfli sintaksisni taqiqlashga yordam beradi.
+</details>
+
+<details>
+<summary>8. Bir vaqtda bir nechta shartni qanday tekshirish mumkin?</summary>
+Mantiqiy operatorlar orqali: `&&` (va), `||` (yoki).
+</details>
+
+<details>
+<summary>9. Massivdan oxirgi elementni qanday o'chiramiz?</summary>
+`.pop()` metodi orqali.
+</details>
+
+<details>
+<summary>10. map() va forEach() farqi nima?</summary>
+`forEach()` shunchaki massivni aylanib chiqadi, `map()` esa yangi massiv qaytaradi.
+</details>
+
+<details>
+<summary>11. Obyekt ichidagi funksiya (metod) qanday yoziladi?</summary>
+Obyekt kalitiga funksiya biriktirish orqali: `sayHi() { ... }`.
+</details>
+
+<details>
+<summary>12. JSda asinxronlik nima degani?</summary>
+Kodning bloklanmasdan, fonda bajarilishi (masalan, API so'rovlar yoki setTimeout).
+</details>`,old_string:,old_string:,
   exercises: [
     {
       id: 1,
