@@ -272,65 +272,53 @@ console.log(operatsiya(5, 3, kopaytir)); // 15
 
 ## 6. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. Funksiya nima?</summary>
+**1. Funksiya nima?**
 Ma'lum bir vazifani bajaradigan kod bo'lagi. Bir marta yoziladi va istalgancha chaqiriladi.
-</details>
 
-<details>
-<summary>2. Funksiya deklaratsiyasi va ifodasi (expression) farqi nima?</summary>
+
+**2. Funksiya deklaratsiyasi va ifodasi (expression) farqi nima?**
 Deklaratsiya e'lon qilishdan oldin chaqirilishi mumkin (hoisting), expression esa chaqira olmaydi.
-</details>
 
-<details>
-<summary>3. Parametr nima?</summary>
+
+**3. Parametr nima?**
 Funksiya yozilganda qavslarda berilgan o'zgaruvchi nomi. Masalan: \`function add(a, b)\` da \`a\` va \`b\` parametrlar.
-</details>
 
-<details>
-<summary>4. Argument nima?</summary>
+
+**4. Argument nima?**
 Funksiya chaqirilganda qavslarda berilgan haqiqiy qiymat. Masalan: \`add(5, 3)\` da \`5\` va \`3\` argumentlar.
-</details>
 
-<details>
-<summary>5. Return kalit so'zi nima vazifani bajaradi?</summary>
+
+**5. Return kalit so'zi nima vazifani bajaradi?**
 Funksiyaning natijasini qaytaradi va funksiyani o'sha zahoti tugatadi.
-</details>
 
-<details>
-<summary>6. Default parametr nima uchun kerak?</summary>
+
+**6. Default parametr nima uchun kerak?**
 Agar argument berilmasa, standart qiymatni ishlatish. Masalan: \`function greet(name = "Mehmon")\`.
-</details>
 
-<details>
-<summary>7. Funksiya ichida return'dan keyin kod yozsa u ishlayadimi?</summary>
+
+**7. Funksiya ichida return'dan keyin kod yozsa u ishlayadimi?**
 Yo'q, return'dan keyin kod bajarilmaydi.
-</details>
 
-<details>
-<summary>8. Funksiyani chaqirish (call/invoke) qanday bo'ladi?</summary>
+
+**8. Funksiyani chaqirish (call/invoke) qanday bo'ladi?**
 Funksiya nomini yozib, qavslar qo'yish. Masalan: \`myFunc()\`.
-</details>
 
-<details>
-<summary>9. Hoisting funksiyalarga qanday ta'sir qiladi?</summary>
+
+**9. Hoisting funksiyalarga qanday ta'sir qiladi?**
 Funksiya declaration'lar e'lon qilishdan oldin chaqirilishi mumkin. Expression'lar esa kerak emas.
-</details>
 
-<details>
-<summary>10. Anonymous (nomsiz) funksiya nima?</summary>
+
+**10. Anonymous (nomsiz) funksiya nima?**
 Nomi bo'lmagan funksiya. Odatda o'zgaruvchiga saqlansa yoki callback sifatida ishlatilsa.
-</details>
 
-<details>
-<summary>11. Bitta funksiyada bir nechta return bo'lishi mumkinmi?</summary>
+
+**11. Bitta funksiyada bir nechta return bo'lishi mumkinmi?**
 Ha, masalan shartlar bilan. Lekin Return funksiyani to'xtatgani uchun, faqat bittasi bajariladi.
-</details>
 
-<details>
-<summary>12. Funksiya ichida boshqa funksiyani chaqirish mumkinmi?</summary>
+
+**12. Funksiya ichida boshqa funksiyani chaqirish mumkinmi?**
 Ha, mutlaqo. Masalan callback pattern'lari, higher-order functions, va boshqalar.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

@@ -44,65 +44,53 @@ console.log(Math.abs(-5)); // 5 (modul - har doim musbat)
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Math obyekti nima vazifani bajaradi?</summary>
+**1. Math obyekti nima vazifani bajaradi?**
 \`Math\` — bu JavaScript-dagi o'rnatilgan global obyekt bo'lib, matematik hisob-kitoblar, konstantalar va murakkab funksiyalar (yaxlitlash, tasodifiy sonlar, trigonometriya va h.k.) bilan ishlash uchun xizmat qiladi.
-</details>
 
-<details>
-<summary>2. Math.floor() va Math.ceil() farqi nimada?</summary>
+
+**2. Math.floor() va Math.ceil() farqi nimada?**
 \`Math.floor()\` kasr sonni har doim pastga (kichik butun songa) yaxlitlaydi. \`Math.ceil()\` esa har doim tepaga (katta butun songa) yaxlitlaydi.
-</details>
 
-<details>
-<summary>3. Eng yaqin songa yaxlitlash metodi qaysi?</summary>
+
+**3. Eng yaqin songa yaxlitlash metodi qaysi?**
 \`Math.round()\` — kasr sonni eng yaqin butun songa yaxlitlaydi. Agar kasr qismi \`0.5\` va undan katta bo'lsa tepaga, bo'lmasa pastga yaxlitlanadi.
-</details>
 
-<details>
-<summary>4. Math.random() qanday son qaytaradi?</summary>
+
+**4. Math.random() qanday son qaytaradi?**
 \`Math.random()\` 0 (shu jumladan) va 1 (istisno) oralig'idagi tasodifiy kasr son qaytaradi.
-</details>
 
-<details>
-<summary>5. Tasodifiy sonni butun songa aylantirish uchun nima qilish kerak?</summary>
+
+**5. Tasodifiy sonni butun songa aylantirish uchun nima qilish kerak?**
 \`Math.random()\` natijasini kerakli diapazon soniga ko'paytirib, keyin \`Math.floor()\` yoki \`Math.trunc()\` kabi yaxlitlash metodlaridan foydalanish kerak.
-</details>
 
-<details>
-<summary>6. Bir nechta son ichidan eng kattasini qaysi metod topadi?</summary>
+
+**6. Bir nechta son ichidan eng kattasini qaysi metod topadi?**
 \`Math.max()\` metodi berilgan parametrlar orasidan eng katta qiymatga ega bo'lgan sonni topib beradi.
-</details>
 
-<details>
-<summary>7. Math.sqrt(25) natijasi nima?</summary>
+
+**7. Math.sqrt(25) natijasi nima?**
 Natija \`5\` bo'ladi, chunki \`Math.sqrt()\` sonning kvadrat ildizini hisoblab beradi.
-</details>
 
-<details>
-<summary>8. Math.abs(-10) natijasi nima?</summary>
+
+**8. Math.abs(-10) natijasi nima?**
 Natija \`10\` bo'ladi. \`Math.abs()\` sonning mutloq qiymatini (modulini), ya'ni ishorasiz musbat ko'rinishini qaytaradi.
-</details>
 
-<details>
-<summary>9. Darajaga ko'tarish metodini ayting (pow).</summary>
+
+**9. Darajaga ko'tarish metodini ayting (pow).**
 \`Math.pow(asos, daraja)\` metodi birinchi parametrni ikkinchi parametr darajasiga ko'taradi (masalan, \`Math.pow(2, 3)\` natijasi \`8\` ga teng).
-</details>
 
-<details>
-<summary>10. Math.PI nima qaytaradi?</summary>
+
+**10. Math.PI nima qaytaradi?**
 Matematikadagi PI (\`π\`) konstantasini — taxminan \`3.141592653589793\` qiymatini qaytaradi. Bu metod emas, oddiy xususiyat bo'lgani uchun qavssiz chaqiriladi.
-</details>
 
-<details>
-<summary>11. Nima uchun math.floor() deb yozish xato?</summary>
+
+**11. Nima uchun math.floor() deb yozish xato?**
 Chunki JavaScript harflar farqiga boradi. Global obyekt nomi doimo bosh harf bilan **\`Math\`** deb yozilishi shart.
-</details>
 
-<details>
-<summary>12. Kasr qismini shunchaki olib tashlaydigan metod qaysi (trunc)?</summary>
+
+**12. Kasr qismini shunchaki olib tashlaydigan metod qaysi (trunc)?**
 \`Math.trunc()\` — sonning kasr qismini shunchaki kesib olib tashlab, faqat butun qismini qaytaradigan metod hisoblanadi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

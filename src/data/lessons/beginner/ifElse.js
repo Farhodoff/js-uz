@@ -50,65 +50,53 @@ let xabar = (yosh >= 18) ? "Katta" : "Kichik";
 3. **Truthy/Falsy:** JavaScriptda \`0\`, \`""\`, \`null\`, \`undefined\`, \`NaN\` doim **false** (falsy) deb hisoblanadi. Qolgan hamma narsa **true** (truthy).
 
 ## 6. SAVOLLAR VA JAVOBLAR
-<details>
-<summary>1. Shartli operator nima uchun kerak?</summary>
+**1. Shartli operator nima uchun kerak?**
 Dasturga mantiq qo'shish va vaziyatga qarab har xil kodlarni ishga tushirish uchun.
-</details>
 
-<details>
-<summary>2. if so'zining ma'nosi nima?</summary>
+
+**2. if so'zining ma'nosi nima?**
 Inglizchadan "Agar" degan ma'noni anglatadi.
-</details>
 
-<details>
-<summary>3. else qachon ishga tushadi?</summary>
+
+**3. else qachon ishga tushadi?**
 \`if\` ichidagi shart noto'g'ri (false) bo'lgan holatda.
-</details>
 
-<details>
-<summary>4. else if nima vazifani bajaradi?</summary>
+
+**4. else if nima vazifani bajaradi?**
 Asosiy \`if\` sharti bajarilmaganda, boshqa bir aniq shartni tekshirish uchun.
-</details>
 
-<details>
-<summary>5. Ternary operator qanday tuzilgan?</summary>
+
+**5. Ternary operator qanday tuzilgan?**
 \`shart ? rost bo'lsa : yolg'on bo'lsa\`
-</details>
 
-<details>
-<summary>6. Bir nechta shartni birlashtirish belgilarini ayting.</summary>
+
+**6. Bir nechta shartni birlashtirish belgilarini ayting.**
 \`&&\` (VA), \`||\` (YOKI), \`!\` (EMAS).
-</details>
 
-<details>
-<summary>7. switch operatorida default nima uchun kerak?</summary>
+
+**7. switch operatorida default nima uchun kerak?**
 Hech bir \`case\` mos kelmagan holatda ishlaydigan kodni belgilash uchun.
-</details>
 
-<details>
-<summary>8. Truthy va Falsy qiymatlar farqi nima?</summary>
+
+**8. Truthy va Falsy qiymatlar farqi nima?**
 Mantiqiy shart ichida o'zini \`true\` yoki \`false\` kabi tutadigan qiymatlar.
-</details>
 
-<details>
-<summary>9. if ("") ishlaydimi?</summary>
+
+**9. if ("") ishlaydimi?**
 Yo'q, chunki bo'sh matn - falsy qiymat.
-</details>
 
-<details>
-<summary>10. switchda break yozmasak nima bo'ladi?</summary>
+
+**10. switchda break yozmasak nima bo'ladi?**
 Kod keyingi \`case\`lar ichiga ham kirib ketadi (fall-through).
-</details>
 
-<details>
-<summary>11. Shart ichida shart (Nested if) yozish mumkinmi?</summary>
+
+**11. Shart ichida shart (Nested if) yozish mumkinmi?**
 Ha, lekin kod o'qilishini qiyinlashtirgani uchun ehtiyot bo'lish kerak.
-</details>
 
-<details>
-<summary>12. switch va if...else o'rtasidagi asosiy farq nima?</summary>
+
+**12. switch va if...else o'rtasidagi asosiy farq nima?**
 \`if\` diapazonlar bilan (x > 10) yaxshi ishlaydi, \`switch\` esa aniq qiymatlar bilan (kun === "Dushanba").
-</details>`,
+`,
   exercises: [
     {
       id: 1,

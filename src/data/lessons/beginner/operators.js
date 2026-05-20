@@ -56,65 +56,53 @@ console.log(sotibOladi); // true
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Operator nima?</summary>
+**1. Operator nima?**
 Operator — bu qiymatlar va o'zgaruvchilar ustida muayyan matematik, solishtirish yoki mantiqiy amallarni bajarish uchun ishlatiladigan maxsus belgi yoki kalit so'zdir.
-</details>
 
-<details>
-<summary>2. Arifmetik operatorlarni sanab bering.</summary>
+
+**2. Arifmetik operatorlarni sanab bering.**
 Qo'shish (\`+\`), ayirish (\`-\`), ko'paytirish (\`*\`), bo'lish (\`/\`), qoldiq olish (\`%\`), va darajaga ko'tarish (\`**\`).
-</details>
 
-<details>
-<summary>3. % operatori nima vazifani bajaradi?</summary>
+
+**3. % operatori nima vazifani bajaradi?**
 Modulo (\`%\`) operatori birinchi sonni ikkinchisiga bo'lgandagi matematik qoldiqni qaytaradi (masalan, \`5 % 2\` natijasi \`1\` ga teng).
-</details>
 
-<details>
-<summary>4. Solishtirish operatorlari natijasi qanday ma'lumot turida bo'ladi?</summary>
+
+**4. Solishtirish operatorlari natijasi qanday ma'lumot turida bo'ladi?**
 Solishtirish operatorlari natijasi har doim mantiqiy (\`boolean\`) turda bo'ladi, ya'ni faqat \`true\` yoki \`false\` qiymat qaytaradi.
-</details>
 
-<details>
-<summary>5. == va === farqi nima?</summary>
+
+**5. == va === farqi nima?**
 \`==\` (oddiy tenglik) solishtirishdan oldin turlarni avtomatik tarzda o'zgartiradi (\`coercion\`). \`===\` (qat'iy tenglik) esa turlarni o'zgartirmasdan, qiymat va turning o'zini bir vaqtda solishtiradi.
-</details>
 
-<details>
-<summary>6. && (VA) operatori qachon true qaytaradi?</summary>
+
+**6. && (VA) operatori qachon true qaytaradi?**
 Taqqoslanayotgan barcha shartlar (chap va o'ng tomonlar) to'liqligicha \`true\` bo'lgandagina \`true\` qiymat qaytaradi.
-</details>
 
-<details>
-<summary>7. || (YOKI) operatori qachon true qaytaradi?</summary>
+
+**7. || (YOKI) operatori qachon true qaytaradi?**
 Taqqoslanayotgan shartlardan kamida bittasi \`true\` bo'lsa, yakuniy natija \`true\` bo'ladi. Faqat barcha shartlar \`false\` bo'lgandagina \`false\` qaytaradi.
-</details>
 
-<details>
-<summary>8. ! operatori nima qiladi?</summary>
+
+**8. ! operatori nima qiladi?**
 Mantiqiy inkor (\`!\`) operatori mantiqiy qiymatni teskarisiga o'zgartiradi (\`true\` ni \`false\` ga, \`false\` ni esa \`true\` ga).
-</details>
 
-<details>
-<summary>9. 5 ** 3 natijasi nima bo'ladi?</summary>
+
+**9. 5 ** 3 natijasi nima bo'ladi?**
 Natija \`125\` bo'ladi (chunki \`5 * 5 * 5 = 125\`, ya'ni 5 ning 3-darajasi).
-</details>
 
-<details>
-<summary>10. "5" + 5 natijasi nima?</summary>
+
+**10. "5" + 5 natijasi nima?**
 Natija \`"55"\` (string) bo'ladi. Chunki \`+\` operatori matn ishtirok etganda konkatensiya (satrlarni birlashtirish) amalini bajaradi.
-</details>
 
-<details>
-<summary>11. "5" - 5 natijasi nima?</summary>
+
+**11. "5" - 5 natijasi nima?**
 Natija \`0\` (number) bo'ladi. Chunki minus (\`-\`) operatori faqat sonlar bilan ishlaydi, shuning uchun \`"5"\` matni avtomatik songa aylantirilagi.
-</details>
 
-<details>
-<summary>12. Increment (++) va Decrement (--) nima?</summary>
+
+**12. Increment (++) va Decrement (--) nima?**
 Increment (\`++\`) o'zgaruvchining qiymatini 1 taga oshirish uchun, Decrement (\`--\`) esa o'zgaruvchining qiymatini 1 taga kamaytirish uchun ishlatiladigan operatorlardir.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

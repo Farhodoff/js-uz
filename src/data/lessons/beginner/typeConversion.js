@@ -51,66 +51,54 @@ console.log(Number(a) + Number(b)); // 30
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Turni o'zgartirish (Type Conversion) nima?</summary>
+**1. Turni o'zgartirish (Type Conversion) nima?**
 Type Conversion (tiplarni o'zgartirish) — bu qiymatni bir ma'lumot turidan boshqasiga o'tkazish jarayonidir (masalan, \`"5"\` ni \`5\` ga yoki aksincha).
-</details>
 
-<details>
-<summary>2. Nima uchun "5" + 5 natijasi 55 chiqadi?</summary>
+
+**2. Nima uchun "5" + 5 natijasi 55 chiqadi?**
 Chunki JavaScriptda plus (\`+\`) belgisi ham qo'shish, ham satrlarni birlashtirish (concatenation) amalini bajaradi. Agar operanlardan biri satr bo'lsa, JS sonni satrga aylantirib, ularni yopishtirib qo'yadi.
-</details>
 
-<details>
-<summary>3. Qo'lda (Explicit) va Avtomatik (Implicit) o'zgartirish farqi nima?</summary>
+
+**3. Qo'lda (Explicit) va Avtomatik (Implicit) o'zgartirish farqi nima?**
 Qo'lda (Explicit) o'zgartirish dasturchi tomonidan aniq buyruqlar (\`Number()\`, \`String()\`) yordamida bajariladi. Avtomatik (Implicit) o'zgartirish esa JS dvigateli tomonidan fonda avtomatik ravishda bajariladi (masalan, \`"5" * 2\` natijasi \`10\` bo'lishi).
-</details>
 
-<details>
-<summary>4. Sonni matnga o'tkazishning 2 ta usulini ayting.</summary>
+
+**4. Sonni matnga o'tkazishning 2 ta usulini ayting.**
 1. \`String(son)\` global funksiyasidan foydalanish.  
 2. \`son.toString()\` metodidan foydalanish.
-</details>
 
-<details>
-<summary>5. Matnni songa o'tkazishning eng qisqa usuli qaysi (+)?</summary>
+
+**5. Matnni songa o'tkazishning eng qisqa usuli qaysi (+)?**
 Unary plus (\`+\`) operatoridan foydalanish. Masalan: \`let son = +"42"\`.
-</details>
 
-<details>
-<summary>6. parseInt() va Number() farqi nimada?</summary>
+
+**6. parseInt() va Number() farqi nimada?**
 \`Number()\` matn to'liq raqamlardan iborat bo'lsagina songa o'giradi (aks holda \`NaN\`). \`parseInt()\` esa matnning boshidagi sonlarni ajratib oladi (\`"12px"\` dan \`12\` ajratadi).
-</details>
 
-<details>
-<summary>7. Boolean(0) natijasi nima bo'ladi?</summary>
+
+**7. Boolean(0) natijasi nima bo'ladi?**
 Natija \`false\` bo'ladi.
-</details>
 
-<details>
-<summary>8. Boolean("0") natijasi nima bo'ladi? (Diqqat!)</summary>
+
+**8. Boolean("0") natijasi nima bo'ladi? (Diqqat!)**
 Natija \`true\` bo'ladi. Chunki \`"0"\` bo'sh bo'lmagan matn (string) bo'lib, har qanday bo'sh bo'lmagan matn JSda rost (\`truthy\`) qiymat hisoblanadi.
-</details>
 
-<details>
-<summary>9. Falsy (yolg'on) qiymatlarni sanab bering.</summary>
+
+**9. Falsy (yolg'on) qiymatlarni sanab bering.**
 JavaScriptda faqatgina 6 ta falsy qiymat bor: \`false\`, \`0\` (va \`-0\`, \`0n\`), \`""\` (bo'sh string), \`null\`, \`undefined\`, va \`NaN\`. Boshqa barcha qiymatlar \`truthy\` hisoblanadi.
-</details>
 
-<details>
-<summary>10. Number(null) natijasi nima bo'ladi?</summary>
+
+**10. Number(null) natijasi nima bo'ladi?**
 Natija \`0\` bo'ladi.
-</details>
 
-<details>
-<summary>11. Number(undefined) natijasi nima bo'ladi?</summary>
+
+**11. Number(undefined) natijasi nima bo'ladi?**
 Natija \`NaN\` bo'ladi.
-</details>
 
-<details>
-<summary>12. String(true) natijasi nima bo'ladi?</summary>
+
+**12. String(true) natijasi nima bo'ladi?**
 Natija \`"true"\` (string tipidagi matn) bo'ladi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

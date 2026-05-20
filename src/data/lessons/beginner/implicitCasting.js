@@ -47,65 +47,53 @@ console.log("5" + "5" - 5); // 50 (Chunki "5" + "5" = "55", keyin 55 - 5 = 50)
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Coercion (Avtomatik o'zgartirish) nima?</summary>
+**1. Coercion (Avtomatik o'zgartirish) nima?**
 Coercion (yoki Implicit Type Casting) — JavaScript dvigateli tomonidan, kontekst va operatorlarga qarab, ma'lumot turlarining avtomatik ravishda biridan boshqasiga o'tkazilishidir (dasturchi aralashuvisiz).
-</details>
 
-<details>
-<summary>2. Nima uchun "10" + 2 natijasi "102" chiqadi?</summary>
+
+**2. Nima uchun "10" + 2 natijasi "102" chiqadi?**
 Chunki plus (\`+\`) operatori ishtirok etganda va operanlardan biri matn (string) bo'lganda, JS ustuvorlikni matnga beradi va sonni matnga aylantirib, ularni birlashtiradi.
-</details>
 
-<details>
-<summary>3. Nima uchun "10" - 2 natijasi 8 chiqadi?</summary>
+
+**3. Nima uchun "10" - 2 natijasi 8 chiqadi?**
 Chunki minus (\`-\`) operatori faqat matematik sonlar bilan ishlaydi. JS avtomatik tarzda \`"10"\` matnini songa (\`10\`) aylantiradi va ayirish amalini bajaradi.
-</details>
 
-<details>
-<summary>4. true + true natijasi nima bo'ladi?</summary>
+
+**4. true + true natijasi nima bo'ladi?**
 Natija \`2\` bo'ladi. Matematik amallarda \`true\` qiymati \`1\` ga aylantirilagi (\`1 + 1 = 2\`).
-</details>
 
-<details>
-<summary>5. [] == 0 natijasi nima bo'ladi?</summary>
+
+**5. [] == 0 natijasi nima bo'ladi?**
 Natija \`true\` bo'ladi. Bo'sh massiv \`[]\` solishtirilganda avtomatik ravishda bo'sh matn \`""\` ga, keyin esa \`0\` soniga aylantiriladi.
-</details>
 
-<details>
-<summary>6. !!"" (ikki marta inkor) nima qaytaradi?</summary>
+
+**6. !!"" (ikki marta inkor) nima qaytaradi?**
 Natija \`false\` bo'ladi. Bo'sh matn \`""\` falsy qiymat hisoblanadi. Uni bir marta inkor qilsak \`true\`, yana bir marta inkor qilsak esa yana \`false\` bo'ladi.
-</details>
 
-<details>
-<summary>7. "5" * "5" natijasi nima?</summary>
+
+**7. "5" * "5" natijasi nima?**
 Natija \`25\` soni bo'ladi. Ko'paytirish operatori (\`*\`) matnlarni avtomatik ravishda sonlarga aylantiradi.
-</details>
 
-<details>
-<summary>8. Nima uchun JSda === ishlatish tavsiya etiladi?</summary>
+
+**8. Nima uchun JSda === ishlatish tavsiya etiladi?**
 Chunki qat'iy tenglik (\`===\`) qiymatlarni ham, ularning tiplarini ham avtomatik o'zgartirmasdan (\`coercion\`-larsiz) solishtiradi, bu esa kutilmagan mantiqiy xatolarning oldini oladi.
-</details>
 
-<details>
-<summary>9. null + 5 natijasi nima bo'ladi?</summary>
+
+**9. null + 5 natijasi nima bo'ladi?**
 Natija \`5\` bo'ladi. Matematik amallarda \`null\` avtomatik ravishda \`0\` soniga o'giriladi.
-</details>
 
-<details>
-<summary>10. undefined + 5 natijasi nima bo'ladi? (Diqqat: NaN)</summary>
+
+**10. undefined + 5 natijasi nima bo'ladi? (Diqqat: NaN)**
 Natija \`NaN\` (Not a Number) bo'ladi. Chunki \`undefined\` songa aylantirilganda \`NaN\` beradi va har qanday songa \`NaN\` qo'shilganda natija baribir \`NaN\` bo'lib qolaveradi.
-</details>
 
-<details>
-<summary>11. 1 < 2 < 3 natijasi nima?</summary>
+
+**11. 1 < 2 < 3 natijasi nima?**
 Natija \`true\` bo'ladi. Chapdan o'ngga bajarilganda \`1 < 2\` ifodasi \`true\` beradi. Keyin \`true < 3\` taqqoslanadi va \`true\` son sifatida \`1\` ga aylanib, \`1 < 3\` bajariladi (natija \`true\`).
-</details>
 
-<details>
-<summary>12. 3 > 2 > 1 natijasi nima? (Mantiqan o'ylab ko'ring)</summary>
+
+**12. 3 > 2 > 1 natijasi nima? (Mantiqan o'ylab ko'ring)**
 Natija \`false\` bo'ladi. Chapdan o'ngga bajarilganda \`3 > 2\` ifodasi \`true\` (1) beradi. Keyin \`true > 1\` ya'ni \`1 > 1\` taqqoslanadi va natija \`false\` chiqadi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

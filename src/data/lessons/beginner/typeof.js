@@ -48,65 +48,53 @@ console.log(typeof true); // "boolean"
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. typeof operatori nima qaytaradi?</summary>
+**1. typeof operatori nima qaytaradi?**
 \`typeof\` operatori tekshirilayotgan qiymat yoki o'zgaruvchining ma'lumot turini bildiruvchi matn (string) qaytaradi (masalan, \`"number"\`, \`"string"\`, \`"boolean"\` va hk).
-</details>
 
-<details>
-<summary>2. typeof natijasi qaysi ma'lumot turida bo'ladi (string)?</summary>
+
+**2. typeof natijasi qaysi ma'lumot turida bo'ladi (string)?**
 Uning natijasi har doim \`string\` (matn) turida bo'ladi. Masalan, \`typeof 5\` bizga \`"number"\` qiymatini matn ko'rinishida beradi.
-</details>
 
-<details>
-<summary>3. Nima uchun typeof null "object" chiqadi?</summary>
+
+**3. Nima uchun typeof null "object" chiqadi?**
 Bu JavaScript yaratilgan paytdagi tizimli xato (bug) bo'lib, keyinchalik mavjud saytlar va tizimlar buzilib ketmasligi uchun o'zgartirilmasdan qoldirilgan.
-</details>
 
-<details>
-<summary>4. Massivning turini typeof orqali aniqlab bo'ladimi?</summary>
+
+**4. Massivning turini typeof orqali aniqlab bo'ladimi?**
 Yo'q, massivlar ham obyekt hisoblangani uchun \`typeof []\` har doim \`"object"\` qaytaradi. Haqiqiy massivni aniqlash uchun \`Array.isArray()\` metodidan foydalaniladi.
-</details>
 
-<details>
-<summary>5. typeof NaN natijasi nima?</summary>
+
+**5. typeof NaN natijasi nima?**
 \`typeof NaN\` (Not a Number) \`"number"\` qaytaradi. Chunki u sonlar ustida noto'g'ri matematik amallar bajarilganda hosil bo'ladigan maxsus raqamli qiymatdir.
-</details>
 
-<details>
-<summary>6. typeof 10 + " apples" natijasi nima bo'ladi?</summary>
+
+**6. typeof 10 + " apples" natijasi nima bo'ladi?**
 Natija \`"number apples"\` bo'ladi. Chunki \`typeof 10\` birinchi bo'lib bajarilib \`"number"\` qaytaradi, so'ngra unga \`" apples"\` matni qo'shiladi.
-</details>
 
-<details>
-<summary>7. typeof (10 + " apples") natijasi-chi?</summary>
+
+**7. typeof (10 + " apples") natijasi-chi?**
 Natija \`"string"\` bo'ladi. Qavs birinchi bajarilib, \`10 + " apples"\` amali \`"10 apples"\` matnini hosil qiladi, \`typeof\` esa ushbu matn turini \`"string"\` deb aniqlaydi.
-</details>
 
-<details>
-<summary>8. typeof undefined natijasi nima?</summary>
+
+**8. typeof undefined natijasi nima?**
 \`typeof undefined\` natijasi \`"undefined"\` matni bo'ladi.
-</details>
 
-<details>
-<summary>9. Funksiyalarning turi nima deb chiqadi?</summary>
+
+**9. Funksiyalarning turi nima deb chiqadi?**
 Funksiyalarning turi har doim \`"function"\` deb chiqadi.
-</details>
 
-<details>
-<summary>10. typeof true === "boolean" natijasi nima bo'ladi?</summary>
+
+**10. typeof true === "boolean" natijasi nima bo'ladi?**
 Natija \`true\` bo'ladi. Chunki \`typeof true\` qiymati \`"boolean"\` matniga teng va u \`"boolean"\` bilan taqqoslanmoqda.
-</details>
 
-<details>
-<summary>11. typeof typeof 42 natijasi nima?</summary>
+
+**11. typeof typeof 42 natijasi nima?**
 Natija \`"string"\` bo'ladi. Birinchi \`typeof 42\` bajarilib \`"number"\` (string) qiymatini qaytaradi. Ikkinchi \`typeof "number"\` esa \`"string"\` natijasini beradi.
-</details>
 
-<details>
-<summary>12. E'lon qilinmagan o'zgaruvchiga typeof ishlatsa xato beradimi?</summary>
+
+**12. E'lon qilinmagan o'zgaruvchiga typeof ishlatsa xato beradimi?**
 Yo'q, \`typeof\` e'lon qilinmagan (mavjud bo'lmagan) o'zgaruvchilar uchun ham xatolik bermaydi va xavfsiz tarzda \`"undefined"\` matnini qaytaradi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

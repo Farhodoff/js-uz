@@ -49,65 +49,53 @@ var ism = "Farhod";
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Hoisting nima?</summary>
+**1. Hoisting nima?**
 Hoisting (Ko'tarilish) — bu JavaScript kodni ishga tushirishdan oldin e'lon qilingan o'zgaruvchilar va funksiyalarni kodning eng tepasiga "ko'chirish" jarayonidir.
-</details>
 
-<details>
-<summary>2. JavaScript kodni o'qishdan oldin necha marta ko'z yugurtiradi?</summary>
+
+**2. JavaScript kodni o'qishdan oldin necha marta ko'z yugurtiradi?**
 JavaScript kodi bajarilishidan oldin 2 ta asosiy bosqichdan o'tadi: **Kompilyatsiya (Compilation)** (bu bosqichda kodga bir marta to'liq ko'z yugurtirib, scope va xotirani tayyorlaydi) va keyin **Bajarilish (Execution)** bosqichi.
-</details>
 
-<details>
-<summary>3. var o'zgaruvchisi hoist bo'lganda qiymati nima bo'ladi?</summary>
+
+**3. var o'zgaruvchisi hoist bo'lganda qiymati nima bo'ladi?**
 \`var\` o'zgaruvchisi ko'tarilganda uning qiymati avtomatik ravishda \`undefined\` qilib sozlanadi.
-</details>
 
-<details>
-<summary>4. let va const hoist bo'ladimi?</summary>
+
+**4. let va const hoist bo'ladimi?**
 Ha, \`let\` va \`const\` o'zgaruvchilari ham hoist bo'ladi, lekin ular xotirada yaratilsa-da, qiymat berilmaguncha ularga kirish taqiqlanadi (TDZ).
-</details>
 
-<details>
-<summary>5. Temporal Dead Zone (TDZ) nima?</summary>
+
+**5. Temporal Dead Zone (TDZ) nima?**
 Temporal Dead Zone (Vaqtinchalik O'lik Hudud) — o'zgaruvchining scope doirasida ko'tarilgan (hoist) qismidan boshlab, to u kodda haqiqiy e'lon qilingan qatorgacha bo'lgan oraliqdir. Bu oraliqda o'zgaruvchini ishlatish \`ReferenceError\` beradi.
-</details>
 
-<details>
-<summary>6. Qaysi turdagi funksiyalar to'liq hoist bo'ladi?</summary>
+
+**6. Qaysi turdagi funksiyalar to'liq hoist bo'ladi?**
 Faqat **Function Declaration** (oddiy \`function name() {}\` ko'rinishidagi) funksiyalar to'liq ko'tariladi, ya'ni ularni e'lon qilinishidan oldin ham chaqirish mumkin.
-</details>
 
-<details>
-<summary>7. Funksiya expression (o'zgaruvchiga saqlangan funksiya) hoist bo'ladimi?</summary>
+
+**7. Funksiya expression (o'zgaruvchiga saqlangan funksiya) hoist bo'ladimi?**
 O'zgaruvchining turi \`var\` bo'lsa, u \`undefined\` bo'lib ko'tariladi va uni funksiya sifatida chaqirish \`TypeError\` xatosini veradi. \`let\` yoki \`const\` bo'lsa, TDZ sababli \`ReferenceError\` beradi.
-</details>
 
-<details>
-<summary>8. undefined va ReferenceError farqi nimada (hoisting misolida)?</summary>
+
+**8. undefined va ReferenceError farqi nimada (hoisting misolida)?**
 \`undefined\` — o'zgaruvchi xotirada borligini, lekin qiymat berilmaganligini bildiradi (masalan, e'londan oldin chaqirilgan \`var\`). \`ReferenceError\` — o'zgaruvchining o'zi umuman topilmaganini yoki unga TDZ ichida murojaat qilinganini bildiradi.
-</details>
 
-<details>
-<summary>9. Hoisting JS tilining xatosimi yoki xususiyatimi?</summary>
+
+**9. Hoisting JS tilining xatosimi yoki xususiyatimi?**
 Bu JS dvigatelining (V8) kodni ikki bosqichda qayta ishlashining tabiiy natijasidir. Garchi u kutilmagan holatlarga olib kelsa-da, u tilning o'ziga xos xususiyati hisoblanadi.
-</details>
 
-<details>
-<summary>10. Nima uchun var o'rniga let ishlatish tavsiya etiladi (hoisting sababli)?</summary>
+
+**10. Nima uchun var o'rniga let ishlatish tavsiya etiladi (hoisting sababli)?**
 Chunki \`let\` hoisting paytidagi chalkashliklarni (e'lon qilinmasdan oldin \`undefined\` qaytarishni) oldini oladi va e'lon qilishdan oldin ishlatilganda xatolik (\`ReferenceError\`) chiqarib xavfsizroq ishlashni ta'minlaydi.
-</details>
 
-<details>
-<summary>11. Hoisting faqat global scope'da bo'ladimi?</summary>
+
+**11. Hoisting faqat global scope'da bo'ladimi?**
 Yo'q, hoisting har qanday scope ichida (funksiya yoki blok) sodir bo'ladi va o'zgaruvchilar o'zi joylashgan scopening eng tepasiga ko'tariladi.
-</details>
 
-<details>
-<summary>12. Klaslar (Classes) hoist bo'ladimi?</summary>
+
+**12. Klaslar (Classes) hoist bo'ladimi?**
 Ha, JavaScript-da klaslar ham e'lon qilinganda hoist bo'ladi, lekin \`let\` va \`const\` kabi TDZ ichida joylashadi, shuning uchun e'lon qilishdan oldin klasdan obyekt olinsa \`ReferenceError\` beradi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

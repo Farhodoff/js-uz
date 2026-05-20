@@ -52,65 +52,53 @@ console.log(yangi); // "Bugun havo zo'r"
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Matn metodlari nima?</summary>
+**1. Matn metodlari nima?**
 Matn metodlari — string (matn) qiymatlari ustida turli amallar bajarish (kesish, harflar registri o'zgartirish, qidirish va h.k.) uchun JavaScript tomonidan taqdim etilgan maxsus tayyor funksiyalardir.
-</details>
 
-<details>
-<summary>2. .length nima qaytaradi?</summary>
+
+**2. .length nima qaytaradi?**
 \`.length\` xususiyati matndagi barcha belgilar (harflar, raqamlar, bo'shliqlar va tinish belgilari) sonini qaytaradi. Bu metod emas, xususiyat bo'lgani uchun qavssiz chaqiriladi.
-</details>
 
-<details>
-<summary>3. .toUpperCase() va .toLowerCase() farqi nima?</summary>
+
+**3. .toUpperCase() va .toLowerCase() farqi nima?**
 \`.toUpperCase()\` matndagi barcha harflarni bosh harflarga (katta), \`.toLowerCase()\` esa barcha harflarni kichik harflarga o'zgartirib beradi.
-</details>
 
-<details>
-<summary>4. .slice() metodining birinchi va ikkinchi parametrlari nimani anglatadi?</summary>
+
+**4. .slice() metodining birinchi va ikkinchi parametrlari nimani anglatadi?**
 Birinchi parametr kesishni boshlash indeksini (shu indeks kiradi), ikkinchi parametr esa kesishni yakunlash indeksini (bu indeks kirmaydi) anglatadi.
-</details>
 
-<details>
-<summary>5. .trim() metodi nima uchun kerak?</summary>
+
+**5. .trim() metodi nima uchun kerak?**
 Matnning boshi va oxiridagi barcha ortiqcha bo'shliqlarni (space, tab, yangi qator) o'chirib tashlash uchun ishlatiladi.
-</details>
 
-<details>
-<summary>6. Matndagi biror so'zni boshqasiga almashtirish metodini ayting (replace).</summary>
+
+**6. Matndagi biror so'zni boshqasiga almashtirish metodini ayting (replace).**
 \`.replace(eskiSo'z, yangiSo'z)\` metodi matn ichidagi ma'lum bir bo'lak yoki so'zni boshqa bir so'zga almashtirib, yangi matn qaytaradi.
-</details>
 
-<details>
-<summary>7. .includes() metodi nima qaytaradi?</summary>
+
+**7. .includes() metodi nima qaytaradi?**
 Agar qidirilayotgan matn bo'lagi joriy matn ichida mavjud bo'lsa \`true\`, aks holda \`false\` (boolean) qiymat qaytaradi.
-</details>
 
-<details>
-<summary>8. .startsWith() va .endsWith() qachon ishlatiladi?</summary>
+
+**8. .startsWith() va .endsWith() qachon ishlatiladi?**
 \`.startsWith()\` matn ma'lum bir belgi yoki so'z bilan boshlanganligini, \`.endsWith()\` esa ma'lum bir belgi yoki so'z bilan tugaganligini tekshirish uchun ishlatiladi.
-</details>
 
-<details>
-<summary>9. Matnning 3-harfini qanday olish mumkin?</summary>
+
+**9. Matnning 3-harfini qanday olish mumkin?**
 Matnning 3-harfini olish uchun \`matn[2]\` (indeks orqali) yoki \`matn.charAt(2)\` metodidan foydalanish mumkin (chunki indeks 0 dan boshlanadi).
-</details>
 
-<details>
-<summary>10. Nima uchun string metodlari asl matnni o'zgartirmaydi?</summary>
+
+**10. Nima uchun string metodlari asl matnni o'zgartirmaydi?**
 Chunki JavaScript-da matnlar primitiv tur bo'lib, o'zgarmas (\`immutable\`) hisoblanadi. Shuning uchun barcha metodlar asl matnni o'zgartirmasdan, yangi matn qaytaradi.
-</details>
 
-<details>
-<summary>11. .split() metodi matnni nimaga aylantiradi?</summary>
+
+**11. .split() metodi matnni nimaga aylantiradi?**
 \`.split()\` metodi berilgan ajratuvchi belgi (separator) bo'yicha matnni bo'laklarga bo'lib, ulardan iborat massiv (\`array\`) hosil qiladi.
-</details>
 
-<details>
-<summary>12. .repeat(3) nima ish bajaradi?</summary>
+
+**12. .repeat(3) nima ish bajaradi?**
 \`.repeat(3)\` metodi joriy matnni berilgan miqdorda (bu yerda 3 marta) takrorlab, ketma-ket birlashtirib beradi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

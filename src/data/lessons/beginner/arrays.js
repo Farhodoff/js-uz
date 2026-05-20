@@ -36,65 +36,53 @@ mevalar[1] = "Kivi";  // "Banan" o'rniga "Kivi" keldi
 2. **Const bilan ishlash:** \`const\` bilan yaratilgan massiv ichidagi elementlarni o'zgartirish mumkin, lekin massivni yangi massivga qayta biriktirib (\`mevalar = [...]\`) bo'lmaydi.
 
 ## 6. SAVOLLAR VA JAVOBLAR
-<details>
-<summary>1. Massiv nima?</summary>
+**1. Massiv nima?**
 Bitta o'zgaruvchi nomi ostida bir nechta qiymatlarni saqlash imkonini beruvchi ma'lumotlar tuzilmasi.
-</details>
 
-<details>
-<summary>2. Massiv yaratishda qaysi qavslar ishlatiladi?</summary>
+
+**2. Massiv yaratishda qaysi qavslar ishlatiladi?**
 Kvadrat qavslar \`[ ]\`.
-</details>
 
-<details>
-<summary>3. Massivda sanoq nechadan boshlanadi?</summary>
+
+**3. Massivda sanoq nechadan boshlanadi?**
 0 dan boshlanadi.
-</details>
 
-<details>
-<summary>4. Massiv uzunligini qanday bilish mumkin?</summary>
+
+**4. Massiv uzunligini qanday bilish mumkin?**
 \`.length\` xususiyati orqali.
-</details>
 
-<details>
-<summary>5. push va unshift farqi nima?</summary>
+
+**5. push va unshift farqi nima?**
 \`push\` oxiriga qo'shadi, \`unshift\` boshiga qo'shadi.
-</details>
 
-<details>
-<summary>6. pop va shift farqi nima?</summary>
+
+**6. pop va shift farqi nima?**
 \`pop\` oxiridan o'chiradi, \`shift\` boshidan o'chiradi.
-</details>
 
-<details>
-<summary>7. Massivning 3-elementini qanday o'qiymiz?</summary>
+
+**7. Massivning 3-elementini qanday o'qiymiz?**
 \`arr[2]\` orqali (chunki 0, 1, 2...).
-</details>
 
-<details>
-<summary>8. Massiv ichida har xil turdagi ma'lumotlar bo'lishi mumkinmi?</summary>
+
+**8. Massiv ichida har xil turdagi ma'lumotlar bo'lishi mumkinmi?**
 Ha, JS massivlarida bir vaqtda son, matn va obyektlarni saqlash mumkin.
-</details>
 
-<details>
-<summary>9. includes() metodi nima qaytaradi?</summary>
+
+**9. includes() metodi nima qaytaradi?**
 Agar element massivda bo'lsa \`true\`, bo'lmasa \`false\`.
-</details>
 
-<details>
-<summary>10. indexOf() metodi nima qaytaradi?</summary>
+
+**10. indexOf() metodi nima qaytaradi?**
 Elementning indeksini. Topilmasa \`-1\` qaytaradi.
-</details>
 
-<details>
-<summary>11. join() metodi nima qiladi?</summary>
+
+**11. join() metodi nima qiladi?**
 Massiv elementlarini bitta matnga birlashtiradi.
-</details>
 
-<details>
-<summary>12. reverse() metodi asl massivni o'zgartiradimi?</summary>
+
+**12. reverse() metodi asl massivni o'zgartiradimi?**
 Ha, u massiv elementlari tartibini teskari qilib qo'yadi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

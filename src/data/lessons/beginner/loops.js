@@ -47,65 +47,53 @@ for (let rang of ranglar) {
 2. **Indeks xatosi:** Massivlar 0 dan boshlanadi. Agar 1 dan boshlasangiz, birinchi elementni o'tkazib yuborasiz.
 
 ## 6. SAVOLLAR VA JAVOBLAR
-<details>
-<summary>1. Sikl (Loop) nima?</summary>
+**1. Sikl (Loop) nima?**
 Bir xil kodni ma'lum bir shart asosida qayta-qayta bajarish usuli.
-</details>
 
-<details>
-<summary>2. JavaScriptda qaysi sikl turlari bor?</summary>
+
+**2. JavaScriptda qaysi sikl turlari bor?**
 for, while, do...while, for...of, for...in.
-</details>
 
-<details>
-<summary>3. for siklining 3 ta qismi nima?</summary>
+
+**3. for siklining 3 ta qismi nima?**
 Boshlanish (initialization), Shart (condition) va Qadam (increment).
-</details>
 
-<details>
-<summary>4. while va do...while farqi nimada?</summary>
+
+**4. while va do...while farqi nimada?**
 \`while\` avval shartni tekshiradi, \`do...while\` avval kodni bajarib, keyin shartni tekshiradi.
-</details>
 
-<details>
-<summary>5. for...of nima uchun ishlatiladi?</summary>
+
+**5. for...of nima uchun ishlatiladi?**
 Massiv (yoki boshqa iterable) ichidagi qiymatlarni to'g'ridan-to'g'ri olish uchun.
-</details>
 
-<details>
-<summary>6. Cheksiz sikl qanday hosil bo'ladi?</summary>
+
+**6. Cheksiz sikl qanday hosil bo'ladi?**
 Shart hech qachon \`false\` bo'lmaganda (masalan, \`while(true)\`).
-</details>
 
-<details>
-<summary>7. i++ yozishni unutsak nima bo'ladi?</summary>
+
+**7. i++ yozishni unutsak nima bo'ladi?**
 Sikl sanoq o'zgarmagani uchun cheksiz davom etadi.
-</details>
 
-<details>
-<summary>8. for siklida let o'rniga const ishlatsa bo'ladimi?</summary>
+
+**8. for siklida let o'rniga const ishlatsa bo'ladimi?**
 Yo'q, chunki \`i\` ning qiymati har bir qadamda o'zgarishi shart.
-</details>
 
-<details>
-<summary>9. continue nima vazifani bajaradi?</summary>
+
+**9. continue nima vazifani bajaradi?**
 Siklning joriy qadamini tashlab o'tib, keyingisiga o'tadi.
-</details>
 
-<details>
-<summary>10. break nima vazifani bajaradi?</summary>
+
+**10. break nima vazifani bajaradi?**
 Siklni darhol to'xtatib, undan chiqib ketadi.
-</details>
 
-<details>
-<summary>11. Obyekt kalitlarini aylanish uchun qaysi sikl ishlatiladi?</summary>
+
+**11. Obyekt kalitlarini aylanish uchun qaysi sikl ishlatiladi?**
 \`for...in\` sikli.
-</details>
 
-<details>
-<summary>12. 10 dan 1 gacha teskari sanaydigan sikl qanday yoziladi?</summary>
+
+**12. 10 dan 1 gacha teskari sanaydigan sikl qanday yoziladi?**
 \`for (let i = 10; i >= 1; i--)\`
-</details>`,
+`,
   exercises: [
     {
       id: 1,

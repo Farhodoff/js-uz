@@ -49,65 +49,53 @@ console.log(z); // 30
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Block Scope nima?</summary>
+**1. Block Scope nima?**
 Block Scope — jingalak qavslar \`{ }\` ichida e'lon qilingan o'zgaruvchilarning faqat shu qavslar ichida ko'rinishi va ishlatilishi mumkinligidir.
-</details>
 
-<details>
-<summary>2. Qaysi belgilar blokni bildiradi?</summary>
+
+**2. Qaysi belgilar blokni bildiradi?**
 JavaScriptda bloklarni jingalak qavslar \`{ }\` bildiradi (masalan, \`if\` shartlari, \`for\` tsikllari yoki shunchaki mustaqil bloklar).
-</details>
 
-<details>
-<summary>3. let va const blok doirasiga kiradimi?</summary>
+
+**3. let va const blok doirasiga kiradimi?**
 Ha, \`let\` va \`const\` block scope-ga ega. Ular e'lon qilingan blokdan tashqarida ko'rinmaydi.
-</details>
 
-<details>
-<summary>4. var blok doirasiga kiradimi?</summary>
+
+**4. var blok doirasiga kiradimi?**
 Yo'q, \`var\` block scope-ni tan olmaydi. U blokdan tashqarida ham ko'rinaveradi (agar blok funksiya ichida bo'lmasa).
-</details>
 
-<details>
-<summary>5. Nima uchun var xavfli hisoblanadi?</summary>
+
+**5. Nima uchun var xavfli hisoblanadi?**
 Chunki u block scope-ni tan olmaydi, bu esa global o'zgaruvchilar chalkashishiga yoki tsikllardan keyin vaqtinchalik o'zgaruvchilarning saqlanib qolib, boshqa kodlarga ta'sir qilishiga sabab bo'ladi.
-</details>
 
-<details>
-<summary>6. if blokidan tashqarida uning ichidagi let o'zgaruvchisini ishlatsa nima bo'ladi?</summary>
+
+**6. if blokidan tashqarida uning ichidagi let o'zgaruvchisini ishlatsa nima bo'ladi?**
 Lokal o'zgaruvchi tashqarida aniqlanmaganligi sababli \`ReferenceError\` xatosi yuz beradi.
-</details>
 
-<details>
-<summary>7. for loop ichida let ishlatish nima uchun yaxshi?</summary>
+
+**7. for loop ichida let ishlatish nima uchun yaxshi?**
 Chunki \`let\` bilan tsikl hisoblagichi (counter) faqat tsikl davomida yashaydi va tugashi bilan xotiradan o'chadi. \`var\` ishlatilsa, u tsikldan tashqarida ham qolib ketadi.
-</details>
 
-<details>
-<summary>8. Bo'sh jingalak qavslar { } ham alohida scope yaratadimi?</summary>
+
+**8. Bo'sh jingalak qavslar { } ham alohida scope yaratadimi?**
 Ha, istalgan bo'sh yoki ichi to'ldirilgan jingalak qavslar \`{ }\` \`let\` va \`const\` uchun alohida mustaqil block scope hosil qiladi.
-</details>
 
-<details>
-<summary>9. Global scope va Block scope farqi nima?</summary>
+
+**9. Global scope va Block scope farqi nima?**
 Global scope-da e'lon qilingan o'zgaruvchi kodning istalgan joyida ko'rinari. Block scope o'zgaruvchisi esa faqat o'zi yaratilgan blok va uning ichidagi bloklarda ko'rinadi.
-</details>
 
-<details>
-<summary>10. Blok ichida blok (Nested blocks) bo'lishi mumkinmi?</summary>
+
+**10. Blok ichida blok (Nested blocks) bo'lishi mumkinmi?**
 Ha, JavaScriptda bloklarni ichma-ich joylashtirish to'liq mumkin (masalan, \`if\` ichida yana \`if\` yoki tsikl ochilganda).
-</details>
 
-<details>
-<summary>11. Ichki blok tashqi blok o'zgaruvchisini ko'radimi?</summary>
+
+**11. Ichki blok tashqi blok o'zgaruvchisini ko'radimi?**
 Ha, Scope Chain (ko'rinish zanjiri) bo'yicha ichki blok o'zidan tashqaridagi (ota) bloklarda yaratilgan o'zgaruvchilarni bemalol ko'radi va ishlata oladi.
-</details>
 
-<details>
-<summary>12. Tashqi blok ichki blok o'zgaruvchisini ko'radimi?</summary>
+
+**12. Tashqi blok ichki blok o'zgaruvchisini ko'radimi?**
 Yo'q, tashqi blok ichki blok (farzand) ichida yaratilgan o'zgaruvchilarni ko'ra olmaydi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

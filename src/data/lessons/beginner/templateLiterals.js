@@ -54,68 +54,56 @@ console.log(\`Assalomu alaykum, \${user}!\`);
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Template Literals qaysi belgilar bilan yoziladi?</summary>
+**1. Template Literals qaysi belgilar bilan yoziladi?**
 Template Literals klaviaturadagi \`Esc\` tugmasi ostida joylashgan backtick (\` \` \` - teskari qo'shtirnoq) belgilari bilan yoziladi.
-</details>
 
-<details>
-<summary>2. \${} belgisi nima vazifani bajaradi?</summary>
+
+**2. \${} belgisi nima vazifani bajaradi?**
 \`\${}\` (interpolatsiya) belgisi matn ichiga istalgan JavaScript o'zgaruvchisi, hisob-kitob amali yoki ifodasini to'g'ridan-to'g'ri joylashtirish (tarjima qilish) uchun xizmat qiladi.
-</details>
 
-<details>
-<summary>3. Backtick ichida yangi qatorga o'tish uchun nima qilish kerak?</summary>
+
+**3. Backtick ichida yangi qatorga o'tish uchun nima qilish kerak?**
 Hech qanday maxsus belgi (masalan, \`\\n\`) yozish shart emas. Shunchaki klaviaturadagi "Enter" tugmasini bosib yangi qatorga o'tish kifoya.
-</details>
 
-<details>
-<summary>4. Eski + usulining asosiy kamchiligi nima?</summary>
+
+**4. Eski + usulining asosiy kamchiligi nima?**
 Ko'p o'zgaruvchilar va uzun matnlarni birlashtirishda qo'shtirnoqlar hamda \`+\` belgilarining ko'pligi sababli sintaktik xatolarga yo'l qo'yish juda oson bo'lgan.
-</details>
 
-<details>
-<summary>5. \${} ichida ternary operator ishlatsa bo'ladimi?</summary>
+
+**5. \${} ichida ternary operator ishlatsa bo'ladimi?**
 Ha, \`\${}\` ichida har qanday JavaScript ifodasi (expression), jumladan ternary (uchlik) shart operatori (\`shart ? true : false\`) ham to'liq ishlaydi.
-</details>
 
-<details>
-<summary>6. Nima uchun bu usul "Template" deb ataladi?</summary>
+
+**6. Nima uchun bu usul "Template" deb ataladi?**
 Chunki u matn uchun andoza (shablon) vazifasini bajaradi va undagi o'zgaruvchilar o'rni dinamik tarzda to'ldiriladi.
-</details>
 
-<details>
-<summary>7. JSning qaysi versiyasida bu xususiyat qo'shilgan?</summary>
+
+**7. JSning qaysi versiyasida bu xususiyat qo'shilgan?**
 Bu xususiyat JavaScript-ning ES6 (ECMAScript 2015) versiyasida qo'shilgan.
-</details>
 
-<details>
-<summary>8. \${2 + 2} natijasi nima bo'ladi?</summary>
+
+**8. \${2 + 2} natijasi nima bo'ladi?**
 Natija \`4\` (matn ko'rinishida) bo'ladi, chunki ifoda bajarilib, natija stringga o'giriladi.
-</details>
 
-<details>
-<summary>9. Backtick ichida oddiy qo'shtirnoq ishlatish mumkinmi?</summary>
+
+**9. Backtick ichida oddiy qo'shtirnoq ishlatish mumkinmi?**
 Ha, backtick bilan o'ralgan matn ichida hech qanday muammosiz oddiy \`'\` va ikkitalik \`"\` qo'shtirnoqlardan foydalanish mumkin (ularni escape qilish shart emas).
-</details>
 
-<details>
-<summary>10. HTML elementlarini backtick bilan yasash qulaymi?</summary>
+
+**10. HTML elementlarini backtick bilan yasash qulaymi?**
 Ha, o'ta qulay. Ko'p qatorli HTML tuzilmalarini va ulardagi dinamik qiymatlarni backtick yordamida juda oson va toza yaratish mumkin.
-</details>
 
-<details>
-<summary>11. Matnni bir nechta o'zgaruvchidan tashkil qilish misolini keltiring.</summary>
+
+**11. Matnni bir nechta o'zgaruvchidan tashkil qilish misolini keltiring.**
 \`\`\`javascript
 let ism = "Ali", yosh = 20;
 let gap = \`Ism: \${ism}, Yosh: \${yosh}\`;
 \`\`\`
-</details>
 
-<details>
-<summary>12. Backtick ichida funksiya chaqirish mumkinmi?</summary>
+
+**12. Backtick ichida funksiya chaqirish mumkinmi?**
 Ha, \`\${}\` ichida har qanday funksiyani chaqirish mumkin va funksiya qaytargan qiymat matn ichiga joylashtiriladi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

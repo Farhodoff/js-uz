@@ -46,65 +46,53 @@ console.log(false - true); // -1
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. JS nima uchun "g'alati" til hisoblanadi?</summary>
+**1. JS nima uchun "g'alati" til hisoblanadi?**
 Chunki JavaScript dastlab juda qisqa vaqt ichida brauzerlar uchun moslashuvchan qilib yaratilgan. U xatolarni ko'rsatib dasturni to'xtatgandan ko'ra, tiplarni avtomatik o'zgartirib (\`type coercion\`) bo'lsa ham biror natija qaytarishga harakat qiladi.
-</details>
 
-<details>
-<summary>2. Nima uchun 0.1 + 0.2 aniq 0.3 ga teng emas?</summary>
+
+**2. Nima uchun 0.1 + 0.2 aniq 0.3 ga teng emas?**
 Chunki JavaScript kasrli sonlarni kompyuter xotirasida ikkilik sanoq tizimida (IEEE 754 standarti) saqlaydi. Ikkilik tizimda ba'zi o'nlik kasrlar (\`0.1\` va \`0.2\` kabi) cheksiz davriy kasr bo'lib qoladi va yaxlitlash natijasida \`0.30000000000000004\` hosil bo'ladi.
-</details>
 
-<details>
-<summary>3. typeof NaN natijasi nima?</summary>
+
+**3. typeof NaN natijasi nima?**
 Natija \`"number"\` chiqadi. \`NaN\` (Not a Number — Son emas) nomi shunday bo'lsa-da, u JavaScript-da matematik jihatdan noto'g'ri bajarilgan amal natijasini bildiruvchi sonli qiymatdir.
-</details>
 
-<details>
-<summary>4. NaN === NaN nima qaytaradi?</summary>
+
+**4. NaN === NaN nima qaytaradi?**
 Natija \`false\` qaytaradi. \`NaN\` o'z-o'ziga teng bo'lmagan JavaScript-dagi yagona qiymatdir. Uni tekshirish uchun \`isNaN()\` yoki \`Number.isNaN()\` funksiyalaridan foydalanish shart.
-</details>
 
-<details>
-<summary>5. [] + [] natijasi nima bo'ladi?</summary>
+
+**5. [] + [] natijasi nima bo'ladi?**
 Natija bo'sh matn \`""\` (string) bo'ladi. Qo'shish (\`+\`) operatori ishlaganda massivlar avtomatik tarzda string ko'rinishiga keladi va ikkita bo'sh string birlashib yana bo'sh string hosil qiladi.
-</details>
 
-<details>
-<summary>6. "10" - "2" natijasi nima?</summary>
+
+**6. "10" - "2" natijasi nima?**
 Natija \`8\` (son) bo'ladi. Ayirish (\`-\`) operatori faqat raqamlar bilan ishlagani uchun ikkala matn ham avtomatik songa aylantiriladi.
-</details>
 
-<details>
-<summary>7. "10" + "2" natijasi nima?</summary>
+
+**7. "10" + "2" natijasi nima?**
 Natija \`"102"\` (string) bo'ladi. \`+\` operatori matn ishtirok etganda konkatensiya (satrlarni birlashtirish) amalini bajaradi.
-</details>
 
-<details>
-<summary>8. true + 5 natijasi nima?</summary>
+
+**8. true + 5 natijasi nima?**
 Natija \`6\` (son) bo'ladi. Matematik amallarda \`true\` avtomatik ravishda \`1\` soniga aylantiriladi.
-</details>
 
-<details>
-<summary>9. null == undefined nima qaytaradi?</summary>
+
+**9. null == undefined nima qaytaradi?**
 Natija \`true\` qaytaradi. Yumshoq tenglik qoidasiga ko'ra, \`null\` va \`undefined\` faqat o'zaro teng deb olingan.
-</details>
 
-<details>
-<summary>10. null === undefined nima qaytaradi?</summary>
+
+**10. null === undefined nima qaytaradi?**
 Natija \`false\` qaytaradi. Chunki ularning ma'lumot turlari turlicha (\`null\` — \`object\` tipida, \`undefined\` — \`undefined\` tipida).
-</details>
 
-<details>
-<summary>11. Nima uchun JSda har doim === ishlatish tavsiya etiladi?</summary>
+
+**11. Nima uchun JSda har doim === ishlatish tavsiya etiladi?**
 Chunki \`===\` (qat'iy tenglik) avtomatik tur o'zgarishlariga (\`coercion\`) yo'l qo'ymaydi va kutilmagan mantiqiy xatolarning oldini oladi.
-</details>
 
-<details>
-<summary>12. Kasrli sonlar bilan ishlaganda JSda qanday muammo bor?</summary>
+
+**12. Kasrli sonlar bilan ishlaganda JSda qanday muammo bor?**
 Yaxlitlash va aniqlik xatosi (precision error) mavjud. Buning oldini olish uchun hisob-kitobdan keyin \`.toFixed(N)\` yoki \`Math.round()\` kabi metodlardan foydalaniladi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

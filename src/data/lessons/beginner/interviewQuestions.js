@@ -49,65 +49,53 @@ Quyida eng ko'p so'raladigan savollar va ularning qisqa javoblari keltirilgan. J
 
 ## 7. SAVOLLARGA JAVOBLAR
 
-<details>
-<summary>1. JavaScript nima va u qachon yaratilgan?</summary>
+**1. JavaScript nima va u qachon yaratilgan?**
 JavaScript — web-sahifalarni interaktiv qilish uchun ishlatiladigan dasturlash tili. U 1995-yilda Brendan Eich tomonidan 10 kunda yaratilgan.
-</details>
 
-<details>
-<summary>2. typeof null natijasi nima va nega?</summary>
+
+**2. typeof null natijasi nima va nega?**
 Natija \`"object"\`. Bu JSning birinchi versiyasidagi xatolik (bug) bo'lib, keyinchalik moslikni saqlab qolish uchun o'zgartirilmagan.
-</details>
 
-<details>
-<summary>3. "Temporal Dead Zone" (TDZ) nima?</summary>
+
+**3. "Temporal Dead Zone" (TDZ) nima?**
 TDZ — \`let\` va \`const\` o'zgaruvchilari e'lon qilingan qatorgacha bo'lgan hudud. Unga murojaat qilish \`ReferenceError\` beradi.
-</details>
 
-<details>
-<summary>4. NaN nima va uni qanday tekshiramiz?</summary>
+
+**4. NaN nima va uni qanday tekshiramiz?**
 \`NaN\` (Not-a-Number) — noto'g'ri matematik amallar natijasi. Uni \`Number.isNaN()\` yoki \`isNaN()\` bilan tekshiramiz.
-</details>
 
-<details>
-<summary>5. Hoisting nima?</summary>
+
+**5. Hoisting nima?**
 Hoisting — o'zgaruvchi va funksiyalar e'lonining kod tepasiga "ko'tarilishi". \`var\` undefined qaytaradi, \`let/const\` xato beradi.
-</details>
 
-<details>
-<summary>6. Closures (Yopilishlar) nima?</summary>
+
+**6. Closures (Yopilishlar) nima?**
 Ichki funksiyaning tashqi funksiya o'zgaruvchilariga kirish huquqiga ega bo'lishi, hatto tashqi funksiya tugaganidan keyin ham.
-</details>
 
-<details>
-<summary>7. "use strict" nima uchun ishlatiladi?</summary>
+
+**7. "use strict" nima uchun ishlatiladi?**
 JSni "qat'iy rejim"da ishlashga majburlaydi, bu xatolarni tezroq topishga va xavfli sintaksisni taqiqlashga yordam beradi.
-</details>
 
-<details>
-<summary>8. Bir vaqtda bir nechta shartni qanday tekshirish mumkin?</summary>
+
+**8. Bir vaqtda bir nechta shartni qanday tekshirish mumkin?**
 Mantiqiy operatorlar orqali: \`&&\` (va), \`||\` (yoki).
-</details>
 
-<details>
-<summary>9. Massivdan oxirgi elementni qanday o'chiramiz?</summary>
+
+**9. Massivdan oxirgi elementni qanday o'chiramiz?**
 \`.pop()\` metodi orqali.
-</details>
 
-<details>
-<summary>10. map() va forEach() farqi nima?</summary>
+
+**10. map() va forEach() farqi nima?**
 \`forEach()\` shunchaki massivni aylanib chiqadi, \`map()\` esa yangi massiv qaytaradi.
-</details>
 
-<details>
-<summary>11. Obyekt ichidagi funksiya (metod) qanday yoziladi?</summary>
+
+**11. Obyekt ichidagi funksiya (metod) qanday yoziladi?**
 Obyekt kalitiga funksiya biriktirish orqali: \`sayHi() { ... }\`.
-</details>
 
-<details>
-<summary>12. JSda asinxronlik nima degani?</summary>
+
+**12. JSda asinxronlik nima degani?**
 Kodning bloklanmasdan, fonda bajarilishi (masalan, API so'rovlar yoki setTimeout).
-</details>`,
+`,
   exercises: [
     {
       id: 1,

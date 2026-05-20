@@ -37,65 +37,53 @@ git config user.email "fsoyilovv@gmail.com"
 3. **Inglizcha izohlar:** Farhodoff tartibida bu taqiqlangan! Faqat o'zbek tili.
 
 ## 6. SAVOLLAR VA JAVOBLAR
-<details>
-<summary>1. Farhodoff tartibida qaysi tilda yozish shart?</summary>
+**1. Farhodoff tartibida qaysi tilda yozish shart?**
 Faqat o'zbek tilida.
-</details>
 
-<details>
-<summary>2. Qachon commit va push qilish kerak?</summary>
+
+**2. Qachon commit va push qilish kerak?**
 Har bir yangilanish (update) kiritilgandan so'ng darhol.
-</details>
 
-<details>
-<summary>3. Pedagogik tartibning birinchi bosqichi nima?</summary>
+
+**3. Pedagogik tartibning birinchi bosqichi nima?**
 "NEGA" - ya'ni mavzuning nima uchun kerakligini tushuntirish.
-</details>
 
-<details>
-<summary>4. Amaliyot necha foiz bo'lishi kerak?</summary>
+
+**4. Amaliyot necha foiz bo'lishi kerak?**
 70-80% atrofida.
-</details>
 
-<details>
-<summary>5. Git configda user.name nima deb sozlanishi kerak?</summary>
+
+**5. Git configda user.name nima deb sozlanishi kerak?**
 "Farhodoff".
-</details>
 
-<details>
-<summary>6. Har bir dars oxirida nechta savol bo'lishi shart?</summary>
+
+**6. Har bir dars oxirida nechta savol bo'lishi shart?**
 12 ta savol.
-</details>
 
-<details>
-<summary>7. Analogiya nima uchun kerak?</summary>
+
+**7. Analogiya nima uchun kerak?**
 Murakkab tushunchalarni hayotiy misollar orqali soddalashtirish uchun.
-</details>
 
-<details>
-<summary>8. "Buzib ko'rish" bo'limi nima uchun kerak?</summary>
+
+**8. "Buzib ko'rish" bo'limi nima uchun kerak?**
 Kutilmagan xatolar va edge caselarni o'rganish uchun.
-</details>
 
-<details>
-<summary>9. Git nima?</summary>
+
+**9. Git nima?**
 Versiyalarni boshqarish tizimi (VCS).
-</details>
 
-<details>
-<summary>10. Push buyrug'i nima vazifani bajaradi?</summary>
+
+**10. Push buyrug'i nima vazifani bajaradi?**
 Mahalliy o'zgarishlarni masofaviy serverga (masalan, GitHub) yuboradi.
-</details>
 
-<details>
-<summary>11. Nima uchun bir vaqtda ko'p o'zgarishni commit qilish xato?</summary>
+
+**11. Nima uchun bir vaqtda ko'p o'zgarishni commit qilish xato?**
 Chunki xato chiqsa, qaysi o'zgarish sabab bo'lganini topish qiyinlashadi.
-</details>
 
-<details>
-<summary>12. Farhodoffning elektron pochtasi qanday?</summary>
+
+**12. Farhodoffning elektron pochtasi qanday?**
 fsoyilovv@gmail.com
-</details>`,
+`,
   exercises: [
     {
       id: 1,

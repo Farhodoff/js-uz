@@ -52,65 +52,53 @@ console.log(ism); // Ali (Global ism o'zgarmadi!)
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Function Scope nima?</summary>
+**1. Function Scope nima?**
 Function Scope — funksiya ichida e'lon qilingan o'zgaruvchi va funksiyalarning faqat shu funksiya ichida mavjud bo'lishi va tashqaridan unga kirib bo'lmasligidir.
-</details>
 
-<details>
-<summary>2. O'zgaruvchi funksiya ichida yaratilsa nima deyiladi?</summary>
+
+**2. O'zgaruvchi funksiya ichida yaratilsa nima deyiladi?**
 Lokal o'zgaruvchi (Local variable) deyiladi.
-</details>
 
-<details>
-<summary>3. Nima uchun funksiya ichidagi o'zgaruvchi tashqarida ko'rinmaydi?</summary>
+
+**3. Nima uchun funksiya ichidagi o'zgaruvchi tashqarida ko'rinmaydi?**
 Chunki JavaScript xavfsizlik va ma'lumotlarni yashirish (encapsulation) uchun funksiyalar atrofida ko'rinish chegaralarini (scope) o'rnatadi.
-</details>
 
-<details>
-<summary>4. Funksiya ichida var ishlatsa u tashqarida ko'rinadimi?</summary>
+
+**4. Funksiya ichida var ishlatsa u tashqarida ko'rinadimi?**
 Yo'q, \`var\` block scope-ni tan olmasa ham, function scope-ga to'liq bo'ysunadi. Funksiya ichidagi \`var\` o'zgaruvchisi tashqaridan ko'rinmaydi.
-</details>
 
-<details>
-<summary>5. Funksiya tugaganidan keyin uning ichidagi o'zgaruvchilar nima bo'ladi?</summary>
+
+**5. Funksiya tugaganidan keyin uning ichidagi o'zgaruvchilar nima bo'ladi?**
 Ular xotirani bo'shatish uchun axlat yig'uvchi (Garbage Collector) tomonidan avtomatik ravishda o'chirib tashlanadi.
-</details>
 
-<details>
-<summary>6. Global scope va Local scope farqi nima?</summary>
+
+**6. Global scope va Local scope farqi nima?**
 Global scope-dagi o'zgaruvchilar butun kod davomida ochiq bo'ladi. Local scope o'zgaruvchilari esa faqat ma'lum bir funksiya yoki blok ichida yashaydi.
-</details>
 
-<details>
-<summary>7. "Lexical Scope" nima degani?</summary>
+
+**7. "Lexical Scope" nima degani?**
 Lexical Scope — o'zgaruvchilarning ko'rinish sohasi ular kodning qayerida yozilganiga qarab belgilanishidir (funksiya chaqirilgan joyga qarab emas, balki yaratilgan joyiga qarab).
-</details>
 
-<details>
-<summary>8. Funksiya ichida let ishlatishning afzalligi nimada?</summary>
+
+**8. Funksiya ichida let ishlatishning afzalligi nimada?**
 \`let\` o'zgaruvchilari hoisting paytida TDZ (Temporal Dead Zone) ga tushadi va ularni e'lon qilishdan oldin ishlatish xavfini oldini oladi hamda block scope-ga rioya qiladi.
-</details>
 
-<details>
-<summary>9. Nyma uchun global va local o'zgaruvchilar nomi bir xil bo'lsa, local ustuvor bo'ladi?</summary>
+
+**9. Nyma uchun global va local o'zgaruvchilar nomi bir xil bo'lsa, local ustuvor bo'ladi?**
 Buni "Variable Shadowing" (to'sish) deyiladi, joriy scopedagi o'zgaruvchi tashqi scopedagisini soya ostida qoldiradi.
-</details>
 
-<details>
-<summary>10. Kalit so'zsiz (let/const/var) o'zgaruvchi yaratilsa nima bo'ladi?</summary>
+
+**10. Kalit so'zsiz (let/const/var) o'zgaruvchi yaratilsa nima bo'ladi?**
 Agar funksiya ichida kalit so'zsiz o'zgaruvchi e'lon qilinsa (masalan \`x = 10\`), u avtomatik ravishda global o'zgaruvchiga aylanadi (qavslar tashqarisida ham ko'rinadi).
-</details>
 
-<details>
-<summary>11. Funksiya ichidagi funksiya (nested) tashqi funksiya o'zgaruvchisini ko'radimi?</summary>
+
+**11. Funksiya ichidagi funksiya (nested) tashqi funksiya o'zgaruvchisini ko'radimi?**
 Ha, Scope Chain zanjiri bo'yicha ichki funksiya tashqi funksiyaning o'zgaruvchilari va parametrlaridan foydalanishi mumkin (bu closure hosil qiladi).
-</details>
 
-<details>
-<summary>12. "Namespace pollution" nima va scope uni qanday hal qiladi?</summary>
+
+**12. "Namespace pollution" nima va scope uni qanday hal qiladi?**
 Namespace pollution — global sohada o'zgaruvchilarning ko'payib ketishi va bir xil nomlarning to'qnashishidir. Local scope o'zgaruvchilarni alohida hududlarda saqlash orqali bu muammoni hal qiladi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

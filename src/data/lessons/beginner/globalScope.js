@@ -49,65 +49,53 @@ console.log(x); // 20
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Global Scope nima?</summary>
+**1. Global Scope nima?**
 Global Scope (global doira) — bu JavaScript kodining eng tashqi qismi bo'lib, bu yerda e'lon qilingan o'zgaruvchilar va funksiyalar dasturning istalgan joyidan foydalanish uchun ochiq bo'ladi.
-</details>
 
-<details>
-<summary>2. Qayerda e'lon qilingan o'zgaruvchilar global hisoblanadi?</summary>
+
+**2. Qayerda e'lon qilingan o'zgaruvchilar global hisoblanadi?**
 Hech qanday funksiya yoki blok (\`{ }\`) ichida bo'lmagan, kodning eng yuqori qismida e'lon qilingan o'zgaruvchilar global hisoblanadi.
-</details>
 
-<details>
-<summary>3. Global o'zgaruvchini funksiya ichida ishlatsa bo'ladimi?</summary>
+
+**3. Global o'zgaruvchini funksiya ichida ishlatsa bo'ladimi?**
 Ha, global o'zgaruvchini kodning istalgan joyida, jumladan har qanday funksiya yoki blok ichida bemalol ishlatish va o'zgartirish mumkin.
-</details>
 
-<details>
-<summary>4. window obyekti nima?</summary>
+
+**4. window obyekti nima?**
 \`window\` — brauzer muhitidagi global obyekt bo'lib, u brauzer oynasini ifodalaydi va barcha global o'zgaruvchilar hamda brauzer API'larini (masalan, \`window.alert\`) o'z ichiga oladi.
-</details>
 
-<details>
-<summary>5. Nima uchun global o'zgaruvchilar xavfli bo'lishi mumkin?</summary>
+
+**5. Nima uchun global o'zgaruvchilar xavfli bo'lishi mumkin?**
 Chunki dasturning istalgan joyi ularni o'zgartirishi mumkin, bu esa kutilmagan xatoliklarga (side-effects) va turli kodlar orasida nomlar to'qnashuviga olib keladi.
-</details>
 
-<details>
-<summary>6. let va var global e'lon qilinganda nima farqi bor?</summary>
+
+**6. let va var global e'lon qilinganda nima farqi bor?**
 Global e'lon qilingan \`var\` o'zgaruvchisi global \`window\` obyektining xususiyatiga aylanadi (\`window.x\`), lekin \`let\` (va \`const\`) global obyektga qo'shilmaydi.
-</details>
 
-<details>
-<summary>7. "Global Namespace Pollution" nima degani?</summary>
+
+**7. "Global Namespace Pollution" nima degani?**
 Global Namespace Pollution (Global doiraning ifloslanishi) — global sohada keragidan ortiq o'zgaruvchilarning to'planishi va bu sababli nomlar to'qnashuvi ehtimolining ortishidir.
-</details>
 
-<details>
-<summary>8. Funksiya ichida let ishlatmasdan o'zgaruvchi yaratsak nima bo'ladi?</summary>
+
+**8. Funksiya ichida let ishlatmasdan o'zgaruvchi yaratsak nima bo'ladi?**
 Strict mode bo'lmagan holatlarda, kalit so'zsiz yaratilgan o'zgaruvchi (\`x = 10\`) avtomatik ravishda global doiraga qo'shiladi va xavfli hisoblanadi.
-</details>
 
-<details>
-<summary>9. Global o'zgaruvchini qachon ishlatish tavsiya etiladi?</summary>
+
+**9. Global o'zgaruvchini qachon ishlatish tavsiya etiladi?**
 Faqat butun loyiha bo'ylab o'zgarmas umumiy konfiguratsiyalar (masalan, API manzili, dasturning versiyasi yoki sozlamalari) uchun ishlatish tavsiya etiladi.
-</details>
 
-<details>
-<summary>10. Global doira faqat brauzerdami yoki Node.js'da ham bormi?</summary>
+
+**10. Global doira faqat brauzerdami yoki Node.js'da ham bormi?**
 Ikkala muhitda ham bor. Brauzerda global obyekt \`window\`, Node.js'da esa \`global\` deb ataladi.
-</details>
 
-<details>
-<summary>11. globalThis nima uchun kerak?</summary>
+
+**11. globalThis nima uchun kerak?**
 \`globalThis\` — har qanday JavaScript ishlaydigan muhitda (brauzer, Node.js, Web Worker) global obyektga murojaat qilishning yagona va universal standart usulidir.
-</details>
 
-<details>
-<summary>12. Qanday qilib global o'zgaruvchilar sonini kamaytirish mumkin?</summary>
+
+**12. Qanday qilib global o'zgaruvchilar sonini kamaytirish mumkin?**
 O'zgaruvchilarni funksiyalar yoki bloklar ichida cheklash (local/block scope), modullardan (ES Modules) foydalanish va ma'lumotlarni bitta global obyekt ichiga guruhlash orqali kamaytirish mumkin.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

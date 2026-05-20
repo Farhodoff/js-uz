@@ -34,65 +34,53 @@ alert("Salom!");
 
 ### 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. JavaScript nima?</summary>
+**1. JavaScript nima?**
 JavaScript — bu asosan veb-sahifalarni interaktiv, jonli va dinamik qilish uchun ishlatiladigan dasturlash tilidir. Bugungi kunda u nafaqat brauzerda, balki serverda va mobil ilovalarda ham keng qo'llaniladi.
-</details>
 
-<details>
-<summary>2. Sayt qurilishida JSning o'rni qanday?</summary>
+
+**2. Sayt qurilishida JSning o'rni qanday?**
 HTML va CSS saytning tana tuzilishi va tashqi ko'rinishini (statik) yaratsa, JS saytga mantiq va harakat (dinamiklik) bag'ishlaydi.
-</details>
 
-<details>
-<summary>3. JS faqat brauzerdami?</summary>
+
+**3. JS faqat brauzerdami?**
 Yo'q, dastlab faqat brauzerlar uchun yaratilgan bo'lsa-da, bugungi kunda Node.js kabi texnologiyalar yordamida serverlarda, ma'lumotlar bazalarida, mobil va desktop ilovalarda ham ishlatiladi.
-</details>
 
-<details>
-<summary>4. console.log() nima uchun kerak?</summary>
+
+**4. console.log() nima uchun kerak?**
 Dasturchilar kod yozish jarayonida o'zgaruvchilar qiymatini tekshirish, xatolarni aniqlash va turli xabarlarni konsol ekraniga chiqarib ko'rish uchun foydalanadilar.
-</details>
 
-<details>
-<summary>5. alert() funksiyasi nima qiladi?</summary>
+
+**5. alert() funksiyasi nima qiladi?**
 Foydalanuvchiga brauzer ekranida "OK" tugmasi bo'lgan kichik ogohlantiruvchi oyna (popup message) chiqaradi.
-</details>
 
-<details>
-<summary>6. JS kodi qayerda yoziladi?</summary>
+
+**6. JS kodi qayerda yoziladi?**
 HTML faylning ichida \`<script>\` tegi ichida yoki alohida \`.js\` kengaytmali faylda yozilib, keyin HTMLga ulab qo'yiladi.
-</details>
 
-<details>
-<summary>7. Brendan Eich kim?</summary>
+
+**7. Brendan Eich kim?**
 Brendan Eich — 1995-yilda bor-yo'g'i 10 kun ichida JavaScript dasturlash tilining birinchi versiyasini yaratgan amerikalik muhandis.
-</details>
 
-<details>
-<summary>8. Nima uchun JS "Dynamic" til deyiladi?</summary>
+
+**8. Nima uchun JS "Dynamic" til deyiladi?**
 Chunki undagi o'zgaruvchilar ma'lumot turini qat'iy talab qilmaydi (bitta o'zgaruvchiga oldin son, keyin matn yozsa bo'ladi) va sahifa yuklanganidan keyin ham elementlarni o'zgartira oladi.
-</details>
 
-<details>
-<summary>9. JS harflar farqiga boradimi (case-sensitive)?</summary>
+
+**9. JS harflar farqiga boradimi (case-sensitive)?**
 Ha, JS katta va kichik harflarni qat'iy farqlaydi. Masalan, \`console\` va \`Console\` yoki \`ism\` va \`Ism\` alohida narsalar hisoblanadi.
-</details>
 
-<details>
-<summary>10. console.error() nima uchun?</summary>
+
+**10. console.error() nima uchun?**
 Konsolga oddiy ma'lumot emas, balki qizil rangli xatolik haqidagi maxsus xabarni chiqarish uchun ishlatiladi.
-</details>
 
-<details>
-<summary>11. Matnni qo'shtirnoqsiz yozsa nima bo'ladi?</summary>
+
+**11. Matnni qo'shtirnoqsiz yozsa nima bo'ladi?**
 JS dvigateli uni matn (string) emas, balki o'zgaruvchi yoki kalit so'z deb o'ylaydi va u topilmagani sababli \`ReferenceError\` xatosini beradi.
-</details>
 
-<details>
-<summary>12. JS birinchi marta nechanchi yilda chiqqan?</summary>
+
+**12. JS birinchi marta nechanchi yilda chiqqan?**
 JavaScript birinchi marta 1995-yilda taqdim etilgan.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

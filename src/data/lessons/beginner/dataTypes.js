@@ -40,65 +40,53 @@ console.log(typeof NaN);        // "number" (G'alati! ⚠️)
 3. **Qo'shtirnoqlarni adashtirish:** \`"Salom'\` (boshida qo'sh, oxirida bittalik) xatoga olib keladi.
 
 ## 6. SAVOLLAR VA JAVOBLAR
-<details>
-<summary>1. Ma'lumot turi nima?</summary>
+**1. Ma'lumot turi nima?**
 Qiymatning qaysi turga (son, matn va h.k.) tegishli ekanligini belgilovchi belgi.
-</details>
 
-<details>
-<summary>2. JavaScriptda nechta primitiv ma'lumot turi bor?</summary>
+
+**2. JavaScriptda nechta primitiv ma'lumot turi bor?**
 7 ta: String, Number, Boolean, Undefined, Null, Symbol, BigInt.
-</details>
 
-<details>
-<summary>3. typeof operatori nima qaytaradi?</summary>
+
+**3. typeof operatori nima qaytaradi?**
 Ma'lumot turining nomini matn (string) ko'rinishida qaytaradi.
-</details>
 
-<details>
-<summary>4. undefined va null farqi nima?</summary>
+
+**4. undefined va null farqi nima?**
 \`undefined\` — qiymat hali berilmaganligini anglatadi. \`null\` — qiymat ataylab bo'sh qilib qo'yilganini bildiradi.
-</details>
 
-<details>
-<summary>5. NaN nima degani?</summary>
+
+**5. NaN nima degani?**
 "Not a Number" (Son emas). Matematik xato yuz berganda qaytadigan maxsus qiymat.
-</details>
 
-<details>
-<summary>6. typeof null natijasi nima va nima uchun?</summary>
+
+**6. typeof null natijasi nima va nima uchun?**
 \`"object"\`. Bu JSning tarixiy xatosi hisoblanadi.
-</details>
 
-<details>
-<summary>7. BigInt nima uchun kerak?</summary>
+
+**7. BigInt nima uchun kerak?**
 Standart \`Number\` turi sig'dira olmaydigan juda katta butun sonlar bilan ishlash uchun.
-</details>
 
-<details>
-<summary>8. String yaratishning 3 xil usuli qaysi?</summary>
+
+**8. String yaratishning 3 xil usuli qaysi?**
 Bittalik qo'shtirnoq (\`'\`), qo'sh qo'shtirnoq (\`"\`) va backtick (\` \` \`).
-</details>
 
-<details>
-<summary>9. Booleanning qanday qiymatlari bor?</summary>
+
+**9. Booleanning qanday qiymatlari bor?**
 Faqat ikkita: \`true\` va \`false\`.
-</details>
 
-<details>
-<summary>10. typeof NaN natijasi nima?</summary>
+
+**10. typeof NaN natijasi nima?**
 \`"number"\`.
-</details>
 
-<details>
-<summary>11. Primitiv va Reference (Object) turlar farqi nima?</summary>
+
+**11. Primitiv va Reference (Object) turlar farqi nima?**
 Primitiv turlar qiymatni o'zida saqlaydi, Reference turlar esa xotiradagi manzilni (link) saqlaydi.
-</details>
 
-<details>
-<summary>12. Symbol nima uchun ishlatiladi?</summary>
+
+**12. Symbol nima uchun ishlatiladi?**
 Obyektlar uchun takrorlanmas, unikal kalitlar yaratish uchun.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

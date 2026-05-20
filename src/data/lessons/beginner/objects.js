@@ -205,67 +205,55 @@ console.log(shaxs.yosh);  // 30
 
 ## 6. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. Obyekt nima?</summary>
+**1. Obyekt nima?**
 Kalit va qiymat juftliklaridan tashkil topgan murakkab ma'lumot turi. Qaytargan qiymat istalgan turda bo'lishi mumkin (raqam, matn, boolean, massiv, boshqa obekt, funksiya).
-</details>
 
-<details>
-<summary>2. Kalit (key) va qiymat (value) nima?</summary>
+
+**2. Kalit (key) va qiymat (value) nima?**
 Kalit — om ichidagi ma'lumotning nomi (identifikatori), Qiymat — o'sha ma'lumotning haqiqiy ma'lum (ma'lumot).
-</details>
 
-<details>
-<summary>3. Oberkt yaratishda qaysi qavslar ishlatiladi?</summary>
+
+**3. Oberkt yaratishda qaysi qavslar ishlatiladi?**
 Figurali qavslar \`{ }\`.
-</details>
 
-<details>
-<summary>4. Dot notation (.) va Bracket notation ([]) farqi nima?</summary>
+
+**4. Dot notation (.) va Bracket notation ([]) farqi nima?**
 Dot notation oddiy kalitlar uchun ishlatiladi. Bracket notation kalit nomida bo'sh joy, maxsus belgilar bo'lsa yoki o'zgaruvchi bo'lsa ishlatiladi.
-</details>
 
-<details>
-<summary>5. Bracket notation qachon ishlatiladi?</summary>
+
+**5. Bracket notation qachon ishlatiladi?**
 1. Kalit nomi o'zgaruvchida bo'lsa: \`obj[kalit]\`
 2. Kalit nomida bo'sh joy bo'lsa: \`obj["to'liq ism"]\`
 3. Kalit nomida minus, qo'sh nuqta kabi maxsus belgilar bo'lsa: \`obj["first-name"]\`
-</details>
 
-<details>
-<summary>6. Obiektga yangi xususiyat (property) qanday qo'shiladi?</summary>
+
+**6. Obiektga yangi xususiyat (property) qanday qo'shiladi?**
 \`obj.yangiKalit = qiymat\` shaklida yoki \`obj["yangi-kalit"] = qiymat\` shaklida.
-</details>
 
-<details>
-<summary>7. Obiektdagi xususiyatni qanday o'chirish mumkin?</summary>
+
+**7. Obiektdagi xususiyatni qanday o'chirish mumkin?**
 \`delete\` operatori orqali: \`delete obj.kalit\` yoki \`delete obj["kalit"]\`.
-</details>
 
-<details>
-<summary>8. Object.keys(), Object.values(), Object.entries() farqi nima?</summary>
+
+**8. Object.keys(), Object.values(), Object.entries() farqi nima?**
 Object.keys() — kalitlarni, Object.values() — qiymatlarni, Object.entries() — kalit-qiymat juftlarini massiv sifatida qaytaradi.
-</details>
 
-<details>
-<summary>9. Spread operatori (...) nima qayla ishlatiladi?</summary>
+
+**9. Spread operatori (...) nima qayla ishlatiladi?**
 Objektni "yuvilish" va boshqa objektga birlashtirlish. Masalan: \`const yangi = {...eski, extra: 'qiymat'}\`.
-</details>
 
-<details>
-<summary>10. Getter va Setter nima uchun kerak?</summary>
+
+**10. Getter va Setter nima uchun kerak?**
 Getter — xususiyatni o'qishda maxsus logic jarayoni. Setter — xususiyatni o'zartirishda validatsiya yoki transformatsiya. Masalan: yosh musbat son bo'lishi kerak.
-</details>
 
-<details>
-<summary>11. Ichma-ich obekt (nested object) bu nima va misolini keltiring?</summary>
+
+**11. Ichma-ich obekt (nested object) bu nima va misolini keltiring?**
 Bitta objektning qiymatlaridan yana boshqa obekt bo'lganida. Masalan: \`{ manzil: { shahar: "Toshkent", ko_cha: "..." } }\`.
-</details>
 
-<details>
-<summary>12. Arrow funksiyada this nima beradi?</summary>
+
+**12. Arrow funksiyada this nima beradi?**
 Arrow funksiyada this uringan joyning context'ini oladi, fo'nktsiyadagi this'i emas. Shuning uchun obekt metodlarida arrow funksiya ishlatilmaydi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

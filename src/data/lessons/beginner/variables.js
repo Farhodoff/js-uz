@@ -44,65 +44,53 @@ JSning eski versiyalaridan qolgan. U **function scope**ga ega va **hoisting** (y
 3. **const va undefined:** \`const x;\` deb yozib bo'lmaydi, unga darhol qiymat berish shart.
 
 ## 6. SAVOLLAR VA JAVOBLAR
-<details>
-<summary>1. O'zgaruvchi nima?</summary>
+**1. O'zgaruvchi nima?**
 Ma'lumotlarni kompyuter xotirasida saqlash uchun ishlatiladigan nomlangan "quti".
-</details>
 
-<details>
-<summary>2. let va var o'rtasidagi asosiy farq nima?</summary>
+
+**2. let va var o'rtasidagi asosiy farq nima?**
 \`let\` block scopega ega, \`var\` esa function scopega. \`let\` qayta e'lon qilinishga yo'l qo'ymaydi.
-</details>
 
-<details>
-<summary>3. Nima uchun constdan foydalanish xavfsizroq?</summary>
+
+**3. Nima uchun constdan foydalanish xavfsizroq?**
 Chunki u qiymatning tasodifan o'zgarib ketishidan himoya qiladi.
-</details>
 
-<details>
-<summary>4. O'zgaruvchi nomini raqam bilan boshlasa bo'ladimi?</summary>
+
+**4. O'zgaruvchi nomini raqam bilan boshlasa bo'ladimi?**
 Yo'q, bu xatolikka olib keladi.
-</details>
 
-<details>
-<summary>5. camelCase yozish usuli nima?</summary>
+
+**5. camelCase yozish usuli nima?**
 Birinchi so'z kichik, keyingi so'zlar katta harf bilan boshlanadigan yozish usuli (masalan: \`meningIsmim\`).
-</details>
 
-<details>
-<summary>6. Qaysi kalit so'zni ishlatish hozirda tavsiya etilmaydi?</summary>
+
+**6. Qaysi kalit so'zni ishlatish hozirda tavsiya etilmaydi?**
 \`var\` kalit so'zi.
-</details>
 
-<details>
-<summary>7. const bilan yaratilgan obyekt ichidagi qiymatni o'zgartirsa bo'ladimi?</summary>
+
+**7. const bilan yaratilgan obyekt ichidagi qiymatni o'zgartirsa bo'ladimi?**
 Ha, obyektning o'zini (reference) o'zgartirib bo'lmaydi, lekin ichidagi xususiyatlarini o'zgartirsa bo'ladi.
-</details>
 
-<details>
-<summary>8. Bir vaqtda bir nechta o'zgaruvchini e'lon qilsa bo'ladimi?</summary>
+
+**8. Bir vaqtda bir nechta o'zgaruvchini e'lon qilsa bo'ladimi?**
 Ha: \`let a = 1, b = 2, c = 3;\`
-</details>
 
-<details>
-<summary>9. O'zgaruvchi nomi qaysi tillarda yozilishi mumkin?</summary>
+
+**9. O'zgaruvchi nomi qaysi tillarda yozilishi mumkin?**
 Unicode qo'llab-quvvatlanadi, lekin ingliz tilida yozish standart hisoblanadi.
-</details>
 
-<details>
-<summary>10. Hoisting nima?</summary>
+
+**10. Hoisting nima?**
 O'zgaruvchi yoki funksiyalarni e'lon qilinishidan oldin ishlatish imkonini beruvchi JS mexanizmi (faqat \`var\` va funksiyalar bilan).
-</details>
 
-<details>
-<summary>11. "Temporal Dead Zone" (TDZ) nima?</summary>
+
+**11. "Temporal Dead Zone" (TDZ) nima?**
 \`let\` va \`const\` e'lon qilinguncha bo'lgan vaqt oralig'i, bunda o'zgaruvchiga murojaat qilib bo'lmaydi.
-</details>
 
-<details>
-<summary>12. Qachon let ishlatgan ma'qul?</summary>
+
+**12. Qachon let ishlatgan ma'qul?**
 Qiymat keyinchalik o'zgarishi aniq bo'lgan holatlarda (masalan, sikllarda).
-</details>`,
+`,
   exercises: [
     {
       id: 1,

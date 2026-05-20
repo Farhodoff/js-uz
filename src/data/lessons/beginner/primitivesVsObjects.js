@@ -46,65 +46,53 @@ console.log(arr1); // [1, 2, 3] (chunki massiv ham obyektdir)
 
 ## 6. SAVOLLAR VA JAVOBLAR (12 ta)
 
-<details>
-<summary>1. Primitiv ma'lumot turlari qaysilar?</summary>
+**1. Primitiv ma'lumot turlari qaysilar?**
 JavaScriptda 7 ta primitiv ma'lumot turi mavjud: \`String\`, \`Number\`, \`Boolean\`, \`Null\`, \`Undefined\`, \`Symbol\` va \`BigInt\`.
-</details>
 
-<details>
-<summary>2. Obyektlar qaysi guruhga kiradi?</summary>
+
+**2. Obyektlar qaysi guruhga kiradi?**
 Obyektlar, massivlar va funksiyalar murakkab (havola orqali uzatiladigan - reference types) ma'lumotlar guruhiga kiradi.
-</details>
 
-<details>
-<summary>3. "By Value" (Qiymat bo'yicha) nima degani?</summary>
+
+**3. "By Value" (Qiymat bo'yicha) nima degani?**
 Bu o'zgaruvchilar nusxalanganda, xotirada mavjud bo'lgan haqiqiy qiymatning o'zi nusxalanishini bildiradi (primitiv turlarda bo'lgani kabi). Ulardan birini o'zgartirish ikkinchisiga ta'sir qilmaydi.
-</details>
 
-<details>
-<summary>4. "By Reference" (Manzil bo'yicha) nima degani?</summary>
+
+**4. "By Reference" (Manzil bo'yicha) nima degani?**
 Bu o'zgaruvchi nusxalanganda, qiymatning o'zi emas, balki uning xotiradagi havolasi (manzili) ko'chirilishini anglatadi. Biror o'zgaruvchi orqali obyekt o'zgartirilsa, barcha havolalar o'sha o'zgarishni ko'radi.
-</details>
 
-<details>
-<summary>5. Nima uchun bitta massivni o'zgartirsak, uning nusxasi ham o'zgaradi?</summary>
+
+**5. Nima uchun bitta massivni o'zgartirsak, uning nusxasi ham o'zgaradi?**
 Chunki massivlar ham obyektlar kabi reference turi hisoblanadi. Nusxalash paytida faqatgina uning xotiradagi manzili ko'chiriladi, natijada ikkalasi ham bitta massivga ishora qiladi.
-</details>
 
-<details>
-<summary>6. let x = 5; let y = x; dan keyin y ni o'zgartirsak x o'zgaradimi?</summary>
+
+**6. let x = 5; let y = x; dan keyin y ni o'zgartirsak x o'zgaradimi?**
 Yo'q, chunki sonlar (\`Number\`) primitiv tur bo'lib, ular qiymat bo'yicha (\`by value\`) nusxalanadi, shuning uchun \`y\` o'zgarganda \`x\` o'zgarmasdan qoladi.
-</details>
 
-<details>
-<summary>7. {} == {} natijasi nima?</summary>
+
+**7. {} == {} natijasi nima?**
 Natija \`false\` bo'ladi. Chunki ikki marta \`{}\` yozilganda, xotiradan alohida-alohida ikkita yangi manzil ajratiladi va ular bir-biriga teng bo'lmaydi.
-</details>
 
-<details>
-<summary>8. Obyektni xotiradagi manzili deganda nima tushuniladi?</summary>
+
+**8. Obyektni xotiradagi manzili deganda nima tushuniladi?**
 Obyektlar kompyuterning Heap xotirasida saqlanadi. Manzil esa ushbu obyekt xotirada aynan qayerda joylashganligini ko'rsatadigan havola (pointer) hisoblanadi.
-</details>
 
-<details>
-<summary>9. Immutable (o'zgarmas) turlar qaysi guruhga kiradi?</summary>
+
+**9. Immutable (o'zgarmas) turlar qaysi guruhga kiradi?**
 Barcha primitiv ma'lumot turlari \`immutable\` (o'zgarmas) guruhiga kiradi. Ya'ni ularning qiymatini o'zini o'zgartirib bo'lmaydi, faqatgina o'zgaruvchiga yangi qiymat berish mumkin.
-</details>
 
-<details>
-<summary>10. Massivni qanday qilib "haqiqiy" nusxa olish mumkin?</summary>
+
+**10. Massivni qanday qilib "haqiqiy" nusxa olish mumkin?**
 Spread operatori yordamida (\`let nusxa = [...aslMassiv]\`) yoki \`slice()\` metodi orqali massivning xotiradagi manzili boshqa bo'lgan yangi nusxasini yaratish mumkin.
-</details>
 
-<details>
-<summary>11. Funksiyalar primitivmi yoki obektmi?</summary>
+
+**11. Funksiyalar primitivmi yoki obektmi?**
 Funksiyalar JavaScript-da obyektlarning maxsus turi hisoblanadi (ular \`Callable Object\` ya'ni chaqiriluvchi obyektlardir).
-</details>
 
-<details>
-<summary>12. null va undefined qaysi guruhga kiradi?</summary>
+
+**12. null va undefined qaysi guruhga kiradi?**
 Ularning ikkalasi ham primitiv ma'lumot turlari guruhiga kiradi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,
