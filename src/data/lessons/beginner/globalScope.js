@@ -47,19 +47,67 @@ console.log(x); // 20
 1. **Global ifloslanish (Global Pollution):** Juda ko'p global o'zgaruvchi yaratmang! Agar ikki xil faylda bir xil nomli global o'zgaruvchi bo'lsa, ular bir-birini buzib qo'yadi.
 2. **E'lonsiz o'zgaruvchi:** Funksiya ichida \`let/const\` yozishni unutsangiz (\`y = 5\`), JS uni avtomatik global qilib yuboradi. Bu juda yomon odat!
 
-## 6. SAVOLLAR (12 ta)
-1. Global Scope nima?
-2. Qayerda e'lon qilingan o'zgaruvchilar global hisoblanadi?
-3. Global o'zgaruvchini funksiya ichida ishlatsa bo'ladimi?
-4. \`window\` obyekti nima?
-5. Nima uchun global o'zgaruvchilar xavfli bo'lishi mumkin?
-6. \`let\` va \`var\` global e'lon qilinganda nima farqi bor?
-7. "Global Namespace Pollution" nima degani?
-8. Funksiya ichida \`let\` ishlatmasdan o'zgaruvchi yaratsak nima bo'ladi?
-9. Global o'zgaruvchini qachon ishlatish tavsiya etiladi?
-10. Global doira faqat brauzerdami yoki Node.js'da ham bormi?
-11. \`globalThis\` nima uchun kerak?
-12. Qanday qilib global o'zgaruvchilar sonini kamaytirish mumkin?`,
+## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. Global Scope nima?</summary>
+Global Scope (global doira) — bu JavaScript kodining eng tashqi qismi bo'lib, bu yerda e'lon qilingan o'zgaruvchilar va funksiyalar dasturning istalgan joyidan foydalanish uchun ochiq bo'ladi.
+</details>
+
+<details>
+<summary>2. Qayerda e'lon qilingan o'zgaruvchilar global hisoblanadi?</summary>
+Hech qanday funksiya yoki blok (\`{ }\`) ichida bo'lmagan, kodning eng yuqori qismida e'lon qilingan o'zgaruvchilar global hisoblanadi.
+</details>
+
+<details>
+<summary>3. Global o'zgaruvchini funksiya ichida ishlatsa bo'ladimi?</summary>
+Ha, global o'zgaruvchini kodning istalgan joyida, jumladan har qanday funksiya yoki blok ichida bemalol ishlatish va o'zgartirish mumkin.
+</details>
+
+<details>
+<summary>4. window obyekti nima?</summary>
+\`window\` — brauzer muhitidagi global obyekt bo'lib, u brauzer oynasini ifodalaydi va barcha global o'zgaruvchilar hamda brauzer API'larini (masalan, \`window.alert\`) o'z ichiga oladi.
+</details>
+
+<details>
+<summary>5. Nima uchun global o'zgaruvchilar xavfli bo'lishi mumkin?</summary>
+Chunki dasturning istalgan joyi ularni o'zgartirishi mumkin, bu esa kutilmagan xatoliklarga (side-effects) va turli kodlar orasida nomlar to'qnashuviga olib keladi.
+</details>
+
+<details>
+<summary>6. let va var global e'lon qilinganda nima farqi bor?</summary>
+Global e'lon qilingan \`var\` o'zgaruvchisi global \`window\` obyektining xususiyatiga aylanadi (\`window.x\`), lekin \`let\` (va \`const\`) global obyektga qo'shilmaydi.
+</details>
+
+<details>
+<summary>7. "Global Namespace Pollution" nima degani?</summary>
+Global Namespace Pollution (Global doiraning ifloslanishi) — global sohada keragidan ortiq o'zgaruvchilarning to'planishi va bu sababli nomlar to'qnashuvi ehtimolining ortishidir.
+</details>
+
+<details>
+<summary>8. Funksiya ichida let ishlatmasdan o'zgaruvchi yaratsak nima bo'ladi?</summary>
+Strict mode bo'lmagan holatlarda, kalit so'zsiz yaratilgan o'zgaruvchi (\`x = 10\`) avtomatik ravishda global doiraga qo'shiladi va xavfli hisoblanadi.
+</details>
+
+<details>
+<summary>9. Global o'zgaruvchini qachon ishlatish tavsiya etiladi?</summary>
+Faqat butun loyiha bo'ylab o'zgarmas umumiy konfiguratsiyalar (masalan, API manzili, dasturning versiyasi yoki sozlamalari) uchun ishlatish tavsiya etiladi.
+</details>
+
+<details>
+<summary>10. Global doira faqat brauzerdami yoki Node.js'da ham bormi?</summary>
+Ikkala muhitda ham bor. Brauzerda global obyekt \`window\`, Node.js'da esa \`global\` deb ataladi.
+</details>
+
+<details>
+<summary>11. globalThis nima uchun kerak?</summary>
+\`globalThis\` — har qanday JavaScript ishlaydigan muhitda (brauzer, Node.js, Web Worker) global obyektga murojaat qilishning yagona va universal standart usulidir.
+</details>
+
+<details>
+<summary>12. Qanday qilib global o'zgaruvchilar sonini kamaytirish mumkin?</summary>
+O'zgaruvchilarni funksiyalar yoki bloklar ichida cheklash (local/block scope), modullardan (ES Modules) foydalanish va ma'lumotlarni bitta global obyekt ichiga guruhlash orqali kamaytirish mumkin.
+</details>`,
   exercises: [
     {
       id: 1,
