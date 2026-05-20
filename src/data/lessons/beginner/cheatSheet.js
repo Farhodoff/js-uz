@@ -1,222 +1,464 @@
 export const cheatSheet = {
   id: "cheat-sheet",
   title: "⚡ JS Cheat Sheet (To'liq ma'lumotnoma)",
-  theory: `## JS Cheat Sheet: Hammasi bir joyda! 🚀
+  theory: `## JS Cheat Sheet (To'liq ma'lumotnoma)
 
-**NEGA:** Dasturlashni o'rganayotganda hamma narsani yodda saqlash qiyin. Bu ma'lumotnoma — sizning "shpargalkangiz". Bu yerda JavaScript-ning eng muhim qismlari jamlangan.
+JavaScript'ning eng kerakli qismlari bir joyda. Bu sahifa tezkor eslatma sifatida ishlaydi: asoslar, operatorlar, tiplar, obyektlar, massivlar, sana, Math, xatolar, JSON va Promise'lar.
 
 ---
 
-### 1. Asoslar va O'zgaruvchilar
-JavaScript-ni HTML-ga qo'shish:
+### Basics
 \`\`\`html
-<script src="script.js"></script>
+<script type="text/javascript">
+  // JS kodi
+</script>
+
+<script src="filename.js"></script>
 \`\`\`
 
-**O'zgaruvchilar:**
-- \`let\` — o'zgaradigan qiymatlar uchun (zamonaviy).
-- \`const\` — o'zgarmas (konstanta) qiymatlar uchun.
-- \`var\` — eski usul, asosan ishlatilmaydi.
-
-**Ma'lumot turlari:**
-- \`Number\`: \`23\`, \`3.14\`
-- \`String\`: \`"Salom"\`, \`'Dunyo'\`
-- \`Boolean\`: \`true\`, \`false\`
-- \`Object\`: \`{name: "Ali", age: 20}\`
-- \`Array\`: \`[1, 2, 3]\`
-- \`typeof null\`: \`"object"\` (JS xatosi, intervyuda so'raladi!)
-- \`typeof NaN\`: \`"number"\` (NaN - "Son emas", lekin turi son)
-
----
-
-### 2. Operatorlar (Hisob-kitob)
-- **Arifmetik:** \`+\`, \`-\`, \`*\`, \`/\`, \`%\` (qoldiq), \`++\` (1 qo'shish), \`--\` (1 ayirish).
-- **Solishtirish:** \`==\` (qiymat), \`===\` (qiymat va tur), \`!=\`, \`>\`, \`<\`, \`>=\`, \`<=\`.
-- **Mantiqiy:** \`&&\` (VA), \`||\` (YOKI), \`!\` (EMAS).
-
----
-
-### 3. Satrlar (Strings) bilan ishlash
-- \`str.length\` — uzunligi.
-- \`str.indexOf("matn")\` — qidirish.
-- \`str.slice(start, end)\` — kesib olish.
-- \`str.replace("eski", "yangi")\` — almashtirish.
-- \`str.toUpperCase()\` / \`str.toLowerCase()\` — harf shakli.
-
----
-
-### 4. Massivlar (Arrays)
-\`\`\`javascript
-const mevalar = ["Olma", "Banan", "Nok"];
+\`\`\`js
+setTimeout(function () {
+  // 1 soniyadan keyin bajariladi
+}, 1000);
 \`\`\`
-- \`push("Gilos")\` — oxiriga qo'shish.
-- \`pop()\` — oxiridan o'chirish.
-- \`shift()\` — boshidan o'chirish.
-- \`unshift("Uzum")\` — boshiga qo'shish.
-- \`join(", ")\` — matnga aylantirish.
-- \`sort()\` — alifbo bo'yicha saralash.
+
+\`\`\`js
+function addNumbers(a, b) {
+  return a + b;
+}
+
+const x = addNumbers(1, 2);
+\`\`\`
+
+\`\`\`js
+document.getElementById("elementID").innerHTML = "Yangi matn";
+\`\`\`
+
+\`\`\`js
+console.log(a);
+document.write(a);
+alert(a);
+confirm("Really?");
+prompt("Your age?", "0");
+\`\`\`
+
+\`\`\`js
+/* Ko'p qatorli izoh */
+// Bir qatorli izoh
+\`\`\`
 
 ---
 
-### 5. Funksiyalar va Shartlar
-**Shartlar:**
-\`\`\`javascript
-if (yosh >= 18) {
-  console.log("Ruxsat");
+### Loops
+\`\`\`js
+for (var i = 0; i < 10; i++) {
+  document.write(i + ": " + i * 3 + "<br />");
+}
+\`\`\`
+
+\`\`\`js
+var i = 1;
+while (i < 100) {
+  i *= 2;
+  document.write(i + ", ");
+}
+\`\`\`
+
+\`\`\`js
+var i = 1;
+do {
+  i *= 2;
+  document.write(i + ", ");
+} while (i < 100);
+\`\`\`
+
+\`\`\`js
+for (var i = 0; i < 10; i++) {
+  if (i == 5) break;
+  document.write(i + ", ");
+}
+\`\`\`
+
+\`\`\`js
+for (var i = 0; i < 10; i++) {
+  if (i == 5) continue;
+  document.write(i + ", ");
+}
+\`\`\`
+
+---
+
+### If / Else / Switch
+\`\`\`js
+if ((age >= 14) && (age < 19)) {
+  status = "Eligible.";
 } else {
-  console.log("Taqiq");
+  status = "Not eligible.";
 }
 \`\`\`
 
-**Funksiya:**
-\`\`\`javascript
-function kvadrat(son) {
-  return son * son;
+\`\`\`js
+switch (new Date().getDay()) {
+  case 6:
+    text = "Saturday";
+    break;
+  case 0:
+    text = "Sunday";
+    break;
+  default:
+    text = "Whatever";
 }
-// Arrow function:
-const kvadrat = (son) => son * son;
 \`\`\`
 
 ---
 
-### 6. Sikllar (Loops)
-- \`for\` — ma'lum marta takrorlash uchun.
-- \`while\` — shart bajarilguncha.
-- \`do while\` — kamida bir marta ishlaydi.
-- \`break\` — siklni to'xtatish.
-- \`continue\` — bitta qadamni tashlab o'tish.
+### Variables and Data Types
+\`\`\`js
+var a;
+var b = "init";
+var c = "Hi" + " " + "Joe";
+var d = 1 + 2 + "3";
+var e = [2, 3, 5, 8];
+var f = false;
+var g = /()/;
+var h = function () {};
+
+const PI = 3.14;
+let z = 'zzz';
+\`\`\`
+
+\`\`\`js
+"use strict";
+x = 1;
+\`\`\`
+
+- Number
+- String
+- Boolean
+- Undefined
+- Null
+- Object
+- Symbol
+
+\`\`\`js
+false, true
+18, 3.14, 0b10011, 0xF6, NaN
+"flower", 'John'
+undefined, null, Infinity
+\`\`\`
 
 ---
 
-### 7. Math (Matematika) va Sana
-- \`Math.random()\` — 0 va 1 oralig'ida tasodifiy son.
-- \`Math.floor(x)\` — pastga yaxlitlash.
-- \`Math.ceil(x)\` — tepaga yaxlitlash.
-- \`Math.round(x)\` — eng yaqin songa yaxlitlash.
-- \`new Date()\` — hozirgi vaqtni olish.
+### Operators
+\`\`\`js
+a = b + c - d;
+a = b * (c / d);
+x = 100 % 48;
+a++;
+b--;
+\`\`\`
+
+\`\`\`js
+a == b;
+a != b;
+a === b;
+a !== b;
+a < b;
+a > b;
+a <= b;
+a >= b;
+a += b;
+a && b;
+a || b;
+\`\`\`
+
+\`\`\`js
+5 & 1;
+5 | 1;
+~5;
+5 ^ 1;
+5 << 1;
+5 >> 1;
+5 >>> 1;
+\`\`\`
 
 ---
 
-### 8. DOM (Veb-sahifa bilan ishlash)
-- \`document.getElementById("id")\` — elementni olish.
-- \`document.querySelector(".class")\` — tanlab olish.
-- \`element.innerHTML = "Yangi matn"\` — ichidagi matnni o'zgartirish.
-- \`element.style.color = "red"\` — rangini o'zgartirish.
+### Objects
+\`\`\`js
+var student = {
+  firstName: "Jane",
+  lastName: "Doe",
+  age: 18,
+  height: 170,
+  fullName: function () {
+    return this.firstName + " " + this.lastName;
+  }
+};
+
+student.age = 19;
+student["age"]++;
+name = student.fullName();
+\`\`\`
 
 ---
 
-### 9. Hodisalar (Events)
-- \`onclick\` — chertilganda.
-- \`onmouseover\` — sichqoncha ustiga kelganda.
-- \`onkeydown\` — klavish bosilganda.
-- \`onload\` — sahifa yuklanganda.
+### Strings
+\`\`\`js
+var abc = "abcdefghijklmnopqrstuvwxyz";
+var esc = 'I don\\'t \\n know';
+var len = abc.length;
+abc.indexOf("lmno");
+abc.lastIndexOf("lmno");
+abc.slice(3, 6);
+abc.replace("abc", "123");
+abc.toUpperCase();
+abc.toLowerCase();
+abc.concat(" ", str2);
+abc.charAt(2);
+abc[2];
+abc.charCodeAt(2);
+abc.split(",");
+abc.split("");
+\`\`\`
 
 ---
 
-### 10. Xatolar (Errors)
-\`\`\`javascript
+### Events
+- Mouse: \`onclick\`, \`oncontextmenu\`, \`ondblclick\`, \`onmousedown\`, \`onmouseenter\`, \`onmouseleave\`, \`onmousemove\`, \`onmouseover\`, \`onmouseout\`, \`onmouseup\`
+- Keyboard: \`onkeydown\`, \`onkeypress\`, \`onkeyup\`
+- Frame: \`onabort\`, \`onbeforeunload\`, \`onerror\`, \`onhashchange\`, \`onload\`, \`onpageshow\`, \`onpagehide\`, \`onresize\`, \`onscroll\`, \`onunload\`
+- Form: \`onblur\`, \`onchange\`, \`onfocus\`, \`onfocusin\`, \`onfocusout\`, \`oninput\`, \`oninvalid\`, \`onreset\`, \`onsearch\`, \`onselect\`, \`onsubmit\`
+- Drag: \`ondrag\`, \`ondragend\`, \`ondragenter\`, \`ondragleave\`, \`ondragover\`, \`ondragstart\`, \`ondrop\`
+- Clipboard: \`oncopy\`, \`oncut\`, \`onpaste\`
+
+---
+
+### Numbers and Math
+\`\`\`js
+var pi = 3.141;
+pi.toFixed(0);
+pi.toFixed(2);
+pi.toPrecision(2);
+pi.valueOf();
+Number(true);
+Number(new Date());
+parseInt("3 months");
+parseFloat("3.5 days");
+\`\`\`
+
+\`\`\`js
+Math.PI;
+Math.round(4.4);
+Math.round(4.5);
+Math.pow(2, 8);
+Math.sqrt(49);
+Math.abs(-3.14);
+Math.ceil(3.14);
+Math.floor(3.99);
+Math.sin(0);
+Math.cos(Math.PI);
+Math.min(0, 3, -2, 2);
+Math.max(0, 3, -2, 2);
+Math.log(1);
+Math.exp(1);
+Math.random();
+Math.floor(Math.random() * 5) + 1;
+\`\`\`
+
+---
+
+### Dates
+\`\`\`js
+var d = new Date();
+Number(d);
+Date("2017-06-23");
+Date("2017");
+Date("2017-06-23T12:00:00-09:45");
+Date("June 23 2017");
+Date("Jun 23 2017 07:45:00 GMT+0100 (Tokyo Time)");
+\`\`\`
+
+\`\`\`js
+d.getDay();
+d.getDate();
+d.getFullYear();
+d.getHours();
+d.getMilliseconds();
+d.getMinutes();
+d.getMonth();
+d.getSeconds();
+d.getTime();
+\`\`\`
+
+\`\`\`js
+d.setDate(d.getDate() + 7);
+d.setDate();
+d.setFullYear();
+d.setHours();
+d.setMilliseconds();
+d.setMinutes();
+d.setMonth();
+d.setSeconds();
+d.setTime();
+\`\`\`
+
+---
+
+### Arrays
+\`\`\`js
+var dogs = ["Bulldog", "Beagle", "Labrador"];
+var dogs = new Array("Bulldog", "Beagle", "Labrador");
+alert(dogs[1]);
+dogs[0] = "Bull Terier";
+\`\`\`
+
+\`\`\`js
+for (var i = 0; i < dogs.length; i++) {
+  console.log(dogs[i]);
+}
+\`\`\`
+
+\`\`\`js
+dogs.toString();
+dogs.join(" * ");
+dogs.pop();
+dogs.push("Chihuahua");
+dogs.shift();
+dogs.unshift("Chihuahua");
+delete dogs[0];
+dogs.splice(2, 0, "Pug", "Boxer");
+var animals = dogs.concat(cats, birds);
+dogs.slice(1, 4);
+dogs.sort();
+dogs.reverse();
+x.sort(function(a, b) { return a - b; });
+x.sort(function(a, b) { return b - a; });
+\`\`\`
+
+---
+
+### Global Functions
+\`\`\`js
+eval();
+String(23);
+(23).toString();
+Number("23");
+decodeURI(enc);
+encodeURI(uri);
+decodeURIComponent(enc);
+encodeURIComponent(uri);
+isFinite();
+isNaN();
+parseFloat();
+parseInt();
+\`\`\`
+
+---
+
+### Regular Expressions
+- Modifiers: \`i\`, \`g\`, \`m\`
+- Patterns: \`\\\\\`, \`\\d\`, \`\\s\`, \`\\b\`, \`n+\`, \`n*\`, \`n?\`, \`^\`
+
+---
+
+### Errors
+- RangeError
+- ReferenceError
+- SyntaxError
+- TypeError
+- URIError
+
+\`\`\`js
 try {
-  // xavfli kod
+  undefinedFunction();
 } catch (err) {
-  console.log("Xato yuz berdi: " + err.message);
+  console.log(err.message);
+}
+\`\`\`
+
+\`\`\`js
+throw "My error message";
+\`\`\`
+
+\`\`\`js
+var x = document.getElementById("mynum").value;
+
+try {
+  if (x == "") throw "empty";
+  if (isNaN(x)) throw "not a number";
+  x = Number(x);
+  if (x > 10) throw "too high";
+} catch (err) {
+  document.write("Input is " + err);
+  console.error(err);
 } finally {
-  // baribir ishlaydi
+  document.write("</br />Done");
 }
 \`\`\`
 
 ---
 
-### 11. SAVOLLAR (12 ta)
-1. \`const\` bilan e'lon qilingan massivga yangi element qo'shsa bo'ladimi?
-2. \`Math.random()\` 1 sonini qaytara oladimi?
-3. \`"5" + 2\` natijasi nima?
-4. \`"5" - 2\` natijasi nima?
-5. \`alert()\` va \`confirm()\` farqi nima?
-6. \`null\` va \`undefined\` farqi nima?
-7. \`push()\` massivning qayeriga ma'lumot qo'shadi?
-8. \`slice()\` asl massivni o'zgartiradimi?
-9. \`document.write()\` nima uchun xavfli bo'lishi mumkin?
-10. \`try...catch\` nima uchun ishlatiladi?
-11. \`==\` va \`===\` operatorlari o'rtasidagi farqni tushuntiring.
-12. \`for\` siklining uchta qismini sanab bering.`,
-  exercises: [
-    {
-      id: 1,
-      title: "Massivlar bilan ishlash",
-      instruction: "'mevalar' massiviga 'Olma' va 'Uzum' qo'shing, so'ngra 'Olma'ni o'chirib tashlang va natijani konsolga chiqaring.",
-      startingCode: "const mevalar = [];\n// Bu yerga yozing\n",
-      hint: "push() qo'shadi, shift() boshidan o'chiradi.",
-      test: "if (logs.includes('Uzum') && !logs.includes('Olma')) return null; return 'Natija noto\\'g\\'ri!';"
-    },
-    {
-      id: 2,
-      title: "Matematika",
-      instruction: "0 dan 10 gacha bo'lgan tasodifiy butun son yaratuvchi kod yozing va konsolga chiqaring.",
-      startingCode: "// Math.random va Math.floor ishlating\n",
-      hint: "Math.floor(Math.random() * 11);",
-      test: "const n = logs[0]; if (typeof n === 'number' && n >= 0 && n <= 10) return null; return '0-10 oralig\\'idagi son chiqishi kerak!';"
-    }
-  ],
-  quizzes: [
-    {
-      id: 1,
-      question: "`typeof null` natijasi JavaScript-da nima qaytaradi va bu nima deb hisoblanadi?",
-      options: [
-        "`\"null\"` (to'g'ri qiymat)",
-        "`\"object\"` (JavaScript-dagi tarixiy/sintaktik xato)",
-        "`\"undefined\"`",
-        "`\"empty\"`"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScript birinchi marta yaratilayotganda qiymatlar 32-bitli tizimda saqlangan va null obyekt deb hisoblangan. Bu xato hozirda ham saqlanib qolgan, chunki uni to'g'irlash eski saytlar ishini buzishi mumkin."
-    },
-    {
-      id: 2,
-      question: "Quyidagi kod konsolda nima natija qaytaradi: `\"5\" + 2` va `\"5\" - 2`?",
-      options: [
-        "`7` va `3`",
-        "`\"52\"` (string) va `3` (number)",
-        "`\"52\"` va `\"5-2\"`",
-        "`TypeError` xatosi kelib chiqadi"
-      ],
-      correctAnswer: 1,
-      explanation: "`+` operatori satr (string) bilan kelganda konkatenatsiya (birlashtirish) qiladi, ya'ni `\"5\" + 2` natijasi `\"52\"` bo'ladi. `-` operatori esa matnni songa o'tkazib arifmetik amal bajaradi, shuning uchun `\"5\" - 2` natijasi `3` bo'ladi."
-    },
-    {
-      id: 3,
-      question: "`Math.random()` funksiyasi qanday sonlar oralig'ida tasodifiy qiymat qaytaradi?",
-      options: [
-        "0 va 1 oralig'ida (0 kiradi, 1 kirmaydi: `[0, 1)`)",
-        "0 va 10 oralig'ida",
-        "1 va 100 oralig'ida",
-        "Faqat 0 yoki 1 butun sonini"
-      ],
-      correctAnswer: 0,
-      explanation: "`Math.random()` 0 dan (shu jumladan) 1 gacha (lekin 1 o'zi kirmaydi) bo'lgan o'nli kasr sonlarni qaytaradi."
-    },
-    {
-      id: 4,
-      question: "`const` kalit so'zi yordamida yaratilgan massiv (Array) elementlarini o'zgartirish yoki unga element qo'shish mumkinmi?",
-      options: [
-        "Yo'q, const bilan yaratilgan massiv mutlaqo o'zgarmas bo'ladi va element qo'shib bo'lmaydi",
-        "Ha, massiv xotiradagi havolasi (reference) o'zgarmaydi, lekin massiv tarkibiga `push` yoki indeks orqali yangi element qo'shish va qiymatlarni o'zgartirish mumkin",
-        "Faqat `let` bilan yozilgan massivlarni o'zgartirish mumkin",
-        "Faqat massiv uzunligini qisqartirish mumkin"
-      ],
-      correctAnswer: 1,
-      explanation: "`const` massivni qaytadan boshqa massivga o'zlashtirishni taqiqlaydi (masalan: `mevalar = [...]`), lekin uning ichidagi qiymatlarni o'zgartirishga yoki element qo'shish/o'chirishga to'sqinlik qilmaydi."
-    },
-    {
-      id: 5,
-      question: "Massiv (Array) oxiriga yangi element qo'shish va massivning eng boshidan elementni o'chirish uchun qaysi metodlar juftligidan foydalaniladi?",
-      options: [
-        "`push()` va `pop()`",
-        "`push()` va `shift()`",
-        "`unshift()` va `shift()`",
-        "`push()` va `unshift()`"
-      ],
-      correctAnswer: 1,
-      explanation: "`push()` massiv oxiriga yangi element qo'shadi, `shift()` esa massivning birinchi elementini o'chirib yuboradi."
-    }
-  ]
+### JSON
+\`\`\`js
+var str = '{"names":[{"first":"Hakuna","lastN":"Matata"},{"first":"Jane","lastN":"Doe"},{"first":"Air","last":"Jordan"}]}';
+obj = JSON.parse(str);
+document.write(obj.names[1].first);
+\`\`\`
+
+\`\`\`js
+var myObj = { "name":"Jane", "age":18, "city":"Chicago" };
+var myJSON = JSON.stringify(myObj);
+window.location = "demo.php?x=" + myJSON;
+\`\`\`
+
+\`\`\`js
+myObj = { "name":"Jane", "age":18, "city":"Chicago" };
+myJSON = JSON.stringify(myObj);
+localStorage.setItem("testJSON", myJSON);
+text = localStorage.getItem("testJSON");
+obj = JSON.parse(text);
+document.write(obj.name);
+\`\`\`
+
+---
+
+### Promises
+\`\`\`js
+function sum(a, b) {
+  return Promise(function (resolve, reject) {
+    setTimeout(function () {
+      if (typeof a !== "number" || typeof b !== "number") {
+        return reject(new TypeError("Inputs must be numbers"));
+      }
+      resolve(a + b);
+    }, 1000);
+  });
+}
+
+var myPromise = sum(10, 5);
+myPromise
+  .then(function (result) {
+    document.write("10 + 5: ", result);
+    return sum(null, "foo");
+  })
+  .then(function () {})
+  .catch(function (err) {
+    console.error(err);
+  });
+\`\`\`
+
+- States: \`pending\`, \`fulfilled\`, \`rejected\`
+- Properties: \`Promise.length\`, \`Promise.prototype\`
+- Methods: \`Promise.all(iterable)\`, \`Promise.race(iterable)\`, \`Promise.reject(reason)\`, \`Promise.resolve(value)\`
+
+---
+
+### Useful Links
+- JS cleaner
+- Obfuscator
+- Can I use?
+- Node.js
+- jQuery
+- RegEx tester`,
 };
