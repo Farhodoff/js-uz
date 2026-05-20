@@ -47,65 +47,53 @@ if (ismInput.value === "") {
 2. **value va elementni adashtirish:** \`console.log(input)\` elementni o'zini chiqaradi, \`console.log(input.value)\` esa ichidagi matnni.
 
 ## 6. SAVOLLAR VA JAVOBLAR
-<details>
-<summary>1. Formaning asosiy hodisasi (event) qaysi?</summary>
+**1. Formaning asosiy hodisasi (event) qaysi?**
 submit
-</details>
 
-<details>
-<summary>2. event.preventDefault() nima uchun shart?</summary>
+
+**2. event.preventDefault() nima uchun shart?**
 Sahifani yangilanib ketishini to'xtatish uchun.
-</details>
 
-<details>
-<summary>3. Input ichidagi matnni qanday olamiz?</summary>
+
+**3. Input ichidagi matnni qanday olamiz?**
 element.value xususiyati orqali.
-</details>
 
-<details>
-<summary>4. Validatsiya nima?</summary>
+
+**4. Validatsiya nima?**
 Ma'lumotlarning to'g'ri to'ldirilganligini tekshirish jarayoni.
-</details>
 
-<details>
-<summary>5. Input qiymati har doim qaysi turda (string) bo'ladi?</summary>
+
+**5. Input qiymati har doim qaysi turda (string) bo'ladi?**
 String turida.
-</details>
 
-<details>
-<summary>6. Checkbox tanlanganini qanday bilamiz?</summary>
+
+**6. Checkbox tanlanganini qanday bilamiz?**
 .checked xususiyati orqali (true/false).
-</details>
 
-<details>
-<summary>7. reset() metodi nima qiladi?</summary>
+
+**7. reset() metodi nima qiladi?**
 Formani tozalaydi.
-</details>
 
-<details>
-<summary>8. required atributi va JS validatsiya farqi?</summary>
+
+**8. required atributi va JS validatsiya farqi?**
 required — HTML tarafidan, JS validatsiya — murakkabroq mantqiy tekshiruv uchun.
-</details>
 
-<details>
-<summary>9. Radio button qiymatini qanday olamiz?</summary>
+
+**9. Radio button qiymatini qanday olamiz?**
 Tanlangan radioga murojaat qilib .value orqali.
-</details>
 
-<details>
-<summary>10. input va change eventlari farqi nima?</summary>
+
+**10. input va change eventlari farqi nima?**
 input — yozish jarayonida, change — yozib bo'lib fokus chiqqanda.
-</details>
 
-<details>
-<summary>11. Formani tugma bosmasdan qanday yuborsa bo'ladi?</summary>
+
+**11. Formani tugma bosmasdan qanday yuborsa bo'ladi?**
 form.submit() metodi orqali.
-</details>
 
-<details>
-<summary>12. Xatolik matnini ekranda ko'rsatish uchun nima qilish kerak?</summary>
+
+**12. Xatolik matnini ekranda ko'rsatish uchun nima qilish kerak?**
 DOM orqali alohida biror div ga matn yozish.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

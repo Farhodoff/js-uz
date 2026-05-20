@@ -40,65 +40,53 @@ const data = JSON.parse(localStorage.getItem("user"));
 3. **Limit:** LocalStorage hajmi cheklangan (odatda 5-10 MB). Juda katta ma'lumotlarni saqlab bo'lmaydi.
 
 ## 6. SAVOLLAR VA JAVOBLAR
-<details>
-<summary>1. LocalStorage va SessionStorage asosiy farqi nima?</summary>
+**1. LocalStorage va SessionStorage asosiy farqi nima?**
 LocalStorage ma'lumotni muddatsiz saqlaydi, SessionStorage esa tab yopilishi bilan o'chirib yuboradi.
-</details>
 
-<details>
-<summary>2. LocalStorage'da taxminan necha MB ma'lumot saqlash mumkin?</summary>
+
+**2. LocalStorage'da taxminan necha MB ma'lumot saqlash mumkin?**
 Brauzerga qarab 5 MB dan 10 MB gacha.
-</details>
 
-<details>
-<summary>3. Ma'lumotni o'qish uchun qaysi metod ishlatiladi?</summary>
+
+**3. Ma'lumotni o'qish uchun qaysi metod ishlatiladi?**
 \`getItem(kalit)\` metodi.
-</details>
 
-<details>
-<summary>4. JSON.stringify nima uchun kerak?</summary>
+
+**4. JSON.stringify nima uchun kerak?**
 JS obyektlarini LocalStorage saqlay oladigan matn (string) formatiga o'tkazish uchun.
-</details>
 
-<details>
-<summary>5. JSON.parse qachon ishlatiladi?</summary>
+
+**5. JSON.parse qachon ishlatiladi?**
 LocalStorage'dan olingan matnli ma'lumotni qaytadan JS obyektiga aylantirish uchun.
-</details>
 
-<details>
-<summary>6. Brauzer yopilganda qaysi xotira o'chib ketadi?</summary>
+
+**6. Brauzer yopilganda qaysi xotira o'chib ketadi?**
 SessionStorage.
-</details>
 
-<details>
-<summary>7. Xotiradagi barcha ma'lumotlarni bittada qanday tozalash mumkin?</summary>
+
+**7. Xotiradagi barcha ma'lumotlarni bittada qanday tozalash mumkin?**
 \`.clear()\` metodi orqali.
-</details>
 
-<details>
-<summary>8. LocalStorage faqat string saqlashining sababi nima?</summary>
+
+**8. LocalStorage faqat string saqlashining sababi nima?**
 Bu brauzer arxitekturasining soddaligi va xavfsizligi uchun shunday loyihalashtirilgan.
-</details>
 
-<details>
-<summary>9. LocalStorage'ga boshqa domen (sayt) kiritgan ma'lumotni o'qish mumkinmi?</summary>
+
+**9. LocalStorage'ga boshqa domen (sayt) kiritgan ma'lumotni o'qish mumkinmi?**
 Yo'q, "Same-origin policy" qoidasiga ko'ra har bir sayt faqat o'ziga tegishli xotirani ko'ra oladi.
-</details>
 
-<details>
-<summary>10. localStorage.length nima qaytaradi?</summary>
+
+**10. localStorage.length nima qaytaradi?**
 Xotirada saqlangan elementlar (kalitlar) sonini.
-</details>
 
-<details>
-<summary>11. Kompyuter o'chib yonsa LocalStorage o'chadimi?</summary>
+
+**11. Kompyuter o'chib yonsa LocalStorage o'chadimi?**
 Yo'q, u kompyuter xotirasida (diskda) saqlanadi.
-</details>
 
-<details>
-<summary>12. SessionStorage qachon tozalanadi?</summary>
+
+**12. SessionStorage qachon tozalanadi?**
 Faqat o'sha tab yoki brauzer butunlay yopilganda.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

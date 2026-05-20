@@ -26,65 +26,53 @@ Kodimizni mantiqiy bo'laklarga bo'lish, har bir faylni o'z vazifasi bilan chekla
 
 ## 4. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. Modul nima?</summary>
+**1. Modul nima?**
 O'zining shaxsiy scope-iga ega bo'lgan alohida JS fayli.
-</details>
 
-<details>
-<summary>2. Named export nima?</summary>
+
+**2. Named export nima?**
 Nomi bor bo'lgan eksportlar, bitta faylda ko'p bo'lishi mumkin.
-</details>
 
-<details>
-<summary>3. Default export nima?</summary>
+
+**3. Default export nima?**
 Faylning "asosiy" eksporti, bitta faylda faqat 1 ta bo'ladi.
-</details>
 
-<details>
-<summary>4. 'import * as' nima qiladi?</summary>
+
+**4. 'import * as' nima qiladi?**
 Barcha eksportlarni bitta obyektga yig'ib import qiladi.
-</details>
 
-<details>
-<summary>5. as kalit so'zi nima uchun?</summary>
+
+**5. as kalit so'zi nima uchun?**
 Import qilinayotgan narsaning nomini o'zgartirish (aliasing) uchun.
-</details>
 
-<details>
-<summary>6. Modullar doim strict mode-dami?</summary>
+
+**6. Modullar doim strict mode-dami?**
 Ha, har doim.
-</details>
 
-<details>
-<summary>7. Dinamik import nima?</summary>
+
+**7. Dinamik import nima?**
 Kod bajarilayotganda (runtime) import() orqali modul yuklash.
-</details>
 
-<details>
-<summary>8. type="module" qayerda kerak?</summary>
+
+**8. type="module" qayerda kerak?**
 HTML-da script tegida modullarni ulash uchun.
-</details>
 
-<details>
-<summary>9. CommonJS nima?</summary>
+
+**9. CommonJS nima?**
 require() ishlatadigan eski modul tizimi (Node.js).
-</details>
 
-<details>
-<summary>10. Tree-shaking nima?</summary>
+
+**10. Tree-shaking nima?**
 Bundler tomonidan ishlatilmagan kodlarni olib tashlash.
-</details>
 
-<details>
-<summary>11. Re-export nima?</summary>
+
+**11. Re-export nima?**
 Boshqa fayldan import qilib, darhol uni export qilish.
-</details>
 
-<details>
-<summary>12. Modulda 'this' nima bo'ladi?</summary>
+
+**12. Modulda 'this' nima bo'ladi?**
 undefined (global obyekt emas).
-</details>`,
+`,
   exercises: [
     {
       id: 1,

@@ -67,18 +67,18 @@ sequenceDiagram
 
 ## 7. SAVOLLAR VA JAVOBLAR
 
-<details><summary>1. XSS nima?</summary>Foydalanuvchi input'iga zararli JS qo'shib yuborish.</details>
-<details><summary>2. XSS'dan qanday himoyalanish kerak?</summary>textContent/sanitization va CSP.</details>
-<details><summary>3. innerHTML va textContent farqi?</summary>innerHTML HTML'ni ishga tushiradi, textContent faqat matn.</details>
-<details><summary>4. CSRF nima?</summary>Foydalanuvchi nomidan soxta so'rov yuborish.</details>
-<details><summary>5. CSRF'dan himoya?</summary>CSRF token, SameSite cookie, double-submit.</details>
-<details><summary>6. SQL Injection nima?</summary>So'rovga zararli SQL qo'shib yuborish.</details>
-<details><summary>7. SQL Injection'dan himoya?</summary>Prepared statements va parametrlar.</details>
-<details><summary>8. HttpOnly cookie nima uchun kerak?</summary>JS orqali o'qilmaydi, XSS'dan himoya.</details>
-<details><summary>9. Authentication va Authorization farqi?</summary>Auth: kim ekanini tekshirish, AuthZ: ruxsat berish.</details>
-<details><summary>10. CSP nima?</summary>Qaysi scriptlar ishlashini cheklovchi siyosat.</details>
-<details><summary>11. Rate limiting nima?</summary>Ko'p so'rovlarni cheklash (brute-force).</details>
-<details><summary>12. HTTPS nega shart?</summary>Ma'lumotlar shifrlanadi.</details>
+**1. XSS nima?**Foydalanuvchi input'iga zararli JS qo'shib yuborish.
+**2. XSS'dan qanday himoyalanish kerak?**textContent/sanitization va CSP.
+**3. innerHTML va textContent farqi?**innerHTML HTML'ni ishga tushiradi, textContent faqat matn.
+**4. CSRF nima?**Foydalanuvchi nomidan soxta so'rov yuborish.
+**5. CSRF'dan himoya?**CSRF token, SameSite cookie, double-submit.
+**6. SQL Injection nima?**So'rovga zararli SQL qo'shib yuborish.
+**7. SQL Injection'dan himoya?**Prepared statements va parametrlar.
+**8. HttpOnly cookie nima uchun kerak?**JS orqali o'qilmaydi, XSS'dan himoya.
+**9. Authentication va Authorization farqi?**Auth: kim ekanini tekshirish, AuthZ: ruxsat berish.
+**10. CSP nima?**Qaysi scriptlar ishlashini cheklovchi siyosat.
+**11. Rate limiting nima?**Ko'p so'rovlarni cheklash (brute-force).
+**12. HTTPS nega shart?**Ma'lumotlar shifrlanadi.
 
 ---
 

@@ -26,65 +26,53 @@ Bir xil qolipli lekin har xil ma'lumotli funksiyalar yasash.
 
 ## 4. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. Closure nima?</summary>
+**1. Closure nima?**
 Funksiya o'zi yaratilgan muhitni (o'zgaruvchilarni) eslab qolishi.
-</details>
 
-<details>
-<summary>2. Lexical Environment nima?</summary>
+
+**2. Lexical Environment nima?**
 Funksiya yaratilgan joyidagi o'zgaruvchilar va ularga kirish doirasi.
-</details>
 
-<details>
-<summary>3. Closure nima uchun kerak?</summary>
+
+**3. Closure nima uchun kerak?**
 Private o'zgaruvchilar yaratish va ma'lumotlarni yashirish uchun.
-</details>
 
-<details>
-<summary>4. Tashqi funksiya tugasa o'zgaruvchilar o'chadimi?</summary>
+
+**4. Tashqi funksiya tugasa o'zgaruvchilar o'chadimi?**
 Yo'q, agar ichki funksiya ulardan foydalanayotgan bo'lsa xotirada qoladi.
-</details>
 
-<details>
-<summary>5. Memory Leak qanday yuz beradi?</summary>
+
+**5. Memory Leak qanday yuz beradi?**
 Keraksiz closurelar xotirani to'ldirib yuborsa.
-</details>
 
-<details>
-<summary>6. var vs let closureda farqi?</summary>
+
+**6. var vs let closureda farqi?**
 var function-scoped, let block-scoped. Loop ichida farq katta.
-</details>
 
-<details>
-<summary>7. IIFE nima?</summary>
+
+**7. IIFE nima?**
 Darhol ishga tushadigan funksiya ifodasi.
-</details>
 
-<details>
-<summary>8. Function factory nima?</summary>
+
+**8. Function factory nima?**
 Boshqa funksiyalarni yasab beruvchi funksiya.
-</details>
 
-<details>
-<summary>9. Closure qachon yopiladi?</summary>
+
+**9. Closure qachon yopiladi?**
 Unga bo'lgan barcha reference-lar o'chirilganda.
-</details>
 
-<details>
-<summary>10. Encapsulation nima?</summary>
+
+**10. Encapsulation nima?**
 Ma'lumotlarni yashirish va faqat metodlar orqali ulashish.
-</details>
 
-<details>
-<summary>11. Scope chain nima?</summary>
+
+**11. Scope chain nima?**
 O'zgaruvchini topguncha ichkaridan tashqariga qidirish zanjiri.
-</details>
 
-<details>
-<summary>12. Closure intervyuda nega muhim?</summary>
+
+**12. Closure intervyuda nega muhim?**
 JavaScript fundamental ish printsipini tushunishni ko'rsatgani uchun.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

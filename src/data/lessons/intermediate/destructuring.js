@@ -229,65 +229,53 @@ console.log(secondName); // "Bobur"
 
 ## 6. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. Destructuring nima?</summary>
+**1. Destructuring nima?**
 Obyekt yoki massiv ichidagi qiymatlarni bittalab olish o'rniga, ularni "bir urinishda" alohida o'zgaruvchilarga chiqarib olish usulidir.
-</details>
 
-<details>
-<summary>2. Obyekt destructuringda kalitlar nomi bir xil bo'lishi shartmi?</summary>
+
+**2. Obyekt destructuringda kalitlar nomi bir xil bo'lishi shartmi?**
 Ha, kalit nomi destructuring da o'zgaruvchi nomi bilan bir xil bo'lishi kerak. Agar boshqacha nom xoxlansa, aliasing ishlatiladi.
-</details>
 
-<details>
-<summary>3. O'zgaruvchi nomini aliasing orqali qanday o'zgartirsa bo'ladi?</summary>
+
+**3. O'zgaruvchi nomini aliasing orqali qanday o'zgartirsa bo'ladi?**
 Qavslarda kalit nomidan keyin \`:\` qo'yib, yangi nom yoziladi. Masalan: \`{ model: marka }\`.
-</details>
 
-<details>
-<summary>4. Massiv destructuringda elementlarni qanday tashlab ketsa bo'ladi?</summary>
+
+**4. Massiv destructuringda elementlarni qanday tashlab ketsa bo'ladi?**
 O'sha element o'rniga bo'sh joy qoldirish. Masalan: \`[first, , third]\` da ikkinchi element tashlanadi.
-</details>
 
-<details>
-<summary>5. Default qiymat berish nima uchun kerak?</summary>
+
+**5. Default qiymat berish nima uchun kerak?**
 Agar kaliti yo'q bo'lsa yoki undefined bo'lsa, standart qiymat ishlatiladi.
-</details>
 
-<details>
-<summary>6. Funksiya parametrlarida destructuring ishlatish mumkinmi?</summary>
+
+**6. Funksiya parametrlarida destructuring ishlatish mumkinmi?**
 Ha, mutlaqo. Masalan: \`function greet({ name, age }) { ... }\`.
-</details>
 
-<details>
-<summary>7. Ikki o'zgaruvchi qiymatini uchinchi o'zgaruvchisiz qanday almashtirish mumkin?</summary>
+
+**7. Ikki o'zgaruvchi qiymatini uchinchi o'zgaruvchisiz qanday almashtirish mumkin?**
 Array destructuring orqali: \`[a, b] = [b, a]\`.
-</details>
 
-<details>
-<summary>8. Nested (ichma-ich) obyektlarni destructure qilish misolini keltiring.</summary>
+
+**8. Nested (ichma-ich) obyektlarni destructure qilish misolini keltiring.**
 \`const { manzil: { shahar } } = user;\` - bu \`manzil\` ichidagi \`shahar\` qiymatini chiqaradi.
-</details>
 
-<details>
-<summary>9. \`const { a, b } = null\` natijasi nima bo'ladi?</summary>
+
+**9. \`const { a, b } = null\` natijasi nima bo'ladi?**
 TypeError beradi. Null destructure qilib bo'lmaydi. Xato oldini olish uchun: \`const { a, b } = null || {}\`.
-</details>
 
-<details>
-<summary>10. Massivdan qolgan hamma elementlarni rest (...) orqali qanday olish mumkin?</summary>
+
+**10. Massivdan qolgan hamma elementlarni rest (...) orqali qanday olish mumkin?**
 \`const [first, ...rest] = [1, 2, 3, 4]\`. Rest faqat oxirida bo'lishi mumkin.
-</details>
 
-<details>
-<summary>11. Obyekt destructuringda tartib muhimmi?</summary>
+
+**11. Obyekt destructuringda tartib muhimmi?**
 Yo'q, obyektda tartib muhim emas, faqat kalit nomi muhim.
-</details>
 
-<details>
-<summary>12. Massiv destructuringda tartib muhimmi?</summary>
+
+**12. Massiv destructuringda tartib muhimmi?**
 Ha, massivda tartib (index) muhim. Tartibga ko'ra o'zgaruvchilarga chiqariladi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

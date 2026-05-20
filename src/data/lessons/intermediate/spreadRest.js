@@ -57,65 +57,53 @@ console.log(hammasi); // ["behi", "olma", "anor", "uzum"]
 4. Funksiya parametrida \`...args\` ishlatilsa, \`args\` qanday turdagi ma'lumot bo'ladi?
 5. Spread yordamida ikkita obyekni qanday birlashtirish mumkin?
 6. Rest operatorini funksiya parametrining boshida ishlatsa bo'ladimi?
-<details>
-<summary><b>1. Spread operatori nima ish qiladi?</b></summary>
+**<b>1. Spread operatori nima ish qiladi?</b>**
 Massiv, obyekt yoki string elementlarini alohida qiymatlar qilib yoyib yuboradi. Obyekt va massivlarni nusxalash, birlashtirishda juda qo'l keladi.
-</details>
 
-<details>
-<summary><b>2. Rest operatori nima ish qiladi?</b></summary>
+
+**<b>2. Rest operatori nima ish qiladi?</b>**
 Funksiyaga berilgan ortiqcha argumentlarni yoki destructuring'dan ortgan qismni bitta qilib massivga yig'adi.
-</details>
 
-<details>
-<summary><b>3. Ikkalasining yozilishida farq bormi?</b></summary>
+
+**<b>3. Ikkalasining yozilishida farq bormi?</b>**
 Sintaksis jihatidan mutlaqo bir xil (uchta nuqta ...). Faqat ishlatilish o'rniga qarab farqlanadi: yoyish yoki yig'ish.
-</details>
 
-<details>
-<summary><b>4. Funksiya parametrida ...args ishlatilsa, args qanday turda bo'ladi?</b></summary>
+
+**<b>4. Funksiya parametrida ...args ishlatilsa, args qanday turda bo'ladi?</b>**
 U haqiqiy Array (massiv) bo'ladi va unda map, filter, reduce kabi barcha massiv metodlarini ishlatish mumkin.
-</details>
 
-<details>
-<summary><b>5. Spread yordamida ikkita obyekni qanday birlashtirish mumkin?</b></summary>
+
+**<b>5. Spread yordamida ikkita obyekni qanday birlashtirish mumkin?</b>**
 \`const combined = { ...obj1, ...obj2 };\` shaklida. Agar bir xil kalitlar bo'lsa, obj2 dagi qiymat obj1 dagi qiymatning ustidan yozib yuboradi.
-</details>
 
-<details>
-<summary><b>6. Rest operatorini funksiya parametrining boshida ishlatsa bo'ladimi?</b></summary>
+
+**<b>6. Rest operatorini funksiya parametrining boshida ishlatsa bo'ladimi?</b>**
 Yo'q, SyntaxError xatosi beradi. Rest operatori har doim eng oxirgi parametr bo'lishi shart.
-</details>
 
-<details>
-<summary><b>7. Stringni ("Salom") spread qilsak nima bo'ladi?</b></summary>
+
+**<b>7. Stringni ("Salom") spread qilsak nima bo'ladi?</b>**
 Har bir harf massivning alohida elementiga aylanadi: \`["S", "a", "l", "o", "m"]\`. Bu \`split('')\` kabi ishlaydi.
-</details>
 
-<details>
-<summary><b>8. Math.max(...[1, 5, 2]) natijasi nima bo'ladi?</b></summary>
+
+**<b>8. Math.max(...[1, 5, 2]) natijasi nima bo'ladi?</b>**
 Natija 5 bo'ladi. Spread massivni yoyadi va funksiya \`Math.max(1, 5, 2)\` ko'rinishida argumentlarni qabul qiladi.
-</details>
 
-<details>
-<summary><b>9. Obyektdan nusxa olishda spreadning qanday kamchiligi bor?</b></summary>
+
+**<b>9. Obyektdan nusxa olishda spreadning qanday kamchiligi bor?</b>**
 U faqat "shallow copy" (sayoz nusxa) qiladi. Agar obyekt ichida yana obyekt bo'lsa, ichkisining reference (manzili) nusxalanadi, o'zi emas.
-</details>
 
-<details>
-<summary><b>10. Destructuring'da rest operatorini ishlatish misolini keltiring.</b></summary>
+
+**<b>10. Destructuring'da rest operatorini ishlatish misolini keltiring.</b>**
 Massivda: \`const [bir, ...qolganlari] = [1, 2, 3];\`. Obyektda: \`const { ism, ...qolganMalumotlar } = user;\`.
-</details>
 
-<details>
-<summary><b>11. arguments obyekti va Rest parametrning farqi nima?</b></summary>
+
+**<b>11. arguments obyekti va Rest parametrning farqi nima?</b>**
 \`arguments\` — ES5 da qo'shilgan massivga o'xshash obyekt (haqiqiy massiv emas). Rest — ES6 yordamida tuzilgan haqiqiy massiv bo'lib, o'qish uchun qulayroq.
-</details>
 
-<details>
-<summary><b>12. Spread obyektlarda qanday ishlaydi?</b></summary>
+
+**<b>12. Spread obyektlarda qanday ishlaydi?</b>**
 \`{ ...obj }\` shaklida yozilsa, obyektning barcha xususiyatlari (property) yangi obyektga yoyilib yoziladi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

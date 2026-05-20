@@ -263,18 +263,18 @@ debugger; // Brauzer'da break point
 
 ## 6. SAVOLLAR VA JAVOBLAR
 
-<details><summary>1. Unit test nima?</summary>Bitta funksiya/metod'ni test qilish</details>
-<details><summary>2. AAA pattern nima?</summary>Arrange-Act-Assert - test tuzilishi</details>
-<details><summary>3. Jest nima?</summary>Popular JavaScript testing framework</details>
-<details><summary>4. Mock nima?</summary>Fake ma'lumot/funksiya test uchun</details>
-<details><summary>5. Spy nima?</summary>Real funksiya'ni watch qilish</details>
-<details><summary>6. beforeEach nima?</summary>Har test oldin ishlaydigan kod</details>
-<details><summary>7. Coverage nima?</summary>Nechta kod line test qilinganini % bilan</details>
-<details><summary>8. Async test qanday?</summary>async/await yoki return promise</details>
-<details><summary>9. E2E test nima?</summary>Butun saytni foydalanuvchi ko'zi bilan test</details>
-<details><summary>10. Integration test nima?</summary>Bir nechta modullar birgalikda test</details>
-<details><summary>11. Test isolation nima?</summary>Bir test'ning natijaasi boshqasiga ta'sir qilmasligi</details>
-<details><summary>12. Mocking vs Spying farqi?</summary>Mock - fake, Spy - real + watch</details>`,
+**1. Unit test nima?**Bitta funksiya/metod'ni test qilish
+**2. AAA pattern nima?**Arrange-Act-Assert - test tuzilishi
+**3. Jest nima?**Popular JavaScript testing framework
+**4. Mock nima?**Fake ma'lumot/funksiya test uchun
+**5. Spy nima?**Real funksiya'ni watch qilish
+**6. beforeEach nima?**Har test oldin ishlaydigan kod
+**7. Coverage nima?**Nechta kod line test qilinganini % bilan
+**8. Async test qanday?**async/await yoki return promise
+**9. E2E test nima?**Butun saytni foydalanuvchi ko'zi bilan test
+**10. Integration test nima?**Bir nechta modullar birgalikda test
+**11. Test isolation nima?**Bir test'ning natijaasi boshqasiga ta'sir qilmasligi
+**12. Mocking vs Spying farqi?**Mock - fake, Spy - real + watch`,
   exercises: [
     {
       id: 1,

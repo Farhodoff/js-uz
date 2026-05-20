@@ -33,65 +33,53 @@ TypeError, ReferenceError, SyntaxError.
 
 ## 4. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. try...catch nima uchun?</summary>
+**1. try...catch nima uchun?**
 Xatolarni ushlash va dastur to'xtashini oldini olish uchun.
-</details>
 
-<details>
-<summary>2. finally qachon ishlaydi?</summary>
+
+**2. finally qachon ishlaydi?**
 Har doim, xato bo'lsa ham, bo'lmasa ham.
-</details>
 
-<details>
-<summary>3. Error objektining asosiy xususiyatlari?</summary>
+
+**3. Error objektining asosiy xususiyatlari?**
 message, name, stack.
-</details>
 
-<details>
-<summary>4. throw nima qiladi?</summary>
+
+**4. throw nima qiladi?**
 Xatolikni o'zimiz yaratishimiz uchun (manual exception).
-</details>
 
-<details>
-<summary>5. TypeError qachon chiqadi?</summary>
+
+**5. TypeError qachon chiqadi?**
 Noto'g'ri turdagi qiymat yoki metod ishlatilsa.
-</details>
 
-<details>
-<summary>6. ReferenceError nima?</summary>
+
+**6. ReferenceError nima?**
 Mavjud bo'lmagan o'zgaruvchiga murojaatda.
-</details>
 
-<details>
-<summary>7. try...catch asinxron callback-ni ushlaydimi?</summary>
+
+**7. try...catch asinxron callback-ni ushlaydimi?**
 Yo'q, asinxron kodda async/await va try...catch kerak.
-</details>
 
-<details>
-<summary>8. Custom Error qanday yaratiladi?</summary>
+
+**8. Custom Error qanday yaratiladi?**
 Error klassidan extends qilib.
-</details>
 
-<details>
-<summary>9. throw 123 qilish mumkinmi?</summary>
+
+**9. throw 123 qilish mumkinmi?**
 Ha, lekin obyekt yuborish (throw new Error) yaxshiroq.
-</details>
 
-<details>
-<summary>10. window.onerror nima?</summary>
+
+**10. window.onerror nima?**
 Global xatolarni tutuvchi handler.
-</details>
 
-<details>
-<summary>11. Optional chaining (?.) xatodan saqlaydimi?</summary>
+
+**11. Optional chaining (?.) xatodan saqlaydimi?**
 Ha, undefined obyekt xususiyatiga murojaatda xatoni oldini oladi.
-</details>
 
-<details>
-<summary>12. Production-da xatolar nima qilinadi?</summary>
+
+**12. Production-da xatolar nima qilinadi?**
 Odatda maxsus serverga log qilinadi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

@@ -294,65 +294,53 @@ console.timeEnd('operation');
 
 ## 6. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. Debounce nima va qachon kerak?</summary>
+**1. Debounce nima va qachon kerak?**
 Funksiyani oxirgi chaqiriqdan keyin kutish. Qidiruv inputida kerak.
-</details>
 
-<details>
-<summary>2. Throttle nima va qachon kerak?</summary>
+
+**2. Throttle nima va qachon kerak?**
 Vaqt oralig'ida bir marta chaqirish. Scroll event'larda kerak.
-</details>
 
-<details>
-<summary>3. Lazy loading nima?</summary>
+
+**3. Lazy loading nima?**
 Resurslarni faqat kerak bo'lganda yuklash (rasm ko'rinavchi bo'lganda).
-</details>
 
-<details>
-<summary>4. Memoization nima?</summary>
+
+**4. Memoization nima?**
 Funksiya natijasini kesh qilish, keyin tez qaytarish.
-</details>
 
-<details>
-<summary>5. Virtual Scrolling nima?</summary>
+
+**5. Virtual Scrolling nima?**
 10,000+ elementda faqat ko'rinavchi elementlarni render qilish.
-</details>
 
-<details>
-<summary>6. Code splitting nima?</summary>
+
+**6. Code splitting nima?**
 Katta bundle'ni kichik fayllarga bo'lish, kerak bo'lganda yuklash.
-</details>
 
-<details>
-<summary>7. RAF (requestAnimationFrame) nima?</summary>
+
+**7. RAF (requestAnimationFrame) nima?**
 Monitor tezligiga mos animatsiya (setInterval bilan o'rniga).
-</details>
 
-<details>
-<summary>8. Service Worker cache nima?</summary>
+
+**8. Service Worker cache nima?**
 Offline'da ham sayt ishlay olishi uchun cache.
-</details>
 
-<details>
-<summary>9. Memory leak nima?</summary>
+
+**9. Memory leak nima?**
 Event listener'larni olib tashlamamsa, xotira oshib turadi.
-</details>
 
-<details>
-<summary>10. performance.measure() nima?</summary>
+
+**10. performance.measure() nima?**
 Kodning ishlash vaqtini o'lchash.
-</details>
 
-<details>
-<summary>11. Bundle size monitoring nima?</summary>
+
+**11. Bundle size monitoring nima?**
 Qaysi fayl eng katashini bilish va optimize qilish.
-</details>
 
-<details>
-<summary>12. HTTP caching nima?</summary>
+
+**12. HTTP caching nima?**
 Browser fayl keshlasin deb serverdan so'rash (Cache-Control header).
-</details>`,
+`,
   exercises: [
     {
       id: 1,

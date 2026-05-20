@@ -316,65 +316,53 @@ container.appendChild(fragment);  // Bir marta qo'shadi
 
 ## 6. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. DOM nima?</summary>
+**1. DOM nima?**
 Document Object Model — HTML sahifasining JavaScript tarafiy model'i. Unda barcha elementlar va ularning xususiyatlari saqlangan.
-</details>
 
-<details>
-<summary>2. document.querySelector() va document.getElementById() farqi nima?</summary>
+
+**2. document.querySelector() va document.getElementById() farqi nima?**
 querySelector() CSS selectors'ni qabul qiladi (klass, ID, tag kombinatsiya), getElementById() faqat ID'ni qabul qiladi.
-</details>
 
-<details>
-<summary>3. createElement() qilingan element darhol ekranda ko'rinadimi?</summary>
+
+**3. createElement() qilingan element darhol ekranda ko'rinadimi?**
 Yo'q, faqat xotirada yaratiladi. appendChild() yoki append() bilan DOM-ga qo'shish kerak.
-</details>
 
-<details>
-<summary>4. appendChild() va prepend() farqi nima?</summary>
+
+**4. appendChild() va prepend() farqi nima?**
 appendChild() ota elementning oxiriga qo'shadi, prepend() boshiga qo'shadi.
-</details>
 
-<details>
-<summary>5. textContent, innerText, va innerHTML farqi nima?</summary>
+
+**5. textContent, innerText, va innerHTML farqi nima?**
 textContent — faqat matn (xavfsiz), innerText — matn (style'ga e'tibor beradi), innerHTML — HTML kodi bilan (XSS xavfi).
-</details>
 
-<details>
-<summary>6. classList.add(), classList.remove(), classList.toggle() nima qiladi?</summary>
+
+**6. classList.add(), classList.remove(), classList.toggle() nima qiladi?**
 add() — klass qo'shadi, remove() — klassni o'chiradi, toggle() — bor bo'lsa o'chir, yo'q bo'lsa qo'sh.
-</details>
 
-<details>
-<summary>7. setAttribute() va elem.attribute ayni bir narsami?</summary>
+
+**7. setAttribute() va elem.attribute ayni bir narsami?**
 Farq yo'q. \`elem.id = "new"\` va \`elem.setAttribute("id", "new")\` bir xil.
-</details>
 
-<details>
-<summary>8. addEventListener() da event object nima beradi?</summary>
+
+**8. addEventListener() da event object nima beradi?**
 Event object'da hodisaning barcha ma'lumotlari bor: turi, maqsadi (target), shu orada murojaat qilish metodlari (preventDefault, stopPropagation).
-</details>
 
-<details>
-<summary>9. innerHTML += "\` ayni bir problem nima?</summary>
+
+**9. innerHTML += "\` ayni bir problem nima?**
 Performance xavfi. Har safar butun ichki HTML qayta yoziladi. Ko'p ma'lumot bo'lsa saytning tezligi sekinlashadi.
-</details>
 
-<details>
-<summary>10. Element ichidagi hamma bolalarni qanday o'chirsa bo'ladi?</summary>
+
+**10. Element ichidagi hamma bolalarni qanday o'chirsa bo'ladi?**
 elem.innerHTML = ""; yoki elem.textContent = ""; Yoki loopda removeChild() qilish.
-</details>
 
-<details>
-<summary>11. cloneNode(true) va cloneNode(false) farqi nima?</summary>
+
+**11. cloneNode(true) va cloneNode(false) farqi nima?**
 cloneNode(true) — bolalari bilan klonlaydi (deep copy), cloneNode(false) — faqat element o'zini (shallow copy).
-</details>
 
-<details>
-<summary>12. DOM Traversal-da parentElement, children, nextElementSibling'ning farqi nima?</summary>
+
+**12. DOM Traversal-da parentElement, children, nextElementSibling'ning farqi nima?**
 parentElement — ota element, children — bolalar, nextElementSibling — keyingi bir xil darajadagi element.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

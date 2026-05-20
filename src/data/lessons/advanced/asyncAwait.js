@@ -34,65 +34,53 @@ Asinxron xatolarni ushlashning eng yaxshi yo'li.
 
 ## 4. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. async kalit so'zi nima qiladi?</summary>
+**1. async kalit so'zi nima qiladi?**
 Funksiyani asinxron qiladi va u har doim Promise qaytaradi.
-</details>
 
-<details>
-<summary>2. await nima qiladi?</summary>
+
+**2. await nima qiladi?**
 Promise yakunlanishini kutadi.
-</details>
 
-<details>
-<summary>3. await-ni oddiy funksiyada ishlatsa bo'ladimi?</summary>
+
+**3. await-ni oddiy funksiyada ishlatsa bo'ladimi?**
 Yo'q, faqat async funksiya ichida.
-</details>
 
-<details>
-<summary>4. Async/await bilan xatolar qanday ushlanadi?</summary>
+
+**4. Async/await bilan xatolar qanday ushlanadi?**
 try...catch bloki bilan.
-</details>
 
-<details>
-<summary>5. Async funksiya return 10 qilsa nima qaytadi?</summary>
+
+**5. Async funksiya return 10 qilsa nima qaytadi?**
 Promise obyekt, qiymati 10.
-</details>
 
-<details>
-<summary>6. Parallel so'rovlar uchun nima ishlatiladi?</summary>
+
+**6. Parallel so'rovlar uchun nima ishlatiladi?**
 Promise.all([await fetch1, await fetch2]).
-</details>
 
-<details>
-<summary>7. forEach ichida await qanday ishlaydi?</summary>
+
+**7. forEach ichida await qanday ishlaydi?**
 Kutilganidek ishlamasligi mumkin (parallel emas).
-</details>
 
-<details>
-<summary>8. Top-level await nima?</summary>
+
+**8. Top-level await nima?**
 Modulning eng yuqori qismida async-siz await ishlatish.
-</details>
 
-<details>
-<summary>9. await brauzerni bloklaydimi?</summary>
+
+**9. await brauzerni bloklaydimi?**
 Yo'q, faqat funksiya ijrosini to'xtatadi.
-</details>
 
-<details>
-<summary>10. async/await nima uchun Promise-dan yaxshi?</summary>
+
+**10. async/await nima uchun Promise-dan yaxshi?**
 O'qish va yozish osonroq.
-</details>
 
-<details>
-<summary>11. finally bloki async-da bormi?</summary>
+
+**11. finally bloki async-da bormi?**
 Ha, try...catch-dan keyin ishlatish mumkin.
-</details>
 
-<details>
-<summary>12. Async arrow function qanday yoziladi?</summary>
+
+**12. Async arrow function qanday yoziladi?**
 const fn = async () => { ... }
-</details>`,
+`,
   exercises: [
     {
       id: 1,

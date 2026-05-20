@@ -242,65 +242,53 @@ console.log(userModule.userCount()); // 1
 
 ### 6. 12 TA SAVOL VA JAVOBLAR
 
-<details>
-<summary><b>1. Closure nima va nima uchun kerak?</b></summary>
+**<b>1. Closure nima va nima uchun kerak?</b>**
 Closure = funksiya + uning tashqarisidagi o'zgaruvchilar. Kerak: Data privacy, factory functions, callbacks.
-</details>
 
-<details>
-<summary><b>2. var, let, const farqini batafsilroq tushuntiring.</b></summary>
+
+**<b>2. var, let, const farqini batafsilroq tushuntiring.</b>**
 var: funksiya scope, hoisting, let: block scope, TDZ, const: block scope, TDZ, o'zgartira olmaydi.
-</details>
 
-<details>
-<summary><b>3. Lexical scope nima?</b></summary>
+
+**<b>3. Lexical scope nima?</b>**
 Funksiya qaysi yerda yozilgani bo'yicha ko'rining qoida — ichka funksiyalar tashqaring o'zgaruvchilarini ko'ra oladi.
-</details>
 
-<details>
-<summary><b>4. for loop bilan var/let farqi nima?</b></summary>
+
+**<b>4. for loop bilan var/let farqi nima?</b>**
 var — loop dagi o'zgaruvchi loop tashqarida ham mavjud. let — faqat block ichida.
-</details>
 
-<details>
-<summary><b>5. IIFE qachon kerak?</b></summary>
+
+**<b>5. IIFE qachon kerak?</b>**
 Private scope yaratmoqchi bo'lganda, module pattern yozganda.
-</details>
 
-<details>
-<summary><b>6. Currying nima va nega kerak?</b></summary>
+
+**<b>6. Currying nima va nega kerak?</b>**
 Funksiya parametrlarini bosqichma-bosqich yuborish. Kerak: Partial application, composition.
-</details>
 
-<details>
-<summary><b>7. Closure memory leak qilishi mumkinmi?</b></summary>
+
+**<b>7. Closure memory leak qilishi mumkinmi?</b>**
 Ha! Agar big data closure da qolsa va listener o'chirilmasa, xotirada qoladi.
-</details>
 
-<details>
-<summary><b>8. TDZ nima?</b></summary>
+
+**<b>8. TDZ nima?</b>**
 Temporal Dead Zone — let/const bilan o'zgaruvchi initialization dan oldin ishlatish xatosi.
-</details>
 
-<details>
-<summary><b>9. Function Factory nima misol bilan?</b></summary>
+
+**<b>9. Function Factory nima misol bilan?</b>**
 Sozlanuvchi funksiyalar qaytaradigan funksiya. Misol: createMultiplier(2) → multiply by 2 funksiya.
-</details>
 
-<details>
-<summary><b>10. Closure va this o'rtasidagi bog'lanish?</b></summary>
+
+**<b>10. Closure va this o'rtasidagi bog'lanish?</b>**
 Closure this ni saqlaydi, lekin this lexical emas — chaqirish kontekstiga bog'liq.
-</details>
 
-<details>
-<summary><b>11. Recursive funksiya closure dan foydalanishi mumkinmi?</b></summary>
+
+**<b>11. Recursive funksiya closure dan foydalanishi mumkinmi?</b>**
 Ha! Recursive funksiya closure yaratishi mumkin va uni sanab turishi mumkin.
-</details>
 
-<details>
-<summary><b>12. Module pattern nima va qanday yoziladi?</b></summary>
+
+**<b>12. Module pattern nima va qanday yoziladi?</b>**
 IIFE yordamida public va private API yaratish. Misol: const mod = (function() { ... })();
-</details>`,
+`,
   exercises: [
     {
       id: 1,

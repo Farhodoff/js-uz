@@ -300,61 +300,50 @@ console.log(yaxshi_darslar); // ["JavaScript"]
 
 ### 6. 12 TA SAVOL VA JAVOBLAR
 
-<details>
-<summary><b>1. map() metodi asl massivni o'zgartiradimi?</b></summary>
+**<b>1. map() metodi asl massivni o'zgartiradimi?</b>**
 Yo'q, \`map()\` yangi massiv qaytaradi. Asl massiv o'zgarmasin.
-</details>
 
-<details>
-<summary><b>2. filter() qachon bo'sh massiv qaytaradi?</b></summary>
+
+**<b>2. filter() qachon bo'sh massiv qaytaradi?</b>**
 Agar hech qanday element shartga mos bo'lmasa (\`true\` bo'lmasa).
-</details>
 
-<details>
-<summary><b>3. reduce() akkumulyatorning boshlang'ich qiymati nima?</b></summary>
+
+**<b>3. reduce() akkumulyatorning boshlang'ich qiymati nima?</b>**
 4-parametr (\`initial value\`). Masalan, \`reduce((sum, n) => sum + n, 0)\` da 0 boshlang'ich.
-</details>
 
-<details>
-<summary><b>4. find() va filter() asosiy farqi nimada?</b></summary>
+
+**<b>4. find() va filter() asosiy farqi nimada?</b>**
 \`find()\` — birinchi mos elementni qaytaradi (yoki undefined).
 \`filter()\` — **barcha** mos elementlar massivini qaytaradi.
-</details>
 
-<details>
-<summary><b>5. some() va every() o'rtasidagi farq?</b></summary>
+
+**<b>5. some() va every() o'rtasidagi farq?</b>**
 \`some()\` — kamida bittasi shartga mos?
 \`every()\` — **barcha**si shartga mos?
-</details>
 
-<details>
-<summary><b>6. map() va forEach() o'rtasidagi farq?</b></summary>
+
+**<b>6. map() va forEach() o'rtasidagi farq?</b>**
 \`map()\` — yangi massiv qaytaradi.
 \`forEach()\` — hech narsa qaytarmaydi (undefined), faqat side-effect uchun.
-</details>
 
-<details>
-<summary><b>7. reduce() yordamida massivni objektga aylantirish mumkinmi?</b></summary>
+
+**<b>7. reduce() yordamida massivni objektga aylantirish mumkinmi?</b>**
 Ha! \`reduce((obj, item) => { obj[item.id] = item; return obj; }, {})\`
-</details>
 
-<details>
-<summary><b>8. find() bir nechta mos element topsa nima bo'ladi?</b></summary>
+
+**<b>8. find() bir nechta mos element topsa nima bo'ladi?</b>**
 Faqat **birinchisi** qaytariladi.
-</details>
 
-<details>
-<summary><b>9. Chaining nima va nega kerak?</b></summary>
+
+**<b>9. Chaining nima va nega kerak?</b>**
 Bir nechta metodni ketma-ket qilish: \`.filter().map().sort()\`. Kod tilishni va o'qishni osonlashtiradi.
-</details>
 
-<details>
-<summary><b>10. sort() asl massivni o'zgartiradimi?</b></summary>
+
+**<b>10. sort() asl massivni o'zgartiradimi?</b>**
 Ha! \`sort()\` asl massivni o'zgartiradi. Xohlamasak: \`[...arr].sort()\`
-</details>
 
-<details>
-<summary><b>11. reduce() yordamida massivning duplikatlarini olib tashlay olamiz?</b></summary>
+
+**<b>11. reduce() yordamida massivning duplikatlarini olib tashlay olamiz?</b>**
 Ha! Misol:
 \`\`\`javascript
 const sonlar = [1, 2, 2, 3, 1];
@@ -362,13 +351,12 @@ const unique = sonlar.reduce((arr, n) =>
   arr.includes(n) ? arr : [...arr, n], []);
 console.log(unique); // [1, 2, 3]
 \`\`\`
-</details>
 
-<details>
-<summary><b>12. Qaysi vaziyatda find() o'rniga filter() ishlatish kerak?</b></summary>
+
+**<b>12. Qaysi vaziyatda find() o'rniga filter() ishlatish kerak?</b>**
 \`find()\` — bitta element kerak bo'lganda.
 \`filter()\` — bir nechta element kerak bo'lganda.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

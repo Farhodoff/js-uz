@@ -193,18 +193,18 @@ class UserRepository {
 
 ## 8. SAVOLLAR VA JAVOBLAR
 
-<details><summary>1. Design Pattern nima?</summary>Tayyor xamalar (solutions)</details>
-<details><summary>2. Singleton nima?</summary>Bitta instance - Database, Config</details>
-<details><summary>3. Factory nima?</summary>Ob'ekt yaratish fabrikasi</details>
-<details><summary>4. Observer nima?</summary>Event listener pattern</details>
-<details><summary>5. Decorator nima?</summary>Funksionallik qo'shish</details>
-<details><summary>6. Strategy nima?</summary>Turli algoritm o'zaro</details>
-<details><summary>7. Facade nima?</summary>Murakkab API soddalash</details>
-<details><summary>8. MVC nima?</summary>Model-View-Controller architecture</details>
-<details><summary>9. Repository nima?</summary>Data access abstraction</details>
-<details><summary>10. State pattern nima?</summary>Holat o'zgarishni boshqarish</details>
-<details><summary>11. Anti-pattern nima?</summary>Noto'g'ri yandalash - oldini olish</details>
-<details><summary>12. Qaysi pattern eng muhim?</summary>Singleton, Factory, Observer - eng ko'p ishlatiladi</details>`,
+**1. Design Pattern nima?**Tayyor xamalar (solutions)
+**2. Singleton nima?**Bitta instance - Database, Config
+**3. Factory nima?**Ob'ekt yaratish fabrikasi
+**4. Observer nima?**Event listener pattern
+**5. Decorator nima?**Funksionallik qo'shish
+**6. Strategy nima?**Turli algoritm o'zaro
+**7. Facade nima?**Murakkab API soddalash
+**8. MVC nima?**Model-View-Controller architecture
+**9. Repository nima?**Data access abstraction
+**10. State pattern nima?**Holat o'zgarishni boshqarish
+**11. Anti-pattern nima?**Noto'g'ri yandalash - oldini olish
+**12. Qaysi pattern eng muhim?**Singleton, Factory, Observer - eng ko'p ishlatiladi`,
   exercises: [
     {
       id: 1,

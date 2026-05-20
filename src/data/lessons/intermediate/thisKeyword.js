@@ -376,65 +376,53 @@ user.greet().wave(); // Chaining ishlaydi
 
 ### 8. 12 TA SAVOL VA JAVOBLAR
 
-<details>
-<summary><b>1. this so'zining asosiy ma'nosi nima?</b></summary>
+**<b>1. this so'zining asosiy ma'nosi nima?</b>**
 this — funksiya qaysi kontekstda chaqirilayotganini ko'rsatadi. U "mening" yoki "bu object" degan so'z kabi.
-</details>
 
-<details>
-<summary><b>2. Global kontekstda this nima qaytaradi?</b></summary>
+
+**<b>2. Global kontekstda this nima qaytaradi?</b>**
 Brauzerda: window. Node.js'da: global. Strict mode'da: undefined.
-</details>
 
-<details>
-<summary><b>3. Obyekt metodida this nimaga teng?</b></summary>
+
+**<b>3. Obyekt metodida this nimaga teng?</b>**
 O'sha objektning o'ziga teng. Masalan: user.method() qilsa, this = user.
-</details>
 
-<details>
-<summary><b>4. Arrow funksiyalarda this bormi?</b></summary>
+
+**<b>4. Arrow funksiyalarda this bormi?</b>**
 Ha, lekin u o'zining this'i emas — parent context'dan olinadi (lexical this).
-</details>
 
-<details>
-<summary><b>5. call(), apply(), bind() farqi nima?</b></summary>
+
+**<b>5. call(), apply(), bind() farqi nima?</b>**
 call — darhol chaqirish, parametrlar ketma-ketlik. apply — darhol chaqirish, parametrlar array. bind — yangi funksiya qaytarish (keyincha chaqirish mumkin).
-</details>
 
-<details>
-<summary><b>6. Nima uchun arrow funksiyani metodda ishlatmaslik kerak?</b></summary>
+
+**<b>6. Nima uchun arrow funksiyani metodda ishlatmaslik kerak?</b>**
 Arrow funksiyada this lexical (parent'dan olinadi), method'da dynamic this kerak.
-</details>
 
-<details>
-<summary><b>7. setTimeout ichidagi this muammosini qanday hal qilish?</b></summary>
+
+**<b>7. setTimeout ichidagi this muammosini qanday hal qilish?</b>**
 Arrow funksiyani ishlatish yoki bind() qilish. setTimeout(() => { this... }) yoki setTimeout(func.bind(this), 1000).
-</details>
 
-<details>
-<summary><b>8. new kalit so'zi bilan chaqirilganda this nima bo'ladi?</b></summary>
+
+**<b>8. new kalit so'zi bilan chaqirilganda this nima bo'ladi?</b>**
 Yangi omda yaratiladi, this — o'sha omda. Constructor'ning oxirida return undefined bo'lmasa, this qaytariladi.
-</details>
 
-<details>
-<summary><b>9. this qiymati compile-time yoki runtime'da aniqlanarmi?</b></summary>
+
+**<b>9. this qiymati compile-time yoki runtime'da aniqlanarmi?</b>**
 Runtime'da! this funksiyaning qanday chaqirilganiga bog'liq, qaysi yerda yozilganiga emas.
-</details>
 
-<details>
-<summary><b>10. Event listener'da this nimaga ishora qiladi?</b></summary>
+
+**<b>10. Event listener'da this nimaga ishora qiladi?</b>**
 Regular funksiyada: event target (button, div, h.k.). Arrow funksiyada: parent context.
-</details>
 
-<details>
-<summary><b>11. Strict mode'da global this nima bo'ladi?</b></summary>
+
+**<b>11. Strict mode'da global this nima bo'ladi?</b>**
 undefined. Global kontekstda bi-argumentsiz chaqirilgan funksiyada this = undefined.
-</details>
 
-<details>
-<summary><b>12. Chaining pattern'da this qanday qaytariladi?</b></summary>
+
+**<b>12. Chaining pattern'da this qanday qaytariladi?</b>**
 Methoddan return this; qilish orqali. Har bir method o'zi qaytariladi, keyingi method chaqiriladi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

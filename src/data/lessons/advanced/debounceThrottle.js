@@ -55,41 +55,29 @@ function throttle(func, limit) {
 ---
 
 ## 5. 12 TA SAVOL VA JAVOBLAR
-<details>
-<summary><b>1. Debounce nima?</b></summary> Debounce — hodisa chaqirilishi butunlay to'xtagandan keyin, ma'lum bir kutish vaqtidan so'nggina funksiyani bajarish usuli.</details>
+**<b>1. Debounce nima?</b>** Debounce — hodisa chaqirilishi butunlay to'xtagandan keyin, ma'lum bir kutish vaqtidan so'nggina funksiyani bajarish usuli.
 
-<details>
-<summary><b>2. Throttle nima?</b></summary> Throttle — hodisa har qancha tez-tez ro'y bermasin, funksiyani faqat belgilangan vaqt oralig'ida (chastotada) bir marta bajarish cheklovidir.</details>
+**<b>2. Throttle nima?</b>** Throttle — hodisa har qancha tez-tez ro'y bermasin, funksiyani faqat belgilangan vaqt oralig'ida (chastotada) bir marta bajarish cheklovidir.
 
-<details>
-<summary><b>3. Debounce va Throttle o'rtasidagi asosiy farq nima?</b></summary> Debounce oxirgi harakatdan keyin kutadi va bir marta ishlaydi. Throttle esa harakat davom etayotgan bo'lsa ham muntazam vaqt oralig'ida ishlashda davom etadi.</details>
+**<b>3. Debounce va Throttle o'rtasidagi asosiy farq nima?</b>** Debounce oxirgi harakatdan keyin kutadi va bir marta ishlaydi. Throttle esa harakat davom etayotgan bo'lsa ham muntazam vaqt oralig'ida ishlashda davom etadi.
 
-<details>
-<summary><b>4. Qidiruv inputlariga (Search Auto-complete) qaysi biri mos keladi?</b></summary> Debounce mos keladi. Foydalanuvchi yozishdan to'xtagandan keyingina serverga API so'rov yuborish ma'qul.</details>
+**<b>4. Qidiruv inputlariga (Search Auto-complete) qaysi biri mos keladi?</b>** Debounce mos keladi. Foydalanuvchi yozishdan to'xtagandan keyingina serverga API so'rov yuborish ma'qul.
 
-<details>
-<summary><b>5. Scroll yoki Window Resize hodisalariga qaysi biri yaxshiroq?</b></summary> Throttle yaxshiroq. Sahifa scroll bo'layotganda har 100-200ms da sahifa holatini hisoblab turish uchun throttle qulay.</details>
+**<b>5. Scroll yoki Window Resize hodisalariga qaysi biri yaxshiroq?</b>** Throttle yaxshiroq. Sahifa scroll bo'layotganda har 100-200ms da sahifa holatini hisoblab turish uchun throttle qulay.
 
-<details>
-<summary><b>6. Debounce ichida clearTimeout nima uchun kerak?</b></summary> Agar foydalanuvchi belgilangan vaqt tugamasdan turib yana harakat qilsa, eski taymerni bekor qilib, yangi taymerni boshlash uchun kerak.</details>
+**<b>6. Debounce ichida clearTimeout nima uchun kerak?</b>** Agar foydalanuvchi belgilangan vaqt tugamasdan turib yana harakat qilsa, eski taymerni bekor qilib, yangi taymerni boshlash uchun kerak.
 
-<details>
-<summary><b>7. Throttle ichidagi inThrottle bayrog'i nima qiladi?</b></summary> Funksiya hozirda "kutish" (bajarilganidan keyingi cheklov) rejimida ekanligini bildiradi va yangi chaqiruvlarni bloklaydi.</details>
+**<b>7. Throttle ichidagi inThrottle bayrog'i nima qiladi?</b>** Funksiya hozirda "kutish" (bajarilganidan keyingi cheklov) rejimida ekanligini bildiradi va yangi chaqiruvlarni bloklaydi.
 
-<details>
-<summary><b>8. apply() ishlatish nima uchun zarur?</b></summary> Wrapper funksiyaga kelgan arguments massivi va joriy this kontekstini original funksiyaga o'tkazish uchun.</details>
+**<b>8. apply() ishlatish nima uchun zarur?</b>** Wrapper funksiyaga kelgan arguments massivi va joriy this kontekstini original funksiyaga o'tkazish uchun.
 
-<details>
-<summary><b>9. Debounce'da immediate opsiyasi nima?</b></summary> Bu opsiya yoqilganda kutish vaqtini boshlashdan oldin funksiya darhol chaqiriladi, so'ngra keyingi chaqiruvlar bloklanadi.</details>
+**<b>9. Debounce'da immediate opsiyasi nima?</b>** Bu opsiya yoqilganda kutish vaqtini boshlashdan oldin funksiya darhol chaqiriladi, so'ngra keyingi chaqiruvlar bloklanadi.
 
-<details>
-<summary><b>10. O'yinlardagi o'q otish tugmasiga qaysi biri mos?</b></summary> Throttle mos. Qahramon har qancha tez tugmani bosmasin, o'qlar faqat ma'lum bir tezlik oralig'ida otiladi.</details>
+**<b>10. O'yinlardagi o'q otish tugmasiga qaysi biri mos?</b>** Throttle mos. Qahramon har qancha tez tugmani bosmasin, o'qlar faqat ma'lum bir tezlik oralig'ida otiladi.
 
-<details>
-<summary><b>11. Debounce funksiyani bekor qilish (cancel) qachon kerak bo'ladi?</b></summary> Masalan, component sahifadan o'chib ketganda (unmount), hali bajarilmagan setTimeout taymerini tozalab, memory leak oldini olish uchun.</details>
+**<b>11. Debounce funksiyani bekor qilish (cancel) qachon kerak bo'ladi?</b>** Masalan, component sahifadan o'chib ketganda (unmount), hali bajarilmagan setTimeout taymerini tozalab, memory leak oldini olish uchun.
 
-<details>
-<summary><b>12. CSS orqali rate limit qilish mumkinmi?</b></summary> Yo'q, CSS hodisalar chastotasini boshqara olmaydi. Bu faqat JS yordamida mantiqiy darajada bajariladi.</details>
+**<b>12. CSS orqali rate limit qilish mumkinmi?</b>** Yo'q, CSS hodisalar chastotasini boshqara olmaydi. Bu faqat JS yordamida mantiqiy darajada bajariladi.
 `,
   exercises: [
     {

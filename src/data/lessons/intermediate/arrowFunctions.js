@@ -44,65 +44,53 @@ console.log(ikkiBarobar); // [2, 4, 6, 8]
 1.  **Obyekt qaytarishda xato:** \`const getObj = () => { name: "Ali" }\` — bu xato beradi! Obyektni qaytarish uchun uni qavsga olish shart: \`const getObj = () => ({ name: "Ali" })\`.
 2.  **Konstruktor sifatida ishlatish:** Arrow funksiyalarni \`new\` kalit so'zi bilan ishlatib bo'lmaydi.
 
-<details>
-<summary><b>1. Arrow function qachon paydo bergan?</b></summary>
+**<b>1. Arrow function qachon paydo bergan?</b>**
 U ES6 (ECMAScript 2015) versiyasida JavaScript-ga kiritilgan.
-</details>
 
-<details>
-<summary><b>2. Arrow function va oddiy funksiyaning sintaksis farqi nima?</b></summary>
+
+**<b>2. Arrow function va oddiy funksiyaning sintaksis farqi nima?</b>**
 \`function\` kalit so'zi yo'q qilinib, parametrlar va funksiya tanasi o'rtasida \`=>\` (fat arrow) belgisi yoziladi.
-</details>
 
-<details>
-<summary><b>3. Implicit return nima?</b></summary>
+
+**<b>3. Implicit return nima?</b>**
 Funksiya atigi bitta qatordan iborat bo'lsa, \`{}\` qavslar va \`return\` so'zini yozmasdan turib natijani avtomatik qaytarish xususiyati.
-</details>
 
-<details>
-<summary><b>4. Arrow funksiyada qachon \`return\` yozish shart?</b></summary>
+
+**<b>4. Arrow funksiyada qachon \`return\` yozish shart?</b>**
 Agar siz jingalak qavslarni \`{}\` ochsangiz (funksiya tanasi bir nechta qator bo'lsa), unda natijani qaytarish uchun \`return\` yozish majburiy.
-</details>
 
-<details>
-<summary><b>5. \`this\` kalit so'zi arrow funksiyada qanday ishlaydi?</b></summary>
+
+**<b>5. \`this\` kalit so'zi arrow funksiyada qanday ishlaydi?</b>**
 Arrow funksiyada o'zining shaxsiy \`this\`i bo'lmaydi. U o'zi e'lon qilingan muhitdagi (lexical scope) \`this\`ni oladi va uni \`bind\`, \`call\` bilan o'zgartirib bo'lmaydi.
-</details>
 
-<details>
-<summary><b>6. Bitta parametr bo'lsa qavslarni yozish shartmi?</b></summary>
+
+**<b>6. Bitta parametr bo'lsa qavslarni yozish shartmi?</b>**
 Yo'q, agar parametr atigi bitta bo'lsa, qavslarsiz \`x => x * 2\` shaklida yozish mumkin. Lekin parametr bo'lmasa yoki bittadan ko'p bo'lsa, qavs majburiy.
-</details>
 
-<details>
-<summary><b>7. Arrow funksiyani \`new\` bilan ishlatish mumkinmi?</b></summary>
+
+**<b>7. Arrow funksiyani \`new\` bilan ishlatish mumkinmi?</b>**
 Yo'q. Arrow funksiyalarda \`[[Construct]]\` metodi yo'q, shuning uchun ularni konstruktor sifatida \`new\` kalit so'zi bilan chaqirib bo'lmaydi.
-</details>
 
-<details>
-<summary><b>8. \`arguments\` obyekti arrow funksiyada bormi?</b></summary>
+
+**<b>8. \`arguments\` obyekti arrow funksiyada bormi?</b>**
 Yo'q, oddiy funksiyalardagi kabi \`arguments\` obyekti arrow funksiyada mavjud emas. Uning o'rniga rest parametridan (\`...args\`) foydalanish kerak.
-</details>
 
-<details>
-<summary><b>9. Callback sifatida nima uchun arrow funksiya tavsiya etiladi?</b></summary>
+
+**<b>9. Callback sifatida nima uchun arrow funksiya tavsiya etiladi?</b>**
 Chunki sintaksisi qisqa, toza ko'rinadi va eng asosiysi, \`this\` kontekstini chalkashtirib (yo'qotib) qo'ymaydi.
-</details>
 
-<details>
-<summary><b>10. Obyekt qaytarishda arrow funksiya sintaksisi qanday bo'ladi?</b></summary>
+
+**<b>10. Obyekt qaytarishda arrow funksiya sintaksisi qanday bo'ladi?</b>**
 Bitta qatorda obyekt qaytarmoqchi bo'lsangiz, obyekt qavslarini oddiy qavslarga o'rashingiz shart: \`id => ({ id: id })\`. Aks holda \`{}\` ni funksiya bloki deb o'ylaydi.
-</details>
 
-<details>
-<summary><b>11. Hoisting arrow funksiyalarda qanday ishlaydi?</b></summary>
+
+**<b>11. Hoisting arrow funksiyalarda qanday ishlaydi?</b>**
 Arrow funksiyalar \`const\` yoki \`let\` yordamida o'zgaruvchiga yuklangani sababli, ular hoisting qilinmaydi (yoki TDZga tushadi). Ularni faqat e'lon qilingandan keyingina chaqirish mumkin.
-</details>
 
-<details>
-<summary><b>12. Qachon arrow funksiyadan ko'ra oddiy funksiya yaxshiroq?</b></summary>
+
+**<b>12. Qachon arrow funksiyadan ko'ra oddiy funksiya yaxshiroq?</b>**
 Obyekt ichida dinamik metodlar (masalan \`obj.sayHi()\`) yaratishda \`this\` obj'ga teng bo'lishi kerak bo'lganda va Event Listener'larda \`this = event.target\` kerak bo'lganda.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

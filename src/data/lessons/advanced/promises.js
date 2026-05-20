@@ -32,65 +32,53 @@ Tasavvur qiling, serverdan ma'lumot olmoqchisiz. Bu vaqt talab qiladi. Agar biz 
 
 ## 4. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. Promise nima?</summary>
+**1. Promise nima?**
 Asinxron operatsiyaning kelajakdagi natijasini ifodalovchi obyekt.
-</details>
 
-<details>
-<summary>2. Promise holatlari qaysilar?</summary>
+
+**2. Promise holatlari qaysilar?**
 Pending, Fulfilled, Rejected.
-</details>
 
-<details>
-<summary>3. .then() nima uchun?</summary>
+
+**3. .then() nima uchun?**
 Muvaffaqiyatli natijani qayta ishlash uchun.
-</details>
 
-<details>
-<summary>4. .catch() nima uchun?</summary>
+
+**4. .catch() nima uchun?**
 Xatolarni ushlash uchun.
-</details>
 
-<details>
-<summary>5. Promise.all() nima qiladi?</summary>
+
+**5. Promise.all() nima qiladi?**
 Barcha promislar tugashini kutadi. Bittasi fail bo'lsa, hammasi fail.
-</details>
 
-<details>
-<summary>6. Promise.race() nima?</summary>
+
+**6. Promise.race() nima?**
 Birinchi tugagan promis natijasini qaytaradi.
-</details>
 
-<details>
-<summary>7. Callback Hell nima?</summary>
+
+**7. Callback Hell nima?**
 Callback-lar ichma-ich ko'payib ketib, kod o'qish qiyinlashishi.
-</details>
 
-<details>
-<summary>8. async funksiya nima qaytaradi?</summary>
+
+**8. async funksiya nima qaytaradi?**
 Har doim Promise qaytaradi.
-</details>
 
-<details>
-<summary>9. await nima qiladi?</summary>
+
+**9. await nima qiladi?**
 Promise natijasini kutadi (faqat async ichida).
-</details>
 
-<details>
-<summary>10. try...catch asinxron kodda qachon kerak?</summary>
+
+**10. try...catch asinxron kodda qachon kerak?**
 async/await bilan xatolarni ushlash uchun.
-</details>
 
-<details>
-<summary>11. finally() bloki qachon ishlaydi?</summary>
+
+**11. finally() bloki qachon ishlaydi?**
 Har doim (xato bo'lsa ham, bo'lmasa ham).
-</details>
 
-<details>
-<summary>12. Promise zanjiri nima?</summary>
+
+**12. Promise zanjiri nima?**
 Ketma-ket .then() orqali ma'lumotlarni uzatish.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

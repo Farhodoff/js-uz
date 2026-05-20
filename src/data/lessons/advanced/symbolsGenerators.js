@@ -71,41 +71,29 @@ console.log(gen.next()); // { value: 3, done: true }
 ---
 
 ## 5. 12 TA SAVOL VA JAVOBLAR
-<details>
-<summary><b>1. Symbol nima va u qanday yaratiladi?</b></summary> Symbol — mutlaqo takrorlanmas va o'zgarmas primitiv qiymat turi. U Symbol() funksiyasi orqali yaratiladi.</details>
+**<b>1. Symbol nima va u qanday yaratiladi?</b>** Symbol — mutlaqo takrorlanmas va o'zgarmas primitiv qiymat turi. U Symbol() funksiyasi orqali yaratiladi.
 
-<details>
-<summary><b>2. Symbol'ga berilgan tavsif nima vazifani bajaradi?</b></summary> Faqatgina debug jarayonida konsolda osonroq tushunish uchun kerak. Ikki bir xil tavsifli Symbol baribir bir-biriga teng bo'lmaydi.</details>
+**<b>2. Symbol'ga berilgan tavsif nima vazifani bajaradi?</b>** Faqatgina debug jarayonida konsolda osonroq tushunish uchun kerak. Ikki bir xil tavsifli Symbol baribir bir-biriga teng bo'lmaydi.
 
-<details>
-<summary><b>3. Global Symbol nima va uning farqi nimada?</b></summary> Symbol.for("key") yordamida global registrda ramz yaratiladi. Agar shu kalitli ramz oldin yaratilgan bo'lsa, mavjud bo'lganini qaytaradi.</details>
+**<b>3. Global Symbol nima va uning farqi nimada?</b>** Symbol.for("key") yordamida global registrda ramz yaratiladi. Agar shu kalitli ramz oldin yaratilgan bo'lsa, mavjud bo'lganini qaytaradi.
 
-<details>
-<summary><b>4. Nima uchun Symbol obyekt kaliti sifatida qulay?</b></summary> Chunki u obyekt ichidagi xususiyatlarni tashqi tomondan tasodifan o'zgartirib yoki o'chirib yuborish xavfini butunlay yo'q qiladi.</details>
+**<b>4. Nima uchun Symbol obyekt kaliti sifatida qulay?</b>** Chunki u obyekt ichidagi xususiyatlarni tashqi tomondan tasodifan o'zgartirib yoki o'chirib yuborish xavfini butunlay yo'q qiladi.
 
-<details>
-<summary><b>5. Well-known Symbol deganda nima tushuniladi?</b></summary> Bular JS tizimining ichki xatti-harakatlarini boshqarish uchun ishlatiladigan maxsus standart ramzlar (masalan: Symbol.iterator, Symbol.toStringTag).</details>
+**<b>5. Well-known Symbol deganda nima tushuniladi?</b>** Bular JS tizimining ichki xatti-harakatlarini boshqarish uchun ishlatiladigan maxsus standart ramzlar (masalan: Symbol.iterator, Symbol.toStringTag).
 
-<details>
-<summary><b>6. Iterator nima va u qaysi metodga ega bo'lishi shart?</b></summary> Iterator — keyingi elementni taqdim qiluvchi obyekt. U next() metodiga ega bo'lishi shart, bu metod {value, done} shaklidagi obyekt qaytaradi.</details>
+**<b>6. Iterator nima va u qaysi metodga ega bo'lishi shart?</b>** Iterator — keyingi elementni taqdim qiluvchi obyekt. U next() metodiga ega bo'lishi shart, bu metod {value, done} shaklidagi obyekt qaytaradi.
 
-<details>
-<summary><b>7. [Symbol.iterator] nima vazifani bajaradi?</b></summary> U obyektni iteratsiya qilinadigan (iterable) qiladi. Masalan, for...of tsikli ishlashi uchun obyektda shu metod bo'lishi shart.</details>
+**<b>7. [Symbol.iterator] nima vazifani bajaradi?</b>** U obyektni iteratsiya qilinadigan (iterable) qiladi. Masalan, for...of tsikli ishlashi uchun obyektda shu metod bo'lishi shart.
 
-<details>
-<summary><b>8. Generator funksiya oddiy funksiyadan qanday farq qiladi?</b></summary> Oddiy funksiya oxirigacha ishlaydi va bitta qiymat qaytaradi. Generator esa yield yordamida ishlashini xohlagancha to'xtatib-davom ettira oladi.</details>
+**<b>8. Generator funksiya oddiy funksiyadan qanday farq qiladi?</b>** Oddiy funksiya oxirigacha ishlaydi va bitta qiymat qaytaradi. Generator esa yield yordamida ishlashini xohlagancha to'xtatib-davom ettira oladi.
 
-<details>
-<summary><b>9. yield kalit so'zi nima qiladi?</b></summary> Generator ishini vaqtinchalik to'xtatib, tashqi tomonga qiymat yuboradi va keyingi next() chaqirilishini kutadi.</details>
+**<b>9. yield kalit so'zi nima qiladi?</b>** Generator ishini vaqtinchalik to'xtatib, tashqi tomonga qiymat yuboradi va keyingi next() chaqirilishini kutadi.
 
-<details>
-<summary><b>10. next() metodiga argument berish nima uchun kerak?</b></summary> Generatordagi oxirgi to'xtagan yield ifodasi o'rniga tashqi tomondan yangi qiymat yuborish (ikki tomonlama aloqa) uchun kerak.</details>
+**<b>10. next() metodiga argument berish nima uchun kerak?</b>** Generatordagi oxirgi to'xtagan yield ifodasi o'rniga tashqi tomondan yangi qiymat yuborish (ikki tomonlama aloqa) uchun kerak.
 
-<details>
-<summary><b>11. return generator ichida ishlatilsa nima bo'ladi?</b></summary> Generator ishini darhol yakunlaydi, done ni true qiladi va value sifatida berilgan qiymatni qaytaradi.</details>
+**<b>11. return generator ichida ishlatilsa nima bo'ladi?</b>** Generator ishini darhol yakunlaydi, done ni true qiladi va value sifatida berilgan qiymatni qaytaradi.
 
-<details>
-<summary><b>12. Generator yordamida cheksiz sikllar yaratish xavflimi?</b></summary> Yo'q, chunki har bir qadam faqat next() chaqirilgandagina bajariladi, bu xotirani to'ldirib yubormaydi.</details>
+**<b>12. Generator yordamida cheksiz sikllar yaratish xavflimi?</b>** Yo'q, chunki har bir qadam faqat next() chaqirilgandagina bajariladi, bu xotirani to'ldirib yubormaydi.
 `,
   exercises: [
     {

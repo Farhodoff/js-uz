@@ -85,18 +85,18 @@ console.log(result); // → 25 (10 * 2 + 5)
 
 ## 7. SAVOLLAR VA JAVOBLAR
 
-<details><summary>1. Pure function nima?</summary>Faqat kirishga bog'liq, tashqi holatni o'zgartirmaydi.</details>
-<details><summary>2. Immutability nima uchun kerak?</summary>Predictable kod va yashirin bug'larni kamaytiradi.</details>
-<details><summary>3. Side effect nima?</summary>Funksiya tashqi state'ni o'zgartirishi yoki I/O qilishidir.</details>
-<details><summary>4. Higher-order function nima?</summary>Funksiyani parametr sifatida oladi yoki funksiya qaytaradi.</details>
-<details><summary>5. map/filter/reduce qachon ishlatiladi?</summary>Transform, saralash va agregatsiya uchun.</details>
-<details><summary>6. Currying nima?</summary>Funksiyani bosqichma-bosqich chaqirish.</details>
-<details><summary>7. Partial application nima?</summary>Argumentlarning bir qismini oldindan berib qo'yish.</details>
-<details><summary>8. Compose va Pipe farqi?</summary>Compose o'ngdan chapga, Pipe chapdan o'ngga.</details>
-<details><summary>9. Referential transparency nima?</summary>Bir xil kirishga bir xil natija (side effect yo'q).</details>
-<details><summary>10. Immutable update qanday qilinadi?</summary>Spread/concat bilan nusxa yaratiladi.</details>
-<details><summary>11. Pure funksiya testga nega qulay?</summary>Setup kam, natija deterministic.</details>
-<details><summary>12. FP qayerda foydali?</summary>UI, data transform, pipeline va testlar.</details>
+**1. Pure function nima?**Faqat kirishga bog'liq, tashqi holatni o'zgartirmaydi.
+**2. Immutability nima uchun kerak?**Predictable kod va yashirin bug'larni kamaytiradi.
+**3. Side effect nima?**Funksiya tashqi state'ni o'zgartirishi yoki I/O qilishidir.
+**4. Higher-order function nima?**Funksiyani parametr sifatida oladi yoki funksiya qaytaradi.
+**5. map/filter/reduce qachon ishlatiladi?**Transform, saralash va agregatsiya uchun.
+**6. Currying nima?**Funksiyani bosqichma-bosqich chaqirish.
+**7. Partial application nima?**Argumentlarning bir qismini oldindan berib qo'yish.
+**8. Compose va Pipe farqi?**Compose o'ngdan chapga, Pipe chapdan o'ngga.
+**9. Referential transparency nima?**Bir xil kirishga bir xil natija (side effect yo'q).
+**10. Immutable update qanday qilinadi?**Spread/concat bilan nusxa yaratiladi.
+**11. Pure funksiya testga nega qulay?**Setup kam, natija deterministic.
+**12. FP qayerda foydali?**UI, data transform, pipeline va testlar.
 `,
   exercises: [
     {

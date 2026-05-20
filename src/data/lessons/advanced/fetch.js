@@ -39,65 +39,53 @@ fetch(url, {
 
 ## 4. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. Fetch API nima?</summary>
+**1. Fetch API nima?**
 Brauzerda tarmoq so'rovlarini yuborish uchun asinxron vosita.
-</details>
 
-<details>
-<summary>2. Fetch default metodi qaysi?</summary>
+
+**2. Fetch default metodi qaysi?**
 GET.
-</details>
 
-<details>
-<summary>3. response.json() nima qaytaradi?</summary>
+
+**3. response.json() nima qaytaradi?**
 Promise (JSON matni obyektga aylangach resolve bo'ladi).
-</details>
 
-<details>
-<summary>4. response.ok qachon true?</summary>
+
+**4. response.ok qachon true?**
 Status kodi 200-299 oralig'ida bo'lsa.
-</details>
 
-<details>
-<summary>5. POST so'rovda body qanday bo'ladi?</summary>
+
+**5. POST so'rovda body qanday bo'ladi?**
 Odatda JSON.stringify(data) bilan string ko'rinishida.
-</details>
 
-<details>
-<summary>6. Fetch xatolarini qanday ushlaymiz?</summary>
+
+**6. Fetch xatolarini qanday ushlaymiz?**
 .catch() yoki try...catch (await bo'lsa).
-</details>
 
-<details>
-<summary>7. Header-lar nima uchun kerak?</summary>
+
+**7. Header-lar nima uchun kerak?**
 Meta-ma'lumotlar (masalan, Token, Content-Type) yuborish uchun.
-</details>
 
-<details>
-<summary>8. CORS nima?</summary>
+
+**8. CORS nima?**
 Boshqa domendan ma'lumot olish xavfsizlik cheklovi.
-</details>
 
-<details>
-<summary>9. AbortController nima qiladi?</summary>
+
+**9. AbortController nima qiladi?**
 Fetch so'rovini to'xtatish (masalan, timeout bo'lsa).
-</details>
 
-<details>
-<summary>10. Fetch va XMLHttpRequest farqi?</summary>
+
+**10. Fetch va XMLHttpRequest farqi?**
 Fetch zamonaviy, Promise-ga asoslangan.
-</details>
 
-<details>
-<summary>11. Bir vaqtda ko'p so'rov yuborish?</summary>
+
+**11. Bir vaqtda ko'p so'rov yuborish?**
 Promise.all([fetch1, fetch2]) orqali.
-</details>
 
-<details>
-<summary>12. Retry pattern nima?</summary>
+
+**12. Retry pattern nima?**
 So'rov xato bo'lsa, avtomatik qayta urinish.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

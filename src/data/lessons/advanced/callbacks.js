@@ -312,58 +312,47 @@ readFileAsync("file.txt", (error, content) => {
 
 ### 8. 12 TA SAVOL VA JAVOBLAR
 
-<details>
-<summary><b>1. Callback nima?</b></summary>
+**<b>1. Callback nima?</b>**
 Funksiyaga argument sifatida uzatiladigan boshqa bir funksiya, odatda asinxron vazifalar tugagandan so'ng bajarilish uchun.
-</details>
 
-<details>
-<summary><b>2. Sinxron vs asinxron farqi?</b></summary>
+
+**<b>2. Sinxron vs asinxron farqi?</b>**
 Sinxron: Natija kutilguncha kod to'xtadi. Asinxron: Kod davom etadi, natija kelib bo'lganda callback chaqiriladi.
-</details>
 
-<details>
-<summary><b>3. setTimeout(fn, 0) nima qiladi?</b></summary>
+
+**<b>3. setTimeout(fn, 0) nima qiladi?</b>**
 Funksiyani darhol emas, balki joriy call stack bo'shagandan so'ng (navbatdagi) bajaradi.
-</details>
 
-<details>
-<summary><b>4. Event Loop nima?</b></summary>
+
+**<b>4. Event Loop nima?</b>**
 JavaScript mexanizmi: "Call stack bo'shmi? Callback queue'dan qabul qil!" deb navbatdagi callbacklarni ishga tushiradi.
-</details>
 
-<details>
-<summary><b>5. Callback Hell (Pyramid) nima?</b></summary>
+
+**<b>5. Callback Hell (Pyramid) nima?</b>**
 Bir-biriga bog'liq ko'p callback'lar bo'lganda, kod ichma-ich kirib, o'qishga og'ir bo'ladi.
-</details>
 
-<details>
-<summary><b>6. Inversion of Control (IoC) nima?</b></summary>
+
+**<b>6. Inversion of Control (IoC) nima?</b>**
 Biz funksiya ijrosini boshqa kodga topshiramiz. Callback necha marta chaqirilishini yoki error bo'lishini boshqara olmayebdiiz.
-</details>
 
-<details>
-<summary><b>7. Error handling callback'lar bilan qanday bo'ladi?</b></summary>
+
+**<b>7. Error handling callback'lar bilan qanday bo'ladi?</b>**
 Ikki callback: success va error. Yoki Node.js uslubi: (error, data) bitta callback bilan.
-</details>
 
-<details>
-<summary><b>8. Callback va scope o'rtasidagi bog'lanish?</b></summary>
+
+**<b>8. Callback va scope o'rtasidagi bog'lanish?</b>**
 Callback o'ziga lexical scope'ni saqlaydi (closure). Tashqaridagi o'zgaruvchilarni ko'ra oladi.
-</details>
 
-<details>
-<summary><b>9. setInterval vs setTimeout farqi?</b></summary>
+
+**<b>9. setInterval vs setTimeout farqi?</b>**
 \`setTimeout\` — bitta marta. \`setInterval\` — har N ms da qayta-qayta.
-</details>
 
-<details>
-<summary><b>10. fetch() dan keyin .then() ishlatish nima?</b></summary>
+
+**<b>10. fetch() dan keyin .then() ishlatish nima?</b>**
 \`fetch\` Promise qaytaradi, callback emas. Shuning uchun callback Hell oldini olish uchun Promise ishlatiladi.
-</details>
 
-<details>
-<summary><b>11. Callback'ni necha marta chaqirmaslik uchun qanday pattern?</b></summary>
+
+**<b>11. Callback'ni necha marta chaqirmaslik uchun qanday pattern?</b>**
 Once pattern: callback faqat bir marta chaqiriladi:
 \`\`\`javascript
 function once(callback) {
@@ -373,12 +362,11 @@ function once(callback) {
   };
 }
 \`\`\`
-</details>
 
-<details>
-<summary><b>12. Callback ASYNC/AWAIT bilan qanday o'zgaradi?</b></summary>
+
+**<b>12. Callback ASYNC/AWAIT bilan qanday o'zgaradi?</b>**
 Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik ko'rinishida yoziladi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

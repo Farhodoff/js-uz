@@ -11,8 +11,7 @@ Ilg'or darajadagi intervyular asosan arxitektura, optimizatsiya va JavaScriptnin
 ### 1. Event Loop qanday ishlaydi? ⭐
 **Qiyinlik:** 🔴 Qiyin | **Mavzu:** Asinxronlik
 
-<details>
-<summary>📖 Javob</summary>
+**📖 Javob**
 
 **Qisqa javob:**
 Event Loop - bu JavaScriptning single-threaded tabiatini saqlagan holda asinxron amallarni bajarishga imkon beruvchi mexanizm.
@@ -21,26 +20,24 @@ Event Loop - bu JavaScriptning single-threaded tabiatini saqlagan holda asinxron
 1. Call Stack bo'shligini tekshiradi.
 2. Microtask Queue (Promises) dagi barcha vazifalarni bajaradi.
 3. Task Queue (setTimeout) dagi bitta vazifani Stack'ga olib keladi.
-</details>
+
 
 ### 2. Prototype Chain nima? ⭐
 **Qiyinlik:** 🔴 Qiyin | **Mavzu:** OOP
 
-<details>
-<summary>📖 Javob</summary>
+**📖 Javob**
 
 JavaScriptda har bir obyektning yashirin \`[[Prototype]]\` xususiyati bor. Agar biror xususiyat obyektning o'zida topilmasa, JS uni prototipdan qidiradi. Bu zanjir \`null\` ga yetguncha davom etadi.
-</details>
+
 
 ### 3. Debounce va Throttle farqi nima? ⭐
 **Qiyinlik:** 🔴 Qiyin | **Mavzu:** Performance
 
-<details>
-<summary>📖 Javob</summary>
+**📖 Javob**
 
 **Debounce:** Ketma-ket kelayotgan chaqiriqlarni to'xtatib, oxirgisidan keyin ma'lum vaqt o'tgach ishlaydi (masalan, qidiruv inputi).
 **Throttle:** Chaqiriqlar sonidan qat'i nazar, ma'lum vaqt oralig'ida faqat bir marta ishlaydi (masalan, scroll event).
-</details>
+
 
 ---
 
@@ -49,8 +46,7 @@ JavaScriptda har bir obyektning yashirin \`[[Prototype]]\` xususiyati bor. Agar 
 ### 1. Currying funksiyasini yozing
 **Topshiriq:** \`sum(1)(2)(3)\` ko'rinishida ishlaydigan funksiya yarating.
 
-<details>
-<summary>✅ Yechim</summary>
+**✅ Yechim**
 
 \`\`\`javascript
 function sum(a) {
@@ -62,13 +58,12 @@ function sum(a) {
 }
 console.log(sum(1)(2)(3)); // → 6
 \`\`\`
-</details>
+
 
 ### 2. Deep Flatten Array
 **Topshiriq:** \`[1, [2, [3, 4]]]\` massivini \`[1, 2, 3, 4]\` holatiga keltiring (flat() ishlatmay).
 
-<details>
-<summary>✅ Yechim</summary>
+**✅ Yechim**
 
 \`\`\`javascript
 function flatten(arr) {
@@ -76,7 +71,7 @@ function flatten(arr) {
     Array.isArray(val) ? acc.concat(flatten(val)) : acc.concat(val), []);
 }
 \`\`\`
-</details>
+
 
 ---
 

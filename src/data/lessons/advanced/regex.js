@@ -50,65 +50,53 @@ console.log(emailRegex.test("ali@gmail.com")); // true
 
 ## Savol-Javoblar (12 ta)
 
-<details>
-<summary><b>1. RegEx nima va u nima uchun ishlatiladi?</b></summary>
+**<b>1. RegEx nima va u nima uchun ishlatiladi?</b>**
 Regular Expression (RegEx) — matn ichidagi naqshlarni (patterns) aniqlash, tekshirish, ajratish va almashtirish uchun ishlatiladigan maxsus belgilar tizimi.
-</details>
 
-<details>
-<summary><b>2. test() va match() metodlari farqi nimada?</b></summary>
+
+**<b>2. test() va match() metodlari farqi nimada?</b>**
 \`test()\` faqat mos kelish bor-yo'qligini \`true/false\` qaytaradi. \`match()\` esa topilgan barcha mos qismlarni massiv qilib qaytaradi.
-</details>
 
-<details>
-<summary><b>3. i va g bayroqlari nimani anglatadi?</b></summary>
+
+**<b>3. i va g bayroqlari nimani anglatadi?</b>**
 \`i\` — katta-kichik harf farqi yo'q (case-insensitive). \`g\` — global, barcha mosliklarni izlaydi, birinchisida to'xtamaydi.
-</details>
 
-<details>
-<summary><b>4. Capturing groups (qavslar) nima uchun kerak?</b></summary>
+
+**<b>4. Capturing groups (qavslar) nima uchun kerak?</b>**
 \`()\` qavslar yordamida mos keladigan qismni "guruh" sifatida saqlash mumkin. Masalan, \`/(\\\\d{4})-(\\\\d{2})/\` sanani guruhlab oladi.
-</details>
 
-<details>
-<summary><b>5. \\d, \\w, \\s nimani bildiradi?</b></summary>
+
+**<b>5. \\d, \\w, \\s nimani bildiradi?</b>**
 \`\\d\` — raqamlar (0-9). \`\\w\` — harf, raqam va pastki chiziq. \`\\s\` — bo'shliq va tabulyatsiya belgilari.
-</details>
 
-<details>
-<summary><b>6. RegEx'da "Greedy" va "Lazy" qidiruv farqi nima?</b></summary>
+
+**<b>6. RegEx'da "Greedy" va "Lazy" qidiruv farqi nima?</b>**
 Greedy (\`+\`, \`*\`) — imkon boricha ko'proq belgini qamrab oladi. Lazy (\`+?\`, \`*?\`) — imkon boricha kam belgini qamrab oladi.
-</details>
 
-<details>
-<summary><b>7. ^ va $ nima?</b></summary>
+
+**<b>7. ^ va $ nima?</b>**
 \`^\` — qator yoki satr boshini bildiradi. \`$\` — qator yoki satr oxirini bildiradi. Email yoki telefon kabi to'liq matnni tekshirishda zarur.
-</details>
 
-<details>
-<summary><b>8. replace() bilan RegEx ishlatishda nima afzallik bor?</b></summary>
+
+**<b>8. replace() bilan RegEx ishlatishda nima afzallik bor?</b>**
 \`str.replace(/pattern/g, 'yangi')\` — \`g\` bayrog'i bilan barcha mosliklarni almashtiradi. Oddiy string bilan faqat birinchisi almashtiriladi.
-</details>
 
-<details>
-<summary><b>9. Lookahead nima? Misol keltiring.</b></summary>
+
+**<b>9. Lookahead nima? Misol keltiring.</b>**
 Lookahead (\`(?=...)\`) — hozirgi pozitsiyadan keyin ma'lum naqsh kelishini talab qiladi. Masalan, \`\\d+(?= yil)\` faqat "yil" oldidagi raqamlarni topadi.
-</details>
 
-<details>
-<summary><b>10. Character class [] nima?</b></summary>
+
+**<b>10. Character class [] nima?</b>**
 \`[abc]\` — 'a', 'b' yoki 'c' dan birini moslashtiradi. \`[a-z]\` — barcha kichik harflar. \`[^abc]\` — a, b, c dan boshqa istalgan belgi.
-</details>
 
-<details>
-<summary><b>11. Non-capturing group (?:...) nima?</b></summary>
+
+**<b>11. Non-capturing group (?:...) nima?</b>**
 \`(?:...)\` — guruhlanadi, lekin natijada saqlanmaydi. Miqdor berish uchun ishlatiladi: \`(?:ab)+\` — "ab" bir yoki ko'p marta.
-</details>
 
-<details>
-<summary><b>12. String.prototype.split() da RegEx qanday ishlaydi?</b></summary>
+
+**<b>12. String.prototype.split() da RegEx qanday ishlaydi?</b>**
 \`"a1b2c3".split(/\\d/)\` → \`["a", "b", "c", ""]\` — har bir raqam ajratuvchi sifatida ishlatiladi.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

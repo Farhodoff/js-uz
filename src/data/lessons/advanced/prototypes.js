@@ -29,65 +29,53 @@ Xotirani tejash uchun metodlarni prototipga yozish tavsiya etiladi.
 
 ## 4. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. Prototype nima?</summary>
+**1. Prototype nima?**
 Obyektlar o'rtasida xususiyatlar almashish mexanizmi.
-</details>
 
-<details>
-<summary>2. __proto__ nima?</summary>
+
+**2. __proto__ nima?**
 Obyektning ota prototipiga bo'lgan yashirin ishorasi.
-</details>
 
-<details>
-<summary>3. prototype va __proto__ farqi?</summary>
+
+**3. prototype va __proto__ farqi?**
 prototype — funksiya xususiyati, __proto__ — obyekt xususiyati.
-</details>
 
-<details>
-<summary>4. Prototype chain nima?</summary>
+
+**4. Prototype chain nima?**
 Ob'ektdan to null gacha bo'lgan prototiplar zanjiri.
-</details>
 
-<details>
-<summary>5. new operatori nima qiladi?</summary>
+
+**5. new operatori nima qiladi?**
 Yangi obyekt yaratadi va prototipni bog'laydi.
-</details>
 
-<details>
-<summary>6. Object.create() nima?</summary>
+
+**6. Object.create() nima?**
 Berilgan prototip bilan yangi obyekt yaratish.
-</details>
 
-<details>
-<summary>7. hasOwnProperty() nima qiladi?</summary>
+
+**7. hasOwnProperty() nima qiladi?**
 Xususiyat obyektning o'zinikimi yoki prototipdan kelganmi tekshiradi.
-</details>
 
-<details>
-<summary>8. Nima uchun metodlarni prototipga qo'shgan ma'qul?</summary>
+
+**8. Nima uchun metodlarni prototipga qo'shgan ma'qul?**
 Xotirani tejash uchun (bitta nusxa hamma instance uchun).
-</details>
 
-<details>
-<summary>9. ES6 Class asli nima?</summary>
+
+**9. ES6 Class asli nima?**
 Prototype inheritance uchun sintaktik qobiq (sugar).
-</details>
 
-<details>
-<summary>10. instanceof nima uchun?</summary>
+
+**10. instanceof nima uchun?**
 Obyekt ma'lum bir prototip zanjirida bormi tekshirish uchun.
-</details>
 
-<details>
-<summary>11. Object.prototype nima?</summary>
+
+**11. Object.prototype nima?**
 Eng yuqori (bazaviy) prototip.
-</details>
 
-<details>
-<summary>12. Polyfill nima?</summary>
+
+**12. Polyfill nima?**
 Eski brauzerlarda yo'q metodlarni prototipga qo'lda qo'shish.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

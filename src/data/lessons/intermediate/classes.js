@@ -266,65 +266,53 @@ console.log(car.constructor === Car); // true
 
 ### 6. 12 TA SAVOL VA JAVOBLAR
 
-<details>
-<summary><b>1. Klass (Class) nima?</b></summary>
+**<b>1. Klass (Class) nima?</b>**
 Objektlar yaratish uchun "shablon" yoki "qolip". Modernizm JS/ES6 qo'shimchasi.
-</details>
 
-<details>
-<summary><b>2. Constructor metodi nima?</b></summary>
+
+**<b>2. Constructor metodi nima?</b>**
 Yangi objekti yaratilganda birinchi chaqirilgan maxsus metod. Boshlang'ich qiymatlarni berish uchun.
-</details>
 
-<details>
-<summary><b>3. new kalit so'zi nima qiladi?</b></summary>
+
+**<b>3. new kalit so'zi nima qiladi?</b>**
 1. Yangi obje yaratadi. 2. Constructor'ni this bo'lib chaqiradi. 3. this'ni qaytaradi.
-</details>
 
-<details>
-<summary><b>4. Klass ichidagi funksiya nima deyiladi?</b></summary>
+
+**<b>4. Klass ichidagi funksiya nima deyiladi?</b>**
 Metod (method).
-</details>
 
-<details>
-<summary><b>5. Extends kalit so'zi nima?</b></summary>
+
+**<b>5. Extends kalit so'zi nima?</b>**
 Bir klassdan boshqasini merosxo'rlik (inheritance) qilish uchun.
-</details>
 
-<details>
-<summary><b>6. Super() funksiyasi nima?</b></summary>
+
+**<b>6. Super() funksiyasi nima?</b>**
 Ota klass'ning constructor'ni chaqirish uchun. Extend qilganda shart.
-</details>
 
-<details>
-<summary><b>7. Static metod nima?</b></summary>
+
+**<b>7. Static metod nima?</b>**
 Klassga tegishli, lekin objektga emas. new'ga kerak emas. Klass.metod() shaklida chaqiriladi.
-</details>
 
-<details>
-<summary><b>8. Getter va Setter nima?</b></summary>
+
+**<b>8. Getter va Setter nima?</b>**
 Getter: property'ni o'qish kabi yozish. Setter: property'ni belgilash kabi yozish. get/set kalit so'zlari bilan.
-</details>
 
-<details>
-<summary><b>9. Private maydonlar (#) nima?</b></summary>
+
+**<b>9. Private maydonlar (#) nima?</b>**
 Tashqaridan o'zgartirib bo'lmaydigan maydonlar. Faqat klass ichida.
-</details>
 
-<details>
-<summary><b>10. Klass nomi qanday harf bilan boshlanishi kerak?</b></summary>
+
+**<b>10. Klass nomi qanday harf bilan boshlanishi kerak?</b>**
 Katta harf (PascalCase): Car, Person, Animal.
-</details>
 
-<details>
-<summary><b>11. Bitta klassdan nechta obyekt olish mumkin?</b></summary>
+
+**<b>11. Bitta klassdan nechta obyekt olish mumkin?</b>**
 Cheksiz. Har biri alohida instance.
-</details>
 
-<details>
-<summary><b>12. Klasslar JSga qachon qo'shilgan?</b></summary>
+
+**<b>12. Klasslar JSga qachon qo'shilgan?</b>**
 ES6 (ECMAScript 2015). Asli prototip-based, syntactic sugar.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

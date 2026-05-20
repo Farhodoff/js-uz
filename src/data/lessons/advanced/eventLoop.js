@@ -40,65 +40,53 @@ setTimeout va setInterval callback'lari bu yerga tushadi.
 
 ## 4. SAVOLLAR VA JAVOBLAR
 
-<details>
-<summary>1. JavaScript necha oqimli (threaded) til?</summary>
+**1. JavaScript necha oqimli (threaded) til?**
 Single-threaded. Faqat bitta kod bir vaqtda bajariladi.
-</details>
 
-<details>
-<summary>2. Call Stack nima?</summary>
+
+**2. Call Stack nima?**
 Hozir bajarilayotgan funksiyalar navbati. LIFO tartibida ishlaydi.
-</details>
 
-<details>
-<summary>3. Web APIs nima vazifani bajaradi?</summary>
+
+**3. Web APIs nima vazifani bajaradi?**
 Asinxron operatsiyalarni brauzerda fonda bajaradi.
-</details>
 
-<details>
-<summary>4. Event Loop'ning asosiy vazifasi nima?</summary>
+
+**4. Event Loop'ning asosiy vazifasi nima?**
 Call Stack bo'sh bo'lsa, Queue'dagi callback'larni Call Stack'ga o'tkazish.
-</details>
 
-<details>
-<summary>5. Microtask va Macrotask farqi nimada?</summary>
+
+**5. Microtask va Macrotask farqi nimada?**
 Microtask (Promise) - yuqori ustuvor, Macrotask (setTimeout) - past ustuvor.
-</details>
 
-<details>
-<summary>6. Promise qaysi navbatga tushadi?</summary>
+
+**6. Promise qaysi navbatga tushadi?**
 Microtask Queue'ga.
-</details>
 
-<details>
-<summary>7. setTimeout qaysi navbatga tushadi?</summary>
+
+**7. setTimeout qaysi navbatga tushadi?**
 Macrotask Queue'ga.
-</details>
 
-<details>
-<summary>8. Nima uchun microtask'lar macrotask'lardan oldin bajariladi?</summary>
+
+**8. Nima uchun microtask'lar macrotask'lardan oldin bajariladi?**
 Data konsistentligi va UI tezkor yangilanishi uchun.
-</details>
 
-<details>
-<summary>9. "Blocking code" nima degani?</summary>
+
+**9. "Blocking code" nima degani?**
 Event Loop'ni to'xtatadigan, brauzerni qotiradigan uzun kod.
-</details>
 
-<details>
-<summary>10. Event Loop brauzerni qotib qolishidan qanday saqlaydi?</summary>
+
+**10. Event Loop brauzerni qotib qolishidan qanday saqlaydi?**
 Asinxronlik orqali og'ir ishlarni chetga surib qo'yadi.
-</details>
 
-<details>
-<summary>11. Call Stack bo'sh bo'lmasa Event Loop nima qiladi?</summary>
+
+**11. Call Stack bo'sh bo'lmasa Event Loop nima qiladi?**
 Navbatdagi ishni o'tkazmay, kutib turadi.
-</details>
 
-<details>
-<summary>12. Node.js va Browser Event Loop'lari farq qiladimi?</summary>
+
+**12. Node.js va Browser Event Loop'lari farq qiladimi?**
 Ha, Node.js da ko'proq fazalar mavjud.
-</details>`,
+`,
   exercises: [
     {
       id: 1,

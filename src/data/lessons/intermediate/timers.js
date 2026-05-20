@@ -43,65 +43,53 @@ clearInterval(id); // Takrorlanishni to'xtatadi
 2.  **To'xtatishni unutish:** \`setInterval\`ni to'xtatmasangiz, u sayt yopilguncha ishlayveradi (performance uchun yomon).
 
 ## 6. SAVOLLAR VA JAVOBLAR
-<details>
-<summary>1. setTimeout va setInterval farqi nima?</summary>
+**1. setTimeout va setInterval farqi nima?**
 setTimeout — bir marta, setInterval — takroriy.
-</details>
 
-<details>
-<summary>2. 1 soniya necha millisekund?</summary>
+
+**2. 1 soniya necha millisekund?**
 1000 ms.
-</details>
 
-<details>
-<summary>3. Taymerni qanday to'xtatish mumkin?</summary>
+
+**3. Taymerni qanday to'xtatish mumkin?**
 clearInterval(id) yoki clearTimeout(id).
-</details>
 
-<details>
-<summary>4. clearTimeout nima uchun kerak?</summary>
+
+**4. clearTimeout nima uchun kerak?**
 setTimeout ni to'xtatish uchun.
-</details>
 
-<details>
-<summary>5. Taymer ID-si nima?</summary>
+
+**5. Taymer ID-si nima?**
 Taymerni o'zgartirish yoki to'xtatish uchun unga berilgan unikal raqam.
-</details>
 
-<details>
-<summary>6. setTimeout(() => {}, 0) nima qiladi?</summary>
+
+**6. setTimeout(() => {}, 0) nima qiladi?**
 Kod bajarilishini hozirgi Call Stackdan keyinga suradi (asinxron).
-</details>
 
-<details>
-<summary>7. Taymerlar brauzerda qanday navbatga qo'yiladi?</summary>
+
+**7. Taymerlar brauzerda qanday navbatga qo'yiladi?**
 Callback Queue (MacroTask).
-</details>
 
-<details>
-<summary>8. setInterval ichida clearInterval ishlatsa bo'ladimi?</summary>
+
+**8. setInterval ichida clearInterval ishlatsa bo'ladimi?**
 Ha, shart qanoatlantirilganda to'xtatish uchun.
-</details>
 
-<details>
-<summary>9. Bir vaqtda nechta taymer ishlatish mumkin?</summary>
+
+**9. Bir vaqtda nechta taymer ishlatish mumkin?**
 Cheksiz, lekin ko'p bo'lsa sayt qotishi mumkin.
-</details>
 
-<details>
-<summary>10. Taymer vaqtini o'zgaruvchida saqlash mumkinmi?</summary>
+
+**10. Taymer vaqtini o'zgaruvchida saqlash mumkinmi?**
 Ha.
-</details>
 
-<details>
-<summary>11. Rekursiv setTimeout nima?</summary>
+
+**11. Rekursiv setTimeout nima?**
 setTimeout ichida yana setTimeout chaqirish.
-</details>
 
-<details>
-<summary>12. requestAnimationFrame taymerlardan nimasi bilan farq qiladi?</summary>
+
+**12. requestAnimationFrame taymerlardan nimasi bilan farq qiladi?**
 Monitor yangilanish tezligiga (60fps) mos keladi, animatsiyalar uchun qulay.
-</details>`,
+`,
   exercises: [
     {
       id: 1,
