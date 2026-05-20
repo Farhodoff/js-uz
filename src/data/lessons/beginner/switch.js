@@ -52,19 +52,67 @@ switch (oy) {
 1. **breakni unutish:** Eng ko'p uchraydigan xato. Agar \`break\` qo'ymasangiz, dastur to'xtamay hamma \`case\`larni chiqarib yuboradi.
 2. **Strict Equality:** \`switch\` solishtirishda \`===\` (qat'iy tenglik) ishlatadi. Ya'ni \`switch(5)\` bo'lsa-yu, siz \`case "5":\` deb yozsangiz (matn), u ishlamaydi.
 
-## 6. SAVOLLAR (12 ta)
-1. \`switch\` operatori nima vazifani bajaradi?
-2. Qachon \`if...else\` o'rniga \`switch\` ishlatgan ma'qul?
-3. \`case\` so'zining ma'nosi nima?
-4. \`break\` kalit so'zi nima uchun shart?
-5. \`default\` bloki nima vazifani bajaradi?
-6. \`switch\` qanday tenglik operatoridan foydalanadi (\`==\` yoki \`===\`)?
-7. "Fall-through" nima degani?
-8. \`default\` har doim oxirida bo'lishi shartmi?
-9. Bitta \`case\` ichida bir nechta amal bajarish mumkinmi?
-10. \`switch\` ichida boshqa \`switch\` ishlatish mumkinmi?
-11. Matnli qiymatlarni \`switch\`da tekshirsa bo'ladimi?
-12. \`switch(true)\` usuli nima uchun ishlatiladi?`,
+## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. switch operatori nima vazifani bajaradi?</summary>
+\`switch\` operatori bitta o'zgaruvchi yoki ifodani berilgan bir nechta qiymatlar (case) bilan solishtirib, mos keladigan kod blokini ishga tushirish uchun xizmat qiladi.
+</details>
+
+<details>
+<summary>2. Qachon if...else o'rniga switch ishlatgan ma'qul?</summary>
+Bitta o'zgaruvchining juda ko'p aniq qiymatlarini tekshirish kerak bo'lganda (masalan, hafta kunlari yoki menyu buyruqlari), kod o'qilishini yaxshilash va tartibli qilish uchun \`switch\` afzaldir.
+</details>
+
+<details>
+<summary>3. case so'zining ma'nosi nima?</summary>
+\`case\` (holat) — \`switch\`ga berilgan ifodaning solishtirilayotgan aniq qiymatini belgilaydi. Agar qiymatlar mos kelsa, shu \`case\`dan keyingi kod ishga tushadi.
+</details>
+
+<details>
+<summary>4. break kalit so'zi nima uchun shart?</summary>
+\`break\` kalit so'zi joriy \`case\` kodi bajarilgandan keyin \`switch\` operatoridan chiqib ketishni buyuradi. Agar u qo'yilmasa, JS keyingi barcha \`case\`larni ham ketma-ket bajaradi.
+</details>
+
+<details>
+<summary>5. default bloki nima vazifani bajaradi?</summary>
+\`default\` bloki \`if...else\` dagi \`else\` kabi ishlaydi. Agar berilgan case-lardan hech biri mos kelmasa, \`default\` bloki ichidagi kod bajariladi.
+</details>
+
+<details>
+<summary>6. switch qanday tenglik operatoridan foydalanadi (== yoki ===)?</summary>
+\`switch\` har bir holatni solishtirish uchun qat'iy tenglik (\`===\`) operatoridan foydalanadi (qiymatni ham, turini ham tekshiradi).
+</details>
+
+<details>
+<summary>7. "Fall-through" nima degani?</summary>
+Bu \`case\` ichida \`break\` yozilmaganligi sababli, dasturning keyingi \`case\`lar ichidagi kodlarni ham to'xtamasdan bajarib ketish holatidir.
+</details>
+
+<details>
+<summary>8. default har doim oxirida bo'lishi shartmi?</summary>
+Yo'q, \`default\` bloki \`switch\` ichida istalgan joyda kelishi mumkin. Lekin o'qish qulayligi uchun odatda eng oxirida yoziladi. Agar u oxirida yozilmasa, uning oxiriga ham \`break\` qo'yish kerak bo'ladi.
+</details>
+
+<details>
+<summary>9. Bitta case ichida bir nechta amal bajarish mumkinmi?</summary>
+Ha, bitta \`case\` dan keyin istalgancha kod qatorlarini yozish va bir nechta amalni bajarish mumkin.
+</details>
+
+<details>
+<summary>10. switch ichida boshqa switch ishlatish mumkinmi?</summary>
+Ha, JavaScriptda \`switch\` ichida boshqa ichki \`switch\` operatorini yozish (nested switch) mumkin, lekin bu kodning o'qilishini qiyinlashtirishi sababli tavsiya etilmaydi.
+</details>
+
+<details>
+<summary>11. Matnli qiymatlarni switchda tekshirsa bo'ladimi?</summary>
+Ha, \`switch\` operatori matnlarni (string), sonlarni, boolean va boshqa har qanday turdagi qiymatlarni solishtira oladi.
+</details>
+
+<details>
+<summary>12. switch(true) usuli nima uchun ishlatiladi?</summary>
+\`switch(true)\` usuli \`case\`lar ichida qiymat emas, balki shartli diapazonlarni (masalan, \`case yosh > 18:\` yoki \`case baho >= 90:\`) tekshirish uchun ishlatiladi.
+</details>`,
   exercises: [
     {
       id: 1,

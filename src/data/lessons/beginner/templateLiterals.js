@@ -52,19 +52,70 @@ console.log(\`Assalomu alaykum, \${user}!\`);
 1.  **Qo'shtirnoqlar bilan adashtirish:** \`'\` yoki \`"\` emas, \` \` \` ishlatish shart.
 2.  **Sintaksis:** \`\${}\` ichida faqat ifodalar (expressions) yoziladi, \`if/for\` kabi bloklarni yozib bo'lmaydi.
 
-## 6. SAVOLLAR (12 ta)
-1. Template Literals qaysi belgilar bilan yoziladi?
-2. \`\${}\` belgisi nima vazifani bajaradi?
-3. Backtick ichida yangi qatorga o'tish uchun nima qilish kerak?
-4. Eski \`+\` usulining asosiy kamchiligi nima?
-5. \`\${}\` ichida ternary operator ishlatsa bo'ladimi?
-6. Nima uchun bu usul "Template" deb ataladi?
-7. JSning qaysi versiyasida bu xususiyat qo'shilgan?
-8. \`\${2 + 2}\` natijasi nima bo'ladi?
-9. Backtick ichida oddiy qo'shtirnoq ishlatish mumkinmi?
-10. HTML elementlarini backtick bilan yasash qulaymi?
-11. Matnni bir nechta o'zgaruvchidan tashkil qilish misolini keltiring.
-12. Backtick ichida funksiya chaqirish mumkinmi?`,
+## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. Template Literals qaysi belgilar bilan yoziladi?</summary>
+Template Literals klaviaturadagi \`Esc\` tugmasi ostida joylashgan backtick (\` \` \` - teskari qo'shtirnoq) belgilari bilan yoziladi.
+</details>
+
+<details>
+<summary>2. \${} belgisi nima vazifani bajaradi?</summary>
+\`\${}\` (interpolatsiya) belgisi matn ichiga istalgan JavaScript o'zgaruvchisi, hisob-kitob amali yoki ifodasini to'g'ridan-to'g'ri joylashtirish (tarjima qilish) uchun xizmat qiladi.
+</details>
+
+<details>
+<summary>3. Backtick ichida yangi qatorga o'tish uchun nima qilish kerak?</summary>
+Hech qanday maxsus belgi (masalan, \`\\n\`) yozish shart emas. Shunchaki klaviaturadagi "Enter" tugmasini bosib yangi qatorga o'tish kifoya.
+</details>
+
+<details>
+<summary>4. Eski + usulining asosiy kamchiligi nima?</summary>
+Ko'p o'zgaruvchilar va uzun matnlarni birlashtirishda qo'shtirnoqlar hamda \`+\` belgilarining ko'pligi sababli sintaktik xatolarga yo'l qo'yish juda oson bo'lgan.
+</details>
+
+<details>
+<summary>5. \${} ichida ternary operator ishlatsa bo'ladimi?</summary>
+Ha, \`\${}\` ichida har qanday JavaScript ifodasi (expression), jumladan ternary (uchlik) shart operatori (\`shart ? true : false\`) ham to'liq ishlaydi.
+</details>
+
+<details>
+<summary>6. Nima uchun bu usul "Template" deb ataladi?</summary>
+Chunki u matn uchun andoza (shablon) vazifasini bajaradi va undagi o'zgaruvchilar o'rni dinamik tarzda to'ldiriladi.
+</details>
+
+<details>
+<summary>7. JSning qaysi versiyasida bu xususiyat qo'shilgan?</summary>
+Bu xususiyat JavaScript-ning ES6 (ECMAScript 2015) versiyasida qo'shilgan.
+</details>
+
+<details>
+<summary>8. \${2 + 2} natijasi nima bo'ladi?</summary>
+Natija \`4\` (matn ko'rinishida) bo'ladi, chunki ifoda bajarilib, natija stringga o'giriladi.
+</details>
+
+<details>
+<summary>9. Backtick ichida oddiy qo'shtirnoq ishlatish mumkinmi?</summary>
+Ha, backtick bilan o'ralgan matn ichida hech qanday muammosiz oddiy \`'\` va ikkitalik \`"\` qo'shtirnoqlardan foydalanish mumkin (ularni escape qilish shart emas).
+</details>
+
+<details>
+<summary>10. HTML elementlarini backtick bilan yasash qulaymi?</summary>
+Ha, o'ta qulay. Ko'p qatorli HTML tuzilmalarini va ulardagi dinamik qiymatlarni backtick yordamida juda oson va toza yaratish mumkin.
+</details>
+
+<details>
+<summary>11. Matnni bir nechta o'zgaruvchidan tashkil qilish misolini keltiring.</summary>
+\`\`\`javascript
+let ism = "Ali", yosh = 20;
+let gap = \`Ism: \${ism}, Yosh: \${yosh}\`;
+\`\`\`
+</details>
+
+<details>
+<summary>12. Backtick ichida funksiya chaqirish mumkinmi?</summary>
+Ha, \`\${}\` ichida har qanday funksiyani chaqirish mumkin va funksiya qaytargan qiymat matn ichiga joylashtiriladi.
+</details>`,
   exercises: [
     {
       id: 1,

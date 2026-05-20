@@ -47,19 +47,67 @@ console.log(null === undefined); // false
 1. **== ishlatish:** Ko'p hollarda \`==\` kutilmagan natija beradi. Shuning uchun professional dasturchilar har doim \`===\` ishlatishni maslahat berishadi.
 2. **NaN bilan solishtirish:** \`if (x === NaN)\` hech qachon ishlamaydi. Buning o'rniga \`isNaN(x)\` ishlatish kerak.
 
-## 6. SAVOLLAR (12 ta)
-1. \`==\` va \`===\` farqi nimada?
-2. Coercion (avtomatik tur o'zgarishi) qaysi tenglikda sodir bo'ladi?
-3. Nima uchun \`5 === "5"\` false qaytaradi?
-4. \`null == undefined\` natijasi nima?
-5. \`null === undefined\` natijasi nima?
-6. \`NaN == NaN\` natijasi nima bo'ladi?
-7. \`Object.is()\` nima uchun kerak?
-8. \`0 == ""\` (bo'sh matn) natijasi nima?
-9. \`0 === ""\` natijasi nima?
-10. Nima uchun har doim \`===\` ishlatish tavsiya etiladi?
-11. \`false == "0"\` natijasi nima?
-12. Massivlarni \`===\` bilan solishtirsa bo'ladimi? (Diqqat: Reference!)`,
+## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. == va === farqi nimada?</summary>
+\`==\` (yumshoq tenglik) solishtirishdan oldin turlarni avtomatik o'zgartiradi (\`coercion\`). \`===\` (qat'iy tenglik) esa turlarni o'zgartirmaydi va qiymat hamda tur bir xil bo'lsagina \`true\` beradi.
+</details>
+
+<details>
+<summary>2. Coercion (avtomatik tur o'zgarishi) qaysi tenglikda sodir bo'ladi?</summary>
+Faqat yumshoq tenglikda (\`==\`) sodir bo'ladi. Qat'iy tenglikda (\`===\`) esa turlar o'zgarmasdan solishtiriladi.
+</details>
+
+<details>
+<summary>3. Nima uchun 5 === "5" false qaytaradi?</summary>
+Chunki chap tomondagi \`5\` son (\`number\`) turida, o'ng tomondagi \`"5"\` esa matn (\`string\`) turida bo'lib, ularning turlari mos kelmaydi.
+</details>
+
+<details>
+<summary>4. null == undefined natijasi nima?</summary>
+Natija \`true\` bo'ladi. Yumshoq tenglik qoidalariga ko'ra, \`null\` va \`undefined\` faqat bir-biri bilan teng deb hisoblanadi.
+</details>
+
+<details>
+<summary>5. null === undefined natijasi nima?</summary>
+Natija \`false\` bo'ladi, chunki ularning ma'lumot turlari farq qiladi (\`null\` — \`object\`, \`undefined\` — \`undefined\`).
+</details>
+
+<details>
+<summary>6. NaN == NaN natijasi nima bo'ladi?</summary>
+Natija \`false\` bo'ladi. JavaScript-da \`NaN\` (Not a Number) o'ziga o'zi teng bo'lmagan yagona qiymatdir.
+</details>
+
+<details>
+<summary>7. Object.is() nima uchun kerak?</summary>
+\`Object.is()\` — qiymatlarni solishtirishning eng aniq va mukammal algoritmidir. U hatto \`NaN === NaN\` (\`false\` qaytaradigan) va \`-0 === +0\` (\`true\` qaytaradigan) kabi o'ziga xos holatlarni ham to'g'ri baholaydi.
+</details>
+
+<details>
+<summary>8. 0 == "" (bo'sh matn) natijasi nima?</summary>
+Natija \`true\` bo'ladi, chunki \`==\` solishtiruvida ikkala tomon ham son (\`0\`) ko'rinishiga o'giriladi.
+</details>
+
+<details>
+<summary>9. 0 === "" natijasi nima?</summary>
+Natija \`false\` bo'ladi, chunki ularning turlari har xil (\`number\` va \`string\`).
+</details>
+
+<details>
+<summary>10. Nima uchun har doim === ishlatish tavsiya etiladi?</summary>
+Chunki u avtomatik tur o'zgarishlaridan kelib chiqadigan kutilmagan mantiqiy xatolarning oldini oladi va kodni yanada tushunarli va ishonchli qiladi.
+</details>
+
+<details>
+<summary>11. false == "0" natijasi nima?</summary>
+Natija \`true\` bo'ladi. Chunki solishtirish paytida \`false\` ham, \`"0"\` ham avtomatik ravishda \`0\` soniga aylantiriladi.
+</details>
+
+<details>
+<summary>12. Massivlarni === bilan solishtirsa bo'ladimi? (Diqqat: Reference!)</summary>
+Massivlar murakkab (reference) ma'lumot turi bo'lgani uchun, ularni \`===\` bilan solishtirganda faqatgina xotiradagi manzillari solishtiriladi. Shuning uchun tarkibi bir xil bo'lsaga ham, ikki alohida massiv (masalan, \`[] === []\`) doimo \`false\` beradi.
+</details>`,
   exercises: [
     {
       id: 1,
