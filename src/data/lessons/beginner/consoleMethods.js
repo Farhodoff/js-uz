@@ -51,19 +51,67 @@ console.table(meva);
 1. \`Console.log\` (katta harf bilan) deb yozish.
 2. Production kodda konsollarni qoldirish.
 
-## 6. SAVOLLAR (12 ta)
-1. \`console.table\` nima uchun kerak?
-2. \`console.error\` qanday rangda chiqadi?
-3. Vaqtni o'lchash uchun qaysi metodlar ishlatiladi?
-4. \`console.clear()\` nima qiladi?
-5. Bir nechta qiymatni bitta logda chiqarsa bo'ladimi?
-6. \`console.group()\` nima?
-7. \`console.warn\` qachon ishlatiladi?
-8. \`console.log\` JS tilidami yoki brauzerda?
-9. Konsolga CSS bersa bo'ladimi?
-10. \`console.count()\` nima vazifani bajaradi?
-11. Obektni konsolda qanday qulay ko'rish mumkin?
-12. Debugging nima?`,
+## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. console.table nima uchun kerak?</summary>
+Massivlar va obyektlarni brauzer konsolida oddiy ro'yxat ko'rinishida emas, balki chiroyli, ustun va qatorlardan iborat jadval (table) shaklida o'qish uchun ishlatiladi.
+</details>
+
+<details>
+<summary>2. console.error qanday rangda chiqadi?</summary>
+\`console.error()\` orqali chiqarilgan xabarlar konsolda qizil rangda, chap tomonida maxsus xato belgisi bilan birga ko'rinadi.
+</details>
+
+<details>
+<summary>3. Vaqtni o'lchash uchun qaysi metodlar ishlatiladi?</summary>
+Vaqtni o'lchashni boshlash uchun \`console.time("nom")\` va uni to'xtatib natijani millisekundlarda ko'rish uchun \`console.timeEnd("nom")\` metodlari ishlatiladi.
+</details>
+
+<details>
+<summary>4. console.clear() nima qiladi?</summary>
+Konsol ekranida to'planib qolgan barcha oldingi xabar va loglarni butunlay tozalab yuboradi.
+</details>
+
+<details>
+<summary>5. Bir nechta qiymatni bitta logda chiqarsa bo'ladimi?</summary>
+Ha, \`console.log()\` ichiga bir nechta qiymat yoki o'zgaruvchilarni vergul bilan ajratib yozish orqali barchasini bitta qatorda chiqarish mumkin.
+</details>
+
+<details>
+<summary>6. console.group() nima?</summary>
+Konsoldagi ketma-ket chiqadigan bir nechta xabarlarni guruhlab, ochiluvchi/yopiluvchi daraxtsimon ro'yxat ko'rinishida tartiblash uchun ishlatiladigan metoddir.
+</details>
+
+<details>
+<summary>7. console.warn qachon ishlatiladi?</summary>
+Dastur ishini to'xtatmaydigan, ammo kelgusida muammo keltirib chiqarishi mumkin bo'lgan holatlar haqida sariq rangli ogohlantirish (warning) chiqarish uchun ishlatiladi.
+</details>
+
+<details>
+<summary>8. console.log JS tilidami yoki brauzerda?</summary>
+\`console\` — JavaScript tilining o'zige tegishli emas, u brauzer yoki Node.js taqdim etadigan global Web API hisoblanadi.
+</details>
+
+<details>
+<summary>9. Konsolga CSS bersa bo'ladimi?</summary>
+Ha, \`console.log()\` ichidagi matn boshiga \`%c\` belgisini qo'yib, ikkinchi parametr sifatida CSS qoidalarini yozib konsoldagi yozuvlarni turli ranglar va stillarga bo'yash mumkin.
+</details>
+
+<details>
+<summary>10. console.count() nima vazifani bajaradi?</summary>
+Ushbu metod o'ziga berilgan yorliqning necha marta chaqirilganligini hisoblab, konsolga chiqarib boradi.
+</details>
+
+<details>
+<summary>11. Obektni konsolda qanday qulay ko'rish mumkin?</summary>
+Uni \`console.table(obj)\` orqali jadval qiling yoki \`console.dir(obj)\` orqali uning barcha xususiyatlarini daraxtsimon ko'rinishda batafsil ko'rish mumkin.
+</details>
+
+<details>
+<summary>12. Debugging nima?</summary>
+Dastur kodi tarkibidagi sintaktik, mantiqiy yoki tizimli xatoliklarni aniqlash, qidirish va ularni bartaraf etish jarayonidir.
+</details>`,
   exercises: [
     {
       id: 1,

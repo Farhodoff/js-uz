@@ -44,19 +44,67 @@ console.log(arr1); // [1, 2, 3] (chunki massiv ham obyektdir)
 1. **Solishtirish:** \`{} === {}\` har doim \`false\` beradi. Chunki JS ikkita alohida obyektni (hatto ichi bir xil bo'lsa ham) xotiradagi turli manzillar deb hisoblaydi.
 2. **Nusxa olish:** Obyektni shunchaki \`obj2 = obj1\` deb nusxalamang, bu faqat manzilni ko'chiradi. Haqiqiy nusxa olish uchun spread \`{...obj1}\` ishlatiladi.
 
-## 6. SAVOLLAR (12 ta)
-1. Primitiv ma'lumot turlari qaysilar?
-2. Obyektlar qaysi guruhga kiradi?
-3. "By Value" (Qiymat bo'yicha) nima degani?
-4. "By Reference" (Manzil bo'yicha) nima degani?
-5. Nima uchun bitta massivni o'zgartirsak, uning nusxasi ham o'zgaradi?
-6. \`let x = 5; let y = x;\` dan keyin y ni o'zgartirsak x o'zgaradimi?
-7. \`{} == {}\` natijasi nima?
-8. Obyektni xotiradagi manzili deganda nima tushuniladi?
-9. Immutable (o'zgarmas) turlar qaysi guruhga kiradi?
-10. Massivni qanday qilib "haqiqiy" nusxa olish mumkin?
-11. Funksiyalar primitivmi yoki obektmi?
-12. \`null\` va \`undefined\` qaysi guruhga kiradi?`,
+## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. Primitiv ma'lumot turlari qaysilar?</summary>
+JavaScriptda 7 ta primitiv ma'lumot turi mavjud: \`String\`, \`Number\`, \`Boolean\`, \`Null\`, \`Undefined\`, \`Symbol\` va \`BigInt\`.
+</details>
+
+<details>
+<summary>2. Obyektlar qaysi guruhga kiradi?</summary>
+Obyektlar, massivlar va funksiyalar murakkab (havola orqali uzatiladigan - reference types) ma'lumotlar guruhiga kiradi.
+</details>
+
+<details>
+<summary>3. "By Value" (Qiymat bo'yicha) nima degani?</summary>
+Bu o'zgaruvchilar nusxalanganda, xotirada mavjud bo'lgan haqiqiy qiymatning o'zi nusxalanishini bildiradi (primitiv turlarda bo'lgani kabi). Ulardan birini o'zgartirish ikkinchisiga ta'sir qilmaydi.
+</details>
+
+<details>
+<summary>4. "By Reference" (Manzil bo'yicha) nima degani?</summary>
+Bu o'zgaruvchi nusxalanganda, qiymatning o'zi emas, balki uning xotiradagi havolasi (manzili) ko'chirilishini anglatadi. Biror o'zgaruvchi orqali obyekt o'zgartirilsa, barcha havolalar o'sha o'zgarishni ko'radi.
+</details>
+
+<details>
+<summary>5. Nima uchun bitta massivni o'zgartirsak, uning nusxasi ham o'zgaradi?</summary>
+Chunki massivlar ham obyektlar kabi reference turi hisoblanadi. Nusxalash paytida faqatgina uning xotiradagi manzili ko'chiriladi, natijada ikkalasi ham bitta massivga ishora qiladi.
+</details>
+
+<details>
+<summary>6. let x = 5; let y = x; dan keyin y ni o'zgartirsak x o'zgaradimi?</summary>
+Yo'q, chunki sonlar (\`Number\`) primitiv tur bo'lib, ular qiymat bo'yicha (\`by value\`) nusxalanadi, shuning uchun \`y\` o'zgarganda \`x\` o'zgarmasdan qoladi.
+</details>
+
+<details>
+<summary>7. {} == {} natijasi nima?</summary>
+Natija \`false\` bo'ladi. Chunki ikki marta \`{}\` yozilganda, xotiradan alohida-alohida ikkita yangi manzil ajratiladi va ular bir-biriga teng bo'lmaydi.
+</details>
+
+<details>
+<summary>8. Obyektni xotiradagi manzili deganda nima tushuniladi?</summary>
+Obyektlar kompyuterning Heap xotirasida saqlanadi. Manzil esa ushbu obyekt xotirada aynan qayerda joylashganligini ko'rsatadigan havola (pointer) hisoblanadi.
+</details>
+
+<details>
+<summary>9. Immutable (o'zgarmas) turlar qaysi guruhga kiradi?</summary>
+Barcha primitiv ma'lumot turlari \`immutable\` (o'zgarmas) guruhiga kiradi. Ya'ni ularning qiymatini o'zini o'zgartirib bo'lmaydi, faqatgina o'zgaruvchiga yangi qiymat berish mumkin.
+</details>
+
+<details>
+<summary>10. Massivni qanday qilib "haqiqiy" nusxa olish mumkin?</summary>
+Spread operatori yordamida (\`let nusxa = [...aslMassiv]\`) yoki \`slice()\` metodi orqali massivning xotiradagi manzili boshqa bo'lgan yangi nusxasini yaratish mumkin.
+</details>
+
+<details>
+<summary>11. Funksiyalar primitivmi yoki obektmi?</summary>
+Funksiyalar JavaScript-da obyektlarning maxsus turi hisoblanadi (ular \`Callable Object\` ya'ni chaqiriluvchi obyektlardir).
+</details>
+
+<details>
+<summary>12. null va undefined qaysi guruhga kiradi?</summary>
+Ularning ikkalasi ham primitiv ma'lumot turlari guruhiga kiradi.
+</details>`,
   exercises: [
     {
       id: 1,

@@ -55,19 +55,67 @@ for (let ism of ismlar) {
 1. **switch ichida continue:** \`continue\` faqat sikllarda ishlaydi, \`switch\` ichida ishlamaydi.
 2. **Infinite Loop (while bilan):** \`while\` siklida \`continue\` ishlatganda ehtiyot bo'ling! Agar sanoqni (\`i++\`) \`continue\`dan keyin qo'ysangiz, u hech qachon ishlamaydi va sikl cheksiz bo'lib qoladi.
 
-## 6. SAVOLLAR (12 ta)
-1. \`break\` va \`continue\` farqi nimada?
-2. Siklni butunlay to'xtatish uchun qaysi biri ishlatiladi?
-3. Faqat bitta qadamni o'tkazib yuborish uchun-chi?
-4. \`break\` ishlatilgandan keyin sikldan keyingi kodlar ishlaydimi?
-5. \`continue\` ishlatilganda keyingi iteratsiyaga o'tiladimi?
-6. Qidiruv algoritmlarida qaysi biri ko'p ishlatiladi?
-7. \`if\` shartisiz \`break\` ishlatsa nima bo'ladi?
-8. \`while\` siklida \`continue\` ishlatishdagi asosiy xavf nima?
-9. Nested (ichma-ich) sikllarda \`break\` qaysi siklni to'xtatadi?
-10. Labels (yorliqlar) nima va \`break\` bilan qanday ishlatiladi?
-11. \`break\`ni \`switch\`dan tashqarida ishlatish mumkinmi?
-12. O'quvchi uchun \`break\` tushunarliroqmi yoki \`if...else\`?`,
+## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. break va continue farqi nimada?</summary>
+\`break\` siklni darhol va butunlay to'xtatadi. \`continue\` esa joriy qadamni (iteratsiyani) tashlab yuborib, siklning keyingi qadamidan davom ettiradi.
+</details>
+
+<details>
+<summary>2. Siklni butunlay to'xtatish uchun qaysi biri ishlatiladi?</summary>
+Siklni to'liq to'xtatish va undan chiqib ketish uchun \`break\` operatori ishlatiladi.
+</details>
+
+<details>
+<summary>3. Faqat bitta qadamni o'tkazib yuborish uchun-chi?</summary>
+Joriy iteratsiyadagi qolgan kodlarni bajarmasdan, keyingi qadamga o'tish uchun \`continue\` operatori ishlatiladi.
+</details>
+
+<details>
+<summary>4. break ishlatilgandan keyin sikldan keyingi kodlar ishlaydimi?</summary>
+Ha, \`break\` faqat siklning o'zini to'xtatadi, sikldan keyin yozilgan navbatdagi kodlar odatdagidek bajarilishda davom etadi.
+</details>
+
+<details>
+<summary>5. continue ishlatilganda keyingi iteratsiyaga o'tiladimi?</summary>
+Ha, \`continue\` bajarilishi bilan brauzer joriy iteratsiyani yakunlab, sikl shartini tekshiradi va keyingi qadamga o'tadi.
+</details>
+
+<details>
+<summary>6. Qidiruv algoritmlarida qaysi biri ko'p ishlatiladi?</summary>
+Qidiruv algoritmlarida kerakli element topilishi bilanoq ortiqcha hisob-kitob qilmaslik va vaqtni tejash uchun \`break\` ko'p ishlatiladi.
+</details>
+
+<details>
+<summary>7. if shartisiz break ishlatsa nima bo'ladi?</summary>
+Sikl birinchi qadamidayoq (iteratsiyada) \`break\`ga duch keladi va birinchi marta ham to'liq aylanmasdan darhol tugaydi.
+</details>
+
+<details>
+<summary>8. while siklida continue ishlatishdagi asosiy xavf nima?</summary>
+Agar sanoqni o'zgartiruvchi kod (\`i++\` kabi) \`continue\` operatoridan keyin yozilgan bo'lsa, u bajarilmay qoladi va natijada sikl cheksiz aylanib qoladi (infinite loop).
+</details>
+
+<details>
+<summary>9. Nested (ichma-ich) sikllarda break qaysi siklni to'xtatadi?</summary>
+\`break\` har doim o'zi yozilgan eng yaqin ichki siklni to'xtatadi. Tashqi sikl esa o'z ishini davom ettiraveradi.
+</details>
+
+<details>
+<summary>10. Labels (yorliqlar) nima va break bilan qanday ishlatiladi?</summary>
+Yorliqlar (\`label:\`) — siklga nom berish imkonini beradi. Ichma-ich sikllarda ichki sikl ichidan turib tashqi siklni to'xtatish uchun \`break yorliqNomi;\` shaklida ishlatiladi.
+</details>
+
+<details>
+<summary>11. breakni switchdan tashqarida ishlatish mumkinmi?</summary>
+Ha, \`break\` faqat \`switch\` blokida va barcha turdagi sikllar (\`for\`, \`while\`, \`do...while\`) ichida ishlatilishi mumkin.
+</details>
+
+<details>
+<summary>12. O'quvchi uchun break tushunarliroqmi yoki if...else?</summary>
+Ikkalasi ham o'z o'rniga ega: shartlarni boshqarishda \`if...else\`, sikllar oqimini favqulodda nazorat qilishda esa \`break\` eng tushunarli va qulay yechimdir.
+</details>`,
   exercises: [
     {
       id: 1,

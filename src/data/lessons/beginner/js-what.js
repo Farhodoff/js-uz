@@ -32,19 +32,67 @@ alert("Salom!");
 1. **Katta-kichik harf:** \`Console.log\` xato ❌. Doim kichik harfda: \`console.log\` ✅.
 2. **Qo'shtirnoqlar:** Matnlarni doim \`" "\` yoki \`' '\` ichiga oling. Bo'lmasa xato beradi.
 
-### 6. SAVOLLAR (12 ta)
-1. JavaScript nima?
-2. Sayt qurilishida JSning o'rni qanday?
-3. JS faqat brauzerdami?
-4. \`console.log()\` nima uchun kerak?
-5. \`alert()\` funksiyasi nima qiladi?
-6. JS kodi qayerda yoziladi?
-7. Brendan Eich kim?
-8. Nima uchun JS "Dynamic" til deyiladi?
-9. JS harflar farqiga boradimi (case-sensitive)?
-10. \`console.error()\` nima uchun?
-11. Matnni qo'shtirnoqsiz yozsa nima bo'ladi?
-12. JS birinchi marta nechanchi yilda chiqqan?`,
+### 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. JavaScript nima?</summary>
+JavaScript — bu asosan veb-sahifalarni interaktiv, jonli va dinamik qilish uchun ishlatiladigan dasturlash tilidir. Bugungi kunda u nafaqat brauzerda, balki serverda va mobil ilovalarda ham keng qo'llaniladi.
+</details>
+
+<details>
+<summary>2. Sayt qurilishida JSning o'rni qanday?</summary>
+HTML va CSS saytning tana tuzilishi va tashqi ko'rinishini (statik) yaratsa, JS saytga mantiq va harakat (dinamiklik) bag'ishlaydi.
+</details>
+
+<details>
+<summary>3. JS faqat brauzerdami?</summary>
+Yo'q, dastlab faqat brauzerlar uchun yaratilgan bo'lsa-da, bugungi kunda Node.js kabi texnologiyalar yordamida serverlarda, ma'lumotlar bazalarida, mobil va desktop ilovalarda ham ishlatiladi.
+</details>
+
+<details>
+<summary>4. console.log() nima uchun kerak?</summary>
+Dasturchilar kod yozish jarayonida o'zgaruvchilar qiymatini tekshirish, xatolarni aniqlash va turli xabarlarni konsol ekraniga chiqarib ko'rish uchun foydalanadilar.
+</details>
+
+<details>
+<summary>5. alert() funksiyasi nima qiladi?</summary>
+Foydalanuvchiga brauzer ekranida "OK" tugmasi bo'lgan kichik ogohlantiruvchi oyna (popup message) chiqaradi.
+</details>
+
+<details>
+<summary>6. JS kodi qayerda yoziladi?</summary>
+HTML faylning ichida \`<script>\` tegi ichida yoki alohida \`.js\` kengaytmali faylda yozilib, keyin HTMLga ulab qo'yiladi.
+</details>
+
+<details>
+<summary>7. Brendan Eich kim?</summary>
+Brendan Eich — 1995-yilda bor-yo'g'i 10 kun ichida JavaScript dasturlash tilining birinchi versiyasini yaratgan amerikalik muhandis.
+</details>
+
+<details>
+<summary>8. Nima uchun JS "Dynamic" til deyiladi?</summary>
+Chunki undagi o'zgaruvchilar ma'lumot turini qat'iy talab qilmaydi (bitta o'zgaruvchiga oldin son, keyin matn yozsa bo'ladi) va sahifa yuklanganidan keyin ham elementlarni o'zgartira oladi.
+</details>
+
+<details>
+<summary>9. JS harflar farqiga boradimi (case-sensitive)?</summary>
+Ha, JS katta va kichik harflarni qat'iy farqlaydi. Masalan, \`console\` va \`Console\` yoki \`ism\` va \`Ism\` alohida narsalar hisoblanadi.
+</details>
+
+<details>
+<summary>10. console.error() nima uchun?</summary>
+Konsolga oddiy ma'lumot emas, balki qizil rangli xatolik haqidagi maxsus xabarni chiqarish uchun ishlatiladi.
+</details>
+
+<details>
+<summary>11. Matnni qo'shtirnoqsiz yozsa nima bo'ladi?</summary>
+JS dvigateli uni matn (string) emas, balki o'zgaruvchi yoki kalit so'z deb o'ylaydi va u topilmagani sababli \`ReferenceError\` xatosini beradi.
+</details>
+
+<details>
+<summary>12. JS birinchi marta nechanchi yilda chiqqan?</summary>
+JavaScript birinchi marta 1995-yilda taqdim etilgan.
+</details>`,
   exercises: [
     {
       id: 1,
