@@ -78,12 +78,12 @@ Faqat ma'lum bir funksiya ichida ko'rinadigan va tashqaridan kirib bo'lmaydigan 
 
 <details>
 <summary>4. Block scope nima?</summary>
-`{ }` jingalak qavslar ichidagi hudud (masalan, `if`, `for` ichida). Unga faqat `let` va `const` bo'ysunadi.
+\`{ }\` jingalak qavslar ichidagi hudud (masalan, \`if\`, \`for\` ichida). Unga faqat \`let\` va \`const\` bo'ysunadi.
 </details>
 
 <details>
 <summary>5. let, const va varning scope bo'yicha farqi nima?</summary>
-`let` va `const` block scope'ga ega, `var` esa function scope'ga ega (block'ni tan olmaydi).
+\`let\` va \`const\` block scope'ga ega, \`var\` esa function scope'ga ega (block'ni tan olmaydi).
 </details>
 
 <details>
@@ -108,18 +108,18 @@ O'zgaruvchining ko'rinish sohasi u kodning qayerida e'lon qilinganiga qarab belg
 
 <details>
 <summary>10. O'zgaruvchi e'lon qilinmagan bo'lsa, JS uni qayerdan qidiradi?</summary>
-Joriy scopedan boshlab, eng yuqori Global scope'gacha qidiradi. Topilmasa `ReferenceError` beradi.
+Joriy scopedan boshlab, eng yuqori Global scope'gacha qidiradi. Topilmasa \`ReferenceError\` beradi.
 </details>
 
 <details>
 <summary>11. Block scope if va fordan tashqari qayerda bo'lishi mumkin?</summary>
-Istalgan `{ }` jingalak qavslar yordamida mustaqil block yaratish mumkin.
+Istalgan \`{ }\` jingalak qavslar yordamida mustaqil block yaratish mumkin.
 </details>
 
 <details>
 <summary>12. Nesting (ichma-ich) scopelar qanday ishlaydi?</summary>
 Ichki scope tashqi scope dagi o'zgaruvchilarni ko'ra oladi, lekin tashqi scope ichki scopedagi o'zgaruvchilarni ko'ra olmaydi.
-</details>`,old_string:,
+</details>`,
   exercises: [
     {
       id: 1,

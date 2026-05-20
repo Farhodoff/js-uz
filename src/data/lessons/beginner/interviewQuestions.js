@@ -56,22 +56,22 @@ JavaScript — web-sahifalarni interaktiv qilish uchun ishlatiladigan dasturlash
 
 <details>
 <summary>2. typeof null natijasi nima va nega?</summary>
-Natija `"object"`. Bu JSning birinchi versiyasidagi xatolik (bug) bo'lib, keyinchalik moslikni saqlab qolish uchun o'zgartirilmagan.
+Natija \`"object"\`. Bu JSning birinchi versiyasidagi xatolik (bug) bo'lib, keyinchalik moslikni saqlab qolish uchun o'zgartirilmagan.
 </details>
 
 <details>
 <summary>3. "Temporal Dead Zone" (TDZ) nima?</summary>
-TDZ — `let` va `const` o'zgaruvchilari e'lon qilingan qatorgacha bo'lgan hudud. Unga murojaat qilish `ReferenceError` beradi.
+TDZ — \`let\` va \`const\` o'zgaruvchilari e'lon qilingan qatorgacha bo'lgan hudud. Unga murojaat qilish \`ReferenceError\` beradi.
 </details>
 
 <details>
 <summary>4. NaN nima va uni qanday tekshiramiz?</summary>
-`NaN` (Not-a-Number) — noto'g'ri matematik amallar natijasi. Uni `Number.isNaN()` yoki `isNaN()` bilan tekshiramiz.
+\`NaN\` (Not-a-Number) — noto'g'ri matematik amallar natijasi. Uni \`Number.isNaN()\` yoki \`isNaN()\` bilan tekshiramiz.
 </details>
 
 <details>
 <summary>5. Hoisting nima?</summary>
-Hoisting — o'zgaruvchi va funksiyalar e'lonining kod tepasiga "ko'tarilishi". `var` undefined qaytaradi, `let/const` xato beradi.
+Hoisting — o'zgaruvchi va funksiyalar e'lonining kod tepasiga "ko'tarilishi". \`var\` undefined qaytaradi, \`let/const\` xato beradi.
 </details>
 
 <details>
@@ -86,28 +86,28 @@ JSni "qat'iy rejim"da ishlashga majburlaydi, bu xatolarni tezroq topishga va xav
 
 <details>
 <summary>8. Bir vaqtda bir nechta shartni qanday tekshirish mumkin?</summary>
-Mantiqiy operatorlar orqali: `&&` (va), `||` (yoki).
+Mantiqiy operatorlar orqali: \`&&\` (va), \`||\` (yoki).
 </details>
 
 <details>
 <summary>9. Massivdan oxirgi elementni qanday o'chiramiz?</summary>
-`.pop()` metodi orqali.
+\`.pop()\` metodi orqali.
 </details>
 
 <details>
 <summary>10. map() va forEach() farqi nima?</summary>
-`forEach()` shunchaki massivni aylanib chiqadi, `map()` esa yangi massiv qaytaradi.
+\`forEach()\` shunchaki massivni aylanib chiqadi, \`map()\` esa yangi massiv qaytaradi.
 </details>
 
 <details>
 <summary>11. Obyekt ichidagi funksiya (metod) qanday yoziladi?</summary>
-Obyekt kalitiga funksiya biriktirish orqali: `sayHi() { ... }`.
+Obyekt kalitiga funksiya biriktirish orqali: \`sayHi() { ... }\`.
 </details>
 
 <details>
 <summary>12. JSda asinxronlik nima degani?</summary>
 Kodning bloklanmasdan, fonda bajarilishi (masalan, API so'rovlar yoki setTimeout).
-</details>`,old_string:,old_string:,
+</details>`,
   exercises: [
     {
       id: 1,
