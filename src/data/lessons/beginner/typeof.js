@@ -46,19 +46,67 @@ console.log(typeof true); // "boolean"
 1. **typeof(x):** \`typeof\` funksiya emas, u operator. Uni qavssiz yozish to'g'riroq: \`typeof x\`.
 2. **Double typeof:** \`typeof typeof 100\` har doim **"string"** qaytaradi. Chunki \`typeof 100\` — \`"number"\` (matn), uning turi esa \`string\`.
 
-## 6. SAVOLLAR (12 ta)
-1. \`typeof\` operatori nima qaytaradi?
-2. \`typeof\` natijasi qaysi ma'lumot turida bo'ladi (string)?
-3. Nima uchun \`typeof null\` "object" chiqadi?
-4. Massivning turini \`typeof\` orqali aniqlab bo'ladimi?
-5. \`typeof NaN\` natijasi nima?
-6. \`typeof 10 + " apples"\` natijasi nima bo'ladi?
-7. \`typeof (10 + " apples")\` natijasi-chi?
-8. \`typeof undefined\` natijasi nima?
-9. Funksiyalarning turi nima deb chiqadi?
-10. \`typeof true === "boolean"\` natijasi nima bo'ladi?
-11. \`typeof typeof 42\` natijasi nima?
-12. E'lon qilinmagan o'zgaruvchiga \`typeof\` ishlatsa xato beradimi?`,
+## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. typeof operatori nima qaytaradi?</summary>
+\`typeof\` operatori tekshirilayotgan qiymat yoki o'zgaruvchining ma'lumot turini bildiruvchi matn (string) qaytaradi (masalan, \`"number"\`, \`"string"\`, \`"boolean"\` va hk).
+</details>
+
+<details>
+<summary>2. typeof natijasi qaysi ma'lumot turida bo'ladi (string)?</summary>
+Uning natijasi har doim \`string\` (matn) turida bo'ladi. Masalan, \`typeof 5\` bizga \`"number"\` qiymatini matn ko'rinishida beradi.
+</details>
+
+<details>
+<summary>3. Nima uchun typeof null "object" chiqadi?</summary>
+Bu JavaScript yaratilgan paytdagi tizimli xato (bug) bo'lib, keyinchalik mavjud saytlar va tizimlar buzilib ketmasligi uchun o'zgartirilmasdan qoldirilgan.
+</details>
+
+<details>
+<summary>4. Massivning turini typeof orqali aniqlab bo'ladimi?</summary>
+Yo'q, massivlar ham obyekt hisoblangani uchun \`typeof []\` har doim \`"object"\` qaytaradi. Haqiqiy massivni aniqlash uchun \`Array.isArray()\` metodidan foydalaniladi.
+</details>
+
+<details>
+<summary>5. typeof NaN natijasi nima?</summary>
+\`typeof NaN\` (Not a Number) \`"number"\` qaytaradi. Chunki u sonlar ustida noto'g'ri matematik amallar bajarilganda hosil bo'ladigan maxsus raqamli qiymatdir.
+</details>
+
+<details>
+<summary>6. typeof 10 + " apples" natijasi nima bo'ladi?</summary>
+Natija \`"number apples"\` bo'ladi. Chunki \`typeof 10\` birinchi bo'lib bajarilib \`"number"\` qaytaradi, so'ngra unga \`" apples"\` matni qo'shiladi.
+</details>
+
+<details>
+<summary>7. typeof (10 + " apples") natijasi-chi?</summary>
+Natija \`"string"\` bo'ladi. Qavs birinchi bajarilib, \`10 + " apples"\` amali \`"10 apples"\` matnini hosil qiladi, \`typeof\` esa ushbu matn turini \`"string"\` deb aniqlaydi.
+</details>
+
+<details>
+<summary>8. typeof undefined natijasi nima?</summary>
+\`typeof undefined\` natijasi \`"undefined"\` matni bo'ladi.
+</details>
+
+<details>
+<summary>9. Funksiyalarning turi nima deb chiqadi?</summary>
+Funksiyalarning turi har doim \`"function"\` deb chiqadi.
+</details>
+
+<details>
+<summary>10. typeof true === "boolean" natijasi nima bo'ladi?</summary>
+Natija \`true\` bo'ladi. Chunki \`typeof true\` qiymati \`"boolean"\` matniga teng va u \`"boolean"\` bilan taqqoslanmoqda.
+</details>
+
+<details>
+<summary>11. typeof typeof 42 natijasi nima?</summary>
+Natija \`"string"\` bo'ladi. Birinchi \`typeof 42\` bajarilib \`"number"\` (string) qiymatini qaytaradi. Ikkinchi \`typeof "number"\` esa \`"string"\` natijasini beradi.
+</details>
+
+<details>
+<summary>12. E'lon qilinmagan o'zgaruvchiga typeof ishlatsa xato beradimi?</summary>
+Yo'q, \`typeof\` e'lon qilinmagan (mavjud bo'lmagan) o'zgaruvchilar uchun ham xatolik bermaydi va xavfsiz tarzda \`"undefined"\` matnini qaytaradi.
+</details>`,
   exercises: [
     {
       id: 1,

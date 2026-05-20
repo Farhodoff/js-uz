@@ -50,19 +50,72 @@ console.log(shaxs[ID]); // 12345
 1. **BigInt va Numberni aralashtirish:** \`10n + 5\` — Xato! ❌ BigIntni faqat BigInt bilan qo'shish mumkin. (\`10n + BigInt(5)\` ✅).
 2. **typeof null:** Yana bir bor eslatamiz, bu \`"object"\` chiqadi, lekin u aslida Primitiv tur.
 
-## 6. SAVOLLAR (12 ta)
-1. \`null\` va \`undefined\` farqi nimada?
-2. Nima uchun \`null\` primitiv tur bo'lsa ham \`object\` qaytaradi?
-3. \`BigInt\` qachon kerak bo'ladi?
-4. \`BigInt\` son yaratishning 2 xil usulini ayting.
-5. \`Number.MAX_SAFE_INTEGER\` nima?
-6. \`Symbol\` nima vazifani bajaradi?
-7. Ikki xil \`Symbol("a")\` bir-biriga tengmi?
-8. \`BigInt\` va \`Number\`ni birga qo'shsa bo'ladimi?
-9. Obyekt ichida \`Symbol\`ni qanday kalit qilib ishlatish mumkin?
-10. \`Symbol.description\` nima qaytaradi?
-11. \`null == undefined\` natijasi nima bo'ladi?
-12. \`null === undefined\` natijasi nima bo'ladi?`,
+## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. null va undefined farqi nimada?</summary>
+\`null\` — o'zgaruvchining qiymati ataylab "bo'sh" qilib belgilanganligini anglatadi (shisha bor, lekin bo'sh). \`undefined\` esa o'zgaruvchi e'lon qilingan, lekin unga hali hech qanday qiymat berilmaganligini anglatadi (shishaning o'zi ham yo'q).
+</details>
+
+<details>
+<summary>2. Nima uchun null primitiv tur bo'lsa ham object qaytaradi?</summary>
+Bu JavaScript yaratilgan paytdagi xato (bug) bo'lib, xotiradagi ob'ektlar ko'rsatkichi bilan bog'liq. Tizimlar va saytlar buzilmasligi uchun bu xatolik o'zgartirilmasdan qoldirilgan.
+</details>
+
+<details>
+<summary>3. BigInt qachon kerak bo'ladi?</summary>
+JavaScriptda xavfsiz butun son chegarasidan (\`Number.MAX_SAFE_INTEGER\` ya'ni \`9007199254740991\`) katta bo'lgan o'ta yirik sonlar bilan aniq ishlamoqchi bo'lganda kerak bo'ladi.
+</details>
+
+<details>
+<summary>4. BigInt son yaratishning 2 xil usulini ayting.</summary>
+1. Son oxiriga \`n\` harfini qo'shish orqali (\`const son = 100n;\`).  
+2. \`BigInt()\` global funksiyasiga matn yoki raqam uzatish orqali (\`const son = BigInt("100");\`).
+</details>
+
+<details>
+<summary>5. Number.MAX_SAFE_INTEGER nima?</summary>
+Bu JavaScript-da oddiy \`Number\` turi yordamida aniqlik yo'qolmasdan xavfsiz hisoblanishi mumkin bo'lgan eng katta butun sondir (qiymati \`9007199254740991\` yoki \`2^53 - 1\`).
+</details>
+
+<details>
+<summary>6. Symbol nima vazifani bajaradi?</summary>
+\`Symbol\` obyektlar uchun mutlaqo yagona (unikal) va takrorlanmas kalitlar (xususiyatlar) yaratish uchun ishlatiladi. Bu obyektlardagi kalitlar to'qnashuvini oldini oladi.
+</details>
+
+<details>
+<summary>7. Ikki xil Symbol("a") bir-biriga tengmi?</summary>
+Yo'q, har bir yaratilgan \`Symbol\` ichidagi tavsifidan (description) qat'i nazar xotirada mutlaqo unikal bo'lib yaratiladi. Shuning uchun \`Symbol("a") === Symbol("a")\` natijasi \`false\` bo'ladi.
+</details>
+
+<details>
+<summary>8. BigInt va Numberni birga qo'shsa bo'ladimi?</summary>
+Yo'q, \`BigInt\` va \`Number\` turlarini to'g'ridan-to'g'ri birgalikda arifmetik amallarda ishlatib bo'lmaydi (\`TypeError\` beradi). Oldin ularni bir xil turga keltirish shart (masalan, \`BigInt(5) + 10n\`).
+</details>
+
+<details>
+<summary>9. Obyekt ichida Symbolni qanday kalit qiling ishlatish mumkin?</summary>
+Kvadrat qavslar \`[ ]\` yordamida obyekt xususiyati sifatida kiritiladi:
+\`\`\`javascript
+const sym = Symbol("id");
+const obj = { [sym]: 123 };
+\`\`\`
+</details>
+
+<details>
+<summary>10. Symbol.description nima qaytaradi?</summary>
+U \`Symbol\` yaratilayotganda qavs ichida berilgan tavsif matnini qaytaradi (masalan, \`Symbol("ism").description\` natijasi \`"ism"\` bo'ladi).
+</details>
+
+<details>
+<summary>11. null == undefined natijasi nima bo'ladi?</summary>
+Natija \`true\` bo'ladi, chunki qat'iy bo'lmagan tenglikda JS ularning ikkalasini ham "qiymatsizlik" jihatidan teng deb hisoblaydi.
+</details>
+
+<details>
+<summary>12. null === undefined natijasi nima bo'ladi?</summary>
+Natija \`false\` bo'ladi. Chunki ularning ma'lumot turlari har xil (\`null\` turi \`object\`, \`undefined\` turi esa \`undefined\`).
+</details>`,
   exercises: [
     {
       id: 1,

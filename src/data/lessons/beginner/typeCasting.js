@@ -47,19 +47,67 @@ console.log(parseInt(r));   // 50 (faqat butun qismini oladi)
 1. **.toString() va null:** \`null.toString()\` deb yozsangiz xato (Error) beradi. Lekin \`String(null)\` xato bermaydi, shunchaki \`"null"\` matnini qaytaradi. Har doim \`String()\` ishlatish xavfsizroq.
 2. **Bo'sh massiv:** \`Number([])\` natijasi \`0\` bo'ladi. Bu kutilmagan natija bo'lishi mumkin!
 
-## 6. SAVOLLAR (12 ta)
-1. Type Casting (Aniq o'zgartirish) nima?
-2. \`Number()\` va \`parseInt()\` farqi nimada?
-3. \`parseFloat()\` qachon ishlatiladi?
-4. \`String()\` va \`.toString()\` farqi nimada?
-5. Nima uchun \`null.toString()\` ishlamaydi?
-6. Unary plus (\`+\`) operatori nima qiladi?
-7. \`Boolean(undefined)\` natijasi nima bo'ladi?
-8. \`Number(true)\` natijasi nima bo'ladi?
-9. \`Number(false)\` natijasi nima bo'ladi?
-10. Matn ichida raqamdan keyin harf bo'lsa (\`"100kg"\`), \`Number()\` nima qaytaradi?
-11. \`parseInt("100kg")\` nima qaytaradi?
-12. "Double bang" (\`!!\`) operatori nima vazifani bajaradi?`,
+## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+
+<details>
+<summary>1. Type Casting (Aniq o'zgartirish) nima?</summary>
+Type Casting (aniq o'zgartirish) — bu dasturchi tomonidan maxsus funksiyalar yoki operatorlar yordamida qiymat turining bir ko'rinishdan boshqasiga aniq o'zgartirilishi (masalan, \`Number()\`, \`String()\` orqali).
+</details>
+
+<details>
+<summary>2. Number() va parseInt() farqi nimada?</summary>
+\`Number()\` butun matnni songa o'tkazadi va agar matnda bitta bo'lsa ham harf bo'lsa \`NaN\` qaytaradi. \`parseInt()\` esa matnning boshidagi sonlarni ajratib oladi (masalan, \`"100px"\` dan \`100\` ajratadi).
+</details>
+
+<details>
+<summary>3. parseFloat() qachon ishlatiladi?</summary>
+Matndan o'nli kasr sonlarni ajratib olish kerak bo'lganda ishlatiladi (masalan, \`"12.5rem"\` dan \`12.5\` sonini ajratadi).
+</details>
+
+<details>
+<summary>4. String() va .toString() farqi nimada?</summary>
+\`String()\` global funksiya bo'lib, har qanday qiymatni, jumladan \`null\` va \`undefined\` ni ham xatolarsiz matnga o'gira oladi. \`.toString()\` esa metod bo'lib, \`null\` va \`undefined\` da chaqirilganda xato (\`TypeError\`) beradi.
+</details>
+
+<details>
+<summary>5. Nima uchun null.toString() ishlamaydi?</summary>
+Chunki \`null\` (va \`undefined\`) primitiv qiymat bo'lib, ularda hech qanday metod yoki xususiyat, jumladan \`.toString()\` metodi mavjud emas.
+</details>
+
+<details>
+<summary>6. Unary plus (+) operatori nima qiladi?</summary>
+Unary plus (\`+\`) operatori o'zidan keyin kelgan qiymatni tezkor ravishda songa o'tkazadi (masalan, \`+"5"\` natijasi \`5\` soni bo'ladi). Bu \`Number()\` bilan bir xil ishlaydi.
+</details>
+
+<details>
+<summary>7. Boolean(undefined) natijasi nima bo'ladi?</summary>
+Natija \`false\` bo'ladi. Chunki \`undefined\` JavaScript-dagi "falsy" (yolg'on) qiymatlar ro'yxatiga kiradi.
+</details>
+
+<details>
+<summary>8. Number(true) natijasi nima bo'ladi?</summary>
+Natija \`1\` bo'ladi.
+</details>
+
+<details>
+<summary>9. Number(false) natijasi nima bo'ladi?</summary>
+Natija \`0\` bo'ladi.
+</details>
+
+<details>
+<summary>10. Matn ichida raqamdan keyin harf bo'lsa ("100kg"), Number() nima qaytaradi?</summary>
+Natija \`NaN\` (Not a Number) bo'ladi. Chunki \`Number()\` funksiyasi matnni to'liq son qiling o'gira olmasa, \`NaN\` qaytaradi.
+</details>
+
+<details>
+<summary>11. parseInt("100kg") nima qaytaradi?</summary>
+Natija \`100\` soni bo'ladi. Chunki \`parseInt()\` matn boshidagi barcha raqamlarni ajratib oladi va harfga yetganda to'xtaydi.
+</details>
+
+<details>
+<summary>12. "Double bang" (!!) operatori nima vazifani bajaradi?</summary>
+\`!!\` operatori har qanday qiymatni unga mos keluvchi mantiqiy (\`boolean\`) qiymatga (\`true\` yoki \`false\` ga) tezkor o'tkazish uchun ishlatiladi (bu \`Boolean()\` bilan bir xil).
+</details>`,
   exercises: [
     {
       id: 1,
