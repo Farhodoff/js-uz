@@ -125,6 +125,86 @@ Har bir kontekst yaratilayotganda o'zining tashqi muhitiga (outer environment) h
       startingCode: "try {\n  // E'lon qilishdan oldin murojaat qiling\n  \n  let x = 10;\n} catch (e) {\n  console.log(e.name);\n}",
       hint: "let x = 10 dan oldin console.log(x) deb yozing.",
       test: "if (code.includes('ReferenceError') || logs.includes('ReferenceError')) return null; return 'ReferenceError aniqlanmadi!';"
+    },
+    {
+      id: 3,
+      title: "var va let Hoisting farqi",
+      instruction: "O'zgaruvchilarni e'lon qilishdan oldin console.log qiling. var o'zgaruvchisiga undefined chiqishini va let uchunReferenceError ushlanishini ta'minlang.",
+      startingCode: "console.log(myVar);\ntry {\n  console.log(myLet);\n} catch (e) {\n  console.log(e.name);\n}\n// O'zgaruvchilarni e'lon qiling\n",
+      hint: "var myVar = 'global';\nlet myLet = 'local';",
+      test: "if (logs.includes('undefined') && logs.includes('ReferenceError')) return null; return 'var uchun undefined, let uchun ReferenceError log qilinishi kerak!';"
+    },
+    {
+      id: 4,
+      title: "LIFO printsipi va Call Stack",
+      instruction: "Uchta funksiya yarating: bir(), ikki(), uch(). bir funksiyasi ikki() ni chaqirsin, ikki funksiyasi uch() ni chaqirsin, va uch funksiyasi konsolga 'Salom' yozsin. So'ngra bir() funksiyasini chaqiring.",
+      startingCode: "// Funksiyalarni bu yerda yarating va chaqiring\n",
+      hint: "function bir() { ikki(); }\nfunction ikki() { uch(); }\nfunction uch() { console.log('Salom'); }\nbir();",
+      test: "if (code.includes('bir()') && code.includes('ikki()') && code.includes('uch()') && logs.includes('Salom')) return null; return 'Funksiyalar zanjirini to\\'g\\'ri yarating va chaqiring!';"
+    },
+    {
+      id: 5,
+      title: "Global Context this qiymati",
+      instruction: "Global execution context ichida 'this' kalit so'zi mavjud. 'this' obyektini tekshirib, u undefined emasligini tasdiqlovchi console.log('Global:', this !== undefined) kodini yozing.",
+      startingCode: "// Global contextni tekshiring\n",
+      hint: "console.log('Global:', this !== undefined);",
+      test: "if (logs.includes('Global: true')) return null; return 'this !== undefined ekanligini konsolga chiqaring!';"
+    },
+    {
+      id: 6,
+      title: "Hoisting va Function Declaration",
+      instruction: "sayHello funksiyasini e'lon qilishdan oldin chaqiring. Funksiya konsolga 'Hello Hoisting' deb chiqarsin.",
+      startingCode: "// Chaqirish\n\n// E'lon qilish\n",
+      hint: "sayHello();\nfunction sayHello() {\n  console.log('Hello Hoisting');\n}",
+      test: "if (code.indexOf('sayHello()') < code.indexOf('function sayHello') && logs.includes('Hello Hoisting')) return null; return 'sayHello funksiyasini e\\'lon qilishdan oldin chaqiring!';"
+    },
+    {
+      id: 7,
+      title: "Function Expression va Hoisting farqi",
+      instruction: "O'zgaruvchiga biriktirilgan funksiya (Function Expression) e'lon qilinishidan oldin chaqirilganda TypeError yuzaga kelishini try-catch bloki ichida ko'rsating. O'zgaruvchini var yordamida e'lon qiling.",
+      startingCode: "try {\n  myFunc();\n} catch (e) {\n  console.log(e.name);\n}\n// var myFunc = function ...\n",
+      hint: "var myFunc = function() {};",
+      test: "if (logs.includes('TypeError') && code.includes('var myFunc')) return null; return 'var myFunc funksiyasini chaqirishda TypeError ushlang!';"
+    },
+    {
+      id: 8,
+      title: "Shadowing (O'zgaruvchini to'sish)",
+      instruction: "Global sohada 'scope = \"global\"' yarating. 'checkScope' funksiyasi ichida xuddi shu nomdagi let o'zgaruvchisini 'local' qiymati bilan yarating va konsolga chiqaring. Tashqarida ham konsolga chiqaring.",
+      startingCode: "let scope = 'global';\nfunction checkScope() {\n  // Bu yerda local scope yarating\n}\ncheckScope();\nconsole.log('Global:', scope);\n",
+      hint: "let scope = 'local'; console.log('Local:', scope);",
+      test: "if (logs.includes('Local: local') && logs.includes('Global: global')) return null; return 'Shadowing hodisasini to\\'g\\'ri amalga oshiring!';"
+    },
+    {
+      id: 9,
+      title: "Arguments obyekti",
+      instruction: "Function execution context-da hosil bo'ladigan 'arguments' obyektidan foydalanib, uzatilgan birinchi ikkita parametrni qo'shib qaytaradigan 'add' funksiyasini yarating.",
+      startingCode: "function add() {\n  // arguments yordamida birinchi va ikkinchi parametrlarni qo'shing\n}\n",
+      hint: "return arguments[0] + arguments[1];",
+      test: "if (code.includes('arguments[0]') && code.includes('arguments[1]')) return null; return 'arguments elementlaridan foydalanib yig\\'indini qaytaring!';"
+    },
+    {
+      id: 10,
+      title: "Erta qaytish va Stekdan chiqish",
+      instruction: "Funksiya ichida return ishlatilganda u o'z contextini tugatadi va Call Stack-dan chiqadi. 'check' funksiyasida 'Birinchi' konsolga chiqsin, return bilan funksiya tugasin, keyin esa 'Ikkinchi' konsolga chiqmasin.",
+      startingCode: "function check() {\n  console.log('Birinchi');\n  // Return yozing\n  console.log('Ikkinchi');\n}\ncheck();\n",
+      hint: "return;",
+      test: "if (logs.includes('Birinchi') && !logs.includes('Ikkinchi')) return null; return 'return yordamida funksiyani erta yakunlang!';"
+    },
+    {
+      id: 11,
+      title: "Arrow funksiya va Arguments",
+      instruction: "Arrow funksiyalarda arguments obyekti mavjud emas. Try-catch ichida arrow funksiyadan arguments ni olishga urinib, ReferenceError xatosini konsolga chiqaring.",
+      startingCode: "const runArrow = () => {\n  try {\n    // arguments ga murojaat qiling\n  } catch (e) {\n    console.log(e.name);\n  }\n};\nrunArrow();\n",
+      hint: "console.log(arguments);",
+      test: "if (logs.includes('ReferenceError')) return null; return 'Arrow funksiya ichida arguments ishlatilganda ReferenceError ushlanishi kerak!';"
+    },
+    {
+      id: 12,
+      title: "Scope Chain qidiruvi",
+      instruction: "Uch darajali o'zgaruvchi qidiruvini hosil qiling. Globalda 'val = 99' bo'lsin, outer() va inner() funksiyalarini yarating. inner() funksiyasi outer() ichida chaqirilsin va u global 'val' o'zgaruvchisini konsolga chiqarsin.",
+      startingCode: "const val = 99;\nfunction outer() {\n  // inner funksiya yarating va chaqiring\n}\nouter();\n",
+      hint: "function inner() { console.log(val); } inner();",
+      test: "if (logs.includes('99') && code.includes('inner')) return null; return 'Scope chain orqali global val o\\'zgaruvchisini konsolga chiqaring!';"
     }
   ],
   quizzes: [

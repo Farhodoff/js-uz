@@ -201,55 +201,44 @@ console.log(shaxs.yosh);  // 30
    console.log(obj.b);  // undefined (xato bera olmaydi)
    \`\`\`
 
-## 5. AMALIYOT (Mushqlar pastda)
+## 5. AMALIYOT (Mashqlar pastda)
 
 ## 6. SAVOLLAR VA JAVOBLAR
 
 **1. Obyekt nima?**
 Kalit va qiymat juftliklaridan tashkil topgan murakkab ma'lumot turi. Qaytargan qiymat istalgan turda bo'lishi mumkin (raqam, matn, boolean, massiv, boshqa obekt, funksiya).
 
-
 **2. Kalit (key) va qiymat (value) nima?**
 Kalit — om ichidagi ma'lumotning nomi (identifikatori), Qiymat — o'sha ma'lumotning haqiqiy ma'lum (ma'lumot).
-
 
 **3. Oberkt yaratishda qaysi qavslar ishlatiladi?**
 Figurali qavslar \`{ }\`.
 
-
 **4. Dot notation (.) va Bracket notation ([]) farqi nima?**
 Dot notation oddiy kalitlar uchun ishlatiladi. Bracket notation kalit nomida bo'sh joy, maxsus belgilar bo'lsa yoki o'zgaruvchi bo'lsa ishlatiladi.
-
 
 **5. Bracket notation qachon ishlatiladi?**
 1. Kalit nomi o'zgaruvchida bo'lsa: \`obj[kalit]\`
 2. Kalit nomida bo'sh joy bo'lsa: \`obj["to'liq ism"]\`
 3. Kalit nomida minus, qo'sh nuqta kabi maxsus belgilar bo'lsa: \`obj["first-name"]\`
 
-
 **6. Obiektga yangi xususiyat (property) qanday qo'shiladi?**
 \`obj.yangiKalit = qiymat\` shaklida yoki \`obj["yangi-kalit"] = qiymat\` shaklida.
-
 
 **7. Obiektdagi xususiyatni qanday o'chirish mumkin?**
 \`delete\` operatori orqali: \`delete obj.kalit\` yoki \`delete obj["kalit"]\`.
 
-
 **8. Object.keys(), Object.values(), Object.entries() farqi nima?**
 Object.keys() — kalitlarni, Object.values() — qiymatlarni, Object.entries() — kalit-qiymat juftlarini massiv sifatida qaytaradi.
-
 
 **9. Spread operatori (...) nima qayla ishlatiladi?**
 Objektni "yuvilish" va boshqa objektga birlashtirlish. Masalan: \`const yangi = {...eski, extra: 'qiymat'}\`.
 
-
 **10. Getter va Setter nima uchun kerak?**
 Getter — xususiyatni o'qishda maxsus logic jarayoni. Setter — xususiyatni o'zartirishda validatsiya yoki transformatsiya. Masalan: yosh musbat son bo'lishi kerak.
 
-
 **11. Ichma-ich obekt (nested object) bu nima va misolini keltiring?**
 Bitta objektning qiymatlaridan yana boshqa obekt bo'lganida. Masalan: \`{ manzil: { shahar: "Toshkent", ko_cha: "..." } }\`.
-
 
 **12. Arrow funksiyada this nima beradi?**
 Arrow funksiyada this uringan joyning context'ini oladi, fo'nktsiyadagi this'i emas. Shuning uchun obekt metodlarida arrow funksiya ishlatilmaydi.
@@ -411,7 +400,91 @@ Arrow funksiyada this uringan joyning context'ini oladi, fo'nktsiyadagi this'i e
         "`const newObj = merge(obj1, obj2);`"
       ],
       correctAnswer: 1,
-      explanation: "Spread operatori (`...`) ES6 da kiritilgan qulay vosita bo'lib, u obyektlarning barcha xususiyatlarini yangi obyekt blokining ichiga yoyib (nusxalab) beradi."
+      explanation: "Spread operatori (`...`) ES6 da kiritilgan qulay vosita bo'lib, u obyektbining barcha xususiyatlarini yangi obyekt blokining ichiga yoyib (nusxalab) beradi."
+    },
+    {
+      id: 6,
+      question: "Obyektdan uning muayyan kaliti va qiymatini butunlay o'chirib tashlash uchun qaysi maxsus operator ishlatiladi?",
+      options: [
+        "`remove`",
+        "`delete` (masalan: `delete user.age`)",
+        "`clear`",
+        "`exclude`"
+      ],
+      correctAnswer: 1,
+      explanation: "`delete` operatori obyektning ma'lum bir xususiyatini (property) kaliti va qiymati bilan birga o'chirib tashlaydi."
+    },
+    {
+      id: 7,
+      question: "Obyekt tarkibidagi property (xususiyat)larni o'qish va yozish jarayonlarida maxsus tekshiruvlar yoki amallarni bajarish uchun nima ishlatiladi?",
+      options: [
+        "Constructor funksiyalar",
+        "Getters va Setters (get va set kalit so'zlari)",
+        "Prototypes",
+        "Static methods"
+      ],
+      correctAnswer: 1,
+      explanation: "`get` va `set` kalit so'zlari yordamida obyekt xususiyatlariga murojaat qilganda yoki yangi qiymat yozganda ishga tushadigan maxsus metodlar yozish mumkin."
+    },
+    {
+      id: 8,
+      question: "`Object.entries(obj)` metodi obyekt qabul qilgandan so'ng qanday natija qaytaradi?",
+      options: [
+        "Faqat kalitlar ro'yxatini",
+        "Faqat qiymatlar ro'yxatini",
+        "Obyektning har bir kalit-qiymat juftligini `[kalit, qiymat]` ko'rinishidagi massivlar sifatida qaytaradigan ikki o'lchamli massiv",
+        "Obyektning string ko'rinishini"
+      ],
+      correctAnswer: 2,
+      explanation: "`Object.entries()` metodi obyektning har bir xususiyatini `[key, value]` ko'rinishidagi massivga joylab, umumiy bitta katta massiv sifatida qaytaradi."
+    },
+    {
+      id: 9,
+      question: "Quyidagi obyektda shahar qiymatini o'qish uchun qaysi dot notation yozuvi to'g'ri?\n```javascript\nconst user = { name: 'Ali', address: { city: 'Samarqand' } };\n```",
+      options: [
+        "`user.address`",
+        "`user.city`",
+        "`user.address.city`",
+        "`user.address[city]`"
+      ],
+      correctAnswer: 2,
+      explanation: "Ichma-ich joylashgan obyektlarning qiymatlarini o'qish uchun nuqta yordamida ketma-ket murojaat qilinadi: `user.address.city`."
+    },
+    {
+      id: 10,
+      question: "Obyektda mavjud bo'lmagan xususiyatni (property) nuqta orqali o'qishga urinilganda qanday qiymat qaytadi?",
+      options: [
+        "NullPointerException xatosi yuz beradi",
+        "`undefined` (xatolik yuz bermaydi, shunchaki aniqlanmagan qiymat qaytadi)",
+        "`null`",
+        "`NaN`"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript-da obyekt ichida yo'q kalit chaqirilganda dastur xato bermaydi, shunchaki `undefined` qaytariladi."
+    },
+    {
+      id: 11,
+      question: "Quyidagi kodda `Object.assign` nima vazifani bajarmoqda?\n```javascript\nconst copy = Object.assign({}, original);\n```",
+      options: [
+        "original obyektni o'chirib tashlamoqda",
+        "original obyektning to'liq nusxasini (shallow copy) yangi bo'sh obyekt ichiga yaratmoqda",
+        "original obyektni massivga aylantirmoqda",
+        "original obyekt tarkibini muzlatib qo'ymoqda"
+      ],
+      correctAnswer: 1,
+      explanation: "`Object.assign` bir yoki bir nechta manba obyektlarning barcha xususiyatlarini maqsad obyektga (bizda bo'sh `{}` obyektga) nusxalab beradi."
+    },
+    {
+      id: 12,
+      question: "Bracket notation yordamida kalitlarni o'qishda `obj[key]` sintaksisidagi `key` nima bo'lishi mumkin?",
+      options: [
+        "Faqat raqam",
+        "Faqat string matn",
+        "O'zgaruvchi, matn, bo'sh joyli yoki maxsus belgili string yoki har qanday ifoda",
+        "Faqat maxsus Symbol"
+      ],
+      correctAnswer: 2,
+      explanation: "Bracket notation ichiga o'zgaruvchini qo'yish yoki istalgan satrni (bo'sh joylari bor bo'lsa ham) yozish mumkin, bu dot notation'dan ko'ra ancha moslashuvchan."
     }
   ]
 };
