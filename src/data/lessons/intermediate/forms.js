@@ -3,97 +3,122 @@ export const formsLesson = {
   title: "Formalar bilan ishlash",
   level: "O'rta daraja",
   description: "Inputlar, submit va validatsiya: foydalanuvchi ma'lumotlarini qabul qilish.",
-  theory: `
-# Formalar — Bu nima va nima uchun kerak?
+  theory: `## 1. NEGA kerak?
 
-**Forma** (\`form\`) — bu veb-saytlarda ma'lumot to'plashning asosiy usuli. Ro'yxatdan o'tish, qidiruv yoki xabar yuborish — hammasi formalar orqali qilinadi.
-
-## 1. NEGA kerak?
-Saytingiz foydalanuvchidan ma'lumot olishi kerak bo'lsa (masalan, login/parol), sizga formalar kerak bo'ladi. JS orqali biz o'sha ma'lumotlarni serverga yuborishdan oldin tekshiramiz (validatsiya).
+Forma (\`form\`) — bu veb-saytlarda foydalanuvchidan ma'lumot to'plashning asosiy usuli. Ro'yxatdan o'tish, qidiruv tizimi, to'lov qilish, fikr-mulohaza qoldirish — bularning barchasi formalar orqali amalga oshiriladi. JavaScript yordamida biz foydalanuvchi kiritgan ma'lumotlarni serverga yuborishdan oldin tekshiramiz (validatsiya), xatolarni ko'rsatamiz va ma'lumotlarni xavfsiz formatda jo'natishga tayyorlaymiz.
 
 ## 2. SODDALIK (Analogiya)
-Buni **anketa to'ldirishga** o'xshatish mumkin. Siz qog'ozdagi katakchalarni to'ldirasiz (Input) va uni qabulxonaga topshirasiz (Submit). Qabulxona xodimi (JS) hamma joyi to'ldirilganini tekshiradi.
+
+Buni **rasmiy anketa to'ldirishga** o'xshatish mumkin:
+- **Anketa varag'i:** HTML formasi.
+- **Katakchalar (ism, yosh):** Inputlar.
+- **Tugma (Submit):** Hujjatni topshirish.
+- **JavaScript (Tekshiruvchi xodim):** Siz anketani topshirganingizda, u hamma narsa to'g'ri to'ldirilganini (masalan, yosh ustuniga raqam yozilganini, email to'g'ri formatdaligini) tekshiradi. Agar xato bo'lsa, anketani qaytarib beradi.
 
 ## 3. STRUKTURA
 
-### A. submit hodisasi
-Forma yuborilganda \`submit\` hodisasi yuz beradi. Uni doim \`preventDefault()\` bilan to'xtatish kerak:
+### A. submit hodisasi va preventDefault
+Forma yuborilganda \`submit\` hodisasi yuz beradi. Brauzer sukut bo'yicha sahifani yangilab yuborishga harakat qiladi. Buning oldini olish uchun \`e.preventDefault()\` chaqiriladi:
 \`\`\`javascript
-const myForm = document.querySelector("form");
-myForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  console.log("Forma yuborildi!");
+const form = document.querySelector("form");
+form.addEventListener("submit", (e) => {
+  e.preventDefault(); // Sahifa yangilanishini to'xtatadi
+  console.log("Forma topshirildi!");
 });
 \`\`\`
 
-### B. Qiymatni olish (.value)
-Input ichidagi matnni olish:
+### B. Inputlardan qiymat olish (.value)
+Matnli maydonlardan ma'lumotni \`.value\` xususiyati orqali olamiz:
 \`\`\`javascript
-const ismInput = document.querySelector("#name");
-console.log(ismInput.value); // Matnni qaytaradi
+const nameInput = document.querySelector("#username");
+console.log(nameInput.value); // Foydalanuvchi kiritgan matn
+\`\`\`
+*Eslatma:* Hatto input turi \`type="number"\` bo'lsa ham, \`.value\` har doim string qaytaradi. Uni songa o'tkazish uchun \`Number()\` yoki \`parseInt()\` ishlatiladi.
+
+### C. Checkbox va Radio button (.checked)
+Tanlov elementlarida qiymat emas, balki ularning tanlanganlik holati (\`true\` / \`false\`) muhim:
+\`\`\`javascript
+const agreeCheckbox = document.querySelector("#agree");
+console.log(agreeCheckbox.checked); // true yoki false
 \`\`\`
 
-### C. Validatsiya (Tekshirish)
+### D. FormData API
+Agar formada inputlar ko'p bo'lsa, ularni birma-bir yig'ish qiyin. \`FormData\` bizga butun formadagi ma'lumotlarni kalit-qiymat ko'rinishida yig'ib beradi:
 \`\`\`javascript
-if (ismInput.value === "") {
-  alert("Ismingizni yozing!");
-}
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const formData = new FormData(form);
+  
+  // Ma'lumotlarni olish
+  const username = formData.get("username");
+  const email = formData.get("email");
+  
+  console.log(username, email);
+});
 \`\`\`
 
-## 4. AMALIYOT (Mashqlar pastda)
+### E. Formani tozalash (reset)
+Formadagi barcha maydonlarni dastlabki holatiga keltirish:
+\`\`\`javascript
+form.reset(); // Barcha inputlarni tozalaydi
+\`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **preventDefault ni unutish:** Agar buni yozmasangiz, forma yuborilganda sahifa yangilanib ketadi va JS kodlaringiz ishlamay qoladi.
-2. **value va elementni adashtirish:** \`console.log(input)\` elementni o'zini chiqaradi, \`console.log(input.value)\` esa ichidagi matnni.
+## 4. XATOLAR (Common Mistakes)
+
+1. **preventDefault ni yozishni unutish:**
+   Agar preventDefault yozilmasa, forma submit bo'lganda sahifa tezda yangilanib ketadi va konsoldagi yoki JS xotirasidagi ma'lumotlar yo'qoladi.
+
+2. **Element va uning qiymatini adashtirish:**
+   \`\`\`javascript
+   const input = document.querySelector("#name");
+   // XATO:
+   if (input === "") { ... } // input - bu DOM obyekti, u hech qachon bo'sh string bo'lmaydi.
+   // TO'G'RI:
+   if (input.value === "") { ... }
+   \`\`\`
+
+3. **Checkbox'lar uchun value tekshirish:**
+   Checkbox tanlanganini bilish uchun \`checkbox.value\` emas, \`checkbox.checked\` ishlatilishi kerak.
+
+## 5. AMALIYOT (Mashqlar)
 
 ## 6. SAVOLLAR VA JAVOBLAR
-**1. Formaning asosiy hodisasi (event) qaysi?**
-submit
 
+**1. Formaning eng muhim hodisasi (event) qaysi?**
+\`submit\` event. U foydalanuvchi formani yubormoqchi bo'lganda (Enter bosganda yoki Submit tugmasini bosganda) ishga tushadi.
 
-**2. event.preventDefault() nima uchun shart?**
-Sahifani yangilanib ketishini to'xtatish uchun.
+**2. preventDefault() nima uchun kerak?**
+Brauzer formani yuborib sahifani qayta yuklashini to'xtatish va ma'lumotlarni JavaScript yordamida qayta ishlash uchun.
 
+**3. Input'dan olingan qiymat har doim qaysi ma'lumot turida bo'ladi?**
+Doimo \`string\` (matn) turida bo'ladi.
 
-**3. Input ichidagi matnni qanday olamiz?**
-element.value xususiyati orqali.
+**4. Input qiymatini songa o'tkazishning qanday usullari bor?**
+\`Number(input.value)\`, \`parseInt(input.value)\` yoki \`+input.value\`.
 
+**5. Checkbox tanlanganligini qanday tekshiramiz?**
+Elementning \`checked\` xususiyati orqali (agar tanlangan bo'lsa \`true\`, aks holda \`false\`).
 
-**4. Validatsiya nima?**
-Ma'lumotlarning to'g'ri to'ldirilganligini tekshirish jarayoni.
+**6. Formadagi barcha inputlarni dastlabki holatga keltirish uchun qaysi metod chaqiriladi?**
+\`form.reset()\` metodi.
 
+**7. FormData nima?**
+Formadagi barcha ma'lumotlarni (input name va qiymatlarini) kalit-qiymat ko'rinishida avtomatik yig'ib beruvchi maxsus brauzer API'si.
 
-**5. Input qiymati har doim qaysi turda (string) bo'ladi?**
-String turida.
+**8. input event va change event farqi nima?**
+\`input\` hodisasi foydalanuvchi har safar harf yozganda yoki o'chirganda real vaqtda ishlaydi. \`change\` esa elementdan fokus yo'qolganda va qiymat o'zgarganda ishga tushadi.
 
+**9. HTML5 required atributi bo'la turib, nega baribir JS validatsiya kerak?**
+HTML5 validatsiyasini foydalanuvchi devtools orqali oson o'chirib qo'yishi mumkin. JS validatsiyasi esa ishonchliroq va murakkab logikalarni (masalan, parollar mosligini tekshirish) bajarishga qodir.
 
-**6. Checkbox tanlanganini qanday bilamiz?**
-.checked xususiyati orqali (true/false).
+**10. Textarea elementining qiymati qanday olinadi?**
+Xuddi oddiy inputlar kabi \`textarea.value\` xususiyati orqali.
 
+**11. Radio button'lardan tanlanganini qanday aniqlash mumkin?**
+CSS selektor yordamida: \`document.querySelector('input[name="gender"]:checked')\` orqali joriy tanlangan radio tugmani topish mumkin.
 
-**7. reset() metodi nima qiladi?**
-Formani tozalaydi.
-
-
-**8. required atributi va JS validatsiya farqi?**
-required — HTML tarafidan, JS validatsiya — murakkabroq mantqiy tekshiruv uchun.
-
-
-**9. Radio button qiymatini qanday olamiz?**
-Tanlangan radioga murojaat qilib .value orqali.
-
-
-**10. input va change eventlari farqi nima?**
-input — yozish jarayonida, change — yozib bo'lib fokus chiqqanda.
-
-
-**11. Formani tugma bosmasdan qanday yuborsa bo'ladi?**
-form.submit() metodi orqali.
-
-
-**12. Xatolik matnini ekranda ko'rsatish uchun nima qilish kerak?**
-DOM orqali alohida biror div ga matn yozish.
-`,
+**12. Formani tugma bosmasdan JS orqali qanday submit qilish mumkin?**
+\`form.submit()\` metodini to'g'ridan-to'g'ri chaqirish orqali.`,
   exercises: [
     {
       id: 1,
@@ -126,6 +151,70 @@ DOM orqali alohida biror div ga matn yozish.
       startingCode: "const pass = { value: '123' };\n// Bu yerga yozing\n",
       hint: "if (pass.value.length < 8) console.log('Kisqa');",
       test: "if (logs.includes('Kisqa')) return null; return 'Uzunlikni tekshiring';"
+    },
+    {
+      id: 5,
+      title: "Formani tozalash",
+      instruction: "Formadagi barcha maydonlarni tozalash uchun uning reset() metodini chaqiring.",
+      startingCode: "const myForm = { reset: () => myForm.cleaned = true };\n// Bu yerda reset() metodini chaqiring\n",
+      hint: "myForm.reset();",
+      test: "if (myForm.cleaned) return null; return 'reset() metodini chaqiring';"
+    },
+    {
+      id: 6,
+      title: "Checkbox holatini aniqlash",
+      instruction: "'agree' checkbox elementining tanlangan (checked) holatini 'isAgree' o'zgaruvchisiga saqlang.",
+      startingCode: "const agree = { checked: true };\n// Bu yerga yozing\n",
+      hint: "const isAgree = agree.checked;",
+      test: "if (typeof isAgree !== 'undefined' && isAgree === true) return null; return 'isAgree o\\'zgaruvchisiga checked qiymatini saqlang';"
+    },
+    {
+      id: 7,
+      title: "FormData yordamida qiymat olish",
+      instruction: "'formData' obyektidan 'username' maydonini olish uchun get() metodini chaqiring va 'nameVal' o'zgaruvchisiga saqlang.",
+      startingCode: "const formData = { get: (name) => name === 'username' ? 'Farhod' : null };\n// Bu yerga yozing\n",
+      hint: "const nameVal = formData.get('username');",
+      test: "if (typeof nameVal !== 'undefined' && nameVal === 'Farhod') return null; return 'get() metodi orqali username\\'ni oling';"
+    },
+    {
+      id: 8,
+      title: "Input sonlarini validatsiya qilish",
+      instruction: "'ageInput' qiymatini songa o'tkazing va agar u 18 dan kichik bo'lsa konsolga 'Kichik' deb chiqaring.",
+      startingCode: "const ageInput = { value: '16' };\n// Bu yerga yozing\n",
+      hint: "if (Number(ageInput.value) < 18) console.log('Kichik');",
+      test: "if (logs.includes('Kichik')) return null; return 'Yosh 18 dan kichik bo\\'lishini tekshiring';"
+    },
+    {
+      id: 9,
+      title: "Input qiymatini o'rnatish",
+      instruction: "'emailInput' elementining qiymatini (value) 'test@test.com' ga o'rnating.",
+      startingCode: "const emailInput = { value: '' };\n// Bu yerga yozing\n",
+      hint: "emailInput.value = 'test@test.com';",
+      test: "if (emailInput.value === 'test@test.com') return null; return 'emailInput qiymatini to\\'g\\'ri o\\'rnating';"
+    },
+    {
+      id: 10,
+      title: "Checkbox o'zgarishini tinglash",
+      instruction: "'checkbox' elementining qiymati o'zgarganda (change), uning tanlangan (checked) holatini konsolga chiqaring.",
+      startingCode: "const checkbox = { checked: true, addEventListener: (type, cb) => checkbox.onchange = cb };\n// Bu yerga yozing\n",
+      hint: "checkbox.addEventListener('change', (e) => console.log(e.target.checked));",
+      test: "if (typeof checkbox.onchange === 'function') { checkbox.onchange({ target: checkbox }); if (logs.includes('true')) return null; } return 'change eventini to\\'g\\'ri boshqaring';"
+    },
+    {
+      id: 11,
+      title: "FormData qiymat qo'shish",
+      instruction: "'formData' obyektiga append() metodi orqali 'role' kalitiga 'admin' qiymatini qo'shing.",
+      startingCode: "const formData = { append: (k, v) => { formData[k] = v; } };\n// Bu yerga yozing\n",
+      hint: "formData.append('role', 'admin');",
+      test: "if (formData.role === 'admin') return null; return 'append() orqali role: admin qo\\'shing';"
+    },
+    {
+      id: 12,
+      title: "Kompleks validatsiya funksiyasi",
+      instruction: "'validateForm(user, pass)' funksiyasini yozing. Agar user.value bo'sh bo'lsa yoki pass.value uzunligi 6 dan kam bo'lsa false, aks holda true qaytarsin.",
+      startingCode: "// Funksiyani yozing\n",
+      hint: "function validateForm(user, pass) { return user.value !== '' && pass.value.length >= 6; }",
+      test: "if (typeof validateForm === 'function' && validateForm({ value: '' }, { value: '123456' }) === false && validateForm({ value: 'admin' }, { value: '123' }) === false && validateForm({ value: 'admin' }, { value: '123456' }) === true) return null; return 'Validatsiya shartlarini to\\'g\\'ri bajaring';"
     }
   ],
   quizzes: [
@@ -188,6 +277,90 @@ DOM orqali alohida biror div ga matn yozish.
       ],
       correctAnswer: 1,
       explanation: "`input` event har bir klavish bosilganda (qiymat har safar o'zgarganda) darhol ishga tushadi. `change` event esa foydalanuvchi qiymatni o'zgartirib, input elementini tark etganidan keyingina ishlaydi."
+    },
+    {
+      id: 6,
+      question: "HTML5 dagi qaysi atribut input maydoni majburiy to'ldirilishi kerakligini bildiradi?",
+      options: [
+        "`validate=\"true\"`",
+        "`required`",
+        "`mandatory`",
+        "`strict`"
+      ],
+      correctAnswer: 1,
+      explanation: "`required` atributi HTML5 da brauzer darajasida element bo'sh qoldirilishini taqiqlaydi."
+    },
+    {
+      id: 7,
+      question: "`<select>` drop-down elementida foydalanuvchi tanlagan variant (option) qiymatini qanday olish mumkin?",
+      options: [
+        "Select elementining `.value` xususiyati orqali",
+        "Har bir option elementining `.checked` xususiyati orqali",
+        "Select elementining `.getText()` metodi orqali",
+        "Select elementining `.selectedOption` xususiyati orqali"
+      ],
+      correctAnswer: 0,
+      explanation: "`<select>` elementining `.value` xususiyati joriy tanlangan `<option>` elementining `value` atributi qiymatini qaytaradi."
+    },
+    {
+      id: 8,
+      question: "`new FormData(myForm)` konstruktorida `myForm` parametridan nima talab etiladi?",
+      options: [
+        "HTMLFormElement (DOM-dan olingan haqiqiy form elementi)",
+        "Oddiy JavaScript obyekti",
+        "Formadagi faqat bitta input elementi",
+        "Input elementlari ro'yxati (NodeList)"
+      ],
+      correctAnswer: 0,
+      explanation: "`FormData` konstruktori parametr sifatida aynan HTML form elementini qabul qiladi va uning ichidagi barcha name'ga ega maydonlarni yig'ib beradi."
+    },
+    {
+      id: 9,
+      question: "Foydalanuvchi input maydoniga har bir belgini yozib borayotganda real vaqtda ishlaydigan hodisa qaysi?",
+      options: [
+        "`change`",
+        "`input`",
+        "`blur`",
+        "`focus`"
+      ],
+      correctAnswer: 1,
+      explanation: "`input` hodisasi qiymat har safar o'zgarganda (har bir harf yozilganda yoki o'chirilganda) real vaqtda ishga tushadi."
+    },
+    {
+      id: 10,
+      question: "Formadagi barcha maydonlarni boshlang'ich (default) qiymatlariga qaytarish va tozalash uchun qaysi metod ishlatiladi?",
+      options: [
+        "`form.clear()`",
+        "`form.clean()`",
+        "`form.reset()`",
+        "`form.empty()`"
+      ],
+      correctAnswer: 2,
+      explanation: "`form.reset()` metodi formadagi barcha input, select va checkbox maydonlarini boshlang'ich qiymatlariga qaytaradi."
+    },
+    {
+      id: 11,
+      question: "Radio button guruhidan tanlangan elementni CSS selector orqali qanday topish mumkin?",
+      options: [
+        "`document.querySelector('input[type=\"radio\"]:checked')`",
+        "`document.querySelector('input[type=\"radio\"].selected')`",
+        "`document.querySelector('input[type=\"radio\"]:active')`",
+        "`document.querySelector('input[type=\"radio\"]:value')`"
+      ],
+      correctAnswer: 0,
+      explanation: "`:checked` pseudo-klassi tanlangan radio yoki checkbox elementlarini topish uchun qo'llaniladi."
+    },
+    {
+      id: 12,
+      question: "`<textarea>` elementi ichidagi foydalanuvchi yozgan matnni olish uchun qaysi xususiyatdan foydalaniladi?",
+      options: [
+        "`textarea.textContent`",
+        "`textarea.innerHTML`",
+        "`textarea.value`",
+        "`textarea.innerText`"
+      ],
+      correctAnswer: 2,
+      explanation: "`<textarea>` xuddi oddiy `<input>` kabi form maydoni hisoblanadi. Shuning uchun uning ichidagi joriy matnni olish yoki o'zgartirish uchun `.value` xususiyati ishlatiladi."
     }
   ]
 };

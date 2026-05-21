@@ -146,7 +146,7 @@ function throttle(func, limit) {
     },
     {
       id: 9,
-      question: "Throttle parametr uzatish",
+      title: "Throttle parametr uzatish",
       instruction: "Throttled funksiyaga dynamic argumentlarni apply yordamida xavfsiz o'tkazing.",
       startingCode: "function throttle(func, limit) {\n  let inThrottle = false;\n  return function(...args) {\n    if (!inThrottle) {\n      // apply orqali context va args o'tkazing\n      inThrottle = true;\n      setTimeout(() => inThrottle = false, limit);\n    }\n  };\n}\n",
       hint: "func.apply(this, args);",
@@ -222,6 +222,90 @@ function throttle(func, limit) {
       options: ["Debounce", "Throttle", "Cheksiz loop", "Sinxron yuklash"],
       correctAnswer: 1,
       explanation: "Scroll vaqtida ekranga yangi element tushganini muntazam ravishda tekshirib turish kerak. Scroll harakati uzoq davom etishi mumkinligi sababli, har 100-200ms da bir marta tekshiruv o'tkazish uchun Throttle eng yaxshi yechim hisoblanadi."
+    },
+    {
+      id: 6,
+      question: "Debounce ichida `clearTimeout(timeoutId)` chaqirilishi qanday vazifani bajaradi?",
+      options: [
+        "Funksiyani butunlay o'chirib yuboradi",
+        "Agar avvalgi chaqiruv bo'yicha taymer hali tugamagan bo'lsa, uni bekor qiladi va yangi taymer uchun joy ochadi (taymerni nollaydi)",
+        "Taymerni darhol ishga tushiradi",
+        "Brauzer keshini tozalaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Har safar hodisa yangidan sodir bo'lganda, avvalgi rejalashtirilgan setTimeout bekor qilinishi kerak, aks holda funksiya kutilganidan ko'p marta ishlab ketadi. `clearTimeout` aynan shu eski taymerni bekor qiladi."
+    },
+    {
+      id: 7,
+      question: "Debounce'da `immediate` (yoki `leading`) parametri yoqilganda nima sodir bo'ladi?",
+      options: [
+        "Funksiya birinchi chaqiriqdanoq darhol bajariladi, so'ngra ketma-ket chaqiriqlar belgilangan vaqt ichida bloklanadi",
+        "Funksiya hech qachon bajarilmaydi",
+        "Funksiya har doim bir vaqtda 2 marta bajariladi",
+        "Funksiya asinxron emas, sinxron ishlaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "`immediate` yoki `leading` deb nomlanuvchi opsiya foydalanuvchi birinchi marta tugmani bosganda funksiyani darhol bajarishga, so'ngra ketma-ket tezkor bosishlarni kechiktirib bloklashga imkon beradi."
+    },
+    {
+      id: 8,
+      question: "Throttle limit vaqti davomida yuz bergan yangi chaqiriqlarga qanday munosabatda bo'ladi?",
+      options: [
+        "Ularni navbatga (queue) qo'shadi va hammasini ketma-ket bajaradi",
+        "Ularni rad etadi (ignoring / e'tiborsiz qoldiradi) va faqat limit tugagach keyingi chaqiriqni qabul qiladi",
+        "Sahifani qayta yuklaydi",
+        "Xatolik (error) qaytaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Throttle qat'iy vaqt oralig'ida ishlashni ta'minlagani uchun, belgilangan limit muddati ichida yuz bergan barcha chaqiriqlar shunchaki e'tiborsiz qoldiriladi."
+    },
+    {
+      id: 9,
+      question: "Nima uchun Debounce yoki Throttle ishlatilgan komponentlar sahifadan o'chganda (unmount bo'lganda) taymerlarni bekor qilish (cancel) muhim?",
+      options: [
+        "Brauzer xotirasida 'memory leak' (xotira yetishmovchiligi) oldini olish va o'chib ketgan komponent elementlariga murojaat qilishda xatolik chiqmasligi uchun",
+        "CSS stillari buzilmasligi uchun",
+        "LocalStorage tozalanib ketishi uchun",
+        "HTTP so'rovlar sonini oshirish uchun"
+      ],
+      correctAnswer: 0,
+      explanation: "Agar komponent o'chib ketgandan keyin ham setTimeout taymeri faol tursa va u o'chgan element yoki komponent holatini (state) o'zgartirmoqchi bo'lsa, xatolik kelib chiqadi va xotira band bo'lib qoladi."
+    },
+    {
+      id: 10,
+      question: "Brauzer oynasi o'lchami o'zgarganda (`resize` event) sahifadagi elementlar koordinatalarini qayta hisoblash uchun qaysi usul eng mos keladi?",
+      options: [
+        "Debounce",
+        "Throttle",
+        "Ikkalasi ham bir xil mos keladi",
+        "Hech biri mos kelmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "resize hodisasi oyna surilayotgan paytda juda ko'p marta chaqiriladi. Har 100-200ms da sahifani yangilab turish (foydalanuvchiga silliq ko'rinishi) uchun Throttle mosroq."
+    },
+    {
+      id: 11,
+      question: "JavaScript-dagi qaysi mashhur kutubxona Debounce va Throttle funksiyalarining tayyor mukammal realizatsiyalarini taqdim etadi?",
+      options: [
+        "React",
+        "Lodash",
+        "Express",
+        "Redux"
+      ],
+      correctAnswer: 1,
+      explanation: "Lodash (`_.debounce` va `_.throttle` yordamida) ushbu rate-limit funksiyalarini barcha edge-case'lar (leading, trailing, cancel va h.k.) bilan to'liq taqdim etadi."
+    },
+    {
+      id: 12,
+      question: "Sichqoncha harakati (`mousemove`) davomida koordinatalarni serverga yuborishda nega Throttle ishlatiladi?",
+      options: [
+        "Sichqoncha harakati har bir pikselda hodisa hosil qiladi, Throttle esa so'rovlar oqimini ma'lum vaqt oralig'i (masalan, har 100ms) bilan cheklab beradi",
+        "Sichqonchani to'xtatadi",
+        "Koordinatalarni shifrlash uchun",
+        "Koordinata qiymatini 0 ga aylantirish uchun"
+      ],
+      correctAnswer: 0,
+      explanation: "`mousemove` juda yuqori chastotali hodisa bo'lib, uning har bir harakatiga serverga so'rov yuborish tarmoqni band qiladi. Throttle bu oqimni ma'lum interval bilan cheklab, tarmoq yuklamasini kamaytiradi."
     }
   ]
 };

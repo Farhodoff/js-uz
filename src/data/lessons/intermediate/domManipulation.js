@@ -521,6 +521,90 @@ parentElement — ota element, children — bolalar, nextElementSibling — keyi
       ],
       correctAnswer: 1,
       explanation: "`DocumentFragment` - bu virtual DOM bo'lagi bo'lib, xotirada yaratiladi. Unga bir nechta elementlarni qo'shib, keyin bitta operatsiya orqali DOM-ga ulaganda sahifani qayta chizish (repaint) soni kamayadi va tezlik sezilarli darajada oshadi."
+    },
+    {
+      id: 6,
+      question: "`element.cloneNode(true)` va `element.cloneNode(false)` o'rtasidagi farq nima?",
+      options: [
+        "`true` faqat elementning o'zini, `false` esa ichidagi bolalari bilan birga nusxalaydi",
+        "`true` elementni va uning barcha ichki bolalarini (deep copy) klonlaydi, `false` esa faqat elementning o'zini (shallow copy) nusxalaydi",
+        "`true` elementni o'chiradi, `false` esa saqlab qoladi",
+        "`true` inline stillarni nusxalaydi, `false` esa klasslarni nusxalaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`cloneNode(true)` chuqur nusxa olishni bildiradi, ya'ni element ichidagi barcha matn va boshqa elementlar bilan birga klonlanadi. `cloneNode(false)` esa elementning o'zini, lekin uning ichidagi tarkibni nusxalamaydi."
+    },
+    {
+      id: 7,
+      question: "Elementning atributini butunlay o'chirib tashlash uchun qaysi metoddan foydalaniladi?",
+      options: [
+        "`element.setAttribute('attr', null)`",
+        "`element.removeAttribute('attr')`",
+        "`element.deleteAttribute('attr')`",
+        "`element.clearAttribute('attr')`"
+      ],
+      correctAnswer: 1,
+      explanation: "`removeAttribute('attr')` ko'rsatilgan atributni elementdan butunlay olib tashlaydi."
+    },
+    {
+      id: 8,
+      question: "`element.insertAdjacentHTML('beforeend', html)` metodi qayerga yangi element qo'shadi?",
+      options: [
+        "Elementning bevosita oldidan (tashqarida)",
+        "Elementning bevosita keyin (tashqarida)",
+        "Element ichidagi barcha bolalarning boshiga (birinchi farzand sifatida)",
+        "Element ichidagi barcha bolalarning oxiriga (oxirgi farzand sifatida)"
+      ],
+      correctAnswer: 3,
+      explanation: "`beforeend` qiymati yangi tarkibni maqsad qilingan elementning eng oxirgi bolasi (farzandi) sifatida, yopilish tegi oldidan joylashtiradi."
+    },
+    {
+      id: 9,
+      question: "`element.classList.toggle('active')` metodi qanday ishlaydi?",
+      options: [
+        "Elementga har doim 'active' klassini qo'shadi",
+        "Elementdan 'active' klassini har doim o'chiradi",
+        "Agar elementda 'active' klassi bo'lsa uni o'chiradi, agar yo'q bo'lsa uni qo'shadi",
+        "Elementning barcha klasslarini 'active'ga almashtiradi"
+      ],
+      correctAnswer: 2,
+      explanation: "`classList.toggle()` metodi berilgan klass elementda mavjud bo'lsa uni o'chiradi (va false qaytaradi), mavjud bo'lmasa qo'shadi (va true qaytaradi)."
+    },
+    {
+      id: 10,
+      question: "`removeChild()` va `remove()` metodlarining farqi nima?",
+      options: [
+        "`remove()` ota elementdan bolani o'chirish uchun ota elementda chaqiriladi, `removeChild()` esa elementning o'zini o'chirish uchun unda to'g'ridan-to'g'ri chaqiriladi",
+        "`removeChild()` ota elementda chaqirilib, o'chirib tashlangan element obyekti ma'lumotini qaytaradi; `remove()` esa elementning o'zida chaqiriladi va sahifadan o'chirilgach hech narsa qaytarmaydi",
+        "Ikkalasi ham mutlaqo bir xil va faqat ota elementda ishlaydi",
+        "`remove()` faqat rasmlarni o'chirishga mos keladi, `removeChild()` esa div'larni"
+      ],
+      correctAnswer: 1,
+      explanation: "`parent.removeChild(child)` eski uslub bo'lib, ota elementda chaqiriladi va o'chirilgan bolani qaytaradi. Modern `child.remove()` esa elementning o'zida chaqiriladi va sahifadan o'chirib tashlaydi."
+    },
+    {
+      id: 11,
+      question: "Quyidagilardan qaysi biri elementning bevosita ota-elementini (parent node) olish uchun ishlatiladi?",
+      options: [
+        "`element.parentElement`",
+        "`element.children`",
+        "`element.nextElementSibling`",
+        "`element.closest`"
+      ],
+      correctAnswer: 0,
+      explanation: "`parentElement` xususiyati elementning bevosita ota elementini (parent node, agar u HTML element bo'lsa) qaytaradi."
+    },
+    {
+      id: 12,
+      question: "`element.closest('.wrapper')` metodi nima qiladi?",
+      options: [
+        "Maqsadli elementning eng birinchi farzandini wrapper klassi bo'yicha qidiradi",
+        "Maqsadli elementdan boshlab ota-bobolari (ancestors) bo'ylab yuqoriga qarab birinchi mos keluvchi '.wrapper' selectorli elementni qidiradi va qaytaradi",
+        "Elementga eng yaqin joylashgan qo'shni (sibling) wrapper elementini qaytaradi",
+        "Sahifadagi barcha '.wrapper' klassiga ega elementlarni topadi"
+      ],
+      correctAnswer: 1,
+      explanation: "`closest()` metodi elementning o'zidan boshlab, DOM daraxti bo'ylab yuqoriga (ota, bobo va h.k.) qarab, berilgan selectorga mos keladigan eng birinchi elementni qaytaradi. Agar topilmasa, `null` qaytaradi."
     }
   ]
 };
