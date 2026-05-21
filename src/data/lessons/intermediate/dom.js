@@ -31,6 +31,39 @@ el.classList.add("active"); // Class qo'shish
 - **HTMLCollection:** Jonli (live) to'plam. DOM o'zgarganda avtomatik yangilanadi. \`getElementsByClassName\` yoki \`getElementsByTagName\` qaytaradi.
 - **NodeList:** Statik (non-live) bo'ladi. \`querySelectorAll\` qaytaradi. Unda \`.forEach()\` metodi mavjud bo'lib, massivga o'xshash operatsiyalarni bajarish oson.
 
+### D. DOM bilan ishlashda bilish kerak bo'lgan asosiy ko'nikmalar rejasi (DOM Skills Roadmap)
+DOM bilan professional darajada ishlash uchun quyidagi 8 ta asosiy yo'nalishni bilish va amalda qo'llay olish zarur:
+
+1. **Elementlarni Tanlash (Selection):**
+   - \`document.querySelector\` va \`document.querySelectorAll\` yordamida har qanday murakkab CSS selektorlar orqali elementlarni topish.
+   - \`getElementById\` va boshqa an'anaviy metodlardan unumli foydalanish.
+
+2. **Daraxt Bo'ylab Harakatlanish (Traversal):**
+   - Ota elementga (\`parentElement\`), bolalarga (\`children\`, \`firstElementChild\`, \`lastElementChild\`) va qo'shnilarga (\`nextElementSibling\`, \`previousElementSibling\`) o'tishni bilish.
+
+3. **Elementlarni Yaratish va Joylashtirish (Creation & Insertion):**
+   - \`document.createElement\` orqali yangi tugunlar yaratish.
+   - \`append\`, \`prepend\`, \`before\`, \`after\` va \`insertAdjacentHTML\` yordamida elementlarni DOM-ning kerakli qismiga xavfsiz va to'g'ri joylashtirish.
+
+4. **Klasslar va Atributlarni Boshqarish (Classes & Attributes):**
+   - \`classList\` metodlari (\`add\`, \`remove\`, \`toggle\`, \`contains\`) yordamida stillarni dinamik boshqarish.
+   - HTML standart atributlari va custom ma'lumotlar (\`data-*\` atributlari va \`dataset\` obyekti) bilan ishlash.
+
+5. **Tarkib va Stillarni O'zgartirish (Content & Styles):**
+   - \`textContent\` (xavfsiz matn) va \`innerHTML\` (HTML render qilish) farqini bilish va to'g'ri qo'llash.
+   - Inline stillarni (\`element.style\`) va CSS o'zgaruvchilarini (CSS Variables) boshqarish.
+
+6. **Hodisalar bilan Ishlash (Event Handling):**
+   - \`addEventListener\` va \`removeEventListener\` yordamida foydalanuvchi harakatlarini eshitish.
+   - Event Bubbling, Event Capturing va Event Delegation (hodisalar delegatsiyasi) mexanizmlarini tushunish.
+
+7. **Geometriya va O'lchamlar (Geometry & Coordinates):**
+   - Elementning o'lchamlari (\`offsetWidth/Height\`, \`clientWidth/Height\`) va skrol holatini (\`scrollTop/Left\`) aniqlash.
+   - Ekrandagi joylashuvini (\`getBoundingClientRect()\`) olish va boshqarish.
+
+8. **Samaradorlik va Optimallashtirish (Performance & DocumentFragment):**
+   - Ko'p miqdordagi elementlarni qo'shishda DOM Reflow/Repaint yuklamasini kamaytirish uchun \`DocumentFragment\`-dan foydalanish.
+
 ## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
