@@ -44,6 +44,7 @@ import { optionalChaining } from "./lessons/intermediate/optionalChaining";
 import { interviewQuestionsIntermediate } from "./lessons/intermediate/interviewQuestions";
 import { thisKeyword } from "./lessons/intermediate/thisKeyword";
 import { timersLesson } from "./lessons/intermediate/timers";
+import { immutableData } from "./lessons/intermediate/immutableData";
 
 import { callbacksLesson } from "./lessons/advanced/callbacks";
 import { promises } from "./lessons/advanced/promises";
@@ -85,7 +86,7 @@ export const curriculum = {
     label: "O'rta daraja",
     color: "#e5b84f",
     icon: "🟡",
-    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, domBasics, domManipulation, events, formsLesson, timersLesson, optionalChaining, classesLesson, interviewQuestionsIntermediate]
+    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, domBasics, domManipulation, events, formsLesson, timersLesson, optionalChaining, classesLesson, interviewQuestionsIntermediate]
   },
   advanced: {
     label: "Murakkab",
