@@ -79,7 +79,7 @@ Klaviaturadagi \`Esc\` tugmasi ostida joylashgan backtick (\` \` \` - teskari qo
 Matn ichiga istalgan JavaScript o'zgaruvchisi, hisob-kitob amali yoki funksiya qaytargan qiymatni to'g'ridan-to'g'ri joylashtirish (interpolatsiya qilish) uchun ishlatiladi.
 
 **3. Backtick ichida yangi qatorga o'tish uchun nima qilish kerak?**
-Hech qanday maxsus belgi (masalan, \`\\n\`) yozish shart emas. Shunchaki klaviaturadagi \"Enter\" tugmasini bosib yangi qatorga o'tish kifoya.
+Hech qanday maxsus belgi (masalan, \`\\n\`) yozish shart emas. Shunchaki klaviaturadagi "Enter" tugmasini bosib yangi qatorga o'tish kifoya.
 
 **4. Eski string birlashtirish (+) usulining asosiy kamchiligi nima?**
 Ko'p o'zgaruvchilar va uzun matnlarni birlashtirishda qo'shtirnoqlar hamda \`+\` belgilarining ko'pligi sababli sintaktik xatolarga yo'l qo'yish juda oson bo'lgan.
@@ -87,7 +87,7 @@ Ko'p o'zgaruvchilar va uzun matnlarni birlashtirishda qo'shtirnoqlar hamda \`+\`
 **5. \${} ichida ternary operator ishlatsa bo'ladimi?**
 Ha, ternary (uchlik) shart operatori (\`shart ? true : false\`) ham to'liq ishlaydi va natijani matnga aylantiradi.
 
-**6. Nima uchun bu usul \"Template\" deb ataladi?**
+**6. Nima uchun bu usul "Template" deb ataladi?**
 Chunki u matn andozasi (shabloni) vazifasini bajaradi va undagi dinamik qiymatlar o'rni dastur ishlashi davomida to'ldiriladi.
 
 **7. JavaScript-ning qaysi versiyasida bu xususiyat qo'shilgan?**
@@ -97,7 +97,7 @@ Bu xususiyat JavaScript-ning ES6 (ECMAScript 2015) versiyasida taqdim etilgan.
 Natija \`4\` (matn ko'rinishida) bo'ladi, chunki ifoda bajarilib, natija stringga o'giriladi.
 
 **9. Backtick ichida oddiy qo'shtirnoqlardan qanday foydalaniladi?**
-Backticks bilan o'ralgan matn ichida hech qanday muammosiz oddiy \`'\` va ikkitalik \`\"\` qo'shtirnoqlardan foydalanish mumkin (ularni escape qilish shart emas).
+Backticks bilan o'ralgan matn ichida hech qanday muammosiz oddiy \`'\` va ikkitalik \`"\` qo'shtirnoqlardan foydalanish mumkin (ularni escape qilish shart emas).
 
 **10. HTML elementlarini backtick bilan yasash qulaymi?**
 Ha, o'ta qulay. Ko'p qatorli HTML tuzilmalarini va ulardagi dinamik qiymatlarni backtick yordamida juda oson va toza yaratish mumkin.
