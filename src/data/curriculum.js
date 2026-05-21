@@ -21,6 +21,7 @@ import { functionScopeLesson } from "./lessons/beginner/functionScope";
 import { blockScopeLesson } from "./lessons/beginner/blockScope";
 import { globalScopeLesson } from "./lessons/beginner/globalScope";
 import { hoistingThisLesson } from "./lessons/beginner/hoistingThis";
+import { executionContextLesson } from "./lessons/beginner/executionContext";
 import { typeofLesson } from "./lessons/beginner/typeof";
 import { operators } from "./lessons/beginner/operators";
 import { loops } from "./lessons/beginner/loops";
@@ -78,7 +79,7 @@ export const curriculum = {
     label: "Boshlang'ich",
     color: "#c8a96e",
     icon: "🟢",
-    lessons: [cheatSheet, interviewQuestionsBeginner, jsWhat, templateLiterals, consoleMethods, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, typeCasting, implicitCasting, ifElseLesson, switchLesson, equalityAlgorithms, primitivesVsObjects, stringMethods, mathObject, jsGotchas, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, typeofLesson, operators, loops, breakContinue, functions, arrays, objects]
+    lessons: [cheatSheet, interviewQuestionsBeginner, jsWhat, templateLiterals, consoleMethods, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, typeCasting, implicitCasting, ifElseLesson, switchLesson, equalityAlgorithms, primitivesVsObjects, stringMethods, mathObject, jsGotchas, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, executionContextLesson, typeofLesson, operators, loops, breakContinue, functions, arrays, objects]
   },
   intermediate: {
     label: "O'rta daraja",
