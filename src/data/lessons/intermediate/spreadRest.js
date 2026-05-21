@@ -3,106 +3,148 @@ export const spreadRest = {
   title: "Spread va Rest (...) - Yoyish va Yig'ish",
   level: "Intermediate",
   description: "Ma'lumotlarni Lego bo'laklaridek oson boshqarish: yoyish va yig'ish operatorlari.",
-  theory: `
-# Spread va Rest – Bu nima va nima uchun kerak?
+  theory: `## 1. NEGA kerak?
 
-Sintaksis jihatidan ikkalasi ham uchta nuqta (\`...\`) bilan yoziladi, lekin vazifasi butunlay boshqa-boshqa.
+Tasavvur qiling, sizda ikkita massiv bor va ularni birlashtirmoqchisiz. Eski usulda \`.concat()\` ishlatish yoki sikl aylantirish kerak edi. Bu ko'p kod talab etardi. Obyektlarni nusxalash va birlashtirish ham shunday qiyin edi.
 
-## 1. NEGA kerak?
-Tasavvur qiling, sizda ikkita massiv bor va ularni birlashtirmoqchisiz. Eski usulda \`.concat()\` ishlatish yoki sikl aylantirish kerak edi. Spread/Rest bilan esa bu bir necha soniyalik ish.
+ES6 (2015) da taqdim etilgan uchta nuqta (\`...\`) yozuvi bu muammoni butunlay hal qildi. U ishlatilish joyiga qarab **Spread (Yoyish)** yoki **Rest (Yig'ish)** vazifasini bajaradi va kodni o'ta qulay shaklga keltiradi.
+
+---
 
 ## 2. SODDALIK (Analogiya)
-- **Spread (Yoyish):** Bu xuddi sumkani ichidagilarni stolga to'kib yuborishga o'xshaydi. Hamma narsa yoyilib chiqadi.
-- **Rest (Yig'ish):** Bu esa stol ustidagi hamma narsani sumkaga solib, og'zini yopishga o'xshaydi. Hamma narsa bir joyga yig'iladi.
+
+- **Spread (Yoyish):** Bu xuddi sumkaning ichidagilarni stolga to'kib yuborishga o'xshaydi. Hamma narsa yoyilib chiqadi (Massiv elementlari yoki obyekt kalitlari alohida qiymatlar sifatida ochiladi).
+- **Rest (Yig'ish):** Bu esa stol ustidagi bir nechta narsalarni sumkaga solib, og'zini yopishga o'xshaydi. Hamma narsa bir joyga yig'iladi (Alohida argumentlar bitta massivga yig'iladi).
+
+---
 
 ## 3. STRUKTURA
 
-### A. Spread: Massiv va Obyektlarni yoyish
-\`\`\`javascript
-// Massivlarni birlashtirish
-const m1 = [1, 2];
-const m2 = [3, 4];
-const yangi = [...m1, ...m2]; // [1, 2, 3, 4]
+### A. Spread Operatori (Yoyish)
 
-// Obyektdan nusxa olish
-const user = { name: "Ali", age: 25 };
-const copy = { ...user, city: "Tashkent" };
+Spread operatori elementlarni "tarqatish" uchun ishlatiladi:
+1. **Massivlarni birlashtirish va nusxalash:**
+   \`\`\`javascript
+   const m1 = [1, 2];
+   const m2 = [3, 4];
+   
+   // Birlashtirish
+   const yangi = [...m1, ...m2]; // [1, 2, 3, 4]
+   
+   // Nusxa olish (Shallow copy)
+   const nusxa = [...m1]; // [1, 2]
+   \`\`\`
+2. **Obyektlarni birlashtirish va nusxalash:**
+   \`\`\`javascript
+   const user = { name: "Ali", age: 25 };
+   
+   // Nusxa olish va yangi kalit qo'shish
+   const copy = { ...user, city: "Tashkent" };
+   
+   // Ikki obyektni birlashtirish (agar bir xil kalitlar bo'lsa, oxirgisi oldingisini o'chiradi)
+   const edit = { ...user, name: "Bobur" }; // name "Bobur" bo'ladi
+   \`\`\`
+3. **Funksiya argumentlarida yoyish:**
+   \`\`\`javascript
+   const sonlar = [5, 12, 8];
+   console.log(Math.max(...sonlar)); // Math.max(5, 12, 8) deb yoyiladi. Natija: 12
+   \`\`\`
+
+**Muhim (Shallow Copy xavfi):** Spread faqat 1-darajali nusxa oladi. Agar massiv yoki obyekt ichida yana obyekt bo'lsa, ularning reference (manzili) ko'chadi xolos:
+\`\`\`javascript
+const original = { name: "Ali", info: { city: "Tashkent" } };
+const copy = { ...original };
+copy.info.city = "Samarqand"; // original.info.city ham "Samarqand"ga o'zgaradi!
 \`\`\`
 
-### B. Rest: Funksiya parametrlarida yig'ish
-Rest har doim oxirida keladi va qolgan hamma argumentlarni massivga aylantiradi:
-\`\`\`javascript
-function sum(birinchi, ...qolganlar) {
-  console.log(birinchi); // 1
-  console.log(qolganlar); // [2, 3, 4, 5] (Massiv)
-}
-sum(1, 2, 3, 4, 5);
-\`\`\`
+### B. Rest Parametri (Yig'ish)
+
+Rest parametri argumentlarni bitta massivga yig'ib olish uchun ishlatiladi:
+1. **Funksiya parametrlarida:**
+   \`\`\`javascript
+   function sum(birinchi, ...qolganlar) {
+     console.log(birinchi); // 1
+     console.log(qolganlar); // [2, 3, 4, 5] (Massiv)
+   }
+   sum(1, 2, 3, 4, 5);
+   \`\`\`
+2. **Destructuring jarayonida:**
+   \`\`\`javascript
+   const [first, ...rest] = [10, 20, 30, 40];
+   console.log(first); // 10
+   console.log(rest);  // [20, 30, 40]
+   \`\`\`
+
+**Muhim qoidalar:**
+- Rest parametri har doim parametrlarning eng oxirida kelishi shart.
+- Bitta funksiyada faqat bitta rest parametri bo'lishi mumkin.
+
+---
 
 ## 4. AMALIYOT (Mashq)
+
 \`\`\`javascript
 const mevalar = ["olma", "anor"];
 const hammasi = ["behi", ...mevalar, "uzum"];
 console.log(hammasi); // ["behi", "olma", "anor", "uzum"]
 \`\`\`
 
+---
+
 ## 5. XATOLAR (Common mistakes)
-1.  **Rest o'rtada kelishi:** \`function x(...a, b)\` — Xato! ❌ Rest har doim oxirgi parametr bo'lishi shart.
-2.  **Shallow Copy:** Spread obyektdan nusxa olganda, ichidagi ichki obyeklarni (nested objects) nusxalamaydi, shunchaki bog'lanish (reference) beradi.
 
-## 6. SAVOLLAR (12 ta)
-1. Spread operatori nima ish qiladi?
-2. Rest operatori nima ish qiladi?
-3. Ikkalasining yozilishida farq bormi?
-4. Funksiya parametrida \`...args\` ishlatilsa, \`args\` qanday turdagi ma'lumot bo'ladi?
-5. Spread yordamida ikkita obyekni qanday birlashtirish mumkin?
-6. Rest operatorini funksiya parametrining boshida ishlatsa bo'ladimi?
-**<b>1. Spread operatori nima ish qiladi?</b>**
-Massiv, obyekt yoki string elementlarini alohida qiymatlar qilib yoyib yuboradi. Obyekt va massivlarni nusxalash, birlashtirishda juda qo'l keladi.
+1. **Rest parametrini noto'g'ri joylashtirish:**
+   \`\`\`javascript
+   // XATO:
+   function test(...args, last) {} // SyntaxError!
+   \`\`\`
+2. **Massiv bo'lmagan qiymatni massiv ichida spread qilish:**
+   \`\`\`javascript
+   const bad = [...null]; // TypeError: null is not iterable
+   \`\`\`
+   *Eslatma:* Obyekt spreadda esa \`{ ...null }\` xato bermaydi, shunchaki bo'sh obyekt qaytaradi.
+3. **Deep copy kutilishi:**
+   Reference sharing xavfini tushunmaslik va ichma-ich obyektlar ma'lumotlarini tasodifan o'zgartirib qo'yish.
 
+---
 
-**<b>2. Rest operatori nima ish qiladi?</b>**
-Funksiyaga berilgan ortiqcha argumentlarni yoki destructuring'dan ortgan qismni bitta qilib massivga yig'adi.
+## 6. SAVOLLAR VA JAVOBLAR
 
+**1. Spread operatori nima ish qiladi?**
+Massiv, obyekt yoki string elementlarini alohida qiymatlar qilib yoyib yuboradi.
 
-**<b>3. Ikkalasining yozilishida farq bormi?</b>**
-Sintaksis jihatidan mutlaqo bir xil (uchta nuqta ...). Faqat ishlatilish o'rniga qarab farqlanadi: yoyish yoki yig'ish.
+**2. Rest operatori nima ish qiladi?**
+Funksiyaga berilgan argumentlarni yoki destructuring'dan ortgan qismni bitta massivga yig'adi.
 
+**3. Ikkalasining yozilishida farq bormi?**
+Sintaksis jihatidan mutlaqo bir xil (\`...\`). Farqi faqat ishlatilish o'rniga qarab yuzaga keladi.
 
-**<b>4. Funksiya parametrida ...args ishlatilsa, args qanday turda bo'ladi?</b>**
-U haqiqiy Array (massiv) bo'ladi va unda map, filter, reduce kabi barcha massiv metodlarini ishlatish mumkin.
+**4. Funksiya parametrida \`...args\` ishlatilsa, \`args\` qanday turdagi ma'lumot bo'ladi?**
+U haqiqiy Array (massiv) bo'ladi va unda barcha massiv metodlarini (map, filter, reduce) ishlatish mumkin.
 
+**5. Spread yordamida ikkita obyektni qanday birlashtirish mumkin?**
+\`const combined = { ...obj1, ...obj2 };\` shaklida. Agar kalitlar takrorlansa, oxirgi obyektning qiymati qoladi.
 
-**<b>5. Spread yordamida ikkita obyekni qanday birlashtirish mumkin?</b>**
-\`const combined = { ...obj1, ...obj2 };\` shaklida. Agar bir xil kalitlar bo'lsa, obj2 dagi qiymat obj1 dagi qiymatning ustidan yozib yuboradi.
+**6. Rest operatorini funksiya parametrining boshida ishlatsa bo'ladimi?**
+Yo'q, Rest parametri har doim eng oxirida kelishi shart. Aks holda SyntaxError beradi.
 
+**7. Stringni ("Salom") spread qilsak nima bo'ladi?**
+Har bir harf alohida element bo'lib yoyiladi: \`["S", "a", "l", "o", "m"]\`.
 
-**<b>6. Rest operatorini funksiya parametrining boshida ishlatsa bo'ladimi?</b>**
-Yo'q, SyntaxError xatosi beradi. Rest operatori har doim eng oxirgi parametr bo'lishi shart.
+**8. Math.max(...[1, 5, 2]) natijasi nima bo'ladi?**
+Natija 5 bo'ladi, chunki massiv elementlari alohida argument qilib uzatiladi.
 
+**9. Obyektdan nusxa olishda spreadning qanday kamchiligi bor?**
+U faqat "sayoz nusxa" (shallow copy) qiladi, ya'ni ichki obyektlarning xotiradagi manzilini saqlab qoladi.
 
-**<b>7. Stringni ("Salom") spread qilsak nima bo'ladi?</b>**
-Har bir harf massivning alohida elementiga aylanadi: \`["S", "a", "l", "o", "m"]\`. Bu \`split('')\` kabi ishlaydi.
+**10. arguments obyekti va Rest parametrining farqi nimada?**
+\`arguments\` — eski, massivga o'xshash obyekt (haqiqiy massiv emas). Rest esa ES6 ning haqiqiy massividir.
 
+**11. Obyekt ichida \`{ ...null }\` yozish xatolikka olib keladimi?**
+Yo'q, obyekt spreadda null va undefined xato bermaydi, shunchaki e'tiborsiz qoldirilib, bo'sh obyekt hosil bo'ladi.
 
-**<b>8. Math.max(...[1, 5, 2]) natijasi nima bo'ladi?</b>**
-Natija 5 bo'ladi. Spread massivni yoyadi va funksiya \`Math.max(1, 5, 2)\` ko'rinishida argumentlarni qabul qiladi.
-
-
-**<b>9. Obyektdan nusxa olishda spreadning qanday kamchiligi bor?</b>**
-U faqat "shallow copy" (sayoz nusxa) qiladi. Agar obyekt ichida yana obyekt bo'lsa, ichkisining reference (manzili) nusxalanadi, o'zi emas.
-
-
-**<b>10. Destructuring'da rest operatorini ishlatish misolini keltiring.</b>**
-Massivda: \`const [bir, ...qolganlari] = [1, 2, 3];\`. Obyektda: \`const { ism, ...qolganMalumotlar } = user;\`.
-
-
-**<b>11. arguments obyekti va Rest parametrning farqi nima?</b>**
-\`arguments\` — ES5 da qo'shilgan massivga o'xshash obyekt (haqiqiy massiv emas). Rest — ES6 yordamida tuzilgan haqiqiy massiv bo'lib, o'qish uchun qulayroq.
-
-
-**<b>12. Spread obyektlarda qanday ishlaydi?</b>**
-\`{ ...obj }\` shaklida yozilsa, obyektning barcha xususiyatlari (property) yangi obyektga yoyilib yoziladi.
+**12. Massiv ichida \`[...null]\` yozish xatolikka olib keladimi?**
+Ha, chunki massiv spread faqat iterable (aylanib chiqiladigan) obyektlar bilan ishlaydi. Null esa iterable emas (TypeError).
 `,
   exercises: [
     {
@@ -262,6 +304,90 @@ Massivda: \`const [bir, ...qolganlari] = [1, 2, 3];\`. Obyektda: \`const { ism, 
       ],
       correctAnswer: 0,
       explanation: "Spread `...` operatori massivni argumentlar ro'yxatiga yoyib yuboradi: `Math.max(1, 5, 2)` ko'rinishida chaqirilishini ta'minlaydi."
+    },
+    {
+      id: 6,
+      question: "Quyidagi kod bajarilganda `copy.b.c` qiymati qanday bo'ladi?\n```javascript\nconst obj = { a: 1, b: { c: 2 } };\nconst copy = { ...obj };\ncopy.b.c = 99;\n```",
+      options: [
+        "`2` (chunki copy mustaqil nusxa)",
+        "`99` (chunki spread sayoz nusxa (shallow copy) oladi va ichki obyekt reference bo'yicha ulashiladi)",
+        "`undefined`",
+        "TypeError xatoligi"
+      ],
+      correctAnswer: 1,
+      explanation: "Spread operatori faqat yuza (birinchi darajali) xususiyatlarni nusxalaydi. Ichki obyektlar reference bo'yicha ko'chirilgani uchun, `copy.b` va `obj.b` bitta xotira manziliga ishora qiladi va biri o'zgartirilsa, ikkinchisi ham o'zgaradi."
+    },
+    {
+      id: 7,
+      question: "Obyektlarni spread operatori bilan birlashtirganda kalit nomlari takrorlansa nima sodir bo'ladi?\n```javascript\nconst combined = { name: 'Ali', ...{ name: 'Vali', age: 20 } };\n```",
+      options: [
+        "Xatolik yuz beradi (Duplicate key error)",
+        "`name` qiymati 'Ali' bo'lib qoladi",
+        "`name` qiymati 'Vali' bo'ladi (chunki keyingi kelgan obyekt qiymati avvalgisini ustidan yozib yuboradi)",
+        "Obyektdagi `name` kaliti massivga aylanadi: `['Ali', 'Vali']`"
+      ],
+      correctAnswer: 2,
+      explanation: "Obyektlarni birlashtirganda, o'ngda (keyinroq) yozilgan xususiyatlar chapdagi (avvalroq) xususiyatlarning ustidan yozib yuboriladi (override)."
+    },
+    {
+      id: 8,
+      question: "Quyidagi koddan keyin `arr` o'zgaruvchisining qiymati nima bo'ladi?\n```javascript\nconst arr = [...'abc'];\n```",
+      options: [
+        "`['abc']`",
+        "`['a', 'b', 'c']`",
+        "`'abc'`",
+        "TypeError"
+      ],
+      correctAnswer: 1,
+      explanation: "String iterable bo'lgani sababli, massiv spread operatori uni har bir belgilarini alohida massiv elementlari sifatida yoyib yuboradi."
+    },
+    {
+      id: 9,
+      question: "Quyidagi funksiya parametrlaridan qaysi biri to'g'ri e'lon qilingan va sintaktik jihatdan xato emas?",
+      options: [
+        "`function myFunc(...a, b) {}`",
+        "`function myFunc(a, ...b, c) {}`",
+        "`function myFunc(a, b, ...c) {}` (rest parametr eng oxirida kelgan)",
+        "`function myFunc(...a, ...b) {}`"
+      ],
+      correctAnswer: 2,
+      explanation: "Rest parametri har doim funksiya parametrlari ro'yxatida faqat eng oxirida bitta bo'lib kelishi shart. O'rtada yoki bir nechta rest bo'lishi taqiqlanadi."
+    },
+    {
+      id: 10,
+      question: "Quyidagi kod bajarilganda qanday natija hosil bo'ladi?\n```javascript\nconst arr = [...[1, 2], ...[3, 4]];\nconsole.log(arr.length);\n```",
+      options: [
+        "`2`",
+        "`4` (chunki ikkita massiv yoyilib birlashtirilmoqda)",
+        "`8`",
+        "TypeError xatosi"
+      ],
+      correctAnswer: 1,
+      explanation: "`...[1, 2]` yoyilib `1, 2` bo'ladi, `...[3, 4]` esa `3, 4` bo'ladi. Birlashganda `[1, 2, 3, 4]` hosil bo'ladi va uning uzunligi 4 ga teng."
+    },
+    {
+      id: 11,
+      question: "Funksiya ichidagi `arguments` obyekti va Rest parametri `...args` o'rtasidagi asosiy farq nima?",
+      options: [
+        "`arguments` har doim tezroq ishlaydi",
+        "`args` haqiqiy Array (massiv) turi hisoblanadi va unda massiv metodlari bor, `arguments` esa massivga o'xshash obyekt bo'lib, metodlar yo'q",
+        "Hech qanday farqi yo'q",
+        "`arguments` faqat arrow funksiyalarda ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "arguments obyekti massivga o'xshaydi (array-like), lekin unda map, reduce kabi massiv metodlari mavjud emas. Rest parametri bilan yig'ilgan o'zgaruvchi esa to'liq Array obyekti hisoblanadi."
+    },
+    {
+      id: 12,
+      question: "JavaScript-da massiv ichida `[...null]` va obyekt ichida `{ ...null }` yozilganda nima sodir bo'ladi?",
+      options: [
+        "Ikkalasida ham TypeError xatosi yuz beradi",
+        "Ikkalasida ham bo'sh massiv/obyekt qaytadi, xato bermaydi",
+        "Massiv spreadda TypeError beradi, obyekt spreadda esa xatosiz bo'sh obyekt `{}` qaytaradi",
+        "Massivda bo'sh massiv, obyektda xato beradi"
+      ],
+      correctAnswer: 2,
+      explanation: "Massiv spread operatori (`[...]`) faqat iterable (aylanib chiqiladigan) obyektlar ustida ishlaydi (null iterable emas, shuning uchun TypeError). Obyekt spread operatori (`{...}`) esa obyektning xususiyatlarini yoyadi va u null/undefined qiymatlarni shunchaki e'tiborsiz qoldiradi (xato chiqmaydi, bo'sh obyekt qaytadi)."
     }
   ]
 };
