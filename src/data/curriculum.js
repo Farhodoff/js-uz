@@ -71,6 +71,8 @@ import { metaprogramming } from "./lessons/advanced/metaprogramming";
 import { regexLesson } from "./lessons/advanced/regex";
 import { symbolsGenerators } from "./lessons/advanced/symbolsGenerators";
 import { debounceThrottle } from "./lessons/advanced/debounceThrottle";
+import { jsPitfalls } from "./lessons/advanced/jsPitfalls";
+import { problemSolving } from "./lessons/advanced/problemSolving";
 
 import { todoList } from "./lessons/projects/todoList";
 import { weatherApp } from "./lessons/projects/weatherApp";
@@ -92,7 +94,7 @@ export const curriculum = {
     label: "Murakkab",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [interviewQuestionsAdvanced, securityLesson, unitTesting, metaprogramming, advancedFetch, closuresDeepDive, callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, prototypesLesson, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson, symbolsGenerators, debounceThrottle]
+    lessons: [interviewQuestionsAdvanced, securityLesson, unitTesting, metaprogramming, advancedFetch, closuresDeepDive, callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, prototypesLesson, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson, symbolsGenerators, debounceThrottle, jsPitfalls, problemSolving]
   },
   projects: {
     label: "Loyihalar",
