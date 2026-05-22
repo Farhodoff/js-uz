@@ -1,42 +1,41 @@
 export const moreDataTypesLesson = {
   id: "more-data-types",
   title: "Ma'lumotlar Turlari: Null, Symbol, BigInt",
-  theory: `## Ma'lumotlar Turlari: Null, Symbol, BigInt
-
-Oldingi darsda biz eng ko'p ishlatiladigan turlarni ko'rdik. Endi esa JavaScriptning biroz "maxsus" turlari haqida gaplashamiz.
-
-## 1. NEGA kerak?
-- **Null:** Ba'zan biz o'zgaruvchi borligini, lekin uning ichi bo'shligini ataylab aytishimiz kerak.
-- **BigInt:** Oddiy \`Number\` turi ma'lum bir kattalikdagi sonlardan keyin xato hisoblashni boshlaydi. Juda katta sonlar (masalan, koinotdagi atomlar soni) uchun \`BigInt\` kerak.
-- **Symbol:** Obyektlar ichida bir-biriga o'xshamaydigan, mutlaqo unikal (yagona) kalitlar yaratish uchun ishlatiladi.
+  level: "Beginner",
+  description: "JavaScriptdagi maxsus va yordamchi ma'lumotlar turlari: null qiymati, unikal Symbollar va o'ta katta BigInt sonlar.",
+  theory: `## 1. NEGA kerak?
+- **Null:** Ba'zan biz o'zgaruvchi borligini, lekin uning ichi ataylab bo'shatib qo'yilganligini ko'rsatishimiz kerak.
+- **BigInt:** Oddiy \`Number\` turi ma'lum bir kattalikdagi sonlardan keyin aniqlikni yo'qotib, noto'g'ri hisoblaydi. Juda katta sonlar (masalan, kriptografiya yoki katta ma'lumotlar bilan ishlash) uchun \`BigInt\` kerak.
+- **Symbol:** Obyektlar ichida bir-biriga o'xshamaydigan, mutlaqo unikal (yagona) va yashirin kalitlar yaratish uchun ishlatiladi.
 
 ## 2. SODDALIK (Analogiya)
-- **Null:** Bu xuddi bo'sh **suv shishasiga** o'xshaydi. Shisha bor, lekin ichida suv yo'q. (\`Undefined\` esa — shishaning o'zi ham yo'qligi).
-- **BigInt:** Oddiy kalkulyator sig'maydigan juda uzun **chek** yoki raqam deb tasavvur qiling.
-- **Symbol:** Bu har bir insonga beriladigan **pasport seriyasi** kabi. Ikki kishining ismi bir xil bo'lishi mumkin, lekin pasport seriyasi (Symbol) doim boshqa-boshqa bo'ladi.
+- **Null:** Bu xuddi bo'sh **suv shishasiga** o'xshaydi. Shisha bor (o'zgaruvchi yaratilgan), lekin ichida suv yo'q (ataylab bo'sh qo'yilgan).
+- **BigInt:** Oddiy kalkulyator ekraniga sig'maydigan o'ta uzun raqamlar deb tasavvur qiling.
+- **Symbol:** Bu har bir insonga beriladigan **pasport seriyasi** kabi. Ikki kishining ismi bir xil bo'lishi mumkin, lekin pasport seriyasi (Symbol) doim takrorlanmas va yagona bo'ladi.
 
 ## 3. STRUKTURA
 
-### A. Null (Ataylab bo'shatish)
+### A. Null (Ataylab bo'sh qiymat)
 \`\`\`javascript
-let foydalanuvchi = null; // Hozircha foydalanuvchi yo'q
+let foydalanuvchi = null; // Hozircha foydalanuvchi tizimga kirmagan, qiymat bo'sh
 \`\`\`
 
-### B. BigInt (Katta sonlar)
-Son oxiriga \`n\` harfi qo'shiladi:
+### B. BigInt (O'ta yirik butun sonlar)
+BigInt sonlar son oxiriga \`n\` harfi qo'shish yoki \`BigInt()\` funksiyasi orqali yaratiladi:
 \`\`\`javascript
-let kattaSon = 9007199254740991n;
+let kattaSon = 9007199254740995n;
 let yanaBir = BigInt("12345678901234567890");
 \`\`\`
 
-### C. Symbol (Yagona belgi)
+### C. Symbol (Yagona va takrorlanmas belgi)
 \`\`\`javascript
 let id1 = Symbol("id");
 let id2 = Symbol("id");
-console.log(id1 === id2); // false (nomi bir xil bo'lsa ham, o'zlari boshqa-boshqa!)
+console.log(id1 === id2); // false (tavsifi bir xil bo'lsa ham, o'zlari mutlaqo boshqa!)
 \`\`\`
 
-## 4. AMALIYOT (Mashq)
+## 4. AMALIYOT (Mashqlar pastda)
+Symbolni obyekt kaliti sifatida ishlatish:
 \`\`\`javascript
 const shaxs = {
   ism: "Ali"
@@ -47,71 +46,143 @@ console.log(shaxs[ID]); // 12345
 \`\`\`
 
 ## 5. XATOLAR (Common mistakes)
-1. **BigInt va Numberni aralashtirish:** \`10n + 5\` — Xato! ❌ BigIntni faqat BigInt bilan qo'shish mumkin. (\`10n + BigInt(5)\` ✅).
-2. **typeof null:** Yana bir bor eslatamiz, bu \`"object"\` chiqadi, lekin u aslida Primitiv tur.
+1. **BigInt va Numberni aralashtirish:** \`10n + 5\` — Xato! ❌ BigIntni oddiy son bilan qo'shib bo'lmaydi. Uni: \`10n + BigInt(5)\` ko'rinishida yozish kerak ✅.
+2. **typeof null:** Bu \`"object"\` natijasini beradi. Bu JavaScript-ning tarixiy xatosi (bug) hisoblanadi.
+3. **Symbol bilan new ishlatish:** \`new Symbol('id')\` xato ❌. Symbol konstruktor emas, shuning uchun \`Symbol('id')\` deb yoziladi ✅.
 
-## 6. SAVOLLAR VA JAVOBLAR (12 ta)
-
+## 6. SAVOLLAR VA JAVOBLAR
 **1. null va undefined farqi nimada?**
-\`null\` — o'zgaruvchining qiymati ataylab "bo'sh" qilib belgilanganligini anglatadi (shisha bor, lekin bo'sh). \`undefined\` esa o'zgaruvchi e'lon qilingan, lekin unga hali hech qanday qiymat berilmaganligini anglatadi (shishaning o'zi ham yo'q).
+\`null\` — qiymat ataylab "bo'sh" qilib belgilanganligini anglatadi. \`undefined\` esa o'zgaruvchi yaratilgan lekin unga hali hech qanday qiymat berilmagan.
 
-
-**2. Nima uchun null primitiv tur bo'lsa ham object qaytaradi?**
-Bu JavaScript yaratilgan paytdagi xato (bug) bo'lib, xotiradagi ob'ektlar ko'rsatkichi bilan bog'liq. Tizimlar va saytlar buzilmasligi uchun bu xatolik o'zgartirilmasdan qoldirilgan.
-
+**2. Nima uchun typeof null natijasi object chiqadi?**
+Bu JavaScript yaratilgan birinchi versiyadagi xatolik bo'lib, eski saytlar va kutubxonalar ishdan chiqmasligi uchun o'zgartirilmasdan qolgan.
 
 **3. BigInt qachon kerak bo'ladi?**
-JavaScriptda xavfsiz butun son chegarasidan (\`Number.MAX_SAFE_INTEGER\` ya'ni \`9007199254740991\`) katta bo'lgan o'ta yirik sonlar bilan aniq ishlamoqchi bo'lganda kerak bo'ladi.
+JavaScriptda xavfsiz butun son chegarasidan (\`Number.MAX_SAFE_INTEGER\` ya'ni \`9007199254740991\`) katta bo'lgan o'ta yirik butun sonlar bilan ishlaganda kerak bo'ladi.
 
+**4. BigInt son qanday yaratiladi?**
+Son oxiriga \`n\` harfini qo'shish orqali yoki \`BigInt()\` global funksiyasidan foydalanib.
 
-**4. BigInt son yaratishning 2 xil usulini ayting.**
-1. Son oxiriga \`n\` harfini qo'shish orqali (\`const son = 100n;\`).  
-2. \`BigInt()\` global funksiyasiga matn yoki raqam uzatish orqali (\`const son = BigInt("100");\`).
+**5. Number.MAX_SAFE_INTEGER qiymati qancha?**
+Taxminan \`9007199254740991\` (yoki \`2^53 - 1\`) ga teng.
 
+**6. Symbol nima uchun ishlatiladi?**
+Obyekt xususiyatlari uchun mutlaqo yagona (unikal) va to'qnashmaydigan kalitlar yaratish uchun.
 
-**5. Number.MAX_SAFE_INTEGER nima?**
-Bu JavaScript-da oddiy \`Number\` turi yordamida aniqlik yo'qolmasdan xavfsiz hisoblanishi mumkin bo'lgan eng katta butun sondir (qiymati \`9007199254740991\` yoki \`2^53 - 1\`).
+**7. Symbol("a") === Symbol("a") natijasi nima?**
+\`false\` qaytadi. Har bir Symbol yaratilganda xotirada yangi unikal belgi hosil bo'ladi.
 
+**8. BigInt sonni oddiy songa qo'shish mumkinmi?**
+Yo'q, ularni aralashtirish \`TypeError\` xatosiga olib keladi.
 
-**6. Symbol nima vazifani bajaradi?**
-\`Symbol\` obyektlar uchun mutlaqo yagona (unikal) va takrorlanmas kalitlar (xususiyatlar) yaratish uchun ishlatiladi. Bu obyektlardagi kalitlar to'qnashuvini oldini oladi.
+**9. Obyekt ichida Symbol qanday kalit qilib yoziladi?**
+Kvadrat qavslar ichida: \`const obj = { [sym]: 'qiymat' }\`.
 
-
-**7. Ikki xil Symbol("a") bir-biriga tengmi?**
-Yo'q, har bir yaratilgan \`Symbol\` ichidagi tavsifidan (description) qat'i nazar xotirada mutlaqo unikal bo'lib yaratiladi. Shuning uchun \`Symbol("a") === Symbol("a")\` natijasi \`false\` bo'ladi.
-
-
-**8. BigInt va Numberni birga qo'shsa bo'ladimi?**
-Yo'q, \`BigInt\` va \`Number\` turlarini to'g'ridan-to'g'ri birgalikda arifmetik amallarda ishlatib bo'lmaydi (\`TypeError\` beradi). Oldin ularni bir xil turga keltirish shart (masalan, \`BigInt(5) + 10n\`).
-
-
-**9. Obyekt ichida Symbolni qanday kalit qiling ishlatish mumkin?**
-Kvadrat qavslar \`[ ]\` yordamida obyekt xususiyati sifatida kiritiladi:
-\`\`\`javascript
-const sym = Symbol("id");
-const obj = { [sym]: 123 };
-\`\`\`
-
-
-**10. Symbol.description nima qaytaradi?**
-U \`Symbol\` yaratilayotganda qavs ichida berilgan tavsif matnini qaytaradi (masalan, \`Symbol("ism").description\` natijasi \`"ism"\` bo'ladi).
-
+**10. Symbol.description xususiyati nima qaytaradi?**
+Symbol yaratilayotganda kiritilgan tavsif (nom) matnini qaytaradi.
 
 **11. null == undefined natijasi nima bo'ladi?**
-Natija \`true\` bo'ladi, chunki qat'iy bo'lmagan tenglikda JS ularning ikkalasini ham "qiymatsizlik" jihatidan teng deb hisoblaydi.
-
+\`true\` bo'ladi (chunki qiymatsizlik jihatdan tenglashtiriladi).
 
 **12. null === undefined natijasi nima bo'ladi?**
-Natija \`false\` bo'ladi. Chunki ularning ma'lumot turlari har xil (\`null\` turi \`object\`, \`undefined\` turi esa \`undefined\`).
+\`false\` bo'ladi (chunki ularning turlari mos ravishda Object va Undefined).
 `,
   exercises: [
     {
       id: 1,
       title: "BigInt mashqi",
-      instruction: "Son oxiriga 'n' qo'shish orqali bitta BigInt son yarating.",
+      instruction: "Son oxiriga 'n' qo'shish orqali big o'zgaruvchisiga 100 qiymatini BigInt turida saqlang.",
       startingCode: "// Bu yerda yarating\nconst big = ",
       hint: "const big = 100n;",
-      test: "if (typeof big === 'bigint') return null; return 'BigInt yaratilmadi!';"
+      test: "if (typeof big === 'bigint' && big === 100n) return null; return 'big o\\'zgaruvchisiga 100n qiymatini bering!';"
+    },
+    {
+      id: 2,
+      title: "Null qiymat",
+      instruction: "car nomli o'zgaruvchiga ataylab bo'sh qiymat berish uchun null ni o'zlashtiring.",
+      startingCode: "// Bu yerga yozing\nconst car = ",
+      hint: "const car = null;",
+      test: "if (car === null) return null; return 'car o\\'zgaruvchisiga null qiymatini o\\'zlashtiring!';"
+    },
+    {
+      id: 3,
+      title: "Symbol yaratish",
+      instruction: "mySymbol nomli o'zgaruvchiga 'tavsif' tavsifiga ega bo'lgan Symbol yarating.",
+      startingCode: "// Bu yerga yozing\nconst mySymbol = ",
+      hint: "const mySymbol = Symbol('tavsif');",
+      test: "if (typeof mySymbol === 'symbol' && mySymbol.description === 'tavsif') return null; return 'Tavsifi \\'tavsif\\' bo\\'lgan Symbol yarating!';"
+    },
+    {
+      id: 4,
+      title: "BigInt global funksiyasi",
+      instruction: "BigInt() funksiyasi yordamida '9007199254740995' stringini BigIntga o'tkazing va uni large o'zgaruvchisiga saqlang.",
+      startingCode: "// Bu yerga yozing\nconst large = ",
+      hint: "const large = BigInt('9007199254740995');",
+      test: "if (typeof large === 'bigint' && large === 9007199254740995n) return null; return 'Stringni BigInt funksiyasi orqali o\\'tkazing!';"
+    },
+    {
+      id: 5,
+      title: "Symbol tavsifini olish",
+      instruction: "sym o'zgaruvchisining description xususiyatidan foydalanib uning tavsifini desc o'zgaruvchisiga oling.",
+      startingCode: "const sym = Symbol('kalit');\n// Bu yerga yozing\nconst desc = ",
+      hint: "const desc = sym.description;",
+      test: "if (desc === 'kalit') return null; return 'desc o\\'zgaruvchisiga sym.description ni o\\'zlashtiring!';"
+    },
+    {
+      id: 6,
+      title: "Obyekt va Symbol",
+      instruction: "user obyektida yashirin kalit sifatida sym Symbolidan foydalaning va unga 101 qiymatini bering.",
+      startingCode: "const sym = Symbol('id');\nconst user = {\n  // Bu yerga yozing\n};",
+      hint: "const user = { [sym]: 101 };",
+      test: "if (user[sym] === 101) return null; return 'user obyektida [sym]: 101 kalitini belgilang!';"
+    },
+    {
+      id: 7,
+      title: "Null turi",
+      instruction: "typeof null natijasini typeOfNull o'zgaruvchisiga o'zlashtiring.",
+      startingCode: "// Bu yerga yozing\nconst typeOfNull = ",
+      hint: "const typeOfNull = typeof null;",
+      test: "if (typeOfNull === 'object') return null; return 'typeof null natijasi \\'object\\' bo\\'lishi kerak!';"
+    },
+    {
+      id: 8,
+      title: "BigIntlar ko'paytmasi",
+      instruction: "10n va 20n sonlarini ko'paytiring va natijani result o'zgaruvchisiga o'zlashtiring.",
+      startingCode: "const num1 = 10n;\nconst num2 = 20n;\n// Bu yerga yozing\nconst result = ",
+      hint: "const result = num1 * num2;",
+      test: "if (result === 200n) return null; return 'Natija 200n bo\\'lishi kerak!';"
+    },
+    {
+      id: 9,
+      title: "Oddiy sonni BigIntga o'tkazish",
+      instruction: "BigInt() funksiyasi yordamida num o'zgaruvchisini BigInt ga o'tkazing va bigintNum o'zgaruvchisiga saqlang.",
+      startingCode: "const num = 45;\n// Bu yerga yozing\nconst bigintNum = ",
+      hint: "const bigintNum = BigInt(num);",
+      test: "if (bigintNum === 45n) return null; return 'bigintNum o\\'zgaruvchisi 45n ga teng bo\\'lishi kerak!';"
+    },
+    {
+      id: 10,
+      title: "Bo'shliqlarni taqqoslash",
+      instruction: "null va undefined ning qat'iy bo'lmagan (==) tenglik natijasini eq o'zgaruvchisiga o'zlashtiring.",
+      startingCode: "// Bu yerga yozing\nconst eq = ",
+      hint: "const eq = (null == undefined);",
+      test: "if (eq === true) return null; return 'null == undefined natijasi true bo\\'lishi kerak!';"
+    },
+    {
+      id: 11,
+      title: "Qat'iy taqqoslash",
+      instruction: "null va undefined ning qat'iy (===) tenglik natijasini seq o'zgaruvchisiga o'zlashtiring.",
+      startingCode: "// Bu yerga yozing\nconst seq = ",
+      hint: "const seq = (null === undefined);",
+      test: "if (seq === false) return null; return 'null === undefined natijasi false bo\\'lishi kerak!';"
+    },
+    {
+      id: 12,
+      title: "Symbol taqqoslash",
+      instruction: "Tavsifi bir xil bo'lgan ikkita sym1 va sym2 Symbolini qat'iy tenglik (===) orqali solishtirib, natijasini result o'zgaruvchisiga saqlang.",
+      startingCode: "const sym1 = Symbol('a');\nconst sym2 = Symbol('a');\n// Bu yerga yozing\nconst result = ",
+      hint: "const result = (sym1 === sym2);",
+      test: "if (result === false) return null; return 'Ikkala symbol bir-biriga teng bo\\'la olmaydi, natija false bo\\'lishi kerak!';"
     }
   ],
   quizzes: [
@@ -174,6 +245,90 @@ Natija \`false\` bo'ladi. Chunki ularning ma'lumot turlari har xil (\`null\` tur
       ],
       correctAnswer: 1,
       explanation: "Son oxiriga kichik `n` harfini qo'shish orqali JavaScript uni `BigInt` turi sifatida qabul qiladi. Masalan: `1234567890n`."
+    },
+    {
+      id: 6,
+      question: "`typeof null` natijasi nima?",
+      options: [
+        "`\"null\"`",
+        "`\"undefined\"`",
+        "`\"object\"` (chunki bu tilning tarixiy xatosidir)",
+        "`\"boolean\"`"
+      ],
+      correctAnswer: 2,
+      explanation: "JavaScript e'lon qilingan birinchi kundan boshlab `typeof null` qiymati `\"object\"` deb qaytadi va u tilning eng katta va mashhur buglaridan biridir."
+    },
+    {
+      id: 7,
+      question: "Obyekt ichidagi `Symbol` kalitiga qanday qilib murojaat qilinadi?",
+      options: [
+        "Nuqta orqali (masalan: `obj.mySymbol`)",
+        "Kvadrat qavslar orqali (masalan: `obj[mySymbol]`)",
+        "Qavslar orqali (masalan: `obj(mySymbol)`)",
+        "Maxsus `get` metodi yordamida"
+      ],
+      correctAnswer: 1,
+      explanation: "Symbollar obyekt kaliti sifatida ishlatilganda ularga faqat kvadrat qavslar `[]` yordamida murojaat qilinadi. Nuqta operatori ishlamaydi."
+    },
+    {
+      id: 8,
+      question: "Quyidagilardan qaysi biri sintaktik xatolik (SyntaxError) beradi?",
+      options: [
+        "`BigInt(10)`",
+        "`BigInt(10.5)` (chunki BigInt faqat butun sonlarni ifodalaydi, kasr sonlar bilan ishlay olmaydi)",
+        "`BigInt(\"10\")`",
+        "`10n + 5n`"
+      ],
+      correctAnswer: 1,
+      explanation: "BigInt faqat butun sonlar uchun mo'ljallangan bo'lib, unga kasr son uzatilsa yoki kasr ko'rinishida yozilsa `RangeError` / `SyntaxError` yuzaga keladi."
+    },
+    {
+      id: 9,
+      question: "JavaScriptda yangi `Symbol` yaratishda `new` kalit so'zidan foydalanilsa nima yuz beradi (masalan: `new Symbol('id')`)?",
+      options: [
+        "Symbol normal ravishda yaratiladi",
+        "Obyekt turi qaytadi",
+        "TypeError xatosi yuz beradi (chunki Symbol konstruktor funksiya emas)",
+        "Dastur qotib qoladi"
+      ],
+      correctAnswer: 2,
+      explanation: "Symbol konstruktor emas, shuning uchun uni `new` kalit so'zi bilan chaqirish mumkin emas. U to'g'ridan-to'g'ri `Symbol()` ko'rinishida chaqiriladi."
+    },
+    {
+      id: 10,
+      question: "Obyekt ichidagi Symbol kalitlari `Object.keys()` yoki `for...in` siklida aylanayotganda ko'rinadimi?",
+      options: [
+        "Ha, har doim ko'rinadi",
+        "Yo'q, Symbol kalitlari yashirin bo'lib, oddiy aylanib chiqish metodlarida ko'rinmaydi",
+        "Faqat `typeof` ishlatilsa ko'rinadi",
+        "Faqat string ko'rinishiga o'tkazilganda ko'rinadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Symbollar obyektlarning yashirin xususiyatlarini yaratish uchun mo'ljallangan. Ular `Object.keys()` yoki `for...in` tomonidan o'tkazib yuboriladi. Ularni olish uchun `Object.getOwnPropertySymbols()` ishlatiladi."
+    },
+    {
+      id: 11,
+      question: "BigInt bilan bo'lish amali (`5n / 2n`) bajarilganda qanday natija chiqadi?",
+      options: [
+        "`2.5`",
+        "`2.5n`",
+        "`2n` (chunki BigInt bo'lish amali natijasidagi kasr qismni shunchaki tashlab yuboradi)",
+        "`3n`"
+      ],
+      correctAnswer: 2,
+      explanation: "BigInt faqat butun sonlar bilan ishlaydi, shuning uchun bo'lish amali bajarilganda kasr qismi to'liq tashlab yuborilib, faqat butun qismi qaytariladi."
+    },
+    {
+      id: 12,
+      question: "Quyidagilardan qaysi biri JavaScriptda yagona va takrorlanmas identifikator yaratib beradi?",
+      options: [
+        "null",
+        "Symbol",
+        "BigInt",
+        "String"
+      ],
+      correctAnswer: 1,
+      explanation: "`Symbol` o'zining asosiy ta'rifiga ko'ra mutlaqo unikal va yagona bo'lgan qiymatlarni yaratish uchun xizmat qiladi."
     }
   ]
 };

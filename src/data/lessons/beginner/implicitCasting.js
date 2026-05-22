@@ -1,98 +1,79 @@
 export const implicitCasting = {
   id: "implicit-casting",
   title: "Implicit Type Casting (Avtomatik o'zgarishlar)",
-  theory: `## 1. KIRISH
-**Implicit Type Casting** (yoki **Coercion**) – JavaScriptning o‘zining operatorlar va kontekstga qarab, qiymatlarni bir turdan boshqasiga **avtomatik** o‘zgartirishi. Bu dasturchi aralashuvisiz sodir bo‘ladi.
-
-**Implicit Coercion** (Avtomatik o'zgartirish) — bu JavaScriptning operatorlar (masalan, \`+\`, \`-\`) ishlatilganda ma'lumot turlarini o'zi xohlagandek o'zgartirib yuborishidir.
-
-## 1. NEGA kerak?
-Aslida bu tilning "qulayligi" uchun qilingan, lekin ko'pincha dasturchilar boshini og'ritadi. JS harakat qiladi-ki, qanday bo'lmasin amallarni bajarishga (xato bermasdan).
+  level: "Beginner",
+  description: "JavaScript-da operatorlar va mantiqiy ifodalar ta'sirida ma'lumot turlarining yashirin (avtomatik) ravishda o'zgarishi (Type Coercion).",
+  theory: `## 1. NEGA kerak?
+Implicit Coercion (Avtomatik o'zgartirish) — bu JavaScriptning operatorlar (masalan, \`+\`, \`-\`) ishlatilganda ma'lumot turlarini dasturchi aralashuvisiz o'zgartirib yuborishidir. Bu JavaScriptni moslashuvchan qiladi va dastur xato berib to'xtab qolishining oldini oladi, lekin ba'zan kutilmagan mantiqiy xatolar (bugs) keltirib chiqarishi mumkin.
 
 ## 2. SODDALIK (Analogiya)
-Buni **moslashuvchan sim (adapter)** deb tasavvur qiling. Sizda uch burchakli rozetka bor, lekin sim ikki burchakli. JS o'zi simni biroz bukab, "amallab" rozetkaga tiqib yuboradi.
+Buni universal elektr adapteriga o'xshatish mumkin. Sizda ikki tishli shtepsel va uch tishli rozetka bor. JavaScript o'zi simni biroz bukab bo'lsa ham rozetkaga "amallab" tiqib yuboradi. Natijada qurilma ishlaydi, lekin ba'zida uchqun chiqishi mumkin.
 
 ## 3. STRUKTURA (Asosiy qoidalar)
 
 ### A. Qo'shish operatori (+) – Matnga moyil
-Agar amalda bitta bo'lsa ham **matn (string)** qatnashsa, JS hammasini matnga aylantiradi:
+Agar amalda kamida bitta operand **matn (string)** bo'lsa, JS barcha qiymatlarni satrga aylantiradi va birlashtiradi:
 \`\`\`javascript
 "5" + 2; // "52"
-1 + 1 + "2"; // "22" (oldin 1+1=2 bo'ladi, keyin "22" bo'ladi)
+1 + 1 + "2"; // "22" (oldin 1+1=2, keyin "2" bilan birlashib "22")
 \`\`\`
 
-### B. Boshqa arifmetik amallar (-, *, /) – Songa moyil
-Bu operatorlar faqat sonlar bilan ishlaydi, shuning uchun JS matnlarni ham songa aylantiradi:
+### B. Arifmetik amallar (-, *, /, %) – Songa moyil
+Bu operatorlar faqat sonlar bilan ishlagani uchun JS operanlarni avtomatik songa aylantiradi:
 \`\`\`javascript
 "10" - 5; // 5
 "5" * "2"; // 10
 \`\`\`
 
-### C. Mantiqiy qiymatlar (Boolean)
-\`true\` son sifatida \`1\` ga, \`false\` esa \`0\` ga teng bo'ladi:
+### C. Bulian qiymatlar (true / false) son sifatida
+Arifmetik amallarda \`true\` sonli qiymat sifatida \`1\` ga, \`false\` esa \`0\` ga aylanadi:
 \`\`\`javascript
 true + 1; // 2
 false * 10; // 0
 \`\`\`
 
-## 4. AMALIYOT (Mashq)
-\`\`\`javascript
-console.log("20" / 2); // 10
-console.log("5" + "5" - 5); // 50 (Chunki "5" + "5" = "55", keyin 55 - 5 = 50)
-\`\`\`
+## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
-1. **== va === farqi:** \`==\` (double equals) avtomatik turni o'zgartiradi (\`5 == "5"\` is true). \`===\` esa o'zgartirmaydi (\`5 === "5"\` is false). Doim \`===\` ishlating!
-2. **Bo'sh massivlar:** \`[] + []\` natijasi bo'sh matn \`""\` bo'ladi. Bu ko'pchilikni hayron qoldiradi.
+1. **== bilan solishtirish:** \`==\` (yumshoq tenglik) yashirin turni o'zgartiradi (\`5 == "5"\` is true). Qat'iy solishtirish uchun har doim \`===\` ishlatilishi kerak.
+2. **undefined bilan hisob-kitob:** \`undefined\` arifmetik amallarda ishlatilsa natija har doim \`NaN\` (Not a Number) bo'ladi.
 
-## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+## 6. SAVOLLAR VA JAVOBLAR
+**1. Coercion nima?**
+JavaScript dvigateli tomonidan ma'lumot turlarining avtomatik ravishda biridan boshqasiga o'tkazilishi.
 
-**1. Coercion (Avtomatik o'zgartirish) nima?**
-Coercion (yoki Implicit Type Casting) — JavaScript dvigateli tomonidan, kontekst va operatorlarga qarab, ma'lumot turlarining avtomatik ravishda biridan boshqasiga o'tkazilishidir (dasturchi aralashuvisiz).
+**2. Nima uchun "10" + 2 ifodasi "102" bo'ladi?**
+Chunki \`+\` operatori matn ishtirok etganda konkatensiya (birlashtirish) amalini bajaradi.
 
-
-**2. Nima uchun "10" + 2 natijasi "102" chiqadi?**
-Chunki plus (\`+\`) operatori ishtirok etganda va operanlardan biri matn (string) bo'lganda, JS ustuvorlikni matnga beradi va sonni matnga aylantirib, ularni birlashtiradi.
-
-
-**3. Nima uchun "10" - 2 natijasi 8 chiqadi?**
-Chunki minus (\`-\`) operatori faqat matematik sonlar bilan ishlaydi. JS avtomatik tarzda \`"10"\` matnini songa (\`10\`) aylantiradi va ayirish amalini bajaradi.
-
+**3. "10" - 2 nima uchun 8 bo'ladi?**
+Chunki \`-\` operatori faqat raqamlar bilan ishlaydi va matnni songa o'giradi.
 
 **4. true + true natijasi nima bo'ladi?**
-Natija \`2\` bo'ladi. Matematik amallarda \`true\` qiymati \`1\` ga aylantirilagi (\`1 + 1 = 2\`).
+\`2\` bo'ladi (chunki true = 1).
 
+**5. [] == 0 natijasi nima uchun true?**
+Bo'sh massiv stringga (\`""\`), keyin esa songa (\`0\`) o'giriladi, \`0 == 0\` esa \`true\`.
 
-**5. [] == 0 natijasi nima bo'ladi?**
-Natija \`true\` bo'ladi. Bo'sh massiv \`[]\` solishtirilganda avtomatik ravishda bo'sh matn \`""\` ga, keyin esa \`0\` soniga aylantiriladi.
-
-
-**6. !!"" (ikki marta inkor) nima qaytaradi?**
-Natija \`false\` bo'ladi. Bo'sh matn \`""\` falsy qiymat hisoblanadi. Uni bir marta inkor qilsak \`true\`, yana bir marta inkor qilsak esa yana \`false\` bo'ladi.
-
+**6. !!"test" nima qaytaradi?**
+\`true\` qaytaradi, chunki bo'sh bo'lmagan string - truthy qiymatdir.
 
 **7. "5" * "5" natijasi nima?**
-Natija \`25\` soni bo'ladi. Ko'paytirish operatori (\`*\`) matnlarni avtomatik ravishda sonlarga aylantiradi.
+\`25\` soni bo'ladi.
 
+**8. Nima uchun == o'rniga === tavsiya etiladi?**
+=== avtomatik turni o'zgartirmay solishtiradi, bu esa xavfsizroq.
 
-**8. Nima uchun JSda === ishlatish tavsiya etiladi?**
-Chunki qat'iy tenglik (\`===\`) qiymatlarni ham, ularning tiplarini ham avtomatik o'zgartirmasdan (\`coercion\`-larsiz) solishtiradi, bu esa kutilmagan mantiqiy xatolarning oldini oladi.
+**9. null + 5 ifodasi nima beradi?**
+\`5\` (null son sifatida 0 ga aylanadi).
 
+**10. undefined + 5 ifodasi nima beradi?**
+\`NaN\` (undefined songa aylanganda NaN beradi).
 
-**9. null + 5 natijasi nima bo'ladi?**
-Natija \`5\` bo'ladi. Matematik amallarda \`null\` avtomatik ravishda \`0\` soniga o'giriladi.
+**11. 1 < 2 < 3 ifodasi nima beradi?**
+\`true\` (\`1 < 2\` -> \`true\` (1), keyin \`1 < 3\` -> \`true\`).
 
-
-**10. undefined + 5 natijasi nima bo'ladi? (Diqqat: NaN)**
-Natija \`NaN\` (Not a Number) bo'ladi. Chunki \`undefined\` songa aylantirilganda \`NaN\` beradi va har qanday songa \`NaN\` qo'shilganda natija baribir \`NaN\` bo'lib qolaveradi.
-
-
-**11. 1 < 2 < 3 natijasi nima?**
-Natija \`true\` bo'ladi. Chapdan o'ngga bajarilganda \`1 < 2\` ifodasi \`true\` beradi. Keyin \`true < 3\` taqqoslanadi va \`true\` son sifatida \`1\` ga aylanib, \`1 < 3\` bajariladi (natija \`true\`).
-
-
-**12. 3 > 2 > 1 natijasi nima? (Mantiqan o'ylab ko'ring)**
-Natija \`false\` bo'ladi. Chapdan o'ngga bajarilganda \`3 > 2\` ifodasi \`true\` (1) beradi. Keyin \`true > 1\` ya'ni \`1 > 1\` taqqoslanadi va natija \`false\` chiqadi.
+**12. 3 > 2 > 1 ifodasi nima beradi?**
+\`false\` (\`3 > 2\` -> \`true\` (1), keyin \`1 > 1\` -> \`false\`).
 `,
   exercises: [
     {
@@ -102,6 +83,94 @@ Natija \`false\` bo'ladi. Chapdan o'ngga bajarilganda \`3 > 2\` ifodasi \`true\`
       startingCode: "// Bu yerga yozing\n",
       hint: "console.log('5' + 5); console.log('5' - 5);",
       test: "if (logs.includes('55') && logs.includes(0)) return null; return 'Natija noto\\'g\\'ri!';"
+    },
+    {
+      id: 2,
+      title: "Boolean math coercion",
+      instruction: "res o'zgaruvchisiga true + 10 amali natijasini bering.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = true + 10;",
+      test: "if (res === 11) return null; return 'true son sifatida 1 ga teng bo\\'ladi!';"
+    },
+    {
+      id: 3,
+      title: "String division coercion",
+      instruction: "res o'zgaruvchisiga '20' / 2 amali natijasini yuklang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '20' / 2;",
+      test: "if (res === 10) return null; return 'Bo\\'lish amali stringni songa o\\'giradi!';"
+    },
+    {
+      id: 4,
+      title: "Undefined summation",
+      instruction: "res o'zgaruvchisiga undefined + 10 yig'indisini yuklang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = undefined + 10;",
+      test: "if (Number.isNaN(res)) return null; return 'undefined + son NaN bo\\'lishi lozim!';"
+    },
+    {
+      id: 5,
+      title: "Null coercion sum",
+      instruction: "res o'zgaruvchisiga null + 10 amali natijasini yuklang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = null + 10;",
+      test: "if (res === 10) return null; return 'null + 10 ifodasi 10 ga teng bo\\'lishi kerak!';"
+    },
+    {
+      id: 6,
+      title: "Implicit subtraction",
+      instruction: "res o'zgaruvchisiga '100' - '50' ifodasi qiymatini bering.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '100' - '50';",
+      test: "if (res === 50) return null; return 'Ayirish amali avtomatik tarzda songa o\\'giradi!';"
+    },
+    {
+      id: 7,
+      title: "Multiple operations coercion",
+      instruction: "res o'zgaruvchisiga '5' + '5' - 5 amali natijasini bering.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '5' + '5' - 5;",
+      test: "if (res === 50) return null; return 'Matnlar qo\\'shilib keyin 5 ayirilishi kerak!';"
+    },
+    {
+      id: 8,
+      title: "Three comparisons chain",
+      instruction: "res o'zgaruvchisiga 3 > 2 > 1 taqqoslash ifodasi natijasini yuklang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = 3 > 2 > 1;",
+      test: "if (res === false) return null; return '3 > 2 > 1 false bo\\'lishini hisobga oling';"
+    },
+    {
+      id: 9,
+      title: "Logical coercion ||",
+      instruction: "res o'zgaruvchisiga '' || 'Sukut' mantiqiy ifodasi natijasini bering.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '' || 'Sukut';",
+      test: "if (res === 'Sukut') return null; return '|| operatori birinchi truthy qiymatni qaytaradi!';"
+    },
+    {
+      id: 10,
+      title: "Double inversion boolean coercion",
+      instruction: "res o'zgaruvchisiga !!'Salom' mantiqiy ifodasi natijasini bering.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = !!'Salom';",
+      test: "if (res === true) return null; return '!! truthy qiymatni truega aylantiradi!';"
+    },
+    {
+      id: 11,
+      title: "Multiplication coercion",
+      instruction: "res o'zgaruvchisiga '4' * '5' amali natijasini yuklang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '4' * '5';",
+      test: "if (res === 20) return null; return 'Ko\\'paytirish stringlarni songa o\\'giradi!';"
+    },
+    {
+      id: 12,
+      title: "Unary plus coercion",
+      instruction: "res o'zgaruvchisiga unar plyus yordamida + '10' qiymatini oling.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = + '10';",
+      test: "if (res === 10 && typeof res === 'number') return null; return 'Unar plyus stringni songa o\\'giradi!';"
     }
   ],
   quizzes: [
@@ -164,6 +233,90 @@ Natija \`false\` bo'ladi. Chapdan o'ngga bajarilganda \`3 > 2\` ifodasi \`true\`
       ],
       correctAnswer: 1,
       explanation: "`==` taqqoslash operatori turlar har xil bo'lsa, ularni avtomatik bir xil turga keltirib taqqoslaydi (masalan, `[] == 0` yoki `true == 1` rost qaytaradi). Bu esa xatolarga sabab bo'lgani uchun qat'iy tenglik `===` tavsiya etiladi."
+    },
+    {
+      id: 6,
+      question: "Quyidagi ifodaning natijasini toping:\n```javascript\n{} + []\n```",
+      options: [
+        "`\"[object Object]\"` (agar ifoda sifatida console.log ichida yozilsa, lekin ba'zi console o'ynalarda {} bo'sh blok deb tushunilib, +[] ya'ni 0 qaytarishi ham mumkin)",
+        "`0`",
+        "`NaN`",
+        "`TypeError`"
+      ],
+      correctAnswer: 0,
+      explanation: "Agar bu console.log ichida ifoda sifatida uzatilsa, `{}` obyekt satrga (`\"[object Object]\"`), `[]` esa bo'sh satrga (`\"\"`) aylanib, natijada `\"[object Object]\"` qaytadi."
+    },
+    {
+      id: 7,
+      question: "Quyidagi ifoda nima qaytaradi?\n```javascript\n1 + 2 + \"3\"\n```",
+      options: [
+        "\"123\"",
+        "\"33\"",
+        "6",
+        "NaN"
+      ],
+      correctAnswer: 1,
+      explanation: "Chapdan o'ngga bajarilish qoidasiga ko'ra: oldin `1 + 2` bajariladi va `3` soni chiqadi. Keyin `3 + \"3\"` bajariladi va son satrga birlashib `\"33\"` matni hosil bo'ladi."
+    },
+    {
+      id: 8,
+      question: "Quyidagi ifodaning natijasi nima bo'ladi?\n```javascript\n\"3\" + 1 + 2\n```",
+      options: [
+        "\"33\"",
+        "\"312\" (chunki birinchi + matnli bo'lib keyingi barcha amallarni satrli qiladi)",
+        "6",
+        "NaN"
+      ],
+      correctAnswer: 1,
+      explanation: "Chapdan o'ngga: `\"3\" + 1` birinchi bo'lib `\"31\"` stringini beradi. Keyin `\"31\" + 2` bajarilib, natijada `\"312\"` hosil bo'ladi."
+    },
+    {
+      id: 9,
+      question: "Quyidagi mantiqiy ifoda nima qaytaradi?\n```javascript\n\"a\" && \"b\"\n```",
+      options: [
+        "true",
+        "\"b\" (chunki && operatori ikkala tomon truthy bo'lsa oxirgi truthy qiymatni qaytaradi)",
+        "\"a\"",
+        "false"
+      ],
+      correctAnswer: 1,
+      explanation: "`&&` operatori birinchi qiymat truthy bo'lsa, ikkinchi qiymatni tekshiradi va o'sha ikkinchi qiymatni (turning o'zgarishisiz) qaytaradi."
+    },
+    {
+      id: 10,
+      question: "Quyidagi ifoda nima qaytaradi?\n```javascript\n0 || \"Salom\"\n```",
+      options: [
+        "true",
+        "\"Salom\" (chunki 0 falsy bo'lgani uchun || ikkinchi qiymatni qaytaradi)",
+        "0",
+        "false"
+      ],
+      correctAnswer: 1,
+      explanation: "`||` operatori birinchi operand falsy bo'lsa, ikkinchi operandni qaytaradi."
+    },
+    {
+      id: 11,
+      question: "Quyidagi ifodaning natijasi nima?\n```javascript\n+true\n```",
+      options: [
+        "true",
+        "1 (unar plyus true ni 1 raqamiga o'giradi)",
+        "NaN",
+        "TypeError"
+      ],
+      correctAnswer: 1,
+      explanation: "Unar plyus operatori (`+`) har qanday qiymatni avtomatik ravishda son turiga o'tkazishning eng qisqa usulidir. `true` son sifatida `1` ga teng."
+    },
+    {
+      id: 12,
+      question: "Quyidagi ifodaning natijasi nima?\n```javascript\n+undefined\n```",
+      options: [
+        "0",
+        "NaN (chunki undefined songa o'tmaydi)",
+        "undefined",
+        "TypeError"
+      ],
+      correctAnswer: 1,
+      explanation: "`undefined` qiymati son ko'rinishiga kelganda `NaN` bo'ladi."
     }
   ]
 };

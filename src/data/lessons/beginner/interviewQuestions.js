@@ -1,100 +1,70 @@
 export const interviewQuestionsBeginner = {
   id: "interview-beginner",
   title: "🟢 Interview Savollar (Boshlang'ich)",
-  theory: `## Kirish
-Bu sahifa JavaScriptdan junior lavozimiga tayyorlanayotganlar uchun mo'ljallangan. 
-Intervyuda muvaffaqiyat qozonish uchun quyidagilarga e'tibor bering:
-1. **Asoslarni biling:** Faqat kod yozish emas, tushuntira olish muhim.
-2. **Kodni ovoz chiqarib tushuntiring:** Fikrlash jarayoningizni ko'rsating.
-3. **Edge caselarni o'ylang:** Masalan, null yoki undefined kelsa nima bo'ladi?
+  level: "Beginner",
+  description: "Boshlang'ich darajadagi JavaScript dasturchilari intervyularida eng ko'p beriladigan nazariy va amaliy savollar to'plami.",
+  theory: `## 1. NEGA kerak?
+Junior darajadagi intervyularda asosan JavaScriptning fundamentallari (asoslari) so'raladi. Kodni shunchaki yozibgina qolmay, u orqada qanday ishlashini tushuntira olish, mantiqiy fikrlashni ko'rsatish va ehtimoliy xatoliklar (edge cases)ni hisobga olish ishga qabul qilishda eng katta omillardan biridir.
 
-Junior darajasidagi intervyularda asosan JavaScriptning asoslari (fundament) so'raladi. Sizdan kodni nafaqat yozish, balki u qanday ishlashini tushuntirib berish talab qilinadi.
+## 2. SODDALIK (Analogiya)
+Intervyuga tayyorlanishni imtihonga tayyorlanishga o'xshatish mumkin. Agar savolga quruq nazariy javob bersangiz, sizni "yodlab olgan" deb o'ylashadi. Agar javobga hayotiy misol yoki "Nega aynan shunday?" degan sababni qo'shsangiz (masalan: "var yomon, chunki u block scope'ni tan olmaydi"), bilimingiz amaliy ekanini isbotlaysiz.
 
-## 1. NEGA kerak?
-Intervyu — bu sizning bilimingizni "sotish" vaqtidir. Savollarga oldindan tayyorlanish sizga ishonch bag'ishlaydi va hayajonni kamaytiradi.
-
-## 2. SODDALIK (Maslahat)
-Savolga javob berganda doim **"NEGA"** degan savolga ham javob berishga harakat qiling. Masalan: "var yomon, chunki u block scope'ni tan olmaydi" (faqat "var yomon" demang).
-
-## 3. STRUKTURA (Eng mashhur savollar)
+## 3. STRUKTURA (Junior intervyu savollari)
 
 ### A. var, let va const farqi nima?
-- **var:** Function scope, hoistingda \`undefined\` bo'ladi.
-- **let/const:** Block scope, hoistingda **TDZ** ga tushadi. \`const\` qayta tayinlanmaydi.
+- **var:** Function scope, hoistingda \`undefined\` qiymat oladi. Qayta e'lon qilish mumkin.
+- **let / const:** Block scope, hoistingda **TDZ** (Temporal Dead Zone)ga tushib, xatolik beradi. \`let\` qiymatini o'zgartirsa bo'ladi, \`const\` esa o'zgarmasdir.
 
-### B. Primitiv va Murakkab turlar farqi?
-- **Primitivlar:** Qiymati bilan saqlanadi (by value), \`immutable\` (o'zgarmas).
-- **Obyektlar:** Manzili bilan saqlanadi (by reference), \`mutable\` (o'zgaruvchan).
+### B. Primitiv va Reference (Havola) turlar farqi
+- **Primitivlar:** Qiymati bilan xotirada saqlanadi (Stack-da), o'zgarmas (\`immutable\`). Masalan: son, matn, bulian.
+- **Reference (Obyektlar):** Xotiradagi manzili bilan saqlanadi (Heap-da), o'zgaruvchan (\`mutable\`). Masalan: obyekt, massiv, funksiya.
 
-### C. == va === farqi?
-- \`==\` (loose): Turni avtomatik o'zgartiradi (Coercion).
-- \`===\` (strict): Turni tekshiradi, o'zgartirmaydi.
+### C. == va === farqi
+- \`==\` (Loose): Solishtirishdan oldin turlarni avtomatik tarzda moslashtiradi (Coercion).
+- \`===\` (Strict): Qiymatni ham, turni ham bir xil bo'lishini talab qiladi.
 
-## 4. AMALIYOT (Mashq)
-Eng ko'p so'raladigan amaliy savol: **Palindromni tekshirish**
-\`\`\`javascript
-function isPalindrom(soz) {
-  let teskari = soz.split("").reverse().join("");
-  return soz === teskari;
-}
-console.log(isPalindrom("non")); // true
-\`\`\`
+## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
-1. **Nazariyani bilmaslik:** "Ishlasa bo'ldi" deb o'ylamang, JS dvigateli qanday ishlashini so'rashadi.
-2. **Jim qolish:** Agar savolga javob bilmasangiz, o'z fikringizni ayting, mantiqiy fikrlashni ko'rsating.
+1. **Jim qolish:** Agar berilgan savolga aniq javob bilmasangiz ham, o'z taxminlaringizni va mantiqiy o'ylash jarayoningizni ovoz chiqarib tushuntiring.
+2. **Edge caselarni esdan chiqarish:** Masalan, funksiya massiv qabul qilsa, "agar bo'sh massiv kelsa-chi?" yoki "null kelsa-chi?" degan holatlarni hisobga oling.
 
-## 6. SAVOLLAR (12 ta)
-Quyida eng ko'p so'raladigan savollar va ularning qisqa javoblari keltirilgan. Javobni ko'rish uchun savol ustiga bosing.
-
-## 7. SAVOLLARGA JAVOBLAR
-
-**1. JavaScript nima va u qachon yaratilgan?**
-JavaScript — web-sahifalarni interaktiv qilish uchun ishlatiladigan dasturlash tili. U 1995-yilda Brendan Eich tomonidan 10 kunda yaratilgan.
-
+## 6. SAVOLLAR VA JAVOBLAR
+**1. Temporal Dead Zone (TDZ) nima?**
+\`let\` va \`const\` e'lon qilingan qatorgacha bo'lgan joy bo'lib, u yerda o'zgaruvchiga murojaat qilish \`ReferenceError\` beradi.
 
 **2. typeof null natijasi nima va nega?**
-Natija \`"object"\`. Bu JSning birinchi versiyasidagi xatolik (bug) bo'lib, keyinchalik moslikni saqlab qolish uchun o'zgartirilmagan.
+\`"object"\`. Bu til yaratilgandagi tarixiy xatodir.
 
+**3. NaN nima va uni qanday tekshiramiz?**
+Not-a-Number. \`Number.isNaN(x)\` metodi orqali tekshiriladi.
 
-**3. "Temporal Dead Zone" (TDZ) nima?**
-TDZ — \`let\` va \`const\` o'zgaruvchilari e'lon qilingan qatorgacha bo'lgan hudud. Unga murojaat qilish \`ReferenceError\` beradi.
+**4. Hoisting nima?**
+O'zgaruvchi va funksiyalarni e'lon qilinishidan oldin yuqoriga ko'tarilib ishlatilishi.
 
+**5. Closures (Yopilishlar) nima?**
+Ichki funksiyaning o'zidan tashqaridagi o'zgaruvchilarga murojaat qila olish qobiliyati.
 
-**4. NaN nima va uni qanday tekshiramiz?**
-\`NaN\` (Not-a-Number) — noto'g'ri matematik amallar natijasi. Uni \`Number.isNaN()\` yoki \`isNaN()\` bilan tekshiramiz.
+**6. "use strict" nima?**
+Kodni qat'iy rejimda ishlashga majburlar, yashirin xatolarni ko'rsatadi va xavfsizroq kod yozishni ta'minlaydi.
 
+**7. Massivdan oxirgi elementni qanday o'chiradi?**
+\`.pop()\` metodi orqali (massivning o'zini o'zgartiradi).
 
-**5. Hoisting nima?**
-Hoisting — o'zgaruvchi va funksiyalar e'lonining kod tepasiga "ko'tarilishi". \`var\` undefined qaytaradi, \`let/const\` xato beradi.
+**8. map() va forEach() farqi nima?**
+\`map()\` yangi massiv qaytaradi, \`forEach()\` esa shunchaki elementlarni aylanib chiqib, \`undefined\` qaytaradi.
 
+**9. JS bir oqimli (single-threaded) tilmi?**
+Ha, u bir vaqtning o'zida faqat bitta operatsiyani bajara oladi.
 
-**6. Closures (Yopilishlar) nima?**
-Ichki funksiyaning tashqi funksiya o'zgaruvchilariga kirish huquqiga ega bo'lishi, hatto tashqi funksiya tugaganidan keyin ham.
+**10. Falsy qiymatlar qaysilar?**
+\`false\`, \`0\`, \`""\`, \`null\`, \`undefined\`, \`NaN\`.
 
+**11. Massiv ekanligini qanday tekshiramiz?**
+\`Array.isArray(x)\` orqali.
 
-**7. "use strict" nima uchun ishlatiladi?**
-JSni "qat'iy rejim"da ishlashga majburlaydi, bu xatolarni tezroq topishga va xavfli sintaksisni taqiqlashga yordam beradi.
-
-
-**8. Bir vaqtda bir nechta shartni qanday tekshirish mumkin?**
-Mantiqiy operatorlar orqali: \`&&\` (va), \`||\` (yoki).
-
-
-**9. Massivdan oxirgi elementni qanday o'chiramiz?**
-\`.pop()\` metodi orqali.
-
-
-**10. map() va forEach() farqi nima?**
-\`forEach()\` shunchaki massivni aylanib chiqadi, \`map()\` esa yangi massiv qaytaradi.
-
-
-**11. Obyekt ichidagi funksiya (metod) qanday yoziladi?**
-Obyekt kalitiga funksiya biriktirish orqali: \`sayHi() { ... }\`.
-
-
-**12. JSda asinxronlik nima degani?**
-Kodning bloklanmasdan, fonda bajarilishi (masalan, API so'rovlar yoki setTimeout).
+**12. push() va concat() farqi nima?**
+\`push()\` mavjud massiv oxiriga element qo'shib uning uzunligini qaytaradi, \`concat()\` esa yangi massiv yaratib qaytaradi.
 `,
   exercises: [
     {
@@ -104,6 +74,94 @@ Kodning bloklanmasdan, fonda bajarilishi (masalan, API so'rovlar yoki setTimeout
       startingCode: "function isEven(num) {\n  // Bu yerga yozing\n}",
       hint: "return num % 2 === 0;",
       test: "if (isEven(4) === true && isEven(5) === false) return null; return 'Mantiq xato!';"
+    },
+    {
+      id: 2,
+      title: "Palindrom tekshiruvi",
+      instruction: "Berilgan so'zning palindrom (o'ngdan ham, chapdan ham bir xil o'qiladigan) ekanligini tekshiruvchi isPalindrom funksiyasini yozing.",
+      startingCode: "function isPalindrom(str) {\n  // Bu yerga yozing\n}",
+      hint: "return str === str.split('').reverse().join('');",
+      test: "if (isPalindrom('non') === true && isPalindrom('olma') === false) return null; return 'Palindrom funksiyasi noto\\'g\\'ri ishladi!';"
+    },
+    {
+      id: 3,
+      title: "Faktorial hisoblash",
+      instruction: "n sonining faktorialini hisoblaydigan factorial funksiyasini yozing.",
+      startingCode: "function factorial(n) {\n  // Bu yerga yozing\n}",
+      hint: "if (n <= 1) return 1; return n * factorial(n - 1);",
+      test: "if (factorial(5) === 120 && factorial(0) === 1) return null; return 'Faktorial hisoblash xato!';"
+    },
+    {
+      id: 4,
+      title: "Massivdagi eng katta son",
+      instruction: "Massivdagi eng katta sonni qaytaradigan findMax funksiyasini yozing.",
+      startingCode: "function findMax(arr) {\n  // Bu yerga yozing\n}",
+      hint: "return Math.max(...arr);",
+      test: "if (findMax([1, 8, 3]) === 8) return null; return 'Eng katta sonni topish xato!';"
+    },
+    {
+      id: 5,
+      title: "Satrni teskarilash",
+      instruction: "Berilgan satrni teskarilab qaytaruvchi reverseString funksiyasini yozing.",
+      startingCode: "function reverseString(str) {\n  // Bu yerga yozing\n}",
+      hint: "return str.split('').reverse().join('');",
+      test: "if (reverseString('salom') === 'molas') return null; return 'Satrni teskarilash xato!';"
+    },
+    {
+      id: 6,
+      title: "Unlilar soni",
+      instruction: "Satrdagi unli harflar (a, e, i, o, u) sonini sanovchi countVowels funksiyasini yozing.",
+      startingCode: "function countVowels(str) {\n  // Bu yerga yozing\n}",
+      hint: "const vowels = ['a','e','i','o','u']; return str.toLowerCase().split('').filter(char => vowels.includes(char)).length;",
+      test: "if (countVowels('apple') === 2 && countVowels('sky') === 0) return null; return 'Unlilar sonini sanash xato!';"
+    },
+    {
+      id: 7,
+      title: "FizzBuzz",
+      instruction: "n soni 3 ga bo'linsa 'Fizz', 5 ga bo'linsa 'Buzz', 15 ga bo'linsa 'FizzBuzz' qaytaruvchi fizzBuzz yozing.",
+      startingCode: "function fizzBuzz(n) {\n  // Bu yerga yozing\n}",
+      hint: "if (n % 15 === 0) return 'FizzBuzz'; if (n % 3 === 0) return 'Fizz'; if (n % 5 === 0) return 'Buzz'; return n;",
+      test: "if (fizzBuzz(15) === 'FizzBuzz' && fizzBuzz(9) === 'Fizz' && fizzBuzz(10) === 'Buzz') return null; return 'FizzBuzz sharti xato!';"
+    },
+    {
+      id: 8,
+      title: "Massiv yig'indisi",
+      instruction: "Massiv elementlari yig'indisini qaytaruvchi sumArray funksiyasini yozing.",
+      startingCode: "function sumArray(arr) {\n  // Bu yerga yozing\n}",
+      hint: "return arr.reduce((sum, current) => sum + current, 0);",
+      test: "if (sumArray([1, 2, 3]) === 6) return null; return 'Yig\\'indi noto\\'g\\'ri!';"
+    },
+    {
+      id: 9,
+      title: "Dublikatlarni o'chirish",
+      instruction: "Massivdagi bir xil qiymatlarni o'chirib, faqat unikal elementli yangi massiv qaytaruvchi removeDuplicates yozing.",
+      startingCode: "function removeDuplicates(arr) {\n  // Bu yerga yozing\n}",
+      hint: "return [...new Set(arr)];",
+      test: "const res = removeDuplicates([1, 2, 2, 3]); if (res.length === 3 && res.includes(2)) return null; return 'Dublikatlar o\\'chirilmadi!';"
+    },
+    {
+      id: 10,
+      title: "Eng uzun so'z",
+      instruction: "Gapdagi eng uzun so'zni qaytaruvchi findLongestWord funksiyasini yozing.",
+      startingCode: "function findLongestWord(sentence) {\n  // Bu yerga yozing\n}",
+      hint: "const words = sentence.split(' '); return words.reduce((longest, current) => current.length > longest.length ? current : longest, '');",
+      test: "if (findLongestWord('Men dasturchiman') === 'dasturchiman') return null; return 'Eng uzun so\\'zni topish xato!';"
+    },
+    {
+      id: 11,
+      title: "Obyekt kalitlari",
+      instruction: "Obyekt kalitlarini massiv sifatida qaytaruvchi getKeys funksiyasini yozing.",
+      startingCode: "function getKeys(obj) {\n  // Bu yerga yozing\n}",
+      hint: "return Object.keys(obj);",
+      test: "const keys = getKeys({a: 1, b: 2}); if (keys.includes('a') && keys.includes('b')) return null; return 'Kalitlarni olish xato!';"
+    },
+    {
+      id: 12,
+      title: "Sonni teskari qilish",
+      instruction: "Berilgan butun sonni teskarilab qaytaruvchi reverseNumber funksiyasini yozing.",
+      startingCode: "function reverseNumber(num) {\n  // Bu yerga yozing\n}",
+      hint: "return parseFloat(num.toString().split('').reverse().join('')) * Math.sign(num);",
+      test: "if (reverseNumber(123) === 321 && reverseNumber(-45) === -54) return null; return 'Sonni teskarilash xato!';"
     }
   ],
   quizzes: [
@@ -141,6 +199,90 @@ Kodning bloklanmasdan, fonda bajarilishi (masalan, API so'rovlar yoki setTimeout
       options: ["true", "false", "undefined", "TypeError"],
       correctAnswer: 1,
       explanation: "`NaN` (Not-a-Number) JavaScriptdagi yagona qiymat bo'lib, u o'z-o'ziga ham, boshqa hech qanday qiymatga ham teng emas."
+    },
+    {
+      id: 6,
+      question: "Quyidagi o'zgaruvchilardan qaysi biri block scope-ga ega?",
+      options: [
+        "Faqat `var`",
+        "`let` va `const`",
+        "`var` va `let`",
+        "Barchasi (`var`, `let`, `const`)"
+      ],
+      correctAnswer: 1,
+      explanation: "`let` va `const` block scope-ga ega (faqat o'zini o'rab turgan `{}` ichida mavjud bo'ladi). `var` esa function scope-ga ega."
+    },
+    {
+      id: 7,
+      question: "Quyidagi o'zgaruvchilardan qaysi biri e'lon qilingandan so'ng qiymati o'zgartirilsa (qayta yuklansa) xatolik (TypeError) beradi?",
+      options: [
+        "`let`",
+        "`const`",
+        "`var`",
+        "Hech qaysi"
+      ],
+      correctAnswer: 1,
+      explanation: "`const` o'zgarmas o'zgaruvchilarni e'lon qilish uchun ishlatiladi. Unga ikkinchi marta boshqa qiymat yuklab bo'lmaydi."
+    },
+    {
+      id: 8,
+      question: "JavaScriptda massivlar (arrays) qaysi ma'lumot turiga kiradi?",
+      options: [
+        "Primitive",
+        "Object (Reference)",
+        "Array deb nomlangan maxsus primitiv tur",
+        "String"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScriptda primitiv bo'lmagan har qanday tur (massiv, funksiya, xatoliklar) texnik jihatdan `object` (reference) hisoblanadi."
+    },
+    {
+      id: 9,
+      question: "Foydalanuvchi o'zgaruvchini yaratdi, lekin unga hech qanday qiymat bermadi. Unda qanday qiymat saqlanadi?",
+      options: [
+        "`null`",
+        "`undefined`",
+        "`0`",
+        "`NaN`"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScriptda e'lon qilingan, ammo qiymat berilmagan o'zgaruvchining qiymati va turi default ravishda `undefined` bo'ladi."
+    },
+    {
+      id: 10,
+      question: "`push()` va `pop()` metodlari massivning qayeridan element qo'shadi va o'chiradi?",
+      options: [
+        "Massiv boshidan",
+        "Massiv oxiridan",
+        "Tasodifiy joydan",
+        "Massivning o'rtasidan"
+      ],
+      correctAnswer: 1,
+      explanation: "`push()` elementni massiv oxiriga qo'shadi, `pop()` esa massiv oxiridagi eng so'nggi elementni o'chirib tashlaydi."
+    },
+    {
+      id: 11,
+      question: "Quyidagi ifodaning natijasini toping:\n```javascript\nconsole.log(!!\"\");\n```",
+      options: [
+        "true",
+        "false (chunki bo'sh string falsy qiymatdir)",
+        "undefined",
+        "TypeError"
+      ],
+      correctAnswer: 1,
+      explanation: "Bo'sh string `\"\"` mantiqiy shartlarda `false` beradi (falsy). Uni ikki marta inkor qilish (`!!`) uning o'zini bulian qiymatiga o'tkazadi, ya'ni `false` qaytadi."
+    },
+    {
+      id: 12,
+      question: "JavaScriptda strict mode-ni yoqish uchun koding eng yuqori qismiga nima deb yozish kerak?",
+      options: [
+        "\"strict: true\"",
+        "\"use strict\"",
+        "\"use strict_mode\"",
+        "\"mode: strict\""
+      ],
+      correctAnswer: 1,
+      explanation: "Kodni qat'iy rejimda ishlatish va ba'zi yashirin xatolarni yuzaga chiqarish uchun fayl boshiga yoki funksiya ichiga `\"use strict\"` satri yoziladi."
     }
   ]
 };
