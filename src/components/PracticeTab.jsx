@@ -2,6 +2,9 @@ import React, { useState, useRef } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+import { linter, lintGutter } from '@codemirror/lint';
+import { autocompletion } from '@codemirror/autocomplete';
+import { uzbekJavaScriptLinter, uzbekJavaScriptAutocomplete } from '../utils/editorExtensions';
 
 export default function PracticeTab({
   code, setCode, runCode, showHint, setShowHint, activeLesson,
@@ -90,7 +93,12 @@ export default function PracticeTab({
           value={code}
           height={`${editorHeight}px`}
           theme={vscodeDark}
-          extensions={[javascript({ jsx: true })]}
+          extensions={[
+            javascript({ jsx: true }),
+            linter(uzbekJavaScriptLinter),
+            lintGutter(),
+            autocompletion({ override: [uzbekJavaScriptAutocomplete] })
+          ]}
           onChange={(value) => setCode(value)}
           basicSetup={{
             lineNumbers: true,
@@ -101,7 +109,7 @@ export default function PracticeTab({
             indentOnInput: true,
             bracketMatching: true,
             closeBrackets: true,
-            autocompletion: true,
+            autocompletion: false,
             rectangularSelection: true,
             highlightSelectionMatches: true,
             tabSize: 2,
