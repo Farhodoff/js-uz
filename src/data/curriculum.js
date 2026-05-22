@@ -45,6 +45,8 @@ import { interviewQuestionsIntermediate } from "./lessons/intermediate/interview
 import { thisKeyword } from "./lessons/intermediate/thisKeyword";
 import { timersLesson } from "./lessons/intermediate/timers";
 import { immutableData } from "./lessons/intermediate/immutableData";
+import { canvas } from "./lessons/intermediate/canvas";
+import { audioVideo } from "./lessons/intermediate/audioVideo";
 
 import { callbacksLesson } from "./lessons/advanced/callbacks";
 import { promises } from "./lessons/advanced/promises";
@@ -73,6 +75,10 @@ import { symbolsGenerators } from "./lessons/advanced/symbolsGenerators";
 import { debounceThrottle } from "./lessons/advanced/debounceThrottle";
 import { jsPitfalls } from "./lessons/advanced/jsPitfalls";
 import { problemSolving } from "./lessons/advanced/problemSolving";
+import { webSockets } from "./lessons/advanced/webSockets";
+import { serverSentEvents } from "./lessons/advanced/serverSentEvents";
+import { webWorkers } from "./lessons/advanced/webWorkers";
+import { serviceWorkersPwa } from "./lessons/advanced/serviceWorkersPwa";
 
 import { todoList } from "./lessons/projects/todoList";
 import { weatherApp } from "./lessons/projects/weatherApp";
@@ -88,13 +94,13 @@ export const curriculum = {
     label: "O'rta daraja",
     color: "#e5b84f",
     icon: "🟡",
-    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, domBasics, domManipulation, events, formsLesson, timersLesson, optionalChaining, classesLesson, interviewQuestionsIntermediate]
+    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, domBasics, domManipulation, events, formsLesson, timersLesson, optionalChaining, classesLesson, interviewQuestionsIntermediate, canvas, audioVideo]
   },
   advanced: {
     label: "Murakkab",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [interviewQuestionsAdvanced, securityLesson, unitTesting, metaprogramming, advancedFetch, closuresDeepDive, callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, prototypesLesson, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson, symbolsGenerators, debounceThrottle, jsPitfalls, problemSolving]
+    lessons: [interviewQuestionsAdvanced, securityLesson, unitTesting, metaprogramming, advancedFetch, closuresDeepDive, callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, prototypesLesson, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson, symbolsGenerators, debounceThrottle, jsPitfalls, problemSolving, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa]
   },
   projects: {
     label: "Loyihalar",
