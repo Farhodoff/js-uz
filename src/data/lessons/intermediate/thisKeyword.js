@@ -561,6 +561,90 @@ Methoddan return this; qilish orqali. Har bir method o'zi qaytariladi, keyingi m
       options: ["10", "undefined yoki window.x", "ReferenceError", "TypeError"],
       correctAnswer: 1,
       explanation: "Arrow funksiyalarda dynamic `this` mavjud emas va ularning lexical `this`ini `call()`, `apply()` yoki `bind()` yordamida qayta bog'lab yoki o'zgartirib bo'lmaydi. Ular chaqirilganda har doim o'zining original lexical contextini (bu yerda global context) ishlataveradi."
+    },
+    {
+      id: 6,
+      question: "`strict mode` (qat'iy rejim) yoqilganda, global funksiya chaqirilganda funksiya ichidagi `this` nimaga teng bo'ladi?",
+      options: [
+        "window (brauzerda) yoki global (Node.js'da)",
+        "undefined",
+        "Bo'sh obyekt {}",
+        "Xatolik yuz berib dastur to'xtaydi (TypeError)"
+      ],
+      correctAnswer: 1,
+      explanation: "Strict mode (qat'iy rejim) yoqilganda, global kontekstda yoki shunchaki chaqirilgan funksiyalar ichidagi default `this` qiymati `window` emas, balki `undefined` bo'ladi. Bu tasodifiy xatoliklarning oldini oladi."
+    },
+    {
+      id: 7,
+      question: "Quyidagi kod ishga tushganda konsolda nima chiqadi?\n```javascript\nconst user = {\n  name: \"Bobur\",\n  greet() {\n    setTimeout(function() {\n      console.log(this.name);\n    }, 100);\n  }\n};\nuser.greet();\n```",
+      options: [
+        "\"Bobur\"",
+        "undefined (yoki window.name)",
+        "ReferenceError",
+        "TypeError"
+      ],
+      correctAnswer: 1,
+      explanation: "`setTimeout` ichidagi oddiy funksiya (regular function) asinxron chaqirilganda, u global obyekt (`window`) kontekstida ishlaydi. Shuning uchun `this.name` `undefined` bo'ladi."
+    },
+    {
+      id: 8,
+      question: "JavaScript-da `this` kalit so'zining qiymati qachon aniqlanadi?",
+      options: [
+        "Kod yozilayotganda (lexical analysis bosqichida)",
+        "Kod runtime-da ishga tushib, funksiya bevosita chaqirilayotgan paytda (runtime execution)",
+        "Sahifa to'liq yuklangandan keyin (DOM load)",
+        "Faqat serverda ishlayotganda"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript-da `this` - dynamic binding bo'lib, uning qiymati funksiyaning qayerda yozilganiga qarab emas, balki runtime-da qanday chaqirilganiga qarab aniqlanadi."
+    },
+    {
+      id: 9,
+      question: "Quyidagi chain (zanjir) chaqiruvda `this` qiymati qanday o'zgaradi?\n```javascript\nconst obj = {\n  val: 5,\n  add(x) { this.val += x; return this; },\n  mul(y) { this.val *= y; return this; }\n};\nconsole.log(obj.add(2).mul(3).val);\n```",
+      options: [
+        "Xatolik yuz beradi, chunki add() natijasi son bo'ladi",
+        "21 chiqadi, chunki return this tufayli zanjirli chaqirishda this doim objga teng bo'ladi",
+        "15 chiqadi, chunki mul() original obyektni o'zgartirmaydi",
+        "undefined chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Metodlar `return this;` qaytargani uchun har bir chaqiruvdan keyin `this` (ya'ni `obj`) qaytadi va zanjir (method chaining) davom etib boradi. Natija: (5 + 2) * 3 = 21."
+    },
+    {
+      id: 10,
+      question: "Event listener funksiyasida `this` muammosini hal etish uchun `handleClick.bind(this)` ishlatilganda, `bind` yangi funksiya yaratadimi?",
+      options: [
+        "Yo'q, u shunchaki original funksiyaning o'zini o'zgartiradi",
+        "Ha, u original funksiyaning nusxasini olib, unga this konteksti abadiy bog'langan yangi funksiya qaytaradi",
+        "Ha, lekin u faqat strict mode-da ishlaydi",
+        "Yo'q, u funksiyani asinxron funksiyaga aylantiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "`bind()` metodi original funksiyani o'zgartirmaydi, balki uning nusxasini yaratib, ko'rsatilgan `this` konteksti bog'langan mutlaqo yangi funksiyani qaytaradi."
+    },
+    {
+      id: 11,
+      question: "JavaScript-da constructor funksiyalarda (Constructor functions) `this` qachon avtomatik ravishda `undefined` yoki boshqa qiymat bo'lishi mumkin?",
+      options: [
+        "Agar constructor funksiya `new` kalit so'zisiz chaqirilsa",
+        "Agar funksiya nomi kichik harf bilan boshlansa",
+        "Agar funksiya parametr qabul qilmasa",
+        "Agar strict mode o'chirilgan bo'lsa"
+      ],
+      correctAnswer: 0,
+      explanation: "Agar constructor funksiya `new` kalit so'zisiz chaqirilsa (masalan, `Robot('R2D2')`), u oddiy funksiya kabi default binding bo'yicha ishlaydi va strict mode bo'lsa `this` `undefined` bo'ladi, aks holda `window`ni o'zgartirib yuboradi."
+    },
+    {
+      id: 12,
+      question: "Quyidagi kodda `this` qanday qiymat qaytaradi?\n```javascript\nclass Light {\n  turnOn() {\n    console.log(this);\n  }\n}\nconst deskLamp = new Light();\nconst turn = deskLamp.turnOn;\nturn();\n```",
+      options: [
+        "deskLamp obyekti",
+        "window yoki global obyekt",
+        "undefined",
+        "Light klassining o'zi"
+      ],
+      correctAnswer: 2,
+      explanation: "ES6 klasslari ichidagi barcha kodlar avtomatik ravishda strict mode-da ishlaydi. Shuning uchun, deskLamp'dan ajratib olingan `turn()` funksiyasi obyektsiz chaqirilganda uning ichidagi `this` qiymati `undefined` bo'ladi."
     }
   ]
 };

@@ -424,7 +424,7 @@ debugger; // Brauzer'da break point
     },
     {
       id: 5,
-      question: "Test yozishda Mocking va Spying (Spy) tushunchalari o'rtasidagi asosiy farq nimada?",
+      question: "Test yozishda Mocking va Spying (Spy) tushunchalari o'rtasidagi asosiy farm nimada?",
       options: [
         "Ikkalasi ham mutqalo bir xil narsa, farqi yo'q",
         "Mock - bu real obyektdan butunlay voz kechib soxta (fake) funksiya ishlatish; Spy esa real obyekt/funksiyani saqlagan holda uning qanday chaqirilganini (necha marta, qanday argumentlar bilan) kuzatishdir",
@@ -432,7 +432,91 @@ debugger; // Brauzer'da break point
         "Mock faqat E2E testlarida ishlatiladi"
       ],
       correctAnswer: 1,
-      explanation: "`jest.fn()` soxta (mock) funksiya yaratadi va uning ichki qismi aslini takrorlamaydi. `jest.spyOn()` esa mavjud obyektdagi metodni haqiqiy logikasini saqlab qolgan holda nazorat ostiga oladi va uning chaqirilish parametrlarini kuzatish imkonini beradi."
+      explanation: "`jest.fn()` soxta (mock) funksiya yaratadi va uning ichki qismi aslini takrorlamaydi. `jest.spyOn()` esa vaqtinchalik real obyektni kuzatadi."
+    },
+    {
+      id: 6,
+      question: "Test yozishda 'Test Isolation' (testlarning mustaqilligi) tamoyili nimani anglatadi?",
+      options: [
+        "Barcha testlarni bitta katta faylga yozish",
+        "Har bir test mustaqil ishlashi, bir testning natijasi yoki o'zgartirgan ma'lumotlari boshqa testlarning o'tishiga ta'sir qilmasligi kerakligi",
+        "Testlarni faqat offlayn (internetsiz) rejimda ishga tushirish",
+        "Testlarni faqat alohida serverda bajarish"
+      ],
+      correctAnswer: 1,
+      explanation: "Har bir test alohida ishga tushirilganda ham, parallel yoki tartibsiz bajarilganda ham bir xil natija berishi kerak. Buning uchun beforeEach va afterEach yordamida state tozalab olinadi."
+    },
+    {
+      id: 7,
+      question: "Integration Testing (Integratsiyaviy testlash) birlik testlaridan (Unit Testing) qanday farq qiladi?",
+      options: [
+        "U faqat bitta funksiyani test qiladi",
+        "U bir nechta modullar yoki tizimlarning (masalan, API va Ma'lumotlar bazasi) birgalikda to'g'ri ishlashini va o'zaro aloqasini tekshiradi",
+        "U faqat CSS fayllarini tekshiradi",
+        "Uni faqat foydalanuvchilar qo'lda bajaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Unit test faqat alohida izolyatsiyalangan kod bo'lagini tekshirsa, integration test esa bir nechta bog'liq komponentlar yoki uchinchi tomon xizmatlarining birgalikdagi integratsiyasini tekshiradi."
+    },
+    {
+      id: 8,
+      question: "E2E (End-to-End, boshidan oxirigacha) testlashning asosiy afzalligi nimada?",
+      options: [
+        "U juda tez ishlaydi va loyiha build vaqtini kamaytiradi",
+        "U butun tizimni real brauzer muhitida, foydalanuvchi ko'zi bilan (haqiqiy tugmalarni bosib, formani to'ldirib) boshidan oxirigacha sinab beradi",
+        "U JavaScript kodini avtomat ravishda optimallashtiradi",
+        "U faqat mobil ilovalar uchun ishlatiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "E2E testlar (masalan, Cypress, Playwright yordamida) haqiqiy brauzerda foydalanuvchining butun oqimini (user flow) simulyatsiya qilib tekshiradi."
+    },
+    {
+      id: 9,
+      question: "Test Coverage (Test qamrovi) deganda nima tushuniladi?",
+      options: [
+        "Loyihadagi JavaScript kodining necha foizi testlar tomonidan bajarilgani va tekshirilganini ko'rsatuvchi ko'rsatkich (foizda)",
+        "Test fayllarining umumiy hajmi (Megabaytlarda)",
+        "Testlarni yozishga ketgan jami vaqt",
+        "GitHub'ga yuklangan testlar soni"
+      ],
+      correctAnswer: 0,
+      explanation: "Test coverage loyiha kodining qaysi qatorlari (lines), shoxlanishlari (branches, if/else) va funksiyalari testlar davomida kamida bir marta chaqirilganini foizda hisoblab beradi."
+    },
+    {
+      id: 10,
+      question: "TDD (Test-Driven Development - testlar orqali ishlab chiqish) metodologiyasining asosiy qadami qanday?",
+      options: [
+        "Avval kodni yozish, keyin edi uni test qilish, oxirida xatolarni tuzatish",
+        "Avval test yozish (u muvaffaqiyatsiz bo'ladi - Red), so'ngra testdan o'tadigan minimal kod yozish (Green), va oxirida kodni refaktoring qilish (Refactor)",
+        "Faqa tayyor loyihani test qilish",
+        "Testlarni butunlay rad etib, faqat manual tekshirish"
+      ],
+      correctAnswer: 1,
+      explanation: "TDD uch bosqichli 'Red-Green-Refactor' sikliga tayanadi. Bu yondashuv toza, tushunarli va testlar bilan to'liq qoplangan arxitekturani qurishga yordam beradi."
+    },
+    {
+      id: 11,
+      question: "Asinxron funksiyalarni (masalan, API fetch so'rovlarini) Jest'da qanday to'g'ri test qilish kerak?",
+      options: [
+        "Faqat `setTimeout` ishlatish kerak",
+        "Test callback funksiyasini `async` qilib e'lon qilish va asinxron chaqiriqlar oldidan `await` kalit so'zini qo'llash yoki Promise qaytarish",
+        "Asinxron kodlarni sinxron holga keltirish",
+        "Asinxron funksiyalarni test qilish imkonsiz"
+      ],
+      correctAnswer: 1,
+      explanation: "Jest asinxron testlarni qo'llab-quvvatlaydi. Agar callback asinxron bo'lsa, async/await qo'llaniladi. Aks holda Jest promisening yakunlanishini kutmasdan testni yakunlab yuboradi."
+    },
+    {
+      id: 12,
+      question: "Jest matcheri `toThrow()` nima uchun ishlatiladi?",
+      options: [
+        "Funksiya kutilgan xatolikni (error/exception) otishini (throw qilishini) tekshirish uchun",
+        "Funksiya hech qanday xatosiz ishlashini tekshirish uchun",
+        "Dasturni darhol to'xtatish uchun",
+        "Promise rad etilganini (rejected) tekshirish uchun"
+      ],
+      correctAnswer: 0,
+      explanation: "`expect(() => fn()).toThrow()` matcheri berilgan funksiya chaqirilganda xatolik (Exception) yuz berishini tekshiradi. Muhimi, tekshirilayotgan funksiya alohida anonim funksiya ichida chaqirilishi kerak."
     }
   ]
 };

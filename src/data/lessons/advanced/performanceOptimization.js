@@ -474,7 +474,7 @@ Browser fayl keshlasin deb serverdan so'rash (Cache-Control header).
         "Dastur xotirasini cheklash"
       ],
       correctAnswer: 1,
-      explanation: "Lazy Loading yordamida dastlab faqat foydalanuvchi ko'rib turgan sohadagi (viewport) ma'lumot va rasmlar yuklanadi. Bu tarmoq trafigini tejaydi va saytning dastlabki yuklanish tezligini sezilarli darajada oshiradi."
+      explanation: "Lazy Loading yordamida dastlab faqat foydalanuvchi ko'rib turgan sohadagi (viewport) ma'lumot va rasmlar yuklanadi. U tarmoq trafigini tejaydi va saytning dastlabki yuklanish tezligini va visual feedbackni yaxshilaydi."
     },
     {
       id: 4,
@@ -499,6 +499,90 @@ Browser fayl keshlasin deb serverdan so'rash (Cache-Control header).
       ],
       correctAnswer: 1,
       explanation: "Memoization - bu pure funksiyalar natijalarini keshga saqlash orqali qayta hisob-kitoblarni oldini olib, performance'ni oshiruvchi samarali usuldir."
+    },
+    {
+      id: 6,
+      question: "Katta hajmdagi JavaScript kodlarini bitta bundle o'rniga kichik qismlarga bo'lib yuklash (Code Splitting) texnikasining asosiy afzalligi nima?",
+      options: [
+        "Loyihaning dastlabki sahifasi yuklanish tezligini sezilarli oshirish va faqat kerakli sahifa uchun kod yuklash",
+        "JavaScript kodini serverda xavfsiz bajarish",
+        "Massivlar bilan ishlashni tezlashtirish",
+        "HTML va CSS kodini avtomat o'chirib tashlash"
+      ],
+      correctAnswer: 0,
+      explanation: "Code splitting (kodni bo'lish) yordamida brauzer boshlang'ich yuklanishda butun sayt kodini emas, balki faqat ayni vaqtda kerakli bo'lgan qismlarini yuklaydi. Qolgan modullar keyinroq, kerak bo'lganda yuklanadi."
+    },
+    {
+      id: 7,
+      question: "Sahifada 100,000 ta elementdan iborat katta ro'yxatni (list) sekinlashuvlarsiz render qilish uchun qaysi texnika ishlatiladi?",
+      options: [
+        "Virtual Scrolling (Virtualizatsiya)",
+        "Debounce",
+        "Server-Side Rendering",
+        "HTML Compression"
+      ],
+      correctAnswer: 0,
+      explanation: "Virtual Scrolling faqat foydalanuvchining ko'rish sohasida (viewport) turgan bir nechta o'nlab elementlarni DOMga qo'shadi, qolgan elementlarni esa scroll qilganda dinamik almashtiradi. Bu DOM elementlari sonini juda kam saqlaydi."
+    },
+    {
+      id: 8,
+      question: "JavaScript-da xotira oqishi (Memory Leak) deganda nima tushuniladi?",
+      options: [
+        "Ishlatib bo'lingan va endi kerak bo'lmagan ma'lumotlar xotiradan (Garbage Collector tomonidan) o'chirilmasdan, xotirani band qilib turishi",
+        "Operatsion tizimning to'liq o'chib qolishi",
+        "Dasturdagi ma'lumotlarning Internetga tarqalib ketishi",
+        "O'zgaruvchilarni const o'rniga let bilan e'lon qilish"
+      ],
+      correctAnswer: 0,
+      explanation: "Xotira oqishi (Memory Leak) - foydalanilmayotgan obyektlar referenslari saqlanib qolgani sababli Garbage Collector ularni tozalay olmasligi natijasida yuzaga keladi. Bu vaqt o'tishi bilan dasturning xotira iste'molini oshiradi."
+    },
+    {
+      id: 9,
+      question: "Veb-saytda takroriy so'rovlarda rasmlar va stillarni tarmoqdan qayta-qayta yuklamaslik uchun server tomonidan yuboriladigan HTTP header qaysi?",
+      options: [
+        "`Cache-Control`",
+        "`Content-Type`",
+        "`Access-Control-Allow-Origin`",
+        "`User-Agent`"
+      ],
+      correctAnswer: 0,
+      explanation: "Serverdan yuboriladigan `Cache-Control` (masalan, `Cache-Control: max-age=31536000`) brauzerga resursni qancha vaqt davomida local keshda saqlash va serverga so'rov yubormaslik mumkinligini aytadi."
+    },
+    {
+      id: 10,
+      question: "Brauzerda repaints (qayta bo'yash) va reflows (sahifa tartibini qayta hisoblash) ni kamaytirish uchun DOM o'zgarishlarini qanday amalga oshirish kerak?",
+      options: [
+        "Har bir o'zgarishni alohida DOM elementiga darhol yozish",
+        "DOM o'zgarishlarini DocumentFragment yordamida xotirada yig'ib, keyin bitta operatsiyada DOMga qo'shish",
+        "CSS-ni butunlay o'chirib tashlash",
+        "`setInterval` orqali tez-tez DOMni yangilab turish"
+      ],
+      correctAnswer: 1,
+      explanation: "`DocumentFragment` — bu yengil, minimal DOM obyekti bo'lib, unga ko'plab yangi elementlarni xotirada qo'shib olgandan keyin, haqiqiy DOMga faqat bir marta append qilish mumkin. Bu esa sahifani qayta chizish (reflow/repaint) yukini keskin kamaytiradi."
+    },
+    {
+      id: 11,
+      question: "Service Worker yordamida ma'lumotlarni keshlash qaysi turdagi ilovalarni yaratishda muhim hisoblanadi?",
+      options: [
+        "PWA (Progressive Web Apps)",
+        "Desktop Command Line Tools",
+        "Node.js Scripting Tools",
+        "WordPress saytlari"
+      ],
+      correctAnswer: 0,
+      explanation: "Service Worker brauzer va tarmoq o'rtasida vositachi vazifasini bajaradi va PWA texnologiyasining asosi hisoblanadi. U tarmoq so'rovlarini tutib olib, offline rejimda ham ilova ishlashini ta'minlash uchun resurslarni local keshdan olib berishi mumkin."
+    },
+    {
+      id: 12,
+      question: "Veb-ilova ishlash tezligini o'lchash va muammoli kodlarni aniqlash uchun JavaScript brauzer muhitida taqdim etiladigan API qaysi?",
+      options: [
+        "Performance API (masalan, `performance.mark` va `performance.measure`)",
+        "LocalStorage API",
+        "Cryptography API",
+        "History API"
+      ],
+      correctAnswer: 0,
+      explanation: "Performance API yordamida kodning bajarilish vaqtini millisekundlarda aniq o'lchash, performance marklar o'rnatish va sekin ishlayotgan kod bloklarini profiler orqali aniqlash mumkin."
     }
   ]
 };

@@ -447,6 +447,90 @@ IIFE yordamida public va private API yaratish. Misol: const mod = (function() { 
       ],
       correctAnswer: 1,
       explanation: "Agar closure funksiya yirik hajmli ma'lumotni ushlab tursa va u closure uzoq vaqt (masalan, global DOM event listener ichida) xotirada yashasa, Garbage Collector u yirik ma'lumotni o'chira olmaydi va natijada xotira band bo'lib qolaveradi."
+    },
+    {
+      id: 6,
+      question: "Temporal Dead Zone (TDZ) atamasi nimani anglatadi?",
+      options: [
+        "`let` yoki `const` bilan e'lon qilingan o'zgaruvchining scope boshidan to unga qiymat berilguncha bo'lgan, murojaat qilib bo'lmaydigan hududi",
+        "Funksiya bajarilib tugagandan keyin uning o'chib ketish vaqti",
+        "JavaScript Call Stack to'lib qolgandagi holat",
+        "Event Loop kutish vaqti"
+      ],
+      correctAnswer: 0,
+      explanation: "TDZ — let va const bilan e'lon qilingan o'zgaruvchilarning hoisting holatida ularga e'lon qilinishidan oldin murojaat qilinsa, ReferenceError beradigan vaqtinchalik kirish taqiqlangan zonadir."
+    },
+    {
+      id: 7,
+      question: "Currying nima?",
+      options: [
+        "Ko'p argumentli funksiyani ketma-ket bittadan argument oluvchi bir necha funksiyalarga bo'lish jarayoni",
+        "Funksiyani recursiv chaqirish mexanizmi",
+        "Obyekt elementlarini kalitlari bo'yicha saralash",
+        "Brauzer xotirasini optimallashtirish"
+      ],
+      correctAnswer: 0,
+      explanation: "Currying - ko'p argumentli funksiyani har safar bitta argument qabul qiladigan va keyingi argumentni olish uchun yangi funksiya qaytaradigan zanjirli shaklga keltirishdir."
+    },
+    {
+      id: 8,
+      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst make = () => {\n  let counter = 0;\n  return {\n    get: () => counter,\n    inc: () => { counter++; }\n  };\n};\nconst m = make();\nm.inc();\nconsole.log(m.get());\n```",
+      options: [
+        "`1`",
+        "`0`",
+        "`undefined`",
+        "`TypeError`"
+      ],
+      correctAnswer: 0,
+      explanation: "`inc()` metodi closure-scoped bo'lgan counter qiymatini 0 dan 1 ga oshiradi. `get()` esa o'sha o'zgargan qiymatni qaytaradi."
+    },
+    {
+      id: 9,
+      question: "JavaScript-da garbage collection (axlat yig'uvchi) qanday ishlaydi va closure-ga qanday ta'sir qiladi?",
+      options: [
+        "O'zgaruvchiga yetib borish imkoni (reachability) bo'lmasa, u o'chiriladi. Closure unga ishorani ushlab tursa, u o'chmaydi",
+        "Barcha o'zgaruvchilar har 5 soniyada majburan o'chiriladi",
+        "Faqat global o'zgaruvchilar saqlab qolinadi",
+        "Faqat callbacklar o'chiriladi"
+      ],
+      correctAnswer: 0,
+      explanation: "JavaScript engine xotiradagi ma'lumotlarni qidirishda 'yetib borish' qoidasiga tayanadi. Agar closure ichidagi o'zgaruvchiga murojaat qilish imkoniyati hali ham mavjud bo'lsa (ya'ni ichki funksiya faol bo'lsa), GC uni o'chirmaydi."
+    },
+    {
+      id: 10,
+      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet val = 10;\nfunction show() {\n  console.log(val);\n}\nfunction run() {\n  let val = 20;\n  show();\n}\nrun();\n```",
+      options: [
+        "`10`",
+        "`20`",
+        "`undefined`",
+        "`ReferenceError`"
+      ],
+      correctAnswer: 0,
+      explanation: "JavaScript static (lexical) scope ishlatadi. `show` e'lon qilingan joyda `val` global scope-dagi `10` ga ishora qiladi, shuning uchun `run` ichidan chaqirilsa ham static e'lon qilingan qiymat chiqadi."
+    },
+    {
+      id: 11,
+      question: "Module pattern-da closures-dan foydalanishdan maqsad nima?",
+      options: [
+        "Koddagi funksionallikni ma'lum qismlarga (modullarga) ajratib, public va private a'zolarni ta'minlash uchun",
+        "Asinxron so'rovlarni tezlashtirish uchun",
+        "Kodni xatolarini avtomatik tuzatish uchun",
+        "Kodni faqat strict mode-da ishga tushirish uchun"
+      ],
+      correctAnswer: 0,
+      explanation: "Module pattern closure yordamida o'zgaruvchilar va yordamchi funksiyalarni tashqi dunyodan yashirishga (private qilish) va faqat kerakli API metodlarini tashqariga chiqarishga imkon beradi."
+    },
+    {
+      id: 12,
+      question: "`const add = x => y => z => x + y + z;` ko'rinishidagi yozuv nima deb ataladi?",
+      options: [
+        "Currying (zanjirli closure-lar)",
+        "Recursive self-invocation",
+        "Function compilation",
+        "Object destructing"
+      ],
+      correctAnswer: 0,
+      explanation: "Bu bir nechta argumentlarni qabul qilishni closure-lar yordamida ketma-ketlikka bo'lgan currying texnikasidir."
     }
   ]
 };

@@ -525,6 +525,90 @@ Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik k
       ],
       correctAnswer: 1,
       explanation: "Node.js ekotizimida xatolarni oson boshqarish maqsadida callback funksiyalarning 1-argumenti sifatida xatolik (`err`), 2-argumentida esa muvaffaqiyatli natija (`data`) uzatiladi."
+    },
+    {
+      id: 6,
+      question: "Callback funksiyalar bilan ishlashda 'Inversion of Control' (Nazoratni yo'qotish) muammosi nimani anglatadi?",
+      options: [
+        "Amalni bajarish va callbackni chaqirish nazoratini uchinchi tomon kutubxonasiga yoki kodiga topshirib qo'yish",
+        "Callback ichida let o'rniga var ishlatish",
+        "Kodni brauzer o'rniga faqat Node.js da ishga tushirish",
+        "Callback funksiyani recursiv chaqirish"
+      ],
+      correctAnswer: 0,
+      explanation: "IoC (Inversion of Control) — biz callback funksiyamizni boshqa bir tashqi kod (API yoki uchinchi tomon kutubxonasi) ixtiyoriga topshirganimizda, u callbackni qachon, necha marta chaqirishi yoki umuman chaqirmasligini o'zimiz to'liq nazorat qila olmasligimizdir."
+    },
+    {
+      id: 7,
+      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst id = setInterval(() => {\n  console.log('hi');\n}, 1000);\nclearInterval(id);\n```",
+      options: [
+        "Hech narsa chop etilmaydi",
+        "Bir marta 'hi' chop etiladi",
+        "Cheksiz marta 'hi' chop etiladi",
+        "1 soniyadan keyin faqat 1 marta 'hi' chop etiladi"
+      ],
+      correctAnswer: 0,
+      explanation: "`setInterval` o'rnatilgandan so'ng darhol `clearInterval(id)` chaqirilib to'xtatilganligi sababli, taymer callback funksiyasi biror marta ham ishlashga ulgurmaydi."
+    },
+    {
+      id: 8,
+      question: "'Error-first callback' yondashuvida asinxron amal muvaffaqiyatli yakunlansa, callbackning birinchi argumentiga qanday qiymat uzatiladi?",
+      options: [
+        "`null` yoki `undefined`",
+        "`true`",
+        "`Error` obyekti",
+        "`0`"
+      ],
+      correctAnswer: 0,
+      explanation: "Muvaffaqiyatli yakunda birinchi argument (error) bo'sh bo'lishi kerak, shuning uchun unga `null` yoki `undefined` uzatiladi, ikkinchi argumentga esa haqiqiy natija (data) uzatiladi."
+    },
+    {
+      id: 9,
+      question: "JavaScript asinxron operatsiyalarini boshqarishda Event Loop qaysi uchta asosiy komponent bilan hamkorlik qiladi?",
+      options: [
+        "Call Stack, Web APIs (Browser APIs), Callback Queue",
+        "Virtual Memory, RAM, hard drive",
+        "CPU threads, cache memory, registers",
+        "DOM tree, CSSOM, Render tree"
+      ],
+      correctAnswer: 0,
+      explanation: "Asinxron operatsiyalar Web API-da bajariladi, so'ng ularning callbacklari Callback Queue-ga joylashadi. Event Loop esa Call Stack bo'shligini tekshirib, navbatdagi callbacklarni Stackka olib kiradi."
+    },
+    {
+      id: 10,
+      question: "Quyidagi kod sinxron callbackmi yoki asinxron?\n```javascript\nfunction process(cb) {\n  cb();\n}\nprocess(() => console.log('Hello'));\n```",
+      options: [
+        "Sinxron callback",
+        "Asinxron callback",
+        "Bu callback emas",
+        "Xatolik yuz beradi"
+      ],
+      correctAnswer: 0,
+      explanation: "Bu yerda hech qanday vaqt kechikishi (setTimeout) yoki tarmoq so'rovi yo'q. `cb()` chaqiruvi stackda darhol (sinxron) bajariladi."
+    },
+    {
+      id: 11,
+      question: "Callback Hell muammosini eng yaxshi va eng zamonaviy hal qiluvchi JavaScript mexanizmlari qaysilar?",
+      options: [
+        "Promises va Async/Await",
+        "IIFE va block scopes",
+        "`var` kalit so'zi va nested loops",
+        "Recursive functions"
+      ],
+      correctAnswer: 0,
+      explanation: "Promises va async/await asinxron kodlarni yuqoridan pastga qarab chiziqli ko'rinishda (sinxron kod kabi) yozishga imkon berib, callback hell chalkashligini butunlay bartaraf etadi."
+    },
+    {
+      id: 12,
+      question: "Quyidagi asinxron funksiyada qanday potensial xatolik mavjud?\n```javascript\nfunction fetchUser(id, cb) {\n  if (!id) cb(new Error('Invalid ID'));\n  cb(null, { id: id });\n}\n```",
+      options: [
+        "Agar id bo'lmasa, cb xato bilan chaqiriladi va keyin return bo'lmagani uchun pastdagi muvaffaqiyatli cb ham chaqirilib yuboriladi",
+        "Koddagi cb faqat bitta argument olishi kerak",
+        "Asinxron kod ichida Error obyekti yaratib bo'lmaydi",
+        "Hech qanday xato yo'q"
+      ],
+      correctAnswer: 0,
+      explanation: "`if` blokida `return` qo'yilmagani sababli, `if (!id)` bajarilgandan keyin ham kod to'xtamaydi va pastdagi `cb(null, { id: id })` ham chaqiriladi. Bu bitta operatsiyada callbackning ikki marta bajarilishiga olib keladi."
     }
   ]
 };

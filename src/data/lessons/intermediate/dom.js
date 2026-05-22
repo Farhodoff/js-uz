@@ -4,10 +4,10 @@ export const domBasics = {
   level: "O'rta daraja",
   description: "JavaScript orqali HTML elementlarini boshqarish: tanlash, o'zgartirish va bezash.",
   theory: `## 1. NEGA kerak?
-HTML o'zi \"o'lik\" (statik) narsa. JavaScript orqali biz o'sha matnlarni o'zgartirishimiz, tugmalar bosilganda ranglarni almashtirishimiz yoki yangi elementlar qo'shishimiz mumkin. DOM bo'lmasa, saytlar shunchaki zerikarli gazeta bo'lib qolardi.
+HTML o'zi "o'lik" (statik) narsa. JavaScript orqali biz o'sha matnlarni o'zgartirishimiz, tugmalar bosilganda ranglarni almashtirishimiz yoki yangi elementlar qo'shishimiz mumkin. DOM bo'lmasa, saytlar shunchaki zerikarli gazeta bo'lib qolardi.
 
 ## 2. SODDALIK (Analogiya)
-Tasavvur qiling, HTML — bu uyning chizmasi (proyekti). Uy bitganidan keyin siz uning devorini bo'yashingiz, mebellarini o'zgartirishingiz mumkin. DOM — bu sizning uydagi narsalarni \"ushlab\" o'zgartira olish qobiliyatingizdir.
+Tasavvur qiling, HTML — bu uyning chizmasi (proyekti). Uy bitganidan keyin siz uning devorini bo'yashingiz, mebellarini o'zgartirishingiz mumkin. DOM — bu sizning uydagi narsalarni "ushlab" o'zgartira olish qobiliyatingizdir.
 
 ## 3. STRUKTURA
 
@@ -67,7 +67,7 @@ DOM bilan professional darajada ishlash uchun quyidagi 8 ta asosiy yo'nalishni b
 ## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
-1. **querySelector bilan nuqtani unutish:** \`document.querySelector(\"my-class\")\` ishlamaydi, \`\".my-class\"\` bo'lishi shart.
+1. **querySelector bilan nuqtani unutish:** \`document.querySelector("my-class")\` ishlamaydi, \`".my-class"\` bo'lishi shart.
 2. **Style nomlari:** JSda CSS xususiyatlari \`camelCase\` yoziladi: \`background-color\` emas, \`backgroundColor\`.
 3. **textContent o'rniga innerHTML-ni noto'g'ri ishlatish:** Xavfsiz bo'lmagan foydalanuvchi ma'lumotlarini to'g'ridan-to'g'ri \`innerHTML\`-ga yozish XSS xurujlariga yo'l ochadi.
 

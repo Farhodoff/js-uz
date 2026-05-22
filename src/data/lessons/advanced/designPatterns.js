@@ -363,6 +363,90 @@ class UserRepository {
       ],
       correctAnswer: 1,
       explanation: "Facade (Tashqi ko'rinish) naqshi murakkab quyi tizimlarni bitta sodda klass yoki metod orqali boshqarish interfeysini yaratib beradi, natijada mijoz (client) ichki detallar bilan chalkashmaydi."
+    },
+    {
+      id: 6,
+      question: "Biror klassning interfeysini mijoz (client) kutayotgan boshqa interfeysga moslashtirish uchun qaysi strukturaviy (structural) naqsh ishlatiladi?",
+      options: [
+        "Adapter Pattern",
+        "Singleton Pattern",
+        "Strategy Pattern",
+        "Observer Pattern"
+      ],
+      correctAnswer: 0,
+      explanation: "Adapter naqshi mos kelmaydigan interfeysga ega bo'lgan ikki xil klassning birgalikda ishlashini ta'minlash uchun xizmat qiladi (xuddi rozetka adapteri kabi)."
+    },
+    {
+      id: 7,
+      question: "Murakkab obyektlarni bosqichma-bosqich, zanjir (method chaining) usulida yaratishga mo'ljallangan naqsh qaysi?",
+      options: [
+        "Builder Pattern",
+        "Factory Pattern",
+        "Facade Pattern",
+        "Decorator Pattern"
+      ],
+      correctAnswer: 0,
+      explanation: "Builder naqshi ko'plab parametrlarga ega murakkab obyektlarni bosqichma-bosqich va toza usulda (masalan, new UserBuilder().withName('Ali').withAge(25).build()) yaratish uchun qo'llaniladi."
+    },
+    {
+      id: 8,
+      question: "Obyektning ichki holati (state) o'zgarganda, uning xatti-harakati ham o'zgarishini ta'minlovchi xulq-atvor naqshi qaysi?",
+      options: [
+        "State Pattern",
+        "Strategy Pattern",
+        "Facade Pattern",
+        "Adapter Pattern"
+      ],
+      correctAnswer: 0,
+      explanation: "State naqshida obyekt o'zining holatiga mos keladigan alohida 'State' klass obyektiga so'rovlarni delegatsiya qiladi, holat o'zgarganda esa boshqa 'State' klassiga o'tadi."
+    },
+    {
+      id: 9,
+      question: "Tizimdagi ma'lumotlar bazasiga kirish (data access) logikasini biznes logikadan ajratib olish va abstraktsiya qilish uchun qaysi me'moriy (architectural) naqsh ishlatiladi?",
+      options: [
+        "Repository Pattern",
+        "Factory Pattern",
+        "Strategy Pattern",
+        "Singleton Pattern"
+      ],
+      correctAnswer: 0,
+      explanation: "Repository naqshi ma'lumotlarni saqlash va o'qish logikasini (masalan, SQL so'rovlarini) ma'lumotlar bazasidan ajratib, umumiy interfeys orqali taqdim etadi."
+    },
+    {
+      id: 10,
+      question: "Muayyan vazifani bajarish uchun turli xil algoritmlar guruhini yaratish va ularni dinamik ravishda bir-biriga almashtirish imkonini beruvchi naqsh qaysi?",
+      options: [
+        "Strategy Pattern",
+        "Observer Pattern",
+        "Decorator Pattern",
+        "Singleton Pattern"
+      ],
+      correctAnswer: 0,
+      explanation: "Strategy naqshi turli algoritmlarni (masalan, turli to'lov usullarini: PayPal, CreditCard) alohida klasslarga ajratib, ularni bir-birining o'rnida oson ishlatish imkonini beradi."
+    },
+    {
+      id: 11,
+      question: "JavaScript-da o'zgaruvchilarni tashqi dunyodan yashirish (encapsulation) va faqat kerakli qismlarini public qilishda qaysi an'anaviy naqshdan foydalaniladi?",
+      options: [
+        "Module Pattern (IIFE yordamida)",
+        "Facade Pattern",
+        "Singleton Pattern",
+        "Decorator Pattern"
+      ],
+      correctAnswer: 0,
+      explanation: "Module naqshi JavaScript-da scope va IIFE (Immediately Invoked Function Expression) yordamida private o'zgaruvchilar yaratish va faqat ma'lum bir API'larni qaytarish uchun klassik usul hisoblanadi."
+    },
+    {
+      id: 12,
+      question: "Dasturlashda \"Anti-pattern\" (anti-andoza) iborasi nimani anglatadi?",
+      options: [
+        "Kod yozishda keng tarqalgan, ammo samarasiz, xavfli yoki muammolarga olib keladigan noto'g'ri yondashuvlar",
+        "Faqat yangi boshlovchilar yozadigan kodlar",
+        "Dasturdagi sintaktik xatolar ro'yxati",
+        "Loyihani tezroq yakunlash uchun ishlatiladigan eng yaxshi usullar"
+      ],
+      correctAnswer: 0,
+      explanation: "Anti-pattern — muammoni hal qilishda dastlab oson ko'ringan, biroq kelajakda kodni o'zgartirishni qiyinlashtiradigan, chalkash va samarasiz yechimlardir (masalan, Spaghetti code, Callback hell)."
     }
   ]
 };

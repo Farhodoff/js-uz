@@ -217,7 +217,7 @@ console.log(sanitize(input)); // → "&lt;script&gt;steal()&lt;/script&gt; Salom
         "Global JavaScript o'zgaruvchisida saqlash"
       ],
       correctAnswer: 2,
-      explanation: "`HttpOnly` flagi bilan o'rnatilgan kuki fayllarini brauzerdagi JavaScript skriptlari orqali o'qish (masalan, `document.cookie` yordamida) mutqalo imkonsiz bo'ladi. Bu esa XSS hujumi sodir bo'lgan taqdirda ham tokenlarni hakerlar o'g'irlay olmasligini kafolatlaydi."
+      explanation: "`HttpOnly` flagi bilan o'rnatilgan kuki fayllarini brauzerdagi JavaScript skriptlari orqali o'qish (masalan, `document.cookie` yordamida) mutqalo imkonsiz bo'liq bo'ladi. Bu esa XSS hujumi sodir bo'lgan taqdirda ham tokenlarni hakerlar o'g'irlay olmasligini kafolatlaydi."
     },
     {
       id: 3,
@@ -229,7 +229,7 @@ console.log(sanitize(input)); // → "&lt;script&gt;steal()&lt;/script&gt; Salom
         "Bu parollarni brute-force yordamida buzish; undan himoya qilish uchun murakkab parol tanlanadi"
       ],
       correctAnswer: 1,
-      explanation: "CSRF hujumida foydalanuvchi bitta xavfsiz saytda auth bo'lib turganida, boshqa zararli saytga kirganda u yerda avtomatik yashirin so'rov yuborish kodi ishlaydi (kuki fayllari avtomatik qo'shib yuborilgani uchun). Buni oldini olishda so'rov faqat o'sha domen ichida yuborilishini tekshiruvchi CSRF tokenlar va `SameSite` cookie siyosati yordam beradi."
+      explanation: "CSRF hujumida foydalanuvchi bitta xavfsiz saytda auth bo'lib turganida, boshqa zararli saytga kirganda u yerda avtomatik yashirin so'rov yuborish kodi ishlaydi. Buni oldini olishda so'rov faqat o'sha domen ichida yuborilishini tekshiruvchi CSRF tokenlar va `SameSite` cookie siyosati yordam beradi."
     },
     {
       id: 4,
@@ -241,7 +241,7 @@ console.log(sanitize(input)); // → "&lt;script&gt;steal()&lt;/script&gt; Salom
         "SQL o'rniga NoSQL bazalardan foydalanish"
       ],
       correctAnswer: 1,
-      explanation: "Prepared Statements yoki Parameterized Queries usulida ma'lumotlar so'rov shablonidan alohida jo'natiladi. Bu orqali ma'lumotlar tarkibidagi SQL buyruqlari (masalan, `' OR '1'='1`) bazaga SQL kodi emas, shunchaki oddiy matn bo'lib boradi va bazani buzib yuborolmaydi."
+      explanation: "Prepared Statements yoki Parameterized Queries usulida ma'lumotlar so'rov shablonidan alohida jo'natiladi. Bu orqali ma'lumotlar tarkibidagi SQL buyruqlari bazaga SQL kodi emas, shunchaki oddiy matn bo'lib boradi va bazani buzib yuborolmaydi."
     },
     {
       id: 5,
@@ -254,6 +254,90 @@ console.log(sanitize(input)); // → "&lt;script&gt;steal()&lt;/script&gt; Salom
       ],
       correctAnswer: 1,
       explanation: "CSP (Content Security Policy) - bu brauzerga qaysi manbalardan kelayotgan resurslar xavfsiz ekanini va ularni ishga tushirish kerakligini aytuvchi HTTP headerdir. U XSS hujumlarini deyarli butunlay zararsizlantirishga yordam beradi."
+    },
+    {
+      id: 6,
+      question: "HTTPS protokoli HTTP protokolidan qanday asosiy xavfsizlik afzalligi bilan farq qiladi?",
+      options: [
+        "U brauzer va server o'rtasidagi barcha ma'lumotlarni shifrlaydi (encryption) va transport qatlamida o'g'irlanishining oldini oladi (SSL/TLS orqali)",
+        "U rasmlarni tezroq yuklaydi",
+        "U SQL Injection hujumlarini avtomatik ravishda to'xtatadi",
+        "U JavaScript xatolarini tozalaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "HTTPS SSL/TLS protokoli yordamida brauzer va server o'rtasida uzatiladigan ma'lumotlarni shifrlaydi. Bu esa provayderlar yoki oraliq hakerlar maxfiy ma'lumotlarni o'qib olishining oldini oladi."
+    },
+    {
+      id: 7,
+      question: "CORS (Cross-Origin Resource Sharing) xavfsizlik mexanizmi brauzerda nima vazifani bajaradi?",
+      options: [
+        "Bitta domendagi veb-sahifa boshqa domendagi resurslarga so'rov yuborishi mumkinligini va unga qanday ruxsatlar berilganini boshqaradi",
+        "Parollarni avtomatik tarzda shifrlaydi",
+        "DDoS hujumlarini aniqlab bloklaydi",
+        "Barcha cookie fayllarini o'chirib tashlaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "CORS — bu brauzer xavfsizlik chorasi bo'lib, uning yordamida server o'z resurslariga boshqa qaysi domenlar so'rov yuborishi mumkinligini hal qiladi (Access-Control-Allow-Origin headerlari orqali)."
+    },
+    {
+      id: 8,
+      question: "Veb-saytga foydalanuvchi kiritadigan input ma'lumotlarini tekshirish va tozalash (Validation & Sanitization) nima uchun zarur?",
+      options: [
+        "Zararli kodlar yoki noto'g'ri formatdagi ma'lumotlar tizim bazasiga yoki sahifaga kirib ketishining oldini olish uchun",
+        "Faqat sahifa dizaynini chiroyli qilish uchun",
+        "Kod hajmini optimallashtirish uchun",
+        "Internet tezligini oshirish uchun"
+      ],
+      correctAnswer: 0,
+      explanation: "Kiritilgan ma'lumotlarni tekshirish (validation) uning to'g'riligini tasdiqlaydi. Tozalash (sanitization) esa hakerlar kiritishi mumkin bo'lgan zararli HTML/JS teglarini tozalaydi, bu esa XSS va SQL Injection hujumlaridan himoya qiladi."
+    },
+    {
+      id: 9,
+      question: "Foydalanuvchi tizimga muvaffaqiyatli kirdi va kimligi aniqlandi (Authentication). Endi uning ma'lum bir sahifaga yoki funksiyaga kirish huquqi bor-yo'qligini tekshirish jarayoni nima deb ataladi?",
+      options: [
+        "Authorization (Avtorizatsiya)",
+        "Authentication (Autentifikatsiya)",
+        "Encryption (Shifrlash)",
+        "Decryption (Shifrdan ochish)"
+      ],
+      correctAnswer: 0,
+      explanation: "Authentication — bu foydalanuvchining kimligini tekshirish (masalan, login/parol orqali). Authorization (avtorizatsiya) esa o'sha aniqlangan foydalanuvchining tizimda qanday amallarni bajarishga huquqi borligini tekshirishdir."
+    },
+    {
+      id: 10,
+      question: "Serverga bir soniyada juda ko'p miqdorda so'rovlar yuborib uni ishdan chiqarishga urinadigan 'Brute-Force' yoki API spam-hujumlaridan himoyalanish uchun qaysi mexanizm ishlatiladi?",
+      options: [
+        "Rate Limiting (So'rovlar sonini cheklash)",
+        "CORS",
+        "Encryption",
+        "Prepared Statements"
+      ],
+      correctAnswer: 0,
+      explanation: "Rate Limiting ma'lum bir vaqt ichida bitta IP manzildan yuborilishi mumkin bo'lgan maksimal so'rovlar sonini belgilaydi. Bu spammerlar va brute-force hujumlaridan serverni himoya qiladi."
+    },
+    {
+      id: 11,
+      question: "Cookie (kuki) sozlamasidagi `SameSite=Strict` flagi qanday asosiy vazifani bajaradi?",
+      options: [
+        "Cookie faqat va faqat o'sha saytning o'zida yuborilishini kafolatlaydi, uchinchi tomon saytlaridan yuborilgan so'rovlarga cookie qo'shilmaydi (CSRF himoyasi)",
+        "Cookie faylini localstorageda saqlaydi",
+        "Faqat HTTPS protokoli orqali cookie yuborilishini ta'minlaydi",
+        "Cookie faylini JavaScript orqali o'qish imkonini beradi"
+      ],
+      correctAnswer: 0,
+      explanation: "`SameSite=Strict` sozlamasi CSRF (Cross-Site Request Forgery) hujumlaridan ajoyib himoyadir, chunki u brauzerga begona saytlardan kelayotgan linklar yoki so'rovlarga ushbu saytning cookie-fayllarini qo'shmaslikni buyuradi."
+    },
+    {
+      id: 12,
+      question: "JavaScript-da `eval()` funksiyasidan foydalanish nima uchun juda katta xavfsizlik xavfi (Security Risk) hisoblanadi?",
+      options: [
+        "Chunki `eval()` unga uzatilgan har qanday string formatidagi kodni to'liq huquq bilan ishga tushiradi, bu esa begona kodlarni bajarish imkonini yaratadi",
+        "Chunki u faqat eski brauzerlarda ishlaydi",
+        "Chunki u xotira hajmini cheklaydi",
+        "Chunki u asinxron ishlashni bloklaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "`eval()` funksiyasi matn ko'rinishidagi kodni bajaradi. Agar foydalanuvchi kiritgan ma'lumot `eval()` ichiga tushib qolsa, haker istalgan zararli kodni tizimda ishga tushirishi mumkin."
     }
   ]
 };

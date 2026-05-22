@@ -471,6 +471,90 @@ ES6 (ECMAScript 2015). Asli prototip-based, syntactic sugar.
       ],
       correctAnswer: 1,
       explanation: "JavaScript tagida baribir prototype inheritance yotadi. ES6 klasslari esa koderlar uchun o'qish va yozishni osonlashtiruvchi sintaktik qobiq (syntactic sugar) vazifasini bajaradi xolos."
+    },
+    {
+      id: 6,
+      question: "Klass getter (get) metodi qanday chaqiriladi?",
+      options: [
+        "Funksiya kabi qavslar bilan (masalan: `person.age()`)",
+        "Oddiy property kabi, qavslarsiz (masalan: `person.age`)",
+        "Faqat static metodlar ichida",
+        "get kalit so'zi yordamida new orqali chaqiriladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Getter metodlar (get kalit so'zi bilan yozilganlar) chaqirilganda funksiya kabi qavs qo'yilmaydi, balki oddiy xususiyat (property) kabi o'qiladi."
+    },
+    {
+      id: 7,
+      question: "Agar merosxo'r klassda `constructor` e'lon qilinmasa nima sodir bo'ladi?",
+      options: [
+        "JavaScript xato qaytaradi (ReferenceError)",
+        "JavaScript o'zi avtomatik ota klass constructor'ini barcha parametrlari bilan chaqiruvchi default constructor yaratadi",
+        "Merosxo'rlik ishlamaydi",
+        "Obyekt yaratilganda default qiymat undefined bo'ladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar child klassda constructor yozilmasa, JS dvigateli avtomatik ravishda `constructor(...args) { super(...args); }` ko'rinishidagi default constructor yaratadi."
+    },
+    {
+      id: 8,
+      question: "Klassda setter (set) metodlarining asosiy maqsadi va ishlatilishi nima?",
+      options: [
+        "Qiymatni ekranga chop etish uchun",
+        "Biror property'ga qiymat berishdan oldin uni tekshirish (validatsiya qilish) yoki o'zgartirish",
+        "Klassga yangi static metodlar qo'shish",
+        "Obyektni JSON ko'rinishiga o'tkazish"
+      ],
+      correctAnswer: 1,
+      explanation: "Setter (set) metodlar property'ga yangi qiymat berilayotganda uni tekshirish, filtrlash yoki o'zgartirish imkonini beradi."
+    },
+    {
+      id: 9,
+      question: "`new.target` klass ichida nimani aniqlash uchun ishlatiladi?",
+      options: [
+        "Yangi yaratiladigan HTML target elementini",
+        "Klass to'g'ridan-to'g'ri chaqirilganini yoki merosxo'r klass orqali chaqirilganini (masalan, abstract klass yaratishda)",
+        "Klassdagi static metodlar sonini",
+        "Global 'this' obyekti targetini"
+      ],
+      correctAnswer: 1,
+      explanation: "`new.target` constructor qaysi klass orqali chaqirilganini aniqlaydi. Agar klass bevosita chaqirilgan bo'lsa, `new.target` shu klassning o'zini qaytaradi."
+    },
+    {
+      id: 10,
+      question: "Ota klassdagi oddiy metodni merosxo'r klassda xuddi shu nom bilan qayta yozish (override qilish) qanday amalga oshiriladi?",
+      options: [
+        "override kalit so'zi yordamida",
+        "Merosxo'r klass ichida shunchaki o'sha nom bilan yangi metod e'lon qilish orqali (ota metodni chaqirish uchun `super.metodNom()` ishlatilishi mumkin)",
+        "Buning iloji yo'q, xatolik yuz beradi",
+        "Faqat static metodlarni override qilish mumkin"
+      ],
+      correctAnswer: 1,
+      explanation: "Merosxo'r klassda ota klassdagi metod nomini qaytadan e'lon qilish orqali uni override qilish mumkin. Agar eski ota metodni ham ishlatmoqchi bo'lsak, `super.metodNom()` deb murojaat qilamiz."
+    },
+    {
+      id: 11,
+      question: "Klasslar hoisting (kodning yuqorisiga ko'tarilish) bo'ladimi?",
+      options: [
+        "Ha, var kabi hoisting bo'ladi va e'lon qilinishidan oldin ishlatish mumkin",
+        "Yo'q, klasslar hoisting bo'lmaydi (TDZda bo'ladi) va ulardan faqat e'lon qilingandan keyin foydalanish mumkin",
+        "Faqat static klasslar hoisting bo'ladi",
+        "Faqat constructor bo'lmagan klasslar hoisting bo'ladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Klasslar hoisting bo'lmaydi (funksiyalardan farqli ravishda, xuddi let/const kabi Temporal Dead Zone qoidasiga bo'ysunadi). Ularni faqat e'lon qilingandan keyin chaqirish mumkin."
+    },
+    {
+      id: 12,
+      question: "JavaScript klasslarida prototype zanjirini (prototype chain) tekshirish uchun qaysi operator ishlatiladi?",
+      options: [
+        "`typeof`",
+        "`instanceof`",
+        "`in`",
+        "`hasOwnProperty`"
+      ],
+      correctAnswer: 1,
+      explanation: "`instanceof` operatori obyektning prototipi uning prototype zanjirida constructor.prototype'ga mos kelish-kelmasligini tekshiradi."
     }
   ]
 };

@@ -177,7 +177,7 @@ Obyekt ichida dinamik metodlar (masalan \`obj.sayHi()\`) yaratishda \`this\` obj
       title: "1️⃣1️⃣ String interpolatsiyasi (Template literal)",
       instruction: "Ismni parametr sifatida qabul qilib, 'Salom, [ism]!' matnini qaytaradigan arrow funksiya yozing.",
       startingCode: "// sayHello funksiyasi\n\nconsole.log(sayHello('Zuhra'));",
-      hint: "const sayHello = name => \`Salom, ${name}!\`;",
+      hint: "const sayHello = name => `Salom, ${name}!`;",
       test: "if (sayHello('Zuhra') === 'Salom, Zuhra!') return null; return 'Matn xato';"
     },
     {
@@ -206,10 +206,10 @@ Obyekt ichida dinamik metodlar (masalan \`obj.sayHi()\`) yaratishda \`this\` obj
       id: 2,
       question: "Arrow funksiya yordamida bitta qatorda obyekt qaytarmoqchi bo'lsak, qaysi sintaksis to'g'ri hisoblanadi?",
       options: [
-        "\`const user = () => { name: 'Ali' };\`",
-        "\`const user = () => ({ name: 'Ali' });\`",
-        "\`const user = () => return { name: 'Ali' };\`",
-        "\`const user = () => [ name: 'Ali' ];\`"
+        "const user = () => { name: 'Ali' };",
+        "const user = () => ({ name: 'Ali' });",
+        "const user = () => return { name: 'Ali' };",
+        "const user = () => [ name: 'Ali' ];"
       ],
       correctAnswer: 1,
       explanation: "Jingalak qavslar `{}` funksiya tanasini (block) anglatgani uchun, obyekt literali qaytarilayotganda chalkashlik yuzaga kelmasligi uchun obyekt qavslar ichiga `({ ... })` olinishi shart."
@@ -242,13 +242,97 @@ Obyekt ichida dinamik metodlar (masalan \`obj.sayHi()\`) yaratishda \`this\` obj
       id: 5,
       question: "Arrow funksiyalar qachon \"hoisted\" bo'ladi (kodning yuqorisiga ko'tariladi)?",
       options: [
-        "Har doim, chunki them funksiya hisoblanadi",
+        "Har doim, chunki hamma funksiya hisoblanadi",
         "Ular e'lon qilinish shakliga (masalan, const/let o'zgaruvchisiga biriktirilganiga) bog'liq. Ular hoisted bo'lmaydi va Temporal Dead Zone (TDZ) ga bo'ysunadi",
         "Faqat var bilan e'lon qilinganda funksiya sifatida hoisted bo'ladi",
         "Faqat brauzer o'chib yonganda hoisted bo'ladi"
       ],
       correctAnswer: 1,
       explanation: "Arrow funksiyalar ifoda (Expression) sifatida e'lon qilinadi (odatda `const` yoki `let` bilan). Shuning uchun o'zgaruvchilar kabi ular ham hoisted bo'lmaydi va e'lon qilinishidan oldin ishlatib bo'lmaydi."
+    },
+    {
+      id: 6,
+      question: "Quyidagi kod bajarilganda konsolga nima chiqadi (brauzerda)?\n```javascript\nconst obj = {\n  x: 10,\n  getX: () => this.x\n};\nconsole.log(obj.getX());\n```",
+      options: [
+        "10",
+        "undefined (chunki arrow function o'zining this-iga ega emas va global context-dan oladi)",
+        "ReferenceError",
+        "TypeError"
+      ],
+      correctAnswer: 1,
+      explanation: "Arrow funksiyada `this` lexical scope-ga bog'liq. U obyektdan emas, o'sha obyekt yaratilgan global context (window) dan `this`ni oladi. Globalda `x` bo'lmagani uchun `undefined` chiqadi."
+    },
+    {
+      id: 7,
+      question: "Arrow funksiyalarni `call()`, `apply()` yoki `bind()` yordamida boshqa obyektdagi `this` kontekstiga bog'lab bo'ladimi?",
+      options: [
+        "Ha, mutlaqo bog'lab bo'ladi",
+        "Yo'q, arrow funksiyalar bu metodlar orqali `this` qiymatini o'zgartirishga yo'l qo'ymaydi (ular e'tiborsiz qoldiriladi)",
+        "Faqat `bind()` yordamida bog'lash mumkin",
+        "Faqat `call()` yordamida bog'lash mumkin"
+      ],
+      correctAnswer: 1,
+      explanation: "Arrow funksiyalarda `this` har doim o'zi e'lon qilingan lexical context-ga bog'langan bo'ladi. `call`, `apply` yoki `bind` chaqirilganda, uzatilgan birinchi parametr shunchaki inobatga olinmaydi."
+    },
+    {
+      id: 8,
+      question: "Arrow funksiyaning parametri atigi bitta bo'lganda, sintaksisda nima qilish mumkin?",
+      options: [
+        "Parametr atrofidagi qavslarni `()` tashlab ketish mumkin",
+        "Jingalak qavslarni tashlab ketish mumkin",
+        "Hech qanday qisqartirish mumkin emas",
+        "Parametrni umuman yozmaslik mumkin"
+      ],
+      correctAnswer: 0,
+      explanation: "Agar arrow funksiyada parametr bitta bo'lsa, qavslarsiz `x => x * 2` shaklida yozish mumkin. Agar parametrlar 0 ta yoki 2 ta va undan ortiq bo'lsa, qavslar majburiy."
+    },
+    {
+      id: 9,
+      question: "Quyidagi arrow funksiya sintaksisining qaysi biri sintaktik jihatdan xato?",
+      options: [
+        "const f = () => 10;",
+        "const f = x => x;",
+        "const f = x, y => x + y;",
+        "const f = (x, y) => x + y;"
+      ],
+      correctAnswer: 2,
+      explanation: "Parametrlar soni birdan ortiq bo'lsa (`x, y`), ular albatta qavs ichiga olinishi kerak: `(x, y) => x + y`. Qavssiz yozish SyntaxError beradi."
+    },
+    {
+      id: 10,
+      question: "Arrow funksiyaning `prototype` xususiyati (property) bormi?",
+      options: [
+        "Ha, oddiy funksiyalardagi kabi `prototype` bor",
+        "Yo'q, arrow funksiyalarda `prototype` mavjud emas (undefined)",
+        "Faqat `var` bilan e'lon qilinganda mavjud",
+        "Faqat `return` ishlatilganda mavjud"
+      ],
+      correctAnswer: 1,
+      explanation: "Arrow funksiyalar konstruktor bo'la olmaganligi sababli, ularda `prototype` xususiyati bo'lmaydi (`f.prototype` qiymati `undefined` bo'ladi)."
+    },
+    {
+      id: 11,
+      question: "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconst multiply = (x, y) => { x * y };\nconsole.log(multiply(2, 3));\n```",
+      options: [
+        "6",
+        "undefined (chunki jingalak qavslar ichida return yozilmagan)",
+        "NaN",
+        "SyntaxError"
+      ],
+      correctAnswer: 1,
+      explanation: "Jingalak qavslar `{}` ochilganda JavaScript uni funksiya tanasi (block) deb hisoblaydi va avtomatik return qilmaydi. Qiymat qaytarish uchun `return x * y;` yozilishi kerak edi."
+    },
+    {
+      id: 12,
+      question: "Arrow funksiyalar generator (`function*`) sifatida ishlatilishi mumkinmi?",
+      options: [
+        "Ha, `* =>` yordamida",
+        "Yo'q, arrow funksiyalarni generator funksiya (yield ishlatiladigan) sifatida ishlatib bo'lmaydi",
+        "Faqat Node.js muhitida ishlatish mumkin",
+        "Faqat asinxron bo'lsa ishlatish mumkin"
+      ],
+      correctAnswer: 1,
+      explanation: "Arrow funksiyalar generator funksiya bo'la olmaydi. Ular `yield` kalit so'zini yieldsiz yieldsiz o'z ichida ishlata olmaydi va `*` sintaksisini qo'llab-quvvatlamaydi."
     }
   ]
 };

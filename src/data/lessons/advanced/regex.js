@@ -254,7 +254,91 @@ Lookahead (\`(?=...)\`) — hozirgi pozitsiyadan keyin ma'lum naqsh kelishini ta
         "`*` va `+`"
       ],
       correctAnswer: 0,
-      explanation: "`^` belgisi andozaning satr boshidan, `$` esa satr oxiridan boshlab mos kelishini talab qiladi. Ular asosan email yoki telefon raqami kabi to'liq matnli kiritmalarni boshidan oxirigacha aniq tekshirishda ishlatiladi."
+      explanation: "`^` belgisi andozaning satr boshidan, `$` esa satr oxiridan boshlab mos kelishini talab qiladi. Ular asosan email yoki telefon raqami kabi to'liq matnli kiritmalarni boshidan oxirigacha precis tekshirishda ishlatiladi."
+    },
+    {
+      id: 6,
+      question: "RegEx'da greedy (ochko'z) va lazy (dangasa) qidiruv farqi nimada?",
+      options: [
+        "Greedy imkon qadar ko'p belgi bilan moslik topadi, lazy esa imkon qadar kam belgi bilan cheklanadi",
+        "Greedy faqat raqamlarni, lazy esa faqat harflarni qidiradi",
+        "Greedy xotirani ko'p yeydi, lazy xotirani tejaydi",
+        "Greedy faqat satr boshidan, lazy satr oxiridan qidiradi"
+      ],
+      correctAnswer: 0,
+      explanation: "RegEx'dagi miqdor ko'rsatkichlari (masalan, `+` va `*`) odatda greedy bo'lib, eng uzun moslikni topishga intiladi. Ulardan keyin `?` qo'yilsa (masalan, `+?` yoki `*?`), ular lazy bo'lib qoladi va eng qisqa moslikni topadi."
+    },
+    {
+      id: 7,
+      question: "RegEx'da `(?:...)` (non-capturing group) ning vazifasi nima?",
+      options: [
+        "Guruhdagi belgilarning mosligini tekshiradi, lekin guruhni xotirada saqlamaydi (capturing qilmaydi)",
+        "Satr boshidagi elementlarni qidirishdan cheklaydi",
+        "Har qanday belgini inkor qiladi",
+        "Faqat izoh yozish uchun ishlatiladi"
+      ],
+      correctAnswer: 0,
+      explanation: "`(?:...)` guruhlash imkonini beradi (masalan, miqdor ko'rsatkichini qo'llash uchun), lekin u mos kelgan natijalar guruhlari (capturing groups) ro'yxatida alohida indeks bilan saqlanmaydi."
+    },
+    {
+      id: 8,
+      question: "RegEx'da lookahead `(?=...)` va lookbehind `(?<=...)` ning asosiy vazifasi nima?",
+      options: [
+        "Match natijasiga qo'shmasdan, faqat ma'lum bir naqshdan oldin yoki keyin kelishini tekshirish (assertion)",
+        "Satr oxiridagi bo'shliqlarni olib tashlash",
+        "String obyektini RegEx obyektiga o'tkazish",
+        "Matndagi barcha katta harflarni kichik qilish"
+      ],
+      correctAnswer: 0,
+      explanation: "Lookaround (lookahead va lookbehind) assertions hisoblanadi. Ular ma'lum bir shart bajarilishini tekshiradi, lekin u shart qismini qidiruv natijasiga qo'shmaydi."
+    },
+    {
+      id: 9,
+      question: "RegEx andozasidagi `\\s` maxsus sinfi nimani bildiradi?",
+      options: [
+        "Faqat kichik harflarni",
+        "Bo'shliq belgilari (probel, tab, yangi qator)ni",
+        "Faqat maxsus belgilarni ($, %, @)",
+        "Faqat raqamlarni"
+      ],
+      correctAnswer: 1,
+      explanation: "`\\s` (whitespace) probel, tabulyatsiya (`\\t`), yangi qator (`\\n`) kabi har qanday bo'shliq belgilarini bildiradi."
+    },
+    {
+      id: 10,
+      question: "Agar `str.replace()` metodida `g` (global) bayrog'i ishlatilmasa nima sodir bo'ladi?",
+      options: [
+        "Faqat birinchi mos kelgan qism almashtiriladi",
+        "Barcha mos kelgan qismlar almashtiriladi",
+        "Hech narsa almashtirilmaydi va xato qaytadi",
+        "Butun satr o'chirib tashlanadi"
+      ],
+      correctAnswer: 0,
+      explanation: "`g` (global) bayrog'i bo'lmasa, `replace` metodi satr ichidagi faqat birinchi uchragan moslikni almashtiradi va qidirishni to'xtatadi."
+    },
+    {
+      id: 11,
+      question: "RegEx'da `[^abc]` yozuvi nimani anglatadi?",
+      options: [
+        "Faqat 'a', 'b' yoki 'c' harflaridan boshlanadigan satrlarni",
+        "'a', 'b' va 'c' dan tashqari har qanday bitta belgini",
+        "Satr oxirida 'abc' iborasi borligini",
+        "'abc' so'zining o'zini"
+      ],
+      correctAnswer: 1,
+      explanation: "Kvadrat qavs ichidagi `^` inkor etish (negation) ma'nosini bildiradi. `[^abc]` andozasi 'a', 'b' yoki 'c' bo'lmagan har qanday bitta belgiga mos keladi."
+    },
+    {
+      id: 12,
+      question: "RegEx konstruktori `new RegExp('pattern', 'flags')` qachon foydali bo'ladi?",
+      options: [
+        "Andoza (pattern) o'zgaruvchi qiymatga bog'liq ravishda dinamik yaratilishi kerak bo'lganda",
+        "Faqat global bayroq ishlatilganda",
+        "RegEx literals ishlamay qolganda",
+        "Kod hajmini kamaytirish uchun"
+      ],
+      correctAnswer: 0,
+      explanation: "RegExp konstruktori string qabul qilganligi sababli, unga o'zgaruvchilar orqali dinamik yig'ilgan matnli andozalarni uzatish mumkin. Literal `/pattern/` esa faqat statik yoziladi."
     }
   ]
 };

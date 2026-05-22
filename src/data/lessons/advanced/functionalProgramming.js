@@ -214,7 +214,7 @@ console.log(result); // → 25 (10 * 2 + 5)
       question: '"Pure Function" (Toza funksiya) nima?',
       options: [
         "Faqat bitta qator koddan iborat funksiya",
-        "Bir xil kirish parametrlari uchun har doim bir xil natija qaytaradigan va hech qanday yon ta\'siri (side-effects) bo\'lmagan funksiya",
+        "Bir xil kirish parametrlari uchun har doim bir xil natija qaytaradigan va hech qanday yon ta'siri (side-effects) bo'lmagan funksiya",
         "Faqat sonlar ustida ishlaydigan funksiya",
         "Hech qanday argument qabul qilmaydigan funksiya"
       ],
