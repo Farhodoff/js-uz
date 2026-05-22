@@ -1,107 +1,144 @@
 export const advancedFetch = {
   id: "a19",
   title: "Ilg'or Fetch: Timeout, Retry va Xatolar",
-  theory: `## 1. KIRISH
-Oddiy \`fetch()\` faqat internet o'chsa yoki server topilmasa xato (reject) beradi. Agar server 404 yoki 500 xato bersa ham, \`fetch\` uni "muvaffaqiyatli" deb hisoblaydi. Real loyihalarda bizga bunday "baxtli yakunlar" yetarli emas.
+  theory: `## 1. NEGA kerak?
+Oddiy \`fetch()\` faqat tarmoq uzilsa yoki server topilmasa xato (reject) qaytaradi. Server 404 (Not Found) yoki 500 (Internal Server Error) xatolik qaytarganda esa, \`fetch\` so'rovni muvaffaqiyatli deb hisoblaydi. Murakkab loyihalarda so'rovlarni timeout qilish, xatolarni to'g'ri boshqarish va tarmoq vaqtincha uzilganda avtomatik qayta urinish (retry) tizimlarini qurish muhim ahamiyatga ega.
 
-## 2. CHUQUR TUSHUNCHALAR
+## 2. SODDALIK (Analogiya)
+Buni **pochta orqali xat yuborish** deb tasavvur qiling:
+- **Oddiy fetch:** Xatingiz manzilga borib tegsa (garchi u yerda qabul qiluvchi xatni rad etsa ham), xat tashuvchi vazifasini muvaffaqiyatli bajardi deb hisoblaydi.
+- **Ilg'or fetch:** Xatni oluvchi uni rad etsa xatoni aniqlaydi, agar xat manzilga yetib bormasa, bir necha bor qayta jo'natishga urinadi, va agar xat juda uzoq kutib qolinsa, jo'natishni bekor qiladi.
 
-### Request Timeout (AbortController)
-Agar so'rov juda uzoq davom etsa (masalan 5 soniya), uni to'xtatish kerak. Aks holda foydalanuvchi cheksiz kutib qoladi.
+## 3. STRUKTURA
+Ilg'or tarmoq so'rovlarini boshqarishda quyidagi obekt va tushunchalar qo'llaniladi:
+- **res.ok va res.status:** HTTP javob muvaffaqiyatli (200-299) bo'lganini tekshirish uchun.
+- **AbortController:** So'rovlarni istalgan vaqtda, masalan, timeout (vaqt chegarasi) tugaganda to'xtatish uchun maxsus signal.
+- **Retry Pattern:** So'rov xato bo'lganda tsikl yoki rekursiya yordamida qayta urinishlarni amalga oshirish.
 
-### Retry Mexanizmi
-Internet uzilib qolsa yoki server vaqtinchalik ishlamasa, avtomatik ravishda qayta so'rov yuborish.
-
-### HTTP Xatolarni Tekshirish
-\`res.ok\` xususiyati orqali status kod 200-299 oralig'ida ekanligini tekshirish shart.
-
----
-
-## 3. KOD MISOLLARI
-
-### Misol 1 — Request Timeout (AbortController) ⭐
+## 4. AMALIYOT (Mashqlar pastda)
+So'rovni ma'lum vaqt ichida bajarilmasa bekor qilish kodi:
 \`\`\`javascript
-async function fetchWithTimeout(url, ms = 5000) {
+async function fetchWithTimeout(url, ms = 3000) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), ms);
 
-  try {
-    const res = await fetch(url, { signal: controller.signal });
-    clearTimeout(id);
-    return await res.json();
-  } catch (err) {
-    if (err.name === 'AbortError') {
-      console.error("Vaqt tugadi (Timeout)!");
-    }
-    throw err;
-  }
+  const res = await fetch(url, { signal: controller.signal });
+  clearTimeout(id);
+  return res;
 }
 \`\`\`
 
-### Misol 2 — Retry (Qayta urinish) Mexanizmi
-\`\`\`javascript
-async function fetchWithRetry(url, retries = 3) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("Server xatosi: " + res.status);
-      return await res.json();
-    } catch (err) {
-      if (i === retries - 1) throw err;
-      console.log(\`Qayta urinish... (\${i + 1})\`);
-    }
-  }
-}
-\`\`\`
+## 5. XATOLAR (Common mistakes)
+- **HTTP status kodlarini tekshirmaslik:** \`res.ok\`ni tekshirmasdan to'g'ridan-to'g'ri \`res.json()\` chaqirish.
+- **AbortController-ni yopmaslik:** \`clearTimeout(id)\` qilish esdan chiqsa, so'rov muvaffaqiyatli bo'lsa ham kelajakda controller uni asossiz bekor qilishi mumkin.
+- **Promise.race() orqali so'rovni uzib bo'lmasligi:** \`Promise.race\` kutishni to'xtatadi, lekin brauzer darajasida tarmoq yuklamasini (fetch-ni) bekor qilmaydi. Buning uchun faqat \`AbortController\` kerak.
 
----
+## 6. SAVOLLAR VA JAVOBLAR
+**1. fetch() qachon reject bo'ladi?**
+Faqat tarmoq ulanishi mutlaqo yo'qolganda yoki server topilmaganda. HTTP 404 va 500 statuslarida u resolve bo'ladi.
 
-## 4. VIZUAL TUSHUNTIRISH
-### Xatolarni Boshqarish Oqimi
-\`\`\`mermaid
-graph TD
-    A[Fetch Request] --> B{Tarmoq bormi?}
-    B -- Yo'q --> C[catch: Network Error]
-    B -- Ha --> D{res.ok?}
-    D -- Yo'q 404/500 --> E[throw: Custom Error]
-    D -- Ha 200 --> F[res.json]
-    F --> G[Muvaffaqiyat ✅]
-\`\`\`
+**2. res.ok nimani anglatadi?**
+HTTP status kodi 200 dan 299 gacha oraliqda bo'lsa, u \`true\` qiymatga ega bo'ladi.
 
----
-
-## 5. INTERVYU SAVOLLARI
-1. **Fetch qachon reject bo'ladi?** - Faqat tarmoq xatosi bo'lganda (internet yo'qligi). HTTP 404/500 xatolarida reject bo'lmaydi.
-2. **AbortController nima uchun kerak?** - Ishlab turgan fetch so'rovini istalgan vaqtda (masalan, timeout bo'lganda) to'xtatish uchun.
-3. **Promise.race() bilan timeout qilsa bo'ladimi?** - Bo'ladi, lekin u so'rovni to'xtatmaydi, shunchaki natijani kutmaydi. \`AbortController\` esa haqiqatda so'rovni uzadi.
-
----
-
-## 6. MINI LOYIHA: "Robust API Client"
-**Vazifa:** Xavfsiz fetch funksiyasini yozing.
-
-\`\`\`javascript
-async function secureGet(url) {
-  try {
-    const res = await fetch(url);
-    if (!res.ok) {
-       throw new Error(\`HTTP xatosi! Status: \${res.status}\`);
-    }
-    return await res.json();
-  } catch (error) {
-    console.error("Xatolik yuz berdi:", error.message);
-  }
-}
-\`\`\`
+**3. AbortController nima uchun ishlatiladi?**
+Tarmoq so'rovlarini dasturiy ravishda bekor qilish uchun (masalan, timeout yoki sahifani tark etganda).
 `,
   exercises: [
     {
       id: 1,
       title: "res.ok tekshiruvi",
       instruction: "Fetch so'rovida res.ok false bo'lsa, xato tashlaydigan (throw) kod yozing.",
-      startingCode: "fetch(url).then(res => {\n  // Bu yerada tekshiring\n});",
+      startingCode: "fetch(url).then(res => {\n  // Bu yerda tekshiring\n});",
       hint: "if (!res.ok) throw new Error('Xato');",
       test: "if (code.includes('res.ok')) return null; return 'res.ok xususiyatini tekshiring';"
+    },
+    {
+      id: 2,
+      title: "AbortController signalini ulanishi",
+      instruction: "fetch parametrlariga 'controller'dan olingan signalni ulang.",
+      startingCode: "const controller = new AbortController();\nfetch(url, {\n  // Signalni ulang\n});",
+      hint: "signal: controller.signal",
+      test: "if (code.includes('signal: controller.signal') || code.includes('signal:controller.signal')) return null; return 'signalni controller.signal ga tenglang';"
+    },
+    {
+      id: 3,
+      title: "Fetch POST Request",
+      instruction: "Method POST, Content-Type application/json bo'lgan fetch so'rovi sozlamalarini yozing.",
+      startingCode: "fetch(url, {\n  // Method va headers qo'shing\n});",
+      hint: "method: 'POST', headers: { 'Content-Type': 'application/json' }",
+      test: "if (code.includes('POST') && code.includes('application/json')) return null; return 'method POST va Content-Type headerini qo\\'shing';"
+    },
+    {
+      id: 4,
+      title: "Simple Retry loops",
+      instruction: "Xatolik yuz berganda 3 marta qayta urinadigan so'rov yozing.",
+      startingCode: "async function getWithRetry(url) {\n  for (let i = 0; i < 3; i++) {\n    try {\n      return await fetch(url);\n    } catch(e) {\n      // Oxirgi qadamda xatoni qayta tashlang\n    }\n  }\n}",
+      hint: "if (i === 2) throw e;",
+      test: "if (code.includes('throw') && code.includes('catch')) return null; return 'catch ichida oxirgi urinishda xatoni qayta tashlang';"
+    },
+    {
+      id: 5,
+      title: "URL Parameters (URLSearchParams)",
+      instruction: "URLSearchParams orqali 'page=2' va 'limit=10' parametrlarini URL-ga qo'shing.",
+      startingCode: "const params = new URLSearchParams();\n// Parametrlarni set qiling\n",
+      hint: "params.set('page', '2'); params.set('limit', '10');",
+      test: "if (code.includes('page') && code.includes('limit') && code.includes('set')) return null; return 'params.set yordamida parametrlar o\\'rnating';"
+    },
+    {
+      id: 6,
+      title: "Promise.all bilan Concurrency",
+      instruction: "Promise.all yordamida bir vaqtda url1 va url2 so'rovlarini yuboring.",
+      startingCode: "const url1 = 'url1', url2 = 'url2';\nconst fetchAll = () => {\n  // Promise.all ishlating\n};",
+      hint: "return Promise.all([fetch(url1), fetch(url2)]);",
+      test: "if (code.includes('Promise.all') && code.includes('fetch')) return null; return 'Promise.all yordamida fetch so\\'rovlarini birlashtiring';"
+    },
+    {
+      id: 7,
+      title: "Response Headers olish",
+      instruction: "Kelgan javobdan (res) 'content-type' sarlavhasini olib qaytaring.",
+      startingCode: "function getContentType(res) {\n  // Content-Type ni qaytaring\n}",
+      hint: "return res.headers.get('content-type');",
+      test: "if (code.includes('headers.get')) return null; return 'res.headers.get metodidan foydalaning';"
+    },
+    {
+      id: 8,
+      title: "Text formatida o'qish",
+      instruction: "Javobni json emas, balki oddiy text formatida o'qib qaytaruvchi kod yozing.",
+      startingCode: "fetch(url).then(res => {\n  // Text formatida qaytaring\n});",
+      hint: "return res.text();",
+      test: "if (code.includes('res.text()')) return null; return 'res.text() metodini ishlating';"
+    },
+    {
+      id: 9,
+      title: "AbortError checking",
+      instruction: "Catch blokida xatoning nomi 'AbortError' ekanligini tekshiring.",
+      startingCode: "try {\n  await fetch(url);\n} catch(err) {\n  // AbortError ekanini tekshiring\n}",
+      hint: "if (err.name === 'AbortError') { }",
+      test: "if (code.includes(\"err.name === 'AbortError'\") || code.includes('err.name === \"AbortError\"')) return null; return 'err.name ni tekshiring';"
+    },
+    {
+      id: 10,
+      title: "Promise.race for Fast Response",
+      instruction: "Promise.race yordamida url1 va url2 dan birinchi bo'lib kelganini oling.",
+      startingCode: "const getFastest = (url1, url2) => {\n  // Promise.race yozing\n};",
+      hint: "return Promise.race([fetch(url1), fetch(url2)]);",
+      test: "if (code.includes('Promise.race') && code.includes('fetch')) return null; return 'Promise.race dan foydalaning';"
+    },
+    {
+      id: 11,
+      title: "Fetch image blob",
+      instruction: "res ob'ektidan blob ko'rinishidagi ma'lumotni o'qib qaytaring.",
+      startingCode: "fetch(imageUrl).then(res => {\n  // Blob qaytaring\n});",
+      hint: "return res.blob();",
+      test: "if (code.includes('res.blob()')) return null; return 'res.blob() metodini chaqiring';"
+    },
+    {
+      id: 12,
+      title: "FormData request body",
+      instruction: "Fetch so'rovining 'body'siga 'formData' ob'ektini uzating.",
+      startingCode: "const formData = new FormData();\nfetch(url, {\n  method: 'POST',\n  // FormData ni uzating\n});",
+      hint: "body: formData",
+      test: "if (code.includes('body: formData') || code.includes('body:formData')) return null; return 'body qismiga formData ni bering';"
     }
   ],
   quizzes: [
@@ -115,7 +152,7 @@ async function secureGet(url) {
         "So'rov yuborilganda va server 200 OK qaytarganda"
       ],
       correctAnswer: 2,
-      explanation: "`fetch()` HTTP status kodlaridan (masalan, 404 yoki 500) qat'i nazar, agar server javob qaytarsa Promiseni muvaffaqiyatli (`resolve`) deb biladi. U faqat tarmoq butunlay uzilganda yoki serverga bog'lanib bo'lmaganda (`reject`) xato beradi."
+      explanation: "`fetch()` HTTP status kodlaridan (masalan, 404 yoki 500) qat'i nazar, agar server javob qaytarsa Promiseni muvaffayatli (`resolve`) deb biladi. U faqat tarmoq butunlay uzilganda yoki serverga bog'lanib bo'lmaganda (`reject`) xato beradi."
     },
     {
       id: 2,
@@ -164,6 +201,90 @@ async function secureGet(url) {
       ],
       correctAnswer: 0,
       explanation: "`for` tsikli orqali belgilangan miqdorda urinish yasaladi. So'rov muvaffaqiyatli bo'lsa, natija qaytariladi. Agar xato bo'lsa, tsikl davom etadi va faqat oxirgi urinish ham xato bo'lsagina xatolik tashqariga otiladi."
+    },
+    {
+      id: 6,
+      question: "Server 401 (Unauthorized) qaytarganda fetch so'rovi qanday yakunlanadi?",
+      options: [
+        "So'rov reject bo'ladi",
+        "So'rov resolve bo'ladi va res.ok qiymati false bo'ladi",
+        "Dastur darhol ishdan to'xtaydi",
+        "Tashqi catch bloki avtomatik ishga tushadi"
+      ],
+      correctAnswer: 1,
+      explanation: "HTTP 401 status kodi ulanish muvaffaqiyatli o'rnatilganini ko'rsatadi, shuning uchun fetch resolve bo'ladi, lekin status 200-299 orasida bo'lmagani sababli res.ok false bo'ladi."
+    },
+    {
+      id: 7,
+      question: "Tarmoq javobining status kodini (masalan, 200, 404, 500) qaysi response xossasidan olish mumkin?",
+      options: [
+        "`res.code`",
+        "`res.status`",
+        "`res.statusCode`",
+        "`res.responseCode`"
+      ],
+      correctAnswer: 1,
+      explanation: "`res.status` xususiyati HTTP javobning raqamli status kodini saqlaydi (masalan, 200 yoki 404)."
+    },
+    {
+      id: 8,
+      question: "AbortController.abort() chaqirilganda, so'rov qaytaradigan errorning nomi qanday bo'ladi?",
+      options: [
+        "\"TimeoutError\"",
+        "\"AbortError\"",
+        "\"CancelError\"",
+        "\"RequestError\""
+      ],
+      correctAnswer: 1,
+      explanation: "Controller bekor qilinganda, fetch Promise reject bo'ladi va uning xato obyekti nomi (name) doimo `\"AbortError\"` bo'lib keladi."
+    },
+    {
+      id: 9,
+      question: "Fetch so'roviga abort signalini ulatish uchun qaysi konfiguratsiya xossasidan foydalaniladi?",
+      options: [
+        "`abort`",
+        "`signal`",
+        "`controller`",
+        "`cancel`"
+      ],
+      correctAnswer: 1,
+      explanation: "`fetch(url, { signal: controller.signal })` ko'rinishida `signal` konfiguratsiya xossasiga o'rnatiladi."
+    },
+    {
+      id: 10,
+      question: "Bitta AbortController signalini birdaniga bir nechta fetch so'rovlariga ulash mumkinmi?",
+      options: [
+        "Yo'q, faqat bittaga ulash mumkin",
+        "Ha, mumkin va controller.abort() chaqirilganda barcha ulangan so'rovlar to'xtatiladi",
+        "Ha, lekin faqat oxirgi ulangan so'rov to'xtaydi",
+        "Faqat strict rejimda ruxsat beriladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Bir nechta fetch so'rovi bitta `signal`ni kuzatishi mumkin. `controller.abort()` chaqirilganda barcha mos fetch so'rovlari bekor qilinadi."
+    },
+    {
+      id: 11,
+      question: "Fetch so'rovining default HTTP metodi qaysi?",
+      options: [
+        "`POST`",
+        "`GET`",
+        "`PUT`",
+        "`OPTIONS`"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar method konfiguratsiya parametrlari orasida ko'rsatilmagan bo'lsa, fetch avtomatik ravishda `GET` so'rovini yuboradi."
+    },
+    {
+      id: 12,
+      question: "Fetch POST so'rovida body qismiga JSON matn uzatish uchun qaysi sarlavha (Header) Content-Type qiymati sifatida berilishi kerak?",
+      options: [
+        "`text/plain`",
+        "`application/json`",
+        "`application/x-www-form-urlencoded`",
+        "`multipart/form-data`"
+      ],
+      correctAnswer: 1,
+      explanation: "Serverga JSON formatidagi ma'lumot uzatilayotganini bildirish uchun `headers: { 'Content-Type': 'application/json' }` o'rnatilishi shart."
     }
   ]
 };

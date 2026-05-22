@@ -1,102 +1,51 @@
 export const functionalProgramming = {
   id: "a14",
   title: "Functional Programming (Funksional dasturlash)",
-  theory: `## 1. KIRISH
-Funksional dasturlash - bu kodni matematik funksiyalar to'plami sifatida yozish uslubidir. Bu uslub kodni osonroq test qilish, o'qish va xatolarni kamaytirish imkonini beradi. **React** kabi zamonaviy kutubxonalar aynan shu tamoyil asosida qurilgan.
+  theory: `## 1. NEGA kerak?
+Funksional dasturlash (FP) — bu kodni matematik funksiyalar to'plami sifatida yozish uslubidir. Bu yondashuv o'zgaruvchan holatlardan (mutable state) va yashirin nojo'ya ta'sirlardan (side effects) qochish orqali xatolarni kamaytirish, kodni osonroq test qilish va parallel bajarilishga tayyorlash uchun xizmat qiladi. React, Redux va zamonaviy JS arxitekturalari aynan shu tamoyillar asosida qurilgan.
 
-## 2. TUSHUNCHA
+## 2. SODDALIK (Analogiya)
+Buni **hujjat nusxalari bilan ishlash**ga o'xshatish mumkin.
+- **Imperativ dasturlash:** Asl shartnoma matnini to'g'ridan-to'g'ri o'chirib-yozib o'zgartirish (original ma'lumotni mutatsiya qilish). Agar xatoga yo'l qo'ysangiz, asl hujjat yo'qoladi.
+- **Funksional dasturlash:** Asl shartnomaning nusxasini olasiz, o'zgarishlarni yangi varoqqa yozasiz. Asl shartnoma har doim toza va o'zgarishsiz qoladi (Immutability).
 
-### Pure Functions (Sof funksiyalar)
-Bir xil kirish qiymati uchun doim bir xil natija beradigan va tashqi dunyoga (side effects) ta'sir qilmaydigan funksiyalar.
+## 3. STRUKTURA
+Funksional dasturlashning asosiy ustunlari:
+- **Sof funksiyalar (Pure Functions):** Bir xil kirish qiymati uchun har doim bir xil natija qaytaruvchi va tashqi dunyoga hech qanday yon ta'sir ko'rsatmaydigan funksiyalar.
+- **O'zgarmaslik (Immutability):** Ma'lumotlarni o'zgartirmaslik, buning o'rniga har doim yangi nusxa yaratish.
+- **Higher-Order Functions:** Boshqa funksiyalarni parametr sifatida oladigan yoki yangi funksiya qaytaradigan funksiyalar (masalan, \`map\`, \`filter\`, \`reduce\`).
+- **Function Composition:** Kichik funksiyalarni zanjir kabi birlashtirib, murakkab funksiyalar hosil qilish (\`compose\`, \`pipe\`).
 
-### Immutability (O'zgarmaslik)
-Ma'lumotlarni o'zgartirmasdan, ularning nusxasini yaratib ishlatish. 
-**Metafora:** Hujjatning asliga o'zgartirish kiritmasdan, nusxasini olib, o'sha nusxada ishlash.
-
-### Higher-Order Functions
-Boshqa funksiyalarni argument sifatida qabul qiladigan yoki funksiya qaytaradigan funksiyalar.
-
----
-
-## 3. KOD MISOLLARI
-
-### Misol 1 — Pure vs Impure
-\`\`\`javascript
-// Impure (Yomon): Tashqi o'zgaruvchiga bog'liq
-let tax = 0.1;
-function calculateTax(price) {
-  return price * tax; 
-}
-
-// Pure (Yaxshi): Faqat kirishga bog'liq
-function calculateTaxPure(price, taxRate) {
-  return price * taxRate;
-}
-\`\`\`
-
-### Misol 2 — Immutability (O'zgarmaslik)
-\`\`\`javascript
-const original = [1, 2, 3];
-
-// Yomon: push() originalni o'zgartiradi
-// original.push(4); 
-
-// Yaxshi: Spread operator bilan nusxa olish
-const updated = [...original, 4];
-
-console.log(original); // → [1, 2, 3]
-console.log(updated);  // → [1, 2, 3, 4]
-\`\`\`
-
----
-
-## 4. VIZUAL TUSHUNTIRISH
-### Funksiya "Oqimi"
-\`\`\`
-Ma'lumot (A) ──▶ [Pure Function 1] ──▶ Ma'lumot (B) ──▶ [Pure Function 2] ──▶ Natija (C)
-\`\`\`
-Hech qachon **A** ning o'zi o'zgarmaydi!
-
----
-
-## 4. XATOLAR (Common mistakes)
-
-1. **Mutatsiya qilish:** \`push/splice\` bilan original massivni o'zgartirish.
-2. **Impure funksiya yozish:** tashqi state'ga tayanish.
-3. **Composition o'rniga ketma-ket if/else:** kod ko'payadi va test qiyinlashadi.
-4. **Katta funksiya:** kichik, qayta ishlatiladigan funksiyalar yo'qligi.
-
----
-
-## 5. MINI LOYIHA: "Data Pipe"
-**Vazifa:** Ma'lumotlarni birma-bir o'zgartiruvchi funksiyalar zanjirini yarating.
-
+## 4. AMALIYOT (Mashqlar pastda)
+Ma'lumotlarni ketma-ket qayta ishlovchi oddiy pipeline:
 \`\`\`javascript
 const double = x => x * 2;
 const addFive = x => x + 5;
 
+// Chapdan o'ngga pipe funksiyasi
 const pipe = (val, ...fns) => fns.reduce((acc, fn) => fn(acc), val);
 
-const result = pipe(10, double, addFive);
-console.log(result); // → 25 (10 * 2 + 5)
+const result = pipe(10, double, addFive); // 10 * 2 + 5 = 25
+console.log(result); // 25
 \`\`\`
 
-## 6. AMALIYOT (Mushqlar pastda)
+## 5. XATOLAR (Common mistakes)
+- **Asl ma'lumotlarni mutatsiya qilish:** O'zgarmaslikni buzib, massivga \`push\` yoki \`splice\` kabi metodlarni qo'llash. Buning o'rniga \`spread (...)\` yoki \`concat\` ishlatish lozim.
+- **Tashqi holatga (state) tayanuvchi funksiyalar yozish:** Funksiya ichida global o'zgaruvchilarni yoki tashqi obektlarni o'qish/o'zgartirish.
+- **Metodlar zanjirida sof bo'lmagan metodlarni qo'llash:** Masalan, \`reverse()\` yoki \`sort()\` massivning aslini o'zgartirib yuboradi.
 
-## 7. SAVOLLAR VA JAVOBLAR
+## 6. SAVOLLAR VA JAVOBLAR
+**1. Pure function nima?**
+Faqat kirish parametrlariga bog'liq bo'lgan va hech qanday tashqi holatni o'zgartirmaydigan funksiya.
 
-**1. Pure function nima?**Faqat kirishga bog'liq, tashqi holatni o'zgartirmaydi.
-**2. Immutability nima uchun kerak?**Predictable kod va yashirin bug'larni kamaytiradi.
-**3. Side effect nima?**Funksiya tashqi state'ni o'zgartirishi yoki I/O qilishidir.
-**4. Higher-order function nima?**Funksiyani parametr sifatida oladi yoki funksiya qaytaradi.
-**5. map/filter/reduce qachon ishlatiladi?**Transform, saralash va agregatsiya uchun.
-**6. Currying nima?**Funksiyani bosqichma-bosqich chaqirish.
-**7. Partial application nima?**Argumentlarning bir qismini oldindan berib qo'yish.
-**8. Compose va Pipe farqi?**Compose o'ngdan chapga, Pipe chapdan o'ngga.
-**9. Referential transparency nima?**Bir xil kirishga bir xil natija (side effect yo'q).
-**10. Immutable update qanday qilinadi?**Spread/concat bilan nusxa yaratiladi.
-**11. Pure funksiya testga nega qulay?**Setup kam, natija deterministic.
-**12. FP qayerda foydali?**UI, data transform, pipeline va testlar.
+**2. Immutability nima uchun kerak?**
+Kodni prognoz qilinadigan (predictable) qilish va xotiradagi yashirin xatolarni kamaytirish uchun.
+
+**3. Side effect nima?**
+Funksiyaning o'z tanasidan tashqaridagi holatlarga ta'sir ko'rsatishi (masalan, tarmoq so'rovi, konsol log, fayl o'qish yoki global o'zgaruvchini o'zgartirish).
+
+**4. Higher-order function nima?**
+Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan funksiya.
 `,
   exercises: [
     {
@@ -256,6 +205,90 @@ console.log(result); // → 25 (10 * 2 + 5)
       ],
       correctAnswer: 1,
       explanation: "Kompozitsiya funksiyalarni birlashtirish usuli bo'lib, uning yordamida `f(g(x))` kabi zanjirli ishlarni soddalashtirish uchun `compose(f, g)(x)` ko'rinishiga keltiriladi."
+    },
+    {
+      id: 6,
+      question: "JavaScriptda Funksiyalar zanjirini chapdan o'ngga qarab bajaradigan funksiya nima deb ataladi?",
+      options: [
+        "`compose`",
+        "`pipe`",
+        "`map`",
+        "`reducer`"
+      ],
+      correctAnswer: 1,
+      explanation: "`pipe` funksiyasi argumentlarni chapdan o'ngga qarab bajaradi, ya'ni birinchi funksiyaning natijasini ikkinchisiga uzatadi. `compose` esa o'ngdan chapga ishlaydi."
+    },
+    {
+      id: 7,
+      question: "`compose` va `pipe` funksiyalari o'rtasidagi asosiy farq nimada?",
+      options: [
+        "`compose` sinxron, `pipe` esa asinxron ishlaydi",
+        "`compose` o'ngdan chapga (right-to-left), `pipe` esa chapdan o'ngga (left-to-right) funksiyalarni bajaradi",
+        "`pipe` ko'proq xotira sarflaydi",
+        "Hech qanday farqi yo'q, ikkalasi ham bir xil ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Matematik kompozitsiya an'anaga ko'ra o'ngdan chapga hisoblanadi (f o g)(x) = f(g(x)), shuning uchun `compose` funksiyalar ro'yxatini o'ngdan chapga chaqiradi. Dasturchilarga qulay bo'lishi uchun esa `pipe` chapdan o'ngga bajaradi."
+    },
+    {
+      id: 8,
+      question: "Qimmat hisob-kitoblarga ega funksiya natijasini kiritilgan argumentlar kaliti bo'yicha keshlab, keyingi chaqiriqlarda qayta hisoblamaslik texnikasi nima deb ataladi?",
+      options: [
+        "Currying",
+        "Memoization",
+        "Partial Application",
+        "Recursion"
+      ],
+      correctAnswer: 1,
+      explanation: "Memoization (keshlash) — bu pure funksiyalar natijasini tezlashtirish uchun foydalaniladigan optimal texnika bo'lib, argumentlar bo'yicha javobni keshda saqlaydi va bir xil argumentlar kelganda darhol javobni qaytaradi."
+    },
+    {
+      id: 9,
+      question: "Quyidagilardan qaysi biri yon ta'sirga (side effect) yorqin misol bo'la oladi?",
+      options: [
+        "Global o'zgaruvchini funksiya ichida o'zgartirish",
+        "Konsolga ma'lumot chiqarish (console.log)",
+        "API orqali tarmoq so'rovi yuborish",
+        "Barcha javoblar to'g'ri"
+      ],
+      correctAnswer: 3,
+      explanation: "Funksiyaning o'zidan tashqaridagi muhitni har qanday tarzda o'zgartirishi yoki unga murojaat qilishi (I/O, console, network, global variable modification) side-effect hisoblanadi."
+    },
+    {
+      id: 10,
+      question: "JavaScriptda funksiyalar 'First-Class Citizens' (Birinchi darajali fuqarolar) deyilganda nima tushuniladi?",
+      options: [
+        "Funksiyalar har doim birinchi bo'lib yuklanadi",
+        "Funksiyalarni boshqa har qanday qiymat kabi o'zgaruvchiga yuklash, argument sifatida uzatish yoki boshqa funksiyadan qaytarish mumkin",
+        "Ular faqat global scope-da ishlaydi",
+        "Ular strict rejimda ishlashga majbur"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript funksiyalari ob'ektlar kabi birinchi darajali qiymatdir, ya'ni ularni o'zgaruvchilarga yuklash, callback sifatida ishlatish va boshqa funksiyalardan qaytarish mumkin."
+    },
+    {
+      id: 11,
+      question: "Quyidagi massiv metodlaridan qaysi biri original massivni o'zgartirgani (mutatsiya qilgani) uchun FP qoidalariga ko'ra pure metod hisoblanmaydi?",
+      options: [
+        "`.map()`",
+        "`.filter()`",
+        "`.reverse()`",
+        "`.concat()`"
+      ],
+      correctAnswer: 2,
+      explanation: "`.reverse()` metodi mavjud massivning elementlarini joyida teskari qilib tartiblaydi va massivning o'zini o'zgartiradi. Qolgan metodlar esa har doim yangi massiv qaytaradi."
+    },
+    {
+      id: 12,
+      question: '"Partial Application" (Qisman qo\'llash) nima degani?',
+      options: [
+        "Funksiyani faqat yarmigacha bajarish va keyin to'xtatish",
+        "Ko'p parametrli funksiyaga uning ba'zi argumentlarini oldindan bog'lab, qolgan argumentlarni qabul qiladigan yangi funksiya hosil qilish",
+        "Faqat shartli bajariladigan funksiya",
+        "Hech qanday argument olmaydigan funksiya"
+      ],
+      correctAnswer: 1,
+      explanation: "Partial application — ko'p argumentli funksiyaning ma'lum bir qism argumentlarini oldindan aniqlab (masalan, `.bind(null, arg1)` yordamida), kamroq argument oladigan funksiyani qaytarish texnikasidir."
     }
   ]
 };

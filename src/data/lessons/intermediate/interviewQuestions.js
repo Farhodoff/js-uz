@@ -1,123 +1,152 @@
 export const interviewQuestionsIntermediate = {
   id: "q2",
   title: "🟡 Interview Savollar (O'rta daraja)",
-  theory: `## Kirish
-O'rta darajadagi intervyularda asosan JavaScriptning ichki ishlash mexanizmlari, ES6+ imkoniyatlari va asinxronlik haqida so'raladi.
+  theory: `## 1. NEGA kerak?
+O'rta (Intermediate) darajadagi intervyu savollari sizning JavaScript-ni shunchaki ishlatishni emas, balki uning ichki ishlash mexanizmlari (scoping, references, memory, async, ES6+ xususiyatlari) qanday ishlashini bilishingizni tekshiradi. Bu savollar sizning kod sifatini va arxitekturasini tushunishingizni aniqlashga xizmat qiladi.
 
----
+## 2. SODDALIK (Analogiya)
+Buni **avtomobil haydash va uni ta'mirlash** o'rtasidagi farqga o'xshatish mumkin.
+- **Boshlang'ich dasturchi:** Rulni buradi, gaz va tormozni bosadi (kod yozadi).
+- **O'rta darajadagi dasturchi:** Dvigatel kapotini ochib, u yerda nimalar borligini, qanday ishlashini va biror qism buzilsa, qanday tuzatishni biladi (kod qanday ishlashini tushunadi).
 
-## NAZARIY SAVOLLAR
+## 3. STRUKTURA
+O'rta darajadagi JavaScript suhbatlarida asosan quyidagi mavzularda savollar beriladi:
+- **Kontekst va this:** Arrow funksiyalar va oddiy funksiyalar farqlari, binding usullari (\`call\`, \`apply\`, \`bind\`).
+- **ES6+ yangiliklari:** Destructuring, Rest/Spread operatorlari, Template Literals, default qiymatlar.
+- **Havola va Qiymat (Reference vs Value):** Obyekt va massivlar bilan ishlashda xotira havolalari, shallow vs deep cloning.
+- **Asosiy asinxronlik:** Callback va oddiy Promiselarni tushunish.
 
-### 1. Arrow function va oddiy function farqi nima? ⭐
-**Qiyinlik:** 🟡 O'rta | **Mavzu:** Funksiyalar
-
-**📖 Javob**
-
-**Asosiy farqlar:**
-1. **this:** Arrow funksiyalarda o'zining \`this\` konteksti yo'q. U tashqi muhitdan \`this\` ni oladi.
-2. **arguments:** Arrow funksiyalarda \`arguments\` obyekti yo'q.
-3. **constructor:** Arrow funksiyalarni \`new\` kalit so'zi bilan ishlatib bo'lmaydi.
-
-**Kod misoli:**
+## 4. AMALIYOT (Mashqlar pastda)
+Suhbatlarda ko'p so'raladigan amaliy topshiriqlardan biri — massivdan takrorlanuvchi elementlarni o'chirish yoki obyektlarni toza nusxalash:
 \`\`\`javascript
-const obj = {
-  name: "Ali",
-  sayHi: function() { console.log(this.name); },
-  sayHiArrow: () => { console.log(this.name); }
-};
-obj.sayHi(); // → "Ali"
-obj.sayHiArrow(); // → undefined
+// Shallow copy (yuzaki nusxa) spread operatori yordamida:
+const original = { name: "Ali", skills: ["JS"] };
+const shallowCopy = { ...original };
+
+// Deep copy (chuqur nusxa) JSON yordamida (sodda usul):
+const deepCopy = JSON.parse(JSON.stringify(original));
 \`\`\`
 
+## 5. XATOLAR (Common mistakes)
+- **Obyekt referensini unutish:** \`let a = {}; let b = a; b.x = 10;\` qilinganda \`a.x\` ham 10 bo'lishini tushunmaslik.
+- **typeof operatorining "tuzoqlari":** \`typeof null\` -> \`"object"\` ekanligini, hamda \`typeof NaN\` -> \`"number"\` ekanligini hisobga olmaslik.
+- **Arrow function ichida this ishlatish:** Uning shaxsiy \`this\`i yo'qligi sababli metod yozishda uni ehtiyotkorlik bilan qo'llash lozim.
 
-### 2. Destructuring nima? ⭐
-**Qiyinlik:** 🟢 Oson | **Mavzu:** ES6+
+## 6. SAVOLLAR VA JAVOBLAR
+**1. Arrow function va oddiy function farqi nima?**
+Arrow funksiyalarda o'zining \`this\`, \`arguments\` va konstruktori bo'lmaydi. Ular \`this\`ni lexical scope-dan (tashqaridan) oladi.
 
-**📖 Javob**
+**2. Destructuring nima?**
+Massiv yoki obyekt ichidagi elementlarni alohida o'zgaruvchilarga tezkor ajratib olish sintaksisi.
 
-Massiv yoki obyekt ichidagi qiymatlarni alohida o'zgaruvchilarga osonlik bilan ajratib olish usuli.
+**3. Spread va Rest operatorlarining farqi nimada?**
+Spread (\`...\`) yig'ilgan ma'lumotlarni alohida bo'laklarga yoyib yuboradi. Rest (\`...\`) esa alohida argumentlarni bitta massivga yig'ib oladi.
 
-\`\`\`javascript
-const user = { id: 1, ism: "Vali" };
-const { ism } = user;
-console.log(ism); // → "Vali"
-\`\`\`
+**4. typeof null natijasi nima uchun 'object'?**
+Bu JavaScript tilining ilk versiyalaridagi xatolik (bug) bo'lib, keyinchalik orqaga moslikni buzmaslik uchun o'zgartirilmagan.
 
+**5. NaN nima va uning turi nima?**
+NaN - "Not a Number" (Son emas), turi esa \`"number"\` hisoblanadi. U noto'g'ri matematik amallar natijasida hosil bo'ladi.
 
-### 3. Spread va Rest operatorlari farqi? ⭐
-**Qiyinlik:** 🟡 O'rta | **Mavzu:** ES6+
-
-**📖 Javob**
-
-**Spread (...):** To'plamni (massiv/obyekt) alohida elementlarga yoyib yuboradi.
-**Rest (...):** Alohida elementlarni bitta to'plamga (massivga) yig'ib oladi.
-
-\`\`\`javascript
-// Spread
-const arr = [1, 2, 3];
-const newArr = [...arr, 4]; // [1, 2, 3, 4]
-
-// Rest
-function sum(...numbers) {
-  return numbers.reduce((a, b) => a + b);
-}
-\`\`\`
-
-
----
-
-## AMALIY SAVOLLAR
-
-### 1. Massivdagi dublikatlarni o'chirish
-**Topshiriq:** \`[1, 2, 2, 3, 4, 4]\` massividan takrorlanuvchi sonlarni o'chiring.
-
-**✅ Yechim**
-
-\`\`\`javascript
-// Set yordamida eng oson usul
-const arr = [1, 2, 2, 3, 4, 4];
-const unique = [...new Set(arr)];
-console.log(unique); // → [1, 2, 3, 4]
-\`\`\`
-
-
-### 2. Obyektni chuqur klonlash (Deep Clone)
-**Topshiriq:** Obyekt nusxasini shunday olingki, ichki obyektlar ham yangi manzilda bo'lsin.
-
-**✅ Yechim**
-
-\`\`\`javascript
-const original = { a: 1, b: { c: 2 } };
-const clone = JSON.parse(JSON.stringify(original));
-\`\`\`
-
-
----
-
-## BU KOD NIMA CHIQARADI?
-
-### Savol #1: Object references
-\`\`\`javascript
-let a = { name: "Ali" };
-let b = a;
-b.name = "Vali";
-console.log(a.name);
-\`\`\`
-- A) Ali
-- B) Vali ✅
-- C) undefined
-- D) ReferenceError
-
-**Sababi:** Obyektlar referens orqali uzatiladi. \`b = a\` qilinganda ikkala o'zgaruvchi xotiradagi bitta joyga ishora qiladi.
+**6. == va === operatorlari farqi nima?**
+\`==\` (kuchsiz tenglik) ma'lumot turlarini avtomatik konvertatsiya qilib solishtiradi. \`===\` (qat'iy tenglik) esa turlarini o'zgartirmasdan, qiymat va turini birdek tekshiradi.
 `,
   exercises: [
     {
       id: 1,
       title: "Unique Elements",
       instruction: "Massivdan takrorlanuvchi elementlarni Set yordamida o'chiring.",
-      startingCode: "const data = [10, 20, 10, 30, 20];\n// Unique massiv yarating\n",
-      hint: "[...new Set(data)]",
-      test: "if (logs.join(',').includes('10,20,30')) return null; return 'Faqat takrorlanmas elementlar qolishi kerak';"
+      startingCode: "const data = [10, 20, 10, 30, 20];\n// Unique massiv yarating\nconst unique = [];\nconsole.log(unique);",
+      hint: "const unique = [...new Set(data)];",
+      test: "if (code.includes('Set') && code.includes('...')) return null; return 'Set va spread operatoridan foydalaning';"
+    },
+    {
+      id: 2,
+      title: "Shallow Copy",
+      instruction: "Spread operatoridan foydalanib 'user' obyektining nusxasini 'clone' o'zgaruvchisiga oling.",
+      startingCode: "const user = { name: 'Ali', age: 25 };\n// user nusxasini oling\nconst clone = {};",
+      hint: "const clone = { ...user };",
+      test: "if (code.includes('...') && code.includes('user')) return null; return 'Spread operatorini user bilan ishlating';"
+    },
+    {
+      id: 3,
+      title: "Sum with Rest",
+      instruction: "Rest parameter (...args) yordamida barcha yuborilgan sonlar yig'indisini qaytaradigan 'sumAll' funksiyasini yozing.",
+      startingCode: "function sumAll(...numbers) {\n  // Kodni yozing\n}",
+      hint: "return numbers.reduce((acc, curr) => acc + curr, 0);",
+      test: "if (code.includes('reduce') || code.includes('sumAll')) return null; return 'numbers.reduce yordamida yig\\'indini hisoblang';"
+    },
+    {
+      id: 4,
+      title: "Array Destructuring",
+      instruction: "Destructuring yordamida a va b o'zgaruvchilar qiymatini almashtiring (swap).",
+      startingCode: "let a = 1, b = 2;\n// Qiymatlarni almashtiring\n",
+      hint: "[a, b] = [b, a];",
+      test: "if (code.includes('[a, b]') || code.includes('[b, a]')) return null; return 'Destructuring orqali almashtiring';"
+    },
+    {
+      id: 5,
+      title: "Object Property Check",
+      instruction: "'in' operatori yordamida 'car' obyektida 'speed' xossasi borligini aniqlovchi 'hasSpeed' o'zgaruvchisini yarating.",
+      startingCode: "const car = { brand: 'BMW', color: 'black' };\nconst hasSpeed = false;",
+      hint: "const hasSpeed = 'speed' in car;",
+      test: "if (code.includes('in') && code.includes('car')) return null; return 'in operatori orqali car obyektini tekshiring';"
+    },
+    {
+      id: 6,
+      title: "Simple Closure",
+      instruction: "Har safar chaqirilganda 1 ga oshadigan counter funksiyasini yaratuvchi 'createCounter' funksiyasini yozing.",
+      startingCode: "function createCounter() {\n  let count = 0;\n  // counter funksiyasini qaytaring\n}",
+      hint: "return function() { count++; return count; };",
+      test: "if (code.includes('count++') || code.includes('++count')) return null; return 'Closure yordamida count-ni oshiruvchi ichki funksiyani qaytaring';"
+    },
+    {
+      id: 7,
+      title: "Filter Even Numbers",
+      instruction: "Filter metodi yordamida massivdagi juft sonlarni ajratib oling.",
+      startingCode: "const numbers = [1, 2, 3, 4, 5, 6];\nconst evens = [];",
+      hint: "const evens = numbers.filter(n => n % 2 === 0);",
+      test: "if (code.includes('filter') && code.includes('% 2')) return null; return 'filter metodidan foydalaning';"
+    },
+    {
+      id: 8,
+      title: "Array to Object",
+      instruction: "Object.fromEntries yordamida kalit-qiymat juftligi ko'rinishidagi massivni obyektga o'giring.",
+      startingCode: "const pairs = [['name', 'Ali'], ['role', 'admin']];\nconst obj = {};",
+      hint: "const obj = Object.fromEntries(pairs);",
+      test: "if (code.includes('Object.fromEntries')) return null; return 'Object.fromEntries metodidan foydalaning';"
+    },
+    {
+      id: 9,
+      title: "Property Renaming",
+      instruction: "Destructuring yordamida 'user' obyektining 'name' xossasini 'username' deb qayta nomlab oling.",
+      startingCode: "const user = { name: 'Ali', role: 'admin' };\n// username o'zgaruvchisiga oling\n",
+      hint: "const { name: username } = user;",
+      test: "if (code.includes('name:username') || code.includes('name: username')) return null; return 'name xossasini username deb nomlang';"
+    },
+    {
+      id: 10,
+      title: "Check All Positive",
+      instruction: "every metodi yordamida massivdagi barcha sonlar musbat (n > 0) ekanligini aniqlang va natijani 'allPositive'ga yuklang.",
+      startingCode: "const nums = [2, 5, 8, -1, 10];\nconst allPositive = false;",
+      hint: "const allPositive = nums.every(n => n > 0);",
+      test: "if (code.includes('every') && code.includes('> 0')) return null; return 'every metodidan foydalaning';"
+    },
+    {
+      id: 11,
+      title: "Merge Objects",
+      instruction: "Spread operatori yordamida 'obj1' va 'obj2' obyektlarini 'merged' obyektiga birlashtiring.",
+      startingCode: "const obj1 = { a: 1 };\nconst obj2 = { b: 2 };\nconst merged = {};",
+      hint: "const merged = { ...obj1, ...obj2 };",
+      test: "if (code.includes('...') && code.includes('obj1') && code.includes('obj2')) return null; return 'Ikkala obyektni spread yordamida birlashtiring';"
+    },
+    {
+      id: 12,
+      title: "Find Object in Array",
+      instruction: "find() metodi yordamida 'users' massividan id si 3 bo'lgan foydalanuvchini toping.",
+      startingCode: "const users = [{ id: 1 }, { id: 3 }, { id: 5 }];\nconst target = null;",
+      hint: "const target = users.find(u => u.id === 3);",
+      test: "if (code.includes('find') && code.includes('id')) return null; return 'find metodidan foydalanib id si 3 bo\\'lgan obyektni toping';"
     }
   ],
   quizzes: [
@@ -155,6 +184,80 @@ console.log(a.name);
       options: ["0 1 2", "3 3 3", "2 2 2", "undefined undefined undefined"],
       correctAnswer: 1,
       explanation: "`var` o'zgaruvchisi function/global scopega ega. `setTimeout` asinxron bo'lgani uchun u ishlaguncha loop tugab, `i` ning qiymati `3` bo'lib ulguradi va barcha callbacklar `3` ni chiqaradi. Agar `let` ishlatilganda, har bir qadam uchun yangi scope yaratilib, `0 1 2` chiqardi."
+    },
+    {
+      id: 6,
+      question: "JavaScriptda `==` (kuchsiz tenglik) va `===` (qat'iy tenglik) operatorlari o'rtasidagi farq nima?",
+      options: [
+        "`==` faqat sonlarni, `===` esa faqat stringlarni solishtiradi",
+        "`==` solishtirishdan oldin ma'lumot turlarini konvertatsiya qiladi, `===` esa turlarni o'zgartirmasdan solishtiradi",
+        "`===` tezroq ishlaydi",
+        "Hech qanday farqi yo'q, ikkalasi ham bir xil solishtiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "`==` taqqoslashda turlarni avtomatik tarzda majburiy moslashtiradi (type coercion). `===` esa ham qiymat, ham uning ma'lumot turini qat'iy tengligini tekshiradi."
+    },
+    {
+      id: 7,
+      question: "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconsole.log(typeof NaN);\n```",
+      options: ["\"number\"", "\"NaN\"", "\"undefined\"", "\"object\""],
+      correctAnswer: 0,
+      explanation: "NaN — 'Not a Number' (son emas) degan ma'noni bildirsa-da, u JavaScript tip tizimida sonli qiymat hisoblanadi, shuning uchun uning turi `\"number\"` chiqadi."
+    },
+    {
+      id: 8,
+      question: "JavaScriptda `[1, 2] + [3, 4]` amali bajarilganda nima natija qaytadi?",
+      options: [
+        "[1, 2, 3, 4]",
+        "\"1,23,4\"",
+        "TypeError",
+        "\"1,2,3,4\""
+      ],
+      correctAnswer: 3,
+      explanation: "JavaScriptda massivlarni qo'shish operatori (`+`) ishlatilganda, massivlar avval stringga o'giriladi (`\"1,2\"` va `\"3,4\"`), keyin esa ular birlashtiriladi: `\"1,23,4\"`."
+    },
+    {
+      id: 9,
+      question: "Agar `Array.prototype.map()` metodining callback funksiyasi hech qanday qiymat qaytarmasa (yani undefined bo'lsa), map metodining qaytargan massivida nimalar bo'ladi?",
+      options: [
+        "Bo'sh massiv qaytadi",
+        "Barcha elementlar o'zgarishsiz qoladi",
+        "Har bir element uchun `undefined` bo'lgan yangi massiv qaytadi",
+        "Xatolik yuz beradi (TypeError)"
+      ],
+      correctAnswer: 2,
+      explanation: "`map()` metodi har doim kiruvchi massiv bilan bir xil uzunlikdagi massiv qaytaradi. Har bir element callback funksiyasi qaytargan qiymatga teng bo'ladi, agar callback hech narsa qaytarmasa, u `undefined` qaytaradi, mos ravishda natijaviy massiv elementlari `undefined`dan iborat bo'ladi."
+    },
+    {
+      id: 10,
+      question: "Quyidagi kod strict rejimda ('use strict') ishga tushirilganda nima sodir bo'ladi?\n```javascript\nconst obj = { a: 1 };\nObject.freeze(obj);\nobj.a = 2;\n```",
+      options: [
+        "Natijasiz o'tib ketadi va obj.a o'zgarmasdan qoladi",
+        "TypeError xatoligi yuz beradi",
+        "obj.a ning qiymati 2 ga o'zgaradi",
+        "SyntaxError yuz beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "`Object.freeze()` obyektni butunlay muzlatib, unga yangi xossa qo'shish, o'chirish yoki qiymatini o'zgartirishni taqiqlaydi. Strict rejimda muzlatilgan obyektni o'zgartirishga urinish `TypeError` xatoligini keltirib chiqaradi."
+    },
+    {
+      id: 11,
+      question: "Quyidagi ifodaning natijasini toping:\n```javascript\nconsole.log(1 + \"2\" + 3);\n```",
+      options: ["6", "\"123\"", "\"15\"", "\"6\""],
+      correctAnswer: 1,
+      explanation: "Amallar chapdan o'ngga bajariladi. Avval `1 + \"2\"` string kontatenatsiyasi bajarilib `\"12\"` hosil bo'ladi, keyin unga `3` qo'shiladi va yakuniy natija `\"123\"` string bo'ladi."
+    },
+    {
+      id: 12,
+      question: "`null` va `undefined` orasidagi asosiy farq nima?",
+      options: [
+        "Ikkalasi mutlaqo bir xil narsani anglatadi",
+        "`undefined` o'zgaruvchining e'lon qilingani ammo qiymat berilmaganligini anglatadi, `null` esa qasddan bo'sh qoldirilgan qiymatni bildiradi",
+        "`null` sonli qiymat, `undefined` esa string hisoblanadi",
+        "`null` turi `undefined`, `undefined` turi esa `null`dir"
+      ],
+      correctAnswer: 1,
+      explanation: "`undefined` — tizim yoki JavaScript tomonidan qiymat berilmaganligini ko'rsatuvchi default holat. `null` esa dasturchi tomonidan obyekt yoki qiymat yo'qligini qasddan ko'rsatish uchun beriladigan qiymatdir."
     }
   ]
 };
