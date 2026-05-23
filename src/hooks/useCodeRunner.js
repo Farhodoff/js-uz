@@ -1,5 +1,18 @@
 import { useState, useCallback, useRef } from 'react';
 
+export function injectLoopGuard(code) {
+  let loopId = 0;
+  return code
+    .replace(/(for|while)\s*\(([^)]*)\)\s*\{/g, (match, type, cond) => {
+      loopId++;
+      return `${type}(${cond}){ if(++__loop_guards[${loopId}] > 2000) throw new Error("Cheksiz sikl aniqlandi!"); `;
+    })
+    .replace(/do\s*\{/g, () => {
+      loopId++;
+      return `do { if(++__loop_guards[loopId] > 2000) throw new Error("Cheksiz sikl aniqlandi!"); `;
+    });
+}
+
 export function useCodeRunner() {
   const [output, setOutput] = useState('');
   const origConsole = useRef({ log: console.log, error: console.error });
@@ -17,16 +30,17 @@ export function useCodeRunner() {
     };
 
     try {
-      // Foydalanuvchi kodi va test kodini bitta funksiya ichiga birlashtiramiz.
-      // Bu foydalanuvchi yaratgan funksiyalar test uchun ko'rinadigan bo'lishini ta'minlaydi.
       const currentExercise = activeLesson?.exercises?.[currentExerciseIndex];
       const testCode = currentExercise?.test || 'return null;';
 
       const combinedCode = `
         "use strict";
+        const __loop_guards = new Proxy({}, {
+          get: (target, name) => target[name] || 0
+        });
         try {
-          // Foydalanuvchi kodi
-          ${code}
+          // Foydalanuvchi kodi (loop guard bilan)
+          ${injectLoopGuard(code)}
           
           // Testni ishga tushirish (IIFE ichida)
           return (function(code, logs) {

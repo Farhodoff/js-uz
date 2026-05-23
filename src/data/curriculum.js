@@ -80,6 +80,24 @@ import { serverSentEvents } from "./lessons/advanced/serverSentEvents";
 import { webWorkers } from "./lessons/advanced/webWorkers";
 import { serviceWorkersPwa } from "./lessons/advanced/serviceWorkersPwa";
 
+import { bigO } from "./lessons/algorithms/bigO";
+import { linkedLists } from "./lessons/algorithms/linkedLists";
+import { stacksQueues } from "./lessons/algorithms/stacksQueues";
+import { binarySearchTree } from "./lessons/algorithms/binarySearchTree";
+import { sortingSearching } from "./lessons/algorithms/sortingSearching";
+import { leetcodeTop } from "./lessons/algorithms/leetcodeTop";
+
+import { webSecurity } from "./lessons/system-design/webSecurity";
+import { cachingScalability } from "./lessons/system-design/cachingScalability";
+import { renderingArchitectures } from "./lessons/system-design/renderingArchitectures";
+
+import { reactArchitecture } from "./lessons/ecosystem/reactArchitecture";
+import { nodeArchitecture } from "./lessons/ecosystem/nodeArchitecture";
+
+import { starMethod } from "./lessons/soft-skills/starMethod";
+import { behavioralQuestions } from "./lessons/soft-skills/behavioralQuestions";
+import { resumeOptimization } from "./lessons/soft-skills/resumeOptimization";
+
 import { todoList } from "./lessons/projects/todoList";
 import { weatherApp } from "./lessons/projects/weatherApp";
 
@@ -102,6 +120,30 @@ export const curriculum = {
     icon: "🔴",
     lessons: [interviewQuestionsAdvanced, securityLesson, unitTesting, metaprogramming, advancedFetch, closuresDeepDive, callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, prototypesLesson, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson, symbolsGenerators, debounceThrottle, jsPitfalls, problemSolving, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa]
   },
+  algorithms: {
+    label: "Algoritmlar",
+    color: "#6a73c9",
+    icon: "📊",
+    lessons: [bigO, linkedLists, stacksQueues, binarySearchTree, sortingSearching, leetcodeTop]
+  },
+  systemDesign: {
+    label: "Tizimli Dizayn",
+    color: "#c96ac8",
+    icon: "🌐",
+    lessons: [webSecurity, cachingScalability, renderingArchitectures]
+  },
+  ecosystem: {
+    label: "Ekotizim (React & Node.js)",
+    color: "#6ac98e",
+    icon: "⚙️",
+    lessons: [reactArchitecture, nodeArchitecture]
+  },
+  softSkills: {
+    label: "Suhbat madaniyati",
+    color: "#a86ac9",
+    icon: "💬",
+    lessons: [starMethod, behavioralQuestions, resumeOptimization]
+  },
   projects: {
     label: "Loyihalar",
     color: "#7a9e7e",
@@ -110,4 +152,5 @@ export const curriculum = {
   }
 };
 
-export const SECTIONS = ["beginner", "intermediate", "advanced", "projects"];
+export const SECTIONS = ["beginner", "intermediate", "advanced", "algorithms", "systemDesign", "ecosystem", "softSkills", "projects"];
+
