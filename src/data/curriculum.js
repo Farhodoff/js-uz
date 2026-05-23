@@ -108,6 +108,13 @@ import { advancedTypes } from "./lessons/typescript/advancedTypes";
 import { todoList } from "./lessons/projects/todoList";
 import { weatherApp } from "./lessons/projects/weatherApp";
 
+import { sqlBasics } from "./lessons/sql/sqlBasics";
+import { sqlFiltering } from "./lessons/sql/sqlFiltering";
+import { sqlFunctions } from "./lessons/sql/sqlFunctions";
+import { sqlJoins } from "./lessons/sql/sqlJoins";
+import { sqlModifications } from "./lessons/sql/sqlModifications";
+import { sqlSubqueries } from "./lessons/sql/sqlSubqueries";
+
 export const curriculum = {
   beginner: {
     label: "Boshlang'ich",
@@ -162,8 +169,14 @@ export const curriculum = {
     color: "#7a9e7e",
     icon: "🏗️",
     lessons: [todoList, weatherApp]
+  },
+  sql: {
+    label: "SQL va Bazalar",
+    color: "#e67e22",
+    icon: "🗄️",
+    lessons: [sqlBasics, sqlFiltering, sqlFunctions, sqlJoins, sqlModifications, sqlSubqueries]
   }
 };
 
-export const SECTIONS = ["beginner", "intermediate", "advanced", "algorithms", "systemDesign", "ecosystem", "typescript", "softSkills", "projects"];
+export const SECTIONS = ["beginner", "intermediate", "advanced", "typescript", "algorithms", "sql", "systemDesign", "ecosystem", "softSkills", "projects"];
 

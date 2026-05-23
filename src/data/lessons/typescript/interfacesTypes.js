@@ -1,8 +1,9 @@
 export const interfacesTypes = {
   id: "interfacesTypes",
   title: "Interfaces va Type Aliases",
+  language: "typescript",
   theory: `## 1. NEGA kerak?
-TypeScript-da murakkab ma'lumotlar tuzilmalarini (obyektlar, funksiyalar) tavsiflash uchun asosan ikki xil usuldan foydalaniladi: **Interfaces** (Interfeyslar) va **Type Aliases** (Tip taxalluslari).
+Hozirgi kunda TypeScript-da murakkab ma'lumotlar tuzilmalarini (obyektlar, funksiyalar) tavsiflash uchun asosan ikki xil usuldan foydalaniladi: **Interfaces** (Interfeyslar) va **Type Aliases** (Tip taxalluslari).
 Katta dasturlarda obyektlarning qanday xususiyat va metodlarga ega bo'lishini oldindan belgilab qo'yish juda muhimdir. Bu kodda tartibni ta'minlaydi va noto'g'ri maydonlar yozilishini oldini oladi. Ikkala usul o'xshash vazifani bajarsa-da, ularning o'ziga xos farqlari va ishlatilish o'rinlari bor.
 
 ## 2. SODDALIK (Analogiya)
@@ -28,7 +29,7 @@ type Point = {
 \`\`\`
 
 ### Asosiy Farqlar:
-1. **Declaration Merging:** Bir xil nomli ikkita interfeys e'lon qilinsa, ular avtomatik birlashadi. Type Alias-da esa bir xil nomli tip yaratish xatoga olib keladi.
+1. **Declaration Merging:** Bir xil nomli ikkita interfeys e'lon qilinsa, mereka avtomatik birlashadi. Type Alias-da esa bir xil nomli tip yaratish xatoga olib keladi.
 2. **Kengaytirish (Extends & Intersection):** Interfeyslar \`extends\` orqali, Tiplar esa \`&\` (intersection) operatori yordamida kengaytiriladi:
 \`\`\`typescript
 interface Employee extends User {
@@ -43,13 +44,13 @@ type Developer = User & {
 ## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
-1. **Readonly xossani o'zgartirishga harakat qilish:** \`readonly\` kalit so'zi qo'yilgan maydonlarni faqat obyekt yaratish paytida sozlash mumkin, keyinchalik ularga yangi qiymat berish kompilyatsiya xatosini beradi.
+1. **Readonly xossani o'zgartirishga harakat qilish:** \`readonly\` kalit so'zi qo'yilgan maydonlarni faqat obyekt yaratish paytida sozlash mumkin, keyinchalik ularga yeni qiymat berish kompilyatsiya xatosini beradi.
 2. **Ixtiyoriy (optional) maydonlarni tekshirmaslik:** \`age?: number\` deb e'lon qilingan maydondan foydalanishdan oldin uning mavjudligini tekshirish lozim, aks holda undefined ustida ishlash xatoga olib keladi.
 3. **Union tiplarni Interface bilan yaratishga urinish:** Interfeyslar faqat obyekt shaklini tavsiflashi mumkin. Agar sizga \`type Status = "active" | "inactive"\` kabi union (birlashma) tip kerak bo'lsa, faqat Type Alias ishlatilishi shart.
 
 ## 6. SAVOLLAR VA JAVOBLAR
 **1. Interface va Type Alias orasidagi eng katta farq nima?**
-Interface-lar deklaratsiyalarni avtomatik birlashtira oladi (Declaration Merging), Type Alias-lar esa birlashtira olmaydi va union kabi sodda tiplarni ham saqlay oladi.
+Interface-lar deklaratsiyalarni avtomatik birlashira oladi (Declaration Merging), Type Alias-lar esa birlashira olmaydi va union kabi sodda tiplarni ham saqlay oladi.
 
 **2. Optional property (ixtiyoriy xossa) nima?**
 Obyektda bo'lishi ixtiyoriy bo'lgan va so'roq belgisi (\`?\`) bilan belgilanadigan maydon (qiymati berilmasa, u \`undefined\` bo'ladi).
@@ -89,7 +90,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 1,
       title: "Interface simulyatsiyasi",
       instruction: "Name va Age xossalariga ega bo'lgan foydalanuvchi obyektini yaratadigan `createUser(name, age)` funksiyasini yozing.",
-      startingCode: "function createUser(name, age) {\n  // Obyekt qaytaring\n}",
+      startingCode: "interface User {\n  name: string;\n  age: number;\n}\n\nfunction createUser(name: string, age: number): User {\n  // Obyekt qaytaring\n}",
       hint: "return { name, age };",
       test: "if (typeof createUser !== 'function') return 'createUser topilmadi'; const user = createUser('Ali', 25); if(user.name !== 'Ali' || user.age !== 25) return 'Obyekt xossalari xato'; return null;"
     },
@@ -97,7 +98,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 2,
       title: "Optional Property",
       instruction: "Book obyekti uchun `title` majburiy va `pages` ixtiyoriy (agar berilmasa `undefined`) bo'lsin. Obyektni yaratuvchi `createBook(title, pages)` funksiyasini yozing.",
-      startingCode: "function createBook(title, pages) {\n  // pages undefined bo'lishi ham mumkin\n}",
+      startingCode: "interface Book {\n  title: string;\n  pages?: number;\n}\n\nfunction createBook(title: string, pages?: number): Book {\n  // pages undefined bo'lishi ham mumkin\n}",
       hint: "return { title, pages };",
       test: "if (typeof createBook !== 'function') return 'createBook topilmadi'; const b1 = createBook('JS'); if(b1.title !== 'JS' || b1.pages !== undefined) return 'Optional property ishlamadi'; return null;"
     },
@@ -105,7 +106,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 3,
       title: "Readonly maydoni",
       instruction: "Faqat o'qish uchun mo'ljallangan `id` maydoni va oddiy `value` maydoni bor obyektni qaytaruvchi `createReadonlyItem(id, value)` funksiyasini yozing.",
-      startingCode: "function createReadonlyItem(id, value) {\n  // Obyekt qaytaring\n}",
+      startingCode: "interface ReadonlyItem {\n  readonly id: number;\n  value: string;\n}\n\nfunction createReadonlyItem(id: number, value: string): ReadonlyItem {\n  // Obyekt qaytaring\n}",
       hint: "return { id, value };",
       test: "if (typeof createReadonlyItem !== 'function') return 'createReadonlyItem topilmadi'; const item = createReadonlyItem(1, 'Notebook'); if(item.id !== 1 || item.value !== 'Notebook') return 'Obyekt to\\'g\\'ri yaratilmadi'; return null;"
     },
@@ -113,7 +114,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 4,
       title: "Intersection (Kesishuv) simulyatsiyasi",
       instruction: "Person (`{ name }`) va Employee (`{ company }`) obyektlarini birlashtirib bitta yangi obyekt qaytaruvchi `mergeObjects(person, employee)` funksiyasini yozing.",
-      startingCode: "function mergeObjects(person, employee) {\n  // Obyektlarni birlashtiring\n}",
+      startingCode: "type Person = { name: string };\ntype Employee = { company: string };\ntype Staff = Person & Employee;\n\nfunction mergeObjects(person: Person, employee: Employee): Staff {\n  // Obyektlarni birlashtiring\n}",
       hint: "return { ...person, ...employee };",
       test: "if (typeof mergeObjects !== 'function') return 'mergeObjects topilmadi'; const res = mergeObjects({ name: 'Vali' }, { company: 'Google' }); if (res.name !== 'Vali' || res.company !== 'Google') return 'Intersection birlashmasi xato'; return null;"
     },
@@ -121,7 +122,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 5,
       title: "Interface kengaytirish (Extends)",
       instruction: "Animal interfeysi (`{ name }`) kengaytirilib, Dog (`{ name, breed }`) yaratilgan. Berilgan name va breed qiymatlari bilan ob'ekt qaytaradigan `createDog(name, breed)` yozing.",
-      startingCode: "function createDog(name, breed) {\n  // Dog obyektini qaytaring\n}",
+      startingCode: "interface Animal {\n  name: string;\n}\n\ninterface Dog extends Animal {\n  breed: string;\n}\n\nfunction createDog(name: string, breed: string): Dog {\n  // Dog obyektini qaytaring\n}",
       hint: "return { name, breed };",
       test: "if (typeof createDog !== 'function') return 'createDog topilmadi'; const dog = createDog('Bobik', 'Poodle'); if(dog.name !== 'Bobik' || dog.breed !== 'Poodle') return 'Meros obyekt xato'; return null;"
     },
@@ -129,7 +130,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 6,
       title: "Index Signatures (Lug'at)",
       instruction: "Ixtiyoriy kalit va qiymatlarni (string) o'z ichiga oluvchi lug'at obyektini yaratuvchi va unga qiymat qo'shib beruvchi `addToDict(dict, key, val)` funksiyasini yozing.",
-      startingCode: "function addToDict(dict, key, val) {\n  // dict obyektiga key orqali val ni yozing va dict ni qaytaring\n}",
+      startingCode: "interface Dictionary {\n  [key: string]: string;\n}\n\nfunction addToDict(dict: Dictionary, key: string, val: string): Dictionary {\n  // dict obyektiga key orqali val ni yozing va dict ni qaytaring\n}",
       hint: "dict[key] = val; return dict;",
       test: "if (typeof addToDict !== 'function') return 'addToDict topilmadi'; const d = addToDict({}, 'hello', 'salom'); if(d.hello !== 'salom') return 'Index signature lug\\'at xato'; return null;"
     },
@@ -137,7 +138,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 7,
       title: "Status Union tipi",
       instruction: "Faqat 'active' va 'inactive' qiymatlarini qabul qiladigan va ulardan boshqasiga `false` qaytaradigan `isValidStatus(status)` funksiyasini yozing.",
-      startingCode: "function isValidStatus(status) {\n  // statusni tekshiring\n}",
+      startingCode: "type Status = 'active' | 'inactive';\n\nfunction isValidStatus(status: any): boolean {\n  // statusni tekshiring\n}",
       hint: "return status === 'active' || status === 'inactive';",
       test: "if (typeof isValidStatus !== 'function') return 'isValidStatus topilmadi'; if(isValidStatus('active') !== true || isValidStatus('pending') !== false) return 'Union qiymatlar noto\\'g\\'ri tekshirildi'; return null;"
     },
@@ -145,7 +146,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 8,
       title: "Discriminated Union simulyatsiyasi",
       instruction: "Obyektdagi `type` xossasiga qarab ('square' yoki 'circle') maydonni aniqlovchi va mos ravishda kvadrat yuzi (`size * size`) yoki doira yuzi (`Math.PI * r * r`) qaytaruvchi `getArea(shape)` funksiyasini yozing.",
-      startingCode: "function getArea(shape) {\n  // type boyicha if yoki switch ishlating\n}",
+      startingCode: "interface Square {\n  type: 'square';\n  size: number;\n}\n\ninterface Circle {\n  type: 'circle';\n  radius: number;\n}\n\ntype Shape = Square | Circle;\n\nfunction getArea(shape: Shape): number {\n  // type boyicha if yoki switch ishlating\n}",
       hint: "if (shape.type === 'square') return shape.size * shape.size; if (shape.type === 'circle') return Math.PI * shape.radius * shape.radius;",
       test: "if (typeof getArea !== 'function') return 'getArea topilmadi'; const s = { type: 'square', size: 4 }; const c = { type: 'circle', radius: 2 }; if (getArea(s) !== 16 || Math.abs(getArea(c) - 12.56) > 0.1) return 'Yuzani hisoblash xato'; return null;"
     },
@@ -153,7 +154,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 9,
       title: "3D nuqta tipini birlashtirish",
       instruction: "2D nuqtani (`{ x, y }`) z o'qi bilan birlashtirib, 3D nuqta obyektini hosil qiladigan `make3DPoint(point2D, z)` funksiyasini yozing.",
-      startingCode: "function make3DPoint(point2D, z) {\n  // point2D va z ni birlashtiring\n}",
+      startingCode: "interface Point2D {\n  x: number;\n  y: number;\n}\n\ninterface Point3D extends Point2D {\n  z: number;\n}\n\nfunction make3DPoint(point2D: Point2D, z: number): Point3D {\n  // point2D va z ni birlashtiring\n}",
       hint: "return { ...point2D, z };",
       test: "if (typeof make3DPoint !== 'function') return 'make3DPoint topilmadi'; const res = make3DPoint({ x: 1, y: 2 }, 3); if(res.x !== 1 || res.y !== 2 || res.z !== 3) return '3D nuqta xato yaratildi'; return null;"
     },
@@ -161,7 +162,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 10,
       title: "Custom User Identity",
       instruction: "Tarkibida `id` (number) va `meta` (ixtiyoriy obyekt) bo'lgan interfeysga mos obyekt yaratib qaytaradigan `createIdentity(id, meta = null)` yozing.",
-      startingCode: "function createIdentity(id, meta) {\n  // Kodni yozing\n}",
+      startingCode: "interface Identity {\n  id: number;\n  meta?: any;\n}\n\nfunction createIdentity(id: number, meta: any = null): Identity {\n  // Kodni yozing\n}",
       hint: "return { id, meta };",
       test: "if (typeof createIdentity !== 'function') return 'createIdentity topilmadi'; const id1 = createIdentity(5); if(id1.id !== 5 || id1.meta !== null) return 'Identity xato yaratildi'; return null;"
     },
@@ -169,7 +170,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 11,
       title: "Optional Callback Interface",
       instruction: "Foydalanuvchini ro'yxatdan o'tkazadigan va agar uchinchi parametrda `onSuccess` callback funksiyasi berilgan bo'lsa uni chaqiradigan `registerUser(name, pass, onSuccess)` yozing.",
-      startingCode: "function registerUser(name, pass, onSuccess) {\n  // Agar onSuccess bo'lsa uni chaqiring\n}",
+      startingCode: "type SuccessCallback = () => void;\n\nfunction registerUser(name: string, pass: string, onSuccess?: SuccessCallback): void {\n  // Agar onSuccess bo'lsa uni chaqiring\n}",
       hint: "if (onSuccess) onSuccess();",
       test: "if (typeof registerUser !== 'function') return 'registerUser topilmadi'; let called = false; registerUser('admin', '123', () => { called = true; }); if(!called) return 'Callback chaqirilmadi'; return null;"
     },
@@ -177,7 +178,7 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       id: 12,
       title: "Nested Interface (Ichma-ich)",
       instruction: "User `{ name, address: { city, zip } }` ko'rinishidagi ichma-ich interfeysga ega. Berilgan ma'lumotlar asosida ushbu obyektni yaratib qaytaradigan `createNestedUser(name, city, zip)` yozing.",
-      startingCode: "function createNestedUser(name, city, zip) {\n  // Ichma-ich obyekt qaytaring\n}",
+      startingCode: "interface Address {\n  city: string;\n  zip: number;\n}\n\ninterface UserWithAddress {\n  name: string;\n  address: Address;\n}\n\nfunction createNestedUser(name: string, city: string, zip: number): UserWithAddress {\n  // Ichma-ich obyekt qaytaring\n}",
       hint: "return { name, address: { city, zip } };",
       test: "if (typeof createNestedUser !== 'function') return 'createNestedUser topilmadi'; const u = createNestedUser('Ali', 'Toshkent', 100000); if(u.address.city !== 'Toshkent' || u.address.zip !== 100000) return 'Address tuzilmasi xato'; return null;"
     }

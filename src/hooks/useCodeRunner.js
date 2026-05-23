@@ -1,4 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
+import { transform } from 'sucrase';
+import alasql from 'alasql';
 
 export function injectLoopGuard(code) {
   let loopId = 0;
@@ -11,6 +13,41 @@ export function injectLoopGuard(code) {
       loopId++;
       return `do { if(++__loop_guards[loopId] > 2000) throw new Error("Cheksiz sikl aniqlandi!"); `;
     });
+}
+
+function setupMockDatabase() {
+  const db = new alasql.Database();
+  
+  // Create tables
+  db.exec("CREATE TABLE users (id INT, name STRING, age INT, city STRING, role STRING)");
+  db.exec(`INSERT INTO users VALUES 
+    (1, 'Ali', 25, 'Toshkent', 'Admin'), 
+    (2, 'Vali', 30, 'Samarqand', 'User'), 
+    (3, 'Sardor', 22, 'Toshkent', 'User'),
+    (4, 'Madina', 28, 'Buxoro', 'Manager'),
+    (5, 'Dilshod', 35, 'Toshkent', 'User')
+  `);
+  
+  db.exec("CREATE TABLE orders (id INT, user_id INT, product STRING, amount DECIMAL, order_date STRING)");
+  db.exec(`INSERT INTO orders VALUES 
+    (101, 1, 'Laptop', 1200.50, '2026-05-01'),
+    (102, 2, 'Phone', 800.00, '2026-05-02'),
+    (103, 1, 'Mouse', 25.00, '2026-05-03'),
+    (104, 3, 'Keyboard', 45.00, '2026-05-04'),
+    (105, 4, 'Monitor', 300.00, '2026-05-05'),
+    (106, 2, 'Charger', 15.00, '2026-05-06')
+  `);
+  
+  db.exec("CREATE TABLE products (id INT, name STRING, category STRING, price DECIMAL, stock INT)");
+  db.exec(`INSERT INTO products VALUES 
+    (1, 'Laptop', 'Electronics', 1200.00, 10),
+    (2, 'Phone', 'Electronics', 800.00, 25),
+    (3, 'Desk', 'Furniture', 150.00, 5),
+    (4, 'Chair', 'Furniture', 155.00, 15),
+    (5, 'Mouse', 'Electronics', 25.00, 50)
+  `);
+
+  return db;
 }
 
 export function useCodeRunner() {
@@ -29,7 +66,66 @@ export function useCodeRunner() {
       logs.push('❌ ' + args.map(a => String(a)).join(' '));
     };
 
+    // SQL Runner
+    if (activeLesson?.language === 'sql') {
+      try {
+        const db = setupMockDatabase();
+        const query = code.trim();
+        const result = db.exec(query);
+
+        // Format SQL result as log
+        logs.push(JSON.stringify(result, null, 2));
+
+        const currentExercise = activeLesson?.exercises?.[currentExerciseIndex];
+        const testCode = currentExercise?.test || 'return null;';
+
+        const tester = new Function('result', 'db', 'logs', `
+          try {
+            ${testCode}
+          } catch(e) {
+            return "Test Error: " + e.message;
+          }
+        `);
+        const errorMsg = tester(result, db, logs);
+
+        let validationResult = '✅ Kod muvaffaqiyatli ishladi';
+        let isCorrect = true;
+
+        if (errorMsg) {
+          validationResult = '❌ ' + errorMsg;
+          isCorrect = false;
+        }
+
+        const outputText = logs.length
+          ? logs.join('\n') + '\n\n' + validationResult
+          : validationResult;
+
+        setOutput(outputText);
+
+        if (isCorrect && onSuccess) {
+          onSuccess();
+        }
+      } catch (e) {
+        setOutput('❌ SQL Xatosi: ' + e.message);
+      } finally {
+        console.log = origLog;
+        console.error = origError;
+      }
+      return;
+    }
+
+    // JavaScript / TypeScript Runner
     try {
+      let codeToRun = code;
+
+      // Transpile TypeScript to JavaScript
+      if (activeLesson?.language === 'typescript') {
+        const transpiled = transform(code, {
+          transforms: ['typescript']
+        });
+        codeToRun = transpiled.code;
+      }
+
       const currentExercise = activeLesson?.exercises?.[currentExerciseIndex];
       const testCode = currentExercise?.test || 'return null;';
 
@@ -40,7 +136,7 @@ export function useCodeRunner() {
         });
         try {
           // Foydalanuvchi kodi (loop guard bilan)
-          ${injectLoopGuard(code)}
+          ${injectLoopGuard(codeToRun)}
           
           // Testni ishga tushirish (IIFE ichida)
           return (function(code, logs) {
@@ -52,7 +148,7 @@ export function useCodeRunner() {
       `;
 
       const runner = new Function('code', 'logs', combinedCode);
-      const errorMsg = runner(code, logs);
+      const errorMsg = runner(codeToRun, logs);
 
       let validationResult = '✅ Kod muvaffaqiyatli ishladi';
       let isCorrect = true;

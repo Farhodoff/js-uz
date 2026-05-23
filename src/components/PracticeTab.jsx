@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
+import { sql } from '@codemirror/lang-sql';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { linter, lintGutter } from '@codemirror/lint';
 import { autocompletion } from '@codemirror/autocomplete';
@@ -93,12 +94,18 @@ export default function PracticeTab({
           value={code}
           height={`${editorHeight}px`}
           theme={vscodeDark}
-          extensions={[
-            javascript({ jsx: true }),
-            linter(uzbekJavaScriptLinter),
-            lintGutter(),
-            autocompletion({ override: [uzbekJavaScriptAutocomplete] })
-          ]}
+          extensions={
+            activeLesson.language === 'sql'
+              ? [sql()]
+              : activeLesson.language === 'typescript'
+              ? [javascript({ jsx: true, typescript: true }), lintGutter()]
+              : [
+                  javascript({ jsx: true }),
+                  linter(uzbekJavaScriptLinter),
+                  lintGutter(),
+                  autocompletion({ override: [uzbekJavaScriptAutocomplete] })
+                ]
+          }
           onChange={(value) => setCode(value)}
           basicSetup={{
             lineNumbers: true,

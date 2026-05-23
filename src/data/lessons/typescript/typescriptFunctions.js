@@ -1,6 +1,7 @@
 export const typescriptFunctions = {
   id: "typescriptFunctions",
   title: "Funksiyalar va Overloads",
+  language: "typescript",
   theory: `## 1. NEGA kerak?
 JavaScript-da funksiyalar har qanday tipdagi argumentlarni qabul qilaveradi va ixtiyoriy qiymat qaytara oladi. Bu katta dasturlarda funksiyaga noto'g'ri argument uzatilishi yoki funksiya qaytargan kutilmagan qiymat tufayli xatolar keltirib chiqaradi.
 **TypeScript-da funksiyalar** argumentlar tipi va qaytish qiymati tipi qat'iy tekshirilishini ta'minlaydi. Shuningdek, u ixtiyoriy va standart parametrlarni, hamda har xil turdagi kiruvchi qiymatlar uchun har xil qaytish turlarini belgilaydigan **Function Overloads (funksiya yuklamasi)** texnikasini taqdim etadi.
@@ -58,7 +59,7 @@ Funksiya chaqirilayotganda faqat to'g'ri tipdagi va to'g'ri sondagi argumentlar 
 Parametrlardan keyin ikki nuqta (\`:\`) qo'yilib, tip yoziladi. Masalan: \`function f(): string\`.
 
 **3. "Type Inference" funksiyalarda qanday ishlaydi?**
-Agar funksiyaning qaytish tipi yozilmasa, TypeScript return qilingan qiymatga qarab qaytish tipini o'zi avtomatik aniqlaydi.
+Agar funksiyaning qaytish tipi yozilasa, TypeScript return qilingan qiymatga qarab qaytish tipini o'zi avtomatik aniqlaydi.
 
 **4. Ixtiyoriy parametr (Optional Parameter) qanday e'lon qilinadi va u qayerda turishi kerak?**
 Maydon nomidan keyin so'roq belgisi (\`?\`) qo'yiladi va u doim parametrlarning oxirida turishi shart.
@@ -92,7 +93,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 1,
       title: "Parametr va Return tiplash",
       instruction: "Ikkita son qabul qilib, ularning ko'paytmasini (number) qaytaradigan `multiplyNumbers(a, b)` funksiyasini yozing.",
-      startingCode: "function multiplyNumbers(a, b) {\n  // Kodni yozing\n}",
+      startingCode: "function multiplyNumbers(a: number, b: number): number {\n  // Kodni yozing\n}",
       hint: "return a * b;",
       test: "if (typeof multiplyNumbers !== 'function') return 'multiplyNumbers topilmadi'; if(multiplyNumbers(2, 5) !== 10) return 'Ko\\'paytma xato'; return null;"
     },
@@ -100,7 +101,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 2,
       title: "String qaytish tipi",
       instruction: "Ism (string) qabul qilib, 'Salom, [name]!' qaytaruvchi `sayHello(name)` funksiyasini yozing.",
-      startingCode: "function sayHello(name) {\n  // Salom qaytaring\n}",
+      startingCode: "function sayHello(name: string): string {\n  // Salom qaytaring\n}",
       hint: "return `Salom, ${name}!`;",
       test: "if (typeof sayHello !== 'function') return 'sayHello topilmadi'; if (sayHello('Jasur') !== 'Salom, Jasur!') return 'Greeting xato'; return null;"
     },
@@ -108,7 +109,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 3,
       title: "Optional Parameter (Ixtiyoriy parametr)",
       instruction: "Birinchi ism (`firstName` - string) va ixtiyoriy familiya (`lastName` - string) qabul qilib, agar familiya berilgan bo'lsa birlashtirib, berilmagan bo'lsa faqat ismni qaytaradigan `getFullName(firstName, lastName)` funksiyasini yozing.",
-      startingCode: "function getFullName(firstName, lastName) {\n  // Kodni yozing\n}",
+      startingCode: "function getFullName(firstName: string, lastName?: string): string {\n  // Kodni yozing\n}",
       hint: "return lastName ? `${firstName} ${lastName}` : firstName;",
       test: "if (typeof getFullName !== 'function') return 'getFullName topilmadi'; if (getFullName('Ali') !== 'Ali') return 'lastName berilmagandagi xato'; if(getFullName('Ali', 'Valiyev') !== 'Ali Valiyev') return 'To\\'liq ism xato'; return null;"
     },
@@ -116,7 +117,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 4,
       title: "Default Parameter (Standart parametr)",
       instruction: "Son `x` va standart qiymati 2 bo'lgan daraja `power` qabul qilib, `x` ning `power`-darajasini hisoblovchi `getPower(x, power)` yozing.",
-      startingCode: "function getPower(x, power = 2) {\n  // Math.pow ishlating\n}",
+      startingCode: "function getPower(x: number, power: number = 2): number {\n  // Math.pow ishlating\n}",
       hint: "return Math.pow(x, power);",
       test: "if (typeof getPower !== 'function') return 'getPower topilmadi'; if(getPower(3) !== 9 || getPower(2, 3) !== 8) return 'Darajani hisoblash xato'; return null;"
     },
@@ -124,7 +125,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 5,
       title: "Rest Parameters (Cheksiz parametrlar)",
       instruction: "Ixtiyoriy miqdordagi sonlarni qabul qilib, ularning yig'indisini hisoblaydigan `sumNumbers(...nums)` funksiyasini yozing.",
-      startingCode: "function sumNumbers(...nums) {\n  // nums massivini hisoblang\n}",
+      startingCode: "function sumNumbers(...nums: number[]): number {\n  // nums massivini hisoblang\n}",
       hint: "return nums.reduce((s, n) => s + n, 0);",
       test: "if (typeof sumNumbers !== 'function') return 'sumNumbers topilmadi'; if(sumNumbers(1, 2, 3, 4) !== 10 || sumNumbers() !== 0) return 'Rest parametr yig\\'indisi xato'; return null;"
     },
@@ -132,7 +133,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 6,
       title: "Callback Parametri",
       instruction: "Qiymat `val` va callback funksiya `cb` qabul qilib, `cb(val)` chaqiruv natijasini qaytaradigan `executeCallback(val, cb)` yozing.",
-      startingCode: "function executeCallback(val, cb) {\n  // cb ni val bilan chaqiring\n}",
+      startingCode: "function executeCallback(val: number, cb: (x: number) => number): number {\n  // cb ni val bilan chaqiring\n}",
       hint: "return cb(val);",
       test: "if (typeof executeCallback !== 'function') return 'executeCallback topilmadi'; if(executeCallback(5, x => x * 2) !== 10) return 'Callback chaqiruvi noto\\'g\\'ri'; return null;"
     },
@@ -140,7 +141,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 7,
       title: "Overload simulyatsiyasi (String va Number)",
       instruction: "Bitta argument qabul qiluvchi `parseInput(arg)` funksiyasini yozing. Agar arg son bo'lsa uni kvadratini qaytaring, agar string bo'lsa uning uzunligini qaytaring.",
-      startingCode: "function parseInput(arg) {\n  // typeof tekshirib qaytaring\n}",
+      startingCode: "function parseInput(arg: number): number;\nfunction parseInput(arg: string): number;\nfunction parseInput(arg: any): number {\n  // typeof tekshirib qaytaring\n}",
       hint: "return typeof arg === 'number' ? arg * arg : arg.length;",
       test: "if (typeof parseInput !== 'function') return 'parseInput topilmadi'; if(parseInput(5) !== 25 || parseInput('hello') !== 5) return 'Overload natijasi xato'; return null;"
     },
@@ -148,7 +149,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 8,
       title: "Sikllarni to'xtatuvchi funksiya (Never)",
       instruction: "Chaqirilganda dasturni to'xtatuvchi va zudlik bilan 'Error Occurred' xabari bilan xato otuvchi `stopProcess()` funksiyasini yozing.",
-      startingCode: "function stopProcess() {\n  // Throw error\n}",
+      startingCode: "function stopProcess(): never {\n  // Throw error\n}",
       hint: "throw new Error('Error Occurred');",
       test: "if (typeof stopProcess !== 'function') return 'stopProcess topilmadi'; try { stopProcess(); return 'Xato otilmadi'; } catch(e) { if(e.message !== 'Error Occurred') return 'Xato xabari noto\\'g\\'ri'; } return null;"
     },
@@ -156,7 +157,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 9,
       title: "Rest Strings Concat",
       instruction: "Rest parametrlar orqali bir nechta so'zlarni qabul qilib, ularni o'rtasiga chiziq '-' qo'shib birlashtirib qaytaruvchi `joinWithHyphen(...words)` funksiyasini yozing.",
-      startingCode: "function joinWithHyphen(...words) {\n  // Kodni yozing\n}",
+      startingCode: "function joinWithHyphen(...words: string[]): string {\n  // Kodni yozing\n}",
       hint: "return words.join('-');",
       test: "if (typeof joinWithHyphen !== 'function') return 'joinWithHyphen topilmadi'; if(joinWithHyphen('a', 'b', 'c') !== 'a-b-c') return 'Birlashtirish xato'; return null;"
     },
@@ -164,7 +165,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 10,
       title: "Max Finder (Rest)",
       instruction: "Rest parametrlar yordamida uzatilgan sonlardan eng kattasini topuvchi `findMaxNumber(...nums)` funksiyasini yozing. Bo'sh bo'lsa `-Infinity` qaytaring.",
-      startingCode: "function findMaxNumber(...nums) {\n  // Math.max ishlating\n}",
+      startingCode: "function findMaxNumber(...nums: number[]): number {\n  // Math.max ishlating\n}",
       hint: "return Math.max(...nums);",
       test: "if (typeof findMaxNumber !== 'function') return 'findMaxNumber topilmadi'; if(findMaxNumber(10, 5, 20, 3) !== 20) return 'Eng katta son topilmadi'; return null;"
     },
@@ -172,7 +173,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 11,
       title: "Callback status",
       instruction: "Qiymat `success` (boolean) va ikkita callback funksiyalar `onYes` va `onNo` qabul qilib, agar `success` true bo'lsa `onYes()` ni, aks holda `onNo()` ni chaqiruvchi `callOnStatus(success, onYes, onNo)` funksiyasini yozing.",
-      startingCode: "function callOnStatus(success, onYes, onNo) {\n  // Shart bo'yicha chaqiring\n}",
+      startingCode: "function callOnStatus(success: boolean, onYes: () => void, onNo: () => void): void {\n  // Shart bo'yicha chaqiring\n}",
       hint: "success ? onYes() : onNo();",
       test: "if (typeof callOnStatus !== 'function') return 'callOnStatus topilmadi'; let y = false, n = false; callOnStatus(true, () => y = true, () => n = true); if(!y || n) return 'To\\'g\\'ri callback chaqirilmadi'; return null;"
     },
@@ -180,7 +181,7 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       id: 12,
       title: "Discriminated Union Callback",
       instruction: "Object formatidagi `{ status: 'success' | 'error', data?: string, error?: string }` natijani qabul qilib, agar status success bo'lsa `data`ni, error bo'lsa `error`ni qaytaradigan `handleResult(res)` funksiyasini yozing.",
-      startingCode: "function handleResult(res) {\n  // status bo'yicha qiymat qaytaring\n}",
+      startingCode: "type Result = { status: 'success'; data: string } | { status: 'error'; error: string };\n\nfunction handleResult(res: Result): string {\n  // status bo'yicha qiymat qaytaring\n}",
       hint: "return res.status === 'success' ? res.data : res.error;",
       test: "if (typeof handleResult !== 'function') return 'handleResult topilmadi'; if(handleResult({ status: 'success', data: 'Done' }) !== 'Done') return 'Success xato ishlov berildi'; if(handleResult({ status: 'error', error: 'Fail' }) !== 'Fail') return 'Error xato ishlov berildi'; return null;"
     }

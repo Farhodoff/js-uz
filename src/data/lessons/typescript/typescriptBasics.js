@@ -1,6 +1,7 @@
 export const typescriptBasics = {
   id: "typescriptBasics",
   title: "TypeScript Asoslari va Tiplar",
+  language: "typescript",
   theory: `## 1. NEGA kerak?
 JavaScript dinamik tipli tildir. Bu shuni anglatadiki, o'zgaruvchi e'lon qilinganda uning tipi belgilanmaydi va dastur ishlash jarayonida (runtime) o'zgaruvchi ixtiyoriy tipdagi qiymatni qabul qilishi mumkin. Bu moslashuvchanlikni oshirsa-da, katta loyihalarda kutilmagan xatolar (runtime errors) keltirib chiqaradi.
 **TypeScript** esa Microsoft tomonidan yaratilgan bo'lib, JavaScript ustiga qurilgan va unga **statik tiplash** (static typing) xususiyatini qo'shadi. TypeScript koddagi tiplarni dastur ishga tushishidan oldin (compile-time) tekshiradi. Bu orqali xatoliklarni kod yozish jarayonidayoq aniqlash va IDE imkoniyatlaridan (autocomplete, refactoring) maksimal foydalanish mumkin bo'ladi.
@@ -77,7 +78,7 @@ Kompilyatsiya vaqtini biroz ko'paytiradi, lekin tayyor bo'lgan JavaScript kodi o
       id: 1,
       title: "Number va String tiplari",
       instruction: "Faqat son qabul qiluvchi va uni string tipiga o'girib qaytaradigan `numberToString(val)` funksiyasini yozing.",
-      startingCode: "function numberToString(val) {\n  // Kodni yozing\n}",
+      startingCode: "function numberToString(val: number): string {\n  // Kodni yozing\n}",
       hint: "return String(val);",
       test: "if (typeof numberToString !== 'function') return 'Funksiya aniqlanmagan'; if (numberToString(45) !== '45') return 'Natija xato'; return null;"
     },
@@ -85,7 +86,7 @@ Kompilyatsiya vaqtini biroz ko'paytiradi, lekin tayyor bo'lgan JavaScript kodi o
       id: 2,
       title: "Boolean tekshiruvi",
       instruction: "Berilgan qiymat boolean tipida ekanligini aniqlab true/false qaytaradigan `isBooleanVal(val)` funksiyasini yozing.",
-      startingCode: "function isBooleanVal(val) {\n  // Kodni yozing\n}",
+      startingCode: "function isBooleanVal(val: any): boolean {\n  // Kodni yozing\n}",
       hint: "return typeof val === 'boolean';",
       test: "if (typeof isBooleanVal !== 'function') return 'Funksiya topilmadi'; if(isBooleanVal(true) !== true || isBooleanVal(5) !== false) return 'Boolean qiymatlar xato tekshirildi'; return null;"
     },
@@ -93,7 +94,7 @@ Kompilyatsiya vaqtini biroz ko'paytiradi, lekin tayyor bo'lgan JavaScript kodi o
       id: 3,
       title: "Number massivi (Array of numbers)",
       instruction: "Berilgan sonlar massividagi elementlarni kvadratga oshirib yangi massiv qaytaradigan `squareArray(arr)` funksiyasini yozing.",
-      startingCode: "function squareArray(arr) {\n  // Kodni yozing\n}",
+      startingCode: "function squareArray(arr: number[]): number[] {\n  // Kodni yozing\n}",
       hint: "return arr.map(x => x * x);",
       test: "if (typeof squareArray !== 'function') return 'squareArray topilmadi'; const res = squareArray([2, 3]); if(res[0] !== 4 || res[1] !== 9) return 'Kvadratlar hisoblanmadi'; return null;"
     },
@@ -101,7 +102,7 @@ Kompilyatsiya vaqtini biroz ko'paytiradi, lekin tayyor bo'lgan JavaScript kodi o
       id: 4,
       title: "String massivi (Array<string>)",
       instruction: "String massivi elementlarini vergul bilan birlashtirib qaytaruvchi `joinStrings(arr)` funksiyasini yozing.",
-      startingCode: "function joinStrings(arr) {\n  // Kodni yozing\n}",
+      startingCode: "function joinStrings(arr: string[]): string {\n  // Kodni yozing\n}",
       hint: "return arr.join(', ');",
       test: "if (typeof joinStrings !== 'function') return 'joinStrings topilmadi'; if(joinStrings(['a', 'b']) !== 'a, b') return 'Birlashtirish xato'; return null;"
     },
@@ -109,7 +110,7 @@ Kompilyatsiya vaqtini biroz ko'paytiradi, lekin tayyor bo'lgan JavaScript kodi o
       id: 5,
       title: "Tuple (Kortej) simulyatsiyasi",
       instruction: "Koordinatalar korteji [x, y] ko'rinishida berilgan massiv elementlarini o'zaro almashtirib [y, x] ko'rinishida qaytaruvchi `swapCoords(coords)` funksiyasini yozing.",
-      startingCode: "function swapCoords(coords) {\n  // coords[0] va coords[1] almashtiring\n}",
+      startingCode: "function swapCoords(coords: [number, number]): [number, number] {\n  // coords[0] va coords[1] almashtiring\n}",
       hint: "return [coords[1], coords[0]];",
       test: "if (typeof swapCoords !== 'function') return 'swapCoords topilmadi'; const res = swapCoords([10, 20]); if(res[0] !== 20 || res[1] !== 10) return 'Koordinatalar almashmadi'; return null;"
     },
@@ -117,31 +118,31 @@ Kompilyatsiya vaqtini biroz ko'paytiradi, lekin tayyor bo'lgan JavaScript kodi o
       id: 6,
       title: "Kortej: Name va Age",
       instruction: "Kortej sifatida [string, number] (ism va yosh) qabul qilib, 'Ism: [name], Yosh: [age]' ko'rinishidagi satr qaytaruvchi `formatPerson(person)` funksiyasini yozing.",
-      startingCode: "function formatPerson(person) {\n  // Kodni yozing\n}",
+      startingCode: "function formatPerson(person: [string, number]): string {\n  // Kodni yozing\n}",
       hint: "return `Ism: ${person[0]}, Yosh: ${person[1]}`;",
       test: "if (typeof formatPerson !== 'function') return 'formatPerson topilmadi'; if(formatPerson(['Ali', 20]) !== 'Ism: Ali, Yosh: 20') return 'Format xato'; return null;"
     },
     {
       id: 7,
-      title: "Numeric Enum simulyatsiyasi",
-      instruction: "Numeric Enum kabi ishlaydigan `Role` obyektini yarating. Unda `User = 0` va `Admin = 1` bo'lsin.",
-      startingCode: "const Role = {\n  // Role obyektini to'ldiring\n}",
-      hint: "const Role = { User: 0, Admin: 1 };",
+      title: "Numeric Enum yaratish",
+      instruction: "User = 0 va Admin = 1 qiymatlariga ega bo'lgan `Role` nomli TypeScript enum e'lon qiling.",
+      startingCode: "// Role enumni yozing",
+      hint: "enum Role {\n  User = 0,\n  Admin = 1\n}",
       test: "if (typeof Role === 'undefined') return 'Role topilmadi'; if(Role.User !== 0 || Role.Admin !== 1) return 'Role qiymatlari noto\\'g\\'ri'; return null;"
     },
     {
       id: 8,
-      title: "String Enum simulyatsiyasi",
-      instruction: "String Enum kabi ishlaydigan `Status` obyektini yarating. Unda `Pending = 'PENDING'` va `Success = 'SUCCESS'` bo'lsin.",
-      startingCode: "const Status = {\n  // Status obyektini to'ldiring\n}",
-      hint: "const Status = { Pending: 'PENDING', Success: 'SUCCESS' };",
+      title: "String Enum yaratish",
+      instruction: "Pending = 'PENDING' va Success = 'SUCCESS' qiymatlariga ega bo'lgan `Status` nomli TypeScript enum e'lon qiling.",
+      startingCode: "// Status enumni yozing",
+      hint: "enum Status {\n  Pending = 'PENDING',\n  Success = 'SUCCESS'\n}",
       test: "if (typeof Status === 'undefined') return 'Status topilmadi'; if(Status.Pending !== 'PENDING' || Status.Success !== 'SUCCESS') return 'Status qiymatlari xato'; return null;"
     },
     {
       id: 9,
       title: "Any tipi ustida amallar",
       instruction: "Kiruvchi istalgan qiymatni satr (string) ko'rinishiga o'girib, uning uzunligini qaytaruvchi `getAnyLength(val)` funksiyasini yozing.",
-      startingCode: "function getAnyLength(val) {\n  // Kodni yozing\n}",
+      startingCode: "function getAnyLength(val: any): number {\n  // Kodni yozing\n}",
       hint: "return String(val).length;",
       test: "if (typeof getAnyLength !== 'function') return 'getAnyLength topilmadi'; if(getAnyLength(12345) !== 5) return 'Uzunlik xato'; return null;"
     },
@@ -149,23 +150,23 @@ Kompilyatsiya vaqtini biroz ko'paytiradi, lekin tayyor bo'lgan JavaScript kodi o
       id: 10,
       title: "Unknown va Type Narrowing",
       instruction: "Unknown qiymat qabul qilib, agar u `number` bo'lsa uni 2 ga ko'paytirib, agar `string` bo'lsa katta harflarga o'girib, boshqa hollarda null qaytaradigan `processUnknown(val)` funksiyasini yozing.",
-      startingCode: "function processUnknown(val) {\n  // typeof tekshiruvini ishlating\n}",
+      startingCode: "function processUnknown(val: unknown): number | string | null {\n  // typeof tekshiruvini ishlating\n}",
       hint: "if (typeof val === 'number') return val * 2; if (typeof val === 'string') return val.toUpperCase(); return null;",
       test: "if (typeof processUnknown !== 'function') return 'processUnknown topilmadi'; if(processUnknown(5) !== 10 || processUnknown('ok') !== 'OK' || processUnknown(true) !== null) return 'Type narrowing xato ishladi'; return null;"
     },
     {
       id: 11,
-      title: "Void funksiya simulyatsiyasi",
-      instruction: "Qabul qilgan qiymatini global `globalState` o'zgaruvchisiga yozadigan va o'zi hech narsa qaytarmaydigan (void kabi undefined) `updateState(val)` funksiyasini yozing.",
-      startingCode: "let globalState = '';\nfunction updateState(val) {\n  // globalState ni yangilang va return yozmang\n}",
+      title: "Void funksiya",
+      instruction: "Qabul qilgan qiymatini global `globalState` o'zgaruvchisiga yozadigan va o'zi void (hech narsa qaytarmaydigan) `updateState(val)` funksiyasini yozing.",
+      startingCode: "let globalState: string = '';\nfunction updateState(val: string): void {\n  // globalState ni yangilang va return yozmang\n}",
       hint: "globalState = val;",
       test: "if (typeof updateState !== 'function') return 'updateState topilmadi'; updateState('active'); if(globalState !== 'active') return 'Global holat yangilanmadi'; return null;"
     },
     {
       id: 12,
-      title: "Never funksiya simulyatsiyasi",
-      instruction: "Hech qachon qiymat qaytarmaydigan va chaqirilganda doim 'Fatal Error' xabari bilan xato otadigan (throw Error) `throwFatal()` funksiyasini yozing.",
-      startingCode: "function throwFatal() {\n  // Error otish logikasi\n}",
+      title: "Never funksiya",
+      instruction: "Hech qachon qiymat qaytarmaydigan va chaqirilganda doim 'Fatal Error' xabari bilan xato otadigan (throw) `throwFatal()` funksiyasini yozing.",
+      startingCode: "function throwFatal(): never {\n  // Error otish logikasi\n}",
       hint: "throw new Error('Fatal Error');",
       test: "if (typeof throwFatal !== 'function') return 'throwFatal topilmadi'; try { throwFatal(); return 'Xato otilmadi'; } catch(e) { if(e.message !== 'Fatal Error') return 'Xato xabari noto\\'g\\'ri'; } return null;"
     }

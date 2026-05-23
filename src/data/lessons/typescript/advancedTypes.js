@@ -1,6 +1,7 @@
 export const advancedTypes = {
   id: "advancedTypes",
   title: "Advanced & Utility Types",
+  language: "typescript",
   theory: `## 1. NEGA kerak?
 TypeScript-da mavjud bo'lgan tiplarni qayta yozmasdan, ulardan yangi va o'zgartirilgan tiplarni yaratish uchun **Utility Types** (Yordamchi tiplar) va **Advanced Types** (Kengaytirilgan tiplar) ishlatiladi.
 Masalan, bizda to'liq foydalanuvchi interfeysi bor, lekin uning ma'lumotlarini tahrirlash (update) funksiyasi uchun barcha maydonlar ixtiyoriy bo'lishi kerak. Har bir maydonni so'roq belgisi bilan qayta yozib chiqish o'rniga, TypeScript-ning tayyor yordamchilaridan foydalanish vaqtni tejaydi va kod takrorlanishini (DRY qoidasi) oldini oladi.
@@ -87,7 +88,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 1,
       title: "Partial (Ixtiyoriy obyekt) simulyatsiyasi",
       instruction: "User obyektini (`{ id, name, email }`) va qisman yangilanuvchi ma'lumotlarni (`Partial` kabi optional) qabul qilib, ularni birlashtirib qaytaruvchi `updateUser(user, fields)` funksiyasini yozing.",
-      startingCode: "function updateUser(user, fields) {\n  // user va fields obyektlarini birlashtiring\n}",
+      startingCode: "interface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\nfunction updateUser(user: User, fields: Partial<User>): User {\n  // user va fields obyektlarini birlashtiring\n}",
       hint: "return { ...user, ...fields };",
       test: "if (typeof updateUser !== 'function') return 'updateUser topilmadi'; const u = { id: 1, name: 'Ali', email: 'a@a.com' }; const res = updateUser(u, { name: 'Vali' }); if(res.name !== 'Vali' || res.email !== 'a@a.com') return 'Obyekt yangilanmadi'; return null;"
     },
@@ -95,7 +96,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 2,
       title: "Required (Barcha maydonlar majburiy)",
       instruction: "Obyektdagi `name` va `email` maydonlari majburiy ekanligini (ya'ni `undefined` yoki `null` emasligini) tekshirib true/false qaytaradigan `hasRequiredFields(obj)` funksiyasini yozing.",
-      startingCode: "function hasRequiredFields(obj) {\n  // name va email borligini tekshiring\n}",
+      startingCode: "interface UserOptional {\n  name?: string;\n  email?: string;\n}\n\nfunction hasRequiredFields(obj: Required<UserOptional>): boolean {\n  // name va email borligini tekshiring\n}",
       hint: "return obj.name !== undefined && obj.name !== null && obj.email !== undefined && obj.email !== null;",
       test: "if (typeof hasRequiredFields !== 'function') return 'hasRequiredFields topilmadi'; if(hasRequiredFields({ name: 'Ali' }) !== false || hasRequiredFields({ name: 'Ali', email: 'a@a' }) !== true) return 'Required tekshiruvi xato'; return null;"
     },
@@ -103,7 +104,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 3,
       title: "Readonly obyekt simulyatsiyasi",
       instruction: "Berilgan obyektni dastur ishlash jarayonida o'zgartirib bo'lmaydigan qilib qotiradigan (Object.freeze) `makeReadonly(obj)` funksiyasini yozing.",
-      startingCode: "function makeReadonly(obj) {\n  // Object.freeze ishlating\n}",
+      startingCode: "function makeReadonly<T extends object>(obj: T): Readonly<T> {\n  // Object.freeze ishlating\n}",
       hint: "return Object.freeze(obj);",
       test: "if (typeof makeReadonly !== 'function') return 'makeReadonly topilmadi'; const o = makeReadonly({ x: 1 }); try { o.x = 2; } catch(e){} if (o.x !== 1) return 'Obyekt o\\'zgartirildi, readonly bo\\'lmadi'; return null;"
     },
@@ -111,7 +112,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 4,
       title: "Record (Lug'at xaritasi)",
       instruction: "Kalitlar massivi `keys` (string) qabul qilib, har bir kalit qiymatiga uning uzunligini yozib obyekt ko'rinishida qaytaruvchi `createRecord(keys)` funksiyasini yozing.",
-      startingCode: "function createRecord(keys) {\n  // keys bo'yicha Record obyektini shakllantiring\n}",
+      startingCode: "function createRecord(keys: string[]): Record<string, number> {\n  // keys bo'yicha Record obyektini shakllantiring\n}",
       hint: "const res = {}; keys.forEach(k => res[k] = k.length); return res;",
       test: "if (typeof createRecord !== 'function') return 'createRecord topilmadi'; const r = createRecord(['cat', 'horse']); if (r.cat !== 3 || r.horse !== 5) return 'Record to\\'g\\'ri yaratilmadi'; return null;"
     },
@@ -119,7 +120,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 5,
       title: "Pick (Tanlab olish) simulyatsiyasi",
       instruction: "Obyekt va kalitlar massivi `keys` qabul qilib, faqat ko'rsatilgan kalitlar va ularning qiymatlaridan iborat yangi obyekt qaytaruvchi `pickProperties(obj, keys)` funksiyasini yozing.",
-      startingCode: "function pickProperties(obj, keys) {\n  // Yangi obyekt yarating\n}",
+      startingCode: "function pickProperties<T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {\n  // Yangi obyekt yarating\n}",
       hint: "const res = {}; keys.forEach(k => { if(k in obj) res[k] = obj[k]; }); return res;",
       test: "if (typeof pickProperties !== 'function') return 'pickProperties topilmadi'; const u = { id: 10, name: 'Ali', role: 'admin' }; const res = pickProperties(u, ['name', 'role']); if(res.id !== undefined || res.name !== 'Ali' || res.role !== 'admin') return 'Obyekt maydonlari xato ajratildi'; return null;"
     },
@@ -127,7 +128,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 6,
       title: "Omit (O'chirish) simulyatsiyasi",
       instruction: "Obyekt va o'chirilishi kerak bo'lgan kalitlar massivi `keys` qabul qilib, shu kalitlardan tashqari barcha maydonlarni o'z ichiga oluvchi yangi obyekt qaytaruvchi `omitProperties(obj, keys)` funksiyasini yozing.",
-      startingCode: "function omitProperties(obj, keys) {\n  // Kalitlarni o'chirib qaytaring\n}",
+      startingCode: "function omitProperties<T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {\n  // Kalitlarni o'chirib qaytaring\n}",
       hint: "const res = { ...obj }; keys.forEach(k => delete res[k]); return res;",
       test: "if (typeof omitProperties !== 'function') return 'omitProperties topilmadi'; const u = { id: 1, name: 'Ali', pass: '123' }; const res = omitProperties(u, ['pass']); if(res.pass !== undefined || res.name !== 'Ali') return 'Omit xato ishladi'; return null;"
     },
@@ -135,7 +136,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 7,
       title: "Typeof (JS runtime validation)",
       instruction: "Kiruvchi parametr tipi faqat `string` bo'lganda 'Text', `number` bo'lganda 'Number', boshqa hollarda 'Other' qaytaruvchi `getTypeName(val)` funksiyasini yozing.",
-      startingCode: "function getTypeName(val) {\n  // typeof tekshiruvini bajaring\n}",
+      startingCode: "function getTypeName(val: any): string {\n  // typeof tekshiruvini bajaring\n}",
       hint: "if (typeof val === 'string') return 'Text'; if (typeof val === 'number') return 'Number'; return 'Other';",
       test: "if (typeof getTypeName !== 'function') return 'getTypeName topilmadi'; if(getTypeName('ok') !== 'Text' || getTypeName(5) !== 'Number' || getTypeName(true) !== 'Other') return 'Tipi xato aniqlandi'; return null;"
     },
@@ -143,7 +144,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 8,
       title: "NonNullable (Null bo'lmagan qiymat)",
       instruction: "Qiymat `val` qabul qilib, agar u `null` yoki `undefined` bo'lsa, standart qiymat `defaultVal` ni qaytaruvchi, aks holda `val` ning o'zini qaytaruvchi `getNonNullable(val, defaultVal)` funksiyasini yozing.",
-      startingCode: "function getNonNullable(val, defaultVal) {\n  // Null/undefined tekshiring\n}",
+      startingCode: "function getNonNullable<T>(val: T | null | undefined, defaultVal: T): T {\n  // Null/undefined tekshiring\n}",
       hint: "return (val === null || val === undefined) ? defaultVal : val;",
       test: "if (typeof getNonNullable !== 'function') return 'getNonNullable topilmadi'; if(getNonNullable(null, 'ok') !== 'ok' || getNonNullable('hello', 'ok') !== 'hello') return 'NonNullable tekshiruvi xato'; return null;"
     },
@@ -151,7 +152,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 9,
       title: "Conditional Output",
       instruction: "Agar kiruvchi qiymat string bo'lsa uning kichik harflari bilan, agar son bo'lsa uni stringga o'girib, boshqa hollarda bo'sh string qaytaradigan `conditionalFormat(val)` yozing.",
-      startingCode: "function conditionalFormat(val) {\n  // Kodni yozing\n}",
+      startingCode: "function conditionalFormat(val: string | number | boolean): string {\n  // Kodni yozing\n}",
       hint: "if (typeof val === 'string') return val.toLowerCase(); if (typeof val === 'number') return String(val); return '';",
       test: "if (typeof conditionalFormat !== 'function') return 'conditionalFormat topilmadi'; if(conditionalFormat('HELLO') !== 'hello' || conditionalFormat(123) !== '123' || conditionalFormat(false) !== '') return 'Conditional format xato'; return null;"
     },
@@ -159,7 +160,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 10,
       title: "Mapped Object (Barcha maydonlarni o'zgartirish)",
       instruction: "Berilgan obyektning barcha string qiymatli maydonlarini katta harflarga (uppercase) o'zgartiradigan `mapToUppercase(obj)` funksiyasini yozing.",
-      startingCode: "function mapToUppercase(obj) {\n  // Obyekt maydonlarini aylanib o'zgartiring\n}",
+      startingCode: "function mapToUppercase(obj: Record<string, any>): Record<string, any> {\n  // Obyekt maydonlarini aylanib o'zgartiring\n}",
       hint: "const res = {}; for(let k in obj) { res[k] = typeof obj[k] === 'string' ? obj[k].toUpperCase() : obj[k]; } return res;",
       test: "if (typeof mapToUppercase !== 'function') return 'mapToUppercase topilmadi'; const res = mapToUppercase({ name: 'ali', age: 20 }); if (res.name !== 'ALI' || res.age !== 20) return 'Mapped property o\\'zgartirilmadi'; return null;"
     },
@@ -167,7 +168,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 11,
       title: "Safe Object Read (Strict Key)",
       instruction: "Obyekt va `key` qabul qilib, agar `key` obyektda mavjud bo'lsa uning qiymatini, bo'lmasa 'Key not found' qaytaruvchi `safeRead(obj, key)` yozing.",
-      startingCode: "function safeRead(obj, key) {\n  // Kodni yozing\n}",
+      startingCode: "function safeRead<T extends Record<string, any>>(obj: T, key: string): any {\n  // Kodni yozing\n}",
       hint: "return key in obj ? obj[key] : 'Key not found';",
       test: "if (typeof safeRead !== 'function') return 'safeRead topilmadi'; if (safeRead({x: 1}, 'x') !== 1 || safeRead({x: 1}, 'y') !== 'Key not found') return 'Safe read xato ishladi'; return null;"
     },
@@ -175,7 +176,7 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       id: 12,
       title: "Required parameters validation",
       instruction: "Obyekt va talab qilingan kalitlar massivi `requiredKeys` qabul qilib, obyektda barcha kalitlar borligini tekshiradigan `checkRequired(obj, requiredKeys)` funksiyasini yozing (true/false).",
-      startingCode: "function checkRequired(obj, requiredKeys) {\n  // every dan foydalaning\n}",
+      startingCode: "function checkRequired(obj: Record<string, any>, requiredKeys: string[]): boolean {\n  // every dan foydalaning\n}",
       hint: "return requiredKeys.every(k => k in obj && obj[k] !== undefined);",
       test: "if (typeof checkRequired !== 'function') return 'checkRequired topilmadi'; if (checkRequired({name: 'Ali'}, ['name', 'age']) !== false || checkRequired({name: 'Ali', age: 20}, ['name']) !== true) return 'Validation xato'; return null;"
     }

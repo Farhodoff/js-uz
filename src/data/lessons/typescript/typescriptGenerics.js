@@ -1,6 +1,7 @@
 export const typescriptGenerics = {
   id: "typescriptGenerics",
   title: "Generics (Umumiylashtirish)",
+  language: "typescript",
   theory: `## 1. NEGA kerak?
 Katta loyihalarda har xil turdagi ma'lumotlar bilan ishlaydigan qayta ishlatiladigan (reusable) komponentlar yoki funksiyalar yozish talab qilinadi. Masalan, massivlar bilan ishlaydigan yordamchi funksiya sonlar massivini ham, satrlar massivini ham qayta ishlay olishi kerak.
 Agar biz har bir tip uchun alohida funksiya yozsak, kod hajmi ko'payadi. Agar \`any\` tipini ishlatsak, tiplar xavfsizligidan voz kechgan bo'lamiz.
@@ -89,7 +90,7 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       id: 1,
       title: "Generic Identity funksiyasi",
       instruction: "Uzatilgan istalgan qiymatni o'zini o'zgartirmasdan qaytaradigan generic `identity(arg)` funksiyasini yozing.",
-      startingCode: "function identity(arg) {\n  // Qiymatni qaytaring\n}",
+      startingCode: "function identity<T>(arg: T): T {\n  // Qiymatni qaytaring\n}",
       hint: "return arg;",
       test: "if (typeof identity !== 'function') return 'identity topilmadi'; if(identity(5) !== 5 || identity('test') !== 'test') return 'Identity xato ishladi'; return null;"
     },
@@ -97,7 +98,7 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       id: 2,
       title: "Massiv birinchi elementi (Get First)",
       instruction: "Generic massiv qabul qilib, uning birinchi elementini qaytaradigan `getFirst(arr)` funksiyasini yozing. Massiv bo'sh bo'lsa `undefined` qaytarilsin.",
-      startingCode: "function getFirst(arr) {\n  // Birinchi elementni qaytaring\n}",
+      startingCode: "function getFirst<T>(arr: T[]): T | undefined {\n  // Birinchi elementni qaytaring\n}",
       hint: "return arr[0];",
       test: "if (typeof getFirst !== 'function') return 'getFirst topilmadi'; if (getFirst([10, 20]) !== 10 || getFirst([]) !== undefined) return 'Birinchi element xato olinmoqda'; return null;"
     },
@@ -105,7 +106,7 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       id: 3,
       title: "Massiv oxirgi elementi (Get Last)",
       instruction: "Generic massiv qabul qilib, uning eng oxirgi elementini qaytaradigan `getLast(arr)` funksiyasini yozing.",
-      startingCode: "function getLast(arr) {\n  // Oxirgi elementni qaytaring\n}",
+      startingCode: "function getLast<T>(arr: T[]): T | undefined {\n  // Oxirgi elementni qaytaring\n}",
       hint: "return arr[arr.length - 1];",
       test: "if (typeof getLast !== 'function') return 'getLast topilmadi'; if(getLast(['a', 'b', 'c']) !== 'c') return 'Oxirgi element xato olindi'; return null;"
     },
@@ -113,7 +114,7 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       id: 4,
       title: "Ikki massivni birlashtirish",
       instruction: "Ikkita bir xil tipdagi massivlarni qabul qilib, ularni bitta massivga birlashtirib qaytaruvchi `mergeArrays(arr1, arr2)` funksiyasini yozing.",
-      startingCode: "function mergeArrays(arr1, arr2) {\n  // Massivlarni birlashtiring\n}",
+      startingCode: "function mergeArrays<T>(arr1: T[], arr2: T[]): T[] {\n  // Massivlarni birlashtiring\n}",
       hint: "return [...arr1, ...arr2];",
       test: "if (typeof mergeArrays !== 'function') return 'mergeArrays topilmadi'; const res = mergeArrays([1, 2], [3, 4]); if(res.length !== 4 || res[2] !== 3) return 'Birlashma xato'; return null;"
     },
@@ -121,7 +122,7 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       id: 5,
       title: "Generic Key-Value Pair",
       instruction: "Generic `key` va `value` qiymatlarini qabul qilib, `{ key, value }` obyektini qaytaradigan `createPair(key, value)` funksiyasini yozing.",
-      startingCode: "function createPair(key, value) {\n  // Obyekt qaytaring\n}",
+      startingCode: "function createPair<K, V>(key: K, value: V): { key: K; value: V } {\n  // Obyekt qaytaring\n}",
       hint: "return { key, value };",
       test: "if (typeof createPair !== 'function') return 'createPair topilmadi'; const pair = createPair('age', 25); if(pair.key !== 'age' || pair.value !== 25) return 'Pair xato yaratildi'; return null;"
     },
@@ -129,7 +130,7 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       id: 6,
       title: "Constraint: Length mulki",
       instruction: "Tarkibida `.length` xossasi bor bo'lgan har qanday obyekt (massiv, string) qabul qilib, uning uzunligini qaytaradigan `getLength(obj)` funksiyasini yozing (bu TS-da `T extends { length: number }` cheklovi bilan yoziladi).",
-      startingCode: "function getLength(obj) {\n  // .length xossasini qaytaring\n}",
+      startingCode: "function getLength<T extends { length: number }>(obj: T): number {\n  // .length xossasini qaytaring\n}",
       hint: "return obj.length;",
       test: "if (typeof getLength !== 'function') return 'getLength topilmadi'; if(getLength('hello') !== 5 || getLength([1, 2, 3]) !== 3) return 'Uzunlik xato aniqlandi'; return null;"
     },
@@ -137,7 +138,7 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       id: 7,
       title: "KeyOf constraint simulyatsiyasi",
       instruction: "Obyekt `obj` va kalit `key` qabul qilib, obyekt ichidagi shu kalit qiymatni qaytaradigan `getProperty(obj, key)` funksiyasini yozing.",
-      startingCode: "function getProperty(obj, key) {\n  // Kalit qiymatni qaytaring\n}",
+      startingCode: "function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {\n  // Kalit qiymatni qaytaring\n}",
       hint: "return obj[key];",
       test: "if (typeof getProperty !== 'function') return 'getProperty topilmadi'; if(getProperty({ name: 'Ali' }, 'name') !== 'Ali') return 'Property xato qaytarildi'; return null;"
     },
@@ -145,23 +146,23 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       id: 8,
       title: "Generic Box klassi",
       instruction: "Istalgan qiymatni saqlaydigan `value` maydoniga va unga qiymat yozadigan `setValue(val)`, qiymat o'qiydigan `getValue()` metodlariga ega `Box` klassini yozing.",
-      startingCode: "class Box {\n  // Klassni to'ldiring\n}",
-      hint: "constructor() { this.value = null; } setValue(val) { this.value = val; } getValue() { return this.value; }",
+      startingCode: "class Box<T> {\n  private value: T | null = null;\n  // Metodlarni yozing\n}",
+      hint: "setValue(val: T): void {\n    this.value = val;\n  }\n  getValue(): T | null {\n    return this.value;\n  }",
       test: "if (typeof Box !== 'function') return 'Box klassi topilmadi'; const box = new Box(); box.setValue('token'); if(box.getValue() !== 'token') return 'Box klassi xato ishladi'; return null;"
     },
     {
       id: 9,
       title: "Generic Queue (Navbat)",
       instruction: "Generic ma'lumotlar bilan ishlaydigan, `enqueue(item)` (oxiriga qo'shish) va `dequeue()` (boshidan o'chirish va qaytarish) metodlari bor `Queue` klassini yozing.",
-      startingCode: "class Queue {\n  constructor() { this.data = []; }\n  // Metodlarni yozing\n}",
-      hint: "enqueue(item) { this.data.push(item); } dequeue() { return this.data.shift(); }",
+      startingCode: "class Queue<T> {\n  private data: T[] = [];\n  // Metodlarni yozing\n}",
+      hint: "enqueue(item: T): void {\n    this.data.push(item);\n  }\n  dequeue(): T | undefined {\n    return this.data.shift();\n  }",
       test: "if (typeof Queue !== 'function') return 'Queue topilmadi'; const q = new Queue(); q.enqueue(1); q.enqueue(2); if(q.dequeue() !== 1 || q.dequeue() !== 2) return 'Navbat FIFO qoidasi buzildi'; return null;"
     },
     {
       id: 10,
       title: "Massiv nusxalash (Generic Copy)",
       instruction: "Berilgan massivning nusxasini (shallow copy) yaratib qaytaradigan generic `copyArray(arr)` funksiyasini yozing.",
-      startingCode: "function copyArray(arr) {\n  // slice yordamida nusxalang\n}",
+      startingCode: "function copyArray<T>(arr: T[]): T[] {\n  // slice yordamida nusxalang\n}",
       hint: "return arr.slice();",
       test: "if (typeof copyArray !== 'function') return 'copyArray topilmadi'; const a = [1, 2]; const b = copyArray(a); if(a === b || b[1] !== 2) return 'Nusxalash xato'; return null;"
     },
@@ -169,7 +170,7 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       id: 11,
       title: "Obyekt qoplama (Generic Wrapper)",
       instruction: "Uzatilgan qiymatni `{ data: val }` obyektiga o'rab qaytaradigan generic `wrapData(val)` funksiyasini yozing.",
-      startingCode: "function wrapData(val) {\n  // Obyekt qaytaring\n}",
+      startingCode: "function wrapData<T>(val: T): { data: T } {\n  // Obyekt qaytaring\n}",
       hint: "return { data: val };",
       test: "if (typeof wrapData !== 'function') return 'wrapData topilmadi'; const w = wrapData(100); if(w.data !== 100) return 'Wrapper xato yaratildi'; return null;"
     },
@@ -177,8 +178,8 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       id: 12,
       title: "Tarix saqlovchi (History Tracker)",
       instruction: "Klassda `list` (array) maydoni bo'lsin. Yangi qiymat qo'shadigan `add(item)` va oxirgi 3 ta qo'shilgan elementlar ro'yxatini qaytaradigan `getHistory()` metodlari bor `HistoryTracker` klassini yozing.",
-      startingCode: "class HistoryTracker {\n  constructor() { this.list = []; }\n  // Metodlarni yozing\n}",
-      hint: "add(item) { this.list.push(item); } getHistory() { return this.list.slice(-3); }",
+      startingCode: "class HistoryTracker<T> {\n  private list: T[] = [];\n  // Metodlarni yozing\n}",
+      hint: "add(item: T): void {\n    this.list.push(item);\n  }\n  getHistory(): T[] {\n    return this.list.slice(-3);\n  }",
       test: "if (typeof HistoryTracker !== 'function') return 'HistoryTracker topilmadi'; const tracker = new HistoryTracker(); tracker.add('a'); tracker.add('b'); tracker.add('c'); tracker.add('d'); if(tracker.getHistory().length !== 3 || tracker.getHistory()[0] !== 'b') return 'Tarix noto\\'g\\'ri qaytarildi'; return null;"
     }
   ],
