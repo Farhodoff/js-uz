@@ -24,7 +24,48 @@ class Node {
 }
 \`\`\`
 
-## 4. AMALIYOT (Mashqlar pastda)
+## 4. AMALIYOT
+Keling, JavaScript-da bir tomonlama bog'langan ro'yxatni (Singly Linked List) qo'lda qanday yozish va uning ustida ishlashni ko'rib chiqamiz:
+
+### 1. Tugun (Node) klassini yaratish
+Har bir tugun bitta qiymat va keyingi tugunga havola (next) saqlashi kerak:
+\`\`\`javascript
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null; // Dastlab hech qayerga ko'rsatmaydi
+  }
+}
+\`\`\`
+
+### 2. Tugunlarni yaratish va qo'lda bog'lash
+Biz 3 ta tugun yaratib, ularni bir-biriga ulaymiz:
+\`\`\`javascript
+const nodeA = new Node(10); // [10 | null]
+const nodeB = new Node(20); // [20 | null]
+const nodeC = new Node(30); // [30 | null]
+
+// Ulash: nodeA -> nodeB -> nodeC
+nodeA.next = nodeB; // nodeA endi nodeB ni ko'rsatadi: [10 | next] -> [20 | null]
+nodeB.next = nodeC; // nodeB endi nodeC ni ko'rsatadi: [20 | next] -> [30 | null]
+
+// nodeA - bu zanjirning Head (boshi), nodeC esa Tail (oxiri). nodeC.next qiymati null.
+\`\`\`
+
+### 3. Zanjir bo'ylab yurish (Traversal)
+Linked List bo'ylab barcha elementlarni ekranga chiqarish uchun biz \`head\` dan boshlab \`next\` orqali zanjir oxirigacha boramiz:
+\`\`\`javascript
+let current = nodeA; // Boshidan boshlaymiz
+
+while (current !== null) {
+  console.log("Tugun qiymati:", current.value);
+  current = current.next; // Keyingi tugunga o'tamiz
+}
+// Konsolda: 10, keyin 20, keyin 30 chiqadi. Keyin current null bo'lib, sikl tugaydi.
+\`\`\`
+
+**Xulosa:** Linked List-da har bir tugun faqat o'zidan keyingi elementning xotiradagi manzilini biladi. Bu massiv kabi indekslar bo'lmagani uchun elementlarni qidirishni chiziqli ($O(n)$) qilsa-da, yangi element qo'shish yoki havolalarni almashtirishni juda oson qiladi.
+
 
 ## 5. XATOLAR (Common mistakes)
 1. **Zanjirni uzib qo'yish (Lost references):** Elementni o'chirish yoki o'rtasiga qo'shish paytida havolalarni to'g'ri bog'lamaslik zanjirning qolgan qismi xotirada yo'qolishiga (Garbage Collection tomonidan o'chirilishiga) olib keladi.

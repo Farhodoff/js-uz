@@ -29,7 +29,57 @@ class Node {
 }
 \`\`\`
 
-## 4. AMALIYOT (Mashqlar pastda)
+## 4. AMALIYOT
+Keling, JavaScript-da Ikkilik Qidiruv Daraxtini (BST) qo'lda qanday yaratish va undan element izlashni amalda ko'ramiz:
+
+### 1. BST Tuguni (BSTNode) va Qidiruv Funksiyasi
+Quyidagi kodda biz daraxt tugunlari va berilgan qiymatni rekursiv qidiradigan sodda funksiyani yozamiz:
+\`\`\`javascript
+class BSTNode {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+// Daraxtda rekursiv qidiruv (Search) algoritmi
+function search(node, target) {
+  // 1. Agar tugun bo'sh bo'lsa - target topilmadi
+  if (node === null) return null;
+
+  // 2. Agar qiymat teng bo'lsa - topildi, tugunning o'zini qaytaramiz
+  if (node.value === target) return node;
+
+  // 3. Agar target kichik bo'lsa chap shoxga, katta bo'lsa o'ng shoxga o'tamiz
+  if (target < node.value) {
+    return search(node.left, target);
+  } else {
+    return search(node.right, target);
+  }
+}
+\`\`\`
+
+### 2. Daraxtni qo'lda tuzish va sinash
+Quyidagi daraxtni qo'lda yig'amiz:
+//        20 (Root)
+//       /  \
+//      10   30
+\`\`\`javascript
+const root = new BSTNode(20);
+root.left = new BSTNode(10);
+root.right = new BSTNode(30);
+
+// Qidiruvni sinash:
+const result1 = search(root, 30);
+console.log(result1 ? "Topildi: " + result1.value : "Topilmadi"); // Konsolda: Topildi: 30
+
+const result2 = search(root, 15);
+console.log(result2 ? "Topildi: " + result2.value : "Topilmadi"); // Konsolda: Topilmadi
+\`\`\`
+
+**Xulosa:** Ikkilik qidiruv daraxti har safar targetni joriy tugun bilan solishtiradi va qidiruv doirasini ikki barobarga (chapga yoki o'ngga) kamaytirib boradi. Bu uning $O(\\log n)$ vaqt murakkabligida ishlashiga xizmat qiladi.
+
 
 ## 5. XATOLAR (Common mistakes)
 1. **Daraxt muvozanati buzilishi (Skewed Tree):** Agar daraxtga elementlar tartiblangan holda qo'shilsa (masalan, 1, 2, 3, 4, 5), daraxt bir chiziq bo'lib o'ngga qarab o'sib ketadi. Bu holatda BST oddiy Linked Listga aylanib qoladi va uning tezligi $O(\\log n)$ dan $O(n)$ ga tushib ketadi. Buni oldini olish uchun Self-Balancing daraxtlar (AVL, Red-Black Trees) ishlatiladi.

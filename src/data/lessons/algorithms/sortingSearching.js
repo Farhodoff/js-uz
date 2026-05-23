@@ -26,7 +26,62 @@ Eng ko'p qo'llaniladigan algoritmlar sinfi:
 4. **Merge Sort:** Divide and Conquer (Bo'l va hukmronlik qil) printsipi. Massivni o'rtasidan bo'lib saralaydi va birlashtiradi. Murakkabligi: $O(n \\log n)$ (Har doim).
 5. **Quick Sort:** Pivot (tayanch) element tanlab, undan kichiklarini chapga, kattalarini o'ngga yig'adi va rekursiv davom etadi. Murakkabligi: $O(n \\log n)$ (eng yomon holatda $O(n^2)$).
 
-## 4. AMALIYOT (Mashqlar pastda)
+## 4. AMALIYOT
+Keling, JavaScript-da eng mashhur ikkita algoritm — Bubble Sort va Binary Search amaliy yozilishini ko'rib chiqamiz:
+
+### 1. Saralash: Bubble Sort (Pufakchali saralash)
+Quyidagi kod massivni o'sish tartibida saralaydi. U ichma-ich sikllar orqali qo'shni elementlarni taqqoslaydi va kattasini o'ngga suradi:
+\`\`\`javascript
+function bubbleSort(arr) {
+  let n = arr.length;
+  for (let i = 0; i < n; i++) {
+    // Oxirgi i ta element allaqachon o'z o'rnida bo'ladi
+    for (let j = 0; j < n - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        // O'rin almashtirish (Swap)
+        let temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
+    }
+  }
+  return arr;
+}
+
+console.log(bubbleSort([35, 12, 45, 8])); // Natija: [8, 12, 35, 45]
+\`\`\`
+
+### 2. Qidiruv: Binary Search (Ikkilik qidiruv)
+Binary Search faqat saralangan massivda ishlaydi. U pastki (low) va yuqori (high) chegaralar orqali qidiruv doirasini har bir qadamda yarmiga qisqartiradi:
+\`\`\`javascript
+function binarySearch(arr, target) {
+  let low = 0;
+  let high = arr.length - 1;
+
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+
+    if (arr[mid] === target) {
+      return mid; // Target indeksini qaytaramiz (topildi!)
+    }
+    
+    if (arr[mid] < target) {
+      low = mid + 1; // O'ng tomondan qidiramiz
+    } else {
+      high = mid - 1; // Chap tomondan qidiramiz
+    }
+  }
+  
+  return -1; // Topilmadi
+}
+
+const sortedArr = [8, 12, 19, 22, 31, 35, 45, 50];
+console.log(binarySearch(sortedArr, 22)); // Natija: 3 (22 soni 3-indeksda joylashgan)
+console.log(binarySearch(sortedArr, 10)); // Natija: -1 (mavjud emas)
+\`\`\`
+
+**Xulosa:** Bubble Sort sodda bo'lsa-da sekin ($O(n^2)$), Binary Search esa o'ta tez ($O(\\log n)$) lekin ma'lumotlar avvaldan saralangan bo'lishini talab qiladi.
+
 
 ## 5. XATOLAR (Common mistakes)
 1. **Saralanmagan massivda Binary Search ishlatish:** Binary Search ishlashi uchun massiv mutlaqo saralangan bo'lishi shart. Aks holda u noto'g'ri natija beradi yoki elementni topa olmaydi.

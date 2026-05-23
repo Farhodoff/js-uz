@@ -16,7 +16,67 @@ Ushbu darsda quyidagi klassik naqshlar (patterns) bo'yicha masalalarni ko'ramiz:
 3. **Hash Map (Assotsiativ massiv):** Qidiruv vaqtini $O(n)$ dan $O(1)$ gacha qisqartirish uchun xotiradan unumli foydalanish.
 4. **Dynamic Programming (Dinamik dasturlash):** Katta muammoni kichik bo'laklarga ajratib, oraliq natijalarni saqlab borish (Memoization).
 
-## 4. AMALIYOT (Mashqlar pastda)
+## 4. AMALIYOT
+Keling, suhbatlarda eng ko'p so'raladigan ikkita klassik LeetCode masalasining amaliy JavaScript yechimi va tahlilini ko'rib chiqamiz:
+
+### 1. Two Sum (Yig'indi qiymati - O(n) vaqt)
+Bizga sonlar massivi va target beriladi. Massivdagi yig'indisi target ga teng bo'lgan ikkita sonning indekslarini qaytarishimiz kerak:
+\`\`\`javascript
+function twoSum(nums, target) {
+  const map = new Map(); // Son va uning indeksini saqlash uchun kesh
+
+  for (let i = 0; i < nums.length; i++) {
+    const complement = target - nums[i]; // Target-ga yetmagan farq
+    
+    // Agar farq oldin ko'rilgan bo'lsa - yechim topildi!
+    if (map.has(complement)) {
+      return [map.get(complement), i];
+    }
+    
+    // Ko'rilmagan bo'lsa joriy son va indeksni saqlaymiz
+    map.set(nums[i], i);
+  }
+  return [];
+}
+
+console.log(twoSum([2, 7, 11, 15], 9)); // Natija: [0, 1] (chunki nums[0] + nums[1] = 9)
+\`\`\`
+
+### 2. Valid Parentheses (Qavslar balansi - O(n) vaqt)
+Berilgan qavslar ketma-ketligi (faqat \`()\`, \`[]\`, \`{}\`) to'g'ri juftlanganligini tekshirish:
+\`\`\`javascript
+function isValid(s) {
+  const stack = [];
+  const map = {
+    ")": "(",
+    "}": "{",
+    "]": "["
+  };
+
+  for (let char of s) {
+    // Agar ochuvchi qavs bo'lsa - stekka joylaymiz
+    if (char === "(" || char === "{" || char === "[") {
+      stack.push(char);
+    } else {
+      // Yopuvchi bo'lsa - stek boshidagi oxirgi ochuvchini olamiz
+      const topElement = stack.pop();
+      // Agar mos kelmasa - noto'g'ri ketma-ketlik
+      if (map[char] !== topElement) {
+        return false;
+      }
+    }
+  }
+  
+  // Agar stek to'liq bo'shab qolsa - hamma qavslar to'g'ri yopilgan
+  return stack.length === 0;
+}
+
+console.log(isValid("{[()]}")); // Natija: true
+console.log(isValid("[(])"));   // Natija: false (yopilish tartibi xato)
+\`\`\`
+
+**Xulosa:** Ushbu masalalarni stek va Hash Map yordamida yechish vaqt murakkabligini chiziqli $O(n)$ darajasiga tushirib beradi.
+
 
 ## 5. XATOLAR (Common mistakes)
 1. **Brute Force yechim bilan cheklanish:** Masalan, "Two Sum" masalasini ichma-ich ikkita sikl bilan yechish ($O(n^2)$). Bu to'g'ri javob bersa-da, suhbat oluvchini qoniqtirmaydi. Har doim vaqt murakkabligini $O(n)$ ga tushirish yo'llarini izlash kerak.

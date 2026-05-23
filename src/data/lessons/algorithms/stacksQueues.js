@@ -23,7 +23,53 @@ Stack va Queue-ni massiv (Array) yoki bog'langan ro'yxat (Linked List) yordamida
 2. \`dequeue()\`: Navbat boshidagi elementni o'chiradi va qaytaradi ($O(1)$).
 3. \`peek()\`: Navbat boshidagi elementni ko'rish ($O(1)$).
 
-## 4. AMALIYOT (Mashqlar pastda)
+## 4. AMALIYOT
+Keling, JavaScript-da Stack va Queue-ni oddiy massivlar (Arrays) yordamida qanday shakllantirishni ko'rib chiqamiz:
+
+### 1. Stack (Stek) namunasi: Brauzer Tarixi (LIFO)
+Brauzerning "Orqaga" (Back) tugmasi ishlashini stek yordamida simulyatsiya qilamiz. Biz massivning \`.push()\` va \`.pop()\` metodlaridan foydalanamiz. Ular massiv oxiriga element qo'shadi va o'chiradi ($O(1)$ tezlikda):
+\`\`\`javascript
+const historyStack = [];
+
+// Sahifalarga tashrif buyurish (Push - Stek tepasiga qo'shish)
+historyStack.push("google.com");
+historyStack.push("github.com");
+historyStack.push("youtube.com");
+
+console.log("Tarix steki:", historyStack); 
+// Natija: ["google.com", "github.com", "youtube.com"]
+
+// "Orqaga" tugmasini bosish (Pop - Stek tepasidan element olish)
+const lastPage = historyStack.pop(); 
+console.log("Qaytilgan sahifa:", lastPage); // Natija: "youtube.com" (LIFO - oxirgi kirgan sahifa birinchi chiqdi)
+
+console.log("Qolgan tarix:", historyStack); 
+// Natija: ["google.com", "github.com"]
+\`\`\`
+
+### 2. Queue (Navbat) namunasi: Printer Navbati (FIFO)
+Printerga yuborilgan hujjatlarni navbat bilan chop etishni simulyatsiya qilamiz. Hujjatlar oxiriga qo'shiladi (\`.push()\`), lekin boshidan olinadi (\`.shift()\`):
+\`\`\`javascript
+const printQueue = [];
+
+// Hujjatlarni navbatga qo'shish (Enqueue - Navbat oxiriga qo'shish)
+printQueue.push("hujjat1.pdf");
+printQueue.push("hujjat2.docx");
+printQueue.push("rasm.png");
+
+console.log("Printer navbati:", printQueue);
+// Natija: ["hujjat1.pdf", "hujjat2.docx", "rasm.png"]
+
+// Birinchi hujjatni chop etish (Dequeue - Navbat boshidan olish)
+const printedDoc = printQueue.shift(); // .shift() birinchi elementni olib tashlaydi
+console.log("Chop etilgan hujjat:", printedDoc); // Natija: "hujjat1.pdf" (FIFO - birinchi kelgan birinchi chop etildi)
+
+console.log("Qolgan navbat:", printQueue);
+// Natija: ["hujjat2.docx", "rasm.png"]
+\`\`\`
+
+**Xulosa:** Stack va Queue amaliy dasturlashda ma'lumotlar ketma-ketligi va tartibini to'g'ri boshqarish uchun eng ko'p ishlatiladigan fundamental tuzilmalardir.
+
 
 ## 5. XATOLAR (Common mistakes)
 1. **Stek to'lib ketishi (Stack Overflow):** Rekursiya yoki ma'lumotlar limiti oshib ketganda stek xotirasi tugashi.

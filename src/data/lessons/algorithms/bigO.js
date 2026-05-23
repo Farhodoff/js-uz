@@ -20,7 +20,33 @@ Eng ko'p uchraydigan vaqt murakkabligi sinflari (yaxshisidan yomoniga qarab):
 6. **$O(2^n)$ — Exponential Time (Eksponential):** Muammo o'sishi bilan amallar soni keskin (ikki barobar) ortadi. (Masalan, rekursiv Fibonacci).
 7. **$O(n!)$ — Factorial Time (Faktorial):** Eng yomon murakkablik. (Masalan, sayohatchi sotuvchi muammosi).
 
-## 4. AMALIYOT (Mashqlar pastda)
+## 4. AMALIYOT
+Keling, Big O nima ekanligini amaliy misolda ko'ramiz. Bizda 1 dan $n$ gacha bo'lgan sonlar yig'indisini hisoblash vazifasi bor:
+
+### Usul 1: Sikl orqali hisoblash ($O(n)$ - Chiziqli vaqt)
+Bu usulda biz 1 dan $n$ gacha har bir sonni aylanib chiqib qo'shib boramiz:
+\`\`\`javascript
+function sumLinear(n) {
+  let total = 0;
+  for (let i = 1; i <= n; i++) {
+    total += i; // Bu amal n marta bajariladi
+  }
+  return total;
+}
+\`\`\`
+**Tahlil:** Agar $n = 100$ bo'lsa, sikl 100 marta aylanadi va 100 ta amal bajariladi. Agar $n = 1,000,000$ bo'lsa, 1 millionta amal bajariladi. Vaqt kirish o'lchamiga ($n$) to'g'ri mutanosib o'sadi. Murakkablik: **$O(n)$**.
+
+### Usul 2: Matematik formula orqali ($O(1)$ - O'zgarmas vaqt)
+Karlo Gauss formulasi yordamida yig'indini siklsiz, bir zumda hisoblash mumkin:
+\`\`\`javascript
+function sumConstant(n) {
+  return (n * (n + 1)) / 2; // Atigi 3 ta matematik amal: qo'shish, ko'paytirish, bo'lish
+}
+\`\`\`
+**Tahlil:** Bu yerda hech qanday sikl yo'q. $n = 100$ bo'ladimi yoki $n = 1,000,000,000$ bo'ladimi, kompyuter atigi 3 ta amal bajaradi. Kod har doim bir xil vaqtda (mikrosoniyalarda) bajariladi. Murakkablik: **$O(1)$**.
+
+**Xulosa:** Katta ma'lumotlar bilan ishlaganda $O(1)$ algoritm $O(n)$ ga qaraganda minglab marta tezroq ishlaydi va tizim resurslarini tejaydi.
+
 
 ## 5. XATOLAR (Common mistakes)
 1. **Konstantalarni hisobga olish:** Big O faqat o'sish tendensiyasini o'lchaydi. $O(2n + 5)$ murakkablikdagi algoritmdan konstantalarni olib tashlab, shunchaki $O(n)$ deb yoziladi.
