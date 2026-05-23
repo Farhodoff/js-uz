@@ -6,6 +6,7 @@ import TheoryTab from "./components/TheoryTab";
 import PracticeTab from "./components/PracticeTab";
 import QuizTab from "./components/QuizTab";
 import AiTab from "./components/AiTab";
+import VisualizerTab from "./components/VisualizerTab";
 import { useLesson } from "./hooks/useLesson";
 import { useCodeRunner } from "./hooks/useCodeRunner";
 import { useAI } from "./hooks/useAI";
@@ -174,28 +175,30 @@ function LessonPage() {
               <div className="pane-divider-handle"></div>
             </div>
 
-            {/* Right: Practice / Quiz */}
+            {/* Right: Practice / Quiz / Visualizer */}
             <div className="pane" style={{ width: `${100 - leftWidth}%` }}>
-              {activeLesson.exercises?.length > 0 && activeLesson.quizzes?.length > 0 ? (
-                <div className="pane-tabs-header">
+              <div className="pane-tabs-header">
+                <button
+                  className={`pane-tab-btn ${activeRightTab === "practice" ? "active" : ""}`}
+                  onClick={() => setActiveRightTab("practice")}
+                >
+                  💻 Amaliyot
+                </button>
+                <button
+                  className={`pane-tab-btn ${activeRightTab === "quiz" ? "active" : ""}`}
+                  onClick={() => setActiveRightTab("quiz")}
+                >
+                  📝 Testlar
+                </button>
+                {activeSection === "algorithms" && (
                   <button
-                    className={`pane-tab-btn ${activeRightTab === "practice" ? "active" : ""}`}
-                    onClick={() => setActiveRightTab("practice")}
+                    className={`pane-tab-btn ${activeRightTab === "visualizer" ? "active" : ""}`}
+                    onClick={() => setActiveRightTab("visualizer")}
                   >
-                    💻 Amaliyot
+                    📊 Visualizatsiya
                   </button>
-                  <button
-                    className={`pane-tab-btn ${activeRightTab === "quiz" ? "active" : ""}`}
-                    onClick={() => setActiveRightTab("quiz")}
-                  >
-                    📝 Testlar
-                  </button>
-                </div>
-              ) : (
-                <div className="pane-label">
-                  {activeRightTab === "practice" ? "💻 Amaliyot" : "📝 Testlar"}
-                </div>
-              )}
+                )}
+              </div>
 
               {activeRightTab === "practice" ? (
                 <PracticeTab
@@ -210,11 +213,26 @@ function LessonPage() {
                   output={output}
                   outputRef={outputRef}
                 />
-              ) : (
+              ) : activeRightTab === "quiz" ? (
                 <QuizTab
                   activeLesson={activeLesson}
                   completedQuizzes={progress.completed}
                   onCompleteQuiz={handleCompleteQuiz}
+                />
+              ) : activeSection === "algorithms" ? (
+                <VisualizerTab activeLesson={activeLesson} />
+              ) : (
+                <PracticeTab
+                  code={code}
+                  setCode={setCode}
+                  runCode={handleRunCode}
+                  showHint={showHint}
+                  setShowHint={setShowHint}
+                  activeLesson={activeLesson}
+                  currentExerciseIndex={currentExerciseIndex}
+                  setCurrentExerciseIndex={setCurrentExerciseIndex}
+                  output={output}
+                  outputRef={outputRef}
                 />
               )}
             </div>
