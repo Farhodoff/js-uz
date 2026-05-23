@@ -98,6 +98,13 @@ import { starMethod } from "./lessons/soft-skills/starMethod";
 import { behavioralQuestions } from "./lessons/soft-skills/behavioralQuestions";
 import { resumeOptimization } from "./lessons/soft-skills/resumeOptimization";
 
+import { typescriptBasics } from "./lessons/typescript/typescriptBasics";
+import { interfacesTypes } from "./lessons/typescript/interfacesTypes";
+import { typescriptFunctions } from "./lessons/typescript/typescriptFunctions";
+import { typescriptClasses } from "./lessons/typescript/typescriptClasses";
+import { typescriptGenerics } from "./lessons/typescript/typescriptGenerics";
+import { advancedTypes } from "./lessons/typescript/advancedTypes";
+
 import { todoList } from "./lessons/projects/todoList";
 import { weatherApp } from "./lessons/projects/weatherApp";
 
@@ -138,6 +145,12 @@ export const curriculum = {
     icon: "⚙️",
     lessons: [reactArchitecture, nodeArchitecture]
   },
+  typescript: {
+    label: "TypeScript",
+    color: "#3178c6",
+    icon: "📘",
+    lessons: [typescriptBasics, interfacesTypes, typescriptFunctions, typescriptClasses, typescriptGenerics, advancedTypes]
+  },
   softSkills: {
     label: "Suhbat madaniyati",
     color: "#a86ac9",
@@ -152,5 +165,5 @@ export const curriculum = {
   }
 };
 
-export const SECTIONS = ["beginner", "intermediate", "advanced", "algorithms", "systemDesign", "ecosystem", "softSkills", "projects"];
+export const SECTIONS = ["beginner", "intermediate", "advanced", "algorithms", "systemDesign", "ecosystem", "typescript", "softSkills", "projects"];
 
