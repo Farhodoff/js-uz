@@ -106,7 +106,7 @@ export const curriculum = {
     label: "Boshlang'ich",
     color: "#c8a96e",
     icon: "🟢",
-    lessons: [cheatSheet, interviewQuestionsBeginner, jsWhat, templateLiterals, consoleMethods, variables, dataTypesLesson, moreDataTypesLesson, typeConversionLesson, typeCasting, implicitCasting, ifElseLesson, switchLesson, equalityAlgorithms, primitivesVsObjects, stringMethods, mathObject, jsGotchas, scopeLesson, functionScopeLesson, blockScopeLesson, globalScopeLesson, hoistingThisLesson, executionContextLesson, typeofLesson, operators, loops, breakContinue, functions, arrays, objects]
+    lessons: [jsWhat, consoleMethods, variables, dataTypesLesson, moreDataTypesLesson, typeofLesson, operators, typeConversionLesson, typeCasting, implicitCasting, ifElseLesson, switchLesson, equalityAlgorithms, loops, breakContinue, functions, arrays, objects, primitivesVsObjects, stringMethods, mathObject, templateLiterals, scopeLesson, globalScopeLesson, functionScopeLesson, blockScopeLesson, hoistingThisLesson, executionContextLesson, jsGotchas, cheatSheet, interviewQuestionsBeginner]
   },
   intermediate: {
     label: "O'rta daraja",
@@ -118,7 +118,7 @@ export const curriculum = {
     label: "Murakkab",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [interviewQuestionsAdvanced, securityLesson, unitTesting, metaprogramming, advancedFetch, closuresDeepDive, callbacksLesson, promises, asyncAwait, fetchApi, eventLoopDeep, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, prototypesLesson, localStorageLesson, errorHandling, modulesLesson, debugging, closuresLesson, eventLoopLesson, regexLesson, symbolsGenerators, debounceThrottle, jsPitfalls, problemSolving, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa]
+    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, symbolsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, interviewQuestionsAdvanced]
   },
   algorithms: {
     label: "Algoritmlar",
