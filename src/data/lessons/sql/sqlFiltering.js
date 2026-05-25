@@ -90,6 +90,70 @@ Ustunga ma'lumot kiritilmagan (bo'sh qolgan) qatorlarni aniqlash uchun ishlatila
       startingCode: "-- SQL so'rovini yozing\n",
       hint: "SELECT * FROM users WHERE city = 'Toshkent' OR role != 'User'",
       test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Jami 4 ta foydalanuvchi shartga mos keladi'; return null;"
+    },
+    {
+      id: 5,
+      title: "And sharti bilan filtrlash",
+      instruction: "`users` jadvalidan yoshi (`age`) 25 dan katta bo'lgan va shahri (`city`) 'Toshkent' bo'lgan foydalanuvchilarni tanlang.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users WHERE age > 25 AND city = 'Toshkent'",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1 || result[0].name !== 'Dilshod') return 'Faqat 35 yoshli Toshkentlik Dilshod chiqishi kerak'; return null;"
+    },
+    {
+      id: 6,
+      title: "Roldan tashqari foydalanuvchilar (NOT IN)",
+      instruction: "`users` jadvalidan roli (`role`) 'Admin' yoki 'Manager' bo'lmagan barcha foydalanuvchilarni oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users WHERE role NOT IN ('Admin', 'Manager')",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Admin va Manager bo\\'lmagan jami 3 ta foydalanuvchi bor'; return null;"
+    },
+    {
+      id: 7,
+      title: "Ismda 'a' harfi borlar",
+      instruction: "`users` jadvalidan ismi tarkibida 'a' harfi qatnashgan barcha foydalanuvchilarni oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users WHERE name LIKE '%a%'",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Ismida a harfi bor 4 kishi bor (Ali, Vali, Sardor, Madina)'; return null;"
+    },
+    {
+      id: 8,
+      title: "Murakkab mantiqiy filtrlash",
+      instruction: "`users` jadvalidan roli 'Admin' bo'lgan yoki yoshi 30 dan kichik bo'lgan barcha foydalanuvchilarni oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users WHERE role = 'Admin' OR age < 30",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Ushbu shartga 3 kishi mos keladi'; return null;"
+    },
+    {
+      id: 9,
+      title: "Mahsulotlar narxi filtri",
+      instruction: "`products` jadvalidan narxi (`price`) 100 dan 900 gacha bo'lgan barcha mahsulotlarni tanlang.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM products WHERE price BETWEEN 100 AND 900",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Ushbu narx oralig\\'ida 3 ta mahsulot bor (Phone, Desk, Chair)'; return null;"
+    },
+    {
+      id: 10,
+      title: "Ombor qoldig'i filtri",
+      instruction: "`products` jadvalidan ombor qoldig'i (`stock`) 10 dan kam bo'lgan yoki toifasi (`category`) 'Furniture' bo'lgan mahsulotlarni oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM products WHERE stock < 10 OR category = 'Furniture'",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Ushbu shartga 2 ta mahsulot mos keladi (Desk, Chair)'; return null;"
+    },
+    {
+      id: 11,
+      title: "Buyurtmalar miqdori filtri",
+      instruction: "`orders` jadvalidan buyurtma summasi (`amount`) 50 dan kam bo'lgan barcha buyurtmalarni tanlang.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM orders WHERE amount < 50",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Summasi 50 dan kam bo\\'lgan 3 ta buyurtma bor'; return null;"
+    },
+    {
+      id: 12,
+      title: "Muayyan sanadagi buyurtmalar",
+      instruction: "`orders` jadvalidan `order_date` qiymati '2026-05-03' dan keyin bo'lgan barcha buyurtmalarni oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM orders WHERE order_date > '2026-05-03'",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Ushbu sanadan keyin 3 ta buyurtma berilgan'; return null;"
     }
   ],
   quizzes: [
@@ -118,6 +182,69 @@ Ustunga ma'lumot kiritilmagan (bo'sh qolgan) qatorlarni aniqlash uchun ishlatila
       ],
       correctAnswer: 1,
       explanation: "BETWEEN operatori chegaralarni ham o'z ichiga oladi (masalan, BETWEEN 1 AND 5 yozilsa, 1 va 5 ham oraliqqa kiradi)."
+    },
+    {
+      id: 4,
+      question: "AND va OR operatorlari birga kelganda qaysi biri yuqori ustuvorlikka ega?",
+      options: ["OR", "AND", "Ikkalasi teng", "Faqat birinchi yozilgani"],
+      correctAnswer: 1,
+      explanation: "AND operatori OR operatoriga qaraganda ustuvorroq hisoblanadi. Shuning uchun OR shartlarini doimo qavsga olish tavsiya etiladi."
+    },
+    {
+      id: 5,
+      question: "Ro'yxatdan qidiruvchi IN operatorining teskari ko'rinishi qaysi?",
+      options: ["EXCLUDE", "NOT IN", "WITHOUT", "NOT BETWEEN"],
+      correctAnswer: 1,
+      explanation: "NOT IN operatori qiymat berilgan ro'yxatda yo'qligini tekshiradi."
+    },
+    {
+      id: 6,
+      question: "Ismi 'Ali' bilan tugaydigan barcha ismlarni topish uchun LIKE shabloni qanday yoziladi?",
+      options: ["'Ali%'", "'%Ali'", "'%Ali%'", "'_Ali'"],
+      correctAnswer: 1,
+      explanation: "%Ali shabloni satr istalgan belgilar bilan boshlanib, 'Ali' bilan tugashini anglatadi."
+    },
+    {
+      id: 7,
+      question: "Teng emas mantiqiy operatori SQL-da qanday yoziladi?",
+      options: ["!=", "<>", "Ikkalasi ham to'g'ri", "!=="],
+      correctAnswer: 2,
+      explanation: "SQL-da teng emaslikni ifodalash uchun ham != ham <> operatorlari ishlatiladi va ikkalasi ham standartdir."
+    },
+    {
+      id: 8,
+      question: "Toshkent yoki Buxoroda yashaydigan foydalanuvchilarni topish uchun to'g'ri shart qaysi?",
+      options: ["WHERE city = 'Toshkent' AND city = 'Buxoro'", "WHERE city = 'Toshkent' OR city = 'Buxoro'", "WHERE city IN ('Toshkent' AND 'Buxoro')", "WHERE city = 'Toshkent', 'Buxoro'"],
+      correctAnswer: 1,
+      explanation: "Foydalanuvchi bir vaqtda ikkita shaharda yashay olmaydi. Shuning uchun OR yoki IN ('Toshkent', 'Buxoro') ishlatilishi shart."
+    },
+    {
+      id: 9,
+      question: "Quyidagilardan qaysi biri '20 dan 30 gacha bo'lgan' sonlar oralig'ini to'g'ri tekshiradi?",
+      options: ["WHERE age >= 20 OR age <= 30", "WHERE age BETWEEN 20 AND 30", "WHERE age IN (20, 30)", "WHERE age > 20 AND age < 30"],
+      correctAnswer: 1,
+      explanation: "BETWEEN 20 AND 30 operatori 20 va 30 ni o'z ichiga olgan mukammal oraliq filtridir."
+    },
+    {
+      id: 10,
+      question: "LIKE operatorida '_a%' shabloni nimani anglatadi?",
+      options: ["Birinchi harfi 'a' bo'lgan istalgan so'z", "Ikkinchi harfi 'a' bo'lgan istalgan so'z", "Faqat 2 ta harfdan iborat va 'a' bilan tugaydigan so'z", "Tarkibida pastki chiziq bo'lgan so'z"],
+      correctAnswer: 1,
+      explanation: "Tag chiziq (_) roppa-rosa bitta ixtiyoriy belgini, 'a' esa ikkinchi o'rinda turishini, % esa keyin ixtiyoriy belgilar kelishini anglatadi."
+    },
+    {
+      id: 11,
+      question: "NULL qiymatga ega bo'lmagan (qiymat kiritilgan) qatorlarni topish uchun nima yoziladi?",
+      options: ["IS NOT NULL", "!= NULL", "<> NULL", "IS FILLED"],
+      correctAnswer: 0,
+      explanation: "SQL-da qiymat mavjudligini tekshirish uchun IS NOT NULL operatoridan foydalaniladi."
+    },
+    {
+      id: 12,
+      question: "Matnlarni qidirishda katta-kichik harflarni farqlamaydigan LIKE o'rniga ba'zi SQL dialektlarida qaysi operator ishlatiladi?",
+      options: ["SLIKE", "ILIKE", "LIKE_IGNORE", "MATCH"],
+      correctAnswer: 1,
+      explanation: "ILIKE operatori case-insensitive LIKE hisoblanadi (faqat PostgreSQL kabi ba'zi dialektlarda mavjud)."
     }
   ]
 };

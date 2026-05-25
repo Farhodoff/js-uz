@@ -68,7 +68,7 @@ Subquery biror qator qaytarsa true, aks holda false beruvchi operator. U ko'pinc
       instruction: "`orders` jadvalidan roli `Admin` bo'lgan foydalanuvchilarning barcha buyurtmalarini subquery orqali tanlang.",
       startingCode: "-- SQL so'rovini yozing\n",
       hint: "SELECT * FROM orders WHERE user_id IN (SELECT id FROM users WHERE role = 'Admin')",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Admin foydalanuvchiga (Ali) tegishli 2 ta buyurtma bor'; if(result.some(o => o.user_id !== 1)) return 'Faqat Admin buyurtmalari chiqishi kerak'; return null;"
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Admin foydalanuviga (Ali) tegishli 2 ta buyurtma bor'; if(result.some(o => o.user_id !== 1)) return 'Faqat Admin buyurtmalari chiqishi kerak'; return null;"
     },
     {
       id: 3,
@@ -77,6 +77,78 @@ Subquery biror qator qaytarsa true, aks holda false beruvchi operator. U ko'pinc
       startingCode: "-- SQL so'rovini yozing\n",
       hint: "SELECT * FROM products WHERE stock > (SELECT MIN(stock) FROM products)",
       test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Minimal qoldiq 5 ga teng, undan katta 4 ta mahsulot bor'; return null;"
+    },
+    {
+      id: 4,
+      title: "Eng arzon mahsulot narxi bilan solishtirish",
+      instruction: "`products` jadvalidan narxi eng minimal narxga (`MIN(price)`) teng bo'lgan mahsulot(lar)ni tanlang.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM products WHERE price = (SELECT MIN(price) FROM products)",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1 || result[0].name !== 'Mouse') return 'Faqat eng arzon mahsulot (Mouse - 25) qaytishi kerak'; return null;"
+    },
+    {
+      id: 5,
+      title: "Toshkentlik foydalanuvchilarning buyurtmalari",
+      instruction: "`orders` jadvalidan `city` qiymati 'Toshkent' bo'lgan foydalanuvchilarning barcha buyurtmalarini subquery yordamida oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM orders WHERE user_id IN (SELECT id FROM users WHERE city = 'Toshkent')",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Toshkentlik foydalanuvchilarga tegishli jami 3 ta buyurtma bor'; return null;"
+    },
+    {
+      id: 6,
+      title: "Menejer bo'lmagan foydalanuvchilarning buyurtmalari",
+      instruction: "`orders` jadvalidan roli `Manager` bo'lmagan (`role != 'Manager'`) foydalanuvchilarning barcha buyurtmalarini subquery orqali oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM orders WHERE user_id IN (SELECT id FROM users WHERE role != 'Manager')",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Menejer bo\\'lmagan foydalanuvchilarning jami 5 ta buyurtmasi bor'; return null;"
+    },
+    {
+      id: 7,
+      title: "Hech qanday buyurtma bermagan foydalanuvchilar",
+      instruction: "`users` jadvalidan `orders` jadvalida umuman buyurtmasi mavjud bo'lmagan foydalanuvchilarning ma'lumotlarini subquery (`NOT IN`) orqali tanlang.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users WHERE id NOT IN (SELECT user_id FROM orders)",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1 || result[0].name !== 'Dilshod') return 'Faqat buyurtma bermagan Dilshod qaytishi kerak'; return null;"
+    },
+    {
+      id: 8,
+      title: "O'rtacha buyurtma miqdoridan kichik bo'lgan buyurtmalar",
+      instruction: "`orders` jadvalidan buyurtma summasi (`amount`) barcha buyurtmalarning o'rtacha summasidan (`AVG(amount)`) kichik bo'lgan buyurtmalarni tanlang.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM orders WHERE amount < (SELECT AVG(amount) FROM orders)",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'O\\'rtacha buyurtmadan kichik jami 4 ta buyurtma bor'; return null;"
+    },
+    {
+      id: 9,
+      title: "Eng yosh foydalanuvchining buyurtmalari",
+      instruction: "`orders` jadvalidan yoshi eng kichik bo'lgan (`MIN(age)`) foydalanuvchining barcha buyurtmalarini subquery yordamida oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM orders WHERE user_id IN (SELECT id FROM users WHERE age = (SELECT MIN(age) FROM users))",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1 || result[0].product !== 'Keyboard') return 'Faqat eng yosh foydalanuvchining buyurtmasi chiqishi kerak'; return null;"
+    },
+    {
+      id: 10,
+      title: "Mebel toifasidagi eng qimmat mahsulot",
+      instruction: "`products` jadvalidan toifasi 'Furniture' bo'lgan mahsulotlar ichida narxi ushbu toifadagi o'rtacha narxdan (`AVG(price)`) katta bo'lgan mahsulotlarni subquery yordamida tanlang.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM products WHERE category = 'Furniture' AND price > (SELECT AVG(price) FROM products WHERE category = 'Furniture')",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1 || result[0].name !== 'Chair') return 'Faqat mebel toifasidagi o\\'rtachadan qimmat mahsulot (Chair) qaytishi kerak'; return null;"
+    },
+    {
+      id: 11,
+      title: "Ko'p buyurtma bergan foydalanuvchi ma'lumotlari",
+      instruction: "`users` jadvalidan `orders` jadvalida kamida bitta buyurtmasi bor bo'lgan barcha foydalanuvchilarni `IN` subquery yordamida oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users WHERE id IN (SELECT user_id FROM orders)",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Kamida bitta buyurtma bergan jami 4 ta foydalanuvchi bor'; return null;"
+    },
+    {
+      id: 12,
+      title: "Elektronika toifasidan arzonroq mahsulotlar",
+      instruction: "`products` jadvalidan narxi elektronika toifasidagi eng qimmat mahsulot narxidan (`MAX(price)`) arzonroq bo'lgan barcha mahsulotlarni subquery orqali tanlang. (Elektronika toifasidagi eng qimmat mahsulotni tanlash uchun ichki so'rov ishlating).",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM products WHERE price < (SELECT MAX(price) FROM products WHERE category = 'Electronics')",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Narxi eng qimmat elektronika mahsulotidan arzon jami 4 ta mahsulot bor'; return null;"
     }
   ],
   quizzes: [
@@ -105,6 +177,114 @@ Subquery biror qator qaytarsa true, aks holda false beruvchi operator. U ko'pinc
       ],
       correctAnswer: 2,
       explanation: "Ichma-ich so'rovlarni barcha asosiy DML buyruqlarida (SELECT, INSERT, UPDATE, DELETE) turli maqsadlar uchun ishlatish mumkin."
+    },
+    {
+      id: 4,
+      question: "Subquery natijasi tashqi so'rovning WHERE shartiga qanday uzatiladi?",
+      options: [
+        "Subquery avval bajarilib, uning qaytargan qiymati(lari) shart o'rniga qo'yiladi",
+        "Tashqi so'rov birinchi bajarilib, natijasi ichki so'rovga o'tkaziladi",
+        "Ikki so'rov parallel bajarilib, natijalar birlashtiriladi",
+        "Tizim xatolik beradi, chunki bitta so'rovda ikkita SELECT mumkin emas"
+      ],
+      correctAnswer: 0,
+      explanation: "SQL dvijogi avval qavs ichidagi ichki so'rovni (subquery) bajaradi va uning natijasini tashqi so'rovning WHERE shartiga parametr sifatida beradi."
+    },
+    {
+      id: 5,
+      question: "Skalyar subquery (Scalar Subquery) nima qaytaradi?",
+      options: [
+        "Butun bir jadvalni",
+        "Faqat bitta qiymatni (1 ta ustun va 1 ta qator)",
+        "Faqat true yoki false qiymatni",
+        "Bir nechta ustunlardan iborat qatorlarni"
+      ],
+      correctAnswer: 1,
+      explanation: "Skalyar subquery faqatgina bitta ustun va bitta qatordan iborat yagona qiymat (masalan, SUM, AVG, yoki bitta ID) qaytaruvchi so'rovdir."
+    },
+    {
+      id: 6,
+      question: "Quyidagilardan qaysi biri subquery qaytargan ro'yxat ichidan moslikni tekshirish uchun ishlatiladi?",
+      options: [
+        "LIKE",
+        "BETWEEN",
+        "IN",
+        "AND"
+      ],
+      correctAnswer: 2,
+      explanation: "IN operatori chap tomondagi qiymat o'ng tomondagi subquery qaytargan ro'yxat (massiv) ichida bor-yo'qligini tekshiradi."
+    },
+    {
+      id: 7,
+      question: "Correlated Subquery (Bog'liq ichki so'rov) nima?",
+      options: [
+        "Hech qachon ishlamaydigan va xato beradigan so'rov",
+        "Tashqi so'rovning har bir qatori uchun alohida qayta bajariladigan va tashqi jadval ustuniga tayanadigan so'rov",
+        "Faqat JOIN yordamida yozilgan so'rov",
+        "Baza yuklanishida faqat bir marta ishlaydigan so'rov"
+      ],
+      correctAnswer: 1,
+      explanation: "Correlated subquery tashqi so'rov ma'lumotlariga bog'liq bo'ladi va tashqi so'rovning har bir qatori uchun qayta-qayta ishga tushib, unumdorlikni pasaytirishi mumkin."
+    },
+    {
+      id: 8,
+      question: "Subquery natijasida birorta ham qator qaytmaganini tekshirish uchun qaysi operator ishlatiladi?",
+      options: [
+        "NOT EXISTS",
+        "NOT IN",
+        "IS NULL",
+        "EMPTY"
+      ],
+      correctAnswer: 0,
+      explanation: "NOT EXISTS operatori ichki so'rov hech qanday natija (0 ta qator) qaytarmasa true beradi."
+    },
+    {
+      id: 9,
+      question: "SELECT * FROM products WHERE price > (SELECT MAX(price) FROM products) so'rovi nimani qaytaradi?",
+      options: [
+        "Eng qimmat mahsulotni",
+        "Bo'sh natija (hech narsa qaytmaydi)",
+        "O'rtacha narxdan qimmat barcha mahsulotlarni",
+        "Xatolik yuz beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Chunki mahsulot narxi o'zining eng maksimal narxidan qimmat bo'la olmaydi (price > MAX(price) har doim false). Natijada bo'sh to'plam qaytadi."
+    },
+    {
+      id: 10,
+      question: "Subquery'ni SELECT ustunlari ro'yxatida (projection) ishlatsa bo'ladimi?",
+      options: [
+        "Yo'q, faqat WHERE va FROM ichida ishlatish mumkin",
+        "Ha, har bir qator uchun qo'shimcha skalyar qiymat hisoblash uchun SELECT tarkibida ishlatsa bo'ladi",
+        "Faqat ma'lumotlarni o'chirishda SELECT ichida ishlatiladi",
+        "Ha, lekin faqat ORDER BY bilan birga"
+      ],
+      correctAnswer: 1,
+      explanation: "SELECT ustunlari orasida skalyar subquery ishlatib, har bir natijaviy qator uchun boshqa jadvaldan tegishli qiymatni hisoblab chiqarish mumkin."
+    },
+    {
+      id: 11,
+      question: "Subquery'ni FROM qismida jadval o'rnida ishlatganda nima deb ataladi?",
+      options: [
+        "Derived Table (yoki Inline View)",
+        "Temporary Table",
+        "Common Table Expression (CTE)",
+        "Correlated Subquery"
+      ],
+      correctAnswer: 0,
+      explanation: "FROM qismida yozilgan va jadval vazifasini bajaradigan subquery 'Derived Table' yoki 'Inline View' deb nomlanadi va unga odatda alias (nom) berish talab etiladi."
+    },
+    {
+      id: 12,
+      question: "ALL operatori subquery bilan birga ishlatilganda nima vazifani bajaradi?",
+      options: [
+        "Bacha shartlar qisman bajarilsa ham true beradi",
+        "Tashqi so'rov qiymati subquery qaytargan barcha qiymatlarning har biridan kattaligini/kichikligini tekshiradi",
+        "Faqat barcha qatorlarni o'chirish uchun qo'llaniladi",
+        "Subquery qaytargan barcha ustunlarni birlashtiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Masalan, price > ALL (Subquery) sharti mahsulot narxi subquery qaytargan barcha qiymatlarning eng kattasidan ham katta bo'lishini talab qiladi."
     }
   ]
 };

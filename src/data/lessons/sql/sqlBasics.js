@@ -102,6 +102,70 @@ Bazada millionlab qatorlar bo'lishi mumkin. So'rov faqat kerakli miqdordagi (mas
       startingCode: "-- SQL so'rovini yozing\n",
       hint: "SELECT * FROM users ORDER BY age DESC",
       test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result[0].age !== 35 || result[4].age !== 22) return 'Yosh bo\\'yicha kamayish tartibida saralash xato'; return null;"
+    },
+    {
+      id: 5,
+      title: "Yoshi 30 dan kichiklar",
+      instruction: "`users` jadvalidan yoshi (`age`) 30 dan kichik bo'lgan barcha foydalanuvchilarni oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users WHERE age < 30",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Yoshi 30 dan kichik bo\\'lgan jami 3 ta foydalanuvchi bor'; return null;"
+    },
+    {
+      id: 6,
+      title: "Alifbo bo'yicha saralash",
+      instruction: "`users` jadvalidagi barcha foydalanuvchilarni ismi (`name`) bo'yicha alifbo tartibida (ASC) oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users ORDER BY name ASC",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result[0].name !== 'Ali' || result[4].name !== 'Vali') return 'Alifbo bo\\'yicha o\\'sish tartibida saralash xato'; return null;"
+    },
+    {
+      id: 7,
+      title: "Dastlabki 3 ta foydalanuvchi",
+      instruction: "`users` jadvalidan eng birinchi joylashgan 3 ta foydalanuvchini oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users LIMIT 3",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Faqat dastlabki 3 ta qator qaytishi kerak'; return null;"
+    },
+    {
+      id: 8,
+      title: "Oddiy userlarning ismlari va yoshi",
+      instruction: "`users` jadvalidan roli (`role`) 'User' bo'lgan foydalanuvchilarning ismi (`name`) va yoshi (`age`) ustunlarini tanlang.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT name, age FROM users WHERE role = 'User'",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Roli User bo\\'lgan 3 kishi bor'; if(result[0].role !== undefined) return 'Faqat name va age ustunlarini tanlash kerak'; return null;"
+    },
+    {
+      id: 9,
+      title: "Samarqandlik foydalanuvchi",
+      instruction: "`users` jadvalidan shahri (`city`) 'Samarqand' bo'lgan barcha ma'lumotlarni oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users WHERE city = 'Samarqand'",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1 || result[0].name !== 'Vali') return 'Faqat Samarqandlik Vali chiqishi kerak'; return null;"
+    },
+    {
+      id: 10,
+      title: "Eng yosh 2 ta foydalanuvchi",
+      instruction: "`users` jadvalidan eng kichik yoshdagi 2 ta foydalanuvchini yoshi o'sish tartibida saralab oling.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users ORDER BY age ASC LIMIT 2",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2 || result[0].age !== 22 || result[1].age !== 25) return 'Eng yosh 2 ta foydalanuvchi olinmadi'; return null;"
+    },
+    {
+      id: 11,
+      title: "Katta yoshlilar ismi",
+      instruction: "`users` jadvalidan yoshi (`age`) 25 dan katta bo'lgan foydalanuvchilarning faqat ismi (`name`) ustunini tanlang.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT name FROM users WHERE age > 25",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return '25 dan katta 3 kishi bor (Vali, Madina, Dilshod)'; if(result[0].age !== undefined) return 'Faqat name ustuni qaytishi kerak'; return null;"
+    },
+    {
+      id: 12,
+      title: "Menejer ma'lumotlari",
+      instruction: "`users` jadvalidan roli (`role`) 'Manager' bo'lgan barcha ustunlarni tanlang va natijani 1 ta qator bilan cheklang.",
+      startingCode: "-- SQL so'rovini yozing\n",
+      hint: "SELECT * FROM users WHERE role = 'Manager' LIMIT 1",
+      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1 || result[0].role !== 'Manager') return 'Faqat 1 ta Manager qaytishi kerak'; return null;"
     }
   ],
   quizzes: [
@@ -125,6 +189,69 @@ Bazada millionlab qatorlar bo'lishi mumkin. So'rov faqat kerakli miqdordagi (mas
       options: ["HAVING", "GROUP BY", "WHERE", "ORDER BY"],
       correctAnswer: 2,
       explanation: "Bazadan keladigan birlamchi qatorlarni shart bo'yicha filtrlash uchun WHERE kalit so'zidan foydalaniladi."
+    },
+    {
+      id: 4,
+      question: "SQL so'rovida qismlar (clauses) qaysi tartibda yozilishi shart?",
+      options: ["FROM -> SELECT -> WHERE", "SELECT -> FROM -> WHERE", "WHERE -> SELECT -> FROM", "SELECT -> WHERE -> FROM"],
+      correctAnswer: 1,
+      explanation: "Sintaksis qoidalariga ko'ra doimo SELECT birinchi, keyin FROM va undan so'ng WHERE yoziladi."
+    },
+    {
+      id: 5,
+      question: "SQL-da ma'lumotlar (string) qiymatlari qanday yoziladi?",
+      options: ["Qo'shtirnoq ichida (Double quotes)", "Bir tirnoq ichida (Single quotes)", "Qavslar ichida", "Burchakli qavslar ichida"],
+      correctAnswer: 1,
+      explanation: "SQL standartida matnli qiymatlar (string literals) doimo bir tirnoq (') ichida yozilishi shart."
+    },
+    {
+      id: 6,
+      question: "SQL buyruqlari (SELECT, FROM va boshqalar) katta-kichik harflarga sezgirmi (case-sensitive)?",
+      options: ["Ha, hammasi faqat kichik harfda yozilishi kerak", "Ha, hammasi faqat katta harfda yozilishi kerak", "Yo'q, SQL kalit so'zlari katta-kichik harflarni farqlamaydi (case-insensitive)", "Faqat SELECT kalit so'zi katta harfda bo'lishi shart"],
+      correctAnswer: 2,
+      explanation: "SQL-da kalit so'zlar case-insensitive. Masalan, SELECT va select bir xil ishlaydi, biroq kod o'qilishi oson bo'lishi uchun ularni katta harfda yozish tavsiya etiladi."
+    },
+    {
+      id: 7,
+      question: "Natijani o'sish tartibida saralash uchun qaysi kalit so'z ishlatiladi?",
+      options: ["DESC", "ASC", "UP", "GROW"],
+      correctAnswer: 1,
+      explanation: "O'sish tartibida saralash uchun ASC (Ascending) kalit so'zi ishlatiladi. Bu sukut bo'yicha (default) tartib hisoblanadi."
+    },
+    {
+      id: 8,
+      question: "Jadval ustunlari (columns) relyatsion ma'lumotlar bazasida nima deyiladi?",
+      options: ["Qatorlar (Rows)", "Maydonlar (Fields/Attributes)", "Tugunlar (Nodes)", "Jadvallar"],
+      correctAnswer: 1,
+      explanation: "Jadvalning ustunlari maydonlar (fields yoki attributes) deb ataladi va ular ma'lumotlar turini ifodalaydi."
+    },
+    {
+      id: 9,
+      question: "Jadval qatorlari (rows) relyatsion bazada nima deb ataladi?",
+      options: ["Yozuvlar (Records/Entities)", "Sarlavhalar (Headers)", "Kalitlar (Keys)", "Toifalar"],
+      correctAnswer: 0,
+      explanation: "Jadval qatorlari yozuvlar (records) yoki ob'ektlar (entities) deb nomlanadi va ular real ma'lumotlarni o'zida saqlaydi."
+    },
+    {
+      id: 10,
+      question: "Quyidagilardan qaysi biri relyatsion ma'lumotlar bazasi tizimi emas?",
+      options: ["PostgreSQL", "MySQL", "MongoDB", "SQLite"],
+      correctAnswer: 2,
+      explanation: "MongoDB relyatsion emas, balki NoSQL (hujjatga yo'naltirilgan) ma'lumotlar bazasi hisoblanadi. PostgreSQL, MySQL va SQLite esa relyatsion ma'lumotlar bazasidir."
+    },
+    {
+      id: 11,
+      question: "Yoshi bo'yicha kamayish tartibida saralash qaysi kalit so'z yordamida amalga oshiriladi?",
+      options: ["ORDER BY age DESC", "ORDER BY age ASC", "SORT BY age DOWN", "GROUP BY age DESC"],
+      correctAnswer: 0,
+      explanation: "ORDER BY ustun_nomi DESC yozuvi ustun qiymatlari bo'yicha kamayish tartibida saralaydi."
+    },
+    {
+      id: 12,
+      question: "Natijadan dastlabki 5 ta qatorni olish uchun nima yoziladi?",
+      options: ["LIMIT 5", "COUNT 5", "WHERE row <= 5", "TAKE 5"],
+      correctAnswer: 0,
+      explanation: "SQL-da natijalarni cheklash uchun LIMIT 5 qo'llaniladi."
     }
   ]
 };
