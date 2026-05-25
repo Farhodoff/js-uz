@@ -15,6 +15,28 @@ export function injectLoopGuard(code) {
     });
 }
 
+export function preprocessCodeForTests(rawCode) {
+  if (typeof rawCode !== 'string') return '';
+  // 1. Remove comments
+  let cleaned = rawCode.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
+  // 2. Replace multiple whitespaces/newlines with a single space
+  cleaned = cleaned.replace(/\s+/g, ' ').trim();
+  // 3. Normalize quotes (replace double quotes and backticks with single quotes)
+  cleaned = cleaned.replace(/["`]/g, "'");
+  // 4. Normalize spaces around equals sign
+  cleaned = cleaned.replace(/\s*=\s*/g, ' = ');
+  // 5. Normalize spaces around commas
+  cleaned = cleaned.replace(/\s*,\s*/g, ', ');
+  // 6. Normalize spaces around math operators (+, -, *, /)
+  cleaned = cleaned.replace(/\s*\+\s*/g, ' + ')
+                   .replace(/\s*-\s*/g, ' - ')
+                   .replace(/\s*\*\s*/g, ' * ')
+                   .replace(/\s*\/\s*/g, ' / ');
+  // Reduce multiple spaces that might have been introduced
+  cleaned = cleaned.replace(/ +/g, ' ');
+  return cleaned;
+}
+
 function setupMockDatabase() {
   const db = new alasql.Database();
   
@@ -148,7 +170,8 @@ export function useCodeRunner() {
       `;
 
       const runner = new Function('code', 'logs', combinedCode);
-      const errorMsg = runner(codeToRun, logs);
+      const preprocessedCode = preprocessCodeForTests(codeToRun);
+      const errorMsg = runner(preprocessedCode, logs);
 
       let validationResult = '✅ Kod muvaffaqiyatli ishladi';
       let isCorrect = true;

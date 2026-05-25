@@ -95,7 +95,7 @@ Qiymat keyinchalik o'zgarishi aniq bo'lgan holatlarda (masalan, sikllarda).
       instruction: "'ball' o'zgaruvchisini yarating, unga 10 bering va keyingi qatorda uni 15 ga o'zgartiring.",
       startingCode: "// Bu yerga yozing\n",
       hint: "let ball = 10; ball = 15;",
-      test: "if (code.includes('let') && code.split('=')[2]?.trim().includes('15')) return null; return 'Qiymatni to\\'g\\'ri yangilang';"
+      test: "if (code.includes('let') && typeof ball !== 'undefined' && ball === 15) return null; return 'Qiymatni to\\'g\\'ri yangilang';"
     },
     {
       id: 3,
