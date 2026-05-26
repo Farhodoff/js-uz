@@ -365,3 +365,76 @@ export function uzbekJavaScriptAutocomplete(context) {
     options: options
   };
 }
+
+export function registerUzbekMonacoHover(monaco) {
+  const dictionary = {};
+
+  KEYWORDS.forEach(item => {
+    dictionary[item.label] = item.info;
+  });
+
+  BUILTIN_GLOBALS.forEach(item => {
+    dictionary[item.label] = item.info;
+  });
+
+  COMMON_METHODS.forEach(item => {
+    dictionary[item.label] = item.info;
+  });
+
+  Object.keys(BUILTIN_PROPERTIES).forEach(objName => {
+    BUILTIN_PROPERTIES[objName].forEach(item => {
+      dictionary[`${objName}.${item.label}`] = item.info;
+      if (!dictionary[item.label]) {
+        dictionary[item.label] = item.info;
+      }
+    });
+  });
+
+  const hoverProvider = {
+    provideHover: (model, position) => {
+      const word = model.getWordAtPosition(position);
+      if (!word) return null;
+
+      let infoText = dictionary[word.word];
+
+      const lineContent = model.getLineContent(position.lineNumber);
+      const beforeWordIndex = word.startColumn - 2;
+      if (beforeWordIndex >= 0 && lineContent[beforeWordIndex] === '.') {
+        const lineBeforeDot = lineContent.substring(0, beforeWordIndex);
+        const match = lineBeforeDot.match(/[\w$]+$/);
+        if (match) {
+          const parentName = match[0];
+          const fullKey = `${parentName}.${word.word}`;
+          if (dictionary[fullKey]) {
+            infoText = dictionary[fullKey];
+          }
+        }
+      }
+
+      if (infoText) {
+        return {
+          range: new monaco.Range(
+            position.lineNumber,
+            word.startColumn,
+            position.lineNumber,
+            word.endColumn
+          ),
+          contents: [
+            { value: "**O'zbekcha izoh:**" },
+            { value: infoText }
+          ]
+        };
+      }
+      return null;
+    }
+  };
+
+  const jsDisposer = monaco.languages.registerHoverProvider('javascript', hoverProvider);
+  const tsDisposer = monaco.languages.registerHoverProvider('typescript', hoverProvider);
+
+  return () => {
+    jsDisposer.dispose();
+    tsDisposer.dispose();
+  };
+}
+

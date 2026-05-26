@@ -1,11 +1,6 @@
-import React, { useState, useRef } from 'react';
-import CodeMirror from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
-import { sql } from '@codemirror/lang-sql';
-import { vscodeDark } from '@uiw/codemirror-theme-vscode';
-import { linter, lintGutter } from '@codemirror/lint';
-import { autocompletion } from '@codemirror/autocomplete';
-import { uzbekJavaScriptLinter, uzbekJavaScriptAutocomplete } from '../utils/editorExtensions';
+import React, { useState, useRef, useEffect } from 'react';
+import Editor from '@monaco-editor/react';
+import { registerUzbekMonacoHover } from '../utils/editorExtensions';
 
 export default function PracticeTab({
   code, setCode, runCode, showHint, setShowHint, activeLesson,
@@ -13,6 +8,39 @@ export default function PracticeTab({
 }) {
   const [editorHeight, setEditorHeight] = useState(280);
   const isResizingHeight = useRef(false);
+
+  const runCodeRef = useRef(runCode);
+  runCodeRef.current = runCode;
+
+  const monacoRef = useRef(null);
+  const hoverProviderDisposerRef = useRef(null);
+
+  const handleEditorDidMount = (editor, monaco) => {
+    monacoRef.current = monaco;
+
+    // Clean up previous registration just in case
+    if (hoverProviderDisposerRef.current) {
+      hoverProviderDisposerRef.current();
+    }
+
+    // Register Uzbek hover tooltips
+    hoverProviderDisposerRef.current = registerUzbekMonacoHover(monaco);
+
+    // Bind Ctrl+Enter and Cmd+Enter to runCode
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+      if (runCodeRef.current) {
+        runCodeRef.current();
+      }
+    });
+  };
+
+  useEffect(() => {
+    return () => {
+      if (hoverProviderDisposerRef.current) {
+        hoverProviderDisposerRef.current();
+      }
+    };
+  }, []);
 
   if (!activeLesson) return null;
 
@@ -89,37 +117,35 @@ export default function PracticeTab({
       </div>
 
       {/* Code Editor */}
-      <div className="editor-wrapper">
-        <CodeMirror
-          value={code}
+      <div className="editor-wrapper" style={{ minHeight: '150px' }}>
+        <Editor
           height={`${editorHeight}px`}
-          theme={vscodeDark}
-          extensions={
+          language={
             activeLesson.language === 'sql'
-              ? [sql()]
+              ? 'sql'
               : activeLesson.language === 'typescript'
-              ? [javascript({ jsx: true, typescript: true }), lintGutter()]
-              : [
-                  javascript({ jsx: true }),
-                  linter(uzbekJavaScriptLinter),
-                  lintGutter(),
-                  autocompletion({ override: [uzbekJavaScriptAutocomplete] })
-                ]
+              ? 'typescript'
+              : 'javascript'
           }
-          onChange={(value) => setCode(value)}
-          basicSetup={{
-            lineNumbers: true,
-            foldGutter: true,
-            highlightActiveLine: true,
-            dropCursor: true,
-            allowMultipleSelections: true,
-            indentOnInput: true,
-            bracketMatching: true,
-            closeBrackets: true,
-            autocompletion: false,
-            rectangularSelection: true,
-            highlightSelectionMatches: true,
+          value={code}
+          theme="vs-dark"
+          onChange={(value) => setCode(value || '')}
+          onMount={handleEditorDidMount}
+          options={{
+            minimap: { enabled: false },
+            fontSize: 14,
             tabSize: 2,
+            wordWrap: 'on',
+            lineNumbers: 'on',
+            folding: true,
+            bracketPairColorization: { enabled: true },
+            automaticLayout: true,
+            quickSuggestions: {
+              other: true,
+              comments: false,
+              strings: false
+            },
+            suggestOnTriggerCharacters: true
           }}
         />
         <div className="editor-resizer" onMouseDown={startResizingHeight}>
@@ -187,3 +213,4 @@ export default function PracticeTab({
     </div>
   );
 }
+

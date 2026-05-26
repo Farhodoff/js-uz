@@ -13,6 +13,7 @@
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.5",
     "@codemirror/lang-sql": "^6.10.0",
+    "@monaco-editor/react": "^4.7.0",
     "@uiw/codemirror-theme-vscode": "^4.25.9",
     "@uiw/react-codemirror": "^4.25.9",
     "alasql": "^4.17.3",
