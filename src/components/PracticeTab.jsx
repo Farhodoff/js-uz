@@ -12,10 +12,94 @@ export default function PracticeTab({
   const runCodeRef = useRef(runCode);
   runCodeRef.current = runCode;
 
+  const editorRef = useRef(null);
+  const zoneIdRef = useRef(null);
   const monacoRef = useRef(null);
   const hoverProviderDisposerRef = useRef(null);
 
+  const removeInlineOutput = (editor) => {
+    if (zoneIdRef.current !== null && editor) {
+      editor.changeViewZones(accessor => {
+        accessor.removeZone(zoneIdRef.current);
+      });
+      zoneIdRef.current = null;
+    }
+  };
+
+  const showInlineOutput = (editor, monaco, outputText, hasError) => {
+    removeInlineOutput(editor);
+
+    const lineCount = editor.getModel().getLineCount();
+
+    const domNode = document.createElement('div');
+    domNode.className = `monaco-inline-output ${hasError ? 'error' : 'success'}`;
+
+    // Style the container
+    domNode.style.background = '#151515';
+    domNode.style.border = '1px solid var(--border-primary)';
+    domNode.style.borderLeft = `4px solid ${hasError ? '#f87171' : '#4ade80'}`;
+    domNode.style.padding = '12px 16px';
+    domNode.style.fontFamily = 'var(--font-mono, monospace)';
+    domNode.style.fontSize = '13px';
+    domNode.style.lineHeight = '1.5';
+    domNode.style.color = '#e2e8f0';
+    domNode.style.overflow = 'auto';
+    domNode.style.boxSizing = 'border-box';
+    domNode.style.borderRadius = '4px';
+    domNode.style.margin = '4px 20px 8px 45px';
+    domNode.style.position = 'relative';
+
+    // Status header
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+    header.style.marginBottom = '8px';
+    header.style.borderBottom = '1px solid #2d2d2d';
+    header.style.paddingBottom = '6px';
+
+    const title = document.createElement('span');
+    title.innerText = hasError ? "❌ Natija (Xatolik)" : "✅ Natija (Muvaffaqiyatli)";
+    title.style.fontWeight = 'bold';
+    title.style.color = hasError ? '#f87171' : '#4ade80';
+    header.appendChild(title);
+
+    const closeBtn = document.createElement('button');
+    closeBtn.innerText = '✕';
+    closeBtn.style.background = 'none';
+    closeBtn.style.border = 'none';
+    closeBtn.style.color = '#94a3b8';
+    closeBtn.style.cursor = 'pointer';
+    closeBtn.style.fontSize = '14px';
+    closeBtn.style.padding = '0 4px';
+    closeBtn.onclick = () => removeInlineOutput(editor);
+    header.appendChild(closeBtn);
+
+    domNode.appendChild(header);
+
+    // Body containing text
+    const pre = document.createElement('pre');
+    pre.style.margin = '0';
+    pre.style.whiteSpace = 'pre-wrap';
+    pre.style.wordBreak = 'break-all';
+    pre.style.fontFamily = 'inherit';
+    pre.innerText = outputText;
+    domNode.appendChild(pre);
+
+    const lines = outputText.split('\n').length;
+    const heightInLines = Math.min(15, lines + 4);
+
+    editor.changeViewZones(accessor => {
+      zoneIdRef.current = accessor.addZone({
+        afterLineNumber: lineCount,
+        heightInLines: heightInLines,
+        domNode: domNode
+      });
+    });
+  };
+
   const handleEditorDidMount = (editor, monaco) => {
+    editorRef.current = editor;
     monacoRef.current = monaco;
 
     // Clean up previous registration just in case
@@ -32,12 +116,30 @@ export default function PracticeTab({
         runCodeRef.current();
       }
     });
+
+    // If there is existing output, show it inline immediately
+    if (output) {
+      const hasError = output.includes('❌');
+      showInlineOutput(editor, monaco, output, hasError);
+    }
   };
+
+  useEffect(() => {
+    if (editorRef.current && monacoRef.current && output) {
+      const hasError = output.includes('❌');
+      showInlineOutput(editorRef.current, monacoRef.current, output, hasError);
+    } else if (editorRef.current && !output) {
+      removeInlineOutput(editorRef.current);
+    }
+  }, [output]);
 
   useEffect(() => {
     return () => {
       if (hoverProviderDisposerRef.current) {
         hoverProviderDisposerRef.current();
+      }
+      if (editorRef.current) {
+        removeInlineOutput(editorRef.current);
       }
     };
   }, []);
@@ -129,7 +231,12 @@ export default function PracticeTab({
           }
           value={code}
           theme="vs-dark"
-          onChange={(value) => setCode(value || '')}
+          onChange={(value) => {
+            setCode(value || '');
+            if (editorRef.current) {
+              removeInlineOutput(editorRef.current);
+            }
+          }}
           onMount={handleEditorDidMount}
           options={{
             minimap: { enabled: false },
