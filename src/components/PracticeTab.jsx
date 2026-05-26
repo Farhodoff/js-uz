@@ -305,18 +305,6 @@ export default function PracticeTab({
         </div>
       )}
 
-      {/* Output */}
-      {output && (
-        <div>
-          <div className="output-label">Natija (Console):</div>
-          <div
-            ref={outputRef}
-            className={`output-panel ${hasError ? 'output-error' : 'output-success'}`}
-          >
-            {output}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
