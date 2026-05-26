@@ -18,6 +18,11 @@ export function useLesson() {
     const secKey = SECTIONS.includes(urlSection) ? urlSection : 'beginner';
     setActiveSectionState(secKey);
 
+    if (secKey === 'challenges') {
+      setActiveLesson({ id: 'challenges', title: 'JS Challenges' });
+      return;
+    }
+
     const sectionData = curriculum[secKey];
     if (!sectionData || !sectionData.lessons || sectionData.lessons.length === 0) return;
 
@@ -44,7 +49,9 @@ export function useLesson() {
 
   const setActiveSection = useCallback((key) => {
     const sec = curriculum[key];
-    if (sec && sec.lessons.length > 0) {
+    if (key === 'challenges') {
+      navigate('/challenges');
+    } else if (sec && sec.lessons.length > 0) {
       navigate(`/${key}/${sec.lessons[0].id}`);
     }
   }, [navigate]);

@@ -175,8 +175,14 @@ export const curriculum = {
     color: "#e67e22",
     icon: "🗄️",
     lessons: [sqlBasics, sqlFiltering, sqlFunctions, sqlJoins, sqlModifications, sqlSubqueries]
+  },
+  challenges: {
+    label: "Challenges",
+    color: "#9b59b6",
+    icon: "🏆",
+    lessons: []
   }
 };
 
-export const SECTIONS = ["beginner", "intermediate", "advanced", "typescript", "algorithms", "sql", "systemDesign", "ecosystem", "softSkills", "projects"];
+export const SECTIONS = ["beginner", "intermediate", "advanced", "typescript", "algorithms", "sql", "systemDesign", "ecosystem", "softSkills", "projects", "challenges"];
 
