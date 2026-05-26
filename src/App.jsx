@@ -11,6 +11,7 @@ import { useLesson } from "./hooks/useLesson";
 import { useCodeRunner } from "./hooks/useCodeRunner";
 import { useAI } from "./hooks/useAI";
 import { useProgress } from "./hooks/useProgress";
+import ChallengeTab from "./components/ChallengeTab";
 
 function LessonPage() {
   const [showHint, setShowHint] = useState(false);
@@ -156,7 +157,11 @@ function LessonPage() {
           setSidebarOpen={setSidebarOpen}
         />
 
-        {!activeLesson ? (
+        {activeSection === "challenges" ? (
+          <div style={{ flex: 1, overflow: "hidden", padding: "var(--space-3) var(--space-5) var(--space-5)" }}>
+            <ChallengeTab />
+          </div>
+        ) : !activeLesson ? (
           <div className="loading-container">
             <div className="loading-dots">
               <span></span><span></span><span></span>

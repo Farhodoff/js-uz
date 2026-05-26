@@ -40,14 +40,16 @@ export default function Sidebar({
                   {s.icon} {s.label}
                 </div>
                 <div className="section-progress">
-                  {stats.done}/{stats.total} bajarildi
+                  {key === 'challenges' ? 'Kodni tahlil qilish' : `${stats.done}/${stats.total} bajarildi`}
                 </div>
-                <div className="section-progress-bar">
-                  <div
-                    className="section-progress-fill"
-                    style={{ width: `${stats.percent}%`, background: s.color }}
-                  />
-                </div>
+                {key !== 'challenges' && (
+                  <div className="section-progress-bar">
+                    <div
+                      className="section-progress-fill"
+                      style={{ width: `${stats.percent}%`, background: s.color }}
+                    />
+                  </div>
+                )}
               </button>
 
               {isActive && s.lessons.map(l => (
