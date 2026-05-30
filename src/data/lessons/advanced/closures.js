@@ -19,6 +19,23 @@ Seyf ichidagi pullar (private o'zgaruvchilar) tashqi odamlarga ko'rinmaydi va ul
 
 ### A. Lexical Environment (Leksik muhit)
 Har bir funksiya yaratilayotganda o'z atrofidagi o'zgaruvchilarga ishorani saqlab qoladi.
+
+\\\`\\\`\\\`mermaid
+graph TD
+    subgraph Global_Scope [Global Scope]
+        myFunc["myFunc = outer()"]
+    end
+    subgraph Outer_Function_Scope [Outer Function Scope]
+        outerVar["let outerVar = 'Men tashqaridanman'"]
+        subgraph Inner_Function_Scope [Inner Function Scope]
+            inner["inner() funksiyasi"]
+            innerVar["console.log(outerVar)"]
+        end
+    end
+    innerVar -.-> |eslab qoladi| outerVar
+    myFunc -.-> |ishora qiladi| inner
+\\\`\\\`\\\`
+
 \\\`\\\`\\\`javascript
 function outer() {
   let outerVar = "Men tashqaridanman";

@@ -30,6 +30,23 @@ Buni **Restorandagi ofitsiant, oshxona va buyurtmalar navbati** orqali tushunish
 
 JavaScript Runtime (bajarilish muhiti) bir nechta muhim qismlardan iborat:
 
+\\\`\\\`\\\`mermaid
+graph TD
+    Code[JS kodi] --> Stack[Call Stack]
+    Stack -->|Asinxron amallar| WebAPI[Web APIs / Node APIs]
+    WebAPI -->|Timer/DOM callbacklar| MacroQueue[Macrotask Queue]
+    WebAPI -->|Promise callbacklar| MicroQueue[Microtask Queue]
+    
+    EventLoop{Event Loop}
+    EventLoop -->|Call Stack bo'sh bo'lsa| CheckMicro{Microtask bormi?}
+    CheckMicro -->|Ha| RunMicro[Microtasklarni bajarish]
+    RunMicro --> CheckMicro
+    CheckMicro -->|Yo'q| RunMacro[Bitta Macrotaskni bajarish]
+    RunMacro --> Stack
+    MacroQueue --> EventLoop
+    MicroQueue --> EventLoop
+\\\`\\\`\\\`
+
 ### A. JavaScript Engine (Dvigatel)
 Dvigatel (masalan, Google Chrome-dagi V8) asosan ikki qismdan iborat:
 * **Memory Heap (Xotira uyumi):** Dinamik ma'lumotlar, obyektlar, massivlar va funksiyalar saqlanadigan tartibsiz xotira maydoni.
