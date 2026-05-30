@@ -9,7 +9,7 @@ export const closuresLesson = {
 JavaScriptda o'zgaruvchilarni himoya qilish va ularni tashqaridan o'zgartirib bo'lmaydigan holatga keltirish (inkapsulyatsiya) juda muhim. **Closure (Yopiq muhit)** funksiyalarga o'zlari yaratilgan joydagi tashqi o'zgaruvchilarni eslab qolish imkonini beradi.
 
 ## 1. NEGA kerak?
-Tasavvur qiling, sizga o'yin uchun ochko hisoblagich (counter) kerak. Agar siz \\\`points\\\` o'zgaruvchisini global qilib e'lon qilsangiz, istalgan boshqa kod uni buzishi yoki o'zgartirib yuborishi mumkin. Closure yordamida esa \\\`points\\\` o'zgaruvchisini funksiya ichiga yashirib (private qilib), faqat maxsus funksiyalar orqali unga kirish huquqini bera olamiz.
+Tasavvur qiling, sizga o'yin uchun ochko hisoblagich (counter) kerak. Agar siz \`points\` o'zgaruvchisini global qilib e'lon qilsangiz, istalgan boshqa kod uni buzishi yoki o'zgartirib yuborishi mumkin. Closure yordamida esa \`points\` o'zgaruvchisini funksiya ichiga yashirib (private qilib), faqat maxsus funksiyalar orqali unga kirish huquqini bera olamiz.
 
 ## 2. SODDALIK (Analogiya)
 Buni xuddi "xazinachining seyfi" kabi tasavvur qiling:
@@ -20,7 +20,7 @@ Seyf ichidagi pullar (private o'zgaruvchilar) tashqi odamlarga ko'rinmaydi va ul
 ### A. Lexical Environment (Leksik muhit)
 Har bir funksiya yaratilayotganda o'z atrofidagi o'zgaruvchilarga ishorani saqlab qoladi.
 
-\\\`\\\`\\\`mermaid
+\`\`\`mermaid
 graph TD
     subgraph Global_Scope [Global Scope]
         myFunc["myFunc = outer()"]
@@ -34,9 +34,9 @@ graph TD
     end
     innerVar -.-> |eslab qoladi| outerVar
     myFunc -.-> |ishora qiladi| inner
-\\\`\\\`\\\`
+\`\`\`
 
-\\\`\\\`\\\`javascript
+\`\`\`javascript
 function outer() {
   let outerVar = "Men tashqaridanman";
   
@@ -47,11 +47,11 @@ function outer() {
 }
 const myFunc = outer();
 myFunc(); // → "Men tashqaridanman"
-\\\`\\\`\\\`
+\`\`\`
 
 ### B. Private o'zgaruvchilar yaratish
 Tashqaridan o'zgaruvchini to'g'ridan-to'g'ri o'zgartirib bo'lmaydi:
-\\\`\\\`\\\`javascript
+\`\`\`javascript
 function createCounter() {
   let count = 0; // Private o'zgaruvchi
   return {
@@ -62,7 +62,7 @@ function createCounter() {
 const counter = createCounter();
 console.log(counter.increment()); // → 1
 // console.log(count); // → ReferenceError (count topilmadi)
-\\\`\\\`\\\`
+\`\`\`
 
 ### C. Function Factory (Funksiyalar zavodi)
 Bir xil qolip yordamida turli xil qiymatlarni eslab qoluvchi funksiyalar yaratish.
@@ -70,8 +70,8 @@ Bir xil qolip yordamida turli xil qiymatlarni eslab qoluvchi funksiyalar yaratis
 ## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
-1.  **Loop ichida \\\`var\\\` ishlatish:** \\\`var\\\` function-scoped bo'lgani uchun loop ichida asinxron timerlar bilan closure yaratganda kutilmagan natijalar beradi. Buning yechimi \\\`let\\\` ishlatishdir.
-2.  **Memory Leak (Xotira to'lib ketishi):** Agar keraksiz closure-larni xotirada saqlab turaversak va ularni hech qachon \\\`null\\\` qilmasak, ular Garbage Collector (axlat yig'uvchi) tomonidan o'chirilmaydi.
+1.  **Loop ichida \`var\` ishlatish:** \`var\` function-scoped bo'lgani uchun loop ichida asinxron timerlar bilan closure yaratganda kutilmagan natijalar beradi. Buning yechimi \`let\` ishlatishdir.
+2.  **Memory Leak (Xotira to'lib ketishi):** Agar keraksiz closure-larni xotirada saqlab turaversak va ularni hech qachon \`null\` qilmasak, ular Garbage Collector (axlat yig'uvchi) tomonidan o'chirilmaydi.
 
 ## 6. SAVOLLAR VA JAVOBLAR
 **1. Closure nima?**
@@ -108,7 +108,7 @@ Qaytarilgan ichki funksiyaga bo'lgan barcha references (ishoralar) yo'qolganidan
 IIFE va closure yordamida faqat bir marta ishga tushib bitta obyekt qaytaradigan funksiya yozish orqali.
 
 **12. Nega loopda let ishlatilganda closure to'g'ri ishlaydi?**
-Chunki \\\`let\\\` block-scoped bo'lib, har bir iteratsiya (sikl aylanishi) uchun alohida o'zgaruvchi yaratadi.
+Chunki \`let\` block-scoped bo'lib, har bir iteratsiya (sikl aylanishi) uchun alohida o'zgaruvchi yaratadi.
 `,
   exercises: [
     {

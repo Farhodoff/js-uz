@@ -30,7 +30,7 @@ Buni **Restorandagi ofitsiant, oshxona va buyurtmalar navbati** orqali tushunish
 
 JavaScript Runtime (bajarilish muhiti) bir nechta muhim qismlardan iborat:
 
-\\\`\\\`\\\`mermaid
+\`\`\`mermaid
 graph TD
     Code[JS kodi] --> Stack[Call Stack]
     Stack -->|Asinxron amallar| WebAPI[Web APIs / Node APIs]
@@ -45,7 +45,7 @@ graph TD
     RunMacro --> Stack
     MacroQueue --> EventLoop
     MicroQueue --> EventLoop
-\\\`\\\`\\\`
+\`\`\`
 
 ### A. JavaScript Engine (Dvigatel)
 Dvigatel (masalan, Google Chrome-dagi V8) asosan ikki qismdan iborat:

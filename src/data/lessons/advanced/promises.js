@@ -19,14 +19,14 @@ Tasavvur qiling, siz do'kondan yangi telefon buyurtma qildingiz:
 2. **Fulfilled (Bajarildi):** Telefon muvaffaqiyatli yetkazildi. Siz xursandsiz (resolve).
 3. **Rejected (Rad etildi):** Omborda telefon qolmagani ma'lum bo'ldi. Sizga pulingiz qaytarildi va uzr so'rashdi (reject).
 
-\\\`\\\`\\\`mermaid
+\`\`\`mermaid
 stateDiagram-v2
     [*] --> Pending : new Promise()
     Pending --> Fulfilled : resolve(value)
     Pending --> Rejected : reject(error)
     Fulfilled --> [*] : .then()
     Rejected --> [*] : .catch()
-\\\`\\\`\\\`
+\`\`\`
 
 ---
 

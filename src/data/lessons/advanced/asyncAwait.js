@@ -22,6 +22,22 @@ Tasavvur qiling, siz qahvaxonadasiz:
 
 ## 3. STRUKTURA
 
+\`\`\`mermaid
+sequenceDiagram
+    participant Main as Asosiy oqim (Main Thread)
+    participant AsyncFn as Async funksiya (getData)
+    participant WebAPI as Web API (fetch)
+    
+    Main->>AsyncFn: getData() chaqiriladi
+    AsyncFn->>WebAPI: fetch('api/data') - asinxron boshlanadi
+    Note over AsyncFn: await fetch(...) - funksiya to'xtatiladi
+    AsyncFn-->>Main: Promise { pending } qaytariladi
+    Note over Main: Asosiy oqim boshqa ishlarni bajaradi (UI render, eventlar)
+    WebAPI-->>AsyncFn: Ma'lumot tayyor (resolve)
+    Note over AsyncFn: getData() o'z ishini davom ettiradi
+    AsyncFn-->>Main: Yakuniy natija qaytadi (fulfilled)
+\`\`\`
+
 ### A. \`async\` kalit so'zi
 Kalit so'z funksiya e'lonidan oldin qo'yiladi. \`async\` funksiyalar har doim **Promise** qaytaradi. Agar funksiyadan oddiy qiymat qaytarilsa, u avtomatik ravishda \`Promise.resolve()\` bilan o'raladi.
 \`\`\`javascript

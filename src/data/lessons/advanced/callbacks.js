@@ -127,29 +127,18 @@ console.log("3");
 \`\`\`
 
 #### Vizual:
-\`\`\`
-┌─────────────────────────────────────┐
-│  CALL STACK                         │
-│  (Hozircha qaysi kod ishlayotgani)  │
-└─────────────────────────────────────┘
-           ↓
-┌─────────────────────────────────────┐
-│  WEB API (Browser API)              │
-│  - setTimeout                       │
-│  - fetch                            │
-│  - event listener                   │
-└─────────────────────────────────────┘
-           ↓
-┌─────────────────────────────────────┐
-│  CALLBACK QUEUE (Navbat)            │
-│  setTimeout callback navbatni kutadi│
-└─────────────────────────────────────┘
-           ↓
-┌─────────────────────────────────────┐
-│  EVENT LOOP                         │
-│  "Call Stack bo'shmi? Navbattan     │
-│   qabul qil!"                       │
-└─────────────────────────────────────┘
+
+\`\`\`mermaid
+graph TD
+    Stack["Call Stack<br/>(Hozirgi bajarilayotgan kod)"]
+    WebAPI["Web APIs (Browser API)<br/>- setTimeout<br/>- fetch<br/>- event listener"]
+    Queue["Callback Queue (Navbat)<br/>- callbacklar kutish hududi"]
+    EventLoop{"Event Loop<br/>'Call Stack bo'shsa,<br/>navbatdan qabul qil!'"}
+
+    Stack -->|Asinxron vazifa| WebAPI
+    WebAPI -->|Tugagach callback yuborish| Queue
+    Queue --> EventLoop
+    EventLoop -->|Stack bo'sh bo'lsa| Stack
 \`\`\`
 
 ---
