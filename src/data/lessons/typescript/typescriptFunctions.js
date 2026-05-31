@@ -44,6 +44,85 @@ function makeDate(mOrTimestamp: number, d?: number, y?: number): Date {
 }
 \`\`\`
 
+### A. 'this' Kalit So'zini Tiplash
+JavaScript-da \`this\` qiymati funksiya qanday chaqirilganiga qarab dinamik o'zgaradi. TypeScript-da funksiya ichidagi \`this\` tipini qat'iy nazorat qilish uchun uni funksiyaning birinchi argumenti sifatida e'lon qilish mumkin (bu argument JS-ga transpayl bo'lganda o'chib ketadi):
+\`\`\`typescript
+interface DB {
+  filterUsers(filter: (this: User) => boolean): User[];
+}
+
+interface User {
+  name: string;
+  isAdmin: boolean;
+}
+
+const db: DB = {
+  filterUsers(filter) {
+    // filter funksiyasi ichida 'this' User tipida bo'ladi
+    return [];
+  }
+};
+\`\`\`
+
+### B. Rest Parametrlar va Tuple Tiplari
+Rest parametrlar faqat oddiy massiv emas (\`number[]\`), balki aniq tartib va tiplarga ega bo'lgan Tuple (kortej) tiplari yordamida ham yozilishi mumkin:
+\`\`\`typescript
+function logEvent(name: string, ...details: [statusCode: number, isFatal: boolean]) {
+  const [code, fatal] = details;
+  console.log(\`Event: \${name}, Code: \${code}, Fatal: \${fatal}\`);
+}
+
+logEvent("Login", 200, false); // TO'G'RI
+// logEvent("Logout", "400", true); // XATO! Birinchi element string emas, number bo'lishi kerak
+\`\`\`
+
+### C. Call Signatures (Murojaat signaturalari)
+JavaScript-da funksiyalar chaqiriluvchi obyektlar hisoblanadi. Agar funksiyaning o'zi chaqirilishi bilan birga qo'shimcha xossalarga ham ega bo'lishi kerak bo'lsa, obyekt tipi ichida Call Signature e'lon qilinadi:
+\`\`\`typescript
+interface DescribedFunction {
+  description: string;
+  (someArg: number): boolean; // Chaqirilish signaturasi (Call Signature)
+}
+
+const myFunc: DescribedFunction = (num: number) => {
+  return num > 10;
+};
+myFunc.description = "Bu sonni 10 dan katta ekanligini tekshiradi";
+\`\`\`
+
+### D. Construct Signatures (Konstruktor signaturalari)
+\`new\` kalit so'zi yordamida yangi obyekt yaratuvchi (konstruktor) funksiyalarni tiplash uchun Construct Signature ishlatiladi:
+\`\`\`typescript
+interface PointConstructor {
+  new (x: number, y: number): Point;
+}
+
+class Point {
+  constructor(public x: number, public y: number) {}
+}
+
+function createPoint(ctor: PointConstructor, x: number, y: number) {
+  return new ctor(x, y);
+}
+const p = createPoint(Point, 10, 20); // Point klassi PointConstructor signaturasiga mos keladi
+\`\`\`
+
+### E. Overloads matching oqimi (Mermaid)
+
+Quyida function overloading chaqirilganda signaturalarning mos kelish jarayoni va qat'iy tekshiruvi ko'rsatilgan:
+
+\`\`\`mermaid
+graph TD
+    A["Funksiya chaqiruvi: makeDate(...)"] --> B{"Argumentlar soni va tiplari?"}
+    B -->|1 ta son| C["1-signaturaga mos keldi: makeDate(timestamp: number)"]
+    B -->|3 ta son| D["2-signaturaga mos keldi: makeDate(m, d, y)"]
+    B -->|Boshqa holat| E["Compile-time Error: No overload matches this call"]
+    
+    C --> F["Yagona implementatsiyaga yo'naltirish (Run-time logic)"]
+    D --> F
+    F --> G["Date obyekti qaytariladi"]
+\`\`\`
+
 ## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
@@ -184,6 +263,22 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       startingCode: "type Result = { status: 'success'; data: string } | { status: 'error'; error: string };\n\nfunction handleResult(res: Result): string {\n  // status bo'yicha qiymat qaytaring\n}",
       hint: "return res.status === 'success' ? res.data : res.error;",
       test: "if (typeof handleResult !== 'function') return 'handleResult topilmadi'; if(handleResult({ status: 'success', data: 'Done' }) !== 'Done') return 'Success xato ishlov berildi'; if(handleResult({ status: 'error', error: 'Fail' }) !== 'Fail') return 'Error xato ishlov berildi'; return null;"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Call Signature yordamida funksiyani tiplash",
+      instruction: "O'zining `.description` (string) xossasiga ega bo'lgan va chaqirilganda kiritilgan sonning kvadratini (number) qaytaruvchi `DescribedFunction` interfeysini e'lon qiling va unga mos keladigan `mySquare` funksiyasini yozing.",
+      startingCode: "interface DescribedFunction {\n  description: string;\n  // Call signature e'lon qiling\n}\n\n// mySquare funksiyasini DescribedFunction tipida yarating\n// uning .description xossasiga 'Hisoblovchi' deb yozing",
+      hint: "interface DescribedFunction {\n  description: string;\n  (x: number): number;\n}\nconst mySquare: DescribedFunction = Object.assign(\n  (x: number) => x * x,\n  { description: 'Hisoblovchi' }\n);",
+      test: "if (typeof mySquare !== 'function') return 'mySquare topilmadi'; if (mySquare.description !== 'Hisoblovchi') return 'description xossasi noto\'g\'ri'; if (mySquare(4) !== 16) return 'Kvadratni hisoblash xato'; return null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Tuple Rest Parametrlari",
+      instruction: "Birinchi parametri `format` (string), qolgan parametrlari ise rest parameter orqali tuple `[number, boolean]` tipida bo'lgan `formatLog(format, ...args)` funksiyasini yozing va uning qiymatini birlashtirib string ko'rinishida qaytaring.",
+      startingCode: "type LogArgs = [code: number, isFatal: boolean];\n\nfunction formatLog(format: string, ...args: LogArgs): string {\n  // format va args dagi elementlarni birlashtirib qaytaring\n}",
+      hint: "function formatLog(format: string, ...args: LogArgs): string {\n  const [code, isFatal] = args;\n  return `${format}: Code=${code}, Fatal=${isFatal}`;\n}",
+      test: "if (typeof formatLog !== 'function') return 'formatLog topilmadi'; const res = formatLog('Error', 500, true); if (res !== 'Error: Code=500, Fatal=true') return 'Formatlash natijasi noto\'g\'ri'; return null;"
     }
   ],
   quizzes: [
@@ -310,6 +405,30 @@ Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish
       options: ["unknown", "void", "any", "never"],
       correctAnswer: 2,
       explanation: "Standart holatda aniqlanmagan parametrlarga `any` tipi beriladi, bu esa loyihada xatoliklarga olib kelishi mumkin."
+    },
+    {
+      id: 13,
+      question: "Quyidagi tip e'lonining nomi nima va u qanday vazifani bajaradi?\n`interface CustomFn { (x: string): void; name: string; }`",
+      options: [
+        "Construct Signature - klass yaratish uchun ishlatiladi",
+        "Call Signature - chaqiriluvchi obyekt funksiya va uning qo'shimcha xossalarini tiplash uchun ishlatiladi",
+        "Index Signature - obyektning dinamik kalitlarini tiplash uchun ishlatiladi",
+        "Method Signature - faqat obyekt metodlarini tiplash uchun ishlatiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar obyekt bir vaqtning o'zida funksiya sifatida chaqirilishi va qo'shimcha xossalarga ega bo'lishi kerak bo'lsang, Call Signature-dan foydalaniladi."
+    },
+    {
+      id: 14,
+      question: "Construct Signature-ni e'lon qilishda qaysi kalit so'zidan foydalaniladi?",
+      options: [
+        "constructor",
+        "class",
+        "new",
+        "create"
+      ],
+      correctAnswer: 2,
+      explanation: "Konstruktor funksiyalar signaturasini belgilash uchun tip ichida `new` kalit so'zi bilan boshlanadigan `new (...args): Type` yozuvi ishlatiladi."
     }
   ]
 };
