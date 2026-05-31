@@ -2,55 +2,137 @@ export const symbolsGenerators = {
   id: "symbols-generators",
   title: "Symbols, Iterators va Generators",
   theory: `## 1. NEGA kerak?
-JavaScriptda obyektlar kalitlari har doim matn (string) bo'lgan. Ammo yirik loyihalarda kutubxonalar va tashqi kodlar obyektlarimizga xatolik bilan bir xil nomli kalitlar yozib yuborishi va mavjud ma'lumotlarni o'chirib yuborishi mumkin edi. Buning oldini olish uchun mutlaqo takrorlanmas kalit turi — **Symbol** joriy qilindi. 
+JavaScriptda obyektlar kalitlari har doim matn (string) bo'lgan. Ammo yirik loyihalarda kutubxonalar va tashqi kodlar obyektlarimizga xatolik bilan bir xil nomli kalitlar yozib yuborishi va mavjud ma'lumotlarni o'chirib yuborishi (name collision) mumkin edi. Buning oldini olish uchun mutlaqo takrorlanmas kalit turi — **Symbol** joriy qilindi. 
 
-Obyektlar ichidagi ma'lumotlarni tartibli varaqlash (aylanib chiqish) uchun esa **Iterators** va ularni juda oson yozish va asinxron oqimlarni to'xtatib-davom ettirish uchun **Generators** yaratildi.
+Obyektlar ichidagi ma'lumotlarni tartibli varaqlash (aylanib chiqish) uchun **Iterators** protokoli va ularni juda oson yozish va asinxron oqimlarni to'xtatib-davom ettirish uchun esa **Generators** yaratildi.
 
 ## 2. SODDALIK (Analogiya)
 * **Symbol:** Bu xuddi davlat tomonidan berilgan **Passport ID** raqamiga o'xshaydi. Dunyoda ismingiz (kalit nomingiz) bir xil bo'lgan odamlar ko'p bo'lishi mumkin, lekin Passport ID raqamingiz mutlaqo takrorlanmas va faqat sizga tegishlidir.
 * **Iterator:** Bu xuddi **kitob sahifasini bitta-bitta varaqlashga** o'xshaydi. Siz kitobni ochasiz va har safar varoqlaganingizda (\`next()\`) keyingi sahifani olasiz, kitob tugagach (\`done: true\`) to'xtaysiz.
-* **Generator:** Bu xuddi **buyurtma berilganda pishadigan taomlar**ga o'xshaydi. Oshpaz taomni birdaniga hammasini stolga qo'ymaydi. Siz so'ragan paytda (\`yield\`) navbatdagi taomni pishirib beradi va buyurtmangiz tugaguncha kutib turadi.
+* **Generator:** Bu xuddi **navbat bilan xizmat ko'rsatadigan konveyerga** o'xshaydi. Har safar tugmani bosganingizda (\`next()\`), u bitta mahsulot ishlab chiqaradi (\`yield\`) va keyingi buyruqni kutib to'xtaydi.
 
-## 3. STRUKTURA
-1. **Symbols:** Primitiv o'zgarmas ma'lumot turi.
-   \`\`\`javascript
-   const sym1 = Symbol("desc");
-   const sym2 = Symbol("desc");
-   console.log(sym1 === sym2); // false
-   \`\`\`
-2. **Iterators:** \`next()\` metodi yordamida navbatdagi qiymatni \`{ value, done }\` ko'rinishida qaytaruvchi obyekt.
-3. **Generators:** Maxsus \`function*\` yulduzcha bilan e'lon qilinadigan, ishlashini \`yield\` bilan to'xtata oladigan funksiya.
+## 3. CHUQUR MAVZULAR VA METODLAR
 
-## 4. AMALIYOT (Mashqlar pastda)
-Generator orqali sonlarni ketma-ketlikda olish namunasi:
+### A. Global Symbol Registry (\`Symbol.for\` va \`Symbol.keyFor\`)
+Odatda \`Symbol()\` har chaqirilganda mutlaqo yangi ramz yaratadi. Agar biz butun dastur bo'yicha (hatto turli modullar, iFrame yoki scriptlar orasida) bir xil nomli yagona ramzdan foydalanmoqchi bo'lsak, **Global Symbol Registry**-dan foydalanamiz.
+
+* \`Symbol.for(key)\`: Agar global registrdagi shu nomli ramz mavjud bo'lsa, uni qaytaradi. Aks holda, yangi yaratadi.
+* \`Symbol.keyFor(sym)\`: Global registrdagi ramzning kalit nomini (string) qaytaradi. Agar ramz global bo'lmasa, \`undefined\` beradi.
+
 \`\`\`javascript
-function* numberGenerator() {
-  yield 10;
-  yield 20;
-  yield 30;
+const localSym = Symbol("auth");
+const globalSym = Symbol.for("auth");
+
+console.log(Symbol.keyFor(localSym)); // undefined (chunki u global registrdan emas)
+console.log(Symbol.keyFor(globalSym)); // "auth"
+\`\`\`
+
+\`\`\`mermaid
+graph TD
+    A[Symbol yaratish] --> B(Local Symbol: Symbol'auth')
+    A --> C(Global Symbol: Symbol.for'auth')
+    B --> D[Har chaqirilganda yangi unikal qiymat]
+    C --> E[Global registrdan qidiradi]
+    E --> F{Kalit bormi?}
+    F -- Ha --> G[Mavjud symbolni qaytaradi]
+    F -- Yo'q --> H[Yangi symbol yaratib qaytaradi]
+\`\`\`
+
+### B. Well-known Symbols (Taniqli ramzlar)
+JavaScript tizimining ichki operatsiyalari va xatti-harakatlarini o'zgartirish uchun foydalaniladigan maxsus tizimli ramzlar:
+1. \`Symbol.iterator\`: Obyektni iterable (aylanuvchan) qilish uchun ishdatiladi. \`for...of\` sikli aynan shu ramz ostidagi metodni chaqiradi.
+2. \`Symbol.toPrimitive\`: Obyektni primitiv turga (matn yoki son) aylantirish (coercion) qoidasini belgilaydi.
+3. \`Symbol.toStringTag\`: \`Object.prototype.toString.call(obj)\` chaqirilganda qaytariladigan matn formatini o'zgartiradi (masalan, custom klasslar nomini chiroyli ko'rsatish uchun).
+
+\`\`\`javascript
+const user = {
+  name: "Ali",
+  money: 1000,
+  [Symbol.toPrimitive](hint) {
+    if (hint === "string") return \`User: \${this.name}\`;
+    if (hint === "number") return this.money;
+    return this.money; // default holat
+  }
+};
+console.log(+user); // 1000 (hint: number)
+console.log(\`\${user}\`); // "User: Ali" (hint: string)
+\`\`\`
+
+### C. Generator Lifecycle va Boshqaruv Metodlari
+Generatorlar oddiy funksiyalardan farqli ravishda o'z holatini saqlab qoladi va ishini to'xtatib tura oladi. Bunga \`yield\` operatori yordam beradi.
+Tashqaridan generatordagi kod oqimini to'liq boshqarish uchun quyidagi metodlar mavjud:
+1. \`next(value)\`: Generatorni davom ettiradi. Agar qiymat uzatilsa, generator ichidagi joriy \`yield\` ifodasi shu qiymatga teng bo'ladi (ikki tomonlama aloqa).
+2. \`return(value)\`: Generator ishini zudlik bilan yakunlaydi va \`{ value, done: true }\` qaytaradi.
+3. \`throw(error)\`: Generator ichiga xatolik otadi. Agar generator ichida \`try...catch\` bo'lsa, xatolik ushlanadi, aks holda dastur to'xtaydi.
+
+\`\`\`javascript
+function* taskGenerator() {
+  try {
+    yield "Birinchi bosqich";
+    yield "Ikkinchi bosqich";
+  } catch (err) {
+    console.log("Xato ushlandi:", err.message);
+    yield "Xatolikdan keyingi holat";
+  }
+}
+const gen = taskGenerator();
+console.log(gen.next().value); // "Birinchi bosqich"
+console.log(gen.throw(new Error("Kutilmagan xato")).value); // "Xatolikdan keyingi holat"
+\`\`\`
+
+\`\`\`mermaid
+sequenceDiagram
+    participant Caller as Tashqi Kod (Caller)
+    participant Gen as Generator Funksiya
+    Caller->>Gen: generator = genFunc() (Yaratiladi, hali ishlamaydi)
+    Caller->>Gen: generator.next()
+    Note over Gen: yield ga qadar ishlaydi
+    Gen-->>Caller: { value: X, done: false } (Ish to'xtaydi/suspend)
+    Caller->>Gen: generator.next(Y) (Qiymat uzatish mumkin)
+    Note over Gen: yield dan keyin davom etadi
+    Gen-->>Caller: { value: Z, done: false }
+    Caller->>Gen: generator.next()
+    Note over Gen: Funksiya yakunlanadi (return yoki oxiri)
+    Gen-->>Caller: { value: undefined, done: true } (Tugallanadi)
+\`\`\`
+
+### D. Asinxron Generatorlar va \`for await...of\`
+Asinxron generatorlar (\`async function*\`) \`yield\` bilan bir qatorda \`await\` operatorini ham ishlata oladi. Har bir \`.next()\` chaqiruvi endi Promise qaytaradi. Bu, asosan, oqimli (stream) ma'lumotlarni yoki API'dan sahifalangan (paginated) ma'lumotlarni asinxron yuklab olishda juda qulaydir.
+
+\`\`\`javascript
+async function* fetchUsers(pages) {
+  for (let page = 1; page <= pages; page++) {
+    // API-dan ma'lumot olishni simulyatsiya qilish
+    const response = await fetch(\`https://api.example.com/users?page=\${page}\`);
+    const users = await response.json();
+    yield users;
+  }
 }
 
-const gen = numberGenerator();
-console.log(gen.next()); // { value: 10, done: false }
-console.log(gen.next().value); // 20
-console.log(gen.next()); // { value: 30, done: false }
-console.log(gen.next()); // { value: undefined, done: true }
+// Asinxron generatorni aylanish:
+// for await (const chunk of fetchUsers(3)) {
+//   console.log(chunk);
+// }
 \`\`\`
+
+## 4. MDN OBYEKT METODLARI
+* \`Object.getOwnPropertySymbols(obj)\`: Obyektning barcha Symbol kalitlarini massiv ko'rinishida qaytaradi (MDN bo'yicha bu metod Symbol kalitlarini topishning eng ishonchli usulidir).
+* \`Reflect.ownKeys(obj)\`: Obyektning barcha oddiy string kalitlarini ham, symbol kalitlarini ham birgalikda qaytaradi.
 
 ## 5. XATOLAR (Common mistakes)
 - **Symbol'larni new kalit so'zi bilan yaratish:** Symbol konstruktor emas, shuning uchun \`new Symbol()\` yozish \`TypeError\` xatosini beradi. To'g'ri shakli: \`Symbol()\`.
-- **Symbol'larni oddiy looplarda qidirish:** Obyekt ichidagi Symbol kalitlari \`for...in\` yoki \`Object.keys()\` orqali chiqmaydi. Ularni olish uchun maxsus \`Object.getOwnPropertySymbols(obj)\` ishlatiladi.
+- **Symbol'larni oddiy looplarda qidirish:** Obyekt ichidagi Symbol kalitlari \`for...in\` yoki \`Object.keys()\` orqali chiqmaydi. Ularni olish uchun \`Object.getOwnPropertySymbols(obj)\` yoki \`Reflect.ownKeys(obj)\` ishlatiladi.
 - **Generatorni qayta ishlata olmaslik:** Generator barcha \`yield\`larni bajarib bo'lgach (\`done: true\`), uni qayta o'qib bo'lmaydi. Yangidan aylanib chiqish uchun yangi generator instansiyasini yaratish kerak.
 
 ## 6. SAVOLLAR VA JAVOBLAR
-**1. Global Symbol nima va uning farqi nimada?**
-\`Symbol.for("key")\` yordamida global registrda ramz yaratiladi. Agar shu kalitli ramz oldin yaratilgan bo'lsa, mavjud bo'lganini qaytaradi.
+**1. yield* delegatsiyasi nima?**
+\`yield*\` yordamida boshqa generator yoki har qanday iterable obyekt (massiv, string) ustidan iteratsiyani delegatsiya qilish (o'tkazish) mumkin.
 
-**2. yield kalit so'zi nima qiladi?**
-Generator funksiya ishini vaqtinchalik to'xtatib, tashqi tomonga qiymat yuboradi va keyingi \`next()\` chaqirilishini kutadi.
+**2. Asinxron generatorlar oddiy generatorlardan nimasi bilan farq qiladi?**
+Asinxron generator har bir qadamda oddiy obyekt o'rniga Promise qaytaradi. Shuning uchun ularni o'qishda \`for await...of\` ishlatiladi.
 
-**3. return generator ichida ishlatilsa nima bo'ladi?**
-Generator ishini darhol yakunlaydi, \`done\` ni \`true\` qiladi va \`value\` sifatida berilgan qiymatni qaytaradi.
+**3. Symbol.toPrimitive metodi nechta hint (ko'rsatma) qabul qiladi?**
+U 3 ta hint qabul qiladi: \`"number"\` (matematik amallarda), \`"string"\` (matnli kontekstlarda) va \`"default"\` (ba'zi qo'shuv amallarida).
 `,
   exercises: [
     {
@@ -148,6 +230,22 @@ Generator ishini darhol yakunlaydi, \`done\` ni \`true\` qiladi va \`value\` sif
       startingCode: "function* doubleInputGenerator() {\n  // yield orqali qiymat olib, 2 ko'paytiring\n  const input = 0;\n  yield input * 2;\n}\n",
       hint: "const input = yield; yield input * 2;",
       test: "const gen = doubleInputGenerator(); gen.next(); if (gen.next(10).value === 20) return null; return 'Ikki tomonlama muloqot xato ishladi';"
+    },
+    {
+      id: 13,
+      title: "Symbol.toPrimitive orqali Obyekt Konvertatsiyasi",
+      instruction: "Berilgan 'product' obyektida '[Symbol.toPrimitive]' metodini shunday yozingki: agar hint 'number' bo'lsa obyektning 'price' qiymatini, 'string' bo'lsa 'name' qiymatini, 'default' bo'lsa esa 'price' qiymatini qaytarsin.",
+      startingCode: "const product = {\n  name: 'Telefon',\n  price: 500,\n  // Kodni shu yerdan yozing\n};\n",
+      hint: "[Symbol.toPrimitive](hint) {\n  if (hint === 'string') return this.name;\n  return this.price;\n}",
+      test: "if (typeof product[Symbol.toPrimitive] !== 'function') return '[Symbol.toPrimitive] metodi aniqlanmagan';\nif (+product !== 500) return 'Sonli kontekstda narxni qaytarmadi';\nif (String(product) !== 'Telefon') return 'Matnli kontekstda nomini qaytarmadi';\nif (product + 100 !== 600) return 'Default kontekstda narxni qaytarmadi';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "Asinxron Generator va Paginated Fetching",
+      instruction: "Sahifalarni asinxron yuklashni simulyatsiya qiluvchi 'asyncIdGenerator(pagesCount)' asinxron generatorini yozing. U 1 dan 'pagesCount'gacha bo'lgan har bir sahifa uchun 10 millisekund kutishi (`await new Promise(r => setTimeout(r, 10))`) va o'sha sahifa raqamini yield qilishi lozim.",
+      startingCode: "async function* asyncIdGenerator(pagesCount) {\n  // Kodni shu yerdan yozing\n}\n",
+      hint: "for (let i = 1; i <= pagesCount; i++) {\n  await new Promise(r => setTimeout(r, 10));\n  yield i;\n}",
+      test: "const results = [];\nconst gen = asyncIdGenerator(3);\nif (typeof gen[Symbol.asyncIterator] !== 'function') return 'Asinxron generator emas';\nreturn (async () => {\n  for await (const val of gen) {\n    results.push(val);\n  }\n  if (results.join(',') === '1,2,3') return null;\n  return 'Asinxron generator sahifalarni to\\'g\\'ri qaytarmadi';\n})();"
     }
   ],
   quizzes: [
@@ -279,6 +377,30 @@ Generator ishini darhol yakunlaydi, \`done\` ni \`true\` qiladi va \`value\` sif
       ],
       correctAnswer: 1,
       explanation: "`Symbol.for(key)` global registrdan berilgan kalitli ramzni qidiradi. Agar u yo'q bo'lsa, yangi yaratadi, agar bor bo'lsa, mavjudini qaytaradi."
+    },
+    {
+      id: 13,
+      question: "Obyektni sonli yoki matnli kontekstga o'girishda uning xatti-harakatini to'liq boshqarish uchun foydalaniladigan well-known Symbol qaysi?",
+      options: [
+        "`Symbol.iterator`",
+        "`Symbol.toStringTag`",
+        "`Symbol.toPrimitive`",
+        "`Symbol.valueOf`"
+      ],
+      correctAnswer: 2,
+      explanation: "`Symbol.toPrimitive` metodi obyektni primitiv qiymatga (son, matn yoki default) o'girish talab qilinganda avtomatik ravishda hint (ko'rsatma) bilan ishga tushadi."
+    },
+    {
+      id: 14,
+      question: "Asinxron generatorning (`async function*`) `.next()` metodi nima qaytaradi?",
+      options: [
+        "`{ value, done }` ko'rinishidagi oddiy obyekt",
+        "`{ value, done }` obyektini qaytaradigan Promise",
+        "Generator ichidagi yield qilingan qiymatni to'g'ridan-to'g'ri",
+        "Asinxron iterator obyekti"
+      ],
+      correctAnswer: 1,
+      explanation: "Asinxron generatorning `.next()` metodi oddiy generatorlardan farqli ravishda doimo Promise qaytaradi. Bu Promise kelajakda `{ value, done }` formatidagi obyektni o'z ichiga oladi."
     }
   ]
 };

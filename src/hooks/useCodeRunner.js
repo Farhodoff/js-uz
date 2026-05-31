@@ -173,22 +173,33 @@ export function useCodeRunner() {
       const preprocessedCode = preprocessCodeForTests(codeToRun);
       const errorMsg = runner(preprocessedCode, logs);
 
-      let validationResult = '✅ Kod muvaffaqiyatli ishladi';
-      let isCorrect = true;
+      const handleResult = (err) => {
+        let validationResult = '✅ Kod muvaffaqiyatli ishladi';
+        let isCorrect = true;
 
-      if (errorMsg) {
-        validationResult = '❌ ' + errorMsg;
-        isCorrect = false;
-      }
+        if (err) {
+          validationResult = '❌ ' + err;
+          isCorrect = false;
+        }
 
-      const outputText = logs.length
-        ? logs.join('\n') + '\n\n' + validationResult
-        : validationResult;
+        const outputText = logs.length
+          ? logs.join('\n') + '\n\n' + validationResult
+          : validationResult;
 
-      setOutput(outputText);
+        setOutput(outputText);
 
-      if (isCorrect && onSuccess) {
-        onSuccess();
+        if (isCorrect && onSuccess) {
+          onSuccess();
+        }
+      };
+
+      if (errorMsg && typeof errorMsg.then === 'function') {
+        errorMsg.then(
+          (resolvedMsg) => handleResult(resolvedMsg),
+          (err) => handleResult(err ? (err.message || err) : 'Xatolik yuz berdi')
+        );
+      } else {
+        handleResult(errorMsg);
       }
     } catch (e) {
       setOutput('❌ Sintaksis xatosi: ' + e.message);
