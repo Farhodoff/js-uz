@@ -41,6 +41,87 @@ type Developer = User & {
 };
 \`\`\`
 
+### A. Declaration Merging (Deklaratsiyalar Birlashishi)
+Interfeyslar uchun xos bo'lgan bu xususiyat, bir xil nomli interfeyslarni avtomatik birlashtiradi. Biroq, agar bir xil kalitli xossalar e'lon qilinsa, ularning tiplari mutlaqo bir xil bo'lishi shart, aks holda kompilyatsiya xatosi yuz beradi:
+\`\`\`typescript
+interface Window {
+  title: string;
+}
+interface Window {
+  ts: boolean; // Birlashadi
+}
+// interface Window { title: number; } // XATO! String va Number mos kelmaydi
+\`\`\`
+
+### B. Index Signatures (Dinamik kalitlar)
+Agar obyektning barcha maydonlari nomlari oldindan aniq bo'lmasa, lekin ularning tipi ma'lum bo'lsa, Index Signature-dan foydalanish mumkin:
+\`\`\`typescript
+interface UserScores {
+  [username: string]: number; // Kalitlar har doim string, qiymatlar number bo'lishi shart
+}
+const scores: UserScores = {
+  ali: 95,
+  vali: 88,
+  // age: "yigirma" // XATO! Qiymat faqat number bo'lishi kerak
+};
+\`\`\`
+
+### C. Discriminated Unions (Farqlanuvchi birlashmalar va to'liqlik tekshiruvi)
+TypeScript-da obyekt tiplarini ishonchli ajratish uchun ularga umumiy literal qiymatli maydon (tag/discriminator) beriladi. \`never\` yordamida esa hamma tiplar tekshirilganini (exhaustiveness check) kafolatlash mumkin:
+\`\`\`typescript
+interface Success {
+  type: "success";
+  data: string;
+}
+
+interface Failure {
+  type: "failure";
+  error: string;
+}
+
+type ResponseResult = Success | Failure;
+
+function handleResponse(res: ResponseResult) {
+  switch (res.type) {
+    case "success":
+      return res.data;
+    case "failure":
+      return res.error;
+    default:
+      // Agar yangi tip qo'shilsa va tekshirilmasa, bu yerda kompilyatsiya xatosi bo'ladi
+      const _exhaustiveCheck: never = res;
+      return _exhaustiveCheck;
+  }
+}
+\`\`\`
+
+### D. Extends vs Intersection (Kengaytirish farqi)
+- **Interface \`extends\`:** Kompilyator tomonidan yuqori darajada optimallashtirilgan. Kengaytirish paytida maydonlar mos kelmasa (conflict), kompilyator darhol xato beradi.
+- **Type \`&\` (Intersection):** Tiplarni majburiy birlashtiradi. Conflictlarni darhol tekshirmaydi, natijada ba'zi maydonlar \`never\` tipiga aylanib qolishi va faqat obyekt yaratishda xato berishi mumkin.
+
+### E. Merging va Kengaytirish Diagrammasi (Mermaid)
+
+Quyida Interfaces va Type Aliases o'rtasidagi deklaratsiyalarni birlashtirish hamda kengaytirish imkoniyatlarining vizual taqqoslanishi ko'rsatilgan:
+
+\`\`\`mermaid
+graph TD
+    subgraph Interfaces
+        I1["interface User { name: string }"] -->|Declaration Merging| I2["interface User { age: number }"]
+        I2 -->|Natija| IResult["User: { name: string, age: number } (Avtomatik birlashdi)"]
+        
+        IExt1["interface Animal { name: string }"] -->|extends| IExt2["interface Dog { breed: string }"]
+        IExt2 -->|Natija| IExtResult["Dog: { name: string, breed: string }"]
+    end
+
+    subgraph Type Aliases
+        T1["type User = { name: string }"] -.->|Declaration Merging| T2["type User = { age: number }"]
+        T2 -.->|Natija| TError["Compile-time Error:<br/>Duplicate identifier 'User' (Taqiqlangan)"]
+        
+        TInt1["type Animal = { name: string }"] -->|Intersection &| TInt2["type Dog = Animal & { breed: string }"]
+        TInt2 -->|Natija| TIntResult["Dog: { name: string, breed: string }"]
+    end
+\`\`\`
+
 ## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
@@ -181,6 +262,22 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       startingCode: "interface Address {\n  city: string;\n  zip: number;\n}\n\ninterface UserWithAddress {\n  name: string;\n  address: Address;\n}\n\nfunction createNestedUser(name: string, city: string, zip: number): UserWithAddress {\n  // Ichma-ich obyekt qaytaring\n}",
       hint: "return { name, address: { city, zip } };",
       test: "if (typeof createNestedUser !== 'function') return 'createNestedUser topilmadi'; const u = createNestedUser('Ali', 'Toshkent', 100000); if(u.address.city !== 'Toshkent' || u.address.zip !== 100000) return 'Address tuzilmasi xato'; return null;"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Discriminated Union va Yuzani hisoblash",
+      instruction: "Kvadrat (`type: 'square'`, `size: number`) va to'g'ri to'rtburchak (`type: 'rectangle'`, `width: number`, `height: number`) obyektlari uchun literal discriminated union `Shape` tipini e'lon qiling va unga ko'ra shakl yuzini hisoblaydigan `calculateArea(shape)` funksiyasini yozing.",
+      startingCode: "interface Square {\n  type: 'square';\n  size: number;\n}\n\ninterface Rectangle {\n  type: 'rectangle';\n  width: number;\n  height: number;\n}\n\ntype Shape = Square | Rectangle;\n\nfunction calculateArea(shape: Shape): number {\n  // shape.type boyicha switch yoki if ishlatib yuzani hisoblang\n}",
+      hint: "if (shape.type === 'square') return shape.size * shape.size;\nreturn shape.width * shape.height;",
+      test: "if (typeof calculateArea !== 'function') return 'calculateArea topilmadi'; if(calculateArea({ type: 'square', size: 5 }) !== 25 || calculateArea({ type: 'rectangle', width: 4, height: 5 }) !== 20) return 'Yuzani hisoblash xato'; return null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Index Signature (Dinamik sozlamalar)",
+      instruction: "String kalitlar va istalgan tipdagi qiymatlarga ega bo'lishi mumkin bo'lgan lug'at `Config` interfeysini Index Signature yordamida e'lon qiling. Ushbu lug'atga yangi kalit qo'shib qaytaradigan `updateConfig(config, key, val)` funksiyasini yozing.",
+      startingCode: "interface Config {\n  // Index signature yozing\n}\n\nfunction updateConfig(config: Config, key: string, val: any): Config {\n  // config obyektiga key orqali val qiymatni qo'shib config ni qaytaring\n}",
+      hint: "interface Config {\n  [key: string]: any;\n}\nfunction updateConfig(config: Config, key: string, val: any): Config {\n  config[key] = val;\n  return config;\n}",
+      test: "if (typeof updateConfig !== 'function') return 'updateConfig topilmadi'; const conf = updateConfig({}, 'theme', 'dark'); if(conf.theme !== 'dark') return 'Config yangilanmadi'; return null;"
     }
   ],
   quizzes: [
@@ -287,6 +384,30 @@ Yo'q, kompilyatsiya jarayonida barcha interfeyslar va tiplar o'chib ketadi, Java
       ],
       correctAnswer: 1,
       explanation: "TypeScript tiplari va interfeyslari faqat kompilyatsiya paytidagi tekshiruvlar uchun kerak. JavaScript-ga transpayl bo'lganda ular butunlay olib tashlanadi."
+    },
+    {
+      id: 13,
+      question: "Exhaustive type narrowing (to'liqlik tekshiruvi) uchun `switch` blokining `default` qismida qaysi tipdan foydalaniladi?",
+      options: [
+        "any",
+        "never",
+        "unknown",
+        "void"
+      ],
+      correctAnswer: 1,
+      explanation: "`never` tipi yordamida discriminated union tarkibidagi barcha mumkin bo'lgan tiplar tekshirib bo'lingani (ya'ni boshqa hech qanday qiymat qolmagani) tekshiriladi. Yangi tip qo'shilsa-yu, u tekshirilmasa, kompilyator `default` blokida xato beradi."
+    },
+    {
+      id: 14,
+      question: "Agar bir xil nomli ikkita interfeysda bir xil kalitli xossa har xil tiplar bilan e'lon qilinsa (Declaration Merging paytida) nima bo'ladi?",
+      options: [
+        "TypeScript ularni avtomatik ravishda union (`|`) qiladi",
+        "TypeScript kompilyatsiya vaqtida xatolik (Compile-time error) beradi",
+        "Dastur ishga tushganda oxirgi e'lon qilingan tip kuchga kiradi",
+        "Birinchi e'lon qilingan interfeys vaqtinchalik yashiriladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Declaration merging paytida birlashayotgan interfeyslardagi bir xil nomli xossalarning tiplari mutlaqo bir xil bo'lishi shart, aks holda tiplar to'qnashuvi xatosi (conflict error) yuz beradi."
     }
   ]
 };
