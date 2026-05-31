@@ -53,6 +53,80 @@ abstract class Vehicle {
 }
 \`\`\`
 
+### A. 'override' Modifikatori (Metodni Xavfsiz Qayta Yozish)
+TypeScript 4.3 versiyasidan boshlab, voris klassda ota klassning metodini qayta yozish (override qilish) paytida xatoliklarni oldini olish uchun \`override\` modifikatori qo'shilgan. Agar ota klassdagi metod nomi o'zgarsa, voris klassda xato ko'rsatiladi:
+\`\`\`typescript
+class Parent {
+  show() {
+    console.log("Parent");
+  }
+}
+
+class Child extends Parent {
+  override show() {
+    console.log("Child");
+  }
+  // override showMessage() {} // XATO! Ota klassda bunday metod yo'q
+}
+\`\`\`
+
+### B. Abstrakt Maydonlar (Abstract Fields)
+Abstrakt klasslarda faqat metodlarni emas, balki maydonlarni ham abstrakt qilib belgilash mumkin. Voris klasslar ushbu maydonlarni o'zlarida realizatsiya qilishlari (qiymat berishlari) shart:
+\`\`\`typescript
+abstract class BaseUser {
+  abstract role: string; // Voris klassda albatta bo'lishi kerak
+  abstract getPermissions(): string[];
+}
+
+class AdminUser extends BaseUser {
+  role = "admin"; // Realizatsiya qilindi
+  getPermissions() {
+    return ["read", "write", "delete"];
+  }
+}
+\`\`\`
+
+### C. Klass Ifodalari (Class Expressions)
+Klasslarni alohida nom bermasdan, anonim ravishda o'zgaruvchilarga yuklash mumkin. Bu ko'pincha klasslarni dinamik yaratishda qo'l keladi:
+\`\`\`typescript
+const UserClass = class {
+  constructor(public name: string) {}
+  sayHi() {
+    console.log(\`Hi, \${this.name}\`);
+  }
+};
+const instance = new UserClass("Ali");
+\`\`\`
+
+### D. Klass Ierarxiyasi Diagrammasi (Mermaid)
+
+Quyida Interfeys, Abstrakt klass va oddiy klasslar o'rtasidagi merosxo'rlik zanjirining ierarxik diagrammasi ko'rsatilgan:
+
+\`\`\`mermaid
+classDiagram
+    class Loggable {
+        <<interface>>
+        +log(msg: string) void
+    }
+    
+    class Entity {
+        <<abstract>>
+        +id: string
+        +createdAt: Date
+        +save()* void
+    }
+    
+    class User {
+        +name: string
+        +role: string
+        +log(msg: string) void
+        +save() void
+    }
+    
+    Entity <|-- User : extends
+    Loggable <|.. User : implements
+\`\`\`
+
 ## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
@@ -193,6 +267,22 @@ Barcha kirish modifikatorlari, interfeyslar va abstrakt shartlar olib tashlanib,
       startingCode: "class Cat {}\nfunction isCatInstance(obj: any): boolean {\n  // instanceof dan foydalaning\n}",
       hint: "return obj instanceof Cat;",
       test: "if (typeof Cat === 'undefined') return 'Cat klassi topilmadi'; if(isCatInstance(new Cat()) !== true || isCatInstance({}) !== false) return 'instanceof tekshiruvi xato'; return null;"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Abstrakt Xossa va Metodni realizatsiya qilish",
+      instruction: "Abstrakt `title` (string) maydoniga va abstrakt `summary()` (string qaytaruvchi) metodiga ega `Publication` abstrakt klassidan meros olgan `Book` klassini yozing. Konstruktorda `title` xossasini o'rnating, `summary()` metodi esa `Book: [title]` ko'rinishida qaytarsin.",
+      startingCode: "abstract class Publication {\n  abstract title: string;\n  abstract summary(): string;\n}\n\nclass Book extends Publication {\n  // Book klassini yozing\n}",
+      hint: "class Book extends Publication {\n  title: string;\n  constructor(title: string) {\n    super();\n    this.title = title;\n  }\n  summary(): string {\n    return `Book: ${this.title}`;\n  }\n}",
+      test: "if (typeof Book !== 'function') return 'Book klassi topilmadi'; const b = new Book('JS Guide'); if (b.title !== 'JS Guide' || b.summary() !== 'Book: JS Guide') return 'Abstrakt a\'zolar xato realizatsiya qilindi'; return null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ 'override' yordamida metodni qayta yozish",
+      instruction: "Metodi `greet()` (u 'Hello' qaytarsin) bo'lgan `BasePerson` klassidan meros olgan `SpecialPerson` klassini yarating va unda `greet()` metodini `override` kalit so'zi yordamida 'Hello Special' qaytaradigan qilib qayta yozing.",
+      startingCode: "class BasePerson {\n  greet(): string {\n    return 'Hello';\n  }\n}\n\nclass SpecialPerson extends BasePerson {\n  // greet metodini override yordamida qayta yozing\n}",
+      hint: "class SpecialPerson extends BasePerson {\n  override greet(): string {\n    return 'Hello Special';\n  }\n}",
+      test: "if (typeof SpecialPerson !== 'function') return 'SpecialPerson topilmadi'; const sp = new SpecialPerson(); if (sp.greet() !== 'Hello Special') return 'Metodni override qilish noto\'g\'ri '); return null;"
     }
   ],
   quizzes: [
@@ -304,6 +394,30 @@ Barcha kirish modifikatorlari, interfeyslar va abstrakt shartlar olib tashlanib,
       options: ["typeof", "instanceof", "is", "as"],
       correctAnswer: 1,
       explanation: "`instanceof` operatori obyekt ma'lum klass prototip zanjiriga tegishli yoki yo'qligini tekshirib true/false qaytaradi."
+    },
+    {
+      id: 13,
+      question: "Voris klassda ota klassning metodini xavfsiz qayta yozish (override qilish) uchun qaysi kalit so'zidan (modifikatordan) foydalaniladi?",
+      options: [
+        "extends",
+        "override",
+        "super",
+        "static"
+      ],
+      correctAnswer: 1,
+      explanation: "`override` modifikatori voris klassdagi metod haqiqatdan ham ota klassda mavjud bo'lgan metodni qayta yozayotganini tekshirish uchun ishlatiladi."
+    },
+    {
+      id: 14,
+      question: "Abstrakt klasslarda abstrakt maydonlar (abstract properties/fields) e'lon qilinishi mumkinmi?",
+      options: [
+        "Yo'q, faqat abstrakt metodlar bo'lishi mumkin",
+        "Ha, va voris klasslar ularni albatta o'zlarida realizatsiya qilishlari shart",
+        "Ha, lekin ularga boshlang'ich qiymat berish majburiy",
+        "Yo'q, interfeyslar maydonlarni taqiqlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Abstrakt klasslarda abstrakt maydonlar e'lon qilinishi mumkin va undan meros olgan voris klasslar bu maydonlarni realizatsiya qilishi (ya'ni qiymat berishi) majburiydir."
     }
   ]
 };
