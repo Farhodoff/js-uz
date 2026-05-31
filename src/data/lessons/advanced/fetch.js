@@ -21,7 +21,7 @@ Fetch ishini restorandagi **ofitsiant** faoliyatiga o'xshatish mumkin:
 
 ---
 
-## 3. STRUKTURA
+## 3. STRUKTURA VA ILG'OR TUSHUNCHALAR
 
 ### A. GET So'rov (Default holat)
 \`fetch()\` metodiga faqat URL berilsa, u sukut bo'yicha ma'lumot olish so'rovini (GET) yuboradi. Tarmoqdan olingan ma'lumot oqim (stream) ko'rinishida bo'ladi, shuning uchun uni \`.json()\` yoki \`.text()\` orqali asinxron o'qib olish kerak.
@@ -37,52 +37,38 @@ async function getTodos() {
 E'tibor bering: \`fetch()\` server 404 yoki 500 xato statusini qaytarganda catch blokiga **tushmaydi**. So'rov tarmoq darajasida muvaffaqiyatli yakunlansa bo'ldi. HTTP xatolarini tekshirish uchun \`response.ok\` dan foydalanamiz.
 - \`response.ok\` - agar HTTP status 200-299 oralig'ida bo'lsa \`true\`, aks holda \`false\`.
 - \`response.status\` - HTTP status kodi (masalan, 200, 404, 500).
-\`\`\`javascript
-const res = await fetch("https://api.example.com/data");
-if (!res.ok) {
-  throw new Error("Server xatosi: " + res.status);
-}
-const data = await res.json();
-\`\`\`
 
-### C. POST, PUT, DELETE So'rovlar (Sozlamalar bilan)
-Ma'lumot yuborish, o'zgartirish yoki o'chirish uchun \`fetch()\`ning ikkinchi argumentiga sozlamalar obyektini uzatamiz.
-- \`method\` - HTTP metodlar (\`POST\`, \`PUT\`, \`DELETE\`).
-- \`headers\` - sarlavhalar. Odatda jo'natilayotgan formatni bildirish uchun \`Content-Type: application/json\` beriladi.
-- \`body\` - yuborilayotgan ma'lumot. U matn formatida (\`JSON.stringify(data)\`) bo'lishi shart.
-\`\`\`javascript
-async function addPost() {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer token123"
-    },
-    body: JSON.stringify({
-      title: "Yangi Post",
-      body: "Post matni"
-    })
-  });
-  return await res.json();
-}
-\`\`\`
+### C. Request va Response Obyektlari
+\`fetch(request)\` yoki \`fetch(url, options)\` chaqiruvlari aslida parda ortida yangi \`Request\` obyektini hosil qiladi.
+* **\`Request\`:** So'rov ma'lumotlarini (URL, method, headers, body, mode) o'zida saqlaydi. Uni alohida yaratib, fetch-ga uzatish mumkin.
+* **\`Response\`:** Javob ma'lumotlarini (status, headers, body) saqlaydi.
+* **\`clone()\` metodi:** Response va Request obyektlarining body qismi faqat bir marta o'qilishi mumkin (ma'lumotlar oqim bo'lganligi sababli). Agar bir xil javobni ham JSON, ham text sifatida o'qimoqchi bo'lsangiz, uni avval \`const responseClone = response.clone()\` deb nusxalab olishingiz shart.
 
-### D. Tarmoq Xatolari (Network Errors)
-Tarmoq xatolari (internet yo'qligi, server o'chganligi, DNS xatosi) yuz berganda \`fetch()\` asinxron xato tashlaydi va bu xatolarni \`try...catch\` bilan ushlaymiz.
-\`\`\`javascript
-try {
-  const res = await fetch("https://non-existent-domain.xyz");
-  const data = await res.json();
-} catch (error) {
-  console.log("Tarmoq ulanishida muammo bor:", error.message);
-}
+### D. Headers Obyekti (Case-insensitivity)
+HTTP sarlavhalari bilan ishlash uchun maxsus \`Headers\` sinfi mavjud.
+- **Case-insensitivity:** Sarlavha nomlarining katta-kichik harflar bilan yozilishi ahamiyatsiz (masalan, \`headers.get('content-type')\` va \`headers.get('Content-Type')\` bir xil ishlaydi).
+- **Iteratsiya:** Headers ustida \`keys()\`, \`values()\`, yoki \`entries()\` metodlari orqali iteratsiya qilish yoki \`forEach\` ishlatish mumkin.
+
+### E. ReadableStream va response.body
+Server javobining body qismi aslida **ReadableStream** (o'qiluvchi oqim) hisoblanadi. Matn juda katta bo'lsa yoki uni kelishi bilan real vaqtda qayta ishlamoqchi bo'lsak (masalan, fayl yuklash foizini ko'rsatish yoki LLM chatbot javobini render qilish), oqimni chunk-bay-chunk (bo'laklab) o'qiymiz.
+
+\`\`\`mermaid
+graph TD
+    A[fetch(url)] --> B{Response Keldi}
+    B --> C[Headers & Status available]
+    B --> D[Body is ReadableStream]
+    D --> E[reader = body.getReader()]
+    E --> F[reader.read()]
+    F --> G{done?}
+    G -- Yo'q --> H[process chunk.value]
+    H --> F
+    G -- Ha --> I[Stream Yopildi]
 \`\`\`
 
 ---
 
-## 4. AMALIYOT
-
-Dasturlarda ma'lumot yuklanayotganda yuklanish holatini (Loading) va xatoliklarni chiroyli ko'rsatish standart pattern hisoblanadi:
+## 4. AMALIYOT: UI yuklanish holati va Loading spinner
+Sahifani yangilamasdan ma'lumot yuklaganda, loading holati quyidagicha boshqariladi:
 \`\`\`javascript
 let isLoading = false;
 let errorMessage = "";
@@ -119,14 +105,8 @@ async function loadProducts() {
    \`\`\`
 2. **404 xatosi catch-ga tushadi deb o'ylash:**
    \`fetch()\` faqat so'rov umuman bajarilmay qolsa reject bo'ladi. HTTP 404 yoki 500 statuslarida u catch-ga tushmaydi. Shuning uchun har doim \`response.ok\` tekshirilishi kerak.
-3. **POST so'rovida body-ni stringify qilmaslik:**
-   \`\`\`javascript
-   // XATO: obyektni to'g'ridan-to'g'ri jo'natib bo'lmaydi
-   body: { title: "Salom" } 
-   
-   // TO'G'RI
-   body: JSON.stringify({ title: "Salom" })
-   \`\`\`
+3. **Response body'ni ikki marta o'qish:**
+   \`await response.json()\` dan keyin \`await response.text()\` ni chaqirish \`TypeError: body stream already read\` xatosiga olib keladi. Bunga yo'l qo'ymaslik uchun \`response.clone()\` ishlatiladi.
 
 ---
 
@@ -153,11 +133,11 @@ Odatda obyektdan string ko'rinishiga o'tkazilgan JSON matni shaklida jo'natiladi
 **7. headers (sarlavhalar) nima uchun kerak?**
 So'rov haqidagi meta-ma'lumotlarni, masalan, yuborilayotgan ma'lumot turini (Content-Type: application/json) yoki foydalanuvchini identifikatsiya qilish uchun tokenlarni (Authorization) yuborish uchun ishlatiladi.
 
-**8. Tarmoq xatosi (network error) va HTTP xato statusi farqi nimada?**
-Tarmoq xatosi - internet yo'qligi yoki server umuman javob bermasligi bo'lib, fetch-da reject (catch) chaqiradi. HTTP xatosi esa server javob bergani lekin so'ralgan resurs xato ekanini bildiradi (ok: false).
+**8. Headers obyekti kalitlari katta yoki kichik harflarda yozilishi farq qiladimi?**
+Yo'q, HTTP Headers standarti bo'yicha sarlavha kalitlari case-insensitive (katta-kichik harflarga sezgir emas) hisoblanadi.
 
-**9. So'rov yuborilganda foydalanuvchi interfeysida loading (yuklanmoqda) holati qanday tashkil etiladi?**
-So'rov boshlanishidan oldin loading o'zgaruvchisi true qilinadi, so'rov yakunlangach (try/catch tugagach, yoki finally ichida) false qilinadi.
+**9. Response obyektidagi clone() metodi nega kerak?**
+Response body'si faqat bir marta o'qilishi mumkin bo'lgan oqim (ReadableStream) bo'lganligi sababli, agar uni bir necha marta yoki har xil formatda o'qish kerak bo'lsa, avval clone() yordamida nusxalash kerak.
 
 **10. response.blob() nima uchun ishlatiladi?**
 Serverdan rasm, audio, video yoki fayl kabi ikkilik (binary) ma'lumotlarni yuklab olish va ularni brauzerda qayta ishlash uchun ishlatiladi.
@@ -165,8 +145,8 @@ Serverdan rasm, audio, video yoki fayl kabi ikkilik (binary) ma'lumotlarni yukla
 **11. fetch yordamida yuborilgan so'rovni qanday qilib bekor qilish (abort qilish) mumkin?**
 AbortController obyektidan foydalanib. Controllerdan signal olinib, fetch sozlamalariga beriladi va kerak bo'lganda controller.abort() chaqiriladi.
 
-**12. fetch orqali DELETE so'rovi qanday yuboriladi?**
-Sozlamalar obyektida method: "DELETE" ko'rsatiladi. Odatda delete so'rovida body yuborilmaydi, faqat URL oxirida o'chirilishi kerak bo'lgan ID beriladi.
+**12. response.body.getReader() nima uchun ishlatiladi?**
+Response body'sini oqim (ReadableStream) ko'rinishida bo'laklab (chunk-by-chunk) real vaqtda o'qish uchun foydalaniladi.
 `,
   exercises: [
     {
@@ -264,6 +244,22 @@ Sozlamalar obyektida method: "DELETE" ko'rsatiladi. Odatda delete so'rovida body
       startingCode: "async function getDynamic(url) {\n  // Bu yerga yozing\n}",
       hint: "const res = await fetch(url); const type = res.headers.get('content-type'); if (type && type.includes('application/json')) { return await res.json(); } return await res.text();",
       test: "if (typeof getDynamic !== 'function') return 'getDynamic funksiya emas'; return getDynamic('https://jsonplaceholder.typicode.com/todos/1').then(r => typeof r === 'object' && r.id === 1 ? null : 'Dinamik o\\'qish ishlamadi');"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Dinamik Headers Boshqaruvi (headersManager)",
+      instruction: "Yangi `Headers` obyekti yarating, unga berilgan `key` va `value` qiymatini o'rnating va ushbu `Headers` obyektini qaytaring.",
+      startingCode: "function headersManager(key, value) {\n  // Bu yerga yozing\n}",
+      hint: "const headers = new Headers(); headers.set(key, value); return headers;",
+      test: "if (typeof headersManager !== 'function') return 'headersManager funksiya emas';\nconst h = headersManager('x-api-key', 'secret');\nif (!(h instanceof Headers)) return 'Headers obyekti qaytarilmadi';\nif (h.get('x-api-key') !== 'secret') return 'Header qiymati noto\\'g\\'ri';\nif (h.get('X-API-Key') !== 'secret') return 'Headers case-insensitivity xususiyati ishlamadi';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ JSON Stream Yuklash (fetchJSONStream)",
+      instruction: "Berilgan URL'dan `fetch` so'rovi orqali keladigan ma'lumotlar oqimini (ReadableStream) `response.body.getReader()` va `TextDecoder` orqali bo'laklab (chunk-by-chunk) o'qing, ularni birlashtiring va to'liq yuklangach parse qilib JSON obyekt sifatida qaytaring.",
+      startingCode: "async function fetchJSONStream(url) {\n  // Bu yerga yozing\n}",
+      hint: "const res = await fetch(url); const reader = res.body.getReader(); const decoder = new TextDecoder(); let text = ''; while (true) { const { done, value } = await reader.read(); if (done) break; text += decoder.decode(value, { stream: true }); } text += decoder.decode(); return JSON.parse(text);",
+      test: "if (typeof fetchJSONStream !== 'function') return 'fetchJSONStream funksiya emas';\nreturn fetchJSONStream('https://jsonplaceholder.typicode.com/todos/1').then(r => {\n  if (r && r.id === 1) return null;\n  return 'Stream orqali yuklangan JSON noto\\'g\\'ri';\n}).catch(e => 'Xatolik: ' + e.message);"
     }
   ],
   quizzes: [
@@ -410,6 +406,30 @@ Sozlamalar obyektida method: "DELETE" ko'rsatiladi. Odatda delete so'rovida body
       ],
       correctAnswer: 1,
       explanation: "Query parametrlari GET so'rovlarida to'g'ridan-to'g'ri URL manzilining oxiriga qo'shib yuboriladi."
+    },
+    {
+      id: 13,
+      question: "HTTP Headers obyekti bilan ishlashda katta-kichik harflar (case-sensitivity) qanday ta'sir qiladi?",
+      options: [
+        "Headers faqat kichik harflarni qo'llab-quvvatlaydi, katta harflar xatolik beradi",
+        "Sarlavha kalitlari butunlay case-insensitive (sezgir emas), ya'ni Content-Type va content-type bir xil ishlaydi",
+        "Faqat GET so'rovlarida katta-kichik harflar farq qiladi",
+        "Xavfsizlik tokenlarini faqat katta harflarda yozish shart"
+      ],
+      correctAnswer: 1,
+      explanation: "HTTP Headers spetsifikatsiyasiga binoan, sarlavhalar kalitlari case-insensitive hisoblanadi. Headers obyekti ham buni to'liq qo'llab-quvvatlaydi."
+    },
+    {
+      id: 14,
+      question: "Response body'sini ReadableStream sifatida chunk-by-chunk o'qishda TextDecoder nima uchun kerak?",
+      options: [
+        "Stream kelayotgan oqim tezligini oshirish uchun",
+        "Ikkilik (Uint8Array) ma'lumotlar oqimini inson o'qiy oladigan matn ko'rinishiga o'tkazish (decode qilish) uchun",
+        "Faqat rasmlarni siqish uchun",
+        "JSON formatini tekshirish uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "ReadableStream o'qilganda byte massivlari (`Uint8Array`) qaytadi. Ularni matnga aylantirish uchun `TextDecoder` dan foydalanish zarur."
     }
   ]
 };

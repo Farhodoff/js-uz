@@ -10,74 +10,87 @@ Ushbu muammoni hal qilish va hodisalar (events) chaqirilish chastotasini cheklas
 
 ## 2. SODDALIK (Analogiya)
 * **Debounce (Lift analogiyasi):** Lift eshigi yopilishi uchun odamlar kirib bo'lishini kutadi. Har safar yangi odam kelib tugmani bossa, lift yopilish taymerini qaytadan (nolga) tushiradi va kutishni davom ettiradi. Lift faqat tugma oxirgi marta bosilgandan va ma'lum bir muddat (masalan, 5 soniya) hech kim tugmani bosmagandan keyingina harakatlanadi.
-* **Throttle (Metro turniketi analogiyasi):** Turniketdan har qancha odam tez-tez o'tishga harakat qilmasin, u faqat belgilangan vaqt oralig'ida (masalan, har 2 soniyada) bitta odamni o'tkazib yuboradi. Qolgan tezkor urinishlar e'tiborga olinmaydi.
+* **Metro turniketi (analogiya):** Turniketdan har qancha odam tez-tez o'tishga harakat qilmasin, u faqat belgilangan vaqt oralig'ida (masalan, har 2 soniyada) bitta odamni o'tkazib yuboradi. Qolgan tezkor urinishlar e'tiborga olinmaydi.
 
 ---
 
-## 3. STRUKTURA (Asosiy Tushunchalar)
+## 3. CHUQUR TUSHUNCHALAR VA IMKONIYATLAR
 
-### A. Debounce
-Debounce hodisa chaqirilishi tugagandan keyin ma'lum bir vaqt o'tishini kutadi. Agar shu vaqt ichida hodisa yana yuz bersa, taymer nollanadi va kutish qayta boshlanadi.
-\`\`\`javascript
-function debounce(func, delay) {
-  let timeoutId;
-  return function(...args) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      func.apply(this, args);
-    }, delay);
-  };
-}
+### A. Leading vs Trailing Execution
+Ko'p hollarda biz funksiyamizni hodisa boshlanganda darhol chaqirilishini (leading/immediate), yoki hodisa to'xtaganidan keyingina chaqirilishini (trailing) xohlaymiz:
+* **Leading (leading: true, trailing: false):** Foydalanuvchi tugmani birinchi marta bosganda funksiya darhol chaqiriladi. Keyingi chaqiruvlar esa to'xtash ro'y berguncha bloklanadi.
+* **Trailing (leading: false, trailing: true - default):** Funksiya faqat kutish vaqti tugaganidan keyin, oxirgi chaqiruv qiymati bilan ishlaydi.
+
+\`\`\`mermaid
+gantt
+    title Debounce va Throttle Vaqt Diagrammasi
+    dateFormat  X
+    axisFormat %s
+    section Hodisalar (Events)
+    Trigger 1 (0s)        :active, 0, 1
+    Trigger 2 (1s)        :active, 1, 2
+    Trigger 3 (2s)        :active, 2, 3
+    Trigger 4 (5s)        :active, 5, 6
+    section Debounce (2s delay)
+    Execution 1 (4s)      :crit, 4, 5
+    Execution 2 (7s)      :crit, 7, 8
+    section Throttle (2s limit)
+    Execution 1 (0s)      :after Trigger 1, 0, 1
+    Execution 2 (2s)      :after Trigger 3, 2, 3
+    Execution 3 (5s)      :after Trigger 4, 5, 6
 \`\`\`
 
-### B. Throttle
-Throttle hodisani ma'lum bir vaqt ichida faqat bir marta ishlashini kafolatlaydi. Belgilangan vaqt tugamaguncha, keyingi chaqiruvlar bloklanadi.
-\`\`\`javascript
-function throttle(func, limit) {
-  let inThrottle;
-  return function(...args) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
-    }
-  };
-}
+### B. requestAnimationFrame (rAF) Throttling
+Agar biz tezkor DOM o'zgarishlarini (masalan, scroll, mousemove, resize) visual ravishda boshqarmoqchi bo'lsak, \`setTimeout\` o'rniga brauzerning **requestAnimationFrame** API-sidan foydalanishimiz lozim.
+- **Nega?** \`setTimeout\` brauzer ekran yangilanishi (odatda 60Hz yoki 16.7ms kadrlar zanjiri, ya'ni V-Sync) bilan sinxron emas. Agar u kadrlar o'rtasida ishga tushsa, ba'zi visual o'zgarishlar tashlab ketiladi, bu esa "stuttering" (visual qotish) holatiga sabab bo'ladi. \`rAF\` esa aynan brauzer ekranni chizishidan oldin funksiyani chaqiradi.
+
+\`\`\`mermaid
+graph TD
+    A[Sinxron Scroll Hodisasi] --> B{rAF faolmi?}
+    B -- Yo'q --> C[rAF navbatiga funksiyani qo'shish]
+    C --> D[ticked = true bayrog'ini yoqish]
+    B -- Ha --> E[Hodisani rad etish / ignore]
+    D --> F[Brauzer Repaint oldidan funksiyani bajarish]
+    F --> G[ticked = false bayrog'ini o'chirish]
 \`\`\`
+
+### C. Cancellation (Bekor qilish) va Flushing
+Murakkab tizimlarda (masalan, React komponentlari o'chganda (unmount)), fonda rejalashtirilgan taymerlarni tozalash juda muhim.
+* **\`.cancel()\`:** Rejalashtirilgan setTimeout'ni tozalaydi, bu esa memory leak va o'chgan komponent state'ini yangilash xatolarining oldini oladi.
+* **\`.flush()\`:** Kutib turgan setTimeout'ni zudlik bilan ishga tushirib, so'ngra tozalaydi.
 
 ---
 
 ## 4. KO'P UCHRAYDIGAN XATOLAR (Edge Cases)
 1. **Context (this) ni yo'qotish:** Debounce va Throttle funksiyalari qaytargan wrapper funksiya ichida original funksiyani shunchaki \`func()\` deb chaqirish \`this\` kontekstini yo'qotadi. Buning oldini olish uchun \`func.apply(this, args)\` ishlatish shart.
 2. **Har bir renderda yangi taymer yaratish (React'da):** React componentlari render bo'lganda oddiy debounce funksiyalar har safar qaytadan yaratilib, eski taymerlarni yo'qota olmaydi. Buning uchun React'da \`useCallback\` yoki \`useRef\` ishlatilishi kerak.
-3. **Trailing (oxirgi chaqiruv) muammosi:** Throttle'da belgilangan vaqt ichida oxirgi marta bosilgan hodisa bajarilmay qolib ketishi mumkin. Buning uchun throttle algoritmini biroz mukammallashtirib, oxirgi chaqiruvni saqlab qolish kerak.
 
 ---
 
 ## 5. 12 TA SAVOL VA JAVOBLAR
-**<b>1. Debounce nima?</b>** Debounce — hodisa chaqirilishi butunlay to'xtagandan keyin, ma'lum bir kutish vaqtidan so'nggina funksiyani bajarish usuli.
+**1. Debounce nima?** Debounce — hodisa chaqirilishi butunlay to'xtagandan kechiktirib, ma'lum bir kutish vaqtidan so'nggina funksiyani bajarish usuli.
 
-**<b>2. Throttle nima?</b>** Throttle — hodisa har qancha tez-tez ro'y bermasin, funksiyani faqat belgilangan vaqt oralig'ida (chastotada) bir marta bajarish cheklovidir.
+**2. Throttle nima?** Throttle — hodisa har qancha tez-tez ro'y bermasin, funksiyani faqat belgilangan vaqt oralig'ida (chastotada) bir marta bajarish cheklovidir.
 
-**<b>3. Debounce va Throttle o'rtasidagi asosiy farq nima?</b>** Debounce oxirgi harakatdan keyin kutadi va bir marta ishlaydi. Throttle esa harakat davom etayotgan bo'lsa ham muntazam vaqt oralig'ida ishlashda davom etadi.
+**3. Debounce va Throttle o'rtasidagi asosiy farq nima?** Debounce oxirgi harakatdan keyin kutadi va bir marta ishlaydi. Throttle esa harakat davom etayotgan bo'lsa ham muntazam vaqt oralig'ida ishlashda davom etadi.
 
-**<b>4. Qidiruv inputlariga (Search Auto-complete) qaysi biri mos keladi?</b>** Debounce mos keladi. Foydalanuvchi yozishdan to'xtagandan keyingina serverga API so'rov yuborish ma'qul.
+**4. Qidiruv inputlariga (Search Auto-complete) qaysi biri mos keladi?** Debounce mos keladi. Foydalanuvchi yozishdan to'xtagandan keyingina serverga API so'rov yuborish ma'qul.
 
-**<b>5. Scroll yoki Window Resize hodisalariga qaysi biri yaxshiroq?</b>** Throttle yaxshiroq. Sahifa scroll bo'layotganda har 100-200ms da sahifa holatini hisoblab turish uchun throttle qulay.
+**5. Scroll yoki Window Resize hodisalariga qaysi biri yaxshiroq?** Throttle yaxshiroq. Sahifa scroll bo'layotganda har 100-200ms da sahifa holatini hisoblab turish uchun throttle qulay.
 
-**<b>6. Debounce ichida clearTimeout nima uchun kerak?</b>** Agar foydalanuvchi belgilangan vaqt tugamasdan turib yana harakat qilsa, eski taymerni bekor qilib, yangi taymerni boshlash uchun kerak.
+**6. Debounce ichida clearTimeout nima uchun kerak?** Agar foydalanuvchi belgilangan vaqt tugamasdan turib yana harakat qilsa, eski taymerni bekor qilib, yangi taymerni boshlash uchun kerak.
 
-**<b>7. Throttle ichidagi inThrottle bayrog'i nima qiladi?</b>** Funksiya hozirda "kutish" (bajarilganidan keyingi cheklov) rejimida ekanligini bildiradi va yangi chaqiruvlarni bloklaydi.
+**7. Throttle ichidagi inThrottle bayrog'i nima qiladi?** Funksiya hozirda \\"kutish\\" (bajarilganidan keyingi cheklov) rejimida ekanligini bildiradi va yangi chaqiruvlarni bloklaydi.
 
-**<b>8. apply() ishlatish nima uchun zarur?</b>** Wrapper funksiyaga kelgan arguments massivi va joriy this kontekstini original funksiyaga o'tkazish uchun.
+**8. apply() ishlatish nima uchun zarur?** Wrapper funksiyaga kelgan arguments massivi va joriy this kontekstini original funksiyaga o'tkazish uchun.
 
-**<b>9. Debounce'da immediate opsiyasi nima?</b>** Bu opsiya yoqilganda kutish vaqtini boshlashdan oldin funksiya darhol chaqiriladi, so'ngra keyingi chaqiruvlar bloklanadi.
+**9. Debounce'da immediate opsiyasi nima?** Bu opsiya yoqilganda kutish vaqtini boshlashdan oldin funksiya darhol chaqiriladi, so'ngra keyingi chaqiruvlar bloklanadi.
 
-**<b>10. O'yinlardagi o'q otish tugmasiga qaysi biri mos?</b>** Throttle mos. Qahramon har qancha tez tugmani bosmasin, o'qlar faqat ma'lum bir tezlik oralig'ida otiladi.
+**10. O'yinlardagi o'q otish tugmasiga qaysi biri mos?** Throttle mos. Qahramon har qancha tez tugmani bosmasin, o'qlar faqat ma'lum bir tezlik oralig'ida otiladi.
 
-**<b>11. Debounce funksiyani bekor qilish (cancel) qachon kerak bo'ladi?</b>** Masalan, component sahifadan o'chib ketganda (unmount), hali bajarilmagan setTimeout taymerini tozalab, memory leak oldini olish uchun.
+**11. Debounce funksiyani bekor qilish (cancel) qachon kerak bo'ladi?** Masalan, component sahifadan o'chib ketganda (unmount), hali bajarilmagan setTimeout taymerini tozalab, memory leak oldini olish uchun.
 
-**<b>12. CSS orqali rate limit qilish mumkinmi?</b>** Yo'q, CSS hodisalar chastotasini boshqara olmaydi. Bu faqat JS yordamida mantiqiy darajada bajariladi.
+**12. CSS orqali rate limit qilish mumkinmi?** Yo'q, CSS hodisalar chastotasini boshqara olmaydi. Bu faqat JS yordamida mantiqiy darajada bajariladi.
 `,
   exercises: [
     {
@@ -155,7 +168,7 @@ function throttle(func, limit) {
     {
       id: 10,
       title: "Immediate Debounce",
-      instruction: "Debounce qilingan funksiyani kutishdan oldin birinchi chaqiruvda darhol chaqiradigan 'immediate' parametrini qo'shing.",
+      instruction: "Debounce qilingan funksiyani kutishdan oldin birinchi chaqiriqda darhol chaqiradigan 'immediate' parametrini qo'shing.",
       startingCode: "function debounce(func, delay, immediate = false) {\n  let timeoutId;\n  return function(...args) {\n    const callNow = immediate && !timeoutId;\n    clearTimeout(timeoutId);\n    timeoutId = setTimeout(() => {\n      timeoutId = null;\n      if (!immediate) func.apply(this, args);\n    }, delay);\n    if (callNow) func.apply(this, args);\n  };\n}\n",
       hint: "Konstruktsiya berilgan, uni o'rganing va return null qaytarish uchun kodni yuboring",
       test: "if (code.includes('immediate')) return null; return 'Immediate qo\\'llanilmagan';"
@@ -175,6 +188,22 @@ function throttle(func, limit) {
       startingCode: "function throttleTrailing(func, limit) {\n  let timeoutId = null;\n  let lastArgs = null;\n  return function(...args) {\n    lastArgs = args;\n    if (!timeoutId) {\n      timeoutId = setTimeout(() => {\n        func.apply(this, lastArgs);\n        timeoutId = null;\n      }, limit);\n    }\n  };\n}\n",
       hint: "Berilgan kodni tekshirish uchun topshiring.",
       test: "if (code.includes('timeoutId = null')) return null; return 'Trailing mantiqi xato';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Bekor qilinuvchi Debounce (debounceWithCancel)",
+      instruction: "Debounce qilingan funksiyaga `.cancel()` metodini qo'shib, rejalashtirilgan so'nggi chaqiruvni bekor qilishni amalga oshiring.",
+      startingCode: "function debounceWithCancel(func, delay) {\n  let timeoutId;\n  const debounced = function(...args) {\n    // Kodni shu yerdan yozing\n  };\n  // debounced.cancel metodini yozing\n  return debounced;\n}\n",
+      hint: "const debounced = function(...args) { clearTimeout(timeoutId); timeoutId = setTimeout(() => func.apply(this, args), delay); }; debounced.cancel = () => clearTimeout(timeoutId); return debounced;",
+      test: "if (typeof debounceWithCancel !== 'function') return 'debounceWithCancel funksiya emas';\nlet count = 0;\nconst f = () => count++;\nconst d = debounceWithCancel(f, 50);\nd(); d(); d.cancel();\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (count === 0) resolve(null);\n    else resolve('Debounce bekor qilinmadi, funksiya baribir ishladi');\n  }, 100);\n});"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ requestAnimationFrame orqali Throttle (rAFThrottle)",
+      instruction: "Scroll va mousemove kabi visual hodisalar unumdorligini oshirish uchun funksiyani `requestAnimationFrame` yordamida throttle qiluvchi `rAFThrottle(func)` funksiyasini yozing.",
+      startingCode: "function rAFThrottle(func) {\n  let ticked = false;\n  return function(...args) {\n    // Kodni shu yerdan yozing\n  };\n}\n",
+      hint: "return function(...args) { if (!ticked) { ticked = true; requestAnimationFrame(() => { func.apply(this, args); ticked = false; }); } };",
+      test: "if (typeof rAFThrottle !== 'function') return 'rAFThrottle funksiya emas';\nlet count = 0;\nconst f = () => count++;\nconst t = rAFThrottle(f);\nt(); t(); t();\nreturn new Promise(resolve => {\n  requestAnimationFrame(() => {\n    if (count === 1) resolve(null);\n    else resolve('rAFThrottle funksiyasi kadr ichida faqat 1 marta ishlashi kerak edi, lekin ish soni: ' + count);\n  });\n});"
     }
   ],
   quizzes: [
@@ -228,7 +257,7 @@ function throttle(func, limit) {
       question: "Debounce ichida `clearTimeout(timeoutId)` chaqirilishi qanday vazifani bajaradi?",
       options: [
         "Funksiyani butunlay o'chirib yuboradi",
-        "Agar avvalgi chaqiruv bo'yicha taymer hali tugamagan bo'lsa, uni bekor qiladi va yangi taymer uchun joy ochadi (taymerni nollaydi)",
+        "Agar avvalgi chaqiruv bo'yicha taymer hali tugamagan bo'lsa, uni bekor qiladi va yangi taymer uchun zor ochadi (taymerni nollaydi)",
         "Taymerni darhol ishga tushiradi",
         "Brauzer keshini tozalaydi"
       ],
@@ -305,7 +334,31 @@ function throttle(func, limit) {
         "Koordinata qiymatini 0 ga aylantirish uchun"
       ],
       correctAnswer: 0,
-      explanation: "`mousemove` juda yuqori chastotali hodisa bo'lib, uning har bir harakatiga serverga so'rov yuborish tarmoqni band qiladi. Throttle bu oqimni ma'lum interval bilan cheklab, tarmoq yuklamasini kamaytiradi."
+      explanation: "`mousemove` vaqtida har bir piksel harakatida hodisa chaqiriladi. Throttle so'rovlar chastotasini kamaytiradi."
+    },
+    {
+      id: 13,
+      question: "DOM o'zgarishlari va yuqori chastotali visual hodisalar uchun `requestAnimationFrame` yordamida throttling qilishning `setTimeout`ga nisbatan asosiy afzalligi nima?",
+      options: [
+        "Chunki rAF so'rovlarni local storage-ga yozib qo'yadi",
+        "U brauzerning ekran yangilash kadrlariga (V-Sync, odatda 60fps) to'liq moslashib, visual qotishlarni (stuttering) bartaraf etadi va ortiqcha chizish ishini oldini oladi",
+        "U tarmoq ulanishlarini butunlay to'xtatadi",
+        "Hech qanday afzalligi yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "requestAnimationFrame visual ishlarni aynan brauzer ekranni yangilashidan oldin bajaradi. Bu setTimeout kabi kadrlarni buzmasdan, visual jihatdan eng silliq natijani beradi."
+    },
+    {
+      id: 14,
+      question: "Debounce yoki Throttle qilingan funksiyalarda `.cancel()` metodidan foydalanish qachon tavsiya etiladi?",
+      options: [
+        "Komponent yuklanishi (mount) boshlanishi bilanoq",
+        "Komponent sahifadan o'chib ketganda (unmount bo'lganda) fondagi taymerlarni tozalash va xotira sizib chiqishini (memory leak) oldini olish uchun",
+        "Faqat so'rov muvaffaqiyatli yakunlanganda",
+        "Har 5 soniyada majburan chaqirib turish kerak"
+      ],
+      correctAnswer: 1,
+      explanation: "Komponent unmount bo'lganda, fonda hali bajarilmagan taymerlar qolishi xavfli. Ular tozalab tashlanmasa, memory leak bo'ladi yoki nofaol komponentni yangilashga urinib xatolik beradi."
     }
   ]
 };

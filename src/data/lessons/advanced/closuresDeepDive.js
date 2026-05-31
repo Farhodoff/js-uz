@@ -2,292 +2,111 @@ export const closuresDeepDive = {
   id: "a20",
   title: "🔐 Closures va Scope (Chuqur O'rganish)",
   level: "Murakkab",
-  theory: `## 📌 CLOSURES VA SCOPE — KURS DARAJASI
+  theory: `## 📌 CLOSURES VA SCOPE — CHUQUR O'RGANISH
 
 ### 1. NEGA KERAK? (Asosiy savol)
-"Closure nima?" solig biladigan ko'pchilik, lekin "Closure qachon kerak, real hayotda nima qiladi?" solig javob berish boshlang'ichlikni intermediateddan seniorg'a ko'taraydi.
-
-**Asosiy faida:** Closure yordamida:
-- ✅ Ma'lumotlarni xavfsiz himoya qilishimiz (encapsulation)
-- ✅ Private o'zgaruvchilar yaratishimiz
-- ✅ Funksiyalarni parametrlashtirish (currying)
-- ✅ Memory-safe callback yozishimiz
+"Closure nima?" savoliga deyarli barcha dasturchilar "ichki funksiyaning tashqi funksiya o'zgaruvchilarini eslab qolishi" deb javob bera oladilar. Ammo real hayotda u nima uchun kerak?
+- **Ma'lumotlar inkapsulyatsiyasi (Encapsulation):** Obyekt xossalarini to'g'ridan-to'g'ri o'zgartirishdan himoya qilish (Private properties).
+- **Dinamik funksiyalar yaratish (Function Factory):** Masalan, turli xil hisob-kitoblar yoki sozlamalarga ega funksiyalarni generatsiya qilish.
+- **Keshlashtirish va Memoization:** Funksiya natijalarini uning o'z xotirasida (closure) saqlab qolish va qayta hisob-kitoblarni oldini olish.
+- **Asinxron operatsiyalar va Callbacks:** \`setTimeout\` yoki tarmoq so'rovlari vaqtida kontekst (muhit) holatini saqlab qolish.
 
 ---
 
-### 2. SCOPE TUSHUNCHASI (Asosiy)
+### 2. SCOPE VA LEKSIK MUHIT (UNDER THE HOOD)
 
-#### A. Global Scope (Dunyo darajasi)
-\`\`\`javascript
-const x = 10; // Global
-function func() {
-  console.log(x); // 10
-}
+Har safar JavaScriptda funksiya ishga tushganda yoki blok (\`{...}\`) bajarilganda xotirada yashirin **Lexical Environment (Leksik muhit)** obyekti yaratiladi. U ikki qismdan iborat:
+1. **Environment Record:** Hozirgi scope'dagi barcha mahalliy o'zgaruvchilar va parametrlar saqlanadigan joy.
+2. **Outer Link (Tashqi havola):** Tashqi (ota) leksik muhitga ko'rsatkich.
+
+\`\`\`mermaid
+graph LR
+    subgraph Global Lexical Environment
+        A[Env Record: global_x = 10]
+        B[Outer Link: null]
+    end
+    subgraph Tashqi Lexical Environment
+        C[Env Record: tashqi_y = 20]
+        D[Outer Link: Global Env]
+    end
+    subgraph Ichki Lexical Environment
+        E[Env Record: ichki_z = 30]
+        F[Outer Link: Tashqi Env]
+    end
+    F --> D
+    D --> B
 \`\`\`
 
-#### B. Function Scope (Funksiya darajasi)
-\`\`\`javascript
-function tashqi() {
-  const y = 20;
-  function ichki() {
-    console.log(y); // 20
-  }
-  ichki();
-}
-\`\`\`
-
-#### C. Block Scope (Blok darajasi)
-\`\`\`javascript
-{
-  let a = 1;
-  const b = 2;
-  var c = 3;
-}
-\`\`\`
-
-#### D. Lexical Scope (Qoida)
-\`\`\`javascript
-const global_x = 1;
-function tashqi() {
-  const tashqi_y = 2;
-  function ichki() {
-    const ichki_z = 3;
-    console.log(global_x, tashqi_y, ichki_z); // 1, 2, 3
-  }
-  ichki();
-}
-\`\`\`
+#### VariableEnvironment vs LexicalEnvironment
+Bajarilish konteksti (Execution Context) yaratilganda, o'zgaruvchilar turi bo'yicha ikki xil muhitga joylashtiriladi:
+* **VariableEnvironment:** \`var\` yordamida e'lon qilingan o'zgaruvchilarni saqlaydi (chunki ular block-scoped emas, balki function-scoped).
+* **LexicalEnvironment:** \`let\`, \`const\`, \`class\` va funksiya deklaratsiyalarini saqlaydi. Blok scope (masalan \`if\` yoki \`for\`) boshlanganda, faqat yangi \`LexicalEnvironment\` yaratiladi va zanjirga ulanadi, \`VariableEnvironment\` esa o'z holicha qolaveradi.
 
 ---
 
-### 3. CLOSURE — ANA MAVZU
+### 3. V8 GARBAGE COLLECTION VA DEBUGGER GOTCHA
 
-#### A. Closure ta'rifi
-**Closure** = Funksiya + uning lexical environment (atrof o'zgaruvchilar)
+Nazariy jihatdan, agar ichki funksiya (closure) tashqariga qaytarilsa, u tashqi funksiyaning **barcha** o'zgaruvchilarini o'zida saqlab qolishi kerak. Ammo bu xotirada katta hajmli ma'lumotlar qolib ketishiga (Memory Leak) olib kelishi mumkin.
+
+**V8 Dvigateli Optimallashuvi (V8 Engine GC Optimization):**
+Zamonaviy JS dvigatellari (V8, JavaScriptCore) kodni statik tahlil qiladi. Agar tashqi o'zgaruvchi ichki funksiyada **ishlatilmagan** bo'lsa, u leksik muhit yozuvidan (Environment Record) avtomatik ravishda **o'chiriladi** (Garbage Collected).
+
+**Debugger Gotcha (Tuzoq):**
+Agarda siz kodingizga \`debugger\` qo'yib, V8 optimallashtirgan (ichki funksiyada ishlatilmagan) tashqi o'zgaruvchini konsolga yozmoqchi bo'lsangiz, \`ReferenceError: variable is not defined\` xatosini olasiz, garchi u kodda yozilgan bo'lsa ham!
 
 \`\`\`javascript
-function createCounter() {
-  let count = 0;
-  return function() {
-    count++;
-    return count;
+function outer() {
+  let unusedValue = "Katta massiv...";
+  let usedValue = "Salom";
+  
+  return function inner() {
+    // usedValue ishlatilgan, xotirada saqlanadi
+    console.log(usedValue); 
+    // unusedValue ishlatilmagan, V8 uni GC orqali o'chirib yuboradi!
+    debugger; // Konsolda unusedValue ni o'qib bo'lmaydi
   };
 }
-
-const counter = createCounter();
-console.log(counter()); // 1
-console.log(counter()); // 2
-console.log(counter()); // 3
-\`\`\`
-
-#### B. Closure yordamida Private State
-
-\`\`\`javascript
-function createBankCard() {
-  let balans = 0;
-  return {
-    pulQoshish(summa) {
-      if (summa > 0) balans += summa;
-      return \`Qo'shildi: \${summa}. Balans: \${balans}\`;
-    },
-    pulOlish(summa) {
-      if (summa > 0 && balans >= summa) {
-        balans -= summa;
-        return \`Olingan: \${summa}. Balans: \${balans}\`;
-      }
-      return "Yetarli pul yo'q!";
-    },
-    balansniKorish() {
-      return balans;
-    }
-  };
-}
-
-const karta = createBankCard();
-console.log(karta.pulQoshish(100000)); // Qo'shildi: 100000
-console.log(karta.balansniKorish()); // 100000
-\`\`\`
-
-#### C. Function Factory (Sozlanuvchi Funksiyalar)
-
-\`\`\`javascript
-function createMultiplier(factor) {
-  return function(num) {
-    return num * factor;
-  };
-}
-
-const double = createMultiplier(2);
-const triple = createMultiplier(3);
-
-console.log(double(5)); // 10
-console.log(triple(5)); // 15
-\`\`\`
-
-#### D. IIFE (Immediately Invoked Function Expression)
-
-\`\`\`javascript
-const calculator = (function() {
-  let memory = 0;
-  return {
-    add(n) { memory += n; return memory; },
-    subtract(n) { memory -= n; return memory; },
-    clear() { memory = 0; }
-  };
-})();
-
-console.log(calculator.add(5)); // 5
-console.log(calculator.add(3)); // 8
-\`\`\`
-
-#### E. Currying (Qisqaviy funksiya)
-
-\`\`\`javascript
-function curriedAdd(a) {
-  return function(b) {
-    return a + b;
-  };
-}
-
-console.log(curriedAdd(5)(3)); // 8
-const add5 = curriedAdd(5);
-console.log(add5(10)); // 15
+const myFn = outer();
+myFn();
 \`\`\`
 
 ---
 
-### 4. ADVANCED TUSHUNCHALAR
+### 4. LOOPlar VA LET UNDER THE HOOD
 
-#### A. Closure va Loop Muammosi
+Nima uchun \`for (let i = 0; i < 3; i++)\` har bir qadamda yangi o'zgaruvchi qiymatini saqlaydi?
+JavaScript har bir loop iteratsiyasi (aylanishi) uchun **mutlaqo yangi Lexical Environment** yaratadi va oldingi iteratsiyadagi \`i\` qiymatini yangi muhitga ko'chirib o'tkazadi (copy).
 
-\`\`\`javascript
-// ❌ XATO
-const functions = [];
-for (var i = 0; i < 3; i++) {
-  functions.push(function() {
-    console.log(i);
-  });
-}
-functions[0](); // 3 (0 emas!)
-
-// ✅ TO'G'RI - let ishlatish
-const functions = [];
-for (let i = 0; i < 3; i++) {
-  functions.push(function() {
-    console.log(i);
-  });
-}
-functions[0](); // 0
-\`\`\`
-
-#### B. Closure va Memory Leak
-
-\`\`\`javascript
-function createListener() {
-  const bigData = new Array(1000000).fill("data");
-  document.addEventListener("click", function() {
-    console.log(bigData[0]);
-  });
-}
-\`\`\`
-
-#### C. Hoisting va TDZ
-
-\`\`\`javascript
-console.log(x); // undefined
-var x = 5;
-
-// console.log(y); // ReferenceError - TDZ
-let y = 5;
+\`\`\`mermaid
+sequenceDiagram
+    participant Loop as For Loop Engine
+    participant Env0 as Iteration 0 Env (i = 0)
+    participant Env1 as Iteration 1 Env (i = 1)
+    participant Env2 as Iteration 2 Env (i = 2)
+    Loop->>Env0: Yaratish: i = 0
+    Loop->>Env1: Yangi Env: oldingi i (0) + 1 -> i = 1
+    Loop->>Env2: Yangi Env: oldingi i (1) + 1 -> i = 2
 \`\`\`
 
 ---
 
-### 5. REAL HAYOTDAGI MISOLLAR
-
-#### Misol 1: Private Counter
-
+### 5. REAL HAYOTDAN MISOL: MEMOIZATION
+Memoization — hisob-kitoblarni closure ichidagi kesh yordamida tezlashtirish patternidir:
 \`\`\`javascript
-const counter = (function() {
-  let count = 0;
-  return {
-    increment() { return ++count; },
-    decrement() { return --count; },
-    getCount() { return count; }
+function createFibonacci() {
+  const cache = {}; // Closure xotirasi
+  
+  return function fib(n) {
+    if (n in cache) return cache[n];
+    if (n <= 1) return n;
+    
+    cache[n] = fib(n - 1) + fib(n - 2);
+    return cache[n];
   };
-})();
-
-console.log(counter.increment()); // 1
-console.log(counter.increment()); // 2
+}
+const fib = createFibonacci();
+console.log(fib(40)); // Bir necha millisekundda hisoblaydi!
 \`\`\`
-
-#### Misol 2: Module Pattern
-
-\`\`\`javascript
-const userModule = (function() {
-  let users = [];
-
-  return {
-    addUser(name) { users.push(name); },
-    getUsers() { return [...users]; },
-    userCount() { return users.length; }
-  };
-})();
-
-userModule.addUser("Ali");
-console.log(userModule.userCount()); // 1
-\`\`\`
-
----
-
-### 6. 12 TA SAVOL VA JAVOBLAR
-
-**<b>1. Closure nima va nima uchun kerak?</b>**
-Closure = funksiya + uning tashqarisidagi o'zgaruvchilar. Kerak: Data privacy, factory functions, callbacks.
-
-
-**<b>2. var, let, const farqini batafsilroq tushuntiring.</b>**
-var: funksiya scope, hoisting, let: block scope, TDZ, const: block scope, TDZ, o'zgartira olmaydi.
-
-
-**<b>3. Lexical scope nima?</b>**
-Funksiya qaysi yerda yozilgani bo'yicha ko'rining qoida — ichka funksiyalar tashqaring o'zgaruvchilarini ko'ra oladi.
-
-
-**<b>4. for loop bilan var/let farqi nima?</b>**
-var — loop dagi o'zgaruvchi loop tashqarida ham mavjud. let — faqat block ichida.
-
-
-**<b>5. IIFE qachon kerak?</b>**
-Private scope yaratmoqchi bo'lganda, module pattern yozganda.
-
-
-**<b>6. Currying nima va nega kerak?</b>**
-Funksiya parametrlarini bosqichma-bosqich yuborish. Kerak: Partial application, composition.
-
-
-**<b>7. Closure memory leak qilishi mumkinmi?</b>**
-Ha! Agar big data closure da qolsa va listener o'chirilmasa, xotirada qoladi.
-
-
-**<b>8. TDZ nima?</b>**
-Temporal Dead Zone — let/const bilan o'zgaruvchi initialization dan oldin ishlatish xatosi.
-
-
-**<b>9. Function Factory nima misol bilan?</b>**
-Sozlanuvchi funksiyalar qaytaradigan funksiya. Misol: createMultiplier(2) → multiply by 2 funksiya.
-
-
-**<b>10. Closure va this o'rtasidagi bog'lanish?</b>**
-Closure this ni saqlaydi, lekin this lexical emas — chaqirish kontekstiga bog'liq.
-
-
-**<b>11. Recursive funksiya closure dan foydalanishi mumkinmi?</b>**
-Ha! Recursive funksiya closure yaratishi mumkin va uni sanab turishi mumkin.
-
-
-**<b>12. Module pattern nima va qanday yoziladi?</b>**
-IIFE yordamida public va private API yaratish. Misol: const mod = (function() { ... })();
 `,
   exercises: [
     {
@@ -350,7 +169,7 @@ IIFE yordamida public va private API yaratish. Misol: const mod = (function() { 
       id: 8,
       title: "8️⃣ Scope Chain (O'rta)",
       instruction: "3 qatlama (global -> funksiya -> nested) o'zgaruvchilar bilan scope chaining ko'rsating.",
-      startingCode: "const global = 'global';\nfunction outer() {\n  const outer = 'outer';\n  function inner() {\n    const inner = 'inner';\n    // Kodni shu yerda yozing\n    console.log(/* global, outer, inner */);  \n  }\n  inner();\n}\nouter();",
+      startingCode: "const global = 'global';\nfunction outer() {\n  const outer = 'outer';\n  function inner() {\n    const inner = 'inner';\n    // Kodni shu yerda yozing\n    console.log(/* global, outer, inner */);\n  }\n  inner();\n}\nouter();",
       hint: "console.log(global, outer, inner);",
       test: "if (logs.some(l => Array.isArray(l) && l[0] === 'global')) return null; return 'Scope chain to\\'g\\'ri emas!';"
     },
@@ -385,6 +204,22 @@ IIFE yordamida public va private API yaratish. Misol: const mod = (function() { 
       startingCode: "// Kodni shu yerda yozing\nconst double = createCurriedMultiplier(2);\nconsole.log(double(3)); // 6\nconsole.log(double(5)); // 10",
       hint: "function createCurriedMultiplier(factor) { return function multiply(n) { return factor * n; }; }",
       test: "if (logs.includes(6) && logs.includes(10)) return null; return 'Curry + Factory to\\'g\\'ri emas!';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Memoize Funksiya (Memoization)",
+      instruction: "Katta hajmli hisob-kitoblarni optimallashtirish uchun universal `memoize(fn)` keshlovchi funksiyani yozing. U berilgan `fn` funksiyasining natijalarini closure xotirasida (obyekt yoki Map-da) saqlab qolsin. Agar keyingi safar chaqirilganda parametrlar bir xil bo'lsa, keshdagi natijani qaytarsin (parametr sifatida bitta primitiv qiymat uzatiladi deb hisoblang).",
+      startingCode: "function memoize(fn) {\n  // Kodni shu yerdan yozing\n}\n",
+      hint: "const cache = {}; return function(arg) { if (arg in cache) return cache[arg]; return cache[arg] = fn(arg); };",
+      test: "let count = 0; const double = x => { count++; return x * 2; }; const memoized = memoize(double); if (memoized(5) === 10 && memoized(5) === 10 && count === 1) return null; return 'Memoize keshdan to\\'g\\'ri foydalanmadi';"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Xavfsiz reyestr (Secure Registry)",
+      instruction: "Faqat closure va uning ichidagi Leksik muhit orqali qiymatlarni saqlaydigan xavfsiz reyestr `createSecureRegistry()` funksiyasini yozing. U tashqi o'zgaruvchilardan butunlay yashirin bo'lgan Map yoki obyektni saqlasin va quyidagi metodlarga ega obyektni qaytarsin:\n- `register(key, val)` - qiymatni reyestrga qo'shadi;\n- `has(key)` - reyestrda kalit borligini tekshiradi (true/false);\n- `get(key)` - qiymatni oladi (agar bo'lmasa undefined).",
+      startingCode: "function createSecureRegistry() {\n  // Kodni shu yerdan yozing\n}\n",
+      hint: "const registry = new Map(); return { register(k, v) { registry.set(k, v); }, has(k) { return registry.has(k); }, get(k) { return registry.get(k); } };",
+      test: "const reg = createSecureRegistry(); reg.register('apiKey', 'secret_123'); if (reg.has('apiKey') && reg.get('apiKey') === 'secret_123' && !reg.hasOwnProperty('registry')) return null; return 'Secure registry to\\'g\\'ri ishlamadi';"
     }
   ],
   quizzes: [
@@ -438,7 +273,7 @@ IIFE yordamida public va private API yaratish. Misol: const mod = (function() { 
     },
     {
       id: 5,
-      question: "Closures qanday qilib \"Memory Leak\" (xotira sizib chiqishi) ga sabab bo'lishi mumkin?",
+      question: "Closures qanday qildek \"Memory Leak\" (xotira sizib chiqishi) ga sabab bo'lishi mumkin?",
       options: [
         "Hech qachon xotira muammosiga sabab bo'lmaydi",
         "Tashqi funksiyadagi katta hajmli ma'lumotlar (masalan, yirik massivlar) closure funksiya xotirada turgunicha Garbage Collector tomonidan o'chirilmaydi",
@@ -450,9 +285,9 @@ IIFE yordamida public va private API yaratish. Misol: const mod = (function() { 
     },
     {
       id: 6,
-      question: "Temporal Dead Zone (TDZ) atamasi nimani anglatadi?",
+      question: "Temporal Dead Zone (TDZ) atamasi nimani anglatami?",
       options: [
-        "`let` yoki `const` bilan e'lon qilingan o'zgaruvchining scope boshidan to unga qiymat berilguncha bo'lgan, murojaat qilib bo'lmaydigan hududi",
+        "`let` yoki `const` bilan e'lon qilingan o'zgaruvchining scope boshidan to unga qiymat berilguncha bo'lgan, murojaat qibly bo'lmaydigan hududi",
         "Funksiya bajarilib tugagandan keyin uning o'chib ketish vaqti",
         "JavaScript Call Stack to'lib qolgandagi holat",
         "Event Loop kutish vaqti"
@@ -489,12 +324,12 @@ IIFE yordamida public va private API yaratish. Misol: const mod = (function() { 
       question: "JavaScript-da garbage collection (axlat yig'uvchi) qanday ishlaydi va closure-ga qanday ta'sir qiladi?",
       options: [
         "O'zgaruvchiga yetib borish imkoni (reachability) bo'lmasa, u o'chiriladi. Closure unga ishorani ushlab tursa, u o'chmaydi",
-        "Barcha o'zgaruvchilar har 5 soniyada majburan o'chiriladi",
+        "Ballar o'zgaruvchilar har 5 soniyada majburan o'chiriladi",
         "Faqat global o'zgaruvchilar saqlab qolinadi",
         "Faqat callbacklar o'chiriladi"
       ],
       correctAnswer: 0,
-      explanation: "JavaScript engine xotiradagi ma'lumotlarni qidirishda 'yetib borish' qoidasiga tayanadi. Agar closure ichidagi o'zgaruvchiga murojaat qilish imkoniyati hali ham mavjud bo'lsa (ya'ni ichki funksiya faol bo'lsa), GC uni o'chirmaydi."
+      explanation: "JavaScript engine xotiradagi ma'lumotlarni qidirishda 'yetib borish' qoidasiga tayanadi. Agar closure ichidagi o'zgaruvchiga murojaat qilish imkoniyati hali ham madison bo'lsa (ya'ni ichki funksiya faol bo'lsa), GC ordan o'chirmaydi."
     },
     {
       id: 10,
@@ -518,7 +353,7 @@ IIFE yordamida public va private API yaratish. Misol: const mod = (function() { 
         "Kodni faqat strict mode-da ishga tushirish uchun"
       ],
       correctAnswer: 0,
-      explanation: "Module pattern closure yordamida o'zgaruvchilar va yordamchi funksiyalarni tashqi dunyodan yashirishga (private qilish) va faqat kerakli API metodlarini tashqariga chiqarishga imkon beradi."
+      explanation: "Module pattern closure yordamida o'zgaruvchilar va yordamchi funksiyalarny tashqi dunyodan yashirishga (private qilish) va faqat kerakli API metodlarini tashqariga chiqarishga imkon beradi."
     },
     {
       id: 12,
@@ -531,6 +366,30 @@ IIFE yordamida public va private API yaratish. Misol: const mod = (function() { 
       ],
       correctAnswer: 0,
       explanation: "Bu bir nechta argumentlarni qabul qilishni closure-lar yordamida ketma-ketlikka bo'lgan currying texnikasidir."
+    },
+    {
+      id: 13,
+      question: "V8 dvigateli (Garbage Collector) closures xotirasini optimallashtirishi nima uchun ba'zida debuggerda o'zgaruvchi topilmadi xatosiga sabab bo'ladi?",
+      options: [
+        "Chunki V8 closure ichida ishlatilmagan tashqi o'zgaruvchilarni GC orqali o'chirib yuboradi, natijada ular debuggerda 'not defined' bo'lib qoladi",
+        "Chunki debugger closures bilan umuman ishlay olmaydi",
+        "Chunki V8 barcha closure'larni avtomatik tarzda sinxronlashtiradi",
+        "Chunki debugger orqali xotira butunlay tozalab tashlanadi"
+      ],
+      correctAnswer: 0,
+      explanation: "Zamonaviy JS dvigatellari xotirani optimallashtirish uchun ichki funksiyada (closureda) ishlatilmagan tashqi o'zgaruvchilarni leksik muhitda saqlamaydi, balki o'chirib yuboradi. Shuning uchun debuggerda to'xtaganda, o'sha o'zgaruvchi xotirada mavjud bo'lmaydi."
+    },
+    {
+      id: 14,
+      question: "Bajarilish konteksti (Execution Context) ichidagi VariableEnvironment va LexicalEnvironment o'rtasidagi farq nima?",
+      options: [
+        "VariableEnvironment block scope o'zgaruvchilarini saqlaydi, LexicalEnvironment esa global xossalarni",
+        "VariableEnvironment faqat 'var' bilan e'lon qilingan o'zgaruvchilarni, LexicalEnvironment esa 'let', 'const' kabi block scope o'zgaruvchilarini saqlaydi",
+        "Ular o'rtasida hech qanday farq yo'q, ikkalasi ham bir xil ma'lumotlarni saqlaydi",
+        "VariableEnvironment faqat stackda ishlaydi, LexicalEnvironment esa diskda"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScriptda 'var' o'zgaruvchilari VariableEnvironment'ga tushadi, 'let' va 'const' esa LexicalEnvironment'ga ulanadi. Blok scope (if/for) ochilganda, yangi LexicalEnvironment yaratilib, context o'shanga ulanadi, VariableEnvironment esa o'zgarmaydi."
     }
   ]
 };
