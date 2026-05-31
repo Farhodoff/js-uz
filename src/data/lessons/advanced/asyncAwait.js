@@ -98,6 +98,60 @@ async function fetchUser() {
 - \`for...of\` tsikli ichida \`await\` ishlatilganda, iteratsiyalar ketma-ket (biri tugagandan keyin ikkinchisi) bajariladi.
 - \`Array.prototype.forEach\` ichida \`await\` ishlatilsa, u awaitni kutmaydi va barcha asinxron operatsiyalarni parallel boshlab yuboradi (chunki \`forEach\` o'z callbackini kutmaydi).
 
+### F. Ketma-ket (Sequential) vs Parallel Await (Vizual taqqoslash)
+
+Ketma-ket chaqirilgan awaitlar va parallel chaqirilgan awaitlar o'rtasidagi vaqt tejalishini quyidagi sxemada yaqqol ko'rish mumkin (masalan, ikkita 2 soniyali asinxron ishda):
+
+\`\`\`mermaid
+gantt
+    title Ketma-ket vs Parallel bajarilish vaqti
+    dateFormat  X
+    axisFormat %s s
+    section Ketma-ket (4s)
+    Await A (2s)           :a1, 0, 2
+    Await B (2s)           :a2, after a1, 2
+    section Parallel (2s)
+    Promise.all A (2s)     :b1, 0, 2
+    Promise.all B (2s)     :b2, 0, 2
+\`\`\`
+
+### G. Custom Thenables bilan ishlash
+Xuddi Promislar kabi, \`await\` operatori ham \`.then()\` metodiga ega bo'lgan har qanday 'thenable' obyekt bilan muammosiz ishlaydi:
+\`\`\`javascript
+const customThenable = {
+  then(resolve) {
+    setTimeout(() => resolve("Tayyor!"), 1000);
+  }
+};
+
+async function run() {
+  const result = await customThenable;
+  console.log(result); // "Tayyor!"
+}
+\`\`\`
+
+### H. Klass Metodlarini Asinxron qilish
+Klasslar ichidagi metodlar ham \`async\` kalit so'zi bilan e'lon qilinishi mumkin va oddiy funksiyalar kabi chaqiriladi:
+\`\`\`javascript
+class UserAPI {
+  async fetchProfile(id) {
+    const res = await fetch(\`https://api.com/users/\${id}\`);
+    return res.json();
+  }
+}
+const api = new UserAPI();
+const user = await api.fetchProfile(1);
+\`\`\`
+
+### I. Async IIFE (Darhol chaqiriluvchi asinxron funksiya)
+Agar moduldan tashqarida top-level await qo'llab-quvvatlanmasa, kodni asinxron ishga tushirish uchun Async IIFE dan foydalaniladi:
+\`\`\`javascript
+(async () => {
+  const data = await getProfile();
+  console.log(data);
+})();
+\`\`\`
+
 ---
 
 ## 4. AMALIYOT
@@ -277,6 +331,22 @@ Kalit so'z parametrlar ro'yxatidan oldin qo'yiladi: const myFn = async () => { .
       startingCode: "// Bu yerga yozing\n",
       hint: "(async () => { const res = await Promise.resolve('IIFE OK'); console.log(res); })();",
       test: "if (code.includes('async') && logs.includes('IIFE OK')) return null; return 'Asinxron IIFE yozilmadi yoki natija log qilinmadi';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Thenable Obyekt bilan Await",
+      instruction: "Berilgan `customThenable` obyektini `await` qiling va natijasini qaytaruvchi `getThenableResult` asinxron funksiyasini yozing.",
+      startingCode: "const customThenable = {\n  then(resolve) {\n    setTimeout(() => resolve(\"Thenable OK\"), 10);\n  }\n};\n\nasync function getThenableResult() {\n  // Bu yerga yozing\n}",
+      hint: "return await customThenable;",
+      test: "if (typeof getThenableResult !== 'function') return 'getThenableResult funksiya emas'; return getThenableResult().then(r => r === 'Thenable OK' ? null : 'Natija noto\\'g\\'ri');"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Parallel Await va Destrukturizatsiya",
+      instruction: "Berilgan `fetchPrice` va `fetchQuantity` promislarini parallel ravishda ishga tushiring, `Promise.all` va `await` yordamida natijalarini oling, massiv destrukturizatsiyasi orqali ularni `price` va `quantity` o'zgaruvchilariga saqlang va ularning ko'paytmasini (`price * quantity`) qaytaruvchi `getTotal` asinxron funksiyasini yozing.",
+      startingCode: "const fetchPrice = () => Promise.resolve(150);\nconst fetchQuantity = () => Promise.resolve(3);\n\nasync function getTotal() {\n  // Bu yerga yozing\n}",
+      hint: "const [price, quantity] = await Promise.all([fetchPrice(), fetchQuantity()]); return price * quantity;",
+      test: "if (typeof getTotal !== 'function') return 'getTotal funksiya emas'; return getTotal().then(r => r === 450 ? null : 'Jami summa noto\\'g\\'ri');"
     }
   ],
   quizzes: [
@@ -423,6 +493,30 @@ Kalit so'z parametrlar ro'yxatidan oldin qo'yiladi: const myFn = async () => { .
       ],
       correctAnswer: 1,
       explanation: "JavaScript har doim yagona oqimli til. Await oqimni to'xtatmaydi, u fondagi asinxron operatsiyalar bajarilishini asinxron kutib, oqimni boshqa ishlarga bo'shatib beradi."
+    },
+    {
+      id: 13,
+      question: "JavaScript-da `await` operatoriga `.then()` metodiga ega bo'lgan ob'ekt (thenable) uzatilsa, `await` o'zini qanday tutadi?",
+      options: [
+        "Xatolik (TypeError) tashlaydi",
+        "Uni oddiy sinxron obyekt deb hisoblab, kutmasdan obyektning o'zini qaytaradi",
+        "Ushbu `.then()` metodini chaqiradi va uning resolve qilinishini xuddi Promise kabi kutadi",
+        "Faqat funksiya generator (Generator) bo'lsagina ishlaydi"
+      ],
+      correctAnswer: 2,
+      explanation: "`await` operatori nafaqat haqiqiy Promislar, balki `.then` metodiga ega bo'lgan har qanday Thenable obyektlar bilan ham xuddi Promise kabi ishlay oladi va ularning bajarilishini kutadi."
+    },
+    {
+      id: 14,
+      question: "Quyidagilardan qaysi biri to'g'ri: Top-level `await` qaysi muhitda ishlaydi?",
+      options: [
+        "Har qanday JavaScript faylida va har qanday global scope-da",
+        "Faqat ECMAScript Modullarida (ES Modules, type: 'module') eng yuqori darajada",
+        "Faqat Node.js ning CommonJS (require) skriptlarida",
+        "Faqat inline HTML skript teglari ichida"
+      ],
+      correctAnswer: 1,
+      explanation: "Top-level `await` faqat ES Modullarning (ESM) yuqori darajasida ishlaydi. Oddiy CommonJS skriptlarida uni asinxron funksiya tashqarisida ishlatish SyntaxError xatosiga olib keladi."
     }
   ]
 };

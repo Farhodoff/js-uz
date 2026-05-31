@@ -39,6 +39,83 @@ type UpdateUser = Partial<User>;
 type UserContact = Pick<User, "name" | "email">;
 \`\`\`
 
+### A. Indexed Access Types (Indeks orqali murojaat)
+Obyekt tipining ma'lum bir maydoni tipini olish uchun xuddi massiv indeksiga o'xshash sintaksisdan foydalaniladi:
+\`\`\`typescript
+interface Product {
+  id: number;
+  info: {
+    name: string;
+    price: number;
+  };
+}
+
+type ProductInfo = Product["info"]; // { name: string; price: number }
+type PriceType = Product["info"]["price"]; // number
+\`\`\`
+
+### B. Mapped Types (Xaritalangan tiplar)
+Mapped tiplar mavjud tip maydonlarini aylanib chiqib, yangi tiplar yaratadi. Bunda xossalarni majburiy qilish/ixtiyoriy qilish uchun \`+\` va \`-\` modifierlari ishlatilishi mumkin:
+\`\`\`typescript
+type FeatureFlags = {
+  darkMode: () => void;
+  profilePage: () => void;
+};
+
+// Har bir xossani boolean tipiga o'zgartiramiz
+type OptionsFlags<Type> = {
+  [Property in keyof Type]: boolean;
+};
+
+type FeatureOptions = OptionsFlags<FeatureFlags>;
+// { darkMode: boolean; profilePage: boolean; }
+
+// Readonly va optional bo'lgan maydonlarni majburiy va o'zgaruvchan qilish (-readonly va -?)
+type MutableRequired<Type> = {
+  -readonly [Property in keyof Type]-?: Type[Property];
+};
+\`\`\`
+
+### C. Conditional Types (Shartli tiplar va \`infer\`)
+Ternary operatoriga o'xshab shartga ko'ra har xil tip tanlash imkonini beradi:
+\`\`\`typescript
+// Agarda T tipi string bo'lsa boolean, aks holda number qaytaradi
+type IsString<T> = T extends string ? boolean : number;
+
+type A = IsString<"Salom">; // boolean
+type B = IsString<123>;     // number
+\`\`\`
+
+#### \`infer\` kalit so'zi (Tipni ajratib olish)
+Conditional tiplar ichida noma'lum tipni ajratib olish va unga nom berish uchun \`infer\` ishlatiladi. Masalan, funksiyaning qaytarish tipini ajratib olish:
+\`\`\`typescript
+type GetReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+type MyFuncType = () => string;
+type FuncResult = GetReturnType<MyFuncType>; // string
+\`\`\`
+
+### D. Template Literal Types (Andoza matn tiplari)
+JavaScript-dagi template literal (shablon satrlar) kabi ishlaydi, ya'ni matn tiplarini birlashtirish orqali yeni string literal tiplar yaratadi:
+\`\`\`typescript
+type EmailStatus = "pending" | "sent" | "failed";
+type EventName = \`on_\${EmailStatus}\`; // "on_pending" | "on_sent" | "on_failed"
+\`\`\`
+
+### E. Utility Types Bajarilish Diagrammasi (Mermaid)
+
+Quyida asosiy Utility tiplar (\`Partial\`, \`Required\`, \`Pick\`, \`Omit\`) obyekt ustida qanday set operatsiyalarini bajarishini ko'rsatuvchi vizual diagramma taqdim etilgan:
+
+\`\`\`mermaid
+graph TD
+    User["Original User Type:<br/>{ id: number, name: string, email?: string }"]
+    
+    User -->|Partial| P["Partial&lt;User&gt;:<br/>{ id?: number, name?: string, email?: string }"]
+    User -->|Required| R["Required&lt;User&gt;:<br/>{ id: number, name: string, email: string }"]
+    User -->|Pick 'name'| PK["Pick&lt;User, 'name'&gt;:<br/>{ name: string }"]
+    User -->|Omit 'email'| OM["Omit&lt;User, 'email'&gt;:<br/>{ id: number, name: string }"]
+\`\`\`
+
 ## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
@@ -179,6 +256,22 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       startingCode: "function checkRequired(obj: Record<string, any>, requiredKeys: string[]): boolean {\n  // every dan foydalaning\n}",
       hint: "return requiredKeys.every(k => k in obj && obj[k] !== undefined);",
       test: "if (typeof checkRequired !== 'function') return 'checkRequired topilmadi'; if (checkRequired({name: 'Ali'}, ['name', 'age']) !== false || checkRequired({name: 'Ali', age: 20}, ['name']) !== true) return 'Validation xato'; return null;"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Custom Mapped Type (`BooleanFlags`)",
+      instruction: "Berilgan `T` tipidagi barcha maydonlarning tipini `boolean` qilib o'zgartiradigan custom mapped type `BooleanFlags<T>` e'lon qiling va uni `{ name: string; age: number }` interfeysiga tatbiq etib, `{ name: true, age: false }` obyektini qaytaradigan `getUserFlags()` funksiyasini yozing.",
+      startingCode: "type BooleanFlags<T> = {\n  // Mapped type qismini yozing\n};\n\nfunction getUserFlags() {\n  // Bu yerga yozing\n}",
+      hint: "type BooleanFlags<T> = {\n  [K in keyof T]: boolean;\n};\nfunction getUserFlags() {\n  return { name: true, age: false };\n}",
+      test: "if (typeof getUserFlags !== 'function') return 'getUserFlags topilmadi'; const res = getUserFlags(); if (res.name !== true || res.age !== false) return 'Flags qiymatlari xato'; return null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Conditional Type va `infer` kalit so'zi",
+      instruction: "Agar berilgan tip `T` massiv bo'lsa uning element tipini (array element type), aks holda `T` ning o'zini qaytaradigan `UnwrapArray<T>` conditional tipini e'lon qiling. Ushbu tip yordamida `string[]`dan `string` tipini ajratib olib, satr qaytaruvchi `getFirstWord(words)` funksiyasini yozing.",
+      startingCode: "type UnwrapArray<T> = any; // Bu yerga conditional yozing\n\nfunction getFirstWord(words: string[]): string {\n  // words[0] ni qaytaring\n}",
+      hint: "type UnwrapArray<T> = T extends (infer U)[] ? U : T;\nfunction getFirstWord(words: string[]): UnwrapArray<string[]> {\n  return words[0];\n}",
+      test: "if (typeof getFirstWord !== 'function') return 'getFirstWord topilmadi'; if (getFirstWord(['Salom', 'Dunyo']) !== 'Salom') return 'Birinchi so\'z noto\'g\'ri'; return null;"
     }
   ],
   quizzes: [
@@ -300,6 +393,30 @@ Yo'q, barcha utility tiplar faqat TypeScript kompilyatori uchun xizmat qiladi va
       ],
       correctAnswer: 1,
       explanation: "Barcha TypeScript utility tiplari faqat tip tekshiruvi uchun mavjud bo'lgani sababli, tayyor JS fayllardan to'liq olib tashlanadi."
+    },
+    {
+      id: 13,
+      question: "Conditional Types ichida `infer` kalit so'zi nima vazifani bajaradi?",
+      options: [
+        "Dasturdagi runtime xatolarni tahlil qiladi",
+        "Shartli tip tekshiruvi jarayonida noma'lum tipni avtomatik ravishda aniqlab, unga yangi o'zgaruvchi nomi (R) beradi",
+        "Barcha utility tiplarni o'chirib tashlaydi",
+        "Faqat massiv elementlarini saralash uchun ishlatiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "`infer` operatori conditional tip extends qismida noma'lum tipni ajratib olish va uni ternary operatorning to'g'ri (true) qismida ishlatish imkonini beradi."
+    },
+    {
+      id: 14,
+      question: "Mapped Types-da `readonly` va optional (`?`) modifierlarini olib tashlash uchun qaysi belgilardan foydalaniladi?",
+      options: [
+        "Delete va Remove kalit so'zlaridan",
+        "Minus belgisi `-` va modifier nomidan (masalan: `-readonly` va `-?`)",
+        "Undov belgisi `!` va `as` operatoridan",
+        "Faqat static kalit so'zidan"
+      ],
+      correctAnswer: 1,
+      explanation: "Mapped types-da `+` (qo'shish) va `-` (olib tashlash) modifierlari mavjud. `-readonly` va `-?` yozuvi mos ravishda readonly va optional xususiyatlarni tipdan olib tashlab, o'zgaruvchan va majburiy qiladi."
     }
   ]
 };

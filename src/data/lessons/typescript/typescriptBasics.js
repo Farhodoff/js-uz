@@ -19,7 +19,7 @@ TypeScript-da asosiy tiplar quyidagicha e'lon qilinadi:
 - **Any va Unknown:** \`any\` tiplashni butunlay o'chirib qo'yadi, \`unknown\` esa xavfsizroq muqobil bo'lib, ishlatishdan oldin tipni aniqlashtirishni (type narrowing) talab qiladi.
 - **Void va Never:** \`void\` funksiya qiymat qaytarmasligini, \`never\` esa funksiya hech qachon yakunlanmasligini (xato otishini yoki cheksiz siklni) anglatadi.
 
-Tiplarni belgilash sinraksi:
+Tiplarni belgilash sintaksisi:
 \`\`\`typescript
 let age: number = 25;
 let username: string = "Ali";
@@ -27,6 +27,59 @@ let isDeveloper: boolean = true;
 
 // Tuple
 let coords: [number, number] = [41.2995, 69.2401];
+\`\`\`
+
+### A. Type Inference vs Type Annotation
+TypeScript-da o'zgaruvchi tipini e'lon qilishning ikki xil yo'li mavjud:
+1. **Type Annotation (Tipni aniq ko'rsatish):** Dasturchi o'zgaruvchi yoniga uning tipini belgilab ketadi.
+   \`\`\`typescript
+   let count: number = 10;
+   \`\`\`
+2. **Type Inference (Tip xulosasi):** Agar qiymat darhol biriktirilsa, TypeScript o'zgaruvchi tipini qiymatidan kelib chiqib avtomatik ravishda aniqlaydi.
+   \`\`\`typescript
+   let message = "Salom"; // TS buni avtomatik string deb hisoblaydi
+   \`\`\`
+   *Tavsiya:* Kod keraksiz murakkablashmasligi uchun, oddiy o'zgaruvchilar uchun Type Inference-dan, funksiya parametrlari va murakkab obyektlar uchun esa Type Annotation-dan foydalanish tavsiya etiladi.
+
+### B. Literal Types (Literal tiplar)
+Literal tiplar o'zgaruvchiga faqat bitta yoki bir nechta aniq belgilangan qiymatlarnigina qabul qilishga ruxsat beradi. Ular asosan Union (\`|\`) bilan birga ishlatiladi:
+\`\`\`typescript
+type Direction = "left" | "right" | "up" | "down";
+let move: Direction = "left"; // to'g'ri
+// let move: Direction = "around"; // XATO!
+\`\`\`
+
+### C. Type Aliases vs Interfaces
+TypeScript-da yangi obyekt yoki qiymat tipini yaratish uchun ikkita asosiy vosita bor:
+- **Type Alias (\`type\`):** Istalgan turdagi tipga (primitivlar, obyektlar, union-lar) yangi nom berish uchun ishlatiladi. Qayta e'lon qilib kengaytirib bo'lmaydi.
+  \`\`\`typescript
+  type Point = { x: number; y: number };
+  type ID = string | number; // Union uchun faqat type mos keladi
+  \`\`\`
+- **Interface (\`interface\`):** Faqat obyekt yoki klasslarning shaklini (structure) tavsiflash uchun ishlatiladi. Ularni \`extends\` orqali kengaytirish yoki bir xil nomda bir nechta interfeys e'lon qilib (declaration merging) avtomatik birlashtirish mumkin.
+  \`\`\`typescript
+  interface User { name: string; }
+  interface User { age: number; } // Endi User interfeysi name va age-ga ega
+  \`\`\`
+
+### D. Type Assertion (Tipni majburlash)
+Ba'zan siz obyekt tipini TypeScript-ga qaraganda aniqroq bilasiz (masalan, API-dan yoki DOM-dan ma'lumot olayotganda). Bunday holda \`as\` operatori orqali tipni majburlab ko'rsatish mumkin:
+\`\`\`typescript
+const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
+\`\`\`
+
+### E. TypeScript-ning Kompilyatsiya Oqimi (Mermaid)
+
+TypeScript kodi brauzerda to'g'ridan-to'g'ri ishlamagani uchun u quyidagi oqim asosida tekshiriladi va oddiy JavaScript kodiga transpayl qilinadi:
+
+\`\`\`mermaid
+flowchart TD
+    TS[TypeScript Kodi: .ts] --> Parser[Syntactic Parser]
+    Parser --> Checker[Type Checker: Tiplarni tekshirish]
+    Checker -->|Xatolik aniqlansa| Err[Compile-time Error: Xatolarni ko'rsatish]
+    Checker -->|Tiplar to'g'ri bo'lsa| Emitter[Emitter / Transpiler]
+    Emitter -->|Tip belgilari o'chiriladi| JS[JavaScript Kodi: .js]
+    JS --> Browser[Brauzerda / Node.js da ishga tushadi]
 \`\`\`
 
 ## 4. AMALIYOT (Mashqlar pastda)
@@ -169,6 +222,22 @@ Kompilyatsiya vaqtini biroz ko'paytiradi, lekin tayyor bo'lgan JavaScript kodi o
       startingCode: "function throwFatal(): never {\n  // Error otish logikasi\n}",
       hint: "throw new Error('Fatal Error');",
       test: "if (typeof throwFatal !== 'function') return 'throwFatal topilmadi'; try { throwFatal(); return 'Xato otilmadi'; } catch(e) { if(e.message !== 'Fatal Error') return 'Xato xabari noto\\'g\\'ri'; } return null;"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Type Assertion (`as` kalit so'zi)",
+      instruction: "Sizga `any` tipidagi `apiData` o'zgaruvchisi berilgan. Uni `{ name: string; age: number }` tipida deb e'lon qilib (Type Assertion orqali), uning `name` xossasini qaytaruvchi `getUserName(apiData)` funksiyasini yozing.",
+      startingCode: "function getUserName(apiData: any): string {\n  // apiData obyektini { name: string; age: number } sifatida ko'rsating va name ni qaytaring\n}",
+      hint: "return (apiData as { name: string; age: number }).name;",
+      test: "if (typeof getUserName !== 'function') return 'getUserName topilmadi'; if(getUserName({ name: 'Farhod', age: 25 }) !== 'Farhod') return 'Ism xato qaytarildi'; return null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Union va Literal tiplar",
+      instruction: "Yo'l chirog'i (Traffic Light) holatini ifodalovchi `'red' | 'yellow' | 'green'` literal union tipini qabul qilib, agar `'red'` bo'lsa `'Stop'`, `'yellow'` bo'lsa `'Slow'`, `'green'` bo'lsa `'Go'` qaytaradigan `trafficLight(color)` funksiyasini yozing.",
+      startingCode: "type LightColor = 'red' | 'yellow' | 'green';\n\nfunction trafficLight(color: LightColor): string {\n  // Switch yoki if orqali tekshiring\n}",
+      hint: "if (color === 'red') return 'Stop'; if (color === 'yellow') return 'Slow'; return 'Go';",
+      test: "if (typeof trafficLight !== 'function') return 'trafficLight topilmadi'; if(trafficLight('red') !== 'Stop' || trafficLight('green') !== 'Go') return 'Noto\\'g\\'ri signal xabari'; return null;"
     }
   ],
   quizzes: [
@@ -275,6 +344,30 @@ Kompilyatsiya vaqtini biroz ko'paytiradi, lekin tayyor bo'lgan JavaScript kodi o
       options: ["TypeScript", "JavaScript", "C++", "HTML5"],
       correctAnswer: 1,
       explanation: "TypeScript kodi transpilyatsiya qilinib, oddiy JavaScript kodiga o'giriladi, chunki brauzerlar TypeScript-ni tushunmaydi."
+    },
+    {
+      id: 13,
+      question: "TypeScript-dagi `as` operatori (Type Assertion) haqidagi qaysi tasdiq to'g'ri?",
+      options: [
+        "U JavaScript runtime-da obyekt tipini majburiy ravishda o'zgartiradi",
+        "U faqat compile-time da ishlaydi va kompilyatorga obyekt tipini dasturchi yaxshiroq bilishini bildiradi",
+        "U faqat sonlarni string-ga o'tkazishda ishlatiladi",
+        "U barcha runtime xatolarni avtomatik ravishda ushlab qoladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Type assertion (`as`) faqat compile-time da kompilyatorni tinchlantirish uchun ishlatiladi. JS-ga o'girilganda u o'chib ketadi va runtime-da hech qanday tekshiruv yoki tip o'zgarishi bajarmaydi."
+    },
+    {
+      id: 14,
+      question: "`Type Aliases` (`type`) va `Interfaces` (`interface`) o'rtasidagi farq haqida qaysi javob to'g'ri?",
+      options: [
+        "Type faqat sonlar uchun, interface esa obyektlar uchun ishlatiladi",
+        "Interface-larni e'lon qilish orqali avtomatik birlashtirish (declaration merging) mumkin, type-da esa bunday qilib bo'lmaydi",
+        "Interface tezroq ishlaydi va uni faqat union uchun ishlatsa bo'ladi",
+        "Ular o'rtasida hech qanday sintaktik yoki funksional farq yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "Interface-lar 'declaration merging' xususiyatiga ega, ya'ni bir xil nomdagi interfeyslar avtomatik birlashadi. Type-da esa bunday qilib bo'lmaydi. Shuningdek, Union tiplarni faqat `type` orqali yaratish mumkin."
     }
   ]
 };

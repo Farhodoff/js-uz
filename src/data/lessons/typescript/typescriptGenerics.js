@@ -41,6 +41,84 @@ function loggingIdentity<T extends Lengthwise>(arg: T): T {
 }
 \`\`\`
 
+### A. Generic Interfaces va Type Aliases
+Interfeyslar va Type Alias-lar ham generic tiplarni qabul qilishi mumkin:
+\`\`\`typescript
+// Generic Interface
+interface KeyValue<K, V> {
+  key: K;
+  value: V;
+}
+
+const pair: KeyValue<string, number> = { key: "Yosh", value: 25 };
+
+// Generic Type Alias
+type ResponseData<T> = {
+  data: T;
+  status: number;
+  error?: string;
+};
+\`\`\`
+
+### B. Generic Classes (Generic Klasslar)
+Klasslar ham ma'lumotlar bilan universal va xavfsiz ishlash uchun generic tiplarni qabul qilishi mumkin (eslatma: static a'zolar generic bo'la olmaydi):
+\`\`\`typescript
+class DataStore<T> {
+  private items: T[] = [];
+
+  addItem(item: T): void {
+    this.items.push(item);
+  }
+
+  getItems(): T[] {
+    return this.items;
+  }
+}
+\`\`\`
+
+### C. Default Generic Parameters (Sukut bo'yicha generic tiplar)
+Generic parametrlar uchun standart (zaxira) tip belgilab qo'yish mumkin. Agar tip ko'rsatilmasa, sukut bo'yicha shu tip olinadi:
+\`\`\`typescript
+interface Container<T = string> {
+  content: T;
+}
+
+const stringBox: Container = { content: "Salom" }; // Container<string> deb olinadi
+const numberBox: Container<number> = { content: 123 }; // Container<number> deb olinadi
+\`\`\`
+
+### D. Class Types in Generics (Klass tiplari va Factory funksiyalar)
+Generics yordamida klass instansiyalarini yaratuvchi factory funksiyalar yozishda klass tipini ifodalash uchun \`new\` signaturasidan foydalaniladi:
+\`\`\`typescript
+function createInstance<T>(clazz: new () => T): T {
+  return new clazz();
+}
+
+class Car { drive() { console.log("Driving"); } }
+const myCar = createInstance(Car); // Car instansiyasi olinadi
+\`\`\`
+
+### E. Generic Box Visualizatsiyasi (Mermaid)
+
+Quyidagi diagrammada generic \`Box<T>\` universal konteynerining har xil tiplar (string, number, object) bilan qanday ishlashi va tiplar xavfsizligini 100% saqlavchi sxemasi ko'rsatilgan:
+
+\`\`\`mermaid
+flowchart TD
+    Box["Box&lt;T&gt; (Generic Container)"]
+    
+    Box -->|T is string| BoxStr["Box&lt;string&gt;"]
+    BoxStr -->|setValue 'OK'| StoreStr["value: 'OK' (String)"]
+    BoxStr -->|getValue| RetStr["'OK' qaytadi (String tipida)"]
+    
+    Box -->|T is number| BoxNum["Box&lt;number&gt;"]
+    BoxNum -->|setValue 42| StoreNum["value: 42 (Number)"]
+    BoxNum -->|getValue| RetNum["42 qaytadi (Number tipida)"]
+    
+    Box -->|T is Object| BoxObj["Box&lt;{id: number}&gt;"]
+    BoxObj -->|setValue id:1| StoreObj["value: {id: 1} (Object)"]
+    BoxObj -->|getValue| RetObj["{id: 1} qaytadi (Strict Object tipida)"]
+\`\`\`
+
 ## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
@@ -181,6 +259,22 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       startingCode: "class HistoryTracker<T> {\n  private list: T[] = [];\n  // Metodlarni yozing\n}",
       hint: "add(item: T): void {\n    this.list.push(item);\n  }\n  getHistory(): T[] {\n    return this.list.slice(-3);\n  }",
       test: "if (typeof HistoryTracker !== 'function') return 'HistoryTracker topilmadi'; const tracker = new HistoryTracker(); tracker.add('a'); tracker.add('b'); tracker.add('c'); tracker.add('d'); if(tracker.getHistory().length !== 3 || tracker.getHistory()[0] !== 'b') return 'Tarix noto\\'g\\'ri qaytarildi'; return null;"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Generic Response Interfeysi",
+      instruction: "Generic ma'lumot `data` va sonli `status` maydonlariga ega bo'lgan generic `ApiResponse<T>` interfeysini e'lon qiling va unga mos ravishda `{ data: 'Muvaffaqiyat', status: 200 }` obyektini qaytaradigan `getSuccessResponse()` funksiyasini yozing.",
+      startingCode: "interface ApiResponse<T> {\n  // data va status xossalarini yozing\n}\n\nfunction getSuccessResponse(): ApiResponse<string> {\n  // Bu yerga yozing\n}",
+      hint: "interface ApiResponse<T> {\n  data: T;\n  status: number;\n}\nfunction getSuccessResponse() {\n  return { data: 'Muvaffaqiyat', status: 200 };\n}",
+      test: "if (typeof getSuccessResponse !== 'function') return 'getSuccessResponse topilmadi'; const res = getSuccessResponse(); if (res.data !== 'Muvaffaqiyat' || res.status !== 200) return 'Response qiymatlari xato'; return null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Klass konstruktori bilan Generic Factory",
+      instruction: "Klass konstruktori signaturasini (`new () => T`) qabul qiluvchi va uning yangi obyekt instansiyasini `new` yordamida yaratib qaytaradigan generic `createInstance<T>(ctor)` funksiyasini yozing.",
+      startingCode: "function createInstance<T>(ctor: new () => T): T {\n  // Yangi instansiya yaratib qaytaring\n}",
+      hint: "return new ctor();",
+      test: "if (typeof createInstance !== 'function') return 'createInstance topilmadi'; class Dummy {}; const inst = createInstance(Dummy); if (!(inst instanceof Dummy)) return 'Instansiya to\\'g\\'ri yaratilmadi'; return null;"
     }
   ],
   quizzes: [
@@ -312,6 +406,30 @@ Yo'q, JS faylga o'girilganda barcha generic tiplar, \`<T>\` belgilari va cheklov
       ],
       correctAnswer: 1,
       explanation: "TypeScript faqat compile-time uchun kerak. JS faylga o'girilganda barcha `<T>` kabi yozuvlar va generic cheklovlar to'liq o'chiriladi."
+    },
+    {
+      id: 13,
+      question: "TypeScript-da generic parametrning standart qiymati (Default generic parameter) qanday yoziladi?",
+      options: [
+        "class Box<T = string>",
+        "class Box<T extends string>",
+        "class Box<T: string>",
+        "class Box<T as string>"
+      ],
+      correctAnswer: 0,
+      explanation: "Standart generic parametrlari `=` operatori yordamida beriladi (masalan: `T = string`). Agar obyekt yaratishda tip ko'rsatilmasa, sukut bo'yicha string tipi ishlatiladi."
+    },
+    {
+      id: 14,
+      question: "TypeScript generic funksiyalarida `new () => T` yozuvi nimani anglatadi?",
+      options: [
+        "Hech qanday argumentlarsiz chaqirilganda `T` tipidagi obyektni yaratadigan klass konstruktori signaturasini",
+        "Dasturdagi yangi callback funksiyasini",
+        "`T` tipini number-ga o'tkazadigan inline tip o'zgartiruvchisini",
+        "SyntaxError xatosini keltirib chiqaradigan noto'g'ri yozuvni"
+      ],
+      correctAnswer: 0,
+      explanation: "`new () => T` signaturasi funksiyaning kiruvchi parametri sifatida argumentlarsiz chaqirilishi mumkin bo'lgan va `T` sinfiga tegishli instansiya yaratadigan klass (ctor) qabul qilinishini bildiradi."
     }
   ]
 };
