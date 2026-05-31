@@ -158,6 +158,122 @@ shaxs.yosh = 30;          // Setter chaqiriladi
 console.log(shaxs.yosh);  // 30
 \`\`\`
 
+### I. Property value shorthand va Property existence (in operatori)
+
+Agar o'zgaruvchi nomi obyekt kaliti bilan bir xil bo'lsa, qisqartma (shorthand) usulda yozish mumkin:
+\`\`\`javascript
+function makeUser(ism, yosh) {
+  return {
+    ism, // ism: ism bilan bir xil
+    yosh  // yosh: yosh bilan bir xil
+  };
+}
+const user = makeUser("Ali", 25);
+\`\`\`
+
+Obyektda xususiyat mavjudligini tekshirish uchun \`in\` operatori ishlatiladi:
+\`\`\`javascript
+const avto = { marka: "BYD" };
+console.log("marka" in avto); // true
+console.log("yil" in avto);   // false
+\`\`\`
+
+### J. for...in sikli
+
+Obyektning barcha kalitlarini aylanib chiqish uchun \`for...in\` siklidan foydalaniladi:
+\`\`\`javascript
+const user = { name: "Ali", age: 25, isAdmin: true };
+for (let key in user) {
+  console.log(key);       // name, age, isAdmin
+  console.log(user[key]); // "Ali", 25, true
+}
+\`\`\`
+**Saralash tartibi:** Kalitlar butun son bo'lsa, o'sish tartibida saralanadi. Boshqa barcha kalitlar esa qo'shilgan tartibi bo'yicha chiqadi.
+
+### K. Obyekt nusxalash: Shallow Copy vs Deep Copy (structuredClone)
+
+Obyektlar xotirada havolalar (references) orqali saqlanadi. Oddiy nusxalash (\`const admin = user\`) faqat havolani nusxalaydi.
+
+**Shallow Copy (Sayoz nusxa):** Obyektning birinchi darajali xossalarini nusxalaydi (\`Object.assign\` yoki \`{...obj}\`). Ichki obyektlar hamon bitta joyga ishora qiladi.
+
+**Deep Copy (Chuqur nusxa):** Ichma-ich joylashgan barcha obyektlarni ham to'liq nusxalaydi. Buning uchun \`structuredClone(obj)\` metodidan foydalaniladi:
+\`\`\`javascript
+const user = { name: "Ali", sizes: { height: 180 } };
+const clone = structuredClone(user); // chuqur nusxa
+clone.sizes.height = 190;
+console.log(user.sizes.height); // 180 (original o'zgarmadi!)
+\`\`\`
+
+### L. Konstruktor funksiyalar va "new" operatori
+
+Ko'plab bir xil turdagi obyektlarni yaratish uchun konstruktor funksiyalar yoziladi (nomi bosh harf bilan boshlanadi va \`new\` bilan chaqiriladi):
+\`\`\`javascript
+function User(name) {
+  // this = {}; (yashirincha)
+  this.name = name;
+  this.isAdmin = false;
+  // return this; (yashirincha)
+}
+const user1 = new User("Ali");
+const user2 = new User("Vali");
+\`\`\`
+
+### M. Property Flags va Descriptors (defineProperty)
+
+Obyekt xususiyatlari qiymatdan tashqari 3 ta yashirin bayroqqa (flags) ega:
+* **writable** — true bo'lsa, o'zgartirish mumkin, aks holda o'qish uchun faqat (read-only).
+* **enumerable** — true bo'lsa, \`for...in\` va \`Object.keys()\` da chiqadi.
+* **configurable** — true bo'lsa, o'chirish yoki flaglarini o'zgartirish mumkin.
+
+Bayroqlarni o'qish va o'zgartirish metodlari:
+\`\`\`javascript
+const user = { name: "Ali" };
+// Flaglarni o'qish
+let descriptor = Object.getOwnPropertyDescriptor(user, "name");
+console.log(descriptor.writable); // true
+
+// Flaglarni o'zgartirish
+Object.defineProperty(user, "name", {
+  writable: false,     // qiymatni o'zgartirib bo'lmaydi
+  configurable: false  // xususiyatni o'chirib bo'lmaydi
+});
+\`\`\`
+
+### N. Obyektlarni himoya qilish (Sealing & Freezing)
+
+Obyekt butunligini saqlash uchun JavaScript-da 3 xil darajadagi himoya metodlari bor:
+1. **Object.preventExtensions(obj):** Yangi xususiyat qo'shishni taqiqlaydi. Tekshirish: \`Object.isExtensible(obj)\`.
+2. **Object.seal(obj):** Yangi xususiyat qo'shish va o'chirishni taqiqlaydi. Mavjudlarini o'zgartirish mumkin (\`configurable: false\` qiladi). Tekshirish: \`Object.isSealed(obj)\`.
+3. **Object.freeze(obj):** Obyektni to'liq muzlatadi. Yangi qo'shish, o'chirish va qiymat o'zgartirishni taqiqlaydi (\`writable: false, configurable: false\` qiladi). Tekshirish: \`Object.isFrozen(obj)\`.
+
+### O. Object.fromEntries(iterable)
+
+Kalit-qiymat massividan qaytadan obyekt yasab beradi (\`Object.entries()\` metodining teskarisi):
+\`\`\`javascript
+const entries = [["name", "Ali"], ["age", 25]];
+const user = Object.fromEntries(entries);
+console.log(user); // { name: "Ali", age: 25 }
+\`\`\`
+
+### P. Obyektni primitiv turga aylantirish (Object to Primitive Conversion)
+
+Obyektlar matematik amallar yoki String konversiyada avtomatik ravishda primitivlarga aylanadi. Buning uchun tizim maxsus metodlarni izlaydi:
+1. \`obj[Symbol.toPrimitive](hint)\`
+2. \`toString()\` va \`valueOf()\`
+
+\`\`\`javascript
+const user = {
+  name: "Ali",
+  money: 1000,
+  [Symbol.toPrimitive](hint) {
+    return hint === "string" ? \`{name: "\${this.name}"}\` : this.money;
+  }
+};
+console.log(user + 500);   // 1500 (hint is "number")
+console.log(String(user)); // {name: "Ali"} (hint is "string")
+\`\`\`
+
+
 ## 4. XATOLAR (Common Mistakes)
 
 1. **Vergulni unutish:** Har bir xususiyatdan (property) keyin vergul qo'yishni unutmang (oxirgisidan keyin opsional).
@@ -339,6 +455,54 @@ Arrow funksiyada this uringan joyning context'ini oladi, fo'nktsiyadagi this'i e
       startingCode: "const shaxs = {\n  ism: 'Farhod',\n  manzil: { shahar: 'Toshkent', ko_cha: 'Amir Temur' }\n};\n\n// Shaharni Samarqandga o'zgartiring va chiqaring\n",
       hint: "shaxs.manzil.shahar = 'Samarqand'; console.log(shaxs.manzil.shahar);",
       test: "if (logs.includes('Samarqand')) return null; return 'Shaharni to\\'g\\'ri o\\'zgartiring va chiqaring';"
+    },
+    {
+      id: 13,
+      title: "structuredClone orqali chuqur nusxa olish",
+      instruction: "Berilgan 'user' obyektining to'liq chuqur nusxasini (deep copy) structuredClone yordamida 'clone' o'zgaruvchisiga nusxalang.",
+      startingCode: "const user = { name: 'Ali', details: { age: 25 } };\n\n// structuredClone yordamida nusxalang\nconst clone = null;\n",
+      hint: "const clone = structuredClone(user);",
+      test: "if (code.includes('structuredClone') && clone !== user && clone.details !== user.details && clone.details.age === 25) return null; return 'structuredClone orqali to\\'g\\'ri deep copy qiling';"
+    },
+    {
+      id: 14,
+      title: "Object.defineProperty() orqali read-only property yaratish",
+      instruction: "Object.defineProperty yordamida 'book' obyektining 'title' xususiyatini o'zgartirib bo'lmaydigan (writable: false) qilib sozlang.",
+      startingCode: "const book = { title: 'JS Manual' };\n\n// defineProperty yordamida writable: false qiling\n",
+      hint: "Object.defineProperty(book, 'title', { writable: false });",
+      test: "const d = Object.getOwnPropertyDescriptor(book, 'title'); if (d && d.writable === false && code.includes('defineProperty')) return null; return 'defineProperty yordamida writable: false o\\'rnating';"
+    },
+    {
+      id: 15,
+      title: "Object.freeze() orqali obyektni muzlatish",
+      instruction: "'config' obyektini Object.freeze yordamida o'zgartirib bo'lmaydigan qilib muzlating.",
+      startingCode: "const config = { theme: 'dark', version: 1.0 };\n\n// Obyektni muzlating\n",
+      hint: "Object.freeze(config);",
+      test: "if (Object.isFrozen(config) && code.includes('freeze')) return null; return 'Object.freeze orqali config obektini muzlating';"
+    },
+    {
+      id: 16,
+      title: "Object.seal() orqali obyektni muhrlash",
+      instruction: "'state' obyektini Object.seal yordamida yangi xususiyat qo'shib va o'chirib bo'lmaydigan qilib muhrlang.",
+      startingCode: "const state = { count: 0 };\n\n// Obyektni muhrlang\n",
+      hint: "Object.seal(state);",
+      test: "if (Object.isSealed(state) && code.includes('seal')) return null; return 'Object.seal orqali state obektini muhrlang';"
+    },
+    {
+      id: 17,
+      title: "Object.fromEntries() orqali massivdan obyekt yaratish",
+      instruction: "'pairs' massividagi kalit-qiymat juftliklarini Object.fromEntries yordamida 'user' obyektiga o'tkazing.",
+      startingCode: "const pairs = [['name', 'Ali'], ['role', 'admin']];\n\n// Obyektga aylantiring\nconst user = null;\n",
+      hint: "const user = Object.fromEntries(pairs);",
+      test: "if (user && user.name === 'Ali' && user.role === 'admin' && code.includes('fromEntries')) return null; return 'Object.fromEntries yordamida pairs ni obektga aylantiring';"
+    },
+    {
+      id: 18,
+      title: "Object.create() descriptors bilan ishlash",
+      instruction: "Object.create yordamida 'proto' obyektidan meros olgan va o'zining o'zgartirib bo'lmaydigan 'id' (value: 123, writable: false) xususiyatiga ega 'child' obyektini yarating.",
+      startingCode: "const proto = { greet() { return 'Hi'; } };\n\n// Object.create yordamida child obyektini yarating\nconst child = null;\n",
+      hint: "const child = Object.create(proto, { id: { value: 123, writable: false } });",
+      test: "if (child && Object.getPrototypeOf(child) === proto && child.id === 123 && Object.getOwnPropertyDescriptor(child, 'id').writable === false) return null; return 'Object.create orqali descriptors bilan child obyektini yarating';"
     }
   ],
   quizzes: [
@@ -485,6 +649,78 @@ Arrow funksiyada this uringan joyning context'ini oladi, fo'nktsiyadagi this'i e
       ],
       correctAnswer: 2,
       explanation: "Bracket notation ichiga o'zgaruvchini qo'yish yoki istalgan satrni (bo'sh joylari bor bo'lsa ham) yozish mumkin, bu dot notation'dan ko'ra ancha moslashuvchan."
+    },
+    {
+      id: 13,
+      question: "Quyidagi kodda `structuredClone` va spread operatori (`{...user}`) orqali olingan nusxalar o'rtasidagi farq nima?",
+      options: [
+        "`structuredClone` obyektni funksiyalari bilan birga to'liq nusxalaydi, spread esa nusxalamaydi",
+        "`structuredClone` chuqur (deep) nusxa oladi, ya'ni sizes ichidagi obyektni ham nusxalaydi; spread esa faqat sayoz (shallow) nusxa oladi, ya'ni ichki obyekt havolasini nusxalaydi",
+        "Ular o'rtasida hech qanday farq yo'q",
+        "`structuredClone` faqat massivlarni nusxalaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`structuredClone` original obyektni rekursiv ravishda chuqur nusxalaydi, spread esa faqat birinchi darajali propertylarni nusxalaydi, ichki obyektlar esa bitta havolani ko'rsatib qoladi."
+    },
+    {
+      id: 14,
+      question: "`Object.defineProperty(obj, 'prop', { writable: false })` qilingan xususiyatga yangi qiymat yozishga urinilganda strict mode da nima sodir bo'ladi?",
+      options: [
+        "Hech narsa sodir bo'lmaydi, qiymat jimgina o'zgarmaydi",
+        "Obyekt butunlay o'chib ketadi",
+        "`TypeError` xatoligi yuzaga keladi",
+        "Qiymat muvaffaqiyatli o'zgaradi"
+      ],
+      correctAnswer: 2,
+      explanation: "Strict rejimda o'zgartirib bo'lmaydigan (read-only) xususiyatga qiymat yozish taqiqlangan va bu TypeError xatoligini beradi."
+    },
+    {
+      id: 15,
+      question: "`Object.seal(obj)` va `Object.freeze(obj)` o'rtasidagi asosiy farq nima?",
+      options: [
+        "Sealda yangi xususiyat qo'shish mumkin, freezeda mumkin emas",
+        "Sealda mavjud xususiyatlar qiymatini o'zgartirish (writable bo'lsa) mumkin, freezeda esa mutlaqo hech qanday xususiyatni o'zgartirib bo'lmaydi",
+        "Freezeda obyektni o'chirish mumkin, sealda mumkin emas",
+        "Ular bir xil vazifani bajaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Seal qilingan obyektda xususiyatlar qiymatini o'zgartirish imkoni qoladi, freeze qilinganda esa barcha xususiyatlar writable: false bo'ladi va butunlay muzlaydi."
+    },
+    {
+      id: 16,
+      question: "Konstruktor funksiyani `new User('Ali')` ko'rinishida chaqirganda dvigatel ichida birinchi bo'lib qaysi yashirin amal bajariladi?",
+      options: [
+        "Bo'sh yangi obyekt yaratiladi va u `this` ga tenglashtiriladi",
+        "Obyekt string turiga aylantiriladi",
+        "Funksiyadagi barcha o'zgaruvchilar o'chiriladi",
+        "Foydalanuvchidan ma'lumot kiritish so'raladi"
+      ],
+      correctAnswer: 0,
+      explanation: "`new` operatori chaqirilganda birinchi bo'lib yashirincha yangi bo'sh obyekt `{}` yaratiladi va u funksiya ichidagi `this` ga bog'lanadi."
+    },
+    {
+      id: 17,
+      question: "`Object.fromEntries(iterable)` metodining vazifasi nima?",
+      options: [
+        "Obyektni key-value massivlariga aylantirish",
+        "Kalit-qiymat juftliklaridan iborat massiv yoki iterable-ni qaytadan obyektga aylantirish",
+        "Obyektni JSON formatiga o'tkazish",
+        "Obyektning barcha kalitlarini o'chirish"
+      ],
+      correctAnswer: 1,
+      explanation: "`Object.fromEntries()` kalit-qiymat juftliklaridan iborat ro'yxatni (masalan, `Map` yoki massiv) qabul qiladi va undan obyekt yasaydi."
+    },
+    {
+      id: 18,
+      question: "Obyektni primitiv turga (matn yoki son) aylantirishda qaysi maxsus Symbol kalitli metod eng birinchi qidiriladi?",
+      options: [
+        "`Symbol.iterator`",
+        "`Symbol.toStringTag`",
+        "`Symbol.toPrimitive`",
+        "`Symbol.valueOf`"
+      ],
+      correctAnswer: 2,
+      explanation: "Dvigatel obyektni primitivga aylantirishda birinchi bo'lib `Symbol.toPrimitive` metodi borligini tekshiradi va bor bo'lsa uni hint bilan ishga tushiradi."
     }
   ]
 };
