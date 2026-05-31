@@ -104,6 +104,48 @@ console.log("4. Sinxron yakuni");
 2. Macrotask (setTimeout)
 \`\`\`
 
+### A. Og'ir CPU Vazifalarini Bo'laklab Bajarish (CPU Splitting)
+JavaScript yagona oqimli bo'lgani sababli, agar sinxron kod juda uzoq ishlasa (masalan, yirik hisob-kitoblar), u brauzerni qotirib qo'yadi. \`setTimeout(..., 0)\` yordamida ushbu og'ir vazifani bir nechta asinxron qismlarga (chunks) bo'lish va har bir qism bajarilgandan so'ng brauzerga foydalanuvchi harakatlarini qayta ishlash hamda ekranni chizish (render) imkonini berish mumkin:
+\`\`\`javascript
+let i = 0;
+function heavyCalculation() {
+  // Og'ir ishning bir qismini bajaramiz (masalan, 1000 iteratsiya)
+  do {
+    i++;
+  } while (i % 1000 !== 0 && i < 1000000);
+
+  if (i < 1000000) {
+    // Ish hali tugamadi, keyingi qismni navbatga qo'yamiz
+    setTimeout(heavyCalculation, 0);
+  } else {
+    console.log("Hisob-kitob tugadi!");
+  }
+}
+heavyCalculation();
+\`\`\`
+
+### B. Progress Indicator va UI Renderlash
+Agar siz sahifadagi biron-bir progress elementining qiymatini sinxron tsiklda (masalan, \`for\` tsikli orqali 0 dan 100 gacha) o'zgartirsangiz, brauzer progressning o'zgarishini ekranda ko'rsatmaydi (UI muzlaydi va tsikl tugagach darhol 100% bo'lib qoladi). Chunki render qilish bosqichi faqat Call Stack butunlay bo'shaganida ishga tushadi. Agar ishni yuqoridagi kabi \`setTimeout\` orqali bo'laklasangiz, progress silliq oshib borayotgani ekranda ko'rinadi.
+
+### C. Event Loop Algoritmi (Batafsil)
+Event Loop har bir aylanishda quyidagi qat'iy ketma-ketlikda ishlaydi:
+1. **Macrotask:** Macrotask Queue-dan eng eski vazifani olib bajaradi.
+2. **Microtasks:** Microtask Queue to'liq bo'shaguncha barcha microtask-larni bajaradi (agar microtask bajarilayotganda yangi microtask qo'shilsa, u ham shu navbatda bajariladi).
+3. **Render/Repaint:** Agar ekran yangilanishi kerak bo'lsa va 16.6ms o'tgan bo'lsa, brauzer ekranni qayta chizadi (repaint).
+4. **Wait:** Agar navbatlar bo'sh bo'lsa, yangi vazifalar tushguncha kutadi.
+
+### D. Event Loop va Render Zanjiri Oqimi (Mermaid)
+
+\`\`\`mermaid
+graph TD
+    Start["Event Loop Iteratsiyasi boshlanishi"] --> Macro["Macrotask navbatidan bitta vazifani bajarish"]
+    Macro --> Micro{"Microtask navbatida ish bormi?"}
+    Micro -->|Ha| RunMicro["Microtask-ni bajarish"] --> Micro
+    Micro -->|Yo'q| CheckRender{"Ekranni yangilash (Render/Repaint) kerakmi?"}
+    CheckRender -->|Ha| Repaint["Reflow, Repaint va Animatsiyalarni chizish"] --> EndIter
+    CheckRender -->|Yo'q| EndIter["Iteratsiya yakunlandi, keyingi aylanish"] --> Start
+\`\`\`
+
 ---
 
 ## 5. XATOLAR
@@ -258,6 +300,22 @@ Yo'q, Call Stack butunlay bo'sh bo'lmaguncha Event Loop hech qanday asinxron nav
       startingCode: "const user1 = { name: 'Ali' };\nconst user2 = user1;\n// user2 orqali name o'zgartiring\n",
       hint: "user2.name = 'Vali'; deb yozing.",
       test: "if (user1.name === 'Vali') return null; return 'O\\'zgarish user1 da aks etmadi!';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ CPU band qiluvchi og'ir vazifani setTimeout orqali bo'lish",
+      instruction: "Berilgan `n` sonigacha bo'lgan yig'indini 1000 talik bo'laklarga bo'lib, har bir bo'lakdan so'ng asinxron kutadigan va oxirida yig'indini callback `cb(sum)` ga qaytaradigan `splitHeavyTask(n, cb, currentSum = 0, currentIndex = 1)` funksiyasini yozing. `setTimeout` ishlating.",
+      startingCode: "function splitHeavyTask(n, cb, currentSum = 0, currentIndex = 1) {\n  let limit = Math.min(currentIndex + 999, n);\n  for (let i = currentIndex; i <= limit; i++) {\n    currentSum += i;\n  }\n  \n  if (limit < n) {\n    // Keyingi bo'lakni setTimeout orqali chaqiring\n  } else {\n    // Yakuniy yig'indini cb ga uzating\n  }\n}",
+      hint: "setTimeout(() => splitHeavyTask(n, cb, currentSum, limit + 1), 0);\nand\ncb(currentSum);",
+      test: "if (typeof splitHeavyTask !== 'function') return 'splitHeavyTask topilmadi'; let res = 0; splitHeavyTask(5000, val => res = val); setTimeout(() => { if (res === 12502500) return null; }, 50); return null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Microtask va Macrotask Zanjiri",
+      instruction: "Konsolga ketma-ketlikda 'Sinxron', 'Promise', 'queueMicrotask', va 'setTimeout' so'zlari chiqishi uchun asinxron loglarni to'g'rilang.",
+      startingCode: "// Tartibni to'g'rilang\nsetTimeout(() => console.log('setTimeout'), 0);\nPromise.resolve().then(() => console.log('Promise'));\nqueueMicrotask(() => console.log('queueMicrotask'));\nconsole.log('Sinxron');",
+      hint: "Sinxron kod darhol ishlaydi, keyin Promise va queueMicrotask navbatma-navbat microtask sifatida ishlaydi, setTimeout esa macrotask bo'lgani uchun oxirida ishlaydi.",
+      test: "if (logs[0] === 'Sinxron' && logs[1] === 'Promise' && logs[2] === 'queueMicrotask' && logs[3] === 'setTimeout') return null; return 'Tartib xato!';"
     }
   ],
   quizzes: [
@@ -404,6 +462,30 @@ Yo'q, Call Stack butunlay bo'sh bo'lmaguncha Event Loop hech qanday asinxron nav
       ],
       correctAnswer: 1,
       explanation: "Ketma-ketlik: 1) Promise microtask bo'lib birinchi ishlaydi ('B'). 2) 0ms li setTimeout navbatga kelib chiqadi ('C'). 3) 10ms kutgan setTimeout eng oxirida Macrotask bo'lib chiqadi ('A')."
+    },
+    {
+      id: 13,
+      question: "Event Loop iteratsiyasida rendering (repaint) bosqichi qachon va qaysi shart bajarilganda sodir bo'ladi?",
+      options: [
+        "Har safar setTimeout funksiyasi chaqirilganda",
+        "Faqat Call Stack bo'shab, Microtask Queue to'liq bajarib bo'linganidan so'ng, agar ekran yangilanishi kerak bo'lsa",
+        "Faqat microtask-lar bajarilayotgan vaqtda",
+        "Hech qachon sodir bo'lmaydi, chunki brauzer sinxron render qiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Brauzer ekranni chizish ishlarini asinxron topshiriqlarni bajarganidan so'ng, Call Stack bo'shaganda va barcha Microtask-lar to'liq bajarilib bo'linganidan keyingina Render bosqichiga ruxsat beradi."
+    },
+    {
+      id: 14,
+      question: "CPU-intensive (og'ir hisob-kitob) ishlarni `setTimeout` yordamida bo'laklashning maqsadi nima?",
+      options: [
+        "Kodni sinxron qilib tezroq bajarish",
+        "Call Stack bo'shashini ta'minlash, UI bloklanishi (muzlashi) oldini olish va brauzerga foydalanuvchi harakatlarini qayta ishlashga imkon berish",
+        "Xotirani tejash va Garbage Collection algoritmini ishga tushirish",
+        "Kodni asinxron Promise-ga o'tkazib yuborish"
+      ],
+      correctAnswer: 1,
+      explanation: "setTimeout(..., 0) og'ir kodni bir nechta macrotask-larga bo'lib yuboradi. Har bir macrotask orasida Call Stack bo'shaydi va Event Loop foydalanuvchi hodisalariga (click, input) javob berishga ulguradi."
     }
   ]
 };

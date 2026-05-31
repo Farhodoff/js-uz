@@ -64,6 +64,41 @@ Node.js asinxron I/O operatsiyalari uchun **libuv** (C++ kutubxonasi) dan foydal
 
 * **process.nextTick() vs Promises:** Node.js-da \`process.nextTick()\` microtask navbatidan ham oldin bajariladigan, eng yuqori ustuvorlikka ega navbatdir.
 
+### E. Node.js Fazalararo Microtask Tekshiruvi (Phase Transitions)
+Node.js 11 va undan keyingi versiyalarda (brauzerlar bilan moslikni oshirish uchun) libuv Event Loop har bir faza tugashini kutib o'tirmaydi. Har safar bitta asinxron callback (masalan, \`setTimeout\` yoki I/O) bajarilib bo'lishi bilanoq, dvigatel darhol \`process.nextTick\` navbatini va keyin Microtask Queue (Promises) ni tekshiradi va tozalaydi. Bu brauzerlardagi har bir macrotask-dan keyingi microtask tozalanishi qoidasiga to'liq mos keladi.
+
+### F. requestAnimationFrame (rAF) Chizish Konveyeri
+\`requestAnimationFrame\` brauzerning chizish konveyeri (Rendering Pipeline) bilan bevosita bog'liq bo'lib, quyidagi bosqichlardan iborat:
+1. **rAF Callbacks:** Siz chizmoqchi bo'lgan animatsiya kodlari bajariladi.
+2. **Style Recalculation:** Elementlar CSS stillari qayta hisoblanadi.
+3. **Layout:** Elementlarning ekrandagi geometrik o'rni (kengligi, balandligi) aniqlanadi (Reflow).
+4. **Paint:** Elementlar piksellarga o'giriladi (Repaint) va kompozitsiya qilinadi.
+
+rAF kodni aynan chizishdan oldin chaqirishi tufayli, 60fps (yoki ekran chastotasiga mos) silliq animatsiyalarni ta'minlaydi. \`setTimeout(fn, 16.6)\` esa brauzer repaint aylanishidan mustaqil ravishda macrotask navbatiga tushgani uchun animatsiyaning ayrim kadrlarini tashlab yuborishga (jank/stutter) sabab bo'ladi.
+
+### G. Microtask Starvation Simulyatsiyasi
+Agar asinxron kodda recursive ravishda Promise zanjiri yaratilsa, foydalanuvchi interfeysidagi hech qaysi hodisa (click, scroll) ishlamaydi. Chunki brauzer renderlash bosqichiga o'tishi uchun microtask navbati butunlay bo'sh bo'lishi shart. Buni quyidagi kod yordamida simulyatsiya qilish mumkin:
+\`\`\`javascript
+function starveUI() {
+  Promise.resolve().then(starveUI); // Cheksiz asinxron zanjir - UI butunlay qotadi!
+}
+\`\`\`
+Bu sinxron \`while(true)\` tsikliga o'xshash ravishda brauzer oynasini qotiradi (starvation), garchi asinxron kod bo'lsa ham.
+
+### H. Brauzer Render va Animatsiya Konveyeri (Mermaid)
+
+\`\`\`mermaid
+graph TD
+    Macro["Macrotask bajarildi"] --> Micro["Microtask-lar to'liq bajarib bo'lindi"]
+    Micro --> CheckRender{"Render aylanishi vaqti keldimi?"}
+    CheckRender -->|Yo'q| End["Keyingi aylanish"]
+    CheckRender -->|Ha| rAF["1. requestAnimationFrame callback-lari"]
+    rAF --> Style["2. Style recalculation (Stillarni hisoblash)"]
+    Style --> Layout["3. Layout/Reflow (Geometriyani aniqlash)"]
+    Layout --> Paint["4. Paint/Repaint (Piksellarni chizish)"]
+    Paint --> End
+\`\`\`
+
 ---
 
 ## 4. AMALIYOT
@@ -267,6 +302,22 @@ Web Worker mutlaqo alohida operatsion oqimda (thread) ishlaydi. Uning o'zining C
       startingCode: "const p1 = Promise.resolve('OK');\nconst p2 = Promise.reject('ERR');\n// Promise.allSettled ishlating va natijalar uzunligini log qiling\n",
       hint: "Promise.allSettled([p1, p2]).then(results => console.log(results.length));",
       test: "if (code.includes('Promise.allSettled') && logs.includes(2)) return null; return 'Promise.allSettled ishlatilmadi yoki natijalar uzunligi xato!';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ requestAnimationFrame yordamida animatsiya simulyatsiyasi",
+      instruction: "Berilgan `element`ning chap koordinatasini (`element.left`) har bir kadrda chizishdan oldin 1px ga oshiradigan va u 100px ga yetganda to'xtaydigan `animateElement(element, cb)` funksiyasini yozing. `requestAnimationFrame` dan foydalaning.",
+      startingCode: "function animateElement(element, cb) {\n  element.left += 1;\n  if (element.left < 100) {\n    // requestAnimationFrame orqali animateElement funksiyasini chaqiring\n  } else {\n    cb();\n  }\n}",
+      hint: "requestAnimationFrame(() => animateElement(element, cb));",
+      test: "if (typeof animateElement !== 'function') return 'animateElement topilmadi'; const el = { left: 0 }; let done = false; animateElement(el, () => done = true); setTimeout(() => { if (el.left >= 100 && done) return null; }, 50); return null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Node.js process.nextTick va setImmediate tartibi",
+      instruction: "Konsolga ketma-ketlikda 'Sinxron', 'nextTick', 'Promise', 'setImmediate' chiqishi uchun asinxron loglarni tartiblang. Funksiyalarni I/O callback ichida emas, global kontekstda e'lon qiling.",
+      startingCode: "// Tartibni to'g'rilang\nsetImmediate(() => console.log('setImmediate'));\nprocess.nextTick(() => console.log('nextTick'));\nPromise.resolve().then(() => console.log('Promise'));\nconsole.log('Sinxron');",
+      hint: "Sinxron kod darhol ishlaydi. Keyin process.nextTick (microtask-dan oldin), keyin Promise (microtask), va oxirida setImmediate check fazasida ishlaydi.",
+      test: "if (logs[0] === 'Sinxron' && logs[1] === 'nextTick' && logs[2] === 'Promise' && logs[3] === 'setImmediate') return null; return 'Navbat tartibi noto\'g\'ri!';"
     }
   ],
   quizzes: [
@@ -413,6 +464,30 @@ Web Worker mutlaqo alohida operatsion oqimda (thread) ishlaydi. Uning o'zining C
       ],
       correctAnswer: 1,
       explanation: "I/O callback-i Poll fazasida bajariladi. Poll-dan keyin Event Loop to'g'ridan-to'g'ri Check fazasiga (setImmediate) o'tadi, Timers fazasi (setTimeout) esa keyingi aylanishda keladi. Shuning uchun setImmediate kafolatlangan tarzda birinchi bajariladi."
+    },
+    {
+      id: 13,
+      question: "Node.js muhitida har bir asinxron callback bajarilib bo'lingandan so'ng navbatlar qanday tartibda tekshiriladi (Node.js 11+ versiyalarida)?",
+      options: [
+        "Faqat faza oxirida to'liq tekshiriladi",
+        "Zudlik bilan process.nextTick navbati, keyin esa microtask navbati (Promises) to'liq bajarib bo'shatiladi",
+        "Faqat setImmediate chaqirilganda tekshiriladi",
+        "Faza o'zgarishida hech qanday microtask ishlamaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Node.js 11+ versiyalarida har bir bajarilgan callback-dan so'ng darhol process.nextTick va microtask (Promise) navbatlari tekshiriladi, bu esa brauzer standartlari bilan to'liq bir xil ishlashini kafolatlaydi."
+    },
+    {
+      id: 14,
+      question: "`requestAnimationFrame` animatsiya kadrini chizish jarayonida qaysi bosqichdan oldin chaqiriladi?",
+      options: [
+        "Microtask Queue tozalanishidan oldin",
+        "Brauzer ekranni yangilash (Style, Layout va Paint/Repaint) bosqichlaridan darhol oldin",
+        "Faqat setTimeout chaqirilishidan oldin",
+        "Node.js Poll fazasidan oldin"
+      ],
+      correctAnswer: 1,
+      explanation: "requestAnimationFrame callback-lari aynan ekran chizilishidan (repaint/reflow) oldin ishga tushadi, shuning uchun ham u silliq FPS beradi."
     }
   ]
 };
