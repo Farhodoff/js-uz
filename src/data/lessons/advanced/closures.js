@@ -67,6 +67,70 @@ console.log(counter.increment()); // → 1
 ### C. Function Factory (Funksiyalar zavodi)
 Bir xil qolip yordamida turli xil qiymatlarni eslab qoluvchi funksiyalar yaratish.
 
+### D. Leksik Muhitning Hayot Sikli (Lexical Environment Lifecycle)
+Leksik muhit (Lexical Environment) — bu JavaScript dvigatelining ichki tuzilmasi bo'lib, u ikki qismdan iborat:
+1. **Environment Record:** O'zgaruvchilar va funksiyalar e'lonlari saqlanadigan joy.
+2. **Outer Reference:** Tashqi leksik muhitga ishora.
+
+Funksiya chaqirilganda, uning uchun yangi leksik muhit yaratiladi va scope zanjiri bo'ylab tashqi muhitga bog'lanadi. Tashqi funksiya bajarilib bo'lgandan keyin ham, agar ichki funksiya uning o'zgaruvchilaridan foydalansa, tashqi muhit xotiradan o'chirilmaydi.
+
+### E. V8 Dvigateli Xotirani Optimallashtirishi
+Zamonaviy JavaScript dvigatellari (masalan, Google Chrome-ning V8 dvigateli) xotirani tejash uchun closure-larni optimallashtiradi. Agar ichki funksiya tashqi funksiyaning ma'lum bir o'zgaruvchisidan foydalansa, u o'zgaruvchi xotiradan o'chirib yuboriladi:
+\`\`\`javascript
+function outer() {
+  let hugeData = new Array(1000000).fill("data");
+  let smallValue = 42;
+  return function inner() {
+    console.log(smallValue); // Faqat smallValue ishlatildi, hugeData esa xotiradan o'chiriladi!
+  };
+}
+\`\`\`
+**Debugger xususiyati:** Agar \`debugger\` o'rnatib, \`inner\` ichida \`hugeData\` ni konsolda tekshirmoqchi bo'lsangiz, \`ReferenceError\` olasiz, chunki u dvigatel tomonidan optimallashtirib o'chirilgan.
+
+### F. Closures va Object Metodlari (defineProperty, seal, freeze)
+Obyekt xossalarini inkapsulyatsiya qilishda closure-lar bilan birga \`Object\` obyekti metodlaridan foydalanish yuqori darajadagi xavfsizlikni ta'minlaydi:
+\`\`\`javascript
+function createSecureObject() {
+  let secretKey = "123-ABC";
+  const obj = {};
+  
+  // Faqat o'qish uchun mo'ljallangan xossa (defineProperty + closure)
+  Object.defineProperty(obj, "key", {
+    get() {
+      return secretKey;
+    },
+    enumerable: true,
+    configurable: false
+  });
+  
+  // Obyektga yangi xossalar qo'shishni taqiqlash (seal)
+  return Object.seal(obj);
+}
+const secure = createSecureObject();
+console.log(secure.key); // "123-ABC"
+// secure.key = "NEW-KEY"; // O'zgarmaydi
+// secure.newProp = "test"; // Yangi xossa qo'shilmaydi (seal tufayli)
+\`\`\`
+
+### G. Leksik Muhit va Scope Zanjiri (Mermaid)
+
+Quyidagi diagrammada funksiya chaqirilgandagi leksik muhit zanjiri va V8 dvigatelining keraksiz ma'lumotlarni Garbage Collection qilish jarayoni ko'rsatilgan:
+
+\`\`\`mermaid
+graph TD
+    subgraph Xotira [Dvigatel Xotirasi (Heap)]
+        EnvOuter["Outer Lexical Environment<br/>- smallValue: 42<br/>- hugeData: (Garbage Collected / O'chirilgan)"]
+        EnvInner["Inner Lexical Environment<br/>- arguments: {}<br/>- outerRef: EnvOuter"] 
+    end
+    
+    subgraph Kod [Bajarilish Zanjiri]
+        C1["outer() chaqirildi"] --> C2["inner() qaytarildi va saqlandi"]
+        C2 --> C3["inner() chaqirilganda EnvOuter-ga bog'lanadi"]
+    end
+    
+    EnvInner -->|outerRef| EnvOuter
+\`\`\`
+
 ## 4. AMALIYOT (Mashqlar pastda)
 
 ## 5. XATOLAR (Common mistakes)
@@ -206,6 +270,22 @@ Chunki \`let\` block-scoped bo'lib, har bir iteratsiya (sikl aylanishi) uchun al
       startingCode: "function createCart() {\n  const items = [];\n  // Kodni yozing\n}",
       hint: "return { addItem(i) { items.push(i); }, getItems() { return items; }, getTotalPrice() { return items.reduce((s, i) => s + i.price, 0); } };",
       test: "const cart = createCart(); cart.addItem({ price: 10 }); cart.addItem({ price: 5 }); if (cart.getItems().length === 2 && cart.getTotalPrice() === 15) return null; return 'Savat to\\'g\\'ri ishlamadi';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Object.defineProperty va Closure hamkorligi",
+      instruction: "`createSecureUser(name)` funksiyasini yozing. U closure ichidagi `name` o'zgaruvchisini saqlab, `Object.defineProperty()` yordamida faqat getter-ga ega bo'lgan, writable bo'lmagan va configurable bo'lmagan `name` xossasini qaytaruvchi obyekt bersin.",
+      startingCode: "function createSecureUser(initialName) {\n  let name = initialName;\n  const obj = {};\n  // Object.defineProperty ishlating\n  return obj;\n}",
+      hint: "Object.defineProperty(obj, 'name', {\n  get() { return name; },\n  enumerable: true,\n  configurable: false\n});",
+      test: "if (typeof createSecureUser !== 'function') return 'createSecureUser topilmadi'; const user = createSecureUser('Jasur'); if (user.name !== 'Jasur') return 'Getter xato'; user.name = 'Ali'; if(user.name !== 'Jasur') return null; return 'Xossa yozishdan himoyalanmagan';"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Object.seal va Closure bilan Secure Wallet",
+      instruction: "`createSecureWallet(initialBalance)` funksiyasini yozing. U closure-da `balance`ni saqlasin va `deposit(amt)` hamda `getBalance()` metodlariga ega bo'lgan va `Object.seal()` orqali yangi maydon qo'shilishi taqiqlangan obyektni qaytarsin.",
+      startingCode: "function createSecureWallet(initialBalance) {\n  let balance = initialBalance;\n  const wallet = {\n    // Metodlarni yozing\n  };\n  // Walletni seal qiling\n}",
+      hint: "const wallet = {\n  deposit(amt) { balance += amt; },\n  getBalance() { return balance; }\n};\nreturn Object.seal(wallet);",
+      test: "if (typeof createSecureWallet !== 'function') return 'createSecureWallet topilmadi'; const w = createSecureWallet(100); w.deposit(50); if (w.getBalance() !== 150) return 'Balans yangilanmadi'; if (Object.isSealed(w) !== true) return 'Obyekt seal qilinmagan'; return null;"
     }
   ],
   quizzes: [
@@ -347,6 +427,30 @@ Chunki \`let\` block-scoped bo'lib, har bir iteratsiya (sikl aylanishi) uchun al
       ],
       correctAnswer: 0,
       explanation: "IIFE yordamida funksiya e'lon qilinishi bilanoq darhol ishga tushadi va uning ichidagi o'zgaruvchilar global muhitni ifloslantirmasdan, private holatda qoladi."
+    },
+    {
+      id: 13,
+      question: "V8 dvigatellarida closure-da ishlatilmagan tashqi o'zgaruvchilar bilan nima sodir bo'ladi?",
+      options: [
+        "Ular baribir xotirada saqlanib qoladi",
+        "Dvigatel ularni Garbage Collection orqali avtomatik xotiradan tozalab yuboradi",
+        "Ular global o'zgaruvchilarga aylanadi",
+        "Dastur ishga tushishida ReferenceError beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Zamonaviy JS dvigatellari optimallashtirish tufayli closure tarkibidagi ishlatilmagan o'zgaruvchilarni aniqlab, ularni xotiradan o'chiradi."
+    },
+    {
+      id: 14,
+      question: "`Object.defineProperty()` yordamida closure o'zgaruvchisiga bog'langan getter e'lon qilganda, `configurable: false` qo'yilsa nima bo'ladi?",
+      options: [
+        "Xossani qayta o'zgartirib bo'lmaydi va uni o'chirib ham bo'lmaydi",
+        "Getter funksiyasi xotiradan o'chib ketadi",
+        "Xossaning qiymatini oddiy tenglik operatori `=` bilan o'zgartirsa bo'ladi",
+        "Obyekt avtomatik ravishda muzlatiladi (freeze)"
+      ],
+      correctAnswer: 0,
+      explanation: "`configurable: false` flagi obyekt xossasining tipini o'zgartirishni, uning konfiguratsiyasini qayta yozishni va xossani obyekt tarkibidan `delete` yordamida o'chirishni taqiqlaydi."
     }
   ]
 };
