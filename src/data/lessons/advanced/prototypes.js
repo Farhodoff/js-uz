@@ -20,6 +20,82 @@ JavaScript-da deyarli barcha obyektlar yashirin \`__proto__\` xususiyatiga ega. 
 2. **Constructor funksiyalar:** Yangi obyektlar yaratish uchun \`new\` kalit so'zi bilan chaqiriladigan funksiyalar.
 3. **Klasslar (ES6 Classes):** Prototipga asoslangan merosxo'rlikni yozishning osonroq sintaktik qobig'i (syntactic sugar).
 
+### A. Prototip Metodlarida 'this' ning Bog'lanishi
+Prototipdagi metodlar meros qilib olingan bo'lishidan qat'iy nazar, chaqirilganda \`this\` doimo nuqtadan chapdagi obyektga, ya'ni metodni chaqirayotgan instansning o'ziga bog'lanadi. Bu prototip obyekti barcha nusxalar uchun umumiy bo'lsa-da, ularning holatlari (states) mustaqil qolishini ta'minlaydi:
+\`\`\`javascript
+const user = {
+  name: "Ali",
+  sayHi() {
+    return \`Salom, \${this.name}\`;
+  }
+};
+const admin = Object.create(user);
+admin.name = "Vali"; // admin obyektida name xossasi yaratiladi
+console.log(admin.sayHi()); // "Salom, Vali" (this -> admin, user.name esa o'zgarmaydi)
+\`\`\`
+
+### B. for..in Loop vs Object.keys()
+- **\`for..in\` tsikli:** Obyektning o'z xossalari bilan birga prototip zanjiridagi barcha enumerable (aylanish ruxsat etilgan) xossalarni ham aylanib chiqadi.
+- **\`Object.keys()\` metodi:** Faqat obyektning o'ziga tegishli bo'lgan (own property) enumerable xossalar massivini qaytaradi.
+
+Meros bo'lib kelgan xossalarni filtrlash uchun \`hasOwnProperty()\` metodidan foydalaniladi:
+\`\`\`javascript
+const animal = { eats: true };
+const rabbit = Object.create(animal);
+rabbit.jumps = true;
+
+// for..in ikkalasini ham chiqaradi
+for(let key in rabbit) {
+  if (rabbit.hasOwnProperty(key)) {
+    console.log(\`Shaxsiy: \${key}\`); // "jumps"
+  } else {
+    console.log(\`Meros: \${key}\`); // "eats"
+  }
+}
+console.log(Object.keys(rabbit)); // ["jumps"]
+\`\`\`
+
+### C. Object.create va Property Descriptors
+\`Object.create()\` metodining ikkinchi argumenti yordamida yangi yaratilayotgan obyekt xossalari uchun qat'iy cheklovlar (deskriptorlar) o'rnatish mumkin:
+\`\`\`javascript
+const parent = { greet() { return "Salom"; } };
+const child = Object.create(parent, {
+  id: {
+    value: 101,
+    writable: false,      // O'zgartirib bo'lmaydi
+    configurable: false,  // O'chirib bo'lmaydi
+    enumerable: true      // Tsikllarda ko'rinadi
+  }
+});
+\`\`\`
+
+### D. __proto__ Obyektning O'zida Joylashmagan
+Siz bilgan \`__proto__\` aslida obyektning ichki xossasi emas, balki \`Object.prototype\` dagi maxsus getter va setter (accessor) hisoblanadi. Agar siz \`Object.create(null)\` orqali prototipsiz obyekt yaratsangiz, unda \`__proto__\` getter/setter bo'lmaydi va u oddiy kalit-qiymat kabi ishlaydi:
+\`\`\`javascript
+const cleanObj = Object.create(null);
+cleanObj.__proto__ = "test"; // oddiy xossa bo'lib qo'shiladi, prototip o'zgarmaydi!
+console.log(Object.getPrototypeOf(cleanObj)); // null
+\`\`\`
+
+### E. Prototip Zanjiri va 'this' Dinamik Bog'lanishi (Mermaid)
+
+Quyidagi diagrammada prototip zanjiri va \`this\` kalit so'zining instansga bog'lanishi vizual ko'rsatilgan:
+
+\`\`\`mermaid
+graph TD
+    subgraph Prototypes [Prototiplar Zanjiri]
+        ObjProto["Object.prototype<br/>- toString()"] -->|__proto__| NullProto["null"]
+        UserProto["user (Prototype)<br/>- name: 'Ali'<br/>- sayHi()"] -->|__proto__| ObjProto
+    end
+    
+    subgraph Instances [Instanslar]
+        AdminInst["admin (Instance)<br/>- name: 'Vali'"] -->|__proto__| UserProto
+    end
+    
+    AdminInst -->|Chaqiriq: admin.sayHi()| UserProto
+    UserProto -.->|this metod ichida| AdminInst
+\`\`\`
+
 ## 4. AMALIYOT (Mashqlar pastda)
 Merosxo'rlik zanjirini o'rnatish va prototipga metod qo'shish misoli:
 \`\`\`javascript
@@ -160,6 +236,22 @@ U obyektning prototiplar zanjirini tekshiradi va u yerda berilgan klassning \`pr
       startingCode: "// Prototipsiz obyekt yarating\nconst pureObj = null;",
       hint: "const pureObj = Object.create(null);",
       test: "if (code.includes('Object.create(null)')) return null; return 'Object.create(null) orqali prototipsiz obyekt yarating';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Object.create va Property Descriptors",
+      instruction: "`Object.create(proto, descriptors)` yordamida `machine` obyektidan meros oladigan va qo'shimcha ravishda faqat o'qish uchun mo'ljallangan (`writable: false`, `configurable: false`) `serialNumber` (qiymati 'SN-999') xossasiga ega bo'lgan yangi `robot` obyektini yarating.",
+      startingCode: "const machine = { status: 'active' };\n// Object.create yordamida robot yarating\nconst robot = null;",
+      hint: "const robot = Object.create(machine, {\n  serialNumber: {\n    value: 'SN-999',\n    writable: false,\n    configurable: false,\n    enumerable: true\n  }\n});",
+      test: "if (robot.status !== 'active') return 'status meros olinmadi'; if (robot.serialNumber !== 'SN-999') return 'serialNumber xato'; robot.serialNumber = '123'; if (robot.serialNumber === 'SN-999') return null; return 'Xossa writable bo\'lmasligi kerak edi';"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ for..in va hasOwnProperty yordamida Own Properties filtrlash",
+      instruction: "Berilgan obyektning faqat o'ziga tegishli (own property) bo'lgan barcha kalitlari (keys) ro'yxatini massiv ko'rinishida qaytaruvchi `getOwnProperties(obj)` funksiyasini yozing. Buning uchun `for..in` tsikli va `hasOwnProperty` metodidan foydalanim (built-in Object.keys() ishlatmang).",
+      startingCode: "function getOwnProperties(obj) {\n  const keys = [];\n  // for..in va hasOwnProperty ishlating\n  return keys;\n}",
+      hint: "for(let key in obj) {\n  if (obj.hasOwnProperty(key)) keys.push(key);\n}",
+      test: "if (typeof getOwnProperties !== 'function') return 'getOwnProperties topilmadi'; const parent = { a: 1 }; const child = Object.create(parent); child.b = 2; const keys = getOwnProperties(child); if (keys.length === 1 && keys[0] === 'b') return null; return 'Faqat shaxsiy xossalar qaytarilishi kerak';"
     }
   ],
   quizzes: [
@@ -306,6 +398,30 @@ U obyektning prototiplar zanjirini tekshiradi va u yerda berilgan klassning \`pr
       ],
       correctAnswer: 1,
       explanation: "`obj instanceof Constructor` operatori `obj` obyektining prototiplari orasida `Constructor.prototype` bor yoki yo'qligini tekshiradi."
+    },
+    {
+      id: 13,
+      question: "Meros qilib olingan metod prototipda joylashgan bo'lsa, uni chaqirganda metod ichidagi `this` kalit so'zi qaysi obyektga bog'lanadi?",
+      options: [
+        "Doimo ota prototip obyektiga",
+        "Metod qayerda chaqirilgan bo'lsa, o'sha instans obyektining o'ziga (nuqtadan chapdagi obyektga)",
+        "Global window obyektiga",
+        "Umutlaqo bog'lanmaydi (undefined bo'ladi)"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript-da prototip metodlarida `this` dinamik ravishda metod chaqirilayotgan obyektning o'zini ifodalaydi. Bu orqali prototip umumiy bo'lsa ham har bir obyekt o'z qiymatlari bilan ishlaydi."
+    },
+    {
+      id: 14,
+      question: "`for..in` tsikli va `Object.keys()` metodining meros bo'lib kelgan xossalarni aylanib chiqishdagi farqi nimada?",
+      options: [
+        "`Object.keys()` meros xossalarni ham chiqaradi, `for..in` esa faqat shaxsiy",
+        "`for..in` meros bo'lib kelgan enumerable xossalarni ham aylanib chiqadi, `Object.keys()` esa faqat obyektning o'ziga tegishli xossalarni qaytaradi",
+        "Ikkalasi ham mutlaqo bir xil ishlaydi va farqi yo'q",
+        "`for..in` faqat funksiyalarni tekshiradi, `Object.keys()` esa faqat satrlarni"
+      ],
+      correctAnswer: 1,
+      explanation: "`for..in` loop zanjir bo'ylab yuqoriga qarab meros bo'lgan enumerable kalitlarni ham tekshiradi, `Object.keys()` esa zanjirga qaramaydi, faqat o'zida bor kalitlarni massiv ko'rinishida beradi."
     }
   ]
 };
