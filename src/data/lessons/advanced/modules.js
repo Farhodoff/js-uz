@@ -4,7 +4,9 @@ export const modulesLesson = {
   level: "Murakkab",
   description: "Modullar, Named/Default exports, Import patterns, va Kod strukturasi.",
   theory: `## 1. NEGA kerak?
-Loyihalar kattalashgani sari barcha kodlarni bitta faylda saqlash imkonsiz bo'lib qoladi. Kodlarimizni mantiqiy bo'laklarga ajratish, har bir faylni o'z vazifasi bilan cheklash, global nomlar to'qnashuvini (scope conflict) oldini olish va kodni qayta ishlatish uchun **Modules (Modullar)** tizimi kerak.
+Loyihalar kattalashgani sari barcha kodlarni bitta faylda saqlash imkonsiz bo'lib qoladi. Kodlarimizni mantiqiy bo'laklarga ajratish, har bir faylni o'z vazifasi bilan cheklash, global nomlar to'qnashuvini (scope conflict) oldini olish va kodni qayta ishlatish uchun **Modules (Modullar)** tizimi kerak. Statik tahlil imkoniyati orqali keraksiz kodlarni o'chirib yuborish (Tree-shaking) ham modullarning katta afzalligi hisoblanadi.
+
+---
 
 ## 2. SODDALIK (Analogiya)
 Buni **Lego konstruktori** deb tasavvur qiling:
@@ -12,52 +14,71 @@ Buni **Lego konstruktori** deb tasavvur qiling:
 - Siz bu bo'laklarni alohida qutidan olasiz (\`import\`), birlashtirasiz va katta "bino" (loyiha) qurasiz.
 - Agar biror bo'lak buzilsa, butun binoni buzish shart emas, faqat o'sha Lego bo'lagini almashtirish yetarli.
 
-## 3. STRUKTURA
-ES6 modullarida ikkita asosiy eksport turi mavjud:
-1. **Named Export (Nomli eksport):** Bitta moduldan bir nechta o'zgaruvchi yoki funksiyalarni nomi bilan eksport qilish. Import qilishda ham aynan shu nom ishlatilishi shart.
-   \`\`\`javascript
-   // math.js
-   export const PI = 3.14;
-   export function add(a, b) { return a + b; }
-   \`\`\`
-2. **Default Export:** Har bir fayldan faqat bitta bo'lishi mumkin bo'lgan asosiy eksport. Import qiluvchi ixtiyoriy nom berishi mumkin.
-   \`\`\`javascript
-   // logger.js
-   export default function log(message) { console.log(message); }
-   \`\`\`
+---
 
-## 4. AMALIYOT (Mashqlar pastda)
-Modullarni qayta nomlash (aliasing) va hammasini birdaniga import qilish namunalari:
-\`\`\`javascript
-// 1. Nomni o'zgartirib import qilish (as)
-import { add as sum } from './math.js';
-console.log(sum(5, 10)); // 15
+## 3. STRUKTURA VA CHUQUR TUSHUNCHALAR
 
-// 2. Hammasini bitta obyekt qilib import qilish (*)
-import * as MathUtils from './math.js';
-console.log(MathUtils.PI); // 3.14
+### A. CommonJS vs ES Modules (ESM)
+JavaScript-da ikkita asosiy modul tizimi mavjud:
+1. **CommonJS (CJS):** Node.js muhiti uchun yaratilgan eski tizim. Eksport qilishda \`module.exports\`, import qilishda esa \`require()\` ishlatiladi. Bu tizim dinamik ravishda runtime-da ishlaydi (sinxron yuklanadi).
+2. **ES Modules (ESM):** JS standartining rasmiy moduli. Eksport qilishda \`export\`, importda esa \`import\` ishlatiladi. Bu tizim **statik** tahlil qilinadi, loyiha ishga tushishidan avval parsing qilinadi.
 
-// 3. Dinamik import (asinxron yuklash)
-import('./analytics.js').then(module => {
-  module.trackEvent('page_view');
-});
+| Xususiyat | CommonJS (CJS) | ES Modules (ESM) |
+| :--- | :--- | :--- |
+| **Sintaksis** | \`require()\` / \`module.exports\` | \`import\` / \`export\` |
+| **Yuklanish turi** | Sinxron / Dinamik (Runtime) | Asinxron / Statik (Parse-time) |
+| **Fayl darajasida \`this\`** | \`exports\` obyektiga teng | \`undefined\` (Strict mode) |
+| **Tree-shaking** | Qo'llab-quvvatlanmaydi | To'liq qo'llab-quvvatlanadi |
+| **Top-level Await** | Yo'q | Ha |
+
+### B. ESM yuklanish bosqichlari
+ESM modul yuklagich (loader) modulni yuklashda 3 ta bosqichdan o'tadi:
+1. **Construction (Yaratish):** Barcha import qilinishi kerak bo'lgan fayllarni topadi, yuklab oladi va parse qiladi (modul rekursiv daraxti tuziladi).
+2. **Instantiation (Xotira ajratish):** Eksport qilinadigan va import qilinadigan o'zgaruvchilar uchun xotiradan joy ajratadi (lekin ularga qiymat bermaydi). Bunda **live bindings** (jonli bog'lanishlar) o'rnatiladi.
+3. **Evaluation (Bajarish):** Kodni qator-baqator ishga tushiradi va xotiradagi o'zgaruvchilarga haqiqiy qiymatlarni beradi.
+
+\`\`\`mermaid
+sequenceDiagram
+    participant B as Browser/Node
+    participant C as Construction (Parsing)
+    participant I as Instantiation (Link)
+    participant E as Evaluation (Run)
+    B->>C: index.js yuklanadi va parse qilinadi
+    C-->>B: Modullar daraxti (AST) hosil bo'ladi
+    B->>I: Eksportlar va importlar bog'lanadi (Live Bindings)
+    B->>E: Kod ishga tushiriladi (Evaluation)
 \`\`\`
 
-## 5. XATOLAR (Common mistakes)
-- **Named export-ni qavssiz import qilish:** \`import PI from './math.js'\` xato (chunki PI named export). To'g'risi: \`import { PI } from './math.js'\`.
-- **Default export-ni {} ichiga olish:** \`import { logger } from './logger.js'\` xato (agar u default bo'lsa). To'g'risi: \`import logger from './logger.js'\`.
-- **Modulda 'this'dan foydalanish:** ES Modules fayl darajasida \`this\` doimo \`undefined\` bo'ladi, u \`window\` yoki global obyektga teng bo'lmaydi.
+### C. Circular Dependencies (Aylanma bog'liqliklar)
+Aylanma bog'liqlik — A moduli B-ni, B moduli esa A-ni import qilganda yuzaga keladi.
+* **CommonJS-da:** \`require()\` sinxron yuklagani uchun circular dependency bo'lganda, chala yuklangan (chala obyekt) holat qaytadi va kutilmagan xatolar (masalan, undefined metodlar) paydo bo'lishi mumkin.
+* **ESM-da:** Live bindings (jonli bog'lanishlar) yordamida o'zgaruvchilar oldindan bir-biriga bog'lanadi (TDZ - Temporal Dead Zone qoidalari amal qiladi). Agar evaluation jarayonida hali qiymat berilmagan o'zgaruvchiga murojaat qilsak, **ReferenceError** otiladi, bu chala obyekt bilan jimgina ishlashdan ko'ra ancha xavfsizroq.
 
-## 6. SAVOLLAR VA JAVOBLAR
+\`\`\`mermaid
+graph LR
+    A[modulA.js] -->|import| B[modulB.js]
+    B -->|import| A
+    style A fill:#1a237e,stroke:#3949ab,stroke-width:2px,color:#fff
+    style B fill:#1a237e,stroke:#3949ab,stroke-width:2px,color:#fff
+\`\`\`
+
+---
+
+## 4. XATOLAR (Common Mistakes)
+1. **Live Bindings mutatsiyasi:** Import qilingan o'zgaruvchini import qilgan fayl ichida o'zgartirishga urinish. Ular faqat o'qish uchun (read-only bindings) mo'ljallangan. Uni faqat eksport qilgan modulning o'zi o'zgartira oladi.
+2. **Dynamic import-ni keraksiz ishlatish:** Dinamik import har doim Promise qaytargani sababli, oddiy yuklanishi kerak bo'lgan modullarni dinamik import qilish asinxronlikni oshirib, kodni chigallashtiradi. Faqat conditional yoki lazy loading zarur bo'lgandagina foydalanish kerak.
+
+---
+
+## 5. SAVOLLAR VA JAVOBLAR
 **1. ESM va CommonJS farqi nima?**
-ESM (\`import/export\`) statik tahlil qilinadi va brauzer/loyihalarda Tree-shaking imkonini beradi. CommonJS (\`require/module.exports\`) esa asosan Node.js muhitida dinamik ishlaydigan eski tizimdir.
+ESM (import/export) statik tahlil qilinadi va brauzer/loyihalarda Tree-shaking imkonini beradi. CommonJS (require/module.exports) esa asosan Node.js muhitida dinamik ishlaydigan eski tizimdir.
 
 **2. Tree-shaking nima?**
 Loyiha yig'ilayotganda (build jarayonida) modullardan import qilinmagan va umuman ishlatilmagan ortiqcha kodlarni olib tashlash orqali fayl hajmini kamaytirish usuli.
 
 **3. Re-export nima?**
-Boshqa fayldan kelayotgan eksportlarni o'zimizda import qilmasdan, to'g'ridan-to'g'ri tashqariga qayta eksport qilish (\`export * from './file.js'\`).
-`,
+Boshqa fayldan kelayotgan eksportlarni o'zimizda import qilmasdan, to'g'ridan-to'g'ri tashqariga qayta eksport qilish (\`export * from './file.js'\`).`,
   exercises: [
     {
       id: 1,
@@ -154,6 +175,22 @@ Boshqa fayldan kelayotgan eksportlarni o'zimizda import qilmasdan, to'g'ridan-to
       startingCode: "// Bu yerga yozing\n",
       hint: "import { url, port } from './config.js';",
       test: "if (code.includes('import') && code.includes('url') && code.includes('port') && code.includes('./config.js')) return null; return 'url va port ni import qiling';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Dinamik Modul Yuklovchi (dynamicImportLoader)",
+      instruction: "Dinamik ravishda `import()` yordamida modul yuklashni simulyatsiya qiluvchi va uning default yoki ma'lum bir nomli eksportini asinxron qaytaruvchi `dynamicImportLoader(modulePromise, exportName)` funksiyasini yozing. `modulePromise` — bu import natijasi kabi resolve bo'ladigan Promise obyekti bo'lib, uning ichida moduldagi eksportlar saqlanadi. Agar `exportName` berilmasa, default eksport qaytarilsin.",
+      startingCode: "async function dynamicImportLoader(modulePromise, exportName) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "const module = await modulePromise; return exportName ? module[exportName] : module.default;",
+      test: "if (typeof dynamicImportLoader !== 'function') return 'dynamicImportLoader funksiya emas';\nconst mockModule = { default: 'DefaultValue', named: 'NamedValue' };\nconst promise = Promise.resolve(mockModule);\nreturn new Promise(resolve => {\n  dynamicImportLoader(promise, 'named').then(val1 => {\n    if (val1 !== 'NamedValue') return resolve('Nomli eksport yuklanmadi');\n    dynamicImportLoader(promise).then(val2 => {\n      if (val2 !== 'DefaultValue') return resolve('Default eksport yuklanmadi');\n      resolve(null);\n    });\n  });\n});"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Eksport Nomlarini Ajratuvchi (extractExportNames)",
+      instruction: "Matn (string) ko'rinishida berilgan sodda JavaScript kodidan named exports (nomli eksportlar) ro'yxatini ajratib oluvchi `extractExportNames(code)` funksiyasini yozing. Funksiya faqat `export const name = ...`, `export let name = ...` yoki `export function name(...)` formatidagi eksportlarni topib, ularning nomlarini massiv ko'rinishida qaytarsin.",
+      startingCode: "function extractExportNames(code) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "const regex = /export\\s+(const|let|function)\\s+([a-zA-Z0-9_$]+)/g; const names = []; let match; while ((match = regex.exec(code)) !== null) { names.push(match[2]); } return names;",
+      test: "if (typeof extractExportNames !== 'function') return 'extractExportNames funksiya emas';\nconst sampleCode = 'export const PI = 3.14;\\nexport function add(a, b) { return a+b; }\\nexport let counter = 0;\\nconst localVal = 100;';\nconst res = extractExportNames(sampleCode);\nif (res && res.includes('PI') && res.includes('add') && res.includes('counter') && res.length === 3) return null;\nreturn 'Eksport nomlarini ajratish xato: ' + JSON.stringify(res);"
     }
   ],
   quizzes: [
@@ -204,9 +241,9 @@ Boshqa fayldan kelayotgan eksportlarni o'zimizda import qilmasdan, to'g'ridan-to
       id: 5,
       question: "ES Modules tizimida `this` qiymati eng yuqori darajada (fayl darajasida) nimaga teng bo'ladi?",
       options: [
-        "`window` (yoki global)",
-        "`undefined`",
-        "`null`",
+        "window (yoki global)",
+        "undefined",
+        "null",
         "Modul obyektiga"
       ],
       correctAnswer: 1,
@@ -222,19 +259,19 @@ Boshqa fayldan kelayotgan eksportlarni o'zimizda import qilmasdan, to'g'ridan-to
         "HTML script elementini"
       ],
       correctAnswer: 1,
-      explanation: "`import()` dinamik ravishda modul yuklash uchun ishlatiladi va har doim Promise qaytaradi. Bu esa asinxron yuklash va code-splitting qilish imkonini beradi."
+      explanation: "import() dinamik ravishda modul yuklash uchun ishlatiladi va har doim Promise qaytaradi. Bu esa asinxron yuklash va code-splitting qilish imkonini beradi."
     },
     {
       id: 7,
       question: "Brauzerda ES Modules faylini to'g'ri ulash uchun script tegiga qaysi atribut berilishi shart?",
       options: [
-        "`type=\"javascript\"`",
-        "`type=\"module\"`",
-        "`async`",
-        "`defer`"
+        "type=\"javascript\"",
+        "type=\"module\"",
+        "async",
+        "defer"
       ],
       correctAnswer: 1,
-      explanation: "Brauzerda import/export ishlatadigan JavaScript faylini ulash uchun `<script type=\"module\" src=\"...\"></script>` ko'rinishida yozish kerak."
+      explanation: "Brauzerda import/export ishlatadigan JavaScript faylini ulash uchun <script type=\"module\" src=\"...\"></script> ko'rinishida yozish kerak."
     },
     {
       id: 8,
@@ -262,7 +299,7 @@ Boshqa fayldan kelayotgan eksportlarni o'zimizda import qilmasdan, to'g'ridan-to
     },
     {
       id: 10,
-      question: "`export * from './module.js'` ifodasi nima qiladi?",
+      question: "export * from './module.js' ifodasi nima qiladi?",
       options: [
         "'module.js' ichidagi barcha o'zgaruvchilarni o'chirib tashlaydi",
         "'module.js' ichidagi barcha nomli eksportlarni import qilmasdan to'g'ridan-to'g'ri qayta eksport (re-export) qiladi",
@@ -277,24 +314,48 @@ Boshqa fayldan kelayotgan eksportlarni o'zimizda import qilmasdan, to'g'ridan-to
       question: "Nima uchun modullar ichidagi o'zgaruvchilar global scope-ga aralashib ketmaydi?",
       options: [
         "Chunki ular avtomatik o'chiriladi",
-        "Chunki har bir modul o'zining shaxsiy (fayl darajasidagi) yopiq scope-iga ega",
+        "Chunki har bir modul o'zining alohida yopiq scope-iga ega",
         "Chunki brauzer ularni cheklaydi",
         "Chunki ular faqat funksiya ichida yoziladi"
       ],
       correctAnswer: 1,
-      explanation: "Modullar global scope ifloslanishini oldini oladi. Har bir modul o'zining alohida yopiq scope-ida ishlaydi va faqat `export` qilingan narsalargina tashqariga ko'rinadi."
+      explanation: "Modullar global scope ifloslanishini oldini oladi. Har bir modul o'zining alohida yopiq scope-ida ishlaydi va faqat export qilingan narsalargina tashqariga ko'rinadi."
     },
     {
       id: 12,
-      question: "`import` operatori yordamida import qilingan o'zgaruvchining qiymatini modul ichida to'g'ridan-to'g'ri o'zgartirish (reassign) mumkinmi?",
+      question: "import operatori yordamida import qilingan o'zgaruvchining qiymatini modul ichida to'g'ridan-to'g'ri o'zgartirish (reassign) mumkinmi?",
       options: [
         "Ha, oddiy o'zgaruvchidek o'zgartirsa bo'ladi",
         "Yo'q, import qilingan o'zgaruvchilar faqat o'qiladigan (read-only bindings) hisoblanadi",
-        "Faqat `let` bilan eksport qilingan bo'lsa mumkin",
+        "Faqat let bilan eksport qilingan bo'lsa mumkin",
         "Faqat dynamic import bo'lsa mumkin"
       ],
       correctAnswer: 1,
       explanation: "Import qilingan o'zgaruvchilar 'live read-only bindings' hisoblanadi. Siz ularni import qilgan fayl ichida qayta yozib o'zgartira olmaysiz, lekin eksport qilgan modul o'zgartirsa, sizda ham yangilanadi."
+    },
+    {
+      id: 13,
+      question: "Circular dependency (aylanma bog'liqlik) holatida ES Modules CommonJS-dan qanday farq qiladi?",
+      options: [
+        "ESM live bindings tufayli ReferenceError bera oladi (yoki to'g'ri ishlaydi), CommonJS esa to'liq tugallanmagan (incomplete) eksport obyektini qaytaradi",
+        "CommonJS ReferenceError tashlaydi, ESM esa hech qachon xato bermaydi",
+        "Hech qanday farq yo'q, ikkalasi ham bir xil ishlaydi",
+        "ESM dynamic import talab qiladi"
+      ],
+      correctAnswer: 0,
+      explanation: "CommonJS-da circular dependency bo'lganda require chala obyekt qaytaradi va bu runtime'da kutilmagan undefined xatolarga olib kelishi mumkin. ESM esa live bindings-ni xotira bog'lanishida TDZ qoidalari bilan boshqarib, ReferenceError orqali xavfsizroq ogohlantiradi."
+    },
+    {
+      id: 14,
+      question: "ES Modules-dagi import-lar loyiha ishga tushishidan oldin (statik tahlil) tekshiriladi, bu nima deb ataladi?",
+      options: [
+        "Static Parsing / Compilation phase",
+        "Dynamic Evaluation / Runtime interpretation",
+        "Thread-safe execution",
+        "Code splitting"
+      ],
+      correctAnswer: 0,
+      explanation: "ESM modullari statik tuzilishga ega bo'lib, uning barcha import/export-lari kod bajarilishidan oldin parsing (statik tahlil) bosqichida tekshiriladi va bog'lanadi."
     }
   ]
 };

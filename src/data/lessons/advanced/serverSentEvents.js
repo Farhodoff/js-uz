@@ -1,69 +1,78 @@
 export const serverSentEvents = {
   id: "serverSentEvents",
   title: "Server-Sent Events (SSE): Serverdan Bir Tomonlama Oqim",
+  level: "Murakkab",
+  description: "HTTP protokoli ustida serverdan mijozga real-vaqtda bir tomonlama ma'lumotlar oqimini uzatish.",
   theory: `## 1. NEGA kerak?
 Real-time ilovalarda har doim ham ikki tomonlama (mijoz ham, server ham yuboradigan) aloqaga ehtiyoj bo'lavermaydi. Masalan, ob-havo yangiliklari, yangiliklar tasmasi (news feed), birja narxlari yoki serverdagi uzoq davom etadigan jarayon progressini kuzatishda faqat server yangi ma'lumotlarni mijozga jo'natib tursa kifoya. WebSockets bu kabi vazifalar uchun juda murakkab va ortiqcha sozlamalarni talab qiladi. Shunday holatlar uchun HTML5-da **Server-Sent Events (SSE)** texnologiyasi joriy qilingan. SSE oddiy HTTP protokoli ustida ishlaydi, brauzer tomonidan avtomatik qayta ulanishni qo'llab-quvvatlaydi va juda sodda API (\`EventSource\` obyekti) orqali boshqariladi.
+
+---
 
 ## 2. SODDALIK (Analogiya)
 WebSockets-ni **ikki kishilik telefon suhbatiga** o'xshatsak, Server-Sent Events (SSE) ni **radio eshittirishga** o'xshatish mumkin. Mijoz (radio tinglovchi) radiostansiyaga ulanadi (EventSource yaratadi), server (radioboshlovchi) esa uzluksiz ma'lumot uzatadi. Mijoz radioga gapira olmaydi (ma'lumot yubora olmaydi), lekin doimo yangi ma'lumotlarni eshitib turadi.
 
-## 3. STRUKTURA
-JavaScript-da SSE bilan ishlash uchun \`EventSource\` obyektidan foydalaniladi.
+---
 
-\`\`\`javascript
-// 1. EventSource ulanishini yaratish
-const source = new EventSource('/api/live-stream');
+## 3. STRUKTURA VA CHUQUR TUSHUNCHALAR
 
-// 2. Server bilan aloqa o'rnatilganda
-source.onopen = (event) => {
-  console.log('Server bilan bog\\'lanildi!');
-};
+### A. HTTP/2 Multiplexing va Ulanish Cheklovlari
+* **HTTP/1.1 Cheklovi:** Brauzerlar bitta domen uchun maksimal **6 ta** doimiy HTTP ulanishini ochishi mumkin. Agar foydalanuvchi saytning 6 ta tabini (oynasini) ochsa va ularning har birida SSE faol bo'lsa, 7-tab butunlay yuklanmay qotib qoladi (tarmoq ulanishlari to'lib ketadi).
+* **HTTP/2 Yechimi:** HTTP/2 protokolida **Multiplexing** (so'rovlarni bitta kanalga jamlash) qo'llaniladi. Unda barcha SSE oqimlari va oddiy HTTP so'rovlari bitta umumiy TCP ulanishi orqali uzatiladi. Bu esa cheklovni butunlay yo'qotib, yuzlab tablarda bir vaqtda SSE ishlatish imkonini beradi.
 
-// 3. Serverdan standart xabar kelganda
-source.onmessage = (event) => {
-  console.log('Yangi ma\\'lumot:', event.data);
-};
-
-// 4. Serverdan maxsus nomli voqea kelganda (Custom Event)
-source.addEventListener('scoreUpdate', (event) => {
-  console.log('Hisob o\\'zgardi:', event.data);
-});
-
-// 5. Xatolik yuz berganda
-source.onerror = (event) => {
-  if (source.readyState === EventSource.CLOSED) {
-    console.log('Ulanish server tomonidan yopildi.');
-  } else {
-    console.error('Xatolik yuz berdi.');
-  }
-};
+\`\`\`mermaid
+graph TD
+    subgraph HTTP/1.1 (Cheklangan)
+        T1[Tab 1] -->|TCP Connection 1| S1[(Server)]
+        T2[Tab 2] -->|TCP Connection 2| S1
+        T6[Tab 6] -->|TCP Connection 6| S1
+        T7[Tab 7] -->|Bloklanadi| S1
+    end
+    subgraph HTTP/2 (Multiplexed)
+        M1[Tab 1] -->|Stream 1| TCP[Single TCP Connection]
+        M2[Tab 2] -->|Stream 2| TCP
+        M7[Tab 7] -->|Stream 7| TCP
+        TCP --> S2[(Server)]
+    end
 \`\`\`
 
-### Server-Sent Events-ning ishlash protokoli:
-Server javob qaytarganda quyidagi HTTP sarlavhalarini (headers) yuborishi shart:
-- \`Content-Type: text/event-stream\`
-- \`Cache-Control: no-cache\`
-- \`Connection: keep-alive\`
+### B. Proxy Buffering (Nginx muammosi)
+SSE ishlashi uchun server ma'lumotni tayyor bo'lishi bilan zudlik bilan jo'natishi (flush/stream) kerak. Biroq, Nginx yoki boshqa teskari proksi (reverse proxy) serverlar sukut bo'yicha ma'lumotlarni **bufferlab** (yig'ib), keyin birdaniga jo'natishga harakat qiladi. Bu real-vaqt rejimini buzadi.
+* **Yechim:** Server javob berayotganda maxsus \`X-Accel-Buffering: no\` sarlavhasini yuborishi kerak. Bu Nginx-ga ma'lumotlarni bufferlamasdan darhol mijozga uzatishni buyuradi.
 
-Serverdan yuboriladigan ma'lumot formati quyidagicha bo'ladi:
+### C. Custom Event Turlari
+SSE oqimida har xil turdagi voqealarni ajratish uchun maxsus nomli voqealar yuborilishi mumkin:
 \`\`\`text
-data: Salom mijoz\n\n
-\`\`\`
-yoki maxsus voqea uchun:
-\`\`\`text
+event: userLogin
+data: {"username": "Ali"}
+
 event: scoreUpdate
 data: 2-1
-\n\n
+\`\`\`
+Mijozda bularni alohida eshitish uchun:
+\`\`\`javascript
+source.addEventListener('userLogin', (e) => { ... });
+source.addEventListener('scoreUpdate', (e) => { ... });
 \`\`\`
 
-## 4. AMALIYOT (Mashqlar pastda)
+\`\`\`mermaid
+sequenceDiagram
+    participant S as Server (text/event-stream)
+    participant C as Client (EventSource)
+    S->>C: event: scoreUpdate \n data: 2-1 \n\n
+    Note over C: scoreUpdate listener ishlaydi
+    S->>C: data: Standart xabar \n\n
+    Note over C: onmessage listener ishlaydi
+\`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **Ikki tomonlama aloqa qilishga urinish:** SSE faqat serverdan mijozga (one-way) ma'lumot jo'natadi. Agar mijoz ham serverga real-time ma'lumot yuborishi kerak bo'lsa, SSE mos kelmaydi. Mijoz ma'lumot yuborishi uchun an'anaviy \`fetch()\` dan yoki WebSockets-dan foydalanishi kerak.
-2. **Serverda buffering-ni yopmaslik:** Ko'pgina veb-serverlar (masalan, Nginx) ma'lumotlarni bufferlab, keyin birdaniga yuboradi. SSE ishlashi uchun serverda buffering o'chirilgan bo'lishi shart (\`X-Accel-Buffering: no\`), aks holda ma'lumotlar real-vaqtda yetib bormaydi.
-3. **HTTP/1.1-da ulanishlar soni cheklovi:** Brauzerlar bitta domen uchun HTTP/1.1 orqali maksimal 6 ta doimiy ulanishni qo'llab-quvvatlaydi. Agar foydalanuvchi bir nechta tab ochsa, 7-tab yuklanmay qoladi. Buni hal qilish uchun HTTP/2 ishlatish lozim (HTTP/2-da bu cheklov yo'q).
+---
 
-## 6. SAVOLLAR VA JAVOBLAR
+## 4. XATOLAR (Common mistakes)
+1. **POST so'rov yuborishga urinish:** Standart \`EventSource\` faqat **GET** so'rovlarini qo'llab-quvvatlaydi. Agar siz serverga ma'lumot yubormoqchi bo'lsangiz, uni faqat URL query parametrlar (masalan, \`/stream?userId=123\`) orqali uzata olasiz.
+2. **Double Linefeed (\\n\\n) ni unutish:** SSE protokolida har bir xabar bloki albatta **ikkita yangi qator belgisi (\\n\\n)** bilan tugashi shart. Agar server oxirida bitta \`\\n\` yuborsa, brauzer ma'lumot tugallanganini tushunmaydi va uni mijoz kodiga yetkazib bermaydi.
+
+---
+
+## 5. SAVOLLAR VA JAVOBLAR
 **1. Server-Sent Events (SSE) nima?**
 HTTP orqali serverdan mijozga real-vaqtda bir tomonlama ma'lumotlar oqimini uzatish texnologiyasi.
 
@@ -71,35 +80,7 @@ HTTP orqali serverdan mijozga real-vaqtda bir tomonlama ma'lumotlar oqimini uzat
 Brauzerdagi standart \`EventSource\` API-si orqali.
 
 **3. SSE va WebSockets o'rtasidagi asosiy farq nima?**
-WebSockets ikki tomonlama (bi-directional), SSE esa faqat bir tomonlama (server -> mijoz) aloqadir.
-
-**4. SSE-da avtomatik qayta ulanish (reconnection) bormi?**
-Ha, brauzer tarmoq uzilsa, o'zi avtomatik ravishda serverga qayta ulanishga harakat qiladi.
-
-**5. Server SSE uchun qaysi Content-Type header-ni qaytarishi kerak?**
-\`text/event-stream\`.
-
-**6. EventSource.readyState holatlari qaysilar?**
-\`0\` (\`CONNECTING\`), \`1\` (\`OPEN\`), \`2\` (\`CLOSED\`).
-
-**7. Serverdan kelgan maxsus nomli voqeani (masalan, "ping") qanday eshitamiz?**
-\`source.addEventListener('ping', callback)\` yordamida.
-
-**8. EventSource ulanishini qanday yopamiz?**
-\`source.close()\` metodi orqali.
-
-**9. Serverdan kelayotgan ma'lumot satri qanday belgi bilan tugashi kerak?**
-Ikkita yangi qator belgisi (\`\\n\\n\`) bilan.
-
-**10. SSE shifrlangan ulanishlarni qo'llab-quvvatlaydimi?**
-Ha, agar HTTPS sahifada ishlatilsa, avtomatik ravishda xavfsiz HTTP kanali orqali ishlaydi.
-
-**11. Server mijozga qayta ulanish vaqtini (retry interval) o'zgartirishni qanday buyurishi mumkin?**
-Server javobida \`retry: 5000\\n\` satrini yuborish orqali (bu qayta ulanishni 5 soniyaga sozlaydi).
-
-**12. SSE-da CORS (Cross-Origin Resource Sharing) qo'llab-quvvatlanadimi?**
-Ha, ikkinchi parametr sifatida \`{ withCredentials: true }\` kabi sozlamalarni berish mumkin.
-`,
+WebSockets ikki tomonlama (bi-directional), SSE esa faqat bir tomonlama (server -> mijoz) aloqadir.`,
   exercises: [
     {
       id: 1,
@@ -196,6 +177,22 @@ Ha, ikkinchi parametr sifatida \`{ withCredentials: true }\` kabi sozlamalarni b
       startingCode: "const source = new EventSource('/api/stream');\n// Bu yerga yozing\nconst isClosed = ",
       hint: "source.readyState === EventSource.CLOSED",
       test: "if (code.includes('readyState') && (code.includes('EventSource.CLOSED') || code.includes('2'))) return null; return 'readyState-ni EventSource.CLOSED qiymatiga solishtiring.';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ SSE Ulanishini Tekshiruvchi (checkSSEConnection)",
+      instruction: "Berilgan `EventSource` ulanishi faol ulanish jarayonida (`CONNECTING` ya'ni 0) ekanligini aniqlaydigan va `true`/`false` qaytaradigan `checkSSEConnection(source)` funksiyasini yozing.",
+      startingCode: "function checkSSEConnection(source) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "return !!(source && source.readyState === 0);",
+      test: "if (typeof checkSSEConnection !== 'function') return 'checkSSEConnection funksiya emas';\nif (checkSSEConnection(null) !== false) return 'null ulanish uchun false bo\\'lishi kerak';\nif (checkSSEConnection({ readyState: 0 }) !== true) return 'CONNECTING (0) holatida true qaytmadi';\nif (checkSSEConnection({ readyState: 1 }) !== false) return 'OPEN (1) holatida false qaytmadi';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ SSE JSON Xavfsiz Parser (parseSSEData)",
+      instruction: "Serverdan kelgan SSE xabari (`eventData` satri) JSON formatida bo'lsa uni obyektga parse qilib qaytaradigan, agar JSON bo'lmasa yoki parse qilishda xatolik bo'lsa xavfsiz ravishda asl satrni o'zini qaytaradigan `parseSSEData(eventData)` funksiyasini yozing.",
+      startingCode: "function parseSSEData(eventData) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "try { return JSON.parse(eventData); } catch (e) { return eventData; }",
+      test: "if (typeof parseSSEData !== 'function') return 'parseSSEData funksiya emas';\nconst parsed = parseSSEData('{\"status\":\"ok\"}');\nif (!parsed || parsed.status !== 'ok') return 'JSON matn parse qilinmadi';\nif (parseSSEData('oddiy matn') !== 'oddiy matn') return 'Oddiy matnda xato qaytdi';\nif (parseSSEData(null) !== null) return 'null uchun to\\'g\\'ri qaytmadi';\nreturn null;"
     }
   ],
   quizzes: [
@@ -342,6 +339,30 @@ Ha, ikkinchi parametr sifatida \`{ withCredentials: true }\` kabi sozlamalarni b
       ],
       correctAnswer: 1,
       explanation: "Mijoz tomonidan ulanishni yopish va serverni ortiqcha band qilmaslik uchun source.close() metodi ishlatiladi."
+    },
+    {
+      id: 13,
+      question: "HTTP/2 protokolidagi multiplexing xususiyati SSE ulanishlariga qanday ta'sir qiladi?",
+      options: [
+        "U SSE-ni butunlay bloklaydi",
+        "U HTTP/1.1-dagi bitta domen uchun maksimal 6 ta ulanish cheklovini olib tashlab, yuzlab tablarda bir vaqtda SSE-ni bloklanishlarsiz ishlatish imkonini beradi",
+        "U ma'lumotlarni faqat POST so'rovi orqali yuborishga majburlaydi",
+        "U avtomatik qayta ulanishni o'chirib qo'yadi"
+      ],
+      correctAnswer: 1,
+      explanation: "HTTP/2 multiplexing barcha oqimlarni bitta TCP ulanishiga joylashtirgani uchun brauzerning 6 ta ulanish limiti endi SSE ulanishlarini to'sib qo'ymaydi."
+    },
+    {
+      id: 14,
+      question: "Teskari proksi server (masalan, Nginx) orqali yuborilgan SSE ma'lumotlari kechikish bilan yetib kelishining oldini olish uchun server qaysi HTTP sarlavhasini yuborishi kerak?",
+      options: [
+        "X-Accel-Buffering: no",
+        "Cache-Control: public",
+        "Connection: close",
+        "Content-Encoding: gzip"
+      ],
+      correctAnswer: 0,
+      explanation: "Nginx sukut bo'yicha ma'lumotni bufferda yig'adi. X-Accel-Buffering: no sarlavhasi Nginx-ga buffering-ni o'chirib, ma'lumotlarni real-vaqtda uzatishni buyuradi."
     }
   ]
 };

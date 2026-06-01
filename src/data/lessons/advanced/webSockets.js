@@ -1,92 +1,92 @@
 export const webSockets = {
   id: "webSockets",
   title: "WebSockets: Real-time Ikki Tomonlama Aloqa",
+  level: "Murakkab",
+  description: "Mijoz va server o'rtasida doimiy, ikki tomonlama real-vaqt rejimida aloqa protokoli.",
   theory: `## 1. NEGA kerak?
 An'anaviy HTTP so'rovlarida mijoz (brauzer) doimo birinchi bo'lib so'rov yuboradi, server esa javob qaytaradi. Server o'z-o'zidan mijozga yangi ma'lumot jo'nata olmaydi. Real-time ilovalar (chatlar, birja grafiklari, bildirishnomalar, ko'p foydalanuvchili o'yinlar) uchun brauzer har soniyada serverdan yangilik bormi deb so'rab turishi (Polling) juda samarasiz va tarmoqni ortiqcha yuklaydi. WebSockets protokoli mijoz va server o'rtasida doimiy, ochiq va ikki tomonlama (bi-directional) aloqa kanalini o'rnatish orqali bu muammoni hal qiladi. Bu orqali har ikki tomon ham istalgan vaqtda bir-biriga juda kam kechikish (low latency) bilan ma'lumot yubora oladi.
+
+---
 
 ## 2. SODDALIK (Analogiya)
 HTTP protokoli **pochta orqali xat yuborishga** o'xshaydi: siz xat yuborasiz va javobini kutasiz, server esa siz so'ramaguningizcha yangi xat yubora olmaydi.
 WebSockets esa **telefon qo'ng'irog'iga** o'xshaydi: aloqa o'rnatilgach, trubkani qo'ymaguningizcha ikkala tomon ham bir vaqtda gapira oladi va bir-birini darhol eshitadi.
 
-## 3. STRUKTURA
-JavaScript-da WebSockets bilan ishlash uchun brauzerning standart \`WebSocket\` klassidan foydalaniladi. Aloqa o'rnatish uchun \`ws://\` (shifrlanmagan) yoki \`wss://\` (shifrlangan va xavfsiz) protokollaridan foydalaniladi.
+---
 
-\`\`\`javascript
-// 1. WebSocket ulanishini yaratish
-const socket = new WebSocket('wss://echo.websocket.org');
+## 3. STRUKTURA VA CHUQUR TUSHUNCHALAR
 
-// 2. Ulanish muvaffaqiyatli ochilganda
-socket.onopen = (event) => {
-  console.log('Ulanish o\\'rnatildi!');
-  socket.send('Salom, Server!'); // Serverga ma\\'lumot yuborish
-};
+### A. WebSocket Handshake (Ulanish o'rnatish)
+WebSocket TCP ulanishini o'rnatish uchun HTTP protokolining maxsus "Upgrade" (yangilash) mexanizmidan foydalanadi:
+1. Brauzer serverga odatiy HTTP GET so'rovini yuboradi, lekin sarlavhalarda (headers) ulanishni WebSocket-ga o'zgartirishni so'raydi:
+   \`\`\`http
+   GET /chat HTTP/1.1
+   Host: server.example.com
+   Upgrade: websocket
+   Connection: Upgrade
+   Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+   Sec-WebSocket-Version: 13
+   \`\`\`
+2. Server rozilik bildirsa, HTTP **101 Switching Protocols** javobini qaytaradi:
+   \`\`\`http
+   HTTP/1.1 101 Switching Protocols
+   Upgrade: websocket
+   Connection: Upgrade
+   Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+   \`\`\`
+3. Shu lahzadan boshlab HTTP ulanishi butunlay tugaydi va TCP soketi orqali to'g'ridan-to'g'ri WebSocket protokoli ishga tushadi.
 
-// 3. Serverdan xabar kelganda
-socket.onmessage = (event) => {
-  console.log('Serverdan kelgan xabar:', event.data);
-};
-
-// 4. Xatolik yuz berganda
-socket.onerror = (error) => {
-  console.error('Xatolik:', error);
-};
-
-// 5. Ulanish yopilganda
-socket.onclose = (event) => {
-  console.log('Ulanish yopildi. Sababi:', event.reason);
-};
+\`\`\`mermaid
+sequenceDiagram
+    participant C as Brauzer (Client)
+    participant S as Server
+    Note over C,S: 1. HTTP Handshake bosqichi
+    C->>S: GET /chat (Upgrade: websocket)
+    S-->>C: 101 Switching Protocols
+    Note over C,S: 2. WebSocket Ikki tomonlama ochiq kanal (TCP)
+    C->>S: Bidirectional Data (Framed)
+    S->>C: Bidirectional Data (Framed)
 \`\`\`
 
-### WebSocket.readyState holatlari:
-- \`0\` (\`WebSocket.CONNECTING\`): Ulanish jarayoni ketmoqda.
-- \`1\` (\`WebSocket.OPEN\`): Ulanish ochiq, ma'lumot almashish mumkin.
-- \`2\` (\`WebSocket.CLOSING\`): Ulanish yopilmoqda.
-- \`3\` (\`WebSocket.CLOSED\`): Ulanish to'liq yopilgan.
+### B. Heartbeat Ping-Pong (Ulanishni ushlab turish)
+Agar WebSocket kanali orqali uzoq vaqt davomida hech qanday ma'lumot uzatilmasa, yo'ldagi tarmoq routerlari, proksilar yoki serverlar ulanishni "o'lik ulanish" (idle timeout) deb hisoblab, uni avtomatik yopib yuborishi mumkin. Buni oldini olish uchun **Heartbeat** (yurak urishi) mexanizmi ishlatiladi:
+- Mijoz yoki server har 30-60 soniyada kichik "Ping" ramkasini (frame) jo'natadi.
+- Ikkinchi tomon zudlik bilan "Pong" ramkasi bilan javob qaytarishi shart.
+- Agar ma'lum vaqt ichida javob kelmasa, ulanish uzilgan deb hisoblanadi va qayta ulanish (reconnect) ishga tushiriladi.
 
-## 4. AMALIYOT (Mashqlar pastda)
+\`\`\`mermaid
+sequenceDiagram
+    participant C as Client (Browser)
+    participant S as Server
+    loop Har 30 soniyada (Heartbeat Interval)
+        C->>S: Ping (U yerdamisan?)
+        S-->>C: Pong (Ha, shu yerdaman!)
+    end
+    Note over C,S: Agar serverdan Pong kelmasa, ulanish qayta ochiladi.
+\`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **Ulanish ochilmasdan oldin \`send()\` qilish:** WebSocket obyekti yaratilishi bilan ulanish darhol tayyor bo'lmaydi. Agar \`socket.readyState\` ochiq (\`OPEN\`) bo'lishidan oldin \`socket.send()\` chaqirilsa, \`DOMException\` xatosi kelib chiqadi. Doimo ma'lumot yuborishni \`onopen\` ichida yoki ulanish ochiqligini tekshirib bajarish kerak.
-2. **Xavfsiz \`wss://\` o'rniga \`ws://\` ishlatish:** Production muhitda (ayniqsa sayt HTTPS bo'lsa), brauzer xavfsizlik nuqtai nazaridan shifrlanmagan \`ws://\` ulanishlarini bloklaydi. Har doim xavfsiz \`wss://\` dan foydalanish tavsiya etiladi.
-3. **JSON obyektlarni to'g'ri o'girmaslik:** WebSocket faqat matn (string) yoki ikkilik (binary) formatlarni qo'llaydi. Ob'ekt yuborishda \`JSON.stringify(obj)\` qilishni, qabul qilishda esa \`JSON.parse(event.data)\` qilishni unutmaslik lozim.
+### C. BinaryType (Ikkilik ma'lumotlar bilan ishlash)
+WebSocket orqali nafaqat matn, balki media fayllar yoki raw binary ma'lumotlar uzatish ham mumkin. Brauzer binary ma'lumotlarni qanday formatda qabul qilishini belgilash uchun \`binaryType\` xossasidan foydalaniladi:
+* **\`blob\` (sukut bo'yicha):** Fayllar, rasmlar kabi diskda saqlanadigan xom ma'lumotlar uchun mos.
+* **\`arraybuffer\`:** Xotirada tezkor ishlov berish kerak bo'lgan, audio/video oqimlar yoki binar tarmoq paketlari uchun mo'ljallangan.
 
-## 6. SAVOLLAR VA JAVOBLAR
+---
+
+## 4. XATOLAR (Common mistakes)
+1. **ReadyState-ni tekshirmaslik:** WebSocket obyekti yaratilishi bilan uning xotiradagi holati hali \`CONNECTING\` bo'ladi. Ulanish to'liq ochiq (\`OPEN\`) bo'lmasdan turib \`send()\` metodini chaqirish dasturning to'xtab qolishiga olib keladi.
+2. **Ulanish uzilishini hisobga olmaslik:** Internet sifati yomonlashganda yoki mobil tarmoq almashganda WebSocket jimgina uziladi. Dasturda avtomatik reconnect va offline boshqaruv mantiqini yozmaslik foydalanuvchilarning xabar olmay qolishiga sabab bo'ladi.
+
+---
+
+## 5. SAVOLLAR VA JAVOBLAR
 **1. WebSocket nima?**
 Mijoz va server o'rtasida doimiy va ikki tomonlama real-vaqt rejimida aloqani ta'minlovchi tarmoq protokoli.
 
 **2. WebSockets qaysi protokol ustiga qurilgan?**
 U TCP protokoli ustida ishlaydi va dastlab HTTP handshake (salomlashish) orqali ulanishni yangilaydi (Upgrade).
 
-**3. \`ws://\` va \`wss://\` farqi nima?**
-\`ws://\` shifrlanmagan (HTTP kabi), \`wss://\` esa shifrlangan va xavfsiz (HTTPS kabi) WebSocket ulanishidir.
-
-**4. WebSocket orqali qanday turdagi ma'lumotlarni yuborish mumkin?**
-Oddiy matn (string), Blob va ArrayBuffer (ikkilik ma'lumotlar).
-
-**5. Ulanish holatini qaysi xususiyat orqali tekshirish mumkin?**
-\`socket.readyState\` xususiyati yordamida.
-
-**6. Ulanish tayyorligini bildiruvchi readyState qiymati nechaga teng?**
-\`1\` ga (\`WebSocket.OPEN\` ga).
-
-**7. Serverdan ma'lumot kelganda qaysi voqea (event) ishga tushadi?**
-\`onmessage\` yoki \`addEventListener('message', ...)\`.
-
-**8. WebSocket ulanishini qanday qilib qo'lda yopish mumkin?**
-\`socket.close()\` metodi orqali.
-
-**9. Nima uchun ulanish ochilmasdan oldin \`send()\` qilish xato?**
-Chunki kanal hali o'rnatilmagan bo'ladi va brauzer ma'lumot yuborishni rad etib, xatolik beradi.
-
-**10. WebSocket-da ulanish uzilganda qanday avtomatik qayta ulanish mumkin?**
-\`onclose\` hodisasi ichida \`setTimeout\` yordamida yangi \`WebSocket\` obyektini qayta yaratish orqali.
-
-**11. WebSocket-da bildirishnomalar yoki real-time chat uchun qo'shimcha qanday kutubxonalar bor?**
-Eng mashhuri - Socket.io (u WebSockets va Polling-ni avtomatik boshqaradi).
-
-**12. HTTP Polling-ga qaraganda WebSocket-ning afzalligi nimada?**
-Ortiqcha HTTP sarlavhalari (headers) yo'qligi sababli tarmoq trafigi kamayadi va kechikish vaqti (latency) deyarli nolga yaqinlashadi.
-`,
+**3. ws:// va wss:// farqi nima?**
+\`ws://\` shifrlanmagan (HTTP kabi), \`wss://\` esa shifrlangan va xavfsiz (HTTPS kabi) WebSocket ulanishidir.`,
   exercises: [
     {
       id: 1,
@@ -183,6 +183,22 @@ Ortiqcha HTTP sarlavhalari (headers) yo'qligi sababli tarmoq trafigi kamayadi va
       startingCode: "function connect() {\n  const ws = new WebSocket('wss://echo.websocket.org');\n  ws.onclose = () => {\n    // Bu yerga yozing\n    \n  };\n}",
       hint: "setTimeout(connect, 3000);",
       test: "if (code.includes('setTimeout') && code.includes('connect') && code.includes('3000')) return null; return 'onclose ichida setTimeout orqali 3000ms kechikish bilan connect funksiyasini chaqiring.';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ ReadyState Tekshiruvchi Helper (checkReadyState)",
+      instruction: "Berilgan `socket` obyektining `readyState` holatiga mos ravishda uning matnli tavsifini qaytaruvchi `checkReadyState(socket)` funksiyasini yozing. Mosliklar: 0: 'CONNECTING', 1: 'OPEN', 2: 'CLOSING', 3: 'CLOSED'. Agar ulanish obyekti berilmagan yoki noto'g'ri bo'lsa, 'INVALID' qaytarsin.",
+      startingCode: "function checkReadyState(socket) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "if (!socket || typeof socket.readyState === 'undefined') return 'INVALID'; const map = { 0: 'CONNECTING', 1: 'OPEN', 2: 'CLOSING', 3: 'CLOSED' }; return map[socket.readyState] || 'INVALID';",
+      test: "if (typeof checkReadyState !== 'function') return 'checkReadyState funksiya emas';\nif (checkReadyState(null) !== 'INVALID') return 'null obyekt uchun INVALID qaytmadi';\nif (checkReadyState({ readyState: 1 }) !== 'OPEN') return 'OPEN holati noto\\'g\\'ri';\nif (checkReadyState({ readyState: 3 }) !== 'CLOSED') return 'CLOSED holati noto\\'g\\'ri';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Xavfsiz JSON Yuboruvchi (sendJSONMessage)",
+      instruction: "WebSocket ulanishi orqali serverga JSON xabar jo'natuvchi xavfsiz `sendJSONMessage(socket, type, payload)` funksiyasini yozing. U quyidagi qoidalarga rioya qilsin:\n1. Agar `socket.readyState` ochiq (`WebSocket.OPEN` ya'ni 1) bo'lsa, xabarni `{ type, payload }` ko'rinishida stringify qilib jo'natsin (send) va `true` qaytarsin.\n2. Aks holda `false` qaytarsin va xabar yubormasin.",
+      startingCode: "function sendJSONMessage(socket, type, payload) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "if (socket && socket.readyState === 1) { socket.send(JSON.stringify({ type, payload })); return true; } return false;",
+      test: "if (typeof sendJSONMessage !== 'function') return 'sendJSONMessage funksiya emas';\nlet sentData = null;\nconst mockSocket = { readyState: 1, send: (data) => { sentData = data; } };\nconst success = sendJSONMessage(mockSocket, 'test', { val: 1 });\nif (!success) return 'Muvaffaqiyatli yuborishda false qaytdi';\nconst parsed = JSON.parse(sentData);\nif (parsed.type === 'test' && parsed.payload.val === 1) {\n  const mockClosed = { readyState: 3, send: () => {} };\n  if (sendJSONMessage(mockClosed, 'test', {}) === false) return null;\n}\nreturn 'Xabar to\\'g\\'ri stringify qilinmadi';"
     }
   ],
   quizzes: [
@@ -236,7 +252,7 @@ Ortiqcha HTTP sarlavhalari (headers) yo'qligi sababli tarmoq trafigi kamayadi va
     },
     {
       id: 5,
-      question: "Serverdan yangi ma'lumot kelganda uni tutib olish uchun qaysi voqea ishlatiladi?",
+      question: "Serverdan ma'lumot kelganda qaysi voqea (event) ishga tushadi?",
       options: [
         "onopen",
         "onclose",
@@ -329,6 +345,30 @@ Ortiqcha HTTP sarlavhalari (headers) yo'qligi sababli tarmoq trafigi kamayadi va
       ],
       correctAnswer: 2,
       explanation: "Faqat bir marta yuklanib, keyin o'zgarmaydigan oddiy matnli blog sahifasi uchun doimiy ochiq WebSocket ulanishi keraksiz resurs sarfidir. Bunga oddiy HTTP so'rovi kifoya qiladi."
+    },
+    {
+      id: 13,
+      question: "WebSocket ulanishini o'rnatish paytida, mijoz sarlavhadagi qaysi HTTP Upgrade so'rovi orqali o'tishni boshlaydi va server bunga qanday status kodi bilan javob qaytaradi?",
+      options: [
+        "Upgrade: websocket sarlavhasi va HTTP 101 Switching Protocols status kodi",
+        "Upgrade: tcp sarlavhasi va HTTP 200 OK status kodi",
+        "Upgrade: socket sarlavhasi va HTTP 301 Moved Permanently status kodi",
+        "Connection: Upgrade sarlavhasi va HTTP 500 Server Error status kodi"
+      ],
+      correctAnswer: 0,
+      explanation: "WebSocket-ga ulanish HTTP Upgrade: websocket sarlavhasi orqali yuboriladi va server muvaffaqiyatli ulansa, HTTP 101 Switching Protocols kodi bilan javob beradi."
+    },
+    {
+      id: 14,
+      question: "Mijoz va server o'rtasidagi WebSocket ulanishini uzoq vaqt faol bo'lmaganda (idle timeout) uzilib qolishdan himoya qilish uchun qaysi mexanizm ishlatiladi?",
+      options: [
+        "CSS transition mexanizmi",
+        "Heartbeat Ping-Pong ramkalari (frames)",
+        "Polling HTTP requestlari",
+        "LocalStorage storage event tinglovchisi"
+      ],
+      correctAnswer: 1,
+      explanation: "Mijoz yoki server tomonidan muntazam ravishda yuboriladigan Ping va javob sifatida qaytuvchi Pong ramkalari (Heartbeat) ulanishni yopilib ketishidan asraydi."
     }
   ]
 };

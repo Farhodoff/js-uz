@@ -7,120 +7,92 @@ export const localStorageLesson = {
 
 Veb-saytga kirganingizda, sayt sizning tanlagan tilingizni yoki tungi rejim (dark mode) sozlamangizni eslab qolishi kerak. Agar bu ma'lumotlarni hech qayerda saqlamasangiz, sahifa yangilanganda hamma narsa dastlabki holatiga qaytib qoladi. Har bir kichik sozlama yoki foydalanuvchi sessiyasini saqlash uchun serverdagi ma'lumotlar bazasiga murojaat qilish vaqt va resurs sarfini oshiradi. Brauzer xotirasi bunday holatlar uchun ayni muddaodir.
 
+---
+
 ## 2. SODDALIK (Analogiya)
 
 Brauzerdagi xotiralarni quyidagicha tushunish mumkin:
-- **LocalStorage:** Bu sizning uyingizdagi shaxsiy esdalik daftaringiz. Unga yozilgan narsalar siz o'zingiz uni o'chirmaguningizcha (yoki varag'ini yirtmaguningizcha) muddatsiz saqlanib turaveradi.
-- **SessionStorage:** Bu esa o'quv xonasidagi oq doska. Dars tugab, xonani tark etishingiz (tab yoki brauzerni yopishingiz) bilan doska o'chirib tozalanadi.
-- **Cookies (Kuki):** Bu sizga mehmonxonada berilgan elektron kalit-karta. Har safar xonangizga kirmoqchi bo'lganingizda (serverga HTTP so'rov yuborganingizda), bu karta sizning kimligingizni tasdiqlash uchun tizimga uzatiladi va uning ham ma'lum bir amal qilish muddati bo'ladi.
+- **LocalStorage:** Bu sizning uyingizdagi shaxsiy esdalik daftaringiz. Unga yozilgan narsalar siz o'zingiz uni o'chirmaguningizcha muddatsiz saqlanib turaveradi.
+- **SessionStorage:** Bu o'quv xonasidagi oq doska. Dars tugab, xonani tark etishingiz (tab yoki brauzerni yopishingiz) bilan doska o'chirib tozalanadi.
+- **Cookies (Kuki):** Bu mehmonxonada berilgan elektron kalit-karta. Har safar xonaga kirmoqchi bo'lganingizda (serverga so'rov yuborganda), bu karta sizning kimligingizni tasdiqlash uchun tizimga uzatiladi.
 
-## 3. STRUKTURA
+---
+
+## 3. STRUKTURA VA CHUQUR TUSHUNCHALAR
 
 ### A. LocalStorage va SessionStorage Metodlari
 Ikkala xotira turi ham bir xil metodlar yordamida boshqariladi:
 \`\`\`javascript
-// Ma'lumot yozish (saqlash)
 localStorage.setItem("theme", "dark");
-sessionStorage.setItem("session_id", "12345");
-
-// Ma'lumotni o'qish
 const theme = localStorage.getItem("theme");
-
-// Bitta kalitni o'chirish
 localStorage.removeItem("theme");
-
-// Hamma narsani butunlay tozalash
 localStorage.clear();
 \`\`\`
 
-### B. Obyekt va Massivlarni saqlash (JSON)
-Veb-xotira faqat **string (matn)** turidagi ma'lumotlarni saqlay oladi. Obyekt yoki massivlarni saqlash uchun ularni string formatiga o'tkazish kerak:
+### B. QuotaExceededError (Xotira limitsiz emas!)
+Brauzer xotiralari o'rtacha **5-10 MB** hajmgacha ma'lumot sig'dira oladi. Agar siz ushbu limitdan ko'p ma'lumot yozmoqchi bo'lsangiz, JavaScript \`QuotaExceededError\` xatosini otadi. Shuning uchun ma'lumotlarni yozishda try...catch bloklaridan foydalanish tavsiya etiladi:
 \`\`\`javascript
-const user = { name: "Ali", age: 25 };
-
-// Obyekt -> String (Saqlashda)
-localStorage.setItem("user", JSON.stringify(user));
-
-// String -> Obyekt (O'qishda)
-const parsedUser = JSON.parse(localStorage.getItem("user"));
+try {
+  localStorage.setItem("key", bigData);
+} catch (e) {
+  if (e.name === 'QuotaExceededError') {
+    console.error("Xotira to'ldi!");
+  }
+}
 \`\`\`
 
-### C. Cookies (Kuki fayllari)
-Cookies — brauzer va server o'rtasida har bir HTTP so'rovda avtomatik uzatiladigan kichik ma'lumot bo'lagi (maksimal 4 KB).
-JavaScript-da kuki yozish va o'qish:
-\`\`\`javascript
-// Kuki yaratish
-document.cookie = "username=Farhod; expires=Sat, 23 May 2026 12:00:00 UTC; path=/";
+### C. Multi-Tab Storage Event (Oynalararo Sinxronizatsiya)
+Agar bir xil domen ostida foydalanuvchi bir nechta tab ochgan bo'lsa va ulardan birida LocalStorage yangilansa, qolgan barcha ochiq tablarda \`storage\` hodisasi triggering bo'ladi. Bu oynalararo dark/light rejimni yoki savatchadagi mahsulotlarni sinxronlashda juda qulay.
 
-// Max-Age yordamida yashash muddatini soniyalarda berish (1 soat)
-document.cookie = "token=abc123xyz; max-age=3600; secure; samesite=lax";
+\`\`\`mermaid
+sequenceDiagram
+    participant Tab A as Brauzer Tab A
+    participant LocalStorage as LocalStorage Xotira
+    participant Tab B as Brauzer Tab B
+    Tab A->>LocalStorage: setItem('theme', 'dark')
+    LocalStorage-->>Tab B: window.onstorage (storage event) trigger bo'ladi
+    Note over Tab B: Tab B dark mode-ga o'tadi
 \`\`\`
 
-#### Muhim Kuki Atributlari:
-1. **Expires / Max-Age:** Kukining amal qilish muddati. Muddati tugagach, brauzer uni o'chirib yuboradi.
-2. **Secure:** Kuki faqat HTTPS (shifrlangan) ulanish orqali uzatilishini ta'minlaydi.
-3. **SameSite:** Kuki uchinchi tomon so'rovlarida yuborilishini boshqaradi (qiymatlari: \`Strict\`, \`Lax\`, \`None\`). CSRF hujumlaridan himoya qiladi.
-4. **HttpOnly:** Ushbu atribut o'rnatilgan kukilarni JavaScript orqali o'qib bo'lmaydi (\`document.cookie\`da ko'rinmaydi). Bu XSS hujumlaridan himoyalanish uchun juda muhimdir. (Faqat server tomonidan o'rnatiladi).
+### D. Cookie Atributlari va Xavfsizlik (XSS va CSRF)
+Kuki — server tomonidan o'rnatiladigan va har safar HTTP so'rov yuborilganda brauzer tomonidan avtomatik qo'shib yuboriladigan kichik ma'lumot bo'lagi (4 KB).
+* **\`HttpOnly\`:** Ushbu atribut o'rnatilgan kukilarni JavaScript orqali (ya'ni \`document.cookie\` bilan) o'qib bo'lmaydi. Bu **XSS (Cross-Site Scripting)** hujumlaridan himoya qilishda o'ta muhim.
+* **\`Secure\`:** Kuki faqat shifrlangan HTTPS ulanishi orqali uzatilishini ta'minlaydi.
+* **\`SameSite\`:** Kuki uchinchi tomon so'rovlarida yuborilishini boshqaradi (\`Strict\`, \`Lax\`, \`None\`). Bu **CSRF (Cross-Site Request Forgery)** hujumlaridan himoya qiladi.
 
-| Xususiyat | LocalStorage | SessionStorage | Cookies |
-| :--- | :--- | :--- | :--- |
-| **Hajmi** | ~5-10 MB | ~5 MB | ~4 KB |
-| **Muddati** | Muddatsiz | Tab yopilguncha | Belgilangan vaqtgacha |
-| **Serverga uzatilishi** | Yo'q | Yo'q | Har bir so'rovda avtomatik |
-| **JS kirishi** | Ha | Ha | Ha (HttpOnly bo'lmasa) |
+\`\`\`mermaid
+graph TD
+    A[Brauzer Xotira Turlari] --> B[Web Storage]
+    A --> C[Cookies]
+    B --> D[LocalStorage - Muddatsiz, 5-10MB]
+    B --> E[SessionStorage - Tab yopilguncha, 5MB]
+    C --> F[HttpOnly - JS uchun yopiq, 4KB]
+    C --> G[Secure - Faqat HTTPS]
+    C --> H[SameSite - CSRF himoyasi]
+\`\`\`
+
+---
 
 ## 4. XATOLAR (Common Mistakes)
+1. **Obyektlarni to'g'ridan-to'g'ri stringify-siz yozish:** \`[object Object]\` bo'lib saqlanishi.
+2. **Maxfiy ma'lumotlarni saqlash:** LocalStorage JavaScript uchun ochiq bo'lgani uchun unda parollar yoki auth-tokenlarni saqlash xavflidir.
 
-1. **Obyektlarni to'g'ridan-to'g'ri yozish:**
-   \`\`\`javascript
-   // XATO:
-   localStorage.setItem("user", { name: "Ali" }); // "[object Object]" bo'lib saqlanadi
-   // TO'G'RI:
-   localStorage.setItem("user", JSON.stringify({ name: "Ali" }));
-   \`\`\`
+---
 
-2. **Nozik ma'lumotlarni saqlash (Xavfsizlik xatosi):**
-   Foydalanuvchi parollari, shaxsiy ma'lumotlari yoki maxfiy tokenlarni LocalStorage'da saqlamang. XSS xuruji orqali zararli skriptlar xotirani osonlik bilan o'qib olishi mumkin. Bunday tokenlar uchun **HttpOnly** kukilari tavsiya etiladi.
-
-## 5. AMALIYOT (Mashqlar)
-
-## 6. SAVOLLAR VA JAVOBLAR
+## 5. SAVOLLAR VA JAVOBLAR
 
 **1. LocalStorage va SessionStorage asosiy farqi nima?**
 LocalStorage doimiy xotira bo'lib, oyna yopilsa ham saqlanadi. SessionStorage esa faqat o'sha oyna/tab ochiq turguncha saqlanadi, tab yopilganda o'chadi.
 
-**2. LocalStorage limit sig'imi qancha?**
-Brauzerga qarab 5 MB dan 10 MB gacha.
+**2. LocalStorage limit sig'imi to'lganda nima yuz beradi?**
+Dasturda \`QuotaExceededError\` nomli runtime xatolik yuz beradi va ma'lumot saqlanmaydi.
 
-**3. Obyektlarni saqlash uchun nima uchun JSON ishlatiladi?**
-LocalStorage faqat string ma'lumotlarni qabul qilgani uchun obyektlarni \`JSON.stringify\` orqali matnga o'tkazish lozim.
+**3. Same-Origin Policy nima?**
+Xavfsizlik qoidasi bo'lib, unga ko'ra har bir sayt faqat o'zining port, protokol va domen manziliga tegishli LocalStorage xotirasiga kira oladi. Boshqa saytlar xotirani o'qiy olmaydi.
 
-**4. Kuki (Cookie) nima?**
-Kuki — brauzer va server o'rtasida har bir so'rovda yuboriladigan, asosan foydalanuvchi seansini aniqlash uchun ishlatiladigan kichik ma'lumot bo'lagi.
-
-**5. Kukining maksimal hajmi qancha?**
-Taxminan 4 KB.
-
-**6. HttpOnly kuki nima va u nima uchun kerak?**
-Faqat server tomonidan o'rnatiladigan, JavaScript kirishi taqiqlangan kuki turi. U XSS hujumi orqali sessiya tokenlarini o'g'irlanishidan himoya qiladi.
-
-**7. Secure atributi nima qiladi?**
-Kukining faqat HTTPS xavfsiz protokoli orqali jo'natilishini kafolatlaydi.
-
-**8. SameSite atributi nima uchun kerak?**
-Cross-Site Request Forgery (CSRF) hujumlaridan himoyalanish uchun kukilarning saytlararo so'rovlarda yuborilishini boshqaradi.
-
-**9. LocalStorage ma'lumotlarini boshqa sayt (origin) o'qiy oladimi?**
-Yo'q, "Same-Origin Policy" qoidasiga ko'ra, har bir sayt faqat o'zining LocalStorage xotirasiga kira oladi.
-
-**10. localStorage.clear() nima qiladi?**
-Domen uchun LocalStorage'da saqlangan barcha ma'lumotlarni tozalaydi.
-
-**11. storage hodisasi (event) qachon ishlaydi?**
-LocalStorage joriy origin ostidagi boshqa oynada yoki tabda o'zgartirilganda.
-
-**12. Kuki muddatini belgilash uchun qaysi atributlar ishlatiladi?**
-\`Expires\` (muayyan sana bilan) yoki \`Max-Age\` (soniyalarda).`,
+**4. HttpOnly kukilar nima uchun xavfsizroq?**
+Chunki bu atribut kuki ma'lumotlarini JavaScript (\`document.cookie\`) yordamida o'g'irlanishini butunlay cheklaydi.
+`,
   exercises: [
     {
       id: 1,
@@ -188,7 +160,7 @@ LocalStorage joriy origin ostidagi boshqa oynada yoki tabda o'zgartirilganda.
     },
     {
       id: 9,
-      title: "Barcha LocalStorage'ni tozalash",
+      title: "Balla LocalStorage'ni tozalash",
       instruction: "LocalStorage'dagi barcha ma'lumotlarni tozalash uchun tegishli metodni chaqiring.",
       startingCode: "// Bu yerga yozing\n",
       hint: "localStorage.clear();",
@@ -217,6 +189,22 @@ LocalStorage joriy origin ostidagi boshqa oynada yoki tabda o'zgartirilganda.
       startingCode: "// Bu yerga yozing\n",
       hint: "sessionStorage.clear();",
       test: "if (code.includes('sessionStorage.clear()')) return null; return 'sessionStorage.clear() chaqirilmadi';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Xavfsiz Yozish Wrapper (safeSetItem)",
+      instruction: "LocalStorage limitdan oshganda `QuotaExceededError` xatosini tashlaydi. Agar yozish jarayonida xato bo'lsa (quota exceeded), uni tutib `false` qaytaradigan, muvaffaqiyatli yozilsa `true` qaytaradigan `safeSetItem(key, value)` funksiyasini yozing.",
+      startingCode: "function safeSetItem(key, value) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "try { localStorage.setItem(key, value); return true; } catch (e) { return false; }",
+      test: "if (typeof safeSetItem !== 'function') return 'safeSetItem funksiya emas';\nconst success = safeSetItem('test_key', 'val');\nif (success && localStorage.getItem('test_key') === 'val') return null;\nreturn 'Yozish xato bajarildi';"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Kuki Parser Helper (parseCookie)",
+      instruction: "Brauzerning `document.cookie` satrini (`key1=val1; key2=val2` formatida) parse qilib, obyekt ko'rinishida qaytaruvchi `parseCookie(cookieStr)` funksiyasini yozing.",
+      startingCode: "function parseCookie(cookieStr) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "if (!cookieStr) return {}; return cookieStr.split(';').reduce((acc, current) => { const [key, val] = current.trim().split('='); if (key) acc[key] = val || ''; return acc; }, {});",
+      test: "if (typeof parseCookie !== 'function') return 'parseCookie funksiya emas';\nconst parsed = parseCookie('user=Ali; theme=dark');\nif (parsed && parsed.user === 'Ali' && parsed.theme === 'dark') return null;\nreturn 'Kuki parse qilish xato';"
     }
   ],
   quizzes: [
@@ -290,79 +278,103 @@ LocalStorage joriy origin ostidagi boshqa oynada yoki tabda o'zgartirilganda.
         "Cheksiz"
       ],
       correctAnswer: 0,
-      explanation: "Cookies juda kichik hajmga ega (har bir kuki uchun taxminan 4 KB gacha), chunki ular har bir HTTP so'rov bilan birga serverga yuboriladi."
+      explanation: "Cookies vaqtinchalik va real vaqtda HTTP request-lar bilan serverga avtomatik yuklanganligi sababli, ularning hajmi 4 KB bilan cheklangan."
     },
     {
       id: 7,
-      question: "Kukilarning `HttpOnly` atributi nima uchun kerak?",
+      question: "Kukilarning `HttpOnly` sarlavha atributining asosiy xavfsizlik afzalligi nima?",
       options: [
-        "Kukilarni faqat mobil telefonlarda o'qish uchun",
-        "JavaScript (masalan, `document.cookie` orqali) ushbu kukini o'qiy olmasligi va shu orqali XSS hujumlaridan himoyalanish uchun",
-        "Kukilarni HTTPS o'rniga faqat HTTP orqali yuborish uchun",
-        "Kuki hajmini oshirish uchun"
+        "Kukini shifrlash tezligini oshiradi",
+        "JavaScript kodi (document.cookie) orqali kuki qiymatlarini o'qishni taqiqlaydi va XSS o'g'irligini oldini oladi",
+        "Kukilarni faqat mobil qurilmalarda ko'rsatadi",
+        "CORS xatosini butunlay yo'qotadi"
       ],
       correctAnswer: 1,
-      explanation: "`HttpOnly` atributi o'rnatilgan kukilarga JavaScript orqali kirib bo'lmaydi. Bu esa hackerlar zararli kod (XSS) yordamida foydalanuvchining sessiya tokenlarini o'g'irlashining oldini oladi."
+      explanation: "HttpOnly atributi kuki qiymatlarini JavaScript kirishidan to'liq berkitadi va browser darajasida XSS xavfidan himoyalaydi."
     },
     {
       id: 8,
-      question: "Kuki atributlaridan `Secure` nima qiladi?",
+      question: "Cookies limit to'lib ketganda yoki QuotaExceededError yuz berganda xavfsiz setItem wrapper yozish nega muhim?",
       options: [
-        "Kukini shifrlab brauzerga yozadi",
-        "Kukini faqat xavfsiz HTTPS protokoli orqali yuborilishini ta'minlaydi",
-        "Kuki o'chib ketishining oldini oladi",
-        "Kuki faqat localhostda ishlashini ta'minlaydi"
+        "Dastur sinxron ravishda to'xtab qolmasligi va ma'lumot saqlanmaganda fallback boshqaruvini amalga oshirish uchun",
+        "LocalStorage hajmini 10MB dan oshirish uchun",
+        "Brauzerni tezkor refresh qilish uchun",
+        "CSS stillarini o'zgartirish uchun"
       ],
-      correctAnswer: 1,
-      explanation: "`Secure` atributi kuki faqat shifrlangan HTTPS ulanishlari orqali yuborilishini ta'minlaydi."
+      correctAnswer: 0,
+      explanation: "QuotaExceededError tutilmasa, dastur kutilmaganda sinxron crash bo'ladi. Xavfsiz wrapper buni aniqlab, boshqa muqobil reja ishlatishga imkon beradi."
     },
     {
       id: 9,
-      question: "Kukining `SameSite` atributi qanday maqsadlarda qo'llaniladi?",
+      question: "document.cookie ga yangi qiymat berilganda (masalan, key=value) eski kukilar o'chib ketadimi?",
       options: [
-        "Kuki faqat bitta kompyuterda ishlashi uchun",
-        "Kuki faqat JavaScript fayllarda ishlashi uchun",
-        "Cross-Site Request Forgery (CSRF) hujumlaridan himoya qilish va uchinchi tomon (third-party) so'rovlarida kuki yuborilishini boshqarish uchun",
-        "Kuki yozilishini butunlay cheklash uchun"
+        "Ha, barcha eski kukilar tozalab tashlanadi",
+        "Yo'q, brauzer yangi kukini mavjud kukilar ro'yxatiga qo'shib qo'yadi (append qiladi)",
+        "Faqat HttpOnly bo'lmasa o'chadi",
+        "Faqat Secure o'rnatilgan bo'lsa o'chadi"
       ],
-      correctAnswer: 2,
-      explanation: "`SameSite` atributi (qiymatlari: Strict, Lax, None) saytlararo so'rovlarda kuki yuborilishini nazorat qilib, CSRF hujumlaridan himoyalanishga yordam beradi."
+      correctAnswer: 1,
+      explanation: "document.cookie xususiyati setter kabi ishlaydi, ammo u to'liq satrni o'zgartirmaydi, balki berilgan yangi kuki kalitini qo'shadi yoki eskisini yangilaydi."
     },
     {
       id: 10,
-      question: "Maxfiy session tokenlarni saqlashda nega xavfsizlik nuqtai nazaridan LocalStorage'dan ko'ra HttpOnly kuki tavsiya etiladi?",
+      question: "Ayni joriy sahifaning o'zida sodir bo'lgan LocalStorage o'zgarishi shu sahifadagi window 'storage' eventini ishga tushiradimi?",
       options: [
-        "Chunki LocalStorage xotira hajmi kichikroq",
-        "Chunki LocalStorage kompyuter o'chganda o'chib ketadi",
-        "Chunki LocalStorage'dagi ma'lumotlarni JavaScript o'qiy oladi (XSS orqali o'g'irlanishi mumkin), HttpOnly kuki esa JS skriptlaridan himoyalangan",
-        "Farqi yo'q, ikkalasi ham bir xil xavfsizlikka ega"
+        "Ha, har doim ishlaydi",
+        "Yo'q, storage hodisasi faqat boshqa tablar yoki oynalardagi o'zgarishlar uchun trigger bo'ladi",
+        "Faqat iframe ichida ishlasa trigger bo'ladi",
+        "Faqat secure kuki bo'lsa ishlaydi"
       ],
-      correctAnswer: 2,
-      explanation: "LocalStorage'dagi barcha ma'lumotlar joriy sahifada ishlayotgan har qanday JS kodi tomonidan osonlikcha o'qilishi mumkin. HttpOnly kuki esa JS ga yopiq bo'lgani sababli xavfsizroq."
+      correctAnswer: 1,
+      explanation: "Qoidaga ko'ra, joriy oynaning o'zida yuz bergan o'zgarish joriy oynadagi 'storage' listenerini trigger qilmaydi, faqat boshqa ochiq tablarda trigger bo'ladi."
     },
     {
       id: 11,
-      question: "JavaScript orqali yangi kuki yozish uchun to'g'ri sintaksis qanday?",
+      question: "CSRF (Cross-Site Request Forgery) hujumlaridan himoyalanishda kuki faylining qaysi atributi yordam beradi?",
       options: [
-        "`document.cookie = \"key=value\"`",
-        "`document.cookie.set(\"key\", \"value\")`",
-        "`document.cookie(\"key\", \"value\")`",
-        "`document.setCookie(\"key\", \"value\")`"
+        "Secure",
+        "HttpOnly",
+        "SameSite (Strict/Lax)",
+        "Max-Age"
       ],
-      correctAnswer: 0,
-      explanation: "JS da `document.cookie` xususiyati setter vazifasini bajaradi, unga `\"key=value\"` ko'rinishidagi string qiymat berilsa, brauzer mavjud kukilarga ushbu yangi kukini qo'shib qo'yadi."
+      correctAnswer: 2,
+      explanation: "SameSite atributi uchinchi tomon so'rovlarida kuki yuborilishini boshqaradi va bu orqali CSRF xavfini kamaytiradi."
     },
     {
       id: 12,
-      question: "LocalStorage'dagi o'zgarishlarni eshitadigan `storage` event qachon ishga tushmaydi?",
+      question: "Cookies secure atributi nimani kafolatlaydi?",
       options: [
-        "O'zgarishlar boshqa tabda sodir bo'lganda",
-        "O'zgarishlar ayni joriy oynaning o'zida yuz berganda",
-        "Kompyuter o'chib yonganda",
-        "SessionStorage ishlatilganda"
+        "Kukini shifrlanganligini",
+        "Kuki faqat HTTPS protokoli orqali serverga uzatilishini",
+        "JavaScript kuki kirishini to'xtatishini",
+        "Kuki muddati cheksizligini"
       ],
       correctAnswer: 1,
-      explanation: "`storage` hodisasi faqat boshqa tablar yoki oynalarda ma'lumot o'zgarganda o'sha origin'dagi boshqa sahifalarda ishga tushadi. Joriy o'zgarish yuz bergan sahifaning o'zida bu event ishlamaydi."
+      explanation: "Secure atributi kuki faqat HTTPS (xavfsiz shifrlangan kanal) orqali yuborilishini ta'minlaydi."
+    },
+    {
+      id: 13,
+      question: "Veb-xotiraga katta ma'lumot yozayotganda QuotaExceededError xatosini qaysi catch sharti bilan ushlash maqsadga muvofiq?",
+      options: [
+        "e.name === 'QuotaExceededError' yoki e.code === 22",
+        "e.message === 'Failed'",
+        "e instanceof TypeError",
+        "e instanceof ReferenceError"
+      ],
+      correctAnswer: 0,
+      explanation: "Brauzer xotira limiti to'lganda aynan 'QuotaExceededError' nomli xatoni (yoki eski brauzerlarda kod 22) otadi."
+    },
+    {
+      id: 14,
+      question: "Same-Origin Policy qoidasiga ko'ra, qaysi uchta qiymat mos kelgandagina boshqa oyna LocalStorage-ni o'qiy oladi?",
+      options: [
+        "Domen nomi, Port va Protokol (schema)",
+        "IP address, operatsion tizim va brauzer turi",
+        "URL, sarlavhalar va HTTP metod",
+        "Faqat URL va sarlavhalar"
+      ],
+      correctAnswer: 0,
+      explanation: "Same-Origin (bir xil manba) qoidasi protokol (http/https), domen (example.com) va port (:80/:443) to'liq mos kelishini talab qiladi."
     }
   ]
 };
