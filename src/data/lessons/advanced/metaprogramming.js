@@ -2,65 +2,123 @@ export const metaprogramming = {
   id: "a23",
   title: "Metaprogramming: Proxy va Reflect",
   theory: `## 1. NEGA kerak?
-Metadasturlash (Metaprogramming) - bu dasturning o'zini o'zi o'zgartirishi, tahlil qilishi yoki boshqa kodning xatti-harakatlarini boshqarishidir. JavaScript-da obyektlar va funksiyalarning ichki xulq-atvorini (masalan, qiymat o'qish, yozish, o'chirish) nazorat qilish juda qiyin edi. Proxy va Reflect API obyektlar ustidan to'liq nazorat o'rnatish, ma'lumotlarni validatsiya qilish, reaktivlik (reactivity) yaratish va log yozish uchun kuchli vosita bo'lib xizmat qiladi.
+Metadasturlash (Metaprogramming) - bu dasturning o'zini o'zi o'zgartirishi, tahlil qilishi yoki boshqa kodning xatti-harakatlarini boshqarishidir. JavaScript-da obyektlar va funksiyalarning ichki xulq-atvorini (masalan, qiymat o'qish, yozish, o'chirish) nazorat qilish va boshqarish an'anaviy ravishda qiyin bo'lgan. Proxy va Reflect API obyektlar ustidan to'liq nazorat o'rnatish, ma'lumotlarni validatsiya qilish, reaktivlik (reactivity) yaratish va log yozish uchun kuchli vosita bo'lib xizmat qiladi. Proxy va Reflect obyektlar ustidan to'liq va tizimli nazorat o'rnatish imkoniyatini beradi.
 
 ## 2. SODDALIK (Analogiya)
 Buni **binoning kirish qismidagi qo'riqchi va qabulxona (reception)** deb tasavvur qiling:
 - **Asl obyekt (Target):** Bino ichidagi xonalar yoki ma'lumotlar ombori.
-- **Proxy:** Kirish eshigidagi qo'riqchi. Har bir kiruvchi va chiquvchi (obyektdan ma'lumot oluvchi/yozuvchi) uning nazoratidan o'tishi kerak.
-- **Reflect:** Binoning ichki telefon tizimi. Qo'riqchi ma'lumotni tekshirgach, Reflect orqali ichkariga xavfsiz murojaat qiladi.
+- **Proxy:** Kirish eshigidagi qo'riqchi. Har bir kiruvchi va chiquvchi (obyektdan ma'lumot oluvchi/yozuvchi) uning nazoratidan o'tishi kerak. Qo'riqchi siz kimligingiz va nimani maqsad qilganingizni so'raydi, tekshiradi va shunga qarab ruxsat beradi yoki rad etadi.
+- **Reflect:** Binoning ichki telefon tizimi yoki administrator qo'llanmasi. Qo'riqchi ma'lumotni tekshirgach, Reflect orqali ichkariga xavfsiz murojaat qiladi. Reflect o'rnatilgan amallarni to'g'ridan-to'g'ri asl obyektda bajaradi.
 
-## 3. STRUKTURA
+## 3. STRUKTURA VA PRINSIPLAR
 Metaprogramming tizimi asosan ikki qismdan iborat:
-1. **Proxy:** Asl obyekt va handler (tuzoqlar - traps) qabul qiladi.
-   \`\`\`javascript
-   const proxy = new Proxy(target, handler);
-   \`\`\`
-2. **Reflect:** Obyekt metodlarini chaqirishning funksional usuli bo'lib, uning har bir metodi mos ravishda Proxy'ning trap metodlari bilan bir xil parametrlarga ega.
 
-Asosiy tuzoqlar (traps):
-- \`get(target, prop, receiver)\` — xususiyat o'qilganda.
-- \`set(target, prop, value, receiver)\` — xususiyat o'zgartirilganda yoki qo'shilganda.
-- \`has(target, prop)\` — \`in\` operatori ishlatilganda.
-- \`deleteProperty(target, prop)\` — \`delete\` operatori ishlatilganda.
-
-## 4. AMALIYOT (Mashqlar pastda)
-Quyida foydalanuvchi ma'lumotlarini tekshiruvchi sodda va ishonchli Proxy misoli ko'rsatilgan:
+### 1. Proxy
+Asl obyekt (target) va uning ustida bajariladigan amallarni boshqaradigan boshqaruvchi (handler) qabul qiluvchi wrapper (qobiq) obyektdir.
 \`\`\`javascript
-const user = { name: "Ali", age: 25 };
+const proxy = new Proxy(target, handler);
+\`\`\`
 
-const secureUser = new Proxy(user, {
-  set(target, prop, value) {
-    if (prop === "age" && (typeof value !== "number" || value < 0)) {
-      throw new Error("Yosh faqat musbat son bo'lishi kerak!");
-    }
-    return Reflect.set(target, prop, value);
-  }
-});
+### 2. Reflect
+Reflect - bu obyektlarning ichki amallarini (masalan, xususiyatni olish, o'rnatish, o'chirish) funksional tarzda chaqirishga yordam beruvchi global obyekt. U Proxy tuzoqlari (traps) bilan bir xil metodlar va parametrlarga ega.
 
-secureUser.age = 30; // Muvaffaqiyatli o'zgaradi
-// secureUser.age = -5; // Xatolik yuz beradi!
+### Asosiy tuzoqlar (Traps):
+- **get(target, prop, receiver):** Obyektdan xususiyat o'qilayotganda ishga tushadi.
+- **set(target, prop, value, receiver):** Obyektga qiymat yozilayotganda yoki o'zgartirilayotganda ishga tushadi. Muvaffaqiyatli bajarilganda \`true\`, aks holda \`false\` qaytarishi shart (strict mode-da \`false\` qaytarilsa TypeError tashlaydi).
+- **has(target, prop):** \`in\` operatori qo'llanilganda ishga tushadi.
+- **deleteProperty(target, prop):** \`delete\` operatori yordamida obyekt xususiyati o'chirilayotganda chaqiriladi.
+- **ownKeys(target):** \`Object.keys()\`, \`Reflect.ownKeys()\`, \`for...in\` kabi obyekt kalitlarini ro'yxat qiluvchi metodlar ishlatilganda ishga tushadi.
+
+\`\`\`mermaid
+graph TD
+    User([Foydalanuvchi/Kod]) -->|Murojaat: get / set / delete| Proxy[Proxy Obyekti]
+    Proxy -->|Tuzoqlarni tekshiradi| HasTrap{Trap aniqlanganmi?}
+    HasTrap -->|Ha| ExecTrap[Trap funksiyasi ishlaydi]
+    HasTrap -->|Yo'q| DirectTarget[Target obyektiga yo'naltiradi]
+    ExecTrap -->|Validatsiya/Loglash| Validation{Validatsiya to'g'rimi?}
+    Validation -->|Ha| ReflectCall[Reflect orqali Target-ga yozish/o'qish]
+    Validation -->|Yo'q| ThrowError[TypeError / Xatolik tashlanadi]
+    ReflectCall --> Target[(Target Obyekti)]
+    DirectTarget --> Target
+    style Proxy fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff
+    style Target fill:#16a085,stroke:#1abc9c,stroke-width:2px,color:#fff
+    style ExecTrap fill:#d35400,stroke:#e67e22,stroke-width:2px,color:#fff
+    style ReflectCall fill:#2980b9,stroke:#3498db,stroke-width:2px,color:#fff
+\`\`\`
+
+## 4. CHUQUR TUSHUNCHALAR VA ILG'OR MAVZULAR
+
+### A. Reflect API va uning afzalliklari
+Nega Reflect ishlatamiz?
+1. **Xavfsiz va aniq qaytish qiymatlari:** \`Object.defineProperty(obj, prop, desc)\` xatolik yuz berganda xato (throw Error) tashlaydi. \`Reflect.defineProperty(obj, prop, desc)\` esa shunchaki muvaffaqiyatli bajarilgan bo'lsa \`true\`, aks holda \`false\` qaytargani uchun xatolarni boshqarish oson.
+2. **Bir xillik (Consistency):** Standard amallarni operator ko'rinishida yozish o'rniga (\`delete obj.prop\` yoki \`prop in obj\`), ularni funksiya shaklida yozish imkonini beradi (\`Reflect.deleteProperty(obj, prop)\`, \`Reflect.has(obj, prop)\`).
+3. **Qabul qiluvchini saqlash (Receiver):** \`Reflect.get(target, prop, receiver)\` yoki \`Reflect.set(target, prop, value, receiver)\` trap-larda asl getter/setter'larga to'g'ri \`this\` (receiver) kontekstini uzatishga yordam beradi.
+
+### B. Revocable Proxies (Bekor qilinadigan Proxy'lar)
+Ba'zi holatlarda siz boshqa kod bo'limiga yoki uchinchi tomon kutubxonasiga obyekt ustidan vaqtinchalik nazorat berishingiz kerak bo'ladi. Operatsiya tugagandan so'ng, siz kirishni butunlay yopmoqchi bo'lasiz. Buning uchun \`Proxy.revocable()\` ishlatiladi:
+
+\`\`\`javascript
+const { proxy, revoke } = Proxy.revocable(target, handler);
+
+// Proxy bilan ishlash
+console.log(proxy.name);
+
+// Nazoratni butunlay bekor qilish
+revoke();
+
+// Keyingi murojaat TypeError xatoligini keltirib chiqaradi
+console.log(proxy.name); // TypeError: Cannot perform 'get' on a proxy that has been revoked
+\`\`\`
+
+\`\`\`mermaid
+sequenceDiagram
+    autonumber
+    actor Client as Kod/Foydalanuvchi
+    participant RP as Revocable Proxy
+    participant Revoke as revoke() funksiyasi
+    participant Target as Target Obyekti
+
+    Note over Client, Target: 1-Bosqich: Proxy Faol Holatda
+    Client->>RP: get/set operatsiyasi
+    RP->>Target: So'rovni Reflect orqali yuborish
+    Target-->>RP: Qiymat qaytarish
+    RP-->>Client: Natija
+
+    Note over Client, Target: 2-Bosqich: Proxy-ni Bekor Qilish (Revocation)
+    Client->>Revoke: revoke() funksiyasini chaqirish
+    Note over RP: Proxy o'chirildi (Revoked status)
+
+    Note over Client, Target: 3-Bosqich: Bekor qilingandan so'ng
+    Client->>RP: get/set operatsiyasi
+    RP-->>Client: TypeError (Cannot perform 'get' on a proxy that has been revoked)
 \`\`\`
 
 ## 5. XATOLAR (Common mistakes)
-- **Trap-da true qaytarmaslik:** \`set\` trap-i muvaffaqiyatli bajarilganda \`true\` qaytarmasa, strict mode rejimida \`TypeError\` xatosi yuzaga keladi.
-- **Cheksiz rekursiya:** Trap ichida yana shu proxy'ning o'ziga murojaat qilish cheksiz aylanma chaqiruvga va xotira to'lishiga olib keladi. Asl obyektga (\`target\`) yoki \`Reflect\`-ga murojaat qilish kerak.
-- **new Symbol() yozish:** \`Symbol\` konstruktor emas, uni yaratishda \`new\` kalit so'zi ishlatilmaydi: \`const sym = Symbol()\` (xato emas, to'g'ri shakl).
+- **set trap ichida true qaytarmaslik:** Agar set trap-da \`true\` qaytarmasangiz va dastur qat'iy rejimda (\`"use strict"\`) bo'lsa, \`TypeError\` xatosi yuzaga keladi.
+- **Cheksiz Rekursiya (Infinite Recursion):**
+  \`\`\`javascript
+  const p = new Proxy(target, {
+    get(target, prop) {
+      return p[prop]; // Xato! Proxy-ning o'ziga murojaat qilish get trap-ini cheksiz chaqiradi.
+    }
+  });
+  \`\`\`
+  To'g'risi: \`Reflect.get(target, prop)\` yoki \`target[prop]\` ishlatishdir.
 
 ## 6. SAVOLLAR VA JAVOBLAR
-**1. Trap (tuzoq) nima?**
-Obyekt ustida biror amal bajarilganda (masalan, \`get\`, \`set\`) uni tutib qoluvchi Proxy handler metodlari.
+**1. Proxy orqali obyektlarni to'liq himoya qila olamizmi?**
+Ha, xususan \`set\`, \`deleteProperty\`, \`defineProperty\` va \`preventExtensions\` kabi tuzoqlarni qo'llab, obyektdagi ma'lumotlarni o'zgartirishdan butunlay saqlash mumkin.
 
-**2. Reflect API nima uchun kerak?**
-Obyektlar bilan ishlashda xavfsiz va funksional kod yozish uchun. U har doim natijani \`boolean\` yoki aniq qiymat ko'rinishida qaytaradi.
+**2. Reflect obyekti nima uchun konstruktorga ega emas?**
+Reflect — Math yoki JSON kabi statik yordamchi obyekt hisoblanadi. Undan \`new\` kalit so'zi bilan yangi nusxa (instance) yaratib bo'lmaydi.
 
-**3. Proxy.revocable() nima qiladi?**
-Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish imkonini beradi.
+**3. Proxy obyekti target obyektining prototipiga ta'sir qiladimi?**
+Proxy o'zi orqali amalga oshiriladigan barcha prototip so'rovlarini (masalan, \`getPrototypeOf\`) ham \`getPrototypeOf\` tuzog'i orqali tutib qolishi mumkin.
 `,
   exercises: [
     {
       id: 1,
-      title: "Proxy Validatsiya",
+      title: "1️⃣ Proxy Validatsiya",
       instruction: "Obyektga yangi xususiyat qo'shishni taqiqlovchi Proxy yozing (faqat mavjud xususiyatni o'zgartirishga ruxsat bersin).",
       startingCode: "const data = { name: 'JS' };\nconst proxy = new Proxy(data, {\n  set(target, prop, value) {\n    // faqat bor xususiyatni o'zgartirishga ruxsat bering\n  }\n});",
       hint: "if (!(prop in target)) return false; target[prop] = value; return true;",
@@ -68,7 +126,7 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 2,
-      title: "ReadOnly Proxy",
+      title: "2️⃣ ReadOnly Proxy",
       instruction: "Obyekt xususiyatlarini o'zgartirishni yoki yangi qo'shishni butunlay taqiqlab, faqat o'qishga (read-only) ruxsat beruvchi Proxy yarating.",
       startingCode: "const user = { role: 'admin' };\nconst readOnlyUser = new Proxy(user, {\n  // set trap-ni to'ldiring\n});",
       hint: "set(target, prop, value) { return false; }",
@@ -76,7 +134,7 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 3,
-      title: "Property Logger",
+      title: "3️⃣ Property Logger",
       instruction: "Obyekt xususiyati o'qilganda, uning nomini console-ga chiqaradigan get trap-ni yozing.",
       startingCode: "const obj = { secret: '123' };\nconst loggedObj = new Proxy(obj, {\n  // get trap-ni yozing\n});",
       hint: "get(target, prop) { console.log(prop); return target[prop]; }",
@@ -84,7 +142,7 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 4,
-      title: "Default Value (Fallback)",
+      title: "4️⃣ Default Value (Fallback)",
       instruction: "Obyektda mavjud bo'lmagan xususiyat o'qilganda undefined o'rniga doim 'Not Found' qaytaradigan Proxy yarating.",
       startingCode: "const settings = { theme: 'dark' };\nconst safeSettings = new Proxy(settings, {\n  // get trap-ni to'ldiring\n});",
       hint: "get(target, prop) { return prop in target ? target[prop] : 'Not Found'; }",
@@ -92,7 +150,7 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 5,
-      title: "Private Property",
+      title: "5️⃣ Private Property",
       instruction: "Agar xususiyat nomi ostki chiziq (_) bilan boshlansa (masalan _id), unga tashqaridan kirishni (get) taqiqlab undefined qaytaradigan Proxy yarating.",
       startingCode: "const account = { username: 'john', _id: 'acc_999' };\nconst secureAccount = new Proxy(account, {\n  // get trap-ni to'ldiring\n});",
       hint: "get(target, prop) { if (prop.startsWith('_')) return undefined; return target[prop]; }",
@@ -100,7 +158,7 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 6,
-      title: "Reflect.get ishlatish",
+      title: "6️⃣ Reflect.get ishlatish",
       instruction: "Proxy get trap-i ichida obyekt xususiyatini o'qish uchun Reflect.get()-dan foydalaning.",
       startingCode: "const user = { name: 'Ali' };\nconst proxyUser = new Proxy(user, {\n  get(target, prop, receiver) {\n    // Reflect.get orqali qiymatni qaytaring\n  }\n});",
       hint: "return Reflect.get(target, prop, receiver);",
@@ -108,7 +166,7 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 7,
-      title: "Delete Property Trap",
+      title: "7️⃣ Delete Property Trap",
       instruction: "Ostki chiziq bilan boshlangan xususiyatlarni o'chirishni (delete) taqiqlovchi Proxy yarating (boshqalarini esa o'chirishga ruxsat bersin).",
       startingCode: "const data = { _id: 1, age: 20 };\nconst proxyData = new Proxy(data, {\n  deleteProperty(target, prop) {\n    // Trap-ni yozing\n  }\n});",
       hint: "if (prop.startsWith('_')) return false; return Reflect.deleteProperty(target, prop);",
@@ -116,7 +174,7 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 8,
-      title: "Negative Index Array",
+      title: "8️⃣ Negative Index Array",
       instruction: "Manfiy indekslarni qo'llab-quvvatlaydigan (masalan, [-1] massivning oxirgi elementini qaytarsin) massiv uchun Proxy yaratuvchi createSmartArray funksiyasini yozing.",
       startingCode: "function createSmartArray(arr) {\n  return new Proxy(arr, {\n    get(target, prop) {\n      // Manfiy indekslarni tekshiring\n    }\n  });\n}",
       hint: "let index = Number(prop); if (index < 0) index = target.length + index; return target[index];",
@@ -124,7 +182,7 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 9,
-      title: "Reflect.has operatori",
+      title: "9️⃣ Reflect.has operatori",
       instruction: "in operatori xatti-harakatini boshqaruvchi has trap-i ichida Reflect.has() operatoridan foydalaning.",
       startingCode: "const user = { name: 'Ali', role: 'guest' };\nconst proxy = new Proxy(user, {\n  has(target, prop) {\n    // has trap-ni to'ldiring\n  }\n});",
       hint: "return Reflect.has(target, prop);",
@@ -132,7 +190,7 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 10,
-      title: "Only Numbers Object",
+      title: "1️⃣0️⃣ Only Numbers Object",
       instruction: "Obyektga faqat sonli qiymatlarni yozishga ruxsat beruvchi Proxy yarating. Agar qiymat son bo'lmasa, TypeError tashlasin (throw).",
       startingCode: "const score = { points: 10 };\nconst numericScore = new Proxy(score, {\n  set(target, prop, value) {\n    // set trap-ni to'ldiring\n  }\n});",
       hint: "if (typeof value !== 'number') throw new TypeError(); target[prop] = value; return true;",
@@ -140,7 +198,7 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 11,
-      title: "Reflect.ownKeys operatori",
+      title: "1️⃣1️⃣ Reflect.ownKeys operatori",
       instruction: "Obyekt kalitlarini ro'yxat qilganda ostki chiziq bilan boshlangan xususiyatlarni yashirish uchun ownKeys trap-ni yozing.",
       startingCode: "const user = { _password: '123', name: 'Ali' };\nconst proxy = new Proxy(user, {\n  ownKeys(target) {\n    // ownKeys trap-ni to'ldiring\n  }\n});",
       hint: "return Reflect.ownKeys(target).filter(key => typeof key !== 'string' || !key.startsWith('_'));",
@@ -148,11 +206,27 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
     },
     {
       id: 12,
-      title: "Proxy Revocable",
+      title: "1️⃣2️⃣ Proxy Revocable",
       instruction: "Proxy.revocable yordamida bekor qilinadigan proxy yarating. Funksiya obyekt va uning proxy'sini bekor qilish funksiyasini (revoke) qaytarsin.",
       startingCode: "function createRevocable(target) {\n  // Proxy.revocable ishlatib qaytaring\n}",
       hint: "return Proxy.revocable(target, {});",
       test: "if (code.includes('Proxy.revocable')) return null; return 'Proxy.revocable orqali obekt va revoke funksiyasini qaytaring';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ To'liq read-only Proxy (createReadOnlyProxy)",
+      instruction: "Obyektga har qanday yangi qiymat yozish (`set`) yoki o'chirish (`deleteProperty`) harakatlarida xatolik (`Error`) tashlaydigan to'liq read-only Proxy qaytaruvchi `createReadOnlyProxy(obj)` funksiyasini yozing. O'chirish va yozish rad etilganda `'Bu obyekt faqat o\\'qish uchun!'` xabari bilan Error tashlanishi shart.",
+      startingCode: "function createReadOnlyProxy(obj) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "return new Proxy(obj, {\n  set() { throw new Error(\"Bu obyekt faqat o'qish uchun!\"); },\n  deleteProperty() { throw new Error(\"Bu obyekt faqat o'qish uchun!\"); }\n});",
+      test: "if (typeof createReadOnlyProxy !== 'function') return 'createReadOnlyProxy funksiya emas';\nconst o = { a: 1 };\nconst p = createReadOnlyProxy(o);\ntry {\n  p.a = 2;\n  return 'Qiymat yozishda xato tashlanmadi';\n} catch (e) {\n  if (e.message !== \"Bu obyekt faqat o'qish uchun!\") return 'Xato xabari noto\\'g\\'ri';\n}\ntry {\n  delete p.a;\n  return 'Qiymat o\\'chirishda xato tashlanmadi';\n} catch (e) {\n  if (e.message !== \"Bu obyekt faqat o'qish uchun!\") return 'Xato xabari noto\\'g\\'ri';\n}\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Schema bo'yicha validatsiya (createValidationProxy)",
+      instruction: "Berilgan `target` obyekti va `schema` (kalit-turlar juftligi) bo'yicha qiymatlarni validatsiya qiluvchi `createValidationProxy(target, schema)` funksiyasini yozing. Agar o'rnatilayotgan qiymat turi `schema`-dagi turga mos kelmasa (va kalit schema-da mavjud bo'lsa), `TypeError` tashlang. Agarda kalit schema ichida bo'lmasa, yoki tur to'g'ri bo'lsa, qiymatni asl obyektga o'rnating. O'rnatish muvaffaqiyatli bo'lsa `Reflect.set` yordamida haqiqiy holatni qaytaring.",
+      startingCode: "function createValidationProxy(target, schema) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "return new Proxy(target, {\n  set(tar, prop, val) {\n    if (prop in schema && typeof val !== schema[prop]) {\n      throw new TypeError(`Noto'g'ri tur`);\n    }\n    return Reflect.set(tar, prop, val);\n  }\n});",
+      test: "if (typeof createValidationProxy !== 'function') return 'createValidationProxy funksiya emas';\nconst schema = { name: 'string', age: 'number' };\nconst target = { name: 'Ali', age: 20 };\nconst p = createValidationProxy(target, schema);\ntry {\n  p.age = 'yosh';\n  return 'Noto\\'g\\'ri tur o\\'rnatilganda TypeError tashlanmadi';\n} catch (e) {\n  if (!(e instanceof TypeError)) return 'Xato turi TypeError bo\\'lishi kerak';\n}\np.age = 25;\nif (target.age !== 25) return 'To\\'g\\'ri qiymat o\\'rnatilmadi';\np.role = 'admin';\nif (target.role !== 'admin') return 'Schema-da bo\\'lmagan kalit o\\'rnatilmadi';\nreturn null;"
     }
   ],
   quizzes: [
@@ -299,6 +373,30 @@ Keyinchalik o'chirib qo'yish (yopish) mumkin bo'lgan vaqtinchalik Proxy yaratish
       ],
       correctAnswer: 1,
       explanation: "Reflect obyekti Proxy-ni soddalashtirish uchun yaratilgan bo'lib, uning har bir metodi mos keluvchi Proxy trap parametrlari bilan 1-ga-1 bir xil tuzilishga ega."
+    },
+    {
+      id: 13,
+      question: "Proxy.revocable() orqali bekor qilingan (revoked) proxy ustida get yoki set amallarini bajarishga urinilganda qanday xatolik yuz beradi?",
+      options: [
+        "ReferenceError",
+        "TypeError",
+        "RangeError",
+        "Hech qanday xato bermaydi, shunchaki undefined qaytaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Bekor qilingan proxy ustida har qanday get, set, deleteProperty va boshqa operatsiyalarni bajarishga urinilganda har doim TypeError xatoligi tashlanadi."
+    },
+    {
+      id: 14,
+      question: "Strict mode (qat'iy rejim) faollashtirilgan holatda, Proxy set trap-i false qaytarsa nima yuz beradi?",
+      options: [
+        "Obyekt qiymati o'zgarmasdan qoladi, lekin hech qanday xato tashlanmaydi",
+        "TypeError xatoligi tashlanadi",
+        "Dastur cheksiz siklga kiradi",
+        "O'rnatilgan qiymat o'chirib yuboriladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Strict mode ostida Proxy set trap-i false (yoki boshqa falsy qiymat) qaytarsa, JS dvigateli darhol TypeError xatoligini ko'taradi."
     }
   ]
 };

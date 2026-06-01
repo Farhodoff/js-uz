@@ -1,116 +1,78 @@
 export const serviceWorkersPwa = {
   id: "serviceWorkersPwa",
   title: "Service Workers va PWA: Oflayn Rejim va Keshlash",
+  level: "Murakkab",
+  description: "Progressive Web Apps asosi bo'lgan Service Worker-lar, oflayn rejim va keshlash strategiyalari.",
   theory: `## 1. NEGA kerak?
 An'anaviy veb-saytlar faqat faol internet ulanishi mavjud bo'lgandagina ishlaydi. Internet yo'qolganda foydalanuvchiga dinozavr rasmi yoki tarmoq xatosi ko'rsatiladi. Progressive Web Apps (PWA) veb-ilovalarni huddi mobil ilovalar kabi oflayn rejimda ishlash, telefonga o'rnatilish (install), bildirishnomalar (Push Notifications) yuborish imkoniyati bilan ta'minlaydi. PWA-ning yuragi esa **Service Worker** hisoblanadi. U brauzer fonda ishlatadigan, tarmoq so'rovlarini tutib oladigan (intercept) va ularni Cache Storage-dan oflayn rejimda qaytara oladigan maxsus proxy-skriptdir.
+
+---
 
 ## 2. SODDALIK (Analogiya)
 Veb-saytingizni **restoran**, internetdagi serverni esa **omborxona** deb tasavvur qiling. Oldin har safar ovqat kerak bo'lganda (sahifaga kirganda) ofitsiant omborxonaga borib kelishi kerak edi. Agar yo'l yopiq bo'lsa (internet uzilsa), restoran yopilardi.
 **Service Worker** esa restoranda qurilgan **muzlatgichli kichik oshxona** kabidir. U bir marta ombordan kerakli narsalarni olib muzlatgichga solib qo'yadi (Keshlash). Keyingi safar mijoz ovqat so'rasa, u omborga qarab o'tirmaydi, muzlatgichdan olib beraveradi. Omborga faqat muzlatgichda yo'q narsa uchungina boriladi.
 
-## 3. STRUKTURA
-Service Worker faqat **HTTPS** protokoli ostida (yoki \`localhost\` da test qilish uchun) ishlaydi. U alohida faylda (masalan, \`sw.js\`) yoziladi va asosiy fayldan ro'yxatdan o'tkaziladi.
+---
 
-### 1. Ro'yxatdan o'tkazish (main.js):
-\`\`\`javascript
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        console.log('Service Worker muvaffaqiyatli ro\\'yxatdan o\\'tdi:', registration.scope);
-      })
-      .catch(error => {
-        console.error('Service Worker ro\\'yxatdan o\\'tishda xato:', error);
-      });
-  });
-}
+## 3. STRUKTURA VA CHUQUR TUSHUNCHALAR
+
+### A. Keshlash Strategiyalari (Caching Strategies)
+Service Worker yordamida tarmoq so'rovlariga javob berishda turli strategiyalardan foydalaniladi:
+1. **Cache-First (Kesh-Birinchi):** So'rov kelganda birinchi kesh tekshiriladi. Agar keshda bo'lsa, tarmoqqa chiqmasdan darhol qaytariladi. Topilmasa, tarmoqdan yuklanadi va kelajak uchun keshga yoziladi. (Statik assetlar — rasm, shrift, CSS uchun mos).
+2. **Network-First (Tarmoq-Birinchi):** Avval tarmoqdan yangi ma'lumot olishga harakat qiladi. Tarmoq ulanishi yo'q bo'lsa (oflayn), keshdagi eskiroq ma'lumotni qaytaradi. (Tez-tez o'zgaruvchi API ma'lumotlari uchun mos).
+3. **Stale-While-Revalidate:** Keshda bor ma'lumotni darhol foydalanuvchiga taqdim etadi (stale), lekin ayni vaqtda fonda tarmoqdan yangi ma'lumotni yuklab keshni yangilab qo'yadi (revalidate). (Yangiliklar tasmasi yoki avatar rasmlar uchun mos).
+
+\`\`\`mermaid
+graph TD
+    subgraph Cache First
+        C1[Client Request] -->|1| CA[Check Cache]
+        CA -->|Hit| C1
+        CA -->|Miss| N1[Network Fetch]
+        N1 -->|Save to Cache| CA
+        N1 --> C1
+    end
+    subgraph Network First
+        C2[Client Request] -->|1| N2[Network Fetch]
+        N2 -->|Success| C2
+        N2 -->|Fail| CA2[Get from Cache]
+        CA2 --> C2
+    end
 \`\`\`
 
-### 2. Service Worker hayotiy sikli (Lifecycle) va hodisalari (sw.js):
-Service Worker asosan uchta bosqichni bosib o'tadi:
-- **\`install\` (O'rnatilish):** Kesh yaratish va statik fayllarni (HTML, CSS, JS) saqlab olish uchun eng qulay joy.
-- **\`activate\` (Faollashuv):** Eski keshlarni tozalash va tizimni yangilash uchun ishlatiladi.
-- **\`fetch\` (So'rovlarni tutish):** Sahifa tomonidan yuborilgan barcha tarmoq so'rovlarini ushlab, ularga keshdan javob qaytaradi.
+### B. Service Worker Update Lifecycle (Yangilanish sikli)
+Service Worker o'zgartirilganda uning o'rnatilishi quyidagi bosqichlardan o'tadi:
+1. **Installing:** Brauzer yangi \`sw.js\` faylini yuklab oladi va o'rnatadi.
+2. **Waiting (Kutish):** Yangi SW o'rnatilgach, u faollashmaydi, kutish rejimida turadi. Chunki eski SW hali ham ochiq sahifalarni (tablarni) nazorat qilmoqda.
+3. **Active (Faol):** Foydalanuvchi barcha tablarni yopib, saytga qayta kirgandagina yangi SW faollashadi.
+   * **skipWaiting():** Yangi SW kutib turmasdan, darhol eski SW-ni o'chirib o'rnini egallashi uchun \`install\` hodisasida \`self.skipWaiting()\` chaqiriladi.
+   * **clients.claim():** Faollashgan SW ochiq turgan sahifalarni darhol o'z nazoratiga olishi uchun \`activate\` hodisasida \`self.clients.claim()\` ishlatiladi.
 
-\`\`\`javascript
-const CACHE_NAME = 'my-app-cache-v1';
-const ASSETS = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/app.js'
-];
-
-// O'rnatish hodisasi
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('Fayllarni keshga yozish...');
-      return cache.addAll(ASSETS);
-    })
-  );
-});
-
-// Faollashtirish hodisasi
-self.addEventListener('activate', (event) => {
-  console.log('Service Worker faollashdi.');
-});
-
-// Tarmoq so'rovlarini tutish
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      // Agar keshda bo'lsa keshdan beramiz, aks holda tarmoqdan yuklaymiz
-      return cachedResponse || fetch(event.request);
-    })
-  );
-});
+\`\`\`mermaid
+stateDiagram-v2
+    [*] --> Installing: sw.js register bo'lganda
+    Installing --> Waiting: install muvaffaqiyatli tugasa
+    Waiting --> Activating: skipWaiting() chaqirilsa yoki tablar yopilsa
+    Activating --> Active: clients.claim() ishga tushsa
+    Active --> [*]
 \`\`\`
 
-## 4. AMALIYOT (Mashqlar pastda)
+---
 
-## 5. XATOLAR (Common mistakes)
-1. **Noto'g'ri fayl manzili va scope (doira):** Service Worker faqat o'zi joylashgan va undan pastki kataloglardagi so'rovlarni tuta oladi. Agar siz \`sw.js\` ni \`/js/sw.js\` ichiga joylashtirsangiz, u \`/index.html\` dan chiquvchi so'rovlarni nazorat qila olmaydi. Shuning uchun \`sw.js\` ni har doim loyihaning ildiz papkasiga (root directory) joylash lozim.
-2. **Kesh versiyasini yangilashni unutish:** Agar siz kodga o'zgartirish kiritsangiz-u, lekin \`sw.js\` ichidagi \`CACHE_NAME\` (versiyasi) ni o'zgartirmasangiz, foydalanuvchilar brauzerida eski kesh turib qolaveradi va ular yangilangan saytni ko'ra olishmaydi.
-3. **HTTP orqali ishga tushirish:** Service Worker yuqori xavfsizlik talab qiladi (chunki u barcha tarmoq so'rovlarini nazorat qiladi). Mahalliy kompyuterdan (\`localhost\`) tashqari barcha production serverlar faqat **HTTPS** protokoli bilan ishlashi shart.
+## 4. XATOLAR (Common mistakes)
+1. **Kesh hajmini to'ldirib yuborish:** Dynamic caching ishlatganda tarmoqdan kelayotgan barcha javoblar nazoratsiz ravishda keshga yozilaversa, kesh limiti tezda to'ladi. Doimo kesh elementlar sonini yoki hajmini cheklovchi helperlar yozish kerak.
+2. **Aktiv ulanishlarni uzishdan qo'rqish:** \`skipWaiting\` ishlatilganda eski ulanishlar darhol yangisiga almashtiriladi, bu esa ayni daqiqada bajarilayotgan yuklash amallarini uzib qo'yishi mumkin. Muhim ilovalarda buni foydalanuvchiga "Yangi versiya tayyor, yangilang" tugmasi orqali bildirish tavsiya etiladi.
 
-## 6. SAVOLLAR VA JAVOBLAR
+---
+
+## 5. SAVOLLAR VA JAVOBLAR
 **1. Progressive Web App (PWA) nima?**
 Veb-saytni xuddi mobil ilovadek o'rnatish, oflayn ishlatish va bildirishnomalar yuborish imkonini beruvchi texnologiyalar to'plami.
 
 **2. Service Worker nima?**
 Brauzer fonda ishlatadigan, tarmoq so'rovlarini boshqaradigan va keshlashni ta'minlaydigan proxy skript.
 
-**3. Service Worker oddiy JS oqimidan nima bilan farq qiladi?**
-U alohida oqimda ishlaydi, DOM elementlari bilan bevosita ishlay olmaydi va sahifa yopilganda ham fonda yashashi mumkin.
-
-**4. Service Worker qaysi protokollarda ishlaydi?**
-Faqat xavfsiz HTTPS protokoli ostida yoki ishlab chiqish jarayonida \`http://localhost\` da.
-
-**5. Service Worker ro'yxatdan o'tkazilganda qaysi obyektdan foydalaniladi?**
-\`navigator.serviceWorker\` obyektidan.
-
-**6. Service Worker hayotiy siklidagi 3 ta asosiy hodisa qaysilar?**
-\`install\`, \`activate\`, \`fetch\`.
-
-**7. \`install\` hodisasi ichida \`event.waitUntil\` nima uchun kerak?**
-Brauzerga kesh to'liq yaratilib bo'lmaguncha Service Worker-ni o'rnatilgan (\`installed\`) deb hisoblamaslikni buyurish uchun.
-
-**8. Keshdagi fayllarni tekshirish va javob berish uchun qaysi metod ishlatiladi?**
-\`caches.match(request)\` metodi.
-
-**9. Veb-ilovani telefonga yoki kompyuterga o'rnatiladigan (Installable) qilish uchun qaysi fayl majburiy hisoblanadi?**
-\`manifest.json\` (Web App Manifest) fayli.
-
-**10. Service Worker-ni eski keshlarni o'chirish uchun qaysi lifecycle hodisasi eng mos keladi?**
-\`activate\` hodisasi.
-
-**11. Nima uchun Service Worker-ni root papkada (masalan \`/sw.js\`) saqlash muhim?**
-Chunki uning ta'sir doirasi (scope) o'zi joylashgan papka darajasi bilan cheklanadi.
-
-**12. Service Worker keshida ma'lumotlarni saqlash hajmi cheklanganmi?**
-Ha, har bir brauzer disk hajmiga qarab kesh uchun ma'lum bir maksimal kvotani ajratadi, ammo bu odatda yuzlab megabaytlar uchun yetarli bo'ladi.
-`,
+**3. Service Worker-da avtomatik yangilanish qanday amalga oshiriladi?**
+Brauzer har 24 soatda yoki sahifa reload bo'lganda yangi \`sw.js\` borligini byte-by-byte tekshiradi. Agar o'zgarish bo'lsa, yangisini yuklab o'rnatadi.`,
   exercises: [
     {
       id: 1,
@@ -207,6 +169,22 @@ Ha, har bir brauzer disk hajmiga qarab kesh uchun ma'lum bir maksimal kvotani aj
       startingCode: "// Bu yerga yozing\n",
       hint: "caches.delete('app-v1');",
       test: "if (code.includes(\"caches.delete('app-v1')\") || code.includes('caches.delete(\"app-v1\")')) return null; return 'caches.delete orqali app-v1 keshini o\\'chiring.';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Stale-While-Revalidate Simulyatori (staleWhileRevalidateFetch)",
+      instruction: "Fetch hodisasi doirasida `stale-while-revalidate` keshlash strategiyasini simulyatsiya qiluvchi asinxron `staleWhileRevalidateFetch(request, cacheName)` funksiyasini yozing. U quyidagi bosqichlarni bajarishi kerak:\n1. Keshdan `request` so'roviga javob qidirsin.\n2. Fonda (`caches.open` va `cache.put` orqali) `fetch(request)` so'rovini yuborib keshni yangilasin.\n3. Agar keshda eski javob bo'lsa, zudlik bilan o'shani qaytarsin (revalidate fonda ketaveradi). Agar keshda bo'lmasa, tarmoqdan yuklab qaytarsin.",
+      startingCode: "async function staleWhileRevalidateFetch(request, cacheName) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "const cached = await caches.match(request); const fetchPromise = caches.open(cacheName).then(async (cache) => { const response = await fetch(request); cache.put(request, response.clone()); return response; }); return cached || fetchPromise;",
+      test: "if (typeof staleWhileRevalidateFetch !== 'function') return 'staleWhileRevalidateFetch funksiya emas';\nlet cacheUpdated = false;\nglobalThis.caches = {\n  match: async () => 'cached_resp',\n  open: async () => ({\n    put: async () => { cacheUpdated = true; }\n  })\n};\nglobalThis.fetch = async () => ({ clone: () => 'network_resp' });\nreturn staleWhileRevalidateFetch('req', 'v1').then(res => {\n  if (res === 'cached_resp' && cacheUpdated) return null;\n  return 'Stale-while-revalidate strategiyasi xato';"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Eski Keshlarni Tozalovchi (clearOldCaches)",
+      instruction: "Service Worker faollashuv jarayonida (`activate`) eski kesh versiyalarini o'chirib yuboradigan `clearOldCaches(currentCacheName, cacheNamesList)` funksiyasini yozing. Funksiya `cacheNamesList` (kesh nomlari massivi) ichidan `currentCacheName` ga teng bo'lmagan barcha kesh nomlarini aniqlab, `caches.delete(cacheName)` yordamida o'chirib tashlasin va yakuniy va'da (Promise.all) qaytarsin.",
+      startingCode: "function clearOldCaches(currentCacheName, cacheNamesList) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "const deletePromises = cacheNamesList.filter(name => name !== currentCacheName).map(name => caches.delete(name)); return Promise.all(deletePromises);",
+      test: "if (typeof clearOldCaches !== 'function') return 'clearOldCaches funksiya emas';\nconst deleted = [];\nglobalThis.caches = { delete: async (name) => { deleted.push(name); return true; } };\nreturn clearOldCaches('v2', ['v1', 'v2', 'v3']).then(() => {\n  if (deleted.includes('v1') && deleted.includes('v3') && !deleted.includes('v2')) return null;\n  return 'Eski keshlar to\\'g\\'ri o\\'chirilmadi: ' + deleted.join(',');\n});"
     }
   ],
   quizzes: [
@@ -232,7 +210,7 @@ Ha, har bir brauzer disk hajmiga qarab kesh uchun ma'lum bir maksimal kvotani aj
         "Foydalanuvchi mobil telefondan kirmasa"
       ],
       correctAnswer: 1,
-      explanation: "Service Worker barcha tarmoq so'rovlarini nazorat qilgani tufayli u faqat xavfsiz kanallarda (HTTPS va localhost-da) ishlashga ruxsat etiladi."
+      explanation: "Service Worker barakar tarmoq so'rovlarini nazorat qilgani tufayli u faqat xavfsiz kanallarda (HTTPS va localhost-da) ishlashga ruxsat etiladi."
     },
     {
       id: 3,
@@ -353,6 +331,30 @@ Ha, har bir brauzer disk hajmiga qarab kesh uchun ma'lum bir maksimal kvotani aj
       ],
       correctAnswer: 2,
       explanation: "Chrome DevTools-dagi Application bo'limida Service Worker va Manifest holati ko'rinadi, Lighthouse esa saytning PWA mezonlariga mosligini to'liq tekshirib audit beradi."
+    },
+    {
+      id: 13,
+      question: "Sahifada keshda saqlangan ma'lumotni darhol ko'rsatib, ayni vaqtda fonda tarmoqdan yuklab keshni yangilab qo'yish (Revalidate) strategiyasi nima deyiladi?",
+      options: [
+        "Cache-Only strategiyasi",
+        "Network-Only strategiyasi",
+        "Stale-While-Revalidate strategiyasi",
+        "Cache-First strategiyasi"
+      ],
+      correctAnswer: 2,
+      explanation: "Stale-While-Revalidate tezlik va eng yangi ma'lumotni kelajak uchun saqlash o'rtasidagi oltin o'rtalik bo'lib, eski javobni qaytarib fonda keshni yangilaydi."
+    },
+    {
+      id: 14,
+      question: "Teskari proksi (Nginx) serverda keshlashni o'chirib SSE va Service Worker real-vaqt rejimida ishlashiga yordam beruvchi sarlavha qaysi?",
+      options: [
+        "Content-Type: text/event-stream",
+        "X-Accel-Buffering: no",
+        "Cache-Control: public",
+        "Pragma: no-cache"
+      ],
+      correctAnswer: 1,
+      explanation: "Nginx oqim ma'lumotlarini bufferlamasligi va darhol klientga yetkazishi uchun X-Accel-Buffering: no headerini yuborish kerak."
     }
   ]
 };
