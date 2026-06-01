@@ -6,15 +6,15 @@ export const callbacksLesson = {
   theory: `## 📌 CALLBACK FUNKSIYALARI — ASOSIY BOSQICH
 
 ### 1. NEGA KERAK? (Sabab)
-Tasavvur qiling: Siz tomoshabinga bilet olishga kitkasiz. Bilet olish 2-3 minutini oladi. Lekin siz:
+Tasavvur qiling: Siz tomoshabinga bilet olishga ketdingiz. Bilet olish 2-3 minut vaqt oladi. Lekin siz:
 - ❌ 3 minut to'xtab turmaysiz (blokirovka — brauzer to'xtab qoladi)
-- ✅ Navbat nomeri (Promise) olasiz va borish davom etasiz
+- ✅ Navbat raqami olasiz va boshqa ishingizni davom ettirasiz
 
 **JavaScript'da:**
 - Eski usul: Kut, kut, kut... (bloklanish)
-- Zamonaviy usul: Asinxron (asosiy kod davom etadi, vazifa tugagandan so'ng xabar ol)
+- Zamonaviy usul: Asinxron (tashqi kod davom etadi, vazifa tugagandan so'ng xabar olasiz)
 
-**Callback:** "Mening vazifasi tugagandan so'ng bu funksiyani chaqir!" — shu bu.
+**Callback:** "Mening vazifam tugagandan so'ng bu funksiyani chaqir!" — degani.
 
 ---
 
@@ -23,110 +23,68 @@ Tasavvur qiling: Siz tomoshabinga bilet olishga kitkasiz. Bilet olish 2-3 minuti
 #### Sinxron (Ketma-ketlik)
 \`\`\`
 Restoran ≈ Kod
-Siz buytutasiz → Oshpaz tayyorlaydi → Siz olesiz
-1. then 2. then 3.
+Siz buyurtma berasiz → Oshpaz tayyorlaydi → Siz olasiz
+1. buyurtma → 2. kutish → 3. olish
 \`\`\`
 
 #### Asinxron (Callback)
 \`\`\`
 Kafé ≈ Kod
-Siz buytutasiz → Navbat nomeri olasiz → Siz o'tirasan, kitob o'qiysiz
-                   → "Ali! 123 raqam tayyor!" (Callback chaqiriladi)
-                   → Siz borasiz, olasiz
+Siz buyurtma berasiz → Navbat raqami olasiz → Siz o'tirib kitob o'qiysiz
+                   → "Ali! 12 raqam tayyor!" (Callback chaqiriladi)
+                   → Siz borib olasiz
 \`\`\`
 
 ---
 
 ### 3. TUSHUNCHA (BATAFSIL)
 
-#### A. SINXRON vs ASINXRON
+### A. Sinxron vs Asinxron Callbacks
+* **Sinxron Callbacks:** Chaqiruvchi funksiya bajarilayotgan paytning o'zidayoq zudlik bilan ishga tushadigan callback funksiyalari. Masalan, \`Array.prototype.map\`, \`filter\`, yoki \`forEach\` ichidagi callbacklar sinxron hisoblanadi:
+  \`\`\`javascript
+  [1, 2, 3].map(x => x * 2); // Bu yerda callback sinxron bajariladi
+  \`\`\`
+* **Asinxron Callbacks:** Keyinchalik, qandaydir asinxron operatsiya (tarmoq so'rovi, fayl o'qish, taymer) yakunlangandan so'nggina chaqiriladigan callbacklar:
+  \`\`\`javascript
+  setTimeout(() => console.log("Asinxron!"), 1000);
+  \`\`\`
 
-**Sinxron (Bloklanadi):**
+### B. Error-First Callback Pattern (Node.js standarti)
+Node.js asinxron API-larida xatolarni boshqarish uchun maxsus qoida qabul qilingan:
+1. Callback funksiyasining **birinchi argumenti** har doim xatolik obyekti (\`error\`) bo'ladi.
+2. Agar operatsiya muvaffaqiyatli yakunlansa, birinchi argument \`null\` yoki \`undefined\` bo'ladi, ikkinchi argument esa natija ma'lumotlarini (\`data\`) saqlaydi.
+
 \`\`\`javascript
-function maʻlumotOl() {
-  // Bu 5 soniyani oladi
-  return "Ma'lumot"; // TO'LDIRILGUNCHA KOD BO'SHASHADI
-}
-
-console.log("Boshlandi");
-const natija = maʻlumotOl(); // 5 SONIYA KUTILADI
-console.log("Tugadi");
-\`\`\`
-
-**Asinxron (Blokirovka yoʻq):**
-\`\`\`javascript
-function maʻlumotOlAsync(callback) {
+function myReadFile(filename, callback) {
   setTimeout(() => {
-    callback("Ma'lumot"); // 5 soniyadan keyin chaqiriladi
-  }, 5000);
-}
-
-console.log("Boshlandi");
-maʻlumotOlAsync((natija) => {
-  console.log(natija); // "Ma'lumot" (5 s keyin)
-});
-console.log("Tugadi"); // DARHOL chiqadi!
-\`\`\`
-
-#### B. ODDIY CALLBACK
-
-\`\`\`javascript
-// 1. Callback qabul qiluvchi funksiya
-function salomBer(ism, callback) {
-  console.log("Salom " + ism);
-  callback(); // Callback chaqir
-}
-
-// 2. Callback funksiyani berish
-salomBer("Ali", () => {
-  console.log("Callback ishga tushdi!");
-});
-
-// OUTPUT:
-// Salom Ali
-// Callback ishga tushdi!
-\`\`\`
-
-#### C. CALLBACK PARAMETRLAR BILAN
-
-\`\`\`javascript
-function calculatorAsync(a, b, operation, callback) {
-  setTimeout(() => {
-    let natija;
-    if (operation === "+") natija = a + b;
-    else if (operation === "-") natija = a - b;
-    else if (operation === "*") natija = a * b;
-
-    callback(natija); // Natijani callback ga berish
+    if (filename === 'xavfli.txt') {
+      callback(new Error("Ruxsat berilmagan!"));
+    } else {
+      callback(null, "Fayl tarkibi...");
+    }
   }, 1000);
 }
 
-calculatorAsync(5, 3, "+", (result) => {
-  console.log("Natija: " + result); // "Natija: 8"
+myReadFile("xavfli.txt", (err, data) => {
+  if (err) {
+    console.error("Xato:", err.message); // "Xato: Ruxsat berilmagan!"
+    return;
+  }
+  console.log("Ma'lumot:", data);
 });
 \`\`\`
+
+### C. Inversion of Control (IoC - Nazoratni Yo'qotish)
+Callback-larning eng katta muammolaridan biri bu **IoC** (Nazoratni yo'qotish) dir. Biz o'z callback funksiyamizni boshqa bir tashqi kodga (masalan, uchinchi tomon kutubxonasiga) parametr qilib topshirganimizda:
+- U callback-ni umuman chaqirmasligi mumkin.
+- Uni kutilganidan ko'p marta (masalan, 2 marta) chaqirib yuborishi mumkin.
+- Uni kutilmagan paytda sinxron yoki asinxron chaqirishi mumkin.
 
 ---
 
 ### 4. ASINXRONLIKNING MEXANIZMI (Event Loop)
 
-#### setTimeout qanday ishlaydi?
-\`\`\`javascript
-console.log("1");
-
-setTimeout(() => {
-  console.log("2");
-}, 0); // 0 ms bo'lsa ham, navbat kutadi!
-
-console.log("3");
-
-// OUTPUT:
-// 1
-// 3
-// 2 (eng oxirida)
-\`\`\`
-
-#### Vizual:
+JavaScript sinxron va asinxron chaqiriqlarni qanday boshqaradi?
 
 \`\`\`mermaid
 graph TD
@@ -145,216 +103,55 @@ graph TD
 
 ### 5. CALLBACK HELL (Piramida Muammosi)
 
-#### Muamma:
-\`\`\`javascript
-// ❌ KOD JUDA MURAKKAB VA O'QISHGA QIYIN
-getUserData(userId, (user) => {
-  console.log("Foydalanuvchi:", user);
+Bir-biriga bog'liq ko'p asinxron operatsiyalar bajarilganda, kod haddan tashqari ichma-ich ketib, piramida shakliga kelib qoladi (Pyramid of Doom).
 
-  getFollowers(user.id, (followers) => {
-    console.log("Kuzatuvchilar:", followers);
-
-    getFollowersPosts(followers[0].id, (posts) => {
-      console.log("Postlar:", posts);
-
-      getComments(posts[0].id, (comments) => {
-        console.log("Izohlar:", comments);
-        // ⬆️ PYRAMID SHAKLIDA BORIB KETADI!
-      });
-    });
-  });
-});
+\`\`\`mermaid
+graph TD
+    A[getUserData] --> B[getFollowers]
+    B --> C[getFollowersPosts]
+    C --> D[getComments]
+    style A fill:#f9f,stroke:#333
+    style B fill:#bbf,stroke:#333
+    style C fill:#fbf,stroke:#333
+    style D fill:#fb9,stroke:#333
 \`\`\`
 
-#### Yechim (Callback best practice):
-\`\`\`javascript
-// ✅ HARSONINI NOMI BILAN AJRATISH
-function ishlashBoshi() {
-  getUserData(userId, foydalanuvchiTanimadi);
-}
-
-function foydalanuvchiTanimadi(user) {
-  console.log("Foydalanuvchi:", user);
-  getFollowers(user.id, kuzatuvchilarTanimadi);
-}
-
-function kuzatuvchilarTanimadi(followers) {
-  console.log("Kuzatuvchilar:", followers);
-  getFollowersPosts(followers[0].id, postlarTanimadi);
-}
-
-function postlarTanimadi(posts) {
-  console.log("Postlar:", posts);
-  // Va shu tarzda...
-}
-
-ishlashBoshi();
-\`\`\`
+#### Yechim (Callback decomposition):
+Buning oldini olish uchun har bir ichki funksiyani alohida nomlangan funksiyalar sifatida e'lon qilish mumkin, ammo zamonaviy JS-da bu muammoni bartaraf etish uchun **Promises** va **Async/Await** mexanizmlari qo'llaniladi.
 
 ---
 
-### 6. CALLBACK XATOLAR VA EDGE CASES
+### 6. SAVOLLAR VA JAVOBLAR
 
-#### ❌ Xato 1: Callback ikki marta chaqirilish
-\`\`\`javascript
-// XATO ❌ - Callback necha marta chaqirilishini nazorat qilolmaymiz
-function fetch_data(callback) {
-  callback("data1");
-  callback("data2"); // Ikki marta! Xato!
-}
-
-// TO'G'RI ✅
-function fetch_data(callback) {
-  callback("data1");
-  // Keyingi chaqirish yoʻq
-}
-\`\`\`
-
-#### ❌ Xato 2: Callback chaqirilmasligi
-\`\`\`javascript
-// XATO ❌
-function fetch_data(callback) {
-  setTimeout(() => {
-    // callback chaqirilmadi!
-  }, 1000);
-}
-
-fetch_data(() => console.log("Done")); // Hech qachon chiqmaydi!
-
-// TO'G'RI ✅
-function fetch_data(callback) {
-  setTimeout(() => {
-    callback("success");
-  }, 1000);
-}
-\`\`\`
-
-#### ❌ Xato 3: Error handling yo'q
-\`\`\`javascript
-// XATO ❌ - Xatolik bo'lganda nima? Hech kim bilmaydi!
-function fetch_data(callback) {
-  try {
-    const data = JSON.parse(invalidJson);
-    callback(data);
-  } catch (e) {
-    // Xato yashiringan!
-  }
-}
-
-// TO'G'RI ✅ - Error callback
-function fetch_data(callback, errorCallback) {
-  try {
-    const data = JSON.parse(validJson);
-    callback(data);
-  } catch (e) {
-    errorCallback(e); // Xatoni bildir
-  }
-}
-
-fetch_data(
-  (data) => console.log(data),
-  (error) => console.error("Xato:", error)
-);
-\`\`\`
-
----
-
-### 7. REAL HAYOTDAGI MISOLLAR
-
-#### Misol 1: API dan ma'lumot olish
-\`\`\`javascript
-function getUserFromAPI(userId, callback) {
-  setTimeout(() => {
-    const user = {
-      id: userId,
-      ism: "Ali",
-      email: "ali@example.com"
-    };
-    callback(user);
-  }, 1000);
-}
-
-getUserFromAPI(1, (user) => {
-  console.log("Foydalanuvchi:", user.ism);
-});
-\`\`\`
-
-#### Misol 2: File tashkil etish
-\`\`\`javascript
-function readFileAsync(filename, callback) {
-  setTimeout(() => {
-    const content = "Fayl mazmuni...";
-    callback(null, content); // Node.js uslubi: (error, data)
-  }, 1000);
-}
-
-readFileAsync("file.txt", (error, content) => {
-  if (error) {
-    console.error("Xato:", error);
-  } else {
-    console.log("Mazmun:", content);
-  }
-});
-\`\`\`
-
----
-
-### 8. 12 TA SAVOL VA JAVOBLAR
-
-**<b>1. Callback nima?</b>**
+**1. Callback nima?**
 Funksiyaga argument sifatida uzatiladigan boshqa bir funksiya, odatda asinxron vazifalar tugagandan so'ng bajarilish uchun.
 
+**2. Sinxron vs asinxron callback farqi nimada?**
+Sinxron callback darhol chaqiruvchi funksiya ichida bajariladi (masalan, \`forEach\`). Asinxron callback esa kelajakda biror hodisa yoki taymer yakunlangach chaqiriladi (masalan, \`setTimeout\`).
 
-**<b>2. Sinxron vs asinxron farqi?</b>**
-Sinxron: Natija kutilguncha kod to'xtadi. Asinxron: Kod davom etadi, natija kelib bo'lganda callback chaqiriladi.
+**3. setTimeout(fn, 0) nima qiladi?**
+Funksiyani darhol emas, balki joriy call stack bo'shagandan so'ng (navbatdagi loop aylanishida) bajaradi.
 
-
-**<b>3. setTimeout(fn, 0) nima qiladi?</b>**
-Funksiyani darhol emas, balki joriy call stack bo'shagandan so'ng (navbatdagi) bajaradi.
-
-
-**<b>4. Event Loop nima?</b>**
+**4. Event Loop nima?**
 JavaScript mexanizmi: "Call stack bo'shmi? Callback queue'dan qabul qil!" deb navbatdagi callbacklarni ishga tushiradi.
 
+**5. Callback Hell (Pyramid) nima?**
+Bir-biriga bog'liq ko'p callback'lar bo'lganda, kod ichma-ich kirib, o'qishga og'ir bo'lib qolishi.
 
-**<b>5. Callback Hell (Pyramid) nima?</b>**
-Bir-biriga bog'liq ko'p callback'lar bo'lganda, kod ichma-ich kirib, o'qishga og'ir bo'ladi.
+**6. Inversion of Control (IoC) nima?**
+Biz funksiya ijrosini boshqa kodga topshiramiz. Callback necha marta chaqirilishini yoki xato bo'lishini boshqara olmaymiz.
 
+**7. Error-first callback nima?**
+Node.js standarti bo'lib, unga ko'ra callback funksiyasining birinchi parametri har doim xatolik obyekti (\`err\`), ikkinchi parametri esa ma'lumot (\`data\`) bo'ladi.
 
-**<b>6. Inversion of Control (IoC) nima?</b>**
-Biz funksiya ijrosini boshqa kodga topshiramiz. Callback necha marta chaqirilishini yoki error bo'lishini boshqara olmayebdiiz.
-
-
-**<b>7. Error handling callback'lar bilan qanday bo'ladi?</b>**
-Ikki callback: success va error. Yoki Node.js uslubi: (error, data) bitta callback bilan.
-
-
-**<b>8. Callback va scope o'rtasidagi bog'lanish?</b>**
+**8. Callback va scope o'rtasidagi bog'lanish?**
 Callback o'ziga lexical scope'ni saqlaydi (closure). Tashqaridagi o'zgaruvchilarni ko'ra oladi.
 
+**9. Callback-da xatolik yuz bersa va biz uni catch qilmasak nima bo'ladi?**
+Dastur runtime darajasida to'xtab qoladi (crash bo'ladi).
 
-**<b>9. setInterval vs setTimeout farqi?</b>**
-\`setTimeout\` — bitta marta. \`setInterval\` — har N ms da qayta-qayta.
-
-
-**<b>10. fetch() dan keyin .then() ishlatish nima?</b>**
-\`fetch\` Promise qaytaradi, callback emas. Shuning uchun callback Hell oldini olish uchun Promise ishlatiladi.
-
-
-**<b>11. Callback'ni necha marta chaqirmaslik uchun qanday pattern?</b>**
-Once pattern: callback faqat bir marta chaqiriladi:
-\`\`\`javascript
-function once(callback) {
-  let called = false;
-  return () => {
-    if (!called) { called = true; callback(); }
-  };
-}
-\`\`\`
-
-
-**<b>12. Callback ASYNC/AWAIT bilan qanday o'zgaradi?</b>**
-Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik ko'rinishida yoziladi.
+**10. Nima uchun callbacklar o'rniga Promise-lar yaratildi?**
+Callback Hell va Inversion of Control muammolarini bartaraf qilish hamda asinxron kodni zanjirli shaklda chiroyli yozish uchun.
 `,
   exercises: [
     {
@@ -416,7 +213,7 @@ Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik k
     {
       id: 8,
       title: "8️⃣ Callback Hell Example (O'rta)",
-      instruction: "Callback Hell'ni ko'rish uchun 3-qavat callback yozing (emas, but see pattern).",
+      instruction: "Callback Hell'ni ko'rish uchun 3-qavat callback yozing.",
       startingCode: "function step1(cb) { setTimeout(() => { console.log('Step 1'); cb(); }, 300); }\nfunction step2(cb) { setTimeout(() => { console.log('Step 2'); cb(); }, 300); }\nfunction step3(cb) { setTimeout(() => { console.log('Step 3'); cb(); }, 300); }\n\n// Kodni shu yerda yozing\nstep1(() => { /* ... */ });",
       hint: "step1(() => step2(() => step3(() => console.log('Done!'))));",
       test: "if (logs.includes('Step 1') && logs.includes('Step 2') && logs.includes('Step 3')) return null; return 'Callback hell xato!';"
@@ -452,6 +249,22 @@ Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik k
       startingCode: "// Kodni shu yerda yozing\nfunction printNumbers(callback) {\n  for (let i = 1; i <= 5; i++) {\n    // setTimeout + callback\n  }\n}\n\nprintNumbers(() => console.log('Done!'));",
       hint: "setTimeout(() => { console.log(i); callback(); }, i * 300);",
       test: "if (logs.includes(1) && logs.includes(5) && logs.includes('Done!')) return null; return 'Combine xato!';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Asinxron Massiv Map (mapAsync)",
+      instruction: "Massiv elementlarini asinxron qayta ishlovchi `mapAsync(arr, callback, finalCallback)` funksiyasini yozing. `callback(item, cb)` har bir elementni asinxron o'zgartiradi va natijani `cb(err, mappedItem)` orqali qaytaradi. Barcha elementlar muvaffaqiyatli qayta ishlangach, `finalCallback(null, results)` chaqirilsin. Agar biron elementda xato bo'lsa, jarayon to'xtab, darhol `finalCallback(err)` chaqirilsin.",
+      startingCode: "function mapAsync(arr, callback, finalCallback) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "let results = []; let completed = 0; let hasError = false; if (arr.length === 0) return finalCallback(null, []); arr.forEach((item, index) => { callback(item, (err, mappedItem) => { if (hasError) return; if (err) { hasError = true; return finalCallback(err); } results[index] = mappedItem; completed++; if (completed === arr.length) finalCallback(null, results); }); });",
+      test: "if (typeof mapAsync !== 'function') return 'mapAsync funksiya emas';\nconst items = [1, 2, 3];\nconst cb = (item, done) => setTimeout(() => done(null, item * 2), 10);\nreturn new Promise(resolve => {\n  mapAsync(items, cb, (err, res) => {\n    if (err) resolve('Xatolik yuz berdi');\n    if (res && res[0] === 2 && res[1] === 4 && res[2] === 6) resolve(null);\n    else resolve('Natija noto\\'g\\'ri');\n  });\n});"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Error-First Callback Wrapper (nodeReadFileStyle)",
+      instruction: "Node.js error-first callback uslubini simulyatsiya qiluvchi `nodeReadFileStyle(filename, callback)` funksiyasini yozing. `filename === 'data.txt'` bo'lsa, 10ms dan keyin `callback(null, 'Fayl mazmuni')` deb natija qaytarsin. Agar boshqa filename bo'lsa, `callback(new Error('Mavjud emas'))` chaqirilsin.",
+      startingCode: "function nodeReadFileStyle(filename, callback) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "setTimeout(() => { if (filename === 'data.txt') { callback(null, 'Fayl mazmuni'); } else { callback(new Error('Mavjud emas')); } }, 10);",
+      test: "if (typeof nodeReadFileStyle !== 'function') return 'nodeReadFileStyle funksiya emas';\nreturn new Promise(resolve => {\n  nodeReadFileStyle('invalid.txt', (err, data) => {\n    if (!err) return resolve('Xatolik tashlanmadi');\n    nodeReadFileStyle('data.txt', (err2, data2) => {\n      if (err2) return resolve('To\\'g\\'ri faylda xato berildi');\n      if (data2 === 'Fayl mazmuni') return resolve(null);\n      resolve('Fayl mazmuni noto\\'g\\'ri');\n    });\n  });\n});"
     }
   ],
   quizzes: [
@@ -489,7 +302,7 @@ Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik k
         "0 soniya aslida 1 soniyaga tenglashtirilgan"
       ],
       correctAnswer: 1,
-      explanation: "Event Loop qoidalariga ko'ra, Callback Queue'dagi vazifalar faqat va faqat Call Stack butunlay bo'shagandan keyingina Stackka yuklanadi."
+      explanation: "Event Loop qoidalariga ko'ra, Callback Queue'dagi vazifalar faqat va vaqt Call Stack butunlay bo'shagandan keyingina Stackka yuklanadi."
     },
     {
       id: 4,
@@ -513,7 +326,7 @@ Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik k
         "Callback funksiyalar umuman parametr qabul qilmaydi"
       ],
       correctAnswer: 1,
-      explanation: "Node.js ekotizimida xatolarni oson boshqarish maqsadida callback funksiyalarning 1-argumenti sifatida xatolik (`err`), 2-argumentida esa muvaffaqiyatli natija (`data`) uzatiladi."
+      explanation: "Node.js ekotizimida xatolarni oson boshqarish maqsadida callback funksiyalarining 1-argumenti sifatida xatolik (`err`), 2-argumentida esa muvaffaqiyatli natija (`data`) uzatiladi."
     },
     {
       id: 6,
@@ -549,7 +362,7 @@ Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik k
         "`0`"
       ],
       correctAnswer: 0,
-      explanation: "Muvaffaqiyatli yakunda birinchi argument (error) bo'sh bo'lishi kerak, shuning uchun unga `null` yoki `undefined` uzatiladi, ikkinchi argumentga esa haqiqiy natija (data) uzatiladi."
+      explanation: "Muvaffaqiyatli yakunda birinchi argument (error) bo'sh bo'lishi kerak, shuning uchun unga `null` yoki `undefined` uzatiladi, ikkinchi argumentga esa vaqtinchalik natija (data) uzatiladi."
     },
     {
       id: 9,
@@ -577,27 +390,51 @@ Async/await callback Hell ni to'liq yo'q qiladi: yuqoridan pastga ketma-ketlik k
     },
     {
       id: 11,
-      question: "Callback Hell muammosini eng yaxshi va eng zamonaviy hal qiluvchi JavaScript mexanizmlari qaysilar?",
+      question: "Error-first callback yondashuvida xatolik yuz berganini tekshirish uchun qaysi ifoda to'g'ri hisoblanadi?",
       options: [
-        "Promises va Async/Await",
-        "IIFE va block scopes",
-        "`var` kalit so'zi va nested loops",
-        "Recursive functions"
+        "if (error) { ... }",
+        "if (data) { ... }",
+        "if (error === null) { ... }",
+        "if (typeof error === 'undefined') { ... }"
       ],
       correctAnswer: 0,
-      explanation: "Promises va async/await asinxron kodlarni yuqoridan pastga qarab chiziqli ko'rinishda (sinxron kod kabi) yozishga imkon berib, callback hell chalkashligini butunlay bartaraf etadi."
+      explanation: "Standart Node.js uslubida callbackning birinchi argumenti `error` bo'lib, xatolik yuz bersa u truthy (Error obyekti) bo'ladi, shuning uchun `if (error)` deb tekshirish to'g'ri."
     },
     {
       id: 12,
-      question: "Quyidagi asinxron funksiyada qanday potensial xatolik mavjud?\n```javascript\nfunction fetchUser(id, cb) {\n  if (!id) cb(new Error('Invalid ID'));\n  cb(null, { id: id });\n}\n```",
+      question: "Callback-lar bilan bog'liq bo'lgan 'Inversion of Control' (IoC) muammosining asosiy xavfi nimada?",
       options: [
-        "Agar id bo'lmasa, cb xato bilan chaqiriladi va keyin return bo'lmagani uchun pastdagi muvaffaqiyatli cb ham chaqirilib yuboriladi",
-        "Koddagi cb faqat bitta argument olishi kerak",
-        "Asinxron kod ichida Error obyekti yaratib bo'lmaydi",
-        "Hech qanday xato yo'q"
+        "Kodning sinxron bo'lib qolishi",
+        "Callback funksiyaning xotira egallashi (leak)",
+        "Callbackning chaqirilishi uchinchi tomon kodi ixtiyorida bo'lib, uning necha marta yoki umuman chaqirilishini kafolatlay olmasligimiz",
+        "Callback ichida global o'zgaruvchilarga kirish cheklanishi"
+      ],
+      correctAnswer: 2,
+      explanation: "IoC xavfi shundaki, biz callbackni chaqirish nazoratini uchinchi tomon kutubxonasiga yoki kodi ixtiyoriga berib qo'yamiz va u bizning callbackimizni kutilgandek chaqirishiga kafolat bera olmaymiz."
+    },
+    {
+      id: 13,
+      question: "Callback funksiyalar yordamida yozilgan asinxron kodlarni zanjirlash (chaining) va xatolarni boshqarishdagi muammolar qaysi standart API yaratilishiga sabab bo'ldi?",
+      options: [
+        "Promises (Vada-lar)",
+        "LocalStorage",
+        "JSON parser",
+        "XMLHTTPRequest"
       ],
       correctAnswer: 0,
-      explanation: "`if` blokida `return` qo'yilmagani sababli, `if (!id)` bajarilgandan keyin ham kod to'xtamaydi va pastdagi `cb(null, { id: id })` ham chaqiriladi. Bu bitta operatsiyada callbackning ikki marta bajarilishiga olib keladi."
+      explanation: "Chalkash callback hell va IoC muammolarini hal qilish, shuningdek, xatolarni yagona catch bloki orqali boshqarish uchun ES6 da Promises interfeysi joriy qilindi."
+    },
+    {
+      id: 14,
+      question: "Asinxron operatsiyalarni sequential (ketma-ket) callbacklar orqali amalga oshirishda xatolik yuz bersa, uni butun zanjir bo'ylab to'g'ri tashish uchun nima qilish kerak?",
+      options: [
+        "Har bir qadamdagi callbackda error parametrini tekshirib, xato bo'lsa zanjirni to'xtatish va eng chetki error callbackni chaqirish",
+        "Sinxron try-catch blokidan foydalanish",
+        "Window.onerror hodisasiga ishonish",
+        "Xatoliklarni e'tiborsiz qoldirish"
+      ],
+      correctAnswer: 0,
+      explanation: "Asinxron bo'lgani uchun sinxron try-catch zanjir bo'ylab ishlamaydi. Shuning uchun har bir callbackda birinchi parametr (`err`) bor-yo'qligi tekshirilib, agar mavjud bo'lsa, zanjir toxtatiladi va xato callback chaqiriladi."
     }
   ]
 };

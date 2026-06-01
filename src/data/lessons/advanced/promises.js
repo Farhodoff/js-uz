@@ -8,7 +8,7 @@ export const promises = {
 JavaScript yagona oqimli (single-threaded) til hisoblanadi. Bu degani, u bir vaqtning o'zida faqat bitta vazifani bajara oladi. Agar biz tarmoqdan ma'lumot yuklash yoki faylni o'qish kabi vaqt talab qiladigan ishlarni sinxron (kutish orqali) bajarsak, butun brauzer oynasi qotib qoladi (bloklanadi).
 
 **Callback-lar muammosi (Callback Hell):**
-Asinxron kodlarni callback funksiyalar yordamida yozish ichma-ich kodlarning ko'payib ketishiga (Pyramid of Doom / Callback Hell) olib keladi. Buni o'qish va xatolarini boshqarish juda murakkab. **Promises** (Va'dalar) asinxron operatsiyalarni tartibli, oson va zanjir shaklida yozish uchun yaratilgan.
+Asinxron kodlarni callback funksiyalar yordamida yozish ichma-ich kodlarning ko'payib ketishiga (Callback Hell) olib keladi. Buni o'qish va xatolarini boshqarish juda murakkab. **Promises** (Va'dalar) asinxron operatsiyalarni tartibli, oson va zanjir shaklida yozish uchun yaratilgan.
 
 ---
 
@@ -30,465 +30,356 @@ stateDiagram-v2
 
 ---
 
-## 3. STRUKTURA
+## 3. CHUQUR TUSHUNCHALAR VA ILG'OR MAVZULAR
 
-### A. Promise Yaratish (Promise Constructor)
-Promise obyekti \`new Promise()\` konstruktori yordamida yaratiladi. U parametr sifatida \`executor\` funksiyasini oladi. Bu funksiya ikkita argument qabul qiladi: \`resolve\` va \`reject\`.
-\`\`\`javascript
-const myPromise = new Promise((resolve, reject) => {
-  let success = true;
-  if (success) {
-    resolve("Muvaffaqiyatli!");
-  } else {
-    reject("Xatolik yuz berdi!");
-  }
-});
-\`\`\`
+### A. Promise Lifecycle va Immutability (O'zgarmaslik)
+Promise yaratilganda u har doim \`pending\` (kutilmoqda) holatida bo'ladi. Keyinchalik u yoki \`fulfilled\` (muvaffaqiyatli bajarildi), yoki \`rejected\` (rad etildi) holatiga o'tadi.
+- **Immutability qoidasi:** Promise holati faqat **bir marta** o'zgarishi mumkin. U resolved yoki rejected bo'lganidan keyin boshqa hech qachon o'z holatini o'zgartira olmaydi, uning qiymati muzlatiladi.
 
-### B. Promise Chaining (Zanjirlash)
-Birinchi asinxron ish tugagach, undan kelgan natijani keyingi \`.then()\`ga uzatish mumkin. Xatoliklar esa \`.catch()\` yordamida zanjirning istalgan joyida ushlanadi. \`.finally()\` esa muvaffaqiyatli yoki muvaffaqiyatsiz bo'lishidan qat'i nazar har doim bajariladi.
-\`\`\`javascript
-myPromise
-  .then(result => {
-    console.log(result); // "Muvaffaqiyatli!"
-    return result + " Yangi qiymat";
-  })
-  .then(newResult => {
-    console.log(newResult); // "Muvaffaqiyatli! Yangi qiymat"
-  })
-  .catch(error => {
-    console.error(error);
-  })
-  .finally(() => {
-    console.log("Jarayon tugadi.");
-  });
-\`\`\`
+### B. Microtask Queue va Call Stack
+JavaScript-da asinxron operatsiyalar navbati ikki turga bo'linadi:
+1. **Macrotasks (Task Queue):** \`setTimeout\`, \`setInterval\`, UI rendering, I/O operatsiyalari.
+2. **Microtasks (Job Queue):** Promise callbacklari (\`.then\`, \`.catch\`, \`.finally\`), \`queueMicrotask\`, \`MutationObserver\`.
 
-### C. Static Metodlar
-
-JavaScript bir vaqtning o'zida bir nechta Promislar bilan parallel ishlash uchun quyidagi 6 ta static metodni taqdim etadi (MDN va javascript.info):
-
-1. **\`Promise.all(iterable)\`** — Barcha promislar muvaffaqiyatli bo'lishini kutadi. Agar birortasi rad etilsa (\`rejected\`), butun so'rov o'sha zahoti rad etiladi va qolgan promislar natijasi tashlab yuboriladi.
-2. **\`Promise.allSettled(iterable)\`** — Barcha promislar yakunlanishini (fulfilled yoki rejected bo'lishidan qat'i nazar) kutadi va har birining holati va natijalar ro'yxatini ob'ektlar massivi ko'rinishida qaytaradi.
-3. **\`Promise.any(iterable)\`** — Parallel promislardan birinchi bo'lib muvaffaqiyatli (\`fulfilled\`) yakunlanganining qiymatini qaytaradi. Agar hammasi xato bilan yakunlansa, \`AggregateError\` xatoligini tashlaydi.
-4. **\`Promise.race(iterable)\`** — Eng tezkor promisning natijasini (xoh muvaffaqiyatli bo'lsin, xoh xatolik) qaytaradi.
-5. **\`Promise.resolve(value)\`** — Berilgan qiymat bilan darhol muvaffaqiyatli (\`fulfilled\`) bo'lgan yangi Promise yaratadi.
-6. **\`Promise.reject(error)\`** — Berilgan xatolik bilan darhol rad etilgan (\`rejected\`) yangi Promise yaratadi.
-
-#### Parallel API-lar qanday ishlaydi? (Vizual solishtirish)
+**Qoida:** Event Loop har safar Call Stack bo'shaganidan keyin, navbatdagi har qanday macrotask-ga o'tishdan oldin, Microtask Queue'dagi **barcha** navbatda turgan vazifalarni bajarib tugatishi shart.
 
 \`\`\`mermaid
-graph TD
-    Start["Parallel Promislar: [P1 (1s da Resolve), P2 (2s da Reject)]"]
-    
-    Start --> ALL["Promise.all()"]
-    ALL -->|P2 reject bo'ldi| ALL_REJ["2s da REJECTED<br/>(Darhol xatolik qaytadi)"]
-    
-    Start --> SETTLED["Promise.allSettled()"]
-    SETTLED -->|Barchasi tugashini kutadi| SETTLED_OK["2s da FULFILLED<br/>(Barcha holatlar ro'yxati qaytadi)"]
-    
-    Start --> ANY["Promise.any()"]
-    ANY -->|P1 birinchi muvaffaqiyatli| ANY_OK["1s da FULFILLED<br/>(P1 natijasi qaytadi)"]
-    
-    Start --> RACE["Promise.race()"]
-    RACE -->|P1 birinchi yakunlandi| RACE_OK["1s da FULFILLED/REJECTED<br/>(Eng tezkor natija qaytadi)"]
+graph LR
+    Stack[Call Stack bo'shadi] --> Micro{Microtask Queue bo'shmi?}
+    Micro -- Yo'q --> RunM[Microtaskni bajarish]
+    RunM --> Stack
+    Micro -- Ha --> Render[UI Render / Repaint]
+    Render --> Macro[Macrotask Queue'dan 1 ta bajarish]
+    Macro --> Stack
 \`\`\`
 
-### D. Parallel va Ketma-ket (Sequential) So'rovlar
-- **Parallel:** Bir vaqtda bir nechta so'rov yuborish. \`Promise.all\` yordamida barcha so'rovlar fonda birga ishlaydi va umumiy vaqt eng uzoq davom etadigan so'rovga teng bo'ladi.
-- **Ketma-ket (Sequential):** Birinchi so'rov natijasi olingandan keyingina ikkinchi so'rovni yuborish. Bu so'rovlar zanjirlash orqali bajariladi va vaqt barcha so'rovlar vaqtining yig'indisiga teng bo'ladi.
+### C. Promise Combinators (Static Metodlar)
+Bir nechta Promiselarni parallel boshqarish uchun quyidagi statik metodlar qo'llaniladi:
+* **\`Promise.all([p1, p2, p3])\`:** Barcha promiselar muvaffaqiyatli bajarilishini kutadi. Agarda bittasi reject bo'lsa, zudlik bilan butun \`Promise.all\` xatolik bilan yakunlanadi (all-or-nothing).
+* **\`Promise.allSettled([p1, p2, p3])\`:** Barcha promiselar yakunlanishini (resolve yoki reject bo'lishidan qat'i nazar) kutadi. Natija har bir promisening holati va qiymatini ko'rsatuvchi obyektlar massivi bo'ladi.
+* **\`Promise.any([p1, p2, p3])\`:** Birinchi muvaffaqiyatli (fulfilled) bo'lgan promiseni qaytaradi. Agar barchasi reject bo'lsa, \`AggregateError\` tashlaydi.
+* **\`Promise.race([p1, p2, p3])\`:** Qaysi promise birinchi bo'lib yakunlansa (fulfilled yoki rejected), o'shaning natijasini qaytaradi.
 
-### E. Promislar bilan Xatoliklarni Boshqarish (Error Handling)
-
-Promises executor (\`new Promise\`) va \`.then\` handlerlari ichidagi barcha kodlar yashirin \`try...catch\` bilan o'ralgan bo'ladi. Agar kod ichida xatolik yuz berib \`throw\` tashlansa, Promise avtomatik ravishda \`reject\` bo'ladi:
+### D. Promisification (Promislantirish)
+Bu callback-ga asoslangan eski API-larni Promise-ga asoslangan zamonaviy ko'rinishga o'tkazish jarayonidir:
 \`\`\`javascript
-new Promise((resolve, reject) => {
-  throw new Error("Kutilmagan xato!"); // reject(new Error("Kutilmagan xato!")) bilan bir xil
-}).catch(err => console.log(err.message)); // "Kutilmagan xato!"
-\`\`\`
-
-#### Global Unhandled Rejections (Tutilmagan xatoliklar)
-Agar Promise rad etilsa (reject bo'lsa) va uni hech qaysi \`.catch()\` tutib qolmasa, u global xatolikka aylanadi. Buni brauzerda quyidagi hodisa yordamida ushlash mumkin:
-\`\`\`javascript
-window.addEventListener('unhandledrejection', (event) => {
-  console.log(event.promise); // xato bergan promise
-  console.log(event.reason);  // xato obyekti
-});
-\`\`\`
-
-### F. Custom Thenables (O'z xatti-harakatiga ega ob'ektlar)
-JavaScript-da agar ob'ektda \`.then\` metodi bo'lsa, u uchinchi tomon kutubxonalaridagi Promislar bilan bir xil ishlay oladi:
-\`\`\`javascript
-const customThenable = {
-  then(resolve, reject) {
-    setTimeout(() => resolve("Thenable natijasi"), 1000);
-  }
-};
-Promise.resolve(customThenable).then(res => console.log(res)); // "Thenable natijasi"
-\`\`\`
-
-### G. Microtasks Queue (Job Queue) — Promislar navbati
-
-Promisening \`.then\`/\`.catch\`/\`.finally\` callbacklari har doim **Microtasks Queue (Job Queue)** deb ataladigan navbatga tushadi.
-Dvigatel har doim birinchi navbatda sinxron kodlarni bajaradi, shundan so'ng darhol barcha Microtasklarni bajaradi, va eng oxirida Macrotasklarni (setTimeout, DOM eventlari) bajaradi.
-
-\`\`\`javascript
-setTimeout(() => console.log("Macrotask (setTimeout)"), 0);
-Promise.resolve().then(() => console.log("Microtask (Promise)"));
-console.log("Sinxron kod");
-
-// Natija:
-// 1. "Sinxron kod"
-// 2. "Microtask (Promise)"
-// 3. "Macrotask (setTimeout)"
-\`\`\`
-
----
-
-## 4. AMALIYOT
-
-Serverdan foydalanuvchi ma'lumotlarini olish va keyin uning postlarini parallel yuklash misoli:
-\`\`\`javascript
-function getUser(id) {
-  return Promise.resolve({ id: id, name: "Farhod" });
+// Eski callback-li funksiya
+function delayCallback(ms, callback) {
+  setTimeout(callback, ms);
 }
 
-function getPosts(userId) {
-  return Promise.resolve(["Post 1", "Post 2"]);
-}
-
-// Zanjir (Sequential)
-getUser(1)
-  .then(user => getPosts(user.id))
-  .then(posts => console.log(posts));
+// Promislantirilgan versiyasi
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+delay(1000).then(() => console.log("1 soniyadan keyin!"));
 \`\`\`
 
 ---
 
-## 5. XATOLAR (Common Mistakes)
-
-1. **Zanjirni buzish (Not returning in then):**
-   \`\`\`javascript
-   // XATO
-   p.then(data => {
-     fetchData(data); // return qilinmagani uchun keyingi .then undefined oladi
-   }).then(result => { ... });
-   
-   // TO'G'RI
-   p.then(data => {
-     return fetchData(data);
-   }).then(result => { ... });
-   \`\`\`
-2. **Xatoni ushlamaslik (Uncaught Promise Rejection):**
-   Har doim promislar zanjiri oxiriga \`.catch()\` qo'shish shart, aks holda dastur kutilmaganda to'xtashi mumkin.
+## 4. KO'P UCHRAYDIGAN XATOLAR
+1. **Promise Chain-da \`return\`ni unutish:** Agar \`.then()\` ichidagi callback-da yangi promise yoki qiymatni \`return\` qilmasangiz, keyingi \`.then()\` \`undefined\` qiymatini qabul qiladi.
+2. **Xatolarni catch qilmaslik (Unhandled Rejections):** Har bir Promise zanjirining oxirida \`.catch()\` bo'lishi yoki global \`unhandledrejection\` hodisasi tinglanishi lozim.
 
 ---
 
-## 6. SAVOLLAR VA JAVOBLAR
+## 5. SAVOLLAR VA JAVOBLAR
 
 **1. Promise nima?**
-Asinxron operatsiyaning kelajakdagi natijasini (qiymat yoki xatoni) ifodalovchi maxsus JavaScript obyektidir.
+Asinxron operatsiyaning yakuniy natijasini (muvaffaqiyat yoki xatolik) o'zida ifodalovchi maxsus obyekt.
 
-**2. Promise-ning 3 ta holati qaysilar va ularning ma'nosi nima?**
-Pending (kutilayotgan), Fulfilled (muvaffaqiyatli bajarilgan) va Rejected (xatolik bilan rad etilgan).
+**2. Promise.all() qachon reject bo'ladi?**
+Unga berilgan promiselardan birontasi birinchi bo'lib reject (xato) bo'lishi bilanoq zudlik bilan reject bo'ladi.
 
-**3. .then() va .catch() metodlari nima uchun ishlatiladi?**
-.then() muvaffaqiyatli natijani (resolve qiymatini) olish va qayta ishlash uchun, .catch() esa xatoliklarni (reject sababini) ushlash uchun xizmat qiladi.
+**3. Promise.allSettled() nima qaytaradi?**
+Barcha berilgan promiselarning yakuniy holatini (status: 'fulfilled' / 'rejected') va qiymatini o'z ichiga olgan obyektlar massivini qaytaradi.
 
-**4. .finally() metodi nima va u qachon bajariladi?**
-Promise muvaffaqiyatli yoki muvaffaqiyatsiz yakunlanishidan qat'i nazar, eng oxirida bajariladigan tozalash blokidir.
+**4. Microtask Queue va Macrotask Queue farqi nimada?**
+Microtasks (masalan, Promise .then) Macrotasks (masalan, setTimeout) ga qaraganda yuqori ustuvorlikka ega va har doim Call Stack bo'shashi bilanoq birinchi bo'lib bajariladi.
 
-**5. Promise Chaining (zanjir) nima va u qanday ishlaydi?**
-Ketma-ket asinxron amallarni bajarish uchun .then() metodlarini bir-biriga ulab yozish. Har bir .then() o'zidan keyingi .then()ga qiymat qaytaradi.
-
-**6. Promise.all() nima va uning bitta kamchiligi qaysi?**
-Bir nechta promisni parallel kutadi. Kamchiligi: agar kamida bitta promis reject bo'lsa, barcha promislar natijasi bekor qilinadi va umumiy xato qaytariladi.
-
-**7. Promise.race() nima va u qaysi holatlarda foydali?**
-Berilgan promislar orasidan eng birinchi bo'lib yakunlangan (resolve yoki reject) promisning natijasini qaytaradi. Timeout va poyga holatlarida foydali.
-
-**8. Promise.allSettled() va Promise.all() o'rtasidagi asosiy farq nima?**
-Promise.all bitta xatoda hammasini bekor qiladi. Promise.allSettled esa barcha promislar xato yoki muvaffaqiyatli bo'lsa ham tugashini kutadi va har birining holatini batafsil qaytaradi.
-
-**9. Promise.any() nima va u qachon AggregateError qaytaradi?**
-Promislardan birinchi muvaffaqiyatli (fulfilled) bo'lganini qaytaradi. Agar berilgan barcha promislar reject bo'lsa, u AggregateError xatosini qaytaradi.
-
-**10. Parallel va Ketma-ket asinxron so'rovlar nima va ularning farqi qanday?**
-Parallel so'rovlar bir vaqtda ishga tushib, vaqtni tejaydi. Ketma-ket so'rovlar esa bir-biriga bog'liq bo'lgan (biri ikkinchisining natijasiga tayanadigan) ishlarda ishlatiladi.
-
-**11. Callback Hell va Promise o'rtasidagi farq nima?**
-Callback Hell kodni ichma-ich chuqurlashtirib o'qishni qiyinlashtiradi. Promise esa kodni tekis zanjir shaklida o'qishga oson va tartibli qiladi.
-
-**12. Promisni qanday qilib manual ravishda reject qilish mumkin?**
-Konstruktor ichida reject("sabab") chaqirish yoki to'g'ridan-to'g'ri Promise.reject(new Error("xato")) yozish orqali.
+**5. AggregateError nima?**
+\`Promise.any()\`ga berilgan barcha promiselar muvaffaqiyatsiz (rejected) bo'lganda yuzaga keladigan va barcha xatolarni o'z ichiga oluvchi maxsus xato obyekti.
 `,
   exercises: [
     {
       id: 1,
-      title: "1️⃣ Muvaffaqiyatli Promise",
-      instruction: "Qiymati 'Salom' bo'lgan muvaffaqiyatli (resolve bo'lgan) Promise yarating va uni 'p' o'zgaruvchisiga yuklang.",
-      startingCode: "const p = new Promise((resolve) => {\n  // Bu yerga yozing\n});",
-      hint: "resolve('Salom') chaqiring.",
-      test: "if (p instanceof Promise) { return p.then(r => { if (r === 'Salom') return null; return 'Qiymat Salom emas'; }); } return 'p Promise emas';"
+      title: "1️⃣ Oddiy Promise yaratish",
+      instruction: "Konstruktor yordamida 'Hello' qiymati bilan darhol resolve bo'ladigan Promise qaytaring.",
+      startingCode: "function getPromise() {\n  // Kodni shu yerda yozing\n}",
+      hint: "return new Promise(resolve => resolve('Hello'));",
+      test: "if (typeof getPromise !== 'function') return 'getPromise funksiya emas'; return getPromise().then(r => r === 'Hello' ? null : 'Natija noto\\'g\\'ri');"
     },
     {
       id: 2,
-      title: "2️⃣ Rad etilgan Promise",
-      instruction: "'Xato yuz berdi' xabari bilan rad etilgan (rejected) Promise yarating va uni 'p' o'zgaruvchisiga yuklang.",
-      startingCode: "const p = new Promise((resolve, reject) => {\n  // Bu yerga yozing\n});",
-      hint: "reject('Xato yuz berdi') chaqiring.",
-      test: "if (p instanceof Promise) { return p.catch(err => { const msg = err instanceof Error ? err.message : err; if (msg === 'Xato yuz berdi') return null; return 'Xato xabari noto\\'g\\'ri'; }); } return 'p Promise emas';"
+      title: "2️⃣ Xatolik bilan reject qilish",
+      instruction: "Konstruktor yordamida 'Xato yuz berdi' matni bilan reject bo'ladigan Promise qaytaring.",
+      startingCode: "function getRejectedPromise() {\n  // Kodni shu yerda yozing\n}",
+      hint: "return new Promise((resolve, reject) => reject('Xato yuz berdi'));",
+      test: "if (typeof getRejectedPromise !== 'function') return 'getRejectedPromise funksiya emas'; return getRejectedPromise().then(() => 'Resolve bo\\'lib ketdi, xato!').catch(e => e === 'Xato yuz berdi' ? null : 'Xato matni noto\\'g\\'ri');"
     },
     {
       id: 3,
-      title: "3️⃣ Qisqa yo'l bilan Promise yaratish",
-      instruction: "`Promise.resolve()` yordamida qiymati 100 bo'lgan Promise yarating va uni 'p' o'zgaruvchisiga yuklang.",
-      startingCode: "const p = // Bu yerga yozing\n",
-      hint: "const p = Promise.resolve(100);",
-      test: "if (p instanceof Promise) { return p.then(r => { if (r === 100) return null; return 'Qiymat 100 emas'; }); } return 'p Promise emas';"
+      title: "3️⃣ Zanjirli then() chaqiruvi",
+      instruction: "Berilgan promise natijasiga 10 ni qo'shib, keyingi then() ga uzatuvchi kod yozing.",
+      startingCode: "function addTen(promise) {\n  return promise.then(num => {\n    // Kodni shu yerda yozing\n  });\n}",
+      hint: "return num + 10;",
+      test: "if (typeof addTen !== 'function') return 'addTen funksiya emas'; return addTen(Promise.resolve(5)).then(r => r === 15 ? null : 'Natija xato');"
     },
     {
       id: 4,
-      title: "4️⃣ Promise zanjiri (Chaining)",
-      instruction: "Mavjud 'p' promisining natijasini olib, uni 2 ga ko'paytirib qaytaradigan keyingi `.then()` zanjirini yarating va natijani 'result' o'zgaruvchisiga yuklang.",
-      startingCode: "const p = Promise.resolve(10);\nconst result = p.then(num => {\n  // Bu yerga yozing\n});",
-      hint: "return num * 2;",
-      test: "if (result instanceof Promise) { return result.then(r => { if (r === 20) return null; return 'Natija 20 emas'; }); } return 'result Promise emas';"
+      title: "4️⃣ Catch yordamida xatoni ushlash",
+      instruction: "Xato tashlaydigan promiseni catch orqali ushlab, 'Qayta ishlandi' deb qaytaring.",
+      startingCode: "function catchError(promise) {\n  return promise.catch(err => {\n    // Natijani qaytaring\n  });\n}",
+      hint: "return 'Qayta ishlandi';",
+      test: "if (typeof catchError !== 'function') return 'catchError funksiya emas'; return catchError(Promise.reject('error')).then(r => r === 'Qayta ishlandi' ? null : 'Xato ushlanmadi');"
     },
     {
       id: 5,
-      title: "5️⃣ Xatolarni ushlash (.catch)",
-      instruction: "Rad etilgan promisdan kelayotgan xato xabarini `.catch()` yordamida ushlab, uni 'errorVal' o'zgaruvchisiga yuklang (catch ichida return qiling).",
-      startingCode: "const p = Promise.reject('Muammo');\nconst errorVal = p.catch(err => {\n  // Bu yerga yozing\n});",
-      hint: "return err;",
-      test: "if (errorVal instanceof Promise) { return errorVal.then(r => { if (r === 'Muammo') return null; return 'Xato to\\'g\\'ri ushlanmadi'; }); } return 'errorVal Promise emas';"
+      title: "5️⃣ Finally ishlatilishi",
+      instruction: "Promisning statusidan qat'i nazar, oxirida 'Tugadi' matnini konsolga chiqaradigan `.finally()` bloki qo'shing.",
+      startingCode: "function logFinally(promise) {\n  return promise.finally(() => {\n    // Konsolga chiqaring\n  });\n}",
+      hint: "console.log('Tugadi');",
+      test: "if (typeof logFinally !== 'function') return 'logFinally funksiya emas'; logFinally(Promise.resolve()); if (logs.includes('Tugadi')) return null; return 'finally ishga tushmadi';"
     },
     {
       id: 6,
-      title: "6️⃣ Parallel Promislar (Promise.all)",
-      instruction: "`p1`, `p2`, `p3` promislarini parallel ravishda ishga tushirib, ularning natijalarini oluvchi `Promise.all` metodini ishlating va natijani 'allPromise' ga yuklang.",
-      startingCode: "const p1 = Promise.resolve('A');\nconst p2 = Promise.resolve('B');\nconst p3 = Promise.resolve('C');\n\nconst allPromise = // Bu yerga yozing",
-      hint: "Promise.all([p1, p2, p3])",
-      test: "if (allPromise instanceof Promise) { return allPromise.then(r => { if (Array.isArray(r) && r.join('') === 'ABC') return null; return 'Natija noto\\'g\\'ri'; }); } return 'allPromise Promise emas';"
+      title: "6️⃣ Promise.all parallel kutish",
+      instruction: "Berilgan p1, p2, p3 promiselarini parallel kutib, ularning natijalari yig'indisini qaytaring.",
+      startingCode: "function sumPromises(p1, p2, p3) {\n  // Promise.all ishlating\n}",
+      hint: "return Promise.all([p1, p2, p3]).then(([r1, r2, r3]) => r1 + r2 + r3);",
+      test: "if (typeof sumPromises !== 'function') return 'sumPromises funksiya emas'; return sumPromises(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)).then(r => r === 6 ? null : 'Yig\\'indi xato');"
     },
     {
       id: 7,
-      title: "7️⃣ Promislar poygasi (Promise.race)",
-      instruction: "Ikki xil vaqtda bajariladigan promislar (`slow` va `fast`) poygasini o'tkazing va natijani 'racePromise' o'zgaruvchisiga yuklang.",
-      startingCode: "const slow = new Promise(resolve => setTimeout(() => resolve('Sekin'), 50));\nconst fast = new Promise(resolve => setTimeout(() => resolve('Tez'), 10));\n\nconst racePromise = // Bu yerga yozing",
-      hint: "Promise.race([slow, fast])",
-      test: "if (racePromise instanceof Promise) { return racePromise.then(r => { if (r === 'Tez') return null; return 'Tezroq promis g\\'olib bo\\'lmadi'; }); } return 'racePromise Promise emas';"
+      title: "7️⃣ Promise.race eng birinchisi",
+      instruction: "Berilgan p1 va p2 promiselardan qaysi biri birinchi bajarilsa, o'shaning natijasini qaytaring.",
+      startingCode: "function getFastest(p1, p2) {\n  // Promise.race\n}",
+      hint: "return Promise.race([p1, p2]);",
+      test: "if (typeof getFastest !== 'function') return 'getFastest funksiya emas'; const p1 = new Promise(r => setTimeout(() => r(1), 50)); const p2 = new Promise(r => setTimeout(() => r(2), 10)); return getFastest(p1, p2).then(r => r === 2 ? null : 'Eng tezi olinmadi');"
     },
     {
       id: 8,
-      title: "8️⃣ Hamma natijalar (Promise.allSettled)",
-      instruction: "`p1` (muvaffaqiyatli) va `p2` (rad etilgan) promislarining yakuniy holatlarini olish uchun `Promise.allSettled` ishlating va natijani 'settledPromise' ga yuklang.",
-      startingCode: "const p1 = Promise.resolve('OK');\nconst p2 = Promise.reject('FAIL');\n\nconst settledPromise = // Bu yerga yozing",
-      hint: "Promise.allSettled([p1, p2])",
-      test: "if (settledPromise instanceof Promise) { return settledPromise.then(r => { if (r.length === 2 && r[0].status === 'fulfilled' && r[1].status === 'rejected') return null; return 'Natija noto\\'g\\'ri'; }); } return 'settledPromise Promise emas';"
+      title: "8️⃣ Xavfsiz Promise.all (allSettled)",
+      instruction: "p1 (resolve) va p2 (reject) berilgan. `Promise.allSettled` yordamida ikkalasini ham kutib, natijaviy massivni qaytaring.",
+      startingCode: "function checkAll(p1, p2) {\n  // allSettled ishlating\n}",
+      hint: "return Promise.allSettled([p1, p2]);",
+      test: "if (typeof checkAll !== 'function') return 'checkAll funksiya emas'; return checkAll(Promise.resolve(1), Promise.reject('xato')).then(r => r.length === 2 && r[1].status === 'rejected' ? null : 'allSettled ishlamadi');"
     },
     {
       id: 9,
-      title: "9️⃣ Birinchi muvaffaqiyatli (Promise.any)",
-      instruction: "Birinchi bo'lib muvaffaqiyatli (fulfilled) bo'lgan promisni olish uchun `Promise.any` metodini ishlating va natijani 'anyPromise' ga yuklang.",
-      startingCode: "const p1 = new Promise((_, reject) => setTimeout(() => reject('Error'), 10));\nconst p2 = new Promise(resolve => setTimeout(() => resolve('Success'), 30));\n\nconst anyPromise = // Bu yerga yozing",
-      hint: "Promise.any([p1, p2])",
-      test: "if (anyPromise instanceof Promise) { return anyPromise.then(r => { if (r === 'Success') return null; return 'Muvaffaqiyatli promis olinmadi'; }); } return 'anyPromise Promise emas';"
+      title: "9️⃣ Promise qayta urinish (Retry delay)",
+      instruction: "Berilgan asinxron `fn` funksiyani bajarib ko'ring, xato bo'lsa, 50ms kutib yana bir marta bajaring.",
+      startingCode: "function retryOnce(fn) {\n  return fn().catch(() => {\n    // 50ms kutib fn() ni qayta chaqiring\n  });\n}",
+      hint: "return new Promise(resolve => setTimeout(resolve, 50)).then(() => fn());",
+      test: "if (typeof retryOnce !== 'function') return 'retryOnce funksiya emas'; let count = 0; const fn = () => { count++; return count < 2 ? Promise.reject('err') : Promise.resolve('ok'); }; return retryOnce(fn).then(r => r === 'ok' && count === 2 ? null : 'Qayta urinish xato');"
     },
     {
       id: 10,
-      title: "🔟 Promisifikatsiya (Callback to Promise)",
-      instruction: "`delay` funksiyasini yozing. U berilgan `ms` vaqtidan keyin resolve bo'ladigan Promise qaytarsin.",
-      startingCode: "function delay(ms) {\n  // Bu yerga yozing\n}",
-      hint: "return new Promise(resolve => setTimeout(resolve, ms));",
-      test: "const t1 = Date.now(); const p = delay(20); if (p instanceof Promise) { return p.then(() => { const diff = Date.now() - t1; if (diff >= 15) return null; return 'Kechikish noto\\'g\\'ri'; }); } return 'delay Promise qaytarmadi';"
+      title: "🔟 Promislarni ketma-ket bajarish",
+      instruction: "Massivdagi asinxron funksiyalarni (promiselarni) \`reduce\` yordamida navbatma-navbat (ketma-ket) ishga tushiring.",
+      startingCode: "function runSequence(funcs) {\n  // Navbatma-navbat chain qiling\n}",
+      hint: "return funcs.reduce((promise, fn) => promise.then(fn), Promise.resolve());",
+      test: "if (typeof runSequence !== 'function') return 'runSequence funksiya emas'; let list = []; const f1 = () => new Promise(r => setTimeout(() => { list.push(1); r(); }, 20)); const f2 = () => new Promise(r => setTimeout(() => { list.push(2); r(); }, 10)); return runSequence([f1, f2]).then(() => list[0] === 1 && list[1] === 2 ? null : 'Ketma-ketlik buzildi');"
     },
     {
       id: 11,
-      title: "1️⃣1️⃣ Tozalash ishlari (.finally)",
-      instruction: "Promis zanjiri oxirida `loading = false` qiluvchi `.finally()` blokini yozing (kodda loading o'zgaruvchisi berilgan).",
-      startingCode: "let loading = true;\nconst p = Promise.resolve('Ma\\'lumot')\n  .then(res => console.log(res))\n  // Bu yerga .finally yozing\n",
-      hint: ".finally(() => { loading = false; })",
-      test: "if (code.includes('finally') && !loading) return null; return 'finally ishlatilmadi yoki loading false bo\\'lmadi';"
+      title: "1️⃣1️⃣ Promise statusini o'qish",
+      instruction: "Promise resolved bo'lsa true, pending bo'lsa false qaytaruvchi sinov funksiyasini yozing (Promise.race orqali).",
+      startingCode: "async function isResolved(promise) {\n  const temp = {};\n  const r = await Promise.race([promise, temp]);\n  return r !== temp;\n}",
+      hint: "Berilgan tayyor kodni tahlil qiling va return null qaytishi uchun tasdiqlang",
+      test: "if (typeof isResolved !== 'function') return 'isResolved funksiya emas'; return isResolved(Promise.resolve()).then(r => r === true ? null : 'Status noto\\'g\\'ri');"
     },
     {
       id: 12,
-      title: "1️⃣2️⃣ So'rov Taymauti (Race)",
-      instruction: "Agar `fetchData` promisi 50ms dan ko'p vaqt olsa, rad etiladigan (reject bo'ladigan) timeout promisi bilan `Promise.race` poygasini yarating va natijani 'result' ga yuklang.",
-      startingCode: "const fetchData = new Promise(resolve => setTimeout(() => resolve('Data'), 100));\nconst timeout = new Promise((_, reject) => setTimeout(() => reject('Timeout!'), 30));\n\nconst result = // Bu yerga yozing",
-      hint: "Promise.race([fetchData, timeout])",
-      test: "if (result instanceof Promise) { return result.catch(err => { if (err === 'Timeout!') return null; return 'Poyga noto\\'g\\'ri tashkil etildi'; }); } return 'result Promise emas';"
+      title: "1️⃣2️⃣ Promise zanjiri xato otish",
+      instruction: "then() ichida `throw new Error('muammo')` yozib, xato keyingi catch ga yetib borishini ta'minlang.",
+      startingCode: "function throwInChain(promise) {\n  return promise.then(() => {\n    // Xato tashlang\n  });\n}",
+      hint: "throw new Error('muammo');",
+      test: "if (typeof throwInChain !== 'function') return 'throwInChain funksiya emas'; return throwInChain(Promise.resolve()).catch(e => e.message === 'muammo' ? null : 'Xato yetib bormadi');"
     },
     {
       id: 13,
-      title: "1️⃣3️⃣ Promise.allSettled orqali tahlil",
-      instruction: "Berilgan `promises` massividagi barcha promislar yakunlanishini `Promise.allSettled` orqali kutib natijani `results` o'zgaruvchisiga saqlang.",
-      startingCode: "const p1 = Promise.resolve('Ok');\nconst p2 = Promise.reject('Fail');\nconst promises = [p1, p2];\n\n// allSettled bilan kutib oling\nconst results = null;\n",
-      hint: "const results = Promise.allSettled(promises);",
-      test: "if (results instanceof Promise && code.includes('allSettled')) { return results.then(res => { if (res[0].status === 'fulfilled' && res[1].status === 'rejected') return null; return 'allSettled natijalari xato'; }); } return 'results Promise.allSettled bo\\'lishi kerak';"
+      title: "1️⃣3️⃣ Node-Style Promisify (promisify)",
+      instruction: "Node.js error-first callback stilidagi funksiyani Promise qaytaradigan funksiyaga o'tkazuvchi `promisify(fn)` helper funksiyasini yozing.",
+      startingCode: "function promisify(fn) {\n  return function(...args) {\n    // Kodni shu yerdan yozing\n  };\n}",
+      hint: "return new Promise((resolve, reject) => { fn(...args, (err, data) => { if (err) reject(err); else resolve(data); }); });",
+      test: "if (typeof promisify !== 'function') return 'promisify funksiya emas';\nconst asyncFunc = (x, cb) => setTimeout(() => cb(null, x * 3), 10);\nconst promised = promisify(asyncFunc);\nreturn promised(4).then(res => {\n  if (res === 12) return null;\n  return 'Promisify natijasi noto\\'g\\'ri';\n}).catch(e => 'Xatolik: ' + e.message);"
     },
     {
       id: 14,
-      title: "1️⃣4️⃣ Thenable Obyekt yaratish",
-      instruction: "Zanjirda ishlay oladigan va 20ms dan keyin 'Muvaffaqiyat' qiymatini resolve qiladigan `customThenable` obyektini yarating (unda .then metodi bo'lishi shart).",
-      startingCode: "const customThenable = {\n  // then metodini yozing\n};\n",
-      hint: "then(resolve) { setTimeout(() => resolve('Muvaffaqiyat'), 20); }",
-      test: "if (typeof customThenable.then === 'function') { return Promise.resolve(customThenable).then(res => { if (res === 'Muvaffaqiyat') return null; return 'Thenable to\\'g\\'ri qiymat qaytarmadi'; }); } return 'then metodi yaratilmagan';"
+      title: "1️⃣4️⃣ Kechiktirilgan Va'da (delayPromise)",
+      instruction: "Berilgan `ms` millisekunddan keyin belgilangan `value` qiymati bilan resolve bo'ladigan `delayPromise(ms, value)` funksiyasini yozing.",
+      startingCode: "function delayPromise(ms, value) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "return new Promise(resolve => setTimeout(() => resolve(value), ms));",
+      test: "if (typeof delayPromise !== 'function') return 'delayPromise funksiya emas';\nconst start = Date.now();\nreturn delayPromise(50, 'success').then(res => {\n  const duration = Date.now() - start;\n  if (res !== 'success') return 'Qiymat noto\\'g\\'ri';\n  if (duration >= 40) return null;\n  return 'Kechikish vaqti xato';\n});"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Promise-ning dastlabki (initial) holati qaysi?",
-      options: ["fulfilled", "rejected", "pending", "resolved"],
-      correctAnswer: 2,
-      explanation: "Yangi Promise yaratilganda u ishini yakunlaguncha 'pending' (kutilayotgan) holatida bo'ladi."
+      question: "`fetch()` metodi serverga tarmoq so'rovini yuborib default holatda nima qaytaradi?",
+      options: [
+        "Serverdan kelgan JSON matnini",
+        "Promise (u hal bo'lganda Response obyekti qaytadi)",
+        "JavaScript obyekti",
+        "Faqat status kodi"
+      ],
+      correctAnswer: 1,
+      explanation: "`fetch()` har doim asinxron Promise qaytaradi. U muvaffaqiyatli yakunlanganda Response obyektini saqlaydi."
     },
     {
       id: 2,
-      question: "`Promise.all()` massividagi promis-lardan biri rad etilsa (reject) nima bo'ladi?",
+      question: "Nima uchun `response.json()` metodidan oldin ham `await` kalit so'zini yozish kerak?",
       options: [
-        "Faqat muvaffaqiyatlilari qaytadi",
-        "Butun `Promise.all` rad etiladi (reject bo'ladi)",
-        "Xato qilgan promis o'tkazib yuboriladi",
-        "Hech narsa bo'lmaydi"
+        "Bu JavaScript-ning majburiy qoidasi",
+        "`response.json()` ham asinxron bo'lib, o'qib tugatilgandan keyin Promise qaytaradi",
+        "Hech qanday sabab yo'q, xohlasak yozmasligimiz mumkin",
+        "Sinxron ishlashini ta'minlash uchun"
       ],
       correctAnswer: 1,
-      explanation: "`Promise.all` barcha promislar muvaffaqiyatli bo'lishini talab qiladi. Bitta xato butun zanjirni to'xtatadi."
+      explanation: "Body ma'lumotlarini to'liq o'qish va JSON sifatida parse qilish vaqt oladi, shuning uchun bu jarayon asinxron Promise qaytaradi."
     },
     {
       id: 3,
-      question: "`Promise.race()` metodi nima qaytaradi?",
+      question: "`response.ok` xususiyati qaysi HTTP status kodlari oralig'ida `true` bo'ladi?",
       options: [
-        "Massivdagi barcha promislar natijalarini",
-        "Faqat birinchi bo'lib muvaffaqiyatli yakunlangan promis natijasini",
-        "Eng birinchi bo'lib yakunlangan (resolve yoki reject bo'lgan) promis natijasini",
-        "Faqat xatoliklarni"
+        "Faqat 200 da",
+        "200 dan 299 gacha",
+        "100 dan 500 gacha",
+        "Faqat 304 da"
       ],
-      correctAnswer: 2,
-      explanation: "Promise.race o'z nomiga mos ravishda poyga o'tkazadi va birinchi tugagan (yaxshi yoki yomon natijali) promisni tanlaydi."
+      correctAnswer: 1,
+      explanation: "`response.ok` HTTP status kodi muvaffaqiyatli (200-299) bo'lganda true qiymatini saqlaydi."
     },
     {
       id: 4,
-      question: "Promise zanjirida `.then()` ichidagi handler return qilmasa, keyingi `.then()` qanday qiymat oladi?",
-      options: ["null", "undefined", "Bo'sh string", "Xatolik tashlanadi"],
-      correctAnswer: 1,
-      explanation: "Agar `.then()` ichida aniq qiymat return qilinmasa, u sukut bo'yicha `undefined` qaytaradi va keyingi `.then()` ushbu `undefined`ni qabul qiladi."
+      question: "Server 500 (Internal Server Error) qaytarganda `fetch()` so'rovi qanday yakunlanadi?",
+      options: [
+        "Muvaffaqiyatli yakunlanadi, ammo `response.ok` false bo'ladi",
+        "Rad etiladi va catch blokiga o'tadi",
+        "So'rov abadiy kutish rejimiga o'tadi",
+        "Brauzer sahifani avtomatik yangilaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "Server javob berganligi sababli fetch muvaffaqiyatli tugaydi (catchga tushmaydi). Faqat xato kod bo'lgani uchun `ok` xususiyati false bo'ladi."
     },
     {
       id: 5,
-      question: "Zanjirdagi `.catch()` metodidan keyin kelgan `.then()` ishlaydimi?",
+      question: "`POST` so'rovida ma'lumot yuborishda `body` xususiyatiga qanday qiymat beriladi?",
       options: [
-        "Yo'q, catch zanjirni butunlay to'xtatadi",
-        "Ha, agar catch ichida yangi xato throw qilinmasa, u muvaffaqiyatli zanjirni davom ettiradi",
-        "Faqat asinxron funksiyalarda ishlaydi",
-        "Faqat massiv qaytarilganda ishlaydi"
+        "JavaScript obyekti",
+        "JSON.stringify() orqali string-ga o'tkazilgan obyekt matni",
+        "Faqat massiv",
+        "Faqat fayl (file) formati"
       ],
       correctAnswer: 1,
-      explanation: "`.catch()` o'zidan oldingi xatoni tozalaydi (handle qiladi) va yangi qiymat qaytarishi mumkin. Shuning uchun undan keyingi `.then()`lar ishlashda davom etadi."
+      explanation: "Tarmoq orqali yuborilayotgan ma'lumotlar matn (string) shaklida bo'lishi lozim. Shuning uchun obyekt `JSON.stringify` qilinadi."
     },
     {
       id: 6,
-      question: "`Promise.allSettled()` qaytaradigan massivdagi har bir obyekt qaysi xususiyatlarga ega?",
+      question: "Quyidagilardan qaysi biri fetch() catch blokiga tushadigan (reject bo'ladigan) holat hisoblanadi?",
       options: [
-        "Faqat `value` yoki `reason`",
-        "`status` va (`value` yoki `reason`)",
-        "Faqat `status` va `ok`",
-        "Faqat error kodlari"
+        "Server 404 (Not Found) statusini qaytarganda",
+        "Server 500 (Server Error) statusini qaytarganda",
+        "Tarmoq ulanishi yo'qolganda yoki DNS xatosi sababli so'rov serverga yetib bormaganda",
+        "Foydalanuvchi ma'lumotlari noto'g'ri bo'lganda"
       ],
-      correctAnswer: 1,
-      explanation: "Har bir obyektda `status` ('fulfilled' yoki 'rejected') bo'ladi. Agar status fulfilled bo'lsa `value`, rejected bo'lsa `reason` (xato sababi) mavjud bo'ladi."
+      correctAnswer: 2,
+      explanation: "fetch() faqat tarmoq darajasida uzilish yuz bergandagina (so'rov yakuniga yetmasa) reject bo'ladi va catch blokiga o'tadi."
     },
     {
       id: 7,
-      question: "Promis-larning callback funksiyalari qaysi navbatda (queue) bajariladi?",
+      question: "`Content-Type: application/json` sarlavhasi (header) nima uchun jo'natiladi?",
       options: [
-        "Macrotask Queue",
-        "Microtask Queue",
-        "Call Stack'da sinxron",
-        "Web APIs ichida"
+        "Foydalanuvchini autentifikatsiya qilish uchun",
+        "Serverga yuborilayotgan ma'lumot formati JSON ekanligini bildirish uchun",
+        "So'rovni bekor qilish uchun",
+        "CORS xatosini oldini olish uchun"
       ],
       correctAnswer: 1,
-      explanation: "Promislarning callbacklari (then/catch/finally) Microtask navbatiga joylashadi. Microtasklar macrotasklarga (masalan setTimeout) qaraganda yuqori ustuvorlikka ega."
+      explanation: "Ushbu sarlavha serverga yuborilayotgan body tarkibi JSON formatida ekanini tushunishga va uni to'g'ri parse qilishga yordam beradi."
     },
     {
       id: 8,
-      question: "`new Promise((resolve, reject) => { ... })` ichidagi kod sinxronmi yoki asinxron?",
+      question: "`fetch` yordamida yuborilgan so'rovni qanday bekor qilish mumkin?",
       options: [
-        "Asinxron bajariladi",
-        "Sinxron (darhol) bajariladi",
-        "Event loop bo'shagandan keyin ishlaydi",
-        "Faqat 1 soniyadan keyin ishlaydi"
+        "`fetch.stop()` chaqirish orqali",
+        "`AbortController` va uning `signal` xususiyati yordamida",
+        "Sahifani yangilash orqali",
+        "So'rovni bekor qilib bo'lmaydi"
       ],
       correctAnswer: 1,
-      explanation: "Promise konstruktori ichidagi executor funksiya sinxron ravishda darhol ishga tushadi. Faqat uning resolve/reject qilingan callbacklari asinxron navbatga qo'yiladi."
+      explanation: "AbortController signalini fetch-ga ulab, keyinchalik `controller.abort()` chaqirish orqali faol so'rovni to'xtatish mumkin."
     },
     {
       id: 9,
-      question: "Promisening necha xil yakuniy (settled) holati bo'lishi mumkin?",
-      options: ["1 xil (fulfilled)", "2 xil (fulfilled yoki rejected)", "3 xil", "Cheksiz"],
-      correctAnswer: 1,
-      explanation: "Promise faqat ikkita yakuniy holatga ega bo'lishi mumkin: fulfilled (muvaffaqiyatli) yoki rejected (rad etilgan). Ular settled deb ataladi."
+      question: "Serverdan kelgan rasm yoki PDF faylni o'qish uchun response-ning qaysi metodidan foydalaniladi?",
+      options: [
+        "`.json()`",
+        "`.text()`",
+        "`.blob()`",
+        "`.html()`"
+      ],
+      correctAnswer: 2,
+      explanation: "Ikkilik (binary) ko'rinishdagi ma'lumotlarni o'qish uchun `.blob()` (Binary Large Object) metodi ishlatiladi."
     },
     {
       id: 10,
-      question: "`Promise.any()` metodining `Promise.race()`dan asosiy farqi nimada?",
+      question: "CORS (Cross-Origin Resource Sharing) nima?",
       options: [
-        "Hech qanday farqi yo'q",
-        "U faqat birinchi muvaffaqiyatli (fulfilled) promisni qaytaradi va faqat hammasi rad etilgandagina reject bo'ladi",
-        "U tezroq ishlaydi",
-        "U faqat network so'rovlarini qabul qiladi"
+        "Tarmoq ma'lumotlarini shifrlash vositasi",
+        "Xavfsizlik nuqtai nazaridan bir domendan boshqa domenga so'rov yuborishni cheklovchi/tartibga soluvchi brauzer mexanizmi",
+        "Yangi HTTP protokoli",
+        "JSON-ga o'xshash ma'lumot formati"
       ],
       correctAnswer: 1,
-      explanation: "`Promise.any()` xatolarni e'tiborsiz qoldirib, birinchi g'olib kelgan muvaffaqiyatli promisni kutadi. Race esa xato bo'lsa ham birinchi tugaganni oladi."
+      explanation: "CORS — brauzerlar xavfsizligini ta'minlash maqsadida boshqa manbalardan ma'lumot yuklashni cheklovchi xavfsizlik qoidasidir."
     },
     {
       id: 11,
-      question: "Bitta promisning `.then()` metodini ko'p marta mustaqil chaqirib unga bir nechta handler bog'lash mumkinmi?",
+      question: "Authorization sarlavhasida Token yuborish uchun qaysi format ko'p ishlatiladi?",
       options: [
-        "Yo'q, faqat oxirgi bog'langani ishlaydi",
-        "Ha, barcha bog'langan handlerlar promis bajarilgandan keyin ketma-ket parallel ishga tushadi",
-        "Faqat strict mode o'chirilgan bo'lsa",
-        "Buning uchun async/await kerak"
+        "`Token mytoken123`",
+        "`Bearer mytoken123`",
+        "`Auth mytoken123`",
+        "`Key mytoken123`"
       ],
       correctAnswer: 1,
-      explanation: "Ha, bitta promisga bir nechta mustaqil `.then()` ulanishi mumkin. Ular bir-biriga ta'sir qilmagan holda, promis resolve bo'lishi bilan navbatma-navbat bajariladi."
+      explanation: "Veb standartlarida ko'pincha tokenlar Authorization headerida `Bearer <token>` ko'rinishida yuboriladi."
     },
     {
       id: 12,
-      question: "Agar resolve(value) chaqirilgandan keyin executor ichida yana resolve(otherValue) chaqirilsa nima sodir bo'ladi?",
+      question: "So'rov parametrlarini (query parameters, masalan `?limit=10&page=2`) fetch-da qanday yuboramiz?",
       options: [
-        "Qiymat ikkinchisiga o'zgaradi",
-        "Ikkinchi chaqiruv e'tiborsiz qoldiriladi (holat o'zgarmaydi)",
-        "Xatolik tashlanadi",
-        "Ikkala qiymat massiv bo'lib qaytadi"
+        "Body ichiga qo'shib",
+        "URL oxiriga string ko'rinishida yoki URLSearchParams yordamida qo'shib",
+        "Headers ichida",
+        "Parametrlarni yuborib bo'lmaydi"
       ],
       correctAnswer: 1,
-      explanation: "Promise holati faqat bir marta o'zgarishi mumkin. Bir marta settled (resolve yoki reject) bo'lganidan so'ng, keyingi barcha resolve/reject chaqiriqlari e'tiborsiz qoldiriladi."
+      explanation: "Query parametrlari GET so'rovlarida to'g'ridan-to'g'ri URL manzilining oxiriga qo'shib yuboriladi."
     },
     {
       id: 13,
-      question: "Promise executor ichida oddiy `throw new Error(...)` yuz bersa nima sodir bo'ladi?",
+      question: "Promise.all() va Promise.allSettled() o'rtasidagi asosiy farq nima?",
       options: [
-        "Loyiha ish faoliyatini butunlay to'xtatadi va qotadi",
-        "Dvigatel yashirin try...catch tufayli uni reject(error) sifatida talqin qiladi va u .catch() blokiga o'tadi",
-        "Xatolik e'tiborsiz qoldiriladi",
-        "Buning uchun faqat window.onerror ishlatish kerak"
+        "Promise.all() barcha promiselar yakunlanishini har doim kutadi; Promise.allSettled() esa bittasi reject bo'lishi bilan zudlik bilan tugaydi",
+        "Promise.all() faqat bitta promiseni bajaradi; Promise.allSettled() barchasini parallel bajaradi",
+        "Promise.all() bitta reject bo'lsa ham zudlik bilan reject bo'ladi (all-or-nothing); Promise.allSettled() esa barcha promiselar (xato yoki muvaffaqiyatli) tugashini to'liq kutadi",
+        "Hech qanday farqi yo'q"
       ],
-      correctAnswer: 1,
-      explanation: "Promise executor va handlerlari yashirin `try...catch` bilan o'ralgan. Executor ichidagi har qanday runtime error `reject` chaqirilishi bilan bir xil hisoblanadi."
+      correctAnswer: 2,
+      explanation: "Promise.all 'all-or-nothing' tamoyilida ishlaydi, ya'ni bitta xato butun natijani bekor qiladi. Promise.allSettled esa har bir promisening yakuniy holatini (statusini) to'liq to'plab beradi."
     },
     {
       id: 14,
-      question: "Obyektni standard JavaScript Promise zanjirida ishlatish uchun unda qaysi metod bo'lishi kifoya?",
+      question: "JavaScript Event Loop-da Promise callbacks (.then / .catch) qaysi navbatga (queue) joylashtiriladi?",
       options: [
-        "`.promise()` metodi",
-        "`.then()` metodi (Thenable ob'ektlar)",
-        "`.resolve()` metodi",
-        "`.catch()` metodi"
+        "Macrotask Queue (Task Queue)",
+        "Microtask Queue (Job Queue)",
+        "Callback Stack",
+        "Web APIs"
       ],
       correctAnswer: 1,
-      explanation: "JavaScript-da `.then` metodiga ega bo'lgan har qanday obyekt 'thenable' hisoblanadi va Promise zanjirlarida haqiqiy Promise kabi ishlatilishi mumkin."
+      explanation: "Promises rezolyutsiyalari (then, catch, finally) Microtask Queue (Job Queue) ga joylashtiriladi va Macrotask Queue ga qaraganda yuqori ustuvorlikda bajariladi."
     }
   ]
 };

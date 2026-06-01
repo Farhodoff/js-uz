@@ -7,57 +7,61 @@ export const errorHandling = {
 
 Dasturlashda xatolar va kutilmagan holatlar (masalan, tarmoq uzilishi, noto'g'ri foydalanuvchi kiritmasi yoki server xatosi) muqarrar. Agar ushbu xatolar to'g'ri boshqarilmasa, butun JavaScript dasturi ishlashdan to'xtaydi (crash bo'ladi).
 
-Xatolar bilan ishlashning (Error Handling) asosiy maqsadi — xato sodir bo'lganda ham dasturning **butun sayt to'xtab qolmasligini** ta'minlash va foydalanuvchiga tushunarli ma'lumot berishdir.
+Xatolar bilan ishlashning (Error Handling) oily maqsadi — xato sodir bo'lganda ham dasturning **butun sayt to'xtab qolmasligini** ta'minlash va foydalanuvchiga tushunarli ma'lumot berishdir.
+
+---
 
 ## 2. SODDALIK (Analogiya)
 
 Buni sirkdagi **xavfsizlik to'ri** (safety net) deb tasavvur qiling. 
 - Dorboz (kod) balandlikda harakat qilmoqda.
 - Agar u yiqilsa (xato yuz bersa) va xavfsizlik to'ri (try...catch) bo'lmasa, u yerga yiqilib jarohat oladi (dastur o'chadi).
-- Agar xavfsizlik to'ri bo'lsa, dorboz unga yiqiladi, jarohat olmaydi va o'yinni xavfsiz davom ettirishi yoki sahnaboshiga vaziyatni tushuntirishi mumkin (dastur ishlashda davom etadi).
+- Agar xavfsizlik to'ri bo'lsa, dorboz unga yiqiladi, jarohat olmaydi va o'yinni xavfsiz davom ettirishi mumkin.
 
-## 3. STRUKTURA
+---
 
-### A. Try...Catch...Finally
-Xatolarni boshqarishning eng asosiy mexanizmi \`try...catch\` blokidir:
+## 3. CHUQUR TUSHUNCHALAR VA ILG'OR MEXANIZMLAR
+
+### A. Exception Bubbling (Xatolarning Stek Bo'ylab Qalqushi)
+JavaScript-da xatolik yuz berganida, dvigatel joriy funksiya ichida \`try...catch\` bloki bor-yo'qligini qidiradi. Agar topilmasa, u joriy funksiyani Call Stack-dan chiqarib yuboradi va uni chaqirgan ota funksiyadagi \`try...catch\`ni qidiradi. Bu jarayon xato ushlangunga qadar yoki global doiraga yetib borguncha davom etadi. Agar hech qayerda ushlanmasa, u **Tutilmagan Xato (Uncaught Error)** sifatida dasturni to'xtatadi.
+
+\`\`\`mermaid
+graph TD
+    A[Xatolik yuz berdi] --> B{Joriy funksiyada try...catch bormi?}
+    B -- Ha --> C[catch blokini bajarish]
+    B -- Yo'q --> D[Call Stack-dan chiqarish]
+    D --> E{Ota funksiya bormi?}
+    E -- Ha --> B
+    E -- Yo'q --> F[Global Uncaught Error]
+\`\`\`
+
+### B. Error Cause (Xato Sababini Zanjirlash - ES2022)
+Ko'p hollarda biz past darajadagi xatolarni (masalan, tarmoq xatolari yoki ma'lumotlar bazasi xatolarini) tutib, ularni yuqori darajadagi tushunarli xatolarga o'ramoqchi (wrap qilmoqchi) bo'lamiz. ES2022 dan boshlab \`new Error()\` konstruktoriga maxsus \`cause\` (sabab) xossasini uzatish mumkin. Bu orqali xatolik zanjirlari ziyon ko'rmasdan saqlanib qoladi:
+
 \`\`\`javascript
 try {
-  // Xavfli yoki xato yuz berishi mumkin bo'lgan kod
-  const user = JSON.parse("not-a-json");
-} catch (error) {
-  // Xato yuz berganda bajariladigan kod
-  console.log("Xato yuz berdi:", error.message);
-} finally {
-  // Xato bo'lishi yoki bo'lmasligidan qat'iy nazar har doim ishlaydi
-  console.log("Jarayon yakunlandi");
+  database.saveUser(user);
+} catch (err) {
+  // pastki xatoni yuqori darajali xato ichiga ulab otamiz
+  throw new Error("Foydalanuvchini saqlab bo'lmadi", { cause: err });
 }
 \`\`\`
 
-**Error obyektining xususiyatlari:**
-- \`error.name\` — xato turi nomi (masalan, \`TypeError\`, \`ReferenceError\`).
-- \`error.message\` — xato haqida tushunarli matn.
-- \`error.stack\` — xato qayerda va qanday chaqiriqlar ketma-ketligida yuz berganini ko'rsatuvchi stek.
-
-### B. Throw Operator yordamida Xato Tashlash
-Dasturchi o'z qoidalari asosida sun'iy xatolik yaratishi mumkin:
-\`\`\`javascript
-function checkAge(age) {
-  if (age < 0) {
-    throw new Error("Yosh manfiy bo'lishi mumkin emas!");
-  }
-  return "Muvaffaqiyatli";
-}
+\`\`\`mermaid
+classDiagram
+    class UserError {
+        +String name: "UserSaveError"
+        +String message: "Foydalanuvchini saqlab bo'lmadi"
+    }
+    class LowLevelError {
+        +String name: "DatabaseTimeoutError"
+        +String message: "Database connection timed out"
+    }
+    UserError --> LowLevelError : cause (original error)
 \`\`\`
 
-### C. Standart Xato Turlari (Built-in Error Types)
-JavaScript-da eng ko'p uchraydigan xatolar:
-1. **ReferenceError** — mavjud bo'lmagan o'zgaruvchiga murojaat etilganda.
-2. **TypeError** — qiymat kutilgan turda bo'lmaganda (masalan, \`null.toUpperCase()\`).
-3. **SyntaxError** — kod sintaksisida xatolik bo'lsa.
-4. **RangeError** — qiymat ruxsat etilgan diapazondan chiqqanda (masalan, \`new Array(-1)\`).
-
-### D. Custom Error (Maxsus Xatolar)
-Katta loyihalarda standart \`Error\` klassidan voris olib o'zimizning xato klasslarimizni yasashimiz mumkin:
+### C. Custom Error (Maxsus Xatolar) va prototype.name
+Katta loyihalarda standart \`Error\` klassidan voris olib o'zimizning xato klasslarimizni yasashimiz lozim. Voris olinganda \`super(message)\` chaqirilishi va \`this.name\` o'rnatilishi shart:
 \`\`\`javascript
 class ValidationError extends Error {
   constructor(message) {
@@ -67,81 +71,43 @@ class ValidationError extends Error {
 }
 \`\`\`
 
-### E. Asinxron Xatolar bilan Ishlash
-\`try...catch\` bloki faqat **sinxron** kodlar uchun ishlaydi. Asinxron xatolarni boshqarish uchun \`async/await\` va \`try...catch\` birga ishlatiladi:
+### D. Safe JSON parsing pattern
+Sinxron kodlarda \`JSON.parse()\` noto'g'ri format berilsa darhol xato otib, dasturni buzadi. Buning oldini olish uchun xavfsiz wrapper patternini qo'llash tavsiya etiladi:
 \`\`\`javascript
-// XATO (catch ishlamaydi):
-try {
-  setTimeout(() => {
-    throw new Error("Kutilmagan xato");
-  }, 1000);
-} catch (e) {
-  console.log("Bu catch ishga tushmaydi!");
-}
-
-// TO'G'RI (async/await bilan):
-async function loadData() {
+function safeJSONParse(str, fallbackValue = {}) {
   try {
-    const data = await fetch("https://invalid-url.com").then(res => res.json());
+    return JSON.parse(str);
   } catch (e) {
-    console.log("Asinxron xato ushlandi:", e.message);
+    return fallbackValue;
   }
 }
 \`\`\`
 
-## 4. XATOLAR (Common Mistakes)
+---
 
-1. **Bo'sh catch bloki (Silent Failures):** Xatoni tutib, uni hech qayerga yozmaslik yoki ko'rsatmaslik xavfli. Bu muammoni qidirib topishni juda qiyinlashtiradi.
-   \`\`\`javascript
-   // XATO:
-   try {
-     doSomething();
-   } catch (e) {} // Xato yashirib ketildi
-   \`\`\`
+## 4. KO'P UCHRAYDIGAN XATOLAR
+1. **Silent Failures (Jimjitlik xatosi):** Xatolikni catch ichida shunchaki yashirib ketish. Bu dasturdagi muammolarni qidirishni judayam murakkablashtiradi.
+2. **Asinxron kodlarda oddiy try...catch ishlatish:** Agar asinxron chaqiriq oldiga \`await\` qo'yilmasa, try...catch uni tuta olmaydi.
 
-2. **Asinxron kodlarda oddiy try...catch ishlatish:** \`await\` kalit so'zini qo'yish esdan chiqsa, asinxron xato \`try...catch\` dan tashqariga chiqib ketadi va dastur crash bo'ladi.
+---
 
-3. **Har qanday narsani throw qilish:** JSda \`throw 123;\` yoki \`throw "xato";\` qilish mumkin bo'lsa-da, har doim \`throw new Error()\` yordamida Error obyektini tashlash lozim. Chunki boshqa turlarda call stack bo'lmaydi.
+## 5. SAVOLLAR VA JAVOBLAR
 
-## 5. AMALIYOT (Mashqlar pastda)
+**1. finally bloki qachon ishlaydi?**
+finally bloki har doim (try blokida xato bo'lsa ham, bo'lmasa ham, xatto try yoki catch ichida return bo'lsa ham) bajariladi.
 
-## 6. SAVOLLAR VA JAVOBLAR
+**2. Error cause nima uchun ishlatiladi?**
+Xato zanjirini saqlab qolish uchun. Biror past darajadagi xatoni (masalan, tarmoq xatosi) ushlab, yuqori darajadagi o'ralgan xatoga sabab qilib bog'lashda qo'l keladi.
 
-**1. try...catch bloki qanday ishlaydi?**
-Sinxron kod bajarilayotganda try bloki ichida xato sodir bo'lsa, try bloki darhol to'xtaydi va boshqaruv catch blokiga o'tadi. Xato bo'lmasa catch bloki tashlab ketiladi.
+**3. ReferenceError va TypeError farqi nimada?**
+ReferenceError mavjud bo'lmagan o'zgaruvchiga murojaat qilinganda kelib chiqadi. TypeError esa mavjud obyekt ustida noto'g'ri turdagi operatsiya (masalan, \`undefined.toString()\`) bajarilganda yuz beradi.
 
-**2. finally bloki qachon va nima uchun ishlatiladi?**
-finally bloki har doim (try blokida xato bo'lsa ham, bo'lmasa ham, xatto try yoki catch ichida return bo'lsa ham) bajariladi. Odatda u ochiq fayllarni yopish, tarmoq ulanishlarini uzish yoki tozalash ishlarini bajarish uchun qo'llaniladi.
+**4. Global darajada tutilmagan xatolarni brauzerda qanday tinglash mumkin?**
+\`window.addEventListener('unhandledrejection')\` asinxron promiselar uchun va \`window.onerror\` sinxron xatolar uchun.
 
-**3. Error obyektining message va name xususiyatlari nima?**
-name — xatoning turi (masalan, TypeError), message — dasturchi yoki tizim tomonidan yozilgan xato haqidagi izoh matni.
-
-**4. Dasturda ReferenceError qachon paydo bo'ladi?**
-Siz e'lon qilinmagan, mavjud bo'lmagan yoki o'sha scope-da ko'rinmaydigan o'zgaruvchiga murojaat qilganingizda.
-
-**5. TypeError va SyntaxError farqi nimada?**
-SyntaxError — kod yozilish qoidalari buzilganda (masalan qavs yopilmaganda) kompilyatsiya bosqichida chiqadi. TypeError esa kod to'g'ri yozilgan lekin noto'g'ri turdagi qiymat ustida operatsiya bajarilganda (masalan undefined ni funksiya kabi chaqirganda) runtime-da chiqadi.
-
-**6. throw operatori nima uchun kerak?**
-Dasturdagi ma'lum biznes-mantiq shartlari bajarilmaganda (masalan, parol uzunligi kam bo'lsa) ataylab xatolik hosil qilib, uni yuqori darajadagi catch blokiga yuborish uchun.
-
-**7. try...catch oddiy setTimeout ichidagi xatoni nega tuta olmaydi?**
-Chunki setTimeout ichidagi callback funksiya zaxiraga olinadi va u ishga tushganda try...catch bloki allaqachon bajarilib bo'lingan va stack-dan chiqib ketgan bo'ladi.
-
-**8. Asinxron xatolarni async/await bilan qanday tutish mumkin?**
-Asinxron funksiyani chaqirishda await kalit so'zini ishlatib, uni oddiy try...catch blokining ichiga joylashtirish orqali.
-
-**9. Promise-lardagi xatolarni qanday ushlaymiz?**
-Promise zanjirining oxirida \`.catch()\` metodini chaqirish orqali yoki agar await ishlatilsa, try...catch yordamida.
-
-**10. Custom Error klasslarini yaratish nega kerak?**
-Tizimdagi standart texnik xatolarni biznes mantiq xatolaridan (masalan, to'lov xatosi, validatsiya xatosi) farqlash va ularni alohida usullar bilan boshqarish uchun.
-
-**11. \`throw new Error("Xato")\` va \`throw "Xato"\` o'rtasidagi farq nima?**
-\`new Error\` orqali yaratilgan obyekt o'zida stack trace (chaqiriqlar tarixi)ni saqlaydi va bu xatoning qayerdan kelganini aniqlashni osonlashtiradi. Oddiy string-da bu ma'lumot bo'lmaydi.
-
-**12. Global darajada tutilmagan xatolarni qanday nazorat qilish mumkin?**
-Brauzerlarda \`window.onerror\` yoki \`window.addEventListener('unhandledrejection')\` yordamida, Node.js muhitida esa \`process.on('uncaughtException')\` orqali.`,
+**5. Custom error klasslarida super(message) nima qiladi?**
+Ota sinf (\`Error\`) konstruktorini chaqiradi, bu esa xato xabarini va stack trace (chaqiriqlar tarixi)ni to'g'ri shakllantirish imkonini beradi.
+`,
   exercises: [
     {
       id: 1,
@@ -238,6 +204,22 @@ Brauzerlarda \`window.onerror\` yoki \`window.addEventListener('unhandledrejecti
       startingCode: "function validateUser(user) {\n  // Kodni yozing\n}",
       hint: "if (!user.username) throw new Error('Foydalanuvchi nomi majburiy');",
       test: "try { validateUser({ age: 25 }); return 'Xato tashlanmadi'; } catch (e) { if (e.message === 'Foydalanuvchi nomi majburiy') return null; return 'Xato xabari noto\\'g\\'ri'; }"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Xavfsiz JSON Parse (safeJSONParse)",
+      instruction: "Berilgan satrni xavfsiz JSON.parse qiladigan `safeJSONParse(str, fallback)` funksiyasini yozing. Noto'g'ri JSON bo'lsa, xato tashlamasdan `fallback` qiymatini qaytarsin.",
+      startingCode: "function safeJSONParse(str, fallback) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "try { return JSON.parse(str); } catch (e) { return fallback; }",
+      test: "if (typeof safeJSONParse !== 'function') return 'safeJSONParse funksiya emas';\nif (safeJSONParse('{\"a\": 1}', {})?.a !== 1) return 'To\\'g\\'ri JSON xato parse qilindi';\nif (JSON.stringify(safeJSONParse('{invalid}', { b: 2 })) !== '{\"b\":2}') return 'Fallback noto\\'g\\'ri qaytdi';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Error cause bog'lash (fetchWithErrorCause)",
+      instruction: "Berilgan `url`ga fetch yuboring. Agar tarmoq xatosi yuz bersa (catch), uni ushlab, `new Error('Tarmoq yuklash xatosi', { cause: err })` deb original xatoni ulab qayta tashlang (throw).",
+      startingCode: "async function fetchWithErrorCause(url) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "try { return await fetch(url); } catch (err) { throw new Error('Tarmoq yuklash xatosi', { cause: err }); }",
+      test: "if (typeof fetchWithErrorCause !== 'function') return 'fetchWithErrorCause funksiya emas';\nreturn fetchWithErrorCause('https://invalid-domain-does-not-exist.xyz').then(() => 'Xato tashlanmadi').catch(err => {\n  if (err.message === 'Tarmoq yuklash xatosi' && err.cause instanceof Error) return null;\n  return 'Error cause zanjiri noto\\'g\\'ri shakllantirilgan';\n});"
     }
   ],
   quizzes: [
@@ -248,10 +230,10 @@ Brauzerlarda \`window.onerror\` yoki \`window.addEventListener('unhandledrejecti
         "Kod tezligini va unumdorligini oshirish",
         "Kutilmagan xatolar tufayli butun dastur to'xtab qolishining oldini olish",
         "O'zgaruvchilarni avtomatik ravishda e'lon qilish",
-        "Barcha asinxron kodlarni sinxron kodga o'tkazish"
+        "Balla asinxron kodlarni sinxron kodga o'tkazish"
       ],
       correctAnswer: 1,
-      explanation: "`try...catch` yuzaga keladigan xatolarni boshqarish imkonini beradi va kutilmagan xatolar tufayli butun dasturning ishdan chiqishini (crash bo'lishini) oldini oladi."
+      explanation: "`try...catch` yuzaga keladigan xatolarni boshqarish imkonini beradi va kutilmagan xatolar tufayli bu dasturning ishdan chiqishini (crash bo'lishini) oldini oladi."
     },
     {
       id: 2,
@@ -364,6 +346,30 @@ Brauzerlarda \`window.onerror\` yoki \`window.addEventListener('unhandledrejecti
       ],
       correctAnswer: 2,
       explanation: "JavaScript-da `throw` operatori juda moslashuvchan va har qanday qiymatni tashlay oladi, lekin standart bo'yicha har doim `Error` obyektini tashlash tavsiya etiladi."
+    },
+    {
+      id: 13,
+      question: "JavaScript-dagi Error.cause xossasining asosiy vazifasi nima (ES2022)?",
+      options: [
+        "Xatoliklarning yuzaga kelish tezligini kamaytirish",
+        "Xatoliklarni bir-biriga bog'lab, pastki (original) xatoning yuqori darajadagi xato ichida saqlanishini ta'minlash (xato zanjirlari)",
+        "Xatoliklarni serverga avtomatik yuborish",
+        "Xato kodini o'zgartirish"
+      ],
+      correctAnswer: 1,
+      explanation: "ES2022 da taqdim etilgan `cause` xossasi orqali yuqori darajadagi xatoga pastki darajadagi original xato obyekti bog'lanadi. Bu xatolar zanjirini o'rganishni osonlashtiradi."
+    },
+    {
+      id: 14,
+      question: "Tutilmagan xatolarning Call Stack bo'ylab qalqishi (Exception Bubbling) nima?",
+      options: [
+        "Xato yuz berganda sahifaning avtomatik yuqoriga scroll bo'lishi",
+        "Xato sodir bo'lgan funksiyadan ota chaqiruvchi funksiyalarga, toki `try...catch` topilguncha yoki global doiraga yetguncha xatoning yuqoriga uzatilishi",
+        "Memory leak yuzaga kelishi",
+        "Xatolarni avtomatik o'chirib yuborish mexanizmi"
+      ],
+      correctAnswer: 1,
+      explanation: "Exception Bubbling — agar joriy doirada try-catch bo'lmasa, xatoning stack bo'ylab yuqoriga qarab qalqishi va chaqiruvchi doiralarda izlanishidir."
     }
   ]
 };

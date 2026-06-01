@@ -20,7 +20,48 @@ Tasavvur qiling, siz qahvaxonadasiz:
 
 ---
 
-## 3. STRUKTURA
+## 3. CHUQUR TUSHUNCHALAR VA ENGINE UNDER-THE-HOOD
+
+### A. Generatorlar va Promise Integratsiyasi (Under the hood)
+JavaScript dvigateli (V8) asinxron funksiyalarni **Generatorlar** (\`function*\`) va **Promises** yordamida qayta ishlaydi. Har safar \`await\` operatori ko'rilganda, generator o'z faoliyatini to'xtatadi (\`yield\`) va boshqaruvni asosiy Call Stack-ga beradi. \`await\` qilinayotgan Promise hal bo'lganidan keyin (\`resolve\`), generator yana o'z faoliyatini tiklaydi (\`next()\`).
+
+### B. Ketma-ket (Sequential) vs Parallel Await (Performance)
+Juda ko'p uchraydigan xatolardan biri asinxron so'rovlarni bir-biriga bog'liq bo'lmagan holda ketma-ket kutib o'tirishdir:
+
+* **Sinxron/Ketma-ket Await (Yomon performance):**
+  \`\`\`javascript
+  // Har bir so'rov oldingisi tugagachgina boshlanadi (Total: 4 soniya)
+  const r1 = await fetch("api1"); // 2s
+  const r2 = await fetch("api2"); // 2s
+  \`\`\`
+* **Parallel Await (Yaxshi performance):**
+  \`\`\`javascript
+  // Ikkala so'rov parallel boshlanadi (Total: 2 soniya)
+  const p1 = fetch("api1");
+  const p2 = fetch("api2");
+  const [r1, r2] = await Promise.all([p1, p2]);
+  \`\`\`
+
+\`\`\`mermaid
+gantt
+    title Await Timeline (Ketma-ket vs Parallel)
+    dateFormat  X
+    axisFormat %s
+    section Ketma-ket Await
+    API 1 (2s)        :active, 0, 2
+    API 2 (2s)        : 2, 4
+    section Parallel Await
+    API 1 (2s)        :active, 0, 2
+    API 2 (2s)        :active, 0, 2
+\`\`\`
+
+### C. Top-Level Await va Cheklovlar
+ES2022 dan boshlab \`async\` funksiya tashqarisida ham (modulning eng yuqori darajasida) \`await\` yozishga ruxsat berildi. Ammo buning cheklovlari bor:
+- Faqat **ES Modullarda** (\`import\`/\`export\` ishlatadigan) ishlaydi.
+- Modulni import qilayotgan boshqa modullar uning eng yuqoridagi await-i hal bo'lgunicha importni **bloklab** (kutib) turishadi. Bu sahifa yuklanish tezligiga ta'sir qilishi mumkin.
+
+### D. Error Propagation (Xatolar tarqalishi)
+Async funksiyalar ichida yuz bergan har qanday tutilmagan xatolik (uncaught exception) funksiya qaytargan Promiseni rad etilishiga (\`rejected\`) sabab bo'ladi. Xatolarni oddiy \`try...catch\` yordamida ushlash mumkin.
 
 \`\`\`mermaid
 sequenceDiagram
@@ -30,493 +71,321 @@ sequenceDiagram
     
     Main->>AsyncFn: getData() chaqiriladi
     AsyncFn->>WebAPI: fetch('api/data') - asinxron boshlanadi
-    Note over AsyncFn: await fetch(...) - funksiya to'xtatiladi
+    Note over AsyncFn: await fetch(...) - funksiya to'xtatiladi (suspended)
     AsyncFn-->>Main: Promise { pending } qaytariladi
     Note over Main: Asosiy oqim boshqa ishlarni bajaradi (UI render, eventlar)
     WebAPI-->>AsyncFn: Ma'lumot tayyor (resolve)
-    Note over AsyncFn: getData() o'z ishini davom ettiradi
+    Note over AsyncFn: getData() o'z ishini davom ettiradi (resumed)
     AsyncFn-->>Main: Yakuniy natija qaytadi (fulfilled)
 \`\`\`
 
-### A. \`async\` kalit so'zi
-Kalit so'z funksiya e'lonidan oldin qo'yiladi. \`async\` funksiyalar har doim **Promise** qaytaradi. Agar funksiyadan oddiy qiymat qaytarilsa, u avtomatik ravishda \`Promise.resolve()\` bilan o'raladi.
-\`\`\`javascript
-async function myFunc() {
-  return "Salom";
-}
+---
 
-myFunc().then(res => console.log(res)); // "Salom"
-\`\`\`
-
-### B. \`await\` operatori
-\`await\` faqat \`async\` funksiya ichida ishlaydi. U Promise bajarilguniga qadar funksiya ijrosini to'xtatib turadi va keyin natijani qaytaradi.
-\`\`\`javascript
-async function getProfile() {
-  // fetch asinxron vaqt oladi, await uni kutadi
-  const response = await fetch("https://api.example.com/profile");
-  const data = await response.json(); // json parsingni ham kutamiz
-  return data;
-}
-\`\`\`
-
-### C. Xatolarni boshqarish (\`try...catch\`)
-Asinxron xatolarni (rejected promislar) ushlash uchun an'anaviy \`try...catch\` blokidan foydalaniladi.
-\`\`\`javascript
-async function fetchUser() {
-  try {
-    const res = await fetch("https://invalid-url.com");
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error("Xatolik yuz berdi:", error.message);
-    return null;
-  } finally {
-    console.log("So'rov yakunlandi.");
-  }
-}
-\`\`\`
-
-### D. Parallel va Ketma-ket (Sequential) Await
-- **Ketma-ket (Sequential):** Agar har bir await bir-biridan mustaqil bo'lsa-da, ularni ketma-ket yozsak, umumiy vaqt ko'payadi.
-  \`\`\`javascript
-  // KOD 4 soniya oladi (2s + 2s)
-  const user = await getUser(); // 2s
-  const posts = await getPosts(); // 2s
-  \`\`\`
-- **Parallel:** Promislarni parallel boshlab yuborib, so'ng ularni birgalikda kutish tezroq ishlaydi.
-  \`\`\`javascript
-  // KOD 2 soniya oladi (parallel)
-  const userPromise = getUser(); // darhol boshlanadi
-  const postsPromise = getPosts(); // darhol boshlanadi
-  
-  const user = await userPromise;
-  const posts = await postsPromise;
-  // yoki: const [user, posts] = await Promise.all([userPromise, postsPromise]);
-  \`\`\`
-
-### E. Tsikllar ichida \`await\` ishlatish
-- \`for...of\` tsikli ichida \`await\` ishlatilganda, iteratsiyalar ketma-ket (biri tugagandan keyin ikkinchisi) bajariladi.
-- \`Array.prototype.forEach\` ichida \`await\` ishlatilsa, u awaitni kutmaydi va barcha asinxron operatsiyalarni parallel boshlab yuboradi (chunki \`forEach\` o'z callbackini kutmaydi).
-
-### F. Ketma-ket (Sequential) vs Parallel Await (Vizual taqqoslash)
-
-Ketma-ket chaqirilgan awaitlar va parallel chaqirilgan awaitlar o'rtasidagi vaqt tejalishini quyidagi sxemada yaqqol ko'rish mumkin (masalan, ikkita 2 soniyali asinxron ishda):
-
-\`\`\`mermaid
-gantt
-    title Ketma-ket vs Parallel bajarilish vaqti
-    dateFormat  X
-    axisFormat %s s
-    section Ketma-ket (4s)
-    Await A (2s)           :a1, 0, 2
-    Await B (2s)           :a2, after a1, 2
-    section Parallel (2s)
-    Promise.all A (2s)     :b1, 0, 2
-    Promise.all B (2s)     :b2, 0, 2
-\`\`\`
-
-### G. Custom Thenables bilan ishlash
-Xuddi Promislar kabi, \`await\` operatori ham \`.then()\` metodiga ega bo'lgan har qanday 'thenable' obyekt bilan muammosiz ishlaydi:
-\`\`\`javascript
-const customThenable = {
-  then(resolve) {
-    setTimeout(() => resolve("Tayyor!"), 1000);
-  }
-};
-
-async function run() {
-  const result = await customThenable;
-  console.log(result); // "Tayyor!"
-}
-\`\`\`
-
-### H. Klass Metodlarini Asinxron qilish
-Klasslar ichidagi metodlar ham \`async\` kalit so'zi bilan e'lon qilinishi mumkin va oddiy funksiyalar kabi chaqiriladi:
-\`\`\`javascript
-class UserAPI {
-  async fetchProfile(id) {
-    const res = await fetch(\`https://api.com/users/\${id}\`);
-    return res.json();
-  }
-}
-const api = new UserAPI();
-const user = await api.fetchProfile(1);
-\`\`\`
-
-### I. Async IIFE (Darhol chaqiriluvchi asinxron funksiya)
-Agar moduldan tashqarida top-level await qo'llab-quvvatlanmasa, kodni asinxron ishga tushirish uchun Async IIFE dan foydalaniladi:
-\`\`\`javascript
-(async () => {
-  const data = await getProfile();
-  console.log(data);
-})();
-\`\`\`
+## 4. KO'P UCHRAYDIGAN XATOLAR
+1. **\`await\` yozishni unutib, uning qaytargan qiymatini oddiy ma'lumot deb o'ylash:** Bu holatda qiymat o'rniga siz \`Promise { <pending> }\` obyektini olasiz.
+2. **Parallel chaqirish mumkin bo'lgan joyda ketma-ket await qilish:** Tarmoq so'rovlarini parallel yuborish o'rniga keraksiz kutishlarni hosil qilish.
 
 ---
 
-## 4. AMALIYOT
+## 5. SAVOLLAR VA JAVOBLAR
 
-Quyida foydalanuvchi va uning buyurtmalarini xavfsiz parallel yuklash misoli keltirilgan:
-\`\`\`javascript
-async function loadDashboard(userId) {
-  try {
-    console.log("Yuklanmoqda...");
-    const userPromise = fetchUser(userId);
-    const ordersPromise = fetchOrders(userId);
+**1. async funksiya har doim nima qaytaradi?**
+U har doim Promise qaytaradi. Agar funksiya ichidan oddiy qiymat qaytarilsa (return), u avtomatik ravishda Promise.resolve(qiymat) bilan o'raladi.
 
-    // Parallel kutish
-    const [user, orders] = await Promise.all([userPromise, ordersPromise]);
-    
-    return { user, orders };
-  } catch (err) {
-    console.error("Dashboard yuklanmadi:", err);
-    return null;
-  }
-}
-\`\`\`
+**2. await kalit so'zi qayerda ishlatilishi mumkin?**
+Faqat async funksiyalarning ichida yoki ES modullarning eng yuqori qismida (Top-level await).
 
----
+**3. async/await ichida xatolarni qanday ushlaymiz?**
+Oddiy \`try...catch\` bloklaridan foydalanib sinxron kod kabi ushlaymiz.
 
-## 5. XATOLAR (Common Mistakes)
+**4. Top-level await nima va u qayerda ishlaydi?**
+Bu async funksiyadan tashqarida await ishlatish imkoni bo'lib, faqat JavaScript ES Modullarda (.mjs yoki type: module sozlamasi bilan) ishlaydi.
 
-1. **\`await\`ni oddiy funksiyada ishlatish:**
-   \`\`\`javascript
-   // XATO: SyntaxError beradi
-   function test() {
-     const data = await fetchData(); 
-   }
-   \`\`\`
-2. **\`await\`ni yozishni unutish:**
-   \`\`\`javascript
-   // XATO: user o'zgaruvchisida data emas, balki Promise obyekti saqlanib qoladi
-   const user = fetchUser();
-   console.log(user.name); // undefined
-   \`\`\`
-3. **try...catch-dan foydalanmaslik:**
-   Agar asinxron funksiyada xatolik yuz bersa va u catch qilinmasa, u \`UnhandledPromiseRejection\` xatosini keltirib chiqaradi.
-
----
-
-## 6. SAVOLLAR VA JAVOBLAR
-
-**1. async kalit so'zi nima vazifani bajaradi?**
-Funksiyani asinxron qiladi va uning har doim Promise qaytarishini ta'minlaydi. Agar funksiyadan oddiy qiymat qaytsa, u avtomatik ravishda Promise.resolve() bilan o'raladi.
-
-**2. await operatori qanday vazifani bajaradi?**
-Promise yakunlanishini (fulfilled yoki rejected bo'lishini) asinxron ravishda kutadi va natijasini qaytaradi. U funksiya bajarilishini bloklamaydi, balki fonda kutadi.
-
-**3. await operatorini oddiy sinxron funksiyalarda ishlatsa bo'ladimi?**
-Yo'q, oddiy funksiyalar ichida await ishlatish SyntaxError (sinxtaksik xato)ga olib keladi. Faqat async funksiyalar ichida yoki ES modullarning yuqori darajasida (top-level await) ishlatish mumkin.
-
-**4. async/await yordamida asinxron xatolarni qanday ushlaymiz?**
-Sinxron koddagi kabi an'anaviy try...catch blokidan foydalanib ushlaymiz. Agar await qilinayotgan Promise rad etilsa (rejected), xato catch blokiga otiladi.
-
-**5. Ketma-ket (sequential) va parallel await qilish o'rtasidagi farq nima?**
-Ketma-ket await qilishda har bir Promise oldingisi tugagandan keyin boshlanadi, bu vaqtni cho'zadi. Parallel qilishda esa barcha Promislar birdaniga ishga tushirilib, keyin parallel ravishda kutiladi (masalan, Promise.all yordamida).
-
-**6. Tsikllar (loops) ichida await ishlatganda forEach va for...of farqi nimada?**
-for...of tsikli iteratsiyalarni ketma-ket (sequential) kutadi (navbatma-navbat). forEach esa callback funksiyani barcha elementlar uchun parallel (asinxron) chaqirib yuboradi va awaitlarni kutib o'tirmaydi.
-
-**7. async funksiya ichida return ishlatilmasa, u nima qaytaradi?**
-U qiymati undefined bo'lgan, muvaffaqiyatli yakunlangan (resolved) Promise qaytaradi.
-
-**8. try...catch...finally bloki asinxron kodda qanday ishlaydi?**
-finally bloki try yoki catch ishlashidan qat'i nazar, asinxron operatsiyalar tugagandan so'ng har doim oxirida ishga tushadi (masalan, yuklanish indikatorini o'chirish uchun mos keladi).
-
-**9. Top-level await nima va u qachon ishlaydi?**
-Bu asinxron funksiya tashqarisida, ya'ni modulning eng yuqori darajasida await ishlatish imkoniyatidir. U faqat ES Modullarda (JavaScript modules, type: "module") ishlaydi.
-
-**10. async/await ishlatganda dasturning ishlash tezligi o'zgaradimi?**
-Yo'q, chunki async/await - bu Promislarning ustiga qurilgan "sintaksik shakar" (syntactic sugar). U kodning o'qilishini yaxshilaydi, lekin ishlash samaradorligini o'zgartirmaydi.
-
-**11. Nima uchun .catch() metodi o'rniga try...catch afzal ko'riladi?**
-try...catch yordamida ham asinxron (await xatolari), ham sinxron (masalan, JSON.parse xatolari) xatolarni bitta blokda va an'anaviy uslubda ushlash mumkin.
-
-**12. async arrow function (o'q funksiya) qanday e'lon qilinadi?**
-Kalit so'z parametrlar ro'yxatidan oldin qo'yiladi: const myFn = async () => { ... }.
+**5. Parallel asinxron so'rovlarni async/await bilan qanday optimallashtiramiz?**
+\`Promise.all\` yordamida barcha promislar ro'yxatini parallel boshlab, so'ng ularni bitta qatorda await qilamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "1️⃣ Async Funksiya e'lon qilish",
-      instruction: "Muvaffaqiyatli 'Salom' matnini qaytaruvchi asinxron `sayHello` funksiyasini yozing.",
-      startingCode: "async function sayHello() {\n  // Bu yerga yozing\n}",
-      hint: "return 'Salom'; yozing. Async funksiya avtomatik ravishda Promise qaytaradi.",
-      test: "if (typeof sayHello !== 'function') return 'sayHello funksiya emas'; const p = sayHello(); if (!(p instanceof Promise)) return 'sayHello Promise qaytarmadi'; return p.then(r => r === 'Salom' ? null : 'Natija Salom emas');"
+      title: "1️⃣ Oddiy async funksiya",
+      instruction: "'Hello World' matnini qaytaradigan oddiy asinxron `sayHello()` funksiyasini yozing.",
+      startingCode: "async function sayHello() {\n  // Kodni yozing\n}",
+      hint: "return 'Hello World';",
+      test: "if (typeof sayHello !== 'function') return 'sayHello funksiya emas'; return sayHello().then(r => r === 'Hello World' ? null : 'Natija noto\\'g\\'ri');"
     },
     {
       id: 2,
-      title: "2️⃣ Await yordamida natijani kutish",
-      instruction: "Berilgan `fetchData` funksiyasi Promise qaytaradi. `getData` asinxron funksiyasi ichida `fetchData`ni await orqali chaqiring va undan qaytgan qiymatni return qiling.",
-      startingCode: "const fetchData = () => Promise.resolve(\"Ma'lumot\");\n\nasync function getData() {\n  // Bu yerga yozing\n}",
-      hint: "const res = await fetchData(); return res;",
-      test: "if (typeof getData !== 'function') return 'getData funksiya emas'; const p = getData(); if (!(p instanceof Promise)) return 'getData Promise qaytarmadi'; return p.then(r => r === \"Ma'lumot\" ? null : 'Natija noto\\'g\\'ri');"
+      title: "2️⃣ Await operatorini ishlatish",
+      instruction: "Berilgan promise natijasini `await` qilib qaytaradigan `getValue(promise)` funksiyasini yozing.",
+      startingCode: "async function getValue(promise) {\n  // Await qilib qaytaring\n}",
+      hint: "return await promise;",
+      test: "if (typeof getValue !== 'function') return 'getValue funksiya emas'; return getValue(Promise.resolve('test')).then(r => r === 'test' ? null : 'Await xato');"
     },
     {
       id: 3,
-      title: "3️⃣ Asinxron xatolarni try...catch orqali ushlash",
-      instruction: "Berilgan `failFetch` funksiyasi xatolik tashlaydi. `safeGet` funksiyasi ichida `failFetch`ni `await` qiling. Agar xato bo'lsa, `catch` orqali uni ushlang va 'Xatolik yuz berdi' matnini qaytaring.",
-      startingCode: "const failFetch = () => Promise.reject(\"Xato\");\n\nasync function safeGet() {\n  // Bu yerga yozing\n}",
-      hint: "try { await failFetch(); } catch (e) { return 'Xatolik yuz berdi'; }",
-      test: "if (typeof safeGet !== 'function') return 'safeGet funksiya emas'; return safeGet().then(r => r === 'Xatolik yuz berdi' ? null : 'Xato ushlanmadi');"
+      title: "3️⃣ Try-Catch yordamida xatolikni ushlash",
+      instruction: "Xato beradigan promiseni `await` qiling, xatoni `try...catch` bilan tutib, uning xabarini (message) qaytaring.",
+      startingCode: "async function catchError(promise) {\n  // try...catch yozing\n}",
+      hint: "try { return await promise; } catch(e) { return e.message; }",
+      test: "if (typeof catchError !== 'function') return 'catchError funksiya emas'; return catchError(Promise.reject(new Error('baza xatosi'))).then(r => r === 'baza xatosi' ? null : 'Xato ushlanmadi');"
     },
     {
       id: 4,
-      title: "4️⃣ Promise.all ni await qilish",
-      instruction: "Berilgan `p1` va `p2` promislarini parallel bajarib, ularning natijalarini `Promise.all` va `await` yordamida oling hamda massiv ko'rinishida qaytaruvchi `getParallel` funksiyasini yozing.",
-      startingCode: "const p1 = Promise.resolve(\"A\");\nconst p2 = Promise.resolve(\"B\");\n\nasync function getParallel() {\n  // Bu yerga yozing\n}",
-      hint: "return await Promise.all([p1, p2]);",
-      test: "if (typeof getParallel !== 'function') return 'getParallel funksiya emas'; return getParallel().then(r => Array.isArray(r) && r[0] === 'A' && r[1] === 'B' ? null : 'Natija noto\\'g\\'ri');"
+      title: "4️⃣ Ketma-ket ikki promiseni kutish",
+      instruction: "p1 va p2 promiselarni ketma-ket `await` qilib, ularning yig'indisini qaytaring.",
+      startingCode: "async function getSum(p1, p2) {\n  // p1 va p2 ni kutib yig'indisini hisoblang\n}",
+      hint: "const a = await p1; const b = await p2; return a + b;",
+      test: "if (typeof getSum !== 'function') return 'getSum funksiya emas'; return getSum(Promise.resolve(2), Promise.resolve(3)).then(r => r === 5 ? null : 'Yig\\'indi xato');"
     },
     {
       id: 5,
-      title: "5️⃣ Ketma-ket (Sequential) await qilish",
-      instruction: "Berilgan `p1` va `p2` promislarini ketma-ket (sequential) `await` qiling va natijalarini 'A B' ko'rinishida birlashtirib qaytaruvchi `getSequential` funksiyasini yozing.",
-      startingCode: "const p1 = () => Promise.resolve(\"A\");\nconst p2 = () => Promise.resolve(\"B\");\n\nasync function getSequential() {\n  // Bu yerga yozing\n}",
-      hint: "const r1 = await p1(); const r2 = await p2(); return r1 + ' ' + r2;",
-      test: "if (typeof getSequential !== 'function') return 'getSequential funksiya emas'; return getSequential().then(r => r === 'A B' ? null : 'Natija noto\\'g\\'ri');"
+      title: "5️⃣ Parallel Promise.all kutish",
+      instruction: "Berilgan p1 va p2 promiselarni `Promise.all` bilan parallel kutib, natijaviy massivni qaytaring.",
+      startingCode: "async function getParallel(p1, p2) {\n  // Promise.all ishlating\n}",
+      hint: "return await Promise.all([p1, p2]);",
+      test: "if (typeof getParallel !== 'function') return 'getParallel funksiya emas'; return getParallel(Promise.resolve(10), Promise.resolve(20)).then(r => r && r[0] === 10 && r[1] === 20 ? null : 'Parallel xato');"
     },
     {
       id: 6,
-      title: "6️⃣ Async/Await va finally bloki",
-      instruction: "`loading` holatini boshqarish uchun `finally` ishlating. `processData` funksiyasi ichida `fetchData`ni await qiling. Natija qanday bo'lishidan qat'i nazar oxirida `loading` o'zgaruvchisini `false` qiling.",
-      startingCode: "let loading = true;\nconst fetchData = () => Promise.resolve(\"OK\");\n\nasync function processData() {\n  try {\n    // Bu yerga yozing\n  } catch (e) {\n  }\n}",
-      hint: "fetchData ni await qiling va try/catch dan keyin finally { loading = false; } yozing.",
-      test: "if (typeof processData !== 'function') return 'processData funksiya emas'; return processData().then(() => !loading ? null : 'loading false bo\\'lmadi');"
+      title: "6️⃣ Finally asinxron tozalash",
+      instruction: "`try...catch...finally` bloki ichida promisni kutib oling va xato bo'lsa ham `finally`da 'Clean' matnini qaytaring.",
+      startingCode: "async function handleClean(promise) {\n  try {\n    return await promise;\n  } catch(e) {\n    return 'Error';\n  } finally {\n    console.log('Clean');\n  }\n}",
+      hint: "Taqdim etilgan kodni tekshiring.",
+      test: "if (typeof handleClean !== 'function') return 'handleClean funksiya emas'; return handleClean(Promise.reject()).then(() => logs.includes('Clean') ? null : 'Finally ishlamadi');"
     },
     {
       id: 7,
-      title: "7️⃣ for...of tsiklida ketma-ket kutish",
-      instruction: "Berilgan `urls` massividagi har bir urlni `fetchData` funksiyasiga uzatib, ketma-ket (sequential) `await` qiling va natijalarni console-ga chiqaring.",
-      startingCode: "const urls = ['url1', 'url2'];\nconst fetchData = (url) => Promise.resolve(url + ' data');\n\nasync function logSequentially(urls) {\n  // Bu yerga for...of orqali yozing\n}",
-      hint: "for (const url of urls) { const data = await fetchData(url); console.log(data); }",
-      test: "if (typeof logSequentially !== 'function') return 'logSequentially funksiya emas'; return logSequentially(urls).then(() => logs.includes('url1 data') && logs.includes('url2 data') ? null : 'Natijalar log qilinmadi');"
+      title: "7️⃣ Asinxron delay funksiyasi",
+      instruction: "Belgilangan millisekund kutadigan `delay(ms)` yordamchi funksiyasini yozing (new Promise va setTimeout orqali).",
+      startingCode: "function delay(ms) {\n  // Promise qaytaring\n}",
+      hint: "return new Promise(resolve => setTimeout(resolve, ms));",
+      test: "if (typeof delay !== 'function') return 'delay funksiya emas'; const start = Date.now(); return delay(50).then(() => { const diff = Date.now() - start; if (diff >= 45) return null; return 'Kechikish vaqti xato'; });"
     },
     {
       id: 8,
-      title: "8️⃣ Async Arrow Function",
-      instruction: "Qiymati 'Arrow' bo'lgan asinxron o'q funksiya (arrow function) yarating va uni `getArrow` o'zgaruvchisiga yuklang.",
-      startingCode: "const getArrow = // Bu yerga yozing\n",
-      hint: "const getArrow = async () => 'Arrow';",
-      test: "if (typeof getArrow !== 'function') return 'getArrow funksiya emas'; return getArrow().then(r => r === 'Arrow' ? null : 'Natija noto\\'g\\'ri');"
+      title: "8️⃣ Async method obyekt ichida",
+      instruction: "Obyekt ichida `async` metod yarating va u `this.name` qiymatini qaytarsin.",
+      startingCode: "const obj = {\n  name: 'JS',\n  // async metod yozing\n};",
+      hint: "async getName() { return this.name; }",
+      test: "if (typeof obj.getName !== 'function') return 'getName metod emas'; return obj.getName().then(r => r === 'JS' ? null : 'Ism xato');"
     },
     {
       id: 9,
-      title: "9️⃣ Asinxron xatoni qayta otish (Rethrow)",
-      instruction: "`fetchError` funksiyasini `await` qiling, agar xatolik yuz bersa, uni `catch` ichida konsolga 'Xato ushlandi' deb yozing va xatoni qayta `throw` qiling (rethrow).",
-      startingCode: "const fetchError = () => Promise.reject(new Error(\"Tarmoq xatosi\"));\n\nasync function handleAndRethrow() {\n  // Bu yerga yozing\n}",
-      hint: "try { await fetchError(); } catch (e) { console.log('Xato ushlandi'); throw e; }",
-      test: "if (typeof handleAndRethrow !== 'function') return 'handleAndRethrow funksiya emas'; return handleAndRethrow().then(() => 'Xato qayta otilmadi').catch(err => logs.includes('Xato ushlandi') ? null : 'Konsolga xato yozilmadi');"
+      title: "9️⃣ Loop ichida await (Ketma-ketlik)",
+      instruction: "Massivdagi asinxron vazifalarni `for...of` tsikli ichida navbatma-navbat `await` qilib, natijalarini console.log qiling.",
+      startingCode: "async function runTasks(tasks) {\n  // tasks massivini aylanib har birini await qiling\n}",
+      hint: "for (const task of tasks) { const res = await task(); console.log(res); }",
+      test: "if (typeof runTasks !== 'function') return 'runTasks funksiya emas'; const tasks = [() => Promise.resolve(1), () => Promise.resolve(2)]; return runTasks(tasks).then(() => logs.includes(1) && logs.includes(2) ? null : 'Tasklar bajarilmadi');"
     },
     {
       id: 10,
-      title: "🔟 Promise.race ni await qilish",
-      instruction: "`fetchData` va `timeout` promislaridan birinchi bo'lib bajarilganini `await` qiling va uning natijasini qaytaring.",
-      startingCode: "const fetchData = new Promise(resolve => setTimeout(() => resolve(\"Omadli\"), 20));\nconst timeout = new Promise((_, reject) => setTimeout(() => reject(\"Taymaut\"), 50));\n\nasync function requestWithTimeout() {\n  // Bu yerga yozing\n}",
-      hint: "return await Promise.race([fetchData, timeout]);",
-      test: "if (typeof requestWithTimeout !== 'function') return 'requestWithTimeout funksiya emas'; return requestWithTimeout().then(r => r === 'Omadli' ? null : 'Natija noto\\'g\\'ri');"
+      title: "🔟 Promise.race orqali timeout qilish",
+      instruction: "So'rov va `delay(100)` taymeridan qaysi biri tez tugashini `Promise.race` bilan aniqlab, timeout bo'lsa 'Timeout!' qaytaradigan kod yozing.",
+      startingCode: "async function requestWithTimeout(promise) {\n  const delay = ms => new Promise((_, rej) => setTimeout(() => rej(new Error('Timeout!')), ms));\n  // Promise.race ishlatib xatolikni tuting\n}",
+      hint: "try { return await Promise.race([promise, delay(100)]); } catch(e) { return e.message; }",
+      test: "if (typeof requestWithTimeout !== 'function') return 'requestWithTimeout funksiya emas'; const slow = new Promise(r => setTimeout(() => r('ok'), 200)); return requestWithTimeout(slow).then(r => r === 'Timeout!' ? null : 'Timeout aniqlanmadi');"
     },
     {
       id: 11,
-      title: "1️⃣1️⃣ Promise.allSettled ni await qilish",
-      instruction: "Berilgan `promises` massividagi promislar yakunlanishini `Promise.allSettled` yordamida `await` qiling va natijalarni qaytaring.",
-      startingCode: "const promises = [Promise.resolve(1), Promise.reject('xato')];\n\nasync function getAllStates() {\n  // Bu yerga yozing\n}",
-      hint: "return await Promise.allSettled(promises);",
-      test: "if (typeof getAllStates !== 'function') return 'getAllStates funksiya emas'; return getAllStates().then(r => Array.isArray(r) && r[0].status === 'fulfilled' && r[1].status === 'rejected' ? null : 'Natija noto\\'g\\'ri');"
+      title: "1️⃣1️⃣ Async Arrow funksiya",
+      instruction: "Qiymatni qaytaradigan `async` ko'rinishidagi arrow (o'q) funksiya yarating.",
+      startingCode: "const getResult = async () => {\n  // Natijani bering\n};",
+      hint: "const getResult = async () => 'Arrow';",
+      test: "if (typeof getResult !== 'function') return 'getResult funksiya emas'; return getResult().then(r => r === 'Arrow' ? null : 'Natija xato');"
     },
     {
       id: 12,
-      title: "1️⃣2️⃣ Asinxron IIFE (Self-invoking async function)",
-      instruction: "O'zini o'zi chaqiruvchi asinxron funksiya (IIFE) yozing, u ichida `Promise.resolve('IIFE OK')`ni `await` qilsin va natijasini konsolga chiqarsin.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "(async () => { const res = await Promise.resolve('IIFE OK'); console.log(res); })();",
-      test: "if (code.includes('async') && logs.includes('IIFE OK')) return null; return 'Asinxron IIFE yozilmadi yoki natija log qilinmadi';"
+      title: "1️⃣2️⃣ Async function dynamically imported",
+      instruction: "Promise orqali resolve bo'ladigan asinxron oqim natijasiga 2 ni ko'paytirib qaytaring.",
+      startingCode: "async function multiplyAsync(promise) {\n  // Await qilib, natijani 2 ga ko'paytiring\n}",
+      hint: "const val = await promise; return val * 2;",
+      test: "if (typeof multiplyAsync !== 'function') return 'multiplyAsync funksiya emas'; return multiplyAsync(Promise.resolve(5)).then(r => r === 10 ? null : 'Ko\\'paytirish xato');"
     },
     {
       id: 13,
-      title: "1️⃣3️⃣ Thenable Obyekt bilan Await",
-      instruction: "Berilgan `customThenable` obyektini `await` qiling va natijasini qaytaruvchi `getThenableResult` asinxron funksiyasini yozing.",
-      startingCode: "const customThenable = {\n  then(resolve) {\n    setTimeout(() => resolve(\"Thenable OK\"), 10);\n  }\n};\n\nasync function getThenableResult() {\n  // Bu yerga yozing\n}",
-      hint: "return await customThenable;",
-      test: "if (typeof getThenableResult !== 'function') return 'getThenableResult funksiya emas'; return getThenableResult().then(r => r === 'Thenable OK' ? null : 'Natija noto\\'g\\'ri');"
+      title: "1️⃣3️⃣ Parallel API So'rovlari (fetchParallel)",
+      instruction: "Berilgan `urls` massividan barcha so'rovlarni parallel yuboradigan va ulardan kelgan javoblarni JSON sifatida o'qib, natijalar massivini qaytaradigan `fetchParallel(urls)` asinxron funksiyasini yozing.",
+      startingCode: "async function fetchParallel(urls) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "const promises = urls.map(url => fetch(url).then(res => res.json())); return await Promise.all(promises);",
+      test: "if (typeof fetchParallel !== 'function') return 'fetchParallel funksiya emas';\nconst urls = [\n  'https://jsonplaceholder.typicode.com/todos/1',\n  'https://jsonplaceholder.typicode.com/todos/2'\n];\nreturn fetchParallel(urls).then(res => {\n  if (res && res.length === 2 && res[0].id === 1 && res[1].id === 2) return null;\n  return 'Parallel natijalar noto\\'g\\'ri';\n}).catch(e => 'Xatolik: ' + e.message);"
     },
     {
       id: 14,
-      title: "1️⃣4️⃣ Parallel Await va Destrukturizatsiya",
-      instruction: "Berilgan `fetchPrice` va `fetchQuantity` promislarini parallel ravishda ishga tushiring, `Promise.all` va `await` yordamida natijalarini oling, massiv destrukturizatsiyasi orqali ularni `price` va `quantity` o'zgaruvchilariga saqlang va ularning ko'paytmasini (`price * quantity`) qaytaruvchi `getTotal` asinxron funksiyasini yozing.",
-      startingCode: "const fetchPrice = () => Promise.resolve(150);\nconst fetchQuantity = () => Promise.resolve(3);\n\nasync function getTotal() {\n  // Bu yerga yozing\n}",
-      hint: "const [price, quantity] = await Promise.all([fetchPrice(), fetchQuantity()]); return price * quantity;",
-      test: "if (typeof getTotal !== 'function') return 'getTotal funksiya emas'; return getTotal().then(r => r === 450 ? null : 'Jami summa noto\\'g\\'ri');"
+      title: "1️⃣4️⃣ Ketma-ket API So'rovlari (fetchSequentialWithState)",
+      instruction: "Berilgan `urls` ro'yxatidan ma'lumotlarni ketma-ket (sequential) yuklab, har bir API dan kelgan natijalarni yig'ib massiv shaklida qaytaruvchi `fetchSequentialWithState(urls)` asinxron funksiyasini yozing.",
+      startingCode: "async function fetchSequentialWithState(urls) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "let results = []; for (const url of urls) { const res = await fetch(url); results.push(await res.json()); } return results;",
+      test: "if (typeof fetchSequentialWithState !== 'function') return 'fetchSequentialWithState funksiya emas';\nconst urls = [\n  'https://jsonplaceholder.typicode.com/todos/1',\n  'https://jsonplaceholder.typicode.com/todos/2'\n];\nreturn fetchSequentialWithState(urls).then(res => {\n  if (res && res.length === 2 && res[0].id === 1 && res[1].id === 2) return null;\n  return 'Ketma-ket yuklash noto\\'g\\'ri bajarildi';\n}).catch(e => 'Xatolik: ' + e.message);"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "`async` funksiya ichida `return 5` yozilsa, funksiya chaqirilganda nima qaytaradi?",
+      question: "Async/Await nima?",
       options: [
-        "Sinxron 5 qiymati",
-        "Promise (u 5 qiymati bilan resolve bo'ladi)",
-        "undefined",
-        "Xatolik (SyntaxError)"
+        "Sinxron kodlarni asinxron qilish usuli",
+        "Promislarning ustiga qurilgan, asinxron kodni chiziqli (sinxron ko'rinishda) yozishga imkon beradigan maxsus sintaksis (syntactic sugar)",
+        "Oyna yangilanishini to'xtatuvchi brauzer vositasi",
+        "Xotirani avtomatik tozalovchi algoritm"
       ],
       correctAnswer: 1,
-      explanation: "Async funksiyalar har doim Promise qaytaradi. Ichidagi oddiy qiymat avtomatik ravishda Promise.resolve(5) bilan o'raladi."
+      explanation: "Async/Await ES8 da taqdim etilgan bo'lib, Promislar bilan ishlashni osonlashtiradi va kodni sinxron ko'rinishda yozish imkonini beradi."
     },
     {
       id: 2,
-      question: "`await` kalit so'zi qayerda ishlatilishi shart?",
+      question: "Qaysi kalit so'z funksiyani har doim Promise qaytaradigan qilib belgilaydi?",
       options: [
-        "Har qanday funksiya ichida",
-        "Faqat `async` bilan belgilangan funksiyalar ichida (yoki top-level ES modullarda)",
-        "Faqat for/while looplar ichida",
-        "Faqat global scoperda"
+        "await",
+        "async",
+        "promise",
+        "defer"
       ],
       correctAnswer: 1,
-      explanation: "Sinxron funksiyalar ichida `await` ishlatish `SyntaxError` ga olib keladi. U faqat asinxron muhit (async funksiya) uchun mo'ljallangan."
+      explanation: "`async` kalit so'zi funksiya e'lonidan oldin qo'yilib, uning natijasini har doim promisga o'raydi."
     },
     {
       id: 3,
-      question: "Agar `await` qilinayotgan Promise rad etilsa (rejected bo'lsa), xatoni qanday ushlash mumkin?",
+      question: "await operatorini qayerda ishlatish mumkin?",
       options: [
-        "Xatoni ushlab bo'lmaydi, dastur to'xtaydi",
-        "An'anaviy `try...catch` bloki yordamida",
-        "Faqat `.catch()` zanjirini ulash orqali",
-        "Faqat window.onerror yordamida"
+        "Istalgan funksiya ichida va global doirada",
+        "Faqat `async` deb belgilangan funksiyalar ichida yoki ES Modullarning eng yuqori darajasida (Top-level await)",
+        "Faqat `for` tsikli ichida",
+        "Faqat `catch` bloki ichida"
       ],
       correctAnswer: 1,
-      explanation: "Async/await da promisning reject bo'lishi xato otilishiga (throw) sabab bo'ladi va uni sinxron kod kabi `try...catch` bloki bilan osongina ushlash mumkin."
+      explanation: "`await` operatoridan faqat asinxron kontekstlarda, ya'ni `async` funksiya ichida yoki ES modullarda top-level darajada foydalanish mumkin."
     },
     {
       id: 4,
-      question: "Quyidagi kodning bajarilishi uchun qancha vaqt ketadi?\n```javascript\nconst a = await delay(1000);\nconst b = await delay(1000);\n```",
+      question: "Async funksiya ichida yuz bergan tutilmagan xatolik (unhandled exception) qanday natijaga olib keladi?",
       options: [
-        "1 soniya (parallel)",
-        "2 soniya (ketma-ket)",
-        "0 soniya",
-        "Xatolik yuz beradi"
+        "Dastur cheksiz loopga kirib qoladi",
+        "Funksiya qaytargan Promise obyekti rad etiladi (rejected)",
+        "Dastur xatoni e'tiborsiz qoldirib davom etadi",
+        "O'zgaruvchilar avtomatik o'chadi"
       ],
       correctAnswer: 1,
-      explanation: "Bu yerda ikkita await ketma-ket yozilgan. Birinchi delay tugamaguncha ikkinchisi boshlanmaydi. Shuning uchun umumiy vaqt 1s + 1s = 2s bo'ladi."
+      explanation: "Tutilmagan xatolik async funksiyadan qaytgan promisening reject holatiga o'tishiga (xato bilan tugashiga) olib keladi."
     },
     {
       id: 5,
-      question: "Quyidagi kodning bajarilishi uchun qancha vaqt ketadi?\n```javascript\nconst p1 = delay(1000);\nconst p2 = delay(1000);\nawait Promise.all([p1, p2]);\n```",
+      question: "Ko'p sonli bir-biriga bog'liq bo'lmagan tarmoq so'rovlarini async/await bilan qanday qilib eng tez bajarish mumkin?",
       options: [
-        "2 soniya (ketma-ket)",
-        "1 soniya (parallel)",
-        "0.5 soniya",
-        "1000 soniya"
+        "Har birini ketma-ket `await fetch(...)` qilish",
+        "Ularni parallel boshlab, \`Promise.all\` yordamida barchasini birdaniga kutish",
+        "Hech qanday await ishlatmaslik",
+        "Ularni callbacks yordamida ichma-ich yozish"
       ],
       correctAnswer: 1,
-      explanation: "Bu yerda promislar parallel ishga tushadi (`delay(1000)` chaqirilishi bilan). Keyin `Promise.all` yordamida parallel kutiladi. Shuning uchun jami 1 soniya ketadi."
+      explanation: "Parallel so'rovlarni boshlab, so'ng `Promise.all` yordamida parallel kutish tarmoq uzilishlari va keraksiz kutishlarni oldini oladi va tezroq bajariladi."
     },
     {
       id: 6,
-      question: "`Array.prototype.forEach` ichida `await` ishlatilganda nima sodir bo'ladi?",
+      question: "Quyidagi kod bajarilganda nima chiqadi?\n```javascript\nasync function test() {\n  return 10;\n}\nconsole.log(test());\n```",
       options: [
-        "Elementlar ketma-ket kutiladi",
-        "Elementlar uchun callback parallel asinxron chaqiriladi va forEach ularni kutib o'tirmaydi",
-        "SyntaxError xatosi yuz beradi",
-        "Faqat birinchi element kutiladi"
+        "10",
+        "Promise { <fulfilled>: 10 } (yoki pending Promise)",
+        "undefined",
+        "SyntaxError"
       ],
       correctAnswer: 1,
-      explanation: "forEach callback funksiyasi sinxron ishga tushadi va u asinxron promislar qaytarishini inobatga olmaydi. Shuning uchun u awaitni kutmaydi."
+      explanation: "async funksiya chaqirilganda har doim Promise qaytaradi, shuning uchun konsolga 10 soni emas, balki hal qilingan Promise obyekti chiqadi."
     },
     {
       id: 7,
-      question: "`async` funksiyaning o'zida xato yuz bersa (throw), u qaytaradigan Promise holati qanday bo'ladi?",
+      question: "await operatorining asosiy ishlash prinsipi nimadan iborat?",
       options: [
-        "Pending bo'lib qolaveradi",
-        "Rejected bo'ladi",
-        "Fulfilled bo'ladi",
-        "Funksiya avtomatik ravishda qayta ishga tushadi"
+        "U CPU oqimini butunlay bloklaydi va brauzerni qotiradi",
+        "U promis yakunlanguncha funksiya ijrosini to'xtatib turadi (suspend qiladi), ammo asosiy oqim boshqa ishlarni (UI render, eventlar) bajarishda davom etadi",
+        "U kodni boshqa faylga yozib qo'yadi",
+        "U ma'lumotlarni shifrlaydi"
       ],
       correctAnswer: 1,
-      explanation: "Async funksiya ichida xato otilsa (throw), u qaytaradigan Promise rejected (rad etilgan) holatga o'tadi va xato xabari promisning reason qismiga aylanadi."
+      explanation: "`await` faqat joriy async funksiya ijrosini to'xtatib turadi. V8 dvigateli boshqa ishlarni bajarishda davom etadi, sahifa qotmaydi."
     },
     {
       id: 8,
-      question: "`finally` bloki asinxron `try...catch`da qachon bajariladi?",
+      question: "ES2022 dagi 'Top-level await'ning asosiy afzalligi nimada?",
       options: [
-        "Faqat xato bo'lmaganda",
-        "Faqat xatolik yuz berganda",
-        "Har qanday holatda (muvaffaqiyatli yoki muvaffaqiyatsiz bo'lsa ham)",
-        "Hech qachon bajarilmaydi"
+        "U loops-larni tezlashtiradi",
+        "Asosiy modul darajasida (async funksiyasiz) asinxron modullarni, API-larni yoki konfiguratsiyalarni await qilish imkoni",
+        "Faqat Node.js da ishlashi",
+        "Xatolarni avtomatik o'chira olishi"
       ],
-      correctAnswer: 2,
-      explanation: "finally bloki har qanday holatda ham, ya'ni operatsiya muvaffaqiyatli yakunlansa ham yoki xato bo'lsa ham eng oxirida ishlaydi."
+      correctAnswer: 1,
+      explanation: "Top-level await yordamida eng yuqori darajada await ishlatish mumkin, bu dinamik modullarni yuklash va asinxron init ishlarida juda qo'l keladi."
     },
     {
       id: 9,
-      question: "Top-level await qayerda ishlaydi?",
+      question: "JavaScript dvigateli (V8) asinxron funksiyalar va await-ni o'zining ichki qismida asosan qaysi mexanizm bilan realizatsiya qiladi?",
       options: [
-        "Har qanday oddiy script fayllarda",
-        "Faqat ES Modullarning eng yuqori darajasida (async funksiya tashqarisida)",
-        "Faqat CSS fayllarda",
-        "Faqat localStorageda"
+        "Generatorlar (function*) va Promises kombinatsiyasi",
+        "Cheksiz recursive while looplar",
+        "Web worker threads",
+        "Sinxron AJAX so'rovlari"
       ],
-      correctAnswer: 1,
-      explanation: "Top-level await faqat JavaScript Modullar (ESM) ichida ruxsat etiladi, oddiy skriptlar ichida esa uni ishlatish xatolikka sabab bo'ladi."
+      correctAnswer: 0,
+      explanation: "Async/await aslida generatorlarning yielding control-flow mexanizmi va Promislar bilan ishlash mantiqining sintaktik qobig'idir."
     },
     {
       id: 10,
-      question: "Quyidagi kod nima qaytaradi?\n```javascript\nasync function test() {}\n```",
+      question: "Quyidagi kodda qanday muammo bor?\n```javascript\nconst data = await fetch('api/data').then(r => r.json());\n```",
       options: [
-        "undefined",
-        "Promise { <fulfilled>: undefined }",
-        "Promise { <pending> }",
-        "null"
+        "Top-level await faqat ES modullarda ishlaydi; oddiy skriptlarda SyntaxError beradi",
+        "Fetch so'rovi bu usulda ishlamaydi",
+        "Await oldiga async so'zi qo'yilishi shart",
+        "Koddagi `.then` asinxron emas"
       ],
-      correctAnswer: 1,
-      explanation: "Return qiymati ko'rsatilmagan async funksiya qiymati `undefined` bo'lgan va muvaffaqiyatli bajarilgan (fulfilled) Promise qaytaradi."
+      correctAnswer: 0,
+      explanation: "Top-level await faqat ES modullarda (`import` tizimida) ishlaydi. Standart skript fayllarda u xatolik beradi."
     },
     {
       id: 11,
-      question: "Sinxron xatolar (masalan, JSON.parse xatosi) `try...catch` ichidagi `await` bilan birga tutilishi mumkinmi?",
+      question: "Sequential await (ketma-ket kutish) qachon tavsiya etiladi?",
       options: [
-        "Yo'q, faqat asinxron xatolar tutiladi",
-        "Ha, try...catch ikkala turdagi xatolarni ham bitta joyda tuta oladi",
-        "Faqat strict rejim yoqilgan bo'lsa",
-        "Buning uchun uchinchi kutubxona kerak"
+        "Hech qachon tavsiya etilmaydi",
+        "Ikkinchi asinxron so'rovning parametrlari birinchi so'rovdan keladigan natijaga bog'liq bo'lsa",
+        "Faqat GET so'rovlarida",
+        "Faqat xatolar bo'lmaganda"
       ],
       correctAnswer: 1,
-      explanation: "try...catch bloki o'zining ichida sodir bo'lgan har qanday sinxron va asinxron (await qilingan) xatolarni ushlash xususiyatiga ega."
+      explanation: "Agar keyingi so'rov oldingi so'rov natijasiga bog'liq bo'lsa (masalan, avval foydalanuvchi ID sini olib, keyin uning postlarini yuklashda), ketma-ket await ishlatish majburiydir."
     },
     {
       id: 12,
-      question: "`await` operatorining ishlatilishi JavaScript-ni ko'p oqimli (multi-threaded) qiladimi?",
+      question: "Async funksiya ichida `throw new Error('xato')` chaqirilsa, bu xatolikni qanday tutish mumkin?",
       options: [
-        "Ha, u yangi oqimlar ochadi",
-        "Yo'q, u faqat bajarilish navbatini boshqaradi, JS hamon yagona oqimli (single-threaded) bo'lib qolaveradi",
-        "Faqat Node.js muhitida",
-        "Faqat Google Chrome brauzerida"
+        "Faqat `window.onerror` yordamida",
+        "Funksiyani chaqirayotgan joyda \`try...catch\` ichiga o'rash yoki qaytgan promisening \`.catch()\` metodidan foydalanish orqali",
+        "Buni tutishning imkoni yo'q",
+        "Faqat `finally` bloki yordamida"
       ],
       correctAnswer: 1,
-      explanation: "JavaScript har doim yagona oqimli til. Await oqimni to'xtatmaydi, u fondagi asinxron operatsiyalar bajarilishini asinxron kutib, oqimni boshqa ishlarga bo'shatib beradi."
+      explanation: "Async funksiya ichidagi throw qilingan xato reject bo'lib qaytadi, uni oddiy `try...catch` yoki `.catch()` bilan ushlash mumkin."
     },
     {
       id: 13,
-      question: "JavaScript-da `await` operatoriga `.then()` metodiga ega bo'lgan ob'ekt (thenable) uzatilsa, `await` o'zini qanday tutadi?",
+      question: "Promise.all() yordamida parallel await qilinganda, biror so'rov xato bo'lsa qolganlari nima bo'ladi?",
       options: [
-        "Xatolik (TypeError) tashlaydi",
-        "Uni oddiy sinxron obyekt deb hisoblab, kutmasdan obyektning o'zini qaytaradi",
-        "Ushbu `.then()` metodini chaqiradi va uning resolve qilinishini xuddi Promise kabi kutadi",
-        "Faqat funksiya generator (Generator) bo'lsagina ishlaydi"
+        "Qolgan so'rovlar ham bekor qilinadi va butun guruh zudlik bilan reject bo'ladi",
+        "Qolganlari muvaffaqiyatli yakunlanadi va xatolar massivga qo'shiladi",
+        "Sahifa refresh bo'ladi",
+        "Dastur abadiy kutib qoladi"
       ],
-      correctAnswer: 2,
-      explanation: "`await` operatori nafaqat haqiqiy Promislar, balki `.then` metodiga ega bo'lgan har qanday Thenable obyektlar bilan ham xuddi Promise kabi ishlay oladi va ularning bajarilishini kutadi."
+      correctAnswer: 0,
+      explanation: "Promise.all tezkor rad etish (fail-fast) tamoyiliga ega bo'lib, bitta xato bo'lishi bilan butun guruhni darhol reject qiladi."
     },
     {
       id: 14,
-      question: "Quyidagilardan qaysi biri to'g'ri: Top-level `await` qaysi muhitda ishlaydi?",
+      question: "Top-level await modullar yuklanishida (import) qanday nojo'ya ta'sirga ega bo'lishi mumkin?",
       options: [
-        "Har qanday JavaScript faylida va har qanday global scope-da",
-        "Faqat ECMAScript Modullarida (ES Modules, type: 'module') eng yuqori darajada",
-        "Faqat Node.js ning CommonJS (require) skriptlarida",
-        "Faqat inline HTML skript teglari ichida"
+        "Import qilinayotgan modul o'zining top-level await operatsiyalari tugamaguncha import qiluvchi boshqa barcha modullarni bloklab turadi (kutishga majbur qiladi)",
+        "Modullar hajmini oshiradi",
+        "Modullarni o'chirib yuboradi",
+        "Hech qanday salbiy ta'siri yo'q"
       ],
-      correctAnswer: 1,
-      explanation: "Top-level `await` faqat ES Modullarning (ESM) yuqori darajasida ishlaydi. Oddiy CommonJS skriptlarida uni asinxron funksiya tashqarisida ishlatish SyntaxError xatosiga olib keladi."
+      correctAnswer: 0,
+      explanation: "Top-level await bloklovchi xususiyatga ega bo'lib, import zanjiridagi barcha ota modullarni so'rov yakunlanguncha kutishga majbur qiladi."
     }
   ]
 };
