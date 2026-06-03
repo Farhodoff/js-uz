@@ -10,17 +10,16 @@ export const performanceOptimization = {
 
 ## 2. SODDALIK
 
-**Lift eshigi (Debounce):** Har yangi odam kelsa, lift kutishni boshidan boshlaydi. Hech kim kelmay qo'ygandan keyingin lift yuradi.
+**Lift eshigi (Debounce):** Har yangi odam kelsa, lift kutishni boshidan boshlaydi. Hech kim kelmay qo'ygandan keyingina lift yuradi.
 
 **Avtobus (Throttle):** Avtobus qancha odam kutsa ham, faqat jadval bo'yicha keladi (har 15 min).
 
 **Asosiy dars:** Funksiyalarni "optimallashtirish" = Kamroq chaqirish = Tezroq sayt.
 
-## 3. STRUKTURA
+## 3. STRUKTURA VA AMALIY USULLAR
 
 ### A. Debounce - Oxirgi Chaqiriqdan Keyin Kutish
-
-\`\`\`javascript
+\`javascript
 function debounce(fn, delay) {
   let timeoutId;
   return function(...args) {
@@ -41,11 +40,10 @@ search("J");      // 0ms - timeout set
 search("Ja");     // 50ms - timeout clear, yangi set
 search("Jav");    // 100ms - timeout clear, yangi set
 // 600ms'da faqat "Jav" uchun server so'rovi ketadi
-\`\`\`
+\`
 
 ### B. Throttle - Vaqt Oralig'ida Bir Marta
-
-\`\`\`javascript
+\`javascript
 function throttle(fn, limit) {
   let inThrottle;
   return function(...args) {
@@ -64,32 +62,34 @@ const onScroll = throttle(() => {
 
 // Scroll event har ms'da chiqadi lekin funksiya har 1s'da bir marta ishlaydi
 window.addEventListener('scroll', onScroll);
-\`\`\`
+\`
 
-### C. Debounce vs Throttle
-
-\`\`\`javascript
-let debounceCount = 0, throttleCount = 0;
-
-const debounceFunc = debounce(() => { debounceCount++; }, 500);
-const throttleFunc = throttle(() => { throttleCount++; }, 500);
-
-// 10 marta vaqt-vaqt chaqir (100ms oralig'ida)
-for (let i = 0; i < 10; i++) {
-  setTimeout(() => {
-    debounceFunc();
-    throttleFunc();
-  }, i * 100);
-}
-
-// 1s keyin:
-// debounceCount = 1 (faqat oxirgi 500ms'ni kutib)
-// throttleCount = 2-3 (har 500ms'da bir marta)
-\`\`\`
+### C. Debounce vs Throttle visual vaqt sxemasi
+\`mermaid
+sequenceDiagram
+    participant User as Foydalanuvchi
+    participant D as Debounce (500ms)
+    participant T as Throttle (500ms)
+    
+    User->>D: 1-so'rov (0ms)
+    Note over D: Kutishni boshlaydi...
+    User->>T: 1-so'rov (0ms)
+    Note over T: Darhol ishlaydi!
+    
+    User->>D: 2-so'rov (200ms)
+    Note over D: Oldingisini bekor qilib, yangidan kutadi
+    User->>T: 2-so'rov (200ms)
+    Note over T: Bloklangan (500ms kutmoqda)
+    
+    User->>D: 3-so'rov (400ms)
+    Note over D: Yana bekor qilib, 500ms kutadi
+    
+    Note over D: 900ms da ishlaydi (oxirgi chaqiriqdan keyin 500ms o'tdi)
+    Note over T: 500ms o'tgach, yangi so'rovlarni qabul qila oladi
+\`
 
 ### D. Lazy Loading - Keraksiz Resurs Yuklama
-
-\`\`\`javascript
+\`javascript
 // HTML:
 // <img src="placeholder.jpg" data-src="actual.jpg" class="lazy">
 
@@ -106,11 +106,10 @@ const observer = new IntersectionObserver((entries) => {
 });
 
 images.forEach(img => observer.observe(img));
-\`\`\`
+\`
 
 ### E. Memoization - Natijani Kesh Qilish
-
-\`\`\`javascript
+\`javascript
 function memoize(fn) {
   const cache = {};
   return function(...args) {
@@ -135,11 +134,10 @@ const expensive = (n) => {
 const memoized = memoize(expensive);
 console.log(memoized(5));  // "Hisoblayapman..."
 console.log(memoized(5));  // "Cache'dan olinmoqda"
-\`\`\`
+\`
 
-### F. RequestAnimationFrame (rAF) - Smooth Animation
-
-\`\`\`javascript
+### F. requestAnimationFrame (rAF) - Smooth Animation
+\`javascript
 // ❌ XATO - setInterval (jerkint animatsiya)
 setInterval(() => {
   element.style.left = (parseInt(element.style.left) + 1) + 'px';
@@ -151,11 +149,40 @@ function animate() {
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);
-\`\`\`
+\`
 
-### G. Virtual Scrolling - Juda Ko'p Elementlarda
+### G. Virtual Scrolling - Katta ro'yxatlarni render qilish
+Katta hajmdagi ma'lumotlar bilan ishlaganda DOM elementlarini minimal darajada saqlash uchun Virtual scrolling qo'llaniladi.
 
-\`\`\`javascript
+\`mermaid
+graph TD
+    %% Styling
+    classDef visible fill:#2ecc71,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef buffer fill:#3498db,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef virtual fill:#95a5a6,stroke:#333,stroke-dasharray: 5 5,color:#fff;
+    
+    TopVirtual["Virtual Spacing Top (5000px balandlik)"]:::virtual
+    
+    BufferTop["Buffer Zone Top (Yuklanayotgan qatorlar)"]:::buffer
+    
+    ViewportStart["=== VIEWPORT (Ko'rinadigan qism) ==="]:::visible
+    Item1["Element 10"]:::visible
+    Item2["Element 11"]:::visible
+    Item3["Element 12"]:::visible
+    ViewportEnd["=== VIEWPORT END ==="]:::visible
+    
+    BufferBottom["Buffer Zone Bottom (Yuklanayotgan qatorlar)"]:::buffer
+    
+    BottomVirtual["Virtual Spacing Bottom (25000px balandlik)"]:::virtual
+    
+    TopVirtual --> BufferTop
+    BufferTop --> ViewportStart
+    ViewportStart --> Item1 --> Item2 --> Item3 --> ViewportEnd
+    ViewportEnd --> BufferBottom
+    BufferBottom --> BottomVirtual
+\`
+
+\`javascript
 // 10,000+ elementi bo'lgan list'da faqat ko'rinavchi elementlarni render qilish
 class VirtualList {
   constructor(container, items, itemHeight) {
@@ -166,7 +193,7 @@ class VirtualList {
 
   onScroll(scrollTop) {
     const visibleStart = Math.floor(scrollTop / this.itemHeight);
-    const visibleEnd = visibleStart + Math.ceil(container.clientHeight / this.itemHeight);
+    const visibleEnd = visibleStart + Math.ceil(this.container.clientHeight / this.itemHeight);
 
     // Faqat visibleStart - visibleEnd elementlarini render qil
     const fragment = document.createDocumentFragment();
@@ -178,105 +205,34 @@ class VirtualList {
     this.container.appendChild(fragment);
   }
 }
-\`\`\`
+\`
 
-### H. Code Splitting - Faylni Bo'lish
-
-\`\`\`javascript
-// webpack.config.js yoki bundler config'da:
-// Dynamic import'larni ajratish
+### H. Code Splitting va Bundle hajmini boshqarish
+\`javascript
+// Dynamic import'lar yordamida bundle-ni qismlarga bo'lib yuklash
 const routes = {
   home: () => import('./pages/home.js'),
   about: () => import('./pages/about.js'),
   contact: () => import('./pages/contact.js')
 };
 
-// Route'ga kelganda faqat o'sha fayl yuklani
 router.on('navigate', async (page) => {
   const module = await routes[page]();
   module.render();
 });
-\`\`\`
+\`
 
-### I. Bundle Size Monitoring
+### I. Performance Monitoring - O'lchash va Profiling
+Samaradorlikni o'lchash uchun brauzerning Performance API-sidan foydalanish eng to'g'ri va aniq yo'ldir:
+\`javascript
+performance.mark('start-operation');
+// Optimallashtirilishi kerak bo'lgan og'ir operatsiya
+performance.mark('end-operation');
 
-\`\`\`javascript
-// package.json'da:
-{
-  "scripts": {
-    "analyze": "webpack-bundle-analyzer dist/bundle.js"
-  }
-}
-
-// Qaysi fayl eng katashi bilish uchun
-// webpack-visualizer, source-map-explorer ishlatish
-\`\`\`
-
-### J. Caching Strategies
-
-\`\`\`javascript
-// 1. Browser cache (HTTP headers)
-// Cache-Control: max-age=31536000
-
-// 2. Service Worker cache
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
-  );
-});
-
-// 3. LocalStorage cache
-const getCached = (key, ttl) => {
-  const item = localStorage.getItem(key);
-  if (!item) return null;
-  const { data, timestamp } = JSON.parse(item);
-  if (Date.now() - timestamp > ttl) return null;
-  return data;
-};
-\`\`\`
-
-### K. Memory Leak Oldini Olish
-
-\`\`\`javascript
-// ❌ XATO - Memory leak
-class Component {
-  constructor() {
-    window.addEventListener('resize', () => this.onResize());
-  }
-  onResize() { console.log('resized'); }
-}
-
-// ✅ TO'G'RI - Event listener olib tashlash
-class Component {
-  constructor() {
-    this.onResize = this.onResize.bind(this);
-    window.addEventListener('resize', this.onResize);
-  }
-  onResize() { console.log('resized'); }
-  destroy() {
-    window.removeEventListener('resize', this.onResize);
-  }
-}
-\`\`\`
-
-### L. Performance Monitoring
-
-\`\`\`javascript
-// Performance API
-performance.mark('start');
-// ... code
-performance.mark('end');
-performance.measure('operation', 'start', 'end');
-
-const measures = performance.getEntriesByType('measure');
-console.log(measures[0].duration); // ms
-
-// Yoki:
-console.time('operation');
-// ... code
-console.timeEnd('operation');
-\`\`\`
+performance.measure('operatsiya-olchovi', 'start-operation', 'end-operation');
+const measures = performance.getEntriesByName('operatsiya-olchovi');
+console.log(\`Bajarilish vaqti: \${measures[0].duration} ms\`);
+\`
 
 ## 4. XATOLAR (Common Mistakes)
 
@@ -288,58 +244,39 @@ console.timeEnd('operation');
    - Rasmlar kelguncha tik bo'sh qoladi
 
 3. **Memory leaks:**
-   - Event listener'larni olib tashlamamgan
+   - Event listener'larni olib tashlamagan
 
-## 5. AMALIYOT (Mushqlar pastda)
-
-## 6. SAVOLLAR VA JAVOBLAR
+## 5. SAVOLLAR VA JAVOBLAR
 
 **1. Debounce nima va qachon kerak?**
 Funksiyani oxirgi chaqiriqdan keyin kutish. Qidiruv inputida kerak.
 
-
 **2. Throttle nima va qachon kerak?**
 Vaqt oralig'ida bir marta chaqirish. Scroll event'larda kerak.
-
 
 **3. Lazy loading nima?**
 Resurslarni faqat kerak bo'lganda yuklash (rasm ko'rinavchi bo'lganda).
 
-
 **4. Memoization nima?**
 Funksiya natijasini kesh qilish, keyin tez qaytarish.
-
 
 **5. Virtual Scrolling nima?**
 10,000+ elementda faqat ko'rinavchi elementlarni render qilish.
 
-
 **6. Code splitting nima?**
 Katta bundle'ni kichik fayllarga bo'lish, kerak bo'lganda yuklash.
-
 
 **7. RAF (requestAnimationFrame) nima?**
 Monitor tezligiga mos animatsiya (setInterval bilan o'rniga).
 
-
 **8. Service Worker cache nima?**
-Offline'da ham sayt ishlay olishi uchun cache.
-
+Offline'da amaliyot ko'rsatish uchun foydali kesh moduli.
 
 **9. Memory leak nima?**
-Event listener'larni olib tashlamamsa, xotira oshib turadi.
-
+Event listener'larni olib tashlamasa, xotira oshib turadi.
 
 **10. performance.measure() nima?**
-Kodning ishlash vaqtini o'lchash.
-
-
-**11. Bundle size monitoring nima?**
-Qaysi fayl eng katashini bilish va optimize qilish.
-
-
-**12. HTTP caching nima?**
-Browser fayl keshlasin deb serverdan so'rash (Cache-Control header).
+Kodning ishlash vaqtini yuqori aniqlikda o'lchash.
 `,
   exercises: [
     {
@@ -437,6 +374,22 @@ Browser fayl keshlasin deb serverdan so'rash (Cache-Control header).
       startingCode: "const fetchUsers = async (query) => {\n  // API call\n};\n\nconst memoized = memoize(fetchUsers);\nconst optimized = debounce(memoized, 300);\n\n// Natija: \n// 1. 300ms kutadi\n// 2. Cached natija bo'lsa tez qaytaradi\n",
       hint: "Debounce + memoize kombinatsiyasi",
       test: "if (code.includes('debounce') && code.includes('memoize')) return null; return 'Kompleks optimization noto\\'g\\'ri';"
+    },
+    {
+      id: 13,
+      title: "Scroll Throttle Coordinates Logger",
+      instruction: "Foydalanuvchi scroll qilganda sahifaning vertikal koordinatasini (window.scrollY) konsolga chiqaruvchi hodisa handlerini yozing. Sayt samaradorligini oshirish va scroll eventlarini kamaytirish uchun ushbu logScroll funksiyasini 'throttle' yordamida har 200msda bir marta ishlaydigan qiling va window-ga 'scroll' hodisasi bilan bog'lang.",
+      startingCode: "const logScroll = throttle(() => {\n  console.log(window.scrollY);\n}, 200);\n// window-ga scroll hodisasini qo'shing\n",
+      hint: "window.addEventListener('scroll', logScroll);",
+      test: "if (code.includes('addEventListener') && code.includes('scroll') && code.includes('logScroll')) return null;\nreturn 'window-ga scroll listener biriktirilmadi yoki logScroll ishlatilmadi';"
+    },
+    {
+      id: 14,
+      title: "Performance Profiling Wrapper",
+      instruction: "Kodni bajarilish vaqtini User Timing API yordamida o'lchash uchun 'profileFunction(name, fn)' wrapper funksiyasini yozing. U funksiyani chaqirishdan oldin 'performance.mark(name + \"-start\")' belgisini qo'ysin, funksiyani ishga tushirsin, bajarilgandan keyin 'performance.mark(name + \"-end\")' belgisini qo'ysin va 'performance.measure(name, name + \"-start\", name + \"-end\")' yordamida o'lchasin. Yakunda funksiya natijasini qaytarsin.",
+      startingCode: "function profileFunction(name, fn) {\n  // performance.mark va performance.measure lardan foydalaning\n}",
+      hint: "performance.mark(name + '-start');\nconst result = fn();\nperformance.mark(name + '-end');\nperformance.measure(name, name + '-start', name + '-end');\nreturn result;",
+      test: "if (code.includes('performance.mark') && code.includes('performance.measure') && code.includes('return')) return null;\nreturn 'performance.mark yoki performance.measure orqali profiling to\\'g\\'ri amalga oshirilmadi';"
     }
   ],
   quizzes: [
@@ -583,6 +536,30 @@ Browser fayl keshlasin deb serverdan so'rash (Cache-Control header).
       ],
       correctAnswer: 0,
       explanation: "Performance API yordamida kodning bajarilish vaqtini millisekundlarda aniq o'lchash, performance marklar o'rnatish va sekin ishlayotgan kod bloklarini profiler orqali aniqlash mumkin."
+    },
+    {
+      id: 13,
+      question: "Layout Thrashing (yoki Force Reflow) brauzerda qanday kelib chiqadi va nimasi bilan zararli?",
+      options: [
+        "JavaScript kodida bir vaqtning o'zida DOM elementlari o'lchamlarini o'qish (read) va yozish (write) operatsiyalari ketma-ket takrorlanganda brauzerni sahifa tartibini qayta-qayta hisoblashga majburlaydi va bu sahifa qotishiga (jank) olib keladi",
+        "Faqat CSS-da animatsiyalar noto'g'ri yozilgan taqdirda",
+        "Foydalanuvchi internet aloqasi sekinlashganda",
+        "Rasm hajmi juda katta bo'lganda"
+      ],
+      correctAnswer: 0,
+      explanation: "Layout Thrashing — o'qish va yozish amallarini ketma-ket aralashtirib bajarish natijasida brauzerni bir necha bor layout reflow qilishga majbur etish. Buni oldini olish uchun o'qish va yozish operatsiyalari guruhlarga (batching) ajratilishi lozim."
+    },
+    {
+      id: 14,
+      question: "Katta ma'lumotlar ro'yxatida (masalan, 50 000 ta qator) Virtual Scrolling (Virtualizatsiya) qanday yordam beradi?",
+      options: [
+        "U faqat foydalanuvchi ekranda ko'rib turgan (viewport) va uning atrofidagi bir nechta DOM elementlarini render qiladi, qolganlarini esa scroll qilinganda dinamik almashtiradi. Bu DOM elementlari sonini juda kichik ushlab qoladi",
+        "U barcha 50 000 ta qatorni birdan yuklab sahifani tezlashtiradi",
+        "U sahifadagi scroll harakatini butunlay o'chirib qo'yadi",
+        "U barcha qatorlarni rasm formatiga o'tkazib yuboradi"
+      ],
+      correctAnswer: 0,
+      explanation: "Virtual scrolling loyihada DOM elementlari sonini juda kam saqlash orqali brauzer xotirasi va grafik chizish yuklamasini (reflow/repaint) minimal darajada ushlab turadi."
     }
   ]
 };

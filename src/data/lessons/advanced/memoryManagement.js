@@ -4,7 +4,7 @@ export const memoryManagement = {
   level: "Murakkab",
   description: "JavaScript xotirani qanday boshqaradi va 'Memory Leak' (Xotira oqishi) nima?",
   theory: `## 1. NEGA kerak?
-Dastur qancha ko'p xotira (RAM) ishlatsa, u shunchalik sekinlashadi va oxir-oqibat brauzer uni butunlay o'chirib qo'yishi ("Out of Memory" xatosi) mumkin. JavaScript-da xotira boshqaruvi avtomatlashtirilgan bo'lsa-da, katta yuklamali dasturlarda xotira qanday taqsimlanishini bilmaslik xavfli "Memory Leak" (xotira oqishi) muammosini keltirib chiqaradi.
+Dastur qancha ko'p xotira (RAM) ishlatsa, u shunchalik sekinlashadi va oxir-oqibat brauzer uni butunlay o'chirib qo'yishi ("Out of Memory" xatosi) mumkin. JavaScript-da xotira boshqaruvi avtomatlashtirilgan bo'lsa-da, katta yuklamali dasturlarda xotira qanday taqsimlanishini va tozalanishini bilmaslik xavfli "Memory Leak" (xotira oqishi) muammosini keltirib chiqaradi.
 
 ## 2. SODDALIK (Analogiya)
 Buni **ijaraga olingan kvartira** deb tasavvur qiling:
@@ -13,36 +13,97 @@ Buni **ijaraga olingan kvartira** deb tasavvur qiling:
 3. **Release (Bo'shatish):** Kvartiradan butunlay ko'chib ketasiz va kalitlarni topshirasiz.
 Agar siz ko'chib ketsangiz-u, lekin kalitni topshirmasangiz yoki uyni bo'shatmasangiz, u xonadon band bo'lib qolaveradi. Bu — **Memory Leak**.
 
-## 3. STRUKTURA
+## 3. STRUKTURA VA XOTIRA TAYANCHI
 JavaScript xotira boshqaruvi quyidagi qismlardan iborat:
-- **Stack:** Ibtidoiy (primitive) qiymatlar va funksiya bajarilish stacklari (Call Stack) tezkor saqlanadigan joy.
-- **Heap:** Dinamik va katta hajmdagi ma'lumotlar (obyektlar, massivlar, funksiyalar) saqlanadigan xotira havzasi.
-- **Garbage Collector (GC):** Ishlatilmayotgan (Root obektidan zanjir uzilgan) xotira bo'laklarini avtomatik tozalovchi motor. U **Mark-and-Sweep** algoritmidan foydalanadi.
+- **Stack (Stek):** Ibtidoiy (primitive) qiymatlar va funksiya chaqirilish stacklari (Call Stack) tezkor saqlanadigan xotira. U qat'iy va o'zgarmas o'lchamga ega bo'ladi.
+- **Heap (Xip):** Dinamik va o'lchami oldindan ma'lum bo'lmagan katta hajmdagi ma'lumotlar (obyektlar, massivlar, funksiyalar) saqlanadigan xotira havzasi.
+- **Garbage Collector (GC):** Ishlatilmayotgan (Root obyektidan zanjir uzilgan) xotira bo'laklarini avtomatik tozalovchi motor. U **Mark-and-Sweep** algoritmidan foydalanadi.
 
-## 4. AMALIYOT (Mashqlar pastda)
-Xotirada sizish yaratadigan xavfli closure misoli:
-\`\`\`javascript
-function leakMemory() {
-  const giantArray = new Array(1000000).fill("📦");
-  return function() {
-    console.log(giantArray.length); // closure tufayli giantArray xotirada qoladi
-  };
-}
-const leaky = leakMemory();
-// leaky yopilmaguncha, giantArray xotiradan o'chmaydi!
+### Mark-and-Sweep algoritmining bosqichlari:
+1. **Marking (Belgilash):** Dvigatel barcha "root" (global obyekt, joriy funksiya scope-i) obyektlarni aniqlaydi va ulardan zanjir bo'yicha bog'langan barcha obyektlarni faol deb belgilaydi.
+2. **Sweeping (Tozalash):** Belgilanmagan, ya'ni root-dan boshlab yetib borish imkoni bo'lmagan (unreachable) barcha obyektlar xotiradan o'chiriladi.
+
+\`\`\`mermaid
+graph TD
+    %% Styling
+    classDef rootStyle fill:#e74c3c,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef activeStyle fill:#2ecc71,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef deadStyle fill:#95a5a6,stroke:#333,stroke-width:1px,color:#fff,stroke-dasharray: 5 5;
+
+    Root[Global Object / Root]:::rootStyle
+    
+    Root --> ObjA[Object A: Active]:::activeStyle
+    Root --> ObjB[Object B: Active]:::activeStyle
+    
+    ObjA --> ObjC[Object C: Active]:::activeStyle
+    ObjC --> ObjD[Object D: Active]:::activeStyle
+    
+    ObjE[Object E: Unreachable]:::deadStyle
+    ObjF[Object F: Unreachable]:::deadStyle
+    ObjE --> ObjF
 \`\`\`
 
-## 5. XATOLAR (Common mistakes)
-- **Unutilgan taymerlar:** \`setInterval\`ni \`clearInterval\` yordamida to'xtatmaslik.
-- **EventListener'larni yopmaslik:** DOM elementi sahifadan o'chirilganda ham unga biriktirilgan hodisalarni \`removeEventListener\` qilmaslik.
-- **Global o'zgaruvchilar:** O'zgaruvchilarni tasodifan \`window\`ga bog'lab qo'yish (masalan, \`var\` bilan e'lon qilmaslik).
+## 4. MEMORY LEAKS (XOTIRA OQISHLARI) VA AMALIYOT
+Dasturda eng ko'p xotira oqishini keltirib chiqaradigan 4 ta asosiy sabab:
 
-## 6. SAVOLLAR VA JAVOBLAR
+### A. Tasodifiy global o'zgaruvchilar
+Agar o'zgaruvchi \`var\`, \`let\`, yoki \`const\` kalit so'zlarisiz e'lon qilinsa, u avtomatik global \`window\` obyektiga bog'lanib qoladi va sahifa ochiq turguncha xotiradan o'chmaydi.
+\`\`\`javascript
+function createGlobal() {
+  leakyVar = new Array(1000000); // window.leakyVar bo'lib qoladi
+}
+\`\`\`
+
+### B. Unutilgan taymerlar va intervallar
+Agar \`setInterval\` yoki \`setTimeout\` to'xtatilmasa, ularning ichidagi callback funksiya va unda ishlangan o'zgaruvchilar xotirada qolaveradi.
+\`\`\`javascript
+const data = getData();
+const id = setInterval(() => {
+  // data ishlatilyapti
+  console.log(data);
+}, 1000);
+// Agar clearInterval(id) qilinmasa, data hech qachon tozalanmaydi
+\`\`\`
+
+### C. Ajralgan DOM elementlari (Detached DOM Elements)
+DOM daraxtidan o'chirilgan, lekin JavaScript kodi ichida o'zgaruvchi sifatida saqlanib qolgan elementlar xotirani band qilaveradi.
+\`\`\`javascript
+let button = document.getElementById('btn');
+document.body.removeChild(button);
+// button o'zgaruvchisi hali ham mavjud bo'lsa, tugma xotiradan o'chmaydi (Detached DOM)
+button = null; // To'liq tozalash uchun
+\`\`\`
+
+### D. Kuchsiz havolalar (Weak References) keshlar uchun
+Oddiy \`Map\` yoki \`Set\` kalitlarni o'zida kuchli (strong) ushlab qoladi. Kalit bo'lgan obyekt tashqaridan o'chirilsa ham, Map keshidan o'chmaydi. Bu muammoni \`WeakMap\` va \`WeakSet\` hal qiladi.
+
+\`\`\`mermaid
+graph LR
+    subgraph Map_Behavior ["Map xotirada ushlab qolishi"]
+        MapInstance["Map Instance"]
+        MapObjKey["Key Object"]
+        MapObjValue["Value Object"]
+        
+        MapInstance -.->|Strong Reference| MapObjKey
+        MapInstance --> MapObjValue
+    end
+    
+    subgraph WeakMap_Behavior ["WeakMap avtomatik tozalashi"]
+        WMInstance["WeakMap Instance"]
+        WMObjKey["Key Object"]
+        WMObjValue["Value Object"]
+        
+        WMInstance -.->|Weak Reference| WMObjKey
+        WMInstance --> WMObjValue
+    end
+\`\`\`
+
+## 5. SAVOLLAR VA JAVOBLAR
 **1. Mark-and-Sweep algoritmi nima?**
 Garbage collector global obyekt (root) dan boshlab barcha obyektlarni ko'zdan kechiradi (mark), yetib bo'lmaydigan obyektlarni esa o'chirib tashlaydi (sweep).
 
 **2. WeakMap oddiy Map dan xotira jihatidan nimasi bilan farq qiladi?**
-WeakMap-dagi obekt-kalitlar kuchsiz bog'langan (weak references) bo'ladi. Agar u obektga tashqarida boshqa bog'liqlik qolmasa, u avtomat ravishda xotiradan tozalab yuboriladi.
+WeakMap-dagi obyekt-kalitlar kuchsiz bog'langan (weak references) bo'ladi. Agar u obyektga tashqarida boshqa bog'liqlik qolmasa, u avtomat ravishda xotiradan tozalab yuboriladi.
 
 **3. Memory leak-ni brauzerda qanday topsa bo'ladi?**
 Chrome DevTools panelining "Memory" bo'limida "Heap Snapshot" (xotira nusxasi) olish orqali xotira o'sishini tahlil qilish mumkin.
@@ -143,6 +204,22 @@ Chrome DevTools panelining "Memory" bo'limida "Heap Snapshot" (xotira nusxasi) o
       startingCode: "const wm = new WeakMap();\nconst session = {};\nwm.set(session, 'active');\n// session ni o'chiring\n",
       hint: "wm.delete(session);",
       test: "if (code.includes('wm.delete')) return null; return 'WeakMap-dan session kalitini o\\'chiring';"
+    },
+    {
+      id: 13,
+      title: "EventListener Registry",
+      instruction: "Xotira oqishini (memory leak) oldini olish uchun 'EventListenerRegistry' klassini yozing. U 'addEventListener(type, listener)' metodi orqali 'window'ga hodisalarni qo'shishi va ularni ro'yxatga olishi, 'destroy()' metodi chaqirilganda esa barcha ro'yxatdan o'tgan listenerlarni 'window'dan o'chirishi hamda 'listeners' massivini tozalashi kerak.",
+      startingCode: "class EventListenerRegistry {\n  constructor() {\n    this.listeners = [];\n  }\n  addEventListener(type, listener) {\n    // window-ga listener qo'shing va registry-ga saqlang\n  }\n  destroy() {\n    // Barcha listenerlarni window-dan o'chiring va massivni tozalang\n  }\n}",
+      hint: "addEventListener(type, listener) {\n  window.addEventListener(type, listener);\n  this.listeners.push({ type, listener });\n}\ndestroy() {\n  this.listeners.forEach(({ type, listener }) => window.removeEventListener(type, listener));\n  this.listeners.length = 0;\n}",
+      test: "if (code.includes('window.removeEventListener') && code.includes('forEach') && (code.includes('length = 0') || code.includes('length=0') || code.includes('listeners = []') || code.includes('listeners=[]'))) return null;\nreturn 'EventListenerRegistry to\\'g\\'ri amalga oshirilmadi. destroy metodida removeEventListener va registry-ni tozalash tekshirilsin.';"
+    },
+    {
+      id: 14,
+      title: "WeakCache tizimi",
+      instruction: "Obyekt kalitlariga asoslangan va Garbage Collector ishlashiga xalaqit bermaydigan 'WeakCache' kesh tizimini 'WeakMap' yordamida yozing. U 'has(obj)' (keshda borligini tekshirish), 'get(obj)' (keshdan qiymatni olish), va 'set(obj, value)' (keshga qiymat qo'shish) metodlariga ega bo'lsin.",
+      startingCode: "class WeakCache {\n  constructor() {\n    this.cache = new WeakMap();\n  }\n  // has, get, set metodlarini yozing\n}",
+      hint: "has(obj) { return this.cache.has(obj); }\nget(obj) { return this.cache.get(obj); }\nset(obj, value) { this.cache.set(obj, value); }",
+      test: "if (code.includes('this.cache.has') && code.includes('this.cache.get') && code.includes('this.cache.set')) return null;\nreturn 'WeakCache metodlari (has, get, set) to\\'liq yoki to\\'g\\'ri yozilmadi.';"
     }
   ],
   quizzes: [
@@ -186,7 +263,7 @@ Chrome DevTools panelining "Memory" bo'limida "Heap Snapshot" (xotira nusxasi) o
       id: 4,
       question: "Unutilgan va to'xtatilmagan `setInterval` qanday qibly memory leak'ka sabab bo'ladi?",
       options: [
-        "Chunki u CPU haroratini oshiradi",
+        "Chunki uning CPU harorati oshadi",
         "Chunki interval to'xtatilmagunicha uning callback funksiyasi ichida ishlatilgan barcha o'zgaruvchilar va obyektlar xotirada ushlab turiladi",
         "Interval faqat 404 xatosi beradi",
         "Interval faqat global o'zgaruvchilarni o'chiradi"
@@ -289,6 +366,30 @@ Chrome DevTools panelining "Memory" bo'limida "Heap Snapshot" (xotira nusxasi) o
       ],
       correctAnswer: 1,
       explanation: "Global o'zgaruvchilar doimo global root ob'ektiga bog'langan bo'ladi. Ular faqat sahifa qayta yuklanganda yoki dasturchi ularni qo'lda `null` qilganda / o'chirgandagina xotiradan bo'shaydi."
+    },
+    {
+      id: 13,
+      question: "JavaScript Garbage Collector ishlash vaqtida qaysi holatda circular reference (siklik havola) muammosidan qochadi?",
+      options: [
+        "Mark-and-Sweep algoritmidan foydalanganda, chunki root-dan bog'lanmagan sikllar to'liq o'chiriladi",
+        "Hech qachon qocholmaydi, xotira oqishi yuzaga keladi",
+        "Reference counting algoritmi faqat yangi brauzerlarda qo'llanilganda",
+        "Faqat `const` ishlatilganda"
+      ],
+      correctAnswer: 0,
+      explanation: "Eski Reference Counting algoritmi circular reference obyektlarini xotirada ushlab qolar edi. Ammo zamonaviy Mark-and-Sweep algoritmi root-dan boshlab yetib borib bo'lmasligiga tayanadi, shuning uchun siklik bog'lanib qolgan lekin root-dan uzilgan obyektlar guruhini osongina o'chirib yuboradi."
+    },
+    {
+      id: 14,
+      question: "DOM-dan remove() qilingan elementni JavaScript o'zgaruvchisida saqlab qolish xotira boshqaruvida nima deb ataladi?",
+      options: [
+        "Detached DOM Elements (Ajralgan DOM elementlari)",
+        "Garbage Reference",
+        "Active Node reference",
+        "Circular DOM"
+      ],
+      correctAnswer: 0,
+      explanation: "DOM daraxtidan o'chirilgan, lekin koddagi o'zgaruvchi orqali unga reference saqlanib qolgan obyekt 'Detached DOM' deyiladi. Xotirani bo'shatish uchun ushbu o'zgaruvchini ham null qilish yoki scope-dan chiqarish lozim."
     }
   ]
 };
