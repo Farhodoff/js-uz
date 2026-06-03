@@ -9,7 +9,7 @@ Dasturlash davomida ba'zi xatolar sintaktik jihatdan to'g'ri bo'lsa-da, mantiqiy
 ## 2. SODDALIK (Analogiya)
 Tasavvur qiling, siz ko'chada ketyapsiz va yo'lda **"yashirin chuqur"** bor. Uni ustidan barglar bilan yopib qo'yishgan. Agar siz yo'lni yaxshi bilmasangiz, barglarni bosib chuqurga yiqilasiz. JS-dagi tuzoqlar ham shunday: kod tashqi tomondan chiroyli va to'g'ri ko'rinadi (barglar), lekin ishga tushganda kutilmagan xatolik (chuqur) yuz beradi. Ushbu dars sizga barglar ostidagi chuqurlarni ko'rishni o'rgatadi.
 
-## 3. STRUKTURA
+## 3. STRUKTURA VA CHALKAShLIKLAR
 
 ### A. == va === Farqi (Type Coercion)
 - \`==\` (noqat'iy tenglik): Solishtirishdan oldin ikkala qiymatni bir xil tipga o'tkazishga harakat qiladi (Coercion).
@@ -50,22 +50,67 @@ for (const url of urls) {
 await Promise.all(urls.map(url => fetchData(url)));
 \`\`\`
 
-### D. Reference va Mutation buglari
-JavaScript primitiv bo'lmagan tiplarni (obyekt, massiv) reference (ishora) orqali uzatadi. Agar siz obyekt nusxasini yaratmasdan uni o'zgartirsangiz (mutate qilsangiz), asl obyekt ham o'zgarib ketadi.
+### D. Reference va Mutation buglari (Shallow vs Deep Copy)
+JavaScript primitiv bo'lmagan tiplarni (obyekt, massiv) reference (ishora) orqali uzatadi. Spread operatori (\`...\`) faqat sayoz (shallow) nusxa yaratadi, ichki obyektlarni o'zgartirsangiz asl obyekt ham o'zgarib ketadi.
+
+\`\`\`mermaid
+graph TD
+    %% Styling
+    classDef origStyle fill:#2ecc71,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef copyStyle fill:#3498db,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef nestedStyle fill:#9b59b6,stroke:#fff,stroke-width:2px,color:#fff;
+
+    subgraph Memory_Stack ["Memory Stack"]
+        VarOrig["Original User Obj (Reference X)"]:::origStyle
+        VarShallow["Shallow Copy Obj (Reference Y)"]:::copyStyle
+        VarDeep["Deep Copy Obj (Reference Z)"]:::copyStyle
+    end
+
+    subgraph Memory_Heap ["Memory Heap"]
+        ObjOrig["{ name: 'Ali', details: Ref-A }"]:::origStyle
+        ObjNested["{ age: 25 } (Address Ref-A)"]:::nestedStyle
+        
+        ObjShallow["{ name: 'Ali', details: Ref-A }"]:::copyStyle
+        
+        ObjDeep["{ name: 'Ali', details: Ref-B }"]:::copyStyle
+        ObjNestedDeep["{ age: 25 } (Address Ref-B)"]:::nestedStyle
+    end
+
+    VarOrig --> ObjOrig
+    VarShallow --> ObjShallow
+    VarDeep --> ObjDeep
+    
+    ObjOrig --> ObjNested
+    ObjShallow --> ObjNested
+    
+    ObjDeep --> ObjNestedDeep
+\`\`\`
+
 \`\`\`javascript
 const user = { name: "Ali", role: "admin" };
 const copy = user; // Reference ko'chirildi
 copy.name = "Vali";
 console.log(user.name); // "Vali" ❌ (Asl obyekt o'zgarib ketdi!)
 
-// Spread operatori faqat 1-darajali (shallow) nusxa oladi:
+// Spread operatori (\`...\`) faqat 1-darajali (shallow) nusxa oladi:
 const profile = { name: "Ali", social: { twitter: "@ali" } };
 const shallowCopy = { ...profile };
 shallowCopy.social.twitter = "@vali";
 console.log(profile.social.twitter); // "@vali" ❌ (Nested obyekt hamon bitta ishorada!)
 \`\`\`
 
-### E. Closure-da eski qiymat (Stale Closure) va Loop chalkashligi
+### E. Floating-Point Precision (Suzuvchi nuqta muammosi)
+JavaScriptda barcha sonlar IEEE 754 double-precision 64-bit formatida saqlanadi. 0.1 va 0.2 kabi ba'zi o'nlik sonlar binary (ikki o'lchovli) tizimda cheksiz davriy kasrga aylanadi va yaxlitlash xatoligi tufayli kutilmagan natija beradi:
+\`\`\`javascript
+console.log(0.1 + 0.2); // 0.30000000000000004
+console.log(0.1 + 0.2 === 0.3); // false ❌
+
+// Yechim: Epsilon yoki toFixed orqali solishtirish
+console.log(Math.abs((0.1 + 0.2) - 0.3) < Number.EPSILON); // true ✅
+console.log(parseFloat((0.1 + 0.2).toFixed(12)) === 0.3); // true ✅
+\`\`\`
+
+### F. Closure-da eski qiymat (Stale Closure) va Loop chalkashligi
 \`var\` yordamida e'lon qilingan o'zgaruvchilar funksiya doirasiga (function scope) ega bo'lgani uchun, tsikllar ichida closure yaratilganda oxirgi qiymat saqlanib qoladi.
 \`\`\`javascript
 for (var i = 0; i < 3; i++) {
@@ -77,7 +122,7 @@ for (let i = 0; i < 3; i++) {
 }
 \`\`\`
 
-### F. this yo'qolishi va chalkashliklar
+### G. this yo'qolishi va chalkashliklar
 Oddiy funksiyalarda \`this\` funksiya qanday chaqirilganiga bog'liq (dinamik). Arrow funksiyalarda esa \`this\` o'zi yaratilgan lexical muhitga bog'liq (statik).
 \`\`\`javascript
 const obj = {
@@ -89,53 +134,33 @@ const obj = {
   }
 };
 \`\`\`
-Yechim: Arrow funksiya ishlatish (\`this\` lexical scope orqali ota elementnikini oladi) yoki \`.bind(this)\` qilish.
+Yechim: Arrow funksiya ishlatish (this lexical scope orqali ota elementnikini oladi) yoki \`.bind(this)\` qilish.
 
-## 4. AMALIYOT (Mashqlar pastda)
-
-## 5. XATOLAR (Common mistakes)
+## 4. XATOLAR (Common mistakes)
 1. **Obyektlarni taqqoslash:** \`JSON.stringify(obj1) === JSON.stringify(obj2)\` qilish faqat kalitlar tartibi bir xil bo'lgandagina ishlaydi. Eng xavfsiz usul - deep comparison yozish.
 2. **Parametrlarni o'zgartirish (Parameter mutation):** Funksiyaga kelgan massiv yoki obyektni funksiya ichida push yoki mutate qilish clean code qoidalariga zid va kutilmagan buglarga sabab bo'ladi.
 3. **forEach return-i:** \`forEach\` ichidan \`return\` qilish tsiklni to'xtatmaydi, u shunchaki callback funksiyadan chiqadi xolos.
 
-## 6. SAVOLLAR VA JAVOBLAR
+## 5. SAVOLLAR VA JAVOBLAR
 
 **1. Nima uchun null primitiv bo'lsa-da, typeof null object qaytaradi?**
-Bu JavaScript tilining ilk versiyasidagi xato (bug) bo'lib, qiymatlarning xotiradagi bitlarini tekshirishda null qiymati obyektlar kabi 000 tagiga ega bo'lganligi sababli sodir bo'lgan. Tizimlar buzilmasligi uchun bu xato tuzatilmay qolgan.
+Bug - bu JavaScript tilining ilk versiyasidagi xato bo'lib, keyinchalik tizimlar buzilmasligi uchun to'g'rilanmagan.
 
 **2. Obyekt va massivlarni solishtirishda == yoki === nega har doim false beradi?**
-Chunki JavaScript obyektlarni solishtirishda ularning qiymatini emas, balki xotiradagi manzillarini (reference) solishtiradi. Ikkita har xil obyekt yoki massiv bir xil qiymatga ega bo'lsa-da, ularning xotiradagi manzillari turlicha bo'ladi.
+Chunki JavaScript obyektlarni solishtirishda ularning qiymatini emas, balki xotiradagi manzillarini (reference) solishtiradi.
 
 **3. NaN === NaN natijasi nima?**
-Natija \`false\` bo'ladi. JS-da \`NaN\` (Not a Number) o'z-o'ziga teng bo'lmagan yagona qiymatdir. \`NaN\`ni tekshirish uchun \`Number.isNaN()\` metodidan foydalanish zarur.
+Natija \`false\` bo'ladi. \`NaN\`ni tekshirish uchun \`Number.isNaN()\` metodidan foydalanish zarur.
 
 **4. forEach ichidagi async callback nega await qilinmaydi?**
-Chunki \`forEach\` o'zining ichki logikasida callback funksiyadan qaytgan va'dani (\`Promise\`) kutish (await) mexanizmiga ega emas. U shunchaki callback-ni ishga tushirib yuboradi va keyingi elementga o'tadi.
+Chunki \`forEach\` o'zining ichki logikasida callback funksiyadan qaytgan Promise-ni await qilish mexanizmiga ega emas.
 
 **5. Shadow copy va Deep copy farqi nima?**
-Shallow copy faqat birinchi darajali xususiyatlarni nusxalaydi, nested (ichki) obyektlarning esa ishorasini saqlab qoladi. Deep copy esa ichki obyektlarni ham rekursiv ravishda to'liq nusxalab chiqadi.
+Shallow copy faqat birinchi darajali xususiyatlarni nusxalaydi, Deep copy esa ichki obyektlarni ham rekursiv ravishda to'liq nusxalab chiqadi.
 
 **6. Arrow funksiyaning this kalit so'zi oddiy funksiyanikidan nimasi bilan farq qiladi?**
-Arrow funksiyada o'zining shaxsiy \`this\` konteksti bo'lmaydi. U o'zi yozilgan (lexical) tashqi muhitdagi \`this\` qiymatini oladi va uni aslo o'zgartirib bo'lmaydi.
-
-**7. Nima uchun massivni const bilan e'lon qilganimizda uning elementlarini o'zgartira olamiz?**
-Chunki \`const\` faqat o'zgaruvchining xotiradagi ishorasini (reference) o'zgarmas qiladi. Obyekt yoki massivning ichki elementlarini o'zgartirish uning ishorasini o'zgartirmagani uchun ruxsat etiladi.
-
-**8. Parameter mutation nima va nima uchun yomon?**
-Parameter mutation - funksiyaga argument sifatida berib yuborilgan obyekt yoki massivni to'g'ridan-to'g'ri o'zgartirishdir. Bu yomon, chunki funksiyadan tashqaridagi ma'lumot kutilmaganda o'zgarib ketadi va nojo'ya ta'sirlarga (side effects) olib keladi.
-
-**9. Stale closure muammosi qanday yuzaga keladi?**
-Stale closure (eski yopilish) asinxron yoki callback funksiya tashqi o'zgaruvchining eski nusxasini (yaratilgan vaqtdagi qiymatini) eslab qolganda va tashqarida o'zgaruvchi yangilanganda yuz beradi.
-
-**10. delete operatori o'zgaruvchilarni o'chira oladimi?**
-Yo'q, \`delete\` operatori faqat obyektlarning xususiyatlarini (properties) o'chirish uchun mo'ljallangan. U \`var\`, \`let\` yoki \`const\` orqali e'lon qilingan o'zgaruvchilarni o'chira olmaydi.
-
-**11. Massiv elementlarini o'zgartirmasdan saralash qanday amalga oshiriladi?**
-Buning uchun massivning nusxasini olib, keyin saralash kerak, masalan: \`[...arr].sort()\` yoki yangi \`arr.toSorted()\` metodidan foydalanish lozim.
-
-**12. [] + {} va {} + [] nima beradi?**
-- \`[] + {}\` natijasi \`"[object Object]"\` (string) bo'ladi.
-- \`{} + []\` esa ko'p brauzer konsollarida birinchi \`{}\` blok deb hisoblanib, qolgan \`+ []\` amali bajariladi va natija \`0\` (number) chiqadi.`,
+Arrow funksiyada o'zining shaxsiy \`this\` konteksti bo'lmaydi. U o'zi yozilgan (lexical) tashqi muhitdagi \`this\` qiymatini oladi.
+`,
   exercises: [
     {
       id: 1,
@@ -232,6 +257,22 @@ Buning uchun massivning nusxasini olib, keyin saralash kerak, masalan: \`[...arr
       startingCode: "function setupCallback(refObj) {\n  return function() {\n    // refObj.current ni qaytaring\n  };\n}\n",
       hint: "return refObj.current;",
       test: "const ref = { current: 1 }; const fn = setupCallback(ref); ref.current = 2; if (fn() === 2) return null; return 'Eski qiymat qaytarilmoqda, reference-dan o\\'qing';"
+    },
+    {
+      id: 13,
+      title: "Floating-point xatolarini to'g'rilash",
+      instruction: "JavaScriptda floating-point sonlarni qo'shishda kelib chiqadigan xatolarni (masalan, `0.1 + 0.2` natijasi `0.30000000000000004` bo'lishini) bartaraf etuvchi va aniq yig'indini qaytaruvchi `safeAdd(a, b)` funksiyasini yozing.",
+      startingCode: "function safeAdd(a, b) {\n  // a va b yig'indisini floating-point xatolarisiz qaytaring\n}",
+      hint: "return parseFloat((a + b).toFixed(12));",
+      test: "if (safeAdd(0.1, 0.2) === 0.3 && safeAdd(0.1, 0.7) === 0.8) return null;\nreturn 'safeAdd funksiyasi to\\'g\\'ri yig\\'indi qaytarmadi';"
+    },
+    {
+      id: 14,
+      title: "Obyektni chuqur muzlatish (Deep Freeze)",
+      instruction: "Berilgan obyektni va uning barcha ichki nested obyektlarini rekursiv tarzda to'liq muzlatib (immutable), o'zgartirishlardan saqlovchi va xavfsiz qiluvchi `deepFreeze(obj)` funksiyasini yozing.",
+      startingCode: "function deepFreeze(obj) {\n  // Obyekt va uning ichidagi barcha obyektlarni muzlating\n}",
+      hint: "Object.freeze(obj);\nObject.keys(obj).forEach(key => {\n  if (typeof obj[key] === 'object' && obj[key] !== null) {\n    deepFreeze(obj[key]);\n  }\n});\nreturn obj;",
+      test: "const o = { a: { b: 1 } };\ndeepFreeze(o);\nif (Object.isFrozen(o) && Object.isFrozen(o.a)) return null;\nreturn 'deepFreeze funksiyasi obyektni chuqur muzlatmadi';"
     }
   ],
   quizzes: [
@@ -247,7 +288,7 @@ Buning uchun massivning nusxasini olib, keyin saralash kerak, masalan: \`[...arr
       question: "JavaScriptda `typeof null` nima uchun 'object' qaytaradi?",
       options: [
         "Chunki null aslida obyektning bir turi hisoblanadi",
-        "Bu til yaratilgan vaqtdagi tarixiy xatolik (bug) bo'lib, keyin tuzatilmay qolgan",
+        "Bug - bu JavaScript tilining ilk versiyasidagi xato bo'lib, keyinchalik tizimlar buzilmasligi uchun to'g'rilanmagan",
         "Null xotirada eng ko'p joy oladigan ma'lumot turi bo'lgani uchun",
         "Bu ES6 spetsifikatsiyasida kiritilgan yangi qoida"
       ],
@@ -353,6 +394,30 @@ Buning uchun massivning nusxasini olib, keyin saralash kerak, masalan: \`[...arr
       options: ["'object'", "'null'", "'string'", "'undefined'"],
       correctAnswer: 2,
       explanation: "`typeof null` qiymati `'object'` (string) qaytaradi. Keyin `'object'` matniga typeof qo'llanilganda u string bo'lganligi sababli `'string'` natijasi chiqadi."
+    },
+    {
+      id: 13,
+      question: "Floating-point (suzuvchi nuqtali) sonlar bilan ishlashda 0.1 + 0.2 === 0.3 ifodasi nega false qaytaradi?",
+      options: [
+        "Chunki JavaScript sonlarni 2 lik sanoq tizimida (binary IEEE 754 standarti) saqlaydi, ba'zi o'nlik kasrlar binary tizimda cheksiz davriy kasr bo'lib qoladi va natijada kichik yaxlitlash xatoligi yuz beradi",
+        "Chunki JS sonlarni faqat satr (string) ko'rinishida saqlaydi",
+        "Chunki 0.1 va 0.2 primitiv sonlar emas",
+        "Chunki JavaScriptda 0.3 degan qiymat mavjud emas"
+      ],
+      correctAnswer: 0,
+      explanation: "V8 dvigateli barcha sonlarni IEEE 754 double-precision standardida saqlaydi. 0.1 va 0.2 ni binary ko'rinishga o'tkazganda cheksiz davriy kasr hosil bo'ladi va yaxlitlash natijasida 0.1 + 0.2 = 0.30000000000000004 bo'lib qoladi."
+    },
+    {
+      id: 14,
+      question: "Object.freeze() va biz yozgan deepFreeze() funksiyalari o'rtasidagi asosiy farq nima?",
+      options: [
+        "Object.freeze() faqat sayoz (shallow) muzlatadi (ichki obyektlar o'zgarishi mumkin), deepFreeze() esa ichki obyektlarni ham rekursiv muzlatib, ularni ham o'zgarishlardan to'liq himoya qiladi",
+        "Object.freeze() faqat massivlarda, deepFreeze() esa obyektlarda ishlaydi",
+        "Hech qanday farqi yo'q, ikkalasi ham bir xil ishlaydi",
+        "Object.freeze() xotirani tozalaydi, deepFreeze() esa xotirani band qiladi"
+      ],
+      correctAnswer: 0,
+      explanation: "Object.freeze() faqat obyektning birinchi darajali xossalarini muzlatadi. Ichki obyektlar (nested properties) o'zgarishi mumkin. deepFreeze() esa rekursiv ravishda obyekt ichidagi barcha obyektlarni ham muzlatadi."
     }
   ]
 };

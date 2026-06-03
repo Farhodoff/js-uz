@@ -13,86 +13,112 @@ Tasavvur qiling, sizga **minglab kitoblar** aralashib yotgan kutubxonadan bitta 
 
 Algoritmlar — bu kutubxonadagi kitoblarni tartibga solish va ularni eng tez topish yo'llaridir.
 
-## 3. STRUKTURA
+## 3. STRUKTURA VA ALGORITMLAR
 
 ### A. Massivlar va Obyektlar (Arrays & Objects in Problem Solving)
 Masalalarni yechishda ma'lumotlarni saqlash va ulardan foydalanish tezligi juda muhimdir.
 - **Massivlar (Arrays):** Tartiblangan ma'lumotlar to'plami. Indeks orqali elementga murojaat qilish tezligi: O(1). Ammo qidirish yoki boshiga element qo'shish O(N) vaqt oladi.
 - **Obyektlar (Objects / Hash Maps):** Kalit-qiymat (Key-Value) juftligi. Kalit orqali qiymatni topish, qo'shish va o'chirish o'rtacha O(1) vaqt oladi. Bu xususiyat ko'p hollarda nested loop (ichma-ich tsikl) orqali yozilgan O(N^2) kodlarni O(N) ga tushirishga yordam beradi.
 
-### B. Rekursiya (Recursion)
-Rekursiya — funksiyaning o'z-o'zini chaqirishi. Har qanday rekursiv funksiyada ikkita asosiy qism bo'lishi shart:
-1. **Base Case (To'xtash sharti):** Rekursiyani to'xtatuvchi va cheksiz chaqiruvdan saqlovchi shart.
-2. **Recursive Step (Rekursiv chaqiruv):** Muammoni kichikroq qismlarga bo'lib, funksiyani qayta chaqirish.
+### B. Two Pointers (Ikki ko'rsatkich) Texnikasi
+Saralangan massivlarda qidiruv qilishni optimallashtirish uchun ikki tomondan (boshi va oxiri) ko'rsatkichlar qo'yib tekshiriladi.
 \`\`\`javascript
-function factorial(n) {
-  if (n === 1) return 1; // Base case
-  return n * factorial(n - 1); // Recursive step
+function hasPairWithSum(arr, target) {
+  let left = 0;
+  let right = arr.length - 1;
+  while (left < right) {
+    const sum = arr[left] + arr[right];
+    if (sum === target) return true;
+    if (sum < target) left++;
+    else right--;
+  }
+  return false;
 }
 \`\`\`
 
-### C. Qidiruv algoritmlari (Searching Algorithms)
-- **Linear Search (Chiziqli qidiruv):** Massivning boshidan oxirigacha har bir elementni birma-bir solishtirib chiqadi. Vaqt murakkabligi: O(N).
-- **Binary Search (Binar qidiruv):** Faqat tartiblangan (sorted) massivlar uchun ishlaydi. Har safar qidiruv doirasini o'rtasidan ikkiga bo'lish orqali ishlaydi. Vaqt murakkabligi: O(log N).
+### C. Sliding Window (Sirpanuvchi oyna) Texnikasi
+Ketma-ket sub-array yig'indilarini dynamic hisoblashda ishlatiladi. Har safar oynadan chiquvchi eski qiymat ayirib tashlanadi va yangi kiruvchi qiymat qo'shiladi.
 
-### D. Saralash algoritmlari (Sorting Algorithms)
-- **Bubble Sort (Pufakchali saralash):** Qo'shni elementlarni solishtirib, noto'g'ri bo'lsa joyini almashtiradi. Eng oddiy, ammo sekin saralash usuli. Vaqt murakkabligi: O(N^2).
-- **Quick Sort va Merge Sort:** Bo'lib ol va hukmronlik qil (Divide and Conquer) tamoyiliga asoslangan tezroq algoritmlar. Vaqt murakkabligi: O(N log N).
+\`\`\`mermaid
+graph LR
+    %% Styling
+    classDef windowStyle fill:#3498db,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef normalStyle fill:#95a5a6,stroke:#fff,stroke-width:1px,color:#fff;
+    
+    subgraph Step_1 ["1-qadam: Oyna boshida (k = 3)"]
+        A1["[ 1 ]"]:::windowStyle
+        A2["[ 2 ]"]:::windowStyle
+        A3["[ 5 ]"]:::windowStyle
+        A4["[ 2 ]"]:::normalStyle
+        A5["[ 8 ]"]:::normalStyle
+    end
 
-### E. Asosiy algoritmlar (Basic Algorithms)
-- **Two Sum:** Berilgan massivdan yig'indisi ma'lum bir targetga teng bo'lgan juftlikni topish.
-- **Anagram:** Ikki so'zning harflari va ularning soni mutlaqo bir xil ekanini tekshirish.
-- **Palindrome:** So'zni chapdan va o'ngdan o'qilganda bir xilligini tekshirish (masalan: "kiyik", "non").
+    subgraph Step_2 ["2-qadam: Oyna siljiganda (k = 3)"]
+        B1["[ 1 ]"]:::normalStyle
+        B2["[ 2 ]"]:::windowStyle
+        B3["[ 5 ]"]:::windowStyle
+        B4["[ 2 ]"]:::windowStyle
+        B5["[ 8 ]"]:::normalStyle
+    end
+\`\`\`
 
-### F. Ma'lumotlar Tuzilmalari Asoslari (Data Structures Basics)
-- **Stack (Stek):** LIFO (Last In, First Out - Oxirgi kirgan, birinchi chiqadi) tamoyilida ishlaydi. Misol: orqaga qaytish (undo) tarixi yoki brauzer tarixi.
-- **Queue (Navbat):** FIFO (First In, First Out - Birinchi kirgan, birinchi chiqadi) tamoyilida ishlaydi. Misol: printer navbati yoki chipta sotib olish navbati.
-- **Linked List (Bog'langan ro'yxat):** Elementlar xotirada ketma-ket joylashishi shart emas, har bir element (Node) o'zida qiymat va keyingi elementga ishora (next) ni saqlaydi.
+### D. Rekursiya va Memoization (Kesh-optimallashtirish)
+Rekursiv funksiyalar keraksiz takroriy chaqiruvlarni chetlab o'tish uchun kesh orqali tezlashtiriladi (Memoization).
 
-## 4. AMALIYOT (Mashqlar pastda)
+\`\`\`mermaid
+graph TD
+    %% Styling
+    classDef compStyle fill:#e74c3c,stroke:#fff,color:#fff;
+    classDef cachedStyle fill:#2ecc71,stroke:#fff,color:#fff;
 
-## 5. XATOLAR (Common mistakes)
-1. **Rekursiyada to'xtash sharti (Base Case) bo'lmasligi:** Bu brauzerda **"Maximum call stack size exceeded"** xatosiga (Stack Overflow) olib keladi.
+    F5["fib(5)"]:::compStyle
+    F5 --> F4["fib(4)"]:::compStyle
+    F5 --> F3_cached["fib(3) - Cached"]:::cachedStyle
+    
+    F4 --> F3["fib(3)"]:::compStyle
+    F4 --> F2_cached["fib(2) - Cached"]:::cachedStyle
+    
+    F3 --> F2["fib(2)"]:::compStyle
+    F3 --> F1["fib(1)"]:::compStyle
+\`\`\`
+
+\`\`\`javascript
+function fibMemo(n, memo = {}) {
+  if (n in memo) return memo[n];
+  if (n <= 1) return n;
+  return memo[n] = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);
+}
+\`\`\`
+
+### E. Qidiruv va Saralash algoritmlari
+- **Linear Search (Chiziqli qidiruv):** Massiv elementlarini boshidan boshlab birma-bir tekshiradi. Vaqt murakkabligi: O(N).
+- **Binary Search (Binar qidiruv):** Faqat tartiblangan massivlarda o'rtadagi elementdan foydalanib ishlaydi. Vaqt murakkabligi: O(log N).
+- **Bubble Sort (Pufakchali saralash):** Qo'shni elementlarni solishtirib, noto'g'ri bo'lsa joyini almashtiradi. Vaqt murakkabligi: O(N^2).
+
+### F. Ma'lumotlar Tuzilmalari Asoslari
+- **Stack (Stek):** LIFO (Last In, First Out) tamoyili.
+- **Queue (Navbat):** FIFO (First In, First Out) tamoyili.
+- **Linked List (Bog'langan ro'yxat):** Har bir element (Node) o'zida qiymat va keyingi elementga ishora (next) ni saqlaydi.
+
+## 4. XATOLAR (Common mistakes)
+1. **Rekursiyada to'xtash sharti (Base Case) bo'lmasligi:** Bu brauzerda \`Maximum call stack size exceeded\` xatosiga olib keladi.
 2. **Binary Search-ni tartiblanmagan massivda ishlatish:** Binary search faqat va faqat saralangan (sorted) massivlar uchun to'g'ri natija beradi.
-3. **Massivlarni solishtirishda to'g'ridan-to'g'ri tenglik ishlatish:** \`[1,2] === [1,2]\` har doim \`false\` beradi, chunki ular alohida obyektlardir. Elementma-element solishtirish talab etiladi.
+3. **Massivlarni solishtirishda to'g'ridan-to'g'ri tenglik ishlatish:** \`[1,2] === [1,2]\` har doim \`false\` beradi.
 
-## 6. SAVOLLAR VA JAVOBLAR
+## 5. SAVOLLAR VA JAVOBLAR
 
 **1. Algoritmning vaqt murakkabligi (Time Complexity) nima?**
 Bu algoritm bajarilishi uchun ketadigan vaqtning kiruvchi ma'lumotlar hajmi (N) o'sishiga qanday bog'liqligini ko'rsatadigan o'lchovdir (Big O notation yordamida ifodalanadi).
 
 **2. Rekursiyaning afzalligi va kamchiligi nimada?**
-Afzalligi — kodning qisqa va tushunarli bo'lishi (ayniqsa daraxtsimon tuzilmalarda). Kamchiligi — har bir chaqiruv xotiradan (call stack) joy olgani uchun xotira sarfi yuqoriligi va sekinroq ishlashidir.
+Afzalligi — kodning qisqa va tushunarli bo'lishi. Kamchiligi — har bir chaqiruv xotiradan (call stack) joy olgani uchun xotira sarfi yuqoriligi va sekinroq ishlashidir.
 
 **3. Binary Search qanday ishlaydi?**
-Tartiblangan massivning o'rtasidagi element olinadi. Agar maqsadli qiymat o'rtadagi elementdan kichik bo'lsa, qidiruv chap yarimda, katta bo'lsa o'ng yarimda davom ettiriladi. Bu jarayon qiymat topilguncha yoki qidiruv doirasi tugaguncha takrorlanadi.
+Tartiblangan massivning o'rtasidagi element olinadi. Agar maqsadli qiymat o'rtadagi elementdan kichik bo'lsa, qidiruv chap yarimda, katta bo'lsa o'ng yarimda davom ettiriladi.
 
 **4. Stek (Stack) va Navbat (Queue) farqi nima?**
-Stek LIFO (oxirgi kirgan birinchi chiqadi) tamoyilida ishlaydi va elementlar bir tomondan qo'shiladi va olinadi. Navbat esa FIFO (birinchi kirgan birinchi chiqadi) tamoyilida ishlaydi, elementlar oxiridan qo'shilib, boshidan olinadi.
-
-**5. Linked List massivdan nimasi bilan farq qiladi?**
-Massiv elementlari xotirada ketma-ket joylashgan bo'lib, o'lchami odatda statikdir. Linked List elementlari esa xotiraning ixtiyoriy joyida bo'lishi mumkin va bir-biriga ishora (pointer) orqali bog'lanadi, bu esa elementlarni oson qo'shish va o'chirish imkonini beradi.
-
-**6. Anagrammani aniqlashning eng tez usuli qanday?**
-Eng samarali usul — ikkala so'zdagi harflar chastotasini obyekt (hash map) yordamida hisoblash va ularni solishtirishdir (O(N) vaqt murakkabligi).
-
-**7. Space Complexity (Fazo murakkabligi) nima?**
-Bu algoritmning ishlashi davomida kiruvchi ma'lumotlardan tashqari qo'shimcha ravishda xotiradan qancha joy talab qilishini ko'rsatadigan o'lchovdir.
-
-**8. Stack Overflow nima va u qachon yuz beradi?**
-Stack Overflow - Call Stack-ning to'lib ketishi bo'lib, odatda rekursiv funksiyaning to'xtash sharti (base case) bajarilmay cheksiz marta o'zini chaqirishi natijasida yuz beradi.
-
-**9. Bubble sort algoritmining vaqt murakkabligi qanday va nega u amaliyotda kam qo'llaniladi?**
-Bubble sort eng yomon va o'rtacha holatda O(N^2) vaqt talab qiladi. U juda ko'p almashtirishlar bajargani uchun sekin ishlaydi va katta ma'lumotlar bilan ishlashga to'g'ri kelmaydi. Amaliyotda Quick/Merge sort ishlatiladi.
-
-**10. Ikki ko'rsatkich (Two pointers) texnikasi nima?**
-Bu massiv ustida bir vaqtning o'zida ikkita har xil indeksda turgan ko'rsatkichlar (masalan boshida va oxirida) yordamida amallar bajarish usuli bo'lib, u asosan saralangan massivlarda qidiruv qilishni tezlashtirish uchun qo'llaniladi.
-
-**11. Nima uchun obyektlarda (Hash Map) qidirish O(1) tezlikka ega?**
-Chunki kalit (key) maxsus hashing funksiyasi orqali to'g'ridan-to'g'ri xotiradagi manzilga aylantiriladi va qiymat massivdagi kabi indeks orqali to'g'ridan-to'g'ri o'qiladi.
-
-**12. Rekursiyani har doim loop (tsikl) ga o'tkazish mumkinmi?**
-Ha, har qanday rekursiv algoritmni qo'shimcha stack ma'lumotlar tuzilmasi yoki oddiy loop yordamida iterativ ko'rinishga keltirish mumkin va bu xotira samaradorligini oshiradi.`,
+Stek LIFO (oxirgi kirgan birinchi chiqadi) tamoyilida ishlaydi. Navbat esa FIFO (birinchi kirgan birinchi chiqadi) tamoyilida ishlaydi.
+`,
   exercises: [
     {
       id: 1,
@@ -169,7 +195,7 @@ Ha, har qanday rekursiv algoritmni qo'shimcha stack ma'lumotlar tuzilmasi yoki o
     {
       id: 10,
       title: "Stek (Stack) tuzilmasi",
-      instruction: "LIFO (Last In First Out) tamoyili asosida ishlaydigan `Stack` klassini yozing. U quyidagi metodlarga ega bo'lishi shart:\n- `push(element)`: element qo'shish\n- `pop()`: oxirgi elementni o'chirish va qaytarish (stek bo'sh bo'lsa null yoki undefined qaytarsin)\n- `peek()`: oxirgi elementni ko'rish (o'chirmasdan)\n- `isEmpty()`: stek bo'shligini tekshirish (true/false)",
+      instruction: "LIFO (Last In First Out) tamoyili asosida ishlaydigan `Stack` klassini yozing. U quyidagi metodlarga ega bo'lik bo'lishi shart:\n- `push(element)`: element qo'shish\n- `pop()`: oxirgi elementni o'chirish va qaytarish (stek bo'sh bo'lsa null yoki undefined qaytarsin)\n- `peek()`: oxirgi elementni ko'rish (o'chirmasdan)\n- `isEmpty()`: stek bo'shligini tekshirish (true/false)",
       startingCode: "class Stack {\n  constructor() {\n    this.items = [];\n  }\n\n  push(element) {\n    // Kodni yozing\n  }\n\n  pop() {\n    // Kodni yozing\n  }\n\n  peek() {\n    // Kodni yozing\n  }\n\n  isEmpty() {\n    // Kodni yozing\n  }\n}\n",
       hint: "this.items massividan va uning push, pop metodlaridan foydalaning. peek uchun this.items[this.items.length - 1] ni ishlating.",
       test: "const stack = new Stack();\nif (!stack.isEmpty()) return \"Boshlanishida stack bo'sh bo'lishi kerak.\";\nstack.push(10);\nstack.push(20);\nif (stack.peek() !== 20) return \"peek() oxirgi qo'shilgan elementni qaytarishi kerak.\";\nif (stack.pop() !== 20 || stack.pop() !== 10) return \"LIFO tartibida elementlar pop qilinishi kerak.\";\nif (!stack.isEmpty()) return \"Barcha elementlar olingach stack bo'sh bo'lishi kerak.\";\nreturn null;"
@@ -189,6 +215,22 @@ Ha, har qanday rekursiv algoritmni qo'shimcha stack ma'lumotlar tuzilmasi yoki o
       startingCode: "class Node {\n  constructor(value) {\n    this.value = value;\n    this.next = null;\n  }\n}\n\nclass LinkedList {\n  constructor() {\n    this.head = null;\n  }\n\n  append(value) {\n    // Kodni yozing\n  }\n\n  toArray() {\n    // Kodni yozing\n  }\n}\n",
       hint: "append metodida agar head === null bo'lsa, head = new Node(value) qiling. Aks holda oxirgi nodegacha borib (current.next !== null tsikli orqali), uning nextiga vaqtinchalik node biriktiring.",
       test: "const list = new LinkedList();\nlist.append(1);\nlist.append(2);\nlist.append(3);\nconst arr = list.toArray();\nif (Array.isArray(arr) && arr.join(\",\") === \"1,2,3\") {\n  if (list.head && list.head.value === 1 && list.head.next && list.head.next.value === 2) {\n    return null;\n  }\n  return \"Bog'langan ro'yxat strukturasida bog'liqliklar to'g'ri o'rnatilmagan.\";\n}\nreturn \"toArray() metodi to'g'ri massiv qaytarmadi.\";"
+    },
+    {
+      id: 13,
+      title: "Sliding Window - Maksimal yig'indi",
+      instruction: "Sirpanuvchi oyna (Sliding Window) texnikasi yordamida massivdagi ketma-ket `k` ta elementning maksimal yig'indisini O(N) vaqt murakkabligida aniqlaydigan `maxSubArraySum(arr, k)` funksiyasini yozing. (Agar `arr.length < k` bo'lsa, `0` qaytaring).",
+      startingCode: "function maxSubArraySum(arr, k) {\n  // k ta ketma-ket elementlarning maksimal yig'indisini toping\n}",
+      hint: "if (arr.length < k) return 0;\nlet maxSum = 0, tempSum = 0;\nfor (let i = 0; i < k; i++) maxSum += arr[i];\ntempSum = maxSum;\nfor (let i = k; i < arr.length; i++) {\n  tempSum = tempSum - arr[i - k] + arr[i];\n  maxSum = Math.max(maxSum, tempSum);\n}\nreturn maxSum;",
+      test: "if (maxSubArraySum([1, 2, 5, 2, 8, 1, 5], 3) === 15 && maxSubArraySum([4, 2, 1, 6], 1) === 6 && maxSubArraySum([4, 2, 1, 6], 5) === 0) return null;\nreturn 'maxSubArraySum to\\'g\\'ri yig\\'indi qaytarmadi yoki O(N) ishlatilmadi';"
+    },
+    {
+      id: 14,
+      title: "Deep Object Comparison",
+      instruction: "Ikkita obyekt yoki massivni ularning barcha ichki nested qiymatlari va tuzilishi jihatidan chuqur (deep) solishtiruvchi `deepEqual(a, b)` rekursiv funksiyasini yozing.",
+      startingCode: "function deepEqual(a, b) {\n  // a va b obyektlari chuqur tengligini tekshiring\n}",
+      hint: "if (a === b) return true;\nif (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) return false;\nconst keysA = Object.keys(a), keysB = Object.keys(b);\nif (keysA.length !== keysB.length) return false;\nfor (let key of keysA) {\n  if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;\n}\nreturn true;",
+      test: "if (deepEqual({a: 1, b: {c: 2}}, {a: 1, b: {c: 2}}) === true && deepEqual({a: 1}, {a: 2}) === false) return null;\nreturn 'deepEqual funksiyasi obyektlarni chuqur solishtira olmadi';"
     }
   ],
   quizzes: [
@@ -201,7 +243,7 @@ Ha, har qanday rekursiv algoritmni qo'shimcha stack ma'lumotlar tuzilmasi yoki o
     },
     {
       id: 2,
-      question: "Obyektlarda (Hash Map) kalit bo'yicha qiymatni qidirish, qo'shish va o'chirishning o'rtacha vaqt murakkabligi qanday?",
+      question: "Obyektlarde (Hash Map) kalit bo'yicha qiymatni qidirish, qo'shish va o'chirishning o'rtacha vaqt murakkabligi qanday?",
       options: ["O(N)", "O(log N)", "O(1)", "O(N log N)"],
       correctAnswer: 2,
       explanation: "Obyektlar kalitlarni maxsus xesh-funksiya yordamida to'g'ridan-to'g'ri xotira indeksiga aylantiradi, shuning uchun o'rtacha holatda barcha amallar O(1) tezlikda bajariladi."
@@ -294,7 +336,31 @@ Ha, har qanday rekursiv algoritmni qo'shimcha stack ma'lumotlar tuzilmasi yoki o
       question: "Quyidagi rekursiv funksiyaning `factorial(3)` chaqiruvidagi natijasi nima bo'ladi?\n```javascript\nfunction factorial(n) {\n  if (n <= 1) return 1;\n  return n * factorial(n - 1);\n}\n```",
       options: ["3", "6", "9", "2"],
       correctAnswer: 1,
-      explanation: " factorial(3) = 3 * factorial(2) = 3 * 2 * factorial(1) = 3 * 2 * 1 = 6."
+      explanation: "factorial(3) = 3 * factorial(2) = 3 * 2 * factorial(1) = 3 * 2 * 1 = 6."
+    },
+    {
+      id: 13,
+      question: "Sliding Window (sirpanuvchi oyna) algoritmining nested loop (ichma-ich tsikl) yordamida yozilgan O(N^2) algoritmlardan asosiy ustunligi nimada?",
+      options: [
+        "U har safar ichki tsikl yordamida elementlarni boshidan qo'shib chiqmasdan, oynaning chap va o'ng chegarasidagi o'zgarishlarni hisoblaydi va vaqt murakkabligini O(N) gacha qisqartiradi",
+        "U xotiradan joy tejash maqsadida massivni o'chirib yuboradi",
+        "U faqat asinxron funksiyalar bilan ishlaydi",
+        "U faqat dynamic type casting uchun ruxsat beradi"
+      ],
+      correctAnswer: 0,
+      explanation: "Sliding Window texnikasi oyna siljiganda faqat oynadan chiquvchi eski qiymatni ayirish va kiruvchi yangi qiymatni qo'shish orqali summani dynamic yangilaydi. Bu takroriy hisoblashlarni oldini olib, O(N^2) dan O(N) ga o'tish imkonini beradi."
+    },
+    {
+      id: 14,
+      question: "Rekursiyada Memoization (keshlash) usulidan foydalanish nega muhim? (Masalan, Fibonachchi sonlarini hisoblashda)",
+      options: [
+        "Chunki u ilgari hisoblangan natijalarni keshga saqlab, bir xil kiruvchi argument uchun funksiya chaqirilganda qayta hisoblamasdan keshdan oladi va bu vaqt murakkabligini keskin kamaytiradi (masalan, O(2^N) dan O(N) ga)",
+        "Chunki u call stack hajmini cheksiz qila oladi",
+        "Chunki u rekursiv funksiyani butunlay o'chirib yuboradi",
+        "Chunki u faqat massivlarni saralashda ishlaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "Oddiy rekursiv Fibonachchi O(2^N) vaqt talab qiladi, chunki u bir xil qiymatlarni qayta-qayta hisoblaydi (masalan, fib(3) ni bir necha bor). Memoization yordamida har bir hisoblangan qiymat saqlanadi va time complexity O(N) ga tushadi."
     }
   ]
 };

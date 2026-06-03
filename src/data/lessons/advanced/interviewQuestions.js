@@ -2,36 +2,96 @@ export const interviewQuestionsAdvanced = {
   id: "q3",
   title: "🔴 Interview Savollar (Murakkab)",
   theory: `## 1. NEGA kerak?
-Ilg'or (Advanced) darajadagi texnik suhbatlar sizning nafaqat JavaScript sintaksisini, balki JavaScript motorining (V8) xotirani boshqarishi, asinxron hodisalar arxitekturasi (Event Loop), kodni optimallashtirish va xavfsizlik kabi murakkab fundamental tushunchalarni qay darajada bilishingizni tekshiradi. Ushbu savollarga tayyorlanish yuqori darajali muhandis (Senior Developer) bo'lishda muhim ahamiyatga ega.
+Ilg'or (Advanced) darajadagi texnik suhbatlar sizning nafaqat JavaScript sintaksisini, balki JavaScript motorining (V8) xotirani boshqarishi, asinxron hodisalar arxitekturasi (Event Loop), kodni optimallashtirish va xavfsizlik kabi murakkab fundamental tushunchalarni qay darajada bilishingizni tekshiradi. Ushbu darsda biz Event Loop-dagi mikrotasklar va makrotasklar navbati, V8 motorining ishlash quvuri (pipeline), prototype zanjiri qidiruvi va maxsus polifillar yozish texnikasini chuqur tahlil qilamiz.
 
 ## 2. SODDALIK (Analogiya)
 Buni **avtopoygachi va mexanik** analogiyasiga o'xshatish mumkin.
 - O'rta darajadagi dasturchi — avtomobilni tez va to'g'ri boshqaradigan haydovchidir.
 - Ilg'or dasturchi (Senior) — avtomobilning aerodinamikasi, shinalarining qizishi, dvigatelning xotira (yoqilg'i) taqsimoti va xavfsizlik tizimlarini to'liq tushunadigan hamda poyga paytida har qanday nosozlikni hal eta oladigan muhandis-haydovchidir.
 
-## 3. STRUKTURA
-Murakkab intervyularda eng ko'p so'raladigan 4 ta asosiy yo'nalish:
-- **Event Loop & Concurrency:** Microtasks vs Macrotasks, call stack, render queue ishlash mexanizmlari.
-- **Xotirani Boshqarish:** Garbage Collector (Mark-and-Sweep algoritmi), memory leaks (xotira sizib chiqishi).
-- **Metaprogramming va Prototiplar:** Proxies, Reflect API, prototype chain zanjirini o'zgartirish.
-- **Dizayn patternlar va Performance:** Debounce/Throttle, Memoization, Custom Promise implementatsiyalari.
+## 3. STRUKTURA VA PRINTSIPLAR
 
-## 4. AMALIYOT (Mashqlar pastda)
-Suhbatlarda ko'p beriladigan amaliy savollardan biri — massivni rekursiv tekislash (deep flatten):
-\`\`\`javascript
-function flatten(arr) {
-  return arr.reduce((acc, val) => 
-    Array.isArray(val) ? acc.concat(flatten(val)) : acc.concat(val), []);
-}
-console.log(flatten([1, [2, [3, 4]]])); // [1, 2, 3, 4]
-\`\`\`
+### A. Event Loop: Microtasks va Macrotasks Prioriteti
+JavaScript bir oqimli (single-threaded) til bo'lib, asinxronlikni Event Loop orqali boshqaradi. Biroq, asinxron vazifalar bir xil ahamiyatga ega emas:
+1. **Microtask Queue:** Tez bajarilishi kerak bo'lgan vazifalar uchun. Bunga \`Promise.then/catch/finally\`, \`queueMicrotask\`, va \`MutationObserver\` kiradi.
+2. **Macrotask Queue (Task Queue):** Brauzer/Node tomonidan rejalashtiriladigan tashqi amallar. Bunga \`setTimeout\`, \`setInterval\`, \`setImmediate\` (Node), I/O amallari va UI hodisalari kiradi.
+3. **Ustuvorlik:** Call Stack bo'shashi bilan, Event Loop avval **Microtask Queue-dagi barcha** vazifalarni (ular bajarilish davomida yangi mikrotasklar qo'shsa ham) to'liq tugatadi. Shundan keyingina Macrotask Queue-dan **bitta** vazifani olib bajaradi.
 
-## 5. XATOLAR (Common mistakes)
+\`mermaid
+sequenceDiagram
+    participant CS as Call Stack
+    participant MT as Microtask Queue (Promises, queueMicrotask)
+    participant MacT as Macrotask Queue (setTimeout, UI events)
+    participant Render as Render Queue (Screen repaint)
+
+    CS->>CS: Sinxron kodlarni bajarish
+    CS->>MT: Microtask-larni navbatga qo'shish
+    CS->>MacT: Macrotask-larni navbatga qo'shish
+    Note over CS: Call Stack bo'shaydi
+    CS->>MT: Barcha Microtask-larni bajarish (Queue bo'shaguncha)
+    MT->>CS: Callback-larni bajarish
+    Note over CS: Microtask-lar tugadi
+    CS->>Render: Ekran yangilanishi (agar kerak bo'lsa)
+    CS->>MacT: Navbatdagi BITTA Macrotask-ni bajarish
+    MacT->>CS: Callback-ni stack-ga o'tkazish
+\`
+
+### B. V8 Engine Compilation Pipeline
+V8 JavaScript kodini quyidagi bosqichlarda bajaradi:
+1. **Parser & AST:** Kod matni o'qilib, sintaktik tahlil qilinadi va **Abstract Syntax Tree (AST)** daraxti tuziladi.
+2. **Ignition Interpreter:** AST asosida tezda **Bytecode** generatsiya qilinadi va kod darhol bajarila boshlaydi. Ignition xotirani tejaydi va tez ishga tushadi.
+3. **TurboFan Compiler:** Ishga tushirish jarayonida ko'p bajariladigan, issiq ("hot") funksiyalar aniqlanadi. TurboFan ularni to'g'ridan-to'g'ri o'ta optimallashgan **Mashina kodiga (Machine Code)** o'tkazadi.
+4. **Deoptimization:** Agar optimallashtirilgan kod kutilmaganda boshqa tipdagi o'zgaruvchini qabul qilsa (masalan, har doim \`number\` oladigan funksiyaga \`string\` kelib qolsa), TurboFan optimallikdan voz kechadi (deoptimization) va yana Ignition bytekodiga qaytadi.
+
+\`mermaid
+graph TD
+    %% Styling
+    classDef source fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    classDef parser fill:#16a085,stroke:#1abc9c,stroke-width:2px,color:#fff;
+    classDef interpreter fill:#d35400,stroke:#e67e22,stroke-width:2px,color:#fff;
+    classDef compiler fill:#2980b9,stroke:#3498db,stroke-width:2px,color:#fff;
+    classDef machine fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
+
+    Src["JavaScript Source Code"]:::source
+    Parser["Parser & AST (Abstract Syntax Tree)"]:::parser
+    Ignition["Ignition Interpreter (Bytecode)"]:::interpreter
+    TurboFan["TurboFan Compiler (Optimized Machine Code)"]:::compiler
+    Exec["CPU Execution"]:::machine
+
+    Src --> Parser
+    Parser --> Ignition
+    Ignition --> Exec
+    Ignition -- "Hot Code (Tez-tez ishlaydigan kod)" --> TurboFan
+    TurboFan --> Exec
+    TurboFan -- "Deoptimization (Kutilmagan tip o'zgarishi)" --> Ignition
+\`
+
+### C. Prototype Chain (Prototiplar zanjiri) Lookup
+JavaScript-da har bir obyekt o'zining yashirin \`[[Prototype]]\` (ya'ni \`__proto__\`) xususiyatiga ega. 
+- Obyektdan biron xususiyat yoki metod qidirilganda, JS avval obyektning o'zidan qidiradi.
+- Topilmasa, uning prototipiga o'tadi va to zanjir oxiri (\`null\`ga yetguncha) qidiruvni davom ettiradi.
+- **Optimallashtirish:** Dvigatellar prototype chain lookup jarayonini tezlashtirish uchun **Hidden Classes (Shapes)** va **Inline Caches (IC)** dan foydalanadi. Obyekt tuzilishi dynamic o'zgarganda (delete yoki yangi xossa qo'shilganda) hidden class o'zgaradi va lookup sekinlashadi.
+
+### D. Custom Array Implementations (Polifillar)
+Intervyularda ko'p beriladigan masalalardan biri — massiv metodlarining polifillarini (polyfills) qo'lda yozish. Custom metodlar yozishda \`thisArg\` orqali kontekstni uzatish va uning to'g'ri qo'llanilishini ta'minlash muhimdir:
+\`javascript
+Array.prototype.myMap = function(callback, thisArg) {
+  const result = [];
+  for (let i = 0; i < this.length; i++) {
+    if (i in this) { // Massivdagi bo'sh elementlarni (sparse elements) tashlab ketish uchun
+      result[i] = callback.call(thisArg, this[i], i, this);
+    }
+  }
+  return result;
+};
+\`
+
+## 4. XATOLAR (Common mistakes)
 - **Microtask va Macrotask navbatini chalkashtirish:** \`Promise.then\` va \`setTimeout\` asinxron bo'lsa-da, ularning bajarilish navbati bir-biridan butunlay farq qilishini unutish.
 - **Muzlatilgan obyektning yuzaki (shallow) ekanligi:** \`Object.freeze\` faqat birinchi darajali xossalarni muzlatadi, ichki obyektlarni esa bemalol o'zgartirish mumkinligini hisobga olmaslik.
-- **Memory Leak yaratish:** Chaqirilgan setInterval'larni o'chirmaslik yoki global o'zgaruvchilarda ortiqcha ma'lumotlarni saqlab qolish.
+- **Memory Leak yaratish:** Chaqirilgan \`setInterval\`larni o'chirmaslik yoki global o'zgaruvchilarda ortiqcha ma'lumotlarni saqlab qolish.
 
-## 6. SAVOLLAR VA JAVOBLAR
+## 5. SAVOLLAR VA JAVOBLAR
 **1. Event Loop qanday ishlaydi?**
 Event Loop call stack bo'shligini tekshiradi, keyin microtask queue (Promises) dagi barcha vazifalarni bajaradi, va nihoyat task queue (setTimeout) dagi bitta vazifani stackka olib chiqadi.
 
@@ -40,6 +100,9 @@ Debounce ketma-ket chaqiriqlarni kechiktirib, faqat oxirgisidan keyin ishlaydi. 
 
 **3. JavaScriptda Garbage Collector qanday ishlaydi?**
 U asosan "Mark-and-Sweep" (belgilash va o'chirish) algoritmi yordamida ishlaydi. Dastur ildizidan (global scope) kirib bo'lmaydigan obyektlar xotiradan tozalab tashlanadi.
+
+**4. V8 motorida Ignition va TurboFan rollari qanday?**
+Ignition tezda AST-ni bytecode-ga o'girib ishga tushiradi, TurboFan esa tez-tez chaqiriladigan "hot" kodlarni optimallashgan mashina kodiga o'tkazib, tezlikni oshiradi.
 `,
   exercises: [
     {
@@ -69,7 +132,7 @@ U asosan "Mark-and-Sweep" (belgilash va o'chirish) algoritmi yordamida ishlaydi.
     {
       id: 4,
       title: "Simplified Debounce",
-      instruction: "Ma'lum vaqtdan keyin chaqiriluvchi sodda 'debounce(fn, delay)' funksiyasini yozing.",
+      instruction: "Ma'tundan keyin chaqiriluvchi sodda 'debounce(fn, delay)' funksiyasini yozing.",
       startingCode: "function debounce(fn, delay) {\n  let timeoutId;\n  return function(...args) {\n    // Timeoutni tozalang va yangisini o'rnating\n  };\n}",
       hint: "clearTimeout(timeoutId); timeoutId = setTimeout(() => fn(...args), delay);",
       test: "if (code.includes('clearTimeout') && code.includes('setTimeout')) return null; return 'clearTimeout va setTimeout dan foydalaning';"
@@ -137,6 +200,22 @@ U asosan "Mark-and-Sweep" (belgilash va o'chirish) algoritmi yordamida ishlaydi.
       startingCode: "function createSecret(val) {\n  let secret = val;\n  return {\n    // get va set metodlarini yozing\n  };\n}",
       hint: "get: () => secret, set: (newVal) => secret = newVal",
       test: "if (code.includes('get') && code.includes('set')) return null; return 'get va set metodlarini yozing';"
+    },
+    {
+      id: 13,
+      title: "Custom Filter Polyfill (myFilter)",
+      instruction: "`Array.prototype.filter` polifillini original `.filter` funksiyasidan foydalanmagan holda `Array.prototype.myFilter` nomi ostida e'lon qiling va uning ishlashini tekshiring. Funksiya callback qabul qilishi va callback-ni `thisArg` konteksti bilan chaqirish imkoniyatiga ega bo'lishi shart.",
+      startingCode: "Array.prototype.myFilter = function(callback, thisArg) {\n  // Custom filter implementatsiyasini yozing\n};",
+      hint: "const result = [];\nfor (let i = 0; i < this.length; i++) {\n  if (i in this) {\n    if (callback.call(thisArg, this[i], i, this)) {\n      result.push(this[i]);\n    }\n  }\n}\nreturn result;",
+      test: "const arr = [1, 2, 3, 4];\nconst filtered = arr.myFilter(x => x > 2);\nconst empty = [].myFilter(() => true);\nif (Array.isArray(filtered) && filtered[0] === 3 && filtered[1] === 4 && filtered.length === 2 && Array.isArray(empty) && empty.length === 0) {\n  const context = { limit: 2 };\n  const filterWithThis = arr.myFilter(function(x) { return x > this.limit; }, context);\n  if (filterWithThis.length === 2 && filterWithThis[0] === 3 && filterWithThis[1] === 4) {\n    return null;\n  }\n}\nreturn 'myFilter to\\'g\\'ri ishlamadi yoki thisArg konteksti qo\\'llab-quvvatlanmadi';"
+    },
+    {
+      id: 14,
+      title: "Asinxron Microtask Scheduler (scheduleMicrotask)",
+      instruction: "Brauzer yoki Node.js muhitlarida microtask navbatiga vazifa qo'shuvchi `scheduleMicrotask(callback)` funksiyasini yozing. Agar platformada `queueMicrotask` mavjud bo'lsa undan, aks holda `Promise.resolve().then(...)` dan, u ham bo'lmasa fallback sifatida `setTimeout` dan foydalanilsin.",
+      startingCode: "function scheduleMicrotask(callback) {\n  // Microtask navbatiga qo'shish funksiyasini yozing\n}",
+      hint: "if (typeof queueMicrotask === 'function') {\n  queueMicrotask(callback);\n} else if (typeof Promise === 'function') {\n  Promise.resolve().then(callback);\n} else {\n  setTimeout(callback, 0);\n}",
+      test: "let order = [];\nscheduleMicrotask(() => order.push('micro'));\nsetTimeout(() => order.push('macro'), 0);\nPromise.resolve().then(() => order.push('promise'));\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (order[0] === 'micro' && order[1] === 'promise' && order[2] === 'macro') {\n      resolve(null);\n    } else {\n      resolve('scheduleMicrotask microtask queue-da vaqtida ishga tushmadi. Kutilgan tartib: micro, promise, macro. Lekin olindi: ' + order.join(', '));\n    }\n  }, 20);\n});"
     }
   ],
   quizzes: [
@@ -197,7 +276,7 @@ U asosan "Mark-and-Sweep" (belgilash va o'chirish) algoritmi yordamida ishlaydi.
         "Asinxron so'rov bajarilib kelgunga qadar bo'lgan kutish jarayoni"
       ],
       correctAnswer: 1,
-      explanation: "`let` va `const` o'zgaruvchilari hoist bo'ladi, lekin TDZ tufayli ularga o'zgaruvchi e'lon qilingan qatorga yetib borguncha murojaat qilib bo'lmaydi va xato qaytariladi."
+      explanation: "`let` va `const` o'zgaruvchilari hoist bo'ladi, lekin TDZ tufayli ularga o'zgaruvchi e'lon qilingan qatorga yetib borguncha murojaat qibly bo'lmaydi va xato qaytariladi."
     },
     {
       id: 8,
@@ -206,7 +285,7 @@ U asosan "Mark-and-Sweep" (belgilash va o'chirish) algoritmi yordamida ishlaydi.
         "Reference Counting (faqat)",
         "Mark-and-Sweep (belgilash va supurish)",
         "FIFO (First In First Out)",
-        "LIFO (Last In First Out)"
+        "LILO (Last In, Last Out)"
       ],
       correctAnswer: 1,
       explanation: "Hozirgi zamonaviy brauzerlar global root obyektidan boshlab zanjir bo'yicha bog'lanib bo'lmaydigan (unreachable) obyektlarni 'unreachable' deb belgilaydi va xotiradan butunlay tozalaydi (Mark-and-Sweep)."
@@ -258,6 +337,30 @@ U asosan "Mark-and-Sweep" (belgilash va o'chirish) algoritmi yordamida ishlaydi.
       ],
       correctAnswer: 0,
       explanation: "JavaScript dvigateli stek hajmi to'lib ketganda dasturni ishdan to'xtatadi va `RangeError: Maximum call stack size exceeded` xatosini beradi."
+    },
+    {
+      id: 13,
+      question: "V8 Engine optimallashtirish pipeline-ida nima uchun TurboFan kompilyatori ishlatiladi?",
+      options: [
+        "AST (Abstract Syntax Tree) yaratish uchun",
+        "Tez-tez ishlatiladigan (hot) kodlarni optimallashtirilgan mashina kodiga o'tkazish uchun",
+        "Koddagi sintaktik xatolarni topish uchun",
+        "Call Stack xotirasini tozalash uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "V8 motorining TurboFan kompilyatori ko'p marta bajariladigan ('hot') JavaScript kodini to'g'diran-to'g'ri tezkor mashina kodiga kompilyatsiya qiladi va optimallashtiradi. Agar kodning ishlash contexti o'zgarsa (deoptimization), u yana Ignition interpreteriga qaytariladi."
+    },
+    {
+      id: 14,
+      question: "Event Loop-da quyidagi kod qaysi tartibda konsolga yozadi?\n```javascript\nsetTimeout(() => console.log('Macro'), 0);\nqueueMicrotask(() => console.log('Micro'));\nconsole.log('Sync');\n```",
+      options: [
+        "Sync Micro Macro",
+        "Sync Macro Micro",
+        "Micro Sync Macro",
+        "Macro Sync Micro"
+      ],
+      correctAnswer: 0,
+      explanation: "Sinxron kod ('Sync') birinchi navbatda Call Stack-da bajariladi. Sinxron kod tugashi bilan Call Stack bo'shagach, microtask queue ('Micro') to'liq tugatiladi. Shundan so'ng macrotask queue-dagi setTimeout ('Macro') bajariladi."
     }
   ]
 };
