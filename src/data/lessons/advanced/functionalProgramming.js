@@ -2,55 +2,98 @@ export const functionalProgramming = {
   id: "a14",
   title: "Functional Programming (Funksional dasturlash)",
   theory: `## 1. NEGA kerak?
-Funksional dasturlash (FP) — bu kodni matematik funksiyalar to'plami sifatida yozish uslubidir. Bu yondashuv o'zgaruvchan holatlardan (mutable state) va yashirin nojo'ya ta'sirlardan (side effects) qochish orqali xatolarni kamaytirish, kodni osonroq test qilish va parallel bajarilishga tayyorlash uchun xizmat qiladi. React, Redux va zamonaviy JS arxitekturalari aynan shu tamoyillar asosida qurilgan.
+Funksional dasturlash (FP) — bu kodni matematik funksiyalar to'plami va ma'lumotlar oqimi sifatida yozish uslubidir. Ushbu yondashuv o'zgaruvchan holatlardan (mutable state) va yashirin nojo'ya ta'sirlardan (side effects) qochish orqali xatolarni kamaytirish, kodni osonroq test qilish, o'qiluvchanlikni oshirish va parallel bajarilishga tayyorlash uchun xizmat qiladi. React, Redux va zamonaviy JS arxitekturalari aynan shu tamoyillar asosida qurilgan.
 
 ## 2. SODDALIK (Analogiya)
-Buni **hujjat nusxalari bilan ishlash**ga o'xshatish mumkin.
+Buni **hujjat nusxalari bilan ishlash**ga o'xshatish mumkin:
 - **Imperativ dasturlash:** Asl shartnoma matnini to'g'ridan-to'g'ri o'chirib-yozib o'zgartirish (original ma'lumotni mutatsiya qilish). Agar xatoga yo'l qo'ysangiz, asl hujjat yo'qoladi.
-- **Funksional dasturlash:** Asl shartnomaning nusxasini olasiz, o'zgarishlarni yangi varoqqa yozasiz. Asl shartnoma har doim toza va o'zgarishsiz qoladi (Immutability).
+- **Funksional dasturlash:** Asl shartnomaning nusxasini olasiz, o'zgarishlarni yeni varoqqa yozasiz. Asl shartnoma har doim toza va o'zgarishsiz qoladi (Immutability).
 
-## 3. STRUKTURA
-Funksional dasturlashning asosiy ustunlari:
-- **Sof funksiyalar (Pure Functions):** Bir xil kirish qiymati uchun har doim bir xil natija qaytaruvchi va tashqi dunyoga hech qanday yon ta'sir ko'rsatmaydigan funksiyalar.
-- **O'zgarmaslik (Immutability):** Ma'lumotlarni o'zgartirmaslik, buning o'rniga har doim yangi nusxa yaratish.
-- **Higher-Order Functions:** Boshqa funksiyalarni parametr sifatida oladigan yoki yangi funksiya qaytaradigan funksiyalar (masalan, \`map\`, \`filter\`, \`reduce\`).
-- **Function Composition:** Kichik funksiyalarni zanjir kabi birlashtirib, murakkab funksiyalar hosil qilish (\`compose\`, \`pipe\`).
+## 3. CHUQUR NAZARIYA VA TUSHUNCHALAR
 
-## 4. AMALIYOT (Mashqlar pastda)
-Ma'lumotlarni ketma-ket qayta ishlovchi oddiy pipeline:
-\`\`\`javascript
-const double = x => x * 2;
-const addFive = x => x + 5;
+### A. Pure Functions (Sof funksiyalar) va Side Effects
+Sof funksiyaning ikki muhim sharti bor:
+1. **Determinizm:** Bir xil kirish qiymatlari (arguments) uchun har doim bir xil natija qaytaradi.
+2. **Side Effect yo'qligi:** Funksiyadan tashqaridagi hech qanday holatni (global o'zgaruvchi, DOM, tarmoq so'rovlari, console.log) o'zgartirmaydi yoki ularga tayanmaydi.
 
-// Chapdan o'ngga pipe funksiyasi
-const pipe = (val, ...fns) => fns.reduce((acc, fn) => fn(acc), val);
+Sof funksiyalar **Referensial shaffoflikka (Referential Transparency)** ega. Bu degani, dastur ichida funksiya chaqirig'ini uning qaytaradigan qiymati bilan almashtirib qo'yganimizda ham dasturning umumiy xulq-atvori mutqalo o'zgarmasdan qoladi.
 
-const result = pipe(10, double, addFive); // 10 * 2 + 5 = 25
-console.log(result); // 25
+### B. Immutability (O'zgarmaslik) va Structural Sharing
+Ma'lumotlar o'zgartirilmaydi, balki har doim yangi nusxa yaratiladi. Bu xotirani to'ldirib yubormasligi uchun JS dvigatellari **Strukturali ulashish (Structural Sharing)** texnikasidan foydalanadi. Ya'ni, yangi obyekt/massiv yaratilganda o'zgarmagan qismlar xotiradagi eski manzillarga ishora qilishda davom etadi.
+
+### C. Function Currying va Partial Application
+- **Currying:** Ko'p parametrli funksiyani (\`f(a, b, c)\`) navbatma-navbat bittadan parametr qabul qiluvchi funksiyalar zanjiriga (\`f(a)(b)(c)\`) aylantirish.
+- **Partial Application:** Funksiyaning ba'zi argumentlarini oldindan bog'lab (masalan, \`bind\` orqali), kamroq parametr oladigan yangi funksiya hosil qilish.
+
+### D. Function Composition (Funksiyalar kompozitsiyasi)
+Kichik funksiyalarni birlashtirib, murakkab funksiyalar hosil qilish uslubi. Ikki xil yo'nalish mavjud:
+- **compose:** Funksiyalarni o'ngdan chapga bajaradi (\`f(g(x))\`).
+- **pipe:** Funksiyalarni chapdan o'ngga bajaradi (\`g(f(x))\`).
+
+\`\`\`mermaid
+graph LR
+    Input([Input: x]) -->|pipe: chapdan o'ngga| PipeA[fn1]
+    PipeA --> PipeB[fn2]
+    PipeB --> PipeC[fn3]
+    PipeC --> Output1([Output: fn3 fn2 fn1 x])
+
+    Input2([Input: x]) -->|compose: o'ngdan chapga| CompC[fn3]
+    CompC --> CompB[fn2]
+    CompB --> CompA[fn1]
+    CompA --> Output2([Output: fn1 fn2 fn3 x])
+
+    style PipeA fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff
+    style PipeB fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff
+    style PipeC fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff
+    style CompA fill:#16a085,stroke:#1abc9c,stroke-width:2px,color:#fff
+    style CompB fill:#16a085,stroke:#1abc9c,stroke-width:2px,color:#fff
+    style CompC fill:#16a085,stroke:#1abc9c,stroke-width:2px,color:#fff
 \`\`\`
 
-## 5. XATOLAR (Common mistakes)
+### E. Monadlar va Funktorlar (Maybe Monad)
+- **Functor:** Qiymatni o'zida saqlaydigan va u ustida \`map\` amalini bajarishga imkon beruvchi obyekt (masalan, massivlar va Promiselar).
+- **Monad:** Funktordan tashqari, qiymatlarni ochish va zanjirlash uchun \`flatMap\` (yoki \`bind\`, \`chain\`) metodiga ega tuzilma.
+- **Maybe Monad:** \`null\` yoki \`undefined\` xavfi bor o'zgaruvchilar ustida zanjirli amallarni xavfsiz va \`TypeError\` xatalarisiz bajarish uchun xizmat qiladi. Agarda oqimda biror qiymat bo'sh bo'lib qolsa, Maybe keyingi barcha amallarni o'tkazib yuboradi (Nothing holati).
+
+\`\`\`mermaid
+graph TD
+    Start([Boshlang'ich Qiymat]) --> Wrap[Maybe.of value]
+    Wrap --> Map1{Qiymat bormi?}
+    Map1 -->|Ha| Just1[Map amali: .map fn1]
+    Map1 -->|Yo'q/Null| Nothing1[Nothing: Amallarni to'xtatish]
+    Just1 --> Map2{Yangi qiymat bormi?}
+    Map2 -->|Ha| Just2[Map amali: .map fn2]
+    Map2 -->|Yo'q/Null| Nothing2[Nothing: Keyingi amallarni o'tkazib yuborish]
+    Just2 --> End[Yakuniy Natija: .getOrElse default]
+    Nothing1 --> End
+    Nothing2 --> End
+
+    style Wrap fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff
+    style Just1 fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+    style Just2 fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+    style Nothing1 fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+    style Nothing2 fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+\`\`\`
+
+## 4. XATOLAR (Common mistakes)
 - **Asl ma'lumotlarni mutatsiya qilish:** O'zgarmaslikni buzib, massivga \`push\` yoki \`splice\` kabi metodlarni qo'llash. Buning o'rniga \`spread (...)\` yoki \`concat\` ishlatish lozim.
 - **Tashqi holatga (state) tayanuvchi funksiyalar yozish:** Funksiya ichida global o'zgaruvchilarni yoki tashqi obektlarni o'qish/o'zgartirish.
 - **Metodlar zanjirida sof bo'lmagan metodlarni qo'llash:** Masalan, \`reverse()\` yoki \`sort()\` massivning aslini o'zgartirib yuboradi.
 
-## 6. SAVOLLAR VA JAVOBLAR
+## 5. SAVOLLAR VA JAVOBLAR
 **1. Pure function nima?**
 Faqat kirish parametrlariga bog'liq bo'lgan va hech qanday tashqi holatni o'zgartirmaydigan funksiya.
 
 **2. Immutability nima uchun kerak?**
-Kodni prognoz qilinadigan (predictable) qilish va xotiradagi yashirin xatolarni kamaytirish uchun.
+Kodning xatti-harakatini prognoz qilinadigan (predictable) qilish va xotiradagi yashirin xatolarni kamaytirish uchun.
 
 **3. Side effect nima?**
 Funksiyaning o'z tanasidan tashqaridagi holatlarga ta'sir ko'rsatishi (masalan, tarmoq so'rovi, konsol log, fayl o'qish yoki global o'zgaruvchini o'zgartirish).
-
-**4. Higher-order function nima?**
-Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan funksiya.
 `,
   exercises: [
     {
       id: 1,
-      title: "Sof funksiya yozish",
+      title: "1️⃣ Sof funksiya yozish",
       instruction: "Berilgan sonning kvadratini qaytaruvchi 'pure' funksiya yozing.",
       startingCode: "function square(n) {\n  // Bu yerga yozing\n}\n",
       hint: "Faqat return n * n; ishlating.",
@@ -58,7 +101,7 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 2,
-      title: "Immutability",
+      title: "2️⃣ Immutability",
       instruction: "Original massivni o'zgartirmasdan yangi element qo'shing.",
       startingCode: "const original = [1, 2, 3];\n// Bu yerga yangi massiv yarating\n",
       hint: "const updated = [...original, 4];",
@@ -66,7 +109,7 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 3,
-      title: "map() bilan transform",
+      title: "3️⃣ map() bilan transform",
       instruction: "Massivdagi sonlarni kvadratga aylantiring.",
       startingCode: "const nums = [1, 2, 3];\n// map orqali square qiling\n",
       hint: "const squared = nums.map(n => n * n);",
@@ -74,7 +117,7 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 4,
-      title: "filter() bilan saralash",
+      title: "4️⃣ filter() bilan saralash",
       instruction: "Faqat juft sonlarni qoldiring.",
       startingCode: "const nums = [1, 2, 3, 4];\n// Bu yerga filter\n",
       hint: "const evens = nums.filter(n => n % 2 === 0);",
@@ -82,7 +125,7 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 5,
-      title: "reduce() bilan yig'indi",
+      title: "5️⃣ reduce() bilan yig'indi",
       instruction: "Massiv yig'indisini reduce bilan toping.",
       startingCode: "const nums = [1, 2, 3];\n// Bu yerga reduce\n",
       hint: "const sum = nums.reduce((acc, n) => acc + n, 0);",
@@ -90,7 +133,7 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 6,
-      title: "Higher-order function",
+      title: "6️⃣ Higher-order function",
       instruction: "Funksiyani 2 marta qo'llaydigan applyTwice yozing.",
       startingCode: "function applyTwice(fn, value) {\n  // Bu yerga yozing\n}\n",
       hint: "return fn(fn(value));",
@@ -98,7 +141,7 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 7,
-      title: "Compose",
+      title: "7️⃣ Compose",
       instruction: "Compose funksiyasini yozing (o'ngdan chapga).",
       startingCode: "const compose = (...fns) => {\n  // Bu yerga yozing\n};\n",
       hint: "return x => fns.reduceRight((acc, fn) => fn(acc), x);",
@@ -106,7 +149,7 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 8,
-      title: "Pipe",
+      title: "8️⃣ Pipe",
       instruction: "Pipe funksiyasini yozing (chapdan o'ngga).",
       startingCode: "const pipe = (...fns) => {\n  // Bu yerga yozing\n};\n",
       hint: "return x => fns.reduce((acc, fn) => fn(acc), x);",
@@ -114,7 +157,7 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 9,
-      title: "Currying",
+      title: "9️⃣ Currying",
       instruction: "add funksiyasini currying ko'rinishida yozing.",
       startingCode: "const add = (a) => {\n  // Bu yerga yozing\n};\n",
       hint: "return (b) => a + b;",
@@ -122,7 +165,7 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 10,
-      title: "Partial application",
+      title: "1️⃣0️⃣ Partial application",
       instruction: "greet funksiyasidan sayHello'ni partial qiling.",
       startingCode: "function greet(greeting, name) { return greeting + ', ' + name; }\n// Bu yerga sayHello\n",
       hint: "const sayHello = greet.bind(null, 'Salom');",
@@ -130,7 +173,7 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 11,
-      title: "Memoization",
+      title: "1️⃣1️⃣ Memoization",
       instruction: "Natijani kesh qiluvchi memoize yozing.",
       startingCode: "function memoize(fn) {\n  const cache = {};\n  // Bu yerga yozing\n}\n",
       hint: "return (...args) => { const key = JSON.stringify(args); if (key in cache) return cache[key]; return cache[key] = fn(...args); };",
@@ -138,11 +181,27 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
     },
     {
       id: 12,
-      title: "Kompleks: Pipeline",
+      title: "1️⃣2️⃣ Kompleks: Pipeline",
       instruction: "map + filter + reduce bilan pipeline yarating.",
       startingCode: "const nums = [1, 2, 3, 4, 5];\n// 1) juftlarni qoldiring\n// 2) 2 ga ko'paytiring\n// 3) yig'indini toping\n",
       hint: "nums.filter(...).map(...).reduce(...);",
       test: "if (code.includes('.filter') && code.includes('.map') && code.includes('.reduce')) return null; return 'Pipeline xato';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Umumiy Currying wrapper (curry)",
+      instruction: "Berilgan ko'p argumentli `fn` funksiyasini currying ko'rinishiga o'tkazuvchi `curry(fn)` funksiyasini yozing. Chaqirilganda argumentlar soni yetarli bo'lsa (`fn.length` ga teng yoki katta bo'lsa) asl funksiyani chaqirib natijani qaytarsin, aks holda qolgan argumentlarni kutuvchi yangi funksiya qaytarsin.",
+      startingCode: "function curry(fn) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "return function curried(...args) {\n  if (args.length >= fn.length) {\n    return fn.apply(this, args);\n  }\n  return function(...args2) {\n    return curried.apply(this, args.concat(args2));\n  };\n};",
+      test: "if (typeof curry !== 'function') return 'curry funksiya emas';\nconst add = (a, b, c) => a + b + c;\nconst curriedAdd = curry(add);\nif (typeof curriedAdd(1) !== 'function') return 'Bitta argument uzatilganda funksiya qaytmadi';\nif (typeof curriedAdd(1)(2) !== 'function') return 'Ikkita argument uzatilganda funksiya qaytmadi';\nif (curriedAdd(1)(2)(3) !== 6) return 'Hisoblash noto\\'g\\'ri';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Funksiyalarni birlashtirish (composeFns)",
+      instruction: "Bir nechta funksiyalarni o'ngdan chapga qarab zanjir ko'rinishida birlashtirib (Function Composition) bitta yakuniy funksiya qaytaruvchi `composeFns(...fns)` funksiyasini yozing. Masalan, `composeFns(f, g)(x)` ifodasi `f(g(x))` ko'rinishida ishlashi shart. O'ngdan chapga yurish uchun `reduceRight` metodidan foydalaning.",
+      startingCode: "function composeFns(...fns) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "return function(x) {\n  return fns.reduceRight((acc, fn) => fn(acc), x);\n};",
+      test: "if (typeof composeFns !== 'function') return 'composeFns funksiya emas';\nconst double = x => x * 2;\nconst addFive = x => x + 5;\nconst composed = composeFns(double, addFive);\nif (composed(10) !== 30) return 'O\\'ngdan chapga kompozitsiya to\\'g\\'ri ishlamadi';\nif (!code.includes('reduceRight')) return 'reduceRight-dan foydalaning';\nreturn null;"
     }
   ],
   quizzes: [
@@ -289,6 +348,30 @@ Argument sifatida funksiya qabul qiladigan yoki boshqa funksiyani qaytaradigan f
       ],
       correctAnswer: 1,
       explanation: "Partial application — ko'p argumentli funksiyaning ma'lum bir qism argumentlarini oldindan aniqlab (masalan, `.bind(null, arg1)` yordamida), kamroq argument oladigan funksiyani qaytarish texnikasidir."
+    },
+    {
+      id: 13,
+      question: "Funksional dasturlashda Maybe Monad-ning asosiy vazifasi va afzalligi nimadan iborat?",
+      options: [
+        "Dastur ishlash tezligini sezilarli darajada oshirish",
+        "Null yoki undefined qiymatlar kelib chiqqanda dastur TypeError xatoligi bilan yiqilishini oldini olish va zanjirli amallarni xavfsiz davom ettirish",
+        "Barcha massiv elementlarini tartiblash",
+        "Asinxron so'rovlarni HTTP/2 multiplexing orqali yuborish"
+      ],
+      correctAnswer: 1,
+      explanation: "Maybe Monad o'zida qiymat mavjud yoki yo'qligini (Just value yoki Nothing) o'rab oladi. Biz unga map funksiyalarini zanjir ko'rinishida bog'laganimizda, agar oraliqda biror joyda null/undefined qaytsa ham dastur yiqilmaydi, balki Nothing holatiga o'tib, xatolarsiz davom etadi."
+    },
+    {
+      id: 14,
+      question: "Dasturlashda Referensial Shaffoflik (Referential Transparency) tamoyili nimani anglatadi?",
+      options: [
+        "Har qanday funksiyani boshqa faylga osonlik bilan import qilish imkoniyati",
+        "Dasturdagi funksiya chaqirig'ini uning natija qiymati bilan almashtirganda ham dasturning xulq-atvori mutqalo o'zgarmasdan qolishi (hech qanday yashirin side effect yo'qligi)",
+        "Kodning barcha o'zgaruvchilari avtomatik tarzda shaffof va ommaviy scopes-ga o'tishi",
+        "Faqat bir xil nomli o'zgaruvchilardan foydalanish"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar funksiya pure bo'lsa va uning hech qanday side effect-i bo'lmasa, dasturda `add(2, 3)` chaqirig'ini shunchaki `5` soni bilan almashtirib qo'yganimizda ham dastur ishlashi va natijasi mutqalo o'zgarmaydi. Bu xususiyat referensial shaffoflik deyiladi."
     }
   ]
 };
