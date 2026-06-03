@@ -2,7 +2,7 @@ export const bigO = {
   id: "bigO",
   title: "Big O va Algoritmlar Murakkabligi",
   theory: `## 1. NEGA kerak?
-Dasturlashda muammoni hal qilishning yuzlab usullari bor. Lekin qaysi usul eng yaxshisi? Qaysi kod tezroq ishlaydi? Qaysi kod xotirani kamroq sarflaydi? Bu savollarga javob berish uchun bizga **Big O Notation** (Big O belgisi) kerak. Big O algoritmlar tezligini soniyalarda emas, balki kiritilgan ma'lumotlar hajmi ($n$) ortishi bilan bajariladigan amallar sonining o'sish tezligi bo'yicha o'lchaydi. Bu orqali biz yozgan kodimiz serverda yuklama ortganda yoki katta ma'lumotlar bilan ishlaganda o'zini qanday tutishini oldindan bashorat qila olamiz.
+Dasturlashda muammoni hal qilishning yuzlab usullari bor. Lekin qaysi usul eng yaxshisi? Qaysi kod tezroq ishlaydi? Qaysi kod xotirani kamroq sarflaydi? Bu savollarga javob berish uchun bizga \`Big O Notation\` (Big O belgisi) kerak. Big O algoritmlar tezligini soniyalarda emas, balki kiritilgan ma'lumotlar hajmi ($n$) ortishi bilan bajariladigan amallar sonining o'sish tezligi bo'yicha o'lchaydi. Bu orqali biz yozgan kodimiz serverda yuklama ortganda yoki katta ma'lumotlar bilan ishlaganda o'zini qanday tutishini oldindan bashorat qila olamiz.
 
 ## 2. SODDALIK (Analogiya)
 Siz do'stingizga katta faylni (masalan, 1 TB video) yubormoqchisiz. Buning ikki yo'li bor:
@@ -10,22 +10,50 @@ Siz do'stingizga katta faylni (masalan, 1 TB video) yubormoqchisiz. Buning ikki 
 2. **Samolyot yoki mashinada olib borib berish:** Fayl hajmi 1 GB bo'ladimi yoki 10 TB bo'ladimi, olib borish vaqti deyarli o'zgarmaydi. Bu — **$O(1)$** (o'zgarmas vaqt).
 Katta hajmdagi ma'lumotlar uchun $O(1)$ har doim $O(n)$ dan afzaldir.
 
-## 3. STRUKTURA
+## 3. STRUKTURA VA PRINTSIPLAR
 Eng ko'p uchraydigan vaqt murakkabligi sinflari (yaxshisidan yomoniga qarab):
-1. **$O(1)$ — Constant Time (O'zgarmas):** Ma'lumot hajmidan qat'i nazar, amallar soni o'zgarmaydi. (Masalan, massivdan indeks bo'yicha element olish).
-2. **$O(\\log n)$ — Logarithmic Time (Logarifmik):** Har bir qadamda muammo hajmi ikki barobarga kamayadi. (Masalan, Ikkilik qidiruv - Binary Search).
-3. **$O(n)$ — Linear Time (Chiziqli):** Amallar soni ma'lumot hajmi bilan to'g'ridan-to'g'ri o'sadi. (Masalan, massiv bo'ylab oddiy qidiruv).
-4. **$O(n \\log n)$ — Linearithmic Time:** Saralash algoritmlarining eng yaxshi o'rtacha tezligi. (Masalan, Merge Sort, Quick Sort).
-5. **$O(n^2)$ — Quadratic Time (Kvadratik):** O'zaro ichma-ich joylashgan sikllar (loops). (Masalan, Bubble Sort).
-6. **$O(2^n)$ — Exponential Time (Eksponential):** Muammo o'sishi bilan amallar soni keskin (ikki barobar) ortadi. (Masalan, rekursiv Fibonacci).
-7. **$O(n!)$ — Factorial Time (Faktorial):** Eng yomon murakkablik. (Masalan, sayohatchi sotuvchi muammosi).
+1. **$O(1)$ — Constant Time (O'zgarmas):** Ma'lumot hajmidan qat'i nazar, amallar soni o'zgarmaydi (masalan, massivdan indeks bo'yicha element olish).
+2. **$O(\log n)$ — Logarithmic Time (Logarifmik):** Har bir qadamda muammo hajmi ikki barobarga kamayadi (masalan, Ikkilik qidiruv - Binary Search).
+3. **$O(n)$ — Linear Time (Chiziqli):** Amallar soni ma'lumot hajmi bilan to'g'ridan-to'g'ri o'sadi (masalan, massiv bo'ylab oddiy qidiruv).
+4. **$O(n \log n)$ — Linearithmic Time:** Saralash algoritmlarining eng yaxshi o'rtacha tezligi (masalan, Merge Sort, Quick Sort).
+5. **$O(n^2)$ — Quadratic Time (Kvadratik):** O'zaro ichma-ich joylashgan sikllar (loops) (masalan, Bubble Sort).
+6. **$O(2^n)$ — Exponential Time (Eksponentsial):** Muammo o'sishi bilan amallar soni keskin (ikki barobar) ortadi (masalan, rekursiv Fibonacci).
+7. **$O(n!)$ — Factorial Time (Faktorial):** Eng yomon murakkablik (masalan, sayohatchi sotuvchi muammosi).
+
+\`mermaid
+graph TD
+    classDef excellent fill:#2ecc71,stroke:#27ae60,color:#fff;
+    classDef fair fill:#f1c40f,stroke:#f39c12,color:#333;
+    classDef bad fill:#e67e22,stroke:#d35400,color:#fff;
+    classDef horrible fill:#e74c3c,stroke:#c0392b,color:#fff;
+
+    O1["O(1) - Constant (O'zgarmas / Zo'r)"]:::excellent
+    Olog["O(log N) - Logarithmic (Logarifmik / Yaxshi)"]:::excellent
+    On["O(N) - Linear (Chiziqli / Qoniqarli)"]:::fair
+    Onlog["O(N log N) - Linearithmic (O'rtacha)"]:::fair
+    On2["O(N^2) - Quadratic (Kvadratik / Yomon)"]:::bad
+    O2n["O(2^N) - Exponential (Eksponentsial / Judayam yomon)"]:::horrible
+    OnFact["O(N!) - Factorial (Faktorial / Halokat)"]:::horrible
+
+    O1 --> Olog --> On --> Onlog --> On2 --> O2n --> OnFact
+\`
+
+### A. Big O Matematik Asosi
+Matematik jihatdan $f(n) = O(g(n))$ ifodasi shuni anglatadiki, yetarlicha katta $n$ qiymatlarda $f(n)$ ning o'sish tezligi $C \times g(n)$ dan oshmaydi (bu yerda $C$ - o'zgarmas konstanta).
+1. **Drop Constants (Konstantalarni tashlash):** Algoritm $2n$ yoki $5n$ qadamda bajarilsa ham, Big O murakkabligi baribir $O(n)$ deb hisoblanadi.
+2. **Drop Non-Dominant Terms (Kuchli bo'lmagan hadlarni tashlash):** Agar algoritm murakkabligi $n^2 + n$ bo'lsa, $n$ juda katta bo'lganida chiziqli $n$ hadining ta'siri juda kichik bo'lib qoladi, shuning uchun u tashlab yuborilib $O(n^2)$ deb yoziladi.
+
+### B. Space Complexity (Xotira murakkabligi)
+Faqat vaqt (Time Complexity) emas, balki algoritm bajarilishi davomida xotiradan qo'shimcha ajratiladigan joy (Space Complexity) ham Big O yordamida o'lchanadi.
+- **$O(1)$ Space (In-place):** Dastur qo'shimcha massiv yoki obyekt yaratmasdan, o'zgaruvchilar miqdorini cheklangan holda saqlaydi.
+- **$O(n)$ Space:** Kiruvchi ma'lumot o'lchamiga bog'liq holda xotiradan yangi ro'yxat yoki kesh saqlanadi.
 
 ## 4. AMALIYOT
 Keling, Big O nima ekanligini amaliy misolda ko'ramiz. Bizda 1 dan $n$ gacha bo'lgan sonlar yig'indisini hisoblash vazifasi bor:
 
 ### Usul 1: Sikl orqali hisoblash ($O(n)$ - Chiziqli vaqt)
 Bu usulda biz 1 dan $n$ gacha har bir sonni aylanib chiqib qo'shib boramiz:
-\`\`\`javascript
+\`javascript
 function sumLinear(n) {
   let total = 0;
   for (let i = 1; i <= n; i++) {
@@ -33,20 +61,19 @@ function sumLinear(n) {
   }
   return total;
 }
-\`\`\`
+\`
 **Tahlil:** Agar $n = 100$ bo'lsa, sikl 100 marta aylanadi va 100 ta amal bajariladi. Agar $n = 1,000,000$ bo'lsa, 1 millionta amal bajariladi. Vaqt kirish o'lchamiga ($n$) to'g'ri mutanosib o'sadi. Murakkablik: **$O(n)$**.
 
 ### Usul 2: Matematik formula orqali ($O(1)$ - O'zgarmas vaqt)
-Karlo Gauss formulasi yordamida yig'indini siklsiz, bir zumda hisoblash mumkin:
-\`\`\`javascript
+Karolo Gauss formulasi yordamida yig'indini siklsiz, bir zumda hisoblash mumkin:
+\`javascript
 function sumConstant(n) {
   return (n * (n + 1)) / 2; // Atigi 3 ta matematik amal: qo'shish, ko'paytirish, bo'lish
 }
-\`\`\`
-**Tahlil:** Bu yerda hech qanday sikl yo'q. $n = 100$ bo'ladimi yoki $n = 1,000,000,000$ bo'ladimi, kompyuter atigi 3 ta amal bajaradi. Kod har doim bir xil vaqtda (mikrosoniyalarda) bajariladi. Murakkablik: **$O(1)$**.
+\`
+**Tahlil:** Bu yerda hech qanday sikl yo'q. $n = 100$ bo'ladimi yoki $n = 1,000,000,000$ bo'ladimi, kompyuter atigi 3 ta amal bajariladi. Kod har doim bir xil vaqtda bajariladi. Murakkablik: **$O(1)$**.
 
 **Xulosa:** Katta ma'lumotlar bilan ishlaganda $O(1)$ algoritm $O(n)$ ga qaraganda minglab marta tezroq ishlaydi va tizim resurslarini tejaydi.
-
 
 ## 5. XATOLAR (Common mistakes)
 1. **Konstantalarni hisobga olish:** Big O faqat o'sish tendensiyasini o'lchaydi. $O(2n + 5)$ murakkablikdagi algoritmdan konstantalarni olib tashlab, shunchaki $O(n)$ deb yoziladi.
@@ -64,7 +91,7 @@ Chunki soniyalar kompyuterning protsessori, operativ xotirasi yoki boshqa dastur
 Kiritilgan ma'lumotlar hajmi qanchalik katta bo'lishidan qat'i nazar, algoritm doim bir xil miqdordagi qadamda bajarilishini anglatadi.
 
 **4. Ikkilik qidiruv (Binary Search) murakkabligi qanday?**
-$O(\\log n)$, chunki har bir solishtirishdan keyin qidiruv doirasi 2 barobar qisqarib boradi.
+$O(\log n)$, chunki har bir solishtirishdan keyin qidiruv doirasi 2 barobar qisqarib boradi.
 
 **5. Ichma-ich kelgan ikkita sikl (nested loops) murakkabligi qanday?**
 Agar ikkala sikl ham $n$ gacha aylansa, ularning murakkabligi $O(n \times n) = O(n^2)$ bo'ladi.
@@ -73,7 +100,7 @@ Agar ikkala sikl ham $n$ gacha aylansa, ularning murakkabligi $O(n \times n) = O
 Bu algoritm ikkita turli o'lchamdagi ($n$ va $m$) kirish ma'lumotlariga bog'liqligini va ular birin-ketin bajarilishini anglatadi.
 
 **7. Quick Sort-ning eng yomon holatdagi murakkabligi qanday?**
-Eng yomon holatda $O(n^2)$, lekin o'rtacha holatda $O(n \\log n)$ ga teng.
+Eng yomon holatda $O(n^2)$, lekin o'rtacha holatda $O(n \log n)$ ga teng.
 
 **8. Xotira murakkabligi (Space Complexity) nima?**
 Algoritm o'z ishi davomida qo'shimcha ravishda qancha xotira (o'zgaruvchilar, massivlar, obyektlar) talab qilishini o'lchash.
@@ -85,7 +112,7 @@ Chunki har bir rekursiv chaqiriq Call Stack-da joy egallaydi. Agar rekursiya chu
 Hech qanday optimallashtirishsiz yozilgan oddiy rekursiv Fibonacci sonini topish algoritmi.
 
 **11. Nega konstantalar tashlab yuboriladi?**
-Chunki $n$ juda katta bo'lganda (masalan, 1 milliard), konstantalarning ta'siri (masalan, $2n$ dagi 2 soni) ahamiyatsiz bo'lib qoladi.
+Chunki $n$ vaqtida (masalan, 1 milliard), konstantalarning ta'siri (masalan, $2n$ dagi 2 soni) ahamiyatsiz bo'lib qoladi.
 
 **12. Kod optimalligini qanday aniqlash mumkin?**
 Muammoni hal qilishda ham vaqt, ham xotira nuqtai nazaridan eng kam Big O murakkablikka ega bo'lgan yo'lni tanlash orqali.
@@ -186,6 +213,22 @@ Muammoni hal qilishda ham vaqt, ham xotira nuqtai nazaridan eng kam Big O murakk
       startingCode: "const bubbleSortComplexity = ",
       hint: "'O(n^2)'",
       test: "if (typeof bubbleSortComplexity === 'undefined') return 'bubbleSortComplexity aniqlanmagan'; if (bubbleSortComplexity !== 'O(n^2)') return 'Murakkablik sinfi xato'; return null;"
+    },
+    {
+      id: 13,
+      title: "O(1) Bitwise Power of Two Check",
+      instruction: "Berilgan musbat butun son 2 ning darajasi ekanini (ya'ni 1, 2, 4, 8, 16...) aniqlovchi `isPowerOfTwo(n)` funksiyasini O(1) vaqt va xotira murakkabligida yozing. Sikl (loop) yoki rekursiya ishlatish taqiqlanadi.",
+      startingCode: "function isPowerOfTwo(n) {\n  // Kodni yozing\n}",
+      hint: "return n > 0 && (n & (n - 1)) === 0;",
+      test: "if (typeof isPowerOfTwo !== 'function') return 'isPowerOfTwo funksiyasi topilmadi';\nif (isPowerOfTwo(1) !== true || isPowerOfTwo(16) !== true || isPowerOfTwo(18) !== false || isPowerOfTwo(0) !== false) return 'Hisoblashda xatolik yuz berdi';\nif (code.includes('for') || code.includes('while')) return 'O(1) murakkablik talab qilinadi, sikl ishlatmang';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "O(n) Time / O(1) Space Missing Number Finder",
+      instruction: "0 dan n gacha bo'lgan sonlardan iborat massivda faqat bitta son yetishmaydi. Ushbu yetishmayotgan sonni O(n) vaqt va O(1) qo'shimcha xotira murakkabligida topuvchi `findMissingNumber(arr)` funksiyasini yozing.",
+      startingCode: "function findMissingNumber(arr) {\n  // Kodni yozing\n}",
+      hint: "n * (n + 1) / 2 formulasi yordamida kutilgan yig'indini topib, undan massiv elementlari yig'indisini ayiring.",
+      test: "if (typeof findMissingNumber !== 'function') return 'findMissingNumber funksiyasi topilmadi';\nif (findMissingNumber([3, 0, 1]) !== 2 || findMissingNumber([9,6,4,2,3,5,7,0,1]) !== 8) return 'Noto\\'g\\'ri son qaytarildi';\nif (code.includes('new Set') || code.includes('Map') || code.includes('filter')) return 'O(1) xotira murakkabligi buzildi, Set/Map ishlatmang';\nreturn null;"
     }
   ],
   quizzes: [
@@ -271,7 +314,31 @@ Muammoni hal qilishda ham vaqt, ham xotira nuqtai nazaridan eng kam Big O murakk
       question: "Call Stack xotira hajmi oshib ketishiga olib keluvchi xatolik nima deb ataladi?",
       options: ["Memory Leak", "Stack Overflow", "Heap Exhaustion", "Syntax Error"],
       correctAnswer: 1,
-      explanation: "Cheksiz yoki juda chuqur rekursiya natijasida tizim Call Stack hajmi to'lib ketadi va bu 'Stack Overflow' xatosiga olib keladi."
+      explanation: "Cheksiz yoki juda chuqur rekursiya natijasida tizim Call Stack hajmi to'lib ketganda va bu 'Stack Overflow' xatosiga olib keladi."
+    },
+    {
+      id: 13,
+      question: "Algoritmning qo'shimcha xotira murakkabligi (Space Complexity) O(1) ekanligi nimani anglatadi?",
+      options: [
+        "Algoritm xotiradan umuman foydalanmasligini",
+        "Kiruvchi ma'lumotlar hajmi qanchalik katta bo'lishidan qat'i nazar, algoritm faqatgina o'zgarmas (konstant) miqdordagi qo'shimcha xotira ishlatishini",
+        "Algoritm har bir qadamda xotirani 2 barobarga qisqartirishini",
+        "Barcha ma'lumotlar global keshda saqlanishini"
+      ],
+      correctAnswer: 1,
+      explanation: "O(1) xotira murakkabligi dasturning o'zgaruvchilari yoki ishlatadigan qo'shimcha joyi kiruvchi ma'lumotlar hajmi (n) ga bog'liq bo'lmagan holda har doim o'zgarmas (konstant) bo'lib qolishini anglatadi."
+    },
+    {
+      id: 14,
+      question: "Nima uchun binar qidiruv (Binary Search) algoritmining vaqt murakkabligi O(log n) ga teng?",
+      options: [
+        "Chunki u logarifmik jadvallarni hisoblash uchun mo'ljallangan",
+        "Chunki har bir tekshirish qadamida qidiruv maydoni ikki barobarga (yarmiga) qisqarib boradi",
+        "Chunki u massiv boshidan oxirigacha chiziqli aylanadi",
+        "Chunki u hech qanday qadam talab qilmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Logarifmik o'sish O(log n) har bir iteratsiyada kirish muammosi o'lchami 2 barobar kamayadigan algoritmlarga tegishlidir. Binary Search-da har bir solishtirish orqali massivning yarmi chetlashtiriladi, bu esa eng yomon holatda log2(n) qadamda yechim topilishini ta'minlaydi."
     }
   ]
 };

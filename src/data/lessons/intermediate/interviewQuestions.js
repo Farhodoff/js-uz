@@ -50,6 +50,79 @@ NaN - "Not a Number" (Son emas), turi esa \`"number"\` hisoblanadi. U noto'g'ri 
 
 **6. == va === operatorlari farqi nima?**
 \`==\` (kuchsiz tenglik) ma'lumot turlarini avtomatik konvertatsiya qilib solishtiradi. \`===\` (qat'iy tenglik) esa turlarini o'zgartirmasdan, qiymat va turini birdek tekshiradi.
+
+### 7. AMALIY SAVOLLAR VA JAVOBLAR (Kod misollari)
+
+**1. Quyidagi kod bajarilganda konsolga nima chiqadi?**
+\`\`\`javascript
+const person = {
+  name: "Dilshod",
+  greet: function() {
+    setTimeout(function() {
+      console.log("Salom, " + this.name);
+    }, 100);
+  }
+};
+person.greet();
+\`\`\`
+
+**Javob:**
+\`"Salom, undefined"\`.
+- \`setTimeout\` ichidagi funksiya oddiy funksiya bo'lgani uchun u global doirada (yoki window kontekstida) ishlaydi va uning \`this\`i \`person\` obyektiga emas, global obyektga teng bo'ladi. Global obyektda \`name\` yo'qligi uchun \`undefined\` chiqadi.
+- Buni to'g'rilash uchun arrow funksiyadan foydalanish kerak: \`setTimeout(() => { console.log("Salom, " + this.name); }, 100);\` (arrow funksiya o'zining \`this\`iga ega emas va tashqi \`greet\` metodining \`this\`ini oladi).
+
+**2. Quyidagi kod nima chiqishini tushuntiring:**
+\`\`\`javascript
+const obj = { a: 1, b: { c: 2 } };
+const clone = { ...obj };
+clone.a = 10;
+clone.b.c = 20;
+
+console.log(obj.a);
+console.log(obj.b.c);
+\`\`\`
+
+**Javob:**
+\`1\` va \`20\`.
+- Spread operatori (\`...\`) yuzaki nusxa (\`shallow copy\`) oladi. Birinchi darajali \`a\` xossasi qiymat bo'yicha ko'chiriladi, shuning uchun \`clone.a\` o'zgarganda \`obj.a\` o'zgarmasdan \`1\`ligicha qoladi.
+- Ammo ichki obyekt \`b\` referens (manzil) bo'yicha nusxalanadi. Ikkala obyekt ham bitta ichki \`b\` obyektiga ishora qiladi. Shuning uchun \`clone.b.c = 20\` qilinganda \`obj.b.c\` ham \`20\` ga aylanadi.
+
+**3. Quyidagi destructuring va default qiymat kodi nima natija beradi?**
+\`\`\`javascript
+const { name = "Guest", age = 18 } = { name: null, age: undefined };
+console.log(name, age);
+\`\`\`
+
+**Javob:**
+\`null 18\`.
+- JavaScript-da default qiymat faqat va faqat qiymat mutlaqo berilmaganda yoki \`undefined\` bo'lgandagina ishga tushadi.
+- \`name\` uchun \`null\` berilgan, shuning uchun u default qiymatni olmaydi va \`null\`ligicha qoladi.
+- \`age\` uchun \`undefined\` berilgan, shuning uchun u default qiymat bo'lgan \`18\` ni oladi.
+
+**4. Quyidagi kod bajarilganda konsolga nimalar chiqadi?**
+\`\`\`javascript
+const arr = [1, 2, 3];
+const [x, , z] = arr;
+console.log(x, z);
+\`\`\`
+
+**Javob:**
+\`1 3\`. Bu massiv destructuring yordamida elementlarni o'tkazib yuborishdir. Ikkinchi element tashlab ketiladi va uning o'rniga vergul qo'yiladi.
+
+**5. Quyidagi kodning natijasi nima bo'ladi?**
+\`\`\`javascript
+const numbers = [1, 2, 3, 4];
+const result = numbers
+  .filter(n => n > 2)
+  .reduce((acc, curr) => acc + curr, 10);
+console.log(result);
+\`\`\`
+
+**Javob:**
+\`17\`.
+- \`.filter(n => n > 2)\` massivdan faqat \`3\` va \`4\` elementlarini saqlab qoladi (\`[3, 4]\`).
+- \`.reduce((acc, curr) => acc + curr, 10)\` metodida boshlang'ich qiymat \`10\` ga teng.
+- Iteratsiya: \`10 + 3 = 13\`, so'ngra \`13 + 4 = 17\`.
 `,
   exercises: [
     {

@@ -102,7 +102,134 @@ Debounce ketma-ket chaqiriqlarni kechiktirib, faqat oxirgisidan keyin ishlaydi. 
 U asosan "Mark-and-Sweep" (belgilash va o'chirish) algoritmi yordamida ishlaydi. Dastur ildizidan (global scope) kirib bo'lmaydigan obyektlar xotiradan tozalab tashlanadi.
 
 **4. V8 motorida Ignition va TurboFan rollari qanday?**
-Ignition tezda AST-ni bytecode-ga o'girib ishga tushiradi, TurboFan esa tez-tez chaqiriladigan "hot" kodlarni optimallashgan mashina kodiga o'tkazib, tezlikni oshiradi.
+Ignition vaqtinchalik AST-ni bytecode-ga o'girib ishga tushiradi, TurboFan esa tez-tez chaqiriladigan "hot" kodlarni optimallashgan mashina kodiga o'tkazib, tezlikni oshiradi.
+
+### 6. AMALIY SAVOLLAR VA JAVOBLAR (Kod misollari)
+
+**1. Quyidagi asinxron kod bajarilganda konsolga nimalar qaysi tartibda chiqadi?**
+\`\`\`javascript
+console.log("Start");
+
+setTimeout(() => {
+  console.log("Timeout 1");
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log("Promise 1");
+  queueMicrotask(() => {
+    console.log("Microtask ichida");
+  });
+}).then(() => {
+  console.log("Promise 2");
+});
+
+setTimeout(() => {
+  console.log("Timeout 2");
+}, 0);
+
+console.log("End");
+\`\`\`
+
+**Javob:**
+\`\`\`text
+Start
+End
+Promise 1
+Microtask ichida
+Promise 2
+Timeout 1
+Timeout 2
+\`\`\`
+**Tushuntirish:**
+1. Sinxron kodlar birinchi navbatda Call Stack-da bajariladi: \`"Start"\` va keyin \`"End"\`.
+2. Asinxron operatsiyalar navbatga olinadi:
+   - \`Timeout 1\` va \`Timeout 2\` -> **Macrotask Queue**.
+   - \`Promise 1\` -> **Microtask Queue**.
+3. Call Stack bo'shagach, barcha microtask-lar bajariladi:
+   - Avval \`Promise 1\` bajariladi. Uning ichida yangi mikrotask (\`Microtask ichida\`) navbat oxiriga qo'shiladi va keyingi \`.then\` (\`Promise 2\`) ham navbatga qo'shiladi.
+   - Microtask navbati bo'shaguncha ishlaganligi sababli, \`"Microtask ichida"\` va \`"Promise 2"\` ham bajarilib ketadi.
+4. Microtask navbati bo'shagach, navbat macrotask-larga keladi. Birinchi makrotask \`"Timeout 1"\`, undan keyin esa \`"Timeout 2"\` bajariladi.
+
+**2. Quyidagi kod nima chiqaradi va nega?**
+\`\`\`javascript
+function Person(name) {
+  this.name = name;
+}
+const p1 = new Person("Anvar");
+
+Person.prototype = {
+  sayHello() {
+    return "Salom, " + this.name;
+  }
+};
+
+const p2 = new Person("Sardor");
+
+try {
+  console.log(p1.sayHello());
+} catch(e) {
+  console.log("Xatolik 1");
+}
+
+try {
+  console.log(p2.sayHello());
+} catch(e) {
+  console.log("Xatolik 2");
+}
+\`\`\`
+
+**Javob:**
+\`"Xatolik 1"\` va \`"Salom, Sardor"\`.
+- \`p1\` obyekti yaratilgan paytda \`Person.prototype\` bo'sh obyekt edi. \`p1\`ning ichki \`[[Prototype]]\` havolasi o'sha eski prototip obyektiga bog'langan.
+- Keyingi qatorda \`Person.prototype\` butunlay yangi obyektga (\`{ sayHello() { ... } }\`) almashtirildi. Bu eski \`p1\` obyektining prototipini o'zgartirmaydi (chunki u eski xotira manziliga ishora qilmoqda).
+- Shuning uchun \`p1.sayHello()\` chaqirilganda metod topilmaydi va \`TypeError\` (xatolik) sodir bo'ladi, bu esa \`"Xatolik 1"\`ni chiqaradi.
+- Yangi yaratilgan \`p2\` esa yangilangan prototip bilan bog'lanadi, shuning uchun \`p2.sayHello()\` muvaffaqiyatli ishlaydi va \`"Salom, Sardor"\` qaytaradi.
+
+**3. Quyidagi kodda xotira muammosi (Memory Leak) bormi? Bo'lsa, uni qanday tuzatish mumkin?**
+\`\`\`javascript
+function setupHandler() {
+  const largeData = new Array(1000000).fill("data");
+  const button = document.getElementById("my-button");
+  
+  button.addEventListener("click", function() {
+    console.log("Button clicked!");
+  });
+}
+setupHandler();
+\`\`\`
+
+**Javob:**
+Ha, bu yerda yashirin **Memory Leak** yuzaga kelishi mumkin (ayniqsa eski brauzerlarda yoki dynamic elementlar o'chirilganda).
+- **Sababi:** Button-ga qo'shilgan click handler funksiyasi closure (yopilish) tufayli \`setupHandler\` ning butun lexical scope-iga bog'lanadi. Garchi \`largeData\` funksiya ichida ishlatilmagan bo'lsa-da, ba'zi JS dvigatellari butun scope-ni xotirada saqlab qolishi mumkin.
+- **Tuzatish:** Ishlatilmagan o'zgaruvchilarni funksiya tugashidan oldin \`null\` qilish yoki event handler-ni alohida funksiya sifatida e'lon qilib, click tugagach handler-ni o'chirib tashlash (\`removeEventListener\`). Yaxshiroq yechim:
+\`\`\`javascript
+function setupHandler() {
+  let largeData = new Array(1000000).fill("data");
+  const button = document.getElementById("my-button");
+  
+  button.addEventListener("click", function() {
+    console.log("Button clicked!");
+  });
+  largeData = null; // garbage collector tozalashi uchun xotirani bo'shatamiz
+}
+\`\`\`
+
+**4. Quyidagi kod nima chiqaradi va nega?**
+\`\`\`javascript
+const original = {
+  a: 1,
+  b: { c: 2 },
+  d: function() { return 5; }
+};
+const clone = JSON.parse(JSON.stringify(original));
+console.log("d" in clone);
+console.log(clone.b === original.b);
+\`\`\`
+
+**Javob:**
+\`false\` va \`false\`.
+- \`JSON.parse(JSON.stringify(original))\` usuli obyektni **Deep Clone** (chuqur nusxalash) qilishda ishlatiladi, shuning uchun \`clone.b\` va \`original.b\` boshqa-boshqa obyektlar bo'ladi (\`clone.b === original.b\` -> \`false\`).
+- Ammo JSON formati funksiyalarni (\`function\`, \`arrow function\`), \`undefined\` qiymatlarni va \`Symbol\`larni qo'llab-quvvatlamaydi. Serializatsiya paytida \`d\` funksiyasi butunlay o'chib ketadi, shuning uchun \`clone\` obyektida \`d\` kaliti mavjud bo'lmaydi (\`"d" in clone\` -> \`false\`).
 `,
   exercises: [
     {

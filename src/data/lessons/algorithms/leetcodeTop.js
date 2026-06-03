@@ -9,19 +9,66 @@ Faqatgina nazariyani bilish yetarli emas. Biz eng mashhur 12 ta LeetCode masalal
 LeetCode masalalarini yechish **sport zalidagi mashg'ulotlarga** o'xshaydi.
 Siz to'g'ridan-to'g'ri og'ir toshni (murakkab loyihani) ko'tara olmaysiz. Avval mushaklarni kichik va muntazam mashqlar (LeetCode Easy/Medium masalalari) orqali chiniqtirish kerak. Algoritmlarni mashq qilish miyangizni optimal yechimlar haqida o'ylashga o'rgatadi.
 
-## 3. STRUKTURA
-Ushbu darsda quyidagi klassik naqshlar (patterns) bo'yicha masalalarni ko'ramiz:
-1. **Two Pointers (Ikki ko'rsatkich):** Massivning ikki chetidan yoki har xil tezlikda o'rtasiga qarab yurish.
-2. **Sliding Window (Sirpanuvchi oyna):** Massivning ma'lum bir qismini dinamik ravishda kengaytirib yoki qisqartirib tahlil qilish.
-3. **Hash Map (Assotsiativ massiv):** Qidiruv vaqtini $O(n)$ dan $O(1)$ gacha qisqartirish uchun xotiradan unumli foydalanish.
-4. **Dynamic Programming (Dinamik dasturlash):** Katta muammoni kichik bo'laklarga ajratib, oraliq natijalarni saqlab borish (Memoization).
+## 3. STRUKTURA VA ILG'OR SHABLONLAR (Patterns)
+Suhbatlarda tushadigan algoritmik masalalarning 90% dan ortig'i ma'lum bir naqshlar (patterns) orqali yechiladi. Quyida ularning eng muhim turlarini batafsil tahlil qilamiz:
+
+### A. Two Pointers (Ikki ko'rsatkich)
+Ikki ko'rsatkich yondashuvi odatda massiv yoki satrlarni bir marta aylanib chiqishda ishlatiladi.
+- **Opposite Pointers (Qarama-qarshi ko'rsatkichlar):** Ko'rsatkichlar massivning ikki chetidan (chap va o'ng) boshlanib, o'rtaga qarab siljiydi. Palindromlikni tekshirish yoki Two Sum (saralangan massivda) uchun mos keladi.
+- **Fast & Slow Pointers (Tez va sekin ko'rsatkichlar):** Bittasi tezroq (masalan, 2 qadam), ikkinchisi sekinroq (1 qadam) siljiydi. Linked List-da sikllarni aniqlash (Floyd's Cycle-Finding) va o'rta nuqtani topishda juda qo'l keladi.
+
+### B. Sliding Window (Sirpanuvchi oyna)
+Ushbu shablon berilgan massiv yoki satrdan ma'lum shartlarni qanoatlantiruvchi qism-massivni (subarray) yoki qism-satrni (substring) topish uchun xizmat qiladi.
+- **Static Window:** Oyna o'lchami o'zgarmas (K) bo'ladi.
+- **Dynamic Window:** Oyna o'lchami dinamik ravishda kengayadi va torayadi. Oyna o'ng tomondan (right ko'rsatkich orqali) kengayib, agar shart buzilsa chap tomondan (left ko'rsatkich orqali) qisqartiriladi.
+
+\`mermaid
+graph TD
+    classDef init fill:#2c3e50,stroke:#34495e,color:#fff;
+    classDef process fill:#e67e22,stroke:#d35400,color:#fff;
+    classDef condition fill:#9b59b6,stroke:#8e44ad,color:#fff;
+    classDef done fill:#2ecc71,stroke:#27ae60,color:#fff;
+
+    Start(["Start (nums, target)"]):::init --> InitMap["Map yaratish (map = new Map())"]:::init
+    InitMap --> Loop["Massiv bo'ylab aylanish (i = 0 -> n-1)"]:::process
+    Loop --> CalcComp["Farqni hisoblash (comp = target - nums[i])"]:::process
+    CalcComp --> CheckMap{"Map-da comp bormi?"}:::condition
+    CheckMap -- "Ha" --> ReturnIdx["[map.get(comp), i] ni qaytarish"]:::done
+    CheckMap -- "Yo'q" --> AddMap["Map-ga qo'shish (map.set(nums[i], i))"]:::process
+    AddMap --> LoopNext["Keyingi elementga o'tish"]:::process
+    LoopNext --> Loop
+    Loop -- "Tugadi (hech narsa topilmadi)" --> ReturnEmpty["Bo'sh [] qaytarish"]:::done
+\`
+
+### C. Hash Map Lookup
+Qidiruv amallarini $O(1)$ tezlikka keltirish uchun kiritilgan elementlarni va ularning indekslarini Hash Map-da keshlab borish. "Two Sum", "Valid Anagram" yoki "Contains Duplicate" kabi masalalarning optimal yechimining kaliti hisoblanadi.
+
+### D. Merge Intervals
+Intervallar (masalan, \`[start, end]\`) bilan ishlashda, avval ularni start bo'yicha saralab olib, ketma-ket joylashgan intervallarning kesishuvini tekshirish yondashuvi. Bu intervyularda eng ko'p so'raladigan Medium masalalardan biridir.
+
+\`mermaid
+graph LR
+    classDef win fill:#3498db,stroke:#2980b9,color:#fff;
+    classDef pointer fill:#e74c3c,stroke:#c0392b,color:#fff;
+
+    subgraph Step1 ["1-qadam (Kengayish)"]
+        W1["[ a  b  c ] a  b"]:::win
+        L1["L (chap)"]:::pointer --> W1
+        R1["R (o'ng)"]:::pointer --> W1
+    end
+    subgraph Step2 ["2-qadam (Takrorlanish topilganda, chapni surish)"]
+        W2["a [ b  c  a ] b"]:::win
+        L2["L (siljidi)"]:::pointer --> W2
+        R2["R (siljidi)"]:::pointer --> W2
+    end
+\`
 
 ## 4. AMALIYOT
 Keling, suhbatlarda eng ko'p so'raladigan ikkita klassik LeetCode masalasining amaliy JavaScript yechimi va tahlilini ko'rib chiqamiz:
 
 ### 1. Two Sum (Yig'indi qiymati - O(n) vaqt)
 Bizga sonlar massivi va target beriladi. Massivdagi yig'indisi target ga teng bo'lgan ikkita sonning indekslarini qaytarishimiz kerak:
-\`\`\`javascript
+\`javascript
 function twoSum(nums, target) {
   const map = new Map(); // Son va uning indeksini saqlash uchun kesh
 
@@ -40,11 +87,11 @@ function twoSum(nums, target) {
 }
 
 console.log(twoSum([2, 7, 11, 15], 9)); // Natija: [0, 1] (chunki nums[0] + nums[1] = 9)
-\`\`\`
+\`
 
 ### 2. Valid Parentheses (Qavslar balansi - O(n) vaqt)
 Berilgan qavslar ketma-ketligi (faqat \`()\`, \`[]\`, \`{}\`) to'g'ri juftlanganligini tekshirish:
-\`\`\`javascript
+\`javascript
 function isValid(s) {
   const stack = [];
   const map = {
@@ -73,7 +120,7 @@ function isValid(s) {
 
 console.log(isValid("{[()]}")); // Natija: true
 console.log(isValid("[(])"));   // Natija: false (yopilish tartibi xato)
-\`\`\`
+\`
 
 **Xulosa:** Ushbu masalalarni stek va Hash Map yordamida yechish vaqt murakkabligini chiziqli $O(n)$ darajasiga tushirib beradi.
 
@@ -216,6 +263,22 @@ Muammoni optimallashtirish haqida o'ylamasdan, eng sodda va qo'pol yo'l bilan (o
       startingCode: "function isPalindrome(s) {\n  const clean = s.toLowerCase().replace(/[^a-z0-9]/g, '');\n  // Ikki ko'rsatkich yordamida tekshiring\n}",
       hint: "let left = 0, right = clean.length - 1;\nwhile(left < right) { if(clean[left] !== clean[right]) return false; left++; right--; } return true;",
       test: "if (typeof isPalindrome !== 'function') return 'isPalindrome topilmadi'; if(isPalindrome('A man, a plan, a canal: Panama') !== true) return 'To\\'g\\'ri palindromni rad etdi'; if(isPalindrome('race a car') !== false) return 'Palindrom bo\\'lmagan satrda xato'; return null;"
+    },
+    {
+      id: 13,
+      title: "Intervallarni birlashtirish (Merge Intervals)",
+      instruction: "Berilgan intervallar massivi (har bir interval `[start, end]` juftligi) berilgan. Barcha kesishgan intervallarni birlashtirib qaytaruvchi `merge(intervals)` funksiyasini yozing. (Masalan, `[[1,3],[2,6],[8,10],[15,18]]` berilgan bo'lsa, natija `[[1,6],[8,10],[15,18]]` bo'lishi kerak).",
+      startingCode: "function merge(intervals) {\n  // Intervallarni birlashtiring\n}",
+      hint: "Avval intervallarni boshlang'ich nuqtasi (start) bo'yicha saralang. Keyin natijalar massivini boshlab, har bir intervalni tekshiring: agar u oxirgi qo'shilgan interval bilan kesishsa (joriy start <= oxirgi end), oxirgi intervalning end qiymatini yangilang (Math.max(oxirgi end, joriy end)). Kesishmasa, yangi interval sifatida qo'shing.",
+      test: "if (typeof merge !== 'function') return 'merge funksiyasi topilmadi'; const res1 = merge([[1,3],[2,6],[8,10],[15,18]]); if (!res1 || res1.length !== 3 || res1[0].join(',') !== '1,6' || res1[1].join(',') !== '8,10' || res1[2].join(',') !== '15,18') return 'Oddiy kesishuvlar uchun xato'; const res2 = merge([[1,4],[4,5]]); if (!res2 || res2.length !== 1 || res2[0].join(',') !== '1,5') return 'Chegaradagi kesishuv uchun xato'; return null;"
+    },
+    {
+      id: 14,
+      title: "Takrorlanuvchi belgilarsiz eng uzun qism-satr (Longest Substring Without Repeating Characters)",
+      instruction: "Berilgan satr `s` berilgan. Undagi takrorlanuvchi belgilarsiz eng uzun qism-satrning (substring) uzunligini sliding window yordamida aniqlovchi `lengthOfLongestSubstring(s)` funksiyasini yozing. (Masalan, `'abcabcbb'` bo'lsa, eng uzun qism-satr `'abc'` bo'lib, javob `3` bo'ladi).",
+      startingCode: "function lengthOfLongestSubstring(s) {\n  // Sliding window yordamida yeching\n}",
+      hint: "Ikki ko'rsatkich (left va right) va ko'rilgan belgilar indeksini saqlash uchun Map ishlating. right ko'rsatkichni surib boring. Agar belgi Map-da bor bo'lsa va uning indeksi left-dan katta yoki teng bo'lsa, left-ni shu indeks + 1 ga suring. Har bir qadamda maksimal uzunlikni (right - left + 1) hisoblang va belgi indeksini yangilang.",
+      test: "if (typeof lengthOfLongestSubstring !== 'function') return 'lengthOfLongestSubstring funksiyasi topilmadi'; if (lengthOfLongestSubstring('abcabcbb') !== 3) return '\\'abcabcbb\\' uchun javob 3 bo\\'lishi kerak'; if (lengthOfLongestSubstring('bbbbb') !== 1) return '\\'bbbbb\\' uchun javob 1 bo\\'lishi kerak'; if (lengthOfLongestSubstring('pwwkew') !== 3) return '\\'pwwkew\\' uchun javob 3 bo\\'lishi kerak'; if (lengthOfLongestSubstring('') !== 0) return 'Bo\\'sh satr uchun javob 0 bo\\'lishi kerak'; return null;"
     }
   ],
   quizzes: [
@@ -279,7 +342,7 @@ Muammoni optimallashtirish haqida o'ylamasdan, eng sodda va qo'pol yo'l bilan (o
       question: "Product of Array Except Self masalasini bo'lish amalisiz (without division) O(n) vaqtda yechish printsipi qanday?",
       options: [
         "Ichma-ich sikl yordamida barcha ko'paytmalarni hisoblash",
-        "Har bir element uchun uning chap tomonidagi ko'paytmalarni (prefix) va o'ng tomonidagi ko'paytmalarni (suffix) alohida hisoblab ko'paytirish",
+        "Har bir element uchun unog chap tomonidagi ko'paytmalarni (prefix) va o'ng tomonidagi ko'paytmalarni (suffix) alohida hisoblab ko'paytirish",
         "Binary Search yordamida",
         "Faqat manfiy elementlarni hisobga olish"
       ],
@@ -288,7 +351,7 @@ Muammoni optimallashtirish haqida o'ylamasdan, eng sodda va qo'pol yo'l bilan (o
     },
     {
       id: 7,
-      question: "Zinaga chiqish (Climbing Stairs) masalasining yechim formulasi qaysi matematik qonuniyatga mos keladi?",
+      question: "Zinaga chiqish (Climbing Stairs) masalasining yechim formulasasi qaysi matematik qonuniyatga mos keladi?",
       options: ["Faktorialga", "Fibonacci ketma-ketligiga", "Tub sonlarga", "Geometrik progressiyaga"],
       correctAnswer: 1,
       explanation: "n-zinaga chiqish yo'llari soni (n-1) va (n-2) zinalarga chiqish yo'llari yig'indisiga teng. Bu Fibonacci sonlari formulasining o'zidir."
@@ -352,6 +415,30 @@ Muammoni optimallashtirish haqida o'ylamasdan, eng sodda va qo'pol yo'l bilan (o
       ],
       correctAnswer: 1,
       explanation: "Palindrom so'zni tekshirishda katta-kichik harflar va tinish belgilari (vergul, ikki nuqta, bo'shliqlar) hisobga olinmaydi, shuning uchun ularni o'chirib tashlash kerak."
+    },
+    {
+      id: 13,
+      question: "Intervallarni birlashtirish (Merge Intervals) masalasini optimal yechishda birinchi bo'lib qanday amal bajarilishi shart?",
+      options: [
+        "Intervallarni ularning oxirgi (end) nuqtasi bo'yicha kamayish tartibida saralash",
+        "Intervallarni ularning boshlang'ich (start) nuqtasi bo'yicha o'sish tartibida saralash",
+        "Barcha intervallarni stekka joylab chiqish",
+        "Ikkilik daraxt (BST) yaratish"
+      ],
+      correctAnswer: 1,
+      explanation: "Intervallarni boshlang'ich nuqtasi (start) bo'yicha saralash orqali biz ketma-ket kelgan intervallarni osongina solishtirish va kesishuvlarni bir marta aylanib chiqishda (O(n) vaqtda) aniqlash imkoniga ega bo'lamiz. Aks holda, tartibsiz intervallarni solishtirish O(n^2) murakkablikni talab qiladi."
+    },
+    {
+      id: 14,
+      question: "Takrorlanuvchi belgilarsiz eng uzun qism-satrni topish masalasida sliding window qanday ishlaydi?",
+      options: [
+        "Ikki ko'rsatkich ham doim o'ngga bir xil tezlikda siljiydi",
+        "Oyna kengayadi (right o'ngga siljiydi), agar takrorlanuvchi belgi topilsa, chap ko'rsatkich (left) takrorlangan belgining oxirgi ko'rilgan indeksidan keyingi joyga sakraydi va oyna torayadi",
+        "Oyna o'lchami har doim o'zgarmas (statik) bo'lib qoladi",
+        "Faqat stek ma'lumotlar tuzilmasi yordamida qavslarni tekshiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Sliding window yondashuvida right ko'rsatkichi satr bo'ylab harakatlanib oynani kengaytiradi. Takrorlanuvchi belgi aniqlanganda, chap ko'rsatkich (left) takrorlangan belgining oldingi o'rnidan o'ngroqqa siljiydi, bu esa oynaning takrorlanishsiz qismini saqlab, uning uzunligini dinamik o'lchashga imkon beradi."
     }
   ]
 };

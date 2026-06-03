@@ -65,6 +65,66 @@ Ha, u bir vaqtning o'zida faqat bitta operatsiyani bajara oladi.
 
 **12. push() va concat() farqi nima?**
 \`push()\` mavjud massiv oxiriga element qo'shib uning uzunligini qaytaradi, \`concat()\` esa yangi massiv yaratib qaytaradi.
+
+### 7. AMALIY SAVOLLAR VA JAVOBLAR (Kod misollari)
+
+**1. Quyidagi kod bajarilganda konsolga nima chiqadi?**
+\`\`\`javascript
+let a = [1, 2, 3];
+let b = a;
+b.push(4);
+console.log(a);
+\`\`\`
+
+**Javob:**
+\`[1, 2, 3, 4]\`. Massivlar JavaScript-da referens (havola) orqali uzatiladi. \`b\` o'zgaruvchisi \`a\` bilan bir xil xotira manziliga ishora qiladi. Shuning uchun \`b\` orqali kiritilgan o'zgarish \`a\` da ham aks etadi.
+
+**2. Quyidagi kod nima natija qaytaradi?**
+\`\`\`javascript
+console.log(5 + "5");
+console.log(5 - "5");
+\`\`\`
+
+**Javob:**
+\`"55"\` (satr) va \`0\` (son).
+- \`+\` operatori satr bilan ishlatilganda sonni satrga o'zgartiradi va birlashtiradi (\`concatenation\`).
+- \`-\` operatori esa faqat matematik amal bo'lgani uchun satrni songa o'zgartiradi (\`coercion\`) va ayiradi.
+
+**3. Quyidagi shart bajarilganda qaysi blok ishlaydi?**
+\`\`\`javascript
+if ([]) {
+  console.log("A");
+} else {
+  console.log("B");
+}
+\`\`\`
+
+**Javob:**
+\`"A"\`. JavaScript-da bo'sh massiv \`[]\` haqiqiy (\`truthy\`) qiymat hisoblanadi. Shuning uchun \`if\` sharti bajariladi va konsolga \`"A"\` chiqadi.
+
+**4. Ushbu funksiya chaqirilganda nima chiqadi?**
+\`\`\`javascript
+function sayHello() {
+  console.log(name);
+  var name = "Ali";
+}
+sayHello();
+\`\`\`
+
+**Javob:**
+\`undefined\`. \`var\` bilan e'lon qilingan o'zgaruvchi hoisting qilinadi (funksiya tepasiga olib o'tiladi), lekin uning qiymati faqat o'zgaruvchi e'lon qilingan qatorda yuklanadi. Ungacha u \`undefined\` bo'lib turadi.
+
+**5. Quyidagi massiv metodining natijasi nima bo'ladi?**
+\`\`\`javascript
+const numbers = [1, 2, 3];
+const result = numbers.map(num => {
+  num * 2;
+});
+console.log(result);
+\`\`\`
+
+**Javob:**
+\`[undefined, undefined, undefined]\`. Chunki arrow funksiya figurali qavslar \`{}\` bilan yozilganda, qiymat qaytarish uchun \`return\` kalit so'zi shart. Funksiya hech narsa qaytarmagani uchun default ravishda \`undefined\` qaytadi va \`map\` yangi massivga \`undefined\` yig'adi. To'g'ri bo'lishi uchun \`return num * 2;\` yozish yoki \`{}\` ni olib tashlash kerak edi.
 `,
   exercises: [
     {

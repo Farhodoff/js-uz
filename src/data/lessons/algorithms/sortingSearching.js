@@ -3,127 +3,113 @@ export const sortingSearching = {
   title: "Saralash va Qidiruv Algoritmlari",
   theory: `## 1. NEGA kerak?
 Dasturlashda ma'lumotlar bilan ishlashning eng ko'p bajariladigan amallari — bu **qidiruv** (izlash) va **saralash** (tartiblash) dir. Masalan, minglab tovarlar orasidan eng arzonini topish uchun avval tovarlarni narxi bo'yicha saralash kerak, keyin keraklisini qidirish kerak.
-Agar ma'lumotlar to'g'ri saralanmagan va samarasiz algoritm ishlatsak, qidiruv juda sekin ishlaydi. To'g'ri tanlangan saralash va qidiruv algoritmlari dasturning resurs sarfini keskin kamaytiradi (masalan, $O(n^2)$ dan $O(n \\log n)$ gacha).
+Agar ma'lumotlar to'g'ri saralanmagan va samarasiz algoritm ishlatsak, qidiruv juda sekin ishlaydi. To'g'ri tanlangan saralash va qidiruv algoritmlari dasturning resurs sarfini keskin kamaytiradi (masalan, $O(n^2)$ dan $O(n \log n)$ gacha).
 
 ## 2. SODDALIK (Analogiya)
 - **Qidiruv:** Siz telefon daftarchasidan "Sardor" ismli odamni qidiryapsiz.
   * *Chiziqli qidiruv (Linear Search):* Daftarni boshidan boshlab har bir ismni bittalab ko'rib chiqasiz ($O(n)$).
-  * *Ikkilik qidiruv (Binary Search):* Daftarni o'rtasidan ochasiz, agar o'rtada "M" harfi bo'lsa, "Sardor" o'ng tomonda ekanligini bilib, chap tomonni butunlay yopasiz. Keyin o'ng tomonning o'rtasidan ochasiz va hokazo ($O(\\log n)$).
+  * *Ikkilik qidiruv (Binary Search):* Daftarni o'rtasidan ochasiz, agar o'rtada "M" harfi bo'lsa, "Sardor" o'ng tomonda ekanligini bilib, chap tomonni butunlay yopasiz ($O(\log n)$).
 - **Saralash:** Siz aralash yotgan **kuy ko'zirlarini (karta)** qo'lingizda tartiblamoqchisiz.
   * *Insertion Sort:* Har bir yangi kartani olib, qo'lingizdagi tartiblangan kartalar orasida o'z o'rniga joylaysiz.
 
-## 3. STRUKTURA
-Eng ko'p qo'llaniladigan algoritmlar sinfi:
+## 3. STRUKTURA VA ILG'OR TUSHUNCHALAR
 
-### Qidiruv algoritmlari:
-1. **Linear Search (Chiziqli):** Tartiblanmagan massivlar uchun mos. Vaqt murakkabligi: $O(n)$.
-2. **Binary Search (Ikkilik):** Faqat **saralangan (sorted)** massivlar uchun ishlaydi. Vaqt murakkabligi: $O(\\log n)$.
+### A. Divide and Conquer (Bo'lib tashla va hukmronlik qil)
+Muammoni kichik bo'laklarga bo'lib yechish, keyin esa bo'laklar yechimini birlashtirishga asoslangan algoritmik yondashuv:
+- **Merge Sort (Birlashtirish orqali):** Massivni o'rtasidan bo'lib saralaydi va birlashtiradi. Har doim $O(n \log n)$ tezlikda ishlaydi, barqaror (stable) lekin qo'shimcha $O(n)$ xotira talab qiladi.
+- **Quick Sort (Tezkor):** Pivot (tayanch) element tanlab, undan kichiklarini chapga, kattalarini o'ngga yig'adi. O'rtacha $O(n \log n)$ tezlikda ishlaydi, qo'shimcha xotira talab qilmaydi ($O(1)$ in-place) lekin barqaror emas (unstable).
 
-### Saralash algoritmlari:
-1. **Bubble Sort:** Qo'shni elementlarni solishtirib o'rin almashtiradi. Murakkabligi: $O(n^2)$.
-2. **Selection Sort:** Massivdagi eng kichik elementni topib, boshiga qo'yadi. Murakkabligi: $O(n^2)$.
-3. **Insertion Sort:** Har bir elementni chapdagi o'z o'rniga suqib joylashtiradi. Murakkabligi: $O(n^2)$.
-4. **Merge Sort:** Divide and Conquer (Bo'l va hukmronlik qil) printsipi. Massivni o'rtasidan bo'lib saralaydi va birlashtiradi. Murakkabligi: $O(n \\log n)$ (Har doim).
-5. **Quick Sort:** Pivot (tayanch) element tanlab, undan kichiklarini chapga, kattalarini o'ngga yig'adi va rekursiv davom etadi. Murakkabligi: $O(n \\log n)$ (eng yomon holatda $O(n^2)$).
+\`mermaid
+graph TD
+    classDef base fill:#2c3e50,stroke:#34495e,color:#fff;
+    classDef div fill:#e74c3c,stroke:#c0392b,color:#fff;
+    classDef merged fill:#2ecc71,stroke:#27ae60,color:#fff;
+
+    Start["[38, 27, 43, 3]"]:::base
+    D1["[38, 27]"]:::div
+    D2["[43, 3]"]:::div
+    D1_1["[38]"]:::div
+    D1_2["[27]"]:::div
+    D2_1["[43]"]:::div
+    D2_2["[3]"]:::div
+    
+    Start --> D1
+    Start --> D2
+    D1 --> D1_1
+    D1 --> D1_2
+    D2 --> D2_1
+    D2 --> D2_2
+
+    M1["[27, 38]"]:::merged
+    M2["[3, 43]"]:::merged
+    Final["[3, 27, 38, 43]"]:::merged
+
+    D1_1 & D1_2 --> M1
+    D2_1 & D2_2 --> M2
+    M1 & M2 --> Final
+\`
+
+### B. Barqaror (Stable) vs Nobarqaror (Unstable) Saralash
+- **Stable Sorting:** Massivda qiymati teng bo'lgan elementlar o'zaro tartibini o'zgartirmasdan saqlab qoladi (masalan, Merge Sort, Insertion Sort).
+- **Unstable Sorting:** Teng elementlar o'rni almashib ketishi mumkin (masalan, Quick Sort, Heap Sort, Selection Sort).
+
+### C. Pivot Tanlash Strategiyalari (Quick Sort)
+Quick Sort tezligi pivot elementga bog'liq. Agar pivot sifatida eng chekka (eng kichik yoki eng katta) element tanlansa, massiv muvozanatsiz bo'linadi va tezlik $O(n^2)$ ga tushadi. Buni oldini olish usullari:
+1. **Random Pivot:** Pivotni tasodifiy indeksdan olish.
+2. **Median-of-Three:** Boshlang'ich, o'rtadagi va oxirgi elementlarning medianasini pivot sifatida tanlash.
+
+\`mermaid
+graph LR
+    classDef pivot fill:#e67e22,stroke:#d35400,color:#fff;
+    classDef normal fill:#3498db,stroke:#2980b9,color:#fff;
+
+    P["Pivot: 5"]:::pivot
+    N1["[ Kichiklar: 3, 2 ]"]:::normal
+    N2["[ Kattalar: 8 ]"]:::normal
+    
+    N1 --> P
+    P --> N2
+\`
 
 ## 4. AMALIYOT
-Keling, JavaScript-da eng mashhur ikkita algoritm — Bubble Sort va Binary Search amaliy yozilishini ko'rib chiqamiz:
-
-### 1. Saralash: Bubble Sort (Pufakchali saralash)
-Quyidagi kod massivni o'sish tartibida saralaydi. U ichma-ich sikllar orqali qo'shni elementlarni taqqoslaydi va kattasini o'ngga suradi:
-\`\`\`javascript
-function bubbleSort(arr) {
-  let n = arr.length;
-  for (let i = 0; i < n; i++) {
-    // Oxirgi i ta element allaqachon o'z o'rnida bo'ladi
-    for (let j = 0; j < n - i - 1; j++) {
-      if (arr[j] > arr[j + 1]) {
-        // O'rin almashtirish (Swap)
-        let temp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j + 1] = temp;
-      }
-    }
+Chiziqli qidiruv (Linear Search) barcha elementlarni birma-bir ko'rib chiqadi:
+\`javascript
+function linearSearch(arr, val) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === val) return i;
   }
-  return arr;
+  return -1;
 }
+\`
 
-console.log(bubbleSort([35, 12, 45, 8])); // Natija: [8, 12, 35, 45]
-\`\`\`
-
-### 2. Qidiruv: Binary Search (Ikkilik qidiruv)
-Binary Search faqat saralangan massivda ishlaydi. U pastki (low) va yuqori (high) chegaralar orqali qidiruv doirasini har bir qadamda yarmiga qisqartiradi:
-\`\`\`javascript
-function binarySearch(arr, target) {
-  let low = 0;
-  let high = arr.length - 1;
-
-  while (low <= high) {
-    let mid = Math.floor((low + high) / 2);
-
-    if (arr[mid] === target) {
-      return mid; // Target indeksini qaytaramiz (topildi!)
-    }
-    
-    if (arr[mid] < target) {
-      low = mid + 1; // O'ng tomondan qidiramiz
-    } else {
-      high = mid - 1; // Chap tomondan qidiramiz
-    }
+Ikkilik qidiruv (Binary Search) saralangan massiv uchun:
+\`javascript
+function binarySearch(arr, val) {
+  let left = 0, right = arr.length - 1;
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    if (arr[mid] === val) return mid;
+    if (arr[mid] < val) left = mid + 1;
+    else right = mid - 1;
   }
-  
-  return -1; // Topilmadi
+  return -1;
 }
-
-const sortedArr = [8, 12, 19, 22, 31, 35, 45, 50];
-console.log(binarySearch(sortedArr, 22)); // Natija: 3 (22 soni 3-indeksda joylashgan)
-console.log(binarySearch(sortedArr, 10)); // Natija: -1 (mavjud emas)
-\`\`\`
-
-**Xulosa:** Bubble Sort sodda bo'lsa-da sekin ($O(n^2)$), Binary Search esa o'ta tez ($O(\\log n)$) lekin ma'lumotlar avvaldan saralangan bo'lishini talab qiladi.
-
+\`
 
 ## 5. XATOLAR (Common mistakes)
-1. **Saralanmagan massivda Binary Search ishlatish:** Binary Search ishlashi uchun massiv mutlaqo saralangan bo'lishi shart. Aks holda u noto'g'ri natija beradi yoki elementni topa olmaydi.
-2. **Eng yaxshi saralashni tanlay olmaslik:** Katta hajmdagi ma'lumotlar uchun hech qachon $O(n^2)$ lik algoritmlarni (Bubble, Selection) ishlatmaslik kerak. Ularning o'rniga Merge Sort yoki Quick Sort tanlanadi.
-3. **Qo'shimcha xotira sarfi:** Merge Sort barqaror (stable) va tez bo'lsa-da, u massivlarni birlashtirishda qo'shimcha $O(n)$ xotira talab qiladi. Xotira juda cheklangan tizimlarda bunga e'tibor berish shart.
+1. **Saralanmagan massivda Binary Search ishlatish:** Binary Search ishlashi uchun massiv mutlaqo saralangan bo'lishi shart.
+2. **Katta ma'lumotlar uchun quadratic saralash tanlash:** Katta hajmdagi ma'lumotlar uchun deyarli hech qachon $O(n^2)$ lik algoritmlarni (Bubble, Selection) ishlatmaslik kerak. Ularning o'rniga Merge Sort yoki Quick Sort tanlanadi.
+3. **Qo'shimcha xotira sarfi:** Merge Sort barqaror (stable) va tez bo'lsa-da, u massivlarni birlashtirishda qo'shimcha $O(n)$ xotira talab qiladi.
 
 ## 6. SAVOLLAR VA JAVOBLAR
 **1. Linear Search qachon ishlatiladi?**
-Ma'lumotlar kichik va tartibsiz (saralanmagan) bo'lganda hamda ularni saralashga ketadigan vaqt qidiruv vaqtidan ko'p bo'lganda.
+Ma'lumotlar kichik va tartibsiz bo'lganda hamda ularni saralashga ketadigan vaqt qidiruv vaqtidan ko'p bo'lganda.
 
-**2. Binary Search algoritmi qanday ishlaydi?**
-Saralangan massivning o'rtasidagi elementni maqsadli qiymat bilan solishtiradi, agar kichik bo'lsa chap yarmini, katta bo'lsa o'ng yarmini o'chirib, qidiruvni qolgan yarmida davom ettiradi.
+**2. Barqaror (Stable) saralash nima?**
+Agar massivda qiymati teng bo'lgan elementlar bo'lsa, ularning saralashdan oldingi boshlang'ich o'zaro tartibini o'zgartirmasdan saqlab qoladigan saralash barqaror deyiladi.
 
-**3. Bubble Sort nima uchun amaliyotda deyarli ishlatilmaydi?**
-Chunki uning o'rtacha va eng yomon holatdagi vaqt murakkabligi $O(n^2)$ bo'lib, elementlar soni ko'payganda juda sekinlashib ketadi.
-
-**4. Barqaror (Stable) saralash nima?**
-Agar massivda qiymati teng bo'lgan elementlar bo'lsa, ularning saralashdan oldingi boshlang'ich o'zaro tartibini o'zgartirmasdan saqlab qoladigan saralash barqaror deyiladi (masalan, Merge Sort).
-
-**5. Divide and Conquer (Bo'l va hukmronlik qil) nima?**
-Muammoni kichik bo'laklarga bo'lib yechish, keyin esa bo'laklar yechimini birlashtirishga asoslangan algoritmik yondashuv (Merge Sort va Quick Sort bunga misol).
-
-**6. Merge Sort va Quick Sort orasidagi asosiy farq nima?**
-Merge Sort har doim $O(n \\log n)$ tezlikda ishlaydi, lekin qo'shimcha $O(n)$ xotira oladi. Quick Sort o'rtacha $O(n \\log n)$ ishlaydi, eng yomon holatda $O(n^2)$ bo'lishi mumkin, lekin qo'shimcha xotira talab qilmaydi ($O(1)$ in-place).
-
-**7. Pivot (tayanch) element nima?**
-Quick Sort-da massivni ikkiga ajratish (chapda kichiklar, o'ngda kattalar) uchun tanlab olinadigan ixtiyoriy element.
-
-**8. Ternary Search nima?**
-Binary Search-ga o'xshash, lekin massivni 2 ga emas, balki 3 ga bo'lib qidiradigan algoritm (murakkabligi: $O(\\log_3 n)$).
-
-**9. Bubble Sort-ni qanday optimallashtirish mumkin?**
-Agar sikl davomida biror marta ham elementlar o'rni almashmasa (swap bo'lmasa), massiv saralangan deb topib, siklni darhol to'xtatish (break) orqali.
-
-**10. Saralangan massivga yangi element qo'shishda qaysi saralash eng yaxshi ishlaydi?**
-Insertion Sort, chunki u deyarli saralangan massiv uchun $O(n)$ vaqtda ishlaydi.
-
-**11. JavaScript-dagi \`Array.prototype.sort()\` qaysi algoritmdan foydalanadi?**
+**3. V8 motoridagi Array.prototype.sort() qaysi algoritmdan foydalanadi?**
 V8 motorida Timsort (Merge Sort va Insertion Sort gibridi) ishlatiladi, u barqaror va juda tezdir.
-
-**12. Interpolation Search nima?**
-Agar saralangan massivdagi sonlar bir tekis taqsimlangan bo'lsa (masalan, 10, 20, 30, 40...), Binary Search o'rniga ishlatiladigan va qidiruvni formulalar orqali o'rtacha $O(\\log(\\log n))$ tezlikda bajaradigan algoritm.
 `,
   exercises: [
     {
@@ -208,7 +194,7 @@ Agar saralangan massivdagi sonlar bir tekis taqsimlangan bo'lsa (masalan, 10, 20
     },
     {
       id: 11,
-      title: "Qidirib joylash indeksi (Search Insert Position)",
+      title: "Qidiruv orqali joylash indeksi (Search Insert Position)",
       instruction: "Saralangan massiv va target berilgan. Agar target bor bo'lsa indeksini, yo'q bo'lsa tartib bo'yicha qayerga joylanishi kerak bo'lgan indeksni qaytaruvchi funksiyani yozing.",
       startingCode: "function searchInsert(nums, target) {\n  let left = 0, right = nums.length - 1;\n  // Binary search yordamida yozing\n}",
       hint: "while(left <= right) {\n  let mid = Math.floor((left+right)/2);\n  if(nums[mid] === target) return mid;\n  else if(nums[mid] < target) left = mid + 1;\n  else right = mid - 1;\n} return left;",
@@ -221,6 +207,22 @@ Agar saralangan massivdagi sonlar bir tekis taqsimlangan bo'lsa (masalan, 10, 20
       startingCode: "const isMergeSortStable = ",
       hint: "true",
       test: "if (typeof isMergeSortStable === 'undefined') return 'isMergeSortStable aniqlanmagan'; if(isMergeSortStable !== true) return 'Merge Sort barqaror algoritm hisoblanadi'; return null;"
+    },
+    {
+      id: 13,
+      title: "Aylantirilgan saralangan massivdan qidirish (Search in Rotated Sorted Array)",
+      instruction: "O'sib borish tartibida saralangan, lekin ma'lum bir pivot nuqtada aylantirilgan (masalan, `[4,5,6,7,0,1,2]`) massiv `nums` va `target` soni berilgan. Target qiymatini massiv ichidan O(log n) vaqt murakkabligida qidirib uning indeksini qaytaruvchi `searchInRotatedArray(nums, target)` funksiyasini yozing. (Topilmasa -1).",
+      startingCode: "function searchInRotatedArray(nums, target) {\n  // Aylantirilgan saralangan massivdan targetni O(log n) da toping\n}",
+      hint: "O(log n) uchun standart Binary Search yozing. Har doim massivning kamida bitta yarmi (chap yoki o'ng) mutlaqo saralangan bo'ladi. target shu diapazonga tushish-tushmasligiga qarab qidiruvni davom ettiring.",
+      test: "if (typeof searchInRotatedArray !== 'function') return 'searchInRotatedArray funksiyasi topilmadi';\nif (searchInRotatedArray([4,5,6,7,0,1,2], 0) === 4 && searchInRotatedArray([4,5,6,7,0,1,2], 3) === -1 && searchInRotatedArray([1], 0) === -1) {\n  return null;\n}\nreturn 'Qidiruv natijasi noto\\'g\\'ri';"
+    },
+    {
+      id: 14,
+      title: "Massivdagi K-chi eng katta element (Kth Largest Element)",
+      instruction: "Tartibsiz sonlar massivi `nums` va butun son `k` berilgan. Massivdagi `k`-chi eng katta elementni aniqlab qaytaruvchi `findKthLargest(nums, k)` funksiyasini yozing. (Masalan, `[3,2,1,5,6,4]` va `k = 2` bo'lsa, 2-chi eng katta element `5`).",
+      startingCode: "function findKthLargest(nums, k) {\n  // K-chi eng katta elementni toping\n}",
+      hint: "Massivni o'sib borish tartibida saralang. k-chi eng katta element oxiridan k-chi element bo'ladi (nums.length - k indeksida).",
+      test: "if (typeof findKthLargest !== 'function') return 'findKthLargest funksiyasi topilmadi';\nif (findKthLargest([3,2,1,5,6,4], 2) === 5 && findKthLargest([3,2,3,1,2,4,5,5,6], 4) === 4) {\n  return null;\n}\nreturn 'K-chi eng katta element noto\\'g\\'ri topildi';"
     }
   ],
   quizzes: [
@@ -276,7 +278,7 @@ Agar saralangan massivdagi sonlar bir tekis taqsimlangan bo'lsa (masalan, 10, 20
       question: "Saralash barqarorligi (Stability) deganda nima tushuniladi?",
       options: [
         "Algoritmning hech qachon xato bermasligi",
-        "Teng qiymatli elementlarning boshlang'ich o'zaro tartibi saralashdan keyin ham o'zgarmasdan saqlanishi",
+        "Teng qiymatli elementlarning boshlang'ich o'zaro tartibi saralashdan keyin har safar o'zgarmasdan saqlanishi",
         "Algoritm faqat bir xil kompyuterda ishlashi",
         "Xotira sarfining doimiyligi"
       ],
@@ -322,6 +324,30 @@ Agar saralangan massivdagi sonlar bir tekis taqsimlangan bo'lsa (masalan, 10, 20
       options: ["Interpolation Search", "Selection Sort", "DFS", "Linear Search"],
       correctAnswer: 0,
       explanation: "Interpolation Search kiritilgan qiymatning joylashuvini taxmin qilish formulasi yordamida bir tekis taqsimlangan ma'lumotlar uchun o'rtacha O(log(log n)) tezlikda ishlaydi."
+    },
+    {
+      id: 13,
+      question: "Aylantirilgan saralangan massivdan (Rotated Sorted Array) target elementni qidirishda qanday qilib O(log n) tezlikni saqlab qolish mumkin?",
+      options: [
+        "Massivni boshidan oxirigacha oddiy chiziqli qidirib",
+        "Massivni o'rtasidan bo'lganda, kamida bitta yarmi (chap yoki o'ng) har doim to'g'ri saralangan bo'lishi qoidasidan foydalanib va Binary Search-ni moslashtirib",
+        "Massivni avval to'liq boshqacha tartibda saralab",
+        "Daraxt tuzilishiga o'tkazib"
+      ],
+      correctAnswer: 1,
+      explanation: "Aylantirilgan saralangan massivda har safar mid o'rtadagi nuqtani olganimizda, massivning chap yoki o'ng yarmi albatta saralangan bo'ladi. Biz target qiymatining shu saralangan qism diapazoniga tushishini tekshirib, Binary search chegaralarini toraytiramiz va O(log n) tezlikka erishamiz."
+    },
+    {
+      id: 14,
+      question: "Massivdagi K-chi eng katta elementni qidirishda Quick Select algoritmi Quick Sort-dan qanday ustunlikka ega?",
+      options: [
+        "Quick Select qo'shimcha massivlar yaratadi",
+        "Quick Sort har doim har ikkala bo'lingan qismni rekursiv saralaydi (O(n log n)), Quick Select esa faqat target indeks joylashgan birgina qism bo'yicha davom etadi va o'rtacha O(n) vaqt oladi",
+        "Quick Select faqat musbat sonlar uchun ishlaydi",
+        "Unda pivot ishlatilmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Quick Select joriy pivot bo'yicha partitioning qilgach, k-chi element qaysi tomondaligiga qarab faqatgina bitta qism bo'ylab davom etadi. Bu har safar muammoni yarmiga qisqartirib, o'rtacha O(n) vaqt murakkabligini beradi."
     }
   ]
 };

@@ -9,72 +9,67 @@ Buning uchun bizga **Stack** (Stek) va **Queue** (Navbat) ma'lumotlar tuzilmalar
 - **Stack (Stek):** Buni kafedagi **likopchalar taxlamiga** o'xshatish mumkin. Yangi yuvilgan likopcha eng tepaga qo'yiladi va ovqat yeydigan odam ham eng tepasidagi likopchani oladi. Bu — **LIFO** (Last In, First Out — Oxirgi kirgan, birinchi chiqadi) qoidasi.
 - **Queue (Navbat):** Buni **do'kondagi kassaga turgan odamlar navbatiga** o'xshatish mumkin. Birinchi kelgan odamga birinchi xizmat ko'rsatiladi va u navbatdan chiqib ketadi, yangi kelganlar navbat oxiriga turishadi. Bu — **FIFO** (First In, First Out — Birinchi kirgan, birinchi chiqadi) qoidasi.
 
-## 3. STRUKTURA
+## 3. STRUKTURA VA ILG'OR TUSHUNCHALAR
 Stack va Queue-ni massiv (Array) yoki bog'langan ro'yxat (Linked List) yordamida yaratish mumkin.
 
-### Stack amallari:
-1. \`push(value)\`: Elementni stek tepasiga qo'shadi ($O(1)$).
-2. \`pop()\`: Stek tepasidagi elementni o'chiradi va qaytaradi ($O(1)$).
-3. \`peek()\`: Stek tepasidagi elementni o'chirmasdan ko'rish ($O(1)$).
-4. \`isEmpty()\`: Stek bo'shligini tekshirish.
+### A. Monotonic Stack
+Monotonic Stack — elementlari har doim o'sib boruvchi (increasing) yoki kamayib boruvchi (decreasing) tartibda saqlanadigan maxsus stekdir. Yangi element qo'shishdan oldin, stek tepasidagi unga to'g'ri kelmaydigan elementlar pop qilinadi. Bu algoritm massivdagi eng yaqin katta/kichik elementlarni $O(n)$ vaqtda topishga yordam beradi.
 
-### Queue amallari:
-1. \`enqueue(value)\`: Elementni navbat oxiriga qo'shadi ($O(1)$).
-2. \`dequeue()\`: Navbat boshidagi elementni o'chiradi va qaytaradi ($O(1)$).
-3. \`peek()\`: Navbat boshidagi elementni ko'rish ($O(1)$).
+\`mermaid
+graph TD
+    subgraph Stack_Layout ["Stek (LIFO) Arxitekturasi"]
+        T["Tepasi (Top)"]
+        N3["[ Tugun 3 ]"]
+        N2["[ Tugun 2 ]"]
+        N1["[ Tugun 1 ]"]
+        
+        T --> N3
+        N3 --> N2
+        N2 --> N1
+    end
+    
+    Push["Yangi Element (Push)"] --> N3
+    N3 --> Pop["O'chirish (Pop)"]
+\`
+
+### B. Circular Queue (Aylanma navbat)
+Oddiy massiv orqali navbat yozilganda, element o'chirish ($shift$) massivdagi qolgan elementlarni siljitishni talab qilib $O(n)$ vaqt oladi. Bog'lanmagan aylanma ko'rsatkichlar (head va tail) orqali massiv ustida aylanuvchi **Circular Queue** qurilsa, xotira bo'shagan kataklar boshidan boshlab qayta to'ldiriladi va vaqt murakkabligi har doim $O(1)$ bo'ladi.
+
+\`mermaid
+graph LR
+    subgraph Queue_Layout ["Navbat (FIFO) Arxitekturasi"]
+        Head["Boshi (Head)"] --> N1["[ Tugun 1 ]"]
+        N1 --> N2["[ Tugun 2 ]"]
+        N2 --> N3["[ Tugun 3 ]"]
+        N3 --> Tail["Oxiri (Tail)"]
+    end
+    
+    Dequeue["O'chirish (Dequeue)"] <-- Head
+    Tail <-- Enqueue["Qo'shish (Enqueue)"]
+\`
+
+### C. Double Ended Queue (Deque)
+Elementlarni ham boshidan, ham oxiridan qo'shish va o'chirish imkonini beruvchi ikki tomonlama navbat. JS-da uni Linked List yoki ikkita ko'rsatkichli dynamic massiv orqali yozish mumkin.
 
 ## 4. AMALIYOT
-Keling, JavaScript-da Stack va Queue-ni oddiy massivlar (Arrays) yordamida qanday shakllantirishni ko'rib chiqamiz:
+Stack push va pop amallari orqali ishlaydi:
+\`javascript
+const stack = [];
+stack.push(10); // push
+const topVal = stack.pop(); // pop
+\`
 
-### 1. Stack (Stek) namunasi: Brauzer Tarixi (LIFO)
-Brauzerning "Orqaga" (Back) tugmasi ishlashini stek yordamida simulyatsiya qilamiz. Biz massivning \`.push()\` va \`.pop()\` metodlaridan foydalanamiz. Ular massiv oxiriga element qo'shadi va o'chiradi ($O(1)$ tezlikda):
-\`\`\`javascript
-const historyStack = [];
-
-// Sahifalarga tashrif buyurish (Push - Stek tepasiga qo'shish)
-historyStack.push("google.com");
-historyStack.push("github.com");
-historyStack.push("youtube.com");
-
-console.log("Tarix steki:", historyStack); 
-// Natija: ["google.com", "github.com", "youtube.com"]
-
-// "Orqaga" tugmasini bosish (Pop - Stek tepasidan element olish)
-const lastPage = historyStack.pop(); 
-console.log("Qaytilgan sahifa:", lastPage); // Natija: "youtube.com" (LIFO - oxirgi kirgan sahifa birinchi chiqdi)
-
-console.log("Qolgan tarix:", historyStack); 
-// Natija: ["google.com", "github.com"]
-\`\`\`
-
-### 2. Queue (Navbat) namunasi: Printer Navbati (FIFO)
-Printerga yuborilgan hujjatlarni navbat bilan chop etishni simulyatsiya qilamiz. Hujjatlar oxiriga qo'shiladi (\`.push()\`), lekin boshidan olinadi (\`.shift()\`):
-\`\`\`javascript
-const printQueue = [];
-
-// Hujjatlarni navbatga qo'shish (Enqueue - Navbat oxiriga qo'shish)
-printQueue.push("hujjat1.pdf");
-printQueue.push("hujjat2.docx");
-printQueue.push("rasm.png");
-
-console.log("Printer navbati:", printQueue);
-// Natija: ["hujjat1.pdf", "hujjat2.docx", "rasm.png"]
-
-// Birinchi hujjatni chop etish (Dequeue - Navbat boshidan olish)
-const printedDoc = printQueue.shift(); // .shift() birinchi elementni olib tashlaydi
-console.log("Chop etilgan hujjat:", printedDoc); // Natija: "hujjat1.pdf" (FIFO - birinchi kelgan birinchi chop etildi)
-
-console.log("Qolgan navbat:", printQueue);
-// Natija: ["hujjat2.docx", "rasm.png"]
-\`\`\`
-
-**Xulosa:** Stack va Queue amaliy dasturlashda ma'lumotlar ketma-ketligi va tartibini to'g'ri boshqarish uchun eng ko'p ishlatiladigan fundamental tuzilmalardir.
-
+Queue enqueue va dequeue orqali ishlaydi:
+\`javascript
+const queue = [];
+queue.push(10); // enqueue
+const headVal = queue.shift(); // dequeue (Eslatma: massiv shift() O(n) vaqt oladi)
+\`
 
 ## 5. XATOLAR (Common mistakes)
 1. **Stek to'lib ketishi (Stack Overflow):** Rekursiya yoki ma'lumotlar limiti oshib ketganda stek xotirasi tugashi.
-2. **Bo'sh stekdan element olish (Stack Underflow):** Stek bo'sh bo'lgan holatda \`pop()\` qilganda xatoliklarni tekshirmaslik (masalan, \`undefined\` qaytishini hisobga olmaslik).
-3. **Massiv shift amaliyotini ishlatish:** Massiv yordamida navbat yasaganda, boshidan element o'chirish uchun \`shift()\` ishlatilsa, uning vaqt murakkabligi $O(n)$ bo'lib qoladi. Katta hajmlar uchun bog'langan ro'yxat ishlatsa, bu $O(1)$ bo'ladi.
+2. **Bo'sh stekdan element olish (Stack Underflow):** Stek bo'sh bo'lgan holatda pop() qilganda xatoliklarni tekshirmaslik.
+3. **Massiv shift amaliyotini ishlatish:** Massiv yordamida navbat yasaganda, boshidan element o'chirish uchun shift() ishlatilsa, uning vaqt murakkabligi $O(n)$ bo'lib qoladi. Katta hajmlar uchun bog'langan ro'yxat ishlatsa, bu $O(1)$ bo'ladi.
 
 ## 6. SAVOLLAR VA JAVOBLAR
 **1. Stack nima?**
@@ -91,27 +86,6 @@ Stack asosida. Har bir tashrif buyurilgan sahifa stekka tashlanadi va Back bosil
 
 **5. Call Stack nima?**
 JavaScript dvigateli funksiyalar chaqiruvini nazorat qilish va ularning qaytish manzillarini boshqarish uchun foydalanadigan stek tuzilmasi.
-
-**6. Massivda \`pop()\` va \`push()\` amallarining murakkabligi qanday?**
-Ikkalasi ham O(1) ga teng, chunki ular massiv oxiridan element qo'shadi va o'chiradi.
-
-**7. Massivda \`unshift()\` va \`shift()\` amallari nega O(n) murakkablikka ega?**
-Chunki massiv boshiga element qo'shilganda yoki o'chirilganda, massivdagi barcha boshqa elementlarning indekslarini siljitib chiqish talab etiladi.
-
-**8. Min Stack nima?**
-Oddiy stek amallaridan tashqari, stekdagi eng kichik elementni O(1) vaqt ichida qaytara oladigan maxsus stek dizayni.
-
-**9. Queue-ni ikkita Stack yordamida qanday qurish mumkin?**
-Bitta stekni faqat elementlarni qabul qilish (input), ikkinchisini esa elementlarni chiqarish (output) uchun ishlatib, elementlarni biridan ikkinchisiga ag'darish orqali.
-
-**10. JavaScript event loop-dagi Task Queue qaysi tuzilma hisoblanadi?**
-Navbat (Queue) hisoblanadi. Asinxron vazifalar (setTimeout) kelib navbatga turadi va tartib bo'yicha FIFO shaklida bajariladi.
-
-**11. Monotonic Stack nima?**
-Elementlari doimiy o'sish yoki kamayish tartibida saqlanadigan va asosan eng yaqin katta/kichik elementni qidirishda foydalaniladigan stek turi.
-
-**12. Bog'langan ro'yxat yordamida Queue yaratishning afzalligi nimada?**
-Navbat boshidan elementni o'chirish (\`dequeue\`) amalini $O(1)$ vaqtda bajarish imkonini beradi.
 `,
   exercises: [
     {
@@ -209,6 +183,22 @@ Navbat boshidan elementni o'chirish (\`dequeue\`) amalini $O(1)$ vaqtda bajarish
       startingCode: "class Queue {\n  constructor() { this.items = []; }\n  enqueue(val) { this.items.push(val); }\n  clear() {\n    // Tozalang\n  }\n}",
       hint: "this.items = [];",
       test: "if (typeof Queue !== 'function') return 'Queue klassi topilmadi'; const q = new Queue(); q.enqueue(1); q.clear(); if(q.items.length !== 0) return 'Navbat tozalanmadi'; return null;"
+    },
+    {
+      id: 13,
+      title: "Kundalik Haroratlar (Daily Temperatures)",
+      instruction: "Sizga kundalik haroratlar massivi `temperatures` berilgan. Monotonic Stack yordamida, har bir kun uchun issiqroq kun kelguncha necha kun kutish kerakligini hisoblab massiv ko'rinishida qaytaruvchi `dailyTemperatures(temperatures)` funksiyasini yozing. Agar keyingi issiqroq kun bo'lmasa, `0` yozing.",
+      startingCode: "function dailyTemperatures(temperatures) {\n  // Monotonic stack yordamida yeching\n}",
+      hint: "res massivini 0 bilan to'ldirib, indekslarni saqlash uchun stek ishlating. temperatures[i] > temperatures[stack[stack.length - 1]] bo'lganda pop qilib indekslar farqini yozing.",
+      test: "if (typeof dailyTemperatures !== 'function') return 'dailyTemperatures topilmadi';\nconst res = dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73]);\nif (Array.isArray(res) && res.join(',') === '1,1,4,2,1,1,0,0') {\n  if (code.includes('stack') || code.includes('push')) return null;\n  return 'Stek tuzilmasidan foydalanish shart';\n}\nreturn 'Natija noto\\'g\\'ri hisoblandi';"
+    },
+    {
+      id: 14,
+      title: "Kodlangan Satrni Oqish (Decode String)",
+      instruction: "Quyidagi qoidaga ko'ra kodlangan satr `s` berilgan: `k[encoded_string]`, ya'ni qavs ichidagi satr to'liq `k` marta takrorlanadi. Stack yordamida uni dekodlab, to'liq satrni qaytaruvchi `decodeString(s)` funksiyasini yozing.",
+      startingCode: "function decodeString(s) {\n  // Kodlangan qavsli satrni stack orqali dekodlang\n}",
+      hint: "Ikkita stekdan foydalaning (sonlar va satrlar uchun). '[' kelganda joriy son va satrni stekka joylab ularni yangilang, ']' kelganda sonni stekdan oling va satrni takrorlang.",
+      test: "if (typeof decodeString !== 'function') return 'decodeString topilmadi';\nif (decodeString('3[a]2[bc]') === 'aaabcbc' && decodeString('3[a2[c]]') === 'accaccacc' && decodeString('2[abc]3[cd]ef') === 'abcabccdcdcdef') {\n  return null;\n}\nreturn 'decodeString funksiyasi noto\\'g\\'ri natija qaytardi';"
     }
   ],
   quizzes: [
@@ -315,6 +305,30 @@ Navbat boshidan elementni o'chirish (\`dequeue\`) amalini $O(1)$ vaqtda bajarish
       ],
       correctAnswer: 1,
       explanation: "Monotonic steklar elementlarni kiritishda tartibni saqlaydi (masalan, faqat o'sib boruvchi). Bu orqali massivdagi eng yaqin katta/kichik elementni tez topish mumkin."
+    },
+    {
+      id: 13,
+      question: "Monotonic Decreasing Stack (kamayib boruvchi monotonic stek) ning asosiy ishlash qoidasi qanday?",
+      options: [
+        "Stekka faqat manfiy sonlar qo'shiladi",
+        "Yangi element qo'shishdan oldin, undan kichik bo'lgan barcha elementlar stek tepasidan o'chiriladi (pop qilinadi), natijada stek ostidan tepaga qarab elementlar faqat kamayib borish tartibida qoladi",
+        "Elementlar har doim navbatma-navbat aylanadi",
+        "Stek elementlar soni hech qachon 1 tadan oshmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Kamayib boruvchi monotonic stekda har bir yangi element o'zidan kichik bo'lgan barcha elementlarni stek tepasidan pop qilib yuboradi, bu esa stekdagi elementlarning pastdan tepaga qarab kamayib borishini ta'minlaydi."
+    },
+    {
+      id: 14,
+      question: "Aylanma navbat (Circular Queue) ning oddiy massiv navbatidan asosiy ustunligi nimada?",
+      options: [
+        "U elementlarni avtomatik ravishda saralaydi",
+        "U massivning boshida bo'shagan xotira kataklarini aylanma indekslar orqali qayta ishlatadi va O(n) siljitish (shift) amalini bajarmasdan xotirani tejaydi",
+        "U cheksiz miqdordagi elementlarni saqlay oladi",
+        "U faqat brauzer asinxron kodlarida ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Circular Queue boshlang'ich va oxirgi element ko'rsatkichlarini (head va tail) aylanma o'lcham bo'yicha (% operatori yordamida) yangilaydi. Bu dequeue qilingan elementlar o'rnini massiv boshiga borib qaytadan to'ldirish imkonini beradi va elementlarni siljitmasdan O(1) vaqtda xotirani boshqaradi."
     }
   ]
 };
