@@ -47,6 +47,9 @@ import { timersLesson } from "./lessons/intermediate/timers";
 import { immutableData } from "./lessons/intermediate/immutableData";
 import { canvas } from "./lessons/intermediate/canvas";
 import { audioVideo } from "./lessons/intermediate/audioVideo";
+import { mapSetWeak } from "./lessons/intermediate/mapSetWeak";
+import { es6Features } from "./lessons/intermediate/es6Features";
+import { higherOrderFunctions } from "./lessons/intermediate/higherOrderFunctions";
 
 import { callbacksLesson } from "./lessons/advanced/callbacks";
 import { promises } from "./lessons/advanced/promises";
@@ -127,13 +130,13 @@ export const curriculum = {
     label: "O'rta daraja",
     color: "#e5b84f",
     icon: "🟡",
-    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, domBasics, domManipulation, events, formsLesson, timersLesson, optionalChaining, classesLesson, interviewQuestionsIntermediate, canvas, audioVideo]
+    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, domBasics, domManipulation, events, formsLesson, timersLesson, optionalChaining, classesLesson, interviewQuestionsIntermediate, canvas, audioVideo, mapSetWeak, es6Features]
   },
   advanced: {
     label: "Murakkab",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, symbolsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, interviewQuestionsAdvanced]
+    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, symbolsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced]
   },
   algorithms: {
     label: "Algoritmlar",
