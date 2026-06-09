@@ -50,6 +50,7 @@ import { audioVideo } from "./lessons/intermediate/audioVideo";
 import { mapSetWeak } from "./lessons/intermediate/mapSetWeak";
 import { es6Features } from "./lessons/intermediate/es6Features";
 import { higherOrderFunctions } from "./lessons/intermediate/higherOrderFunctions";
+import { intlApi } from "./lessons/intermediate/intlApi";
 
 import { callbacksLesson } from "./lessons/advanced/callbacks";
 import { promises } from "./lessons/advanced/promises";
@@ -82,6 +83,12 @@ import { webSockets } from "./lessons/advanced/webSockets";
 import { serverSentEvents } from "./lessons/advanced/serverSentEvents";
 import { webWorkers } from "./lessons/advanced/webWorkers";
 import { serviceWorkersPwa } from "./lessons/advanced/serviceWorkersPwa";
+import { webComponents } from "./lessons/advanced/webComponents";
+import { advancedWebStorage } from "./lessons/advanced/advancedWebStorage";
+import { advancedWebApis } from "./lessons/advanced/advancedWebApis";
+import { binaryData } from "./lessons/advanced/binaryData";
+import { webAnimations } from "./lessons/advanced/webAnimations";
+import { historyRouting } from "./lessons/advanced/historyRouting";
 
 import { bigO } from "./lessons/algorithms/bigO";
 import { linkedLists } from "./lessons/algorithms/linkedLists";
@@ -143,13 +150,13 @@ export const curriculum = {
     label: "O'rta daraja",
     color: "#e5b84f",
     icon: "🟡",
-    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, domBasics, domManipulation, events, formsLesson, timersLesson, optionalChaining, classesLesson, interviewQuestionsIntermediate, canvas, audioVideo, mapSetWeak, es6Features]
+    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, domBasics, domManipulation, events, formsLesson, timersLesson, optionalChaining, classesLesson, interviewQuestionsIntermediate, canvas, audioVideo, mapSetWeak, es6Features, intlApi]
   },
   advanced: {
     label: "Murakkab",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, symbolsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced]
+    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, symbolsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced, webComponents, advancedWebStorage, advancedWebApis, binaryData, webAnimations, historyRouting]
   },
   algorithms: {
     label: "Algoritmlar",
