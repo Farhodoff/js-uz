@@ -72,8 +72,7 @@ React ilovalarida ma'lumotlar oqimi (data flow) tepadan pastga (unidirectional) 
       test: "if (typeof combineStores !== 'function') return 'combineStores topilmadi'; const a = { x: 1 }; const b = { y: 2 }; const res = combineStores(a, b); if(res.x !== 1 || res.y !== 2) return 'Birlashtirishda xato'; return null;"
     }
   ],
-  quizzes: [
-    {
+  quizzes: [{
       id: 1,
       question: "Nega array state-ga `state.push(item)` deb to'g'ridan-to'g'ri element qo'shish tavsiya etilmaydi?",
       options: [
@@ -144,6 +143,78 @@ React ilovalarida ma'lumotlar oqimi (data flow) tepadan pastga (unidirectional) 
       ],
       correctAnswer: 1,
       explanation: "RTK ichida Immer.js ishlaydi. U koddagi o'zgartirishlarni (state.user.age = 20) fonda avtomatik tarzda immutable shaklga aylantiradi."
+    },
+    {
+      id: 7,
+      question: "React-da 'State' tushunchasi o'zi nima?",
+      options: [
+        "Brauzerning offline kesh xotirasi",
+        "Komponentning o'zgaruvchan local xotirasi",
+        "CSS animatsiyalari to'plami",
+        "Serverdan kelgan statik HTML fayl"
+      ],
+      correctAnswer: 1,
+      explanation: "State - bu komponent ichida saqlanadigan va u o'zgarganda komponentni qayta chizadigan (re-render) ma'lumotdir."
+    },
+    {
+      id: 8,
+      question: "Zustand global state manager Context API-dan qanday qilib yaxshiroq ishlaydi?",
+      options: [
+        "U brauzerda ishlamaydi",
+        "Selector obunalari orqali faqatgina o'zgargan state qiymatini olgan komponentlarni render qiladi",
+        "U Virtual DOM-ni chetlab o'tadi",
+        "U CSS o'zgaruvchilari orqali ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Zustand selectorlar bilan komponentlarni bog'laydi. Context-dan farqli o'laroq, keraksiz komponentlar re-render bo'lmaydi."
+    },
+    {
+      id: 9,
+      question: "Redux Middleware-ning asosiy vazifasi nima?",
+      options: [
+        "Komponentlarni bezash",
+        "Action-lar reducer-ga yetib borguncha ularni ushlab, asinxron API yoki log yozish ishlarini bajarish",
+        "HTML teglari yaratish",
+        "Sayt tezligini o'lchash"
+      ],
+      correctAnswer: 1,
+      explanation: "Middleware (masalan Thunk) Redux oqimini kengaytirib, asinxron harakatlarni boshqarishga yordam beradi."
+    },
+    {
+      id: 10,
+      question: "Jotai/Recoil atomic state manager-larning eng muhim xususiyati nima?",
+      options: [
+        "Hamma state-ni bitta katta obyektda saqlashi",
+        "Global state-ni komponentlar to'g'ridan-to'g'ri obuna bo'la oladigan mustaqil 'atom'larga bo'lib tashlashi",
+        "Faqat server logikasini yozishi",
+        "CSS-ni avtomatik generatsiya qilishi"
+      ],
+      correctAnswer: 1,
+      explanation: "Atomic yondashuvda global state atomlarga bo'linadi va faqat o'sha atom o'zgarganda unga bog'langan komponent re-render bo'ladi."
+    },
+    {
+      id: 11,
+      question: "Nega form inputlaridagi tezkor o'zgaruvchan state-larni Zustand/Redux-ga yozish tavsiya etilmaydi?",
+      options: [
+        "Chunki global store string-larni tushunmaydi",
+        "Har bir harf yozilganda global store yangilanib, butun sahifa komponentlarini keraksiz qayta render qilmasligi uchun",
+        "Inputlar faqat local state bilan ishlay olgani uchun",
+        "Bu xavfsizlikka zarar keltirgani uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "Input holatlari local bo'lgani afzal. Bo'lmasa, har safar harf kiritilganda global o'zgarish sodir bo'ladi va butun ilova sekinlashadi."
+    },
+    {
+      id: 12,
+      question: "State Management-dagi 'Immutable State' atamasi nimani anglatadi?",
+      options: [
+        "Hech qachon o'zgartirib bo'lmaydigan state",
+        "State obyektini to'g'ridan-to'g'ri o'zgartirmasdan, har doim yangi nusxa (copy) yaratish orqali yangilash yondashuvi",
+        "Serverda saqlanadigan ma'lumotlar",
+        "Faqat CSS o'zgaruvchilari"
+      ],
+      correctAnswer: 1,
+      explanation: "Immutable yondashuvda eski obyekt o'zgartirilmaydi, balki spread operator yordamida uning nusxasi olinib yangilanadi."
     }
   ]
 };

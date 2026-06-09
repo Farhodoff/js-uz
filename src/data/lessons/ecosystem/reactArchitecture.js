@@ -72,8 +72,7 @@ Buni **Lego o'yinchoq uyi** deb tasavvur qiling:
       test: "if (typeof assignRef !== 'function') return 'assignRef topilmadi'; const r = { current: null }; assignRef(r, 'div'); if(r.current !== 'div') return 'Ref bog\\'lanmadi'; return null;"
     }
   ],
-  quizzes: [
-    {
+  quizzes: [{
       id: 1,
       question: "Presentational (Dumb) komponentning asosiy vazifasi nima?",
       options: [
@@ -144,6 +143,78 @@ Buni **Lego o'yinchoq uyi** deb tasavvur qiling:
       ],
       correctAnswer: 1,
       explanation: "Aylanma bog'liqlik importlar sikliga sabab bo'lib, runtime-da xatolik yuzaga keltirishi mumkin."
+    },
+    {
+      id: 7,
+      question: "Barrel export (index.js orqali eksport qilish) nima?",
+      options: [
+        "Barcha importlarni o'chirib tashlash",
+        "Papkadagi barcha komponentlarni bitta index.js fayl orqali tashqi foydalanish uchun eksport qilish",
+        "Stil fayllarini birlashtirish",
+        "Faqat server loglarini yozish"
+      ],
+      correctAnswer: 1,
+      explanation: "Barrel export import yo'llarini qisqartirib, bitta papkadan hamma kerakli narsani olishga yordam beradi."
+    },
+    {
+      id: 8,
+      question: "Presentational (Dumb) komponentlarning eng katta afzalligi nimada?",
+      options: [
+        "Faqat bitta tugma chiza olishi",
+        "Yuqori darajadagi qayta ishlatiluvchanlik (reusability) va testlashning osonligi",
+        "API so'rovlarini avtomatik bajarishi",
+        "State-ni o'zgartirishi"
+      ],
+      correctAnswer: 1,
+      explanation: "Dumb komponentlar tashqi state yoki API-ga bog'liq bo'lmagani uchun ularni loyihaning istalgan joyida ishlatish juda oson."
+    },
+    {
+      id: 9,
+      question: "Feature-based papkalar tuzilishida umumiy komponentlar (masalan, Button, Input) qayerda saqlanadi?",
+      options: [
+        "src/features/auth/components papkasida",
+        "src/components (shared components) papkasida",
+        "node_modules ichida",
+        "src/pages papkasida"
+      ],
+      correctAnswer: 1,
+      explanation: "Loyiha bo'ylab ko'p ishlatiladigan shared UI g'ishtchalari har doim global src/components papkasida saqlanadi."
+    },
+    {
+      id: 10,
+      question: "Komponentlar dizaynidagi 'Separation of Concerns' nima degani?",
+      options: [
+        "HTML va CSS-ni alohida yozish",
+        "UI renderini (ko'rinishini) biznes logikadan (hisob-kitob, api) ajratish",
+        "Database jadvallarini bo'lish",
+        "Rasmlarni alohida serverda saqlash"
+      ],
+      correctAnswer: 1,
+      explanation: "Bu prinsip kodni toza va tushunarli saqlash uchun visual UI bilan ma'lumotlar logikasini alohida yozishni anglatadi."
+    },
+    {
+      id: 11,
+      question: "Presentational komponentdan logikani butunlay ajratish uchun React-da qaysi hook turi qo'llaniladi?",
+      options: [
+        "useId",
+        "Custom Hooks (maxsus hooklar)",
+        "useInsertionEffect",
+        "useDeferredValue"
+      ],
+      correctAnswer: 1,
+      explanation: "Custom hooklar logikani alohida faylda saqlab, UI komponentni faqat vizual render bilan band qilishga imkon beradi."
+    },
+    {
+      id: 12,
+      question: "Smart komponent pattern-i UI-da qaysi xavfli xolatning oldini oladi?",
+      options: [
+        "CSS yozishni qiyinlashishini",
+        "API so'rovlari va UI shablonlarini bitta joyda aralashib ketishini (spagetti kod)",
+        "JavaScript kodining kamayishini",
+        "Faqat class component ishlashini"
+      ],
+      correctAnswer: 1,
+      explanation: "Smart komponent pattern-i logika va vizual qismni ajratish orqali chalkash loyihalar yuzaga kelishini oldini oladi."
     }
   ]
 };

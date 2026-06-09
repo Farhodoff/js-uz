@@ -73,8 +73,7 @@ Siz navbatning boshiga \`Sami\`ni qo'shmoqchisiz: \`[Sami, Ali, Vali, G'ani]\`.
       test: "if (typeof countChildren !== 'function') return 'countChildren topilmadi'; if (countChildren(null) !== 0) return 'Null uchun xato'; if (countChildren([1, 2]) !== 2) return 'Massiv uchun xato'; if (countChildren('hi') !== 1) return 'Yagona bola uchun xato'; return null;"
     }
   ],
-  quizzes: [
-    {
+  quizzes: [{
       id: 1,
       question: "Nega `key={Math.random()}` yozish juda yomon amaliyot hisoblanadi?",
       options: [
@@ -145,6 +144,78 @@ Siz navbatning boshiga \`Sami\`ni qo'shmoqchisiz: \`[Sami, Ali, Vali, G'ani]\`.
       ],
       correctAnswer: 1,
       explanation: "Komponentning kaliti o'zgarganda React eski elementni butunlay o'chirib yuborib, yangisini yaratgani uchun state ham toza noldan boshlanadi."
+    },
+    {
+      id: 7,
+      question: "Ro'yxat renderingida unikal 'key' prop-ni yozmaslik nima keltirib chiqaradi?",
+      options: [
+        "Sayt umuman ochilmay qoladi",
+        "React standart indekslardan (index) foydalanadi, bu esa elementlar o'zgarganda UI xatoliklarga va sekinlashuvga olib keladi",
+        "Faqat CSS-ga xalaqit beradi",
+        "Dizayn buziladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Key bo'lmasa, React indeksni oladi. Agar elementlar o'chsa yoki surilsa, React ularni chalkashtirib qayta render qiladi."
+    },
+    {
+      id: 8,
+      question: "React-da komponentga berilgan 'key' o'zgarganda DOM elementiga nima bo'ladi?",
+      options: [
+        "U o'sha joyida matni o'zgaradi",
+        "Eski element butunlay o'chib (unmount), noldan yangi DOM elementi (mount) yaratiladi",
+        "Stili o'zgaradi",
+        "LocalStorage-ga saqlanadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Key o'zgarishi React-ga bu butunlay boshqa komponent ekanligini bildiradi, eski komponent unmount bo'lib, yangi mount qilinadi."
+    },
+    {
+      id: 9,
+      question: "Nega ro'yxat tartibi o'zgaruvchan bo'lsa, `key={index + '-' + item.id}` yozish yomon amaliyot?",
+      options: [
+        "Chunki u juda uzun yoziladi",
+        "Indeks baribir surilgani sababli, React keraksiz DOM yangilashlarini amalga oshiradi",
+        "String-ni birlashtirish mumkin emas",
+        "Faqat sonli kalitlar ruxsat etilgan"
+      ],
+      correctAnswer: 1,
+      explanation: "Indeks aralashsa, tartib o'zgarganda kalitlar ham o'zgarib ketadi. Bu Virtual DOM-ga kalit qo'ymagan kabi zarar beradi."
+    },
+    {
+      id: 10,
+      question: "`React.Children.map` yordamchi metodi nima uchun foydali?",
+      options: [
+        "Ma'lumotlar bazasini xaritalash uchun",
+        "Children props-i massiv, yagona element yoki null bo'lganda ham xatolarsiz aylanib chiqish uchun",
+        "Faqat CSS-ni tekshirish uchun",
+        "API chaqiruvlari uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "React-da children har xil turda kelishi mumkin. Bu metod ularni xavfsiz tsiklda aylanish imkonini beradi."
+    },
+    {
+      id: 11,
+      question: "Virtual DOM reconciliation jarayonida 'key' qanday ishlaydi?",
+      options: [
+        "U faqat dizayn beradi",
+        "U yangi va eski Virtual DOM daraxtlari o'rtasidagi elementlarni bog'lovchi unikal ko'prik (identifikator) vazifasini bajaradi",
+        "Tugmalarni ishlatish uchun kerak",
+        "API javobini keshlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Reconciliation davrida React aynan o'sha key-li element o'zgarganmi yoki yo'qligini tekshiradi."
+    },
+    {
+      id: 12,
+      question: "1000 ta elementdan iborat ro'yxatda bitta satr o'zgarganda qolgan 999 tasi render bo'lmasligi uchun nima qilish kerak?",
+      options: [
+        "Context API ishlatish",
+        "Ro'yxat satr komponentini `React.memo` bilan o'rab, unga unikal barqaror (stable) key berish",
+        "Massivni bo'shatish",
+        "Absolute positioning qo'llash"
+      ],
+      correctAnswer: 1,
+      explanation: "React.memo props o'zgarmagan qolgan 999 ta komponentning render bo'lishini to'xtatadi."
     }
   ]
 };

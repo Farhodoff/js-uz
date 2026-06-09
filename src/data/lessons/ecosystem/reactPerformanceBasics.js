@@ -75,8 +75,7 @@ Siz uyingizdagi stolning joyini o'zgartirmoqchisiz:
       test: "if (typeof isPureComponent !== 'function') return 'isPureComponent topilmadi'; const mockClass = { prototype: { isPureReactComponent: true } }; if(isPureComponent(mockClass) !== true) return 'PureComponent aniqlanmadi'; return null;"
     }
   ],
-  quizzes: [
-    {
+  quizzes: [{
       id: 1,
       question: "Virtual DOM haqida qaysi fikr to'g'ri?",
       options: [
@@ -147,6 +146,78 @@ Siz uyingizdagi stolning joyini o'zgartirmoqchisiz:
       ],
       correctAnswer: 0,
       explanation: "Batching yordamida bir nechta setState ketma-ket bajarilsa ham, React ularni bitta re-renderga jamlaydi va tezkorlikni oshiradi."
+    },
+    {
+      id: 7,
+      question: "React-da re-render bo'lishiga nimalar sabab bo'ladi?",
+      options: [
+        "Faqat sahifani yangilash",
+        "Komponent state-i, props-i o'zgarishi yoki uning parent komponenti qayta render bo'lishi",
+        "Brauzer oynasi o'lchami o'zgarishi",
+        "Faqat CSS fayl o'zgarishi"
+      ],
+      correctAnswer: 1,
+      explanation: "State, Props va Parent render bo'lishi React-da re-render jarayonini ishga tushiruvchi 3 ta asosiy trigger hisoblanadi."
+    },
+    {
+      id: 8,
+      question: "Virtual DOM diffing jarayonidagi 'Diffing' nima degani?",
+      options: [
+        "Kodni arxivlash",
+        "Yangi Virtual DOM daraxtini avvalgisi bilan solishtirib, farqlarni topish",
+        "Ma'lumotlarni bazaga yozish",
+        "Brauzer keshini tozalash"
+      ],
+      correctAnswer: 1,
+      explanation: "Diffing — yangi render natijasida hosil bo'lgan maketni eskisiga solishtirish va faqat farqlarni ajratib olish bosqichidir."
+    },
+    {
+      id: 9,
+      question: "React rendering jarayonidagi 'Commit Phase' nima ish qiladi?",
+      options: [
+        "Virtual DOM-dagi farqlarni hisoblaydi",
+        "Hisoblangan farqlarni (o'zgarishlarni) real DOM-ga yozib ekranda aks ettiradi",
+        "Git commit-larni yuklaydi",
+        "API-ga ma'lumot jo'natadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Commit Phase - render hisob-kitoblaridan keyin haqiqiy DOM elementlarini yangilaydigan yakuniy va sinxron bosqichdir."
+    },
+    {
+      id: 10,
+      question: "React-dagi 'Render Phase' jarayoni sinxronmi yoki asinxronmi?",
+      options: [
+        "Har doim sinxron bo'ladi",
+        "React Fiber yordamida asinxron bajarilishi va to'xtatib turilishi mumkin",
+        "Faqat serverda bajariladi",
+        "Hech qachon ishga tushmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Render phase xotirada Virtual DOM chizish bo'lgani sababli asinxron ishlashi va boshqa og'irroq ishlarga yo'l berishi (Fiber tufayli) mumkin."
+    },
+    {
+      id: 11,
+      question: "React diffing jarayonida ikki element turlari har xil bo'lsa (masalan div -> span) nima qiladi?",
+      options: [
+        "Faqat klasslarini o'zgartiradi",
+        "Eski komponentni va uning barcha bolalarini butunlay o'chirib, noldan yangisini quradi",
+        "Ular bir xil deb hisoblaydi",
+        "Faqat matnni yangilaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar element turi o'zgarsa, React reconciliation qoidasiga ko'ra eskisini o'chirib yuboradi (unmount) va yangi turni joylaydi."
+    },
+    {
+      id: 12,
+      question: "React 'StrictMode' ishlab chiqish (development) jarayonida nima uchun kerak?",
+      options: [
+        "Foydalanuvchi tugma bosishini cheklash uchun",
+        "Potensial xatolar va nojo'ya ta'sirlarni (side-effects) topish uchun komponentlarni ataylab 2 marta render qilish uchun",
+        "Bundle hajmini kamaytirish uchun",
+        "Faqat CSS-ni tekshirish uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "StrictMode koddagi eski metodlar va re-renderlar davomida xavfli bo'lgan side-effectlarni topish maqsadida komponentni ikki marta chaqiradi."
     }
   ]
 };

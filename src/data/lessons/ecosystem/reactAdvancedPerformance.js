@@ -74,8 +74,7 @@ Siz mashinada ketyapsiz va dvigatelda muammo borligini sezyapsiz:
       test: "if (typeof paginateList !== 'function') return 'paginateList topilmadi'; const list = [1, 2, 3, 4, 5]; const res = paginateList(list, 2, 2); if(res.length !== 2 || res[0] !== 3) return 'Pagination slice noto\\'g\\'ri'; return null;"
     }
   ],
-  quizzes: [
-    {
+  quizzes: [{
       id: 1,
       question: "Debounce va Throttle o'rtasidagi asosiy farq nima?",
       options: [
@@ -146,6 +145,78 @@ Siz mashinada ketyapsiz va dvigatelda muammo borligini sezyapsiz:
       ],
       correctAnswer: 1,
       explanation: "Ranked chart eng og'ir va ko'p vaqt olgan komponentlarni birinchi bo'lib vizual ko'rsatib, optimallash kerak bo'lgan joyni aniqlaydi."
+    },
+    {
+      id: 7,
+      question: "Profiler tab-idagi 'Flame Chart' nima vazifani bajaradi?",
+      options: [
+        "Xatoliklarni qizil rangda ko'rsatish",
+        "Komponentlar daraxtining ierarxiyasini va har bir komponent renderiga ketgan aniq vaqtni vizual grafikda ko'rsatish",
+        "Xotira hajmini ko'rsatish",
+        "CSS animatsiya grafigi"
+      ],
+      correctAnswer: 1,
+      explanation: "Flame chart komponentlarning joylashuv tartibida ularning render vaqtini ranglar bilan (og'ir renderlar sariq/olovrang) ko'rsatadi."
+    },
+    {
+      id: 8,
+      question: "`useDeferredValue` hook-ining asosiy vazifasi nima?",
+      options: [
+        "Qiymatlarni butunlay o'chirish",
+        "Muhimroq o'zgarishlar (masalan input yozilishi) yakunlanguniga qadar og'ir state qiymatini yangilashni kechiktirish",
+        "API chaqiruvini tezlashtirish",
+        "Cookie-da qiymat saqlash"
+      ],
+      correctAnswer: 1,
+      explanation: "useDeferredValue state o'zgarishini pastroq priorityga surib, foydalanuvchi kiritayotgan yozuvlarning silliq yozilishini ta'minlaydi."
+    },
+    {
+      id: 9,
+      question: "Foydalanuvchi sahifani scroll qilganda har bir pikselda state-ni yangilash performance-ga qanday ta'sir qiladi?",
+      options: [
+        "Scroll harakatini silliq qiladi",
+        "Soniyasiga yuzlab re-render chaqirib, sahifaning qattiq qotishiga (lag) olib keladi",
+        "Hech qanday ta'sir qilmaydi",
+        "Saytni tezlashtiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "State-ni juda tez o'zgartirish brauzerga og'ir yuk bo'ladi. Bunday hollarda harakatni throttle yordamida cheklash shart."
+    },
+    {
+      id: 10,
+      question: "Inputga yozib bo'lgach mahalliy ro'yxatni qidirib filterlaydigan tizimda qaysi texnika eng ma'qul?",
+      options: [
+        "Throttle",
+        "Debounce",
+        "Code splitting",
+        "SSG"
+      ],
+      correctAnswer: 1,
+      explanation: "Debounce foydalanuvchi yozishdan to'xtagachgina hisob-kitob qilish yoki qidiruvni boshlash uchun eng mukammal yechimdir."
+    },
+    {
+      id: 11,
+      question: "Nima uchun useEffect ichidagi taymerlarni (timeout) cleanup funksiyasida tozalash kerak?",
+      options: [
+        "Chunki JS shuni majburlaydi",
+        "Tozalanmagan timeoutlar komponent o'chgandan keyin ham orqa fonda ishlab, xotira sizib chiqishiga (memory leak) sabab bo'ladi",
+        "Dastur darhol to'xtab qolmasligi uchun",
+        "Faqat CSS-ga ta'sir qiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Cleanup funksiyasi komponent unmount bo'lganda ishlamay qolgan taymerlarni o'chirib, xotirani bo'shatadi."
+    },
+    {
+      id: 12,
+      question: "Scroll paytida 'Virtualizatsiya' nima ishni amalga oshiradi?",
+      options: [
+        "Sahifani to'liq yuklaydi",
+        "Ekranga ko'rinmay qolgan DOM elementlarini o'chirib, yangi ko'rinayotgan elementlarni dinamik ravishda chizib boradi",
+        "CSS faylini yangilaydi",
+        "Faqat backend bazasini tekshiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Virtualizatsiya scroll qilinganda faqat ko'rinib turgan satrlarni render qilib, qolganlarini DOM-dan o'chirib turadi."
     }
   ]
 };

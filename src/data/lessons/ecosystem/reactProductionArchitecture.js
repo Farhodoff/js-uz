@@ -75,8 +75,7 @@ Professional restoran oshxonasini tasavvur qiling:
       test: "if (typeof parseApiResponse !== 'function') return 'parseApiResponse topilmadi'; if(parseApiResponse({ data: 'ok' }) !== 'ok') return 'Data qaytishi xato'; try { parseApiResponse({ error: 'fail' }); } catch(e) { if(e.message === 'fail') return null; } return 'Error otilmadi';"
     }
   ],
-  quizzes: [
-    {
+  quizzes: [{
       id: 1,
       question: "Separation of Concerns (Vazifalar ajratilishi) prinsipi nima?",
       options: [
@@ -147,6 +146,78 @@ Professional restoran oshxonasini tasavvur qiling:
       ],
       correctAnswer: 1,
       explanation: "Agar barrel fayl ichidagi barcha komponentlar bir vaqtda yuklansa, bu tree shaking-ni buzib bundle hajmini oshirishi mumkin."
+    },
+    {
+      id: 7,
+      question: "Production arxitekturasida 'Service Layer' modelining eng muhim vazifasi nima?",
+      options: [
+        "Dizayn stillarini boshqarish",
+        "Tarmoq so'rovlarini (Axios/fetch kabi) komponentlar va hooklardan to'liq ajratib, markaziy joyga yig'ish",
+        "Database migratsiyalarini qilish",
+        "JSX yozish"
+      ],
+      correctAnswer: 1,
+      explanation: "Service Layer barcha API so'rovlarni alohida modullarda saqlashga imkon beradi, bu esa loyihani toza va oson testlanadigan qiladi."
+    },
+    {
+      id: 8,
+      question: "React-da logikani komponentga eng yaqin joyda saqlash (Co-location) nimani anglatadi?",
+      options: [
+        "Hamma kodni App.js faylida saqlash",
+        "State va biznes logikani aynan o'sha ma'lumotdan foydalanadigan komponentga imkon qadar yaqin joyda joylashtirish",
+        "Kodlarni har xil serverlarga yozish",
+        "Bitta faylda faqat CSS saqlash"
+      ],
+      correctAnswer: 1,
+      explanation: "Co-location keraksiz props-drilling va global statelar yuzaga kelishini oldini oladi, kodni oson o'qiladigan qiladi."
+    },
+    {
+      id: 9,
+      question: "Custom Hook-lar yozilishi React ilovasini testlashni qanday osonlashtiradi?",
+      options: [
+        "Ular testlarni tezlashtiradi",
+        "Hech qanday UI komponentni chizmasdan (render qilmasdan), biznes logikani alohida (isolation) testlash imkonini beradi",
+        "Linter xatolarini o'chiradi",
+        "Database-ni test qiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Custom hook faqat funksiya bo'lgani sababli, `@testing-library/react-hooks` orqali uning holatlari UI-siz sinovdan o'tkaziladi."
+    },
+    {
+      id: 10,
+      question: "Feature-based papkalar tuzilishidagi `index.js` (barrel) ning vazifasi nima?",
+      options: [
+        "Node serverini ishga tushirish",
+        "Feature modulining 'Public API' si vazifasini bajarib, tashqariga faqat ruxsat etilgan komponent va hooklarni eksport qilish",
+        "CSS-ni sozlash",
+        "Kodni tozalash"
+      ],
+      correctAnswer: 1,
+      explanation: "Index.js feature modulining tashqi dunyo bilan bog'lanadigan yagona eshigi (interface) bo'lib xizmat qiladi."
+    },
+    {
+      id: 11,
+      question: "React-da DRY (Don't Repeat Yourself) prinsipining ma'nosi nima?",
+      options: [
+        "Kodni kommentlarsiz yozish",
+        "Takrorlanuvchi UI qismlari, biznes logikalari yoki API chaqiruvlarini alohida komponent, hook va helper funksiyalarga chiqarish",
+        "Har soatda build qilish",
+        "Fayllarni quruq saqlash"
+      ],
+      correctAnswer: 1,
+      explanation: "Takrorlanuvchi logikani bitta umumiy funksiya yoki hook ichiga yozib, hamma joyda o'shani import qilib ishlatish DRY hisoblanadi."
+    },
+    {
+      id: 12,
+      question: "Ma'lumot olish uchun custom hook ishlatish qanday qilib 'Separation of Concerns' ga mos keladi?",
+      options: [
+        "Kodni tezroq compile qiladi",
+        "Komponentning JSX qismini toza saqlab, loading, error va fetch holatlarini to'liq komponentdan yashiradi",
+        "Bazaga to'g'ridan-to'g'ri bog'laydi",
+        "Faqat CSS-ga stil beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "UI komponent faqat ma'lumotni render qilish bilan shug'ullanadi, hook esa orqa fondagi so'rovlar logikasiga javob beradi."
     }
   ]
 };

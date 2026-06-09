@@ -72,8 +72,7 @@ Siz matematikadan **135 x 24** misolining javobini hisobladingiz. Natija: **3240
       test: "if (typeof checkBundleSize !== 'function') return 'checkBundleSize topilmadi'; if(checkBundleSize(600, 500) !== true || checkBundleSize(400, 500) !== false) return 'Limit tekshirish xato'; return null;"
     }
   ],
-  quizzes: [
-    {
+  quizzes: [{
       id: 1,
       question: "`React.memo` qachon ishlatiladi?",
       options: [
@@ -144,6 +143,78 @@ Siz matematikadan **135 x 24** misolining javobini hisobladingiz. Natija: **3240
       ],
       correctAnswer: 1,
       explanation: "Callback-da dependency yozilmasa, u o'zgaruvchining eski holatdagi (stale) holatini keshlab qotirib qo'yadi."
+    },
+    {
+      id: 7,
+      question: "`React.memo` default holatda props-larni qanday solishtiradi?",
+      options: [
+        "Chuqur (deep comparison) solishtiradi",
+        "Yuzaki (shallow comparison) solishtiradi",
+        "Solishtirmaydi",
+        "Faqat string formatga tekshiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "React.memo default holatda props obyektlarining birinchi darajali kalitlarini yuzaki (`Object.is` orqali) tekshiradi."
+    },
+    {
+      id: 8,
+      question: "`useMemo` va `useCallback` hooklarining farqi nimada?",
+      options: [
+        "useMemo klasslarda, useCallback funksiyalarda ishlaydi",
+        "useMemo hisoblangan qiymatni (value), useCallback esa funksiya havolasini (reference) keshlaydi",
+        "Ikkalasi mutlaqo bir xil narsadir",
+        "Faqat useCallback serverda ishlay oladi"
+      ],
+      correctAnswer: 1,
+      explanation: "useMemo qiymatni keshlab saqlaydi. useCallback esa qayta yaratilishini oldini olish uchun funksiyani o'zini keshlaydi."
+    },
+    {
+      id: 9,
+      question: "`useCallback` hookini ishlatish qachon haqiqiy foyda keltiradi?",
+      options: [
+        "Hamma yaratilgan funksiyalarga yozganda",
+        "Funksiyani props orqali `React.memo` bilan optimallashtirilgan bola komponentga yuborganda",
+        "Faqat CSS stillarini o'zgartirganda",
+        "Hech qachon foyda keltirmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "useCallback-ning maqsadi funksiya reference-ini saqlashdir, bu esa React.memo bolaning keraksiz render bo'lishidan saqlaydi."
+    },
+    {
+      id: 10,
+      question: "React-dagi 'dynamic import()' nima?",
+      options: [
+        "Require yordamida yuklash",
+        "Kodni asinxron va faqat kerak bo'lganda yuklash (Code Splitting asoschisi)",
+        "Faqat rasmlarni yuklash",
+        "API-ga tezkor so'rov yuborish"
+      ],
+      correctAnswer: 1,
+      explanation: "Dynamic import `import('./file')` orqali JS faylni alohida chunk qilib yig'adi va foydalanuvchi faqat kerak bo'lganda yuklab oladi."
+    },
+    {
+      id: 11,
+      question: "Code splitting (kodni bo'lish) ning eng asosiy performance foydasi nima?",
+      options: [
+        "Serverni tezroq yuklaydi",
+        "Brauzer birinchi yuklab oladigan JS bundle hajmini kamaytiradi (sayt tez ochiladi)",
+        "Database so'rovlarini birlashtiradi",
+        "Xavfsizlikni kuchaytiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Code splitting barcha sahifalarni bitta JS faylga tiqmasdan, bo'laklab yuborgani uchun sayt tez yuklanadi."
+    },
+    {
+      id: 12,
+      question: "Agar komponent `React.memo` qilingan bo'lsa-yu, unga har renderda parent ichida yangi obyekt props qilib uzatilsa nima bo'ladi?",
+      options: [
+        "React xato berib to'xtaydi",
+        "Obyekt reference-i o'zgargani uchun, React.memo baribir komponentni qayta render qiladi",
+        "Render bo'lmaydi",
+        "State o'chib ketadi"
+      ],
+      correctAnswer: 1,
+      explanation: "React.memo yuzaki tekshiradi. Obyekt har safar yangi manzilga ega bo'lgani uchun, u o'zgardi deb hisoblanadi va render bo'laveradi."
     }
   ]
 };
