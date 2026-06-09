@@ -95,6 +95,12 @@ import { cachingScalability } from "./lessons/system-design/cachingScalability";
 import { renderingArchitectures } from "./lessons/system-design/renderingArchitectures";
 
 import { reactArchitecture } from "./lessons/ecosystem/reactArchitecture";
+import { reactStateManagement } from "./lessons/ecosystem/reactStateManagement";
+import { reactPerformanceBasics } from "./lessons/ecosystem/reactPerformanceBasics";
+import { reactPerformanceOptimization } from "./lessons/ecosystem/reactPerformanceOptimization";
+import { reactRenderingOptimization } from "./lessons/ecosystem/reactRenderingOptimization";
+import { reactAdvancedPerformance } from "./lessons/ecosystem/reactAdvancedPerformance";
+import { reactProductionArchitecture } from "./lessons/ecosystem/reactProductionArchitecture";
 import { nodeArchitecture } from "./lessons/ecosystem/nodeArchitecture";
 
 import { starMethod } from "./lessons/soft-skills/starMethod";
@@ -154,7 +160,16 @@ export const curriculum = {
     label: "Ekotizim (React & Node.js)",
     color: "#6ac98e",
     icon: "⚙️",
-    lessons: [reactArchitecture, nodeArchitecture]
+    lessons: [
+      reactArchitecture,
+      reactStateManagement,
+      reactPerformanceBasics,
+      reactPerformanceOptimization,
+      reactRenderingOptimization,
+      reactAdvancedPerformance,
+      reactProductionArchitecture,
+      nodeArchitecture
+    ]
   },
   typescript: {
     label: "TypeScript",
