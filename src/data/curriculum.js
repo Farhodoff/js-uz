@@ -118,12 +118,19 @@ import { typeNarrowing } from "./lessons/typescript/typeNarrowing";
 import { todoList } from "./lessons/projects/todoList";
 import { weatherApp } from "./lessons/projects/weatherApp";
 
+import { sqlIntro } from "./lessons/sql/sqlIntro";
+import { sqlSyntax } from "./lessons/sql/sqlSyntax";
 import { sqlBasics } from "./lessons/sql/sqlBasics";
 import { sqlFiltering } from "./lessons/sql/sqlFiltering";
 import { sqlFunctions } from "./lessons/sql/sqlFunctions";
 import { sqlJoins } from "./lessons/sql/sqlJoins";
-import { sqlModifications } from "./lessons/sql/sqlModifications";
 import { sqlSubqueries } from "./lessons/sql/sqlSubqueries";
+import { sqlViews } from "./lessons/sql/sqlViews";
+import { sqlIndexes } from "./lessons/sql/sqlIndexes";
+import { sqlTransactions } from "./lessons/sql/sqlTransactions";
+import { sqlStoredProcedures } from "./lessons/sql/sqlStoredProcedures";
+import { sqlQueryOptimization } from "./lessons/sql/sqlQueryOptimization";
+import { sqlModifications } from "./lessons/sql/sqlModifications";
 
 export const curriculum = {
   beginner: {
@@ -193,7 +200,21 @@ export const curriculum = {
     label: "SQL va Bazalar",
     color: "#e67e22",
     icon: "🗄️",
-    lessons: [sqlBasics, sqlFiltering, sqlFunctions, sqlJoins, sqlModifications, sqlSubqueries]
+    lessons: [
+      sqlIntro,
+      sqlSyntax,
+      sqlBasics,
+      sqlFiltering,
+      sqlFunctions,
+      sqlJoins,
+      sqlSubqueries,
+      sqlViews,
+      sqlIndexes,
+      sqlTransactions,
+      sqlStoredProcedures,
+      sqlQueryOptimization,
+      sqlModifications
+    ]
   },
   challenges: {
     label: "Challenges",
