@@ -39,7 +39,7 @@ import { domManipulation } from "./lessons/intermediate/domManipulation";
 import { events } from "./lessons/intermediate/events";
 import { forms } from "./lessons/intermediate/forms";
 import { higherOrderArrays } from "./lessons/intermediate/higherOrderArrays";
-import { classesLesson } from "./lessons/intermediate/classes";
+import { classes } from "./lessons/intermediate/classes";
 import { optionalChaining } from "./lessons/intermediate/optionalChaining";
 import { interviewQuestionsIntermediate } from "./lessons/intermediate/interviewQuestions";
 import { thisKeyword } from "./lessons/intermediate/thisKeyword";
@@ -150,7 +150,7 @@ export const curriculum = {
     label: "O'rta daraja",
     color: "#e5b84f",
     icon: "🟡",
-    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, dom, domManipulation, events, forms, timers, optionalChaining, classesLesson, interviewQuestionsIntermediate, canvas, audioVideo, mapSetWeak, es6Features, intlApi]
+    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, dom, domManipulation, events, forms, timers, optionalChaining, classes, interviewQuestionsIntermediate, canvas, audioVideo, mapSetWeak, es6Features, intlApi]
   },
   advanced: {
     label: "Murakkab",
