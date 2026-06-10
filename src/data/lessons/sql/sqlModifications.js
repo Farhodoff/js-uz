@@ -1,314 +1,383 @@
 export const sqlModifications = {
   id: "sqlModifications",
-  title: "Ma'lumotlarni O'zgartirish (INSERT, UPDATE, DELETE)",
+  title: "Ma'lumotlarni o'zgartirish (INSERT, UPDATE, DELETE)",
   language: "sql",
-  theory: `## 1. NEGA kerak?
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+
+### Ma'lumotlarni o'zgartirish nima?
 Ma'lumotlar bazasi faqatgina o'qish (SELECT) uchun ishlatilmaydi. Ilovangizda yangi foydalanuvchi ro'yxatdan o'tganda, u o'z profil ma'lumotlarini o'zgartirganda yoki hisobini o'chirganda siz ma'lumotlar bazasini o'zgartirishingiz kerak. Buning uchun SQL-da **DML (Data Manipulation Language)** amallari: **INSERT** (qo'shish), **UPDATE** (yangilash) va **DELETE** (o'chirish) buyruqlari xizmat qiladi.
 
-## 2. SODDALIK (Analogiya)
-- **INSERT**: Daftarning yangi bo'sh varag'iga yangi foydalanuvchi ma'lumotlarini qator qilib yozib qo'yish.
-- **UPDATE**: Daftardagi yozilgan qatorning biror qiymatini (masalan, yashash joyini) o'chirgich bilan o'chirib, yangisini yozish.
-- **DELETE**: Daftardagi biror qatorning ustidan butunlay chiziq tortib (yoki o'chirib) tashlash.
+### Real hayotiy analogiya
+Daftarda yozuvlar bilan ishlashni tasavvur qiling:
+* **INSERT**: Daftarning yangi bo'sh varag'iga yangi foydalanuvchi ma'lumotlarini qator qilib yozib qo'yish.
+* **UPDATE**: Daftardagi yozilgan qatorning biror qiymatini (masalan, yashash joyini) o'chirgich bilan o'chirib, yangisini yozish.
+* **DELETE**: Daftardagi biror qatorning ustidan butunlay chiziq tortib (yoki o'chirib) tashlash.
 
-## 3. STRUKTURA
+---
 
-### INSERT INTO (Qo'shish)
-Yangi qator qo'shish uchun jadval nomi, ustunlar ro'yxati va ularga mos qiymatlar ko'rsatiladi:
-\`\`\`sql
-INSERT INTO jadval_nomi (ustun1, ustun2) 
-VALUES (qiymat1, qiymat2);
-\`\`\`
+## 2. 💻 Real SQL Kod Misollari
 
-### UPDATE (Yangilash)
-Mavjud qatorlarni o'zgartirish uchun ishlatiladi. **DIQQAT**: Qaysi qatorlarni yangilashni belgilash uchun doimo **WHERE** sharti kerak!
-\`\`\`sql
-UPDATE jadval_nomi 
-SET ustun1 = qiymat1, ustun2 = qiymat2
-WHERE shart;
-\`\`\`
+Ushbu bo'limda ma'lumotlarni qo'shish, yangilash va o'chirish bo'yicha real amaliy misollarni ko'rib chiqamiz.
 
-### DELETE (O'chirish)
-Qatorlarni butunlay o'chirish. **DIQQAT**: Qaysi qatorlarni o'chirishni belgilash uchun doimo **WHERE** shartidan foydalaniladi!
-\`\`\`sql
-DELETE FROM jadval_nomi 
-WHERE shart;
-\`\`\`
-
-## 4. AMALIYOT
-Mock jadvallarimiz bo'yicha ma'lumotlarni o'zgartirish namunalari:
-
-### Yangi foydalanuvchi qo'shish (INSERT)
+### 1. Basic Example (INSERT INTO)
+Yangi foydalanuvchi ma'lumotlarini jadvalga kiritish:
 \`\`\`sql
 INSERT INTO users (id, name, age, city, role) 
 VALUES (6, 'Jasur', 27, 'Farg''ona', 'User');
 \`\`\`
+* **Natija:** \`users\` jadvalida yangi qator paydo bo'ladi.
+* **Qachon ishlatiladi:** Ro'yxatdan o'tish jarayonida.
+* **Performance jihati:** Faqat kerakli ustunlarni belgilash va keraksiz indekslarni vaqtincha cheklash orqali yozish tezligini oshirish mumkin.
 
-### Foydalanuvchi ma'lumotlarini yangilash (UPDATE)
-Ali ismli foydalanuvchining shahrini 'Buxoro'ga o'zgartirish:
+### 2. Intermediate Example (UPDATE with WHERE)
+Sardor ismli foydalanuvchining yoshini yangilash:
 \`\`\`sql
 UPDATE users 
-SET city = 'Buxoro' 
-WHERE name = 'Ali';
+SET age = 23 
+WHERE name = 'Sardor';
 \`\`\`
+* **Natija:** Ismi 'Sardor' bo'lgan barcha foydalanuvchilarning yoshi 23 ga o'zgaradi.
+* **Qachon ishlatiladi:** Profil sozlamalarini o'zgartirishda.
+* **Performance jihati:** \`WHERE\` shartida indekslangan ustundan foydalanish (masalan, \`id\`) jadvalni to'liq skaner qilishdan (Full Table Scan) saqlaydi va tez ishlaydi.
 
-### Foydalanuvchini o'chirish (DELETE)
-ID si 5 bo'lgan foydalanuvchini o'chirish:
+### 3. Advanced Example (UPDATE with Subquery)
+Faqatgina buyurtmalarining umumiy summasi 500 dan oshgan foydalanuvchilarning rolini 'VIP' ga o'zgartirish:
+\`\`\`sql
+UPDATE users 
+SET role = 'VIP' 
+WHERE id IN (
+    SELECT user_id 
+    FROM orders 
+    GROUP BY user_id 
+    HAVING SUM(amount) > 500
+);
+\`\`\`
+* **Natija:** Baza subquery orqali kerakli foydalanuvchilarni aniqlaydi va faqat ularning rolini o'zgartiradi.
+* **Qachon ishlatiladi:** Foydalanuvchilar holatini ularning faolligi bo'yicha avtomatik yangilashda.
+* **Performance jihati:** Bu so'rov ichki agregatsiyaga bog'liq. Katta hajmlarda tranzaksiya qulflanishiga (row locking) olib kelmasligi uchun ehtiyotkorlik bilan ishlatilishi lozim.
+
+### 4. Production Example (DELETE and Foreign Key constraints)
+Roli 'Manager' bo'lgan foydalanuvchini o'chirish:
 \`\`\`sql
 DELETE FROM users 
-WHERE id = 5;
+WHERE role = 'Manager';
+\`\`\`
+* **Natija:** Roli menejer bo'lgan barcha foydalanuvchilar o'chiriladi.
+* **Qachon ishlatiladi:** Tizimdan keraksiz yoki faol bo'lmagan foydalanuvchilarni o'chirishda.
+* **Performance jihati:** Agar boshqa jadvallarda (masalan, \`orders\`) ushbu foydalanuvchiga bog'liq yozuvlar bo'lsa va \`ON DELETE CASCADE\` o'rnatilmagan bo'lsa, baza xatolik beradi va o'chirishga ruxsat bermaydi.
+
+### 5. Enterprise Example (Upsert - INSERT ... ON CONFLICT)
+PostgreSQL-da yangi foydalanuvchi ma'lumotlarini kiritish, agar email oldindan mavjud bo'lsa, shunchaki oxirgi kirish vaqtini yangilash (Upsert amaliyoti):
+\`\`\`sql
+INSERT INTO users (id, name, email, last_login) 
+VALUES (10, 'Bobur', 'bobur@example.com', CURRENT_TIMESTAMP)
+ON CONFLICT (email) 
+DO UPDATE SET last_login = EXCLUDED.last_login;
+\`\`\`
+* **Natija:** Email bazada bo'lmasa yangi qator qo'shiladi, agar bo'lsa xatolik yuz bermaydi va mavjud foydalanuvchining login vaqti yangilanadi.
+* **Qachon ishlatiladi:** Sinxronizatsiya jarayonlarida, login tizimida, API integratsiyalarida.
+* **Performance jihati:** \`ON CONFLICT\` ishlashi uchun mo'ljallangan ustunda albatta unikal indeks (Unique Index) yoki Primary Key bo'lishi shart.
+
+---
+
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
+
+### DML amallari qaysi muammoni hal qiladi?
+DML amallari ma'lumotlar bazasini statik (faqat o'qiladigan) holatdan dinamik (hayotiy) holatga o'tkazadi. Agar bu buyruqlar bo'lmaganda, foydalanuvchi faolligini saqlash, tovar qoldiqlarini yangilash yoki hisob-kitoblarni real vaqtda yangilab borish imkonsiz bo'lar edi.
+
+### Real Dunyoda Qo'llanilishi:
+* **E-commerce:** Xaridor mahsulot sotib olganda \`products\` jadvalidagi \`stock\` (ombor qoldig'i) miqdorini kamaytirish (\`UPDATE\`).
+* **Ijtimoiy Tarmoqlar:** Foydalanuvchi o'z postini o'chirib tashlaganida (\`DELETE\`).
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. UPDATE va DELETE amallarida WHERE shartini yozishni unutish
+#### Xato:
+\`\`\`sql
+-- XATO! Bazadagi barcha foydalanuvchilarning shahrini Toshkent qilib qo'yadi!
+UPDATE users SET city = 'Toshkent';
+\`\`\`
+#### Nima uchun noto'g'ri:
+\`WHERE\` sharti berilmasa, SQL bazadagi barcha qatorlarni yangilaydi yoki o'chiradi. Bu loyihalarda juda katta ma'lumot yo'qolishiga (data loss) olib keladi.
+#### To'g'ri usul:
+\`\`\`sql
+UPDATE users SET city = 'Toshkent' WHERE id = 3;
 \`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **UPDATE va DELETE amallarida WHERE shartini yozishni unutish**: Agar \`UPDATE users SET city = 'Toshkent'\` deb WHERE shartisiz yozsangiz, bazadagi **barcha** foydalanuvchilarning shahri Toshkent bo'lib qoladi! Agar \`DELETE FROM users\` deb yozsangiz, jadvaldagi barcha ma'lumotlar o'chib ketadi! Bu real loyihalarda juda katta halokatga (data loss) olib keladi.
-2. **Qiymatlar tartibini adashtirish**: INSERT so'rovida ustunlar tartibi bilan VALUES qismidagi qiymatlar tartibi va turlari mutlaqo mos kelishi shart.
+### 2. Qiymatlar tartibini adashtirish
+#### Xato:
+\`\`\`sql
+-- XATO! Ustunlar tartibi va values mos emas
+INSERT INTO users (name, age) VALUES (25, 'Ali');
+\`\`\`
+#### Nima uchun noto'g'ri:
+String turi kutilgan joyga raqam, yoki aksincha qiymat kiritilsa, baza ma'lumotlar turi mos kelmasligi (data type mismatch) sababli xato beradi.
+#### To'g'ri usul:
+\`\`\`sql
+INSERT INTO users (name, age) VALUES ('Ali', 25);
+\`\`\`
 
-## 6. SAVOLLAR VA JAVOBLAR
-**1. UPDATE so'rovida bir vaqtning o'zida bir nechta ustunni o'zgartirsa bo'ladimi?**
-Ha, ustunlarni vergul bilan ajratgan holda yozish orqali. Masalan: \`SET city = 'Toshkent', age = 30\`.
+---
 
-**2. \`DELETE\` va \`DROP TABLE\` farqi nima?**
-\`DELETE\` faqat jadval ichidagi qatorlarni o'chiradi (jadval strukturasi saqlanib qoladi). \`DROP TABLE\` esa butun jadvalni va uning strukturasini bazadan to'liq yo'q qiladi.
+## 5. 💬 12 ta Intervyu Savollari
 
-**3. O'chirilgan ma'lumotlarni qaytarish mumkinmi?**
-Oddiy SQL so'rovi bajarilgandan so'ng ma'lumotlar qaytmaydi. Tranzaksiyalar (Transactions) ishlatilganda, xato bo'lsa \`ROLLBACK\` qilish mumkin. Shuning uchun o'chirish amallarida ehtiyot bo'lish shart.
+### Junior (1–4)
+1. **Savol:** SQL-da ma'lumotlarni o'zgartirish uchun qaysi asosiy buyruqlar ishlatiladi?
+   * **Javob:** \`INSERT\` (qo'shish), \`UPDATE\` (yangilash) va \`DELETE\` (o'chirish).
+2. **Savol:** UPDATE so'rovida \`WHERE\` sharti yozilmasa nima bo'ladi?
+   * **Javob:** Jadvaldagi barcha qatorlarning qiymatlari yangilanib ketadi.
+3. **Savol:** \`DELETE\` va \`TRUNCATE\` farqi nimada?
+   * **Javob:** \`DELETE\` ma'lum shart bo'yicha qatorlarni o'chiradi va sekinroq ishlaydi. \`TRUNCATE\` esa butun jadval ma'lumotlarini tezda tozalaydi, lekin jadval strukturasini saqlab qoladi.
+4. **Savol:** String formatidagi qiymatlar SQL buyruqlarida qanday yoziladi?
+   * **Javob:** Yagona tirnoqlar \`'...'\` ichida yozilishi shart.
+
+### Middle (5–8)
+5. **Savol:** \`ON DELETE CASCADE\` nima vazifani bajaradi?
+   * **Javob:** Agar asosiy jadvaldagi qator o'chirilsa, unga bog'liq bo'lgan tashqi kalitli (Foreign Key) jadvallardagi barcha tegishli qatorlarni ham avtomatik o'chiradi.
+6. **Savol:** Bitta \`UPDATE\` so'rovida bir nechta ustunlarni qanday yangilash mumkin?
+   * **Javob:** \`SET\` kalit so'zidan keyin ustunlarni vergul bilan ajratgan holda: \`SET city = 'Toshkent', age = 30\`.
+7. **Savol:** \`INSERT INTO ... SELECT\` nima vazifani bajaradi?
+   * **Javob:** Bir jadvaldagi ma'lumotlarni tanlab (SELECT), ikkinchi jadvalga to'g'ridan-to'g'ri yozish (INSERT) imkonini beradi.
+8. **Savol:** Tranzaksiya ichida \`DELETE\` qilingan ma'lumotlarni qaytarish mumkinmi?
+   * **Javob:** Ha, agar tranzaksiya hali \`COMMIT\` qilinmagan bo'lsa, \`ROLLBACK\` buyrug'i bilan o'chirishni bekor qilish mumkin.
+
+### Senior (9–12)
+9. **Savol:** UPSERT nima va PostgreSQL-da u qanday amalga oshiriladi?
+   * **Javob:** UPSERT — bu kiritish va yangilash birlashmasi. \`INSERT ... ON CONFLICT (ustun) DO UPDATE SET ...\` sintaksisi orqali bajariladi.
+10. **Savol:** Katta hajmli jadvalda (masalan, 100 mln qator) \`DELETE\` so'rovini optimallashtirish qanday amalga oshiriladi?
+    * **Javob:** Barcha qatorlarni birdaniga o'chirish bazani va loglarni qulflab qo'yishi mumkin. Shuning uchun ma'lumotlar partiyalarga bo'lib (chunking) o'chiriladi yoki jadval qayta yaratiladi.
+11. **Savol:** \`UPDATE\` so'rovida \`RETURNING\` kalit so'zi nima uchun ishlatiladi?
+    * **Javob:** Yangilangan qatorlarning yangi qiymatlarini qaytarib olish uchun ishlatiladi (PostgreSQL va ba'zi boshqa bazalarda).
+12. **Savol:** Jadvalni butunlay o'chirish (\`DROP\`) bilan ma'lumotlarini tozalash (\`TRUNCATE\`) farqi nimada?
+    * **Javob:** \`DROP\` jadval tuzilishi va indekslarini ham o'chirib tashlaydi. \`TRUNCATE\` esa faqat ma'lumotlarni tozalaydi, jadval strukturasi qoladi.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Amaliy topshiriqlarni quyidagi mashqlar bo'limida bajarishingiz mumkin.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars oxirida o'rganilgan material bo'yicha interaktiv testlardan o'ting.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Elektron Tijorat Platformasida Buyurtma Rasmiylashtirish va Ombor Qoldig'i
+Mijoz savatchadagi mahsulotlarni sotib olganida, tizim quyidagi DML amallarini zanjir ko'rinishida bajarishi kerak:
+1. Yangi buyurtma yaratish (\`INSERT INTO orders\`).
+2. Har bir mahsulotning ombor qoldig'ini sotib olingan miqdorga kamaytirish (\`UPDATE products\`).
+
+Agar mahsulot omborida yetarli miqdor qolmagan bo'lsa yoki birinchi amal bajarilib, ikkinchisi to'xtab qolsa, ma'lumotlar butunligi buziladi. Buning oldini olish uchun ushbu amallar yagona tranzaksiya blokida bajariladi:
+\`\`\`sql
+BEGIN;
+
+-- 1. Yangi buyurtma kiritiladi
+INSERT INTO orders (id, user_id, product, amount, order_date) 
+VALUES (108, 2, 'Chair', 120.00, '2026-06-10');
+
+-- 2. Ombor qoldig'i kamaytiriladi
+UPDATE products 
+SET stock = stock - 1 
+WHERE name = 'Chair' AND stock >= 1;
+
+COMMIT;
+\`\`\`
+Agar \`stock >= 1\` sharti bajarilmasa, dastur tranzaksiyani bekor qiladi (\`ROLLBACK\`).
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+DML amallarini optimallashtirish qoidalari:
+1. **Indekslar ta'siri:** Har bir \`INSERT\`, \`UPDATE\`, \`DELETE\` amali jadvaldagi barcha indekslarni qayta yangilashga majbur qiladi. Katta hajmli yuklashlarda indekslarni vaqtincha o'chirib turish tavsiya etiladi.
+2. **Batching:** 10,000 ta qatorni alohida 10,000 ta \`INSERT\` so'rovi bilan kiritgandan ko'ra, ularni bitta massiv ko'rinishida (Batch Insert) kiritish 50 barobar tezroq ishlaydi.
+3. **Primary Key orqali yangilash:** \`UPDATE\` va \`DELETE\` amallarida doimo Primary Key ustunidan foydalaning.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Buyruq | Sintaksis | Vazifasi | Ehtiyot bo'lish kerak bo'lgan jihati |
+| :--- | :--- | :--- | :--- |
+| **INSERT** | \`INSERT INTO users (name) VALUES ('Ali');\` | Yangi qator qo'shish | Ma'lumotlar turlarining mosligi |
+| **UPDATE** | \`UPDATE users SET age = 20 WHERE id = 1;\` | Qiymatni yangilash | \`WHERE\` shartini unutmaslik |
+| **DELETE** | \`DELETE FROM users WHERE id = 1;\` | Qatorlarni o'chirish | \`WHERE\` shartini unutmaslik |
+| **TRUNCATE** | \`TRUNCATE TABLE users;\` | Jadvalni butunlay tozalash | ROLLBACK qilish imkonsiz (ko'p hollarda) |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Yangi foydalanuvchi qo'shish",
-      instruction: "`users` jadvaliga yangi foydalanuvchi qo'shing. Qiymatlar: `id` = 6, `name` = 'Jasur', `age` = 24, `city` = 'Xiva', `role` = 'User'.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "INSERT INTO users (id, name, age, city, role) VALUES (6, 'Jasur', 24, 'Xiva', 'User')",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT * FROM users WHERE id = 6'); if(check.length !== 1 || check[0].name !== 'Jasur') return 'Jasur foydalanuvchisi qo\\'shilmadi'; return null;"
-    },
-    {
-      id: 2,
-      title: "Yoshni yangilash (UPDATE)",
-      instruction: "`users` jadvalidan `name` qiymati 'Sardor' bo'lgan foydalanuvchining yoshini (`age`) 23 ga o'zgartiring.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "UPDATE users SET age = 23 WHERE name = 'Sardor'",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT age FROM users WHERE name = 'Sardor'\"); if(check.length === 0 || check[0].age !== 23) return 'Sardorning yoshi yangilanmadi'; return null;"
-    },
-    {
-      id: 3,
-      title: "Menejerni o'chirish (DELETE)",
-      instruction: "`users` jadvalidan roli `Manager` bo'lgan barcha foydalanuvchilarni o'chirib tashlang.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "DELETE FROM users WHERE role = 'Manager'",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM users WHERE role = 'Manager'\"); if(check.length !== 0) return 'Menejer o\\'chmadi'; return null;"
-    },
-    {
-      id: 4,
-      title: "Yangi mahsulot qo'shish",
-      instruction: "`products` jadvaliga yangi mahsulot qo'shing. Qiymatlar: `id` = 6, `name` = 'Table', `category` = 'Furniture', `price` = 200.00, `stock` = 8.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "INSERT INTO products (id, name, category, price, stock) VALUES (6, 'Table', 'Furniture', 200.00, 8)",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM products WHERE id = 6\"); if(check.length !== 1 || check[0].name !== 'Table') return 'Mahsulot qo\\'shilmadi'; return null;"
-    },
-    {
-      id: 5,
-      title: "Foydalanuvchining shahrini o'zgartirish",
-      instruction: "`users` jadvalida Madinaning (`name` = 'Madina') shahrini (`city`) 'Navoiy'ga o'zgartiring.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "UPDATE users SET city = 'Navoiy' WHERE name = 'Madina'",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT city FROM users WHERE name = 'Madina'\"); if(check.length === 0 || check[0].city !== 'Navoiy') return 'Madinaning shahri yangilanmadi'; return null;"
-    },
-    {
-      id: 6,
-      title: "Buyurtmani o'chirish",
-      instruction: "`orders` jadvalidan `id` qiymati 103 bo'lgan buyurtmani o'chirib tashlang.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "DELETE FROM orders WHERE id = 103",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM orders WHERE id = 103\"); if(check.length !== 0) return 'Buyurtma o\\'chmadi'; return null;"
-    },
-    {
-      id: 7,
-      title: "Narxlarni oshirish",
-      instruction: "Elektronika (`category` = 'Electronics') turidagi barcha mahsulotlarning narxini (`price`) 10% ga oshiring (ya'ni 1.1 ga ko'paytiring).",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "UPDATE products SET price = price * 1.1 WHERE category = 'Electronics'",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT price FROM products WHERE category = 'Electronics'\"); if(check.length === 0 || Math.abs(check[0].price - 1320.00) > 0.01) return 'Elektronika mahsulotlarining narxi to\\'g\\'ri oshirilmadi'; return null;"
-    },
-    {
-      id: 8,
-      title: "Yangi buyurtma qo'shish",
-      instruction: "`orders` jadvaliga yangi buyurtma qo'shing. Qiymatlar: `id` = 107, `user_id` = 2, `product` = 'Desk', `amount` = 150.00, `order_date` = '2026-05-07'.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "INSERT INTO orders (id, user_id, product, amount, order_date) VALUES (107, 2, 'Desk', 150.00, '2026-05-07')",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM orders WHERE id = 107\"); if(check.length !== 1 || check[0].product !== 'Desk') return 'Buyurtma qo\\'shilmadi'; return null;"
-    },
-    {
-      id: 9,
-      title: "Ombor qoldig'ini kamaytirish",
-      instruction: "`products` jadvalidan Desk (`name` = 'Desk') mahsulotining ombor qoldig'ini (`stock`) 1 taga kamaytiring.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "UPDATE products SET stock = stock - 1 WHERE name = 'Desk'",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT stock FROM products WHERE name = 'Desk'\"); if(check.length === 0 || check[0].stock !== 4) return 'Ombor qoldig\\'i kamaytirilmadi'; return null;"
-    },
-    {
-      id: 10,
-      title: "Kam miqdordagi buyurtmalarni o'chirish",
-      instruction: "`orders` jadvalidan buyurtma summasi (`amount`) 30 dan kichik bo'lgan barcha buyurtmalarni o'chiring.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "DELETE FROM orders WHERE amount < 30",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM orders WHERE amount < 30\"); if(check.length !== 0) return 'Kichik summadagi buyurtmalar o\\'chirilmadi'; return null;"
-    },
-    {
-      id: 11,
-      title: "Ko'p ustunlarni yangilash",
-      instruction: "`users` jadvalida Ali (`name` = 'Ali') foydalanuvchisining yoshini (`age`) 26 ga va rolini (`role`) 'Superadmin'ga o'zgartiring.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "UPDATE users SET age = 26, role = 'Superadmin' WHERE name = 'Ali'",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT age, role FROM users WHERE name = 'Ali'\"); if(check.length === 0 || check[0].age !== 26 || check[0].role !== 'Superadmin') return 'Foydalanuvchi ma\\'lumotlari to\\'g\\'ri yangilanmadi'; return null;"
-    },
-    {
-      id: 12,
-      title: "Muayyan sanadagi buyurtmalarni o'chirish",
-      instruction: "`orders` jadvalidan buyurtma sanasi (`order_date`) '2026-05-03' bo'lgan buyurtmani o'chiring.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "DELETE FROM orders WHERE order_date = '2026-05-03'",
-      test: "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM orders WHERE order_date = '2026-05-03'\"); if(check.length !== 0) return 'Belgilangan sanadagi buyurtma o\\'chirilmadi'; return null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Yangi foydalanuvchi qo'shish",
+    "instruction": "`users` jadvaliga yangi foydalanuvchi qo'shing. Qiymatlar: `id` = 6, `name` = 'Jasur', `age` = 24, `city` = 'Xiva', `role` = 'User'.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "INSERT INTO users (id, name, age, city, role) VALUES (6, 'Jasur', 24, 'Xiva', 'User')",
+    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT * FROM users WHERE id = 6'); if(check.length !== 1 || check[0].name !== 'Jasur') return 'Jasur foydalanuvchisi qo\\'shilmadi'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Yoshni yangilash (UPDATE)",
+    "instruction": "`users` jadvalidan `name` qiymati 'Sardor' bo'lgan foydalanuvchining yoshini (`age`) 23 ga o'zgartiring.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "UPDATE users SET age = 23 WHERE name = 'Sardor'",
+    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT age FROM users WHERE name = 'Sardor'\"); if(check.length === 0 || check[0].age !== 23) return 'Sardorning yoshi yangilanmadi'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Menejerni o'chirish (DELETE)",
+    "instruction": "`users` jadvalidan roli `Manager` bo'lgan barcha foydalanuvchilarni o'chirib tashlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "DELETE FROM users WHERE role = 'Manager'",
+    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM users WHERE role = 'Manager'\"); if(check.length !== 0) return 'Menejer o\\'chmadi'; return null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Mavjud ma'lumotlarni o'zgartirish (tahrirlash) uchun qaysi SQL buyrug'i ishlatiladi?",
-      options: ["INSERT", "UPDATE", "CHANGE", "MODIFY"],
-      correctAnswer: 1,
-      explanation: "Mavjud qatorlardagi qiymatlarni yangilash yoki o'zgartirish uchun UPDATE buyrug'i ishlatiladi."
-    },
-    {
-      id: 2,
-      question: "UPDATE yoki DELETE so'rovlarida WHERE shartini yozish unutilsa nima sodir bo'ladi?",
-      options: [
-        "Faqat birinchi qator o'zgaradi / o'chadi",
-        "Loyiha xatolik berib to'xtaydi va hech narsa o'zgarmaydi",
-        "Jadvaldagi barcha qatorlar o'zgaradi / o'chadi",
-        "Oxirgi qo'shilgan qator o'zgaradi"
-      ],
-      correctAnswer: 2,
-      explanation: "WHERE sharti yozilmasa, buyruq butun jadval bo'yicha qo'llaniladi. Bu barcha ma'lumotlarning o'zgarishi yoki o'chib ketishiga olib keladi."
-    },
-    {
-      id: 3,
-      question: "Jadvalga yangi qator kiritish uchun to'g'ri sintaksis qaysi?",
-      options: [
-        "INSERT INTO users VALUES (name, age) VALUES ('Ali', 20)",
-        "INSERT INTO users (name, age) VALUES ('Ali', 20)",
-        "UPDATE users ADD (name = 'Ali', age = 20)",
-        "INSERT INTO users SET name = 'Ali', age = 20"
-      ],
-      correctAnswer: 1,
-      explanation: "Standard INSERT sintaksisi: INSERT INTO jadval (ustunlar) VALUES (qiymatlar) ko'rinishida bo'ladi."
-    },
-    {
-      id: 4,
-      question: "INSERT INTO jadval_nomi VALUES (...) so'rovida ustunlar nomlari yozilmasa nima bo'ladi?",
-      options: [
-        "Xatolik yuz beradi, ustun nomlari yozilishi shart",
-        "Qiymatlar jadvaldagi barcha ustunlarga tartib bo'yicha to'liq va mos ravishda kiritilishi kerak",
-        "Faqat birinchi ustunga ma'lumot yoziladi",
-        "Jadvaldagi tasodifiy ustunlarga yoziladi"
-      ],
-      correctAnswer: 1,
-      explanation: "Jadval ustunlari ko'rsatilmaganda, VALUES qismidagi qiymatlar jadvalning barcha ustunlariga yaratilgan tartibda mos ravishda taqdim etilishi kerak."
-    },
-    {
-      id: 5,
-      question: "Bitta UPDATE so'rovida bir nechta ustun qiymatini o'zgartirish uchun ular qanday ajratiladi?",
-      options: [
-        "AND kalit so'zi bilan",
-        "Vergul (,) belgisi bilan",
-        "Nuqtali vergul (;) bilan",
-        "OR kalit so'zi bilan"
-      ],
-      correctAnswer: 1,
-      explanation: "UPDATE so'rovida bir nechta ustunlarni yangilashda SET ustun1 = qiymat1, ustun2 = qiymat2 ko'rinishida vergul bilan ajratiladi."
-    },
-    {
-      id: 6,
-      question: "Jadvaldagi barcha ma'lumotlarni o'chirish uchun qaysi so'rov ishlatiladi (lekin jadval strukturasini saqlab qoladi)?",
-      options: [
-        "DROP TABLE jadval_nomi",
-        "DELETE FROM jadval_nomi",
-        "REMOVE TABLE jadval_nomi",
-        "CLEAR jadval_nomi"
-      ],
-      correctAnswer: 1,
-      explanation: "DELETE FROM jadval_nomi so'rovi shartsiz (WHERE-siz) bajarilsa, jadvaldagi barcha qatorlar o'chib ketadi, lekin jadvalning o'zi va ustunlari o'chmaydi."
-    },
-    {
-      id: 7,
-      question: "UPDATE so'rovida SET kalit so'zi nima vazifani bajaradi?",
-      options: [
-        "Filtrlash shartini o'rnatadi",
-        "Yangilanadigan ustunlar va ularning yangi qiymatlarini belgilaydi",
-        "Qatorlarni o'chirish uchun ishlatiladi",
-        "Natijalarni saralaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "SET kalit so'zi yangilanadigan ustun(lar) nomini va ularga beriladigan yangi qiymat(lar)ni ko'rsatish uchun ishlatiladi."
-    },
-    {
-      id: 8,
-      question: "INSERT buyrug'ida VALUES ichiga yoziladigan matnli ma'lumotlar qanday yoziladi?",
-      options: [
-        "Qavssiz va tirnoqsiz",
-        "Bir tirnoq (') ichida",
-        "Kvadrat qavs [ ] ichida",
-        "Faqat katta harflar bilan"
-      ],
-      correctAnswer: 1,
-      explanation: "SQL standartiga ko'ra har qanday string (matn) qiymati bir tirnoq ichida yozilishi shart."
-    },
-    {
-      id: 9,
-      question: "DELETE FROM users WHERE age IS NULL so'rovi nima qiladi?",
-      options: [
-        "Yoshi 0 bo'lgan foydalanuvchilarni o'chiradi",
-        "Yoshi ko'rsatilmagan (NULL bo'lgan) foydalanuvchilarni o'chiradi",
-        "Barcha foydalanuvchilarni o'chiradi",
-        "Haqiqiy foydalanuvchilarni saqlab, qolganlarini o'chiradi"
-      ],
-      correctAnswer: 1,
-      explanation: "IS NULL operatori qiymat mavjud bo'lmagan (bo'sh) qatorlarni aniqlaydi. Ushbu so'rov yoshi NULL bo'lgan foydalanuvchilarni o'chiradi."
-    },
-    {
-      id: 10,
-      question: "TRUNCATE TABLE va DELETE FROM farqi nimada?",
-      options: [
-        "TRUNCATE jadvalni butunlay o'chiradi (DROP kabi), DELETE esa qatorlarni",
-        "TRUNCATE tezroq ishlaydi, tranzaksiya jurnallarini kamroq yozadi va WHERE shartini qabul qilmaydi",
-        "DELETE faqat bitta qatorni o'chira oladi, TRUNCATE esa ko'p qatorni",
-        "Ular o'rtasida hech qanday farq yo'q"
-      ],
-      correctAnswer: 1,
-      explanation: "TRUNCATE yirik jadvallardagi barcha ma'lumotlarni juda tez o'chirish uchun mo'ljallangan, WHERE shartini qo'llab-quvvatlamaydi va DELETE kabi qatorlar bo'yicha triggerlarni ishga tushirmaydi."
-    },
-    {
-      id: 11,
-      question: "Jadvalga bir vaqtning o'zida bir nechta yangi qator kiritish mumkinmi?",
-      options: [
-        "Yo'q, har bir INSERT so'rovi faqat bitta qator kiritadi",
-        "Ha, VALUES qismidan keyin qavslarni vergul bilan ajratib yozish orqali",
-        "Faqat UPDATE so'rovi orqali ko'p qator kiritish mumkin",
-        "Ha, faqat maxsus MULTI INSERT buyrug'i orqali"
-      ],
-      correctAnswer: 1,
-      explanation: "Ko'pgina SQL tizimlarida INSERT INTO jadval (...) VALUES (...), (...), (...) ko'rinishida bir so'rov bilan ko'plab qatorlarni qo'shish mumkin."
-    },
-    {
-      id: 12,
-      question: "UPDATE users SET age = age + 1 so'rovi nima ish bajaradi?",
-      options: [
-        "Faqat birinchi foydalanuvchining yoshini 1 taga oshiradi",
-        "Barcha foydalanuvchilarning yoshini 1 taga oshiradi",
-        "Xatolik beradi, chunki o'ng tomonda ustun nomi yozilgan",
-        "Yangi foydalanuvchi qo'shadi va uning yoshini 1 qiladi"
-      ],
-      correctAnswer: 1,
-      explanation: "WHERE sharti ko'rsatilmagani sababli, ushbu so'rov jadvaldagi barcha foydalanuvchilarning yoshini (`age`) 1 taga oshiradi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Mavjud ma'lumotlarni o'zgartirish (tahrirlash) uchun qaysi SQL buyrug'i ishlatiladi?",
+    "options": ["INSERT", "UPDATE", "CHANGE", "MODIFY"],
+    "correctAnswer": 1,
+    "explanation": "Mavjud qatorlardagi qiymatlarni yangilash yoki o'zgartirish uchun UPDATE buyrug'i ishlatiladi."
+  },
+  {
+    "id": 2,
+    "question": "UPDATE yoki DELETE so'rovlarida WHERE shartini yozish unutilsa nima sodir bo'ladi?",
+    "options": [
+      "Faqat birinchi qator o'zgaradi / o'chadi",
+      "Loyiha xatolik berib to'xtaydi va hech narsa o'zgarmaydi",
+      "Jadvaldagi barcha qatorlar o'zgaradi / o'chadi",
+      "Oxirgi qo'shilgan qator o'zgaradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "WHERE sharti yozilmasa, buyruq butun jadval bo'yicha qo'llaniladi. Bu barcha ma'lumotlarning o'zgarishi yoki o'chib ketishiga olib keladi."
+  },
+  {
+    "id": 3,
+    "question": "Jadvalga yangi qator kiritish uchun to'g'ri sintaksis qaysi?",
+    "options": [
+      "INSERT INTO users VALUES (name, age) VALUES ('Ali', 20)",
+      "INSERT INTO users (name, age) VALUES ('Ali', 20)",
+      "UPDATE users ADD (name = 'Ali', age = 20)",
+      "INSERT INTO users SET name = 'Ali', age = 20"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Standard INSERT sintaksisi: INSERT INTO jadval (ustunlar) VALUES (qiymatlar) ko'rinishida bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "INSERT INTO jadval_nomi VALUES (...) so'rovida ustunlar nomlari yozilmasa nima bo'ladi?",
+    "options": [
+      "Xatolik yuz beradi, ustun nomlari yozilishi shart",
+      "Qiymatlar jadvaldagi barcha ustunlarga tartib bo'yicha to'liq va mos ravishda kiritilishi kerak",
+      "Faqat birinchi ustunga ma'lumot yoziladi",
+      "Jadvaldagi tasodifiy ustunlarga yoziladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Jadval ustunlari ko'rsatilmaganda, VALUES qismidagi qiymatlar jadvalning barcha ustunlariga yaratilgan tartibda mos ravishda taqdim etilishi kerak."
+  },
+  {
+    "id": 5,
+    "question": "Bitta UPDATE so'rovida bir nechta ustun qiymatini o'zgartirish uchun ular qanday ajratiladi?",
+    "options": [
+      "AND kalit so'zi bilan",
+      "Vergul (,) belgisi bilan",
+      "Nuqtali vergul (;) bilan",
+      "OR kalit so'zi bilan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "UPDATE so'rovida bir nechta ustunlarni yangilashda SET ustun1 = qiymat1, ustun2 = qiymat2 ko'rinishida vergul bilan ajratiladi."
+  },
+  {
+    "id": 6,
+    "question": "Jadvaldagi barcha ma'lumotlarni o'chirish uchun qaysi so'rov ishlatiladi (lekin jadval strukturasini saqlab qoladi)?",
+    "options": [
+      "DROP TABLE jadval_nomi",
+      "DELETE FROM jadval_nomi",
+      "REMOVE TABLE jadval_nomi",
+      "CLEAR jadval_nomi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "DELETE FROM jadval_nomi so'rovi shartsiz (WHERE-siz) bajarilsa, jadvaldagi barcha qatorlar o'chib ketadi, lekin jadvalning o'zi va ustunlari o'chmaydi."
+  },
+  {
+    "id": 7,
+    "question": "UPDATE so'rovida SET kalit so'zi nima vazifani bajaradi?",
+    "options": [
+      "Filtrlash shartini o'rnatadi",
+      "Yangilanadigan ustunlar va ularning yangi qiymatlarini belgilaydi",
+      "Qatorlarni o'chirish uchun ishlatiladi",
+      "Natijalarni saralaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "SET kalit so'zi yangilanadigan ustun(lar) nomini va ularga beriladigan yangi qiymat(lar)ni ko'rsatish uchun ishlatiladi."
+  },
+  {
+    "id": 8,
+    "question": "INSERT buyrug'ida VALUES ichiga yoziladigan matnli ma'lumotlar qanday yoziladi?",
+    "options": [
+      "Qavssiz va tirnoqsiz",
+      "Bir tirnoq (') ichida",
+      "Kvadrat qavs [ ] ichida",
+      "Faqat katta harflar bilan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "SQL standartiga ko'ra har qanday string (matn) qiymati bir tirnoq ichida yozilishi shart."
+  },
+  {
+    "id": 9,
+    "question": "DELETE FROM users WHERE age IS NULL so'rovi nima qiladi?",
+    "options": [
+      "Yoshi 0 bo'lgan foydalanuvchilarni o'chiradi",
+      "Yoshi ko'rsatilmagan (NULL bo'lgan) foydalanuvchilarni o'chiradi",
+      "Bacha foydalanuvchilarni o'chiradi",
+      "Haqiqiy foydalanuvchilarni saqlab, qolganlarini o'chiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "IS NULL operatori qiymat mavjud bo'lmagan (bo'sh) qatorlarni aniqlaydi. Ushbu so'rov yoshi NULL bo'lgan foydalanuvchilarni o'chiradi."
+  },
+  {
+    "id": 10,
+    "question": "TRUNCATE TABLE va DELETE FROM farqi nimada?",
+    "options": [
+      "TRUNCATE jadvalni butunlay o'chiradi (DROP kabi), DELETE esa qatorlarni",
+      "TRUNCATE tezroq ishlaydi, tranzaksiya jurnallarini kamroq yozadi va WHERE shartini qabul qilmaydi",
+      "DELETE faqat bitta qatorni o'chira oladi, TRUNCATE esa ko'p qatorni",
+      "Ular o'rtasida hech qanday farq yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TRUNCATE yirik jadvallardagi barcha ma'lumotlarni juda tez o'chirish uchun mo'ljallangan, WHERE shartini qo'llab-quvvatlamaydi va DELETE kabi qatorlar bo'yicha triggerlarni ishga tushirmaydi."
+  },
+  {
+    "id": 11,
+    "question": "Jadvalga bir vaqtning o'zida bir nechta yangi qator kiritish mumkinmi?",
+    "options": [
+      "Yo'q, har bir INSERT so'rovi faqat bitta qator kiritadi",
+      "Ha, VALUES qismidan keyin qavslarni vergul bilan ajratib yozish orqali",
+      "Faqat UPDATE so'rovi orqali ko'p qator kiritish mumkin",
+      "Ha, faqat maxsus MULTI INSERT buyrug'i orqali"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ko'pgina SQL tizimlarida INSERT INTO jadval (...) VALUES (...), (...), (...) ko'rinishida bir so'rov bilan ko'plab qatorlarni qo'shish mumkin."
+  },
+  {
+    "id": 12,
+    "question": "UPDATE users SET age = age + 1 so'rovi nima ish bajaradi?",
+    "options": [
+      "Faqat birinchi foydalanuvchining yoshini 1 taga oshiradi",
+      "Bacha foydalanuvchilarning yoshini 1 taga oshiradi",
+      "Xatolik beradi, chunki o'ng tomonda ustun nomi yozilgan",
+      "Yangi foydalanuvchi qo'shadi va uning yoshini 1 qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "WHERE sharti ko'rsatilmagani sababli, ushbu so'rov jadvaldagi barcha foydalanuvchilarning yoshini (`age`) 1 taga oshiradi."
+  }
+]
+
 };
