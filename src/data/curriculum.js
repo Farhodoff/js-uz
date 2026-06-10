@@ -58,7 +58,7 @@ import { asyncAwait } from "./lessons/advanced/asyncAwait";
 import { fetchApi } from "./lessons/advanced/fetch";
 import { localStorageLesson } from "./lessons/advanced/localStorage";
 import { errorHandling } from "./lessons/advanced/errorHandling";
-import { modulesLesson } from "./lessons/advanced/modules";
+import { modules as modulesLesson } from "./lessons/advanced/modules";
 import { debugging } from "./lessons/advanced/debugging";
 import { closuresLesson } from "./lessons/advanced/closures";
 import { eventLoopLesson } from "./lessons/advanced/eventLoop";
@@ -75,7 +75,7 @@ import { securityLesson } from "./lessons/advanced/security";
 import { unitTesting } from "./lessons/advanced/unitTesting";
 import { metaprogramming } from "./lessons/advanced/metaprogramming";
 import { regexLesson } from "./lessons/advanced/regex";
-import { symbolsGenerators } from "./lessons/advanced/symbolsGenerators";
+import { iteratorsGenerators } from "./lessons/advanced/iteratorsGenerators";
 import { debounceThrottle } from "./lessons/advanced/debounceThrottle";
 import { jsPitfalls } from "./lessons/advanced/jsPitfalls";
 import { problemSolving } from "./lessons/advanced/problemSolving";
@@ -156,7 +156,7 @@ export const curriculum = {
     label: "Murakkab",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, symbolsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced, webComponents, advancedWebStorage, advancedWebApis, binaryData, webAnimations, historyRouting]
+    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, iteratorsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced, webComponents, advancedWebStorage, advancedWebApis, binaryData, webAnimations, historyRouting]
   },
   algorithms: {
     label: "Algoritmlar",
