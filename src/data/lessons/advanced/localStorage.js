@@ -1,380 +1,394 @@
-export const localStorageLesson = {
-  id: "local-storage",
-  title: "Brauzer xotirasi (LocalStorage, SessionStorage va Cookies)",
-  level: "Murakkab",
-  description: "Ma'lumotlarni brauzerda doimiy va vaqtinchalik saqlash usullari hamda Cookies xavfsizligi.",
-  theory: `## 1. NEGA kerak?
+export const localStorage = {
+  id: "localStorage",
+  title: "Web Storage API: localStorage va sessionStorage",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-Veb-saytga kirganingizda, sayt sizning tanlagan tilingizni yoki tungi rejim (dark mode) sozlamangizni eslab qolishi kerak. Agar bu ma'lumotlarni hech qayerda saqlamasangiz, sahifa yangilanganda hamma narsa dastlabki holatiga qaytib qoladi. Har bir kichik sozlama yoki foydalanuvchi sessiyasini saqlash uchun serverdagi ma'lumotlar bazasiga murojaat qilish vaqt va resurs sarfini oshiradi. Brauzer xotirasi bunday holatlar uchun ayni muddaodir.
+### Web Storage API nima?
+Brauzer foydalanuvchiga tegishli ma'lumotlarni (masalan, sozlamalar, tanlangan mahsulotlar, til yoki ekran rejimini) foydalanuvchi kompyuterida saqlab qolishi uchun **Web Storage API**-dan foydalaniladi. U ikki xil saqlagichni taqdim etadi:
+* **localStorage:** Ma'lumotlar brauzer yopilganda ham, kompyuter o'chib yongan bo'lsa ham abadiy saqlanadi (dasturchi yoki foydalanuvchi qo'lda o'chirib yubormaguncha).
+* **sessionStorage:** Ma'lumotlar faqat joriy sahifa oynasi (tab) ochiq turganda saqlanadi. Oyna yopilishi bilan ma'lumotlar o'chib ketadi.
 
----
-
-## 2. SODDALIK (Analogiya)
-
-Brauzerdagi xotiralarni quyidagicha tushunish mumkin:
-- **LocalStorage:** Bu sizning uyingizdagi shaxsiy esdalik daftaringiz. Unga yozilgan narsalar siz o'zingiz uni o'chirmaguningizcha muddatsiz saqlanib turaveradi.
-- **SessionStorage:** Bu o'quv xonasidagi oq doska. Dars tugab, xonani tark etishingiz (tab yoki brauzerni yopishingiz) bilan doska o'chirib tozalanadi.
-- **Cookies (Kuki):** Bu mehmonxonada berilgan elektron kalit-karta. Har safar xonaga kirmoqchi bo'lganingizda (serverga so'rov yuborganda), bu karta sizning kimligingizni tasdiqlash uchun tizimga uzatiladi.
+### Real hayotiy analogiya
+* **localStorage (Shaxsiy daftar):** Siz o'zingizning shaxsiy daftaringizga qaydlar yozasiz. Uyquga ketib uyg'onsangiz ham, daftarni javonga qo'yib 1 yildan keyin ochsangiz ham yozuvlar joyida turadi.
+* **sessionStorage (Mehmonxona shkafi):** Mehmonxonaga joylashganingizda narsalaringizni shkafga qo'yasiz. Mehmonxonani tark etib (check-out) xonani topshirganingizdan so'ng, shkaf ichi butunlay tozalanadi (kelgusi safar kelganingizda u bo'sh bo'ladi).
 
 ---
 
-## 3. STRUKTURA VA CHUQUR TUSHUNCHALAR
+## 2. 💻 Real Kod Misollari
 
-### A. LocalStorage va SessionStorage Metodlari
-Ikkala xotira turi ham bir xil metodlar yordamida boshqariladi:
+### 1. Basic Example (Matnli ma'lumot saqlash va o'qish)
+localStorage-ga ma'lumot yozish, o'qish va o'chirish:
 \`\`\`javascript
-localStorage.setItem("theme", "dark");
-const theme = localStorage.getItem("theme");
-localStorage.removeItem("theme");
+// 1. Kalit-qiymat juftligini yozish
+localStorage.setItem('theme', 'dark');
+localStorage.setItem('language', 'uz');
+
+// 2. Qiymatni kalit orqali o'qish
+const currentTheme = localStorage.getItem('theme');
+console.log(currentTheme); // "dark"
+
+// 3. Alohida kalitni o'chirish
+localStorage.removeItem('language');
+
+// 4. Barcha ma'lumotlarni tozalash
 localStorage.clear();
 \`\`\`
 
-### B. QuotaExceededError (Xotira limitsiz emas!)
-Brauzer xotiralari o'rtacha **5-10 MB** hajmgacha ma'lumot sig'dira oladi. Agar siz ushbu limitdan ko'p ma'lumot yozmoqchi bo'lsangiz, JavaScript \`QuotaExceededError\` xatosini otadi. Shuning uchun ma'lumotlarni yozishda try...catch bloklaridan foydalanish tavsiya etiladi:
+### 2. Intermediate Example (Obyektlar va Massivlarni saqlash)
+Web Storage faqat **satr (string)** turidagi ma'lumotlarni saqlay oladi. Obyektlarni saqlash uchun ularni JSON formatiga o'girish kerak:
+\`\`\`javascript
+const user = {
+  id: 1,
+  name: "Farhod",
+  roles: ["admin", "editor"]
+};
+
+// Noto'g'ri:
+// localStorage.setItem('currentUser', user); // Brauzerda "[object Object]" bo'lib qoladi
+
+// To'g'ri usul:
+// 1. JSON.stringify orqali stringga aylantirib yozamiz
+localStorage.setItem('currentUser', JSON.stringify(user));
+
+// 2. O'qishda esa JSON.parse yordamida qaytadan obyektga o'giramiz
+const storedData = localStorage.getItem('currentUser');
+if (storedData) {
+  const parsedUser = JSON.parse(storedData);
+  console.log(parsedUser.name); // "Farhod"
+}
+\`\`\`
+
+### 3. Advanced Example (Barcha kalitlarni aylanib chiqish va storage hodisasi)
+Storage ichidagi barcha elementlarni indeks bo'yicha olish:
+\`\`\`javascript
+function listAllStorageItems() {
+  console.log(\`Jami elementlar soni: \${localStorage.length}\`);
+  
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    const value = localStorage.getItem(key);
+    console.log(\`\${key}: \${value}\`);
+  }
+}
+
+// Boshqa oyna yoki tabda ma'lumot o'zgarganini eshitish (cross-tab event listener)
+window.addEventListener('storage', (event) => {
+  console.log('Ma'lumot o'zgardi!');
+  console.log('Kalit:', event.key);
+  console.log('Eski qiymat:', event.oldValue);
+  console.log('Yangi qiymat:', event.newValue);
+  console.log('Qaysi sahifada:', event.url);
+});
+\`\`\`
+
+---
+
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
+
+### Qaysi muammoni hal qiladi?
+* **Holatni saqlash (State Persistence):** Foydalanuvchi sahifani yangilaganda (F5 yoki reload) barcha JS o'zgaruvchilari nolga aylanadi. Web Storage yordamida muhim holat ma'lumotlarini saqlab qolish mumkin.
+* **Katta sig'im (~5MB):** Eski Cookie (kuki) texnologiyasi har bir sahifa so'rovida serverga ma'lumot jo'natardi va uning hajmi juda kichik (faqat 4KB) edi. Web Storage ma'lumotlarni faqat brauzerda lokal saqlaydi va uning hajmi ancha katta (~5MB gacha).
+* **Tarmoq trafigini tejash:** Serverga har gal yuklashni kamaytirib, foydalanuvchining lokal qurilmasidan ma'lumot olish orqali ilova tezligini oshiradi.
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. Obyektlarni to'g'ridan-to'g'ri yozib ketish
+#### Xato:
+\`localStorage.setItem('profile', { id: 1 });\` // O'qilganda "[object Object]" matni keladi.
+#### Tuzatish:
+\`localStorage.setItem('profile', JSON.stringify({ id: 1 }));\`
+
+### 2. Maxfiy tokenlar va parollarni saqlash
+#### Xato:
+localStorage-ga foydalanuvchi parolini yoki muhim shaxsiy ma'lumotlarni saqlash.
+*Tushuntirish:* localStorage ichidagi ma'lumotlarni sahifada ishlayotgan har qanday uchinchi tomon JavaScript kodi (masalan, XSS hujumi yoki zararli kutubxona orqali) osongina o'qib olishi mumkin. Maxfiy tokenlar uchun \`HttpOnly\` kuki fayllaridan foydalanish tavsiya etiladi.
+
+### 3. QuotaExceededError xatoligini inobatga olmaslik
+#### Xato:
+localStorage limiti (~5MB) to'lib qolganda yoki xususiy rejimda (Incognito) saqlash taqiqlanganda dastur qulashi mumkin.
+#### Tuzatish:
 \`\`\`javascript
 try {
-  localStorage.setItem("key", bigData);
+  localStorage.setItem('large_data', dataString);
 } catch (e) {
   if (e.name === 'QuotaExceededError') {
-    console.error("Xotira to'ldi!");
+    console.warn("Storage limiti to'lib ketdi!");
   }
 }
 \`\`\`
 
-### C. Multi-Tab Storage Event (Oynalararo Sinxronizatsiya)
-Agar bir xil domen ostida foydalanuvchi bir nechta tab ochgan bo'lsa va ulardan birida LocalStorage yangilansa, qolgan barcha ochiq tablarda \`storage\` hodisasi triggering bo'ladi. Bu oynalararo dark/light rejimni yoki savatchadagi mahsulotlarni sinxronlashda juda qulay.
+### 4. Storage API sinxron ekanligini unutish
+Web Storage operatsiyalari **sinxrondir**. Agar siz localStorage-ga juda katta hajmli matnni yoki JSON-ni qayta-qayta yozsangiz/o'qisangiz, bu brauzerning asosiy oqimini (Main Thread) bloklaydi va foydalanuvchi interfeysi qotib qoladi.
 
-\`\`\`mermaid
-sequenceDiagram
-    participant Tab A as Brauzer Tab A
-    participant LocalStorage as LocalStorage Xotira
-    participant Tab B as Brauzer Tab B
-    Tab A->>LocalStorage: setItem('theme', 'dark')
-    LocalStorage-->>Tab B: window.onstorage (storage event) trigger bo'ladi
-    Note over Tab B: Tab B dark mode-ga o'tadi
-\`\`\`
+---
 
-### D. Cookie Atributlari va Xavfsizlik (XSS va CSRF)
-Kuki — server tomonidan o'rnatiladigan va har safar HTTP so'rov yuborilganda brauzer tomonidan avtomatik qo'shib yuboriladigan kichik ma'lumot bo'lagi (4 KB).
-* **\`HttpOnly\`:** Ushbu atribut o'rnatilgan kukilarni JavaScript orqali (ya'ni \`document.cookie\` bilan) o'qib bo'lmaydi. Bu **XSS (Cross-Site Scripting)** hujumlaridan himoya qilishda o'ta muhim.
-* **\`Secure\`:** Kuki faqat shifrlangan HTTPS ulanishi orqali uzatilishini ta'minlaydi.
-* **\`SameSite\`:** Kuki uchinchi tomon so'rovlarida yuborilishini boshqaradi (\`Strict\`, \`Lax\`, \`None\`). Bu **CSRF (Cross-Site Request Forgery)** hujumlaridan himoya qiladi.
+## 5. 💬 12 ta Intervyu Savollari
 
-\`\`\`mermaid
-graph TD
-    A[Brauzer Xotira Turlari] --> B[Web Storage]
-    A --> C[Cookies]
-    B --> D[LocalStorage - Muddatsiz, 5-10MB]
-    B --> E[SessionStorage - Tab yopilguncha, 5MB]
-    C --> F[HttpOnly - JS uchun yopiq, 4KB]
-    C --> G[Secure - Faqat HTTPS]
-    C --> H[SameSite - CSRF himoyasi]
+### Junior (1–4)
+1. **Savol:** \`localStorage\` va \`sessionStorage\` o'rtasidagi asosiy farq nima?
+   * **Javob:** \`localStorage\`-dagi ma'lumotlar abadiy saqlanadi, \`sessionStorage\`-da esa faqat joriy oyna/tab ochiq turguncha saqlanadi.
+2. **Savol:** Web Storage-da qanday turdagi ma'lumotlarni saqlash mumkin?
+   * **Javob:** Faqat matnli (string) ma'lumotlarni. Murakkab tiplarni (obyekt, massiv) avval JSON formatiga o'tkazish lozim.
+3. **Savol:** LocalStorage-da ma'lumot saqlash limiti taxminan qancha?
+   * **Javob:** Ko'pchilik brauzerlarda har bir domen (origin) uchun taxminan 5 megabayt (5MB).
+4. **Savol:** Ma'lumotni storage-dan qanday to'liq o'chirib tashlash mumkin?
+   * **Javob:** Bitta elementni o'chirish uchun \`removeItem(key)\`, barcha elementlarni tozalash uchun \`clear()\` metodi chaqiriladi.
+
+### Middle (5–8)
+5. **Savol:** Nima uchun cookies o'rniga localStorage ishlatiladi?
+   * **Javob:** Cookies limiti juda kichik (4KB) va u har bir HTTP so'rov bilan birga serverga yuborilib, tarmoqni band qiladi. LocalStorage esa 5MB gacha sig'imga ega va faqat brauzerda lokal saqlanadi.
+6. **Savol:** \`storage\` hodisasi (event) nima va u qachon ishga tushadi?
+   * **Javob:** Bir domendagi boshqa oyna yoki tablarda localStorage o'zgarganda ishga tushadigan hodisadir. U o'zgarishni amalga oshirgan joriy tabning o'zida ishlamaydi, faqat boshqa parallel ochiq tablarda ishlaydi.
+7. **Savol:** Nega localStorage-ga foydalanuvchining session JWT tokenini saqlash xavfli hisoblanadi?
+   * **Javob:** Chunki localStorage JavaScript orqali ochiq o'qiladi. Agar saytda XSS (Cross-Site Scripting) zaifligi bo'lsa, tajovuzkor tokenlarni osongina o'g'irlab oladi.
+8. **Savol:** Brauzer inkognito (Private) rejimida bo'lganda localStorage qanday ishlaydi?
+   * **Javob:** Aksar zamonaviy brauzerlar inkognito rejimida storage uchun vaqtinchalik xotira ajratadi va yopilganda o'chirib yuboradi, ba'zi eski brauzerlar esa unga yozmoqchi bo'lganda xatolik otadi.
+
+### Senior (9–12)
+9. **Savol:** Nima uchun Web Storage API asinxron emas? Bu qanday muammoga sabab bo'ladi?
+   * **Javob:** Chunki u eski spetsifikatsiya asosida yaratilgan sinxron bloklovchi API. Katta hajmdagi ma'lumotlarni ketma-ket yozish yoki o'qish Main Thread-ni bloklab, interfeys FPS tushishiga olib kelishi mumkin. Katta hajmlar uchun IndexedDB ishlatish afzal.
+10. **Savol:** LocalStorage-dagi ma'lumotlarning amal qilish muddatini (expiration date) qanday yaratish mumkin?
+    * **Javob:** Buni qo'lda obyekt ichida kiritish kerak: ma'lumot bilan birga \`timestamp\` (yaratilgan vaqti) va \`ttl\` (yashash muddati) saqlanadi. Keyin getItem qilganda joriy vaqt bilan solishtirib, muddati o'tgan bo'lsa removeItem qilinadi.
+11. **Savol:** \`JSON.parse\` va \`JSON.stringify\` operatsiyalari localStorage bilan ishlashda qanday performance muammolarini keltirib chiqarishi mumkin?
+    * **Javob:** Katta obyektlarni har safar o'qishda va yozishda parse/stringify qilish CPU bloklanishiga olib keladi. Buni oldini olish uchun ma'lumotlarni mayda kalitlarga bo'lib saqlash yoki memory caching usulidan foydalanish zarur.
+12. **Savol:** subdomain.example.com sahifasi example.com ning localStorage ma'lumotlaridan foydalana oladimi?
+    * **Javob:** Yo'q. Web Storage **Same-Origin Policy** (bir xil kelib chiqish qoidasi) asosida ishlaydi. Ya'ni protokol (http/https), domen (subdomenlar ham alohida) va port mutloq bir xil bo'lishi shart.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Bu bo'limda siz interaktiv kod muharriri orqali amaliy mashqlarni bajarasiz.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars oxirida bilimingizni sinash uchun test topshiriqlari taqdim etiladi.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Dark Mode / Light Mode sozlamasini brauzerda saqlash
+Foydalanuvchi o'ziga ma'qul bo'lgan tema (qorong'u yoki yorug' rejim)ni tanlaganda, sahifa yangilansa ham tema saqlanib qolishi kerak.
+
+\`\`\`javascript
+// 1. Temani yuklash funksiyasi
+function applyTheme() {
+  const savedTheme = localStorage.getItem('app-theme') || 'light';
+  document.body.className = savedTheme;
+  console.log(\`Faollashtirilgan tema: \${savedTheme}\`);
+}
+
+// 2. Temani o'zgartirish va saqlash
+function toggleTheme() {
+  const currentTheme = localStorage.getItem('app-theme') || 'light';
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  
+  localStorage.setItem('app-theme', newTheme);
+  document.body.className = newTheme;
+}
+
+// Sahifa yuklanganda avtomatik ishlaydi
+window.onload = applyTheme;
 \`\`\`
 
 ---
 
-## 4. XATOLAR (Common Mistakes)
-1. **Obyektlarni to'g'ridan-to'g'ri stringify-siz yozish:** \`[object Object]\` bo'lib saqlanishi.
-2. **Maxfiy ma'lumotlarni saqlash:** LocalStorage JavaScript uchun ochiq bo'lgani uchun unda parollar yoki auth-tokenlarni saqlash xavflidir.
+## 9. 🚀 Performance va Optimization
+
+* **IndexedDB-ni o'rganing:** Agar saqlamoqchi bo'lgan ma'lumotingiz 5MB dan ko'p bo'lsa yoki tez-tez o'zgarib tursa, asinxron ishlovchi tranzaksiyaviy ma'lumotlar bazasi — **IndexedDB**-dan foydalaning.
+* **Debouncing (Kechiktirib yozish):** Foydalanuvchi matn yozayotganda har bir harfda localStorage-ga yozish o'rniga, yozish tugagandan so'ng 500ms kutib, keyin bitta yozish operatsiyasini bajaring.
 
 ---
 
-## 5. SAVOLLAR VA JAVOBLAR
+## 10. 📌 Cheat Sheet
 
-**1. LocalStorage va SessionStorage asosiy farqi nima?**
-LocalStorage doimiy xotira bo'lib, oyna yopilsa ham saqlanadi. SessionStorage esa faqat o'sha oyna/tab ochiq turguncha saqlanadi, tab yopilganda o'chadi.
-
-**2. LocalStorage limit sig'imi to'lganda nima yuz beradi?**
-Dasturda \`QuotaExceededError\` nomli runtime xatolik yuz beradi va ma'lumot saqlanmaydi.
-
-**3. Same-Origin Policy nima?**
-Xavfsizlik qoidasi bo'lib, unga ko'ra har bir sayt faqat o'zining port, protokol va domen manziliga tegishli LocalStorage xotirasiga kira oladi. Boshqa saytlar xotirani o'qiy olmaydi.
-
-**4. HttpOnly kukilar nima uchun xavfsizroq?**
-Chunki bu atribut kuki ma'lumotlarini JavaScript (\`document.cookie\`) yordamida o'g'irlanishini butunlay cheklaydi.
+| Metod / Xossa | Vazifasi | Misol |
+| :--- | :--- | :--- |
+| \`localStorage.setItem(key, value)\` | Kalit bo'yicha qiymat yozish | \`localStorage.setItem('role', 'user')\` |
+| \`localStorage.getItem(key)\` | Kalit bo'yicha qiymatni o'qish | \`localStorage.getItem('role')\` |
+| \`localStorage.removeItem(key)\` | Belgilangan kalitni o'chirish | \`localStorage.removeItem('role')\` |
+| \`localStorage.clear()\` | Butun storageni tozalash | \`localStorage.clear()\` |
+| \`localStorage.length\` | Saqlangan elementlar soni | \`console.log(localStorage.length)\` |
+| \`localStorage.key(index)\` | Indeks bo'yicha kalit nomini olish | \`const firstKey = localStorage.key(0)\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Ma'lumot saqlash",
-      instruction: "LocalStorage'ga 'theme' kaliti bilan 'dark' qiymatini saqlang.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "localStorage.setItem('theme', 'dark');",
-      test: "if (code.includes('setItem')) return null; return 'setItem ishlatilmadi';"
-    },
-    {
-      id: 2,
-      title: "Obyektni saqlash",
-      instruction: "JSON.stringify yordamida 'car' obyektini saqlang.",
-      startingCode: "const car = { model: 'BYD' };\n// Saqlang\n",
-      hint: "localStorage.setItem('car', JSON.stringify(car));",
-      test: "if (code.includes('JSON.stringify')) return null; return 'JSON.stringify ishlatilmadi';"
-    },
-    {
-      id: 3,
-      title: "Ma'lumotni o'chirish",
-      instruction: "LocalStorage'dan 'user' kalitini o'chirib tashlang.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "localStorage.removeItem('user');",
-      test: "if (code.includes('removeItem')) return null; return 'removeItem ishlatilmadi';"
-    },
-    {
-      id: 4,
-      title: "Ma'lumotni olish",
-      instruction: "LocalStorage'dan 'theme' kaliti qiymatini oling va uni 'myTheme' o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "const myTheme = localStorage.getItem('theme');",
-      test: "if (code.includes('getItem') && code.includes('theme')) return null; return 'getItem(\\'theme\\') orqali theme\\'ni oling';"
-    },
-    {
-      id: 5,
-      title: "Obyektni o'qish va parse qilish",
-      instruction: "LocalStorage'dan 'car' kalitini oling va uni JSON.parse yordamida obyektga o'tkazib 'carObj' o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "const carObj = JSON.parse(localStorage.getItem('car'));",
-      test: "if (code.includes('JSON.parse') && code.includes('getItem')) return null; return 'JSON.parse va getItem orqali obyektingizni parse qiling';"
-    },
-    {
-      id: 6,
-      title: "SessionStorage yozish",
-      instruction: "SessionStorage'ga 'session_id' kaliti bilan 'xyz123' qiymatini saqlang.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "sessionStorage.setItem('session_id', 'xyz123');",
-      test: "if (code.includes('sessionStorage.setItem') && code.includes('session_id')) return null; return 'sessionStorage.setItem ishlatilmadi';"
-    },
-    {
-      id: 7,
-      title: "Kuki yozish",
-      instruction: "document.cookie orqali 'username=Farhod' kuki qiymatini yozing.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "document.cookie = 'username=Farhod';",
-      test: "if (code.includes('document.cookie') && code.includes('username=Farhod')) return null; return 'document.cookie ga username=Farhod qo\\'shing';"
-    },
-    {
-      id: 8,
-      title: "Max-Age bilan kuki yozish",
-      instruction: "document.cookie orqali 'user=Ali' kukisini uning yashash muddatini 3600 soniya qilib belgilang (max-age=3600).",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "document.cookie = 'user=Ali; max-age=3600';",
-      test: "if (code.includes('document.cookie') && code.includes('max-age=3600')) return null; return 'max-age=3600 bilan kuki yozing';"
-    },
-    {
-      id: 9,
-      title: "Balla LocalStorage'ni tozalash",
-      instruction: "LocalStorage'dagi barcha ma'lumotlarni tozalash uchun tegishli metodni chaqiring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "localStorage.clear();",
-      test: "if (code.includes('localStorage.clear()')) return null; return 'localStorage.clear() chaqirilmadi';"
-    },
-    {
-      id: 10,
-      title: "LocalStorage hajmini tekshirish",
-      instruction: "LocalStorage'da nechta kalit saqlanganligini (length) 'len' o'zgaruvchisiga oling.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "const len = localStorage.length;",
-      test: "if (code.includes('localStorage.length')) return null; return 'localStorage.length ishlating';"
-    },
-    {
-      id: 11,
-      title: "Index bo'yicha kalit nomini olish",
-      instruction: "LocalStorage'dagi birinchi kalit nomini (index 0) .key() metodi yordamida 'firstKey' o'zgaruvchisiga oling.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "const firstKey = localStorage.key(0);",
-      test: "if (code.includes('localStorage.key(0)')) return null; return 'localStorage.key(0) ishlating';"
-    },
-    {
-      id: 12,
-      title: "SessionStorage'ni butunlay tozalash",
-      instruction: "SessionStorage'dagi barcha ma'lumotlarni tozalang.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "sessionStorage.clear();",
-      test: "if (code.includes('sessionStorage.clear()')) return null; return 'sessionStorage.clear() chaqirilmadi';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Xavfsiz Yozish Wrapper (safeSetItem)",
-      instruction: "LocalStorage limitdan oshganda `QuotaExceededError` xatosini tashlaydi. Agar yozish jarayonida xato bo'lsa (quota exceeded), uni tutib `false` qaytaradigan, muvaffaqiyatli yozilsa `true` qaytaradigan `safeSetItem(key, value)` funksiyasini yozing.",
-      startingCode: "function safeSetItem(key, value) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "try { localStorage.setItem(key, value); return true; } catch (e) { return false; }",
-      test: "if (typeof safeSetItem !== 'function') return 'safeSetItem funksiya emas';\nconst success = safeSetItem('test_key', 'val');\nif (success && localStorage.getItem('test_key') === 'val') return null;\nreturn 'Yozish xato bajarildi';"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Kuki Parser Helper (parseCookie)",
-      instruction: "Brauzerning `document.cookie` satrini (`key1=val1; key2=val2` formatida) parse qilib, obyekt ko'rinishida qaytaruvchi `parseCookie(cookieStr)` funksiyasini yozing.",
-      startingCode: "function parseCookie(cookieStr) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "if (!cookieStr) return {}; return cookieStr.split(';').reduce((acc, current) => { const [key, val] = current.trim().split('='); if (key) acc[key] = val || ''; return acc; }, {});",
-      test: "if (typeof parseCookie !== 'function') return 'parseCookie funksiya emas';\nconst parsed = parseCookie('user=Ali; theme=dark');\nif (parsed && parsed.user === 'Ali' && parsed.theme === 'dark') return null;\nreturn 'Kuki parse qilish xato';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Oddiy qiymat saqlash",
+    "instruction": "Berilgan `key` (kalit) va `value` (matnli qiymat)ni localStorage-ga saqlaydigan va so'ngra uni qayta o'qib qaytaradigan `saveStringToLocalStorage(key, value)` funksiyasini yozing.",
+    "startingCode": "function saveStringToLocalStorage(key, value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "localStorage.setItem(key, value); dan keyin localStorage.getItem(key); ni return qiling.",
+    "test": "if (typeof localStorage === 'undefined') {\n  globalThis.localStorage = {\n    store: {},\n    setItem(k,v) { this.store[k] = String(v); },\n    getItem(k) { return this.store[k] || null; },\n    clear() { this.store = {}; }\n  };\n}\nconst sandbox = new Function(code + '; return saveStringToLocalStorage;');\nconst fn = sandbox();\nlocalStorage.clear();\nconst res = fn('name', 'Jasur');\nif (localStorage.getItem('name') === 'Jasur' && res === 'Jasur') return null;\nreturn 'LocalStorage-ga ma\\'lumot yozilmadi yoki to\\'g\\'ri o\\'qilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Obyektni satrga o'girib saqlash",
+    "instruction": "Berilgan `obj` obyektini JSON satrga aylantirib, `key` kaliti ostida localStorage-ga saqlaydigan `saveObjectToLocalStorage(key, obj)` funksiyasini yozing.",
+    "startingCode": "function saveObjectToLocalStorage(key, obj) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "JSON.stringify(obj) funksiyasidan foydalaning.",
+    "test": "if (typeof localStorage === 'undefined') {\n  globalThis.localStorage = {\n    store: {},\n    setItem(k,v) { this.store[k] = String(v); },\n    getItem(k) { return this.store[k] || null; },\n    clear() { this.store = {}; }\n  };\n}\nconst sandbox = new Function(code + '; return saveObjectToLocalStorage;');\nconst fn = sandbox();\nlocalStorage.clear();\nconst testObj = { x: 10, y: 20 };\nfn('coords', testObj);\nconst stored = localStorage.getItem('coords');\nif (stored && JSON.parse(stored).x === 10) return null;\nreturn 'Obyekt JSON formatida localStorage-ga to\\'g\\'ri saqlanmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Saqlangan obyektni parse qilib olish",
+    "instruction": "localStorage-dan berilgan `key` kaliti ostidagi qiymatni olib, uni qaytadan JS obyektiga o'girib (parse qilib) qaytaradigan `getParsedObjectFromLocalStorage(key)` funksiyasini yozing. Agar bunday kalit storage-da mavjud bo'lmasa, `null` qaytaring.",
+    "startingCode": "function getParsedObjectFromLocalStorage(key) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "localStorage.getItem(key) qiymatini tekshiring, agar bor bo'lsa JSON.parse() qiling, aks holda null qaytaring.",
+    "test": "if (typeof localStorage === 'undefined') {\n  globalThis.localStorage = {\n    store: {},\n    setItem(k,v) { this.store[k] = String(v); },\n    getItem(k) { return this.store[k] || null; },\n    clear() { this.store = {}; }\n  };\n}\nconst sandbox = new Function(code + '; return getParsedObjectFromLocalStorage;');\nconst fn = sandbox();\nlocalStorage.clear();\nlocalStorage.setItem('user', JSON.stringify({ name: 'Ali' }));\nconst res = fn('user');\nconst emptyRes = fn('nonexistent');\nif (res && res.name === 'Ali' && emptyRes === null) return null;\nreturn 'Obyekt to\\'g\\'ri parse qilinmadi yoki mavjud bo\\'lmagan kalit uchun null qaytarilmadi';"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "`LocalStorage` va `SessionStorage` o'rtasidagi eng asosiy farq nima?",
-      options: [
-        "LocalStorage ma'lumotlarni faqat massiv ko'rinishida saqlaydi, SessionStorage esa faqat obyekt ko'rinishida",
-        "LocalStorage'dagi ma'lumotlar foydalanuvchi yoki kod orqali o'chirilmaguncha muddatsiz saqlanadi, SessionStorage esa tab yoki brauzer yopilishi bilan o'chib ketadi",
-        "SessionStorage xavfsizroq va parollarni saqlash uchun mo'ljallangan",
-        "LocalStorage faqat serverda, SessionStorage esa faqat client-side'da ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "LocalStorage doimiy xotira bo'lib, kompyuter o'chib yonsa ham o'chmaydi (kod orqali yoki qo'lda tozalanmaguncha). SessionStorage esa faqat o'sha tab ochiq turganda saqlanib turadi."
-    },
-    {
-      id: 2,
-      question: "`LocalStorage`ga JavaScript obyektini (`const user = { name: 'Ali' }`) saqlamoqchi bo'lsak, nima uchun `JSON.stringify()` ishlatishimiz shart?",
-      options: [
-        "Chunki LocalStorage faqat matnli (string) ma'lumotlarni saqlashga moslashgan, aks holda obyekt `[object Object]` shaklida saqlanib qoladi",
-        "Chunki bu xotirada joyni 10 barobargacha tejaydi",
-        "Chunki u ma'lumotlarni shifrlaydi (encrypt)",
-        "JSON ishlatilmasa brauzer avtomatik ravishda sahifani bloklaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "Veb-xotiraga faqat kalit-qiymat ko'rinishidagi stringlar saqlanadi. Obyektlarni saqlashdan oldin `JSON.stringify` orqali string formatiga aylantirish, o'qiyotganda esa `JSON.parse` yordamida obyekt holiga qaytarish zarur."
-    },
-    {
-      id: 3,
-      question: "`LocalStorage`ning o'rtacha sig'im limiti (storage limit) qancha?",
-      options: [
-        "5-10 KB",
-        "5-10 MB",
-        "1-2 GB",
-        "Cheksiz"
-      ],
-      correctAnswer: 1,
-      explanation: "LocalStorage juda katta hajmdagi ma'lumotlar uchun mo'ljallagannmagan. Brauzerlar odatda har bir origin uchun 5 dan 10 MB gacha bo'lgan limit o'rnatishadi."
-    },
-    {
-      id: 4,
-      question: "Brauzer xotirasidan barcha ma'lumotlarni bitta operatsiya bilan butunlay tozalash uchun qaysi metod ishlatiladi?",
-      options: [
-        "`localStorage.removeAll()`",
-        "`localStorage.clear()`",
-        "`localStorage.delete()`",
-        "`localStorage.reset()`"
-      ],
-      correctAnswer: 1,
-      explanation: "`localStorage.clear()` metodi o'sha origin (domen) uchun saqlangan barcha kalit va qiymatlarni butunlay tozalab tashlaydi."
-    },
-    {
-      id: 5,
-      question: "Bir xil domendagi boshqa tab yoki oynada `LocalStorage` ma'lumotlari o'zgarganda, buni real-vaqtda kuzatib borish uchun qaysi hodisadan (event) foydalanish mumkin?",
-      options: [
-        "`change` event",
-        "`storage` event",
-        "`update` event",
-        "`load` event"
-      ],
-      correctAnswer: 1,
-      explanation: "Brauzerda `storage` event hodisasi mavjud. Agar bitta saytning bir nechta tabi ochiq bo'lsa va birida `localStorage` o'zgartirilsa, qolgan tablar buni `window.addEventListener('storage', callback)` orqali eshitib, mos ravishda ish tutishi mumkin."
-    },
-    {
-      id: 6,
-      question: "Kukilar (Cookies)ning odatiy maksimal hajmi (sig'im limiti) qancha bo'ladi?",
-      options: [
-        "taxminan 4 KB",
-        "taxminan 5 MB",
-        "taxminan 100 KB",
-        "Cheksiz"
-      ],
-      correctAnswer: 0,
-      explanation: "Cookies vaqtinchalik va real vaqtda HTTP request-lar bilan serverga avtomatik yuklanganligi sababli, ularning hajmi 4 KB bilan cheklangan."
-    },
-    {
-      id: 7,
-      question: "Kukilarning `HttpOnly` sarlavha atributining asosiy xavfsizlik afzalligi nima?",
-      options: [
-        "Kukini shifrlash tezligini oshiradi",
-        "JavaScript kodi (document.cookie) orqali kuki qiymatlarini o'qishni taqiqlaydi va XSS o'g'irligini oldini oladi",
-        "Kukilarni faqat mobil qurilmalarda ko'rsatadi",
-        "CORS xatosini butunlay yo'qotadi"
-      ],
-      correctAnswer: 1,
-      explanation: "HttpOnly atributi kuki qiymatlarini JavaScript kirishidan to'liq berkitadi va browser darajasida XSS xavfidan himoyalaydi."
-    },
-    {
-      id: 8,
-      question: "Cookies limit to'lib ketganda yoki QuotaExceededError yuz berganda xavfsiz setItem wrapper yozish nega muhim?",
-      options: [
-        "Dastur sinxron ravishda to'xtab qolmasligi va ma'lumot saqlanmaganda fallback boshqaruvini amalga oshirish uchun",
-        "LocalStorage hajmini 10MB dan oshirish uchun",
-        "Brauzerni tezkor refresh qilish uchun",
-        "CSS stillarini o'zgartirish uchun"
-      ],
-      correctAnswer: 0,
-      explanation: "QuotaExceededError tutilmasa, dastur kutilmaganda sinxron crash bo'ladi. Xavfsiz wrapper buni aniqlab, boshqa muqobil reja ishlatishga imkon beradi."
-    },
-    {
-      id: 9,
-      question: "document.cookie ga yangi qiymat berilganda (masalan, key=value) eski kukilar o'chib ketadimi?",
-      options: [
-        "Ha, barcha eski kukilar tozalab tashlanadi",
-        "Yo'q, brauzer yangi kukini mavjud kukilar ro'yxatiga qo'shib qo'yadi (append qiladi)",
-        "Faqat HttpOnly bo'lmasa o'chadi",
-        "Faqat Secure o'rnatilgan bo'lsa o'chadi"
-      ],
-      correctAnswer: 1,
-      explanation: "document.cookie xususiyati setter kabi ishlaydi, ammo u to'liq satrni o'zgartirmaydi, balki berilgan yangi kuki kalitini qo'shadi yoki eskisini yangilaydi."
-    },
-    {
-      id: 10,
-      question: "Ayni joriy sahifaning o'zida sodir bo'lgan LocalStorage o'zgarishi shu sahifadagi window 'storage' eventini ishga tushiradimi?",
-      options: [
-        "Ha, har doim ishlaydi",
-        "Yo'q, storage hodisasi faqat boshqa tablar yoki oynalardagi o'zgarishlar uchun trigger bo'ladi",
-        "Faqat iframe ichida ishlasa trigger bo'ladi",
-        "Faqat secure kuki bo'lsa ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Qoidaga ko'ra, joriy oynaning o'zida yuz bergan o'zgarish joriy oynadagi 'storage' listenerini trigger qilmaydi, faqat boshqa ochiq tablarda trigger bo'ladi."
-    },
-    {
-      id: 11,
-      question: "CSRF (Cross-Site Request Forgery) hujumlaridan himoyalanishda kuki faylining qaysi atributi yordam beradi?",
-      options: [
-        "Secure",
-        "HttpOnly",
-        "SameSite (Strict/Lax)",
-        "Max-Age"
-      ],
-      correctAnswer: 2,
-      explanation: "SameSite atributi uchinchi tomon so'rovlarida kuki yuborilishini boshqaradi va bu orqali CSRF xavfini kamaytiradi."
-    },
-    {
-      id: 12,
-      question: "Cookies secure atributi nimani kafolatlaydi?",
-      options: [
-        "Kukini shifrlanganligini",
-        "Kuki faqat HTTPS protokoli orqali serverga uzatilishini",
-        "JavaScript kuki kirishini to'xtatishini",
-        "Kuki muddati cheksizligini"
-      ],
-      correctAnswer: 1,
-      explanation: "Secure atributi kuki faqat HTTPS (xavfsiz shifrlangan kanal) orqali yuborilishini ta'minlaydi."
-    },
-    {
-      id: 13,
-      question: "Veb-xotiraga katta ma'lumot yozayotganda QuotaExceededError xatosini qaysi catch sharti bilan ushlash maqsadga muvofiq?",
-      options: [
-        "e.name === 'QuotaExceededError' yoki e.code === 22",
-        "e.message === 'Failed'",
-        "e instanceof TypeError",
-        "e instanceof ReferenceError"
-      ],
-      correctAnswer: 0,
-      explanation: "Brauzer xotira limiti to'lganda aynan 'QuotaExceededError' nomli xatoni (yoki eski brauzerlarda kod 22) otadi."
-    },
-    {
-      id: 14,
-      question: "Same-Origin Policy qoidasiga ko'ra, qaysi uchta qiymat mos kelgandagina boshqa oyna LocalStorage-ni o'qiy oladi?",
-      options: [
-        "Domen nomi, Port va Protokol (schema)",
-        "IP address, operatsion tizim va brauzer turi",
-        "URL, sarlavhalar va HTTP metod",
-        "Faqat URL va sarlavhalar"
-      ],
-      correctAnswer: 0,
-      explanation: "Same-Origin (bir xil manba) qoidasi protokol (http/https), domen (example.com) va port (:80/:443) to'liq mos kelishini talab qiladi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "localStorage va sessionStorage o'rtasidagi eng asosiy farq nimada?",
+    "options": [
+      "localStorage ma'lumotlarni serverga yuboradi, sessionStorage esa yo'q",
+      "Ma'lumotlarning saqlanish muddati: localStorage abadiy saqlaydi, sessionStorage esa tab yopilganda o'chadi",
+      "sessionStorage faqat raqamlarni saqlay oladi, localStorage esa obyeklarni",
+      "Hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "localStorage ma'lumotlarni dasturchi yoki foydalanuvchi o'chirmaguncha saqlab turadi, sessionStorage esa joriy tab/oyna yopilishi bilan ma'lumotlarni yo'qotadi."
+  },
+  {
+    "id": 2,
+    "question": "sessionStorage-ga saqlangan ma'lumotlar qachon to'liq o'chib ketadi?",
+    "options": [
+      "Kompyuter o'chib-yonganda",
+      "Brauzer keshini tozalaganda",
+      "Ma'lumotlar yozilgan brauzer oynasi (tabi) foydalanuvchi tomonidan yopilganda",
+      "Yozilgandan 24 soat o'tgach"
+    ],
+    "correctAnswer": 2,
+    "explanation": "sessionStorage joriy seans (session) bilan bog'liq bo'lib, sahifa yorlig'i (tab) o'chirilishi bilan o'z-o'zidan tozalanadi."
+  },
+  {
+    "id": 3,
+    "question": "Web Storage API-da ma'lumotlar qanday ma'lumot tipida saqlanadi?",
+    "options": [
+      "Faqat JSON obyektlari shaklida",
+      "Faqat satr (string) turida",
+      "Istalgan JS tipi (number, array, function, object) o'zgarishsiz saqlanadi",
+      "Faqat ikkilik (binary) formatda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web Storage faqat satr (string) qiymatlarni saqlay oladi. Obyektlar yoki massivlarni saqlashdan oldin ularni satrga (masalan JSON) o'girish shart."
+  },
+  {
+    "id": 4,
+    "question": "localStorage-ga obyektni saqlashdan oldin qaysi metod yordamida string formatiga o'tkazish kerak?",
+    "options": [
+      "JSON.parse()",
+      "JSON.stringify()",
+      "Object.toString()",
+      "String.valueOf()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JSON.stringify() obyekti JS obyektini string formatiga o'tkazadi va uni storage-da to'g'ri saqlash imkonini beradi."
+  },
+  {
+    "id": 5,
+    "question": "Storage-dan biror kalit (key) ostidagi ma'lumotni o'qib olish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "localStorage.readItem(key)",
+      "localStorage.getItem(key)",
+      "localStorage.fetchItem(key)",
+      "localStorage.key"
+    ],
+    "correctAnswer": 1,
+    "explanation": "getItem(key) metodi ko'rsatilgan kalit bo'yicha qiymatni qaytaradi. Agar kalit mavjud bo'lmasa, null qaytadi."
+  },
+  {
+    "id": 6,
+    "question": "LocalStorage sig'imi har bir domen (origin) uchun o'rtacha qancha qilib belgilangan?",
+    "options": [
+      "4 Kilobayt (4KB)",
+      "5 Megabayt (5MB)",
+      "50 Megabayt (50MB)",
+      "Cheksiz"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Zamonaviy brauzerlarda localStorage limiti har bir domen uchun o'rtacha 5MB ni tashkil qiladi. Cookie (kuki) fayllarida esa bu atigi 4KB dir."
+  },
+  {
+    "id": 7,
+    "question": "LocalStorage-dagi barcha kalit va qiymatlarni birdaniga butunlay tozalash uchun qaysi metod ishlatiladi?",
+    "options": [
+      "localStorage.removeItem()",
+      "localStorage.clear()",
+      "localStorage.deleteAll()",
+      "localStorage.reset()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "clear() metodi joriy domen uchun tegishli bo'lgan barcha ma'lumotlarni storagedan butunlay o'chirib yuboradi."
+  },
+  {
+    "id": 8,
+    "question": "Boshqa ochiq tab yoki oyna orqali localStorage o'zgartirilganda qaysi hodisa (event) ishga tushadi?",
+    "options": [
+      "change",
+      "update",
+      "storage",
+      "onstoragechange"
+    ],
+    "correctAnswer": 2,
+    "explanation": "window-dagi 'storage' hodisasi parallel oynalarda ma'lumot o'zgarganda ishlaydi va cross-tab aloqasini o'rnatishga yordam beradi."
+  },
+  {
+    "id": 9,
+    "question": "Nima uchun localStorage-ga foydalanuvchining session ID yoki JWT tokenlarini saqlash xavfli hisoblanadi?",
+    "options": [
+      "Chunki ular tez-tez o'chib ketadi",
+      "Chunki localStorage faqat rasmlarni saqlash uchun mo'ljallangan",
+      "Chunki u JavaScript tomonidan oson o'qiladi va saytda XSS zaifligi bo'lsa token o'g'irlanishi mumkin",
+      "Chunki brauzer tokenlarni keshlamaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "LocalStorage-ga JS kodlari to'liq kirish huquqiga ega. XSS (Cross-Site Scripting) hujumi sodir etilsa, tajovuzkorlar foydalanuvchi tokenini o'g'irlab olishlari mumkin."
+  },
+  {
+    "id": 10,
+    "question": "localStorage.key(0) buyrug'i nima vazifani bajaradi?",
+    "options": [
+      "Storage-dagi birinchi elementning qiymatini qaytaradi",
+      "Storage-dagi birinchi elementning kalit (key) nomini qaytaradi",
+      "LocalStorage-ni tozalaydi",
+      "Har doim xatolik qaytaradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "key(index) metodi storagedan berilgan indeks bo'yicha joylashgan kalit (key) nomini aniqlaydi."
+  },
+  {
+    "id": 11,
+    "question": "Web Storage API operatsiyalari ishlash tabiati bo'yicha qanday?",
+    "options": [
+      "Ular asinxrondir va Promise qaytaradi",
+      "Ular sinxrondir, ya'ni bajarilayotganda brauzerning asosiy oqimini (Main Thread) bloklaydi",
+      "Ular orqa fonda Web Workers yordamida ishlaydi",
+      "Hech qanday resurs sarflamaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web Storage API to'liq sinxrondir. Shuning uchun katta hajmdagi ma'lumotlar bilan ishlaganda interfeys qotib qolishini oldini olish uchun uni ehtiyotkorlik bilan ishlatish kerak."
+  },
+  {
+    "id": 12,
+    "question": "Same-Origin Policy qoidasiga ko'ra, qaysi domenlar bir-birining localStorage ma'lumotlarini o'qishi mumkin?",
+    "options": [
+      "Protokoli, domeni va porti mutlaqo bir xil bo'lgan domenlar",
+      "Faqat bir xil IP manzildan ishlovchi har qanday saytlar",
+      "Domen nomining bir qismi mos keladigan subdomenlar (masalan: a.test.com va b.test.com)",
+      "Har qanday HTTP/HTTPS saytlar"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Same-Origin Policy protokoli (HTTP/HTTPS), domen (va subdomenlari ham alohida kelib chiqish) hamda porti bir xil bo'lishini talab qiladi. Subdomenlar ham bir-birining storage'ini o'qiy olmaydi."
+  }
+]
+
 };

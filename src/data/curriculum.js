@@ -56,7 +56,7 @@ import { callbacks as callbacksLesson } from "./lessons/advanced/callbacks";
 import { promises } from "./lessons/advanced/promises";
 import { asyncAwait } from "./lessons/advanced/asyncAwait";
 import { fetch as fetchApi } from "./lessons/advanced/fetch";
-import { localStorageLesson } from "./lessons/advanced/localStorage";
+import { localStorage as localStorageLesson } from "./lessons/advanced/localStorage";
 import { errorHandling } from "./lessons/advanced/errorHandling";
 import { modules as modulesLesson } from "./lessons/advanced/modules";
 import { debugging } from "./lessons/advanced/debugging";
