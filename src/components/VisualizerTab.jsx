@@ -14,6 +14,14 @@ export default function VisualizerTab({ activeLesson }) {
     { id: 3, value: 30 }
   ]);
   const [llInput, setLlInput] = useState("");
+  const [llMode, setLlMode] = useState("basic"); // basic or cycle
+  const [cycleLength, setCycleLength] = useState(8);
+  const [cycleEntry, setCycleEntry] = useState(3);
+  const [cycleStep, setCycleStep] = useState(0);
+  const [slowPointer, setSlowPointer] = useState(0);
+  const [fastPointer, setFastPointer] = useState(0);
+  const [cyclePhase, setCyclePhase] = useState("collision"); // collision, find_entry, done
+  const [cycleCodeLine, setCycleCodeLine] = useState(0);
 
   const [sqMode, setSqMode] = useState("stack"); // stack or queue
   const [sqItems, setSqItems] = useState([10, 20, 30]);
@@ -78,6 +86,11 @@ export default function VisualizerTab({ activeLesson }) {
         { id: 2, value: 20 },
         { id: 3, value: 30 }
       ]);
+      setCycleStep(0);
+      setSlowPointer(0);
+      setFastPointer(0);
+      setCyclePhase("collision");
+      setCycleCodeLine(0);
     } else if (activeLesson.id === "stacksQueues") {
       setSqItems([10, 20, 30]);
       setSqActiveIndex(null);
@@ -105,11 +118,75 @@ export default function VisualizerTab({ activeLesson }) {
     }
   };
 
+  const runCycleStep = () => {
+    const getNext = (idx) => {
+      if (idx === cycleLength - 1) return cycleEntry;
+      return idx + 1;
+    };
+
+    if (cycleStep === 0) {
+      setSlowPointer(0);
+      setFastPointer(0);
+      setCyclePhase("collision");
+      setCycleCodeLine(2);
+      setStepInfo("slow va fast ko'rsatkichlari head (Node 0) ga joylashtirildi.");
+      setCycleStep(1);
+      return;
+    }
+
+    if (cyclePhase === "collision") {
+      if (cycleCodeLine === 2 || cycleCodeLine === 6) {
+        const nextSlow = getNext(slowPointer);
+        const nextFast = getNext(getNext(fastPointer));
+        setSlowPointer(nextSlow);
+        setFastPointer(nextFast);
+        setCycleCodeLine(4);
+        setStepInfo(`slow pointer Node ${nextSlow} ga, fast pointer Node ${nextFast} ga surildi.`);
+      } else if (cycleCodeLine === 4) {
+        setCycleCodeLine(6);
+        if (slowPointer === fastPointer) {
+          setCyclePhase("find_entry");
+          setCycleCodeLine(8);
+          setStepInfo(`To'qnashuv Node ${slowPointer} da aniqlandi (slow == fast)! Endi slow pointer head ga (Node 0) qaytariladi.`);
+          setSlowPointer(0);
+        } else {
+          setStepInfo(`slow (Node ${slowPointer}) va fast (Node ${fastPointer}) hali to'qnashmadi. Sikl davom etadi.`);
+        }
+      }
+      setCycleStep(prev => prev + 1);
+    } else if (cyclePhase === "find_entry") {
+      if (cycleCodeLine === 8) {
+        setCycleCodeLine(10);
+        const nextSlow = getNext(slowPointer);
+        const nextFast = getNext(fastPointer);
+        setSlowPointer(nextSlow);
+        setFastPointer(nextFast);
+        setStepInfo(`Ikkala pointer ham 1 qadamdan surildi: slow Node ${nextSlow} ga, fast Node ${nextFast} ga.`);
+      } else if (cycleCodeLine === 10) {
+        if (slowPointer === fastPointer) {
+          setCyclePhase("done");
+          setCycleCodeLine(11);
+          setStepInfo(`slow va fast Node ${slowPointer} da uchrashdi! Bu tsiklning boshlanish (kirish) nuqtasidir.`);
+          stopTimer();
+        } else {
+          setCycleCodeLine(8);
+          setStepInfo(`slow va fast hali uchrashmadi. Har biri 1 qadamdan surilishda davom etadi.`);
+        }
+      }
+      setCycleStep(prev => prev + 1);
+    } else {
+      setStepInfo("Tsikl aniqlash simulyatsiyasi yakunlandi.");
+      stopTimer();
+    }
+  };
+
   const handleStep = () => {
     if (activeLesson.id === "sortingSearching") {
       runSortingStep();
     } else if (activeLesson.id === "leetcodeTop") {
       runLeetcodeStep();
+    } else if (activeLesson.id === "linkedLists" && llMode === "cycle") {
+      runCycleStep();
     } else {
       setStepInfo("Ushbu dars uchun qadamma-qadam animatsiya tugmasi faqat boshqaruv panelidan amalga oshiriladi.");
       stopTimer();
@@ -450,33 +527,250 @@ export default function VisualizerTab({ activeLesson }) {
 
         {/* LINKED LISTS VISUALIZATION */}
         {activeLesson.id === "linkedLists" && (
-          <div className="vis-ll-layout">
-            <div className="vis-controls">
-              <input
-                type="number"
-                placeholder="Qiymat"
-                value={llInput}
-                onChange={(e) => setLlInput(e.target.value)}
-              />
-              <button onClick={handleLLPrepend}>Head (Boshiga)</button>
-              <button onClick={handleLLAppend}>Tail (Oxiriga)</button>
-              <button onClick={handleLLDelete} className="btn-danger">O'chirish</button>
+          <div className="vis-ll-layout flex flex-col w-full">
+            <div className="vis-controls flex gap-2 mb-4">
+              <button
+                className={`px-3 py-1.5 rounded text-sm ${llMode === "basic" ? "bg-amber-500 text-slate-950 font-semibold" : "bg-slate-800 text-slate-300"}`}
+                onClick={() => {
+                  setLlMode("basic");
+                  handleReset();
+                }}
+              >
+                Oddiy Linked List
+              </button>
+              <button
+                className={`px-3 py-1.5 rounded text-sm ${llMode === "cycle" ? "bg-amber-500 text-slate-950 font-semibold" : "bg-slate-800 text-slate-300"}`}
+                onClick={() => {
+                  setLlMode("cycle");
+                  handleReset();
+                }}
+              >
+                Floyd's Cycle Detection
+              </button>
             </div>
-            <div className="ll-nodes-chain">
-              {linkedListNodes.map((node, idx) => (
-                <div className="ll-node-container" key={node.id}>
-                  <div className="ll-node-box">
-                    <div className="ll-node-value">{node.value}</div>
-                    <div className="ll-node-next">next</div>
-                  </div>
-                  {idx < linkedListNodes.length - 1 ? (
-                    <div className="ll-arrow">➔</div>
-                  ) : (
-                    <div className="ll-arrow-null">➔ null</div>
-                  )}
+
+            {llMode === "basic" ? (
+              <div className="w-full">
+                <div className="vis-controls flex gap-2 mb-4">
+                  <input
+                    type="number"
+                    placeholder="Qiymat"
+                    className="bg-slate-800 text-slate-100 border border-slate-700 px-2.5 py-1.5 rounded w-24 text-sm"
+                    value={llInput}
+                    onChange={(e) => setLlInput(e.target.value)}
+                  />
+                  <button className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded text-sm border border-slate-700" onClick={handleLLPrepend}>Head (Boshiga)</button>
+                  <button className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded text-sm border border-slate-700" onClick={handleLLAppend}>Tail (Oxiriga)</button>
+                  <button className="bg-red-950/65 text-red-200 hover:bg-red-900/80 px-3 py-1.5 rounded text-sm border border-red-900/60" onClick={handleLLDelete}>O'chirish</button>
                 </div>
-              ))}
-            </div>
+                <div className="ll-nodes-chain flex items-center gap-2 overflow-x-auto py-4">
+                  {linkedListNodes.map((node, idx) => (
+                    <div className="ll-node-container flex items-center gap-1" key={node.id}>
+                      <div className="ll-node-box bg-slate-800/85 border border-slate-700 rounded-lg p-2 flex items-center shadow-lg text-sm">
+                        <div className="ll-node-value font-semibold px-2 text-amber-400">{node.value}</div>
+                        <div className="w-[1px] h-6 bg-slate-700"></div>
+                        <div className="text-[11px] text-slate-400 px-2">next</div>
+                      </div>
+                      {idx < linkedListNodes.length - 1 ? (
+                        <div className="ll-arrow text-slate-500 text-lg">➔</div>
+                      ) : (
+                        <div className="ll-arrow-null text-red-400/85 text-xs font-mono">➔ null</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <div className="lg:col-span-8 bg-slate-900/60 border border-slate-800 rounded-xl p-4 flex flex-col items-center">
+                  <div className="flex gap-4 w-full justify-between items-center mb-6">
+                    <div className="flex flex-col gap-1 w-1/2">
+                      <div className="text-xs text-slate-400 flex justify-between">
+                        <span>Length:</span>
+                        <span className="font-semibold text-amber-400">{cycleLength}</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="3"
+                        max="12"
+                        value={cycleLength}
+                        className="accent-amber-500 w-full"
+                        onChange={(e) => {
+                          const len = parseInt(e.target.value);
+                          setCycleLength(len);
+                          if (cycleEntry >= len) setCycleEntry(len - 1);
+                          handleReset();
+                        }}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1 w-1/2">
+                      <div className="text-xs text-slate-400 flex justify-between">
+                        <span>Cycle Entry:</span>
+                        <span className="font-semibold text-amber-400">Node {cycleEntry}</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0"
+                        max={cycleLength - 1}
+                        value={cycleEntry}
+                        className="accent-amber-500 w-full"
+                        onChange={(e) => {
+                          setCycleEntry(parseInt(e.target.value));
+                          handleReset();
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="relative w-full h-[280px] bg-slate-950/45 border border-slate-900 rounded-xl overflow-hidden shadow-inner">
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                      {Array.from({ length: cycleLength }).map((_, i) => {
+                        const getCoords = (idx) => {
+                          if (idx < cycleEntry) {
+                            return { x: 60 + idx * 85, y: 140 };
+                          } else {
+                            const loopNodes = cycleLength - cycleEntry;
+                            const r = 70;
+                            const cx = 60 + cycleEntry * 85 + r;
+                            const cy = 140;
+                            const angle = Math.PI + ((idx - cycleEntry) * (2 * Math.PI / loopNodes));
+                            return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
+                          }
+                        };
+
+                        const current = getCoords(i);
+                        const nextIndex = (i === cycleLength - 1) ? cycleEntry : i + 1;
+                        const next = getCoords(nextIndex);
+
+                        const dx = next.x - current.x;
+                        const dy = next.y - current.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        
+                        const shrink = 18;
+                        const startX = current.x + (dx / dist) * shrink;
+                        const startY = current.y + (dy / dist) * shrink;
+                        const endX = next.x - (dx / dist) * (shrink + 4);
+                        const endY = next.y - (dy / dist) * (shrink + 4);
+
+                        const isBackedge = i === cycleLength - 1;
+
+                        return (
+                          <g key={i}>
+                            <defs>
+                              <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b" />
+                              </marker>
+                              <marker id="arrow-cycle" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#06b6d4" />
+                              </marker>
+                            </defs>
+                            <path
+                              d={isBackedge 
+                                ? `M ${startX} ${startY} Q ${(current.x + next.x)/2} ${current.y + 60} ${endX} ${endY}`
+                                : `M ${startX} ${startY} L ${endX} ${endY}`
+                              }
+                              stroke={isBackedge ? "#06b6d4" : "#475569"}
+                              strokeWidth="2"
+                              fill="none"
+                              markerEnd={isBackedge ? "url(#arrow-cycle)" : "url(#arrow)"}
+                            />
+                          </g>
+                        );
+                      })}
+                    </svg>
+
+                    {Array.from({ length: cycleLength }).map((_, i) => {
+                      const getCoords = (idx) => {
+                        if (idx < cycleEntry) {
+                          return { x: 60 + idx * 85, y: 140 };
+                        } else {
+                          const loopNodes = cycleLength - cycleEntry;
+                          const r = 70;
+                          const cx = 60 + cycleEntry * 85 + r;
+                          const cy = 140;
+                          const angle = Math.PI + ((idx - cycleEntry) * (2 * Math.PI / loopNodes));
+                          return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
+                        }
+                      };
+
+                      const { x, y } = getCoords(i);
+                      const isSlowHere = slowPointer === i && cycleStep > 0;
+                      const isFastHere = fastPointer === i && cycleStep > 0;
+                      const isBothHere = isSlowHere && isFastHere;
+
+                      return (
+                        <div
+                          key={i}
+                          style={{ left: x - 18, top: y - 18 }}
+                          className={`absolute w-9 h-9 rounded-full flex items-center justify-center border text-xs font-semibold shadow-md z-10 transition-all duration-300 ${
+                            isBothHere
+                              ? "bg-amber-500 border-amber-600 text-slate-950 scale-110 ring-4 ring-amber-500/20"
+                              : isSlowHere
+                              ? "bg-blue-600 border-blue-700 text-slate-100 scale-105"
+                              : isFastHere
+                              ? "bg-cyan-500 border-cyan-600 text-slate-950 scale-105"
+                              : "bg-slate-800 border-slate-700 text-slate-300"
+                          }`}
+                        >
+                          {i}
+
+                          {/* Pointer tags */}
+                          {(isSlowHere || isFastHere) && (
+                            <div className="absolute -top-7 flex flex-col items-center gap-0.5">
+                              {isBothHere ? (
+                                <span className="bg-amber-500 text-slate-950 text-[9px] px-1 rounded font-bold uppercase shadow">Both</span>
+                              ) : (
+                                <>
+                                  {isSlowHere && <span className="bg-blue-600 text-slate-100 text-[9px] px-1 rounded font-bold uppercase shadow">Slow</span>}
+                                  {isFastHere && <span className="bg-cyan-500 text-slate-950 text-[9px] px-1 rounded font-bold uppercase shadow">Fast</span>}
+                                </>
+                              )}
+                            </div>
+                          )}
+                          {i === cycleEntry && (
+                            <span className="absolute -bottom-5 text-[9px] text-cyan-400 font-semibold tracking-wider uppercase">Entry</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="lg:col-span-4 bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex flex-col gap-4 w-full">
+                  <div>
+                    <h5 className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Metrics</h5>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="bg-slate-950/50 border border-slate-850 p-2.5 rounded-lg flex flex-col">
+                        <span className="text-[10px] text-slate-500">Steps</span>
+                        <span className="text-sm font-semibold text-slate-200">{cycleStep}</span>
+                      </div>
+                      <div className="bg-slate-950/50 border border-slate-850 p-2.5 rounded-lg flex flex-col">
+                        <span className="text-[10px] text-slate-500">Has Cycle</span>
+                        <span className={`text-sm font-semibold ${cyclePhase !== "collision" ? "text-green-400" : "text-amber-500"}`}>
+                          {cyclePhase !== "collision" ? "YES" : "RUNNING"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h5 className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Floyd's algorithm</h5>
+                    <div className="bg-slate-950 border border-slate-850 p-3 rounded-lg text-[11px] font-mono text-slate-400 leading-relaxed">
+                      <div className={cycleCodeLine === 0 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>detectCycle(head):</div>
+                      <div className={cycleCodeLine === 2 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>  slow = head; fast = head</div>
+                      <div className={cycleCodeLine === 3 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>  while fast and fast.next:</div>
+                      <div className={cycleCodeLine === 4 && cyclePhase === "collision" ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>    slow = slow.next</div>
+                      <div className={cycleCodeLine === 4 && cyclePhase === "collision" ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>    fast = fast.next.next</div>
+                      <div className={cycleCodeLine === 6 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>    if slow == fast: break</div>
+                      <div className={cycleCodeLine === 8 && cyclePhase === "find_entry" ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>  slow = head</div>
+                      <div className={cycleCodeLine === 8 && cyclePhase === "find_entry" ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>  while slow != fast:</div>
+                      <div className={cycleCodeLine === 10 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>    slow = slow.next; fast = fast.next</div>
+                      <div className={cycleCodeLine === 11 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>  return slow</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
