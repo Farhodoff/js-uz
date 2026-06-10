@@ -692,20 +692,19 @@ export default function VisualizerTab({ activeLesson }) {
                 </div>
               </div>
             ) : (
-              <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                <div className="lg:col-span-8 bg-slate-900/60 border border-slate-800 rounded-xl p-4 flex flex-col items-center">
-                  <div className="flex gap-4 w-full justify-between items-center mb-6">
-                    <div className="flex flex-col gap-1 w-1/2">
-                      <div className="text-xs text-slate-400 flex justify-between">
+              <div className="floyd-grid-container">
+                <div className="floyd-visualizer-panel">
+                  <div className="floyd-sliders-row">
+                    <div className="floyd-slider-wrapper">
+                      <label>
                         <span>Length:</span>
-                        <span className="font-semibold text-amber-400">{cycleLength}</span>
-                      </div>
+                        <span style={{ fontWeight: 600, color: "var(--accent)" }}>{cycleLength}</span>
+                      </label>
                       <input
                         type="range"
                         min="3"
                         max="12"
                         value={cycleLength}
-                        className="accent-amber-500 w-full"
                         onChange={(e) => {
                           const len = parseInt(e.target.value);
                           setCycleLength(len);
@@ -714,17 +713,16 @@ export default function VisualizerTab({ activeLesson }) {
                         }}
                       />
                     </div>
-                    <div className="flex flex-col gap-1 w-1/2">
-                      <div className="text-xs text-slate-400 flex justify-between">
+                    <div className="floyd-slider-wrapper">
+                      <label>
                         <span>Cycle Entry:</span>
-                        <span className="font-semibold text-amber-400">Node {cycleEntry}</span>
-                      </div>
+                        <span style={{ fontWeight: 600, color: "var(--accent)" }}>Node {cycleEntry}</span>
+                      </label>
                       <input
                         type="range"
                         min="0"
                         max={cycleLength - 1}
                         value={cycleEntry}
-                        className="accent-amber-500 w-full"
                         onChange={(e) => {
                           setCycleEntry(parseInt(e.target.value));
                           handleReset();
@@ -733,7 +731,7 @@ export default function VisualizerTab({ activeLesson }) {
                     </div>
                   </div>
 
-                  <div className="relative w-full h-[280px] bg-slate-950/45 border border-slate-900 rounded-xl overflow-hidden shadow-inner">
+                  <div className="floyd-canvas">
                     <svg className="absolute inset-0 w-full h-full pointer-events-none">
                       {Array.from({ length: cycleLength }).map((_, i) => {
                         const getCoords = (idx) => {
@@ -847,17 +845,17 @@ export default function VisualizerTab({ activeLesson }) {
                   </div>
                 </div>
 
-                <div className="lg:col-span-4 bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex flex-col gap-4 w-full">
+                <div className="floyd-sidebar-panel">
                   <div>
-                    <h5 className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Metrics</h5>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="bg-slate-950/50 border border-slate-850 p-2.5 rounded-lg flex flex-col">
-                        <span className="text-[10px] text-slate-500">Steps</span>
-                        <span className="text-sm font-semibold text-slate-200">{cycleStep}</span>
+                    <h5>Metrics</h5>
+                    <div className="floyd-metrics-grid">
+                      <div className="floyd-metric-card">
+                        <span className="label">Steps</span>
+                        <span className="val">{cycleStep}</span>
                       </div>
-                      <div className="bg-slate-950/50 border border-slate-850 p-2.5 rounded-lg flex flex-col">
-                        <span className="text-[10px] text-slate-500">Has Cycle</span>
-                        <span className={`text-sm font-semibold ${cyclePhase !== "collision" ? "text-green-400" : "text-amber-500"}`}>
+                      <div className="floyd-metric-card">
+                        <span className="label">Has Cycle</span>
+                        <span className="val" style={{ color: cyclePhase !== "collision" ? "#4caf50" : "#ff9800" }}>
                           {cyclePhase !== "collision" ? "YES" : "RUNNING"}
                         </span>
                       </div>
@@ -865,18 +863,18 @@ export default function VisualizerTab({ activeLesson }) {
                   </div>
 
                   <div>
-                    <h5 className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Floyd's algorithm</h5>
-                    <div className="bg-slate-950 border border-slate-850 p-3 rounded-lg text-[11px] font-mono text-slate-400 leading-relaxed">
-                      <div className={cycleCodeLine === 0 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>detectCycle(head):</div>
-                      <div className={cycleCodeLine === 2 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>  slow = head; fast = head</div>
-                      <div className={cycleCodeLine === 3 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>  while fast and fast.next:</div>
-                      <div className={cycleCodeLine === 4 && cyclePhase === "collision" ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>    slow = slow.next</div>
-                      <div className={cycleCodeLine === 4 && cyclePhase === "collision" ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>    fast = fast.next.next</div>
-                      <div className={cycleCodeLine === 6 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>    if slow == fast: break</div>
-                      <div className={cycleCodeLine === 8 && cyclePhase === "find_entry" ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>  slow = head</div>
-                      <div className={cycleCodeLine === 8 && cyclePhase === "find_entry" ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>  while slow != fast:</div>
-                      <div className={cycleCodeLine === 10 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>    slow = slow.next; fast = fast.next</div>
-                      <div className={cycleCodeLine === 11 ? "text-amber-400 font-bold bg-slate-900 px-1 rounded" : "px-1"}>  return slow</div>
+                    <h5>Floyd's algorithm</h5>
+                    <div className="floyd-code-container">
+                      <div className={`floyd-code-line ${cycleCodeLine === 0 ? "active" : ""}`}>detectCycle(head):</div>
+                      <div className={`floyd-code-line ${cycleCodeLine === 2 ? "active" : ""}`}>  slow = head; fast = head</div>
+                      <div className={`floyd-code-line ${cycleCodeLine === 3 ? "active" : ""}`}>  while fast and fast.next:</div>
+                      <div className={`floyd-code-line ${cycleCodeLine === 4 && cyclePhase === "collision" ? "active" : ""}`}>    slow = slow.next</div>
+                      <div className={`floyd-code-line ${cycleCodeLine === 4 && cyclePhase === "collision" ? "active" : ""}`}>    fast = fast.next.next</div>
+                      <div className={`floyd-code-line ${cycleCodeLine === 6 ? "active" : ""}`}>    if slow == fast: break</div>
+                      <div className={`floyd-code-line ${cycleCodeLine === 8 && cyclePhase === "find_entry" ? "active" : ""}`}>  slow = head</div>
+                      <div className={`floyd-code-line ${cycleCodeLine === 8 && cyclePhase === "find_entry" ? "active" : ""}`}>  while slow != fast:</div>
+                      <div className={`floyd-code-line ${cycleCodeLine === 10 ? "active" : ""}`}>    slow = slow.next; fast = fast.next</div>
+                      <div className={`floyd-code-line ${cycleCodeLine === 11 ? "active" : ""}`}>  return slow</div>
                     </div>
                   </div>
                 </div>
