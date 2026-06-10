@@ -1,238 +1,321 @@
 export const es6Features = {
-  id: "es6-features",
+  id: "es6Features",
   title: "ES6+ Yangi Xususiyatlari",
-  level: "O'rta daraja",
-  description: "JavaScript evolyutsiyasi: ES6 dan boshlab eng so'nggi ECMAScript versiyalarigacha qo'shilgan eng qulay va zamonaviy imkoniyatlar.",
-  theory: `## 1. NEGA kerak?
-JavaScript (ECMAScript) doimiy ravishda rivojlanib boradi. 2015-yilda chiqarilgan **ES6 (ES2015)** versiyasi tildagi eng katta va inqilobiy yangilanish bo'ldi. Undan keyin ham har yili (ES2016, ES2017, ... ES2024) dasturchilar ishini osonlashtirishga qaratilgan kichik va foydalanuvchi uchun juda qulay sintaksis yangiliklari qo'shilib kelmoqda.
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-Ushbu yangiliklarni bilish:
-- Kodimizni 2-3 barobar qisqartiradi va o'qishni osonlashtiradi.
-- Xavfsiz kod yozishga yordam beradi (masalan, \`undefined\` xatolardan himoyalanish).
-- Zamonaviy kutubxonalar (React, Vue, Node.js) bilan ishlashda qulaylik yaratadi.
+### ES6+ Yangi Xususiyatlari nima?
+**ES6+ (ECMAScript 2015 va undan keyingi versiyalar)** — bu JavaScript dasturlash tilining rivojlanish jarayonida qo'shilgan eng zamonaviy, qulay va qisqa sintaktik imkoniyatlaridir. Ular kod hajmini sezilarli darajada qisqartirib, xavfsiz va oson o'qiladigan dasturlar yozishga yordam beradi.
 
-## 2. SODDALIK (Analogiya)
-Tasavvur qiling, siz **oddiy mexanik velosipedda** yurasiz. Har bir tepalikka chiqishda juda ko'p kuch sarflashingiz (ko'p kod yozishingiz) kerak edi.
-Modern JavaScript (ES6+) esa xuddi **aqlli elektr velosipedga** o'xshaydi:
-- **Optional Chaining (\`?.\`):** Bu xuddi sensorli tormoz tizimi kabi - yo'lda to'siq (undefined/null) ko'rsa, avtomatik tormoz berib, yiqilib tushishdan (dastur sinib qolishidan) asraydi.
-- **Nullish Coalescing (\`??\`):** Zaxira akkumulyator kabi - agar asosiy tok butunlay o'chsa (null/undefined bo'lsa), zaxirani ishga tushiradi, lekin shunchaki sekinlashsa (0 yoki false bo'lsa) o'chirmaydi.
-- **Spread/Rest (\`...\`):** Bu xuddi sig'imli ryukzak kabi - xohlasangiz ichidagi narsalarni sochib yuborasiz (spread), xohlasangiz hammasini bitta qilib yig'ib olasiz (rest).
+### Real hayotiy analogiya
+Tasavvur qiling, siz **eski mexanik velosiped haydayapsiz**:
+* Har safar tepalikka chiqishda juda ko'p kuch (ortiqcha kod) sarflaysiz.
+* **ES6+ (Aqlli elektr velosiped):** Endi sizda tepalikka chiqish uchun yordamchi motor (arrow funksiyalar), yiqilishdan asraydigan sensorli tormoz (optional chaining \`?.\`), va avtomatik chiroqlar (template literals) bor. Siz kamroq jismoniy kuch sarflaysiz, lekin tezroq va xavfsizroq yurasiz.
 
-## 3. ASOSIY MODERN XUSUSIYATLAR
+---
 
-### A. Optional Chaining (\`?.\`)
-Obyekt ichidagi chuqur xususiyatlarga murojaat qilishda zanjirning o'rtasidagi biror xossa \`null\` yoki \`undefined\` bo'lsa, xato otmasdan (\`Cannot read properties of undefined\`) shunchaki \`undefined\` qaytaradi:
+## 2. 💻 Real Kod Misollari
 
+### 1. Basic Example (Object Property Shorthand va Template Literals)
 \`\`\`javascript
-const user = {
-  name: "Ali",
-  address: {
-    city: "Toshkent"
-  }
-};
+const name = "Ali";
+const age = 25;
 
 // Eski usul:
-const city1 = user.address ? user.address.city : undefined;
+// const user = { name: name, age: age };
+// const info = "Ismi: " + name + ", Yoshi: " + age;
 
-// Zamonaviy usul:
-const city2 = user.address?.city; // "Toshkent"
-const zip = user.address?.zip; // undefined (xato bermaydi!)
+// ES6+ usuli:
+const user = { name, age }; // Shorthand
+const info = \`Ismi: \${name}, Yoshi: \${age}\`; // Template Literal
 \`\`\`
 
-### B. Nullish Coalescing (\`??\`)
-Faqatgina qiymat \`null\` yoki \`undefined\` bo'lgandagina o'ng tomondagi qiymatni qaytaradi. Eski \`||\` operatoridan farqi - u \`0\`, \`false\` va bo'sh satr \`""\` ni "notog'ri qiymat" deb hisoblamaydi:
+### 2. Intermediate Example (Logical Assignment Operators: \`||=\`, \`&&=\`, \`??=\`)
+Qiymatlarni shartli tekshirib o'zlashtirishni juda qisqa yozish:
+\`\`\`javascript
+const config = { theme: "dark" };
+
+// Agar count mavjud bo'lmasa yoki nullish bo'lsa, default 10 beraiz:
+config.count ??= 10; 
+
+// Agar theme bor bo'lsa, uni log qilamiz (&&=)
+config.theme &&= "light"; 
+\`\`\`
+
+### 3. Advanced Example (Array findLast va Object.fromEntries)
+ES2022+ va ES2019+ yordamida obyektlar va massivlarni professional boshqarish:
+\`\`\`javascript
+const records = [10, 5, 8, 20, 15];
+
+// Massiv oxiridan shartga mos birinchi elementni topish (findLast)
+const lastLarge = records.findLast(x => x > 10); // 15
+
+// Key-value juftliklar massivini obyektga o'girish
+const entries = [["name", "Bobur"], ["role", "admin"]];
+const obj = Object.fromEntries(entries); // { name: "Bobur", role: "admin" }
+\`\`\`
+
+---
+
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+
+### Syntactic Sugar va TC39 Komiteti
+JavaScript-ga har yili qo'shiladigan yangi imkoniyatlar **TC39** (Ecma International texnik komiteti) tomonidan 4 bosqichli sinovdan o'tkazilib, standartga kiritiladi. Bu yangi sintaksislar brauzer dvigatelida (masalan, V8) optimallashtirilgan C++ funksiyalariga tarjima qilinadi.
+* **Transpiling (Babel):** Eski brauzerlar tushunishi uchun yangi ES6+ kodlari odatda **Babel** yordamida ES5 (eski JS) formatiga o'giriladi (masalan, \`let/const\` -> \`var\`).
+
+---
+
+## 4. 🧪 Bosqichma-bosqich Amaliy Mashq
+
+### API response'dan kelgan ma'lumotlarni zamonaviy formatlash
+Keling, bir nechta ES6+ imkoniyatlarini birlashtirib, ma'lumotlarni tozalaymiz.
 
 \`\`\`javascript
-const count = 0;
+const rawUser = {
+  id: 101,
+  details: {
+    first_name: "Farhod",
+    last_name: "Umarov"
+  },
+  roles: null
+};
 
-const res1 = count || 10; // 10 (chunki 0 falsy)
-const res2 = count ?? 10; // 0 (chunki 0 null/undefined emas!)
+// 1. Destructuring va Default qiymat
+const { details: { first_name: firstName }, roles } = rawUser;
+
+// 2. Nullish Coalescing
+const activeRoles = roles ?? ["guest"];
+
+// 3. String interpolatsiyasi
+const welcomeMessage = \`Salom, \${firstName}! Roli: \${activeRoles.join(", ")}\`;
+
+console.log(welcomeMessage); // "Salom, Farhod! Roli: guest"
 \`\`\`
 
-### C. Logical Assignment Operatorlari (Mantiqiy o'zlashtirishlar)
-O'zlashtirish va shartni birlashtiradi (\`||=\`, \`&&=\`, \`??=\`):
+---
 
-\`\`\`javascript
-const options = { title: "Dars" };
+## 5. ⚠️ Ko'p Uchraydigan Xatolar va Ularni Tuzatish
 
-// title bo'sh bo'lsa yoki null/undefined bo'lsa yangi qiymat berish:
-options.title ??= "Default Title"; 
-options.count ??= 5; // options.count null/undefined bo'lgani uchun 5 o'zlashtiriladi.
-\`\`\`
+### 1. \`??\` o'rniga \`||\` ishlatish xavfi
+* **Noto'g'ri:**
+  \`\`\`javascript
+  const volume = 0;
+  const finalVolume = volume || 50; // 50 (chunki 0 falsy. Lekin foydalanuvchi ovozni o'chirgan edi!)
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  const volume = 0;
+  const finalVolume = volume ?? 50; // 0 (chunki 0 null/undefined emas, u saqlab qolinadi)
+  \`\`\`
 
-### D. String Metodlari: \`padStart\` va \`padEnd\`
-Satr boshiga yoki oxiriga belgilangan uzunlikka yetguncha boshqa belgilarni qo'shib chiqadi:
+---
 
-\`\`\`javascript
-const cardNumber = "4232";
-const masked = cardNumber.padStart(16, "*");
-console.log(masked); // "************4232" (kartani yashirish)
-\`\`\`
+## 6. 📝 Qisqacha Xulosa (Cheat Sheet)
 
-### E. Obyektlarni guruhlash: \`Object.groupBy\` (ES2024)
-Massiv elementlarini ma'lum shart asosida guruhlab, obyektga aylantiradi:
+| Xususiyati | Sintaksis | Vazifasi | Qo'shilgan yili |
+| :--- | :--- | :--- | :--- |
+| **Object property shorthand** | \`{ name }\` | Kalit va qiymat nomi bir xil bo'lsa qisqartirish | ES6 (2015) |
+| **Template Literals** | \`\` \`Hello \${name}\` \`\` | Matn va o'zgaruvchilarni dinamik ulash | ES6 (2015) |
+| **Logical Assignment** | \`a ??= b\` | Faqat nullish bo'lsa o'zlashtirish | ES2021 |
+| **Object.fromEntries** | \`Object.fromEntries(arr)\` | Array-entry formatni obyektga o'girish | ES2019 |
+| **Array findLast** | \`arr.findLast(fn)\` | Oxiridan boshlab qidirish | ES2023 |
 
-\`\`\`javascript
-const products = [
-  { name: "Olma", category: "meva" },
-  { name: "Bodring", category: "sabzavot" },
-  { name: "Banan", category: "meva" }
-];
+---
 
-const grouped = Object.groupBy(products, p => p.category);
-/* Natija:
-{
-  meva: [{ name: "Olma", ... }, { name: "Banan", ... }],
-  sabzavot: [{ name: "Bodring", ... }]
-}
-*/
-\`\`\`
+## 7. ❓ Savollar va Javoblar
 
-## 4. NIMA UCHUN MUHIM?
-- **Xatolardan himoya:** \`?.\` va \`??\` asosan tashqi API ma'lumotlari bilan ishlashda xavfsizlikni ta'minlaydi (agar API ba'zi maydonlarni qaytarmasa, dastur sinib qolmaydi).
-- **Kod o'qiluvchanligi:** Qatorlab yoziladigan if/else shartlari o'rniga qisqa va tushunarli operatorlarni taqdim etadi.
+### 1. Nega ES6 JavaScript tarixidagi eng muhim yangilanish hisoblanadi?
+Chunki ES6 da tilga butunlay yangi arxitekturalar: \`let/const\`, Arrow funksiyalar, Klasslar, Modullar, Promise-lar, Destructuring va Spread/Rest kabi fundamental mexanizmlar olib kirildi.
 
-## 5. KO'P UCHRAYDIGAN XATOLAR
-1. **Optional chainingni funksiya chaqiruvlarida xato ishlatish:**
-   \`\`\`javascript
-   const user = { getProfile: null };
-   user.getProfile(); // TypeError: user.getProfile is not a function ❌
-   
-   // TO'G'RI:
-   user.getProfile?.(); // undefined qaytadi, lekin dastur sinmaydi ✅
-   \`\`\`
-2. **\`||\` va \`??\` ni adashtirish:**
-   Agar foydalanuvchi sozlamalarida \`volume: 0\` berilgan bo'lsa, \`volume || 50\` natijasi \`50\` bo'ladi (foydalanuvchi sozlamasi buziladi), \`volume ?? 50\` esa to'g'ri ravishda \`0\` ni saqlab qoladi.
+### 2. \`let/const\` va \`var\` farqi nimada?
+\`var\` funksiyaviy scope (scope)ga ega va hoisted bo'ladi. \`let/const\` esa bloki doirasida (block scope) ishlaydi, hoisted bo'lmaydi (TDZda bo'ladi) va qayta e'lon qilishni taqiqlaydi.
 
-## 6. INTERVIEW SAVOLLAR (Junior -> Middle -> Senior)
-1. **ES6 da qo'shilgan asosiy o'zgarishlar nimalar? (Junior)**
-   - \`let\`/\`const\`, arrow functions, template literals, destructuring, spread/rest, classes, promises.
-2. **Optional Chaining (\`?.\`) nima va u qachon ishlatiladi? (Junior)**
-   - Obyekt ichidagi zanjirlangan xossalar mavjud bo'lmaganda ReferenceError/TypeError oldini olish va xavfsiz o'qish uchun.
-3. **Nullish Coalescing (\`??\`) operatorining \`||\` dan farqi nima? (Middle)**
-   - \`||\` operatori falsy qiymatlarni (0, false, "") bekor qiladi. \`??\` esa faqat \`null\` va \`undefined\` bo'lgandagina o'ng tomondagi qiymatni qaytaradi.
-4. **Logical Assignment operatorlari qanday ishlaydi? (Middle)**
-   - \`x ||= y\` -> faqat x falsy bo'lsa x-ga y ni o'zlashtiradi. \`x ??= y\` -> faqat x null/undefined bo'lsa y ni o'zlashtiradi.
-5. **Array.prototype.at() metodi nima va uning massiv[index] dan afzalligi nimada? (Junior)**
-   - U massiv oxiridan elementlarni olish imkonini beradi (masalan, \`arr.at(-1)\` oxirgi elementni beradi, \`arr[arr.length - 1]\` o'rniga).
-6. **Object.groupBy() metodi qaysi versiyada qo'shildi va u nima vazifani bajaradi? (Middle)**
-   - ES2024 da qo'shildi, massiv elementlarini callback funksiya belgilab bergan kalit bo'yicha guruhlaydi.
-7. **ECMAScript standarti qanchalik tez-tez yangilanadi va bu brauzerlarga qanday ta'sir qiladi? (Middle)**
-   - Har yili yangilanadi. Brauzerlar yangi sintaksisni qo'llab-quvvatlashi uchun vaqt ketadi, shuning uchun eski brauzerlar tushunishi uchun kodlar \`Babel\` orqali transpayl qilinadi.
-8. **Optional chaining yordamida dinamik metodlarni qanday chaqirish mumkin? (Senior)**
-   - \`obj?.[methodName]?.()\` ko'rinishida kalit nomi dynamic bo'lganda ham xavfsiz chaqirish mumkin.
-9. **Nullish coalescing operatorini mantiqiy and (\`&&\`) yoki or (\`||\`) operatorlari bilan qavslarsiz aralashtirib yozish mumkinmi? (Senior)**
-   - Yo'q, qavslarsiz \`a ?? b || c\` sintaksis xatosi (SyntaxError) beradi, chunki ustuvorlik tartibi chalkash bo'ladi. Qavslar majburiy: \`(a ?? b) || c\`.
-10. **String.prototype.replaceAll() nima va u replace() dan nimasi bilan farq qiladi? (Junior)**
-    - \`replaceAll()\` berilgan matndagi barcha mos keladigan satrlarni o'zgartiradi, regex ishlatmasdan ham. \`replace()\` esa faqat birinchi uchraganini o'zgartiradi.
-11. **Promise.any() va Promise.race() farqi nima? (Senior)**
-    - \`Promise.race()\` birinchi bo'lib yakunlangan (resolve yoki reject) promisni qaytaradi. \`Promise.any()\` esa birinchi bo'lib muvaffaqiyatli resolved bo'lgan promisni qaytaradi, hammasi rejected bo'lsagina xato qaytaradi.
-12. **Top-level await nima va u qayerda ishlaydi? (Senior)**
-    - ES modullar (ESM) ichida asinxron \`await\`ni \`async\` funksiya ichiga o'ramay, to'g'ridan-to'g'ri faylning yuqori qismida ishlatish imkoniyati.
-`
-  ,
+---
+
+## 8. 🧠 O'z-o'zini Tekshirish
+
+1. \`??=\` operatori qachon o'zlashtirish bajaradi?
+2. \`[...arr]\` spread operatori qaysi yili standartga kirgan? (ES6 - 2015, obyekt spread esa ES2018 da).
+3. JavaScript-dagi yangi xususiyatlar taklifini qaysi komitet boshqaradi? (TC39 komiteti).
+
+---
+
+## 9. 🚀 Amaliy Topsiriq
+
+Quyidagi testlar va mashqlar yordamida modern JavaScript imkoniyatlaridan foydalanish bo'yicha ko'nikmalaringizni tekshiring.
+`,
   exercises: [
-    {
-      id: 1,
-      title: "Optional Chaining & Nullish Coalescing",
-      instruction: "Foydalanuvchi `user` obyektini qabul qilib, uning `address.city` qiymatini qaytaruvchi, agar shahar mavjud bo'lmasa 'Noma'lum shahar' fallback qiymatini qaytaruvchi `getCity(user)` funksiyasini yozing. Optional chaining va nullish coalescing operatorlaridan foydalaning.",
-      startingCode: "function getCity(user) {\n  // Kodni yozing\n}",
-      hint: "return user?.address?.city ?? 'Noma\\'lum shahar';",
-      test: "if (typeof getCity !== 'function') return 'getCity topilmadi'; const u1 = { address: { city: 'Toshkent' } }; const u2 = { name: 'Ali' }; if (getCity(u1) !== 'Toshkent' || getCity(u2) !== 'Noma\\'lum shahar') return 'Xavfsiz olish xato ishladi'; return null;"
-    },
-    {
-      id: 2,
-      title: "Logical Assignment",
-      instruction: "Konfiguratsiya obyektidagi `port` sozlamasi mavjud bo'lmasa (null/undefined bo'lsa), unga 8080 standart port qiymatini beruvchi `setupConfig(config)` funksiyasini yozing. Buning uchun `??=` operatorini ishlating va yangilangan config obyektini qaytaring.",
-      startingCode: "function setupConfig(config) {\n  // ??= operatorini ishlating va config qaytaring\n}",
-      hint: "config.port ??= 8080; return config;",
-      test: "if (typeof setupConfig !== 'function') return 'setupConfig topilmadi'; const c1 = { host: 'localhost' }; const c2 = { host: 'localhost', port: 3000 }; if (setupConfig(c1).port !== 8080 || setupConfig(c2).port !== 3000) return 'Config to\\'g\\'ri yangilanmadi'; return null;"
-    },
-    {
-      id: 3,
-      title: "String Padding (Karta yashirish)",
-      instruction: "Karta raqamining oxirgi 4 ta raqamini qabul qilib, uning boshiga '*' belgisini qo'shish orqali jami 16 xonali qilib qaytaradigan `maskCard(last4)` funksiyasini yozing. Buning uchun `padStart` metodidan foydalaning.",
-      startingCode: "function maskCard(last4) {\n  // padStart ishlating\n}",
-      hint: "return last4.padStart(16, '*');",
-      test: "if (typeof maskCard !== 'function') return 'maskCard topilmadi'; if (maskCard('4232') !== '************4232') return 'Karta raqami noto\\'g\\'ri maskalandi'; return null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Object Property Shorthand va Template Literals",
+    "instruction": "Taqdim etilgan 'name' va 'age' o'zgaruvchilaridan foydalanib, Object Property Shorthand orqali 'user' obyektini yarating. So'ngra template literals yordamida 'Ism: [name], Yosh: [age]' matnini 'info' o'zgaruvchisiga saqlang.",
+    "startingCode": "const name = 'Ali';\nconst age = 25;\n\n// Kodni shu yerda yozing\n",
+    "hint": "const user = { name, age }; const info = `Ism: ${name}, Yosh: ${age}`;",
+    "test": "if (code.includes('name: name')) return 'Object property shorthand ishlatilmadi';\nif (!code.includes('`')) return 'Template literal (backtick) ishlatilmadi';\nconst sandbox = new Function(code + '; return {user, info};');\nconst res = sandbox();\nif (res.user.name === 'Ali' && res.info === 'Ism: Ali, Yosh: 25') return null;\nreturn 'Natija noto\\'g\\'ri';"
+  },
+  {
+    "id": 2,
+    "title": "Logical Nullish Assignment (??=)",
+    "instruction": "'config' obyektidagi 'theme' va 'volume' parametrlarini tekshiring. Agar 'volume' mavjud bo'lmasa yoki nullish bo'lsa, '??=' yordamida unga 50 qiymatini default qilib o'rnating.",
+    "startingCode": "const config = { theme: 'dark', volume: null };\n\n// Kodni shu yerda yozing\n",
+    "hint": "config.volume ??= 50;",
+    "test": "if (!code.includes('??=')) return 'Logical Nullish Assignment (??=) operatori ishlatilmadi';\nconst sandbox = new Function('config', code + '; return config;');\nconst conf = { theme: 'dark', volume: null };\nsandbox(conf);\nif (conf.volume === 50) return null;\nreturn 'volume qiymati noto\\'g\\'ri belgilandi';"
+  },
+  {
+    "id": 3,
+    "title": "Object.fromEntries yordamida Obyekt Yaratish",
+    "instruction": "Taqdim etilgan kalit-qiymat juftliklaridan iborat 'entries' massivini 'Object.fromEntries' yordamida obyektga aylantiring va natijani 'userObj' o'zgaruvchisiga saqlang.",
+    "startingCode": "const entries = [['username', 'ali12'], ['role', 'user']];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const userObj = Object.fromEntries(entries);",
+    "test": "if (!code.includes('Object.fromEntries')) return 'Object.fromEntries ishlatilmadi';\nconst sandbox = new Function('entries', code + '; return userObj;');\nconst res = sandbox([['username', 'ali12'], ['role', 'user']]);\nif (res && res.username === 'ali12' && res.role === 'user') return null;\nreturn 'userObj obyekti noto\\'g\\'ri yaratildi';"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Optional Chaining (`?.`) operatori qanday asosiy vazifani bajaradi?",
-      options: [
-        "Matnlarni bir-biriga ulash",
-        "Obyekt ichidagi chuqur xossalar mavjud bo'lmaganda xato otmasdan undefined qaytarish",
-        "Obyektni to'liq o'chirish",
-        "Asinxron promisni kutish"
-      ],
-      correctAnswer: 1,
-      explanation: "Optional chaining zanjir davomidagi xossa null/undefined bo'lsa, xato tashlash o'rniga zanjirni erta to'xtatib undefined qaytaradi."
-    },
-    {
-      id: 2,
-      question: "Nullish Coalescing (`??`) operatori qachon o'ng tarafdagi qiymatni qaytaradi?",
-      options: [
-        "Chap tarafdagi qiymat har qanday falsy (0, false, '') bo'lsa",
-        "Faqat chap tarafdagi qiymat null yoki undefined bo'lsa",
-        "Faqat chap tarafdagi qiymat true bo'lsa",
-        "Hech qachon o'ng tarafdagi qiymatni qaytarmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "`??` faqat `null` va `undefined` qiymatlar uchun ishlaydi, `0`, `false`, `\"\"` kabi boshqa falsy qiymatlarni o'zgarishsiz qoldiradi."
-    },
-    {
-      id: 3,
-      question: "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nlet volume = 0;\nconsole.log(volume ?? 100);\n```",
-      options: ["100", "0", "undefined", "TypeError"],
-      correctAnswer: 1,
-      explanation: "volume qiymati 0 (null/undefined emas), shuning uchun nullish coalescing operatori 0 ning o'zini qaytaradi."
-    },
-    {
-      id: 4,
-      question: "Logical Nullish Assignment (`??=`) operatori qanday vazifani bajaradi?",
-      options: [
-        "O'zgaruvchi faqat 0 bo'lganda yangi qiymat beradi",
-        "O'zgaruvchi faqat null yoki undefined bo'lgandagina yangi qiymatni o'zlashtiradi",
-        "O'zgaruvchini mutlaqo o'chirib yuboradi",
-        "Ikkita obyektni solishtiradi"
-      ],
-      correctAnswer: 1,
-      explanation: "`x ??= y` faqat `x` qiymati null yoki undefined bo'lsagina `x = y` amalini bajaradi."
-    },
-    {
-      id: 5,
-      question: "String boshiga belgilangan uzunlikka yetguncha boshqa belgilarni to'ldirishda qaysi metod ishlatiladi?",
-      options: ["padStart()", "padEnd()", "fillStart()", "align()"],
-      correctAnswer: 0,
-      explanation: "`padStart()` metodi joriy satr boshiga kerakli uzunlikka yetguncha belgilangan simvollarni qo'shadi."
-    },
-    {
-      id: 6,
-      question: "Massiv elementlarini ma'lum guruhlash sharti asosida to'plovchi ES2024 metodini aniqlang.",
-      options: ["Object.groupBy()", "Array.prototype.group()", "Object.entries()", "Map.prototype.group()"],
-      correctAnswer: 0,
-      explanation: "`Object.groupBy()` massiv elementlarini berilgan callback sharti bo'yicha guruhlab obyekt shaklida qaytaradigan yangi metoddir."
-    },
-    {
-      id: 7,
-      question: "Optional chaining yordamida mavjud bo'lmasligi mumkin bo'lgan funksiyani qanday chaqirish to'g'ri hisoblanadi?",
-      options: [
-        "obj.method?.()",
-        "obj.method?()",
-        "obj?.method()",
-        "obj.method.call?.()"
-      ],
-      correctAnswer: 0,
-      explanation: "Funksiyani xavfsiz chaqirish uchun metod nomidan keyin `?.()` yozilishi kerak."
-    },
-    {
-      id: 8,
-      question: "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconst arr = [10, 20, 30];\nconsole.log(arr.at(-1));\n```",
-      options: ["10", "30", "undefined", "NaN"],
-      correctAnswer: 1,
-      explanation: "at() metodi salbiy indekslarni qabul qiladi, -1 indeks massivning eng oxirgi elementi ya'ni 30 ni beradi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Object Property Shorthand (ES6) yordamida obyekt yaratishda kalit va o'zgaruvchi nomi bir xil bo'lsa qanday yoziladi?",
+    "options": [
+      "`const user = { name: name };`",
+      "`const user = { name };`",
+      "`const user = { name = name };`",
+      "`const user = { ism: name };`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "ES6-da, agar obyekt kaliti va unga beriladigan qiymat o'zgaruvchisining nomi bir xil bo'lsa, shunchaki `{ name }` deb qisqartirib yozish mumkin."
+  },
+  {
+    "id": 2,
+    "question": "Template Literals (ES6) da matn ichida dinamik ifodalarni joylashtirish qaysi qavslar yordamida amalga oshiriladi?",
+    "options": [
+      "`${expression}`",
+      "`#{expression}`",
+      "`{{expression}}`",
+      "`[expression]`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Template literals (backticks `` ` ``) ichida dinamik o'zgaruvchilar yoki ifodalarni kiritish uchun `${...}` sintaksisi qo'llaniladi."
+  },
+  {
+    "id": 3,
+    "question": "Logical Nullish Assignment (`??=`) operatori qachon o'zlashtirishni (assignment) amalga oshiradi?",
+    "options": [
+      "Chap tomondagi qiymat har qanday Falsy qiymat bo'lsa",
+      "Chap tomondagi qiymat faqat `null` yoki `undefined` bo'lsa",
+      "Chap tomondagi qiymat faqat `false` bo'lsa",
+      "Har doim o'zlashtiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`??=` operatori faqatgina chap tomondagi o'zgaruvchi qiymati nullish (ya'ni `null` yoki `undefined`) bo'lgandagina o'ng tomondagi qiymatni o'zlashtiradi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilgandan keyin `config.volume` qiymati nima bo'ladi?\n```javascript\nconst config = { volume: 0 };\nconfig.volume ??= 100;\n```",
+    "options": [
+      "`100`",
+      "`0` (chunki 0 null yoki undefined emas)",
+      "`undefined`",
+      "`TypeError` xatosi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`0` - nullish qiymat emas. Shu sababli `??=` operatori o'zlashtirishni bajarmaydi va original `0` qiymatini qoldiradi."
+  },
+  {
+    "id": 5,
+    "question": "Key-value juftliklaridan iborat massivni (entries) qaytadan obyektga o'girish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "`Object.entries()`",
+      "`Object.fromEntries()`",
+      "`Object.toObject()`",
+      "`JSON.parse()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Object.fromEntries()` metodi `[key, value]` ko'rinishidagi massiv yoki iterablarni qabul qilib, ularni oddiy obyektga aylantiradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi koddan keyin `lastEven` o'zgaruvchisi qiymati nima bo'ladi (ES2023)?\n```javascript\nconst nums = [1, 2, 3, 4, 5];\nconst lastEven = nums.findLast(x => x % 2 === 0);\n```",
+    "options": [
+      "`2`",
+      "`4` (oxirgi juft son)",
+      "`undefined`",
+      "`5`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`findLast()` metodi massivning oxiridan boshlab qidiradi va shartga mos keladigan birinchi elementni (ya'ni oxirgi juft son - 4 ni) qaytaradi."
+  },
+  {
+    "id": 7,
+    "question": "JavaScript ES6 (2015) versiyasigacha o'zgaruvchilar yaratish uchun qaysi kalit so'zi ishlatilgan?",
+    "options": [
+      "`let`",
+      "`const`",
+      "`var`",
+      "`def`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "ES6 versiyasigacha JavaScript-da faqat `var` kalit so'zi yordamida o'zgaruvchilar e'lon qilingan. ES6 da `let` va `const` qo'shildi."
+  },
+  {
+    "id": 8,
+    "question": "ES2020 da qo'shilgan String.prototype.matchAll() metodi qanday natija qaytaradi?",
+    "options": [
+      "Barcha mos kelgan natijalar massivini (Array)",
+      "RegEx guruhlari bo'yicha barcha mosliklarning iteratorini (Iterator)",
+      "Faqat birinchi mos kelgan satrni",
+      "Muvaffaqiyatli bo'lsa true, bo'lmasa false"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`matchAll()` regex mosliklari bo'yicha guruhlar va indekslarni o'z ichiga olgan to'liq iterator (iterable) qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod bajarilganda `userRole` qiymati nima bo'ladi?\n```javascript\nlet user = { role: 'user' };\nuser.role &&= 'admin';\n```",
+    "options": [
+      "`'admin'` (chunki 'user' truthy qiymat)",
+      "`'user'`",
+      "`true`",
+      "`undefined`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`&&=` operatori chap tomon truthy bo'lgandagina o'ng tomondagi qiymatni o'zlashtiradi. `user.role` ('user') truthy bo'lgani uchun unga 'admin' yoziladi."
+  },
+  {
+    "id": 10,
+    "question": "Logical OR Assignment (`||=`) operatori qachon o'zlashtiradi?",
+    "options": [
+      "Chap tomondagi o'zgaruvchi har qanday Falsy qiymat (0, null, undefined, '', false) bo'lsa",
+      "Faqat undefined bo'lsa",
+      "Faqat true bo'lsa",
+      "Faqat son bo'lsa"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`||=` operatori chap tomondagi qiymat har qanday falsy bo'lsa (jumladan `0`, `\"\"`, `false` va h.k.) o'ng tomondagiga o'zgartiradi."
+  },
+  {
+    "id": 11,
+    "question": "ES2022-da massivlar uchun kiritilgan `.at()` metodining oddiy kvadrat qavslardan (`arr[index]`) farqi nimada?",
+    "options": [
+      "U faqat musbat indekslar bilan ishlaydi",
+      "U manfiy indekslarni ham qo'llab-quvvatlaydi (masalan, `arr.at(-1)` massivning oxirgi elementini beradi)",
+      "U elementni o'chirib yuboradi",
+      "U faqat stringlar bilan ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`.at(-1)` massiv oxiridan boshlab elementlarni oson o'qish imkonini beradi. Oddiy qavslarda `arr[-1]` xato yoki `undefined` beradi."
+  },
+  {
+    "id": 12,
+    "question": "JavaScript standartlarini yangilab boruvchi va TC39 komiteti tomonidan boshqariladigan texnik hujjat qanday nomlanadi?",
+    "options": [
+      "ECMAScript (ES)",
+      "JavaSpec",
+      "Web API Specification",
+      "TypeScript Spec"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JavaScript tili ECMAScript standarti (qisqacha ES) asosida standartlashtiriladi va rivojlantiriladi."
+  }
+]
+
 };

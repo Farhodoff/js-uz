@@ -1,604 +1,343 @@
 export const higherOrderArrays = {
-  id: "higher-order-arrays",
-  title: "🚀 Massiv Metodlari (Chuqur O'rganish)",
-  level: "O'rta daraja",
-  description: "map, filter, reduce, find, some, every, sort - amaliy misollari bilan.",
-  theory: `## 📌 MASSIV METODLARI — KURS DARAJASI
+  id: "higherOrderArrays",
+  title: "Massiv Metodlari (Chuqur O'rganish)",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-### 1. NEGA kerak? (Sabab)
-Eski usulda 100 ta foydalanuvchini filtrlash uchun:
-\`\`\`javascript
-// Eski, uzoq usul
-const natijaQatuv = [];
-for (let i = 0; i < users.length; i++) {
-  if (users[i].age >= 18) {
-    natijaQatuv.push(users[i].name);
-  }
-}
-\`\`\`
-Zamonaviy usulda:
-\`\`\`javascript
-const natijaQatuv = users
-  .filter(u => u.age >= 18)
-  .map(u => u.name);
-\`\`\`
-**Foyda:** Kod qisqa, xatolar kam, o'qish oson, qayta ishlatiladigan (reusable).
+### Massiv Helper Metodlari nima?
+**Massiv Helper Metodlari (Higher-Order Array Methods)** — bu massivlar ustida turli xil operatsiyalarni (saralash, qidirish, o'zgartirish va yig'ish) sikllarsiz (\`for\` yoki \`while\`) va osonroq bajarish uchun xizmat qiladigan o'rnatilgan JavaScript funksiyalaridir. Ular callback funksiyalarni qabul qiladi.
+
+### Real hayotiy analogiya
+Tasavvur qiling, sizda **maktab o'quvchilari ro'yxati** bor:
+* **\`map\` (Sertifikat berish):** Har bir o'quvchining ismini olib, unga moslab chiroyli tabriknoma (yangi massiv) yaratib chiqasiz.
+* **\`filter\` (Saralash):** Ro'yxatdan faqat a'lochi o'quvchilarni ajratib olasiz.
+* **\`reduce\` (Yig'indi):** Hamma o'quvchilarning imtihon ballarini qo'shib, bitta umumiy o'rtacha ballni hisoblaysiz.
+* **\`find\` (Qidiruv):** Ro'yxatdan birinchi bo'lib ismi "Ali" bo'lgan o'quvchini topasiz.
 
 ---
 
-### 2. SODDALIK (Haqiqiy Analogiyalar)
-- **map() — Masturga yozu berish:** Har bir student uchun sertifikat o'zimiz yozie qo'yamiz. Natijaviy qagozlar massivi — shu massiv.
-- **filter() — Qo'shni saralash:** Qo'shdan faqat 18 yoshdan oshgan bolalarni chiqaramiz.
-- **reduce() — Xazina:** Hamma gaz noma'lumlarning puli bor. Hammani bitta quitiga qo'shamiz.
-- **find() — Izlanuvchi:** "Berilgan yoshda kim bor?" deb birinchisini topamiz.
-- **some() — Hammasida bormi?** "Kamida birta 18 yoshdan oshgan bormi?" — Ha yoki Yo'q.
-- **every() — Hammasida o'z-o'zidan?** "Hammasibmi 18 yoshdan oshgan?" — Ha yoki Yo'q.
+## 2. 💻 Real Kod Misollari
 
----
-
-### 3. TUSHUNCHA (BATAFSIL)
-
-#### A. map() — TRANSFORMATSIYA
-**Vazifasi:** Har bir element bilan bir narsa qilish, yangi massiv qaytarish.
+### 1. Basic Example (map va filter)
 \`\`\`javascript
-// Misol 1: Hamma sonni 2 ga ko'paytirish
-const sonlar = [1, 2, 3];
-const ikkilantirilgan = sonlar.map(n => n * 2);
-console.log(ikkilantirilgan); // [2, 4, 6]
+const numbers = [1, 2, 3, 4, 5];
 
-// Misol 2: Foydalanuvchi ma'lumotlarini o'zlashtirish
-const foydalanuvchilar = [
-  { id: 1, ism: "Ali" },
-  { id: 2, ism: "Zara" }
-];
-const ismlar = foydalanuvchilar.map(f => f.ism);
-console.log(ismlar); // ["Ali", "Zara"]
+// Har bir sonni 2 ga ko'paytirish (map)
+const doubled = numbers.map(n => n * 2); // [2, 4, 6, 8, 10]
 
-// Misol 3: String formatini o'zgartirish
-const narxlar = [100, 200, 300];
-const formatlanganNarxlar = narxlar.map(n => n + " so'm");
-// ["100 so'm", "200 so'm", "300 so'm"]
+// Faqat juft sonlarni ajratish (filter)
+const evens = numbers.filter(n => n % 2 === 0); // [2, 4]
 \`\`\`
 
-#### B. filter() — SARALASH
-**Vazifasi:** Shartga mos elementlarni saqlash, qolgani tashlash.
+### 2. Intermediate Example (reduce yordamida yig'indini hisoblash)
 \`\`\`javascript
-// Misol 1: Raqamli saralash
-const ballar = [45, 80, 55, 90, 30];
-const otib_ketganlar = ballar.filter(b => b >= 60);
-console.log(otib_ketganlar); // [80, 90]
-
-// Misol 2: String saralash
-const ismlar = ["Ali", "Anna", "Zara", "Aziz"];
-const A_bilan = ismlar.filter(i => i[0] === "A");
-console.log(A_bilan); // ["Ali", "Anna", "Aziz"]
-
-// Misol 3: Kompleks shart
-const tovarlar = [
-  { nom: "Kitob", narx: 30000 },
-  { nom: "Qalam", narx: 5000 },
-  { nom: "Daftar", narx: 15000 }
-];
-const arzon = tovarlar.filter(t => t.narx < 20000);
-// Kitob va qalam qoladi
-\`\`\`
-
-#### C. reduce() — JAMI QISISH
-**Vazifasi:** Massivni bitta qiymatga keltirish (raqam, string, obyekt...).
-\`\`\`javascript
-// Misol 1: Yig'indi
-const savat = [500, 1200, 300];
-const jami = savat.reduce((sum, narx) => sum + narx, 0);
-console.log(jami); // 2000
-
-// Misol 2: Ko'paytma
-const sonlar = [2, 3, 4];
-const mahsulot = sonlar.reduce((p, n) => p * n, 1);
-console.log(mahsulot); // 24
-
-// Misol 3: Massivni Obyektga aylantirish
-const ranglar = ["qizil", "ko'k", "sariq"];
-const indeks = ranglar.reduce((obj, rang, i) => {
-  obj[i] = rang;
-  return obj;
-}, {});
-// { 0: "qizil", 1: "ko'k", 2: "sariq" }
-
-// Misol 4: Guruhlash
-const xaridlar = [
-  { nom: "Kitob", narx: 30000 },
-  { nom: "Qalam", narx: 5000 },
-  { nom: "Daftar", narx: 30000 }
-];
-const guruh = xaridlar.reduce((acc, tovar) => {
-  if (!acc[tovar.narx]) acc[tovar.narx] = [];
-  acc[tovar.narx].push(tovar.nom);
-  return acc;
-}, {});
-// { 30000: ["Kitob", "Daftar"], 5000: ["Qalam"] }
-\`\`\`
-
-#### D. find() — BIRINCHISINI TOPISH
-**Vazifasi:** Shartga mos **birinchi** elementni qaytarish (yoki undefined).
-\`\`\`javascript
-// Misol 1
-const sonlar = [10, 20, 30];
-const birinchi = sonlar.find(n => n > 15);
-console.log(birinchi); // 20 (30 emas, birinchi mos)
-
-// Misol 2: Foydalanuvchini ID orqali qidirish
-const foydalanuvchilar = [
-  { id: 1, ism: "Ali" },
-  { id: 2, ism: "Zara" }
-];
-const topildi = foydalanuvchilar.find(f => f.id === 2);
-console.log(topildi); // { id: 2, ism: "Zara" }
-\`\`\`
-
-#### E. some() — HAMMASIDA BORMI?
-**Vazifasi:** Kamida birta element shartga mos bormi? **true/false**.
-\`\`\`javascript
-// Misol 1
-const ballar = [30, 45, 80, 55];
-const otdi_bormi = ballar.some(b => b >= 60);
-console.log(otdi_bormi); // true (80 bor)
-
-// Misol 2
-const foydalanuvchilar = [
-  { ism: "Ali", admin: false },
-  { ism: "Zara", admin: true }
-];
-const admin_bormi = foydalanuvchilar.some(f => f.admin === true);
-console.log(admin_bormi); // true
-\`\`\`
-
-#### F. every() — HAMMASI SHARTGA MOS?
-**Vazifasi:** **Barcha** elementlar shartga mos? **true/false**.
-\`\`\`javascript
-// Misol 1
-const ballar = [65, 75, 85];
-const hammasi_otdi = ballar.every(b => b >= 60);
-console.log(hammasi_otdi); // true
-
-// Misol 2
-const ballar2 = [65, 45, 85];
-const hammasi_otdi2 = ballar2.every(b => b >= 60);
-console.log(hammasi_otdi2); // false (45 yo'q)
-\`\`\`
-
-#### G. CHAINING (ZANJIR QILISH)
-**Vazifasi:** Bir nechta operatsiyani ketma-ket qilish.
-\`\`\`javascript
-// Misol: O'quvchilardan 18 yoshdan oshgan erkaklar topib, ularning ismlarini olib, ABC tartibida saralash
-const oqvuchilar = [
-  { ism: "Ali", yosh: 20, jins: "erkak" },
-  { ism: "Zara", yosh: 25, jins: "ayol" },
-  { ism: "Bobir", yosh: 17, jins: "erkak" },
-  { ism: "Kamol", yosh: 22, jins: "erkak" }
+const cart = [
+  { name: "Telefon", price: 300 },
+  { name: "G'ilof", price: 20 },
+  { name: "Shisha", price: 10 }
 ];
 
-const natija = oqvuchilar
-  .filter(o => o.yosh >= 18)       // 18+ sifillash
-  .filter(o => o.jins === "erkak") // Faqat erkaklar
-  .map(o => o.ism)                 // Ismlarni olish
-  .sort();                         // ABC tartibida
+// Savatchadagi umumiy summani hisoblash
+const total = cart.reduce((sum, item) => sum + item.price, 0);
+console.log(total); // 330
+\`\`\`
 
-console.log(natija); // ["Ali", "Kamol"]
+### 3. Advanced Example (find, some, every va sort)
+\`\`\`javascript
+const users = [
+  { name: "Ali", age: 25 },
+  { name: "Zara", age: 17 },
+  { name: "Bobur", age: 30 }
+];
+
+// Birinchi 18 yoshdan oshgan foydalanuvchini topish (find)
+const adult = users.find(u => u.age > 18); // { name: "Ali", age: 25 }
+
+// Ro'yxatda voyaga yetmaganlar bormi? (some)
+const hasMinors = users.some(u => u.age < 18); // true
+
+// Yosh bo'yicha o'sish tartibida saralash (sort)
+const sorted = [...users].sort((a, b) => a.age - b.age);
 \`\`\`
 
 ---
 
-### 4. XATOLAR VA CHUQURLIKLAR (Edge Cases)
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
 
-#### ❌ Xato 1: Arrow funksiyada returnni unutish
-\`\`\`javascript
-// NOTO'G'RI ❌
-const sonlar = [1, 2, 3];
-const ikkilantir = sonlar.map(n => { n * 2 }); // undefined, undefined, undefined
+### Callback Context va Declarative Programming
+Ushbu metodlar **declarative (tavsiflovchi)** dasturlash uslubiga kiradi. Biz JSga massiv elementlarini qanday aylanib chiqishni (\`for\` kabi) buyurmaymiz, balki natija qanday bo'lishi kerakligini yozamiz.
+* **\`map\` va \`filter\`** har doim **yangi massiv** qaytaradi (original massiv o'zgarmaydi - immutability).
+* **\`reduce\`** bitta yakuniy qiymat (son, string, obyekt yoki boshqa massiv) qaytaradi. U akkumulyatordan (yig'uvchi) foydalanadi.
 
-// TO'G'RI ✅
-const ikkilantir = sonlar.map(n => { return n * 2; });
-// YOKI (return kalit sozi yo'q)
-const ikkilantir = sonlar.map(n => n * 2);
-\`\`\`
-
-#### ❌ Xato 2: Asl massivni o'zgartiramiz (Mutation)
-\`\`\`javascript
-// XATO ❌ - Yangi massiv kerak, eslizini o'zgartirish kerak emas
-const sonlar = [1, 2, 3];
-sonlar.forEach(n => n * 2); // Asl massiv o'zgarishsiz
-
-// TO'G'RI ✅
-const sonlar = [1, 2, 3];
-const natija = sonlar.map(n => n * 2);
-\`\`\`
-
-#### ❌ Xato 3: reduce() bilan boshlang'ich qiymatni unutish
-\`\`\`javascript
-// XATO ❌ - Bo'sh massiv xatoga olib keladi
-const sonlar = [];
-const jami = sonlar.reduce((sum, n) => sum + n);
-// TypeError: Reduce of empty array with no initial value
-
-// TO'G'RI ✅
-const jami = sonlar.reduce((sum, n) => sum + n, 0); // 0
-\`\`\`
-
-#### ❌ Xato 4: sort() asl massivni o'zgartiradi
-\`\`\`javascript
-// XATO ❌ - Asl massiv o'zgaradi
-const sonlar = [3, 1, 2];
-sonlar.sort((a, b) => a - b); // sonlar = [1, 2, 3]
-
-// TO'G'RI ✅ - Aslisini xohlamasak
-const sonlar = [3, 1, 2];
-const saralangan = [...sonlar].sort((a, b) => a - b);
-\`\`\`
-
-#### ⚠️ Edge Case: map(parseInt) mazmunam
-\`\`\`javascript
-// XATO ❌
-const stringlar = ["10", "20", "30"];
-const sonlar = stringlar.map(parseInt);
-console.log(sonlar); // [10, NaN, NaN] ❌ NEGA?!
-
-// SABABNI: parseInt(value, index) ishlamoqda
-// parseInt("10", 0) → 10 ✓
-// parseInt("20", 1) → NaN ✗ (1-asosda 20 yo'q)
-// parseInt("30", 2) → NaN ✗ (2-asosda 30 yo'q)
-
-// TO'G'RI ✅
-const sonlar = stringlar.map(Number); // [10, 20, 30]
-// YOKI
-const sonlar = stringlar.map(s => parseInt(s, 10));
-\`\`\`
+> [!IMPORTANT]
+> \`sort()\` metodi original massivni o'zgartiradi (mutable). Original massiv saqlanib qolishi uchun spread operatoridan nusxa olish tavsiya etiladi: \`[...arr].sort()\`.
 
 ---
 
-### 5. REAL HAYOTDAGI MISOLLAR
+## 4. 🧪 Bosqichma-bosqich Amaliy Mashq
 
-#### Misol 1: E-commerce savatchasi
+### Savatchadagi tovarlar uchun Chegirma va Filtrlash
+Keling, narxi 100 dan katta tovarlarga 10% chegirma beramiz va umumiy summani hisoblaymiz.
+
 \`\`\`javascript
-const savat = [
-  { nom: "Kitob", narx: 30000, miqdori: 2 },
-  { nom: "Qalam", narx: 5000, miqdori: 5 },
-  { nom: "Daftar", narx: 15000, miqdori: 1 }
+const products = [
+  { id: 1, name: "Noutbuk", price: 1000 },
+  { id: 2, name: "Klaviatura", price: 80 },
+  { id: 3, name: "Monitor", price: 200 }
 ];
 
-// Har bir tovar uchun umumiy summani hisoblash
-const tovarlar_bilan_jami = savat.map(t => ({
-  ...t,
-  jami: t.narx * t.miqdori
+// 1. Narxi 100 dan yuqori tovarlarni olish
+const expensive = products.filter(p => p.price > 100);
+
+// 2. Ularga 10% chegirma berish
+const discounted = expensive.map(p => ({
+  ...p,
+  price: p.price * 0.9
 }));
 
-// Umumiy summani hisoblash
-const savatning_jamiyi = savat
-  .map(t => t.narx * t.miqdori)
-  .reduce((sum, n) => sum + n, 0);
+// 3. Chegirmali tovarlar umumiy narxini hisoblash
+const grandTotal = discounted.reduce((sum, p) => sum + p.price, 0);
 
-console.log(savatning_jamiyi); // 115000
-\`\`\`
-
-#### Misol 2: Filterlab va o'rganish
-\`\`\`javascript
-const darslar = [
-  { nom: "JavaScript", kesib: true, reyting: 4.8 },
-  { nom: "Python", kesib: false, reyting: 4.9 },
-  { nom: "React", kesib: true, reyting: 4.7 }
-];
-
-// Kesib o'tilgan va 4.8+ reyting bilan darslar
-const yaxshi_darslar = darslar
-  .filter(d => d.kesib === true)
-  .filter(d => d.reyting >= 4.8)
-  .map(d => d.nom);
-
-console.log(yaxshi_darslar); // ["JavaScript"]
+console.log(grandTotal); // 1080 (900 + 180)
 \`\`\`
 
 ---
 
-### 6. 12 TA SAVOL VA JAVOBLAR
+## 5. ⚠️ Ko'p Uchraydigan Xatolar va Ularni Tuzatish
 
-**<b>1. map() metodi asl massivni o'zgartiradimi?</b>**
-Yo'q, \`map()\` yangi massiv qaytaradi. Asl massiv o'zgarmasin.
+### 1. \`map\` ichida \`return\` yozishni unutish (jingalak qavslar bilan)
+* **Noto'g'ri:**
+  \`\`\`javascript
+  const squares = [1, 2].map(n => { n * n }); // [undefined, undefined]
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  const squares = [1, 2].map(n => n * n);
+  // Yoki:
+  const squares = [1, 2].map(n => { return n * n; });
+  \`\`\`
 
+### 2. \`reduce\` metodiga boshlang'ich qiymat bermaslik
+Agar boshlang'ich qiymat berilmasa, massivning birinchi elementi akkumulyator bo'lib qoladi.
+* **Noto'g'ri:**
+  \`\`\`javascript
+  const total = [{price: 10}].reduce((sum, item) => sum + item.price); // "[object Object]"
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  const total = [{price: 10}].reduce((sum, item) => sum + item.price, 0); // 10
+  \`\`\`
 
-**<b>2. filter() qachon bo'sh massiv qaytaradi?</b>**
-Agar hech qanday element shartga mos bo'lmasa (\`true\` bo'lmasa).
+---
 
+## 6. 📝 Qisqacha Xulosa (Cheat Sheet)
 
-**<b>3. reduce() akkumulyatorning boshlang'ich qiymati nima?</b>**
-4-parametr (\`initial value\`). Masalan, \`reduce((sum, n) => sum + n, 0)\` da 0 boshlang'ich.
+| Metod | Vazifasi | Qaytaradigan Natijasi | Originalni o'zgartiradimi? |
+| :--- | :--- | :--- | :--- |
+| \`map\` | Har bir elementni o'zgartirish | Yangi massiv | Yo'q |
+| \`filter\` | Shartga moslarini ajratish | Yangi massiv | Yo'q |
+| \`reduce\` | Elementlarni bitta qiymatga yig'ish | Yagona qiymat | Yo'q |
+| \`find\` | Shartga mos birinchi elementni topish | Element yoki \`undefined\` | Yo'q |
+| \`some\` | Kamida bitta mos element bormi? | \`true\` / \`false\` | Yo'q |
+| \`every\` | Barcha elementlar mosmi? | \`true\` / \`false\` | Yo'q |
+| \`sort\` | Elementlarni tartiblash | Tartiblangan massiv | **Ha** |
 
+---
 
-**<b>4. find() va filter() asosiy farqi nimada?</b>**
-\`find()\` — birinchi mos elementni qaytaradi (yoki undefined).
-\`filter()\` — **barcha** mos elementlar massivini qaytaradi.
+## 7. ❓ Savollar va Javoblar
 
+### 1. \`forEach\` va \`map\` farqi nima?
+\`map\` har doim o'zgartirilgan elementlardan iborat yangi massiv qaytaradi. \`forEach\` esa shunchaki elementlarni aylanib chiqadi va hech narsa qaytarmaydi (\`undefined\`).
 
-**<b>5. some() va every() o'rtasidagi farq?</b>**
-\`some()\` — kamida bittasi shartga mos?
-\`every()\` — **barcha**si shartga mos?
+### 2. \`sort()\` nima uchun sonlarni noto'g'ri saralaydi? (masalan, [10, 2] ni [10, 2] ko'rinishida qoldiradi)
+Chunki \`sort()\` default holatda elementlarni string (matn) deb o'ylaydi va alifbo bo'yicha saralaydi. Sonlarni to'g'ri saralash uchun taqqoslovchi funksiya uzatish kerak: \`.sort((a, b) => a - b)\`.
 
+---
 
-**<b>6. map() va forEach() o'rtasidagi farq?</b>**
-\`map()\` — yangi massiv qaytaradi.
-\`forEach()\` — hech narsa qaytarmaydi (undefined), faqat side-effect uchun.
+## 8. 🧠 O'z-o'zini Tekshirish
 
+1. Qaysi metodlar original massivni o'zgartiradi?
+2. \`filter\` metodi shartga mos element topa olmasa nima qaytaradi? (Bo'sh massiv \`[]\`).
+3. \`reduce\` qanday ishlaydi va uning callback funksiyasi qanday parametrlarni oladi?
 
-**<b>7. reduce() yordamida massivni objektga aylantirish mumkinmi?</b>**
-Ha! \`reduce((obj, item) => { obj[item.id] = item; return obj; }, {})\`
+---
 
+## 9. 🚀 Amaliy Topsiriq
 
-**<b>8. find() bir nechta mos element topsa nima bo'ladi?</b>**
-Faqat **birinchisi** qaytariladi.
-
-
-**<b>9. Chaining nima va nega kerak?</b>**
-Bir nechta metodni ketma-ket qilish: \`.filter().map().sort()\`. Kod tilishni va o'qishni osonlashtiradi.
-
-
-**<b>10. sort() asl massivni o'zgartiradimi?</b>**
-Ha! \`sort()\` asl massivni o'zgartiradi. Xohlamasak: \`[...arr].sort()\`
-
-
-**<b>11. reduce() yordamida massivning duplikatlarini olib tashlay olamiz?</b>**
-Ha! Misol:
-\`\`\`javascript
-const sonlar = [1, 2, 2, 3, 1];
-const unique = sonlar.reduce((arr, n) =>
-  arr.includes(n) ? arr : [...arr, n], []);
-console.log(unique); // [1, 2, 3]
-\`\`\`
-
-
-**<b>12. Qaysi vaziyatda find() o'rniga filter() ishlatish kerak?</b>**
-\`find()\` — bitta element kerak bo'lganda.
-\`filter()\` — bir nechta element kerak bo'lganda.
+Quyidagi topshiriqlarni bajarib, massiv metodlaridan foydalanish bo'yicha bilimlaringizni amalda tekshiring.
 `,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Map: Narxlarni yangilash (Boshlang'ich)",
-      instruction: "Mahsulotlar narxiga 15% QQS qo'shib, yangi massiv yarating.",
-      startingCode: "const narxlar = [100, 200, 300];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "narxlar.map(n => n * 1.15)",
-      test: "if (logs.some(l => Array.isArray(l) && Math.abs(l[0] - 115) < 0.1)) return null; return 'Narxlar noto\\'g\\'ri!';"
-    },
-    {
-      id: 2,
-      title: "2️⃣ Filter: Juft sonlar (Boshlang'ich)",
-      instruction: "Massivdan faqat juft sonlarni olib, konsolga chiqaring.",
-      startingCode: "const sonlar = [1, 2, 3, 4, 5, 6, 7, 8];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "sonlar.filter(n => n % 2 === 0)",
-      test: "if (logs.some(l => Array.isArray(l) && l.length === 4 && l[0] === 2)) return null; return 'Faqat juft sonlar qolishi kerak!';"
-    },
-    {
-      id: 3,
-      title: "3️⃣ Reduce: Yig'indi (Boshlang'ich)",
-      instruction: "Massivdagi barcha sonlarni qo'shib, umumiy yig'indini chiqaring.",
-      startingCode: "const ballar = [85, 90, 70, 100];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "ballar.reduce((sum, ball) => sum + ball, 0)",
-      test: "if (logs.includes(345)) return null; return 'Umumiy ball 345 chiqishi kerak!';"
-    },
-    {
-      id: 4,
-      title: "4️⃣ Find: Birinchi topish (O'rta)",
-      instruction: "Massivdan 50 dan katta birinchi sonni toping.",
-      startingCode: "const sonlar = [20, 40, 60, 30, 80];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "sonlar.find(n => n > 50)",
-      test: "if (logs.includes(60)) return null; return '50 dan katta birinchi sonni toping!';"
-    },
-    {
-      id: 5,
-      title: "5️⃣ Map + Filter: Ism va yoshni o'zgartirish (O'rta)",
-      instruction: "18 yoshdan oshgan odamlarning ismlarini KATTA HARFLAR bilan oling.",
-      startingCode: "const adamlar = [\n  { ism: 'Ali', yosh: 20 },\n  { ism: 'zara', yosh: 17 },\n  { ism: 'bobir', yosh: 25 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "adamlar.filter(a => a.yosh >= 18).map(a => a.ism.toUpperCase())",
-      test: "if (logs.some(l => Array.isArray(l) && l.length === 2 && l[0] === 'ALI')) return null; return 'Natijani to\\'g\\'ri formatda oling!';"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Some: Shartga mos bormi? (O'rta)",
-      instruction: "Massivda 18 yoshdan oshgan foydalanuvchi bormi? true/false ni konsolga chiqaring.",
-      startingCode: "const foydalanuvchilar = [\n  { ism: 'Ali', yosh: 20 },\n  { ism: 'Zara', yosh: 17 },\n  { ism: 'Bobir', yosh: 15 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "foydalanuvchilar.some(f => f.yosh >= 18)",
-      test: "if (logs.includes(true)) return null; return 'some() metodi false qaytarishi kerak!';"
-    },
-    {
-      id: 7,
-      title: "7️⃣ Every: Hammasi shartga mos? (O'rta)",
-      instruction: "Hammasi 18 yoshdan oshganmi? true/false ni chiqaring.",
-      startingCode: "const foydalanuvchilar = [\n  { ism: 'Ali', yosh: 20 },\n  { ism: 'Zara', yosh: 25 },\n  { ism: 'Bobir', yosh: 15 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "foydalanuvchilar.every(f => f.yosh >= 18)",
-      test: "if (logs.includes(false)) return null; return 'Hisoblanmadi!';"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Reduce: Jami summani hisoblash (O'rta)",
-      instruction: "Savatchadagi barcha tovarlarning umumiy narxini hisoblang (narx × miqdori).",
-      startingCode: "const savat = [\n  { nom: 'Kitob', narx: 30000, miqdori: 2 },\n  { nom: 'Qalam', narx: 5000, miqdori: 3 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "savat.reduce((sum, t) => sum + (t.narx * t.miqdori), 0)",
-      test: "if (logs.includes(75000)) return null; return 'Jami 75000 bo\\'lishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "9️⃣ Chaining: Filter + Map + Sort (Qiyin)",
-      instruction: "18+ yoshli odamlarni ismlarini alfabetik tartibda chiqaring.",
-      startingCode: "const adamlar = [\n  { ism: 'Zara', yosh: 20 },\n  { ism: 'Ali', yosh: 17 },\n  { ism: 'Bobir', yosh: 25 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "adamlar.filter(a => a.yosh >= 18).map(a => a.ism).sort()",
-      test: "if (logs.some(l => Array.isArray(l) && l[0] === 'Bobir' && l[1] === 'Zara')) return null; return 'Alfabetik tartibda bo\\'lishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "🔟 Reduce: Massivni Objektga aylantirish (Qiyin)",
-      instruction: "Foydalanuvchilar massivini ID bo'yicha indexed objektga aylantiring.",
-      startingCode: "const users = [\n  { id: 1, ism: 'Ali' },\n  { id: 2, ism: 'Zara' }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "users.reduce((obj, u) => { obj[u.id] = u.ism; return obj; }, {})",
-      test: "if (logs.some(l => typeof l === 'object' && l['1'] === 'Ali' && l['2'] === 'Zara')) return null; return 'Objektga aylantirish kerak!';"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ Map + Sort: Narxlarni saralash (Qiyin)",
-      instruction: "Mahsulotlarni narxga ko'ra o'suvchi tartibda saralab, ismlarni konsolga chiqaring.",
-      startingCode: "const tovarlar = [\n  { nom: 'Kitob', narx: 30000 },\n  { nom: 'Qalam', narx: 5000 },\n  { nom: 'Daftar', narx: 15000 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "[...tovarlar].sort((a, b) => a.narx - b.narx).map(t => t.nom)",
-      test: "if (logs.some(l => Array.isArray(l) && l[0] === 'Qalam' && l[1] === 'Daftar')) return null; return 'Narxga ko\\'ra saralanmadi!';"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Reduce: Guruhlash (Eng Qiyin)",
-      instruction: "Tovarlarni narxga ko'ra guruhlang: { narx: [tovar ismları] }.",
-      startingCode: "const tovarlar = [\n  { nom: 'Kitob', narx: 30000 },\n  { nom: 'Qalam', narx: 5000 },\n  { nom: 'Daftar', narx: 30000 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
-      hint: "tovarlar.reduce((acc, t) => { if (!acc[t.narx]) acc[t.narx] = []; acc[t.narx].push(t.nom); return acc; }, {})",
-      test: "if (logs.some(l => typeof l === 'object' && l['30000'] && l['30000'].length === 2)) return null; return 'Guruhlash to\\'g\\'ri emas!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Map yordamida Transformatsiya",
+    "instruction": "Taqdim etilgan 'nums' massividagi har bir sonni kvadratini hisoblab, ulardan iborat yangi massiv yarating va uni 'squares' o'zgaruvchisiga saqlang. 'map' metodidan foydalaning.",
+    "startingCode": "const nums = [1, 2, 3, 4];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const squares = nums.map(n => n * n);",
+    "test": "if (!code.includes('map')) return 'map metodi ishlatilmadi';\nconst sandbox = new Function('nums', code + '; return squares;');\nconst res = sandbox([1, 2, 3, 4]);\nif (Array.isArray(res) && res[1] === 4 && res[3] === 16) return null;\nreturn 'Natija xato';"
+  },
+  {
+    "id": 2,
+    "title": "Filter yordamida Saralash",
+    "instruction": "Taqdim etilgan 'users' massividan faqat yoshi 18 dan katta yoki teng bo'lgan foydalanuvchilarni ajratib oling va natijani 'adults' o'zgaruvchisiga saqlang. 'filter' metodidan foydalaning.",
+    "startingCode": "const users = [\n  { name: 'Ali', age: 25 },\n  { name: 'Zara', age: 17 },\n  { name: 'Bobur', age: 18 }\n];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const adults = users.filter(u => u.age >= 18);",
+    "test": "if (!code.includes('filter')) return 'filter metodi ishlatilmadi';\nconst sandbox = new Function('users', code + '; return adults;');\nconst res = sandbox([\n  { name: 'Ali', age: 25 },\n  { name: 'Zara', age: 17 },\n  { name: 'Bobur', age: 18 }\n]);\nif (Array.isArray(res) && res.length === 2 && res[1].name === 'Bobur') return null;\nreturn 'adults massivi noto\\'g\\'ri filtrlandi';"
+  },
+  {
+    "id": 3,
+    "title": "Reduce yordamida Yig'indi",
+    "instruction": "Taqdim etilgan 'items' massividagi barcha obyektlarning 'price' qiymatlarini qo'shib, umumiy summani hisoblang va natijani 'totalPrice' o'zgaruvchisiga saqlang. 'reduce' metodidan foydalaning (boshlang'ich qiymatga 0 bering).",
+    "startingCode": "const items = [\n  { name: 'Noutbuk', price: 800 },\n  { name: 'Sichqoncha', price: 20 },\n  { name: 'Klaviatura', price: 50 }\n];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const totalPrice = items.reduce((sum, item) => sum + item.price, 0);",
+    "test": "if (!code.includes('reduce')) return 'reduce metodi ishlatilmadi';\nconst sandbox = new Function('items', code + '; return totalPrice;');\nconst res = sandbox([\n  { name: 'a', price: 10 },\n  { name: 'b', price: 20 }\n]);\nif (res === 30) return null;\nreturn 'totalPrice qiymati noto\\'g\\'ri hisoblandi';"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "`map()` va `forEach()` metodlari o'rtasidagi asosiy farq nimada?",
-      options: [
-        "`map()` har bir element uchun amal bajarib, natijalardan iborat mutlaqo yangi massiv qaytaradi; `forEach()` esa natija qaytarmaydi (`undefined` qaytaradi) va faqat elementlarni aylanib chiqish uchun ishlatiladi",
-        "`forEach()` yangi massiv qaytaradi, `map()` esa qaytarmaydi",
-        "`map()` faqat sonlar bilan, `forEach()` esa faqat stringlar bilan ishlaydi",
-        "Hech qanday farqi yo'q, ikkalasi ham bir xil ishlaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "`map()` har doim asl massiv bilan bir xil uzunlikdagi yangi o'zgartirilgan massiv qaytaradi. `forEach` esa shunchaki har bir element uchun callback funksiyani bajaradi, lekin hech qanday qiymat qaytarmaydi."
-    },
-    {
-      id: 2,
-      question: "`filter()` metodi qidiruv natijasida hech qanday mos element topa olmasa nima qaytaradi?",
-      options: [
-        "`undefined`",
-        "`null`",
-        "Bo'sh massiv (`[]`)",
-        "Xatolik (Error) beradi"
-      ],
-      correctAnswer: 2,
-      explanation: "`filter()` shartga mos keluvchi barcha elementlar to'plamini (massiv) qaytaradi. Agar hech qanday element shartni bajarmasa, natija baribir massiv bo'ladi, faqat bo'sh (`[]`)."
-    },
-    {
-      id: 3,
-      question: "`reduce()` metodida boshlang'ich qiymat (initial value) berilmagan bo'lsa va massiv bo'sh bo'lsa nima yuz beradi?",
-      options: [
-        "`0` qaytaradi",
-        "`undefined` qaytaradi",
-        "`TypeError: Reduce of empty array with no initial value` xatosi yuz beradi",
-        "Bo'sh massiv `[]` qaytaradi"
-      ],
-      correctAnswer: 2,
-      explanation: "Bo'sh massiv ustida boshlang'ich qiymatsiz `reduce` bajarilganda, akkumulyatorni nimadan boshlashni bilmagani uchun JavaScript `TypeError` xatoligini tashlaydi."
-    },
-    {
-      id: 4,
-      question: "`sort()` metodi haqida qaysi tasdiq to'g'ri?",
-      options: [
-        "U har doim yangi saralangan massiv qaytaradi va asl massivni o'zgartirmaydi",
-        "U asl massivning o'zini o'zgartiradi (mutable) va elementlarni string sifatida taqqoslaydi (shuning uchun sonlarni saralashda taqqoslash funksiyasi yozilishi kerak)",
-        "U faqat obyektlarni saralay oladi",
-        "U faqat asinxron ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "`sort()` asl massivning joylashuvini o'zgartiradi. Agar solishtirish (compare) funksiyasi berilmasa, sonlarni ham string kabi tartiblaydi (masalan, 10 soni 2 dan oldin keladi, chunki '1' < '2')."
-    },
-    {
-      id: 5,
-      question: "Massivdagi hammasi emas, balki kamida bitta element berilgan shartga mos kelishini tekshirish uchun qaysi metod ishlatiladi?",
-      options: [
-        "`every()`",
-        "`some()`",
-        "`find()`",
-        "`filter()`"
-      ],
-      correctAnswer: 1,
-      explanation: "`some()` kamida bitta element shartni bajarsa `true` qaytaradi. `every()` esa faqat barcha elementlar shartni bajargandagina `true` beradi."
-    },
-    {
-      id: 6,
-      question: "`find()` va `filter()` metodlarining asosiy farqi nimada?",
-      options: [
-        "`find()` yangi massiv qaytaradi, `filter()` esa faqat bitta element",
-        "`find()` shartga mos keluvchi birinchi elementning o'zini qaytaradi, `filter()` esa barcha mos keluvchi elementlardan iborat yangi massiv qaytaradi",
-        "`find()` faqat sonlar bilan ishlaydi, `filter()` esa faqat obyektlar bilan",
-        "`find()` metodida boshlang'ich qiymat berilishi shart, `filter()`da esa shart emas"
-      ],
-      correctAnswer: 1,
-      explanation: "`find()` shartga mos keladigan bitta qiymat (yoki `undefined`) qaytarsa, `filter()` hamma mos keladiganlarni massiv sifatida qaytaradi."
-    },
-    {
-      id: 7,
-      question: "Massiv metodlarida 'chaining' (zanjir hosil qilish) nima?",
-      options: [
-        "Bitta massivni bir nechta alohida o'zgaruvchilarga bo'lib chiqish",
-        "Bir nechta massiv metodlarini ketma-ket (masalan, `arr.filter().map().sort()`) ulab ishlatish, bunda har bir metod o'zidan keyingi metod uchun yangi massiv qaytaradi",
-        "Obyekt xususiyatlarini prototip orqali bir-biriga ulash",
-        "Callback funksiyalarni cheksiz siklga tushirish"
-      ],
-      correctAnswer: 1,
-      explanation: "Chaining - massiv metodlarini nuqta (`.`) orqali zanjir kabi bir-biriga ulashdir. Masalan, filter yangi massiv qaytaradi, map undan foydalanadi, keyin sort tartiblaydi."
-    },
-    {
-      id: 8,
-      question: "`const arr = ['1', '2', '3'].map(parseInt);` kodining natijasi qanday bo'ladi?",
-      options: [
-        "[1, 2, 3]",
-        "[1, NaN, NaN]",
-        "['1', '2', '3']",
-        "TypeError xatosi yuz beradi"
-      ],
-      correctAnswer: 1,
-      explanation: "`map` callback funksiyaga uchta argument (`value, index, array`) uzatadi. `parseInt` esa ikkita parametr qabul qiladi (`string, radix`). Shuning uchun `parseInt('2', 1)` va `parseInt('3', 2)` xatolikka (`NaN`) olib keladi."
-    },
-    {
-      id: 9,
-      question: "Asl massivni o'zgartirmasdan (immutably) uni saralash (sort qilish) untuk qanday yo'l tutiladi?",
-      options: [
-        "Shunchaki `arr.sort()` deb chaqirish kifoya",
-        "Massivdan nusxa olib, keyin saralash kerak: `[...arr].sort((a, b) => a - b)`",
-        "`arr.filter().sort()` deb chaqirish",
-        "`arr.map().sort()` deb chaqirish, chunki map avtomatik nusxa oladi"
-      ],
-      correctAnswer: 1,
-      explanation: "`sort()` asl massivni o'zgartirgani uchun, uning ustida amal bajarishdan oldin spread operator `[...arr]` yoki `arr.slice()` yordamida nusxa olish tavsiya etiladi."
-    },
-    {
-      id: 10,
-      question: "`every()` metodi bo'sh massiv (`[]`) uchun qanday qiymat qaytaradi?",
-      options: [
-        "false",
-        "true",
-        "undefined",
-        "TypeError"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScript-da `every()` metodi bo'sh massiv uchun har doim `true` qaytaradi. Bunga matematika va mantiqda \"bo'sh haqiqat\" (vacuous truth) deyiladi."
-    },
-    {
-      id: 11,
-      question: "`find()` metodi shartga mos element topa olmasa qanday qiymat qaytaradi?",
-      options: [
-        "Bo'sh massiv `[]`",
-        "undefined",
-        "null",
-        "-1"
-      ],
-      correctAnswer: 1,
-      explanation: "Agar massivda berilgan shartga mos keladigan bitta ham element topilmasa, `find()` metodi `undefined` qaytaradi."
-    },
-    {
-      id: 12,
-      question: "`reduce()` metodining callback funksiyasi qabul qiladigan to'rtta parametr qaysilar?",
-      options: [
-        "accumulator, currentValue, currentIndex, array",
-        "value, index, array, thisArg",
-        "prevValue, nextValue, total, index",
-        "sum, item, key, object"
-      ],
-      correctAnswer: 0,
-      explanation: "`reduce()` callback funksiyasi 4 ta parametr oladi: `accumulator` (yig'uvchi), `currentValue` (joriy element), `currentIndex` (joriy indeks) va `array` (asl massiv)."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Qaysi massiv metodi callback funksiya qaytargan natijaga qarab asl massiv elementlarini o'zgartirmasdan, butunlay yangi massiv qaytaradi?",
+    "options": [
+      "`map`",
+      "`forEach`",
+      "`push`",
+      "`splice`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`map` metodi massivdagi har bir element ustida amallar bajarib, ularning natijalaridan iborat yangi massiv qaytaradi va original massivni o'zgartirmaydi."
+  },
+  {
+    "id": 2,
+    "question": "`filter` metodi callback funksiya qanday qiymat qaytarganda elementni yangi massivga qo'shadi?",
+    "options": [
+      "Faqat `true` (yoki truthy qiymat) qaytarganda",
+      "Faqat `false` (yoki falsy qiymat) qaytarganda",
+      "Faqat `1` yoki `0` qaytarganda",
+      "Har qanday qiymat qaytarganda"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`filter` metodi har bir element uchun callback funksiyani chaqiradi. Agar u `true` yoki truthy qiymat qaytarsa, element natijaviy massivga kiritiladi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi `reduce` chaqiruvining yakuniy natijasi nima bo'ladi?\n```javascript\nconst nums = [1, 2, 3];\nconst res = nums.reduce((acc, val) => acc + val, 10);\n```",
+    "options": [
+      "`6`",
+      "`16`",
+      "`10`",
+      "`undefined`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Reduce boshlang'ich qiymat sifatida 10 ni oladi. Keyin ketma-ket massiv elementlarini qo'shib boradi: 10 + 1 + 2 + 3 = 16."
+  },
+  {
+    "id": 4,
+    "question": "`find` metodi massiv ichidan shartga mos element topa olmasa nima qaytaradi?",
+    "options": [
+      "`null`",
+      "`undefined`",
+      "`-1`",
+      "Bo'sh massiv `[]`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`find` metodi shartga mos keluvchi birinchi elementni qaytaradi. Agar bunday element topilmasa, u `undefined` qaytaradi."
+  },
+  {
+    "id": 5,
+    "question": "`some` va `every` metodlari qanday turdagi (data type) natija qaytaradi?",
+    "options": [
+      "Yangi massiv (Array)",
+      "Mantiqiy qiymat (Boolean: true yoki false)",
+      "Son (Number)",
+      "Obyekt (Object)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ikkala metod ham faqat shartning bajarilishi yoki bajarilmasligini tekshiradi va har doim `true` yoki `false` qiymat qaytaradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi saralash kodidan keyin original `nums` massivi qanday o'zgaradi?\n```javascript\nconst nums = [10, 2, 30];\nnums.sort();\n```",
+    "options": [
+      "`[2, 10, 30]` ko'rinishida to'g'ri saralanadi",
+      "`[10, 2, 30]` bo'lib o'zgarishsiz qoladi",
+      "`[10, 2, 30]` alifbo tartibida saralanadi, chunki default holatda elementlar string deb qaraladi",
+      "TypeError xatosi chiqadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Default `sort()` metodida taqqoslovchi funksiya bo'lmasa, u elementlarni matnga o'tkazadi va alifbo bo'yicha solishtiradi (bu yerda '10' '2' dan oldin keladi, chunki '1' '2' dan kichik)."
+  },
+  {
+    "id": 7,
+    "question": "Faqat birinchi voyaga yetgan foydalanuvchining ismini topish uchun qaysi metodlar zanjiri to'g'ri hisoblanadi?",
+    "options": [
+      "`users.filter(u => u.age >= 18).map(u => u.name)[0]`",
+      "`users.find(u => u.age >= 18)?.name`",
+      "Ikkala variant ham to'g'ri va bir xil natija beradi, lekin keyingisi optimalroq",
+      "Buning uchun faqat reduce ishlatish mumkin"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Ikkala usul ham to'g'ri ishlaydi. Biroq `find` metodi birinchi elementni topishi bilanoq ishlashni to'xtatadi va yangi massiv yaratmagani uchun optimalroqdir."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodda `squares` qiymati nima bo'ladi?\n```javascript\nconst squares = [1, 2].map(n => { n * n });\n```",
+    "options": [
+      "`[1, 4]`",
+      "`[undefined, undefined]` (chunki arrow functionda jingalak qavs ochilsa, return yozilishi shart)",
+      "TypeError",
+      "`[]`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Arrow funksiyalarda `{}` jingalak qavslar ochilsa, return avtomatik bo'lmaydi. Return yozilmagani uchun map natijasi undefined lardan iborat bo'ladi."
+  },
+  {
+    "id": 9,
+    "question": "`forEach` metodi haqida qaysi fikr noto'g'ri?",
+    "options": [
+      "U massiv elementlarini shunchaki aylanib chiqish uchun ishlatiladi",
+      "U har doim yangi o'zgartirilgan massiv qaytaradi",
+      "Uning ichida break yoki continue ishlatib bo'lmaydi",
+      "U undefined qaytaradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`forEach` metodi yangi massiv qaytarmaydi (u har doim `undefined` qaytaradi). Yangi massiv olish uchun `map` ishlatilishi kerak."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconst arr = [1, 2, 3];\nconsole.log(arr.every(n => n > 0));\n```",
+    "options": [
+      "`true` (chunki barcha sonlar 0 dan katta)",
+      "`false`",
+      "`undefined`",
+      "`[1, 2, 3]`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`every` metodi barcha elementlar shartga mos kelsa `true` qaytaradi. Massivdagi barcha elementlar (1, 2, 3) 0 dan katta bo'lgani uchun natija `true` bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kodda `total` qiymati qanday hisoblanadi?\n```javascript\nconst items = [{ price: 5 }, { price: 15 }];\nconst total = items.reduce((acc, curr) => acc + curr.price, 0);\n```",
+    "options": [
+      "`20`",
+      "`[object Object]15`",
+      "`NaN`",
+      "`undefined`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Boshlang'ich qiymat 0 qilib ko'rsatilgan. Shunda 0 + 5 + 15 = 20 to'g'ri hisoblanadi."
+  },
+  {
+    "id": 12,
+    "question": "Original massivni o'zgartirmasdan saralash (sort qilish) uchun qaysi yondashuv to'g'ri?",
+    "options": [
+      "`arr.sort()`",
+      "`const sorted = [...arr].sort((a, b) => a - b);`",
+      "`const sorted = arr.map().sort();`",
+      "`arr.filter().sort();`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Spread `[...arr]` orqali massivdan yangi nusxa olinadi, so'ngra uning ustida `.sort` chaqiriladi. Bu original massiv o'zgarmasligini ta'minlaydi."
+  }
+]
+
 };

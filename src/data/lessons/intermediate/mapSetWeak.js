@@ -1,258 +1,319 @@
 export const mapSetWeak = {
-  id: "map-set-weak",
+  id: "mapSetWeak",
   title: "Map, Set, WeakMap va WeakSet",
-  level: "O'rta daraja",
-  description: "JavaScript-dagi zamonaviy kalit-qiymatli va unikal to'plamlar, ularning afzalliklari va xotira boshqaruvi.",
-  theory: `## 1. NEGA kerak?
-JavaScript-da an'anaviy ravishda ma'lumotlarni kalit-qiymat (key-value) juftligida saqlash uchun **Object** (Obyekt) dan, samarasiz bo'lsa-da ro'yxat shaklida saqlash uchun esa **Array** (Massiv) dan foydalanib kelingan.
-Biroq, obyektlar va massivlarning ma'lum cheklovlari bor:
-- Obyekt kalitlari faqat \`String\` yoki \`Symbol\` bo'lishi mumkin. Obyekt kaliti sifatida boshqa bir obyekt yoki funksiyani ishlata olmaymiz.
-- Obyektda elementlar sonini (\`size\`) olish qiyin (avval kalitlarni massivga olib, keyin uzunligini tekshirish kerak).
-- Massivlarda takrorlanuvchi elementlarni avtomatik ravishda tozalash mexanizmi yo'q.
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-Shu sababli, ES6 (2015) versiyasida JavaScript-ga yangi va mukammal ma'lumotlar tuzilmalari: **Map**, **Set**, **WeakMap** va **WeakSet** qo'shildi. Ular ma'lumotlar bilan ishlashni yanada tezroq, xavfsizroq va xotira jihatidan samaraliroq qiladi.
+### Map, Set, WeakMap va WeakSet nima?
+ES6 versiyasida JavaScriptga ma'lumotlarni yanada samaraliroq saqlash va boshqarish uchun 4 ta yangi ma'lumotlar tuzilmasi qo'shildi:
+* **Map (Lug'at):** Kalit-qiymat (key-value) juftliklarini saqlaydi. Obyektdan farqi - istalgan turdagi qiymatni (hatto boshqa obyektni ham) kalit sifatida ishlata oladi.
+* **Set (Unikal to'plam):** Faqat takrorlanmaydigan (unikal) qiymatlarni saqlaydi.
+* **WeakMap (Kuchsiz lug'at):** Kaliti faqat obyekt bo'lishi mumkin va u xotirada kuchsiz saqlanadi (agar obyektga boshqa ishora qolmasa, u avtomatik xotiradan o'chadi).
+* **WeakSet (Kuchsiz to'plam):** Faqat obyektlarni unikal va kuchsiz tarzda saqlaydi.
 
-## 2. SODDALIK (Analogiya)
-- **Map (Lug'at):** Buni xuddi **telefon kitobchasi** deb tasavvur qiling. Unda ism (kalit) va telefon raqami (qiymat) juftligi saqlanadi. Obyektdan farqi - telefon kitobchasi kaliti sifatida insonning rasmini (obyekt) ham yopishtirib qo'yish mumkin!
-- **Set (Unikal to'plam):** Buni xuddi **imtihon topshirganlar ro'yxati** deb tasavvur qiling. Agar bir o'quvchi imtihondan 3 marta o'tgan bo'lsa ham, uning ismi ro'yxatda faqat bir marta yoziladi. Takrorlanishlarga yo'l qo'yilmaydi.
-- **WeakMap (Vaqtinchalik seyf):** Bu xuddi mehmonxonadagi **vaqtincha saqlash kamerasi** kabi. Agar mehmon mehmonxonani tark etsa (obyekt xotiradan o'chirilsa), u kameraga topshirgan buyumlar ham avtomatik ravishda axlat qutisiga tashlanadi (Garbage Collected bo'ladi).
+### Real hayotiy analogiya
+* **Map:** Telefon kitobchasi. Odamning ismi (kalit) va uning raqami (qiymat). Obyektdan farqi - odamning rasmini (obyekt) ham kalit qilib yopishtirish mumkin!
+* **Set:** Imtihonga kirgan talabalar ro'yxati. Bir talaba imtihonga 3 marta kelgan bo'lsa ham, ro'yxatda uning ismi faqat 1 marta unikal bo'lib qoladi.
+* **WeakMap:** Vaqtincha saqlash kamerasi. Agar mehmon mehmonxonadan chiqib ketsa (obyekt xotiradan o'chirilsa), kameradagi uning yuklari (qiymat) ham avtomatik axlatga tashlanadi.
 
-## 3. STRUKTURA VA QO'LLANILISHI
+---
 
-### A. Map
-\`Map\` — kalit-qiymat juftligini saqlaydigan to'plam. Uning obyektdan farqi - kalit sifatida istalgan turdagi qiymatni (obyekt, funksiya, raqam) ishlatish mumkin.
+## 2. 💻 Real Kod Misollari
 
-Asosiy metodlari:
-- \`new Map()\` – map yaratish.
-- \`map.set(key, value)\` – kalit bo'yicha qiymat saqlash.
-- \`map.get(key)\` – kalit bo'yicha qiymatni olish (\`undefined\` qaytarishi mumkin).
-- \`map.has(key)\` – kalit mavjudligini tekshirish (\`true\` / \`false\`).
-- \`map.delete(key)\` – kalit bo'yicha o'chirish.
-- \`map.clear()\` – hamma narsani o'chirish.
-- \`map.size\` – elementlar soni.
-
+### 1. Basic Example (Map va Set yaratish)
 \`\`\`javascript
+// Map yaratish
 const userRoles = new Map();
+const user = { name: "Ali" };
+userRoles.set(user, "admin");
+console.log(userRoles.get(user)); // "admin"
 
-const ali = { name: "Ali" };
-const adminRole = { role: "Administrator" };
-
-// Obyektni kalit sifatida ishlatamiz!
-userRoles.set(ali, adminRole);
-userRoles.set("status", "active");
-
-console.log(userRoles.get(ali)); // { role: "Administrator" }
-console.log(userRoles.size); // 2
+// Set yaratish va duplikatlarni tozalash
+const numbers = new Set([1, 2, 2, 3, 3, 4]);
+console.log([...numbers]); // [1, 2, 3, 4]
 \`\`\`
 
-### B. Set
-\`Set\` — faqat unikal (takrorlanmas) qiymatlarni saqlaydigan maxsus to'plam. Unda har bir qiymat faqat bir marta bo'lishi mumkin.
+### 2. Intermediate Example (WeakMap va Xotira boshqaruvi)
+\`\`\`javascript
+let guest = { name: "Zara" };
+const guestVisits = new WeakMap();
 
-Asosiy metodlari:
-- \`new Set([iterable])\` – set yaratish.
-- \`set.add(value)\` – qiymat qo'shish (agar qiymat allaqachon bo'lsa, hech narsa o'zgarmaydi).
-- \`set.has(value)\` – qiymat borligini tekshirish.
-- \`set.delete(value)\` – o'chirish.
-- \`set.clear()\` – tozalash.
-- \`set.size\` – elementlar soni.
+// Obyektni kalit sifatida saqlaymiz
+guestVisits.set(guest, 5);
+
+// Agar guest obyektini o'chirsak:
+guest = null;
+// Endi guestVisits ichidagi ma'lumot ham avtomatik ravishda xotiradan o'chadi.
+\`\`\`
+
+### 3. Advanced Example (WeakSet orqali faol ulanishlarni kuzatish)
+\`\`\`javascript
+const activeConnections = new WeakSet();
+
+let socket1 = { id: "ws_1" };
+let socket2 = { id: "ws_2" };
+
+activeConnections.add(socket1);
+activeConnections.add(socket2);
+
+console.log(activeConnections.has(socket1)); // true
+
+// Socket yopilganda va xotiradan o'chirilganda:
+socket1 = null; 
+// activeConnections ichidan ham avtomatik o'chadi
+\`\`\`
+
+---
+
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+
+### Hash Tables va Garbage Collection
+* **Map/Set** elementlarni **Hash Table** orqali tartiblaydi, bu esa elementlarni qidirishni (\`has\`), o'chirishni (\`delete\`) va qo'shishni (\`set\`/\`add\`) massivlar kabi $O(N)$ emas, balki juda tezkor $O(1)$ tezlikda bajarish imkonini beradi.
+* **WeakMap/WeakSet** Garbage Collector (axlat yig'uvchi) uchun to'siq bo'lmaydi. Oddiy \`Map\`da obyekt o'chirilgan taqdirda ham, u Map ichida kalit sifatida turgani uchun xotiradan butunlay o'chib ketmaydi (Memory Leak). \`WeakMap\` esa bu muammoni hal qiladi.
+
+---
+
+## 4. 🧪 Bosqichma-bosqich Amaliy Mashq
+
+### Massivdagi takrorlangan ma'lumotlarni tozalash loyihasi
+Foydalanuvchilar tomonidan kiritilgan unikal teglar (tags) ro'yxatini shakllantirish:
 
 \`\`\`javascript
-const numbers = new Set([1, 2, 3, 3, 2, 1, 4]);
-console.log(numbers); // Set(4) { 1, 2, 3, 4 } (duplikatlar o'chib ketdi!)
+const userTags = ["js", "react", "js", "html", "react", "css"];
 
-// Massivdagi duplikatlarni tozalashning eng tezkor usuli:
-const uniqueArray = [...new Set([1, 1, 2, 2, 3])]; // [1, 2, 3]
+// 1. Set yordamida unikal qilamiz
+const uniqueTagsSet = new Set(userTags);
+
+// 2. Set ni qaytadan massivga aylantiramiz (spread yordamida)
+const cleanTags = [...uniqueTagsSet];
+
+console.log(cleanTags); // ["js", "react", "html", "css"]
 \`\`\`
 
-### C. WeakMap
-\`WeakMap\` — bu \`Map\` ning maxsus turi bo'lib, quyidagi cheklovlarga ega:
-1. Kalit sifatida **faqat obyektlar** ishlatilishi mumkin (ibtidoiy turlar - string, number mumkin emas).
-2. Obyekt-kalitlar xotirada **kuchsiz ushlab turiladi (weak references)**. Agar obyektga boshqa hech qayerdan havola (reference) qolmasa, u Garbage Collector (axlat yig'uvchi) tomonidan xotiradan avtomatik o'chiriladi.
-3. Elementlarni aylanib chiqish (iteration) va \`size\` xossasi yo'q.
+---
 
-\`\`\`javascript
-let user = { name: "John" };
-const visitsCountMap = new WeakMap();
+## 5. ⚠️ Ko'p Uchraydigan Xatolar va Ularni Tuzatish
 
-visitsCountMap.set(user, 12);
+### 1. WeakMap ichida ibtidoiy (primitive) tiplarni kalit qilish
+* **Noto'g'ri:**
+  \`\`\`javascript
+  const wm = new WeakMap();
+  wm.set("key", 100); // TypeError: Invalid value used as weak map key
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  const wm = new WeakMap();
+  const keyObj = {};
+  wm.set(keyObj, 100);
+  \`\`\`
 
-user = null; // Havola o'chirildi!
-// Endi { name: "John" } obyekti va visitsCountMap ichidagi ma'lumot xotiradan to'liq o'chib ketadi.
-\`\`\`
+### 2. Obyekt kalitlarida reference farqini hisobga olmaslik
+* **Noto'g'ri:**
+  \`\`\`javascript
+  const map = new Map();
+  map.set({ id: 1 }, "Ma'lumot");
+  console.log(map.get({ id: 1 })); // undefined! Chunki ikkita {} xotirada har xil manzilda.
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  const map = new Map();
+  const userKey = { id: 1 };
+  map.set(userKey, "Ma'lumot");
+  console.log(map.get(userKey)); // "Ma'lumot"
+  \`\`\`
 
-### D. WeakSet
-\`WeakSet\` — faqat unikal obyektlarni saqlaydigan to'plam.
-- Kalitlar faqat obyektlar bo'lishi kerak.
-- Obyektlar kuchsiz saqlanadi.
-- Iteratsiya (aylanib chiqish) metodlari va \`size\` yo'q.
+---
 
-\`\`\`javascript
-const activeUsers = new WeakSet();
-let bob = { name: "Bob" };
+## 6. 📝 Qisqacha Xulosa (Cheat Sheet)
 
-activeUsers.add(bob);
-console.log(activeUsers.has(bob)); // true
+| Xususiyati | Map | Set | WeakMap | WeakSet |
+| :--- | :--- | :--- | :--- | :--- |
+| **Kalit turi** | Istalgan tip | Faqat qiymat | Faqat obyekt | Faqat obyekt |
+| **Iteratsiya** | Mavjud | Mavjud | Yo'q | Yo'q |
+| **size xossasi** | Mavjud | Mavjud | Yo'q | Yo'q |
+| **Garbage Collected** | Yo'q | Yo'q | Ha | Ha |
 
-bob = null; // Bob obyekti faol foydalanuvchilar ro'yxatidan va xotiradan o'chiriladi.
-\`\`\`
+---
 
-## 4. NIMA UCHUN MUHIM?
-- **Tezkorlik:** Map va Set elementlarni qidirishda (\`has\`), o'chirishda (\`delete\`) va qo'shishda (\`set\` / \`add\`) obyekt va massivlarga qaraganda ancha tez ishlaydi (ayniqsa katta ma'lumotlar bilan ishlaganda O(1) murakkablikda).
-- **Metadata qo'shish:** WeakMap uchinchi tomon kutubxonalari yaratgan obyektlarga qo'shimcha metadata yozishda xotira sizib chiqishi (memory leak) oldini oladi.
+## 7. ❓ Savollar va Javoblar
 
-## 5. KO'P UCHRAYDIGAN XATOLAR
-1. **WeakMap ichida string kalit ishlatish:**
-   \`\`\`javascript
-   const wm = new WeakMap();
-   wm.set("key", 1); // TypeError: Invalid value used as weak map key ❌
-   \`\`\`
-2. **Obyekt kalitlarini tekshirishda havola (reference) farqini unutish:**
-   \`\`\`javascript
-   const map = new Map();
-   map.set({ id: 1 }, "Foydalanuvchi");
-   console.log(map.get({ id: 1 })); // undefined! ❌ Chunki ikkita alohida obyekt {} xotirada boshqa manzilda joylashgan.
-   
-   // TO'G'RI:
-   const keyObj = { id: 1 };
-   map.set(keyObj, "Foydalanuvchi");
-   console.log(map.get(keyObj)); // "Foydalanuvchi" ✅
-   \`\`\`
+### 1. \`Map\` va \`Object\` farqi nimada?
+Obyekt kalitlari faqat string yoki symbol bo'ladi, Map esa har qanday ma'lumot turini kalit qila oladi. Mapda elementlar sonini \`size\` orqali tezda olish mumkin.
 
-## 6. INTERVIEW SAVOLLARI (Junior -> Middle -> Senior)
-1. **Map va Object farqi nima? (Junior)**
-   - Obyekt kalitlari faqat string/symbol bo'ladi, Map-da esa istalgan tip. Map elementlar sonini \`size\` orqali beradi, obyektda esa bunday xossa yo'q. Map iteratsiya uchun qulay.
-2. **Set yordamida massivdagi duplikatlarni qanday yo'qotish mumkin? (Junior)**
-   - \`[...new Set(array)]\` sintaksisi orqali.
-3. **WeakMap va Map o'rtasidagi farq nimada? (Middle)**
-   - WeakMap kalitlari faqat obyekt bo'lishi shart va ular xotirada kuchsiz saqlanadi. WeakMap-da iteratsiya metodlari va size xossasi mavjud emas.
-4. **WeakSet qachon ishlatiladi? (Middle)**
-   - Obyektlar guruhini (masalan, faol websocket ulanishlari yoki DOM tugunlari) kuzatib borishda va ularni xotiradan avtomatik o'chishini ta'minlashda.
-5. **Set-da element bor-yo'qligini tekshirish massivning \`includes\` metodidan nega tezroq? (Middle)**
-   - Chunki Set ichida qiymatlar hash-table yordamida indekslanadi, bu esa O(1) tezlikda tekshirish imkonini beradi. Massiv esa O(N) vaqt sarflaydi.
-6. **Map-ni obyektga va aksincha qanday o'tkazamiz? (Middle)**
-   - Obyektni Map-ga: \`new Map(Object.entries(obj))\`.
-   - Map-ni obyektga: \`Object.fromEntries(map)\`.
-7. **WeakMap qanday qilib xotira sizib chiqishini (memory leak) oldini oladi? (Senior)**
-   - WeakMap-dagi kalit obyektga boshqa havola qolmasa, Garbage Collector uni va unga bog'liq qiymatni avtomatik o'chiradi. Map-da esa obyekt o'chsa ham, u Map ichida kalit sifatida saqlanib qolaveradi va xotira bo'shamaydi.
-8. **WeakMap yordamida klasslarda private xususiyatlarni qanday yaratish mumkin? (Senior)**
-   - Klassdan tashqarida \`const privateFields = new WeakMap()\` yaratiladi. Konstruktorda \`privateFields.set(this, { secret: 123 })\` deb yoziladi. Bu ma'lumot faqat klass ichida o'qiladi va obyektdan tashqarida ko'rinmaydi.
-9. **Map elementlarining tartibi qanday saqlanadi? (Junior)**
-   - Map elementlari unga qo'shilgan ketma-ketlikda (insertion order) saqlanadi va iteratsiya qilinganda shu tartibda chiqadi.
-10. **Set ichida \`{}\` va \`{}\` bir xil element deb hisoblanadimi? (Junior)**
-    - Yo'q, Set ikkita alohida bo'sh obyektni saqlab qoladi, chunki ularning havolalari (references) boshqa-boshqa.
-11. **Nega WeakMap-ni loop orqali aylanib chiqish (iterate qilish) mumkin emas? (Senior)**
-    - Chunki Garbage Collector fonda istalgan vaqtda kalit obyektlarni xotiradan o'chirib yuborishi mumkin. Bu esa iteratsiya paytida elementlar soni kutilmaganda o'zgarishiga olib keladi.
-12. **Map kaliti sifatida NaN ishlatsa bo'ladimi? (Middle)**
-    - Ha, Map-da \`NaN\` kaliti o'ziga teng deb hisoblanadi (ya'ni \`NaN === NaN\` kabi ishlaydi) va uni bitta kalit sifatida saqlaydi.
-`
-  ,
+### 2. Nima uchun WeakMap-ni loop orqali aylanib chiqib bo'lmaydi?
+Chunki Garbage Collector fonda istalgan vaqtda kalit obyektlarni xotiradan o'chirib yuborishi mumkin. Bu esa aylanib chiqish jarayonida kutilmagan xatoliklar keltirib chiqaradi.
+
+---
+
+## 8. 🧠 O'z-o'zini Tekshirish
+
+1. \`Set\` ichiga ikkita bo'sh obyekt \`{}\` qo'shilsa, uning \`size\` qiymati nechaga teng bo'ladi? (2 ga, chunki ular reference bo'yicha farq qiladi).
+2. Qaysi holatlarda \`Map\`ni oddiy \`Object\`dan ko'ra afzal ko'rish kerak?
+3. \`WeakSet\` qaysi muammoni hal qilishda qo'llaniladi?
+
+---
+
+## 9. 🚀 Amaliy Topsiriq
+
+Quyidagi mashqlar va testlar yordamida to'plamlar bilan ishlash ko'nikmalaringizni mustahkamlang.
+`,
   exercises: [
-    {
-      id: 1,
-      title: "Set: Unikal elementlar",
-      instruction: "Berilgan sonlar massividagi barcha takrorlanuvchi elementlarni Set yordamida o'chirib tashlang va natijani oddiy massiv ko'rinishida qaytaruvchi `removeDuplicates(arr)` funksiyasini yozing.",
-      startingCode: "function removeDuplicates(arr) {\n  // Kodni yozing\n}",
-      hint: "Set yaratib, uni spread operator orqali massivga o'giring: return [...new Set(arr)];",
-      test: "if (typeof removeDuplicates !== 'function') return 'removeDuplicates topilmadi'; if (JSON.stringify(removeDuplicates([1,2,2,3,1])) !== '[1,2,3]') return 'Duplikatlar to\\'g\\'ri tozalanmadi'; return null;"
-    },
-    {
-      id: 2,
-      title: "Map: Foydalanuvchi qidirish",
-      instruction: "Map obyektini (`userMap`) va foydalanuvchi `id` (kalit) sini qabul qilib, agar foydalanuvchi mavjud bo'lsa uning ismini qaytaruvchi, aks holda 'Topilmadi' satrini qaytaruvchi `getUserName(userMap, id)` funksiyasini yozing.",
-      startingCode: "function getUserName(userMap, id) {\n  // Map metodlarini ishlating\n}",
-      hint: "userMap.has(id) orqali tekshirib, userMap.get(id) ni qaytaring yoki 'Topilmadi'.",
-      test: "if (typeof getUserName !== 'function') return 'getUserName topilmadi'; const myMap = new Map([[1, 'Ali'], [2, 'Vali']]); if (getUserName(myMap, 1) !== 'Ali' || getUserName(myMap, 3) !== 'Topilmadi') return 'Map-dan qidirish xato ishladi'; return null;"
-    },
-    {
-      id: 3,
-      title: "WeakMap: Yashirin Metadata",
-      instruction: "WeakMap yordamida berilgan `obj` obyektiga `metadata` qiymatini biriktiruvchi va keyinchalik uni o'qib qaytaruvchi `attachMetadata(weakMap, obj, metadata)` funksiyasini yozing.",
-      startingCode: "function attachMetadata(weakMap, obj, metadata) {\n  // WeakMap-ga yozing va keyin o'sha qiymatni qaytaring\n}",
-      hint: "weakMap.set(obj, metadata); return weakMap.get(obj);",
-      test: "if (typeof attachMetadata !== 'function') return 'attachMetadata topilmadi'; const wm = new WeakMap(); const o = {}; if (attachMetadata(wm, o, 'secret') !== 'secret') return 'WeakMap-da metadata to\\'g\\'ri saqlanmadi'; return null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Set yordamida Duplikatlarni Tozalash",
+    "instruction": "Taqdim etilgan 'removeDuplicates(arr)' funksiyasini shunday yozingki, u massivdagi barcha takrorlanuvchi elementlarni Set yordamida tozalab, unikal elementlardan iborat yangi massiv qaytarsin.",
+    "startingCode": "function removeDuplicates(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return [...new Set(arr)];",
+    "test": "if (!code.includes('Set')) return 'Set ishlatilmadi';\nconst sandbox = new Function(code + '; return removeDuplicates;');\nconst fn = sandbox();\nconst res = fn([1, 2, 2, 3, 1]);\nif (Array.isArray(res) && res.length === 3 && res[1] === 2) return null;\nreturn 'Natija noto\\'g\\'ri';"
+  },
+  {
+    "id": 2,
+    "title": "Map yordamida Ma'lumot Qidirish",
+    "instruction": "'userMap' (Map obyekti) va 'id' kalitini qabul qilib, agar Map ichida kalit mavjud bo'lsa uning qiymatini, aks holda 'Topilmadi' satrini qaytaruvchi 'getUserName(userMap, id)' funksiyasini yozing.",
+    "startingCode": "function getUserName(userMap, id) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return userMap.has(id) ? userMap.get(id) : 'Topilmadi';",
+    "test": "if (!code.includes('get') || !code.includes('has')) return 'Map has/get metodlari ishlatilmadi';\nconst sandbox = new Function(code + '; return getUserName;');\nconst fn = sandbox();\nconst m = new Map([[1, 'Ali']]);\nif (fn(m, 1) === 'Ali' && fn(m, 2) === 'Topilmadi') return null;\nreturn 'getUserName funksiyasi to\\'g\\'ri ishlamadi';"
+  },
+  {
+    "id": 3,
+    "title": "WeakMap orqali Metadata bog'lash",
+    "instruction": "'weakMap' obyekti, 'obj' (kalit obyekt) va 'metadata' (qiymat) qabul qiluvchi 'attachMetadata(weakMap, obj, metadata)' funksiyasini yozing. U 'weakMap'ga ma'lumotni saqlasin va o'sha saqlangan qiymatni qaytarsin.",
+    "startingCode": "function attachMetadata(weakMap, obj, metadata) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "weakMap.set(obj, metadata); return weakMap.get(obj);",
+    "test": "if (!code.includes('set') || !code.includes('get')) return 'WeakMap set/get metodlari ishlatilmadi';\nconst sandbox = new Function(code + '; return attachMetadata;');\nconst fn = sandbox();\nconst wm = new WeakMap();\nconst k = {};\nif (fn(wm, k, 'secret_val') === 'secret_val') return null;\nreturn 'Metadata to\\'g\\'ri bog\\'lanmadi';"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Obyekt (Object) va Map o'rtasidagi eng asosiy farqlardan biri nima?",
-      options: [
-        "Obyektlar faqat sonlarni kalit qiladi, Map esa satrlarni",
-        "Map kaliti sifatida har qanday turdagi qiymatni (shu jumladan obyektlarni ham) ishlatish mumkin",
-        "Map faqat local storage-da saqlanadi",
-        "Obyektlar Map-ga qaraganda doimo tezroq ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Obyektlarda kalitlar faqat String yoki Symbol bo'lishi mumkin, Map-da esa istalgan tip (obyekt, funksiya, raqam) kalit bo'la oladi."
-    },
-    {
-      id: 2,
-      question: "Set to'plamining o'ziga xosligi nimada?",
-      options: [
-        "U ma'lumotlarni kalit-qiymat shaklida saqlaydi",
-        "U faqat takrorlanmaydigan (unikal) elementlarni saqlaydi",
-        "U faqat asinxron funksiyalarni qabul qiladi",
-        "U massivlardan ko'ra ko'proq xotira egallaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Set - faqat unikal elementlarni saqlaydigan to'plam bo'lib, unga takroriy qiymat qo'shilganda u inkor qilinadi."
-    },
-    {
-      id: 3,
-      question: "Set ichida elementlar sonini olish uchun qaysi xossadan foydalaniladi?",
-      options: ["length", "size", "count", "keys.length"],
-      correctAnswer: 1,
-      explanation: "Set va Map to'plamlarida elementlar sonini olish uchun maxsus `size` xossasi ishlatiladi."
-    },
-    {
-      id: 4,
-      question: "WeakMap-da kalit sifatida nimalardan foydalanish mumkin?",
-      options: [
-        "Faqat string va number turlari",
-        "Faqat obyektlar (objects)",
-        "Istalgan ma'lumot turi",
-        "Faqat funksiyalar"
-      ],
-      correctAnswer: 1,
-      explanation: "WeakMap and WeakSet faqat obyektlar bilan ishlaydi. Ular ibtidoiy turlarni (string, number, boolean) kalit qibly qabul qilmaydi."
-    },
-    {
-      id: 5,
-      question: "WeakMap qanday qilib xotira sizib chiqishini (memory leaks) oldini oladi?",
-      options: [
-        "U xotirani vaqti-vaqti bilan avtomatik o'chirib turadi",
-        "Undagi obyekt-kalitlarga boshqa havola qolmasa, u Garbage Collector tomonidan xotiradan avtomatik o'chiriladi",
-        "U ma'lumotlarni qattiq diskda saqlaydi",
-        "U faqat asinxron operatsiyalarni bloklaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "WeakMap obyekt-kalitlarni kuchsiz ushlab turadi (weak references). Agar dasturda obyektga boshqa reference qolmasa, u xotiradan to'liq o'chib ketadi."
-    },
-    {
-      id: 6,
-      question: "WeakSet va WeakMap to'plamlarini loop (for...of, forEach) yordamida aylanib chiqish mumkinmi?",
-      options: [
-        "Ha, cheklovlarsiz",
-        "Yo'q, ularda aylanib chiqish (iteratsiya) metodlari mavjud emas",
-        "Faqat browser konsolida aylanib chiqish mumkin",
-        "Faqat maxsus generatorlar yordamida"
-      ],
-      correctAnswer: 1,
-      explanation: "WeakMap va WeakSet tarkibi Garbage Collector tomonidan istalgan vaqtda o'zgarishi mumkinligi sababli, ularni iterate qilish (for...of) taqiqlangan."
-    },
-    {
-      id: 7,
-      question: "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconst set = new Set();\nset.add({});\nset.add({});\nconsole.log(set.size);\n```",
-      options: ["1", "2", "undefined", "TypeError"],
-      correctAnswer: 1,
-      explanation: "Ikkita alohida bo'sh obyekt `{}` xotirada boshqa havolalarga (references) ega, shuning uchun Set ularni unikal deb hisoblaydi va ikkalasini ham saqlaydi. Natija: 2."
-    },
-    {
-      id: 8,
-      question: "Map tarkibidagi barcha elementlarni butunlay o'chirish uchun qaysi metod chaqiriladi?",
-      options: ["delete()", "clear()", "reset()", "remove()"],
-      correctAnswer: 1,
-      explanation: "Map va Set to'plamlaridagi barcha elementlarni to'liq tozalash uchun `clear()` metodi ishlatiladi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Obyekt (Object) va Map o'rtasidagi eng asosiy farqlardan biri nima?",
+    "options": [
+      "Obyektlar faqat sonlarni kalit qiladi, Map esa satrlarni",
+      "Map kaliti sifatida har qanday turdagi qiymatni (shu jumladan obyektlarni ham) ishlatish mumkin",
+      "Map faqat local storage-da saqlanadi",
+      "Obyektlar Map-ga qaraganda doimo tezroq ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Obyektlarda kalitlar faqat String yoki Symbol bo'lishi mumkin, Map-da esa istalgan tip (obyekt, funksiya, raqam) kalit bo'la oladi."
+  },
+  {
+    "id": 2,
+    "question": "Set to'plamining o'ziga xosligi nimada?",
+    "options": [
+      "U ma'lumotlarni kalit-qiymat shaklida saqlaydi",
+      "U faqat takrorlanmaydigan (unikal) elementlarni saqlaydi",
+      "U faqat asinxron funksiyalarni qabul qiladi",
+      "U massivlardan ko'ra ko'proq xotira egallaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Set - faqat unikal elementlarni saqlaydigan to'plam bo'lib, unga takroriy qiymat qo'shilganda u inkor qilinadi."
+  },
+  {
+    "id": 3,
+    "question": "Set ichida elementlar sonini olish uchun qaysi xossadan foydalaniladi?",
+    "options": ["length", "size", "count", "keys.length"],
+    "correctAnswer": 1,
+    "explanation": "Set va Map to'plamlarida elementlar sonini olish uchun maxsus `size` xossasi ishlatiladi."
+  },
+  {
+    "id": 4,
+    "question": "WeakMap-da kalit sifatida nimalardan foydalanish mumkin?",
+    "options": [
+      "Faqat string va number turlari",
+      "Faqat obyektlar (objects)",
+      "Istalgan ma'lumot turi",
+      "Faqat funksiyalar"
+    ],
+    "correctAnswer": 1,
+    "explanation": "WeakMap va WeakSet faqat obyektlar bilan ishlaydi. Ular ibtidoiy turlarni (string, number, boolean) kalit qilib qabul qilmaydi."
+  },
+  {
+    "id": 5,
+    "question": "WeakMap qanday qilib xotira sizib chiqishini (memory leaks) oldini oladi?",
+    "options": [
+      "U xotirani vaqti-vaqti bilan avtomatik o'chirib turadi",
+      "Undagi obyekt-kalitlarga boshqa havola qolmasa, u Garbage Collector tomonidan xotiradan avtomatik o'chiriladi",
+      "U ma'lumotlarni qattiq diskda saqlaydi",
+      "U faqat asinxron operatsiyalarni bloklaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "WeakMap obyekt-kalitlarni kuchsiz ushlab turadi (weak references). Agar dasturda obyektga boshqa reference qolmasa, u xotiradan to'liq o'chib ketadi."
+  },
+  {
+    "id": 6,
+    "question": "WeakSet va WeakMap to'plamlarini loop (for...of, forEach) yordamida aylanib chiqish mumkinmi?",
+    "options": [
+      "Ha, cheklovlarsiz",
+      "Yo'q, ularda aylanib chiqish (iteratsiya) metodlari mavjud emas",
+      "Faqat browser konsolida aylanib chiqish mumkin",
+      "Faqat maxsus generatorlar yordamida"
+    ],
+    "correctAnswer": 1,
+    "explanation": "WeakMap va WeakSet tarkibi Garbage Collector tomonidan istalgan vaqtda o'zgarishi mumkinligi sababli, ularni iterate qilish (for...of) taqiqlangan."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconst set = new Set();\nset.add({});\nset.add({});\nconsole.log(set.size);\n```",
+    "options": ["1", "2", "undefined", "TypeError"],
+    "correctAnswer": 1,
+    "explanation": "Ikkita alohida bo'sh obyekt `{}` xotirada boshqa havolalarga (references) ega, shuning uchun Set ularni unikal deb hisoblaydi va ikkalasini ham saqlaydi. Natija: 2."
+  },
+  {
+    "id": 8,
+    "question": "Map tarkibidagi barcha elementlarni butunlay o'chirish uchun qaysi metod chaqiriladi?",
+    "options": ["delete()", "clear()", "reset()", "remove()"],
+    "correctAnswer": 1,
+    "explanation": "Map va Set to'plamlaridagi barcha elementlarni to'liq tozalash uchun `clear()` metodi ishlatiladi."
+  },
+  {
+    "id": 9,
+    "question": "Map to'plamida elementlar qanday tartibda saqlanadi?",
+    "options": [
+      "Elementlar unga qo'shilgan ketma-ketlik tartibida (insertion order)",
+      "Kalitlar bo'yicha alifbo tartibida",
+      "Qiymatlar bo'yicha o'sish tartibida",
+      "Hech qanday tartib saqlanmaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Map va Set to'plamlarida elementlar qo'shilgan tartibi (insertion order) har doim saqlanadi va aylanib chiqilganda o'sha tartibda chiqadi."
+  },
+  {
+    "id": 10,
+    "question": "Set ichida `NaN` qiymatini qo'shganda nima sodir bo'ladi?",
+    "options": [
+      "NaN ni qo'shib bo'lmaydi, xato beradi",
+      "Bir nechta NaN qiymat qo'shsa bo'ladi",
+      "Faqat bitta unikal NaN qiymat qo'shish mumkin, keyingilari inkor etiladi",
+      "NaN avtomatik ravishda 0 ga o'zgaradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript Set to'plamlarida `NaN` qiymatlarini bir-biriga teng deb hisoblaydi va Set ichida faqat bitta `NaN` unikal element sifatida saqlanishi mumkin."
+  },
+  {
+    "id": 11,
+    "question": "Oddiy obyektni Map ga o'tkazish uchun qaysi metod birgalikda qo'llaniladi?",
+    "options": [
+      "`new Map(Object.entries(obj))`",
+      "`new Map(Object.keys(obj))`",
+      "`Map.from(obj)`",
+      "`obj.toMap()`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Object.entries(obj)` obyektni `[key, value]` ko'rinishidagi massivga aylantiradi. Bu formatni `new Map()` bevosita qabul qilib, Map obyektini yaratadi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst wm = new WeakMap();\nlet obj = { id: 1 };\nwm.set(obj, 'data');\nobj = null;\n// Keyinchalik dynamic GC dan so'ng:\n```",
+    "options": [
+      "Obyekt va 'data' avtomatik xotiradan o'chib ketadi",
+      "Obyekt xotirada qolaveradi",
+      "WeakMap xatolik berib dasturni to'xtatadi",
+      "Obyekt local storage ga yoziladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "WeakMap kuchsiz reference ishlatgani sababli, `obj = null` qilingandan keyin Garbage Collector ushbu obyektni va unga tegishli 'data' qiymatini xotiradan to'liq o'chiradi."
+  }
+]
+
 };

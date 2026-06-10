@@ -1,246 +1,316 @@
 export const higherOrderFunctions = {
-  id: "higher-order-functions",
+  id: "higherOrderFunctions",
   title: "Higher-Order Functions va Currying",
-  level: "Murakkab",
-  description: "Funksiyalarni qaytaruvchi va qabul qiluvchi funksiyalar (HOF), Karring (Currying), partial application va funksiyalar kompozitsiyasi.",
-  theory: `## 1. NEGA kerak?
-JavaScript-da funksiyalar **Birinchi darajali ob'ektlar (First-Class Citizens)** hisoblanadi. Bu shuni anglatadiki, funksiyalarni:
-- Boshqa o'zgaruvchilarga o'zlashtirish;
-- Boshqa funksiyalarga argument sifatida uzatish;
-- Boshqa funksiyalardan qiymat sifatida qaytarish mumkin.
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-Ushbu xususiyatlar bizga **Higher-Order Functions** (HOF - Oliy tartibli funksiyalar) va **Currying** (Karring) kabi ilg'or dasturlash andozalarini (patterns) qo'llash imkonini beradi. Ular yordamida:
-- Kodimizni modulli (bo'laklangan) va moslashuvchan qilamiz.
-- Kod takrorlanishining oldini olamiz (DRY qoidasi).
-- Funktsional dasturlash (Functional Programming) yondashuvidan to'liq foydalanova olamiz.
+### Higher-Order Functions va Currying nima?
+* **Higher-Order Functions (HOF - Oliy tartibli funksiyalar):** Argument sifatida boshqa funksiyani qabul qiladigan yoki o'zidan yangi funksiya qaytaradigan funksiyadir. JavaScript-da funksiyalar "birinchi darajali obyektlar" (First-Class Citizens) bo'lgani uchun ularni o'zgaruvchidek boshqarish mumkin.
+* **Currying (Karring):** Bir nechta argument oladigan funksiyani faqat bittadan argument qabul qiladigan zanjirli funksiyalar ketma-ketligiga aylantirish usulidir.
 
-## 2. SODDALIK (Analogiya)
-- **Higher-Order Function (Boshqaruvchi):** Buni xuddi **ish boshqaruvchiga (director)** o'xshatish mumkin. U o'zi to'g'ridan-to'g'ri jismoniy ish qilmaydi, balki boshqa ishchilarni (funksiyalarni) ishga yollaydi (qabul qiladi) yoki yangi ishchilarni tayinlaydi (qaytaradi).
-- **Currying (Qadam-baqadam to'lov):** Tasavvur qiling, siz do'kondan muddatli to'lovga (kreditga) narsa sotib olyapsiz. Siz birdaniga hamma pulni to'lamaysiz. Birinchi oy bir qismini (birinchi argument), ikkinchi oy yana bir qismini (ikkinchi argument) to'laysiz va oxirida mahsulot to'liq sizniki bo'ladi (yakuniy natija qaytadi).
-- **Function Composition (Konveyer):** Zavoddagi konveyer lentasi kabi. Birinchi mashina xomashyoni kesadi (1-funksiya), ikkinchisi uni bo'yaydi (2-funksiya), uchinchisi esa qadoqlaydi (3-funksiya). Natijada bir funksiyaning chiqishi keyingisining kirishi bo'ladi.
+### Real hayotiy analogiya
+* **Higher-Order Function (Ish boshqaruvchi):** Tashkilot direktori o'zi jismoniy ish qilmaydi. U bir ishchini (funksiyani) chaqirib unga topshiriq beradi (callback qabul qiladi) yoki yangi bo'lim boshlig'ini (funksiya) tayinlaydi (qaytaradi).
+* **Currying (Muddatli to'lov):** Siz do'kondan qimmatbaho noutbuk sotib olmoqchisiz. Hamma summani birdaniga to'lash o'rniga, har oy ma'lum bir qismini to'laysiz (birinchi oy \`a\`, keyingi oy \`b\` argumentlarini berasiz) va to'liq to'lab bo'lingach, noutbuk sizniki bo'ladi (yakuniy natija qaytadi).
 
-## 3. STRUKTURA VA ILG'OR TUSHUNCHALAR
+---
 
-### A. Higher-Order Functions (HOF)
-Argument sifatida funksiya qabul qiladigan yoki o'zidan funksiya qaytaradigan funksiyaga HOF deyiladi.
+## 2. 💻 Real Kod Misollari
+
+### 1. Basic Example (Funksiya qabul qiluvchi HOF)
 \`\`\`javascript
-// Funksiya qabul qiluvchi HOF:
+// Boshqa funksiyani qabul qiluvchi oddiy HOF
 function repeat(n, action) {
   for (let i = 0; i < n; i++) {
-    action(i); // callback chaqirilmoqda
+    action(i); 
   }
 }
-repeat(3, console.log); // 0, 1, 2 chiqadi
 
-// Funksiya qaytaruvchi HOF (Factory function):
-function greetingCreator(greeting) {
-  return function(name) {
-    return \`\${greeting}, \${name}!\`;
+repeat(3, (index) => console.log(\`Qadam: \${index}\`)); 
+// Qadam: 0
+// Qadam: 1
+// Qadam: 2
+\`\`\`
+
+### 2. Intermediate Example (Funksiya qaytaruvchi HOF va Currying)
+\`\`\`javascript
+// O'zidan funksiya qaytaruvchi HOF:
+function multiplyCreator(multiplier) {
+  return function(num) {
+    return num * multiplier;
   };
 }
-const sayHello = greetingCreator("Salom");
-console.log(sayHello("Ali")); // "Salom, Ali!"
+
+const double = multiplyCreator(2);
+console.log(double(5)); // 10
+
+// Arrow syntax yordamida Currying:
+const add = a => b => a + b;
+console.log(add(5)(3)); // 8
 \`\`\`
 
-### B. Currying (Karring)
-Karring — bu ko'p argumentli funksiyani bittadan argument qabul qiluvchi zanjirlangan funksiyalarga aylantirish jarayonidir.
+### 3. Advanced Example (Funksiyalar kompozitsiyasi - Pipe)
+Bir nechta funksiyalarni ketma-ket zanjir qilib ulash (konveyer kabi):
 \`\`\`javascript
-// Oddiy funksiya:
-function sum(a, b) {
-  return a + b;
-}
+const lowercase = str => str.toLowerCase();
+const shout = str => \`\${str}!\`;
+const repeatTwo = str => \`\${str} \${str}\`;
 
-// Karring qilingan funksiya:
-function curriedSum(a) {
-  return function(b) {
-    return a + b;
-  };
-}
-console.log(curriedSum(5)(10)); // 15
+// Oliy tartibli compose funksiyasi:
+const pipe = (...funcs) => (val) => funks.reduce((acc, fn) => fn(acc), val);
+
+const formatText = pipe(lowercase, shout, repeatTwo);
+console.log(formatText("HELLO")); // "hello! hello!"
 \`\`\`
-*Karringning foydasi:* U bizga **Partial Application** (qisman qo'llash) imkonini beradi. Ya'ni, funksiyaning birinchi argumentini saqlab qo'yib, keyinroq boshqa qiymatlar bilan chaqira olamiz:
+
+---
+
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+
+### First-Class Functions va Closures (Yopilishlar)
+* **First-Class Functions:** JavaScript dvigateli funksiyalarni obyektlar kabi xotiraning **Heap** qismida saqlaydi va ularning reference-larini uzatishga yo'l qo'yadi.
+* **Closures (Yopilishlar):** Funksiya qaytarilganda, u o'zi yaratilgan tashqi muhitdagi o'zgaruvchilarni (masalan, \`multiplier\` yoki \`a\`) xotirada saqlab qoladi. Currying to'liq closures imkoniyatlariga tayanib ishlaydi.
+
+---
+
+## 4. 🧪 Bosqichma-bosqich Amaliy Mashq
+
+### Logging tizimi uchun dinamik funksiya yaratish
+Turli xil log darajalari (INFO, ERROR, WARN) uchun oldindan sozlangan funksiyalar yaratamiz.
+
 \`\`\`javascript
-const addFive = curriedSum(5); // a = 5 saqlandi
-console.log(addFive(3)); // 8 (b = 3 berildi)
-console.log(addFive(10)); // 15
+// HOF yordamida log yaratuvchi:
+const logger = level => message => \`[\${level.toUpperCase()}] \${message}\`;
+
+// Karring yordamida ixtisoslashgan funksiyalarni olamiz:
+const infoLog = logger("info");
+const errorLog = logger("error");
+
+console.log(infoLog("Tizim ishga tushdi")); // "[INFO] Tizim ishga tushdi"
+console.log(errorLog("Ulanishda xatolik"));  // "[ERROR] Ulanishda xatolik"
 \`\`\`
 
-### C. Function Composition (Kompozitsiya)
-Ikki yoki undan ko'p funksiyalarni birlashtirib, yangi funksiya hosil qilish. Bunda birinchi funksiyaning natijasi ikkinchisiga argument bo'ladi: \`f(g(x))\`.
-\`\`\`javascript
-const double = x => x * 2;
-const addTen = x => x + 10;
+---
 
-// f(g(x)) -> double(addTen(x))
-const compose = (f, g) => (x) => f(g(x));
+## 5. ⚠️ Ko'p Uchraydigan Xatolar va Ularni Tuzatish
 
-const doubleThenAdd = compose(addTen, double);
-console.log(doubleThenAdd(5)); // (5 * 2) + 10 = 20
-\`\`\`
+### 1. Zanjirli chaqiriq (Currying) qavslarini unutish
+* **Noto'g'ri:**
+  \`\`\`javascript
+  const add = a => b => a + b;
+  console.log(add(5, 3)); // b => a + b funksiyasini qaytaradi (xato!)
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  console.log(add(5)(3)); // 8
+  \`\`\`
 
-## 4. NIMA UCHUN MUHIM?
-- **Qayta ishlatiluvchanlik (Reusability):** Umumiy logikaga ega funksiyani karring orqali osonlikcha ixtisoslashtirilgan kichik funksiyalarga bo'lish mumkin (masalan, chegirmalar yoki valyuta konvertorlari).
-- **Deklarativ kod:** Kod qanday bajarilishi (imperativ) emas, nima bajarilishini (deklarativ) yozishga o'tiladi.
+---
 
-## 5. KO'P UCHRAYDIGAN XATOLAR
-1. **Zanjirli chaqiruvlarda qavslarni unutish:**
-   \`\`\`javascript
-   const curried = a => b => a + b;
-   curried(5); // funksiya qaytaradi, lekin ishlamaydi ❌
-   curried(5)(10); // 15 ✅
-   \`\`\`
-2. **Context (this) yo'qolishi:** Higher-order funksiyalar ichida callback chaqirilganda, callback ichidagi \`this\` kalit so'zi global obyektga bog'lanib qolishi mumkin. Buning oldini olish uchun arrow functions yoki \`bind()\` ishlatiladi.
+## 6. 📝 Qisqacha Xulosa (Cheat Sheet)
 
-## 6. INTERVIEW SAVOLLAR (Junior -> Middle -> Senior)
-1. **Oliy tartibli funksiya (Higher-Order Function) nima? (Junior)**
-   - Argument sifatida boshqa funksiyani qabul qiladigan yoki o'zidan yangi funksiya qaytaradigan funksiyadir.
-2. **First-class citizens (Birinchi darajali fuqarolar) nima degani? (Junior)**
-   - Dasturlash tilida funksiyalar boshqa obyektlar va ma'lumotlar kabi erkin ishlatilishi, o'zgaruvchiga o'zlashtirilishi va argument bo'lib o'ta olishi.
-3. **Currying (Karring) nima va u partial application dan qanday farq qiladi? (Middle)**
-   - Karring ko'p argumentli funksiyani har safar faqat bittadan argument oladigan funksiyalar zanjiriga ajratadi. Partial application esa funksiyaning bir nechta argumentlarini oldindan biriktirib qo'yishdir (argumentlar soni bitta bo'lishi shart emas).
-4. **Funksiyalar kompozitsiyasi (Function Composition) nima? (Middle)**
-   - Bir nechta oddiy funksiyalarni birlashtirib, bitta murakkab funksiya hosil qilish. Masalan: \`f(g(x))\` ko'rinishida.
-5. **Karring funksiyasini dinamik ravishda universal qiluvchi helper qanday yoziladi? (Senior)**
-   - Funksiyaning \`length\` xossasi (kutilayotgan argumentlar soni) yordamida rekursiv ravishda yoziladi:
-     \`\`\`javascript
-     const curry = (fn) => {
-       return function curried(...args) {
-         if (args.length >= fn.length) return fn(...args);
-         return (...moreArgs) => curried(...args, ...moreArgs);
-       };
-     };
-     \`\`\`
-6. **Currying loyihalarda real hayotda qayerda qo'llaniladi? (Middle)**
-   - Konfiguratsiya yoki logger tizimlarida (masalan, birinchi bo'lib log darajasini "ERROR" deb sozlab, keyin xabarlarni yozishda) yoki API so'rovlarida umumiy endpointni saqlab qo'yishda.
-7. **Callback va Higher-Order Function farqi nimada? (Junior)**
-   - Callback — HOF funksiyaga argument sifatida berib yuboriladigan va keyinroq chaqiriladigan oddiy funksiya. HOF esa callback-ni qabul qiluvchi ota funksiyadir.
-8. **Dramatik tarzda nesting ko'payib ketishidan (Callback Hell) qanday saqlanish mumkin? (Middle)**
-   - Promises, async/await yoki funksiyalarni kichik bo'laklarga ajratib composition qilish orqali.
-9. **Kombinatorlar (Combinators) va ularning funktsional dasturlashdagi roli nima? (Senior)**
-   - Boshqa funksiyalar ustida mantiqiy amallar bajaradigan va o'zgaruvchilarsiz ishlaydigan HOF-lar (masalan: Identity \`I\`, Constant \`K\` kombinatorlari).
-10. **Partial application yaratish uchun JavaScript-dagi qaysi standart metoddan foydalanish mumkin? (Junior)**
-    - \`Function.prototype.bind()\` metodi orqali (masalan: \`const add5 = sum.bind(null, 5)\`).
-11. **Funksiya kompozitsiyasini (Compose) ixtiyoriy miqdordagi funksiyalar uchun qanday yozish mumkin? (Senior)**
-    - \`reduceRight\` metodi yordamida:
-      \`\`\`javascript
-      const compose = (...fns) => (x) => fns.reduceRight((v, f) => f(v), x);
-      \`\`\`
-12. **Pure functions (toza funksiyalar) va HOF bog'liqligi nimada? (Middle)**
-    - HOF funksiyalar pure funksiyalar bilan ishlaganda eng yuqori xavfsizlikni beradi, chunki side-effect (tashqi dunyoni o'zgartirish) bo'lmaganda funksiyalarni xavfsiz kompozitsiya qilib bo'ladi.
-`
-  ,
+| Tushuncha | Ta'rifi | Misol |
+| :--- | :--- | :--- |
+| **HOF (Callback qabul qiluvchi)** | Callback olib ishlatadigan funksiya | \`arr.map(x => x * 2)\` |
+| **HOF (Funksiya qaytaruvchi)** | Ichki funksiyani qaytaradi | \`const f = () => () => 5\` |
+| **Currying (Karring)** | \`f(a, b)\` ni \`f(a)(b)\` ga o'girish | \`const add = a => b => a + b\` |
+| **Partial Application** | Argumentlarning bir qismini oldindan bog'lash | \`const addFive = add(5)\` |
+
+---
+
+## 7. ❓ Savollar va Javoblar
+
+### 1. Currying nima uchun kerak?
+U kodni qayta ishlatish (reusability) va argumentlarni oldindan sozlab qo'yish (partial application) uchun juda qulay. Masalan, bir xil birinchi argumentli chaqiriqlarni qayta-qayta yozishni oldini oladi.
+
+### 2. Har qanday funksiyani karring qilsa bo'ladimi?
+Ha, buning uchun yordamchi \`curry\` funksiyalarini yozish yoki Lodash kutubxonasining \`_.curry\` metodidan foydalanish mumkin.
+
+---
+
+## 8. 🧠 O'z-o'zini Tekshirish
+
+1. \`arr.filter()\` funksiyasi Higher-Order Function hisoblanadimi? (Ha, chunki u argument sifatida boshqa funksiyani qabul qiladi).
+2. Currying qanday qilib yopilishlar (closures) orqali ishlaydi?
+3. Partial Application va Currying farqi nima? (Currying funksiyani faqat bittadan argument oladigan zanjirga aylantiradi, Partial Application esa bir nechta argumentni birdaniga bog'lab qo'ya oladi).
+
+---
+
+## 9. 🚀 Amaliy Topsiriq
+
+Quyidagi amaliy mashqlar va testlar yordamida funksiyalar bilan ishlash ko'nikmalaringizni tekshiring.
+`,
   exercises: [
-    {
-      id: 1,
-      title: "Karring (Currying) mashqi",
-      instruction: "Ikki sonning ko'paytmasini karring usulida hisoblaydigan `multiply(a)(b)` funksiyasini yozing.",
-      startingCode: "function multiply(a) {\n  // Karring funksiya yozing\n}",
-      hint: "return function(b) { return a * b; };",
-      test: "if (typeof multiply !== 'function') return 'multiply topilmadi'; if (typeof multiply(2) !== 'function') return 'Karring amalga oshirilmadi'; if (multiply(2)(5) !== 10) return 'Ko\\'paytma noto\\'g\\'ri'; return null;"
-    },
-    {
-      id: 2,
-      title: "Logger Decorator",
-      instruction: "Berilgan funksiyani (`fn`) qabul qilib, u chaqirilganda argumentlarini konsolga chiqaradigan va keyin funksiya natijasini qaytaradigan oliy tartibli `logger(fn)` funksiyasini yozing.",
-      startingCode: "function logger(fn) {\n  // Yangi funksiya qaytaring\n}",
-      hint: "return function(...args) { console.log(...args); return fn(...args); };",
-      test: "if (typeof logger !== 'function') return 'logger topilmadi'; const double = x => x * 2; const logged = logger(double); if (logged(4) !== 8) return 'Logger funksiya natijasini to\\'g\\'ri qaytarmadi'; return null;"
-    },
-    {
-      id: 3,
-      title: "Funksiyalar kompozitsiyasi (Compose)",
-      instruction: "Ikkita funksiya `f` va `g` qabul qilib, ularning kompozitsiyasini (`f(g(x))`) hisoblaydigan yangi funksiya qaytaruvchi `compose(f, g)` funksiyasini yozing.",
-      startingCode: "function compose(f, g) {\n  // f(g(x)) qaytaruvchi funksiya yozing\n}",
-      hint: "return function(x) { return f(g(x)); };",
-      test: "if (typeof compose !== 'function') return 'compose topilmadi'; const add5 = x => x + 5; const mult3 = x => x * 3; const comp = compose(add5, mult3); if (comp(10) !== 35) return 'Kompozitsiya xato (10 * 3 + 5 = 35 bo\\'lishi kerak)'; return null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Funksiya Qabul Qiluvchi HOF",
+    "instruction": "Argument sifatida funksiya ('callback') qabul qilib, uni ikki marta ketma-ket chaqiruvchi 'runTwice(callback)' nomli oliy tartibli funksiyani yozing.",
+    "startingCode": "function runTwice(callback) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "callback(); callback();",
+    "test": "const sandbox = new Function(code + '; return runTwice;');\nconst fn = sandbox();\nlet count = 0;\nfn(() => count++);\nif (count === 2) return null;\nreturn 'callback funksiyasi 2 marta chaqirilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Currying yordamida Ko'paytirish",
+    "instruction": "Karring (Currying) uslubida ikkita sonni ko'paytiradigan 'multiply(a)(b)' funksiyasini yozing (arrow funksiya orqali yozishingiz mumkin).",
+    "startingCode": "// Kodni shu yerda yozing\n",
+    "hint": "const multiply = a => b => a * b;",
+    "test": "if (!code.includes('=>')) return 'Arrow funksiya ko\\'rinishida karring ishlatilmadi';\nconst sandbox = new Function(code + '; return multiply;');\nconst fn = sandbox();\nif (typeof fn === 'function' && fn(3)(4) === 12) return null;\nreturn 'Karring funksiyasi noto\\'g\\'ri ko\\'paytirmoqda';"
+  },
+  {
+    "id": 3,
+    "title": "Partial Application (Qisman Qo'llash)",
+    "instruction": "Avval yozilgan karring funksiyadan ('multiply') foydalanib, berilgan sonni 10 ga ko'paytiradigan 'multiplyByTen' nomli yangi partial funksiyani hosil qiling.",
+    "startingCode": "const multiply = a => b => a * b;\n\n// Kodni shu yerda yozing\n",
+    "hint": "const multiplyByTen = multiply(10);",
+    "test": "if (!code.includes('multiply(10)')) return 'multiply(10) orqali partial application hosil qilinmadi';\nconst sandbox = new Function(code + '; return multiplyByTen;');\nconst fn = sandbox();\nif (typeof fn === 'function' && fn(5) === 50) return null;\nreturn 'multiplyByTen to\\'g\\'ri ishlamadi';"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Higher-Order Function (Oliy tartibli funksiya) nima?",
-      options: [
-        "Faqat matematik hisob-kitoblarni bajaradigan funksiya",
-        "Argument sifatida funksiya qabul qiladigan yoki o'zidan funksiya qaytaradigan funksiya",
-        "Faqat klasslar ichida yoziladigan funksiya",
-        "Eng tez ishlaydigan asinxron funksiya"
-      ],
-      correctAnswer: 1,
-      explanation: "Oliy tartibli funksiyaning ta'rifi boshqa funksiyalarni argument qibly olish yoki yangi funksiya qaytarish qobiliyatidir."
-    },
-    {
-      id: 2,
-      question: "JavaScript-da funksiyalar 'First-Class Citizens' (Birinchi darajali obyektlar) ekanligi nimani anglatadi?",
-      options: [
-        "Ular faqat birinchi qatorda e'lon qilinishi kerakligini",
-        "Funksiyalarni o'zgaruvchilarga o'zlashtirish, argument qibly uzatish va boshqa funksiyadan qaytarish mumkinligini",
-        "Ular xotirada eng ko'p joy egallashini",
-        "Ulardan faqat senior dasturchilar foydalanishini"
-      ],
-      correctAnswer: 1,
-      explanation: "Birinchi darajali bo'lish ularning oddiy o'zgaruvchilar kabi erkin va teng ishlatilishini anglatadi."
-    },
-    {
-      id: 3,
-      question: "Karring (Currying) jarayonining maqsadi nima?",
-      options: [
-        "Koddagi barcha xatolarni avtomatik tuzatish",
-        "Ko'p argumentli funksiyani bittadan argument qabul qiluvchi zanjirli funksiyalarga aylantirish",
-        "Funksiya xotirasini optimallashtirish",
-        "Faqat class konstruktorini ishga tushirish"
-      ],
-      correctAnswer: 1,
-      explanation: "Karring ko'p argumentli funksiyani bir qator bitta argumentli zanjirlarga ajratadi. Masalan: `f(a, b)` -> `f(a)(b)`."
-    },
-    {
-      id: 4,
-      question: "Funksiyani qisman qo'llash (Partial Application) nima?",
-      options: [
-        "Funksiyaning faqat yarmini ishga tushirish",
-        "Funksiya argumentlarining bir qismini oldindan biriktirib (fiksatsiya qilib) qo'yish",
-        "Funksiyani faqat catch blokida chaqirish",
-        "Faqat local storage bilan ishlash"
-      ],
-      correctAnswer: 1,
-      explanation: "Partial application yordamida funksiyaning ba'zi argumentlarini oldindan saqlab qo'yib, qolganlarini keyinroq uzatish mumkin."
-    },
-    {
-      id: 5,
-      question: "Funksiyalar kompozitsiyasini ifodalovchi to'g'ri formula qaysi?",
-      options: [
-        "f(x) + g(x)",
-        "f(g(x))",
-        "f(x) * g(x)",
-        "f(g) + x"
-      ],
-      correctAnswer: 1,
-      explanation: "Funksiyalar kompozitsiyasi deb bitta funksiya natijasini keyingisiga kirish qilib ulashga aytiladi: `f(g(x))`."
-    },
-    {
-      id: 6,
-      question: "Quyidagi karring kodi chaqirilganda qanday natija qaytadi?\n```javascript\nconst add = a => b => a + b;\nconst res = add(10);\n```",
-      options: [
-        "10",
-        "Yangi funksiya (`b => 10 + b`)",
-        "undefined",
-        "TypeError"
-      ],
-      correctAnswer: 1,
-      explanation: "`add(10)` chaqirilganda birinchi o'ram bajarilib, `b` ni kutadigan ichki funksiya qaytadi. U hali ikkinchi marta chaqirilmagan."
-    },
-    {
-      id: 7,
-      question: "JavaScript-da partial application yaratish uchun qaysi standart metoddan foydalaniladi?",
-      options: ["call()", "apply()", "bind()", "connect()"],
-      correctAnswer: 2,
-      explanation: "`Function.prototype.bind()` birinchi argumentni this qilib bog'laydi, keyingilarini esa funksiyaga argument sifatida oldindan biriktiradi."
-    },
-    {
-      id: 8,
-      question: "Ixtiyoriy miqdordagi funksiyalarni o'ngdan chapga qarab kompozitsiya (compose) qilish uchun massivning qaysi metodidan foydalaniladi?",
-      options: ["reduce()", "reduceRight()", "map()", "filter()"],
-      correctAnswer: 1,
-      explanation: "Funktsional dasturlashda `compose` funksiyalarni o'ngdan chapga qarab ketma-ket qo'llaydi, shuning uchun massivdagi elementlarni o'ngdan chapga aylanishda `reduceRight` mos keladi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "JavaScript funksiyalarining \"Birinchi darajali obyektlar\" (First-Class Citizens) ekanligi nimani anglatadi?",
+    "options": [
+      "Ularni o'zgaruvchilarga o'zlashtirish, boshqa funksiyalarga parametr qilib uzatish va qiymat qilib qaytarish mumkinligini",
+      "Ular faqat birinchi sahifada ishga tushishini",
+      "Ular har doim boshqa funksiyalardan tezroq ishlashini",
+      "Ularni klasslar ichida ishlatib bo'lmasligini"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Birinchi darajali obyektlar (First-Class Citizens) qoidasiga ko'ra, funksiyalar JavaScript-da boshqa har qanday oddiy qiymat (masalan, son yoki matn) kabi erkin boshqariladi."
+  },
+  {
+    "id": 2,
+    "question": "Higher-Order Function (Oliy tartibli funksiya) deb qanday funksiyaga aytiladi?",
+    "options": [
+      "Faqat `async/await` bilan ishlaydigan funksiyaga",
+      "Parametr sifatida boshqa funksiyani qabul qiladigan yoki o'zidan funksiya qaytaradigan funksiyaga",
+      "Faqat klass ichida e'lon qilingan static metodlarga",
+      "Hech qanday argument qabul qilmaydigan funksiyaga"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Argument sifatida boshqa funksiyani (callback) qabul qiladigan yoki o'zidan funksiya (closure) qaytaradigan funksiyalar oliy tartibli funksiyalar deb nomlanadi."
+  },
+  {
+    "id": 3,
+    "question": "Karring (Currying) jarayonining asosiy mohiyati nimada?",
+    "options": [
+      "Funksiyalarni asinxron rejimga o'tkazish",
+      "Bir nechta argument oladigan bitta funksiyani faqat bittadan argument oladigan zanjirli funksiyalar ketma-ketligiga aylantirish",
+      "Obyekt qiymatlarini butunlay o'chirish",
+      "Koddagi barcha xatolarni o'z-o'zidan tuzatish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Currying `f(a, b, c)` ko'rinishidagi funksiyani `f(a)(b)(c)` ko'rinishida bittadan argument oladigan zanjirli zanjirli funksiyaga aylantirishdir."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi karring funksiya chaqirilganda konsolga nima chiqadi?\n```javascript\nconst add = a => b => a + b;\nconsole.log(add(5)(3));\n```",
+    "options": [
+      "`8`",
+      "`undefined`",
+      "`[Function]`",
+      "`TypeError`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`add(5)` dastlab `b => 5 + b` funksiyasini qaytaradi, so'ngra u `(3)` bilan chaqirilib, natijada 5 + 3 = 8 chiqadi."
+  },
+  {
+    "id": 5,
+    "question": "Partial Application (Qisman qo'llash) nima?",
+    "options": [
+      "Funksiyaning faqat bir qismini serverga yuborish",
+      "Funksiya argumentlarining ma'lum bir qismini oldindan biriktirib (sozlab), kamroq argument oladigan yangi funksiya hosil qilish",
+      "Dasturning faqat ba'zi brauzerlarda ishlashi",
+      "Faqat default parametrlardan foydalanish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Partial Application biror ko'p argumentli funksiyani ba'zi argumentlarini oldindan bog'lab, qolgan argumentlarni keyinchalik kutadigan soddaroq funksiyaga keltirishdir."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilgandan keyin `multiplyByFive(3)` nimani qaytaradi?\n```javascript\nconst multiply = a => b => a * b;\nconst multiplyByFive = multiply(5);\n```",
+    "options": [
+      "`15`",
+      "`8`",
+      "`multiply` funksiyasini",
+      "`undefined`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`multiply(5)` orqali biz `multiplyByFive` partial funksiyasini oldik (u `b => 5 * b` ga teng). Uni `(3)` bilan chaqirsak 5 * 3 = 15 bo'ladi."
+  },
+  {
+    "id": 7,
+    "question": "JavaScript-dagi qaysi o'rnatilgan massiv metodi Higher-Order Function hisoblanadi?",
+    "options": [
+      "`.map()`",
+      "`.filter()`",
+      "`.reduce()`",
+      "Barcha ko'rsatilgan metodlar"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Ushbu metodlarning barchasi argument sifatida callback funksiyani qabul qilgani sababli Higher-Order Function (oliy tartibli funksiya) hisoblanadi."
+  },
+  {
+    "id": 8,
+    "question": "Funksiyalar kompozitsiyasi (Function Composition) deganda nima tushuniladi?",
+    "options": [
+      "Bir nechta funksiyalarni birlashtirib, birining natijasi keyingisiga kirish argumenti bo'ladigan zanjir (konveyer) hosil qilish",
+      "Funksiyalarni alfavit bo'yicha tartiblash",
+      "Klass konstruktorlari ichida funksiya yozish",
+      "Funksiya nomini o'zgartirish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Function Composition matematikadagi `f(g(x))` kabi bo'lib, bir nechta sodda funksiyani zanjir qilib ulab, murakkabroq jarayonni hosil qilishdir."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kodda `sayHi('Lola')` chaqirilganda nima chiqadi?\n```javascript\nfunction greet(type) {\n  return function(name) {\n    return type + ' ' + name;\n  };\n}\nconst sayHi = greet('Salom');\n```",
+    "options": [
+      "`\"Salom Lola\"`",
+      "`\"Salom\"`",
+      "`undefined`",
+      "TypeError"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`greet('Salom')` funksiyasi ichki funksiyani qaytaradi. U `type` ('Salom') qiymatini yopilish (closure) orqali saqlab qoladi. `sayHi('Lola')` chaqirilganda `'Salom Lola'` qaytadi."
+  },
+  {
+    "id": 10,
+    "question": "Currying qaysi JavaScript mexanizmiga tayanib ishlaydi?",
+    "options": [
+      "Closures (Yopilishlar)",
+      "Prototip zanjiri",
+      "Event Loop",
+      "Destructuring"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Karring zanjirdagi ichki funksiyalar tashqi funksiya argumentlarini xotirada saqlab qolishi uchun Closures (Yopilishlar) mexanizmidan foydalanadi."
+  },
+  {
+    "id": 11,
+    "question": "Currying yordamida yozilgan `const f = a => b => c => a + b + c;` funksiyasi qanday chaqiriladi?",
+    "options": [
+      "`f(1, 2, 3)`",
+      "`f(1)(2)(3)`",
+      "`f[1][2][3]`",
+      "`f(1, 2)(3)`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Funksiya bittadan argument oladigan 3 ta zanjirli funksiyadan iborat bo'lgani uchun uni `f(1)(2)(3)` ko'rinishida chaqirish kerak."
+  },
+  {
+    "id": 12,
+    "question": "Higher-Order funksiyalardan foydalanishning asosiy afzalligi nimada?",
+    "options": [
+      "Kodning modulliligini, tozaligini va qayta ishlatilishini (DRY) oshirish",
+      "Dasturning xotira hajmini kamaytirish",
+      "Sinxron kodni asinxron qilish",
+      "CSS stillarini avtomatik ulash"
+    ],
+    "correctAnswer": 0,
+    "explanation": "HOF kod takrorlanishini oldini olib, logikani kichik, mustaqil va qayta ishlatiladigan funksiyalar shaklida ajratishga yordam beradi."
+  }
+]
+
 };
