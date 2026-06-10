@@ -1,565 +1,439 @@
 export const performanceOptimization = {
-  id: "a17",
-  title: "Performance Optimization: Debounce, Throttle, Lazy Loading, Memoization",
-  theory: `## 1. NEGA kerak?
+  id: "performanceOptimization",
+  title: "JavaScript Unumdorligini Oshirish (Performance Optimization)",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-**Real muammolar:**
-- Qidiruv inputiga har harfda server so'rovi → Serverga juda ko'p yuklama
-- Scroll event har ms'da → 1000+ event chiqadi
-- Rasm ko'rmaydigan joyda ham yuklansa → Keraksiz xotira ishlatiladi
+### JavaScript-da Performance (Unumdorlik) nima?
+JavaScript-da unumdorlikni oshirish — bu ilovaning tezroq yuklanishi, foydalanuvchi harakatlariga (klik, skrol, yozish) lahzada javob qaytarishi va brauzer xotirasi (RAM) hamda protsessor (CPU) resurslaridan tejamkorlik bilan foydalanishini ta'minlashdir.
 
-## 2. SODDALIK
+### Real hayotiy analogiya
+Tasavvur qiling, siz **restoranda bosh oshpazsiz**:
+* **Optimallashtirilmagan holat:** Har bir mijoz bitta salat buyurtma qilganda, siz omborxonaga borib bitta pomidor olib kelasiz, keyin yana borib bitta bodring olib kelasiz. Bu vaqt va kuchni behuda sarflashdir (bu DOM-ga har bir elementni alohida qo'shish yoki har skrolda og'ir funksiyani chaqirishga o'xshaydi).
+* **Optimallashtirilgan holat (DocumentFragment analogiyasi):** Siz laganga salat uchun kerakli barcha sabzavotlarni bir marta yig'ib olasiz (fragment yaratasiz), stol ustida salatni tayyorlaysiz va mijozga bir martada tayyor holda taqdim etasiz (DOM-ga bir marta qo'shasiz).
+* **Debounce analogiyasi:** Mijoz buyurtma berayotganda gapini tugatishini kutasiz. U "Menga pitsa, kola va... yana... shokoladli desert" deb to'xtagunicha buyurtmani yozmaysiz. U 2 soniya jim tursa, keyin buyurtmani oshxonaga yuborasiz.
+* **Throttle analogiyasi:** Juda ko'p gapiradigan mijoz sizga tinimsiz savol beryapti. Siz unga: "Har 5 daqiqada faqat bitta savolingizga javob beraman" deysiz. U o'sha 5 daqiqa ichida 100 ta savol bersa ham, siz faqat bittasini qabul qilasiz.
 
-**Lift eshigi (Debounce):** Har yangi odam kelsa, lift kutishni boshidan boshlaydi. Hech kim kelmay qo'ygandan keyingina lift yuradi.
+---
 
-**Avtobus (Throttle):** Avtobus qancha odam kutsa ham, faqat jadval bo'yicha keladi (har 15 min).
+## 2. 💻 Real Kod Misollari
 
-**Asosiy dars:** Funksiyalarni "optimallashtirish" = Kamroq chaqirish = Tezroq sayt.
-
-## 3. STRUKTURA VA AMALIY USULLAR
-
-### A. Debounce - Oxirgi Chaqiriqdan Keyin Kutish
-\`javascript
+### 1. Debounce (Qidiruv maydoni misolida)
+Foydalanuvchi inputga matn kiritayotganda API-ga tinimsiz so'rov ketishini oldini olamiz:
+\`\`\`javascript
 function debounce(fn, delay) {
   let timeoutId;
-  return function(...args) {
-    clearTimeout(timeoutId);  // Oldingi timeout'ni bekor qil
+  return function (...args) {
+    // Har safar yangi chaqiruv bo'lganda oldingi taymerni o'chiramiz
+    clearTimeout(timeoutId);
+    // Yangi taymer o'rnatamiz
     timeoutId = setTimeout(() => {
-      fn.apply(this, args);   // delay ms'dan keyin chaqir
+      fn.apply(this, args);
     }, delay);
   };
 }
 
-// REAL MISOL: Qidiruv
-const search = debounce((text) => {
-  console.log("Server so'rov: " + text);
-}, 500);
+// Foydalanish:
+const searchInput = document.querySelector("#search");
+const fetchSuggestions = (event) => {
+  console.log("API so'rov yuborildi:", event.target.value);
+};
 
-// Foydalanuvchi yozmoqda...
-search("J");      // 0ms - timeout set
-search("Ja");     // 50ms - timeout clear, yangi set
-search("Jav");    // 100ms - timeout clear, yangi set
-// 600ms'da faqat "Jav" uchun server so'rovi ketadi
-\`
+// Foydalanuvchi yozishdan to'xtaganidan keyin 500ms o'tibgina API chaqiriladi
+searchInput.addEventListener("input", debounce(fetchSuggestions, 500));
+\`\`\`
 
-### B. Throttle - Vaqt Oralig'ida Bir Marta
-\`javascript
+### 2. Throttle (Skrol qilish yoki tugmani spam-klik qilishdan himoya)
+Foydalanuvchi sahifani skrol qilganda koordinatalarni hisoblash funksiyasini cheklaymiz:
+\`\`\`javascript
 function throttle(fn, limit) {
-  let inThrottle;
-  return function(...args) {
+  let inThrottle = false;
+  return function (...args) {
     if (!inThrottle) {
       fn.apply(this, args);
       inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      // Belgilangan limit vaqt o'tgandan keyingina cheklovni yechamiz
+      setTimeout(() => (inThrottle = false), limit);
     }
   };
 }
 
-// REAL MISOL: Scroll event
-const onScroll = throttle(() => {
-  console.log("Scroll!");
-}, 1000);
+// Foydalanish:
+const handleScroll = () => {
+  console.log("Skrol koordinatasi hisoblandi:", window.scrollY);
+};
 
-// Scroll event har ms'da chiqadi lekin funksiya har 1s'da bir marta ishlaydi
-window.addEventListener('scroll', onScroll);
-\`
+// Scroll hodisasi har soniyada yuzlab marta chaqirilsa ham, funksiya har 200ms da 1 marta ishlaydi
+window.addEventListener("scroll", throttle(handleScroll, 200));
+\`\`\`
 
-### C. Debounce vs Throttle visual vaqt sxemasi
-\`mermaid
-sequenceDiagram
-    participant User as Foydalanuvchi
-    participant D as Debounce (500ms)
-    participant T as Throttle (500ms)
-    
-    User->>D: 1-so'rov (0ms)
-    Note over D: Kutishni boshlaydi...
-    User->>T: 1-so'rov (0ms)
-    Note over T: Darhol ishlaydi!
-    
-    User->>D: 2-so'rov (200ms)
-    Note over D: Oldingisini bekor qilib, yangidan kutadi
-    User->>T: 2-so'rov (200ms)
-    Note over T: Bloklangan (500ms kutmoqda)
-    
-    User->>D: 3-so'rov (400ms)
-    Note over D: Yana bekor qilib, 500ms kutadi
-    
-    Note over D: 900ms da ishlaydi (oxirgi chaqiriqdan keyin 500ms o'tdi)
-    Note over T: 500ms o'tgach, yangi so'rovlarni qabul qila oladi
-\`
+### 3. DOM optimallashtirish (DocumentFragment)
+DOM-ga 1000 ta elementni samarali qo'shish:
+\`\`\`javascript
+const listContainer = document.querySelector("#my-list");
+const items = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
 
-### D. Lazy Loading - Keraksiz Resurs Yuklama
-\`javascript
-// HTML:
-// <img src="placeholder.jpg" data-src="actual.jpg" class="lazy">
+// Yomon usul (Har bir iteratsiyada DOM o'zgaradi va Reflow bo'ladi):
+// items.forEach(text => {
+//   const li = document.createElement('li');
+//   li.textContent = text;
+//   listContainer.appendChild(li); 
+// });
 
-const images = document.querySelectorAll('img.lazy');
-const observer = new IntersectionObserver((entries) => {
+// Yaxshi usul (DocumentFragment yordamida):
+const fragment = document.createDocumentFragment();
+
+items.forEach(text => {
+  const li = document.createElement("li");
+  li.textContent = text;
+  fragment.appendChild(li); // Fragment xotirada, DOM-ga ta'sir qilmaydi
+});
+
+// Asosiy DOM daraxtiga fragmentni bir marta qo'shamiz (Faqat 1 marta Reflow!)
+listContainer.appendChild(fragment);
+\`\`\`
+
+---
+
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+
+### 1. Reflow va Repaint
+Brauzer sahifani render qilganda ikki bosqichni bajaradi:
+1. **Reflow (Layout):** Elementlarning o'lchamlari va sahifadagi o'rnini hisoblaydi. Bu geometriya bilan bog'liq (masalan, \`width\`, \`height\`, \`margin\`, \`padding\`, \`top\`, \`left\`). Bitta elementning reflow bo'lishi butun sahifa tartibini o'zgartirib yuborishi mumkin.
+2. **Repaint (Paint):** Elementlarning ko'rinishini (rangi, foni, soyasi, matn bezagi) ekranga chizadi. Geometriya o'zgarmaydi, shuning uchun Repaint ancha tezroq ishlaydi.
+
+### 2. Garbage Collection (Xotirani tozalash)
+JavaScript-da Garbage Collector (GC) xotirani boshqaradi. U **Mark-and-Sweep** algoritmini ishlatadi:
+* Dasturning boshlang'ich nuqtasi (Global obyekt)dan boshlab barcha havolalar bo'ylab yurib chiqiladi va kirish imkoni bo'lgan (reachable) o'zgaruvchilar "belgilanadi" (Mark).
+* Kirib bo'lmaydigan, havolasi uzilgan barcha o'zgaruvchilar xotiradan "tozalab tashlanadi" (Sweep).
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. Tozalanmagan Taymerlar (Intervals)
+\`setInterval\` ishlatilgandan keyin uni tozalash esdan chiqsa, callback ichidagi o'zgaruvchilar xotirada qolib ketadi va memory leak-ga sabab bo'ladi.
+\`\`\`javascript
+// XATO:
+function startTracking() {
+  const largeData = new Array(1000000).fill("leak");
+  setInterval(() => {
+    console.log(largeData.length);
+  }, 1000);
+}
+// Foydalanuvchi bu sahifadan chiqsa ham taymer ishlayveradi va xotira to'lib boradi.
+
+// TO'G'RI:
+function startTrackingSafe() {
+  const largeData = new Array(1000000).fill("clean");
+  const intervalId = setInterval(() => {
+    console.log(largeData.length);
+  }, 1000);
+
+  return () => clearInterval(intervalId); // Tozalash uchun funksiya qaytaramiz
+}
+\`\`\`
+
+### 2. Ajralgan DOM elementlar (Detached DOM Nodes)
+DOM-dan o'chirilgan elementga JavaScript o'zgaruvchisida havola saqlab qolish.
+\`\`\`javascript
+// XATO:
+let btn = document.querySelector("#my-button");
+document.body.removeChild(btn);
+// Tugma DOM-dan o'chdi, lekin 'btn' o'zgaruvchisi hamon uni ushlab turibdi.
+
+// TO'G'RI:
+let btn = document.querySelector("#my-button");
+document.body.removeChild(btn);
+btn = null; // Havolani uzib yuboramiz, GC endi buni tozalay oladi
+\`\`\`
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior
+1. **Savol:** Debounce nima va u qayerlarda qo'llaniladi?
+   * **Javob:** Debounce — ketma-ket chaqirilayotgan hodisalarni bitta so'nggi chaqiruvga birlashtirish. Qidiruv inputlarida API-ga ortiqcha so'rov yubormaslik uchun ishlatiladi.
+2. **Savol:** Repaint va Reflow o'rtasidagi farq nima?
+   * **Javob:** Reflow elementlarning o'lchami yoki joylashuvi o'zgarganda geometriyani qayta hisoblaydi (qimmat operatsiya). Repaint esa faqat rang va ko'rinish o'zgarganda ekranga qayta chizadi.
+3. **Savol:** Nima uchun global o'zgaruvchilardan kamroq foydalanish kerak?
+   * **Javob:** Global o'zgaruvchilar dastur tugaguniga qadar xotirada (RAM) saqlanib turadi va Garbage Collector ularni o'chira olmaydi.
+4. **Savol:** \`requestAnimationFrame\` nima?
+   * **Javob:** Brauzerning ekran yangilanish chastotasi bilan sinxron ravishda ishlaydigan va animatsiyalarni silliq render qiluvchi maxsus API.
+
+### Middle
+5. **Savol:** Memory Leak (Xotira oqishi) nima va uning asosiy sabablari nimalardan iborat?
+   * **Javob:** Dastur endi ishlatmaydigan, lekin qandaydir sabab bilan havolasi saqlanib qolgani uchun Garbage Collector o'chira olmaydigan xotira qismlari. Asosiy sabablar: tozalanmagan taymerlar, ajralgan DOM elementlari, o'chirilmagan event listenerlar.
+6. **Savol:** Nima uchun \`DocumentFragment\` oddiy \`div\` yaratib element qo'shishdan ko'ra afzalroq?
+   * **Javob:** Chunki fragment DOM daraxtidan tashqarida mavjud bo'lgan xotiradagi yengil obyektdir. Unga element qo'shganda DOM Reflow bo'lmaydi va xotira kamroq sarflanadi.
+7. **Savol:** Loop (sikl) ichida DOM elementlariga to'g'ridan-to'g'ri murojaat qilish unumdorlikka qanday ta'sir qiladi?
+   * **Javob:** Loop ichida DOM elementini o'qish yoki yozish Reflow/Repaint-ni keltirib chiqarib, brauzerni qotishiga (jank) olib keladi. Buni loop tashqarisiga chiqarish kerak.
+8. **Savol:** Event Delegation (Hodisalarni vakillash) qanday qilib unumdorlikni oshiradi?
+   * **Javob:** Har bir elementga alohida listener qo'shgandan ko'ra, ularning ota elementiga bitta listener qo'shish orqali xotira sarfini keskin kamaytiradi.
+
+### Senior
+9. **Savol:** Garbage Collector-dagi 'Mark-and-Sweep' algoritmi qanday ishlaydi?
+   * **Javob:** U root (global) obyektdan boshlab barcha havolalarni tekshiradi. Root-dan boshlab yetib borib bo'ladigan (reachable) obyektlarni belgilaydi (mark). Yetib bo'lmaydigan qolgan barcha obektlarni xotiradan tozalaydi (sweep).
+10. **Savol:** \`requestIdleCallback\` nima va u qanday maqsadlarda ishlatiladi?
+    * **Javob:** Brauzer bo'sh (idle) bo'lgan vaqtda bajariladigan past ustuvorlikka ega vazifalarni rejalashtirish uchun ishlatiladi (masalan, analitika yuborish).
+11. **Savol:** Virtual DOM va an'anaviy DOM-ni manipulyatsiya qilish o'rtasidagi farqni tushuntiring.
+    * **Javob:** Virtual DOM JS xotirasida DOM tuzilishining nusxasini saqlaydi va o'zgarishlarni hisoblab (diffing), real DOM-ga faqat o'zgargan qismlarni minimal reflow bilan yangilaydi (batching).
+12. **Savol:** JavaScript-da V8 engine qanday qilib kodni optimallashtiradi va "Deoptimization" nima?
+    * **Javob:** V8 tez-tez chaqiriladigan funksiyalarni ("hot functions") aniqlab, ularni to'g'ridan-to'g'ri mashina kodiga kompilyatsiya qiladi (JIT). Agar funksiyadagi o'zgaruvchi turlari o'zgarib ketsa (polymorphism), V8 uni yana sekinroq interpretatsiya rejimiga qaytaradi (Deoptimization).
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Mashqlar \`/Users/farhod/Desktop/github/js-uz/scratch/performanceOptimization_exercises.json\` faylida berilgan. Ularni bajarib, bilimingizni sinab ko'ring.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Test savollari \`/Users/farhod/Desktop/github/js-uz/scratch/performanceOptimization_quizzes.json\` faylida joylashgan. Unda 12 ta variantli test mavjud.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Cheksiz Skrol (Infinite Scroll) va Rasm yuklash (Lazy Loading) tizimi
+
+Tasavvur qiling, bizda juda ko'p rasmli yangiliklar tasmasi bor. Skrol qilinganda sahifa qotib qolmasligi uchun biz ikkita narsani optimallashtiramiz:
+1. \`scroll\` hodisasini **throttle** qilamiz.
+2. Rasmlarni faqat ekran sohasiga yaqinlashganda yuklaymiz (\`IntersectionObserver\`).
+
+\`\`\`javascript
+// 1. Throttle funksiyasini yozamiz
+function throttle(func, wait) {
+  let waiting = false;
+  return function(...args) {
+    if (!waiting) {
+      func.apply(this, args);
+      waiting = true;
+      setTimeout(() => waiting = false, wait);
+    }
+  }
+}
+
+// 2. Skrol bo'lganda elementlarni tekshirish (Optimallashtirilgan)
+const checkScrollPosition = throttle(() => {
+  console.log("Scroll holati tekshirilmoqda...");
+  // Bu yerda sahifa oxiriga yetganda yangi kontent yuklash kodi bo'ladi
+}, 200);
+
+window.addEventListener('scroll', checkScrollPosition);
+
+// 3. Zamonaviy yondashuv: Lazy Loading Images (IntersectionObserver)
+const lazyImages = document.querySelectorAll('img.lazy');
+
+const imageObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      const img = entry.target;
-      img.src = img.dataset.src;  // Asl rasmni yuklash
-      img.classList.remove('lazy');
-      observer.unobserve(img);
+      const image = entry.target;
+      image.src = image.dataset.src; // Haqiqiy rasmni yuklaymiz
+      image.classList.remove('lazy');
+      observer.unobserve(image); // Kuzatishni to'xtatamiz
     }
   });
 });
 
-images.forEach(img => observer.observe(img));
-\`
+lazyImages.forEach(image => imageObserver.observe(image));
+\`\`\`
 
-### E. Memoization - Natijani Kesh Qilish
-\`javascript
-function memoize(fn) {
-  const cache = {};
-  return function(...args) {
-    const key = JSON.stringify(args);
-    if (key in cache) {
-      console.log("Cache'dan olinmoqda");
-      return cache[key];
-    }
-    console.log("Hisoblayapman...");
-    const result = fn(...args);
-    cache[key] = result;
-    return result;
-  };
-}
+---
 
-const expensive = (n) => {
-  let sum = 0;
-  for (let i = 0; i < n * 1000000; i++) sum += i;
-  return sum;
-};
+## 9. 🚀 Performance va Optimization
 
-const memoized = memoize(expensive);
-console.log(memoized(5));  // "Hisoblayapman..."
-console.log(memoized(5));  // "Cache'dan olinmoqda"
-\`
+* **Hodisalarni cheklash:** Skrol, resize, keyup kabi tez-tez chiquvchi event-larni \`debounce\` yoki \`throttle\` qiling.
+* **Layout Thrashing-dan qoching:** Bir vaqtning o'zida DOM-dan ham qiymat o'qib, ham yozmang. Avval o'qishlarni guruhlang, keyin yozishlarni bajaring.
+* **Xotirani boshqaring:** Ishlatilmagan timerlar, event listenerlar va global o'zgaruvchilarni vaqtida tozalang.
 
-### F. requestAnimationFrame (rAF) - Smooth Animation
-\`javascript
-// ❌ XATO - setInterval (jerkint animatsiya)
-setInterval(() => {
-  element.style.left = (parseInt(element.style.left) + 1) + 'px';
-}, 16);
+---
 
-// ✅ TO'G'RI - RAF (monitor tezligiga mos)
-function animate() {
-  element.style.left = (parseInt(element.style.left) + 1) + 'px';
-  requestAnimationFrame(animate);
-}
-requestAnimationFrame(animate);
-\`
+## 10. 📌 Cheat Sheet
 
-### G. Virtual Scrolling - Katta ro'yxatlarni render qilish
-Katta hajmdagi ma'lumotlar bilan ishlaganda DOM elementlarini minimal darajada saqlash uchun Virtual scrolling qo'llaniladi.
-
-\`mermaid
-graph TD
-    %% Styling
-    classDef visible fill:#2ecc71,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef buffer fill:#3498db,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef virtual fill:#95a5a6,stroke:#333,stroke-dasharray: 5 5,color:#fff;
-    
-    TopVirtual["Virtual Spacing Top (5000px balandlik)"]:::virtual
-    
-    BufferTop["Buffer Zone Top (Yuklanayotgan qatorlar)"]:::buffer
-    
-    ViewportStart["=== VIEWPORT (Ko'rinadigan qism) ==="]:::visible
-    Item1["Element 10"]:::visible
-    Item2["Element 11"]:::visible
-    Item3["Element 12"]:::visible
-    ViewportEnd["=== VIEWPORT END ==="]:::visible
-    
-    BufferBottom["Buffer Zone Bottom (Yuklanayotgan qatorlar)"]:::buffer
-    
-    BottomVirtual["Virtual Spacing Bottom (25000px balandlik)"]:::virtual
-    
-    TopVirtual --> BufferTop
-    BufferTop --> ViewportStart
-    ViewportStart --> Item1 --> Item2 --> Item3 --> ViewportEnd
-    ViewportEnd --> BufferBottom
-    BufferBottom --> BottomVirtual
-\`
-
-\`javascript
-// 10,000+ elementi bo'lgan list'da faqat ko'rinavchi elementlarni render qilish
-class VirtualList {
-  constructor(container, items, itemHeight) {
-    this.container = container;
-    this.items = items;
-    this.itemHeight = itemHeight;
-  }
-
-  onScroll(scrollTop) {
-    const visibleStart = Math.floor(scrollTop / this.itemHeight);
-    const visibleEnd = visibleStart + Math.ceil(this.container.clientHeight / this.itemHeight);
-
-    // Faqat visibleStart - visibleEnd elementlarini render qil
-    const fragment = document.createDocumentFragment();
-    for (let i = visibleStart; i < visibleEnd; i++) {
-      const el = this.renderItem(this.items[i], i);
-      fragment.appendChild(el);
-    }
-    this.container.innerHTML = '';
-    this.container.appendChild(fragment);
-  }
-}
-\`
-
-### H. Code Splitting va Bundle hajmini boshqarish
-\`javascript
-// Dynamic import'lar yordamida bundle-ni qismlarga bo'lib yuklash
-const routes = {
-  home: () => import('./pages/home.js'),
-  about: () => import('./pages/about.js'),
-  contact: () => import('./pages/contact.js')
-};
-
-router.on('navigate', async (page) => {
-  const module = await routes[page]();
-  module.render();
-});
-\`
-
-### I. Performance Monitoring - O'lchash va Profiling
-Samaradorlikni o'lchash uchun brauzerning Performance API-sidan foydalanish eng to'g'ri va aniq yo'ldir:
-\`javascript
-performance.mark('start-operation');
-// Optimallashtirilishi kerak bo'lgan og'ir operatsiya
-performance.mark('end-operation');
-
-performance.measure('operatsiya-olchovi', 'start-operation', 'end-operation');
-const measures = performance.getEntriesByName('operatsiya-olchovi');
-console.log(\`Bajarilish vaqti: \${measures[0].duration} ms\`);
-\`
-
-## 4. XATOLAR (Common Mistakes)
-
-1. **Debounce/Throttle'ni shunaqa qilmagan:**
-   - Search inputida har harfda API so'rov
-   - Scroll'da har pixel'da render
-
-2. **Lazy loading'da placeholder yo'q:**
-   - Rasmlar kelguncha tik bo'sh qoladi
-
-3. **Memory leaks:**
-   - Event listener'larni olib tashlamagan
-
-## 5. SAVOLLAR VA JAVOBLAR
-
-**1. Debounce nima va qachon kerak?**
-Funksiyani oxirgi chaqiriqdan keyin kutish. Qidiruv inputida kerak.
-
-**2. Throttle nima va qachon kerak?**
-Vaqt oralig'ida bir marta chaqirish. Scroll event'larda kerak.
-
-**3. Lazy loading nima?**
-Resurslarni faqat kerak bo'lganda yuklash (rasm ko'rinavchi bo'lganda).
-
-**4. Memoization nima?**
-Funksiya natijasini kesh qilish, keyin tez qaytarish.
-
-**5. Virtual Scrolling nima?**
-10,000+ elementda faqat ko'rinavchi elementlarni render qilish.
-
-**6. Code splitting nima?**
-Katta bundle'ni kichik fayllarga bo'lish, kerak bo'lganda yuklash.
-
-**7. RAF (requestAnimationFrame) nima?**
-Monitor tezligiga mos animatsiya (setInterval bilan o'rniga).
-
-**8. Service Worker cache nima?**
-Offline'da amaliyot ko'rsatish uchun foydali kesh moduli.
-
-**9. Memory leak nima?**
-Event listener'larni olib tashlamasa, xotira oshib turadi.
-
-**10. performance.measure() nima?**
-Kodning ishlash vaqtini yuqori aniqlikda o'lchash.
+| Metod/Tushuncha | Qachon ishlatiladi? | Qisqa izoh |
+| :--- | :--- | :--- |
+| **Debounce** | Qidiruv (Autocomplete), oyna o'lchamini o'zgartirish | Kiritish tugaganidan keyin X ms o'tib 1 marta ishlaydi |
+| **Throttle** | Skrol qilish, o'yinlardagi tugma bosish | Har X ms vaqt oralig'ida faqat 1 marta ishlaydi |
+| **DocumentFragment** | DOM-ga bir vaqtda ko'p element qo'shish | Xotiradagi yengil konteyner, reflow-ni kamaytiradi |
+| **removeEventListener** | Element o'chirilganda | Xotira oqishining (memory leak) oldini oladi |
+| **requestAnimationFrame** | Animatsiya chizishda | Sahifa yangilanishiga moslashib, silliq animatsiya beradi |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Oddiy Debounce",
-      instruction: "setTimeout bilan 500ms kechikuvchi funksiya yozing.",
-      startingCode: "function delayedLog() {\n  // 500ms kutib keyin console.log('OK')\n}\n",
-      hint: "setTimeout(() => console.log('OK'), 500);",
-      test: "if (code.includes('setTimeout')) return null; return 'setTimeout xato';"
-    },
-    {
-      id: 2,
-      title: "Debounce Funksiyasi",
-      instruction: "Debounce factory yarating - fn va delay'ni parametr qabul qilsin.",
-      startingCode: "function debounce(fn, delay) {\n  // Bu yerga yozing\n}\n",
-      hint: "let timeoutId; return function() { clearTimeout(timeoutId); timeoutId = setTimeout(() => fn(), delay); }",
-      test: "if (code.includes('clearTimeout') && code.includes('setTimeout')) return null; return 'Debounce noto\\'g\\'ri';"
-    },
-    {
-      id: 3,
-      title: "Throttle Funksiyasi",
-      instruction: "Throttle factory yarating - vaqt oralig'ida bir marta chaqirsin.",
-      startingCode: "function throttle(fn, limit) {\n  // Bu yerga yozing\n}\n",
-      hint: "let inThrottle; return function() { if (!inThrottle) { fn(); inThrottle = true; setTimeout(() => inThrottle = false, limit); } }",
-      test: "if (code.includes('inThrottle')) return null; return 'Throttle noto\\'g\\'ri';"
-    },
-    {
-      id: 4,
-      title: "Debounce vs Throttle Farqi",
-      instruction: "Debounce oxirgi chaqiriqdan keyin, Throttle vaqt oralig'ida.",
-      startingCode: "// Qidiruv inputi uchun qaysi kerak?\nconst search = /* Debounce yoki Throttle? */;\n",
-      hint: "Debounce - foydalanuvchi yozib bo'lishini kutish",
-      test: "if (code.includes('Debounce')) return null; return 'Qidiruv uchun Debounce kerak';"
-    },
-    {
-      id: 5,
-      title: "Memoization",
-      instruction: "Natijani kesh qilib, second call'ni tezlangtirib ol.",
-      startingCode: "function memoize(fn) {\n  const cache = {};\n  // Bu yerga yozing\n}\n",
-      hint: "return function(...args) { const key = JSON.stringify(args); if (key in cache) return cache[key]; return cache[key] = fn(...args); }",
-      test: "if (code.includes('cache')) return null; return 'Memoization noto\\'g\\'ri';"
-    },
-    {
-      id: 6,
-      title: "IntersectionObserver - Lazy Loading",
-      instruction: "Rasm ko'rinavchi bo'lganda yuklash.",
-      startingCode: "const observer = new IntersectionObserver((entries) => {\n  // Bu yerga yozing - rasm.src = rasm.dataset.src\n});\n",
-      hint: "entries.forEach(entry => { if (entry.isIntersecting) { entry.target.src = entry.target.dataset.src; } });",
-      test: "if (code.includes('isIntersecting')) return null; return 'Lazy loading noto\\'g\\'ri';"
-    },
-    {
-      id: 7,
-      title: "requestAnimationFrame",
-      instruction: "RAF bilan smooth animatsiya qiling.",
-      startingCode: "function animate() {\n  element.style.left = (parseInt(element.style.left) + 1) + 'px';\n  // Bu yerga RAF\n}\n",
-      hint: "requestAnimationFrame(animate);",
-      test: "if (code.includes('requestAnimationFrame')) return null; return 'RAF noto\\'g\\'ri';"
-    },
-    {
-      id: 8,
-      title: "Performance.measure()",
-      instruction: "Kodning ishlash vaqtini o'lchang.",
-      startingCode: "performance.mark('start');\n// ... some code\nperformance.mark('end');\n// Bu yerga measure\n",
-      hint: "performance.measure('operation', 'start', 'end');",
-      test: "if (code.includes('performance.measure')) return null; return 'Measure noto\\'g\\'ri';"
-    },
-    {
-      id: 9,
-      title: "Debounce + Search",
-      instruction: "Search input uchun debounce API so'rovini qiling.",
-      startingCode: "const search = debounce((text) => {\n  console.log('API so\\'rov: ' + text);\n}, 300);\n\n// Tez yozish simulyatsiyasi\n// Natija: oxirgi yozuv uchun faqat 1 marta so'rov\n",
-      hint: "Debounce'dan foydalanib har harfda emas, oxirigina so'rov ketadi",
-      test: "if (code.includes('debounce')) return null; return 'Search debounce noto\\'g\\'ri';"
-    },
-    {
-      id: 10,
-      title: "Throttle + Scroll",
-      instruction: "Scroll event'da har 1s'da bir marta event handler chaqir.",
-      startingCode: "const onScroll = throttle(() => {\n  console.log('Scroll event');\n}, 1000);\n\nwindow.addEventListener('scroll', onScroll);\n",
-      hint: "Throttle qo'llangan handler har 1s'da bir marta ishlaydi",
-      test: "if (code.includes('throttle') && code.includes('addEventListener')) return null; return 'Scroll throttle noto\\'g\\'ri';"
-    },
-    {
-      id: 11,
-      title: "Memory Leak Oldini Olish",
-      instruction: "Event listener'ni component destroy'da olib tashlang.",
-      startingCode: "class Component {\n  constructor() {\n    this.onResize = this.onResize.bind(this);\n    window.addEventListener('resize', this.onResize);\n  }\n  destroy() {\n    // Bu yerga olib tashlash\n  }\n}\n",
-      hint: "window.removeEventListener('resize', this.onResize);",
-      test: "if (code.includes('removeEventListener')) return null; return 'Cleanup noto\\'g\\'ri';"
-    },
-    {
-      id: 12,
-      title: "Kompleks - Optimized Search Component",
-      instruction: "Debounce + memoize bilan optimal search qiling.",
-      startingCode: "const fetchUsers = async (query) => {\n  // API call\n};\n\nconst memoized = memoize(fetchUsers);\nconst optimized = debounce(memoized, 300);\n\n// Natija: \n// 1. 300ms kutadi\n// 2. Cached natija bo'lsa tez qaytaradi\n",
-      hint: "Debounce + memoize kombinatsiyasi",
-      test: "if (code.includes('debounce') && code.includes('memoize')) return null; return 'Kompleks optimization noto\\'g\\'ri';"
-    },
-    {
-      id: 13,
-      title: "Scroll Throttle Coordinates Logger",
-      instruction: "Foydalanuvchi scroll qilganda sahifaning vertikal koordinatasini (window.scrollY) konsolga chiqaruvchi hodisa handlerini yozing. Sayt samaradorligini oshirish va scroll eventlarini kamaytirish uchun ushbu logScroll funksiyasini 'throttle' yordamida har 200msda bir marta ishlaydigan qiling va window-ga 'scroll' hodisasi bilan bog'lang.",
-      startingCode: "const logScroll = throttle(() => {\n  console.log(window.scrollY);\n}, 200);\n// window-ga scroll hodisasini qo'shing\n",
-      hint: "window.addEventListener('scroll', logScroll);",
-      test: "if (code.includes('addEventListener') && code.includes('scroll') && code.includes('logScroll')) return null;\nreturn 'window-ga scroll listener biriktirilmadi yoki logScroll ishlatilmadi';"
-    },
-    {
-      id: 14,
-      title: "Performance Profiling Wrapper",
-      instruction: "Kodni bajarilish vaqtini User Timing API yordamida o'lchash uchun 'profileFunction(name, fn)' wrapper funksiyasini yozing. U funksiyani chaqirishdan oldin 'performance.mark(name + \"-start\")' belgisini qo'ysin, funksiyani ishga tushirsin, bajarilgandan keyin 'performance.mark(name + \"-end\")' belgisini qo'ysin va 'performance.measure(name, name + \"-start\", name + \"-end\")' yordamida o'lchasin. Yakunda funksiya natijasini qaytarsin.",
-      startingCode: "function profileFunction(name, fn) {\n  // performance.mark va performance.measure lardan foydalaning\n}",
-      hint: "performance.mark(name + '-start');\nconst result = fn();\nperformance.mark(name + '-end');\nperformance.measure(name, name + '-start', name + '-end');\nreturn result;",
-      test: "if (code.includes('performance.mark') && code.includes('performance.measure') && code.includes('return')) return null;\nreturn 'performance.mark yoki performance.measure orqali profiling to\\'g\\'ri amalga oshirilmadi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Debounce Funksiyasini Yozish",
+    "instruction": "Foydalanuvchi tez-tez tugmani bosganda yoki matn kiritganda, funksiya faqat kiritish to'xtaganidan so'ng ma'lum bir `delay` (ms) o'tgach ishga tushadigan `debounce(fn, delay)` funksiyasini yarating.",
+    "startingCode": "function debounce(fn, delay) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Har safar funksiya chaqirilganda, avvalgi taymerni `clearTimeout` yordamida tozalang va yangi `setTimeout` o'rnating.",
+    "test": "if (!code.includes('clearTimeout')) return 'debounce ichida clearTimeout ishlatilishi kerak';\nif (!code.includes('setTimeout')) return 'debounce ichida setTimeout ishlatilishi kerak';\nconst sandbox = new Function(code + '; return debounce;');\nconst db = sandbox();\nlet count = 0;\nconst debounced = db(() => count++, 50);\nif (typeof debounced !== 'function') return 'debounce funksiyasi wrapper funksiya qaytarishi kerak';\ndebounced(); debounced(); debounced();\nif (count !== 0) return 'Taymer tugashidan oldin funksiya bajarilmasligi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Throttle Funksiyasini Yozish",
+    "instruction": "Hodisa juda ko'p chaqirilganda (masalan, `scroll` yoki `resize`), funksiya har `limit` (ms) vaqt oralig'ida faqat bir marta bajarilishini ta'minlovchi `throttle(fn, limit)` funksiyasini yozing.",
+    "startingCode": "function throttle(fn, limit) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Chaqiruv ruxsat etilganligini ko'rsatuvchi bayroqcha (flag) o'zgaruvchisidan foydalaning va taymer orqali uni qayta tiklang.",
+    "test": "if (!code.includes('setTimeout')) return 'throttle ichida setTimeout ishlatilishi kerak';\nconst sandbox = new Function(code + '; return throttle;');\nconst th = sandbox();\nlet count = 0;\nconst throttled = th(() => count++, 100);\nif (typeof throttled !== 'function') return 'throttle funksiyasi wrapper funksiya qaytarishi kerak';\nthrottled(); throttled();\nif (count !== 1) return 'Throttle vaqtida birinchi chaqiriq darhol ishlashi va keyingilari cheklanishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "DocumentFragment yordamida DOM optimallashtirish",
+    "instruction": "Berilgan `container` (DOM elementi) ichiga ko'p miqdordagi `items` (matnli massiv) elementlarini `li` ko'rinishida qo'shing. DOM-ga qayta-qayta murojaat qilib (reflow/repaint) unumdorlikni pasaytirmaslik uchun `document.createDocumentFragment()` dan foydalaning.",
+    "startingCode": "function appendItemsOptimized(container, items) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Avval fragment yarating, so'ng tsikl ichida har bir elementni fragmentga `appendChild` qiling. Eng oxirida fragmentni `container`ga bir marta qo'shing.",
+    "test": "if (!code.includes('createDocumentFragment')) return 'createDocumentFragment dan foydalanilishi shart';\ntry {\n  const mockContainer = { appendChild: function(el) { this.child = el; } };\n  const mockDoc = {\n    createDocumentFragment: () => {\n      const fragment = { children: [], appendChild: function(el) { this.children.push(el); } };\n      return fragment;\n    },\n    createElement: (tag) => ({ tag, textContent: '' })\n  };\n  const sandbox = new Function('document', code + '; return appendItemsOptimized;');\n  const fn = sandbox(mockDoc);\n  fn(mockContainer, ['Olma', 'Anor']);\n  if (!mockContainer.child) return 'Elementlar containerga qo\\'shilmadi';\n  if (mockContainer.child.children && mockContainer.child.children.length !== 2) return 'Barcha elementlar fragmentga qo\\'shilmagan';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "\"Debounce\" va \"Throttle\" optimallashtirish usullari o'rtasidagi asosiy farq nima?",
-      options: [
-        "Debounce funksiyani ma'lum vaqt kutib, faqat oxirgi chaqiriqdan keyin ishga tushiradi; Throttle esa funksiya ketma-ket chaqirilganda ma'lum vaqt oralig'ida faqat bir marta ishlashini ta'minlaydi",
-        "Debounce faqat rasmlarda, Throttle esa faqat videolarda ishlatiladi",
-        "Throttle faqat Internet Explorer brauzerida ishlaydi",
-        "Debounce funksiyani tezlashtiradi, Throttle esa sekinlashtiradi"
-      ],
-      correctAnswer: 0,
-      explanation: "Debounce foydalanuvchi harakatdan to'xtaganidan keyingina funksiyani chaqiradi (masalan, qidiruv tugagach). Throttle esa harakat to'xtovsiz davom etsa ham, ma'lum oraliq bilan chaqirib turadi (masalan, scroll paytida)."
-    },
-    {
-      id: 2,
-      question: "Qidiruv maydoni (Search Input) uchun foydalanuvchi yozib bo'lgandan keyin API so'rov yuborish uchun qaysi usul eng mos keladi?",
-      options: [
-        "Throttle",
-        "Debounce",
-        "Lazy Loading",
-        "Virtual Scrolling"
-      ],
-      correctAnswer: 1,
-      explanation: "Foydalanuvchi har bir harfni kiritganda API ga so'rov yubormaslik uchun Debounce eng optimal yechimdir. U foydalanuvchi yozishdan 300-500ms to'xtaganidan keyingina so'rov yuboradi."
-    },
-    {
-      id: 3,
-      question: "\"Lazy Loading\" (Kechiktirib yuklash) usulining asosiy maqsadi nima?",
-      options: [
-        "Sahifadagi barcha rasmlarni darhol eng yuqori sifatda yuklash",
-        "Foydalanuvchi ekranda ko'rmayotgan resurslarni (masalan, sahifa pastidagi rasmlarni) faqat ular ko'rinadigan sohaga (viewport) yaqinlashganda yuklash",
-        "JavaScript kodlarini sekinroq bajarish",
-        "Dastur xotirasini cheklash"
-      ],
-      correctAnswer: 1,
-      explanation: "Lazy Loading yordamida dastlab faqat foydalanuvchi ko'rib turgan sohadagi (viewport) ma'lumot va rasmlar yuklanadi. U tarmoq trafigini tejaydi va saytning dastlabki yuklanish tezligini va visual feedbackni yaxshilaydi."
-    },
-    {
-      id: 4,
-      question: "Nima uchun animatsiyalarni yaratishda `setInterval` yoki `setTimeout` o'rniga `requestAnimationFrame` (rAF) ishlatish tavsiya etiladi?",
-      options: [
-        "Chunki `requestAnimationFrame` monitorning yangilanish tezligiga (refresh rate, odatda 60Hz/120Hz) avtomatik ravishda moslashib, silliq (smooth) animatsiyani ta'minlaydi va batareyani tejaydi",
-        "Chunki u kodni qisqartiradi",
-        "Chunki u CSS yozishni talab qilmaydi",
-        "Chunki u faqat mobil telefonlarda ishlaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "`requestAnimationFrame` brauzerning grafik chizish (paint) sikli bilan sinxron ishlaydi va sahifa faol bo'lmaganda (background tab) ishlashdan to'xtab, CPU resurslarini tejaydi."
-    },
-    {
-      id: 5,
-      question: "\"Memoization\" nima?",
-      options: [
-        "Kompyuter xotirasini tozalash algoritmi",
-        "Qimmat (ko'p vaqt oluvchi) funksiya natijalarini kirish argumentlari bo'yicha keshlab qo'yib, keyingi safar bir xil argumentlar yuborilganda keshdan tezkor qaytarish texnikasi",
-        "Kodlarni avtomatik qismlarga bo'lish (Code splitting)",
-        "Sahifani offlayn rejimda ishlashga tayyorlash"
-      ],
-      correctAnswer: 1,
-      explanation: "Memoization - bu pure funksiyalar natijalarini keshga saqlash orqali qayta hisob-kitoblarni oldini olib, performance'ni oshiruvchi samarali usuldir."
-    },
-    {
-      id: 6,
-      question: "Katta hajmdagi JavaScript kodlarini bitta bundle o'rniga kichik qismlarga bo'lib yuklash (Code Splitting) texnikasining asosiy afzalligi nima?",
-      options: [
-        "Loyihaning dastlabki sahifasi yuklanish tezligini sezilarli oshirish va faqat kerakli sahifa uchun kod yuklash",
-        "JavaScript kodini serverda xavfsiz bajarish",
-        "Massivlar bilan ishlashni tezlashtirish",
-        "HTML va CSS kodini avtomat o'chirib tashlash"
-      ],
-      correctAnswer: 0,
-      explanation: "Code splitting (kodni bo'lish) yordamida brauzer boshlang'ich yuklanishda butun sayt kodini emas, balki faqat ayni vaqtda kerakli bo'lgan qismlarini yuklaydi. Qolgan modullar keyinroq, kerak bo'lganda yuklanadi."
-    },
-    {
-      id: 7,
-      question: "Sahifada 100,000 ta elementdan iborat katta ro'yxatni (list) sekinlashuvlarsiz render qilish uchun qaysi texnika ishlatiladi?",
-      options: [
-        "Virtual Scrolling (Virtualizatsiya)",
-        "Debounce",
-        "Server-Side Rendering",
-        "HTML Compression"
-      ],
-      correctAnswer: 0,
-      explanation: "Virtual Scrolling faqat foydalanuvchining ko'rish sohasida (viewport) turgan bir nechta o'nlab elementlarni DOMga qo'shadi, qolgan elementlarni esa scroll qilganda dinamik almashtiradi. Bu DOM elementlari sonini juda kam saqlaydi."
-    },
-    {
-      id: 8,
-      question: "JavaScript-da xotira oqishi (Memory Leak) deganda nima tushuniladi?",
-      options: [
-        "Ishlatib bo'lingan va endi kerak bo'lmagan ma'lumotlar xotiradan (Garbage Collector tomonidan) o'chirilmasdan, xotirani band qilib turishi",
-        "Operatsion tizimning to'liq o'chib qolishi",
-        "Dasturdagi ma'lumotlarning Internetga tarqalib ketishi",
-        "O'zgaruvchilarni const o'rniga let bilan e'lon qilish"
-      ],
-      correctAnswer: 0,
-      explanation: "Xotira oqishi (Memory Leak) - foydalanilmayotgan obyektlar referenslari saqlanib qolgani sababli Garbage Collector ularni tozalay olmasligi natijasida yuzaga keladi. Bu vaqt o'tishi bilan dasturning xotira iste'molini oshiradi."
-    },
-    {
-      id: 9,
-      question: "Veb-saytda takroriy so'rovlarda rasmlar va stillarni tarmoqdan qayta-qayta yuklamaslik uchun server tomonidan yuboriladigan HTTP header qaysi?",
-      options: [
-        "`Cache-Control`",
-        "`Content-Type`",
-        "`Access-Control-Allow-Origin`",
-        "`User-Agent`"
-      ],
-      correctAnswer: 0,
-      explanation: "Serverdan yuboriladigan `Cache-Control` (masalan, `Cache-Control: max-age=31536000`) brauzerga resursni qancha vaqt davomida local keshda saqlash va serverga so'rov yubormaslik mumkinligini aytadi."
-    },
-    {
-      id: 10,
-      question: "Brauzerda repaints (qayta bo'yash) va reflows (sahifa tartibini qayta hisoblash) ni kamaytirish uchun DOM o'zgarishlarini qanday amalga oshirish kerak?",
-      options: [
-        "Har bir o'zgarishni alohida DOM elementiga darhol yozish",
-        "DOM o'zgarishlarini DocumentFragment yordamida xotirada yig'ib, keyin bitta operatsiyada DOMga qo'shish",
-        "CSS-ni butunlay o'chirib tashlash",
-        "`setInterval` orqali tez-tez DOMni yangilab turish"
-      ],
-      correctAnswer: 1,
-      explanation: "`DocumentFragment` — bu yengil, minimal DOM obyekti bo'lib, unga ko'plab yangi elementlarni xotirada qo'shib olgandan keyin, haqiqiy DOMga faqat bir marta append qilish mumkin. Bu esa sahifani qayta chizish (reflow/repaint) yukini keskin kamaytiradi."
-    },
-    {
-      id: 11,
-      question: "Service Worker yordamida ma'lumotlarni keshlash qaysi turdagi ilovalarni yaratishda muhim hisoblanadi?",
-      options: [
-        "PWA (Progressive Web Apps)",
-        "Desktop Command Line Tools",
-        "Node.js Scripting Tools",
-        "WordPress saytlari"
-      ],
-      correctAnswer: 0,
-      explanation: "Service Worker brauzer va tarmoq o'rtasida vositachi vazifasini bajaradi va PWA texnologiyasining asosi hisoblanadi. U tarmoq so'rovlarini tutib olib, offline rejimda ham ilova ishlashini ta'minlash uchun resurslarni local keshdan olib berishi mumkin."
-    },
-    {
-      id: 12,
-      question: "Veb-ilova ishlash tezligini o'lchash va muammoli kodlarni aniqlash uchun JavaScript brauzer muhitida taqdim etiladigan API qaysi?",
-      options: [
-        "Performance API (masalan, `performance.mark` va `performance.measure`)",
-        "LocalStorage API",
-        "Cryptography API",
-        "History API"
-      ],
-      correctAnswer: 0,
-      explanation: "Performance API yordamida kodning bajarilish vaqtini millisekundlarda aniq o'lchash, performance marklar o'rnatish va sekin ishlayotgan kod bloklarini profiler orqali aniqlash mumkin."
-    },
-    {
-      id: 13,
-      question: "Layout Thrashing (yoki Force Reflow) brauzerda qanday kelib chiqadi va nimasi bilan zararli?",
-      options: [
-        "JavaScript kodida bir vaqtning o'zida DOM elementlari o'lchamlarini o'qish (read) va yozish (write) operatsiyalari ketma-ket takrorlanganda brauzerni sahifa tartibini qayta-qayta hisoblashga majburlaydi va bu sahifa qotishiga (jank) olib keladi",
-        "Faqat CSS-da animatsiyalar noto'g'ri yozilgan taqdirda",
-        "Foydalanuvchi internet aloqasi sekinlashganda",
-        "Rasm hajmi juda katta bo'lganda"
-      ],
-      correctAnswer: 0,
-      explanation: "Layout Thrashing — o'qish va yozish amallarini ketma-ket aralashtirib bajarish natijasida brauzerni bir necha bor layout reflow qilishga majbur etish. Buni oldini olish uchun o'qish va yozish operatsiyalari guruhlarga (batching) ajratilishi lozim."
-    },
-    {
-      id: 14,
-      question: "Katta ma'lumotlar ro'yxatida (masalan, 50 000 ta qator) Virtual Scrolling (Virtualizatsiya) qanday yordam beradi?",
-      options: [
-        "U faqat foydalanuvchi ekranda ko'rib turgan (viewport) va uning atrofidagi bir nechta DOM elementlarini render qiladi, qolganlarini esa scroll qilinganda dinamik almashtiradi. Bu DOM elementlari sonini juda kichik ushlab qoladi",
-        "U barcha 50 000 ta qatorni birdan yuklab sahifani tezlashtiradi",
-        "U sahifadagi scroll harakatini butunlay o'chirib qo'yadi",
-        "U barcha qatorlarni rasm formatiga o'tkazib yuboradi"
-      ],
-      correctAnswer: 0,
-      explanation: "Virtual scrolling loyihada DOM elementlari sonini juda kam saqlash orqali brauzer xotirasi va grafik chizish yuklamasini (reflow/repaint) minimal darajada ushlab turadi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Debounce va Throttle o'rtasidagi asosiy farq nimada?",
+    "options": [
+      "Debounce hodisalarni guruhlab, harakat to'xtagandan so'ng bir marta chaqiradi; Throttle esa ma'lum vaqt oralig'ida faqat bir marta chaqirilishini kafolatlaydi",
+      "Debounce faqat rasmlar uchun ishlatiladi, Throttle esa faqat matnlar uchun",
+      "Debounce funksiyani tezlashtiradi, Throttle esa uni sekinlashtiradi",
+      "Hech qanday farqi yo'q, ikkalasi bir xil mexanizmning sinonimidir"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Debounce foydalanuvchi yozishdan to'xtaganidan keyin (masalan, qidiruv satri) ishlaydi. Throttle esa doimiy harakat paytida (masalan, scroll) har X millisekundda funksiyani bir marta ishga tushiradi."
+  },
+  {
+    "id": 2,
+    "question": "DOM Reflow (Layout) nima?",
+    "options": [
+      "Brauzer elementlarning rangini yoki fonini o'zgartirishi",
+      "Brauzer sahifadagi elementlarning o'lchamlari va geometriyasini (joylashuvini) qaytadan hisoblab chiqishi",
+      "Garbage Collector tomonidan keraksiz elementlarning xotiradan o'chirilishi",
+      "CSS faylining serverdan yuklanishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Reflow — brauzer sahifaning geometrik tuzilishini qaytadan hisoblashi. Bu juda qimmat operatsiya hisoblanadi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi CSS xususiyatlaridan qaysi biri o'zgarganda faqat Repaint (qayta chizish) sodir bo'ladi, Reflow emas?",
+    "options": [
+      "`width`",
+      "`margin`",
+      "`background-color`",
+      "`font-size`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`background-color` elementning sahifadagi geometrik o'lchamlariga ta'sir qilmaydi, shuning uchun u faqat Repaint (qayta bo'yash) ni keltirib chiqaradi. `width`, `margin` va `font-size` esa Reflow-ga sabab bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "DocumentFragment nima va u qanday foyda keltiradi?",
+    "options": [
+      "Faqat server tomonida HTML generatsiya qiladigan funksiya",
+      "Yengil, ko'rinmas DOM daraxti bo'lib, unga elementlarni yig'ib, asosiy DOM-ga bir marta qo'shish orqali reflow/repaint sonini kamaytiradi",
+      "CSS stillarini yashirish uchun ishlatiladigan maxsus Shadow DOM element",
+      "JS fayllarni bo'laklarga bo'lib yuklaydigan kutubxona"
+    ],
+    "correctAnswer": 1,
+    "explanation": "DocumentFragment xotiradagi virtual konteynerdir. Unga elementlarni qo'shganda DOM-ga ta'sir qilmaydi, fragmentni DOM-ga qo'shganda esa faqat bitta reflow sodir bo'ladi."
+  },
+  {
+    "id": 5,
+    "question": "Detached DOM node (ajralgan DOM tugunlari) tufayli kelib chiqadigan xotira oqishi (Memory Leak) nima?",
+    "options": [
+      "Brauzer yopilgandan keyin ham sahifaning ochiq qolishi",
+      "DOM daraxtidan o'chirilgan, lekin JS-dagi o'zgaruvchilar orqali hamon havola (reference) saqlanib turgan va xotiradan o'chmagan elementlar",
+      "CSS stillarining noto'g'ri yuklanishi",
+      "HTML faylining bo'sh bo'lib qolishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar element DOM-dan `remove()` qilinsa-yu, lekin sizda global o'zgaruvchida unga havola bo'lsa, Garbage Collector uni xotiradan tozalay olmaydi."
+  },
+  {
+    "id": 6,
+    "question": "JavaScript Garbage Collector o'zgaruvchilarning keraksizligini qanday algoritm yordamida aniqlaydi?",
+    "options": [
+      "Binary Search",
+      "Mark-and-Sweep (Belgilash va tozalash)",
+      "First In, First Out (FIFO)",
+      "Bubble Sort"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Zamonaviy brauzerlar Mark-and-Sweep algoritmidan foydalanadi: global obyektdan boshlab borib bo'lmaydigan (unreachable) obyektlar belgilab chiqiladi va o'chiriladi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagilardan qaysi biri xotira oqishiga (Memory Leak) sabab bo'lishi mumkin?",
+    "options": [
+      "Foydalanib bo'lingan `setInterval`ni `clearInterval` bilan to'xtatmaslik",
+      "Funksiya ichida `let` yoki `const` yordamida o'zgaruvchi yaratish",
+      "Massivni `null` qilib tozalash",
+      "Funksiyani o'z vaqtida chaqirish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Agar `setInterval` to'xtatilmasa, undagi callback va unda ishlatilgan tashqi o'zgaruvchilar (closures tufayli) abadiy xotirada qolib ketadi."
+  },
+  {
+    "id": 8,
+    "question": "Event listener-lar qanday qilib xotira oqishiga (memory leak) sabab bo'ladi?",
+    "options": [
+      "Bir elementga bir nechta listener qo'shilganda brauzer qulasa",
+      "Element sahifadan o'chirilganda, unga bog'langan listener-lar hamon xotirada saqlanib qolsa",
+      "Faqat `click` hodisasi ko'p marta ishlatilganda",
+      "Agar listener faqat asinxron funksiyada yozilgan bo'lsa"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Garchi ba'zi zamonaviy brauzerlar buni avtomatlashtirgan bo'lsa-da, elementlar o'chirilganda ulardagi event listener-lar xotirada qolishi va o'zaro bog'liq o'zgaruvchilarni ushlab turishi mumkin. Shuning uchun `removeEventListener` ishlatish tavsiya etiladi."
+  },
+  {
+    "id": 9,
+    "question": "Animatsiyalarni silliq va optimallashtirilgan tarzda bajarish uchun qaysi API-dan foydalanish tavsiya etiladi?",
+    "options": [
+      "`setTimeout`",
+      "`setInterval`",
+      "`requestAnimationFrame`",
+      "`async/await`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`requestAnimationFrame` brauzer ekran yangilanishi (refresh rate) bilan sinxron ravishda ishlaydi (odatda soniyasiga 60-120 marta) va keraksiz chizishlarning oldini oladi."
+  },
+  {
+    "id": 10,
+    "question": "Katta massivlar ustida ishlaganda unumdorlikni oshirish uchun qaysi sikl operatori eng tez ishlaydi?",
+    "options": [
+      "Oddiy `for` (indeksli) yoki `while` sikli",
+      "`Array.prototype.forEach`",
+      "`Array.prototype.map`",
+      "Barcha sikl va massiv metodlarining ishlash tezligi mutlaqo bir xil"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Oddiy `for` yoki `while` tsikllari qo'shimcha callback chaqiruvlari va funksional kontekstlar yaratmagani uchun eng yuqori tezlikka ega."
+  },
+  {
+    "id": 11,
+    "question": "Web Workers nima uchun kerak?",
+    "options": [
+      "Sahifani bezash uchun CSS stillarini avtomatik sozlashda",
+      "Og'ir matematik hisob-kitoblarni asosiy UI oqimidan (main thread) alohida fondagi oqimga o'tkazib, sahifani qotib qolishdan himoya qilish uchun",
+      "HTML elementlarni tezroq yaratish uchun",
+      "Faqat ma'lumotlar ombori bilan bog'lanishda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript bir oqimli (single-threaded) til. Web Workers yordamida og'ir hisob-kitoblarni boshqa oqimda bajarish va UI qotishini oldini olish mumkin."
+  },
+  {
+    "id": 12,
+    "question": "Nima uchun Code Splitting (kodni bo'laklash) sahifa yuklanish tezligini oshiradi?",
+    "options": [
+      "Chunki u fayl hajmini sun'iy ravishda kattalashtiradi",
+      "Foydalanuvchiga faqat hozirgi sahifa uchun zarur bo'lgan JS kodlarini yuklab, qolgan qismlarini kerak bo'lganda (on-demand) yuklash imkonini beradi",
+      "U barcha JS kodlarini CSS faylga o'zgartiradi",
+      "Brauzerdagi cache xotirani o'chirib tashlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kodni bo'laklash (Code Splitting) boshlang'ich yuklanadigan JS hajmini kamaytiradi, natijada sahifa tezroq interaktiv holatga keladi."
+  }
+]
+
 };

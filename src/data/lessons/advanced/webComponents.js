@@ -4,477 +4,467 @@ export const webComponents = {
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-### Web Components nima?
-**Web Components** — bu HTML, CSS va JavaScript-ni birlashtirib, istalgan freymvorkdan (React, Vue, Angular) mustaqil bo'lgan, qayta ishlatiladigan shaxsiy HTML teglarini (masalan, \`<my-button>\`, \`<user-card>\`) yaratish imkonini beruvchi texnologiyalar to'plamidir.
-
-U uchta asosiy ustundan iborat:
-1. **Custom Elements (Shaxsiy elementlar):** Brauzerga yangi HTML teg va uning ishlash mantig'ini (JavaScript klassi orqali) tanitish.
-2. **Shadow DOM (Ko'lka DOM):** Komponentning HTML va CSS-ni tashqi sahifadan butunlay izolyatsiya qilish (yashirish). Tashqi sahifadagi global CSS ushbu komponent ichiga ta'sir qilmaydi, uning CSS-i ham tashqarini buzmaydi.
-3. **HTML Templates va Slots (\`<template>\`, \`<slot>\`):** Komponent shablonini sahifa yuklanganda bajarilmaydigan, faqat nusxalab ishlatiladigan formatda saqlash va uning ichiga dinamik ma'lumotlar joylash (Slots).
+### Web Components va Shadow DOM nima?
+* **Web Components (Veb Komponentlar):** Bu hech qanday framework (React, Vue, Angular va h.k.) ishlatmasdan, brauzerning o'zida yangi, maxsus HTML teglarini (masalan, \`<user-card>\`, \`<image-slider>\`) yaratishga yordam beradigan texnologiyalar to'plamidir.
+* **Shadow DOM (Soyali DOM):** Bu komponentingiz atrofida "himoya qalqoni" yaratadigan texnologiya. Shadow DOM ichidagi HTML va CSS kodlari butunlay yopiq bo'ladi: tashqi CSS stillari uning ichiga ta'sir qilmaydi, uning ichidagi CSS stillari esa tashqi sahifani buzib yubormaydi.
 
 ### Real hayotiy analogiya
-Tasavvur qiling, siz **uy qurayapsiz**:
-* **Oddiy HTML/CSS:** G'ishtlarni birma-bir terib, har bir xonani alohida bo'yaysiz. Agar bitta xonadagi bo'yoq to'kilsa, u ikkinchi xonaga o'tishi mumkin (CSS global ziddiyatlari).
-* **Web Components:** Tayyor **import qilingan xona moduli (kapsula)**. Ushbu xona fabrikada tayyorlangan, uning devorlari izolyatsiya qilingan (Shadow DOM). Siz uni shunchaki uyingizga keltirib ulaysiz. Tashqi tomondan bu xonaning qanday tuzilgani ko'rinmaydi, uning devor rangi global bo'yoqlardan buzilmaydi.
-* **Slot:** Ushbu xona modulidagi bo'sh joylar (masalan, mebel uchun joy). Siz xonani sotib olasiz va uning ichidagi bo'sh joyga (slot) o'zingiz xohlagan divan yoki stolni joylashtirasiz.
+Tasavvur qiling, siz **yangi aqlli choynak (Smart Kettle)** sotib oldingiz:
+* **Custom Element:** Bu choynakning o'zi. Uning tashqi ko'rinishi va tugmalari bor. Siz uni sahifangizga \`<smart-kettle></smart-kettle>\` deb qo'shasiz.
+* **Shadow DOM:** Bu choynakning ichki simlari, isitish elementi va sensorlari. Ular choynak korpusi bilan yopilgan (himoyalangan). Siz tashqaridan turib u simlarni o'zgartira olmaysiz. Agar uyingizdagi boshqa jihozning rangi qizil bo'lsa, bu choynakning ichki tizimiga ta'sir qilmaydi.
+* **Templates va Slots:** Choynakka suv solish uchun maxsus teshik (Slot) mavjud. Siz uning ichiga xohlagan suvni (oddiy yoki filtrlangan) quya olasiz. Slot — tashqi ma'lumotlarni komponentning ichki qismiga xavfsiz joylashtirish joyidir.
 
 ---
 
 ## 2. 💻 Real Kod Misollari
 
-### 1. Basic Example (Sodda Custom Element)
-Salomlashuvchi maxsus \`<hello-world>\` elementini yaratish:
+### 1. Oddiy Custom Element
+Ushbu element sahifada \`Hello, [ism]!\` degan matnni chiqaradi:
 \`\`\`javascript
-// 1. Yangi element klassini yaratish
-class HelloWorld extends HTMLElement {
+class SayHello extends HTMLElement {
+  constructor() {
+    super(); // HTMLElement-ning konstruktorini chaqirish shart
+  }
+
+  // Element DOM-ga qo'shilganda ishga tushadi
   connectedCallback() {
-    this.textContent = 'Salom, Dunyo! Bu mening birinchi komponentim.';
+    const name = this.getAttribute("name") || "Mehmon";
+    this.innerHTML = \`<p>Hello, <strong>\${name}</strong>!</p>\`;
   }
 }
 
-// 2. Brauzerga ro'yxatdan o'tkazish (Teg nomida majburiy chiziq '-' bo'lishi shart)
-customElements.define('hello-world', HelloWorld);
+// Elementni ro'yxatdan o'tkazamiz
+customElements.define("say-hello", SayHello);
 \`\`\`
-* **HTML-da ishlatilishi:**
-  \`\`\`html
-  <hello-world></hello-world>
-  \`\`\`
-* **Natija:** Sahifada "Salom, Dunyo!..." matni paydo bo'ladi.
-* **Qachon ishlatiladi:** Sodda va hech qanday murakkab CSS talab qilmaydigan shaxsiy widget-larda.
+**HTML-da foydalanilishi:**
+\`\`\`html
+<say-hello name="Jasur"></say-hello>
+<!-- Ekranda: Hello, Jasur! -->
+\`\`\`
 
-### 2. Intermediate Example (Shadow DOM va CSS Izolyatsiyasi)
-Tashqi sahifadagi global CSS dan mutlaqo himoyalangan foydalanuvchi kartochkasi:
+### 2. Shadow DOM bilan Ishlash (Style Encapsulation)
+Tashqi sahifadagi stillardan butunlay mustaqil komponent:
 \`\`\`javascript
-class UserCard extends HTMLElement {
-  constructor() {
-    super();
-    // Shadow root yaratish (mode: 'open' tashqaridan JS orqali kirish imkonini beradi)
-    const shadow = this.attachShadow({ mode: 'open' });
-    
-    // HTML va CSS shablonini yozish
+class UserProfile extends HTMLElement {
+  connectedCallback() {
+    // 1. Shadow root biriktiramiz
+    const shadow = this.attachShadow({ mode: "open" });
+
+    // 2. Ichki HTML va stillarni belgilaymiz
     shadow.innerHTML = \`
       <style>
+        /* Bu stil faqat ushbu komponent ichida ishlaydi, tashqariga ta'sir qilmaydi */
         .card {
-          padding: 20px;
+          padding: 15px;
           border: 1px solid #ccc;
           border-radius: 8px;
-          font-family: sans-serif;
           background: #f9f9f9;
         }
-        h3 { color: #2c3e50; } /* Global h3 rangini buzmaydi, global CSS ham buni o'zgartira olmaydi */
+        h2 {
+          color: darkblue;
+        }
       </style>
       <div class="card">
-        <h3>Foydalanuvchi Profili</h3>
-        <p>Ism: Alisher Navoiy</p>
+        <h2>Foydalanuvchi Profili</h2>
+        <p>Ism: Profil egasi</p>
       </div>
     \`;
   }
 }
-customElements.define('user-card', UserCard);
+customElements.define("user-profile", UserProfile);
 \`\`\`
-* **Qachon ishlatiladi:** Micro-frontends loyihalarida yoki sahifaning global CSS-laridan qo'rqmasdan ishlatiladigan uchinchi tomon widget-larida.
 
-### 3. Advanced Example (Templates va Slots)
-HTML \`<template>\` va \`<slot>\` yordamida dinamik kontent qabul qiluvchi modal yoki kartochka yaratish:
-\`\`\`javascript
-// HTML-da shablon yoziladi (js faylda ham yaratish mumkin):
-/*
-<template id="card-template">
+### 3. \`<template>\` va \`<slot>\` dan Foydalanish
+Shablon va dinamik joylashtirish (Content projection):
+\`\`\`html
+<!-- HTML shablon e'lon qilamiz (Ekranda ko'rinmaydi) -->
+<template id="custom-alert-tpl">
   <style>
-    .wrapper { border: 2px solid royalblue; padding: 15px; }
+    .alert {
+      padding: 10px;
+      margin: 10px 0;
+      border-left: 5px solid red;
+      background-color: #ffe6e6;
+    }
   </style>
-  <div class="wrapper">
-    <h2><slot name="title">Standart Sarlavha</slot></h2>
-    <p><slot name="content">Standart matn</slot></p>
+  <div class="alert">
+    <strong>Diqqat!</strong>
+    <!-- Slot orqali tashqi kontent shu yerga kiradi -->
+    <slot name="message">Standart ogohlantirish matni</slot>
   </div>
 </template>
-*/
-
-class DynamicCard extends HTMLElement {
+\`\`\`
+**JavaScript:**
+\`\`\`javascript
+class CustomAlert extends HTMLElement {
   connectedCallback() {
-    const shadow = this.attachShadow({ mode: 'open' });
-    const template = document.getElementById('card-template');
-    // Shablonni nusxalash (cloneNode) va shadow DOM-ga qo'shish
+    const shadow = this.attachShadow({ mode: "open" });
+    const template = document.getElementById("custom-alert-tpl");
+    // Shablonni nusxalaymiz (clone) va shadow root-ga qo'shamiz
     shadow.appendChild(template.content.cloneNode(true));
   }
 }
-customElements.define('dynamic-card', DynamicCard);
+customElements.define("custom-alert", CustomAlert);
 \`\`\`
-* **HTML-da ishlatilishi:**
-  \`\`\`html
-  <dynamic-card>
-    <span slot="title">Mening Maxsus Kitobim</span>
-    <span slot="content">Ushbu kitob o'zbek adabiyoti durdonasidir.</span>
-  </dynamic-card>
-  \`\`\`
-
-### 4. Production Example (Atributlarni kuzatish va hayotiy sikl - Reactive Attributes)
-Atribut o'zgarishlarini kuzatib, UI-ni avtomatik yangilovchi dynamic \`<counter-element>\` komponenti:
-\`\`\`javascript
-class CounterElement extends HTMLElement {
-  static get observedAttributes() {
-    return ['count']; // Kuzatiladigan atributlar ro'yxati
-  }
-
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = \`
-      <div>
-        Soni: <span id="num">0</span>
-        <button id="btn">+1</button>
-      </div>
-    \`;
-  }
-
-  connectedCallback() {
-    // Tugmaga hodisa bog'lash
-    this.shadowRoot.querySelector('#btn').addEventListener('click', () => {
-      const current = parseInt(this.getAttribute('count') || 0);
-      this.setAttribute('count', current + 1);
-    });
-  }
-
-  // Atribut o'zgarganda ishga tushadigan funksiya (React useEffect kabi)
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'count') {
-      this.shadowRoot.querySelector('#num').textContent = newValue;
-    }
-  }
-}
-customElements.define('counter-element', CounterElement);
-\`\`\`
-
-### 5. Enterprise Example (Custom Events - Komponentlararo aloqa)
-Komponent ichidan tashqi sahifaga xavfsiz Custom Event-lar yuborish:
-\`\`\`javascript
-class CustomButton extends HTMLElement {
-  connectedCallback() {
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = \`<button>Sotib olish</button>\`;
-    
-    this.shadowRoot.querySelector('button').addEventListener('click', () => {
-      // Custom Event yaratish va tashqariga otish (bubbles: true tashqariga chiqishini ta'minlaydi)
-      const event = new CustomEvent('purchase', {
-        detail: { productId: 105, price: 150000 },
-        bubbles: true,
-        composed: true // Shadow DOM chegarasidan tashqariga chiqishiga ruxsat berish
-      });
-      this.dispatchEvent(event);
-    });
-  }
-}
-customElements.define('custom-button', CustomButton);
-
-// Tashqaridan (global JS-da) hodisani eshitish:
-document.body.addEventListener('purchase', (e) => {
-  console.log('Xarid qilindi:', e.detail.productId, e.detail.price);
-});
+**HTML-da foydalanish:**
+\`\`\`html
+<custom-alert>
+  <span slot="message">Sessiya muddati tugadi, iltimos qayta kiring!</span>
+</custom-alert>
 \`\`\`
 
 ---
 
-## 3. ⚠️ Muammo va Nima uchun Muhimligi
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
 
-### Qaysi muammoni hal qiladi?
-* **Freymvorklar ziddiyati (Framework lock-in):** Bugungi kunda yozilgan React komponenti 5 yildan keyin eskiradi yoki boshqa freymvorkka (masalan, Svelte yoki Vue) o'tish qiyin bo'ladi. Web Components standart brauzer API-si bo'lgani uchun abadiy ishlaydi.
-* **Global CSS ifloslanishi (CSS Leakage):** Katta loyihalarda \`.button\` sinfi tasodifan boshqa joydagi tugmalarni buzib qo'yishi mumkin. Shadow DOM buni to'liq izolyatsiya qiladi.
+### 1. Custom Elements Registry
+Brauzer \`customElements.define('teg-nom', Class)\` chaqirilganda, ko'rsatilgan klassni ichki jadvalga yozib qo'yadi. Sahifa yuklanayotganda yoki JS orqali element yaratilganda brauzer ushbu jadvaldan elementni izlaydi va uning hayotiy sikl metodlarini chaqiradi.
+
+### 2. Shadow DOM Daraxti (Shadow Tree)
+Dasturdagi odatiy DOM daraxti **Light DOM** deb ataladi. Elementga shadow DOM ulanganidan so'ng u yerda **Shadow Root** yaratiladi. Uning ichidagi elementlar alohida tarmoqda bo'ladi.
+* **Flat Tree:** Brauzer ekranga chizayotgan vaqtda Light DOM va Shadow DOM-ni birlashtirib "Flat Tree" hosil qiladi, bunda \`<slot>\` ichiga Light DOM-dagi tegishli elementlar joylashtiriladi.
 
 ---
 
 ## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
 
-### 1. Custom Element nomida defis (\`-\`) belgisini yozishni unutish
-#### Xato:
+### 1. Element Nomi Qoidasini Buzish
+Custom element nomida tire (\`-\`) bo'lishi shart.
 \`\`\`javascript
-customElements.define('mybutton', MyButton); // Xato!
-\`\`\`
-#### Nima uchun noto'g'ri:
-Brauzer standart HTML teglar bilan shaxsiy teglarni aralashtirib yubormasligi uchun Custom Element nomida kamida bitta \`-\` (defis) bo'lishi qat'iyan talab qilinadi.
-#### To'g'ri usul:
-\`\`\`javascript
-customElements.define('my-button', MyButton); // To'g'ri
+// XATO:
+customElements.define("mycard", MyCard); // Brauzer xatolik beradi
+
+// TO'G'RI:
+customElements.define("my-card", MyCard);
 \`\`\`
 
-### 2. Shadow DOM rejimi (mode) haqida noto'g'ri qaror
-#### Xato:
-\`attachShadow({ mode: 'closed' })\` yozish va keyinchalik tashqaridan komponentni sinab ko'rish yoki boshqarishga qiynalish.
-#### To'g'ri usul:
-Ko'p hollarda \`mode: 'open'\` ishlating. Bu tashqi JS kodlariga komponent ichidagi elementlarni tahlil qilish imkonini beradi.
-
-### 3. Custom Element klassida \`super()\` ni chaqirishni unutish
-#### Xato:
+### 2. Atributlarni Kuzatishda \`observedAttributes\` ni E'lon Qilmaslik
+Agar siz faqat \`attributeChangedCallback\` yozsangiz-u, lekin qaysi atributlarni kuzatish kerakligini ko'rsatmasangiz, metod ishga tushmaydi.
 \`\`\`javascript
-class MyCard extends HTMLElement {
-  constructor() {
-    // super() chaqirilmagan
-    this.attachShadow({ mode: 'open' });
+// XATO:
+class UserCard extends HTMLElement {
+  attributeChangedCallback(name, oldVal, newVal) {
+    console.log(\`\${name} o'zgardi: \${newVal}\`);
+  }
+}
+
+// TO'G'RI:
+class UserCard extends HTMLElement {
+  static get observedAttributes() {
+    return ["user-id", "theme"]; // Kuzatilishi kerak bo'lgan atributlar ro'yxati
+  }
+
+  attributeChangedCallback(name, oldVal, newVal) {
+    console.log(\`\${name} o'zgardi: \${newVal}\`);
   }
 }
 \`\`\`
-#### Nima uchun noto'g'ri:
-Sinf meros olgan \`HTMLElement\`ning konstruktorini ishga tushirish uchun \`super()\` birinchi qatorda chaqirilishi shart. Aks holda \`this\` ishlamaydi va xatolik beradi.
-#### To'g'ri usul:
-Konstruktor ichida birinchi bo'lib \`super()\`ni chaqiring.
-
-### 4. Shadow DOM ichiga o'tilgan Event-larga \`composed: true\` bermaslik
-#### Xato:
-Shadow DOM ichidagi tugma bosilganda tashqi sahifadagi \`addEventListener\` ishlamasligi.
-#### To'g'ri usul:
-Custom Event yaratganda \`composed: true\` bering. Aks holda hodisa Shadow chegarasida to'xtab qoladi.
-
-### 5. Komponent o'chirilganda hodisalarni (EventListeners) toza qilmaslik (Memory Leak)
-#### Xato:
-\`connectedCallback\`da global \`window.addEventListener('resize')\` bog'lab, komponent o'chirilganda uni olib tashlamaslik.
-#### To'g'ri usul:
-\`disconnectedCallback\` hayotiy siklida barcha global tinglovchilarni o'chirib yuboring.
 
 ---
 
 ## 5. 💬 12 ta Intervyu Savollari
 
-### Junior (1–4)
-1. **Savol:** Web Components nima va u qaysi 3 ta texnologiyaga tayanadi?
-   * **Javob:** Custom Elements, Shadow DOM va HTML Templates/Slots.
+### Junior
+1. **Savol:** Web Components o'zi nima va u qaysi 3 ta texnologiyaga asoslanadi?
+   * **Javob:** Custom Elements, Shadow DOM va HTML Templates (shablonlar).
+2. **Savol:** Custom element yozganda qaysi klassdan voris olish shart?
+   * **Javob:** \`HTMLElement\` klassidan yoki uning hosilalaridan (masalan, \`HTMLButtonElement\`).
+3. **Savol:** HTML-da yozilgan \`<template>\` tegi ichidagi narsalar sahifada ko'rinadimi?
+   * **Javob:** Yo'q, template tarkibi inert hisoblanadi, ya'ni u sahifada ko'rinmaydi va undagi media (rasm, video) yuklanmaydi, to u JS yordamida klonlanib DOM-ga qo'shilmaguncha.
+4. **Savol:** \`connectedCallback\` nima vazifani bajaradi?
+   * **Javob:** Element sahifadagi DOM daraxtiga muvaffaqiyatli ulanganida ishga tushadi (React-dagi \`componentDidMount\` kabi).
 
-2. **Savol:** Custom Element yaratish shartlari qanday?
-   * **Javob:** Teg nomida defis (\`-\`) bo'lishi shart va u \`HTMLElement\` sinfidan voris olgan bo'lishi kerak.
+### Middle
+5. **Savol:** \`disconnectedCallback\` metodida odatda nimalar qilinadi?
+   * **Javob:** Element DOM-dan o'chirilganda ishlaydi. Unda xotira oqishining oldini olish uchun global event listenerlarni o'chirish, \`setInterval\`larni tozalash kabi tozalash ishlari bajariladi.
+6. **Savol:** Shadow DOM tashqi CSS-dan qanday himoyalanadi?
+   * **Javob:** Shadow boundary (soya chegarasi) tufayli global CSS qoidalari shadow DOM ichidagi elementlarga ta'sir qilmaydi (CSS Custom Properties - ya'ni o'zgaruvchilar bundan mustasno).
+7. **Savol:** Slot nima va u qanday turlarga bo'linadi?
+   * **Javob:** Slot — komponent ichida tashqi HTML-ni qabul qiluvchi joy. U ikki xil bo'ladi: Nomlanmagan (default slot) va Nomlangan (Named slot, masalan \`<slot name="header">\`).
+8. **Savol:** Shadow DOM-dagi \`:host\` va \`:host-context\` o'rtasidagi farq nima?
+   * **Javob:** \`:host\` komponentning o'zini tanlaydi va stillaydi. \`:host-context(selector)\` esa komponentning otasi yoki ajdodi ma'lum bir CSS klassga ega bo'lsagina komponentni stillashga imkon beradi (masalan, \`.dark-theme :host\` dark mode uchun).
 
-3. **Savol:** Shadow DOM nima va u oddiy DOM dan qanday farq qiladi?
-   * **Javob:** Shadow DOM komponentning HTML va CSS tuzilishini global sahifadan to'liq izolyatsiya qiladigan maxsus yordamchi daraxtdir.
-
-4. **Savol:** HTML-dagi \`<template>\` tegi nima uchun ishlatiladi?
-   * **Javob:** U sahifa yuklanganda render qilinmaydigan, faqat JS orqali nusxalanib komponent shablonlari uchun ishlatiladigan HTML konteyneridir.
-
-### Middle (5–8)
-5. **Savol:** Web Components hayotiy sikli (Lifecycle methods) qaysilar va ularning vazifalari nima?
-   * **Javob:** 
-     * \`constructor()\`: Obyekt yaratilganda.
-     * \`connectedCallback()\`: Element DOM-ga qo'shilganda (React componentDidMount kabi).
-     * \`disconnectedCallback()\`: Element DOM-dan o'chirilganda (componentWillUnmount).
-     * \`attributeChangedCallback()\`: Atributlar o'zgarganda.
-
-6. **Savol:** Shadow DOM dagi \`mode: 'open'\` va \`mode: 'closed'\` farqi nima?
-   * **Javob:** Open rejimida tashqi JS \`element.shadowRoot\` orqali ichkarini o'qiy oladi. Closed rejimida esa shadowRoot null qaytaradi.
-
-7. **Savol:** \`<slot>\` tegi nima va u qanday turlarga bo'linadi?
-   * **Javob:** Slot komponent ichiga tashqaridan HTML kontent joylash uchun joy. Turlari: Default slot va Named (nomlangan) slot.
-
-8. **Savol:** Shadow DOM ichidagi CSS qoidalari qanday ustuvorlikka ega va tashqi global CSS komponentni o'zgartira oladimi?
-   * **Javob:** Tashqi CSS Shadow DOM ichidagi elementlarni o'zgartira olmaydi. Faqat CSS Custom Properties (Variables) orqali ichki o'zgaruvchilarga ta'sir qilish mumkin.
-
-### Senior (9–12)
-9. **Savol:** Shadow DOM chegarasidan Event Retargeting (hodisalarni qayta yo'naltirish) qanday amalga oshadi?
-   * **Javob:** Shadow DOM ichida sodir bo'lgan hodisa tashqariga chiqqanda, uning \`target\` xossasi tashqi sahifa uchun shaxsiy ichki element emas, balki butun boshli Custom Element bo'lib ko'rinadi. Bu izolyatsiyani buzmaslik uchun kerak.
-
-10. **Savol:** Web Components yordamida freymvorklardan mustaqil Micro-Frontend qanday loyihalashtiriladi?
-    * **Javob:** Har bir micro-frontend alohida Custom Element sifatida build qilinadi va asosiy ilovada oddiy HTML teglari ko'rinishida birlashtiriladi.
-
-11. **Savol:** Shadow DOM ichidagi elementlarni tashqaridan global CSS orqali bezash uchun qaysi psevdo-elementlar yoki selector-lar ishlatiladi (\`::part\`, \`:host\`)?
-    * **Javob:** \`:host\` komponentning o'zini bezaydi. \`::part\` esa komponent ichidagi maxsus belgilangan elementlarni tashqaridan bezashga ruxsat beradi.
-
-12. **Savol:** Custom Elements-da Memory Leak (xotira oqishi) qanday yuzaga keladi va uning oldini qanday olish mumkin?
-    * **Javob:** Komponent o'chganda (destroy bo'lganda) global event listener-larni yoki pub-sub obunalarini tozalash esdan chiqsa xotirada qoladi. disconnectedCallback ichida barcha tozalashlarni yozish kerak.
+### Senior
+9. **Savol:** Shadow DOM ichidagi voqea (Event) tashqariga tarqalganda (bubble) nima sodir bo'ladi?
+   * **Javob:** Inkapsulyatsiyani saqlash uchun voqea obyekti qayta maqsadlanadi (Event Retargeting). Ya'ni tashqi DOM voqea Shadow DOM ichidagi aniq elementdan emas, balki komponentning o'zidan (\`host\` elementidan) chiqqan deb hisoblaydi.
+10. **Savol:** Shadow DOM ichidagi elementlarni tashqaridan qanday qilib stillash mumkin?
+    * **Javob:** 1) CSS Custom Properties (Variables) orqali; 2) \`::part()\` psevdo-elementi yordamida, agar komponent ichidagi elementga \`part="qism-nomi"\` atributi berilgan bo'lsa.
+11. **Savol:** Autonomous Custom Elements va Customized Built-in Elements o'rtasidagi farq nimada?
+    * **Javob:** Autonomous elementlar \`HTMLElement\`dan voris oladi va butunlay yangi teg yaratadi (masalan \`<my-button>\`). Customized built-in elementlar esa mavjud HTML tegidan (masalan, \`<button is="my-button">\`) voris olib uning funksionalligini kengaytiradi.
+12. **Savol:** Shadow DOM-ga ega komponentni sinovdan o'tkazishda (Unit testing) qanday qiyinchiliklar bor va ularni qanday hal qilinadi?
+    * **Javob:** Standart \`document.querySelector\` shadow root ichini ko'ra olmaydi. Testlarda komponentning \`shadowRoot.querySelector\` xossasi orqali uning ichki elementlarini tanlab test qilish lozim.
 
 ---
 
 ## 6. 🛠️ Amaliy Topshiriqlar
 
-Mashqlar interaktiv kod runner orqali bajariladi.
+Mashqlar \`/Users/farhod/Desktop/github/js-uz/scratch/webComponents_exercises.json\` faylida berilgan. Ularni bajarib, Shadow DOM va Custom Elementlar yozishni mashq qiling.
 
 ---
 
 ## 7. 📝 12 ta Mini Test
 
-Dars yakunidagi testlar.
+Test savollari \`/Users/farhod/Desktop/github/js-uz/scratch/webComponents_quizzes.json\` faylida berilgan. Bilimingizni sinash uchun ularga javob bering.
 
 ---
 
 ## 8. 🎯 Real Project Case Study
 
-### Freymvorklardan mustaqil universal "Sotib olish" vidjeti
-Biz yirik kompaniya uchun barcha saytlarda (WordPress, React, PHP saytlar) bir xil ishlaydigan va savatchaga tovar qo'shadigan Universal Tugma yaratishimiz kerak.
+### Custom Tooltip (Maslahat oynasi) Komponenti
 
-#### Yechim:
-Biz Shadow DOM yordamida \`<buy-button>\` komponentini yaratamiz. U o'zining CSS dizayniga ega. Bosilganda tashqariga dynamic xarid event-ini otadi:
+Loyiha davomida ko'plab joylarda ishlatiladigan, matn ustiga borganda chiquvchi tooltip komponentini yaratamiz. U mutlaqo mustaqil stilga ega bo'ladi:
+
 \`\`\`javascript
-class BuyButton extends HTMLElement {
+class CustomTooltip extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+
   connectedCallback() {
-    const shadow = this.attachShadow({ mode: 'open' });
-    shadow.innerHTML = \`
+    // Tooltip matnini atributdan olamiz
+    this.tooltipText = this.getAttribute("text") || "Maslahat matni yozilmagan";
+    
+    // Shadow DOM ichki strukturasini yaratam icon va matn bilan
+    this.shadowRoot.innerHTML = \`
       <style>
-        button { background: #e74c3c; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        .tooltip-container {
+          position: relative;
+          display: inline-block;
+          cursor: pointer;
+        }
+        .tooltip-box {
+          position: absolute;
+          bottom: 125%;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: #333;
+          color: #fff;
+          text-align: center;
+          padding: 5px 10px;
+          border-radius: 4px;
+          font-size: 12px;
+          white-space: nowrap;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s;
+          z-index: 10;
+        }
+        .tooltip-container:hover .tooltip-box {
+          opacity: 1;
+        }
       </style>
-      <button>Sotib olish</button>
+      <span class="tooltip-container">
+        <slot>ⓘ</slot> <!-- Tashqi element (masalan matn) kiradigan joy -->
+        <div class="tooltip-box">\${this.tooltipText}</div>
+      </span>
     \`;
-    shadow.querySelector('button').addEventListener('click', () => {
-      this.dispatchEvent(new CustomEvent('add-to-cart', {
-        detail: { id: this.getAttribute('product-id') },
-        bubbles: true,
-        composed: true
-      }));
-    });
   }
 }
-customElements.define('buy-button', BuyButton);
+
+customElements.define("custom-tooltip", CustomTooltip);
 \`\`\`
-Ushbu komponentni istalgan saytga faqat bitta js fayl ulab, \`<buy-button product-id="101"></buy-button>\` ko'rinishida darhol ishlatish mumkin.
+**HTML loyihada ishlatilishi:**
+\`\`\`html
+<p>
+  JavaScript dasturlash tili juda 
+  <custom-tooltip text="Dasturlash tili unumdorligini oshirish">o'zgaruvchan</custom-tooltip> 
+  hisoblanadi.
+</p>
+\`\`\`
 
 ---
 
 ## 9. 🚀 Performance va Optimization
 
-* **CSS yuklamasini kamaytirish:** Shadow DOM ichida CSS yozilganda, u faqat o'sha komponent yaratilganda xotiraga yuklanadi va global CSS daraxtini (CSSOM) kattalashtirmaydi.
-* **Declarative Shadow DOM:** Server-Side Rendering (SSR) yordamida JS yuklanmasdan oldin Shadow DOM tuzilishini tezkor yuklash texnologiyasi.
+* **Inert Shablonlar:** Har safar \`innerHTML\` yaratgandan ko'ra, \`<template>\` shablonini bir marta yaratib, undan nusxa olish (clone) xotira va tezlik jihatidan samaralidir.
+* **Xotira tozalash:** \`disconnectedCallback\` metodida komponent yaratgan event listenerlarni tozalang, aks holda komponent o'chib ketsa ham xotirada qolaveradi.
 
 ---
 
 ## 10. 📌 Cheat Sheet
 
-| Tushuncha | Sintaksis | Vazifasi | Eslatma |
-| :--- | :--- | :--- | :--- |
-| **Custom Element** | \`customElements.define('my-el', MyEl);\` | Brauzerga yangi teg qo'shish | Nomida defis bo'lishi shart |
-| **Shadow DOM** | \`this.attachShadow({ mode: 'open' })\` | CSS va HTML izolyatsiya qilish | mode: open tavsiya etiladi |
-| **Slot** | \`<slot name="title"></slot>\` | Dinamik kontent joylash | Komponent ichida ishlatiladi |
-| **connectedCallback**| lifecycle method | DOM-ga qo'shilganda ishlaydi | Hodisalarni bog'lash uchun mos |
-| **::part()** | CSS selector | Tashqaridan bezashga ruxsat berish | Komponent ichida part atributi kerak |
+| Metod/Texnologiya | Vazifasi | Misol kod |
+| :--- | :--- | :--- |
+| **customElements.define** | Custom elementni ro'yxatdan o'tkazish | \`customElements.define('my-el', MyEl)\` |
+| **attachShadow** | Elementga Shadow DOM ulash | \`this.attachShadow({mode: 'open'})\` |
+| **connectedCallback** | Element DOM-ga qo'shilganda ishlaydi | \`connectedCallback() { ... }\` |
+| **disconnectedCallback** | Element DOM-dan o'chirilganda ishlaydi | \`disconnectedCallback() { ... }\` |
+| **observedAttributes** | Kuzatiladigan atributlar ro'yxati | \`static get observedAttributes() { return ['id']; }\` |
+| **slot** | Tashqi HTML-ni qabul qilish joyi | \`<slot name="header"></slot>\` |
+| **:host** | Shadow DOM ichidan turib elementning o'zini stillash | \`:host { display: block; }\` |
 `,
   exercises: [
   {
     "id": 1,
-    "title": "Salomlashuvchi Komponent",
-    "instruction": "HTML-da `<hello-world>` maxsus tegi orqali ishlatiladigan Custom Element yarating. U yuklanganda (`connectedCallback`) uning `textContent` qiymatiga 'Salom, Dunyo!' yozuvi o'rnatilsin.",
-    "startingCode": "class HelloWorld extends HTMLElement {\n  connectedCallback() {\n    // Kodni yozing\n  }\n}\n\ncustomElements.define('hello-world', HelloWorld);",
-    "hint": "this.textContent = 'Salom, Dunyo!';",
-    "test": "try { const el = document.createElement('hello-world'); document.body.appendChild(el); if(el.textContent !== 'Salom, Dunyo!') return 'connectedCallback ichida matn to\\'g\\'ri o\\'rnatilmadi'; } catch(e) { return 'Xatolik: ' + e.message; } return null;"
+    "title": "Sodda Custom Element yaratish",
+    "instruction": "Ekranga 'Salom Dunyo' matnini chiqaruvchi `HelloWorld` nomli custom element yarating va uni `hello-world` tegi bilan ro'yxatdan o'tkazing.",
+    "startingCode": "class HelloWorld extends HTMLElement {\n  // Kodni shu yerda yozing\n}\n\n// Elementni ro'yxatdan o'tkazing\n",
+    "hint": "HTMLElement-dan voris oling, `connectedCallback()` metodida `this.innerHTML = 'Salom Dunyo';` yozing. Oxirida `customElements.define('hello-world', HelloWorld);` yordamida ro'yxatdan o'tkazing.",
+    "test": "if (!code.includes('customElements.define')) return 'customElements.define yordamida element ro\\'yxatdan o\\'tkazilmadi';\nif (!code.includes('hello-world')) return 'Custom element nomi hello-world bo\\'lishi kerak';\ntry {\n  const sandbox = new Function('HTMLElement', code + '; return customElements.get(\"hello-world\");');\n  const MockHTMLElement = class {};\n  // Basic check to see if the definition exists in registry\n  // Since customElements might not exist in global context directly in node, we mock customElements or run in sandboxed way:\n  // Wait, let's mock customElements in the test environment to make sure it runs correctly without browser context\n  const mockRegistry = {};\n  const mockCustomElements = {\n    define: (name, cls) => mockRegistry[name] = cls,\n    get: (name) => mockRegistry[name]\n  };\n  const testFn = new Function('HTMLElement', 'customElements', code + '; return customElements.get(\"hello-world\");');\n  const El = testFn(class {}, mockCustomElements);\n  if (!El) return 'Element ro\\'yxatdan o\\'tmagan';\n  const inst = new El();\n  inst.connectedCallback();\n  if (inst.innerHTML !== 'Salom Dunyo') return 'Element ichidagi matn \"Salom Dunyo\" bo\\'lishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
   },
   {
     "id": 2,
-    "title": "Shadow DOM Karta",
-    "instruction": "Open rejimidagi Shadow DOM ulanadigan `<shadow-card>` maxsus elementini yarating. U yaratilganda (`connectedCallback`) Shadow DOM ichiga 'Karta' matni yozilgan `div` qo'shilsin.",
-    "startingCode": "class ShadowCard extends HTMLElement {\n  connectedCallback() {\n    // 1. attachShadow\n    // 2. innerHTML ga div qo'shish\n  }\n}\n\ncustomElements.define('shadow-card', ShadowCard);",
-    "hint": "const shadow = this.attachShadow({ mode: 'open' }); shadow.innerHTML = '<div>Karta</div>';",
-    "test": "try { const el = document.createElement('shadow-card'); document.body.appendChild(el); if(!el.shadowRoot) return 'Shadow DOM biriktirilmadi'; if(el.shadowRoot.innerHTML.indexOf('Karta') === -1) return 'Shadow DOM ichiga Karta div-i yozilmadi'; } catch(e) { return 'Xatolik: ' + e.message; } return null;"
+    "title": "Shadow DOM-ga ega Element",
+    "instruction": "Ichki stillari tashqi muhitdan himoyalangan (Shadow DOM) bo'lgan `ShadowCard` elementini yarating. U `shadow-card` tegi bilan ro'yxatdan o'tishi va `connectedCallback` chaqirilganda o'ziga yopiq yoki ochiq shadow root (`this.attachShadow({mode: 'open'})`) biriktirib, uning ichiga `<h1>Card Title</h1>` matnini yozishi kerak.",
+    "startingCode": "class ShadowCard extends HTMLElement {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "connectedCallback ichida `const shadow = this.attachShadow({mode: 'open'}); shadow.innerHTML = '<h1>Card Title</h1>';` deb yozing.",
+    "test": "if (!code.includes('attachShadow')) return 'attachShadow yordamida Shadow DOM biriktirilishi shart';\ntry {\n  const mockRegistry = {};\n  const mockCustomElements = {\n    define: (name, cls) => mockRegistry[name] = cls,\n    get: (name) => mockRegistry[name]\n  };\n  const testFn = new Function('HTMLElement', 'customElements', code + '; customElements.define(\"shadow-card\", ShadowCard); return customElements.get(\"shadow-card\");');\n  const El = testFn(class {\n    attachShadow(opts) {\n      this.shadowRoot = { innerHTML: '' };\n      return this.shadowRoot;\n    }\n  }, mockCustomElements);\n  const inst = new El();\n  inst.connectedCallback();\n  if (!inst.shadowRoot || inst.shadowRoot.innerHTML !== '<h1>Card Title</h1>') return 'Shadow DOM ichiga to\\'g\\'ri HTML joylashtirilmadi';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
   },
   {
     "id": 3,
-    "title": "Dinamik Atribut",
-    "instruction": "`username` atributini kuzatadigan `<dynamic-user>` elementini yarating. Atribut o'zgarganda Shadow DOM ichidagi `span` elementiga 'User: [qiymat]' yozuvi chiqsin. (Sinflar oldindan ro'yxatdan o'tkazilganda xato bo'lmasligi uchun dynamic-user3 nomidan foydalaning).",
-    "startingCode": "class DynamicUser extends HTMLElement {\n  static get observedAttributes() {\n    return ['username'];\n  }\n  constructor() {\n    super();\n    this.attachShadow({ mode: 'open' });\n    this.shadowRoot.innerHTML = '<span>User: </span>';\n  }\n  attributeChangedCallback(name, oldValue, newValue) {\n    if (name === 'username') {\n      this.shadowRoot.querySelector('span').textContent = 'User: ' + newValue;\n    }\n  }\n}\ncustomElements.define('dynamic-user3', DynamicUser);",
-    "hint": "Kodni diqqat bilan o'rganing, barcha hayotiy sikl metodlari to'g'ri bog'langan.",
-    "test": "try { const el = document.createElement('dynamic-user3'); document.body.appendChild(el); el.setAttribute('username', 'Ali'); if(el.shadowRoot.querySelector('span').textContent !== 'User: Ali') return 'Atribut o\\'zgarganda span matni yangilanmadi'; } catch(e) { return 'Xatolik: ' + e.message; } return null;"
+    "title": "Attribut o'zgarishini kuzatish",
+    "instruction": "`color` attributi o'zgarganda matn rangini o'zgartiruvchi `ColorText` elementini yarating. Buning uchun `observedAttributes` va `attributeChangedCallback` dan foydalaning. Teg nomi `color-text` bo'lsin.",
+    "startingCode": "class ColorText extends HTMLElement {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`static get observedAttributes() { return ['color']; }` metodini qo'shing. `attributeChangedCallback(name, oldVal, newVal)` ichida `if (name === 'color') this.style.color = newVal;` deb yozing.",
+    "test": "if (!code.includes('observedAttributes')) return 'observedAttributes metodi yozilishi shart';\nif (!code.includes('attributeChangedCallback')) return 'attributeChangedCallback metodi yozilishi shart';\ntry {\n  const mockRegistry = {};\n  const mockCustomElements = {\n    define: (name, cls) => mockRegistry[name] = cls,\n    get: (name) => mockRegistry[name]\n  };\n  const testFn = new Function('HTMLElement', 'customElements', code + '; customElements.define(\"color-text\", ColorText); return customElements.get(\"color-text\");');\n  const El = testFn(class {\n    constructor() {\n      this.style = {};\n    }\n  }, mockCustomElements);\n  if (El.observedAttributes && !El.observedAttributes.includes('color')) return 'color atributi kuzatiladiganlar ro\\'yxatiga kiritilmagan';\n  const inst = new El();\n  inst.attributeChangedCallback('color', null, 'red');\n  if (inst.style.color !== 'red') return 'Raqam yoki rang to\\'g\\'ri o\\'zgartirilmadi';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
   }
 ]
 ,
   quizzes: [
   {
     "id": 1,
-    "question": "Web Components qaysi texnologiyaga tayanmaydi?",
-    "options": ["Custom Elements", "Shadow DOM", "Virtual DOM", "HTML Templates"],
-    "correctAnswer": 2,
-    "explanation": "Virtual DOM React va Vue freymvorklari tomonidan ishlatiladi. Web Components esa Custom Elements, Shadow DOM va HTML Templates (brauzer standartlari)ga tayanadi."
+    "question": "Web Components nima?",
+    "options": [
+      "Faqat React loyihalarida ishlatiladigan komponentlar to'plami",
+      "Brauzer darajasida ishlaydigan, qayta ishlatiluvchi va inkapsulyatsiya qilingan HTML teglarini yaratishga imkon beruvchi texnologiyalar to'plami",
+      "CSS frameworklarining yangi nomi",
+      "Node.js server kutubxonasi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web Components — bu hech qanday frameworklarsiz (React, Vue) brauzerning o'zida yangi, maxsus HTML teglarini (Custom Elements) yaratish texnologiyasidir."
   },
   {
     "id": 2,
-    "question": "Custom Element nomlashda qaysi belgi bo'lishi qat'iy talab etiladi?",
-    "options": ["Chiziqcha (-)", "Nuqta (.)", "Tag chiziq (_)", "Undov (!)"],
-    "correctAnswer": 0,
-    "explanation": "Brauzer o'zining standart HTML teglari bilan chalkashtirib yubormasligi uchun Custom Element nomida kamida bitta '-' (defis) belgisi bo'lishi shart (masalan, <my-card>)."
+    "question": "Custom element yaratilganda uning nomi uchun qanday majburiy qoida mavjud?",
+    "options": [
+      "Nom faqat bosh harflardan iborat bo'lishi kerak",
+      "Nomda kamida bitta tire (chiziqcha, '-') belgisi bo'lishi shart",
+      "Nom majburiy ravishda 'custom_' so'zi bilan boshlanishi kerak",
+      "Maxsus qoidalar yo'q, xohlagan nomdan foydalanish mumkin"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Custom element nomlarida standart HTML teglaridan (masalan, `div`, `span`) ajralib turishi uchun kamida bitta tire bo'lishi shart (masalan: `my-card`, `custom-button`)."
   },
   {
     "id": 3,
-    "question": "Shadow DOM-ning asosiy vazifasi nima?",
+    "question": "Custom elementning qaysi hayotiy sikl (lifecycle) metodi u DOM-ga qo'shilganda avtomatik chaqiriladi?",
     "options": [
-      "Ma'lumotlarni shifrlash",
-      "Komponent HTML va CSS kodini sahifadan to'liq izolyatsiya qilish (yashirish)",
-      "Sahifani tezroq render qilish",
-      "Animatsiyalarni boshqarish"
+      "`constructor()`",
+      "`connectedCallback()`",
+      "`disconnectedCallback()`",
+      "`attributeChangedCallback()`"
     ],
     "correctAnswer": 1,
-    "explanation": "Shadow DOM komponentning ichki stil va tuzilishini tashqaridan yashiradi, bu CSS leak (global stillar ziddiyati) muammosini hal qiladi."
+    "explanation": "`connectedCallback()` custom element DOM daraxtiga muvaffaqiyatli qo'shilganda ishga tushadi va bu yerda odatda boshlang'ich renderlash ishlari amalga oshiriladi."
   },
   {
     "id": 4,
-    "question": "Custom Element DOM-ga qo'shilganda (yuklanganda) qaysi hayotiy sikl metodi (lifecycle method) ishga tushadi?",
-    "options": ["constructor()", "connectedCallback()", "disconnectedCallback()", "attributeChangedCallback()"],
+    "question": "Shadow DOM-ning asosiy vazifasi nima?",
+    "options": [
+      "Sahifadagi elementlarni to'liq qoraytirish (Dark mode)",
+      "HTML, CSS va JS kodlarini inkapsulyatsiya qilish (tashqi CSS va JS kodi komponent ichiga ta'sir qilmasligi va aksincha)",
+      "Ma'lumotlar bazasidan ma'lumotlarni yashirincha yuklash",
+      "JS fayllarini siqib berish"
+    ],
     "correctAnswer": 1,
-    "explanation": "Element jismonan DOM daraxtiga ulanishi bilan connectedCallback() metodi ishga tushadi (React componentDidMount kabi)."
+    "explanation": "Shadow DOM komponentning ichki qismini alohida muhitda saqlaydi, bu esa stillarning tashqi dunyo bilan to'qnashmasligini (CSS encapsulation) ta'minlaydi."
   },
   {
     "id": 5,
-    "question": "Custom Element klassida super() nima uchun chaqiriladi?",
+    "question": "Custom element sahifadan (DOM-dan) o'chirilganda qaysi lifecycle metod chaqiriladi?",
     "options": [
-      "Ota sinf (HTMLElement) konstruktorini chaqirish va 'this' kalit so'zini faollashtirish uchun",
-      "Stil berish uchun",
-      "Shadow DOM yaratish uchun",
-      "O'chirish uchun"
+      "`connectedCallback()`",
+      "`disconnectedCallback()`",
+      "`adoptedCallback()`",
+      "`destroyCallback()`"
     ],
-    "correctAnswer": 0,
-    "explanation": "ES6 sinflarida ota sinf HTMLElement ning funksional imkoniyatlarini ishga solish uchun super() birinchi navbatda chaqirilishi majburiydir."
+    "correctAnswer": 1,
+    "explanation": "`disconnectedCallback()` element DOM-dan o'chirilganda ishlaydi. Bu yerda xotira oqishini (memory leaks) oldini olish uchun event listener va taymerlar tozalanadi."
   },
   {
     "id": 6,
-    "question": "Shadow DOM-da mode: 'closed' nimani anglatadi?",
+    "question": "Shadow DOM-da `mode: 'open'` va `mode: 'closed'` o'rtasidagi farq nima?",
     "options": [
-      "Komponent yopiq holatda saqlanishini",
-      "Tashqi JavaScript kod element.shadowRoot orqali ichkariga kira olmasligini",
-      "CSS stillari umuman ishlamasligini",
-      "Komponent o'chirilganini"
+      "`open` rejimida shadow root-ga tashqi JS fayllardan `element.shadowRoot` orqali kirish mumkin, `closed` rejimida esa kirib bo'lmaydi (null qaytadi)",
+      "`open` rejimida CSS stillari ishlaydi, `closed` rejimida faqat HTML ko'rinadi",
+      "`open` rejimini o'zgartirib bo'lmaydi, `closed` rejimini o'zgartirsa bo'ladi",
+      "Hech qanday farqi yo'q"
     ],
-    "correctAnswer": 1,
-    "explanation": "mode: 'closed' holatida element.shadowRoot qiymati null qaytadi, ya'ni tashqi JS skriptlar komponent ichiga kira olmaydi."
+    "correctAnswer": 0,
+    "explanation": "`open` rejimi tashqaridan shadow DOM-ga kirish imkonini beradi. `closed` rejimida esa `shadowRoot` xossasi tashqaridan yopiq bo'ladi va unga faqat komponent ichida murojaat qilish mumkin."
   },
   {
     "id": 7,
-    "question": "Atribut o'zgarishlarini kuzatish uchun Custom Element sinfida qaysi funksiya bo'lishi kerak?",
-    "options": ["observedAttributes get-metodi", "constructor", "connectedCallback", "watchAttribute"],
-    "correctAnswer": 0,
-    "explanation": "observedAttributes static get-metodi qaysi atributlar kuzatilishini ro'yxat ko'rinishida qaytarishi shart."
+    "question": "Web Components-da `<template>` tegining xususiyati nimada?",
+    "options": [
+      "U sahifa yuklanishi bilan darhol ekranda render bo'ladi",
+      "Uning ichidagi HTML brauzer tomonidan yuklanadi, lekin foydalanuvchiga ko'rsatilmaydi va faqat JS orqali nusxalab olingandan keyingina ishlaydi",
+      "U faqat CSS kodlarini yozish uchun ishlatiladi",
+      "U ma'lumotlarni serverga yuborish uchun ishlatiladigan formadir"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`<template>` tegi ichidagi tarkib sahifada ko'rinmaydi. U shablon sifatida xizmat qiladi va JS orqali klonlanib (`cloneNode(true)`) DOM-ga qo'shiladi."
   },
   {
     "id": 8,
-    "question": "Slot (<slot>) nima uchun ishlatiladi?",
+    "question": "Web Components shablonlarida `<slot>` nima vazifani bajaradi?",
     "options": [
-      "Tezkor xotirani boshqarish uchun",
-      "Komponent ichiga tashqaridan dynamic HTML kontent joylash (bo'sh joy) uchun",
-      "Indekslar uchun",
-      "Vaqtinchalik o'zgaruvchilar uchun"
+      "U faqat o'yin o'ynash uchun ishlatiladi",
+      "Tashqaridan kelgan HTML kontentni komponent ichidagi ma'lum bir joyga joylashtirish (placeholder) uchun ishlatiladi",
+      "U elementlarning joylashuvini avtomatik to'g'rilaydi",
+      "U serverdan keladigan so'rovlarni qabul qiladi"
     ],
     "correctAnswer": 1,
-    "explanation": "Slot yordamida biz komponent shabloni ichiga tashqaridan ixtiyoriy HTML teg yoki matn joylaymiz (nomlangan va default turlari bor)."
+    "explanation": "Slot — bu komponent shablonidagi joy ochuvchi (placeholder) bo'lib, komponent ichiga tashqaridan berilgan HTML tarkibini mos ravishda joylashtiradi (Content projection)."
   },
   {
     "id": 9,
-    "question": "Atribut o'zgarganda Custom Element-da qaysi metod ishga tushadi?",
-    "options": ["connectedCallback()", "disconnectedCallback()", "attributeChangedCallback()", "constructor()"],
-    "correctAnswer": 2,
-    "explanation": "observedAttributes ro'yxatidagi atribut o'zgarganida attributeChangedCallback(name, oldValue, newValue) chaqiriladi."
+    "question": "Custom elementda attribut o'zgarishini kuzatish uchun qaysi metodlar juftligi ishlatiladi?",
+    "options": [
+      "`watchAttributes` va `updateCallback`",
+      "`static get observedAttributes()` va `attributeChangedCallback()`",
+      "`addEventListener` va `dispatchEvent`",
+      "`onAttributeChange` va `render`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kuzatiladigan atributlar `static get observedAttributes()` massivida qaytariladi va ular o'zgarganda `attributeChangedCallback(name, oldVal, newVal)` avtomatik ravishda chaqiriladi."
   },
   {
     "id": 10,
-    "question": "Shadow DOM ichidagi maxsus elementlarni tashqaridan bezash uchun qaysi CSS selector ishlatiladi?",
-    "options": ["::part()", "::shadow()", "::element()", ":host()"],
-    "correctAnswer": 0,
-    "explanation": "::part() selektori Shadow DOM ichida 'part' atributi berilgan elementlarni tashqaridan global CSS yordamida bezash imkonini beradi."
+    "question": "Shadow DOM ichidan turib, komponentning o'ziga (host elementiga) stil berish uchun qaysi CSS selektori ishlatiladi?",
+    "options": [
+      "`:root`",
+      "`:host`",
+      "`:self`",
+      "`::shadow-parent`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Shadow DOM-da `:host` CSS psevdo-klassi komponentning o'zini (ya'ni shadow root biriktirilgan tashqi elementni) tanlash uchun ishlatiladi."
   },
   {
     "id": 11,
-    "question": "Custom Element sahifadan o'chib ketganda xotirani tozalash qayerda bajariladi?",
-    "options": ["constructor()", "connectedCallback()", "disconnectedCallback()", "attributeChangedCallback()"],
-    "correctAnswer": 2,
-    "explanation": "disconnectedCallback() element sahifadan o'chirilganda chaqiriladi, shu sababli memory leak oldini olish uchun eventListener-lar shu yerda tozalanadi."
+    "question": "Custom Elementni ro'yxatdan o'tkazganda xatolik yuz bermasligi uchun qaysi klassdan voris olish shart?",
+    "options": [
+      "`Object`",
+      "`HTMLElement`",
+      "`HTMLDivElement` yoki uning hosilalari",
+      "Faqat `HTMLElement` (yoki uning maxsus sub-klasslari, masalan `HTMLButtonElement` kabi)"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Barcha custom elementlar `HTMLElement` klassidan yoki uning aniqroq HTML element hosilalaridan (masalan, `HTMLParagraphElement`) voris olgan bo'lishi kerak."
   },
   {
     "id": 12,
-    "question": "Tashqaridagi global CSS qoidalari Shadow DOM ichidagi elementlarga qanday ta'sir qiladi?",
+    "question": "Tashqaridan komponent ichidagi ma'lum bir slotga yo'naltirilgan elementni Shadow DOM ichidan turib qanday stilize qilish mumkin?",
     "options": [
-      "To'liq ta'sir qiladi",
-      "Ular butunlay to'siladi (ta'sir qilmaydi), faqat CSS Custom Properties (o'zgaruvchilar) o'tishi mumkin",
-      "Faqat matn rangiga ta'sir qiladi",
-      "Baza xatolik beradi"
+      "`::slot`",
+      "`::slotted()`",
+      "`:assigned-nodes`",
+      "`::content`"
     ],
     "correctAnswer": 1,
-    "explanation": "Shadow DOM to'liq izolyatsiya qilingani uchun tashqi CSS uning ichki elementlarini o'zgartira olmaydi. Faqat CSS variables orqali stildan foydalanish mumkin."
+    "explanation": "`::slotted(selector)` psevdo-elementi komponent slotiga joylashtirilgan (tashqi) elementlarga nisbatan Shadow DOM ichidan stil yozish imkonini beradi."
   }
 ]
 

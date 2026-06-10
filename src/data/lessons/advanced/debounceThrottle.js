@@ -1,364 +1,449 @@
 export const debounceThrottle = {
-  id: "debounce-throttle",
-  title: "Debounce va Throttle",
-  theory: `## 1. KIRISH: Nega bu mavzu kerak?
-Foydalanuvchi veb-sahifada matn qidirayotganda (input yozayotganda) yoki sahifani scroll qilayotganda, har bir harakat uchun serverga so'rov yuborish yoki murakkab hisob-kitoblarni amalga oshirish sahifaning qotib qolishiga (lag) yoki serverning yiqilishiga (crash) sabab bo'ladi. 
+  id: "debounceThrottle",
+  title: "Debounce va Throttle: Hodisalarni Optimal Boshqarish",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-Ushbu muammoni hal qilish va hodisalar (events) chaqirilish chastotasini cheklash uchun **Debounce** va **Throttle** usullari qo'llaniladi.
+### Debounce va Throttle nima?
+* **Debounce (Kechiktirish/Guruhlash):** Tez-tez takrorlanadigan hodisalarni guruhlab, ular butunlay to'xtagandan keyin ma'lum bir vaqt (delay) o'tib, funksiyani faqat bir marta ishga tushirish mexanizmi.
+* **Throttle (Bo'g'ish/Cheklash):** Hodisalar qanchalik tez-tez sodir bo'lishidan qat'i nazar, funksiyani ma'lum bir vaqt oralig'ida (interval) ko'pi bilan 1 marta bajarilishini ta'minlash mexanizmi.
+
+### Real hayotiy analogiya
+Tasavvur qiling, siz **ko'p qavatli uydagi liftni** chaqiryapsiz:
+* **Debounce usuli:** Lift eshigi ochiq turibdi. Kimdir kelib tugmani bossa, lift eshigi yopilishi yana 5 soniyaga kechikadi. Yana kimdir kelsa, eshik yana 5 soniya yopilmaydi. Lift faqat odamlar kelishi to'xtab, 5 soniya davomida hech kim tugmani bosmagandan keyingina harakatni boshlaydi.
+* **Throttle usuli:** Lift har 10 soniyada bir marta pastga tushadi. Liftga odamlar qanchalik tez kelib tugmani bosishidan qat'i nazar, u faqat belgilangan vaqtda (har 10 soniyada) 1 marta harakatlanadi.
 
 ---
 
-## 2. SODDALIK (Analogiya)
-* **Debounce (Lift analogiyasi):** Lift eshigi yopilishi uchun odamlar kirib bo'lishini kutadi. Har safar yangi odam kelib tugmani bossa, lift yopilish taymerini qaytadan (nolga) tushiradi va kutishni davom ettiradi. Lift faqat tugma oxirgi marta bosilgandan va ma'lum bir muddat (masalan, 5 soniya) hech kim tugmani bosmagandan keyingina harakatlanadi.
-* **Metro turniketi (analogiya):** Turniketdan har qancha odam tez-tez o'tishga harakat qilmasin, u faqat belgilangan vaqt oralig'ida (masalan, har 2 soniyada) bitta odamni o'tkazib yuboradi. Qolgan tezkor urinishlar e'tiborga olinmaydi.
+## 2. 💻 Real Kod Misollari
 
----
+### 1. Basic Example (Oddiy Debounce)
+Foydalanuvchi qidiruv maydoniga yozishni tugatgandan so'ng 500ms o'tgach ishga tushuvchi debounce:
+\`\`\`javascript
+function debounce(func, delay) {
+  let timeoutId;
+  
+  return function(...args) {
+    // Har safar yangi chaqiruv bo'lganda eski taymerni o'chiramiz
+    clearTimeout(timeoutId);
+    
+    // Yangi taymer o'rnatamiz
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
 
-## 3. CHUQUR TUSHUNCHALAR VA IMKONIYATLAR
+// Ishlatilishi:
+const handleSearch = debounce((query) => {
+  console.log("API so'rov yuborilmoqda:", query);
+}, 500);
 
-### A. Leading vs Trailing Execution
-Ko'p hollarda biz funksiyamizni hodisa boshlanganda darhol chaqirilishini (leading/immediate), yoki hodisa to'xtaganidan keyingina chaqirilishini (trailing) xohlaymiz:
-* **Leading (leading: true, trailing: false):** Foydalanuvchi tugmani birinchi marta bosganda funksiya darhol chaqiriladi. Keyingi chaqiruvlar esa to'xtash ro'y berguncha bloklanadi.
-* **Trailing (leading: false, trailing: true - default):** Funksiya faqat kutish vaqti tugaganidan keyin, oxirgi chaqiruv qiymati bilan ishlaydi.
-
-\`\`\`mermaid
-gantt
-    title Debounce va Throttle Vaqt Diagrammasi
-    dateFormat  X
-    axisFormat %s
-    section Hodisalar (Events)
-    Trigger 1 (0s)        :active, 0, 1
-    Trigger 2 (1s)        :active, 1, 2
-    Trigger 3 (2s)        :active, 2, 3
-    Trigger 4 (5s)        :active, 5, 6
-    section Debounce (2s delay)
-    Execution 1 (4s)      :crit, 4, 5
-    Execution 2 (7s)      :crit, 7, 8
-    section Throttle (2s limit)
-    Execution 1 (0s)      :after Trigger 1, 0, 1
-    Execution 2 (2s)      :after Trigger 3, 2, 3
-    Execution 3 (5s)      :after Trigger 4, 5, 6
+// Foydalanuvchi tez-tez yozmoqda:
+handleSearch("j");
+handleSearch("ja");
+handleSearch("jav"); // Faqat shu chaqiruvdan keyin 500ms o'tib konsolga chiqadi
 \`\`\`
 
-### B. requestAnimationFrame (rAF) Throttling
-Agar biz tezkor DOM o'zgarishlarini (masalan, scroll, mousemove, resize) visual ravishda boshqarmoqchi bo'lsak, \`setTimeout\` o'rniga brauzerning **requestAnimationFrame** API-sidan foydalanishimiz lozim.
-- **Nega?** \`setTimeout\` brauzer ekran yangilanishi (odatda 60Hz yoki 16.7ms kadrlar zanjiri, ya'ni V-Sync) bilan sinxron emas. Agar u kadrlar o'rtasida ishga tushsa, ba'zi visual o'zgarishlar tashlab ketiladi, bu esa "stuttering" (visual qotish) holatiga sabab bo'ladi. \`rAF\` esa aynan brauzer ekranni chizishidan oldin funksiyani chaqiradi.
+### 2. Intermediate Example (Oddiy Throttle)
+Scroll (aylantirish) hodisasi yuz berganda har 200ms da faqat 1 marta ishlovchi throttle:
+\`\`\`javascript
+function throttle(func, limit) {
+  let inThrottle = false;
+  
+  return function(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      
+      // Belgilangan vaqt tugagach blokni ochamiz
+      setTimeout(() => {
+        inThrottle = false;
+      }, limit);
+    }
+  };
+}
 
-\`\`\`mermaid
-graph TD
-    A[Sinxron Scroll Hodisasi] --> B{rAF faolmi?}
-    B -- Yo'q --> C[rAF navbatiga funksiyani qo'shish]
-    C --> D[ticked = true bayrog'ini yoqish]
-    B -- Ha --> E[Hodisani rad etish / ignore]
-    D --> F[Brauzer Repaint oldidan funksiyani bajarish]
-    F --> G[ticked = false bayrog'ini o'chirish]
+// Ishlatilishi:
+const handleScroll = throttle(() => {
+  console.log("Sahifa scroll holati tekshirilmoqda:", window.scrollY);
+}, 200);
+
+window.addEventListener("scroll", handleScroll);
 \`\`\`
 
-### C. Cancellation (Bekor qilish) va Flushing
-Murakkab tizimlarda (masalan, React komponentlari o'chganda (unmount)), fonda rejalashtirilgan taymerlarni tozalash juda muhim.
-* **\`.cancel()\`:** Rejalashtirilgan setTimeout'ni tozalaydi, bu esa memory leak va o'chgan komponent state'ini yangilash xatolarining oldini oladi.
-* **\`.flush()\`:** Kutib turgan setTimeout'ni zudlik bilan ishga tushirib, so'ngra tozalaydi.
+### 3. Advanced Example (Leading Edge Debounce)
+Tugma birinchi marta bosilganda funksiyani darhol bajaradigan va foydalanuvchi ketma-ket bosaverganda delay tugaguncha boshqa chaqiruvlarni bloklaydigan debounce (Double Submission oldini olish uchun):
+\`\`\`javascript
+function debounceAdvanced(func, delay, immediate = false) {
+  let timeoutId;
+  
+  return function(...args) {
+    const context = this;
+    const callNow = immediate && !timeoutId;
+    
+    clearTimeout(timeoutId);
+    
+    timeoutId = setTimeout(() => {
+      timeoutId = null;
+      if (!immediate) func.apply(context, args);
+    }, delay);
+    
+    if (callNow) {
+      func.apply(context, args);
+    }
+  };
+}
+
+// Ishlatilishi (immediate = true):
+const sendPayment = debounceAdvanced(() => {
+  console.log("To'lov yuborildi!");
+}, 2000, true);
+\`\`\`
 
 ---
 
-## 4. KO'P UCHRAYDIGAN XATOLAR (Edge Cases)
-1. **Context (this) ni yo'qotish:** Debounce va Throttle funksiyalari qaytargan wrapper funksiya ichida original funksiyani shunchaki \`func()\` deb chaqirish \`this\` kontekstini yo'qotadi. Buning oldini olish uchun \`func.apply(this, args)\` ishlatish shart.
-2. **Har bir renderda yangi taymer yaratish (React'da):** React componentlari render bo'lganda oddiy debounce funksiyalar har safar qaytadan yaratilib, eski taymerlarni yo'qota olmaydi. Buning uchun React'da \`useCallback\` yoki \`useRef\` ishlatilishi kerak.
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
+
+### Qaysi muammoni hal qiladi?
+* **UI Muzlab qolishi (Lagging UI):** \`scroll\`, \`resize\`, \`mousemove\` kabi hodisalar soniyasiga yuzlab marta sodir bo'ladi. Agar ularga og'ir DOM manipulyatsiyasi yoki hisob-kitoblar bog'langan bo'lsa, brauzer freym tezligi (FPS) tushib ketadi va sahifa qotib qoladi.
+* **Serverga keraksiz yuklama (Overwhelming Server):** Foydalanuvchi klaviaturada yozganda (Autocomplete) har bir harf uchun API so'rov yuborilsa, serverga juda ko'p yuklama tushadi va 429 (Too Many Requests) xatoligi kelib chiqadi.
+* **Double Submission:** Foydalanuvchi "To'lash" yoki "Yuborish" tugmasini tez-tez 2-3 marta bosib yuborganida serverda ma'lumotlar dublikat bo'lib qoladi.
 
 ---
 
-## 5. 12 TA SAVOL VA JAVOBLAR
-**1. Debounce nima?** Debounce — hodisa chaqirilishi butunlay to'xtagandan kechiktirib, ma'lum bir kutish vaqtidan so'nggina funksiyani bajarish usuli.
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
 
-**2. Throttle nima?** Throttle — hodisa har qancha tez-tez ro'y bermasin, funksiyani faqat belgilangan vaqt oralig'ida (chastotada) bir marta bajarish cheklovidir.
+### 1. Debounce funksiyasini Event Listener ichida yaratish
+#### Xato:
+\`\`\`javascript
+// Noto'g'ri! Har safar scroll bo'lganda yangi debounce va yangi timeout yaratiladi
+window.addEventListener('scroll', () => {
+  debounce(() => console.log('Scroll!'), 300)();
+});
+\`\`\`
+#### To'g'ri usul:
+\`\`\`javascript
+// Debounced funksiyani oldindan yaratib, keyin referensini uzatish kerak
+const processScroll = debounce(() => console.log('Scroll!'), 300);
+window.addEventListener('scroll', processScroll);
+\`\`\`
 
-**3. Debounce va Throttle o'rtasidagi asosiy farq nima?** Debounce oxirgi harakatdan keyin kutadi va bir marta ishlaydi. Throttle esa harakat davom etayotgan bo'lsa ham muntazam vaqt oralig'ida ishlashda davom etadi.
+### 2. \`this\` konteksti va argumentlarni yo'qotib qo'yish
+#### Xato:
+\`\`\`javascript
+function debounce(func, delay) {
+  let timeoutId;
+  return function() {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func(); // Argumentlar va 'this' yo'qoldi!
+    }, delay);
+  };
+}
+\`\`\`
+#### To'g'ri usul:
+\`\`\`javascript
+function debounce(func, delay) {
+  let timeoutId;
+  return function(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args); // Kontekst va argumentlar saqlanadi
+    }, delay);
+  };
+}
+\`\`\`
 
-**4. Qidiruv inputlariga (Search Auto-complete) qaysi biri mos keladi?** Debounce mos keladi. Foydalanuvchi yozishdan to'xtagandan keyingina serverga API so'rov yuborish ma'qul.
+---
 
-**5. Scroll yoki Window Resize hodisalariga qaysi biri yaxshiroq?** Throttle yaxshiroq. Sahifa scroll bo'layotganda har 100-200ms da sahifa holatini hisoblab turish uchun throttle qulay.
+## 5. 💬 12 ta Intervyu Savollari
 
-**6. Debounce ichida clearTimeout nima uchun kerak?** Agar foydalanuvchi belgilangan vaqt tugamasdan turib yana harakat qilsa, eski taymerni bekor qilib, yangi taymerni boshlash uchun kerak.
+### Junior (1–4)
+1. **Savol:** Debounce nima?
+   * **Javob:** Ketma-ket kelayotgan tezkor chaqiriqlarni guruhlab, harakatlar tugagach ma'lum vaqt o'tgandan keyin faqat oxirgisini bajarish mexanizmi.
+2. **Savol:** Throttle nima?
+   * **Javob:** Hodisalar qanchalik ko'p bo'lmasin, ularning bajarilishini ma'lum vaqt oralig'ida faqat 1 marta bilan cheklash usuli.
+3. **Savol:** Qidiruv inputiga (Search input) qaysi biri qo'llaniladi?
+   * **Javob:** Debounce qo'llaniladi, chunki foydalanuvchi yozishdan to'xtagach so'rov yuborish mantiqiyroq.
+4. **Savol:** Scroll hodisasida nega debounce emas, ko'pincha throttle tanlanadi?
+   * **Javob:** Chunki scroll paytida foydalanuvchiga ekran kontenti silliq yangilanishi kerak. Debounce scroll tugamaguncha yangilamay turadi, bu esa noqulaylik tug'diradi.
 
-**7. Throttle ichidagi inThrottle bayrog'i nima qiladi?** Funksiya hozirda \\"kutish\\" (bajarilganidan keyingi cheklov) rejimida ekanligini bildiradi va yangi chaqiruvlarni bloklaydi.
+### Middle (5–8)
+5. **Savol:** Debounce va Throttle o'rtasidagi asosiy farq nima?
+   * **Javob:** Debounce oxirgi chaqiriqdan keyin ma'lum muddat kutadi (taymer har safar yangilanadi). Throttle esa birinchi chaqiriqni bajarib, ma'lum muddatga yangilarini bloklab qo'yadi va taymer tugagach yana ochadi.
+6. **Savol:** Debounce-da \`clearTimeout\` nima uchun kerak?
+   * **Javob:** Eski rejalashtirilgan funksiya chaqirilishini bekor qilish va kechikish vaqtini yangidan hisoblash uchun kerak.
+7. **Savol:** Leading edge debounce nima va u trailing edge-dan nimasi bilan farq qiladi?
+   * **Javob:** Leading edge funksiyani hodisa boshlanishi bilan darhol bajaradi va keyingilarini bloklaydi. Trailing edge esa (default) hodisalar tugashini kutib, oxirida bajaradi.
+8. **Savol:** Throttle-ni setTimeout o'rniga qanday usul bilan optimallashtirish mumkin?
+   * **Javob:** Vaqt tamg'alari (\`Date.now()\`) farqini hisoblash yoki animatsiyalar uchun \`requestAnimationFrame\` ishlatish orqali.
 
-**8. apply() ishlatish nima uchun zarur?** Wrapper funksiyaga kelgan arguments massivi va joriy this kontekstini original funksiyaga o'tkazish uchun.
+### Senior (9–12)
+9. **Savol:** Debounce/Throttle-da xotira sizib chiqishi (memory leak) qanday yuz berishi mumkin?
+   * **Javob:** Agar komponent o'chib ketganda (unmount) taymerlar (\`clearTimeout\`) tozalanmasa, yopilishlar (closures) tufayli DOM elementlari xotirada qolib ketadi.
+10. **Savol:** \`requestAnimationFrame\` yordamida qanday qilib throttle-ga o'xshash effekt yaratish mumkin va uning afzalligi nimada?
+    * **Javob:** Brauzerning har safar ekranni yangilash sikliga (60fps) moslab funksiyani chaqiradi, bu layout thrashing-ni kamaytiradi va scroll/animationlarni o'ta silliq qiladi.
+11. **Savol:** Underscore/Lodash kutubxonalaridagi debounce va throttle funksiyalarida qanday qo'shimcha imkoniyatlar bor?
+    * **Javob:** Ularda \`leading\`, \`trailing\` opsiyalari hamda faol taymerni bekor qiluvchi \`.cancel()\` metodi mavjud.
+12. **Savol:** Debounce funksiyasini custom React hook shaklida qanday yozish mumkin va qanday muammoga e'tibor berish kerak?
+    * **Javob:** Har renderda funksiya qayta yaratilmasligi uchun \`useCallback\` yoki \`useRef\` ishlatish shart, aks holda debounce ishlamaydi.
 
-**9. Debounce'da immediate opsiyasi nima?** Bu opsiya yoqilganda kutish vaqtini boshlashdan oldin funksiya darhol chaqiriladi, so'ngra keyingi chaqiruvlar bloklanadi.
+---
 
-**10. O'yinlardagi o'q otish tugmasiga qaysi biri mos?** Throttle mos. Qahramon har qancha tez tugmani bosmasin, o'qlar faqat ma'lum bir tezlik oralig'ida otiladi.
+## 6. 🛠️ Amaliy Topshiriqlar
 
-**11. Debounce funksiyani bekor qilish (cancel) qachon kerak bo'ladi?** Masalan, component sahifadan o'chib ketganda (unmount), hali bajarilmagan setTimeout taymerini tozalab, memory leak oldini olish uchun.
+Bu bo'limda siz interaktiv kod muharriri orqali amaliy mashqlarni bajarasiz.
 
-**12. CSS orqali rate limit qilish mumkinmi?** Yo'q, CSS hodisalar chastotasini boshqara olmaydi. Bu faqat JS yordamida mantiqiy darajada bajariladi.
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars oxiridagi test topshiriqlari.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Infinite Scroll (Cheksiz Scroll) optimallashtirish
+Foydalanuvchi sahifa oxiriga yaqinlashganda yangi postlarni yuklashimiz kerak. Agar oddiy scroll ishlatilsa, u har 1-2 pikselda serverga so'rov jo'natishi mumkin.
+
+#### Yechim (Throttled Scroll Listener):
+\`\`\`javascript
+class InfiniteScroll {
+  constructor(container, loadMoreCallback) {
+    this.container = container;
+    this.loadMore = loadMoreCallback;
+    this.isLoading = false;
+    
+    // Throttled funksiyani bog'laymiz
+    this.scrollHandler = this.throttle(this.checkScrollPosition.bind(this), 150);
+    window.addEventListener('scroll', this.scrollHandler);
+  }
+
+  throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+      if (!inThrottle) {
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    }
+  }
+
+  checkScrollPosition() {
+    if (this.isLoading) return;
+    
+    const threshold = 300; // Ekranning pastidan 300px qolganda yuklash
+    const position = window.innerHeight + window.scrollY;
+    const height = document.documentElement.scrollHeight;
+    
+    if (position >= height - threshold) {
+      this.isLoading = true;
+      console.log("Yangi postlar yuklanmoqda...");
+      this.loadMore().finally(() => {
+        this.isLoading = false;
+      });
+    }
+  }
+
+  destroy() {
+    window.removeEventListener('scroll', this.scrollHandler);
+  }
+}
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **rAF (requestAnimationFrame) ishlatish:** Agar throttle faqat vizual o'zgarishlar (animatsiyalar, scroll elementlarini surish) uchun ishlatilayotgan bo'lsa, \`requestAnimationFrame\` eng yaxshi va optimal yechim hisoblanadi.
+* **Kechikish vaqtini (delay/limit) to'g'ri sozlash:** Qidiruv inputlarida 300ms–500ms, scroll/resize uchun esa 100ms–200ms oralig'i foydalanuvchi tajribasi (UX) uchun eng optimal hisoblanadi.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Metod | Rejimi | Qachon ishlatiladi | Xususiyati |
+| :--- | :--- | :--- | :--- |
+| **Debounce** | \`trailing\` (default) | Qidiruv (Autocomplete), avtomatik saqlash (Auto-save) | Chaqirishlar tugagandan keyin 1 marta ishlaydi |
+| **Debounce** | \`leading\` | Tugma bosish (Submit/Payment buttons) | Birinchi marta darhol ishlaydi, keyingilarini bloklaydi |
+| **Throttle** | - | Scroll, Resize, Mousemove, O'yin boshqaruvlari | Tez-tez chaqiruvlarni ma'lum vaqt oralig'ida bo'lib beradi |
+| **rAF** | - | Faqat ekran chizilishi bilan bog'liq vizual hodisalar | Brauzer yangilanish chastotasi (odatda 60Hz) bilan sinxron ishlaydi |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Taymerni kechiktirish",
-      instruction: "setTimeout yordamida 'hello' funksiyasini 100ms keyin chaqiring.",
-      startingCode: "function hello() {\n  console.log('hi');\n}\n// Kodni yozing\n",
-      hint: "setTimeout(hello, 100);",
-      test: "if (code.includes('setTimeout')) return null; return 'setTimeout ishlatilmadi';"
-    },
-    {
-      id: 2,
-      title: "Taymerni bekor qilish",
-      instruction: "Yaratilgan taymerni bekor qiling, toki u ishga tushib ketmasin.",
-      startingCode: "const timerId = setTimeout(() => console.log('not run'), 500);\n// Kodni yozing\n",
-      hint: "clearTimeout(timerId);",
-      test: "if (code.includes('clearTimeout')) return null; return 'clearTimeout ishlatilmadi';"
-    },
-    {
-      id: 3,
-      title: "Debounce qobig'i",
-      instruction: "Boshqa funksiyani qaytaradigan oddiy debounce wrapper funksiyasi qobig'ini yozing.",
-      startingCode: "function debounce(func) {\n  return function() {\n    // Wrapper\n  };\n}\n",
-      hint: "return function() { ... }",
-      test: "if (code.includes('return function')) return null; return 'Wrapper funksiya qaytarilmadi';"
-    },
-    {
-      id: 4,
-      title: "Sodda Debounce Yarating",
-      instruction: "Berilgan delay bo'yicha ishlaydigan va har safar chaqirilganda eski taymerni bekor qiladigan debounce funksiyasini yozing.",
-      startingCode: "function debounce(func, delay) {\n  let timeoutId;\n  return function() {\n    // Kodni yozing\n  };\n}\n",
-      hint: "clearTimeout(timeoutId); timeoutId = setTimeout(func, delay);",
-      test: "if (code.includes('clearTimeout') && code.includes('setTimeout')) return null; return 'clearTimeout yoki setTimeout xato ishlatildi';"
-    },
-    {
-      id: 5,
-      title: "Argumentlar bilan Debounce",
-      instruction: "Debounce qilingan funksiyaga barcha kelgan argumentlar yetib borishini ta'minlang.",
-      startingCode: "function debounce(func, delay) {\n  let timeoutId;\n  return function(...args) {\n    clearTimeout(timeoutId);\n    // dynamic args o'tkazing\n  };\n}\n",
-      hint: "timeoutId = setTimeout(() => func(...args), delay);",
-      test: "if (code.includes('...args')) return null; return 'Argumentlar uzatilmadi';"
-    },
-    {
-      id: 6,
-      title: "Context (this) bilan Debounce",
-      instruction: "Original funksiya chaqirilganda funksiya konteksti (this) buzilmasligini apply yordamida ta'minlang.",
-      startingCode: "function debounce(func, delay) {\n  let timeoutId;\n  return function(...args) {\n    clearTimeout(timeoutId);\n    timeoutId = setTimeout(() => {\n      // Kodni yozing\n    }, delay);\n  };\n}\n",
-      hint: "func.apply(this, args);",
-      test: "if (code.includes('apply')) return null; return 'apply() ishlatilmadi';"
-    },
-    {
-      id: 7,
-      title: "Throttle qobig'i",
-      instruction: "Harakatlarni cheklaydigan throttle funksiyasining boshlang'ich qobig'ini yozing.",
-      startingCode: "function throttle(func, limit) {\n  let inThrottle = false;\n  return function() {\n    // Wrapper\n  };\n}\n",
-      hint: "return function() { ... }",
-      test: "if (code.includes('return function')) return null; return 'Wrapper funksiya qaytarilmadi';"
-    },
-    {
-      id: 8,
-      title: "Flag-based Throttle",
-      instruction: "InThrottle flagi yordamida belgilangan vaqtda faqat bir marta ishlaydigan throttle funksiyasini yozing.",
-      startingCode: "function throttle(func, limit) {\n  let inThrottle = false;\n  return function() {\n    if (!inThrottle) {\n      func();\n      // inThrottle ni yoqing va vaqt tugagach o'chiring\n    }\n  };\n}\n",
-      hint: "inThrottle = true; setTimeout(() => inThrottle = false, limit);",
-      test: "if (code.includes('inThrottle = true') && code.includes('false')) return null; return 'Throttle flag boshqaruvi xato';"
-    },
-    {
-      id: 9,
-      title: "Throttle parametr uzatish",
-      instruction: "Throttled funksiyaga dynamic argumentlarni apply yordamida xavfsiz o'tkazing.",
-      startingCode: "function throttle(func, limit) {\n  let inThrottle = false;\n  return function(...args) {\n    if (!inThrottle) {\n      // apply orqali context va args o'tkazing\n      inThrottle = true;\n      setTimeout(() => inThrottle = false, limit);\n    }\n  };\n}\n",
-      hint: "func.apply(this, args);",
-      test: "if (code.includes('apply')) return null; return 'apply yoki args xato';"
-    },
-    {
-      id: 10,
-      title: "Immediate Debounce",
-      instruction: "Debounce qilingan funksiyani kutishdan oldin birinchi chaqiriqda darhol chaqiradigan 'immediate' parametrini qo'shing.",
-      startingCode: "function debounce(func, delay, immediate = false) {\n  let timeoutId;\n  return function(...args) {\n    const callNow = immediate && !timeoutId;\n    clearTimeout(timeoutId);\n    timeoutId = setTimeout(() => {\n      timeoutId = null;\n      if (!immediate) func.apply(this, args);\n    }, delay);\n    if (callNow) func.apply(this, args);\n  };\n}\n",
-      hint: "Konstruktsiya berilgan, uni o'rganing va return null qaytarish uchun kodni yuboring",
-      test: "if (code.includes('immediate')) return null; return 'Immediate qo\\'llanilmagan';"
-    },
-    {
-      id: 11,
-      title: "Cancelable Debounce",
-      instruction: "Debounce funksiyaga uni muddatidan oldin bekor qiluvchi '.cancel()' metodini qo'shing.",
-      startingCode: "function debounce(func, delay) {\n  let timeoutId;\n  const debounced = function(...args) {\n    clearTimeout(timeoutId);\n    timeoutId = setTimeout(() => func.apply(this, args), delay);\n  };\n  // debounced.cancel metodini yarating\n  return debounced;\n}\n",
-      hint: "debounced.cancel = () => clearTimeout(timeoutId);",
-      test: "if (code.includes('.cancel')) return null; return 'cancel metodi qo\\'shilmadi';"
-    },
-    {
-      id: 12,
-      title: "Custom Throttle trailing",
-      instruction: "Throttled funksiyada limit oralig'idagi oxirgi chaqiruv ham saqlanib qolib bajarilishini ta'minlovchi trailing opsiyasini tekshiring.",
-      startingCode: "function throttleTrailing(func, limit) {\n  let timeoutId = null;\n  let lastArgs = null;\n  return function(...args) {\n    lastArgs = args;\n    if (!timeoutId) {\n      timeoutId = setTimeout(() => {\n        func.apply(this, lastArgs);\n        timeoutId = null;\n      }, limit);\n    }\n  };\n}\n",
-      hint: "Berilgan kodni tekshirish uchun topshiring.",
-      test: "if (code.includes('timeoutId = null')) return null; return 'Trailing mantiqi xato';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Bekor qilinuvchi Debounce (debounceWithCancel)",
-      instruction: "Debounce qilingan funksiyaga `.cancel()` metodini qo'shib, rejalashtirilgan so'nggi chaqiruvni bekor qilishni amalga oshiring.",
-      startingCode: "function debounceWithCancel(func, delay) {\n  let timeoutId;\n  const debounced = function(...args) {\n    // Kodni shu yerdan yozing\n  };\n  // debounced.cancel metodini yozing\n  return debounced;\n}\n",
-      hint: "const debounced = function(...args) { clearTimeout(timeoutId); timeoutId = setTimeout(() => func.apply(this, args), delay); }; debounced.cancel = () => clearTimeout(timeoutId); return debounced;",
-      test: "if (typeof debounceWithCancel !== 'function') return 'debounceWithCancel funksiya emas';\nlet count = 0;\nconst f = () => count++;\nconst d = debounceWithCancel(f, 50);\nd(); d(); d.cancel();\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (count === 0) resolve(null);\n    else resolve('Debounce bekor qilinmadi, funksiya baribir ishladi');\n  }, 100);\n});"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ requestAnimationFrame orqali Throttle (rAFThrottle)",
-      instruction: "Scroll va mousemove kabi visual hodisalar unumdorligini oshirish uchun funksiyani `requestAnimationFrame` yordamida throttle qiluvchi `rAFThrottle(func)` funksiyasini yozing.",
-      startingCode: "function rAFThrottle(func) {\n  let ticked = false;\n  return function(...args) {\n    // Kodni shu yerdan yozing\n  };\n}\n",
-      hint: "return function(...args) { if (!ticked) { ticked = true; requestAnimationFrame(() => { func.apply(this, args); ticked = false; }); } };",
-      test: "if (typeof rAFThrottle !== 'function') return 'rAFThrottle funksiya emas';\nlet count = 0;\nconst f = () => count++;\nconst t = rAFThrottle(f);\nt(); t(); t();\nreturn new Promise(resolve => {\n  requestAnimationFrame(() => {\n    if (count === 1) resolve(null);\n    else resolve('rAFThrottle funksiyasi kadr ichida faqat 1 marta ishlashi kerak edi, lekin ish soni: ' + count);\n  });\n});"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Debounce implementatsiyasi",
+    "instruction": "Berilgan `func` funksiyasini `delay` millisekund davomida qayta chaqirilmasa keyin ishga tushiradigan `debounce(func, delay)` funksiyasini yozing.",
+    "startingCode": "function debounce(func, delay) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Qaytadigan funksiya ichida har safar chaqirilganda `clearTimeout` yordamida oldingi taymerni o'chiring va yangi `setTimeout` o'rnating.",
+    "test": "const sandbox = new Function(code + '; return debounce;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'debounce funksiyasi aniqlanmadi';\nlet counter = 0;\nconst d = fn(() => counter++, 50);\nd();\nd();\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (counter === 0) {\n      setTimeout(() => {\n        if (counter === 1) resolve(null);\n        else resolve('Debounce kechikishdan keyin ham ishga tushmadi yoki noto\\'g\\'ri marta ishladi');\n      }, 80);\n    } else {\n      resolve('Debounce funksiyasi belgilangan vaqtdan oldin chaqirib yuborildi');\n    }\n  }, 20);\n});"
+  },
+  {
+    "id": 2,
+    "title": "Throttle implementatsiyasi",
+    "instruction": "Berilgan `func` funksiyasini har `limit` millisekund ichida ko'pi bilan 1 marta bajarilishini ta'minlaydigan `throttle(func, limit)` funksiyasini yozing.",
+    "startingCode": "function throttle(func, limit) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Bajarish mumkinligini bildiruvchi `inThrottle` yoki `flag` o'zgaruvchisidan foydalaning. Funksiya bajarilgach, ushbu flagni ma'lum bir muddatga bloklab qo'ying.",
+    "test": "const sandbox = new Function(code + '; return throttle;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'throttle funksiyasi aniqlanmadi';\nlet counter = 0;\nconst t = fn(() => counter++, 50);\nt();\nt();\nt();\nif (counter !== 1) return 'Throttle birinchi chaqiruvni darhol bajarishi kerak edi va ketma-ket chaqiruvlarni bloklashi kerak edi';\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    t();\n    if (counter === 2) resolve(null);\n    else resolve('Limit muddati tugagandan so\\'ng chaqirilganda funksiya bajarilmadi');\n  }, 70);\n});"
+  },
+  {
+    "id": 3,
+    "title": "Leading Edge Debounce",
+    "instruction": "Chaqirilganda funksiyani zudlik bilan (leading edge) bajaradigan va keyingi `delay` millisekund davomida boshqa chaqirilishlarni e'tiborsiz qoldiradigan `leadingDebounce(func, delay)` funksiyasini yozing.",
+    "startingCode": "function leadingDebounce(func, delay) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Oddiy debouncega o'xshash, lekin taymer mavjud bo'lmaganda funksiyani darhol chaqiradi va taymer tugagandan so'ng taymer o'zgaruvchisini yana tozalaydi.",
+    "test": "const sandbox = new Function(code + '; return leadingDebounce;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'leadingDebounce funksiyasi aniqlanmadi';\nlet counter = 0;\nconst d = fn(() => counter++, 50);\nd();\nd();\nif (counter !== 1) return 'Leading edge debounce birinchi chaqiruvni darhol bajarishi kerak edi';\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    d();\n    if (counter === 2) resolve(null);\n    else resolve('Kechikish vaqti tugagandan keyin yangi chaqiruv ishlamadi');\n  }, 70);\n});"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Lift eshigi analogiyasi qaysi texnologiyani yaxshi tushuntiradi?",
-      options: ["Throttle", "Debounce", "Recursion", "Garbage Collection"],
-      correctAnswer: 1,
-      explanation: "Lift eshigi tugma oxirgi marta bosilgandan so'ng ma'lum vaqt o'tgachgina yopiladi. Bu harakatlar tugagach ishlaydigan Debounce texnikasining aynan o'zidir."
-    },
-    {
-      id: 2,
-      question: "Qidiruv (Search input) maydonlarida foydalanuvchi yozishini serverga yuborishda nega Debounce ishlatiladi?",
-      options: [
-        "Serverga boradigan so'rovlar sonini keskin kamaytirish uchun",
-        "Ma'lumotlar xavfsizligini ta'minlash uchun",
-        "Matnni avtomat ravishda tarjima qilish uchun",
-        "Foydalanuvchi tezligini oshirish uchun"
-      ],
-      correctAnswer: 0,
-      explanation: "Agar foydalanuvchi 'JavaScript' so'zini yozsa, debounce bo'lmasa 10 marta API so'rov yuborilardi. Debounce yozish to'xtashini kutib, faqat 1 ta yakuniy so'rov yuboradi."
-    },
-    {
-      id: 3,
-      question: "Metro turniketi analogiyasi qaysi biriga mos keladi?",
-      options: ["Debounce", "Throttle", "Promise", "Callback"],
-      correctAnswer: 1,
-      explanation: "Metro turniketidan odamlar har qancha tez o'tishga urinmasin, u faqat belgilangan vaqt oralig'ida bittadan odamni o'tkazadi. Bu muntazam chastota bilan ishlaydigan Throttle usuliga mos keladi."
-    },
-    {
-      id: 4,
-      question: "Debounce va Throttle'da `apply(this, args)` ishlatishning asosiy sababi nima?",
-      options: [
-        "Kodni qisqartirish",
-        "Funksiya chaqirilganda `this` konteksti va dynamic argumentlarni saqlab qolish",
-        "Funksiyani asinxron qilish",
-        "Xatoliklarni avtomatik ushlash"
-      ],
-      correctAnswer: 1,
-      explanation: "setTimeout ichida chaqirilgan callback funksiyalar global contextga ishora qilib qoladi. Asl context (this) va barcha argumentlar original funksiyaga yetib borishi uchun `apply` yordamida uzatiladi."
-    },
-    {
-      id: 5,
-      question: "Foydalanuvchi scroll qilayotganda ekrandagi rasmlarni yuklash (Lazy Loading) uchun qaysi biri eng samarali?",
-      options: ["Debounce", "Throttle", "Cheksiz loop", "Sinxron yuklash"],
-      correctAnswer: 1,
-      explanation: "Scroll vaqtida ekranga yangi element tushganini muntazam ravishda tekshirib turish kerak. Scroll harakati uzoq davom etishi mumkinligi sababli, har 100-200ms da bir marta tekshiruv o'tkazish uchun Throttle eng yaxshi yechim hisoblanadi."
-    },
-    {
-      id: 6,
-      question: "Debounce ichida `clearTimeout(timeoutId)` chaqirilishi qanday vazifani bajaradi?",
-      options: [
-        "Funksiyani butunlay o'chirib yuboradi",
-        "Agar avvalgi chaqiruv bo'yicha taymer hali tugamagan bo'lsa, uni bekor qiladi va yangi taymer uchun zor ochadi (taymerni nollaydi)",
-        "Taymerni darhol ishga tushiradi",
-        "Brauzer keshini tozalaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Har safar hodisa yangidan sodir bo'lganda, avvalgi rejalashtirilgan setTimeout bekor qilinishi kerak, aks holda funksiya kutilganidan ko'p marta ishlab ketadi. `clearTimeout` aynan shu eski taymerni bekor qiladi."
-    },
-    {
-      id: 7,
-      question: "Debounce'da `immediate` (yoki `leading`) parametri yoqilganda nima sodir bo'ladi?",
-      options: [
-        "Funksiya birinchi chaqiriqdanoq darhol bajariladi, so'ngra ketma-ket chaqiriqlar belgilangan vaqt ichida bloklanadi",
-        "Funksiya hech qachon bajarilmaydi",
-        "Funksiya har doim bir vaqtda 2 marta bajariladi",
-        "Funksiya asinxron emas, sinxron ishlaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "`immediate` yoki `leading` deb nomlanuvchi opsiya foydalanuvchi birinchi marta tugmani bosganda funksiyani darhol bajarishga, so'ngra ketma-ket tezkor bosishlarni kechiktirib bloklashga imkon beradi."
-    },
-    {
-      id: 8,
-      question: "Throttle limit vaqti davomida yuz bergan yangi chaqiriqlarga qanday munosabatda bo'ladi?",
-      options: [
-        "Ularni navbatga (queue) qo'shadi va hammasini ketma-ket bajaradi",
-        "Ularni rad etadi (ignoring / e'tiborsiz qoldiradi) va faqat limit tugagach keyingi chaqiriqni qabul qiladi",
-        "Sahifani qayta yuklaydi",
-        "Xatolik (error) qaytaradi"
-      ],
-      correctAnswer: 1,
-      explanation: "Throttle qat'iy vaqt oralig'ida ishlashni ta'minlagani uchun, belgilangan limit muddati ichida yuz bergan barcha chaqiriqlar shunchaki e'tiborsiz qoldiriladi."
-    },
-    {
-      id: 9,
-      question: "Nima uchun Debounce yoki Throttle ishlatilgan komponentlar sahifadan o'chganda (unmount bo'lganda) taymerlarni bekor qilish (cancel) muhim?",
-      options: [
-        "Brauzer xotirasida 'memory leak' (xotira yetishmovchiligi) oldini olish va o'chib ketgan komponent elementlariga murojaat qilishda xatolik chiqmasligi uchun",
-        "CSS stillari buzilmasligi uchun",
-        "LocalStorage tozalanib ketishi uchun",
-        "HTTP so'rovlar sonini oshirish uchun"
-      ],
-      correctAnswer: 0,
-      explanation: "Agar komponent o'chib ketgandan keyin ham setTimeout taymeri faol tursa va u o'chgan element yoki komponent holatini (state) o'zgartirmoqchi bo'lsa, xatolik kelib chiqadi va xotira band bo'lib qoladi."
-    },
-    {
-      id: 10,
-      question: "Brauzer oynasi o'lchami o'zgarganda (`resize` event) sahifadagi elementlar koordinatalarini qayta hisoblash uchun qaysi usul eng mos keladi?",
-      options: [
-        "Debounce",
-        "Throttle",
-        "Ikkalasi ham bir xil mos keladi",
-        "Hech biri mos kelmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "resize hodisasi oyna surilayotgan paytda juda ko'p marta chaqiriladi. Har 100-200ms da sahifani yangilab turish (foydalanuvchiga silliq ko'rinishi) uchun Throttle mosroq."
-    },
-    {
-      id: 11,
-      question: "JavaScript-dagi qaysi mashhur kutubxona Debounce va Throttle funksiyalarining tayyor mukammal realizatsiyalarini taqdim etadi?",
-      options: [
-        "React",
-        "Lodash",
-        "Express",
-        "Redux"
-      ],
-      correctAnswer: 1,
-      explanation: "Lodash (`_.debounce` va `_.throttle` yordamida) ushbu rate-limit funksiyalarini barcha edge-case'lar (leading, trailing, cancel va h.k.) bilan to'liq taqdim etadi."
-    },
-    {
-      id: 12,
-      question: "Sichqoncha harakati (`mousemove`) davomida koordinatalarni serverga yuborishda nega Throttle ishlatiladi?",
-      options: [
-        "Sichqoncha harakati har bir pikselda hodisa hosil qiladi, Throttle esa so'rovlar oqimini ma'lum vaqt oralig'i (masalan, har 100ms) bilan cheklab beradi",
-        "Sichqonchani to'xtatadi",
-        "Koordinatalarni shifrlash uchun",
-        "Koordinata qiymatini 0 ga aylantirish uchun"
-      ],
-      correctAnswer: 0,
-      explanation: "`mousemove` vaqtida har bir piksel harakatida hodisa chaqiriladi. Throttle so'rovlar chastotasini kamaytiradi."
-    },
-    {
-      id: 13,
-      question: "DOM o'zgarishlari va yuqori chastotali visual hodisalar uchun `requestAnimationFrame` yordamida throttling qilishning `setTimeout`ga nisbatan asosiy afzalligi nima?",
-      options: [
-        "Chunki rAF so'rovlarni local storage-ga yozib qo'yadi",
-        "U brauzerning ekran yangilash kadrlariga (V-Sync, odatda 60fps) to'liq moslashib, visual qotishlarni (stuttering) bartaraf etadi va ortiqcha chizish ishini oldini oladi",
-        "U tarmoq ulanishlarini butunlay to'xtatadi",
-        "Hech qanday afzalligi yo'q"
-      ],
-      correctAnswer: 1,
-      explanation: "requestAnimationFrame visual ishlarni aynan brauzer ekranni yangilashidan oldin bajaradi. Bu setTimeout kabi kadrlarni buzmasdan, visual jihatdan eng silliq natijani beradi."
-    },
-    {
-      id: 14,
-      question: "Debounce yoki Throttle qilingan funksiyalarda `.cancel()` metodidan foydalanish qachon tavsiya etiladi?",
-      options: [
-        "Komponent yuklanishi (mount) boshlanishi bilanoq",
-        "Komponent sahifadan o'chib ketganda (unmount bo'lganda) fondagi taymerlarni tozalash va xotira sizib chiqishini (memory leak) oldini olish uchun",
-        "Faqat so'rov muvaffaqiyatli yakunlanganda",
-        "Har 5 soniyada majburan chaqirib turish kerak"
-      ],
-      correctAnswer: 1,
-      explanation: "Komponent unmount bo'lganda, fonda hali bajarilmagan taymerlar qolishi xavfli. Ular tozalab tashlanmasa, memory leak bo'ladi yoki nofaol komponentni yangilashga urinib xatolik beradi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Debounce nima?",
+    "options": [
+      "Ketma-ket chaqirilgan funksiyalarning faqat birinchisini darhol bajaradigan mexanizm",
+      "Ketma-ket chaqirilayotgan funksiyalar to'xtagandan keyin, ma'lum bir kechikish vaqti (delay) o'tgachgina funksiyani 1 marta ishga tushiradigan usul",
+      "Funksiyani har doim ma'lum bir vaqt oralig'ida (masalan, har 100ms da) majburiy ishga tushiradigan usul",
+      "Xotiradagi o'zgaruvchilarni keshlovchi maxsus decorator"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Debounce ketma-ket takrorlanadigan tezkor hodisalarni guruhlaydi va hodisalar to'xtagandan keyin ma'lum bir vaqt o'tishini kutib, so'ngra faqat oxirgi chaqiruvni bajaradi."
+  },
+  {
+    "id": 2,
+    "question": "Throttle nima?",
+    "options": [
+      "Funksiyaning bajarilishini butunlay bekor qiluvchi operator",
+      "Faqat oxirgi chaqiruvni bajaradigan va oldingilarini o'chiradigan taymer",
+      "Tez-tez sodir bo'ladigan hodisalarga qaramasdan, funksiyani ma'lum bir vaqt oralig'ida (interval) ko'pi bilan 1 marta bajarilishini ta'minlaydigan mexanizm",
+      "Faqat xatolar yuz berganda ishlaydigan qayta sinash (retry) algoritmi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Throttle (bo'g'ish/cheklash) tez-tez chaqiriladigan hodisani ma'lum bir vaqt oralig'ida faqat bir marta ishlashini ta'minlash orqali yuklamani kamaytiradi."
+  },
+  {
+    "id": 3,
+    "question": "Qidiruv maydoniga (Search input) foydalanuvchi yozayotgan vaqtda API ga so'rov yuborishni optimallashtirish uchun qaysi biri ma'qulroq?",
+    "options": [
+      "Throttle, chunki u har bir harfda so'rov yuboradi",
+      "Hech qaysisi, chunki fetch o'zi optimallashtirilgan",
+      "Debounce, chunki foydalanuvchi yozishdan to'xtagandagina API so'rov yuborilishi kerak",
+      "Sinxron callback"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Foydalanuvchi yozayotgan paytda har bir harf uchun serverga so'rov yubormaslik uchun debounce ishlatiladi. Foydalanuvchi yozishdan to'xtagach (masalan, 500ms yozmay turganda) so'rov ketadi."
+  },
+  {
+    "id": 4,
+    "question": "Scroll (aylantirish) va Resize (oyna o'lchamini o'zgartirish) kabi yuqori chastotali hodisalarda ekrandagi elementlarni silliq va bir xil vaqtda yangilash uchun qaysi biri mos keladi?",
+    "options": [
+      "Throttle, chunki u hodisa davom etayotganda ham ma'lum vaqt oralig'ida (masalan, har 150ms da) yangilab turadi",
+      "Debounce, chunki scroll butunlay to'xtagandan keyin yangilansa yetarli",
+      "setTimeout-ni oddiy recursive chaqirish",
+      "try/catch bloki"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Scroll hodisasida debounce ishlatilsa, scroll davom etayotganda ekran yangilanmay qotib qoladi va faqat scroll to'xtaganda sakrab yangilanadi. Throttle esa scroll paytida ham ma'lum intervalda yangilab boradi."
+  },
+  {
+    "id": 5,
+    "question": "Debounce funksiyasida `clearTimeout(timeoutId)` chaqirilishining asosiy maqsadi nima?",
+    "options": [
+      "Brauzer keshini tozalash",
+      "Oldingi rejalashtirilgan bajarilishni bekor qilish va taymerni yangidan boshlash",
+      "Funksiya parametrlarini o'chirish",
+      "Xotirani majburiy bo'shatish (garbage collection)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Debounce-da har safar yangi hodisa sodir bo'lganda, `clearTimeout` yordamida eski rejalashtirilgan `setTimeout` bekor qilinadi va yangi taymer o'rnatiladi. Natijada kechikish davri boshidan boshlanadi."
+  },
+  {
+    "id": 6,
+    "question": "Agar debounce kechikish vaqti 300ms bo'lsa va foydalanuvchi har 200ms da tugmani bossa, funksiya necha marta bajariladi?",
+    "options": [
+      "Har bir bosishda bajariladi",
+      "Har 200ms da 1 marta bajariladi",
+      "Faqat foydalanuvchi tugma bosishni to'xtatgandan keyin 300ms o'tib, 1 marta bajariladi",
+      "Hech qachon bajarilmaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Chaqiruvlar oralig'i (200ms) debounce delayidan (300ms) kam bo'lgani uchun taymer har safar tozalanaveradi va faqat eng oxirgi bosishdan keyin 300ms o'tgach 1 marta ishlaydi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kodda nima xatolik bor?\n```javascript\nwindow.addEventListener('resize', () => {\n  debounce(() => console.log('Resized'), 300)();\n});\n```",
+    "options": [
+      "resize hodisasida debounce ishlatib bo'lmaydi",
+      "Har resize hodisasi sodir bo'lganda yangi debounced funksiya yaratilmoqda va eski taymerlar saqlanib qolmayapti. Natijada debounce ishlamaydi",
+      "Callback funksiyaga arrow funksiya berilgan",
+      "Kechikish vaqti millisekundda berilmagan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Debounce closure (yopiq muhit) hosil qilib, `timeoutId`ni o'zida saqlashi kerak. Har event sodir bo'lganda debounce-ni qayta yaratish xato. To'g'ri usul: `const process = debounce(...); window.addEventListener('resize', process);`"
+  },
+  {
+    "id": 8,
+    "question": "Throttle implementatsiyasida cheklovni tekshirish uchun odatda nima ishlatiladi?",
+    "options": [
+      "Promise.race",
+      "Flag o'zgaruvchisi (masalan, `inThrottle` true/false yoki oxirgi chaqiruv vaqti logikasi)",
+      "Window.location",
+      "localStorage"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Throttle-da asosan `inThrottle` yoki `isWaiting` kabi boolean flag yoki oxirgi bajarilish vaqtining farqidan foydalanib, yangi chaqiruvni bloklash yoki o'tkazish hal qilinadi."
+  },
+  {
+    "id": 9,
+    "question": "Leading edge (yoki immediate) debounce nima?",
+    "options": [
+      "Faqat xatolar bilan ishlaydigan debounce turi",
+      "Birinchi chaqiruvni darhol (kechikishsiz) bajaradigan va keyingi tezkor chaqiriqlarni delay tugaguncha bloklaydigan rejim",
+      "Faqat oxirgi elementlarni o'chirish usuli",
+      "Animatsiyalar uchun mo'ljallangan maxsus sinxron loop"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Leading-edge (immediate) rejimida foydalanuvchi tugmani birinchi marta bosganda funksiya darhol ishlaydi, so'ngra belgilangan muddat davomida takroriy bosishlar e'tiborsiz qoldiriladi. Bu tugmani ikki marta bosib yuborish (double submission) oldini oladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagilardan qaysi biri debounce va throttle-ning asosiy afzalligi hisoblanadi?",
+    "options": [
+      "Sahifaning yuklanish tezligini (Initial Load) oshirish",
+      "Hodisalarning ishlash chastotasini kamaytirish orqali CPU va tarmoq yuklamasini kamaytirish, UI unumdorligini oshirish",
+      "CSS kodlarini avtomatik siqish (minify)",
+      "Veb-sayt xavfsizligini ta'minlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Debounce va Throttle hodisalar (scroll, input, resize, mousemove) chastotasini boshqarib, keraksiz hisob-kitoblar va API so'rovlarini kamaytiradi, natijada sahifaning ishlashi yaxshilanadi."
+  },
+  {
+    "id": 11,
+    "question": "Agar bizga foydalanuvchi klaviaturani tez-tez bosib turgan paytda ham har 1 soniyada oraliq natijani serverga yuborib turish kerak bo'lsa, qaysi birini ishlatgan ma'qul?",
+    "options": [
+      "Debounce (1 soniya)",
+      "Throttle (1 soniya)",
+      "Oddiy sinxron setInterval",
+      "Hech qanday cheklovsiz to'g'ridan-to'g'ri yuborish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Throttle ma'lum bir intervalda (masalan, har 1 soniyada) kamida bir marta ishga tushishni kafolatlaydi, debounce esa yozish to'xtamaguncha kutib turaveradi."
+  },
+  {
+    "id": 12,
+    "question": "Debounce va Throttle yordamida qaysi brauzer xatoliklarini (errors) kamaytirish yoki oldini olish mumkin?",
+    "options": [
+      "SyntaxError (Sintaktik xatolar)",
+      "Page freezing (Sahifa muzlab qolishi) va keraksiz API so'rovlari tufayli serverning 429 (Too Many Requests) xatoligi berishi",
+      "CORS (Cross-Origin Resource Sharing)",
+      "NullPointerException"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tezkor API so'rovlarini cheklash orqali serverga tushayotgan yuk kamayadi (429 xatosining oldi olinadi) hamda og'ir DOM manipulyatsiyalarini cheklash orqali sahifa qotib qolishining oldi olinadi."
+  }
+]
+
 };

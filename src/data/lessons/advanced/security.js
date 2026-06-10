@@ -1,412 +1,452 @@
-export const securityLesson = {
-  id: "a21",
-  title: "Security: XSS, CSRF, SQL Injection, Authentication",
-  theory: `## 1. NEGA kerak?
+export const security = {
+  id: "security",
+  title: "Veb Xavfsizlik Asoslari (XSS, CSRF, CORS, HTTPS)",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-**Real Muammolar:**
-- Foydalanuvchi input'iga <script> qo'yib, haker kodi ishlaydi (XSS)
-- Sayt orqali foydalanuvchining ma'lumotini olib ketish (CSRF)
-- Database'ni buzish (SQL Injection)
+### Veb Xavfsizlik Asoslari nima?
+Veb-ilovalarni yaratishda xavfsizlik eng muhim qismlardan biridir. Agar xavfsizlik choralari ko'rilmasa, buzg'unchilar foydalanuvchilarning shaxsiy ma'lumotlarini o'g'irlashi, hisoblarini egallashi yoki server ishini buzishi mumkin. Veb xavfsizlikning eng asosiy to'rtta ustuni:
+* **XSS (Cross-Site Scripting):** Saytga begona zararli JavaScript kodlarini kiritish va ishga tushirish hujumi.
+* **CSRF (Cross-Site Request Forgery):** Foydalanuvchining ruxsatisiz va bilmasdan uchinchi tomon saytidan uning nomidan so'rovlar yuborish hujumi.
+* **CORS (Cross-Origin Resource Sharing):** Bir saytdan boshqa saytdagi resurslarni so'rash huquqini tartibga soluvchi brauzer qoidasi.
+* **HTTPS:** Mijoz (brauzer) va server o'rtasidagi ma'lumotlar almashinuvini shifrlangan tarza himoya qiluvchi protokol.
 
-## 2. SODDALIK
+### Real hayotiy analogiya
+Tasavvur qiling, siz **bank binosida xizmat ko'rsatyapsiz**:
+* **XSS:** Buzg'unchi mijozning e'lonlar doskasiga zararli ko'rsatma yozib ketadi. Boshqa kelgan mijozlar uni o'qib, o'z pullarini buzg'unchiga topshirib yuboradi.
+* **CSRF:** Siz bankda o'tirganingizda, kimdir sizning qo'lingiz va imzoingizdan foydalanib yashirincha pul o'tkazish qog'ozini imzolab yuboradi. Siz bu haqida bilmay ham qolasiz.
+* **CORS:** Bank xodimi faqat maxsus ruxsatnomasi bor mijozlargagina ichki arxiv xonalariga kirishga ruxsat beradi. Boshqa bank xodimlari kira olmaydi.
+* **HTTPS:** Mijoz va kassir o'rtasidagi suhbat ochiq havoda emas, balki tovush o'tkazmaydigan shisha orqasida, maxsus shifrlangan aloqa qurilmasi yordamida amalga oshiriladi. Tashqaridan hech kim bu suhbatni eshita olmaydi.
 
-**Qal'a himoyasi:** Hech kim ichkariga kirmaslik uchun qal'aning barcha darvozasida guard bo'ladi.
+---
 
-## 3. XAVFSIZLIK TURLARI
+## 2. 💻 Real Kod Misollari
 
-### A. XSS (Cross-Site Scripting) - Inject qilingan Javascript
-XSS — bu hakerlar tomonidan yozilgan zararli skriptlarning jabrlanuvchi brauzerida ishga tushishi. U uch xil bo'ladi:
-1. **Stored XSS:** Zararli kod server bazasida saqlanadi va hamma sahifani ochganda ishlaydi.
-2. **Reflected XSS:** Zararli kod URL parametrlari orqali keladi va faqat o'sha linkni ochgan foydalanuvchida ishlaydi.
-3. **DOM-based XSS:** Client-side kodining o'zidagi xatolik (masalan, \`eval\` yoki \`innerHTML\`) tufayli yuzaga keladi.
-
-#### innerHTML xavfi:
-Hech qachon foydalanuvchi kiritgan ma'lumotni \`innerHTML\` orqali tozalashlarsiz chiqarmang!
+### 1. Basic Example (XSS ning oldini olish - Input sanitizatsiyasi)
+Foydalanuvchi kiritgan har qanday HTML teglarni matn ko'rinishiga o'tkazib yuborish (Escaping):
 \`\`\`javascript
-// XAVFLI KOD ❌
-const input = "<img src=x onerror='alert(1)'>";
-document.body.innerHTML = input; // Script ishga tushib ketadi!
-\`\`\`
-
-#### To'g'ri usul: textContent ✅
-\`textContent\` har doim ma'lumotni shunchaki matn deb hisoblaydi va scriptlarni ishga tushirmaydi.
-
-\`\`\`mermaid
-sequenceDiagram
-    autonumber
-    participant H as Haker
-    participant S as Server/Baza
-    participant U as Jabrlanuvchi (User)
-    
-    H->S: Izoh yozadi: <script>stealToken()</script>
-    Note over S: Zararli kod bazaga saqlanadi
-    U->S: Izohlar ro'yxatini so'raydi
-    S-->>U: Bazadagi izohni yuboradi (kod ochiq holda)
-    Note over U: Brauzer innerHTML orqali render qiladi
-    Note over U: Haker skripti brauzerda ishga tushadi!
-    U->>H: Cookie yoki JWT tokenni o'g'irlab jo'natadi
-\`\`\`
-
-### B. CSRF (Cross-Site Request Forgery)
-CSRF — bu foydalanuvchi ruxsatisiz va uning xabarisiz uning nomidan veb-saytga soxta so'rovlar yuborish hujumi.
-
-#### Double-Submit Cookie Pattern
-CSRF-dan himoyalanishda keng tarqalgan usul. Server client-ga cookie-da tasodifiy token yuboradi. So'rov yuborilganda client ushbu tokenni ham kuki-da, ham maxsus HTTP request header-da (masalan, \`X-CSRF-Token\`) yuborishi shart. Server ularni solishtirib, faqat mos kelsa so'rovni bajaradi.
-
-\`\`\`mermaid
-sequenceDiagram
-    autonumber
-    participant C as Client (Brauzer)
-    participant S as Server
-    
-    Note over C: Foydalanuvchi tizimga kirganda...
-    S-->>C: Set-Cookie: csrfToken=abcde123
-    Note over C: Form yuborilganda yoki API so'rovda...
-    C->>S: POST /api/transfer (Header: X-CSRF-Token=abcde123, Cookie: csrfToken=abcde123)
-    Note over S: Server solishtiradi: Cookie-dagi Token === Header-dagi Token?
-    alt Tokenlar mos va to'g'ri
-        S-->>C: 200 OK (Amal bajarildi)
-    else Tokenlar mos emas yoki yo'q
-        S-->>C: 403 Forbidden (Hujum bekor qilindi)
-    end
-\`\`\`
-
----
-
-## 4. MA'LUMOTLARNI SAQLASH (JWT va Tokenlar)
-Intervyuda eng ko'p so'raladigan savol: **"JWT tokenni qayerda saqlash xavfsiz?"**
-
-| Joy | Xavfsizlik darajasi | Izoh |
-|---|---|---|
-| **LocalStorage** | Past ❌ | XSS hujumi orqali osongina o'g'irlash mumkin. |
-| **SessionStorage**| Past ❌ | Tab yopilguncha saqlanadi, lekin baribir himoyasiz. |
-| **HttpOnly Cookie** | Yuqori ✅ | JavaScript orqali o'qib bo'lmaydi, faqat serverga yuboriladi. |
-
----
-
-## 5. XATOLAR (Common mistakes)
-
-1. **innerHTML ishlatish:** foydalanuvchi input'i bilan XSS paydo bo'ladi.
-2. **Tokenni LocalStorage'da saqlash:** XSS bo'lsa token o'g'irlanadi.
-3. **SQL query'ni string bilan yig'ish:** injection uchun yo'l ochiladi.
-4. **CSRF himoyasini unutish:** soxta so'rovlar ishlaydi.
-5. **HTTPS ishlatmaslik:** ma'lumot yo'lda o'qib olinadi.
-
----
-
-## 6. SAVOLLAR VA JAVOBLAR
-
-**1. XSS nima?** Foydalanuvchi input'iga zararli JS qo'shib yuborish.
-**2. XSS'dan qanday himoyalanish kerak?** textContent/sanitization va CSP.
-**3. innerHTML va textContent farqi?** innerHTML HTML'ni ishga tushiradi, textContent faqat matn.
-**4. CSRF nima?** Foydalanuvchi nomidan soxta so'rov yuborish.
-**5. CSRF'dan himoya?** CSRF token, SameSite cookie, double-submit.
-**6. SQL Injection nima?** So'rovga zararli SQL qo'shib yuborish.
-**7. SQL Injection'dan himoya?** Prepared statements va parametrlar.
-**8. HttpOnly cookie nima uchun kerak?** JS orqali o'qilmaydi, XSS'dan himoya.
-**9. Authentication va Authorization farqi?** Auth: kim ekanini tekshirish, AuthZ: ruxsat berish.
-**10. CSP nima?** Qaysi scriptlar ishlashini cheklovchi siyosat.
-**11. Rate limiting nima?** Ko'p so'rovlarni cheklash (brute-force).
-**12. HTTPS nega shart?** Ma'lumotlar shifrlanadi.
-
----
-
-## 7. MINI LOYIHA: "Input Sanitizer"
-**Vazifa:** Foydalanuvchi kiritgan matndagi barcha HTML teglarni tozalab tashlovchi funksiya yozing.
-
-\`\`\`javascript
-function sanitize(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML; // Faqat matnli HTML qaytadi
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, 
+    tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#x27;',
+      '"': '&quot;'
+    }[tag] || tag)
+  );
 }
 
-const input = "<script>steal()</script> Salom!";
-console.log(sanitize(input)); // → "&lt;script&gt;steal()&lt;/script&gt; Salom!"
+// Ishlatilishi:
+const userInput = "<script>alert('xss')</script>";
+const safeOutput = escapeHTML(userInput);
+
+console.log(safeOutput); 
+// Natija: &lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;
+// Brauzer buni skript sifatida ishga tushirmaydi, shunchaki matn qilib ko'rsatadi.
 \`\`\`
+
+### 2. Intermediate Example (Express.js da CORS sarlavhalarini qo'lda sozlash)
+Serverda ma'lum bir domenlargagina API so'rov yuborishga ruxsat berish:
+\`\`\`javascript
+const express = require('express');
+const app = express();
+
+const ALLOWED_ORIGINS = ['https://mytrustedapp.com', 'https://admin.mytrustedapp.com'];
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    // Ruxsat berilgan origin-ni sarlavhaga yozamiz
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+\`\`\`
+
+### 3. Advanced Example (CSRF token tekshiruvi va Cookie xavfsizligi)
+Server tomonida xavfsiz cookie yaratish va CSRF tokenni solishtirish:
+\`\`\`javascript
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const crypto = require('crypto');
+const app = express();
+
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+
+// 1. Sessiyada xavfsiz cookie o'rnatish
+app.get('/login', (req, res) => {
+  const csrfToken = crypto.randomBytes(32).toString('hex');
+  
+  // Cookie xavfsizlik sozlamalari
+  res.cookie('csrfToken', csrfToken, {
+    httpOnly: true,  // JS orqali o'qib bo'lmaydi (XSS dan himoya)
+    secure: true,    // Faqat HTTPS da ishlaydi
+    sameSite: 'strict' // Uchinchi tomon so'rovlarida yuborilmaydi (CSRF dan himoya)
+  });
+  
+  res.send(\`
+    <form action="/transfer" method="POST">
+      <input type="hidden" name="_csrf" value="\${csrfToken}">
+      <input type="text" name="amount" placeholder="Summa">
+      <button type="submit">O'tkazish</button>
+    </form>
+  \`);
+});
+
+// 2. CSRF Tokenni solishtirish (Verification)
+app.post('/transfer', (req, res) => {
+  const cookieToken = req.cookies.csrfToken;
+  const formToken = req.body._csrf;
+  
+  if (!cookieToken || !formToken || cookieToken !== formToken) {
+    return res.status(403).send("XAVFSIZLIK XATOSI: CSRF token mos kelmadi!");
+  }
+  
+  res.send("Pul muvaffaqiyatli o'tkazildi!");
+});
+\`\`\`
+
+---
+
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
+
+### Qaysi muammolarni hal qiladi?
+* **Sessiyani o'g'irlash (Session Hijacking):** Agar cookie fayllari \`HttpOnly\` qilinmasa, buzg'unchi XSS yordamida foydalanuvchining session ID yoki JWT tokenini o'g'irlab, uning nomidan tizimga kira oladi.
+* **Mablag' yoki Ma'lumotlarni yo'qotish (CSRF):** Foydalanuvchi zararli saytga kirganda, u yerdagi yashirin skript orqali foydalanuvchining bank yoki ijtimoiy tarmoqdagi akkauntiga pul o'tkazish yoki parolni o'zgartirish so'rovi yuborilishi mumkin.
+* **Ma'lumotlar shifrlanmasligi (Man-in-the-Middle):** Agar HTTP ishlatilsa, provayder yoki ochiq Wi-Fi tarmog'idagi buzg'unchilar foydalanuvchining login va parollarini ochiq matn ko'rinishida ko'ra oladilar. HTTPS barcha ma'lumotlarni shifrlab uzatadi.
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. \`Access-Control-Allow-Origin: *\` ni hamma joyda ishlatish
+#### Xato:
+Katta loyihalarda yoki shaxsiy ma'lumotlar saqlanadigan API larda hamma domenlarga ruxsat berib yuborish.
+#### To'g'ri usul:
+Faqat o'zingizga tegishli ishonchli domenlargagina ruxsat bering va kerak bo'lsa serverda oq ro'yxat (Allowlist) ishlating.
+
+### 2. Cookie fayllarini default (odatiy) sozlamalarda qoldirish
+#### Xato:
+Sessiya cookie fayllarini \`httpOnly: true\` va \`secure: true\` qilmasdan saqlash.
+#### To'g'ri usul:
+Maxfiy ma'lumotlar (JWT, Session ID) saqlanadigan cookie fayllariga har doim \`httpOnly: true\`, \`secure: true\` va \`sameSite: 'lax'\` (yoki \`'strict'\`) xossalarini qo'shish.
+
+### 3. Matn chiqarishda \`innerHTML\` dan nazoratsiz foydalanish
+#### Xato:
+\`\`\`javascript
+// Agar userInput ichida <img src=x onerror=alert(1)> bo'lsa, XSS ishga tushadi
+document.getElementById('output').innerHTML = userInput;
+\`\`\`
+#### To'g'ri usul:
+\`\`\`javascript
+// textContent faqat matn sifatida chiqaradi va hech qanday skriptni ijro etmaydi
+document.getElementById('output').textContent = userInput;
+\`\`\`
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior (1–4)
+1. **Savol:** XSS nima va u qanday sodir bo'ladi?
+   * **Javob:** XSS (Cross-Site Scripting) — buzg'unchi tomonidan sayt sahifasiga zararli JavaScript kodini kiritilishi. Brauzer uni oddiy kod deb o'ylab ishga tushirib yuboradi.
+2. **Savol:** CSRF nima?
+   * **Javob:** CSRF (Cross-Site Request Forgery) — foydalanuvchi avtorizatsiyadan o'tgan saytda, uchinchi tomon sayti yordamida uning nomidan yashirincha so'rov yuborish hujumi.
+3. **Savol:** HTTP va HTTPS ning asosiy farqi nimada?
+   * **Javob:** HTTP ma'lumotlarni ochiq ko'rinishda uzatadi, HTTPS esa SSL/TLS shifrlash protokoli yordamida ma'lumotlarni shifrlab, xavfsiz yetkazadi.
+4. **Savol:** \`HttpOnly\` cookie nima?
+   * **Javob:** Brauzerda JavaScript (\`document.cookie\`) orqali o'qib bo'lmaydigan, faqat HTTP so'rovlariga qo'shib yuboriladigan xavfsiz cookie fayli.
+
+### Middle (5–8)
+5. **Savol:** CORS nima va nima uchun brauzerda CORS error chiqadi?
+   * **Javob:** CORS — xavfsizlik standarti bo'lib, u boshqa domendan resurs so'rashni cheklaydi. Server o'z javobida \`Access-Control-Allow-Origin\` sarlavhasini qaytarmasa brauzer so'rovni bloklaydi.
+6. **Savol:** \`SameSite\` cookie atributi qanday vazifani bajaradi?
+   * **Javob:** U cookie-larni uchinchi tomon saytlaridan kelayotgan so'rovlar bilan birga yuborilishini boshqaradi. Uning \`Strict\`, \`Lax\` va \`None\` qiymatlari bor.
+7. **Savol:** CSP (Content Security Policy) nima va u qanday ishlaydi?
+   * **Javob:** CSP — brauzerga qaysi manbalardan (domenlardan) JS, CSS yoki rasmlarni yuklashga ruxsat borligini ko'rsatuvchi sarlavha. U ruxsat etilmagan uchinchi tomon skriptlarini butunlay bloklaydi.
+8. **Savol:** CORS va CSRF o'rtasidagi bog'liqlik yoki farq nimada?
+   * **Javob:** CORS — bu API ni ruxsat etilmagan domenlardan o'qishdan himoya qiladi (read protection). CSRF esa foydalanuvchi nomidan yozish/so'rov yuborish (write/action) hujumidir. CORS bu CSRF dan to'liq himoya qilmaydi.
+
+### Senior (9–12)
+9. **Savol:** Preflight so'rovi (CORS dagi OPTIONS so'rovi) nima va u qachon yuboriladi?
+   * **Javob:** Murakkab HTTP so'rovlari (masalan, PUT, DELETE, yoki \`Content-Type: application/json\` bo'lgan POST so'rovlari) yuborilishidan oldin, brauzer serverga avtomatik tarzda \`OPTIONS\` so'rovini yuborib ruxsat tekshiradi. Bunga Preflight deyiladi.
+10. **Savol:** SQL Injection (SQLi) nima va uni Node.js/JS loyihalarida qanday bartaraf etish mumkin?
+    * **Javob:** SQL query tarkibiga zararli ma'lumot kiritish orqali bazani manipulyatsiya qilish. Buni oldini olish uchun Parameterized Queries (ORMs/ODMs yoki query bindings) ishlatiladi, stringlarni ulab so'rov yozilmaydi.
+11. **Savol:** XSS ni to'liq bloklash uchun ko'p bosqichli mudofaa (Defense-in-depth) qanday quriladi?
+    * **Javob:** Kiruvchi ma'lumotlarni sanitizatsiya qilish, chiquvchi ma'lumotlarni escape qilish, cookies uchun \`HttpOnly\` ishlatish va qat'iy Content Security Policy (CSP) sarlavhalarini sozlash orqali.
+12. **Savol:** JWT (JSON Web Token) ni LocalStorage da saqlash xavfsizroqmi yoki Cookie-dami?
+    * **Javob:** LocalStorage XSS hujumiga o'ta zaif (JS orqali osongina o'qiladi). \`HttpOnly\` va \`Secure\` cookie esa XSS dan himoyalangan. Shuning uchun maxfiy JWT tokenlarni cookie-da saqlash xavfsizroq hisoblanadi.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Bu bo'limda siz interaktiv kod muharriri orqali amaliy mashqlarni bajarasiz.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars oxiridagi test topshiriqlari.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Xavfsiz JWT (JSON Web Token) Auth Tizimi
+Ko'plab loyihalarda JWT tokenlari noto'g'ri saqlanishi tufayli foydalanuvchilar akkauntlari o'g'irlanadi. Quyida tokenlarni xavfsiz saqlash arxitekturasi ko'rsatilgan.
+
+#### Arxitektura:
+1. **Access Token:** Qisqa umrga ega (masalan, 15 daqiqa) va uni xotirada (React state yoki JS o'zgaruvchisida) saqlaymiz. Uni JS o'qiy oladi, lekin sahifa yangilanganda o'chib ketadi.
+2. **Refresh Token:** Uzoq umrga ega (masalan, 7 kun) va uni faqat \`HttpOnly\`, \`Secure\` va \`SameSite=Lax\` bo'lgan keshlanmaydigan Cookie-da saqlaymiz.
+3. **Silent Refresh:** Sahifa yangilanganda yoki Access Token muddati tugaganda, brauzer orqa fonda Refresh Token yordamida yangi Access Token so'raydi.
+
+#### Silent Refresh Server kodi:
+\`\`\`javascript
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+const app = express();
+
+app.use(cookieParser());
+
+const ACCESS_SECRET = "access_key_123";
+const REFRESH_SECRET = "refresh_key_987";
+
+// Login qilganda tokenlarni berish
+app.post('/api/login', (req, res) => {
+  // Foydalanuvchi tekshirilgandan so'ng:
+  const userId = 101;
+  
+  const accessToken = jwt.sign({ userId }, ACCESS_SECRET, { expiresIn: '15m' });
+  const refreshToken = jwt.sign({ userId }, REFRESH_SECRET, { expiresIn: '7d' });
+  
+  // Refresh tokenni xavfsiz cookie ichiga joylaymiz
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    secure: true, // faqat HTTPS da yuboriladi
+    sameSite: 'strict',
+    path: '/api/refresh' // faqat refresh API ga yuboriladi
+  });
+  
+  // Access tokenni JS xotirasi uchun body-da qaytaramiz
+  res.json({ accessToken });
+});
+
+// Yangi Access Token olish (Silent Refresh)
+app.post('/api/refresh', (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  
+  if (!refreshToken) return res.sendStatus(401);
+  
+  jwt.verify(refreshToken, REFRESH_SECRET, (err, decoded) => {
+    if (err) return res.sendStatus(403);
+    
+    // Yangi access token yaratib qaytaramiz
+    const newAccessToken = jwt.sign({ userId: decoded.userId }, ACCESS_SECRET, { expiresIn: '15m' });
+    res.json({ accessToken: newAccessToken });
+  });
+});
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **CORS So'rovlarini keshlar (CORS Caching):** Har safar murakkab so'rov oldidan OPTIONS (preflight) so'rovi ketmasligi uchun serverda \`Access-Control-Max-Age\` sarlavhasiga soniyalar hisobida qiymat (masalan, \`86400\` yoki 24 soat) berib qo'yish kerak. Bu tarmoq so'rovlari sonini kamaytiradi.
+* **HTTPS yuklamasini kamaytirish:** Zamonaviy serverlarda TLS sessiyalarini keshlash (TLS Session Resumption) yoki HTTP/2-dan foydalanish HTTPS ulanish tezligini sezilarli darajada oshiradi.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Himoya vositasi / Atribut | Vazifasi | Qachon ishlatiladi |
+| :--- | :--- | :--- |
+| **\`HttpOnly\` Cookie** | JavaScript-ning cookie fayllarini o'qishini taqiqlaydi | XSS orqali token o'g'irlanishini oldini olishda |
+| **\`Secure\` Cookie** | Faqat shifrlangan HTTPS ulanishda yuborilishini kafolatlaydi | Ochiq Wi-Fi va tarmoq kuzatuvchilaridan (MitM) himoyalanishda |
+| **\`SameSite\` (Lax/Strict)** | Uchinchi tomon havolalarida cookie yuborilishini bloklaydi | CSRF hujumlaridan himoyalanishda |
+| **HTML Escaping** | \`<\`, \`>\`, \`"\` kabi belgilarni zararsizlantiradi | Matnlarni sahifaga xavfsiz chiqarishda (XSS prevention) |
+| **CORS Headers** | API ni qaysi domenlar o'qiy olishini belgilaydi | Tashqi saytlar ma'lumotlaringizni ruxsatsiz o'qimasligida |
+| **CSP (Content Security Policy)** | Sahifaga faqat ishonchli skriptlar yuklanishini ta'minlaydi | XSS va clickjacking hujumlarini jilovlashda |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Xavfsiz matn chiqarish",
-      instruction: "Berilgan 'userText' o'zgaruvchisini xavfsiz tarzda (textContent yordamida) 'output' elementiga joylang.",
-      startingCode: "const userText = '<img src=x onerror=alert(1)>';\nconst output = document.createElement('div');\n\n// Xavfsiz usulda joylang\n",
-      hint: "output.textContent = userText;",
-      test: "if (code.includes('textContent')) return null; return 'textContent xususiyatidan foydalaning';"
-    },
-    {
-      id: 2,
-      title: "Oddiy Sanitizatsiya",
-      instruction: "Matndan < va > belgilarini xavfsizga almashtiring.",
-      startingCode: "function sanitize(input) {\n  // Bu yerga yozing\n}\n",
-      hint: "return input.replace(/</g, '&lt;').replace(/>/g, '&gt;');",
-      test: "if (code.includes('replace')) return null; return 'Sanitizatsiya yoq';"
-    },
-    {
-      id: 3,
-      title: "CSRF Token Header",
-      instruction: "POST so'rovda CSRF token header qo'shing.",
-      startingCode: "const token = 'csrf-token';\nfetch('/api', {\n  method: 'POST',\n  headers: {\n    // Bu yerga token qo'shing\n  }\n});\n",
-      hint: "'X-CSRF-Token': token",
-      test: "if (code.includes('X-CSRF-Token')) return null; return 'CSRF header yoq';"
-    },
-    {
-      id: 4,
-      title: "SQL Injection'dan himoya",
-      instruction: "Parametrli query yozing (string concatenation emas).",
-      startingCode: "const email = 'a@b.com';\n// Bu yerga parametrli query\n// db.query('SELECT * FROM users WHERE email = ?', [email])\n",
-      hint: "Parametrli query va massiv",
-      test: "if (code.includes('?') && code.includes('[')) return null; return 'Parametrli query yoq';"
-    },
-    {
-      id: 5,
-      title: "Password hashing",
-      instruction: "Parolni hash qiling (bcrypt).",
-      startingCode: "async function hashPassword(password) {\n  // Bu yerga yozing\n}\n",
-      hint: "return await bcrypt.hash(password, 10);",
-      test: "if (code.includes('bcrypt.hash')) return null; return 'Hashing yoq';"
-    },
-    {
-      id: 6,
-      title: "HttpOnly cookie",
-      instruction: "Tokenni HttpOnly cookie orqali yuboring.",
-      startingCode: "const token = 'jwt';\n// res.setHeader(...) yozing\n",
-      hint: "res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Secure; SameSite=Strict`);",
-      test: "if (code.includes('HttpOnly')) return null; return 'HttpOnly yoq';"
-    },
-    {
-      id: 7,
-      title: "CORS cheklash",
-      instruction: "Faqat bitta domen uchun CORS ruxsat bering.",
-      startingCode: "// res.setHeader(...) yozing\n",
-      hint: "res.setHeader('Access-Control-Allow-Origin', 'https://example.com');",
-      test: "if (code.includes('Access-Control-Allow-Origin')) return null; return 'CORS yoq';"
-    },
-    {
-      id: 8,
-      title: "Input validation",
-      instruction: "Email bo'sh yoki noto'g'ri bo'lsa xato qaytaring.",
-      startingCode: "function validateEmail(email) {\n  // Bu yerga yozing\n}\n",
-      hint: "if (!email || !email.includes('@')) return false; return true;",
-      test: "if (code.includes('includes')) return null; return 'Validatsiya yoq';"
-    },
-    {
-      id: 9,
-      title: "Auth vs AuthZ",
-      instruction: "Admin bo'lmasa xato qaytaring.",
-      startingCode: "function checkAdmin(user) {\n  // Bu yerga yozing\n}\n",
-      hint: "if (!user || !user.isAdmin) throw new Error('Ruxsat yoq');",
-      test: "if (code.includes('isAdmin')) return null; return 'Authorization yoq';"
-    },
-    {
-      id: 10,
-      title: "Rate limiting",
-      instruction: "Bir IP uchun 5 martadan ko'p urinish bo'lsa bloklang.",
-      startingCode: "const attempts = {};\nfunction rateLimit(ip) {\n  // Bu yerga yozing\n}\n",
-      hint: "attempts[ip] = (attempts[ip] || 0) + 1; if (attempts[ip] > 5) return false;",
-      test: "if (code.includes('attempts')) return null; return 'Rate limit yoq';"
-    },
-    {
-      id: 11,
-      title: "SameSite cookie",
-      instruction: "Cookie'da SameSite=Strict qo'ying.",
-      startingCode: "const token = 'jwt';\n// Set-Cookie yozing\n",
-      hint: "SameSite=Strict",
-      test: "if (code.includes('SameSite')) return null; return 'SameSite yoq';"
-    },
-    {
-      id: 12,
-      title: "XSSdan himoya render",
-      instruction: "Foydalanuvchi matnini faqat textContent bilan render qiling.",
-      startingCode: "const el = document.createElement('p');\nconst userInput = '<script>alert(1)</script>';\n// Bu yerga yozing\n",
-      hint: "el.textContent = userInput;",
-      test: "if (code.includes('textContent')) return null; return 'XSS xavfsiz render yoq';"
-    },
-    {
-      id: 13,
-      title: "Script Strip Sanitizer",
-      instruction: "Foydalanuvchi kiritgan HTML matndan barcha '<script>...</script>' teglari va ularning ichidagi kodlarni regex orqali butunlay tozalab tashlovchi 'stripScripts(html)' funksiyasini yozing.",
-      startingCode: "function stripScripts(html) {\n  // <script> teglarini butunlay o'chiruvchi regex yozing\n}",
-      hint: "return html.replace(/<script[^>]*>([\\s\\S]*?)<\\/script>/gi, '');",
-      test: "if (code.includes('replace') && (code.includes('script') || code.includes('/script/'))) return null;\nreturn 'stripScripts funksiyasida <script> teglarini o\\'chirish regexi ishlatilmadi';"
-    },
-    {
-      id: 14,
-      title: "Double-Submit Cookie CSRF Validator",
-      instruction: "Tizimga kelgan HTTP request xavfsizligini ta'minlash uchun Double-Submit Cookie CSRF himoya middleware funksiyasini yozing. 'validateCSRF(req)' funksiyasi cookie-dagi 'csrfToken' qiymati request headerdagi 'X-CSRF-Token' qiymati bilan mavjudligini va tengligini tekshirsin hamda mos kelsa 'true', aks holda 'false' qaytarsin. Request obyekti 'headers' va 'cookies' obyektlariga ega bo'ladi.",
-      startingCode: "function validateCSRF(req) {\n  // req.headers['x-csrf-token'] va req.cookies['csrfToken'] ni tekshiring\n}",
-      hint: "const headerToken = req.headers['x-csrf-token'];\nconst cookieToken = req.cookies['csrfToken'];\nreturn !!(headerToken && cookieToken && headerToken === cookieToken);",
-      test: "if (code.includes('headers') && code.includes('cookies') && (code.includes('x-csrf-token') || code.includes('X-CSRF-Token')) && (code.includes('csrfToken') || code.includes('csrf-token'))) return null;\nreturn 'validateCSRF funksiyasida header va cookie-dagi CSRF tokenlarini tekshirish to\\'g\\'ri yozilmadi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "XSS Himoyasi (HTML Sanitize)",
+    "instruction": "Foydalanuvchi yuborgan matn tarkibidagi zararli belgilarni HTML entity ko'rinishiga o'tkazib (escape qilib) qaytaradigan `sanitize(input)` funksiyasini yozing. Quyidagi belgilarni almashtiring:\n- `<` -> `&lt;`\n- `>` -> `&gt;`\n- `\"` -> `&quot;`\n- `'` -> `&#x27;`\n- `&` -> `&amp;`",
+    "startingCode": "function sanitize(input) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Stringdagi belgilarni almashtirish uchun replace yoki replaceAll metodlaridan yoki regexdan foydalanishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return sanitize;');\nconst fn = sandbox();\nconst res = fn('<script>alert(\"xss\")</script>');\nif (res.includes('<') || res.includes('>')) return 'HTML teglari (&lt; va &gt; ga) to\\'g\\'ri o\\'zgartirilmadi';\nif (res.includes('\"')) return 'Qo\\'shtirnoq belgisi (&quot; ga) o\\'zgartirilmadi';\nif (fn('A & B') !== 'A &amp; B') return 'Amperstand (&) belgisi to\\'g\\'ri o\\'zgartirilmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "CORS Origin tekshiruvi",
+    "instruction": "CORS xavfsizligini ta'minlash uchun `validateOrigin(origin, allowedOrigins)` funksiyasini yozing. Agar so'rov yuborilgan `origin` manzili `allowedOrigins` (ruxsat etilgan manbalar) massivida mavjud bo'lsa, u holda `Access-Control-Allow-Origin` sarlavhasiga berish uchun ushbu origin qiymatini qaytarsin. Agar mavjud bo'lmasa yoki origin bo'sh bo'lsa, `null` qaytarsin.",
+    "startingCode": "function validateOrigin(origin, allowedOrigins) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`allowedOrigins.includes(origin)` shartidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return validateOrigin;');\nconst fn = sandbox();\nconst allowed = ['https://trusted.com', 'https://app.trusted.com'];\nif (fn('https://trusted.com', allowed) !== 'https://trusted.com') return 'Ishonchli origin tekshiruvdan o\\'ta olmadi';\nif (fn('https://malicious.com', allowed) !== null) return 'Ruxsat etilmagan origin to\\'g\\'ri bloklanmadi (null qaytarishi kerak edi)';\nif (fn('', allowed) !== null) return 'Origin bo\\'sh bo\\'lganda null qaytarishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "CSRF Tokenni solishtirish",
+    "instruction": "So'rovdan kelgan CSRF tokenni sessiyadagi token bilan solishtiradigan `validateCsrfToken(requestToken, sessionToken)` funksiyasini yozing. Tokenlar xavfsizlik uchun faqat satr (string) turida, bo'sh bo'lmagan va o'zaro teng bo'lgandagina `true` qaytarsin, aks holda `false` qaytarsin.",
+    "startingCode": "function validateCsrfToken(requestToken, sessionToken) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Birinchi navbatda argumentlarning typeof string ekanligini, so'ngra ularning uzunligi 0 dan kattaligini va tengligini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return validateCsrfToken;');\nconst fn = sandbox();\nif (fn('abc123token', 'abc123token') !== true) return 'Bir xil tokenlarda true qaytishi kerak edi';\nif (fn('abc123token', 'xyz987token') !== false) return 'Har xil tokenlarda false qaytishi kerak';\nif (fn('', '') !== false) return 'Bo\\'sh tokenlarda false qaytishi kerak';\nif (fn(null, null) !== false) return 'Null yoki boshqa turdagi ma\\'lumotlarda false qaytishi kerak';\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "XSS (Cross-Site Scripting) hujumining asosiy maqsadi va ishlash printsipi nima?",
-      options: [
-        "Ma'lumotlar bazasiga noto'g'ri SQL so'rovlarini yuborib, jadval ma'lumotlarini o'g'irlash",
-        "Foydalanuvchi kiritadigan input maydonlari orqali sahifaga zararli JavaScript kodini kiritish (inject qilish) va uni boshqa foydalanuvchilar brauzerida ishga tushirish",
-        "Serverni judayam ko'p so'rovlar yuborib to'xtatib qo'yish (DDoS)",
-        "Veb-sayt xosting provayderini buzish"
-      ],
-      correctAnswer: 1,
-      explanation: "XSS hujumida haker foydalanuvchi kiritadigan input maydoni, URL query parametrlari yoki boshqa yo'llar bilan sahifaga begona zararli JS kodini joylaydi. Agar sayt bu kodni filtrlarsiz render qilsa, ushbu kod boshqa foydalanuvchilar brauzerida ham ishlab ketib, ularning cookie-fayllari va maxfiy ma'lumotlarini o'g'irlashi mumkin."
-    },
-    {
-      id: 2,
-      question: "Foydalanuvchi tokenlarini (masalan, JWT token) brauzerda XSS hujumlaridan maksimal darajada himoya qilgan holda saqlash uchun qaysi usul eng xavfsiz hisoblanadi?",
-      options: [
-        "`LocalStorage`da saqlash",
-        "`SessionStorage`da saqlash",
-        "`HttpOnly` va `Secure` flaglariga ega bo'lgan kuki (Cookie) fayllarida saqlash",
-        "Global JavaScript o'zgaruvchisida saqlash"
-      ],
-      correctAnswer: 2,
-      explanation: "`HttpOnly` flagi bilan o'rnatilgan kuki fayllarini brauzerdagi JavaScript skriptlari orqali o'qish (masalan, `document.cookie` yordamida) mutlaqo imkonsiz bo'ladi. Bu esa XSS hujumi sodir bo'lgan taqdirda ham tokenlarni hakerlar o'g'irlay olmasligini kafolatlaydi."
-    },
-    {
-      id: 3,
-      question: "CSRF (Cross-Site Request Forgery) hujumi nima va undan qanday himoyalanish mumkin?",
-      options: [
-        "Bu foydalanuvchi kompyuterini virus bilan zararlash; undan faqat antivirus orqali himoyalaniladi",
-        "Bu foydalanuvchi nomidan uning xabarisiz soxta so'rovlar yuborish hujumi; undan himoyalanish uchun maxsus CSRF tokenlar va cookie'larda `SameSite=Strict` (yoki `Lax`) sozlamasidan foydalaniladi",
-        "Bu ma'lumotlarni shifrlash; undan himoya qilish uchun SSL sertifikat ishlatiladi",
-        "Bu parollarni brute-force yordamida buzish; undan himoya qilish uchun murakkab parol tanlanadi"
-      ],
-      correctAnswer: 1,
-      explanation: "CSRF hujumida foydalanuvchi bitta xavfsiz saytda auth bo'lib turganida, boshqa zararli saytga kirganda u yerda avtomatik yashirin so'rov yuborish kodi ishlaydi. Buni oldini olishda so'rov faqat o'sha domen ichida yuborilishini tekshiruvchi CSRF tokenlar va `SameSite` cookie siyosati yordam beradi."
-    },
-    {
-      id: 4,
-      question: "SQL Injection (SQL inyeksiyasi) xavfini mutlaqo bartaraf etish uchun ma'lumotlar bazasiga so'rov yuborishda qaysi usuldan foydalanish shart?",
-      options: [
-        "SQL so'rovlarini oddiy string concatenation (satrlarni qo'shish) orqali yig'ish",
-        "Prepared Statements (parametrli so'rovlar) dan foydalanish",
-        "SQL so'rovlarini faqat client-side'da yozish",
-        "SQL o'rniga NoSQL bazalardan foydalanish"
-      ],
-      correctAnswer: 1,
-      explanation: "Prepared Statements yoki Parameterized Queries usulida ma'lumotlar so'rov shablonidan alohida jo'natiladi. Bu orqali ma'lumotlar tarkibidagi SQL buyruqlari bazaga SQL kodi emas, shunchaki oddiy matn bo'lib boradi va bazani buzib yuborolmaydi."
-    },
-    {
-      id: 5,
-      question: "Veb-sahifada qaysi manbalardan (domenlardan) JavaScript skriptlari, CSS stillari yoki rasmlar yuklanishi mumkinligini qat'iy cheklovchi xavfsizlik chorasi (HTTP header) nima deb ataladi?",
-      options: [
-        "CORS (Cross-Origin Resource Sharing)",
-        "CSP (Content Security Policy)",
-        "HTTPS",
-        "HSTS (HTTP Strict Transport Security)"
-      ],
-      correctAnswer: 1,
-      explanation: "CSP (Content Security Policy) - bu brauzerga qaysi manbalardan kelayotgan resurslar xavfsiz ekanini va ularni ishga tushirish kerakligini aytuvchi HTTP headerdir. U XSS hujumlarini deyarli butunlay zararsizlantirishga yordam beradi."
-    },
-    {
-      id: 6,
-      question: "HTTPS protokoli HTTP protokolidan qanday asosiy xavfsizlik afzalligi bilan farq qiladi?",
-      options: [
-        "U brauzer va server o'rtasidagi barcha ma'lumotlarni shifrlaydi (encryption) va transport qatlamida o'g'irlanishining oldini oladi (SSL/TLS orqali)",
-        "U rasmlarni tezroq yuklaydi",
-        "U SQL Injection hujumlarini avtomatik ravishda to'xtatadi",
-        "U JavaScript xatolarini tozalaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "HTTPS SSL/TLS protokoli yordamida brauzer va server o'rtasida uzatiladigan ma'lumotlarni shifrlaydi. Bu esa provayderlar yoki oraliq hakerlar maxfiy ma'lumotlarni o'qib olishining oldini oladi."
-    },
-    {
-      id: 7,
-      question: "CORS (Cross-Origin Resource Sharing) xavfsizlik mexanizmi brauzerda nima vazifani bajaradi?",
-      options: [
-        "Bitta domendagi veb-sahifa boshqa domendagi resurslarga so'rov yuborishi mumkinligini va unga qanday ruxsatlar berilganini boshqaradi",
-        "Parollarni avtomatik tarzda shifrlaydi",
-        "DDoS hujumlarini aniqlab bloklaydi",
-        "Barcha cookie fayllarini o'chirib tashlaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "CORS — bu brauzer xavfsizlik chorasi bo'lib, uning yordamida server o'z resurslariga boshqa qaysi domenlar so'rov yuborishi mumkinligini hal qiladi (Access-Control-Allow-Origin headerlari orqali)."
-    },
-    {
-      id: 8,
-      question: "Veb-saytga foydalanuvchi kiritadigan input ma'lumotlarini tekshirish va tozalash (Validation & Sanitization) nima uchun zarur?",
-      options: [
-        "Zararli kodlar yoki noto'g'ri formatdagi ma'lumotlar tizim bazasiga yoki sahifaga kirib ketishining oldini olish uchun",
-        "Faqat sahifa dizaynini chiroyli qilish uchun",
-        "Kod hajmini optimallashtirish uchun",
-        "Internet tezligini oshirish uchun"
-      ],
-      correctAnswer: 0,
-      explanation: "Kiritilgan ma'lumotlarni tekshirish (validation) uning to'g'riligini tasdiqlaydi. Tozalash (sanitization) esa hakerlar kiritishi mumkin bo'lgan zararli HTML/JS teglarini tozalaydi, bu esa XSS va SQL Injection hujumlaridan himoya qiladi."
-    },
-    {
-      id: 9,
-      question: "Foydalanuvchi tizimga muvaffaqiyatli kirdi va kimligi aniqlandi (Authentication). Endi uning ma'lum bir sahifaga yoki funksiyaga kirish huquqi bor-yo'qligini tekshirish jarayoni nima deb ataladi?",
-      options: [
-        "Authorization (Avtorizatsiya)",
-        "Authentication (Autentifikatsiya)",
-        "Encryption (Shifrlash)",
-        "Decryption (Shifrdan ochish)"
-      ],
-      correctAnswer: 0,
-      explanation: "Authentication — bu foydalanuvchining kimligini tekshirish (masalan, login/parol orqali). Authorization (avtorizatsiya) esa o'sha aniqlangan foydalanuvchining tizimda qanday amallarni bajarishga huquqi borligini tekshirishdir."
-    },
-    {
-      id: 10,
-      question: "Serverga bir soniyada juda ko'p miqdorda so'rovlar yuborib uni ishdan chiqarishga urinadigan 'Brute-Force' yoki API spam-hujumlaridan himoyalanish uchun qaysi mexanizm ishlatiladi?",
-      options: [
-        "Rate Limiting (So'rovlar sonini cheklash)",
-        "CORS",
-        "Encryption",
-        "Prepared Statements"
-      ],
-      correctAnswer: 0,
-      explanation: "Rate Limiting ma'lum bir vaqt ichida bitta IP manzildan yuborilishi mumkin bo'lgan maksimal so'rovlar sonini belgilaydi. Bu spammerlar va brute-force hujumlaridan serverni himoya qiladi."
-    },
-    {
-      id: 11,
-      question: "Cookie (kuki) sozlamasidagi `SameSite=Strict` flagi qanday asosiy vazifani bajaradi?",
-      options: [
-        "Cookie faqat va faqat o'sha saytning o'zida yuborilishini kafolatlaydi, uchinchi tomon saytlaridan yuborilgan so'rovlarga cookie qo'shilmaydi (CSRF himoyasi)",
-        "Cookie faylini localstorageda saqlaydi",
-        "Faqat HTTPS protokoli orqali cookie yuborilishini ta'minlaydi",
-        "Cookie faylini JavaScript orqali o'qish imkonini beradi"
-      ],
-      correctAnswer: 0,
-      explanation: "`SameSite=Strict` sozlamasi CSRF (Cross-Site Request Forgery) hujumlaridan ajoyib himoyadir, chunki u brauzerga begona saytlardan kelayotgan linklar yoki so'rovlarga ushbu saytning cookie-fayllarini qo'shmaslikni buyuradi."
-    },
-    {
-      id: 12,
-      question: "JavaScript-da `eval()` funksiyasidan foydalanish nima uchun juda katta xavfsizlik xavfi (Security Risk) hisoblanadi?",
-      options: [
-        "Chunki `eval()` unga uzatilgan har qanday string formatidagi kodni to'liq huquq bilan ishga tushiradi, bu esa begona kodlarni bajarish imkonini yaratadi",
-        "Chunki u faqat eski brauzerlarda ishlaydi",
-        "Chunki u xotira hajmini cheklaydi",
-        "Chunki u asinxron ishlashni bloklaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "`eval()` funksiyasi matn ko'rinishidagi kodni bajaradi. Agar foydalanuvchi kiritgan ma'lumot `eval()` ichiga tushib qolsa, haker istalgan zararli kodni tizimda ishga tushirishi mumkin."
-    },
-    {
-      id: 13,
-      question: "Content Security Policy (CSP) nima va u veb-ilovada qanday xizmat qiladi?",
-      options: [
-        "Bu HTTP javob headeri bo'lib, brauzerga qaysi manbalardan (domenlardan) JS skriptlari, CSS stillari, rasmlar yoki boshqa resurslar yuklanishi ruxsat etilganini qat'iy belgilaydi va XSS hujumlarini oldini oladi",
-        "Bu ma'lumotlar bazasida parollarni shifrlash algoritmidir",
-        "Bu foydalanuvchilarning cookie-fayllarini o'chirib tashlaydigan brauzer kengaytmasidir",
-        "Bu faqat mobil ilovalar uchun ishlaydigan ruxsatnomadir"
-      ],
-      correctAnswer: 0,
-      explanation: "CSP (Content Security Policy) veb-sahifaning ishonchli manbalari ro'yxatini e'lon qilish orqali ruxsat etilmagan uchinchi tomon skriptlari yoki inline JS kodlari ishga tushishini taqiqlaydi. Bu XSS-ga qarshi juda kuchli himoyadir."
-    },
-    {
-      id: 14,
-      question: "Kuki (Cookie) o'rnatishda Secure flagi nimani ta'minlaydi va u nega muhim?",
-      options: [
-        "Kuki faqat HTTPS (shifrlangan xavfsiz aloqa kanali) orqali tarmoqqa yuborilishini kafolatlaydi va HTTP orqali uzatilib yo'lda o'g'irlanishidan himoya qiladi",
-        "Kuki faqat LocalStorage ichida saqlanishini ta'minlaydi",
-        "Kuki faylini o'qish tezligini oshiradi",
-        "Foydalanuvchiga kuki-ni o'chirishga ruxsat bermaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "Secure flagi kukining faqat HTTPS orqali yuborilishini majburlaydi. Bu orqali hakerlar tarmoq trafigini kuzatganda (Man-in-the-Middle) maxfiy kuki/tokenlarni ochiq matn ko'rinishida o'g'irlay olmaydi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "XSS (Cross-Site Scripting) nima?",
+    "options": [
+      "Serverdagi ma'lumotlar bazasini o'chirib yuboradigan SQL so'rovi",
+      "Zararli buzg'unchi tomonidan veb-saytga (HTML sahifaga) begona JavaScript kodining joylashtirilishi va boshqa foydalanuvchilar brauzerida ushbu kodning ijro etilishi",
+      "Sayt dizaynini buzuvchi CSS xatoligi",
+      "Server ulanishini cheklovchi tarmoq hujumi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "XSS — bu foydalanuvchi kiritgan ma'lumotlar to'g'ri tekshirilmasdan sahifaga chiqarilishi oqibatida zararli JS skriptlarining ishga tushib ketishidir. Bu orqali cookie yoki session tokenlarni o'g'irlash mumkin."
+  },
+  {
+    "id": 2,
+    "question": "XSS hujumlaridan saqlanishning eng samarali yo'li nima?",
+    "options": [
+      "Faqat CSS dan foydalanish",
+      "Foydalanuvchidan kelayotgan barcha ma'lumotlarni HTML entity ko'rinishiga o'tkazish (Sanitizing/Escaping) va ishonchsiz kodlarni ijro etmaslik",
+      "Faqat server xotirasini oshirish",
+      "Saytga kirishda parolni juda uzun qilish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Matnlardagi `<`, `>`, `&` kabi maxsus belgilarni zararsizlantirish (escaping) orqali brauzer ularni skript emas, oddiy matn sifatida ko'rsatishini ta'minlaymiz."
+  },
+  {
+    "id": 3,
+    "question": "CSRF (Cross-Site Request Forgery) hujumi nima?",
+    "options": [
+      "Serverga juda ko'p so'rov yuborib uni qotirish",
+      "Foydalanuvchining ma'lum bir saytda avtorizatsiyadan o'tganligidan foydalanib, uning ruxsatisiz uchinchi tomon saytidan zararli so'rovlarni yuborish (masalan, foydalanuvchi nomidan pul o'tkazish)",
+      "Buzilgan parollarni taxmin qilib topish",
+      "Sayt sahifalarini nusxalab olish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CSRF — bu foydalanuvchi bilmagan holda uning nomidan (brauzerdagi faol sessiya/cookie yordamida) boshqa saytdan turib so'rov yuborish hujumidir."
+  },
+  {
+    "id": 4,
+    "question": "CSRF hujumlaridan himoyalanish uchun qaysi mexanizm keng qo'llaniladi?",
+    "options": [
+      "Faqat HTTPS protokoli",
+      "Anti-CSRF (yoki CSRF) tokenlaridan foydalanish (har bir form/so'rov bilan server tomonidan berilgan bir martalik maxfiy tokenni solishtirish) va cookies uchun `SameSite` flagini yoqish",
+      "Sinflarni keshlab qo'yish",
+      "Tizimga faqat telefon orqali kirish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CSRF tokenlar faqat foydalanuvchining o'z sahifasida mavjud bo'lgani uchun, zararli uchinchi tomon sayti bu tokenni bila olmaydi va server noto'g'ri tokenli so'rovlarni rad etadi."
+  },
+  {
+    "id": 5,
+    "question": "CORS (Cross-Origin Resource Sharing) nima?",
+    "options": [
+      "Faqat Chrome brauzerida ishlaydigan tezkor ma'lumot uzatish tizimi",
+      "Brauzerlarda xavfsizlik nuqtai nazaridan bir manbadan (Origin A) boshqa manbadagi (Origin B) resurslarga so'rov yuborishni nazorat qiluvchi va ruxsat beruvchi xavfsizlik mexanizmi",
+      "Rasmlarni siqish algoritmi",
+      "Faqat HTTP POST so'rovlarini bloklaydigan tizim"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CORS brauzer xavfsizligi standarti bo'lib, u serverga o'z resurslarini qaysi origin'lar (saytlar) o'qiy olishi mumkinligini belgilash imkonini beradi."
+  },
+  {
+    "id": 6,
+    "question": "Brauzerda CORS xatoligi (CORS error) kelib chiqqanda, muammoni qayerda sozlash lozim?",
+    "options": [
+      "Faqat mijoz (Frontend) kodida, chunki so'rov brauzerdan yuborilgan",
+      "Server (Backend) sozlamalarida, javob sarlavhalariga (Headers) kerakli `Access-Control-Allow-Origin` qiymatlarini qo'shish orqali",
+      "Foydalanuvchining operatsion tizimida",
+      "DNS provayderda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CORS xavfsizlik qoidasi brauzer tomonidan tekshiriladi, lekin ruxsat beruvchi sarlavhalar server tomonidan `Access-Control-Allow-Origin` ko'rinishida yuborilishi shart."
+  },
+  {
+    "id": 7,
+    "question": "Cookie ma'lumotlarini JavaScript (masalan, `document.cookie`) orqali o'qishni taqiqlash va XSS orqali o'g'irlanishining oldini olish uchun qaysi flag qo'yiladi?",
+    "options": [
+      "`Secure`",
+      "`HttpOnly`",
+      "`SameSite`",
+      "`Path`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`HttpOnly` flagi o'rnatilgan cookie-larga brauzerda JS orqali kirib bo'lmaydi. Ular faqat tarmoq so'rovlari (HTTP/HTTPS) bilan avtomatik yuboriladi."
+  },
+  {
+    "id": 8,
+    "question": "Cookie faqat shifrlangan HTTPS ulanishlar orqali uzatilishini ta'minlash uchun qaysi flag ishlatiladi?",
+    "options": [
+      "`HttpOnly`",
+      "`Secure`",
+      "`SameSite=Strict`",
+      "`Max-Age`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Secure` flagi cookie faylining ochiq (shifrlanmagan) HTTP ulanishi orqali uzatilishini taqiqlaydi, bu esa tarmoq trafigini kuzatayotgan buzg'unchilardan himoya qiladi."
+  },
+  {
+    "id": 9,
+    "question": "Uchinchi tomon saytlaridan yuboriladigan so'rovlarda (Cross-Site) cookie yuborilishini boshqarish orqali CSRF dan himoyalovchi zamonaviy cookie xossasi nima?",
+    "options": [
+      "`Domain`",
+      "`Path`",
+      "`SameSite`",
+      "`Expires`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`SameSite` atributi (Strict, Lax yoki None qiymatlari bilan) uchinchi tomon havolalaridan kelgan so'rovlarda cookie yuborilishini cheklaydi."
+  },
+  {
+    "id": 10,
+    "question": "HTTPS protokoli HTTP dan qanday qilib ustun xavfsizlik ta'minlaydi?",
+    "options": [
+      "U faqat rasmlarni shifrlaydi",
+      "U TLS/SSL protokoli yordamida mijoz va server o'rtasidagi barcha ma'lumotlarni shifrlaydi va transport qatlamida o'g'irlanish (Man-in-the-Middle) hamda o'zgartirilishdan himoya qiladi",
+      "U faqat parollarni keshlaydi",
+      "U sayt yuklanishini sekinlashtiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "HTTPS barcha so'rovlar va javoblar (sarlavhalar, body, cookies va h.k.) transport darajasida shifrlanishini kafolatlaydi."
+  },
+  {
+    "id": 11,
+    "question": "Content Security Policy (CSP) nima?",
+    "options": [
+      "Foydalanuvchi parolini tekshiradigan qoida",
+      "Brauzerga qaysi manbalardan (domenlardan) JS, CSS, rasmlar va boshqa resurslarni yuklashga ruxsat berilganligini ko'rsatuvchi va XSS xavfini sezilarli kamaytiruvchi HTTP sarlavhasi (yoki meta teg)",
+      "Veb-sayt tezligini oshiruvchi kesh siyosati",
+      "Ma'lumotlar bazasi xavfsizlik devori"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CSP yordamida ishlab chiquvchilar sahifada faqat ruxsat etilgan xavfsiz manbalardan olingan skriptlar bajarilishini yoki `inline` skriptlar ishlamasligini belgilashi mumkin."
+  },
+  {
+    "id": 12,
+    "question": "SQL Injection (SQLi) nima?",
+    "options": [
+      "HTML sahifaga zararli JavaScript qo'shish",
+      "Foydalanuvchi kiritgan ma'lumotlar orqali ma'lumotlar bazasiga yuboriladigan SQL so'rovini manipulyatsiya qilish (o'zgartirish) va ruxsat berilmagan ma'lumotlarni olish yoki o'chirish hujumi",
+      "Server fayl tizimini buzish",
+      "Tarmoqdagi IP manzillarini aniqlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "SQL Injection serverga yozilgan SQL so'rovlarining kiritilgan ma'lumotlar bilan birlashib ketishi natijasida yuzaga keladi. Buni oldini olish uchun Parameterized Queries (tayyorlangan so'rovlar) ishlatiladi."
+  }
+]
+
 };

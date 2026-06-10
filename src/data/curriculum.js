@@ -71,7 +71,7 @@ import { performanceOptimization } from "./lessons/advanced/performanceOptimizat
 import { prototypes as prototypesLesson } from "./lessons/advanced/prototypes";
 import { advancedFetch } from "./lessons/advanced/advancedFetch";
 import { closuresDeepDive } from "./lessons/advanced/closuresDeepDive";
-import { securityLesson } from "./lessons/advanced/security";
+import { security as securityLesson } from "./lessons/advanced/security";
 import { unitTesting } from "./lessons/advanced/unitTesting";
 import { metaprogramming } from "./lessons/advanced/metaprogramming";
 import { regex as regexLesson } from "./lessons/advanced/regex";
