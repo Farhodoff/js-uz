@@ -1,355 +1,445 @@
 export const binarySearchTree = {
   id: "binarySearchTree",
   title: "Ikkilik Qidiruv Daraxti (Binary Search Tree)",
-  theory: `## 1. NEGA kerak?
-Chiziqli ma'lumotlar tuzilmalarida (massiv, linked list) ma'lumotlarni tartiblangan holda saqlash va tez qidirish orasida doimiy ziddiyat bor. Massivda tez qidirish mumkin (Binary Search $O(\log n)$), lekin yangi element qo'shish qiyin ($O(n)$). Linked listda esa qo'shish tez ($O(1)$), lekin qidirish qiyin ($O(n)$).
-**Binary Search Tree (BST)** (Ikkilik qidiruv daraxti) esa ierarxik tuzilishi orqali ikkala amaliyotni ham o'ta samarali — o'rtacha **$O(\log n)$** vaqt ichida bajarish imkonini beradi. Bu uni ma'lumotlar bazalari indekslarida, fayl tizimlarida va tezkor qidiruv tizimlarida almashtirib bo'lmas tuzilmaga aylantiradi.
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-## 2. SODDALIK (Analogiya)
-Buni **kutubxonadagi kitoblarni tartiblash tizimiga** o'xshatish mumkin:
-Tasavvur qiling, sizga biror kitob kerak. Agar barcha kitoblar bitta chiziqda taxlangan bo'lsa, siz boshidan boshlab bittalab qidirasiz ($O(n)$).
-Lekin kutubxonachi kitoblarni shunday joylaganki, siz o'rtada turibsiz. Chap tomonda faqat siz qidirayotgan harfdan oldingi harflar (A-M), o'ng tomonda esa keyingi harflar (N-Z) bor. Siz bitta qaror bilan kitoblarning yarmini tekshirishdan voz kechasiz. BST ham xuddi shunday ishlaydi: har bir qadamda muammoni yarmiga qisqartiradi.
+### Ikkilik Qidiruv Daraxti (Binary Search Tree - BST) nima?
+**Ikkilik Daraxt (Binary Tree)** — bu ierarxik ma'lumotlar tuzilmasi bo'lib, unda har bir element (tugun) ko'pi bilan ikkita "farzand" (chap va o'ng tugunlar)ga ega bo'lishi mumkin.
+**Ikkilik Qidiruv Daraxti (BST)** — bu ikkilik daraxtning maxsus turi bo'lib, quyidagi qoidalarga bo'ysunadi:
+* Har bir tugunning **chap** ostki daraxtidagi barcha qiymatlar shu tugun qiymatidan **kichik** bo'ladi.
+* Har bir tugunning **o'ng** ostki daraxtidagi barcha qiymatlar shu tugun qiymatidan **katta** bo'ladi.
 
-## 3. STRUKTURA VA PRINTSIPLAR
-Daraxt tugunlar (Nodes) dan iborat bo'lib, eng tepada bitta **Root** (Ildiz) tugun turadi.
-Har bir tugun ko'pi bilan 2 ta bolaga ega bo'lishi mumkin: **Left child** (chap bola) va **Right child** (o'ng bola).
+### Real hayotiy analogiya
+Tasavvur qiling, siz **telefon kitobidan kimnidir qidiryapsiz**:
+* Agar kitob sahifalari tartibsiz bo'lsa, siz boshidan boshlab birma-bir varaqlashingiz kerak (chiziqli qidiruv - O(n)).
+* Agar siz BST formatidagi tizimdan foydalansangiz, o'rtadagi ismdan boshlaysiz. Agar siz qidirayotgan ism o'rtadagidan alifbo bo'yicha oldin kelsa, kitobning butun o'ng yarmini tashlab yuborasiz va faqat chap yarmini qidirasiz. Har bir solishtirishda qidiruv maydoni ikki barobar qisqaradi (O(log n)).
 
-### BST ning asosiy oltin qoidasi:
-1. Tugunning **chap** tarafidagi barcha tugunlarning qiymatlari shu tugun qiymatidan **kichik** bo'ladi.
-2. Tugunning **o'ng** tarafidagi barcha tugunlarning qiymatlari shu tugun qiymatidan **katta** bo'ladi.
+---
 
-\`mermaid
-graph TD
-    subgraph Balanced ["Balanced Tree (Balandlik = 2)"]
-        B1((20)) --> B2((10))
-        B1 --> B3((30))
-        B2 --> B4((5))
-        B2 --> B5((15))
-    end
-    subgraph Skewed ["Skewed Tree (Balandlik = 3)"]
-        S1((5)) --> S2((null))
-        S1 --> S3((10))
-        S3 --> S4((null))
-        S3 --> S5((15))
-    end
-\`
+## 2. 💻 Real Kod Misollari
 
-### A. Balanced vs Unbalanced Trees
-Daraxtga elementlar qanday tartibda qo'shilishi daraxt shakliga katta ta'sir qiladi:
-- **Balanced (Muvozanatli):** Chap va o'ng shoxlar balandligi taxminan teng. Qidiruv tezligi doimo optimal $O(\log n)$ bo'ladi.
-- **Unbalanced / Degenerate (Muvozanatsiz):** Elementlar tartiblangan holda kelganda (masalan, 1, 2, 3, 4), daraxt bitta chiziq bo'lib o'ngga yoki chapga cho'zilib ketadi va tezligi chiziqli $O(n)$ bo'lib qoladi (Linked List holiga keladi).
-
-### B. Daraxtni aylanib chiqish (Traversals)
-1. **DFS (Depth-First Search - Chuqurlik bo'yicha):**
-   - **In-Order (Chap -> Ota -> O'ng):** Elementlarni tartiblangan holda (kichikdan kattaga) chiqaradi.
-   - **Pre-Order (Ota -> Chap -> O'ng):** Daraxt nusxasini yaratishda ishlatiladi.
-   - **Post-Order (Chap -> O'ng -> Ota):** Elementlarni (yoki fayllarni) pastdan yuqoriga o'chirishda ishlatiladi.
-2. **BFS (Breadth-First Search - Kenglik bo'yicha):** Darajama-daraja (Level Order) aylanadi.
-
-\`mermaid
-graph TD
-    classDef nodeStyle fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
-    
-    A((A)):::nodeStyle --> B((B)):::nodeStyle
-    A --> C((C)):::nodeStyle
-    
-    NoteA["In-Order: B -> A -> C <br> Pre-Order: A -> B -> C <br> Post-Order: B -> C -> A"]
-\`
-
-## 4. AMALIYOT
-Tugun strukturasi:
-\`javascript
+### 1. Basic Example (Tugun va Daraxt sinfini yaratish hamda kiritish)
+Quyida tugun (Node) va daraxt (BST) yaratish hamda unga qiymat kiritish misoli keltirilgan:
+\`\`\`javascript
 class Node {
   constructor(value) {
     this.value = value;
+    this.left = null; // Chap farzand
+    this.right = null; // O'ng farzand
+  }
+}
+
+class BinarySearchTree {
+  constructor() {
+    this.root = null; // Daraxt ildizi
+  }
+
+  // Daraxtga yangi qiymat qo'shish
+  insert(value) {
+    const newNode = new Node(value);
+    if (this.root === null) {
+      this.root = newNode;
+      return this;
+    }
+    let current = this.root;
+    while (true) {
+      if (value === current.value) return undefined; // Bir xil qiymatlar kiritilmaydi
+      if (value < current.value) {
+        if (current.left === null) {
+          current.left = newNode;
+          return this;
+        }
+        current = current.left;
+      } else {
+        if (current.right === null) {
+          current.right = newNode;
+          return this;
+        }
+        current = current.right;
+      }
+    }
+  }
+}
+
+const bst = new BinarySearchTree();
+bst.insert(10);
+bst.insert(5);
+bst.insert(15);
+console.log(bst.root.value); // 10
+console.log(bst.root.left.value); // 5
+console.log(bst.root.right.value); // 15
+\`\`\`
+
+### 2. Intermediate Example (Qidiruv - Search/Contains)
+Daraxt ichidan ma'lum bir qiymatni tezkor qidirib topish:
+\`\`\`javascript
+class BinarySearchTreeWithSearch extends BinarySearchTree {
+  contains(value) {
+    if (this.root === null) return false;
+    let current = this.root;
+    while (current) {
+      if (value < current.value) {
+        current = current.left;
+      } else if (value > current.value) {
+        current = current.right;
+      } else {
+        return true; // Topildi!
+      }
+    }
+    return false; // Topilmadi
+  }
+}
+\`\`\`
+
+### 3. Advanced Example (Daraxtni aylanish - In-order DFS)
+In-order traversal yordamida daraxt elementlarini saralangan massiv ko'rinishida olish:
+\`\`\`javascript
+class CompleteBST extends BinarySearchTree {
+  // In-order traversal: Chap -> Tugun -> O'ng
+  inDFS() {
+    const data = [];
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      data.push(node.value);
+      if (node.right) traverse(node.right);
+    }
+    if (this.root) traverse(this.root);
+    return data;
+  }
+}
+
+const myTree = new CompleteBST();
+myTree.insert(10);
+myTree.insert(5);
+myTree.insert(15);
+myTree.insert(8);
+console.log(myTree.inDFS()); // [5, 8, 10, 15] (tartiblangan holda chiqadi)
+\`\`\`
+
+---
+
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
+
+### Qaysi muammoni hal qiladi?
+* **Tezkor qidirish va kiritish balansi:** Oddiy tartiblangan massivda qidirish tez (Binary Search - O(log n)), lekin yangi element kiritish sekin (O(n)), chunki elementlarni surish kerak. Tartibsiz massivda esa kiritish tez (O(1)), lekin qidirish sekin (O(n)). BST ikkala operatsiyani ham o'rtacha **O(log n)** tezlikda bajarish imkonini beradi.
+* **Ierarxik ma'lumotlarni ifodalash:** Fayllar tizimi, HTML DOM daraxti, qarorlar daraxti (Decision Trees) kabi ma'lumotlarni saqlash va boshqarishda daraxt tuzilmasi juda qulaydir.
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. Daraxt balansini hisobga olmaslik (Skewed Tree)
+#### Xato:
+Agar elementlarni o'sish tartibida kiritib borsak, daraxt bir tomonga qiyshayib, chiziqli ro'yxatga aylanib qoladi.
+\`bst.insert(1).insert(2).insert(3).insert(4)\`
+Bu holatda qidiruv tezligi O(log n) dan O(n) ga tushib ketadi.
+#### Tuzatish:
+Katta loyihalarda o'z-o'zini balanslovchi daraxtlardan (masalan, **AVL daraxti** yoki **Qizil-qora daraxt**) foydalanish lozim.
+
+### 2. Rekursiv aylanishda stek to'lib ketishi (Stack Overflow)
+Juda chuqur daraxtlarda rekursiyadan foydalanish chaqiriqlar stekini to'ldirib yuborishi mumkin. O'ta katta ma'lumotlar bilan ishlaganda iterativ usullardan foydalanish tavsiya etiladi.
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior (1–4)
+1. **Savol:** Ikkilik qidiruv daraxti (BST) oddiy ikkilik daraxtdan nimasi bilan farq qiladi?
+   * **Javob:** BSTda har bir tugunning chap tuguni undan kichik, o'ng tuguni esa undan katta qiymatga ega bo'lishi shart.
+2. **Savol:** BSTda eng kichik element qayerda joylashgan bo'ladi?
+   * **Javob:** Har doim eng chapki tugunda (rootdan boshlab chapga yurib boriladi).
+3. **Savol:** Leaf (barg) tugun nima?
+   * **Javob:** Chap va o'ng tarmoqlari \`null\` bo'lgan, ya'ni farzandlari bo'lmagan tugun.
+4. **Savol:** \`In-order\` aylanish tartibi qanday?
+   * **Javob:** Chap farzand -> Joriy Tugun -> O'ng farzand.
+
+### Middle (5–8)
+5. **Savol:** Balanslashgan BSTda element kiritish va o'chirishning vaqt murakkabligi qanday?
+   * **Javob:** O(log n) ga teng.
+6. **Savol:** Daraxtning balandligi (height) deganda nima tushuniladi?
+   * **Javob:** Root tugundan boshlab eng uzoq barg tugungacha bo'lgan yo'ldagi shoxlar (edges) soni.
+7. **Savol:** Nima uchun BSTda in-order aylanish har doim saralangan massiv qaytaradi?
+   * **Javob:** Chunki u birinchi bo'lib kichik (chap) elementlarni, so'ng o'rta (tugun) elementni, keyin esa katta (o'ng) elementlarni o'qiydi.
+8. **Savol:** Unbalanced (balanslanmagan) daraxt nima va u qanday muammo tug'diradi?
+   * **Javob:** Chap va o'ng tarmoqlarining chuqurligi keskin farq qiluvchi daraxt. U qidirish operatsiyasini O(n) gacha sekinlashtiradi.
+
+### Senior (9–12)
+9. **Savol:** BSTdan ikki farzandi bor tugunni o'chirish qanday amalga oshiriladi?
+   * **Javob:** O'chiriladigan tugunning o'rniga uning o'ng ostki daraxtining eng kichik qiymati (inorder successor) yoki chap ostki daraxtining eng katta qiymati (inorder predecessor) qo'yiladi va o'sha almashtirilgan tugun o'chiriladi.
+10. **Savol:** BFS (Breadth-First Search) va DFS (Depth-First Search) farqi nimada?
+    * **Javob:** BFS daraxtni qavatma-qavat (ko'ndalangiga) tekshiradi. DFS esa daraxtning oxirigacha (chuqurligiga) tushib, keyin ortga qaytadi.
+11. **Savol:** Red-Black Tree va AVL Tree o'rtasidagi farq nima?
+    * **Javob:** AVL daraxti qattiqroq balanslangan bo'lib, tezkor qidiruv uchun qulayroq. Red-Black daraxti esa kamroq balanslash operatsiyasini talab qilgani uchun kiritish va o'chirish ko'p bo'ladigan holatlarda tezroq ishlaydi.
+12. **Savol:** B-daraxtlar (B-Trees) qayerda ko'p ishlatiladi va nega?
+    * **Javob:** Ma'lumotlar bazasi indekslarida (masalan, MySQL, PostgreSQL) va fayl tizimlarida. Ular diskdan o'qish operatsiyalarini kamaytirish uchun ko'p tarmoqli (multi-way) qilib loyihalashtirilgan.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Bu bo'limda siz interaktiv kod muharriri orqali BST yaratish, element qo'shish va qidirish metodlarini amalda sinab ko'rasiz.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars oxirida bilimingizni sinash uchun test topshiriqlari taqdim etiladi.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Avtomatik To'ldirish (Autocomplete) tizimi uchun lug'at daraxti
+Katta hajmdagi matnlar ichidan so'zlarni tezkor qidirish uchun BST yoki uning modifikatsiyasi bo'lgan Trie (lug'at daraxti) tuzilmasi ishlatiladi.
+
+#### Oddiy BST qidiruv tizimi simulyatsiyasi:
+\`\`\`javascript
+class WordNode {
+  constructor(word) {
+    this.word = word;
     this.left = null;
     this.right = null;
   }
 }
-\`
 
-### Qidirish algoritmi (Search)
-\`javascript
-function search(node, target) {
-  if (node === null || node.value === target) return node;
-  if (target < node.value) return search(node.left, target);
-  return search(node.right, target);
+class AutoCompleteDictionary {
+  constructor() {
+    this.root = null;
+  }
+
+  addWord(word) {
+    const newNode = new WordNode(word.toLowerCase());
+    if (!this.root) {
+      this.root = newNode;
+      return;
+    }
+    let current = this.root;
+    while (true) {
+      if (word < current.word) {
+        if (!current.left) {
+          current.left = newNode;
+          break;
+        }
+        current = current.left;
+      } else if (word > current.word) {
+        if (!current.right) {
+          current.right = newNode;
+          break;
+        }
+        current = current.right;
+      } else {
+        break; // So'z allaqachon bor
+      }
+    }
+  }
+
+  // Berilgan prefiks bilan boshlanadigan so'z borligini tekshirish
+  hasWord(word) {
+    let current = this.root;
+    while (current) {
+      if (word === current.word) return true;
+      if (word < current.word) {
+        current = current.left;
+      } else {
+        current = current.right;
+      }
+    }
+    return false;
+  }
 }
-\`
+\`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **Daraxt muvozanati buzilishi (Skewed Tree):** Balanslanmagan BST oddiy Linked Listga va vaqt murakkabligi $O(n)$ ga tushib ketishi.
-2. **BST qoidasini noto'g'ri tekshirish:** Tugunning faqat bevosita bolalari o'zaro to'g'ri bog'langanini tekshirish kifoya qilmaydi. Chap tarmog'idagi barcha elementlar joriy tugundan kichik bo'lishi lozim.
-3. **Rekursiya chuqurligi (Stack Overflow):** Balanslanmagan juda katta daraxtlarda rekursiv usullar Call Stack-ni to'ldirib yuborishi mumkin.
+---
 
-## 6. SAVOLLAR VA JAVOBLAR
-**1. Ikkilik daraxt (Binary Tree) nima?**
-Har bir tuguni ko'pi bilan ikkita (chap va o'ng) bolaga ega bo'lishi mumkin bo'lgan ierarxik ma'lumotlar tuzilmasi.
+## 9. 🚀 Performance va Optimization
 
-**2. Binary Search Tree (BST) oddiy Binary Tree-dan nimasi bilan farq qiladi?**
-BST-da tartib qoidasi bor: chap bolalar ota-onadan kichik, o'ng bolalar esa ota-onadan katta bo'ladi.
+* **Daraxtni balanslash:** Agar ma'lumotlar juda ko'p bo'lsa, massivdan BST yasashda avval massivni saralab olib, o'rtadagi elementni root qilish orqali balanslangan daraxt yasash mumkin (Divide and Conquer).
+* **Iterativ metodlar:** Recursion o'rniga \`while\` siklidan foydalanish xotira (Call Stack) sarfini kamaytiradi va JavaScript dvigatelida tezroq ishlaydi.
 
-**3. Balanslashgan BST-da qidiruv vaqt murakkabligi qanday?**
-O'rtacha holatda barcha amallar uchun $O(\log n)$ ga teng.
+---
 
-**4. Eng yomon holatda (Skewed Tree) BST tezligi qanday bo'ladi?**
-$O(n)$ bo'lib qoladi, chunki daraxt chiziqli bog'langan ro'yxatga aylanib qoladi.
+## 10. 📌 Cheat Sheet
 
-**5. Red-Black Tree va AVL daraxtlarining maqsadi nima?**
-Ular elementlar qo'shilganda yoki o'chirilganda daraxtni avtomatik ravishda balanslab (muvozanatda saqlab) turuvchi o'z-o'zini balanslovchi BST hisoblanadi.
+| Operatsiya | Balanslangan BST | Qiyshaygan (Skewed) BST | Tavsif |
+| :--- | :--- | :--- | :--- |
+| **Qidiruv (Search)** | O(log n) | O(n) | Ildizdan boshlab chap/o'ngga qarab yuriladi |
+| **Kiritish (Insert)** | O(log n) | O(n) | Bo'sh joy topilguncha solishtirib boriladi |
+| **O'chirish (Delete)**| O(log n) | O(n) | Tugun topilib, farzandlar soniga qarab qayta ulanadi |
+| **In-order aylanish**| O(n) | O(n) | Elementlarni o'sish tartibida o'qish |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "BST Tuguni (BSTNode)",
-      instruction: "Binary Search Tree tuguni uchun `value`, chap (`left = null`) va o'ng (`right = null`) ko'rsatkichli `BSTNode` klassini yozing.",
-      startingCode: "class BSTNode {\n  // Constructor yarating\n}",
-      hint: "constructor(value) { this.value = value; this.left = null; this.right = null; }",
-      test: "if (typeof BSTNode !== 'function') return 'BSTNode klassi topilmadi'; const n = new BSTNode(15); if(n.value !== 15 || n.left !== null || n.right !== null) return 'BSTNode xossalari xato'; return null;"
-    },
-    {
-      id: 2,
-      title: "BST-ga element qo'shish (Insert)",
-      instruction: "BinarySearchTree klassiga yangi qiymatni BST qoidasi bo'yicha rekursiv joylashtiradigan `insert(value)` metodini yozing.",
-      startingCode: "class BSTNode {\n  constructor(value) { this.value = value; this.left = null; this.right = null; }\n}\nclass BinarySearchTree {\n  constructor() { this.root = null; }\n  insert(value) {\n    const newNode = new BSTNode(value);\n    if (!this.root) { this.root = newNode; return; }\n    this._insertNode(this.root, newNode);\n  }\n  _insertNode(node, newNode) {\n    // Rekursiv qo'shish logikasini yozing\n  }\n}",
-      hint: "if (newNode.value < node.value) {\n  if (!node.left) node.left = newNode;\n  else this._insertNode(node.left, newNode);\n} else {\n  if (!node.right) node.right = newNode;\n  else this._insertNode(node.right, newNode);\n}",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); bst.insert(10); bst.insert(5); bst.insert(15); if(bst.root.value !== 10) return 'Root xato'; if(bst.root.left.value !== 5) return 'Chap shox xato'; if(bst.root.right.value !== 15) return 'O\\'ng shox xato'; return null;"
-    },
-    {
-      id: 3,
-      title: "BST-dan element izlash (Search)",
-      instruction: "Daraxtdan berilgan `value` qiymatini izlab, topilgan tugunni qaytaradigan `search(node, value)` rekursiv metodini yozing (topilmasa null).",
-      startingCode: "class BinarySearchTree {\n  constructor() { this.root = null; }\n  search(node, value) {\n    // Rekursiv qidiruv shartini yozing\n  }\n}",
-      hint: "if (!node) return null;\nif (value < node.value) return this.search(node.left, value);\nif (value > node.value) return this.search(node.right, value);\nreturn node;",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); const root = { value: 10, left: { value: 5, left: null, right: null }, right: null }; bst.root = root; if(!bst.search(root, 5) || bst.search(root, 5).value !== 5) return 'Mavjud element topilmadi'; if(bst.search(root, 12) !== null) return 'Mavjud bo\\'lmagan element uchun null bo\\'lishi kerak'; return null;"
-    },
-    {
-      id: 4,
-      title: "In-Order Traversal (Tartiblangan)",
-      instruction: "Daraxt elementlarini o'sish tartibida massivga yozib qaytaradigan `inOrder(node, arr = [])` metodini yozing.",
-      startingCode: "class BinarySearchTree {\n  inOrder(node, arr = []) {\n    // Chap, Ota, O'ng tartibida rekursiya qiling\n  }\n}",
-      hint: "if (node) {\n  this.inOrder(node.left, arr);\n  arr.push(node.value);\n  this.inOrder(node.right, arr);\n}\nreturn arr;",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); const root = { value: 10, left: { value: 5, left: null, right: null }, right: { value: 15, left: null, right: null } }; const res = bst.inOrder(root); if (res[0] !== 5 || res[1] !== 10 || res[2] !== 15) return 'In-order tartibi xato'; return null;"
-    },
-    {
-      id: 5,
-      title: "Pre-Order Traversal",
-      instruction: "Avval ota-ona, keyin chap va o'ng shoxlarni aylanadigan `preOrder(node, arr = [])` metodini yozing.",
-      startingCode: "class BinarySearchTree {\n  preOrder(node, arr = []) {\n    // Ota, Chap, O'ng tartibida\n  }\n}",
-      hint: "if (node) {\n  arr.push(node.value);\n  this.preOrder(node.left, arr);\n  this.preOrder(node.right, arr);\n}\nreturn arr;",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); const root = { value: 10, left: { value: 5, left: null, right: null }, right: { value: 15, left: null, right: null } }; const res = bst.preOrder(root); if (res[0] !== 10 || res[1] !== 5 || res[2] !== 15) return 'Pre-order tartibi xato'; return null;"
-    },
-    {
-      id: 6,
-      title: "Post-Order Traversal",
-      instruction: "Avval chap va o'ng bolalar, eng oxirida ota-onani aylanadigan `postOrder(node, arr = [])` metodini yozing.",
-      startingCode: "class BinarySearchTree {\n  postOrder(node, arr = []) {\n    // Chap, O'ng, Ota tartibida\n  }\n}",
-      hint: "if (node) {\n  this.postOrder(node.left, arr);\n  this.postOrder(node.right, arr);\n  arr.push(node.value);\n}\nreturn arr;",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); const root = { value: 10, left: { value: 5, left: null, right: null }, right: { value: 15, left: null, right: null } }; const res = bst.postOrder(root); if (res[0] !== 5 || res[1] !== 15 || res[2] !== 10) return 'Post-order tartibi xato'; return null;"
-    },
-    {
-      id: 7,
-      title: "Eng kichik element (Min Value)",
-      instruction: "Daraxtdagi eng kichik qiymatni topuvchi `getMin(node)` metodini yozing (eng chap tomonga boring).",
-      startingCode: "class BinarySearchTree {\n  getMin(node) {\n    // Eng chapdagi tugungacha sikl yozing\n  }\n}",
-      hint: "if (!node) return null; while(node.left) node = node.left; return node.value;",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); const root = { value: 10, left: { value: 3, left: null, right: null }, right: null }; if (bst.getMin(root) !== 3) return 'Eng kichik element topilmadi'; return null;"
-    },
-    {
-      id: 8,
-      title: "Eng katta element (Max Value)",
-      instruction: "Daraxtdagi eng katta qiymatni topuvchi `getMax(node)` metodini yozing (eng o'ng tomonga boring).",
-      startingCode: "class BinarySearchTree {\n  getMax(node) {\n    // Eng o'ngdagi tugungacha boring\n  }\n}",
-      hint: "if (!node) return null; while(node.right) node = node.right; return node.value;",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); const root = { value: 10, left: null, right: { value: 20, left: null, right: null } }; if (bst.getMax(root) !== 20) return 'Eng katta element topilmadi'; return null;"
-    },
-    {
-      id: 9,
-      title: "BFS - Kenglik bo'yicha aylanib chiqish",
-      instruction: "Navbat (Queue) yordamida darajama-daraja aylanib chiqadigan `bfs(node)` metodini yozing (qiymatlar massivini qaytaring).",
-      startingCode: "class BinarySearchTree {\n  bfs(node) {\n    if (!node) return [];\n    const queue = [node];\n    const result = [];\n    // queue yordamida level-order aylaning\n  }\n}",
-      hint: "while(queue.length) {\n  let curr = queue.shift();\n  result.push(curr.value);\n  if (curr.left) queue.push(curr.left);\n  if (curr.right) queue.push(curr.right);\n} return result;",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); const root = { value: 10, left: { value: 5, left: null, right: null }, right: { value: 15, left: null, right: null } }; const res = bst.bfs(root); if (res[0] !== 10 || res[1] !== 5 || res[2] !== 15) return 'BFS tartibi xato'; return null;"
-    },
-    {
-      id: 10,
-      title: "Daraxt balandligi (Height)",
-      instruction: "Daraxt balandligini (root-dan eng uzoq barggacha bo'lgan yo'l uzunligi) hisoblaydigan rekursiv `getHeight(node)` metodini yozing.",
-      startingCode: "class BinarySearchTree {\n  getHeight(node) {\n    // Rekursiv balandlikni hisoblang\n  }\n}",
-      hint: "if (!node) return -1; return Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); if (bst.getHeight(null) !== -1) return 'Bo\\'sh daraxt balandligi -1 bo\\'lishi kerak'; const root = { value: 10, left: { value: 5, left: null, right: null }, right: null }; if (bst.getHeight(root) !== 1) return 'Balandlik xato'; return null;"
-    },
-    {
-      id: 11,
-      title: "BST ekanligini tekshirish",
-      instruction: "Daraxt BST oltin qoidasiga to'liq javob berishini tekshiradigan `isValidBST(node, min = null, max = null)` metodini yozing (true/false).",
-      startingCode: "class BinarySearchTree {\n  isValidBST(node, min = null, max = null) {\n    // Diapazonni tekshiring\n  }\n}",
-      hint: "if (!node) return true;\nif (min !== null && node.value <= min) return false;\nif (max !== null && node.value >= max) return false;\nreturn this.isValidBST(node.left, min, node.value) && this.isValidBST(node.right, node.value, max);",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); const validRoot = { value: 10, left: { value: 5, left: null, right: null }, right: { value: 15, left: null, right: null } }; if (bst.isValidBST(validRoot) !== true) return 'To\\'g\\'ri BSTni xato deb topdi'; const invalidRoot = { value: 10, left: { value: 12, left: null, right: null }, right: null }; if (bst.isValidBST(invalidRoot) !== false) return 'Noto\\'g\\'ri BSTni aniqlay olmadi'; return null;"
-    },
-    {
-      id: 12,
-      title: "Qiymat borligini tekshirish (Contains)",
-      instruction: "Daraxtda qidirilayotgan qiymat bor yoki yo'qligini tekshirib true/false qaytaradigan `contains(value)` metodini yozing.",
-      startingCode: "class BinarySearchTree {\n  constructor() { this.root = null; }\n  contains(value) {\n    let curr = this.root;\n    // Sikl yordamida qidirib true/false qaytaring\n  }\n}",
-      hint: "while(curr) {\n  if (value === curr.value) return true;\n  curr = value < curr.value ? curr.left : curr.right;\n} return false;",
-      test: "if (typeof BinarySearchTree !== 'function') return 'BinarySearchTree topilmadi'; const bst = new BinarySearchTree(); bst.root = { value: 10, left: { value: 5, left: null, right: null }, right: null }; if (bst.contains(5) !== true) return 'Mavjud element topilmadi'; if (bst.contains(8) !== false) return 'Mavjud bo\\'lmagan element uchun true berildi'; return null;"
-    },
-    {
-      id: 13,
-      title: "Ikkilik daraxtni teskarilash (Invert Binary Tree)",
-      instruction: "Ikkilik daraxt ildizi `node` berilgan. Chap va o'ng tarmoqlarini o'zaro almashtirish orqali daraxtni ko'zgusimon teskarilab (invert), yangi ildizini qaytaruvchi `invertTree(node)` funksiyasini yozing.",
-      startingCode: "function invertTree(node) {\n  // Daraxt shoxlarini ko'zgusimon teskarilang\n}",
-      hint: "if (!node) return null;\nconst temp = node.left;\nnode.left = invertTree(node.right);\nnode.right = invertTree(temp);\nreturn node;",
-      test: "const tree = {\n  value: 4,\n  left: { value: 2, left: { value: 1, left: null, right: null }, right: { value: 3, left: null, right: null } },\n  right: { value: 7, left: { value: 6, left: null, right: null }, right: { value: 9, left: null, right: null } }\n};\nconst inverted = invertTree(tree);\nif (inverted && inverted.value === 4 && inverted.left.value === 7 && inverted.right.value === 2 && inverted.left.left.value === 9 && inverted.right.right.value === 1) {\n  return null;\n}\nreturn 'Daraxt ko\\'zgusimon teskarilanmadi';"
-    },
-    {
-      id: 14,
-      title: "Qatlamlar bo'yicha aylanib chiqish (Binary Tree Level Order Traversal)",
-      instruction: "Ikkilik daraxt ildizi `node` berilgan. Elementlar qiymatlarini gorizontal qatlamlar (levels) bo'yicha ikki o'lchamli massiv shaklida qaytaruvchi `levelOrder(node)` funksiyasini yozing. Masalan: `[[3], [9, 20], [15, 7]]`.",
-      startingCode: "function levelOrder(node) {\n  // Qatlamlar bo'yicha 2D massiv qaytaring\n}",
-      hint: "BFS yondashuvida navbat (Queue) ishlating. Har bir iteratsiyada joriy darajadagi elementlar soni (levelSize = queue.length) bo'yicha elementlarni dequeue qiling va bolalarini navbatga qo'shib boring.",
-      test: "const tree = {\n  value: 3,\n  left: { value: 9, left: null, right: null },\n  right: { value: 20, left: { value: 15, left: null, right: null }, right: { value: 7, left: null, right: null } }\n};\nconst res = levelOrder(tree);\nif (Array.isArray(res) && res.length === 3 && res[0].join(',') === '3' && res[1].join(',') === '9,20' && res[2].join(',') === '15,7') {\n  return null;\n}\nreturn 'Level order traversal noto\\'g\\'ri massiv qaytardi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Daraxtga element qo'shish (insert)",
+    "instruction": "Ikkilik qidiruv daraxtiga yangi qiymat qo'shuvchi `insert(value)` metodini yozing. Metod qiymatni to'g'ri chap yoki o'ng tarmoqqa joylashtirishi va `this` (daraxt obyekti) ni qaytarishi kerak. `Node` va `BinarySearchTree` klasslari berilgan.",
+    "startingCode": "class Node {\n  constructor(value) {\n    this.value = value;\n    this.left = null;\n    this.right = null;\n  }\n}\n\nclass BinarySearchTree {\n  constructor() {\n    this.root = null;\n  }\n\n  insert(value) {\n    // Kodni shu yerda yozing\n  }\n}\n",
+    "hint": "Agar root bo'sh bo'lsa, uni yangi Node qiling. Aks holda rekursiv yoki sikl yordamida qiymatni root.value bilan solishtirib, kichik bo'lsa chapga, katta bo'lsa o'ngga yuring.",
+    "test": "const sandbox = new Function(code + '; return BinarySearchTree;');\nconst BST = sandbox();\nconst bst = new BST();\nbst.insert(10);\nbst.insert(5);\nbst.insert(15);\nbst.insert(7);\nif (!bst.root) return 'Root null bo\\'lib qoldi';\nif (bst.root.value !== 10) return 'Root qiymati noto\\'g\\'ri';\nif (!bst.root.left || bst.root.left.value !== 5) return 'Chap tugun noto\\'g\\'ri joylashdi';\nif (!bst.root.right || bst.root.right.value !== 15) return 'O\\'ng tugun noto\\'g\\'ri joylashdi';\nif (!bst.root.left.right || bst.root.left.right.value !== 7) return 'Chuqurroqdagi tugun noto\\'g\\'ri joylashdi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Daraxtdan qiymat qidirish (contains)",
+    "instruction": "Berilgan `value` qiymati daraxtda bor yoki yo'qligini tekshiruvchi `contains(value)` metodini yozing. Agar qiymat topilsa `true`, aks holda `false` qaytarsin.",
+    "startingCode": "class Node {\n  constructor(value) {\n    this.value = value;\n    this.left = null;\n    this.right = null;\n  }\n}\n\nclass BinarySearchTree {\n  constructor() {\n    this.root = null;\n  }\n\n  insert(value) {\n    const newNode = new Node(value);\n    if (!this.root) { this.root = newNode; return this; }\n    let current = this.root;\n    while (true) {\n      if (value === current.value) return this;\n      if (value < current.value) {\n        if (!current.left) { current.left = newNode; return this; }\n        current = current.left;\n      } else {\n        if (!current.right) { current.right = newNode; return this; }\n        current = current.right;\n      }\n    }\n  }\n\n  contains(value) {\n    // Kodni shu yerda yozing\n  }\n}\n",
+    "hint": "Rootdan boshlab joriy tugunni tekshiring. Agar value kichik bo'lsa chapga, katta bo'lsa o'ngga o'ting. Teng bo'lsa true, tugun tugasa va topilmasa false qaytaring.",
+    "test": "const sandbox = new Function(code + '; return BinarySearchTree;');\nconst BST = sandbox();\nconst bst = new BST();\nbst.insert(50).insert(30).insert(70).insert(20).insert(40);\nif (bst.contains(30) !== true) return 'Mavjud qiymat (30) topilmadi (true qaytishi kerak edi)';\nif (bst.contains(70) !== true) return 'Mavjud qiymat (70) topilmadi';\nif (bst.contains(100) !== false) return 'Mavjud bo\\'lmagan qiymat (100) uchun true qaytdi';\nif (bst.contains(10) !== false) return 'Mavjud bo\\'lmagan qiymat (10) uchun true qaytdi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "In-Order traversal (Daraxtni tartib bilan aylanish)",
+    "instruction": "Daraxtdagi elementlarni o'sish tartibida yig'ib beruvchi `inOrder()` metodini yozing. U massiv qaytarishi kerak. Masalan: `[left, root, right]` tartibida rekursiv aylanib chiqish.",
+    "startingCode": "class Node {\n  constructor(value) {\n    this.value = value;\n    this.left = null;\n    this.right = null;\n  }\n}\n\nclass BinarySearchTree {\n  constructor() {\n    this.root = null;\n  }\n\n  insert(value) {\n    const newNode = new Node(value);\n    if (!this.root) { this.root = newNode; return this; }\n    let current = this.root;\n    while (true) {\n      if (value === current.value) return this;\n      if (value < current.value) {\n        if (!current.left) { current.left = newNode; return this; }\n        current = current.left;\n      } else {\n        if (!current.right) { current.right = newNode; return this; }\n        current = current.right;\n      }\n    }\n  }\n\n  inOrder() {\n    // Kodni shu yerda yozing\n  }\n}\n",
+    "hint": "Yordamchi rekursiv funksiya yozing: `traverse(node)`. Avval `traverse(node.left)` ni chaqiring, keyin node qiymatini massivga yozing, so'ng `traverse(node.right)` ni chaqiring.",
+    "test": "const sandbox = new Function(code + '; return BinarySearchTree;');\nconst BST = sandbox();\nconst bst = new BST();\nbst.insert(15).insert(10).insert(20).insert(8).insert(12).insert(18).insert(25);\nconst res = bst.inOrder();\nif (!Array.isArray(res)) return 'inOrder() massiv qaytarmadi';\nconst expected = [8, 10, 12, 15, 18, 20, 25];\nif (res.length !== expected.length) return 'Massiv elementlari soni noto\\'g\\'ri';\nfor (let i = 0; i < expected.length; i++) {\n  if (res[i] !== expected[i]) return `Kutilgan qiymat: ${expected}, lekin olindi: ${res}`;\n}\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Ikkilik qidiruv daraxti (BST) ning asosiy oltin qoidasi qaysi javobda to'g'ri ko'rsatilgan?",
-      options: [
-        "Barcha tugunlar doimo juft sonlardan iborat bo'lishi shart",
-        "Chap bolalar ota-onadan kichik, o'ng bolalar esa ota-onadan katta bo'lishi kerak",
-        "Chap va o'ng bolalar qiymati yig'indisi ota-onadan katta bo'lishi shart",
-        "O'ng bolalar ota-onadan kichik, chap bolalar esa katta bo'lishi kerak"
-      ],
-      correctAnswer: 1,
-      explanation: "BST ning fundamental qoidasiga ko'ra, har bir tugun uchun uning chap shoxidagi barcha elementlar kichik, o'ng shoxdagilar esa katta bo'ladi."
-    },
-    {
-      id: 2,
-      question: "Balanslashgan BST-dan element izlashning o'rtacha vaqt murakkabligi qanday?",
-      options: ["O(n)", "O(1)", "O(log n)", "O(n log n)"],
-      correctAnswer: 2,
-      explanation: "Balanslangan BST ning balandligi log(n) ga teng bo'ladi, shuning uchun har safar qidiruv 2 barobar qisqarib O(log n) tezlikda ishlaydi."
-    },
-    {
-      id: 3,
-      question: "Eng yomon holatda balanslanmagan (skewed) BST ning vaqt murakkabligi qanday bo'ladi?",
-      options: ["O(log n)", "O(1)", "O(n)", "O(n^2)"],
-      correctAnswer: 2,
-      explanation: "Daraxt faqat bir tomonga qarab o'sib ketsa (muvozanat buzilsa), u chiziqli tuzilmaga aylanadi va qidiruv chiziqli ya'ni O(n) vaqtni oladi."
-    },
-    {
-      id: 4,
-      question: "In-order traversal (chap-ota-o'ng) metodi BST aylanib chiqilganda qanday natija beradi?",
-      options: [
-        "Tasodifiy tartiblangan elementlar",
-        "Kichikdan kattaga qarab to'liq saralangan elementlar",
-        "Kattadan kichikka qarab teskari saralangan elementlar",
-        "Faqat barg (leaf) tugunlarini qaytaradi"
-      ],
-      correctAnswer: 1,
-      explanation: "BST qoidasiga binoan, in-order algoritmi chap tarmoqni, keyin joriy tugunni, keyin o'ng shoxni oladi. Bu esa elementlarning tartiblangan (sorted) ketma-ketligini hosil qiladi."
-    },
-    {
-      id: 5,
-      question: "Daraxtdagi eng yuqori nuqta (barcha tugunlarning boshlang'ich nuqtasi) nima deyiladi?",
-      options: ["Leaf (Barg)", "Branch (Shox)", "Root (Ildiz)", "Parent (Ota)"],
-      correctAnswer: 2,
-      explanation: "Daraxtning eng yuqori darajasida turgan va ota-onasi bo'lmagan yagona boshlang'ich tuguni Root (Ildiz) deb ataladi."
-    },
-    {
-      id: 6,
-      question: "Bolalari bo'lmagan (daraxtning eng quyi qismidagi) tugunlar nima deyiladi?",
-      options: ["Roots", "Leaves (Barglar)", "Branches", "Subtrees"],
-      correctAnswer: 1,
-      explanation: "Daraxtda chap yoki o'ng bolaga ega bo'lmagan (left = null, right = null) eng chekka tugunlar Leaves (Barglar) deb nomlanadi."
-    },
-    {
-      id: 7,
-      question: "Kenglik bo'yicha aylanib chiqish (BFS) algoritmi daraxtni qanday tartibda tekshiradi?",
-      options: [
-        "Avval eng chapki shox oxirigacha boradi",
-        "Darajama-daraja (Level-by-level) yuqoridan pastga",
-        "Avval barglarni, keyin ildizni ko'radi",
-        "Tugunlarni faqat tasodifiy tartibda aylanadi"
-      ],
-      correctAnswer: 1,
-      explanation: "BFS (Breadth First Search) darajama-daraja (gorizontal ravishda) barcha tugunlarni ketma-ket ko'rib chiqadi."
-    },
-    {
-      id: 8,
-      question: "BST-dagi eng kichik qiymat doimo qayerda joylashadi?",
-      options: [
-        "Root (ildiz) tugunning o'zida",
-        "Eng chapki barg tugunida (leftmost node)",
-        "Eng o'nggi barg tugunida (rightmost node)",
-        "Tugunlar soniga qarab istalgan joyda bo'lishi mumkin"
-      ],
-      correctAnswer: 1,
-      explanation: "Kichik elementlar doimo chapga yo'naltirilishi sababli, eng kichik qiymat eng chapki tarmoq oxiridagi bargda bo'ladi."
-    },
-    {
-      id: 9,
-      question: "Quyidagilardan qaysi biri o'z-o'zini balanslovchi daraxt hisoblanadi?",
-      options: ["Singly Linked List", "AVL daraxti", "Queue", "Binary Stack"],
-      correctAnswer: 1,
-      explanation: "AVL daraxti va Red-Black Tree-lar element qo'shilganda yoki o'chirilganda o'z balandligini balansda saqlaydigan (Self-Balancing BST) daraxtlardir."
-    },
-    {
-      id: 10,
-      question: "Daraxt balandligi (Height) nima?",
-      options: [
-        "Jami tugunlar soni",
-        "Root-dan eng uzoq barggacha bo'lgan eng uzun yo'ldagi shoxlar soni",
-        "Faqat o'ng bolalar soni",
-        "Daraxtning eng keng qismidagi tugunlar soni"
-      ],
-      correctAnswer: 1,
-      explanation: "Height (Balandlik) bu root-dan eng chuqur barggacha bo'lgan yo'ldagi shoxlar (edges) soni bilan o'lchanadi."
-    },
-    {
-      id: 11,
-      question: "Daraxtdan ikkita bolaga ega bo'lgan tugunni o'chirish uchun odatda nima qilinadi?",
-      options: [
-        "Uning ikkala bolasi ham o'chirib yuboriladi",
-        "Uning o'rniga o'ng tarmoqning eng kichik elementi (inorder successor) qo'yiladi",
-        "Daraxt to'liq boshidan qayta quriladi",
-        "Ildiz tugun o'chirib yuboriladi"
-      ],
-      correctAnswer: 1,
-      explanation: "BST tartibini saqlash uchun ikkinchi darajali bolalari bo'lgan tugun o'chirilganda, o'ng shoxning eng kichik elementi bilan almashtiriladi."
-    },
-    {
-      id: 12,
-      question: "Daraxt bo'ylab chuqurlik bo'yicha qidiruv (DFS) uchun qaysi ma'lumotlar tuzilmasi yordamida rekursiyasiz (iterative) yozish mumkin?",
-      options: ["Queue (Navbat)", "Stack (Stek)", "Linked List", "Hash Map"],
-      correctAnswer: 1,
-      explanation: "DFS chuqur kirishni talab qiladi. Uni rekursiyasiz yozish uchun biz LIFO printsipiga asoslangan Stack (Stek) ma'lumotlar tuzilmasidan foydalanamiz."
-    },
-    {
-      id: 13,
-      question: "Agar Ikkilik Qidiruv Daraxtidan (BST) elementlarni kichikdan kattaga qarab saralangan holda olmoqchi bo'lsak, qaysi aylanib chiqish (traversal) algoritmini tanlash kerak?",
-      options: [
-        "Pre-order traversal",
-        "Post-order traversal",
-        "In-order traversal",
-        "Level-order traversal (BFS)"
-      ],
-      correctAnswer: 2,
-      explanation: "In-order traversal (chap -> ota -> o'ng) tugunlarni qiymatlari o'sib borish tartibida ziyorat qiladi, chunki chap shoxdagi kichik qiymatlar ota-onadan oldin, o'ngdagilar esa ota-onadan keyin ziyorat qilinadi."
-    },
-    {
-      id: 14,
-      question: "AVL daraxti yoki Red-Black daraxti kabi o'z-o'zini balanslovchi daraxtlarning oddiy BST-dan asosiy afzalligi nimada?",
-      options: [
-        "Ular xotiradan umuman foydalanmaydi",
-        "Ular elementlarni qo'shish yoki o'chirish paytida daraxt balandligini doimo minimal tutib turadi va eng yomon holatda ham O(log n) vaqt murakkabligini kafolatlaydi",
-        "Ular faqatgina juft sonlarni saqlaydi",
-        "Ularda chap va o'ng shoxlar bo'lmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Oddiy BST-ga ma'lumotlar tartiblangan holda kirganda u chiziqli zanjirga aylanib, tezligi O(n) ga tushib qoladi. Balanslovchi daraxtlar esa balandlik farqini doimo nazorat qilib, rotatsiyalar yordamida daraxtni muvozanatlashtiradi va logarifmik tezlikni saqlab qoladi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Ikkilik qidiruv daraxti (Binary Search Tree - BST) nima?",
+    "options": [
+      "Har bir tugun ko'pi bilan bitta farzandga ega bo'lgan chiziqli ma'lumotlar tuzilmasi",
+      "Har bir tugun ko'pi bilan ikkita farzandga ega bo'lgan va chap farzand qiymati ota tugundan kichik, o'ng farzand qiymati esa katta bo'lgan daraxt",
+      "Barcha tugunlari bir xil darajada joylashgan ierarxik bo'lmagan massiv",
+      "Elementlari faqat boolean (true/false) qiymatlardan iborat bo'lgan grafik shakli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "BSTda har bir tugunning chap tarmog'idagi barcha qiymatlar o'sha tugun qiymatidan kichik, o'ng tarmog'idagi barcha qiymatlar esa o'sha tugun qiymatidan katta bo'lishi shart."
+  },
+  {
+    "id": 2,
+    "question": "Balanslashtirilgan BSTda elementni qidirish yoki kiritishning o'rtacha vaqt murakkabligi (Time Complexity) qanday?",
+    "options": [
+      "O(1)",
+      "O(n)",
+      "O(log n)",
+      "O(n log n)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Balanslashtirilgan daraxtda har safar solishtirish amalga oshirilganda qidiruv sohasi yarmi qisqaradi, shuning uchun o'rtacha vaqt murakkabligi O(log n) ga teng."
+  },
+  {
+    "id": 3,
+    "question": "Daraxt butunlay chiziqli (skewed) bo'lib qolsa (masalan, faqat o'ngga yoki faqat chapga o'ssa), qidiruvning eng yomon holatdagi (worst-case) murakkabligi qanday bo'ladi?",
+    "options": [
+      "O(n)",
+      "O(log n)",
+      "O(1)",
+      "O(n²)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Daraxt chiziqli bo'lib qolganda, u bog'langan ro'yxat (linked list) kabi ishlaydi. Elementlarni qidirish uchun barcha tugunlarni ketma-ket tekshirish kerak bo'ladi, bu esa O(n) murakkablikka olib keladi."
+  },
+  {
+    "id": 4,
+    "question": "BST elementlarini o'sish tartibida (tartiblangan holda) chiqarish uchun daraxtni qaysi tartibda aylanish (Traversal) kerak?",
+    "options": [
+      "Pre-order (Tugun -> Chap -> O'ng)",
+      "Post-order (Chap -> O'ng -> Tugun)",
+      "In-order (Chap -> Tugun -> O'ng)",
+      "Level-order (Qavatma-qavat)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "In-order aylanib chiqishda birinchi navbatda chap tomondagi kichik qiymat, keyin tugun o'zi va oxirida o'ng tomondagi katta qiymat olinadi. Bu esa o'z-o'zidan tartiblangan ketma-ketlikni beradi."
+  },
+  {
+    "id": 5,
+    "question": "Daraxtning eng yuqorisida joylashgan va hech qanday ota tugunga ega bo'lmagan boshlang'ich tugun nima deyiladi?",
+    "options": [
+      "Leaf (Barg)",
+      "Root (Ildiz)",
+      "Branch (Shox)",
+      "Sibling (Aka-uka)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Daraxtning eng yuqori tuguni 'Root' (ildiz) tugun deb ataladi va barcha boshqa tugunlar undan tarqaladi."
+  },
+  {
+    "id": 6,
+    "question": "Farzandlari (chap va o'ng tugunlari) bo'lmagan daraxt tugunlari qanday nomlanadi?",
+    "options": [
+      "Leaf nodes (Barg tugunlar)",
+      "Internal nodes (Ichki tugunlar)",
+      "Root nodes (Ildiz tugunlar)",
+      "Subtrees (Yordamchi daraxtlar)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Hech qanday farzandga (left = null, right = null) ega bo'lmagan tugunlar 'Leaf' (barg) tugunlar deb ataladi."
+  },
+  {
+    "id": 7,
+    "question": "Agar BSTga ketma-ket [15, 10, 20, 12, 17] qiymatlari kiritilsa, 12 qiymati qayerga joylashadi?",
+    "options": [
+      "10 tugunining o'ng tomoniga",
+      "10 tugunining chap tomoniga",
+      "20 tugunining o'ng tomoniga",
+      "15 tugunining chap tomoniga to'g'ridan-to'g'ri root sifatida"
+    ],
+    "correctAnswer": 0,
+    "explanation": "12 qiymati 15 dan kichik (chapga ketadi), 10 dan esa katta. Shuning uchun u 10 ning o'ng tomoniga joylashadi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagilardan qaysi biri binary tree aylanish (traversal) usuliga kirmaydi?",
+    "options": [
+      "Pre-order",
+      "Post-order",
+      "In-order",
+      "Bubble-order"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Pre-order, Post-order va In-order ikkilik daraxtlarni aylanishning standart chuqurlik bo'yicha (DFS) usullaridir. Bubble-order degan usul mavjud emas."
+  },
+  {
+    "id": 9,
+    "question": "Qidiruv daraxtida har qanday tugunning chap va o'ng ostki daraxtlari (subtrees) balandligi farqi ko'pi bilan 1 bo'lsa, bunday daraxt qanday ataladi?",
+    "options": [
+      "Chiziqli daraxt (Skewed Tree)",
+      "Balanslashgan daraxt (Balanced Tree)",
+      "To'liq bo'lmagan daraxt (Unbalanced Tree)",
+      "Bo'sh daraxt (Empty Tree)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Balandliklar farqi 1 dan oshmaydigan daraxt 'Balanslashgan daraxt' (Balanced Tree) deyiladi (masalan, AVL yoki Red-Black daraxtlari)."
+  },
+  {
+    "id": 10,
+    "question": "BSTdan elementni o'chirish (Delete) operatsiyasida eng murakkab holat qaysi?",
+    "options": [
+      "O'chiriladigan tugun barg (leaf) bo'lsa",
+      "O'chiriladigan tugunning faqat bitta farzandi bo'lsa",
+      "O'chiriladigan tugunning ikkita farzandi bo'lsa",
+      "O'chiriladigan tugun root bo'lsa va daraxtda faqat bitta tugun bo'lsa"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Ikki farzandli tugun o'chirilganda, uning o'rniga o'ng ostki daraxtning eng kichik elementini (inorder successor) yoki chap ostki daraxtning eng katta elementini (inorder predecessor) topib qo'yish kerak bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun odatiy massivga qaraganda BSTdan foydalanish afzalroq bo'lishi mumkin?",
+    "options": [
+      "Daraxt xotiradan kam joy egallaydi",
+      "Tartiblangan massivda yangi element qo'shish O(n) vaqt olsa, BSTda o'rtacha O(log n) vaqt oladi va qidirish tez bajariladi",
+      "Daraxtda elementlar faqat string formatida saqlanadi",
+      "Daraxt elementlari brauzer keshida avtomatik saqlanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tartiblangan massivda element kiritish boshqa elementlarni surish kerakligi sababli O(n) vaqt talab qiladi, BSTda esa ko'rsatkichlar (pointers) o'zgartiriladi, bu esa O(log n) da bajariladi."
+  },
+  {
+    "id": 12,
+    "question": "Pre-order aylanib chiqish (Traversal) tartibi qanday?",
+    "options": [
+      "Tugun o'zi -> Chap farzand -> O'ng farzand",
+      "Chap farzand -> Tugun o'zi -> O'ng farzand",
+      "Chap farzand -> O'ng farzand -> Tugun o'zi",
+      "O'ng farzand -> Tugun o'zi -> Chap farzand"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Pre-order (oldindan tartiblash) usulida birinchi bo'lib joriy tugunning o'zi olinadi, so'ng chap ostki daraxt va keyin o'ng ostki daraxt aylaniladi."
+  }
+]
+
 };

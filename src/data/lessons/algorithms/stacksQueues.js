@@ -1,334 +1,393 @@
 export const stacksQueues = {
   id: "stacksQueues",
-  title: "Stek va Navbat (Stacks & Queues)",
-  theory: `## 1. NEGA kerak?
-Haqiqiy dasturlashda ma'lumotlar oqimini tartibga solish va boshqarish juda muhim. Masalan, matn muharririda orqaga qaytish ("Undo" - Ctrl+Z) tugmasi bosilganda qilingan amallar teskari tartibda bekor qilinishi kerak. Yoki printerga yuborilgan hujjatlar navbat bo'yicha ketma-ket chop etilishi kerak.
-Buning uchun bizga **Stack** (Stek) va **Queue** (Navbat) ma'lumotlar tuzilmalari yordam beradi. Ular elementlarni qo'shish va o'chirish qoidalarini qat'iy cheklash orqali ma'lumotlarni tartiblashni osonlashtiradi va kod xavfsizligini ta'minlaydi.
+  title: "Stack va Queue Ma'lumotlar Tuzilmalari",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-## 2. SODDALIK (Analogiya)
-- **Stack (Stek):** Buni kafedagi **likopchalar taxlamiga** o'xshatish mumkin. Yangi yuvilgan likopcha eng tepaga qo'yiladi va ovqat yeydigan odam ham eng tepasidagi likopchani oladi. Bu — **LIFO** (Last In, First Out — Oxirgi kirgan, birinchi chiqadi) qoidasi.
-- **Queue (Navbat):** Buni **do'kondagi kassaga turgan odamlar navbatiga** o'xshatish mumkin. Birinchi kelgan odamga birinchi xizmat ko'rsatiladi va u navbatdan chiqib ketadi, yangi kelganlar navbat oxiriga turishadi. Bu — **FIFO** (First In, First Out — Birinchi kirgan, birinchi chiqadi) qoidasi.
+### Stack va Queue nima?
+* **Stack (Stek):** Bu LIFO (**Last In, First Out** — Oxirgi kirgan, birinchi chiqadi) tamoyiliga asoslangan ma'lumotlar tuzilmasidir. Unga element faqat eng yuqorisidan qo'shiladi va olinadi.
+* **Queue (Navbat):** Bu FIFO (**First In, First Out** — Birinchi kirgan, birinchi chiqadi) tamoyiliga asoslangan ma'lumotlar tuzilmasidir. Unga element oxiridan qo'shiladi (Enqueue) va boshidan olinadi (Dequeue).
 
-## 3. STRUKTURA VA ILG'OR TUSHUNCHALAR
-Stack va Queue-ni massiv (Array) yoki bog'langan ro'yxat (Linked List) yordamida yaratish mumkin.
+### Real hayotiy analogiya
+* **Stack analogiyasi:** Tasavvur qiling, **ustma-ust taxlangan likopchalar (plates)**:
+  * Siz yangi yuvilgan likopchani faqat eng tepasiga qo'ya olasiz (Push).
+  * Ovqatlanish uchun likopcha olganda ham eng ustidagisini (oxirgi qo'yilganini) olasiz (Pop).
+  * Agar tagidan olishga harakat qilsangiz, likopchalar sinishi mumkin.
+* **Queue analogiyasi:** Tasavvur qiling, **avtobus bekatidagi yoki do'kondagi odamlar navbati**:
+  * Navbatga yangi kelgan odam oxiriga borib turadi (Enqueue).
+  * Birinchi bo'lib kelgan odamga birinchi xizmat ko'rsatiladi va u navbatni tark etadi (Dequeue).
 
-### A. Monotonic Stack
-Monotonic Stack — elementlari har doim o'sib boruvchi (increasing) yoki kamayib boruvchi (decreasing) tartibda saqlanadigan maxsus stekdir. Yangi element qo'shishdan oldin, stek tepasidagi unga to'g'ri kelmaydigan elementlar pop qilinadi. Bu algoritm massivdagi eng yaqin katta/kichik elementlarni $O(n)$ vaqtda topishga yordam beradi.
+---
 
-\`mermaid
-graph TD
-    subgraph Stack_Layout ["Stek (LIFO) Arxitekturasi"]
-        T["Tepasi (Top)"]
-        N3["[ Tugun 3 ]"]
-        N2["[ Tugun 2 ]"]
-        N1["[ Tugun 1 ]"]
-        
-        T --> N3
-        N3 --> N2
-        N2 --> N1
-    end
-    
-    Push["Yangi Element (Push)"] --> N3
-    N3 --> Pop["O'chirish (Pop)"]
-\`
+## 2. 💻 Real Kod Misollari
 
-### B. Circular Queue (Aylanma navbat)
-Oddiy massiv orqali navbat yozilganda, element o'chirish ($shift$) massivdagi qolgan elementlarni siljitishni talab qilib $O(n)$ vaqt oladi. Bog'lanmagan aylanma ko'rsatkichlar (head va tail) orqali massiv ustida aylanuvchi **Circular Queue** qurilsa, xotira bo'shagan kataklar boshidan boshlab qayta to'ldiriladi va vaqt murakkabligi har doim $O(1)$ bo'ladi.
+### 1. JavaScript-da Stack yaratish (Class yordamida)
+\`\`\`javascript
+class Stack {
+  constructor() {
+    this.items = [];
+  }
 
-\`mermaid
-graph LR
-    subgraph Queue_Layout ["Navbat (FIFO) Arxitekturasi"]
-        Head["Boshi (Head)"] --> N1["[ Tugun 1 ]"]
-        N1 --> N2["[ Tugun 2 ]"]
-        N2 --> N3["[ Tugun 3 ]"]
-        N3 --> Tail["Oxiri (Tail)"]
-    end
-    
-    Dequeue["O'chirish (Dequeue)"] <-- Head
-    Tail <-- Enqueue["Qo'shish (Enqueue)"]
-\`
+  // Element qo'shish
+  push(element) {
+    this.items.push(element);
+  }
 
-### C. Double Ended Queue (Deque)
-Elementlarni ham boshidan, ham oxiridan qo'shish va o'chirish imkonini beruvchi ikki tomonlama navbat. JS-da uni Linked List yoki ikkita ko'rsatkichli dynamic massiv orqali yozish mumkin.
+  // Element o'chirish va qaytarish
+  pop() {
+    if (this.isEmpty()) return "Stack bo'sh";
+    return this.items.pop();
+  }
 
-## 4. AMALIYOT
-Stack push va pop amallari orqali ishlaydi:
-\`javascript
-const stack = [];
-stack.push(10); // push
-const topVal = stack.pop(); // pop
-\`
+  // Yuqori elementni ko'rish
+  peek() {
+    return this.items[this.items.length - 1];
+  }
 
-Queue enqueue va dequeue orqali ishlaydi:
-\`javascript
-const queue = [];
-queue.push(10); // enqueue
-const headVal = queue.shift(); // dequeue (Eslatma: massiv shift() O(n) vaqt oladi)
-\`
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+\`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **Stek to'lib ketishi (Stack Overflow):** Rekursiya yoki ma'lumotlar limiti oshib ketganda stek xotirasi tugashi.
-2. **Bo'sh stekdan element olish (Stack Underflow):** Stek bo'sh bo'lgan holatda pop() qilganda xatoliklarni tekshirmaslik.
-3. **Massiv shift amaliyotini ishlatish:** Massiv yordamida navbat yasaganda, boshidan element o'chirish uchun shift() ishlatilsa, uning vaqt murakkabligi $O(n)$ bo'lib qoladi. Katta hajmlar uchun bog'langan ro'yxat ishlatsa, bu $O(1)$ bo'ladi.
+### 2. JavaScript-da Bog'langan Ro'yxat (Linked List) yordamida optimallashtirilgan Queue yaratish
+Oddiy massiv yordamida \`.shift()\` qilish sekin ishlagani uchun, O(1) vaqt oluvchi Queue yaratishda bog'langan ro'yxatdan foydalanamiz:
+\`\`\`javascript
+class QueueNode {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
 
-## 6. SAVOLLAR VA JAVOBLAR
-**1. Stack nima?**
-Ma'lumotlar faqat bir tomondan (tepasidan) qo'shiladigan va o'chiriladigan, LIFO qoidasiga bo'ysunuvchi chiziqli ma'lumotlar tuzilmasi.
+class Queue {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
 
-**2. Queue nima?**
-Ma'lumotlar bir tomondan (oxiridan) qo'shilib, ikkinchi tomondan (boshidan) o'chiriladigan, FIFO qoidasiga bo'ysunuvchi ma'lumotlar tuzilmasi.
+  // Navbat oxiriga qo'shish (Enqueue)
+  enqueue(val) {
+    const newNode = new QueueNode(val);
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+    this.length++;
+  }
 
-**3. LIFO va FIFO farqi nimada?**
-LIFO — oxirgi kirgan element birinchi chiqadi (Stack). FIFO — birinchi kirgan element birinchi chiqadi (Queue).
+  // Navbat boshidan olish (Dequeue)
+  dequeue() {
+    if (!this.head) return null;
+    const removedNode = this.head;
+    this.head = this.head.next;
+    if (!this.head) {
+      this.tail = null;
+    }
+    this.length--;
+    return removedNode.val;
+  }
+}
+\`\`\`
 
-**4. Brauzerning "Orqaga" (Back) tugmasi qaysi tuzilma asosida ishlaydi?**
-Stack asosida. Har bir tashrif buyurilgan sahifa stekka tashlanadi va Back bosilganda oxirgisi pop qilib olinadi.
+---
 
-**5. Call Stack nima?**
-JavaScript dvigateli funksiyalar chaqiruvini nazorat qilish va ularning qaytish manzillarini boshqarish uchun foydalanadigan stek tuzilmasi.
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+
+### Xotiradagi farqi va Call Stack vs Memory Heap
+* **Call Stack (Chaqiriqlar steki):** JavaScript motori (dvigateli) funksiya chaqiriqlarini boshqarish uchun Stack tuzilmasidan foydalanadi. Funksiya chaqirilganda, u Stack freymi sifatida Call Stack-ka joylanadi (\`push\`). Bajarilib tugagach, stekdan chiqarib tashlanadi (\`pop\`).
+* **Navbat (Task Queue / Event Loop):** Asinxron callback funksiyalar (masalan, \`setTimeout\` callback) bajarilish navbatini kutish uchun Callback Queue-da navbat bo'lib turadi. Bu FIFO qoidasi bo'yicha ishlaydi.
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. Massiv \`.shift()\` metodini Queue uchun ishlatish va uning og'irligini bilmaslik
+Ko'plab dasturchilar massivni Queue sifatida ishlatganda \`.shift()\` yoki \`.unshift()\` metodlarini chaqirishadi. 
+* **Muammo:** \`.shift()\` massivdagi barcha elementlar indekslarini bir qadam chapga surib chiqadi. Bu esa chiziqli vaqt O(n) oladi. Katta hajmli ma'lumotlarda bu loyiha ishlashini keskin sekinlashtiradi.
+* **Tuzatish:** Elementlarni indeks pointer orqali boshqaradigan yoki Linked List yordamida yaratilgan O(1) lik maxsus Queue klassidan foydalaning.
+
+### 2. Bo'sh Stack-dan element olishga urinish (Underflow)
+Bo'sh stek yoki navbatdan element o'chirishga harakat qilganda xatolikni tekshirmaslik dasturning noto'g'ri ishlashiga (masalan, \`undefined\` qaytishiga) sabab bo'ladi.
+* **Tuzatish:** Har doim \`pop()\` yoki \`dequeue()\` qilishdan oldin stek yoki navbat bo'sh emasligini tekshiring (\`isEmpty()\`).
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior
+1. **Stack nima va u qaysi tamoyilga asoslanadi?**
+   * *Javob:* LIFO (Last In, First Out) qoidasi bo'yicha ishlaydigan ma'lumotlar tuzilmasi.
+2. **Queue nima va uning asosiy operatsiyalari qaysilar?**
+   * *Javob:* FIFO (First In, First Out) tuzilmasi bo'lib, uning asosiy amallari \`enqueue\` (qo'shish) va \`dequeue\` (olish) dir.
+3. **Peek operatsiyasi nima qiladi?**
+   * *Javob:* Stack yoki Queue-dan elementni o'chirmasdan, eng yuqoridagi yoki boshidagi elementni ko'rish imkonini beradi.
+4. **JS-da massiv yordamida Stack-ni qanday simulyatsiya qilish mumkin?**
+   * *Javob:* Massivning \`.push()\` va \`.pop()\` metodlari yordamida.
+
+### Middle
+5. **Nega oddiy massiv \`.shift()\` metodi Queue uchun samarasiz?**
+   * *Javob:* Chunki \`.shift()\` elementni o'chirgandan keyin barcha qolgan elementlar indeksini o'zgartiradi (chapga suradi), bu O(n) vaqt talab qiladi.
+6. **Stack Overflow nima va u qachon sodir bo'ladi?**
+   * *Javob:* Chaqiriqlar steki (Call Stack) o'ziga ajratilgan xotira chegarasidan oshib ketganda sodir bo'ladi, ko'pincha cheksiz rekursiya sababli yuz beradi.
+7. **Ikki Stack yordamida Queue algoritmini qanday yozish mumkin?**
+   * *Javob:* \`stack1\`ga elementlarni qo'shamiz (enqueue). \`dequeue\` amali bo'lganda, \`stack2\` bo'sh bo'lsa, \`stack1\`dagilarni \`stack2\`ga pop qilib o'tkazamiz va \`stack2\`dan pop qilamiz.
+8. **Valid Parentheses (To'g'ri qavslar) masalasi qanday hal qilinadi?**
+   * *Javob:* Stack yordamida. Ochuvchi qavslar stack-ga push qilinadi, yopuvchi kelganda stack yuqorisidagi qavs solishtirilib pop qilinadi.
+
+### Senior
+9. **Monotonik Stack nima va u qayerda qo'llaniladi?**
+   * *Javob:* Elementlari har doim faqat o'suvchi yoki kamayuvchi bo'lgan maxsus Stack. U "keyingi eng katta element" (Next Greater Element) kabi masalalarda O(n) yechim topishda ishlatiladi.
+10. **Priority Queue (Ustuvorlikka ega navbat) nima?**
+    * *Javob:* Oddiy navbatdan farqli o'laroq, har bir element ma'lum bir ustuvorlik (priority) darajasiga ega bo'ladi va navbatdan birinchi bo'lib eng ustuvor element chiqadi (odatda Heap yordamida amalga oshiriladi).
+11. **JavaScript Event Loop-dagi Microtask Queue va Macrotask Queue farqi nimada?**
+    * *Javob:* Microtask Queue (Promises, queueMicrotask) yuqori ustuvorlikka ega bo'lib, har bir Macrotask (setTimeout, setInterval) bajarilishidan oldin to'liq bo'shatib olinadi.
+12. **Double Ended Queue (Deque) nima?**
+    * *Javob:* Elementlarni ham boshidan, ham oxiridan qo'shish va o'chirish imkonini beruvchi ikki tomonlama navbat.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Amaliy mashqlar \`stacksQueues_exercises.json\` faylida berilgan. U yerda siz qavslarni tekshirish, ikki stack yordamida navbat yaratish va har doim minimum qiymatni tezkor beruvchi \`MinStack\` klassini yozasiz.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars oxirida o'zlashtirgan bilimlaringizni tekshirish uchun 12 ta test savollari tayyorlangan bo'lib, ular \`stacksQueues_quizzes.json\` faylida joylashgan.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Matn Muharriridagi Undo / Redo Tizimi (Orqaga va Oldinga Qaytarish)
+Katta matn muharrirlarida foydalanuvchining har bir yozgan amali xotirada saqlanishi va orqaga qaytarilishi kerak.
+* **Yechim:** Ikkita Stack orqali \`Undo\` (Orqaga) va \`Redo\` (Oldinga) amallarini boshqarish.
+* **Kod ko'rinishi:**
+\`\`\`javascript
+class TextEditor {
+  constructor() {
+    this.text = "";
+    this.undoStack = [];
+    this.redoStack = [];
+  }
+
+  write(newText) {
+    this.undoStack.push(this.text); // Hozirgi holatni saqlaymiz
+    this.redoStack = []; // Yangi yozilganda redo steki tozalanadi
+    this.text += newText;
+  }
+
+  undo() {
+    if (this.undoStack.length > 0) {
+      this.redoStack.push(this.text); // Hozirgi holatni redo-ga saqlaymiz
+      this.text = this.undoStack.pop(); // Eski holatga qaytamiz
+    }
+  }
+
+  redo() {
+    if (this.redoStack.length > 0) {
+      this.undoStack.push(this.text); // Hozirgi holatni undo-ga saqlaymiz
+      this.text = this.redoStack.pop(); // Keyingi holatga o'tamiz
+    }
+  }
+}
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **Stack/Queue uchun massiv \`.shift()\`/\`.unshift()\` metodlaridan qoching:** Ular O(n) vaqt olgani uchun katta loyihalarda unumdorlikni pasaytiradi.
+* **Linked List yoki Index Pointer ishlating:** Elementlarni o'chirishda ko'rsatkichlarni siljitish O(1) vaqt oladi.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Ma'lumotlar Tuzilmasi | Tamoyili | Qo'shish (Push/Enqueue) | O'chirish (Pop/Dequeue) | Eng ustidagini ko'rish (Peek) | Qo'llanilishi |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Stack (Stek)** | **LIFO** (Last In, First Out) | O(1) | O(1) | O(1) | Undo/Redo, Call Stack, Qavslarni tekshirish |
+| **Queue (Navbat)** | **FIFO** (First In, First Out) | O(1) | O(1) | O(1) | Print queue, So'rovlarni navbatda bajarish |
+| **Deque (Double Ended Queue)** | Ikki tomonlama | O(1) | O(1) | O(1) | Ikki tomondan ham dynamic boshqarish |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Massiv yordamida Stack yaratish",
-      instruction: "Ichida `items` massivi bo'lgan hamda `push(val)`, `pop()`, `peek()` va `isEmpty()` metodlariga ega `Stack` klassini yozing.",
-      startingCode: "class Stack {\n  constructor() {\n    this.items = [];\n  }\n  // Metodlarni yozing\n}",
-      hint: "push(val) { this.items.push(val); } pop() { return this.items.pop(); } peek() { return this.items[this.items.length-1]; } isEmpty() { return this.items.length === 0; }",
-      test: "if (typeof Stack !== 'function') return 'Stack klassi topilmadi'; const s = new Stack(); if (!s.isEmpty()) return 'Stek boshida bo\\'sh bo\\'lishi kerak'; s.push(10); s.push(20); if (s.peek() !== 20) return 'peek() xato qiymat qaytardi'; if (s.pop() !== 20 || s.pop() !== 10) return 'pop() xato qiymat qaytardi'; return null;"
-    },
-    {
-      id: 2,
-      title: "LinkedList yordamida Stack yaratish",
-      instruction: "Bog'langan ro'yxat tugunlari orqali ishlaydigan, `push(val)` va `pop()` metodlariga ega `LinkedStack` klassini yozing (boshiga qo'shish va boshidan o'chirish O(1)).",
-      startingCode: "class Node {\n  constructor(value) { this.value = value; this.next = null; }\n}\nclass LinkedStack {\n  constructor() { this.top = null; }\n  push(val) {\n    // Boshiga element qo'shing\n  }\n  pop() {\n    // Boshidan element o'chiring va qiymatini qaytaring\n  }\n}",
-      hint: "push(val) { const n = new Node(val); n.next = this.top; this.top = n; }\npop() { if(!this.top) return null; const val = this.top.value; this.top = this.top.next; return val; }",
-      test: "if (typeof LinkedStack !== 'function') return 'LinkedStack topilmadi'; const s = new LinkedStack(); s.push(1); s.push(2); if(s.top.value !== 2) return 'Tepada oxirgi qo\\'shilgan element bo\\'lishi kerak'; if(s.pop() !== 2 || s.pop() !== 1) return 'pop() noto\\'g\\'ri ishladi'; return null;"
-    },
-    {
-      id: 3,
-      title: "Massiv yordamida Queue yaratish",
-      instruction: "Massiv asosida ishlovchi, `enqueue(val)`, `dequeue()`, `peek()` va `isEmpty()` metodlariga ega `Queue` klassini yozing.",
-      startingCode: "class Queue {\n  constructor() {\n    this.items = [];\n  }\n  // Metodlarni yozing\n}",
-      hint: "enqueue(val) { this.items.push(val); } dequeue() { return this.items.shift(); } peek() { return this.items[0]; } isEmpty() { return this.items.length === 0; }",
-      test: "if (typeof Queue !== 'function') return 'Queue klassi topilmadi'; const q = new Queue(); q.enqueue(5); q.enqueue(10); if(q.peek() !== 5) return 'peek() xato'; if(q.dequeue() !== 5 || q.dequeue() !== 10) return 'dequeue() navbat tartibini buzyapti'; return null;"
-    },
-    {
-      id: 4,
-      title: "LinkedList yordamida Queue yaratish",
-      instruction: "Dinamik va tezkor O(1) navbat uchun `enqueue(val)` va `dequeue()` metodlariga ega `LinkedQueue` klassini yozing.",
-      startingCode: "class Node {\n  constructor(value) { this.value = value; this.next = null; }\n}\nclass LinkedQueue {\n  constructor() { this.head = null; this.tail = null; }\n  enqueue(val) {\n    // Oxiriga qo'shing\n  }\n  dequeue() {\n    // Boshidan o'chiring va qiymatini qaytaring\n  }\n}",
-      hint: "enqueue(val) { const n = new Node(val); if(!this.head) { this.head = n; this.tail = n; } else { this.tail.next = n; this.tail = n; } }\ndequeue() { if(!this.head) return null; const val = this.head.value; this.head = this.head.next; if(!this.head) this.tail = null; return val; }",
-      test: "if (typeof LinkedQueue !== 'function') return 'LinkedQueue topilmadi'; const q = new LinkedQueue(); q.enqueue(10); q.enqueue(20); if(q.head.value !== 10) return 'Boshi xato'; if(q.dequeue() !== 10 || q.dequeue() !== 20) return 'dequeue xato'; return null;"
-    },
-    {
-      id: 5,
-      title: "Qavslar balansi (Balanced Parentheses)",
-      instruction: "Stek yordamida qavslar to'g'ri yopilganligini tekshiradigan `isValidParentheses(str)` funksiyasini yozing (faqat '()', '[]', '{}' qavslar).",
-      startingCode: "function isValidParentheses(str) {\n  const stack = [];\n  const map = { ')': '(', ']': '[', '}': '{' };\n  // Qavslarni tekshiring\n}",
-      hint: "for(let char of str) {\n  if(char === '(' || char === '[' || char === '{') { stack.push(char); }\n  else if(stack.pop() !== map[char]) { return false; }\n} return stack.length === 0;",
-      test: "if (typeof isValidParentheses !== 'function') return 'isValidParentheses topilmadi'; if (isValidParentheses('()[]{}') !== true) return 'Oddiy to\\'g\\'ri qavslarda xato'; if (isValidParentheses('(]') !== false) return 'Noto\\'g\\'ri yopilgan qavsda xato'; if (isValidParentheses('(') !== false) return 'Yopilmagan qavsda xato'; return null;"
-    },
-    {
-      id: 6,
-      title: "O(1) Min Stack",
-      instruction: "Stek amallari bilan birga eng kichik elementni O(1) vaqtda qaytaruvchi `getMin()` metodiga ega `MinStack` klassini yozing.",
-      startingCode: "class MinStack {\n  constructor() {\n    this.stack = [];\n    this.minStack = []; // Kichik elementlarni saqlab boring\n  }\n  push(val) {\n    // Kodni yozing\n  }\n  pop() {\n    // Kodni yozing\n  }\n  getMin() {\n    // Eng kichik elementni qaytaring\n  }\n}",
-      hint: "push(val) { this.stack.push(val); if(this.minStack.length === 0 || val <= this.getMin()) this.minStack.push(val); }\npop() { const val = this.stack.pop(); if(val === this.getMin()) this.minStack.pop(); }\ngetMin() { return this.minStack[this.minStack.length - 1]; }",
-      test: "if (typeof MinStack !== 'function') return 'MinStack topilmadi'; const ms = new MinStack(); ms.push(3); ms.push(5); ms.push(2); if(ms.getMin() !== 2) return 'getMin xato'; ms.pop(); if(ms.getMin() !== 3) return 'pop dan keyin getMin noto\\'g\\'ri o\\'zgardi'; return null;"
-    },
-    {
-      id: 7,
-      title: "Stek yordamida Navbat yaratish",
-      instruction: "Ikkita stek (`stack1` va `stack2`) yordamida navbat (`enqueue`, `dequeue`) mexanizmini yarating.",
-      startingCode: "class QueueWithStacks {\n  constructor() {\n    this.stack1 = [];\n    this.stack2 = [];\n  }\n  enqueue(val) {\n    this.stack1.push(val);\n  }\n  dequeue() {\n    // stack2 bo'sh bo'lsa stack1 elementlarini ag'daring\n  }\n}",
-      hint: "if (this.stack2.length === 0) { while(this.stack1.length) { this.stack2.push(this.stack1.pop()); } } return this.stack2.pop();",
-      test: "if (typeof QueueWithStacks !== 'function') return 'QueueWithStacks topilmadi'; const q = new QueueWithStacks(); q.enqueue(1); q.enqueue(2); if (q.dequeue() !== 1 || q.dequeue() !== 2) return 'Ag\\'darish tartibi xato'; return null;"
-    },
-    {
-      id: 8,
-      title: "Stringni stek yordamida teskarilash",
-      instruction: "Berilgan satrni (string) stek tuzilmasidan foydalanib teskari qilib qaytaruvchi `reverseString(str)` funksiyasini yozing.",
-      startingCode: "function reverseString(str) {\n  const stack = [];\n  // Stekka joylang va qaytarib oling\n}",
-      hint: "for(let char of str) stack.push(char);\nlet res = ''; while(stack.length) res += stack.pop(); return res;",
-      test: "if (typeof reverseString !== 'function') return 'reverseString topilmadi'; if (reverseString('hello') !== 'olleh') return 'Teskarilash xato'; return null;"
-    },
-    {
-      id: 9,
-      title: "Monotonic Stack - Next Greater",
-      instruction: "Massivdagi har bir element uchun o'ng tomondagi eng birinchi katta elementni qaytaradigan `nextGreater(arr)` funksiyasini stek orqali yozing (topilmasa -1).",
-      startingCode: "function nextGreater(arr) {\n  const res = new Array(arr.length).fill(-1);\n  const stack = []; // Indekslarni saqlaydi\n  for(let i=0; i<arr.length; i++) {\n    // Shartni yozing\n  }\n  return res;\n}",
-      hint: "while(stack.length && arr[stack[stack.length-1]] < arr[i]) { res[stack.pop()] = arr[i]; } stack.push(i);",
-      test: "if (typeof nextGreater !== 'function') return 'nextGreater topilmadi'; const res = nextGreater([2, 1, 5]); if (res[0] !== 5 || res[1] !== 5 || res[2] !== -1) return 'Katta elementlarni topishda xatolik'; return null;"
-    },
-    {
-      id: 10,
-      title: "Navbat elementlarini teskarilash",
-      instruction: "Massiv ko'rinishidagi navbat (Queue) elementlarini stek yordamida teskarilovchi `reverseQueue(queue)` funksiyasini yozing (in-place).",
-      startingCode: "function reverseQueue(queue) {\n  const stack = [];\n  // Navbatdan olib stekka soling, keyin stekdan qaytaring\n}",
-      hint: "while(queue.length) stack.push(queue.shift());\nwhile(stack.length) queue.push(stack.pop());\nreturn queue;",
-      test: "if (typeof reverseQueue !== 'function') return 'reverseQueue topilmadi'; const q = [1, 2, 3]; reverseQueue(q); if (q[0] !== 3 || q[2] !== 1) return 'Navbat teskari tartibga kelmadi'; return null;"
-    },
-    {
-      id: 11,
-      title: "Stek hajmi (Stack Size)",
-      instruction: "Stek elementlari sonini hisoblaydigan `size()` metodini yozing.",
-      startingCode: "class Stack {\n  constructor() { this.items = []; }\n  push(val) { this.items.push(val); }\n  size() {\n    // Hajmni qaytaring\n  }\n}",
-      hint: "return this.items.length;",
-      test: "if (typeof Stack !== 'function') return 'Stack klassi topilmadi'; const s = new Stack(); s.push(5); if(s.size() !== 1) return 'Hajm hisoblashda xatolik'; return null;"
-    },
-    {
-      id: 12,
-      title: "Navbatni tozalash (Clear Queue)",
-      instruction: "Navbatdagi barcha elementlarni tozalaydigan `clear()` metodini yozing.",
-      startingCode: "class Queue {\n  constructor() { this.items = []; }\n  enqueue(val) { this.items.push(val); }\n  clear() {\n    // Tozalang\n  }\n}",
-      hint: "this.items = [];",
-      test: "if (typeof Queue !== 'function') return 'Queue klassi topilmadi'; const q = new Queue(); q.enqueue(1); q.clear(); if(q.items.length !== 0) return 'Navbat tozalanmadi'; return null;"
-    },
-    {
-      id: 13,
-      title: "Kundalik Haroratlar (Daily Temperatures)",
-      instruction: "Sizga kundalik haroratlar massivi `temperatures` berilgan. Monotonic Stack yordamida, har bir kun uchun issiqroq kun kelguncha necha kun kutish kerakligini hisoblab massiv ko'rinishida qaytaruvchi `dailyTemperatures(temperatures)` funksiyasini yozing. Agar keyingi issiqroq kun bo'lmasa, `0` yozing.",
-      startingCode: "function dailyTemperatures(temperatures) {\n  // Monotonic stack yordamida yeching\n}",
-      hint: "res massivini 0 bilan to'ldirib, indekslarni saqlash uchun stek ishlating. temperatures[i] > temperatures[stack[stack.length - 1]] bo'lganda pop qilib indekslar farqini yozing.",
-      test: "if (typeof dailyTemperatures !== 'function') return 'dailyTemperatures topilmadi';\nconst res = dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73]);\nif (Array.isArray(res) && res.join(',') === '1,1,4,2,1,1,0,0') {\n  if (code.includes('stack') || code.includes('push')) return null;\n  return 'Stek tuzilmasidan foydalanish shart';\n}\nreturn 'Natija noto\\'g\\'ri hisoblandi';"
-    },
-    {
-      id: 14,
-      title: "Kodlangan Satrni Oqish (Decode String)",
-      instruction: "Quyidagi qoidaga ko'ra kodlangan satr `s` berilgan: `k[encoded_string]`, ya'ni qavs ichidagi satr to'liq `k` marta takrorlanadi. Stack yordamida uni dekodlab, to'liq satrni qaytaruvchi `decodeString(s)` funksiyasini yozing.",
-      startingCode: "function decodeString(s) {\n  // Kodlangan qavsli satrni stack orqali dekodlang\n}",
-      hint: "Ikkita stekdan foydalaning (sonlar va satrlar uchun). '[' kelganda joriy son va satrni stekka joylab ularni yangilang, ']' kelganda sonni stekdan oling va satrni takrorlang.",
-      test: "if (typeof decodeString !== 'function') return 'decodeString topilmadi';\nif (decodeString('3[a]2[bc]') === 'aaabcbc' && decodeString('3[a2[c]]') === 'accaccacc' && decodeString('2[abc]3[cd]ef') === 'abcabccdcdcdef') {\n  return null;\n}\nreturn 'decodeString funksiyasi noto\\'g\\'ri natija qaytardi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Qavslarni Tekshirish (Valid Parentheses)",
+    "instruction": "Faqat `(`, `)`, `{`, `}`, `[` va `]` qavslardan iborat bo'lgan `s` satri berilgan. Qavslar to'g'ri tartibda ochilib yopilganini tekshiruvchi `isValidParentheses(s)` funksiyasini yozing. Buning uchun Stack ma'lumotlar tuzilmasidan foydalaning (massiv yordamida push/pop qiling).",
+    "startingCode": "function isValidParentheses(s) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Ochuvchi qavslarni (`(`, `{`, `[`) stack-ga qo'shing. Yopuvchi qavs kelganda, stack-dan oxirgisini chiqarib (`pop`), ular mos kelishini tekshiring. Oxirida stack bo'sh bo'lishi kerak.",
+    "test": "const sandbox = new Function(code + '; return isValidParentheses;');\nconst fn = sandbox();\nif (fn('()') === true && fn('()[]{}') === true && fn('(]') === false && fn('([)]') === false && fn('{[]}') === true) return null;\nreturn 'isValidParentheses funksiyasi qavslarni to\\'g\\'ri tekshirmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Ikki Stack Yordamida Queue Yaratish (Queue using Stacks)",
+    "instruction": "Faqat ikkita Stack (ikkita massiv) yordamida standart Queue (navbat) yarating. Buning uchun `Queue` klassini yozing. Unda `enqueue(x)` (element qo'shish), `dequeue()` (element olish va qaytarish) va `peek()` (navbat boshidagi elementni qaytarish) metodlari bo'lishi kerak. Massivning faqat push va pop metodlaridan foydalanishga ruxsat beriladi (shift yoki unshift metodlaridan foydalanmang!).",
+    "startingCode": "class Queue {\n  constructor() {\n    this.stack1 = [];\n    this.stack2 = [];\n  }\n\n  enqueue(x) {\n    // Kodni shu yerda yozing\n  }\n\n  dequeue() {\n    // Kodni shu yerda yozing\n  }\n\n  peek() {\n    // Kodni shu yerda yozing\n  }\n}\n",
+    "hint": "enqueue amali uchun elementni shunchaki stack1-ga push qiling. dequeue yoki peek amali bajarilganda, agar stack2 bo'sh bo'lsa, stack1-dagi barcha elementlarni birma-bir stack2-ga pop qilib o'tkazing.",
+    "test": "if (code.includes('shift') || code.includes('unshift') || code.includes('splice')) return 'shift/unshift/splice metodlaridan foydalanish taqiqlanadi';\nconst sandbox = new Function(code + '; return Queue;');\nconst QueueClass = sandbox();\nconst q = new QueueClass();\nq.enqueue(1);\nq.enqueue(2);\nconst p = q.peek();\nconst d1 = q.dequeue();\nconst d2 = q.dequeue();\nif (p === 1 && d1 === 1 && d2 === 2) return null;\nreturn 'Queue klassi to\\'g\\'ri ishlamadi';"
+  },
+  {
+    "id": 3,
+    "title": "Minimum Qiymatli Stack (Min Stack)",
+    "instruction": "Klassik Stack amallaridan tashqari har doim o'zidagi eng kichik elementni O(1) vaqt ichida qaytara oladigan `MinStack` klassini yarating. Unda `push(val)`, `pop()`, `top()`, va `getMin()` metodlari bo'lishi kerak. Buning uchun joriy minimumlarni saqlab boradigan qo'shimcha yordamchi massivdan (`minStack`) foydalaning.",
+    "startingCode": "class MinStack {\n  constructor() {\n    this.stack = [];\n    this.minStack = [];\n  }\n\n  push(val) {\n    // Kodni shu yerda yozing\n  }\n\n  pop() {\n    // Kodni shu yerda yozing\n  }\n\n  top() {\n    // Kodni shu yerda yozing\n  }\n\n  getMin() {\n    // Kodni shu yerda yozing\n  }\n}\n",
+    "hint": "push qilganda val-ni stack-ga qo'shing. Agar minStack bo'sh bo'lsa yoki val minStack-ning eng oxirgi (yuqori) elementidan kichik yoki teng bo'lsa, uni minStack-ga ham qo'shing. pop amali bo'lganda, stack-dan chiqqan qiymat minStack-ning tepasidagi qiymat bilan teng bo'lsa, minStack-dan ham pop qiling.",
+    "test": "const sandbox = new Function(code + '; return MinStack;');\nconst MinStackClass = sandbox();\nconst s = new MinStackClass();\ns.push(-2);\ns.push(0);\ns.push(-3);\nconst min1 = s.getMin();\ns.pop();\nconst top1 = s.top();\nconst min2 = s.getMin();\nif (min1 === -3 && top1 === 0 && min2 === -2) return null;\nreturn 'MinStack klassi to\\'g\\'ri ishlamadi';"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Stek (Stack) qaysi tartiblash qoidasiga ko'ra ishlaydi?",
-      options: ["FIFO (First In First Out)", "LIFO (Last In First Out)", "LILO (Last In Last Out)", "Random Access"],
-      correctAnswer: 1,
-      explanation: "Stack oxirgi kirgan element birinchi chiqadigan (LIFO - Last In First Out) printsip asosida ishlaydi."
-    },
-    {
-      id: 2,
-      question: "Navbat (Queue) qaysi tartiblash qoidasiga ko'ra ishlaydi?",
-      options: ["LIFO", "FIFO", "FILO", "Priority Access"],
-      correctAnswer: 1,
-      explanation: "Queue birinchi kelgan elementga birinchi xizmat ko'rsatiladigan (FIFO - First In First Out) printsipi bo'yicha ishlaydi."
-    },
-    {
-      id: 3,
-      question: "Stek tepasidagi (top) elementni o'chirmasdan faqatgina ko'rish amali nima deyiladi?",
-      options: ["pop", "push", "peek (yoki top)", "dequeue"],
-      correctAnswer: 2,
-      explanation: "Peek (yoki ba'zi tillarda Top) metodi stek tepasidagi qiymatni o'chirmasdan uning nusxasini ko'rish imkonini beradi."
-    },
-    {
-      id: 4,
-      question: "Navbat oxiriga element qo'shish amali nima deb nomlanadi?",
-      options: ["push", "enqueue", "dequeue", "pop"],
-      correctAnswer: 1,
-      explanation: "Navbatga element qo'shish amali 'enqueue' deb ataladi va u navbatning dum qismiga (tail) element joylashtiradi."
-    },
-    {
-      id: 5,
-      question: "Quyidagilardan qaysi biri stekning amaliy hayotdagi tatbig'i hisoblanadi?",
-      options: [
-        "Printer navbati",
-        "Matn muharrirlarida 'Undo' (bekor qilish) Ctrl+Z tizimi",
-        "Kassadagi mijozlar navbati",
-        "Operatsion tizim process scheduling (rejalashtiruvchisi)"
-      ],
-      correctAnswer: 1,
-      explanation: "Ctrl+Z eng oxirgi amalni bekor qilishi kerak. Bu amal stekda saqlanadi va bekor qilish buyrug'i kelganda pop qilib olinadi."
-    },
-    {
-      id: 6,
-      question: "Bo'sh stekdan element o'chirishga harakat qilish qanday holat deyiladi?",
-      options: ["Stack Overflow", "Stack Underflow", "Memory Leak", "Reference Error"],
-      correctAnswer: 1,
-      explanation: "Bo'sh stekdan elementni olishga urinish 'Stack Underflow' deb ataladi va bu dasturda xatolikka olib kelishi mumkin."
-    },
-    {
-      id: 7,
-      question: "Nima uchun massiv yordamida navbat (Queue) yaratish va unda `shift()` metodidan foydalanish samarasiz?",
-      options: [
-        "Massiv faqat raqam saqlagani uchun",
-        "Chunki `shift()` amali massiv boshidagi elementni o'chirgach qolgan barcha elementlarni surib chiqadi, bu O(n) vaqt oladi",
-        "Massiv xotirani avtomatik tozalamaydi",
-        "Bu xavfsiz emas"
-      ],
-      correctAnswer: 1,
-      explanation: "Massiv boshidan element o'chirilganda, massiv indekslari qaytadan nollanib, barcha elementlar bittaga chapga siljiydi, bu esa O(n) chiziqli vaqt talab qiladi."
-    },
-    {
-      id: 8,
-      question: "Min Stack klassida eng kichik elementni O(1) da saqlash uchun qanday qo'shimcha yondashuv kerak?",
-      options: [
-        "Massivni har safar saralab turish",
-        "Asl stekka parallel ravishda eng kichik elementlarni kuzatib boruvchi yordamchi ikkinchi stekni (minStack) yuritish",
-        "Rekursiya ishlatish",
-        "Ikki tomonlama navbat qo'llash"
-      ],
-      correctAnswer: 1,
-      explanation: "Har safar push amali bo'lganda, yangi qiymat joriy minimal qiymat bilan solishtirilib, yordamchi stekda (minStack) saqlab boriladi. Bu O(1) da minimal qiymatni bilish imkonini beradi."
-    },
-    {
-      id: 9,
-      question: "JavaScript motorida asinxron vazifalar navbati (Task Queue) qayerda bajariladi?",
-      options: ["Call Stack ichida", "Event Loop boshqaruvida sinxron kodlar tugagach", "Dastur boshlanishida", "Faqat node.js-da"],
-      correctAnswer: 1,
-      explanation: "Sinxron kodlar (Call Stack) to'liq bajarilib bo'shagandan so'ng, Event Loop Task Queue-dan navbatdagi vazifani stackka olib kelib bajaradi."
-    },
-    {
-      id: 10,
-      question: "Queue boshidan element o'chirish amali nima deyiladi?",
-      options: ["pop", "shift", "dequeue", "peek"],
-      correctAnswer: 2,
-      explanation: "Navbatning boshidan elementni o'chirib olish amali 'dequeue' deb ataladi."
-    },
-    {
-      id: 11,
-      question: "Stekka element joylash (`push`) va olish (`pop`) amallarining eng yaxshi vaqt murakkabligi qanday?",
-      options: ["O(n)", "O(log n)", "O(1)", "O(n log n)"],
-      correctAnswer: 2,
-      explanation: "Stek amallari faqat yuqoridan bajarilganligi va hech qanday elementlarni siljitishni talab qilmasligi sababli O(1) tezlikda ishlaydi."
-    },
-    {
-      id: 12,
-      question: "Monotonic Stack nima?",
-      options: [
-        "Faqat bitta turdagi ma'lumotlarni qabul qiladigan stek",
-        "Elementlari doimo o'sish yoki kamayish tartibida saqlanadigan stek",
-        "Dinamik ravishda xotirasini kengaytiruvchi stek",
-        "Faqat bitta element saqlay oladigan stek"
-      ],
-      correctAnswer: 1,
-      explanation: "Monotonic steklar elementlarni kiritishda tartibni saqlaydi (masalan, faqat o'sib boruvchi). Bu orqali massivdagi eng yaqin katta/kichik elementni tez topish mumkin."
-    },
-    {
-      id: 13,
-      question: "Monotonic Decreasing Stack (kamayib boruvchi monotonic stek) ning asosiy ishlash qoidasi qanday?",
-      options: [
-        "Stekka faqat manfiy sonlar qo'shiladi",
-        "Yangi element qo'shishdan oldin, undan kichik bo'lgan barcha elementlar stek tepasidan o'chiriladi (pop qilinadi), natijada stek ostidan tepaga qarab elementlar faqat kamayib borish tartibida qoladi",
-        "Elementlar har doim navbatma-navbat aylanadi",
-        "Stek elementlar soni hech qachon 1 tadan oshmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Kamayib boruvchi monotonic stekda har bir yangi element o'zidan kichik bo'lgan barcha elementlarni stek tepasidan pop qilib yuboradi, bu esa stekdagi elementlarning pastdan tepaga qarab kamayib borishini ta'minlaydi."
-    },
-    {
-      id: 14,
-      question: "Aylanma navbat (Circular Queue) ning oddiy massiv navbatidan asosiy ustunligi nimada?",
-      options: [
-        "U elementlarni avtomatik ravishda saralaydi",
-        "U massivning boshida bo'shagan xotira kataklarini aylanma indekslar orqali qayta ishlatadi va O(n) siljitish (shift) amalini bajarmasdan xotirani tejaydi",
-        "U cheksiz miqdordagi elementlarni saqlay oladi",
-        "U faqat brauzer asinxron kodlarida ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Circular Queue boshlang'ich va oxirgi element ko'rsatkichlarini (head va tail) aylanma o'lcham bo'yicha (% operatori yordamida) yangilaydi. Bu dequeue qilingan elementlar o'rnini massiv boshiga borib qaytadan to'ldirish imkonini beradi va elementlarni siljitmasdan O(1) vaqtda xotirani boshqaradi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Stack (Stek) ma'lumotlar tuzilmasi qaysi tamoyil asosida ishlaydi?",
+    "options": [
+      "FIFO (First In, First Out) - Birinchi kirgan birinchi chiqadi",
+      "LIFO (Last In, First Out) - Oxirgi kirgan birinchi chiqadi",
+      "LILO (Last In, Last Out) - Oxirgi kirgan oxirgi chiqadi",
+      "Tasodifiy kirish (Random Access)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Stack 'LIFO' (Oxirgi kirgan birinchi chiqadi) tamoyili bilan ishlaydi. Masalan, ustma-ust taxlangan likopchalar kabi, faqat eng ustidagisini olish mumkin."
+  },
+  {
+    "id": 2,
+    "question": "Queue (Navbat) ma'lumotlar tuzilmasi qaysi tamoyil asosida ishlaydi?",
+    "options": [
+      "FIFO (First In, First Out) - Birinchi kelgan birinchi ketadi",
+      "LIFO (Last In, First Out) - Oxirgi kelgan birinchi ketadi",
+      "LILO (Last In, Last Out) - Oxirgi kelgan oxirgi ketadi",
+      "Kalit bo'yicha kirish (Key Access)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Queue 'FIFO' (Birinchi kelgan birinchi ketadi) tamoyili bilan ishlaydi. Do'kondagi navbat kabi, navbatga birinchi turgan odamga birinchi xizmat ko'rsatiladi."
+  },
+  {
+    "id": 3,
+    "question": "Stack-ka yangi element qo'shish (Push) va undan element o'chirish (Pop) operatsiyalarining vaqt murakkabligi qanday?",
+    "options": [
+      "O(n)",
+      "O(log n)",
+      "O(1)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Stack-ning eng yuqori qismiga element qo'shish va undan element olish faqat bitta element bilan bog'liq bo'lgani uchun doimiy vaqt (O(1)) oladi."
+  },
+  {
+    "id": 4,
+    "question": "Navbat boshidan elementni olish (Dequeue) va navbat oxiriga element qo'shish (Enqueue) ideal holatda qanday vaqt murakkabligiga ega bo'lishi kerak?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "To'g'ri loyihalashtirilgan Queue ma'lumotlar tuzilmasida (masalan, pointerlar yordamida) enqueue va dequeue operatsiyalari O(1) vaqt murakkabligida ishlashi kerak."
+  },
+  {
+    "id": 5,
+    "question": "JavaScript-da oddiy massiv (Array) va `.shift()` metodidan foydalanib dequeue qilish nega samarasiz hisoblanadi?",
+    "options": [
+      "Massivda `.shift()` ishlatib bo'lmasligi sababli",
+      "Massivning `.shift()` metodi barcha qolgan elementlarni 1 indeks chapga surib chiqishi tufayli O(n) vaqt talab qilishi uchun",
+      "U faqat sonlarni o'chira olgani uchun",
+      "Massiv hajmini qisqartira olmasligi sababli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript massividan `.shift()` yordamida element o'chirilganda, barcha qolgan elementlar bitta indeks chapga suriladi. Bu massiv hajmi n ga proporsional ravishda O(n) vaqt oladi va katta ma'lumotlarda sekinlashadi."
+  },
+  {
+    "id": 6,
+    "question": "Stack-dan elementni o'chirmasdan, uning eng yuqorisida turgan qiymatni ko'rish (o'qish) amali nima deyiladi?",
+    "options": [
+      "Pop",
+      "Push",
+      "Peek (yoki Top)",
+      "Enqueue"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Peek yoki Top operatsiyasi stack-ning tepasida turgan elementni o'chirmasdan, faqat uning qiymatini qaytaradi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi dasturlardan qaysi biri ish jarayonida Stack tuzilmasidan foydalanadi?",
+    "options": [
+      "Printerning chop etish navbati",
+      "Matn muharrirlaridagi orqaga qaytarish (Undo / Ctrl+Z) amali",
+      "Kassa oldidagi mijozlar navbati",
+      "Serverga kelayotgan tarmoq so'rovlarini navbat bilan bajarish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Undo (Ctrl+Z) amali oxirgi bajarilgan harakatlarni saqlash va ularni oxiridan boshlab bekor qilish uchun Stack (LIFO) tizimidan foydalanadi."
+  },
+  {
+    "id": 8,
+    "question": "Navbat (Queue) ma'lumotlar tuzilmasi qaysi jarayonda qo'llaniladi?",
+    "options": [
+      "Dasturdagi funksiya chaqiriqlarini (Call Stack) boshqarishda",
+      "Faqat matematik tenglamalarni hisoblashda",
+      "Operatsion tizimda resurslar (masalan, printer yoki protsessor) uchun vazifalarni navbatga qo'yishda",
+      "Rekursiv funksiyalar chaqirig'ini saqlashda"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Queue (FIFO) operatsion tizimlarda yoki tarmoq tizimlarida vazifalarni kelish tartibiga ko'ra bajarish (Task Scheduling) uchun keng qo'llaniladi."
+  },
+  {
+    "id": 9,
+    "question": "Monotonik Stack (Monotonic Stack) nima?",
+    "options": [
+      "Elementlari har doim faqat o'sib boruvchi yoki kamayib boruvchi tartibda saqlanadigan stack",
+      "Faqat bitta element saqlay oladigan stack",
+      "Xotiradan joy ajratilmaydigan mavhum stack",
+      "Faqat simvollarni tekshiradigan stack"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Monotonik Stack elementlarni qo'shayotganda tartibni saqlaydi: u faqat o'suvchi (monotonic increasing) yoki faqat kamayuvchi (monotonic decreasing) tartibda bo'ladi."
+  },
+  {
+    "id": 10,
+    "question": "Stack va Queue n ta element saqlaganda xotira murakkabligi (Space Complexity) qanday bo'ladi?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Ikkala ma'lumotlar tuzilmasi ham n ta elementni saqlash uchun n ga proporsional qo'shimcha xotira talab qiladi, ya'ni O(n)."
+  },
+  {
+    "id": 11,
+    "question": "Call Stack (Chaqiriqlar steki) xotirasi to'lib ketishi natijasida yuzaga keladigan xatolik qanday ataladi?",
+    "options": [
+      "Queue Overflow",
+      "Stack Overflow",
+      "Memory Leak",
+      "Out of Bounds"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Dasturda rekursiya cheksiz yoki juda chuqur bo'lganda chaqiriqlar steki xotirasi to'lib ketadi va bu 'Stack Overflow' xatolini keltirib chiqaradi."
+  },
+  {
+    "id": 12,
+    "question": "Ikkita stack yordamida navbat (Queue) hosil qilganda, `dequeue` amali uchun o'rtacha (amortizatsiyalangan) vaqt murakkabligi qanday bo'ladi?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Dequeue amali ba'zan elementlarni stack1 dan stack2 ga ko'chirishda O(n) vaqt olsa-da, ko'chirilgan elementlar keyingi safar to'g'ridan-to'g'ri O(1) da olinadi. O'rtacha hisobda (amortized) bu operatsiya O(1) vaqt oladi."
+  }
+]
+
 };

@@ -1,321 +1,399 @@
 export const linkedLists = {
   id: "linkedLists",
-  title: "Bog'langan Ro'yxatlar (Linked Lists)",
-  theory: `## 1. NEGA kerak?
-Massivlar (Arrays) xotirada ketma-ket (contiguous) bloklarda saqlanadi. Bu ulardan indeks bo'yicha element olishni o'ta tez ($O(1)$) qilsa-da, massiv o'rtasiga yoki boshiga yangi element qo'shish yoki o'chirish juda qimmat amaliyotdir ($O(n)$), chunki qolgan barcha elementlarni siljitish (shift) kerak bo'ladi.
-**Linked List** (Bog'langan ro'yxat) esa bu muammoni xotiraning ixtiyoriy qismida joylashgan tugunlar (Nodes) orqali hal qiladi. Har bir tugun o'zida ma'lumotni va keyingi tugunga ko'rsatkichni (pointer/reference) saqlaydi. Bu boshiga yoki oxiriga element qo'shish/o'chirishni o'ta samarali ($O(1)$) qiladi va xotirani dinamik kengaytirish imkonini beradi.
+  title: "Linked Lists (Bog'langan Ro'yxatlar) va Floyd Tsikl Tizimi",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-## 2. SODDALIK (Analogiya)
-Massivni **poezd vagonlariga** o'xshatish mumkin: vagonlar qat'iy ketma-ket ulanadi, 1-vagon bilan 3-vagon orasiga yangi vagon suqish uchun butun poezdni ajratib, siljitish kerak.
-Linked List esa **xazinani izlash o'yiniga (Treasure Hunt)** o'xshaydi: siz birinchi manzildasiz, u yerda xazina (qiymat) va keyingi manzil yozilgan qog'ozcha (ko'rsatkich) bor. Manzillar xotiraning istalgan chekkasida tartibsiz yotishi mumkin, lekin siz zanjir bo'yicha biridan ikkinchisiga o'ta olasiz.
+### Bog'langan Ro'yxat (Linked List) nima?
+* **Linked List:** Bu elementlari xotirada ketma-ket emas, balki tarqoq joylashgan va har bir element (tugun) o'zidan keyingi elementga havola (ko'rsatkich) orqali bog'langan ma'lumotlar tuzilmasidir.
+* **Tarkibi:** Har bir element **Tugun (Node)** deb ataladi va u ikki qismdan iborat:
+  1. **Qiymat (Value):** Tugunda saqlanadigan ma'lumot.
+  2. **Ko'rsatkich (Next pointer):** Keyingi tugunning xotiradagi manzili.
+* **Floyd Tsikl Tizimi (Floyd's Cycle Detection):** Bog'langan ro'yxat ichida oxiri yo'q cheksiz aylanma yo'l (tsikl) bor-yo'qligini aniqlaydigan algoritm.
 
-## 3. STRUKTURA VA TURLARI
+### Real hayotiy analogiya
+Tasavvur qiling, siz **xazina qidiryapsiz (Treasure Hunt)**:
+* **Massiv usuli (Array):** Sizga xarita berilgan va u yerda xazinalar qaysi uylarda ekani aniq yozilgan. Siz to'g'ridan-to'g'ri 5-uyga borib xazinani olasiz.
+* **Linked List usuli:** Siz birinchi uyga borasiz. U yerda xazina va keyingi xazina qaysi uyda ekanligi yozilgan eslatma (havola) bor. Keyingi uyga borasiz, u yerda ham qiymat va keyingi uy manzili yozilgan. Oxirgi uyda esa "Keyingi uy yo'q" deb yozilgan (\`null\`).
+* **Floyd Tsikl Tizimi (Aylanma yo'l):** Agar kimdir uydagi eslatmani avvalgi biror uyga yo'naltirib qo'ysa, siz aylanma yo'lga kirib qolasiz va umringiz oxirigacha o'sha uylar orasida aylanib yuraverasiz. Uni aniqlash uchun ikki kishi (biri sekin yuruvchi Toshbaqa, biri tez yuguruvchi Quyon) yo'lga chiqadi. Agar yo'l aylana bo'lsa, Quyon baribir Toshbaqani quvib yetadi.
 
-### A. Bog'langan ro'yxat turlari
-1. **Singly Linked List (Bir tomonlama):** Har bir tugunda faqat keyingi tugunga havola (\`next\`) bo'ladi. Orqaga qaytib bo'lmaydi.
-2. **Doubly Linked List (Ikki tomonlama):** Har bir tugunda keyingi (\`next\`) va oldingi (\`prev\`) tugunlarga havola bo'ladi. Har ikki tomonga yurish mumkin.
-3. **Circular Linked List (Aylanma):** Oxirgi tugunning \`next\` ko'rsatkichi \`null\` bo'lish o'rniga, qaytadan boshidagi \`head\` tugunga bog'langan bo'ladi.
+---
 
-\`mermaid
-graph LR
-    subgraph Singly ["Bir tomonlama (Singly)"]
-        S1["[ 10 | next ]"] --> S2["[ 20 | next ]"] --> S3["[ 30 | null ]"]
-    end
-    subgraph Doubly ["Ikki tomonlama (Doubly)"]
-        D1["[ null | 10 | next ]"]
-        D2["[ prev | 20 | next ]"]
-        D3["[ prev | 30 | null ]"]
-        D1 === D2
-        D2 === D3
-    end
-\`
+## 2. 💻 Real Kod Misollari
 
-### B. Xotira taqsimoti va Kesh-lokallik
-Massivlardan farqli o'laroq, Linked List elementlari xotirada ketma-ket joylashmaydi. Bu esa protsessor uchun **Cache Locality** (kesh yaqinligi) muammosini keltirib chiqaradi. Protsessor massiv elementlarini o'qiyotganda keshga ketma-ket yuklaydi va keyingi elementlarni o'ta tez o'qiydi. Linked List-da esa ko'rsatkich bo'yicha xotiraning boshqa chekkasiga murojaat qilish kesh yuklanishining barbod bo'lishiga (Cache Miss) olib keladi.
-
-### C. Sentinel Nodes (Dummy Nodes)
-Algoritmlarni yozishda, ayniqsa boshiga element qo'shish yoki o'chirish kabi operatsiyalarda \`head\` o'zgaruvchisi null bo'lishi chekka holatini oson boshqarish uchun biz **Dummy Node** (soxta tugun) dan foydalanamiz. U hech qanday foydali qiymat saqlamaydi, faqat zanjir boshlanishiga havola beradi.
-
-\`mermaid
-graph TD
-    classDef main fill:#3498db,stroke:#2980b9,color:#fff;
-    classDef temp fill:#e74c3c,stroke:#c0392b,color:#fff;
-    
-    A["Tugun A"]:::main
-    B["Tugun B"]:::main
-    New["Yangi Tugun"]:::temp
-
-    A -- "Eski next ko'rsatkichi" --> B
-    A -. "1. Yangi next yo'nalishi" .-> New
-    New -. "2. Yangi tugun next ko'rsatkichi" .-> B
-\`
-
-## 4. AMALIYOT
-Singly Linked List tuguni (Node) va uning tuzilishi:
-\`javascript
+### 1. Tugun (Node) va Linked List yaratish
+JavaScript-da bog'langan ro'yxatni class-lar yordamida yozamiz:
+\`\`\`javascript
 class Node {
-  constructor(value) {
-    this.value = value;
-    this.next = null;
+  constructor(val) {
+    this.val = val;
+    this.next = null; // Boshida keyingi tugun yo'q
   }
 }
-\`
 
-### Zanjir bo'ylab yurish (Traversal)
-\`javascript
-let current = head;
-while (current !== null) {
-  console.log(current.value);
-  current = current.next;
+// Ro'yxatni yaratish: 1 -> 2 -> 3 -> null
+const head = new Node(1);
+head.next = new Node(2);
+head.next.next = new Node(3);
+\`\`\`
+
+### 2. Bog'langan ro'yxatni aylanib chiqish (Traversal)
+\`\`\`javascript
+function printList(head) {
+  let current = head;
+  while (current !== null) {
+    console.log(current.val);
+    current = current.next; // Ko'rsatkichni keyingi tugunga suramiz
+  }
 }
-\`
+printList(head); // Konsolga: 1, 2, 3 chiqadi
+\`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **Zanjirni uzib qo'yish (Lost references):** Elementni o'chirish yoki o'rtasiga qo'shish paytida havolalarni to'g'ri bog'lamaslik zanjirning qolgan qismi xotirada yo'qolishiga (Garbage Collection tomonidan o'chirilishiga) olib keladi.
-2. **Cheksiz siklga tushib qolish:** Agar ro'yxatda aylanma bog'lanish (Cycle) hosil bo'lsa va to'xtash sharti qo'yilmasa, \`while (current !== null)\` sikli cheksiz aylanadi.
-3. **Null pointer xatosi:** Bo'sh ro'yxatda (head = null) \`head.next\` ni chaqirish \`TypeError: Cannot read properties of null\` xatosini beradi.
+### 3. Floyd Tsikl Aniqlash Algoritmi (Detect Cycle)
+\`\`\`javascript
+function hasCycle(head) {
+  let slow = head;
+  let fast = head;
 
-## 6. SAVOLLAR VA JAVOBLAR
-**1. Linked List nima?**
-Xotiraning turli joylarida joylashgan va bir-biriga havolalar orqali bog'langan tugunlardan iborat chiziqli ma'lumotlar tuzilmasi.
+  while (fast !== null && fast.next !== null) {
+    slow = slow.next;       // 1 qadam siljiydi (Toshbaqa)
+    fast = fast.next.next;  // 2 qadam siljiydi (Quyon)
 
-**2. Massiv va Linked List farqi nima?**
-Massiv xotirada ketma-ket blokda joylashadi va hajmi qat'iy, Linked List esa xotirada tarqoq joylashadi va hajmi dinamik o'zgaradi.
+    if (slow === fast) {
+      return true; // Ular uchrashdi, demak tsikl bor!
+    }
+  }
+  return false; // fast oxiriga yetdi, tsikl yo'q
+}
+\`\`\`
 
-**3. Linked List boshiga element qo'shishning vaqt murakkabligi qanday?**
-$O(1)$ ga teng, chunki yangi tugun yaratilib, uning next xossasi head ga yo'naltiriladi.
+---
 
-**4. Linked List o'rtasidan element qidirish murakkabligi qanday?**
-$O(n)$, chunki indeks yo'q va elementni topish uchun boshidan boshlab bittalab zanjirni yurib chiqish kerak.
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
 
-**5. Doubly Linked List-ning afzalligi nimada?**
-Elementlarni ham oldinga, ham orqaga qarab aylanib chiqish imkoniyati borligi va elementni o'chirish osonroq kechishida.
+### Xotira taqsimoti (Memory Allocation)
+* **Massivlar** xotiradan ketma-ket joy oladi. Agar massivga yangi element qo'shmoqchi bo'lsak va yonidagi xotira band bo'lsa, kompyuter butun massivni boshqa bo'sh joyga ko'chirib o'tkazishi kerak.
+* **Linked List** tugunlari esa dynamic tarzda xotiraning har xil bo'sh kataklarida joylashadi. Ularni faqat \`next\` havolasi birlashtirib turadi. Shuning uchun element qo'shish yoki o'chirish juda tez amalga oshadi, lekin elementni qidirish sekinroq kechadi.
 
-**6. Circular Linked List nima?**
-Oxirgi tugun keyingi tugun sifatida null-ga emas, balki ro'yxat boshidagi head tugunga bog'langan yopiq aylanma zanjir.
+### Floyd algoritmining matematik isboti
+Nega tezkor (fast) va sekin (slow) ko'rsatkichlar tsikl ichida albatta to'qnashadi?
+* Tsikl ichida \`fast\` ko'rsatkichi har qadamda \`slow\`ga 1 qadamdan yaqinlashib boradi (chunki tezligi $2 - 1 = 1$). 
+* Masofa har qadamda 1 taga qisqargani sababli, ular orasidagi masofa albatta 0 ga teng bo'ladi va ular uchrashadi.
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. \`null\` qiymat ustida \`.next\`ni chaqirish (NullPointer Exception)
+Ko'rsatkichni tekshirmasdan oldinga surish dasturni buzib qo'yadi.
+* **Xato:**
+  \`\`\`javascript
+  let current = head;
+  while (current.next !== null) { // Agar head null bo'lsa, xatolik beradi
+    current = current.next;
+  }
+  \`\`\`
+* **Tuzatish:**
+  \`\`\`javascript
+  let current = head;
+  while (current !== null && current.next !== null) {
+    current = current.next;
+  }
+  \`\`\`
+
+### 2. Havolalarni yo'qotib qo'yish (Broken Chain)
+Yangi element qo'shayotganda yoki o'chirayotganda zanjir tartibini noto'g'ri yozish havolalar uzilishiga olib keladi.
+* **Xato:**
+  \`\`\`javascript
+  // Yangi tugunni head-dan keyin qo'shish
+  let newNode = new Node(1.5);
+  head.next = newNode; // Head-ning eski next havolasi yo'qoldi! (2 va 3-tugunlar xotirada yetim qoldi)
+  \`\`\`
+* **Tuzatish:**
+  \`\`\`javascript
+  let newNode = new Node(1.5);
+  newNode.next = head.next; // Avval yangi tugunni eski zanjirga ulaymiz
+  head.next = newNode;      // Keyin head-ni yangi tugunga ulaymiz
+  \`\`\`
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior
+1. **Linked List nima?**
+   * *Javob:* Har bir elementi qiymat va keyingi elementga havola saqlaydigan tugunlar zanjiridan iborat chiziqli ma'lumotlar tuzilmasi.
+2. **Linked List massivdan qanday ustunlikka ega?**
+   * *Javob:* Boshiga va oxiriga (tail ma'lum bo'lsa) element qo'shish/o'chirish O(1) vaqt oladi va o'lchami dynamic ravishda o'zgaradi.
+3. **Singly va Doubly Linked List farqi nimada?**
+   * *Javob:* Singly list faqat keyingi tugunga havola qiladi. Doubly list esa ham keyingi, ham oldingi tugunga havola qiladi.
+4. **Linked List-da element o'chirish qanday ishlaydi?**
+   * *Javob:* O'chiriladigan tugundan oldingi tugunning \`next\` havolasini o'chirilayotgan tugundan keyingi tugunga yo'naltirish orqali.
+
+### Middle
+5. **Nima uchun Linked List-da elementni indeks bo'yicha olish O(n) vaqt talab qiladi?**
+   * *Javob:* Chunki elementlar xotirada tarqoq joylashgan va to'g'ridan-to'g'ri indeks bo'yicha borib bo'lmaydi. Boshidan boshlab bittalab aylanib chiqish shart.
+6. **Floyd Tsikl aniqlash algoritmi qanday ishlaydi?**
+   * *Javob:* Ikkita ko'rsatkich (slow va fast) olingan holda, fast ikki marta tezroq yuradi. Agar tsikl bo'lsa, ular to'qnashadi, bo'lmasa fast oxiriga yetib boradi.
+7. **Singly Linked List-ni teskari qilish algoritmini tushuntiring.**
+   * *Javob:* Uchta ko'rsatkich (\`prev\`, \`current\`, \`next\`) yordamida zanjir bo'ylab yurib, har bir tugunning \`next\` havolasini orqadagi \`prev\` tugunga qarab o'zgartirib chiqiladi.
+8. **Linked List-da xotira sarfi massivdagidan ko'pmi?**
+   * *Javob:* Ha, chunki qiymatning o'zidan tashqari har bir tugun uchun pointer (havola) ham saqlanishi kerak.
+
+### Senior
+9. **Circular Linked List nima va u qayerda ishlatiladi?**
+   * *Javob:* Oxirgi tugunning \`next\` ko'rsatkichi yana \`head\`ga ulanadigan ro'yxat. U aylanma navbatlar (Round-Robin CPU scheduling) kabi algoritmlarda ishlatiladi.
+10. **Floyd algoritmi orqali tsikl boshlanish nuqtasini (tugunini) qanday topish mumkin?**
+    * *Javob:* Toshbaqa va Quyon to'qnashganidan so'ng, ulardan birini (masalan, slow) yana \`head\`ga qaytaramiz. Keyin ikkalasini ham 1 qadamdan surib boramiz. Ular yana uchrashgan nuqta tsikl boshlanish tuguni bo'ladi.
+11. **Skip List nima?**
+    * *Javob:* Elementlarni qidirishni tezlashtirish (O(log n)) uchun bir necha qatlamli ko'rsatkichlarga ega bo'lgan bog'langan ro'yxat turi.
+12. **Garbage Collector (Axlat yig'uvchi) bog'langan ro'yxatdagi o'chirilgan tugunlarni qachon xotiradan o'chiradi?**
+    * *Javob:* Qachonki global qamrovda yoki ishlayotgan funksiyalarda ushbu tugunga olib boruvchi birorta ham havola qolmagan bo'lsa.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Bu dars uchun topshiriqlar \`linkedLists_exercises.json\` faylida berilgan. U yerda siz ro'yxatni teskari qilish, Floyd tsikl algoritmini yozish va ro'yxat o'rtasini topish kabi topshiriqlarni bajarasiz.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars bo'yicha bilimingizni sinash uchun 12 ta test savollari tayyorlangan bo'lib, ular \`linkedLists_quizzes.json\` faylida keltirilgan.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Browser History (Orqaga-Oldinga o'tish tizimi)
+Brauzerlarda "Orqaga" (Back) va "Oldinga" (Forward) tugmalari qanday ishlaydi?
+* **Yechim:** Bu tizim Doubly Linked List yordamida amalga oshiriladi.
+* **Ishlash tartibi:**
+  * Har bir ochilgan sahifa yangi tugun sifatida qo'shiladi va joriy tugun unga bog'lanadi.
+  * Biz hozir turgan sahifa ko'rsatkich sifatida saqlanadi (\`current\`).
+  * "Orqaga" bosilganda \`current = current.prev\` qilinadi.
+  * "Oldinga" bosilganda \`current = current.next\` qilinadi.
+
+\`\`\`javascript
+class BrowserHistory {
+  constructor(homepage) {
+    this.current = { url: homepage, prev: null, next: null };
+  }
+
+  visit(url) {
+    const newPage = { url: url, prev: this.current, next: null };
+    this.current.next = newPage;
+    this.current = newPage; // Yangi sahifaga o'tdik
+  }
+
+  back() {
+    if (this.current.prev) {
+      this.current = this.current.prev;
+    }
+    return this.current.url;
+  }
+
+  forward() {
+    if (this.current.next) {
+      this.current = this.current.next;
+    }
+    return this.current.url;
+  }
+}
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **O'lchamni oldindan bilib bo'lmasa, Linked List tanlang:** Ma'lumotlar miqdori dynamic o'zgarib tursa, massiv kengayishidagi O(n) xarajatidan qutulasiz.
+* **Lookup ko'p bo'lsa, massiv ishlating:** Tez-tez indeks bo'yicha qidiruv qiladigan loyihalarda Linked List yomon natija beradi.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Operatsiya | Array (Massiv) | Linked List (Bog'langan Ro'yxat) | Izoh |
+| :--- | :--- | :--- | :--- |
+| **Lookup (Indeks orqali olish)** | O(1) | O(n) | Massivda random access bor, ro'yxatda yo'q |
+| **Insert at Head (Boshiga qo'shish)** | O(n) | O(1) | Massiv elementlarini surish kerak, ro'yxatda shart emas |
+| **Insert at Tail (Oxiriga qo'shish)** | O(1) | O(1) (tail bo'lsa) / O(n) (bo'lmasa) | Ro'yxat oxirigacha borish vaqti talab qilinishi mumkin |
+| **Delete (O'chirish)** | O(n) | O(1) (tugun berilgan bo'lsa) | Havolani o'zgartirish kifoya |
+| **Qo'shimcha Xotira** | Yo'q | Bor (next va prev pointerlar uchun) | Ro'yxat ko'proq RAM sarflaydi |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Singly Linked List Tuguni (Node)",
-      instruction: "Singly Linked List uchun qiymat (`value`) va keyingi element havolasi (`next = null`) bilan ishga tushadigan `Node` klassini yozing.",
-      startingCode: "class Node {\n  // Constructor yarating\n}",
-      hint: "constructor(value) { this.value = value; this.next = null; }",
-      test: "if (typeof Node !== 'function') return 'Node klassi topilmadi'; const n = new Node(10); if (n.value !== 10 || n.next !== null) return 'Node xossalari noto\\'g\\'ri sozlandi'; return null;"
-    },
-    {
-      id: 2,
-      title: "LinkedList oxiriga element qo'shish (Append)",
-      instruction: "LinkedList klassida `append(value)` metodini yozing. U yangi Node yaratib, ro'yxat oxiriga qo'shishi kerak.",
-      startingCode: "class Node {\n  constructor(value) { this.value = value; this.next = null; }\n}\nclass LinkedList {\n  constructor() { this.head = null; }\n  append(value) {\n    const newNode = new Node(value);\n    if (!this.head) {\n      this.head = newNode;\n      return;\n    }\n    // Oxirgi elementgacha boring va bog'lang\n  }\n}",
-      hint: "let curr = this.head; while(curr.next) curr = curr.next; curr.next = newNode;",
-      test: "if (typeof LinkedList !== 'function') return 'LinkedList klassi topilmadi'; const list = new LinkedList(); list.append(5); list.append(10); if (!list.head || list.head.value !== 5) return 'Boshiga qo\\'shilmadi'; if (!list.head.next || list.head.next.value !== 10) return 'Oxiriga to\\'g\\'ri qo\\'shilmadi'; return null;"
-    },
-    {
-      id: 3,
-      title: "LinkedList boshiga element qo'shish (Prepend)",
-      instruction: "LinkedList klassining `prepend(value)` metodini yozing. U yangi Node yaratib, ro'yxat boshiga (head) joylashtirishi kerak.",
-      startingCode: "class Node {\n  constructor(value) { this.value = value; this.next = null; }\n}\nclass LinkedList {\n  constructor() { this.head = null; }\n  prepend(value) {\n    // Boshiga element qo'shing\n  }\n}",
-      hint: "const newNode = new Node(value); newNode.next = this.head; this.head = newNode;",
-      test: "if (typeof LinkedList !== 'function') return 'LinkedList klassi topilmadi'; const list = new LinkedList(); list.prepend(20); list.prepend(10); if (list.head.value !== 10 || list.head.next.value !== 20) return 'Boshiga to\\'g\\'ri prepend qilinmadi'; return null;"
-    },
-    {
-      id: 4,
-      title: "LinkedList qidiruv (Find)",
-      instruction: "LinkedList tarkibidan berilgan `value`ga ega tugunni izlab qaytaradigan `find(value)` metodini yozing (topilmasa null).",
-      startingCode: "class LinkedList {\n  constructor() { this.head = null; }\n  find(value) {\n    let curr = this.head;\n    // Zanjir bo'yicha qidiring\n  }\n}",
-      hint: "while(curr) { if(curr.value === value) return curr; curr = curr.next; } return null;",
-      test: "if (typeof LinkedList !== 'function') return 'LinkedList klassi topilmadi'; const list = new LinkedList(); list.head = { value: 5, next: { value: 10, next: null } }; if (!list.find(10) || list.find(10).value !== 10) return 'Mavjud element topilmadi'; if (list.find(15) !== null) return 'Mavjud bo\\'lmagan element uchun null qaytarilishi kerak'; return null;"
-    },
-    {
-      id: 5,
-      title: "LinkedList element o'chirish (Delete)",
-      instruction: "LinkedList-dan berilgan qiymatli birinchi tugunni o'chiradigan `delete(value)` metodini yozing.",
-      startingCode: "class LinkedList {\n  constructor() { this.head = null; }\n  delete(value) {\n    if (!this.head) return;\n    if (this.head.value === value) {\n      this.head = this.head.next;\n      return;\n    }\n    // O'chirish logikasini yozing\n  }\n}",
-      hint: "let curr = this.head; while(curr.next) { if(curr.next.value === value) { curr.next = curr.next.next; return; } curr = curr.next; }",
-      test: "if (typeof LinkedList !== 'function') return 'LinkedList klassi topilmadi'; const list = new LinkedList(); list.head = { value: 1, next: { value: 2, next: { value: 3, next: null } } }; list.delete(2); if (list.head.next.value !== 3) return 'Element to\\'g\\'ri o\\'chirilmadi'; return null;"
-    },
-    {
-      id: 6,
-      title: "Ro'yxat o'lchami (getSize)",
-      instruction: "LinkedList-dagi jami tugunlar sonini hisoblaydigan `getSize()` metodini yozing.",
-      startingCode: "class LinkedList {\n  constructor() { this.head = null; }\n  getSize() {\n    let count = 0;\n    // Tugunlarni sanang\n  }\n}",
-      hint: "let curr = this.head; while(curr) { count++; curr = curr.next; } return count;",
-      test: "if (typeof LinkedList !== 'function') return 'LinkedList klassi topilmadi'; const list = new LinkedList(); if(list.getSize() !== 0) return 'Bo\\'sh ro\\'yxat uchun 0 bo\\'lishi shart'; list.head = { value: 1, next: { value: 2, next: null } }; if (list.getSize() !== 2) return 'O\\'lcham noto\\'g\\'ri hisoblandi'; return null;"
-    },
-    {
-      id: 7,
-      title: "LinkedList-ni teskarilash (Reverse)",
-      instruction: "LinkedList-ni joyida (in-place) teskarilaydigan `reverse()` metodini yozing (head-ni teskari zanjir boshiga to'g'rilang).",
-      startingCode: "class LinkedList {\n  constructor() { this.head = null; }\n  reverse() {\n    let prev = null, curr = this.head, next = null;\n    // Havolalar yo'nalishini o'zgartiring\n  }\n}",
-      hint: "while(curr) { next = curr.next; curr.next = prev; prev = curr; curr = next; } this.head = prev;",
-      test: "if (typeof LinkedList !== 'function') return 'LinkedList klassi topilmadi'; const list = new LinkedList(); list.head = { value: 1, next: { value: 2, next: null } }; list.reverse(); if (list.head.value !== 2 || list.head.next.value !== 1) return 'Zanjir teskari o\\'girilmadi'; return null;"
-    },
-    {
-      id: 8,
-      title: "Doubly Linked List Tuguni",
-      instruction: "Doubly Linked List uchun qiymat (`value`), keyingi (`next = null`) va oldingi (`prev = null`) havolalari bor `DLLNode` klassini yozing.",
-      startingCode: "class DLLNode {\n  // Constructor yarating\n}",
-      hint: "constructor(value) { this.value = value; this.next = null; this.prev = null; }",
-      test: "if (typeof DLLNode !== 'function') return 'DLLNode klassi topilmadi'; const n = new DLLNode(5); if (n.value !== 5 || n.next !== null || n.prev !== null) return 'DLLNode xossalari xato'; return null;"
-    },
-    {
-      id: 9,
-      title: "DLL oxiriga qo'shish (Append)",
-      instruction: "Doubly Linked List uchun oxiriga element qo'shuvchi `append(value)` metodini yozing.",
-      startingCode: "class DLLNode {\n  constructor(value) { this.value = value; this.next = null; this.prev = null; }\n}\nclass DoublyLinkedList {\n  constructor() { this.head = null; this.tail = null; }\n  append(value) {\n    const newNode = new DLLNode(value);\n    if (!this.head) {\n      this.head = newNode; this.tail = newNode; return;\n    }\n    // Oxiriga ulab tail-ni yangilang\n  }\n}",
-      hint: "this.tail.next = newNode; newNode.prev = this.tail; this.tail = newNode;",
-      test: "if (typeof DoublyLinkedList !== 'function') return 'DoublyLinkedList topilmadi'; const list = new DoublyLinkedList(); list.append(5); list.append(10); if (list.tail.value !== 10 || list.tail.prev.value !== 5) return 'Tail yoki prev ko\\'rsatkichlari bog\\'lanmadi'; return null;"
-    },
-    {
-      id: 10,
-      title: "DLL Oxirgi elementini o'chirish",
-      instruction: "Doubly Linked List oxirgi elementini (tail) o'chiradigan `deleteTail()` metodini yozing.",
-      startingCode: "class DoublyLinkedList {\n  constructor() { this.head = null; this.tail = null; }\n  deleteTail() {\n    if (!this.tail) return;\n    if (this.head === this.tail) {\n      this.head = null; this.tail = null; return;\n    }\n    // Tail-ni o'chiring\n  }\n}",
-      hint: "this.tail = this.tail.prev; this.tail.next = null;",
-      test: "if (typeof DoublyLinkedList !== 'function') return 'DoublyLinkedList topilmadi'; const list = new DoublyLinkedList(); const n1 = { value: 1, prev: null }; const n2 = { value: 2, prev: n1 }; n1.next = n2; list.head = n1; list.tail = n2; list.deleteTail(); if (list.tail.value !== 1 || list.tail.next !== null) return 'Tail to\\'g\\'ri o\\'chirilmadi'; return null;"
-    },
-    {
-      id: 11,
-      title: "O'rtadagi tugunni topish (Middle Node)",
-      instruction: "LinkedList o'rtasidagi elementni topuvchi `findMiddle()` metodini yozing (fast va slow pointer yondashuvini ishlating).",
-      startingCode: "class LinkedList {\n  constructor() { this.head = null; }\n  findMiddle() {\n    let slow = this.head, fast = this.head;\n    // slow bitta, fast ikkita qadam tashlasin\n  }\n}",
-      hint: "while(fast && fast.next) { slow = slow.next; fast = fast.next.next; } return slow;",
-      test: "if (typeof LinkedList !== 'function') return 'LinkedList klassi topilmadi'; const list = new LinkedList(); list.head = { value: 1, next: { value: 2, next: { value: 3, next: null } } }; if (list.findMiddle().value !== 2) return 'O\\'rtadagi element noto\\'g\\'ri aniqlandi'; return null;"
-    },
-    {
-      id: 12,
-      title: "Sikl aniqlash (Cycle Detection)",
-      instruction: "LinkedList-da sikl (aylanma bog'lanish) bor yoki yo'qligini tekshiradigan `hasCycle()` metodini yozing (true/false).",
-      startingCode: "class LinkedList {\n  constructor() { this.head = null; }\n  hasCycle() {\n    let slow = this.head, fast = this.head;\n    // pointerlarni tekshiring\n  }\n}",
-      hint: "while (fast && fast.next) {\n  slow = slow.next;\n  fast = fast.next.next;\n  if (slow === fast) return true;\n}\nreturn false;",
-      test: "if (typeof LinkedList !== 'function') return 'LinkedList klassi topilmadi'; const list = new LinkedList(); const n1 = { value: 1 }; const n2 = { value: 2 }; n1.next = n2; n2.next = n1; list.head = n1; if (list.hasCycle() !== true) return 'Sikl borligi aniqlanmadi'; n2.next = null; if (list.hasCycle() !== false) return 'Siklsiz zanjirda xato natija berildi'; return null;"
-    },
-    {
-      id: 13,
-      title: "Oxiridan N-chi elementni topish (Find Nth from End)",
-      instruction: "Singly Linked List oxiridan boshlab `n`-chi tugunni bitta siklda (bir marta aylanib) topuvchi `findNthFromEnd(n)` metodini yozing. (Agar ro'yxat uzunligi `n` dan kichik bo'lsa, null qaytarsin).",
-      startingCode: "class LinkedList {\n  constructor() { this.head = null; }\n  findNthFromEnd(n) {\n    // Fast va slow ko'rsatkichlar yordamida bitta siklda yeching\n  }\n}",
-      hint: "let fast = this.head, slow = this.head;\nfor (let i = 0; i < n; i++) {\n  if (!fast) return null;\n  fast = fast.next;\n}\nwhile (fast) {\n  slow = slow.next;\n  fast = fast.next;\n}\nreturn slow;",
-      test: "if (typeof LinkedList !== 'function') return 'LinkedList klassi topilmadi';\nconst list = new LinkedList();\nlist.head = { value: 10, next: { value: 20, next: { value: 30, next: { value: 40, next: null } } } };\nconst node2 = list.findNthFromEnd(2);\nconst node4 = list.findNthFromEnd(4);\nconst node5 = list.findNthFromEnd(5);\nif (!node2 || node2.value !== 30) return 'Oxiridan 2-chi element xato topildi';\nif (!node4 || node4.value !== 10) return 'Oxiridan 4-chi element (boshi) xato topildi';\nif (node5 !== null) return 'Mavjud bo\\'lmagan element uchun null qaytarilmadi';\nreturn null;"
-    },
-    {
-      id: 14,
-      title: "Ikki saralangan ro'yxatni birlashtirish (Merge Two Sorted Lists)",
-      instruction: "Ikkita o'sib borish tartibida saralangan Singly Linked List boshi `l1` va `l2` berilgan. Ularni o'zaro birlashtirib, saralangan yangi LinkedList boshini (head) qaytaruvchi `mergeTwoLists(l1, l2)` funksiyasini yozing.",
-      startingCode: "function mergeTwoLists(l1, l2) {\n  // l1 va l2 saralangan ro'yxatlarini birlashtirib, yangi boshini qaytaring\n}",
-      hint: "const dummy = { value: -1, next: null };\nlet curr = dummy;\nwhile (l1 && l2) {\n  if (l1.value <= l2.value) {\n    curr.next = l1;\n    l1 = l1.next;\n  } else {\n    curr.next = l2;\n    l2 = l2.next;\n  }\n  curr = curr.next;\n}\ncurr.next = l1 || l2;\nreturn dummy.next;",
-      test: "const l1 = { value: 1, next: { value: 3, next: { value: 5, next: null } } };\nconst l2 = { value: 2, next: { value: 4, next: null } };\nconst merged = mergeTwoLists(l1, l2);\nif (merged && merged.value === 1 && merged.next.value === 2 && merged.next.next.value === 3 && merged.next.next.next.value === 4 && merged.next.next.next.next.value === 5) {\n  return null;\n}\nreturn 'Saralangan ro\\'yxatlar to\\'g\\'ri birlashtirilmadi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Linked List-ni Teskari Qilish (Reverse Linked List)",
+    "instruction": "Singly Linked List-ning bosh tuguni (`head`) berilgan. Ro'yxatni teskari qilib (ya'ni oxirgi element boshiga keladigan qilib) yangi bosh tugunni qaytaradigan `reverseList(head)` funksiyasini yozing. Har bir tugunda keyingi elementga ishora qiluvchi `.next` xossasi mavjud.",
+    "startingCode": "function reverseList(head) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "prev = null, current = head o'zgaruvchilarini yarating. Loop ichida keyingi tugunni saqlab oling (next = current.next), joriy tugunni prev ga yo'naltiring, keyin prev va current ko'rsatkichlarini bir qadam oldinga suring.",
+    "test": "const sandbox = new Function(code + '; return reverseList;');\nconst fn = sandbox();\nconst node3 = { val: 3, next: null };\nconst node2 = { val: 2, next: node3 };\nconst node1 = { val: 1, next: node2 };\nconst reversed = fn(node1);\nif (reversed && reversed.val === 3 && reversed.next && reversed.next.val === 2 && reversed.next.next && reversed.next.next.val === 1 && reversed.next.next.next === null) return null;\nreturn 'reverseList funksiyasi ro\\'yxatni to\\'g\\'ri teskari qilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Floyd Tsikl Aniqlash Algoritmi (Detect Cycle)",
+    "instruction": "Bog'langan ro'yxatda (`head`) tsikl (loop) bor yoki yo'qligini aniqlovchi `hasCycle(head)` funksiyasini yozing. Buning uchun Floyd tsikl aniqlash algoritmidan (ikki ko'rsatkich - sekin va tez) foydalaning. Tsikl bo'lsa `true`, aks holda `false` qaytaring.",
+    "startingCode": "function hasCycle(head) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "slow = head, fast = head qilib belgilang. fast va fast.next mavjud bo'lgancha, slow ni 1 qadam, fast ni esa 2 qadam oldinga suring. Agar ular uchrashsa, tsikl bor.",
+    "test": "const sandbox = new Function(code + '; return hasCycle;');\nconst fn = sandbox();\nconst node3 = { val: 3, next: null };\nconst node2 = { val: 2, next: node3 };\nconst node1 = { val: 1, next: node2 };\nconst noCycle = fn(node1);\nnode3.next = node2;\nconst hasCycle = fn(node1);\nif (noCycle === false && hasCycle === true) return null;\nreturn 'hasCycle tsiklni to\\'g\\'ri aniqlay olmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Bog'langan Ro'yxat O'rtasini Topish (Middle of the Linked List)",
+    "instruction": "Singly Linked List-ning bosh tuguni (`head`) berilgan. Ikki ko'rsatkich (slow va fast) usuli yordamida ro'yxatning o'rtasidagi tugunni qaytaruvchi `findMiddle(head)` funksiyasini yozing. Agar ro'yxatda juft miqdordagi element bo'lsa, ikkinchi o'rta element qaytarilsin.",
+    "startingCode": "function findMiddle(head) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "slow = head va fast = head oling. fast va fast.next tugaguncha slow ni 1 qadam, fast ni 2 qadam suring. Oxirida slow o'rtadagi tugunga ishora qiladi.",
+    "test": "const sandbox = new Function(code + '; return findMiddle;');\nconst fn = sandbox();\nconst node4 = { val: 4, next: null };\nconst node3 = { val: 3, next: node4 };\nconst node2 = { val: 2, next: node3 };\nconst node1 = { val: 1, next: node2 };\nconst mid = fn(node1);\nif (mid && mid.val === 3) return null;\nreturn 'findMiddle o\\'rtadagi tugunni to\\'g\\'ri topmadi';"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Bog'langan ro'yxat (Linked List) tugunining eng asosiy ikki qismi nimalardan iborat?",
-      options: ["Kalit va Qiymat", "Qiymat va Keyingi tugun ko'rsatkichi", "Chap va O'ng ko'rsatkichlar", "Indeks va Uzunlik"],
-      correctAnswer: 1,
-      explanation: "Linked List tuguni (Node) o'zida saqlaydigan foydali ma'lumot (Value) va keyingi element manzili/havolasi (Next) dan tashkil topadi."
-    },
-    {
-      id: 2,
-      question: "Singly Linked List boshiga (Head) element qo'shishning vaqt murakkabligi qancha?",
-      options: ["O(n)", "O(1)", "O(log n)", "O(n^2)"],
-      correctAnswer: 1,
-      explanation: "Boshiga element qo'shish faqatgina yangi head yaratib, keyingisini avvalgisiga bog'lashni talab qiladi, bu hech qanday siklsiz O(1) vaqt oladi."
-    },
-    {
-      id: 3,
-      question: "LinkedList oxiriga element qo'shishda agar tail (oxirgi tugun) havolasi saqlanmagan bo'lsa, vaqt murakkabligi qanday bo'ladi?",
-      options: ["O(1)", "O(n)", "O(log n)", "O(n^2)"],
-      correctAnswer: 1,
-      explanation: "Tail havolasi saqlanmasa, oxirgi tugunni topish uchun boshidan boshlab next orqali oxirigacha aylanib chiqish kerak bo'ladi, bu esa O(n) vaqt oladi."
-    },
-    {
-      id: 4,
-      question: "Singly va Doubly Linked List orasidagi asosiy farq nima?",
-      options: ["Singly Linked List ko'proq xotira oladi", "Doubly Linked List tugunlarida oldingi elementga ham havola (prev) bo'ladi", "Singly Linked List tezroq qidiradi", "Doubly Linked List faqat bitta element saqlaydi"],
-      correctAnswer: 1,
-      explanation: "Doubly Linked List tugunlarida keyingi (next) bilan birga oldingi (prev) tugun manzili ham saqlanadi, bu orqaga harakatlanish imkonini beradi."
-    },
-    {
-      id: 5,
-      question: "Linked List-da qidirish (find) amaliyotining vaqt murakkabligi qanday?",
-      options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
-      correctAnswer: 2,
-      explanation: "Elementlar indekslanmaganligi sababli, biz qidirayotgan element boshida, o'rtasida yoki oxirida bo'lishi mumkin. Eng yomon holatda butun zanjirni ko'rish kerak (O(n))."
-    },
-    {
-      id: 6,
-      question: "Bo'sh bo'lmagan Singly Linked List-da eng oxirgi tugunning `next` qiymati nimaga teng bo'ladi?",
-      options: ["0", "undefined", "null", "Mavjud emas"],
-      correctAnswer: 2,
-      explanation: "Zanjir tugaganligini bildirish uchun eng oxirgi tugunning keyingi tugun ko'rsatkichi `null` qilib belgilanadi."
-    },
-    {
-      id: 7,
-      question: "Linked List-da aylanma bog'lanish (sikl) mavjudligini aniqlashda qaysi algoritm ishlatiladi?",
-      options: ["Binary Search", "DFS (Depth First Search)", "Floyd's Tortoise and Hare (Sekin va tez ko'rsatkichlar)", "Dijkstra"],
-      correctAnswer: 2,
-      explanation: "Floyd algoritmi ikkita ko'rsatkichni (slow va fast) har xil tezlikda harakatlantirish orqali siklni aniqlaydi. Agar sikl bo'lsa, ular uchrashadi."
-    },
-    {
-      id: 8,
-      question: "O'chirilgan tugunning boshqa hech qayerdan havolasi qolmasa, u bilan nima sodir bo'ladi?",
-      options: ["U xotirada abadiy qoladi", "U Garbage Collector (GC) tomonidan xotiradan avtomatik o'chiriladi", "Dastur ReferenceError veradi", "Kompyuter o'chib yonadi"],
-      correctAnswer: 1,
-      explanation: "JavaScript dvigatelining Garbage Collector tizimi boshqa hech qayerdan kirib bo'lmaydigan (unreachable) xotira ob'ektlarini avtomatik tozalaydi."
-    },
-    {
-      id: 9,
-      question: "LinkedList o'rtasidagi elementni bitta siklda topish uchun ko'rsatkichlar qanday harakatlanishi kerak?",
-      options: ["Ikkalasi ham bir xil tezlikda", "Slow 1 qadam, Fast esa 2 qadam tashlaydi", "Fast faqat orqaga yuradi", "Ikkalasi ham har xil tomondan boshlaydi"],
-      correctAnswer: 1,
-      explanation: "Fast pointer har safar 2 qadam va slow pointer 1 qadam tashlaganda, fast oxiriga yetib borganda slow aynan o'rtadagi elementda turgan bo'ladi."
-    },
-    {
-      id: 10,
-      question: "Ro'yxat boshidagi elementni o'chirishning vaqt murakkabligi qanday?",
-      options: ["O(n)", "O(1)", "O(log n)", "O(n^2)"],
-      correctAnswer: 1,
-      explanation: "Boshidagi elementni o'chirish uchun `head = head.next` qilish yetarli, bu hech qanday siljitishlarsiz O(1) bajariladi."
-    },
-    {
-      id: 11,
-      question: "Nima uchun massiv bilan taqqoslaganda Linked List ko'proq xotira sarflaydi?",
-      options: ["Tugunlar kattaroq bo'lgani uchun", "Chunki har bir qiymat bilan birga qo'shimcha havolalar (next, prev) ham xotirada saqlanadi", "Linked List faqat 64 bitli sonlar saqlaydi", "Chunki u dinamik hisoblanadi"],
-      correctAnswer: 1,
-      explanation: "Tugunda qiymatdan tashqari qo'shimcha ko'rsatkich(lar) uchun ham joy ajratilishi sababli, bir xil miqdordagi ma'lumot uchun Linked List ko'proq xotira oladi."
-    },
-    {
-      id: 12,
-      question: "Bog'langan ro'yxatni teskari o'girish (reverse) algoritmining eng yaxshi vaqt murakkabligi qancha?",
-      options: ["O(1)", "O(log n)", "O(n)", "O(n^2)"],
-      correctAnswer: 2,
-      explanation: "Zanjirni teskarilash uchun ballar tugunlarning havolasini o'zgartirish kerak, bu esa jami n ta amal, ya'ni O(n) vaqt murakkabligini talab qiladi."
-    },
-    {
-      id: 13,
-      question: "Dummy Node (yoki Sentinel Node) dan Linked List algoritmlarida foydalanishning asosiy sababi nima?",
-      options: [
-        "Ro'yxat o'lchamini ikki barobar oshirish uchun",
-        "Chekka holatlarni (edge cases, masalan, bo'sh head bilan ishlash, boshiga yangi element qo'shish) soddalashtirish va maxsus if-else shartlaridan qochish uchun",
-        "Xotiradan joy tejash maqsadida elementlarni o'chirish uchun",
-        "Faqa aylanma (circular) ro'yxatlarni yaratish uchun"
-      ],
-      correctAnswer: 1,
-      explanation: "Dummy Node yaratish orqali biz yangi ro'yxatning boshlang'ich head elementiga murojaat qilish muammosini hal qilamiz. U hech qanday real ma'lumot saqlamaydi, lekin uning .next havolasi orqali natijaviy bosh tugunga osongina yetib boramiz va bo'sh head uchun ortiqcha chekka tekshiruvlar yozmaymiz."
-    },
-    {
-      id: 14,
-      question: "Singly Linked List-da aylanma bog'lanish (sikl) borligini Floyd algoritmi (Tortoise and Hare) yordamida aniqlashning qo'shimcha xotira murakkabligi (Space Complexity) qanday?",
-      options: [
-        "O(n)",
-        "O(1)",
-        "O(log n)",
-        "O(n^2)"
-      ],
-      correctAnswer: 1,
-      explanation: "Floyd algoritmi faqatgina ikkita o'zgaruvchi (slow va fast ko'rsatkichlar) orqali ishlaydi va qo'shimcha hech qanday kesh (Set yoki Map) yaratmaydi. Shuning uchun uning qo'shimcha xotira murakkabligi o'zgarmas, ya'ni O(1) dir."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Singly Linked List (Bir tomonlama bog'langan ro'yxat) nima?",
+    "options": [
+      "Barcha elementlari xotirada ketma-ket kataklarda joylashadigan ma'lumotlar tuzilmasi",
+      "Har bir elementi qiymat va faqat keyingi elementga havola (pointer) saqlaydigan tugunlar zanjiri",
+      "Elementlari faqat ota-bola munosabatida bo'lgan daraxtsimon tuzilma",
+      "Faqat raqamlardan iborat saralangan massiv"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Singly Linked List har bir tuguni (Node) o'z qiymati (value) va keyingi tugunga havola (next) saqlaydigan chiziqli ma'lumotlar tuzilmasidir."
+  },
+  {
+    "id": 2,
+    "question": "Massiv (Array) va Bog'langan Ro'yxat (Linked List) o'rtasidagi eng asosiy xotira farqi nimada?",
+    "options": [
+      "Massiv xotirada ketma-ket kataklarda joylashadi, Linked List tugunlari esa xotiraning ixtiyoriy tarqoq joylarida joylashishi mumkin",
+      "Linked List xotiradan mutlaqo joy egallamaydi",
+      "Massiv faqat statik xotirada, Linked List esa faqat kesh xotirada saqlanadi",
+      "Massivda elementlar havolalar yordamida bog'lanadi, Linked Listda esa indeks yordamida"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Massivlar xotiradan ketma-ket bo'sh joy (contiguous block of memory) talab qiladi, Linked List esa xotira bo'ylab tarqoq holda bo'lib, havolalar orqali bog'lanadi."
+  },
+  {
+    "id": 3,
+    "question": "Bog'langan ro'yxatning boshiga (Head) yangi tugun qo'shish operatsiyasining vaqt murakkabligi qanday?",
+    "options": [
+      "O(n)",
+      "O(log n)",
+      "O(1)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Head-ga yangi element qo'shish uchun faqat yangi tugunning `next` xossasini eski head-ga yo'naltirish kifoya. Bu massiv hajmidan qat'i nazar doimiy vaqt O(1) oladi."
+  },
+  {
+    "id": 4,
+    "question": "Agar bizda `tail` (oxirgi tugun) ko'rsatkichi bo'lmasa, ro'yxat oxiriga yangi tugun qo'shish qanday vaqt oladi?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Tail ko'rsatkichi bo'lmasa, ro'yxat oxirini topish uchun boshidan oxirigacha traversal (aylanib o'tish) qilish kerak, bu O(n) vaqt oladi. (Kechirasiz, options 0-indexed da 3 deb belgiladim, lekin variant index-lariga ko'ra O(n) bu 2. Keling to'g'rilab 2 qilamiz)."
+  },
+  {
+    "id": 5,
+    "question": "Doubly Linked List (Ikki tomonlama bog'langan ro'yxat) Singly Linked List-dan nima bilan farq qiladi?",
+    "options": [
+      "U faqat sonli ma'lumotlarni saqlaydi",
+      "Uning har bir tuguni ham keyingi (next), ham oldingi (prev) tugunga havola saqlaydi",
+      "U faqat bitta tugundan iborat bo'ladi",
+      "U xotirada ketma-ket joylashadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Doubly Linked List tugunlari ikkita ko'rsatkichga ega bo'ladi: `.next` (keyingi tugun) va `.prev` (oldingi tugun). Bu ro'yxat bo'ylab ikki tomonga ham harakatlanish imkonini beradi."
+  },
+  {
+    "id": 6,
+    "question": "Bog'langan ro'yxatda ma'lum bir elementni qiymati bo'yicha qidirish (Search) yoki indeks bo'yicha olish (Lookup) murakkabligi qanday?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n log n)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Linked Listda tasodifiy kirish (random access) yo'q. Istalgan elementni olish uchun boshidan boshlab bittalab o'tib borish kerak, bu eng yomon holatda O(n) vaqt oladi."
+  },
+  {
+    "id": 7,
+    "question": "Floyd's Cycle-Finding algoritmi qanday nom bilan ham mashhur?",
+    "options": [
+      "Toshbaqa va Quyon (Tortoise and Hare) algoritmi",
+      "Tezkor saralash algoritmi",
+      "Chuqurlik bo'yicha qidiruv (DFS)",
+      "Ikki karrali ko'rsatkichlar simulyatsiyasi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Floyd tsikl topish algoritmi ikki xil tezlikdagi ko'rsatkichlar (sekin - Toshbaqa va tezkor - Quyon) ishlatilgani uchun 'Tortoise and Hare' deb ataladi."
+  },
+  {
+    "id": 8,
+    "question": "Floyd algoritmi yordamida tsiklni aniqlashda qo'shimcha xotira murakkabligi (Space Complexity) qanday bo'ladi?",
+    "options": [
+      "O(1) - faqat ikkita ko'rsatkich uchun xotira ishlatiladi",
+      "O(n) - barcha tugunlarni Set-ga saqlab borish kerak",
+      "O(log n) - rekursiya steki ishlatiladi",
+      "O(n^2)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Floyd algoritmi yangi ma'lumotlar tuzilmasi (Set yoki massiv kabi) yaratmaydi, faqatgina ikkita ko'rsatkich o'zgaruvchisidan foydalanadi, shuning uchun xotira murakkabligi O(1) dir."
+  },
+  {
+    "id": 9,
+    "question": "Bog'langan ro'yxatni teskari qilish (Reverse) algoritmining vaqt murakkabligi qanday?",
+    "options": [
+      "O(1)",
+      "O(n)",
+      "O(n^2)",
+      "O(2^n)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ro'yxatni teskari qilish uchun har bir tugunning havolasini (next) bir marta o'zgartirib chiqish yetarli, bu O(n) vaqtni talab qiladi."
+  },
+  {
+    "id": 10,
+    "question": "Floyd tsikl aniqlash algoritmida tezkor ko'rsatkich (fast) har iteratsiyada necha qadam siljiydi?",
+    "options": [
+      "1 qadam",
+      "2 qadam",
+      "3 qadam",
+      "Tasodifiy qadam"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Floyd algoritmida `slow` ko'rsatkichi har qadamda 1 ta tugunga, `fast` esa 2 ta tugunga siljiydi. Agar tsikl bo'lsa, ular albatta to'qnashadi."
+  },
+  {
+    "id": 11,
+    "question": "Singly Linked List-da zanjirning eng oxirgi tugunining `next` ko'rsatkichi nimaga teng bo'ladi?",
+    "options": [
+      "`undefined`",
+      "`null`",
+      "Bosh tugunga (`head`) qaytadi",
+      "`0`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Singly Linked List oxirgi tugunidan keyin hech qanday element yo'qligini bildirish uchun uning `.next` qiymati standart bo'yicha `null` ga teng bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "Linked List massivga nisbatan qo'shimcha xotira sarflaydi. Bunga sabab nima?",
+    "options": [
+      "Elementlar faqat dynamic xotirada saqlanishi",
+      "Har bir tugun ma'lumot qiymatidan tashqari havolalar (ko'rsatkichlar) uchun ham xotirada joy egallashi",
+      "U faqat o'nlik sanoq tizimida ishlashi",
+      "Brauzer keshini tez-tez tozalab turishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massivda faqat qiymatlar saqlansa, Linked List-da har bir qiymat bilan birga uning keyingi/oldingi elementga havolalari (ko'rsatkichlari) ham saqlanishi tufayli har bir Node qo'shimcha baytlar talab qiladi."
+  }
+]
+
 };
