@@ -1,395 +1,383 @@
 export const closuresDeepDive = {
-  id: "a20",
-  title: "🔐 Closures va Scope (Chuqur O'rganish)",
-  level: "Murakkab",
-  theory: `## 📌 CLOSURES VA SCOPE — CHUQUR O'RGANISH
+  id: "closuresDeepDive",
+  title: "Closures: Amaliy Tahlil va Xotira Boshqaruvi",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-### 1. NEGA KERAK? (Asosiy savol)
-"Closure nima?" savoliga deyarli barcha dasturchilar "ichki funksiyaning tashqi funksiya o'zgaruvchilarini eslab qolishi" deb javob bera oladilar. Ammo real hayotda u nima uchun kerak?
-- **Ma'lumotlar inkapsulyatsiyasi (Encapsulation):** Obyekt xossalarini to'g'ridan-to'g'ri o'zgartirishdan himoya qilish (Private properties).
-- **Dinamik funksiyalar yaratish (Function Factory):** Masalan, turli xil hisob-kitoblar yoki sozlamalarga ega funksiyalarni generatsiya qilish.
-- **Keshlashtirish va Memoization:** Funksiya natijalarini uning o'z xotirasida (closure) saqlab qolish va qayta hisob-kitoblarni oldini olish.
-- **Asinxron operatsiyalar va Callbacks:** \`setTimeout\` yoki tarmoq so'rovlari vaqtida kontekst (muhit) holatini saqlab qolish.
+### Closures va Xotira Boshqaruvi
+* **Closures (Yopilishlar):** Birinchi darsda o'rganganimizdek, bu ichki funksiyaning tashqi o'zgaruvchilarni saqlab qolishidir.
+* **Xotira boshqaruvi (Memory Management):** Yopilishlar o'zgaruvchilarni xotirada ushlab turar ekan, bu ma'lumotlar **Heap (uyum)** xotirasida saqlanadi. Agarda biz ularni to'g'ri boshqara olmasak, xotirada keraksiz chiqindilar yig'ilib qoladi, bu esa **Memory Leak (xotira oqishi)** ga olib keladi.
 
----
-
-### 2. SCOPE VA LEKSIK MUHIT (UNDER THE HOOD)
-
-Har safar JavaScriptda funksiya ishga tushganda yoki blok (\`{...}\`) bajarilganda xotirada yashirin **Lexical Environment (Leksik muhit)** obyekti yaratiladi. U ikki qismdan iborat:
-1. **Environment Record:** Hozirgi scope'dagi barcha mahalliy o'zgaruvchilar va parametrlar saqlanadigan joy.
-2. **Outer Link (Tashqi havola):** Tashqi (ota) leksik muhitga ko'rsatkich.
-
-\`\`\`mermaid
-graph LR
-    subgraph Global Lexical Environment
-        A[Env Record: global_x = 10]
-        B[Outer Link: null]
-    end
-    subgraph Tashqi Lexical Environment
-        C[Env Record: tashqi_y = 20]
-        D[Outer Link: Global Env]
-    end
-    subgraph Ichki Lexical Environment
-        E[Env Record: ichki_z = 30]
-        F[Outer Link: Tashqi Env]
-    end
-    F --> D
-    D --> B
-\`\`\`
-
-#### VariableEnvironment vs LexicalEnvironment
-Bajarilish konteksti (Execution Context) yaratilganda, o'zgaruvchilar turi bo'yicha ikki xil muhitga joylashtiriladi:
-* **VariableEnvironment:** \`var\` yordamida e'lon qilingan o'zgaruvchilarni saqlaydi (chunki ular block-scoped emas, balki function-scoped).
-* **LexicalEnvironment:** \`let\`, \`const\`, \`class\` va funksiya deklaratsiyalarini saqlaydi. Blok scope (masalan \`if\` yoki \`for\`) boshlanganda, faqat yangi \`LexicalEnvironment\` yaratiladi va zanjirga ulanadi, \`VariableEnvironment\` esa o'z holicha qolaveradi.
+### Real hayotiy analogiya
+Tasavvur qiling, siz **ijaraga kvartira oldingiz**:
+* **Oddiy funksiya:** Siz kvartirani bir necha kunga ijaraga olasiz, ishni tugatgach kalitni topshirib ketasiz. Kvartira egasi uni tozalaydi va boshqaga beradi (Garbage Collection).
+* **Closure:** Siz kvartirani ijaraga olib, u yerdagi bir xonani **shaxsiy narsalaringizni saqlash uchun qulflab ketdingiz**. Kvartira egasi siz kalitni qaytarmaguningizcha u xonani tozalay olmaydi va boshqalarga ijaraga berolmaydi. Agar siz o'sha xonadan foydalanmayotgan bo'lsangiz ham, u band bo'lib turaveradi (Memory Leak).
 
 ---
 
-### 3. V8 GARBAGE COLLECTION VA DEBUGGER GOTCHA
+## 2. 💻 Real Kod Misollari
 
-Nazariy jihatdan, agar ichki funksiya (closure) tashqariga qaytarilsa, u tashqi funksiyaning **barcha** o'zgaruvchilarini o'zida saqlab qolishi kerak. Ammo bu xotirada katta hajmli ma'lumotlar qolib ketishiga (Memory Leak) olib kelishi mumkin.
-
-**V8 Dvigateli Optimallashuvi (V8 Engine GC Optimization):**
-Zamonaviy JS dvigatellari (V8, JavaScriptCore) kodni statik tahlil qiladi. Agar tashqi o'zgaruvchi ichki funksiyada **ishlatilmagan** bo'lsa, u leksik muhit yozuvidan (Environment Record) avtomatik ravishda **o'chiriladi** (Garbage Collected).
-
-**Debugger Gotcha (Tuzoq):**
-Agarda siz kodingizga \`debugger\` qo'yib, V8 optimallashtirgan (ichki funksiyada ishlatilmagan) tashqi o'zgaruvchini konsolga yozmoqchi bo'lsangiz, \`ReferenceError: variable is not defined\` xatosini olasiz, garchi u kodda yozilgan bo'lsa ham!
-
+### 1. Basic Example (Memoization - Keshlash yordamida optimallashtirish)
+Faqat bir marta hisoblab, keyingi safar keshdan olish:
 \`\`\`javascript
-function outer() {
-  let unusedValue = "Katta massiv...";
-  let usedValue = "Salom";
-  
-  return function inner() {
-    // usedValue ishlatilgan, xotirada saqlanadi
-    console.log(usedValue); 
-    // unusedValue ishlatilmagan, V8 uni GC orqali o'chirib yuboradi!
-    debugger; // Konsolda unusedValue ni o'qib bo'lmaydi
+function memoizedFactorial() {
+  const cache = {}; // Yopilishda saqlanadigan kesh
+
+  return function calculate(n) {
+    if (n in cache) {
+      console.log("Keshdan olindi:");
+      return cache[n];
+    }
+    console.log("Yangi hisoblandi:");
+    if (n <= 1) return 1;
+    const result = n * calculate(n - 1);
+    cache[n] = result;
+    return result;
   };
 }
-const myFn = outer();
-myFn();
+
+const factorial = memoizedFactorial();
+console.log(factorial(5)); // Yangi hisoblandi... -> 120
+console.log(factorial(5)); // Keshdan olindi: -> 120
 \`\`\`
 
----
-
-### 4. LOOPlar VA LET UNDER THE HOOD
-
-Nima uchun \`for (let i = 0; i < 3; i++)\` har bir qadamda yangi o'zgaruvchi qiymatini saqlaydi?
-JavaScript har bir loop iteratsiyasi (aylanishi) uchun **mutlaqo yangi Lexical Environment** yaratadi va oldingi iteratsiyadagi \`i\` qiymatini yangi muhitga ko'chirib o'tkazadi (copy).
-
-\`\`\`mermaid
-sequenceDiagram
-    participant Loop as For Loop Engine
-    participant Env0 as Iteration 0 Env (i = 0)
-    participant Env1 as Iteration 1 Env (i = 1)
-    participant Env2 as Iteration 2 Env (i = 2)
-    Loop->>Env0: Yaratish: i = 0
-    Loop->>Env1: Yangi Env: oldingi i (0) + 1 -> i = 1
-    Loop->>Env2: Yangi Env: oldingi i (1) + 1 -> i = 2
-\`\`\`
-
----
-
-### 5. REAL HAYOTDAN MISOL: MEMOIZATION
-Memoization — hisob-kitoblarni closure ichidagi kesh yordamida tezlashtirish patternidir:
+### 2. Intermediate Example (Detached DOM Element Memory Leak)
+DOM elementi o'chirilgan bo'lsa ham xotirada qolib ketishi muammosi:
 \`\`\`javascript
-function createFibonacci() {
-  const cache = {}; // Closure xotirasi
+function setupLeak() {
+  const button = document.getElementById("leak-button");
   
-  return function fib(n) {
-    if (n in cache) return cache[n];
-    if (n <= 1) return n;
-    
-    cache[n] = fib(n - 1) + fib(n - 2);
-    return cache[n];
+  return function handleClick() {
+    // button o'zgaruvchisi yopilish ichida saqlanmoqda
+    console.log("Bosilgan tugma ID:", button.id);
   };
 }
-const fib = createFibonacci();
-console.log(fib(40)); // Bir necha millisekundda hisoblaydi!
+
+// Keyinchalik DOM-dan tugma o'chirilsa ham, handleClick funksiyasi yashar ekan,
+// button xotiradan to'liq o'chib ketmaydi (Detached DOM element).
 \`\`\`
+
+### 3. Advanced Example (Meteor JS mashhur Closure Leak muammosi)
+\`\`\`javascript
+let theThing = null;
+let replaceThing = function () {
+  let originalThing = theThing;
+  
+  // unused funksiyasi originalThing-ga bog'langan
+  let unused = function () {
+    if (originalThing) console.log("hi");
+  };
+  
+  theThing = {
+    longStr: new Array(1000000).join('*'),
+    // someMethod unused bilan bir xil Lexical Environment-ni bo'lishadi!
+    someMethod: function () {
+      console.log("salom");
+    }
+  };
+};
+
+// Har soniyada replaceThing chaqirilganda xotira tinimsiz o'sib boradi!
+setInterval(replaceThing, 1000);
+\`\`\`
+
+---
+
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+
+### 1. Heap vs Stack
+JavaScript-da oddiy, qisqa muddatli o'zgaruvchilar **Stack** xotirasida saqlanadi. Biroq closures ishtirok etganda, o'zgaruvchilar va ularga tegishli Leksik Muhit (Lexical Environment) **Heap** xotirasiga ko'chiriladi. Chunki JS dvigateli bu o'zgaruvchilarning qancha muddat yashashini oldindan bilolmaydi.
+
+### 2. V8 Garbage Collection va Scope Sharing
+Modern V8 dvigateli closures xotirasini optimallashtiradi. Agar ichki funksiyada tashqi o'zgaruvchi ishlatilmasa, u leksik muhitdan o'chiriladi.
+Biroq, agar bitta tashqi funksiyada ikkita ichki funksiya yaratilsa va ulardan faqat bittasi tashqi o'zgaruvchidan foydalansa ham, **ikkala funksiya bitta umumiy Lexical Environment obyekti bilan bog'lanadi**. Bu degani, ikkinchi funksiya global miqyosda saqlansa, birinchisidagi ishlatilmagan o'zgaruvchi ham o'chmay xotirada qolib ketaveradi.
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. \`setInterval\` / \`setTimeout\` ichidagi closures havolasini uzmaslik
+#### Muammo:
+\`setInterval\` har doim o'zining callback-ini xotirada saqlaydi va unga ulanib qolgan barcha o'zgaruvchilarni ham tozalanishdan to'sib turadi.
+#### Tuzatish:
+Sikl yoki vaqt tugagandan so'ng intervalni tozalash (\`clearInterval\`) va closures-ga bo'lgan havolalarni \`null\` qilish zarur.
+
+### 2. \`eval()\` dan foydalanish va xotirani optimallashtira olmaslik
+\`eval()\` ishlatilgan funksiyada JS dvigateli hech qaysi o'zgaruvchini optimallashtira olmaydi. Barcha o'zgaruvchilar xotirada qolib ketadi.
+#### Tavsiya:
+Dynamic eval() ishlatishdan qat'iyan qoching.
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior
+1. **Savol:** Heap va Stack farqi nima?
+   * **Javob:** Stack — tezkor, kichik hajmli va sinxron ishlovchi xotira. Heap — dynamic o'lchamli, obyektlar va closures saqlanadigan xotira.
+2. **Savol:** Garbage Collector closures-ni qachon tozalaydi?
+   * **Javob:** Ichki funksiyaga bo'lgan barcha havolalar \`null\` bo'lganda yoki butunlay yo'q qilinganda.
+3. **Savol:** Nima uchun \`const\` ishlatganda ham xotira oqishi mumkin?
+   * **Javob:** \`const\` faqat o'zgaruvchining qayta tayinlanishini (reassignment) taqiqlaydi, lekin uning ichidagi obyektlar o'zgarishi va closures xotirada qolishi mumkin.
+4. **Savol:** Xotira oqishi (Memory Leak) nima?
+   * **Javob:** Endi kerak bo'lmagan, lekin dasturdagi havolalar uzilmagani sababli RAM xotiradan tozalanmay qolgan ma'lumotlar.
+
+### Middle
+5. **Savol:** Detached DOM element nima va closures unga qanday bog'liq?
+   * **Javob:** DOM-dan o'chirilgan, lekin JS-dagi closure ichida hali ham havolasi saqlanib qolgan elementlar.
+6. **Savol:** Chrome DevTools yordamida memory leak qanday topiladi?
+   * **Javob:** Memory bo'limida Heap Snapshot olib, "detached" yoki closures havolalarining soni oshib borishini tekshirish orqali.
+7. **Savol:** \`WeakMap\` va \`WeakSet\` nima va u closures muammolarini qanday yengillashtiradi?
+   * **Javob:** Ular o'zlarining kalitlarini kuchsiz havola (weak reference) orqali ushlab turadi va bu obyektlar boshqa joyda ishlatilmay qolsa, closures ularni xotirada ushlab qololmaydi, avtomat tozalanadi.
+8. **Savol:** Closures ishlatilganda xotira hajmi oshishining sababi nimada?
+   * **Javob:** Chunki har bir closure o'zining butun leksik muhit (scope) zanjirini Heap xotirasida saqlashga majbur qiladi.
+
+### Senior
+9. **Savol:** Meteor JS dagi yopilish xotirasi oqishi (Scope sharing leak) qanday ishlaydi?
+   * **Javob:** Agar bitta funksiya ichida ikkita closure bo'lsa va biri katta obyektdan foydalansa, ikkinchisi esa global context-da saqlanib qolsa, ikkalasi bitta Lexical Environment obyektini bo'lishgani uchun katta obyekt ham xotiradan o'chmaydi.
+10. **Savol:** V8 dvigatelidagi \`Context\` obyekti closures uchun qanday yaratiladi?
+    * **Javob:** Har safar closures bo'lgan funksiya chaqirilganda, V8 Heap xotirada dynamic \`Context\` obyektini yaratadi va faqat closure-da ishlatilgan o'zgaruvchilarnigina unga ko'chiradi.
+11. **Savol:** \`new Function()\` closures yaratishga qodirmi va nima uchun?
+    * **Javob:** Yo'q, chunki u runtime paytida global scope-da e'lon qilinadi va o'zi yaratilgan lokal funksiyaning Leksik Muhitini ko'rmaydi.
+12. **Savol:** Closures-ni optimallashtirish uchun JavaScript-da Factory pattern o'rniga Class ishlatish qachon samaraliroq?
+    * **Javob:** Agar obyektlar juda ko'p yaratilsa, Class metodlari prototipda yozilgani uchun xotirani tejaydi. Factory pattern esa closures orqali xususiy o'zgaruvchilar yaratar ekan, har safar yangi xotira talab qiladi.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Bu bo'limda keshlovchi yordamchi funksiyalar (memoize), qisman qo'llash (partial) va bir marta ishlovchi (once) tizimlarni yozasiz.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars oxiridagi xotira boshqaruvi va advanced closures bo'yicha testlar.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Xavfsiz Kesh tizimi (Memory Safe Cache Manager)
+Katta hajmdagi ma'lumotlarni vaqtincha keshlovchi, lekin xotira to'lib ketmasligi uchun \`WeakMap\` va closures yordamida avtomatik tozalanadigan tizim tuzamiz.
+
+\`\`\`javascript
+function createMemorySafeCache() {
+  // WeakMap kalitlari obyekt bo'lishi shart va ular GC tomonidan avtomat tozalanadi
+  const cache = new WeakMap();
+
+  return {
+    get(keyObj) {
+      return cache.get(keyObj);
+    },
+    set(keyObj, value) {
+      cache.set(keyObj, value);
+    },
+    has(keyObj) {
+      return cache.has(keyObj);
+    }
+  };
+}
+
+// Foydalanish:
+let userSession = { token: "XYZ123" };
+const sessionCache = createMemorySafeCache();
+
+sessionCache.set(userSession, { role: "admin", logTime: Date.now() });
+
+// Foydalanuvchi tizimdan chiqsa:
+userSession = null; // Havola uzildi, WeakMap keshdagi ma'lumotlar avtomat tozalanadi
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **Factory vs Classes:** Private o'zgaruvchilar xotirada qimmat turadi. Agar minglab nusxalar kerak bo'lsa, closures emas, \`#\` private sintaksisiga ega \`class\`lardan foydalaning.
+* **GC Timing:** Garbage Collection qachon ishlashi aniq emas (non-deterministic). Shuning uchun havolalarni zudlik bilan tozalash muhim.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Muammo / Konsept | Sababi | Yechimi |
+| :--- | :--- | :--- |
+| **Detached DOM** | Yopilish ichida DOM element saqlanishi | Element o'chganda closuredagi havolani \`null\` qilish |
+| **Shared Scope Leak** | Closures bitta Leksik Muhitni bo'lishishi | Keraksiz closures havolalarini uzish |
+| **WeakMap** | Oddiy Map xotirada ushlab turadi | Kuchsiz havolalardan foydalanish |
+| **new Function** | Scope chain yo'qligi | Faqat global scope-ga ehtiyoj bo'lganda ishlatish |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Oddiy Closure (Boshlang'ich)",
-      instruction: "Counter funksiya yarating. Har chaqirilganda 1 ga o'sib turadi.",
-      startingCode: "// Kodni shu yerda yozing\nconst counter = /* ... */;\nconsole.log(counter()); // 1\nconsole.log(counter()); // 2\nconsole.log(counter()); // 3",
-      hint: "function createCounter() { let count = 0; return () => ++count; }",
-      test: "if (logs.includes(1) && logs.includes(2) && logs.includes(3)) return null; return 'Counter to\\'g\\'ri ishlashi kerak!';"
-    },
-    {
-      id: 2,
-      title: "2️⃣ Private Balans (Boshlang'ich)",
-      instruction: "Bank kartasi yarating. qosh va ol metodlari bilan, private balans bilan.",
-      startingCode: "// Kodni shu yerda yozing\nconst karta = /* ... */;\nconsole.log(karta.qosh(100)); \nconsole.log(karta.olish(30));",
-      hint: "function createCard() { let balance = 0; return { qosh(n) { balance += n; return balance; }, olish(n) { balance -= n; return balance; } }; }",
-      test: "if (logs.some(l => typeof l === 'number' && l === 100)) return null; return 'Balans funksiyası ishlamadi!';"
-    },
-    {
-      id: 3,
-      title: "3️⃣ IIFE (O'rta)",
-      instruction: "IIFE yordamida private x o'zgaruvchisi bilan calculator yarating.",
-      startingCode: "// Kodni shu yerda yozing\nconst calc = /* IIFE */;\nconsole.log(calc.add(5)); // 5\nconsole.log(calc.add(3)); // 8",
-      hint: "const calc = (function() { let memory = 0; return { add(n) { return memory += n; } }; })();",
-      test: "if (logs.includes(5) && logs.includes(8)) return null; return 'Calculator to\\'g\\'ri ishlamadi!';"
-    },
-    {
-      id: 4,
-      title: "4️⃣ Currying (O'rta)",
-      instruction: "add() funksiyasini currying qoling, add(a)(b) shaklida ishlashi uchun.",
-      startingCode: "// Kodni shu yerda yozing\nconst curriedAdd = /* ... */;\nconsole.log(curriedAdd(5)(3)); // 8",
-      hint: "function curriedAdd(a) { return function(b) { return a + b; }; }",
-      test: "if (logs.includes(8)) return null; return 'Currying to\\'g\\'ri emas!';"
-    },
-    {
-      id: 5,
-      title: "5️⃣ Function Factory (O'rta)",
-      instruction: "multiplier factory yarating: createMultiplier(2) → 2 ga ko'paytiradigan funksiya.",
-      startingCode: "// Kodni shu yerda yozing\nconst double = createMultiplier(2);\nconst triple = createMultiplier(3);\nconsole.log(double(5)); // 10\nconsole.log(triple(5)); // 15",
-      hint: "function createMultiplier(factor) { return n => n * factor; }",
-      test: "if (logs.includes(10) && logs.includes(15)) return null; return 'Factory to\\'g\\'ri emas!';"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Let vs Var Loop (O'rta)",
-      instruction: "Let bilan for loop yozib, har bir i qiymatini funksiyalarda saqlab qoling.",
-      startingCode: "const functions = [];\nfor (let i = 0; i < 3; i++) {\n  // Kodni shu yerda yozing\n  functions.push(/* ... */);\n}\nconsole.log(functions[0]()); // 0\nconsole.log(functions[2]()); // 2",
-      hint: "functions.push(() => console.log(i));",
-      test: "if (logs.includes(0) && logs.includes(2)) return null; return 'Loop to\\'g\\'ri emas!';"
-    },
-    {
-      id: 7,
-      title: "7️⃣ Rate Limiter (O'rta)",
-      instruction: "Request limiter yarating: cheksiz chaqirish mumkin, lekin bittadan ko'p bo'lmaydi.",
-      startingCode: "// Kodni shu yerda yozing\nconst limit = createRateLimiter(2);\nconsole.log(limit()); // OK\nconsole.log(limit()); // OK\nconsole.log(limit()); // Kotora rasta!",
-      hint: "function createRateLimiter(max) { let count = 0; return () => { return count++ < max ? 'OK' : 'Kotora!'; }; }",
-      test: "if (logs.some(l => l === 'OK') && logs.some(l => l === 'Kotora!')) return null; return 'Limiter to\\'g\\'ri emas!';"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Scope Chain (O'rta)",
-      instruction: "3 qatlama (global -> funksiya -> nested) o'zgaruvchilar bilan scope chaining ko'rsating.",
-      startingCode: "const global = 'global';\nfunction outer() {\n  const outer = 'outer';\n  function inner() {\n    const inner = 'inner';\n    // Kodni shu yerda yozing\n    console.log(/* global, outer, inner */);\n  }\n  inner();\n}\nouter();",
-      hint: "console.log(global, outer, inner);",
-      test: "if (logs.some(l => Array.isArray(l) && l[0] === 'global')) return null; return 'Scope chain to\\'g\\'ri emas!';"
-    },
-    {
-      id: 9,
-      title: "9️⃣ Closure with Parameters (Qiyin)",
-      instruction: "greeting funksiya yarating: createGreeter('Salom') → 'Salom, [name]' qaytaradigan funksiya.",
-      startingCode: "// Kodni shu yerda yozing\nconst greet = createGreeter('Salom');\nconsole.log(greet('Ali')); // Salom, Ali",
-      hint: "function createGreeter(greeting) { return name => greeting + ', ' + name; }",
-      test: "if (logs.includes('Salom, Ali')) return null; return 'Greeter to\\'g\\'ri emas!';"
-    },
-    {
-      id: 10,
-      title: "🔟 Module Pattern (Qiyin)",
-      instruction: "IIFE bilan module yarating: add, subtract, getValue methodlari bilan.",
-      startingCode: "// Kodni shu yerda yozing\nconst module = (function() { /* ... */ })();\nconsole.log(module.add(5)); // 5\nconsole.log(module.add(3)); // 8\nconsole.log(module.getValue()); // 8",
-      hint: "const module = (function() { let total = 0; return { add(n) { total += n; return total; }, subtract(n) { total -= n; return total; }, getValue() { return total; } }; })();",
-      test: "if (logs.includes(5) && logs.includes(8)) return null; return 'Module pattern to\\'g\\'ri emas!';"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ Closure Array (Qiyin)",
-      instruction: "10 ta funksiya massivini yarating har biri i*2 qaytaradigan. Let ishlatib closure muammosini hal qiling.",
-      startingCode: "const functions = [];\n// Kodni shu yerda yozing\nconst fns = [/* ... */];\nconsole.log(fns[0]()); // 0\nconsole.log(fns[5]()); // 10",
-      hint: "for (let i = 0; i < 10; i++) { functions.push(() => i * 2); }",
-      test: "if (logs.includes(0) && logs.includes(10)) return null; return 'Closure array to\\'g\\'ri emas!';"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Combine: Curry + Factory (Eng Qiyin)",
-      instruction: "curriedMultiplier yarating: createCurriedMultiplier(2) → multiply(3) → 6.",
-      startingCode: "// Kodni shu yerda yozing\nconst double = createCurriedMultiplier(2);\nconsole.log(double(3)); // 6\nconsole.log(double(5)); // 10",
-      hint: "function createCurriedMultiplier(factor) { return function multiply(n) { return factor * n; }; }",
-      test: "if (logs.includes(6) && logs.includes(10)) return null; return 'Curry + Factory to\\'g\\'ri emas!';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Memoize Funksiya (Memoization)",
-      instruction: "Katta hajmli hisob-kitoblarni optimallashtirish uchun universal `memoize(fn)` keshlovchi funksiyani yozing. U berilgan `fn` funksiyasining natijalarini closure xotirasida (obyekt yoki Map-da) saqlab qolsin. Agar keyingi safar chaqirilganda parametrlar bir xil bo'lsa, keshdagi natijani qaytarsin (parametr sifatida bitta primitiv qiymat uzatiladi deb hisoblang).",
-      startingCode: "function memoize(fn) {\n  // Kodni shu yerdan yozing\n}\n",
-      hint: "const cache = {}; return function(arg) { if (arg in cache) return cache[arg]; return cache[arg] = fn(arg); };",
-      test: "let count = 0; const double = x => { count++; return x * 2; }; const memoized = memoize(double); if (memoized(5) === 10 && memoized(5) === 10 && count === 1) return null; return 'Memoize keshdan to\\'g\\'ri foydalanmadi';"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Xavfsiz reyestr (Secure Registry)",
-      instruction: "Faqat closure va uning ichidagi Leksik muhit orqali qiymatlarni saqlaydigan xavfsiz reyestr `createSecureRegistry()` funksiyasini yozing. U tashqi o'zgaruvchilardan butunlay yashirin bo'lgan Map yoki obyektni saqlasin va quyidagi metodlarga ega obyektni qaytarsin:\n- `register(key, val)` - qiymatni reyestrga qo'shadi;\n- `has(key)` - reyestrda kalit borligini tekshiradi (true/false);\n- `get(key)` - qiymatni oladi (agar bo'lmasa undefined).",
-      startingCode: "function createSecureRegistry() {\n  // Kodni shu yerdan yozing\n}\n",
-      hint: "const registry = new Map(); return { register(k, v) { registry.set(k, v); }, has(k) { return registry.has(k); }, get(k) { return registry.get(k); } };",
-      test: "const reg = createSecureRegistry(); reg.register('apiKey', 'secret_123'); if (reg.has('apiKey') && reg.get('apiKey') === 'secret_123' && !reg.hasOwnProperty('registry')) return null; return 'Secure registry to\\'g\\'ri ishlamadi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Memoization (Keshlovchi Funksiya)",
+    "instruction": "Hisoblash yukini kamaytirish uchun, chaqirilgan argumentlar natijalarini keshda saqlovchi va bir xil argument bilan qayta murojaat qilinganda hisoblamasdan tayyor natijani qaytaruvchi `memoize(fn)` yordamchi funksiyasini yozing.",
+    "startingCode": "function memoize(fn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Closure ichida `const cache = {};` yarating. Qaytarilgan funksiya parametrni (masalan JSON.stringify yoki oddiy toString qilib) kalit sifatida ishlatsin va natijani keshga yozsin.",
+    "test": "const sandbox = new Function(code + '; return memoize;');\nconst fn = sandbox();\nlet calls = 0;\nconst square = (x) => { calls++; return x * x; };\nconst memoized = fn(square);\nif (typeof memoized !== 'function') return 'memoize funksiya qaytarishi kerak';\nif (memoized(4) !== 16) return 'Hisob-kitob natijasi noto\\'g\\'ri';\nif (memoized(4) !== 16) return 'Keshdagi natija noto\\'g\\'ri';\nif (calls !== 1) return 'Funksiya keshdan foydalanmadi va qayta ishga tushdi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Bir Martalik Funksiya (Once)",
+    "instruction": "Uzatilgan funksiyani faqat bir marta chaqirishga imkon beradigan, keyingi barcha chaqiriqlarda birinchi chaqiriqdagi natijani qaytaradigan `once(fn)` funksiyasini yozing.",
+    "startingCode": "function once(fn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Closure-da funksiyaning bajarilgan yoki bajarilmaganligini ifodalovchi bayroqcha (`hasRun = false`) va olingan natija o'zgaruvchisini saqlang.",
+    "test": "const sandbox = new Function(code + '; return once;');\nconst fn = sandbox();\nlet counter = 0;\nconst increment = fn(() => {\n  counter++;\n  return counter;\n});\nif (typeof increment !== 'function') return 'once funksiya qaytarishi kerak';\nconst res1 = increment();\nconst res2 = increment();\nif (res1 !== 1 || res2 !== 1) return 'Qiymatlar noto\\'g\\'ri qaytdi';\nif (counter !== 1) return 'Asl funksiya 1 martadan ko\\'p bajarilib ketdi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Qisman Qo'llash (Partial Application)",
+    "instruction": "Funksiya va bir nechta boshlang'ich argumentlarni (`presetArgs`) qabul qilib, yangi funksiya qaytaradigan `partial(fn, ...presetArgs)` funksiyasini yozing. Yangi funksiya chaqirilganda, u qolgan argumentlarni qabul qilib, hammasini birlashtirgan holda asl funksiyani ishga tushirsin.",
+    "startingCode": "function partial(fn, ...presetArgs) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Qaytarilgan funksiya ichida rest operator yordamida yangi argumentlarni olib, `presetArgs` bilan birlashtiring (`[...presetArgs, ...newArgs]`) va `fn`ga uzating.",
+    "test": "const sandbox = new Function(code + '; return partial;');\nconst fn = sandbox();\nconst multiply = (a, b, c) => a * b * c;\nconst doubleAndMultiply = fn(multiply, 2);\nif (typeof doubleAndMultiply !== 'function') return 'partial funksiya qaytarishi kerak';\nif (doubleAndMultiply(3, 4) !== 24) return 'Parametrlar noto\\'g\\'ri birlashtirildi';\nconst multiplyBySix = fn(multiply, 2, 3);\nif (multiplyBySix(5) !== 30) return 'Ko\\'p parametrli partial qo\\'llashda xatolik';\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "JavaScript'da Closure (yopilish) nima?",
-      options: [
-        "Funksiya va uning e'lon qilingan lexical scope (tashqi muhit o'zgaruvchilari) kombinatsiyasi",
-        "Funksiya bajarilishini to'xtatuvchi maxsus runtime xatosi",
-        "Faqat `let` va `const` yordamida yaratilgan o'zgaruvchilar guruhi",
-        "Dasturning xotirasini butunlay tozalovchi maxsus metod"
-      ],
-      correctAnswer: 0,
-      explanation: "Closure funksiya o'zining lexical scope'idagi o'zgaruvchilarni (xoh u tashqi funksiyada bo'lsin) o'zi yopilganidan (tashqi funksiya bajarilib bo'lganidan) keyin ham eslab qolish qobiliyatidir."
-    },
-    {
-      id: 2,
-      question: "Lexical Scope deganda nima tushuniladi?",
-      options: [
-        "Funksiya chaqirilayotgan vaqtdagi dinamik o'zgaruvchilar ko'rinishi",
-        "Funksiya kodda qayerda yozilganligiga qarab uning o'zgaruvchilarni ko'rish doirasi belgilanishi",
-        "Faqat brauzer oynasiga bog'liq bo'lgan global o'zgaruvchilar",
-        "Xatolarni qayd etuvchi loglar to'plami"
-      ],
-      correctAnswer: 1,
-      explanation: "Lexical (yoki Static) Scope - bu o'zgaruvchining ko'rinish doirasi u kodda qayerda e'lon qilinganiga qarab aniqlanishidir. JavaScript dynamic scope emas, lexical scope'dan foydalanadi."
-    },
-    {
-      id: 3,
-      question: "Quyidagi kod bajarilganda konsolda nima chiqadi?\n```javascript\nconst arr = [];\nfor (var i = 0; i < 3; i++) {\n  arr.push(() => console.log(i));\n}\narr[0]();\n```",
-      options: [
-        "0",
-        "3",
-        "undefined",
-        "ReferenceError: i is not defined"
-      ],
-      correctAnswer: 1,
-      explanation: "`var` funksiyaviy/global scope'ga ega bo'lgani uchun, loop davomida bitta umumiy `i` o'zgaruvchisi o'zgarib boradi. Loop tugaganda `i` qiymati `3` bo'ladi va barcha closure funksiyalar shu yagona `i` ga ishora qilgani uchun konsolga `3` chop etiladi."
-    },
-    {
-      id: 4,
-      question: "Nima uchun yuqoridagi kodda `let` ishlatilganda `arr[0]()` chaqirilganda `0` chiqadi?",
-      options: [
-        "`let` ishlatilganda har bir loop iteratsiyasi uchun alohida yangi block scope (o'zgaruvchi bog'lamasi) yaratiladi",
-        "`let` o'zgaruvchilari global scope'ga tushadi",
-        "`let` hoisting'ni umuman taqiqlaydi",
-        "`let` ishlatilganda funksiya sinxron ravishda bajariladi"
-      ],
-      correctAnswer: 0,
-      explanation: "`let` block-scoped bo'lgani tufayli, har bir iteratsiyada yangi `i` o'zgaruvchisi xotirada yaratiladi va o'sha iteratsiyadagi closure aynan o'sha o'ziga tegishli nusxani eslab qoladi."
-    },
-    {
-      id: 5,
-      question: "Closures qanday qildek \"Memory Leak\" (xotira sizib chiqishi) ga sabab bo'lishi mumkin?",
-      options: [
-        "Hech qachon xotira muammosiga sabab bo'lmaydi",
-        "Tashqi funksiyadagi katta hajmli ma'lumotlar (masalan, yirik massivlar) closure funksiya xotirada turgunicha Garbage Collector tomonidan o'chirilmaydi",
-        "Barcha closure'lar avtomatik tarzda cheksiz loop yaratadi",
-        "O'zgaruvchilarni var bilan yaratganda"
-      ],
-      correctAnswer: 1,
-      explanation: "Agar closure funksiya yirik hajmli ma'lumotni ushlab tursa va u closure uzoq vaqt (masalan, global DOM event listener ichida) xotirada yashasa, Garbage Collector u yirik ma'lumotni o'chira olmaydi va natijada xotira band bo'lib qolaveradi."
-    },
-    {
-      id: 6,
-      question: "Temporal Dead Zone (TDZ) atamasi nimani anglatami?",
-      options: [
-        "`let` yoki `const` bilan e'lon qilingan o'zgaruvchining scope boshidan to unga qiymat berilguncha bo'lgan, murojaat qibly bo'lmaydigan hududi",
-        "Funksiya bajarilib tugagandan keyin uning o'chib ketish vaqti",
-        "JavaScript Call Stack to'lib qolgandagi holat",
-        "Event Loop kutish vaqti"
-      ],
-      correctAnswer: 0,
-      explanation: "TDZ — let va const bilan e'lon qilingan o'zgaruvchilarning hoisting holatida ularga e'lon qilinishidan oldin murojaat qilinsa, ReferenceError beradigan vaqtinchalik kirish taqiqlangan zonadir."
-    },
-    {
-      id: 7,
-      question: "Currying nima?",
-      options: [
-        "Ko'p argumentli funksiyani ketma-ket bittadan argument oluvchi bir necha funksiyalarga bo'lish jarayoni",
-        "Funksiyani recursiv chaqirish mexanizmi",
-        "Obyekt elementlarini kalitlari bo'yicha saralash",
-        "Brauzer xotirasini optimallashtirish"
-      ],
-      correctAnswer: 0,
-      explanation: "Currying - ko'p argumentli funksiyani har safar bitta argument qabul qiladigan va keyingi argumentni olish uchun yangi funksiya qaytaradigan zanjirli shaklga keltirishdir."
-    },
-    {
-      id: 8,
-      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst make = () => {\n  let counter = 0;\n  return {\n    get: () => counter,\n    inc: () => { counter++; }\n  };\n};\nconst m = make();\nm.inc();\nconsole.log(m.get());\n```",
-      options: [
-        "`1`",
-        "`0`",
-        "`undefined`",
-        "`TypeError`"
-      ],
-      correctAnswer: 0,
-      explanation: "`inc()` metodi closure-scoped bo'lgan counter qiymatini 0 dan 1 ga oshiradi. `get()` esa o'sha o'zgargan qiymatni qaytaradi."
-    },
-    {
-      id: 9,
-      question: "JavaScript-da garbage collection (axlat yig'uvchi) qanday ishlaydi va closure-ga qanday ta'sir qiladi?",
-      options: [
-        "O'zgaruvchiga yetib borish imkoni (reachability) bo'lmasa, u o'chiriladi. Closure unga ishorani ushlab tursa, u o'chmaydi",
-        "Ballar o'zgaruvchilar har 5 soniyada majburan o'chiriladi",
-        "Faqat global o'zgaruvchilar saqlab qolinadi",
-        "Faqat callbacklar o'chiriladi"
-      ],
-      correctAnswer: 0,
-      explanation: "JavaScript engine xotiradagi ma'lumotlarni qidirishda 'yetib borish' qoidasiga tayanadi. Agar closure ichidagi o'zgaruvchiga murojaat qilish imkoniyati hali ham madison bo'lsa (ya'ni ichki funksiya faol bo'lsa), GC ordan o'chirmaydi."
-    },
-    {
-      id: 10,
-      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet val = 10;\nfunction show() {\n  console.log(val);\n}\nfunction run() {\n  let val = 20;\n  show();\n}\nrun();\n```",
-      options: [
-        "`10`",
-        "`20`",
-        "`undefined`",
-        "`ReferenceError`"
-      ],
-      correctAnswer: 0,
-      explanation: "JavaScript static (lexical) scope ishlatadi. `show` e'lon qilingan joyda `val` global scope-dagi `10` ga ishora qiladi, shuning uchun `run` ichidan chaqirilsa ham static e'lon qilingan qiymat chiqadi."
-    },
-    {
-      id: 11,
-      question: "Module pattern-da closures-dan foydalanishdan maqsad nima?",
-      options: [
-        "Koddagi funksionallikni ma'lum qismlarga (modullarga) ajratib, public va private a'zolarni ta'minlash uchun",
-        "Asinxron so'rovlarni tezlashtirish uchun",
-        "Kodni xatolarini avtomatik tuzatish uchun",
-        "Kodni faqat strict mode-da ishga tushirish uchun"
-      ],
-      correctAnswer: 0,
-      explanation: "Module pattern closure yordamida o'zgaruvchilar va yordamchi funksiyalarny tashqi dunyodan yashirishga (private qilish) va faqat kerakli API metodlarini tashqariga chiqarishga imkon beradi."
-    },
-    {
-      id: 12,
-      question: "`const add = x => y => z => x + y + z;` ko'rinishidagi yozuv nima deb ataladi?",
-      options: [
-        "Currying (zanjirli closure-lar)",
-        "Recursive self-invocation",
-        "Function compilation",
-        "Object destructing"
-      ],
-      correctAnswer: 0,
-      explanation: "Bu bir nechta argumentlarni qabul qilishni closure-lar yordamida ketma-ketlikka bo'lgan currying texnikasidir."
-    },
-    {
-      id: 13,
-      question: "V8 dvigateli (Garbage Collector) closures xotirasini optimallashtirishi nima uchun ba'zida debuggerda o'zgaruvchi topilmadi xatosiga sabab bo'ladi?",
-      options: [
-        "Chunki V8 closure ichida ishlatilmagan tashqi o'zgaruvchilarni GC orqali o'chirib yuboradi, natijada ular debuggerda 'not defined' bo'lib qoladi",
-        "Chunki debugger closures bilan umuman ishlay olmaydi",
-        "Chunki V8 barcha closure'larni avtomatik tarzda sinxronlashtiradi",
-        "Chunki debugger orqali xotira butunlay tozalab tashlanadi"
-      ],
-      correctAnswer: 0,
-      explanation: "Zamonaviy JS dvigatellari xotirani optimallashtirish uchun ichki funksiyada (closureda) ishlatilmagan tashqi o'zgaruvchilarni leksik muhitda saqlamaydi, balki o'chirib yuboradi. Shuning uchun debuggerda to'xtaganda, o'sha o'zgaruvchi xotirada mavjud bo'lmaydi."
-    },
-    {
-      id: 14,
-      question: "Bajarilish konteksti (Execution Context) ichidagi VariableEnvironment va LexicalEnvironment o'rtasidagi farq nima?",
-      options: [
-        "VariableEnvironment block scope o'zgaruvchilarini saqlaydi, LexicalEnvironment esa global xossalarni",
-        "VariableEnvironment faqat 'var' bilan e'lon qilingan o'zgaruvchilarni, LexicalEnvironment esa 'let', 'const' kabi block scope o'zgaruvchilarini saqlaydi",
-        "Ular o'rtasida hech qanday farq yo'q, ikkalasi ham bir xil ma'lumotlarni saqlaydi",
-        "VariableEnvironment faqat stackda ishlaydi, LexicalEnvironment esa diskda"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScriptda 'var' o'zgaruvchilari VariableEnvironment'ga tushadi, 'let' va 'const' esa LexicalEnvironment'ga ulanadi. Blok scope (if/for) ochilganda, yangi LexicalEnvironment yaratilib, context o'shanga ulanadi, VariableEnvironment esa o'zgarmaydi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Garbage Collector (Axlat yig'uvchi) yopilish (closure) ichidagi tashqi o'zgaruvchilarni qachon xotiradan tozalaydi?",
+    "options": [
+      "Tashqi funksiya bajarilib bo'lishi bilanoq",
+      "Ichki funksiyaga (yopilishga) bo'lgan barcha havolalar (references) butunlay yo'qolganda yoki null bo'lganda",
+      "Faqat brauzer sahifasi yangilanganda",
+      "Har 5 daqiqada avtomatik tarzda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Garbage Collector faqat obyekt yoki funksiyaga hech qanday faol havola qolmagan taqdirdagina uni va uning leksik muhitini xotiradan tozalaydi."
+  },
+  {
+    "id": 2,
+    "question": "V8 dvigateli closures bo'yicha qanday xotira optimallashtirishini amalga oshiradi?",
+    "options": [
+      "Barcha o'zgaruvchilarni matn (string) shakliga o'tkazadi",
+      "Ichki funksiyada ishlatilmagan tashqi o'zgaruvchilarni leksik muhitdan (Lexical Environment) olib tashlaydi va xotirada saqlamaydi",
+      " closures ichidagi o'zgaruvchilarni Stack-ga ko'chiradi",
+      "Hech qanday optimallashtirish qilmaydi, hamma o'zgaruvchilar to'liq saqlanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Modern JS dvigatellari (V8 kabi) leksik muhitni tahlil qilib, ichki funksiya tomonidan murojaat qilinmagan o'zgaruvchilarni xotirada saqlamaydi."
+  },
+  {
+    "id": 3,
+    "question": "Meteor JS freymvorkida aniqlangan mashhur 'Closure Memory Leak' (Jorj Beyli muammosi) nima sababdan sodir bo'ladi?",
+    "options": [
+      "Katta massivlarni `.forEach()` orqali aylanishdan",
+      "Bitta tashqi funksiya ichida yaratilgan bitta closure katta hajmdagi ma'lumotni ushlab qolsa va ikkinchi closure global miqyosda saqlansa, ikkalasi bitta Lexical Environment obyekti bilan bo'lishgani uchun katta ma'lumot ham xotirada qolib ketadi",
+      "`setTimeout` vaqtini juda kichik qilib belgilashdan",
+      "Global o'zgaruvchilarni `const` bilan e'lon qilmaganlikdan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bitta tashqi funksiyadan qaytgan closures umumiy Lexical Environment obyekti bilan bog'lanadi. Agar bir closure ulkan ma'lumotni ushlab tursa va ikkinchisi yashashda davom etsa, butun leksik muhit (shu jumladan ulkan ma'lumot) xotirada qolib ketadi."
+  },
+  {
+    "id": 4,
+    "question": "Detached DOM elementlari closures ichida qanday xavf tug'diradi?",
+    "options": [
+      "Sahifaning CSS stillarini buzib yuboradi",
+      "DOM element sahifadan o'chirilgan bo'lsa ham, closure unga bo'lgan havolani saqlab qolgani uchun u xotiradan o'chmaydi (Detached DOM Tree leak)",
+      "Hech qanday xavfi yo'q, xotira avtomat tozalanadi",
+      "Faqat Internet Explorer brauzerida xatolik beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar closure ichida DOM elementi saqlangan bo'lsa va keyin u element `remove()` qilinsa ham, closure havolasi tufayli Garbage Collector uni xotiradan chiqara olmaydi."
+  },
+  {
+    "id": 5,
+    "question": "Closures bilan bog'liq o'zgaruvchilar va leksik muhitlar xotiraning qaysi qismida (Heap yoki Stack) saqlanadi?",
+    "options": [
+      "Faqat Stack xotirasida",
+      "Hech qayerda saqlanmaydi, dynamic hisoblanadi",
+      "Heap (uyum) xotirasida, chunki ularning yashash muddati funksiya bajarilishidan uzunroq bo'lishi mumkin",
+      "CPU kesh xotirasida"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Oddiy lokal o'zgaruvchilar Call Stack-da saqlanishi mumkin, ammo yopilish (closure) vujudga kelganda, leksik muhit Heap xotirasiga ko'chiriladi, chunki uning qachon o'chirilishi noma'lum bo'ladi."
+  },
+  {
+    "id": 6,
+    "question": "Chrome DevTools-ning qaysi paneli orqali closures sabab bo'lgan xotira oqishlarini (Memory Leak) tahlil qilish mumkin?",
+    "options": [
+      "Network paneli",
+      "Memory paneli (Heap Snapshot yordamida)",
+      "Elements paneli",
+      "Security paneli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Memory panelida olingan Heap Snapshot-lar orqali xotiradagi obyeklar va closures havolalarining qayerda bog'lanib qolganini ko'rish mumkin."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kodda `eval()` ishlatilishi closures-ga qanday ta'sir qiladi?\n```javascript\nfunction outer() {\n  let secret = \"123\";\n  let unused = \"data\";\n  eval(\"\");\n  return () => console.log(secret);\n}\n```",
+    "options": [
+      "Hech qanday ta'sir ko'rsatmaydi",
+      "V8 dvigatelining optimallashtirish qobiliyatini cheklaydi, chunki dynamic kod nima so'rashini bilmaganligi sababli barcha o'zgaruvchilarni (jumladan `unused`ni ham) xotirada saqlashga majbur bo'ladi",
+      "Dasturning xavfsizligini ta'minlaydi",
+      "Faqat `secret` o'zgaruvchisini o'chirib yuboradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`eval` ishlatilganda JS dvigateli qaysi o'zgaruvchi dynamic chaqirilishini oldindan bilolmaydi va scope-ni optimallashtira olmaydi, natijada barcha o'zgaruvchilar xotirada qoladi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodda nima uchun xotira oqishi (Memory Leak) yuz berishi mumkin?\n```javascript\nlet replaceThing = function () {\n  let originalThing = theThing;\n  let unused = function () {\n    if (originalThing) console.log(\"hi\");\n  };\n  theThing = {\n    longStr: new Array(1000000).join('*'),\n    someMethod: function () {}\n  };\n};\nsetInterval(replaceThing, 1000);\n```",
+    "options": [
+      "`setInterval` ishlamay qoladi",
+      "`unused` closure va `someMethod` closure bitta leksik muhitni bo'lishadi. `theThing`ning `someMethod`i omon qoladi va har soniyada oldingi `originalThing`ni yopilishda zanjirdek ushlab boradi, natijada xotira to'lib ketadi",
+      "Chunki massiv hajmi juda kichik",
+      "Chunki `replaceThing` o'zgaruvchisi o'zgarmas `const` emas"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bu Meteor muammosining klassik namunasidir. `someMethod` global `theThing` tarkibida saqlanib qoladi va o'zi bilan birga `originalThing` saqlangan leksik muhitni tortib yuradi, bu zanjir har soniyada uzayib boradi."
+  },
+  {
+    "id": 9,
+    "question": "Qisman qo'llash (Partial Application) va Currying usullari closures bilan qanday bog'liq?",
+    "options": [
+      "Ular closures-dan foydalanmaydi, faqat prototiplarga asoslanadi",
+      "Ular dastlabki uzatilgan parametrlarni closure (yopilish) ichida saqlab qolib, keyinchalik to'liq chaqiruvda foydalanadi",
+      "Ular xotirani avtomatik ravishda kamaytiradi",
+      "Ular faqat sinxron kodlarda xatolarni oldini oladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Currying va Partial application funksiyalarga dastlab berilgan argumentlarni closure-da saqlaydi va keyingi chaqiriqlar o'sha saqlangan qiymatlardan foydalanadi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodda `new Function` ishlatilganda nima sodir bo'ladi?\n```javascript\nlet x = 10;\nfunction outer() {\n  let x = 20;\n  return new Function('console.log(x)');\n}\nconst fn = outer();\nfn();\n```",
+    "options": [
+      "`20` chiqadi, chunki u `outer` ichida yaratilgan",
+      "`10` chiqadi, chunki `new Function` yopilgan leksik muhitni emas, faqat global scope-ni ko'radi",
+      "`undefined` chiqadi",
+      "`ReferenceError` xatoligi yuz beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`new Function` orqali yaratilgan funksiyalar jismoniy joylashuviga qaramay, har doim global scope leksik qamroviga ulanadi va lokal yopilishlarni (closures) yarata olmaydi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kodda xotira oqishining oldini olish uchun qanday o'zgarish qilish kerak?\n```javascript\nlet element = document.getElementById('button');\nelement.addEventListener('click', function onClick() {\n  // element bilan qandaydir amal\n});\n```",
+    "options": [
+      "`onClick` funksiyasini `const` qilish",
+      "Element o'chirilganda `removeEventListener` yordamida `onClick`ni tozalash yoki havola zanjirini uzish",
+      "Tugmani yashirib qo'yish (`display: none`)",
+      "Hech qanday o'zgarish shart emas, brauzer o'zi tozalaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Element o'chirilayotganda unga bog'liq dynamic listener-larni o'chirish yoki mos closures havolalarini uzish detached DOM elements hosil bo'lishining oldini oladi."
+  },
+  {
+    "id": 12,
+    "question": "Garbage Collector-ga xotiradagi keraksiz obyektlarni yig'ishga yordam berish uchun modern JS dasturchilari qanday obyekt turidan foydalanadilar (havolani kuchsiz saqlash uchun)?",
+    "options": [
+      "`Map` va `Set` dan",
+      "`WeakMap` va `WeakSet` dan",
+      "`Object.freeze` qilingan obyektlardan",
+      "`JSON.stringify` qilingan ma'lumotlardan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`WeakMap` va `WeakSet` kalitlari bo'lgan obyektlar kuchsiz havolaga ega bo'ladi (weak references). Agar obyektga boshqa kuchli havola qolmasa, u Garbage Collector tomonidan xotiradan tozalab yuborilaveradi (closures-da ham keng qo'llaniladi)."
+  }
+]
+
 };

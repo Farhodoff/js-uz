@@ -1,363 +1,372 @@
-export const regexLesson = {
+export const regex = {
   id: "regex",
-  title: "Regular Expressions (RegEx): Murakkab Matn Tahlili",
-  level: "Murakkab",
-  description: "Matnlardan andozalar bo'yicha murakkab qidiruv, lookaround assertions va ReDoS xavfsizligi.",
-  theory: `## 1. NEGA kerak?
-Matnli ma'lumotlar bilan ishlashda oddiy \`indexOf\` yoki \`includes\` metodlari juda cheklangan. Masalan, matn ichidan faqat email manzillarini, telefon raqamlarini yoki muayyan formatdagi sanalarni ajratib olish uchun shunchaki so'z qidirish yetarli emas. **Regular Expressions (RegEx)** matn ichidan murakkab qoliplar (patterns) bo'yicha qidirish, kiritilgan ma'lumotlarni tekshirish (validation) va matn qismlarini dinamik almashtirish uchun kuchli dasturlash vositasidir.
+  title: "Muntazam Ifodalar (Regular Expressions)",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+
+### Muntazam Ifoda (Regular Expression) nima?
+* **Muntazam ifoda (RegEx):** Matnlar ichidan ma'lum bir andozaga (shablonga) mos keladigan qismlarni qidirish, mosligini tekshirish (validation) yoki almashtirish (replace) uchun ishlatiladigan maxsus qidiruv tili andozasidir.
+* U JavaScript-da o'rnatilgan obyekt (\`RegExp\`) bo'lib, juda murakkab matnli vazifalarni bitta qatorda hal qilish imkonini beradi.
+
+### Real hayotiy analogiya
+Tasavvur qiling, sizda **minglab hujjatlar solingan quti** bor:
+* **Oddiy usul (Muntazam ifodasiz):** Siz har bir qog'ozni ochib, undagi har bir so'zni ko'zdan kechirib chiqishingiz kerak. Agar sizga "telefon raqamlari" kerak bo'lsa, har bir raqamni qo'lda tekshirasiz.
+* **Muntazam ifoda (RegEx) usuli:** Sizda sehrli skaner bor. Unga **"avval 3 ta raqam, keyin tire, keyin yana 2 ta raqam"** ko'rinishidagi qolipni (shablonni) o'rgatasiz. Skaner qutidagi barcha qog'ozlarni soniyalar ichida skanerdan o'tkazib, faqat shu qolipga mos keluvchi raqamlarni ajratib beradi.
 
 ---
 
-## 2. SODDALIK (Analogiya)
-RegEx-ni **detektiv qidiruv ko'rsatmalariga** o'xshatish mumkin.
-Siz qidiruvchiga "Ali ismli odamni top" demaysiz, balki:
-"Bosh harfi katta 'A' bilan boshlanadigan, keyin 2 ta harf keladigan, yonida esa 1990 dan 2005 gacha bo'lgan son yozilgan so'zni top" (bu \`\\bA[a-z]{2}\\s(199\\d|200[0-5])\\b\`) deb andoza berasiz. Detektiv shu andozaga mos keladigan har qanday matnni sizga topib beradi.
+## 2. 💻 Real Kod Misollari
 
----
+### 1. Basic Example (Satrdan raqamlarni qidirish)
+Matn ichida raqamlar bor-yo'qligini tekshirish va ularni olish:
+\`\`\`javascript
+const text = "Mening telefon raqamim: 1234567";
+const regex = /\\d+/; // \\d raqamni anglatadi, + esa kamida bitta yoki ko'p degani
 
-## 3. STRUKTURA VA CHUQUR TUSHUNCHALAR
-
-### A. Lookahead va Lookbehind (Lookaround Assertions)
-Lookaround assertions — bu matn kursorini oldinga siljitmasdan (non-consuming), ma'lum bir pozitsiyadan oldin yoki keyin muayyan shart bajarilishini tekshirish usulidir.
-1. **Positive Lookahead \`(?=...)\`:** Joriy pozitsiyadan keyin berilgan andoza kelishini talab qiladi.
-   * \`\\d+(?=\\sUSD)\` -> "100 USD" ichidan "100" ni topadi, chunki undan keyin " USD" bor, lekin "USD" natijaga qo'shilmaydi.
-2. **Negative Lookahead \`(?!...)\`:** Joriy pozitsiyadan keyin berilgan andoza kelmasligini talab qiladi.
-   * \`\\d+(?!\\sUSD)\` -> "100 EUR" ichidan "100" ni topadi.
-3. **Positive Lookbehind \`(?<=...)\`:** Joriy pozitsiyadan oldin ma'lum andoza bo'lishini talab qiladi.
-   * \`(?<=\\$)\\d+\` -> "$100" ichidan "100" ni topadi.
-4. **Negative Lookbehind \`(?<!...)\`:** Joriy pozitsiyadan oldin ma'lum andoza bo'lmasligini talab qiladi.
-   * \`(?<!\\$)\\d+\` -> "€100" ichidan "100" ni topadi.
-
-\`\`\`mermaid
-graph TD
-    A[Lookaround Assertions] --> B[Lookahead - O'ng tomonni tekshiradi]
-    A --> C[Lookbehind - Chap tomonni tekshiradi]
-    B --> D["Positive (?=...) - Bor bo'lsin"]
-    B --> E["Negative (?!...) - Yo'q bo'lsin"]
-    C --> F["Positive (?<=...) - Bor bo'lsin"]
-    C --> G["Negative (?<!...) - Yo'q bo'lsin"]
+console.log(regex.test(text)); // true (tekshirish)
+console.log(text.match(regex)); // ["1234567"] (ajratib olish)
 \`\`\`
 
-### B. Greedy va Lazy Matching (Backtracking)
-* **Greedy (Ochko'z, sukut bo'yicha):** Miqdor ko'rsatkichlari (\`*\`, \`+\`, \`{n,m}\`) imkoni boricha eng uzun moslikni qamrab olishga harakat qiladi.
-  * Masalan, \`"<div>salom</div><div>dunyo</div>"\` matnini \`/<.*>/\` regexi bilan qidirsak, u butun matnni \`<div>salom</div><div>dunyo</div>\` bitta moslik deb topadi.
-* **Lazy (Dangasa):** Miqdor ko'rsatkichidan keyin \`?\` belgisini qo'yish (\`*?\`, \`+?\`, \`??\`) orqali eng qisqa moslikni topish buyuriladi.
-  * Yuqoridagi misolda \`/<.*?>/\` regexi ikkita alohida moslikni topadi: \`<div>\` va \`</div>\`.
+### 2. Intermediate Example (Matndagi so'zlarni almashtirish)
+RegEx yordamida barcha mos keladigan so'zlarni almashtirish:
+\`\`\`javascript
+const str = "Men olmani yaxshi ko'raman. Olma juda shirin.";
+// 'g' flagi global qidirishni, 'i' esa katta-kichik harf farqlamaslikni bildiradi
+const pattern = /olma/gi; 
 
-\`\`\`mermaid
-sequenceDiagram
-    participant T as Matn: &lt;div&gt;salom&lt;/div&gt;
-    participant G as Greedy Pattern: /&lt;.*&gt;/
-    participant L as Lazy Pattern: /&lt;.*?&gt;/
-    Note over T, G: Greedy eng oxirgi &gt; belgisini qidirib davom etadi
-    G-->>T: Natija: &lt;div&gt;salom&lt;/div&gt;
-    Note over T, L: Lazy birinchi &gt; belgisini topishi bilanoq to'xtaydi
-    L-->>T: Natija: &lt;div&gt;
+const newStr = str.replace(pattern, "anor");
+console.log(newStr); // "Men anorni yaxshi ko'raman. anor juda shirin."
 \`\`\`
 
-### C. ReDoS (Regular Expression Denial of Service)
-ReDoS — bu xavfsiz bo'lmagan regex yozilishi tufayli yuzaga keladigan xavfsizlik zaifligidir. Ba'zi andozalarda, agar matn andozaga mos kelmasa, regex dvigateli barcha kombinatsiyalarni qayta tekshirib chiqish uchun **Catastrophic Backtracking (falokatli ortga qaytish)** holatiga tushib qoladi.
-* Masalan, \`/(a+)+b/\` regexiga \`aaaaaaaaaaaaaaaaaaaaaaaaaaaaac\` (oxiri 'b' o'rniga 'c') satrini bersak, CPU 100% yuklanib, brauzer yoki Node.js server butunlay qotib qoladi. Bu kabi andozalardan qochish lozim.
+### 3. Advanced Example (Guruhlar yordamida sanani formatlash)
+Sana formatini o'zgartirish (masalan, YYYY-MM-DD formatini DD/MM/YYYY ko'rinishiga keltirish):
+\`\`\`javascript
+const dateStr = "2026-06-10";
+// 4 ta raqam, 2 ta raqam va yana 2 ta raqamni guruhlarga ajratamiz
+const datePattern = /(\\d{4})-(\\d{2})-(\\d{2})/;
+
+// $1, $2, $3 - mos ravishda dumaloq qavslar ichidagi guruhlarni bildiradi
+const formattedDate = dateStr.replace(datePattern, "$3/$2/$1");
+console.log(formattedDate); // "10/06/2026"
+\`\`\`
 
 ---
 
-## 4. XATOLAR (Common mistakes)
-1. **Lookbehind mos kelmasligini tekshirish:** Kvadrat qavslar ichida inkor etish (\`[^...]\`) va negative lookahead (\`(?!...)\`) farqini chalkashtirish. Kvadrat qavs ichidagi \`^\` faqat bitta belgi o'rnini inkor etadi, lookaround esa butun bir andozani tekshiradi.
-2. **Katta-kichik harf bayrog'ini (\`i\`) unutish:** Foydalanuvchi kiritgan matnlarda (masalan, email yoki ismlar) harflar katta-kichik bo'lishi mumkinligini hisobga olmaslik.
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
+
+### Qaysi muammoni hal qiladi?
+1. **Murakkab matn validatsiyasi:** Foydalanuvchi kiritgan email manzili, telefon raqami, pochta indeksi yoki parol xavfsizligini (kamida bitta katta harf, bitta raqam, bitta belgi bo'lishi shartligi) tekshirish uchun loops va if-shartlari yozilsa, kod yuzlab qator bo'lib ketadi va sekin ishlaydi. RegEx buni bitta shablon bilan tez va aniq bajaradi.
+2. **Matnlarni qayta ishlash:** Log fayllaridan ma'lumotlarni yig'ish, matn ichidan URL havolalarini qidirib ajratib olish kabi ishlarni RegEx yordamida juda oson hal qilish mumkin.
 
 ---
 
-## 5. SAVOLLAR VA JAVOBLAR
-**1. RegEx nima?**
-Matn ichidagi andozalarni aniqlash, tekshirish, ajratish va almashtirish uchun ishlatiladigan maxsus belgilar tizimi.
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
 
-**2. test() va match() metodlari farqi nimada?**
-\`test()\` faqat mos kelish bor-yo'qligini \`true/false\` qaytaradi. \`match()\` esa topilgan barcha mos qismlarni massiv qilib qaytaradi.
+### 1. \`g\` (Global) flagini yozishni unutish
+Agar \`g\` flagi qo'yilmasa, \`replace\` yoki \`match\` faqat birinchi duch kelgan moslikni oladi va to'xtaydi.
+#### Xato:
+\`\`\`javascript
+const sentence = "cat, bat, rat, cat";
+const result = sentence.replace(/cat/, "dog");
+console.log(result); // "dog, bat, rat, cat" (ikkinchisi o'zgarmay qoldi)
+\`\`\`
+#### Tuzatish:
+\`\`\`javascript
+const result = sentence.replace(/cat/g, "dog");
+console.log(result); // "dog, bat, rat, dog"
+\`\`\`
 
-**3. i va g bayroqlari nimani anglatadi?**
-\`i\` — katta-kichik harf farqi yo'q (case-insensitive). \`g\` — global, barcha mosliklarni izlaydi, birinchisida to'xtamaydi.`,
+### 2. Maxsus belgilarni ekranlashtirishni (escaping) unutish
+\`.\`, \`?\`, \`*\`, \`+\`, \`(\`, \`)\` kabi belgilar RegEx-da maxsus ma'noga ega. Ularni oddiy matn sifatida qidirish uchun oldiga orqa chiziq \`\\\` (backslash) qo'yish shart.
+#### Xato:
+\`\`\`javascript
+// Nuqta belgisi RegEx-da "istalgan belgi" degan ma'noni beradi
+const fileRegex = /photo.jpg/; 
+console.log(fileRegex.test("photoAxjpg")); // true qaytadi, chunki nuqta o'rnida A turibdi
+\`\`\`
+#### Tuzatish:
+\`\`\`javascript
+const fileRegex = /photo\\.jpg/; // Nuqta oldiga \\ qo'yildi
+console.log(fileRegex.test("photoAxjpg")); // false
+console.log(fileRegex.test("photo.jpg")); // true
+\`\`\`
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior (1–4)
+1. **Savol:** RegEx-da \`test()\` va \`match()\` metodlarining farqi nimada?
+   * **Javob:** \`test()\` metodi RegExp obyekti metodi bo'lib, true/false qaytaradi. \`match()\` esa String metodi bo'lib, mos keluvchi matnlarni massiv shaklida qaytaradi (topilmasa null).
+2. **Savol:** RegEx flaglari nima va eng ko'p ishlatiladiganlarini ayting?
+   * **Javob:** Flaglar qidiruv xatti-harakatini o'zgartiradi. \`g\` (global qidiruv), \`i\` (katta-kichik harf farqlamaslik), \`m\` (ko'p qatorli qidiruv).
+3. **Savol:** \`\\d\` va \`\\D\` farqi nimada?
+   * **Javob:** \`\\d\` istalgan bitta raqamga mos keladi, \`\\D\` esa raqam bo'lmagan istalgan belgiga mos keladi.
+4. **Savol:** \`\\w\` belgilar sinfi nimalarni o'z ichiga oladi?
+   * **Javob:** Alfanumerik belgilar: harflar (a-z, A-Z), raqamlar (0-9) va pastki chiziq (\`_\`).
+
+### Middle (5–8)
+5. **Savol:** RegEx-da ochko'zlik (greedy) va kamtar (lazy) qidiruv nima?
+   * **Javob:** Greedy (masalan \`.*\`) maksimal darajada uzun matnni qamrab oladi. Lazy qilish uchun kvantifikatordan keyin \`?\` qo'yiladi (masalan \`.*?\`), u eng qisqa mos keluvchi matnni oladi.
+6. **Savol:** Capturing group (guruhlash) nima va unga qanday murojaat qilinadi?
+   * **Javob:** Shablon ichida qismlarni dumaloq qavs \`(...)\` ichiga olish orqali guruhlanadi. Ularga replace-da \`$1\`, \`$2\` kabi o'zgaruvchilar orqali murojaat qilish mumkin.
+7. **Savol:** RegExp konstruktori \`new RegExp('pattern')\` va \`/pattern/\` literalining farqi nimada?
+   * **Javob:** Literallar dastur yuklanganda kompiyatsiya qilinadi (statik). Konstruktor esa dinamik tarzda, masalan o'zgaruvchi qiymatidan shablon yasash uchun ishlatiladi.
+8. **Savol:** \`^\` belgisi qachon satr boshini, qachon inkor etishni bildiradi?
+   * **Javob:** Andoza boshida kelganda (\`/^abc/\`) satr boshini bildiradi. To'rtburchak qavslar ichida kelganda (\`/[^abc]/\`) a, b, c dan boshqa istalgan belgini bildiradi.
+
+### Senior (9–12)
+9. **Savol:** Lookahead (\`(?=...)\` va \`(?!...)\`) va Lookbehind (\`(?<=...)\` va \`(?<!...)\`) tushunchalarini tushuntiring.
+   * **Javob:** Ular assertion (tasdiqlar) bo'lib, o'zidan oldin yoki keyin ma'lum bir matn bor yoki yo'qligini tekshiradi, lekin u matnni natijaga (match) qo'shmaydi.
+10. **Savol:** RegEx-da "Catastrophic Backtracking" (Halokatli qaytish) nima va u qanday xavf tug'diradi?
+    * **Javob:** Agar shablon juda murakkab va mos kelmaydigan matn uzun bo'lsa, RegEx dvigateli barcha kombinatsiyalarni tekshirish uchun juda ko'p vaqt sarflaydi. Bu CPU yuklamasini 100% ga chiqarib, dasturni qotirib qo'yishi mumkin (ReDoS hujumi).
+11. **Savol:** RegExp obyektidagi \`lastIndex\` xususiyati nima va u qachon o'zgaradi?
+    * **Javob:** Global (\`g\`) yoki yopishqoq (\`y\`) flaglari ishlatilganda, \`lastIndex\` keyingi qidiruv boshlanadigan indeksni ko'rsatadi. Har safar \`exec()\` yoki \`test()\` chaqirilganda u yangilanadi.
+12. **Savol:** RegEx-da Unicode belgilar bilan ishlashda qaysi flag kerak va nima uchun?
+    * **Javob:** \`u\` (unicode) flagi kerak. Chunki Emoji yoki maxsus belgilar 2-4 bayt joy egallaydi va \`u\` flagsiz ular noto'g'ri bo'laklarga bo'linib tekshiriladi.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Mashqlar maxsus test tizimi orqali tekshiriladi.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars oxirida testlar taqdim etiladi.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Parol Kuchini Tekshiruvchi Algoritm (Password Validator)
+Saytlarda ro'yxatdan o'tishda parollarni tekshirish uchun RegEx eng qulay vosita hisoblanadi.
+
+\`\`\`javascript
+function checkPasswordStrength(password) {
+  // Shartlar:
+  // 1. Kamida 8 ta belgi bo'lishi kerak
+  // 2. Kamida bitta katta harf bo'lishi kerak
+  // 3. Kamida bitta kichik harf bo'lishi kerak
+  // 4. Kamida bitta raqam bo'lishi kerak
+  // 5. Kamida bitta maxsus belgi (@, $, !, %, *, ?, &) bo'lishi kerak
+
+  const strongPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/;
+
+  if (strongPattern.test(password)) {
+    return { status: "Kuchli", valid: true };
+  } else {
+    return {
+      status: "Kuchsiz. Parolda kamida 8 belgi, katta-kichik harflar, raqam va maxsus belgi bo'lishi shart.",
+      valid: false
+    };
+  }
+}
+
+console.log(checkPasswordStrength("Simple12")); // valid: false (maxsus belgi yo'q)
+console.log(checkPasswordStrength("SecurePass123!")); // valid: true (Kuchli!)
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **Sikl ichida \`new RegExp()\` yaratmang:** Agar andoza dinamik ravishda o'zgarmasa, uni sikl tashqarisida e'lon qiling. Har bir sikl aylanishida yangi obyekt yaratish xotira va vaqt talab qiladi.
+* **Andozalarni soddalashtiring:** Juda murakkab va bir-birining ichiga kirgan kvantifikatorlardan (masalan \`(a+)+\`) qoching, chunki ular "Catastrophic Backtracking" xavfini tug'diradi.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Belgan / Sinf | Vazifasi | Misol |
+| :--- | :--- | :--- |
+| \`.\` | Istalgan bitta belgi (yangi satrdan tashqari) | \`/a.c/\` -> "abc", "axc" |
+| \`\\d\` | Istalgan bitta raqam | \`/\\d/\` -> "5" |
+| \`\\w\` | Alfanumerik belgi (harf, raqam, \`_\`) | \`/\\w/\` -> "a", "3", "_" |
+| \`\\s\` | Istalgan bo'shliq belgi (probel, tab) | \`/\\s/\` -> " " |
+| \`^\` | Satr boshlanishi | \`/^Hello/\` -> "Hello World" |
+| \`$\` | Satr tugashi | \`/World$/\` -> "Hello World" |
+| \`*\` | 0 yoki undan ko'p marta takrorlanish | \`/ab*/\` -> "a", "ab", "abbb" |
+| \`+\` | 1 yoki undan ko'p marta takrorlanish | \`/ab+/\` -> "ab", "abbb" |
+| \`?\` | 0 yoki 1 marta takrorlanish (ixtiyoriy) | \`/ab?/\` -> "a", "ab" |
+| \`{n,m}\` | Kamida n marta, ko'pi bilan m marta | \`/\\d{2,4}/\` -> "12", "1234" |
+| \`[a-z]\` | Berilgan oraliqdagi istalgan belgi | \`/[a-c]/\` -> "a", "b", "c" |
+| \`(abc)\` | Guruhlash (capturing group) | \`/(\\d{2})/\` -> guruh 1 |
+`,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Raqam borligini tekshirish",
-      instruction: "Matn ichida kamida bitta raqam borligini tekshiruvchi RegEx yozing va test() bilan ishlatib true qaytaring.",
-      startingCode: "const matn = 'Yoshim 25 da';\n// RegEx yozing\nconst regex = /\\d/;\nconst result = regex.test(matn);\nconsole.log(result);",
-      hint: "const regex = /\\d/;",
-      test: "if (result === true) return null; return 'Raqam topilmadi';"
-    },
-    {
-      id: 2,
-      title: "2️⃣ Telefon raqami validatsiyasi",
-      instruction: "+998XXXXXXXXX formatidagi telefon raqamini tekshiruvchi RegEx yozing.",
-      startingCode: "const phone = '+998901234567';\n// RegEx yozing\nconst phoneRegex = /^\\+998\\d{9}$/;\nconsole.log(phoneRegex.test(phone));",
-      hint: "const phoneRegex = /^\\+998\\d{9}$/;",
-      test: "if (phoneRegex.test('+998901234567') === true && phoneRegex.test('998901234567') === false) return null; return 'Telefon regex noto\\'g\\'ri';"
-    },
-    {
-      id: 3,
-      title: "3️⃣ Barcha sonlarni ajratib olish",
-      instruction: "Matn ichidagi barcha sonlarni match() yordamida massiv sifatida oling.",
-      startingCode: "const matn = '12 ta olma va 34 ta anor bor';\n// match() ishlatib sonlarni oling\nconst sonlar = matn.match(/\\d+/g);\nconsole.log(sonlar);",
-      hint: "const sonlar = matn.match(/\\d+/g);",
-      test: "if (Array.isArray(sonlar) && sonlar[0] === '12' && sonlar[1] === '34') return null; return 'Sonlar topilmadi';"
-    },
-    {
-      id: 4,
-      title: "4️⃣ So'zni almashtirish (global replace)",
-      instruction: "Matn ichidagi barcha 'JavaScript' so'zlarini (katta-kichik harfdan qat'iy nazar) 'JS' bilan almashtiring.",
-      startingCode: "const matn = 'Javascript zo\\'r. JAVASCRIPT tili!';\n// replace() ishlating\nconst yangi = matn.replace(/javascript/gi, 'JS');\nconsole.log(yangi);",
-      hint: "const yangi = matn.replace(/javascript/gi, 'JS');",
-      test: "if (yangi === 'JS zo\\'r. JS tili!') return null; return 'Almashtirish noto\\'g\\'ri';"
-    },
-    {
-      id: 5,
-      title: "5️⃣ Email tekshirish",
-      instruction: "Oddiy email manzilini tekshiruvchi RegEx yozing.",
-      startingCode: "const email1 = 'ali@gmail.com';\nconst email2 = 'noto\\'g\\'ri-email';\n// RegEx yozing\nconst emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\nconsole.log(emailRegex.test(email1), emailRegex.test(email2));",
-      hint: "const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;",
-      test: "if (emailRegex.test('ali@gmail.com') === true && emailRegex.test('noto\\'g\\'ri') === false) return null; return 'Email regex noto\\'g\\'ri';"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Bosh harfni topish",
-      instruction: "Matn ichidagi barcha so'zlarning bosh harflarini topib massiv qiling.",
-      startingCode: "const matn = 'Ali Bobur Zara';\n// Bosh harflarni toping\nconst boshHarflar = matn.match(/[A-Z]/g);\nconsole.log(boshHarflar);",
-      hint: "const boshHarflar = matn.match(/[A-Z]/g);",
-      test: "if (Array.isArray(boshHarflar) && boshHarflar.length === 3) return null; return 'Bosh harflar topilmadi';"
-    },
-    {
-      id: 7,
-      title: "7️⃣ Satr boshi va oxiri",
-      instruction: "Faqat 'Salom' so'zidan boshlanadigan va oxirida '!' bilan tugaydigan satrni tekshiring.",
-      startingCode: "const satr1 = 'Salom dunyo!';\nconst satr2 = 'Dunyo Salom!';\n// RegEx yozing\nconst regex = /^Salom.*!$/;\nconsole.log(regex.test(satr1), regex.test(satr2));",
-      hint: "const regex = /^Salom.*!$/;",
-      test: "if (regex.test('Salom dunyo!') === true && regex.test('Dunyo Salom!') === false) return null; return 'Regex noto\\'g\\'ri';"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Parol kuchi tekshirish",
-      instruction: "Parol kamida 8 ta belgi, kamida 1 ta raqam va 1 ta harf bo'lishini tekshiring.",
-      startingCode: "const parol1 = 'Salom123';\nconst parol2 = 'qisqa1';\n// RegEx yozing\nconst parolRegex = /^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$/;\nconsole.log(parolRegex.test(parol1), parolRegex.test(parol2));",
-      hint: "const parolRegex = /^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$/;",
-      test: "if (parolRegex.test('Salom123') === true && parolRegex.test('qisqa1') === false) return null; return 'Parol regex noto\\'g\\'ri';"
-    },
-    {
-      id: 9,
-      title: "9️⃣ Bo'shliqlar bilan ajratish",
-      instruction: "Matnni bir yoki ko'p bo'shliqlar bo'yicha split() qiling.",
-      startingCode: "const matn = 'bir   ikki  uch';\n// RegEx bilan split qiling\nconst qismlar = matn.split(/\\s+/);\nconsole.log(qismlar);",
-      hint: "const qismlar = matn.split(/\\s+/);",
-      test: "if (qismlar.length === 3 && qismlar[0] === 'bir') return null; return 'Split noto\\'g\\'ri';"
-    },
-    {
-      id: 10,
-      title: "🔟 Guruh bilan sana ajratish",
-      instruction: "'2024-05-19' formatidagi sanadan yil, oy va kunni capturing groups yordamida ajratib oling.",
-      startingCode: "const sana = '2024-05-19';\n// Capturing groups ishlatib match qiling\nconst natija = sana.match(/(\\d{4})-(\\d{2})-(\\d{2})/);\nconsole.log(natija[1], natija[2], natija[3]);",
-      hint: "sana.match(/(\\d{4})-(\\d{2})-(\\d{2})/)",
-      test: "const n = '2024-05-19'.match(/(\\d{4})-(\\d{2})-(\\d{2})/); if (n && n[1] === '2024') return null; return 'Guruh ajratish noto\\'g\\'ri';"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ URL dan protokolni ajratish",
-      instruction: "'https://example.com' URL dan faqat protokolni ('https') ajratib oling.",
-      startingCode: "const url = 'https://example.com';\n// Protokolni ajrating\nconst protokol = url.match(/^(https?)/)?.[1];\nconsole.log(protokol);",
-      hint: "url.match(/^(https?)/)?.[1]",
-      test: "const p = 'https://example.com'.match(/^(https?)/)?.[1]; if (p === 'https') return null; return 'Protokol ajratilmadi';"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Maxfiy ma'lumotlarni yashirish (Eng Qiyin)",
-      instruction: "Matn ichidagi kredit karta raqamini (16 ta raqam) yulduzchalar bilan yashiring (faqat oxirgi 4 ta ko'rinsin).",
-      startingCode: "const matn = 'Karta: 1234567890123456';\n// replace bilan yashiring\nconst yashirilgan = matn.replace(/\\d(?=\\d{4})/g, '*');\nconsole.log(yashirilgan);",
-      hint: "matn.replace(/\\d(?=\\d{4})/g, '*')",
-      test: "const y = 'Karta: 1234567890123456'.replace(/\\d(?=\\d{4})/g, '*'); if (y.includes('3456') && y.includes('*')) return null; return 'Yashirish noto\\'g\\'ri';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Murakkab Parol Tekshiruvi (validatePasswordStrength)",
-      instruction: "Lookahead assertion-lardan foydalanib, parolni murakkablikka tekshiruvchi `validatePasswordStrength(password)` funksiyasini yozing. Parol kamida 8 ta belgidan iborat bo'lishi, kamida bitta katta harf, bitta kichik harf, bitta raqam va kamida bitta maxsus belgi (`@`, `$`, `!`, `%`, `*`, `?`, `&`) o'z ichiga olishi shart. Barcha shartlar bajarilsa `true`, aks holda `false` qaytarsin.",
-      startingCode: "function validatePasswordStrength(password) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/; return regex.test(password);",
-      test: "if (typeof validatePasswordStrength !== 'function') return 'validatePasswordStrength funksiya emas';\nif (validatePasswordStrength('Salom123!') !== true) return 'To\\'g\\'ri parolga false berildi';\nif (validatePasswordStrength('salom123!') !== false) return 'Katta harfi yo\\'q parolga true berildi';\nif (validatePasswordStrength('Salom!!!') !== false) return 'Raqami yo\\'q parolga true berildi';\nif (validatePasswordStrength('Salom123') !== false) return 'Maxsus belgisi yo\\'q parolga true berildi';\nreturn null;"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Nomli Guruhlarni Ajratuvchi (parseNamedGroups)",
-      instruction: "Nomli capturing groups (`(?<groupName>...)`) bo'lgan `regex` andozasini `str` satrida ishlatib, mos kelgan guruh nomlari va ularning qiymatlarini kalit-qiymat obyekt ko'rinishida qaytaruvchi `parseNamedGroups(regex, str)` funksiyasini yozing. Agar moslik topilmasa, bo'sh obyekt `{}` qaytarsin.",
-      startingCode: "function parseNamedGroups(regex, str) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "const match = str.match(regex); return match && match.groups ? match.groups : {};",
-      test: "if (typeof parseNamedGroups !== 'function') return 'parseNamedGroups funksiya emas';\nconst regex = /(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})/;\nconst res = parseNamedGroups(regex, 'Bugun 2026-06-01 sanasi');\nif (res && res.year === '2026' && res.month === '06' && res.day === '01') {\n  if (Object.keys(parseNamedGroups(regex, 'noto\\'g\\'ri')).length === 0) return null;\n}\nreturn 'Guruhlar noto\\'g\\'ri ajratildi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Email Manzilini Tekshirish",
+    "instruction": "Kiritilgan satrning haqiqiy email manzili ekanligini tekshiruvchi `validateEmail(email)` funksiyasini yozing. Funksiya to'g'ri bo'lsa `true`, noto'g'ri bo'lsa `false` qaytarsin.",
+    "startingCode": "function validateEmail(email) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "/^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$/ kabi muntazam ifoda va regex.test(email) metodidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return validateEmail;');\nconst fn = sandbox();\nif (fn('test@example.com') !== true) return 'To\\'g\\'ri emailni tekshirishda false qaytdi';\nif (fn('invalid-email') !== false) return 'Noto\\'g\\'ri emailni tekshirishda true qaytdi';\nif (fn('abc@def') !== false) return 'Domeni yo\\'q emailni tekshirishda true qaytdi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Telefon Raqamini Formatlash",
+    "instruction": "998901234567 ko'rinishidagi 12 ta raqamdan iborat O'zbekiston telefon raqamini regex yordamida guruhlarga ajratib, `+998 (90) 123-45-67` ko'rinishiga keltiruvchi `formatPhoneNumber(str)` funksiyasini yozing.",
+    "startingCode": "function formatPhoneNumber(str) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "RegEx guruhlari (capturing groups) va `.replace()` metodidan foydalaning. Masalan: `str.replace(/(\\d{3})(\\d{2})(\\d{3})(\\d{2})(\\d{2})/, '+$1 ($2) $3-$4-$5')`.",
+    "test": "const sandbox = new Function(code + '; return formatPhoneNumber;');\nconst fn = sandbox();\nconst res = fn('998901234567');\nif (res === '+998 (90) 123-45-67') return null;\nreturn 'Telefon raqamini formatlash xato: ' + res;"
+  },
+  {
+    "id": 3,
+    "title": "Hashtaglarni Ajratib Olish",
+    "instruction": "Berilgan matndan barcha hashtaglarni (masalan, `#javascript`, `#code`) ajratib olib, massiv ko'rinishida qaytaruvchi `extractHashtags(text)` funksiyasini yozing. Agar matnda hashtaglar topilmasa, bo'sh massiv `[]` qaytishi kerak.",
+    "startingCode": "function extractHashtags(text) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "/#[a-zA-Z0-9_]+/g yoki /#\\w+/g shablonidan va `.match()` metodidan foydalaning. Match natijasi `null` bo'lsa, `[]` qaytarishni unutmang.",
+    "test": "const sandbox = new Function(code + '; return extractHashtags;');\nconst fn = sandbox();\nconst res = fn('Bugun #javascript va #regex o\\'rganamiz!');\nif (!Array.isArray(res) || res.length !== 2 || res[0] !== '#javascript' || res[1] !== '#regex') {\n  return 'Hashtaglarni ajratib olishda xatolik: ' + JSON.stringify(res);\n}\nconst empty = fn('Hech qanday hashtag yo\\'q');\nif (!Array.isArray(empty) || empty.length !== 0) {\n  return 'Topilmagan holatda bo\\'sh massiv qaytarilmadi';\n}\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "JavaScript-da Regular Expressions (RegEx) qanday asosiy maqsadlarda ishlatiladi?",
-      options: [
-        "Faqat matnlarni katta harflarga o'tkazish uchun",
-        "Matnlar ichidan ma'lum andozalar (patterns) bo'yicha qidirish, moslikni tekshirish, kerakli qismlarni ajratib olish va almashtirish uchun",
-        "Obyektlarni massivga o'tkazish uchun",
-        "CSS selektorlarini boshqarish uchun"
-      ],
-      correctAnswer: 1,
-      explanation: "RegEx — bu matnlar bilan ishlashda juda kuchli qurol bo'lib, uning yordamida email, telefon raqami kabilarni tekshirish (validation) va kerakli andozadagi matnlarni izlab topish mumkin."
-    },
-    {
-      id: 2,
-      question: "RegEx-da bayroqlar (flags) ichida `g` va `i` nimani anglatadi?",
-      options: [
-        "`g` - global (barcha mosliklarni qidirish), `i` - ignore case (katta-kichik harflarni farqlamaslik)",
-        "`g` - group (guruhlash), `i` - index (indeks bo'yicha)",
-        "`g` - greedy (ochko'z), `i` - inline (qator ichida)",
-        "`g` - generator, `i` - iterator"
-      ],
-      correctAnswer: 0,
-      explanation: "`g` bayrog'i andozaga mos keladigan birinchi qismni topgach to'xtamasdan, satr oxirigacha qidirishni buyuradi. `i` bayrog'i esa katta va kichik harflarni bir xil deb hisoblaydi."
-    },
-    {
-      id: 3,
-      question: "RegEx andozasida faqat raqamlarni (0-9) topish uchun qaysi maxsus sinfdan (character class) foydalaniladi?",
-      options: [
-        "`\\w`",
-        "`\\s`",
-        "`\\d`",
-        "`.`"
-      ],
-      correctAnswer: 2,
-      explanation: "`\\d` (digit) belgisi har qanday raqam belgisini anglatadi. `\\w` esa so'z belgilari (harf, son va pastki chiziq), `\\s` bo'shliqlar, nuqta esa yangi qatordan boshqa har qanday bitta belgini bildiradi."
-    },
-    {
-      id: 4,
-      question: "RegEx-da `regex.test(str)` va `str.match(regex)` metodlarining farqi nimada?",
-      options: [
-        "Hech qanday farqi yo'q",
-        "`test()` faqat moslik bormi-yo'qligini tekshirib true/false qaytaradi; `match()` esa mos keluvchi qismlarni massiv shaklida ajratib qaytaradi",
-        "`test()` yangi matn qaytaradi, `match()` esa o'zgaruvchini o'chiradi",
-        "`test()` faqat Node.js'da, `match()` faqat brauzerda ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "`RegExp.prototype.test()` metodi faqat andoza mosligini boolean shaklda tekshiradi va tezroq ishlaydi. `String.prototype.match()` esa topilgan natijalar ro'yxatini massiv qilib qaytaradi."
-    },
-    {
-      id: 5,
-      question: "RegEx andozasida satr (yoki qator) boshi va oxirini belgilash uchun mos ravishda qaysi anchor (langar) belgilaridan foydalaniladi?",
-      options: [
-        "`^` va `$`",
-        "`[` va `]`",
-        "`(` va `)`",
-        "`*` va `+`"
-      ],
-      correctAnswer: 0,
-      explanation: "`^` belgisi andozaning satr boshidan, `$` esa satr oxiridan boshlab mos kelishini talab qiladi. Ular asosan email yoki telefon raqami kabi to'liq matnli kiritmalarni boshidan oxirigacha precis tekshirishda ishlatiladi."
-    },
-    {
-      id: 6,
-      question: "RegEx'da greedy (ochko'z) va lazy (dangasa) qidiruv farqi nimada?",
-      options: [
-        "Greedy imkon qadar ko'p belgi bilan moslik topadi, lazy esa imkon qadar kam belgi bilan cheklanadi",
-        "Greedy faqat raqamlarni, lazy esa faqat harflarni qidiradi",
-        "Greedy xotirani ko'p yeydi, lazy xotirani tejaydi",
-        "Greedy faqat satr boshidan, lazy satr oxiridan qidiradi"
-      ],
-      correctAnswer: 0,
-      explanation: "RegEx'dagi miqdor ko'rsatkichlari (masalan, `+` va `*`) odatda greedy bo'lib, eng uzun moslikni topishga intiladi. Ulardan keyin `?` qo'yilsa (masalan, `+?` yoki `*?`), va'da lazy bo'lib qoladi va eng qisqa moslikni topadi."
-    },
-    {
-      id: 7,
-      question: "RegEx'da `(?:...)` (non-capturing group) ning vazifasi nima?",
-      options: [
-        "Guruhdagi belgilarning mosligini tekshiradi, lekin guruhni xotirada saqlamaydi (capturing qilmaydi)",
-        "Satr boshidagi elementlarni qidirishdan cheklaydi",
-        "Har qanday belgini inkor qiladi",
-        "Faqat izoh yozish uchun ishlatiladi"
-      ],
-      correctAnswer: 0,
-      explanation: "`(?:...)` guruhlash imkonini beradi (masalan, miqdor ko'rsatkichini qo'llash uchun), lekin u mos kelgan natijalar guruhlari (capturing groups) ro'yxatida alohida indeks bilan saqlanmaydi."
-    },
-    {
-      id: 8,
-      question: "RegEx'da lookahead `(?=...)` va lookbehind `(?<=...)` ning asosiy vazifasi nima?",
-      options: [
-        "Match natijasiga qo'shmasdan, faqat ma'lum bir naqshdan oldin yoki keyin kelishini tekshirish (assertion)",
-        "Satr oxiridagi bo'shliqlarni olib tashlash",
-        "String obyektini RegEx obyektiga o'tkazish",
-        "Matndagi barcha katta harflarni kichik qilish"
-      ],
-      correctAnswer: 0,
-      explanation: "Lookaround (lookahead va lookbehind) assertions hisoblanadi. Ular ma'lum bir shart bajarilishini tekshiradi, lekin u shart qismini qidiruv natijasiga qo'shmaydi."
-    },
-    {
-      id: 9,
-      question: "RegEx andozasidagi `\\s` maxsus sinfi nimani bildiradi?",
-      options: [
-        "Faqat kichik harflarni",
-        "Bo'shliq belgilari (probel, tab, yangi qator)ni",
-        "Faqat maxsus belgilarni ($, %, @)",
-        "Faqat raqamlarni"
-      ],
-      correctAnswer: 1,
-      explanation: "`\\s` (whitespace) probel, tabulyatsiya (`\\t`), yangi qator (`\\n`) kabi har qanday bo'shliq belgilarini bildiradi."
-    },
-    {
-      id: 10,
-      question: "Agar `str.replace()` metodida `g` (global) bayrog'i ishlatilmasa nima sodir bo'ladi?",
-      options: [
-        "Faqat birinchi mos kelgan qism almashtiriladi",
-        "Barcha mos kelgan qismlar almashtiriladi",
-        "Hech narsa almashtirilmaydi va xato qaytadi",
-        "Butun satr o'chirib tashlanadi"
-      ],
-      correctAnswer: 0,
-      explanation: "`g` (global) bayrog'i bo'lmasa, `replace` metodi satr ichidagi faqat birinchi uchragan moslikni almashtiradi va qidirishni to'xtatadi."
-    },
-    {
-      id: 11,
-      question: "RegEx'da `[^abc]` yozuvi nimani anglatadi?",
-      options: [
-        "Faqat 'a', 'b' yoki 'c' harflaridan boshlanadigan satrlarni",
-        "'a', 'b' va 'c' dan tashqari har qanday bitta belgini",
-        "Satr oxirihda 'abc' iborasi borligini",
-        "'abc' so'zining o'zini"
-      ],
-      correctAnswer: 1,
-      explanation: "Kvadrat qavs ichidagi `^` inkor etish (negation) ma'nosini bildiradi. `[^abc]` andozasi 'a', 'b' yoki 'c' bo'lmagan har qanday bitta belgiga mos keladi."
-    },
-    {
-      id: 12,
-      question: "RegEx konstruktori `new RegExp('pattern', 'flags')` qachon foydali bo'ladi?",
-      options: [
-        "Andoza (pattern) o'zgaruvchi qiymatga bog'liq ravishda dinamik yaratilishi kerak bo'lganda",
-        "Faqat global bayroq ishlatilganda",
-        "RegEx literals ishlamay qolganda",
-        "Kod hajmini kamaytirish uchun"
-      ],
-      correctAnswer: 0,
-      explanation: "RegExp konstruktori string qabul qilganligi sababli, unga o'zgaruvchilar orqali dinamik yig'ilgan matnli andozalarni uzatish mumkin. Literal `/pattern/` esa faqat statik yoziladi."
-    },
-    {
-      id: 13,
-      question: "RegEx lookbehind assertion `(?<=...)` ning joriy kursor o'rni bilan bog'liq ishlash mexanizmi qanday?",
-      options: [
-        "U moslikni topgach, matn ko'rsatkichini (cursor) o'ngga suradi",
-        "U moslikni match qismiga qo'shmasdan, faqat kursor turgan o'rindan chapga qarab shart tekshirilishini ta'minlaydi (non-consuming assertion)",
-        "U faqat satr oxiridagi belgilarni tekshiradi",
-        "U barcha belgilarni inkor qiladi"
-      ],
-      correctAnswer: 1,
-      explanation: "Lookbehind (ortga qarash) - joriy kursor o'rnidan chapdagi matn shartga to'g'ri kelishini tekshiradi va u tekshirilgan qismni qidiruv natijasiga qo'shmaydi."
-    },
-    {
-      id: 14,
-      question: "RegEx tahlilida Catastrophic Backtracking (falokatli ortga qaytish) yoki ReDoS xavfi qachon yuzaga keladi?",
-      options: [
-        "Faqat lazy matching ishlatilganda",
-        "Regex andozasida bir nechta bir-biriga kirib ketgan va bir xil belgilar guruhini qamrab oladigan miqdor ko'rsatkichlari (masalan, `(a+)+`) bo'lsa va matnda mos kelmaslik oxirida sodir bo'lsa",
-        "Faqat string split() metodida ishlatilganda",
-        "Faqat test() metodi ishlatilganda"
-      ],
-      correctAnswer: 1,
-      explanation: "Dvigatel matn mos kelmasligini aniqlash uchun barcha mumkin bo'lgan rekursiv aylanma kombinatsiyalarni tekshirib chiqadi. Murakkab va zanjirli guruhlarda bu kombinatsiyalar soni eksponentsial oshib ketib, CPU-ni 100% yuklaydi va dasturni qotiradi (ReDoS)."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "JavaScript-da muntazam ifodalar (Regular Expressions) nima uchun ishlatiladi?",
+    "options": [
+      "Faqat matematik hisob-kitoblarni tezlashtirish uchun",
+      "Matnlar ichidan ma'lum bir andozaga (shablonga) mos keladigan qismlarni qidirish, almashtirish va tekshirish uchun",
+      "CSS stillarini dinamik yuklash uchun",
+      "Obyektlarni keshga saqlash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Muntazam ifodalar (RegEx) matn ustida andozalar yordamida qidiruv, tekshirish (validation) va almashtirish amallarini bajarish uchun juda kuchli vositadir."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagilardan qaysi biri RegEx literalini to'g'ri e'lon qilish usuli hisoblanadi?",
+    "options": [
+      "`const regex = 'abc';`",
+      "`const regex = /abc/;`",
+      "`const regex = #abc#;`",
+      "`const regex = {abc};`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da muntazam ifoda literali ikkita yonma-yon chiziq (slash) `/` belgisi orasida yoziladi: `/pattern/`."
+  },
+  {
+    "id": 3,
+    "question": "Muntazam ifodalardagi `\\d` maxsus belgisi nimani anglatadi?",
+    "options": [
+      "Istalgan harf (a-z, A-Z)",
+      "Istalgan raqam (0-9)",
+      "Bo'shliq (probel, tab)",
+      "Satrning boshlanish qismi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`\\d` (digit) - istalgan bitta raqamga mos keladi, ya'ni `[0-9]` to'plami bilan bir xil."
+  },
+  {
+    "id": 4,
+    "question": "Muntazam ifodadagi `^` belgisi nimani bildiradi?",
+    "options": [
+      "Satr oxirini belgilaydi",
+      "Satr boshlanishini belgilaydi (yoki to'plam ichida rad etishni bildiradi)",
+      "Belgi kamida bir marta takrorlanishini",
+      "Istalgan belgini anglatadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Muntazam ifoda boshida kelgan `^` (caret) belgisi matn aynan shu andoza bilan boshlanishi kerakligini bildiradi."
+  },
+  {
+    "id": 5,
+    "question": "Muntazam ifodadagi `$` belgisi nimani bildiradi?",
+    "options": [
+      "Satr boshini belgilaydi",
+      "Satr oxirini belgilaydi",
+      "Valyuta belgilarini qidiradi",
+      "Belgi 0 yoki 1 marta takrorlanishini bildiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Muntazam ifoda oxirida kelgan `$` (dollar) belgisi matn aynan shu andoza bilan tugashi kerakligini bildiradi."
+  },
+  {
+    "id": 6,
+    "question": "Muntazam ifodalarda belgi 0 yoki undan ko'p marta takrorlanishi mumkinligini ko'rsatish uchun qaysi belgi ishlatiladi?",
+    "options": [
+      "`?`",
+      "`+`",
+      "`*`",
+      "`{1,}`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`*` (yulduzcha) belgisi o'zidan oldin turgan belgi 0 marta (umuman qatnashmasligi) yoki istalgancha ko'p marta takrorlanishi mumkinligini bildiradi."
+  },
+  {
+    "id": 7,
+    "question": "Muntazam ifodalarda o'zidan oldingi belgi kamida 1 yoki undan ko'p marta takrorlanishini talab qiluvchi operator qaysi?",
+    "options": [
+      "`*`",
+      "`?`",
+      "`+`",
+      "`.`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`+` (plyus) operatori o'zidan oldingi belgi kamida 1 marta yoki undan ko'p marta takrorlanishi shartligini bildiradi."
+  },
+  {
+    "id": 8,
+    "question": "Satr ichida berilgan muntazam ifodaga mos keladigan qism bor-yo'qligini tekshirib, true yoki false qaytaruvchi RegExp metodi qaysi?",
+    "options": [
+      "`match()`",
+      "`search()`",
+      "`test()`",
+      "`exec()`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`regex.test(string)` metodi satrni tekshirib, agar andozaga mos keluvchi qism topilsa `true`, topilmasa `false` qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "Muntazam ifodada katta-kichik harflarni farqlamasdan (case-insensitive) qidirish uchun qaysi flag ishlatiladi?",
+    "options": [
+      "`g`",
+      "`m`",
+      "`i`",
+      "`s`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`i` flagi (insensitive) qidiruv paytida katta va kichik harflarni bir xil deb hisoblaydi (masalan, `/abc/i` andozasi 'ABC' matniga ham mos keladi)."
+  },
+  {
+    "id": 10,
+    "question": "Matn ichidagi faqat birinchi moslikni emas, balki barcha mosliklarni qidirib topish uchun qaysi flag ishlatiladi?",
+    "options": [
+      "`a`",
+      "`g`",
+      "`i`",
+      "`y`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`g` flagi (global) butun matn bo'ylab barcha mosliklarni qidirish uchun qo'llaniladi. Flag qo'yilmasa, faqat birinchi moslik topilgach qidiruv to'xtaydi."
+  },
+  {
+    "id": 11,
+    "question": "Muntazam ifodalarda probel, tab, yangi satr kabi barcha bo'shliq belgilarini topish uchun qaysi maxsus belgi ishlatiladi?",
+    "options": [
+      "`\\b`",
+      "`\\s`",
+      "`\\w`",
+      "`\\d`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`\\s` (space) - probel, tabulyatsiya (`\\t`), yangi satr (`\\n`) va boshqa bo'shliqlarga mos keluvchi belgidir."
+  },
+  {
+    "id": 12,
+    "question": "Muntazam ifodalarda guruhlarni shakllantirish (capturing groups) uchun qaysi qavslardan foydalaniladi?",
+    "options": [
+      "To'rtburchak qavslar `[...]`",
+      "Gullik qavslar `{...}`",
+      "Dumaloq qavslar `(...)`",
+      "Burchakli qavslar `<...>`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Dumaloq qavslar `(...)` muntazam ifodadagi bir nechta belgilarni bitta guruhga birlashtirish va keyinchalik `.replace()` yoki `.match()`-da ularni alohida ajratib olish (capturing) uchun ishlatiladi."
+  }
+]
+
 };
