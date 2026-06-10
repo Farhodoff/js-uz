@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Sodda Custom Element yaratish",
+    "instruction": "Ekranga 'Salom Dunyo' matnini chiqaruvchi `HelloWorld` nomli custom element yarating va uni `hello-world` tegi bilan ro'yxatdan o'tkazing.",
+    "startingCode": "class HelloWorld extends HTMLElement {\n  // Kodni shu yerda yozing\n}\n\n// Elementni ro'yxatdan o'tkazing\n",
+    "hint": "HTMLElement-dan voris oling, `connectedCallback()` metodida `this.innerHTML = 'Salom Dunyo';` yozing. Oxirida `customElements.define('hello-world', HelloWorld);` yordamida ro'yxatdan o'tkazing.",
+    "test": "if (!code.includes('customElements.define')) return 'customElements.define yordamida element ro\\'yxatdan o\\'tkazilmadi';\nif (!code.includes('hello-world')) return 'Custom element nomi hello-world bo\\'lishi kerak';\ntry {\n  const sandbox = new Function('HTMLElement', code + '; return customElements.get(\"hello-world\");');\n  const MockHTMLElement = class {};\n  // Basic check to see if the definition exists in registry\n  // Since customElements might not exist in global context directly in node, we mock customElements or run in sandboxed way:\n  // Wait, let's mock customElements in the test environment to make sure it runs correctly without browser context\n  const mockRegistry = {};\n  const mockCustomElements = {\n    define: (name, cls) => mockRegistry[name] = cls,\n    get: (name) => mockRegistry[name]\n  };\n  const testFn = new Function('HTMLElement', 'customElements', code + '; return customElements.get(\"hello-world\");');\n  const El = testFn(class {}, mockCustomElements);\n  if (!El) return 'Element ro\\'yxatdan o\\'tmagan';\n  const inst = new El();\n  inst.connectedCallback();\n  if (inst.innerHTML !== 'Salom Dunyo') return 'Element ichidagi matn \"Salom Dunyo\" bo\\'lishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Shadow DOM-ga ega Element",
+    "instruction": "Ichki stillari tashqi muhitdan himoyalangan (Shadow DOM) bo'lgan `ShadowCard` elementini yarating. U `shadow-card` tegi bilan ro'yxatdan o'tishi va `connectedCallback` chaqirilganda o'ziga yopiq yoki ochiq shadow root (`this.attachShadow({mode: 'open'})`) biriktirib, uning ichiga `<h1>Card Title</h1>` matnini yozishi kerak.",
+    "startingCode": "class ShadowCard extends HTMLElement {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "connectedCallback ichida `const shadow = this.attachShadow({mode: 'open'}); shadow.innerHTML = '<h1>Card Title</h1>';` deb yozing.",
+    "test": "if (!code.includes('attachShadow')) return 'attachShadow yordamida Shadow DOM biriktirilishi shart';\ntry {\n  const mockRegistry = {};\n  const mockCustomElements = {\n    define: (name, cls) => mockRegistry[name] = cls,\n    get: (name) => mockRegistry[name]\n  };\n  const testFn = new Function('HTMLElement', 'customElements', code + '; customElements.define(\"shadow-card\", ShadowCard); return customElements.get(\"shadow-card\");');\n  const El = testFn(class {\n    attachShadow(opts) {\n      this.shadowRoot = { innerHTML: '' };\n      return this.shadowRoot;\n    }\n  }, mockCustomElements);\n  const inst = new El();\n  inst.connectedCallback();\n  if (!inst.shadowRoot || inst.shadowRoot.innerHTML !== '<h1>Card Title</h1>') return 'Shadow DOM ichiga to\\'g\\'ri HTML joylashtirilmadi';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Attribut o'zgarishini kuzatish",
+    "instruction": "`color` attributi o'zgarganda matn rangini o'zgartiruvchi `ColorText` elementini yarating. Buning uchun `observedAttributes` va `attributeChangedCallback` dan foydalaning. Teg nomi `color-text` bo'lsin.",
+    "startingCode": "class ColorText extends HTMLElement {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`static get observedAttributes() { return ['color']; }` metodini qo'shing. `attributeChangedCallback(name, oldVal, newVal)` ichida `if (name === 'color') this.style.color = newVal;` deb yozing.",
+    "test": "if (!code.includes('observedAttributes')) return 'observedAttributes metodi yozilishi shart';\nif (!code.includes('attributeChangedCallback')) return 'attributeChangedCallback metodi yozilishi shart';\ntry {\n  const mockRegistry = {};\n  const mockCustomElements = {\n    define: (name, cls) => mockRegistry[name] = cls,\n    get: (name) => mockRegistry[name]\n  };\n  const testFn = new Function('HTMLElement', 'customElements', code + '; customElements.define(\"color-text\", ColorText); return customElements.get(\"color-text\");');\n  const El = testFn(class {\n    constructor() {\n      this.style = {};\n    }\n  }, mockCustomElements);\n  if (El.observedAttributes && !El.observedAttributes.includes('color')) return 'color atributi kuzatiladiganlar ro\\'yxatiga kiritilmagan';\n  const inst = new El();\n  inst.attributeChangedCallback('color', null, 'red');\n  if (inst.style.color !== 'red') return 'Raqam yoki rang to\\'g\\'ri o\\'zgartirilmadi';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "XSS (Cross-Site Scripting) nima?",
+    "options": [
+      "Serverdagi ma'lumotlar bazasini o'chirib yuboradigan SQL so'rovi",
+      "Zararli buzg'unchi tomonidan veb-saytga (HTML sahifaga) begona JavaScript kodining joylashtirilishi va boshqa foydalanuvchilar brauzerida ushbu kodning ijro etilishi",
+      "Sayt dizaynini buzuvchi CSS xatoligi",
+      "Server ulanishini cheklovchi tarmoq hujumi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "XSS — bu foydalanuvchi kiritgan ma'lumotlar to'g'ri tekshirilmasdan sahifaga chiqarilishi oqibatida zararli JS skriptlarining ishga tushib ketishidir. Bu orqali cookie yoki session tokenlarni o'g'irlash mumkin."
+  },
+  {
+    "id": 2,
+    "question": "XSS hujumlaridan saqlanishning eng samarali yo'li nima?",
+    "options": [
+      "Faqat CSS dan foydalanish",
+      "Foydalanuvchidan kelayotgan barcha ma'lumotlarni HTML entity ko'rinishiga o'tkazish (Sanitizing/Escaping) va ishonchsiz kodlarni ijro etmaslik",
+      "Faqat server xotirasini oshirish",
+      "Saytga kirishda parolni juda uzun qilish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Matnlardagi `<`, `>`, `&` kabi maxsus belgilarni zararsizlantirish (escaping) orqali brauzer ularni skript emas, oddiy matn sifatida ko'rsatishini ta'minlaymiz."
+  },
+  {
+    "id": 3,
+    "question": "CSRF (Cross-Site Request Forgery) hujumi nima?",
+    "options": [
+      "Serverga juda ko'p so'rov yuborib uni qotirish",
+      "Foydalanuvchining ma'lum bir saytda avtorizatsiyadan o'tganligidan foydalanib, uning ruxsatisiz uchinchi tomon saytidan zararli so'rovlarni yuborish (masalan, foydalanuvchi nomidan pul o'tkazish)",
+      "Buzilgan parollarni taxmin qilib topish",
+      "Sayt sahifalarini nusxalab olish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CSRF — bu foydalanuvchi bilmagan holda uning nomidan (brauzerdagi faol sessiya/cookie yordamida) boshqa saytdan turib so'rov yuborish hujumidir."
+  },
+  {
+    "id": 4,
+    "question": "CSRF hujumlaridan himoyalanish uchun qaysi mexanizm keng qo'llaniladi?",
+    "options": [
+      "Faqat HTTPS protokoli",
+      "Anti-CSRF (yoki CSRF) tokenlaridan foydalanish (har bir form/so'rov bilan server tomonidan berilgan bir martalik maxfiy tokenni solishtirish) va cookies uchun `SameSite` flagini yoqish",
+      "Sinflarni keshlab qo'yish",
+      "Tizimga faqat telefon orqali kirish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CSRF tokenlar faqat foydalanuvchining o'z sahifasida mavjud bo'lgani uchun, zararli uchinchi tomon sayti bu tokenni bila olmaydi va server noto'g'ri tokenli so'rovlarni rad etadi."
+  },
+  {
+    "id": 5,
+    "question": "CORS (Cross-Origin Resource Sharing) nima?",
+    "options": [
+      "Faqat Chrome brauzerida ishlaydigan tezkor ma'lumot uzatish tizimi",
+      "Brauzerlarda xavfsizlik nuqtai nazaridan bir manbadan (Origin A) boshqa manbadagi (Origin B) resurslarga so'rov yuborishni nazorat qiluvchi va ruxsat beruvchi xavfsizlik mexanizmi",
+      "Rasmlarni siqish algoritmi",
+      "Faqat HTTP POST so'rovlarini bloklaydigan tizim"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CORS brauzer xavfsizligi standarti bo'lib, u serverga o'z resurslarini qaysi origin'lar (saytlar) o'qiy olishi mumkinligini belgilash imkonini beradi."
+  },
+  {
+    "id": 6,
+    "question": "Brauzerda CORS xatoligi (CORS error) kelib chiqqanda, muammoni qayerda sozlash lozim?",
+    "options": [
+      "Faqat mijoz (Frontend) kodida, chunki so'rov brauzerdan yuborilgan",
+      "Server (Backend) sozlamalarida, javob sarlavhalariga (Headers) kerakli `Access-Control-Allow-Origin` qiymatlarini qo'shish orqali",
+      "Foydalanuvchining operatsion tizimida",
+      "DNS provayderda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CORS xavfsizlik qoidasi brauzer tomonidan tekshiriladi, lekin ruxsat beruvchi sarlavhalar server tomonidan `Access-Control-Allow-Origin` ko'rinishida yuborilishi shart."
+  },
+  {
+    "id": 7,
+    "question": "Cookie ma'lumotlarini JavaScript (masalan, `document.cookie`) orqali o'qishni taqiqlash va XSS orqali o'g'irlanishining oldini olish uchun qaysi flag qo'yiladi?",
+    "options": [
+      "`Secure`",
+      "`HttpOnly`",
+      "`SameSite`",
+      "`Path`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`HttpOnly` flagi o'rnatilgan cookie-larga brauzerda JS orqali kirib bo'lmaydi. Ular faqat tarmoq so'rovlari (HTTP/HTTPS) bilan avtomatik yuboriladi."
+  },
+  {
+    "id": 8,
+    "question": "Cookie faqat shifrlangan HTTPS ulanishlar orqali uzatilishini ta'minlash uchun qaysi flag ishlatiladi?",
+    "options": [
+      "`HttpOnly`",
+      "`Secure`",
+      "`SameSite=Strict`",
+      "`Max-Age`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Secure` flagi cookie faylining ochiq (shifrlanmagan) HTTP ulanishi orqali uzatilishini taqiqlaydi, bu esa tarmoq trafigini kuzatayotgan buzg'unchilardan himoya qiladi."
+  },
+  {
+    "id": 9,
+    "question": "Uchinchi tomon saytlaridan yuboriladigan so'rovlarda (Cross-Site) cookie yuborilishini boshqarish orqali CSRF dan himoyalovchi zamonaviy cookie xossasi nima?",
+    "options": [
+      "`Domain`",
+      "`Path`",
+      "`SameSite`",
+      "`Expires`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`SameSite` atributi (Strict, Lax yoki None qiymatlari bilan) uchinchi tomon havolalaridan kelgan so'rovlarda cookie yuborilishini cheklaydi."
+  },
+  {
+    "id": 10,
+    "question": "HTTPS protokoli HTTP dan qanday qilib ustun xavfsizlik ta'minlaydi?",
+    "options": [
+      "U faqat rasmlarni shifrlaydi",
+      "U TLS/SSL protokoli yordamida mijoz va server o'rtasidagi barcha ma'lumotlarni shifrlaydi va transport qatlamida o'g'irlanish (Man-in-the-Middle) hamda o'zgartirilishdan himoya qiladi",
+      "U faqat parollarni keshlaydi",
+      "U sayt yuklanishini sekinlashtiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "HTTPS barcha so'rovlar va javoblar (sarlavhalar, body, cookies va h.k.) transport darajasida shifrlanishini kafolatlaydi."
+  },
+  {
+    "id": 11,
+    "question": "Content Security Policy (CSP) nima?",
+    "options": [
+      "Foydalanuvchi parolini tekshiradigan qoida",
+      "Brauzerga qaysi manbalardan (domenlardan) JS, CSS, rasmlar va boshqa resurslarni yuklashga ruxsat berilganligini ko'rsatuvchi va XSS xavfini sezilarli kamaytiruvchi HTTP sarlavhasi (yoki meta teg)",
+      "Veb-sayt tezligini oshiruvchi kesh siyosati",
+      "Ma'lumotlar bazasi xavfsizlik devori"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CSP yordamida ishlab chiquvchilar sahifada faqat ruxsat etilgan xavfsiz manbalardan olingan skriptlar bajarilishini yoki `inline` skriptlar ishlamasligini belgilashi mumkin."
+  },
+  {
+    "id": 12,
+    "question": "SQL Injection (SQLi) nima?",
+    "options": [
+      "HTML sahifaga zararli JavaScript qo'shish",
+      "Foydalanuvchi kiritgan ma'lumotlar orqali ma'lumotlar bazasiga yuboriladigan SQL so'rovini manipulyatsiya qilish (o'zgartirish) va ruxsat berilmagan ma'lumotlarni olish yoki o'chirish hujumi",
+      "Server fayl tizimini buzish",
+      "Tarmoqdagi IP manzillarini aniqlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "SQL Injection serverga yozilgan SQL so'rovlarining kiritilgan ma'lumotlar bilan birlashib ketishi natijasida yuzaga keladi. Buni oldini olish uchun Parameterized Queries (tayyorlangan so'rovlar) ishlatiladi."
+  }
+]

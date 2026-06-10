@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Debounce implementatsiyasi",
+    "instruction": "Berilgan `func` funksiyasini `delay` millisekund davomida qayta chaqirilmasa keyin ishga tushiradigan `debounce(func, delay)` funksiyasini yozing.",
+    "startingCode": "function debounce(func, delay) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Qaytadigan funksiya ichida har safar chaqirilganda `clearTimeout` yordamida oldingi taymerni o'chiring va yangi `setTimeout` o'rnating.",
+    "test": "const sandbox = new Function(code + '; return debounce;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'debounce funksiyasi aniqlanmadi';\nlet counter = 0;\nconst d = fn(() => counter++, 50);\nd();\nd();\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (counter === 0) {\n      setTimeout(() => {\n        if (counter === 1) resolve(null);\n        else resolve('Debounce kechikishdan keyin ham ishga tushmadi yoki noto\\'g\\'ri marta ishladi');\n      }, 80);\n    } else {\n      resolve('Debounce funksiyasi belgilangan vaqtdan oldin chaqirib yuborildi');\n    }\n  }, 20);\n});"
+  },
+  {
+    "id": 2,
+    "title": "Throttle implementatsiyasi",
+    "instruction": "Berilgan `func` funksiyasini har `limit` millisekund ichida ko'pi bilan 1 marta bajarilishini ta'minlaydigan `throttle(func, limit)` funksiyasini yozing.",
+    "startingCode": "function throttle(func, limit) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Bajarish mumkinligini bildiruvchi `inThrottle` yoki `flag` o'zgaruvchisidan foydalaning. Funksiya bajarilgach, ushbu flagni ma'lum bir muddatga bloklab qo'ying.",
+    "test": "const sandbox = new Function(code + '; return throttle;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'throttle funksiyasi aniqlanmadi';\nlet counter = 0;\nconst t = fn(() => counter++, 50);\nt();\nt();\nt();\nif (counter !== 1) return 'Throttle birinchi chaqiruvni darhol bajarishi kerak edi va ketma-ket chaqiruvlarni bloklashi kerak edi';\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    t();\n    if (counter === 2) resolve(null);\n    else resolve('Limit muddati tugagandan so\\'ng chaqirilganda funksiya bajarilmadi');\n  }, 70);\n});"
+  },
+  {
+    "id": 3,
+    "title": "Leading Edge Debounce",
+    "instruction": "Chaqirilganda funksiyani zudlik bilan (leading edge) bajaradigan va keyingi `delay` millisekund davomida boshqa chaqirilishlarni e'tiborsiz qoldiradigan `leadingDebounce(func, delay)` funksiyasini yozing.",
+    "startingCode": "function leadingDebounce(func, delay) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Oddiy debouncega o'xshash, lekin taymer mavjud bo'lmaganda funksiyani darhol chaqiradi va taymer tugagandan so'ng taymer o'zgaruvchisini yana tozalaydi.",
+    "test": "const sandbox = new Function(code + '; return leadingDebounce;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'leadingDebounce funksiyasi aniqlanmadi';\nlet counter = 0;\nconst d = fn(() => counter++, 50);\nd();\nd();\nif (counter !== 1) return 'Leading edge debounce birinchi chaqiruvni darhol bajarishi kerak edi';\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    d();\n    if (counter === 2) resolve(null);\n    else resolve('Kechikish vaqti tugagandan keyin yangi chaqiruv ishlamadi');\n  }, 70);\n});"
+  }
+]

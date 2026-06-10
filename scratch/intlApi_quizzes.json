@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da Intl API nima maqsadda ishlatiladi?",
+    "options": [
+      "Veb-ilovada internet tezligini oshirish uchun",
+      "Sana, raqam va valyutalarni foydalanuvchi tiliga mos ravishda formatlash (lokalizatsiya) uchun",
+      "Kutubxonalarning hajmini siqish uchun",
+      "Matnlar ustida regex qidiruvini tezlashtirish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Intl API xalqaro standartlarga (CLDR) asoslanib, ilovani turli davlatlar (lokallar) madaniy qoidalariga mos formatlashga xizmat qiladi."
+  },
+  {
+    "id": 2,
+    "question": "Sanalarni formatlashda moment.js o'rniga Intl API ishlatishning asosiy afzalligi nimada?",
+    "options": [
+      "Moment.js o'zbek tilini tushunmaydi",
+      "Intl API brauzerga o'rnatilgan bo'lib, loyiha hajmini (bundle size) tejaydi",
+      "Intl API sinxron emas, asinxron ishlaydi",
+      "Intl API xotirani avtomatik tozalaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Intl API brauzer ichida vaqtinchalik tayyor turgani sababli tashqi yirik kutubxonalarga ehtiyoj qolmaydi va bundle hajmini 0 KB ga kamaytiradi."
+  },
+  {
+    "id": 3,
+    "question": "Qaysi Intl sinfi katta sonlarni minglik guruhlarga bo'lish uchun ishlatiladi?",
+    "options": [
+      "Intl.DateTimeFormat",
+      "Intl.NumberFormat",
+      "Intl.ListFormat",
+      "Intl.RelativeTimeFormat"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Intl.NumberFormat sonlar va pul birliklarini berilgan lokal bo'yicha chiroyli formatlash uchun qo'llaniladi."
+  },
+  {
+    "id": 4,
+    "question": "'5 daqiqa oldin' kabi nisbiy vaqtlarni formatlovchi Intl obyekti qaysi?",
+    "options": [
+      "Intl.TimeSpan",
+      "Intl.RelativeTimeFormat",
+      "Intl.DurationFormat",
+      "Intl.DateTimeFormat"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Intl.RelativeTimeFormat berilgan son va o'lchov birligidan (masalan, -5 va 'minute') kelib chiqib dynamic nisbiy vaqt matnini yasaydi."
+  },
+  {
+    "id": 5,
+    "question": "Intl.NumberFormat-da valyutani ko'rsatish (style: 'currency') uchun yana qaysi parametr majburiy hisoblanadi?",
+    "options": [
+      "currency (masalan, 'USD')",
+      "currencySymbol (masalan, '$')",
+      "localeSymbol",
+      "formatType"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Valyuta uslubi tanlansa, albatta ISO 4217 standarti bo'yicha 3 harfli valyuta kodi (currency) ko'rsatilishi shart (masalan: UZS, USD, EUR)."
+  },
+  {
+    "id": 6,
+    "question": "Foydalanuvchi brauzerining asosiy tilini dynamic aniqlash uchun qaysi brauzer API-sidan foydalaniladi?",
+    "options": [
+      "window.locale",
+      "navigator.language",
+      "document.language",
+      "navigator.userAgent"
+    ],
+    "correctAnswer": 1,
+    "explanation": "navigator.language foydalanuvchi brauzerining asosiy interfeys tilini (masalan, 'uz-UZ' yoki 'en-US') qaytaradi."
+  },
+  {
+    "id": 7,
+    "question": "Massiv elementlarini grammatik jihatdan to'g'ri (masalan, 'Olma, Banan va Uzum') birlashtiruvchi Intl obyekti qaysi?",
+    "options": [
+      "Intl.ArrayFormat",
+      "Intl.ListFormat",
+      "Intl.StringJoiner",
+      "Intl.Collator"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Intl.ListFormat berilgan lokal qoidalariga mos keladigan bog'lovchilar ('va', 'and', 'or') bilan massivlarni birlashtirib beradi."
+  },
+  {
+    "id": 8,
+    "question": "Matnlarni yoki alifbo harflarini (masalan, o'zbekcha 'o'g' yoki 'o'') tillarga xos tartibda to'g'ri saralash (sorting) uchun nima ishlatiladi?",
+    "options": [
+      "Array.prototype.sort()",
+      "Intl.Collator",
+      "Intl.StringFormatter",
+      "Intl.DateTimeFormat"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Intl.Collator har bir tilning o'ziga xos alifbo qoidalarini (masalan, umlautlar, tutuq belgilari) hisobga olgan holda matnlarni to'g'ri solishtiradi."
+  },
+  {
+    "id": 9,
+    "question": "Jadvaldagi 10 000 ta qatorni render qilishda Intl.NumberFormat ishlatishda eng to'g'ri optimallashtirish usuli qaysi?",
+    "options": [
+      "Har bir qatorda 'new Intl.NumberFormat()' chaqirish",
+      "Loop-dan tashqarida bitta formatlovchi obyekt yaratib, uni loop ichida qayta-qayta ishlatish (Keshlash)",
+      "Loop o'rniga setTimeout ishlatish",
+      "Intl API dan butunlay voz kechish va string operatsiyalardan foydalanish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Intl formatlovchi obyektlarini yaratish CPU uchun og'ir bo'lgani sababli, uni bir marta yaratib keshlab qo'yish (Memoization) unumdorlikni sezilarli oshiradi."
+  },
+  {
+    "id": 10,
+    "question": "Intl.NumberFormat.prototype.formatToParts() metodi oddiy format() metodidan nima bilan farq qiladi?",
+    "options": [
+      "U faqat sonlarni JSON formatida qaytaradi",
+      "U formatlangan matnni alohida bo'laklarga ajratilgan obyektlar massivi shaklida qaytaradi (masalan, butun qism, valyuta belgisi, minglik ajratuvchi)",
+      "U faqat asinxron ishlaydi",
+      "U hech qanday farq qilmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "formatToParts() yordamida har bir bo'lakka (valyuta belgisi, son, ajratuvchi) alohida CSS stillari berish yoki UI elementlarni moslashuvchan boshqarish mumkin."
+  },
+  {
+    "id": 11,
+    "question": "Hafta kunini matn ko'rinishida chiqarish uchun Intl.DateTimeFormat options qismida qaysi xususiyat beriladi?",
+    "options": [
+      "day: 'string'",
+      "weekday: 'long' yoki 'short'",
+      "week: 'text'",
+      "dayOfWeek: 'full'"
+    ],
+    "correctAnswer": 1,
+    "explanation": "weekday xossasiga 'long' (chorshanba) yoki 'short' (chor.) qiymati berilib, hafta kunini olish mumkin."
+  },
+  {
+    "id": 12,
+    "question": "SSR (Server-Side Rendering) ilovalarda Intl ishlaganda nima uchun 'Hydration Mismatch' xatosi yuzaga keladi?",
+    "options": [
+      "Server va brauzer vaqt zonalari yoki lokallari bir-biridan farq qilganligi uchun",
+      "Serverda JavaScript ishlamasligi sababli",
+      "Brauzer dynamic animatsiyalarni qo'llab-quvvatlamagani uchun",
+      "Serverda Intl API mavjud emasligi sababli"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Agar serverda HTML boshqa lokalda (masalan, 'en-US' / UTC) chizilsa va foydalanuvchida boshqa lokalda ('uz-UZ') hydration bo'lsa, struktura mos kelmay mismatch yuz beradi."
+  }
+]

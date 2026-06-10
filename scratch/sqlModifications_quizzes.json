@@ -1,0 +1,141 @@
+[
+  {
+    "id": 1,
+    "question": "Mavjud ma'lumotlarni o'zgartirish (tahrirlash) uchun qaysi SQL buyrug'i ishlatiladi?",
+    "options": ["INSERT", "UPDATE", "CHANGE", "MODIFY"],
+    "correctAnswer": 1,
+    "explanation": "Mavjud qatorlardagi qiymatlarni yangilash yoki o'zgartirish uchun UPDATE buyrug'i ishlatiladi."
+  },
+  {
+    "id": 2,
+    "question": "UPDATE yoki DELETE so'rovlarida WHERE shartini yozish unutilsa nima sodir bo'ladi?",
+    "options": [
+      "Faqat birinchi qator o'zgaradi / o'chadi",
+      "Loyiha xatolik berib to'xtaydi va hech narsa o'zgarmaydi",
+      "Jadvaldagi barcha qatorlar o'zgaradi / o'chadi",
+      "Oxirgi qo'shilgan qator o'zgaradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "WHERE sharti yozilmasa, buyruq butun jadval bo'yicha qo'llaniladi. Bu barcha ma'lumotlarning o'zgarishi yoki o'chib ketishiga olib keladi."
+  },
+  {
+    "id": 3,
+    "question": "Jadvalga yangi qator kiritish uchun to'g'ri sintaksis qaysi?",
+    "options": [
+      "INSERT INTO users VALUES (name, age) VALUES ('Ali', 20)",
+      "INSERT INTO users (name, age) VALUES ('Ali', 20)",
+      "UPDATE users ADD (name = 'Ali', age = 20)",
+      "INSERT INTO users SET name = 'Ali', age = 20"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Standard INSERT sintaksisi: INSERT INTO jadval (ustunlar) VALUES (qiymatlar) ko'rinishida bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "INSERT INTO jadval_nomi VALUES (...) so'rovida ustunlar nomlari yozilmasa nima bo'ladi?",
+    "options": [
+      "Xatolik yuz beradi, ustun nomlari yozilishi shart",
+      "Qiymatlar jadvaldagi barcha ustunlarga tartib bo'yicha to'liq va mos ravishda kiritilishi kerak",
+      "Faqat birinchi ustunga ma'lumot yoziladi",
+      "Jadvaldagi tasodifiy ustunlarga yoziladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Jadval ustunlari ko'rsatilmaganda, VALUES qismidagi qiymatlar jadvalning barcha ustunlariga yaratilgan tartibda mos ravishda taqdim etilishi kerak."
+  },
+  {
+    "id": 5,
+    "question": "Bitta UPDATE so'rovida bir nechta ustun qiymatini o'zgartirish uchun ular qanday ajratiladi?",
+    "options": [
+      "AND kalit so'zi bilan",
+      "Vergul (,) belgisi bilan",
+      "Nuqtali vergul (;) bilan",
+      "OR kalit so'zi bilan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "UPDATE so'rovida bir nechta ustunlarni yangilashda SET ustun1 = qiymat1, ustun2 = qiymat2 ko'rinishida vergul bilan ajratiladi."
+  },
+  {
+    "id": 6,
+    "question": "Jadvaldagi barcha ma'lumotlarni o'chirish uchun qaysi so'rov ishlatiladi (lekin jadval strukturasini saqlab qoladi)?",
+    "options": [
+      "DROP TABLE jadval_nomi",
+      "DELETE FROM jadval_nomi",
+      "REMOVE TABLE jadval_nomi",
+      "CLEAR jadval_nomi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "DELETE FROM jadval_nomi so'rovi shartsiz (WHERE-siz) bajarilsa, jadvaldagi barcha qatorlar o'chib ketadi, lekin jadvalning o'zi va ustunlari o'chmaydi."
+  },
+  {
+    "id": 7,
+    "question": "UPDATE so'rovida SET kalit so'zi nima vazifani bajaradi?",
+    "options": [
+      "Filtrlash shartini o'rnatadi",
+      "Yangilanadigan ustunlar va ularning yangi qiymatlarini belgilaydi",
+      "Qatorlarni o'chirish uchun ishlatiladi",
+      "Natijalarni saralaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "SET kalit so'zi yangilanadigan ustun(lar) nomini va ularga beriladigan yangi qiymat(lar)ni ko'rsatish uchun ishlatiladi."
+  },
+  {
+    "id": 8,
+    "question": "INSERT buyrug'ida VALUES ichiga yoziladigan matnli ma'lumotlar qanday yoziladi?",
+    "options": [
+      "Qavssiz va tirnoqsiz",
+      "Bir tirnoq (') ichida",
+      "Kvadrat qavs [ ] ichida",
+      "Faqat katta harflar bilan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "SQL standartiga ko'ra har qanday string (matn) qiymati bir tirnoq ichida yozilishi shart."
+  },
+  {
+    "id": 9,
+    "question": "DELETE FROM users WHERE age IS NULL so'rovi nima qiladi?",
+    "options": [
+      "Yoshi 0 bo'lgan foydalanuvchilarni o'chiradi",
+      "Yoshi ko'rsatilmagan (NULL bo'lgan) foydalanuvchilarni o'chiradi",
+      "Bacha foydalanuvchilarni o'chiradi",
+      "Haqiqiy foydalanuvchilarni saqlab, qolganlarini o'chiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "IS NULL operatori qiymat mavjud bo'lmagan (bo'sh) qatorlarni aniqlaydi. Ushbu so'rov yoshi NULL bo'lgan foydalanuvchilarni o'chiradi."
+  },
+  {
+    "id": 10,
+    "question": "TRUNCATE TABLE va DELETE FROM farqi nimada?",
+    "options": [
+      "TRUNCATE jadvalni butunlay o'chiradi (DROP kabi), DELETE esa qatorlarni",
+      "TRUNCATE tezroq ishlaydi, tranzaksiya jurnallarini kamroq yozadi va WHERE shartini qabul qilmaydi",
+      "DELETE faqat bitta qatorni o'chira oladi, TRUNCATE esa ko'p qatorni",
+      "Ular o'rtasida hech qanday farq yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TRUNCATE yirik jadvallardagi barcha ma'lumotlarni juda tez o'chirish uchun mo'ljallangan, WHERE shartini qo'llab-quvvatlamaydi va DELETE kabi qatorlar bo'yicha triggerlarni ishga tushirmaydi."
+  },
+  {
+    "id": 11,
+    "question": "Jadvalga bir vaqtning o'zida bir nechta yangi qator kiritish mumkinmi?",
+    "options": [
+      "Yo'q, har bir INSERT so'rovi faqat bitta qator kiritadi",
+      "Ha, VALUES qismidan keyin qavslarni vergul bilan ajratib yozish orqali",
+      "Faqat UPDATE so'rovi orqali ko'p qator kiritish mumkin",
+      "Ha, faqat maxsus MULTI INSERT buyrug'i orqali"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ko'pgina SQL tizimlarida INSERT INTO jadval (...) VALUES (...), (...), (...) ko'rinishida bir so'rov bilan ko'plab qatorlarni qo'shish mumkin."
+  },
+  {
+    "id": 12,
+    "question": "UPDATE users SET age = age + 1 so'rovi nima ish bajaradi?",
+    "options": [
+      "Faqat birinchi foydalanuvchining yoshini 1 taga oshiradi",
+      "Bacha foydalanuvchilarning yoshini 1 taga oshiradi",
+      "Xatolik beradi, chunki o'ng tomonda ustun nomi yozilgan",
+      "Yangi foydalanuvchi qo'shadi va uning yoshini 1 qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "WHERE sharti ko'rsatilmagani sababli, ushbu so'rov jadvaldagi barcha foydalanuvchilarning yoshini (`age`) 1 taga oshiradi."
+  }
+]

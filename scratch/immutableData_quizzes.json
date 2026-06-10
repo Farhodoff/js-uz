@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Shallow copy va Deep copy o'rtasidagi asosiy farq nima?",
+    "options": [
+      "Shallow copy faqat birinchi darajali xususiyatlarni nusxalaydi, Deep copy esa barcha ichma-ich joylashgan xususiyatlarni to'liq nusxalaydi",
+      "Shallow copy faqat sonlarni nusxalaydi, Deep copy esa obyektlarni",
+      "Shallow copy asl ob'ektni o'chirib yuboradi, Deep copy esa saqlab qoladi",
+      "Ikkalasi mutlaqo bir xil ishlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Shallow copy (sayoz nusxa) faqat ob'ektning eng yuqori darajasini nusxalaydi. Ichki ob'ektlar xotiradagi eski manzilga bog'langan holda qoladi. Deep copy (chuqur nusxa) esa barcha ichki ob'ektlarni ham yangidan nusxalaydi."
+  },
+  {
+    "id": 2,
+    "question": "`const copy = { ...original }` kodi qanday nusxa yaratadi?",
+    "options": [
+      "Shallow copy (Sayoz nusxa)",
+      "Deep copy (Chuqur nusxa)",
+      "Hech qanday nusxa yaratmaydi, shunchaki xatolik beradi",
+      "Faqat massivlar uchun deep copy yaratadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Spread operatori faqat birinchi darajali kalit-qiymatlarni nusxalaydi, shuning uchun u sayoz nusxa (shallow copy) hisoblanadi."
+  },
+  {
+    "id": 3,
+    "question": "JavaScript-dagi `structuredClone()` nima uchun ishlatiladi?",
+    "options": [
+      "Ob'ektlardan xavfsiz va to'liq chuqur nusxa (Deep copy) olish uchun",
+      "Ob'ektlarni HTML elementga aylantirish uchun",
+      "Ob'ekt xotirasini butunlay tozalash uchun",
+      "Faqat primitiv qiymatlarni solishtirish uchun"
+    ],
+    "correctAnswer": 0,
+    "explanation": "structuredClone JavaScript-ning zamonaviy standarti bo'lib, ob'ektlar va massivlardan chuqur (deep) nusxa olish uchun eng to'g'ri va xavfsiz usul hisoblanadi."
+  },
+  {
+    "id": 4,
+    "question": "`JSON.parse(JSON.stringify(obj))` usulining qanday kamchiligi bor?",
+    "options": [
+      "U funksiyalar, undefined va Date ob'ektlari kabi ma'lumot turlarini noto'g'ri o'zgartiradi yoki yo'qotadi",
+      "U faqat brauzerlarda ishlaydi, Node.js da ishlamaydi",
+      "U juda tez ishlaydi va ko'p xotira talab qiladi",
+      "U faqat bo'sh ob'ektlarni nusxalay oladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JSON serialization funksiyalar, undefined va Symbol qiymatlarni tashlab yuboradi, hamda Date ob'ektlarini string formatiga o'zgartirib yuboradi."
+  },
+  {
+    "id": 5,
+    "question": "Nima uchun React-da state (holat)ni to'g'ridan-to'g'ri mutatsiya qilish (o'zgartirish) tavsiya etilmaydi?",
+    "options": [
+      "Chunki React o'zgarishlarni ob'ekt manzillari (references) bo'yicha tekshiradi. To'g'ridan-to'g'ri o'zgartirilganda manzil o'zgarmaydi va re-render sodir bo'lmaydi",
+      "Chunki to'g'ridan-to'g'ri o'zgartirish JavaScript-da taqiqlangan",
+      "Chunki bu xotirani to'ldirib yuboradi",
+      "Chunki state faqat funksiyalardan iborat bo'lishi kerak"
+    ],
+    "correctAnswer": 0,
+    "explanation": "React state o'zgarganini bilish uchun shallow reference comparison (oldState === newState) bajaradi. Agar ob'ektning o'zini o'zgartirsak, uning reference manzili o'zgarmasdan qoladi, natijada React render qilmaydi."
+  },
+  {
+    "id": 6,
+    "question": "`const arr = [1, 2]` massiviga 3 elementini o'zgarmas (immutable) usulda qo'shish uchun qaysi variant to'g'ri?",
+    "options": [
+      "`const newArr = [...arr, 3];`",
+      "`arr.push(3);`",
+      "`arr[arr.length] = 3;`",
+      "`arr.unshift(3);`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "push va unshift metodlari asl massivni o'zgartiradi (mutatsiya). Spread operator yordamida yangi massiv yaratish esa immutable yangilash hisoblanadi."
+  },
+  {
+    "id": 7,
+    "question": "`Object.freeze(obj)` metodining cheklovi nimada?",
+    "options": [
+      "U faqat sayoz (shallow) muzlatadi, ya'ni ichki obyektlarni o'zgartirish mumkin bo'lib qoladi",
+      "U faqat massivlarni muzlata oladi",
+      "U ob'ekt qiymatlarini o'chirib yuboradi",
+      "U asinxron ishlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Object.freeze faqat ob'ektning birinchi darajali xususiyatlarini muzlatadi. Agar ob'ekt ichida boshqa ob'ekt bo'lsa, uning xususiyatlarini o'zgartirish mumkin."
+  },
+  {
+    "id": 8,
+    "question": "Massivni o'zgarmas (immutable) tarzda qanday saralash mumkin?",
+    "options": [
+      "`const sorted = [...arr].sort((a, b) => a - b);`",
+      "`arr.sort((a, b) => a - b);`",
+      "`const sorted = arr.reverse();`",
+      "`arr.splice(0, arr.length).sort();`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "sort() metodi asl massivni to'g'ridan-to'g'ri o'zgartiradi. Shuning uchun, avval spread operator yordamida nusxa olib, keyin sort qilish kerak."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kodda `user === updatedUser` va `user.profile === updatedUser.profile` ifodalarning qiymati nima bo'ladi?\n```javascript\nconst user = { name: 'Ali', profile: { age: 20 } };\nconst updatedUser = { ...user, name: 'Vali' };\n```",
+    "options": [
+      "`false` va `true`",
+      "`true` va `false`",
+      "`false` va `false`",
+      "`true` va `true`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "updatedUser yangi ob'ekt bo'lgani uchun user === updatedUser false bo'ladi. Lekin profile ob'ekti nusxalanmagani uchun (shallow copy bo'lgani sababli) ikkalasi ham bitta profile ob'ektiga ishora qiladi, shuning uchun user.profile === updatedUser.profile true bo'ladi."
+  },
+  {
+    "id": 10,
+    "question": "Massivdan elementni o'zgarmas (immutable) tarzda o'chirish uchun qaysi metod eg mos keladi?",
+    "options": [
+      "`filter`",
+      "`splice`",
+      "`pop`",
+      "`shift`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "splice, pop va shift metodlari asl massivni o'zgartiradi. filter esa shartga mos keladigan elementlardan iborat mutlaqo yangi massiv qaytaradi."
+  },
+  {
+    "id": 11,
+    "question": "`structuredClone` qaysi turdagi ma'lumotlarni nusxalashga harakat qilganda xatolik (DataCloneError) beradi?",
+    "options": [
+      "Funksiyalar va DOM elementlari",
+      "Massivlar va Date obyektlari",
+      "Map va Set to'plamlari",
+      "Null va undefined"
+    ],
+    "correctAnswer": 0,
+    "explanation": "structuredClone deyarli barcha JS turlarini qo'llab-quvvatlaydi, lekin funksiyalar va DOM elementlarini nusxalashda xatolik beradi, chunki ularni strukturaviy klonlab bo'lmaydi."
+  },
+  {
+    "id": 12,
+    "question": "Massivdagi ma'lum bir indeksdagi elementni o'zgarmas tarzda yangilash uchun qaysi metoddan foydalanish eng to'g'ri?",
+    "options": [
+      "`map`",
+      "`forEach`",
+      "`push`",
+      "`reduceRight`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "map metodi massiv elementlarini tekshirib, kerakli indeksdagi elementni o'zgartirib, qolganlarini esa o'zgarishsiz qoldirib yangi massiv qaytarish uchun juda qulay."
+  }
+]

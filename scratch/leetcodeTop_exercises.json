@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Two Sum (Ikki son yig'indisi)",
+    "instruction": "Butun sonlar massivi (`nums`) va bitta butun son (`target`) berilgan. Yig'indisi `target` ga teng bo'lgan ikkita sonning indekslarini qaytaruvchi `twoSum(nums, target)` funksiyasini yozing. Bir xil elementni ikki marta ishlatish mumkin emas. Javob istalgan tartibda bo'lishi mumkin. O(n) vaqt murakkabligida ishlashga harakat qiling.",
+    "startingCode": "function twoSum(nums, target) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Map (yoki obyekt) obyektidan foydalanib, har bir elementning farqini (target - nums[i]) tekshirib boring. Agar farq Map ichida bo'lsa, javobni darhol indekslar bilan qaytaring.",
+    "test": "const sandbox = new Function(code + '; return twoSum;');\nconst fn = sandbox();\nconst res1 = fn([2, 7, 11, 15], 9);\nif (!Array.isArray(res1) || res1.length !== 2) return 'Massiv qaytarilishi kerak va uzunligi 2 bo\\'lishi lozim';\nif (!((res1[0] === 0 && res1[1] === 1) || (res1[0] === 1 && res1[1] === 0))) return '[2,7,11,15] va 9 uchun javob [0,1] chiqishi kerak';\nconst res2 = fn([3, 2, 4], 6);\nif (!((res2[0] === 1 && res2[1] === 2) || (res2[0] === 2 && res2[1] === 1))) return '[3,2,4] va 6 uchun javob [1,2] chiqishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Valid Parentheses (Qavslar to'g'riligi)",
+    "instruction": "Faqat `'('`, `')'`, `'{'`, `'}'`, `'['` va `']'` belgilaridan iborat satr (`s`) berilgan. Qavslar to'g'ri ochilib yopilganini tekshiruvchi `isValid(s)` funksiyasini yozing. Buning uchun qavslar to'g'ri tartibda yopilishi va ochilgan turdagi qavs bilan mos kelishi lozim.",
+    "startingCode": "function isValid(s) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Stek (Stack) ma'lumotlar tuzilmasidan foydalaning. Ochiluvchi qavslarni stakka qo'shing (`push`), yopiluvchi qavs kelganda esa stakdan oxirgisini chiqarib (`pop`) solishtiring.",
+    "test": "const sandbox = new Function(code + '; return isValid;');\nconst fn = sandbox();\nif (fn('()') !== true) return '\"()\" uchun true qaytishi kerak';\nif (fn('()[]{}') !== true) return '\"()[]{}\" uchun true qaytishi kerak';\nif (fn('(]') !== false) return '\"(]\" uchun false qaytishi kerak';\nif (fn('([)]') !== false) return '\"([)]\" uchun false qaytishi kerak';\nif (fn('{[]}') !== true) return '\"{[]}\" uchun true qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Best Time to Buy and Sell Stock (Aksiyani sotib olish va sotish)",
+    "instruction": "Kunlik aksiya narxlari massivi (`prices`) berilgan. Siz faqat bitta aksiyani bir kunda sotib olib, kelajakda boshqa kunda sotishingiz mumkin. Maksimal foyda miqdorini qaytaruvchi `maxProfit(prices)` funksiyasini yozing. Agar foyda ko'rish iloji bo'lmasa, `0` qaytaring.",
+    "startingCode": "function maxProfit(prices) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Bir marta aylanib chiqadigan (Single Pass) algoritm yozing. Eng minimal narxni (minPrice) va maksimal foydani (maxProfit) kuzatib boring. Har safar `prices[i] - minPrice` ni hisoblab, maxProfit bilan solishtiring.",
+    "test": "const sandbox = new Function(code + '; return maxProfit;');\nconst fn = sandbox();\nif (fn([7, 1, 5, 3, 6, 4]) !== 5) return '[7,1,5,3,6,4] uchun foyda 5 bo\\'lishi kerak (1 da olib, 6 da sotish)';\nif (fn([7, 6, 4, 3, 1]) !== 0) return '[7,6,4,3,1] uchun foyda 0 bo\\'lishi kerak';\nreturn null;"
+  }
+]

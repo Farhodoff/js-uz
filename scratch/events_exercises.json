@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Klik Hodisasini Tinglash (addEventListener)",
+    "instruction": "Berilgan `button` elementiga 'click' hodisasini eshituvchi va bosilganda `callback` funksiyasini ishga tushiruvchi `setupClick(button, callback)` funksiyasini yozing.",
+    "startingCode": "function setupClick(button, callback) {\n  // Kodni yozing\n}",
+    "hint": "button.addEventListener('click', callback);",
+    "test": "try { let clicked = false; const mockBtn = { addEventListener: (t, cb) => { if(t === 'click') cb(); } }; setupClick(mockBtn, () => clicked = true); if (!clicked) return 'click hodisasi ulanmadi yoki callback chaqirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 2,
+    "title": "Standart Harakatni Bekor Qilish (preventDefault)",
+    "instruction": "Forma yuborilish (submit) hodisasini qabul qilib, uning standart sahifani yangilash harakatini bekor qiluvchi `handleSubmit(event)` funksiyasini yozing.",
+    "startingCode": "function handleSubmit(event) {\n  // Kodni yozing\n}",
+    "hint": "event.preventDefault();",
+    "test": "try { let prevented = false; const mockEvent = { preventDefault: () => prevented = true }; handleSubmit(mockEvent); if (!prevented) return 'preventDefault() chaqirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 3,
+    "title": "Hodisalarni Delegatsiya Qilish (Event Delegation)",
+    "instruction": "Berilgan `parent` elementiga click listener ulang. Agar bosilgan element (`event.target`) `item` klassiga ega bo'lsa, `callback` funksiyasini ishga tushirib, unga o'sha bosilgan elementni argument qilib uzatuvchi `delegateClick(parent, callback)` funksiyasini yozing.",
+    "startingCode": "function delegateClick(parent, callback) {\n  // Kodni yozing\n}",
+    "hint": "parent.addEventListener('click', (e) => { if (e.target.classList.contains('item')) callback(e.target); });",
+    "test": "try { let calledWith = null; let listener = null; const mockParent = { addEventListener: (t, cb) => { listener = cb; } }; delegateClick(mockParent, (el) => calledWith = el); const mockTarget = { classList: { contains: (c) => c === 'item' } }; listener({ target: mockTarget }); if (calledWith !== mockTarget) return 'Delegatsiya ishlamadi yoki callback to\\'g\\'ri element bilan chaqirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Daraxtga element qo'shish (insert)",
+    "instruction": "Ikkilik qidiruv daraxtiga yangi qiymat qo'shuvchi `insert(value)` metodini yozing. Metod qiymatni to'g'ri chap yoki o'ng tarmoqqa joylashtirishi va `this` (daraxt obyekti) ni qaytarishi kerak. `Node` va `BinarySearchTree` klasslari berilgan.",
+    "startingCode": "class Node {\n  constructor(value) {\n    this.value = value;\n    this.left = null;\n    this.right = null;\n  }\n}\n\nclass BinarySearchTree {\n  constructor() {\n    this.root = null;\n  }\n\n  insert(value) {\n    // Kodni shu yerda yozing\n  }\n}\n",
+    "hint": "Agar root bo'sh bo'lsa, uni yangi Node qiling. Aks holda rekursiv yoki sikl yordamida qiymatni root.value bilan solishtirib, kichik bo'lsa chapga, katta bo'lsa o'ngga yuring.",
+    "test": "const sandbox = new Function(code + '; return BinarySearchTree;');\nconst BST = sandbox();\nconst bst = new BST();\nbst.insert(10);\nbst.insert(5);\nbst.insert(15);\nbst.insert(7);\nif (!bst.root) return 'Root null bo\\'lib qoldi';\nif (bst.root.value !== 10) return 'Root qiymati noto\\'g\\'ri';\nif (!bst.root.left || bst.root.left.value !== 5) return 'Chap tugun noto\\'g\\'ri joylashdi';\nif (!bst.root.right || bst.root.right.value !== 15) return 'O\\'ng tugun noto\\'g\\'ri joylashdi';\nif (!bst.root.left.right || bst.root.left.right.value !== 7) return 'Chuqurroqdagi tugun noto\\'g\\'ri joylashdi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Daraxtdan qiymat qidirish (contains)",
+    "instruction": "Berilgan `value` qiymati daraxtda bor yoki yo'qligini tekshiruvchi `contains(value)` metodini yozing. Agar qiymat topilsa `true`, aks holda `false` qaytarsin.",
+    "startingCode": "class Node {\n  constructor(value) {\n    this.value = value;\n    this.left = null;\n    this.right = null;\n  }\n}\n\nclass BinarySearchTree {\n  constructor() {\n    this.root = null;\n  }\n\n  insert(value) {\n    const newNode = new Node(value);\n    if (!this.root) { this.root = newNode; return this; }\n    let current = this.root;\n    while (true) {\n      if (value === current.value) return this;\n      if (value < current.value) {\n        if (!current.left) { current.left = newNode; return this; }\n        current = current.left;\n      } else {\n        if (!current.right) { current.right = newNode; return this; }\n        current = current.right;\n      }\n    }\n  }\n\n  contains(value) {\n    // Kodni shu yerda yozing\n  }\n}\n",
+    "hint": "Rootdan boshlab joriy tugunni tekshiring. Agar value kichik bo'lsa chapga, katta bo'lsa o'ngga o'ting. Teng bo'lsa true, tugun tugasa va topilmasa false qaytaring.",
+    "test": "const sandbox = new Function(code + '; return BinarySearchTree;');\nconst BST = sandbox();\nconst bst = new BST();\nbst.insert(50).insert(30).insert(70).insert(20).insert(40);\nif (bst.contains(30) !== true) return 'Mavjud qiymat (30) topilmadi (true qaytishi kerak edi)';\nif (bst.contains(70) !== true) return 'Mavjud qiymat (70) topilmadi';\nif (bst.contains(100) !== false) return 'Mavjud bo\\'lmagan qiymat (100) uchun true qaytdi';\nif (bst.contains(10) !== false) return 'Mavjud bo\\'lmagan qiymat (10) uchun true qaytdi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "In-Order traversal (Daraxtni tartib bilan aylanish)",
+    "instruction": "Daraxtdagi elementlarni o'sish tartibida yig'ib beruvchi `inOrder()` metodini yozing. U massiv qaytarishi kerak. Masalan: `[left, root, right]` tartibida rekursiv aylanib chiqish.",
+    "startingCode": "class Node {\n  constructor(value) {\n    this.value = value;\n    this.left = null;\n    this.right = null;\n  }\n}\n\nclass BinarySearchTree {\n  constructor() {\n    this.root = null;\n  }\n\n  insert(value) {\n    const newNode = new Node(value);\n    if (!this.root) { this.root = newNode; return this; }\n    let current = this.root;\n    while (true) {\n      if (value === current.value) return this;\n      if (value < current.value) {\n        if (!current.left) { current.left = newNode; return this; }\n        current = current.left;\n      } else {\n        if (!current.right) { current.right = newNode; return this; }\n        current = current.right;\n      }\n    }\n  }\n\n  inOrder() {\n    // Kodni shu yerda yozing\n  }\n}\n",
+    "hint": "Yordamchi rekursiv funksiya yozing: `traverse(node)`. Avval `traverse(node.left)` ni chaqiring, keyin node qiymatini massivga yozing, so'ng `traverse(node.right)` ni chaqiring.",
+    "test": "const sandbox = new Function(code + '; return BinarySearchTree;');\nconst BST = sandbox();\nconst bst = new BST();\nbst.insert(15).insert(10).insert(20).insert(8).insert(12).insert(18).insert(25);\nconst res = bst.inOrder();\nif (!Array.isArray(res)) return 'inOrder() massiv qaytarmadi';\nconst expected = [8, 10, 12, 15, 18, 20, 25];\nif (res.length !== expected.length) return 'Massiv elementlari soni noto\\'g\\'ri';\nfor (let i = 0; i < expected.length; i++) {\n  if (res[i] !== expected[i]) return `Kutilgan qiymat: ${expected}, lekin olindi: ${res}`;\n}\nreturn null;"
+  }
+]

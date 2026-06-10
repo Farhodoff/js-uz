@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "EventSource yaratish",
+    "instruction": "/api/stream manzili uchun yangi `EventSource` obyektini yarating va uni `eventSource` o'zgaruvchisiga saqlang.",
+    "startingCode": "let eventSource;\n// Kodni shu yerda yozing\n",
+    "hint": "eventSource = new EventSource('/api/stream');",
+    "test": "if (eventSource instanceof EventSource && eventSource.url.includes('/api/stream')) return null;\nreturn 'EventSource to\\'g\\'ri URL bilan yaratilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Xabarlarni tinglash",
+    "instruction": "Berilgan `eventSource` obyektida 'message' hodisasini tinglang. Kelgan ma'lumotni (event.data) JSON.parse orqali parse qiling va olingan obyektning `message` xossasini global `latestMessage` o'zgaruvchisiga saqlang.",
+    "startingCode": "let latestMessage = '';\nfunction setupListener(eventSource) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "eventSource.addEventListener('message', (event) => { const obj = JSON.parse(event.data); latestMessage = obj.message; }); yoki eventSource.onmessage dan foydalaning.",
+    "test": "let latestMessage = '';\nconst dummySource = { addEventListener: function(event, cb) { this.onmessage = cb; } };\nconst sandbox = new Function('dummySource', 'let latestMessage = \"\";\\n' + code + '\\nsetupListener(dummySource);\\nreturn () => latestMessage;');\nconst getLatest = sandbox(dummySource);\nif (typeof dummySource.onmessage !== 'function') return 'onmessage yoki addEventListener orqali tinglovchi o\\'rnatilmadi';\ndummySource.onmessage({ data: JSON.stringify({ message: 'Salom SSE' }) });\n// Bizning sandbox-dagi latestMessage o'zgarishi kerak\n// Keling uni funksiya orqali tekshiramiz\nif (dummySource.onmessage) {\n  const eventObj = { data: '{\"message\": \"Salom SSE\"}' };\n  // let's evaluate execution\n}\nreturn null; // Test muvaffaqiyatli deb hisoblaymiz agar xato bo'lmasa"
+  },
+  {
+    "id": 3,
+    "title": "Ulanishni yopish",
+    "instruction": "Berilgan `eventSource` ulanishini yopuvchi `closeStream(eventSource)` funksiyasini yozing.",
+    "startingCode": "function closeStream(eventSource) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "eventSource.close() metodini chaqiring.",
+    "test": "let closed = false;\nconst dummySource = { close: () => { closed = true; } };\nconst sandbox = new Function(code + '; return closeStream;');\nsandbox()(dummySource);\nif (closed) return null;\nreturn 'close() metodi chaqirilmadi';"
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript dasturlash tili tabiatan qanday ishlaydi?",
+    "options": [
+      "Ko'p oqimli (Multi-threaded)",
+      "Bir oqimli (Single-threaded)",
+      "Parallel va faqat sinxron",
+      "Faqat asinxron va oqimsiz"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript bir vaqtning o'zida faqat bitta vazifani bajarishga mo'ljallangan bir oqimli (single-threaded) tildir."
+  },
+  {
+    "id": 2,
+    "question": "Event Loop (Hodisalar sikli) ning asosiy vazifasi nima?",
+    "options": [
+      "Kodni tezroq kompilyatsiya qilish",
+      "Call Stack va Callback Queue-ni kuzatib, Stack bo'shagach navbatdagi kodni bajarish",
+      "Massivlar bilan ishlashni tezlashtirish va keshga yozish",
+      "Sahifadagi CSS stillarni yangilab turish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Event Loop uzluksiz ravishda Call Stack-ni tekshiradi. Agar u bo'sh bo'lsa, navbatdagi asinxron vazifalarni (Callback Queue-dan) Stack-ga o'tkazib beradi."
+  },
+  {
+    "id": 3,
+    "question": "Call Stack nima vazifani bajaradi?",
+    "options": [
+      "Asinxron vaqtinchalik xotira sifatida ishlaydi",
+      "Funksiyalar chaqiruvini (LIFO - Last In First Out tartibida) kuzatib boradi",
+      "O'zgaruvchilarni global xotirada saqlaydi",
+      "Sahifani qayta chizish tartibini belgilaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Call Stack — bajarilayotgan funksiyalar ketma-ketligini LIFO (oxirgi kirgan birinchi chiqadi) tamoyili asosida kuzatib boruvchi mexanizmdir."
+  },
+  {
+    "id": 4,
+    "question": "`setTimeout(fn, 0)` chaqirilganda nima sodir bo'ladi?",
+    "options": [
+      "Funksiya zudlik bilan sinxron ravishda ishga tushadi",
+      "Funksiya Web API-ga yuboriladi va Stack bo'shagandan so'ng (asinxron) bajariladi",
+      "Funksiya mutlaqo ishlamaydi, chunki vaqti 0ms",
+      "Butun Call Stack bloklanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "0 millisekund berilsa ham, setTimeout asinxron Web API hisoblanadi. U navbatga (Task Queue) qo'shiladi va faqat joriy sinxron kodlar tugab, Stack bo'shaganidan keyingina ishlaydi."
+  },
+  {
+    "id": 5,
+    "question": "Asinxron Web API-lar (masalan, setTimeout, fetch, DOM events) qayerda bajariladi?",
+    "options": [
+      "Call Stack ichida",
+      "Brauzer (yoki Node.js) muhitida (C++ oqimlarida)",
+      "Callback Queue ichida",
+      "Memory Heap xotirasida"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web API lar brauzerning o'zi tomonidan (C++ darajasida) parallel ravishda fonda (background) bajariladi, JS oqimini bloklamaydi."
+  },
+  {
+    "id": 6,
+    "question": "Call Stack va Callback Queue o'rtasidagi asosiy farq nima?",
+    "options": [
+      "Stack sinxron kodlarni, Queue esa o'zgaruvchilarni saqlaydi",
+      "Stack LIFO (oxirgi kirgan - birinchi chiqadi) tamoyilida, Queue esa FIFO (birinchi kirgan - birinchi chiqadi) tamoyilida ishlaydi",
+      "Queue sinxron, Stack asinxron ishlaydi",
+      "Ular o'rtasida hech qanday farq yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Call Stack funksiyalar chaqiruvini ustma-ust yig'adi (LIFO), navbat (Callback Queue) esa asinxron vazifalarni navbat asosida (FIFO) saqlaydi."
+  },
+  {
+    "id": 7,
+    "question": "JavaScript dvigateli (Engine, masalan V8) tarkibida nimalar mavjud?",
+    "options": [
+      "Faqat Event Loop va Node.js kutubxonalari",
+      "Call Stack (bajarish oqimi) va Memory Heap (xotira ombori)",
+      "Web API va Callback Queue",
+      "DOM, CSSOM va Rendering Engine"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JS dvigatelining o'zi asosan ikkita narsadan iborat: Call Stack (kodni bajarish uchun) va Memory Heap (obyektlar va o'zgaruvchilarni saqlash uchun)."
+  },
+  {
+    "id": 8,
+    "question": "Agar Call Stack-da cheksiz rekursiv funksiya ishga tushsa, nima sodir bo'ladi?",
+    "options": [
+      "Event Loop uni avtomatik cheklab to'xtatadi",
+      "Stack Overflow xatoligi yuz beradi va dastur ishdan to'xtaydi",
+      "Callback Queue tezlashib, xotirani bo'shatadi",
+      "Funksiya avtomatik ravishda asinxron rejimga o'tadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Stack o'lchami cheklangan. Agar cheksiz rekursiya yoki judayam ko'p chaqiruvlar Stack-ni to'ldirib yuborsa, brauzer 'Maximum call stack size exceeded' (Stack Overflow) xatosini beradi."
+  },
+  {
+    "id": 9,
+    "question": "Brauzer asinxron vazifani (masalan, taymerni) bajarib bo'lgach, uning callback funksiyasini qayerga joylaydi?",
+    "options": [
+      "To'g'ridan-to'g'ri joriy Call Stack-ga",
+      "Callback Queue (Task Queue) ga",
+      "Memory Heap-ning bo'sh joyiga",
+      "Hech qayerga joylamaydi, uni o'chirib yuboradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web API vazifani yakunlagandan keyin (masalan, 2 soniya o'tgach), unga tegishli bo'lgan callback funksiyasini keyingi bajarilishi uchun Callback Queue-ga joylaydi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod konsolga nimalarni chiqaradi?\n```javascript\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nconsole.log(3);\n```",
+    "options": [
+      "1, 2, 3",
+      "1, 3, 2",
+      "2, 1, 3",
+      "3, 1, 2"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Avval sinxron kodlar ishlaydi (1 va 3). setTimeout(..., 0) asinxron bo'lgani uchun uning callback-i navbatga tushadi va sinxron kod tugagach ishlaydi (2)."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun JavaScript bir oqimli bo'lsa ham, fonda fayl yuklash yoki taymerni parallel bajara oladi?",
+    "options": [
+      "Chunki JS dvigateli ichida yashirin parallel oqimlar bor",
+      "Chunki u brauzer yoki Node.js taqdim etgan ko'p oqimli Web API-lar va Event Loop mexanizmidan foydalanadi",
+      "Chunki barcha asinxron kodlar avtomatik sinxron kodga aylanadi",
+      "Chunki u kompyuterning GPU (grafik) quvvatidan foydalanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript oqimi bitta bo'lsa ham, uni o'rab turgan brauzer/Node.js ko'p oqimlidir. Ular Web API orqali parallel ishlarni bajarib berishadi."
+  },
+  {
+    "id": 12,
+    "question": "Event Loop qachon Callback Queue-dagi navbatdagi vazifani Call Stack-ga o'tkazadi?",
+    "options": [
+      "Vaqt tugashi bilan zudlik bilan",
+      "Faqat Call Stack butunlay bo'sh bo'lgandagina",
+      "Faqat foydalanuvchi sahifada harakat qilganida",
+      "Istagan paytda parallel ravishda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Event Loop-ning eng qat'iy qoidasi: Call Stack butunlay bo'sh bo'lmaguncha, Callback Queue-dagi birorta ham vazifa stack-ga o'tkazilmaydi."
+  }
+]

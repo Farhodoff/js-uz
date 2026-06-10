@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Set yordamida Duplikatlarni Tozalash",
+    "instruction": "Taqdim etilgan 'removeDuplicates(arr)' funksiyasini shunday yozingki, u massivdagi barcha takrorlanuvchi elementlarni Set yordamida tozalab, unikal elementlardan iborat yangi massiv qaytarsin.",
+    "startingCode": "function removeDuplicates(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return [...new Set(arr)];",
+    "test": "if (!code.includes('Set')) return 'Set ishlatilmadi';\nconst sandbox = new Function(code + '; return removeDuplicates;');\nconst fn = sandbox();\nconst res = fn([1, 2, 2, 3, 1]);\nif (Array.isArray(res) && res.length === 3 && res[1] === 2) return null;\nreturn 'Natija noto\\'g\\'ri';"
+  },
+  {
+    "id": 2,
+    "title": "Map yordamida Ma'lumot Qidirish",
+    "instruction": "'userMap' (Map obyekti) va 'id' kalitini qabul qilib, agar Map ichida kalit mavjud bo'lsa uning qiymatini, aks holda 'Topilmadi' satrini qaytaruvchi 'getUserName(userMap, id)' funksiyasini yozing.",
+    "startingCode": "function getUserName(userMap, id) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return userMap.has(id) ? userMap.get(id) : 'Topilmadi';",
+    "test": "if (!code.includes('get') || !code.includes('has')) return 'Map has/get metodlari ishlatilmadi';\nconst sandbox = new Function(code + '; return getUserName;');\nconst fn = sandbox();\nconst m = new Map([[1, 'Ali']]);\nif (fn(m, 1) === 'Ali' && fn(m, 2) === 'Topilmadi') return null;\nreturn 'getUserName funksiyasi to\\'g\\'ri ishlamadi';"
+  },
+  {
+    "id": 3,
+    "title": "WeakMap orqali Metadata bog'lash",
+    "instruction": "'weakMap' obyekti, 'obj' (kalit obyekt) va 'metadata' (qiymat) qabul qiluvchi 'attachMetadata(weakMap, obj, metadata)' funksiyasini yozing. U 'weakMap'ga ma'lumotni saqlasin va o'sha saqlangan qiymatni qaytarsin.",
+    "startingCode": "function attachMetadata(weakMap, obj, metadata) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "weakMap.set(obj, metadata); return weakMap.get(obj);",
+    "test": "if (!code.includes('set') || !code.includes('get')) return 'WeakMap set/get metodlari ishlatilmadi';\nconst sandbox = new Function(code + '; return attachMetadata;');\nconst fn = sandbox();\nconst wm = new WeakMap();\nconst k = {};\nif (fn(wm, k, 'secret_val') === 'secret_val') return null;\nreturn 'Metadata to\\'g\\'ri bog\\'lanmadi';"
+  }
+]

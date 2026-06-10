@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Sodda Assertion yozish",
+    "instruction": "Kichik testing kutubxonasi uchun `expect(actual)` funksiyasini yozing. U ikkita tekshiruv metodiga ega obyekt qaytarsin:\n1. `toBe(expected)`: Agar `actual` va `expected` qiymatlari teng bo'lmasa (`!==`), xatolik (`Error`) tashlasin.\n2. `toBeGreaterThan(expected)`: Agar `actual` qiymati `expected` dan katta bo'lmasa (`<=`), xatolik (`Error`) tashlasin.",
+    "startingCode": "function expect(actual) {\n  return {\n    toBe(expected) {\n      // Kodni shu yerda yozing\n    },\n    toBeGreaterThan(expected) {\n      // Kodni shu yerda yozing\n    }\n  };\n}\n",
+    "hint": "Shart bajarilmagan hollarda `throw new Error(...)` yordamida xatolik tashlang.",
+    "test": "const sandbox = new Function(code + '; return expect;');\nconst fn = sandbox();\ntry {\n  fn(5).toBe(5);\n  fn(10).toBeGreaterThan(5);\n} catch(e) {\n  return 'Muvaffaqiyatli tekshiruvda xatolik tashlamasligi kerak edi';\n}\ntry {\n  fn(5).toBe(10);\n  return 'toBe xato qiymat berilganda xatolik tashlamadi';\n} catch(e) {}\ntry {\n  fn(5).toBeGreaterThan(10);\n  return 'toBeGreaterThan xato qiymat berilganda xatolik tashlamadi';\n} catch(e) {}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Mock Funksiya yaratish",
+    "instruction": "Testlarda chaqiruvlarni kuzatish uchun `createMock()` funksiyasini yarating. U chaqirilganda yangi funksiya qaytarsin. Qaytgan funksiya har chaqirilganda uzatilgan argumentlarni `.calls` deb nomlangan massivga saqlab borsin. Shuningdek, mock funksiyada chaqiruvlar sonini qaytaruvchi `.getCallCount()` metodi bo'lishi kerak.",
+    "startingCode": "function createMock() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Mock funksiya o'zgaruvchisiga massiv va metodlarni xossa sifatida biriktirishingiz (assign) mumkin.",
+    "test": "const sandbox = new Function(code + '; return createMock;');\nconst fn = sandbox();\nconst mock = fn();\nif (typeof mock !== 'function') return 'createMock funksiya qaytarmadi';\nmock(1, 2);\nmock('a');\nif (mock.getCallCount() !== 2) return 'getCallCount() noto\\'g\\'ri qiymat qaytardi';\nif (mock.calls[0][0] !== 1 || mock.calls[0][1] !== 2) return 'calls massivida birinchi chaqiruv argumentlari noto\\'g\\'ri saqlangan';\nif (mock.calls[1][0] !== 'a') return 'calls massivida ikkinchi chaqiruv argumentlari noto\\'g\\'ri saqlangan';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Mini Test Runner",
+    "instruction": "Berilgan test holatini ishga tushiruvchi `it(description, testFn)` funksiyasini yozing. Agar test muvaffaqiyatli (hech qanday xatolarsiz) o'tsa, `{ success: true, message: 'PASS: ' + description }` qaytarsin. Agar xato yoki assertion xatoligi bo'lsa, `{ success: false, message: 'FAIL: ' + description + ' - ' + error.message }` qaytarsin.",
+    "startingCode": "function it(description, testFn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "try...catch blokidan foydalaning va testFn() ni try ichida chaqiring.",
+    "test": "const sandbox = new Function(code + '; return it;');\nconst fn = sandbox();\nconst pass = fn('should pass', () => {});\nif (!pass || !pass.success || !pass.message.includes('PASS: should pass')) return 'Test muvaffaqiyatli o\\'tganda to\\'g\\'ri obyekt qaytarmadi';\nconst fail = fn('should fail', () => { throw new Error('Some error'); });\nif (!fail || fail.success || !fail.message.includes('FAIL: should fail - Some error')) return 'Test muvaffaqiyatsiz bo\\'ganda to\\'g\\'ri obyekt qaytarmadi';\nreturn null;"
+  }
+]

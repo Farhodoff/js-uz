@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Lexical Scope (Leksik qamrov) deganda nima tushuniladi?",
+    "options": [
+      "Funksiyaning qayerda chaqirilganiga qarab o'zgaruvchilarni qidirish qoidasi",
+      "Funksiya yozilgan (e'lon qilingan) joydagi jismoniy joylashuviga ko'ra o'zgaruvchilar qamrovining belgilanishi",
+      "Faqat `global` kontekstda mavjud bo'lgan o'zgaruvchilar to'plami",
+      "Dastur ishga tushganda dynamic o'zgaradigan vaqtinchalik xotira"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Lexical Scope — bu funksiya qayerda chaqirilganidan qat'i nazar, uning e'lon qilingan joyidagi o'zgaruvchilar qamroviga kirish huquqidir."
+  },
+  {
+    "id": 2,
+    "question": "Closure (Yopilish) nima?",
+    "options": [
+      "Funksiyani bajarilishini majburiy to'xtatuvchi kalit so'z",
+      "JavaScript-da barcha o'zgaruvchilarni o'chirish jarayoni",
+      "Ichki funksiyaning o'zidan tashqaridagi (leksik atrof-muhitdagi) o'zgaruvchilarni eslab qolishi va ulardan foydalana olish xususiyati",
+      "Faqat matematik funksiyalarni bog'lovchi zanjir"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Closure ichki funksiya o'zining tashqi funksiyasi bajarilib bo'lingandan keyin ham tashqi qamrovdagi o'zgaruvchilarni eslab qolishi va ishlata olishidir."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi kod ishga tushganda konsolga nima chiqadi?\n```javascript\nfunction outer() {\n  let x = 10;\n  return function inner() {\n    console.log(x);\n  };\n}\nconst fn = outer();\nfn();\n```",
+    "options": [
+      "`undefined`",
+      "`ReferenceError`",
+      "`10`",
+      "`null`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`fn` o'zgaruvchisi `inner` funksiyasini ushlab turibdi. `outer` bajarilib bo'lsa ham, `inner` yopilish (closure) tufayli `x = 10` qiymatini eslab qolgan va 10 ni chiqaradi."
+  },
+  {
+    "id": 4,
+    "question": "JavaScript-da closures qanday holatda avtomatik ravishda hosil bo'ladi?",
+    "options": [
+      "Faqat `class` e'lon qilinganda",
+      "Ichki funksiya o'zining tashqi leksik qamrovidagi o'zgaruvchilardan foydalangan holda tashqariga uzatilganda (yoki saqlanganda)",
+      "Har safar `if-else` shart operatori yozilganda",
+      "Faqat `use strict` rejimi yoqilganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ichki funksiya tashqi funksiya qamrovidagi o'zgaruvchilarga murojaat qilganda va tashqi funksiya tugaganidan keyin ham chaqirilganda closure vujudga keladi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nfunction makeCounter() {\n  let count = 0;\n  return () => ++count;\n}\nconst c1 = makeCounter();\nconst c2 = makeCounter();\nconsole.log(c1());\nconsole.log(c1());\nconsole.log(c2());\n```",
+    "options": [
+      "`1, 2, 3`",
+      "`1, 1, 1`",
+      "`1, 2, 1`",
+      "`1, 2, 2`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`makeCounter()` har safar chaqirilganda yangi xotira muhiti (lexical environment) va yangi `count` o'zgaruvchisi yaratiladi. Shuning uchun `c1` va `c2` o'zlarining mustaqil hisoblagichlariga ega. `c1` ikki marta chaqirilib `1, 2` bo'lsa, `c2` birinchi chaqiruvda `1` qaytaradi."
+  },
+  {
+    "id": 6,
+    "question": "Closures yordamida obyektga xos qanday muhim konseptni simulyatsiya qilish mumkin?",
+    "options": [
+      "Polimorfizm",
+      "Ko'p tarmoqli vorislik",
+      "Inkapsulyatsiya (Encapsulation) va xususiy (private) o'zgaruvchilar yaratish",
+      "Xotirani majburiy tozalash"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Closures yordamida tashqaridan to'g'ridan-to'g'ri kirib bo'lmaydigan, faqat maxsus metodlar orqali boshqariladigan private (xususiy) o'zgaruvchilarni yaratib, inkapsulyatsiyani amalga oshirish mumkin."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet a = 5;\nfunction printA() {\n  console.log(a);\n}\nfunction test() {\n  let a = 10;\n  printA();\n}\ntest();\n```",
+    "options": [
+      "`10`",
+      "`5`",
+      "`undefined`",
+      "`ReferenceError`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript leksik qamrovga ega. `printA` e'lon qilingan joyda `a` o'zgaruvchisi global qamrovdagi `5` ga teng. `test` funksiyasi ichida `printA` chaqirilganda, u baribir o'zining yaratilgan joyidagi `a = 5` qiymatini oladi (chaqirilgan joydagini emas)."
+  },
+  {
+    "id": 8,
+    "question": "Nima uchun closures xotira sarfini (Memory usage) oshiradi?",
+    "options": [
+      "Chunki ular JS fayl hajmini kattalashtiradi",
+      "Chunki yopilish saqlanib turgan muddatda uning tashqi muhitidagi o'zgaruvchilar Garbage Collector (axlat yig'uvchi) tomonidan xotiradan o'chirilmaydi",
+      "Chunki ular faqat RAM xotiraning eng qimmat qismida ishlaydi",
+      "Bu noto'g'ri ma'lumot, closures xotira sarfini kamaytiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Leksik atrof-muhitdagi o'zgaruvchilarga bo'lgan havolalar (references) ichki funksiya yashar ekan saqlanib qoladi, bu Garbage Collector-ga ularni tozalashga yo'l qo'ymaydi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi loop muammosi qanday natija beradi?\n```javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n```",
+    "options": [
+      "`0, 1, 2` ketma-ketlikda",
+      "`3, 3, 3` ketma-ketlikda",
+      "`0, 0, 0` ketma-ketlikda",
+      "`undefined, undefined, undefined`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`var` kalit so'zi block scope-ga ega bo'lmagani uchun butun sikl davomida bitta umumiy `i` ishlatiladi. 100ms o'tgach callbacklar ishlaganda, `i` ning qiymati allaqachon `3` ga yetib bo'lgan bo'ladi. Har bir callback o'sha global `i` ning oxirgi qiymatini (3) o'qiydi."
+  },
+  {
+    "id": 10,
+    "question": "Yuqoridagi loop-da `0, 1, 2` chiqishi uchun qaysi o'zgartirishni kiritish eng oson yo'ldir?",
+    "options": [
+      "`var` so'zini `let` ga almashtirish",
+      "`setTimeout` vaqtini `0` qilish",
+      "`console.log` o'rniga `alert` yozish",
+      "Siklni teskari tomonga aylantirish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`let` kalit so'zi block scope-ga ega bo'lib, har bir sikl iteratsiyasi uchun yangi o'zgaruvchi va yangi leksik qamrov (scope) yaratadi. Natijada har bir callback o'zining shaxsiy `i` qiymatini saqlab qoladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod natijasini aniqlang:\n```javascript\nconst add = x => y => x + y;\nconsole.log(add(10)(20));\n```",
+    "options": [
+      "`NaN`",
+      "`undefined`",
+      "`30`",
+      "`TypeError: add(...) is not a function`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Bu Currying usulidir. `add(10)` chaqirilganda `x = 10` qiymatini yopilishda saqlab qolgan yangi funksiya qaytadi. Uni keyin `(20)` bilan chaqirganda natija `10 + 20 = 30` bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "Yopilishlardan foydalangandan so'ng xotirada ortiqcha havola (Memory leak) qolmasligi uchun nima qilish kerak?",
+    "options": [
+      "Funksiyani har doim `use strict` ichida yozish",
+      "Yopilishni ushlab turgan tashqi o'zgaruvchi havolasini `null` ga tenglash yoki o'chirish",
+      "Dasturni qayta yuklash",
+      "`delete` operatorini funksiyaga nisbatan ishlatish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar yopilish funksiyasiga havola qiluvchi o'zgaruvchini `null` qilsangiz, Garbage Collector unga bog'liq butun leksik qamrovni xotiradan tozalab yuboradi."
+  }
+]

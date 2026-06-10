@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Big O notatsiyasi (belgilanishi) nima uchun ishlatiladi?",
+    "options": [
+      "Koddagi sintaktik xatolarni avtomatik tuzatish uchun",
+      "Algoritmning kirish ma'lumotlari hajmi o'sishi bilan vaqt va xotira sarfi qanday o'zgarishini (o'sish sur'atini) ifodalash uchun",
+      "Dastur interfeysining chiroyli ko'rinishini ta'minlash uchun",
+      "Ma'lumotlar bazasidagi so'rovlarni tezlashtirish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Big O notatsiyasi algoritmning samaradorligini kirish o'lchami (n) kattalashganda uning vaqt yoki xotira sarfi qanchalik o'sishini matematik modellashtirish uchun ishlatiladi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi algoritmlardan qaysi biri doimiy vaqt murakkabligiga (O(1)) ega?",
+    "options": [
+      "Massivning o'rtasidagi elementni indeks orqali olish",
+      "Massivning barcha elementlarini konsolga chiqarish",
+      "Massiv ichidan ma'lum bir elementni qidirish",
+      "Massiv elementlarini o'sish tartibida saralash"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Massiv elementiga indeks bo'yicha murojaat qilish massiv hajmidan qat'i nazar darhol bajariladi, shuning uchun bu O(1) murakkablikka ega."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi kodning vaqt murakkabligi qanday?\n```javascript\nfor (let i = 0; i < n; i++) {\n  console.log(i);\n}\n```",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Sikl n marta aylanadi va har bir iteratsiyada O(1) operatsiya bajariladi. Jami operatsiyalar soni n ga to'g'ri proporsional, shuning uchun O(n)."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kodning umumiy vaqt murakkabligi nima bo'ladi?\n```javascript\nfor (let i = 0; i < n; i++) {\n  // O(1) kod\n}\nfor (let j = 0; j < n; j++) {\n  // O(1) kod\n}\n```",
+    "options": [
+      "O(n^2)",
+      "O(2n) yoki soddalashtirilganda O(n)",
+      "O(log n)",
+      "O(1)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ikkita yonma-yon sikl n + n = 2n marta bajariladi. Big O qoidasiga ko'ra konstantalar tashlab yuboriladi, shuning uchun murakkablik O(n) bo'ladi."
+  },
+  {
+    "id": 5,
+    "question": "Ichma-ich joylashgan ikkita sikl (har biri n gacha aylanadi) qanday vaqt murakkabligini hosil qiladi?",
+    "options": [
+      "O(n)",
+      "O(n log n)",
+      "O(2n)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Tashqi sikl n marta aylanganda ichki sikl ham har safar n marta aylanadi. Jami bajarilishlar soni n * n = n^2 bo'ladi, ya'ni kvadratik murakkablik (O(n^2))."
+  },
+  {
+    "id": 6,
+    "question": "Binary Search (Ikkilik qidiruv) algoritmining vaqt murakkabligi qanday?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n log n)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Binary Search har safar qidiruv maydonini yarmiga qisqartirib boradi, bu esa logarifmik o'sishga mos keladi, ya'ni O(log n)."
+  },
+  {
+    "id": 7,
+    "question": "Eng samarali saralash algoritmlarining (masalan, Merge Sort, Quick Sort o'rtacha holatda) vaqt murakkabligi nima?",
+    "options": [
+      "O(n)",
+      "O(n log n)",
+      "O(n^2)",
+      "O(2^n)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bo'l va hukmronlik qil (Divide and conquer) usuliga asoslangan Merge Sort kabi saralash algoritmlari O(n log n) vaqt murakkabligida ishlaydi."
+  },
+  {
+    "id": 8,
+    "question": "Rekursiv Fibonachchi ketma-ketligini hisoblash algoritmi (optimallashtirilmagan) qanday vaqt murakkabligiga ega?",
+    "options": [
+      "O(log n)",
+      "O(n)",
+      "O(n^2)",
+      "O(2^n)"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Har bir rekursiv chaqiriq o'zidan keyin yana ikkita rekursiv chaqiriqni amalga oshiradi, bu esa operatsiyalar daraxtini hosil qiladi va eksponentsial o'sishga (O(2^n)) olib keladi."
+  },
+  {
+    "id": 9,
+    "question": "Xotira murakkabligi (Space Complexity) nima?",
+    "options": [
+      "Dastur faylining diskdagi hajmi",
+      "Algoritm ishlashi davomida kirish ma'lumotlaridan tashqari qo'shimcha ravishda foydalanadigan tezkor xotira (RAM) miqdori",
+      "Ma'lumotlar bazasining diskdagi hajmi",
+      "Koddagi qatorlar soni"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Space Complexity algoritm o'z vazifasini bajarishi uchun qancha qo'shimcha xotira (xotirada yaratilgan yangi massivlar, o'zgaruvchilar, chaqiriqlar steki) talab qilishini o'lchaydi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi operatsiyalardan qaysi biri O(n) xotira murakkabligiga (Space Complexity) ega?",
+    "options": [
+      "Massiv elementlarini bitta o'zgaruvchi yordamida yig'ish",
+      "O'lchami n bo'lgan massivning barcha elementlaridan nusxa olib, yangi massiv yaratish",
+      "Ikki sonni bir-biriga ko'paytirish",
+      "Massivni o'z joyida (in-place) saralash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "O'lchami n bo'lgan yangi massiv yaratilganda xotiradan n ta element joy egallaydi, bu esa chiziqli xotira murakkabligi O(n) hisoblanadi."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun Big O da asosan eng yomon holat (Worst Case) tahlil qilinadi?",
+    "options": [
+      "Chunki dasturchilar doim xatolarga tayyor turishi kerak",
+      "Algoritm har qanday holatda ham kafolatlangan maksimal chegaradan (vaqtdan) ko'p vaqt olmasligini bilish uchun",
+      "Eng yomon holatni kodlash osonroq bo'lgani uchun",
+      "Worst Case faqat mobil dasturlar uchun muhim bo'lgani uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Eng yomon holat tahlili algoritm har qanday eng qiyin kirish ma'lumotida ham ma'lum bir vaqtdan oshib ketmasligiga kafolat beradi."
+  },
+  {
+    "id": 12,
+    "question": "Algoritm bajaradigan operatsiyalar soni f(n) = 5n^2 + 100n + 500 bo'lsa, uning Big O dagi soddalashtirilgan ko'rinishi qanday bo'ladi?",
+    "options": [
+      "O(500)",
+      "O(100n)",
+      "O(n^2)",
+      "O(n^2 + n)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Big O tahlilida faqat eng tez o'suvchi had (n^2) qoldiriladi va uning oldidagi o'zgarmas koeffitsiyentlar (5) hamda boshqa sekin o'suvchi hadlar (100n, 500) tashlab yuboriladi. Natija: O(n^2)."
+  }
+]

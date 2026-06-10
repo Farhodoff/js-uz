@@ -131,7 +131,7 @@ Kod yozishdan oldin input validatsiyasini va chekka holatlarni o'ylash kerak:
    * **Javob:** JS-da: \`s.split('').reverse().join('')\` yoki Two Pointer yordamida massivga o'girib, o'rinlarini almashtirish orqali.
 
 ### Middle (5–8)
-5. **Savol:** sliding Window (Sirpanuvchi oyna) texnikasi qachon ishlatiladi?
+5. **Savol:** Sliding Window (Sirpanuvchi oyna) texnikasi qachon ishlatiladi?
    * **Javob:** Massiv yoki satrning ketma-ket kelgan qismlarini (subarrays/substrings) tahlil qilishda, keraksiz takroriy hisoblashlarni oldini olish uchun.
 6. **Savol:** Linked List (Bog'langan ro'yxat) nima va uning massivdan afzalligi nimada?
    * **Javob:** Elementlari xotirada ketma-ket joylashmagan, har bir element keyingisiga ko'rsatkich (pointer) saqlaydigan tuzilma. Afzalligi — element qo'shish va o'chirish O(1) vaqt oladi.
@@ -152,15 +152,95 @@ Kod yozishdan oldin input validatsiyasini va chekka holatlarni o'ylash kerak:
 
 ---
 
-## 6. 🛠️ Amaliy Topshiriqlar
+## 6. 🎨 Interaktiv Vizual
 
-Ushbu bo'limdagi interaktiv muharrir yordamida Two Sum, Valid Parentheses va Best Time to Buy and Sell Stock masalalarini optimal usullarda yozib, test topshiriqlarini bajaring.
+LeetCode masalalarida yechimning tezligi kabi uning xotira strukturalari ustidagi amallari ham juda muhim.
+
+### 1. Two Sum: Hash Map va Massivning Xotira Holati
+
+\`twoSum([2, 7, 11], 9)\` masalasida:
+* **Stack**: Funksiya chaqiruvi local parametrlarni saqlaydi (\`nums = @100\`, \`target = 9\`).
+* **Heap \`@100\`**: Asl massiv \`[2, 7, 11]\`.
+* **Heap \`@200\`**: Biz yaratgan \`Map\` (Hash Table). 2 elementini ko'rganimizda uning jufti \`7\` ekanini bilamiz. \`Map\`-ga \`2: 0\` (qiymat -> indeks) juftligini yozamiz. 7 kelganda esa \`9 - 7 = 2\` ni \`Map\` ichidan $O(1)$ tezlikda qidirib topamiz.
+
+\`\`\`mermaid
+classDiagram
+    class StackFrame {
+        +nums : Ref @100
+        +target : 9
+        +map : Ref @200
+        +complement : 7
+    }
+    class Heap_Array {
+        +0 : 2
+        +1 : 7
+        +2 : 11
+    }
+    class Heap_Map {
+        +Key (2) : Value (0)
+    }
+    
+    StackFrame --> Heap_Array : points to
+    StackFrame --> Heap_Map : points to
+\`\`\`
+
+### 2. Valid Parentheses: Stack va LIFO Xotira Dinamikasi
+
+\`isValid("({[]})")\` satri tekshirilayotganda Stack-dagi o'zgarishlar:
+* Har bir ochiluvchi qavs Heap-dagi dinamik massivga (stakka) qo'shib boriladi (\`push\`).
+* Yopiluvchi qavs kelganda stakning eng oxirgi elementi olinadi (\`pop\`) va tekshiriladi.
+
+\`\`\`mermaid
+graph LR
+    subgraph Stack LIFO in Heap
+        direction TB
+        Node3["'[' (Top) <br/> Index 2"]
+        Node2["'{' <br/> Index 1"]
+        Node1["'(' <br/> Index 0"]
+        
+        Node3 --> Node2
+        Node2 --> Node1
+    end
+    
+    subgraph Input Parsing
+        direction LR
+        I1["'('"] --> I2["'{'"]
+        I2 --> I3["'['"]
+        I3 --> I4["']' <-- Current Char (Triggers POP)"]
+    end
+    
+    I4 -.->|"Compares & Pops"| Node3
+\`\`\`
+
+### 3. Best Time to Buy and Sell Stock: $O(1)$ Xotira bilan Optimal Ishlash
+
+Ushbu yechimda qo'shimcha massiv yoki obyekt yaratilmaydi. Hamma o'zgaruvchilar faqat **Stack** xotirada saqlanadi. Heap-dan faqat massiv elementlari o'qiladi. Xotira sarfi cheksiz n uchun ham bir xil ($O(1)$).
+
+\`\`\`mermaid
+graph TD
+    subgraph Stack Frame
+        MinPrice["minPrice = 1"]
+        MaxProfit["maxProfit = 5"]
+    end
+    
+    subgraph Heap Array prices = @500
+        P1["7"]
+        P2["1"]
+        P3["5"]
+        P4["3"]
+        P5["6"]
+        P6["4"]
+    end
+    
+    MinPrice -.->|"reads and updates"| P2
+    MaxProfit -.->|"calculates profit"| P5
+\`\`\`
 
 ---
 
-## 7. 📝 12 ta Mini Test
+## 7. 🛠️ Amaliy Topshiriqlar
 
-Bilimingizni mustahkamlash uchun dars oxiridagi 12 ta test savoli.
+Ushbu bo'limdagi interaktiv muharrir yordamida Two Sum, Valid Parentheses va Best Time to Buy and Sell Stock masalalarini optimal usullarda yozib, test topshiriqlarini bajaring.
 
 ---
 
@@ -198,7 +278,7 @@ class SyntaxValidator {
 ## 9. 🚀 Performance va Optimization
 
 * **O'rnatilgan metodlardan qochish:** Ba'zida \`Array.prototype.indexOf\` yoki \`.includes\` metodlarini tsikl ichida ishlatish bilmasdan O(n²) tezlikka olib kelishi mumkin. Ularning o'rniga Map/Set (O(1)) ishlatgan ma'qul.
-* **Xotira tejash (In-place changes):** Agar qo'shimcha xotira sarflash taqiqlangan bo'lsa (O(1) Space), massiv elementlarini yangi massivga ko'chirmasdan, Two Pointer texnikasi bilan joyida almashtiring.
+* **Xotira tejash (In-place changes):** Agar qo'shimcha xotira sarflash taqiqlangan bo'lsa (O(1) Space), massiv elementlarini vaqtinchalik massivga ko'chirmasdan, Two Pointer texnikasi bilan joyida almashtiring.
 
 ---
 
@@ -242,7 +322,7 @@ class SyntaxValidator {
   quizzes: [
   {
     "id": 1,
-    "question": "Two Sum masalasini Brute Force (kuch bilan) yechganda vaqt murakkabligi (Time Complexity) qanday bo'ladi?",
+    "question": "Two Sum masalasini Brute Force (kuch bilan) yechganda vaqt murakkabligi (Time Complexity) qanday bo'bali?",
     "options": [
       "O(n)",
       "O(n log n)",

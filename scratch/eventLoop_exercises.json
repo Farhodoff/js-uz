@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Sinxron va Asinxron Ketma-ketlik",
+    "instruction": "Quyidagi `scheduleLogs(logFn)` funksiyasini yozing. U berilgan `logFn` funksiyasini quyidagi tartibda chaqirsin:\n1. Birinchi bo'lib sinxron ravishda 'Start' qiymati bilan\n2. Keyin asinxron ravishda (setTimeout 0ms yordamida) 'Middle' qiymati bilan\n3. Oxirida sinxron ravishda 'End' qiymati bilan.",
+    "startingCode": "function scheduleLogs(logFn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "logFn('Start') va logFn('End') ni sinxron chaqiring. logFn('Middle') ni esa setTimeout ichiga joylashtiring.",
+    "test": "if (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\nconst sandbox = new Function(code + '; return scheduleLogs;');\nconst fn = sandbox();\nconst logs = [];\nconst logFn = (msg) => logs.push(msg);\nfn(logFn);\nif (logs.length === 2 && logs[0] === 'Start' && logs[1] === 'End') {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      if (logs.length === 3 && logs[2] === 'Middle') resolve(null);\n      else resolve('Ketma-ketlik xato yoki \"Middle\" asinxron chaqirilmadi');\n    }, 20);\n  });\n}\nreturn 'Sinxron qism to\\'g\\'ri bajarilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Promise va setTimeout yordamida Kechikish (Delay)",
+    "instruction": "Berilgan `ms` (millisekundlar) vaqt o'tganidan keyin resolve bo'ladigan Promise qaytaruvchi `delay(ms)` funksiyasini yozing.",
+    "startingCode": "function delay(ms) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Yangi Promise qaytaring va uning resolve funksiyasini setTimeout ichida ms vaqtdan keyin chaqiring.",
+    "test": "if (!code.includes('Promise') || !code.includes('setTimeout')) return 'Promise va setTimeout ikkalasi ham ishlatilishi shart';\nconst sandbox = new Function(code + '; return delay;');\nconst fn = sandbox();\nconst start = Date.now();\nreturn fn(50).then(() => {\n  const diff = Date.now() - start;\n  if (diff >= 40 && diff <= 120) return null;\n  return 'Kutish vaqti noto\\'g\\'ri yoki kechikish sodir bo\\'lmadi: ' + diff + 'ms';\n});"
+  },
+  {
+    "id": 3,
+    "title": "Funksiyani Asinxron Chaqirish",
+    "instruction": "Uzatilgan `fn` funksiyasini har doim asinxron ravishda (Event Loop navbatiga qo'yib) chaqiradigan `callAsync(fn)` funksiyasini yozing. Ya'ni `callAsync(fn)` chaqirilganda, u o'zidan keyingi sinxron kodlar ishlab bo'lganidan so'nggina `fn`ni bajarsin.",
+    "startingCode": "function callAsync(fn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "setTimeout(fn, 0) yordamida funksiyani asinxron navbatga qo'shishingiz mumkin.",
+    "test": "if (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\nconst sandbox = new Function(code + '; return callAsync;');\nconst fn = sandbox();\nlet called = false;\nfn(() => { called = true; });\nif (called === true) return 'Funksiya sinxron chaqirib yuborildi, asinxron bo\\'lishi kerak';\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (called === true) resolve(null);\n    else resolve('Funksiya umuman chaqirilmadi');\n  }, 10);\n});"
+  }
+]

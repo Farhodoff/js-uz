@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "`async` kalit so'zi funksiya oldidan qo'yilganda nima sodir bo'ladi?",
+    "options": [
+      "Funksiya sinxron rejimga o'tadi va tezroq ishlaydi",
+      "Funksiya har doim Promise (va'da) qaytaradigan bo'ladi",
+      "Funksiya avtomatik ravishda setTimeout ichiga o'raladi",
+      "Funksiya xotiradan butunlay o'chiriladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Funksiya oldiga `async` qo'yilganda, u har doim Promise qaytaradi. Agar funksiya ichida oddiy qiymat qaytarilsa ham, u avtomatik ravishda Promise.resolve() bilan o'raladi."
+  },
+  {
+    "id": 2,
+    "question": "`await` kalit so'zini qayerlarda ishlatish mumkin?",
+    "options": [
+      "Faqat `async` deb e'lon qilingan funksiyalar ichida (yoki top-level await qo'llab-quvvatlaydigan modullarda)",
+      "Istalgan oddiy funksiya yoki sikl (loop) ichida cheklovsiz",
+      "Faqat HTML fayl ichidagi script teglarida",
+      "Faqat klass konstruktori (constructor) ichida"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`await` kalit so'zi asinxron operatsiya tugashini kutish uchun faqat `async` funksiyalar ichida yoki modern ES modullarning eng yuqori darajasida (top-level await) ishlaydi."
+  },
+  {
+    "id": 3,
+    "question": "Agar `await` qilingan Promise 'rejected' (rad etilgan) holatga o'tsa, nima sodir bo'ladi?",
+    "options": [
+      "Dastur hech qanday xatosiz jim to'xtaydi",
+      "Promise avtomatik ravishda yana bir bor bajarilishga urinadi",
+      "Xatolik (exception) otiladi, uni try-catch bloki orqali tutish kerak",
+      "Brauzer o'z-o'zidan qayta yuklanadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Rad etilgan Promise `await` qilinganida xuddi oddiy xatolik otilgandek (`throw`) ishlaydi. Shuning uchun uni try-catch bloki yordamida boshqarish lozim."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kodda nima xato bor?\n`function show() { const data = await fetchDetails(); }`",
+    "options": [
+      "`await` faqat `async` funksiya ichida ishlatilishi kerak",
+      "`const` o'rniga `let` ishlatish shart",
+      "`fetchDetails` parametri berilmagan",
+      "Kodda xatolik yo'q, u to'g'ri ishlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`await` faqat asinxron funksiyalar ichida ishlaydi. Ushbu kod ishlashi uchun `async function show()` deb yozilishi kerak."
+  },
+  {
+    "id": 5,
+    "question": "Bir nechta asinxron so'rovlarni parallel bajarish va ularning barchasi tugashini kutish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "Promise.race()",
+      "setInterval()",
+      "async.parallel()",
+      "Promise.all()"
+    ],
+    "correctAnswer": 3,
+    "explanation": "`Promise.all()` bir nechta Promise massivini qabul qilib, ularning hammasi muvaffaqiyatli bajarilgandan so'ng umumiy natijani qaytaradi."
+  },
+  {
+    "id": 6,
+    "question": "Async/await qaysi fundamental JS obyekti ustiga qurilgan 'syntactic sugar' hisoblanadi?",
+    "options": [
+      "Promise (Va'dalar)",
+      "Array (Massivlar)",
+      "Closure (Yopilmalar)",
+      "Callback funksiyalar"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Async/await sintaksisi asinxron kodni chiroyli va tushunarli yozish uchun Promise API ustiga qurilgan qulaylikdir."
+  },
+  {
+    "id": 7,
+    "question": "`async` funksiya ichida oddiy qiymat qaytarganimizda (masalan `return 42;`), aslini olganda nima qaytadi?",
+    "options": [
+      "Oddiy son turi (Number)",
+      "Undefined qiymati",
+      "42 qiymati bilan hal qilingan (resolved) Promise obyekti",
+      "Promise.reject(42) obyekti"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`async` funksiyadan qaytgan har qanday qiymat Promise.resolve(qiymat) ko'rinishida Promise-ga o'raladi."
+  },
+  {
+    "id": 8,
+    "question": "Top-level await nima?",
+    "options": [
+      "ES modullarda async funksiyasiz to'g'ridan-to'g'ri eng yuqori darajada `await` ishlatish imkoniyati",
+      "Brauzerning eng yuqori qismida skroll qilish vaqtidagi asinxronlik",
+      "Barcha kutubxonalardan oldin Promise yuklash",
+      "Window obyektida global wait qilish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Zamonaviy JavaScript (ES modullar) tarkibida async funksiya yaratmasdan ham bevosita faylning o'zida `await` ishlatish imkoniyati Top-level await deb ataladi."
+  },
+  {
+    "id": 9,
+    "question": "Nima uchun class constructor-i ichida `async/await` ishlatib bo'lmaydi?",
+    "options": [
+      "Klasslar faqat sinxron kod uchun yaratilgan",
+      "Chunki konstruktor har doim yangi klass nusxasini (instance) qaytarishi shart, Promise emas",
+      "V8 dvigateli klasslarda asinxronlikni taqiqlaydi",
+      "JavaScript prototiplari asinxronlikni qo'llamaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Konstruktor yangi obyekt instance qaytarishi kerak. Agar u async qilinib Promise qaytarsa, new kalit so'zi kutilganidek ishlamaydi."
+  },
+  {
+    "id": 10,
+    "question": "Birinchi tugagan asinxron operatsiyaning natijasini olish kerak bo'lsa (qolganlarini kutmasdan), qaysi metoddan foydalaniladi?",
+    "options": [
+      "Promise.race()",
+      "Promise.all()",
+      "Promise.allSettled()",
+      "Promise.any()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Promise.race()` massivdagi eng birinchi bo'lib yakunlangan (resolved yoki rejected) Promise-ning natijasini qaytaradi."
+  },
+  {
+    "id": 11,
+    "question": "Asinxron siklda (for-await-of) qanday oqimlar yoki obyektlar bilan ishlash mumkin?",
+    "options": [
+      "Asinxron generatorlar va AsyncIterable obyektlar",
+      "Oddiy massivlar va obyektlar bilan faqat",
+      "DOM hodisalari bilan faqat",
+      "JSON fayllar bilan faqat"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`for await...of` sikli asinxron oqimlar, generatsiyalar va AsyncIterable interfeysiga ega bo'lgan obyeklar ustida aylanish uchun mo'ljallangan."
+  },
+  {
+    "id": 12,
+    "question": "async/await yordamida yozilgan asinxron kodning callback-larga nisbatan eng asosiy ustunligi nimada?",
+    "options": [
+      "Kod tezroq ishlaydi va kamroq protsessor kuchi talab qiladi",
+      "Kodning o'qilishi osonroq (sinxron kod kabi ko'rinadi) va 'callback hell' muammosi hal bo'ladi",
+      "Xatoliklarni mutlaqo yuzaga keltirmaydi",
+      "Tarmoq so'rovlarini avtomatik ravishda takrorlaydi (retry)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Async/await asinxron kodni go'yo sinxron kod kabi tekis va chiziqli ko'rinishda yozish imkonini berib, o'qiluvchanlikni oshiradi va chuqur callback zanjirlaridan qutqaradi."
+  }
+]

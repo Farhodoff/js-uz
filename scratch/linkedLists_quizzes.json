@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Singly Linked List (Bir tomonlama bog'langan ro'yxat) nima?",
+    "options": [
+      "Barcha elementlari xotirada ketma-ket kataklarda joylashadigan ma'lumotlar tuzilmasi",
+      "Har bir elementi qiymat va faqat keyingi elementga havola (pointer) saqlaydigan tugunlar zanjiri",
+      "Elementlari faqat ota-bola munosabatida bo'lgan daraxtsimon tuzilma",
+      "Faqat raqamlardan iborat saralangan massiv"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Singly Linked List har bir tuguni (Node) o'z qiymati (value) va keyingi tugunga havola (next) saqlaydigan chiziqli ma'lumotlar tuzilmasidir."
+  },
+  {
+    "id": 2,
+    "question": "Massiv (Array) va Bog'langan Ro'yxat (Linked List) o'rtasidagi eng asosiy xotira farqi nimada?",
+    "options": [
+      "Massiv xotirada ketma-ket kataklarda joylashadi, Linked List tugunlari esa xotiraning ixtiyoriy tarqoq joylarida joylashishi mumkin",
+      "Linked List xotiradan mutlaqo joy egallamaydi",
+      "Massiv faqat statik xotirada, Linked List esa faqat kesh xotirada saqlanadi",
+      "Massivda elementlar havolalar yordamida bog'lanadi, Linked Listda esa indeks yordamida"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Massivlar xotiradan ketma-ket bo'sh joy (contiguous block of memory) talab qiladi, Linked List esa xotira bo'ylab tarqoq holda bo'lib, havolalar orqali bog'lanadi."
+  },
+  {
+    "id": 3,
+    "question": "Bog'langan ro'yxatning boshiga (Head) yangi tugun qo'shish operatsiyasining vaqt murakkabligi qanday?",
+    "options": [
+      "O(n)",
+      "O(log n)",
+      "O(1)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Head-ga yangi element qo'shish uchun faqat yangi tugunning `next` xossasini eski head-ga yo'naltirish kifoya. Bu massiv hajmidan qat'i nazar doimiy vaqt O(1) oladi."
+  },
+  {
+    "id": 4,
+    "question": "Agar bizda `tail` (oxirgi tugun) ko'rsatkichi bo'lmasa, ro'yxat oxiriga yangi tugun qo'shish qanday vaqt oladi?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Tail ko'rsatkichi bo'lmasa, ro'yxat oxirini topish uchun boshidan oxirigacha traversal (aylanib o'tish) qilish kerak, bu O(n) vaqt oladi."
+  },
+  {
+    "id": 5,
+    "question": "Doubly Linked List (Ikki tomonlama bog'langan ro'yxat) Singly Linked List-dan nima bilan farq qiladi?",
+    "options": [
+      "U faqat sonli ma'lumotlarni saqlaydi",
+      "Uning har bir tuguni ham keyingi (next), ham oldingi (prev) tugunga havola saqlaydi",
+      "U faqat bitta tugundan iborat bo'ladi",
+      "U xotirada ketma-ket joylashadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Doubly Linked List tugunlari ikkita ko'rsatkichga ega bo'ladi: `.next` (keyingi tugun) va `.prev` (oldingi tugun). Bu ro'yxat bo'ylab ikki tomonga ham harakatlanish imkonini beradi."
+  },
+  {
+    "id": 6,
+    "question": "Bog'langan ro'yxatda ma'lum bir elementni qiymati bo'yicha qidirish (Search) yoki indeks bo'yicha olish (Lookup) murakkabligi qanday?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n log n)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Linked Listda tasodifiy kirish (random access) yo'q. Istalgan elementni olish uchun boshidan boshlab bittalab o'tib borish kerak, bu eng yomon holatda O(n) vaqt oladi."
+  },
+  {
+    "id": 7,
+    "question": "Floyd's Cycle-Finding algoritmi qanday nom bilan ham mashhur?",
+    "options": [
+      "Toshbaqa va Quyon (Tortoise and Hare) algoritmi",
+      "Tezkor saralash algoritmi",
+      "Chuqurlik bo'yicha qidiruv (DFS)",
+      "Ikki karrali ko'rsatkichlar simulyatsiyasi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Floyd tsikl topish algoritmi ikki xil tezlikdagi ko'rsatkichlar (sekin - Toshbaqa va tezkor - Quyon) ishlatilgani uchun 'Tortoise and Hare' deb ataladi."
+  },
+  {
+    "id": 8,
+    "question": "Floyd algoritmi yordamida tsiklni aniqlashda qo'shimcha xotira murakkabligi (Space Complexity) qanday bo'ladi?",
+    "options": [
+      "O(1) - faqat ikkita ko'rsatkich uchun xotira ishlatiladi",
+      "O(n) - babrasini Set-ga saqlab borish kerak",
+      "O(log n) - rekursiya steki ishlatiladi",
+      "O(n^2)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Floyd algoritmi yangi ma'lumotlar tuzilmasi (Set yoki massiv kabi) yaratmaydi, faqatgina ikkita ko'rsatkich o'zgaruvchisidan foydalanadi, shuning uchun xotira murakkabligi O(1) dir."
+  },
+  {
+    "id": 9,
+    "question": "Bog'langan ro'yxatni teskari qilish (Reverse) algoritmining vaqt murakkabligi qanday?",
+    "options": [
+      "O(1)",
+      "O(n)",
+      "O(n^2)",
+      "O(2^n)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ro'yxatni teskari qilish uchun har bir tugunning havolasini (next) bir marta o'zgartirib chiqish yetarli, bu O(n) vaqtni talab qiladi."
+  },
+  {
+    "id": 10,
+    "question": "Floyd tsikl aniqlash algoritmida tezkor ko'rsatkich (fast) har iteratsiyada necha qadam siljiydi?",
+    "options": [
+      "1 qadam",
+      "2 qadam",
+      "3 qadam",
+      "Tasodifiy qadam"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Floyd algoritmida `slow` ko'rsatkichi har qadamda 1 ta tugunga, `fast` esa 2 ta tugunga siljiydi. Agar tsikl bo'lsa, ular albatta to'qnashadi."
+  },
+  {
+    "id": 11,
+    "question": "Singly Linked List-da zanjirning eng oxirgi tugunining `next` ko'rsatkichi nimaga teng bo'ladi?",
+    "options": [
+      "`undefined`",
+      "`null`",
+      "Bosh tugunga (`head`) qaytadi",
+      "`0`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Singly Linked List oxirgi tugunidan keyin hech qanday element yo'qligini bildirish uchun uning `.next` qiymati standart bo'yicha `null` ga teng bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "Linked List massivga nisbatan qo'shimcha xotira sarflaydi. Bunga sabab nima?",
+    "options": [
+      "Elementlar faqat dynamic xotirada saqlanishi",
+      "Har bir tugun ma'lumot qiymatidan tashqari havolalar (ko'rsatkichlar) uchun ham xotirada joy egallashi",
+      "U faqat o'nlik sanoq tizimida ishlashi",
+      "Brauzer keshini tez-tez tozalab turishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massivda faqat qiymatlar saqlansa, Linked List-da har bir qiymat bilan birga uning keyingi/oldingi elementga havolalari (ko'rsatkichlari) ham saqlanishi tufayli har bir Node qo'shimcha baytlar talab qiladi."
+  }
+]

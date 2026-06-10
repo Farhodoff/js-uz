@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Valyutani Formatlash (NumberFormat)",
+    "instruction": "Taqdim etilgan sonni ('amount') 'uz-UZ' lokali va 'UZS' valyuta kodi yordamida formatlovchi 'formatUZS(amount)' funksiyasini yozing.",
+    "startingCode": "function formatUZS(amount) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return new Intl.NumberFormat('uz-UZ', { style: 'currency', currency: 'UZS' }).format(amount);",
+    "test": "if (!code.includes('NumberFormat')) return 'NumberFormat ishlatilmadi';\nconst sandbox = new Function(code + '; return formatUZS;');\nconst fn = sandbox();\nconst res = fn(1000);\nif (typeof res === 'string' && (res.includes('UZS') || res.includes('so\\'m'))) return null;\nreturn 'UZS formatlash noto\\'g\\'ri';"
+  },
+  {
+    "id": 2,
+    "title": "Nisbiy Vaqt (RelativeTimeFormat)",
+    "instruction": "Berilgan minutlar sonini ('minutes') 'uz-UZ' lokalida 'auto' numeric ko'rinishida formatlovchi 'formatMinutesAgo(minutes)' funksiyasini yozing. U manfiy qiymat bilan format qilishi kerak (ya'ni -minutes soniya/daqiqa oldin).",
+    "startingCode": "function formatMinutesAgo(minutes) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "const rtf = new Intl.RelativeTimeFormat('uz-UZ', { numeric: 'auto' }); return rtf.format(-minutes, 'minute');",
+    "test": "if (!code.includes('RelativeTimeFormat')) return 'RelativeTimeFormat ishlatilmadi';\nconst sandbox = new Function(code + '; return formatMinutesAgo;');\nconst fn = sandbox();\nconst res = fn(5);\nif (typeof res === 'string' && res.includes('daqiqa')) return null;\nreturn 'Nisbiy vaqt noto\\'g\\'ri formatlandi';"
+  },
+  {
+    "id": 3,
+    "title": "Sana Formatlash (DateTimeFormat)",
+    "instruction": "Berilgan Date obyektini ('date') 'uz-UZ' lokalida 'long' dateStyle bo'yicha formatlovchi 'formatToUzbekDate(date)' funksiyasini yozing.",
+    "startingCode": "function formatToUzbekDate(date) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return new Intl.DateTimeFormat('uz-UZ', { dateStyle: 'long' }).format(date);",
+    "test": "if (!code.includes('DateTimeFormat')) return 'DateTimeFormat ishlatilmadi';\nconst sandbox = new Function(code + '; return formatToUzbekDate;');\nconst fn = sandbox();\nconst res = fn(new Date('2026-06-10'));\nif (typeof res === 'string' && res.includes('2026') && res.includes('iyun')) return null;\nreturn 'Sana formatlash xato';"
+  }
+]

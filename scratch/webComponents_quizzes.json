@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Web Components nima?",
+    "options": [
+      "Faqat React loyihalarida ishlatiladigan komponentlar to'plami",
+      "Brauzer darajasida ishlaydigan, qayta ishlatiluvchi va inkapsulyatsiya qilingan HTML teglarini yaratishga imkon beruvchi texnologiyalar to'plami",
+      "CSS frameworklarining yangi nomi",
+      "Node.js server kutubxonasi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web Components — bu hech qanday frameworklarsiz (React, Vue) brauzerning o'zida yangi, maxsus HTML teglarini (Custom Elements) yaratish texnologiyasidir."
+  },
+  {
+    "id": 2,
+    "question": "Custom element yaratilganda uning nomi uchun qanday majburiy qoida mavjud?",
+    "options": [
+      "Nom faqat bosh harflardan iborat bo'lishi kerak",
+      "Nomda kamida bitta tire (chiziqcha, '-') belgisi bo'lishi shart",
+      "Nom majburiy ravishda 'custom_' so'zi bilan boshlanishi kerak",
+      "Maxsus qoidalar yo'q, xohlagan nomdan foydalanish mumkin"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Custom element nomlarida standart HTML teglaridan (masalan, `div`, `span`) ajralib turishi uchun kamida bitta tire bo'lishi shart (masalan: `my-card`, `custom-button`)."
+  },
+  {
+    "id": 3,
+    "question": "Custom elementning qaysi hayotiy sikl (lifecycle) metodi u DOM-ga qo'shilganda avtomatik chaqiriladi?",
+    "options": [
+      "`constructor()`",
+      "`connectedCallback()`",
+      "`disconnectedCallback()`",
+      "`attributeChangedCallback()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`connectedCallback()` custom element DOM daraxtiga muvaffaqiyatli qo'shilganda ishga tushadi va bu yerda odatda boshlang'ich renderlash ishlari amalga oshiriladi."
+  },
+  {
+    "id": 4,
+    "question": "Shadow DOM-ning asosiy vazifasi nima?",
+    "options": [
+      "Sahifadagi elementlarni to'liq qoraytirish (Dark mode)",
+      "HTML, CSS va JS kodlarini inkapsulyatsiya qilish (tashqi CSS va JS kodi komponent ichiga ta'sir qilmasligi va aksincha)",
+      "Ma'lumotlar bazasidan ma'lumotlarni yashirincha yuklash",
+      "JS fayllarini siqib berish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Shadow DOM komponentning ichki qismini alohida muhitda saqlaydi, bu esa stillarning tashqi dunyo bilan to'qnashmasligini (CSS encapsulation) ta'minlaydi."
+  },
+  {
+    "id": 5,
+    "question": "Custom element sahifadan (DOM-dan) o'chirilganda qaysi lifecycle metod chaqiriladi?",
+    "options": [
+      "`connectedCallback()`",
+      "`disconnectedCallback()`",
+      "`adoptedCallback()`",
+      "`destroyCallback()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`disconnectedCallback()` element DOM-dan o'chirilganda ishlaydi. Bu yerda xotira oqishini (memory leaks) oldini olish uchun event listener va taymerlar tozalanadi."
+  },
+  {
+    "id": 6,
+    "question": "Shadow DOM-da `mode: 'open'` va `mode: 'closed'` o'rtasidagi farq nima?",
+    "options": [
+      "`open` rejimida shadow root-ga tashqi JS fayllardan `element.shadowRoot` orqali kirish mumkin, `closed` rejimida esa kirib bo'lmaydi (null qaytadi)",
+      "`open` rejimida CSS stillari ishlaydi, `closed` rejimida faqat HTML ko'rinadi",
+      "`open` rejimini o'zgartirib bo'lmaydi, `closed` rejimini o'zgartirsa bo'ladi",
+      "Hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`open` rejimi tashqaridan shadow DOM-ga kirish imkonini beradi. `closed` rejimida esa `shadowRoot` xossasi tashqaridan yopiq bo'ladi va unga faqat komponent ichida murojaat qilish mumkin."
+  },
+  {
+    "id": 7,
+    "question": "Web Components-da `<template>` tegining xususiyati nimada?",
+    "options": [
+      "U sahifa yuklanishi bilan darhol ekranda render bo'ladi",
+      "Uning ichidagi HTML brauzer tomonidan yuklanadi, lekin foydalanuvchiga ko'rsatilmaydi va faqat JS orqali nusxalab olingandan keyingina ishlaydi",
+      "U faqat CSS kodlarini yozish uchun ishlatiladi",
+      "U ma'lumotlarni serverga yuborish uchun ishlatiladigan formadir"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`<template>` tegi ichidagi tarkib sahifada ko'rinmaydi. U shablon sifatida xizmat qiladi va JS orqali klonlanib (`cloneNode(true)`) DOM-ga qo'shiladi."
+  },
+  {
+    "id": 8,
+    "question": "Web Components shablonlarida `<slot>` nima vazifani bajaradi?",
+    "options": [
+      "U faqat o'yin o'ynash uchun ishlatiladi",
+      "Tashqaridan kelgan HTML kontentni komponent ichidagi ma'lum bir joyga joylashtirish (placeholder) uchun ishlatiladi",
+      "U elementlarning joylashuvini avtomatik to'g'rilaydi",
+      "U serverdan keladigan so'rovlarni qabul qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Slot — bu komponent shablonidagi joy ochuvchi (placeholder) bo'lib, komponent ichiga tashqaridan berilgan HTML tarkibini mos ravishda joylashtiradi (Content projection)."
+  },
+  {
+    "id": 9,
+    "question": "Custom elementda attribut o'zgarishini kuzatish uchun qaysi metodlar juftligi ishlatiladi?",
+    "options": [
+      "`watchAttributes` va `updateCallback`",
+      "`static get observedAttributes()` va `attributeChangedCallback()`",
+      "`addEventListener` va `dispatchEvent`",
+      "`onAttributeChange` va `render`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kuzatiladigan atributlar `static get observedAttributes()` massivida qaytariladi va ular o'zgarganda `attributeChangedCallback(name, oldVal, newVal)` avtomatik ravishda chaqiriladi."
+  },
+  {
+    "id": 10,
+    "question": "Shadow DOM ichidan turib, komponentning o'ziga (host elementiga) stil berish uchun qaysi CSS selektori ishlatiladi?",
+    "options": [
+      "`:root`",
+      "`:host`",
+      "`:self`",
+      "`::shadow-parent`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Shadow DOM-da `:host` CSS psevdo-klassi komponentning o'zini (ya'ni shadow root biriktirilgan tashqi elementni) tanlash uchun ishlatiladi."
+  },
+  {
+    "id": 11,
+    "question": "Custom Elementni ro'yxatdan o'tkazganda xatolik yuz bermasligi uchun qaysi klassdan voris olish shart?",
+    "options": [
+      "`Object`",
+      "`HTMLElement`",
+      "`HTMLDivElement` yoki uning hosilalari",
+      "Faqat `HTMLElement` (yoki uning maxsus sub-klasslari, masalan `HTMLButtonElement` kabi)"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Barcha custom elementlar `HTMLElement` klassidan yoki uning aniqroq HTML element hosilalaridan (masalan, `HTMLParagraphElement`) voris olgan bo'lishi kerak."
+  },
+  {
+    "id": 12,
+    "question": "Tashqaridan komponent ichidagi ma'lum bir slotga yo'naltirilgan elementni Shadow DOM ichidan turib qanday stilize qilish mumkin?",
+    "options": [
+      "`::slot`",
+      "`::slotted()`",
+      "`:assigned-nodes`",
+      "`::content`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`::slotted(selector)` psevdo-elementi komponent slotiga joylashtirilgan (tashqi) elementlarga nisbatan Shadow DOM ichidan stil yozish imkonini beradi."
+  }
+]

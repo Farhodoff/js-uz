@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Microtask va Macrotask Navbati",
+    "instruction": "Quyidagi `scheduleMicroAndMacro(logFn)` funksiyasini yozing. U berilgan `logFn` funksiyasini quyidagi tartibda chaqirishi kerak:\n1. Sinxron ravishda 'sync' qiymati bilan.\n2. Macrotask navbatida (setTimeout orqali 0ms) 'macro' qiymati bilan.\n3. Microtask navbatida (Promise orqali) 'micro' qiymati bilan.",
+    "startingCode": "function scheduleMicroAndMacro(logFn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "logFn('sync') ni sinxron chaqiring. setTimeout yordamida macro-ni rejalashtiring. Promise.resolve().then() yordamida micro-ni rejalashtiring.",
+    "test": "if (!code.includes('Promise') || !code.includes('setTimeout')) return 'Promise va setTimeout ikkalasi ham ishlatilishi shart';\nconst sandbox = new Function(code + '; return scheduleMicroAndMacro;');\nconst fn = sandbox();\nconst logs = [];\nconst logFn = (msg) => logs.push(msg);\nfn(logFn);\nif (logs.length === 1 && logs[0] === 'sync') {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      if (logs.length === 3 && logs[1] === 'micro' && logs[2] === 'macro') resolve(null);\n      else resolve('Microtask va Macrotask navbati noto\\'g\\'ri: ' + logs.join(', '));\n    }, 50);\n  });\n}\nreturn 'Sinxron qism noto\\'g\\'ri bajarildi';"
+  },
+  {
+    "id": 2,
+    "title": "queueMicrotask yordamida Microtask yaratish",
+    "instruction": "JavaScript-ning mahalliy `queueMicrotask(fn)` API-sidan foydalanib, berilgan `fn` funksiyasini microtask navbatiga qo'shuvchi `runMicrotask(fn)` funksiyasini yozing.",
+    "startingCode": "function runMicrotask(fn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "queueMicrotask(fn) ni to'g'ridan-to'g'ri chaqiring.",
+    "test": "if (!code.includes('queueMicrotask')) return 'queueMicrotask API-sidan foydalanilmadi';\nconst sandbox = new Function(code + '; return runMicrotask;');\nconst fn = sandbox();\nlet called = false;\nfn(() => { called = true; });\nif (called === true) return 'Funksiya sinxron ishga tushib ketdi, u microtask bo\\'lishi kerak';\nlet order = [];\nfn(() => order.push('micro'));\nsetTimeout(() => order.push('macro'), 0);\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (order[0] === 'micro' && order[1] === 'macro') resolve(null);\n    else resolve('Microtask macrotaskdan oldin ishga tushmadi');\n  }, 20);\n});"
+  },
+  {
+    "id": 3,
+    "title": "Aralash Asinxronlikni Boshqarish",
+    "instruction": "Ikkita callback qabul qiladigan `executeMixed(cb1, cb2)` funksiyasini yozing. U `cb1` callback-ini microtask navbatida, `cb2` callback-ini esa macrotask navbatida ishga tushirishi kerak. Buni amalga oshirishda Promise va setTimeout lardan foydalaning.",
+    "startingCode": "function executeMixed(cb1, cb2) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "cb1 ni Promise.resolve().then(cb1) yoki queueMicrotask(cb1) ichida, cb2 ni esa setTimeout(cb2, 0) ichida chaqiring.",
+    "test": "if (!code.includes('setTimeout') || (!code.includes('Promise') && !code.includes('queueMicrotask'))) return 'Kerakli asinxron mexanizmlar (setTimeout va Promise/queueMicrotask) ishlatilmadi';\nconst sandbox = new Function(code + '; return executeMixed;');\nconst fn = sandbox();\nlet order = [];\nfn(() => order.push('micro'), () => order.push('macro'));\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (order[0] === 'micro' && order[1] === 'macro') resolve(null);\n    else resolve('Tartib noto\\'g\\'ri: ' + order.join(', '));\n  }, 20);\n});"
+  }
+]

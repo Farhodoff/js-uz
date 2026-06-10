@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "HTMLMediaElement interfeysida media faylni dasturiy o'ynatish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "media.start()",
+      "media.play()",
+      "media.resume()",
+      "media.begin()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "play() metodi HTMLMediaElement (audio/video) ijro etilishini boshlaydi va Promise obyekti qaytaradi."
+  },
+  {
+    "id": 2,
+    "question": "Media elementini vaqtincha to'xtatish uchun qaysi metod chaqiriladi?",
+    "options": [
+      "media.stop()",
+      "media.halt()",
+      "media.pause()",
+      "media.break()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "pause() metodi medianing ijro etilishini to'xtatib turadi, ammo currentTime qiymatini nolga qaytarmaydi (o'sha joydan davom ettirish mumkin)."
+  },
+  {
+    "id": 3,
+    "question": "Media ijro etilayotganda joriy vaqt o'zgarishini real-vaqtda kuzatish uchun qaysi hodisa (event) ishlatiladi?",
+    "options": [
+      "progress",
+      "timeupdate",
+      "playing",
+      "change"
+    ],
+    "correctAnswer": 1,
+    "explanation": "timeupdate hodisasi media ijro etilayotgan vaqtda currentTime xususiyati o'zgarganda tez-tez (sekundiga bir necha marta) ishga tushadi."
+  },
+  {
+    "id": 4,
+    "question": "Ijro etish tezligini 2 barobar tezlashtirish uchun qaysi xususiyat qanday o'zgartiriladi?",
+    "options": [
+      "media.playbackRate = 2.0;",
+      "media.speed = 2;",
+      "media.rate = 200%;",
+      "media.velocity = 2;"
+    ],
+    "correctAnswer": 0,
+    "explanation": "playbackRate xususiyati medianing ijro etilish tezligini belgilaydi. Standart qiymat 1.0 bo'lib, 2.0 uni ikki barobar tezlashtiradi."
+  },
+  {
+    "id": 5,
+    "question": "Ovoz balandligi (volume) uchun qabul qilinadigan qiymatlar diapazoni qanday?",
+    "options": [
+      "0 dan 100 gacha bo'lgan butun sonlar",
+      "0.0 dan 1.0 gacha bo'lgan o'nlik sonlar",
+      "-1.0 dan 1.0 gacha bo'lgan sonlar",
+      "Cheklov yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "volume xususiyati faqat 0.0 (mutloq ovozsiz) dan 1.0 (maksimal balandlik) oralig'idagi float son bo'lishi mumkin."
+  },
+  {
+    "id": 6,
+    "question": "Nima uchun media elementining 'duration' xususiyati sahifa yuklanishi bilan darhol o'qilganda NaN qaytishi mumkin?",
+    "options": [
+      "Audio/Video fayl buzilgan bo'lsa",
+      "Brauzer hali medianing o'lchami va vaqti haqidagi metama'lumotlarni yuklamagan bo'lsa",
+      "Ovoz o'chirilgan (muted) bo'lsa",
+      "duration xususiyati faqat audio uchun mavjud bo'lib, video uchun ishlamasa"
+    ],
+    "correctAnswer": 1,
+    "explanation": "duration va o'lchamlar loadedmetadata hodisasi yuz berganidan keyingina aniq yuklanib bo'ladi. Ungacha bo'lgan vaqtda NaN qaytadi."
+  },
+  {
+    "id": 7,
+    "question": "Media fayl tugaganligini aniqlash uchun qaysi xususiyatdan foydalaniladi (boolean qiymat)?",
+    "options": [
+      "media.finished",
+      "media.ended",
+      "media.completed",
+      "media.isOver"
+    ],
+    "correctAnswer": 1,
+    "explanation": "ended xususiyati agar media ijrosi o'z oxiriga yetgan bo'lsa true, aks holda false qiymatini qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "Media manbaini dinamik o'zgartirgandan so'ng, uni brauzerda yuklashni boshlash uchun qaysi metod chaqiriladi?",
+    "options": [
+      "media.load()",
+      "media.reload()",
+      "media.fetch()",
+      "media.update()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "load() metodi media elementini yangidan ishga tushiradi va va yangi manbani (src) keshdan yoki tarmoqdan yuklaydi."
+  },
+  {
+    "id": 9,
+    "question": "Ovozni butunlay o'chirish (mute) uchun qaysi xususiyat ishlatiladi?",
+    "options": [
+      "media.volume = 0;",
+      "media.muted = true;",
+      "Ikkala usul ham foydalaniladi, ammo muted = true ovoz balandligi xotirasini saqlab qoladi",
+      "media.silence = true;"
+    ],
+    "correctAnswer": 2,
+    "explanation": "muted = true ovozni o'chiradi, lekin volume darajasini o'zgartirmaydi, ya'ni qayta yoqqanda avvalgi balandlik tiklanadi. volume = 0 va ovoz balandligini yo'qotadi."
+  },
+  {
+    "id": 10,
+    "question": "Media pleyerning tugashi bilash boshidan takror o'ynashi uchun loop xususiyati qanday sozlanadi?",
+    "options": [
+      "media.loop = true;",
+      "media.repeat = true;",
+      "media.autoplay = true;",
+      "media.cycle = true;"
+    ],
+    "correctAnswer": 0,
+    "explanation": "loop xususiyati boolean tipida bo'lib, unga true berilsa media tugashi bilanoq avtomatik tarzda qaytadan o'ynashni boshlaydi."
+  },
+  {
+    "id": 11,
+    "question": "Videoni avtomatik o'ynatish (autoplay) muvaffaqiyatli bo'lishi uchun qaysi shart bajarilishi kerak?",
+    "options": [
+      "Video faqat yuqori sifatli bo'lishi kerak",
+      "Video ovozsiz (muted = true) holatda bo'lishi lozim",
+      "Sahifada kamida bitta tugma bo'lishi shart",
+      "Video autoplay atributiga ega bo'lmasa ishlamaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Zamonaviy brauzerlar ovozli kontentlarning foydalanuvchi ruxsatisiz avtomatik o'ynalishini taqiqlaydi. Shuning uchun muted qilingan media autoplay bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "Volume darajasi o'zgarganligini eshitish uchun qaysi event ishlatiladi?",
+    "options": [
+      "change",
+      "volumechange",
+      "mutechange",
+      "soundupdate"
+    ],
+    "correctAnswer": 1,
+    "explanation": "volumechange hodisasi volume yoki muted xususiyatlari o'zgarganda ishga tushadi."
+  }
+]

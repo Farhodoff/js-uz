@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Garbage Collector (Axlat yig'uvchi) yopilish (closure) ichidagi tashqi o'zgaruvchilarni qachon xotiradan tozalaydi?",
+    "options": [
+      "Tashqi funksiya bajarilib bo'lishi bilanoq",
+      "Ichki funksiyaga (yopilishga) bo'lgan barcha havolalar (references) butunlay yo'qolganda yoki null bo'lganda",
+      "Faqat brauzer sahifasi yangilanganda",
+      "Har 5 daqiqada avtomatik tarzda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Garbage Collector faqat obyekt yoki funksiyaga hech qanday faol havola qolmagan taqdirdagina uni va uning leksik muhitini xotiradan tozalaydi."
+  },
+  {
+    "id": 2,
+    "question": "V8 dvigateli closures bo'yicha qanday xotira optimallashtirishini amalga oshiradi?",
+    "options": [
+      "Barcha o'zgaruvchilarni matn (string) shakliga o'tkazadi",
+      "Ichki funksiyada ishlatilmagan tashqi o'zgaruvchilarni leksik muhitdan (Lexical Environment) olib tashlaydi va xotirada saqlamaydi",
+      " closures ichidagi o'zgaruvchilarni Stack-ga ko'chiradi",
+      "Hech qanday optimallashtirish qilmaydi, hamma o'zgaruvchilar to'liq saqlanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Modern JS dvigatellari (V8 kabi) leksik muhitni tahlil qilib, ichki funksiya tomonidan murojaat qilinmagan o'zgaruvchilarni xotirada saqlamaydi."
+  },
+  {
+    "id": 3,
+    "question": "Meteor JS freymvorkida aniqlangan mashhur 'Closure Memory Leak' (Jorj Beyli muammosi) nima sababdan sodir bo'ladi?",
+    "options": [
+      "Katta massivlarni `.forEach()` orqali aylanishdan",
+      "Bitta tashqi funksiya ichida yaratilgan bitta closure katta hajmdagi ma'lumotni ushlab qolsa va ikkinchi closure global miqyosda saqlansa, ikkalasi bitta Lexical Environment obyekti bilan bo'lishgani uchun katta ma'lumot ham xotirada qolib ketadi",
+      "`setTimeout` vaqtini juda kichik qilib belgilashdan",
+      "Global o'zgaruvchilarni `const` bilan e'lon qilmaganlikdan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bitta tashqi funksiyadan qaytgan closures umumiy Lexical Environment obyekti bilan bog'lanadi. Agar bir closure ulkan ma'lumotni ushlab tursa va ikkinchisi yashashda davom etsa, butun leksik muhit (shu jumladan ulkan ma'lumot) xotirada qolib ketadi."
+  },
+  {
+    "id": 4,
+    "question": "Detached DOM elementlari closures ichida qanday xavf tug'diradi?",
+    "options": [
+      "Sahifaning CSS stillarini buzib yuboradi",
+      "DOM element sahifadan o'chirilgan bo'lsa ham, closure unga bo'lgan havolani saqlab qolgani uchun u xotiradan o'chmaydi (Detached DOM Tree leak)",
+      "Hech qanday xavfi yo'q, xotira avtomat tozalanadi",
+      "Faqat Internet Explorer brauzerida xatolik beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar closure ichida DOM elementi saqlangan bo'lsa va keyin u element `remove()` qilinsa ham, closure havolasi tufayli Garbage Collector uni xotiradan chiqara olmaydi."
+  },
+  {
+    "id": 5,
+    "question": "Closures bilan bog'liq o'zgaruvchilar va leksik muhitlar xotiraning qaysi qismida (Heap yoki Stack) saqlanadi?",
+    "options": [
+      "Faqat Stack xotirasida",
+      "Hech qayerda saqlanmaydi, dynamic hisoblanadi",
+      "Heap (uyum) xotirasida, chunki ularning yashash muddati funksiya bajarilishidan uzunroq bo'lishi mumkin",
+      "CPU kesh xotirasida"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Oddiy lokal o'zgaruvchilar Call Stack-da saqlanishi mumkin, ammo yopilish (closure) vujudga kelganda, leksik muhit Heap xotirasiga ko'chiriladi, chunki uning qachon o'chirilishi noma'lum bo'ladi."
+  },
+  {
+    "id": 6,
+    "question": "Chrome DevTools-ning qaysi paneli orqali closures sabab bo'lgan xotira oqishlarini (Memory Leak) tahlil qilish mumkin?",
+    "options": [
+      "Network paneli",
+      "Memory paneli (Heap Snapshot yordamida)",
+      "Elements paneli",
+      "Security paneli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Memory panelida olingan Heap Snapshot-lar orqali xotiradagi obyeklar va closures havolalarining qayerda bog'lanib qolganini ko'rish mumkin."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kodda `eval()` ishlatilishi closures-ga qanday ta'sir qiladi?\n```javascript\nfunction outer() {\n  let secret = \"123\";\n  let unused = \"data\";\n  eval(\"\");\n  return () => console.log(secret);\n}\n```",
+    "options": [
+      "Hech qanday ta'sir ko'rsatmaydi",
+      "V8 dvigatelining optimallashtirish qobiliyatini cheklaydi, chunki dynamic kod nima so'rashini bilmaganligi sababli barcha o'zgaruvchilarni (jumladan `unused`ni ham) xotirada saqlashga majbur bo'ladi",
+      "Dasturning xavfsizligini ta'minlaydi",
+      "Faqat `secret` o'zgaruvchisini o'chirib yuboradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`eval` ishlatilganda JS dvigateli qaysi o'zgaruvchi dynamic chaqirilishini oldindan bilolmaydi va scope-ni optimallashtira olmaydi, natijada barcha o'zgaruvchilar xotirada qoladi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodda nima uchun xotira oqishi (Memory Leak) yuz berishi mumkin?\n```javascript\nlet replaceThing = function () {\n  let originalThing = theThing;\n  let unused = function () {\n    if (originalThing) console.log(\"hi\");\n  };\n  theThing = {\n    longStr: new Array(1000000).join('*'),\n    someMethod: function () {}\n  };\n};\nsetInterval(replaceThing, 1000);\n```",
+    "options": [
+      "`setInterval` ishlamay qoladi",
+      "`unused` closure va `someMethod` closure bitta leksik muhitni bo'lishadi. `theThing`ning `someMethod`i omon qoladi va har soniyada oldingi `originalThing`ni yopilishda zanjirdek ushlab boradi, natijada xotira to'lib ketadi",
+      "Chunki massiv hajmi juda kichik",
+      "Chunki `replaceThing` o'zgaruvchisi o'zgarmas `const` emas"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bu Meteor muammosining klassik namunasidir. `someMethod` global `theThing` tarkibida saqlanib qoladi va o'zi bilan birga `originalThing` saqlangan leksik muhitni tortib yuradi, bu zanjir har soniyada uzayib boradi."
+  },
+  {
+    "id": 9,
+    "question": "Qisman qo'llash (Partial Application) va Currying usullari closures bilan qanday bog'liq?",
+    "options": [
+      "Ular closures-dan foydalanmaydi, faqat prototiplarga asoslanadi",
+      "Ular dastlabki uzatilgan parametrlarni closure (yopilish) ichida saqlab qolib, keyinchalik to'liq chaqiruvda foydalanadi",
+      "Ular xotirani avtomatik ravishda kamaytiradi",
+      "Ular faqat sinxron kodlarda xatolarni oldini oladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Currying va Partial application funksiyalarga dastlab berilgan argumentlarni closure-da saqlaydi va keyingi chaqiriqlar o'sha saqlangan qiymatlardan foydalanadi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodda `new Function` ishlatilganda nima sodir bo'ladi?\n```javascript\nlet x = 10;\nfunction outer() {\n  let x = 20;\n  return new Function('console.log(x)');\n}\nconst fn = outer();\nfn();\n```",
+    "options": [
+      "`20` chiqadi, chunki u `outer` ichida yaratilgan",
+      "`10` chiqadi, chunki `new Function` yopilgan leksik muhitni emas, faqat global scope-ni ko'radi",
+      "`undefined` chiqadi",
+      "`ReferenceError` xatoligi yuz beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`new Function` orqali yaratilgan funksiyalar jismoniy joylashuviga qaramay, har doim global scope leksik qamroviga ulanadi va lokal yopilishlarni (closures) yarata olmaydi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kodda xotira oqishining oldini olish uchun qanday o'zgarish qilish kerak?\n```javascript\nlet element = document.getElementById('button');\nelement.addEventListener('click', function onClick() {\n  // element bilan qandaydir amal\n});\n```",
+    "options": [
+      "`onClick` funksiyasini `const` qilish",
+      "Element o'chirilganda `removeEventListener` yordamida `onClick`ni tozalash yoki havola zanjirini uzish",
+      "Tugmani yashirib qo'yish (`display: none`)",
+      "Hech qanday o'zgarish shart emas, brauzer o'zi tozalaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Element o'chirilayotganda unga bog'liq dynamic listener-larni o'chirish yoki mos closures havolalarini uzish detached DOM elements hosil bo'lishining oldini oladi."
+  },
+  {
+    "id": 12,
+    "question": "Garbage Collector-ga xotiradagi keraksiz obyektlarni yig'ishga yordam berish uchun modern JS dasturchilari qanday obyekt turidan foydalanadilar (havolani kuchsiz saqlash uchun)?",
+    "options": [
+      "`Map` va `Set` dan",
+      "`WeakMap` va `WeakSet` dan",
+      "`Object.freeze` qilingan obyektlardan",
+      "`JSON.stringify` qilingan ma'lumotlardan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`WeakMap` va `WeakSet` kalitlari bo'lgan obyektlar kuchsiz havolaga ega bo'ladi (weak references). Agar obyektga boshqa kuchli havola qolmasa, u Garbage Collector tomonidan xotiradan tozalab yuborilaveradi (closures-da ham keng qo'llaniladi)."
+  }
+]

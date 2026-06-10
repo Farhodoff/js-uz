@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Cookie-larning asosiy vazifasi va u LocalStorage-dan nimasi bilan farq qiladi?",
+    "options": [
+      "Cookie faqat rasmlarni saqlaydi, LocalStorage esa matnlarni",
+      "Cookie-lar har bir HTTP so'rov bilan birga avtomatik ravishda serverga yuboriladi, LocalStorage esa faqat brauzerda qoladi",
+      "Cookie ancha kattaroq hajmdagi ma'lumotlarni saqlay oladi",
+      "Cookie-larda xavfsizlik cheklovlari mutlaqo yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Cookie-lar (pechenyelar) asosan foydalanuvchini identifikatsiya qilish (sessiyalar) uchun ishlatiladi va ular har bir HTTP so'rovda serverga avtomatik biriktirilib yuboriladi. LocalStorage ma'lumotlari esa serverga yuborilmaydi."
+  },
+  {
+    "id": 2,
+    "question": "Bitta Cookie faylining maksimal hajmi qancha bo'lishi mumkin?",
+    "options": [
+      "Taxminan 4 Kilobayt (KB)",
+      "Taxminan 5 Megabayt (MB)",
+      "Cheksiz",
+      "Kamida 1 Gigabayt (GB)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Bitta cookie faylining maksimal hajmi taxminan 4KB ga teng. Bu cheklov tufayli cookie-larda faqat kichik hajmli ma'lumotlar (token, ID) saqlanadi."
+  },
+  {
+    "id": 3,
+    "question": "Cookie-ning qaysi flagi (atributi) uni JavaScript (XSS hujumlari) orqali o'qishdan himoya qiladi?",
+    "options": [
+      "`Secure`",
+      "`HttpOnly`",
+      "`SameSite`",
+      "`Max-Age`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`HttpOnly` flagi o'rnatilgan cookie-larni JavaScript kodlari (masalan, `document.cookie`) orqali o'qib bo'lmaydi. Bu uni Cross-Site Scripting (XSS) hujumlaridan himoya qiladi."
+  },
+  {
+    "id": 4,
+    "question": "Cookie-dagi `Secure` atributi nima vazifani bajaradi?",
+    "options": [
+      "Cookie-ni faqat xavfsiz parollar uchun ishlatishga majburlaydi",
+      "Cookie faqat HTTPS (shifrlangan) protokoli orqali yuborilishini ta'minlaydi",
+      "Cookie faylini antivirus tomonidan tekshiradi",
+      "JavaScript orqali o'zgartirishni taqiqlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Secure` atributi o'rnatilganda brauzer ushbu cookieni faqat HTTPS xavfsiz ulanishi orqali serverga yuboradi, HTTP orqali yubormaydi."
+  },
+  {
+    "id": 5,
+    "question": "Cross-Site Request Forgery (CSRF) hujumlaridan himoya qilish uchun Cookie-ning qaysi atributidan foydalaniladi?",
+    "options": [
+      "`Domain`",
+      "`Path`",
+      "`SameSite`",
+      "`Expires`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`SameSite` atributi (qiymatlari: Strict, Lax, None) cookie uchinchi tomon so'rovlarida yuborilish-yuborilmasligini nazorat qiladi va CSRF hujumlarini oldini oladi."
+  },
+  {
+    "id": 6,
+    "question": "IndexedDB nima?",
+    "options": [
+      "Serverdagi SQL ma'lumotlar bazasining sinonimi",
+      "Brauzer ichidagi katta hajmdagi tranzaksiyali, indekslangan, no-SQL (key-value) turidagi ma'lumotlar bazasi",
+      "Faqat JSON formatidagi fayllarni siquvchi dastur",
+      "Brauzer keshini avtomatik tozalovchi API"
+    ],
+    "correctAnswer": 1,
+    "explanation": "IndexedDB — brauzer ichidagi to'liq xususiyatli, asinxron ishlaydigan va juda katta hajmdagi tuzilmali ma'lumotlarni saqlashga mo'ljallangan tranzaksiyali ma'lumotlar omboridir."
+  },
+  {
+    "id": 7,
+    "question": "IndexedDB-da ma'lumotlar ombori (Object Store) yaratish yoki o'chirish kabi strukturaviy o'zgarishlar faqat qaysi hodisa (event) ichida amalga oshirilishi shart?",
+    "options": [
+      "`onsuccess`",
+      "`onerror`",
+      "`onupgradeneeded`",
+      "`oncomplete`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Baza strukturasi (Object Store yaratish, indekslar qo'shish) faqat versiya o'zgarganda ishga tushuvchi `onupgradeneeded` hodisasi ichida bajarilishi mumkin."
+  },
+  {
+    "id": 8,
+    "question": "IndexedDB-ning asinxron tabiati nimani anglatadi?",
+    "options": [
+      "U faqat `sync` kalit so'zi bilan ishlaydi",
+      "Baza bilan barcha operatsiyalar (o'qish, yozish) bloklamaydigan (non-blocking) tarzda bajariladi va natija callback yoki promise orqali qaytadi",
+      "U internet bo'lmasa ishlamaydi",
+      "U faqat bitta tranzaksiyani bajara oladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Asinxron tabiati brauzerning asosiy oqimi (UI thread) bloklanib qolmasligini ta'minlaydi. Katta ma'lumotlar bilan ishlaganda ham sahifa qotib qolmaydi."
+  },
+  {
+    "id": 9,
+    "question": "IndexedDB tranzaksiyalarida (Transactions) xatolik yuz berganda nima sodir bo'ladi?",
+    "options": [
+      "Baza to'liq o'chib ketadi",
+      "Tranzaksiya doirasidagi barcha o'zgarishlar bekor qilinadi (Rollback bo'ladi) va baza avvalgi holatiga qaytadi",
+      "Brauzer avtomatik ravishda sahifani qayta yuklaydi",
+      "Xatolik e'tiborga olinmay keyingi amal bajarilaveradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tranzaksiyaning asosiy afzalligi atomarlikdir. Agar tranzaksiya ichidagi birorta amal xato bo'lsa, butun tranzaksiya bekor qilinadi (abort/rollback)."
+  },
+  {
+    "id": 10,
+    "question": "IndexedDB-da obyektlarni saqlashda har bir yozuvni aniq identifikatsiya qiluvchi maydon nima deyiladi?",
+    "options": [
+      "`Key Path`",
+      "`Foreign Key`",
+      "`Index Field`",
+      "`Data Pointer`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "IndexedDB-da obyektni unikal aniqlash uchun `Key Path` (masalan, `id`) va `autoIncrement: true` sozlamalaridan foydalaniladi."
+  },
+  {
+    "id": 11,
+    "question": "Same-Origin Policy (Bir xil manba qoidasi) IndexedDB va LocalStorage-ga ta'sir qiladimi?",
+    "options": [
+      "Yo'q, ular istalgan saytdan o'qilishi mumkin",
+      "Ha, faqat bir xil protokol, domen va portga ega bo'lgan sahifalar bir-birlarining ma'lumotlariga kira oladi",
+      "Faqat port raqamlari har xil bo'lganda ruxsat beradi",
+      "Faqat cookies uchun bu qoida amal qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Xavfsizlik nuqtai nazaridan, brauzerdagi barcha saqlash tizimlari (LocalStorage, SessionStorage, IndexedDB) Same-Origin policy asosida faqat o'z manbasiga (origin) tegishli ma'lumotlarga kirishga ruxsat beradi."
+  },
+  {
+    "id": 12,
+    "question": "LocalStorage xotira hajmi to'lib ketganda (odatda > 5MB) JS qanday xatolik qaytaradi?",
+    "options": [
+      "`NullPointerException`",
+      "`QuotaExceededError` (DOMException)",
+      "`OutOfMemoryError`",
+      "`AccessDeniedError`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "LocalStorage sig'imi (odatda 5MB atrofida) to'lganda brauzer `QuotaExceededError` xatoligini tashlaydi. Bunday hollarda IndexedDB-dan foydalanish tavsiya etiladi."
+  }
+]

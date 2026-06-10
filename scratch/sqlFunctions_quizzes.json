@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "question": "Guruhlangan natijalarni filtrlash uchun qaysi kalit so'z ishlatiladi?",
+    "options": ["WHERE", "HAVING", "ORDER BY", "SELECT"],
+    "correctAnswer": 1,
+    "explanation": "GROUP BY yordamida guruhlangan ma'lumotlar ustidan shart tekshirish uchun HAVING ishlatiladi. WHERE esa guruhlashdan oldin ishlaydi."
+  },
+  {
+    "id": 2,
+    "question": "Jadvaldagi qatorlar sonini sanash uchun qaysi agregat funksiya ishlatiladi?",
+    "options": ["SUM()", "COUNT()", "AVG()", "TOTAL()"],
+    "correctAnswer": 1,
+    "explanation": "COUNT() funksiyasi qatorlar yoki NULL bo'lmagan qiymatlar sonini hisoblash uchun xizmat qiladi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagilardan qaysi biri to'g'ri yozilgan SQL so'rovi?",
+    "options": [
+      "SELECT city, AVG(age) FROM users WHERE AVG(age) > 20 GROUP BY city",
+      "SELECT city, AVG(age) FROM users GROUP BY city HAVING AVG(age) > 20",
+      "SELECT city, AVG(age) FROM users GROUP BY city WHERE age > 20",
+      "SELECT city, AVG(age) FROM users HAVING AVG(age) > 20"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agregat natija bo'yicha filtrlash HAVING orqali va u GROUP BY dan keyin yozilishi shart."
+  },
+  {
+    "id": 4,
+    "question": "Agregat funksiyaga olinmagan oddiy ustun SELECT qismida turgan bo'lsa, u yana qayerda ko'rsatilishi shart?",
+    "options": ["ORDER BY qismida", "WHERE qismida", "GROUP BY qismida", "LIMIT qismida"],
+    "correctAnswer": 2,
+    "explanation": "Sintaksis qoidasiga ko'ra, SELECT-ga yozilgan va agregat funksiya bo'lmagan har bir ustun albatta GROUP BY guruhlash qismida ham yozilishi shart."
+  },
+  {
+    "id": 5,
+    "question": "WHERE va HAVING farqi nimada?",
+    "options": [
+      "Hech qanday farqi yo'q",
+      "WHERE guruhlashdan oldin qatorlarni filtrlash uchun, HAVING esa guruhlashdan keyingi agregat natijalarni filtrlash uchun ishlatiladi",
+      "HAVING tezroq ishlaydi",
+      "WHERE faqat sonlarni, HAVING esa faqat matnlarni filtrlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "WHERE birlamchi jadval qatorlarini, HAVING esa GROUP BY natijasida hosil bo'lgan agregat guruhlarni filtrlaydi."
+  },
+  {
+    "id": 6,
+    "question": "COUNT(city) va COUNT(*) farqi nimada?",
+    "options": [
+      "COUNT(*) shaharlarni sanamaydi",
+      "COUNT(city) faqat city ustunida NULL bo'lmagan qiymatlarni sanaydi, COUNT(*) esa barcha qatorlarni sanaydi",
+      "Ikkalasi mutlaqo bir xil",
+      "COUNT(city) xato sintaksis"
+    ],
+    "correctAnswer": 1,
+    "explanation": "COUNT(ustun) faqat shu ustundagi aniq (NULL bo'lmagan) ma'lumotlarni hisoblaydi, yulduzcha (*) esa har qanday qatorni hisobga oladi."
+  },
+  {
+    "id": 7,
+    "question": "O'rtacha yoshni topish uchun qaysi agregat funksiya ishlatiladi?",
+    "options": ["MIDDLE()", "AVG()", "MEAN()", "AVERAGE()"],
+    "correctAnswer": 1,
+    "explanation": "Average so'zining qisqartmasi bo'lgan AVG() funksiyasi sonlarning o'rtacha qiymatini hisoblaydi."
+  },
+  {
+    "id": 8,
+    "question": "Ustun nomiga so'rov natijasida chiroyli vaqtinchalik nom berish (Alias) uchun qaysi kalit so'z yoziladi?",
+    "options": ["LIKE", "AS", "NAME", "TO"],
+    "correctAnswer": 1,
+    "explanation": "AS (Alias) kalit so'zi natijadagi ustun sarlavhasiga vaqtincha nom berish uchun ishlatiladi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi agregat funksiyalardan qaysi biri faqat sonli qiymatlar bilan ishlay oladi?",
+    "options": ["COUNT()", "MIN()", "SUM()", "MAX()"],
+    "correctAnswer": 2,
+    "explanation": "SUM() va AVG() funksiyalari faqat matematik yig'indi hisoblagani uchun sonli ustunlar bilan ishlaydi. COUNT, MIN va MAX esa matnlar bilan ham ishlay oladi."
+  },
+  {
+    "id": 10,
+    "question": "Agregat funksiyalar ichida unikal (takrorlanmagan) qiymatlarni sanash uchun qaysi kalit so'z qo'shiladi?",
+    "options": ["COUNT(UNIQUE ...)", "COUNT(DISTINCT ...)", "COUNT(ALL ...)", "COUNT(SINGLE ...)"],
+    "correctAnswer": 1,
+    "explanation": "COUNT(DISTINCT ustun) yordamida ustundagi faqat bir-biriga o'xshamaydigan unikal qiymatlar soni aniqlanadi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagilardan qaysi biri eng katta qiymatni topib beradi?",
+    "options": ["MIN()", "MAX()", "HIGH()", "TOP()"],
+    "correctAnswer": 1,
+    "explanation": "MAX() funksiyasi berilgan maydondagi eng maksimal (katta) qiymatni qaytaradi."
+  },
+  {
+    "id": 12,
+    "question": "Har bir foydalanuvchining jami xarajatini topish uchun qaysi so'rov to'g'ri?",
+    "options": [
+      "SELECT user_id, SUM(amount) FROM orders",
+      "SELECT user_id, SUM(amount) FROM orders GROUP BY user_id",
+      "SELECT user_id, SUM(amount) FROM orders HAVING SUM(amount) > 0",
+      "SELECT SUM(amount) FROM orders GROUP BY product"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Har bir foydalanuvchi bo'yicha yig'indi topish uchun albatta GROUP BY user_id bo'lishi lozim."
+  }
+]

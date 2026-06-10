@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Oddiy Callback",
+    "instruction": "Foydalanuvchi ismini olib, uni tabriklovchi callback funksiyasini chaqiradigan `greetUser(name, callback)` funksiyasini yozing. Callback funksiyaga argument sifatida ism uzatilishi kerak.",
+    "startingCode": "function greetUser(name, callback) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "callback(name); ko'rinishida chaqiring.",
+    "test": "let namePassed = '';\nconst sandbox = new Function(code + '; return greetUser;');\nconst fn = sandbox();\nfn('Jasur', (n) => namePassed = n);\nif (namePassed === 'Jasur') return null;\nreturn 'greetUser callback funksiyasini to\\'g\\'ri chaqirmadi yoki ismni uzatmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Asinxron Hisoblagich",
+    "instruction": "2 soniyadan (2000 ms) keyin callback funksiyasini ishga tushiradigan `delayExecution(callback)` funksiyasini yozing. Buning uchun `setTimeout` funksiyasidan foydalaning.",
+    "startingCode": "function delayExecution(callback) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "setTimeout(callback, 2000);",
+    "test": "if (!code.includes('setTimeout')) return 'setTimeout funksiyasidan foydalanilmadi';\nif (!code.includes('2000')) return 'Kutish vaqti 2000 ms qilib belgilanmadi';\nconst sandbox = new Function(code + '; return delayExecution;');\nconst fn = sandbox();\nlet called = false;\nfn(() => called = true);\nif (typeof fn === 'function') return null;\nreturn 'delayExecution funksiyasida xatolik';"
+  },
+  {
+    "id": 3,
+    "title": "Massiv elementlarini filtrlash",
+    "instruction": "O'zingizning shaxsiy massiv filtrlovchi funksiyangizni yarating. `customFilter(arr, callback)` funksiyasi berilgan `arr` massividan faqat `callback(element)` true qaytargan elementlarni yangi massivga yig'ib qaytarsin.",
+    "startingCode": "function customFilter(arr, callback) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Massiv bo'ylab aylanib chiqib, callback(arr[i]) true bo'lsa, elementni yangi massivga push qiling.",
+    "test": "const sandbox = new Function(code + '; return customFilter;');\nconst fn = sandbox();\nconst res = fn([1, 2, 3, 4], (x) => x % 2 === 0);\nif (Array.isArray(res) && res.length === 2 && res[0] === 2 && res[1] === 4) return null;\nreturn 'customFilter to\\'g\\'ri filtrlamadi';"
+  }
+]

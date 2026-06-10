@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Callback funksiya nima?",
+    "options": [
+      "Faqat matematik hisob-kitoblarni amalga oshiradigan maxsus ichki funksiya",
+      "Boshqa bir funksiyaga argument (parametr) sifatida uzatiladigan va ma'lum bir hodisa sodir bo'lgandan keyin chaqiriladigan funksiya",
+      "Brauzer oynasi yopilganda avtomatik ishlaydigan dastur qismi",
+      "Faqat xatolarni aniqlaydigan catch bloki"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Callback funksiya boshqa funksiyaga parametr qilib yuboriladi va u funksiya o'z ishini tugatgach yoki biror hodisa bo'lgach (masalan, vaqt tugagach), ushbu callbackni chaqiradi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kodda sinxron va asinxron bajarilish sababli konsolga qaysi tartibda javob chiqadi?\n```javascript\nconsole.log('A');\nsetTimeout(() => console.log('B'), 0);\nconsole.log('C');\n```",
+    "options": [
+      "`A`, `B`, `C`",
+      "`A`, `C`, `B`",
+      "`B`, `A`, `C`",
+      "`C`, `A`, `B`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`A` va `C` sinxron kod bo'lib, darhol bajariladi. `setTimeout` esa asinxron vazifadir va u 0 millisekund berilgan bo'lsa ham, Call Stack bo'shagandan keyingina (Event Loop orqali) ishga tushadi. Shuning uchun natija A, C, B bo'ladi."
+  },
+  {
+    "id": 3,
+    "question": "Callback Hell (Callback jahannami) iborasi nimani anglatadi?",
+    "options": [
+      "Ko'p miqdordagi funksiyalar serverda xotira yetishmasligiga olib kelishini",
+      "Asinxron operatsiyalarni bajarishda callbacklar bir-birining ichiga juda chuqur joylashib ketishi (nesting) va kodning o'qilishini qiyinlashtirishi",
+      "Callback funksiyasi ichida `return` ishlatib bo'lmasligini",
+      "Xatolar yuz berganda sahifaning qotib qolishini"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bir nechta asinxron vazifalar zanjirini callbacks yordamida yozganda, ular bir-birining ichiga kirib ketib, kod o'ngga qarab siljiydi va piramida shaklini oladi (`Pyramid of Doom`), bu Callback Hell deyiladi."
+  },
+  {
+    "id": 4,
+    "question": "JavaScript massivlarining qaysi o'rnatilgan metodi callback funksiyani qabul qilmaydi?",
+    "options": [
+      "`.forEach()`",
+      "`.map()`",
+      "`.filter()`",
+      "`.push()`"
+    ],
+    "correctAnswer": 3,
+    "explanation": "`.push()` metodi massiv oxiriga yangi elementlarni qo'shadi va callback qabul qilmaydi. `.forEach()`, `.map()` va `.filter()` esa har bir element uchun callback funksiyasini ishga tushiradi."
+  },
+  {
+    "id": 5,
+    "question": "Sinxron callback nima?",
+    "options": [
+      "Faqat internet tez bo'lganda ishlaydigan callback",
+      "Boshqa funksiya ichida darhol, hech qanday kutishlarsiz, ketma-ketlik bo'yicha bajariladigan callback",
+      "Faqat `setTimeout` ichida yoziladigan callback",
+      "Kelajakda ma'lum bir voqea sodir bo'lganda ishlaydigan callback"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Sinxron callback hech qanday asinxron kutishlarsiz, chaqirgan funksiya bajarilayotgan paytda darhol ishga tushadi (masalan, `Array.prototype.map` callbacki)."
+  },
+  {
+    "id": 6,
+    "question": "Node.js va eski JS kodlarida ko'p qo'llanilgan 'Error-First Callback' patterns nima?",
+    "options": [
+      "Xatolik yuz berganda dasturni to'xtatuvchi sintaktik qoida",
+      "Callback funksiyasining birinchi argumenti har doim xatolik obyekti (`err`) bo'lishi, muvaffaqiyatli natija esa ikkinchi argument bo'lib kelishi",
+      "Faqat xato ma'lumotlarni qaytaradigan callback",
+      "Brauzer konsoliga birinchi bo'lib xatoni chiqarish usuli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Error-First callback qoidasiga ko'ra, funksiya tugagach callback chaqirilganda, agar xato bo'lsa `callback(err)`, xato bo'lmasa `callback(null, data)` shaklida birinchi parametrda xatolik tekshiriladi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kodda `process` funksiyasining callbacki qanday chaqirilgan?\n```javascript\nfunction process(num, cb) {\n  cb(num * 2);\n}\n```",
+    "options": [
+      "Asinxron tarzda Event Loop yordamida",
+      "Sinxron tarzda zudlik bilan",
+      "Ma'lum bir vaqt o'tgandan keyin",
+      "Faqat xato yuz berganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ushbu funksiya ichida hech qanday asinxron API (`setTimeout`, `fetch` va h.k.) ishlatilmagan. Shuning uchun `cb` sinxron ravishda darhol bajariladi."
+  },
+  {
+    "id": 8,
+    "question": "Callback funksiyani argument qilib yuborishda qaysi xato eng ko'p uchraydi?",
+    "options": [
+      "Funksiya nomini yozish o'rniga uni qavslar bilan chaqirib yuborish (masalan: `setTimeout(myFunc(), 1000)`)",
+      "Funksiyani o'zgaruvchiga tenglash",
+      "Callback ichida `let` o'rniga `const` ishlatish",
+      "Funksiyaga parametr bermaslik"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`myFunc()` deb yozilsa, funksiya zudlik bilan ishga tushadi va uning qaytargan qiymati (ko'pincha `undefined`) argument sifatida uzatiladi. Callback sifatida funksiyaning o'zini uzatish kerak: `setTimeout(myFunc, 1000)`."
+  },
+  {
+    "id": 9,
+    "question": "Asinxron callbacklar JavaScript dvigatelining qaysi qismida navbatda (queue) turadi?",
+    "options": [
+      "Call Stack",
+      "Memory Heap",
+      "Callback Queue (Task Queue)",
+      "Global Context"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Asinxron operatsiya yakunlangach, uning callback funksiyasi Callback Queue-ga joylashtiriladi va Call Stack bo'shagach, u yerga o'tkaziladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod ishga tushganda konsolga nima chiqadi?\n```javascript\nconst doSomething = (cb) => {\n  cb(10);\n};\ndoSomething(val => console.log(val + 5));\n```",
+    "options": [
+      "`10`",
+      "`15`",
+      "`undefined`",
+      "`TypeError`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`doSomething` funksiyasi `cb` ga 10 qiymatini uzatadi. Biz parametr sifatida `val => console.log(val + 5)` funksiyasini yubordik. Natijada `10 + 5 = 15` ekranga chiqadi."
+  },
+  {
+    "id": 11,
+    "question": "Callbacks bilan ishlashda 'Inversion of Control' (Boshqaruvning yo'qolishi) muammosi nima?",
+    "options": [
+      "Dastur yopilib qolishi",
+      "Callback funksiyani uchinchi tomon kutubxonasiga topshirganimizda, u callbackni qachon, necha marta va qanday sharoitda chaqirishini o'zimiz to'liq nazorat qila olmasligimiz",
+      "Brauzerning callbacklarni o'chirib yuborishi",
+      "Dasturning faqat bitta CPU yadrosida ishlashi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Boshqaruvning yo'qolishi (Inversion of Control) — biz o'z kodimizni (callbackni) boshqa tizim (kutubxona) chaqirishiga ishonib topshiramiz, bu esa xavfsizlik va nazoratni kamaytiradi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod bajarilganda nima sodir bo'ladi?\n```javascript\nfunction run(callback) {\n  if (callback) {\n    callback();\n  }\n}\nrun();\n```",
+    "options": [
+      "`TypeError: callback is not a function` xatoligi beradi",
+      "Dastur hech qanday xatosiz tugaydi",
+      "`undefined` deb yozib chiqadi",
+      "Dastur cheksiz siklga tushib qoladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`if (callback)` sharti callback uzatilganligini tekshiradi. Biz `run()` ni argumentsiz chaqirganimiz uchun `callback` qiymati `undefined` bo'ladi va shart bajarilmay, xatosiz tugaydi."
+  }
+]

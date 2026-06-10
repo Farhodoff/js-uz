@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Qavslarni Tekshirish (Valid Parentheses)",
+    "instruction": "Faqat `(`, `)`, `{`, `}`, `[` va `]` qavslardan iborat bo'lgan `s` satri berilgan. Qavslar to'g'ri tartibda ochilib yopilganini tekshiruvchi `isValidParentheses(s)` funksiyasini yozing. Buning uchun Stack ma'lumotlar tuzilmasidan foydalaning (massiv yordamida push/pop qiling).",
+    "startingCode": "function isValidParentheses(s) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Ochuvchi qavslarni (`(`, `{`, `[`) stack-ga qo'shing. Yopuvchi qavs kelganda, stack-dan oxirgisini chiqarib (`pop`), ular mos kelishini tekshiring. Oxirida stack bo'sh bo'luk bo'lishi kerak.",
+    "test": "const sandbox = new Function(code + '; return isValidParentheses;');\nconst fn = sandbox();\nif (fn('()') === true && fn('()[]{}') === true && fn('(]') === false && fn('([)]') === false && fn('{[]}') === true) return null;\nreturn 'isValidParentheses funksiyasi qavslarni to\\'g\\'ri tekshirmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Ikki Stack Yordamida Queue Yaratish (Queue using Stacks)",
+    "instruction": "Faqat ikkita Stack (ikkita massiv) yordamida standart Queue (navbat) yarating. Buning uchun `Queue` klassini yozing. Unda `enqueue(x)` (element qo'shish), `dequeue()` (element olish va qaytarish) va `peek()` (navbat boshidagi elementni qaytarish) metodlari bo'lishi kerak. Massivning faqat push va pop metodlaridan foydalanishga ruxsat beriladi (shift yoki unshift metodlaridan foydalanmang!).",
+    "startingCode": "class Queue {\n  constructor() {\n    this.stack1 = [];\n    this.stack2 = [];\n  }\n\n  enqueue(x) {\n    // Kodni shu yerda yozing\n  }\n\n  dequeue() {\n    // Kodni shu yerda yozing\n  }\n\n  peek() {\n    // Kodni shu yerda yozing\n  }\n}\n",
+    "hint": "enqueue amali uchun elementni shunchaki stack1-ga push qiling. dequeue yoki peek amali bajarilganda, agar stack2 bo'sh bo'lsa, stack1-dagi barcha elementlarni birma-bir stack2-ga pop qilib o'tkazing.",
+    "test": "if (code.includes('shift') || code.includes('unshift') || code.includes('splice')) return 'shift/unshift/splice metodlaridan foydalanish taqiqlanadi';\nconst sandbox = new Function(code + '; return Queue;');\nconst QueueClass = sandbox();\nconst q = new QueueClass();\nq.enqueue(1);\nq.enqueue(2);\nconst p = q.peek();\nconst d1 = q.dequeue();\nconst d2 = q.dequeue();\nif (p === 1 && d1 === 1 && d2 === 2) return null;\nreturn 'Queue klassi to\\'g\\'ri ishlamadi';"
+  },
+  {
+    "id": 3,
+    "title": "Minimum Qiymatli Stack (Min Stack)",
+    "instruction": "Klassik Stack amallaridan tashqari har doim o'zidagi eng kichik elementni O(1) vaqt ichida qaytara oladigan `MinStack` klassini yarating. Unda `push(val)`, `pop()`, `top()`, va `getMin()` metodlari bo'lishi kerak. Buning uchun joriy minimumlarni saqlab boradigan qo'shimcha yordamchi massivdan (`minStack`) foydalaning.",
+    "startingCode": "class MinStack {\n  constructor() {\n    this.stack = [];\n    this.minStack = [];\n  }\n\n  push(val) {\n    // Kodni shu yerda yozing\n  }\n\n  pop() {\n    // Kodni shu yerda yozing\n  }\n\n  top() {\n    // Kodni shu yerda yozing\n  }\n\n  getMin() {\n    // Kodni shu yerda yozing\n  }\n}\n",
+    "hint": "push qilganda val-ni stack-ga qo'shing. Agar minStack bo'sh bo'lsa yoki val minStack-ning eng oxirgi (yuqori) elementidan kichik yoki teng bo'lsa, uni minStack-ga ham qo'shing. pop amali bo'lganda, stack-dan chiqqan qiymat minStack-ning tepasidagi qiymat bilan teng bo'lsa, minStack-dan ham pop qiling.",
+    "test": "const sandbox = new Function(code + '; return MinStack;');\nconst MinStackClass = sandbox();\nconst s = new MinStackClass();\ns.push(-2);\ns.push(0);\ns.push(-3);\nconst min1 = s.getMin();\ns.pop();\nconst top1 = s.top();\nconst min2 = s.getMin();\nif (min1 === -3 && top1 === 0 && min2 === -2) return null;\nreturn 'MinStack klassi to\\'g\\'ri ishlamadi';"
+  }
+]

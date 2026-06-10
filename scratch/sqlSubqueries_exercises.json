@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Eng qimmat mahsulotlar",
+    "instruction": "`products` jadvalidan narxi eng o'rtacha narxdan (`AVG(price)`) katta bo'lgan barcha mahsulotlarni tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT * FROM products WHERE price > (SELECT AVG(price) FROM products)",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Ortacha narxdan (451) katta jami 2 ta mahsulot bor'; if(result.some(p => p.price < 451)) return 'Faqat o\\'rtachadan qimmat mahsulotlar qaytishi kerak'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Adminlarning buyurtmalari",
+    "instruction": "`orders` jadvalidan roli `Admin` bo'lgan foydalanuvchilarning barcha buyurtmalarini subquery orqali tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT * FROM orders WHERE user_id IN (SELECT id FROM users WHERE role = 'Admin')",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Admin foydalanuviga (Ali) tegishli 2 ta buyurtma bor'; if(result.some(o => o.user_id !== 1)) return 'Faqat Admin buyurtmalari chiqishi kerak'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Kam qolgan mahsulotlar",
+    "instruction": "`products` jadvalidan `stock` (ombor qoldig'i) eng minimal qoldiqdan (`MIN(stock)`) ko'proq bo'lgan barcha mahsulotlarni oling.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT * FROM products WHERE stock > (SELECT MIN(stock) FROM products)",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Minimal qoldiq 5 ga teng, undan katta 4 ta mahsulot bor'; return null;"
+  }
+]

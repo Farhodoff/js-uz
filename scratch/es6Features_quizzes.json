@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Object Property Shorthand (ES6) yordamida obyekt yaratishda kalit va o'zgaruvchi nomi bir xil bo'lsa qanday yoziladi?",
+    "options": [
+      "`const user = { name: name };`",
+      "`const user = { name };`",
+      "`const user = { name = name };`",
+      "`const user = { ism: name };`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "ES6-da, agar obyekt kaliti va unga beriladigan qiymat o'zgaruvchisining nomi bir xil bo'lsa, shunchaki `{ name }` deb qisqartirib yozish mumkin."
+  },
+  {
+    "id": 2,
+    "question": "Template Literals (ES6) da matn ichida dinamik ifodalarni joylashtirish qaysi qavslar yordamida amalga oshiriladi?",
+    "options": [
+      "`${expression}`",
+      "`#{expression}`",
+      "`{{expression}}`",
+      "`[expression]`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Template literals (backticks `` ` ``) ichida dinamik o'zgaruvchilar yoki ifodalarni kiritish uchun `${...}` sintaksisi qo'llaniladi."
+  },
+  {
+    "id": 3,
+    "question": "Logical Nullish Assignment (`??=`) operatori qachon o'zlashtirishni (assignment) amalga oshiradi?",
+    "options": [
+      "Chap tomondagi qiymat har qanday Falsy qiymat bo'lsa",
+      "Chap tomondagi qiymat faqat `null` yoki `undefined` bo'lsa",
+      "Chap tomondagi qiymat faqat `false` bo'lsa",
+      "Har doim o'zlashtiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`??=` operatori faqatgina chap tomondagi o'zgaruvchi qiymati nullish (ya'ni `null` yoki `undefined`) bo'lgandagina o'ng tomondagi qiymatni o'zlashtiradi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilgandan keyin `config.volume` qiymati nima bo'ladi?\n```javascript\nconst config = { volume: 0 };\nconfig.volume ??= 100;\n```",
+    "options": [
+      "`100`",
+      "`0` (chunki 0 null yoki undefined emas)",
+      "`undefined`",
+      "`TypeError` xatosi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`0` - nullish qiymat emas. Shu sababli `??=` operatori o'zlashtirishni bajarmaydi va original `0` qiymatini qoldiradi."
+  },
+  {
+    "id": 5,
+    "question": "Key-value juftliklaridan iborat massivni (entries) qaytadan obyektga o'girish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "`Object.entries()`",
+      "`Object.fromEntries()`",
+      "`Object.toObject()`",
+      "`JSON.parse()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Object.fromEntries()` metodi `[key, value]` ko'rinishidagi massiv yoki iterablarni qabul qilib, ularni oddiy obyektga aylantiradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi koddan keyin `lastEven` o'zgaruvchisi qiymati nima bo'ladi (ES2023)?\n```javascript\nconst nums = [1, 2, 3, 4, 5];\nconst lastEven = nums.findLast(x => x % 2 === 0);\n```",
+    "options": [
+      "`2`",
+      "`4` (oxirgi juft son)",
+      "`undefined`",
+      "`5`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`findLast()` metodi massivning oxiridan boshlab qidiradi va shartga mos keladigan birinchi elementni (ya'ni oxirgi juft son - 4 ni) qaytaradi."
+  },
+  {
+    "id": 7,
+    "question": "JavaScript ES6 (2015) versiyasigacha o'zgaruvchilar yaratish uchun qaysi kalit so'zi ishlatilgan?",
+    "options": [
+      "`let`",
+      "`const`",
+      "`var`",
+      "`def`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "ES6 versiyasigacha JavaScript-da faqat `var` kalit so'zi yordamida o'zgaruvchilar e'lon qilingan. ES6 da `let` va `const` qo'shildi."
+  },
+  {
+    "id": 8,
+    "question": "ES2020 da qo'shilgan String.prototype.matchAll() metodi qanday natija qaytaradi?",
+    "options": [
+      "Barcha mos kelgan natijalar massivini (Array)",
+      "RegEx guruhlari bo'yicha barcha mosliklarning iteratorini (Iterator)",
+      "Faqat birinchi mos kelgan satrni",
+      "Muvaffaqiyatli bo'lsa true, bo'lmasa false"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`matchAll()` regex mosliklari bo'yicha guruhlar va indekslarni o'z ichiga olgan to'liq iterator (iterable) qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod bajarilganda `userRole` qiymati nima bo'ladi?\n```javascript\nlet user = { role: 'user' };\nuser.role &&= 'admin';\n```",
+    "options": [
+      "`'admin'` (chunki 'user' truthy qiymat)",
+      "`'user'`",
+      "`true`",
+      "`undefined`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`&&=` operatori chap tomon truthy bo'lgandagina o'ng tomondagi qiymatni o'zlashtiradi. `user.role` ('user') truthy bo'lgani uchun unga 'admin' yoziladi."
+  },
+  {
+    "id": 10,
+    "question": "Logical OR Assignment (`||=`) operatori qachon o'zlashtiradi?",
+    "options": [
+      "Chap tomondagi o'zgaruvchi har qanday Falsy qiymat (0, null, undefined, '', false) bo'lsa",
+      "Faqat undefined bo'lsa",
+      "Faqat true bo'lsa",
+      "Faqat son bo'lsa"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`||=` operatori chap tomondagi qiymat har qanday falsy bo'lsa (jumladan `0`, `\"\"`, `false` va h.k.) o'ng tomondagiga o'zgartiradi."
+  },
+  {
+    "id": 11,
+    "question": "ES2022-da massivlar uchun kiritilgan `.at()` metodining oddiy kvadrat qavslardan (`arr[index]`) farqi nimada?",
+    "options": [
+      "U faqat musbat indekslar bilan ishlaydi",
+      "U manfiy indekslarni ham qo'llab-quvvatlaydi (masalan, `arr.at(-1)` massivning oxirgi elementini beradi)",
+      "U elementni o'chirib yuboradi",
+      "U faqat stringlar bilan ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`.at(-1)` massiv oxiridan boshlab elementlarni oson o'qish imkonini beradi. Oddiy qavslarda `arr[-1]` xato yoki `undefined` beradi."
+  },
+  {
+    "id": 12,
+    "question": "JavaScript standartlarini yangilab boruvchi va TC39 komiteti tomonidan boshqariladigan texnik hujjat qanday nomlanadi?",
+    "options": [
+      "ECMAScript (ES)",
+      "JavaSpec",
+      "Web API Specification",
+      "TypeScript Spec"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JavaScript tili ECMAScript standarti (qisqacha ES) asosida standartlashtiriladi va rivojlantiriladi."
+  }
+]

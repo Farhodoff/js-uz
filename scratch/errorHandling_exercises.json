@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Xavfsiz JSON Parse",
+    "instruction": "Berilgan satrni JSON formatida o'qiydigan `safeJSONParse(str)` funksiyasini yozing. Agar satr to'g'ri JSON bo'lsa, hosil bo'lgan obyektni qaytaring, aks holda dastur qulashining oldini olib `null` qaytaring.",
+    "startingCode": "function safeJSONParse(str) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "try { return JSON.parse(str); } catch (e) { return null; } ko'rinishida yozing.",
+    "test": "const sandbox = new Function(code + '; return safeJSONParse;');\nconst fn = sandbox();\nconst success = fn('{\"a\":1}');\nconst failure = fn('{a:1}');\nif (success && success.a === 1 && failure === null) return null;\nreturn 'safeJSONParse funksiyasi xatolikni to\\'g\\'ri boshqarmadi yoki to\\'g\\'ri JSONni parse qilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Yoshni tekshirish",
+    "instruction": "Foydalanuvchining yoshini tekshiradigan `validateAge(age)` funksiyasini yozing. Agar yosh manfiy bo'lsa (0 dan kichik), funksiya `\"Yosh manfiy bo'lishi mumkin emas\"` xabari bilan yangi Error otsin. Agar yosh to'g'ri bo'lsa, `true` qaytarsin.",
+    "startingCode": "function validateAge(age) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "if (age < 0) throw new Error(...); shartidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return validateAge;');\nconst fn = sandbox();\ntry {\n  fn(-5);\n  return 'Manfiy yosh kiritilganda xato otilmadi';\n} catch (e) {\n  if (e.message.includes('manfiy')) {\n    if (fn(20) === true) return null;\n  }\n  return 'Xatolik xabari noto\\'g\\'ri: ' + e.message;\n}"
+  },
+  {
+    "id": 3,
+    "title": "Kafolatlangan Tozalash",
+    "instruction": "Ikkita callback funksiyani qabul qiluvchi `executeAndCleanup(fn, cleanup)` funksiyasini yozing. Funksiya `fn` ni ishga tushirsin. Agar `fn` xato bersa, xatoni yuqoriga qayta otib yuboring (rethrow), lekin har qanday holatda ham (xato bo'lsa ham, bo'lmasa ham) oxirida `cleanup` funksiyasi chaqirilishini ta'minlang.",
+    "startingCode": "function executeAndCleanup(fn, cleanup) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "try-finally blokidan foydalaning va catch ichida throw ishlatib xatoni qayta oting.",
+    "test": "const sandbox = new Function(code + '; return executeAndCleanup;');\nconst myFn = sandbox();\nlet cleaned = false;\nconst clean = () => { cleaned = true; };\ntry {\n  myFn(() => { throw new Error('Boom'); }, clean);\n} catch(e) {\n  if (cleaned) {\n    cleaned = false;\n    myFn(() => {}, clean);\n    if (cleaned) return null;\n  }\n}\nreturn 'cleanup funksiyasi kafolatlangan holda chaqirilmadi yoki xatolik qayta otilmadi';"
+  }
+]

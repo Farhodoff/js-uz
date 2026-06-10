@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Massivdan Sayoz Nusxa Olish",
+    "instruction": "Taqdim etilgan 'original' massivining spread operatori yordamida sayoz nusxasini ('copy') yarating, shunda ular xotirada har xil manzilga ega bo'ladi.",
+    "startingCode": "const original = [1, 2, 3];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const copy = [...original];",
+    "test": "if (!code.includes('...')) return 'Spread operatoridan foydalanilmadi';\nconst sandbox = new Function('original', code + '; return copy;');\nconst orig = [1, 2, 3];\nconst res = sandbox(orig);\nif (Array.isArray(res) && res !== orig && res.length === 3 && res[1] === 2) return null;\nreturn 'copy massivi noto\\'g\\'ri yoki original bilan bir xil referencega ega';"
+  },
+  {
+    "id": 2,
+    "title": "Massivga Element Qo'shish (Immutable)",
+    "instruction": "'nums' massivini mutatsiya qilmasdan (o'zgartirmasdan), uning oxiriga 4 sonini qo'shib 'newNums' nomli yangi massiv yarating.",
+    "startingCode": "const nums = [1, 2, 3];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const newNums = [...nums, 4];",
+    "test": "if (code.includes('push')) return 'push metodidan foydalanmang, u massivni mutatsiya qiladi';\nconst sandbox = new Function('nums', code + '; return {nums, newNums};');\nconst orig = [1, 2, 3];\nconst res = sandbox(orig);\nif (res.nums.length === 3 && res.newNums.length === 4 && res.newNums[3] === 4) return null;\nreturn 'Natija noto\\'g\\'ri';"
+  },
+  {
+    "id": 3,
+    "title": "structuredClone yordamida Chuqur Nusxa",
+    "instruction": "'nestedData' obyektidan 'structuredClone' yordamida chuqur nusxa ('deepCopy') oling, shunda ichki 'meta' obyekti ham yangidan nusxalanadi.",
+    "startingCode": "const nestedData = { id: 1, meta: { tags: ['js'] } };\n\n// Kodni shu yerda yozing\n",
+    "hint": "const deepCopy = structuredClone(nestedData);",
+    "test": "if (!code.includes('structuredClone')) return 'structuredClone ishlatilmadi';\nconst sandbox = new Function('nestedData', code + '; return deepCopy;');\nconst orig = { id: 1, meta: { tags: ['js'] } };\nconst res = sandbox(orig);\nif (res !== orig && res.meta !== orig.meta && res.meta.tags[0] === 'js') return null;\nreturn 'Chuqur nusxa noto\\'g\\'ri';"
+  }
+]

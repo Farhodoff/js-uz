@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Funksiya Qabul Qiluvchi HOF",
+    "instruction": "Argument sifatida funksiya ('callback') qabul qilib, uni ikki marta ketma-ket chaqiruvchi 'runTwice(callback)' nomli oliy tartibli funksiyani yozing.",
+    "startingCode": "function runTwice(callback) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "callback(); callback();",
+    "test": "const sandbox = new Function(code + '; return runTwice;');\nconst fn = sandbox();\nlet count = 0;\nfn(() => count++);\nif (count === 2) return null;\nreturn 'callback funksiyasi 2 marta chaqirilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Currying yordamida Ko'paytirish",
+    "instruction": "Karring (Currying) uslubida ikkita sonni ko'paytiradigan 'multiply(a)(b)' funksiyasini yozing (arrow funksiya orqali yozishingiz mumkin).",
+    "startingCode": "// Kodni shu yerda yozing\n",
+    "hint": "const multiply = a => b => a * b;",
+    "test": "if (!code.includes('=>')) return 'Arrow funksiya ko\\'rinishida karring ishlatilmadi';\nconst sandbox = new Function(code + '; return multiply;');\nconst fn = sandbox();\nif (typeof fn === 'function' && fn(3)(4) === 12) return null;\nreturn 'Karring funksiyasi noto\\'g\\'ri ko\\'paytirmoqda';"
+  },
+  {
+    "id": 3,
+    "title": "Partial Application (Qisman Qo'llash)",
+    "instruction": "Avval yozilgan karring funksiyadan ('multiply') foydalanib, berilgan sonni 10 ga ko'paytiradigan 'multiplyByTen' nomli yangi partial funksiyani hosil qiling.",
+    "startingCode": "const multiply = a => b => a * b;\n\n// Kodni shu yerda yozing\n",
+    "hint": "const multiplyByTen = multiply(10);",
+    "test": "if (!code.includes('multiply(10)')) return 'multiply(10) orqali partial application hosil qilinmadi';\nconst sandbox = new Function(code + '; return multiplyByTen;');\nconst fn = sandbox();\nif (typeof fn === 'function' && fn(5) === 50) return null;\nreturn 'multiplyByTen to\\'g\\'ri ishlamadi';"
+  }
+]

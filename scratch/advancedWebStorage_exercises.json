@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Cookie yaratish funksiyasi",
+    "instruction": "Berilgan `name`, `value` va saqlanish muddati `days` (kun) bo'yicha cookie o'rnatuvchi `setCookie(name, value, days)` funksiyasini yozing. Cookie `path=/` ga ega bo'lishi kerak.",
+    "startingCode": "function setCookie(name, value, days) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Kunlarni millisekundlarga o'tkazib (`days * 24 * 60 * 60 * 1000`), `expires` sanasini hisoblang va `document.cookie`ga `name=value;expires=date;path=/` formatida yozing.",
+    "test": "if (!code.includes('document.cookie')) return 'document.cookie o\\'zgartirilishi shart';\ntry {\n  const mockDoc = { cookie: '' };\n  const sandbox = new Function('document', code + '; return setCookie;');\n  const fn = sandbox(mockDoc);\n  fn('user', 'Farhod', 7);\n  if (!mockDoc.cookie.includes('user=Farhod')) return 'Cookie nomi va qiymati to\\'g\\'ri o\\'rnatilmadi';\n  if (!mockDoc.cookie.includes('path=/')) return 'Cookie path=/ parametri bilan o\\'rnatilishi shart';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Cookie qiymatini olish",
+    "instruction": "Berilgan `name` bo'yicha tegishli cookie qiymatini qaytaruvchi, agar u mavjud bo'lmasa `null` qaytaruvchi `getCookie(name)` funksiyasini yozing.",
+    "startingCode": "function getCookie(name) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`document.cookie` satrini `; ` bo'yicha massivga ajrating (`split`), har bir bo'lakni `=` bo'yicha ajratib, nomini qidiring. Topilsa qiymatini qaytaring (qiymatni `decodeURIComponent` qilish tavsiya etiladi).",
+    "test": "try {\n  const mockDoc = { cookie: 'theme=dark; user=Farhod; session=123' };\n  const sandbox = new Function('document', code + '; return getCookie;');\n  const fn = sandbox(mockDoc);\n  if (fn('user') !== 'Farhod') return 'user cookie qiymati noto\\'g\\'ri qaytdi';\n  if (fn('theme') !== 'dark') return 'theme cookie qiymati noto\\'g\\'ri qaytdi';\n  if (fn('nonexistent') !== null) return 'Mavjud bo\\'lmagan cookie uchun null qaytishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "IndexedDB yaratish va Object Store qo'shish",
+    "instruction": "`indexedDB.open(dbName, 1)` yordamida ma'lumotlar bazasini ochadigan va yangilanish jarayonida (`onupgradeneeded`) `storeName` nomli object store (kalitlar bilan birga: `{ keyPath: 'id' }`) yaratadigan `initDatabase(dbName, storeName)` funksiyasini yozing. Funksiya o'rnatilgan request obyektini qaytarsin.",
+    "startingCode": "function initDatabase(dbName, storeName) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "request.onupgradeneeded hodisasi ichida `const db = event.target.result;` ni oling va `db.createObjectStore(storeName, { keyPath: 'id' });` ni chaqiring.",
+    "test": "if (!code.includes('indexedDB.open')) return 'indexedDB.open orqali bazani ochish kerak';\nif (!code.includes('createObjectStore')) return 'createObjectStore yordamida object store yaratilishi kerak';\ntry {\n  const mockIndexedDB = {\n    open: (dbName, version) => {\n      const req = { onupgradeneeded: null };\n      return req;\n    }\n  };\n  const sandbox = new Function('indexedDB', code + '; return initDatabase;');\n  const fn = sandbox(mockIndexedDB);\n  const req = fn('myDb', 'users');\n  if (!req || typeof req !== 'object') return 'request obyekti qaytarilishi shart';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  }
+]

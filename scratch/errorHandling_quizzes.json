@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da try...catch blokining asosiy vazifasi nima?",
+    "options": [
+      "Dasturning xotira sarfini kamaytirish",
+      "Koddagi xatolarni avtomatik tarzda o'chirib yuborish",
+      "Kutilmagan xatolar yuz berganda dastur to'xtab qolishining oldini olish va xatoni boshqarish",
+      "Sinxron kodni asinxron kodga aylantirish"
+    ],
+    "correctAnswer": 2,
+    "explanation": "try...catch bloki yordamida biz xavfli kodlarni try ichiga olamiz, xato yuz berganda esa catch bloki ishlab dastur to'xtamasligini ta'minlaymiz."
+  },
+  {
+    "id": 2,
+    "question": "finally bloki qachon ishga tushadi?",
+    "options": [
+      "Faqat try blokida xato yuz bermasa",
+      "Faqat catch bloki xatoni tutib olgandan keyin",
+      "Xatolik yuz berishi yoki bermasligidan qat'i nazar har doim eng oxirida",
+      "Faqat brauzer yopilganda"
+    ],
+    "correctAnswer": 2,
+    "explanation": "finally bloki har qanday holatda ham, xato bo'lsa ham bo'lmasa ham, eng oxirida albatta ishga tushadi."
+  },
+  {
+    "id": 3,
+    "question": "Dasturchi tomonidan qo'lda (sun'iy) xatolik otish uchun qaysi kalit so'z ishlatiladi?",
+    "options": [
+      "catch",
+      "throw",
+      "reject",
+      "raise"
+    ],
+    "correctAnswer": 1,
+    "explanation": "throw kalit so'zi yordamida istalgan xatolik obyektini yoki qiymatini otishimiz mumkin: throw new Error('Xato');"
+  },
+  {
+    "id": 4,
+    "question": "E'lon qilinmagan (mavjud bo'lmagan) o'zgaruvchidan foydalanmoqchi bo'linganda qanday xato turi yuzaga keladi?",
+    "options": [
+      "TypeError",
+      "SyntaxError",
+      "ReferenceError",
+      "RangeError"
+    ],
+    "correctAnswer": 2,
+    "explanation": "ReferenceError o'zgaruvchi yoki funksiya topilmaganda, ya'ni unga havola (reference) noto'g'ri bo'lganda yuzaga keladi."
+  },
+  {
+    "id": 5,
+    "question": "Error obyektining qaysi xossasi xato yuz bergan joygacha bo'lgan funksiyalar chaqiruvlari ketma-ketligini (Call Stack) ko'rsatadi?",
+    "options": [
+      "message",
+      "name",
+      "stack",
+      "cause"
+    ],
+    "correctAnswer": 2,
+    "explanation": "stack xossasi xato aynan qaysi fayl, qaysi qator va qaysi funksiyalarda sodir bo'lganligini to'liq ko'rsatuvchi ma'lumotni saqlaydi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\ntry {\n  setTimeout(() => {\n    throw new Error('Asinxron xato');\n  }, 100);\n} catch (e) {\n  console.log('Xato tutildi!');\n}\n```",
+    "options": [
+      "Konsolda 'Xato tutildi!' yozuvi chiqadi",
+      "Dastur xatosiz tugaydi va hech narsa chiqmaydi",
+      "Boshqarilmagan (Uncaught Error: Asinxron xato) xatosi yuzaga keladi va catch bloki ishlamaydi",
+      "TypeError xatosi chiqadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "setTimeout asinxron bo'lgani uchun uning callbacki keyinchalik alohida stackda ishlaydi. Bu paytda try-catch bloki allaqachon bajarilib bo'lgani uchun u xatoni tuta olmaydi va global xato yuzaga keladi."
+  },
+  {
+    "id": 7,
+    "question": "throw operatori yordamida qanday turdagi qiymatlarni otish mumkin?",
+    "options": [
+      "Faqat Error obyektlarini",
+      "Faqat satr (string) turidagi xabarlarni",
+      "Istalgan turdagi qiymatni (obyekt, string, son, boolean va h.k.)",
+      "Faqat raqamlarni"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JS-da throw orqali istalgan qiymatni, jumladan string, son yoki custom obyektlarni ham otish mumkin, lekin eng yaxshi amaliyot Error obyektini ishlatishdir."
+  },
+  {
+    "id": 8,
+    "question": "try yoki catch bloklari ichida return yozilgan bo'lsa, finally bloki qanday ishlaydi?",
+    "options": [
+      "finally bloki umuman ishga tushmaydi",
+      "finally baribir ishlaydi va agar uning ichida ham return bo'lsa, u oldingi return qiymatini felini o'zgartiradi",
+      "Faqat xato bo'lsagina ishlaydi",
+      "Dastur SyntaxError beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "finally bloki try/catch ichidagi return bajarilishidan oldin baribir ishga tushadi. Agar finally ichida ham return bo'lsa, u yakuniy natijaga aylanadi."
+  },
+  {
+    "id": 9,
+    "question": "Noma'lum (aniqlanmagan) obyekt metodini yoki null qiymat ustida amal bajarmoqchi bo'lganda qaysi xato turi yuz beradi?",
+    "options": [
+      "SyntaxError",
+      "TypeError",
+      "RangeError",
+      "URIError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TypeError qiymat kutilgan turda bo'lmaganda yoki null/undefined ustida xossa/metod chaqirilganda yuzaga keladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodda console.log ishlaydimi?\n```javascript\ntry {\n  JSON.parse('{not-json}');\n} catch (e) {\n  console.log('Catch ishladi');\n}\n```",
+    "options": [
+      "Yo'q, chunki JSON parsing xatosi try-catch tomonidan tutilmaydi",
+      "Ha, chunki noto'g'ri JSON parser SyntaxError beradi va catch uni tutib log yozadi",
+      "Yo'q, chunki kod SyntaxError berib butunlay to'xtaydi",
+      "Ha, lekin logda undefined chiqadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JSON.parse xato JSON matni uzatilganda SyntaxError otadi va bu sinxron xato bo'lgani uchun catch bloki uni muvaffaqiyatli tutadi va log ishlaydi."
+  },
+  {
+    "id": 11,
+    "question": "RangeError xatosi odatda qachon yuz beradi?",
+    "options": [
+      "O'zgaruvchi topilmaganda",
+      "Qiymat ruxsat etilgan diapazondan yoki massiv o'lchovidan oshib ketganda",
+      "Sinxron kod asinxronga aylanganda",
+      "Tugma bosilmaganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "RangeError qiymat ruxsat berilgan diapazondan chiqqanda (masalan, new Array(-1) yoki recursion juda chuqurlashib stack overflow bo'lganda) yuzaga keladi."
+  },
+  {
+    "id": 12,
+    "question": "Nima uchun try-catch bloklarini faqat haqiqiy xatolar uchun ishlatish tavsiya etiladi?",
+    "options": [
+      "Chunki ular kod hajmini oshiradi",
+      "Chunki xatolarni yaratish va stack trace to'plash resurs jihatidan og'ir operatsiya bo'lib, unumdorlikka ta'sir qiladi",
+      "Chunki brauzer try-catch ko'p bo'lsa sahifani bloklaydi",
+      "Foydalanish cheklovlari mavjud"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Error obyektlarini yaratish va call stack trace yig'ish tizim uchun qimmatga tushadi, shuning uchun dastur normal mantiqiy oqimini (flow control) if-else o'rniga try-catch bilan boshqarish unumdorlikni pasaytiradi."
+  }
+]

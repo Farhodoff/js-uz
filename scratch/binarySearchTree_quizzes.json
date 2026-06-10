@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Ikkilik qidiruv daraxti (Binary Search Tree - BST) nima?",
+    "options": [
+      "Har bir tugun ko'pi bilan bitta farzandga ega bo'lgan chiziqli ma'lumotlar tuzilmasi",
+      "Har bir tugun ko'pi bilan ikkita farzandga ega bo'lgan va chap farzand qiymati ota tugundan kichik, o'ng farzand qiymati esa katta bo'lgan daraxt",
+      "Barcha tugunlari bir xil darajada joylashgan ierarxik bo'lmagan massiv",
+      "Elementlari faqat boolean (true/false) qiymatlardan iborat bo'lgan grafik shakli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "BSTda har bir tugunning chap tarmog'idagi barcha qiymatlar shu tugun qiymatidan kichik, o'ng tarmog'idagi barcha qiymatlar esa o'sha tugun qiymatidan katta bo'lishi shart."
+  },
+  {
+    "id": 2,
+    "question": "Balanslashtirilgan BSTda elementni qidirish yoki kiritishning o'rtacha vaqt murakkabligi (Time Complexity) qanday?",
+    "options": [
+      "O(1)",
+      "O(n)",
+      "O(log n)",
+      "O(n log n)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Balanslashtirilgan daraxtda har safar solishtirish amalga oshirilganda qidiruv sohasi yarmi qisqaradi, shuning uchun o'rtacha vaqt murakkabligi O(log n) ga teng."
+  },
+  {
+    "id": 3,
+    "question": "Daraxt butunlay chiziqli (skewed) bo'lib qolsa (masalan, faqat o'ngga yoki faqat chapga o'ssa), qidiruvning eng yomon holatdagi (worst-case) murakkabligi qanday bo'ladi?",
+    "options": [
+      "O(n)",
+      "O(log n)",
+      "O(1)",
+      "O(n²)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Daraxt chiziqli bo'lib qolganda, u bog'langan ro'yxat (linked list) kabi ishlaydi. Elementlarni qidirish uchun barcha tugunlarni ketma-ket tekshirish kerak bo'ladi, bu esa O(n) murakkablikka olib keladi."
+  },
+  {
+    "id": 4,
+    "question": "BST elementlarini o'sish tartibida (tartiblangan holda) chiqarish uchun daraxtni qaysi tartibda aylanish (Traversal) kerak?",
+    "options": [
+      "Pre-order (Tugun -> Chap -> O'ng)",
+      "Post-order (Chap -> O'ng -> Tugun)",
+      "In-order (Chap -> Tugun -> O'ng)",
+      "Level-order (Qavatma-qavat)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "In-order aylanib chiqishda birinchi navbatda chap tomondagi kichik qiymat, keyin tugun o'zi va oxirida o'ng tomondagi katta qiymat olinadi. Bu esa o'z-o'zidan tartiblangan ketma-ketlikni beradi."
+  },
+  {
+    "id": 5,
+    "question": "Daraxtning eng yuqorisida joylashgan va hech qanday ota tugunga ega bo'lmagan boshlang'ich tugun nima deyiladi?",
+    "options": [
+      "Leaf (Barg)",
+      "Root (Ildiz)",
+      "Branch (Shox)",
+      "Sibling (Aka-uka)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Daraxtning eng yuqori tuguni 'Root' (ildiz) tugun deb ataladi va barcha boshqa tugunlar undan tarqaladi."
+  },
+  {
+    "id": 6,
+    "question": "Farzandlari (chap va o'ng tugunlari) bo'lmagan daraxt tugunlari qanday nomlanadi?",
+    "options": [
+      "Leaf nodes (Barg tugunlar)",
+      "Internal nodes (Ichki tugunlar)",
+      "Root nodes (Ildiz tugunlar)",
+      "Subtrees (Yordamchi daraxtlar)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Hech qanday farzandga (left = null, right = null) ega bo'lmagan tugunlar 'Leaf' (barg) tugunlar deb ataladi."
+  },
+  {
+    "id": 7,
+    "question": "Agar BSTga ketma-ket [15, 10, 20, 12, 17] qiymatlari kiritilsa, 12 qiymati qayerga joylashadi?",
+    "options": [
+      "10 tugunining o'ng tomoniga",
+      "10 tugunining chap tomoniga",
+      "20 tugunining o'ng tomoniga",
+      "15 tugunining chap tomoniga to'g'ridan-to'g'ri root sifatida"
+    ],
+    "correctAnswer": 0,
+    "explanation": "12 qiymati 15 dan kichik (chapga ketadi), 10 dan esa katta. Shuning uchun u 10 ning o'ng tomoniga joylashadi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagilardan qaysi biri binary tree aylanish (traversal) usuliga kirmaydi?",
+    "options": [
+      "Pre-order",
+      "Post-order",
+      "In-order",
+      "Bubble-order"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Pre-order, Post-order va In-order ikkilik daraxtlarni aylanishning standart chuqurlik bo'yicha (DFS) usullaridir. Bubble-order degan usul mavjud emas."
+  },
+  {
+    "id": 9,
+    "question": "Qidiruv daraxtida har qanday tugunning chap va o'ng ostki daraxtlari (subtrees) balandligi farqi ko'pi bilan 1 bo'lsa, bunday daraxt qanday ataladi?",
+    "options": [
+      "Chiziqli daraxt (Skewed Tree)",
+      "Balanslashgan daraxt (Balanced Tree)",
+      "To'liq bo'lmagan daraxt (Unbalanced Tree)",
+      "Bo'sh daraxt (Empty Tree)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Balandliklar farqi 1 dan oshmaydigan daraxt 'Balanslashgan daraxt' (Balanced Tree) deyiladi (masalan, AVL yoki Red-Black daraxtlari)."
+  },
+  {
+    "id": 10,
+    "question": "BSTdan elementni o'chirish (Delete) operatsiyasida eng murakkab holat qaysi?",
+    "options": [
+      "O'chiriladigan tugun barg (leaf) bo'lsa",
+      "O'chiriladigan tugunning faqat bitta farzandi bo'lsa",
+      "O'chiriladigan tugunning ikkita farzandi bo'lsa",
+      "O'chiriladigan tugun root bo'lsa va daraxtda faqat bitta tugun bo'lsa"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Ikki farzandli tugun o'chirilganda, uning o'rniga o'ng ostki daraxtning eng kichik elementini (inorder successor) yoki chap ostki daraxtning eng katta elementini (inorder predecessor) topib qo'yish kerak bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun odatiy massivga qaraganda BSTdan foydalanish afzalroq bo'lishi mumkin?",
+    "options": [
+      "Daraxt xotiradan kam joy egallaydi",
+      "Tartiblangan massivda yangi element qo'shish O(n) vaqt olsa, BSTda o'rtacha O(log n) vaqt oladi va qidirish tez bajariladi",
+      "Daraxtda elementlar faqat string formatida saqlanadi",
+      "Daraxt elementlari brauzer keshida avtomatik saqlanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tartiblangan massivda element kiritish boshqa elementlarni surish kerakligi sababli O(n) vaqt talab qiladi, BSTda esa ko'rsatkichlar (pointers) o'zgartiriladi, bu esa O(log n) da bajariladi."
+  },
+  {
+    "id": 12,
+    "question": "Pre-order aylanib chiqish (Traversal) tartibi qanday?",
+    "options": [
+      "Tugun o'zi -> Chap farzand -> O'ng farzand",
+      "Chap farzand -> Tugun o'zi -> O'ng farzand",
+      "Chap farzand -> O'ng farzand -> Tugun o'zi",
+      "O'ng farzand -> Tugun o'zi -> Chap farzand"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Pre-order (oldindan tartiblash) usulida birinchi bo'lib joriy tugunning o'zi olinadi, so'ng chap ostki daraxt va keyin o'ng ostki daraxt aylaniladi."
+  }
+]

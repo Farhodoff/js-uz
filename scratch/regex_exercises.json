@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Email Manzilini Tekshirish",
+    "instruction": "Kiritilgan satrning haqiqiy email manzili ekanligini tekshiruvchi `validateEmail(email)` funksiyasini yozing. Funksiya to'g'ri bo'lsa `true`, noto'g'ri bo'lsa `false` qaytarsin.",
+    "startingCode": "function validateEmail(email) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "/^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$/ kabi muntazam ifoda va regex.test(email) metodidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return validateEmail;');\nconst fn = sandbox();\nif (fn('test@example.com') !== true) return 'To\\'g\\'ri emailni tekshirishda false qaytdi';\nif (fn('invalid-email') !== false) return 'Noto\\'g\\'ri emailni tekshirishda true qaytdi';\nif (fn('abc@def') !== false) return 'Domeni yo\\'q emailni tekshirishda true qaytdi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Telefon Raqamini Formatlash",
+    "instruction": "998901234567 ko'rinishidagi 12 ta raqamdan iborat O'zbekiston telefon raqamini regex yordamida guruhlarga ajratib, `+998 (90) 123-45-67` ko'rinishiga keltiruvchi `formatPhoneNumber(str)` funksiyasini yozing.",
+    "startingCode": "function formatPhoneNumber(str) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "RegEx guruhlari (capturing groups) va `.replace()` metodidan foydalaning. Masalan: `str.replace(/(\\d{3})(\\d{2})(\\d{3})(\\d{2})(\\d{2})/, '+$1 ($2) $3-$4-$5')`.",
+    "test": "const sandbox = new Function(code + '; return formatPhoneNumber;');\nconst fn = sandbox();\nconst res = fn('998901234567');\nif (res === '+998 (90) 123-45-67') return null;\nreturn 'Telefon raqamini formatlash xato: ' + res;"
+  },
+  {
+    "id": 3,
+    "title": "Hashtaglarni Ajratib Olish",
+    "instruction": "Berilgan matndan barcha hashtaglarni (masalan, `#javascript`, `#code`) ajratib olib, massiv ko'rinishida qaytaruvchi `extractHashtags(text)` funksiyasini yozing. Agar matnda hashtaglar topilmasa, bo'sh massiv `[]` qaytishi kerak.",
+    "startingCode": "function extractHashtags(text) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "/#[a-zA-Z0-9_]+/g yoki /#\\w+/g shablonidan va `.match()` metodidan foydalaning. Match natijasi `null` bo'lsa, `[]` qaytarishni unutmang.",
+    "test": "const sandbox = new Function(code + '; return extractHashtags;');\nconst fn = sandbox();\nconst res = fn('Bugun #javascript va #regex o\\'rganamiz!');\nif (!Array.isArray(res) || res.length !== 2 || res[0] !== '#javascript' || res[1] !== '#regex') {\n  return 'Hashtaglarni ajratib olishda xatolik: ' + JSON.stringify(res);\n}\nconst empty = fn('Hech qanday hashtag yo\\'q');\nif (!Array.isArray(empty) || empty.length !== 0) {\n  return 'Topilmagan holatda bo\\'sh massiv qaytarilmadi';\n}\nreturn null;"
+  }
+]

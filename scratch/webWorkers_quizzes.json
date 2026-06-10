@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Web Worker nima vazifani bajaradi?",
+    "options": [
+      "Brauzerning asosiy oqimini (UI thread) bloklamasdan, fon rejimida og'ir kodlarni bajarish imkonini beradi",
+      "DOM elementlarini tezroq render qiluvchi CSS dvigatelidir",
+      "Ma'lumotlar bazasini brauzer ichida avtomatik sinxronizatsiya qiluvchi tizim",
+      "Faqat internet tezligini oshiruvchi proksi server"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Web Worker brauzerning UI (foydalanuvchi interfeysi) oqimini muzlatib qo'ymaslik uchun og'ir matematik yoki ma'lumotlar bilan bog'liq ishlarni orqa fonda bajaradi."
+  },
+  {
+    "id": 2,
+    "question": "Web Worker ichida quyidagi global obyektlardan qaysi biridan foydalanish TAQIQLANGAN?",
+    "options": [
+      "self",
+      "navigator",
+      "window (va uning yordamida DOM)",
+      "location"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Web Worker alohida oqim bo'lgani uchun u DOM (Document Object Model) elementlariga va `window` obyektiga bevosita kira olmaydi. Bu xavfsizlik va oqimlar to'qnashuvining oldini olish uchun joriy qilingan."
+  },
+  {
+    "id": 3,
+    "question": "Asosiy oqimdan Web Workerga xabar yuborish uchun qaysi metod chaqiriladi?",
+    "options": [
+      "sendMessage()",
+      "postMessage()",
+      "pushData()",
+      "emit()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web Worker-da oqimlararo aloqa faqat `postMessage()` metodi orqali amalga oshiriladi."
+  },
+  {
+    "id": 4,
+    "question": "Web Worker-dan yuborilgan ma'lumotlarni qabul qilish uchun qaysi event handler ishlatiladi?",
+    "options": [
+      "onmessage",
+      "onload",
+      "onchange",
+      "onreceive"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ma'lumot kelganda javob qaytarish uchun `onmessage` yoki `addEventListener('message', callback)` ishlatiladi."
+  },
+  {
+    "id": 5,
+    "question": "Yangi Web Worker yaratish uchun qanday sintaksis ishlatiladi?",
+    "options": [
+      "const worker = new Worker('worker.js');",
+      "const worker = Worker.create('worker.js');",
+      "const worker = new ServiceWorker('worker.js');",
+      "const worker = fetchWorker('worker.js');"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`new Worker('file_path')` yordamida yangi fon oqimi yaratiladi va unga alohida JS fayli yuklanadi."
+  },
+  {
+    "id": 6,
+    "question": "Web Worker-ni uning o'z ichidan (fondagi koddan) to'xtatish uchun qaysi metod chaqiriladi?",
+    "options": [
+      "self.close()",
+      "self.terminate()",
+      "self.stop()",
+      "self.exit()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Worker o'z ishini yakunlab o'zini to'xtatishi uchun global `self.close()` funksiyasini chaqirishi kerak."
+  },
+  {
+    "id": 7,
+    "question": "Asosiy oqimdan turib fondagi workerni darhol va majburiy to'xtatish uchun qaysi metod chaqiriladi?",
+    "options": [
+      "worker.stop()",
+      "worker.close()",
+      "worker.terminate()",
+      "worker.destroy()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Asosiy oqimdan turib ishlayotgan workerni zudlik bilan yopib yuborish uchun `worker.terminate()` metodi ishlatiladi."
+  },
+  {
+    "id": 8,
+    "question": "Worker ichida xatolik yuz berganda uni asosiy oqimda qanday tinglash mumkin?",
+    "options": [
+      "worker.onerror = ...",
+      "worker.onfail = ...",
+      "worker.onbreak = ...",
+      "worker.onabort = ..."
+    ],
+    "correctAnswer": 0,
+    "explanation": "Worker ichidagi xatoliklarni kuzatish uchun asosiy oqimda `worker.onerror` yoki `addEventListener('error', callback)` qo'llaniladi."
+  },
+  {
+    "id": 9,
+    "question": "Web Worker ichida tarmoq so'rovlari yuborish mumkinmi?",
+    "options": [
+      "Yo'q, Web Worker-da tarmoq so'rovlari butunlay taqiqlangan",
+      "Ha, faqat XMLHttpRequest orqali mumkin",
+      "Ha, ham fetch(), ham XMLHttpRequest orqali so'rov yuborish mumkin",
+      "Ha, lekin faqat local serverga"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Web Worker ichida tarmoq bilan ishlash cheklanmagan. U erda `fetch` va `XMLHttpRequest` dan bemalol foydalanish mumkin."
+  },
+  {
+    "id": 10,
+    "question": "Web Workerga `postMessage` orqali obyekt uzatilganda JS dvigateli uni qanday o'tkazadi?",
+    "options": [
+      "Reference (ko'rsatkich) orqali to'g'ridan-to'g'ri uzatadi",
+      "Structured Clone algoritmi yordamida obyektning chuqur nusxasini yaratib o'tkazadi",
+      "Obyektni avtomatik ravishda Base64-ga o'giradi",
+      "Uni faqat global xotirada saqlab qo'yadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JS oqimlar o'rtasida ma'lumotlar xavfsiz bo'lishi va bir vaqtda o'zgartirilmasligi uchun ularni Structured Clone algoritmi yordamida nusxalab beradi."
+  },
+  {
+    "id": 11,
+    "question": "Juda katta massivlarni (masalan, ArrayBuffer) nusxalamasdan, egalik huquqini workerga o'tkazish uchun nima ishlatiladi?",
+    "options": [
+      "Shared Memory",
+      "Transferable Objects",
+      "JSON Serialization",
+      "WebSockets"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Transferable Objects yordamida ma'lumot nusxalanmaydi, balki uning xotiradagi adresi workerga o'tkaziladi. Bu esa resurs va vaqtni tejaydi (chunki asosiy oqim endi u ma'lumotdan foydalana olmaydi)."
+  },
+  {
+    "id": 12,
+    "question": "SharedWorker nima?",
+    "options": [
+      "Bir nechta sahifalar (tablar, iframe-lar) tomonidan birgalikda foydalaniladigan Web Worker",
+      "Faqat bitta tab ichida ishlaydigan oddiy worker",
+      "Serverdagi fayllarni yuklashni tezlashtiruvchi worker",
+      "O'zgaruvchilarni umumiy tarmoqqa yuklovchi tizim"
+    ],
+    "correctAnswer": 0,
+    "explanation": "SharedWorker bitta kelib chiqish manziliga (origin) ega bo'lgan bir nechta tablar, oynalar yoki iframe-lar o'rtasida umumiy bitta worker oqimi bo'lib ishlay oladi."
+  }
+]

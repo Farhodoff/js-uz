@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "2D Kontekstni Olish",
+    "instruction": "Taqdim etilgan 'canvas' o'zgaruvchisidan '2d' chizish kontekstini oling va uni 'ctx' o'zgaruvchisiga saqlang.",
+    "startingCode": "const canvas = document.createElement('canvas');\n\n// Kodni shu yerda yozing\n",
+    "hint": "const ctx = canvas.getContext('2d');",
+    "test": "if (!code.includes('getContext')) return 'getContext metodi ishlatilmadi';\nconst sandbox = new Function('canvas', code + '; return ctx;');\nconst el = document.createElement('canvas');\nconst res = sandbox(el);\nif (res instanceof CanvasRenderingContext2D) return null;\nreturn 'ctx o\\'zgaruvchisi 2D context emas';"
+  },
+  {
+    "id": 2,
+    "title": "To'rtburchak Chizish",
+    "instruction": "'ctx' dan foydalanib x=20, y=30 koordinatada eni 100 va bo'yi 50 bo'lgan to'ldirilgan (fillRect) to'rtburchak chizing.",
+    "startingCode": "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n\n// Kodni shu yerda yozing\n",
+    "hint": "ctx.fillRect(20, 30, 100, 50);",
+    "test": "if (!code.includes('fillRect(20, 30, 100, 50)')) return 'fillRect to\\'g\\'ri koordinatalar bilan chaqirilmadi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Chizish Rangini O'zgartirish",
+    "instruction": "'ctx' ning chizish rangini (fillStyle) 'green' (yashil) ga o'zgartiring va x=0, y=0, eni 50, bo'yi 50 bo'lgan to'rtburchak chizing.",
+    "startingCode": "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n\n// Kodni shu yerda yozing\n",
+    "hint": "ctx.fillStyle = 'green'; ctx.fillRect(0, 0, 50, 50);",
+    "test": "if (!code.includes('fillStyle') || !code.includes('green')) return 'fillStyle ko\\'k rangga o\\'zgartirilmadi';\nif (!code.includes('fillRect')) return 'fillRect ishlatilmadi';\nreturn null;"
+  }
+]

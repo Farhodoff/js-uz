@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "localStorage va sessionStorage o'rtasidagi eng asosiy farq nimada?",
+    "options": [
+      "localStorage ma'lumotlarni serverga yuboradi, sessionStorage esa yo'q",
+      "Ma'lumotlarning saqlanish muddati: localStorage abadiy saqlaydi, sessionStorage esa tab yopilganda o'chadi",
+      "sessionStorage faqat raqamlarni saqlay oladi, localStorage esa obyeklarni",
+      "Hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "localStorage ma'lumotlarni dasturchi yoki foydalanuvchi o'chirmaguncha saqlab turadi, sessionStorage esa joriy tab/oyna yopilishi bilan ma'lumotlarni yo'qotadi."
+  },
+  {
+    "id": 2,
+    "question": "sessionStorage-ga saqlangan ma'lumotlar qachon to'liq o'chib ketadi?",
+    "options": [
+      "Kompyuter o'chib-yonganda",
+      "Brauzer keshini tozalaganda",
+      "Ma'lumotlar yozilgan brauzer oynasi (tabi) foydalanuvchi tomonidan yopilganda",
+      "Yozilgandan 24 soat o'tgach"
+    ],
+    "correctAnswer": 2,
+    "explanation": "sessionStorage joriy seans (session) bilan bog'liq bo'lib, sahifa yorlig'i (tab) o'chirilishi bilan o'z-o'zidan tozalanadi."
+  },
+  {
+    "id": 3,
+    "question": "Web Storage API-da ma'lumotlar qanday ma'lumot tipida saqlanadi?",
+    "options": [
+      "Faqat JSON obyektlari shaklida",
+      "Faqat satr (string) turida",
+      "Istalgan JS tipi (number, array, function, object) o'zgarishsiz saqlanadi",
+      "Faqat ikkilik (binary) formatda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web Storage faqat satr (string) qiymatlarni saqlay oladi. Obyektlar yoki massivlarni saqlashdan oldin ularni satrga (masalan JSON) o'girish shart."
+  },
+  {
+    "id": 4,
+    "question": "localStorage-ga obyektni saqlashdan oldin qaysi metod yordamida string formatiga o'tkazish kerak?",
+    "options": [
+      "JSON.parse()",
+      "JSON.stringify()",
+      "Object.toString()",
+      "String.valueOf()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JSON.stringify() obyekti JS obyektini string formatiga o'tkazadi va uni storage-da to'g'ri saqlash imkonini beradi."
+  },
+  {
+    "id": 5,
+    "question": "Storage-dan biror kalit (key) ostidagi ma'lumotni o'qib olish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "localStorage.readItem(key)",
+      "localStorage.getItem(key)",
+      "localStorage.fetchItem(key)",
+      "localStorage.key"
+    ],
+    "correctAnswer": 1,
+    "explanation": "getItem(key) metodi ko'rsatilgan kalit bo'yicha qiymatni qaytaradi. Agar kalit mavjud bo'lmasa, null qaytadi."
+  },
+  {
+    "id": 6,
+    "question": "LocalStorage sig'imi har bir domen (origin) uchun o'rtacha qancha qilib belgilangan?",
+    "options": [
+      "4 Kilobayt (4KB)",
+      "5 Megabayt (5MB)",
+      "50 Megabayt (50MB)",
+      "Cheksiz"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Zamonaviy brauzerlarda localStorage limiti har bir domen uchun o'rtacha 5MB ni tashkil qiladi. Cookie (kuki) fayllarida esa bu atigi 4KB dir."
+  },
+  {
+    "id": 7,
+    "question": "LocalStorage-dagi barcha kalit va qiymatlarni birdaniga butunlay tozalash uchun qaysi metod ishlatiladi?",
+    "options": [
+      "localStorage.removeItem()",
+      "localStorage.clear()",
+      "localStorage.deleteAll()",
+      "localStorage.reset()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "clear() metodi joriy domen uchun tegishli bo'lgan barcha ma'lumotlarni storagedan butunlay o'chirib yuboradi."
+  },
+  {
+    "id": 8,
+    "question": "Boshqa ochiq tab yoki oyna orqali localStorage o'zgartirilganda qaysi hodisa (event) ishga tushadi?",
+    "options": [
+      "change",
+      "update",
+      "storage",
+      "onstoragechange"
+    ],
+    "correctAnswer": 2,
+    "explanation": "window-dagi 'storage' hodisasi parallel oynalarda ma'lumot o'zgarganda ishlaydi va cross-tab aloqasini o'rnatishga yordam beradi."
+  },
+  {
+    "id": 9,
+    "question": "Nima uchun localStorage-ga foydalanuvchining session ID yoki JWT tokenlarini saqlash xavfli hisoblanadi?",
+    "options": [
+      "Chunki ular tez-tez o'chib ketadi",
+      "Chunki localStorage faqat rasmlarni saqlash uchun mo'ljallangan",
+      "Chunki u JavaScript tomonidan oson o'qiladi va saytda XSS zaifligi bo'lsa token o'g'irlanishi mumkin",
+      "Chunki brauzer tokenlarni keshlamaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "LocalStorage-ga JS kodlari to'liq kirish huquqiga ega. XSS (Cross-Site Scripting) hujumi sodir etilsa, tajovuzkorlar foydalanuvchi tokenini o'g'irlab olishlari mumkin."
+  },
+  {
+    "id": 10,
+    "question": "localStorage.key(0) buyrug'i nima vazifani bajaradi?",
+    "options": [
+      "Storage-dagi birinchi elementning qiymatini qaytaradi",
+      "Storage-dagi birinchi elementning kalit (key) nomini qaytaradi",
+      "LocalStorage-ni tozalaydi",
+      "Har doim xatolik qaytaradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "key(index) metodi storagedan berilgan indeks bo'yicha joylashgan kalit (key) nomini aniqlaydi."
+  },
+  {
+    "id": 11,
+    "question": "Web Storage API operatsiyalari ishlash tabiati bo'yicha qanday?",
+    "options": [
+      "Ular asinxrondir va Promise qaytaradi",
+      "Ular sinxrondir, ya'ni bajarilayotganda brauzerning asosiy oqimini (Main Thread) bloklaydi",
+      "Ular orqa fonda Web Workers yordamida ishlaydi",
+      "Hech qanday resurs sarflamaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web Storage API to'liq sinxrondir. Shuning uchun katta hajmdagi ma'lumotlar bilan ishlaganda interfeys qotib qolishini oldini olish uchun uni ehtiyotkorlik bilan ishlatish kerak."
+  },
+  {
+    "id": 12,
+    "question": "Same-Origin Policy qoidasiga ko'ra, qaysi domenlar bir-birining localStorage ma'lumotlarini o'qishi mumkin?",
+    "options": [
+      "Protokoli, domeni va porti mutlaqo bir xil bo'lgan domenlar",
+      "Faqat bir xil IP manzildan ishlovchi har qanday saytlar",
+      "Domen nomining bir qismi mos keladigan subdomenlar (masalan: a.test.com va b.test.com)",
+      "Har qanday HTTP/HTTPS saytlar"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Same-Origin Policy protokoli (HTTP/HTTPS), domen (va subdomenlari ham alohida kelib chiqish) hamda porti bir xil bo'lishini talab qiladi. Subdomenlar ham bir-birining storage'ini o'qiy olmaydi."
+  }
+]

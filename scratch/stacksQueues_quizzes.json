@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Stack (Stek) ma'lumotlar tuzilmasi qaysi tamoyil asosida ishlaydi?",
+    "options": [
+      "FIFO (First In, First Out) - Birinchi kirgan birinchi chiqadi",
+      "LIFO (Last In, First Out) - Oxirgi kirgan birinchi chiqadi",
+      "LILO (Last In, Last Out) - Oxirgi kirgan oxirgi chiqadi",
+      "Tasodifiy kirish (Random Access)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Stack 'LIFO' (Oxirgi kirgan birinchi chiqadi) tamoyili bilan ishlaydi. Masalan, ustma-ust taxlangan likopchalar kabi, faqat eng ustidagisini olish mumkin."
+  },
+  {
+    "id": 2,
+    "question": "Queue (Navbat) ma'lumotlar tuzilmasi qaysi tamoyil asosida ishlaydi?",
+    "options": [
+      "FIFO (First In, First Out) - Birinchi kelgan birinchi ketadi",
+      "LIFO (Last In, First Out) - Oxirgi kelgan birinchi ketadi",
+      "LILO (Last In, Last Out) - Oxirgi kelgan oxirgi ketadi",
+      "Kalit bo'yicha kirish (Key Access)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Queue 'FIFO' (Birinchi kelgan birinchi ketadi) tamoyili bilan ishlaydi. Do'kondagi navbat kabi, navbatga birinchi turgan odamga birinchi xizmat ko'rsatiladi."
+  },
+  {
+    "id": 3,
+    "question": "Stack-ka yangi element qo'shish (Push) va undan element o'chirish (Pop) operatsiyalarining vaqt murakkabligi qanday?",
+    "options": [
+      "O(n)",
+      "O(log n)",
+      "O(1)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Stack-ning eng yuqori qismiga element qo'shish va undan element olish faqat bitta element bilan bog'liq bo'lgani uchun doimiy vaqt (O(1)) oladi."
+  },
+  {
+    "id": 4,
+    "question": "Navbat boshidan elementni olish (Dequeue) va navbat oxiriga element qo'shish (Enqueue) ideal holatda qanday vaqt murakkabligiga ega bo'lishi kerak?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "To'g'ri loyihalashtirilgan Queue ma'lumotlar tuzilmasida (masalan, pointerlar yordamida) enqueue va dequeue operatsiyalari O(1) vaqt murakkabligida ishlashi kerak."
+  },
+  {
+    "id": 5,
+    "question": "JavaScript-da oddiy massiv (Array) va `.shift()` metodidan foydalanib dequeue qilish nega samarasiz hisoblanadi?",
+    "options": [
+      "Massivda `.shift()` ishlatib bo'lmasligi sababli",
+      "Massivning `.shift()` metodi barcha qolgan elementlarni 1 indeks chapga surib chiqishi tufayli O(n) vaqt talab qilishi uchun",
+      "U faqat sonlarni o'chira olgani uchun",
+      "Massiv hajmini qisqartira olmasligi sababli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript massividan `.shift()` yordamida element o'chirilganda, barcha qolgan elementlar bitta indeks chapga suriladi. Bu massiv hajmi n ga proporsional ravishda O(n) vaqt oladi va katta ma'lumotlarda sekinlashadi."
+  },
+  {
+    "id": 6,
+    "question": "Stack-dan elementni o'chirmasdan, uning eng yuqorisida turgan qiymatni ko'rish (o'qish) amali nima deyiladi?",
+    "options": [
+      "Pop",
+      "Push",
+      "Peek (yoki Top)",
+      "Enqueue"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Peek yoki Top operatsiyasi stack-ning tepasida turgan elementni o'chirmasdan, faqat uning qiymatini qaytaradi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi dasturlardan qaysi biri ish jarayonida Stack tuzilmasidan foydalanadi?",
+    "options": [
+      "Printerning chop etish navbati",
+      "Matn muharrirlaridagi orqaga qaytarish (Undo / Ctrl+Z) amali",
+      "Kassa oldidagi mijozlar navbati",
+      "Serverga kelayotgan tarmoq so'rovlarini navbat bilan bajarish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Undo (Ctrl+Z) amali oxirgi bajarilgan harakatlarni saqlash va ularni oxiridan boshlab bekor qilish uchun Stack (LIFO) tizimidan foydalanadi."
+  },
+  {
+    "id": 8,
+    "question": "Navbat (Queue) ma'lumotlar tuzilmasi qaysi jarayonda qo'llaniladi?",
+    "options": [
+      "Dasturdagi funksiya chaqiriqlarini (Call Stack) boshqarishda",
+      "Faqat matematik tenglamalarni hisoblashda",
+      "Operatsion tizimda resurslar (masalan, printer yoki protsessor) uchun vazifalarni navbatga qo'yishda",
+      "Rekursiv funksiyalar chaqirig'ini saqlashda"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Queue (FIFO) operatsion tizimlarda yoki tarmoq tizimlarida vazifalarni kelish tartibiga ko'ra bajarish (Task Scheduling) uchun keng qo'llaniladi."
+  },
+  {
+    "id": 9,
+    "question": "Monotonik Stack (Monotonic Stack) nima?",
+    "options": [
+      "Elementlari har doim faqat o'sib boruvchi yoki kamayib boruvchi tartibda saqlanadigan stack",
+      "Faqat bitta element saqlay oladigan stack",
+      "Xotiradan joy ajratilmaydigan mavhum stack",
+      "Faqat simvollarni tekshiradigan stack"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Monotonik Stack elementlarni qo'shayotganda tartibni saqlaydi: u faqat o'suvchi (monotonic increasing) yoki faqat kamayuvchi (monotonic decreasing) tartibda bo'lsa."
+  },
+  {
+    "id": 10,
+    "question": "Stack va Queue n ta element saqlaganda xotira murakkabligi (Space Complexity) qanday bo'ladi?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Ikkala ma'lumotlar tuzilmasi ham n ta elementni saqlash uchun n ga proporsional qo'shimcha xotira talab qiladi, ya'ni O(n)."
+  },
+  {
+    "id": 11,
+    "question": "Call Stack (Chaqiriqlar steki) xotirasi to'lib ketishi natijasida yuzaga keladigan xatolik qanday ataladi?",
+    "options": [
+      "Queue Overflow",
+      "Stack Overflow",
+      "Memory Leak",
+      "Out of Bounds"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Dasturda rekursiya cheksiz yoki juda chuqur bo'lganda chaqiriqlar steki xotirasi to'lib ketadi va bu 'Stack Overflow' xatolini keltirib chiqaradi."
+  },
+  {
+    "id": 12,
+    "question": "Ikkita stack yordamida navbat (Queue) hosil qilganda, `dequeue` amali uchun o'rtacha (amortizatsiyalangan) vaqt murakkabligi qanday bo'ladi?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n^2)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Dequeue amali ba'zan elementlarni stack1 dan stack2 ga ko'chirishda O(n) vaqt olsa-da, ko'chirilgan elementlar keyingi safar to'g'ridan-to'g'ri O(1) da olinadi. O'rtacha hisobda (amortized) bu operatsiya O(1) vaqt oladi."
+  }
+]

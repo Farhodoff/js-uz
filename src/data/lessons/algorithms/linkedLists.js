@@ -1,6 +1,6 @@
 export const linkedLists = {
   id: "linkedLists",
-  title: "Linked Lists (Bog'langan Ro'yxatlar) va Floyd Tsikl Tizimi",
+  title: "Bog'langan Ro'yxatlar (Linked Lists)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
@@ -71,9 +71,15 @@ function hasCycle(head) {
 
 ## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
 
-### Xotira taqsimoti (Memory Allocation)
-* **Massivlar** xotiradan ketma-ket joy oladi. Agar massivga yangi element qo'shmoqchi bo'lsak va yonidagi xotira band bo'lsa, kompyuter butun massivni boshqa bo'sh joyga ko'chirib o'tkazishi kerak.
-* **Linked List** tugunlari esa dynamic tarzda xotiraning har xil bo'sh kataklarida joylashadi. Ularni faqat \`next\` havolasi birlashtirib turadi. Shuning uchun element qo'shish yoki o'chirish juda tez amalga oshadi, lekin elementni qidirish sekinroq kechadi.
+### Xotira taqsimoti va Tugunlar sxemasi (Memory Allocation & Node Layouts)
+Massivlardan farqli o'laroq, Linked List elementlari xotiradan ketma-ket joy talab qilmaydi.
+* **Massiv xotira joylashuvi:** Kompyuter RAMidan yaxlit, chiziqli blok ajratadi. Indeks orqali element topish $O(1)$ bo'lsa-da, massiv hajmini oshirish yoki boshiga element qo'shish barcha elementlarni siljitishni (shuning uchun $O(n)$) talab qiladi.
+* **Linked List xotira joylashuvi:** Har safar \`new Node(val)\` yozilganda, JavaScript obyekti xotiraning ixtiyoriy, bo'sh bo'lgan **Heap (Xip)** qismida yaratiladi.
+* **Havolalar (Pointer references):** Heapdagi har bir Node obyektida ikkita xossa bo'ladi: \`val\` (qiymat) va \`next\`. \`next\` xossasi qiymat emas, balki keyingi Node obyektining Heapdagi **xotira manzili (hexadecimal address reference)** bo'ladi.
+* **Stack xotira roli:** Bizning dasturimizdagi \`head\` o'zgaruvchisi Stackda joylashadi va u faqat birinchi tugunning Heapdagi manziliga ishora qiladi. Biz keyingi tugunlarga faqat ushbu zanjirlangan manzillar orqali borishimiz mumkin.
+
+#### CPU Kesh effekti (Cache Locality)
+Massivlar ketma-ket joylashgani sababli CPU kesh xotirasiga (L1/L2/L3) yaxlit holda yuklanadi va ularni o'qish juda tez kechadi. Linked List tugunlari esa Heap bo'ylab tarqoq bo'lgani sababli, CPU har bir tugunga o'tishda yangi xotira so'rovini yuboradi. Bunga **pointer chasing (ko'rsatkich quvish)** deyiladi va u kesh xatoliklarini (cache misses) keltirib chiqaradi.
 
 ### Floyd algoritmining matematik isboti
 Nega tezkor (fast) va sekin (slow) ko'rsatkichlar tsikl ichida albatta to'qnashadi?
@@ -152,19 +158,59 @@ Yangi element qo'shayotganda yoki o'chirayotganda zanjir tartibini noto'g'ri yoz
 
 ---
 
-## 6. 🛠️ Amaliy Topshiriqlar
+## 6. 🎨 Interaktiv Vizual
+
+### Xotira taqsimoti (Stack vs Heap)
+Stack xotiradagi \`head\` ko'rsatkichi Heapdagi tarqoq tugunlar zanjirini qanday bog'lab turishi:
+
+\`\`\`mermaid
+graph LR
+    subgraph Stack [Stack - Lokal Havola]
+        head["head pointer<br>(Manzil: #HeapNode1)"]
+    end
+
+    subgraph Heap [Heap - Dynamic Tarqoq Tugunlar]
+        Node1["Tugun 1 (#HeapNode1)<br>val: 10<br>next: #HeapNode2"]
+        Node2["Tugun 2 (#HeapNode2)<br>val: 20<br>next: #HeapNode3"]
+        Node3["Tugun 3 (#HeapNode3)<br>val: 30<br>next: null"]
+    end
+
+    head -->|Boshlash manzili| Node1
+    Node1 -->|next ko'rsatkichi| Node2
+    Node2 -->|next ko'rsatkichi| Node3
+
+    style Stack fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Heap fill:#efebe9,stroke:#5d4037,stroke-width:2px
+    classDef nodeStyle fill:#fff,stroke:#333,stroke-width:1px
+    class Node1,Node2,Node3 nodeStyle
+\`\`\`
+
+### Doubly Linked List Node Layout (Ikki tomonlama bog'langan tugun)
+Har bir Doubly Node xotirada 3 ta bo'limdan tarkib topadi:
+
+\`\`\`mermaid
+graph LR
+    subgraph DoublyNode [Tugun Strukturasi]
+        prev["prev pointer<br>(Oldingi manzil)"] <--> val["Value<br>(Qiymat)"] <--> next["next pointer<br>(Keyingi manzil)"]
+    end
+    style DoublyNode fill:#fffde7,stroke:#fbc02d,stroke-width:2px
+\`\`\`
+
+---
+
+## 7. 🛠️ Amaliy Topshiriqlar
 
 Bu dars uchun topshiriqlar \`linkedLists_exercises.json\` faylida berilgan. U yerda siz ro'yxatni teskari qilish, Floyd tsikl algoritmini yozish va ro'yxat o'rtasini topish kabi topshiriqlarni bajarasiz.
 
 ---
 
-## 7. 📝 12 ta Mini Test
+## 8. 📝 12 ta Mini Test
 
 Dars bo'yicha bilimingizni sinash uchun 12 ta test savollari tayyorlangan bo'lib, ular \`linkedLists_quizzes.json\` faylida keltirilgan.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 9. 🎯 Real Project Case Study
 
 ### Browser History (Orqaga-Oldinga o'tish tizimi)
 Brauzerlarda "Orqaga" (Back) va "Oldinga" (Forward) tugmalari qanday ishlaydi?
@@ -202,13 +248,6 @@ class BrowserHistory {
   }
 }
 \`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-* **O'lchamni oldindan bilib bo'lmasa, Linked List tanlang:** Ma'lumotlar miqdori dynamic o'zgarib tursa, massiv kengayishidagi O(n) xarajatidan qutulasiz.
-* **Lookup ko'p bo'lsa, massiv ishlating:** Tez-tez indeks bo'yicha qidiruv qiladigan loyihalarda Linked List yomon natija beradi.
 
 ---
 
@@ -296,7 +335,7 @@ class BrowserHistory {
       "O(n^2)"
     ],
     "correctAnswer": 2,
-    "explanation": "Tail ko'rsatkichi bo'lmasa, ro'yxat oxirini topish uchun boshidan oxirigacha traversal (aylanib o'tish) qilish kerak, bu O(n) vaqt oladi. (Kechirasiz, options 0-indexed da 3 deb belgiladim, lekin variant index-lariga ko'ra O(n) bu 2. Keling to'g'rilab 2 qilamiz)."
+    "explanation": "Tail ko'rsatkichi bo'lmasa, ro'yxat oxirini topish uchun boshidan oxirigacha traversal (aylanib o'tish) qilish kerak, bu O(n) vaqt oladi."
   },
   {
     "id": 5,
@@ -339,7 +378,7 @@ class BrowserHistory {
     "question": "Floyd algoritmi yordamida tsiklni aniqlashda qo'shimcha xotira murakkabligi (Space Complexity) qanday bo'ladi?",
     "options": [
       "O(1) - faqat ikkita ko'rsatkich uchun xotira ishlatiladi",
-      "O(n) - barcha tugunlarni Set-ga saqlab borish kerak",
+      "O(n) - babrasini Set-ga saqlab borish kerak",
       "O(log n) - rekursiya steki ishlatiladi",
       "O(n^2)"
     ],

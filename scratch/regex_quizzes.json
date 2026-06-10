@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da muntazam ifodalar (Regular Expressions) nima uchun ishlatiladi?",
+    "options": [
+      "Faqat matematik hisob-kitoblarni tezlashtirish uchun",
+      "Matnlar ichidan ma'lum bir andozaga (shablonga) mos keladigan qismlarni qidirish, almashtirish va tekshirish uchun",
+      "CSS stillarini dinamik yuklash uchun",
+      "Obyektlarni keshga saqlash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Muntazam ifodalar (RegEx) matn ustida andozalar yordamida qidiruv, tekshirish (validation) va almashtirish amallarini bajarish uchun juda kuchli vositadir."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagilardan qaysi biri RegEx literalini to'g'ri e'lon qilish usuli hisoblanadi?",
+    "options": [
+      "`const regex = 'abc';`",
+      "`const regex = /abc/;`",
+      "`const regex = #abc#;`",
+      "`const regex = {abc};`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da muntazam ifoda literali ikkita yonma-yon chiziq (slash) `/` belgisi orasida yoziladi: `/pattern/`."
+  },
+  {
+    "id": 3,
+    "question": "Muntazam ifodalardagi `\\d` maxsus belgisi nimani anglatadi?",
+    "options": [
+      "Istalgan harf (a-z, A-Z)",
+      "Istalgan raqam (0-9)",
+      "Bo'shliq (probel, tab)",
+      "Satrning boshlanish qismi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`\\d` (digit) - istalgan bitta raqamga mos keladi, ya'ni `[0-9]` to'plami bilan bir xil."
+  },
+  {
+    "id": 4,
+    "question": "Muntazam ifodadagi `^` belgisi nimani bildiradi?",
+    "options": [
+      "Satr oxirini belgilaydi",
+      "Satr boshlanishini belgilaydi (yoki to'plam ichida rad etishni bildiradi)",
+      "Belgi kamida bir marta takrorlanishini",
+      "Istalgan belgini anglatadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Muntazam ifoda boshida kelgan `^` (caret) belgisi matn aynan shu andoza bilan boshlanishi kerakligini bildiradi."
+  },
+  {
+    "id": 5,
+    "question": "Muntazam ifodadagi `$` belgisi nimani bildiradi?",
+    "options": [
+      "Satr boshini belgilaydi",
+      "Satr oxirini belgilaydi",
+      "Valyuta belgilarini qidiradi",
+      "Belgi 0 yoki 1 marta takrorlanishini bildiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Muntazam ifoda oxirida kelgan `$` (dollar) belgisi matn aynan shu andoza bilan tugashi kerakligini bildiradi."
+  },
+  {
+    "id": 6,
+    "question": "Muntazam ifodalarda belgi 0 yoki undan ko'p marta takrorlanishi mumkinligini ko'rsatish uchun qaysi belgi ishlatiladi?",
+    "options": [
+      "`?`",
+      "`+`",
+      "`*`",
+      "`{1,}`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`*` (yulduzcha) belgisi o'zidan oldin turgan belgi 0 marta (umuman qatnashmasligi) yoki istalgancha ko'p marta takrorlanishi mumkinligini bildiradi."
+  },
+  {
+    "id": 7,
+    "question": "Muntazam ifodalarda o'zidan oldingi belgi kamida 1 yoki undan ko'p marta takrorlanishini talab qiluvchi operator qaysi?",
+    "options": [
+      "`*`",
+      "`?`",
+      "`+`",
+      "`.`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`+` (plyus) operatori o'zidan oldingi belgi kamida 1 marta yoki undan ko'p marta takrorlanishi shartligini bildiradi."
+  },
+  {
+    "id": 8,
+    "question": "Satr ichida berilgan muntazam ifodaga mos keladigan qism bor-yo'qligini tekshirib, true yoki false qaytaruvchi RegExp metodi qaysi?",
+    "options": [
+      "`match()`",
+      "`search()`",
+      "`test()`",
+      "`exec()`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`regex.test(string)` metodi satrni tekshirib, agar andozaga mos keluvchi qism topilsa `true`, topilmasa `false` qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "Muntazam ifodada katta-kichik harflarni farqlamasdan (case-insensitive) qidirish uchun qaysi flag ishlatiladi?",
+    "options": [
+      "`g`",
+      "`m`",
+      "`i`",
+      "`s`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`i` flagi (insensitive) qidiruv paytida katta va kichik harflarni bir xil deb hisoblaydi (masalan, `/abc/i` andozasi 'ABC' matniga ham mos keladi)."
+  },
+  {
+    "id": 10,
+    "question": "Matn ichidagi faqat birinchi moslikni emas, balki barcha mosliklarni qidirib topish uchun qaysi flag ishlatiladi?",
+    "options": [
+      "`a`",
+      "`g`",
+      "`i`",
+      "`y`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`g` flagi (global) butun matn bo'ylab barcha mosliklarni qidirish uchun qo'llaniladi. Flag qo'yilmasa, faqat birinchi moslik topilgach qidiruv to'xtaydi."
+  },
+  {
+    "id": 11,
+    "question": "Muntazam ifodalarda probel, tab, yangi satr kabi barcha bo'shliq belgilarini topish uchun qaysi maxsus belgi ishlatiladi?",
+    "options": [
+      "`\\b`",
+      "`\\s`",
+      "`\\w`",
+      "`\\d`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`\\s` (space) - probel, tabulyatsiya (`\\t`), yangi satr (`\\n`) va boshqa bo'shliqlarga mos keluvchi belgidir."
+  },
+  {
+    "id": 12,
+    "question": "Muntazam ifodalarda guruhlarni shakllantirish (capturing groups) uchun qaysi qavslardan foydalaniladi?",
+    "options": [
+      "To'rtburchak qavslar `[...]`",
+      "Gullik qavslar `{...}`",
+      "Dumaloq qavslar `(...)`",
+      "Burchakli qavslar `<...>`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Dumaloq qavslar `(...)` muntazam ifodadagi bir nechta belgilarni bitta guruhga birlashtirish va keyinchalik `.replace()` yoki `.match()`-da ularni alohida ajratib olish (capturing) uchun ishlatiladi."
+  }
+]

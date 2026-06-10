@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da Promise nima?",
+    "options": [
+      "Faqat brauzerni tozalaydigan ichki funksiya",
+      "Asinxron operatsiyaning yakuniy natijasini (muvaffaqiyatli yoki muvaffaqiyatsiz) ifodalovchi maxsus obyekt",
+      "O'zgaruvchilar turini o'zgartiruvchi operator",
+      "Xatolarni avtomatik tuzatadigan kutubxona"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Promise (Va'da) asinxron amallarning kelajakda olinadigan natijasini ifodalovchi va uning holatini kuzatish imkonini beruvchi obyektdir."
+  },
+  {
+    "id": 2,
+    "question": "Promisening uchta holati qaysi variantda to'g'ri ko'rsatilgan?",
+    "options": [
+      "`pending` (kutilmoqda), `fulfilled` (bajarildi), `rejected` (rad etildi)",
+      "`start`, `run`, `stop`",
+      "`waiting`, `processing`, `done`",
+      "`try`, `catch`, `finally`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Promise uch xil holatda bo'ladi: pending (boshlang'ich kutilayotgan holat), fulfilled (muvaffaqiyatli yakunlangan holat), rejected (xatolik bilan tugagan holat)."
+  },
+  {
+    "id": 3,
+    "question": "Promise holati haqidagi qaysi qoida to'g'ri?",
+    "options": [
+      "Promise holatini cheksiz marta o'zgartirish mumkin",
+      "Promise bir marta `fulfilled` yoki `rejected` holatiga o'tgandan keyin, uning holatini boshqa o'zgartirib bo'lmaydi (immutable)",
+      "Promise faqat `pending` holatida javob qaytara oladi",
+      "`rejected` bo'lgan promise avtomatik ravishda `fulfilled` ga aylanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Promise o'zgarmas (immutable) hisoblanadi. Agar u resolve yoki reject bo'lsa, uning holati qulflanadi va boshqa o'zgarmaydi."
+  },
+  {
+    "id": 4,
+    "question": "Promise ichida xatolik yuz berganda uni qaysi metod yordamida tutib olamiz?",
+    "options": [
+      "`.then()`",
+      "`.catch()`",
+      "`.finally()`",
+      "`.error()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Promisening rad etilishini (rejected) yoki asinxron zanjirda yuz bergan xatoliklarni tutish uchun `.catch()` metodidan foydalaniladi."
+  },
+  {
+    "id": 5,
+    "question": "Promise `.finally()` metodi qachon ishga tushadi?",
+    "options": [
+      "Faqat Promise muvaffaqiyatli yakunlanganda (fulfilled)",
+      "Faqat Promise rad etilganda (rejected)",
+      "Promise qanday natija bilan tugashidan qat'i nazar (muvaffaqiyatli yoki muvaffaqiyatsiz bo'lsa ham)",
+      "Faqat xato yuz berganda"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`.finally()` bloki Promise qanday holat bilan tugashidan qat'i nazar, eng oxirida tozalash ishlarini (masalan, loading indikatorini o'chirish) bajarish uchun doim ishlaydi."
+  },
+  {
+    "id": 6,
+    "question": "Promise zanjirini (Chaining) hosil qilish imkoniyati nimaga asoslangan?",
+    "options": [
+      "Har bir `.then()` metodi o'zidan avtomatik ravishda yangi Promise qaytarishiga",
+      "Funksiyalarni cheksiz chaqira olishimizga",
+      "Event loopning tezkarligiga",
+      "Callback larning yo'qligiga"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Har safar `.then()` chaqirilganda, u yangi Promise qaytaradi. Bu esa bizga zanjir hosil qilib, ketma-ket asinxron amallarni o'qishli yozish imkonini beradi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kodda `Promise.all` ishlatilganda nima yuz beradi?\n```javascript\nconst p1 = Promise.resolve(10);\nconst p2 = Promise.reject('Xato!');\nPromise.all([p1, p2]).catch(err => console.log(err));\n```",
+    "options": [
+      "Konsolga `[10, 'Xato!']` massivi chiqadi",
+      "Konsolga `'Xato!'` chiqadi va butun zanjir rad etiladi",
+      "Xato e'tiborga olinmay, faqat 10 chiqadi",
+      "`TypeError` xatoligi beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Promise.all` \"hammasi yoki hech narsa\" (all-or-nothing) prinsipi asosida ishlaydi. Agar massivdagi bitta Promise rad etilsa (rejected), butun zanjir darhol o'sha xato bilan rad etiladi."
+  },
+  {
+    "id": 8,
+    "question": "Promise.race() metodi qanday natija qaytaradi?",
+    "options": [
+      "Massivdagi barcha promislar bajarilishini kutib, natijalarni yig'ib qaytaradi",
+      "Massivdagi promislar ichidan birinchi bo'lib yakunlangan (muvaffaqiyatli yoki xatolik bilan bo'lsa ham) promisning natijasini qaytaradi",
+      "Faqat eng tez rad etilgan promisni qaytaradi",
+      "Faqat oxirgi yakunlangan promisni qaytaradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Promise.race()` (poyga) eng birinchi bo'lib hal bo'lgan (u xoh resolve bo'lsin, xoh reject) promisening natijasini qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "Promise.allSettled() metodining Promise.all() dan asosiy farqi nimada?",
+    "options": [
+      "U faqat tezroq ishlaydi",
+      "U biron bir promise rad etilsa ham zanjirni to'xtatmaydi, barcha promislar tugashini kutadi va har birining holati hamda qiymatini o'z ichiga olgan massiv qaytaradi",
+      "U xatolarni umuman tutmaydi",
+      "U massiv o'rniga obyekt qaytaradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Promise.allSettled()` barcha promislar tugashini (fulfilled yoki rejected bo'lishidan qat'i nazar) kutadi va har birining natijasi (status va value/reason) yozilgan massivni qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "Promise callbacks (then/catch) JavaScript Event Loop-ning qaysi navbatida bajariladi?",
+    "options": [
+      "Macrotask Queue (Task Queue)",
+      "Microtask Queue (Job Queue)",
+      "Call Stack ichida darhol",
+      "Render Queue"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Promise `.then/catch/finally` handlerlari **Microtask Queue** ga joylashtiriladi. Microtask navbati Macrotask navbatiga (setTimeout, events) qaraganda yuqori ustuvorlikka ega bo'lib, stack bo'shashi bilan darhol bajariladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod bajarilgandan keyin konsolga nima chiqadi?\n```javascript\nPromise.resolve('A').then(val => {\n  console.log(val);\n  return 'B';\n}).then(val => {\n  console.log(val);\n});\n```",
+    "options": [
+      "`A` keyingi qatorda `B`",
+      "`A` keyingi qatorda `A`",
+      "Faqat `A`",
+      "`B` keyingi qatorda `A`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Birinchi `.then` `'A'` ni chiqaradi va `'B'` ni qaytaradi. Ushbu qaytarilgan qiymat keyingi `.then` ga argument bo'lib o'tadi va u `'B'` ni chiqaradi."
+  },
+  {
+    "id": 12,
+    "question": "Promise.any() metodi qanday ishlaydi?",
+    "options": [
+      "Barcha promislar xato bo'lishini kutadi",
+      "Massivdagi promislar ichidan birinchi bo'lib muvaffaqiyatli (fulfilled) yakunlangan promisning qiymatini qaytaradi. Agar hammasi rad etilsa, AggregateError qaytaradi",
+      "Faqat rad etilgan promisni qaytaradi",
+      "Hech qachon xato qaytarmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Promise.any()` massiv ichidan eng birinchi bo'lib **muvaffaqiyatli** bajarilgan promisni qaytaradi. Agarda hamma promislar rad etilsa, u barcha xatolarni jamlagan `AggregateError` xatosini beradi."
+  }
+]

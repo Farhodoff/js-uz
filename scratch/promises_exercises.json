@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Muvaffaqiyatli Promise yaratish",
+    "instruction": "Qabul qilingan `value` qiymati bilan darhol hal bo'ladigan (resolve) `resolveWithValue(value)` funksiyasini yozing. U Promise qaytarishi shart.",
+    "startingCode": "function resolveWithValue(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return new Promise((resolve) => resolve(value)); yoki Promise.resolve(value) dan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return resolveWithValue;');\nconst fn = sandbox();\nconst p = fn('Salom');\nif (p instanceof Promise) {\n  return p.then(val => val === 'Salom' ? null : 'Noto\\'g\\'ri qiymat bilan resolve qilingan');\n}\nreturn 'Promise qaytarilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Kechikuvchi Va'da (Promisification)",
+    "instruction": "Berilgan millisekund (`ms`) o'tgandan so'ng muvaffaqiyatli hal bo'ladigan `delay(ms)` funksiyasini yozing. U Promise qaytarishi lozim.",
+    "startingCode": "function delay(ms) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "new Promise((resolve) => setTimeout(resolve, ms)) shaklida yozing.",
+    "test": "if (!code.includes('Promise')) return 'Promise ishlatilmadi';\nif (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\nconst sandbox = new Function(code + '; return delay;');\nconst fn = sandbox();\nconst p = fn(100);\nif (p instanceof Promise) return null;\nreturn 'delay funksiyasi Promise qaytarmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Promise Zanjiri (Chaining)",
+    "instruction": "Berilgan sonni olib, uni 2 ga ko'paytiradigan, so'ngra hosil bo'lgan songa 10 ni qo'shadigan Promise zanjirini hosil qiluvchi `processNumber(num)` funksiyasini yozing. Boshlang'ich Promise `Promise.resolve(num)` bo'lishi kerak.",
+    "startingCode": "function processNumber(num) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Promise.resolve(num).then(val => val * 2).then(val => val + 10) shaklida yozishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return processNumber;');\nconst fn = sandbox();\nconst p = fn(5);\nif (p instanceof Promise) {\n  return p.then(val => val === 20 ? null : 'Zanjir yakunidagi natija noto\\'g\\'ri');\n}\nreturn 'processNumber funksiyasi Promise qaytarmadi';"
+  }
+]

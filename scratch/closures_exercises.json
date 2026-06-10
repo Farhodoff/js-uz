@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Sodda Hisoblagich",
+    "instruction": "Har safar chaqirilganda qiymati 1 taga oshib boradigan funksiyani qaytaruvchi `createCounter()` funksiyasini yozing. Qiymat 1 dan boshlanishi kerak.",
+    "startingCode": "function createCounter() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Ichki o'zgaruvchi `let count = 0;` yarating va ichki funksiya qaytaring, u `count`ni oshirib qaytarsin.",
+    "test": "const sandbox = new Function(code + '; return createCounter;');\nconst fn = sandbox();\nconst counter = fn();\nif (typeof counter !== 'function') return 'createCounter funksiya qaytarishi kerak';\nif (counter() !== 1) return 'Birinchi chaqiruvda 1 qaytishi kerak';\nif (counter() !== 2) return 'Ikkinchi chaqiruvda 2 qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Maxfiy Kalit Saqlovchi (Encapsulation)",
+    "instruction": "Berilgan `secret` qiymatini yashirin holda saqlovchi va uni boshqarish uchun `getSecret()` hamda `setSecret(newSecret)` metodlariga ega bo'lgan obyekt qaytaruvchi `createSecretHolder(secret)` funksiyasini yozing.",
+    "startingCode": "function createSecretHolder(secret) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Obyekt qaytaring: `{ getSecret: () => ..., setSecret: (val) => ... }` ko'rinishida yozing va `secret` o'zgaruvchisini yopilishda saqlang.",
+    "test": "const sandbox = new Function(code + '; return createSecretHolder;');\nconst fn = sandbox();\nconst holder = fn('maxfiy');\nif (typeof holder !== 'object') return 'Obyekt qaytarilishi kerak';\nif (typeof holder.getSecret !== 'function' || typeof holder.setSecret !== 'function') return 'getSecret va setSecret metodlari bo\\'lishi kerak';\nif (holder.getSecret() !== 'maxfiy') return 'Boshlang\\'ich maxfiy qiymat xato';\nholder.setSecret('yangi');\nif (holder.getSecret() !== 'yangi') return 'setSecret metodi qiymatni o\\'zgartirmadi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Ko'paytiruvchi Funksiya (Currying)",
+    "instruction": "Birinchi bosqichda `multiplier` (ko'paytiruvchi) sonini oladigan va ikkinchi bosqichda boshqa bir son olib, ularning ko'paytmasini qaytaradigan funksiya yozing.",
+    "startingCode": "function multiplyBy(multiplier) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "multiplier-ni yopilish orqali saqlovchi va boshqa `num` parametrini qabul qiluvchi ichki funksiya qaytaring.",
+    "test": "const sandbox = new Function(code + '; return multiplyBy;');\nconst fn = sandbox();\nconst double = fn(2);\nif (typeof double !== 'function') return 'multiplyBy funksiya qaytarishi kerak';\nif (double(5) !== 10) return '2 ga ko\\'paytirish xato bajarildi';\nconst triple = fn(3);\nif (triple(4) !== 12) return '3 ga ko\\'paytirish xato bajarildi';\nreturn null;"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Bajarilish vaqtini o'lchash",
+    "instruction": "Berilgan `fn` callback funksiyasining bajarilish vaqtini o'lchaydigan `measureExecutionTime(fn)` funksiyasini yozing. Buning uchun `console.time('execTime')` va `console.timeEnd('execTime')` metodlaridan foydalaning va funksiya oxirida callback qaytargan qiymatni qaytaring.",
+    "startingCode": "function measureExecutionTime(fn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "fn() chaqirilishidan oldin console.time('execTime') ni, keyin esa console.timeEnd('execTime') ni chaqiring.",
+    "test": "let timeCalled = false;\nlet timeEndCalled = false;\nconst originalTime = console.time;\nconst originalTimeEnd = console.timeEnd;\nconsole.time = (label) => { if (label === 'execTime') timeCalled = true; };\nconsole.timeEnd = (label) => { if (label === 'execTime') timeEndCalled = true; };\ntry {\n  const sandbox = new Function(code + '; return measureExecutionTime;');\n  const fn = sandbox();\n  const result = fn(() => 42);\n  if (result === 42 && timeCalled && timeEndCalled) return null;\n  return 'console.time(\\'execTime\\') yoki console.timeEnd(\\'execTime\\') chaqirilmadi';\n} finally {\n  console.time = originalTime;\n  console.timeEnd = originalTimeEnd;\n}"
+  },
+  {
+    "id": 2,
+    "title": "Debugger bilan faktorial",
+    "instruction": "Faktorialni hisoblovchi `debugFactorial(n)` funksiyasini yozing. Agar berilgan `n` soni manfiy yoki butun son bo'lmasa, `debugger` kalit so'zi yordamida to'xtash nuqtasini hosil qiling va `0` qaytaring. To'g'ri sonlar uchun faktorialni hisoblab qaytaring.",
+    "startingCode": "function debugFactorial(n) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "if (n < 0 || !Number.isInteger(n)) { debugger; return 0; } shartini yozing, so'ngra faktorial hisoblash algoritmini qo'shing.",
+    "test": "if (!code.includes('debugger')) return 'debugger kalit so\\'zi kod ichida yozilmagan';\nconst sandbox = new Function(code + '; return debugFactorial;');\nconst fn = sandbox();\nconst normalRes = fn(5);\nconst invalidRes = fn(-3);\nif (normalRes === 120 && invalidRes === 0) return null;\nreturn 'Faktorialni hisoblash yoki debugger sharti to\\'g\\'ri ishlamadi';"
+  },
+  {
+    "id": 3,
+    "title": "Chaqiriq Stackini kuzatish",
+    "instruction": "Berilgan `callback` funksiyasini bajarishdan oldin `console.trace('Chaqiriqlar stacki:')` orqali chaqiriqlar izini konsolga chiqaradigan `traceCallStack(callback)` funksiyasini yozing va callback qaytargan qiymatni qaytaring.",
+    "startingCode": "function traceCallStack(callback) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "console.trace('Chaqiriqlar stacki:') chaqiring va so'ngra callback funksiyasini ishga tushiring.",
+    "test": "let traceCalled = false;\nconst originalTrace = console.trace;\nconsole.trace = (msg) => { if (msg === 'Chaqiriqlar stacki:') traceCalled = true; };\ntry {\n  const sandbox = new Function(code + '; return traceCallStack;');\n  const fn = sandbox();\n  const res = fn(() => 'success');\n  if (res === 'success' && traceCalled) return null;\n  return 'console.trace(\\'Chaqiriqlar stacki:\\') to\\'g\\'ri chaqirilmadi';\n} finally {\n  console.trace = originalTrace;\n}"
+  }
+]

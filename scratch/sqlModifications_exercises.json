@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Yangi foydalanuvchi qo'shish",
+    "instruction": "`users` jadvaliga yangi foydalanuvchi qo'shing. Qiymatlar: `id` = 6, `name` = 'Jasur', `age` = 24, `city` = 'Xiva', `role` = 'User'.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "INSERT INTO users (id, name, age, city, role) VALUES (6, 'Jasur', 24, 'Xiva', 'User')",
+    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT * FROM users WHERE id = 6'); if(check.length !== 1 || check[0].name !== 'Jasur') return 'Jasur foydalanuvchisi qo\\'shilmadi'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Yoshni yangilash (UPDATE)",
+    "instruction": "`users` jadvalidan `name` qiymati 'Sardor' bo'lgan foydalanuvchining yoshini (`age`) 23 ga o'zgartiring.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "UPDATE users SET age = 23 WHERE name = 'Sardor'",
+    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT age FROM users WHERE name = 'Sardor'\"); if(check.length === 0 || check[0].age !== 23) return 'Sardorning yoshi yangilanmadi'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Menejerni o'chirish (DELETE)",
+    "instruction": "`users` jadvalidan roli `Manager` bo'lgan barcha foydalanuvchilarni o'chirib tashlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "DELETE FROM users WHERE role = 'Manager'",
+    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM users WHERE role = 'Manager'\"); if(check.length !== 0) return 'Menejer o\\'chmadi'; return null;"
+  }
+]

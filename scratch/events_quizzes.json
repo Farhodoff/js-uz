@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da elementga hodisa tinglovchisi (event listener) qo'shish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "element.attachEvent('click')",
+      "element.addEventListener('click', callback)",
+      "element.onclick(callback)",
+      "element.bindEvent('click')"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`addEventListener` modern JavaScript-da elementga bir yoki bir nechta hodisalarni bog'lash uchun standart metod hisoblanadi."
+  },
+  {
+    "id": 2,
+    "question": "`event.preventDefault()` metodining vazifasi nima?",
+    "options": [
+      "Hodisaning ota elementlarga tarqalishini to'xtatadi",
+      "Elementning standart brauzer harakatlarini (masalan, form yuborilganda sahifa yangilanishini) bekor qiladi",
+      "Hodisa tinglovchisini xotiradan o'chirib yuboradi",
+      "Xatoliklarni avtomatik tuzatadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`preventDefault()` brauzerning default amallarini (havola href-ga o'tishi, forma submit bo'lib sahifa yangilanishi) to'xtatadi."
+  },
+  {
+    "id": 3,
+    "question": "Hodisa yuz berganda `event.target` xossasi nimani qaytaradi?",
+    "options": [
+      "Tinglovchi ulab qo'yilgan ota elementni",
+      "Hodisani trigger qilgan (klik bo'lgan) eng birinchi boshlang'ich elementni",
+      "Barcha elementlar ro'yxatini",
+      "Hodisa sodir bo'lgan vaqtni"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`event.target` hodisani yuzaga keltirgan, foydalanuvchi bevosita bosgan eng pastki aniq elementni ifodalaydi."
+  },
+  {
+    "id": 4,
+    "question": "`event.stopPropagation()` nima qiladi?",
+    "options": [
+      "Tugmaning standart bosilishini bekor qiladi",
+      "Hodisaning DOM daraxti bo'ylab tepaga (ota elementlarga) tarqalishini (bubbling) to'xtatadi",
+      "Zaharli skriptlarni tozalaydi",
+      "Intervalni to'xtatadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`stopPropagation()` hodisaning ota elementlarga ko'tarilib ketishini bubbling bosqichida bloklaydi."
+  },
+  {
+    "id": 5,
+    "question": "Event Delegation (hodisalarni delegatsiya qilish) qanday prinsipga tayanadi?",
+    "options": [
+      "Barcha elementlarga alohida-alohida listener qo'shishga",
+      "Hodisalarning ko'pirib chiqish (Bubbling) xususiyatidan foydalanib, ota elementga bitta listener qo'shib dynamic kliklarni boshqarishga",
+      "Dinamik import yordamida yuklashga",
+      "Stillarni alohida faylda saqlashga"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Event Delegation hodisalarning bubbling bo'lishiga tayanadi. Biz ota elementga ulab, uning ichidagi dynamic yaratilgan bolalarning kliklarini ham osongina bitta joyda boshqaramiz."
+  },
+  {
+    "id": 6,
+    "question": "Hodisaning capturing (tutib olish) va bubbling (ko'pirib chiqish) bosqichlari qanday tartibda bajariladi?",
+    "options": [
+      "Birlamchi bubbling, keyin capturing bosqichi",
+      "Birlamchi capturing (tepadan pastga), keyin target (maqsad), so'ngra bubbling (pastdan tepaga)",
+      "Ikkalasi barobar bajariladi",
+      "Faqat bubbling bosqichi mavjud, capturing yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Hodisa dastlab Window-dan boshlab target-gacha tushadi (capturing), targetda ishlaydi, so'ngra targetdan boshlab yana yuqoriga ko'tariladi (bubbling)."
+  },
+  {
+    "id": 7,
+    "question": "Hodisa tinglovchisini faqat bir marta ishlatib, so'ngra xotiradan avtomat o'chirib yuborish uchun qaysi option parametri beriladi?",
+    "options": [
+      "{ single: true }",
+      "{ once: true }",
+      "{ passive: true }",
+      "{ capture: false }"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`{ once: true }` addEventListener uchinchi parametri sifatida berilganda, hodisa 1 marta bajarilgach brauzer uni o'zi o'chirib yuboradi."
+  },
+  {
+    "id": 8,
+    "question": "Touch va scroll hodisalarini o'ta silliq (janksiz) qilish uchun qaysi option parametri berilishi shart?",
+    "options": [
+      "{ smooth: true }",
+      "{ passive: true }",
+      "{ once: true }",
+      "{ capture: true }"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`{ passive: true }` brauzerga preventDefault chaqirilmasligini kafolatlaydi, bu esa sahifani chizishni bloklamasdan scroll-ni GPU-da silliq bajarishga imkon beradi."
+  },
+  {
+    "id": 9,
+    "question": "`event.currentTarget` xossasi nimani qaytaradi?",
+    "options": [
+      "Klik bo'lgan eng boshlang'ich elementni",
+      "Ayni vaqtda event listener ulab qo'yilgan (hodisani eshitayotgan) ota elementni",
+      "Keyingi qo'shni elementni",
+      "Hujjatning ildiz elementini (html)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`currentTarget` event handler ulab qo'yilgan va o'sha handler ayni vaqtda ishlayotgan elementni (odatda ota elementni) ko'rsatadi."
+  },
+  {
+    "id": 10,
+    "question": "Event listenerni capturing (tutib olish) bosqichida tinglash uchun nima qilinadi?",
+    "options": [
+      "Tinglovchi metodini o'zgartirish kerak",
+      "addEventListener uchinchi argumentiga `true` yoki `{ capture: true }` parametrini yuborish shart",
+      "Hech qanday iloji yo'q, capturing faqat CSS-da ishlaydi",
+      "once parametridan foydalanish shart"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Uchinchi parametrga `true` yoki `{ capture: true }` berilsa, listener bubbling emas, capturing bosqichida (tepadan pastga tushishda) ishga tushadi."
+  },
+  {
+    "id": 11,
+    "question": "`removeEventListener` to'g'ri ishlashi uchun qaysi shartlar bajarilishi shart?",
+    "options": [
+      "Faqat hodisa turi mos kelsa yetarli",
+      "Hodisa turi (event type) va ro'yxatga olingan funksiya havolasi (reference) aynan bir xil bo'lishi shart",
+      "Uni faqat asinxron funksiyalar ichida ishlatish kerak",
+      "Ota elementni o'chirish kerak"
+    ],
+    "correctAnswer": 1,
+    "explanation": "O'chirish to'g'ri ishlashi uchun add va remove chaqiruvlaridagi hodisa nomi va funksiya havolasi (references) bir-biriga aynan teng (same memory address) bo'lishi lozim."
+  },
+  {
+    "id": 12,
+    "question": "Klaviaturadan bosilgan aniq tugmani (masalan, 'Enter') aniqlash uchun qaysi xususiyatdan foydalanish tavsiya etiladi?",
+    "options": [
+      "event.keyCode (eskirgan)",
+      "event.key",
+      "event.char",
+      "event.button"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Modern JavaScript-da bosilgan tugmani topish uchun `event.key` xossasi (masalan, 'Enter', 'Escape') tavsiya qilinadi. `keyCode` esa eskirgan va foydalanishdan olingan (deprecated)."
+  }
+]

@@ -1,6 +1,6 @@
 export const stacksQueues = {
   id: "stacksQueues",
-  title: "Stack va Queue Ma'lumotlar Tuzilmalari",
+  title: "Stek va Navbat (Stacks & Queues)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
@@ -98,9 +98,21 @@ class Queue {
 
 ## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
 
-### Xotiradagi farqi va Call Stack vs Memory Heap
-* **Call Stack (Chaqiriqlar steki):** JavaScript motori (dvigateli) funksiya chaqiriqlarini boshqarish uchun Stack tuzilmasidan foydalanadi. Funksiya chaqirilganda, u Stack freymi sifatida Call Stack-ka joylanadi (\`push\`). Bajarilib tugagach, stekdan chiqarib tashlanadi (\`pop\`).
-* **Navbat (Task Queue / Event Loop):** Asinxron callback funksiyalar (masalan, \`setTimeout\` callback) bajarilish navbatini kutish uchun Callback Queue-da navbat bo'lib turadi. Bu FIFO qoidasi bo'yicha ishlaydi.
+### Chaqiriqlar steki vs Xotira hovuzi (Call Stack vs Memory Heap)
+Operatsion tizim darajasida va JavaScript Engine (masalan V8) ichida Stack va Queue quyidagicha ishlaydi:
+
+1. **Call Stack (Chaqiriqlar Steki - LIFO):**
+   * Funksiya chaqirilganda, u Stack freymi (execution frame) sifatida Call Stack-ka joylanadi (\`Push\`). U yerda funksiyaning parametrlari va lokal primitiv o'zgaruvchilari saqlanadi.
+   * Funksiya o'z ishini yakunlaganda, u Call Stackdan o'chiriladi (\`Pop\`).
+   * **Stack Overflow:** Rekursiv funksiya to'xtash shartisiz cheksiz chaqirilaversa, Call Stack uchun ajratilgan cheklangan xotira to'lib ketadi va "Maximum call stack size exceeded" xatosi yuzaga keladi.
+
+2. **Task Queue (Vazifalar Navbati - FIFO):**
+   * Asinxron amallar (masalan, \`setTimeout\`, \`fetch\` yoki foydalanuvchi hodisalari callbacklari) Web API tomonidan bajarilib bo'lingach, ularning callback funksiyalari **Task Queue (Navbat)** ga yuboriladi.
+   * **Event Loop** doimiy ravishda Call Stackni tekshiradi. Call Stack to'liq bo'shaganda, Task Queue-dan eng birinchi navbatda turgan vazifani FIFO tamoyili asosida olib, bajarish uchun Call Stackka yuklaydi.
+
+### Xotirani optimallashtirish (Array-based vs Linked List-based)
+* Massiv yordamida Queue yaratish oson, ammo \`.shift()\` metodini chaqirish $O(n)$ vaqt oladi. Chunki massiv elementlarining barcha indekslari xotirada 1 qadam chapga surilishi kerak.
+* Bog'langan ro'yxat (Linked List) orqali yaratilgan Queue esa $O(1)$ xotira amali va tezligiga ega. Bizda doimiy ravishda \`head\` (navbat boshi) va \`tail\` (navbat oxiri) ko'rsatkichlari bo'ladi. Element qo'shganda \`tail.next = newNode\`, element o'chirilganda esa \`head = head.next\` amali bajariladi. Bunga hech qanday indekslarni siljitish talab qilinmaydi.
 
 ---
 
@@ -151,19 +163,56 @@ Bo'sh stek yoki navbatdan element o'chirishga harakat qilganda xatolikni tekshir
 
 ---
 
-## 6. 🛠️ Amaliy Topshiriqlar
+## 6. 🎨 Interaktiv Vizual
+
+### Stack Strukturasi (LIFO)
+Elementlar faqat yuqoridan qo'shiladi va olinadi.
+
+\`\`\`mermaid
+graph TD
+    subgraph StackWorkflow [Stek Amallari]
+        direction TB
+        push["Push (Qo'shish)"] --> TopNode["Top (Tepa): Tugun 3"]
+        pop["Pop (Olish)"] --> TopNode
+        
+        subgraph Items [Stekdagi Elementlar]
+            TopNode --> Node2["Tugun 2"]
+            Node2 --> Node1["Bottom (Taq): Tugun 1"]
+        end
+    end
+    style StackWorkflow fill:#f1f8e9,stroke:#558b2f,stroke-width:2px
+\`\`\`
+
+### Queue Strukturasi (FIFO)
+Elementlar oxiridan qo'shiladi (tail) va oldidan olinadi (head).
+
+\`\`\`mermaid
+graph LR
+    subgraph QueueWorkflow [Navbat Amallari]
+        direction LR
+        enqueue["Enqueue (Orqaga qo'shish)"] --> Tail["Tail (Oxiri): Tugun 3"]
+        Tail --> Middle["Tugun 2"]
+        Middle --> Head["Head (Boshi): Tugun 1"]
+        Head --> dequeue["Dequeue (Oldidan olish)"]
+    end
+    style QueueWorkflow fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+\`\`\`
+
+---
+
+## 7. 🛠️ Amaliy Topshiriqlar
 
 Amaliy mashqlar \`stacksQueues_exercises.json\` faylida berilgan. U yerda siz qavslarni tekshirish, ikki stack yordamida navbat yaratish va har doim minimum qiymatni tezkor beruvchi \`MinStack\` klassini yozasiz.
 
 ---
 
-## 7. 📝 12 ta Mini Test
+## 8. 📝 12 ta Mini Test
 
 Dars oxirida o'zlashtirgan bilimlaringizni tekshirish uchun 12 ta test savollari tayyorlangan bo'lib, ular \`stacksQueues_quizzes.json\` faylida joylashgan.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 9. 🎯 Real Project Case Study
 
 ### Matn Muharriridagi Undo / Redo Tizimi (Orqaga va Oldinga Qaytarish)
 Katta matn muharrirlarida foydalanuvchining har bir yozgan amali xotirada saqlanishi va orqaga qaytarilishi kerak.
@@ -201,13 +250,6 @@ class TextEditor {
 
 ---
 
-## 9. 🚀 Performance va Optimization
-
-* **Stack/Queue uchun massiv \`.shift()\`/\`.unshift()\` metodlaridan qoching:** Ular O(n) vaqt olgani uchun katta loyihalarda unumdorlikni pasaytiradi.
-* **Linked List yoki Index Pointer ishlating:** Elementlarni o'chirishda ko'rsatkichlarni siljitish O(1) vaqt oladi.
-
----
-
 ## 10. 📌 Cheat Sheet
 
 | Ma'lumotlar Tuzilmasi | Tamoyili | Qo'shish (Push/Enqueue) | O'chirish (Pop/Dequeue) | Eng ustidagini ko'rish (Peek) | Qo'llanilishi |
@@ -222,7 +264,7 @@ class TextEditor {
     "title": "Qavslarni Tekshirish (Valid Parentheses)",
     "instruction": "Faqat `(`, `)`, `{`, `}`, `[` va `]` qavslardan iborat bo'lgan `s` satri berilgan. Qavslar to'g'ri tartibda ochilib yopilganini tekshiruvchi `isValidParentheses(s)` funksiyasini yozing. Buning uchun Stack ma'lumotlar tuzilmasidan foydalaning (massiv yordamida push/pop qiling).",
     "startingCode": "function isValidParentheses(s) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Ochuvchi qavslarni (`(`, `{`, `[`) stack-ga qo'shing. Yopuvchi qavs kelganda, stack-dan oxirgisini chiqarib (`pop`), ular mos kelishini tekshiring. Oxirida stack bo'sh bo'lishi kerak.",
+    "hint": "Ochuvchi qavslarni (`(`, `{`, `[`) stack-ga qo'shing. Yopuvchi qavs kelganda, stack-dan oxirgisini chiqarib (`pop`), ular mos kelishini tekshiring. Oxirida stack bo'sh bo'luk bo'lishi kerak.",
     "test": "const sandbox = new Function(code + '; return isValidParentheses;');\nconst fn = sandbox();\nif (fn('()') === true && fn('()[]{}') === true && fn('(]') === false && fn('([)]') === false && fn('{[]}') === true) return null;\nreturn 'isValidParentheses funksiyasi qavslarni to\\'g\\'ri tekshirmadi';"
   },
   {
@@ -350,7 +392,7 @@ class TextEditor {
       "Faqat simvollarni tekshiradigan stack"
     ],
     "correctAnswer": 0,
-    "explanation": "Monotonik Stack elementlarni qo'shayotganda tartibni saqlaydi: u faqat o'suvchi (monotonic increasing) yoki faqat kamayuvchi (monotonic decreasing) tartibda bo'ladi."
+    "explanation": "Monotonik Stack elementlarni qo'shayotganda tartibni saqlaydi: u faqat o'suvchi (monotonic increasing) yoki faqat kamayuvchi (monotonic decreasing) tartibda bo'lsa."
   },
   {
     "id": 10,

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Doimiy Vaqt Murakkabligi (O(1))",
+    "instruction": "Berilgan massivning birinchi elementini qaytaradigan `getFirstElement(arr)` funksiyasini yozing. Ushbu operatsiya massiv o'lchamidan qat'i nazar bir xil vaqtda bajarilishi (O(1)) kerak.",
+    "startingCode": "function getFirstElement(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Massivning 0-indeksidagi elementiga murojaat qiling va uni qaytaring.",
+    "test": "const sandbox = new Function(code + '; return getFirstElement;');\nconst fn = sandbox();\nif (fn([10, 20, 30]) === 10 && fn(['a', 'b']) === 'a') return null;\nreturn 'getFirstElement to\\'g\\'ri birinchi elementni qaytarmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Chiziqli Vaqt Murakkabligi (O(n))",
+    "instruction": "Massivda dublikat (takrorlangan) elementlar bor yoki yo'qligini aniqlovchi `hasDuplicates(arr)` funksiyasini yozing. Kod O(n) vaqt murakkabligida ishlashi uchun `Set` ma'lumotlar tuzilmasidan foydalaning (ikkita ichma-ich loop yozmang). Agar dublikat bo'lsa `true`, bo'lmasa `false` qaytaring.",
+    "startingCode": "function hasDuplicates(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Set obyektining `.size` xossasi bilan massivning `.length` xossasini solishtiring.",
+    "test": "if (code.includes('for') && (code.match(/for/g) || []).length > 1) return 'Nested looplardan foydalanmang (O(n^2) bo\\'lmasligi kerak)';\nconst sandbox = new Function(code + '; return hasDuplicates;');\nconst fn = sandbox();\nif (fn([1, 2, 3, 4]) === false && fn([1, 2, 2, 4]) === true) return null;\nreturn 'hasDuplicates xato natija qaytardi';"
+  },
+  {
+    "id": 3,
+    "title": "Logarifmik Murakkablik (O(log n))",
+    "instruction": "Saralangan massiv `arr` va qidirilayotgan son `target` berilgan. Binary Search (Ikkilik qidiruv) algoritmidan foydalanib, `target` massivda mavjud bo'lsa uning indeksini, aks holda `-1` qaytaradigan `binarySearch(arr, target)` funksiyasini yozing.",
+    "startingCode": "function binarySearch(arr, target) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "left va right ko'rsatkichlarni belgilang, o'rtadagi elementni (mid) topib, target bilan solishtiring va doim qidiruv hududini yarmiga qisqartiring.",
+    "test": "if (code.includes('indexOf') || code.includes('includes') || code.includes('find')) return 'Tayyor metodlardan foydalanmang';\nconst sandbox = new Function(code + '; return binarySearch;');\nconst fn = sandbox();\nconst arr = [1, 3, 5, 7, 9, 11];\nif (fn(arr, 5) === 2 && fn(arr, 1) === 0 && fn(arr, 10) === -1) return null;\nreturn 'binarySearch algoritmi to\\'g\\'ri ishlamadi';"
+  }
+]

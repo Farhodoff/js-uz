@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Yanggi Element Yaratish va Joylashtirish",
+    "instruction": "`document.createElement` yordamida 'div' elementi yarating, uning klassiga 'box' qo'shing va uni `document.body` oxiriga appendChild yordamida ulovchi `createBox()` funksiyasini yozing.",
+    "startingCode": "function createBox() {\n  // Kodni yozing\n}",
+    "hint": "const div = document.createElement('div'); div.classList.add('box'); document.body.appendChild(div);",
+    "test": "try { createBox(); const boxes = document.body.querySelectorAll('.box'); if (boxes.length === 0) return 'Box klassli element qo\\'shilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 2,
+    "title": "Boshiga Qo'shish (Prepend)",
+    "instruction": "Berilgan `newElement` obyektini `container` elementining eng boshiga birinchi bola element sifatida joylashtiruvchi `addToStart(container, newElement)` funksiyasini yozing.",
+    "startingCode": "function addToStart(container, newElement) {\n  // Kodni yozing\n}",
+    "hint": "container.prepend(newElement);",
+    "test": "try { let added = null; const mockContainer = { prepend: (el) => added = el }; const testEl = { id: 'test' }; addToStart(mockContainer, testEl); if (added !== testEl) return 'newElement boshiga joylashtirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 3,
+    "title": "Element Klonlash va ID o'zgartirish",
+    "instruction": "Berilgan `original` elementini uning bolalari bilan birga to'liq klonlovchi, klonlangan nusxaning ID sini 'cloned-item' ga o'zgartiruvchi va o'sha klonlangan elementni qaytaruvchi `cloneElement(original)` funksiyasini yozing.",
+    "startingCode": "function cloneElement(original) {\n  // Kodni yozing\n}",
+    "hint": "const cloned = original.cloneNode(true); cloned.id = 'cloned-item'; return cloned;",
+    "test": "try { const orig = document.createElement('div'); orig.id = 'original-id'; const res = cloneElement(orig); if (!res || res.id !== 'cloned-item') return 'Klonlangan element IDsi cloned-item bo\\'lmadi'; if (res === orig) return 'Klonlanmagan, asl element qaytarilgan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  }
+]

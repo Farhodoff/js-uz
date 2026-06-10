@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Yosh oralig'i (BETWEEN)",
+    "instruction": "`users` jadvalidan yoshi 25 va 30 oralig'ida bo'lgan (25 va 30 ni ham qo'shib) barcha foydalanuvchilarni tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT * FROM users WHERE age BETWEEN 25 AND 30",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Ushbu oraliqda 3 ta foydalanuvchi bor'; if(result.some(u => u.age < 25 || u.age > 30)) return 'Faqat 25 va 30 yosh oralig\\'idagi foydalanuvchilar chiqishi shart'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Rollar filtri (IN)",
+    "instruction": "`users` jadvalidan roli `Admin` yoki `Manager` bo'lgan foydalanuvchilarning ismi (`name`) va roli (`role`) ustunlarini tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT name, role FROM users WHERE role IN ('Admin', 'Manager')",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Admin va Manager roli bo\\'lgan jami 2 kishi bor'; if(result[0].city !== undefined) return 'Faqat name va role ustunlari tanlanishi kerak'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Ism bo'yicha qidiruv (LIKE)",
+    "instruction": "`users` jadvalidan ismi 'M' harfi bilan boshlanadigan barcha foydalanuvchilarni tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT * FROM users WHERE name LIKE 'M%'",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1 || result[0].name !== 'Madina') return 'Faqat Madina ismi qaytishi kerak'; return null;"
+  }
+]

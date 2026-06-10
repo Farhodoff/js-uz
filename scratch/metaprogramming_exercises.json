@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Proxy yordamida Validatsiya",
+    "instruction": "Foydalanuvchi obyektini tekshiruvchi `createValidatedUser(user)` funksiyasini yozing. U quyidagi shartlar bilan Proxy qaytarishi kerak:\n1. `age` xususiyati faqat son bo'lishi va 18 dan kichik bo'lmasligi kerak, aks holda Error tashlasin.\n2. `name` xususiyati faqat satr (string) bo'lishi va uzunligi kamida 3 ta belgidan iborat bo'lishi kerak, aks holda Error tashlasin.",
+    "startingCode": "function createValidatedUser(user) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Proxy set(target, prop, value) trap-idan foydalaning. Validatsiyadan o'tgach, Reflect.set(target, prop, value) yoki target[prop] = value orqali qiymatni yozing.",
+    "test": "const sandbox = new Function(code + '; return createValidatedUser;');\nconst fn = sandbox();\nconst target = { name: 'Ali', age: 20 };\nconst proxy = fn(target);\nproxy.age = 25;\nif (proxy.age !== 25) return 'Proxy qiymatni o\\'zgartira olmadi';\ntry {\n  proxy.age = 'yosh';\n  return 'Age string qabul qilinganda xato tashlamadi';\n} catch (e) {}\ntry {\n  proxy.age = 15;\n  return 'Age 18 dan kichik bo\\'lganda xato tashlamadi';\n} catch (e) {}\ntry {\n  proxy.name = 'Ab';\n  return 'Name 3 ta harfdan kam bo\\'lganda xato tashlamadi';\n} catch (e) {}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Property Logger (Obyekt Logeri)",
+    "instruction": "Obyekt ustidagi har bir o'qish (get) va yozish (set) operatsiyalarini kuzatib boruvchi `createLogger(obj)` funksiyasini yozing. Funksiya `{ proxy, logs }` ko'rinishidagi obyekt qaytarishi kerak. Bu yerda:\n- `proxy` - yaratilgan Proxy obyekti.\n- `logs` - operatsiyalarni yozib boruvchi massiv. Agar xususiyat o'qilsa, massivga `GET <prop>` ko'rinishida, yozilsa `SET <prop>=<value>` ko'rinishida satr qo'shilsin.",
+    "startingCode": "function createLogger(obj) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Proxy get va set traplari ichida `logs` massiviga tegishli matnni push qiling va Reflect.get/Reflect.set orqali asl amalni bajaring.",
+    "test": "const sandbox = new Function(code + '; return createLogger;');\nconst fn = sandbox();\nconst target = { name: 'Jasur' };\nconst { proxy, logs } = fn(target);\nconst n = proxy.name;\nproxy.age = 22;\nif (n !== 'Jasur') return 'GET operatsiyasi noto\\'g\\'ri qiymat qaytardi';\nif (logs[0] !== 'GET name') return 'GET logi noto\\'g\\'ri yozildi: ' + logs[0];\nif (logs[1] !== 'SET age=22') return 'SET logi noto\\'g\\'ri yozildi: ' + logs[1];\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Maxfiy Xususiyatlar (Safe Object)",
+    "instruction": "Obyektning pastki chiziq (`_`) bilan boshlanadigan xususiyatlarini yashiruvchi va himoyalovchi `createSafeObject(obj)` funksiyasini yozing. U quyidagi qoidalarga ega Proxy qaytarsin:\n1. Pastki chiziq bilan boshlangan xususiyat o'qilganda `undefined` qaytsin.\n2. Pastki chiziq bilan boshlangan xususiyatga yozishga harakat qilinganda `Error('Access Denied')` xatosi tashlansin.\n3. Obyekt kalitlari ro'yxati olinganda (Object.keys yoki for...in da) pastki chiziq bilan boshlanadigan xususiyatlar ko'rinmasin (filtrlab tashlansin).",
+    "startingCode": "function createSafeObject(obj) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "get, set va ownKeys traplaridan foydalaning. ownKeys-da Reflect.ownKeys(target) orqali barcha kalitlarni olib, key.startsWith('_') bo'lmaganlarini saqlang.",
+    "test": "const sandbox = new Function(code + '; return createSafeObject;');\nconst fn = sandbox();\nconst target = { name: 'Ali', _secret: '12345' };\nconst proxy = fn(target);\nif (proxy.name !== 'Ali') return 'Oddiy xususiyatlarni o\\'qishda xatolik';\nif (proxy._secret !== undefined) return '_ bilan boshlanuvchi xususiyatni o\\'qish yopilmadi';\ntry {\n  proxy._secret = 'change';\n  return '_ bilan boshlanuvchi xususiyatga yozishda xato tashlamadi';\n} catch(e) {}\nconst keys = Object.keys(proxy);\nif (keys.includes('_secret')) return 'ownKeys orqali _secret ko\\'rinib qoldi';\nreturn null;"
+  }
+]

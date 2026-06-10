@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Fetch API yordamida so'rov yuborilganda, u default holatda qaysi HTTP metodidan foydalanadi?",
+    "options": [
+      "POST",
+      "PUT",
+      "GET",
+      "DELETE"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Agar fetch() chaqirilganda hech qanday metod ko'rsatilmasa, brauzer avtomatik ravishda GET so'rovini yuboradi."
+  },
+  {
+    "id": 2,
+    "question": "Tarmoq so'rovi muvaffaqiyatli yakunlanib serverdan 404 Not Found xatosi qaytsa, `fetch()` qanday yo'l tutadi?",
+    "options": [
+      "Va'dani (Promise) 'fulfilled' deb hisoblaydi, faqat `response.ok` xossasi false bo'ladi",
+      "Va'dani darhol 'rejected' (rad etilgan) qiladi va catch-ga otadi",
+      "So'rovni serverga qayta yuboradi",
+      "Dastur ishini butunlay to'xtatadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Fetch faqat tarmoq ulanishi mutlaqo uzilgandagina Promise-ni reject qiladi. Agar HTTP status kodi (masalan, 404 yoki 500) qaytsa, Promise baribir resolve bo'ladi va faqat `response.ok` false qiymat oladi."
+  },
+  {
+    "id": 3,
+    "question": "Qaysi holatda `fetch()` qaytargan Promise 'rejected' (rad etilgan) bo'ladi?",
+    "options": [
+      "Server 500 Internal Server Error qaytarganda",
+      "Foydalanuvchida internet aloqasi bo'lmaganda yoki tarmoq mutlaqo ishlay olmay qolganda",
+      "Server 403 Forbidden qaytarganda",
+      "Javob JSON formatida bo'lmaganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Fetch faqat tarmoq uzilishi, DNS topilmasligi yoki xavfsizlik to'siqlari tufayli haqiqatdan ham serverga ulana olmaganidagina Promise-ni reject holatiga o'tkazadi."
+  },
+  {
+    "id": 4,
+    "question": "Fetch so'rovida POST metodini ishlatganda, yuborilayotgan JS obyektini `body` qismiga qanday ko'rinishda joylash kerak?",
+    "options": [
+      "JS obyektini to'g'ridan-to'g'ri o'zini uzatish orqali",
+      "Massivga o'girib",
+      "XML ko'rinishida",
+      "`JSON.stringify(obyekt)` ko'rinishida string qilib"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Tarmoq orqali yuborishda JS obyektini JSON formatidagi matnga o'giriish uchun `JSON.stringify()` metodidan foydalanish zarur."
+  },
+  {
+    "id": 5,
+    "question": "Serverdan kelgan javobni JSON formatida o'qish uchun javob obyektining qaysi asinxron metodidan foydalaniladi?",
+    "options": [
+      "response.json()",
+      "response.toJSON()",
+      "JSON.parse(response)",
+      "response.readBody()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "response.json() metodi javob body-sini JSON sifatida o'qiydi va Promise qaytaradi. Uni har doim `await` qilish kerak."
+  },
+  {
+    "id": 6,
+    "question": "So'rov jo'natish sarlavhalarini (headers) sozlash uchun fetch-ning qaysi parametridan foydalaniladi?",
+    "options": [
+      "credentials",
+      "headers",
+      "metadata",
+      "mode"
+    ],
+    "correctAnswer": 1,
+    "explanation": "So'rovda yuboriladigan qo'shimcha sarlavhalar (masalan, Authorization tokenlari, Content-Type) `headers` parametri orqali boshqariladi."
+  },
+  {
+    "id": 7,
+    "question": "Fetch so'rovini ma'lum vaqt o'tgandan keyin yoki foydalanuvchi bekor qilganda to'xtatish (abort qilish) uchun qaysi API ishlatiladi?",
+    "options": [
+      "AbortController va AbortSignal",
+      "fetch.cancel()",
+      "clearTimeout()",
+      "Promise.race()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`AbortController` yordamida maxsus signal yaratilib fetch-ga uzatiladi va kerak bo'lganda controller.abort() chaqirilib so'rov bekor qilinadi."
+  },
+  {
+    "id": 8,
+    "question": "`response.ok` xossasi serverning HTTP status kodi qaysi oraliqda bo'lganda `true` qiymat qaytaradi?",
+    "options": [
+      "100 dan 500 gacha bo'lgan oraliqda",
+      "Faqat 200 bo'lganda",
+      "200 dan 299 gacha bo'lgan oraliqda",
+      "300 dan kichik va 400 dan katta bo'lganda"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Agar server muvaffaqiyatli HTTP status kodlarini (2xx oralig'ida, masalan 200 OK, 201 Created) qaytarsa, `response.ok` true bo'ladi."
+  },
+  {
+    "id": 9,
+    "question": "CORS (Cross-Origin Resource Sharing) xatosi nima sababdan yuzaga keladi?",
+    "options": [
+      "Brauzer xavfsizlik nuqtai nazaridan boshqa domendan ruxsatsiz ma'lumot olishni bloklaganda",
+      "Foydalanuvchining internet tezligi juda past bo'lganda",
+      "So'rov yuborilayotgan API URL manzili xato yozilganda",
+      "Server 500 xatosini berganda"
+    ],
+    "correctAnswer": 0,
+    "explanation": "CORS - bu brauzerning xavfsizlik siyosati bo'lib, ruxsat etilmagan boshqa domenlardan (origin) keladigan so'rovlarga javob qaytarishni taqiqlaydi yoki bloklaydi."
+  },
+  {
+    "id": 10,
+    "question": "Fetch orqali yuklangan fayl (masalan rasm yoki PDF) baytlarini xom holatda o'qish uchun `response` ning qaysi metodi ishlatiladi?",
+    "options": [
+      "response.text()",
+      "response.blob()",
+      "response.json()",
+      "response.bytes()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Rasm, audio, video yoki hujjatlarni yuklab ularni fayl sifatida o'qish va URL yaratish uchun `response.blob()` ishlatiladi."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun modern veb-dasturlashda eski `XMLHttpRequest` o'rniga `Fetch API` tavsiya etiladi?",
+    "options": [
+      "Fetch Promise-larga asoslangan bo'lib, asinxron kodni toza va oson yozish imkonini beradi",
+      "XMLHttpRequest faqat sinxron ishlaydi",
+      "Fetch orqali faqat JSON yuklash mumkin",
+      "Fetch tashqi kutubxona bo'lib, o'rnatilishi shart"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Fetch API modern va'dalarga (Promises) asoslangani tufayli ancha sodda interfeys taqdim etadi va Callback Hell kabi muammolardan qutulishga yordam beradi."
+  },
+  {
+    "id": 12,
+    "question": "Fetch-da `credentials: 'include'` sozlamasi nima maqsadda beriladi?",
+    "options": [
+      "So'rov bilan birga cookie fayllarini va autentifikatsiya sarlavhalarini yuborish uchun",
+      "So'rovni shifrlash (encrypt) qilish uchun",
+      "API kalitlarini (API keys) yashirish uchun",
+      "LocalStorage ma'lumotlarini serverga jo'natish uchun"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`credentials: 'include'` sozlamasi cross-origin (boshqa domendagi) so'rovlarda ham cookie fayllari va session IDlarni birga yuborishga imkon beradi."
+  }
+]

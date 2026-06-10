@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Object Property Shorthand va Template Literals",
+    "instruction": "Taqdim etilgan 'name' va 'age' o'zgaruvchilaridan foydalanib, Object Property Shorthand orqali 'user' obyektini yarating. So'ngra template literals yordamida 'Ism: [name], Yosh: [age]' matnini 'info' o'zgaruvchisiga saqlang.",
+    "startingCode": "const name = 'Ali';\nconst age = 25;\n\n// Kodni shu yerda yozing\n",
+    "hint": "const user = { name, age }; const info = `Ism: ${name}, Yosh: ${age}`;",
+    "test": "if (code.includes('name: name')) return 'Object property shorthand ishlatilmadi';\nif (!code.includes('`')) return 'Template literal (backtick) ishlatilmadi';\nconst sandbox = new Function(code + '; return {user, info};');\nconst res = sandbox();\nif (res.user.name === 'Ali' && res.info === 'Ism: Ali, Yosh: 25') return null;\nreturn 'Natija noto\\'g\\'ri';"
+  },
+  {
+    "id": 2,
+    "title": "Logical Nullish Assignment (??=)",
+    "instruction": "'config' obyektidagi 'theme' va 'volume' parametrlarini tekshiring. Agar 'volume' mavjud bo'lmasa yoki nullish bo'lsa, '??=' yordamida unga 50 qiymatini default qilib o'rnating.",
+    "startingCode": "const config = { theme: 'dark', volume: null };\n\n// Kodni shu yerda yozing\n",
+    "hint": "config.volume ??= 50;",
+    "test": "if (!code.includes('??=')) return 'Logical Nullish Assignment (??=) operatori ishlatilmadi';\nconst sandbox = new Function('config', code + '; return config;');\nconst conf = { theme: 'dark', volume: null };\nsandbox(conf);\nif (conf.volume === 50) return null;\nreturn 'volume qiymati noto\\'g\\'ri belgilandi';"
+  },
+  {
+    "id": 3,
+    "title": "Object.fromEntries yordamida Obyekt Yaratish",
+    "instruction": "Taqdim etilgan kalit-qiymat juftliklaridan iborat 'entries' massivini 'Object.fromEntries' yordamida obyektga aylantiring va natijani 'userObj' o'zgaruvchisiga saqlang.",
+    "startingCode": "const entries = [['username', 'ali12'], ['role', 'user']];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const userObj = Object.fromEntries(entries);",
+    "test": "if (!code.includes('Object.fromEntries')) return 'Object.fromEntries ishlatilmadi';\nconst sandbox = new Function('entries', code + '; return userObj;');\nconst res = sandbox([['username', 'ali12'], ['role', 'user']]);\nif (res && res.username === 'ali12' && res.role === 'user') return null;\nreturn 'userObj obyekti noto\\'g\\'ri yaratildi';"
+  }
+]

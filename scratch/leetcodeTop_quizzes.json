@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Two Sum masalasini Brute Force (kuch bilan) yechganda vaqt murakkabligi (Time Complexity) qanday bo'bali?",
+    "options": [
+      "O(n)",
+      "O(n log n)",
+      "O(n²)",
+      "O(1)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Brute Force yondashuvida ikki qavatli tsikl yordamida barcha juftliklar solishtirib chiqiladi, bu esa O(n²) vaqt oladi."
+  },
+  {
+    "id": 2,
+    "question": "Hash Map (yoki JS Obyekti) yordamida Two Sum masalasini qanday optimal vaqtda yechish mumkin?",
+    "options": [
+      "O(n)",
+      "O(n log n)",
+      "O(log n)",
+      "O(1)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Biz massivni bir marta aylanib chiqib, har bir element uchun kerakli juftlikni (`target - element`) Map ichidan O(1) vaqtda qidiramiz, natijada umumiy vaqt O(n) bo'ladi."
+  },
+  {
+    "id": 3,
+    "question": "Hash Map yordamida Two Sum yechimining xotira murakkabligi (Space Complexity) qanday bo'ladi?",
+    "options": [
+      "O(1)",
+      "O(n)",
+      "O(log n)",
+      "O(n²)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Eng yomon holatda massivdagi barcha n ta elementni Hash Map ichiga saqlash talab etiladi, bu esa O(n) qo'shimcha xotira deganidir."
+  },
+  {
+    "id": 4,
+    "question": "Valid Parentheses (To'g'ri qavslar) masalasini yechishda eng mos keladigan ma'lumotlar tuzilmasi qaysi?",
+    "options": [
+      "Queue (Navbat)",
+      "Stack (Stek)",
+      "Binary Search Tree",
+      "Graph (Graf)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Qavslar 'oxirgi kirgan - birinchi chiqadi' (LIFO) tamoyili bo'yicha yopiladi, shuning uchun Stack tuzilmasi bu masalaga eng to'g'ri yechimdir."
+  },
+  {
+    "id": 5,
+    "question": "Valid Parentheses yechimining vaqt va xotira murakkabligi (optimal holatda) qanday?",
+    "options": [
+      "Vaqt: O(n), Xotira: O(n)",
+      "Vaqt: O(n²), Xotira: O(1)",
+      "Vaqt: O(log n), Xotira: O(n)",
+      "Vaqt: O(n), Xotira: O(1)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Satrni bir marta to'liq aylanib chiqish O(n) vaqt oladi. Ochilgan qavslarni yig'ib boruvchi stak esa eng yomon holatda n/2 elementni saqlashi mumkin, ya'ni xotira O(n)."
+  },
+  {
+    "id": 6,
+    "question": "Best Time to Buy and Sell Stock (Aksiyani sotish) masalasida maksimal foydani topish uchun Single Pass (bir marta aylanib chiqish) algoritmining vaqt va xotira murakkabligi qanday?",
+    "options": [
+      "Vaqt: O(n²), Xotira: O(1)",
+      "Vaqt: O(n), Xotira: O(n)",
+      "Vaqt: O(n), Xotira: O(1)",
+      "Vaqt: O(1), Xotira: O(1)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Biz massivni bir marta aylanib chiqib, faqat minimal narx va maksimal foydani saqlovchi ikkita o'zgaruvchidan foydalanamiz. Shuning uchun vaqt O(n), xotira O(1) bo'ladi."
+  },
+  {
+    "id": 7,
+    "question": "LeetCode masalalarida 'Two Pointers' (Ikki ko'rsatkich) texnikasi odatda qanday vaziyatlarda qo'llaniladi?",
+    "options": [
+      "Faqat daraxtlarni rekursiv aylanishda",
+      "Saralangan massivda juftliklarni qidirish yoki massiv elementlarini joyida almashtirishda",
+      "Katta JSON fayllarini parse qilishda",
+      "Serverga HTTP POST so'rovlarini parallel yuborishda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ikki ko'rsatkich texnikasi massivning ikki chetidan (chap va o'ng) markazga qarab yurish yoki tez va sekin ko'rsatkichlar yordamida zanjirlarni tekshirishda ishlatiladi."
+  },
+  {
+    "id": 8,
+    "question": "'Number of Islands' (Orollar soni - LeetCode #200) masalasini yechishda qaysi algoritmik yondashuv eng ko'p ishlatiladi?",
+    "options": [
+      "Binary Search",
+      "Merge Sort",
+      "DFS (Depth-First Search) yoki BFS",
+      "Sliding Window"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Orolning barcha qismlarini (qo'shni 1 larni) aniqlash va ularni suvga (0 ga) aylantirib borish uchun Graf/Matritsa aylanish algoritmlari (DFS/BFS) qo'llaniladi."
+  },
+  {
+    "id": 9,
+    "question": "Bog'langan ro'yxatni teskari qilish (Reverse Linked List) algoritmining vaqt murakkabligi qanday?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n²)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Ro'yxatning har bir tugunini bir marta ko'rib chiqib, ko'rsatkichlarini teskari tomonga o'zgartirish kerak, bu esa O(n) vaqt talab qiladi."
+  },
+  {
+    "id": 10,
+    "question": "Eng katta yig'indiga ega qism massivni topish (Maximum Subarray - Kadane algoritmi) qanday yondashuvga misol bo'ladi?",
+    "options": [
+      "Binary Search",
+      "Dinamik Dasturlash (Dynamic Programming) / Greedy",
+      "Divide and Conquer",
+      "Brute Force"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kadane algoritmi joriy elementgacha bo'lgan maksimal yig'indi va umumiy maksimal yig'indini saqlash orqali sub-problem xarakteriga ega, bu Dinamik dasturlash/Greedy tamoyillariga asoslanadi."
+  },
+  {
+    "id": 11,
+    "question": "Sliding Window (Sirpanuvchi oyna) texnikasi qanday turdagi muammolarni optimallashtirish uchun qo'llaniladi?",
+    "options": [
+      "Massivda ketma-ket keladigan (contiguous) elementlar blokini (masalan, eng uzun qism satr) O(n²) dan O(n) ga tushirish uchun",
+      "Ikki xil massivni birlashtirish uchun",
+      "SQL ma'lumotlar bazasini indekslash uchun",
+      "Daraxtlarni darajama-daraja chiqarish uchun"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Sliding Window massivning ma'lum bir qismini (oynani) o'ngga surish va chap chegarani qisqartirish orqali keraksiz takroriy hisob-kitoblarning oldini olib, O(n) yechim beradi."
+  },
+  {
+    "id": 12,
+    "question": "LeetCode intervyulariga tayyorlanishda 'Space-Time Tradeoff' deganda nima tushuniladi?",
+    "options": [
+      "Algoritm bajarilish tezligini oshirish uchun qo'shimcha xotiradan (masalan, Hash Table) foydalanish",
+      "Kodni faqat serverda bajarish orqali mijoz kompyuterini tejash",
+      "Rekursiv funksiyalarni faqat async/await bilan yozish",
+      "Dastur xotirasini bo'shatish uchun sahifani yangilash"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Space-Time Tradeoff — bu xotira evaziga vaqtni tejashdir. Masalan, Two Sum masalasida Hash Map (qo'shimcha xotira) ishlatib, qidiruv vaqtini O(n²) dan O(n) ga tushiramiz."
+  }
+]

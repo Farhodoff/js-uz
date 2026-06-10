@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "WebSocket protokoli qaysi transport protokoli ustiga qurilgan?",
+    "options": [
+      "UDP",
+      "TCP",
+      "DNS",
+      "FTP"
+    ],
+    "correctAnswer": 1,
+    "explanation": "WebSocket protokoli ishonchli va tartiblangan ma'lumot uzatishni ta'minlaydigan TCP protokoli ustida ishlaydi."
+  },
+  {
+    "id": 2,
+    "question": "WebSocket ulanishini boshlashda mijoz va server o'rtasidagi kelishuv (Handshake) qanday amalga oshiriladi?",
+    "options": [
+      "FTP yuklash orqali",
+      "HTTP Upgrade so'rovi yordamida",
+      "SMTP elektron pochta protokoli orqali",
+      "Hech qanday so'rovsiz to'g'ridan-to'g'ri bog'lanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ulanish dastlab standart HTTP GET so'rovi orqali boshlanadi va sarlavhada Upgrade: websocket so'raladi. Server rozilik bergach ulanish WebSocket-ga o'tadi."
+  },
+  {
+    "id": 3,
+    "question": "HTTP-dan farqli o'laroq WebSocket protokolining eng muhim ustunligi nima?",
+    "options": [
+      "Har bir so'rovda sarlavhalarni kattalashtirishi",
+      "Ikki tomonlama (bi-directional) va doimiy ochiq qoluvchi aloqa kanali orqali haqiqiy vaqt rejimida (real-time) ma'lumot uzatishi",
+      "Faqat rasmlarni tezkor yuklashi",
+      "Keshni avtomatik tozalashi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "WebSocket-da ulanish bir marta ochiladi va yopilmaguncha har ikki tomon ham istalgan vaqtda so'rov kutmasdan ma'lumot yubora oladi."
+  },
+  {
+    "id": 4,
+    "question": "SSL/TLS shifrlash bilan himoyalangan xavfsiz WebSocket protokoli qanday belgilanadi?",
+    "options": [
+      "ws://",
+      "http://",
+      "wss://",
+      "https://"
+    ],
+    "correctAnswer": 2,
+    "explanation": "wss:// (WebSocket Secure) xuddi https:// kabi ma'lumotlarni shifrlab uzatishni ta'minlaydi."
+  },
+  {
+    "id": 5,
+    "question": "WebSocket ulanishining joriy holatini (masalan ulanayotgan, ochiq yoki yopilgan) qaysi xossa orqali bilish mumkin?",
+    "options": [
+      "state",
+      "status",
+      "readyState",
+      "connectionState"
+    ],
+    "correctAnswer": 2,
+    "explanation": "readyState xossasi ulanishning 4 xil holat qiymatini (0: CONNECTING, 1: OPEN, 2: CLOSING, 3: CLOSED) qaytaradi."
+  },
+  {
+    "id": 6,
+    "question": "WebSocket.readyState qiymati 1 bo'lganda, bu qaysi holatni anglatadi?",
+    "options": [
+      "CONNECTING (ulanish o'rnatilmoqda)",
+      "OPEN (ulanish ochiq va xabarlar almashishga tayyor)",
+      "CLOSING (ulanish yopilmoqda)",
+      "CLOSED (ulanish yopilgan)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "1 (yoki WebSocket.OPEN) ulanish muvaffaqiyatli o'rnatilganini va hozirda faol ekanligini anglatadi."
+  },
+  {
+    "id": 7,
+    "question": "Ulanish to'liq ochiq holatga (OPEN) kelmasdan turib socket.send() metodi chaqirilsa nima sodir bo'ladi?",
+    "options": [
+      "Xabar ulanish ochilguncha navbatda turadi",
+      "Hech narsa yuz bermaydi, xabar shunchaki yo'qoladi",
+      "InvalidStateError xatoligi yuz beradi",
+      "Dastur avtomatik ravishda qayta ishga tushadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Ulanish hali tayyor bo'lmagan (CONNECTING) yoki yopilgan holatda ma'lumot yuborish InvalidStateError xatosini keltirib chiqaradi."
+  },
+  {
+    "id": 8,
+    "question": "WebSocket serveridan yangi xabar olinganda qaysi hodisa (event listener) ishga tushadi?",
+    "options": [
+      "onopen",
+      "onmessage",
+      "onclose",
+      "onchange"
+    ],
+    "correctAnswer": 1,
+    "explanation": "onmessage hodisasi serverdan yangi ma'lumot kelganda chaqiriladi va event.data tarkibida kelgan ma'lumotni saqlaydi."
+  },
+  {
+    "id": 9,
+    "question": "Foydalanuvchi interneti kutilmaganda uzilib, tarmoq o'chib qolganda WebSocket ulanishida nima uchun darhol onclose ishlamay qolishi mumkin?",
+    "options": [
+      "Chunki WebSocket faqat Wi-Fi da ishlaydi",
+      "Chunki TCP protokoli jismoniy tarmoq uzilishini sezishi uchun biroz vaqt talab etiladi (TCP timeout)",
+      "Chunki brauzer har doim ma'lumotlarni keshlab turadi",
+      "Dasturchi close() ni chaqirmagani sababli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tarmoq jismoniy uzilganini operatsion tizim va TCP darhol aniqlay olmaydi. Shuning uchun ulanish ochiqdek ko'rinib (zombi holati), onclose kechikib ishlaydi. Buni oldini olish uchun Heartbeat ishlatiladi."
+  },
+  {
+    "id": 10,
+    "question": "Tarmoq faolligini saqlash va zombi ulanishlarni aniqlash uchun qo'llaniladigan davriy xabar almashish tizimi nima deyiladi?",
+    "options": [
+      "Polling",
+      "Handshake",
+      "Heartbeat (yoki Ping-Pong)",
+      "Long-Polling"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Heartbeat (Ping-Pong) mexanizmi ma'lum vaqt oralig'ida (masalan har 30 soniyada) server bilan bir-biriga kichik signal yuborib, ulanish tirikligini tekshirish jarayonidir."
+  },
+  {
+    "id": 11,
+    "question": "HTTPS orqali chiquvchi sahifada shifrlanmagan ws:// protokoli orqali ulanmoqchi bo'lsak nima sodir bo'ladi?",
+    "options": [
+      "Ulanish avtomatik ravishda wss:// ga o'tadi",
+      "Ulanish muvaffaqiyatli amalga oshadi, lekin sekinroq ishlaydi",
+      "Brauzer xavfsizlik siyosati (Mixed Content) tufayli so'rovni taqiqlaydi va bloklaydi",
+      "Server xatolik kodi 404 qaytaradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "HTTPS protokoli ostidagi sahifa faqat xavfsiz manbalar bilan ulanishi mumkin. Shifrlanmagan ws:// ulanishlari brauzer tomonidan bloklanadi."
+  },
+  {
+    "id": 12,
+    "question": "socket.bufferedAmount xossasining vazifasi nima?",
+    "options": [
+      "Serverdan qabul qilingan ma'lumotlar hajmini ko'rsatish",
+      "send() orqali yuborilgan, lekin hali tarmoqqa chiqib ketmay brauzer xotirasi navbatida turgan ma'lumotlar hajmini baytlarda qaytarish",
+      "Brauzer keshidagi ma'lumotlar o'lchovini aniqlash",
+      "Ulanish tezligini megabitlarda ko'rsatish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "bufferedAmount yuborish navbatida turgan ma'lumotlar miqdorini aniqlaydi. Agar bu qiymat katta bo'lsa, tarmoq tiqilinchini oldini olish uchun ma'lumot yuborishni vaqtincha to'xtatib turish kerak."
+  }
+]

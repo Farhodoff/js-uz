@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Prototipli Vorislik Zanjiri (ES5)",
+    "instruction": "Berilgan `Animal` konstruktor funksiyasidan vorislik oluvchi `Dog` konstruktor funksiyasini yozing. `Dog` ota konstruktordagi `name` xossasini qabul qilishi va qo'shimcha `breed` xossasiga ega bo'lishi kerak. Prototip zanjirini to'g'ri o'rnating va `constructor` xossasini tuzating.",
+    "startingCode": "function Animal(name) {\n  this.name = name;\n}\nAnimal.prototype.speak = function() {\n  return this.name + ' shovqin solmoqda';\n};\n\nfunction Dog(name, breed) {\n  // Kodni shu yerda yozing\n}\n// Vorislikni sozlang\n",
+    "hint": "`Dog` ichida `Animal.call(this, name)` dan foydalanib ota xossani chaqiring. Keyin `Dog.prototype = Object.create(Animal.prototype)` qiling va uning `constructor`ini `Dog` ga tenglang.",
+    "test": "const sandbox = new Function(code + '; return { Animal, Dog };');\nconst scope = sandbox();\nconst husky = new scope.Dog('Maks', 'Husky');\nif (!(husky instanceof scope.Animal)) return 'Dog Animal-dan vorislik olmagan';\nif (husky.speak() !== 'Maks shovqin solmoqda') return 'Ota metod (speak) xato ishlayapti';\nif (husky.breed !== 'Husky') return 'breed xossasi to\\'g\\'ri o\\'rnatilmagan';\nif (husky.constructor !== scope.Dog) return 'Dog prototipining constructor xossasi tuzatilmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Massiv Prototipini Kengaytirish",
+    "instruction": "Barcha JavaScript massivlarida ishlaydigan shaxsiy `Array.prototype.last()` metodini yarating. U massivning eng oxirgi elementini qaytarsin. Agar massiv bo'sh bo'lsa, `undefined` qaytarsin.",
+    "startingCode": "// Prototipni shu yerda kengaytiring\n",
+    "hint": "`Array.prototype.last = function() { ... }` ko'rinishida yozib, massiv elementiga `this` kalit so'zi va uning uzunligi `this.length` orqali murojaat qiling.",
+    "test": "const sandbox = new Function(code + '; return [\"olma\", \"anor\", \"limon\"].last();');\nif (sandbox() !== 'limon') return 'last() metodi oxirgi elementni qaytarmadi';\nconst emptySandbox = new Function(code + '; return [].last();');\nif (emptySandbox() !== undefined) return 'Bo\\'sh massiv uchun undefined qaytarishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Object.create yordamida Prototip Bog'lash",
+    "instruction": "Berilgan `person` obyektini prototip sifatida qabul qiluvchi yangi `student` obyektini `Object.create` yordamcha metodi orqali yarating. `student` obyektida shaxsiy `study()` metodi bo'lsin va u `'O\\'qimoqda'` degan matnni qaytarsin.",
+    "startingCode": "const person = {\n  greet() {\n    return 'Salom';\n  }\n};\n\n// student obyektini yarating\n",
+    "hint": "`const student = Object.create(person);` yordamida voris obyekt oching va unga `student.study = function() { ... }` shaklida metod biriktiring.",
+    "test": "const sandbox = new Function(code + '; return student;');\nconst st = sandbox();\nif (!st) return 'student obyekti yaratilmagan';\nif (Object.getPrototypeOf(st) !== person) return 'student obyekti prototipi person ga bog\\'lanmagan';\nif (st.greet() !== 'Salom') return 'student otasining greet() metodini chaqira olmayapti';\nif (typeof st.study !== 'function' || st.study() !== 'O\\'qimoqda') return 'study() metodi to\\'g\\'ri yozilmagan';\nreturn null;"
+  }
+]

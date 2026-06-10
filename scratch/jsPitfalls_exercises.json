@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Float hisob-kitoblarni to'g'rilash",
+    "instruction": "JavaScript-dagi suzuvchi nuqtali sonlar (floating point numbers) tuzog'idan qutulish uchun `preciseAdd(a, b)` funksiyasini yozing. Masalan, `preciseAdd(0.1, 0.2)` chaqirilganda `0.30000000000000004` emas, balki aniq `0.3` sonini qaytarishi lozim.",
+    "startingCode": "function preciseAdd(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Sonlarni qo'shib, keyin `.toFixed(12)` yoki o'xshash metod orqali yaxlitlang va `parseFloat()` orqali qaytadan son ko'rinishiga o'tkazing.",
+    "test": "const sandbox = new Function(code + '; return preciseAdd;');\nconst fn = sandbox();\nif (fn(0.1, 0.2) !== 0.3) return 'preciseAdd(0.1, 0.2) 0.3 ni qaytarmadi';\nif (fn(0.2, 0.4) !== 0.6) return 'preciseAdd(0.2, 0.4) 0.6 ni qaytarmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Obyektlardan Chuqur Nusxa Olish",
+    "instruction": "JavaScript-da obyektlar havola (reference) orqali uzatiladi. Obyekt ichidagi boshqa ichki obyektlarni ham to'liq mustaqil nusxalovchi `deepClone(obj)` funksiyasini yozing. Nusxa o'zgartirilganda original obyekt o'zgarmasligi shart.",
+    "startingCode": "function deepClone(obj) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Eng sodda usul - `JSON.parse(JSON.stringify(obj))` dan yoki yangi `structuredClone(obj)` metodidan foydalanishdir.",
+    "test": "const sandbox = new Function(code + '; return deepClone;');\nconst fn = sandbox();\nconst original = { name: 'Ali', details: { age: 20, hobbies: ['coding'] } };\nconst clone = fn(original);\nif (clone === original) return 'Nusxa asl obyekt bilan bir xil havola bo\\'lib qoldi';\nif (clone.details === original.details) return 'details obyekti chuqur nusxalanmadi (referensial bog\\'liqlik qoldi)';\nclone.details.hobbies.push('gaming');\nif (original.details.hobbies.includes('gaming')) return 'Clone o\\'zgartirilganda original ham o\\'zgardi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Sikl ichidagi Closure (Yopilish) xatosini tuzatish",
+    "instruction": "Berilgan `createCallbacks()` funksiyasi 5 ta elementdan iborat massiv qaytaradi. Har bir element funksiya bo'lib, o'z indeksini (ya'ni 0, 1, 2, 3, 4) qaytarishi kerak. Quyidagi kodda `var` ishlatilganligi sababli barcha funksiyalar `5` qaytarib yubormoqda. Ushbu xatolikni (closure pitfall) faqat kodni to'g'ri o'zgartirish orqali tuzating.",
+    "startingCode": "function createCallbacks() {\n  var callbacks = [];\n  for (var i = 0; i < 5; i++) {\n    callbacks.push(function() {\n      return i;\n    });\n  }\n  return callbacks;\n}\n",
+    "hint": "`var` kalit so'zi block scope-ga ega emas. Uni block scope-ga ega bo'lgan `let` kalit so'zi bilan almashtiring.",
+    "test": "const sandbox = new Function(code + '; return createCallbacks;');\nconst fn = sandbox();\nconst fns = fn();\nif (fns.length !== 5) return 'Massivda 5 ta funksiya bo\\'lishi kerak';\nif (fns[0]() === 5) return 'Barcha funksiyalar 5 qaytarmoqda (tuzoqqa tushdingiz!)';\nif (fns[0]() !== 0 || fns[1]() !== 1 || fns[4]() !== 4) {\n  return 'Funksiyalar o\\'zlarining tegishli indekslarini qaytarmadi';\n}\nreturn null;"
+  }
+]

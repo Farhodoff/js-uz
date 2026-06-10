@@ -47,6 +47,11 @@ export default function VisualizerTab({ activeLesson }) {
   const [sortSearchHigh, setSortSearchHigh] = useState(-1);
   const [sortSearchMid, setSortSearchMid] = useState(-1);
   const [searchTarget, setSearchTarget] = useState(22);
+  const [customArrayInput, setCustomArrayInput] = useState("");
+  const [quickI, setQuickI] = useState(-1);
+  const [quickJ, setQuickJ] = useState(0);
+  const [quickPivotIdx, setQuickPivotIdx] = useState(7);
+  const [quickPhase, setQuickPhase] = useState("init");
 
   const [lcMode, setLcMode] = useState("twosum"); // twosum or parentheses
   const [lcStep, LcSetStep] = useState(0);
@@ -103,7 +108,6 @@ export default function VisualizerTab({ activeLesson }) {
       setBstActiveValue(null);
       setBstPath([]);
     } else if (activeLesson.id === "sortingSearching") {
-      setSortArray([35, 12, 45, 8, 22, 19, 50, 31]);
       setSortActive([]);
       setSortSwap([]);
       setSortSorted([]);
@@ -111,6 +115,10 @@ export default function VisualizerTab({ activeLesson }) {
       setSortSearchLow(-1);
       setSortSearchHigh(-1);
       setSortSearchMid(-1);
+      setQuickI(-1);
+      setQuickJ(0);
+      setQuickPivotIdx(sortArray.length - 1);
+      setQuickPhase("init");
     } else if (activeLesson.id === "leetcodeTop") {
       LcSetStep(0);
       setLcStack([]);
@@ -350,9 +358,68 @@ export default function VisualizerTab({ activeLesson }) {
         setSortStepIndex((i + 1) * n);
         setStepInfo(`${i + 1}-pass yakunlandi. Eng katta element o'ng chekkaga joylashdi.`);
       }
+    } else if (sortAlgo === "quick") {
+      let arr = [...sortArray];
+      let i = quickI;
+      let j = quickJ;
+      let pIdx = quickPivotIdx;
+      let phase = quickPhase;
+      const pivot = arr[pIdx];
+
+      if (phase === "init") {
+        setQuickI(-1);
+        setQuickJ(0);
+        setQuickPivotIdx(arr.length - 1);
+        setQuickPhase("compare");
+        setSortActive([0, arr.length - 1]);
+        setSortSwap([]);
+        setStepInfo(`Quick Sort (Lomuto Partition): Pivot qilib oxirgi element [${pivot}] olindi. i = -1, j = 0.`);
+        return;
+      }
+
+      if (phase === "compare") {
+        if (j < pIdx) {
+          setSortActive([j, pIdx]);
+          setSortSwap([]);
+          if (arr[j] < pivot) {
+            setQuickPhase("swap");
+            setStepInfo(`Taqqoslash: arr[j] (${arr[j]}) < pivot (${pivot}). i indeksini oshiramiz (i = ${i + 1}) va arr[i] bilan arr[j] ni almashtirishga tayyorlaymiz.`);
+            setQuickI(i + 1);
+          } else {
+            setQuickJ(j + 1);
+            setStepInfo(`Taqqoslash: arr[j] (${arr[j]}) >= pivot (${pivot}). O'zgarishsiz qoldirilib, j oldinga suriladi.`);
+          }
+        } else {
+          setQuickPhase("final_swap");
+          setSortActive([i + 1, pIdx]);
+          setStepInfo(`Sikl tugadi. Pivotni o'zining to'g'ri o'rniga qo'yish uchun arr[i + 1] (${arr[i + 1]}) bilan pivot (${pivot}) o'rni almashtiriladi.`);
+        }
+      } else if (phase === "swap") {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+        setSortArray(arr);
+        setSortSwap([i, j]);
+        setQuickPhase("compare");
+        setQuickJ(j + 1);
+        setStepInfo(`Almashtirildi: arr[i] (${arr[i]}) <-> arr[j] (${arr[j]}). j keyingi bosqichga surildi.`);
+      } else if (phase === "final_swap") {
+        let temp = arr[i + 1];
+        arr[i + 1] = arr[pIdx];
+        arr[pIdx] = temp;
+        setSortArray(arr);
+        setSortSwap([i + 1, pIdx]);
+        setQuickPhase("done");
+        setStepInfo(`Pivot to'g'ri joyga joylashdi! Lomuto partition yakunlandi. Pivot chapidagi barcha sonlar undan kichik, o'ngdagilar esa katta.`);
+      } else if (phase === "done") {
+        setStepInfo("Quick Sort Lomuto Partition qadami yakunlandi.");
+        setSortActive([]);
+        setSortSwap([]);
+        setSortSorted(arr);
+        stopTimer();
+      }
     } else if (sortAlgo === "binary") {
       let arr = [...sortArray].sort((a, b) => a - b);
-      // If array not sorted, sort it first
       if (JSON.stringify(sortArray) !== JSON.stringify(arr)) {
         setSortArray(arr);
         setStepInfo("Ikkilik qidiruv uchun massiv avval tartiblandi.");
@@ -384,6 +451,31 @@ export default function VisualizerTab({ activeLesson }) {
         setSortSearchHigh(mid - 1);
       }
     }
+  };
+
+  const handleCustomArraySubmit = () => {
+    const parsed = customArrayInput
+      .split(",")
+      .map(item => parseInt(item.trim()))
+      .filter(item => !isNaN(item));
+    if (parsed.length < 3 || parsed.length > 15) {
+      setStepInfo("Xato: Massiv elementlari soni 3 va 15 oralig'ida bo'lishi kerak.");
+      return;
+    }
+    setSortArray(parsed);
+    setCustomArrayInput("");
+    setSortActive([]);
+    setSortSwap([]);
+    setSortSorted([]);
+    setSortStepIndex(0);
+    setSortSearchLow(-1);
+    setSortSearchHigh(-1);
+    setSortSearchMid(-1);
+    setQuickI(-1);
+    setQuickJ(0);
+    setQuickPivotIdx(parsed.length - 1);
+    setQuickPhase("init");
+    setStepInfo(`Yangi massiv kiritildi: [${parsed.join(", ")}].`);
   };
 
   // 5. LeetCode Trace Steps
@@ -452,21 +544,32 @@ export default function VisualizerTab({ activeLesson }) {
     }
   };
 
-  // Helper: Recursive BST node render
-  const renderBstNode = (node) => {
-    if (!node) return <div className="bst-node-null">null</div>;
-    const isActive = bstPath.includes(node.value) || bstActiveValue === node.value;
-    return (
-      <div className="bst-node-wrapper">
-        <div className={`bst-node-circle ${isActive ? "active" : ""}`}>
-          {node.value}
-        </div>
-        <div className="bst-node-children">
-          <div className="bst-node-left">{renderBstNode(node.left)}</div>
-          <div className="bst-node-right">{renderBstNode(node.right)}</div>
-        </div>
-      </div>
-    );
+  // Helper: Recursive BST node positions coordinate calculator
+  const getBstNodesAndEdges = (node, x = 300, y = 40, level = 0, dx = 120) => {
+    if (!node) return { nodes: [], edges: [] };
+
+    const nodes = [{ value: node.value, x, y }];
+    const edges = [];
+
+    if (node.left) {
+      const leftX = x - dx;
+      const leftY = y + 60;
+      edges.push({ x1: x, y1: y, x2: leftX, y2: leftY });
+      const leftData = getBstNodesAndEdges(node.left, leftX, leftY, level + 1, dx / 1.7);
+      nodes.push(...leftData.nodes);
+      edges.push(...leftData.edges);
+    }
+
+    if (node.right) {
+      const rightX = x + dx;
+      const rightY = y + 60;
+      edges.push({ x1: x, y1: y, x2: rightX, y2: rightY });
+      const rightData = getBstNodesAndEdges(node.right, rightX, rightY, level + 1, dx / 1.7);
+      nodes.push(...rightData.nodes);
+      edges.push(...rightData.edges);
+    }
+
+    return { nodes, edges };
   };
 
   return (
@@ -563,13 +666,21 @@ export default function VisualizerTab({ activeLesson }) {
                   <button className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded text-sm border border-slate-700" onClick={handleLLAppend}>Tail (Oxiriga)</button>
                   <button className="bg-red-950/65 text-red-200 hover:bg-red-900/80 px-3 py-1.5 rounded text-sm border border-red-900/60" onClick={handleLLDelete}>O'chirish</button>
                 </div>
-                <div className="ll-nodes-chain flex items-center gap-2 overflow-x-auto py-4">
+                <div className="ll-nodes-chain flex items-center gap-2 overflow-x-auto py-8">
                   {linkedListNodes.map((node, idx) => (
                     <div className="ll-node-container flex items-center gap-1" key={node.id}>
-                      <div className="ll-node-box bg-slate-800/85 border border-slate-700 rounded-lg p-2 flex items-center shadow-lg text-sm">
-                        <div className="ll-node-value font-semibold px-2 text-amber-400">{node.value}</div>
-                        <div className="w-[1px] h-6 bg-slate-700"></div>
-                        <div className="text-[11px] text-slate-400 px-2">next</div>
+                      <div className="relative flex flex-col items-center">
+                        {idx === 0 && (
+                          <span className="absolute -top-6 bg-blue-600/90 text-slate-100 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Head</span>
+                        )}
+                        {idx === linkedListNodes.length - 1 && (
+                          <span className="absolute -top-6 bg-cyan-600/90 text-slate-100 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Tail</span>
+                        )}
+                        <div className="ll-node-box bg-slate-800/85 border border-slate-700 rounded-lg p-2 flex items-center shadow-lg text-sm">
+                          <div className="ll-node-value font-semibold px-2 text-amber-400">{node.value}</div>
+                          <div className="w-[1px] h-6 bg-slate-700"></div>
+                          <div className="text-[11px] text-slate-400 px-2">next</div>
+                        </div>
                       </div>
                       {idx < linkedListNodes.length - 1 ? (
                         <div className="ll-arrow text-slate-500 text-lg">➔</div>
@@ -839,54 +950,123 @@ export default function VisualizerTab({ activeLesson }) {
         )}
 
         {/* BINARY SEARCH TREE VISUALIZATION */}
-        {activeLesson.id === "binarySearchTree" && (
-          <div className="vis-bst-layout">
-            <div className="vis-controls">
-              <input
-                type="number"
-                placeholder="Qiymat"
-                value={bstInput}
-                onChange={(e) => setBstInput(e.target.value)}
-              />
-              <button onClick={handleBSTInsert}>Kiritish</button>
-              <button onClick={handleBSTSearch}>Qidirish</button>
+        {activeLesson.id === "binarySearchTree" && (() => {
+          const { nodes, edges } = getBstNodesAndEdges(bstRoot, 300, 40, 0, 120);
+          return (
+            <div className="vis-bst-layout flex flex-col items-center w-full">
+              <div className="vis-controls flex gap-2 mb-4">
+                <input
+                  type="number"
+                  placeholder="Qiymat"
+                  className="bg-slate-800 text-slate-100 border border-slate-700 px-2.5 py-1.5 rounded w-24 text-sm"
+                  value={bstInput}
+                  onChange={(e) => setBstInput(e.target.value)}
+                />
+                <button className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded text-sm border border-slate-700" onClick={handleBSTInsert}>Kiritish</button>
+                <button className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded text-sm border border-slate-700" onClick={handleBSTSearch}>Qidirish</button>
+              </div>
+              <div className="bst-tree-viewport bg-slate-950/45 border border-slate-900 rounded-xl p-4 flex justify-center w-full max-w-[640px] overflow-x-auto">
+                <svg className="w-[600px] h-[300px]" viewBox="0 0 600 300">
+                  {edges.map((edge, idx) => (
+                    <line
+                      key={`edge-${idx}`}
+                      x1={edge.x1}
+                      y1={edge.y1}
+                      x2={edge.x2}
+                      y2={edge.y2}
+                      stroke="#475569"
+                      strokeWidth="2"
+                    />
+                  ))}
+                  {nodes.map((n, idx) => {
+                    const isActive = bstPath.includes(n.value) || bstActiveValue === n.value;
+                    return (
+                      <g key={`node-${idx}`}>
+                        <circle
+                          cx={n.x}
+                          cy={n.y}
+                          r="18"
+                          fill={isActive ? "#f59e0b" : "#1e293b"}
+                          stroke={isActive ? "#d97706" : "#334155"}
+                          strokeWidth="2"
+                          className="transition-all duration-300"
+                        />
+                        <text
+                          x={n.x}
+                          y={n.y + 4}
+                          textAnchor="middle"
+                          fill={isActive ? "#020617" : "#e2e8f0"}
+                          className="text-[11px] font-bold font-mono transition-all duration-300"
+                        >
+                          {n.value}
+                        </text>
+                      </g>
+                    );
+                  })}
+                </svg>
+              </div>
             </div>
-            <div className="bst-tree-viewport">
-              {renderBstNode(bstRoot)}
-            </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* SORTING & SEARCHING VISUALIZATION */}
         {activeLesson.id === "sortingSearching" && (
-          <div className="vis-sort-layout">
-            <div className="vis-controls">
-              <button
-                className={sortAlgo === "bubble" ? "active" : ""}
-                onClick={() => {
-                  setSortAlgo("bubble");
-                  handleReset();
-                  setStepInfo("Bubble Sort tanlandi. Play yoki Step bosing.");
-                }}
-              >
-                Bubble Sort
-              </button>
-              <button
-                className={sortAlgo === "binary" ? "active" : ""}
-                onClick={() => {
-                  setSortAlgo("binary");
-                  handleReset();
-                  setStepInfo("Ikkilik qidiruv (Binary Search) tanlandi.");
-                }}
-              >
-                Binary Search
-              </button>
+          <div className="vis-sort-layout w-full flex flex-col items-center">
+            <div className="vis-controls flex flex-col items-center gap-3 mb-6 w-full">
+              <div className="flex gap-2">
+                <button
+                  className={sortAlgo === "bubble" ? "active" : ""}
+                  onClick={() => {
+                    setSortAlgo("bubble");
+                    handleReset();
+                    setStepInfo("Bubble Sort tanlandi. Play yoki Step bosing.");
+                  }}
+                >
+                  Bubble Sort
+                </button>
+                <button
+                  className={sortAlgo === "quick" ? "active" : ""}
+                  onClick={() => {
+                    setSortAlgo("quick");
+                    handleReset();
+                    setStepInfo("Quick Sort (Lomuto Partition) tanlandi. Play yoki Step bosing.");
+                  }}
+                >
+                  Quick Sort
+                </button>
+                <button
+                  className={sortAlgo === "binary" ? "active" : ""}
+                  onClick={() => {
+                    setSortAlgo("binary");
+                    handleReset();
+                    setStepInfo("Ikkilik qidiruv (Binary Search) tanlandi.");
+                  }}
+                >
+                  Binary Search
+                </button>
+              </div>
+              <div className="flex gap-2 items-center flex-wrap justify-center">
+                <input
+                  type="text"
+                  placeholder="Masalan: 35, 12, 45, 8, 22"
+                  className="bg-slate-800 text-slate-100 border border-slate-700 px-2.5 py-1.5 rounded text-sm w-52"
+                  value={customArrayInput}
+                  onChange={(e) => setCustomArrayInput(e.target.value)}
+                />
+                <button
+                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded text-sm border border-slate-700 font-semibold transition-all"
+                  onClick={handleCustomArraySubmit}
+                >
+                  Massiv Kiritish
+                </button>
+              </div>
               {sortAlgo === "binary" && (
                 <div style={{ margin: "5px 0" }}>
-                  <label>Izlanayotgan son (target): </label>
+                  <label className="text-xs text-slate-400">Izlanayotgan son (target): </label>
                   <input
                     type="number"
                     style={{ width: "60px" }}
+                    className="bg-slate-800 text-slate-100 border border-slate-700 px-2 py-1 rounded text-sm"
                     value={searchTarget}
                     onChange={(e) => setSearchTarget(parseInt(e.target.value) || 0)}
                   />
@@ -894,7 +1074,7 @@ export default function VisualizerTab({ activeLesson }) {
               )}
             </div>
 
-            <div className="sort-bars-container">
+            <div className="sort-bars-container flex items-end justify-center gap-2 h-48 w-full max-w-[500px] border-b border-slate-700 pb-2">
               {sortArray.map((val, idx) => {
                 const isActive = sortActive.includes(idx) || sortSearchMid === idx;
                 const isSwap = sortSwap.includes(idx);
@@ -909,15 +1089,22 @@ export default function VisualizerTab({ activeLesson }) {
 
                 return (
                   <div
-                    className={`sort-bar-wrapper ${isOutOfRange ? "disabled" : ""}`}
+                    className={`sort-bar-wrapper flex flex-col items-center flex-1 max-w-[40px] transition-all duration-300 ${isOutOfRange ? "opacity-15" : ""}`}
                     key={idx}
                   >
                     <div
-                      className={`sort-bar ${barClass}`}
-                      style={{ height: `${val * 3}px` }}
+                      className={`sort-bar w-full rounded-t-sm flex items-start justify-center pt-2 transition-all duration-300 ${barClass}`}
+                      style={{ height: `${Math.min(130, val * 2.5)}px` }}
                     >
-                      <span className="sort-bar-val">{val}</span>
+                      <span className="sort-bar-val text-[9px] font-bold text-slate-200 font-mono">{val}</span>
                     </div>
+                    {sortAlgo === "quick" && (
+                      <div className="text-[9px] font-mono mt-1 h-8 flex flex-col items-center">
+                        {idx === quickPivotIdx && <span className="text-cyan-400 font-bold uppercase tracking-tighter">piv</span>}
+                        {idx === quickI && <span className="text-blue-400 font-bold uppercase">i</span>}
+                        {idx === quickJ && <span className="text-amber-500 font-bold uppercase">j</span>}
+                      </div>
+                    )}
                   </div>
                 );
               })}

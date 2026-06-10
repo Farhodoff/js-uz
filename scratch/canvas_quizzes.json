@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "HTML5-da canvas elementining 2D chizish asboblarini taqdim etadigan obyekt qaysi?",
+    "options": [
+      "CanvasRenderingContext2D",
+      "WebGLRenderingContext",
+      "HTMLCanvasElement",
+      "Canvas2DDrawingTool"
+    ],
+    "correctAnswer": 0,
+    "explanation": "canvas.getContext('2d') chaqirilganda brauzer bizga chizish uchun barcha 2D asboblar va xususiyatlarni o'z ichiga olgan CanvasRenderingContext2D obyekti nusxasini qaytaradi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagilardan qaysi biri Canvas koordinatalar tizimi uchun to'g'ri ta'rif?",
+    "options": [
+      "Markazi (0, 0) o'rtada joylashgan va Y o'qi tepaga qarab o'sadi",
+      "Markazi (0, 0) chap pastki burchakda joylashgan",
+      "Markazi (0, 0) chap yuqori burchakda joylashgan va Y o'qi pastga qarab o'sadi",
+      "Markazi (0, 0) o'ng yuqori burchakda joylashgan"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Canvas-da standart koordinata boshi (0, 0) chap yuqori burchakda joylashgan. O'ngga qarab X o'qi, pastga qarab esa Y o'qi musbat yo'nalishda o'sib boradi."
+  },
+  {
+    "id": 3,
+    "question": "Canvas eni va bo'yini o'rnatishda nima uchun CSS-dan foydalanish tavsiya etilmaydi?",
+    "options": [
+      "CSS Canvas-ni umuman qo'llab-quvvatlamaydi",
+      "CSS o'lchamlari shakllarni cho'zib, rasmni piksellashib (distortion) ketishiga olib keladi",
+      "CSS o'lchamlari Canvas chizmalarining rangini o'chiradi",
+      "CSS-dan foydalansa Canvas faqat qora rangda chizadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CSS o'lchami faqat ko'rinish oynasini cho'zadi. Canvas-ning ichki o'lchamlari o'zgarmaydi va bu grafikaning sifati buzilib, cho'zilib ketishiga sabab bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "Ko'k rangli chegarali (to'ldirilmagan) to'rtburchak chizish uchun qaysi kod to'g'ri?",
+    "options": [
+      "ctx.strokeStyle = 'blue'; ctx.strokeRect(10, 10, 100, 100);",
+      "ctx.fillStyle = 'blue'; ctx.fillRect(10, 10, 100, 100);",
+      "ctx.borderColor = 'blue'; ctx.drawRect(10, 10, 100, 100);",
+      "ctx.color = 'blue'; ctx.rect(10, 10, 100, 100);"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Chegaralarni (konturlarni) chizish uchun fill o'rniga stroke ishlatiladi. Shuning uchun strokeStyle va strokeRect kombinatsiyasi to'g'ri."
+  },
+  {
+    "id": 5,
+    "question": "Chiziq yo'li tugagandan so'ng, uni boshlang'ich nuqta bilan bog'lab yopish uchun qaysi metod chaqiriladi?",
+    "options": [
+      "ctx.endPath()",
+      "ctx.closePath()",
+      "ctx.finishPath()",
+      "ctx.connect()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "ctx.closePath() joriy chizish nuqtasidan boshlang'ich nuqtagacha to'g'ri chiziq tortib, shaklni avtomatik yopadi."
+  },
+  {
+    "id": 6,
+    "question": "Rasm ichiga matn yozish va uning ichini bo'yash uchun qaysi metod ishlatiladi?",
+    "options": [
+      "ctx.writeText()",
+      "ctx.fillText()",
+      "ctx.strokeText()",
+      "ctx.drawText()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "fillText() metodi ko'rsatilgan matnni to'ldirilgan rang (fillStyle) bilan belgilangan koordinataga yozib beradi."
+  },
+  {
+    "id": 7,
+    "question": "Canvas kontekstining joriy holatini (rang, shrift, soya parametrlarini) saqlash uchun qaysi metod ishlatiladi?",
+    "options": [
+      "ctx.save()",
+      "ctx.store()",
+      "ctx.backup()",
+      "ctx.freeze()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "ctx.save() kontekstning joriy holatlarini (styles, transformation matrix) stack-ga saqlab qo'yadi. Keyinchalik ularni ctx.restore() orqali qaytarib olish mumkin."
+  },
+  {
+    "id": 8,
+    "question": "ctx.arc() metodidagi burchaklar qaysi o'lchov birligida ko'rsatiladi?",
+    "options": [
+      "Graduslarda (Degrees - masalan, 360)",
+      "Piksellarda (Pixels - masalan, 100)",
+      "Radianlarda (Radians - masalan, Math.PI * 2)",
+      "Foizlarda (Percentages - masalan, 100%)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "arc() metodi burchak parametrlarini faqat radian birliklarida qabul qiladi. 180 gradus Math.PI ga teng bo'ladi."
+  },
+  {
+    "id": 9,
+    "question": "Canvas-da chizilgan chizmalarni piksellar darajasida o'qish (matritsa olish) uchun qaysi metod xizmat qiladi?",
+    "options": [
+      "ctx.getPixels()",
+      "ctx.getImageData()",
+      "ctx.readPixels()",
+      "ctx.getCanvasData()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "ctx.getImageData(x, y, w, h) metodi Canvas-dagi piksellarni RGBA massivi ko'rinishida saqlagan ImageData obyektini qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "Canvas-da aylanish yoki masshtabni o'zgartirish (transformatsiyalar) qaysi nuqtaga nisbatan amalga oshiriladi?",
+    "options": [
+      "Canvas-ning markaziy nuqtasiga nisbatan",
+      "Sahifaning o'rtasiga nisbalan",
+      "Koordinatalar boshiga (0, 0) nuqtaga nisbatan",
+      "Shaklning eng chap nuqtasiga nisbatan"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Balla transformatsiyalar (rotate, scale, translate) har doim Canvas-ning joriy koordinata boshi (dastlab 0, 0 nuqtasi)ga nisbatan bajariladi."
+  },
+  {
+    "id": 11,
+    "question": "Boshqa bir <img id='pic'> rasmni canvas ustiga chizish uchun qaysi kod to'g'ri keladi?",
+    "options": [
+      "ctx.drawImage(document.getElementById('pic'), 0, 0);",
+      "ctx.drawPicture(document.getElementById('pic'), 0, 0);",
+      "ctx.insertImage('pic', 0, 0);",
+      "ctx.fillRect('pic', 0, 0);"
+    ],
+    "correctAnswer": 0,
+    "explanation": "drawImage() metodi HTML rasm elementi, boshqa canvas yoki video elementini koordinatalari bo'yicha chizib beradi."
+  },
+  {
+    "id": 12,
+    "question": "Chizmalarga soya qo'shganda, uning x-o'qi bo'yicha siljishini qaysi xususiyat belgilaydi?",
+    "options": [
+      "ctx.shadowX",
+      "ctx.shadowOffsetX",
+      "ctx.shadowBlurX",
+      "ctx.shadowHorizontal"
+    ],
+    "correctAnswer": 1,
+    "explanation": "shadowOffsetX soyani o'ngga (musbat bo'lsa) yoki chapga (manfiy bo'lsa) siljitish uchun ishlatiladi."
+  }
+]

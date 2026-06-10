@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Oddiy qiymat saqlash",
+    "instruction": "Berilgan `key` (kalit) va `value` (matnli qiymat)ni localStorage-ga saqlaydigan va so'ngra uni qayta o'qib qaytaradigan `saveStringToLocalStorage(key, value)` funksiyasini yozing.",
+    "startingCode": "function saveStringToLocalStorage(key, value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "localStorage.setItem(key, value); dan keyin localStorage.getItem(key); ni return qiling.",
+    "test": "if (typeof localStorage === 'undefined') {\n  globalThis.localStorage = {\n    store: {},\n    setItem(k,v) { this.store[k] = String(v); },\n    getItem(k) { return this.store[k] || null; },\n    clear() { this.store = {}; }\n  };\n}\nconst sandbox = new Function(code + '; return saveStringToLocalStorage;');\nconst fn = sandbox();\nlocalStorage.clear();\nconst res = fn('name', 'Jasur');\nif (localStorage.getItem('name') === 'Jasur' && res === 'Jasur') return null;\nreturn 'LocalStorage-ga ma\\'lumot yozilmadi yoki to\\'g\\'ri o\\'qilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Obyektni satrga o'girib saqlash",
+    "instruction": "Berilgan `obj` obyektini JSON satrga aylantirib, `key` kaliti ostida localStorage-ga saqlaydigan `saveObjectToLocalStorage(key, obj)` funksiyasini yozing.",
+    "startingCode": "function saveObjectToLocalStorage(key, obj) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "JSON.stringify(obj) funksiyasidan foydalaning.",
+    "test": "if (typeof localStorage === 'undefined') {\n  globalThis.localStorage = {\n    store: {},\n    setItem(k,v) { this.store[k] = String(v); },\n    getItem(k) { return this.store[k] || null; },\n    clear() { this.store = {}; }\n  };\n}\nconst sandbox = new Function(code + '; return saveObjectToLocalStorage;');\nconst fn = sandbox();\nlocalStorage.clear();\nconst testObj = { x: 10, y: 20 };\nfn('coords', testObj);\nconst stored = localStorage.getItem('coords');\nif (stored && JSON.parse(stored).x === 10) return null;\nreturn 'Obyekt JSON formatida localStorage-ga to\\'g\\'ri saqlanmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Saqlangan obyektni parse qilib olish",
+    "instruction": "localStorage-dan berilgan `key` kaliti ostidagi qiymatni olib, uni qaytadan JS obyektiga o'girib (parse qilib) qaytaradigan `getParsedObjectFromLocalStorage(key)` funksiyasini yozing. Agar bunday kalit storage-da mavjud bo'lmasa, `null` qaytaring.",
+    "startingCode": "function getParsedObjectFromLocalStorage(key) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "localStorage.getItem(key) qiymatini tekshiring, agar bor bo'lsa JSON.parse() qiling, aks holda null qaytaring.",
+    "test": "if (typeof localStorage === 'undefined') {\n  globalThis.localStorage = {\n    store: {},\n    setItem(k,v) { this.store[k] = String(v); },\n    getItem(k) { return this.store[k] || null; },\n    clear() { this.store = {}; }\n  };\n}\nconst sandbox = new Function(code + '; return getParsedObjectFromLocalStorage;');\nconst fn = sandbox();\nlocalStorage.clear();\nlocalStorage.setItem('user', JSON.stringify({ name: 'Ali' }));\nconst res = fn('user');\nconst emptyRes = fn('nonexistent');\nif (res && res.name === 'Ali' && emptyRes === null) return null;\nreturn 'Obyekt to\\'g\\'ri parse qilinmadi yoki mavjud bo\\'lmagan kalit uchun null qaytarilmadi';"
+  }
+]

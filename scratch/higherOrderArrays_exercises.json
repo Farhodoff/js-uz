@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Map yordamida Transformatsiya",
+    "instruction": "Taqdim etilgan 'nums' massividagi har bir sonni kvadratini hisoblab, ulardan iborat yangi massiv yarating va uni 'squares' o'zgaruvchisiga saqlang. 'map' metodidan foydalaning.",
+    "startingCode": "const nums = [1, 2, 3, 4];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const squares = nums.map(n => n * n);",
+    "test": "if (!code.includes('map')) return 'map metodi ishlatilmadi';\nconst sandbox = new Function('nums', code + '; return squares;');\nconst res = sandbox([1, 2, 3, 4]);\nif (Array.isArray(res) && res[1] === 4 && res[3] === 16) return null;\nreturn 'Natija xato';"
+  },
+  {
+    "id": 2,
+    "title": "Filter yordamida Saralash",
+    "instruction": "Taqdim etilgan 'users' massividan faqat yoshi 18 dan katta yoki teng bo'lgan foydalanuvchilarni ajratib oling va natijani 'adults' o'zgaruvchisiga saqlang. 'filter' metodidan foydalaning.",
+    "startingCode": "const users = [\n  { name: 'Ali', age: 25 },\n  { name: 'Zara', age: 17 },\n  { name: 'Bobur', age: 18 }\n];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const adults = users.filter(u => u.age >= 18);",
+    "test": "if (!code.includes('filter')) return 'filter metodi ishlatilmadi';\nconst sandbox = new Function('users', code + '; return adults;');\nconst res = sandbox([\n  { name: 'Ali', age: 25 },\n  { name: 'Zara', age: 17 },\n  { name: 'Bobur', age: 18 }\n]);\nif (Array.isArray(res) && res.length === 2 && res[1].name === 'Bobur') return null;\nreturn 'adults massivi noto\\'g\\'ri filtrlandi';"
+  },
+  {
+    "id": 3,
+    "title": "Reduce yordamida Yig'indi",
+    "instruction": "Taqdim etilgan 'items' massividagi barcha obyektlarning 'price' qiymatlarini qo'shib, umumiy summani hisoblang va natijani 'totalPrice' o'zgaruvchisiga saqlang. 'reduce' metodidan foydalaning (boshlang'ich qiymatga 0 bering).",
+    "startingCode": "const items = [\n  { name: 'Noutbuk', price: 800 },\n  { name: 'Sichqoncha', price: 20 },\n  { name: 'Klaviatura', price: 50 }\n];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const totalPrice = items.reduce((sum, item) => sum + item.price, 0);",
+    "test": "if (!code.includes('reduce')) return 'reduce metodi ishlatilmadi';\nconst sandbox = new Function('items', code + '; return totalPrice;');\nconst res = sandbox([\n  { name: 'a', price: 10 },\n  { name: 'b', price: 20 }\n]);\nif (res === 30) return null;\nreturn 'totalPrice qiymati noto\\'g\\'ri hisoblandi';"
+  }
+]

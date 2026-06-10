@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Pufakchali saralash (Bubble Sort)",
+    "instruction": "Berilgan sonlar massivini o'sish tartibida saralovchi `bubbleSort(arr)` funksiyasini yozing. Algoritm qo'shni elementlarni solishtirib, kerak bo'lsa ularning o'rnini almashtirishi lozim. Funksiya saralangan yangi massivni yoki o'zgartirilgan massivni qaytarishi kerak.",
+    "startingCode": "function bubbleSort(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Ikki qavatli tsikldan foydalaning. Agar `arr[j] > arr[j + 1]` bo'lsa, ularning qiymatini almashtiring (destructuring orqali: `[arr[j], arr[j+1]] = [arr[j+1], arr[j]]`).",
+    "test": "const sandbox = new Function(code + '; return bubbleSort;');\nconst fn = sandbox();\nconst testArr = [5, 3, 8, 4, 2];\nconst res = fn(testArr);\nif (!Array.isArray(res)) return 'Funksiya massiv qaytarmadi';\nconst expected = [2, 3, 4, 5, 8];\nfor (let i = 0; i < expected.length; i++) {\n  if (res[i] !== expected[i]) return `Kutilgan natija: ${expected}, lekin olindi: ${res}`;\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Ikkilik qidiruv (Binary Search)",
+    "instruction": "Saralangan sonlar massivi (`arr`) va qidirilayotgan qiymat (`target`) berilgan. Ikkilik qidiruv algoritmi yordamida `target` ning indeksini qaytaruvchi `binarySearch(arr, target)` funksiyasini yozing. Agar qiymat massivda bo'lmasa, `-1` qaytarsin.",
+    "startingCode": "function binarySearch(arr, target) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Chap (left = 0) va o'ng (right = arr.length - 1) ko'rsatkichlarni belgilang. Har safar o'rtadagi indeksni `mid = Math.floor((left + right) / 2)` topib, target bilan solishtiring va qidiruv sohasini qisqartiring.",
+    "test": "const sandbox = new Function(code + '; return binarySearch;');\nconst fn = sandbox();\nconst arr = [1, 3, 5, 7, 9, 11, 13];\nif (fn(arr, 7) !== 3) return 'Target = 7 bo\\'lganda indeks 3 chiqishi kerak edi';\nif (fn(arr, 1) !== 0) return 'Target = 1 bo\\'lganda indeks 0 chiqishi kerak edi';\nif (fn(arr, 13) !== 6) return 'Target = 13 bo\\'lganda indeks 6 chiqishi kerak edi';\nif (fn(arr, 10) !== -1) return 'Target massivda bo\\'lmaganda -1 chiqishi kerak edi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Joylashtirish orqali saralash (Insertion Sort)",
+    "instruction": "Massiv elementlarini ketma-ket olib, ularni o'zidan oldingi saralangan qismdagi to'g'ri o'ringa joylashtirish orqali saralovchi `insertionSort(arr)` funksiyasini yozing.",
+    "startingCode": "function insertionSort(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Indeks 1 dan boshlab aylanib chiqing, joriy elementni vaqtinchalik saqlang. Undan oldingi elementlarni tekshirib, agar oni kattaroq bo'lsa o'ngga suring va bo'sh joyga joriy elementni qo'ying.",
+    "test": "const sandbox = new Function(code + '; return insertionSort;');\nconst fn = sandbox();\nconst testArr = [12, 11, 13, 5, 6];\nconst res = fn(testArr);\nif (!Array.isArray(res)) return 'Funksiya massiv qaytarmadi';\nconst expected = [5, 6, 11, 12, 13];\nfor (let i = 0; i < expected.length; i++) {\n  if (res[i] !== expected[i]) return `Kutilgan natija: ${expected}, lekin olindi: ${res}`;\n}\nreturn null;"
+  }
+]

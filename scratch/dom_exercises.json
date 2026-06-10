@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "querySelector yordamida element tanlash",
+    "instruction": "`document.querySelector` yordamida sahifadagi birinchi `h1` elementini tanlang va uni `title` o'zgaruvchisiga saqlang.",
+    "startingCode": "// Kodni shu yerda yozing\n",
+    "hint": "const title = document.querySelector('h1');",
+    "test": "if (code.includes('document.querySelector') && (code.includes('h1') || code.includes(\"h1\"))) return null; return 'document.querySelector yordamida h1 elementini tanlang';"
+  },
+  {
+    "id": 2,
+    "title": "textContent yordamida matnni o'zgartirish",
+    "instruction": "Berilgan `header` elementining `textContent` xususiyatini 'Salom JS' matniga o'zgartiruvchi `changeText(header)` funksiyasini yozing.",
+    "startingCode": "function changeText(header) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "header.textContent = 'Salom JS';",
+    "test": "try { const mockHeader = { textContent: '' }; changeText(mockHeader); if (mockHeader.textContent !== 'Salom JS') return 'header.textContent to\\'g\\'ri o\\'zgartirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 3,
+    "title": "classList yordamida klassni o'zgartirish (Toggle)",
+    "instruction": "Berilgan `element` obyekti klasslari ichida `active` klassi borligini `classList.toggle` yordamida almashtiruvchi `toggleActive(element)` funksiyasini yozing.",
+    "startingCode": "function toggleActive(element) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "element.classList.toggle('active');",
+    "test": "try { let toggled = null; const mockEl = { classList: { toggle: (c) => toggled = c } }; toggleActive(mockEl); if (toggled !== 'active') return 'classList.toggle yordamida active klassi almashtirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  }
+]

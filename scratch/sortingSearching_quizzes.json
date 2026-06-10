@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Pufakchali saralash (Bubble Sort) algoritmining eng yomon holatdagi (worst-case) vaqt murakkabligi qanday?",
+    "options": [
+      "O(n)",
+      "O(n log n)",
+      "O(n²)",
+      "O(1)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Bubble Sortda har bir elementni qolgan barcha elementlar bilan solishtirish talab etiladi. Buning uchun ikki qavatli tsikl ishlatiladi, bu esa O(n²) vaqt murakkabligini beradi."
+  },
+  {
+    "id": 2,
+    "question": "Ikkilik qidiruv (Binary Search) algoritmidan foydalanish uchun massiv qanday holatda bo'lishi shart?",
+    "options": [
+      "Faqat musbat sonlardan iborat bo'lishi",
+      "Massiv albatta saralangan (sorted) bo'lishi",
+      "Massiv elementlari faqat string bo'lishi",
+      "Massiv kamida 100 ta elementdan iborat bo'lishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Binary Search qidiruv sohasini o'rtadagi elementga qarab ikkiga bo'lish tamoyiliga asoslanadi. Bu ishlashi uchun massiv mantiqan saralangan bo'lishi shart."
+  },
+  {
+    "id": 3,
+    "question": "Birlashtirish orqali saralash (Merge Sort) algoritmining o'rtacha vaqt murakkabligi nima?",
+    "options": [
+      "O(n log n)",
+      "O(n²)",
+      "O(log n)",
+      "O(n)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Merge Sort massivni teng ikkiga bo'lib, keyin birlashtiradi. Bo'lish log n qavatni, birlashtirish esa har bir qavatda n amalni talab qiladi, natijada O(n log n) kelib chiqadi."
+  },
+  {
+    "id": 4,
+    "question": "Tezkor saralash (Quick Sort) algoritmidagi bo'linish nuqtasi sifatida tanlanadigan tayanch element qanday ataladi?",
+    "options": [
+      "Index",
+      "Pivot",
+      "Root",
+      "Pointer"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Quick Sort algoritmida massivni qismlarga ajratish uchun tanlab olinadigan tayanch element 'Pivot' deb ataladi."
+  },
+  {
+    "id": 5,
+    "question": "Chiziqli qidiruv (Linear Search) algoritmining vaqt murakkabligi qanday?",
+    "options": [
+      "O(log n)",
+      "O(1)",
+      "O(n)",
+      "O(n²)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Chiziqli qidiruvda elementlar boshidan oxirigacha birma-bir solishtirib chiqiladi. Eng yomon holatda massivning barcha n ta elementini tekshirish kerak, shuning uchun O(n)."
+  },
+  {
+    "id": 6,
+    "question": "Ikkilik qidiruv (Binary Search) algoritmining vaqt murakkabligi qanday?",
+    "options": [
+      "O(log n)",
+      "O(n)",
+      "O(n log n)",
+      "O(1)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Binary Search har bir qadamda qidirilayotgan sohani teng yarmiga qisqartirib boradi, bu esa O(log n) vaqt murakkabligini bildiradi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi saralash algoritmlaridan qaysi biri doimo barqaror (stable) va har qanday holatda ham O(n log n) vaqt oladi?",
+    "options": [
+      "Quick Sort",
+      "Bubble Sort",
+      "Merge Sort",
+      "Selection Sort"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Merge Sort eng yaxshi, o'rtacha va eng yomon holatlarda ham O(n log n) vaqt oladi va elementlarning asl joylashuv tartibini saqlab qoladi (stable)."
+  },
+  {
+    "id": 8,
+    "question": "Standart Merge Sort algoritmining xotira (Space Complexity) murakkabligi qanday?",
+    "options": [
+      "O(1) - qo'shimcha xotira talab qilmaydi",
+      "O(n) - yangi massivlar yaratadi",
+      "O(log n)",
+      "O(n²)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Merge Sort elementlarni birlashtirish jarayonida vaqtinchalik yordamchi massivlar yaratadi, bu esa qo'shimcha O(n) xotira talab qiladi."
+  },
+  {
+    "id": 9,
+    "question": "Qaysi saralash algoritmi massivni saralash uchun maxsus 'Daraxt-To'da' (Heap) tuzilmasini quradi?",
+    "options": [
+      "Heap Sort",
+      "Quick Sort",
+      "Insertion Sort",
+      "Bubble Sort"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Heap Sort algoritmi massiv elementlaridan 'Binary Heap' tuzilmasini hosil qilib, eng katta yoki eng kichik elementlarni ketma-ket chiqarib olish orqali ishlaydi."
+  },
+  {
+    "id": 10,
+    "question": "Nima uchun 'Pufakchali saralash' algoritmi shunday nomlangan?",
+    "options": [
+      "Chunki u ma'lumotlar oqimida pufakchalar hosil qiladi",
+      "Chunki kattaroq (yoki kichikroq) elementlar xuddi suv tagidagi pufakchalar kabi massiv oxiriga (tepaga) qalqib chiqadi",
+      "Ushbu algoritm faqat grafik interfeysdagi pufakchalarni tartiblash uchun yaratilgan",
+      "Algoritm yaratuvchisining taxallusi 'Bubble' bo'lganligi sababli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Har bir aylanishda eng katta element solishtirishlar orqali massiv oxiriga qarab siljiydi. Harakat xuddi suv ostidagi havo pufakchasining yuqoriga qalqib chiqishiga o'xshaydi."
+  },
+  {
+    "id": 11,
+    "question": "Saralangan yoki deyarli saralangan massivlar uchun eng yaxshi ishlovchi va O(n) tezlik bera oladigan saralash algoritmi qaysi?",
+    "options": [
+      "Selection Sort",
+      "Quick Sort",
+      "Insertion Sort",
+      "Merge Sort"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Insertion Sort agar massiv deyarli saralangan bo'lsa, elementlarni deyarli surishga hojat qolmagani sababli juda tez, ya'ni O(n) vaqtda ishlaydi."
+  },
+  {
+    "id": 12,
+    "question": "Selection Sort (Tanlash orqali saralash) algoritmining asosiy ishlash prinsipi qanday?",
+    "options": [
+      "Har bir qadamda eng kichik elementni topib, uni massivning boshidagi element bilan almashtirish",
+      "Massivni ikkiga bo'lib, alohida saralash va birlashtirish",
+      "Qo'shni elementlarni solishtirib o'rnini almashtirish",
+      "Elementlarni tasodifiy tartibda almashtirib, tekshirish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Selection Sort massivning saralanmagan qismidan eng kichik elementni qidirib topadi (Select) va uni saralanmagan qismning birinchi elementi bilan almashtiradi."
+  }
+]

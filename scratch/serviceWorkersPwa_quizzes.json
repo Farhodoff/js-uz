@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Service Worker nima vazifani bajaradi?",
+    "options": [
+      "Foydalanuvchi interfeysini bezatuvchi zamonaviy CSS klassidir",
+      "Brauzer va tarmoq o'rtasida proksi bo'lib xizmat qiladigan, oflayn rejimni va push bildirishnomalarni boshqaradigan skript oqimi",
+      "Ma'lumotlar bazasini brauzer ichida avtomatik sinxronizatsiya qiluvchi SQL so'rovi",
+      "Sayt sahifalarini serverda avtomatik render qiladigan Node.js moduli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Service Worker tarmoq so'rovlarini tutib olish, keshlash va internet yo'q bo'lganda (oflayn) saytning ishlashini ta'minlash uchun ishlatiladigan brauzer skriptidir."
+  },
+  {
+    "id": 2,
+    "question": "Service Worker-ning xavfsizlik talablariga ko'ra, u qaysi manzillarda ishlashi mumkin?",
+    "options": [
+      "Faqat oddiy HTTP protokoli ostida",
+      "Faqat xavfsiz HTTPS protokoli (va localhost) ostida",
+      "Faqat ftp:// manzillarida",
+      "Istalgan tarmoq sharoitida cheklovsiz ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Service Worker tarmoq so'rovlarini o'zgartira olgani sababli, xavfsizlik nuqtai nazaridan faqat HTTPS ulanishlarda yoki mahalliy sinovlar uchun localhost manzillarida ishlashiga ruxsat berilgan."
+  },
+  {
+    "id": 3,
+    "question": "Progressive Web Apps (PWA) ning asosiy talablaridan biri nima?",
+    "options": [
+      "Faqat React yoki Vue JS kutubxonalari yordamida yaratilgan bo'lishi",
+      "Ilova nomi va ikonkalarini belgilovchi manifest.json va oflayn rejimni ta'minlovchi Service Worker bo'lishi",
+      "Faqat mobil qurilmalarda ishlashi va kompyuterlarda ochilmasligi",
+      "Dastur kodlarining barchasi serverda shifrlangan bo'lishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "PWA veb-saytni xuddi mobil ilovadek o'rnatish va oflayn rejimda ishga tushirish imkonini berishi uchun `manifest.json` (Manifest fayli) va `Service Worker` talab etiladi."
+  },
+  {
+    "id": 4,
+    "question": "Service Worker hayotiy siklida (lifecycle) ro'yxatdan o'tgandan so'ng birinchi bo'lib qaysi bosqichdan o'tadi?",
+    "options": [
+      "activate",
+      "fetch",
+      "install",
+      "message"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Service Worker ro'yxatdan o'tgach, eng birinchi bo'lib `install` (o'rnatilish) bosqichidan o'tadi. Bu bosqichda ko'pincha statik fayllar keshga yozib olinadi."
+  },
+  {
+    "id": 5,
+    "question": "Service Worker-da eski keshlar va fayllarni tozalash ko'pincha qaysi bosqichda amalga oshiriladi?",
+    "options": [
+      "install",
+      "fetch",
+      "activate",
+      "register"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Eski keshlar va eskirgan ma'lumotlarni o'chirish odatda Service Worker yangi versiyasi to'liq boshqaruvni qo'lga oladigan `activate` (faollashish) bosqichida amalga oshiriladi."
+  },
+  {
+    "id": 6,
+    "question": "Tarmoqdan kelayotgan barcha fetch so'rovlarini tutib qolish va ularga javob berish uchun qaysi hodisadan foydalaniladi?",
+    "options": [
+      "onrequest",
+      "fetch",
+      "get",
+      "onhttp"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`fetch` hodisasi yordamida Service Worker saytdan chiquvchi har qanday tarmoq so'rovini tutib olib, unga tarmoqdan yoki keshdan javob qaytarishi mumkin."
+  },
+  {
+    "id": 7,
+    "question": "Service Worker-da yuklash tugaguncha uning o'rnatilish bosqichini ushlab turish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "event.waitUntil()",
+      "event.respondWith()",
+      "event.hold()",
+      "event.freeze()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`event.waitUntil(promise)` metodi ichidagi va'da (Promise) bajarilguncha Service Worker-ning `install` yoki `activate` holatini tugallanmagan qilib ushlab turadi."
+  },
+  {
+    "id": 8,
+    "question": "Keshdagi mavjud resurslarni tekshirish va mos keluvchi faylni qaytarish uchun qaysi Cache API metodi chaqiriladi?",
+    "options": [
+      "caches.find()",
+      "caches.match()",
+      "caches.get()",
+      "caches.retrieve()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`caches.match(request)` kesh xotirasi ichidan so'ralgan URL yoki so'rovga mos keladigan oldindan saqlangan javobni (Response) izlab topadi."
+  },
+  {
+    "id": 9,
+    "question": "PWA ilovasining nomlari, ranglari va ikonkalarini belgilaydigan standart fayl qaysi?",
+    "options": [
+      "package.json",
+      "sw.js",
+      "manifest.json",
+      "config.xml"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`manifest.json` — veb-ilovaning metadata fayli bo'lib, mobil va desktop qurilmalarga o'rnatish (Add to Home Screen) sozlamalarini o'z ichiga oladi."
+  },
+  {
+    "id": 10,
+    "question": "Yangi yozilgan Service Worker-ni kutish holatidan darhol va majburiy faol holatga o'tkazish uchun qaysi metod chaqiriladi?",
+    "options": [
+      "self.skipWaiting()",
+      "self.activate()",
+      "self.forceUpdate()",
+      "self.close()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`self.skipWaiting()` yangi Service Worker o'rnatilganidan so'ng eski brauzer tablarini yopishni kutmasdan, yangi versiyani darhol faollashtiradi."
+  },
+  {
+    "id": 11,
+    "question": "Cache-First (Kesh birinchi) strategiyasi nimani anglatadi?",
+    "options": [
+      "Faqat internet bo'lmaganda ishlaydigan strategiya",
+      "Ma'lumotni birinchi bo'lib keshdan izlash, topsa qaytarish, topmasa tarmoqdan yuklash va keshga saqlash usuli",
+      "Kesh xotirasini butunlay o'chirib yuborish",
+      "Faqat serverdan yuklash strategiyasi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Cache-First strategiyasi ilova yuklanish tezligini sezilarli darajada oshiradi, chunki u ma'lumotni tarmoqdan emas, birinchi navbatda local keshdan o'qiydi."
+  },
+  {
+    "id": 12,
+    "question": "Service Worker ichida DOM elementlarini to'g'ridan-to'g'ri o'zgartirish yoki unga kirish mumkinmi?",
+    "options": [
+      "Ha, bunga to'liq ruxsat berilgan",
+      "Yo'q, u DOM-dan butunlay alohida fondagi oqimda ishlaydi",
+      "Faqat tarmoq uzilib qolgan vaziyatlarda ruxsat bor",
+      "Faqat rasmlarni yuklash paytida ruxsat berilgan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Service Worker `window` kontekstidan tashqarida ishlaydi, shuning uchun unda DOM elementlariga bevosita kirish mutlaqo taqiqlangan. Agar DOM-ni o'zgartirish kerak bo'lsa, xabarni asosiy oqimga (postMessage orqali) yuborish lozim."
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Linked List-ni Teskari Qilish (Reverse Linked List)",
+    "instruction": "Singly Linked List-ning bosh tuguni (`head`) berilgan. Ro'yxatni teskari qilib (ya'ni oxirgi element boshiga keladigan qilib) yangi bosh tugunni qaytaradigan `reverseList(head)` funksiyasini yozing. Har bir tugunda keyingi elementga ishora qiluvchi `.next` xossasi mavjud.",
+    "startingCode": "function reverseList(head) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "prev = null, current = head o'zgaruvchilarini yarating. Loop ichida keyingi tugunni saqlab oling (next = current.next), joriy tugunni prev ga yo'naltiring, keyin prev va current ko'rsatkichlarini bir qadam oldinga suring.",
+    "test": "const sandbox = new Function(code + '; return reverseList;');\nconst fn = sandbox();\nconst node3 = { val: 3, next: null };\nconst node2 = { val: 2, next: node3 };\nconst node1 = { val: 1, next: node2 };\nconst reversed = fn(node1);\nif (reversed && reversed.val === 3 && reversed.next && reversed.next.val === 2 && reversed.next.next && reversed.next.next.val === 1 && reversed.next.next.next === null) return null;\nreturn 'reverseList funksiyasi ro\\'yxatni to\\'g\\'ri teskari qilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Floyd Tsikl Aniqlash Algoritmi (Detect Cycle)",
+    "instruction": "Bog'langan ro'yxatda (`head`) tsikl (loop) bor yoki yo'qligini aniqlovchi `hasCycle(head)` funksiyasini yozing. Buning uchun Floyd tsikl aniqlash algoritmidan (ikki ko'rsatkich - sekin va tez) foydalaning. Tsikl bo'lsa `true`, aks holda `false` qaytaring.",
+    "startingCode": "function hasCycle(head) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "slow = head, fast = head qilib belgilang. fast va fast.next mavjud bo'lgancha, slow ni 1 qadam, fast ni esa 2 qadam oldinga suring. Agar ular uchrashsa, tsikl bor.",
+    "test": "const sandbox = new Function(code + '; return hasCycle;');\nconst fn = sandbox();\nconst node3 = { val: 3, next: null };\nconst node2 = { val: 2, next: node3 };\nconst node1 = { val: 1, next: node2 };\nconst noCycle = fn(node1);\nnode3.next = node2;\nconst hasCycle = fn(node1);\nif (noCycle === false && hasCycle === true) return null;\nreturn 'hasCycle tsiklni to\\'g\\'ri aniqlay olmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Bog'langan Ro'yxat O'rtasini Topish (Middle of the Linked List)",
+    "instruction": "Singly Linked List-ning bosh tuguni (`head`) berilgan. Ikki ko'rsatkich (slow va fast) usuli yordamida ro'yxatning o'rtasidagi tugunni qaytaruvchi `findMiddle(head)` funksiyasini yozing. Agar ro'yxatda juft miqdordagi element bo'lsa, ikkinchi o'rta element qaytarilsin.",
+    "startingCode": "function findMiddle(head) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "slow = head va fast = head oling. fast va fast.next tugaguncha slow ni 1 qadam, fast ni 2 qadam suring. Oxirida slow o'rtadagi tugunga ishora qiladi.",
+    "test": "const sandbox = new Function(code + '; return findMiddle;');\nconst fn = sandbox();\nconst node4 = { val: 4, next: null };\nconst node3 = { val: 3, next: node4 };\nconst node2 = { val: 2, next: node3 };\nconst node1 = { val: 1, next: node2 };\nconst mid = fn(node1);\nif (mid && mid.val === 3) return null;\nreturn 'findMiddle o\\'rtadagi tugunni to\\'g\\'ri topmadi';"
+  }
+]

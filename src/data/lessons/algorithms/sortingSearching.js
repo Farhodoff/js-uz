@@ -178,15 +178,69 @@ Sonlarni solishtirish uchun callback yozish kerak: \`arr.sort((a, b) => a - b)\`
 
 ---
 
-## 6. 🛠️ Amaliy Topshiriqlar
+## 6. 🎨 Interaktiv Vizual
 
-Interaktiv muharrir yordamida Bubble Sort, Insertion Sort va Binary Search kabi klassik algoritmlarni yozib, ularni testlardan o'tkazing.
+Dasturlarda ma'lumotlarni saralash va qidirishda xotira (Memory Allocation) boshqaruvi algoritmlarning samaradorligiga bevosita ta'sir qiladi.
+
+### 1. In-place vs Out-of-place (Xotirada saralash)
+
+* **In-place (Masalan: Bubble, Insertion, Quick Sort):** Qo'shimcha massiv yaratmaydi. Stack-dagi o'zgaruvchi Heap-dagi bitta massiv \`@500\` ga ishora qilib turadi. Qiymatlar faqat \`@500\` ichida almashtiriladi. Xotira murakkabligi: $O(1)$.
+* **Out-of-place (Masalan: Merge Sort):** Har bir bo'linish va birlashish qadamida Heap-da yangi massivlar yaratiladi (\`@600\`, \`@700\` va h.k.). Bu esa JavaScript-ning Garbage Collector-iga juda katta bosim yuklaydi. Xotira murakkabligi: $O(n)$.
+
+\`\`\`mermaid
+graph TD
+    subgraph In-Place Memory (Bubble Sort)
+        StackA["Stack: arr = @500"]
+        HeapA["Heap @500: [5, 1, 4]"]
+        HeapA2["Heap @500: [1, 5, 4] (Swapped)"]
+        StackA --> HeapA
+        HeapA -.-> HeapA2
+    end
+    
+    subgraph Out-of-Place Memory (Merge Sort)
+        StackB["Stack: arr = @600"]
+        HeapB["Heap @600: [5, 1, 4]"]
+        HeapBLeft["Heap @700: [5] (New Heap Array)"]
+        HeapBRight["Heap @800: [1, 4] (New Heap Array)"]
+        
+        StackB --> HeapB
+        HeapB --> HeapBLeft
+        HeapB --> HeapBRight
+    end
+\`\`\`
+
+### 2. Binary Search Algoritmining Qisqarish Strukturasi
+
+Binary Search saralangan massivda har bir iteratsiyada qidiruv maydonini ikkiga bo'lib boradi.
+
+\`\`\`mermaid
+graph TD
+    subgraph Binary Search: [1, 3, 5, 7, 9, 11, 13], Target: 11
+        Step1["Step 1: [1, 3, 5, (7), 9, 11, 13] <br/> Mid = 7 (Index 3) <br/> Target 11 > 7 -> Search Right"]
+        Step2["Step 2: [9, (11), 13] <br/> Mid = 11 (Index 5) <br/> Target 11 == 11 -> Found!"]
+        
+        Step1 --> Step2
+    end
+\`\`\`
+
+### 3. Quick Sort Pivot va Partitioning Strukturasi
+
+Pivot sifatida chetki element tanlanib, unga nisbatan kichiklar chapga, kattalar o'ngga yig'iladi:
+
+\`\`\`mermaid
+stateDiagram-v2
+    [*] --> Start : Massiv [5, 3, 8, 4, 2], Pivot = 2
+    Start --> Partition : Pivotdan kichiklar chapga, kattalar o'ngga suriladi
+    Partition --> Sorted_Parts : [ ] + 2 + [5, 3, 8, 4]
+    Sorted_Parts --> Recurse : Chap va o'ng qismlar rekursiv saralanadi
+    Recurse --> [*] : Natija [2, 3, 4, 5, 8]
+\`\`\`
 
 ---
 
-## 7. 📝 12 ta Mini Test
+## 7. 🛠️ Amaliy Topshiriqlar
 
-Dars oxirida bilimingizni tekshirish uchun taqdim etiladigan test savollari.
+Interaktiv muharrir yordamida Bubble Sort, Insertion Sort va Binary Search kabi klassik algoritmlarni yozib, ularni testlardan o'tkazing.
 
 ---
 
@@ -262,7 +316,7 @@ function findProductByPrice(arr, targetPrice) {
     "title": "Joylashtirish orqali saralash (Insertion Sort)",
     "instruction": "Massiv elementlarini ketma-ket olib, ularni o'zidan oldingi saralangan qismdagi to'g'ri o'ringa joylashtirish orqali saralovchi `insertionSort(arr)` funksiyasini yozing.",
     "startingCode": "function insertionSort(arr) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Indeks 1 dan boshlab aylanib chiqing, joriy elementni vaqtinchalik saqlang. Undan oldingi elementlarni tekshirib, agar ular kattaroq bo'lsa o'ngga suring va bo'sh joyga joriy elementni qo'ying.",
+    "hint": "Indeks 1 dan boshlab aylanib chiqing, joriy elementni vaqtinchalik saqlang. Undan oldingi elementlarni tekshirib, agar oni kattaroq bo'lsa o'ngga suring va bo'sh joyga joriy elementni qo'ying.",
     "test": "const sandbox = new Function(code + '; return insertionSort;');\nconst fn = sandbox();\nconst testArr = [12, 11, 13, 5, 6];\nconst res = fn(testArr);\nif (!Array.isArray(res)) return 'Funksiya massiv qaytarmadi';\nconst expected = [5, 6, 11, 12, 13];\nfor (let i = 0; i < expected.length; i++) {\n  if (res[i] !== expected[i]) return `Kutilgan natija: ${expected}, lekin olindi: ${res}`;\n}\nreturn null;"
   }
 ]
@@ -386,7 +440,7 @@ function findProductByPrice(arr, targetPrice) {
       "Algoritm yaratuvchisining taxallusi 'Bubble' bo'lganligi sababli"
     ],
     "correctAnswer": 1,
-    "explanation": "Har bir aylanishda eng katta element solishtirishlar orqali massiv oxiriga qarab siljiydi. Bu harakat xuddi suv ostidagi havo pufakchasining yuqoriga qalqib chiqishiga o'xshaydi."
+    "explanation": "Har bir aylanishda eng katta element solishtirishlar orqali massiv oxiriga qarab siljiydi. Harakat xuddi suv ostidagi havo pufakchasining yuqoriga qalqib chiqishiga o'xshaydi."
   },
   {
     "id": 11,

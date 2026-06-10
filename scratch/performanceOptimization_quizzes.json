@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Debounce va Throttle o'rtasidagi asosiy farq nimada?",
+    "options": [
+      "Debounce hodisalarni guruhlab, harakat to'xtagandan so'ng bir marta chaqiradi; Throttle esa ma'lum vaqt oralig'ida faqat bir marta chaqirilishini kafolatlaydi",
+      "Debounce faqat rasmlar uchun ishlatiladi, Throttle esa faqat matnlar uchun",
+      "Debounce funksiyani tezlashtiradi, Throttle esa uni sekinlashtiradi",
+      "Hech qanday farqi yo'q, ikkalasi bir xil mexanizmning sinonimidir"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Debounce foydalanuvchi yozishdan to'xtaganidan keyin (masalan, qidiruv satri) ishlaydi. Throttle esa doimiy harakat paytida (masalan, scroll) har X millisekundda funksiyani bir marta ishga tushiradi."
+  },
+  {
+    "id": 2,
+    "question": "DOM Reflow (Layout) nima?",
+    "options": [
+      "Brauzer elementlarning rangini yoki fonini o'zgartirishi",
+      "Brauzer sahifadagi elementlarning o'lchamlari va geometriyasini (joylashuvini) qaytadan hisoblab chiqishi",
+      "Garbage Collector tomonidan keraksiz elementlarning xotiradan o'chirilishi",
+      "CSS faylining serverdan yuklanishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Reflow — brauzer sahifaning geometrik tuzilishini qaytadan hisoblashi. Bu juda qimmat operatsiya hisoblanadi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi CSS xususiyatlaridan qaysi biri o'zgarganda faqat Repaint (qayta chizish) sodir bo'ladi, Reflow emas?",
+    "options": [
+      "`width`",
+      "`margin`",
+      "`background-color`",
+      "`font-size`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`background-color` elementning sahifadagi geometrik o'lchamlariga ta'sir qilmaydi, shuning uchun u faqat Repaint (qayta bo'yash) ni keltirib chiqaradi. `width`, `margin` va `font-size` esa Reflow-ga sabab bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "DocumentFragment nima va u qanday foyda keltiradi?",
+    "options": [
+      "Faqat server tomonida HTML generatsiya qiladigan funksiya",
+      "Yengil, ko'rinmas DOM daraxti bo'lib, unga elementlarni yig'ib, asosiy DOM-ga bir marta qo'shish orqali reflow/repaint sonini kamaytiradi",
+      "CSS stillarini yashirish uchun ishlatiladigan maxsus Shadow DOM element",
+      "JS fayllarni bo'laklarga bo'lib yuklaydigan kutubxona"
+    ],
+    "correctAnswer": 1,
+    "explanation": "DocumentFragment xotiradagi virtual konteynerdir. Unga elementlarni qo'shganda DOM-ga ta'sir qilmaydi, fragmentni DOM-ga qo'shganda esa faqat bitta reflow sodir bo'ladi."
+  },
+  {
+    "id": 5,
+    "question": "Detached DOM node (ajralgan DOM tugunlari) tufayli kelib chiqadigan xotira oqishi (Memory Leak) nima?",
+    "options": [
+      "Brauzer yopilgandan keyin ham sahifaning ochiq qolishi",
+      "DOM daraxtidan o'chirilgan, lekin JS-dagi o'zgaruvchilar orqali hamon havola (reference) saqlanib turgan va xotiradan o'chmagan elementlar",
+      "CSS stillarining noto'g'ri yuklanishi",
+      "HTML faylining bo'sh bo'lib qolishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar element DOM-dan `remove()` qilinsa-yu, lekin sizda global o'zgaruvchida unga havola bo'lsa, Garbage Collector uni xotiradan tozalay olmaydi."
+  },
+  {
+    "id": 6,
+    "question": "JavaScript Garbage Collector o'zgaruvchilarning keraksizligini qanday algoritm yordamida aniqlaydi?",
+    "options": [
+      "Binary Search",
+      "Mark-and-Sweep (Belgilash va tozalash)",
+      "First In, First Out (FIFO)",
+      "Bubble Sort"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Zamonaviy brauzerlar Mark-and-Sweep algoritmidan foydalanadi: global obyektdan boshlab borib bo'lmaydigan (unreachable) obyektlar belgilab chiqiladi va o'chiriladi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagilardan qaysi biri xotira oqishiga (Memory Leak) sabab bo'lishi mumkin?",
+    "options": [
+      "Foydalanib bo'lingan `setInterval`ni `clearInterval` bilan to'xtatmaslik",
+      "Funksiya ichida `let` yoki `const` yordamida o'zgaruvchi yaratish",
+      "Massivni `null` qilib tozalash",
+      "Funksiyani o'z vaqtida chaqirish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Agar `setInterval` to'xtatilmasa, undagi callback va unda ishlatilgan tashqi o'zgaruvchilar (closures tufayli) abadiy xotirada qolib ketadi."
+  },
+  {
+    "id": 8,
+    "question": "Event listener-lar qanday qilib xotira oqishiga (memory leak) sabab bo'ladi?",
+    "options": [
+      "Bir elementga bir nechta listener qo'shilganda brauzer qulasa",
+      "Element sahifadan o'chirilganda, unga bog'langan listener-lar hamon xotirada saqlanib qolsa",
+      "Faqat `click` hodisasi ko'p marta ishlatilganda",
+      "Agar listener faqat asinxron funksiyada yozilgan bo'lsa"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Garchi ba'zi zamonaviy brauzerlar buni avtomatlashtirgan bo'lsa-da, elementlar o'chirilganda ulardagi event listener-lar xotirada qolishi va o'zaro bog'liq o'zgaruvchilarni ushlab turishi mumkin. Shuning uchun `removeEventListener` ishlatish tavsiya etiladi."
+  },
+  {
+    "id": 9,
+    "question": "Animatsiyalarni silliq va optimallashtirilgan tarzda bajarish uchun qaysi API-dan foydalanish tavsiya etiladi?",
+    "options": [
+      "`setTimeout`",
+      "`setInterval`",
+      "`requestAnimationFrame`",
+      "`async/await`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`requestAnimationFrame` brauzer ekran yangilanishi (refresh rate) bilan sinxron ravishda ishlaydi (odatda soniyasiga 60-120 marta) va keraksiz chizishlarning oldini oladi."
+  },
+  {
+    "id": 10,
+    "question": "Katta massivlar ustida ishlaganda unumdorlikni oshirish uchun qaysi sikl operatori eng tez ishlaydi?",
+    "options": [
+      "Oddiy `for` (indeksli) yoki `while` sikli",
+      "`Array.prototype.forEach`",
+      "`Array.prototype.map`",
+      "Barcha sikl va massiv metodlarining ishlash tezligi mutlaqo bir xil"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Oddiy `for` yoki `while` tsikllari qo'shimcha callback chaqiruvlari va funksional kontekstlar yaratmagani uchun eng yuqori tezlikka ega."
+  },
+  {
+    "id": 11,
+    "question": "Web Workers nima uchun kerak?",
+    "options": [
+      "Sahifani bezash uchun CSS stillarini avtomatik sozlashda",
+      "Og'ir matematik hisob-kitoblarni asosiy UI oqimidan (main thread) alohida fondagi oqimga o'tkazib, sahifani qotib qolishdan himoya qilish uchun",
+      "HTML elementlarni tezroq yaratish uchun",
+      "Faqat ma'lumotlar ombori bilan bog'lanishda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript bir oqimli (single-threaded) til. Web Workers yordamida og'ir hisob-kitoblarni boshqa oqimda bajarish va UI qotishini oldini olish mumkin."
+  },
+  {
+    "id": 12,
+    "question": "Nima uchun Code Splitting (kodni bo'laklash) sahifa yuklanish tezligini oshiradi?",
+    "options": [
+      "Chunki u fayl hajmini sun'iy ravishda kattalashtiradi",
+      "Foydalanuvchiga faqat hozirgi sahifa uchun zarur bo'lgan JS kodlarini yuklab, qolgan qismlarini kerak bo'lganda (on-demand) yuklash imkonini beradi",
+      "U barcha JS kodlarini CSS faylga o'zgartiradi",
+      "Brauzerdagi cache xotirani o'chirib tashlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kodni bo'laklash (Code Splitting) boshlang'ich yuklanadigan JS hajmini kamaytiradi, natijada sahifa tezroq interaktiv holatga keladi."
+  }
+]

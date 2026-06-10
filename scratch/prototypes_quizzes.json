@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript prototipiga oid qaysi ta'rif to'g'ri?",
+    "options": [
+      "Faqat server xotirasini tejaydigan maxsus API kalit",
+      "JavaScript obyektlari o'zaro xossalar va metodlarni baham ko'rish uchun foydalanadigan andoza (boshqa obyektga havola)",
+      "Faqat massivlarni saralashda ishlatiladigan ichki algoritm",
+      "Faqat HTML sahifasini o'zgartiradigan JavaScript kodi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da har bir obyekt boshqa bir obyektga yashirin havolaga ega bo'ladi, u prototip (prototype) deb ataladi. Obyekt undagi metod va xossalarni meros qilib oladi."
+  },
+  {
+    "id": 2,
+    "question": "Obyektning `__proto__` xossasi va Konstruktor funksiyasining `prototype` xossasi farqi nimada?",
+    "options": [
+      "Hech qanday farqi yo'q, ikkalasi bir xil narsa",
+      "`__proto__` obyektning aniq prototip havolasidir; `prototype` esa konstruktor funksiyadan yaratiladigan yangi obyektlarga prototip qilib beriladigan obyektdir",
+      "`prototype` faqat satrlarda, `__proto__` esa faqat raqamlarda ishlaydi",
+      "`__proto__` yangi metodlar yaratadi, `prototype` esa ularni o'chiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`__proto__` har bir obyekt nusxasining real prototipiga ishora qiluvchi getter/setter. `prototype` esa faqat konstruktor funksiyalarda (yoki klasslarda) bo'lib, yangi yaratilgan obyekt unga `__proto__` orqali ulanadi."
+  },
+  {
+    "id": 3,
+    "question": "Prototip zanjiri (Prototype Chain) qanday ishlaydi?",
+    "options": [
+      "Obyektdan xossa qidirilganda, JS avval obyektning o'zini, topilmasa uning prototipini, undan keyin esa zanjir bo'ylab yuqori prototiplarni tekshirib boradi",
+      "Xossalarni faqat global o'zgaruvchilardan qidiradi",
+      "Faqat xatolar yuz berganda ularni qayta ishlaydi",
+      "Barcha metodlarni bir vaqtda parallel ishga tushiradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Agar obyektning o'zida so'ralgan xossa topilmasa, JavaScript uning prototipiga (`__proto__`) o'tadi va to `null` qiymatga yetguncha zanjir bo'ylab qidirishni davom ettiradi."
+  },
+  {
+    "id": 4,
+    "question": "JavaScript prototip zanjirining eng yuqori (oxirgi) nuqtasida qaysi obyekt turadi va uning prototipi nimaga teng?",
+    "options": [
+      "`Function.prototype` va uning prototipi `undefined` ga",
+      "`Object.prototype` va uning prototipi `null` ga",
+      "`Array.prototype` va uning prototipi `Object` ga",
+      "`window` va uning prototipi `document` ga"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Deyarli barcha obyektlar oxir-oqibat `Object.prototype`dan meros oladi. `Object.prototype.__proto__` esa `null` ga teng bo'lib, zanjir shu yerda tugaydi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst animal = { eats: true };\nconst rabbit = Object.create(animal);\nrabbit.eats = false;\nconsole.log(rabbit.eats);\nconsole.log(animal.eats);\n```",
+    "options": [
+      "`true`, `true`",
+      "`false`, `false`",
+      "`false`, `true`",
+      "`undefined`, `true`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`rabbit.eats = false` deb yozilganda, bu xossa `rabbit` obyektining o'zida (yuzada) yaratiladi (shadowing). Prototipdagi `animal.eats` esa o'zgarmasdan `true` bo'lib qolaveradi."
+  },
+  {
+    "id": 6,
+    "question": "Konstruktor funksiya ichida `this.method = ...` deb yozish va `Constructor.prototype.method = ...` deb yozishning xotira (performance) jihatidan farqi nimada?",
+    "options": [
+      "Hech qanday farqi yo'q",
+      "Konstruktor ichida yozilsa, har bir yangi obyekt nusxasi uchun xotirada alohida yangi funksiya yaratiladi. Prototipga qo'shilsa, barcha nusxalar bitta umumiy funksiya nusxasidan foydalanadi (xotirani tejaydi)",
+      "Prototipda yozilgan metodlar tezroq ishlaydi, lekin xotirani ko'proq band qiladi",
+      "Konstruktor ichida yozilgan metodlar faqat asinxron ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Prototipda e'lon qilingan metodlar xotirada faqat bitta nusxada saqlanadi, har bir yangi obyekt (`new` orqali) yaratilganda qayta-qayta nusxalanmaydi, bu esa xotirani sezilarli darajada tejaydi."
+  },
+  {
+    "id": 7,
+    "question": "Obyektdagi xossa uning o'zinikimi yoki prototipdan kelayotganini aniqlash uchun qaysi metoddan foydalaniladi?",
+    "options": [
+      "`obj.isPrototypeOf()`",
+      "`obj.hasOwnProperty()`",
+      "`obj.instanceof()`",
+      "`Object.getPrototypeOf()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`hasOwnProperty(propName)` metodi agar xossa to'g'ridan-to'g'ri obyektning o'ziga tegishli bo'lsa `true`, agar u prototip zanjiridan olinayotgan bo'lsa `false` qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "ES6-dagi `class` kalit so'zi JavaScript-ga qanday yangilik olib kirdi?",
+    "options": [
+      "U prototiplarni butunlay yo'q qildi va klassik OOP mexanizmini yaratdi",
+      "U prototipli vorislik ustiga qurilgan qulay sintaktik shakar (syntactic sugar) bo'lib, kod yozishni osonlashtirdi xolos",
+      "U faqat ma'lumotlar bazasi bilan ishlash funksiyalarini qo'shdi",
+      "U JavaScript dasturlarini avtomatik kompilyatsiya qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-dagi klasslar aslida prototipli vorislikning boshqacha (chiroyli) ko'rinishidir. Orqa fonda baribir o'sha prototiplar va konstruktor funksiyalar ishlayveradi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod bajarilganda nima sodir bo'ladi?\n```javascript\nfunction Person() {}\nconst p1 = new Person();\nPerson.prototype.sayHi = () => \"Salom\";\nconsole.log(p1.sayHi());\n```",
+    "options": [
+      "`TypeError: p1.sayHi is not a function`",
+      "`Salom`",
+      "`undefined`",
+      "`ReferenceError`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Obyekt prototip bilan bog'lanishi dynamic hisoblanadi. Obyekt yaratilib bo'linganidan so'ng uning prototipiga yangi metod qo'shilsa ham, u zudlik bilan barcha obyekt nusxalarida (jumladan `p1`da ham) ishlay boshlaydi."
+  },
+  {
+    "id": 10,
+    "question": "Nima uchun `Object.setPrototypeOf(obj, newProto)` metodidan dynamic foydalanish tavsiya etilmaydi?",
+    "options": [
+      "Chunki u JS xavfsizlik tizimini butunlay o'chirib qo'yadi",
+      "Chunki u JS dvigatellarining ichki optimallashtirish tizimlarini buzadi va kod ishlash tezligini sezilarli darajada pasaytiradi (performance penalty)",
+      "Chunki bu metod ES6 tarkibiga kiritilmagan",
+      "Chunki u massivlarni o'chirib yuborishi mumkin"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Obyekt yaratilgandan so'ng uning prototipini dynamic o'zgartirish (re-prototyping) JS dvigatellarining tezkor xossalarga kirish optimallashtirishlarini (Inline Caches) yo'qqa chiqaradi."
+  },
+  {
+    "id": 11,
+    "question": "`Object.create(null)` orqali obyekt yaratilganda nima sodir bo'ladi?",
+    "options": [
+      "Bo'sh obyekt yaratiladi, lekin unda `toString`, `hasOwnProperty` kabi standart Object metodlari va umuman prototip bo'lmaydi",
+      "`null` qiymat qaytadi, obyekt yaratilmaydi",
+      "Faqat `null` nomli xossa yaratiladi",
+      "Obyekt avtomatik tarzda muzlatiladi (`Object.freeze` qilinadi)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Object.create(null)` prototipi `null` bo'lgan, ya'ni mutlaqo hech qanday prototipga (xatto `Object.prototype`ga ham) ega bo'lmagan toza obyekt yaratadi. Unda standart metodlar ishlamaydi."
+  },
+  {
+    "id": 12,
+    "question": "Prototipni ifloslantirish (Prototype Pollution) nima?",
+    "options": [
+      "Faqat kodda ko'plab sharhlar yozish",
+      "Tashqi (ko'pincha zararli) kiruvchi ma'lumotlar orqali `__proto__` yoki `constructor.prototype` ga yangi xossalar yozib, global obyekt prototiplarini buzish yoki xavfsizlikni zaiflashtirish",
+      "Xotiraning to'lib qolishi muammosi",
+      "Prototip metodlarini bir nechta faylda takroran yozish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Prototype Pollution xavfsizlik zaifligi bo'lib, unda tajovuzkor dynamic obyeklar orqali `Object.prototype`ga zararli metod yoki xossalar qo'shib yuboradi va bu butun ilovadagi barcha obyektlarda aks etadi."
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "XSS Himoyasi (HTML Sanitize)",
+    "instruction": "Foydalanuvchi yuborgan matn tarkibidagi zararli belgilarni HTML entity ko'rinishiga o'tkazib (escape qilib) qaytaradigan `sanitize(input)` funksiyasini yozing. Quyidagi belgilarni almashtiring:\n- `<` -> `&lt;`\n- `>` -> `&gt;`\n- `\"` -> `&quot;`\n- `'` -> `&#x27;`\n- `&` -> `&amp;`",
+    "startingCode": "function sanitize(input) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Stringdagi belgilarni almashtirish uchun replace yoki replaceAll metodlaridan yoki regexdan foydalanishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return sanitize;');\nconst fn = sandbox();\nconst res = fn('<script>alert(\"xss\")</script>');\nif (res.includes('<') || res.includes('>')) return 'HTML teglari (&lt; va &gt; ga) to\\'g\\'ri o\\'zgartirilmadi';\nif (res.includes('\"')) return 'Qo\\'shtirnoq belgisi (&quot; ga) o\\'zgartirilmadi';\nif (fn('A & B') !== 'A &amp; B') return 'Amperstand (&) belgisi to\\'g\\'ri o\\'zgartirilmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "CORS Origin tekshiruvi",
+    "instruction": "CORS xavfsizligini ta'minlash uchun `validateOrigin(origin, allowedOrigins)` funksiyasini yozing. Agar so'rov yuborilgan `origin` manzili `allowedOrigins` (ruxsat etilgan manbalar) massivida mavjud bo'lsa, u holda `Access-Control-Allow-Origin` sarlavhasiga berish uchun ushbu origin qiymatini qaytarsin. Agar mavjud bo'lmasa yoki origin bo'sh bo'lsa, `null` qaytarsin.",
+    "startingCode": "function validateOrigin(origin, allowedOrigins) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`allowedOrigins.includes(origin)` shartidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return validateOrigin;');\nconst fn = sandbox();\nconst allowed = ['https://trusted.com', 'https://app.trusted.com'];\nif (fn('https://trusted.com', allowed) !== 'https://trusted.com') return 'Ishonchli origin tekshiruvdan o\\'ta olmadi';\nif (fn('https://malicious.com', allowed) !== null) return 'Ruxsat etilmagan origin to\\'g\\'ri bloklanmadi (null qaytarishi kerak edi)';\nif (fn('', allowed) !== null) return 'Origin bo\\'sh bo\\'lganda null qaytarishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "CSRF Tokenni solishtirish",
+    "instruction": "So'rovdan kelgan CSRF tokenni sessiyadagi token bilan solishtiradigan `validateCsrfToken(requestToken, sessionToken)` funksiyasini yozing. Tokenlar xavfsizlik uchun faqat satr (string) turida, bo'sh bo'lmagan va o'zaro teng bo'lgandagina `true` qaytarsin, aks holda `false` qaytarsin.",
+    "startingCode": "function validateCsrfToken(requestToken, sessionToken) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Birinchi navbatda argumentlarning typeof string ekanligini, so'ngra ularning uzunligi 0 dan kattaligini va tengligini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return validateCsrfToken;');\nconst fn = sandbox();\nif (fn('abc123token', 'abc123token') !== true) return 'Bir xil tokenlarda true qaytishi kerak edi';\nif (fn('abc123token', 'xyz987token') !== false) return 'Har xil tokenlarda false qaytishi kerak';\nif (fn('', '') !== false) return 'Bo\\'sh tokenlarda false qaytishi kerak';\nif (fn(null, null) !== false) return 'Null yoki boshqa turdagi ma\\'lumotlarda false qaytishi kerak';\nreturn null;"
+  }
+]

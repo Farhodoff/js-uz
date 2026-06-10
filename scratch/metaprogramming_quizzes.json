@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da Proxy nima vazifani bajaradi?",
+    "options": [
+      "Obyektga so'rovlar yuboruvchi HTTP mijoz kutubxonasi",
+      "Asl obyekt atrofida o'ralgan maxsus qobiq bo'lib, uning ustidagi amallarni (o'qish, yozish va h.k.) intercept qilish (tutib olish) va boshqarish imkonini beradi",
+      "Faqat massivlarni tezkor saralash uchun xizmat qiladigan algoritm",
+      "Brauzer keshini tozalash funksiyasi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Proxy obyekti boshqa obyektning ustidagi fundamental operatsiyalarni (masalan, xususiyatni o'qish, yozish, o'chirish va hokazo) tutib olib, ularni qayta aniqlash (customise qilish) imkonini beradi."
+  },
+  {
+    "id": 2,
+    "question": "Reflect obyektining asosiy maqsadi nima?",
+    "options": [
+      "Obyektni HTML sahifada aks ettirish",
+      "Proxy trap-lari ichidan mos keluvchi asl obyekt amallarini bajarish va xatoliklar o'rniga to'g'ri qiymatlar (masalan boolean) qaytaruvchi metodlar taqdim etish",
+      "Funksiyalarni asinxron tarzda parallel ishga tushirish",
+      "Klasslarni avtomatik ravishda JSON-ga o'tkazish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Reflect - bu obyektlar ustidagi operatsiyalar uchun metodlar taqdim etuvchi o'rnatilgan obyekt bo'lib, u ko'pincha Proxy trap-lari ichida operatsiyalarni asl obyektga to'g'ri yo'naltirish uchun Reflect.get, Reflect.set kabi metodlar bilan ishlatiladi."
+  },
+  {
+    "id": 3,
+    "question": "Proxy yaratishdagi `target` parametri nimani anglatadi?",
+    "options": [
+      "Proxy orqali yuboriladigan yakuniy URL manzili",
+      "Trap-lar yoziladigan handler obyekti",
+      "Proxy o'rab oladigan va xatti-harakati boshqariladigan asl obyekt",
+      "Xatoliklarni qayta ishlovchi catch bloki"
+    ],
+    "correctAnswer": 2,
+    "explanation": "new Proxy(target, handler) sintaksisida `target` - bu biz virtualizatsiya qilmoqchi bo'lgan, Proxy ortida turgan asl obyekt (obyekt, massiv yoki funksiya) hisoblanadi."
+  },
+  {
+    "id": 4,
+    "question": "Proxy yaratishdagi `handler` parametri nima?",
+    "options": [
+      "Xatolarni qayd qiluvchi global tizim",
+      "Obyekt ustidagi operatsiyalarni tutib oluvchi funksiyalar (trap-lar) jamlangan obyekt",
+      "Serverdan kelgan javobni qayta ishlovchi callback funksiya",
+      "Barcha asinxron operatsiyalar navbati"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`handler` - bu Proxy-ning xulq-atvorini belgilaydigan obyekt bo'lib, uning ichida get, set kabi traplar (tutuvchi metodlar) joylashadi."
+  },
+  {
+    "id": 5,
+    "question": "Obyektdan biror xususiyat qiymati o'qilayotganda uni tutish uchun qaysi trap ishlatiladi?",
+    "options": [
+      "`read`",
+      "`get`",
+      "`access`",
+      "`intercept`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`get` trap-i obyektdan xususiyat o'qilayotganda (masalan, proxy.name yoki proxy['name']) avtomatik ravishda ishga tushadi."
+  },
+  {
+    "id": 6,
+    "question": "Obyekt xususiyatiga yangi qiymat yozilayotganda uni tekshirish va tutish uchun qaysi trap ishlatiladi?",
+    "options": [
+      "`write`",
+      "`update`",
+      "`set`",
+      "`modify`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`set` trap-i obyekt xususiyatiga qiymat berilayotganda (masalan, proxy.age = 20) ishga tushadi va qiymatni tekshirish (validatsiya) uchun eng qulay joy hisoblanadi."
+  },
+  {
+    "id": 7,
+    "question": "Reflect.set() metodi muvaffaqiyatli qiymat o'rnatilgandan so'ng nima qaytaradi?",
+    "options": [
+      "O'zgartirilgan obyektning o'zini (this)",
+      "Yozilgan yangi qiymatni",
+      "Amal muvaffaqiyatli bo'lsa `true`, aks holda `false` (mantiqiy qiymat)",
+      "`undefined` qaytaradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Reflect.set() muvaffaqiyatli bajarilsa `true`, muvaffaqiyatsiz bo'lsa (masalan obyekt muzlatilgan bo'lsa) `false` qaytaradi. Bu Proxy set trap-i ichida return qilish uchun juda qulaydir."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodda `proxy.name` so'ralganda ekranga nima chiqadi?\n```javascript\nconst user = { name: 'Ali' };\nconst proxy = new Proxy(user, {\n  get(target, prop) {\n    return 'Jasur';\n  }\n});\nconsole.log(proxy.name);\n```",
+    "options": [
+      "`'Ali'`",
+      "`'Jasur'`",
+      "`undefined`",
+      "`TypeError` xatoligi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`get` trap-i kelgan so'rovlarni har doim intercept qilib `'Jasur'` qaytarmoqda. Shuning uchun asl obyektda `'Ali'` bo'lsa ham, proxy orqali o'qilganda `'Jasur'` qaytadi."
+  },
+  {
+    "id": 9,
+    "question": "Obyekt kalitlari ro'yxatini (`Object.keys()`) yoki loop orqali aylanib chiqishni intercept qilish uchun qaysi handler trap-idan foydalaniladi?",
+    "options": [
+      "`keys`",
+      "`enumerate`",
+      "`ownKeys`",
+      "`getOwnPropertyNames`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`ownKeys` trap-i Reflect.ownKeys(), Object.keys(), Object.getOwnPropertyNames() kabi metodlar chaqirilganda va for...in looplarida obyekt kalitlarini boshqarish yoki yashirish uchun ishlatiladi."
+  },
+  {
+    "id": 10,
+    "question": "Proxy o'rab olgan obyekt funksiya bo'lsa va u chaqirilganda (call qilinganda) qaysi trap ishga tushadi?",
+    "options": [
+      "`call`",
+      "`apply`",
+      "`run`",
+      "`execute`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`apply` trap-i nishon obyekt funksiya bo'lib chaqirilganda, `.apply()`, yoki `.call()` qilinganda ishga tushadi."
+  },
+  {
+    "id": 11,
+    "question": "Nishon obyekt (constructor) ustida `new` kalit so'zi yordamida obyekt yaratilishini intercept qilish uchun qaysi trap ishlatiladi?",
+    "options": [
+      "`new`",
+      "`createInstance`",
+      "`construct`",
+      "`instantiate`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`construct` trap-i `new` operatori orqali obyektdan nusxa olinayotganda ishga tushadi. Bu trap har doim obyekt qaytarishi shart."
+  },
+  {
+    "id": 12,
+    "question": "Vaqtinchalik Proxy yaratish va uni keyinchalik butunlay o'chirib qo'yish (o'chirgandan keyin xatolik otadigan qilish) uchun nima ishlatiladi?",
+    "options": [
+      "`proxy.delete()` metodi",
+      "`Proxy.revocable()` metodi",
+      "`delete proxy` operatori",
+      "`proxy = null` qilish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Proxy.revocable(target, handler)` metodi `{ proxy, revoke }` obyektini qaytaradi. `revoke()` funksiyasi chaqirilgach, proxy o'chadi va uning xususiyatlariga murojaat qilganda `TypeError` tashlanadi."
+  }
+]

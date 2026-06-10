@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Worker yaratish",
+    "instruction": "`worker.js` fayli yo'li orqali yangi Web Worker obyektini yarating va uni `myWorker` o'zgaruvchisiga saqlang.",
+    "startingCode": "let myWorker;\n// Kodni shu yerda yozing\n",
+    "hint": "myWorker = new Worker('worker.js');",
+    "test": "if (myWorker instanceof Worker) return null;\nreturn 'myWorker o\\'zgaruvchisiga Worker obyekti to\\'g\\'ri yuklanmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Xabar yuborish va qabul qilish",
+    "instruction": "Berilgan `myWorker` obyektiga `'start'` matnli xabarni yuboring. Shuningdek, workerdan keladigan xabarlarni tinglang va kelgan ma'lumotni (`event.data`) global `resultData` o'zgaruvchisiga saqlang.",
+    "startingCode": "let resultData = null;\nfunction communicate(myWorker) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "myWorker.postMessage('start'); va myWorker.onmessage = function(e) { resultData = e.data; } dan foydalaning.",
+    "test": "let sentMessage = null;\nconst dummyWorker = {\n  postMessage: (msg) => { sentMessage = msg; },\n  onmessage: null\n};\nconst sandbox = new Function('myWorker', 'let resultData = null;\\n' + code + '\\ncommunicate(myWorker);\\nreturn { getResult: () => resultData, getSent: () => sentMessage, setMsg: (d) => { if (myWorker.onmessage) myWorker.onmessage({ data: d }); } };');\nconst testObj = sandbox(dummyWorker);\nif (sentMessage !== 'start') return 'Workerga \"start\" xabari yuborilmadi';\ntestObj.setMsg('OK');\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Workerni to'xtatish",
+    "instruction": "Ishlayotgan `myWorker` ishini asosiy oqim (main thread) orqali darhol va butunlay to'xtatuvchi `stopWorker(myWorker)` funksiyasini yozing.",
+    "startingCode": "function stopWorker(myWorker) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Worker-ni to'xtatish uchun terminate() metodidan foydalaniladi.",
+    "test": "let terminated = false;\nconst dummyWorker = { terminate: () => { terminated = true; } };\nconst sandbox = new Function(code + '; return stopWorker;');\nsandbox()(dummyWorker);\nif (terminated) return null;\nreturn 'terminate() metodi chaqirilmadi';"
+  }
+]

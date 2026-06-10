@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "fetch() funksiyasi sukut bo'yicha (default) qaysi HTTP metodidan foydalanadi?",
+    "options": [
+      "POST",
+      "GET",
+      "PUT",
+      "DELETE"
+    ],
+    "correctAnswer": 1,
+    "explanation": "fetch() metodi agar options obyekti berilmasa, sukut bo'yicha har doim GET so'rovini yuboradi."
+  },
+  {
+    "id": 2,
+    "question": "Fetch so'rovida maxsus sarlavhalarni (custom headers) qaysi kalit orqali uzatamiz?",
+    "options": [
+      "header",
+      "headers",
+      "customHeaders",
+      "requestHeaders"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Fetch parametrlaridagi options obyektida sarlavhalar 'headers' kaliti orqali obyekt ko'rinishida beriladi."
+  },
+  {
+    "id": 3,
+    "question": "Fetch javobidagi `response.ok` xossasi qachon `true` qiymat qaytaradi?",
+    "options": [
+      "Faqat HTTP status 200 bo'lganda",
+      "HTTP status 200 dan 299 gacha bo'lgan oraliqda",
+      "Sarlavhalar muvaffaqiyatli o'qilganda",
+      "Tarmoq xatosi bo'lmagan har qanday holatda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "response.ok xossasi HTTP status kodi 200-299 oralig'ida bo'lsa true, aks holda false qaytaradi."
+  },
+  {
+    "id": 4,
+    "question": "Fetch so'rovini ma'lum muddat ichida yoki foydalanuvchi xohishiga ko'ra bekor qilish uchun qaysi API ishlatiladi?",
+    "options": [
+      "AbortController",
+      "fetchCancel",
+      "RequestController",
+      "Promise.race"
+    ],
+    "correctAnswer": 0,
+    "explanation": "AbortController JS da faol tarmoq so'rovlarini yoki boshqa asinxron ishlarni bekor qilish uchun mo'ljallangan maxsus API hisoblanadi."
+  },
+  {
+    "id": 5,
+    "question": "AbortController.abort() chaqirilganda, unga bog'langan fetch qanday xatolik tashlaydi?",
+    "options": [
+      "TimeoutError",
+      "AbortError nomli DOMException",
+      "NetworkError",
+      "SyntaxError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "So'rov bekor qilinganda, fetch Promise-i 'AbortError' nomli DOMException bilan reject qilinadi."
+  },
+  {
+    "id": 6,
+    "question": "Fetch orqali POST so'rovi yuborilganda JavaScript obyektini body qismiga qanday joylaymiz?",
+    "options": [
+      "Obyektni o'zini to'g'ridan-to'g'ri body-ga beramiz",
+      "JSON.stringify() yordamida satr formatiga o'tkazib beramiz",
+      "Obyektni toString() metodi bilan o'giramiz",
+      "Faqat URL param-lar orqali jo'natamiz"
+    ],
+    "correctAnswer": 1,
+    "explanation": "HTTP body orqali obyekt uzatish uchun uni JSON.stringify() yordamida JSON satriga o'girish lozim."
+  },
+  {
+    "id": 7,
+    "question": "Tarmoq xatosi yuz berganda (masalan, internet butunlay uzilib qolganda) fetch() qanday yo'l tutadi?",
+    "options": [
+      "status: 500 bo'lgan Response qaytaradi",
+      "status: 404 bo'lgan Response qaytaradi",
+      "Promise reject bo'ladi va xatolik tashlanadi",
+      "Sonsiz kutish rejimiga (pending) o'tadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Fetch server bilan umuman bog'lana olmaganda (tarmoq xatosi yoki noto'g'ri domen) Promise-ni reject qiladi. Agar server xato status (masalan 500 yoki 404) qaytarsa, u reject bo'lmaydi, balki response.ok=false bo'lib resolve bo'ladi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagilardan qaysi biri AbortController signalini fetchga to'g'ri bog'lash usuli hisoblanadi?",
+    "options": [
+      "fetch(url, { controller })",
+      "fetch(url, { signal: controller.signal })",
+      "fetch(url, controller.signal)",
+      "fetch(url).abort(controller)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "AbortController obyekti yaratilgach, uning signal xossasi fetch-ning optsiyasidagi 'signal' kalitiga qiymat qilib beriladi."
+  },
+  {
+    "id": 9,
+    "question": "Fetch orqali kelgan javobni matn (text) ko'rinishida to'liq o'qish uchun qaysi metod chaqiriladi?",
+    "options": [
+      "response.json()",
+      "response.text()",
+      "response.body()",
+      "response.toString()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Response obyekti tarkibidagi text() metodi javobni oddiy matn ko'rinishida o'qib beruvchi Promise qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "`response.json()` metodi nima qaytaradi?",
+    "options": [
+      "Tayyor JavaScript obyekti yoki massivini",
+      "Obyektga parse qiluvchi va resolve bo'luvchi Promise-ni",
+      "JSON formatidagi JSON string-ni",
+      "Undefined qiymatini"
+    ],
+    "correctAnswer": 1,
+    "explanation": "response.json() asinxron metod bo'lib, u ma'lumotni parse qilib bo'lgach JS obyektini qaytaradigan Promise taqdim etadi."
+  },
+  {
+    "id": 11,
+    "question": "Agar server 404 status kodi qaytarsa, fetch() qanday holatga o'tadi?",
+    "options": [
+      "Promise reject holatiga o'tadi",
+      "Promise resolve holatiga o'tadi, ammo response.ok=false bo'ladi",
+      "Dastur darhol qotib qoladi",
+      "So'rov avtomatik qaytadan yuboriladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Fetch faqat tarmoq ulanishi mutlaqo bo'lmagandagina reject bo'ladi. 404 kabi server javoblari muvaffaqiyatli qabul qilingan hisoblanib, resolve bo'ladi va response.ok = false, response.status = 404 bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "Headers tarkibidagi `'Content-Type': 'application/json'` sozlamasi nimani anglatadi?",
+    "options": [
+      "Serverdan faqat JSON javob qabul qilinishini",
+      "Yuborilayotgan request tanasi (body) JSON formatida ekanligini",
+      "So'rov xavfsiz HTTPS protokoli orqali yuborilishini",
+      "Brauzer keshidan ma'lumotlarni o'qishini"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Content-Type so'rov sarlavhasi jo'natilayotgan body-ning media-turini bildiradi. application/json esa ma'lumot JSON matni ekanligini anglatadi."
+  }
+]

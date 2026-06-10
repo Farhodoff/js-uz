@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Memoization (Keshlovchi Funksiya)",
+    "instruction": "Hisoblash yukini kamaytirish uchun, chaqirilgan argumentlar natijalarini keshda saqlovchi va bir xil argument bilan qayta murojaat qilinganda hisoblamasdan tayyor natijani qaytaruvchi `memoize(fn)` yordamchi funksiyasini yozing.",
+    "startingCode": "function memoize(fn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Closure ichida `const cache = {};` yarating. Qaytarilgan funksiya parametrni (masalan JSON.stringify yoki oddiy toString qilib) kalit sifatida ishlatsin va natijani keshga yozsin.",
+    "test": "const sandbox = new Function(code + '; return memoize;');\nconst fn = sandbox();\nlet calls = 0;\nconst square = (x) => { calls++; return x * x; };\nconst memoized = fn(square);\nif (typeof memoized !== 'function') return 'memoize funksiya qaytarishi kerak';\nif (memoized(4) !== 16) return 'Hisob-kitob natijasi noto\\'g\\'ri';\nif (memoized(4) !== 16) return 'Keshdagi natija noto\\'g\\'ri';\nif (calls !== 1) return 'Funksiya keshdan foydalanmadi va qayta ishga tushdi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Bir Martalik Funksiya (Once)",
+    "instruction": "Uzatilgan funksiyani faqat bir marta chaqirishga imkon beradigan, keyingi barcha chaqiriqlarda birinchi chaqiriqdagi natijani qaytaradigan `once(fn)` funksiyasini yozing.",
+    "startingCode": "function once(fn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Closure-da funksiyaning bajarilgan yoki bajarilmaganligini ifodalovchi bayroqcha (`hasRun = false`) va olingan natija o'zgaruvchisini saqlang.",
+    "test": "const sandbox = new Function(code + '; return once;');\nconst fn = sandbox();\nlet counter = 0;\nconst increment = fn(() => {\n  counter++;\n  return counter;\n});\nif (typeof increment !== 'function') return 'once funksiya qaytarishi kerak';\nconst res1 = increment();\nconst res2 = increment();\nif (res1 !== 1 || res2 !== 1) return 'Qiymatlar noto\\'g\\'ri qaytdi';\nif (counter !== 1) return 'Asl funksiya 1 martadan ko\\'p bajarilib ketdi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Qisman Qo'llash (Partial Application)",
+    "instruction": "Funksiya va bir nechta boshlang'ich argumentlarni (`presetArgs`) qabul qilib, yangi funksiya qaytaradigan `partial(fn, ...presetArgs)` funksiyasini yozing. Yangi funksiya chaqirilganda, u qolgan argumentlarni qabul qilib, hammasini birlashtirgan holda asl funksiyani ishga tushirsin.",
+    "startingCode": "function partial(fn, ...presetArgs) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Qaytarilgan funksiya ichida rest operator yordamida yangi argumentlarni olib, `presetArgs` bilan birlashtiring (`[...presetArgs, ...newArgs]`) va `fn`ga uzating.",
+    "test": "const sandbox = new Function(code + '; return partial;');\nconst fn = sandbox();\nconst multiply = (a, b, c) => a * b * c;\nconst doubleAndMultiply = fn(multiply, 2);\nif (typeof doubleAndMultiply !== 'function') return 'partial funksiya qaytarishi kerak';\nif (doubleAndMultiply(3, 4) !== 24) return 'Parametrlar noto\\'g\\'ri birlashtirildi';\nconst multiplyBySix = fn(multiply, 2, 3);\nif (multiplyBySix(5) !== 30) return 'Ko\\'p parametrli partial qo\\'llashda xatolik';\nreturn null;"
+  }
+]

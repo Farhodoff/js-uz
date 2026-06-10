@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Asinxron Ma'lumot Yuklash",
+    "instruction": "Taqdim etilgan `fetchData` funksiyasini chaqirib, undan qaytgan ma'lumotni qaytaruvchi asinxron `getUserData` funksiyasini yozing. `fetchData` va'da (Promise) qaytaradi.",
+    "startingCode": "async function getUserData() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "const data = await fetchData(); return data;",
+    "test": "if (!code.includes('await')) return 'await kalit so\\'zi ishlatilmadi';\ntry {\n  const sandbox = new Function('fetchData', code + '; return getUserData;');\n  const fn = sandbox(async () => 'ok');\n  const p = fn();\n  if (!(p instanceof Promise)) return 'getUserData funksiyasi Promise qaytarmayapti (async ekanligiga ishonch hosil qiling)';\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Xatoliklarni Try-Catch bilan Boshqarish",
+    "instruction": "Asinxron `fetchUser` funksiyasini chaqirib, natijani qaytaruvchi `safeFetch` asinxron funksiyasini yozing. Agar `fetchUser` xato bersa (reject), catch blokida 'Xato yuz berdi' satrini qaytaring.",
+    "startingCode": "async function safeFetch() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "try {\n  return await fetchUser();\n} catch(err) {\n  return 'Xato yuz berdi';\n}",
+    "test": "if (!code.includes('try') || !code.includes('catch')) return 'try-catch blogi ishlatilmadi';\ntry {\n  const sandbox = new Function('fetchUser', code + '; return safeFetch;');\n  const fn = sandbox(async () => { throw new Error('fail'); });\n  const p = fn();\n  if (!(p instanceof Promise)) return 'safeFetch funksiyasi Promise qaytarishi kerak';\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Paralel Asinxron Amallar (Promise.all)",
+    "instruction": "Ikkita asinxron funksiya `getProfile()` va `getPosts()` berilgan. Ularni bir vaqtda (paralel) ishga tushirib, natijalarini [profile, posts] massivi ko'rinishida qaytaruvchi asinxron `getDashboardData()` funksiyasini yozing.",
+    "startingCode": "async function getDashboardData() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return await Promise.all([getProfile(), getPosts()]);",
+    "test": "if (!code.includes('Promise.all')) return 'Promise.all ishlatilmadi';\ntry {\n  const sandbox = new Function('getProfile', 'getPosts', code + '; return getDashboardData;');\n  const fn = sandbox(async () => 'p', async () => 'posts');\n  const p = fn();\n  if (!(p instanceof Promise)) return 'getDashboardData funksiyasi Promise qaytarishi kerak';\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "DOM (Document Object Model) nima maqsadda xizmat qiladi?",
+    "options": [
+      "HTML hujjatini serverda saqlash va boshqarish uchun",
+      "HTML hujjatini brauzer xotirasida daraxtsimon obyekt ko'rinishida ifodalab, uni JavaScript yordamida dinamik boshqarish uchun",
+      "Faqat CSS stillarini optimallashtirish uchun",
+      "Veb-sayt xavfsizligini ta'minlash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "DOM brauzer tomonidan HTML sahifani tahlil qilish (parsing) paytida yaratiladi va u JavaScript-ga HTML elementlarini dynamic o'zgartirish, o'chirish yoki yangi elementlar qo'shish imkoniyatini taqdim etadi."
+  },
+  {
+    "id": 2,
+    "question": "document.querySelector va document.querySelectorAll metodlarining farqi nima?",
+    "options": [
+      "querySelector faqat id-lar bilan, querySelectorAll esa class-lar bilan ishlaydi",
+      "querySelector faqat birinchi mos kelgan elementni, querySelectorAll esa mos kelgan barcha elementlarni NodeList ko'rinishida qaytaradi",
+      "querySelectorAll sinxron, querySelector esa asinxron ishlaydi",
+      "Ikkalasi bir xil ishlaydi, hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "querySelector berilgan CSS selektoriga mos kelgan birinchi element obyektini, querySelectorAll esa barcha mos kelgan elementlarni o'z ichiga olgan NodeList to'plamini qaytaradi."
+  },
+  {
+    "id": 3,
+    "question": "JavaScript yordamida element klassini boshqarishda (add, remove, toggle) nima uchun classList-dan foydalanish tavsiya etiladi?",
+    "options": [
+      "Chunki u HTML-ni to'liq yangilaydi",
+      "Chunki u elementning boshqa klasslariga zarar yetkazmasdan, xavfsiz va qulay boshqarish imkonini beradi",
+      "Chunki classList yordamida serverga so'rov yuborish mumkin",
+      "classList metodlari eng sekin ishlovchi metodlar hisoblanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "classList.add() yoki classList.remove() elementdagi boshqa klasslarni o'chirib yubormasdan, faqat kerakli klass bilan ishlaydi. className esa butun klass stringini overwrite qilib yuboradi."
+  },
+  {
+    "id": 4,
+    "question": "HTMLCollection va NodeList o'rtasidagi asosiy farqlardan biri nima?",
+    "options": [
+      "NodeList faqat eski brauzerlarda ishlaydi",
+      "HTMLCollection har doim jonli (live) to'plam bo'ladi (DOM o'zgarganda avtomat yangilanadi), NodeList esa odatda statik (non-live) bo'ladi",
+      "HTMLCollection massiv metodlarini to'liq qo'llab-quvvatlaydi, NodeList esa yo'q",
+      "Hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "HTMLCollection har doim dynamic yangilanadi (live). querySelectorAll qaytaradigan NodeList esa statik bo'lib, DOM o'zgargani bilan undagi elementlar ro'yxati o'zgarmaydi."
+  },
+  {
+    "id": 5,
+    "question": "ID bo'yicha element tanlashda qaysi metod eng yuqori unumdorlikka (tezlikka) ega?",
+    "options": [
+      "document.getElementById('title')",
+      "document.querySelector('#title')",
+      "Ikkalasi mutlaqo bir xil tezlikda ishlaydi",
+      "document.getElementsByClassName('title')[0]"
+    ],
+    "correctAnswer": 0,
+    "explanation": "getElementById faqat ID bo'yicha qidirish uchun optimallashtirilgan bo'lib, querySelector-ga qaraganda tezroq ishlaydi (chunki querySelector CSS parseridan o'tishi shart)."
+  },
+  {
+    "id": 6,
+    "question": "Foydalanuvchi kiritgan matnni yozishda nima uchun `innerHTML` o'rniga `textContent` ishlatish tavsiya etiladi?",
+    "options": [
+      "Chunki textContent stillarni buzmaydi",
+      "XSS (Cross-Site Scripting) zararli kodlar hujumining oldini olish va xavfsizlikni ta'minlash uchun",
+      "Chunki textContent tezlroq render qiladi",
+      "innerHTML faqat rasmlar uchun ishlatiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "innerHTML foydalanuvchi yozgan zararli teglarni (masalan `<script>`) render qilib yuborishi mumkin. textContent esa barcha teglarni oddiy zararsiz matn sifatida yozadi."
+  },
+  {
+    "id": 7,
+    "question": "CSS faylda yozilgan elementning real (hisoblangan) rangini JavaScript-da qanday o'qiymiz?",
+    "options": [
+      "element.style.color orqali",
+      "window.getComputedStyle(element).color orqali",
+      "element.getAttribute('color') orqali",
+      "element.className.color"
+    ],
+    "correctAnswer": 1,
+    "explanation": "element.style faqat inline stillarni ko'radi. CSS faylda yozilgan real stillarni o'qish uchun window.getComputedStyle(element) metodidan foydalaniladi."
+  },
+  {
+    "id": 8,
+    "question": "Elementning `children` va `childNodes` xususiyatlari farqi nima?",
+    "options": [
+      "children faqat haqiqiy elementlarni (tags), childNodes esa har qanday tugunlarni (text, comment) ham qaytaradi",
+      "childNodes faqat HTML elementlarni, children esa matnlarni qaytaradi",
+      "Ikkalasi mutlaqo bir xil narsani qaytaradi",
+      "children faqat o'g'il bolalarni qaytaradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "children faqat HTML element tugunlarini (Element Nodes) massivsimon ro'yxatda qaytaradi. childNodes esa har qanday tugunlarni (jumladan bo'sh joylar/text node) qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "DOM daraxtida `firstElementChild` va `firstChild` o'rtasidagi farq nima?",
+    "options": [
+      "Hech qanday farqi yo'q",
+      "firstElementChild birinchi HTML elementini, firstChild esa birinchi tugunni (bu probel yoki yangi qator kabi text node bo'lishi mumkin) qaytaradi",
+      "firstChild faqat birinchi harfni qaytaradi",
+      "firstElementChild sekinroq ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "firstChild ko'pincha elementlar orasidagi bo'shliqni (text node) qaytaradi. firstElementChild esa birinchi haqiqiy HTML elementini (tag) qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "DocumentFragment-dan foydalanishning asosiy maqsadi nima?",
+    "options": [
+      "DOM elementlarini animatsiya qilish uchun",
+      "Ko'p miqdordagi elementlarni DOM-ga qo'shishda Reflow va Repaint sonini 1 taga tushirib, unumdorlikni oshirish uchun",
+      "Faqat serverdagi ma'lumotlarni yuklash uchun",
+      "HTML faylini siqish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "DocumentFragment virtual xotirada yaratilgani uchun, unga qilingan o'zgarishlar haqiqiy sahifani qayta chizmaydi. Uni to'ldirib, DOM-ga bitta operatsiyada ulasak, sahifa qotmaydi."
+  },
+  {
+    "id": 11,
+    "question": "Elementdagi custom `data-user-id=\"10\"` atributini JavaScript-da eng qulay usulda qanday o'qiymiz?",
+    "options": [
+      "element.getAttribute('data-user-id')",
+      "element.dataset.userId (camelCase formatida)",
+      "element.data.userId",
+      "element.dataset['data-user-id']"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScriptdataset obyekti data-* atributlarini camelCase formatiga o'tkazib saqlaydi, shuning uchun dataset.userId ko'rinishida oson o'qiladi."
+  },
+  {
+    "id": 12,
+    "question": "parentElement va parentNode o'rtasidagi farq nima?",
+    "options": [
+      "Hech qanday farqi yo'q",
+      "parentElement faqat ota elementni qaytaradi (yo'q bo'lsa null), parentNode esa ota tugunni (masalan document node-ni ham) qaytaraveradi",
+      "parentNode faqat CSS-ni qaytaradi",
+      "parentElement xotiradan joy ajratmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "parentElement har doim HTML elementi (nodeType === 1) bo'lishini talab qiladi, aks holda null qaytaradi. parentNode esa har qanday ota tugunni qaytaradi."
+  }
+]

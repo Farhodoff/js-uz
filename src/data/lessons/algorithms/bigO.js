@@ -26,7 +26,7 @@ function getElementAtIndex(arr, index) {
 \`\`\`
 
 ### 2. Linear Time - O(n) (Chiziqli vaqt)
-Operatsiyalar soni kirish ma'lumotlari soni \`n\` ga to'g'ridan-to'g'ri bog'liq:
+Operatsiyalar soni kirish ma'lumotlari soni \`n\` ga to'g'diran-to'g'ri bog'liq:
 \`\`\`javascript
 function printAllElements(arr) {
   for (let i = 0; i < arr.length; i++) {
@@ -50,6 +50,23 @@ function printPairs(arr) {
 ---
 
 ## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+
+### Xotira taqsimoti: Stack vs Heap
+Dastur bajarilayotganda JavaScript dvigateli (V8 kabi) xotirani ikki qismga bo'ladi:
+1. **Stack (Stek xotira):**
+   * Bu qism o'ta tezkor va o'lchami oldindan ma'lum bo'lgan static ma'lumotlarni saqlaydi.
+   * Primitiv turlar (Numbers, Strings, Booleans, undefined, null) to'g'ridan-to'g'ri stack xotirasida qiymat sifatida saqlanadi.
+   * Funksiya chaqiriqlari va lokal o'zgaruvchilar uchun yaratilgan ramkalar (execution frames) shu yerda joylashadi.
+
+2. **Heap (Xip xotira):**
+   * Bu katta va tartibsiz joylashgan dynamic xotira hovuzidir.
+   * Obyektlar, massivlar va funksiyalar kabi o'lchami dynamic ravishda o'zgaruvchi referensial ma'lumotlar heap xotirasidan joy oladi.
+   * Stack xotirada esa faqatgina ushbu obyektning heapdagi manziliga ishora qiluvchi ko'rsatkich pointer (\`reference\`) saqlanadi.
+
+\`\`\`javascript
+let age = 25; // Stack xotirada qiymat bilan saqlanadi. Space: O(1)
+let user = { name: "Ali", age: 25 }; // Obyekt Heap xotirada, unga havola Stack xotirada saqlanadi.
+\`\`\`
 
 ### Big O ni hisoblash qoidalari
 Dastur kodining Big O murakkabligini aniqlash uchun quyidagi 3 ta asosiy qoidaga amal qilinadi:
@@ -125,45 +142,57 @@ Sikl ichida \`indexOf\`, \`includes\`, \`shift\` yoki \`slice\` kabi chiziqli mu
 
 ---
 
-## 6. 🛠️ Amaliy Topshiriqlar
+## 6. 🎨 Interaktiv Vizual
+
+### Stack vs Heap Xotira Strukturasi
+Quyidagi diagrammada primitiv \`age\` o'zgaruvchisi va heapdagi obyektga ishora qiluvchi \`userRef\` ko'rsatkichining xotiradagi ko'rinishi keltirilgan:
+
+\`\`\`mermaid
+graph TD
+    subgraph Stack [Stack - Tezkor va Statik]
+        v1["let age = 25<br>(Primitiv qiymat)"]
+        v2["let userRef<br>(Pointer: #001)"]
+    end
+    subgraph Heap [Heap - Dynamic Xip]
+        v3["Obyekt #001<br>{ name: 'Farhod', role: 'Admin' }"]
+    end
+    v2 -->|Ko'rsatkich havolasi| v3
+    style Stack fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Heap fill:#efebe9,stroke:#5d4037,stroke-width:2px
+\`\`\`
+
+### Big O Murakkablik Tizimi
+Algoritmlar o'sish sur'atlarining o'zaro taqqoslanishi:
+
+\`\`\`mermaid
+graph TD
+    classDef excel fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff;
+    classDef good fill:#a3e4d7,stroke:#16a085,stroke-width:2px,color:#000;
+    classDef fair fill:#f9e79f,stroke:#f39c12,stroke-width:2px,color:#000;
+    classDef bad fill:#fadbd8,stroke:#e74c3c,stroke-width:2px,color:#000;
+    classDef horrible fill:#f1948a,stroke:#c0392b,stroke-width:2px,color:#fff;
+
+    O1["O(1) - Doimiy (Constant)<br>Eng samarali yechim"]:::excel
+    Olog["O(log n) - Logarifmik<br>Binary Search kabi yondashuvlar"]:::good
+    On["O(n) - Chiziqli (Linear)<br>Bitta oddiy sikl (loop)"]:::fair
+    Onlogn["O(n log n) - Chiziqli-logarifmik<br>Merge/Quick Sort saralash"]:::bad
+    On2["O(n^2) - Kvadratik (Quadratic)<br>Ichma-ich sikllar"]:::horrible
+    O2n["O(2^n) - Eksponentsial<br>Rekursiv og'ir algoritmlar"]:::horrible
+
+    O1 --> Olog --> On --> Onlogn --> On2 --> O2n
+\`\`\`
+
+---
+
+## 7. 🛠️ Amaliy Topshiriqlar
 
 Bu dars uchun mo'ljallangan amaliy topshiriqlarni \`bigO_exercises.json\` faylidan topishingiz mumkin. U yerda siz O(1), O(n) va O(log n) murakkablikdagi algoritmlarni amaliy yozasiz.
 
 ---
 
-## 7. 📝 12 ta Mini Test
+## 8. 📝 12 ta Mini Test
 
 Dars oxirida o'zlashtirgan bilimlaringizni tekshirish uchun 12 ta test savollari tayyorlangan. Savollar va variantlar \`bigO_quizzes.json\` faylida keltirilgan.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### Katta hajmli foydalanuvchilar bazasida qidiruv tizimini optimallashtirish
-Kompaniyamiz bazasida 1,000,000 ta saralangan foydalanuvchi ma'lumotlari bor. Foydalanuvchilar ID bo'yicha saralangan.
-* **Muammo:** Chiziqli qidiruv (\`Array.prototype.find\`) eng yomon holatda 1,000,000 ta operatsiya bajaradi. Bu esa sahifani sekinlashtiradi va serverga ortiqcha yuklama beradi.
-* **Yechim:** Binary Search (Ikkilik qidiruv) algoritmini qo'llash.
-* **Natija:** Operatsiyalar soni max 20 tagacha kamayadi ($log_2(1,000,000) \\approx 20$).
-
-\`\`\`javascript
-// Binary Search orqali optimallashtirilgan qidiruv
-function searchUserById(users, targetId) {
-  let left = 0;
-  let right = users.length - 1;
-
-  while (left <= right) {
-    let mid = Math.floor((left + right) / 2);
-    if (users[mid].id === targetId) {
-      return users[mid]; // Topildi
-    } else if (users[mid].id < targetId) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
-  return null; // Topilmadi
-}
-\`\`\`
 
 ---
 
@@ -182,7 +211,7 @@ function searchUserById(users, targetId) {
 | **O(log n)** | Logarithmic (Logarifmik) | Binary Search | Juda yaxshi |
 | **O(n)** | Linear (Chiziqli) | Oddiy \`for\` loop, \`.find()\`, \`.indexOf()\` | Yaxshi |
 | **O(n log n)** | Linearithmic | Merge Sort, Quick Sort | Qoniqarli |
-| **O(n^2)** | Quadratic (Kvadratik) | Ichma-ich \`for\` looplar | Yomon |
+| **O(n^2)** | Quadratic (Kvadratik) | Ichma-ich \`for\` looplar | Yemon |
 | **O(2^n)** | Exponential (Eksponentsial) | Rekursiv Fibonachchi ketma-ketligi | Juda yomon |
 `,
   exercises: [

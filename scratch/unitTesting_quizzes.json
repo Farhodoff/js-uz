@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Unit Test (Birlik testi) nima?",
+    "options": [
+      "Butun veb-saytning xavfsizligini tekshiruvchi test turi",
+      "Dasturdagi eng kichik tekshirilishi mumkin bo'lgan qism (odatda alohida funksiya yoki metod) to'g'ri ishlayotganini alohida (izolyatsiyada) tekshiruvchi test",
+      "Faqat ma'lumotlar bazasi tezligini o'lchaydigan test",
+      "Foydalanuvchi interfeysining dizaynini solishtiruvchi test"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Unit test dasturdagi eng kichik mantiqiy bo'laklarni (funksiyalarni) boshqa bog'liqliklardan ajratgan holda alohida tekshiradi."
+  },
+  {
+    "id": 2,
+    "question": "Jest nima?",
+    "options": [
+      "JavaScript kodlarini siquvchi va tezlashtiruvchi framework",
+      "Ma'lumotlar bazasi boshqaruv tizimi",
+      "Facebook (Meta) tomonidan yaratilgan, JavaScript va TypeScript kodlarini test qilish uchun mo'ljallangan mashhur sinov muhiti (test runner va assertion library)",
+      "Veb-saytlar uchun CSS animatsiyalar kutubxonasi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Jest — bu JS ekotizimida eng keng tarqalgan test muhiti bo'lib, u testlarni ishga tushirish, natijalarni tekshirish (assertion) va mock qilish vositalarini o'z ichiga oladi."
+  },
+  {
+    "id": 3,
+    "question": "TDD (Test-Driven Development) yondashuvining asosiy tamoyili nimadan iborat?",
+    "options": [
+      "Loyihani to'liq tugatib, keyin oxirida barcha kod uchun test yozish",
+      "Faqat server xatolarini test qilish",
+      "Kodni yozishdan oldin uning bajarishi kerak bo'lgan vazifasi uchun test yozish, so'ngra testdan o'tuvchi minimal kod yozish va keyin refaktoring qilish (Red-Green-Refactor)",
+      "Dasturchilarga test yozishni taqiqlash"
+    ],
+    "correctAnswer": 2,
+    "explanation": "TDD-da dastlab bajarilmaydigan test yoziladi (Red), keyin u testdan o'tadigan darajada kod yoziladi (Green) va nihoyat kod optimallashtiriladi (Refactor)."
+  },
+  {
+    "id": 4,
+    "question": "Jest-da ibtidoiy qiymatlarni (primitives: son, satr) aniq tenglikka tekshirish uchun qaysi matcher mos keladi?",
+    "options": [
+      "`.toBe()`",
+      "`.toEqual()`",
+      "`.toBeNull()`",
+      "`.toMatch()`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`.toBe()` matcher-i JavaScript-dagi `Object.is` (deyarli `===`) kabi ishlaydi va ibtidoiy qiymatlar uchun ishlatiladi."
+  },
+  {
+    "id": 5,
+    "question": "Obyekt yoki massivlarning ichidagi barcha xossalarini (deep equality) tenglikka tekshirish uchun Jest-da qaysi matcher ishlatiladi?",
+    "options": [
+      "`.toBe()`",
+      "`.toEqual()`",
+      "`.toContain()`",
+      "`.toBeInstanceOf()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`.toEqual()` matcheri obyekt va massivlarning barcha xossalarini rekurziv ravishda tekshirib chiqadi. `.toBe()` esa obyektlarning xotiradagi silkasini (reference) tekshiradi."
+  },
+  {
+    "id": 6,
+    "question": "Jest-dagi `describe` blokining vazifasi nima?",
+    "options": [
+      "Faqat bitta testni ishga tushirish",
+      "Tegishli testlarni mantiqan guruhlash va test natijalarini o'qishni osonlashtirish",
+      "Funksiyaning necha marta chaqirilganini sanash",
+      "Asinxron kodlarni sinxron qilish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`describe('Guruh nomi', () => { ... })` bloki bir nechta bog'liq testlarni bitta guruhga birlashtirish uchun xizmat qiladi."
+  },
+  {
+    "id": 7,
+    "question": "Har bir test blokidan oldin (boshlang'ich holatni sozlash yoki bazani tozalash uchun) kod bajarish uchun Jest-ning qaysi hook-idan foydalaniladi?",
+    "options": [
+      "`afterAll`",
+      "`beforeEach`",
+      "`afterEach`",
+      "`beforeAll`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`beforeEach` har bir `test()` yoki `it()` bloki ishga tushishidan oldin avtomatik ravishda bajariladi."
+  },
+  {
+    "id": 8,
+    "question": "Testlarda Mocking (soxtalashtirish) nima uchun kerak?",
+    "options": [
+      "Foydalanuvchilarni aldash uchun",
+      "Tashqi API-lar yoki og'ir operatsiyalarni (masalan, haqiqiy ma'lumotlar bazasi yoki tarmoq so'rovini) simulyatsiya qilish va testlarning tez hamda barqaror ishlashini ta'minlash uchun",
+      "Brauzer oynasini yopish uchun",
+      "Faqat CSS xatoliklarini topish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Mocking yordamida tashqi tizimlarga (masalan, to'lov tizimi API-siga) bog'liqlikni soxtalashtiramiz va haqiqiy pul sarflamay yoki tarmoqqa tayanmay test o'tkaza olamiz."
+  },
+  {
+    "id": 9,
+    "question": "Jest-da asinxron funksiyani (Promise qaytaradigan funksiyani) test qilishning eng to'g'ri va o'qishli usuli qaysi?",
+    "options": [
+      "Callback orqali `done` parametridan foydalanish",
+      "Asinxron test yozib, `async/await` dan foydalanish (masalan: `const data = await fetchData(); expect(data)...`)",
+      "Asinxron testlarni test qilmaslik",
+      "setInterval yordamida kutish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Zamonaviy Jest-da test blokini `async` qilib, ichida `await` yordamida Promise hal bo'lishini kutish eng toza va o'qishli yo'ldir."
+  },
+  {
+    "id": 10,
+    "question": "Code Coverage (kodning test bilan qamrab olinishi) nimani anglatadi?",
+    "options": [
+      "Loyihada yozilgan fayllar sonini",
+      "Loyiha kodining necha foizi testlar tomonidan bajarilganligini va tekshirilganligini ko'rsatuvchi ko'rsatkich",
+      "Dasturning internet tezligini",
+      "Koddagi sintaktik xatolar sonini"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Code Coverage kodimizning qaysi qismlari test yordamida tekshirilayotganini va qaysi qismlar (statements, branches, functions, lines) e'tibordan chetda qolganini foizlarda ko'rsatadi."
+  },
+  {
+    "id": 11,
+    "question": "Jest-da mock funksiya yaratish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "`jest.mock()`",
+      "`jest.fn()`",
+      "`jest.spyOn()`",
+      "`jest.create()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`jest.fn()` yangi mock (soxta) funksiya qaytaradi, u chaqirilganda necha marta chaqirilgani va qanday argumentlar olganini kuzatib boradi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi assert qanday vazifani bajaradi?\n```javascript\nexpect(myMockFn).toHaveBeenCalledTimes(2);\n```",
+    "options": [
+      "`myMockFn` funksiyasi 2 soniya davomida ishlaganini tekshiradi",
+      "`myMockFn` mock funksiyasi test davomida aynan 2 marta chaqirilganligini tekshiradi",
+      "Funksiya faqat 2 ta parametr qabul qilganini tekshiradi",
+      "Funksiya ichida 2 marta xatolik bo'lganini tekshiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`toHaveBeenCalledTimes(n)` mock funksiyaning jami chaqirilgan sonini tekshirish uchun ishlatiladi."
+  }
+]

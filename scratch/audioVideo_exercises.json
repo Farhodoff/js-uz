@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Mediani Ijro Etish",
+    "instruction": "Taqdim etilgan 'video' elementini dasturiy ravishda ishga tushiring (play qiling).",
+    "startingCode": "const video = document.createElement('video');\n\n// Kodni shu yerda yozing\n",
+    "hint": "video.play();",
+    "test": "if (!code.includes('play()')) return 'video.play() chaqirilmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Ovozsiz Rejimga O'tkazish (Mute)",
+    "instruction": "'video' elementining ovozini o'chiring (muted xususiyatini true qiling).",
+    "startingCode": "const video = document.createElement('video');\n\n// Kodni shu yerda yozing\n",
+    "hint": "video.muted = true;",
+    "test": "if (!code.includes('muted = true')) return 'muted xususiyati true qilinmadi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Ovoz Balandligini Sozlash",
+    "instruction": "'audio' elementining ovoz balandligini (volume) 60% ga (ya'ni 0.6 qiymatga) o'zgartiring.",
+    "startingCode": "const audio = document.createElement('audio');\n\n// Kodni shu yerda yozing\n",
+    "hint": "audio.volume = 0.6;",
+    "test": "if (!code.includes('volume = 0.6')) return 'volume xususiyati 0.6 qilib belgilanmadi';\nreturn null;"
+  }
+]

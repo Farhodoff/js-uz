@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da debugger kalit so'zi nima vazifani bajaradi?",
+    "options": [
+      "Koddagi barcha xatolarni avtomatik tarzda tuzatadi",
+      "Agar brauzer DevTools oynasi ochiq bo'lsa, kod bajarilishini o'sha qatorda to'xtatadi",
+      "Kod ishlash tezligini ikki barobar oshiradi",
+      "Sinxron kodni asinxron kodga o'zgartiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "debugger kalit so'zi dasturchi tomonidan qo'yilgan breakpoint vazifasini bajaradi va DevTools ochiq bo'lgan taqdirda dasturni o'sha joyda to'xtatib, holatni tekshirish imkonini beradi."
+  },
+  {
+    "id": 2,
+    "question": "Massiv yoki obyektlarni konsolda jadval shaklida chiroyli ko'rsatish uchun qaysi metod mos keladi?",
+    "options": [
+      "console.log()",
+      "console.dir()",
+      "console.table()",
+      "console.group()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "console.table() metodi uzatilgan obyekt yoki massiv elementlarini konsolda jadval ko'rinishida chiqarib beradi."
+  },
+  {
+    "id": 3,
+    "question": "Dasturdagi xatolik aynan qaysi funksiyalar zanjiri orqali chaqirilib kelganini (Call Stack trace) konsolga chiqarish uchun qaysi metoddan foydalaniladi?",
+    "options": [
+      "console.log()",
+      "console.trace()",
+      "console.warn()",
+      "console.assert()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "console.trace() metodi chaqirilgan nuqtagacha bo'lgan Call Stack izlarini konsolga chiqaradi."
+  },
+  {
+    "id": 4,
+    "question": "Production (ishlab chiqarish) uchun siqilgan (minify qilingan) kodni DevTools-da asl yozilgan holida ko'rish imkonini beruvchi texnologiya nima deb nomlanadi?",
+    "options": [
+      "Source Map",
+      "Web Workers",
+      "Babel Compiler",
+      "Service Workers"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Source Map (.map fayllari) siqilgan kod bilan uning asl manbasi (source code) o'rtasidagi bog'liqlikni saqlaydi va debuggingni osonlashtiradi."
+  },
+  {
+    "id": 5,
+    "question": "Faqat biror o'zgaruvchi ma'lum bir qiymatga teng bo'lgandagina (masalan, i === 10) kodni to'xtatadigan breakpoint turi qanday ataladi?",
+    "options": [
+      "DOM Breakpoint",
+      "Conditional Breakpoint",
+      "Event Listener Breakpoint",
+      "XHR Breakpoint"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Conditional Breakpoint (shartli to'xtash nuqtasi) faqat berilgan shart 'true' bo'lgandagina dasturni to'xtatish imkonini beradi."
+  },
+  {
+    "id": 6,
+    "question": "Debugging jarayonida 'Step Over' tugmasi bosilganda nima sodir bo'ladi?",
+    "options": [
+      "Dastur bajarilishini butunlay to'xtatadi",
+      "Keyingi qatorga o'tadi, agar u qatorda funksiya chaqirilgan bo'lsa, uning ichiga kirmaydi",
+      "Funksiyaning eng birinchi qatoriga kiradi",
+      "Faqat xato yuz berganda to'xtaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Step Over keyingi qatorga o'tadi, lekin funksiyalar ichiga chuqurlashib kirmasdan ularni to'liq bajarib o'tib ketadi. Ichiga kirish uchun esa Step Into ishlatiladi."
+  },
+  {
+    "id": 7,
+    "question": "Koddagi biror bo'limning bajarilish vaqtini aniq o'lchash uchun qaysi metodlar juftligi ishlatiladi?",
+    "options": [
+      "console.start() va console.stop()",
+      "console.time() va console.timeEnd()",
+      "console.profile() va console.profileEnd()",
+      "console.log() va console.clear()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "console.time('label') va console.timeEnd('label') yordamida jarayonning boshlanishi va tugashi orasidagi millisekundlarni hisoblash mumkin."
+  },
+  {
+    "id": 8,
+    "question": "DevTools-dagi 'Blackboxing' (Ignore List) funksiyasining maqsadi nima?",
+    "options": [
+      "Dasturning xavfsizlik darajasini oshirish",
+      "Debugging paytida uchinchi tomon kutubxonalari (React, Vue va h.k.) kodlari ichiga kirmasdan chetlab o'tish",
+      "Kodlarni brauzer keshidan o'chirib yuborish",
+      "Dasturni qorong'u rejimga o'tkazish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Blackboxing yordamida biz kutubxonalar kodini e'tiborsiz qoldiramiz. Natijada debug qilayotganda faqat o'zimiz yozgan kod bo'ylab harakatlanamiz."
+  },
+  {
+    "id": 9,
+    "question": "HTML elementining atributlari (masalan, class yoki style) JavaScript orqali o'zgartirilganda kodni to'xtatish uchun qanday breakpoint o'rnatiladi?",
+    "options": [
+      "DOM Attribute Modifications Breakpoint",
+      "Event Listener Breakpoint",
+      "Fetch/XHR Breakpoint",
+      "Line-of-code Breakpoint"
+    ],
+    "correctAnswer": 0,
+    "explanation": "DOM breakpoints bo'limida 'Attribute modifications' tanlansa, element atributi o'zgargan zahoti uni o'zgartirgan JS qatorida kod to'xtaydi."
+  },
+  {
+    "id": 10,
+    "question": "Nima uchun production koddagi ortiqcha console.log-larni o'chirish yoki build tool yordamida olib tashlash kerak?",
+    "options": [
+      "Chunki ular JS fayl hajmini keskin oshirib yuboradi",
+      "Chunki console loglari foydalanuvchiga keraksiz metadatalarni chiqaradi va sinxron bo'lgani uchun tezlikni pasaytirishi mumkin",
+      "Chunki xosting provayderlari console loglari uchun pul oladi",
+      "Hech qanday salbiy ta'siri yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Console obyektining metodlari sinxron bo'lib, ular xotirani egallaydi va unumdorlikni pasaytiradi. Shuningdek, uchinchi shaxslarga ichki tizim ma'lumotlarini oshkor qilib qo'yishi mumkin."
+  },
+  {
+    "id": 11,
+    "question": "DevTools debugging panelidagi 'Watch' bo'limi nima uchun ishlatiladi?",
+    "options": [
+      "Kodni real vaqtda videoga olish uchun",
+      "Dasturchi kiritgan o'zgaruvchilar yoki ifodalarning qiymatlarini debug jarayonida doimiy kuzatib borish uchun",
+      "CPU haroratini o'lchash uchun",
+      "Server yuklamasini nazorat qilish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Watch bo'limiga biror o'zgaruvchi yoki ifoda (masalan, user.id) yozib qo'yilsa, u har bir qadam bajarilganda o'zgaruvchi qiymati qanchaga o'zgarganini avtomatik ko'rsatib boradi."
+  },
+  {
+    "id": 12,
+    "question": "Chrome DevTools-ning qaysi paneli xotira sizib chiqishi (Memory Leaks) va xotira holatini tahlil qilish uchun mo'ljallangan?",
+    "options": [
+      "Console",
+      "Network",
+      "Memory (yoki Performance)",
+      "Elements"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Memory paneli yordamida xotiradan nusxa (Heap Snapshot) olish va qaysi obyektlar o'chirilmasdan xotirani band qilib turganini aniqlash mumkin."
+  }
+]

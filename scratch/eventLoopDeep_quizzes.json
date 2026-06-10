@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Microtask-lar (kichik vazifalar) navbatiga quyidagilardan qaysi biri kiradi?",
+    "options": [
+      "setTimeout va setInterval",
+      "Promise.then() / catch() / finally() callback-lari",
+      "I/O operatsiyalari (fayl o'qish)",
+      "UI rendering (sahifani chizish)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Promise-larning barcha javob callback-lari (then/catch/finally) standart bo'yicha microtask hisoblanadi."
+  },
+  {
+    "id": 2,
+    "question": "Macrotask-lar (katta vazifalar / shunchaki Tasks) navbatiga qaysi biri kiradi?",
+    "options": [
+      "queueMicrotask()",
+      "MutationObserver",
+      "setTimeout / setInterval / setImmediate",
+      "Promise.resolve()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Taymerlar (setTimeout, setInterval) brauzer va Node.js muhitida macrotask (yoki shunchaki task) hisoblanadi."
+  },
+  {
+    "id": 3,
+    "question": "JavaScript-da microtask-lar macrotask-larga nisbatan qanday ustuvorlikka (priority) ega?",
+    "options": [
+      "Pastroq ustuvorlikka ega",
+      "Bir xil ustuvorlikka ega",
+      "Yuqoriroq ustuvorlikka ega (sinxron kod tugagach, har qanday macrotask-dan oldin barcha microtask-lar bajariladi)",
+      "Faqat Node.js muhitida yuqoriroq ustuvorlikka ega"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Microtask-lar har doim macrotask-lardan ustun turadi. Sinxron kod tugashi bilanoq, yoki har bir macrotask tugaganidan keyin, navbatdagi macrotask-ga o'tishdan oldin microtask navbati butunlay bo'shatiladi."
+  },
+  {
+    "id": 4,
+    "question": "Agar microtask bajarilayotgan paytda uning ichida cheksiz ravishda yangi microtask-lar qo'shilsa (masalan, rekursiv Promise), nima sodir bo'ladi?",
+    "options": [
+      "Ular keyingi macrotask-dan keyin ishlash uchun qoldiriladi",
+      "Event Loop va macrotask-lar butunlay bloklanadi (sahifa qotib qoladi)",
+      "Ortiqcha microtask-lar brauzer tomonidan o'chirib yuboriladi",
+      "Hech qanday muammosiz parallel ishlayveradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Microtask navbati to'liq bo'shatilguncha Event Loop keyingi qadamga o'tmaydi. Agar cheksiz microtask yarataversangiz, u Task Queue va UI Rendering-ni bloklab qo'yadi va sahifa qotadi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi API-lardan qaysi biri JavaScript-da to'g'ridan-to'g'ri maxsus microtask yaratish uchun xizmat qiladi?",
+    "options": [
+      "setTimeout()",
+      "queueMicrotask()",
+      "requestAnimationFrame()",
+      "setImmediate()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "HTML5 standartiga kiritilgan `queueMicrotask(fn)` funksiyasi hechn qanday Promise yaratmasdan, to'g'ridan-to'g'ri funksiyani microtask navbatiga qo'shish imkonini beradi."
+  },
+  {
+    "id": 6,
+    "question": "Sahifani vizual yangilash (UI Rendering) Event Loop tsiklida qachon sodir bo'ladi?",
+    "options": [
+      "Har bir yakka microtask bajarilganidan keyin darhol",
+      "Call Stack bo'shagach va joriy barcha microtask-lar to'liq bajarib bo'linganidan keyin",
+      "Sinxron kod ishlayotgan paytda parallel ravishda",
+      "Faqat barcha setTimeout-lar tugagandan keyin sahifa oxirida"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Rendering (sahifani qayta chizish va layout hisoblash) ishlari microtask-lar navbati butunlay bo'shaganidan so'nggina amalga oshirilishi mumkin."
+  },
+  {
+    "id": 7,
+    "question": "Node.js muhitida `process.nextTick()` funksiyasining ustuvorligi qanday?",
+    "options": [
+      "Oddiy Promise microtask-laridan ham oldin (eng yuqori microtask ustuvorligi) bajariladi",
+      "setTimeout va boshqa macrotask-lardan keyin bajariladi",
+      "Faqat File I/O operatsiyalaridan keyin chaqiriladi",
+      "Ustuvorligi eng past hisoblanadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Node.js da `process.nextTick()` microtask navbatining eng boshida turadi. U oddiy Promise-larga qaraganda ham oldinroq (stack bo'shashi bilanoq) bajariladi."
+  },
+  {
+    "id": 8,
+    "question": "Promise konstruktori `new Promise((resolve) => { ... })` ichidagi kod qanday bajariladi?",
+    "options": [
+      "Asinxron ravishda microtask sifatida",
+      "Asinxron ravishda macrotask sifatida",
+      "Sinxron ravishda darhol (oddiy kod kabi)",
+      "Faqat resolve() chaqirilgandan so'ng asinxron"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Promise konstruktori ichiga uzatilgan executor funksiyasi sinxron hisoblanadi va darhol ishlaydi. Faqat `.then()`, `.catch()` va `.finally()` callback-larigina asinxron (microtask) hisoblanadi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod konsolga nimalarni chiqaradi?\n```javascript\nPromise.resolve().then(() => console.log('A'));\nsetTimeout(() => console.log('B'), 0);\nconsole.log('C');\n```",
+    "options": [
+      "A, B, C",
+      "C, A, B",
+      "C, B, A",
+      "A, C, B"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Birinchi sinxron kod ishlaydi ('C'). Keyin microtask navbati bo'shatiladi ('A'). Eng oxirida macrotask (setTimeout) bajariladi ('B'). Shuning uchun natija: C, A, B."
+  },
+  {
+    "id": 10,
+    "question": "Macrotask navbatini (Task Queue) V8 va brauzer arxitekturasida yana qanday nomlashadi?",
+    "options": [
+      "Microtask Queue",
+      "Job Queue",
+      "Event Queue yoki Message Queue",
+      "Call Stack"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Macrotask navbati ko'pincha Task Queue, Event Queue yoki Message Queue deb ham ataladi. Microtask navbati esa Job Queue deb ataladi."
+  },
+  {
+    "id": 11,
+    "question": "Promise.then() zanjirlari va await-dan keyingi kodlar qaysi navbatda bajariladi?",
+    "options": [
+      "Task Queue (Macrotasks)",
+      "Microtask Queue (Job Queue)",
+      "Render Queue",
+      "Call Stack"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Barcha Promise reaksiyalari va async/await-ning davomi (yield nuqtasidan keyingi kodlar) Microtask Queue-ga joylashtiriladi."
+  },
+  {
+    "id": 12,
+    "question": "Sinxron script fayli (main script) Event Loop nuqtai nazaridan nima deb hisoblanadi?",
+    "options": [
+      "Joriy script o'zi birinchi bajariladigan eng katta macrotask-dir",
+      "U faqat microtask-lar to'plamidir",
+      "U render navbati tarkibiga kiradi",
+      "U Event Loop nazoratidan mutlaqo tashqarida"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Event Loop ishlashni boshlaganda, butun boshli JS faylini (sinxron kodni) bajarishning o'zi birinchi macrotask deb hisoblanadi. U tugagach, undan chiqqan microtask-lar bajariladi."
+  }
+]

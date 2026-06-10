@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Buyurtmalar va Ismlar (INNER JOIN)",
+    "instruction": "`orders` jadvalini `users` jadvali bilan bog'lang (user_id va id orqali). Foydalanuvchining ismi (`name`), mahsulot (`product`) va summasi (`amount`) ustunlarini tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT users.name, orders.product, orders.amount FROM orders INNER JOIN users ON orders.user_id = users.id",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 6) return 'Jami 6 ta buyurtma qaytishi kerak'; if(result[0].name === undefined || result[0].product === undefined) return 'name va product ustunlarini tanlang'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Barcha foydalanuvchilar va buyurtmalar (LEFT JOIN)",
+    "instruction": "`users` jadvalini `orders` jadvali bilan `LEFT JOIN` yordamida bog'lang. Foydalanuvchining ismi (`name`), mahsulot (`product`) va summasi (`amount`) ustunlarini tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT users.name, orders.product, orders.amount FROM users LEFT JOIN orders ON users.id = orders.user_id",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 7) return 'LEFT JOIN tufayli buyurtma bermagan foydalanuvchilar (masalan, Dilshod) ham chiqishi shart (jami 7 qator)'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Mahsulotlar va buyurtma summalari",
+    "instruction": "`orders` jadvalidagi `product` ustunini `products` jadvalidagi `name` ustuniga bog'lang (`INNER JOIN`). Mahsulot nomi (`name`), toifasi (`category`) va buyurtma qilingan summasi (`amount`) ustunlarini tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT p.name, p.category, o.amount FROM orders o INNER JOIN products p ON o.product = p.name",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Orders va Products jadvallarida mos keluvchi 3 ta mahsulot bor'; return null;"
+  }
+]

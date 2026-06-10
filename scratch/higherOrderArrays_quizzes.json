@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Qaysi massiv metodi callback funksiya qaytargan natijaga qarab asl massiv elementlarini o'zgartirmasdan, butunlay yangi massiv qaytaradi?",
+    "options": [
+      "`map`",
+      "`forEach`",
+      "`push`",
+      "`splice`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`map` metodi massivdagi har bir element ustida amallar bajarib, ularning natijalaridan iborat yangi massiv qaytaradi va original massivni o'zgartirmaydi."
+  },
+  {
+    "id": 2,
+    "question": "`filter` metodi callback funksiya qanday qiymat qaytarganda elementni yangi massivga qo'shadi?",
+    "options": [
+      "Faqat `true` (yoki truthy qiymat) qaytarganda",
+      "Faqat `false` (yoki falsy qiymat) qaytarganda",
+      "Faqat `1` yoki `0` qaytarganda",
+      "Har qanday qiymat qaytarganda"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`filter` metodi har bir element uchun callback funksiyani chaqiradi. Agar u `true` yoki truthy qiymat qaytarsa, element natijaviy massivga kiritiladi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi `reduce` chaqiruvining yakuniy natijasi nima bo'ladi?\n```javascript\nconst nums = [1, 2, 3];\nconst res = nums.reduce((acc, val) => acc + val, 10);\n```",
+    "options": [
+      "`6`",
+      "`16`",
+      "`10`",
+      "`undefined`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Reduce boshlang'ich qiymat sifatida 10 ni oladi. Keyin ketma-ket massiv elementlarini qo'shib boradi: 10 + 1 + 2 + 3 = 16."
+  },
+  {
+    "id": 4,
+    "question": "`find` metodi massiv ichidan shartga mos element topa olmasa nima qaytaradi?",
+    "options": [
+      "`null`",
+      "`undefined`",
+      "`-1`",
+      "Bo'sh massiv `[]`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`find` metodi shartga mos keluvchi birinchi elementni qaytaradi. Agar bunday element topilmasa, u `undefined` qaytaradi."
+  },
+  {
+    "id": 5,
+    "question": "`some` va `every` metodlari qanday turdagi (data type) natija qaytaradi?",
+    "options": [
+      "Yangi massiv (Array)",
+      "Mantiqiy qiymat (Boolean: true yoki false)",
+      "Son (Number)",
+      "Obyekt (Object)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ikkala metod ham faqat shartning bajarilishi yoki bajarilmasligini tekshiradi va har doim `true` yoki `false` qiymat qaytaradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi saralash kodidan keyin original `nums` massivi qanday o'zgaradi?\n```javascript\nconst nums = [10, 2, 30];\nnums.sort();\n```",
+    "options": [
+      "`[2, 10, 30]` ko'rinishida to'g'ri saralanadi",
+      "`[10, 2, 30]` bo'lib o'zgarishsiz qoladi",
+      "`[10, 2, 30]` alifbo tartibida saralanadi, chunki default holatda elementlar string deb qaraladi",
+      "TypeError xatosi chiqadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Default `sort()` metodida taqqoslovchi funksiya bo'lmasa, u elementlarni matnga o'tkazadi va alifbo bo'yicha solishtiradi (bu yerda '10' '2' dan oldin keladi, chunki '1' '2' dan kichik)."
+  },
+  {
+    "id": 7,
+    "question": "Faqat birinchi voyaga yetgan foydalanuvchining ismini topish uchun qaysi metodlar zanjiri to'g'ri hisoblanadi?",
+    "options": [
+      "`users.filter(u => u.age >= 18).map(u => u.name)[0]`",
+      "`users.find(u => u.age >= 18)?.name`",
+      "Ikkala variant ham to'g'ri va bir xil natija beradi, lekin keyingisi optimalroq",
+      "Buning uchun faqat reduce ishlatish mumkin"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Ikkala usul ham to'g'ri ishlaydi. Biroq `find` metodi birinchi elementni topishi bilanoq ishlashni to'xtatadi va yangi massiv yaratmagani uchun optimalroqdir."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodda `squares` qiymati nima bo'ladi?\n```javascript\nconst squares = [1, 2].map(n => { n * n });\n```",
+    "options": [
+      "`[1, 4]`",
+      "`[undefined, undefined]` (chunki arrow functionda jingalak qavs ochilsa, return yozilishi shart)",
+      "TypeError",
+      "`[]`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Arrow funksiyalarda `{}` jingalak qavslar ochilsa, return avtomatik bo'lmaydi. Return yozilmagani uchun map natijasi undefined lardan iborat bo'ladi."
+  },
+  {
+    "id": 9,
+    "question": "`forEach` metodi haqida qaysi fikr noto'g'ri?",
+    "options": [
+      "U massiv elementlarini shunchaki aylanib chiqish uchun ishlatiladi",
+      "U har doim yangi o'zgartirilgan massiv qaytaradi",
+      "Uning ichida break yoki continue ishlatib bo'lmaydi",
+      "U undefined qaytaradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`forEach` metodi yangi massiv qaytarmaydi (u har doim `undefined` qaytaradi). Yangi massiv olish uchun `map` ishlatilishi kerak."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconst arr = [1, 2, 3];\nconsole.log(arr.every(n => n > 0));\n```",
+    "options": [
+      "`true` (chunki barcha sonlar 0 dan katta)",
+      "`false`",
+      "`undefined`",
+      "`[1, 2, 3]`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`every` metodi barcha elementlar shartga mos kelsa `true` qaytaradi. Massivdagi barcha elementlar (1, 2, 3) 0 dan katta bo'lgani uchun natija `true` bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kodda `total` qiymati qanday hisoblanadi?\n```javascript\nconst items = [{ price: 5 }, { price: 15 }];\nconst total = items.reduce((acc, curr) => acc + curr.price, 0);\n```",
+    "options": [
+      "`20`",
+      "`[object Object]15`",
+      "`NaN`",
+      "`undefined`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Boshlang'ich qiymat 0 qilib ko'rsatilgan. Shunda 0 + 5 + 15 = 20 to'g'ri hisoblanadi."
+  },
+  {
+    "id": 12,
+    "question": "Original massivni o'zgartirmasdan saralash (sort qilish) uchun qaysi yondashuv to'g'ri?",
+    "options": [
+      "`arr.sort()`",
+      "`const sorted = [...arr].sort((a, b) => a - b);`",
+      "`const sorted = arr.map().sort();`",
+      "`arr.filter().sort();`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Spread `[...arr]` orqali massivdan yangi nusxa olinadi, so'ngra uning ustida `.sort` chaqiriladi. Bu original massiv o'zgarmasligini ta'minlaydi."
+  }
+]

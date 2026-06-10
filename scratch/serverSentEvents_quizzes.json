@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "SSE (Server-Sent Events) nima?",
+    "options": [
+      "HTTP protokoli orqali serverdan mijozga bir tomonlama real-time ma'lumot uzatish texnologiyasi",
+      "Mijoz va server o'rtasida ikki tomonlama real-time ma'lumot almashish texnologiyasi",
+      "Faqat rasmlarni yuklash uchun ishlatiladigan maxsus CDN xizmati",
+      "Ma'lumotlarni serverga yuborish uchun ishlatiladigan yangi fetch turi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "SSE serverdan mijozga bir tomonlama (one-way) real-time ma'lumot oqimini yuborish imkonini beradi. Mijoz serverga ushbu ulanish orqali ma'lumot yubora olmaydi."
+  },
+  {
+    "id": 2,
+    "question": "SSE qaysi protokol ustida ishlaydi?",
+    "options": [
+      "WebSocket protokoli",
+      "FTP protokoli",
+      "Oddiy HTTP/HTTPS protokoli",
+      "SMTP protokoli"
+    ],
+    "correctAnswer": 2,
+    "explanation": "SSE oddiy HTTP/HTTPS protokollaridan foydalanadi, shu sababli qo'shimcha protokollar yoki portlar ochish talab etilmaydi."
+  },
+  {
+    "id": 3,
+    "question": "Serverdan SSE oqimini yuborish uchun qaysi Content-Type sarlavhasi (Header) ishlatilishi shart?",
+    "options": [
+      "application/json",
+      "text/html",
+      "text/event-stream",
+      "application/octet-stream"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Server-Sent Events uchun standart Content-Type har doim `text/event-stream` bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "Brauzerda SSE oqimiga ulanish uchun qaysi standart JavaScript klassidan foydalaniladi?",
+    "options": [
+      "WebSocket",
+      "XMLHttpRequest",
+      "EventSource",
+      "FetchController"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Brauzerlarda SSE oqimiga ulanish va uni boshqarish uchun standart `EventSource` klassi taqdim etilgan."
+  },
+  {
+    "id": 5,
+    "question": "Standart `EventSource` obyekti yordamida qaysi HTTP metod orqali so'rov yuborish mumkin?",
+    "options": [
+      "Faqat GET",
+      "Faqat POST",
+      "GET va POST",
+      "Istalgan HTTP metodlari"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Standart `EventSource` API faqat GET so'rovlarini qo'llab-quvvatlaydi. Sarlavhalarni o'zgartirish yoki POST ishlatish uchun uchinchi tomon kutubxonalari kerak bo'ladi."
+  },
+  {
+    "id": 6,
+    "question": "EventSource ulanishi kutilmaganda uzilib qolganda nima sodir bo'ladi?",
+    "options": [
+      "Xatolik beradi va dastur butunlay to'xtaydi",
+      "Brauzer avtomatik ravishda ulanishni qayta tiklashga harakat qiladi (auto-reconnect)",
+      "Ulanish butunlay yopiladi va qayta ulanmaydi",
+      "Brauzer foydalanuvchidan qayta ulanish uchun ruxsat so'raydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "EventSource-ning eng katta afzalliklaridan biri — ulanish uzilganda brauzer avtomatik ravishda ulanishni qayta tiklashga harakat qiladi."
+  },
+  {
+    "id": 7,
+    "question": "SSE oqimida xabarlar qanday formatda bo'ladi?",
+    "options": [
+      "Faqat JSON",
+      "Faqat XML",
+      "Matnli qatorlar (text-based) formatida",
+      "Binary (baxarli) formatda"
+    ],
+    "correctAnswer": 2,
+    "explanation": "SSE oqimi matnli (text-based) formatda bo'lib, har bir xabar qatorlar orqali uzatiladi (masalan: `data: mening xabarim\\n\\n`)."
+  },
+  {
+    "id": 8,
+    "question": "EventSource ulanishini butunlay yopish uchun qaysi metod chaqiriladi?",
+    "options": [
+      "disconnect()",
+      "stop()",
+      "close()",
+      "abort()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`eventSource.close()` metodi ulanishni yopish va server bilan aloqani uzish uchun ishlatiladi."
+  },
+  {
+    "id": 9,
+    "question": "SSE xabaridagi `id` maydoni nima uchun kerak?",
+    "options": [
+      "Foydalanuvchining ID raqamini ko'rsatish uchun",
+      "Xabarning unikal identifikatori bo'lib, ulanish uzilib qayta tiklanganda oxirgi olingan xabardan davom ettirish (Last-Event-ID) uchun",
+      "Serverning IP manzilini tekshirish uchun",
+      "Faqat xavfsizlik tokenini yuborish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar ulanish uzilsa, brauzer serverga oxirgi olingan `id` ni `Last-Event-ID` HTTP sarlavhasi orqali yuboradi, bu serverga faqat o'tkazib yuborilgan ma'lumotlarni yuborish imkonini beradi."
+  },
+  {
+    "id": 10,
+    "question": "WebSockets va SSE o'rtasidagi asosiy farq nimada?",
+    "options": [
+      "WebSockets tezroq ishlaydi",
+      "WebSockets ikki tomonlama (bidirectional), SSE esa bir tomonlama (unidirectional) ishlaydi",
+      "WebSockets faqat HTTP/2 da ishlaydi, SSE esa HTTP/1 da",
+      "SSE faqat mobil telefonlarda ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "WebSockets mijoz va serverga bir vaqtda ma'lumot almashish imkonini beradi (ikki tomonlama), SSE esa faqat serverdan mijozga real-time ma'lumot uzatadi (bir tomonlama)."
+  },
+  {
+    "id": 11,
+    "question": "SSE oqimidagi maxsus (custom) hodisalarni tinglash uchun qanday kod yoziladi?",
+    "options": [
+      "eventSource.onmessage = ...",
+      "eventSource.addEventListener('hodisa_nomi', callback)",
+      "eventSource.onclick = ...",
+      "eventSource.subscribe('hodisa_nomi')"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Standart xabarlar `onmessage` bilan tinglansa-da, maxsus nomlangan hodisalarni (masalan, `event: update`) tinglash uchun `addEventListener` ishlatiladi."
+  },
+  {
+    "id": 12,
+    "question": "SSE oqimini ochiq saqlash uchun server javob sarlavhalarida qaysi qiymatlar bo'lishi tavsiya etiladi?",
+    "options": [
+      "Connection: close",
+      "Content-Type: application/json",
+      "Connection: keep-alive va Cache-Control: no-cache",
+      "Cache-Control: max-age=3600"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Server ulanishni yopib yubormasligi uchun `Connection: keep-alive` va brauzer ma'lumotlarni keshlab qo'ymasligi uchun `Cache-Control: no-cache` yuborilishi zarur."
+  }
+]

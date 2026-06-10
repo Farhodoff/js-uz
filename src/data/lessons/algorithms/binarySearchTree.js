@@ -13,7 +13,7 @@ export const binarySearchTree = {
 ### Real hayotiy analogiya
 Tasavvur qiling, siz **telefon kitobidan kimnidir qidiryapsiz**:
 * Agar kitob sahifalari tartibsiz bo'lsa, siz boshidan boshlab birma-bir varaqlashingiz kerak (chiziqli qidiruv - O(n)).
-* Agar siz BST formatidagi tizimdan foydalansangiz, o'rtadagi ismdan boshlaysiz. Agar siz qidirayotgan ism o'rtadagidan alifbo bo'yicha oldin kelsa, kitobning butun o'ng yarmini tashlab yuborasiz va faqat chap yarmini qidirasiz. Har bir solishtirishda qidiruv maydoni ikki barobar qisqaradi (O(log n)).
+* Agar siz BST formatidagi tizimdan foydalanamiz desangiz, o'rtadagi ismdan boshlaysiz. Agar siz qidirayotgan ism o'rtadagidan alifbo bo'yicha oldin kelsa, kitobning butun o'ng yarmini tashlab yuborasiz va faqat chap yarmini qidirasiz. Har bir solishtirishda qidiruv maydoni ikki barobar qisqaradi (O(log n)).
 
 ---
 
@@ -176,15 +176,110 @@ Juda chuqur daraxtlarda rekursiyadan foydalanish chaqiriqlar stekini to'ldirib y
 
 ---
 
-## 6. 🛠️ Amaliy Topshiriqlar
+## 6. 🎨 Interaktiv Vizual
 
-Bu bo'limda siz interaktiv kod muharriri orqali BST yaratish, element qo'shish va qidirish metodlarini amalda sinab ko'rasiz.
+Daraxt tuzilmalari xotirada qanday saqlanishini tushunish juda muhimdir. Massivlardan farqli o'laroq (ular xotirada ketma-ket kataklarda joylashadi), daraxt tugunlari **Heap (Dinamik xotira)** bo'ylab tarqalib ketgan bo'ladi va bir-biri bilan **Reference (Havola / Ko'rsatkich)** orqali bog'lanadi.
+
+### 1. Ikkilik Qidiruv Daraxtining Xotira Strukturasi
+
+Quyidagi jadval va sxemalarda [10, 5, 15] elementlaridan iborat daraxtning xotira ko'rinishi ko'rsatilgan:
+
+* **Stack xotira:** \`bst\` o'zgaruvchisini saqlaydi, u esa Heap-dagi \`BinarySearchTree\` obyekti manziliga (\`@100\` kabi) ishora qiladi.
+* **Heap xotira:**
+  * \`BinarySearchTree\` obyekti \`@100\` manzilda joylashgan va \`root\` xususiyati orqali \`@200\` manzildagi \`Node\` obyektiga ishora qiladi.
+  * \`@200\` manzilda \`Node(10)\` joylashgan. Uning \`left\` xususiyati \`@300\` manzilga, \`right\` xususiyati \`@400\` manzilga ishora qiladi.
+  * \`@300\` manzilda \`left\` va \`right\` pointerlari \`null\` bo'lgan \`Node(5)\` joylashgan.
+  * \`@400\` manzilda \`left\` va \`right\` pointerlari \`null\` bo'lgan \`Node(15)\` joylashgan.
+
+\`\`\`mermaid
+classDiagram
+    class Stack {
+        +bst : @100 (Heap Address)
+    }
+    class Heap_BST {
+        +root : @200 (Node 10)
+    }
+    class Heap_Node_10 {
+        +value : 10
+        +left : @300 (Node 5)
+        +right : @400 (Node 15)
+    }
+    class Heap_Node_5 {
+        +value : 5
+        +left : null
+        +right : null
+    }
+    class Heap_Node_15 {
+        +value : 15
+        +left : null
+        +right : null
+    }
+    
+    Stack --> Heap_BST : points to
+    Heap_BST --> Heap_Node_10 : root pointer
+    Heap_Node_10 --> Heap_Node_5 : left pointer
+    Heap_Node_10 --> Heap_Node_15 : right pointer
+\`\`\`
+
+### 2. Daraxtning Mantiqiy Strukturasi va Pointer Oqimi
+
+Quyidagi diagrammada ma'lumotlar oqimi va chap/o'ng shoxlanish qoidalari ko'rsatilgan. Har bir tugunda qiymat va ikkita pointer mavjud:
+
+\`\`\`mermaid
+graph TD
+    subgraph Logical BST Structure
+        N10["Node (10) <br/> Address: @200"]
+        N5["Node (5) <br/> Address: @300"]
+        N15["Node (15) <br/> Address: @400"]
+        
+        N10 -- "left <br/> (value < 10)" --> N5
+        N10 -- "right <br/> (value > 10)" --> N15
+    end
+    
+    subgraph Memory Representation
+        M1["Stack: bst = Ref(@100)"]
+        M2["Heap @100: BST { root: Ref(@200) }"]
+        M3["Heap @200: Node { value: 10, left: Ref(@300), right: Ref(@400) }"]
+        M4["Heap @300: Node { value: 5, left: null, right: null }"]
+        M5["Heap @400: Node { value: 15, left: null, right: null }"]
+    end
+    
+    M1 -.-> M2
+    M2 -.-> M3
+    M3 -.-> M4
+    M3 -.-> M5
+\`\`\`
+
+### 3. Rekursiv In-Order Traversal (Aylanish) Simulyatsiyasi
+
+Daraxtni aylanishda chaqiriqlar staki (Call Stack) qanday o'zgarishini ko'rish:
+
+\`\`\`mermaid
+sequenceDiagram
+    participant CallStack as Call Stack (LIFO)
+    participant N10 as Node 10 (Root)
+    participant N5 as Node 5 (Left)
+    participant N15 as Node 15 (Right)
+    
+    Note over CallStack: inOrder() chaqirildi
+    CallStack->>N10: traverse(Node 10)
+    CallStack->>N5: traverse(Node 5)
+    Note over CallStack: Node 5 chap/o'ng null
+    Note over CallStack: Natija: [5] yozildi
+    N5-->>CallStack: qaytdi
+    Note over CallStack: Node 10 o'zi yozildi: [5, 10]
+    CallStack->>N15: traverse(Node 15)
+    Note over CallStack: Node 15 chap/o'ng null
+    Note over CallStack: Natija: [5, 10, 15] yozildi
+    N15-->>CallStack: qaytdi
+    N10-->>CallStack: tugadi
+\`\`\`
 
 ---
 
-## 7. 📝 12 ta Mini Test
+## 7. 🛠️ Amaliy Topshiriqlar
 
-Dars oxirida bilimingizni sinash uchun test topshiriqlari taqdim etiladi.
+Bu bo'limda siz interaktiv kod muharriri orqali BST yaratish, element qo'shish va qidirish metodlarini amalda sinab ko'rasiz.
 
 ---
 
@@ -306,7 +401,7 @@ class AutoCompleteDictionary {
       "Elementlari faqat boolean (true/false) qiymatlardan iborat bo'lgan grafik shakli"
     ],
     "correctAnswer": 1,
-    "explanation": "BSTda har bir tugunning chap tarmog'idagi barcha qiymatlar o'sha tugun qiymatidan kichik, o'ng tarmog'idagi barcha qiymatlar esa o'sha tugun qiymatidan katta bo'lishi shart."
+    "explanation": "BSTda har bir tugunning chap tarmog'idagi barcha qiymatlar shu tugun qiymatidan kichik, o'ng tarmog'idagi barcha qiymatlar esa o'sha tugun qiymatidan katta bo'lishi shart."
   },
   {
     "id": 2,

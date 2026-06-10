@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Service Worker ro'yxatdan o'tkazish",
+    "instruction": "Brauzerda Service Worker qo'llab-quvvatlanishini tekshiring va `/sw.js` faylini ro'yxatdan o'tkazuvchi `registerSW()` funksiyasini yozing.",
+    "startingCode": "function registerSW() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); } shartidan foydalaning.",
+    "test": "if (!code.includes('serviceWorker')) return 'navigator tekshiruvi amalga oshirilmadi';\nif (!code.includes('register')) return 'register() metodi chaqirilmadi';\nif (!code.includes('/sw.js')) return 'sw.js fayli yo\\'li to\\'g\\'ri ko\\'rsatilmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Install hodisasida kesh yaratish",
+    "instruction": "Service Worker ichida `install` hodisasini tinglang. `caches.open('v1')` orqali keshni oching va unga `['/', '/index.html', '/styles.css']` fayllarini qo'shing (`addAll`).",
+    "startingCode": "self.addEventListener('install', (event) => {\n  // Kodni shu yerda yozing\n});\n",
+    "hint": "event.waitUntil(caches.open('v1').then(cache => cache.addAll([...]))) zanjiridan foydalaning.",
+    "test": "if (!code.includes('install')) return 'install hodisasi tinglanmadi';\nif (!code.includes('caches.open')) return 'caches.open ishlatilmadi';\nif (!code.includes('addAll')) return 'addAll metodi chaqirilmadi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Fetch hodisasida keshdan javob qaytarish",
+    "instruction": "Service Worker ichida tarmoq so'rovlarini tutib qolish (`fetch` event) va agar keshda mos keluvchi resurs mavjud bo'lsa, o'shani qaytarish (`caches.match(event.request)`), aks holda tarmoqdan yuklash kodini yozing.",
+    "startingCode": "self.addEventListener('fetch', (event) => {\n  // Kodni shu yerda yozing\n});\n",
+    "hint": "event.respondWith(caches.match(event.request).then(response => response || fetch(event.request))) dan foydalaning.",
+    "test": "if (!code.includes('fetch')) return 'fetch hodisasi tinglanmadi';\nif (!code.includes('respondWith')) return 'respondWith ishlatilmadi';\nif (!code.includes('caches.match')) return 'caches.match ishlatilmadi';\nreturn null;"
+  }
+]

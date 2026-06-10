@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Jami buyurtmalar summasi (SUM)",
+    "instruction": "`orders` jadvalidagi barcha buyurtmalar summasi yig'indisini (`SUM`) toping.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT SUM(amount) FROM orders",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; const sum = result[0]['SUM(amount)'] || result[0]['sum(amount)'] || Object.values(result[0])[0]; if(Math.abs(Number(sum) - 2386) > 10) return 'Jami summa noto\\'g\\'ri'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Rollar bo'yicha guruhlash",
+    "instruction": "`users` jadvalidan har bir roldagi (`role`) foydalanuvchilar sonini (`COUNT`) guruhlab oling.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT role, COUNT(*) FROM users GROUP BY role",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Jami 3 ta alohida rol bor'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Eng arzon mahsulot narxi (MIN)",
+    "instruction": "`products` jadvalidan eng arzon mahsulot narxini (`MIN`) toping.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT MIN(price) FROM products",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; const minVal = Object.values(result[0])[0]; if(Number(minVal) !== 25) return 'Eng arzon narx 25 bo\\'lishi kerak'; return null;"
+  }
+]

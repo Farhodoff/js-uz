@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Debounce Funksiyasini Yozish",
+    "instruction": "Foydalanuvchi tez-tez tugmani bosganda yoki matn kiritganda, funksiya faqat kiritish to'xtaganidan so'ng ma'lum bir `delay` (ms) o'tgach ishga tushadigan `debounce(fn, delay)` funksiyasini yarating.",
+    "startingCode": "function debounce(fn, delay) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Har safar funksiya chaqirilganda, avvalgi taymerni `clearTimeout` yordamida tozalang va yangi `setTimeout` o'rnating.",
+    "test": "if (!code.includes('clearTimeout')) return 'debounce ichida clearTimeout ishlatilishi kerak';\nif (!code.includes('setTimeout')) return 'debounce ichida setTimeout ishlatilishi kerak';\nconst sandbox = new Function(code + '; return debounce;');\nconst db = sandbox();\nlet count = 0;\nconst debounced = db(() => count++, 50);\nif (typeof debounced !== 'function') return 'debounce funksiyasi wrapper funksiya qaytarishi kerak';\ndebounced(); debounced(); debounced();\nif (count !== 0) return 'Taymer tugashidan oldin funksiya bajarilmasligi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Throttle Funksiyasini Yozish",
+    "instruction": "Hodisa juda ko'p chaqirilganda (masalan, `scroll` yoki `resize`), funksiya har `limit` (ms) vaqt oralig'ida faqat bir marta bajarilishini ta'minlovchi `throttle(fn, limit)` funksiyasini yozing.",
+    "startingCode": "function throttle(fn, limit) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Chaqiruv ruxsat etilganligini ko'rsatuvchi bayroqcha (flag) o'zgaruvchisidan foydalaning va taymer orqali uni qayta tiklang.",
+    "test": "if (!code.includes('setTimeout')) return 'throttle ichida setTimeout ishlatilishi kerak';\nconst sandbox = new Function(code + '; return throttle;');\nconst th = sandbox();\nlet count = 0;\nconst throttled = th(() => count++, 100);\nif (typeof throttled !== 'function') return 'throttle funksiyasi wrapper funksiya qaytarishi kerak';\nthrottled(); throttled();\nif (count !== 1) return 'Throttle vaqtida birinchi chaqiriq darhol ishlashi va keyingilari cheklanishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "DocumentFragment yordamida DOM optimallashtirish",
+    "instruction": "Berilgan `container` (DOM elementi) ichiga ko'p miqdordagi `items` (matnli massiv) elementlarini `li` ko'rinishida qo'shing. DOM-ga qayta-qayta murojaat qilib (reflow/repaint) unumdorlikni pasaytirmaslik uchun `document.createDocumentFragment()` dan foydalaning.",
+    "startingCode": "function appendItemsOptimized(container, items) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Avval fragment yarating, so'ng tsikl ichida har bir elementni fragmentga `appendChild` qiling. Eng oxirida fragmentni `container`ga bir marta qo'shing.",
+    "test": "if (!code.includes('createDocumentFragment')) return 'createDocumentFragment dan foydalanilishi shart';\ntry {\n  const mockContainer = { appendChild: function(el) { this.child = el; } };\n  const mockDoc = {\n    createDocumentFragment: () => {\n      const fragment = { children: [], appendChild: function(el) { this.children.push(el); } };\n      return fragment;\n    },\n    createElement: (tag) => ({ tag, textContent: '' })\n  };\n  const sandbox = new Function('document', code + '; return appendItemsOptimized;');\n  const fn = sandbox(mockDoc);\n  fn(mockContainer, ['Olma', 'Anor']);\n  if (!mockContainer.child) return 'Elementlar containerga qo\\'shilmadi';\n  if (mockContainer.child.children && mockContainer.child.children.length !== 2) return 'Barcha elementlar fragmentga qo\\'shilmagan';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  }
+]

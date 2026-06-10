@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Debounce nima?",
+    "options": [
+      "Ketma-ket chaqirilgan funksiyalarning faqat birinchisini darhol bajaradigan mexanizm",
+      "Ketma-ket chaqirilayotgan funksiyalar to'xtagandan keyin, ma'lum bir kechikish vaqti (delay) o'tgachgina funksiyani 1 marta ishga tushiradigan usul",
+      "Funksiyani har doim ma'lum bir vaqt oralig'ida (masalan, har 100ms da) majburiy ishga tushiradigan usul",
+      "Xotiradagi o'zgaruvchilarni keshlovchi maxsus decorator"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Debounce ketma-ket takrorlanadigan tezkor hodisalarni guruhlaydi va hodisalar to'xtagandan keyin ma'lum bir vaqt o'tishini kutib, so'ngra faqat oxirgi chaqiruvni bajaradi."
+  },
+  {
+    "id": 2,
+    "question": "Throttle nima?",
+    "options": [
+      "Funksiyaning bajarilishini butunlay bekor qiluvchi operator",
+      "Faqat oxirgi chaqiruvni bajaradigan va oldingilarini o'chiradigan taymer",
+      "Tez-tez sodir bo'ladigan hodisalarga qaramasdan, funksiyani ma'lum bir vaqt oralig'ida (interval) ko'pi bilan 1 marta bajarilishini ta'minlaydigan mexanizm",
+      "Faqat xatolar yuz berganda ishlaydigan qayta sinash (retry) algoritmi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Throttle (bo'g'ish/cheklash) tez-tez chaqiriladigan hodisani ma'lum bir vaqt oralig'ida faqat bir marta ishlashini ta'minlash orqali yuklamani kamaytiradi."
+  },
+  {
+    "id": 3,
+    "question": "Qidiruv maydoniga (Search input) foydalanuvchi yozayotgan vaqtda API ga so'rov yuborishni optimallashtirish uchun qaysi biri ma'qulroq?",
+    "options": [
+      "Throttle, chunki u har bir harfda so'rov yuboradi",
+      "Hech qaysisi, chunki fetch o'zi optimallashtirilgan",
+      "Debounce, chunki foydalanuvchi yozishdan to'xtagandagina API so'rov yuborilishi kerak",
+      "Sinxron callback"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Foydalanuvchi yozayotgan paytda har bir harf uchun serverga so'rov yubormaslik uchun debounce ishlatiladi. Foydalanuvchi yozishdan to'xtagach (masalan, 500ms yozmay turganda) so'rov ketadi."
+  },
+  {
+    "id": 4,
+    "question": "Scroll (aylantirish) va Resize (oyna o'lchamini o'zgartirish) kabi yuqori chastotali hodisalarda ekrandagi elementlarni silliq va bir xil vaqtda yangilash uchun qaysi biri mos keladi?",
+    "options": [
+      "Throttle, chunki u hodisa davom etayotganda ham ma'lum vaqt oralig'ida (masalan, har 150ms da) yangilab turadi",
+      "Debounce, chunki scroll butunlay to'xtagandan keyin yangilansa yetarli",
+      "setTimeout-ni oddiy recursive chaqirish",
+      "try/catch bloki"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Scroll hodisasida debounce ishlatilsa, scroll davom etayotganda ekran yangilanmay qotib qoladi va faqat scroll to'xtaganda sakrab yangilanadi. Throttle esa scroll paytida ham ma'lum intervalda yangilab boradi."
+  },
+  {
+    "id": 5,
+    "question": "Debounce funksiyasida `clearTimeout(timeoutId)` chaqirilishining asosiy maqsadi nima?",
+    "options": [
+      "Brauzer keshini tozalash",
+      "Oldingi rejalashtirilgan bajarilishni bekor qilish va taymerni yangidan boshlash",
+      "Funksiya parametrlarini o'chirish",
+      "Xotirani majburiy bo'shatish (garbage collection)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Debounce-da har safar yangi hodisa sodir bo'lganda, `clearTimeout` yordamida eski rejalashtirilgan `setTimeout` bekor qilinadi va yangi taymer o'rnatiladi. Natijada kechikish davri boshidan boshlanadi."
+  },
+  {
+    "id": 6,
+    "question": "Agar debounce kechikish vaqti 300ms bo'lsa va foydalanuvchi har 200ms da tugmani bossa, funksiya necha marta bajariladi?",
+    "options": [
+      "Har bir bosishda bajariladi",
+      "Har 200ms da 1 marta bajariladi",
+      "Faqat foydalanuvchi tugma bosishni to'xtatgandan keyin 300ms o'tib, 1 marta bajariladi",
+      "Hech qachon bajarilmaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Chaqiruvlar oralig'i (200ms) debounce delayidan (300ms) kam bo'lgani uchun taymer har safar tozalanaveradi va faqat eng oxirgi bosishdan keyin 300ms o'tgach 1 marta ishlaydi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kodda nima xatolik bor?\n```javascript\nwindow.addEventListener('resize', () => {\n  debounce(() => console.log('Resized'), 300)();\n});\n```",
+    "options": [
+      "resize hodisasida debounce ishlatib bo'lmaydi",
+      "Har resize hodisasi sodir bo'lganda yangi debounced funksiya yaratilmoqda va eski taymerlar saqlanib qolmayapti. Natijada debounce ishlamaydi",
+      "Callback funksiyaga arrow funksiya berilgan",
+      "Kechikish vaqti millisekundda berilmagan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Debounce closure (yopiq muhit) hosil qilib, `timeoutId`ni o'zida saqlashi kerak. Har event sodir bo'lganda debounce-ni qayta yaratish xato. To'g'ri usul: `const process = debounce(...); window.addEventListener('resize', process);`"
+  },
+  {
+    "id": 8,
+    "question": "Throttle implementatsiyasida cheklovni tekshirish uchun odatda nima ishlatiladi?",
+    "options": [
+      "Promise.race",
+      "Flag o'zgaruvchisi (masalan, `inThrottle` true/false yoki oxirgi chaqiruv vaqti logikasi)",
+      "Window.location",
+      "localStorage"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Throttle-da asosan `inThrottle` yoki `isWaiting` kabi boolean flag yoki oxirgi bajarilish vaqtining farqidan foydalanib, yangi chaqiruvni bloklash yoki o'tkazish hal qilinadi."
+  },
+  {
+    "id": 9,
+    "question": "Leading edge (yoki immediate) debounce nima?",
+    "options": [
+      "Faqat xatolar bilan ishlaydigan debounce turi",
+      "Birinchi chaqiruvni darhol (kechikishsiz) bajaradigan va keyingi tezkor chaqiriqlarni delay tugaguncha bloklaydigan rejim",
+      "Faqat oxirgi elementlarni o'chirish usuli",
+      "Animatsiyalar uchun mo'ljallangan maxsus sinxron loop"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Leading-edge (immediate) rejimida foydalanuvchi tugmani birinchi marta bosganda funksiya darhol ishlaydi, so'ngra belgilangan muddat davomida takroriy bosishlar e'tiborsiz qoldiriladi. Bu tugmani ikki marta bosib yuborish (double submission) oldini oladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagilardan qaysi biri debounce va throttle-ning asosiy afzalligi hisoblanadi?",
+    "options": [
+      "Sahifaning yuklanish tezligini (Initial Load) oshirish",
+      "Hodisalarning ishlash chastotasini kamaytirish orqali CPU va tarmoq yuklamasini kamaytirish, UI unumdorligini oshirish",
+      "CSS kodlarini avtomatik siqish (minify)",
+      "Veb-sayt xavfsizligini ta'minlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Debounce va Throttle hodisalar (scroll, input, resize, mousemove) chastotasini boshqarib, keraksiz hisob-kitoblar va API so'rovlarini kamaytiradi, natijada sahifaning ishlashi yaxshilanadi."
+  },
+  {
+    "id": 11,
+    "question": "Agar bizga foydalanuvchi klaviaturani tez-tez bosib turgan paytda ham har 1 soniyada oraliq natijani serverga yuborib turish kerak bo'lsa, qaysi birini ishlatgan ma'qul?",
+    "options": [
+      "Debounce (1 soniya)",
+      "Throttle (1 soniya)",
+      "Oddiy sinxron setInterval",
+      "Hech qanday cheklovsiz to'g'ridan-to'g'ri yuborish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Throttle ma'lum bir intervalda (masalan, har 1 soniyada) kamida bir marta ishga tushishni kafolatlaydi, debounce esa yozish to'xtamaguncha kutib turaveradi."
+  },
+  {
+    "id": 12,
+    "question": "Debounce va Throttle yordamida qaysi brauzer xatoliklarini (errors) kamaytirish yoki oldini olish mumkin?",
+    "options": [
+      "SyntaxError (Sintaktik xatolar)",
+      "Page freezing (Sahifa muzlab qolishi) va keraksiz API so'rovlari tufayli serverning 429 (Too Many Requests) xatoligi berishi",
+      "CORS (Cross-Origin Resource Sharing)",
+      "NullPointerException"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tezkor API so'rovlarini cheklash orqali serverga tushayotgan yuk kamayadi (429 xatosining oldi olinadi) hamda og'ir DOM manipulyatsiyalarini cheklash orqali sahifa qotib qolishining oldi olinadi."
+  }
+]

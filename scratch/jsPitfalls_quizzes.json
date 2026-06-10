@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da `0.1 + 0.2 === 0.3` ifodasi nima qaytaradi va nega?",
+    "options": [
+      "`true` qaytaradi, chunki matematik jihatdan bu teng",
+      "`false` qaytaradi, chunki sonlar ikkilik tizimda (IEEE 754 standarti) saqlanganda suzuvchi nuqtali hisob-kitoblarda kichik xatolik yuzaga keladi (`0.30000000000000004`)",
+      "`undefined` qaytaradi, chunki bu turdagi qo'shish taqiqlangan",
+      "`TypeError` xatoligini beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript sonlarni IEEE 754 64-bit suzuvchi nuqta ko'rinishida saqlaydi. 0.1 va 0.2 ni ikkilik kasr ko'rinishida cheksiz hisoblash natijasida xatolik yig'ilib, yig'indi 0.30000000000000004 ga teng bo'ladi."
+  },
+  {
+    "id": 2,
+    "question": "JavaScript-dagi tarixiy xatolik (bug) tufayli `typeof null` nima qaytaradi?",
+    "options": [
+      "`'null'`",
+      "`'undefined'`",
+      "`'object'`",
+      "`'boolean'`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript yaratilgan dastlabki versiyalarda qiymatlar turlari tag (belgi) yordamida aniqlangan. Obyektlar uchun tag `000` bo'lgan, `null` ham xotirada hammasi nollardan tashkil topganligi sababli u xato ravishda obyekt deb hisoblangan. Bu xato saqlab qolingan."
+  },
+  {
+    "id": 3,
+    "question": "JavaScript-da `typeof NaN` (Not-a-Number) nima qaytaradi?",
+    "options": [
+      "`'nan'`",
+      "`'number'`",
+      "`'undefined'`",
+      "`'string'`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "NaN - garchi nomi 'Son emas' deb tarjima qilinsa ham, u raqamli hisob-kitoblardagi xatolik natijasini anglatuvchi maxsus numeric (raqamli) qiymatdir, shuning uchun turi 'number' hisoblanadi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi ifoda bajarilganda qanday natija hosil bo'ladi?\n```javascript\n[] + []\n```",
+    "options": [
+      "`[]` (bo'sh massiv)",
+      "`\"\"` (bo'sh satr)",
+      "`undefined`",
+      "`[object Object]`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massivlarni `+` operatori bilan qo'shganda, JavaScript ularni satrga (string) aylantiradi. Bo'sh massiv `\"\"` ga aylanadi, natijada `\"\" + \"\" = \"\"` (bo'sh satr) bo'ladi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi ifoda bajarilganda qanday natija olinadi?\n```javascript\n[] + {}\n```",
+    "options": [
+      "`\"\"` (bo'sh satr)",
+      "`\"[object Object]\"`",
+      "`NaN`",
+      "`TypeError`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`+` operatori tufayli massiv ham, obyekt ham satrga o'giriladi: `[]` bo'sh satrga `\"\"`, `{}` esa `\"[object Object]\"` ga o'zgaradi. Ikkovini qo'shganda `\"[object Object]\"` hosil bo'ladi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi funksiya chaqirilganda nima qaytaradi va bunga nima sabab bo'ladi?\n```javascript\nfunction test() {\n  return\n  {\n    name: 'Ali'\n  };\n}\n```",
+    "options": [
+      "`{ name: 'Ali' }` obyektini",
+      "`undefined` qaytaradi, chunki Automatic Semicolon Insertion (ASI) `return`dan keyin yangi satr bo'lgani uchun nuqtali vergul qo'yib yuboradi",
+      "`null` qaytaradi",
+      "`SyntaxError` tashlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript avtomatik ravishda nuqtali vergul qo'yish (ASI) qoidasiga ega. `return` so'zidan keyin yangi qatorga o'tilsa, u `return;` deb hisoblanadi va keyingi qatordagi kod o'qilmaydi, funksiya `undefined` qaytaradi."
+  },
+  {
+    "id": 7,
+    "question": "JavaScript-da `3 > 2 > 1` ifodasi nima qaytaradi?",
+    "options": [
+      "`true`",
+      "`false`",
+      "`1`",
+      "`NaN`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Taqqoslash chapdan o'ngga bajariladi. Dastlab `3 > 2` tekshiriladi va `true` qaytadi. So'ngra `true > 1` bajariladi. `true` son turiga o'tganda `1` bo'ladi, `1 > 1` esa `false` qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "Kuchli bo'lmagan tenglik `==` ishlatilganda `\"\" == 0` nima qaytaradi?",
+    "options": [
+      "`true`, chunki ikkala qiymat ham taqqoslashda 0 (yoki falsey) songa o'zgartiriladi",
+      "`false`, chunki biri string, biri son",
+      "`undefined`",
+      "`TypeError`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`==` ishlatilganda turlarni avtomatik o'zgartirish (coercion) yuz beradi. Bo'sh satr `\"\"` son turiga o'tganda `0` ga aylanadi. Natijada `0 == 0` bo'lib, `true` qaytadi. Shuning uchun har doim `===` (qatiy tenglik) ishlatish tavsiya etiladi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod bajarilgandan keyin `a` massivining qiymati qanday bo'ladi?\n```javascript\nconst a = [1, 2];\nconst b = a;\nb.push(3);\n```",
+    "options": [
+      "`[1, 2]`",
+      "`[1, 2, 3]`",
+      "`[3]`",
+      "`TypeError: const o'zgaruvchini o'zgartirib bo'lmaydi`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da massivlar va obyektlar havola (reference) orqali saqlanadi. `const b = a` yozilganda `b` ham `a` ko'rsatib turgan xotira manziliga bog'lanadi. Shuning uchun `b` orqali kiritilgan o'zgarish `a` da ham aks etadi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod bajarilganda qanday natija chiqadi?\n```javascript\nparseInt('0.0000005')\n```",
+    "options": [
+      "`0`",
+      "`5`",
+      "`NaN`",
+      "`null`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`parseInt` o'ziga kelgan birinchi argumentni string-ga o'giradi. `0.0000005` soni string bo'lganda ilmiy ko'rinishga o'tadi: `'5e-7'`. `parseInt` esa ushbu satr boshidagi `'5'` raqamini ajratib olib, 5 sonini qaytaradi."
+  },
+  {
+    "id": 11,
+    "question": "JavaScript-da `Array(3).map(() => 1)` metodi qanday massiv qaytaradi?",
+    "options": [
+      "`[1, 1, 1]`",
+      "`[empty × 3]` (bo'sh slotli massiv)",
+      "`[undefined, undefined, undefined]`",
+      "`[1]`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Array(3)` faqatgina massiv uzunligini (length) belgilaydi, lekin xotirada haqiqiy elementlarni yaratmaydi (ular empty slots yoki bo'sh kataklar deyiladi). `map()` kabi metodlar esa bo'sh slotlarni sakrab o'tadi va ularni qayta ishlamaydi."
+  },
+  {
+    "id": 12,
+    "question": "JavaScript-da argumentsiz chaqirilgan `Math.min() > Math.max()` sharti nima qaytaradi?",
+    "options": [
+      "`false`",
+      "`true`, chunki Math.min() default qiymati Infinity, Math.max() niki esa -Infinity",
+      "`NaN`",
+      "`TypeError`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Math.min()` argumentsiz chaqirilganda qiyoslanadigan eng katta sonni qaytarishi kerak, shuning uchun u `Infinity` beradi. `Math.max()` esa mos ravishda `-Infinity` beradi. Natijada `Infinity > -Infinity` sharti bajarilib `true` qaytadi."
+  }
+]
