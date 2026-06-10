@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Nega `key={Math.random()}` yozish juda yomon amaliyot hisoblanadi?",
+    "options": [
+      "Chunki random sonlar o'zgarmasdir",
+      "Har renderda yangi key yaratilib, komponent to'liq noldan o'rnatiladi va barcha local state yo'qoladi",
+      "Faqat serverga so'rov sekinlashadi",
+      "Bu JavaScript xatosiga olib keladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kalit o'zgarganda React uning eski holatini butunlay o'chirib (unmount), noldan qayta quradi (mount), bu barcha local statelarni tozalaydi va qotishga sabab bo'ladi."
+  },
+  {
+    "id": 2,
+    "question": "Ro'yxatlarni chizishda qachon indeksni (`index`) key sifatida ishlatsa bo'ladi?",
+    "options": [
+      "Doim ishlatsa bo'ladi",
+      "Faqat ro'yxat statik (hech qachon tartibi o'zgarmaydigan va o'chirilmaydigan) bo'lganda",
+      "Hech qachon ishlatib bo'lmaydi",
+      "Faqat asinxron so'rovlarda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Dinamik ro'yxatlarda indekslarni ishlatish xavfli, chunki qatorlar siljishi indekslarning yangilanishiga va UI xatoliklariga olib keladi."
+  },
+  {
+    "id": 3,
+    "question": "React-da key va ref qiymatlarini prop sifatida o'qish mumkinmi?",
+    "options": [
+      "Ha, albatta",
+      "Yo'q, u maxsus kalitlar bo'lib, React ichki hisob-kitoblar uchun ishlatadi va props-ga uzatmaydi",
+      "Faqat input teglari ichida o'qish mumkin",
+      "Faqat klasslarda ruxsat etilgan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ushbu qiymatlar React-ning o'ziga ajratilgan bo'lib, bolalar komponentga props sifatida o'tib bormaydi."
+  },
+  {
+    "id": 4,
+    "question": "React Fragment-da key qanday ishlatiladi?",
+    "options": [
+      "Key fragmentga qo'yilmaydi",
+      "Faqat `<React.Fragment key={id}>` shaklida to'liq yozilganda",
+      "`< key={id}>` yozish orqali",
+      "Faqat HTML class ishlatganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Fragment sintaksisining qisqa ko'rinishi (`<>`) hech qanday prop qabul qilmaydi, shuning uchun to'liq yozilishi shart."
+  },
+  {
+    "id": 5,
+    "question": "List rendering optimizatsiyasining eng sodda va samarali usuli qaysi?",
+    "options": [
+      "CSS flex-direction ishlatish",
+      "Elementlarni `React.memo` bilan o'rash va unikal, barqaror key props qo'llash",
+      "Massivni o'chirib yuborish",
+      "Uni context api provayderiga ulash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "React.memo yordamida ro'yxat elementlari faqat props o'zgargandagina qayta chiziladi va unikal keys bilan reconciliation tezlashadi."
+  },
+  {
+    "id": 6,
+    "question": "Key o'zgarishi orqali komponent state-ini tozalash (Resetting state) qanday amalga oshiriladi?",
+    "options": [
+      "setState(null) chaqirish orqali",
+      "Komponentga unikal key berib, state tozalanishi kerak bo'lganda o'sha key qiymatini o'zgartirish orqali",
+      "Brauzerni yangilash orqali",
+      "Faqat storage o'chirilganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Komponentning kaliti o'zgarganda React eski elementni butunlay o'chirib yuborib, yangisini yaratgani uchun state ham toza noldan boshlanadi."
+  },
+  {
+    "id": 7,
+    "question": "Ro'yxat renderingida unikal 'key' prop-ni yozmaslik nima keltirib chiqaradi?",
+    "options": [
+      "Sayt umuman ochilmay qoladi",
+      "React standart indekslardan (index) foydalanadi, bu esa elementlar o'zgarganda UI xatoliklarga va sekinlashuvga olib keladi",
+      "Faqat CSS-ga xalaqit beradi",
+      "Dizayn buziladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Key bo'lmasa, React indeksni oladi. Agar elementlar o'chsa yoki surilsa, React ularni chalkashtirib qayta render qiladi."
+  },
+  {
+    "id": 8,
+    "question": "React-da komponentga berilgan 'key' o'zgarganda DOM elementiga nima bo'ladi?",
+    "options": [
+      "U o'sha joyida matni o'zgaradi",
+      "Eski element butunlay o'chib (unmount), noldan yangi DOM elementi (mount) yaratiladi",
+      "Stili o'zgaradi",
+      "LocalStorage-ga saqlanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Key o'zgarishi React-ga bu butunlay boshqa komponent ekanligini bildiradi, eski komponent unmount bo'lib, yangi mount qilinadi."
+  },
+  {
+    "id": 9,
+    "question": "React-da ro'yxat virtualizatsiyasi (virtualization) nima?",
+    "options": [
+      "Ro'yxat elementlarini CSS visual effektlari yordamida yashirish",
+      "Juda katta ro'yxatda faqat ekranga ko'rinadigan (viewport dagi) elementlarni render qilish orqali DOM-ni yengillashtirish texnikasi",
+      "Elementlarni 3D ko'rinishga keltirish",
+      "Ma'lumotlarni serverga yubormasdan keshda saqlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Virtualizatsiya DOM elementlari sonini kamaytirish orqali sahifa unumdorligini va skrol tezligini sezilarli darajada oshiradi."
+  },
+  {
+    "id": 10,
+    "question": "Code Splitting (React.lazy va Suspense) rendering unumdorligiga qanday ta'sir qiladi?",
+    "options": [
+      "U barcha JS fayllarni CSS-ga o'zgartiradi",
+      "Boshlang'ich yuklanadigan bundle hajmini kamaytiradi va sahifa yuklanish tezligini oshiradi",
+      "Komponentlarni tezroq render qiladi",
+      "Brauzer keshini tozalaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kodni bo'laklash foydalanuvchiga faqat kerakli sahifaning kodlarini yuklash imkonini beradi va ortiqcha kod yuklanishining oldini oladi."
+  },
+  {
+    "id": 11,
+    "question": "Virtual DOM reconciliation jarayonida 'key' qanday ishlaydi?",
+    "options": [
+      "U faqat dizayn beradi",
+      "U yangi va eski Virtual DOM daraxtlari o'rtasidagi elementlarni bog'lovchi unikal ko'prik (identifikator) vazifasini bajaradi",
+      "Tugmalarni ishlatish uchun kerak",
+      "API javobini keshlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Reconciliation davrida React aynan o'sha key-li element o'zgarganmi yoki yo'qligini tekshiradi."
+  },
+  {
+    "id": 12,
+    "question": "10000 ta elementdan iborat ro'yxatda bitta satr o'zgarganda qolgan 9999 tasi render bo'lmasligi uchun nima qilish kerak?",
+    "options": [
+      "Context API ishlatish",
+      "Ro'yxat satr komponentini `React.memo` bilan o'rab, unga unikal barqaror (stable) key berish",
+      "Massivni bo'shatish",
+      "Absolute positioning qo'llash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "React.memo props o'zgarmagan qolgan 9999 ta komponentning render bo'lishini to'xtatadi."
+  }
+]

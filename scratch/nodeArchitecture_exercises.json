@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Buffer Yaratish",
+    "instruction": "Berilgan satrdan (string) UTF-8 formatida yangi Buffer obyektini yaratib qaytaruvchi `createBuffer(str)` funksiyasini yozing.",
+    "startingCode": "function createBuffer(str) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Buffer.from(str, 'utf8') dan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return createBuffer;');\nconst fn = sandbox();\nconst buf = fn('Salom');\nif (!buf || typeof buf.toString !== 'function') return 'Buffer obyekti qaytarilmadi';\nif (buf.toString('utf8') !== 'Salom') return 'Buffer ichidagi qiymat to\\'g\\'ri kelmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Fayl hajmini olish",
+    "instruction": "Node.js-dagi `fs.stat` qaytargan stat obyektidan fayl hajmini baytlarda qaytaruvchi `getFileSize(stats)` funksiyasini yozing.",
+    "startingCode": "function getFileSize(stats) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "stats obyektining `size` xossasini qaytaring.",
+    "test": "const sandbox = new Function(code + '; return getFileSize;');\nconst fn = sandbox();\nif (fn({ size: 2048 }) !== 2048) return 'Foydalanuvchi obyektdan size xossasini to\\'g\\'ri qaytarmadi';\nif (fn({ size: 0 }) !== 0) return '0 o\\'lchamdagi fayl uchun noto\\'g\\'ri javob';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Windows Platformasini Tekshirish",
+    "instruction": "Node.js platformasi 'win32' (Windows) ekanligini tekshirib `true` yoki `false` qaytaradigan `isWindows(platform)` funksiyasini yozing.",
+    "startingCode": "function isWindows(platform) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "platform === 'win32' ifodasi qiymatini qaytaring.",
+    "test": "const sandbox = new Function(code + '; return isWindows;');\nconst fn = sandbox();\nif (fn('win32') !== true) return 'win32 platformasi uchun true qaytishi kerak';\nif (fn('darwin') !== false) return 'darwin (macOS) platformasi uchun false qaytishi kerak';\nreturn null;"
+  }
+]

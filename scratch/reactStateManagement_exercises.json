@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Immutable List Adder",
+    "instruction": "Massiv ko'rinishidagi state-ga element qo'shish uchun massivni o'zgartirmasdan (immutable) yangi massiv qaytaruvchi `addItem(state, item)` funksiyasini yozing.",
+    "startingCode": "function addItem(state, item) {\n  // Spread operator orqali yozing\n}",
+    "hint": "return [...state, item];",
+    "test": "if (typeof addItem !== 'function') return 'addItem topilmadi'; const s = [1, 2]; const res = addItem(s, 3); if(s.length !== 2) return 'Asl state o\\'zgartirildi (mutated)'; if(res[2] !== 3) return 'Yangi element qo\\'shilmadi'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Immutable Object Updater",
+    "instruction": "User obyektini o'zgartirmasdan (immutable), uning yoshini (`age`) yangi qiymatga o'zgartirib qaytaruvchi `updateUserAge(user, newAge)` funksiyasini yozing.",
+    "startingCode": "function updateUserAge(user, newAge) {\n  // user obyektini o'zgartirmasdan yozing\n}",
+    "hint": "return { ...user, age: newAge };",
+    "test": "if (typeof updateUserAge !== 'function') return 'updateUserAge topilmadi'; const u = { name: 'Ali', age: 20 }; const res = updateUserAge(u, 21); if(u.age !== 20) return 'Asl obyekt o\\'zgartirildi'; if(res.age !== 21) return 'Yosh yangilanmadi'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Store Merger",
+    "instruction": "Ikkita do'kon obyektlarini birlashtirib qaytaruvchi `combineStores(storeA, storeB)` funksiyasini yozing.",
+    "startingCode": "function combineStores(storeA, storeB) {\n  // Obyektlarni birlashtiring\n}",
+    "hint": "return { ...storeA, ...storeB };",
+    "test": "if (typeof combineStores !== 'function') return 'combineStores topilmadi'; const a = { x: 1 }; const b = { y: 2 }; const res = combineStores(a, b); if(res.x !== 1 || res.y !== 2) return 'Birlashtirishda xato'; return null;"
+  }
+]

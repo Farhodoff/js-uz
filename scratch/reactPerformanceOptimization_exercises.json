@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Sodda useMemo simulyatsiyasi",
+    "instruction": "Qiymat va dependencylar berilganda, agar dependency o'zgarmasa keshdagi qiymatni qaytaradigan `memoizeValue(fn, deps, lastDeps, lastValue)` funksiyasini yozing. (massiv deps tengligini solishtiring).",
+    "startingCode": "function memoizeValue(fn, deps, lastDeps, lastValue) {\n  const depsEqual = lastDeps && deps.every((d, i) => d === lastDeps[i]);\n  // Agar teng bo'lsa eski qiymatni, bo'lmasa fn() ni chaqirib yangisini qaytaring\n}",
+    "hint": "if (depsEqual) return lastValue;\nreturn fn();",
+    "test": "if (typeof memoizeValue !== 'function') return 'memoizeValue topilmadi'; const fn = () => 10; if(memoizeValue(fn, [1], [1], 5) !== 5) return 'Dependency o\\'zgarmaganda kesh xato'; if(memoizeValue(fn, [2], [1], 5) !== 10) return 'Dependency o\\'zgarganda fn() chaqirilmadi'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Sodda useCallback simulyatsiyasi",
+    "instruction": "Berilgan funksiya havolasini dependencylar o'zgarmasa keshlab saqlaydigan `memoizeCallback(fn, deps, lastDeps, lastFn)` funksiyasini yozing.",
+    "startingCode": "function memoizeCallback(fn, deps, lastDeps, lastFn) {\n  const depsEqual = lastDeps && deps.every((d, i) => d === lastDeps[i]);\n  // Teng bo'lsa eski funksiyani, bo'lmasa yangisini qaytaring\n}",
+    "hint": "if (depsEqual) return lastFn;\nreturn fn;",
+    "test": "if (typeof memoizeCallback !== 'function') return 'memoizeCallback topilmadi'; const f = () => {}; if (memoizeCallback(f, [1], [1], f) !== f) return 'Callback keshlanmadi'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Bundle Limit Checker",
+    "instruction": "Sahifa to'liq hidratatsiya bo'lishidan oldin yuklanadigan bundle hajmini tekshiruvchi `checkBundleSize(sizeKB, limitKB)` funksiyasini yozing (agar limitdan oshsa true, bo'lmasa false).",
+    "startingCode": "function checkBundleSize(sizeKB, limitKB) {\n  // Limit tekshirish\n}",
+    "hint": "return sizeKB > limitKB;",
+    "test": "if (typeof checkBundleSize !== 'function') return 'checkBundleSize topilmadi'; if(checkBundleSize(600, 500) !== true || checkBundleSize(400, 500) !== false) return 'Limit tekshirish xato'; return null;"
+  }
+]

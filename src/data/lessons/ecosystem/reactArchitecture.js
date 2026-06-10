@@ -1,52 +1,146 @@
 export const reactArchitecture = {
   id: "reactArchitecture",
   title: "React Component Arxitekturasi (Design Patterns)",
-  theory: `## 1. NEGA kerak?
-React loyihalarida to'g'ri komponentlar dizaynini tanlash, kodning qayta ishlatilishini (reusability) va kengaytiriluvchanligini ta'minlaydi. Loyiha o'sib borgan sari komponentlar chalkashib ketmasligi uchun ularni to'g'ri guruhlash, rollarini aniqlash va vazifalarini ajratish (Separation of Concerns) muhimdir.
+  theory: `## 1. 💡 Kirish va Nega kerak?
+React loyihalarida to\\'g\\'ri komponentlar dizaynini tanlash, kodning qayta ishlatilishini (reusability) va kengaytiriluvchanligini ta\\'minlaydi. Loyiha o\\'sib borgan sari komponentlar chalkashib ketmasligi uchun ularni to\\'g\\'ri guruhlash, rollarini aniqlash va vazifalarini ajratish (Separation of Concerns) muhimdir. Agar bu arxitektura to\\'g\\'ri o\\'rnatilmasa, React loyihasi qisqa muddatda "spagetti kod"ga aylanadi va uni testlash yoki kengaytirish imkonsiz bo\\'lib qoladi.
 
-## 2. SODDALIK (Analogiya)
-Buni **Lego o'yinchoq uyi** deb tasavvur qiling:
-- **Dumb (Presentational) Component:** Oddiy Lego g'ishtining o'zi. U faqat shakli va rangi bilan mavjud, o'zicha o'zgarmaydi. Faqat props (buyruqlar) oladi.
-- **Smart (Container) Component:** Uyning elektr shit paneli. U qayerdan tok kelishini va qayerga tarqalishini boshqaradi. U state va ma'lumotlarni boshqaradi.
+---
 
-## 3. STRUKTURA VA MAHSULOT PRINSIPLARI
-- **Smart vs Dumb Components:**
-  - **Dumb (Presentational):** UI ko'rinishi uchun mas'ul. Unda lifecycle metodlari yoki local api fetch bo'lmaydi. U faqat kelgan props-larni ko'rsatadi.
-  - **Smart (Container):** Logika va state uchun mas'ul. Ular API-ga so'rov yuboradi, ma'lumotlarni saqlaydi va dumb komponentlarga uzatadi.
-- **Folder Structure (Features vs Shared):**
-  - Katta loyihalarda kodlar funksionallik bo'yicha guruhlanadi (**Feature-based structure**): masalan, \`features/auth\`, \`features/cart\`.
-  - Har bir feature o'zining \`components\`, \`hooks\` va \`services\` papkalariga ega bo'ladi.
+## 2. 💡 Sodda Tushuntirish va Analogiya
+React komponentlar dizaynini **Lego o\\'yinchoq uyi** yoki **Lego shaharchasi** deb tasavvur qiling:
+* **Dumb (Presentational) Component:** Oddiy Lego g\\'ishtining o\\'zi. U faqat shakli va rangi bilan mavjud, o\\'zicha o\\'zgarmaydi. Faqat props (tashqi buyruqlar va xossalar) oladi va o\\'sha bo\\'yicha ko\\'rinish beradi.
+* **Smart (Container) Component:** Uyning elektr shit paneli. U qayerdan tok kelishini va qayerga tarqalishini boshqaradi. U state (holat) va ma\\'lumotlarni boshqaradi va Dumb komponentlarni kerakli energiya bilan ta\\'minlaydi.
+* **Reconciliation (Yarashtirish) va Fiber:** Bu Lego shaharchasini doimiy ravishda minimal kuch bilan ta\\'mirlab turadigan usta quruvchilar guruhidir. Ular butun shaharni buzib qayta qurmaydi, balki faqat shikastlangan g\\'ishtchani (DOM elementini) topib almashtiradi.
 
-## 4. KO‘P UCHRAYDIGAN XATOLAR (Junior Mistakes)
-1. **Dumb komponent ichida to'g'ridan-to'g'ri API fetch yozish:** Bu komponentni qayta ishlatib bo'lmaydigan holga keltirib qo'yadi.
-2. **Barrel importlar orqali circular dependency chaqirish:** \`index.js\` lardan noto'g'ri foydalanib komponentlarni bir-biriga zanjirband qilib qo'yish.
+---
 
-## 5. SAVOLLAR VA JAVOBLAR (Interview Questions)
-1. **Component-based architecture nima?**
-   - UI-ni kichik, mustaqil va qayta ishlatiladigan bo'laklar (komponentlar) yordamida yig'ish yondashuvi.
-2. **Container vs Presentational components farqi nima?**
-   - Container logika va ma'lumotlar bilan ishlaydi, Presentational esa faqat vizual ko'rinish va props qabul qilishga ixtisoslashgan.
-3. **Smart vs Dumb komponentlar pattern-i hozir ham dolzarbmi?**
-   - Custom hook-lar paydo bo'lgach, uning ahamiyati biroz kamaydi (chunki logikani hook-ka chiqarish osonlashdi), ammo katta tizimlarda hali ham qo'llaniladi.
-4. **Feature-based folder structure nima?**
-   - Loyiha fayllarini texnik turlari bo'yicha emas (barcha komponentlar bitta papkada), balki biznes modullari (auth, profile, shopping-cart) bo'yicha tartiblash.
-5. **Smart komponent qanday test qilinadi?**
-   - Biznes logikasi va custom hook-larni mock qilish yoki \`@testing-library/react\` yordamida integratsiya testlari orqali.
-6. **Co-location prinsipi nima?**
-   - Komponentga tegishli test, stil va yordamchi helper fayllarni uning yonida (bitta papkada) saqlash.
-7. **Atomic Design tizimi qanday ishlaydi?**
-   - UI komponentlarni Atomlar, Molekulalar, Organizmlar, Shablonlar va Sahifalar darajasida bo'lib qurish.
-8. **Circular dependency muammosi nima?**
-   - A komponent B komponentni, B komponent esa A-ni import qilganda brauzerda chalkashlik yoki \`undefined\` xatosi chiqishi.
-9. **Katta loyihalarda barrel importlardan nega ehtiyot bo'lish kerak?**
-   - Ular keraksiz kodlarni ham bundle-ga tortib kelishi va Tree-shaking-ni buzishi mumkin.
-10. **Reusability (qayta ishlash) darajasini oshirish uchun nima qilish kerak?**
-    - Komponentni tashqi global state va API-ga bog'liq qilmasdan, props orqali boshqariladigan holga keltirish.
-11. **Props-drilling nima?**
-    - State-ni unga ehtiyoji bo'lmagan ko'plab o'rta komponentlar orqali pastga uzatish.
-12. **Smart komponentda UI qismini qanday kamaytirish mumkin?**
-    - Barcha vizual kodlarni dumb komponentlarga ajratib, smart komponentda faqat ma'lumotlarni boshqarish orqali.`,
-    exercises: [
+## 3. ⏳ Tarix va Evolutsiya
+React arxitekturasi bir necha muhim bosqichlarni bosib o\\'tdi:
+1. **Class Components davri:** Logikani qayta ishlatish uchun HOC (Higher-Order Components) va Render Props ishlatilardi. Bu esa komponentlar zanjirining haddan tashqari chuqurlashib ketishiga (Wrapper Hell) olib keldi.
+2. **Hooks inqilobi (React 16.8+):** Custom Hook\\'lar kelishi bilan Smart/Dumb tushunchasi o\\'zgardi. Endi logikani alohida Hook ichiga yozib, UI qismini mutlaqo toza saqlash imkoniyati tug\\'ildi.
+3. **React Fiber (React 16.0+):** React-ning renderlash mexanizmi to\\'liq qayta yozildi. Stack-ga asoslangan sinxron renderlash o\\'rniga, bo\\'lib-bo\\'lib ishlaydigan asinxron Fiber arxitekturasi joriy etildi.
+
+---
+
+## 4. ⚙️ Asosiy Konseptlar va Struktura
+* **Separation of Concerns (Vazifalarni ajratish):** Vizual ko\\'rinish va biznes logikani alohida saqlash.
+* **Smart vs Dumb Components:**
+  * **Dumb (Presentational):** UI renderiga mas\\'ul. Unda API so\\'rovlari yoki global state boshqaruvi bo\\'lmaydi. Ular faqat props qabul qiladi.
+  * **Smart (Container):** Logika va state uchun mas\\'ul. Ular API-ga so\\'rov yuboradi, ma\\'lumotlarni saqlaydi va dumb komponentlarga uzatadi.
+* **Folder Structure (Features vs Shared):**
+  * Loyiha fayllarini biznes funksionalligi bo\\'yicha guruhlash: \`features/auth\`, \`features/cart\`. Common UI komponentlar esa \`components/shared\` papkasida saqlanadi.
+
+---
+
+## 5. 🔍 Virtual DOM va Reconciliation Algoritmi
+React-ning tez ishlash siri Virtual DOM va Reconciliation (diffing) algoritmidir. React elementlarni yangilaganda:
+1. Agar ikki element turi har xil bo\\'lsa, eski element o\\'chiriladi va yangi DOM daraxti hosil qilinadi.
+2. Ro\\'yxatlar bilan ishlashda \`key\` propidan foydalanib, qaysi element o\\'zgarganini aniq topadi.
+Reconciliation algoritmi \$O(N)\$ vaqt murakkabligida ishlaydi, bu esa real DOM bilan solishtirganda judayam tezdir.
+
+---
+
+## 6. 📊 Sxema va Mermaid Diagramma
+React Fiber arxitekturasida elementlar bir-biri bilan Linked List (bir tomonlama bog\\'langan ro\\'yxat) orqali ulanadi. Quyida Reconciliation va Fiber daraxtining vizual ko\\'rinishi keltirilgan:
+
+\`\`\`mermaid
+graph TD
+    A[Root Fiber] --> B(Header Fiber)
+    A --> C(Main Content Fiber)
+    C --> D(Sidebar Fiber)
+    C --> E(List Fiber)
+    E --> F[Item 1 Fiber]
+    E --> G[Item 2 Fiber]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+\`\`\`
+
+Har bir Fiber tugun (node) o\\'zida render jarayonini to\\'xtatish, ustuvorligini belgilash va qayta tiklash uchun barcha ma\\'lumotlarni saqlaydi.
+
+---
+
+## 7. 💻 Real Kod Misoli va Tahlil
+Keling, an\\'anaviy Smart/Dumb yondashuvini custom hook orqali modernizatsiya qilishni ko\\'rib chiqamiz.
+
+**Spagetti Kod (Hamma narsa bitta joyda):**
+\`\`\`javascript
+function UserProfile() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/user")
+      .then(res => res.json())
+      .then(data => {
+        setUser(data);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <div>Yuklanmoqda...</div>;
+  return <div>Foydalanuvchi: {user.name}</div>;
+}
+\`\`\`
+
+**Toza Arxitektura (Custom Hook + Presentational Component):**
+\`\`\`javascript
+// 1. Smart Layer (Logika)
+function useUserProfile() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/user")
+      .then(res => res.json())
+      .then(data => {
+        setUser(data);
+        setLoading(false);
+      });
+  }, []);
+
+  return { user, loading };
+}
+
+// 2. Dumb Layer (UI ko\\'rinishi)
+function UserProfileView({ user, loading }) {
+  if (loading) return <div>Yuklanmoqda...</div>;
+  return <div>Foydalanuvchi: {user?.name}</div>;
+}
+
+// 3. Integratsiya (Container)
+function UserProfileContainer() {
+  const { user, loading } = useUserProfile();
+  return <UserProfileView user={user} loading={loading} />;
+}
+\`\`\`
+
+---
+
+## 8. ❌ Ko\\'p Uchraydigan Xatolar (Junior Mistakes)
+1. **Dumb komponent ichida API so\\'rov yozish:** Bu komponentni boshqa joyda qayta ishlatish imkoniyatini yo\\'q qiladi.
+2. **Ro\\'yxatlarda index-ni key sifatida ishlatish:** Agar ro\\'yxat tartibi o\\'zgarsa, React eski holatni noto\\'g\\'ri render qilishi mumkin.
+3. **Props-drilling xatosi:** State-ni unga ehtiyoji bo\\'lmagan ko\\'plab o\\'rta komponentlar orqali pastga uzatish. Yechim: React Context yoki global state (Zustand, Redux).
+
+---
+
+## 9. 💬 Intervyu Savollari
+1. **Reconciliation nima?**
+   - *Javob:* Virtual DOM-dagi o\\'zgarishlarni real DOM bilan solishtirib, faqat farqlarni yangilash algoritmi.
+2. **Fiber nima va uning asosiy afzalligi nima?**
+   - *Javob:* Fiber - React-ning renderlash ishini mayda bo\\'laklarga bo\\'lib asinxron bajaruvchi yangi dvigateli.
+3. **Smart va Dumb komponentlarning farqi nima?**
+   - *Javob:* Smart logika va ma\\'lumotlar bilan ishlaydi, Dumb esa faqat props olib, visual UI ko\\'rsatadi.
+4. **Co-location nima?**
+   - *Javob:* Fayllarni (test, css, komponent) o\\'ziga yaqin joyda, bitta papkada saqlash.
+5. **Nega key prop kerak?**
+   - *Javob:* React Reconciliation jarayonida qaysi elementlar o\\'zgarganini yoki o\\'chganini aniqlash uchun.
+
+---
+
+## 10. 🎯 Xulosa va Keyingi Qadamlar
+React komponentlar dizaynini to\\'g\\'ri rejalashtirish katta loyihalar uchun juda muhimdir. Logika va visual qismlarni ajratish orqali siz kodingizni toza, tushunarli va testlashga oson qilasiz. Keyingi qadamlarda React Performance optimization va modern state-management tizimlari bilan tanishib chiqing.`,
+  exercises: [
     {
       id: 1,
       title: "React isFunctionComponent",
@@ -72,7 +166,8 @@ Buni **Lego o'yinchoq uyi** deb tasavvur qiling:
       test: "if (typeof assignRef !== 'function') return 'assignRef topilmadi'; const r = { current: null }; assignRef(r, 'div'); if(r.current !== 'div') return 'Ref bog\\'lanmadi'; return null;"
     }
   ],
-  quizzes: [{
+  quizzes: [
+    {
       id: 1,
       question: "Presentational (Dumb) komponentning asosiy vazifasi nima?",
       options: [

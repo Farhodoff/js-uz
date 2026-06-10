@@ -1,59 +1,270 @@
 export const reactProductionArchitecture = {
   id: "reactProductionArchitecture",
   title: "Real Production Arxitekturasi (Separation of Concerns)",
-  theory: `## 1. NEGA kerak?
-Professional loyihalarni (masalan, 10+ dasturchi ishlayotgan katta tizimlar) boshqarish uchun eng muhim qoida — har bir kod bo'lagining o'z o'rni va vazifasi bo'lishi kerak (**Separation of Concerns**). JSX, API chaqiruvlari, validation va state boshqaruvi bitta faylga aralashtirilsa, loyihani kengaytirib bo'lmaydi va unit test yozish imkonsiz bo'lib qoladi.
+  theory: `## 1. NEGA KERAK?
 
-## 2. SODDALIK (Analogiya)
-Professional restoran oshxonasini tasavvur qiling:
-- **UI Komponent (Ofitsiant):** U faqat mijozdan buyurtma oladi va tayyor ovqatni mijozga chiroyli qilib yetkazadi (vizual render). U ovqat qanday pishishini bilmaydi.
-- **Custom Hooks (Oshpaz):** U orqa fonda ovqat pishiradi, qanday pishirish (logika) sirlarini ofitsiantdan yashiradi.
-- **Service Layer (Mahsulot yetkazib beruvchilar):** Ular bozordan sabzavot va go'sht (API orqali tashqi ma'lumotlar) olib kelib berishadi.
+Katta va professional React loyihalarida (masalan, o\\'nlab dasturchilar ishlaydigan Enterprise tizimlarda) kod bazasini tartibli saqlash hayotiy zaruriyatdir. Junior dasturchilar odatda barcha logikani (API so\\'rovlar, ma\\'lumotlarni formatlash, form validation va holat boshqaruvi) to\\'g\\'ridan-to\\'g\\'ri UI komponentining ichiga (JSX aralash) yozib yuborishadi. Bu quyidagi muammolarga olib keladi:
+- **Spaghetti Code:** Kodni o\\'qish va tushunish o\\'ta qiyinlashadi.
+- **Qayta ishlatib bo\\'lmaslik (Duplication):** Bir xil API so\\'rov yoki logika boshqa sahifada ham kerak bo\\'lsa, uni nusxalashga to\\'g\\'ri keladi.
+- **Testlash qiyinligi:** UI-ga qattiq bog\\'langan biznes logikani Unit test yordamida tekshirish imkonsiz bo\\'lib qoladi.
 
-## 3. STRUKTURA VA PRINSIPLAR
-- **Separation of Concerns (Vazifalar ajratilishi):**
-  - Bitta fayl faqat bitta ish bilan shug'ullanishi kerak. JSX faqat UI-ni chizadi, asinxron logika custom hook ichiga yoziladi, API chaqiruvlari esa alohida service faylga o'tkaziladi.
-- **Service Layer Pattern:**
-  - API so'rovlarini markazlashtirilgan holda boshqarish (masalan, Axios instance yoki fetch wrapper-lar).
-- **Custom Hooks Arxitekturasi:**
-  - Biznes logikani komponentdan to'liq ajratib, uni bir nechta komponentlarda qayta ishlata oladigan holga keltirish.
-- **Scalable Folder Structure (Feature-based):**
-  - Loyihani texnik turlari bo'yicha emas (barcha komponentlar bitta joyda), balki biznes modullari bo'yicha bo'lish (masalan, \`src/features/auth\`, \`src/features/dashboard\`).
+**Separation of Concerns (Vazifalar taqsimoti)** — har bir kod bo\\'lagining loyihada faqat bitta aniq vazifaga ega bo\\'lishini ta\\'minlash qoidasidir.
 
-## 4. KO‘P UCHRAYDIGAN XATOLAR (Junior Mistakes)
-1. **useEffect ichida to'g'ridan-to'g'ri fetch yozish:** Bu kodni qayta ishlatib bo'lmaydigan holga keltirib, testlashni murakkablashtiradi.
-2. **JSX ichiga og'ir matematik hisob-kitoblar yoki data formatlashlarni aralashtirib yuborish:** JSX faqat UI shabloniga javob berishi kerak, formatlash helper-larga chiqarilishi shart.
+---
 
-## 5. SAVOLLAR VA JAVOBLAR (Interview Questions)
-1. **Separation of Concerns React-da qanday qo'llaniladi?**
-   - UI (JSX), Biznes logika (Custom Hooks) va Ma'lumot (Services/API) qatlamlarini bir-biridan mustaqil ajratish orqali.
-2. **Nega custom hooklar arxitekturada juda muhim?**
-   - Kod takrorlanishini (DRY) oldini oladi va stateful harakatlarni boshqa komponentlarda ham oson ulash imkonini beradi.
-3. **Service Layer nima?**
-   - API so'rovlari va tarmoq kutubxonalari (Axios) sozlamalari yoziladigan, komponentlardan alohida yashaydigan markaziy qatlam.
-4. **Custom hook va oddiy helper (utility) funksiya farqi nima?**
-   - Custom hook o'z ichida boshqa React hooklarini (useState, useEffect) ishlata oladi, helper esa oddiy JS funksiyasidir.
-5. **Dry (Don't Repeat Yourself) qoidasi React-da qanday buziladi?**
-   - Har bir sahifada API so'rovlarni yoki form validation qoidalarini qaytadan yozib chiqish orqali.
-6. **Custom hook ichida useEffect yozish yaxshimi yoki komponentdami?**
-   - Custom hook ichida yozish afzal, shunda komponent faqat toza natijalarni qabul qiladi va useEffect nojo'ya ta'sirlaridan xoli bo'ladi.
-7. **Katta loyihalarda barrel export-lar nega ishlatiladi?**
-   - Import yo'llarini qisqartirish va toza yozish uchun (\`import { Button } from '@/components'\`).
-8. **Scalable React loyihasining papkalar tuzilishi qanday bo'lishi kerak?**
-   - \`src/components\` (umumiy UI), \`src/features\` (biznes modullar), \`src/services\` (API), \`src/hooks\` (global hooklar), \`src/context\` (global state).
-9. **Separation of concerns unit-test yozishni qanday osonlashtiradi?**
-   - Logikani UI-siz (custom hook), API-ni esa mock ma'lumotlar bilan alohida, juda oddiy sinovdan o'tkazish mumkin bo'ladi.
-10. **React-da Container/Presenter andozasini nima almashtirdi?**
-    - Custom Hooks arxitekturasi.
-11. **React dynamic importlar yordamida bundle-ni qanday optimallashtirgan bo'lar edingiz?**
-    - Kam ishlatiladigan feature modullarni (masalan, PDF eksport yoki Admin dashboard) faqat kerak bo'lganda dynamic import yordamida yuklash orqali.
-12. **Micro-frontends arxitekturasida React qanday moslashadi?**
-    - Web Components yoki Module Federation (Webpack 5) orqali React komponentlarini boshqa tizimlarda ulash orqali.`,
-    exercises: [
+## 2. SODDALASHTIRILGAN ANALOGIYA
+
+Professional restoran faoliyatini tasavvur qiling:
+1. **UI Komponent (Ofitsiant):** Mijoz bilan muloqot qiladi, buyurtmani oladi va tayyor ovqatni chiroyli qilib stolga tortadi. U ovqat qanday pishishini yoki masalliqlar qaerdan kelishini bilmaydi.
+2. **Custom Hook (Oshpaz):** Oshxonada ishlaydi. U ovqat tayyorlash retsepti va texnikasini (biznes logikani) biladi, lekin mijozlar bilan to\\'g\\'ridan-to\\'g\\'ri gaplashmaydi.
+3. **Service Layer (Ta\\'minotchi):** Bozordan go\\'sht, sabzavotlar (tashqi API ma\\'lumotlari) olib keladi. U ovqat pishirmaydi ham, mijozga xizmat ham ko\\'rsatmaydi.
+
+Agar ofitsiantning o\\'zi ham bozorga borib, ham ovqat pishirib, ham xizmat ko\\'rsatsa, restoran tezda inqirozga uchraydi. Dasturlashda ham xuddi shunday!
+
+---
+
+## 3. ASOSIY KONSEPTLAR
+
+Katta loyihalarda arxitektura asosan quyidagi 4 ta mustaqil qatlamga bo\\'linadi:
+
+1. **Presentation Layer (UI Qatlami):**
+   - Faqat JSX render qiladi, foydalanuvchi hodisalarini (onClick, onChange) tinglaydi.
+   - Minimal holat (faqat UI-ga tegishli statelar, masalan: \`isOpen\`, \`activeTab\`) saqlaydi.
+2. **Business Logic Layer (Biznes Logika Qatlami):**
+   - Custom hooklar orqali amalga oshiriladi.
+   - React state-lari, useEffect-lar va boshqa logikalar shu yerda yashaydi.
+3. **Service Layer (API Qatlami):**
+   - Tashqi dunyo (Backend) bilan bog\\'lanish kanali.
+   - Axios instance-lar, fetch so\\'rovlari va request/response interceptor-lar shu yerda boshqariladi.
+4. **Data/State Management (Global Global State):**
+   - Redux, Zustand, yoki React Context yordamida ilovaning umumiy holatini boshqarish.
+
+---
+
+## 4. CHUQUR SHO\\'NG\\'ISH: FEATURE-BASED ARXITEKTURA
+
+Zamonaviy React production loyihalarida eng mashhur va kengayuvchan papkalar tuzilmasi bu **Feature-based structure** (yoki *Colocation*) hisoblanadi. Kod texnik turi bo\\'yicha emas, balki biznes moduli bo\\'yicha guruhlanadi:
+
+\`\`\`bash
+src/
+├── assets/             # Global rasmlar, shriftlar
+├── components/         # Global umumiy UI komponentlar (Button, Input, Modal)
+├── config/             # Global konfiguratsiyalar (env, constants)
+├── hooks/              # Global custom hooklar (useTheme, useAuth)
+├── services/           # Global umumiy API xizmatlari
+├── features/           # Biznes modullar (Har bir modul o\\'z arxitekturasiga ega)
+│   ├── auth/           # Avtorizatsiya moduli
+│   │   ├── components/ # Faqat auth sahifalariga tegishli UI komponentlar
+│   │   ├── hooks/      # useLogin, useRegister hooklari
+│   │   ├── services/   # authApi.js (login, register so\\'rovlari)
+│   │   └── index.js    # Public API (Tashqariga faqat kerakli narsalarni chiqaradi)
+│   └── dashboard/      # Dashboard moduli
+└── App.js
+\`\`\`
+
+### Barrel Exports va Public API Pattern
+Feature ichidagi \`index.js\` fayli darvoza (public API) vazifasini bajaradi. U boshqa modullarga auth ichidagi hamma narsani ko\\'rishga ruxsat bermaydi, faqat eksport qilingan qismlarnigina taqdim etadi:
+\`\`\`javascript
+// features/auth/index.js
+export { LoginForm } from \\'./components/LoginForm\\';
+export { useAuth } from \\'./hooks/useAuth\\';
+// Boshqa ichki yordamchi funksiyalar yashirin qoladi.
+\`\`\`
+
+---
+
+## 5. TIRIK KOD / LOYIHA MISOLI
+
+Keling, Separation of Concerns prinsipini to\\'liq qo\\'llagan holda foydalanuvchilar ro\\'yxatini yuklaydigan kod yozamiz.
+
+### 1-qadam: API Service (services/userService.js)
+\`\`\`javascript
+import axios from \\'axios\\';
+
+const apiClient = axios.create({
+  baseURL: \\'https://api.example.com\\',
+  headers: { \\'Content-Type\\': \\'application/json\\' }
+});
+
+export const UserService = {
+  getUsers: async () => {
+    try {
+      const response = await apiClient.get(\\'/users\\');
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || \\'Tarmoq xatosi!\\');
+    }
+  }
+};
+\`\`\`
+
+### 2-qadam: Custom Hook (hooks/useFetchUsers.js)
+\`\`\`javascript
+import { useState, useEffect } from \\'react\\';
+import { UserService } from \\'../services/userService\\';
+
+export function useFetchUsers() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadData() {
+      try {
+        setLoading(true);
+        const data = await UserService.getUsers();
+        if (isMounted) setUsers(data);
+      } catch (err) {
+        if (isMounted) setError(err.message);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    }
+
+    loadData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  return { users, loading, error };
+}
+\`\`\`
+
+### 3-qadam: UI Presentational Component (components/UserList.jsx)
+\`\`\`javascript
+import React from \\'react\\';
+import { useFetchUsers } from \\'../hooks/useFetchUsers\\';
+
+export function UserList() {
+  const { users, loading, error } = useFetchUsers();
+
+  if (loading) return <div>Yuklanmoqda...</div>;
+  if (error) return <div className="error">Xatolik: {error}</div>;
+
+  return (
+    <ul className="user-list">
+      {users.map(user => (
+        <li key={user.id} className="user-item">
+          <strong>{user.name}</strong> - {user.email}
+        </li>
+      ))}
+    </ul>
+  );
+}
+\`\`\`
+
+---
+
+## 6. VIZUALIZATSIYA
+
+Quyidagi diagrammada React Server Components (RSC) va Client Components o\\'rtasidagi chegara hamda ma\\'lumotlar oqimi tasvirlangan:
+
+\`\`\`mermaid
+graph TD
+  subgraph Server Boundary (NodeJS Environment)
+    RSC[React Server Component: ProductPage] -->|Direct Fetch| DB[(Database / Internal API)]
+    RSC -->|Prepare Static HTML & JSON Props| Serializer[Props Serialization]
+  end
+
+  subgraph Client Boundary (Browser Environment)
+    Serializer -->|Network Transfer| ClientComp[Client Component: ProductInteractive]
+    ClientComp -->|Browser Hydration| Interactive[Attach Event Listeners & State]
+    Interactive -->|Interactions| API[External Microservices API]
+  end
+  
+  style ServerBoundary fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px
+  style ClientBoundary fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+\`\`\`
+
+---
+
+## 7. KO\\'P UCHRAYDIGAN XATOLAR VA MUAMMOLAR
+
+1. **useEffect ichida to\\'g\\'ridan-to\\'g\\'ri URL bilan Fetch qilish:**
+   - *Muammo:* Tarmoq xatolari va interceptorlar markazlashtirilmagan. Keyinchalik API manzili o\\'zgarsa, o\\'nlab fayllarni qo\\'lda tahrirlash kerak bo\\'ladi.
+   - *Yechim:* Har doim API so\\'rovlarni \`Service\` qatlamiga joylashtiring.
+
+2. **Circular Dependencies (Aylanma Importlar):**
+   - *Muammo:* A component B componentni import qiladi, B esa o\\'z navbatida A-ni import qiladi. Bu dasturning to\\'xtab qolishiga yoki \`undefined\` xatolariga sabab bo\\'ladi.
+   - *Yechim:* Modullarning public API-larini (\`index.js\` orqali) to\\'g\\'ri boshqaring va umumiy qismlarni global \`components\` yoki \`hooks\`-ga ko\\'chiring.
+
+3. **Global State-dan noto\\'g\\'ri foydalanish:**
+   - *Muammo:* Oddiy UI holatlarini (masalan, dropdown ochiq-yopiqligini) ham Redux yoki global context-ga joylash bundle hajmini va re-renderlar sonini oshiradi.
+   - *Yechim:* **State Colocation** qoidasiga amal qiling. State-ni faqat o\\'sha state-ga muhtoj bo\\'lgan eng pastki komponent darajasida saqlang.
+
+---
+
+## 8. INTERVYU SAVOLLARI VA JAVOBLARI
+
+### 1. Separation of Concerns (Vazifalar ajratilishi) React ilovalarda qanday amalga oshiriladi?
+JSX kodini (UI render), API chaqiruvlarini (Services) va UI o\\'zgarishlar logikasini (Custom Hooks) alohida fayllarga ajratib saqlash orqali.
+
+### 2. Service Layer nima va u nega muhim?
+Service Layer — API so\\'rovlari va tarmoq kutubxonalari (Axios kabi) sozlamalari yoziladigan alohida qatlam. U logikani markazlashtiradi va testlashni osonlashtiradi.
+
+### 3. Custom Hook va oddiy helper funksiyaning farqi nimada?
+Custom Hook o\\'z ichida React-ning boshqa hooklarini (\`useState\`, \`useEffect\`) ishlata oladi va stateful logikani boshqaradi. Helper funksiya esa faqat kiruvchi qiymat olib chiquvchi toza (pure) JavaScript funksiyasidir.
+
+### 4. Barrel export nima va undan foydalanishda nimaga e\\'tibor berish kerak?
+Papkadagi barcha eksportlarni yagona \`index.js\` faylida jamlab, boshqa fayllarga bitta import bilan taqdim etish usuli. E\\'tiborsizlik qilinsa, Tree-shaking-ni buzib, aylanma import (circular dependency) chaqirishi mumkin.
+
+### 5. Feature-based papka tuzilishining an\\'anaviy (technical/flat) tuzilishdan afzalligi nimada?
+Katta loyihalarda har bir modul (masalan, \`auth\`, \`payment\`) mustaqil yashaydi. Bu kodni oson o\\'chirish, ko\\'chirish va alohida jamoalar tomonidan parallel rivojlantirish imkonini beradi.
+
+### 6. React-da Container/Presenter pattern-ini nima siqib chiqardi va nega?
+Custom Hooks arxitekturasi. Hooklar kodni kamaytirdi, tushunarli qildi va JSX yozmasdan biznes logikani oson ulash imkonini berdi.
+
+### 7. Custom hook ichida fetch yozish unit test yozishni qanday osonlashtiradi?
+Chunki biz UI-ni render qilmasdan va tugmalarni bosmasdan turib, shunchaki hookni alohida ishga tushirib (\`@testing-library/react-hooks\`), uning holatlarini sinab ko\\'rishimiz mumkin.
+
+### 8. State Colocation nima?
+Ma\\'lumotni iloji boricha uni ishlatadigan komponentning eng yaqin ajdodiga yoki o\\'zining ichiga joylashtirish. Bu keraksiz global state va props drilling-ni oldini oladi.
+
+### 9. API so\\'rovlarda interceptor-lar qanday vazifani bajaradi?
+Har bir so\\'rov yuborilishidan oldin unga Token qo\\'shish, yoki serverdan kelgan xatoliklarni yagona joyda (masalan, 401 Unauthorized bo\\'lganda foydalanuvchini tizimdan chiqarib yuborish) qayta ishlash uchun ishlatiladi.
+
+### 10. React Server Components (RSC) arxitekturasi bizga qanday yordam beradi?
+Komponentlarni to\\'g\\'ridan-to\\'g\\'ri serverda ma\\'lumotlar bazasiga ulanib render qilishga va mijoz brauzeriga keraksiz JS yuklamasdan faqat HTML/JSON formatida jo\\'natishga yordam beradi.
+
+### 11. Loyihani optimallashtirishda Dynamic Import nima uchun ishlatiladi?
+Kam ishlatiladigan katta sahifalarni (masalan, Admin Dashboard) faqat foydalanuvchi o\\'sha sahifaga kirgandagina yuklash orqali dastlabki yuklanish hajmini (\`bundle size\`) kamaytirish uchun.
+
+### 12. Public API pattern qanday ishlaydi?
+Modul tashqarisidagi kodlar modul ichidagi private fayllarga ruxsatsiz kirmasligi uchun modulning faqat \`index.js\` faylidagi eksportlari bilan cheklanishini ta\\'minlaydi.
+
+---
+
+## 9. KENGAYTIRILGAN MAVZULAR
+
+### Monorepo Arxitekturasi (Lerna, Turborepo, Nx)
+Agar tashkilotda bir nechta loyihalar mavjud bo\\'lsa (masalan, Admin panel, Customer site, Mobile App), ularning umumiy UI komponentlari va API xizmatlarini bitta joyda saqlash uchun Monorepo arxitekturasi tanlanadi:
+- **Shared packages:** API xizmatlar (\`@org/api\`) va UI dizayn tizimi (\`@org/ui\`) alohida paket sifatida yozilib, Turborepo orqali boshqariladi.
+- **Qayta foydalanish:** Kod takrorlanishini minimallashtiradi va barcha ilovalarda dizayn izchilligini kafolatlaydi.
+
+### Micro-Frontend Arxitekturasi
+Katta tizimlarni bir nechta mustaqil React loyihalariga bo\\'lib yuborish va ularni Webpack 5 Module Federation yordamida runtime-da bitta katta ilovaga birlashtirish usuli:
+- Har bir jamoa o\\'z feature-ini alohida build qilib, deploy qila oladi.
+- Asosiy xost (Host) ilova ushbu modullarni dinamik ravishda o\\'ziga yuklab oladi.
+
+---
+
+## 10. XULOSA VA CHECKLIST
+
+Tizimli production arxitekturasini yaratish uchun quyidagi checklistga rioya qiling:
+- [ ] useEffect ichida to\\'g\\'ridan-to\\'g\\'ri fetch yozish taqiqlangan.
+- [ ] Barcha API chaqiruvlari Service qatlamida to\\'plangan.
+- [ ] Har bir feature modul faqat o\\'zining \`index.js\` (Public API) fayli orqali tashqi dunyoga bog\\'lanadi.
+- [ ] UI komponentlar faqat renderlash bilan band, og\\'ir hisob-kitoblar helper-larda, asinxron holatlar custom hooklarda joylashgan.
+- [ ] Aylanma importlarni aniqlash uchun ESLint qoidalari o\\'rnatilgan.`,
+  exercises: [
     {
       id: 1,
       title: "API URL Creator",
-      instruction: "Service qatlamida API so'rovlari uchun to'liq URL yaratadigan `createServiceUrl(baseUrl, path, queryParams)` funksiyasini yozing (QueryParams obyekt kalit va qiymatlaridan foydalanib string yarating).",
+      instruction: "Service qatlamida API so\\'rovlari uchun to\\'liq URL yaratadigan `createServiceUrl(baseUrl, path, queryParams)` funksiyasini yozing (QueryParams obyekt kalit va qiymatlaridan foydalanib string yarating).",
       startingCode: "function createServiceUrl(baseUrl, path, queryParams) {\n  // queryParams obyektidan URL string yarating\n}",
       hint: "const q = new URLSearchParams(queryParams).toString();\nreturn `${baseUrl}${path}${q ? '?' + q : ''}`;",
       test: "if (typeof createServiceUrl !== 'function') return 'createServiceUrl topilmadi'; const res = createServiceUrl('https://api.com', '/users', { limit: 10 }); if (res !== 'https://api.com/users?limit=10') return 'URL noto\\'g\\'ri formatlandi'; return null;"
@@ -61,7 +272,7 @@ Professional restoran oshxonasini tasavvur qiling:
     {
       id: 2,
       title: "Custom Hook State Getter/Setter",
-      instruction: "Custom hook logikasini simulyatsiya qiluvchi, boshlang'ich qiymat olib, o'zgaruvchi state-ni yopiq saqlagan holda array formatda `[getState, setState]` funksiyalarini qaytaradigan `useCustomState(initialValue)` yozing.",
+      instruction: "Custom hook logikasini simulyatsiya qiluvchi, boshlang\\'ich qiymat olib, o\\'zgaruvchi state-ni yopiq saqlagan holda array formatda `[getState, setState]` funksiyalarini qaytaradigan `useCustomState(initialValue)` yozing.",
       startingCode: "function useCustomState(initialValue) {\n  let state = initialValue;\n  // getState va setState-ni qaytaring\n}",
       hint: "const getState = () => state;\nconst setState = (newValue) => { state = newValue; };\nreturn [getState, setState];",
       test: "if (typeof useCustomState !== 'function') return 'useCustomState topilmadi'; const [get, set] = useCustomState(5); if(get() !== 5) return 'Boshlang\\'ich qiymat xato'; set(10); if(get() !== 10) return 'State yangilanmadi'; return null;"
@@ -69,13 +280,14 @@ Professional restoran oshxonasini tasavvur qiling:
     {
       id: 3,
       title: "Service Response Parser",
-      instruction: "API Service qatlamida javob muvaffaqiyatli bo'lsa `response.data` ni qaytaruvchi, aks holda `response.error` ni Error shaklida uloqtiruvchi (throw) `parseApiResponse(response)` funksiyasini yozing.",
+      instruction: "API Service qatlamida javob muvaffaqiyatli bo\\'lsa `response.data` ni qaytaruvchi, aks holda `response.error` ni Error shaklida uloqtiruvchi (throw) `parseApiResponse(response)` funksiyasini yozing.",
       startingCode: "function parseApiResponse(response) {\n  // data yoki error tekshiring\n}",
       hint: "if (response.data) return response.data;\nthrow new Error(response.error || 'Unknown error');",
       test: "if (typeof parseApiResponse !== 'function') return 'parseApiResponse topilmadi'; if(parseApiResponse({ data: 'ok' }) !== 'ok') return 'Data qaytishi xato'; try { parseApiResponse({ error: 'fail' }); } catch(e) { if(e.message === 'fail') return null; } return 'Error otilmadi';"
     }
   ],
-  quizzes: [{
+  quizzes: [
+    {
       id: 1,
       question: "Separation of Concerns (Vazifalar ajratilishi) prinsipi nima?",
       options: [
@@ -193,7 +405,7 @@ Professional restoran oshxonasini tasavvur qiling:
         "Kodni tozalash"
       ],
       correctAnswer: 1,
-      explanation: "Index.js feature modulining tashqi dunyo bilan bog'lanadigan yagona eshigi (interface) bo'lib xizmat qiladi."
+      explanation: "Index.js feature modulining tashqi dunyo bilan bog'lanadigan yagona eshigi (interface) bo'limi bo'lib xizmat qiladi."
     },
     {
       id: 11,

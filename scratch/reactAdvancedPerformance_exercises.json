@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Simple Debounce Funksiyasi",
+    "instruction": "Ketma-ket chaqirilganda faqat oxirgi chaqiruvdan keyin belgilangan vaqt o'tgach bajariladigan `simpleDebounce(fn, delay)` decorator funksiyasini yozing.",
+    "startingCode": "function simpleDebounce(fn, delay) {\n  let timeoutId;\n  return function (...args) {\n    // clearTimeout va setTimeout yozing\n  };\n}",
+    "hint": "clearTimeout(timeoutId);\ntimeoutId = setTimeout(() => fn(...args), delay);",
+    "test": "if (typeof simpleDebounce !== 'function') return 'simpleDebounce topilmadi'; let count = 0; const debounced = simpleDebounce(() => count++, 50); debounced(); debounced(); setTimeout(() => { if (count !== 1) throw new Error('Debounce xato'); }, 100); return null;"
+  },
+  {
+    "id": 2,
+    "title": "Simple Throttle Funksiyasi",
+    "instruction": "Belgilangan vaqt oralig'ida funksiyaning faqat 1 marta chaqirilishini ta'minlovchi `simpleThrottle(fn, limit)` funksiyasini yozing.",
+    "startingCode": "function simpleThrottle(fn, limit) {\n  let inThrottle;\n  return function (...args) {\n    // inThrottle orqali cheklang\n  };\n}",
+    "hint": "if (!inThrottle) {\n      fn(...args);\n      inThrottle = true;\n      setTimeout(() => inThrottle = false, limit);\n    }",
+    "test": "if (typeof simpleThrottle !== 'function') return 'simpleThrottle topilmadi'; let count = 0; const throttled = simpleThrottle(() => count++, 50); throttled(); throttled(); if (count !== 1) return 'Throttle sinovi boshida bajarilmadi'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Pagination Slicer",
+    "instruction": "Katta ro'yxatlarni bo'laklab ko'rsatish uchun `paginateList(list, page, pageSize)` funksiyasini yozing (page: 1-indexed).",
+    "startingCode": "function paginateList(list, page, pageSize) {\n  // list massivini slice qiling\n}",
+    "hint": "const start = (page - 1) * pageSize;\nreturn list.slice(start, start + pageSize);",
+    "test": "if (typeof paginateList !== 'function') return 'paginateList topilmadi'; const list = [1, 2, 3, 4, 5]; const res = paginateList(list, 2, 2); if(res.length !== 2 || res[0] !== 3) return 'Pagination slice noto\\'g\\'ri'; return null;"
+  }
+]

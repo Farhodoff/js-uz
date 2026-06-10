@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Nega array state-ga `state.push(item)` deb to'g'ridan-to'g'ri element qo'shish tavsiya etilmaydi?",
+    "options": [
+      "Chunki bu JS sintaksisi emas",
+      "Chunki u xotira manzilini (reference) o'zgartirmaydi va React re-render qilmaydi",
+      "Faqat CSS-ga zarar beradi",
+      "React-da push metodi butunlay o'chirilgan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "React elementlarning o'zgarganini xotira havolasini solishtirish orqali biladi. Obyekt mutatsiya qilinganda reference o'zgarmasdan qoladi."
+  },
+  {
+    "id": 2,
+    "question": "Props drilling muammosini qanday hal qilish mumkin?",
+    "options": [
+      "Faqat bitta faylga yozib chiqish orqali",
+      "Context API yoki global state manager (Zustand, Redux) ishlatish orqali",
+      "CSS flexbox yordamida",
+      "Node.js serverini qayta yoqish orqali"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Context API va global do'konlar ma'lumotni to'g'ridan-to'g'ri kerakli komponentga uzatishga imkon beradi, o'rta qatlamlarni aylanib o'tadi."
+  },
+  {
+    "id": 3,
+    "question": "Context API-dan qachon foydalanish eng to'g'ri hisoblanadi?",
+    "options": [
+      "Tez o'zgaruvchan murakkab o'yin statelari uchun",
+      "Kam o'zgaruvchan global ma'lumotlar (Theme, Til, Autentifikatsiya holati) uchun",
+      "Har soniyada API-dan ma'lumot olganda",
+      "Faqat HTML input qiymatlarini saqlashda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Context tez o'zgarsa, provayder ichidagi barcha komponentlar qayta render bo'ladi. Shuning uchun u kam yangilanadigan ma'lumotlar uchun mos keladi."
+  },
+  {
+    "id": 4,
+    "question": "Redux-dagi 'Single Source of Truth' nima degani?",
+    "options": [
+      "Barcha kodlar bitta faylda bo'lishi",
+      "Ilovaning barcha global holati (state) bitta markaziy store-da saqlanishi",
+      "Saytda faqat bitta sahifa borligi",
+      "API ma'lumotlarini bir marta olish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bu prinsip ilova holatini markaziy va bir joyda xatolarsiz, toza boshqarishni ta'minlaydi."
+  },
+  {
+    "id": 5,
+    "question": "Zustand-da selectordan foydalanish maqsadi nima?",
+    "options": [
+      "Stil tanlash",
+      "Komponentga faqat kerakli state qiymatini olib kelish va ortiqcha renderlarni oldini olish",
+      "API so'rov yuborish",
+      "Database-dan jadval tanlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Selector yordamida komponent faqat o'ziga kerakli state bo'lagiga obuna bo'ladi, qolgan o'zgarishlarda u qayta render bo'lmaydi."
+  },
+  {
+    "id": 6,
+    "question": "Redux Toolkit (RTK) qaysi kutubxona yordamida obyektlarni 'mutatsiya' qilish imkonini beradi?",
+    "options": [
+      "React Query",
+      "Immer.js",
+      "Axios",
+      "Lodash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "RTK ichida Immer.js ishlaydi. U koddagi o'zgartirishlarni (state.user.age = 20) fonda avtomatik tarzda immutable shaklga aylantiradi."
+  },
+  {
+    "id": 7,
+    "question": "React-da 'State' tushunchasi o'zi nima?",
+    "options": [
+      "Brauzerning offline kesh xotirasi",
+      "Komponentning o'zgaruvchan local xotirasi",
+      "CSS animatsiyalari to'plami",
+      "Serverdan kelgan statik HTML fayl"
+    ],
+    "correctAnswer": 1,
+    "explanation": "State - bu komponent ichida saqlanadigan va u o'zgarganda komponentni qayta chizadigan (re-render) ma'lumotdir."
+  },
+  {
+    "id": 8,
+    "question": "Zustand global state manager Context API-dan qanday qilib yaxshiroq ishlaydi?",
+    "options": [
+      "U brauzerda ishlamaydi",
+      "Selector obunalari orqali faqatgina o'zgargan state qiymatini olgan komponentlarni render qiladi",
+      "U Virtual DOM-ni chetlab o'tadi",
+      "U CSS o'zgaruvchilari orqali ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Zustand selectorlar bilan komponentlarni bog'laydi. Context-dan farqli o'laroq, keraksiz komponentlar re-render bo'lmaydi."
+  },
+  {
+    "id": 9,
+    "question": "Redux Middleware-ning asosiy vazifasi nima?",
+    "options": [
+      "Komponentlarni bezash",
+      "Action-lar reducer-ga yetib borguncha ularni ushlab, asinxron API yoki log yozish ishlarini bajarish",
+      "HTML teglari yaratish",
+      "Sayt tezligini o'lchash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Middleware (masalan Thunk) Redux oqimini kengaytirib, asinxron harakatlarni boshqarishga yordam beradi."
+  },
+  {
+    "id": 10,
+    "question": "Jotai/Recoil atomic state manager-larning eng muhim xususiyati nima?",
+    "options": [
+      "Hamma state-ni bitta katta obyektda saqlashi",
+      "Global state-ni komponentlar to'g'ridan-to'g'ri obuna bo'la oladigan mustaqil 'atom'larga bo'lib tashlashi",
+      "Faqat server logikasini yozishi",
+      "CSS-ni avtomatik generatsiya qilishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Atomic yondashuvda global state atomlarga bo'linadi va faqat o'sha atom o'zgarganda unga bog'langan komponent re-render bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Nega form inputlaridagi tezkor o'zgaruvchan state-larni Zustand/Redux-ga yozish tavsiya etilmaydi?",
+    "options": [
+      "Chunki global store string-larni tushunmaydi",
+      "Har bir harf yozilganda global store yangilanib, butun sahifa komponentlarini keraksiz qayta render qilmasligi uchun",
+      "Inputlar faqat local state bilan ishlay olgani uchun",
+      "Bu xavfsizlikka zarar keltirgani uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Input holatlari local bo'lgani afzal. Bo'lmasa, har safar harf kiritilganda global o'zgarish sodir bo'ladi va butun ilova sekinlashadi."
+  },
+  {
+    "id": 12,
+    "question": "State Management-dagi 'Immutable State' atamasi nimani anglatami?",
+    "options": [
+      "Hech qachon o'zgartirib bo'lmaydigan state",
+      "State obyektini to'g'ridan-to'g'ri o'zgartirmasdan, har doim yangi nusxa (copy) yaratish orqali yangilash yondashuvi",
+      "Serverda saqlanadigan ma'lumotlar",
+      "Faqat CSS o'zgaruvchilari"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Immutable yondashuvda eski obyekt o'zgartirilmaydi, balki spread operator yordamida uning nusxasi olinib yangilanadi."
+  }
+]

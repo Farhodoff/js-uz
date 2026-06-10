@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "React props shallow comparison",
+    "instruction": "Ikki props obyektini yuzaki (shallow) solishtirib, ular teng bo'lsa true, farq qilsa false qaytaruvchi `shallowEqual(objA, objB)` funksiyasini yozing.",
+    "startingCode": "function shallowEqual(objA, objB) {\n  if (objA === objB) return true;\n  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) return false;\n  const keysA = Object.keys(objA);\n  const keysB = Object.keys(objB);\n  if (keysA.length !== keysB.length) return false;\n  // Kalitlar bo'yicha qiymatlarni solishtiring\n}",
+    "hint": "for (let key of keysA) {\n    if (objA[key] !== objB[key]) return false;\n  }\n  return true;",
+    "test": "const sandbox = new Function(code + '; return shallowEqual;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'shallowEqual topilmadi';\nif (fn({a: 1}, {a: 1}) !== true) return 'Teng obyektlarda xato';\nif (fn({a: 1}, {a: 2}) !== false) return 'Farqli obyektda xato';\nif (fn({a: 1}, {a: 1, b: 2}) !== false) return 'Har xil kalitlar sonida xato';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Should Component Update simulyatsiyasi",
+    "instruction": "Props o'zgarganligiga ko'ra komponent qayta chizilishi kerakligini (true/false) hal qiluvchi `shouldUpdate(prevProps, nextProps)` funksiyasini yozing (props ichida faqat `id` va `count` bor, ulardan kamida biri o'zgarsa true, aks holda false).",
+    "startingCode": "function shouldUpdate(prevProps, nextProps) {\n  // id yoki count o'zgargan bo'lsa true qaytaring\n}",
+    "hint": "return prevProps.id !== nextProps.id || prevProps.count !== nextProps.count;",
+    "test": "const sandbox = new Function(code + '; return shouldUpdate;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'shouldUpdate topilmadi';\nif (fn({id: 1, count: 5}, {id: 1, count: 5}) !== false) return 'O\\'zgarmagan props render chaqirmasligi kerak';\nif (fn({id: 1, count: 5}, {id: 1, count: 6}) !== true) return 'count o\\'zgarganda true bo\\'lishi shart';\nif (fn({id: 2, count: 5}, {id: 1, count: 5}) !== true) return 'id o\\'zgarganda true bo\\'lishi shart';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Pure Component check",
+    "instruction": "Komponent sinfi `React.PureComponent` dan meros olinganligini tekshiruvchi `isPureComponent(classDeclaration)` funksiyasini yozing.",
+    "startingCode": "function isPureComponent(classDeclaration) {\n  // class prototipida isPureReactComponent borligini tekshiring\n}",
+    "hint": "return !!classDeclaration?.prototype?.isPureReactComponent;",
+    "test": "const sandbox = new Function(code + '; return isPureComponent;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'isPureComponent topilmadi';\nconst mockClass = { prototype: { isPureReactComponent: true } };\nif (fn(mockClass) !== true) return 'PureComponent aniqlanmadi';\nif (fn({ prototype: {} }) !== false) return 'Oddiy component PureComponent deb topildi';\nreturn null;"
+  }
+]

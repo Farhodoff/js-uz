@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Unikal Key Tekshiruvi",
+    "instruction": "Ro'yxat elementlari React-da render bo'lishi uchun ularning tarkibida `key` xossasi (unikal ID) borligini tekshiradigan `validateKeys(elements)` funksiyasini yozing (barchasida bo'lsa true, kamida bittasida yo'q bo'lsa false).",
+    "startingCode": "function validateKeys(elements) {\n  // every orqali tekshiring\n}",
+    "hint": "return elements.every(el => el.key !== undefined && el.key !== null);",
+    "test": "if (typeof validateKeys !== 'function') return 'validateKeys topilmadi'; if(validateKeys([{id: 1, key: 'a'}, {id: 2, key: 'b'}]) !== true) return 'To\\'g\\'ri keys rad etildi'; if(validateKeys([{id: 1, key: 'a'}, {id: 2}]) !== false) return 'Key yo\\'qligi aniqlanmadi'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "React Key String Format",
+    "instruction": "Element kaliti (`key`) string ko'rinishida bo'lishini ta'minlovchi `formatReactKey(id)` funksiyasini yozing (masalan, `element-5`).",
+    "startingCode": "function formatReactKey(id) {\n  // formatlang\n}",
+    "hint": "return `element-${id}`;",
+    "test": "if (typeof formatReactKey !== 'function') return 'formatReactKey topilmadi'; if(formatReactKey(12) !== 'element-12') return 'Key formatlash xato'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "React Children Counter",
+    "instruction": "React-ga o'xshash bolalar massividagi barcha elementlar sonini hisoblaydigan `countChildren(children)` funksiyasini yozing (agar array bo'lmasa 1, bo'lsa array uzunligi, null bo'lsa 0).",
+    "startingCode": "function countChildren(children) {\n  // Shartlarni yozing\n}",
+    "hint": "if (children === null || children === undefined) return 0;\nif (Array.isArray(children)) return children.length;\nreturn 1;",
+    "test": "if (typeof countChildren !== 'function') return 'countChildren topilmadi'; if (countChildren(null) !== 0) return 'Null uchun xato'; if (countChildren([1, 2]) !== 2) return 'Massiv uchun xato'; if (countChildren('hi') !== 1) return 'Yagona bola uchun xato'; return null;"
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Debounce va Throttle o'rtasidagi asosiy farq nima?",
+    "options": [
+      "Debounce harakat to'xtashini kutib, keyin bajaradi; Throttle esa harakat davom etsa ham ma'lum vaqt oralig'ida muntazam bajaradi",
+      "Debounce faqat CSS-da, Throttle esa JS-da ishlaydi",
+      "Throttle server so'rovlarini butunlay to'xtatadi",
+      "Ikkalasi mutlaqo bir xil narsadir"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Debounce foydalanuvchi harakati (masalan yozish) tugagandan keyin ishlaydi, Throttle esa belgilangan vaqt ichida ko'pi bilan 1 marta bajarilishini ta'minlaydi."
+  },
+  {
+    "id": 2,
+    "question": "Virtualizatsiya (Windowing) texnikasining asosiy vazifasi nima?",
+    "options": [
+      "Faqat ekranda ko'rinib turgan cheklangan qatorlarni chizish orqali minglab elementlar renderini tezlashtirish",
+      "Sahifani to'liq yuklash",
+      "Rasm hajmini avtomatik kichraytirish",
+      "Dasturni PWA rejimiga o'tkazish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Virtualizatsiya DOM-da minglab elementlar o'rniga faqat foydalanuvchi ko'rib turgan 15-20 ta qatorni render qilib tezlikni oshiradi."
+  },
+  {
+    "id": 3,
+    "question": "React Profiler yordamida nimalarni bilib olish mumkin?",
+    "options": [
+      "Loyiha necha qator koddan iboratligini",
+      "Komponent render vaqtlari, necha marta render bo'lgani va render sabablarini",
+      "Serverdagi xatoliklarni",
+      "CSS animatsiya turlarini"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Profiler komponentlarning qachon, necha millisoniyada va qaysi prop/state o'zgarishi tufayli render bo'lganini ko'rsatadi."
+  },
+  {
+    "id": 4,
+    "question": "React 18-dagi `useTransition` nima uchun xizmat qiladi?",
+    "options": [
+      "Saytni o'chirish uchun",
+      "State yangilanishini 'low priority' qilib belgilash va interfeys qotib qolishini oldini olish uchun",
+      "CSS transitions qo'shish uchun",
+      "Ma'lumotlar bazasini yangilash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "useTransition yordamida og'ir UI yangilanishlari (non-urgent) orqa fonga o'tkaziladi, shunda muhim input yozish ishlari (urgent) silliq ishlaydi."
+  },
+  {
+    "id": 5,
+    "question": "Nega asinxron input qidiruvda debounce ishlatish shart?",
+    "options": [
+      "Chunki JS shuni talab qiladi",
+      "Har bir harf yozilganda serverga yuzlab API so'rov yuborib uni yuklab yubormaslik uchun",
+      "Faqat chiroyli dizayn uchun",
+      "Saytni oflayn rejimda ishlatish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Debounce foydalanuvchi so'zni to'liq yozib bo'lmaguncha API so'rovlarni kechiktirib turish orqali tarmoq va server yuklamasini kamaytiradi."
+  },
+  {
+    "id": 6,
+    "question": "Profiler tab-idagi 'Ranked Chart' ma'lumotlarni qanday saralaydi?",
+    "options": [
+      "Alifbo tartibida",
+      "Eng ko'p vaqt sarflagan (eng sekin) komponentlarni tepaga saralab beradi",
+      "Faqat ranglarini o'zgartiradi",
+      "Hech qanday ma'lumot bermaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ranked Chart profiling seansida eng ko'p render vaqti talab qilgan komponentlarni eng tepaga chiqarib beradi."
+  },
+  {
+    "id": 7,
+    "question": "Profiler tab-idagi 'Flame Chart' nima vazifani bajaradi?",
+    "options": [
+      "Xatoliklarni qizil rangda ko'rsatish",
+      "Komponentlar daraxtining ierarxiyasini va har bir komponent renderiga ketgan aniq vaqtni vizual grafikda ko'rsatish",
+      "Xotira hajmini ko'rsatish",
+      "CSS animatsiya grafigi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Flame Chart komponentlarning daraxt ko'rinishidagi tuzilishini va har birining renderiga sarflangan vaqtni rangli ustunlar orqali aks ettiradi."
+  },
+  {
+    "id": 8,
+    "question": "`useDeferredValue` hook-ining asosiy vazifasi nima?",
+    "options": [
+      "Qiymatlarni butunlay o'chirish",
+      "Muhimroq o'zgarishlar (masalan input yozilishi) yakunlanguniga qadar og'ir state qiymatini yangilashni kechiktirish",
+      "API chaqiruvini tezlashtirish",
+      "Cookie-da qiymat saqlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "useDeferredValue shoshilinch bo'lmagan yangilanishlarni (masalan katta ro'yxat filterlanishi) keyinga qoldirib, asosiy interfeysning tezligini saqlaydi."
+  },
+  {
+    "id": 9,
+    "question": "Foydalanuvchi sahifani scroll qilganda har bir pikselda og'ir state-ni yangilash performance-ga qanday ta'sir qiladi?",
+    "options": [
+      "Scroll harakatini silliq qiladi",
+      "Soniyasiga yuzlab re-render chaqirib, sahifaning qattiq qotishiga (lag) olib keladi",
+      "Hech qanday ta'sir qilmaydi",
+      "Saytni tezlashtiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Scroll hodisasi soniyasiga o'nlab marta chaqiriladi. Har chaqirilganda og'ir ishlarni bajarish Main Thread-ni band qilib, qotishlarga sabab bo'ladi."
+  },
+  {
+    "id": 10,
+    "question": "Inputga yozib bo'lgach mahalliy ro'yxatni qidirib filterlaydigan tizimda qaysi texnika eng ma'qul?",
+    "options": [
+      "Throttle",
+      "Debounce",
+      "Code splitting",
+      "SSG"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Inputga yozish jarayonida debounce ishlatish eng yaxshi yechimdir, chunki u keraksiz filtrlash ishlarini faqat foydalanuvchi to'xtaganda chaqiradi."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun useEffect ichidagi taymerlarni (timeout) cleanup funksiyasida tozalash kerak?",
+    "options": [
+      "Chunki JS shuni majburlaydi",
+      "Tozalanmagan timeoutlar komponent o'chgandan keyin ham orqa fonda ishlab, xotira sizib chiqishiga (memory leak) sabab bo'ladi",
+      "Dastur darhol to'xtab qolmasligi uchun",
+      "Faqat CSS-ga ta'sir qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Cleanup funksiyasida taymerlarni tozalash komponent o'chib ketganda eskirgan asinxron kodlarning ishlab ketishidan va xotira muammolaridan himoya qiladi."
+  },
+  {
+    "id": 12,
+    "question": "React-da scheduler har 5ms-da asosiy oqimga navbat berishi qanday ataladi?",
+    "options": [
+      "Time Slicing (Vaqtni bo'laklash)",
+      "Hydration (Gidratsiya)",
+      "Tree Shaking",
+      "Code Splitting"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Time Slicing - bu React Concurrent rejimining asosiy texnikasi bo'lib, render ishlarini mayda bo'laklarga bo'lib, Main Thread-ga brauzer hodisalarini qayta ishlash imkonini beradi."
+  }
+]
