@@ -1,435 +1,397 @@
-export const fetchApi = {
-  id: "fetch-api",
-  title: "🌐 Fetch API: Server bilan Aloqa",
-  level: "Murakkab",
-  description: "Fetch API yordamida serverga asinxron so'rovlar yuborish (GET, POST, PUT, DELETE), header va body bilan ishlash, HTTP va tarmoq xatolarini boshqarish.",
-  theory: `## 1. NEGA kerak?
+export const fetch = {
+  id: "fetch",
+  title: "Fetch API va Tarmoq So'rovlari",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-Zamonaviy veb-saytlar dinamik va jonli bo'lishi talab etiladi. Masalan, ijtimoiy tarmoqda yangi postlarni ko'rish yoki yangiliklarni o'qish uchun butun sahifani qayta yuklash (F5) juda noqulay va eskirgan usuldir.
+### Fetch API nima?
+**Fetch API** — bu brauzerga o'rnatilgan, JavaScript orqali tarmoq (network) so'rovlarini yuborish va serverdan ma'lumotlarni yuklab olish uchun ishlatiladigan modern funksionallikdir. Uning yordamida sahifani to'liq yangilamasdan (refresh) turib, fonda API-lar bilan muloqot qilish mumkin.
 
-**Fetch API** — bu sahifani yangilamasdan, orqa fonda (backgroundda) server bilan ma'lumot almashish imkonini beruvchi asinxron vositadir. U eski \`XMLHttpRequest\` texnologiyasining o'rniga kelgan, qulay, o'qilishi oson va Promis-larga asoslangan zamonaviy standartdir.
-
----
-
-## 2. SODDALIK (Analogiya)
-
-Fetch ishini restorandagi **ofitsiant** faoliyatiga o'xshatish mumkin:
-1. **So'rov (Request):** Siz stolda o'tirib, ofitsiantga buyurtma berasiz (fetch chaqiruvi).
-2. **Kutish (Pending):** Ofitsiant buyurtmangizni oshxonaga (Server) olib ketadi. Siz esa stolingizda suhbatlashib o'tiraverasiz (sayt qotib qolmaydi).
-3. **Javob (Response):** Oshxona ovqatni tayyorlaydi. Ofitsiant uni sizga olib keladi (Response). Siz ovqatni yeyishni boshlaysiz (ma'lumotlarni interfeysga chiqarish).
-4. **Xatolik (Error):** Agar oshxonada kebab qolmagan bo'lsa, ofitsiant sizga rad javobini beradi (Rejected).
+### Real hayotiy analogiya
+Tasavvur qiling, siz **kuryerlik xizmatidan foydalanyapsiz**:
+* **Eski XMLHttpRequest usuli:** Kuryerni chaqirish uchun juda uzun qog'ozbozlik shartnomasini to'ldirasiz, qayerga borishi, qanday borishi, agar xato bo'lsa nima qilishini har bir bosqichini chigal kodlar bilan belgilaysiz.
+* **Fetch API usuli:** Siz kuryerlik kompaniyasiga telefon qilib, shunchaki manzilni (\`url\`) va nima yubormoqchi ekanligingizni (\`body\`) aytasiz. Kuryer borib kelishni o'z zimmasiga oladi va sizga elektron va'da (Promise) beradi. Vaqt kelib u eshikni taqillatadi va ichida sovg'asi (Response) bo'lgan qutini uzatadi. Siz shunchaki qutini ochib ichidagidan foydalanasiz.
 
 ---
 
-## 3. STRUKTURA VA ILG'OR TUSHUNCHALAR
+## 2. 💻 Real Kod Misollari
 
-### A. GET So'rov (Default holat)
-\`fetch()\` metodiga faqat URL berilsa, u sukut bo'yicha ma'lumot olish so'rovini (GET) yuboradi. Tarmoqdan olingan ma'lumot oqim (stream) ko'rinishida bo'ladi, shuning uchun uni \`.json()\` yoki \`.text()\` orqali asinxron o'qib olish kerak.
+### 1. Basic Example (GET so'rovi yordamida JSON olish)
 \`\`\`javascript
-async function getTodos() {
-  const response = await fetch("https://jsonplaceholder.typicode.com/todos/1");
-  const data = await response.json(); // JS obyektiga o'giramiz
-  return data;
+// Oddiy ma'lumot yuklab olish
+async function getUsers() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    
+    // response.json() ham asinxron ishlaydi
+    const users = await response.json();
+    console.log(users.slice(0, 2)); // Dastlabki 2 ta foydalanuvchini chiqaradi
+  } catch (error) {
+    console.error("Tarmoq xatosi:", error);
+  }
+}
+
+getUsers();
+\`\`\`
+
+### 2. Intermediate Example (POST so'rovi yordamida ma'lumot yuborish)
+Serverga yangi ma'lumot qo'shish uchun so'rov tanasi (body) va sarlavhalari (headers) sozlanadi:
+\`\`\`javascript
+async function createUser(userData) {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users", {
+      method: "POST", // HTTP metodi
+      headers: {
+        "Content-Type": "application/json" // Yuborilayotgan ma'lumot turi JSON ekanligi
+      },
+      body: JSON.stringify(userData) // Obyektni string (matn) holiga keltiramiz
+    });
+
+    const result = await response.json();
+    console.log("Muvaffaqiyatli yaratildi:", result);
+  } catch (error) {
+    console.error("Yuborishda xato:", error);
+  }
+}
+
+createUser({ name: "Farhod", username: "farrux" });
+\`\`\`
+
+### 3. Advanced Example (So'rovni bekor qilish - AbortController)
+Agar foydalanuvchi sahifadan chiqib ketsa yoki so'rov juda cho'zilib ketsa, uni to'xtatish (abort qilish):
+\`\`\`javascript
+const controller = new AbortController();
+const signal = controller.signal;
+
+async function fetchWithTimeout() {
+  // 3 soniyadan keyin so'rovni bekor qiladigan taymer
+  setTimeout(() => controller.abort(), 3000);
+
+  try {
+    const response = await fetch("https://httpbin.org/delay/5", { signal });
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    if (error.name === "AbortError") {
+      console.log("So'rov vaqt o'tganligi sababli bekor qilindi (Timeout)!");
+    } else {
+      console.log("Boshqa xatolik:", error);
+    }
+  }
+}
+
+fetchWithTimeout();
+\`\`\`
+
+---
+
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
+
+### Qaysi muammoni hal qiladi?
+* **XMLHttpRequest chigalligi:** Avvalgi XMLHttpRequest (XHR) obyekti callbacks tizimiga asoslangan bo'lib, uning yozilishi va boshqarilishi juda murakkab edi. Fetch esa toza Promise-larga asoslangan.
+* **SPA (Single Page Application) ekotizimi:** Fetch sahifa to'liq qayta yuklanmasdan faqat uning kerakli qismini dinamik yangilash imkonini berdi (Gmail, Facebook kabi tezkor ilovalar).
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. HTTP xatolarida (404, 500) fetch xato otadi deb o'ylash
+#### Muammo:
+Serverdan 404 yoki 500 qaytsa ham tarmoq aloqasi buzilmagani uchun \`fetch\` Promise-ni "fulfilled" (hal qilingan) qiladi, catch bloki ishlamaydi.
+#### Tuzatish:
+Har doim \`response.ok\` xossasini tekshirish lozim:
+\`\`\`javascript
+const response = await fetch(url);
+if (!response.ok) {
+  throw new Error(\`HTTP xatosi! Status: \${response.status}\`);
 }
 \`\`\`
 
-### B. HTTP Status va Muvaffaqiyatni Tekshirish (\`response.ok\`)
-E'tibor bering: \`fetch()\` server 404 yoki 500 xato statusini qaytarganda catch blokiga **tushmaydi**. So'rov tarmoq darajasida muvaffaqiyatli yakunlansa bo'ldi. HTTP xatolarini tekshirish uchun \`response.ok\` dan foydalanamiz.
-- \`response.ok\` - agar HTTP status 200-299 oralig'ida bo'lsa \`true\`, aks holda \`false\`.
-- \`response.status\` - HTTP status kodi (masalan, 200, 404, 500).
+### 2. \`response.json()\` ni \`await\` qilishni unutish
+\`json()\` metodi ham Promise qaytaradi. \`const data = response.json()\` deb yozilsa, uning ichida qiymat emas, Promise saqlanib qoladi. Har doim \`await response.json()\` deb yozish kerak.
 
-### C. Request va Response Obyektlari
-\`fetch(request)\` yoki \`fetch(url, options)\` chaqiruvlari aslida parda ortida yangi \`Request\` obyektini hosil qiladi.
-* **\`Request\`:** So'rov ma'lumotlarini (URL, method, headers, body, mode) o'zida saqlaydi. Uni alohida yaratib, fetch-ga uzatish mumkin.
-* **\`Response\`:** Javob ma'lumotlarini (status, headers, body) saqlaydi.
-* **\`clone()\` metodi:** Response va Request obyektlarining body qismi faqat bir marta o'qilishi mumkin (ma'lumotlar oqim bo'lganligi sababli). Agar bir xil javobni ham JSON, ham text sifatida o'qimoqchi bo'lsangiz, uni avval \`const responseClone = response.clone()\` deb nusxalab olishingiz shart.
-
-### D. Headers Obyekti (Case-insensitivity)
-HTTP sarlavhalari bilan ishlash uchun maxsus \`Headers\` sinfi mavjud.
-- **Case-insensitivity:** Sarlavha nomlarining katta-kichik harflar bilan yozilishi ahamiyatsiz (masalan, \`headers.get('content-type')\` va \`headers.get('Content-Type')\` bir xil ishlaydi).
-- **Iteratsiya:** Headers ustida \`keys()\`, \`values()\`, yoki \`entries()\` metodlari orqali iteratsiya qilish yoki \`forEach\` ishlatish mumkin.
-
-### E. ReadableStream va response.body
-Server javobining body qismi aslida **ReadableStream** (o'qiluvchi oqim) hisoblanadi. Matn juda katta bo'lsa yoki uni kelishi bilan real vaqtda qayta ishlamoqchi bo'lsak (masalan, fayl yuklash foizini ko'rsatish yoki LLM chatbot javobini render qilish), oqimni chunk-bay-chunk (bo'laklab) o'qiymiz.
-
-\`\`\`mermaid
-graph TD
-    A[fetch(url)] --> B{Response Keldi}
-    B --> C[Headers & Status available]
-    B --> D[Body is ReadableStream]
-    D --> E[reader = body.getReader()]
-    E --> F[reader.read()]
-    F --> G{done?}
-    G -- Yo'q --> H[process chunk.value]
-    H --> F
-    G -- Ha --> I[Stream Yopildi]
-\`\`\`
+### 3. \`JSON.stringify\` qilmasdan obyektni to'g'ridan-to'g'ri body-ga berish
+#### Xato:
+\`body: { name: "Ali" }\`
+#### Tuzatish:
+\`body: JSON.stringify({ name: "Ali" })\`
 
 ---
 
-## 4. AMALIYOT: UI yuklanish holati va Loading spinner
-Sahifani yangilamasdan ma'lumot yuklaganda, loading holati quyidagicha boshqariladi:
-\`\`\`javascript
-let isLoading = false;
-let errorMessage = "";
+## 5. 💬 12 ta Intervyu Savollari
 
-async function loadProducts() {
-  isLoading = true;
-  errorMessage = "";
+### Junior (1–4)
+1. **Savol:** Fetch API nima va u qanday HTTP metodlarini qo'llab-quvvatlaydi?
+   * **Javob:** Fetch tarmoq so'rovlarini yuborish vositasi bo'lib, barcha standart metodlarni (GET, POST, PUT, DELETE, PATCH va boshqalar) qo'llab-quvvatlaydi.
+2. **Savol:** \`fetch()\` qachon reject (rad etilgan) holatiga o'tadi?
+   * **Javob:** Faqatgina tarmoq mutlaqo uzilganda yoki DNS topilmay serverga so'rov yetib bormagandagina. HTTP status kodlari 404/500 bo'lsa resolve bo'laveradi.
+3. **Savol:** Response obyektining \`ok\` xossasi nima uchun kerak?
+   * **Javob:** U HTTP status kodi 200–299 oralig'ida bo'lsa true, aks holda false qiymatini qaytaradi.
+4. **Savol:** Nima uchun POST so'rov yuborganda \`Content-Type\` headeri kerak?
+   * **Javob:** Serverga biz yuborayotgan ma'lumot qaysi formatda ekanligini (odatda \`application/json\`) bildirish uchun.
+
+### Middle (5–8)
+5. **Savol:** CORS (Cross-Origin Resource Sharing) xatosi nima va u qanday hal qilinadi?
+   * **Javob:** Bu brauzerning xavfsizlik to'sig'i bo'lib, boshqa domendagi ma'lumotlarni ruxsatsiz olishga yo'l qo'ymaydi. Uni hal qilish uchun server o'z javobida \`Access-Control-Allow-Origin\` sarlavhasini qaytarishi kerak.
+6. **Savol:** \`response.json()\` va \`response.text()\` farqi nimada?
+   * **Javob:** \`json()\` kelgan ma'lumotni JavaScript obyektiga o'giradi. \`text()\` esa kelgan ma'lumotni oddiy string ko'rinishida o'qiydi.
+7. **Savol:** Bitta response obyektida \`response.json()\` va \`response.text()\` ni ketma-ket chaqirish mumkinmi?
+   * **Javob:** Yo'q. Brauzer body oqimini (stream) faqat bir marta o'qiy oladi. Ikkinchi marta chaqirganda \`TypeError: body stream already read\` xatosi chiqadi.
+8. **Savol:** So'rov bilan birga cookie-larni boshqa domendagi API serverga yuborish qanday sozlanadi?
+   * **Javob:** Fetch options qismida \`credentials: 'include'\` parametri berilishi kerak.
+
+### Senior (9–12)
+9. **Savol:** So'rov yuborishda vaqt cheklovini (Timeout) Fetch yordamida qanday amalga oshiramiz?
+   * **Javob:** \`AbortController\` yaratib, uning \`signal\`ini fetch parametriga beramiz va \`setTimeout\` yordamida kerakli vaqtda \`controller.abort()\` chaqiramiz.
+10. **Savol:** Fetch orqali yuklanish jarayonini (Upload/Download progress) kuzatish mumkinmi?
+    * **Javob:** Fetch yuklash (upload) progressini kuzata olmaydi (buning uchun XHR kerak). Ammo yuklab olish (download) progressini \`response.body\` oqimidan (ReadableStream) baytlarni o'qib borish orqali kuzatish mumkin.
+11. **Savol:** Fetch so'rovini keshlash (caching) siyosatini qanday boshqaramiz?
+    * **Javob:** Options ichidagi \`cache\` parametri orqali (\`'no-store'\`, \`'reload'\`, \`'force-cache'\`, \`'only-if-cached'\`).
+12. **Savol:** Axios kutubxonasi va o'rnatilgan Fetch API o'rtasidagi asosiy farqlar nimada?
+    * **Javob:** Axios avtomatik ravishda HTTP xatolarda reject qiladi, JSON-ga o'gira oladi (transform), so'rovlarni abort qilish qulayroq va yuklash progressini qo'llab-quvvatlaydi. Fetch esa brauzerga o'rnatilgan bo'lib, loyihaga ortiqcha yuklama qo'shmaydi.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Mashqlar maxsus test tizimi orqali tekshiriladi.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars yakunidagi testlar.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Dinamik Ob-havo Ma'lumotlarini Yuklash
+API orqali shahar nomini yuborib ob-havo ma'lumotini yuklaymiz. HTTP xatolarini va tarmoq uzilishlarini to'g'ri boshqaramiz.
+
+\`\`\`javascript
+async function getWeather(city) {
+  const apiKey = "demo_key";
+  const url = \`https://api.openweathermap.org/data/2.5/weather?q=\${city}&appid=\${apiKey}\`;
+
   try {
-    const res = await fetch("https://api.example.com/products");
-    if (!res.ok) throw new Error("Yuklab bo'lmadi");
-    const products = await res.json();
-    displayProducts(products);
-  } catch (err) {
-    errorMessage = err.message;
-    showError(errorMessage);
-  } finally {
-    isLoading = false;
-    hideLoadingSpinner();
+    const response = await fetch(url);
+    
+    // 1. HTTP status xatolarini tekshiramiz
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error("Shahar topilmadi!");
+      }
+      throw new Error("Server xatosi!");
+    }
+    
+    // 2. JSON-ga o'giramiz
+    const data = await response.json();
+    return {
+      temp: data.main.temp - 273.15, // Kelvinni Selsiyga o'tkazamiz
+      description: data.weather[0].description
+    };
+  } catch (error) {
+    // Tarmoq uzilishi yoki qo'lda otilgan xatolar shu yerga tushadi
+    console.error("Ob-havo olishda xato:", error.message);
+    return null;
   }
 }
 \`\`\`
 
 ---
 
-## 5. XATOLAR (Common Mistakes)
+## 9. 🚀 Performance va Optimization
 
-1. **\`res.json()\` da \`await\` yozishni unutish:**
-   \`\`\`javascript
-   // XATO: json() ham Promise qaytaradi
-   const data = res.json(); 
-   
-   // TO'G'RI
-   const data = await res.json();
-   \`\`\`
-2. **404 xatosi catch-ga tushadi deb o'ylash:**
-   \`fetch()\` faqat so'rov umuman bajarilmay qolsa reject bo'ladi. HTTP 404 yoki 500 statuslarida u catch-ga tushmaydi. Shuning uchun har doim \`response.ok\` tekshirilishi kerak.
-3. **Response body'ni ikki marta o'qish:**
-   \`await response.json()\` dan keyin \`await response.text()\` ni chaqirish \`TypeError: body stream already read\` xatosiga olib keladi. Bunga yo'l qo'ymaslik uchun \`response.clone()\` ishlatiladi.
+* **Keshlashdan foydalaning:** Agar tez-tez o'zgarmaydigan ma'lumot bo'lsa (masalan davlatlar ro'yxati), \`cache: 'force-cache'\` sozlamasi bilan so'rovni keshdan tezkor o'qing.
+* **Keep-Alive:** Bir nechta ketma-ket qisqa so'rovlar yuborilganda tarmoq ulanishini ochiq saqlash uchun \`keepalive: true\` opsiyasidan foydalaning.
 
 ---
 
-## 6. SAVOLLAR VA JAVOBLAR
+## 10. 📌 Cheat Sheet
 
-**1. fetch() nima vazifani bajaradi?**
-Brauzer orqali tarmoq bo'ylab serverga HTTP so'rovlar yuborish va javoblarni qabul qilish uchun xizmat qiladigan zamonaviy asinxron interfeysdir.
-
-**2. fetch() so'rovining sukut bo'yicha HTTP metodi qaysi?**
-Sukut bo'yicha (default) GET metodi ishlatiladi, ya'ni serverdan ma'lumot olish so'raladi.
-
-**3. fetch() qaytaradigan javobni (response) to'g'ridan-to'g'ri o'qib bo'ladimi? Nima uchun .json() kerak?**
-Yo'q, chunki javob oqim (stream) ko'rinishida keladi. .json() yoki .text() metodlari bu oqimni to'liq o'qib, mos ravishda JS obyektiga yoki matnga o'girib beradi. Ular ham asinxron bo'lgani uchun await qilinishi shart.
-
-**4. response.ok xususiyati nima va u qachon true bo'ladi?**
-Bu so'rov muvaffaqiyatli yakunlanganini bildiruvchi boolean qiymat. HTTP status kodi 200-299 oralig'ida bo'lsa, u true bo'ladi, aks holda false bo'ladi.
-
-**5. Server 404 (Topilmadi) yoki 500 (Server xatosi) qaytarsa, fetch() catch blokiga tushadimi?**
-Yo'q! fetch() faqat tarmoq ulanishi yo'qolsa, DNS xatosi bo'lsa yoki so'rov to'xtatilsagina reject bo'ladi (catch-ga tushadi). HTTP xato statuslarida esa muvaffaqiyatli yakunlanadi va faqat response.ok false bo'ladi.
-
-**6. POST yoki PUT so'rovlarida body qanday shaklda jo'natiladi?**
-Odatda obyektdan string ko'rinishiga o'tkazilgan JSON matni shaklida jo'natiladi: body: JSON.stringify(data).
-
-**7. headers (sarlavhalar) nima uchun kerak?**
-So'rov haqidagi meta-ma'lumotlarni, masalan, yuborilayotgan ma'lumot turini (Content-Type: application/json) yoki foydalanuvchini identifikatsiya qilish uchun tokenlarni (Authorization) yuborish uchun ishlatiladi.
-
-**8. Headers obyekti kalitlari katta yoki kichik harflarda yozilishi farq qiladimi?**
-Yo'q, HTTP Headers standarti bo'yicha sarlavha kalitlari case-insensitive (katta-kichik harflarga sezgir emas) hisoblanadi.
-
-**9. Response obyektidagi clone() metodi nega kerak?**
-Response body'si faqat bir marta o'qilishi mumkin bo'lgan oqim (ReadableStream) bo'lganligi sababli, agar uni bir necha marta yoki har xil formatda o'qish kerak bo'lsa, avval clone() yordamida nusxalash kerak.
-
-**10. response.blob() nima uchun ishlatiladi?**
-Serverdan rasm, audio, video yoki fayl kabi ikkilik (binary) ma'lumotlarni yuklab olish va ularni brauzerda qayta ishlash uchun ishlatiladi.
-
-**11. fetch yordamida yuborilgan so'rovni qanday qilib bekor qilish (abort qilish) mumkin?**
-AbortController obyektidan foydalanib. Controllerdan signal olinib, fetch sozlamalariga beriladi va kerak bo'lganda controller.abort() chaqiriladi.
-
-**12. response.body.getReader() nima uchun ishlatiladi?**
-Response body'sini oqim (ReadableStream) ko'rinishida bo'laklab (chunk-by-chunk) real vaqtda o'qish uchun foydalaniladi.
+| Metod / Option | Vazifasi | Misol / Sintaksis |
+| :--- | :--- | :--- |
+| **fetch(url)** | GET so'rovi yuborish | \`await fetch('/api')\` |
+| **response.ok** | Muvaffaqiyatni tekshirish (2xx) | \`if (res.ok) { ... }\` |
+| **response.json()** | Body-ni JSON formatda o'qish | \`await res.json()\` |
+| **response.text()** | Body-ni oddiy matn ko'rinishida o'qish | \`await res.text()\` |
+| **body** | POST so'rovida yuboriladigan ma'lumot | \`body: JSON.stringify(data)\` |
+| **headers** | So'rov sarlavhalari | \`headers: { 'Content-Type': 'application/json' }\` |
+| **AbortController** | So'rovni bekor qilish | \`controller.abort()\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Oddiy GET so'rovi",
-      instruction: "Berilgan URL-dan `fetch` orqali ma'lumot yuklab oling, response-ni JSON formatida parse qiling va qaytaring.",
-      startingCode: "async function getJSON(url) {\n  // Bu yerga yozing\n}",
-      hint: "const res = await fetch(url); return await res.json();",
-      test: "if (typeof getJSON !== 'function') return 'getJSON funksiya emas'; const p = getJSON('https://jsonplaceholder.typicode.com/todos/1'); return p.then(r => r && r.id === 1 ? null : 'Ma\\'lumot noto\\'g\\'ri yuklandi');"
-    },
-    {
-      id: 2,
-      title: "2️⃣ HTTP statusini tekshirish (response.ok)",
-      instruction: "URL-ga so'rov yuboring. Agar javob muvaffaqiyatli bo'lsa (`res.ok`), JSON ma'lumotni oling, aks holda 'Xato status: ' va status kodini qaytaring.",
-      startingCode: "async function fetchSafe(url) {\n  // Bu yerga yozing\n}",
-      hint: "const res = await fetch(url); if (res.ok) return await res.json(); return 'Xato status: ' + res.status;",
-      test: "if (typeof fetchSafe !== 'function') return 'fetchSafe funksiya emas'; return fetchSafe('https://jsonplaceholder.typicode.com/todos/1').then(r => { if (typeof r === 'object' && r.id === 1) { return fetchSafe('https://jsonplaceholder.typicode.com/invalid-url-path-999').then(r2 => r2 === 'Xato status: 404' ? null : 'Xatolik to\\'g\\'ri boshqarilmadi'); } return 'Muvaffaqiyatli holat noto\\'g\\'ri bajarildi'; });"
-    },
-    {
-      id: 3,
-      title: "3️⃣ POST so'rovi yuborish",
-      instruction: "Berilgan `url` va `data` (obyekt) yordamida POST so'rovini yuboring. Headers-da `'Content-Type': 'application/json'` yuboring, body-ni stringify qiling va natija JSON-ni qaytaring.",
-      startingCode: "async function createPost(url, data) {\n  // Bu yerga yozing\n}",
-      hint: "const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); return await res.json();",
-      test: "if (typeof createPost !== 'function') return 'createPost funksiya emas'; return createPost('https://jsonplaceholder.typicode.com/posts', { title: 'foo' }).then(r => r && r.title === 'foo' ? null : 'POST so\\'rovi bajarilmadi');"
-    },
-    {
-      id: 4,
-      title: "4️⃣ DELETE so'rovi yuborish",
-      instruction: "Berilgan URL-ga `DELETE` metodini ishlatgan holda fetch so'rovini yuboring va `response.status`ni qaytaring.",
-      startingCode: "async function deleteItem(url) {\n  // Bu yerga yozing\n}",
-      hint: "const res = await fetch(url, { method: 'DELETE' }); return res.status;",
-      test: "if (typeof deleteItem !== 'function') return 'deleteItem funksiya emas'; return deleteItem('https://jsonplaceholder.typicode.com/posts/1').then(r => r >= 200 && r < 300 ? null : 'DELETE so\\'rovi muvaffaqiyatsiz');"
-    },
-    {
-      id: 5,
-      title: "5️⃣ PUT so'rovi yordamida yangilash",
-      instruction: "Berilgan `url` va `data` obyektini PUT metodi yordamida serverga yuboring (headers va body to'g'ri berilishi shart) va yangilangan JSON natijasini qaytaring.",
-      startingCode: "async function updateItem(url, data) {\n  // Bu yerga yozing\n}",
-      hint: "const res = await fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); return await res.json();",
-      test: "if (typeof updateItem !== 'function') return 'updateItem funksiya emas'; return updateItem('https://jsonplaceholder.typicode.com/posts/1', { id: 1, title: 'bar' }).then(r => r && r.title === 'bar' ? null : 'PUT so\\'rovi noto\\'g\\'ri');"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Tarmoq xatolarini ushlash",
-      instruction: "So'rov yuborganda internet uzilishi yoki noto'g'ri domen kabi tarmoq xatolari (network errors) yuz bersa, catch bloki orqali 'Tarmoq xatosi' matnini qaytaradigan `fetchDataSafe` funksiyasini yozing.",
-      startingCode: "async function fetchDataSafe(url) {\n  // Bu yerga yozing\n}",
-      hint: "try { const res = await fetch(url); return await res.json(); } catch(e) { return 'Tarmoq xatosi'; }",
-      test: "if (typeof fetchDataSafe !== 'function') return 'fetchDataSafe funksiya emas'; return fetchDataSafe('https://invalid-domain-does-not-exist.xyz').then(r => r === 'Tarmoq xatosi' ? null : 'Tarmoq xatosi ushlanmadi');"
-    },
-    {
-      id: 7,
-      title: "7️⃣ Matn (text) ko'rinishidagi javob",
-      instruction: "Berilgan URL-dan ma'lumot yuklab oling va uni `.text()` yordamida oddiy matn ko'rinishida qaytaring.",
-      startingCode: "async function getPlainText(url) {\n  // Bu yerga yozing\n}",
-      hint: "const res = await fetch(url); return await res.text();",
-      test: "if (typeof getPlainText !== 'function') return 'getPlainText funksiya emas'; return getPlainText('https://jsonplaceholder.typicode.com/todos/1').then(r => typeof r === 'string' && r.includes('userId') ? null : 'Matn noto\\'g\\'ri o\\'qildi');"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Authorization Header yuborish",
-      instruction: "Berilgan `url`ga `Authorization: Bearer my-token-123` header-i bilan GET so'rovi yuboring (fetch sozlamalarida headers obyektini bering).",
-      startingCode: "async function fetchWithToken(url, token) {\n  // Bu yerga yozing\n}",
-      hint: "return await fetch(url, { headers: { 'Authorization': 'Bearer ' + token } });",
-      test: "if (typeof fetchWithToken !== 'function') return 'fetchWithToken funksiya emas'; if (code.includes('Authorization') && code.includes('Bearer')) return null; return 'Authorization header ishlatilmadi';"
-    },
-    {
-      id: 9,
-      title: "9️⃣ Response status kodini olish",
-      instruction: "Berilgan URL-ga fetch so'rovini yuboring va faqat HTTP status kodini (masalan: 200, 404) qaytaring.",
-      startingCode: "async function getStatus(url) {\n  // Bu yerga yozing\n}",
-      hint: "const res = await fetch(url); return res.status;",
-      test: "if (typeof getStatus !== 'function') return 'getStatus funksiya emas'; return getStatus('https://jsonplaceholder.typicode.com/posts/1').then(r => r === 200 ? null : 'Status noto\\'g\\'ri');"
-    },
-    {
-      id: 10,
-      title: "🔟 UI yuklanish holatini simulyatsiya qilish",
-      instruction: "`loading = true` qiling. Keyin `fetch` so'rovini yuboring, javobini oling va oxirida `finally` bloki ichida `loading = false` qiling. Natijani qaytaring.",
-      startingCode: "let loading = false;\nasync function loadData(url) {\n  // Bu yerga yozing\n}",
-      hint: "loading = true; try { const res = await fetch(url); return await res.json(); } finally { loading = false; }",
-      test: "if (typeof loadData !== 'function') return 'loadData funksiya emas'; const p = loadData('https://jsonplaceholder.typicode.com/todos/1'); if (loading === true) { return p.then(() => !loading ? null : 'loading false bo\\'lmadi'); } return 'loading true qilinmadi';"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ Timeout so'rovi (AbortController)",
-      instruction: "`AbortController` yarating. So'rovni yuborayotganda uning `signal`ini sozlamalarga qo'shing va so'rov yuborilgandan so'ng darhol so'rovni bekor qiling (`abort()`), so'ng 'Bekor qilindi' deb return qiling (catch ichida).",
-      startingCode: "async function requestAndAbort(url) {\n  // Bu yerga yozing\n}",
-      hint: "const controller = new AbortController(); try { const p = fetch(url, { signal: controller.signal }); controller.abort(); await p; } catch (e) { return 'Bekor qilindi'; }",
-      test: "if (typeof requestAndAbort !== 'function') return 'requestAndAbort funksiya emas'; return requestAndAbort('https://jsonplaceholder.typicode.com/posts').then(r => r === 'Bekor qilindi' ? null : 'So\\'rov abort qilinmadi');"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Response formatini dinamik aniqlash",
-      instruction: "Berilgan URL-dan fetch orqali javob oling. Agar `Content-Type` headeri `'application/json'`ni o'z ichiga olsa JSON ko'rinishida, aks holda matn (text) ko'rinishida qaytaring.",
-      startingCode: "async function getDynamic(url) {\n  // Bu yerga yozing\n}",
-      hint: "const res = await fetch(url); const type = res.headers.get('content-type'); if (type && type.includes('application/json')) { return await res.json(); } return await res.text();",
-      test: "if (typeof getDynamic !== 'function') return 'getDynamic funksiya emas'; return getDynamic('https://jsonplaceholder.typicode.com/todos/1').then(r => typeof r === 'object' && r.id === 1 ? null : 'Dinamik o\\'qish ishlamadi');"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Dinamik Headers Boshqaruvi (headersManager)",
-      instruction: "Yangi `Headers` obyekti yarating, unga berilgan `key` va `value` qiymatini o'rnating va ushbu `Headers` obyektini qaytaring.",
-      startingCode: "function headersManager(key, value) {\n  // Bu yerga yozing\n}",
-      hint: "const headers = new Headers(); headers.set(key, value); return headers;",
-      test: "if (typeof headersManager !== 'function') return 'headersManager funksiya emas';\nconst h = headersManager('x-api-key', 'secret');\nif (!(h instanceof Headers)) return 'Headers obyekti qaytarilmadi';\nif (h.get('x-api-key') !== 'secret') return 'Header qiymati noto\\'g\\'ri';\nif (h.get('X-API-Key') !== 'secret') return 'Headers case-insensitivity xususiyati ishlamadi';\nreturn null;"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ JSON Stream Yuklash (fetchJSONStream)",
-      instruction: "Berilgan URL'dan `fetch` so'rovi orqali keladigan ma'lumotlar oqimini (ReadableStream) `response.body.getReader()` va `TextDecoder` orqali bo'laklab (chunk-by-chunk) o'qing, ularni birlashtiring va to'liq yuklangach parse qilib JSON obyekt sifatida qaytaring.",
-      startingCode: "async function fetchJSONStream(url) {\n  // Bu yerga yozing\n}",
-      hint: "const res = await fetch(url); const reader = res.body.getReader(); const decoder = new TextDecoder(); let text = ''; while (true) { const { done, value } = await reader.read(); if (done) break; text += decoder.decode(value, { stream: true }); } text += decoder.decode(); return JSON.parse(text);",
-      test: "if (typeof fetchJSONStream !== 'function') return 'fetchJSONStream funksiya emas';\nreturn fetchJSONStream('https://jsonplaceholder.typicode.com/todos/1').then(r => {\n  if (r && r.id === 1) return null;\n  return 'Stream orqali yuklangan JSON noto\\'g\\'ri';\n}).catch(e => 'Xatolik: ' + e.message);"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "GET so'rovi yordamida ma'lumot olish",
+    "instruction": "Berilgan `url` manzilidan fetch orqali ma'lumot yuklab oluvchi va undan olingan JSON ma'lumotni qaytaruvchi asinxron `getJSON(url)` funksiyasini yozing.",
+    "startingCode": "async function getJSON(url) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "const response = await fetch(url); return await response.json();",
+    "test": "if (!code.includes('fetch')) return 'fetch ishlatilmadi';\ntry {\n  const mockResponse = { json: async () => ({ status: 'ok' }) };\n  const mockFetch = async () => mockResponse;\n  const sandbox = new Function('fetch', code + '; return getJSON;');\n  const fn = sandbox(mockFetch);\n  const res = await fn('https://api.example.com');\n  if (res.status !== 'ok') return 'JSON qaytarishda xatolik yuz berdi';\n} catch (e) { return 'Xatolik: ' + e.message; }\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "POST so'rovi yordamida ma'lumot yuborish",
+    "instruction": "Berilgan `url` manziliga `data` obyektini POST so'rovi yordamida JSON formatida yuboradigan hamda serverdan qaytgan javobning JSON formatini qaytaruvchi asinxron `sendPOST(url, data)` funksiyasini yozing. So'rov sarlavhalari (headers) ichida 'Content-Type': 'application/json' bo'lishi shart.",
+    "startingCode": "async function sendPOST(url, data) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); return await res.json();",
+    "test": "if (!code.includes('POST') || !code.includes('body')) return 'POST so\\'rovi yoki body parametri ishlatilmadi';\ntry {\n  let sentOptions = null;\n  const mockFetch = async (u, opt) => { sentOptions = opt; return { json: async () => ({ success: true }) }; };\n  const sandbox = new Function('fetch', code + '; return sendPOST;');\n  const fn = sandbox(mockFetch);\n  await fn('api', { name: 'Ali' });\n  if (!sentOptions || sentOptions.method !== 'POST') return 'Metod POST qilib belgilanmagan';\n  if (!sentOptions.headers || (!sentOptions.headers['Content-Type'] && !sentOptions.headers['content-type'])) return 'Content-Type header-i to\\'g\\'ri o\\'rnatilmadi';\n  if (sentOptions.body !== JSON.stringify({ name: 'Ali' })) return 'So\\'rov body-si noto\\'g\\'ri formatlangan';\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "HTTP Xatolarini Tekshirish",
+    "instruction": "Fetch so'rovi yuborilganda tarmoq ishlashiga qaramasdan serverdan 404 yoki 500 kabi xatoliklar qaytishi mumkin (fetch buni reject qilmaydi). Agar `response.ok` xossasi false bo'lsa, 'Server error' xatosini otuvchi (`throw new Error('Server error')`) hamda muvaffaqiyatli bo'lsa, text formatida natijani qaytaruvchi asinxron `fetchText(url)` funksiyasini yozing.",
+    "startingCode": "async function fetchText(url) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "const response = await fetch(url); if (!response.ok) { throw new Error('Server error'); } return await response.text();",
+    "test": "if (!code.includes('ok')) return 'response.ok tekshiruvi bajarilmadi';\ntry {\n  const mockFetchGood = async () => ({ ok: true, text: async () => 'hello' });\n  const mockFetchBad = async () => ({ ok: false });\n  const sandbox = new Function('fetch', code + '; return fetchText;');\n  const fnGood = sandbox(mockFetchGood);\n  const fnBad = sandbox(mockFetchBad);\n  const res = await fnGood('u');\n  if (res !== 'hello') return 'Muvaffaqiyatli so\\'rovda matn qaytarilmadi';\n  try {\n    await fnBad('u');\n    return 'Xato holatida (ok: false) error otilmadi';\n  } catch (err) {\n    if (err.message !== 'Server error') return 'Error xabari to\\'g\\'ri berilmadi';\n  }\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "`fetch()` metodi serverga tarmoq so'rovini yuborib default holatda nima qaytaradi?",
-      options: [
-        "Serverdan kelgan JSON matnini",
-        "Promise (u hal bo'lganda Response obyekti qaytadi)",
-        "JavaScript obyekti",
-        "Faqat status kodi"
-      ],
-      correctAnswer: 1,
-      explanation: "`fetch()` har doim asinxron Promise qaytaradi. U muvaffaqiyatli yakunlanganda Response obyektini saqlaydi."
-    },
-    {
-      id: 2,
-      question: "Nima uchun `response.json()` metodidan oldin ham `await` kalit so'zini yozish kerak?",
-      options: [
-        "Bu JavaScript-ning majburiy qoidasi",
-        "`response.json()` ham asinxron bo'lib, o'qib tugatilgandan keyin Promise qaytaradi",
-        "Hech qanday sabab yo'q, xohlasak yozmasligimiz mumkin",
-        "Sinxron ishlashini ta'minlash uchun"
-      ],
-      correctAnswer: 1,
-      explanation: "Body ma'lumotlarini to'liq o'qish va JSON sifatida parse qilish vaqt oladi, shuning uchun bu jarayon asinxron Promise qaytaradi."
-    },
-    {
-      id: 3,
-      question: "`response.ok` xususiyati qaysi HTTP status kodlari oralig'ida `true` bo'ladi?",
-      options: [
-        "Faqat 200 da",
-        "200 dan 299 gacha",
-        "100 dan 500 gacha",
-        "Faqat 304 da"
-      ],
-      correctAnswer: 1,
-      explanation: "`response.ok` HTTP status kodi muvaffaqiyatli (200-299) bo'lganda true qiymatini saqlaydi."
-    },
-    {
-      id: 4,
-      question: "Server 500 (Internal Server Error) qaytarganda `fetch()` so'rovi qanday yakunlanadi?",
-      options: [
-        "Muvaffaqiyatli yakunlanadi, ammo `response.ok` false bo'ladi",
-        "Rad etiladi va catch blokiga o'tadi",
-        "So'rov abadiy kutish rejimiga o'tadi",
-        "Brauzer sahifani avtomatik yangilaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "Server javob berganligi sababli fetch muvaffaqiyatli tugaydi (catchga tushmaydi). Faqat xato kod bo'lgani uchun `ok` xususiyati false bo'ladi."
-    },
-    {
-      id: 5,
-      question: "`POST` so'rovida ma'lumot yuborishda `body` xususiyatiga qanday qiymat beriladi?",
-      options: [
-        "JavaScript obyekti",
-        "JSON.stringify() orqali string-ga o'tkazilgan obyekt matni",
-        "Faqat massiv",
-        "Faqat fayl (file) formati"
-      ],
-      correctAnswer: 1,
-      explanation: "Tarmoq orqali yuborilayotgan ma'lumotlar matn (string) shaklida bo'lishi lozim. Shuning uchun obyekt `JSON.stringify` qilinadi."
-    },
-    {
-      id: 6,
-      question: "Quyidagilardan qaysi biri fetch() catch blokiga tushadigan (reject bo'ladigan) holat hisoblanadi?",
-      options: [
-        "Server 404 (Not Found) statusini qaytarganda",
-        "Server 500 (Server Error) statusini qaytarganda",
-        "Tarmoq ulanishi yo'qolganda yoki DNS xatosi sababli so'rov serverga yetib bormaganda",
-        "Foydalanuvchi ma'lumotlari noto'g'ri bo'lganda"
-      ],
-      correctAnswer: 2,
-      explanation: "fetch() faqat tarmoq darajasida uzilish yuz bergandagina (so'rov yakuniga yetmasa) reject bo'ladi va catch blokiga o'tadi."
-    },
-    {
-      id: 7,
-      question: "`Content-Type: application/json` sarlavhasi (header) nima uchun jo'natiladi?",
-      options: [
-        "Foydalanuvchini autentifikatsiya qilish uchun",
-        "Serverga yuborilayotgan ma'lumot formati JSON ekanligini bildirish uchun",
-        "So'rovni bekor qilish uchun",
-        "CORS xatosini oldini olish uchun"
-      ],
-      correctAnswer: 1,
-      explanation: "Ushbu sarlavha serverga yuborilayotgan body tarkibi JSON formatida ekanini tushunishga va uni to'g'ri parse qilishga yordam beradi."
-    },
-    {
-      id: 8,
-      question: "`fetch` yordamida yuborilgan so'rovni qanday bekor qilish mumkin?",
-      options: [
-        "`fetch.stop()` chaqirish orqali",
-        "`AbortController` va uning `signal` xususiyati yordamida",
-        "Sahifani yangilash orqali",
-        "So'rovni bekor qilib bo'lmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "AbortController signalini fetch-ga ulab, keyinchalik `controller.abort()` chaqirish orqali faol so'rovni to'xtatish mumkin."
-    },
-    {
-      id: 9,
-      question: "Serverdan kelgan rasm yoki PDF faylni o'qish uchun response-ning qaysi metodidan foydalaniladi?",
-      options: [
-        "`.json()`",
-        "`.text()`",
-        "`.blob()`",
-        "`.html()`"
-      ],
-      correctAnswer: 2,
-      explanation: "Ikkilik (binary) ko'rinishdagi ma'lumotlarni o'qish uchun `.blob()` (Binary Large Object) metodi ishlatiladi."
-    },
-    {
-      id: 10,
-      question: "CORS (Cross-Origin Resource Sharing) nima?",
-      options: [
-        "Tarmoq ma'lumotlarini shifrlash vositasi",
-        "Xavfsizlik nuqtai nazaridan bir domendan boshqa domenga so'rov yuborishni cheklovchi/tartibga soluvchi brauzer mexanizmi",
-        "Yangi HTTP protokoli",
-        "JSON-ga o'xshash ma'lumot formati"
-      ],
-      correctAnswer: 1,
-      explanation: "CORS — brauzerlar xavfsizligini ta'minlash maqsadida boshqa manbalardan ma'lumot yuklashni cheklovchi xavfsizlik qoidasidir."
-    },
-    {
-      id: 11,
-      question: "Authorization sarlavhasida Token yuborish uchun qaysi format ko'p ishlatiladi?",
-      options: [
-        "`Token mytoken123`",
-        "`Bearer mytoken123`",
-        "`Auth mytoken123`",
-        "`Key mytoken123`"
-      ],
-      correctAnswer: 1,
-      explanation: "Veb standartlarida ko'pincha tokenlar Authorization headerida `Bearer <token>` ko'rinishida yuboriladi."
-    },
-    {
-      id: 12,
-      question: "So'rov parametrlarini (query parameters, masalan `?limit=10&page=2`) fetch-da qanday yuboramiz?",
-      options: [
-        "Body ichiga qo'shib",
-        "URL oxiriga string ko'rinishida yoki URLSearchParams yordamida qo'shib",
-        "Headers ichida",
-        "Parametrlarni yuborib bo'lmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Query parametrlari GET so'rovlarida to'g'ridan-to'g'ri URL manzilining oxiriga qo'shib yuboriladi."
-    },
-    {
-      id: 13,
-      question: "HTTP Headers obyekti bilan ishlashda katta-kichik harflar (case-sensitivity) qanday ta'sir qiladi?",
-      options: [
-        "Headers faqat kichik harflarni qo'llab-quvvatlaydi, katta harflar xatolik beradi",
-        "Sarlavha kalitlari butunlay case-insensitive (sezgir emas), ya'ni Content-Type va content-type bir xil ishlaydi",
-        "Faqat GET so'rovlarida katta-kichik harflar farq qiladi",
-        "Xavfsizlik tokenlarini faqat katta harflarda yozish shart"
-      ],
-      correctAnswer: 1,
-      explanation: "HTTP Headers spetsifikatsiyasiga binoan, sarlavhalar kalitlari case-insensitive hisoblanadi. Headers obyekti ham buni to'liq qo'llab-quvvatlaydi."
-    },
-    {
-      id: 14,
-      question: "Response body'sini ReadableStream sifatida chunk-by-chunk o'qishda TextDecoder nima uchun kerak?",
-      options: [
-        "Stream kelayotgan oqim tezligini oshirish uchun",
-        "Ikkilik (Uint8Array) ma'lumotlar oqimini inson o'qiy oladigan matn ko'rinishiga o'tkazish (decode qilish) uchun",
-        "Faqat rasmlarni siqish uchun",
-        "JSON formatini tekshirish uchun"
-      ],
-      correctAnswer: 1,
-      explanation: "ReadableStream o'qilganda byte massivlari (`Uint8Array`) qaytadi. Ularni matnga aylantirish uchun `TextDecoder` dan foydalanish zarur."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Fetch API yordamida so'rov yuborilganda, u default holatda qaysi HTTP metodidan foydalanadi?",
+    "options": [
+      "POST",
+      "PUT",
+      "GET",
+      "DELETE"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Agar fetch() chaqirilganda hech qanday metod ko'rsatilmasa, brauzer avtomatik ravishda GET so'rovini yuboradi."
+  },
+  {
+    "id": 2,
+    "question": "Tarmoq so'rovi muvaffaqiyatli yakunlanib serverdan 404 Not Found xatosi qaytsa, `fetch()` qanday yo'l tutadi?",
+    "options": [
+      "Va'dani (Promise) 'fulfilled' deb hisoblaydi, faqat `response.ok` xossasi false bo'ladi",
+      "Va'dani darhol 'rejected' (rad etilgan) qiladi va catch-ga otadi",
+      "So'rovni serverga qayta yuboradi",
+      "Dastur ishini butunlay to'xtatadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Fetch faqat tarmoq ulanishi mutlaqo uzilgandagina Promise-ni reject qiladi. Agar HTTP status kodi (masalan, 404 yoki 500) qaytsa, Promise baribir resolve bo'ladi va faqat `response.ok` false qiymat oladi."
+  },
+  {
+    "id": 3,
+    "question": "Qaysi holatda `fetch()` qaytargan Promise 'rejected' (rad etilgan) bo'ladi?",
+    "options": [
+      "Server 500 Internal Server Error qaytarganda",
+      "Foydalanuvchida internet aloqasi bo'lmaganda yoki tarmoq mutlaqo ishlay olmay qolganda",
+      "Server 403 Forbidden qaytarganda",
+      "Javob JSON formatida bo'lmaganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Fetch faqat tarmoq uzilishi, DNS topilmasligi yoki xavfsizlik to'siqlari tufayli haqiqatdan ham serverga ulana olmaganidagina Promise-ni reject holatiga o'tkazadi."
+  },
+  {
+    "id": 4,
+    "question": "Fetch so'rovida POST metodini ishlatganda, yuborilayotgan JS obyektini `body` qismiga qanday ko'rinishda joylash kerak?",
+    "options": [
+      "JS obyektini to'g'ridan-to'g'ri o'zini uzatish orqali",
+      "Massivga o'girib",
+      "XML ko'rinishida",
+      "`JSON.stringify(obyekt)` ko'rinishida string qilib"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Tarmoq orqali yuborishda JS obyektini JSON formatidagi matnga o'giriish uchun `JSON.stringify()` metodidan foydalanish zarur."
+  },
+  {
+    "id": 5,
+    "question": "Serverdan kelgan javobni JSON formatida o'qish uchun javob obyektining qaysi asinxron metodidan foydalaniladi?",
+    "options": [
+      "response.json()",
+      "response.toJSON()",
+      "JSON.parse(response)",
+      "response.readBody()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "response.json() metodi javob body-sini JSON sifatida o'qiydi va Promise qaytaradi. Uni har doim `await` qilish kerak."
+  },
+  {
+    "id": 6,
+    "question": "So'rov jo'natish sarlavhalarini (headers) sozlash uchun fetch-ning qaysi parametridan foydalaniladi?",
+    "options": [
+      "credentials",
+      "headers",
+      "metadata",
+      "mode"
+    ],
+    "correctAnswer": 1,
+    "explanation": "So'rovda yuboriladigan qo'shimcha sarlavhalar (masalan, Authorization tokenlari, Content-Type) `headers` parametri orqali boshqariladi."
+  },
+  {
+    "id": 7,
+    "question": "Fetch so'rovini ma'lum vaqt o'tgandan keyin yoki foydalanuvchi bekor qilganda to'xtatish (abort qilish) uchun qaysi API ishlatiladi?",
+    "options": [
+      "AbortController va AbortSignal",
+      "fetch.cancel()",
+      "clearTimeout()",
+      "Promise.race()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`AbortController` yordamida maxsus signal yaratilib fetch-ga uzatiladi va kerak bo'lganda controller.abort() chaqirilib so'rov bekor qilinadi."
+  },
+  {
+    "id": 8,
+    "question": "`response.ok` xossasi serverning HTTP status kodi qaysi oraliqda bo'lganda `true` qiymat qaytaradi?",
+    "options": [
+      "100 dan 500 gacha bo'lgan oraliqda",
+      "Faqat 200 bo'lganda",
+      "200 dan 299 gacha bo'lgan oraliqda",
+      "300 dan kichik va 400 dan katta bo'lganda"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Agar server muvaffaqiyatli HTTP status kodlarini (2xx oralig'ida, masalan 200 OK, 201 Created) qaytarsa, `response.ok` true bo'ladi."
+  },
+  {
+    "id": 9,
+    "question": "CORS (Cross-Origin Resource Sharing) xatosi nima sababdan yuzaga keladi?",
+    "options": [
+      "Brauzer xavfsizlik nuqtai nazaridan boshqa domendan ruxsatsiz ma'lumot olishni bloklaganda",
+      "Foydalanuvchining internet tezligi juda past bo'lganda",
+      "So'rov yuborilayotgan API URL manzili xato yozilganda",
+      "Server 500 xatosini berganda"
+    ],
+    "correctAnswer": 0,
+    "explanation": "CORS - bu brauzerning xavfsizlik siyosati bo'lib, ruxsat etilmagan boshqa domenlardan (origin) keladigan so'rovlarga javob qaytarishni taqiqlaydi yoki bloklaydi."
+  },
+  {
+    "id": 10,
+    "question": "Fetch orqali yuklangan fayl (masalan rasm yoki PDF) baytlarini xom holatda o'qish uchun `response` ning qaysi metodi ishlatiladi?",
+    "options": [
+      "response.text()",
+      "response.blob()",
+      "response.json()",
+      "response.bytes()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Rasm, audio, video yoki hujjatlarni yuklab ularni fayl sifatida o'qish va URL yaratish uchun `response.blob()` ishlatiladi."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun modern veb-dasturlashda eski `XMLHttpRequest` o'rniga `Fetch API` tavsiya etiladi?",
+    "options": [
+      "Fetch Promise-larga asoslangan bo'lib, asinxron kodni toza va oson yozish imkonini beradi",
+      "XMLHttpRequest faqat sinxron ishlaydi",
+      "Fetch orqali faqat JSON yuklash mumkin",
+      "Fetch tashqi kutubxona bo'lib, o'rnatilishi shart"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Fetch API modern va'dalarga (Promises) asoslangani tufayli ancha sodda interfeys taqdim etadi va Callback Hell kabi muammolardan qutulishga yordam beradi."
+  },
+  {
+    "id": 12,
+    "question": "Fetch-da `credentials: 'include'` sozlamasi nima maqsadda beriladi?",
+    "options": [
+      "So'rov bilan birga cookie fayllarini va autentifikatsiya sarlavhalarini yuborish uchun",
+      "So'rovni shifrlash (encrypt) qilish uchun",
+      "API kalitlarini (API keys) yashirish uchun",
+      "LocalStorage ma'lumotlarini serverga jo'natish uchun"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`credentials: 'include'` sozlamasi cross-origin (boshqa domendagi) so'rovlarda ham cookie fayllari va session IDlarni birga yuborishga imkon beradi."
+  }
+]
+
 };

@@ -1,491 +1,415 @@
-export const eventLoopLesson = {
-  id: "event-loop",
-  title: "Event Loop: JavaScript Qanday Ishlaydi?",
-  level: "Murakkab",
-  description: "Call Stack, Web APIs, Callback Queue, Microtasks, Macrotasks, va Event Loop mexanizmi.",
-  theory: `## 1. NEGA kerak?
+export const eventLoop = {
+  id: "eventLoop",
+  title: "Event Loop asoslari",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-JavaScript **single-threaded** (yagona oqimli) til bo'lib, bir vaqtning o'zida faqat **bitta** vazifani bajara oladi. Bu degani, unda faqat bitta chaqiruvlar stegi (Call Stack) bor.
+### Event Loop nima?
+**JavaScript** — bu **bir oqimli (single-threaded)** dasturlash tili. Bu degani, u bir vaqtning o'zida faqat bitta ishni bajara oladi. Unda nega biz bir vaqtda ham taymerlarni ishlatamiz, ham serverdan ma'lumot yuklaymiz va sahifadagi tugmalarni bosamiz? Sahifamiz qotib qolmaydi? 
+Buning siri **Event Loop (Hodisalar sikli)** mexanizmidir. Event Loop — bu JavaScript-ning bir oqimli tabiatiga qaramay, asinxron (parallel) ishlarni bajarishiga imkon beruvchi brauzer (yoki Node.js) tarkibidagi ko'prikdir.
 
-**Muammo:**
-Agar biz tarmoqdan ma'lumot olish yoki katta hajmdagi faylni yuklash kabi og'ir vazifalarni sinxron (kutib turish) usulida bajarsak, butun sayt operatsiya tugaguncha **muzlab (qotib) qoladi**. Foydalanuvchi tugmalarni bosa olmaydi va interfeys reaksiyadan to'xtaydi.
-
-**Yechim (Event Loop):**
-Asinxron dasturlash va Event Loop mexanizmi JavaScript-ga og'ir vazifalarni fonda (background) bajarishga imkon beradi. JS og'ir ishlarni boshqa tizimga (Web API) topshiradi-da, o'zi navbatdagi kodni bajarishda davom etadi. Ish bitgach, natija navbat orqali Call Stack-ga qaytadi.
-
----
-
-## 2. SODDALIK (Analogiya)
-
-Buni **Restorandagi ofitsiant, oshxona va buyurtmalar navbati** orqali tushunish mumkin:
-
-1. **Ofitsiant (Call Stack):** Mijozlardan buyurtmalarni ketma-ket qabul qiladi. Agar buyurtma oddiy (suv olib kelish) bo'lsa, uni darhol o'zi bajaradi. Agar buyurtma murakkab bo'lsa (kabob pishirish), uni oshxonaga topshiradi va keyingi mijozga o'tadi.
-2. **Oshxona (Web APIs):** Taomni fonda tayyorlaydigan joy. Ofitsiant bu yerda ovqat pishishini kutib turmaydi.
-3. **Tayyor taomlar peshtaxtasi (Callback/Macrotask Queue):** Ovqat pishib tayyor bo'lgach, oshxona uni peshtaxtaga qo'yadi. Taomlar bu yerda ofitsiant ularni olib mijozga tarqatishini kutadi.
-4. **Nazoratchi (Event Loop):** Ofitsiantning bandligini tekshirib turadigan boshqaruvchi. Agar ofitsiant (Call Stack) bo'sh bo'lsa, u peshtaxtadan (Queue) eng birinchi tayyor taomni olib, mijozga eltishni (Stack-ga yuklashni) topshiradi.
+### Real hayotiy analogiya
+Tasavvur qiling, siz **oshxonadagi yagona bosh oshpazsiz** (JavaScript Call Stack):
+1. **Sinxron buyurtma:** Sizga "Salat tayyorlang" deyishdi. Siz sabzavotlarni to'g'rab, salatni darhol topshirdingiz.
+2. **Asinxron buyurtma:** Sizga "Tovuq pishiring" deyishdi. Tovuq duxovkada 30 daqiqa pishishi kerak. Siz duxovka yonida 30 daqiqa hech narsa qilmay qarab turmaysiz (oqimni bloklamaysiz). Siz tovuqni duxovkaga solasiz va taymer qo'yasiz (Web API-ga topshiriq berasiz).
+3. **Boshqa ishlar:** Tovuq duxovkada pishguncha, siz boshqa tezkor salatlar tayyorlashda davom etasiz.
+4. **Taymer jiringlashi (Event Loop faoliyati):** Duxovka taymeri jiringlaganda (Task Queue-ga vazifa kelganda), siz qo'lingizdagi salatni tugatib bo'lingach (Call Stack bo'shagach), borib tovuqni olasiz va mijozga taqdim etasiz.
 
 ---
 
-## 3. STRUKTURA
+## 2. 💻 Real Kod Misollari
 
-JavaScript Runtime (bajarilish muhiti) bir nechta muhim qismlardan iborat:
-
-\`\`\`mermaid
-graph TD
-    Code[JS kodi] --> Stack[Call Stack]
-    Stack -->|Asinxron amallar| WebAPI[Web APIs / Node APIs]
-    WebAPI -->|Timer/DOM callbacklar| MacroQueue[Macrotask Queue]
-    WebAPI -->|Promise callbacklar| MicroQueue[Microtask Queue]
-    
-    EventLoop{Event Loop}
-    EventLoop -->|Call Stack bo'sh bo'lsa| CheckMicro{Microtask bormi?}
-    CheckMicro -->|Ha| RunMicro[Microtasklarni bajarish]
-    RunMicro --> CheckMicro
-    CheckMicro -->|Yo'q| RunMacro[Bitta Macrotaskni bajarish]
-    RunMacro --> Stack
-    MacroQueue --> EventLoop
-    MicroQueue --> EventLoop
-\`\`\`
-
-### A. JavaScript Engine (Dvigatel)
-Dvigatel (masalan, Google Chrome-dagi V8) asosan ikki qismdan iborat:
-* **Memory Heap (Xotira uyumi):** Dinamik ma'lumotlar, obyektlar, massivlar va funksiyalar saqlanadigan tartibsiz xotira maydoni.
-* **Call Stack (Chaqiruv steki):** Kod bajarilishini kuzatib boradigan ma'lumotlar tuzilmasi. U **LIFO** (Last In, First Out) printsipi bo'yicha ishlaydi.
-
-### B. Web APIs (yoki Node.js APIs)
-Dvigateldan tashqarida, lekin brauzer (yoki Node.js) taqdim etadigan qo'shimcha imkoniyatlar. Bunga \`setTimeout\`, \`fetch\`, DOM hodisalari, asinxron tarmoq so'rovlari kiradi. Ular parallel oqimda ishlay oladi.
-
-### C. Macrotask Queue (yoki shunchaki Callback Queue)
-Asinxron operatsiyalar tugagach, ularning callback funksiyalari shu navbatga kelib tushadi. Masalan, \`setTimeout\` va \`setInterval\` callback-lari.
-
-### D. Microtask Queue (Yuqori ustuvorlikdagi navbat)
-Promises \`.then()\`, \`.catch()\`, \`.finally()\` bloklari, \`queueMicrotask()\` va \`MutationObserver\` callback-lari joylashadigan navbat. Bu navbat Macrotask navbatidan ko'ra **ancha yuqori ustuvorlikka** ega.
-
-### E. Event Loop (Hodisalar aylanmasi)
-Uning yagona vazifasi — Call Stack va navbatlarni (Queues) doimiy kuzatish.
-* Agar Call Stack **bo'sh** bo'lsa:
-  1. Event Loop birinchi navbatda **Microtask Queue**-ga qaraydi va undagi barcha topshiriqlarni oxirigacha bajarib tozalaydi.
-  2. Microtask-lar tugagach, u **Macrotask Queue**-dan bitta vazifani olib Call Stack-ga qo'yadi.
-  3. Ushbu jarayon cheksiz takrorlanadi.
-
----
-
-## 4. AMALIYOT
-
-Keling, sinxron va asinxron kodlarning aralashmasini ko'rib chiqamiz:
-
+### 1. Basic Example (Sinxron va Asinxron navbat)
 \`\`\`javascript
-console.log("1. Sinxron boshlanishi");
+console.log("1. Boshlanishi"); // Sinxron
 
 setTimeout(() => {
-  console.log("2. Macrotask (setTimeout)");
-}, 0);
+  console.log("2. Taymer bajarildi (asinxron)");
+}, 0); // Vaqti 0ms bo'lsa ham asinxron
 
-Promise.resolve().then(() => {
-  console.log("3. Microtask (Promise)");
-});
+console.log("3. Tugashi"); // Sinxron
 
-console.log("4. Sinxron yakuni");
+// Natija:
+// 1. Boshlanishi
+// 3. Tugashi
+// 2. Taymer bajarildi (asinxron)
 \`\`\`
 
-**Ijro etilish tartibi va izohi:**
-1. \`console.log("1...")\` stakka kiradi, bajariladi va stakdan chiqadi.
-2. \`setTimeout\` stakka kiradi. Brauzer Web API-da taymerni boshlaydi (0ms) va callback-ni Macrotask Queue-ga joylashtiradi. \`setTimeout\` o'zi stakdan chiqib ketadi.
-3. \`Promise.resolve().then(...)\` stakka kiradi. Uning callback funksiyasi Microtask Queue-ga joylashadi.
-4. \`console.log("4...")\` stakka kiradi, bajariladi va chiqadi.
-5. Hozirda Call Stack bo'sh. Event Loop birinchi bo'lib Microtask Queue-ga o'tadi va 3-logni bajaradi.
-6. Microtask Queue bo'shagach, Macrotask Queue-dan 2-logni olib stakka qo'yadi va u bajariladi.
-
-**Natija:**
-\`\`\`
-1. Sinxron boshlanishi
-4. Sinxron yakuni
-3. Microtask (Promise)
-2. Macrotask (setTimeout)
-\`\`\`
-
-### A. Og'ir CPU Vazifalarini Bo'laklab Bajarish (CPU Splitting)
-JavaScript yagona oqimli bo'lgani sababli, agar sinxron kod juda uzoq ishlasa (masalan, yirik hisob-kitoblar), u brauzerni qotirib qo'yadi. \`setTimeout(..., 0)\` yordamida ushbu og'ir vazifani bir nechta asinxron qismlarga (chunks) bo'lish va har bir qism bajarilgandan so'ng brauzerga foydalanuvchi harakatlarini qayta ishlash hamda ekranni chizish (render) imkonini berish mumkin:
+### 2. Intermediate Example (Stack-ni bloklovchi og'ir kod)
+Sinxron og'ir kod asinxron kodlarni qanday kechiktirishini ko'ramiz:
 \`\`\`javascript
-let i = 0;
-function heavyCalculation() {
-  // Og'ir ishning bir qismini bajaramiz (masalan, 1000 iteratsiya)
-  do {
-    i++;
-  } while (i % 1000 !== 0 && i < 1000000);
+console.log("Start");
 
-  if (i < 1000000) {
-    // Ish hali tugamadi, keyingi qismni navbatga qo'yamiz
-    setTimeout(heavyCalculation, 0);
-  } else {
-    console.log("Hisob-kitob tugadi!");
-  }
+// 100ms dan keyin ishlashi kerak bo'lgan taymer
+setTimeout(() => {
+  console.log("Taymer ishladi!");
+}, 100);
+
+// Stack-ni bloklovchi 1 soniyalik sikl (og'ir ish)
+const start = Date.now();
+while (Date.now() - start < 1000) {
+  // 1 soniya kutib turadi
 }
-heavyCalculation();
+
+console.log("End");
+
+// Natija:
+// Start
+// (1 soniya o'tadi)
+// End
+// Taymer ishladi! (Garchi 100ms da tayyor bo'lsa ham, stack bo'shashini 1 soniya kutdi)
 \`\`\`
 
-### B. Progress Indicator va UI Renderlash
-Agar siz sahifadagi biron-bir progress elementining qiymatini sinxron tsiklda (masalan, \`for\` tsikli orqali 0 dan 100 gacha) o'zgartirsangiz, brauzer progressning o'zgarishini ekranda ko'rsatmaydi (UI muzlaydi va tsikl tugagach darhol 100% bo'lib qoladi). Chunki render qilish bosqichi faqat Call Stack butunlay bo'shaganida ishga tushadi. Agar ishni yuqoridagi kabi \`setTimeout\` orqali bo'laklasangiz, progress silliq oshib borayotgani ekranda ko'rinadi.
+### 3. Advanced Example (Event Loop simulyatsiyasi)
+JavaScript-da asinxronlikni boshqarish:
+\`\`\`javascript
+function main() {
+  console.log("A");
+  
+  setTimeout(function cb1() {
+    console.log("B");
+  }, 1000);
+  
+  setTimeout(function cb2() {
+    console.log("C");
+  }, 0);
+  
+  console.log("D");
+}
 
-### C. Event Loop Algoritmi (Batafsil)
-Event Loop har bir aylanishda quyidagi qat'iy ketma-ketlikda ishlaydi:
-1. **Macrotask:** Macrotask Queue-dan eng eski vazifani olib bajaradi.
-2. **Microtasks:** Microtask Queue to'liq bo'shaguncha barcha microtask-larni bajaradi (agar microtask bajarilayotganda yangi microtask qo'shilsa, u ham shu navbatda bajariladi).
-3. **Render/Repaint:** Agar ekran yangilanishi kerak bo'lsa va 16.6ms o'tgan bo'lsa, brauzer ekranni qayta chizadi (repaint).
-4. **Wait:** Agar navbatlar bo'sh bo'lsa, yangi vazifalar tushguncha kutadi.
+main();
 
-### D. Event Loop va Render Zanjiri Oqimi (Mermaid)
-
-\`\`\`mermaid
-graph TD
-    Start["Event Loop Iteratsiyasi boshlanishi"] --> Macro["Macrotask navbatidan bitta vazifani bajarish"]
-    Macro --> Micro{"Microtask navbatida ish bormi?"}
-    Micro -->|Ha| RunMicro["Microtask-ni bajarish"] --> Micro
-    Micro -->|Yo'q| CheckRender{"Ekranni yangilash (Render/Repaint) kerakmi?"}
-    CheckRender -->|Ha| Repaint["Reflow, Repaint va Animatsiyalarni chizish"] --> EndIter
-    CheckRender -->|Yo'q| EndIter["Iteratsiya yakunlandi, keyingi aylanish"] --> Start
+// Bajarilish bosqichlari:
+// 1. main() stack-ga tushadi.
+// 2. console.log("A") stack-ga kiradi, ekranga 'A' chiqadi va stack-dan chiqadi.
+// 3. cb1 taymeri Web API-ga yuboriladi (1 soniya kutiladi).
+// 4. cb2 taymeri Web API-ga yuboriladi (0 soniya kutiladi va darhol Task Queue-ga tushadi).
+// 5. console.log("D") ekranga 'D' chiqaradi.
+// 6. main() tugaydi va stack-dan chiqadi (Stack bo'shadi).
+// 7. Event Loop stack bo'shligini ko'rib, Task Queue-dan cb2 ni olib stack-ga qo'yadi. Ekranga 'C' chiqadi.
+// 8. 1 soniyadan keyin cb1 Task Queue-ga keladi, Event Loop uni stack-ga qo'yadi. Ekranga 'B' chiqadi.
+// Yakuniy Natija: A, D, C, B
 \`\`\`
 
 ---
 
-## 5. XATOLAR
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
 
-1. **Call Stack-ni bloklash (Blocking code):** Call Stack bo'shatilmaguncha Event Loop hech qaysi navbatdan topshiriq ololmaydi. Shuning uchun og'ir matematik amallar yoki cheksiz sinxron tsikllar saytni butunlay qotirib qo'yadi:
-   \`\`\`javascript
-   // XATO: Butun brauzerni qotirib qo'yadigan kod
-   while(true) {
-     // Stack hech qachon bo'shamaydi, asinxron ishlar ishlamaydi!
-   }
-   \`\`\`
-2. **Cheksiz rekursiya (Stack Overflow):** Funksiya o'zini to'xtovsiz chaqiraversa, Call Stack xotirasi to'lib ketadi:
-   \`\`\`javascript
-   function stackCrash() {
-     stackCrash();
-   }
-   stackCrash(); // RangeError: Maximum call stack size exceeded
-   \`\`\`
+### Qaysi muammoni hal qiladi?
+* **Muzlab qolish (UI Blocking):** Agar Event Loop bo'lmaganda va JS faqat sinxron ishlaganda, har safar serverdan rasm yuklanganda sahifa butunlay muzlab qolar edi (tugmalar bosilmasdi, animatsiyalar to'xtardi). Web API va Event Loop yordamida brauzer og'ir ishlarni orqa fonda (background) bajaradi.
+* **Resurslardan samarali foydalanish:** Ko'p oqimli tillarda (Java, C++) har bir so'rov uchun alohida oqim (thread) ochiladi. JS esa bitta oqimda Event Loop yordamida minglab asinxron so'rovlarni juda kam resurs sarflab bajara oladi.
 
 ---
 
-## 6. SAVOLLAR VA JAVOBLAR
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
 
-**1. JavaScript necha oqimli til va nima uchun?**
-JavaScript yagona oqimli (single-threaded) til, chunki unda faqat bitta Call Stack bor va u bir vaqtda faqat bitta amalni bajaradi.
+### 1. \`setTimeout(..., 0)\` zudlik bilan ishlaydi deb o'ylash
+#### Xato:
+Juniorlar 0ms berilgani uchun bu kod keyingi satrdan oldin ishlaydi deb o'ylashadi.
+#### To'g'ri tushuncha:
+Har qanday setTimeout (hatto 0ms bo'lsa ham) Web API-ga o'tadi va Task Queue orqali faqat stack bo'shagachgina ishlaydi.
 
-**2. Memory Heap nima vazifani bajaradi?**
-Memory Heap — ob'ektlar, massivlar, funksiyalar va dinamik ravishda ajratiladigan xotira manzillarini saqlaydigan tartibsiz katta xotira maydonidir.
+### 2. Stack-ni og'ir hisob-kitoblar bilan to'ldirib qo'yish (Blocking the Event Loop)
+#### Muammo:
+Katta massivlarni sinxron aylanib chiqish taymerlar va klik hodisalari ishlashini to'xtatib qo'yadi.
+#### To'g'ri yechim:
+Og'ir ishlarni mayda bo'laklarga bo'lish yoki Web Workers (alohida fon oqimi) ishlatish.
 
-**3. Call Stack nima va u qaysi tamoyilga asoslanadi?**
-Call Stack — funksiyalarning bajarilish tartibini boshqaruvchi stak xotirasidir. U LIFO (Last In, First Out - Oxirgi kirgan, birinchi chiqadi) tamoyilida ishlaydi.
+### 3. Rekursiyada chiqish shartini yozmaslik (Stack Overflow)
+#### Muammo:
+\`function foo() { foo(); }\` stack-ni cheksiz to'ldirib, brauzerni sindiradi.
 
-**4. Web APIs nima va ular asinxronlikka qanday yordam beradi?**
-Web APIs — brauzer taqdim etadigan vositalar bo'lib, ular fonda parallel ishlarni (timer, tarmoq so'rovlari) bajarishga imkon beradi va JS oqimini band qilmaydi.
+### 4. Asinxron funksiyani sinxron o'zgaruvchiga tenglash
+#### Xato:
+\`\`\`javascript
+let data = setTimeout(() => { return "ma'lumot"; }, 100);
+console.log(data); // taymer ID-sini chiqaradi, ma'lumotni emas!
+\`\`\`
+#### To'g'ri usul:
+Callback, Promise yoki Async/Await ishlatish.
 
-**5. Event Loop ning asosiy vazifasi nima?**
-Event Loop ning vazifasi Call Stack bo'shligini tekshirish va agar u bo'sh bo'lsa, navbatlardagi callback-larni stakka o'tkazib berishdir.
+### 5. Web API va JS Dvigateli farqini bilmaslik
+#### Muammo:
+\`setTimeout\` yoki \`fetch\` JavaScript tilining o'zida bor deb o'ylash. Aslida bular brauzer (yoki Node.js) taqdim etadigan tashqi muhit API-laridir.
 
-**6. Microtask Queue va Macrotask Queue farqi nimada?**
-Microtask Queue (Promises, queueMicrotask) yuqori ustuvorlikka ega va Call Stack bo'shashi bilan darhol to'liq bo'shatiladi. Macrotask Queue (setTimeout, setInterval) esa pastroq ustuvorlikka ega va har bir aylanishda undan faqat bitta vazifa bajariladi.
+---
 
-**7. Nima uchun setTimeout(() => {}, 0) darhol ishga tushmaydi?**
-Chunki uning callback funksiyasi Macrotask Queue-ga tushadi. U ishga tushishi uchun Call Stack-dagi barcha sinxron kodlar va Microtask Queue-dagi barcha microtask-lar bajarilib bo'lishi shart.
+## 5. 💬 12 ta Intervyu Savollari
 
-**8. queueMicrotask() funksiyasi nima uchun ishlatiladi?**
-U asinxron kodni to'g'ridan-to'g'ri Microtask navbatiga yuborish uchun ishlatiladi. Bu Promise ishlatmasdan microtask yaratishning eng qulay usulidir.
+### Junior (1–4)
+1. **Savol:** JavaScript bir oqimli (single-threaded) deganda nimani tushunasiz?
+   * **Javob:** Bir vaqtning o'zida faqat bitta operatsiya/kod satri bajarilishini va bitta Call Stack mavjudligini anglatadi.
+2. **Savol:** Call Stack nima?
+   * **Javob:** Dasturdagi funksiyalar chaqiruvini va ularning bajarilish navbatini (LIFO - Last In First Out qoidasi bilan) saqlovchi xotira tuzilmasi.
+3. **Savol:** Callback Queue nima?
+   * **Javob:** Asinxron amallar tugagandan keyin, ularga tegishli callback funksiyalar bajarilishini kutib turadigan navbat (FIFO - First In First Out qoidasi).
+4. **Savol:** JS dvigateli (Engine) va brauzer muhiti (Runtime) farqi nima?
+   * **Javob:** Dvigatel (masalan V8) kodni o'qiydi va bajaradi. Brauzer muhiti esa dvigatelni o'rab turadi va qo'shimcha asboblarni (DOM, setTimeout, fetch, Event Loop) taqdim etadi.
 
-**9. "Stack Overflow" xatoligi nima va u qachon yuz beradi?**
-Bu chaqiruvlar steki to'lib ketganda yuz beradigan RangeError xatosidir. Ko'pincha rekursiya funksiyalarida to'xtash sharti unutilganda sodir bo'ladi.
+### Middle (5–8)
+5. **Savol:** \`setTimeout(() => {}, 1000)\` aynan 1 soniyadan keyin ishlashini kafolatlaydimi?
+   * **Javob:** Yo'q. U kamida 1 soniyadan keyin Task Queue-ga o'tishini kafolatlaydi xolos. Agar o'sha paytda Call Stack-da og'ir sinxron kod ishlayotgan bo'lsa, stack bo'shaguncha taymer kutib turadi.
+6. **Savol:** Nega \`while(true) {}\` sikli turgan kodda asinxron taymerlar hech qachon ishlamaydi?
+   * **Javob:** Chunki cheksiz sikl Call Stack-ni abadiy band qiladi. Call Stack bo'shamas ekan, Event Loop navbatdagi taymerlarni stack-ga o'tkaza olmaydi.
+7. **Savol:** LIFO va FIFO prinsiplari Event Loop-da qanday qo'llaniladi?
+   * **Javob:** Call Stack LIFO (Last In First Out) asosida ishlaydi, Callback Queue esa FIFO (First In First Out) navbat tizimida ishlaydi.
+8. **Savol:** Event Loop har bir aylanishida (tick) nima ish qiladi?
+   * **Javob:** U birinchi bo'lib Call Stack-ni tekshiradi. Stack bo'sh bo'lsa, Callback Queue-dagi birinchi vazifani olib Stack-ga tashlaydi.
 
-**10. "Blocking the Event Loop" (Event Loopni bloklash) deganda nima tushuniladi?**
-Call Stack-da juda uzoq vaqt oladigan sinxron kod (masalan, ulkan loop) bajarilishi natijasida asinxron topshiriqlar va sahifadagi foydalanuvchi harakatlari kutib qolishidir.
+### Senior (9–12)
+9. **Savol:** Node.js va Brauzer Event Loop arxitekturasining asosiy farqi nimada?
+   * **Javob:** Brauzerda bitta asosiy Event Loop bor (HTML5 standarti). Node.js esa libuv kutubxonasiga asoslangan va Event Loop bir necha maxsus fazalardan (poll, check, close callback va hk) iborat.
+10. **Savol:** UI rendering (sahifani qayta chizish) Event Loop bilan qanday bog'langan?
+    * **Javob:** Brauzer odatda har 16.6ms da (60 FPS uchun) sahifani qayta chizadi (render). Render faqat Call Stack bo'sh bo'lganda va microtask-lar bajarilib bo'linganida amalga oshadi.
+11. **Savol:** Agar sizda Event Loop-ni bloklamasdan juda og'ir matematik hisob-kitob bajarish topshirig'i bo'lsa, uni qanday hal qilasiz?
+    * **Javob:** Web Workers yordamida ishni alohida fon oqimiga o'tkazish yoki \`setTimeout\` yordamida hisob-kitobni mayda qismlarga (chunks) bo'lib asinxron bajarish.
+12. **Savol:** Memory Heap-dagi ma'lumotlar bilan Call Stack-dagilarning bog'liqligi qanday?
+    * **Javob:** Call Stack-da primitiv qiymatlar va Heap-dagi obyektlarga havolalar (references) saqlanadi. Stack-dagi funksiya tugagach, undagi reference-lar o'chadi va Heap-dagi yetib bo'lmas obyektlar keyinchalik Garbage Collector tomonidan tozalanadi.
 
-**11. Garbage Collector (Chiqindi yig'uvchi) nima qiladi?**
-U Memory Heap-dagi hech qanday o'zgaruvchi yoki reference ulanmagan (unreachable) bo'sh obyektlarni aniqlaydi va ularni o'chirib xotirani bo'shatadi.
+---
 
-**12. Agar Call Stack to'la bo'lsa, Event Loop asinxron imkoniyatlarni bajara oladimi?**
-Yo'q, Call Stack butunlay bo'sh bo'lmaguncha Event Loop hech qanday asinxron navbatdagi vazifalarni stackka o'tkaza olmaydi va ular navbatda kutib turaveradi.`,
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Mashqlar interaktiv kod tekshiruvchi orqali bajariladi.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars yakunidagi test topshiriqlari.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Sahifa muzlashini (UI Freezing) oldini olish
+Foydalanuvchi katta hajmdagi ma'lumotlarni (masalan 1,000,000 ta qator) filtrlash tugmasini bosganda, sahifa qotib qolmasligi uchun Event Loop-dan unumli foydalanish.
+
+#### Yechim (Hisob-kitobni bo'laklarga bo'lish - Chunking):
+\`\`\`javascript
+function processLargeArray(items, processItem) {
+  let index = 0;
+
+  function doChunk() {
+    const chunkSize = 1000; // Har bir tick-da 1000 ta element
+    const end = Math.min(index + chunkSize, items.length);
+
+    for (let i = index; i < end; i++) {
+      processItem(items[i]);
+    }
+
+    index = end;
+
+    if (index < items.length) {
+      // Keyingi bo'lakni keyingi Event Loop tick-ga rejalashtiramiz
+      // Bu orqali brauzer kadr chizishga va tugma bosishlarini eshitishga ulguradi
+      setTimeout(doChunk, 0);
+    } else {
+      console.log("Barcha ma'lumotlar qayta ishlandi!");
+    }
+  }
+
+  doChunk();
+}
+
+// Ishlatilishi:
+const giantList = new Array(50000).fill(0);
+processLargeArray(giantList, (item) => {
+  // Har bir element ustidagi og'ir amal
+});
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **Stack hajmini saqlash:** Rekursiv funksiyalarni asinxron zanjirga o'tkazish orqali \`RangeError: Maximum call stack size exceeded\` xatosidan qutulish mumkin.
+* **Sinxron blokirovkani kamaytirish:** Katta JSON parse amallarini (\`JSON.parse\`) kichik qismlarda qilish yoki Web Worker-larga topshirish interaktivlikni (FID - First Input Delay) yaxshilaydi.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Tushuncha | Vazifasi / Qoidasi | Misol |
+| :--- | :--- | :--- |
+| **Call Stack** | Funksiya chaqiriqlarini LIFO qoidasida saqlash | \`function a() { b() }\` |
+| **Web API** | Brauzer taqdim etgan parallel fon ishlari | \`setTimeout\`, \`fetch\`, \`DOM Events\` |
+| **Task Queue** | Asinxron callback-larni navbatda saqlash | \`() => console.log('Hi')\` |
+| **Event Loop** | Stack bo'shashini kutib, Queue-dan kod o'tkazish | Har doim ishlovchi ichki mexanizm |
+| **setTimeout(fn, 0)** | Kodni darhol emas, eng kamida joriy stack tugagach bajarish | \`setTimeout(cb, 0)\` |
+`,
   exercises: [
-    {
-      id: 1,
-      title: "Call Stack Chaqiruv Ketma-ketligi",
-      instruction: "Konsolga avval 'ikkinchi', keyin ise 'birinchi' degan yozuv chiqishi uchun funksiyalar chaqiruvini to'g'rilang.",
-      startingCode: "function birinchi() {\n  console.log('birinchi');\n}\n\nfunction ikkinchi() {\n  console.log('ikkinchi');\n}\n\n// Chaqiriqlarni shu yerda boshqaring\nbirinchi();\nikkinchi();",
-      hint: "ikkinchi() funksiyasini birinchi() dan oldin chaqiring.",
-      test: "if (logs[0] === 'ikkinchi' && logs[1] === 'birinchi') return null; return 'Ketma-ketlik noto\\'g\\'ri!';"
-    },
-    {
-      id: 2,
-      title: "setTimeout Yordamida Macrotask",
-      instruction: "0 millisoniyadan keyin konsolga 'Asinxron ish' deb chiqaruvchi setTimeout yozing.",
-      startingCode: "// setTimeout shu yerda bo'lsin\n",
-      hint: "setTimeout(() => console.log('Asinxron ish'), 0); shaklida yozing.",
-      test: "if (code.includes('setTimeout') && logs.includes('Asinxron ish')) return null; return 'setTimeout yoki log matni noto\\'g\\'ri!';"
-    },
-    {
-      id: 3,
-      title: "Rekursiyaga Cheklov Qo'yish",
-      instruction: "Quyidagi rekursiv funksiyaga to'xtash shartini qo'shing, toki u n noldan kichik yoki teng bo'lganda to'xtasin va Stack Overflow bo'lmasin.",
-      startingCode: "function hisobla(n) {\n  console.log(n);\n  // To'xtash shartini yozing\n  \n  hisobla(n - 1);\n}\nhisobla(3);",
-      hint: "if (n <= 0) return; shartini funksiya boshiga qo'shing.",
-      test: "if (code.includes('return') && logs.includes(3) && logs.includes(1) && !logs.includes(0)) return null; return 'To\\'xtash sharti xato yoki cheksiz rekursiya yuz berdi!';"
-    },
-    {
-      id: 4,
-      title: "Memory Heap Allocation",
-      instruction: "Memory Heap-dan joy oluvchi va ichida 'ism' hamda 'yosh' xususiyatlari mavjud bo'lgan 'talaba' ob'ektini yarating.",
-      startingCode: "const talaba = // Ob'ekt yozing\n",
-      hint: "const talaba = { ism: 'Ali', yosh: 20 };",
-      test: "if (typeof talaba === 'object' && talaba !== null && 'ism' in talaba) return null; return 'talaba ob\\'ekti to\\'g\\'ri yaratilmadi!';"
-    },
-    {
-      id: 5,
-      title: "Microtask Yaratish",
-      instruction: "Promise yordamida Microtask Queue-ga vazifa qo'shing va u konsolga 'Microtask' so'zini chiqarsin.",
-      startingCode: "// Promise resolve yozing\n",
-      hint: "Promise.resolve().then(() => console.log('Microtask'));",
-      test: "if (code.includes('Promise') && logs.includes('Microtask')) return null; return 'Promise orqali microtask yaratilmadi!';"
-    },
-    {
-      id: 6,
-      title: "Sinxron va Asinxron Ketma-ketlik",
-      instruction: "Kodning oxirgi natijasida konsolga ketma-ketlikda 'Sinxron', keyin 'Vada', keyin 'Taymer' chiqishi uchun koddagi asinxron metodlarni moslang.",
-      startingCode: "// Quyidagi 3 ta logning chiqarilish tartibini to'g'rilang\nsetTimeout(() => console.log('Taymer'), 0);\nconsole.log('Sinxron');\nPromise.resolve().then(() => console.log('Vada'));",
-      hint: "Sinxron kod darhol, Promise microtask sifatida va setTimeout macrotask sifatida navbati bilan ishlaydi.",
-      test: "if (logs[0] === 'Sinxron' && logs[1] === 'Vada' && logs[2] === 'Taymer') return null; return 'Tartib noto\\'g\\'ri!';"
-    },
-    {
-      id: 7,
-      title: "queueMicrotask-dan Foydalanish",
-      instruction: "`queueMicrotask` API-dan foydalanib, konsolga 'Tezkor asinxron' yozuvini chiqaring.",
-      startingCode: "// queueMicrotask ishlating\n",
-      hint: "queueMicrotask(() => console.log('Tezkor asinxron'));",
-      test: "if (code.includes('queueMicrotask') && logs.includes('Tezkor asinxron')) return null; return 'queueMicrotask to\\'g\\'ri ishlatilmadi!';"
-    },
-    {
-      id: 8,
-      title: "Call Stack bloklanishini tekshirish",
-      instruction: "Call Stack-da 5 tagacha funksiyani bir-birining ichida chaqirib, eng ichkaridagi funksiyada 'Stack Ichida' yozuvini chiqaring.",
-      startingCode: "function f1() { f2(); }\nfunction f2() { f3(); }\nfunction f3() { f4(); }\nfunction f4() { f5(); }\nfunction f5() { console.log('Stack Ichida'); }\nf1();",
-      hint: "Chaqiruv zanjirini saqlang va f1-ni chaqiring.",
-      test: "if (logs.includes('Stack Ichida')) return null; return 'Zanjirli chaqiruv bajarilmadi!';"
-    },
-    {
-      id: 9,
-      title: "Taymerni Bekor Qilish",
-      instruction: "Xotira va resurslarni asrash uchun setTimeout taymerini u bajarilishidan oldin bekor qiling.",
-      startingCode: "const timerId = setTimeout(() => console.log('Ishlamaydi'), 1000);\n// Taymerni bekor qiling",
-      hint: "clearTimeout(timerId); metodidan foydalaning.",
-      test: "if (code.includes('clearTimeout') && !logs.includes('Ishlamaydi')) return null; return 'Taymer bekor qilinmadi!';"
-    },
-    {
-      id: 10,
-      title: "Heap-dagi Referenceni Tozalash (Garbage Collection uchun)",
-      instruction: "Katta ob'ekt o'zgaruvchisiga bo'lgan havolani tozalab, uni Garbage Collector tomonidan yig'ib olinishiga tayyorlang.",
-      startingCode: "let kattaMalumot = { data: new Array(100000) };\n// Havolani tozalang",
-      hint: "kattaMalumot = null; deb yozib havolani uzing.",
-      test: "if (kattaMalumot === null) return null; return 'kattaMalumot tozalab yuborilmadi!';"
-    },
-    {
-      id: 11,
-      title: "Ikki Bosqichli Asinxronlik",
-      instruction: "Birinchi Promise bajarilgach, uning ichida ikkinchi Promiseni qaytaruvchi zanjir yarating va natijada 'Yakuniy' so'zini log qiling.",
-      startingCode: "Promise.resolve()\n  .then(() => {\n    // Shu yerda resolved Promise qaytaring\n  })\n  .then(val => console.log(val));",
-      hint: "return Promise.resolve('Yakuniy'); deb yozing.",
-      test: "if (logs.includes('Yakuniy')) return null; return 'Yakuniy natija qaytmadi!';"
-    },
-    {
-      id: 12,
-      title: "Ob'ekt Mutatsiyasi va Reference",
-      instruction: "Heap-dagi bitta ob'ektga ishora qiluvchi user1 va user2 o'zgaruvchilarini yarating, keyin user2 orqali obyekt nomini o'zgartiring va user1 nomini tekshiring.",
-      startingCode: "const user1 = { name: 'Ali' };\nconst user2 = user1;\n// user2 orqali name o'zgartiring\n",
-      hint: "user2.name = 'Vali'; deb yozing.",
-      test: "if (user1.name === 'Vali') return null; return 'O\\'zgarish user1 da aks etmadi!';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ CPU band qiluvchi og'ir vazifani setTimeout orqali bo'lish",
-      instruction: "Berilgan `n` sonigacha bo'lgan yig'indini 1000 talik bo'laklarga bo'lib, har bir bo'lakdan so'ng asinxron kutadigan va oxirida yig'indini callback `cb(sum)` ga qaytaradigan `splitHeavyTask(n, cb, currentSum = 0, currentIndex = 1)` funksiyasini yozing. `setTimeout` ishlating.",
-      startingCode: "function splitHeavyTask(n, cb, currentSum = 0, currentIndex = 1) {\n  let limit = Math.min(currentIndex + 999, n);\n  for (let i = currentIndex; i <= limit; i++) {\n    currentSum += i;\n  }\n  \n  if (limit < n) {\n    // Keyingi bo'lakni setTimeout orqali chaqiring\n  } else {\n    // Yakuniy yig'indini cb ga uzating\n  }\n}",
-      hint: "setTimeout(() => splitHeavyTask(n, cb, currentSum, limit + 1), 0);\nand\ncb(currentSum);",
-      test: "if (typeof splitHeavyTask !== 'function') return 'splitHeavyTask topilmadi'; let res = 0; splitHeavyTask(5000, val => res = val); setTimeout(() => { if (res === 12502500) return null; }, 50); return null;"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Microtask va Macrotask Zanjiri",
-      instruction: "Konsolga ketma-ketlikda 'Sinxron', 'Promise', 'queueMicrotask', va 'setTimeout' so'zlari chiqishi uchun asinxron loglarni to'g'rilang.",
-      startingCode: "// Tartibni to'g'rilang\nsetTimeout(() => console.log('setTimeout'), 0);\nPromise.resolve().then(() => console.log('Promise'));\nqueueMicrotask(() => console.log('queueMicrotask'));\nconsole.log('Sinxron');",
-      hint: "Sinxron kod darhol ishlaydi, keyin Promise va queueMicrotask navbatma-navbat microtask sifatida ishlaydi, setTimeout esa macrotask bo'lgani uchun oxirida ishlaydi.",
-      test: "if (logs[0] === 'Sinxron' && logs[1] === 'Promise' && logs[2] === 'queueMicrotask' && logs[3] === 'setTimeout') return null; return 'Tartib xato!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Sinxron va Asinxron Ketma-ketlik",
+    "instruction": "Quyidagi `scheduleLogs(logFn)` funksiyasini yozing. U berilgan `logFn` funksiyasini quyidagi tartibda chaqirsin:\n1. Birinchi bo'lib sinxron ravishda 'Start' qiymati bilan\n2. Keyin asinxron ravishda (setTimeout 0ms yordamida) 'Middle' qiymati bilan\n3. Oxirida sinxron ravishda 'End' qiymati bilan.",
+    "startingCode": "function scheduleLogs(logFn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "logFn('Start') va logFn('End') ni sinxron chaqiring. logFn('Middle') ni esa setTimeout ichiga joylashtiring.",
+    "test": "if (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\nconst sandbox = new Function(code + '; return scheduleLogs;');\nconst fn = sandbox();\nconst logs = [];\nconst logFn = (msg) => logs.push(msg);\nfn(logFn);\nif (logs.length === 2 && logs[0] === 'Start' && logs[1] === 'End') {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      if (logs.length === 3 && logs[2] === 'Middle') resolve(null);\n      else resolve('Ketma-ketlik xato yoki \"Middle\" asinxron chaqirilmadi');\n    }, 20);\n  });\n}\nreturn 'Sinxron qism to\\'g\\'ri bajarilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Promise va setTimeout yordamida Kechikish (Delay)",
+    "instruction": "Berilgan `ms` (millisekundlar) vaqt o'tganidan keyin resolve bo'ladigan Promise qaytaruvchi `delay(ms)` funksiyasini yozing.",
+    "startingCode": "function delay(ms) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Yangi Promise qaytaring va uning resolve funksiyasini setTimeout ichida ms vaqtdan keyin chaqiring.",
+    "test": "if (!code.includes('Promise') || !code.includes('setTimeout')) return 'Promise va setTimeout ikkalasi ham ishlatilishi shart';\nconst sandbox = new Function(code + '; return delay;');\nconst fn = sandbox();\nconst start = Date.now();\nreturn fn(50).then(() => {\n  const diff = Date.now() - start;\n  if (diff >= 40 && diff <= 120) return null;\n  return 'Kutish vaqti noto\\'g\\'ri yoki kechikish sodir bo\\'lmadi: ' + diff + 'ms';\n});"
+  },
+  {
+    "id": 3,
+    "title": "Funksiyani Asinxron Chaqirish",
+    "instruction": "Uzatilgan `fn` funksiyasini har doim asinxron ravishda (Event Loop navbatiga qo'yib) chaqiradigan `callAsync(fn)` funksiyasini yozing. Ya'ni `callAsync(fn)` chaqirilganda, u o'zidan keyingi sinxron kodlar ishlab bo'lganidan so'nggina `fn`ni bajarsin.",
+    "startingCode": "function callAsync(fn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "setTimeout(fn, 0) yordamida funksiyani asinxron navbatga qo'shishingiz mumkin.",
+    "test": "if (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\nconst sandbox = new Function(code + '; return callAsync;');\nconst fn = sandbox();\nlet called = false;\nfn(() => { called = true; });\nif (called === true) return 'Funksiya sinxron chaqirib yuborildi, asinxron bo\\'lishi kerak';\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (called === true) resolve(null);\n    else resolve('Funksiya umuman chaqirilmadi');\n  }, 10);\n});"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Event Loop-da Microtask Queue va Macrotask Queue (Callback Queue) o'rtasidagi ustuvorlik qanday?",
-      options: [
-        "Microtask Queue har doim ustuvor va u to'liq bo'shatilmaguncha navbatdagi Macrotask bajarilmaydi",
-        "Macrotask Queue har doim ustuvor",
-        "Ular navbatma-navbat bajariladi",
-        "Ikkalasi ham bir vaqtda bajariladi"
-      ],
-      correctAnswer: 0,
-      explanation: "Event Loop qoidasiga ko'ra, har bir Macrotaskdan so'ng Microtask Queue to'liq tekshiriladi va undagi barcha vazifalar tugatilgandan keyingina keyingi Macrotaskka o'tiladi."
-    },
-    {
-      id: 2,
-      question: "Quyidagi kod natijasi nima bo'ladi?\n```javascript\nsetTimeout(() => console.log('Timeout'), 0);\nPromise.resolve().then(() => console.log('Promise'));\n```",
-      options: [
-        "Timeout, Promise",
-        "Promise, Timeout",
-        "Bir vaqtda chiqadi",
-        "Faqat Promise"
-      ],
-      correctAnswer: 1,
-      explanation: "Promise Microtask Queuega, setTimeout esa Macrotask Queuega tushadi. Microtasklar Macrotasklardan oldin bajariladi."
-    },
-    {
-      id: 3,
-      question: "JavaScript engine-da 'Blocking code' deganda nimani tushunasiz?",
-      options: [
-        "API dan ma'lumot kutish",
-        "Main thread (Call Stack)ni uzoq vaqt band qiladigan va Event Loop-ni to'xtatib qo'yadigan og'ir sinxron kod",
-        "Xato yozilgan kod",
-        "Asinxron funksiyalar"
-      ],
-      correctAnswer: 1,
-      explanation: "Og'ir sinxron operatsiyalar (masalan, milliardlik loop) Call Stackni band qiladi va Event Loop callbacklarni stackka o'tkaza olmay qoladi, natijada sahifa qotadi."
-    },
-    {
-      id: 4,
-      question: "JavaScript Memory Heap qanday maqsadda ishlatiladi?",
-      options: [
-        "Funksiya chaqiruvlari navbatini tartiblash uchun",
-        "Obyektlar, massivlar va funksiyalar kabi dinamik hajmli ma'lumotlarni xotirada saqlash uchun",
-        "Sinxron kodlarni asinxron kodga aylantirish uchun",
-        "Brauzer oynasidagi tugmalarni kuzatib borish uchun"
-      ],
-      correctAnswer: 1,
-      explanation: "Memory Heap — ob'ektlar, massivlar va funksiyalar kabi dinamik ravishda xotiradan joy oladigan strukturaviy ma'lumotlarni saqlashga xizmat qiladi."
-    },
-    {
-      id: 5,
-      question: "Call Stack uchun qaysi ma'lumotlar strukturasi printsipi qo'llaniladi?",
-      options: [
-        "FIFO (First In, First Out)",
-        "LIFO (Last In, First Out)",
-        "Daraxtsimon tuzilma (Tree)",
-        "Tasodifiy navbat (Random)"
-      ],
-      correctAnswer: 1,
-      explanation: "Call Stack LIFO (Last In, First Out) printsipi bo'yします. Eng oxirgi stakka kirgan funksiya birinchi bo'lib bajarilib chiqib ketadi."
-    },
-    {
-      id: 6,
-      question: "Stek xotirasi to'lib ketganda (masalan, cheksiz rekursiya tufayli) JavaScript qanday xatolik qaytaradi?",
-      options: [
-        "TypeError",
-        "RangeError: Maximum call stack size exceeded",
-        "ReferenceError",
-        "SyntaxError"
-      ],
-      correctAnswer: 1,
-      explanation: "Stek hajmi cheklangan bo'lgani sababli, u to'lib ketganda dvigatel `RangeError` (Stack Overflow) xatosini qaytaradi."
-    },
-    {
-      id: 7,
-      question: "Brauzerning Web API qismi nima uchun xizmat qiladi?",
-      options: [
-        "JavaScript kodini mashina kodiga tarjima qilish uchun",
-        "Taymerlar, tarmoq so'rovlari va DOM hodisalari kabi og'ir amallarni parallel ravishda fonda bajarish uchun",
-        "Faol darchani butunlay muzlatib turish uchun",
-        "Faqat CSS uslublarini tahlil qilish uchun"
-      ],
-      correctAnswer: 1,
-      explanation: "Web API brauzer muhiti tomonidan taqdim etiladi va u JavaScript single-threaded tabiatini chetlab o'tib, fondagi ishlarni parallel bajarish imkonini beradi."
-    },
-    {
-      id: 8,
-      question: "Event Loop qachon navbatdagi callbacklarni Call Stack-ga o'tkazishi mumkin?",
-      options: [
-        "Har doim, o'z xohishiga ko'ra",
-        "Faqat va faqat Call Stack butunlay bo'sh bo'lganda",
-        "Faqat har 5 soniyada bir marta",
-        "Sahifa yangilanganda"
-      ],
-      correctAnswer: 1,
-      explanation: "Event Loop faqat Call Stack mutlaqo bo'sh bo'lgan taqdirdagina navbatlardagi callback funksiyalarni stakka yuklay oladi."
-    },
-    {
-      id: 9,
-      question: "`queueMicrotask()` yordamida qo'shilgan vazifa qaysi navbatga tushadi?",
-      options: [
-        "Macrotask Queue",
-        "Microtask Queue",
-        "Call Stack",
-        "Memory Heap"
-      ],
-      correctAnswer: 1,
-      explanation: "`queueMicrotask()` metodi o'z nomiga mos ravishda uzatilgan callbackni to'g'ridan-to'g'ri Microtask Queue-ga yuklaydi."
-    },
-    {
-      id: 10,
-      question: "Garbage Collector qaysi algoritmdan foydalanib o'chirilishi kerak bo'lgan obyektlarni aniqlaydi?",
-      options: [
-        "Bubble Sort",
-        "Mark-and-Sweep",
-        "Binary Search",
-        "LIFO Stack"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScript-da Garbage Collector asosan 'Mark-and-Sweep' (Belgilash va supurish) algoritmidan foydalanadi. Yetib bo'lmaydigan (unreachable) obyektlar tozalanadi."
-    },
-    {
-      id: 11,
-      question: "Nima uchun `setTimeout(fn, 1000)` ko'rsatilgan vaqtdan biroz kechikib bajarilishi mumkin?",
-      options: [
-        "Chunki brauzer o'z vaqtini noto'g'ri hisoblaydi",
-        "Chunki belgilangan 1 soniya tugagandan so'ng, Call Stack yoki Microtask Queue hali ham band bo'lgan bo'lishi mumkin",
-        "Chunki u faqat server ruxsat berganida ishlaydi",
-        "Chunki internet sekin bo'lishi mumkin"
-      ],
-      correctAnswer: 1,
-      explanation: "setTimeout vaqti tugagach, uning callback topshirig'i Macrotask navbatiga tushadi. Agar bu vaqtda Call Stack band bo'lsa yoki Microtask navbatida ishlar bo'lsa, u kutib qoladi."
-    },
-    {
-      id: 12,
-      question: "Quyidagi asinxron kod bajarilganda konsolga eng oxirida qaysi qiymat chiqadi?\n```javascript\nsetTimeout(() => console.log('A'), 10);\nPromise.resolve().then(() => console.log('B'));\nsetTimeout(() => console.log('C'), 0);\n```",
-      options: [
-        "B",
-        "A",
-        "C",
-        "Hech biri"
-      ],
-      correctAnswer: 1,
-      explanation: "Ketma-ketlik: 1) Promise microtask bo'lib birinchi ishlaydi ('B'). 2) 0ms li setTimeout navbatga kelib chiqadi ('C'). 3) 10ms kutgan setTimeout eng oxirida Macrotask bo'lib chiqadi ('A')."
-    },
-    {
-      id: 13,
-      question: "Event Loop iteratsiyasida rendering (repaint) bosqichi qachon va qaysi shart bajarilganda sodir bo'ladi?",
-      options: [
-        "Har safar setTimeout funksiyasi chaqirilganda",
-        "Faqat Call Stack bo'shab, Microtask Queue to'liq bajarib bo'linganidan so'ng, agar ekran yangilanishi kerak bo'lsa",
-        "Faqat microtask-lar bajarilayotgan vaqtda",
-        "Hech qachon sodir bo'lmaydi, chunki brauzer sinxron render qiladi"
-      ],
-      correctAnswer: 1,
-      explanation: "Brauzer ekranni chizish ishlarini asinxron topshiriqlarni bajarganidan so'ng, Call Stack bo'shaganda va barcha Microtask-lar to'liq bajarilib bo'linganidan keyingina Render bosqichiga ruxsat beradi."
-    },
-    {
-      id: 14,
-      question: "CPU-intensive (og'ir hisob-kitob) ishlarni `setTimeout` yordamida bo'laklashning maqsadi nima?",
-      options: [
-        "Kodni sinxron qilib tezroq bajarish",
-        "Call Stack bo'shashini ta'minlash, UI bloklanishi (muzlashi) oldini olish va brauzerga foydalanuvchi harakatlarini qayta ishlashga imkon berish",
-        "Xotirani tejash va Garbage Collection algoritmini ishga tushirish",
-        "Kodni asinxron Promise-ga o'tkazib yuborish"
-      ],
-      correctAnswer: 1,
-      explanation: "setTimeout(..., 0) og'ir kodni bir nechta macrotask-larga bo'lib yuboradi. Har bir macrotask orasida Call Stack bo'shaydi va Event Loop foydalanuvchi hodisalariga (click, input) javob berishga ulguradi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "JavaScript dasturlash tili tabiatan qanday ishlaydi?",
+    "options": [
+      "Ko'p oqimli (Multi-threaded)",
+      "Bir oqimli (Single-threaded)",
+      "Parallel va faqat sinxron",
+      "Faqat asinxron va oqimsiz"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript bir vaqtning o'zida faqat bitta vazifani bajarishga mo'ljallangan bir oqimli (single-threaded) tildir."
+  },
+  {
+    "id": 2,
+    "question": "Event Loop (Hodisalar sikli) ning asosiy vazifasi nima?",
+    "options": [
+      "Kodni tezroq kompilyatsiya qilish",
+      "Call Stack va Callback Queue-ni kuzatib, Stack bo'shagach navbatdagi kodni bajarish",
+      "Massivlar bilan ishlashni tezlashtirish va keshga yozish",
+      "Sahifadagi CSS stillarni yangilab turish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Event Loop uzluksiz ravishda Call Stack-ni tekshiradi. Agar u bo'sh bo'lsa, navbatdagi asinxron vazifalarni (Callback Queue-dan) Stack-ga o'tkazib beradi."
+  },
+  {
+    "id": 3,
+    "question": "Call Stack nima vazifani bajaradi?",
+    "options": [
+      "Asinxron vaqtinchalik xotira sifatida ishlaydi",
+      "Funksiyalar chaqiruvini (LIFO - Last In First Out tartibida) kuzatib boradi",
+      "O'zgaruvchilarni global xotirada saqlaydi",
+      "Sahifani qayta chizish tartibini belgilaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Call Stack — bajarilayotgan funksiyalar ketma-ketligini LIFO (oxirgi kirgan birinchi chiqadi) tamoyili asosida kuzatib boruvchi mexanizmdir."
+  },
+  {
+    "id": 4,
+    "question": "`setTimeout(fn, 0)` chaqirilganda nima sodir bo'ladi?",
+    "options": [
+      "Funksiya zudlik bilan sinxron ravishda ishga tushadi",
+      "Funksiya Web API-ga yuboriladi va Stack bo'shagandan so'ng (asinxron) bajariladi",
+      "Funksiya mutlaqo ishlamaydi, chunki vaqti 0ms",
+      "Butun Call Stack bloklanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "0 millisekund berilsa ham, setTimeout asinxron Web API hisoblanadi. U navbatga (Task Queue) qo'shiladi va faqat joriy sinxron kodlar tugab, Stack bo'shaganidan keyingina ishlaydi."
+  },
+  {
+    "id": 5,
+    "question": "Asinxron Web API-lar (masalan, setTimeout, fetch, DOM events) qayerda bajariladi?",
+    "options": [
+      "Call Stack ichida",
+      "Brauzer (yoki Node.js) muhitida (C++ oqimlarida)",
+      "Callback Queue ichida",
+      "Memory Heap xotirasida"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web API lar brauzerning o'zi tomonidan (C++ darajasida) parallel ravishda fonda (background) bajariladi, JS oqimini bloklamaydi."
+  },
+  {
+    "id": 6,
+    "question": "Call Stack va Callback Queue o'rtasidagi asosiy farq nima?",
+    "options": [
+      "Stack sinxron kodlarni, Queue esa o'zgaruvchilarni saqlaydi",
+      "Stack LIFO (oxirgi kirgan - birinchi chiqadi) tamoyilida, Queue esa FIFO (birinchi kirgan - birinchi chiqadi) tamoyilida ishlaydi",
+      "Queue sinxron, Stack asinxron ishlaydi",
+      "Ular o'rtasida hech qanday farq yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Call Stack funksiyalar chaqiruvini ustma-ust yig'adi (LIFO), navbat (Callback Queue) esa asinxron vazifalarni navbat asosida (FIFO) saqlaydi."
+  },
+  {
+    "id": 7,
+    "question": "JavaScript dvigateli (Engine, masalan V8) tarkibida nimalar mavjud?",
+    "options": [
+      "Faqat Event Loop va Node.js kutubxonalari",
+      "Call Stack (bajarish oqimi) va Memory Heap (xotira ombori)",
+      "Web API va Callback Queue",
+      "DOM, CSSOM va Rendering Engine"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JS dvigatelining o'zi asosan ikkita narsadan iborat: Call Stack (kodni bajarish uchun) va Memory Heap (obyektlar va o'zgaruvchilarni saqlash uchun)."
+  },
+  {
+    "id": 8,
+    "question": "Agar Call Stack-da cheksiz rekursiv funksiya ishga tushsa, nima sodir bo'ladi?",
+    "options": [
+      "Event Loop uni avtomatik cheklab to'xtatadi",
+      "Stack Overflow xatoligi yuz beradi va dastur ishdan to'xtaydi",
+      "Callback Queue tezlashib, xotirani bo'shatadi",
+      "Funksiya avtomatik ravishda asinxron rejimga o'tadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Stack o'lchami cheklangan. Agar cheksiz rekursiya yoki judayam ko'p chaqiruvlar Stack-ni to'ldirib yuborsa, brauzer 'Maximum call stack size exceeded' (Stack Overflow) xatosini beradi."
+  },
+  {
+    "id": 9,
+    "question": "Brauzer asinxron vazifani (masalan, taymerni) bajarib bo'lgach, uning callback funksiyasini qayerga joylaydi?",
+    "options": [
+      "To'g'ridan-to'g'ri joriy Call Stack-ga",
+      "Callback Queue (Task Queue) ga",
+      "Memory Heap-ning bo'sh joyiga",
+      "Hech qayerga joylamaydi, uni o'chirib yuboradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Web API vazifani yakunlagandan keyin (masalan, 2 soniya o'tgach), unga tegishli bo'lgan callback funksiyasini keyingi bajarilishi uchun Callback Queue-ga joylaydi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod konsolga nimalarni chiqaradi?\n```javascript\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nconsole.log(3);\n```",
+    "options": [
+      "1, 2, 3",
+      "1, 3, 2",
+      "2, 1, 3",
+      "3, 1, 2"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Avval sinxron kodlar ishlaydi (1 va 3). setTimeout(..., 0) asinxron bo'lgani uchun uning callback-i navbatga tushadi va sinxron kod tugagach ishlaydi (2)."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun JavaScript bir oqimli bo'lsa ham, fonda fayl yuklash yoki taymerni parallel bajara oladi?",
+    "options": [
+      "Chunki JS dvigateli ichida yashirin parallel oqimlar bor",
+      "Chunki u brauzer yoki Node.js taqdim etgan ko'p oqimli Web API-lar va Event Loop mexanizmidan foydalanadi",
+      "Chunki barcha asinxron kodlar avtomatik sinxron kodga aylanadi",
+      "Chunki u kompyuterning GPU (grafik) quvvatidan foydalanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript oqimi bitta bo'lsa ham, uni o'rab turgan brauzer/Node.js ko'p oqimlidir. Ular Web API orqali parallel ishlarni bajarib berishadi."
+  },
+  {
+    "id": 12,
+    "question": "Event Loop qachon Callback Queue-dagi navbatdagi vazifani Call Stack-ga o'tkazadi?",
+    "options": [
+      "Vaqt tugashi bilan zudlik bilan",
+      "Faqat Call Stack butunlay bo'sh bo'lgandagina",
+      "Faqat foydalanuvchi sahifada harakat qilganida",
+      "Istagan paytda parallel ravishda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Event Loop-ning eng qat'iy qoidasi: Call Stack butunlay bo'sh bo'lmaguncha, Callback Queue-dagi birorta ham vazifa stack-ga o'tkazilmaydi."
+  }
+]
+
 };
