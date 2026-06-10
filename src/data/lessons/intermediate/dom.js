@@ -1,355 +1,469 @@
-export const domBasics = {
-  id: "m4",
-  title: "DOM bilan ishlash (Document Object Model)",
-  level: "O'rta daraja",
-  description: "JavaScript orqali HTML elementlarini boshqarish: tanlash, o'zgartirish va bezash.",
-  theory: `## 1. NEGA kerak?
-HTML o'zi "o'lik" (statik) narsa. JavaScript orqali biz o'sha matnlarni o'zgartirishimiz, tugmalar bosilganda ranglarni almashtirishimiz yoki yangi elementlar qo'shishimiz mumkin. DOM bo'lmasa, saytlar shunchaki zerikarli gazeta bo'lib qolardi.
+export const dom = {
+  id: "dom",
+  title: "DOM Asoslari va Hujjat Daraxti (Document Object Model)",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-## 2. SODDALIK (Analogiya)
-Tasavvur qiling, HTML — bu uyning chizmasi (proyekti). Uy bitganidan keyin siz uning devorini bo'yashingiz, mebellarini o'zgartirishingiz mumkin. DOM — bu sizning uydagi narsalarni "ushlab" o'zgartira olish qobiliyatingizdir.
+### DOM nima?
+**DOM (Document Object Model - Hujjat Obyekt Modeli)** — bu veb-brauzer tomonidan HTML hujjatini o'qish paytida tuziladigan va uni JavaScript orqali boshqarish, o'zgartirish, o'chirish yoki yangilash imkonini beruvchi dynamic daraxtsimon obyektlar tuzilmasidir. HTML kodlarimiz statik matn xolos, DOM esa ularning brauzer xotirasidagi faol va tirik vakilidir.
 
-## 3. STRUKTURA
+### Real hayotiy analogiya
+Tasavvur qiling, siz **Aqlli Uy (Smart Home)** tizimini boshqaryapsiz:
+* **HTML chizmasi (Statik):** Bu uy qurilishidan oldingi qog'ozdagi reja. U erda qaysi xonada chiroq yoki oyna bo'lishi yozilgan, lekin uni qog'oz ustida yoqib-o'chirib bo'lmaydi.
+* **DOM (Dinamik boshqaruv):** Uy tayyor bo'lgach, barcha qurilmalar umumiy boshqaruv planshetiga ulanadi. Planshetdan turib, istalgan xonaning haroratini sozlash, chirog'ini yoqish (\`style.color = "yellow"\`) yoki yangi televizor sotib olib xonaga qo'yish mumkin (\`createElement\`). Planshet — bu JavaScript, uydagi barcha jihozlar va xonalar esa — DOM elementlaridir.
 
-### A. Elementlarni tanlash
+---
+
+## 2. 💻 Real Kod Misollari
+
+### 1. Basic Example (Element tanlash va O'zgartirish)
+CSS selektori yordamida elementni topish va uning matnini hamda stillarini yangilash:
 \`\`\`javascript
-const sarlavha = document.getElementById("title"); // ID orqali
-const tugma = document.querySelector(".btn"); // CSS selektor orqali (eng qulay)
-const hammaListlar = document.querySelectorAll("li"); // Hammasini olish
+// querySelector eng universal va tavsiya etiladigan element tanlash metodidir
+const title = document.querySelector('.main-title');
+
+if (title) {
+  // textContent matnni xavfsiz o'zgartiradi
+  title.textContent = 'Salom, JavaScript Akademy!';
+  title.style.color = '#3498db';
+  title.style.fontWeight = 'bold';
+}
 \`\`\`
 
-### B. Elementlarni o'zgartirish
+### 2. Intermediate Example (DOM Navigation - Daraxtda harakatlanish)
+Elementning ota-onasi, bolalari va yonidagi qo'shnilariga ishora qilish:
 \`\`\`javascript
-const el = document.querySelector("h1");
-el.textContent = "Yangi sarlavha"; // Matnni o'zgartirish (xavfsiz)
-el.innerHTML = "<span>Yangi sarlavha</span>"; // HTML kontent yozish
-el.style.color = "red"; // Rang berish
-el.classList.add("active"); // Class qo'shish
+const currentItem = document.querySelector('.active-item');
+
+if (currentItem) {
+  // 1. Ota elementga chiqish
+  const parentMenu = currentItem.parentElement;
+  
+  // 2. Birinchi bolaga tushish
+  const firstChild = currentItem.firstElementChild;
+  
+  // 3. Keyingi qo'shni elementga o'tish (nextElementSibling)
+  const nextItem = currentItem.nextElementSibling;
+  
+  console.log('Ota element tag:', parentMenu.tagName);
+  console.log('Keyingi element text:', nextItem ? nextItem.textContent : 'Yo\\'q');
+}
 \`\`\`
 
-### C. NodeList va HTMLCollection farqi
-- **HTMLCollection:** Jonli (live) to'plam. DOM o'zgarganda avtomatik yangilanadi. \`getElementsByClassName\` yoki \`getElementsByTagName\` qaytaradi.
-- **NodeList:** Statik (non-live) bo'ladi. \`querySelectorAll\` qaytaradi. Unda \`.forEach()\` metodi mavjud bo'lib, massivga o'xshash operatsiyalarni bajarish oson.
+### 3. Advanced Example (NodeList va HTMLCollection solishtiruvi)
+Jonli (live) HTMLCollection va statik (static) NodeList o'rtasidagi mantiqiy farq:
+\`\`\`javascript
+// HTMLCollection - Jonli (live): DOM o'zgarishi bilan avtomat yangilanadi
+const liveList = document.getElementsByClassName('menu-item');
 
-### D. DOM bilan ishlashda bilish kerak bo'lgan asosiy ko'nikmalar rejasi (DOM Skills Roadmap)
-DOM bilan professional darajada ishlash uchun quyidagi 8 ta asosiy yo'nalishni bilish va amalda qo'llay olish zarur:
+// NodeList - Statik (non-live): DOM o'zgarsa ham ro'yxat soni o'zgarmaydi
+const staticList = document.querySelectorAll('.menu-item');
 
-1. **Elementlarni Tanlash (Selection):**
-   - \`document.querySelector\` va \`document.querySelectorAll\` yordamida har qanday murakkab CSS selektorlar orqali elementlarni topish.
-   - \`getElementById\` va boshqa an'anaviy metodlardan unumli foydalanish.
+console.log('Boshlang\\'ich:', liveList.length, staticList.length); // 3 3 (masalan)
 
-2. **Daraxt Bo'ylab Harakatlanish (Traversal):**
-   - Ota elementga (\`parentElement\`), bolalarga (\`children\`, \`firstElementChild\`, \`lastElementChild\`) va qo'shnilarga (\`nextElementSibling\`, \`previousElementSibling\`) o'tishni bilish.
+// DOM-ga yangi element qo'shamiz
+const newItem = document.createElement('li');
+newItem.className = 'menu-item';
+document.querySelector('ul').appendChild(newItem);
 
-3. **Elementlarni Yaratish va Joylashtirish (Creation & Insertion):**
-   - \`document.createElement\` orqali yangi tugunlar yaratish.
-   - \`append\`, \`prepend\`, \`before\`, \`after\` va \`insertAdjacentHTML\` yordamida elementlarni DOM-ning kerakli qismiga xavfsiz va to'g'ri joylashtirish.
+console.log('Element qo\\'shilgach:', liveList.length, staticList.length); // 4 3
+\`\`\`
 
-4. **Klasslar va Atributlarni Boshqarish (Classes & Attributes):**
-   - \`classList\` metodlari (\`add\`, \`remove\`, \`toggle\`, \`contains\`) yordamida stillarni dinamik boshqarish.
-   - HTML standart atributlari va custom ma'lumotlar (\`data-*\` atributlari va \`dataset\` obyekti) bilan ishlash.
+### 4. Production Example (Unumdorlik va DocumentFragment)
+Ko'p miqdordagi elementlarni DOM-ga qo'shishda brauzerni yuklamaslik (Reflow va Repaint optimallashtirish):
+\`\`\`javascript
+const list = document.querySelector('#user-list');
+// DocumentFragment virtual DOM kabi ishlaydi, xotirada yaratiladi
+const fragment = document.createDocumentFragment();
 
-5. **Tarkib va Stillarni O'zgartirish (Content & Styles):**
-   - \`textContent\` (xavfsiz matn) va \`innerHTML\` (HTML render qilish) farqini bilish va to'g'ri qo'llash.
-   - Inline stillarni (\`element.style\`) va CSS o'zgaruvchilarini (CSS Variables) boshqarish.
+const users = ['Ali', 'Vali', 'Guli', 'Hasan', 'Husan'];
 
-6. **Hodisalar bilan Ishlash (Event Handling):**
-   - \`addEventListener\` va \`removeEventListener\` yordamida foydalanuvchi harakatlarini eshitish.
-   - Event Bubbling, Event Capturing va Event Delegation (hodisalar delegatsiyasi) mexanizmlarini tushunish.
+users.forEach(name => {
+  const li = document.createElement('li');
+  li.textContent = name;
+  li.className = 'list-group-item';
+  
+  // To'g'ridan-to'g'ri haqiqiy DOM-ga emas, fragmentga qo'shamiz
+  fragment.appendChild(li);
+});
 
-7. **Geometriya va O'lchamlar (Geometry & Coordinates):**
-   - Elementning o'lchamlari (\`offsetWidth/Height\`, \`clientWidth/Height\`) va skrol holatini (\`scrollTop/Left\`) aniqlash.
-   - Ekrandagi joylashuvini (\`getBoundingClientRect()\`) olish va boshqarish.
+// Fragmentni bitta operatsiyada haqiqiy DOM-ga joylashtiramiz
+// Bu orqali brauzer faqat 1 marta sahifani qayta chizadi (1 reflow)
+list.appendChild(fragment);
+\`\`\`
 
-8. **Samaradorlik va Optimallashtirish (Performance & DocumentFragment):**
-   - Ko'p miqdordagi elementlarni qo'shishda DOM Reflow/Repaint yuklamasini kamaytirish uchun \`DocumentFragment\`-dan foydalanish.
+### 5. Enterprise Example (Dynamic Koordinata va Skroll boshqaruvi)
+Elementning ekrandagi aniq joylashuvini hisoblash va dynamic navigatsiya:
+\`\`\`javascript
+function scrollToElement(selector) {
+  const element = document.querySelector(selector);
+  
+  if (element) {
+    // getBoundingClientRect elementning o'lchamlari va ekrandagi o'rnini beradi
+    const rect = element.getBoundingClientRect();
+    const absoluteTop = rect.top + window.scrollY;
+    
+    // Sahifani silliq ravishda element joylashgan joyga skroll qilish
+    window.scrollTo({
+      top: absoluteTop - 80, // 80px yuqoridan joy qoldirish (masalan header uchun)
+      behavior: 'smooth'
+    });
+  }
+}
+\`\`\`
 
-## 4. AMALIYOT (Mashqlar pastda)
+---
 
-## 5. XATOLAR (Common mistakes)
-1. **querySelector bilan nuqtani unutish:** \`document.querySelector("my-class")\` ishlamaydi, \`".my-class"\` bo'lishi shart.
-2. **Style nomlari:** JSda CSS xususiyatlari \`camelCase\` yoziladi: \`background-color\` emas, \`backgroundColor\`.
-3. **textContent o'rniga innerHTML-ni noto'g'ri ishlatish:** Xavfsiz bo'lmagan foydalanuvchi ma'lumotlarini to'g'ridan-to'g'ri \`innerHTML\`-ga yozish XSS xurujlariga yo'l ochadi.
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
 
-## 6. SAVOLLAR VA JAVOBLAR
+### Qaysi muammoni hal qiladi?
+* **Statik sahifani dynamic qilish:** DOM bo'lmaganda foydalanuvchi tugmani bossa sahifa serverga borib yangidan yuklanishi shart edi. DOM orqali faqat kerakli tugunlar (nodes) yangilanadi, bu esa SPA (Single Page Application) arxitekturasini yuzaga keltirdi.
+* **Layout Thrashing va unumdorlik:** DOM-ni har safar o'zgartirish brauzerga juda qimmatga tushadi (CPU/GPU jihatidan). Kod orqali element tanlash va o'zgartirishlarni optimallashtirish veb-ilovalarning yuqori FPS (60+) da ishlashiga imkon beradi.
 
-**1. DOM nima degani?**
-Document Object Model (Hujjat Obyekt Modeli) - brauzer tomonidan yaratiladigan, HTML hujjatini daraxtsimon tuzilishda ifodalovchi va JS orqali boshqarishga imkon beruvchi obyektlar modeli.
+---
 
-**2. HTML va DOM farqi nima?**
-HTML - bu boshlang'ich yozilgan statik matnli kod. DOM esa brauzer xotirasidagi o'sha kodning dinamik daraxtsimon obyekt ko'rinishidir.
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
 
-**3. Elementni ID orqali tanlash metodi qaysi?**
-\`document.getElementById()\` metodi faqat ID orqali elementni tanlaydi.
+### 1. \`querySelector\` ichida sinf nuqtasi (\`.\`) yoki ID panjarasini (\`#\`) unutish
+#### Xato:
+\`const el = document.querySelector("active-btn");\`
+#### Nima uchun:
+Brauzer buni tag nomi (\`<active-btn>\`) deb o'ylaydi va topa olmaydi.
+#### To'g'ri:
+\`const el = document.querySelector(".active-btn");\`
 
-**4. querySelector va querySelectorAll farqi nima?**
-\`querySelector\` faqat birinchi mos kelgan elementni, \`querySelectorAll\` esa barcha mos kelgan elementlarni NodeList to'plami ko'rinishida qaytaradi.
+### 2. Inline style nomlarini CSS formatida yozish
+#### Xato:
+\`element.style.background-color = 'red';\` // Error!
+#### To'g'ri:
+\`element.style.backgroundColor = 'red';\`
 
-**5. textContent va innerHTML farqi nima?**
-\`textContent\` HTML teglarni oddiy matn deb hisoblab xavfsiz yozadi. \`innerHTML\` esa berilgan matnni HTML kodi sifatida o'qib, render qiladi.
+### 3. NodeList ustida \`map\` yoki \`filter\` metodlarini to'g'ridan-to'g'ri ishlatish
+#### Xato:
+\`document.querySelectorAll("li").map(el => el.textContent);\` // TypeError: map is not a function
+#### To'g'ri:
+\`Array.from(document.querySelectorAll("li")).map(el => el.textContent);\`
 
-**6. JSda CSS style'lari qanday nomlanadi?**
-camelCase formatida nomlanadi (masalan: backgroundColor, fontSize, marginTop).
+### 4. Xavfsiz bo'lmagan matnlar uchun \`innerHTML\` ishlatish
+#### Xato:
+\`element.innerHTML = userInput;\` // XSS vulnerability!
+#### To'g'ri:
+\`element.textContent = userInput;\`
 
-**7. classList.toggle() nima qiladi?**
-Agar klass elementda mavjud bo'lsa uni o'chiradi, agar mavjud bo'lmasa uni qo'shadi.
+### 5. DOM yuklanmasdan avval elementlarni qidirish (defer/async xatosi)
+#### Muammo:
+Script HTML-dan oldin yuklansa, elementlar topilmay \`null\` qaytadi va \`Cannot read properties of null\` xatosi chiqadi.
+#### To'g'ri:
+Scriptni \`<body>\` oxiriga qo'yish yoki \`<script type="module" src="...">\` yoki \`defer\` atributini qo'shish.
 
-**8. document.body nima?**
-DOM daraxtidagi \`<body>\` elementiga to'g'ridan-to'g'ri kirish imkonini beruvchi xususiyat.
+### 6. HTMLCollection yoki NodeList-ning 'jonli' tabiatini hisobga olmaslik
+#### Muammo:
+Loop ichida live HTMLCollection elementlarini o'chirganda indekslar siljib ketadi va ba'zi elementlar o'chmay qolib ketadi.
 
-**9. Ota elementni qanday topish mumkin?**
-\`parentElement\` xususiyati yordamida ota elementga murojaat qilinadi.
+### 7. DOM-ga har bir elementni loop ichida birma-bir \`appendChild\` qilish
+#### Muammo:
+Loopda har safar DOM o'zgartirilganda brauzer sahifani qayta hisoblaydi, bu unumdorlikni juda pasaytiradi (Layout Reflow).
+#### To'g'ri yechim:
+\`DocumentFragment\` yoki \`insertAdjacentHTML\` dan foydalanish.
 
-**10. Class qo'shish metodi qaysi?**
-\`classList.add('klass-nomi')\` metodi.
+### 8. \`classList.toggle\` ning ikkinchi parametrini bilmaslik
+#### Muammo:
+Klassni shartga mos qo'shish yoki o'chirish uchun qo'lda if-else yozish.
+#### To'g'ri:
+\`element.classList.toggle('active', shouldShow);\`
 
-**11. Nima uchun JSda style berishdan ko'ra class qo'shish yaxshi?**
-Chunki stillar CSS faylida qolishi (separation of concerns) va klasslarni dinamik almashtirish oson bo'lishi uchun.
+### 9. Custom ma'lumotlarni attributes orqali o'qish (dataset o'rniga)
+#### Xato:
+\`element.getAttribute('data-user-id')\` deb yozib kodni uzaytirish.
+#### To'g'ri:
+\`element.dataset.userId\` orqali tezkor o'qish.
 
-**12. NodeList ustida forEach tsiklini ishlatsa bo'ladimi?**
-Ha, modern brauzerlarda NodeList to'plami \`forEach\` metodini to'g'ridan-to'g'ri qo'llab-quvvatlaydi.`,
+### 10. \`element.style\` orqali berilgan stillarni CSS faylidagi qiymatini o'qishga urinish
+#### Muammo:
+\`element.style.color\` faqat inline berilgan CSS-ni o'qiydi. CSS faylidagi stilni o'qiy olmaydi.
+#### To'g'ri yechim:
+\`window.getComputedStyle(element).color\` metodidan foydalanish.
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior (1–4)
+1. **Savol:** DOM (Document Object Model) nima va u qanday tuzilgan?
+   * **Javob:** DOM - HTML hujjatining brauzer xotirasidagi daraxtsimon obyekt ko'rinishi. U elementlar (tags), atributlar va matnlarni tugunlar (nodes) shaklida ifodalaydi va JS orqali boshqariladi.
+
+2. **Savol:** \`querySelector\` va \`getElementById\` o'rtasidagi farq nima?
+   * **Javob:** \`getElementById\` faqat ID bo'yicha tezkor qidiradi. \`querySelector\` esa istalgan murakkab CSS selektori (sinf, tag, atribut, ota-bola) bo'yicha birinchi mos kelgan elementni qidirib topadi.
+
+3. **Savol:** Elementga klass qo'shish, o'chirish va tekshirish qanday amalga oshiriladi?
+   * **Javob:** \`element.classList\` obyekti metodlari orqali: \`add('classname')\`, \`remove('classname')\` va \`contains('classname')\`.
+
+4. **Savol:** \`textContent\` va \`innerHTML\` farqlari nimada?
+   * **Javob:** \`textContent\` HTML teglarni oddiy matn deb hisoblab xavfsiz yozadi/o'qiydi. \`innerHTML\` esa matn ichidagi HTML teglarni brauzerda render qilib beradi.
+
+### Middle (5–8)
+5. **Savol:** HTMLCollection va NodeList o'rtasidagi farq nima?
+   * **Javob:** HTMLCollection faqat elementlardan iborat va har doim jonli (live) to'plam bo'ladi. NodeList esa istalgan tugunlarni (matn, izohlar) o'z ichiga olishi mumkin, odatda statik bo'ladi va \`.forEach()\` metodiga ega.
+
+6. **Savol:** DOM Reflow va Repaint tushunchalarini tushuntiring.
+   * **Javob:** **Reflow** — elementlar o'lchami yoki joylashuvi o'zgarganda brauzer sahifa geometriyasini qayta hisoblashi. **Repaint** — ranglar, soyalar o'zgarganda sahifaning piksellarini qayta chizishi. Reflow juda og'ir hisob-kitob talab qiladi.
+
+7. **Savol:** custom atributlar (data-* attributes) bilan ishlash qoidalari qanday?
+   * **Javob:** HTML-da \`data-user-id="42"\` deb yozilgan elementni JavaScript-da \`element.dataset.userId\` (camelCase formatida) orqali o'qish va yozish mumkin.
+
+8. **Savol:** \`DocumentFragment\` nima va u unumdorlikka qanday ta'sir qiladi?
+   * **Javob:** Xotiradagi virtual va bo'sh DOM konteyneri. Unga bir nechta elementlarni qo'shib, so'ngra fragmentning o'zini real DOM-ga bir marta ulasak, brauzer faqat bitta reflow bajaradi va bu sahifa qotishini oldini oladi.
+
+### Senior (9–12)
+9. **Savol:** Layout Thrashing (Layout qotishi) nima va u qanday kod yozish natijasida yuzaga keladi?
+   * **Javob:** Bir kadrda DOM element o'lchamlarini o'qish (offsetwidth, clientHeight) va unga yozish (style o'zgartirish) amallarini ketma-ket, takroriy bajarish. Bu brauzerni har safar layoutni hisoblashga majbur qiladi va FPSni keskin tushiradi. Yechim: o'qishlarni guruhlash, so'ngra yozishlarni guruhlash (FastDOM pattern).
+
+10. **Savol:** Elementning real (hisoblangan) CSS xususiyatlarini JS orqali qanday to'g'ri aniqlaymiz va \`window.getComputedStyle\` qanday ishlaydi?
+    * **Javob:** \`element.style\` faqat inline stillarni ko'rsatadi. CSS fayldagi yoki vorislik bo'yicha berilgan barcha stillarni o'qish uchun \`window.getComputedStyle(element)\` chaqiriladi. U barcha faol xususiyatlarni string qiymatda qaytaradi.
+
+11. **Savol:** virtual DOM va real DOM o'rtasidagi farq nima va nega modern frameworklar to'g'ridan-to'g'ri real DOM bilan ishlamaydi?
+    * **Javob:** Real DOM juda sekin ishlaydi va har bir o'zgarishda og'ir reflow/repaint chaqiradi. Virtual DOM - bu xotiradagi engil JSON nusxasi. Dastlab o'zgarishlar virtual DOM-da solishtiriladi (reconciliation/diffing), so'ngra faqat eng minimal zaruriy o'zgarishlargina real DOM-ga yuboriladi.
+
+12. **Savol:** DOM daraxtini dynamic ravishda rekursiv aylanib chiqish (DOM Tree Traversal) algoritmi qanday tuziladi?
+    * **Javob:** Rekursiv funksiya yoki DOM NodeIterator / TreeWalker API lari orqali. TreeWalker yordamida ma'lum turdagi elementlarni (masalan faqat matn tugunlarini) filtrlash va daraxt bo'ylab juda tez harakatlanish mumkin.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Mashqlar interaktiv kod runner orqali bajariladi.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Dars yakunidagi testlar.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Dinamik Foydalanuvchilar Jadvali (Virtual DOM-siz Optimallashtirish)
+Loyiha real vaqt rejimida API orqali ma'lumotlarni qabul qiladi va jadvalni yangilaydi. Har bir yuklanishda 1000 ta qator qo'shilishi kerak.
+
+#### Yechim (DocumentFragment va dataset ishlatish):
+\`\`\`javascript
+function renderUsersTable(usersData) {
+  const tbody = document.querySelector('#users-tbody');
+  tbody.innerHTML = ''; // Eski ma'lumotlarni tozalash
+  
+  const fragment = document.createDocumentFragment();
+  
+  usersData.forEach(user => {
+    const tr = document.createElement('tr');
+    tr.dataset.userId = user.id; // Custom dataset yozish
+    
+    tr.innerHTML = \`
+      <td>\${user.name}</td>
+      <td>\${user.email}</td>
+      <td><button class="delete-btn">O'chirish</button></td>
+    \`;
+    
+    fragment.appendChild(tr);
+  });
+  
+  tbody.appendChild(fragment); // Faqat 1 ta reflow
+}
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **Reflow Minimization:** Bir vaqtning o'zida bir nechta stillarni o'zgartirish kerak bo'lsa, elementning \`.style\` xususiyatini alohida chaqirgandan ko'ra bitta CSS klasini almashtirish (\`classList.add\`) ma'qulroq.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Metod / Xususiyat | Sintaksis | Vazifasi | Eslatma |
+| :--- | :--- | :--- | :--- |
+| **querySelector()** | \`document.querySelector(selector)\` | Elementni selektor bo'yicha topadi | Faqat 1-element |
+| **querySelectorAll()**| \`document.querySelectorAll(selector)\`| Barcha elementlarni topadi | NodeList qaytaradi |
+| **createElement()** | \`document.createElement(tagName)\` | Yangi element yaratadi | Xotirada, DOM-ga ulanmagan |
+| **appendChild()** | \`parent.appendChild(child)\` | Elementni bolasi qilib qo'shadi | Oxiriga qo'shadi |
+| **remove()** | \`element.remove()\` | Elementni DOM-dan butunlay o'chiradi | Modern brauzerlarda |
+| **classList** | \`el.classList.add/remove/toggle\` | Klasslarni boshqaradi | Xavfsiz va qulay |
+| **dataset** | \`el.dataset.camelCase\` | Custom attributes o'qish/yozish | data-attribute uchun |
+| **getBoundingClientRect()**| \`el.getBoundingClientRect()\` | Koordinatalar va o'lchamlarni beradi| Reflow chaqirishi mumkin |
+`,
   exercises: [
-    {
-      id: 1,
-      title: "Elementni tanlash",
-      instruction: "querySelector yordamida 'h1' elementini tanlab oling va uni 'title' o'zgaruvchisiga saqlang.",
-      startingCode: "// Kodni shu yerda yozing\n",
-      hint: "const title = document.querySelector('h1');",
-      test: "if (code.includes('document.querySelector') && code.includes('h1')) return null; return 'h1 tegini tanlang';"
-    },
-    {
-      id: 2,
-      title: "Matnni o'zgartirish",
-      instruction: "O'zgaruvchi 'header' ning textContent xususiyatini 'Salom JS' ga o'zgartiring.",
-      startingCode: "const header = { textContent: '' }; // Mock element\n// Kodni shu yerga yozing\n",
-      hint: "header.textContent = 'Salom JS';",
-      test: "if (header.textContent === 'Salom JS') return null; return 'Matn noto\\'g\\'ri';"
-    },
-    {
-      id: 3,
-      title: "Style o'zgartirish",
-      instruction: "Elementning fon rangini (backgroundColor) 'blue' qiling.",
-      startingCode: "const el = { style: { backgroundColor: '' } };\n// Bu yerga yozing\n",
-      hint: "el.style.backgroundColor = 'blue';",
-      test: "if (el.style.backgroundColor === 'blue') return null; return 'Rang ko\\'k bo\\'lishi kerak';"
-    },
-    {
-      id: 4,
-      title: "Class qo'shish",
-      instruction: "Elementga 'highlight' klassini qo'shing.",
-      startingCode: "const el = { classList: { add: (c) => el.className = c } };\n// Bu yerga yozing\n",
-      hint: "el.classList.add('highlight');",
-      test: "if (el.className === 'highlight') return null; return 'Class qo\\'shilmadi';"
-    },
-    {
-      id: 5,
-      title: "querySelectorAll ishlatish",
-      instruction: "querySelectorAll yordamida barcha 'li' elementlarini tanlang va ularni 'listItems' o'zgaruvchisiga saqlang.",
-      startingCode: "// Kodni shu yerda yozing\n",
-      hint: "const listItems = document.querySelectorAll('li');",
-      test: "if (code.includes('querySelectorAll') && code.includes('li')) return null; return 'querySelectorAll yordamida li elementlarini tanlang';"
-    },
-    {
-      id: 6,
-      title: "Class o'chirish",
-      instruction: "Elementdan classList.remove yordamida 'hidden' klassini o'chiring.",
-      startingCode: "const el = { classList: { remove: (c) => el.className = '' } };\n// Bu yerga yozing\n",
-      hint: "el.classList.remove('hidden');",
-      test: "if (code.includes('classList.remove') && code.includes('hidden')) return null; return 'hidden klassini o\\'chiring';"
-    },
-    {
-      id: 7,
-      title: "innerHTML orqali yozish",
-      instruction: "Elementning innerHTML xususiyatiga '<span>Yangi</span>' matnini yozing.",
-      startingCode: "const el = { innerHTML: '' };\n// Bu yerga yozing\n",
-      hint: "el.innerHTML = '<span>Yangi</span>';",
-      test: "if (el.innerHTML === '<span>Yangi</span>') return null; return 'innerHTML qiymati noto\\'g\\'ri';"
-    },
-    {
-      id: 8,
-      title: "Class toggle qilish",
-      instruction: "Elementning classList xususiyatidagi toggle metodi yordamida 'dark-mode' klassini almashtiring.",
-      startingCode: "const el = { classList: { toggle: (c) => el.toggled = c } };\n// Bu yerga yozing\n",
-      hint: "el.classList.toggle('dark-mode');",
-      test: "if (el.toggled === 'dark-mode') return null; return 'classList.toggle yordamida dark-mode klassini ishlating';"
-    },
-    {
-      id: 9,
-      title: "Ota elementga murojaat",
-      instruction: "Elementning ota elementini 'parent' o'zgaruvchisiga saqlang.",
-      startingCode: "const el = { parentElement: { id: 'parent-id' } };\n// Bu yerga yozing\n",
-      hint: "const parent = el.parentElement;",
-      test: "if (code.includes('parentElement')) return null; return 'parentElement xususiyatidan foydalaning';"
-    },
-    {
-      id: 10,
-      title: "Qo'shni elementni topish",
-      instruction: "Elementdan keyingi qo'shni elementni (nextElementSibling) 'nextEl' o'zgaruvchisiga saqlang.",
-      startingCode: "const el = { nextElementSibling: { tagName: 'DIV' } };\n// Bu yerga yozing\n",
-      hint: "const nextEl = el.nextElementSibling;",
-      test: "if (code.includes('nextElementSibling')) return null; return 'nextElementSibling xususiyatidan foydalaning';"
-    },
-    {
-      id: 11,
-      title: "Bolalarini topish",
-      instruction: "Elementning 'children' ro'yxatidan birinchi elementni (0-indeks) 'firstChildEl' o'zgaruvchisiga saqlang.",
-      startingCode: "const el = { children: [{ text: 'child' }] };\n// Bu yerga yozing\n",
-      hint: "const firstChildEl = el.children[0];",
-      test: "if (code.includes('children[0]')) return null; return 'children massividan 0-indeksni oling';"
-    },
-    {
-      id: 12,
-      title: "Input qiymatini olish",
-      instruction: "Element 'myInput' ning value xususiyatini 'inputValue' o'zgaruvchisiga saqlang.",
-      startingCode: "const myInput = { value: 'Salom' };\n// Bu yerga yozing\n",
-      hint: "const inputValue = myInput.value;",
-      test: "if (code.includes('.value')) return null; return 'value xususiyatini o\\'qing';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "querySelector yordamida element tanlash",
+    "instruction": "`document.querySelector` yordamida sahifadagi birinchi `h1` elementini tanlang va uni `title` o'zgaruvchisiga saqlang.",
+    "startingCode": "// Kodni shu yerda yozing\n",
+    "hint": "const title = document.querySelector('h1');",
+    "test": "if (code.includes('document.querySelector') && (code.includes('h1') || code.includes(\"h1\"))) return null; return 'document.querySelector yordamida h1 elementini tanlang';"
+  },
+  {
+    "id": 2,
+    "title": "textContent yordamida matnni o'zgartirish",
+    "instruction": "Berilgan `header` elementining `textContent` xususiyatini 'Salom JS' matniga o'zgartiruvchi `changeText(header)` funksiyasini yozing.",
+    "startingCode": "function changeText(header) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "header.textContent = 'Salom JS';",
+    "test": "try { const mockHeader = { textContent: '' }; changeText(mockHeader); if (mockHeader.textContent !== 'Salom JS') return 'header.textContent to\\'g\\'ri o\\'zgartirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 3,
+    "title": "classList yordamida klassni o'zgartirish (Toggle)",
+    "instruction": "Berilgan `element` obyekti klasslari ichida `active` klassi borligini `classList.toggle` yordamida almashtiruvchi `toggleActive(element)` funksiyasini yozing.",
+    "startingCode": "function toggleActive(element) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "element.classList.toggle('active');",
+    "test": "try { let toggled = null; const mockEl = { classList: { toggle: (c) => toggled = c } }; toggleActive(mockEl); if (toggled !== 'active') return 'classList.toggle yordamida active klassi almashtirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "DOM (Document Object Model) deganda nimani tushunasiz?",
-      options: [
-        "HTML fayllarini serverda saqlash texnologiyasi",
-        "Brauzer tomonidan yaratiladigan, HTML hujjatini daraxtsimon tuzilishda ifodalovchi va JavaScript orqali elementlarni boshqarishga imkon beruvchi obyektlar modeli",
-        "Ma'lumotlar bazasini boshqarish tizimi",
-        "CSS stillarini avtomatik optimallashtirish vositasi"
-      ],
-      correctAnswer: 1,
-      explanation: "DOM - bu brauzer tomonidan HTML hujjatini o'qish paytida tuziladigan va sahifadagi har bir elementni o'zgartirish, o'chirish yoki yangi elementlar qo'shish imkonini beruvchi interfeys/obyektlar daraxtidir."
-    },
-    {
-      id: 2,
-      question: "`document.querySelector` va `document.querySelectorAll` metodlari o'rtasidagi asosiy farq nima?",
-      options: [
-        "`querySelector` faqat rasmlarni, `querySelectorAll` esa barcha teglarni tanlaydi",
-        "`querySelector` CSS selektoriga mos keluvchi faqat birinchi elementni, `querySelectorAll` esa mos keluvchi barcha elementlarni NodeList to'plami ko'rinishida qaytaradi",
-        "`querySelectorAll` tezroq ishlaydi",
-        "Hech qanday farqi yo'q, ikkalasi ham bir xil natija beradi"
-      ],
-      correctAnswer: 1,
-      explanation: "`querySelector` faqat bitta (birinchi mos kelgan) element obyektini, `querySelectorAll` esa barcha mos kelgan elementlarni o'z ichiga olgan NodeList ro'yxatini qaytaradi."
-    },
-    {
-      id: 3,
-      question: "JavaScript yordamida elementning CSS klassini qo'shish yoki o'chirish uchun qaysi metodlar eng to'g'ri va xavfsiz hisoblanadi?",
-      options: [
-        "`element.style.class = 'nom'`",
-        "`element.classList.add('nom')` va `element.classList.remove('nom')`",
-        "`element.setAttribute('class', 'nom')`",
-        "`element.className = 'nom'` (oldingi klasslarni o'chirib yuboradi)"
-      ],
-      correctAnswer: 1,
-      explanation: "`classList` obyekti ichidagi `add`, `remove`, `toggle` metodlari elementning boshqa klasslariga zarar yetkazmagan holda klasslarni xavfsiz boshqarish imkonini beradi."
-    },
-    {
-      id: 4,
-      question: "NodeList va HTMLCollection o'rtasidagi farq haqida qaysi tasdiq to'g'ri?",
-      options: [
-        "Ikkalasi ham oddiy JavaScript massivi (Array) bo'lib, barcha massiv metodlarini to'liq qo'llab-quvvatlaydi",
-        "HTMLCollection faqat element tugunlarini (Element nodes) o'z ichiga oladi va jonli (live) bo'ladi; NodeList esa har qanday tugun turlarini (text, comment) o'z ichiga olishi mumkin va odatda statik (non-live) bo'ladi",
-        "NodeList faqat Internet Explorer brauzerida ishlaydi",
-        "HTMLCollection faqat rasmlar uchun ishlatiladi"
-      ],
-      correctAnswer: 1,
-      explanation: "HTMLCollection har doim jonli (live) bo'lib, DOM o'zgarganda avtomat yangilanadi. NodeList (masalan, querySelectorAll qaytargan ro'yxat) odatda statik (non-live) bo'ladi."
-    },
-    {
-      id: 5,
-      question: "JavaScript-da DOM elementining inline stillarini o'zgartirishda CSS xususiyati nomlari qanday yoziladi (masalan: background-color)?",
-      options: [
-        "`element.style['background-color']` yoki `element.style.backgroundColor` (camelCase formatida)",
-        "Faqat `element.style.background-color` ko'rinishida",
-        "Faqat katta harflarda: `element.style.BACKGROUND_COLOR`",
-        "CSS stillarini JavaScript'da inline o'zgartirib bo'lmaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "JavaScript style obyektida chiziqcha bilan yoziladigan CSS xususiyatlari camelCase formatida yoziladi (backgroundColor, fontSize), yoki qavslar ichida string sifatida `style['background-color']` ko'rinishida yozilishi mumkin."
-    },
-    {
-      id: 6,
-      question: "ID bo'yicha elementni tanlashda qaysi metod eng tez ishlaydi?",
-      options: [
-        "`document.getElementById('myId')`",
-        "`document.querySelector('#myId')`",
-        "Ikkalasi bir xil tezlikda ishlaydi",
-        "`document.getElementsByTagName('myId')`"
-      ],
-      correctAnswer: 0,
-      explanation: "`getElementById` faqat ID bo'yicha qidirishga moslashtirilgani uchun, brauzer darhol o'sha elementni topadi. `querySelector` esa CSS parseridan o'tgani sababli nazariy jihatdan biroz sekinroq ishlaydi."
-    },
-    {
-      id: 7,
-      question: "`textContent` o'rniga `innerHTML` ishlatilganda qanday xavf tug'ilishi mumkin?",
-      options: [
-        "Faqat CSS stillari buziladi",
-        "Sayt tezligi 10 barobarga pasayadi",
-        "XSS (Cross-Site Scripting) ya'ni sahifaga zararli skriptlar kiritib yuborish xavfi",
-        "DOM butunlay bloklanadi"
-      ],
-      correctAnswer: 2,
-      explanation: "`innerHTML` berilgan matn ichidagi HTML kodlarni (masalan `<script>`) ishga tushirishi mumkin. Shuning uchun foydalanuvchilar kiritgan ma'lumotlarni yozishda faqat `textContent` ishlatish xavfsizlik nuqtai nazaridan shart."
-    },
-    {
-      id: 8,
-      question: "querySelectorAll qaytargan NodeList ustida qaysi massiv metodini to'g'ridan-to'g'ri chaqirish mumkin?",
-      options: [
-        "`.map()`",
-        "`.filter()`",
-        "`.forEach()`",
-        "`.reduce()`"
-      ],
-      correctAnswer: 2,
-      explanation: "NodeList haqiqiy massiv bo'lmasa ham, brauzerlar unda `.forEach()` metodini to'g'ridan-to'g'ri chaqirish imkoniyatini yaratgan. Boshqa massiv metodlari (.map, .filter) uchun uni `Array.from(nodeList)` orqali haqiqiy massivga aylantirish kerak."
-    },
-    {
-      id: 9,
-      question: "DOM-da butun HTML hujjatining ildiz (root) elementini ifodalovchi obyekt nima?",
-      options: [
-        "`document.body`",
-        "`document.documentElement` (ya'ni <html> tegi)",
-        "`window.root`",
-        "`document.head`"
-      ],
-      correctAnswer: 1,
-      explanation: "`document.documentElement` DOM daraxtidagi eng ildiz element bo'lgan `<html>` tegini ifodalaydi."
-    },
-    {
-      id: 10,
-      question: "`parentElement` va `parentNode` o'rtasidagi farq nima?",
-      options: [
-        "Hech qanday farqi yo'q",
-        "`parentElement` faqat element tugunini qaytaradi (yo'q bo'lsa null), `parentNode` esa hujjat tugunlarini (document node, text node) ham qaytarishi mumkin",
-        "`parentNode` eski IE da ishlaydi, `parentElement` esa faqat Chrome da",
-        "`parentElement` xotirani kamroq band qiladi"
-      ],
-      correctAnswer: 1,
-      explanation: "`parentElement` har doim ota elementni (Element node) qaytaradi, agar u element bo'lmasa (masalan, root bo'lsa) null beradi. `parentNode` esa har qanday ota tugunni qaytaraveradi."
-    },
-    {
-      id: 11,
-      question: "`firstElementChild` va `firstChild` o'rtasidagi farq nima?",
-      options: [
-        "Ikkalasi ham mutlaqo bir xil narsani qaytaradi",
-        "`firstElementChild` birinchi haqiqiy HTML elementini qaytaradi, `firstChild` esa birinchi tugunni (bu probel yoki matnli text node bo'lishi mumkin) qaytaradi",
-        "`firstChild` tezroq ishlaydi",
-        "`firstElementChild` faqat CSS stillarini ko'radi"
-      ],
-      correctAnswer: 1,
-      explanation: "DOM-da bo'sh joylar va yangi qatorlar ham text node (matn tuguni) hisoblanadi. Shuning uchun `firstChild` ko'pincha bo'sh joyni qaytaradi. `firstElementChild` esa faqat haqiqiy HTML teglarni (elementlarni) qidiradi."
-    },
-    {
-      id: 12,
-      question: "Elementda ma'lum bir klass mavjudligini tekshirish uchun qaysi metoddan foydalaniladi?",
-      options: [
-        "`element.classList.has('active')`",
-        "`element.classList.contains('active')`",
-        "`element.classList.check('active')`",
-        "`element.classList.includes('active')`"
-      ],
-      correctAnswer: 1,
-      explanation: "`element.classList.contains('klass')` elementi berilgan klass mavjud bo'lsa true, aks holda false qiymatini qaytaradi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "DOM (Document Object Model) nima maqsadda xizmat qiladi?",
+    "options": [
+      "HTML hujjatini serverda saqlash va boshqarish uchun",
+      "HTML hujjatini brauzer xotirasida daraxtsimon obyekt ko'rinishida ifodalab, uni JavaScript yordamida dinamik boshqarish uchun",
+      "Faqat CSS stillarini optimallashtirish uchun",
+      "Veb-sayt xavfsizligini ta'minlash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "DOM brauzer tomonidan HTML sahifani tahlil qilish (parsing) paytida yaratiladi va u JavaScript-ga HTML elementlarini dynamic o'zgartirish, o'chirish yoki yangi elementlar qo'shish imkoniyatini taqdim etadi."
+  },
+  {
+    "id": 2,
+    "question": "document.querySelector va document.querySelectorAll metodlarining farqi nima?",
+    "options": [
+      "querySelector faqat id-lar bilan, querySelectorAll esa class-lar bilan ishlaydi",
+      "querySelector faqat birinchi mos kelgan elementni, querySelectorAll esa mos kelgan barcha elementlarni NodeList ko'rinishida qaytaradi",
+      "querySelectorAll sinxron, querySelector esa asinxron ishlaydi",
+      "Ikkalasi bir xil ishlaydi, hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "querySelector berilgan CSS selektoriga mos kelgan birinchi element obyektini, querySelectorAll esa barcha mos kelgan elementlarni o'z ichiga olgan NodeList to'plamini qaytaradi."
+  },
+  {
+    "id": 3,
+    "question": "JavaScript yordamida element klassini boshqarishda (add, remove, toggle) nima uchun classList-dan foydalanish tavsiya etiladi?",
+    "options": [
+      "Chunki u HTML-ni to'liq yangilaydi",
+      "Chunki u elementning boshqa klasslariga zarar yetkazmasdan, xavfsiz va qulay boshqarish imkonini beradi",
+      "Chunki classList yordamida serverga so'rov yuborish mumkin",
+      "classList metodlari eng sekin ishlovchi metodlar hisoblanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "classList.add() yoki classList.remove() elementdagi boshqa klasslarni o'chirib yubormasdan, faqat kerakli klass bilan ishlaydi. className esa butun klass stringini overwrite qilib yuboradi."
+  },
+  {
+    "id": 4,
+    "question": "HTMLCollection va NodeList o'rtasidagi asosiy farqlardan biri nima?",
+    "options": [
+      "NodeList faqat eski brauzerlarda ishlaydi",
+      "HTMLCollection har doim jonli (live) to'plam bo'ladi (DOM o'zgarganda avtomat yangilanadi), NodeList esa odatda statik (non-live) bo'ladi",
+      "HTMLCollection massiv metodlarini to'liq qo'llab-quvvatlaydi, NodeList esa yo'q",
+      "Hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "HTMLCollection har doim dynamic yangilanadi (live). querySelectorAll qaytaradigan NodeList esa statik bo'lib, DOM o'zgargani bilan undagi elementlar ro'yxati o'zgarmaydi."
+  },
+  {
+    "id": 5,
+    "question": "ID bo'yicha element tanlashda qaysi metod eng yuqori unumdorlikka (tezlikka) ega?",
+    "options": [
+      "document.getElementById('title')",
+      "document.querySelector('#title')",
+      "Ikkalasi mutlaqo bir xil tezlikda ishlaydi",
+      "document.getElementsByClassName('title')[0]"
+    ],
+    "correctAnswer": 0,
+    "explanation": "getElementById faqat ID bo'yicha qidirish uchun optimallashtirilgan bo'lib, querySelector-ga qaraganda tezroq ishlaydi (chunki querySelector CSS parseridan o'tishi shart)."
+  },
+  {
+    "id": 6,
+    "question": "Foydalanuvchi kiritgan matnni yozishda nima uchun `innerHTML` o'rniga `textContent` ishlatish tavsiya etiladi?",
+    "options": [
+      "Chunki textContent stillarni buzmaydi",
+      "XSS (Cross-Site Scripting) zararli kodlar hujumining oldini olish va xavfsizlikni ta'minlash uchun",
+      "Chunki textContent tezlroq render qiladi",
+      "innerHTML faqat rasmlar uchun ishlatiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "innerHTML foydalanuvchi yozgan zararli teglarni (masalan `<script>`) render qilib yuborishi mumkin. textContent esa barcha teglarni oddiy zararsiz matn sifatida yozadi."
+  },
+  {
+    "id": 7,
+    "question": "CSS faylda yozilgan elementning real (hisoblangan) rangini JavaScript-da qanday o'qiymiz?",
+    "options": [
+      "element.style.color orqali",
+      "window.getComputedStyle(element).color orqali",
+      "element.getAttribute('color') orqali",
+      "element.className.color"
+    ],
+    "correctAnswer": 1,
+    "explanation": "element.style faqat inline stillarni ko'radi. CSS faylda yozilgan real stillarni o'qish uchun window.getComputedStyle(element) metodidan foydalaniladi."
+  },
+  {
+    "id": 8,
+    "question": "Elementning `children` va `childNodes` xususiyatlari farqi nima?",
+    "options": [
+      "children faqat haqiqiy elementlarni (tags), childNodes esa har qanday tugunlarni (text, comment) ham qaytaradi",
+      "childNodes faqat HTML elementlarni, children esa matnlarni qaytaradi",
+      "Ikkalasi mutlaqo bir xil narsani qaytaradi",
+      "children faqat o'g'il bolalarni qaytaradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "children faqat HTML element tugunlarini (Element Nodes) massivsimon ro'yxatda qaytaradi. childNodes esa har qanday tugunlarni (jumladan bo'sh joylar/text node) qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "DOM daraxtida `firstElementChild` va `firstChild` o'rtasidagi farq nima?",
+    "options": [
+      "Hech qanday farqi yo'q",
+      "firstElementChild birinchi HTML elementini, firstChild esa birinchi tugunni (bu probel yoki yangi qator kabi text node bo'lishi mumkin) qaytaradi",
+      "firstChild faqat birinchi harfni qaytaradi",
+      "firstElementChild sekinroq ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "firstChild ko'pincha elementlar orasidagi bo'shliqni (text node) qaytaradi. firstElementChild esa birinchi haqiqiy HTML elementini (tag) qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "DocumentFragment-dan foydalanishning asosiy maqsadi nima?",
+    "options": [
+      "DOM elementlarini animatsiya qilish uchun",
+      "Ko'p miqdordagi elementlarni DOM-ga qo'shishda Reflow va Repaint sonini 1 taga tushirib, unumdorlikni oshirish uchun",
+      "Faqat serverdagi ma'lumotlarni yuklash uchun",
+      "HTML faylini siqish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "DocumentFragment virtual xotirada yaratilgani uchun, unga qilingan o'zgarishlar haqiqiy sahifani qayta chizmaydi. Uni to'ldirib, DOM-ga bitta operatsiyada ulasak, sahifa qotmaydi."
+  },
+  {
+    "id": 11,
+    "question": "Elementdagi custom `data-user-id=\"10\"` atributini JavaScript-da eng qulay usulda qanday o'qiymiz?",
+    "options": [
+      "element.getAttribute('data-user-id')",
+      "element.dataset.userId (camelCase formatida)",
+      "element.data.userId",
+      "element.dataset['data-user-id']"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScriptdataset obyekti data-* atributlarini camelCase formatiga o'tkazib saqlaydi, shuning uchun dataset.userId ko'rinishida oson o'qiladi."
+  },
+  {
+    "id": 12,
+    "question": "parentElement va parentNode o'rtasidagi farq nima?",
+    "options": [
+      "Hech qanday farqi yo'q",
+      "parentElement faqat ota elementni qaytaradi (yo'q bo'lsa null), parentNode esa ota tugunni (masalan document node-ni ham) qaytaraveradi",
+      "parentNode faqat CSS-ni qaytaradi",
+      "parentElement xotiradan joy ajratmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "parentElement har doim HTML elementi (nodeType === 1) bo'lishini talab qiladi, aks holda null qaytaradi. parentNode esa har qanday ota tugunni qaytaradi."
+  }
+]
+
 };

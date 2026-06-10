@@ -34,16 +34,16 @@ import { objects } from "./lessons/beginner/objects";
 import { destructuring } from "./lessons/intermediate/destructuring";
 import { spreadRest } from "./lessons/intermediate/spreadRest";
 import { arrowFunctions } from "./lessons/intermediate/arrowFunctions";
-import { domBasics } from "./lessons/intermediate/dom";
+import { dom } from "./lessons/intermediate/dom";
 import { domManipulation } from "./lessons/intermediate/domManipulation";
 import { events } from "./lessons/intermediate/events";
-import { formsLesson } from "./lessons/intermediate/forms";
+import { forms } from "./lessons/intermediate/forms";
 import { higherOrderArrays } from "./lessons/intermediate/higherOrderArrays";
 import { classesLesson } from "./lessons/intermediate/classes";
 import { optionalChaining } from "./lessons/intermediate/optionalChaining";
 import { interviewQuestionsIntermediate } from "./lessons/intermediate/interviewQuestions";
 import { thisKeyword } from "./lessons/intermediate/thisKeyword";
-import { timersLesson } from "./lessons/intermediate/timers";
+import { timers } from "./lessons/intermediate/timers";
 import { immutableData } from "./lessons/intermediate/immutableData";
 import { canvas } from "./lessons/intermediate/canvas";
 import { audioVideo } from "./lessons/intermediate/audioVideo";
@@ -150,7 +150,7 @@ export const curriculum = {
     label: "O'rta daraja",
     color: "#e5b84f",
     icon: "🟡",
-    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, domBasics, domManipulation, events, formsLesson, timersLesson, optionalChaining, classesLesson, interviewQuestionsIntermediate, canvas, audioVideo, mapSetWeak, es6Features, intlApi]
+    lessons: [destructuring, spreadRest, arrowFunctions, thisKeyword, higherOrderArrays, immutableData, dom, domManipulation, events, forms, timers, optionalChaining, classesLesson, interviewQuestionsIntermediate, canvas, audioVideo, mapSetWeak, es6Features, intlApi]
   },
   advanced: {
     label: "Murakkab",
