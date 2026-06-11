@@ -94,6 +94,10 @@ import { reactivePatterns } from "./lessons/advanced/reactivePatterns";
 import { performanceAlgos } from "./lessons/advanced/performanceAlgos";
 
 import { bigO } from "./lessons/algorithms/bigO";
+import { dsaBasics } from "./lessons/algorithms/dsaBasics";
+import { dsaControlFlow } from "./lessons/algorithms/dsaControlFlow";
+import { dsaFunctions } from "./lessons/algorithms/dsaFunctions";
+import { dsaInputOutput } from "./lessons/algorithms/dsaInputOutput";
 import { linkedLists } from "./lessons/algorithms/linkedLists";
 import { stacksQueues } from "./lessons/algorithms/stacksQueues";
 import { binarySearchTree } from "./lessons/algorithms/binarySearchTree";
@@ -178,7 +182,7 @@ export const curriculum = {
     label: "Algoritmlar",
     color: "#6a73c9",
     icon: "📊",
-    lessons: [bigO, linkedLists, stacksQueues, binarySearchTree, sortingSearching, leetcodeTop]
+    lessons: [dsaBasics, dsaControlFlow, dsaFunctions, dsaInputOutput, bigO, linkedLists, stacksQueues, binarySearchTree, sortingSearching, leetcodeTop]
   },
   systemDesign: {
     label: "Tizimli Dizayn",
