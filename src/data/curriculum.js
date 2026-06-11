@@ -110,6 +110,9 @@ import { dns } from "./lessons/system-design/dns";
 import { networkEssentials } from "./lessons/system-design/networkEssentials";
 import { apiGateway } from "./lessons/system-design/apiGateway";
 import { distributedCharacteristics } from "./lessons/system-design/distributedCharacteristics";
+import { systemDesignQuiz2 } from "./lessons/system-design/systemDesignQuiz2";
+import { consistentHashing } from "./lessons/system-design/consistentHashing";
+import { messageQueues } from "./lessons/system-design/messageQueues";
 
 import { reactArchitecture } from "./lessons/ecosystem/reactArchitecture";
 import { reactStateManagement } from "./lessons/ecosystem/reactStateManagement";
@@ -178,7 +181,7 @@ export const curriculum = {
     label: "Tizimli Dizayn",
     color: "#c96ac8",
     icon: "🌐",
-    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, distributedCharacteristics]
+    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues]
   },
   ecosystem: {
     label: "Ekotizim (React & Node.js)",
