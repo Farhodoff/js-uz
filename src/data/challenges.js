@@ -15015,4 +15015,301 @@ End\`.
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`["user@example.com","info@company.org"]\`.
 3. Variantlar ichidan to'g'ri javobni tanlang.`
   }
+,
+  {
+    id: "tg-3266",
+    title: "JS Challenge #3266",
+    difficulty: "medium",
+    category: "basics",
+    code: `function Animal(name) {  this.name = name;}Animal.prototype.speak = function () {  return \`\${this.name} makes a sound.\`;};function Dog(name, breed) {  Animal.call(this, name);  this.breed = breed;}Dog.prototype = Object.create(Animal.prototype);Dog.prototype.constructor = Dog;Dog.prototype.speak = function () {  return \`\${this.name} barks!\`;};const dog = new Dog("Rex", "Labrador");console.log(dog.speak());console.log(dog instanceof Dog);console.log(dog instanceof Animal);console.log(Object.getPrototypeOf(dog) === Animal.prototype);`,
+    options: [
+      "Rex barks! true true true",
+      "Rex makes a sound. true true false",
+      "Rex barks! true true false",
+      "Rex barks! true false false"
+],
+    correctAnswer: "Rex barks! true true false",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3266).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Rex barks!
+true
+true
+false\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3269",
+    title: "JS Challenge #3269",
+    difficulty: "medium",
+    category: "basics",
+    code: `const person = {  name: "Marcus",  greet: function () {    const inner = () => \`Hello, I am \${this.name}\`;    return inner();  },  greetArrow: () => {    return \`Hello, I am \${this.name}\`;  },};const detached = person.greet;console.log(person.greet());console.log(person.greetArrow());console.log(detached?.());`,
+    options: [
+      "Hello, I am Marcus Hello, I am undefined Hello, I am Marcus",
+      "Hello, I am Marcus Hello, I am undefined Hello, I am undefined",
+      "Hello, I am Marcus Hello, I am  Hello, I am",
+      "Hello, I am Marcus Hello, I am Marcus Hello, I am Marcus"
+],
+    correctAnswer: "Hello, I am Marcus Hello, I am undefined Hello, I am undefined",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3269).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Hello, I am Marcus
+Hello, I am undefined
+Hello, I am undefined\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3271",
+    title: "JS Challenge #3271",
+    difficulty: "medium",
+    category: "basics",
+    code: `const transactions = [  { type: "credit", amount: 200, category: "salary" },  { type: "debit",  amount: 50,  category: "food" },  { type: "debit",  amount: 30,  category: "food" },  { type: "credit", amount: 100, category: "bonus" },  { type: "debit",  amount: 70,  category: "transport" },];const summary = transactions.reduce((acc, { type, amount, category }) => {  acc.balance += type === "credit" ? amount : -amount;  acc.byCategory[category] = (acc.byCategory[category] ?? 0) + amount;  acc.count[type] = (acc.count[type] ?? 0) + 1;  return acc;}, { balance: 0, byCategory: {}, count: {} });console.log(summary.balance);console.log(JSON.stringify(summary.byCategory));console.log(JSON.stringify(summary.count));`,
+    options: [
+      "150 {\"salary\":200,\"food\":80,\"bonus\":100,\"transport\":70} {\"debit\":3,\"credit\":2}",
+      "150 {\"salary\":200,\"food\":80,\"bonus\":100,\"transport\":70} {\"credit\":2,\"debit\":3}",
+      "250 {\"salary\":200,\"food\":80,\"bonus\":100,\"transport\":70} {\"credit\":2,\"debit\":3}",
+      "150 {\"salary\":200,\"food\":80,\"transport\":70,\"bonus\":100} {\"credit\":2,\"debit\":3}"
+],
+    correctAnswer: "150 {\"salary\":200,\"food\":80,\"bonus\":100,\"transport\":70} {\"credit\":2,\"debit\":3}",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3271).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`150
+{"salary":200,"food":80,"bonus":100,"transport":70}
+{"credit":2,"debit":3}\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3274",
+    title: "JS Challenge #3274",
+    difficulty: "medium",
+    category: "basics",
+    code: `class Pipeline {  #value;  #log = [];  constructor(value) {    this.#value = value;  }  map(fn) {    this.#value = fn(this.#value);    this.#log.push(\`map:\${this.#value}\`);    return this;  }  filter(fn) {    if (Array.isArray(this.#value)) {      this.#value = this.#value.filter(fn);      this.#log.push(\`filter:\${this.#value}\`);    }    return this;  }  reduce(fn, init) {    this.#value = this.#value.reduce(fn, init);    this.#log.push(\`reduce:\${this.#value}\`);    return this;  }  result() {    console.log(this.#log.join(' | '));    return this.#value;  }}const output = new Pipeline([1, 2, 3, 4, 5, 6])  .filter(x => x % 2 === 0)  .map(arr => arr.map(x => x ** 2))  .reduce((acc, x) => acc + x, 0)  .result();console.log(output);`,
+    options: [
+      "filter:2,4,6 | map:4,16,36 | reduce:56 56",
+      "filter:2,4,6 | map:2,4,6 | reduce:12 12",
+      "filter:1,3,5 | map:1,9,25 | reduce:35 35",
+      "filter:2,4,6 | map:4,16,36 | reduce:56 0"
+],
+    correctAnswer: "filter:2,4,6 | map:4,16,36 | reduce:56 56",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3274).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`filter:2,4,6 | map:4,16,36 | reduce:56
+56\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3277",
+    title: "JS Challenge #3277",
+    difficulty: "medium",
+    category: "basics",
+    code: `const memoize = (fn) => {  const cache = new Map();  return (...args) => {    const key = JSON.stringify(args);    if (cache.has(key)) {      return cache.get(key);    }    const result = fn(...args);    cache.set(key, result);    return result;  };};let callCount = 0;const expensiveMultiply = memoize((a, b) => {  callCount++;  return a * b;});console.log(expensiveMultiply(4, 5));console.log(expensiveMultiply(4, 5));console.log(expensiveMultiply(3, 7));console.log(expensiveMultiply(4, 5));console.log(\`calls: \${callCount}\`);`,
+    options: [
+      "20 20 21 20 calls: 4",
+      "20 20 21 20 calls: 2",
+      "20 20 21 20 calls: 3",
+      "20 20 21 calls: 2"
+],
+    correctAnswer: "20 20 21 20 calls: 2",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3277).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`20
+20
+21
+20
+calls: 2\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3279",
+    title: "JS Challenge #3279",
+    difficulty: "medium",
+    category: "basics",
+    code: `class Registry {  static #instances = new Map();  static #count = 0;  static defaultTTL;  static maxSize;  static {    Registry.defaultTTL = 3600;    Registry.maxSize = 100;    Registry.#instances.set("__init__", { ts: 0 });    Registry.#count = Registry.#instances.size;  }  static register(key) {    if (Registry.#count >= Registry.maxSize) return false;    Registry.#instances.set(key, { ts: Registry.defaultTTL });    Registry.#count++;    return true;  }  static info() {    return \`count=\${Registry.#count}, ttl=\${Registry.defaultTTL}, max=\${Registry.maxSize}\`;  }}Registry.register("service-a");Registry.register("service-b");console.log(Registry.info());`,
+    options: [
+      "count=2, ttl=3600, max=100",
+      "count=1, ttl=3600, max=100",
+      "count=3, ttl=undefined, max=100",
+      "count=3, ttl=3600, max=100"
+],
+    correctAnswer: "count=3, ttl=3600, max=100",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3279).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`count=3, ttl=3600, max=100\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3282",
+    title: "JS Challenge #3282",
+    difficulty: "medium",
+    category: "basics",
+    code: `const handler = {  get(target, prop, receiver) {    if (prop in target) {      return Reflect.get(target, prop, receiver) * 2;    }    return \`missing:\${prop}\`;  },  set(target, prop, value) {    if (typeof value !== "number") {      throw new TypeError("Only numbers allowed");    }    Reflect.set(target, prop, value + 10);    return true;  },  has(target, prop) {    return prop.startsWith("x") ? false : prop in target;  },};const store = new Proxy({ xray: 5, zoom: 8 }, handler);store.nova = 3;console.log(store.xray);console.log(store.nova);console.log(store.ghost);console.log("zoom" in store);console.log("xray" in store);`,
+    options: [
+      "5 13 missing:ghost true false",
+      "10 13 missing:ghost false true",
+      "10 26 missing:ghost true true",
+      "10 26 missing:ghost true false"
+],
+    correctAnswer: "10 26 missing:ghost true false",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3282).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`10
+26
+missing:ghost
+true
+false\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3245",
+    title: "JS Challenge #3245",
+    difficulty: "medium",
+    category: "basics",
+    code: `const flags = {  READ:    0b0001,  WRITE:   0b0010,  EXECUTE: 0b0100,  DELETE:  0b1000,};const userPermissions  = flags.READ | flags.WRITE | flags.EXECUTE;const adminPermissions = userPermissions | flags.DELETE;const canDelete  = (adminPermissions & flags.DELETE)  !== 0;const canExecute = (userPermissions  & flags.EXECUTE) !== 0;const readOnly   = userPermissions   ^ flags.WRITE;console.log(canDelete, canExecute, readOnly, adminPermissions >> 1);`,
+    options: [
+      "true false 5 7",
+      "false true 5 7",
+      "true true 7 5",
+      "true true 5 7"
+],
+    correctAnswer: "true true 5 7",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3245).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`true true 5 7\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3247",
+    title: "JS Challenge #3247",
+    difficulty: "medium",
+    category: "basics",
+    code: `const team = {  name: "Alpha",  members: ["Carlos", "Diana", "Eve"],  listMembers() {    return this.members.map(function (member) {      return \`\${this.name}: \${member}\`;    });  },  listMembersArrow() {    return this.members.map((member) => {      return \`\${this.name}: \${member}\`;    });  },};console.log(team.listMembers()[0]);console.log(team.listMembersArrow()[0]);`,
+    options: [
+      "Alpha: Carlos Alpha: Carlos",
+      "undefined: Carlos undefined: Carlos",
+      "Alpha: Carlos undefined: Carlos",
+      "undefined: Carlos Alpha: Carlos"
+],
+    correctAnswer: "undefined: Carlos Alpha: Carlos",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3247).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`undefined: Carlos
+Alpha: Carlos\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3249",
+    title: "JS Challenge #3249",
+    difficulty: "medium",
+    category: "basics",
+    code: `function makeCounter(start = 0, step = 1) {  let count = start;  const history = [];  return {    increment() {      count += step;      history.push(count);      return this;    },    decrement() {      count -= step;      history.push(count);      return this;    },    getHistory: () => history,    getCount: () => count,  };}const counter = makeCounter(10, 3);counter.increment().increment().decrement();console.log(counter.getCount());console.log(counter.getHistory());`,
+    options: [
+      "13 [ 13, 16, 13 ]",
+      "13 [13, 16, 10]",
+      "10 [13, 16, 13]",
+      "16 [13, 16, 13]"
+],
+    correctAnswer: "13 [ 13, 16, 13 ]",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3249).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`13
+[13,16,13]\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3251",
+    title: "JS Challenge #3251",
+    difficulty: "medium",
+    category: "basics",
+    code: `const inventory = new Map([  ["sword", { qty: 3, value: 150 }],  ["shield", { qty: 1, value: 200 }],  ["potion", { qty: 5, value: 30 }],]);const upgraded = new Map(  [...inventory.entries()]    .filter(([, item]) => item.value >= 100)    .map(([key, item]) => [key, { ...item, value: item.value * 2 }]));console.log(upgraded.size);console.log(upgraded.get("sword").value);console.log(upgraded.has("potion"));console.log([...upgraded.keys()].join(", "));`,
+    options: [
+      "2 300 true sword, shield",
+      "2 150 false sword, shield",
+      "3 300 true sword, shield, potion",
+      "2 300 false sword, shield"
+],
+    correctAnswer: "2 300 false sword, shield",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3251).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`2
+300
+false
+sword, shield\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3253",
+    title: "JS Challenge #3253",
+    difficulty: "medium",
+    category: "basics",
+    code: `const log = [];const handler = {  set(target, key, value) {    log.push(\`set:\${key}=\${value}\`);    target[key] = value;    return true;  },  get(target, key) {    log.push(\`get:\${key}\`);    return target[key];  }};const state = new Proxy({}, handler);state.count = 0;state.count = state.count + 1;state.count = state.count + 1;console.log(log.join(" | "));`,
+    options: [
+      "get:count | set:count=0 | get:count | set:count=1 | get:count | set:count=2",
+      "set:count=0 | get:count | set:count=1 | get:count | set:count=2 | get:count",
+      "set:count=0 | set:count=1 | set:count=2",
+      "set:count=0 | get:count | set:count=1 | get:count | set:count=2"
+],
+    correctAnswer: "get:count | set:count=0 | get:count | set:count=1 | get:count | set:count=2",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3253).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`set:count=0 | get:count | set:count=1 | get:count | set:count=2\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3256",
+    title: "JS Challenge #3256",
+    difficulty: "medium",
+    category: "basics",
+    code: `const obj = {  name: "Nikola",  greetArrow: () => {    return \`Hello, \${this?.name ?? "stranger"}!\`;  },  greetRegular() {    return \`Hello, \${this.name}!\`;  },  greetNested() {    const inner = () => \`Hi, \${this.name}!\`;    return inner();  }};console.log(obj.greetArrow());console.log(obj.greetRegular());console.log(obj.greetNested());`,
+    options: [
+      "Hello, undefined! Hello, Nikola! Hi, Nikola!",
+      "Hello, Nikola! Hello, Nikola! Hi, Nikola!",
+      "Hello, stranger! Hello, Nikola! Hi, Nikola!",
+      "Hello, stranger! Hello, stranger! Hi, stranger!"
+],
+    correctAnswer: "Hello, stranger! Hello, Nikola! Hi, Nikola!",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3256).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Hello, stranger!
+Hello, Nikola!
+Hi, Nikola!\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3258",
+    title: "JS Challenge #3258",
+    difficulty: "medium",
+    category: "basics",
+    code: `const a = 9007199254740991n;const b = BigInt(Number.MAX_SAFE_INTEGER);console.log(a === b);console.log(a + 1n);console.log(typeof a);console.log(a === 9007199254740991);`,
+    options: [
+      "true 9007199254740992n bigint false",
+      "true 9007199254740992n bigint true",
+      "false 9007199254740992n bigint false",
+      "true 9007199254740992n number false"
+],
+    correctAnswer: "true 9007199254740992n bigint false",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3258).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`true
+9007199254740992
+bigint
+false\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  },
+  {
+    id: "tg-3260",
+    title: "JS Challenge #3260",
+    difficulty: "medium",
+    category: "basics",
+    code: `const config = {  timeout: 0,  retries: null,  host: "",  port: undefined,  debug: false,};const timeout = config.timeout ?? 3000;const retries = config.retries ?? 5;const host = config.host ?? "localhost";const port = config.port ?? 8080;const debug = config.debug ?? true;console.log(timeout, retries, host, port, debug);`,
+    options: [
+      "0 5  8080 false",
+      "0 5 localhost 8080 false",
+      "3000 5 localhost 8080 true",
+      "0 null  8080 false"
+],
+    correctAnswer: "0 5  8080 false",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 3260).
+2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`0 5  8080 false\`.
+3. Variantlar ichidan to'g'ri javobni tanlang.`
+  }
 ];
