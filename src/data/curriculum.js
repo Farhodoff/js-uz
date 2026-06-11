@@ -97,6 +97,8 @@ import { binarySearchTree } from "./lessons/algorithms/binarySearchTree";
 import { sortingSearching } from "./lessons/algorithms/sortingSearching";
 import { leetcodeTop } from "./lessons/algorithms/leetcodeTop";
 
+import { howToLearn } from "./lessons/system-design/howToLearn";
+import { requirements } from "./lessons/system-design/requirements";
 import { webSecurity } from "./lessons/system-design/webSecurity";
 import { cachingScalability } from "./lessons/system-design/cachingScalability";
 import { renderingArchitectures } from "./lessons/system-design/renderingArchitectures";
@@ -168,7 +170,7 @@ export const curriculum = {
     label: "Tizimli Dizayn",
     color: "#c96ac8",
     icon: "🌐",
-    lessons: [webSecurity, cachingScalability, renderingArchitectures]
+    lessons: [howToLearn, requirements, webSecurity, cachingScalability, renderingArchitectures]
   },
   ecosystem: {
     label: "Ekotizim (React & Node.js)",
