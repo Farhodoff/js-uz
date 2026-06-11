@@ -475,6 +475,15 @@ body {
   color: var(--accent);
 }
 
+.theory-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-secondary);
+  margin: var(--space-4) 0;
+  display: block;
+}
+
 /* --- Practice Panel --- */
 .practice-panel {
   display: flex;
