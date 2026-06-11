@@ -100,6 +100,7 @@ import { leetcodeTop } from "./lessons/algorithms/leetcodeTop";
 import { howToLearn } from "./lessons/system-design/howToLearn";
 import { requirements } from "./lessons/system-design/requirements";
 import { estimations } from "./lessons/system-design/estimations";
+import { thingsToAvoid } from "./lessons/system-design/thingsToAvoid";
 import { webSecurity } from "./lessons/system-design/webSecurity";
 import { cachingScalability } from "./lessons/system-design/cachingScalability";
 import { renderingArchitectures } from "./lessons/system-design/renderingArchitectures";
@@ -171,7 +172,7 @@ export const curriculum = {
     label: "Tizimli Dizayn",
     color: "#c96ac8",
     icon: "🌐",
-    lessons: [howToLearn, requirements, estimations, webSecurity, cachingScalability, renderingArchitectures]
+    lessons: [howToLearn, requirements, estimations, thingsToAvoid, webSecurity, cachingScalability, renderingArchitectures]
   },
   ecosystem: {
     label: "Ekotizim (React & Node.js)",
