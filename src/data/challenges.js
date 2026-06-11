@@ -1,5 +1,137 @@
 export const challenges = [
   {
+    id: "tg-3217-new",
+    title: "Proxy va Reflect bilan xususiyatlarni boshqarish",
+    difficulty: "hard",
+    category: "objects",
+    code: `const handler = {
+  get(target, prop, receiver) {
+    if (prop in target) {
+      const value = Reflect.get(target, prop, receiver);
+      return typeof value === "number" ? value * 2 : value;
+    }
+    return \`Property "\${prop}" not found\`;
+  },
+  set(target, prop, value) {
+    if (typeof value !== "number") {
+      throw new TypeError("Only numbers allowed");
+    }
+    Reflect.set(target, prop, value ** 2);
+    return true;
+  },
+  has(target, prop) {
+    return prop.startsWith("_") ? false : prop in target;
+  },
+};
+
+const store = new Proxy({ _secret: 99, score: 5 }, handler);
+store.level = 3;
+
+console.log(store.score);
+console.log(store.level);
+console.log("_secret" in store);
+console.log("score" in store);
+console.log(store._secret);`,
+    options: [
+      "10 va 18 va false va true va 198",
+      "10 va 9 va false va true va Property \"_secret\" not found",
+      "5 va 9 va false va true va 198",
+      "10 va 18 va true va false va 198"
+    ],
+    correctAnswer: "10 va 18 va false va true va 198",
+    explanation: `**Qadam-baqadam tahlil:**
+1. \`store.level = 3\` bo'lganda, Proxy-ning \`set\` trapi ishlaydi. U qiymat son bo'lsa uni kvadratga oshirib (\`3 ** 2 = 9\`) Reflect orqali targetga yozadi. Targetdagi \`level\` qiymati 9 bo'ladi.
+2. \`store.score\` chaqirilganda, Proxy-ning \`get\` trapi ishlaydi. U targetdagi qiymatni olib, agar u son bo'lsa uni 2 ga ko'paytirib qaytaradi. Targetda \`score: 5\` edi, shuning uchun \`5 * 2 = 10\` chiqadi.
+3. \`store.level\` chaqirilganda ham \`get\` ishlaydi. Targetdagi \`level: 9\` olinib, \`9 * 2 = 18\` qaytariladi.
+4. \`"_secret" in store\` bo'lganda, Proxy-ning \`has\` trapi ishlaydi. Agar xususiyat \`_\` belgisi bilan boshlansa, u har doim \`false\` qaytaradi. Shuning uchun \`false\` chiqadi.
+5. \`"score" in store\` esa \`true\` qaytaradi, chunki u \`_\` bilan boshlanmaydi va targetda mavjud.
+6. \`store._secret\` chaqirilganda, \`_secret\` targetda borligi uchun \`get\` trapida \`Reflect.get\` orqali \`99\` olinadi va u son bo'lgani uchun 2 ga ko'paytirilib \`198\` qaytariladi.`
+  },
+  {
+    id: "tg-3219-new",
+    title: "Custom Range iteratorlari va massivlarni yig'ish",
+    difficulty: "medium",
+    category: "basics",
+    code: `class Range {
+  constructor(start, end, step = 1) {
+    this.start = start;
+    this.end = end;
+    this.step = step;
+  }
+
+  [Symbol.iterator]() {
+    let current = this.start;
+    const { end, step } = this;
+    return {
+      next() {
+        if (current <= end) {
+          const value = current;
+          current += step;
+          return { value, done: false };
+        }
+        return { value: undefined, done: true };
+      }
+    };
+  }
+}
+
+const range = new Range(1, 10, 3);
+const result = [...range].map(n => n ** 2);
+console.log(result);`,
+    options: [
+      "[ 1, 9, 25, 49 ]",
+      "[ 1, 16, 49, 100 ]",
+      "[ 1, 9, 49 ]",
+      "[ 1, 9, 25, 49, 81 ]"
+    ],
+    correctAnswer: "[ 1, 16, 49, 100 ]",
+    explanation: `**Qadam-baqadam tahlil:**
+1. \`Range\` klassida \`[Symbol.iterator]\` metodi e'lon qilingan, bu esa klass nusxalarini spread operator (\`...\`) yordamida massivga yoyish imkonini beradi.
+2. \`new Range(1, 10, 3)\` chaqirilganda, iterator 1 dan boshlanadi, har safar step (3) ga oshib boradi va 10 dan oshmaguncha davom etadi.
+3. Iterator qaytaradigan qiymatlar ketma-ketligi:
+   - 1 (1 <= 10, keyingi current = 4)
+   - 4 (4 <= 10, keyingi current = 7)
+   - 7 (7 <= 10, keyingi current = 10)
+   - 10 (10 <= 10, keyingi current = 13)
+   - Keyingi safar current 13 bo'lib, shart bajarilmaydi va tugaydi (\`done: true\`).
+4. Hosil bo'lgan massiv: \`[1, 4, 7, 10]\`.
+5. \`.map(n => n ** 2)\` har bir sonning kvadratini hisoblaydi: \`[1, 16, 49, 100]\`.`
+  },
+  {
+    id: "tg-3221-new",
+    title: "Promise zanjirlari va mikro-topshiriqlar navbati",
+    difficulty: "medium",
+    category: "async",
+    code: `const p1 = new Promise((resolve) => {
+  console.log("A");
+  resolve("B");
+});
+
+const p2 = p1.then((val) => {
+  console.log(val);
+  return "C";
+});
+
+p2.then((val) => console.log(val));
+console.log("D");`,
+    options: [
+      "A va D va B va C",
+      "D va A va B va C",
+      "A va B va D va C",
+      "A va B va C va D"
+    ],
+    correctAnswer: "A va D va B va C",
+    explanation: `**Qadam-baqadam tahlil:**
+1. \`new Promise\` konstruktori ichidagi funksiya (executor) sinxron ravishda darhol bajariladi. Shuning uchun birinchi bo'lib \`A\` konsolga chiqadi.
+2. \`resolve("B")\` chaqirilganda \`p1\` va'dasi bajarilgan (fulfilled) holatga keladi va uning \`then\` callback funksiyasi mikro-topshiriqlar navbatiga (Microtask Queue) yoziladi.
+3. Navbatdagi \`p2\` va undan keyingi \`then\`lar ham mikro-topshiriq hisoblanadi.
+4. Kod davom etadi va eng quyidagi sinxron \`console.log("D")\` bajariladi. Konsolga \`D\` chiqadi.
+5. Barcha sinxron kodlar tugagach (Call Stack bo'shagach), Event Loop mikro-topshiriqlarni bajarishni boshlaydi:
+   - Birinchi bo'lib \`p1.then\` callbacki ishlaydi va \`val\` (ya'ni \`B\`) chiqadi, so'ngra \`C\` qiymatini qaytarib \`p2\` va'dasini hal qiladi.
+   - Keyin \`p2.then\` callbacki ishga tushib, \`val\` (ya'ni \`C\`) ni chiqaradi.
+6. Yakuniy natija: \`A\` -> \`D\` -> \`B\` -> \`C\`.`
+  },
+  {
     id: "str-manipulation-1",
     title: "Murakkab satr va massiv metodlari",
     difficulty: "medium",
