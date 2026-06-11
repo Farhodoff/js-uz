@@ -1,5 +1,108 @@
 export const challenges = [
   {
+    id: "tg-3223-new",
+    title: "Custom Event Emitter va Chaining",
+    difficulty: "hard",
+    category: "basics",
+    code: `class EventEmitter {
+  #listeners = new Map();
+
+  on(event, listener) {
+    if (!this.#listeners.has(event)) {
+      this.#listeners.set(event, []);
+    }
+    this.#listeners.get(event).push(listener);
+    return this; // Method chaining uchun
+  }
+
+  emit(event, ...args) {
+    const handlers = this.#listeners.get(event) ?? [];
+    handlers.forEach(fn => fn(...args));
+    return this;
+  }
+}
+
+const emitter = new EventEmitter();
+const log = [];
+
+emitter
+  .on("data", val => log.push(\`A:\${val}\`))
+  .on("data", val => log.push(\`B:\${val * 2}\`))
+  .on("end",  ()  => log.push("done"));
+
+emitter.emit("data", 5).emit("data", 3).emit("end");
+console.log(log.join(","));`,
+    options: [
+      "A:5,B:10,A:3,B:6,done",
+      "A:5,A:3,B:6,B:10,done",
+      "A:5,B:10,done,A:3,B:6",
+      "A:5,B:25,A:3,B:9,done"
+    ],
+    correctAnswer: "A:5,B:10,A:3,B:6,done",
+    explanation: `**Qadam-baqadam tahlil:**
+1. \`EventEmitter\` klassi metodlarni zanjir (chaining) usulida chaqirish uchun har safar \`return this\` qaytaradi.
+2. \`emitter.on("data", ...)\` orqali \`data\` hodisasiga ikkita tinglovchi (listener) qo'shiladi:
+   - Birinchisi: qiymatni \`A:\${val}\` formatida yozadi.
+   - Ikkinchisi: qiymatni 2 ga ko'paytirib \`B:\${val * 2}\` formatida yozadi.
+3. \`emitter.on("end", ...)\` orqali \`end\` hodisasi uchun \`done\` yozadigan tinglovchi o'rnatiladi.
+4. \`emitter.emit("data", 5)\` chaqirilganda, \`data\` tinglovchilari navbat bilan 5 bilan ishlaydi:
+   - \`A:5\` qo'shiladi.
+   - \`B:10\` (5 * 2) qo'shiladi.
+5. Keyingi \`.emit("data", 3)\` chaqirilganda, yana 3 bilan ishlaydi:
+   - \`A:3\` qo'shiladi.
+   - \`B:6\` (3 * 2) qo'shiladi.
+6. Eng oxirida \`.emit("end")\` chaqirilib, \`done\` yoziladi.
+7. Yakuniy massiv: \`["A:5", "B:10", "A:3", "B:6", "done"]\` bo'ladi va chiquvchi satr: \`A:5,B:10,A:3,B:6,done\` ko'rinishini oladi.`
+  },
+  {
+    id: "tg-3200-new",
+    title: "Klasslar merosxo'rligi va instanceof tekshiruvi",
+    difficulty: "medium",
+    category: "basics",
+    code: `class DatabaseError extends Error {
+  constructor(message, code) {
+    super(message);
+    this.name = "DatabaseError";
+    this.code = code;
+  }
+}
+
+class ConnectionError extends DatabaseError {
+  constructor(host) {
+    super(\`Failed to connect to \${host}\`, 503);
+    this.name = "ConnectionError";
+    this.host = host;
+  }
+}
+
+const err = new ConnectionError("db.server.io");
+
+console.log([
+  err instanceof ConnectionError,
+  err instanceof DatabaseError,
+  err instanceof Error,
+  err.name,
+  err.code,
+  err.message,
+].join(" | "));`,
+    options: [
+      "true | true | true | ConnectionError | 503 | Failed to connect to db.server.io",
+      "true | true | false | ConnectionError | 503 | Failed to connect to db.server.io",
+      "true | false | true | DatabaseError | 503 | Failed to connect to db.server.io",
+      "false | true | true | ConnectionError | 503 | Failed to connect to db.server.io"
+    ],
+    correctAnswer: "true | true | true | ConnectionError | 503 | Failed to connect to db.server.io",
+    explanation: `**Qadam-baqadam tahlil:**
+1. \`ConnectionError\` klassi \`DatabaseError\`dan meros olgan, \`DatabaseError\` esa o'z navbatida JavaScript-ning standart \`Error\` klassidan meros olgan.
+2. Prototiplar zanjiri bo'yicha \`err\` obyekti barcha ushbu klasslarning nusxasi (instance) hisoblanadi. Shuning uchun:
+   - \`err instanceof ConnectionError\` -> \`true\`
+   - \`err instanceof DatabaseError\` -> \`true\`
+   - \`err instanceof Error\` -> \`true\`
+3. Konstruktorda \`this.name = "ConnectionError"\` va \`this.code = 503\` deb belgilangan.
+4. \`super\` chaqiruvi orqali xatolik xabari \`Failed to connect to db.server.io\` ko'rinishida yuqoridagi Error klassiga uzatilgan va \`err.message\` da saqlanadi.
+5. Barcha qiymatlar \`|\` belgisi bilan birlashganda to'g'ri javob hosil bo'ladi.`
+  },
+  {
     id: "tg-3217-new",
     title: "Proxy va Reflect bilan xususiyatlarni boshqarish",
     difficulty: "hard",
