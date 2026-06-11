@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Parametr va Return tiplash",
+    "instruction": "Ikkita son qabul qilib, ularning ko'paytmasini (number) qaytaradigan `multiplyNumbers(a, b)` funksiyasini yozing.",
+    "startingCode": "function multiplyNumbers(a: number, b: number): number {\n  // Kodni yozing\n}",
+    "hint": "return a * b;",
+    "test": "if (typeof multiplyNumbers !== 'function') return 'multiplyNumbers topilmadi'; if(multiplyNumbers(2, 5) !== 10) return 'Ko\\'paytma xato'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Optional Parameter (Ixtiyoriy parametr)",
+    "instruction": "Birinchi ism (`firstName` - string) va ixtiyoriy familiya (`lastName` - string) qabul qilib, agar familiya berilgan bo'lsa birlashtirib, berilmagan bo'lsa faqat ismni qaytaradigan `getFullName(firstName, lastName)` funksiyasini yozing.",
+    "startingCode": "function getFullName(firstName: string, lastName?: string): string {\n  // Kodni yozing\n}",
+    "hint": "return lastName ? `${firstName} ${lastName}` : firstName;",
+    "test": "if (typeof getFullName !== 'function') return 'getFullName topilmadi'; if (getFullName('Ali') !== 'Ali') return 'lastName berilmagandagi xato'; if(getFullName('Ali', 'Valiyev') !== 'Ali Valiyev') return 'To\\'liq ism xato'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Overload simulyatsiyasi (String va Number)",
+    "instruction": "Bitta argument qabul qiluvchi `parseInput(arg)` funksiyasini yozing. Agar arg son bo'lsa uning kvadratini qaytaring, agar string bo'lsa uning uzunligini qaytaring.",
+    "startingCode": "function parseInput(arg: number): number;\nfunction parseInput(arg: string): number;\nfunction parseInput(arg: any): number {\n  // typeof tekshirib qaytaring\n}",
+    "hint": "return typeof arg === 'number' ? arg * arg : arg.length;",
+    "test": "if (typeof parseInput !== 'function') return 'parseInput topilmadi'; if(parseInput(5) !== 25 || parseInput('hello') !== 5) return 'Overload natijasi xato'; return null;"
+  }
+]

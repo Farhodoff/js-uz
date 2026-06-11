@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Partial<T> yordamchi tipi (Utility Type) qanday vazifani bajaradi?",
+    "options": [
+      "Maydonlarni faqat sonlar bilan cheklaydi",
+      "Obyekt tipidagi barcha maydonlarni ixtiyoriy (optional) qiladi",
+      "Barcha maydonlarni o'chirib tashlaydi",
+      "T tipini funksiyaga aylantiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Partial<T> barcha maydonlarni ixtiyoriy qiladi, ya'ni ularni e'lon qilishda `?` belgisi qo'shilgandek ta'sir ko'rsatadi."
+  },
+  {
+    "id": 2,
+    "question": "Required<T> tipining vazifasi nima?",
+    "options": [
+      "Barcha maydonlarni o'chirish",
+      "Barcha ixtiyoriy (optional) maydonlarni majburiy (required) holga keltirish",
+      "Maydonlarni faqat o'qish uchun sozlash",
+      "Obyektga yangi kalitlar qo'shish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Required<T> tipidagi barcha `?` optional belgilarini olib tashlab, har bir maydonga qiymat berilishini majburiy qiladi."
+  },
+  {
+    "id": 3,
+    "question": "Obyektning hech bir maydonini o'zgartirib bo'lmaydigan qilishda qaysi utility tipdan foydalaniladi?",
+    "options": [
+      "Freeze<T>",
+      "Readonly<T>",
+      "Const<T>",
+      "Immutable<T>"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Readonly<T> obyekt tarkibidagi barcha maydonlarni `readonly` qilib belgilaydi, natijada qiymatlarni o'zgartirish taqiqlanadi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi tip nima deb ataladi?\ntype AgeMap = Record<string, number>;",
+    "options": [
+      "Oddiy massiv tipi",
+      "Kalitlari string bo'lgan va qiymatlari son bo'lgan obyekt lug'ati",
+      "Tuple korteji",
+      "Conditional Type"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Record<K, T> yordamida kalitlari K tipida va qiymatlari T tipida bo'lgan xarita/lug'at obyektlari tiplanadi."
+  },
+  {
+    "id": 5,
+    "question": "Mavjud tipdan faqat ko'rsatilgan bir nechta maydonlarni tanlab olishda qaysi utility tip ishlatiladi?",
+    "options": [
+      "Omit",
+      "Pick",
+      "Select",
+      "Filter"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Pick<T, K> orqali T tipidan faqat K kalitlari ajratib olinib, yangi kichik tip yaratiladi."
+  },
+  {
+    "id": 6,
+    "question": "Mavjud tipdan ko'rsatilgan bir nechta maydonlarni o'chirib tashlab, qolgan maydonlardan tip hosil qilishda qaysi utility tip ishlatiladi?",
+    "options": [
+      "Pick",
+      "Omit",
+      "Exclude",
+      "Delete"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Omit<T, K> turi T tarkibidan K ro'yxatidagi maydonlarni o'chirib, qolgan maydonlardan iborat yangi tip qaytaradi."
+  },
+  {
+    "id": 7,
+    "question": "NonNullable<T> tipi T tarkibidan qaysi tiplarni avtomatik ravishda olib tashlaydi?",
+    "options": [
+      "Faqat any tipini",
+      "null va undefined tiplarini",
+      "Faqat bo'sh satrlarni",
+      "Faqat raqamlarni"
+    ],
+    "correctAnswer": 1,
+    "explanation": "NonNullable<T> qiymatlarda null yoki undefined mavjud bo'lishi ehtimolini yo'qotib, xavfsizlikni ta'minlaydi."
+  },
+  {
+    "id": 8,
+    "question": "TypeScript-da typeof operatorining asosiy vazifasi nima?",
+    "options": [
+      "Faqat runtime-da tiplarni tekshirish",
+      "Mavjud JavaScript o'zgaruvchisining tipini aniqlab, uni TypeScript kodi darajasida tip sifatida qo'llash",
+      "Kodni siqish",
+      "Error handling bajarish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TypeScript darajasidagi typeof o'zgaruvchining tipini o'ziga ko'chirib olish uchun qulay. Masalan: `let y: typeof x = 10;`."
+  },
+  {
+    "id": 9,
+    "question": "Conditional Type (Shartli tip) sintaksisi qaysi operatorga juda o'xshash?",
+    "options": [
+      "If-else operatoriga",
+      "Ternary (uchlik) shart operatoriga (A extends B ? C : D)",
+      "Switch-case operatoriga",
+      "Bitwise operatoriga"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Conditional type shartli tip tanlash uchun ternary operator sintaksisini qo'llaydi: `T extends U ? X : Y`."
+  },
+  {
+    "id": 10,
+    "question": "Mavjud tipdagi har bir maydonni aylanib chiqib, ularning xususiyatlarini o'zgartirish orqali yangi tip yaratish nima deyiladi?",
+    "options": [
+      "Mapped Types (Xaritalangan tiplar)",
+      "Intersection Types",
+      "Union Types",
+      "Enum Types"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mapped types yordamida mavjud tip maydonlarining tiplarini siklda o'zgartirib chiqish mumkin, masalan: barcha maydonlarni readonly yoki optional qilish."
+  },
+  {
+    "id": 11,
+    "question": "Funksiyaning qaytaradigan natijasi tipini aniqlab beradigan utility tip qaysi?",
+    "options": [
+      "FunctionReturn<T>",
+      "ReturnType<T>",
+      "GetReturn<T>",
+      "ResultOf<T>"
+    ],
+    "correctAnswer": 1,
+    "explanation": "ReturnType<T> funksiya tipi T ning return qiladigan qiymati qanday tipdaligini aniqlab beradi."
+  },
+  {
+    "id": 12,
+    "question": "Utility tiplar loyiha JavaScript-ga o'girilganda kod hajmiga qanday ta'sir ko'rsatadi?",
+    "options": [
+      "Kod hajmini 2 barobar ko'paytiradi",
+      "Hech qanday ta'sir qilmaydi - ular kompilyatsiya vaqtida o'chib ketadi, JS faylda qolmaydi",
+      "JS fayllarni import qilishni qiyinlashtiradi",
+      "Faqat local keshda saqlanib qoladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Balla TypeScript utility tiplari faqat tip tekshiruvi uchun mavjud bo'lgani sababli, tayyor JS fayllardan to'liq olib tashlanadi."
+  }
+]

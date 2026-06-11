@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Generic Key-Value Juftligi",
+    "instruction": "Ikkita turli tipdagi kalit (`key`) va qiymat (`value`) qabul qilib, ularni `{ key, value }` shaklidagi obyektda qaytaradigan generic `createPair(key, value)` funksiyasini yozing.",
+    "startingCode": "function createPair<K, V>(key: K, value: V): { key: K; value: V } {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return { key, value };",
+    "test": "if (typeof createPair !== 'function') return 'createPair funksiyasi topilmadi';\nconst pair = createPair('age', 25);\nif (pair.key !== 'age' || pair.value !== 25) return 'Juftlik to\\'g\\'ri yaratilmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Constraint: Uzunlik mulkini tekshirish",
+    "instruction": "Tarkibida `.length` xossasi (number tipida) mavjud bo'lgan har qanday obyektni qabul qilib, uning uzunligini qaytaruvchi generic `getLength(obj)` funksiyasini yozing. Buning uchun generic tipga mos cheklov qo'llang.",
+    "startingCode": "function getLength<T extends { length: number }>(obj: T): number {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return obj.length;",
+    "test": "if (typeof getLength !== 'function') return 'getLength funksiyasi topilmadi';\nif (getLength('hello') !== 5 || getLength([1, 2, 3]) !== 3) return 'Uzunlik noto\\'g\\'ri qaytarilmoqda';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "keyof cheklovi bilan obyekt xossasini olish",
+    "instruction": "Obyekt va uning kalitini qabul qilib, obyekt ichidagi shu kalitga tegishli qiymatni qaytaruvchi `getProperty(obj, key)` funksiyasini yozing. Kalit faqat obyektda mavjud xossalardan biri bo'lishini ta'minlash uchun `keyof` operatoridan foydalaning.",
+    "startingCode": "function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return obj[key];",
+    "test": "if (typeof getProperty !== 'function') return 'getProperty funksiyasi topilmadi';\nconst user = { name: 'Ali', age: 20 };\nif (getProperty(user, 'name') !== 'Ali' || getProperty(user, 'age') !== 20) return 'Obyekt xossasi noto\\'g\\'ri qaytarildi';\nreturn null;"
+  }
+]

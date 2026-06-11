@@ -2,174 +2,283 @@ export const typeNarrowing = {
   id: "typeNarrowing",
   title: "Type Narrowing va Type Guards",
   language: "typescript",
-  theory: `## 1. NEGA kerak?
-TypeScript-da biror o'zgaruvchi bir nechta tipni qabul qila olganda (masalan, Union types: \`string | number\`), biz uning xossalaridan to'g'ridan-to'g'ri foydalana olmaymiz. Masalan, agar qiymat \`string | number\` bo'lsa, unga \`toUpperCase()\` yoki \`toFixed()\` metodlarini chaqirish xatolikka olib keladi. Sababi, TypeScript bu metod faqat ma'lum bir tipga tegishli ekanligini ko'radi va xavfsizlikni ta'minlash uchun kodni ishga tushirishga yo'l qo'ymaydi.
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-Bunday vaziyatlarda bizga **Type Narrowing** (Tipni toraytirish) yordam beradi. Bu JavaScript-dagi shartlar (if/else) va maxsus tekshiruvlar yordamida o'zgaruvchining aniq tipini shart bloki ichida toraytirish jarayonidir.
+### Type Narrowing va Type Guards nima?
+* **Type Narrowing (Tipni toraytirish):** TypeScript-da biror o'zgaruvchi bir nechta tipni qabul qila olganda (ya'ni Union type: \\\`string | number\\\`), uning aniq metodlaridan to'g'ridan-to'g'ri foydalana olmaymiz. Masalan, \\\`string | number\\\` tipiga ega o'zgaruvchiga \\\`.toUpperCase()\\\` deb murojaat qilsak, TypeScript kompilyatori xatolik beradi. Nega? Chunki u qiymat son bo'lib qolishi mumkinligidan xavotir oladi. Type Narrowing — bu shartlar va tekshiruvlar yordamida o'zgaruvchining tipini torroq va aniqroq sohaga olib kelish jarayonidir.
+* **Type Guard (Tip qo'riqchisi):** Dasturning runtime (ishlash) vaqtida o'zgaruvchi tipini tekshiruvchi va natijasiga qarab compile-time (kompilyatsiya) vaqtida tipni toraytiruvchi maxsus ifoda yoki funksiyadir.
 
-## 2. SODDALIK (Analogiya)
+### Real hayotiy analogiya
 Buni aeroportdagi **xavfsizlik nazorati (security checkpoint)** bilan solishtirish mumkin:
-Barcha yo'lovchilar va ularning yuklari bitta umumiy oqimda (union type) keladi. Lekin bojxona xodimlari yuklarni tekshirayotganda ularni turlariga ajratishadi:
-- Agar yuk sumka bo'lsa (typeof check), uni rentgen apparatiga solishadi.
-- Agar yo'lovchi xorijiy fuqaro bo'lsa (instanceof Passport check), pasport nazoratiga yuboriladi.
-- Agar yukda taqiqlangan buyum borligi aniqlansa (in check), uni alohida tintuv qilishadi.
+Barcha yo'lovchilar va ularning yuklari bitta umumiy oqimda (union type) keladi. Lekin bojxona xodimlari ularni tekshirish vaqtida turli guruhlarga ajratishadi (narrowing):
+* Agar yuk metall buyum bo'lsa (\\\`typeof\\\` check), uni maxsus metall qidiruvchiga yuborishadi.
+* Agar yo'lovchi xorijiy fuqaro bo'lsa (\\\`instanceof\\\` Passport check), pasport nazoratiga yuboriladi.
+* Agar yukda taqiqlangan buyum borligi shubha qilinsa (\\\`in\\\` check), uni alohida tintuv qilishadi.
 
-Ushbu tekshiruvlardan so'ng, har bir yo'lovchi o'z yo'nalishi bo'yicha ketadi va o'sha yerda unga mos bo'lgan maxsus amallar bajariladi.
+Ushbu tekshiruvlardan so'ng, har bir yo'lovchi o'z yo'nalishi bo'yicha ketadi va u yerda unga mos bo'lgan maxsus amallar bajariladi.
 
-## 3. STRUKTURA
-TypeScript-da tiplarni toraytirishning bir nechta asosiy usullari (Type Guards) mavjud:
+---
 
-### A. \`typeof\` operatori
-JavaScript-dagi standart \`typeof\` operatori yordamida primitiv tiplarni (\`string\`, \`number\`, \`boolean\`, \`symbol\`) tekshirish mumkin:
-\`\`\`typescript
-function printId(id: string | number) {
-  if (typeof id === "string") {
-    // Bu blok ichida id avtomatik string deb hisoblanadi
-    console.log(id.toUpperCase());
+## 2. 💻 Real Kod Misollari
+
+### 1. Basic Example (\\\`typeof\\\` operatori yordamida primitivlarni toraytirish)
+JavaScript-dagi standart \\\`typeof\\\` operatori primitiv tiplarni (\\\`string\\\`, \\\`number\\\`, \\\`boolean\\\`, \\\`symbol\\\`) tekshirish uchun ishlatiladi:
+\\\`\\\`\\\`typescript
+function formatPrice(price: string | number) {
+  if (typeof price === "string") {
+    // Bu blok ichida price avtomatik string deb hisoblanadi
+    return price.trim().toUpperCase();
   } else {
     // Bu yerda esa faqat number bo'la oladi
-    console.log(id.toFixed(2));
+    return price.toFixed(2);
   }
 }
-\`\`\`
+\\\`\\\`\\\`
 
-### B. \`instanceof\` operatori
-Klaslar yoki obyektlar nusxasini (instances) tekshirish uchun ishlatiladi:
-\`\`\`typescript
-function logDateOrString(x: Date | string) {
+### 2. Intermediate Example (\\\`instanceof\\\` va \\\`in\\\` operatorlari)
+* **\\\`instanceof\\\`** — obyekt ma'lum bir klass yoki konstruktordan yaratilganligini tekshiradi:
+\\\`\\\`\\\`typescript
+function logFormattedDate(x: Date | string) {
   if (x instanceof Date) {
-    // Bu yerda x aniq Date obyekti
+    // x aniq Date obyekti ekanligi kafolatlandi
     console.log(x.toUTCString());
   } else {
-    // Bu yerda x string
-    console.log(x.trim());
+    // x string tipi deb qabul qilinadi
+    console.log(new Date(x).toUTCString());
   }
 }
-\`\`\`
+\\\`\\\`\\\`
+* **\\\`in\\\`** — obyekt tarkibida ma'lum bir xossa mavjudligini tekshiradi:
+\\\`\\\`\\\`typescript
+interface Admin {
+  role: string;
+  deleteUser: () => void;
+}
+interface User {
+  name: string;
+  profile: () => void;
+}
 
-### C. \`in\` operatori
-Obyekt tarkibida ma'lum bir kalit/xossa (property) bor-yo'qligini tekshirish orqali tipni toraytiradi:
-\`\`\`typescript
-interface Fish { swim: () => void }
-interface Bird { fly: () => void }
-
-function move(pet: Fish | Bird) {
-  if ("swim" in pet) {
-    // pet tarkibida swim metodi bor, demak u Fish
-    pet.swim();
+function processUser(person: Admin | User) {
+  if ("deleteUser" in person) {
+    // person tarkibida deleteUser bor, demak u Admin
+    person.deleteUser();
   } else {
-    pet.fly();
+    // person foydalanuvchi
+    person.profile();
   }
 }
-\`\`\`
+\\\`\\\`\\\`
 
-### D. Discriminated Unions (Tasniflangan birlashmalar)
-Har bir interfeysga umumiy bo'lgan va literal qiymat qabul qiluvchi xossa (odatda \`kind\` yoki \`type\`) qo'shish orqali tiplarni ajratishning eng keng tarqalgan usuli:
-\`\`\`typescript
-interface Circle {
-  kind: "circle";
-  radius: number;
-}
-
-interface Square {
-  kind: "square";
-  side: number;
-}
-
-type Shape = Circle | Square;
-
-function getArea(shape: Shape) {
-  switch (shape.kind) {
-    case "circle":
-      return Math.PI * shape.radius ** 2;
-    case "square":
-      return shape.side * shape.side;
-  }
-}
-\`\`\`
-
-### E. User-Defined Type Guards (Custom Type Guards)
-Ba'zan sodda tekshiruvlar yetarli bo'lmaydi. Bunday holda funksiya yozib, uning qaytish tipini \`parameter is Type\` ko'rinishida belgilaymiz:
-\`\`\`typescript
+### 3. Advanced Example (Custom Type Guards va Assertion Functions)
+* **Custom Type Guard:** Maxsus funksiya yordamida tipni aniqlash. Funksiya qaytarish tipi sifatida \\\`parameter is Type\\\` yoziladi:
+\\\`\\\`\\\`typescript
 interface Car { drive: () => void }
-interface Bike { ride: () => void }
+interface Boat { sail: () => void }
 
-// Custom type guard funksiyasi
-function isCar(vehicle: Car | Bike): vehicle is Car {
+function isCar(vehicle: Car | Boat): vehicle is Car {
   return (vehicle as Car).drive !== undefined;
 }
 
-function useVehicle(v: Car | Bike) {
+function moveVehicle(v: Car | Boat) {
   if (isCar(v)) {
-    v.drive(); // Endi drive() xavfsiz chaqiriladi
+    v.drive(); // Car ekanligi kafolatlandi
   } else {
-    v.ride();
+    v.sail(); // Boat ekanligi kafolatlandi
   }
 }
-\`\`\`
-
-### F. Assertion Functions (Tasdiqlovchi funksiyalar)
-Shart bajarilmaganda xatolik otadigan funksiyalar uchun \`asserts condition\` yoki \`asserts parameter is Type\` sintaksisi ishlatiladi. Bu asosan test yozishda yoki ma'lumotlar strukturasini tekshirishda qo'l keladi:
-\`\`\`typescript
+\\\`\\\`\\\`
+* **Assertion Function:** Agar shart to'g'ri kelmasa, xatolik otuvchi va keyingi kodda tipni toraytiruvchi funksiyalar:
+\\\`\\\`\\\`typescript
 function assertIsString(val: unknown): asserts val is string {
   if (typeof val !== "string") {
-    throw new Error("Qiymat string emas!");
+    throw new Error("Qiymat satr bo'lishi shart!");
   }
 }
-\`\`\`
 
-### G. Type Narrowing Oqimi (Mermaid)
+function processUnknown(val: unknown) {
+  assertIsString(val);
+  // Bu qatordan boshlab val string deb qabul qilinadi
+  console.log(val.toUpperCase());
+}
+\\\`\\\`\\\`
 
-Quyidagi oqim diagrammasi union tip (\`string | Date\`) qanday qilib tegishli type guard orqali toraytirilishini ko'rsatadi:
+---
 
-\`\`\`mermaid
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
+
+### Qaysi muammoni hal qiladi?
+Agar bizda union tiplar yoki \\\`unknown\\\` qiymatlar bo'lsa, ularni tekshiruvsiz ishlatish xavfli hisoblanadi. TypeScript bizga quyidagi xatoliklarning oldini olishga yordam beradi:
+1. **Runtime Error (Ishga tushishdagi xatolar):** Obyektda mavjud bo'lmagan metodni chaqirish (masalan, \\\`TypeError: x.toFixed is not a function\\\`).
+2. **Kompilyatsiya xavfsizligi:** Dasturchi kod yozayotgan paytda noto'g'ri metodlarni chaqirishdan ogohlantiradi.
+3. **Kodni tozalash:** \\\`any\\\` turidan butunlay voz kechish va tiplarni aniq boshqarish imkonini beradi.
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. \\\`typeof null === 'object'\\\` tuzog'i
+Junior dasturchilar ko'pincha qiymat null emasligini tekshirish uchun faqat \\\`typeof obj === 'object'\\\` dan foydalanadilar.
+* **Xato:**
+\\\`\\\`\\\`typescript
+function process(obj: object | null) {
+  if (typeof obj === "object") {
+    // Xatolik! null ham object qaytaradi va bu yerda obj.hasOwnProperty() xato berishi mumkin
+    console.log(obj.toString()); 
+  }
+}
+\\\`\\\`\\\`
+* **To'g'ri usul:**
+\\\`\\\`\\\`typescript
+function process(obj: object | null) {
+  if (obj !== null && typeof obj === "object") {
+    console.log(obj.toString());
+  }
+}
+\\\`\\\`\\\`
+
+### 2. Interfeyslar ustida \\\`instanceof\\\` ishlatish
+TypeScript interfeyslari faqat kompilyatsiya vaqtida mavjud bo'ladi. JavaScript-ga o'girilganda interfeyslar butunlay o'chib ketadi.
+* **Xato:**
+\\\`\\\`\\\`typescript
+interface Bird { fly: () => void }
+// if (pet instanceof Bird) { ... } -> Xato! Bird sinf emas, u runtime-da mavjud emas!
+\\\`\\\`\\\`
+* **To'g'ri usul:** Interfeyslar uchun \\\`in\\\` operatori yoki Custom Type Guard-lardan foydalaning.
+
+### 3. Custom Type Guard-da noto'g'ri logika
+Custom type guard-da funksiya \\\`true\\\` qaytarsa, TypeScript siz ko'rsatgan tipga ishonadi, hatto logika noto'g'ri bo'lsa ham.
+* **Xato:**
+\\\`\\\`\\\`typescript
+function isNumber(x: any): x is number {
+  return typeof x === "string"; // Noto'g'ri return, lekin TS baribir x ni number deb hisoblaydi!
+}
+\\\`\\\`\\\`
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior (1–4)
+1. **Savol:** TypeScript-da Type Narrowing nima?
+   * **Javob:** Union tipli o'zgaruvchini shartli tekshiruvlar yordamida kichikroq va aniqroq tip doirasiga olib kelish jarayonidir.
+2. **Savol:** JavaScript \\\`typeof\\\` operatori qaysi tiplarni aniqlay oladi?
+   * **Javob:** Primitiv turlarni: \\\`string\\\`, \\\`number\\\`, \\\`boolean\\\`, \\\`symbol\\\`, \\\`undefined\\\`, \\\`object\\\`, \\\`function\\\`, \\\`bigint\\\`.
+3. **Savol:** \\\`instanceof\\\` qachon ishlatiladi?
+   * **Javob:** Obyekt prototipi zanjirida berilgan klass mavjudligini tekshirish uchun (masalan, \\\`Date\\\`, \\\`Error\\\` yoki maxsus klasslar).
+4. **Savol:** Obyektda biror xossa borligini qaysi operator yordamida tekshirish mumkin?
+   * **Javob:** \\\`in\\\` operatori yordamida. Masalan: \\\`"fly" in animal\\\`.
+
+### Middle (5–8)
+5. **Savol:** Discriminated Union nima va u qanday yaratiladi?
+   * **Javob:** Har bir interfeysga umumiy literal nomli (masalan, \\\`kind\\\` yoki \\\`type\\\`) maydon qo'shish va uning qiymatlari orqali tiplarni ajratish.
+6. **Savol:** Custom Type Guard yaratish sintaksisi qanday?
+   * **Javob:** Funksiya qaytaruvchi qiymati sifatida \\\`parameter is Type\\\` (masalan, \\\`x is string\\\`) yoziladi va funksiya boolean qiymat qaytarishi shart.
+7. **Savol:** Nima uchun \\\`typeof null\\\` natijasi \\\`'object'\\\` bo'lib chiqadi?
+   * **Javob:** Bu JavaScript-ning dastlabki versiyalaridan qolgan tarixiy xato bo'lib, null xotirada 000 ko'rinishida saqlangani uchun uni obyekt deb hisoblagan.
+8. **Savol:** Type predicate (\\\`parameter is Type\\\`) oddiy \\\`boolean\\\`dan nima bilan farq qiladi?
+   * **Javob:** Oddiy \\\`boolean\\\` faqat true/false qaytaradi, TypeScript kompilyatori esa shart blokida tipni toraytira olmaydi. Type predicate esa TypeScript-ga o'zgaruvchining tipini o'zgartirish haqida buyruq beradi.
+
+### Senior (9–12)
+9. **Savol:** Assertion function (\\\`asserts x is Type\\\`) oddiy type guard funksiyasidan nimasi bilan farq qiladi?
+   * **Javob:** Type guard boolean qaytaradi va \\\`if\\\` sharti bilan ishlaydi. Assertion funksiyasi esa agar tekshiruv muvaffaqiyatsiz bo'lsa xatolik otadi va shart bloklarisiz undan keyingi barcha kodlarda tipni toraytiradi.
+10. **Savol:** exhaustive check (to'liq tekshirish) nima va unga qanday erishiladi?
+    * **Javob:** \\\`never\\\` tipi yordamida switch-case yoki if-else bloklarida barcha mumkin bo'lgan tiplar qamrab olinganini tekshirish. Agar yangi tip qo'shilsa va u tekshirilmay qolsa, kompilyator xatolik beradi.
+11. **Savol:** Dinamik API ma'lumotlarini tekshirishda qaysi turdagi guard eng mos keladi?
+    * **Javob:** Custom type guards yoki Zod/Yup kabi runtime validation kutubxonalari orqali ma'lumot strukturasi to'liq tekshirilgandan keyin safe narrowing qilish.
+12. **Savol:** TypeScript-da narrowing faqat runtime tekshiruvlarga tayanadimi?
+    * **Javob:** Tekshiruv logikasi (typeof, instanceof, in) JavaScript runtime-da bajariladi. Lekin undan keyingi tip toraytirish va static tekshiruvlar faqat compile-time vaqtida TypeScript tomonidan bajariladi.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Bu bo'limda siz amaliy mashqlar orqali tiplarni toraytirishni o'rganasiz.
+
+Quyidagi diagramma union tip (\\\`string | Date | Car\\\`) qanday qilib tegishli type guard orqali bosqichma-bosqich toraytirilishini ko'rsatadi:
+
+\\\`\\\`\\\`mermaid
 flowchart TD
-    Start[O'zgaruvchi: val string | Date] --> Check{val instanceof Date ?}
-    Check -->|Ha| DateBlock[Date tipi deb qabul qilinadi]
-    DateBlock --> UseDate[val.getFullYear() ishlatsa bo'ladi]
-    Check -->|Yo'q| StrBlock[string tipi deb qabul qilinadi]
-    StrBlock --> UseStr[val.toUpperCase() ishlatsa bo'ladi]
-End
-\`\`\`
+    Start["Union Type: value (string | Date | Car)"] --> CheckType{"typeof value === 'string'"}
+    CheckType -->|Yes| StringBlock["value is string (toUpperCase allowed)"]
+    CheckType -->|No| CheckInstance{"value instanceof Date"}
+    CheckInstance -->|Yes| DateBlock["value is Date (getFullYear allowed)"]
+    CheckInstance -->|No| CheckCustom{"isCar(value) (custom guard)"}
+    CheckCustom -->|Yes| CarBlock["value is Car (drive allowed)"]
+    CheckCustom -->|No| UnknownBlock["value is unknown / fallback / never"]
+\\\`\\\`\\\`
 
-## 4. AMALIYOT (Mashqlar pastda)
+---
 
-## 5. XATOLAR (Common mistakes)
-1. **Tipni aniqlamasdan to'g'ridan-to'g'ri ishlash:** Union tipdagi o'zgaruvchining metodini tekshiruvsiz chaqirish xatoga sabab bo'ladi.
-2. **Custom type guard-da noto'g'ri logika yozish:** Agar custom guard ichida noto'g'ri boolean qiymat qaytsa, TypeScript baribir siz ko'rsatgan tipga ishonadi, bu esa runtime xatolarga olib kelishi mumkin.
-3. **\`/typeof null === 'object'\` xatosi:** Agar obyekt \`null\` bo'lishi mumkin bo'lsa, shunchaki \`typeof obj === 'object'\` tekshiruvi yetarli emas, chunki \`null\` ham \`object\` qaytaradi.
+## 7. 📝 12 ta Mini Test
 
-## 6. SAVOLLAR VA JAVOBLAR
-**1. Type Narrowing nima?**
-Union tipli o'zgaruvchini ma'lum bir shartlar yordamida kichikroq va aniqroq tip doirasiga olib kelish jarayoni.
+Dars oxiridagi test topshiriqlari quyidagi quizzes bo'limida keltirilgan.
 
-**2. Type Guard nima?**
-Sinflarni yoki tiplarni runtime-da tekshiruvchi va natijasiga qarab compile-time da tipni toraytiruvchi ifoda yoki funksiya.
+---
 
-**3. typeof bilan qaysi turlarni tekshirish mumkin?**
-Faqat primitiv JavaScript tiplarini (\`string\`, \`number\`, \`boolean\`, \`symbol\`, \`undefined\`, \`object\`, \`function\`).
+## 8. 🎯 Real Project Case Study
 
-**4. instanceof qanday ishlaydi?**
-Obyektning prototip zanjirida berilgan klass mavjudligini runtime va compile-time da tekshiradi.
+### API javoblarini Discriminated Unions orqali xavfsiz boshqarish
+Tasavvur qiling, bizda serverdan keladigan turli xil javob holatlari mavjud. Ularni to'g'ri ajratmasak, yo'q maydonlarga murojaat qilib xatoga yo'l qo'yamiz.
 
-**5. in operatori qachon qo'llaniladi?**
-Obyektda ma'lum bir kalit borligini va shu orqali obyekt tipini boshqalaridan farqlash kerak bo'lganda.
+#### Exhaustive checking bilan yechim:
+\\\`\\\`\\\`typescript
+interface SuccessResponse {
+  status: "success";
+  data: { id: number; name: string };
+}
 
-**6. Discriminated Union nima?**
-Union tarkibidagi har bir tipda bir xil nomli, lekin har xil literal qiymatga ega bo'lgan identifikator maydon mavjud birlashma.
+interface ErrorResponse {
+  status: "error";
+  message: string;
+}
 
-**7. Custom Type Guard nima qaytaradi?**
-Qaytish tipi sifatida maxsus predikat (\`parameter is Type\`) yoziladi va u ichkarida boolean qiymat qaytaradi.
+interface LoadingResponse {
+  status: "loading";
+}
 
-**8. asserts operatori nima uchun ishlatiladi?**
-Shart to'g'ri bo'lmaganda xato otadigan funksiyani aniqlash va undan keyingi kodlarda tipni toraytirish uchun.
+type ApiResponse = SuccessResponse | ErrorResponse | LoadingResponse;
 
-**9. dynamic API ma'lumotlariga qaysi guard ko'p mos keladi?**
-Custom type guards yoki \`in\` operatori, chunki tashqi API tiplari ma'lum bo'lmasligi mumkin.
+function handleApiResponse(response: ApiResponse) {
+  switch (response.status) {
+    case "success":
+      // response.data xavfsiz o'qiladi
+      console.log("Foydalanuvchi nomi:", response.data.name);
+      break;
+    case "error":
+      // response.message xavfsiz o'qiladi
+      console.error("Xatolik yuz berdi:", response.message);
+      break;
+    case "loading":
+      console.log("Yuklanmoqda...");
+      break;
+    default:
+      // Exhaustive check: yangi javob turi qo'shilsa va case yozilmasa, bu yerda xato beradi
+      const _exhaustiveCheck: never = response;
+      return _exhaustiveCheck;
+  }
+}
+\\\`\\\`\\\`
 
-**10. Type narrowing faqat compile-time dami?**
-Tekshiruv logikasi (typeof, instanceof, in) JavaScript runtime-da ham ishlaydi, lekin tipni tushunish va cheklovlar faqat TypeScript kompilyatsiya bosqichida bo'ladi.
-`,
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **Zero Runtime Overhead:** TypeScript-ning tiplarni toraytirish tekshiruvlari JavaScript-ning standart operatorlari (\\\`typeof\\\`, \\\`instanceof\\\`, \\\`in\\\`) yordamida yoziladi. Ular qo'shimcha runtime kutubxonalari yoki ortiqcha kodlarsiz ishlaydi.
+* **V8 Engine optimizatsiyasi:** Discriminated Union-larda literal maydonlar (masalan: \\\`status: "success"\\\`) tekshiruvi juda tez ishlaydi, chunki JS dvigatellari (V8) string yoki son literals solishtirishni optimallashtirilgan shaklda bajaradi.
+* **Yengil custom type guardlar:** Custom type guard yozayotganda ichkarida og'ir va ko'p vaqt oladigan operatsiyalar yoki tarmoq so'rovlarini amalga oshirmaslik kerak, chunki bu shartli tekshiruvlar har safar bajarilganda dastur ishlashini sekinlashtiradi.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Shart turi | Runtime operatori | Sintaksis misoli | Qaysi hollarda qo'llaniladi |
+| :--- | :--- | :--- | :--- |
+| **Primitiv tiplar** | \\\`typeof\\\` | \\\`typeof val === "string"\\\` | \\\`string\\\`, \\\`number\\\`, \\\`boolean\\\`, \\\`symbol\\\` va boshqalar |
+| **Klass nusxalari** | \\\`instanceof\\\` | \\\`val instanceof Date\\\` | Klaslar, sanalar (\\\`Date\\\`), xatolar (\\\`Error\\\`) |
+| **Xossa mavjudligi** | \\\`in\\\` | \\\`"fly" in animal\\\` | Interfeyslar va obyekt xossalarini tekshirish |
+| **Custom Tip Guard** | Type predicate (\\\`is\\\`) | \\\`x is Car\\\` | Murakkab obyektlar va custom tiplar |
+| **Tasdiq (Assertion)** | \\\`asserts\\\` | \\\`asserts val is string\\\` | Testlar va run-time tekshiruvlarda majburiy toraytirish |`,
   exercises: [
     {
       id: 1,
@@ -194,30 +303,6 @@ Tekshiruv logikasi (typeof, instanceof, in) JavaScript runtime-da ham ishlaydi, 
       startingCode: "interface Admin { role: string; kickUser: () => string; }\ninterface Guest { name: string; login: () => string; }\n\nfunction handleUser(user: Admin | Guest): string {\n  // in operatorini ishlating\n}",
       hint: "if ('kickUser' in user) return user.kickUser(); return user.login();",
       test: "if (typeof handleUser !== 'function') return 'handleUser topilmadi'; const admin = { role: 'admin', kickUser: () => 'Kicked' }; const guest = { name: 'Ali', login: () => 'Logged in' }; if (handleUser(admin) !== 'Kicked' || handleUser(guest) !== 'Logged in') return 'Foydalanuvchi roli noto\\'g\\'ri tekshirildi'; return null;"
-    },
-    {
-      id: 4,
-      title: "Discriminated Unions (Shape area)",
-      instruction: "Circle va Square shakllari berilgan. Ularning yuzasini `kind` xossasi bo'yicha aniqlab hisoblaydigan `getArea(shape)` funksiyasini yozing. Doiraning yuzi PI * r^2, Kvadratning yuzi side * side.",
-      startingCode: "interface Circle { kind: 'circle'; radius: number; }\ninterface Square { kind: 'square'; side: number; }\n\ntype Shape = Circle | Square;\n\nfunction getArea(shape: Shape): number {\n  // kind xossasi orqali switch yoki if ishlating\n}",
-      hint: "if (shape.kind === 'circle') return Math.PI * shape.radius * shape.radius; return shape.side * shape.side;",
-      test: "if (typeof getArea !== 'function') return 'getArea topilmadi'; const c = { kind: 'circle', radius: 3 }; const s = { kind: 'square', side: 4 }; if (Math.abs(getArea(c) - Math.PI * 9) > 0.001 || getArea(s) !== 16) return 'Yuza noto\\'g\\'ri hisoblandi'; return null;"
-    },
-    {
-      id: 5,
-      title: "Custom Type Guard",
-      instruction: "Kiruvchi `val` (`unknown`) parametr satr (string) ekanligini tekshiradigan custom type guard funksiyasi `isString(val)` ni yozing. Uning qaytish turi `val is string` bo'lishi shart.",
-      startingCode: "function isString(val: unknown): val is string {\n  // typeof dan foydalaning\n}",
-      hint: "return typeof val === 'string';",
-      test: "if (typeof isString !== 'function') return 'isString topilmadi'; if (isString('hello') !== true || isString(123) !== false) return 'Type guard noto\\'g\\'ri ishladi'; return null;"
-    },
-    {
-      id: 6,
-      title: "Assertion Functions",
-      instruction: "Kiruvchi `val` (`unknown`) qiymat son (number) ekanligini tasdiqlovchi va agar son bo'lmasa 'Not a number' xabari bilan xatolik otadigan `assertIsNumber(val)` funksiyasini yozing. Qaytish tipi `asserts val is number` bo'lishi shart.",
-      startingCode: "function assertIsNumber(val: unknown): asserts val is number {\n  // Kodni yozing\n}",
-      hint: "if (typeof val !== 'number') throw new Error('Not a number');",
-      test: "if (typeof assertIsNumber !== 'function') return 'assertIsNumber topilmadi'; try { assertIsNumber(10); } catch(e) { return 'Son uchun xatolik otildi'; } try { assertIsNumber('hello'); return 'Xatolik otilmadi'; } catch(e) { if(e.message !== 'Not a number') return 'Xato xabari xato'; } return null;"
     }
   ],
   quizzes: [
@@ -236,21 +321,36 @@ Tekshiruv logikasi (typeof, instanceof, in) JavaScript runtime-da ham ishlaydi, 
     {
       id: 2,
       question: "Primitiv turlarni (string, number va boshqalar) tekshirishda qaysi type guard mos keladi?",
-      options: ["instanceof", "in", "typeof", "as"],
+      options: [
+        "instanceof",
+        "in",
+        "typeof",
+        "as"
+      ],
       correctAnswer: 2,
       explanation: "typeof operatori JavaScript primitiv tiplarini tekshirish va uni TypeScript darajasida toraytirish uchun ishlatiladi."
     },
     {
       id: 3,
-      question: "Klass nusxalari (instances) yoki obyektlarni tekshirish uchun qaysi operator ishlatiladi?",
-      options: ["typeof", "instanceof", "in", "is"],
+      question: "Klass nusxalari (instances) yoki Date kabi obyektlarni tekshirish uchun qaysi operator ishlatiladi?",
+      options: [
+        "typeof",
+        "instanceof",
+        "in",
+        "is"
+      ],
       correctAnswer: 1,
       explanation: "instanceof klass yoki obyekt zanjiri orqali aniq klass nusxasi ekanligini tekshirish uchun ishlatiladi."
     },
     {
       id: 4,
       question: "Obyekt tarkibida aniq bir maydon/xossa mavjudligini tekshirishda qaysi type guard qo'llaniladi?",
-      options: ["typeof", "instanceof", "in", "is"],
+      options: [
+        "typeof",
+        "instanceof",
+        "in",
+        "is"
+      ],
       correctAnswer: 2,
       explanation: "'property in object' sintaksisi orqali obyektda kerakli xossa borligi aniqlanadi va tip toraytiriladi."
     },
@@ -292,7 +392,7 @@ Tekshiruv logikasi (typeof, instanceof, in) JavaScript runtime-da ham ishlaydi, 
     },
     {
       id: 8,
-      question: "Quyidagi tekshiruvning natijasi nima bo'ladi?\n`typeof null === 'object'`",
+      question: "Quyidagi tekshiruvning natijasi nima bo'ladi? typeof null === 'object'",
       options: [
         "Bu xato, u 'null' qaytaradi",
         "Bu to'g'ri, JavaScript-da null obyektdir, shuning uchun faqat typeof object tekshiruvi null uchun ham ishlaydi",
@@ -301,6 +401,54 @@ Tekshiruv logikasi (typeof, instanceof, in) JavaScript runtime-da ham ishlaydi, 
       ],
       correctAnswer: 1,
       explanation: "JavaScript-da `typeof null === 'object'` har doim true qaytarganligi sababli, faqat typeof 'object' qilish orqali null qiymatni xavfsiz filtrlash yetarli emas."
+    },
+    {
+      id: 9,
+      question: "Nima uchun TypeScript-da interfeyslar (interfaces) ustida instanceof tekshiruvini amalga oshirib bo'lmaydi?",
+      options: [
+        "Interfeyslar faqat compile-time da mavjud bo'lib, runtime JavaScript-da o'chib ketadi",
+        "Interfeyslar vaqtinchalik xotira egallaydi",
+        "Interfeyslar faqat typeof bilan tekshirilishi shart",
+        "TypeScript interfeyslarda instanceof-ni taqiqlamaydi, u to'g'ridan-to'g'ri ishlaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "Interfeyslar faqat TypeScript tip tizimida mavjud va JavaScript-ga transpayl qilinganda yo'qoladi. Shu bois runtime-da ishlaydigan `instanceof` ularni tekshira olmaydi."
+    },
+    {
+      id: 10,
+      question: "TypeScript-da shart blokining else qismida o'zgaruvchining tipi qanday aniqlanadi?",
+      options: [
+        "U har doim any bo'lib qoladi",
+        "U kompilyator tomonidan union tarkibidagi qolgan tiplardan iborat deb toraytiriladi",
+        "U har doim never tipida bo'ladi",
+        "Dasturchi uni qo'lda qayta e'lon qilishi shart"
+      ],
+      correctAnswer: 1,
+      explanation: "TypeScript `if` bloki ichidagi shartga mos kelmaydigan qolgan barcha tiplarni `else` blokiga o'tkazadi va tipni toraytiradi."
+    },
+    {
+      id: 11,
+      question: "Exhaustive type checking (barcha tiplar tekshirilganligini kafolatlash) uchun qaysi tipdan foydalaniladi?",
+      options: [
+        "any",
+        "unknown",
+        "never",
+        "void"
+      ],
+      correctAnswer: 2,
+      explanation: "`never` tipiga qiymat yuklash orqali biz switch-case yoki if-else zanjirida barcha union tiplari qamrab olinganini tekshiramiz. Agar yangi tip qo'shilsa va u tekshirilmasa, compile-time xatosi yuzaga keladi."
+    },
+    {
+      id: 12,
+      question: "Custom Type Guard-da funksiya tanasi qanday qiymat qaytarishi shart?",
+      options: [
+        "Faqat satr (string) qiymat",
+        "Shart bajarilishini tasdiqlovchi mantiqiy (boolean) qiymat",
+        "Hech narsa qaytarmaydi (void)",
+        "Tekshirilayotgan obyektning o'zini"
+      ],
+      correctAnswer: 1,
+      explanation: "Custom type guard funksiyasi mantiqiy (`true` yoki `false`) qiymat qaytaradi. TypeScript ushbu boolean natijaga qarab o'zgaruvchi tipini toraytiradi."
     }
   ]
 };

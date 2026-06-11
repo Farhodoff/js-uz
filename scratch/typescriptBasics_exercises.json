@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Sonni Satrga O'girish (Number to String)",
+    "instruction": "Faqat `number` tipidagi qiymatni qabul qiluvchi va uni `string` tipiga o'girib qaytaradigan `numberToString(val)` funksiyasini yozing.",
+    "startingCode": "function numberToString(val: number): string {\n  // Kodni shu yerda yozing\n}",
+    "hint": "return String(val);",
+    "test": "if (typeof numberToString !== 'function') return 'Funksiya aniqlanmagan'; if (numberToString(45) !== '45') return 'Natija xato'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Sonlar Massivini Kvadratga Oshirish",
+    "instruction": "Berilgan sonlar massividagi elementlarni kvadratga oshirib yangi massiv qaytaradigan `squareArray(arr)` funksiyasini yozing. Kiruvchi parametr tipi `number[]` bo'lishi kerak.",
+    "startingCode": "function squareArray(arr: number[]): number[] {\n  // Kodni shu yerda yozing\n}",
+    "hint": "return arr.map(x => x * x);",
+    "test": "if (typeof squareArray !== 'function') return 'squareArray topilmadi'; const res = squareArray([2, 3]); if(res[0] !== 4 || res[1] !== 9) return 'Kvadratlar hisoblanmadi'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Tuple (Kortej) Koordinatalari",
+    "instruction": "Koordinatalar korteji `[number, number]` ko'rinishida berilgan massiv elementlarini o'zaro almashtirib `[number, number]` ko'rinishida qaytaruvchi `swapCoords(coords)` funksiyasini yozing.",
+    "startingCode": "function swapCoords(coords: [number, number]): [number, number] {\n  // Kodni shu yerda yozing\n}",
+    "hint": "return [coords[1], coords[0]];",
+    "test": "if (typeof swapCoords !== 'function') return 'swapCoords topilmadi'; const res = swapCoords([10, 20]); if(res[0] !== 20 || res[1] !== 10) return 'Koordinatalar almashmadi'; return null;"
+  }
+]

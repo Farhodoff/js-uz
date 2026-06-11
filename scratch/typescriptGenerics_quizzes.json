@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "TypeScript-da Generics nima uchun xizmat qiladi?",
+    "options": [
+      "Faqat CSS o'zgaruvchilarini boshqarish uchun",
+      "Turlicha ma'lumotlar tiplagi bilan xavfsiz va qayta ishlatiladigan (reusable) kod yozish uchun",
+      "Koddagi cheksiz sikllarni to'xtatish uchun",
+      "Faqat ma'lumotlar bazasi so'rovlarini tiplash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Generics yordamida funksiya, klass yoki interfeys ishlatilish vaqtida qaysi tip bilan ishlashini parametr sifatida qabul qila oladi."
+  },
+  {
+    "id": 2,
+    "question": "Generic tiplashda odatiy holda birinchi tip parametri sifatida qaysi harf ishlatiladi?",
+    "options": [
+      "G",
+      "T",
+      "V",
+      "K"
+    ],
+    "correctAnswer": 1,
+    "explanation": "T harfi 'Type' (Tip) so'zining qisqartmasi bo'lib, generic kodlarda an'anaviy ravishda birinchi bo'lib qo'llaniladi."
+  },
+  {
+    "id": 3,
+    "question": "Generic parametrning qabul qilishi mumkin bo'lgan turlarini cheklash (Generic Constraint) uchun qaysi kalit so'z ishlatiladi?",
+    "options": [
+      "implements",
+      "extends",
+      "as",
+      "is"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`extends` kalit so'zi generic parametr ma'lum interfeys yoki xossalarga ega bo'lishini shart qilib qo'yadi. Masalan: `T extends Lengthwise`."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagilardan qaysi biri generic funksiya e'lon qilinishining to'g'ri sintaksisidir?",
+    "options": [
+      "function identity(arg: T) <T>",
+      "function identity<T>(arg: T): T",
+      "function <T> identity(arg: T)",
+      "let identity = <T>(arg) as T"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Generic funksiyada tip parametri funksiya nomidan keyin burchak qavslarda `<T>` yoziladi va parametrlar hamda qaytish tipida ishlatiladi."
+  },
+  {
+    "id": 5,
+    "question": "keyof kalit so'zi generics bilan birga ishlatilganda qanday vazifani bajaradi?",
+    "options": [
+      "Faqat ob'ekt uzunligini qaytaradi",
+      "Tip parametrini obyektning kalitlari (keys) birlashmasi bilan cheklaydi (Union type of object keys)",
+      "Static a'zolarni tekshiradi",
+      "Kodni xavfsiz transpayl qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`keyof T` yozuvi T obyektining barcha kalitlari birlashmasini beradi. `K extends keyof T` esa K faqat T obyektida mavjud kalitlardan biri bo'lishini shart qiladi."
+  },
+  {
+    "id": 6,
+    "question": "Default Generic Parameters (standart generic tip parametrlari) nima uchun kerak?",
+    "options": [
+      "Faqat xatolar yuz berganda o'rnini bosish uchun",
+      "Generic funksiya yoki klass chaqirilganda tip parametri uzatilmasa, sukut bo'yicha ishlatiladigan zaxira tipini belgilash uchun",
+      "Klass static metodlarini tiplash uchun",
+      "TypeScript build tezligini oshirish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar klass yoki interfeys chaqirilganda tip ko'rsatilmasa, standart ko'rsatilgan tip (masalan: `class Box<T = string>`) ishlatiladi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi e'londa T qanday aniqlanadi (Type Inference orqali)? `function log<T>(val: T) {}` va `log(45);` chaqiruvi.",
+    "options": [
+      "string",
+      "number",
+      "any",
+      "unknown"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Uzatilgan argument `45` son (number) bo'lganligi sababli, TypeScript-ning Type Inference tizimi T tipini avtomatik ravishda `number` deb belgilaydi."
+  },
+  {
+    "id": 8,
+    "question": "Nima uchun klasslarning static maydonlari va metodlarida generic tiplarni ishlatib bo'lmaydi?",
+    "options": [
+      "Chunki static a'zolar xotirada saqlanmaydi",
+      "Chunki static a'zolar klass instansiyasi (obyekti) yaratilmasdan ishlaydi va ular obyekt yaratishdagi generic tiplarni bilmaydi",
+      "Chunki static faqat CSS-da ishlaydi",
+      "Chunki static metodlar return qilmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Static a'zolar ob'ekt nusxalariga emas, balki klassning o'ziga tegishlidir. Generic tiplar esa har bir yangi obyekt yaratishda har xil aniqlanadi, shu sababli static a'zolarda generic ishlamaydi."
+  },
+  {
+    "id": 9,
+    "question": "Generics-ning any tipini ishlatishdan asosiy afzalligi nimada?",
+    "options": [
+      "Kod tezligini oshirishi",
+      "Kirish va chiqish qiymatlari orasidagi tiplar bog'liqligini qat'iy saqlab, tiplar xavfsizligini ta'minlashi",
+      "HTML kodlarini validatsiya qilishi",
+      "Barcha xatolarni avtomatik tozalashi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "any tiplar tekshiruvini butunlay buzadi, Generics esa tiplar xavfsizligini 100% saqlab, moslashuvchan funksiyalar yaratishga imkon beradi."
+  },
+  {
+    "id": 10,
+    "question": "TypeScript-da generic interfeys qanday e'lon qilinadi?",
+    "options": [
+      "interface Box<T> { value: T; }",
+      "interface Box(T) { value: T; }",
+      "interface <T> Box { value: T; }",
+      "interface Box { value: T; } as generic"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Generic interfeys nomi yoniga burchak qavsda `<T>` yoziladi, masalan: `interface Box<T> { value: T; }`."
+  },
+  {
+    "id": 11,
+    "question": "Obyekt kesishuvida (Intersection) generic tiplar qanday birlashtiriladi?",
+    "options": [
+      "function merge<T, U>(a: T, b: U): T & U",
+      "function merge<T, U>(a: T, b: U): T | U",
+      "function merge<T, U>(a: T, b: U): T + U",
+      "function merge<T, U>(a: T, b: U): T && U"
+    ],
+    "correctAnswer": 0,
+    "explanation": "T va U tiplarini birlashtirish va har ikkala tipdagi maydonlarga ega obyekt qaytarish uchun `T & U` (Intersection) yoziladi."
+  },
+  {
+    "id": 12,
+    "question": "TypeScript generics-dan transpayl qilingan JavaScript kodi qayerda generics parametrlarini saqlaydi?",
+    "options": [
+      "Klass prototipida",
+      "Hech qayerda - JS-da generics yo'q, shuning uchun ular kompilyatsiyada butunlay o'chib ketadi",
+      "Global o'zgaruvchilarda",
+      "JSON formatida local-keshda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TypeScript faqat compile-time uchun kerak. JS faylga o'girilganda barcha `<T>` kabi yozuvlar va generic cheklovlar to'liq o'chiriladi."
+  }
+]

@@ -2,433 +2,405 @@ export const typescriptFunctions = {
   id: "typescriptFunctions",
   title: "Funksiyalar va Overloads",
   language: "typescript",
-  theory: `## 1. NEGA kerak?
-JavaScript-da funksiyalar har qanday tipdagi argumentlarni qabul qilaveradi va ixtiyoriy qiymat qaytara oladi. Bu katta dasturlarda funksiyaga noto'g'ri argument uzatilishi yoki funksiya qaytargan kutilmagan qiymat tufayli xatolar keltirib chiqaradi.
-**TypeScript-da funksiyalar** argumentlar tipi va qaytish qiymati tipi qat'iy tekshirilishini ta'minlaydi. Shuningdek, u ixtiyoriy va standart parametrlarni, hamda har xil turdagi kiruvchi qiymatlar uchun har xil qaytish turlarini belgilaydigan **Function Overloads (funksiya yuklamasi)** texnikasini taqdim etadi.
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-## 2. SODDALIK (Analogiya)
-Funksiyalarni **mahsulot tayyorlaydigan mashinaga (konveyerga)** o'xshatish mumkin:
-- JavaScript-dagi funksiya — bu konveyerga **istalgan xomashyoni** (son, string, obyekt) tashlashingiz mumkin bo'lgan mashinadir. U sizga nima tayyorlab berishi noma'lum.
-- TypeScript-dagi funksiya — bu kirish qismida faqat **kartoshka** (\`number\`) qabul qiladigan va chiqishda faqat **kartoshka fri** (\`string\`) qaytaradigan qat'iy dasturlangan apparatdir. Agar unga g'isht tashlamoqchi bo'lsangiz, apparat ishga tushishdan oldinoq to'xtaydi.
+### TypeScript-da Funksiyalar nima?
+JavaScript-da funksiyalar juda erkin: ular har qanday tipdagi argumentlarni qabul qilaveradi va istalgan qiymatni qaytaradi. Bu esa katta loyihalarda kutilmagan xatolarga (masalan, son kutilgan joyga string yoki undefined kelib qolishiga) sabab bo'ladi.
+**TypeScript-da funksiyalar** — bu funksiyaga kirayotgan parametrlar (argumentlar) va undan qaytayotgan natijaning tiplari qat'iy nazorat qilinishidir. Shuningdek, u bizga ixtiyoriy parametrlarni, standart qiymatlarni va har xil kirish parametrlariga mos ravishda har xil chiqish tiplarini belgilash imkonini beruvchi **Function Overloads** (funksiya yuklamasi) mexanizmini taqdim etadi.
 
-## 3. STRUKTURA
-Funksiya tiplarini belgilash sinraksi:
+### Real hayotiy analogiya
+Funksiyani **kartoshka tozalaydigan va to'g'raydigan mashinaga** o'xshatish mumkin:
+* **JavaScript funksiyasi:** Bu mashina ichiga kartoshka o'rniga tosh, g'isht yoki poyabzal tashlasangiz ham ishlashga harakat qiladi va natijada runtime (ish jarayoni) paytida buziladi.
+* **TypeScript funksiyasi:** Bu mashinaning kirish qismida faqat "Kartoshka" (\`number\`) qabul qilinishi va chiqishida faqat "Tozalangan to'g'ralgan kartoshka" (\`string\`) olinishi oldindan qat'iy e'lon qilingan. Agar g'isht tashlamoqchi bo'lsangiz, tizim hali mashinani yoqmasdan oldinoq (kompilyatsiya bosqichida) xatolik beradi va ishlashni rad etadi.
+
+---
+
+## 2. 💻 Real Kod Misollari
+
+### 1. Basic Example (Oddiy parametr va return tiplari)
 \`\`\`typescript
-// Oddiy funksiya
-function add(x: number, y: number): number {
-  return x + y;
+// Parametrlar ham, qaytish qiymati ham son (number) bo'lishi shart
+function calculateArea(width: number, height: number): number {
+  return width * height;
 }
 
-// Arrow function
-const multiply = (x: number, y: number): number => x * y;
+const area = calculateArea(10, 5); // To'g'ri
+// calculateArea("10", 5); // Xatolik! Birinchi parametr string bo'la olmaydi
+\`\`\`
 
-// Ixtiyoriy va standart parametrlar
-function greet(name: string, title?: string, greeting: string = "Salom"): string {
-  return title ? \`\${greeting}, \${title} \${name}\` : \`\${greeting}, \${name}\`;
+### 2. Intermediate Example (Ixtiyoriy va default parametrlar hamda Rest)
+\`\`\`typescript
+// greeting parametri default qiymatga ega, title esa ixtiyoriy (?)
+function greetUser(name: string, title?: string, greeting: string = "Xush kelibsiz"): string {
+  const prefix = title ? \`\${title} \` : "";
+  return \`\${greeting}, \${prefix}\${name}!\`;
+}
+
+console.log(greetUser("Sardor")); // "Xush kelibsiz, Sardor!"
+console.log(greetUser("Dilnoza", "Doktor")); // "Xush kelibsiz, Doktor Dilnoza!"
+
+// Rest parametrlarni massiv sifatida tiplash:
+function sumAll(...numbers: number[]): number {
+  return numbers.reduce((sum, num) => sum + num, 0);
 }
 \`\`\`
 
-### Function Overloads (Funksiya yuklamasi):
-Ayrim holatlarda funksiya kiruvchi argumentlarga qarab har xil tipdagi qiymat qaytarishi kerak bo'ladi. Buning uchun overload e'lon qilinadi:
+### 3. Advanced Example (Function Overloads va Call Signatures)
 \`\`\`typescript
-// Overload signaturalari
-function makeDate(timestamp: number): Date;
-function makeDate(m: number, d: number, y: number): Date;
-// Real implementatsiya (faqat bitta)
-function makeDate(mOrTimestamp: number, d?: number, y?: number): Date {
-  if (d !== undefined && y !== undefined) {
-    return new Date(y, mOrTimestamp, d);
+// 1. Overload signaturalari (faqat tiplar tavsifi)
+function formatData(value: string): string;
+function formatData(value: number): string[];
+
+// 2. Yagona implementatsiya (haqiqiy kod yoziladigan qism)
+function formatData(value: string | number): string | string[] {
+  if (typeof value === "string") {
+    return value.toUpperCase();
   } else {
-    return new Date(mOrTimestamp);
+    return value.toString().split("");
   }
 }
+
+const resStr = formatData("salom"); // Tipi: string
+const resArr = formatData(123); // Tipi: string[]
 \`\`\`
 
-### A. 'this' Kalit So'zini Tiplash
-JavaScript-da \`this\` qiymati funksiya qanday chaqirilganiga qarab dinamik o'zgaradi. TypeScript-da funksiya ichidagi \`this\` tipini qat'iy nazorat qilish uchun uni funksiyaning birinchi argumenti sifatida e'lon qilish mumkin (bu argument JS-ga transpayl bo'lganda o'chib ketadi):
-\`\`\`typescript
-interface DB {
-  filterUsers(filter: (this: User) => boolean): User[];
-}
+---
 
-interface User {
-  name: string;
-  isAdmin: boolean;
-}
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
 
-const db: DB = {
-  filterUsers(filter) {
-    // filter funksiyasi ichida 'this' User tipida bo'ladi
-    return [];
+### Qaysi muammoni hal qiladi?
+1. **Dynamic typing xavflari:** JS-da funksiyaga noto'g'ri argument uzatilsa, funksiya xato natija qaytaradi yoki runtime-da \`TypeError: Cannot read properties of undefined\` kabi xatolarni keltirib chiqaradi. TypeScript parametrlar mosligini static tekshiruv vaqtida hal qiladi.
+2. **\`this\` kontekstining chalkashligi:** JavaScript-da funksiya ichidagi \`this\` obyektini tiplash qiyin edi. TypeScript funksiyaning birinchi argumenti sifatida \`this\` kalit so'zini tiplash imkonini beradi.
+3. **Murakkab interfeyslar bilan ishlash:** Bir xil funksiya har xil tipli argumentlar uchun har xil turdagi qiymat qaytarganda, return tipini \`any\` yoki \`union\` qilib qo'yish tiplar xavfsizligini yo'qotadi. Function Overloading yordamida har bir kirish tipiga mos aniq chiqish tipini kompilyatorga tushuntirish mumkin.
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. Rest parametrlarni oddiy o'zgaruvchi kabi tiplash
+Rest parametr (\`...args\`) doimo uzatilgan barcha argumentlarni bitta massivga yig'adi, shuning uchun uning tipi massiv bo'lishi shart.
+* **Xato:** \`function log(...messages: string)\`
+* **Tuzatish:** \`function log(...messages: string[])\`
+
+### 2. Callback funksiyani shunchaki \`Function\` deb e'lon qilish
+\`Function\` tipi har qanday funksiyani qabul qiladi, lekin uning argumentlari va qaytish qiymatini tekshirmaydi.
+* **Xato:**
+  \`\`\`typescript
+  function execute(callback: Function) {
+    callback("data"); // Parametrlar tipi nazorat qilinmaydi
   }
-};
-\`\`\`
+  \`\`\`
+* **Tuzatish:**
+  \`\`\`typescript
+  function execute(callback: (data: string) => void) {
+    callback("data");
+  }
+  \`\`\`
 
-### B. Rest Parametrlar va Tuple Tiplari
-Rest parametrlar faqat oddiy massiv emas (\`number[]\`), balki aniq tartib va tiplarga ega bo'lgan Tuple (kortej) tiplari yordamida ham yozilishi mumkin:
-\`\`\`typescript
-function logEvent(name: string, ...details: [statusCode: number, isFatal: boolean]) {
-  const [code, fatal] = details;
-  console.log(\`Event: \${name}, Code: \${code}, Fatal: \${fatal}\`);
-}
+### 3. Overload signaturalarini implementatsiya bilan to'g'ri moslashtirmaslik
+Implementatsiya funksiyasi barcha overload signaturalarini to'liq qamrab olishi kerak, aks holda TypeScript kompilyatsiya xatosini beradi.
+* **Xato:**
+  \`\`\`typescript
+  function process(x: string): string;
+  function process(x: number): number;
+  function process(x: string) { return x; } // Xatolik! number signaturasi qamrab olinmagan
+  \`\`\`
+* **Tuzatish:**
+  \`\`\`typescript
+  function process(x: string): string;
+  function process(x: number): number;
+  function process(x: string | number): any { return x; }
+  \`\`\`
 
-logEvent("Login", 200, false); // TO'G'RI
-// logEvent("Logout", "400", true); // XATO! Birinchi element string emas, number bo'lishi kerak
-\`\`\`
+---
 
-### C. Call Signatures (Murojaat signaturalari)
-JavaScript-da funksiyalar chaqiriluvchi obyektlar hisoblanadi. Agar funksiyaning o'zi chaqirilishi bilan birga qo'shimcha xossalarga ham ega bo'lishi kerak bo'lsa, obyekt tipi ichida Call Signature e'lon qilinadi:
-\`\`\`typescript
-interface DescribedFunction {
-  description: string;
-  (someArg: number): boolean; // Chaqirilish signaturasi (Call Signature)
-}
+## 5. 💬 12 ta Intervyu Savollari
 
-const myFunc: DescribedFunction = (num: number) => {
-  return num > 10;
-};
-myFunc.description = "Bu sonni 10 dan katta ekanligini tekshiradi";
-\`\`\`
+### Junior (1–4)
+1. **Savol:** TypeScript-da funksiya parametrlari qanday tiplanadi?
+   * **Javob:** Har bir parametrdan keyin ikki nuqta (\`:\`) va uning tipi yoziladi. Masalan: \`function add(a: number, b: number)\`.
+2. **Savol:** Qaytish tipi (\`return type\`) yozilmasa nima bo'ladi?
+   * **Javob:** TypeScript uni return qilinayotgan qiymatga qarab o'zi aniqlaydi (Type Inference). Agar return bo'lmasa, \`void\` deb hisoblaydi.
+3. **Savol:** Ixtiyoriy parametr (\`?\`) va default parametr farqi nimada?
+   * **Javob:** Ixtiyoriy parametr qiymat berilmaganda \`undefined\` bo'ladi. Default parametr esa qiymat berilmaganda o'zining standart qiymatini oladi.
+4. **Savol:** \`void\` va \`never\` tiplarining farqi nimada?
+   * **Javob:** \`void\` hech qanday qiymat qaytarmaydigan funksiyalar uchun (lekin funksiya o'z ishini tugatadi). \`never\` esa hech qachon tugamaydigan yoki faqat xato otadigan funksiyalar uchun ishlatiladi.
 
-### D. Construct Signatures (Konstruktor signaturalari)
-\`new\` kalit so'zi yordamida yangi obyekt yaratuvchi (konstruktor) funksiyalarni tiplash uchun Construct Signature ishlatiladi:
-\`\`\`typescript
-interface PointConstructor {
-  new (x: number, y: number): Point;
-}
+### Middle (5–8)
+5. **Savol:** Function Overloading nima va uning asosiy qoidasi qanday?
+   * **Javob:** Bir xil nomli, lekin parametrlari yoki qaytish tiplari har xil bo'lgan bir nechta signaturalarni e'lon qilish. Asosiy qoidasi: barcha signaturalardan keyin bitta umumiy implementatsiya funksiyasi yozilishi shart.
+6. **Savol:** Rest parametrlar qanday tiplanadi va Tuple ishlatish mumkinmi?
+   * **Javob:** Rest parametrlar odatda massiv tipi bilan tiplanadi. Shuningdek, ularni aniq tartibdagi tiplarga ega Tuple (kortej) sifatida ham yozish mumkin: \`...args: [number, string]\`.
+7. **Savol:** Funksiya ichida \`this\` parametrining roli nima va u JS-ga qanday o'tadi?
+   * **Javob:** Funksiya tanasida \`this\` konteksti qaysi obyektga tegishli ekanini tekshirish uchun ishlatiladi. U parametrlarning eng boshida \`this: Type\` ko'rinishida yoziladi va kompilyatsiya qilinganda JS kodidan butunlay o'chib ketadi.
+8. **Savol:** Call Signature (murojaat signaturasi) nima va u qachon ishlatiladi?
+   * **Javob:** Obyekt ham funksiya sifatida chaqirilishi, ham o'z xususiyatlariga ega bo'lishi kerak bo'lgan holatlarda interfeys ichida yoziladigan maxsus signatura. Masalan: \`interface Fn { (x: number): boolean; desc: string; }\`.
 
-class Point {
-  constructor(public x: number, public y: number) {}
-}
+### Senior (9–12)
+9. **Savol:** Construct Signature (konstruktor signaturasi) nima va uning Call Signature-dan farqi nima?
+   * **Javob:** Construct Signature \`new\` kalit so'zi yordamida obyekt yaratuvchi (konstruktor) funksiyalarni tiplaydi: \`interface Ctor { new (x: number): Point; }\`. Call signature esa oddiy chaqiriladigan funksiyalar uchun ishlatiladi.
+10. **Savol:** Overload signaturalari tartibi kompilyatorga qanday ta'sir qiladi?
+    * **Javob:** TypeScript mos keladigan signaturani birinchisidan boshlab tartib bilan qidiradi. Shuning uchun kengroq yoki umumiyroq signaturalarni teparoqqa emas, pastroqqa yozish tavsiya etiladi.
+11. **Savol:** TypeScript funksiyalar mosligi (assignability) parametrlar soni bo'yicha qanday ishlaydi?
+    * **Javob:** TypeScript kamroq parametrli funksiyalarni ko'proq parametr kutayotgan joylarga mos deb biladi (masalan, callbacklarda ortiqcha parametrlarni tashlab yuborish imkoni borligi sababli).
+12. **Savol:** \`never\` qaytaruvchi funksiya orqali "Exhaustiveness checking" qanday amalga oshiriladi?
+    * **Javob:** Switch-case yoki if-else shartlarida barcha mumkin bo'lgan tiplar (masalan, union variantlar) tekshirib bo'lingach, qolgan \`else/default\` blokida \`never\` tipidagi o'zgaruvchiga qiymat yuklanadi. Agar yangi tip qo'shilib, tekshirilmay qolsa, kompilyator xato beradi.
 
-function createPoint(ctor: PointConstructor, x: number, y: number) {
-  return new ctor(x, y);
-}
-const p = createPoint(Point, 10, 20); // Point klassi PointConstructor signaturasiga mos keladi
-\`\`\`
+---
 
-### E. Overloads matching oqimi (Mermaid)
+## 6. 🛠️ Amaliy Topshiriqlar
 
-Quyida function overloading chaqirilganda signaturalarning mos kelish jarayoni va qat'iy tekshiruvi ko'rsatilgan:
+Quyida function overloading yoki parametrlar oqimi jarayonining vizual sxemasi ko'rsatilgan:
 
 \`\`\`mermaid
 graph TD
-    A["Funksiya chaqiruvi: makeDate(...)"] --> B{"Argumentlar soni va tiplari?"}
-    B -->|1 ta son| C["1-signaturaga mos keldi: makeDate(timestamp: number)"]
-    B -->|3 ta son| D["2-signaturaga mos keldi: makeDate(m, d, y)"]
-    B -->|Boshqa holat| E["Compile-time Error: No overload matches this call"]
-    
-    C --> F["Yagona implementatsiyaga yo'naltirish (Run-time logic)"]
+    A["Funksiya chaqiruvi: processInput(data)"] --> B{"data tipi nimaga teng?"}
+    B -->|string| C["1-Overload Signaturasi: (data: string) => string[]"]
+    B -->|number| D["2-Overload Signaturasi: (data: number) => number"]
+    B -->|Boshqa tip| E["Compile-time Error (Xatolik)"]
+    C --> F["Asosiy Implementatsiya Funksiyasi: processInput(data: string | number)"]
     D --> F
-    F --> G["Date obyekti qaytariladi"]
+    F --> G["To'g'ri qaytish qiymati qaytariladi"]
 \`\`\`
 
-## 4. AMALIYOT (Mashqlar pastda)
+---
 
-## 5. XATOLAR (Common mistakes)
-1. **Rest parametrni noto'g'ri tiplash:** Rest parametrlar doimo massiv bo'lgani uchun, ularning tipi massiv ko'rinishida yozilishi kerak. Masalan: \`...args: number[]\` (oddiy \`number\` yozish xato).
-2. **Callback funksiyani \`Function\` deb tiplash:** \`callback: Function\` deb yozish xavfsiz emas. Har doim callback-ning argumentlari va qaytish tipini aniq ko'rsatish lozim. Masalan: \`callback: (x: number) => void\`.
-3. **Overload signaturasini to'g'ri moslashtirmaslik:** Implementatsiya qiluvchi funksiya barcha overload signaturalarini qamrab oladigan darajada keng bo'lishi kerak.
+## 7. 📝 12 ta Mini Test
 
-## 6. SAVOLLAR VA JAVOBLAR
-**1. Funksiya parametrlarini tiplash nima uchun kerak?**
-Funksiya chaqirilayotganda faqat to'g'ri tipdagi va to'g'ri sondagi argumentlar uzatilishini ta'minlash uchun.
+Dars oxirida bilimingizni sinab ko'rish uchun testlar berilgan.
 
-**2. Funksiyaning qaytish tipi (Return Type) qanday yoziladi?**
-Parametrlardan keyin ikki nuqta (\`:\`) qo'yilib, tip yoziladi. Masalan: \`function f(): string\`.
+---
 
-**3. "Type Inference" funksiyalarda qanday ishlaydi?**
-Agar funksiyaning qaytish tipi yozilasa, TypeScript return qilingan qiymatga qarab qaytish tipini o'zi avtomatik aniqlaydi.
+## 8. 🎯 Real Project Case Study
 
-**4. Ixtiyoriy parametr (Optional Parameter) qanday e'lon qilinadi va u qayerda turishi kerak?**
-Maydon nomidan keyin so'roq belgisi (\`?\`) qo'yiladi va u doim parametrlarning oxirida turishi shart.
+### Moslashuvchan Konfiguratsiya Yuklovchi (Configuration Loader)
+Katta loyihalarda konfiguratsiyalar ko'pincha inline JSON string ko'rinishida yoki URL orqali asinxron ravishda yuklanadi. Bizga har ikkala holatni ham xavfsiz boshqara oladigan bitta funksiya kerak.
 
-**5. Default parameter (standart qiymatli parametr) nima?**
-Argument uzatilmaganda avtomatik ravishda ishlatiladigan boshlang'ich qiymatga ega parametr (\`arg: type = default\`).
+\`\`\`typescript
+interface AppConfig {
+  apiUrl: string;
+  debugMode: boolean;
+}
 
-**6. Rest parameters (qolgan parametrlar) qanday tiplanadi?**
-Ular har doim massiv bo'lganligi sababli massiv tipi yoziladi. Masalan: \`...numbers: number[]\`.
+// 1. JSON string qabul qilganda obyektni sinxron qaytaradi
+function configureApp(jsonConfig: string): AppConfig;
 
-**7. Function Overloading nima?**
-Bir xil nomli, lekin kiruvchi parametrlar soni yoki tiplari turlicha bo'lgan, hamda har xil tipda qiymat qaytaradigan funksiyalar to'plamini yaratish.
+// 2. URL qabul qilganda Promise qaytaradi (asinxron)
+function configureApp(url: string, fetchTimeout: number): Promise<AppConfig>;
 
-**8. Overload-da nechta implementatsiya (haqiqiy kod) bo'ladi?**
-Faqat bitta asosiy implementatsiya funksiyasi bo'ladi va u barcha tepada e'lon qilingan overload signaturalarini qo'llab-quvvatlashi kerak.
+// 3. Implementatsiya
+function configureApp(source: string, timeout?: number): AppConfig | Promise<AppConfig> {
+  if (timeout !== undefined) {
+    // Asinxron fetch simulyatsiyasi
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ apiUrl: source, debugMode: false });
+      }, timeout);
+    });
+  }
+  
+  // Sinxron JSON parse
+  return JSON.parse(source) as AppConfig;
+}
 
-**9. Callback funksiyalarning tipi qanday tavsiflanadi?**
-Arrow funksiya sinraksiga o'xshash tarzda. Masalan: \`(val: string) => boolean\`.
+// Foydalanish:
+const syncConf = configureApp('{"apiUrl": "localhost", "debugMode": true}'); // Tipi: AppConfig
+const asyncConfPromise = configureApp("https://api.example.com", 2000); // Tipi: Promise<AppConfig>
+\`\`\`
 
-**10. "this" kalit so'zi funksiya ichida qanday tiplanadi?**
-Funksiyaning birinchi argumenti sifatida maxsus \`this\` parametri yoziladi. Masalan: \`function f(this: User, x: number)\`.
+---
 
-**11. Nega funksiyaga parametrlardan ko'p argument uzatish TSda xatolik beradi?**
-Chunki TypeScript qat'iy signaturaga amal qiladi. Keraksiz argumentlarni uzatish mantiqiy xatolar oldini olish uchun taqiqlangan.
+## 9. 🚀 Performance va Optimization
 
-**12. Never qaytaradigan funksiyaga misol keltiring.**
-\`throw new Error('something')\` qiladigan yoki \`while(true) {}\` cheksiz sikli bo'lgan funksiyalar.
+1. **Compile-time va Runtime xarajatlari:** TypeScript tiplash va signatura tekshiruvlari faqat kompilyatsiya bosqichida mavjud. Transpayldan so'ng JS faylda hech qanday tip tekshiruvi qolmaydi, shuning uchun bu runtime tezligiga ta'sir qilmaydi.
+2. **Rest Parametrlar va xotira:** Rest parametrlarni (\`...nums\`) ishlatganda JavaScript har gal funksiya chaqirilganda yangi massiv yaratadi. O'ta yuqori unumdorlik talab etiladigan "hot paths" (tez-tez chaqiriladigan kodlar)da rest parametr o'rniga oddiy argumentlardan yoki oldindan yaratilgan massivlardan foydalanish tavsiya etiladi.
+3. **Overload implementatsiyasi optimalligi:** Implementatsiya funksiyasi ichida \`typeof\`, \`instanceof\` yoki "type guards" orqali tiplarni ajratish tez va yengil bo'lishi kerak.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Funksiya Turi / Parametr | Yozilish Sinraksi | Qisqa Tavsif |
+| :--- | :--- | :--- |
+| **Oddiy Funksiya** | \`function f(x: number): number\` | Kirish va chiqish son bo'lgan qat'iy funksiya |
+| **Ixtiyoriy Parametr** | \`function f(x: number, y?: number)\` | \`y\` parametri majburiy emas (undefined bo'lishi mumkin) |
+| **Standart Parametr** | \`function f(x: number, y = 10)\` | Qiymat berilmaganda \`y\` ning qiymati \`10\` ga teng |
+| **Rest Parametr** | \`function f(...args: string[])\` | Istalgancha string argumentlarni massivga yig'adi |
+| **Function Overload** | \`function f(x: string): string;\` | Har xil signaturalarni bitta nom ostida birlashtirish |
+| **Call Signature** | \`interface F { (a: number): void; d: string; }\` | Funksiya sifatida chaqiriladigan va xossalarga ega obyekt |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Parametr va Return tiplash",
-      instruction: "Ikkita son qabul qilib, ularning ko'paytmasini (number) qaytaradigan `multiplyNumbers(a, b)` funksiyasini yozing.",
-      startingCode: "function multiplyNumbers(a: number, b: number): number {\n  // Kodni yozing\n}",
-      hint: "return a * b;",
-      test: "if (typeof multiplyNumbers !== 'function') return 'multiplyNumbers topilmadi'; if(multiplyNumbers(2, 5) !== 10) return 'Ko\\'paytma xato'; return null;"
-    },
-    {
-      id: 2,
-      title: "String qaytish tipi",
-      instruction: "Ism (string) qabul qilib, 'Salom, [name]!' qaytaruvchi `sayHello(name)` funksiyasini yozing.",
-      startingCode: "function sayHello(name: string): string {\n  // Salom qaytaring\n}",
-      hint: "return `Salom, ${name}!`;",
-      test: "if (typeof sayHello !== 'function') return 'sayHello topilmadi'; if (sayHello('Jasur') !== 'Salom, Jasur!') return 'Greeting xato'; return null;"
-    },
-    {
-      id: 3,
-      title: "Optional Parameter (Ixtiyoriy parametr)",
-      instruction: "Birinchi ism (`firstName` - string) va ixtiyoriy familiya (`lastName` - string) qabul qilib, agar familiya berilgan bo'lsa birlashtirib, berilmagan bo'lsa faqat ismni qaytaradigan `getFullName(firstName, lastName)` funksiyasini yozing.",
-      startingCode: "function getFullName(firstName: string, lastName?: string): string {\n  // Kodni yozing\n}",
-      hint: "return lastName ? `${firstName} ${lastName}` : firstName;",
-      test: "if (typeof getFullName !== 'function') return 'getFullName topilmadi'; if (getFullName('Ali') !== 'Ali') return 'lastName berilmagandagi xato'; if(getFullName('Ali', 'Valiyev') !== 'Ali Valiyev') return 'To\\'liq ism xato'; return null;"
-    },
-    {
-      id: 4,
-      title: "Default Parameter (Standart parametr)",
-      instruction: "Son `x` va standart qiymati 2 bo'lgan daraja `power` qabul qilib, `x` ning `power`-darajasini hisoblovchi `getPower(x, power)` yozing.",
-      startingCode: "function getPower(x: number, power: number = 2): number {\n  // Math.pow ishlating\n}",
-      hint: "return Math.pow(x, power);",
-      test: "if (typeof getPower !== 'function') return 'getPower topilmadi'; if(getPower(3) !== 9 || getPower(2, 3) !== 8) return 'Darajani hisoblash xato'; return null;"
-    },
-    {
-      id: 5,
-      title: "Rest Parameters (Cheksiz parametrlar)",
-      instruction: "Ixtiyoriy miqdordagi sonlarni qabul qilib, ularning yig'indisini hisoblaydigan `sumNumbers(...nums)` funksiyasini yozing.",
-      startingCode: "function sumNumbers(...nums: number[]): number {\n  // nums massivini hisoblang\n}",
-      hint: "return nums.reduce((s, n) => s + n, 0);",
-      test: "if (typeof sumNumbers !== 'function') return 'sumNumbers topilmadi'; if(sumNumbers(1, 2, 3, 4) !== 10 || sumNumbers() !== 0) return 'Rest parametr yig\\'indisi xato'; return null;"
-    },
-    {
-      id: 6,
-      title: "Callback Parametri",
-      instruction: "Qiymat `val` va callback funksiya `cb` qabul qilib, `cb(val)` chaqiruv natijasini qaytaradigan `executeCallback(val, cb)` yozing.",
-      startingCode: "function executeCallback(val: number, cb: (x: number) => number): number {\n  // cb ni val bilan chaqiring\n}",
-      hint: "return cb(val);",
-      test: "if (typeof executeCallback !== 'function') return 'executeCallback topilmadi'; if(executeCallback(5, x => x * 2) !== 10) return 'Callback chaqiruvi noto\\'g\\'ri'; return null;"
-    },
-    {
-      id: 7,
-      title: "Overload simulyatsiyasi (String va Number)",
-      instruction: "Bitta argument qabul qiluvchi `parseInput(arg)` funksiyasini yozing. Agar arg son bo'lsa uni kvadratini qaytaring, agar string bo'lsa uning uzunligini qaytaring.",
-      startingCode: "function parseInput(arg: number): number;\nfunction parseInput(arg: string): number;\nfunction parseInput(arg: any): number {\n  // typeof tekshirib qaytaring\n}",
-      hint: "return typeof arg === 'number' ? arg * arg : arg.length;",
-      test: "if (typeof parseInput !== 'function') return 'parseInput topilmadi'; if(parseInput(5) !== 25 || parseInput('hello') !== 5) return 'Overload natijasi xato'; return null;"
-    },
-    {
-      id: 8,
-      title: "Sikllarni to'xtatuvchi funksiya (Never)",
-      instruction: "Chaqirilganda dasturni to'xtatuvchi va zudlik bilan 'Error Occurred' xabari bilan xato otuvchi `stopProcess()` funksiyasini yozing.",
-      startingCode: "function stopProcess(): never {\n  // Throw error\n}",
-      hint: "throw new Error('Error Occurred');",
-      test: "if (typeof stopProcess !== 'function') return 'stopProcess topilmadi'; try { stopProcess(); return 'Xato otilmadi'; } catch(e) { if(e.message !== 'Error Occurred') return 'Xato xabari noto\\'g\\'ri'; } return null;"
-    },
-    {
-      id: 9,
-      title: "Rest Strings Concat",
-      instruction: "Rest parametrlar orqali bir nechta so'zlarni qabul qilib, ularni o'rtasiga chiziq '-' qo'shib birlashtirib qaytaruvchi `joinWithHyphen(...words)` funksiyasini yozing.",
-      startingCode: "function joinWithHyphen(...words: string[]): string {\n  // Kodni yozing\n}",
-      hint: "return words.join('-');",
-      test: "if (typeof joinWithHyphen !== 'function') return 'joinWithHyphen topilmadi'; if(joinWithHyphen('a', 'b', 'c') !== 'a-b-c') return 'Birlashtirish xato'; return null;"
-    },
-    {
-      id: 10,
-      title: "Max Finder (Rest)",
-      instruction: "Rest parametrlar yordamida uzatilgan sonlardan eng kattasini topuvchi `findMaxNumber(...nums)` funksiyasini yozing. Bo'sh bo'lsa `-Infinity` qaytaring.",
-      startingCode: "function findMaxNumber(...nums: number[]): number {\n  // Math.max ishlating\n}",
-      hint: "return Math.max(...nums);",
-      test: "if (typeof findMaxNumber !== 'function') return 'findMaxNumber topilmadi'; if(findMaxNumber(10, 5, 20, 3) !== 20) return 'Eng katta son topilmadi'; return null;"
-    },
-    {
-      id: 11,
-      title: "Callback status",
-      instruction: "Qiymat `success` (boolean) va ikkita callback funksiyalar `onYes` va `onNo` qabul qilib, agar `success` true bo'lsa `onYes()` ni, aks holda `onNo()` ni chaqiruvchi `callOnStatus(success, onYes, onNo)` funksiyasini yozing.",
-      startingCode: "function callOnStatus(success: boolean, onYes: () => void, onNo: () => void): void {\n  // Shart bo'yicha chaqiring\n}",
-      hint: "success ? onYes() : onNo();",
-      test: "if (typeof callOnStatus !== 'function') return 'callOnStatus topilmadi'; let y = false, n = false; callOnStatus(true, () => y = true, () => n = true); if(!y || n) return 'To\\'g\\'ri callback chaqirilmadi'; return null;"
-    },
-    {
-      id: 12,
-      title: "Discriminated Union Callback",
-      instruction: "Object formatidagi `{ status: 'success' | 'error', data?: string, error?: string }` natijani qabul qilib, agar status success bo'lsa `data`ni, error bo'lsa `error`ni qaytaradigan `handleResult(res)` funksiyasini yozing.",
-      startingCode: "type Result = { status: 'success'; data: string } | { status: 'error'; error: string };\n\nfunction handleResult(res: Result): string {\n  // status bo'yicha qiymat qaytaring\n}",
-      hint: "return res.status === 'success' ? res.data : res.error;",
-      test: "if (typeof handleResult !== 'function') return 'handleResult topilmadi'; if(handleResult({ status: 'success', data: 'Done' }) !== 'Done') return 'Success xato ishlov berildi'; if(handleResult({ status: 'error', error: 'Fail' }) !== 'Fail') return 'Error xato ishlov berildi'; return null;"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Call Signature yordamida funksiyani tiplash",
-      instruction: "O'zining `.description` (string) xossasiga ega bo'lgan va chaqirilganda kiritilgan sonning kvadratini (number) qaytaruvchi `DescribedFunction` interfeysini e'lon qiling va unga mos keladigan `mySquare` funksiyasini yozing.",
-      startingCode: "interface DescribedFunction {\n  description: string;\n  // Call signature e'lon qiling\n}\n\n// mySquare funksiyasini DescribedFunction tipida yarating\n// uning .description xossasiga 'Hisoblovchi' deb yozing",
-      hint: "interface DescribedFunction {\n  description: string;\n  (x: number): number;\n}\nconst mySquare: DescribedFunction = Object.assign(\n  (x: number) => x * x,\n  { description: 'Hisoblovchi' }\n);",
-      test: "if (typeof mySquare !== 'function') return 'mySquare topilmadi'; if (mySquare.description !== 'Hisoblovchi') return 'description xossasi noto\'g\'ri'; if (mySquare(4) !== 16) return 'Kvadratni hisoblash xato'; return null;"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Tuple Rest Parametrlari",
-      instruction: "Birinchi parametri `format` (string), qolgan parametrlari ise rest parameter orqali tuple `[number, boolean]` tipida bo'lgan `formatLog(format, ...args)` funksiyasini yozing va uning qiymatini birlashtirib string ko'rinishida qaytaring.",
-      startingCode: "type LogArgs = [code: number, isFatal: boolean];\n\nfunction formatLog(format: string, ...args: LogArgs): string {\n  // format va args dagi elementlarni birlashtirib qaytaring\n}",
-      hint: "function formatLog(format: string, ...args: LogArgs): string {\n  const [code, isFatal] = args;\n  return `${format}: Code=${code}, Fatal=${isFatal}`;\n}",
-      test: "if (typeof formatLog !== 'function') return 'formatLog topilmadi'; const res = formatLog('Error', 500, true); if (res !== 'Error: Code=500, Fatal=true') return 'Formatlash natijasi noto\'g\'ri'; return null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Parametr va Return tiplash",
+    "instruction": "Ikkita son qabul qilib, ularning ko'paytmasini (number) qaytaradigan `multiplyNumbers(a, b)` funksiyasini yozing.",
+    "startingCode": "function multiplyNumbers(a: number, b: number): number {\n  // Kodni yozing\n}",
+    "hint": "return a * b;",
+    "test": "if (typeof multiplyNumbers !== 'function') return 'multiplyNumbers topilmadi'; if(multiplyNumbers(2, 5) !== 10) return 'Ko\\'paytma xato'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Optional Parameter (Ixtiyoriy parametr)",
+    "instruction": "Birinchi ism (`firstName` - string) va ixtiyoriy familiya (`lastName` - string) qabul qilib, agar familiya berilgan bo'lsa birlashtirib, berilmagan bo'lsa faqat ismni qaytaradigan `getFullName(firstName, lastName)` funksiyasini yozing.",
+    "startingCode": "function getFullName(firstName: string, lastName?: string): string {\n  // Kodni yozing\n}",
+    "hint": "return lastName ? `${firstName} ${lastName}` : firstName;",
+    "test": "if (typeof getFullName !== 'function') return 'getFullName topilmadi'; if (getFullName('Ali') !== 'Ali') return 'lastName berilmagandagi xato'; if(getFullName('Ali', 'Valiyev') !== 'Ali Valiyev') return 'To\\'liq ism xato'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Overload simulyatsiyasi (String va Number)",
+    "instruction": "Bitta argument qabul qiluvchi `parseInput(arg)` funksiyasini yozing. Agar arg son bo'lsa uning kvadratini qaytaring, agar string bo'lsa uning uzunligini qaytaring.",
+    "startingCode": "function parseInput(arg: number): number;\nfunction parseInput(arg: string): number;\nfunction parseInput(arg: any): number {\n  // typeof tekshirib qaytaring\n}",
+    "hint": "return typeof arg === 'number' ? arg * arg : arg.length;",
+    "test": "if (typeof parseInput !== 'function') return 'parseInput topilmadi'; if(parseInput(5) !== 25 || parseInput('hello') !== 5) return 'Overload natijasi xato'; return null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Quyidagilardan qaysi biri TypeScript-da to'g'ri yozilgan funksiya hisoblanadi?",
-      options: [
-        "function add(a: number, b: number) { return a + b; }",
-        "function add(a, b) as number { return a + b; }",
-        "let add = (a, b) => a + b;",
-        "function add(a number, b number) {}"
-      ],
-      correctAnswer: 0,
-      explanation: "Birinchi variantda parametrlar tiplari ko'rsatilgan va return tipi avtomatik ravishda Type Inference yordamida son deb topiladi."
-    },
-    {
-      id: 2,
-      question: "Funksiyaning ixtiyoriy parametri (Optional Parameter) qayerda e'lon qilinishi shart?",
-      options: [
-        "Parametrlar ro'yxatining eng boshida",
-        "Parametrlar ro'yxatining ixtiyoriy joyida",
-        "Parametrlar ro'yxatining eng oxirida",
-        "Funksiya tanasining ichida"
-      ],
-      correctAnswer: 2,
-      explanation: "Optional parametrlar doimo majburiy parametrlardan keyin, ya'ni parametrlar ro'yxatining eng oxirida bo'lishi shart."
-    },
-    {
-      id: 3,
-      question: "TypeScript-da rest parametrlarni qanday tiplash to'g'ri hisoblanadi?",
-      options: [
-        "function sum(...args: number)",
-        "function sum(...args: number[])",
-        "function sum(...args: [number])",
-        "function sum(...args: any)"
-      ],
-      correctAnswer: 1,
-      explanation: "Rest parametrlar doimo massiv ko'rinishida yig'ilganligi uchun ularning tipi massiv (masalan: `number[]`) bo'lishi shart."
-    },
-    {
-      id: 4,
-      question: "Function Overloading (Funksiya yuklamasi) nima?",
-      options: [
-        "Bitta funksiyani qayta-qayta chaqirish",
-        "Bir xil nomli, lekin har xil parametrlar va har xil qaytish tiplariga ega funksiyalar to'plamini yaratish",
-        "Funksiya xotirasini optimallashtirish",
-        "Funksiyani oqimga (thread) yuklash"
-      ],
-      correctAnswer: 1,
-      explanation: "Overloads — har xil turdagi argumentlar uzatilganda funksiya har xil tipli natija qaytarishini kompilyatorga tushuntirish uchun bir xil nomli signaturalarni yozishdir."
-    },
-    {
-      id: 5,
-      question: "Function Overload ishlatilganda, funksiyaning haqiqiy implementatsiya (kod) qismi nechta bo'ladi?",
-      options: ["Overload signaturalari soni bilan bir xil", "Faqat bitta", "Ikkita", "Hech qancha (faqat deklaratsiya bo'ladi)"],
-      correctAnswer: 1,
-      explanation: "Kompilyatsiya qilingan JavaScript-da faqat bitta funksiya qolishi kerakligi sababli, overload-da haqiqiy implementatsiya faqat bitta bo'ladi va u barcha signaturalarga mos bo'lishi shart."
-    },
-    {
-      id: 6,
-      question: "Callback funksiyani parametrlarda `cb: Function` deb tiplash nega tavsiya etilmaydi?",
-      options: [
-        "Chunki u xotirani ko'p oladi",
-        "Chunki u xavfsiz emas - callback qanday argumentlar olishi va nima qaytarishini tekshirmaydi",
-        "Chunki `Function` tipi TypeScript-da mavjud emas",
-        "Chunki u sinxron ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "`Function` tipi har qanday funksiyani qabul qilib yuboradi. Tiplar xavfsizligi uchun callback signaturasini to'liq yozish lozim: `(x: number) => void`."
-    },
-    {
-      id: 7,
-      question: "Default parameters (standart qiymatli parametrlar) qachon ishlatiladi?",
-      options: [
-        "Faqat massiv bo'lganda",
-        "Argument uzatilmagan yoki uning qiymati `undefined` bo'lganda",
-        "Faqat funksiya xato berganda",
-        "Har doim dastur ishlashi boshida"
-      ],
-      correctAnswer: 1,
-      explanation: "Agar argument uzatilmasa yoki uning qiymati `undefined` bo'lsa, standart qiymat avtomatik ravishda parametrga yuklanadi."
-    },
-    {
-      id: 8,
-      question: "Hech qachon tugamaydigan (masalan, cheksiz loop yoki throw qiluvchi) funksiyalarning qaytish tipi nima deb e'lon qilinadi?",
-      options: ["void", "never", "null", "unknown"],
-      correctAnswer: 1,
-      explanation: "Hech qachon yakunlanib qiymat qaytarmaydigan holatlar uchun maxsus `never` qaytish tipi ishlatiladi."
-    },
-    {
-      id: 9,
-      question: "TypeScript-da arrow funksiyalarni qanday tiplash mumkin?",
-      options: [
-        "const double = (x: number): number => x * 2;",
-        "const double: number = (x) => x * 2;",
-        "const double = function(x): number {}",
-        "const double = (x): number => x * 2;"
-      ],
-      correctAnswer: 0,
-      explanation: "Arrow funksiyalarda parametrlar va qaytish tipi bevosita qavslar ichida va keyin yoziladi: `(x: number): number => x * 2`."
-    },
-    {
-      id: 10,
-      question: "TypeScript-da funksiya ichidagi `this` kontekstini qanday tiplash mumkin?",
-      options: [
-        "Klass ichida readonly qilish orqali",
-        "Funksiyaning birinchi argumenti sifatida maxsus `this: Type` yozish orqali",
-        "Global o'zgaruvchi yaratib",
-        "Funksiyaga bind() metodini chaqirib"
-      ],
-      correctAnswer: 1,
-      explanation: "TypeScript funksiya parametrlarida birinchi bo'lib yozilgan `this: Type` parametrini maxsus tushunadi va u haqiqiy JS argumentiga aylanmaydi."
-    },
-    {
-      id: 11,
-      question: "Quyidagi funksiyaning qaytish tipi nima deb hisoblanadi (Type Inference orqali)?\n`function check(x: number) { return x > 10; }`",
-      options: ["number", "boolean", "void", "any"],
-      correctAnswer: 1,
-      explanation: "Funksiya taqqoslash amali `x > 10` natijasini qaytaradi, bu esa true yoki false, ya'ni boolean tipidir."
-    },
-    {
-      id: 12,
-      question: "Agar funksiya parametrlari tiplari belgilanmasa va Type Inference ham aniqlay olmasa, unga qaysi tip avtomatik beriladi (agar noImplicitAny yoqilmagan bo'lsa)?",
-      options: ["unknown", "void", "any", "never"],
-      correctAnswer: 2,
-      explanation: "Standart holatda aniqlanmagan parametrlarga `any` tipi beriladi, bu esa loyihada xatoliklarga olib kelishi mumkin."
-    },
-    {
-      id: 13,
-      question: "Quyidagi tip e'lonining nomi nima va u qanday vazifani bajaradi?\n`interface CustomFn { (x: string): void; name: string; }`",
-      options: [
-        "Construct Signature - klass yaratish uchun ishlatiladi",
-        "Call Signature - chaqiriluvchi obyekt funksiya va uning qo'shimcha xossalarini tiplash uchun ishlatiladi",
-        "Index Signature - obyektning dinamik kalitlarini tiplash uchun ishlatiladi",
-        "Method Signature - faqat obyekt metodlarini tiplash uchun ishlatiladi"
-      ],
-      correctAnswer: 1,
-      explanation: "Agar obyekt bir vaqtning o'zida funksiya sifatida chaqirilishi va qo'shimcha xossalarga ega bo'lishi kerak bo'lsang, Call Signature-dan foydalaniladi."
-    },
-    {
-      id: 14,
-      question: "Construct Signature-ni e'lon qilishda qaysi kalit so'zidan foydalaniladi?",
-      options: [
-        "constructor",
-        "class",
-        "new",
-        "create"
-      ],
-      correctAnswer: 2,
-      explanation: "Konstruktor funksiyalar signaturasini belgilash uchun tip ichida `new` kalit so'zi bilan boshlanadigan `new (...args): Type` yozuvi ishlatiladi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Quyidagilardan qaysi biri TypeScript-da to'g'ri yozilgan funksiya hisoblanadi?",
+    "options": [
+      "function add(a: number, b: number) { return a + b; }",
+      "function add(a, b) as number { return a + b; }",
+      "let add = (a, b) => a + b;",
+      "function add(a number, b number) {}"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Birinchi variantda parametrlar tiplari ko'rsatilgan va return tipi avtomatik ravishda Type Inference yordamida son deb topiladi."
+  },
+  {
+    "id": 2,
+    "question": "Funksiyaning ixtiyoriy parametri (Optional Parameter) qayerda e'lon qilinishi shart?",
+    "options": [
+      "Parametrlar ro'yxatining eng boshida",
+      "Parametrlar ro'yxatining ixtiyoriy joyida",
+      "Parametrlar ro'yxatining eng oxirida",
+      "Funksiya tanasining ichida"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Optional parametrlar doimo majburiy parametrlardan keyin, ya'ni parametrlar ro'yxatining eng oxirida bo'lishi shart."
+  },
+  {
+    "id": 3,
+    "question": "TypeScript-da rest parametrlarni qanday tiplash to'g'ri hisoblanadi?",
+    "options": [
+      "function sum(...args: number)",
+      "function sum(...args: number[])",
+      "function sum(...args: [number])",
+      "function sum(...args: any)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Rest parametrlar doimo massiv ko'rinishida yig'ilganligi uchun ularning tipi massiv (masalan: `number[]`) bo'lishi shart."
+  },
+  {
+    "id": 4,
+    "question": "Function Overloading (Funksiya yuklamasi) nima?",
+    "options": [
+      "Bitta funksiyani qayta-qayta chaqirish",
+      "Bir xil nomli, lekin har xil parametrlar va har xil qaytish tiplariga ega funksiyalar to'plamini yaratish",
+      "Funksiya xotirasini optimallashtirish",
+      "Funksiyani oqimga (thread) yuklash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Overloads — har xil turdagi argumentlar uzatilganda funksiya har xil tipli natija qaytarishini kompilyatorga tushuntirish uchun bir xil nomli signaturalarni yozishdir."
+  },
+  {
+    "id": 5,
+    "question": "Function Overload ishlatilganda, funksiyaning haqiqiy implementatsiya (kod) qismi nechta bo'ladi?",
+    "options": [
+      "Overload signaturalari soni bilan bir xil",
+      "Faqat bitta",
+      "Ikkita",
+      "Hech qancha (faqat deklaratsiya bo'ladi)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kompilyatsiya qilingan JavaScript-da faqat bitta funksiya qolishi kerakligi sababli, overload-da haqiqiy implementatsiya faqat bitta bo'ladi va u barcha signaturalarga mos bo'lishi shart."
+  },
+  {
+    "id": 6,
+    "question": "Callback funksiyani parametrlarda `cb: Function` deb tiplash nega tavsiya etilmaydi?",
+    "options": [
+      "Chunki u xotirani ko'p oladi",
+      "Chunki u xavfsiz emas - callback qanday argumentlar olishi va nima qaytarishini tekshirmaydi",
+      "Chunki `Function` tipi TypeScript-da mavjud emas",
+      "Chunki u sinxron ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Function` tipi har qanday funksiyani qabul qilib yuboradi. Tiplar xavfsizligi uchun callback signaturasini to'liq yozish lozim: `(x: number) => void`."
+  },
+  {
+    "id": 7,
+    "question": "Default parameters (standart qiymatli parametrlar) qachon ishlatiladi?",
+    "options": [
+      "Faqat massiv bo'lganda",
+      "Argument uzatilmagan yoki uning qiymati `undefined` bo'lganda",
+      "Faqat funksiya xato berganda",
+      "Har doim dastur ishlashi boshida"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar argument uzatilmasa yoki uning qiymati `undefined` bo'lsa, standart qiymat avtomatik ravishda parametrga yuklanadi."
+  },
+  {
+    "id": 8,
+    "question": "Hech qachon tugamaydigan (masalan, cheksiz loop yoki throw qiluvchi) funksiyalarning qaytish tipi nima deb e'lon qilinadi?",
+    "options": [
+      "void",
+      "never",
+      "null",
+      "unknown"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Hech qachon yakunlanib qiymat qaytarmaydigan holatlar uchun maxsus `never` qaytish tipi ishlatiladi."
+  },
+  {
+    "id": 9,
+    "question": "TypeScript-da arrow funksiyalarni qanday tiplash mumkin?",
+    "options": [
+      "const double = (x: number): number => x * 2;",
+      "const double: number = (x) => x * 2;",
+      "const double = function(x): number {}",
+      "const double = (x): number => x * 2;"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Arrow funksiyalarda parametrlar va qaytish tipi bevosita qavslar ichida va keyin yoziladi: `(x: number): number => x * 2`."
+  },
+  {
+    "id": 10,
+    "question": "TypeScript-da funksiya ichidagi `this` kontekstini qanday tiplash mumkin?",
+    "options": [
+      "Klass ichida readonly qilish orqali",
+      "Funksiyaning birinchi argumenti sifatida maxsus `this: Type` yozish orqali",
+      "Global o'zgaruvchi yaratib",
+      "Funksiyaga bind() metodini chaqirib"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TypeScript funksiya parametrlarida birinchi bo'lib yozilgan `this: Type` parametrini maxsus tushunadi va u haqiqiy JS argumentiga aylanmaydi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi funksiyaning qaytish tipi nima deb hisoblanadi (Type Inference orqali)?\n`function check(x: number) { return x > 10; }`",
+    "options": [
+      "number",
+      "boolean",
+      "void",
+      "any"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Funksiya taqqoslash amali `x > 10` natijasini qaytaradi, bu esa true yoki false, ya'ni boolean tipidir."
+  },
+  {
+    "id": 12,
+    "question": "Construct Signature-ni e'lon qilishda qaysi kalit so'zidan foydalaniladi?",
+    "options": [
+      "constructor",
+      "class",
+      "new",
+      "create"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Konstruktor funksiyalar signaturasini belgilash uchun tip ichida `new` kalit so'zi bilan boshlanadigan `new (...args): Type` yozuvi ishlatiladi."
+  }
+]
+
 };

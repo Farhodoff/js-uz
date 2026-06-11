@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Typeof Type Guard",
+    "instruction": "Kiruvchi `val` parametrini (`string | number`) tekshiring. Agar string bo'lsa uning uzunligini, number bo'lsa uning kvadratini qaytaruvchi `checkType(val)` funksiyasini yozing.",
+    "startingCode": "function checkType(val: string | number): number {\n  // Kodni yozing\n}",
+    "hint": "if (typeof val === 'string') return val.length; return val * val;",
+    "test": "if (typeof checkType !== 'function') return 'checkType topilmadi'; if(checkType('hello') !== 5 || checkType(4) !== 16) return 'Turlarni tekshirish xato'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Instanceof Type Guard",
+    "instruction": "O'zgaruvchi `val` (`Date | string`) qabul qilib, agar u Date obyekti bo'lsa uning yilini (`getFullYear()`), string bo'lsa uni Date obyekti sifatida pars qilib, keyin uning yilini qaytaradigan `getYear(val)` funksiyasini yozing.",
+    "startingCode": "function getYear(val: Date | string): number {\n  // instanceof dan foydalaning\n}",
+    "hint": "if (val instanceof Date) return val.getFullYear(); return new Date(val).getFullYear();",
+    "test": "if (typeof getYear !== 'function') return 'getYear topilmadi'; if(getYear(new Date(2025, 0, 1)) !== 2025 || getYear('2026-01-01') !== 2026) return 'Yilni aniqlash xato'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "In Operator Guard",
+    "instruction": "Foydalanuvchi `user` (`Admin | Guest`) qabul qilib, unda `kickUser` xossasi borligini `in` operatori orqali tekshiring. Agar u Admin bo'lsa `kickUser()` natijasini, Guest bo'lsa `login()` natijasini qaytaruvchi `handleUser(user)` funksiyasini yozing.",
+    "startingCode": "interface Admin { role: string; kickUser: () => string; }\ninterface Guest { name: string; login: () => string; }\n\nfunction handleUser(user: Admin | Guest): string {\n  // in operatorini ishlating\n}",
+    "hint": "if ('kickUser' in user) return user.kickUser(); return user.login();",
+    "test": "if (typeof handleUser !== 'function') return 'handleUser topilmadi'; const admin = { role: 'admin', kickUser: () => 'Kicked' }; const guest = { name: 'Ali', login: () => 'Logged in' }; if (handleUser(admin) !== 'Kicked' || handleUser(guest) !== 'Logged in') return 'Foydalanuvchi roli noto\\'g\\'ri tekshirildi'; return null;"
+  }
+]

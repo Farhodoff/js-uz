@@ -2,372 +2,388 @@ export const typescriptBasics = {
   id: "typescriptBasics",
   title: "TypeScript Asoslari va Tiplar",
   language: "typescript",
-  theory: `## 1. NEGA kerak?
-JavaScript dinamik tipli tildir. Bu shuni anglatadiki, o'zgaruvchi e'lon qilinganda uning tipi belgilanmaydi va dastur ishlash jarayonida (runtime) o'zgaruvchi ixtiyoriy tipdagi qiymatni qabul qilishi mumkin. Bu moslashuvchanlikni oshirsa-da, katta loyihalarda kutilmagan xatolar (runtime errors) keltirib chiqaradi.
-**TypeScript** esa Microsoft tomonidan yaratilgan bo'lib, JavaScript ustiga qurilgan va unga **statik tiplash** (static typing) xususiyatini qo'shadi. TypeScript koddagi tiplarni dastur ishga tushishidan oldin (compile-time) tekshiradi. Bu orqali xatoliklarni kod yozish jarayonidayoq aniqlash va IDE imkoniyatlaridan (autocomplete, refactoring) maksimal foydalanish mumkin bo'ladi.
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-## 2. SODDALIK (Analogiya)
-JavaScript-ni **vilkalar va rozetkalarsiz simlarga** o'xshatish mumkin: siz istalgan simni istalgan joyga ulashingiz mumkin, lekin noto'g'ri ulasangiz, qisqa tutashuv (runtime error) yuz beradi.
-TypeScript esa **maxsus shaklli rozetka va vilkalarga** o'xshaydi: yumaloq vilkani faqat yumaloq rozetkaga ulay olasiz. Agar to'rtburchak vilkani ulamoqchi bo'lsangiz, tizim sizga elektr oqimi boshlanishidan oldinoq (kompilyatsiyada) xato haqida ogohlantiradi.
+### JavaScript va TypeScript farqi
+* **JavaScript (Dinamik tiplash):** O'zgaruvchining tipi oldindan belgilanmaydi va runtime-da (ishlash jarayonida) o'zgarishi mumkin. Bu xuddi vilkalar va rozetkalarsiz yalang'och simlarga o'xshaydi: istalgan simni istalgan joyga ulashingiz mumkin, lekin noto'g'ri ulasangiz, portlash (runtime error) sodir bo'ladi.
+* **TypeScript (Statik tiplash):** Kod yozish va build qilish vaqtidayoq har bir o'zgaruvchi va funksiyaning tipi tekshiriladi. U xuddi har xil shakldagi rozetka va vilkalarga o'xshaydi: to'rtburchak vilkani faqat to'rtburchak rozetkaga ulay olasiz. Agar xato shaklli simni ulamoqchi bo'lsangiz, tizim sizga tokni ulashdan oldinoq (kompilyatsiyada) xato beradi.
 
-## 3. STRUKTURA
-TypeScript-da asosiy tiplar quyidagicha e'lon qilinadi:
-- **Oddiy tiplar:** \`number\`, \`string\`, \`boolean\`
-- **Massivlar (Arrays):** \`number[]\` yoki \`Array<string>\`
-- **Tuple (Kortej):** Elementlar soni va tiplari qat'iy belgilangan massiv. Masalan: \`[string, number]\`
-- **Enum (Ro'yxat):** Nomlangan konstantalar to'plami.
-- **Any va Unknown:** \`any\` tiplashni butunlay o'chirib qo'yadi, \`unknown\` esa xavfsizroq muqobil bo'lib, ishlatishdan oldin tipni aniqlashtirishni (type narrowing) talab qiladi.
-- **Void va Never:** \`void\` funksiya qiymat qaytarmasligini, \`never\` esa funksiya hech qachon yakunlanmasligini (xato otishini yoki cheksiz siklni) anglatadi.
+---
 
-Tiplarni belgilash sintaksisi:
-\`\`\`typescript
+## 2. 💻 Real Kod Misollari
+
+### 1. Basic Example (Primitive Types va Type Inference)
+TypeScript o'zgaruvchining tipini u biriktirilayotgan qiymatidan kelib chiqib avtomatik ravishda ham aniqlay oladi (Type Inference):
+\\\`\\\`\\\`typescript
+// Type Annotation (Tipni aniq belgilash)
 let age: number = 25;
-let username: string = "Ali";
-let isDeveloper: boolean = true;
+let userName: string = "Doston";
+let isStudent: boolean = true;
 
-// Tuple
-let coords: [number, number] = [41.2995, 69.2401];
-\`\`\`
+// Type Inference (TS avtomatik ravishda 'number' deb xulosa qiladi)
+let score = 95; 
+// score = "yuz"; // XATO! string tipi number-ga berilmaydi.
+\\\`\\\`\\\`
 
-### A. Type Inference vs Type Annotation
-TypeScript-da o'zgaruvchi tipini e'lon qilishning ikki xil yo'li mavjud:
-1. **Type Annotation (Tipni aniq ko'rsatish):** Dasturchi o'zgaruvchi yoniga uning tipini belgilab ketadi.
-   \`\`\`typescript
-   let count: number = 10;
-   \`\`\`
-2. **Type Inference (Tip xulosasi):** Agar qiymat darhol biriktirilsa, TypeScript o'zgaruvchi tipini qiymatidan kelib chiqib avtomatik ravishda aniqlaydi.
-   \`\`\`typescript
-   let message = "Salom"; // TS buni avtomatik string deb hisoblaydi
-   \`\`\`
-   *Tavsiya:* Kod keraksiz murakkablashmasligi uchun, oddiy o'zgaruvchilar uchun Type Inference-dan, funksiya parametrlari va murakkab obyektlar uchun esa Type Annotation-dan foydalanish tavsiya etiladi.
+### 2. Intermediate Example (Tuple va Enum)
+Kortej (Tuple) elementlari soni va tiplari qat'iy belgilangan massivdir. Enum esa mantiqiy konstantalar guruhidir:
+\\\`\\\`\\\`typescript
+// Tuple (Kortej)
+let location: [number, number] = [41.2995, 69.2401]; // [kenglik, uzunlik]
 
-### B. Literal Types (Literal tiplar)
-Literal tiplar o'zgaruvchiga faqat bitta yoki bir nechta aniq belgilangan qiymatlarnigina qabul qilishga ruxsat beradi. Ular asosan Union (\`|\`) bilan birga ishlatiladi:
-\`\`\`typescript
-type Direction = "left" | "right" | "up" | "down";
-let move: Direction = "left"; // to'g'ri
-// let move: Direction = "around"; // XATO!
-\`\`\`
+// Enum (Ro'yxat)
+enum UserRole {
+  User = "USER",
+  Admin = "ADMIN",
+  Guest = "GUEST"
+}
 
-### C. Type Aliases vs Interfaces
-TypeScript-da yangi obyekt yoki qiymat tipini yaratish uchun ikkita asosiy vosita bor:
-- **Type Alias (\`type\`):** Istalgan turdagi tipga (primitivlar, obyektlar, union-lar) yangi nom berish uchun ishlatiladi. Qayta e'lon qilib kengaytirib bo'lmaydi.
-  \`\`\`typescript
-  type Point = { x: number; y: number };
-  type ID = string | number; // Union uchun faqat type mos keladi
-  \`\`\`
-- **Interface (\`interface\`):** Faqat obyekt yoki klasslarning shaklini (structure) tavsiflash uchun ishlatiladi. Ularni \`extends\` orqali kengaytirish yoki bir xil nomda bir nechta interfeys e'lon qilib (declaration merging) avtomatik birlashtirish mumkin.
-  \`\`\`typescript
-  interface User { name: string; }
-  interface User { age: number; } // Endi User interfeysi name va age-ga ega
-  \`\`\`
+let currentRole: UserRole = UserRole.Admin;
+\\\`\\\`\\\`
 
-### D. Type Assertion (Tipni majburlash)
-Ba'zan siz obyekt tipini TypeScript-ga qaraganda aniqroq bilasiz (masalan, API-dan yoki DOM-dan ma'lumot olayotganda). Bunday holda \`as\` operatori orqali tipni majburlab ko'rsatish mumkin:
-\`\`\`typescript
-const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
-\`\`\`
+### 3. Advanced Example (Unknown vs Any va Type Narrowing)
+\\\`any\\\` barcha tip tekshiruvlarini o'chiradi. \\\`unknown\\\` esa qiymatni saqlaydi, lekin uni ishlatishdan oldin uning tipini aniqlashtirishni talab qiladi:
+\\\`\\\`\\\`typescript
+function printLength(value: unknown) {
+  // value.length; // XATO! unknown tipida 'length' bormi-yo'qmi TS bilmaydi.
+  
+  if (typeof value === "string") {
+    // Type Narrowing: bu blok ichida 'value' aniq string ekanligi isbotlandi
+    console.log("Satr uzunligi:", value.length); 
+  } else if (Array.isArray(value)) {
+    console.log("Massiv uzunligi:", value.length);
+  } else {
+    console.log("Uzunlik aniqlanmadi.");
+  }
+}
+\\\`\\\`\\\`
 
-### E. TypeScript-ning Kompilyatsiya Oqimi (Mermaid)
+---
 
-TypeScript kodi brauzerda to'g'ridan-to'g'ri ishlamagani uchun u quyidagi oqim asosida tekshiriladi va oddiy JavaScript kodiga transpayl qilinadi:
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
 
-\`\`\`mermaid
-flowchart TD
-    TS[TypeScript Kodi: .ts] --> Parser[Syntactic Parser]
-    Parser --> Checker[Type Checker: Tiplarni tekshirish]
-    Checker -->|Xatolik aniqlansa| Err[Compile-time Error: Xatolarni ko'rsatish]
-    Checker -->|Tiplar to'g'ri bo'lsa| Emitter[Emitter / Transpiler]
-    Emitter -->|Tip belgilari o'chiriladi| JS[JavaScript Kodi: .js]
-    JS --> Browser[Brauzerda / Node.js da ishga tushadi]
-\`\`\`
+### Kompilyatsiya va Transpilyatsiya
+TypeScript kodi brauzer yoki Node.js tomonidan bevosita bajarila olmaydi. Buning uchun:
+1. **TS Compiler (tsc):** Kodni tahlil qiladi va tiplarni tekshiradi. Agar koddagi tiplarda biror mos kelmaslik bo'lsa, xato xabarini chiqaradi.
+2. **Type Erasure:** Kompilyator tiplarning to'g'riligini tasdiqlagach, barcha tiplarga tegishli belgilarni (masalan, \\\`: number\\\`, \\\`interface\\\`, \\\`type\\\`) koddandan butunlay o'chirib tashlaydi.
+3. **JS Generation:** Natijada toza JavaScript kodi hosil bo'ladi va bu kod runtimeda odatdagidek ishlaydi.
 
-## 4. AMALIYOT (Mashqlar pastda)
+> [!IMPORTANT]
+> TypeScript faqat **kod yozish va kompilyatsiya** vaqtida xavfsizlikni ta'minlaydi. Runtime-da (dastur ishlash jarayonida) faqat JavaScript ishlaydi va u yerda hech qanday tip tekshiruvi mavjud bo'lmaydi.
 
-## 5. XATOLAR (Common mistakes)
-1. **Hammasiga \`any\` ishlatish (Any-script):** TypeScript-ga endi o'tganlar tiplash xatolaridan qochish uchun barcha joyda \`any\` ishlatishadi. Bu statik tekshiruvning barcha afzalliklarini yo'qqa chiqaradi.
-2. **unknown tipidagi o'zgaruvchini to'g'ridan-to'g'ri ishlatish:** \`unknown\` tipidagi qiymatni boshqa o'zgaruvchiga berishdan oldin uning tipini \`typeof\` orqali tekshirish yoki type assertion (\`as\`) qilish shart.
-3. **Tuple va Array-ni chalkashtirish:** \`[string, number]\` kortejiga faqat ikkita element qo'shish mumkin, oddiy massiv esa ixtiyoriy uzunlikda bo'ladi.
+---
 
-## 6. SAVOLLAR VA JAVOBLAR
-**1. TypeScript nima?**
-JavaScript-ga statik tiplash va qo'shimcha imkoniyatlarni qo'shadigan, kompilyatsiya qilinadigan dasturlash tili.
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
 
-**2. Statik tiplash nima va u dinamik tiplashdan nimasi bilan farq qiladi?**
-Statik tiplashda tiplar kod yozish/kompilyatsiya vaqtida tekshiriladi, dinamik tiplashda esa dastur ishlayotgan vaqtda (runtime) tekshiriladi.
+### 1. "Any-Script" yozish
+Junior dasturchilar tiplardagi xatoliklarni yechish uchun ko'p joyga \\\`any\\\` yozishadi. Bu statik tiplashning barcha foydasini yo'qqa chiqaradi va JS-ga qaytish bilan barobardir.
+* **Yechim:** \\\`any\\\` o'rniga \\\`unknown\\\` ishlating va tipni toraytiring (narrowing).
 
-**3. TypeScript kodini brauzer to'g'ridan-to'g'ri tushunadimi?**
-Yo'q, brauzerlar faqat JavaScript-ni tushunadi. TypeScript kodi avval JavaScript-ga transpayl (kompilyatsiya) qilinishi kerak.
+### 2. Type Assertion (\\\`as\\\`) ni runtime-da ishlaydi deb o'ylash
+\\\`as\\\` yordamida tipni majburlash kompilyatorni aldaydi, lekin runtime-da haqiqiy qiymat boshqacha bo'lsa, baribir xatolik kelib chiqadi.
+* **Noto'g'ri:**
+  \\\`\\\`\\\`typescript
+  let val: any = 123;
+  let str = val as string; // bu runtimeda sonligicha qolaveradi!
+  console.log(str.toUpperCase()); // RUNTIME ERROR: toUpperCase is not a function
+  \\\`\\\`\\\`
 
-**4. "Type Inference" nima degani?**
-TypeScript o'zgaruvchiga berilgan boshlang'ich qiymatga qarab, uning tipini avtomatik ravishda aniqlab olish xususiyati.
+### 3. Void va Never-ni adashtirish
+* \\\`void\\\` — funksiya normal tugaydi, lekin hech qanday qiymat qaytarmaydi (ichki xizmatda \\\`undefined\\\` qaytadi).
+* \\\`never\\\` — funksiya hech qachon normal yakunlanmaydi (masalan, cheksiz sikl yoki throw error).
 
-**5. any va unknown farqi nima?**
-Ikkalasi ham har qanday qiymatni qabul qiladi, lekin \`any\` tipi bilan istalgan amalni bajarish mumkin, \`unknown\` esa tip aniqlanmaguncha u ustida amal bajarishga yo'l qo'ymaydi.
+---
 
-**6. Tuple nima?**
-Elementlari soni va har bir indeksdagi elementlarining tipi oldindan qat'iy belgilangan massiv turi.
+## 5. 💬 12 ta Intervyu Savollari
 
-**7. Enum nima va u nima uchun ishlatiladi?**
-Mantiqiy bog'langan konstantalar to'plamini (masalan, haftaning kunlari, foydalanuvchi rollari) bitta nom ostida guruhlash uchun.
+### Junior
+1. **Savol:** TypeScript nima va u JavaScript-dan qanday farq qiladi?
+   * **Javob:** TypeScript JavaScript-ning ustiga qurilgan bo'lib, unga statik tiplash tizimini qo'shadi. Kod yozish jarayonida xatolarni aniqlashga yordam beradi.
+2. **Savol:** Type Inference (Tip xulosasi) nima?
+   * **Javob:** Dasturchi tipni yozmagan bo'lsa ham, TypeScript-ning o'zgaruvchiga berilgan qiymatdan kelib chiqib uning tipini avtomatik aniqlab olish xususiyatidir.
+3. **Savol:** any va unknown tiplari farqi nima?
+   * **Javob:** Ikkalasi ham har qanday qiymatni qabul qiladi. Farqi shundaki, \\\`any\\\` bilan istalgan amalni bajarish mumkin (tip tekshiruvi yo'q), \\\`unknown\\\` esa tip aniqlashtirilmaguncha (narrowing bo'lmaguncha) u ustida amal bajarishga yo'l qo'ymaydi.
+4. **Savol:** Kortej (Tuple) nima?
+   * **Javob:** Elementlari soni va ularning tartibi bo'yicha tiplari qat'iy belgilangan massiv. Masalan: \\\`[string, number]\\\`.
 
-**8. Void tipi qayerda ishlatiladi?**
-Hech qanday qiymat qaytarmaydigan (faqat amal bajaradigan) funksiyalarning qaytish tipi sifatida.
+### Middle
+5. **Savol:** void va never farqi nimada?
+   * **Javob:** \\\`void\\\` funksiya normal tugaydi va qiymat qaytarmaydi. \\\`never\\\` esa funksiya hech qachon normal oxiriga yetib bormasligini bildiradi (xato otadi yoki cheksiz sikl).
+6. **Savol:** Type Alias (\\\`type\\\`) va \\\`interface\\\` farqi nima?
+   * **Javob:** \\\`interface\\\` faqat obyektlar/klasslarni tavsiflaydi va declaration merging (avtomatik birlashish) ni qo'llaydi. \\\`type\\\` esa istalgan tipga (primitivlar, union va h.k.) taxallusi sifatida ishlatiladi va avtomatik birlashmaydi.
+7. **Savol:** Type Assertion (\\\`as\\\`) runtimeda ishlaydimi?
+   * **Javob:** Yo'q. Type assertion faqat kompilyatsiya vaqtida ishlaydi (kompilyatorga 'bunga tegma, men tipni aniq bilaman' deydi). Kompilyatsiyadan keyin u yo'qoladi.
+8. **Savol:** \\\`const enum\\\` ning oddiy \\\`enum\\\` dan farqi nima?
+   * **Javob:** Oddiy \\\`enum\\\` runtime-da JS obyekti sifatida saqlanib qoladi. \\\`const enum\\\` esa kompilyatsiyadan so'ng butunlay o'chiriladi va uning qiymatlari kod ichiga joylashtiriladi (inlined).
 
-**9. Never tipi nima va u void-dan qanday farq qiladi?**
-\`void\` funksiya tugaydi lekin qiymat qaytarmaydi (undefined qaytadi), \`never\` esa funksiya umuman normal tugamasligini (dasturni to'xtatishini yoki xato otishini) bildiradi.
+### Senior
+9. **Savol:** TypeScript structural typing (strukturaviy tiplash) modeliga qanday asoslanadi?
+   * **Javob:** U nominal emas, balki struktura bo'yicha tekshiriladi (Duck typing). Agar obyekt talab etilgan barcha xossalarga mos tuzilishga ega bo'lsa, u mos tip hisoblanadi (nomi muhim emas).
+10. **Savol:** TypeScript-da Top Type va Bottom Type deganda nimalar tushuniladi?
+    * **Javob:** Top Type (barcha boshqa tiplarni qabul qila oladigan) — \\\`any\\\` va \\\`unknown\\\`. Bottom Type (hech qanday tip qabul qilolmaydigan, hatto void-ni ham) — \\\`never\\\`.
+11. **Savol:** "Type Narrowing" nima va uni qanday usullar bilan amalga oshirish mumkin?
+    * **Javob:** \\\`typeof\\\`, \\\`instanceof\\\`, \\\`in\\\` operatorlari, shuningdek Custom Type Guards (foydalanuvchi tekshiruv funksiyalari) orqali tipni kichikroq, aniqroq tipga toraytirish.
+12. **Savol:** Nima uchun TypeScript runtimeda koddagi xavfsizlikni to'liq kafolatlay olmaydi?
+    * **Javob:** Chunki runtimeda faqat transpilyatsiya qilingan JavaScript ishlaydi. Agar tashqi API kutilmagan yoki noto'g'ri shakldagi ma'lumot qaytarsa, JS uni qabul qilib xatolik berishi mumkin (buni oldini olish uchun runtimeda alohida validatorlar kerak).
 
-**10. TypeScript-da qanday qilib massivlarni e'lon qilish mumkin?**
-\`type[]\` (masalan, \`string[]\`) yoki \`Array<type>\` (masalan, \`Array<string>\`) sinrakslari orqali.
+---
 
-**11. Type Assertion nima?**
-Kompilyatorga o'zgaruvchining tipi haqida aniqroq ma'lumot berish uchun ishlatiladigan \`as\` kalit so'zi (cast qilish).
+## 6. 🛠️ Amaliy Topshiriqlar
 
-**12. TypeScript loyiha tezligiga ta'sir qiladimi?**
-Kompilyatsiya vaqtini biroz ko'paytiradi, lekin tayyor bo'lgan JavaScript kodi oddiy JS bilan bir xil tezlikda ishlaydi (hech qanday runtime yuklama qo'shmaydi).
-`,
+Quyida TypeScript tiplar ierarxiyasi tasvirlangan. Bu ierarxiya qaysi tip boshqasining usti (supertype) yoki osti (subtype) ekanligini ko'rsatadi:
+
+\\\`\\\`\\\`mermaid
+graph TD
+    unknown[unknown / any] --> Object[Object / custom types]
+    unknown --> primitives[Primitives: string, number, boolean, symbol, null, undefined]
+    unknown --> void[void]
+    primitives --> Literals[Literal Types: 'red', 42, true]
+    Object --> never[never]
+    Literals --> never
+    void --> never
+\\\`\\\`\\\`
+
+Dars oxiridagi amaliy mashqlarni bajarib, olgan bilimlaringizni sinab ko'ring.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Darsdagi nazariy tushunchalarni mustahkamlash uchun mo'ljallangan mini testlar to'plami.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### API-dan kelgan ma'lumotni xavfsiz validation qilish va tiplash (API Guard)
+Haqiqiy loyihalarda API-dan kelgan ma'lumotlar tipi biz kutgandek bo'lmasligi mumkin. Quyida ma'lumotni \\\`unknown\\\` orqali qabul qilib, uni xavfsiz tahlil qiluvchi va ma'lumot turini kafolatlovchi (Type Guard) tizim keltirilgan:
+
+\\\`\\\`\\\`typescript
+interface UserData {
+  id: number;
+  name: string;
+  role: "admin" | "user";
+}
+
+// UserData ekanligini runtimeda va compile-time da tekshiruvchi funksiya
+function isUserData(obj: any): obj is UserData {
+  return (
+    obj !== null &&
+    typeof obj === "object" &&
+    typeof obj.id === "number" &&
+    typeof obj.name === "string" &&
+    (obj.role === "admin" || obj.role === "user")
+  );
+}
+
+// API so'rovi natijasini qayta ishlash
+function handleApiResponse(rawResponse: unknown) {
+  if (isUserData(rawResponse)) {
+    // Bu blok ichida rawResponse tipi avtomatik ravishda UserData bo'ladi
+    console.log(\\\`Tizimga kirildi: \\\${rawResponse.name} (Roli: \\\${rawResponse.role})\\\`);
+  } else {
+    console.error("API qaytargan ma'lumot formati noto'g'ri!");
+  }
+}
+
+// To'g'ri ma'lumot bilan chaqirish
+handleApiResponse({ id: 1, name: "Sardor", role: "admin" });
+
+// Noto'g'ri ma'lumot bilan chaqirish
+handleApiResponse({ id: "1", name: "Guest" }); // Konsolga xato chiqadi
+\\\`\\\`\\\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **\\\`const enum\\\` ishlating:** Oddiy \\\`enum\\\`lar JavaScript obyektlarini yaratadi, bu esa ortiqcha kod hajmini oshiradi. \\\`const enum\\\` esa inlining yordamida qiymatlarni joy-joyiga qo'yadi.
+* **\\\`strict: true\\\` yoqing:** Loyihani boshlashdanoq \\\`tsconfig.json\\\` faylida \\\`strict\\\` rejimini yoqish kutilmagan \\\`null\\\`/\\\`undefined\\\` xatolaridan 99% qutqaradi.
+* **\\\`any\\\` tiplarini minimallashtiring:** \\\`any\\\` tipi ko'p ishlatilganda, kompilyator tiplarni tekshirishni rad etadi va uning tahlil qilish tezligi sekinlashishi mumkin.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Tip (Type) | Tavsif | Misol |
+| :--- | :--- | :--- |
+| **Primitivlar** | Oddiy ma'lumotlar turlari | \\\`let x: number = 5;\\\` \\\`let s: string = "ok";\\\` |
+| **Tuple (Kortej)** | Hajmi va tiplar tartibi qat'iy massiv | \\\`let coords: [number, number] = [12, 34];\\\` |
+| **unknown** | Xavfsiz top tip (ishlatishdan oldin tekshirish shart) | \\\`let data: unknown; if (typeof data === "string") ...\\\` |
+| **any** | Tip tekshiruvini butunlay o'chirish (tavsiya etilmaydi) | \\\`let raw: any = getRawData();\\\` |
+| **void** | Qiymat qaytarmaydigan funksiyalar uchun | \\\`function log(): void { console.log("hi"); }\\\` |
+| **never** | Hech qachon yakunlanmaydigan funksiyalar yoki imkonsiz holatlar | \\\`function fail(): never { throw new Error(); }\\\` |
+| **Literal type** | Faqat aniq yozilgan qiymatni qabul qilish | \\\`let mode: "dark" | "light";\\\` |`,
   exercises: [
     {
       id: 1,
-      title: "Number va String tiplari",
-      instruction: "Faqat son qabul qiluvchi va uni string tipiga o'girib qaytaradigan `numberToString(val)` funksiyasini yozing.",
-      startingCode: "function numberToString(val: number): string {\n  // Kodni yozing\n}",
-      hint: "return String(val);",
-      test: "if (typeof numberToString !== 'function') return 'Funksiya aniqlanmagan'; if (numberToString(45) !== '45') return 'Natija xato'; return null;"
+      title: "Primitiv tiplar va Funksiya tiplanishi",
+      instruction: "Foydalanuvchining ismi (`string`) va yoshi (`number`) qiymatlarini qabul qilib, ularni formatlangan satr ko'rinishida (`Ism: {name}, Yosh: {age}`) qaytaradigan `formatUserInfo(name, age)` funksiyasini yozing. Funksiya parametrlari va qaytish tipi aniq belgilangan bo'lishi kerak.",
+      startingCode: "function formatUserInfo(name: string, age: number): string {\n  // Kodni yozing\n}",
+      hint: "return `Ism: ${name}, Yosh: ${age}`;",
+      test: "if (typeof formatUserInfo !== 'function') return 'formatUserInfo funksiyasi topilmadi'; if (formatUserInfo('Ali', 25) !== 'Ism: Ali, Yosh: 25') return 'Natija noto\\'g\\'ri'; if (!code.includes(': string') || !code.includes(': number')) return 'Iltimos, parametrlarning tiplarini (string va number) to\\'g\\'ri belgilang'; return null;"
     },
     {
       id: 2,
-      title: "Boolean tekshiruvi",
-      instruction: "Berilgan qiymat boolean tipida ekanligini aniqlab true/false qaytaradigan `isBooleanVal(val)` funksiyasini yozing.",
-      startingCode: "function isBooleanVal(val: any): boolean {\n  // Kodni yozing\n}",
-      hint: "return typeof val === 'boolean';",
-      test: "if (typeof isBooleanVal !== 'function') return 'Funksiya topilmadi'; if(isBooleanVal(true) !== true || isBooleanVal(5) !== false) return 'Boolean qiymatlar xato tekshirildi'; return null;"
+      title: "Unknown va Type Narrowing",
+      instruction: "Bizga `unknown` tipida qiymat qabul qiladigan va uning tipi `string` bo'lsa satr uzunligini, agar `number` bo'lsa, uning kvadratini (sonning o'ziga ko'paytirilganini) qaytaradigan, boshqa barcha hollarda esa `-1` qaytaradigan `processInput(input)` funksiyasini yozing. Type narrowing (typeof) ishlating.",
+      startingCode: "function processInput(input: unknown): number {\n  // Kodni yozing\n}",
+      hint: "if (typeof input === 'string') return input.length; if (typeof input === 'number') return input * input; return -1;",
+      test: "if (typeof processInput !== 'function') return 'processInput funksiyasi topilmadi'; if (processInput('hello') !== 5) return 'String uchun uzunlik noto\\'g\\'ri hisoblandi'; if (processInput(6) !== 36) return 'Number uchun kvadrat noto\\'g\\'ri hisoblandi'; if (processInput(true) !== -1) return 'Boshqa tiplar uchun -1 qaytarilishi kerak'; if (!code.includes(': unknown')) return 'Parametr tipi unknown deb belgilanishi shart'; return null;"
     },
     {
       id: 3,
-      title: "Number massivi (Array of numbers)",
-      instruction: "Berilgan sonlar massividagi elementlarni kvadratga oshirib yangi massiv qaytaradigan `squareArray(arr)` funksiyasini yozing.",
-      startingCode: "function squareArray(arr: number[]): number[] {\n  // Kodni yozing\n}",
-      hint: "return arr.map(x => x * x);",
-      test: "if (typeof squareArray !== 'function') return 'squareArray topilmadi'; const res = squareArray([2, 3]); if(res[0] !== 4 || res[1] !== 9) return 'Kvadratlar hisoblanmadi'; return null;"
-    },
-    {
-      id: 4,
-      title: "String massivi (Array<string>)",
-      instruction: "String massivi elementlarini vergul bilan birlashtirib qaytaruvchi `joinStrings(arr)` funksiyasini yozing.",
-      startingCode: "function joinStrings(arr: string[]): string {\n  // Kodni yozing\n}",
-      hint: "return arr.join(', ');",
-      test: "if (typeof joinStrings !== 'function') return 'joinStrings topilmadi'; if(joinStrings(['a', 'b']) !== 'a, b') return 'Birlashtirish xato'; return null;"
-    },
-    {
-      id: 5,
-      title: "Tuple (Kortej) simulyatsiyasi",
-      instruction: "Koordinatalar korteji [x, y] ko'rinishida berilgan massiv elementlarini o'zaro almashtirib [y, x] ko'rinishida qaytaruvchi `swapCoords(coords)` funksiyasini yozing.",
-      startingCode: "function swapCoords(coords: [number, number]): [number, number] {\n  // coords[0] va coords[1] almashtiring\n}",
-      hint: "return [coords[1], coords[0]];",
-      test: "if (typeof swapCoords !== 'function') return 'swapCoords topilmadi'; const res = swapCoords([10, 20]); if(res[0] !== 20 || res[1] !== 10) return 'Koordinatalar almashmadi'; return null;"
-    },
-    {
-      id: 6,
-      title: "Kortej: Name va Age",
-      instruction: "Kortej sifatida [string, number] (ism va yosh) qabul qilib, 'Ism: [name], Yosh: [age]' ko'rinishidagi satr qaytaruvchi `formatPerson(person)` funksiyasini yozing.",
-      startingCode: "function formatPerson(person: [string, number]): string {\n  // Kodni yozing\n}",
-      hint: "return `Ism: ${person[0]}, Yosh: ${person[1]}`;",
-      test: "if (typeof formatPerson !== 'function') return 'formatPerson topilmadi'; if(formatPerson(['Ali', 20]) !== 'Ism: Ali, Yosh: 20') return 'Format xato'; return null;"
-    },
-    {
-      id: 7,
-      title: "Numeric Enum yaratish",
-      instruction: "User = 0 va Admin = 1 qiymatlariga ega bo'lgan `Role` nomli TypeScript enum e'lon qiling.",
-      startingCode: "// Role enumni yozing",
-      hint: "enum Role {\n  User = 0,\n  Admin = 1\n}",
-      test: "if (typeof Role === 'undefined') return 'Role topilmadi'; if(Role.User !== 0 || Role.Admin !== 1) return 'Role qiymatlari noto\\'g\\'ri'; return null;"
-    },
-    {
-      id: 8,
-      title: "String Enum yaratish",
-      instruction: "Pending = 'PENDING' va Success = 'SUCCESS' qiymatlariga ega bo'lgan `Status` nomli TypeScript enum e'lon qiling.",
-      startingCode: "// Status enumni yozing",
-      hint: "enum Status {\n  Pending = 'PENDING',\n  Success = 'SUCCESS'\n}",
-      test: "if (typeof Status === 'undefined') return 'Status topilmadi'; if(Status.Pending !== 'PENDING' || Status.Success !== 'SUCCESS') return 'Status qiymatlari xato'; return null;"
-    },
-    {
-      id: 9,
-      title: "Any tipi ustida amallar",
-      instruction: "Kiruvchi istalgan qiymatni satr (string) ko'rinishiga o'girib, uning uzunligini qaytaruvchi `getAnyLength(val)` funksiyasini yozing.",
-      startingCode: "function getAnyLength(val: any): number {\n  // Kodni yozing\n}",
-      hint: "return String(val).length;",
-      test: "if (typeof getAnyLength !== 'function') return 'getAnyLength topilmadi'; if(getAnyLength(12345) !== 5) return 'Uzunlik xato'; return null;"
-    },
-    {
-      id: 10,
-      title: "Unknown va Type Narrowing",
-      instruction: "Unknown qiymat qabul qilib, agar u `number` bo'lsa uni 2 ga ko'paytirib, agar `string` bo'lsa katta harflarga o'girib, boshqa hollarda null qaytaradigan `processUnknown(val)` funksiyasini yozing.",
-      startingCode: "function processUnknown(val: unknown): number | string | null {\n  // typeof tekshiruvini ishlating\n}",
-      hint: "if (typeof val === 'number') return val * 2; if (typeof val === 'string') return val.toUpperCase(); return null;",
-      test: "if (typeof processUnknown !== 'function') return 'processUnknown topilmadi'; if(processUnknown(5) !== 10 || processUnknown('ok') !== 'OK' || processUnknown(true) !== null) return 'Type narrowing xato ishladi'; return null;"
-    },
-    {
-      id: 11,
-      title: "Void funksiya",
-      instruction: "Qabul qilgan qiymatini global `globalState` o'zgaruvchisiga yozadigan va o'zi void (hech narsa qaytarmaydigan) `updateState(val)` funksiyasini yozing.",
-      startingCode: "let globalState: string = '';\nfunction updateState(val: string): void {\n  // globalState ni yangilang va return yozmang\n}",
-      hint: "globalState = val;",
-      test: "if (typeof updateState !== 'function') return 'updateState topilmadi'; updateState('active'); if(globalState !== 'active') return 'Global holat yangilanmadi'; return null;"
-    },
-    {
-      id: 12,
-      title: "Never funksiya",
-      instruction: "Hech qachon qiymat qaytarmaydigan va chaqirilganda doim 'Fatal Error' xabari bilan xato otadigan (throw) `throwFatal()` funksiyasini yozing.",
-      startingCode: "function throwFatal(): never {\n  // Error otish logikasi\n}",
-      hint: "throw new Error('Fatal Error');",
-      test: "if (typeof throwFatal !== 'function') return 'throwFatal topilmadi'; try { throwFatal(); return 'Xato otilmadi'; } catch(e) { if(e.message !== 'Fatal Error') return 'Xato xabari noto\\'g\\'ri'; } return null;"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Type Assertion (`as` kalit so'zi)",
-      instruction: "Sizga `any` tipidagi `apiData` o'zgaruvchisi berilgan. Uni `{ name: string; age: number }` tipida deb e'lon qilib (Type Assertion orqali), uning `name` xossasini qaytaruvchi `getUserName(apiData)` funksiyasini yozing.",
-      startingCode: "function getUserName(apiData: any): string {\n  // apiData obyektini { name: string; age: number } sifatida ko'rsating va name ni qaytaring\n}",
-      hint: "return (apiData as { name: string; age: number }).name;",
-      test: "if (typeof getUserName !== 'function') return 'getUserName topilmadi'; if(getUserName({ name: 'Farhod', age: 25 }) !== 'Farhod') return 'Ism xato qaytarildi'; return null;"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Union va Literal tiplar",
-      instruction: "Yo'l chirog'i (Traffic Light) holatini ifodalovchi `'red' | 'yellow' | 'green'` literal union tipini qabul qilib, agar `'red'` bo'lsa `'Stop'`, `'yellow'` bo'lsa `'Slow'`, `'green'` bo'lsa `'Go'` qaytaradigan `trafficLight(color)` funksiyasini yozing.",
-      startingCode: "type LightColor = 'red' | 'yellow' | 'green';\n\nfunction trafficLight(color: LightColor): string {\n  // Switch yoki if orqali tekshiring\n}",
-      hint: "if (color === 'red') return 'Stop'; if (color === 'yellow') return 'Slow'; return 'Go';",
-      test: "if (typeof trafficLight !== 'function') return 'trafficLight topilmadi'; if(trafficLight('red') !== 'Stop' || trafficLight('green') !== 'Go') return 'Noto\\'g\\'ri signal xabari'; return null;"
+      title: "Tuple (Kortej) bilan ishlash",
+      instruction: "Sizga koordinatalarni [x, y] ko'rinishida saqlovchi kortej (`[number, number]`) beriladi. Koordinatalarning o'rtacha qiymatini (ya'ni `(x + y) / 2`) qaytaradigan `getAverageCoord(coords)` funksiyasini yozing. Kortej tipini to'g'ri belgilang.",
+      startingCode: "function getAverageCoord(coords: [number, number]): number {\n  // Kodni yozing\n}",
+      hint: "return (coords[0] + coords[1]) / 2;",
+      test: "if (typeof getAverageCoord !== 'function') return 'getAverageCoord funksiyasi topilmadi'; if (getAverageCoord([10, 20]) !== 15) return 'Natija noto\\'g\\'ri'; if (getAverageCoord([5, 5]) !== 5) return 'Natija noto\\'g\\'ri'; if (!code.includes('[number, number]')) return 'coords parametri [number, number] (Tuple) tipida bo\\'lishi kerak'; return null;"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "TypeScript-ning JavaScript-dan eng asosiy farqi nimada?",
+      question: "TypeScript-ning JavaScript-dan asosiy farqi nimada?",
       options: [
-        "U tezroq ishga tushadi",
-        "U kod yozish vaqtida statik tiplarni tekshiradi (Static Typing)",
-        "U faqat ma'lumotlar bazasida ishlaydi",
-        "Unga CSS yozib bo'lmaydi"
+        "U tezroq ishga tushadi va kamroq xotira egallaydi",
+        "U statik tiplash tizimiga ega va xatolarni kompilyatsiya vaqtidayoq aniqlaydi",
+        "U faqat backend-da (Node.js) ishlaydi va brauzer uni to'g'ridan-to'g'ri tushunadi",
+        "U HTML va CSS-ni almashtira oladigan yangi dasturlash tilidir"
       ],
       correctAnswer: 1,
-      explanation: "TypeScript-ning asosiy vazifasi JavaScript-ga statik tiplash tizimini qo'shib, xatolarni kompilyatsiya vaqtidayoq aniqlashdir."
+      explanation: "TypeScript JavaScript-ga statik tiplash tizimini qo'shib, xatolarni kod yozish va kompilyatsiya vaqtida aniqlash imkonini beradi."
     },
     {
       id: 2,
-      question: "Foydalanuvchi kiritgan har qanday o'zgaruvchan qiymat uchun tiplash tekshiruvini butunlay o'chirishda qaysi tipdan foydalaniladi?",
-      options: ["unknown", "any", "void", "never"],
+      question: "TypeScript-da tip tekshiruvini butunlay o'chirib qo'yadigan va ixtiyoriy qiymat qabul qiladigan tip qaysi?",
+      options: [
+        "unknown",
+        "any",
+        "never",
+        "void"
+      ],
       correctAnswer: 1,
-      explanation: "any tipi TypeScript-ning tip tekshiruvchisini o'chirib qo'yadi va o'zgaruvchiga istalgan amalni bajarishga ruxsat beradi."
+      explanation: "any tipi TypeScript-ning tip tekshiruvini to'liq o'chiradi, bu esa xavfsizlikni yo'qotadi."
     },
     {
       id: 3,
-      question: "unknown tipining any tipidan afzalligi nimada?",
+      question: "unknown tipining any tipidan asosiy afzalligi nimada?",
       options: [
-        "U kamroq xotira egallaydi",
-        "U xavfsizroq, chunki tip tekshiruvisiz (type narrowing) qiymatdan foydalanishga yo'l qo'ymaydi",
-        "Uni JavaScript umuman tanimaydi",
-        "Uni faqat sonlar uchun ishlatib bo'ladi"
+        "unknown faqat sonlarni qabul qila oladi",
+        "unknown xavfsizroq bo'lib, uning ustida amal bajarishdan oldin tipni tekshirishni (Type Narrowing) talab qiladi",
+        "unknown xotiradan kamroq joy oladi",
+        "unknown faqat sinxron funksiyalarda ishlatiladi"
       ],
       correctAnswer: 1,
-      explanation: "unknown any kabi har qanday qiymatni qabul qiladi, lekin uni ishlatishdan oldin uning aniq tipini (masalan, typeof orqali) tekshirishni talab qiladi."
+      explanation: "unknown tipidagi o'zgaruvchi bilan biror amal bajarishdan oldin typeof yoki type assertion yordamida uning aniq tipini aniqlashtirish talab qilinadi."
     },
     {
       id: 4,
-      question: "Qaysi kalit so'z yordamida o'zgaruvchining tipini majburiy ravishda boshqa tipga o'tkazish mumkin (Type Assertion)?",
-      options: ["is", "as", "typeof", "extends"],
+      question: "Elementlar soni va tiplari tartib bo'yicha qat'iy belgilangan massiv turi nima deyiladi?",
+      options: [
+        "Array",
+        "Tuple (Kortej)",
+        "Enum (Ro'yxat)",
+        "Literal"
+      ],
       correctAnswer: 1,
-      explanation: "TypeScript-da 'as' kalit so'zi yordamida ob'ekt tipini assert (type casting) qilish mumkin. Masalan: val as string."
+      explanation: "Elementlar soni va har bir indeksdagi elementlarining tipi qat'iy belgilangan massiv turi Tuple (kortej) deyiladi."
     },
     {
       id: 5,
-      question: "Elementlari soni va ularning tiplari qat'iy belgilangan massiv turi nima deb ataladi?",
-      options: ["List", "Tuple (Kortej)", "Enum", "Record"],
-      correctAnswer: 1,
-      explanation: "Tuple (Kortej) ma'lum tartibdagi va cheklangan sondagi elementlardan iborat massiv tipidir. Masalan: [string, number]."
+      question: "Hech qanday qiymat qaytarmaydigan (faqat amal bajarib tugaydigan) funksiyaning qaytish tipi qanday belgilanadi?",
+      options: [
+        "undefined",
+        "null",
+        "void",
+        "never"
+      ],
+      correctAnswer: 2,
+      explanation: "Qiymat qaytarmaydigan funksiyalarning qaytish tipi void hisoblanadi."
     },
     {
       id: 6,
-      question: "Agar funksiya return orqali hech qanday qiymat qaytarmasa (lekin normal tugasa), uning qaytish tipi nima bo'ladi?",
-      options: ["null", "undefined", "void", "never"],
-      correctAnswer: 2,
-      explanation: "Qiymat qaytarmaydigan funksiyalarning qaytish tipi TypeScript-da 'void' deb belgilanadi."
+      question: "Doimiy ravishda xato otadigan (throw) yoki cheksiz siklda aylanadigan (hech qachon tugamaydigan) funksiyaning qaytish tipi nima?",
+      options: [
+        "void",
+        "never",
+        "unknown",
+        "any"
+      ],
+      correctAnswer: 1,
+      explanation: "never tipi funksiya normal yakunlanmasligini (dasturni to'xtatishini yoki xato otishini) bildiradi."
     },
     {
       id: 7,
-      question: "Xato otadigan (throw) yoki cheksiz aylanadigan funksiyalarning qaytish tipi nima bo'ladi?",
-      options: ["void", "null", "never", "any"],
-      correctAnswer: 2,
-      explanation: "never tipi funksiya hech qachon muvaffaqiyatli yakunlanmasligini va oxirigacha yetib bormasligini bildiradi."
+      question: "Dasturchi o'zgaruvchi tipini kompilyatorga qaraganda yaxshiroq bilishini bildirish uchun ishlatiladigan vosita nima deb ataladi?",
+      options: [
+        "Type Inference",
+        "Type Assertion (as)",
+        "Interface",
+        "Type Guard"
+      ],
+      correctAnswer: 1,
+      explanation: "Type Assertion (as operatori) kompilyatorga o'zgaruvchining tipini majburiy ravishda ma'lum bir tip sifatida qabul qilishni aytadi."
     },
     {
       id: 8,
-      question: "Enum (Ro'yxat) nima uchun xizmat qiladi?",
+      question: "TypeScript-dagi Type Inference nima?",
       options: [
-        "Faqat massivlarni saralash uchun",
-        "Mantiqan bir-biriga bog'liq konstantalar guruhini bitta nom ostida birlashtirish uchun",
-        "Faqat CSS klasslarini yozish uchun",
-        "Brauzer keshini tozalash uchun"
+        "Dasturchi tomonidan tipni majburan o'zgartirish",
+        "Dastur ishga tushganda tipni aniqlash",
+        "Boshlang'ich berilgan qiymatga qarab TypeScript tomonidan tipning avtomatik aniqlanishi",
+        "Obyektning faqat prototipini tekshirish"
       ],
-      correctAnswer: 1,
-      explanation: "Enum mantiqan bog'langan konstantalarni (masalan, foydalanuvchi rollari: Admin, User) e'lon qilishda qulay vositadir."
+      correctAnswer: 2,
+      explanation: "Type Inference — bu TypeScript kompilyatori o'zgaruvchining boshlang'ich qiymatidan uning tipini avtomatik xulosa qilib olishidir."
     },
     {
       id: 9,
-      question: "TypeScript-da string massivini qanday tiplash mumkin?",
-      options: ["string[] yoki Array<string>", "stringArray", "[string]", "string{}"],
-      correctAnswer: 0,
-      explanation: "TypeScript-da massivlar string[] yoki generic Array<string> sinrakslari yordamida e'lon qilinadi."
+      question: "TypeScript-da yaratilgan tayyor kod brauzerda qanday ishlaydi?",
+      options: [
+        "TypeScript brauzerda maxsus plagin yordamida to'g'ridan-to'g'ri ishlaydi",
+        "TS kodi JavaScript-ga transpayl (kompilyatsiya) qilinadi, chunki brauzerlar faqat JS-ni tushunadi",
+        "Kompilyator kodni WebAssembly-ga o'giradi",
+        "TS kodi Node.js tomonidan virtual sahifada ishlatiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Brauzerlar TypeScript-ni bevosita tushunmaydi, shuning uchun TS kodi avval standart JavaScript-ga kompilyatsiya qilinadi."
     },
     {
       id: 10,
-      question: "TypeScript kodi qachon tekshiriladi?",
+      question: "Type Aliases (type) va Interfaces (interface) o'rtasidagi asosiy farqlardan biri nima?",
       options: [
-        "Dastur ishga tushganda (runtime)",
-        "Kompilyatsiya / kod yozish jarayonida (compile-time)",
-        "Faqat foydalanuvchi tugmani bosganda",
-        "Faqat GitHub-ga yuklanganda"
+        "Type tezroq ishlaydi, interface esa sekinroq",
+        "Interface-larni bir xil nomda qayta e'lon qilib avtomatik birlashtirish (declaration merging) mumkin, type-da esa buni qilib bo'lmaydi",
+        "Type faqat obyektlar uchun ishlatiladi, interface esa primitivlar uchun ham ishlaydi",
+        "Ular o'rtasida hech qanday farq yo'q"
       ],
       correctAnswer: 1,
-      explanation: "TypeScript statik tiplash tizimi bo'lgani uchun, u koddagi tiplarni dastur ishlamasdan oldin (dastur yozish yoki build jarayonida) tekshiradi."
+      explanation: "Interfeyslar avtomatik birlashish xususiyatiga ega (declaration merging), ya'ni bir xil nomdagi interfeyslar kengayadi. Type esa bunday xususiyatga ega emas, lekin u union tiplarni yaratishga imkon beradi."
     },
     {
       id: 11,
-      question: "TypeScript o'zgaruvchi e'lon qilinib, unga qiymat berilganda tipni avtomatik aniqlashi nima deyiladi?",
-      options: ["Type Assertion", "Type Inference (Tip xulosasi)", "Type Cast", "Interface"],
+      question: "const enum ning oddiy enum dan farqi nimada?",
+      options: [
+        "const enum ko'proq xotira egallaydi",
+        "const enum kompilyatsiyadan so'ng runtime-da JavaScript obyekti hosil qilmaydi, qiymatlar to'g'ridan-to'g'ri joyiga yoziladi (inlined)",
+        "const enum faqat string qiymatlar qabul qiladi",
+        "const enum-dan tashqi fayllarda foydalanib bo'lmaydi"
+      ],
       correctAnswer: 1,
-      explanation: "Type Inference — TypeScript-ning berilgan boshlang'ich qiymatga qarab o'zgaruvchi tipini aniqlay olish xususiyatidir."
+      explanation: "const enum kompilyatsiya paytida butunlay o'chiriladi va uning qiymatlari kodga inlining qilinadi (direkt yoziladi), bu esa xotirani va tezlikni tejaydi."
     },
     {
       id: 12,
-      question: "TypeScript-da yozilgan tayyor kod brauzerda qaysi tilda ishlaydi?",
-      options: ["TypeScript", "JavaScript", "C++", "HTML5"],
-      correctAnswer: 1,
-      explanation: "TypeScript kodi transpilyatsiya qilinib, oddiy JavaScript kodiga o'giriladi, chunki brauzerlar TypeScript-ni tushunmaydi."
-    },
-    {
-      id: 13,
-      question: "TypeScript-dagi `as` operatori (Type Assertion) haqidagi qaysi tasdiq to'g'ri?",
+      question: "TypeScript-ning tiplash tizimi qaysi modelga asoslangan?",
       options: [
-        "U JavaScript runtime-da obyekt tipini majburiy ravishda o'zgartiradi",
-        "U faqat compile-time da ishlaydi va kompilyatorga obyekt tipini dasturchi yaxshiroq bilishini bildiradi",
-        "U faqat sonlarni string-ga o'tkazishda ishlatiladi",
-        "U barcha runtime xatolarni avtomatik ravishda ushlab qoladi"
+        "Nominal typing (tiplar nomi va klassi bo'yicha solishtiriladi)",
+        "Structural typing (tiplarning faqat ichki tuzilishi/xossalari bo'yicha solishtiriladi - Duck typing)",
+        "Strict typing (faqat son va satrlar tekshiriladi)",
+        "Runtime typing (tiplar faqat dastur ishlaganda tekshiriladi)"
       ],
       correctAnswer: 1,
-      explanation: "Type assertion (`as`) faqat compile-time da kompilyatorni tinchlantirish uchun ishlatiladi. JS-ga o'girilganda u o'chib ketadi va runtime-da hech qanday tekshiruv yoki tip o'zgarishi bajarmaydi."
-    },
-    {
-      id: 14,
-      question: "`Type Aliases` (`type`) va `Interfaces` (`interface`) o'rtasidagi farq haqida qaysi javob to'g'ri?",
-      options: [
-        "Type faqat sonlar uchun, interface esa obyektlar uchun ishlatiladi",
-        "Interface-larni e'lon qilish orqali avtomatik birlashtirish (declaration merging) mumkin, type-da esa bunday qilib bo'lmaydi",
-        "Interface tezroq ishlaydi va uni faqat union uchun ishlatsa bo'ladi",
-        "Ular o'rtasida hech qanday sintaktik yoki funksional farq yo'q"
-      ],
-      correctAnswer: 1,
-      explanation: "Interface-lar 'declaration merging' xususiyatiga ega, ya'ni bir xil nomdagi interfeyslar avtomatik birlashadi. Type-da esa bunday qilib bo'lmaydi. Shuningdek, Union tiplarni faqat `type` orqali yaratish mumkin."
+      explanation: "TypeScript-da tiplash strukturaviy (structural typing) yondashuvga asoslangan: agar obyektning strukturasi kerakli xossalar va tiplarga mos kelsa, u shu tipga tegishli deb hisoblanadi."
     }
   ]
 };

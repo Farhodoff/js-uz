@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "TypeScript-ning JavaScript-dan eng asosiy farqi nimada?",
+    "options": [
+      "U tezroq ishga tushadi",
+      "U kod yozish vaqtida statik tiplarni tekshiradi (Static Typing)",
+      "U faqat ma'lumotlar bazasida ishlaydi",
+      "Unga CSS yozib bo'lmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TypeScript-ning asosiy vazifasi JavaScript-ga statik tiplash tizimini qo'shib, xatolarni kompilyatsiya vaqtidayoq aniqlashdir."
+  },
+  {
+    "id": 2,
+    "question": "Foydalanuvchi kiritgan har qanday o'zgaruvchan qiymat uchun tiplash tekshiruvini butunlay o'chirishda qaysi tipdan foydalaniladi?",
+    "options": [
+      "unknown",
+      "any",
+      "void",
+      "never"
+    ],
+    "correctAnswer": 1,
+    "explanation": "any tipi TypeScript-ning tip tekshiruvchisini o'chirib qo'yadi va o'zgaruvchiga istalgan amalni bajarishga ruxsat beradi."
+  },
+  {
+    "id": 3,
+    "question": "unknown tipining any tipidan afzalligi nimada?",
+    "options": [
+      "U kamroq xotira egallaydi",
+      "U xavfsizroq, chunki tip tekshiruvisiz (type narrowing) qiymatdan foydalanishga yo'l qo'ymaydi",
+      "Uni JavaScript umuman tanimaydi",
+      "Uni faqat sonlar uchun ishlatib bo'ladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "unknown any kabi har qanday qiymatni qabul qiladi, lekin uni ishlatishdan oldin uning aniq tipini (typeof orqali) tekshirishni talab qiladi."
+  },
+  {
+    "id": 4,
+    "question": "Qaysi kalit so'z yordamida o'zgaruvchining tipini majburiy ravishda boshqa tipga o'tkazish mumkin (Type Assertion)?",
+    "options": [
+      "is",
+      "as",
+      "typeof",
+      "extends"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TypeScript-da 'as' kalit so'zi yordamida ob'ekt tipini assert (type casting) qilish mumkin. Masalan: val as string."
+  },
+  {
+    "id": 5,
+    "question": "Elementlari soni va ularning tiplari qat'iy belgilangan massiv turi nima deb ataladi?",
+    "options": [
+      "List",
+      "Tuple (Kortej)",
+      "Enum",
+      "Record"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tuple (Kortej) ma'lum tartibdagi va cheklangan sondagi elementlardan iborat massiv tipidir. Masalan: [string, number]."
+  },
+  {
+    "id": 6,
+    "question": "Agar funksiya return orqali hech qanday qiymat qaytarmasa (lekin normal tugasa), uning qaytish tipi nima bo'ladi?",
+    "options": [
+      "null",
+      "undefined",
+      "void",
+      "never"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Qiymat qaytarmaydigan funksiyalarning qaytish tipi TypeScript-da 'void' deb belgilanadi."
+  },
+  {
+    "id": 7,
+    "question": "Xato otadigan (throw) yoki cheksiz aylanadigan funksiyalarning qaytish tipi nima bo'ladi?",
+    "options": [
+      "void",
+      "null",
+      "never",
+      "any"
+    ],
+    "correctAnswer": 2,
+    "explanation": "never tipi funksiya hech qachon muvaffaqiyatli yakunlanmasligini va oxirigacha yetib bormasligini bildiradi."
+  },
+  {
+    "id": 8,
+    "question": "Enum (Ro'yxat) nima uchun xizmat qiladi?",
+    "options": [
+      "Faqat massivlarni saralash uchun",
+      "Mantiqan bir-biriga bog'liq konstantalar guruhini bitta nom ostida birlashtirish uchun",
+      "Faqat CSS klasslarini yozish uchun",
+      "Brauzer keshini tozalash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Enum mantiqan bog'langan konstantalarni (masalan, foydalanuvchi rollari: Admin, User) e'lon qilishda qulay vositadir."
+  },
+  {
+    "id": 9,
+    "question": "TypeScript-da string massivini qanday tiplash mumkin?",
+    "options": [
+      "string[] yoki Array<string>",
+      "stringArray",
+      "[string]",
+      "string{}"
+    ],
+    "correctAnswer": 0,
+    "explanation": "TypeScript-da massivlar string[] yoki generic Array<string> sinrakslari yordamida e'lon qilinadi."
+  },
+  {
+    "id": 10,
+    "question": "TypeScript kodi qachon tekshiriladi?",
+    "options": [
+      "Dastur ishga tushganda (runtime)",
+      "Kompilyatsiya / kod yozish jarayonida (compile-time)",
+      "Faqat foydalanuvchi tugmani bosganda",
+      "Faqat GitHub-ga yuklanganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TypeScript statik tiplash tizimi bo'lgani uchun, u koddagi tiplarni dastur ishlamasdan oldin (dastur yozish yoki build jarayonida) tekshiradi."
+  },
+  {
+    "id": 11,
+    "question": "TypeScript o'zgaruvchi e'lon qilinib, unga qiymat berilganda tipni avtomatik aniqlashi nima deyiladi?",
+    "options": [
+      "Type Assertion",
+      "Type Inference (Tip xulosasi)",
+      "Type Cast",
+      "Interface"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Type Inference — TypeScript-ning berilgan boshlang'ich qiymatga qarab o'zgaruvchi tipini aniqlay olish xususiyatidir."
+  },
+  {
+    "id": 12,
+    "question": "TypeScript-da yozilgan tayyor kod brauzerda qaysi tilda ishlaydi?",
+    "options": [
+      "TypeScript",
+      "JavaScript",
+      "C++",
+      "HTML5"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TypeScript kodi transpilyatsiya qilinib, oddiy JavaScript kodiga o'giriladi, chunki brauzerlar TypeScript-ni tushunmaydi."
+  }
+]

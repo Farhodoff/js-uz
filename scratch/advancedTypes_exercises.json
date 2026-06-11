@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Partial (Ixtiyoriy obyekt) simulyatsiyasi",
+    "instruction": "User obyektini (`{ id, name, email }`) va qisman yangilanuvchi ma'lumotlarni (`Partial` kabi optional) qabul qilib, ularni birlashtirib qaytaruvchi `updateUser(user, fields)` funksiyasini yozing.",
+    "startingCode": "interface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\nfunction updateUser(user: User, fields: Partial<User>): User {\n  // user va fields obyektlarini birlashtiring\n}",
+    "hint": "return { ...user, ...fields };",
+    "test": "if (typeof updateUser !== 'function') return 'updateUser topilmadi'; const u = { id: 1, name: 'Ali', email: 'a@a.com' }; const res = updateUser(u, { name: 'Vali' }); if(res.name !== 'Vali' || res.email !== 'a@a.com') return 'Obyekt yangilanmadi'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Custom Mapped Type (BooleanFlags)",
+    "instruction": "Berilgan `T` tipidagi barcha maydonlarning tipini `boolean` qilib o'zgartiradigan custom mapped type `BooleanFlags<T>` e'lon qiling va uni `{ name: string; age: number }` interfeysiga tatbiq etib, `{ name: true, age: false }` obyektini qaytaradigan `getUserFlags()` funksiyasini yozing.",
+    "startingCode": "type BooleanFlags<T> = {\n  // Mapped type qismini yozing\n};\n\nfunction getUserFlags() {\n  // Bu yerga yozing\n}",
+    "hint": "type BooleanFlags<T> = {\n  [K in keyof T]: boolean;\n};\nfunction getUserFlags() {\n  return { name: true, age: false };\n}",
+    "test": "if (typeof getUserFlags !== 'function') return 'getUserFlags topilmadi'; const res = getUserFlags(); if (res.name !== true || res.age !== false) return 'Flags qiymatlari xato'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Conditional Type va infer kalit so'zi",
+    "instruction": "Agar berilgan tip `T` massiv bo'lsa uning element tipini (array element type), aks holda `T` ning o'zini qaytaradigan `UnwrapArray<T>` conditional tipini e'lon qiling. Ushbu tip yordamida `string[]`dan `string` tipini ajratib olib, satr qaytaruvchi `getFirstWord(words)` funksiyasini yozing.",
+    "startingCode": "type UnwrapArray<T> = any; // Bu yerga conditional yozing\n\nfunction getFirstWord(words: string[]): string {\n  // words[0] ni qaytaring\n}",
+    "hint": "type UnwrapArray<T> = T extends (infer U)[] ? U : T;\nfunction getFirstWord(words: string[]): UnwrapArray<string[]> {\n  return words[0];\n}",
+    "test": "if (typeof getFirstWord !== 'function') return 'getFirstWord topilmadi'; if (getFirstWord(['Salom', 'Dunyo']) !== 'Salom') return 'Birinchi so'z noto'g'ri'; return null;"
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "TypeScript-da 'Type Narrowing' deganda nima tushuniladi?",
+    "options": [
+      "O'zgaruvchi xotira hajmini kamaytirish",
+      "Union tipdagi o'zgaruvchini ma'lum tekshiruvlar yordamida aniqroq tipga toraytirish",
+      "Koddagi barcha o'zgaruvchilarni number-ga o'tkazish",
+      "TypeScript-ni JavaScript-ga transpayl qilish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Type Narrowing union tipli o'zgaruvchilar ustida xavfsiz amal bajarish uchun uning tipini shartlar doirasida aniqlashtirishdir."
+  },
+  {
+    "id": 2,
+    "question": "Primitiv turlarni (string, number va boshqalar) tekshirishda qaysi type guard mos keladi?",
+    "options": [
+      "instanceof",
+      "in",
+      "typeof",
+      "as"
+    ],
+    "correctAnswer": 2,
+    "explanation": "typeof operatori JavaScript primitiv tiplarini tekshirish va uni TypeScript darajasida toraytirish uchun ishlatiladi."
+  },
+  {
+    "id": 3,
+    "question": "Klass nusxalari (instances) yoki Date kabi obyektlarni tekshirish uchun qaysi operator ishlatiladi?",
+    "options": [
+      "typeof",
+      "instanceof",
+      "in",
+      "is"
+    ],
+    "correctAnswer": 1,
+    "explanation": "instanceof klass yoki obyekt zanjiri orqali aniq klass nusxasi ekanligini tekshirish uchun ishlatiladi."
+  },
+  {
+    "id": 4,
+    "question": "Obyekt tarkibida aniq bir maydon/xossa mavjudligini tekshirishda qaysi type guard qo'llaniladi?",
+    "options": [
+      "typeof",
+      "instanceof",
+      "in",
+      "is"
+    ],
+    "correctAnswer": 2,
+    "explanation": "'property in object' sintaksisi orqali obyektda kerakli xossa borligi aniqlanadi va tip toraytiriladi."
+  },
+  {
+    "id": 5,
+    "question": "Discriminated Union tipida har bir interfeysda qanday umumiy maydon bo'lishi kerak?",
+    "options": [
+      "Faqat id maydoni",
+      "Umumiy nomli, lekin har xil literal qiymatga ega bo'lgan identifikator (masalan: kind)",
+      "Barcha maydonlar turi bir xil bo'lishi shart",
+      "Hech qanday umumiy xossa kerak emas"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Discriminated union-lar har bir obyektdagi umumiy literal tipdagi xossa (kind yoki type) qiymatini solishtirish orqali farqlanadi."
+  },
+  {
+    "id": 6,
+    "question": "Custom Type Guard yaratishda funksiyaning qaytarish turi sintaksisi qanday bo'ladi?",
+    "options": [
+      "boolean",
+      "parameter is Type",
+      "Type | null",
+      "asserts parameter is Type"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Custom Type Guard-da funksiya `parameter is Type` ko'rinishida tip predikatini qaytaradi va u ichkarida true bo'lganda shu tip qabul qilinadi."
+  },
+  {
+    "id": 7,
+    "question": "Assertion Functions haqidagi qaysi tasdiq to'g'ri?",
+    "options": [
+      "Ular hech qachon xatolik otmaydi",
+      "Ular asserts parameter is Type sintaksisidan foydalanib, shart bajarilmasa xato otadi va undan keyingi kodlarda tipni kafolatlaydi",
+      "Ular faqat CSS stillarini tekshiradi",
+      "Ular oddiy JavaScript-ga transpayl qilinmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Assertion functions (`asserts val is number`) o'zgaruvchi talab qilingan tipda bo'lmasa xato otadi va funksiya chaqirilgandan keyingi kodda shu o'zgaruvchi o'sha tipda ekanligini kafolatlaydi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi tekshiruvning natijasi nima bo'ladi? typeof null === 'object'",
+    "options": [
+      "Bu xato, u 'null' qaytaradi",
+      "Bu to'g'ri, JavaScript-da null obyektdir, shuning uchun faqat typeof object tekshiruvi null uchun ham ishlaydi",
+      "Bu true qaytarsa-da, TypeScript-da uni tip guard deb bo'lmaydi",
+      "U runtime error beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da `typeof null === 'object'` har doim true qaytarganligi sababli, faqat typeof 'object' qilish orqali null qiymatni xavfsiz filtrlash yetarli emas."
+  },
+  {
+    "id": 9,
+    "question": "Nima uchun TypeScript-da interfeyslar (interfaces) ustida instanceof tekshiruvini amalga oshirib bo'lmaydi?",
+    "options": [
+      "Interfeyslar faqat compile-time da mavjud bo'lib, runtime JavaScript-da o'chib ketadi",
+      "Interfeyslar juda katta xotira egallaydi",
+      "Interfeyslar faqat typeof bilan tekshirilishi shart",
+      "TypeScript interfeyslarda instanceof-ni taqiqlamaydi, u to'g'ridan-to'g'ri ishlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Interfeyslar faqat TypeScript tip tizimida mavjud va JavaScript-ga transpayl qilinganda yo'qoladi. Shu bois runtime-da ishlaydigan `instanceof` ularni tekshira olmaydi."
+  },
+  {
+    "id": 10,
+    "question": "TypeScript-da shart blokining else qismida o'zgaruvchining tipi qanday aniqlanadi?",
+    "options": [
+      "U har doim any bo'lib qoladi",
+      "U kompilyator tomonidan union tarkibidagi qolgan tiplardan iborat deb toraytiriladi",
+      "U har doim never tipida bo'ladi",
+      "Dasturchi uni qo'lda qayta e'lon qilishi shart"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TypeScript `if` bloki ichidagi shartga mos kelmaydigan qolgan barcha tiplarni `else` blokiga o'tkazadi va tipni toraytiradi."
+  },
+  {
+    "id": 11,
+    "question": "Exhaustive type checking (barcha tiplar tekshirilganligini kafolatlash) uchun qaysi tipdan foydalaniladi?",
+    "options": [
+      "any",
+      "unknown",
+      "never",
+      "void"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`never` tipiga qiymat yuklash orqali biz switch-case yoki if-else zanjirida barcha union tiplari qamrab olinganini tekshiramiz. Agar yangi tip qo'shilsa va u tekshirilmasa, compile-time xatosi yuzaga keladi."
+  },
+  {
+    "id": 12,
+    "question": "Custom Type Guard-da funksiya tanasi qanday qiymat qaytarishi shart?",
+    "options": [
+      "Faqat satr (string) qiymat",
+      "Shart bajarilishini tasdiqlovchi mantiqiy (boolean) qiymat",
+      "Hech narsa qaytarmaydi (void)",
+      "Tekshirilayotgan obyektning o'zini"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Custom type guard funksiyasi mantiqiy (`true` yoki `false`) qiymat qaytarasi. TypeScript ushbu boolean natijaga qarab o'zgaruvchi tipini toraytiradi."
+  }
+]
