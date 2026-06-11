@@ -93,7 +93,6 @@ import { asyncPolyfills } from "./lessons/advanced/asyncPolyfills";
 import { reactivePatterns } from "./lessons/advanced/reactivePatterns";
 import { performanceAlgos } from "./lessons/advanced/performanceAlgos";
 
-import { bigO } from "./lessons/algorithms/bigO";
 import { dsaBasics } from "./lessons/algorithms/dsaBasics";
 import { dsaControlFlow } from "./lessons/algorithms/dsaControlFlow";
 import { dsaFunctions } from "./lessons/algorithms/dsaFunctions";
@@ -101,11 +100,26 @@ import { dsaInputOutput } from "./lessons/algorithms/dsaInputOutput";
 import { dsaArrays } from "./lessons/algorithms/dsaArrays";
 import { dsaStrings } from "./lessons/algorithms/dsaStrings";
 import { dsaHashing } from "./lessons/algorithms/dsaHashing";
+import { bigO } from "./lessons/algorithms/bigO";
 import { linkedLists } from "./lessons/algorithms/linkedLists";
 import { stacksQueues } from "./lessons/algorithms/stacksQueues";
 import { binarySearchTree } from "./lessons/algorithms/binarySearchTree";
 import { sortingSearching } from "./lessons/algorithms/sortingSearching";
 import { leetcodeTop } from "./lessons/algorithms/leetcodeTop";
+import { dsaTrees } from "./lessons/algorithms/dsaTrees";
+import { dsaHeaps } from "./lessons/algorithms/dsaHeaps";
+import { dsaGraphs } from "./lessons/algorithms/dsaGraphs";
+import { dsaTries } from "./lessons/algorithms/dsaTries";
+import { dsaDSU } from "./lessons/algorithms/dsaDSU";
+import { dsaDP } from "./lessons/algorithms/dsaDP";
+import { dsaGreedy } from "./lessons/algorithms/dsaGreedy";
+import { dsaBacktracking } from "./lessons/algorithms/dsaBacktracking";
+import { dsaDivideConquer } from "./lessons/algorithms/dsaDivideConquer";
+import { dsaGraphAlgos } from "./lessons/algorithms/dsaGraphAlgos";
+import { dsaStringAlgos } from "./lessons/algorithms/dsaStringAlgos";
+import { dsaAdvancedDP } from "./lessons/algorithms/dsaAdvancedDP";
+import { dsaAdvancedGraph } from "./lessons/algorithms/dsaAdvancedGraph";
+import { dsaGeometry } from "./lessons/algorithms/dsaGeometry";
 
 import { howToLearn } from "./lessons/system-design/howToLearn";
 import { requirements } from "./lessons/system-design/requirements";
@@ -185,7 +199,7 @@ export const curriculum = {
     label: "Algoritmlar",
     color: "#6a73c9",
     icon: "📊",
-    lessons: [dsaBasics, dsaControlFlow, dsaFunctions, dsaInputOutput, dsaArrays, dsaStrings, dsaHashing, bigO, linkedLists, stacksQueues, binarySearchTree, sortingSearching, leetcodeTop]
+    lessons: [dsaBasics, dsaControlFlow, dsaFunctions, dsaInputOutput, dsaArrays, dsaStrings, dsaHashing, bigO, linkedLists, stacksQueues, binarySearchTree, dsaTrees, dsaHeaps, dsaGraphs, dsaTries, dsaDSU, sortingSearching, dsaDP, dsaGreedy, dsaBacktracking, dsaDivideConquer, dsaGraphAlgos, dsaStringAlgos, dsaAdvancedDP, dsaAdvancedGraph, dsaGeometry, leetcodeTop]
   },
   systemDesign: {
     label: "Tizimli Dizayn",
