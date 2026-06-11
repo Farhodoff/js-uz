@@ -89,6 +89,9 @@ import { advancedWebApis } from "./lessons/advanced/advancedWebApis";
 import { binaryData } from "./lessons/advanced/binaryData";
 import { webAnimations } from "./lessons/advanced/webAnimations";
 import { historyRouting } from "./lessons/advanced/historyRouting";
+import { asyncPolyfills } from "./lessons/advanced/asyncPolyfills";
+import { reactivePatterns } from "./lessons/advanced/reactivePatterns";
+import { performanceAlgos } from "./lessons/advanced/performanceAlgos";
 
 import { bigO } from "./lessons/algorithms/bigO";
 import { linkedLists } from "./lessons/algorithms/linkedLists";
@@ -169,7 +172,7 @@ export const curriculum = {
     label: "Murakkab",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, iteratorsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced, webComponents, advancedWebStorage, advancedWebApis, binaryData, webAnimations, historyRouting]
+    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, iteratorsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced, webComponents, advancedWebStorage, advancedWebApis, binaryData, webAnimations, historyRouting, asyncPolyfills, reactivePatterns, performanceAlgos]
   },
   algorithms: {
     label: "Algoritmlar",
