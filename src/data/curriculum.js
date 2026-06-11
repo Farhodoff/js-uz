@@ -98,6 +98,9 @@ import { dsaBasics } from "./lessons/algorithms/dsaBasics";
 import { dsaControlFlow } from "./lessons/algorithms/dsaControlFlow";
 import { dsaFunctions } from "./lessons/algorithms/dsaFunctions";
 import { dsaInputOutput } from "./lessons/algorithms/dsaInputOutput";
+import { dsaArrays } from "./lessons/algorithms/dsaArrays";
+import { dsaStrings } from "./lessons/algorithms/dsaStrings";
+import { dsaHashing } from "./lessons/algorithms/dsaHashing";
 import { linkedLists } from "./lessons/algorithms/linkedLists";
 import { stacksQueues } from "./lessons/algorithms/stacksQueues";
 import { binarySearchTree } from "./lessons/algorithms/binarySearchTree";
@@ -182,7 +185,7 @@ export const curriculum = {
     label: "Algoritmlar",
     color: "#6a73c9",
     icon: "📊",
-    lessons: [dsaBasics, dsaControlFlow, dsaFunctions, dsaInputOutput, bigO, linkedLists, stacksQueues, binarySearchTree, sortingSearching, leetcodeTop]
+    lessons: [dsaBasics, dsaControlFlow, dsaFunctions, dsaInputOutput, dsaArrays, dsaStrings, dsaHashing, bigO, linkedLists, stacksQueues, binarySearchTree, sortingSearching, leetcodeTop]
   },
   systemDesign: {
     label: "Tizimli Dizayn",
