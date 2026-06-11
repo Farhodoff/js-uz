@@ -276,32 +276,119 @@ app.post('/api/refresh', (req, res) => {
 | **CSP (Content Security Policy)** | Sahifaga faqat ishonchli skriptlar yuklanishini ta'minlaydi | XSS va clickjacking hujumlarini jilovlashda |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "XSS Himoyasi (HTML Sanitize)",
-    "instruction": "Foydalanuvchi yuborgan matn tarkibidagi zararli belgilarni HTML entity ko'rinishiga o'tkazib (escape qilib) qaytaradigan `sanitize(input)` funksiyasini yozing. Quyidagi belgilarni almashtiring:\n- `<` -> `&lt;`\n- `>` -> `&gt;`\n- `\"` -> `&quot;`\n- `'` -> `&#x27;`\n- `&` -> `&amp;`",
-    "startingCode": "function sanitize(input) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Stringdagi belgilarni almashtirish uchun replace yoki replaceAll metodlaridan yoki regexdan foydalanishingiz mumkin.",
-    "test": "const sandbox = new Function(code + '; return sanitize;');\nconst fn = sandbox();\nconst res = fn('<script>alert(\"xss\")</script>');\nif (res.includes('<') || res.includes('>')) return 'HTML teglari (&lt; va &gt; ga) to\\'g\\'ri o\\'zgartirilmadi';\nif (res.includes('\"')) return 'Qo\\'shtirnoq belgisi (&quot; ga) o\\'zgartirilmadi';\nif (fn('A & B') !== 'A &amp; B') return 'Amperstand (&) belgisi to\\'g\\'ri o\\'zgartirilmadi';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "CORS Origin tekshiruvi",
-    "instruction": "CORS xavfsizligini ta'minlash uchun `validateOrigin(origin, allowedOrigins)` funksiyasini yozing. Agar so'rov yuborilgan `origin` manzili `allowedOrigins` (ruxsat etilgan manbalar) massivida mavjud bo'lsa, u holda `Access-Control-Allow-Origin` sarlavhasiga berish uchun ushbu origin qiymatini qaytarsin. Agar mavjud bo'lmasa yoki origin bo'sh bo'lsa, `null` qaytarsin.",
-    "startingCode": "function validateOrigin(origin, allowedOrigins) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "`allowedOrigins.includes(origin)` shartidan foydalaning.",
-    "test": "const sandbox = new Function(code + '; return validateOrigin;');\nconst fn = sandbox();\nconst allowed = ['https://trusted.com', 'https://app.trusted.com'];\nif (fn('https://trusted.com', allowed) !== 'https://trusted.com') return 'Ishonchli origin tekshiruvdan o\\'ta olmadi';\nif (fn('https://malicious.com', allowed) !== null) return 'Ruxsat etilmagan origin to\\'g\\'ri bloklanmadi (null qaytarishi kerak edi)';\nif (fn('', allowed) !== null) return 'Origin bo\\'sh bo\\'lganda null qaytarishi kerak';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "CSRF Tokenni solishtirish",
-    "instruction": "So'rovdan kelgan CSRF tokenni sessiyadagi token bilan solishtiradigan `validateCsrfToken(requestToken, sessionToken)` funksiyasini yozing. Tokenlar xavfsizlik uchun faqat satr (string) turida, bo'sh bo'lmagan va o'zaro teng bo'lgandagina `true` qaytarsin, aks holda `false` qaytarsin.",
-    "startingCode": "function validateCsrfToken(requestToken, sessionToken) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Birinchi navbatda argumentlarning typeof string ekanligini, so'ngra ularning uzunligi 0 dan kattaligini va tengligini tekshiring.",
-    "test": "const sandbox = new Function(code + '; return validateCsrfToken;');\nconst fn = sandbox();\nif (fn('abc123token', 'abc123token') !== true) return 'Bir xil tokenlarda true qaytishi kerak edi';\nif (fn('abc123token', 'xyz987token') !== false) return 'Har xil tokenlarda false qaytishi kerak';\nif (fn('', '') !== false) return 'Bo\\'sh tokenlarda false qaytishi kerak';\nif (fn(null, null) !== false) return 'Null yoki boshqa turdagi ma\\'lumotlarda false qaytishi kerak';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Xavfsiz matn chiqarish",
+      instruction: "Berilgan 'userText' o'zgaruvchisini xavfsiz tarzda (textContent yordamida) 'output' elementiga joylang.",
+      startingCode: "const userText = '<img src=x onerror=alert(1)>';\nconst output = document.createElement('div');\n\n// Xavfsiz usulda joylang\n",
+      hint: "output.textContent = userText;",
+      test: "if (code.includes('textContent')) return null; return 'textContent xususiyatidan foydalaning';"
+    },
+    {
+      id: 2,
+      title: "Oddiy Sanitizatsiya",
+      instruction: "Matndan < va > belgilarini xavfsizga almashtiring.",
+      startingCode: "function sanitize(input) {\n  // Bu yerga yozing\n}\n",
+      hint: "return input.replace(/</g, '&lt;').replace(/>/g, '&gt;');",
+      test: "if (code.includes('replace')) return null; return 'Sanitizatsiya yoq';"
+    },
+    {
+      id: 3,
+      title: "CSRF Token Header",
+      instruction: "POST so'rovda CSRF token header qo'shing.",
+      startingCode: "const token = 'csrf-token';\nfetch('/api', {\n  method: 'POST',\n  headers: {\n    // Bu yerga token qo'shing\n  }\n});\n",
+      hint: "'X-CSRF-Token': token",
+      test: "if (code.includes('X-CSRF-Token')) return null; return 'CSRF header yoq';"
+    },
+    {
+      id: 4,
+      title: "SQL Injection'dan himoya",
+      instruction: "Parametrli query yozing (string concatenation emas).",
+      startingCode: "const email = 'a@b.com';\n// Bu yerga parametrli query\n// db.query('SELECT * FROM users WHERE email = ?', [email])\n",
+      hint: "Parametrli query va massiv",
+      test: "if (code.includes('?') && code.includes('[')) return null; return 'Parametrli query yoq';"
+    },
+    {
+      id: 5,
+      title: "Password hashing",
+      instruction: "Parolni hash qiling (bcrypt).",
+      startingCode: "async function hashPassword(password) {\n  // Bu yerga yozing\n}\n",
+      hint: "return await bcrypt.hash(password, 10);",
+      test: "if (code.includes('bcrypt.hash')) return null; return 'Hashing yoq';"
+    },
+    {
+      id: 6,
+      title: "HttpOnly cookie",
+      instruction: "Tokenni HttpOnly cookie orqali yuboring.",
+      startingCode: "const token = 'jwt';\n// res.setHeader(...) yozing\n",
+      hint: "res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Secure; SameSite=Strict`);",
+      test: "if (code.includes('HttpOnly')) return null; return 'HttpOnly yoq';"
+    },
+    {
+      id: 7,
+      title: "CORS cheklash",
+      instruction: "Faqat bitta domen uchun CORS ruxsat bering.",
+      startingCode: "// res.setHeader(...) yozing\n",
+      hint: "res.setHeader('Access-Control-Allow-Origin', 'https://example.com');",
+      test: "if (code.includes('Access-Control-Allow-Origin')) return null; return 'CORS yoq';"
+    },
+    {
+      id: 8,
+      title: "Input validation",
+      instruction: "Email bo'sh yoki noto'g'ri bo'lsa xato qaytaring.",
+      startingCode: "function validateEmail(email) {\n  // Bu yerga yozing\n}\n",
+      hint: "if (!email || !email.includes('@')) return false; return true;",
+      test: "if (code.includes('includes')) return null; return 'Validatsiya yoq';"
+    },
+    {
+      id: 9,
+      title: "Auth vs AuthZ",
+      instruction: "Admin bo'lmasa xato qaytaring.",
+      startingCode: "function checkAdmin(user) {\n  // Bu yerga yozing\n}\n",
+      hint: "if (!user || !user.isAdmin) throw new Error('Ruxsat yoq');",
+      test: "if (code.includes('isAdmin')) return null; return 'Authorization yoq';"
+    },
+    {
+      id: 10,
+      title: "Rate limiting",
+      instruction: "Bir IP uchun 5 martadan ko'p urinish bo'lsa bloklang.",
+      startingCode: "const attempts = {};\nfunction rateLimit(ip) {\n  // Bu yerga yozing\n}\n",
+      hint: "attempts[ip] = (attempts[ip] || 0) + 1; if (attempts[ip] > 5) return false;",
+      test: "if (code.includes('attempts')) return null; return 'Rate limit yoq';"
+    },
+    {
+      id: 11,
+      title: "SameSite cookie",
+      instruction: "Cookie'da SameSite=Strict qo'ying.",
+      startingCode: "const token = 'jwt';\n// Set-Cookie yozing\n",
+      hint: "SameSite=Strict",
+      test: "if (code.includes('SameSite')) return null; return 'SameSite yoq';"
+    },
+    {
+      id: 12,
+      title: "XSSdan himoya render",
+      instruction: "Foydalanuvchi matnini faqat textContent bilan render qiling.",
+      startingCode: "const el = document.createElement('p');\nconst userInput = '<script>alert(1)</script>';\n// Bu yerga yozing\n",
+      hint: "el.textContent = userInput;",
+      test: "if (code.includes('textContent')) return null; return 'XSS xavfsiz render yoq';"
+    },
+    {
+      id: 13,
+      title: "Script Strip Sanitizer",
+      instruction: "Foydalanuvchi kiritgan HTML matndan barcha '<script>...</script>' teglari va ularning ichidagi kodlarni regex orqali butunlay tozalab tashlovchi 'stripScripts(html)' funksiyasini yozing.",
+      startingCode: "function stripScripts(html) {\n  // <script> teglarini butunlay o'chiruvchi regex yozing\n}",
+      hint: "return html.replace(/<script[^>]*>([\\s\\S]*?)<\\/script>/gi, '');",
+      test: "if (code.includes('replace') && (code.includes('script') || code.includes('/script/'))) return null;\nreturn 'stripScripts funksiyasida <script> teglarini o\\'chirish regexi ishlatilmadi';"
+    },
+    {
+      id: 14,
+      title: "Double-Submit Cookie CSRF Validator",
+      instruction: "Tizimga kelgan HTTP request xavfsizligini ta'minlash uchun Double-Submit Cookie CSRF himoya middleware funksiyasini yozing. 'validateCSRF(req)' funksiyasi cookie-dagi 'csrfToken' qiymati request headerdagi 'X-CSRF-Token' qiymati bilan mavjudligini va tengligini tekshirsin hamda mos kelsa 'true', aks holda 'false' qaytarsin. Request obyekti 'headers' va 'cookies' obyektlariga ega bo'ladi.",
+      startingCode: "function validateCSRF(req) {\n  // req.headers['x-csrf-token'] va req.cookies['csrfToken'] ni tekshiring\n}",
+      hint: "const headerToken = req.headers['x-csrf-token'];\nconst cookieToken = req.cookies['csrfToken'];\nreturn !!(headerToken && cookieToken && headerToken === cookieToken);",
+      test: "if (code.includes('headers') && code.includes('cookies') && (code.includes('x-csrf-token') || code.includes('X-CSRF-Token')) && (code.includes('csrfToken') || code.includes('csrf-token'))) return null;\nreturn 'validateCSRF funksiyasida header va cookie-dagi CSRF tokenlarini tekshirish to\\'g\\'ri yozilmadi';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

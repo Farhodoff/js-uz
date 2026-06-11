@@ -302,32 +302,103 @@ JavaScript dvigateli (masalan, Chrome va Node.js dagi V8) kodni ishga tushirishd
 | **Qayta e'lon qilish** | Mumkin | Taqiqlangan | Mumkin (oxirgisi olinadi) | Taqiqlangan | Taqiqlangan |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Funksiya Ifodasining Hoisting Muammosi",
-    "instruction": "Quyidagi kodda `greetUsers` funksiyasi ichida `sayHello` (Function Declaration) va `sayGoodbye` (Function Expression) funksiyalari chaqirilgan. `sayHello` to'liq hoisting bo'lgani sababli uni e'lon qilishdan oldin chaqirib bo'ladi. Ammo `sayGoodbye` o'zgaruvchiga yuklanganligi sababli (TDZ tufayli) uni e'lon qilishdan oldin chaqirish `ReferenceError` xatosini beradi. Kodni shunday o'zgartiringki, `sayGoodbye` funksiyasi chaqirilishidan oldin e'lon qilinsin va funksiya 'Salom va Xayr' qiymatini xatosiz qaytarsin.",
-    "startingCode": "function greetUsers() {\n  const hello = sayHello();\n  const goodbye = sayGoodbye();\n\n  function sayHello() {\n    return \"Salom\";\n  }\n\n  const sayGoodbye = function() {\n    return \"Xayr\";\n  };\n\n  return hello + \" va \" + goodbye;\n}\n",
-    "hint": "sayGoodbye o'zgaruvchisini va unga biriktirilgan funksiya ifodasini `const goodbye = sayGoodbye();` qatoridan oldinga o'tkazing.",
-    "test": "try {\n  const sandbox = new Function(code + '; return greetUsers;');\n  const fn = sandbox();\n  const res = fn();\n  if (res !== 'Salom va Xayr') {\n    return 'greetUsers funksiyasi \"Salom va Xayr\" qaytarishi kerak, hozir: ' + res;\n  }\n  const cleanCode = code.replace(/\\s+/g, '');\n  const declGoodbye = cleanCode.indexOf('constsayGoodbye=function');\n  const callGoodbye = cleanCode.indexOf('sayGoodbye()');\n  if (declGoodbye === -1) {\n    return 'sayGoodbye funksiyasini const sayGoodbye = function() { ... } ko\\'rinishida saqlang.';\n  }\n  if (declGoodbye > callGoodbye) {\n    return 'sayGoodbye funksiyasi chaqirilishidan oldin e\\'lon qilinishi shart.';\n  }\n  return null;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
-  },
-  {
-    "id": 2,
-    "title": "var Hoisting va Soyalash (Shadowing)",
-    "instruction": "Quyidagi kodda global `score = 10` qiymatiga ega. `play` funksiyasi ichida `if (score > 5)` sharti bajarilib, 'Yutdingiz' qaytarilishi kutilgan edi. Biroq, funksiya ichidagi `var score = 3;` e'loni hoisting bo'lgani sababli, `score` funksiya boshida `undefined` bo'lib qoladi va shart bajarilmay, 'Yutqazdingiz' qaytadi. Muammoni hal qilish uchun funksiya ichidagi local o'zgaruvchini boshqa nomga (masalan, `localScore`) o'zgartiring (va uni e'lon qilishda `let` yoki `const` dan foydalaning) toki u global `score` bilan to'qnashmasin va funksiya to'g'ri ishlasin.",
-    "startingCode": "var score = 10;\n\nfunction play() {\n  if (score > 5) {\n    return \"Yutdingiz\";\n  }\n  var score = 3;\n  return \"Yutqazdingiz\";\n}\n",
-    "hint": "Funksiya ichidagi var score = 3 e'lonini o'chirib, o'rniga let localScore = 3 ko'rinishida yozing va uning nomini o'zgartiring.",
-    "test": "try {\n  const sandbox = new Function(code + '; return play;');\n  const fn = sandbox();\n  const res = fn();\n  if (res !== 'Yutdingiz') {\n    return 'play funksiyasi \"Yutdingiz\" qaytarishi kerak, hozir: ' + res;\n  }\n  if (code.includes('var score =') || code.includes('var score=')) {\n    return 'Funksiya ichidagi var score e\\'lonini olib tashlang yoki o\\'zgartiring.';\n  }\n  return null;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
-  },
-  {
-    "id": 3,
-    "title": "Temporal Dead Zone (TDZ) va let/const",
-    "instruction": "Quyidagi funksiyada `console.log(message)` chaqirilganda TDZ sababli xatolik bermoqda. O'zgaruvchilar va ularning ishlatilish tartibini shunday to'g'rilangki, xatolik bartaraf etilsin va funksiya 'Salom Dunyo!' qiymatini qaytarsin. `let` o'zgaruvchisini to'g'ri joyda e'lon qiling.",
-    "startingCode": "function formatMessage() {\n  console.log(message);\n  let message = \"Salom Dunyo!\";\n  return message;\n}\n",
-    "hint": "message o'zgaruvchisini uni ishlatayotgan console.log va return qatorlaridan yuqorida e'lon qiling.",
-    "test": "try {\n  const sandbox = new Function(code + '; return formatMessage;');\n  const fn = sandbox();\n  const res = fn();\n  if (res !== 'Salom Dunyo!') {\n    return 'formatMessage funksiyasi \"Salom Dunyo!\" qaytarishi kerak.';\n  }\n  const cleanCode = code.replace(/\\s+/g, '');\n  const declIdx = cleanCode.indexOf('letmessage=');\n  const consoleIdx = cleanCode.indexOf('console.log(message)');\n  if (declIdx === -1) {\n    return 'let message = ... e\\'lonini saqlab qoling.';\n  }\n  if (declIdx > consoleIdx) {\n    return 'let message e\\'loni console.log dan oldin bo\\'lishi kerak.';\n  }\n  return null;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Hoisting testi",
+      instruction: "Funksiyani e'lon qilinishidan oldin chaqiring.",
+      startingCode: "// Bu yerda chaqiring\n\nfunction salom() {\n  console.log('Salom');\n}",
+      hint: "salom(); deb yozing.",
+      test: "if (logs.includes('Salom')) return null; return 'Funksiya chaqirilmadi';"
+    },
+    {
+      id: 2,
+      title: "var Hoisting va Undefined",
+      instruction: "var myVar = 'test' o'zgaruvchisini e'lon qilishdan oldin console.log yordamida uning qiymatini konsolga chiqaring (u undefined bo'lishi kerak).",
+      startingCode: "// Murojaat qiling va var bilan e'lon qiling\n",
+      hint: "console.log(myVar);\nvar myVar = 'test';",
+      test: "if (code.includes('console.log(myVar)') && code.includes('var myVar') && logs.includes('undefined')) return null; return 'var o\\'zgaruvchisini e\\'lon qilishdan oldin log qilib undefined oling!';"
+    },
+    {
+      id: 3,
+      title: "const va TDZ xatosi",
+      instruction: "try-catch bloki ichida const yordamida e'lon qilingan x o'zgaruvchisini u yaratilishidan oldin o'qib, ReferenceError xatosini ushlang va konsolga chiqaring.",
+      startingCode: "try {\n  // E'londan oldin murojaat qiling\n  console.log(x);\n} catch (e) {\n  console.log(e.name);\n}\n// const x ni e'lon qiling\n",
+      hint: "const x = 5;",
+      test: "if (logs.includes('ReferenceError') && code.includes('const x')) return null; return 'const x e\\'lon qilib TDZ orqali ReferenceError ni ushlang!';"
+    },
+    {
+      id: 4,
+      title: "let Function Expression va Hoisting",
+      instruction: "try-catch ichida let bilan e'lon qilingan myFunc funksiyasini e'lon qilishdan oldin chaqiring va ReferenceError xatosini konsolga chiqaring.",
+      startingCode: "try {\n  myFunc();\n} catch (e) {\n  console.log(e.name);\n}\n// let myFunc funksiyasini yozing\n",
+      hint: "let myFunc = () => {};",
+      test: "if (logs.includes('ReferenceError') && code.includes('let myFunc')) return null; return 'let bilan e\\'lon qilingan funksiya ReferenceError berishini tekshiring!';"
+    },
+    {
+      id: 5,
+      title: "var Function Expression va TypeError",
+      instruction: "try-catch ichida var bilan e'lon qilingan myArrow funksiyasini e'lon qilishdan oldin chaqiring va TypeError xatosini konsolga chiqaring.",
+      startingCode: "try {\n  myArrow();\n} catch (e) {\n  console.log(e.name);\n}\n// var myArrow funksiyasini yozing\n",
+      hint: "var myArrow = () => {};",
+      test: "if (logs.includes('TypeError') && code.includes('var myArrow')) return null; return 'var bilan e\\'lon qilingan funksiya TypeError berishini tekshiring!';"
+    },
+    {
+      id: 6,
+      title: "Scope ichidagi Local Hoisting",
+      instruction: "Globalda var x = 10 e'lon qilingan. test() funksiyasi yaratib, uning ichida avval console.log(x) qiling, so'ngra var x = 20 e'lon qiling. Funksiya chaqirilganda local hoisting sababli undefined chiqishini ko'ring.",
+      startingCode: "var x = 10;\nfunction test() {\n  // Bu yerda local var e'lon qiling va e'londan oldin konsolga chiqaring\n}\ntest();\n",
+      hint: "console.log(x);\nvar x = 20;",
+      test: "if (logs.includes('undefined') && code.includes('var x = 20')) return null; return 'Funksiya ichida local hoisting yuz berishi kerak!';"
+    },
+    {
+      id: 7,
+      title: "Ikkita Function Declaration to'qnashuvi",
+      instruction: "Uchta bir xil nomli function declaration yozilsa, eng oxirgisi amalda bo'ladi. check() funksiyasini e'lon qilishdan oldin chaqiring. Bitta check funksiyasi 'Bir', keyingisi 'Ikki' chiqarsin. Konsolda faqat 'Ikki' chiqishini ta'minlang.",
+      startingCode: "check();\n// check funksiyalarini e'lon qiling\n",
+      hint: "function check() { console.log('Bir'); }\nfunction check() { console.log('Ikki'); }",
+      test: "if (logs.includes('Ikki') && !logs.includes('Bir')) return null; return 'Oxirgi function declaration ustun kelishi kerak!';"
+    },
+    {
+      id: 8,
+      title: "Blok ichidagi funksiyalar va strict mode",
+      instruction: "Blok ({}) ichida e'lon qilingan function declaration blok tashqarisida ReferenceError beradi. Try-catch ichida blok tashqarisidan testBlock() ni chaqiring va xatoni konsolga chiqaring.",
+      startingCode: "{\n  function testBlock() { console.log('Blok'); }\n}\ntry {\n  // Blok tashqarisida chaqiring\n} catch (e) {\n  console.log(e.name);\n}\n",
+      hint: "testBlock();",
+      test: "if (logs.includes('ReferenceError')) return null; return 'Blok ichidagi funksiya tashqarida ReferenceError berishi kerak!';"
+    },
+    {
+      id: 9,
+      title: "Klaslarda Hoisting va TDZ",
+      instruction: "Try-catch ichida new MyClass() yarating, klasni esa let kabi pastda e'lon qiling. ReferenceError xatosini ushlab konsolga chiqaring.",
+      startingCode: "try {\n  const obj = new MyClass();\n} catch (e) {\n  console.log(e.name);\n}\n// class MyClass e'lon qiling\n",
+      hint: "class MyClass {}",
+      test: "if (logs.includes('ReferenceError') && code.includes('class MyClass')) return null; return 'Class e\\'lon qilinishidan oldin ReferenceError berishi kerak!';"
+    },
+    {
+      id: 10,
+      title: "Parametr va let to'qnashuvi (SyntaxError)",
+      instruction: "Funksiya parametrlari scope-da yaratiladi. new Function('a', 'let a = 5;')() yordamida bir xil nomli let e'lon qilinganda yuz beradigan SyntaxError ni try-catch ichida ushlab, konsolga chiqaring.",
+      startingCode: "try {\n  // Bu yerda dynamic function bilan SyntaxError chiqaring\n} catch (e) {\n  console.log(e.name);\n}\n",
+      hint: "new Function('a', 'let a = 5;')();",
+      test: "if (logs.includes('SyntaxError')) return null; return 'Parametr va let to\\'qnashuvi tufayli SyntaxError-ni ushlang!';"
+    },
+    {
+      id: 11,
+      title: "Var shadowing va local hoisting",
+      instruction: "Globalda var name = 'global'. printName() funksiyasini yarating, unda console.log(name) qiling va keyingi qatorda var name = 'local' deb e'lon qiling. Funksiyani chaqiring. undefined chiqishini ko'ring.",
+      startingCode: "var name = 'global';\nfunction printName() {\n  // Bu yerga yozing\n}\nprintName();\n",
+      hint: "console.log(name);\nvar name = 'local';",
+      test: "if (logs.includes('undefined') && code.includes('var name =')) return null; return 'Local var name hoisting sababli undefined chiqishi kerak!';"
+    },
+    {
+      id: 12,
+      title: "Hoisting-ning yakuniy tekshiruvi",
+      instruction: "a (var) va b (let) o'zgaruvchilarini e'lon qilishdan oldin chaqiring. b ni try-catch ichida chaqirib ReferenceError log qiling. a ning undefined bo'lishini ko'rsating.",
+      startingCode: "// a ga murojaat qiling va b ni try-catch ichida chaqiring\n\n// var a va let b o'zgaruvchilarini e'lon qiling\n",
+      hint: "console.log(a);\ntry { console.log(b); } catch(e) { console.log(e.name); }\nvar a = 1; let b = 2;",
+      test: "if (logs.includes('undefined') && logs.includes('ReferenceError') && code.includes('var a') && code.includes('let b')) return null; return 'var va let hoisting farqlarini ko\\'rsating!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

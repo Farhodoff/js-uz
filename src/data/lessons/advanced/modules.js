@@ -314,32 +314,119 @@ class ToolManager {
 | \`import('./m.js')\` | Dynamic | Dinamik yuklash | Promise qaytaradi, runtime-da ishlaydi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Nomli Eksport va Qayta Nomlash (as)",
-    "instruction": "`math.js` modulidan `multiply` funksiyasini eksport qilib, uni joriy faylda `mult` nomi ostida import qiling. (Simulyatsiya uchun import sintaksisini string sifatida boshlang'ich koda kiriting).",
-    "startingCode": "// import sintaksisini yozing\n// import { ... as ... } from './math.js';",
-    "hint": "import { multiply as mult } from './math.js';",
-    "test": "try { if (!code.includes('import') || !code.includes('multiply as mult') || !code.includes('./math.js')) return 'Nomli eksport qayta nomlanib import qilinmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 2,
-    "title": "Default Eksportni Qayta Eksport qilish (Re-export)",
-    "instruction": "`auth.js` faylidagi default eksportni joriy fayldan `defaultAuth` nomi ostida qayta eksport (re-export) qiluvchi kodni yozing.",
-    "startingCode": "// Re-export kodini yozing",
-    "hint": "export { default as defaultAuth } from './auth.js';",
-    "test": "try { if (!code.includes('export') || !code.includes('default as defaultAuth') || !code.includes('./auth.js')) return 'auth.js default eksporti defaultAuth sifatida re-export qilinmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 3,
-    "title": "Dinamik Modul Yuklovchi",
-    "instruction": "Dinamik ravishda `import()` yordamida modul yuklashni simulyatsiya qiluvchi va uning default yoki ma'lum bir nomli eksportini asinxron qaytaruvchi `dynamicImportLoader(modulePromise, exportName)` funksiyasini yozing. `modulePromise` — bu import natijasi kabi resolve bo'ladigan Promise obyekti bo'lib, uning ichida moduldagi eksportlar saqlanadi. Agar `exportName` berilmasa, default eksport qaytarilsin.",
-    "startingCode": "async function dynamicImportLoader(modulePromise, exportName) {\n  // Kodni yozing\n}",
-    "hint": "const module = await modulePromise; return exportName ? module[exportName] : module.default;",
-    "test": "if (typeof dynamicImportLoader !== 'function') return 'dynamicImportLoader funksiya emas'; const mockModule = { default: 'DefaultValue', named: 'NamedValue' }; const promise = Promise.resolve(mockModule); return new Promise(resolve => { dynamicImportLoader(promise, 'named').then(val1 => { if (val1 !== 'NamedValue') return resolve('Nomli eksport yuklanmadi'); dynamicImportLoader(promise).then(val2 => { if (val2 !== 'DefaultValue') return resolve('Default eksport yuklanmadi'); resolve(null); }); }); });"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Named Export",
+      instruction: "math.js faylidan PI ni export qiling.",
+      startingCode: "const PI = 3.14;\n// Bu yerga yozing",
+      hint: "export { PI };",
+      test: "if (code.includes('export')) return null; return 'export kalit so\\'zidan foydalaning';"
+    },
+    {
+      id: 2,
+      title: "Default Export",
+      instruction: "logger.js faylidan log funksiyasini default export qiling.",
+      startingCode: "function log(msg) { console.log(msg); }\n// Default export qiling\n",
+      hint: "export default log;",
+      test: "if (code.includes('export default')) return null; return 'export default kalit so\\'zidan foydalaning';"
+    },
+    {
+      id: 3,
+      title: "Named Import",
+      instruction: "math.js faylidan add va subtract funksiyalarini import qiling.",
+      startingCode: "// Bu yerda import yozing\n",
+      hint: "import { add, subtract } from './math.js';",
+      test: "if (code.includes('import') && code.includes('add') && code.includes('subtract') && code.includes('./math.js')) return null; return 'import { add, subtract } from \\'./math.js\\' yozing';"
+    },
+    {
+      id: 4,
+      title: "Import Renaming (as)",
+      instruction: "utils.js faylidan formatDate funksiyasini format nomi bilan import qiling.",
+      startingCode: "// Bu yerda import yozing\n",
+      hint: "import { formatDate as format } from './utils.js';",
+      test: "if (code.includes('import') && code.includes('formatDate as format') && code.includes('./utils.js')) return null; return 'formatDate as format dan foydalanib import qiling';"
+    },
+    {
+      id: 5,
+      title: "Namespace Import (*)",
+      instruction: "db.js faylidagi barcha eksportlarni db obyekti sifatida import qiling.",
+      startingCode: "// Bu yerda import yozing\n",
+      hint: "import * as db from './db.js';",
+      test: "if (code.includes('import * as db') && code.includes('./db.js')) return null; return 'import * as db from \\'./db.js\\' ko\\'rinishida yozing';"
+    },
+    {
+      id: 6,
+      title: "Re-exporting",
+      instruction: "Boshqa joydan import qilmasdan, math.js faylidagi barcha nomli eksportlarni joriy fayldan to'g'ridan-to'g'ri re-export qiling.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "export * from './math.js';",
+      test: "if (code.includes('export * from') && code.includes('./math.js')) return null; return 'export * from \\'./math.js\\' ko\\'rinishida re-export qiling';"
+    },
+    {
+      id: 7,
+      title: "Re-export Default",
+      instruction: "auth.js faylining default eksportini joriy fayldan defaultAuth nomi ostida nomli eksport qilib yuboring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "export { default as defaultAuth } from './auth.js';",
+      test: "if (code.includes('export') && code.includes('default as defaultAuth') && code.includes('./auth.js')) return null; return 'export { default as defaultAuth } from \\'./auth.js\\' yozing';"
+    },
+    {
+      id: 8,
+      title: "Dynamic Import",
+      instruction: "Dynamic import yordamida runtime-da './analytics.js' modulini yuklang va resolved bo'lgan modulni qaytaring.",
+      startingCode: "function loadAnalytics() {\n  // Dinamik import ishlatib modulni qaytaring (Promise)\n}",
+      hint: "return import('./analytics.js');",
+      test: "if (code.includes('import(') && code.includes('./analytics.js')) return null; return 'import(\\'./analytics.js\\') funksiyasini chaqiring';"
+    },
+    {
+      id: 9,
+      title: "Inline Named Export",
+      instruction: "double funksiyasini e'lon qilish paytidayoq eksport qiling (inline export).",
+      startingCode: "// Funksiyani e'lon qilishda to'g'ridan-to'g'ri eksport qiling\nfunction double(x) { return x * 2; }",
+      hint: "export function double(x) { return x * 2; }",
+      test: "if (code.includes('export function double')) return null; return 'Funksiyani inline export qiling (export function double)';"
+    },
+    {
+      id: 10,
+      title: "Exporting Multiple Variables",
+      instruction: "let x = 1 va let y = 2 o'zgaruvchilarini bitta blokda eksport qiling.",
+      startingCode: "let x = 1;\nlet y = 2;\n// Blokda eksport qiling\n",
+      hint: "export { x, y };",
+      test: "if (code.includes('export {') && code.includes('x') && code.includes('y')) return null; return 'export { x, y } yordamida eksport qiling';"
+    },
+    {
+      id: 11,
+      title: "Default Exporting Class",
+      instruction: "User klassini default export qiling.",
+      startingCode: "class User {}\n// Default export qiling\n",
+      hint: "export default class User {} yoki export default User;",
+      test: "if (code.includes('export default class User') || code.includes('export default User')) return null; return 'User klassini default export qiling';"
+    },
+    {
+      id: 12,
+      title: "Aggregating Imports",
+      instruction: "'./config.js' faylidan faqat url va port xossalarini nomli import qiling.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "import { url, port } from './config.js';",
+      test: "if (code.includes('import') && code.includes('url') && code.includes('port') && code.includes('./config.js')) return null; return 'url va port ni import qiling';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Dinamik Modul Yuklovchi (dynamicImportLoader)",
+      instruction: "Dinamik ravishda `import()` yordamida modul yuklashni simulyatsiya qiluvchi va uning default yoki ma'lum bir nomli eksportini asinxron qaytaruvchi `dynamicImportLoader(modulePromise, exportName)` funksiyasini yozing. `modulePromise` — bu import natijasi kabi resolve bo'ladigan Promise obyekti bo'lib, uning ichida moduldagi eksportlar saqlanadi. Agar `exportName` berilmasa, default eksport qaytarilsin.",
+      startingCode: "async function dynamicImportLoader(modulePromise, exportName) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "const module = await modulePromise; return exportName ? module[exportName] : module.default;",
+      test: "if (typeof dynamicImportLoader !== 'function') return 'dynamicImportLoader funksiya emas';\nconst mockModule = { default: 'DefaultValue', named: 'NamedValue' };\nconst promise = Promise.resolve(mockModule);\nreturn new Promise(resolve => {\n  dynamicImportLoader(promise, 'named').then(val1 => {\n    if (val1 !== 'NamedValue') return resolve('Nomli eksport yuklanmadi');\n    dynamicImportLoader(promise).then(val2 => {\n      if (val2 !== 'DefaultValue') return resolve('Default eksport yuklanmadi');\n      resolve(null);\n    });\n  });\n});"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Eksport Nomlarini Ajratuvchi (extractExportNames)",
+      instruction: "Matn (string) ko'rinishida berilgan sodda JavaScript kodidan named exports (nomli eksportlar) ro'yxatini ajratib oluvchi `extractExportNames(code)` funksiyasini yozing. Funksiya faqat `export const name = ...`, `export let name = ...` yoki `export function name(...)` formatidagi eksportlarni topib, ularning nomlarini massiv ko'rinishida qaytarsin.",
+      startingCode: "function extractExportNames(code) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "const regex = /export\\s+(const|let|function)\\s+([a-zA-Z0-9_$]+)/g; const names = []; let match; while ((match = regex.exec(code)) !== null) { names.push(match[2]); } return names;",
+      test: "if (typeof extractExportNames !== 'function') return 'extractExportNames funksiya emas';\nconst sampleCode = 'export const PI = 3.14;\\nexport function add(a, b) { return a+b; }\\nexport let counter = 0;\\nconst localVal = 100;';\nconst res = extractExportNames(sampleCode);\nif (res && res.includes('PI') && res.includes('add') && res.includes('counter') && res.length === 3) return null;\nreturn 'Eksport nomlarini ajratish xato: ' + JSON.stringify(res);"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

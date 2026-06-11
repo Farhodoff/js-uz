@@ -243,32 +243,103 @@ Ko'p uchraydigan holat: backend yoki frontenda sahifa raqamini hisoblash uchun U
 | \`[]\` (Bo'sh massiv) | Bo'sh stringga, so'ngra 0 soniga o'tadi | \`""\` yoki \`0\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Songa majburiy o'tkazish (Safe Addition)",
-    "instruction": "Sizga ikkita parametr qabul qiladigan `safeAdd(val1, val2)` funksiyasi berilgan. Ular har xil tipda (string, boolean, null) bo'lishi mumkin. Agar ular yordamida oddiy plyus `+` amalini bajarsak va ulardan biri string bo'lsa, JS ularni matn sifatida birlashtiradi. Siz plyus `+` unar operatorining implicit casting xususiyatidan foydalanib, har qanday holatda ham ularni songa o'tkazib matematik qo'shadigan funksiya yozing.",
-    "startingCode": "function safeAdd(val1, val2) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Plyus `+` unar operatori (masalan, `+x`) qiymatni tezkor va yashirin tarzda songa o'tkazadi.",
-    "test": "const sandbox = new Function(code + '; return safeAdd;');\nconst fn = sandbox();\nif (fn('5', '10') === 15 && fn(true, 5) === 6 && fn('3', false) === 3) return null;\nreturn 'safeAdd funksiyasi qiymatlarni to\\'g\\'ri songa o\\'tkazib qo\\'shmadi';"
-  },
-  {
-    "id": 2,
-    "title": "Falsy qiymatlarni inkor qilish",
-    "instruction": "Berilgan istalgan qiymatni boolean tipiga o'tkazib, uning 'falsy' (noto'g'ri/bo'sh) ekanligini aniqlovchi `isFalsy(value)` funksiyasini yozing. Buning uchun mantiqiy inkor `!` operatorining implicit casting xususiyatidan foydalaning (explicit `Boolean()` ishlatilmasin).",
-    "startingCode": "function isFalsy(value) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Mantiqiy inkor operatori `!` har qanday qiymatni boolean-ga o'tkazadi va uni teskarisiga aylantiradi. Uni ikki marta ishlatish `!!` qiymatni o'zining boolean holatiga o'tkazadi.",
-    "test": "const sandbox = new Function(code + '; return isFalsy;');\nconst fn = sandbox();\nif (fn(0) === true && fn('') === true && fn(null) === true && fn('hello') === false && fn(5) === false) return null;\nreturn 'isFalsy funksiyasi falsy qiymatlarni to\\'g\\'ri aniqlamadi';"
-  },
-  {
-    "id": 3,
-    "title": "Massiv elementlarini songa o'tkazib yig'ish",
-    "instruction": "Massiv berilgan. Massiv elementlarini (ular son, boolean yoki songa aylanadigan string yoki null bo'lishi mumkin) implicit casting (unary `+`) yordamida songa o'tkazib yig'ib boruvchi `sumCoerced(arr)` funksiyasini yozing. Agar element songa o'tkazilganda `NaN` bo'lsa (masalan `'abc'`), uni 0 deb hisoblang.",
-    "startingCode": "function sumCoerced(arr) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Massivni aylanib chiquvchi sikl yoki `reduce` ishlatib, har bir elementni `+item` ko'rinishida songa o'giring. Uni `isNaN()` orqali tekshirib, agar true bo'lsa, 0 qo'shing.",
-    "test": "const sandbox = new Function(code + '; return sumCoerced;');\nconst fn = sandbox();\nconst res = fn([1, '2', true, 'abc', null]);\nif (res === 4) return null;\nreturn 'sumCoerced funksiyasi to\\'g\\'ri yig\\'indini qaytarmadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Coercion sinovi",
+      instruction: "Konsolga '5' + 5 va '5' - 5 natijalarini chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "console.log('5' + 5); console.log('5' - 5);",
+      test: "if (logs.includes('55') && logs.includes(0)) return null; return 'Natija noto\\'g\\'ri!';"
+    },
+    {
+      id: 2,
+      title: "Boolean math coercion",
+      instruction: "res o'zgaruvchisiga true + 10 amali natijasini bering.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = true + 10;",
+      test: "if (res === 11) return null; return 'true son sifatida 1 ga teng bo\\'ladi!';"
+    },
+    {
+      id: 3,
+      title: "String division coercion",
+      instruction: "res o'zgaruvchisiga '20' / 2 amali natijasini yuklang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '20' / 2;",
+      test: "if (res === 10) return null; return 'Bo\\'lish amali stringni songa o\\'giradi!';"
+    },
+    {
+      id: 4,
+      title: "Undefined summation",
+      instruction: "res o'zgaruvchisiga undefined + 10 yig'indisini yuklang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = undefined + 10;",
+      test: "if (Number.isNaN(res)) return null; return 'undefined + son NaN bo\\'lishi lozim!';"
+    },
+    {
+      id: 5,
+      title: "Null coercion sum",
+      instruction: "res o'zgaruvchisiga null + 10 amali natijasini yuklang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = null + 10;",
+      test: "if (res === 10) return null; return 'null + 10 ifodasi 10 ga teng bo\\'lishi kerak!';"
+    },
+    {
+      id: 6,
+      title: "Implicit subtraction",
+      instruction: "res o'zgaruvchisiga '100' - '50' ifodasi qiymatini bering.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '100' - '50';",
+      test: "if (res === 50) return null; return 'Ayirish amali avtomatik tarzda songa o\\'giradi!';"
+    },
+    {
+      id: 7,
+      title: "Multiple operations coercion",
+      instruction: "res o'zgaruvchisiga '5' + '5' - 5 amali natijasini bering.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '5' + '5' - 5;",
+      test: "if (res === 50) return null; return 'Matnlar qo\\'shilib keyin 5 ayirilishi kerak!';"
+    },
+    {
+      id: 8,
+      title: "Three comparisons chain",
+      instruction: "res o'zgaruvchisiga 3 > 2 > 1 taqqoslash ifodasi natijasini yuklang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = 3 > 2 > 1;",
+      test: "if (res === false) return null; return '3 > 2 > 1 false bo\\'lishini hisobga oling';"
+    },
+    {
+      id: 9,
+      title: "Logical coercion ||",
+      instruction: "res o'zgaruvchisiga '' || 'Sukut' mantiqiy ifodasi natijasini bering.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '' || 'Sukut';",
+      test: "if (res === 'Sukut') return null; return '|| operatori birinchi truthy qiymatni qaytaradi!';"
+    },
+    {
+      id: 10,
+      title: "Double inversion boolean coercion",
+      instruction: "res o'zgaruvchisiga !!'Salom' mantiqiy ifodasi natijasini bering.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = !!'Salom';",
+      test: "if (res === true) return null; return '!! truthy qiymatni truega aylantiradi!';"
+    },
+    {
+      id: 11,
+      title: "Multiplication coercion",
+      instruction: "res o'zgaruvchisiga '4' * '5' amali natijasini yuklang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '4' * '5';",
+      test: "if (res === 20) return null; return 'Ko\\'paytirish stringlarni songa o\\'giradi!';"
+    },
+    {
+      id: 12,
+      title: "Unary plus coercion",
+      instruction: "res o'zgaruvchisiga unar plyus yordamida + '10' qiymatini oling.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = + '10';",
+      test: "if (res === 10 && typeof res === 'number') return null; return 'Unar plyus stringni songa o\\'giradi!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

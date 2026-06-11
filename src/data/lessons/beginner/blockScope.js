@@ -316,32 +316,103 @@ Global yoki funktsional doirada ortiqcha o'zgaruvchilarning yoyilib ketishi (Sco
 | **Global window obyektiga birikish** | Ha | Yo'q | Yo'q |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Tsikl ichida Block Scope",
-    "instruction": "Berilgan sonlar massividagi faqat musbat sonlar kvadratlarining yig'indisini hisoblaydigan `sumOfPositiveSquares(numbers)` funksiyasini yozing. Tsikl va uning ichidagi `if` sharti ichida o'zgaruvchilarni e'lon qilishda faqat `let` yoki `const` kalit so'zlaridan foydalaning (umuman `var` kalit so'zini ishlatmang). Har bir musbat son kvadratini alohida block scope ichida `square` o'zgaruvchisiga yuklab, keyin yig'indiga qo'shing.",
-    "startingCode": "function sumOfPositiveSquares(numbers) {\n  let total = 0;\n  for (let i = 0; i < numbers.length; i++) {\n    // Kodni shu yerda yozing\n  }\n  return total;\n}",
-    "hint": "if (numbers[i] > 0) { const square = numbers[i] * numbers[i]; total += square; } blokidan foydalaning.",
-    "test": "if (code.includes('var')) return \"Kodingizda 'var' kalit so'zidan foydalanmang! Block scope ta'sirini ko'rsatish uchun faqat let yoki const ishlating.\";\nconst sandbox = new Function(code + '; return sumOfPositiveSquares;');\nconst fn = sandbox();\nconst res1 = fn([2, -3, 4]);\nconst res2 = fn([-1, -2, -5]);\nconst res3 = fn([1, 2, 3]);\nif (res1 === 20 && res2 === 0 && res3 === 14) return null;\nreturn 'Kalkulyatsiya xato yoki kutilgan natija olinmadi. Musbat sonlar kvadratlarini to\\'g\\'ri hisoblang.';"
-  },
-  {
-    "id": 2,
-    "title": "Asinxron Tsikl Muammosi",
-    "instruction": "Massivga 3 ta callback funksiyani joylashtirib qaytaruvchi `createDelayedCallbacks()` funksiyasini yozing. Har bir callback funksiya chaqirilganda o'zining tsikldagi indeksini (0, 1, 2) qaytarishi kerak. Tsikl o'zgaruvchisini block scope da saqlab qolish uchun `let` dan to'g'ri foydalaning.",
-    "startingCode": "function createDelayedCallbacks() {\n  const callbacks = [];\n  // Tsiklni block scope-dan foydalanib yozing\n  for (let i = 0; i < 3; i++) {\n    callbacks.push(function() {\n      // Kodni shu yerda yozing\n    });\n  }\n  return callbacks;\n}",
-    "hint": "Callback funksiya ichida shunchaki `return i;` qiling. Tsikl boshida `let i` yozilgani sababli, har bir callback o'zining shaxsiy block-scoped `i` nusxasini saqlab qoladi.",
-    "test": "if (code.includes('var')) return \"Kodingizda var ishlatmang! Har bir iteratsiya uchun alohida block scope yaratish uchun faqat let ishlatilishi shart.\";\nconst sandbox = new Function(code + '; return createDelayedCallbacks;');\nconst fn = sandbox();\nconst cbList = fn();\nif (cbList.length !== 3) return 'Massivda ro\\'ppa-rosa 3 ta callback bo\\'lishi kerak.';\nif (cbList[0]() === 0 && cbList[1]() === 1 && cbList[2]() === 2) return null;\nreturn 'Callbacklar noto\\'g\\'ri indekslarni qaytardi. Block scope muammosini let yordamida hal qiling.';"
-  },
-  {
-    "id": 3,
-    "title": "O'zgaruvchini Soya Qilish (Shadowing)",
-    "instruction": "Sizga global (yoki tashqi doiradagi) o'zgaruvchi `value = 10` berilgan. Funksiya ichida yangi blok `{}` oching. Ushbu blok ichida `value` o'zgaruvchisini `let` orqali qayta e'lon qilib, unga `20` qiymatini bering va bu qiymatni tashqaridagi `innerValue` o'zgaruvchisiga o'zlashtiring. Blokdan chiqilganda, tashqi `value` qiymati o'zgarmasdan `10`ligicha qolishi kerak.",
-    "startingCode": "function testShadowing() {\n  let value = 10;\n  let innerValue;\n  \n  // Kodni shu yerda yozing\n  \n  return [innerValue, value];\n}",
-    "hint": "{\n  let value = 20;\n  innerValue = value;\n} ko'rinishidagi blokdan foydalaning.",
-    "test": "if (!code.includes('{') || !code.includes('}')) return \"Blokdan (curly braces) foydalanilmagan!\";\nif (code.includes('var')) return \"Kodingizda 'var' ishlatmang!\";\nconst sandbox = new Function(code + '; return testShadowing;');\nconst fn = sandbox();\nconst res = fn();\nif (res[0] === 20 && res[1] === 10) return null;\nreturn \"Natija kutilgandek emas. Blok ichida 'value' o'zgaruvchisini soya qilib (shadowing) uni 20 ga tenglang.\";"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Blok testi",
+      instruction: "Blok { } oching, uning ichida 'x' o'zgaruvchisini yarating va tashqarida uni ishlatib xato oling.",
+      startingCode: "// { } oching\n",
+      hint: "{ let x = 5; } console.log(x);",
+      test: "if (code.includes('{') && code.includes('}') && (code.includes('let x') || code.includes('const x'))) return null; return 'Blok ichida let x = 5 e\\'lon qilib, tashqarida log qiling!';"
+    },
+    {
+      id: 2,
+      title: "const va block scope",
+      instruction: "Blok { } ichida const y = 10 yarating. Blokdan tashqarida console.log(y) qiling.",
+      startingCode: "// Blok ichida const y = 10 e'lon qilib tashqarida log qiling\n",
+      hint: "{ const y = 10; } console.log(y);",
+      test: "if (code.includes('{') && code.includes('}') && code.includes('const y') && code.includes('y')) return null; return 'const o\\'zgaruvchisini blok ichida yarating!';"
+    },
+    {
+      id: 3,
+      title: "var blok devorini buzishi",
+      instruction: "Blok { } ichida var status = 'active' yarating va blokdan tashqarida uni konsolga chiqaring.",
+      startingCode: "// Blok ichida var status yarating va tashqarida console.log qiling\n",
+      hint: "{ var status = 'active'; } console.log(status);",
+      test: "if (code.includes('var status') && logs.includes('active')) return null; return 'var o\\'zgaruvchisini blok ichida yaratib tashqarida log qiling!';"
+    },
+    {
+      id: 4,
+      title: "if blok scope",
+      instruction: "if (true) bloki ichida let result = 'Muvaffaqiyatli' yarating va uni konsolga chiqaring. Blokdan tashqarida uni ishlatmang.",
+      startingCode: "if (true) {\n  // Bu yerda let result yarating va log qiling\n}",
+      hint: "let result = 'Muvaffaqiyatli'; console.log(result);",
+      test: "if (code.includes('let result') && logs.includes('Muvaffaqiyatli')) return null; return 'result o\\'zgaruvchisini if bloki ichida yaratib log qiling!';"
+    },
+    {
+      id: 5,
+      title: "for tsikli block scope",
+      instruction: "for (let i = 0; i < 3; i++) tsiklini yozing va har bir qadamda i ni log qiling.",
+      startingCode: "// let yordamida for tsiklini yozing\n",
+      hint: "for (let i = 0; i < 3; i++) { console.log(i); }",
+      test: "if (code.includes('let i') && code.includes('for') && logs.includes(0) && logs.includes(2)) return null; return 'let yordamida for tsikli yozing!';"
+    },
+    {
+      id: 6,
+      title: "for tsiklidan keyin var i",
+      instruction: "for (var j = 0; j < 3; j++) tsikli tugagach, console.log('Final:', j) qiling. var sababli j globalda qolganini tekshiring.",
+      startingCode: "// var yordamida for tsikli yozing va tashqarida log qiling\n",
+      hint: "for (var j = 0; j < 3; j++) {} console.log('Final:', j);",
+      test: "if (code.includes('var j') && logs.includes('Final: 3')) return null; return 'var yordamida tsikl yozib, final qiymatini log qiling!';"
+    },
+    {
+      id: 7,
+      title: "Temporal Dead Zone (TDZ)",
+      instruction: "Blok ichida console.log(z) qiling, undan keyin esa let z = 50 e'lon qiling. Bu ReferenceError berishini tekshirish uchun log-ni oldin yozing.",
+      startingCode: "{\n  // z-ni e'lon qilishdan oldin log qiling\n  // keyin let z = 50 e'lon qiling\n}",
+      hint: "console.log(z); let z = 50;",
+      test: "if (code.includes('let z') && code.indexOf('console.log') < code.indexOf('let z')) return null; return 'z-ni e\\'lon qilishdan oldin log qiling!';"
+    },
+    {
+      id: 8,
+      title: "Nested Blocks (Ichma-ich bloklar)",
+      instruction: "Tashqi blok oching va unda let outerVar = 'Tashqi' yarating. Ichida yana bir blok oching va unda console.log(outerVar) qiling.",
+      startingCode: "// Ichma-ich bloklar va outerVar log qilinishi\n",
+      hint: "{ let outerVar = 'Tashqi'; { console.log(outerVar); } }",
+      test: "if (code.includes('outerVar') && logs.includes('Tashqi')) return null; return 'Ichma-ich bloklarda outerVar-dan foydalaning!';"
+    },
+    {
+      id: 9,
+      title: "Blok ichidagi var shadowing",
+      instruction: "Globalda var age = 20 yarating. Blok ichida var age = 30 yarating va log qiling. Tashqarida ham log qiling. Ikkala log ham 30 chiqishini tekshiring.",
+      startingCode: "var age = 20;\n{\n  // age-ni o'zgartiring va log qiling\n}\nconsole.log('Global:', age);",
+      hint: "var age = 30; console.log(age);",
+      test: "if (logs.includes('Global: 30')) return null; return 'var o\\'zgaruvchisi blokda shadowing qilinmasligini tekshiring!';"
+    },
+    {
+      id: 10,
+      title: "Blok ichidagi let shadowing",
+      instruction: "Globalda let points = 100 yarating. Blok ichida let points = 200 yarating va log qiling. Tashqarida ham log qiling. Tashqarida 100, ichkarida 200 chiqishini tekshiring.",
+      startingCode: "let points = 100;\n{\n  // let points yarating va log qiling\n}\nconsole.log('Global:', points);",
+      hint: "let points = 200; console.log(points);",
+      test: "if (logs.includes('Global: 100') && logs.includes(200)) return null; return 'let o\\'zgaruvchisi blok ichida to\\'g\\'ri shadowing qilinishini tekshiring!';"
+    },
+    {
+      id: 11,
+      title: "const massivini blokda o'zgartirish",
+      instruction: "Blok ichida const nums = [1, 2] yarating. Unga nums.push(3) qiling. Tashqarida nums ni log qilishga urining.",
+      startingCode: "{\n  // const nums yarating va unga 3 qo'shing\n}\n// tashqarida console.log(nums) qiling",
+      hint: "{ const nums = [1, 2]; nums.push(3); } console.log(nums);",
+      test: "if (code.includes('const nums') && code.includes('push') && code.includes('nums')) return null; return 'const massivini blok ichida o\\'zgartirib, tashqarida ishlatishni tekshiring!';"
+    },
+    {
+      id: 12,
+      title: "switch case block scope",
+      instruction: "switch case bloki ichida let msg = 'Hi' e'lon qiling va uni konsolga chiqaring.",
+      startingCode: "let action = 'greet';\nswitch(action) {\n  case 'greet': {\n    // let msg yarating va log qiling\n    break;\n  }\n}",
+      hint: "let msg = 'Hi'; console.log(msg);",
+      test: "if (code.includes('let msg') && logs.includes('Hi')) return null; return 'switch case bloki ichida let msg = \"Hi\" yarating!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

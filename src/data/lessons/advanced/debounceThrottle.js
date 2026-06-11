@@ -273,32 +273,119 @@ class InfiniteScroll {
 | **rAF** | - | Faqat ekran chizilishi bilan bog'liq vizual hodisalar | Brauzer yangilanish chastotasi (odatda 60Hz) bilan sinxron ishlaydi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Debounce implementatsiyasi",
-    "instruction": "Berilgan `func` funksiyasini `delay` millisekund davomida qayta chaqirilmasa keyin ishga tushiradigan `debounce(func, delay)` funksiyasini yozing.",
-    "startingCode": "function debounce(func, delay) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Qaytadigan funksiya ichida har safar chaqirilganda `clearTimeout` yordamida oldingi taymerni o'chiring va yangi `setTimeout` o'rnating.",
-    "test": "const sandbox = new Function(code + '; return debounce;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'debounce funksiyasi aniqlanmadi';\nlet counter = 0;\nconst d = fn(() => counter++, 50);\nd();\nd();\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (counter === 0) {\n      setTimeout(() => {\n        if (counter === 1) resolve(null);\n        else resolve('Debounce kechikishdan keyin ham ishga tushmadi yoki noto\\'g\\'ri marta ishladi');\n      }, 80);\n    } else {\n      resolve('Debounce funksiyasi belgilangan vaqtdan oldin chaqirib yuborildi');\n    }\n  }, 20);\n});"
-  },
-  {
-    "id": 2,
-    "title": "Throttle implementatsiyasi",
-    "instruction": "Berilgan `func` funksiyasini har `limit` millisekund ichida ko'pi bilan 1 marta bajarilishini ta'minlaydigan `throttle(func, limit)` funksiyasini yozing.",
-    "startingCode": "function throttle(func, limit) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Bajarish mumkinligini bildiruvchi `inThrottle` yoki `flag` o'zgaruvchisidan foydalaning. Funksiya bajarilgach, ushbu flagni ma'lum bir muddatga bloklab qo'ying.",
-    "test": "const sandbox = new Function(code + '; return throttle;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'throttle funksiyasi aniqlanmadi';\nlet counter = 0;\nconst t = fn(() => counter++, 50);\nt();\nt();\nt();\nif (counter !== 1) return 'Throttle birinchi chaqiruvni darhol bajarishi kerak edi va ketma-ket chaqiruvlarni bloklashi kerak edi';\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    t();\n    if (counter === 2) resolve(null);\n    else resolve('Limit muddati tugagandan so\\'ng chaqirilganda funksiya bajarilmadi');\n  }, 70);\n});"
-  },
-  {
-    "id": 3,
-    "title": "Leading Edge Debounce",
-    "instruction": "Chaqirilganda funksiyani zudlik bilan (leading edge) bajaradigan va keyingi `delay` millisekund davomida boshqa chaqirilishlarni e'tiborsiz qoldiradigan `leadingDebounce(func, delay)` funksiyasini yozing.",
-    "startingCode": "function leadingDebounce(func, delay) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Oddiy debouncega o'xshash, lekin taymer mavjud bo'lmaganda funksiyani darhol chaqiradi va taymer tugagandan so'ng taymer o'zgaruvchisini yana tozalaydi.",
-    "test": "const sandbox = new Function(code + '; return leadingDebounce;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'leadingDebounce funksiyasi aniqlanmadi';\nlet counter = 0;\nconst d = fn(() => counter++, 50);\nd();\nd();\nif (counter !== 1) return 'Leading edge debounce birinchi chaqiruvni darhol bajarishi kerak edi';\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    d();\n    if (counter === 2) resolve(null);\n    else resolve('Kechikish vaqti tugagandan keyin yangi chaqiruv ishlamadi');\n  }, 70);\n});"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Taymerni kechiktirish",
+      instruction: "setTimeout yordamida 'hello' funksiyasini 100ms keyin chaqiring.",
+      startingCode: "function hello() {\n  console.log('hi');\n}\n// Kodni yozing\n",
+      hint: "setTimeout(hello, 100);",
+      test: "if (code.includes('setTimeout')) return null; return 'setTimeout ishlatilmadi';"
+    },
+    {
+      id: 2,
+      title: "Taymerni bekor qilish",
+      instruction: "Yaratilgan taymerni bekor qiling, toki u ishga tushib ketmasin.",
+      startingCode: "const timerId = setTimeout(() => console.log('not run'), 500);\n// Kodni yozing\n",
+      hint: "clearTimeout(timerId);",
+      test: "if (code.includes('clearTimeout')) return null; return 'clearTimeout ishlatilmadi';"
+    },
+    {
+      id: 3,
+      title: "Debounce qobig'i",
+      instruction: "Boshqa funksiyani qaytaradigan oddiy debounce wrapper funksiyasi qobig'ini yozing.",
+      startingCode: "function debounce(func) {\n  return function() {\n    // Wrapper\n  };\n}\n",
+      hint: "return function() { ... }",
+      test: "if (code.includes('return function')) return null; return 'Wrapper funksiya qaytarilmadi';"
+    },
+    {
+      id: 4,
+      title: "Sodda Debounce Yarating",
+      instruction: "Berilgan delay bo'yicha ishlaydigan va har safar chaqirilganda eski taymerni bekor qiladigan debounce funksiyasini yozing.",
+      startingCode: "function debounce(func, delay) {\n  let timeoutId;\n  return function() {\n    // Kodni yozing\n  };\n}\n",
+      hint: "clearTimeout(timeoutId); timeoutId = setTimeout(func, delay);",
+      test: "if (code.includes('clearTimeout') && code.includes('setTimeout')) return null; return 'clearTimeout yoki setTimeout xato ishlatildi';"
+    },
+    {
+      id: 5,
+      title: "Argumentlar bilan Debounce",
+      instruction: "Debounce qilingan funksiyaga barcha kelgan argumentlar yetib borishini ta'minlang.",
+      startingCode: "function debounce(func, delay) {\n  let timeoutId;\n  return function(...args) {\n    clearTimeout(timeoutId);\n    // dynamic args o'tkazing\n  };\n}\n",
+      hint: "timeoutId = setTimeout(() => func(...args), delay);",
+      test: "if (code.includes('...args')) return null; return 'Argumentlar uzatilmadi';"
+    },
+    {
+      id: 6,
+      title: "Context (this) bilan Debounce",
+      instruction: "Original funksiya chaqirilganda funksiya konteksti (this) buzilmasligini apply yordamida ta'minlang.",
+      startingCode: "function debounce(func, delay) {\n  let timeoutId;\n  return function(...args) {\n    clearTimeout(timeoutId);\n    timeoutId = setTimeout(() => {\n      // Kodni yozing\n    }, delay);\n  };\n}\n",
+      hint: "func.apply(this, args);",
+      test: "if (code.includes('apply')) return null; return 'apply() ishlatilmadi';"
+    },
+    {
+      id: 7,
+      title: "Throttle qobig'i",
+      instruction: "Harakatlarni cheklaydigan throttle funksiyasining boshlang'ich qobig'ini yozing.",
+      startingCode: "function throttle(func, limit) {\n  let inThrottle = false;\n  return function() {\n    // Wrapper\n  };\n}\n",
+      hint: "return function() { ... }",
+      test: "if (code.includes('return function')) return null; return 'Wrapper funksiya qaytarilmadi';"
+    },
+    {
+      id: 8,
+      title: "Flag-based Throttle",
+      instruction: "InThrottle flagi yordamida belgilangan vaqtda faqat bir marta ishlaydigan throttle funksiyasini yozing.",
+      startingCode: "function throttle(func, limit) {\n  let inThrottle = false;\n  return function() {\n    if (!inThrottle) {\n      func();\n      // inThrottle ni yoqing va vaqt tugagach o'chiring\n    }\n  };\n}\n",
+      hint: "inThrottle = true; setTimeout(() => inThrottle = false, limit);",
+      test: "if (code.includes('inThrottle = true') && code.includes('false')) return null; return 'Throttle flag boshqaruvi xato';"
+    },
+    {
+      id: 9,
+      title: "Throttle parametr uzatish",
+      instruction: "Throttled funksiyaga dynamic argumentlarni apply yordamida xavfsiz o'tkazing.",
+      startingCode: "function throttle(func, limit) {\n  let inThrottle = false;\n  return function(...args) {\n    if (!inThrottle) {\n      // apply orqali context va args o'tkazing\n      inThrottle = true;\n      setTimeout(() => inThrottle = false, limit);\n    }\n  };\n}\n",
+      hint: "func.apply(this, args);",
+      test: "if (code.includes('apply')) return null; return 'apply yoki args xato';"
+    },
+    {
+      id: 10,
+      title: "Immediate Debounce",
+      instruction: "Debounce qilingan funksiyani kutishdan oldin birinchi chaqiriqda darhol chaqiradigan 'immediate' parametrini qo'shing.",
+      startingCode: "function debounce(func, delay, immediate = false) {\n  let timeoutId;\n  return function(...args) {\n    const callNow = immediate && !timeoutId;\n    clearTimeout(timeoutId);\n    timeoutId = setTimeout(() => {\n      timeoutId = null;\n      if (!immediate) func.apply(this, args);\n    }, delay);\n    if (callNow) func.apply(this, args);\n  };\n}\n",
+      hint: "Konstruktsiya berilgan, uni o'rganing va return null qaytarish uchun kodni yuboring",
+      test: "if (code.includes('immediate')) return null; return 'Immediate qo\\'llanilmagan';"
+    },
+    {
+      id: 11,
+      title: "Cancelable Debounce",
+      instruction: "Debounce funksiyaga uni muddatidan oldin bekor qiluvchi '.cancel()' metodini qo'shing.",
+      startingCode: "function debounce(func, delay) {\n  let timeoutId;\n  const debounced = function(...args) {\n    clearTimeout(timeoutId);\n    timeoutId = setTimeout(() => func.apply(this, args), delay);\n  };\n  // debounced.cancel metodini yarating\n  return debounced;\n}\n",
+      hint: "debounced.cancel = () => clearTimeout(timeoutId);",
+      test: "if (code.includes('.cancel')) return null; return 'cancel metodi qo\\'shilmadi';"
+    },
+    {
+      id: 12,
+      title: "Custom Throttle trailing",
+      instruction: "Throttled funksiyada limit oralig'idagi oxirgi chaqiruv ham saqlanib qolib bajarilishini ta'minlovchi trailing opsiyasini tekshiring.",
+      startingCode: "function throttleTrailing(func, limit) {\n  let timeoutId = null;\n  let lastArgs = null;\n  return function(...args) {\n    lastArgs = args;\n    if (!timeoutId) {\n      timeoutId = setTimeout(() => {\n        func.apply(this, lastArgs);\n        timeoutId = null;\n      }, limit);\n    }\n  };\n}\n",
+      hint: "Berilgan kodni tekshirish uchun topshiring.",
+      test: "if (code.includes('timeoutId = null')) return null; return 'Trailing mantiqi xato';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Bekor qilinuvchi Debounce (debounceWithCancel)",
+      instruction: "Debounce qilingan funksiyaga `.cancel()` metodini qo'shib, rejalashtirilgan so'nggi chaqiruvni bekor qilishni amalga oshiring.",
+      startingCode: "function debounceWithCancel(func, delay) {\n  let timeoutId;\n  const debounced = function(...args) {\n    // Kodni shu yerdan yozing\n  };\n  // debounced.cancel metodini yozing\n  return debounced;\n}\n",
+      hint: "const debounced = function(...args) { clearTimeout(timeoutId); timeoutId = setTimeout(() => func.apply(this, args), delay); }; debounced.cancel = () => clearTimeout(timeoutId); return debounced;",
+      test: "if (typeof debounceWithCancel !== 'function') return 'debounceWithCancel funksiya emas';\nlet count = 0;\nconst f = () => count++;\nconst d = debounceWithCancel(f, 50);\nd(); d(); d.cancel();\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (count === 0) resolve(null);\n    else resolve('Debounce bekor qilinmadi, funksiya baribir ishladi');\n  }, 100);\n});"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ requestAnimationFrame orqali Throttle (rAFThrottle)",
+      instruction: "Scroll va mousemove kabi visual hodisalar unumdorligini oshirish uchun funksiyani `requestAnimationFrame` yordamida throttle qiluvchi `rAFThrottle(func)` funksiyasini yozing.",
+      startingCode: "function rAFThrottle(func) {\n  let ticked = false;\n  return function(...args) {\n    // Kodni shu yerdan yozing\n  };\n}\n",
+      hint: "return function(...args) { if (!ticked) { ticked = true; requestAnimationFrame(() => { func.apply(this, args); ticked = false; }); } };",
+      test: "if (typeof rAFThrottle !== 'function') return 'rAFThrottle funksiya emas';\nlet count = 0;\nconst f = () => count++;\nconst t = rAFThrottle(f);\nt(); t(); t();\nreturn new Promise(resolve => {\n  requestAnimationFrame(() => {\n    if (count === 1) resolve(null);\n    else resolve('rAFThrottle funksiyasi kadr ichida faqat 1 marta ishlashi kerak edi, lekin ish soni: ' + count);\n  });\n});"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

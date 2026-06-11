@@ -166,32 +166,103 @@ Yo'q, u faqat sayoz (shallow) muzlatadi. Obyekt ichidagi boshqa ichki obyektlarn
 Quyidagi amaliy topshiriqlarni bajarib, immutability va nusxalash bo'yicha ko'nikmalaringizni sinab ko'ring.
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Massivdan Sayoz Nusxa Olish",
-    "instruction": "Taqdim etilgan 'original' massivining spread operatori yordamida sayoz nusxasini ('copy') yarating, shunda ular xotirada har xil manzilga ega bo'ladi.",
-    "startingCode": "const original = [1, 2, 3];\n\n// Kodni shu yerda yozing\n",
-    "hint": "const copy = [...original];",
-    "test": "if (!code.includes('...')) return 'Spread operatoridan foydalanilmadi';\nconst sandbox = new Function('original', code + '; return copy;');\nconst orig = [1, 2, 3];\nconst res = sandbox(orig);\nif (Array.isArray(res) && res !== orig && res.length === 3 && res[1] === 2) return null;\nreturn 'copy massivi noto\\'g\\'ri yoki original bilan bir xil referencega ega';"
-  },
-  {
-    "id": 2,
-    "title": "Massivga Element Qo'shish (Immutable)",
-    "instruction": "'nums' massivini mutatsiya qilmasdan (o'zgartirmasdan), uning oxiriga 4 sonini qo'shib 'newNums' nomli yangi massiv yarating.",
-    "startingCode": "const nums = [1, 2, 3];\n\n// Kodni shu yerda yozing\n",
-    "hint": "const newNums = [...nums, 4];",
-    "test": "if (code.includes('push')) return 'push metodidan foydalanmang, u massivni mutatsiya qiladi';\nconst sandbox = new Function('nums', code + '; return {nums, newNums};');\nconst orig = [1, 2, 3];\nconst res = sandbox(orig);\nif (res.nums.length === 3 && res.newNums.length === 4 && res.newNums[3] === 4) return null;\nreturn 'Natija noto\\'g\\'ri';"
-  },
-  {
-    "id": 3,
-    "title": "structuredClone yordamida Chuqur Nusxa",
-    "instruction": "'nestedData' obyektidan 'structuredClone' yordamida chuqur nusxa ('deepCopy') oling, shunda ichki 'meta' obyekti ham yangidan nusxalanadi.",
-    "startingCode": "const nestedData = { id: 1, meta: { tags: ['js'] } };\n\n// Kodni shu yerda yozing\n",
-    "hint": "const deepCopy = structuredClone(nestedData);",
-    "test": "if (!code.includes('structuredClone')) return 'structuredClone ishlatilmadi';\nconst sandbox = new Function('nestedData', code + '; return deepCopy;');\nconst orig = { id: 1, meta: { tags: ['js'] } };\nconst res = sandbox(orig);\nif (res !== orig && res.meta !== orig.meta && res.meta.tags[0] === 'js') return null;\nreturn 'Chuqur nusxa noto\\'g\\'ri';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Massivdan sayoz nusxa olish",
+      instruction: "'original' massivining spread operatori yordamida sayoz nusxasini ('copy') yarating.",
+      startingCode: "const original = [1, 2, 3];\n// Bu yerga yozing\nconst copy = [];",
+      hint: "const copy = [...original];",
+      test: "if (Array.isArray(copy) && copy !== original && copy.length === 3 && copy[2] === 3) return null; return 'Massiv to\\'g\\'ri nusxalanmadi yoki asli bilan bir xil reference!';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Massiv oxiriga element qo'shish",
+      instruction: "'nums' massivini o'zgartirmasdan, uning oxiriga 4 sonini qo'shgan holda 'newNums' yangi massivini yarating.",
+      startingCode: "const nums = [1, 2, 3];\n// Bu yerga yozing\nconst newNums = [];",
+      hint: "const newNums = [...nums, 4];",
+      test: "if (nums.length === 3 && newNums.length === 4 && newNums[3] === 4) return null; return 'newNums to\\'g\\'ri yaratilmadi yoki asl massiv o\\'zgartirildi!';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Massivdan elementni o'chirish (Filter)",
+      instruction: "'users' massividan id si 2 bo'lgan foydalanuvchini o'chirish uchun filter metodidan foydalanib 'activeUsers' yangi massivini hosil qiling.",
+      startingCode: "const users = [{ id: 1, name: 'Ali' }, { id: 2, name: 'Vali' }, { id: 3, name: 'Zara' }];\n// Bu yerga yozing\nconst activeUsers = [];",
+      hint: "const activeUsers = users.filter(u => u.id !== 2);",
+      test: "if (users.length === 3 && activeUsers.length === 2 && !activeUsers.some(u => u.id === 2)) return null; return 'id si 2 bo\\'lgan foydalanuvchi o\\'chirilmadi yoki asl massiv o\\'zgartirildi!';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Massiv elementini yangilash (Map)",
+      instruction: "'prices' massividagi 200 qiymatini 250 ga o'zgarmas (immutable) usulda map yordamida o'zgartirib 'updatedPrices' massivini hosil qiling.",
+      startingCode: "const prices = [100, 200, 300];\n// Bu yerga yozing\nconst updatedPrices = [];",
+      hint: "const updatedPrices = prices.map(p => p === 200 ? 250 : p);",
+      test: "if (prices[1] === 200 && updatedPrices[1] === 250) return null; return 'Narx noto\\'g\\'ri yangilandi yoki asl massiv mutatsiya qilindi!';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Object.assign yordamida sayoz nusxa",
+      instruction: "'info' ob'ektining sayoz nusxasini ('infoCopy') Object.assign yordamida yarating.",
+      startingCode: "const info = { age: 30, status: 'pending' };\n// Bu yerga yozing\nconst infoCopy = {};",
+      hint: "const infoCopy = Object.assign({}, info);",
+      test: "if (infoCopy !== info && infoCopy.age === 30 && infoCopy.status === 'pending') return null; return 'Object.assign yordamida nusxa olinmadi!';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Ichki ob'ektni o'zgarmas yangilash",
+      instruction: "'state' ob'ektini mutatsiya qilmasdan, 'profile.age' qiymatini 21 ga o'zgartirgan holda 'updatedState' yangi ob'ektini hosil qiling.",
+      startingCode: "const state = { username: 'farhod', profile: { age: 20, city: 'Samarkand' } };\n// Bu yerga yozing\nconst updatedState = {};",
+      hint: "const updatedState = { ...state, profile: { ...state.profile, age: 21 } };",
+      test: "if (state.profile.age === 20 && updatedState.profile.age === 21 && updatedState.profile.city === 'Samarkand' && state.profile !== updatedState.profile) return null; return 'Profil yoshi to\\'g\\'ri yangilanmadi yoki asl ob\\'ekt mutatsiya qilindi!';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ structuredClone bilan chuqur nusxa",
+      instruction: "'nestedData' ob'ektidan structuredClone yordamida chuqur nusxa ('deepCopy') oling.",
+      startingCode: "const nestedData = { id: 1, meta: { tags: ['js', 'react'] } };\n// Bu yerga yozing\nconst deepCopy = {};",
+      hint: "const deepCopy = structuredClone(nestedData);",
+      test: "if (deepCopy !== nestedData && deepCopy.meta !== nestedData.meta && Array.isArray(deepCopy.meta.tags)) return null; return 'structuredClone yordamida chuqur nusxa yaratilmadi!';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ JSON yordamida chuqur nusxa",
+      instruction: "'settings' ob'ektidan JSON serialization-deserialization usuli yordamida chuqur nusxa ('settingsCopy') oling.",
+      startingCode: "const settings = { theme: 'dark', options: { notifications: true } };\n// Bu yerga yozing\nconst settingsCopy = {};",
+      hint: "const settingsCopy = JSON.parse(JSON.stringify(settings));",
+      test: "if (settingsCopy !== settings && settingsCopy.options !== settings.options && settingsCopy.options.notifications === true) return null; return 'JSON yordamida deep copy qilinmadi!';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Massiv o'rtasiga element qo'shish",
+      instruction: "'items' massivining 1-indeksiga (ya'ni 10 va 30 orasiga) 20 sonini o'zgarmas (immutable) usulda joylashtirib 'newItems' massivini hosil qiling.",
+      startingCode: "const items = [10, 30, 40];\n// Bu yerga yozing\nconst newItems = [];",
+      hint: "const newItems = [...items.slice(0, 1), 20, ...items.slice(1)];",
+      test: "if (items.length === 3 && newItems.length === 4 && newItems[1] === 20 && newItems[2] === 30) return null; return 'Element ko\\'rsatilgan indeksga o\\'zgarmas holda joylashtirilmadi!';"
+    },
+    {
+      id: 10,
+      title: "1️⃣0️⃣ O'zgaruvchini muzlatish (freeze)",
+      instruction: "'config' ob'ektini sayoz darajada o'zgarmas qilish (muzlatish) uchun Object.freeze metodidan foydalaning.",
+      startingCode: "const config = { api: 'https://api.com', timeout: 5000 };\n// Bu yerga yozing\n",
+      hint: "Object.freeze(config);",
+      test: "if (Object.isFrozen(config)) return null; return 'config ob\\'ekti muzlatilmadi!';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Massiv elementlari o'rnini almashtirish",
+      instruction: "'colors' massividagi birinchi ikki elementning o'rnini o'zgarmas (immutable) usulda almashtirib 'swappedColors' massivini hosil qiling.",
+      startingCode: "const colors = ['red', 'blue', 'green'];\n// Bu yerga yozing\nconst swappedColors = [];",
+      hint: "const swappedColors = [colors[1], colors[0], colors[2]];",
+      test: "if (colors[0] === 'red' && swappedColors[0] === 'blue' && swappedColors[1] === 'red' && swappedColors[2] === 'green') return null; return 'Elementlar o\\'rni to\\'g\\'ri almashtirilmadi!';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Murakkab holatni yangilash (Complex Update)",
+      instruction: "'store' ob'ektidagi 'cart' massivining 1-indeksidagi tovarning 'quantity' qiymatini 3 ga o'zgarmas usulda yangilab 'newStore' ob'ektini hosil qiling.",
+      startingCode: "const store = { name: 'My Store', cart: [{ id: 101, title: 'Book', quantity: 1 }, { id: 102, title: 'Pen', quantity: 1 }] };\n// Bu yerga yozing\nconst newStore = {};",
+      hint: "const newStore = { ...store, cart: store.cart.map((item, i) => i === 1 ? { ...item, quantity: 3 } : item) };",
+      test: "if (store.cart[1].quantity === 1 && newStore.cart[1].quantity === 3 && store.cart !== newStore.cart && store.cart[1] !== newStore.cart[1] && store.cart[0] === newStore.cart[0]) return null; return 'Savatdagi tovar quantitysi to\\'g\\'ri o\\'zgarmadi yoki boshqa elementlar noto\\'g\\'ri nusxalandi!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

@@ -227,32 +227,119 @@ function applyGrayscale(canvas, ctx) {
 | \`importScripts('lib.js')\` | Worker Oqimi | Worker ichiga tashqi JS kutubxonalarini yuklaydi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Worker yaratish",
-    "instruction": "`worker.js` fayli yo'li orqali yangi Web Worker obyektini yarating va uni `myWorker` o'zgaruvchisiga saqlang.",
-    "startingCode": "let myWorker;\n// Kodni shu yerda yozing\n",
-    "hint": "myWorker = new Worker('worker.js');",
-    "test": "if (myWorker instanceof Worker) return null;\nreturn 'myWorker o\\'zgaruvchisiga Worker obyekti to\\'g\\'ri yuklanmadi';"
-  },
-  {
-    "id": 2,
-    "title": "Xabar yuborish va qabul qilish",
-    "instruction": "Berilgan `myWorker` obyektiga `'start'` matnli xabarni yuboring. Shuningdek, workerdan keladigan xabarlarni tinglang va kelgan ma'lumotni (`event.data`) global `resultData` o'zgaruvchisiga saqlang.",
-    "startingCode": "let resultData = null;\nfunction communicate(myWorker) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "myWorker.postMessage('start'); va myWorker.onmessage = function(e) { resultData = e.data; } dan foydalaning.",
-    "test": "let sentMessage = null;\nconst dummyWorker = {\n  postMessage: (msg) => { sentMessage = msg; },\n  onmessage: null\n};\nconst sandbox = new Function('myWorker', 'let resultData = null;\\n' + code + '\\ncommunicate(myWorker);\\nreturn { getResult: () => resultData, getSent: () => sentMessage, setMsg: (d) => { if (myWorker.onmessage) myWorker.onmessage({ data: d }); } };');\nconst testObj = sandbox(dummyWorker);\nif (sentMessage !== 'start') return 'Workerga \"start\" xabari yuborilmadi';\ntestObj.setMsg('OK');\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Workerni to'xtatish",
-    "instruction": "Ishlayotgan `myWorker` ishini asosiy oqim (main thread) orqali darhol va butunlay to'xtatuvchi `stopWorker(myWorker)` funksiyasini yozing.",
-    "startingCode": "function stopWorker(myWorker) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Worker-ni to'xtatish uchun terminate() metodidan foydalaniladi.",
-    "test": "let terminated = false;\nconst dummyWorker = { terminate: () => { terminated = true; } };\nconst sandbox = new Function(code + '; return stopWorker;');\nsandbox()(dummyWorker);\nif (terminated) return null;\nreturn 'terminate() metodi chaqirilmadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Worker yaratish",
+      instruction: "'heavyTask.js' faylidan foydalanuvchi yangi Web Worker obyektini yarating va uni 'myWorker' o'zgaruvchisiga saqlang.",
+      startingCode: "// Bu yerga yozing\nconst myWorker = ",
+      hint: "new Worker('heavyTask.js')",
+      test: "if (code.includes(\"new Worker('heavyTask.js')\") || code.includes('new Worker(\"heavyTask.js\")')) return null; return 'Worker-ni to\\'g\\'ri fayl nomi bilan yarating.';"
+    },
+    {
+      id: 2,
+      title: "Worker-ga xabar yuborish",
+      instruction: "'myWorker' obyektiga 'start' matnini yuboruvchi kod yozing.",
+      startingCode: "const myWorker = new Worker('heavyTask.js');\n// Bu yerga yozing\n",
+      hint: "myWorker.postMessage('start');",
+      test: "if (code.includes(\"myWorker.postMessage('start')\") || code.includes('myWorker.postMessage(\"start\")')) return null; return 'postMessage orqali \\'start\\' matnini yuboring.';"
+    },
+    {
+      id: 3,
+      title: "Worker-dan javob olish",
+      instruction: "Worker-dan ma'lumot kelganda (onmessage) kelgan ma'lumotni (event.data) konsolga chiqaradigan funksiya yozing.",
+      startingCode: "const myWorker = new Worker('heavyTask.js');\n// Bu yerga yozing\n",
+      hint: "myWorker.onmessage = (event) => {\n  console.log(event.data);\n};",
+      test: "if (code.includes('onmessage') && (code.includes('event.data') || code.includes('data'))) return null; return 'onmessage hodisasini sozlab event.data-ni konsolga chiqaring.';"
+    },
+    {
+      id: 4,
+      title: "Worker ichida xabar tinglash",
+      instruction: "Worker-ning o'zida (self global obyekti orqali) 'onmessage' hodisasini tinglovchi funksiya yozing.",
+      startingCode: "// Worker kodi ichida\n// Bu yerga yozing\n",
+      hint: "self.onmessage = (event) => {\n  // kod\n};",
+      test: "if (code.includes('self.onmessage') || code.includes('onmessage =')) return null; return 'self.onmessage hodisasini e\\'lon qiling.';"
+    },
+    {
+      id: 5,
+      title: "Worker ichidan javob yuborish",
+      instruction: "Worker ichida kelgan xabar matniga ' Qabul qilindi' so'zini ulab, asosiy oqimga postMessage orqali qaytarib yuboring.",
+      startingCode: "self.onmessage = (event) => {\n  const message = event.data;\n  // Bu yerga yozing\n  \n};",
+      hint: "self.postMessage(message + ' Qabul qilindi');",
+      test: "if (code.includes('postMessage') && (code.includes('message +') || code.includes('Qabul qilindi'))) return null; return 'self.postMessage orqali natijani yuboring.';"
+    },
+    {
+      id: 6,
+      title: "Worker-ni asosiy oqimdan to'xtatish",
+      instruction: "Asosiy oqimdan turib 'myWorker' obyektini darhol to'xtating (ishini tugating).",
+      startingCode: "const myWorker = new Worker('heavyTask.js');\n// Bu yerga yozing\n",
+      hint: "myWorker.terminate();",
+      test: "if (code.includes('myWorker.terminate()')) return null; return 'terminate() metodini chaqiring.';"
+    },
+    {
+      id: 7,
+      title: "Worker-ni o'z ichidan yopish",
+      instruction: "Worker kodining o'zidan turib aloqani va oqimni yopadigan metodni chaqiring.",
+      startingCode: "// Worker kodi ichida\n// Bu yerga yozing\n",
+      hint: "self.close();",
+      test: "if (code.includes('self.close()') || code.includes('close()')) return null; return 'close() yoki self.close() metodini chaqiring.';"
+    },
+    {
+      id: 8,
+      title: "Worker errorlarini tutish",
+      instruction: "Worker-da xatolik yuz berganda (onerror), xatoning xabarini (event.message) konsolga chiqaruvchi kod yozing.",
+      startingCode: "const myWorker = new Worker('heavyTask.js');\n// Bu yerga yozing\n",
+      hint: "myWorker.onerror = (event) => {\n  console.error(event.message);\n};",
+      test: "if (code.includes('onerror') && (code.includes('event.message') || code.includes('message'))) return null; return 'onerror hodisasi ichida event.message-ni chiqaring.';"
+    },
+    {
+      id: 9,
+      title: "Web Worker qo'llab-quvvatlashini tekshirish",
+      instruction: "Agar brauzerda Web Worker mavjud bo'lsa, 'hasWorker' o'zgaruvchisini true ga tenglang.",
+      startingCode: "let hasWorker = false;\n// Bu yerga yozing\n",
+      hint: "if (typeof Worker !== 'undefined') {\n  hasWorker = true;\n}",
+      test: "if (code.includes('typeof Worker') && code.includes('undefined')) return null; return 'typeof Worker !== \"undefined\" tekshiruvini yozing.';"
+    },
+    {
+      id: 10,
+      title: "Obyekt yuborish",
+      instruction: "'myWorker'ga { taskId: 1, action: 'calculate' } obyektini yuboradigan kod yozing.",
+      startingCode: "const myWorker = new Worker('heavyTask.js');\n// Bu yerga yozing\n",
+      hint: "myWorker.postMessage({ taskId: 1, action: 'calculate' });",
+      test: "if (code.includes('postMessage') && code.includes('taskId') && code.includes('calculate')) return null; return 'Obyektni postMessage yordamida to\\'g\\'ri yuboring.';"
+    },
+    {
+      id: 11,
+      title: "Inline Worker yaratish (Blob)",
+      instruction: "Berilgan 'workerCode' matnidan 'application/javascript' tipidagi Blob yarating va uni 'blob' o'zgaruvchisiga saqlang.",
+      startingCode: "const workerCode = \"self.onmessage = (e) => self.postMessage(e.data * 2);\";\n// Bu yerga yozing\nconst blob = ",
+      hint: "new Blob([workerCode], { type: 'application/javascript' })",
+      test: "if (code.includes('new Blob') && code.includes('application/javascript')) return null; return 'application/javascript tipi bilan Blob yarating.';"
+    },
+    {
+      id: 12,
+      title: "SharedWorker obyektini yaratish",
+      instruction: "'shared.js' faylidan foydalanuvchi yangi Shared Worker obyektini yarating va uni 'myShared' o'zgaruvchisiga saqlang.",
+      startingCode: "// Bu yerga yozing\nconst myShared = ",
+      hint: "new SharedWorker('shared.js')",
+      test: "if (code.includes(\"new SharedWorker('shared.js')\") || code.includes('new SharedWorker(\"shared.js\")')) return null; return 'SharedWorker-ni to\\'g\\'ri fayl nomi bilan yarating.';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Vaqt Limitsiz Inline Worker (workerWithTimeout)",
+      instruction: "Dinamik ravishda inline Web Worker (Blob yordamida) yaratib, unga `data` qiymatini yuboradigan va natijani Promise ko'rinishida qaytaradigan `workerWithTimeout(workerCode, data, timeoutMs)` funksiyasini yozing. Agar worker belgilangan `timeoutMs` vaqt ichida javob bermasa, ulanish va worker `terminate()` orqali yopilsin va Promise 'Timeout' xatoligi bilan reject bo'lsin. (Eslatma: Test muhitida Web Worker simulyatsiyasi uchun `new Function` va global `setTimeout` ishlatilishi mumkin).",
+      startingCode: "function workerWithTimeout(workerCode, data, timeoutMs) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "return new Promise((resolve, reject) => { const blob = new Blob([workerCode], { type: 'application/javascript' }); const url = URL.createObjectURL(blob); const worker = new Worker(url); const timer = setTimeout(() => { worker.terminate(); reject('Timeout'); }, timeoutMs); worker.onmessage = (e) => { clearTimeout(timer); worker.terminate(); resolve(e.data); }; worker.postMessage(data); });",
+      test: "if (typeof workerWithTimeout !== 'function') return 'workerWithTimeout funksiya emas';\n// Simulating worker for the runner check\nconst workerCode = \"self.onmessage = (e) => self.postMessage(e.data + 1);\";\nreturn new Promise(resolve => {\n  workerWithTimeout(workerCode, 5, 200).then(res => {\n    if (res === 6) resolve(null);\n    else resolve('Worker natijasi noto\\'g\\'ri: ' + res);\n  }).catch(err => {\n    resolve('Worker muvaffaqiyatli ishlamadi: ' + err);\n  });\n});"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ ArrayBuffer Transfer Helper (transferBufferToWorker)",
+      instruction: "Foydalanuvchi bergan `ArrayBuffer` obyektini uning xotiradagi nusxasini ko'chirmasdan, transferable object ko'rinishida workerga yuboruvchi `transferBufferToWorker(worker, buffer)` funksiyasini yozing. Muvaffaqiyatli yuborilgach, `true` qaytarsin (agar buffer transferable bo'lmasa yoki xato yuz bersa `false` qaytarsin).",
+      startingCode: "function transferBufferToWorker(worker, buffer) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "try { if (!worker || !buffer) return false; worker.postMessage(buffer, [buffer]); return true; } catch(e) { return false; }",
+      test: "if (typeof transferBufferToWorker !== 'function') return 'transferBufferToWorker funksiya emas';\nconst mockWorker = { postMessage: (data, transfer) => { mockWorker.transferred = transfer; } };\nconst buffer = new ArrayBuffer(8);\nconst success = transferBufferToWorker(mockWorker, buffer);\nif (success && mockWorker.transferred && mockWorker.transferred[0] === buffer) return null;\nreturn 'Buffer transferable qilib uzatilmadi';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

@@ -198,31 +198,119 @@ sequenceDiagram
 | **Object.freeze** | Yuzaki muzlatish | Ichki obyektlar muzlamaydi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Unique Elements",
-    "instruction": "Massivdan takrorlanuvchi elementlarni Set yordamida o'chiring.",
-    "startingCode": "const data = [10, 20, 10, 30, 20];\n// Unique massiv yarating\nconst unique = [];\nconsole.log(unique);",
-    "hint": "const unique = [...new Set(data)];",
-    "test": "if (code.includes('Set') && code.includes('...')) return null; return 'Set va spread operatoridan foydalaning';"
-  },
-  {
-    "id": 2,
-    "title": "Shallow Copy",
-    "instruction": "Spread operatoridan foydalanib 'user' obyektining nusxasini 'clone' o'zgaruvchisiga oling.",
-    "startingCode": "const user = { name: 'Ali', age: 25 };\n// user nusxasini oling\nconst clone = {};",
-    "hint": "const clone = { ...user };",
-    "test": "if (code.includes('...') && code.includes('user')) return null; return 'Spread operatorini user bilan ishlating';"
-  },
-  {
-    "id": 3,
-    "title": "Sum with Rest",
-    "instruction": "Rest parameter (...args) yordamida barcha yuborilgan sonlar yig'indisini qaytaradigan 'sumAll' funksiyasini yozing.",
-    "startingCode": "function sumAll(...numbers) {\n  // Kodni yozing\n}",
-    "hint": "return numbers.reduce((acc, curr) => acc + curr, 0);",
-    "test": "if (code.includes('reduce') || code.includes('sumAll')) return null; return 'numbers.reduce yordamida yig\\'indini hisoblang';"
-  }
-],
+    {
+      id: 1,
+      title: "Memoization",
+      instruction: "Natijani keshlovchi oddiy memoize funksiyasini yozing.",
+      startingCode: "function memoize(fn) {\n  const cache = {};\n  return function(n) {\n    // keshni tekshiring\n  }\n}",
+      hint: "cache[n] borligini tekshiring.",
+      test: "if (code.includes('cache')) return null; return 'cache dan foydalaning';"
+    },
+    {
+      id: 2,
+      title: "Currying sum",
+      instruction: "sum(a)(b)(c) ko'rinishida chaqiriladigan va 3 ta sonning yig'indisini qaytaruvchi funksiya yozing.",
+      startingCode: "function sum(a) {\n  // Ichma-ich funksiyalar yozing\n}",
+      hint: "return function(b) { return function(c) { return a + b + c; } }",
+      test: "if (code.includes('return') && code.includes('b') && code.includes('c')) return null; return 'Ichma-ich funksiyalar orqali yig\\'indini qaytaring';"
+    },
+    {
+      id: 3,
+      title: "Array Flatten",
+      instruction: "Rekursiya yordamida massivni tekislovchi (flatten) funksiya yozing (flat() ishlatmang).",
+      startingCode: "function flatten(arr) {\n  // Rekursiv yechim yozing\n}",
+      hint: "return arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flatten(val)) : acc.concat(val), []);",
+      test: "if (code.includes('reduce') && code.includes('Array.isArray')) return null; return 'reduce va Array.isArray yordamida rekursiv yozing';"
+    },
+    {
+      id: 4,
+      title: "Simplified Debounce",
+      instruction: "Ma'tundan keyin chaqiriluvchi sodda 'debounce(fn, delay)' funksiyasini yozing.",
+      startingCode: "function debounce(fn, delay) {\n  let timeoutId;\n  return function(...args) {\n    // Timeoutni tozalang va yangisini o'rnating\n  };\n}",
+      hint: "clearTimeout(timeoutId); timeoutId = setTimeout(() => fn(...args), delay);",
+      test: "if (code.includes('clearTimeout') && code.includes('setTimeout')) return null; return 'clearTimeout va setTimeout dan foydalaning';"
+    },
+    {
+      id: 5,
+      title: "Simplified Throttle",
+      instruction: "Ma'lum vaqtda faqat bir marta chaqiriluvchi sodda 'throttle(fn, limit)' funksiyasini yozing.",
+      startingCode: "function throttle(fn, limit) {\n  let inThrottle;\n  return function(...args) {\n    // Throttle shartini yozing\n  };\n}",
+      hint: "if (!inThrottle) { fn(...args); inThrottle = true; setTimeout(() => inThrottle = false, limit); }",
+      test: "if (code.includes('inThrottle') && code.includes('setTimeout')) return null; return 'inThrottle flagi va setTimeout yordamida boshqaring';"
+    },
+    {
+      id: 6,
+      title: "Simple Deep Clone",
+      instruction: "Obyektni chuqur nusxalovchi deepClone funksiyasini JSON orqali yozing.",
+      startingCode: "function deepClone(obj) {\n  // JSON orqali deep clone qiling\n}",
+      hint: "return JSON.parse(JSON.stringify(obj));",
+      test: "if (code.includes('JSON.parse') && code.includes('JSON.stringify')) return null; return 'JSON parse va stringify dan foydalaning';"
+    },
+    {
+      id: 7,
+      title: "Cyclical reference checker",
+      instruction: "Obyektda siklik bog'liqlik (circular reference) bor yoki yo'qligini tekshiruvchi 'hasCircular' funksiyasi shartini yozing.",
+      startingCode: "function hasCircular(obj) {\n  try {\n    // JSON stringify xato berishini tekshiring\n  } catch (e) {\n    return true;\n  }\n  return false;\n}",
+      hint: "JSON.stringify(obj);",
+      test: "if (code.includes('JSON.stringify')) return null; return 'JSON.stringify yordamida sinab ko\\'ring';"
+    },
+    {
+      id: 8,
+      title: "Custom Bind implementation",
+      instruction: "Function.prototype ga 'myBind' nomli custom bind funksiyasi shablonini yozing.",
+      startingCode: "Function.prototype.myBind = function(context, ...args) {\n  const fn = this;\n  // Funksiyani qaytaring\n};",
+      hint: "return function(...newArgs) { return fn.apply(context, [...args, ...newArgs]); };",
+      test: "if (code.includes('apply') || code.includes('call')) return null; return 'apply yoki call orqali kontekstni bog\\'lang';"
+    },
+    {
+      id: 9,
+      title: "Basic Event Emitter",
+      instruction: "Eventlarni boshqarish uchun on va emit metodlariga ega EventEmitter sinfi constructorida 'events' ob'ektini yarating.",
+      startingCode: "class EventEmitter {\n  constructor() {\n    // events ob'ektini yarating\n  }\n}",
+      hint: "this.events = {};",
+      test: "if (code.includes('this.events')) return null; return 'this.events ni e\\'lon qiling';"
+    },
+    {
+      id: 10,
+      title: "Custom Promise.all skeleton",
+      instruction: "Promise.all ga o'xshash funksiya yozish uchun massiv ustidan map yoki loop qilib Promise.resolve ishlatish shablonini yozing.",
+      startingCode: "function promiseAll(promises) {\n  // Promise.resolve ishlatilishini ko'rsating\n}",
+      hint: "promises.map(p => Promise.resolve(p))",
+      test: "if (code.includes('Promise.resolve')) return null; return 'Promise.resolve dan foydalaning';"
+    },
+    {
+      id: 11,
+      title: "Delay function",
+      instruction: "Belgilangan millisekunddan keyin resolve bo'ladigan delay funksiyasini yozing.",
+      startingCode: "function delay(ms) {\n  // Promise qaytaring\n}",
+      hint: "return new Promise(resolve => setTimeout(resolve, ms));",
+      test: "if (code.includes('Promise') && code.includes('setTimeout')) return null; return 'Promise va setTimeout dan foydalaning';"
+    },
+    {
+      id: 12,
+      title: "Private variables with Closures",
+      instruction: "Konteksda yashirin 'value'ni faqat get/set metodlari orqali boshqaruvchi obyekt qaytaring.",
+      startingCode: "function createSecret(val) {\n  let secret = val;\n  return {\n    // get va set metodlarini yozing\n  };\n}",
+      hint: "get: () => secret, set: (newVal) => secret = newVal",
+      test: "if (code.includes('get') && code.includes('set')) return null; return 'get va set metodlarini yozing';"
+    },
+    {
+      id: 13,
+      title: "Custom Filter Polyfill (myFilter)",
+      instruction: "`Array.prototype.filter` polifillini original `.filter` funksiyasidan foydalanmagan holda `Array.prototype.myFilter` nomi ostida e'lon qiling va uning ishlashini tekshiring. Funksiya callback qabul qilishi va callback-ni `thisArg` konteksti bilan chaqirish imkoniyatiga ega bo'lishi shart.",
+      startingCode: "Array.prototype.myFilter = function(callback, thisArg) {\n  // Custom filter implementatsiyasini yozing\n};",
+      hint: "const result = [];\nfor (let i = 0; i < this.length; i++) {\n  if (i in this) {\n    if (callback.call(thisArg, this[i], i, this)) {\n      result.push(this[i]);\n    }\n  }\n}\nreturn result;",
+      test: "const arr = [1, 2, 3, 4];\nconst filtered = arr.myFilter(x => x > 2);\nconst empty = [].myFilter(() => true);\nif (Array.isArray(filtered) && filtered[0] === 3 && filtered[1] === 4 && filtered.length === 2 && Array.isArray(empty) && empty.length === 0) {\n  const context = { limit: 2 };\n  const filterWithThis = arr.myFilter(function(x) { return x > this.limit; }, context);\n  if (filterWithThis.length === 2 && filterWithThis[0] === 3 && filterWithThis[1] === 4) {\n    return null;\n  }\n}\nreturn 'myFilter to\\'g\\'ri ishlamadi yoki thisArg konteksti qo\\'llab-quvvatlanmadi';"
+    },
+    {
+      id: 14,
+      title: "Asinxron Microtask Scheduler (scheduleMicrotask)",
+      instruction: "Brauzer yoki Node.js muhitlarida microtask navbatiga vazifa qo'shuvchi `scheduleMicrotask(callback)` funksiyasini yozing. Agar platformada `queueMicrotask` mavjud bo'lsa undan, aks holda `Promise.resolve().then(...)` dan, u ham bo'lmasa fallback sifatida `setTimeout` dan foydalanilsin.",
+      startingCode: "function scheduleMicrotask(callback) {\n  // Microtask navbatiga qo'shish funksiyasini yozing\n}",
+      hint: "if (typeof queueMicrotask === 'function') {\n  queueMicrotask(callback);\n} else if (typeof Promise === 'function') {\n  Promise.resolve().then(callback);\n} else {\n  setTimeout(callback, 0);\n}",
+      test: "let order = [];\nscheduleMicrotask(() => order.push('micro'));\nsetTimeout(() => order.push('macro'), 0);\nPromise.resolve().then(() => order.push('promise'));\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (order[0] === 'micro' && order[1] === 'promise' && order[2] === 'macro') {\n      resolve(null);\n    } else {\n      resolve('scheduleMicrotask microtask queue-da vaqtida ishga tushmadi. Kutilgan tartib: micro, promise, macro. Lekin olindi: ' + order.join(', '));\n    }\n  }, 20);\n});"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

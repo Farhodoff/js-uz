@@ -297,32 +297,103 @@ Massiv bilan ishlashda uning metodlari vaqt murakkabligini (Time Complexity) bil
 | **\`join(separator)\`** | Massivni satrga (string) o'tkazadi | Yo'q | Yig'ilgan satr (string) | $O(N)$ |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Navbat (Queue) Simulyatsiyasi",
-    "instruction": "Massivni boshqaruvchi `manageQueue(arr, element)` funksiyasini yozing. Funksiya berilgan `arr` massivining oxiriga `element`ni qo'shishi, so'ngra massivning birinchi elementini o'chirib, o'sha o'chirilgan elementni qaytarishi kerak (massiv o'zgarishi kerak).",
-    "startingCode": "function manageQueue(arr, element) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "push yordamida elementni oxiriga qo'shing, shift yordamida birinchi elementni o'chiring va uni return qiling.",
-    "test": "const sandbox = new Function(code + '; return manageQueue;');\nconst fn = sandbox();\nconst testArr = [1, 2, 3];\nconst removed = fn(testArr, 4);\nif (removed !== 1) return 'manageQueue birinchi elementni to\\'g\\'ri o\\'chirmadi yoki qaytarmadi';\nif (testArr.length !== 3 || testArr[0] !== 2 || testArr[2] !== 4) return 'manageQueue elementni oxiriga qo\\'shmadi yoki massiv tarkibini to\\'g\\'ri o\\'zgartirmadi';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Massivdan nusxa olish va kesish",
-    "instruction": "Berilgan massivning boshidan va oxiridan ma'lum miqdordagi elementlarni olib tashlab, o'rtadagi qismidan nusxa qaytaruvchi `getMiddlePart(arr, startCount, endCount)` funksiyasini yozing. Masalan: `getMiddlePart([1, 2, 3, 4, 5], 1, 1)` chaqirilganda boshidan 1 ta, oxiridan 1 ta element olib tashlanadi va `[2, 3, 4]` qaytariladi. Asl massiv o'zgarmasligi shart.",
-    "startingCode": "function getMiddlePart(arr, startCount, endCount) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "slice metodidan foydalaning. Slice asl massivni o'zgartirmaydi. arr.slice(startCount, arr.length - endCount) deb yozishingiz mumkin.",
-    "test": "const sandbox = new Function(code + '; return getMiddlePart;');\nconst fn = sandbox();\nconst original = [10, 20, 30, 40, 50, 60];\nconst result = fn(original, 2, 1);\nif (original.length !== 6) return 'Asl massiv o\\'zgarmasligi kerak';\nif (!Array.isArray(result) || result.length !== 3 || result[0] !== 30 || result[2] !== 50) return 'getMiddlePart o\\'rtadagi elementlarni to\\'g\\'ri qaytarmadi. Kutilgan: [30, 40, 50], olingan: ' + JSON.stringify(result);\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Elementni almashtirish (Splice)",
-    "instruction": "Berilgan `arr` massivida `oldVal` qiymatini izlab toping va uning birinchi uchragan indeksida uni o'chirib, o'rniga `newVal`ni joylashtiradigan `replaceElement(arr, oldVal, newVal)` funksiyasini yozing. Agar `oldVal` topilmasa, massiv o'zgarmasin. Funksiya o'zgartirilgan massivni qaytarsin (massiv joyida (in-place) o'zgarishi kerak).",
-    "startingCode": "function replaceElement(arr, oldVal, newVal) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "indexOf orqali element indeksini toping. Agar indeks -1dan farqli bo'lsa, splice(index, 1, newVal) yordamida uni almashtiring va massivni qaytaring.",
-    "test": "const sandbox = new Function(code + '; return replaceElement;');\nconst fn = sandbox();\nconst testArr = ['olma', 'anor', 'behi'];\nconst result = fn(testArr, 'anor', 'shaftoli');\nif (testArr !== result) return 'replaceElement funksiyasi o\\'zgartirilgan asl massivni qaytarishi kerak';\nif (testArr[1] !== 'shaftoli' || testArr.length !== 3) return 'replaceElement qiymatni to\\'g\\'ri almashtirmadi';\nconst notFound = fn(testArr, 'anjir', 'olxo\\'ri');\nif (notFound.length !== 3 || notFound[1] !== 'shaftoli') return 'Topilmagan element bo\\'lsa massiv o\\'zgarmasligi kerak';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Massiv yaratish",
+      instruction: "3 ta hayvon nomidan iborat 'animals' massivini yarating.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "const animals = ['Ayiq', 'Bo\\'ri', 'Tulki'];",
+      test: "if (code.includes('animals') && code.includes('[')) return null; return 'animals nomli massiv yarating';"
+    },
+    {
+      id: 2,
+      title: "Element qo'shish",
+      instruction: "Berilgan 'colors' massiviga 'Sariq' rangini oxiridan qo'shing.",
+      startingCode: "const colors = ['Qizil', 'Ko\\'k'];\n// Bu yerga yozing\n",
+      hint: "colors.push('Sariq');",
+      test: "if (colors.includes('Sariq')) return null; return 'push ishlatib qo\\'shing';"
+    },
+    {
+      id: 3,
+      title: "Uzunlikni topish",
+      instruction: "Massiv uzunligini 'len' o'zgaruvchisiga saqlang.",
+      startingCode: "const items = [1, 2, 3, 4, 5];\n// Bu yerga yozing\n",
+      hint: "const len = items.length;",
+      test: "if (code.includes('.length')) return null; return 'length xususiyatidan foydalaning';"
+    },
+    {
+      id: 4,
+      title: "Boshidan o'chirish",
+      instruction: "Berilgan 'fruits' massivining birinchi elementini shift() orqali o'chiring va o'chirilgan qiymatni 'removed' o'zgaruvchisiga saqlang.",
+      startingCode: "const fruits = ['Olma', 'Banan'];\n// Bu yerga yozing\n",
+      hint: "const removed = fruits.shift();",
+      test: "if (code.includes('shift') && code.includes('removed')) return null; return 'shift() orqali birinchi elementni o\\'chiring va removed ga saqlang';"
+    },
+    {
+      id: 5,
+      title: "Boshiga qo'shish",
+      instruction: "Berilgan 'numbers' massivining boshiga 1 sonini unshift() orqali qo'shing.",
+      startingCode: "const numbers = [2, 3];\n// Bu yerga yozing\n",
+      hint: "numbers.unshift(1);",
+      test: "if (code.includes('unshift(1)')) return null; return 'unshift(1) orqali boshiga 1 qo\\'shing';"
+    },
+    {
+      id: 6,
+      title: "Oxiridan o'chirish",
+      instruction: "Berilgan 'list' massivining oxirgi elementini pop() orqali o'chiring va o'chirilgan qiymatni 'lastItem' o'zgaruvchisiga saqlang.",
+      startingCode: "const list = [10, 20, 30];\n// Bu yerga yozing\n",
+      hint: "const lastItem = list.pop();",
+      test: "if (code.includes('pop') && code.includes('lastItem')) return null; return 'pop() orqali oxirgi elementni o\\'chiring va lastItem ga saqlang';"
+    },
+    {
+      id: 7,
+      title: "Element borligini tekshirish",
+      instruction: "includes() orqali 'basket' massivida 'Nok' borligini tekshiring va natijani 'hasPear' o'zgaruvchisiga saqlang.",
+      startingCode: "const basket = ['Olma', 'Uzum', 'Nok'];\n// Bu yerga yozing\n",
+      hint: "const hasPear = basket.includes('Nok');",
+      test: "if (code.includes('includes') && code.includes('hasPear')) return null; return 'includes(\\'Nok\\') dan foydalanib hasPear ga saqlang';"
+    },
+    {
+      id: 8,
+      title: "Element indeksini topish",
+      instruction: "indexOf() orqali 'tech' massividagi 'JS' elementining indeksini aniqlab 'index' o'zgaruvchisiga saqlang.",
+      startingCode: "const tech = ['HTML', 'CSS', 'JS'];\n// Bu yerga yozing\n",
+      hint: "const index = tech.indexOf('JS');",
+      test: "if (code.includes('indexOf') && code.includes('index')) return null; return 'indexOf(\\'JS\\') dan foydalanib index ga saqlang';"
+    },
+    {
+      id: 9,
+      title: "Massivni teskari qilish",
+      instruction: "reverse() orqali 'letters' massivini teskari tartibga o'giring.",
+      startingCode: "const letters = ['a', 'b', 'c'];\n// Bu yerga yozing\n",
+      hint: "letters.reverse();",
+      test: "if (code.includes('reverse()')) return null; return 'reverse() metodini chaqiring';"
+    },
+    {
+      id: 10,
+      title: "Splice orqali o'chirish",
+      instruction: "splice() yordamida 'values' massividan 1-indeksdagi elementni (2 sonini) o'chiring.",
+      startingCode: "const values = [1, 2, 3];\n// Bu yerga yozing\n",
+      hint: "values.splice(1, 1);",
+      test: "if (code.includes('splice(1, 1)') || code.includes('splice(1,1)')) return null; return 'splice(1, 1) orqali 1-indeksdagi elementni o\\'chiring';"
+    },
+    {
+      id: 11,
+      title: "Massivlarni birlashtirish",
+      instruction: "concat() yordamida 'a' va 'b' massivlarini birlashtirib 'combined' o'zgaruvchisiga saqlang.",
+      startingCode: "const a = [1, 2];\nconst b = [3, 4];\n// Bu yerga yozing\n",
+      hint: "const combined = a.concat(b);",
+      test: "if (code.includes('concat') && code.includes('combined')) return null; return 'concat orqali massivlarni birlashtiring';"
+    },
+    {
+      id: 12,
+      title: "Join orqali matn qilish",
+      instruction: "join() metodi yordamida 'parts' massividagi harflarni '-' belgisi orqali birlashtirib 'joined' o'zgaruvchisiga saqlang.",
+      startingCode: "const parts = ['a', 'b', 'c'];\n// Bu yerga yozing\n",
+      hint: "const joined = parts.join('-');",
+      test: "if (code.includes('join') && code.includes('-') && code.includes('joined')) return null; return 'join(\\'-\\') orqali joined o\\'zgaruvchisiga saqlang';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

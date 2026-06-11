@@ -259,32 +259,119 @@ function getUserDataSafe(id, callback) {
 | **Macrotasks** | 4-o'rin (Task Queue) | \`setTimeout\`, \`setInterval\`, I/O, DOM Events | Sahifani qotirmaydi (har doim oraliqda renderga yo'l beradi) |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Microtask va Macrotask Navbati",
-    "instruction": "Quyidagi `scheduleMicroAndMacro(logFn)` funksiyasini yozing. U berilgan `logFn` funksiyasini quyidagi tartibda chaqirishi kerak:\n1. Sinxron ravishda 'sync' qiymati bilan.\n2. Macrotask navbatida (setTimeout orqali 0ms) 'macro' qiymati bilan.\n3. Microtask navbatida (Promise orqali) 'micro' qiymati bilan.",
-    "startingCode": "function scheduleMicroAndMacro(logFn) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "logFn('sync') ni sinxron chaqiring. setTimeout yordamida macro-ni rejalashtiring. Promise.resolve().then() yordamida micro-ni rejalashtiring.",
-    "test": "if (!code.includes('Promise') || !code.includes('setTimeout')) return 'Promise va setTimeout ikkalasi ham ishlatilishi shart';\nconst sandbox = new Function(code + '; return scheduleMicroAndMacro;');\nconst fn = sandbox();\nconst logs = [];\nconst logFn = (msg) => logs.push(msg);\nfn(logFn);\nif (logs.length === 1 && logs[0] === 'sync') {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      if (logs.length === 3 && logs[1] === 'micro' && logs[2] === 'macro') resolve(null);\n      else resolve('Microtask va Macrotask navbati noto\\'g\\'ri: ' + logs.join(', '));\n    }, 50);\n  });\n}\nreturn 'Sinxron qism noto\\'g\\'ri bajarildi';"
-  },
-  {
-    "id": 2,
-    "title": "queueMicrotask yordamida Microtask yaratish",
-    "instruction": "JavaScript-ning mahalliy `queueMicrotask(fn)` API-sidan foydalanib, berilgan `fn` funksiyasini microtask navbatiga qo'shuvchi `runMicrotask(fn)` funksiyasini yozing.",
-    "startingCode": "function runMicrotask(fn) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "queueMicrotask(fn) ni to'g'ridan-to'g'ri chaqiring.",
-    "test": "if (!code.includes('queueMicrotask')) return 'queueMicrotask API-sidan foydalanilmadi';\nconst sandbox = new Function(code + '; return runMicrotask;');\nconst fn = sandbox();\nlet called = false;\nfn(() => { called = true; });\nif (called === true) return 'Funksiya sinxron ishga tushib ketdi, u microtask bo\\'lishi kerak';\nlet order = [];\nfn(() => order.push('micro'));\nsetTimeout(() => order.push('macro'), 0);\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (order[0] === 'micro' && order[1] === 'macro') resolve(null);\n    else resolve('Microtask macrotaskdan oldin ishga tushmadi');\n  }, 20);\n});"
-  },
-  {
-    "id": 3,
-    "title": "Aralash Asinxronlikni Boshqarish",
-    "instruction": "Ikkita callback qabul qiladigan `executeMixed(cb1, cb2)` funksiyasini yozing. U `cb1` callback-ini microtask navbatida, `cb2` callback-ini esa macrotask navbatida ishga tushirishi kerak. Buni amalga oshirishda Promise va setTimeout lardan foydalaning.",
-    "startingCode": "function executeMixed(cb1, cb2) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "cb1 ni Promise.resolve().then(cb1) yoki queueMicrotask(cb1) ichida, cb2 ni esa setTimeout(cb2, 0) ichida chaqiring.",
-    "test": "if (!code.includes('setTimeout') || (!code.includes('Promise') && !code.includes('queueMicrotask'))) return 'Kerakli asinxron mexanizmlar (setTimeout va Promise/queueMicrotask) ishlatilmadi';\nconst sandbox = new Function(code + '; return executeMixed;');\nconst fn = sandbox();\nlet order = [];\nfn(() => order.push('micro'), () => order.push('macro'));\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (order[0] === 'micro' && order[1] === 'macro') resolve(null);\n    else resolve('Tartib noto\\'g\\'ri: ' + order.join(', '));\n  }, 20);\n});"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Microtask zanjiri tartibini aniqlash",
+      instruction: "Konsolga ketma-ketlikda 1, 2, 3 va 4 raqamlari chiqishi uchun asinxron loglarni to'g'rilang.",
+      startingCode: "console.log(1);\nsetTimeout(() => console.log(4), 0);\nPromise.resolve().then(() => console.log(2)).then(() => console.log(3));",
+      hint: "Sinxron loglar (1) birinchi, Promises microtask zanjiri (2 va 3) ikkinchi, setTimeout (4) uchinchi bo'ladi.",
+      test: "if (logs[0] === '1' && logs[1] === '2' && logs[2] === '3' && logs[3] === '4') return null; return 'Loglar tartibi noto\\'g\\'ri!';"
+    },
+    {
+      id: 2,
+      title: "Async/Await Execution Flow",
+      instruction: "Berilgan async funksiyadan keyingi kodlarni shunday yozingki, logda 'A', 'C', 'B' ketma-ketligi hosil bo'lsin.",
+      startingCode: "async function runs() {\n  console.log('A');\n  await Promise.resolve();\n  console.log('B');\n}\nruns();\nconsole.log('C');",
+      hint: "Kodni o'zgarishsiz qoldirib ishga tushiring, chunki u tabiatan A -> C -> B tartibida ishlaydi.",
+      test: "if (logs[0] === 'A' && logs[1] === 'C' && logs[2] === 'B') return null; return 'Ketma-ketlik xato!';"
+    },
+    {
+      id: 3,
+      title: "Starvation oldini olish",
+      instruction: "Cheksiz ravishda queueMicrotask chaqirish o'rniga, uning o'rniga setTimeout ishlatib Event Loop-ga nafas olish imkonini bering.",
+      startingCode: "let counter = 0;\nfunction run() {\n  counter++;\n  if (counter < 5) {\n    // queueMicrotask o'rniga macrotask ishlating\n    queueMicrotask(run);\n    console.log(counter);\n  }\n}",
+      hint: "queueMicrotask(run) o'rniga setTimeout(run, 0) yozing.",
+      test: "if (code.includes('setTimeout') && !code.includes('queueMicrotask')) return null; return 'setTimeout ishlatilishi kerak!';"
+    },
+    {
+      id: 4,
+      title: "Parallel Await So'rovlar",
+      instruction: "Ikkita alohida resolved promiseni parallel ravishda (Promise.all yordamida) kuting va ularning natijasini konsolga chiqaruvchi async funksiya yozing.",
+      startingCode: "const p1 = Promise.resolve('Data1');\nconst p2 = Promise.resolve('Data2');\nasync function fetchAll() {\n  // Promise.all va await ishlating\n  const results = await Promise.all([p1, p2]);\n  console.log(results.join(', '));\n}\nfetchAll();",
+      hint: "await Promise.all([p1, p2]) yozib, natijani log qiling.",
+      test: "if (code.includes('Promise.all') && logs.includes('Data1, Data2')) return null; return 'Parallel await amalga oshirilmadi!';"
+    },
+    {
+      id: 5,
+      title: "Promise Executor Sinxronligi",
+      instruction: "Koddagi loglar tartibi 'Executor', 'Sinxron', 'Callback' bo'lishi uchun Promise executor kodi ichida log yozing.",
+      startingCode: "new Promise((resolve) => {\n  // Sinxron bajariladigan executor logi\n  \n  resolve();\n}).then(() => console.log('Callback'));\nconsole.log('Sinxron');",
+      hint: "Promise ichida console.log('Executor'); deb yozing.",
+      test: "if (logs[0] === 'Executor' && logs[1] === 'Sinxron' && logs[2] === 'Callback') return null; return 'Tartib xato!';"
+    },
+    {
+      id: 6,
+      title: "setTimeout vs queueMicrotask",
+      instruction: "Konsolga birinchi bo'lib 'Tezkor', keyin 'Sekin' chiqadigan asinxron zanjir yarating.",
+      startingCode: "setTimeout(() => console.log('Sekin'), 0);\nqueueMicrotask(() => console.log('Tezkor'));",
+      hint: "queueMicrotask microtask bo'lgani uchun setTimeout macrotask-dan oldin bajariladi.",
+      test: "if (logs[0] === 'Tezkor' && logs[1] === 'Sekin') return null; return ' queueMicrotask va setTimeout ketma-ketligi buzilgan!';"
+    },
+    {
+      id: 7,
+      title: "Zanjirli Await amallari",
+      instruction: "Uchta await amalini bajaruvchi va har bir await-dan keyin o'zgaruvchini oshirib boruvchi async funksiya yozing.",
+      startingCode: "async function chain() {\n  let count = 0;\n  await Promise.resolve();\n  count++;\n  await Promise.resolve();\n  count++;\n  console.log(count);\n}\nchain();",
+      hint: "Ikki marta await va count++ amallaridan keyin 2 qiymati chiqadi.",
+      test: "if (logs.includes(2)) return null; return 'Count qiymati noto\\'g\\'ri!';"
+    },
+    {
+      id: 8,
+      title: "Error Handling in Microtasks",
+      instruction: "Microtask ichida xato tashlang va uni catch bloki yordamida ushlab konsolga 'Xato ushlandi' deb yozing.",
+      startingCode: "Promise.resolve()\n  .then(() => {\n    throw new Error('Oops');\n  })\n  .catch(err => {\n    console.log('Xato ushlandi');\n  });",
+      hint: "Catch bloki error-first pattern kabi asinxron xatolarni zanjirda ushlaydi.",
+      test: "if (logs.includes('Xato ushlandi')) return null; return 'Xato catch orqali ushlanmadi!';"
+    },
+    {
+      id: 9,
+      title: "Nested microtasks queue structure",
+      instruction: "Microtask ichida boshqa bir microtask joylashtiring va u konsolga 'Ichki Microtask' deb yozsin.",
+      startingCode: "Promise.resolve().then(() => {\n  // Ichkarida yana bitta microtask yarating\n  \n});",
+      hint: "Promise.resolve().then(() => console.log('Ichki Microtask')); yoki queueMicrotask ishlating.",
+      test: "if (code.includes('Promise') && logs.includes('Ichki Microtask')) return null; return 'Ichki microtask to\\'g\\'ri yaratilmadi!';"
+    },
+    {
+      id: 10,
+      title: "Sinxron Blocking kodni yengish",
+      instruction: "Call Stack bloklanishining oldini olish uchun og'ir amalni setTimeout yordamida asinxron Macrotask-ga o'tkazing.",
+      startingCode: "function ogirHisob() {\n  let sum = 0;\n  for(let i=0; i<100; i++) sum += i;\n  console.log('Tugadi');\n}\n// Asinxron oqimga o'tkazing\n",
+      hint: "setTimeout(ogirHisob, 0); deb chaqiring.",
+      test: "if (code.includes('setTimeout') && logs.includes('Tugadi')) return null; return 'setTimeout ishlatilmadi!';"
+    },
+    {
+      id: 11,
+      title: "Multiple Promises Resolution Order",
+      instruction: "Bir vaqtda uchta promisni parallel hal qiling va ulardan eng tezini (race yordamida) konsolga 'Tezkor' nomi bilan log qiling.",
+      startingCode: "const fast = Promise.resolve('Tezkor');\nconst slow = new Promise(res => setTimeout(() => res('Sekin'), 100));\n// Promise.race ishlating\n",
+      hint: "Promise.race([fast, slow]).then(val => console.log(val));",
+      test: "if (code.includes('Promise.race') && logs.includes('Tezkor')) return null; return 'Promise.race to\\'g\\'ri ishlatilmadi!';"
+    },
+    {
+      id: 12,
+      title: "Promise.all Settled Natijalari",
+      instruction: "Ikkita promisning (biri resolved, biri rejected) yakuniy holatini uning natijalarini yo'qotmasdan (allSettled yordamida) tekshirib konsolga natija chiqaring.",
+      startingCode: "const p1 = Promise.resolve('OK');\nconst p2 = Promise.reject('ERR');\n// Promise.allSettled ishlating va natijalar uzunligini log qiling\n",
+      hint: "Promise.allSettled([p1, p2]).then(results => console.log(results.length));",
+      test: "if (code.includes('Promise.allSettled') && logs.includes(2)) return null; return 'Promise.allSettled ishlatilmadi yoki natijalar uzunligi xato!';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ requestAnimationFrame yordamida animatsiya simulyatsiyasi",
+      instruction: "Berilgan `element`ning chap koordinatasini (`element.left`) har bir kadrda chizishdan oldin 1px ga oshiradigan va u 100px ga yetganda to'xtaydigan `animateElement(element, cb)` funksiyasini yozing. `requestAnimationFrame` dan foydalaning.",
+      startingCode: "function animateElement(element, cb) {\n  element.left += 1;\n  if (element.left < 100) {\n    // requestAnimationFrame orqali animateElement funksiyasini chaqiring\n  } else {\n    cb();\n  }\n}",
+      hint: "requestAnimationFrame(() => animateElement(element, cb));",
+      test: "if (typeof animateElement !== 'function') return 'animateElement topilmadi'; const el = { left: 0 }; let done = false; animateElement(el, () => done = true); setTimeout(() => { if (el.left >= 100 && done) return null; }, 50); return null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Node.js process.nextTick va setImmediate tartibi",
+      instruction: "Konsolga ketma-ketlikda 'Sinxron', 'nextTick', 'Promise', 'setImmediate' chiqishi uchun asinxron loglarni tartiblang. Funksiyalarni I/O callback ichida emas, global kontekstda e'lon qiling.",
+      startingCode: "// Tartibni to'g'rilang\nsetImmediate(() => console.log('setImmediate'));\nprocess.nextTick(() => console.log('nextTick'));\nPromise.resolve().then(() => console.log('Promise'));\nconsole.log('Sinxron');",
+      hint: "Sinxron kod darhol ishlaydi. Keyin process.nextTick (microtask-dan oldin), keyin Promise (microtask), va oxirida setImmediate check fazasida ishlaydi.",
+      test: "if (logs[0] === 'Sinxron' && logs[1] === 'nextTick' && logs[2] === 'Promise' && logs[3] === 'setImmediate') return null; return 'Navbat tartibi noto\'g\'ri!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

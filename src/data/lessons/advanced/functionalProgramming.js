@@ -152,31 +152,119 @@ graph LR
 | **Currying** | f(a,b) ni f(a)(b) ko'rinishga keltirish | \`const curried = a => b => a + b;\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "1️⃣ Sof funksiya yozish",
-    "instruction": "Berilgan sonning kvadratini qaytaruvchi 'pure' funksiya yozing.",
-    "startingCode": "function square(n) {\n  // Bu yerga yozing\n}\n",
-    "hint": "Faqat return n * n; ishlating.",
-    "test": "if (square(5) === 25) return null; return 'Natija noto\\'g\\'ri';"
-  },
-  {
-    "id": 2,
-    "title": "2️⃣ Immutability",
-    "instruction": "Original massivni o'zgartirmasdan yangi element qo'shing.",
-    "startingCode": "const original = [1, 2, 3];\n// Bu yerga yangi massiv yarating\n",
-    "hint": "const updated = [...original, 4];",
-    "test": "if (code.includes('...') || code.includes('concat')) return null; return 'Immutability xato';"
-  },
-  {
-    "id": 3,
-    "title": "3️⃣ map() bilan transform",
-    "instruction": "Massivdagi sonlarni kvadratga aylantiring.",
-    "startingCode": "const nums = [1, 2, 3];\n// map orqali square qiling\n",
-    "hint": "const squared = nums.map(n => n * n);",
-    "test": "if (code.includes('.map')) return null; return 'map yoq';"
-  }
-],
+    {
+      id: 1,
+      title: "1️⃣ Sof funksiya yozish",
+      instruction: "Berilgan sonning kvadratini qaytaruvchi 'pure' funksiya yozing.",
+      startingCode: "function square(n) {\n  // Bu yerga yozing\n}\n",
+      hint: "Faqat return n * n; ishlating.",
+      test: "if (square(5) === 25) return null; return 'Natija noto\\'g\\'ri';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Immutability",
+      instruction: "Original massivni o'zgartirmasdan yangi element qo'shing.",
+      startingCode: "const original = [1, 2, 3];\n// Bu yerga yangi massiv yarating\n",
+      hint: "const updated = [...original, 4];",
+      test: "if (code.includes('...') || code.includes('concat')) return null; return 'Immutability xato';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ map() bilan transform",
+      instruction: "Massivdagi sonlarni kvadratga aylantiring.",
+      startingCode: "const nums = [1, 2, 3];\n// map orqali square qiling\n",
+      hint: "const squared = nums.map(n => n * n);",
+      test: "if (code.includes('.map')) return null; return 'map yoq';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ filter() bilan saralash",
+      instruction: "Faqat juft sonlarni qoldiring.",
+      startingCode: "const nums = [1, 2, 3, 4];\n// Bu yerga filter\n",
+      hint: "const evens = nums.filter(n => n % 2 === 0);",
+      test: "if (code.includes('.filter')) return null; return 'filter yoq';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ reduce() bilan yig'indi",
+      instruction: "Massiv yig'indisini reduce bilan toping.",
+      startingCode: "const nums = [1, 2, 3];\n// Bu yerga reduce\n",
+      hint: "const sum = nums.reduce((acc, n) => acc + n, 0);",
+      test: "if (code.includes('.reduce')) return null; return 'reduce yoq';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Higher-order function",
+      instruction: "Funksiyani 2 marta qo'llaydigan applyTwice yozing.",
+      startingCode: "function applyTwice(fn, value) {\n  // Bu yerga yozing\n}\n",
+      hint: "return fn(fn(value));",
+      test: "if (code.includes('fn(')) return null; return 'HOF xato';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Compose",
+      instruction: "Compose funksiyasini yozing (o'ngdan chapga).",
+      startingCode: "const compose = (...fns) => {\n  // Bu yerga yozing\n};\n",
+      hint: "return x => fns.reduceRight((acc, fn) => fn(acc), x);",
+      test: "if (code.includes('reduceRight')) return null; return 'Compose xato';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Pipe",
+      instruction: "Pipe funksiyasini yozing (chapdan o'ngga).",
+      startingCode: "const pipe = (...fns) => {\n  // Bu yerga yozing\n};\n",
+      hint: "return x => fns.reduce((acc, fn) => fn(acc), x);",
+      test: "if (code.includes('reduce(')) return null; return 'Pipe xato';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Currying",
+      instruction: "add funksiyasini currying ko'rinishida yozing.",
+      startingCode: "const add = (a) => {\n  // Bu yerga yozing\n};\n",
+      hint: "return (b) => a + b;",
+      test: "if (code.includes('=>')) return null; return 'Currying xato';"
+    },
+    {
+      id: 10,
+      title: "1️⃣0️⃣ Partial application",
+      instruction: "greet funksiyasidan sayHello'ni partial qiling.",
+      startingCode: "function greet(greeting, name) { return greeting + ', ' + name; }\n// Bu yerga sayHello\n",
+      hint: "const sayHello = greet.bind(null, 'Salom');",
+      test: "if (code.includes('.bind')) return null; return 'Partial xato';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Memoization",
+      instruction: "Natijani kesh qiluvchi memoize yozing.",
+      startingCode: "function memoize(fn) {\n  const cache = {};\n  // Bu yerga yozing\n}\n",
+      hint: "return (...args) => { const key = JSON.stringify(args); if (key in cache) return cache[key]; return cache[key] = fn(...args); };",
+      test: "if (code.includes('cache')) return null; return 'Memoize xato';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Kompleks: Pipeline",
+      instruction: "map + filter + reduce bilan pipeline yarating.",
+      startingCode: "const nums = [1, 2, 3, 4, 5];\n// 1) juftlarni qoldiring\n// 2) 2 ga ko'paytiring\n// 3) yig'indini toping\n",
+      hint: "nums.filter(...).map(...).reduce(...);",
+      test: "if (code.includes('.filter') && code.includes('.map') && code.includes('.reduce')) return null; return 'Pipeline xato';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Umumiy Currying wrapper (curry)",
+      instruction: "Berilgan ko'p argumentli `fn` funksiyasini currying ko'rinishiga o'tkazuvchi `curry(fn)` funksiyasini yozing. Chaqirilganda argumentlar soni yetarli bo'lsa (`fn.length` ga teng yoki katta bo'lsa) asl funksiyani chaqirib natijani qaytarsin, aks holda qolgan argumentlarni kutuvchi yangi funksiya qaytarsin.",
+      startingCode: "function curry(fn) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "return function curried(...args) {\n  if (args.length >= fn.length) {\n    return fn.apply(this, args);\n  }\n  return function(...args2) {\n    return curried.apply(this, args.concat(args2));\n  };\n};",
+      test: "if (typeof curry !== 'function') return 'curry funksiya emas';\nconst add = (a, b, c) => a + b + c;\nconst curriedAdd = curry(add);\nif (typeof curriedAdd(1) !== 'function') return 'Bitta argument uzatilganda funksiya qaytmadi';\nif (typeof curriedAdd(1)(2) !== 'function') return 'Ikkita argument uzatilganda funksiya qaytmadi';\nif (curriedAdd(1)(2)(3) !== 6) return 'Hisoblash noto\\'g\\'ri';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Funksiyalarni birlashtirish (composeFns)",
+      instruction: "Bir nechta funksiyalarni o'ngdan chapga qarab zanjir ko'rinishida birlashtirib (Function Composition) bitta yakuniy funksiya qaytaruvchi `composeFns(...fns)` funksiyasini yozing. Masalan, `composeFns(f, g)(x)` ifodasi `f(g(x))` ko'rinishida ishlashi shart. O'ngdan chapga yurish uchun `reduceRight` metodidan foydalaning.",
+      startingCode: "function composeFns(...fns) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "return function(x) {\n  return fns.reduceRight((acc, fn) => fn(acc), x);\n};",
+      test: "if (typeof composeFns !== 'function') return 'composeFns funksiya emas';\nconst double = x => x * 2;\nconst addFive = x => x + 5;\nconst composed = composeFns(double, addFive);\nif (composed(10) !== 30) return 'O\\'ngdan chapga kompozitsiya to\\'g\\'ri ishlamadi';\nif (!code.includes('reduceRight')) return 'reduceRight-dan foydalaning';\nreturn null;"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

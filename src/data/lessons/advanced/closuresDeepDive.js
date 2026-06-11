@@ -207,32 +207,119 @@ userSession = null; // Havola uzildi, WeakMap keshdagi ma'lumotlar avtomat tozal
 | **new Function** | Scope chain yo'qligi | Faqat global scope-ga ehtiyoj bo'lganda ishlatish |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Memoization (Keshlovchi Funksiya)",
-    "instruction": "Hisoblash yukini kamaytirish uchun, chaqirilgan argumentlar natijalarini keshda saqlovchi va bir xil argument bilan qayta murojaat qilinganda hisoblamasdan tayyor natijani qaytaruvchi `memoize(fn)` yordamchi funksiyasini yozing.",
-    "startingCode": "function memoize(fn) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Closure ichida `const cache = {};` yarating. Qaytarilgan funksiya parametrni (masalan JSON.stringify yoki oddiy toString qilib) kalit sifatida ishlatsin va natijani keshga yozsin.",
-    "test": "const sandbox = new Function(code + '; return memoize;');\nconst fn = sandbox();\nlet calls = 0;\nconst square = (x) => { calls++; return x * x; };\nconst memoized = fn(square);\nif (typeof memoized !== 'function') return 'memoize funksiya qaytarishi kerak';\nif (memoized(4) !== 16) return 'Hisob-kitob natijasi noto\\'g\\'ri';\nif (memoized(4) !== 16) return 'Keshdagi natija noto\\'g\\'ri';\nif (calls !== 1) return 'Funksiya keshdan foydalanmadi va qayta ishga tushdi';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Bir Martalik Funksiya (Once)",
-    "instruction": "Uzatilgan funksiyani faqat bir marta chaqirishga imkon beradigan, keyingi barcha chaqiriqlarda birinchi chaqiriqdagi natijani qaytaradigan `once(fn)` funksiyasini yozing.",
-    "startingCode": "function once(fn) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Closure-da funksiyaning bajarilgan yoki bajarilmaganligini ifodalovchi bayroqcha (`hasRun = false`) va olingan natija o'zgaruvchisini saqlang.",
-    "test": "const sandbox = new Function(code + '; return once;');\nconst fn = sandbox();\nlet counter = 0;\nconst increment = fn(() => {\n  counter++;\n  return counter;\n});\nif (typeof increment !== 'function') return 'once funksiya qaytarishi kerak';\nconst res1 = increment();\nconst res2 = increment();\nif (res1 !== 1 || res2 !== 1) return 'Qiymatlar noto\\'g\\'ri qaytdi';\nif (counter !== 1) return 'Asl funksiya 1 martadan ko\\'p bajarilib ketdi';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Qisman Qo'llash (Partial Application)",
-    "instruction": "Funksiya va bir nechta boshlang'ich argumentlarni (`presetArgs`) qabul qilib, yangi funksiya qaytaradigan `partial(fn, ...presetArgs)` funksiyasini yozing. Yangi funksiya chaqirilganda, u qolgan argumentlarni qabul qilib, hammasini birlashtirgan holda asl funksiyani ishga tushirsin.",
-    "startingCode": "function partial(fn, ...presetArgs) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Qaytarilgan funksiya ichida rest operator yordamida yangi argumentlarni olib, `presetArgs` bilan birlashtiring (`[...presetArgs, ...newArgs]`) va `fn`ga uzating.",
-    "test": "const sandbox = new Function(code + '; return partial;');\nconst fn = sandbox();\nconst multiply = (a, b, c) => a * b * c;\nconst doubleAndMultiply = fn(multiply, 2);\nif (typeof doubleAndMultiply !== 'function') return 'partial funksiya qaytarishi kerak';\nif (doubleAndMultiply(3, 4) !== 24) return 'Parametrlar noto\\'g\\'ri birlashtirildi';\nconst multiplyBySix = fn(multiply, 2, 3);\nif (multiplyBySix(5) !== 30) return 'Ko\\'p parametrli partial qo\\'llashda xatolik';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Oddiy Closure (Boshlang'ich)",
+      instruction: "Counter funksiya yarating. Har chaqirilganda 1 ga o'sib turadi.",
+      startingCode: "// Kodni shu yerda yozing\nconst counter = /* ... */;\nconsole.log(counter()); // 1\nconsole.log(counter()); // 2\nconsole.log(counter()); // 3",
+      hint: "function createCounter() { let count = 0; return () => ++count; }",
+      test: "if (logs.includes(1) && logs.includes(2) && logs.includes(3)) return null; return 'Counter to\\'g\\'ri ishlashi kerak!';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Private Balans (Boshlang'ich)",
+      instruction: "Bank kartasi yarating. qosh va ol metodlari bilan, private balans bilan.",
+      startingCode: "// Kodni shu yerda yozing\nconst karta = /* ... */;\nconsole.log(karta.qosh(100)); \nconsole.log(karta.olish(30));",
+      hint: "function createCard() { let balance = 0; return { qosh(n) { balance += n; return balance; }, olish(n) { balance -= n; return balance; } }; }",
+      test: "if (logs.some(l => typeof l === 'number' && l === 100)) return null; return 'Balans funksiyası ishlamadi!';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ IIFE (O'rta)",
+      instruction: "IIFE yordamida private x o'zgaruvchisi bilan calculator yarating.",
+      startingCode: "// Kodni shu yerda yozing\nconst calc = /* IIFE */;\nconsole.log(calc.add(5)); // 5\nconsole.log(calc.add(3)); // 8",
+      hint: "const calc = (function() { let memory = 0; return { add(n) { return memory += n; } }; })();",
+      test: "if (logs.includes(5) && logs.includes(8)) return null; return 'Calculator to\\'g\\'ri ishlamadi!';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Currying (O'rta)",
+      instruction: "add() funksiyasini currying qoling, add(a)(b) shaklida ishlashi uchun.",
+      startingCode: "// Kodni shu yerda yozing\nconst curriedAdd = /* ... */;\nconsole.log(curriedAdd(5)(3)); // 8",
+      hint: "function curriedAdd(a) { return function(b) { return a + b; }; }",
+      test: "if (logs.includes(8)) return null; return 'Currying to\\'g\\'ri emas!';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Function Factory (O'rta)",
+      instruction: "multiplier factory yarating: createMultiplier(2) → 2 ga ko'paytiradigan funksiya.",
+      startingCode: "// Kodni shu yerda yozing\nconst double = createMultiplier(2);\nconst triple = createMultiplier(3);\nconsole.log(double(5)); // 10\nconsole.log(triple(5)); // 15",
+      hint: "function createMultiplier(factor) { return n => n * factor; }",
+      test: "if (logs.includes(10) && logs.includes(15)) return null; return 'Factory to\\'g\\'ri emas!';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Let vs Var Loop (O'rta)",
+      instruction: "Let bilan for loop yozib, har bir i qiymatini funksiyalarda saqlab qoling.",
+      startingCode: "const functions = [];\nfor (let i = 0; i < 3; i++) {\n  // Kodni shu yerda yozing\n  functions.push(/* ... */);\n}\nconsole.log(functions[0]()); // 0\nconsole.log(functions[2]()); // 2",
+      hint: "functions.push(() => console.log(i));",
+      test: "if (logs.includes(0) && logs.includes(2)) return null; return 'Loop to\\'g\\'ri emas!';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Rate Limiter (O'rta)",
+      instruction: "Request limiter yarating: cheksiz chaqirish mumkin, lekin bittadan ko'p bo'lmaydi.",
+      startingCode: "// Kodni shu yerda yozing\nconst limit = createRateLimiter(2);\nconsole.log(limit()); // OK\nconsole.log(limit()); // OK\nconsole.log(limit()); // Kotora rasta!",
+      hint: "function createRateLimiter(max) { let count = 0; return () => { return count++ < max ? 'OK' : 'Kotora!'; }; }",
+      test: "if (logs.some(l => l === 'OK') && logs.some(l => l === 'Kotora!')) return null; return 'Limiter to\\'g\\'ri emas!';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Scope Chain (O'rta)",
+      instruction: "3 qatlama (global -> funksiya -> nested) o'zgaruvchilar bilan scope chaining ko'rsating.",
+      startingCode: "const global = 'global';\nfunction outer() {\n  const outer = 'outer';\n  function inner() {\n    const inner = 'inner';\n    // Kodni shu yerda yozing\n    console.log(/* global, outer, inner */);\n  }\n  inner();\n}\nouter();",
+      hint: "console.log(global, outer, inner);",
+      test: "if (logs.some(l => Array.isArray(l) && l[0] === 'global')) return null; return 'Scope chain to\\'g\\'ri emas!';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Closure with Parameters (Qiyin)",
+      instruction: "greeting funksiya yarating: createGreeter('Salom') → 'Salom, [name]' qaytaradigan funksiya.",
+      startingCode: "// Kodni shu yerda yozing\nconst greet = createGreeter('Salom');\nconsole.log(greet('Ali')); // Salom, Ali",
+      hint: "function createGreeter(greeting) { return name => greeting + ', ' + name; }",
+      test: "if (logs.includes('Salom, Ali')) return null; return 'Greeter to\\'g\\'ri emas!';"
+    },
+    {
+      id: 10,
+      title: "🔟 Module Pattern (Qiyin)",
+      instruction: "IIFE bilan module yarating: add, subtract, getValue methodlari bilan.",
+      startingCode: "// Kodni shu yerda yozing\nconst module = (function() { /* ... */ })();\nconsole.log(module.add(5)); // 5\nconsole.log(module.add(3)); // 8\nconsole.log(module.getValue()); // 8",
+      hint: "const module = (function() { let total = 0; return { add(n) { total += n; return total; }, subtract(n) { total -= n; return total; }, getValue() { return total; } }; })();",
+      test: "if (logs.includes(5) && logs.includes(8)) return null; return 'Module pattern to\\'g\\'ri emas!';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Closure Array (Qiyin)",
+      instruction: "10 ta funksiya massivini yarating har biri i*2 qaytaradigan. Let ishlatib closure muammosini hal qiling.",
+      startingCode: "const functions = [];\n// Kodni shu yerda yozing\nconst fns = [/* ... */];\nconsole.log(fns[0]()); // 0\nconsole.log(fns[5]()); // 10",
+      hint: "for (let i = 0; i < 10; i++) { functions.push(() => i * 2); }",
+      test: "if (logs.includes(0) && logs.includes(10)) return null; return 'Closure array to\\'g\\'ri emas!';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Combine: Curry + Factory (Eng Qiyin)",
+      instruction: "curriedMultiplier yarating: createCurriedMultiplier(2) → multiply(3) → 6.",
+      startingCode: "// Kodni shu yerda yozing\nconst double = createCurriedMultiplier(2);\nconsole.log(double(3)); // 6\nconsole.log(double(5)); // 10",
+      hint: "function createCurriedMultiplier(factor) { return function multiply(n) { return factor * n; }; }",
+      test: "if (logs.includes(6) && logs.includes(10)) return null; return 'Curry + Factory to\\'g\\'ri emas!';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Memoize Funksiya (Memoization)",
+      instruction: "Katta hajmli hisob-kitoblarni optimallashtirish uchun universal `memoize(fn)` keshlovchi funksiyani yozing. U berilgan `fn` funksiyasining natijalarini closure xotirasida (obyekt yoki Map-da) saqlab qolsin. Agar keyingi safar chaqirilganda parametrlar bir xil bo'lsa, keshdagi natijani qaytarsin (parametr sifatida bitta primitiv qiymat uzatiladi deb hisoblang).",
+      startingCode: "function memoize(fn) {\n  // Kodni shu yerdan yozing\n}\n",
+      hint: "const cache = {}; return function(arg) { if (arg in cache) return cache[arg]; return cache[arg] = fn(arg); };",
+      test: "let count = 0; const double = x => { count++; return x * 2; }; const memoized = memoize(double); if (memoized(5) === 10 && memoized(5) === 10 && count === 1) return null; return 'Memoize keshdan to\\'g\\'ri foydalanmadi';"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Xavfsiz reyestr (Secure Registry)",
+      instruction: "Faqat closure va uning ichidagi Leksik muhit orqali qiymatlarni saqlaydigan xavfsiz reyestr `createSecureRegistry()` funksiyasini yozing. U tashqi o'zgaruvchilardan butunlay yashirin bo'lgan Map yoki obyektni saqlasin va quyidagi metodlarga ega obyektni qaytarsin:\n- `register(key, val)` - qiymatni reyestrga qo'shadi;\n- `has(key)` - reyestrda kalit borligini tekshiradi (true/false);\n- `get(key)` - qiymatni oladi (agar bo'lmasa undefined).",
+      startingCode: "function createSecureRegistry() {\n  // Kodni shu yerdan yozing\n}\n",
+      hint: "const registry = new Map(); return { register(k, v) { registry.set(k, v); }, has(k) { return registry.has(k); }, get(k) { return registry.get(k); } };",
+      test: "const reg = createSecureRegistry(); reg.register('apiKey', 'secret_123'); if (reg.has('apiKey') && reg.get('apiKey') === 'secret_123' && !reg.hasOwnProperty('registry')) return null; return 'Secure registry to\\'g\\'ri ishlamadi';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

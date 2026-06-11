@@ -239,32 +239,119 @@ paymentLogger.error("Tizimda xato!"); // Ota metod ishlamoqda
 | **\`Object.create(null)\`** | Prototipsiz, toza obyekt yaratadi | \`const dict = Object.create(null)\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Prototipli Vorislik Zanjiri (ES5)",
-    "instruction": "Berilgan `Animal` konstruktor funksiyasidan vorislik oluvchi `Dog` konstruktor funksiyasini yozing. `Dog` ota konstruktordagi `name` xossasini qabul qilishi va qo'shimcha `breed` xossasiga ega bo'lishi kerak. Prototip zanjirini to'g'ri o'rnating va `constructor` xossasini tuzating.",
-    "startingCode": "function Animal(name) {\n  this.name = name;\n}\nAnimal.prototype.speak = function() {\n  return this.name + ' shovqin solmoqda';\n};\n\nfunction Dog(name, breed) {\n  // Kodni shu yerda yozing\n}\n// Vorislikni sozlang\n",
-    "hint": "`Dog` ichida `Animal.call(this, name)` dan foydalanib ota xossani chaqiring. Keyin `Dog.prototype = Object.create(Animal.prototype)` qiling va uning `constructor`ini `Dog` ga tenglang.",
-    "test": "const sandbox = new Function(code + '; return { Animal, Dog };');\nconst scope = sandbox();\nconst husky = new scope.Dog('Maks', 'Husky');\nif (!(husky instanceof scope.Animal)) return 'Dog Animal-dan vorislik olmagan';\nif (husky.speak() !== 'Maks shovqin solmoqda') return 'Ota metod (speak) xato ishlayapti';\nif (husky.breed !== 'Husky') return 'breed xossasi to\\'g\\'ri o\\'rnatilmagan';\nif (husky.constructor !== scope.Dog) return 'Dog prototipining constructor xossasi tuzatilmadi';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Massiv Prototipini Kengaytirish",
-    "instruction": "Barcha JavaScript massivlarida ishlaydigan shaxsiy `Array.prototype.last()` metodini yarating. U massivning eng oxirgi elementini qaytarsin. Agar massiv bo'sh bo'lsa, `undefined` qaytarsin.",
-    "startingCode": "// Prototipni shu yerda kengaytiring\n",
-    "hint": "`Array.prototype.last = function() { ... }` ko'rinishida yozib, massiv elementiga `this` kalit so'zi va uning uzunligi `this.length` orqali murojaat qiling.",
-    "test": "const sandbox = new Function(code + '; return [\"olma\", \"anor\", \"limon\"].last();');\nif (sandbox() !== 'limon') return 'last() metodi oxirgi elementni qaytarmadi';\nconst emptySandbox = new Function(code + '; return [].last();');\nif (emptySandbox() !== undefined) return 'Bo\\'sh massiv uchun undefined qaytarishi kerak';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Object.create yordamida Prototip Bog'lash",
-    "instruction": "Berilgan `person` obyektini prototip sifatida qabul qiluvchi yangi `student` obyektini `Object.create` yordamcha metodi orqali yarating. `student` obyektida shaxsiy `study()` metodi bo'lsin va u `'O\\'qimoqda'` degan matnni qaytarsin.",
-    "startingCode": "const person = {\n  greet() {\n    return 'Salom';\n  }\n};\n\n// student obyektini yarating\n",
-    "hint": "`const student = Object.create(person);` yordamida voris obyekt oching va unga `student.study = function() { ... }` shaklida metod biriktiring.",
-    "test": "const sandbox = new Function(code + '; return student;');\nconst st = sandbox();\nif (!st) return 'student obyekti yaratilmagan';\nif (Object.getPrototypeOf(st) !== person) return 'student obyekti prototipi person ga bog\\'lanmagan';\nif (st.greet() !== 'Salom') return 'student otasining greet() metodini chaqira olmayapti';\nif (typeof st.study !== 'function' || st.study() !== 'O\\'qimoqda') return 'study() metodi to\\'g\\'ri yozilmagan';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Simple Prototype",
+      instruction: "Person.prototype-ga 'sayHi' metodini qo'shing (metod 'Hi' matnini qaytarsin).",
+      startingCode: "function Person(n) { this.name = n; }\n// Bu yerga yozing\nconst p = new Person('Ali');",
+      hint: "Person.prototype.sayHi = function() { return 'Hi'; };",
+      test: "if (p.sayHi && p.sayHi() === 'Hi') return null; return 'sayHi metodini Person.prototype ga qo\\'shing';"
+    },
+    {
+      id: 2,
+      title: "Getter in Prototype",
+      instruction: "Car konstruktori prototipiga mashina yoshi (hozirgi yildan ishlab chiqarilgan yilini ayirish) qaytaradigan getAge(currentYear) metodini qo'shing.",
+      startingCode: "function Car(make, year) { this.make = make; this.year = year; }\n// getAge metodini prototipga qo'shing\n",
+      hint: "Car.prototype.getAge = function(currentYear) { return currentYear - this.year; };",
+      test: "if (code.includes('Car.prototype.getAge') && code.includes('this.year')) return null; return 'Car.prototype.getAge metodini to\\'g\\'ri yozing';"
+    },
+    {
+      id: 3,
+      title: "Object.create()",
+      instruction: "Object.create() yordamida animal obyektini prototip qilib olgan yangi dog obyektini yarating.",
+      startingCode: "const animal = { eats: true };\n// dog obyektini animaldan yarating\nconst dog = null;",
+      hint: "const dog = Object.create(animal);",
+      test: "if (code.includes('Object.create(animal)')) return null; return 'Object.create(animal) orqali dog yarating';"
+    },
+    {
+      id: 4,
+      title: "hasOwnProperty()",
+      instruction: "Obyektning o'z xususiyatini tekshiradigan checkOwn(obj, prop) funksiyasini yozing.",
+      startingCode: "function checkOwn(obj, prop) {\n  // hasOwnProperty orqali tekshiring\n}",
+      hint: "return obj.hasOwnProperty(prop);",
+      test: "if (code.includes('hasOwnProperty')) return null; return 'hasOwnProperty metodidan foydalaning';"
+    },
+    {
+      id: 5,
+      title: "Set Prototype",
+      instruction: "Object.setPrototypeOf() yordamida admin obyektining prototipini user obyektiga o'rnating.",
+      startingCode: "const user = { login: true };\nconst admin = { delete: true };\n// Prototipni bog'lang\n",
+      hint: "Object.setPrototypeOf(admin, user);",
+      test: "if (code.includes('Object.setPrototypeOf(admin, user)')) return null; return 'Object.setPrototypeOf dan foydalanib bog\\'lang';"
+    },
+    {
+      id: 6,
+      title: "Object.getPrototypeOf()",
+      instruction: "Berilgan obyektning prototipini qaytaradigan getProto(obj) funksiyasini yozing.",
+      startingCode: "function getProto(obj) {\n  // Prototipni qaytaring\n}",
+      hint: "return Object.getPrototypeOf(obj);",
+      test: "if (code.includes('Object.getPrototypeOf')) return null; return 'Object.getPrototypeOf metodidan foydalaning';"
+    },
+    {
+      id: 7,
+      title: "Prototype Constructor Property",
+      instruction: "Konstruktor funksiya prototipini qayta yozgandan so'ng, constructor xossasini yana o'ziga qaytarib bog'lang.",
+      startingCode: "function User(name) { this.name = name; }\nUser.prototype = {\n  // constructor xossasini User-ga qayta ulang\n  sayHello() { return 'Hello'; }\n};",
+      hint: "constructor: User,",
+      test: "if (code.includes('constructor:') && code.includes('User')) return null; return 'constructor: User xossasini qo\\'shing';"
+    },
+    {
+      id: 8,
+      title: "Inheriting Prototype Methods",
+      instruction: "Rabbit klassi Animal klassidan meros olishi uchun Rabbit.prototype-ni Object.create(Animal.prototype) yordamida to'g'rilang.",
+      startingCode: "function Animal() {}\nAnimal.prototype.run = function() {};\nfunction Rabbit() {}\n// Rabbit prototipini Animal prototipidan yarating\n",
+      hint: "Rabbit.prototype = Object.create(Animal.prototype); Rabbit.prototype.constructor = Rabbit;",
+      test: "if (code.includes('Object.create(Animal.prototype)')) return null; return 'Rabbit.prototype-ni Animal.prototype-dan Object.create orqali yarating';"
+    },
+    {
+      id: 9,
+      title: "Polymorphism (Method Overriding)",
+      instruction: "Prototipdagi default toString metodini o'zgartirib (override), shaxs ismini qaytaradigan Person.prototype.toString yozing.",
+      startingCode: "function Person(name) { this.name = name; }\n// toString metodini override qiling\n",
+      hint: "Person.prototype.toString = function() { return this.name; };",
+      test: "if (code.includes('Person.prototype.toString') && code.includes('this.name')) return null; return 'toString metodini person ismini qaytaradigan qilib yozing';"
+    },
+    {
+      id: 10,
+      title: "Checking Instance (instanceof)",
+      instruction: "Berilgan obyekt Array instansi ekanligini instanceof orqali tekshirib qaytaruvchi funksiya islandsArray(obj) yozing.",
+      startingCode: "function islandsArray(obj) {\n  // instanceof dan foydalaning\n}",
+      hint: "return obj instanceof Array;",
+      test: "if (code.includes('instanceof') && code.includes('Array')) return null; return 'instanceof Array dan foydalaning';"
+    },
+    {
+      id: 11,
+      title: "Custom String method",
+      instruction: "Barcha stringlarda ishlaydigan reverse() metodini String.prototype ga qo'shing.",
+      startingCode: "// String prototipiga reverse metodini ulang\n",
+      hint: "String.prototype.reverse = function() { return this.split('').reverse().join(''); };",
+      test: "if (code.includes('String.prototype.reverse') && (code.includes('split') || code.includes('reverse') || code.includes('join'))) return null; return 'String.prototype.reverse metodini yozing';"
+    },
+    {
+      id: 12,
+      title: "Pure Object",
+      instruction: "Prototipsiz (hech qanday __proto__ yoki Object.prototype metodlarisiz) mutlaqo toza obyekt yarating va pureObj o'zgaruvchisiga saqlang.",
+      startingCode: "// Prototipsiz obyekt yarating\nconst pureObj = null;",
+      hint: "const pureObj = Object.create(null);",
+      test: "if (code.includes('Object.create(null)')) return null; return 'Object.create(null) orqali prototipsiz obyekt yarating';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Object.create va Property Descriptors",
+      instruction: "`Object.create(proto, descriptors)` yordamida `machine` obyektidan meros oladigan va qo'shimcha ravishda faqat o'qish uchun mo'ljallangan (`writable: false`, `configurable: false`) `serialNumber` (qiymati 'SN-999') xossasiga ega bo'lgan yangi `robot` obyektini yarating.",
+      startingCode: "const machine = { status: 'active' };\n// Object.create yordamida robot yarating\nconst robot = null;",
+      hint: "const robot = Object.create(machine, {\n  serialNumber: {\n    value: 'SN-999',\n    writable: false,\n    configurable: false,\n    enumerable: true\n  }\n});",
+      test: "if (robot.status !== 'active') return 'status meros olinmadi'; if (robot.serialNumber !== 'SN-999') return 'serialNumber xato'; robot.serialNumber = '123'; if (robot.serialNumber === 'SN-999') return null; return 'Xossa writable bo\'lmasligi kerak edi';"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ for..in va hasOwnProperty yordamida Own Properties filtrlash",
+      instruction: "Berilgan obyektning faqat o'ziga tegishli (own property) bo'lgan barcha kalitlari (keys) ro'yxatini massiv ko'rinishida qaytaruvchi `getOwnProperties(obj)` funksiyasini yozing. Buning uchun `for..in` tsikli va `hasOwnProperty` metodidan foydalanim (built-in Object.keys() ishlatmang).",
+      startingCode: "function getOwnProperties(obj) {\n  const keys = [];\n  // for..in va hasOwnProperty ishlating\n  return keys;\n}",
+      hint: "for(let key in obj) {\n  if (obj.hasOwnProperty(key)) keys.push(key);\n}",
+      test: "if (typeof getOwnProperties !== 'function') return 'getOwnProperties topilmadi'; const parent = { a: 1 }; const child = Object.create(parent); child.b = 2; const keys = getOwnProperties(child); if (keys.length === 1 && keys[0] === 'b') return null; return 'Faqat shaxsiy xossalar qaytarilishi kerak';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

@@ -247,32 +247,119 @@ class ChatClient {
 | \`ws.onclose\` | Ulanish yopilganda ishlaydi | \`ws.onclose = () => { ... }\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "WebSocket ulanishini yaratish",
-    "instruction": "Berilgan `url` manzili bo'yicha yangi WebSocket ulanishini hosil qiladigan va o'sha WebSocket obyektini qaytaradigan `initializeWS(url)` funksiyasini yozing.",
-    "startingCode": "function initializeWS(url) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "new WebSocket(url) yordamida yangi obyekt yaratib, uni return qiling.",
-    "test": "if (typeof WebSocket === 'undefined') {\n  globalThis.WebSocket = class {\n    constructor(url) { this.url = url; this.readyState = 0; }\n  };\n}\nconst sandbox = new Function(code + '; return initializeWS;');\nconst fn = sandbox();\nconst ws = fn('wss://echo.websocket.org');\nif (ws && ws.url === 'wss://echo.websocket.org') return null;\nreturn 'WebSocket obyekti to\\'g\\'ri yaratilmadi yoki qaytarilmadi';"
-  },
-  {
-    "id": 2,
-    "title": "Xavfsiz xabar yuborish",
-    "instruction": "WebSocket ulanishi faqat ochiq holatda bo'lgandagina (ya'ni `readyState` qiymati `WebSocket.OPEN` ga teng bo'lsa) xabar yuboradigan `sendMessageSafe(socket, message)` funksiyasini yozing. Agar xabar yuborilsa, `true` qaytaring, aks holda `false` qaytaring.",
-    "startingCode": "function sendMessageSafe(socket, message) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "socket.readyState === WebSocket.OPEN shartini tekshirib, keyin socket.send(message) ni chaqiring.",
-    "test": "if (typeof WebSocket === 'undefined') {\n  globalThis.WebSocket = class {\n    constructor(url) { this.url = url; this.readyState = 0; }\n    send(m) { this.sent = m; }\n  };\n  globalThis.WebSocket.OPEN = 1;\n}\nconst sandbox = new Function(code + '; return sendMessageSafe;');\nconst fn = sandbox();\nconst mockSocket1 = { readyState: 1, send(m) { this.sent = m; } };\nconst mockSocket2 = { readyState: 0, send(m) {} };\nconst res1 = fn(mockSocket1, 'Hello');\nconst res2 = fn(mockSocket2, 'Hello');\nif (res1 === true && mockSocket1.sent === 'Hello' && res2 === false) return null;\nreturn 'sendMessageSafe funksiyasi ulanish holatini noto\\'g\\'ri tekshirdi yoki xabarni jo\\'natmadi';"
-  },
-  {
-    "id": 3,
-    "title": "JSON xabarlarni parse qilish",
-    "instruction": "WebSocket serverdan kelayotgan xabarlarni eshitadigan va kelgan har bir xabarni JSON formatidan parse qilib, berilgan `callback` funksiyasiga uzatadigan `handleWSMessages(socket, callback)` funksiyasini yozing.",
-    "startingCode": "function handleWSMessages(socket, callback) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "socket.onmessage = (event) => { const data = JSON.parse(event.data); callback(data); } ko'rinishida yozing.",
-    "test": "const sandbox = new Function(code + '; return handleWSMessages;');\nconst fn = sandbox();\nconst mockSocket = { onmessage: null };\nlet receivedData = null;\nfn(mockSocket, (data) => { receivedData = data; });\nif (typeof mockSocket.onmessage !== 'function') return 'socket.onmessage funksiyasi o\\'rnatilmadi';\nmockSocket.onmessage({ data: '{\"status\":\"ok\"}' });\nif (receivedData && receivedData.status === 'ok') return null;\nreturn 'Kelgan JSON xabar to\\'g\\'ri parse qilinmadi yoki callback-ga uzatilmadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "WebSocket obyektini yaratish",
+      instruction: "'wss://echo.websocket.org' manziliga ulanuvchi yangi WebSocket obyektini yarating va uni 'ws' o'zgaruvchisiga saqlang.",
+      startingCode: "// Bu yerga yozing\nconst ws = ",
+      hint: "new WebSocket('wss://echo.websocket.org')",
+      test: "if (code.includes(\"new WebSocket('wss://echo.websocket.org')\") || code.includes('new WebSocket(\"wss://echo.websocket.org\")')) return null; return 'WebSocket obyektini to\\'g\\'ri URL bilan yarating.';"
+    },
+    {
+      id: 2,
+      title: "Ulanish ochilganda xabar berish",
+      instruction: "WebSocket 'ws' o'zgaruvchisi uchun 'onopen' hodisasi (event handler) yordamida konsolga 'Ulanish ochildi' matnini chiqaruvchi funksiya yozing.",
+      startingCode: "const ws = new WebSocket('wss://echo.websocket.org');\n// Bu yerga yozing\n",
+      hint: "ws.onopen = () => {\n  console.log('Ulanish ochildi');\n};",
+      test: "if (code.includes('onopen') && code.includes('Ulanish ochildi')) return null; return 'onopen hodisasini sozlang va konsolga to\\'g\\'ri xabarni chiqaring.';"
+    },
+    {
+      id: 3,
+      title: "Serverga xabar yuborish",
+      instruction: "Ulanish ochilishi bilan (onopen hodisasi ichida) serverga 'Salom' matnini yuboradigan kod yozing.",
+      startingCode: "const ws = new WebSocket('wss://echo.websocket.org');\nws.onopen = () => {\n  // Bu yerga yozing\n  \n};",
+      hint: "ws.send('Salom');",
+      test: "if (code.includes(\"ws.send('Salom')\") || code.includes('ws.send(\"Salom\")')) return null; return 'send() metodi yordamida \\'Salom\\' xabarini yuboring.';"
+    },
+    {
+      id: 4,
+      title: "Kelgan xabarlarni qabul qilish",
+      instruction: "Serverdan xabar kelganda (onmessage hodisasi), uning ichidagi ma'lumotni (event.data) konsolga chiqaradigan funksiya yozing.",
+      startingCode: "const ws = new WebSocket('wss://echo.websocket.org');\n// Bu yerga yozing\n",
+      hint: "ws.onmessage = (event) => {\n  console.log(event.data);\n};",
+      test: "if (code.includes('onmessage') && (code.includes('event.data') || code.includes('data'))) return null; return 'onmessage hodisasi ichida event.data-ni konsolga chiqaring.';"
+    },
+    {
+      id: 5,
+      title: "Ulanish yopilganda xabar yozish",
+      instruction: "WebSocket aloqasi yopilganda (onclose hodisasi), konsolga 'Ulanish yopildi' yozuvini chiqaruvchi funksiya yozing.",
+      startingCode: "const ws = new WebSocket('wss://echo.websocket.org');\n// Bu yerga yozing\n",
+      hint: "ws.onclose = () => {\n  console.log('Ulanish yopildi');\n};",
+      test: "if (code.includes('onclose') && code.includes('Ulanish yopildi')) return null; return 'onclose hodisasini to\\'g\\'ri boshqaring.';"
+    },
+    {
+      id: 6,
+      title: "Xatoliklarni tutish",
+      instruction: "WebSocket-da xatolik yuz berganda (onerror hodisasi), xatoni konsolga chiqaradigan kod yozing.",
+      startingCode: "const ws = new WebSocket('wss://echo.websocket.org');\n// Bu yerga yozing\n",
+      hint: "ws.onerror = (error) => {\n  console.error(error);\n};",
+      test: "if (code.includes('onerror')) return null; return 'onerror hodisasi orqali xatoliklarni tuting.';"
+    },
+    {
+      id: 7,
+      title: "Ulanishni yopish",
+      instruction: "'ws' ulanishini yopuvchi metodni chaqiring.",
+      startingCode: "const ws = new WebSocket('wss://echo.websocket.org');\n// Bu yerga yozing\n",
+      hint: "ws.close();",
+      test: "if (code.includes('ws.close()')) return null; return 'ws.close() metodini chaqiring.';"
+    },
+    {
+      id: 8,
+      title: "Ulanish holatini tekshirish",
+      instruction: "WebSocket 'ws' ning readyState qiymati ochiq (WebSocket.OPEN) ekanligini tekshiradigan 'isOpen' o'zgaruvchisini yarating (true/false).",
+      startingCode: "const ws = new WebSocket('wss://echo.websocket.org');\n// Bu yerga yozing\nconst isOpen = ",
+      hint: "ws.readyState === WebSocket.OPEN",
+      test: "if (code.includes('readyState') && (code.includes('WebSocket.OPEN') || code.includes('1'))) return null; return 'ws.readyState-ni WebSocket.OPEN bilan solishtiring.';"
+    },
+    {
+      id: 9,
+      title: "JSON jo'natish",
+      instruction: "Mijozdan serverga { type: 'chat', text: 'Salom' } obyektini JSON string ko'rinishida yuboradigan kod yozing.",
+      startingCode: "const ws = new WebSocket('wss://echo.websocket.org');\nws.onopen = () => {\n  const message = { type: 'chat', text: 'Salom' };\n  // Bu yerga yozing\n  \n};",
+      hint: "ws.send(JSON.stringify(message));",
+      test: "if (code.includes('JSON.stringify(message)')) return null; return 'JSON.stringify yordamida obyektni stringga o\\'girib jo\\'nating.';"
+    },
+    {
+      id: 10,
+      title: "Kelgan JSONni parse qilish",
+      instruction: "onmessage hodisasida kelgan event.data-ni obyekt sifatida parse qiling va konsolga uning 'text' xususiyatini chiqaring.",
+      startingCode: "const ws = new WebSocket('wss://echo.websocket.org');\nws.onmessage = (event) => {\n  // Bu yerga yozing\n  \n};",
+      hint: "const data = JSON.parse(event.data);\nconsole.log(data.text);",
+      test: "if (code.includes('JSON.parse(event.data)') && (code.includes('.text') || code.includes('[\"text\"]'))) return null; return 'event.data-ni parse qilib, text xususiyatini konsolga yozing.';"
+    },
+    {
+      id: 11,
+      title: "Binary ma'lumotlar turini sozlash",
+      instruction: "WebSocket orqali keladigan ikkilik ma'lumotlar turini (binaryType) 'arraybuffer' ga tenglang.",
+      startingCode: "const ws = new WebSocket('wss://echo.websocket.org');\n// Bu yerga yozing\n",
+      hint: "ws.binaryType = 'arraybuffer';",
+      test: "if (code.includes('binaryType') && (code.includes(\"'arraybuffer'\") || code.includes('\"arraybuffer\"'))) return null; return 'binaryType-ni arraybuffer qilib belgilang.';"
+    },
+    {
+      id: 12,
+      title: "Oddiy qayta ulanish (Reconnect)",
+      instruction: "Ulanish yopilganda (onclose), 3 soniyadan (3000ms) keyin 'connect' nomli funksiyani qayta chaqiradigan voqea tinglovchisini yozing.",
+      startingCode: "function connect() {\n  const ws = new WebSocket('wss://echo.websocket.org');\n  ws.onclose = () => {\n    // Bu yerga yozing\n    \n  };\n}",
+      hint: "setTimeout(connect, 3000);",
+      test: "if (code.includes('setTimeout') && code.includes('connect') && code.includes('3000')) return null; return 'onclose ichida setTimeout orqali 3000ms kechikish bilan connect funksiyasini chaqiring.';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ ReadyState Tekshiruvchi Helper (checkReadyState)",
+      instruction: "Berilgan `socket` obyektining `readyState` holatiga mos ravishda uning matnli tavsifini qaytaruvchi `checkReadyState(socket)` funksiyasini yozing. Mosliklar: 0: 'CONNECTING', 1: 'OPEN', 2: 'CLOSING', 3: 'CLOSED'. Agar ulanish obyekti berilmagan yoki noto'g'ri bo'lsa, 'INVALID' qaytarsin.",
+      startingCode: "function checkReadyState(socket) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "if (!socket || typeof socket.readyState === 'undefined') return 'INVALID'; const map = { 0: 'CONNECTING', 1: 'OPEN', 2: 'CLOSING', 3: 'CLOSED' }; return map[socket.readyState] || 'INVALID';",
+      test: "if (typeof checkReadyState !== 'function') return 'checkReadyState funksiya emas';\nif (checkReadyState(null) !== 'INVALID') return 'null obyekt uchun INVALID qaytmadi';\nif (checkReadyState({ readyState: 1 }) !== 'OPEN') return 'OPEN holati noto\\'g\\'ri';\nif (checkReadyState({ readyState: 3 }) !== 'CLOSED') return 'CLOSED holati noto\\'g\\'ri';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Xavfsiz JSON Yuboruvchi (sendJSONMessage)",
+      instruction: "WebSocket ulanishi orqali serverga JSON xabar jo'natuvchi xavfsiz `sendJSONMessage(socket, type, payload)` funksiyasini yozing. U quyidagi qoidalarga rioya qilsin:\n1. Agar `socket.readyState` ochiq (`WebSocket.OPEN` ya'ni 1) bo'lsa, xabarni `{ type, payload }` ko'rinishida stringify qilib jo'natsin (send) va `true` qaytarsin.\n2. Aks holda `false` qaytarsin va xabar yubormasin.",
+      startingCode: "function sendJSONMessage(socket, type, payload) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "if (socket && socket.readyState === 1) { socket.send(JSON.stringify({ type, payload })); return true; } return false;",
+      test: "if (typeof sendJSONMessage !== 'function') return 'sendJSONMessage funksiya emas';\nlet sentData = null;\nconst mockSocket = { readyState: 1, send: (data) => { sentData = data; } };\nconst success = sendJSONMessage(mockSocket, 'test', { val: 1 });\nif (!success) return 'Muvaffaqiyatli yuborishda false qaytdi';\nconst parsed = JSON.parse(sentData);\nif (parsed.type === 'test' && parsed.payload.val === 1) {\n  const mockClosed = { readyState: 3, send: () => {} };\n  if (sendJSONMessage(mockClosed, 'test', {}) === false) return null;\n}\nreturn 'Xabar to\\'g\\'ri stringify qilinmadi';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

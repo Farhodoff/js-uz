@@ -198,31 +198,103 @@ graph TD
 | **typeof null** | JS ning tarixiy bugi, object qaytaradi | \`typeof null === 'object'\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Unique Elements",
-    "instruction": "Massivdan takrorlanuvchi elementlarni Set yordamida o'chiring.",
-    "startingCode": "const data = [10, 20, 10, 30, 20];\n// Unique massiv yarating\nconst unique = [];\nconsole.log(unique);",
-    "hint": "const unique = [...new Set(data)];",
-    "test": "if (code.includes('Set') && code.includes('...')) return null; return 'Set va spread operatoridan foydalaning';"
-  },
-  {
-    "id": 2,
-    "title": "Shallow Copy",
-    "instruction": "Spread operatoridan foydalanib 'user' obyektining nusxasini 'clone' o'zgaruvchisiga oling.",
-    "startingCode": "const user = { name: 'Ali', age: 25 };\n// user nusxasini oling\nconst clone = {};",
-    "hint": "const clone = { ...user };",
-    "test": "if (code.includes('...') && code.includes('user')) return null; return 'Spread operatorini user bilan ishlating';"
-  },
-  {
-    "id": 3,
-    "title": "Sum with Rest",
-    "instruction": "Rest parameter (...args) yordamida barcha yuborilgan sonlar yig'indisini qaytaradigan 'sumAll' funksiyasini yozing.",
-    "startingCode": "function sumAll(...numbers) {\n  // Kodni yozing\n}",
-    "hint": "return numbers.reduce((acc, curr) => acc + curr, 0);",
-    "test": "if (code.includes('reduce') || code.includes('sumAll')) return null; return 'numbers.reduce yordamida yig\\'indini hisoblang';"
-  }
-],
+    {
+      id: 1,
+      title: "Unique Elements",
+      instruction: "Massivdan takrorlanuvchi elementlarni Set yordamida o'chiring.",
+      startingCode: "const data = [10, 20, 10, 30, 20];\n// Unique massiv yarating\nconst unique = [];\nconsole.log(unique);",
+      hint: "const unique = [...new Set(data)];",
+      test: "if (code.includes('Set') && code.includes('...')) return null; return 'Set va spread operatoridan foydalaning';"
+    },
+    {
+      id: 2,
+      title: "Shallow Copy",
+      instruction: "Spread operatoridan foydalanib 'user' obyektining nusxasini 'clone' o'zgaruvchisiga oling.",
+      startingCode: "const user = { name: 'Ali', age: 25 };\n// user nusxasini oling\nconst clone = {};",
+      hint: "const clone = { ...user };",
+      test: "if (code.includes('...') && code.includes('user')) return null; return 'Spread operatorini user bilan ishlating';"
+    },
+    {
+      id: 3,
+      title: "Sum with Rest",
+      instruction: "Rest parameter (...args) yordamida barcha yuborilgan sonlar yig'indisini qaytaradigan 'sumAll' funksiyasini yozing.",
+      startingCode: "function sumAll(...numbers) {\n  // Kodni yozing\n}",
+      hint: "return numbers.reduce((acc, curr) => acc + curr, 0);",
+      test: "if (code.includes('reduce') || code.includes('sumAll')) return null; return 'numbers.reduce yordamida yig\\'indini hisoblang';"
+    },
+    {
+      id: 4,
+      title: "Array Destructuring",
+      instruction: "Destructuring yordamida a va b o'zgaruvchilar qiymatini almashtiring (swap).",
+      startingCode: "let a = 1, b = 2;\n// Qiymatlarni almashtiring\n",
+      hint: "[a, b] = [b, a];",
+      test: "if (code.includes('[a, b]') || code.includes('[b, a]')) return null; return 'Destructuring orqali almashtiring';"
+    },
+    {
+      id: 5,
+      title: "Object Property Check",
+      instruction: "'in' operatori yordamida 'car' obyektida 'speed' xossasi borligini aniqlovchi 'hasSpeed' o'zgaruvchisini yarating.",
+      startingCode: "const car = { brand: 'BMW', color: 'black' };\nconst hasSpeed = false;",
+      hint: "const hasSpeed = 'speed' in car;",
+      test: "if (code.includes('in') && code.includes('car')) return null; return 'in operatori orqali car obyektini tekshiring';"
+    },
+    {
+      id: 6,
+      title: "Simple Closure",
+      instruction: "Har safar chaqirilganda 1 ga oshadigan counter funksiyasini yaratuvchi 'createCounter' funksiyasini yozing.",
+      startingCode: "function createCounter() {\n  let count = 0;\n  // counter funksiyasini qaytaring\n}",
+      hint: "return function() { count++; return count; };",
+      test: "if (code.includes('count++') || code.includes('++count')) return null; return 'Closure yordamida count-ni oshiruvchi ichki funksiyani qaytaring';"
+    },
+    {
+      id: 7,
+      title: "Filter Even Numbers",
+      instruction: "Filter metodi yordamida massivdagi juft sonlarni ajratib oling.",
+      startingCode: "const numbers = [1, 2, 3, 4, 5, 6];\nconst evens = [];",
+      hint: "const evens = numbers.filter(n => n % 2 === 0);",
+      test: "if (code.includes('filter') && code.includes('% 2')) return null; return 'filter metodidan foydalaning';"
+    },
+    {
+      id: 8,
+      title: "Array to Object",
+      instruction: "Object.fromEntries yordamida kalit-qiymat juftligi ko'rinishidagi massivni obyektga o'giring.",
+      startingCode: "const pairs = [['name', 'Ali'], ['role', 'admin']];\nconst obj = {};",
+      hint: "const obj = Object.fromEntries(pairs);",
+      test: "if (code.includes('Object.fromEntries')) return null; return 'Object.fromEntries metodidan foydalaning';"
+    },
+    {
+      id: 9,
+      title: "Property Renaming",
+      instruction: "Destructuring yordamida 'user' obyektining 'name' xossasini 'username' deb qayta nomlab oling.",
+      startingCode: "const user = { name: 'Ali', role: 'admin' };\n// username o'zgaruvchisiga oling\n",
+      hint: "const { name: username } = user;",
+      test: "if (code.includes('name:username') || code.includes('name: username')) return null; return 'name xossasini username deb nomlang';"
+    },
+    {
+      id: 10,
+      title: "Check All Positive",
+      instruction: "every metodi yordamida massivdagi barcha sonlar musbat (n > 0) ekanligini aniqlang va natijani 'allPositive'ga yuklang.",
+      startingCode: "const nums = [2, 5, 8, -1, 10];\nconst allPositive = false;",
+      hint: "const allPositive = nums.every(n => n > 0);",
+      test: "if (code.includes('every') && code.includes('> 0')) return null; return 'every metodidan foydalaning';"
+    },
+    {
+      id: 11,
+      title: "Merge Objects",
+      instruction: "Spread operatori yordamida 'obj1' va 'obj2' obyektlarini 'merged' obyektiga birlashtiring.",
+      startingCode: "const obj1 = { a: 1 };\nconst obj2 = { b: 2 };\nconst merged = {};",
+      hint: "const merged = { ...obj1, ...obj2 };",
+      test: "if (code.includes('...') && code.includes('obj1') && code.includes('obj2')) return null; return 'Ikkala obyektni spread yordamida birlashtiring';"
+    },
+    {
+      id: 12,
+      title: "Find Object in Array",
+      instruction: "find() metodi yordamida 'users' massividan id si 3 bo'lgan foydalanuvchini toping.",
+      startingCode: "const users = [{ id: 1 }, { id: 3 }, { id: 5 }];\nconst target = null;",
+      hint: "const target = users.find(u => u.id === 3);",
+      test: "if (code.includes('find') && code.includes('id')) return null; return 'find metodidan foydalanib id si 3 bo\\'lgan obyektni toping';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

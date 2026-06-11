@@ -327,32 +327,103 @@ orderForm.addEventListener('submit', async (e) => {
 | **trim()** | \`str.trim()\` | Bo'shliqlarni tozalaydi | Validatsiya uchun muhim |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Sahifa yangilanishining oldini olish (preventDefault)",
-    "instruction": "Forma yuborilganida (`submit` event yuz berganda) standart sahifa yangilanishini to'xtatuvchi `preventSubmit(event)` funksiyasini yozing.",
-    "startingCode": "function preventSubmit(event) {\n  // Kodni yozing\n}",
-    "hint": "event.preventDefault();",
-    "test": "try { let prevented = false; const mockEvent = { preventDefault: () => prevented = true }; preventSubmit(mockEvent); if (!prevented) return 'preventDefault() chaqirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 2,
-    "title": "Input qiymatini tozalab olish (value & trim)",
-    "instruction": "Berilgan `input` elementining qiymatini (`value`) olib, boshidagi va oxiridagi bo'shliqlarni olib tashlab (trim) qaytaruvchi `getCleanValue(input)` funksiyasini yozing.",
-    "startingCode": "function getCleanValue(input) {\n  // Kodni yozing\n}",
-    "hint": "return input.value.trim();",
-    "test": "try { const mockInput = { value: '  Salom JS  ' }; const res = getCleanValue(mockInput); if (res !== 'Salom JS') return 'Bo\\'shliqlar tozalab qaytarilmadi: ' + res; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 3,
-    "title": "FormData orqali Obyektga o'tkazish",
-    "instruction": "Berilgan HTML `form` elementini qabul qilib, undagi ma'lumotlarni `FormData` yordamida yig'ib, toza JavaScript obyektiga (JSON yuborishga tayyor holga) o'tkazib qaytaruvchi `serializeForm(form)` funksiyasini yozing.",
-    "startingCode": "function serializeForm(form) {\n  // Kodni yozing\n}",
-    "hint": "const formData = new FormData(form); return Object.fromEntries(formData.entries());",
-    "test": "try { const form = document.createElement('form'); const input = document.createElement('input'); input.name = 'role'; input.value = 'admin'; form.appendChild(input); const res = serializeForm(form); if (!res || res.role !== 'admin') return 'FormData to\\'g\\'ri obyektga o\\'tkazilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Submitni to'xtatish",
+      instruction: "Forma yuborilganda sahifa yangilanmasligi uchun kerakli metodni chaqiring.",
+      startingCode: "const event = { preventDefault: () => event.done = true };\nfunction handleSubmit(e) {\n  // Bu yerda chaqiring\n}\nhandler(event);",
+      hint: "e.preventDefault();",
+      test: "if (event.done) return null; return 'event.preventDefault() chaqirilmadi';"
+    },
+    {
+      id: 2,
+      title: "Qiymatni olish",
+      instruction: "'user' o'zgaruvchisidan uning qiymatini (value) oling va 'val' o'zgaruvchisiga saqlang.",
+      startingCode: "const user = { value: 'Ali' };\n// Bu yerga yozing\n",
+      hint: "const val = user.value;",
+      test: "if (code.includes('.value')) return null; return 'value xususiyatini ishlating';"
+    },
+    {
+      id: 3,
+      title: "Bo'shliqni tekshirish",
+      instruction: "Agar 'msg' inputining qiymati bo'sh bo'lsa 'Bo'sh' so'zini konsolga chiqaring.",
+      startingCode: "const msg = { value: '' };\n// Bu yerga yozing\n",
+      hint: "if (msg.value === '') console.log('Bo'sh');",
+      test: "if (logs.includes('Bo\\'sh')) return null; return 'Xato tekshiruv';"
+    },
+    {
+      id: 4,
+      title: "Parol uzunligi",
+      instruction: "Parol (pass.value) 8 tadan kam bo'lsa 'Kisqa' so'zini chiqaring.",
+      startingCode: "const pass = { value: '123' };\n// Bu yerga yozing\n",
+      hint: "if (pass.value.length < 8) console.log('Kisqa');",
+      test: "if (logs.includes('Kisqa')) return null; return 'Uzunlikni tekshiring';"
+    },
+    {
+      id: 5,
+      title: "Formani tozalash",
+      instruction: "Formadagi barcha maydonlarni tozalash uchun uning reset() metodini chaqiring.",
+      startingCode: "const myForm = { reset: () => myForm.cleaned = true };\n// Bu yerda reset() metodini chaqiring\n",
+      hint: "myForm.reset();",
+      test: "if (myForm.cleaned) return null; return 'reset() metodini chaqiring';"
+    },
+    {
+      id: 6,
+      title: "Checkbox holatini aniqlash",
+      instruction: "'agree' checkbox elementining tanlangan (checked) holatini 'isAgree' o'zgaruvchisiga saqlang.",
+      startingCode: "const agree = { checked: true };\n// Bu yerga yozing\n",
+      hint: "const isAgree = agree.checked;",
+      test: "if (typeof isAgree !== 'undefined' && isAgree === true) return null; return 'isAgree o\\'zgaruvchisiga checked qiymatini saqlang';"
+    },
+    {
+      id: 7,
+      title: "FormData yordamida qiymat olish",
+      instruction: "'formData' obyektidan 'username' maydonini olish uchun get() metodini chaqiring va 'nameVal' o'zgaruvchisiga saqlang.",
+      startingCode: "const formData = { get: (name) => name === 'username' ? 'Farhod' : null };\n// Bu yerga yozing\n",
+      hint: "const nameVal = formData.get('username');",
+      test: "if (typeof nameVal !== 'undefined' && nameVal === 'Farhod') return null; return 'get() metodi orqali username\\'ni oling';"
+    },
+    {
+      id: 8,
+      title: "Input sonlarini validatsiya qilish",
+      instruction: "'ageInput' qiymatini songa o'tkazing va agar u 18 dan kichik bo'lsa konsolga 'Kichik' deb chiqaring.",
+      startingCode: "const ageInput = { value: '16' };\n// Bu yerga yozing\n",
+      hint: "if (Number(ageInput.value) < 18) console.log('Kichik');",
+      test: "if (logs.includes('Kichik')) return null; return 'Yosh 18 dan kichik bo\\'lishini tekshiring';"
+    },
+    {
+      id: 9,
+      title: "Input qiymatini o'rnatish",
+      instruction: "'emailInput' elementining qiymatini (value) 'test@test.com' ga o'rnating.",
+      startingCode: "const emailInput = { value: '' };\n// Bu yerga yozing\n",
+      hint: "emailInput.value = 'test@test.com';",
+      test: "if (emailInput.value === 'test@test.com') return null; return 'emailInput qiymatini to\\'g\\'ri o\\'rnating';"
+    },
+    {
+      id: 10,
+      title: "Checkbox o'zgarishini tinglash",
+      instruction: "'checkbox' elementining qiymati o'zgarganda (change), uning tanlangan (checked) holatini konsolga chiqaring.",
+      startingCode: "const checkbox = { checked: true, addEventListener: (type, cb) => checkbox.onchange = cb };\n// Bu yerga yozing\n",
+      hint: "checkbox.addEventListener('change', (e) => console.log(e.target.checked));",
+      test: "if (typeof checkbox.onchange === 'function') { checkbox.onchange({ target: checkbox }); if (logs.includes('true')) return null; } return 'change eventini to\\'g\\'ri boshqaring';"
+    },
+    {
+      id: 11,
+      title: "FormData qiymat qo'shish",
+      instruction: "'formData' obyektiga append() metodi orqali 'role' kalitiga 'admin' qiymatini qo'shing.",
+      startingCode: "const formData = { append: (k, v) => { formData[k] = v; } };\n// Bu yerga yozing\n",
+      hint: "formData.append('role', 'admin');",
+      test: "if (formData.role === 'admin') return null; return 'append() orqali role: admin qo\\'shing';"
+    },
+    {
+      id: 12,
+      title: "Kompleks validatsiya funksiyasi",
+      instruction: "'validateForm(user, pass)' funksiyasini yozing. Agar user.value bo'sh bo'lsa yoki pass.value uzunligi 6 dan kam bo'lsa false, aks holda true qaytarsin.",
+      startingCode: "// Funksiyani yozing\n",
+      hint: "function validateForm(user, pass) { return user.value !== '' && pass.value.length >= 6; }",
+      test: "if (typeof validateForm === 'function' && validateForm({ value: '' }, { value: '123456' }) === false && validateForm({ value: 'admin' }, { value: '123' }) === false && validateForm({ value: 'admin' }, { value: '123456' }) === true) return null; return 'Validatsiya shartlarini to\\'g\\'ri bajaring';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

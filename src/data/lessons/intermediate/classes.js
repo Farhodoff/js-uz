@@ -209,32 +209,103 @@ Yo'q, klasslar let/const kabi Temporal Dead Zone doirasida bo'ladi va e'lon qili
 Quyidagi amaliy mashqlar va testlar yordamida klasslar bo'yicha bilimlaringizni sinab ko'ring.
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Oddiy Klass Yaratis",
-    "instruction": "'Person' nomli klass yarating. Klass constructor'i 'name' va 'age' parametrlarini qabul qilib, ularni obyekt xususiyatlariga o'zlashtirsin.",
-    "startingCode": "// Kodni shu yerda yozing\n",
-    "hint": "class Person { constructor(name, age) { this.name = name; this.age = age; } }",
-    "test": "if (!code.includes('class Person')) return 'Person klassi yaratilmadi';\nif (!code.includes('constructor')) return 'constructor yozilmadi';\nconst sandbox = new Function(code + '; return Person;');\nconst PersonClass = sandbox();\nconst instance = new PersonClass('Ali', 25);\nif (instance.name === 'Ali' && instance.age === 25) return null;\nreturn 'Klass xususiyatlari noto\\'g\\'ri o\\'rnatildi';"
-  },
-  {
-    "id": 2,
-    "title": "Klassga Metod Qo'shish",
-    "instruction": "'Car' nomli klass yarating. Uning constructor'i 'model' parametrini qabul qilsin. Klassga 'drive' nomli metod qo'shing, u '[model] haydalmoqda' matnini qaytarsin.",
-    "startingCode": "// Kodni shu yerda yozing\n",
-    "hint": "class Car { constructor(model) { this.model = model; } drive() { return this.model + ' haydalmoqda'; } }",
-    "test": "if (!code.includes('class Car')) return 'Car klassi yaratilmadi';\nif (!code.includes('drive(')) return 'drive metodi qo\\'shilmadi';\nconst sandbox = new Function(code + '; return Car;');\nconst CarClass = sandbox();\nconst instance = new CarClass('Tesla');\nif (instance.drive() === 'Tesla haydalmoqda') return null;\nreturn 'drive() metodi kutilgan natijani qaytarmadi';"
-  },
-  {
-    "id": 3,
-    "title": "Inheritance (Merosxo'rlik)",
-    "instruction": "'Animal' klassidan meros oluvchi 'Dog' klassini yarating. 'Dog' klassi constructor'ida 'super' yordamida ota klass constructor'iga 'name' parametrini uzating.",
-    "startingCode": "class Animal {\n  constructor(name) {\n    this.name = name;\n  }\n  eat() {\n    return this.name + ' yeyapti';\n  }\n}\n\n// Kodni shu yerda yozing\n",
-    "hint": "class Dog extends Animal { constructor(name) { super(name); } }",
-    "test": "if (!code.includes('extends Animal')) return 'Dog klassi Animaldan extends orqali meros olmadi';\nif (!code.includes('super(')) return 'super() orqali ota klass constructori chaqirilmadi';\nconst sandbox = new Function('Animal', code + '; return Dog;');\nconst DogClass = sandbox(Animal);\nconst instance = new DogClass('Tuzik');\nif (instance.eat() === 'Tuzik yeyapti') return null;\nreturn 'Dog klassi Animal metodini muvaffaqiyatli meros qilib olmadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Oddiy Klass (Boshlang'ich)",
+      instruction: "Person klass yarating: name va age xususiyati.",
+      startingCode: "class Person {\n  // Kodni shu yerda yozing\n}\n\nconst p = new Person('Ali', 25);\nconsole.log(p.name); // 'Ali'",
+      hint: "constructor(name, age) { this.name = name; this.age = age; }",
+      test: "if (logs.includes('Ali')) return null; return 'Klass xato!';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Metod Qo'shish (Boshlang'ich)",
+      instruction: "Car klass yarating, drive() metodi bilan.",
+      startingCode: "class Car {\n  constructor(model) { this.model = model; }\n  // drive() metodi qo'shing\n}\n\nconst car = new Car('Tesla');\nconsole.log(car.drive()); // 'Tesla haydaydi'",
+      hint: "drive() { return this.model + ' haydaydi'; }",
+      test: "if (logs.includes('Tesla haydaydi')) return null; return 'Metod xato!';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Inheritance (O'rta)",
+      instruction: "Animal → Dog merosxo'rlik qiling.",
+      startingCode: "class Animal {\n  constructor(name) { this.name = name; }\n  eat() { return this.name + ' yeyapti'; }\n}\n\nclass Dog extends Animal {\n  // Kodni shu yerda yozing\n  bark() { return this.name + ' vav deya yuqorlaydi'; }\n}\n\nconst dog = new Dog('Bobur');\nconsole.log(dog.eat()); // 'Bobur yeyapti'",
+      hint: "constructor(name, breed) { super(name); this.breed = breed; }",
+      test: "if (logs.includes('Bobur yeyapti')) return null; return 'Inheritance xato!';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Getter (O'rta)",
+      instruction: "Getter orqali age'ni hisoblang (birthYear'dan).",
+      startingCode: "class Person {\n  constructor(name, birthYear) {\n    this.name = name;\n    this.birthYear = birthYear;\n  }\n  \n  // Getter yarating\n  get age() {\n    return 2024 - this.birthYear;\n  }\n}\n\nconst p = new Person('Ali', 1990);\nconsole.log(p.age); // 34",
+      hint: "return 2024 - this.birthYear;",
+      test: "if (logs.includes(34)) return null; return 'Getter xato!';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Static Metod (O'rta)",
+      instruction: "Static add() metodi qo'shing Calculator klassga.",
+      startingCode: "class Calculator {\n  // Kodni shu yerda yozing\n  static add(a, b) {\n    return a + b;\n  }\n}\n\nconsole.log(Calculator.add(5, 3)); // 8",
+      hint: "static add(a, b) { return a + b; }",
+      test: "if (logs.includes(8)) return null; return 'Static xato!';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Super() (O'rta)",
+      instruction: "Vehicle → Car merosxo'rlikda super() chaqiring.",
+      startingCode: "class Vehicle {\n  constructor(model) { this.model = model; }\n}\n\nclass Car extends Vehicle {\n  constructor(model, color) {\n    // Kodni shu yerda yozing: super va this.color\n  }\n}\n\nconst car = new Car('Tesla', 'qora');\nconsole.log(car.model); // 'Tesla'",
+      hint: "super(model); this.color = color;",
+      test: "if (logs.includes('Tesla')) return null; return 'Super xato!';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Private Maydon (O'rta)",
+      instruction: "BankAccount'da #balance private maydon qo'shing.",
+      startingCode: "class BankAccount {\n  // Kodni shu yerda yozing: #balance private maydon\n  \n  deposit(amount) {\n    this.#balance += amount;\n  }\n  \n  getBalance() {\n    return this.#balance;\n  }\n}\n\nconst acc = new BankAccount();\nacc.deposit(100);\nconsole.log(acc.getBalance()); // 100",
+      hint: "#balance = 0;",
+      test: "if (logs.includes(100)) return null; return 'Private maydon xato!';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Setter (O'rta)",
+      instruction: "Setter orqali name'ni o'zgartirib bo'lishi uchun.",
+      startingCode: "class User {\n  constructor(name) { this._name = name; }\n  \n  get name() { return this._name; }\n  \n  // Setter yarating\n  set name(value) {\n    if (value.length > 0) this._name = value;\n  }\n}\n\nconst u = new User('Ali');\nu.name = 'Bobur';\nconsole.log(u.name); // 'Bobur'",
+      hint: "set name(value) { if (value.length > 0) this._name = value; }",
+      test: "if (logs.includes('Bobur')) return null; return 'Setter xato!';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Multi-level Inheritance (Qiyin)",
+      instruction: "Animal → Mammal → Dog 3-qavat merosxo'rlik.",
+      startingCode: "class Animal {\n  constructor(name) { this.name = name; }\n  move() { return this.name + ' harakat qilmoqda'; }\n}\n\nclass Mammal extends Animal {\n  // Kodni shu yerda yozing\n}\n\nclass Dog extends Mammal {\n  constructor(name, breed) {\n    super(name);\n    this.breed = breed;\n  }\n}\n\nconst dog = new Dog('Bobur', 'Ovcharka');\nconsole.log(dog.move()); // 'Bobur harakat qilmoqda'",
+      hint: "constructor(name, warmBlooded) { super(name); this.warmBlooded = warmBlooded; }",
+      test: "if (logs.includes('Bobur harakat qilmoqda')) return null; return 'Multi-level xato!';"
+    },
+    {
+      id: 10,
+      title: "🔟 Static Property (Qiyin)",
+      instruction: "Counter klassda static count property va getCount() static metodi.",
+      startingCode: "class Counter {\n  // Kodni shu yerda yozing: static count va constructor\n  \n  static getCount() {\n    return Counter.count;\n  }\n}\n\nnew Counter(); new Counter(); new Counter();\nconsole.log(Counter.getCount()); // 3",
+      hint: "static count = 0; constructor() { Counter.count++; }",
+      test: "if (logs.includes(3)) return null; return 'Static property xato!';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Super Metod (Qiyin)",
+      instruction: "Vehicle → Car merosxo'rlikda super.info() chaqiring.",
+      startingCode: "class Vehicle {\n  constructor(model) { this.model = model; }\n  info() { return 'Model: ' + this.model; }\n}\n\nclass Car extends Vehicle {\n  constructor(model, color) {\n    super(model);\n    this.color = color;\n  }\n  \n  // Kodni shu yerda yozing: super.info() chaqiring\n  info() {\n    return super.info() + ', Rang: ' + this.color;\n  }\n}\n\nconst car = new Car('Tesla', 'qora');\nconsole.log(car.info()); // 'Model: Tesla, Rang: qora'",
+      hint: "return super.info() + ', Rang: ' + this.color;",
+      test: "if (logs.includes('Model: Tesla') && logs.includes('Rang: qora')) return null; return 'Super metod xato!';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Combine: Klass + Getter + Inheritance (Eng Qiyin)",
+      instruction: "Shape → Circle: radius va area getter.",
+      startingCode: "class Shape {\n  constructor(name) { this.name = name; }\n}\n\nclass Circle extends Shape {\n  // Kodni shu yerda yozing: constructor radius bilan\n  \n  get area() {\n    return Math.PI * this.radius ** 2;\n  }\n}\n\nconst circle = new Circle('Doira', 5);\nconsole.log(circle.area.toFixed(2)); // '78.50'",
+      hint: "constructor(name, radius) { super(name); this.radius = radius; }",
+      test: "if (logs.some(l => l.includes('78.50') || l.includes('78.5'))) return null; return 'Combine xato!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

@@ -256,32 +256,103 @@ Natija:
 | **Arrow Function** | \`const foo = () => {}\` | Yo'q | Leksik (tashqi muhitdan oladi) | Callback-lar yozishda, qisqa bir qatorli amallarda, \`this\`ni yo'qotmaslik uchun |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Selsiyni Farengeytga O'tkazish",
-    "instruction": "Selsiy shkalasidagi haroratni Farengeyt shkalasiga o'tkazuvchi `celsiusToFahrenheit(celsius)` funksiyasini yozing. Formula: `F = C * 9/5 + 32`.",
-    "startingCode": "function celsiusToFahrenheit(celsius) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Parametr `celsius`-ni 9 ga ko'paytiring, 5 ga bo'ling va natijaga 32 qo'shib `return` kalit so'zi orqali qaytaring.",
-    "test": "const sandbox = new Function(code + '; return celsiusToFahrenheit;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'celsiusToFahrenheit funksiya bo\\'lishi kerak';\nif (fn(0) !== 32) return '0 C bo\\'lganda 32 F bo\\'lishi kerak';\nif (fn(100) !== 212) return '100 C bo\\'lganda 212 F bo\\'lishi kerak';\nif (fn(-40) !== -40) return '-40 C bo\\'lganda -40 F bo\\'lishi kerak';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Sonlarning O'rtacha Qiymati",
-    "instruction": "Istalgan miqdordagi sonlarni qabul qilib, ularning o'rtacha qiymatini hisoblaydigan `calculateAverage(...numbers)` funksiyasini yozing. Agar hech qanday son berilmasa, 0 qaytarsin.",
-    "startingCode": "function calculateAverage(...numbers) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Rest parametridan foydalanib massivni oling. Agar massiv uzunligi 0 bo'lsa, 0 qaytaring. Aks holda, elementlar yig'indisini hisoblab, ularning soniga bo'ling.",
-    "test": "const sandbox = new Function(code + '; return calculateAverage;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'calculateAverage funksiya bo\\'lishi kerak';\nif (fn() !== 0) return 'Hech narsa berilmasa, 0 qaytishi kerak';\nif (fn(10, 20, 30) !== 20) return '10, 20, 30 ning o\\'rtachasi 20 bo\\'shu kerak';\nif (fn(5, 5, 5, 5) !== 5) return '5, 5, 5, 5 ning o\\'rtachasi 5 bo\\'lishi kerak';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Unli Tovushlar Soni",
-    "instruction": "Berilgan satrdagi (string) ingliz tilidagi unli harflar (`a, e, i, o, u`) sonini aniqlaydigan `countVowels(str)` funksiyasini yozing. Katta-kichik harflarni farqlamasligi lozim.",
-    "startingCode": "function countVowels(str) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Satrdagi har bir belgini tekshiring, agar u unli harflardan biri bo'lsa, hisoblagichni oshiring. Satrni `.toLowerCase()` qilish yordam beradi.",
-    "test": "const sandbox = new Function(code + '; return countVowels;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'countVowels funksiya bo\\'lishi kerak';\nif (fn(\"hello\") !== 2) return '\"hello\" so\\'zida 2 ta unli bor';\nif (fn(\"JavaScript\") !== 3) return '\"JavaScript\" so\\'zida 3 ta unli bor';\nif (fn(\"Uzbekistan\") !== 4) return '\"Uzbekistan\" so\\'zida 4 ta unli bor';\nif (fn(\"xyz\") !== 0) return '\"xyz\" so\\'zida 0 ta unli bor';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Oddiy funksiya - Ikkita sonni qo'shish",
+      instruction: "'add' funksiyasini yarating. Ikkita sonni qabul qilsin va ularning yig'indisini qaytarsin.",
+      startingCode: "// add funksiyasini yozing\n\n// Tekshirish:\nconsole.log(add(5, 3));\nconsole.log(add(10, 20));\n",
+      hint: "function add(a, b) { return a + b; }",
+      test: "if (typeof add !== 'function') return 'add funksiyasi topilmadi'; if (add(5, 3) === 8 && add(10, 20) === 30) return null; return 'Natija noto\\'g\\'ri';"
+    },
+    {
+      id: 2,
+      title: "Sonning kvadratini hisoblash",
+      instruction: "'square' funksiyasini yarating. Sonni qabul qilsin va uning kvadratini qaytarsin.",
+      startingCode: "// square funksiyasini yozing\n\n// Tekshirish:\nconsole.log(square(4));\nconsole.log(square(5));\n",
+      hint: "function square(n) { return n * n; }",
+      test: "if (typeof square !== 'function') return 'square funksiyasi topilmadi'; if (square(4) === 16 && square(5) === 25) return null; return 'Kvadrat noto\\'g\\'ri hisoblandi';"
+    },
+    {
+      id: 3,
+      title: "Shartli return - Salomlashish",
+      instruction: "'greet' funksiyasini yarating. Ismni qabul qilsin. Agar ism 'Ali' bo'lsa 'Ali! Sening do\\'stingman' qaytarsin, aks holda 'Salom, [ism]' qaytarsin.",
+      startingCode: "// greet funksiyasini yozing\n\n// Tekshirish:\nconsole.log(greet('Ali'));\nconsole.log(greet('Bobur'));\n",
+      hint: "function greet(name) { if (name === 'Ali') return 'Ali! Sening do\\'stingman'; return 'Salom, ' + name; }",
+      test: "if (typeof greet !== 'function') return 'greet funksiyasi topilmadi'; if (greet('Ali') === 'Ali! Sening do\\'stingman' && greet('Bobur') === 'Salom, Bobur') return null; return 'Natija noto\\'g\\'ri';"
+    },
+    {
+      id: 4,
+      title: "Default parametrlar",
+      instruction: "'sayHi' funksiyasini yarating. Default ismni 'Mehmon' qilib qo'ying. 'Salom, [ism]!' qaytarsin.",
+      startingCode: "// sayHi funksiyasini yozing (default parametr bilan)\n\n// Tekshirish:\nconsole.log(sayHi());\nconsole.log(sayHi('Farhod'));\n",
+      hint: "function sayHi(name = 'Mehmon') { return 'Salom, ' + name + '!'; }",
+      test: "if (typeof sayHi !== 'function') return 'sayHi funksiyasi topilmadi'; if (sayHi() === 'Salom, Mehmon!' && sayHi('Farhod') === 'Salom, Farhod!') return null; return 'Natija noto\\'g\\'ri';"
+    },
+    {
+      id: 5,
+      title: "Arrow funksiya - Tomonlama hisoblash",
+      instruction: "'rectArea' arrow funksiyasini yarating. Eni va bo'yini qabul qilsin, tomonlamani qaytarsin.",
+      startingCode: "// rectArea arrow funksiyasini yozing\n\n// Tekshirish:\nconsole.log(rectArea(5, 10));\nconsole.log(rectArea(3, 7));\n",
+      hint: "const rectArea = (width, height) => width * height;",
+      test: "if (typeof rectArea !== 'function') return 'rectArea funksiyasi topilmadi'; if (rectArea(5, 10) === 50 && rectArea(3, 7) === 21) return null; return 'Tomonlama noto\\'g\\'ri hisoblandi';"
+    },
+    {
+      id: 6,
+      title: "Rest parametrlar - Hammasi bo'yicha yig'indi",
+      instruction: "'sumAll' funksiyasini yarating. Istalgan sondagi raqamlarni qabul qilsin va ularning yig'indisini qaytarsin. Rest parametrlarni (...) ishlatsin.",
+      startingCode: "// sumAll funksiyasini yozing (rest parametrlar)\n\n// Tekshirish:\nconsole.log(sumAll(1, 2, 3));\nconsole.log(sumAll(5, 10, 15, 20));\n",
+      hint: "function sumAll(...numbers) { return numbers.reduce((a, b) => a + b, 0); }",
+      test: "if (typeof sumAll !== 'function') return 'sumAll funksiyasi topilmadi'; if (sumAll(1, 2, 3) === 6 && sumAll(5, 10, 15, 20) === 50) return null; return 'Yig\\'indi noto\\'g\\'ri hisoblandi';"
+    },
+    {
+      id: 7,
+      title: "Multiple return qiymatlari",
+      instruction: "'getGrade' funksiyasini yarating. Baho (0-100) qabul qilsin. Agar >= 90 bo'lsa 'A', >= 80 bo'lsa 'B', >= 70 bo'lsa 'C', aks holda 'F' qaytarsin.",
+      startingCode: "// getGrade funksiyasini yozing\n\n// Tekshirish:\nconsole.log(getGrade(95));\nconsole.log(getGrade(85));\nconsole.log(getGrade(65));\n",
+      hint: "function getGrade(score) { if (score >= 90) return 'A'; if (score >= 80) return 'B'; if (score >= 70) return 'C'; return 'F'; }",
+      test: "if (typeof getGrade !== 'function') return 'getGrade funksiyasi topilmadi'; if (getGrade(95) === 'A' && getGrade(85) === 'B' && getGrade(65) === 'F') return null; return 'Baho noto\\'g\\'ri';"
+    },
+    {
+      id: 8,
+      title: "Callback funksiya",
+      instruction: "'applyOperation' funksiyasini yarating. Ikkita son va operatsiyani (funksiyani) qabul qilsin. Operatsiyani qo'llsin va natijasini qaytarsin.",
+      startingCode: "// applyOperation funksiyasini yozing\nconst add = (a, b) => a + b;\nconst multiply = (a, b) => a * b;\n\n// Tekshirish:\nconsole.log(applyOperation(5, 3, add));\nconsole.log(applyOperation(5, 3, multiply));\n",
+      hint: "function applyOperation(a, b, operation) { return operation(a, b); }",
+      test: "if (typeof applyOperation !== 'function') return 'applyOperation funksiyasi topilmadi'; if (applyOperation(5, 3, add) === 8 && applyOperation(5, 3, multiply) === 15) return null; return 'Operatsiya noto\\'g\\'ri';"
+    },
+    {
+      id: 9,
+      title: "Funksiya Expression",
+      instruction: "'getDayName' funksiyasini Expression shaklida yarating. 1 = \"Dushanba\", 2 = \"Seshanba\" va h.k.",
+      startingCode: "// getDayName funksiyasini expression shaklida yozing\n\n// Tekshirish:\nconsole.log(getDayName(1));\nconsole.log(getDayName(3));\n",
+      hint: "const getDayName = function(day) { const days = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba']; return days[day - 1]; };",
+      test: "if (typeof getDayName !== 'function') return 'getDayName funksiyasi topilmadi'; if (getDayName(1) === 'Dushanba' && getDayName(3) === 'Chorshanba') return null; return 'Kun nomi noto\\'g\\'ri';"
+    },
+    {
+      id: 10,
+      title: "Scope - Global va Local",
+      instruction: "Global o'zgaruvchi 'globalMsg' yarating. Funksiya yarating, ichida 'localMsg' o'zgaruvchi bo'lsin. Ikkalasini console.log() qiling.",
+      startingCode: "// Global o'zgaruvchi\nconst globalMsg = 'Global';\n\n// Funksiya yarating\nfunction showMessages() {\n  // Bu yerga yozing\n}\n\nshowMessages();\n",
+      hint: "function showMessages() { const localMsg = 'Lokal'; console.log(globalMsg); console.log(localMsg); }",
+      test: "if (logs.includes('Global') && logs.includes('Lokal')) return null; return 'Scope noto\\'g\\'ri';"
+    },
+    {
+      id: 11,
+      title: "Funksiya ichida boshqa funksiya",
+      instruction: "'outer' funksiyasini yarating. Ichida 'inner' funksiyasini e'lon qiling. Inner 'Ichka' chiqarsin. Outer chaqirganda inner chaqirilsin.",
+      startingCode: "// outer funksiyasini yozing\n\n// Tekshirish:\nouter();\n",
+      hint: "function outer() { function inner() { console.log('Ichka'); } inner(); }",
+      test: "if (logs.includes('Ichka')) return null; return 'Nested funksiya noto\\'g\\'ri';"
+    },
+    {
+      id: 12,
+      title: "Kompleks - Parametrlarni validatsiya qilish",
+      instruction: "O'quvchi yoshini validatsiya qiladigan funksiya yozing.",
+      startingCode: "// validateAge funksiyasini yozing\n\n// Tekshirish:\nconsole.log(validateAge(25));\nconsole.log(validateAge(-5));\nconsole.log(validateAge(150));\n",
+      hint: "function validateAge(age) { return age >= 0 && age <= 100; }",
+      test: "if (typeof validateAge !== 'function') return 'validateAge funksiyasi topilmadi'; if (validateAge(25) === true && validateAge(-5) === false && validateAge(150) === false) return null; return 'Validatsiya noto\\'g\\'ri';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

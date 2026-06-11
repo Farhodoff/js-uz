@@ -278,32 +278,103 @@ const toggleNotifications = () => {
 | **Misollar** | \`42\`, \`"salom"\`, \`true\`, \`null\` | \`{...}\`, \`[...]\`, \`function() {}\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Havolani mutatsiya qilmasdan yangilash",
-    "instruction": "Berilgan `user` obyektini o'zgartirmasdan, uning `score` xususiyatini yangi `newScore` qiymatiga o'zgartirib, yangi o'zgartirilgan obyektni qaytaruvchi `updateScore(user, newScore)` funksiyasini yozing.",
-    "startingCode": "function updateScore(user, newScore) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Spread operator `{ ...user }` yordamida yuzaki nusxa oling va unda score qiymatini o'zgartiring.",
-    "test": "const sandbox = new Function(code + '; return updateScore;');\nconst fn = sandbox();\nconst original = { name: 'Anvar', score: 50 };\nconst updated = fn(original, 100);\nif (original.score !== 50) return 'Original obyekt o\\'zgartirildi! Uni o\\'zgartirmasligingiz kerak.';\nif (updated === original) return 'Yangi obyekt qaytarilmadi, xotiradagi havola bir xil bo\\'lib qoldi.';\nif (updated.score !== 100 || updated.name !== 'Anvar') return 'Yangi obyektning xususiyatlari noto\\'g\\'ri.';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Ichma-ich obyektlarni chuqur nusxalash",
-    "instruction": "Berilgan ichma-ich tuzilishga ega `user` obyektini (masalan: `{ name: 'Vali', preferences: { theme: 'dark' } }`) xavfsiz chuqur nusxalab (deep clone) qaytaruvchi `deepCloneUser(user)` funksiyasini yozing. Shunda qaytarilgan nusxa o'zgartirilganda original obyektga hech qanday ta'sir bo'lmasin.",
-    "startingCode": "function deepCloneUser(user) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "JavaScript-dagi o'rnatilgan `structuredClone()` funksiyasidan foydalaning.",
-    "test": "const sandbox = new Function(code + '; return deepCloneUser;');\nconst fn = sandbox();\nconst original = { name: 'Vali', preferences: { theme: 'dark', lang: 'uz' } };\nconst cloned = fn(original);\nif (cloned === original) return 'Obyektning o\\'zi chuqur nusxalanmadi, havola manzili bir xil.';\nif (cloned.preferences === original.preferences) return 'Ichki preferences obyekti chuqur nusxalanmadi, u hali ham bir xil xotira manziliga ega.';\ncloned.preferences.theme = 'light';\nif (original.preferences.theme !== 'dark') return 'Nusxa o\\'zgartirilganda original obyekt ham o\\'zgarib ketdi.';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Obyektlarni qiymatlari bo'yicha solishtirish",
-    "instruction": "Ikkita obyektni ularning xotiradagi manzillariga qaramasdan, faqat birinchi darajali xususiyatlari va ularning qiymatlari bo'yicha solishtiruvchi `areObjectsEqualByValue(obj1, obj2)` funksiyasini yozing. Agar kalitlar va qiymatlar mos kelsa `true`, aks holda `false` qaytaring.",
-    "startingCode": "function areObjectsEqualByValue(obj1, obj2) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "`Object.keys(obj1)` va `Object.keys(obj2)` massivlari uzunligini solishtiring. Keyin har bir kalitdagi qiymatlar bir-biriga tengligini tekshiring.",
-    "test": "const sandbox = new Function(code + '; return areObjectsEqualByValue;');\nconst fn = sandbox();\nconst o1 = { a: 1, b: 'hello' };\nconst o2 = { a: 1, b: 'hello' };\nconst o3 = { a: 1, b: 'world' };\nconst o4 = { a: 1, b: 'hello', c: 3 };\nif (fn(o1, o2) !== true) return 'Tarkibi bir xil bo\\'lgan obyektlar uchun true qaytishi kerak edi.';\nif (fn(o1, o3) !== false) return 'Qiymatlari har xil bo\\'lgan obyektlar uchun false qaytishi kerak edi.';\nif (fn(o1, o4) !== false) return 'Kalitlar soni har xil bo\\'lgan obyektlar uchun false qaytishi kerak edi.';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Manzilni tekshirish",
+      instruction: "Ikkita yangi bo'sh obyekt yaratib ularni qat'iy tenglik (===) orqali solishtiring va natijani res o'zgaruvchisiga saqlang.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = ({} === {});",
+      test: "if (res === false) return null; return 'Obyektlar har doim alohida xotirada bo\\'ladi, natija false bo\\'lishi kerak!';"
+    },
+    {
+      id: 2,
+      title: "Primitiv nusxasi",
+      instruction: "x o'zgaruvchisini y o'zgaruvchisiga o'zlashtiring va keyin y ning qiymatini 20 qiling. x o'zgaruvchisini o'z holicha qoldiring.",
+      startingCode: "let x = 10;\n// Bu yerga yozing\nlet y = ",
+      hint: "let y = x; y = 20;",
+      test: "if (x === 10 && y === 20) return null; return 'x ning qiymati 10 bo\\'lib qolishi shart!';"
+    },
+    {
+      id: 3,
+      title: "Obyekt havolasi",
+      instruction: "user obyektini admin o'zgaruvchisiga o'zlashtiring. Keyin admin.name qiymatini 'Vali' ga o'zgartiring.",
+      startingCode: "let user = { name: 'Ali' };\n// Bu yerga yozing\nlet admin = ",
+      hint: "let admin = user; admin.name = 'Vali';",
+      test: "if (user.name === 'Vali' && admin.name === 'Vali') return null; return 'admin o\\'zgarganda user.name ham Vali bo\\'lishi kerak!';"
+    },
+    {
+      id: 4,
+      title: "Mustaqil obyekt nusxasi",
+      instruction: "Spread operatoridan (...) foydalanib original obyektining nusxasini yarating va uni copy o'zgaruvchisiga saqlang. Keyin copy.age ni 30 qiling.",
+      startingCode: "let original = { age: 25 };\n// Bu yerga yozing\nlet copy = ",
+      hint: "let copy = { ...original }; copy.age = 30;",
+      test: "if (original.age === 25 && copy.age === 30) return null; return 'original.age 25 bo\\'lib qolishi shart!';"
+    },
+    {
+      id: 5,
+      title: "Massiv havolasi",
+      instruction: "list1 massivini list2 o'zgaruvchisiga tenglang. Keyin list2 massiviga push() yordamida 3 sonini qo'shing.",
+      startingCode: "let list1 = [1, 2];\n// Bu yerga yozing\nlet list2 = ",
+      hint: "let list2 = list1; list2.push(3);",
+      test: "if (list1.length === 3 && list1[2] === 3) return null; return 'list1 massiviga ham 3 soni qo\\'shilib qolishi kerak!';"
+    },
+    {
+      id: 6,
+      title: "Massiv nusxasi",
+      instruction: "Spread operatori yordamida originalList massivining mustaqil nusxasini yarating va uni newList o'zgaruvchisiga saqlang. Keyin newList massiviga 3 sonini qo'shing.",
+      startingCode: "let originalList = [1, 2];\n// Bu yerga yozing\nlet newList = ",
+      hint: "let newList = [...originalList]; newList.push(3);",
+      test: "if (originalList.length === 2 && newList.length === 3) return null; return 'originalList o\\'zgarmasdan qolishi kerak!';"
+    },
+    {
+      id: 7,
+      title: "Teng manzillar",
+      instruction: "obj1 ni obj2 ga o'zlashtiring. Keyin ularni qat'iy tenglik (===) orqali tekshirib natijani res o'zgaruvchisiga saqlang.",
+      startingCode: "let obj1 = { val: 10 };\n// Bu yerga yozing\nlet obj2 = \nlet res = ",
+      hint: "let obj2 = obj1; let res = (obj1 === obj2);",
+      test: "if (res === true) return null; return 'Havolalar bitta bo\\'lgani sababli res true bo\\'lishi kerak!';"
+    },
+    {
+      id: 8,
+      title: "Obyektni muzlatish",
+      instruction: "Object.freeze() yordamida obj obyektini o'zgartirib bo'lmaydigan qilib muzlating.",
+      startingCode: "let obj = { x: 5 };\n// Bu yerga yozing\n",
+      hint: "Object.freeze(obj);",
+      test: "if (Object.isFrozen(obj)) return null; return 'obj obyekti muzlatilishi shart!';"
+    },
+    {
+      id: 9,
+      title: "String o'zgarmasligi",
+      instruction: "Matnlarning (string) o'zgarmasligini (immutability) tekshiring. str massiv kabi indeks orqali str[0] = 'S' deb o'zgartirib ko'ring (o'zgarmaydi) va uni chop eting.",
+      startingCode: "let str = 'salom';\n// Bu yerga yozing\n",
+      hint: "str[0] = 'S'; console.log(str);",
+      test: "if (code.includes('[0]') && str === 'salom') return null; return 'String o\\'zgarib qolmasligini indeks orqali tekshiring!';"
+    },
+    {
+      id: 10,
+      title: "Havolaning uzilishi",
+      instruction: "b o'zgaruvchisiga a obyektini o'zlashtiring. Keyin a o'zgaruvchisini butunlay yangi obyekt { n: 2 } ga o'zgartiring (buning natijasida b o'zgarmaydi).",
+      startingCode: "let a = { n: 1 };\n// Bu yerga yozing\nlet b = ",
+      hint: "let b = a; a = { n: 2 };",
+      test: "if (b.n === 1 && a.n === 2) return null; return 'a yangilanganda b o\\'zgaruvchisi eski obyektda qolishi kerak!';"
+    },
+    {
+      id: 11,
+      title: "Shallow copy muammosi",
+      instruction: "Spread yordamida user obyektini copy ga nusxalang. Keyin copy.info.age ni 25 qiling. Buning natijasida original ham o'zgarib qolishini ko'rasiz.",
+      startingCode: "let user = { info: { age: 20 } };\n// Bu yerga yozing\nlet copy = ",
+      hint: "let copy = { ...user }; copy.info.age = 25;",
+      test: "if (user.info.age === 25 && copy.info.age === 25) return null; return 'copy.info.age o\\'zgarganda user.info.age ham o\\'zgarib qolishi shart (shallow copy)!';"
+    },
+    {
+      id: 12,
+      title: "JSON Deep copy",
+      instruction: "JSON.parse(JSON.stringify()) yordamida user obyektining to'liq chuqur nusxasini oling va uni copy o'zgaruvchisiga saqlang. Keyin copy.info.age ni 25 qiling.",
+      startingCode: "let user = { info: { age: 20 } };\n// Bu yerga yozing\nlet copy = ",
+      hint: "let copy = JSON.parse(JSON.stringify(user)); copy.info.age = 25;",
+      test: "if (user.info.age === 20 && copy.info.age === 25) return null; return 'Deep copy natijasida original obyekt o\\'zgarmasdan qolishi kerak!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

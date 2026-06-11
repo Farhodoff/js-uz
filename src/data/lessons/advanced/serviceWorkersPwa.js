@@ -233,32 +233,119 @@ self.addEventListener('sync', (event) => {
 | \`cache.put(req, res)\` | Service Worker / Page | Keshga bitta so'rov va javob juftligini yozadi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Service Worker ro'yxatdan o'tkazish",
-    "instruction": "Brauzerda Service Worker qo'llab-quvvatlanishini tekshiring va `/sw.js` faylini ro'yxatdan o'tkazuvchi `registerSW()` funksiyasini yozing.",
-    "startingCode": "function registerSW() {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); } shartidan foydalaning.",
-    "test": "if (!code.includes('serviceWorker')) return 'navigator tekshiruvi amalga oshirilmadi';\nif (!code.includes('register')) return 'register() metodi chaqirilmadi';\nif (!code.includes('/sw.js')) return 'sw.js fayli yo\\'li to\\'g\\'ri ko\\'rsatilmadi';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Install hodisasida kesh yaratish",
-    "instruction": "Service Worker ichida `install` hodisasini tinglang. `caches.open('v1')` orqali keshni oching va unga `['/', '/index.html', '/styles.css']` fayllarini qo'shing (`addAll`).",
-    "startingCode": "self.addEventListener('install', (event) => {\n  // Kodni shu yerda yozing\n});\n",
-    "hint": "event.waitUntil(caches.open('v1').then(cache => cache.addAll([...]))) zanjiridan foydalaning.",
-    "test": "if (!code.includes('install')) return 'install hodisasi tinglanmadi';\nif (!code.includes('caches.open')) return 'caches.open ishlatilmadi';\nif (!code.includes('addAll')) return 'addAll metodi chaqirilmadi';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Fetch hodisasida keshdan javob qaytarish",
-    "instruction": "Service Worker ichida tarmoq so'rovlarini tutib qolish (`fetch` event) va agar keshda mos keluvchi resurs mavjud bo'lsa, o'shani qaytarish (`caches.match(event.request)`), aks holda tarmoqdan yuklash kodini yozing.",
-    "startingCode": "self.addEventListener('fetch', (event) => {\n  // Kodni shu yerda yozing\n});\n",
-    "hint": "event.respondWith(caches.match(event.request).then(response => response || fetch(event.request))) dan foydalaning.",
-    "test": "if (!code.includes('fetch')) return 'fetch hodisasi tinglanmadi';\nif (!code.includes('respondWith')) return 'respondWith ishlatilmadi';\nif (!code.includes('caches.match')) return 'caches.match ishlatilmadi';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Service Worker mavjudligini tekshirish",
+      instruction: "Brauzerda service worker qo'llab-quvvatlanishini tekshiring va natijani 'isSupported' o'zgaruvchisiga saqlang (true/false).",
+      startingCode: "// Bu yerga yozing\nconst isSupported = ",
+      hint: "'serviceWorker' in navigator",
+      test: "if (code.includes('serviceWorker') && code.includes('navigator')) return null; return 'navigator tarkibida serviceWorker borligini tekshiring.';"
+    },
+    {
+      id: 2,
+      title: "Service Worker-ni ro'yxatdan o'tkazish",
+      instruction: "'/sw.js' faylini service worker sifatida ro'yxatdan o'tkazadigan kod yozing.",
+      startingCode: "if ('serviceWorker' in navigator) {\n  // Bu yerga yozing\n  \n}",
+      hint: "navigator.serviceWorker.register('/sw.js');",
+      test: "if (code.includes('register') && (code.includes(\"'/sw.js'\") || code.includes('\"/sw.js\"'))) return null; return 'navigator.serviceWorker.register metodini to\\'g\\'ri chaqiring.';"
+    },
+    {
+      id: 3,
+      title: "Install hodisasini eshitish",
+      instruction: "Service worker kodi ichida (self global obyekti orqali) 'install' hodisasiga tinglovchi qo'shing.",
+      startingCode: "// sw.js fayli ichi\n// Bu yerga yozing\n",
+      hint: "self.addEventListener('install', (event) => {\n  // kod\n});",
+      test: "if (code.includes(\"addEventListener('install'\") || code.includes('addEventListener(\"install\"')) return null; return 'install hodisasi uchun addEventListener yozing.';"
+    },
+    {
+      id: 4,
+      title: "Kesh ochish",
+      instruction: "'caches.open' yordamida 'app-v1' nomli keshni oching va qaytgan va'da (promise)ni 'cachePromise'ga saqlang.",
+      startingCode: "// Bu yerga yozing\nconst cachePromise = ",
+      hint: "caches.open('app-v1')",
+      test: "if (code.includes(\"caches.open('app-v1')\") || code.includes('caches.open(\"app-v1\")')) return null; return 'caches.open metodini to\\'g\\'ri nom bilan chaqiring.';"
+    },
+    {
+      id: 5,
+      title: "Keshga fayllar qo'shish",
+      instruction: "Ochilgan 'cache' obyektiga '/index.html' va '/styles.css' fayllarini bir vaqtda qo'shuvchi (addAll) metodini yozing.",
+      startingCode: "caches.open('app-v1').then((cache) => {\n  // Bu yerga yozing\n  \n});",
+      hint: "return cache.addAll(['/index.html', '/styles.css']);",
+      test: "if (code.includes('addAll') && code.includes('/index.html') && code.includes('/styles.css')) return null; return 'cache.addAll yordamida ko\\'rsatilgan fayllarni keshga qo\\'shing.';"
+    },
+    {
+      id: 6,
+      title: "O'rnatilishni kutish (waitUntil)",
+      instruction: "install hodisasi voqeasi (event) ichida kesh ochish yakunlanmaguncha o'rnatilish jarayonini ushlab turuvchi event.waitUntil() metodini chaqiring va unga 'caches.open' va'dasini bering.",
+      startingCode: "self.addEventListener('install', (event) => {\n  // Bu yerga yozing\n  \n});",
+      hint: "event.waitUntil(\n    caches.open('v1').then(cache => cache.addAll(['/']))\n  );",
+      test: "if (code.includes('event.waitUntil') && code.includes('caches.open')) return null; return 'event.waitUntil yordamida o\\'rnatilish va\\'dasini boshqaring.';"
+    },
+    {
+      id: 7,
+      title: "Activate hodisasini eshitish",
+      instruction: "Service worker ichida 'activate' hodisasini eshitadigan va konsolga 'Activated' deb chiqaradigan kod yozing.",
+      startingCode: "// sw.js ichi\n// Bu yerga yozing\n",
+      hint: "self.addEventListener('activate', (event) => {\n  console.log('Activated');\n});",
+      test: "if (code.includes(\"addEventListener('activate'\") && code.includes('Activated')) return null; return 'activate hodisasi uchun tinglovchi va log yozing.';"
+    },
+    {
+      id: 8,
+      title: "Fetch hodisasini tutish",
+      instruction: "Tarmoq so'rovlarini tutib olish uchun 'fetch' hodisasini eshitadigan voqea tinglovchisini qo'shing.",
+      startingCode: "// sw.js ichi\n// Bu yerga yozing\n",
+      hint: "self.addEventListener('fetch', (event) => {\n  // kod\n});",
+      test: "if (code.includes(\"addEventListener('fetch'\") || code.includes('addEventListener(\"fetch\"')) return null; return 'fetch hodisasi uchun tinglovchi yozing.';"
+    },
+    {
+      id: 9,
+      title: "Keshdan qidirish (caches.match)",
+      instruction: "fetch hodisasi event.respondWith ichida kelgan event.request so'roviga mos kesh ma'lumotlarini qidirish metodini yozing.",
+      startingCode: "self.addEventListener('fetch', (event) => {\n  event.respondWith(\n    // Bu yerga yozing\n    \n  );\n});",
+      hint: "caches.match(event.request)",
+      test: "if (code.includes('caches.match(event.request)') || code.includes('caches.match(e.request)')) return null; return 'caches.match metodi orqali event.request-ni tekshiring.';"
+    },
+    {
+      id: 10,
+      title: "Ulanishni kutmasdan faollashish (skipWaiting)",
+      instruction: "Yangi service worker-ni o'rnatilgan zahoti kutish rejimisiz darhol faollashtirish uchun self.skipWaiting() metodini chaqiring.",
+      startingCode: "self.addEventListener('install', (event) => {\n  // Bu yerga yozing\n  \n});",
+      hint: "self.skipWaiting();",
+      test: "if (code.includes('self.skipWaiting()') || code.includes('skipWaiting()')) return null; return 'self.skipWaiting() metodini chaqiring.';"
+    },
+    {
+      id: 11,
+      title: "PWA Manifest havolasini HTMLga qo'shish",
+      instruction: "HTML fayli head qismida '/manifest.json' fayliga havola beruvchi link tegi matnini 'manifestHtml' o'zgaruvchisiga string ko'rinishida yozing.",
+      startingCode: "// Bu yerga yozing\nconst manifestHtml = ",
+      hint: "'<link rel=\"manifest\" href=\"/manifest.json\">'",
+      test: "if (code.includes('link') && code.includes('manifest') && code.includes('/manifest.json')) return null; return 'HTML manifest link tegini string shaklida to\\'g\\'ri yozing.';"
+    },
+    {
+      id: 12,
+      title: "Eski keshni o'chirish",
+      instruction: "caches.delete metodi yordamida 'app-v1' nomli eski keshni o'chirib yuboradigan kod yozing.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "caches.delete('app-v1');",
+      test: "if (code.includes(\"caches.delete('app-v1')\") || code.includes('caches.delete(\"app-v1\")')) return null; return 'caches.delete orqali app-v1 keshini o\\'chiring.';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Stale-While-Revalidate Simulyatori (staleWhileRevalidateFetch)",
+      instruction: "Fetch hodisasi doirasida `stale-while-revalidate` keshlash strategiyasini simulyatsiya qiluvchi asinxron `staleWhileRevalidateFetch(request, cacheName)` funksiyasini yozing. U quyidagi bosqichlarni bajarishi kerak:\n1. Keshdan `request` so'roviga javob qidirsin.\n2. Fonda (`caches.open` va `cache.put` orqali) `fetch(request)` so'rovini yuborib keshni yangilasin.\n3. Agar keshda eski javob bo'lsa, zudlik bilan o'shani qaytarsin (revalidate fonda ketaveradi). Agar keshda bo'lmasa, tarmoqdan yuklab qaytarsin.",
+      startingCode: "async function staleWhileRevalidateFetch(request, cacheName) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "const cached = await caches.match(request); const fetchPromise = caches.open(cacheName).then(async (cache) => { const response = await fetch(request); cache.put(request, response.clone()); return response; }); return cached || fetchPromise;",
+      test: "if (typeof staleWhileRevalidateFetch !== 'function') return 'staleWhileRevalidateFetch funksiya emas';\nlet cacheUpdated = false;\nglobalThis.caches = {\n  match: async () => 'cached_resp',\n  open: async () => ({\n    put: async () => { cacheUpdated = true; }\n  })\n};\nglobalThis.fetch = async () => ({ clone: () => 'network_resp' });\nreturn staleWhileRevalidateFetch('req', 'v1').then(res => {\n  if (res === 'cached_resp' && cacheUpdated) return null;\n  return 'Stale-while-revalidate strategiyasi xato';"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Eski Keshlarni Tozalovchi (clearOldCaches)",
+      instruction: "Service Worker faollashuv jarayonida (`activate`) eski kesh versiyalarini o'chirib yuboradigan `clearOldCaches(currentCacheName, cacheNamesList)` funksiyasini yozing. Funksiya `cacheNamesList` (kesh nomlari massivi) ichidan `currentCacheName` ga teng bo'lmagan barcha kesh nomlarini aniqlab, `caches.delete(cacheName)` yordamida o'chirib tashlasin va yakuniy va'da (Promise.all) qaytarsin.",
+      startingCode: "function clearOldCaches(currentCacheName, cacheNamesList) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "const deletePromises = cacheNamesList.filter(name => name !== currentCacheName).map(name => caches.delete(name)); return Promise.all(deletePromises);",
+      test: "if (typeof clearOldCaches !== 'function') return 'clearOldCaches funksiya emas';\nconst deleted = [];\nglobalThis.caches = { delete: async (name) => { deleted.push(name); return true; } };\nreturn clearOldCaches('v2', ['v1', 'v2', 'v3']).then(() => {\n  if (deleted.includes('v1') && deleted.includes('v3') && !deleted.includes('v2')) return null;\n  return 'Eski keshlar to\\'g\\'ri o\\'chirilmadi: ' + deleted.join(',');\n});"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

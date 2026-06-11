@@ -151,32 +151,103 @@ Yo'q, arrow funksiyadagi \`this\` qat'iy lexical bog'langan va uni hech qanday u
 Quyidagi testlar va mashqlar yordamida arrow funksiyalar bo'yicha ko'nikmalaringizni mustahkamlang.
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Arrow Yig'indi",
-    "instruction": "Ikkita sonni parametr sifatida qabul qilib, ularning yig'indisini qaytaruvchi 'add' nomli arrow funksiyasini yozing.",
-    "startingCode": "// Kodni shu yerda yozing\n",
-    "hint": "const add = (a, b) => a + b;",
-    "test": "if (!code.includes('=>')) return 'Arrow funksiya (=>) sintaksisi ishlatilmadi';\nconst sandbox = new Function(code + '; return add;');\nconst fn = sandbox();\nif (typeof fn === 'function' && fn(5, 3) === 8) return null;\nreturn 'add funksiyasi noto\\'g\\'ri hisoblamoqda';"
-  },
-  {
-    "id": 2,
-    "title": "Implicit Return bilan Obyekt Qaytarish",
-    "instruction": "'ism' va 'yosh' parametrlarini qabul qilib, ularni mos ravishda kalit va qiymat qilib obyekt ko'rinishida qaytaruvchi 'createProfile' nomli arrow funksiyasini yozing. Funksiyada jingalak qavslarni jingalak qavsli obyekt deb tushunmaslik uchun oddiy qavslardan foydalaning (implicit return).",
-    "startingCode": "// Kodni shu yerda yozing\n",
-    "hint": "const createProfile = (ism, yosh) => ({ ism, yosh });",
-    "test": "if (code.includes('return')) return 'Implicit return ishlatilishi kerak, ya\\'ni return so\\'zini yozmang';\nconst sandbox = new Function(code + '; return createProfile;');\nconst fn = sandbox();\nconst profile = fn('Ali', 20);\nif (profile && profile.ism === 'Ali' && profile.yosh === 20) return null;\nreturn 'createProfile funksiyasi to\\'g\\'ri obyekt qaytarmadi';"
-  },
-  {
-    "id": 3,
-    "title": "Map bilan Arrow Funksiya",
-    "instruction": "Taqdim etilgan 'nums' massividagi har bir elementni 2 barobar oshirish uchun 'map' metodi ichiga arrow funksiyani yozing va natijani 'doubled' o'zgaruvchisiga saqlang.",
-    "startingCode": "const nums = [1, 2, 3];\n// Kodni shu yerda yozing\n",
-    "hint": "const doubled = nums.map(n => n * 2);",
-    "test": "if (!code.includes('map') || !code.includes('=>')) return 'map va arrow funksiya birgalikda ishlatilmadi';\nconst sandbox = new Function('nums', code + '; return doubled;');\nconst res = sandbox([1, 2, 3]);\nif (Array.isArray(res) && res[0] === 2 && res[2] === 6) return null;\nreturn 'Natija noto\\'g\\'ri';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Arrow Yig'indi",
+      instruction: "Ikkita sonni qo'shadigan 'add' arrow funksiyasini yozing.",
+      startingCode: "// add funksiyasini yozing\n\nconsole.log(add(5, 3));",
+      hint: "const add = (a, b) => a + b;",
+      test: "if (add(5, 3) === 8) return null; return 'Qo\\'shish noto\\'g\\'ri';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Implicit Return",
+      instruction: "Sonning kvadratini topadigan 'square' arrow funksiyasini (bitta qatorda, return so'ziziz) yozing.",
+      startingCode: "// square funksiyasini yozing\n\nconsole.log(square(4));",
+      hint: "const square = n => n * n;",
+      test: "if (square(4) === 16 && !code.includes('return')) return null; return 'Implicit return ishlatilmadi';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Bitta Parametrli Arrow",
+      instruction: "Faqat bitta 'son' parametrini oladigan va uni musbat bo'lsa true, manfiy bo'lsa false qaytaradigan 'isPositive' funksiyasini yozing. Qavssiz ishlating.",
+      startingCode: "// isPositive funksiyasini yozing\n\nconsole.log(isPositive(10));",
+      hint: "const isPositive = son => son > 0;",
+      test: "if (isPositive(10) === true && isPositive(-5) === false) return null; return 'Funksiya noto\\'g\\'ri ishlayapti';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Obyekt Qaytarish",
+      instruction: "ism va yosh qabul qilib, obyekt qaytaradigan 'createProfile' arrow funksiyasini yozing. Yodda tuting: ({...})",
+      startingCode: "// createProfile funksiyasini yozing\n\nconsole.log(createProfile('Ali', 20));",
+      hint: "const createProfile = (ism, yosh) => ({ ism, yosh });",
+      test: "if (createProfile('Ali', 20).ism === 'Ali') return null; return 'Obyekt to\\'g\\'ri qaytarilmadi';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Map bilan qisqa yozish",
+      instruction: "'nums' massividagi har bir sonni 2 ga ko'paytiring. Map metodining ichiga qisqa arrow function yozing.",
+      startingCode: "const nums = [1, 2, 3];\n// Bu yerga yozing\nconst doubled = nums.map( /* shu yerga yozing */ );\nconsole.log(doubled);",
+      hint: "nums.map(n => n * 2)",
+      test: "if (doubled[2] === 6) return null; return 'Map ichida xatolik';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Filter bilan qisqa yozish",
+      instruction: "Massivdan faqat toq sonlarni filter orqali qaytarib oling.",
+      startingCode: "const nums = [1, 2, 3, 4, 5];\n// Bu yerga yozing\nconst odds = nums.filter( /* shu yerga yozing */ );\nconsole.log(odds);",
+      hint: "nums.filter(n => n % 2 !== 0)",
+      test: "if (odds.length === 3 && odds[1] === 3) return null; return 'Filter ichida xatolik';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ setTimeout va Arrow",
+      instruction: "setTimeout ichida anonim arrow function yozib, 10ms dan so'ng 'Salom' deb chiqaring.",
+      startingCode: "// setTimeout ichiga arrow function yozing\nsetTimeout(  , 10);",
+      hint: "setTimeout(() => console.log('Salom'), 10)",
+      test: "if (code.includes('=>') && code.includes('setTimeout')) return null; return 'setTimeout da arrow function yo\\'q';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Lexical This (Obyekt ichida)",
+      instruction: "'user' obyektining 'greet' metodida setTimeout bor. Ichidagi funksiyani arrow ga o'zgartiringki, 'this.name' topilsin.",
+      startingCode: "const user = {\n  name: 'Bobur',\n  greet() {\n    // Buni arrow ga aylantiring\n    setTimeout(function() {\n      console.log('Salom, ' + this.name);\n    }, 10);\n  }\n};\nuser.greet();",
+      hint: "setTimeout(() => { ... })",
+      test: "if (code.includes('=>') && !code.includes('function()')) return null; return 'Arrow ga aylantirilmadi';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Rest parametr va Arrow",
+      instruction: "Rest parametr (...args) yordamida uzatilgan barcha sonlarning uzunligini qaytaradigan funksiya yozing.",
+      startingCode: "// countArgs funksiyasi\n\nconsole.log(countArgs(1, 2, 3, 4)); // 4 chiqishi kerak",
+      hint: "const countArgs = (...args) => args.length;",
+      test: "if (countArgs(1,2,3,4) === 4) return null; return 'Uzunlik qaytarilmadi';"
+    },
+    {
+      id: 10,
+      title: "🔟 Reduce va Arrow",
+      instruction: "reduce() metodi yordamida massivdagi barcha sonlar yig'indisini arrow funksiya yordamida hisoblang.",
+      startingCode: "const nums = [10, 20, 30];\n// Bu yerga yozing\nconst sum = nums.reduce( /* shu yerga yozing */ );\nconsole.log(sum);",
+      hint: "nums.reduce((acc, curr) => acc + curr, 0)",
+      test: "if (sum === 60) return null; return 'Reduce hisoblashi xato';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ String interpolatsiyasi (Template literal)",
+      instruction: "Ismni parametr sifatida qabul qilib, 'Salom, [ism]!' matnini qaytaradigan arrow funksiya yozing.",
+      startingCode: "// sayHello funksiyasi\n\nconsole.log(sayHello('Zuhra'));",
+      hint: "const sayHello = name => `Salom, ${name}!`;",
+      test: "if (sayHello('Zuhra') === 'Salom, Zuhra!') return null; return 'Matn xato';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Currying (Eng Qiyin)",
+      instruction: "Bitta son qabul qilib, yana bitta son qabul qiladigan arrow funksiya qaytaradigan (currying) yozuv. Natijada ularning yig'indisi hisoblansin.",
+      startingCode: "// add funksiyasini yozing: add(a)(b)\n\nconsole.log(add(5)(3)); // 8",
+      hint: "const add = a => b => a + b;",
+      test: "if (add(5)(3) === 8) return null; return 'Currying qilinmadi';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

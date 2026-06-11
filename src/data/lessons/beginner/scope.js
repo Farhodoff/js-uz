@@ -258,32 +258,103 @@ console.log(AppConfig.systemSettings); // undefined
 | **Scope Chain** | Ichma-ich qamrovlarda | Lokal -> Tashqi -> Global | Qidiruv mexanizmi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Blok Qamrovi va Soya Solish (Block Scope & Shadowing)",
-    "instruction": "Berilgan `x` parametrini qabul qiluvchi `getShadowedValue(x)` funksiyasini yozing. Funksiya ichida bitta blok (`{ ... }`) yarating. Ushbu blok ichida `x` nomli yangi o'zgaruvchini `let` yordamida e'lon qiling va unga `100` qiymatini bering. Blok tashqarisida esa, blok ichidagi `x` ning qiymati va funksiya parametri bo'lgan `x` ning yig'indisini qaytaring.\n\nEslatma: Blok ichidagi qiymatni blokdan tashqariga uzatish uchun yordamchi o'zgaruvchidan foydalanishingiz mumkin.",
-    "startingCode": "function getShadowedValue(x) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Funksiya ichida `let blockVal;` yarating. Keyin `{ let x = 100; blockVal = x; }` blokini yozing. Oxirida `x + blockVal` qiymatini qaytaring.",
-    "test": "const sandbox = new Function(code + '; return getShadowedValue;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'getShadowedValue funksiya bo\\'lishi kerak';\nif (fn(5) !== 105) return 'getShadowedValue(5) 105 qaytarishi kerak';\nif (fn(0) !== 100) return 'getShadowedValue(0) 100 qaytarishi kerak';\nif (fn(-50) !== 50) return 'getShadowedValue(-50) 50 qaytarishi kerak';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Global va Lokal Qamrov Farqi (Global vs Local Scope)",
-    "instruction": "Koddagi global `let count = 0;` o'zgaruvchisidan foydalanib, `incrementCounter()` funksiyasini yozing. Funksiya har chaqirilganda global `count` o'zgaruvchisini 1 taga oshirishi va yangi qiymatni qaytarishi kerak. Muhim: funksiya ichida yangi lokal `count` o'zgaruvchisini e'lon qilmang (soyalashdan qoching).",
-    "startingCode": "let count = 0;\n\nfunction incrementCounter() {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Lokal `count` yaratmang. Faqat global `count++` (yoki `count += 1`) qiling va uni `return count;` orqali qaytaring.",
-    "test": "const sandbox = new Function(code + '; return { incrementCounter, getCount: () => count };');\nconst env = sandbox();\nif (typeof env.incrementCounter !== 'function') return 'incrementCounter funksiya bo\\'lishi kerak';\nconst res1 = env.incrementCounter();\nif (res1 !== 1) return 'Birinchi safar chaqirilganda 1 qaytarishi kerak';\nconst globalCount1 = env.getCount();\nif (globalCount1 !== 1) return 'Global count o\\'zgaruvchisi 1 ga oshishi kerak';\nconst res2 = env.incrementCounter();\nif (res2 !== 2) return 'Ikkinchi safar chaqirilganda 2 qaytarishi kerak';\nconst globalCount2 = env.getCount();\nif (globalCount2 !== 2) return 'Global count o\\'zgaruvchisi 2 bo\\'lishi kerak';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Leksik Qamrov Zanjiri (Scope Chain)",
-    "instruction": "Ko'p bosqichli qamrov zanjirini amalga oshirish uchun nested (ichma-ich) funksiyalar yozing. `createScopeChain(a)` funksiyasi `a` parametrini qabul qiladi va ichki `nested(b)` funksiyasini qaytaradi. `nested(b)` esa o'z navbatida `deepNested(c)` funksiyasini qaytaradi. Eng ichki `deepNested(c)` funksiyasi esa `a`, `b` va `c` qiymatlarining yig'indisini (`a + b + c`) qaytarishi kerak.",
-    "startingCode": "function createScopeChain(a) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Ichma-ich funksiyalar qaytarish uchun `return function nested(b) { return function deepNested(c) { return a + b + c; } }` tuzilmasidan foydalaning.",
-    "test": "const sandbox = new Function(code + '; return createScopeChain;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'createScopeChain funksiya bo\\'lishi kerak';\nconst nested = fn(5);\nif (typeof nested !== 'function') return 'createScopeChain(a) funksiya qaytarishi kerak';\nconst deepNested = nested(10);\nif (typeof deepNested !== 'function') return 'nested(b) funksiya qaytarishi kerak';\nconst result = deepNested(15);\nif (result !== 30) return 'createScopeChain(5)(10)(15) yig\\'indisi 30 bo\\'lishi kerak (5 + 10 + 15)';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Global o'zgaruvchi",
+      instruction: "globalVar nomli global o'zgaruvchi yarating va uni 'salom' qiymati bilan e'lon qiling. Keyin printVar() funksiyasi ichida uni konsolga chiqaring.",
+      startingCode: "let globalVar = 'salom';\nfunction printVar() {\n  // Bu yerga yozing\n}",
+      hint: "console.log(globalVar);",
+      test: "if (code.includes('console.log(globalVar)')) return null; return 'globalVar ni konsolga chiqaring!';"
+    },
+    {
+      id: 2,
+      title: "Function scope",
+      instruction: "testScope funksiyasi ichida localVar nomli o'zgaruvchini 'local' qiymati bilan e'lon qiling va uni konsolga chiqaring.",
+      startingCode: "function testScope() {\n  // Bu yerga yozing\n}",
+      hint: "let localVar = 'local'; console.log(localVar);",
+      test: "if (code.includes('let localVar') && code.includes('console.log(localVar)')) return null; return 'localVar o\\'zgaruvchisini local sohada e\\'lon qiling va chop eting!';"
+    },
+    {
+      id: 3,
+      title: "Block scope",
+      instruction: "if bloki ichida let yordamida blockVar o'zgaruvchisini 'block' qiymati bilan yarating.",
+      startingCode: "if (true) {\n  // Bu yerga yozing\n}",
+      hint: "let blockVar = 'block';",
+      test: "if (code.includes('let blockVar')) return null; return 'if bloki ichida blockVar e\\'lon qiling!';"
+    },
+    {
+      id: 4,
+      title: "Block scope const",
+      instruction: "if bloki ichida const yordamida blockConst o'zgaruvchisini 'const' qiymati bilan e'lon qiling.",
+      startingCode: "if (true) {\n  // Bu yerga yozing\n}",
+      hint: "const blockConst = 'const';",
+      test: "if (code.includes('const blockConst')) return null; return 'if ichida blockConst e\\'lon qiling!';"
+    },
+    {
+      id: 5,
+      title: "var block scope testi",
+      instruction: "if bloki ichida var yordamida varVar o'zgaruvchisini 'var' qiymati bilan yarating (u blockdan tashqarida ham ko'rinadi).",
+      startingCode: "if (true) {\n  // Bu yerga yozing\n}\nconsole.log(varVar);",
+      hint: "var varVar = 'var';",
+      test: "if (code.includes('var varVar') && logs.includes('var')) return null; return 'if ichida varVar o\\'zgaruvchisini var yordamida yarating!';"
+    },
+    {
+      id: 6,
+      title: "Variable shadowing",
+      instruction: "Globalda name = 'Ali' bor. shadow() funksiyasi ichida yana name nomli local o'zgaruvchi yaratib qiymatini 'Vali' qiling va uni konsolga chiqaring.",
+      startingCode: "let name = 'Ali';\nfunction shadow() {\n  // Bu yerga yozing\n}",
+      hint: "let name = 'Vali'; console.log(name);",
+      test: "if (code.includes('let name = \\'Vali\\'') && code.includes('console.log(name)')) return null; return 'Funksiya ichida name ni o\\'zgartirib chiqaring!';"
+    },
+    {
+      id: 7,
+      title: "Lexical scope",
+      instruction: "outer funksiyasi ichida x = 10 o'zgaruvchisi bor. Ichki inner funksiyasi ichida ushbu x o'zgaruvchisini konsolga chiqaring.",
+      startingCode: "function outer() {\n  let x = 10;\n  function inner() {\n    // Bu yerga yozing\n  }\n  inner();\n}",
+      hint: "console.log(x);",
+      test: "if (code.includes('console.log(x)')) return null; return 'inner funksiyasi ichida x ni konsolga chiqaring!';"
+    },
+    {
+      id: 8,
+      title: "Sikl block scope",
+      instruction: "for sikli ichida let yordamida 0 dan 3 gacha aylanuvchi i o'zgaruvchisini e'lon qiling.",
+      startingCode: "// Bu yerga yozing\nfor (...) {\n  console.log(i);\n}",
+      hint: "for (let i = 0; i < 3; i++) {",
+      test: "if (code.includes('let i = 0') && logs.includes(2)) return null; return 'for sikli shartini to\\'g\\'ri yozing!';"
+    },
+    {
+      id: 9,
+      title: "Mustaqil blok",
+      instruction: "Mustaqil block scope { } yaratib, uning ichida let a = 100 o'zgaruvchisini e'lon qiling.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "{\n  let a = 100;\n}",
+      test: "if (code.includes('{') && code.includes('let a = 100') && code.includes('}')) return null; return 'Jingalak qavslar bilan mustaqil block scope yarating!';"
+    },
+    {
+      id: 10,
+      title: "Scope chain qidiruvi",
+      instruction: "Tashqi f1 funksiyasida yozilgan x o'zgaruvchisini eng ichki f2 funksiyasida konsolga chiqarish orqali scope chainni ishlating.",
+      startingCode: "function f1() {\n  let x = 'chain';\n  function f2() {\n    // Bu yerga yozing\n  }\n  f2();\n}",
+      hint: "console.log(x);",
+      test: "if (code.includes('console.log(x)')) return null; return 'f2 ichida x ni chop eting!';"
+    },
+    {
+      id: 11,
+      title: "Tashqi o'zgaruvchini yangilash",
+      instruction: "update() funksiyasi ichidan turib tashqi count o'zgaruvchisini e'lon qilmasdan, to'g'ridan-to'g'ri 10 ga tenglang.",
+      startingCode: "let count = 0;\nfunction update() {\n  // Bu yerga yozing\n}\nupdate();",
+      hint: "count = 10;",
+      test: "if (count === 10 && !code.includes('let count = 10') && !code.includes('const count = 10')) return null; return 'count qiymatini funksiya ichida 10 ga o\\'zgartiring!';"
+    },
+    {
+      id: 12,
+      title: "Lexical Scope qaytishi",
+      instruction: "greet funksiyasidan ichki funksiyani return qiling, u ichki funksiya greet funksiyasidagi word o'zgaruvchisini konsolga chiqarsin.",
+      startingCode: "function greet() {\n  let word = 'Salom';\n  // Bu yerga yozing\n}",
+      hint: "return function() { console.log(word); };",
+      test: "if (code.includes('return') && code.includes('word')) return null; return 'greet funksiyasidan word ni chop qiluvchi funksiyani return qiling!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

@@ -179,32 +179,103 @@ Strict mode yoqilganda global funksiya chaqiruvlarida \`this\` global \`window\`
 Quyidagi testlar va mashqlar yordamida \`this\` bo'yicha ko'nikmalaringizni sinab ko'ring.
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Metod ichida This",
-    "instruction": "'user' obyektidagi 'getName' metodini shunday to'ldiringki, u 'user' obyektidagi 'ism' xususiyatini 'this' orqali qaytarsin.",
-    "startingCode": "const user = {\n  ism: 'Ali',\n  getName() {\n    // Kodni shu yerda yozing\n  }\n};\n",
-    "hint": "return this.ism;",
-    "test": "if (!code.includes('this.ism')) return 'this.ism ishlatilmadi';\nconst sandbox = new Function(code + '; return user.getName();');\nconst res = sandbox();\nif (res === 'Ali') return null;\nreturn 'Natija noto\\'g\\'ri';"
-  },
-  {
-    "id": 2,
-    "title": "Call Metodi orqali Kontekst Bog'lash",
-    "instruction": "'greet' funksiyasini 'user' obyektining konteksti bilan darhol ishga tushirish uchun 'call' metodidan foydalaning va natijani 'result' o'zgaruvchisiga saqlang.",
-    "startingCode": "const user = { name: 'Zara' };\nfunction greet() {\n  return 'Salom, ' + this.name;\n}\n\n// Kodni shu yerda yozing\n",
-    "hint": "const result = greet.call(user);",
-    "test": "if (!code.includes('greet.call(user)')) return 'greet.call(user) ishlatilmadi';\nconst sandbox = new Function('user', 'greet', code + '; return result;');\nconst mockUser = { name: 'Zara' };\nconst mockGreet = function() { return 'Salom, ' + this.name; };\nconst res = sandbox(mockUser, mockGreet);\nif (res === 'Salom, Zara') return null;\nreturn 'result o\\'zgaruvchisi qiymati xato';"
-  },
-  {
-    "id": 3,
-    "title": "Chaining Pattern (Zanjirli Chaqiruv)",
-    "instruction": "'calculator' obyektidagi 'add' va 'multiply' metodlari zanjirli chaqirilishi (chaining) uchun har bir metod oxirida 'this' obyektini qaytaring (return this).",
-    "startingCode": "const calculator = {\n  value: 0,\n  add(n) {\n    this.value += n;\n    // Kodni shu yerda yozing\n  },\n  multiply(n) {\n    this.value *= n;\n    // Kodni shu yerda yozing\n  }\n};\n",
-    "hint": "return this;",
-    "test": "if (!code.includes('return this')) return 'return this ishlatilmadi';\nconst sandbox = new Function(code + '; return calculator.add(5).multiply(2).value;');\nconst res = sandbox();\nif (res === 10) return null;\nreturn 'Chaining to\\'g\\'ri ishlamadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Oddiy Metod (Boshlang'ich)",
+      instruction: "Objektda this.ism qaytaradigan metod yozing.",
+      startingCode: "const user = {\n  ism: 'Ali',\n  getName() {\n    // Kodni shu yerda yozing\n  }\n};\n\nconsole.log(user.getName());",
+      hint: "return this.ism;",
+      test: "if (user.getName() === 'Ali') return null; return 'this.ism ishlatilmadi!';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Global This (Boshlang'ich)",
+      instruction: "Global this qanday ekanligi ko'rsating.",
+      startingCode: "function checkThis() {\n  // Kodni shu yerda yozing\n  return this;\n}\n\nconst result = checkThis();\nconsole.log(result === window); // true yoki false?",
+      hint: "return this;",
+      test: "if (typeof checkThis() === 'object' || checkThis() === undefined) return null; return 'This type xato!';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Lost Context (O'rta)",
+      instruction: "Method'ni o'zgaruvchiga saqlasa, this yo'qolishini ko'rsating.",
+      startingCode: "const user = {\n  ism: 'Ali',\n  greet: function() {\n    return this.ism;\n  }\n};\n\nconst greetFunc = user.greet;\nconsole.log(greetFunc()); // nima qaytadi?",
+      hint: "Javob: undefined (this yo'qoladi)",
+      test: "if (greetFunc() === undefined) return null; return 'Context lost o\\'rtildi!';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Call Metodi (O'rta)",
+      instruction: "call() yordamida boshqa object'ning metodini chaqiring.",
+      startingCode: "const user1 = { ism: 'Ali' };\nconst user2 = { ism: 'Zara' };\n\nfunction greet() {\n  return 'Salom, ' + this.ism;\n}\n\n// Kodni shu yerda yozing\nconst result = greet.call(user2);",
+      hint: "greet.call(user2)",
+      test: "if (result === 'Salom, Zara') return null; return 'call() ishlatilmadi!';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Apply Metodi (O'rta)",
+      instruction: "apply() yordamida parametrlarni array bilan o'tkazing.",
+      startingCode: "function introduce(greeting, emoji) {\n  return emoji + ' ' + greeting + ', ' + this.ism;\n}\n\nconst user = { ism: 'Ali' };\n\n// Kodni shu yerda yozing\nconst result = introduce.apply(user, ['Salom', '👋']);",
+      hint: "introduce.apply(user, ['Salom', '👋'])",
+      test: "if (result.includes('Salom') && result.includes('Ali')) return null; return 'apply() xato!';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Bind Metodi (O'rta)",
+      instruction: "bind() yordamida this fixed qilgan yangi funksiya yarating.",
+      startingCode: "const user = { ism: 'Ali' };\n\nfunction getName() {\n  return this.ism;\n}\n\n// Kodni shu yerda yozing\nconst getAliName = getName.bind(user);\nconsole.log(getAliName());",
+      hint: "const getAliName = getName.bind(user);",
+      test: "if (getAliName() === 'Ali') return null; return 'bind() ishlatilmadi!';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Arrow vs Regular (O'rta)",
+      instruction: "Arrow funksiyada this parent context'dan olinishini ko'rsating.",
+      startingCode: "const calculator = {\n  num: 10,\n  // XATO - Arrow\n  getArrow: () => {\n    return this.num;\n  },\n  // TO'G'RI - Regular\n  getRegular: function() {\n    return this.num;\n  }\n};\n\nconsole.log('Arrow:', calculator.getArrow()); // undefined\nconsole.log('Regular:', calculator.getRegular()); // 10",
+      hint: "Arrow: undefined, Regular: 10",
+      test: "if (calculator.getRegular() === 10 && calculator.getArrow() === undefined) return null; return 'Arrow vs Regular xato!';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Constructor va New (O'rta)",
+      instruction: "new yordamida objekt yaratish, this = yangi obje.",
+      startingCode: "function Robot(ism) {\n  // Kodni shu yerda yozing: this.ism = ism\n}\n\nconst robot = new Robot('R2D2');\nconsole.log(robot.ism); // 'R2D2'",
+      hint: "this.ism = ism;",
+      test: "if (robot.ism === 'R2D2') return null; return 'Constructor xato!';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Callback Arrow (O'rta)",
+      instruction: "forEach callback'iga arrow funksiya bersan, this preserved.",
+      startingCode: "const user = {\\n  ism: 'Ali',\\n  hobbies: ['Kitob', 'Futbol', 'Dasturlash'],\\n  printHobbies() {\\n    // Arrow funksiya kerak\\n    this.hobbies.forEach((hobby) => {\\n      console.log(this.ism + ': ' + hobby);\\n    });\\n  }\\n};\\nuser.printHobbies();",
+      hint: "this.hobbies.forEach((hobby) => { ... });",
+      test: "if (code.includes('=>')) return null; return 'Arrow callback ishlatilmadi!';"
+    },
+    {
+      id: 10,
+      title: "🔟 Event Listener (O'rta)",
+      instruction: "Event listener'da this = event target.",
+      startingCode: "// HTML: <button id='btn'>Click</button>\n\nconst btn = document.getElementById('btn');\n\n// YAXSHI - Regular: this = button\nbtn.addEventListener('click', function() {\n  console.log(this); // button element\n  console.log(this.id); // 'btn'\n});\n\n// XATO - Arrow: this = window\n// btn.addEventListener('click', () => {\n//   console.log(this); // window (xato!)\n// });",
+      hint: "Regular funksiyada this = button",
+      test: "if (code.includes('function()')) return null; return 'Event listener xato!';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Method Chaining (Qiyin)",
+      instruction: "return this; orqali chaining qilgan metodlar yarating.",
+      startingCode: "const calculator = {\n  value: 0,\n  \n  add(n) {\n    this.value += n;\n    return this; // Chaining uchun\n  },\n  \n  multiply(n) {\n    this.value *= n;\n    return this; // Chaining uchun\n  },\n  \n  getValue() {\n    return this.value;\n  }\n};\n\n// Kodni shu yerda yozing: Chaining\nconst result = calculator.add(5).multiply(2).getValue();\nconsole.log(result); // (0 + 5) * 2 = 10",
+      hint: "calculator.add(5).multiply(2).getValue()",
+      test: "if (result === 10) return null; return 'Chaining xato!';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Combine: Class + This + Binding (Eng Qiyin)",
+      instruction: "Class'da metodni event listener'ga bind qiling.",
+      startingCode: "class Counter {\n  constructor() {\n    this.count = 0;\n    // Kodni shu yerda yozing: bind\n    // this.button.addEventListener('click', this.increment.bind(this));\n  }\n  \n  increment() {\n    this.count++;\n    console.log('Count: ' + this.count);\n  }\n}\n\nconst counter = new Counter();",
+      hint: "this.increment.bind(this) - this fixed qilish",
+      test: "if (code.includes('bind')) return null; return 'Binding xato!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

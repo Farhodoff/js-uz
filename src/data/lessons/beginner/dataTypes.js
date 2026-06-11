@@ -240,32 +240,103 @@ const promoteUser = () => {
 | **Object** | \`"object"\` | Heap (havola Stack-da) | Havola bo'yicha | Mutable (O'zgaruvchan) | \`{ name: "Ali" }\`, \`[1, 2]\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Obyektni sayoz nusxalash (Shallow Copy)",
-    "instruction": "Foydalanuvchi obyektini (`user`) va yangi ism (`newName`) qabul qiluvchi hamda foydalanuvchining asl obyektini o'zgartirmasdan, faqat ismi o'zgartirilgan yangi obyekt nusxasini qaytaruvchi `cloneUser(user, newName)` funksiyasini yozing.",
-    "startingCode": "function cloneUser(user, newName) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Spread operatoridan foydalanib yangi obyekt yarating: { ...user, name: newName }",
-    "test": "const sandbox = new Function(code + '; return cloneUser;');\nconst fn = sandbox();\nconst original = { id: 99, name: 'Sardor', age: 25 };\nconst cloned = fn(original, 'Temur');\nif (!cloned) return 'Funksiya hech narsa qaytarmadi';\nif (original.name !== 'Sardor') return 'Original obyekt o\\'zgartirib yuborildi (mutatsiya yuz berdi)';\nif (cloned.name !== 'Temur') return 'Yangi obyektda ism to\\'g\\'ri o\\'zgartirilmadi';\nif (cloned.id !== 99 || cloned.age !== 25) return 'Boshqa xususiyatlar nusxalanmadi';\nif (original === cloned) return 'Yangi obyekt yaratilmagan, shunchaki havola qaytarilgan';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Ma'lumot turini aniqlash (Precise Type)",
-    "instruction": "Kiritilgan qiymat turini aniqroq aniqlaydigan `getPreciseType(value)` funksiyasini yozing. Standart JavaScript `typeof` operatori ba'zi turlar uchun chalkash natijalar beradi. Funksiyangiz quyidagi holatlarni to'g'ri qaytarishi kerak:\n- Agar `null` bo'lsa, `'null'` matnini qaytarsin.\n- Agar massiv bo'lsa, `'array'` matnini qaytarsin.\n- Qolgan barcha turlar uchun standart `typeof` natijasini qaytarsin.",
-    "startingCode": "function getPreciseType(value) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Null ekanini tekshirish uchun === null, massiv ekanini tekshirish uchun Array.isArray() va boshqa turlar uchun typeof operatoridan foydalaning.",
-    "test": "const sandbox = new Function(code + '; return getPreciseType;');\nconst fn = sandbox();\nif (fn(null) !== 'null') return 'null kiritilganda \"null\" qaytishi kerak';\nif (fn([]) !== 'array') return 'Massiv kiritilganda \"array\" qaytishi kerak';\nif (fn(42) !== 'number') return 'Son kiritilganda \"number\" qaytishi kerak';\nif (fn('salom') !== 'string') return 'Satr kiritilganda \"string\" qaytishi kerak';\nif (fn({}) !== 'object') return 'Obyekt kiritilganda \"object\" qaytishi kerak';\nif (fn(() => {}) !== 'function') return 'Funksiya kiritilganda \"function\" qaytishi kerak';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Primitive yoki Reference ekanini aniqlash",
-    "instruction": "Berilgan qiymatning primitive (oddiy) yoki reference (havola) ma'lumot turi ekanini aniqlaydigan `isPrimitive(value)` funksiyasini yozing. Agar qiymat primitive bo'lsa `true`, reference bo'lsa `false` qaytarsin. (Eslatma: null ham primitive tur hisoblanadi).",
-    "startingCode": "function isPrimitive(value) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "JavaScript-da Obyektlar, Massivlar va Funksiyalar reference turlar hisoblanadi. null qiymatining typeof natijasi \"object\" bo'lsa-da, u primitive ekanini hisobga oling.",
-    "test": "const sandbox = new Function(code + '; return isPrimitive;');\nconst fn = sandbox();\nif (fn(100) !== true) return 'Sonlar primitive hisoblanadi';\nif (fn('test') !== true) return 'Satrlar primitive hisoblanadi';\nif (fn(null) !== true) return 'Null primitive hisoblanadi';\nif (fn(undefined) !== true) return 'Undefined primitive hisoblanadi';\nif (fn(Symbol('id')) !== true) return 'Symbol primitive hisoblanadi';\nif (fn({}) !== false) return 'Obyektlar reference tur hisoblanadi';\nif (fn([]) !== false) return 'Massivlar reference tur hisoblanadi';\nif (fn(() => {}) !== false) return 'Funksiyalar reference tur hisoblanadi';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Turini aniqlang",
+      instruction: "'age' o'zgaruvchisining turini konsolga chiqaring.",
+      startingCode: "let age = 20;\n// Bu yerga yozing\n",
+      hint: "console.log(typeof age);",
+      test: "if (logs.includes('number')) return null; return 'typeof ishlatilmadi!';"
+    },
+    {
+      id: 2,
+      title: "G'alati holat",
+      instruction: "null qiymatining turini (typeof) konsolga chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "console.log(typeof null);",
+      test: "if (logs.includes('object')) return null; return 'null turi object chiqishi kerak!';"
+    },
+    {
+      id: 3,
+      title: "Matn uzunligi",
+      instruction: "'text' o'zgaruvchisining uzunligini (length) konsolga chiqaring.",
+      startingCode: "const text = 'JavaScript';\n// Bu yerga yozing\n",
+      hint: "console.log(text.length);",
+      test: "if (logs.includes('10')) return null; return 'Matn uzunligini to\\'g\\'ri chiqaring';"
+    },
+    {
+      id: 4,
+      title: "NaN hosil qilish",
+      instruction: "Matnni songa bo'lish orqali NaN qiymatini hisoblang va uning turini (typeof) konsolga chiqaring.",
+      startingCode: "const val = 'salom' / 2;\n// Bu yerga yozing\n",
+      hint: "console.log(typeof val);",
+      test: "if (logs.includes('number')) return null; return 'NaN ning turi number bo\\'lishi kerak';"
+    },
+    {
+      id: 5,
+      title: "Boolean qiymat",
+      instruction: "'isLogged' nomli o'zgaruvchiga true qiymatini bering va uni konsolga chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "let isLogged = true;\nconsole.log(isLogged);",
+      test: "if (logs.includes('true') || logs.includes(true)) return null; return 'Boolean qiymatni to\\'g\\'ri chiqaring';"
+    },
+    {
+      id: 6,
+      title: "BigInt yaratish",
+      instruction: "100 sonidan BigInt hosil qiling (oxiriga n qo'shish orqali) va uning turini konsolga chiqaring.",
+      startingCode: "const value = 100n;\n// Bu yerga yozing\n",
+      hint: "console.log(typeof value);",
+      test: "if (logs.includes('bigint')) return null; return 'BigInt turini aniqlang';"
+    },
+    {
+      id: 7,
+      title: "Symbol yaratish",
+      instruction: "'mySym' nomli Symbol yarating (tavsifi 'id' bo'lsin) va uning turini konsolga chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "const mySym = Symbol('id');\nconsole.log(typeof mySym);",
+      test: "if (logs.includes('symbol')) return null; return 'Symbol yarating va turini konsolga chiqaring';"
+    },
+    {
+      id: 8,
+      title: "Undefined qiymat e'lon qilish",
+      instruction: "'status' nomli o'zgaruvchiga undefined qiymat berib uni konsolga chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "let status = undefined;\nconsole.log(status);",
+      test: "if (logs.includes('undefined')) return null; return 'status o\\'zgaruvchisiga undefined qiymatini bering';"
+    },
+    {
+      id: 9,
+      title: "Obyekt turini aniqlash",
+      instruction: "Bo'sh obyekt yarating va uning turini (typeof) konsolga chiqaring.",
+      startingCode: "const obj = {};\n// Bu yerga yozing\n",
+      hint: "console.log(typeof obj);",
+      test: "if (logs.includes('object')) return null; return 'Obyekt turi object chiqishi kerak';"
+    },
+    {
+      id: 10,
+      title: "Massiv turini aniqlash",
+      instruction: "Bo'sh massiv yarating va uning turini (typeof) konsolga chiqaring.",
+      startingCode: "const list = [];\n// Bu yerga yozing\n",
+      hint: "console.log(typeof list);",
+      test: "if (logs.includes('object')) return null; return 'Massiv turi ham object chiqishi kerak';"
+    },
+    {
+      id: 11,
+      title: "Infinity hosil qilish",
+      instruction: "Sonni nolga bo'lish orqali Infinity hosil qiling va natijani konsolga chiqaring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "console.log(10 / 0);",
+      test: "if (logs.includes('Infinity') || logs.includes(Infinity)) return null; return 'Infinity qiymatini chiqaring';"
+    },
+    {
+      id: 12,
+      title: "Songa o'tkazish",
+      instruction: "Matnli '123' sonini Number() orqali songa o'tkazing va uning turini konsolga chiqaring.",
+      startingCode: "const str = '123';\n// Bu yerga yozing\n",
+      hint: "const num = Number(str);\nconsole.log(typeof num);",
+      test: "if (logs.includes('number')) return null; return 'Songa o\\'tkazilgandan keyingi turni aniqlang';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

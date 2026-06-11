@@ -221,32 +221,119 @@ async function getWeather(city) {
 | **AbortController** | So'rovni bekor qilish | \`controller.abort()\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "GET so'rovi yordamida ma'lumot olish",
-    "instruction": "Berilgan `url` manzilidan fetch orqali ma'lumot yuklab oluvchi va undan olingan JSON ma'lumotni qaytaruvchi asinxron `getJSON(url)` funksiyasini yozing.",
-    "startingCode": "async function getJSON(url) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "const response = await fetch(url); return await response.json();",
-    "test": "if (!code.includes('fetch')) return 'fetch ishlatilmadi';\ntry {\n  const mockResponse = { json: async () => ({ status: 'ok' }) };\n  const mockFetch = async () => mockResponse;\n  const sandbox = new Function('fetch', code + '; return getJSON;');\n  const fn = sandbox(mockFetch);\n  const res = await fn('https://api.example.com');\n  if (res.status !== 'ok') return 'JSON qaytarishda xatolik yuz berdi';\n} catch (e) { return 'Xatolik: ' + e.message; }\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "POST so'rovi yordamida ma'lumot yuborish",
-    "instruction": "Berilgan `url` manziliga `data` obyektini POST so'rovi yordamida JSON formatida yuboradigan hamda serverdan qaytgan javobning JSON formatini qaytaruvchi asinxron `sendPOST(url, data)` funksiyasini yozing. So'rov sarlavhalari (headers) ichida 'Content-Type': 'application/json' bo'lishi shart.",
-    "startingCode": "async function sendPOST(url, data) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); return await res.json();",
-    "test": "if (!code.includes('POST') || !code.includes('body')) return 'POST so\\'rovi yoki body parametri ishlatilmadi';\ntry {\n  let sentOptions = null;\n  const mockFetch = async (u, opt) => { sentOptions = opt; return { json: async () => ({ success: true }) }; };\n  const sandbox = new Function('fetch', code + '; return sendPOST;');\n  const fn = sandbox(mockFetch);\n  await fn('api', { name: 'Ali' });\n  if (!sentOptions || sentOptions.method !== 'POST') return 'Metod POST qilib belgilanmagan';\n  if (!sentOptions.headers || (!sentOptions.headers['Content-Type'] && !sentOptions.headers['content-type'])) return 'Content-Type header-i to\\'g\\'ri o\\'rnatilmadi';\n  if (sentOptions.body !== JSON.stringify({ name: 'Ali' })) return 'So\\'rov body-si noto\\'g\\'ri formatlangan';\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "HTTP Xatolarini Tekshirish",
-    "instruction": "Fetch so'rovi yuborilganda tarmoq ishlashiga qaramasdan serverdan 404 yoki 500 kabi xatoliklar qaytishi mumkin (fetch buni reject qilmaydi). Agar `response.ok` xossasi false bo'lsa, 'Server error' xatosini otuvchi (`throw new Error('Server error')`) hamda muvaffaqiyatli bo'lsa, text formatida natijani qaytaruvchi asinxron `fetchText(url)` funksiyasini yozing.",
-    "startingCode": "async function fetchText(url) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "const response = await fetch(url); if (!response.ok) { throw new Error('Server error'); } return await response.text();",
-    "test": "if (!code.includes('ok')) return 'response.ok tekshiruvi bajarilmadi';\ntry {\n  const mockFetchGood = async () => ({ ok: true, text: async () => 'hello' });\n  const mockFetchBad = async () => ({ ok: false });\n  const sandbox = new Function('fetch', code + '; return fetchText;');\n  const fnGood = sandbox(mockFetchGood);\n  const fnBad = sandbox(mockFetchBad);\n  const res = await fnGood('u');\n  if (res !== 'hello') return 'Muvaffaqiyatli so\\'rovda matn qaytarilmadi';\n  try {\n    await fnBad('u');\n    return 'Xato holatida (ok: false) error otilmadi';\n  } catch (err) {\n    if (err.message !== 'Server error') return 'Error xabari to\\'g\\'ri berilmadi';\n  }\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Oddiy GET so'rovi",
+      instruction: "Berilgan URL-dan `fetch` orqali ma'lumot yuklab oling, response-ni JSON formatida parse qiling va qaytaring.",
+      startingCode: "async function getJSON(url) {\n  // Bu yerga yozing\n}",
+      hint: "const res = await fetch(url); return await res.json();",
+      test: "if (typeof getJSON !== 'function') return 'getJSON funksiya emas'; const p = getJSON('https://jsonplaceholder.typicode.com/todos/1'); return p.then(r => r && r.id === 1 ? null : 'Ma\\'lumot noto\\'g\\'ri yuklandi');"
+    },
+    {
+      id: 2,
+      title: "2️⃣ HTTP statusini tekshirish (response.ok)",
+      instruction: "URL-ga so'rov yuboring. Agar javob muvaffaqiyatli bo'lsa (`res.ok`), JSON ma'lumotni oling, aks holda 'Xato status: ' va status kodini qaytaring.",
+      startingCode: "async function fetchSafe(url) {\n  // Bu yerga yozing\n}",
+      hint: "const res = await fetch(url); if (res.ok) return await res.json(); return 'Xato status: ' + res.status;",
+      test: "if (typeof fetchSafe !== 'function') return 'fetchSafe funksiya emas'; return fetchSafe('https://jsonplaceholder.typicode.com/todos/1').then(r => { if (typeof r === 'object' && r.id === 1) { return fetchSafe('https://jsonplaceholder.typicode.com/invalid-url-path-999').then(r2 => r2 === 'Xato status: 404' ? null : 'Xatolik to\\'g\\'ri boshqarilmadi'); } return 'Muvaffaqiyatli holat noto\\'g\\'ri bajarildi'; });"
+    },
+    {
+      id: 3,
+      title: "3️⃣ POST so'rovi yuborish",
+      instruction: "Berilgan `url` va `data` (obyekt) yordamida POST so'rovini yuboring. Headers-da `'Content-Type': 'application/json'` yuboring, body-ni stringify qiling va natija JSON-ni qaytaring.",
+      startingCode: "async function createPost(url, data) {\n  // Bu yerga yozing\n}",
+      hint: "const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); return await res.json();",
+      test: "if (typeof createPost !== 'function') return 'createPost funksiya emas'; return createPost('https://jsonplaceholder.typicode.com/posts', { title: 'foo' }).then(r => r && r.title === 'foo' ? null : 'POST so\\'rovi bajarilmadi');"
+    },
+    {
+      id: 4,
+      title: "4️⃣ DELETE so'rovi yuborish",
+      instruction: "Berilgan URL-ga `DELETE` metodini ishlatgan holda fetch so'rovini yuboring va `response.status`ni qaytaring.",
+      startingCode: "async function deleteItem(url) {\n  // Bu yerga yozing\n}",
+      hint: "const res = await fetch(url, { method: 'DELETE' }); return res.status;",
+      test: "if (typeof deleteItem !== 'function') return 'deleteItem funksiya emas'; return deleteItem('https://jsonplaceholder.typicode.com/posts/1').then(r => r >= 200 && r < 300 ? null : 'DELETE so\\'rovi muvaffaqiyatsiz');"
+    },
+    {
+      id: 5,
+      title: "5️⃣ PUT so'rovi yordamida yangilash",
+      instruction: "Berilgan `url` va `data` obyektini PUT metodi yordamida serverga yuboring (headers va body to'g'ri berilishi shart) va yangilangan JSON natijasini qaytaring.",
+      startingCode: "async function updateItem(url, data) {\n  // Bu yerga yozing\n}",
+      hint: "const res = await fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); return await res.json();",
+      test: "if (typeof updateItem !== 'function') return 'updateItem funksiya emas'; return updateItem('https://jsonplaceholder.typicode.com/posts/1', { id: 1, title: 'bar' }).then(r => r && r.title === 'bar' ? null : 'PUT so\\'rovi noto\\'g\\'ri');"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Tarmoq xatolarini ushlash",
+      instruction: "So'rov yuborganda internet uzilishi yoki noto'g'ri domen kabi tarmoq xatolari (network errors) yuz bersa, catch bloki orqali 'Tarmoq xatosi' matnini qaytaradigan `fetchDataSafe` funksiyasini yozing.",
+      startingCode: "async function fetchDataSafe(url) {\n  // Bu yerga yozing\n}",
+      hint: "try { const res = await fetch(url); return await res.json(); } catch(e) { return 'Tarmoq xatosi'; }",
+      test: "if (typeof fetchDataSafe !== 'function') return 'fetchDataSafe funksiya emas'; return fetchDataSafe('https://invalid-domain-does-not-exist.xyz').then(r => r === 'Tarmoq xatosi' ? null : 'Tarmoq xatosi ushlanmadi');"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Matn (text) ko'rinishidagi javob",
+      instruction: "Berilgan URL-dan ma'lumot yuklab oling va uni `.text()` yordamida oddiy matn ko'rinishida qaytaring.",
+      startingCode: "async function getPlainText(url) {\n  // Bu yerga yozing\n}",
+      hint: "const res = await fetch(url); return await res.text();",
+      test: "if (typeof getPlainText !== 'function') return 'getPlainText funksiya emas'; return getPlainText('https://jsonplaceholder.typicode.com/todos/1').then(r => typeof r === 'string' && r.includes('userId') ? null : 'Matn noto\\'g\\'ri o\\'qildi');"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Authorization Header yuborish",
+      instruction: "Berilgan `url`ga `Authorization: Bearer my-token-123` header-i bilan GET so'rovi yuboring (fetch sozlamalarida headers obyektini bering).",
+      startingCode: "async function fetchWithToken(url, token) {\n  // Bu yerga yozing\n}",
+      hint: "return await fetch(url, { headers: { 'Authorization': 'Bearer ' + token } });",
+      test: "if (typeof fetchWithToken !== 'function') return 'fetchWithToken funksiya emas'; if (code.includes('Authorization') && code.includes('Bearer')) return null; return 'Authorization header ishlatilmadi';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Response status kodini olish",
+      instruction: "Berilgan URL-ga fetch so'rovini yuboring va faqat HTTP status kodini (masalan: 200, 404) qaytaring.",
+      startingCode: "async function getStatus(url) {\n  // Bu yerga yozing\n}",
+      hint: "const res = await fetch(url); return res.status;",
+      test: "if (typeof getStatus !== 'function') return 'getStatus funksiya emas'; return getStatus('https://jsonplaceholder.typicode.com/posts/1').then(r => r === 200 ? null : 'Status noto\\'g\\'ri');"
+    },
+    {
+      id: 10,
+      title: "🔟 UI yuklanish holatini simulyatsiya qilish",
+      instruction: "`loading = true` qiling. Keyin `fetch` so'rovini yuboring, javobini oling va oxirida `finally` bloki ichida `loading = false` qiling. Natijani qaytaring.",
+      startingCode: "let loading = false;\nasync function loadData(url) {\n  // Bu yerga yozing\n}",
+      hint: "loading = true; try { const res = await fetch(url); return await res.json(); } finally { loading = false; }",
+      test: "if (typeof loadData !== 'function') return 'loadData funksiya emas'; const p = loadData('https://jsonplaceholder.typicode.com/todos/1'); if (loading === true) { return p.then(() => !loading ? null : 'loading false bo\\'lmadi'); } return 'loading true qilinmadi';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Timeout so'rovi (AbortController)",
+      instruction: "`AbortController` yarating. So'rovni yuborayotganda uning `signal`ini sozlamalarga qo'shing va so'rov yuborilgandan so'ng darhol so'rovni bekor qiling (`abort()`), so'ng 'Bekor qilindi' deb return qiling (catch ichida).",
+      startingCode: "async function requestAndAbort(url) {\n  // Bu yerga yozing\n}",
+      hint: "const controller = new AbortController(); try { const p = fetch(url, { signal: controller.signal }); controller.abort(); await p; } catch (e) { return 'Bekor qilindi'; }",
+      test: "if (typeof requestAndAbort !== 'function') return 'requestAndAbort funksiya emas'; return requestAndAbort('https://jsonplaceholder.typicode.com/posts').then(r => r === 'Bekor qilindi' ? null : 'So\\'rov abort qilinmadi');"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Response formatini dinamik aniqlash",
+      instruction: "Berilgan URL-dan fetch orqali javob oling. Agar `Content-Type` headeri `'application/json'`ni o'z ichiga olsa JSON ko'rinishida, aks holda matn (text) ko'rinishida qaytaring.",
+      startingCode: "async function getDynamic(url) {\n  // Bu yerga yozing\n}",
+      hint: "const res = await fetch(url); const type = res.headers.get('content-type'); if (type && type.includes('application/json')) { return await res.json(); } return await res.text();",
+      test: "if (typeof getDynamic !== 'function') return 'getDynamic funksiya emas'; return getDynamic('https://jsonplaceholder.typicode.com/todos/1').then(r => typeof r === 'object' && r.id === 1 ? null : 'Dinamik o\\'qish ishlamadi');"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Dinamik Headers Boshqaruvi (headersManager)",
+      instruction: "Yangi `Headers` obyekti yarating, unga berilgan `key` va `value` qiymatini o'rnating va ushbu `Headers` obyektini qaytaring.",
+      startingCode: "function headersManager(key, value) {\n  // Bu yerga yozing\n}",
+      hint: "const headers = new Headers(); headers.set(key, value); return headers;",
+      test: "if (typeof headersManager !== 'function') return 'headersManager funksiya emas';\nconst h = headersManager('x-api-key', 'secret');\nif (!(h instanceof Headers)) return 'Headers obyekti qaytarilmadi';\nif (h.get('x-api-key') !== 'secret') return 'Header qiymati noto\\'g\\'ri';\nif (h.get('X-API-Key') !== 'secret') return 'Headers case-insensitivity xususiyati ishlamadi';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ JSON Stream Yuklash (fetchJSONStream)",
+      instruction: "Berilgan URL'dan `fetch` so'rovi orqali keladigan ma'lumotlar oqimini (ReadableStream) `response.body.getReader()` va `TextDecoder` orqali bo'laklab (chunk-by-chunk) o'qing, ularni birlashtiring va to'liq yuklangach parse qilib JSON obyekt sifatida qaytaring.",
+      startingCode: "async function fetchJSONStream(url) {\n  // Bu yerga yozing\n}",
+      hint: "const res = await fetch(url); const reader = res.body.getReader(); const decoder = new TextDecoder(); let text = ''; while (true) { const { done, value } = await reader.read(); if (done) break; text += decoder.decode(value, { stream: true }); } text += decoder.decode(); return JSON.parse(text);",
+      test: "if (typeof fetchJSONStream !== 'function') return 'fetchJSONStream funksiya emas';\nreturn fetchJSONStream('https://jsonplaceholder.typicode.com/todos/1').then(r => {\n  if (r && r.id === 1) return null;\n  return 'Stream orqali yuklangan JSON noto\\'g\\'ri';\n}).catch(e => 'Xatolik: ' + e.message);"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

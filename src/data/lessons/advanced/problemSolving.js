@@ -183,31 +183,119 @@ graph LR
 | **Bubble Sort** | O(N^2) | Oddiy saralash ishlarida |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Ikki son yig'indisi (Two Sum)",
-    "instruction": "Berilgan tartiblangan massiv `nums` va maqsadli son `target` berilgan. Yig'indisi `target` ga teng bo'lgan ikkita sonning indekslarini massiv ko'rinishida qaytaruvchi `twoSum(nums, target)` funksiyasini yozing. (Faqat bitta yechim bor deb hisoblang).",
-    "startingCode": "function twoSum(nums, target) {\n  // Kodni shu yerga yozing\n}\n",
-    "hint": "Ikki ko'rsatkich (two pointers) usulidan foydalaning. left = 0 va right = nums.length - 1 deb oling.",
-    "test": "const res1 = twoSum([2, 7, 11, 15], 9);\nconst res2 = twoSum([1, 3, 4, 6, 8, 10], 10);\nif (Array.isArray(res1) && res1[0] === 0 && res1[1] === 1 && Array.isArray(res2) && res2[0] === 2 && res2[1] === 3) return null;\nreturn \"twoSum funksiyasi to'g'ri ishlamadi yoki indekslarni noto'g'ri qaytardi.\";"
-  },
-  {
-    "id": 2,
-    "title": "Anagramani aniqlash",
-    "instruction": "Ikkita string `s` va `t` berilgan. Agar `t` string `s` ning anagrammasi (bir xil harflardan tashkil topgan, tartibi har xil bo'lgan so'z) bo'lsa `true`, aks holda `false` qaytaruvchi `isAnagram(s, t)` funksiyasini yozing.",
-    "startingCode": "function isAnagram(s, t) {\n  // Kodni shu yerga yozing\n}\n",
-    "hint": "Ikkala stringdagi harflar sonini hisoblash uchun obyekt (frequency map) ishlating yoki ularni saralab solishtiring.",
-    "test": "if (isAnagram(\"anagram\", \"nagaram\") === true && isAnagram(\"rat\", \"car\") === false && isAnagram(\"a\", \"ab\") === false) return null;\nreturn \"isAnagram funksiyasi anagrammalarni noto'g'ri aniqladi.\";"
-  },
-  {
-    "id": 3,
-    "title": "Fibonachchi soni (Rekursiya)",
-    "instruction": "Rekursiya yordamida n-chi Fibonachchi sonini hisoblovchi `fibonacci(n)` funksiyasini yozing. Masalan, n=0 bo'lsa 0, n=1 bo'lsa 1, n=2 bo'lsa 1, n=3 bo'lsa 2 va hokazo. (n >= 0)",
-    "startingCode": "function fibonacci(n) {\n  // Kodni shu yerga yozing\n}\n",
-    "hint": "Base case: agar n < 2 bo'lsa, n ning o'zini qaytaring. Aks holda fibonacci(n-1) + fibonacci(n-2) ni qaytaring.",
-    "test": "if (fibonacci(0) === 0 && fibonacci(1) === 1 && fibonacci(6) === 8) {\n  if (code.includes(\"fibonacci\") && (code.match(/fibonacci/g) || []).length >= 2) {\n    return null;\n  }\n  return \"Funksiya rekursiv bo'lishi shart!\";\n}\nreturn \"Fibonachchi soni noto'g'ri hisoblandi.\";"
-  }
-],
+    {
+      id: 1,
+      title: "Ikki son yig'indisi (Two Sum)",
+      instruction: "Berilgan tartiblangan massiv `nums` va maqsadli son `target` berilgan. Yig'indisi `target` ga teng bo'lgan ikkita sonning indekslarini massiv ko'rinishida qaytaruvchi `twoSum(nums, target)` funksiyasini yozing. (Faqat bitta yechim bor deb hisoblang).",
+      startingCode: "function twoSum(nums, target) {\n  // Kodni shu yerga yozing\n}\n",
+      hint: "Ikki ko'rsatkich (two pointers) usulidan foydalaning. left = 0 va right = nums.length - 1 deb oling.",
+      test: "const res1 = twoSum([2, 7, 11, 15], 9);\nconst res2 = twoSum([1, 3, 4, 6, 8, 10], 10);\nif (Array.isArray(res1) && res1[0] === 0 && res1[1] === 1 && Array.isArray(res2) && res2[0] === 2 && res2[1] === 3) return null;\nreturn \"twoSum funksiyasi to'g'ri ishlamadi yoki indekslarni noto'g'ri qaytardi.\";"
+    },
+    {
+      id: 2,
+      title: "Anagramani aniqlash",
+      instruction: "Ikkita string `s` va `t` berilgan. Agar `t` string `s` ning anagrammasi (bir xil harflardan tashkil topgan, tartibi har xil bo'lgan so'z) bo'lsa `true`, aks holda `false` qaytaruvchi `isAnagram(s, t)` funksiyasini yozing.",
+      startingCode: "function isAnagram(s, t) {\n  // Kodni shu yerga yozing\n}\n",
+      hint: "Ikkala stringdagi harflar sonini hisoblash uchun obyekt (frequency map) ishlating yoki ularni saralab solishtiring.",
+      test: "if (isAnagram(\"anagram\", \"nagaram\") === true && isAnagram(\"rat\", \"car\") === false && isAnagram(\"a\", \"ab\") === false) return null;\nreturn \"isAnagram funksiyasi anagrammalarni noto'g'ri aniqladi.\";"
+    },
+    {
+      id: 3,
+      title: "Fibonachchi soni (Rekursiya)",
+      instruction: "Rekursiya yordamida n-chi Fibonachchi sonini hisoblovchi `fibonacci(n)` funksiyasini yozing. Masalan, n=0 bo'lsa 0, n=1 bo'lsa 1, n=2 bo'lsa 1, n=3 bo'lsa 2 va hokazo. (n >= 0)",
+      startingCode: "function fibonacci(n) {\n  // Kodni shu yerga yozing\n}\n",
+      hint: "Base case: agar n < 2 bo'lsa, n ning o'zini qaytaring. Aks holda fibonacci(n-1) + fibonacci(n-2) ni qaytaring.",
+      test: "if (fibonacci(0) === 0 && fibonacci(1) === 1 && fibonacci(6) === 8) {\n  if (code.includes(\"fibonacci\") && (code.match(/fibonacci/g) || []).length >= 2) {\n    return null;\n  }\n  return \"Funksiya rekursiv bo'lishi shart!\";\n}\nreturn \"Fibonachchi soni noto'g'ri hisoblandi.\";"
+    },
+    {
+      id: 4,
+      title: "Rekursiv Yig'indi",
+      instruction: "Berilgan sonli massiv elementlarining yig'indisini rekursiv tarzda hisoblaydigan `recursiveSum(arr)` funksiyasini yozing. Loop (for, while) yoki `reduce` ishlatish taqiqlanadi!",
+      startingCode: "function recursiveSum(arr) {\n  // Kodni shu yerga yozing\n}\n",
+      hint: "Base case: agar massiv uzunligi 0 bo'lsa, 0 qaytaring. Aks holda birinchi elementni massivning qolgan qismi yig'indisiga qo'shing: arr[0] + recursiveSum(arr.slice(1)).",
+      test: "if (code.includes(\"for\") || code.includes(\"while\") || code.includes(\"reduce\")) {\n  return \"Loop (for, while) yoki reduce ishlatish mumkin emas! Faqat rekursiya.\";\n}\nif (recursiveSum([1, 2, 3, 4]) === 10 && recursiveSum([]) === 0 && recursiveSum([5]) === 5) return null;\nreturn \"recursiveSum to'g'ri yig'indi qaytarmadi.\";"
+    },
+    {
+      id: 5,
+      title: "Chiziqli qidiruv (Linear Search)",
+      instruction: "Berilgan obyektlar massivi `arr` ichidan ma'lum bir `key` xususiyati bo'yicha `value` qiymatga ega bo'lgan birinchi obyektning indeksini qaytaruvchi `linearSearch(arr, key, value)` funksiyasini yozing. Agar topilmasa `-1` qaytarsin.",
+      startingCode: "function linearSearch(arr, key, value) {\n  // Kodni shu yerga yozing\n}\n",
+      hint: "Massiv bo'ylab oddiy tsikl aylaning va item[key] === value ekanini tekshiring.",
+      test: "const list = [{id: 1, name: 'Ali'}, {id: 2, name: 'Vali'}, {id: 3, name: 'Ali'}];\nif (linearSearch(list, 'name', 'Vali') === 1 && linearSearch(list, 'id', 3) === 2 && linearSearch(list, 'name', 'Hasan') === -1) return null;\nreturn \"linearSearch funksiyasi obyektni to'g'ri qidira olmadi.\";"
+    },
+    {
+      id: 6,
+      title: "Binar qidiruv (Binary Search)",
+      instruction: "O'sib borish tartibida joylashgan massiv `arr` va qidirilayotgan son `target` berilgan. Binary Search (ikki bo'lish qidiruvi) yordamida `target` ning indeksini qaytaruvchi `binarySearch(arr, target)` funksiyasini yozing. Agar qiymat massivda bo'lmasa `-1` qaytarsin.",
+      startingCode: "function binarySearch(arr, target) {\n  // Kodni shu yerga yozing\n}\n",
+      hint: "Chap (low) va o'ng (high) chegaralarni belgilab, o'rtadagi element (mid) targetdan kichik yoki kattaligiga qarab chegaralarni toraytiring.",
+      test: "const sorted = [1, 3, 5, 7, 9, 11, 13];\nif (binarySearch(sorted, 7) === 3 && binarySearch(sorted, 1) === 0 && binarySearch(sorted, 13) === 6 && binarySearch(sorted, 4) === -1) return null;\nreturn \"binarySearch algoritmi to'g'ri ishlamadi.\";"
+    },
+    {
+      id: 7,
+      title: "Pufakchali saralash (Bubble Sort)",
+      instruction: "Berilgan tartibsiz sonlar massivini o'sib borish tartibida pufakchali saralash (Bubble Sort) yordamida saralab, saralangan massivni qaytaruvchi `bubbleSort(arr)` funksiyasini yozing.",
+      startingCode: "function bubbleSort(arr) {\n  // Kodni shu yerga yozing\n}\n",
+      hint: "Ikkita ichma-ich for tsikli yozing. Agar qo'shni elementlar noto'g'ri tartibda bo'lsa (arr[j] > arr[j+1]), ularning joyini almashtiring (swap).",
+      test: "const sorted = bubbleSort([5, 3, 8, 4, 2]);\nif (Array.isArray(sorted) && sorted.join(\",\") === \"2,3,4,5,8\") return null;\nreturn \"bubbleSort funksiyasi massivni to'g'ri saralamadi.\";"
+    },
+    {
+      id: 8,
+      title: "Palindrom tekshiruvi",
+      instruction: "Berilgan string `str` palindrom (chapdan ham, o'ngdan ham bir xil o'qiladigan so'z yoki gap) ekanligini tekshiruvchi `isPalindrome(str)` funksiyasini yozing. Bo'shliqlar, tinish belgilari va harflar registri (katta-kichikligi) inobatga olimasligi kerak.",
+      startingCode: "function isPalindrome(str) {\n  // Kodni shu yerga yozing\n}\n",
+      hint: "Regex yordamida faqat harf va sonlarni saqlab qoling: str.toLowerCase().replace(/[^a-z0-9]/g, ''), keyin uni teskarisi bilan solishtiring.",
+      test: "if (isPalindrome(\"A man, a plan, a canal: Panama\") === true && isPalindrome(\"race a car\") === false && isPalindrome(\"Abba\") === true) return null;\nreturn \"isPalindrome gaplarni palindromlikka to'g'ri tekshira olmadi.\";"
+    },
+    {
+      id: 9,
+      title: "FizzBuzz",
+      instruction: "Berilgan musbat butun son `n` gacha bo'lgan sonlar massivini qaytaradigan `fizzBuzz(n)` funksiyasini yozing. Bunda: 3 ga bo'linadigan sonlar o'rniga 'Fizz', 5 ga bo'linadigan sonlar o'rniga 'Buzz', ham 3 ga ham 5 ga bo'linadigan sonlar o'rniga esa 'FizzBuzz' yozilishi lozim.",
+      startingCode: "function fizzBuzz(n) {\n  // Kodni shu yerga yozing\n}\n",
+      hint: "1 dan n gacha tsikl aylantiring. % 3 === 0 && % 5 === 0 tekshiruvidan boshlang.",
+      test: "const res = fizzBuzz(15);\nif (Array.isArray(res) && res[2] === \"Fizz\" && res[4] === \"Buzz\" && res[14] === \"FizzBuzz\" && res[0] === 1) return null;\nreturn \"fizzBuzz funksiyasi kutilgan massivni qaytarmadi.\";"
+    },
+    {
+      id: 10,
+      title: "Stek (Stack) tuzilmasi",
+      instruction: "LIFO (Last In First Out) tamoyili asosida ishlaydigan `Stack` klassini yozing. U quyidagi metodlarga ega bo'lik bo'lishi shart:\n- `push(element)`: element qo'shish\n- `pop()`: oxirgi elementni o'chirish va qaytarish (stek bo'sh bo'lsa null yoki undefined qaytarsin)\n- `peek()`: oxirgi elementni ko'rish (o'chirmasdan)\n- `isEmpty()`: stek bo'shligini tekshirish (true/false)",
+      startingCode: "class Stack {\n  constructor() {\n    this.items = [];\n  }\n\n  push(element) {\n    // Kodni yozing\n  }\n\n  pop() {\n    // Kodni yozing\n  }\n\n  peek() {\n    // Kodni yozing\n  }\n\n  isEmpty() {\n    // Kodni yozing\n  }\n}\n",
+      hint: "this.items massividan va uning push, pop metodlaridan foydalaning. peek uchun this.items[this.items.length - 1] ni ishlating.",
+      test: "const stack = new Stack();\nif (!stack.isEmpty()) return \"Boshlanishida stack bo'sh bo'lishi kerak.\";\nstack.push(10);\nstack.push(20);\nif (stack.peek() !== 20) return \"peek() oxirgi qo'shilgan elementni qaytarishi kerak.\";\nif (stack.pop() !== 20 || stack.pop() !== 10) return \"LIFO tartibida elementlar pop qilinishi kerak.\";\nif (!stack.isEmpty()) return \"Barcha elementlar olingach stack bo'sh bo'lishi kerak.\";\nreturn null;"
+    },
+    {
+      id: 11,
+      title: "Navbat (Queue) tuzilmasi",
+      instruction: "FIFO (First In First Out) tamoyili asosida ishlaydigan `Queue` klassini yarating. U quyidagi metodlarga ega bo'lishi lozim:\n- `enqueue(element)`: navbat oxiriga element qo'shish\n- `dequeue()`: navbat boshidagi elementni o'chirish va qaytarish (bo'sh bo'lsa null/undefined)\n- `peek()`: navbat boshidagi elementni o'chirmasdan ko'rish\n- `isEmpty()`: navbat bo'shligini tekshirish",
+      startingCode: "class Queue {\n  constructor() {\n    this.items = [];\n  }\n\n  enqueue(element) {\n    // Kodni yozing\n  }\n\n  dequeue() {\n    // Kodni yozing\n  }\n\n  peek() {\n    // Kodni yozing\n  }\n\n  isEmpty() {\n    // Kodni yozing\n  }\n}\n",
+      hint: "enqueue uchun this.items.push(element) va dequeue uchun this.items.shift() dan foydalanishingiz mumkin.",
+      test: "const queue = new Queue();\nif (!queue.isEmpty()) return \"Boshlanishida navbat bo'sh bo'lishi kerak.\";\nqueue.enqueue(10);\nqueue.enqueue(20);\nif (queue.peek() !== 10) return \"peek() navbat boshidagi elementni qaytarishi kerak.\";\nif (queue.dequeue() !== 10 || queue.dequeue() !== 20) return \"FIFO tartibida elementlar dequeue qilinishi kerak.\";\nif (!queue.isEmpty()) return \"Queue bo'sh bo'lishi kerak.\";\nreturn null;"
+    },
+    {
+      id: 12,
+      title: "Bog'langan ro'yxat (Linked List)",
+      instruction: "Sodda bog'langan ro'yxat (Linked List) yaratish uchun `Node` klassini va `LinkedList` klassini yozing. `LinkedList` klassida `head` (boshlang'ich node, default null) va quyidagi metodlar bo'lishi kerak:\n- `append(value)`: ro'yxat oxiriga yangi Node qo'shish.\n- `toArray()`: barcha node qiymatlarini massiv ko'rinishida qaytarish.\nHar bir Node obyekti `value` va `next` (default null) xususiyatlariga ega bo'lishi kerak.",
+      startingCode: "class Node {\n  constructor(value) {\n    this.value = value;\n    this.next = null;\n  }\n}\n\nclass LinkedList {\n  constructor() {\n    this.head = null;\n  }\n\n  append(value) {\n    // Kodni yozing\n  }\n\n  toArray() {\n    // Kodni yozing\n  }\n}\n",
+      hint: "append metodida agar head === null bo'lsa, head = new Node(value) qiling. Aks holda oxirgi nodegacha borib (current.next !== null tsikli orqali), uning nextiga vaqtinchalik node biriktiring.",
+      test: "const list = new LinkedList();\nlist.append(1);\nlist.append(2);\nlist.append(3);\nconst arr = list.toArray();\nif (Array.isArray(arr) && arr.join(\",\") === \"1,2,3\") {\n  if (list.head && list.head.value === 1 && list.head.next && list.head.next.value === 2) {\n    return null;\n  }\n  return \"Bog'langan ro'yxat strukturasida bog'liqliklar to'g'ri o'rnatilmagan.\";\n}\nreturn \"toArray() metodi to'g'ri massiv qaytarmadi.\";"
+    },
+    {
+      id: 13,
+      title: "Sliding Window - Maksimal yig'indi",
+      instruction: "Sirpanuvchi oyna (Sliding Window) texnikasi yordamida massivdagi ketma-ket `k` ta elementning maksimal yig'indisini O(N) vaqt murakkabligida aniqlaydigan `maxSubArraySum(arr, k)` funksiyasini yozing. (Agar `arr.length < k` bo'lsa, `0` qaytaring).",
+      startingCode: "function maxSubArraySum(arr, k) {\n  // k ta ketma-ket elementlarning maksimal yig'indisini toping\n}",
+      hint: "if (arr.length < k) return 0;\nlet maxSum = 0, tempSum = 0;\nfor (let i = 0; i < k; i++) maxSum += arr[i];\ntempSum = maxSum;\nfor (let i = k; i < arr.length; i++) {\n  tempSum = tempSum - arr[i - k] + arr[i];\n  maxSum = Math.max(maxSum, tempSum);\n}\nreturn maxSum;",
+      test: "if (maxSubArraySum([1, 2, 5, 2, 8, 1, 5], 3) === 15 && maxSubArraySum([4, 2, 1, 6], 1) === 6 && maxSubArraySum([4, 2, 1, 6], 5) === 0) return null;\nreturn 'maxSubArraySum to\\'g\\'ri yig\\'indi qaytarmadi yoki O(N) ishlatilmadi';"
+    },
+    {
+      id: 14,
+      title: "Deep Object Comparison",
+      instruction: "Ikkita obyekt yoki massivni ularning barcha ichki nested qiymatlari va tuzilishi jihatidan chuqur (deep) solishtiruvchi `deepEqual(a, b)` rekursiv funksiyasini yozing.",
+      startingCode: "function deepEqual(a, b) {\n  // a va b obyektlari chuqur tengligini tekshiring\n}",
+      hint: "if (a === b) return true;\nif (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) return false;\nconst keysA = Object.keys(a), keysB = Object.keys(b);\nif (keysA.length !== keysB.length) return false;\nfor (let key of keysA) {\n  if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;\n}\nreturn true;",
+      test: "if (deepEqual({a: 1, b: {c: 2}}, {a: 1, b: {c: 2}}) === true && deepEqual({a: 1}, {a: 2}) === false) return null;\nreturn 'deepEqual funksiyasi obyektlarni chuqur solishtira olmadi';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

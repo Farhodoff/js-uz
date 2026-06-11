@@ -327,32 +327,103 @@ Massivlar ustida yuqori tartibli metodlarni qo'llashda quyidagi qoidalarga rioya
 | **\`every\`** | Barcha elementlar shartga mos kelishini tekshirish | Truthy / Falsy | \`true\` yoki \`false\` | Yo'q | **Ha** (\`false\` topilsa darhol to'xtaydi) |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Foydalanuvchilarni Filtrlash va Ismlarini Olish",
-    "instruction": "Sizga foydalanuvchilar obyekti massivi beriladi. Har bir foydalanuvchi `name` (ism), `age` (yosh) va `isActive` (faol) xususiyatlariga ega. Siz faol bo'lgan (`isActive: true`) va yoshi 18 dan katta yoki teng bo'lgan foydalanuvchilarning faqat ismlarini massiv ko'rinishida qaytaruvchi `getActiveAdultNames(users)` funksiyasini yozishingiz kerak. Buni `.filter()` va `.map()` metodlaridan foydalanib bajaring.",
-    "startingCode": "function getActiveAdultNames(users) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "users.filter(user => user.isActive && user.age >= 18).map(user => user.name) orqali yechishingiz mumkin.",
-    "test": "const sandbox = new Function(code + '; return getActiveAdultNames;');\nconst fn = sandbox();\nconst testUsers = [\n  { name: 'Ali', age: 20, isActive: true },\n  { name: 'Vali', age: 16, isActive: true },\n  { name: 'Sardor', age: 25, isActive: false },\n  { name: 'Olim', age: 18, isActive: true }\n];\nconst result = fn(testUsers);\nif (!Array.isArray(result)) return 'Natija massiv bo\\'lishi kerak';\nif (result.length !== 2) return 'Natijadagi elementlar soni noto\\'g\\'ri';\nif (result[0] !== 'Ali' || result[1] !== 'Olim') return 'Natijadagi ismlar noto\\'g\\'ri. Kutilgan: [\"Ali\", \"Olim\"], Olingan: ' + JSON.stringify(result);\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Kategoriyalar Bo'yicha Mahsulotlar Narxini Jamlash",
-    "instruction": "Sizga mahsulotlar ro'yxati (massiv) beriladi. Har bir mahsulot `name`, `category` (kategoriya) va `price` (narx) xususiyatlariga ega. Berilgan kategoriya bo'yicha barcha mahsulotlar narxining umumiy yig'indisini hisoblaydigan `getTotalPriceByCategory(products, category)` funksiyasini yozing. Buning uchun `.filter()` va `.reduce()` yoki faqat `.reduce()` metodidan foydalaning. Agar mahsulotlar topilmasa, `0` qaytarsin.",
-    "startingCode": "function getTotalPriceByCategory(products, category) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Avval berilgan kategoriya bo'yicha filter qiling, so'ngra reduce yordamida price larni jamlang. reduce boshlang'ich qiymatini 0 qilib belgilashni unutmang.",
-    "test": "const sandbox = new Function(code + '; return getTotalPriceByCategory;');\nconst fn = sandbox();\nconst products = [\n  { name: 'Telefon', category: 'electronics', price: 500 },\n  { name: 'Kitob', category: 'books', price: 15 },\n  { name: 'Noutbuk', category: 'electronics', price: 1200 },\n  { name: 'Ruchka', category: 'books', price: 2 }\n];\nconst sumElec = fn(products, 'electronics');\nconst sumBooks = fn(products, 'books');\nconst sumEmpty = fn(products, 'clothing');\nif (sumElec !== 1700) return 'Electronics kategoriyasi bo\\'yicha yig\\'indi xato. Kutilgan: 1700, Olingan: ' + sumElec;\nif (sumBooks !== 17) return 'Books kategoriyasi bo\\'yicha yig\\'indi xato. Kutilgan: 17, Olingan: ' + sumBooks;\nif (sumEmpty !== 0) return 'Mavjud bo\\'lmagan kategoriya uchun 0 qaytishi kerak';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Talabalarni Guruhlash",
-    "instruction": "Sizga talabalar massivi beriladi. Har bir talaba `name` (ism) va `grade` (baho: 'A', 'B', 'C' va h.k.) xususiyatlariga ega. Talabalarni baholari bo'yicha guruhlaydigan `groupStudentsByGrade(students)` funksiyasini yozing. Funksiya qaytaradigan obyekt kalitlari baholar bo'lishi va qiymatlari o'sha bahoni olgan talabalarning ismlari massividan iborat bo'lishi kerak. Buning uchun `.reduce()` metodidan foydalaning.",
-    "startingCode": "function groupStudentsByGrade(students) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "reduce metodining boshlang'ich qiymatini bo'sh obyekt `{}` qilib oling. reduce ichida, agar `acc[student.grade]` mavjud bo'lmasa, uni bo'sh massiv `[]` sifatida e'lon qiling, keyin talabaning ismini unga push qiling.",
-    "test": "const sandbox = new Function(code + '; return groupStudentsByGrade;');\nconst fn = sandbox();\nconst students = [\n  { name: 'Ali', grade: 'A' },\n  { name: 'Vali', grade: 'B' },\n  { name: 'Sardor', grade: 'A' },\n  { name: 'Olim', grade: 'C' },\n  { name: 'Eldor', grade: 'B' }\n];\nconst result = fn(students);\nif (typeof result !== 'object' || result === null) return 'Natija obyekt bo\\'ish kerak';\nif (!result.A || !result.B || !result.C) return 'Natija obyektida barcha baholar kalit sifatida mavjud emas';\nif (result.A.length !== 2 || !result.A.includes('Ali') || !result.A.includes('Sardor')) return 'A baho guruhi xato';\nif (result.B.length !== 2 || !result.B.includes('Vali') || !result.B.includes('Eldor')) return 'B baho guruhi xato';\nif (result.C.length !== 1 || result.C[0] !== 'Olim') return 'C baho guruhi xato';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Map: Narxlarni yangilash (Boshlang'ich)",
+      instruction: "Mahsulotlar narxiga 15% QQS qo'shib, yangi massiv yarating.",
+      startingCode: "const narxlar = [100, 200, 300];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "narxlar.map(n => n * 1.15)",
+      test: "if (logs.some(l => Array.isArray(l) && Math.abs(l[0] - 115) < 0.1)) return null; return 'Narxlar noto\\'g\\'ri!';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Filter: Juft sonlar (Boshlang'ich)",
+      instruction: "Massivdan faqat juft sonlarni olib, konsolga chiqaring.",
+      startingCode: "const sonlar = [1, 2, 3, 4, 5, 6, 7, 8];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "sonlar.filter(n => n % 2 === 0)",
+      test: "if (logs.some(l => Array.isArray(l) && l.length === 4 && l[0] === 2)) return null; return 'Faqat juft sonlar qolishi kerak!';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Reduce: Yig'indi (Boshlang'ich)",
+      instruction: "Massivdagi barcha sonlarni qo'shib, umumiy yig'indini chiqaring.",
+      startingCode: "const ballar = [85, 90, 70, 100];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "ballar.reduce((sum, ball) => sum + ball, 0)",
+      test: "if (logs.includes(345)) return null; return 'Umumiy ball 345 chiqishi kerak!';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Find: Birinchi topish (O'rta)",
+      instruction: "Massivdan 50 dan katta birinchi sonni toping.",
+      startingCode: "const sonlar = [20, 40, 60, 30, 80];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "sonlar.find(n => n > 50)",
+      test: "if (logs.includes(60)) return null; return '50 dan katta birinchi sonni toping!';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Map + Filter: Ism va yoshni o'zgartirish (O'rta)",
+      instruction: "18 yoshdan oshgan odamlarning ismlarini KATTA HARFLAR bilan oling.",
+      startingCode: "const adamlar = [\n  { ism: 'Ali', yosh: 20 },\n  { ism: 'zara', yosh: 17 },\n  { ism: 'bobir', yosh: 25 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "adamlar.filter(a => a.yosh >= 18).map(a => a.ism.toUpperCase())",
+      test: "if (logs.some(l => Array.isArray(l) && l.length === 2 && l[0] === 'ALI')) return null; return 'Natijani to\\'g\\'ri formatda oling!';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Some: Shartga mos bormi? (O'rta)",
+      instruction: "Massivda 18 yoshdan oshgan foydalanuvchi bormi? true/false ni konsolga chiqaring.",
+      startingCode: "const foydalanuvchilar = [\n  { ism: 'Ali', yosh: 20 },\n  { ism: 'Zara', yosh: 17 },\n  { ism: 'Bobir', yosh: 15 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "foydalanuvchilar.some(f => f.yosh >= 18)",
+      test: "if (logs.includes(true)) return null; return 'some() metodi false qaytarishi kerak!';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Every: Hammasi shartga mos? (O'rta)",
+      instruction: "Hammasi 18 yoshdan oshganmi? true/false ni chiqaring.",
+      startingCode: "const foydalanuvchilar = [\n  { ism: 'Ali', yosh: 20 },\n  { ism: 'Zara', yosh: 25 },\n  { ism: 'Bobir', yosh: 15 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "foydalanuvchilar.every(f => f.yosh >= 18)",
+      test: "if (logs.includes(false)) return null; return 'Hisoblanmadi!';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Reduce: Jami summani hisoblash (O'rta)",
+      instruction: "Savatchadagi barcha tovarlarning umumiy narxini hisoblang (narx × miqdori).",
+      startingCode: "const savat = [\n  { nom: 'Kitob', narx: 30000, miqdori: 2 },\n  { nom: 'Qalam', narx: 5000, miqdori: 3 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "savat.reduce((sum, t) => sum + (t.narx * t.miqdori), 0)",
+      test: "if (logs.includes(75000)) return null; return 'Jami 75000 bo\\'lishi kerak!';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Chaining: Filter + Map + Sort (Qiyin)",
+      instruction: "18+ yoshli odamlarni ismlarini alfabetik tartibda chiqaring.",
+      startingCode: "const adamlar = [\n  { ism: 'Zara', yosh: 20 },\n  { ism: 'Ali', yosh: 17 },\n  { ism: 'Bobir', yosh: 25 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "adamlar.filter(a => a.yosh >= 18).map(a => a.ism).sort()",
+      test: "if (logs.some(l => Array.isArray(l) && l[0] === 'Bobir' && l[1] === 'Zara')) return null; return 'Alfabetik tartibda bo\\'lishi kerak!';"
+    },
+    {
+      id: 10,
+      title: "🔟 Reduce: Massivni Objektga aylantirish (Qiyin)",
+      instruction: "Foydalanuvchilar massivini ID bo'yicha indexed objektga aylantiring.",
+      startingCode: "const users = [\n  { id: 1, ism: 'Ali' },\n  { id: 2, ism: 'Zara' }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "users.reduce((obj, u) => { obj[u.id] = u.ism; return obj; }, {})",
+      test: "if (logs.some(l => typeof l === 'object' && l['1'] === 'Ali' && l['2'] === 'Zara')) return null; return 'Objektga aylantirish kerak!';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Map + Sort: Narxlarni saralash (Qiyin)",
+      instruction: "Mahsulotlarni narxga ko'ra o'suvchi tartibda saralab, ismlarni konsolga chiqaring.",
+      startingCode: "const tovarlar = [\n  { nom: 'Kitob', narx: 30000 },\n  { nom: 'Qalam', narx: 5000 },\n  { nom: 'Daftar', narx: 15000 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "[...tovarlar].sort((a, b) => a.narx - b.narx).map(t => t.nom)",
+      test: "if (logs.some(l => Array.isArray(l) && l[0] === 'Qalam' && l[1] === 'Daftar')) return null; return 'Narxga ko\\'ra saralanmadi!';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Reduce: Guruhlash (Eng Qiyin)",
+      instruction: "Tovarlarni narxga ko'ra guruhlang: { narx: [tovar ismları] }.",
+      startingCode: "const tovarlar = [\n  { nom: 'Kitob', narx: 30000 },\n  { nom: 'Qalam', narx: 5000 },\n  { nom: 'Daftar', narx: 30000 }\n];\n// Kodni shu yerda yozing\nconsole.log(/* natija */);",
+      hint: "tovarlar.reduce((acc, t) => { if (!acc[t.narx]) acc[t.narx] = []; acc[t.narx].push(t.nom); return acc; }, {})",
+      test: "if (logs.some(l => typeof l === 'object' && l['30000'] && l['30000'].length === 2)) return null; return 'Guruhlash to\\'g\\'ri emas!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

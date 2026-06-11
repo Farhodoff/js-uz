@@ -143,32 +143,103 @@ Massiv uchun \`?.[index]\` shaklida, funksiyani chaqirish uchun esa \`funksiyaNo
 Quyidagi testlar va topshiriqlarni bajarib, optional chaining operatorlaridan foydalanish ko'nikmalaringizni sinab ko'ring.
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Xavfsiz Funksiya Chaqiruvi",
-    "instruction": "'obj' obyekti ichida 'sayHello' nomli funksiya borligini optional chaining (?.) orqali xavfsiz tekshirib, keyin chaqiring.",
-    "startingCode": "const obj = {};\n\n// Kodni shu yerda yozing\n",
-    "hint": "obj.sayHello?.();",
-    "test": "if (!code.includes('?.(')) return 'Optional chaining orqali funksiya chaqiruvi (?.()) ishlatilmadi';\nconst sandbox = new Function('obj', code);\nconst mockObj = { sayHello: () => {} };\nsandbox(mockObj);\nsandbox({}); // Should not crash\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Zanjirli Xavfsiz Murojaat",
-    "instruction": "'user' obyektidan 'user.profile.address.zipcode' qiymatini xavfsiz oling va uni 'zipcode' o'zgaruvchisiga saqlang.",
-    "startingCode": "const user = { profile: { address: null } };\n\n// Kodni shu yerda yozing\n",
-    "hint": "const zipcode = user.profile?.address?.zipcode;",
-    "test": "if (!code.includes('?.') || !code.includes('zipcode')) return 'Optional chaining orqali zipcode o\\'zlashtirilmadi';\nconst sandbox = new Function('user', code + '; return zipcode;');\nconst res1 = sandbox({ profile: { address: null } });\nconst res2 = sandbox({ profile: { address: { zipcode: 12345 } } });\nif (res1 === undefined && res2 === 12345) return null;\nreturn 'Natija noto\\'g\\'ri';"
-  },
-  {
-    "id": 3,
-    "title": "Nullish Coalescing bilan Default Qiymat",
-    "instruction": "'user' obyektidagi 'age' qiymatini xavfsiz oling, agar u null yoki undefined bo'lsa, 'age' o'zgaruvchisiga 18 qiymatini default qilib o'rnating. (0 yoki false qiymatlar o'zgarmasligi kerak).",
-    "startingCode": "const user = { age: 0 };\n\n// Kodni shu yerda yozing\n",
-    "hint": "const age = user.age ?? 18;",
-    "test": "if (!code.includes('??')) return 'Nullish coalescing (??) operatori ishlatilmadi';\nconst sandbox = new Function('user', code + '; return age;');\nconst res1 = sandbox({ age: 0 });\nconst res2 = sandbox({ age: null });\nif (res1 === 0 && res2 === 18) return null;\nreturn 'Kutilgan qiymat hosil bo\\'lmadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Xavfsiz funksiya chaqiruvi (Boshlang'ich)",
+      instruction: "Obyekt ichidagi funksiya borligini tekshirib, keyin chaqiring.",
+      startingCode: "const obj = { };\n// obj.sayHello funksiyasini ?. bilan chaqiring\n",
+      hint: "obj.sayHello?.();",
+      test: "if (code.includes('?.(')) return null; return '?.() sintaksisidan foydalaning';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Zanjirli murojaat (Boshlang'ich)",
+      instruction: "Obyekt ichidagi user.profile.address.zipcode qiymatini ?. yordamida xavfsiz oling va uni zipcode o'zgaruvchisiga saqlang.",
+      startingCode: "const user = { profile: { address: null } };\nconst zipcode = // Kodni yozing\n",
+      hint: "user.profile?.address?.zipcode;",
+      test: "if (code.includes('user.profile?.address?.zipcode')) return null; return '?. operatorini zanjir ko\\'rinishida ishlating';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Nullish Coalescing (Boshlang'ich)",
+      instruction: "Foydalanuvchi yoshi (user.age) null yoki undefined bo'lsa, 18 default qiymat berilsin. ?? operatoridan foydalaning.",
+      startingCode: "const user = { age: null };\nconst age = // Kodni yozing\n",
+      hint: "user.age ?? 18;",
+      test: "if (code.includes('user.age ?? 18')) return null; return '?? operatori yordamida yoshni 18 qilib belgilang';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Massiv elementiga xavfsiz murojaat (Boshlang'ich)",
+      instruction: "Foydalanuvchi ma'lumotlari obyektidagi 'users' massivining birinchi elementini (?.[0]) xavfsiz oling.",
+      startingCode: "const data = { users: null };\nconst firstUser = // Kodni yozing\n",
+      hint: "data.users?.[0];",
+      test: "if (code.includes('data.users?.[0]')) return null; return 'Massivning 0-indeksiga xavfsiz murojaat qiling (?.[0])';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ ?? va || farqi (O'rta)",
+      instruction: "Uydagi harorat (temperature) 0 bo'lsa ham saqlab qoladigan, faqat null yoki undefined bo'lsa 22 qiymatini beradigan kod yozing.",
+      startingCode: "const home = { temperature: 0 };\nconst temp = // Kodni yozing\n",
+      hint: "home.temperature ?? 22;",
+      test: "if (code.includes('home.temperature ?? 22')) return null; return '0 darajani o\\'chirib yubormaslik uchun ?? dan foydalaning';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Xavfsiz metod chaqiruvi (O'rta)",
+      instruction: "Foydalanuvchi profilidagi updateAvatar metodini ?. bilan chaqiring.",
+      startingCode: "const user = { updateAvatar: null };\n// Kodni shu yerda yozing\n",
+      hint: "user.updateAvatar?.();",
+      test: "if (code.includes('user.updateAvatar?.()')) return null; return 'Metodni ?.() orqali xavfsiz chaqiring';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Dinamik kalit orqali xavfsiz murojaat (O'rta)",
+      instruction: "Obyekt ichidagi xususiyatni dinamik propKey kaliti yordamida xavfsiz oling (?.[propKey]).",
+      startingCode: "const user = { info: { age: 25 } };\nconst propKey = 'age';\nconst age = // Kodni yozing\n",
+      hint: "user.info?.[propKey];",
+      test: "if (code.includes('user.info?.[propKey]')) return null; return 'Dinamik kalitga xavfsiz murojaat qiling (?.[propKey])';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ API xatosidan himoya (O'rta)",
+      instruction: "API dan kelgan response obyekti bo'sh bo'lishi mumkin. Undagi response.data.user.name qiymatiga xavfsiz murojaat qilib, agar yo'q bo'lsa 'Mehmon' qiymatini qaytaring.",
+      startingCode: "const response = {};\nconst userName = // Kodni yozing\n",
+      hint: "response.data?.user?.name ?? 'Mehmon';",
+      test: "if (code.includes('response.data?.user?.name ??') && code.includes('Mehmon')) return null; return 'Zanjirli murojaat va default qiymatni to\\'g\\'ri qo\\'llang';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ DOM elementi textContent (Qiyin)",
+      instruction: "Qidiruv natijasi obyekti titleEl bo'lishi yoki topilmasligi (null) mumkin. Uning textContent xususiyatini xavfsiz oladigan va default holatda 'Sarlavha topilmadi' qiymatini qaytaradigan ifoda yozing.",
+      startingCode: "const titleEl = null;\nconst titleText = // Kodni yozing\n",
+      hint: "titleEl?.textContent ?? 'Sarlavha topilmadi';",
+      test: "if (code.includes('titleEl?.textContent ??') && code.includes('Sarlavha topilmadi')) return null; return 'titleEl?.textContent ?? \"Sarlavha topilmadi\" ko\\'rinishida yozing';"
+    },
+    {
+      id: 10,
+      title: "🔟 Xavfsiz callback chaqirish (Qiyin)",
+      instruction: "onComplete funksiyasi parametr sifatida berilishi yoki berilmasligi mumkin. Uni xavfsiz tarzda 42 argumenti bilan chaqiring.",
+      startingCode: "function finishTask(onComplete) {\n  // Kodni shu yerda yozing\n}",
+      hint: "onComplete?.(42);",
+      test: "if (code.includes('onComplete?.(42)')) return null; return 'onComplete?.(42) ko\\'rinishida xavfsiz chaqiring';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Obyekt destrukturlash bilan ?. (Qiyin)",
+      instruction: "Foydalanuvchi ma'lumotlaridagi settings.options.notifications?.email xususiyatidan foydalanib, uning qiymatini oling va agar u null/undefined bo'lsa true qiymatini default qiling.",
+      startingCode: "const settings = { options: {} };\nconst emailAlert = // Kodni yozing\n",
+      hint: "settings.options.notifications?.email ?? true;",
+      test: "if (code.includes('settings.options.notifications?.email ?? true')) return null; return 'Email notification holatini xavfsiz oling va default true bering';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Murakkab massiv va obyekt zanjiri (Eng Qiyin)",
+      instruction: "Kompaniya xodimlari ro'yxatida 'employees[0].projects[1].name' qiymatini xavfsiz oling, agar loyiha nomi mavjud bo'lmasa 'Noma'lum loyiha' deb o'rnating.",
+      startingCode: "const company = { employees: [] };\nconst projectName = // Kodni yozing\n",
+      hint: "company.employees?.[0]?.projects?.[1]?.name ?? 'Noma'lum loyiha';",
+      test: "if (code.includes('company.employees?.[0]?.projects?.[1]?.name ??') && code.includes('Noma\\'lum loyiha')) return null; return 'Zanjirli murojaatlarni va default qiymatni to\\'g\\'ri qo\\'llang';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

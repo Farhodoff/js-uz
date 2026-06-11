@@ -289,32 +289,119 @@ describe('Shopping Cart Logic', () => {
 | \`afterAll()\` | Barcha testlar tugagach 1 marta bajariladigan kod | \`afterAll(() => { db.close() })\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Sodda Assertion yozish",
-    "instruction": "Kichik testing kutubxonasi uchun `expect(actual)` funksiyasini yozing. U ikkita tekshiruv metodiga ega obyekt qaytarsin:\n1. `toBe(expected)`: Agar `actual` va `expected` qiymatlari teng bo'lmasa (`!==`), xatolik (`Error`) tashlasin.\n2. `toBeGreaterThan(expected)`: Agar `actual` qiymati `expected` dan katta bo'lmasa (`<=`), xatolik (`Error`) tashlasin.",
-    "startingCode": "function expect(actual) {\n  return {\n    toBe(expected) {\n      // Kodni shu yerda yozing\n    },\n    toBeGreaterThan(expected) {\n      // Kodni shu yerda yozing\n    }\n  };\n}\n",
-    "hint": "Shart bajarilmagan hollarda `throw new Error(...)` yordamida xatolik tashlang.",
-    "test": "const sandbox = new Function(code + '; return expect;');\nconst fn = sandbox();\ntry {\n  fn(5).toBe(5);\n  fn(10).toBeGreaterThan(5);\n} catch(e) {\n  return 'Muvaffaqiyatli tekshiruvda xatolik tashlamasligi kerak edi';\n}\ntry {\n  fn(5).toBe(10);\n  return 'toBe xato qiymat berilganda xatolik tashlamadi';\n} catch(e) {}\ntry {\n  fn(5).toBeGreaterThan(10);\n  return 'toBeGreaterThan xato qiymat berilganda xatolik tashlamadi';\n} catch(e) {}\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Mock Funksiya yaratish",
-    "instruction": "Testlarda chaqiruvlarni kuzatish uchun `createMock()` funksiyasini yarating. U chaqirilganda yangi funksiya qaytarsin. Qaytgan funksiya har chaqirilganda uzatilgan argumentlarni `.calls` deb nomlangan massivga saqlab borsin. Shuningdek, mock funksiyada chaqiruvlar sonini qaytaruvchi `.getCallCount()` metodi bo'lishi kerak.",
-    "startingCode": "function createMock() {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Mock funksiya o'zgaruvchisiga massiv va metodlarni xossa sifatida biriktirishingiz (assign) mumkin.",
-    "test": "const sandbox = new Function(code + '; return createMock;');\nconst fn = sandbox();\nconst mock = fn();\nif (typeof mock !== 'function') return 'createMock funksiya qaytarmadi';\nmock(1, 2);\nmock('a');\nif (mock.getCallCount() !== 2) return 'getCallCount() noto\\'g\\'ri qiymat qaytardi';\nif (mock.calls[0][0] !== 1 || mock.calls[0][1] !== 2) return 'calls massivida birinchi chaqiruv argumentlari noto\\'g\\'ri saqlangan';\nif (mock.calls[1][0] !== 'a') return 'calls massivida ikkinchi chaqiruv argumentlari noto\\'g\\'ri saqlangan';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Mini Test Runner",
-    "instruction": "Berilgan test holatini ishga tushiruvchi `it(description, testFn)` funksiyasini yozing. Agar test muvaffaqiyatli (hech qanday xatolarsiz) o'tsa, `{ success: true, message: 'PASS: ' + description }` qaytarsin. Agar xato yoki assertion xatoligi bo'lsa, `{ success: false, message: 'FAIL: ' + description + ' - ' + error.message }` qaytarsin.",
-    "startingCode": "function it(description, testFn) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "try...catch blokidan foydalaning va testFn() ni try ichida chaqiring.",
-    "test": "const sandbox = new Function(code + '; return it;');\nconst fn = sandbox();\nconst pass = fn('should pass', () => {});\nif (!pass || !pass.success || !pass.message.includes('PASS: should pass')) return 'Test muvaffaqiyatli o\\'tganda to\\'g\\'ri obyekt qaytarmadi';\nconst fail = fn('should fail', () => { throw new Error('Some error'); });\nif (!fail || fail.success || !fail.message.includes('FAIL: should fail - Some error')) return 'Test muvaffaqiyatsiz bo\\'ganda to\\'g\\'ri obyekt qaytarmadi';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Oddiy Test",
+      instruction: "sum(2,2) = 4 bo'lishini tekshiring.",
+      startingCode: "function sum(a,b) { return a + b; }\n// Test yozing\n",
+      hint: "if (sum(2,2) !== 4) throw new Error('Test failed');",
+      test: "if (code.includes('sum(2,2)')) return null; return 'Test yoq';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Jest Test",
+      instruction: "Jest'da test yozing - test() funksiyasi bilan.",
+      startingCode: "test('sum 2+2', () => {\n  // Bu yerga yozing\n});\n",
+      hint: "expect(sum(2,2)).toBe(4);",
+      test: "if (code.includes('expect')) return null; return 'Jest test xato';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Describe va Test",
+      instruction: "describe bilan test suite yarating.",
+      startingCode: "describe('sum', () => {\n  test('2+2=4', () => {\n    expect(sum(2,2)).toBe(4);\n  });\n});\n",
+      hint: "Mavjud",
+      test: "if (code.includes('describe')) return null; return 'Describe xato';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ beforeEach",
+      instruction: "beforeEach'da o'zgaruvchi tayyorlang.",
+      startingCode: "let value;\nbeforeEach(() => {\n  // Bu yerga value = 10\n});\ntest('test', () => {\n  expect(value).toBe(10);\n});\n",
+      hint: "value = 10;",
+      test: "if (code.includes('beforeEach')) return null; return 'beforeEach xato';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Matchers",
+      instruction: "toBeTruthy(), toBeNull(), toContain() ishlatib ko'ring.",
+      startingCode: "test('matchers', () => {\n  expect(true).toBeTruthy();\n  // Bu yerga boshqa matchers\n});\n",
+      hint: "expect(null).toBeNull(); expect([1,2,3]).toContain(2);",
+      test: "if (code.includes('toBe')) return null; return 'Matchers xato';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Mock Function",
+      instruction: "jest.fn() orqali mock funksiya yarating.",
+      startingCode: "test('mock', () => {\n  const mockFn = jest.fn();\n  mockFn(1,2);\n  // Bu yerga toHaveBeenCalledWith\n});\n",
+      hint: "expect(mockFn).toHaveBeenCalledWith(1,2);",
+      test: "if (code.includes('jest.fn')) return null; return 'Mock xato';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Async Test",
+      instruction: "async/await test yozing.",
+      startingCode: "test('async', async () => {\n  // Bu yerga await\n});\n",
+      hint: "const data = await fetchData(); expect(data).toBe(...)",
+      test: "if (code.includes('async')) return null; return 'Async test xato';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ toThrow",
+      instruction: "Funksiya error throw qilishini tekshiring.",
+      startingCode: "function divide(a, b) {\n  if (b === 0) throw new Error('Nolga bo\\'lish mumkin emas');\n  return a / b;\n}\ntest('error', () => {\n  // Bu yerga yozing\n});\n",
+      hint: "expect(() => divide(5,0)).toThrow();",
+      test: "if (code.includes('toThrow')) return null; return 'toThrow xato';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Spy",
+      instruction: "jest.spyOn orqali funksiyani watch qiling.",
+      startingCode: "const obj = { method: () => 'original' };\ntest('spy', () => {\n  const spy = jest.spyOn(obj, 'method');\n  // Bu yerga yozing\n});\n",
+      hint: "expect(spy).toHaveBeenCalled();",
+      test: "if (code.includes('spyOn')) return null; return 'Spy xato';"
+    },
+    {
+      id: 10,
+      title: "1️⃣0️⃣ Mock Module",
+      instruction: "jest.mock() orqali modul mock qiling.",
+      startingCode: "jest.mock('./api', () => ({\n  fetch: jest.fn(() => Promise.resolve({data: 'test'}))\n}));\ntest('mock module', async () => {\n  // Bu yerga yozing\n});\n",
+      hint: "const data = await fetch(); expect(data.data).toBe('test');",
+      test: "if (code.includes('jest.mock')) return null; return 'Mock module xato';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Coverage",
+      instruction: "Barcha branch'larini test qiling (if/else).",
+      startingCode: "function check(x) {\n  if (x > 0) return 'positive';\n  return 'negative';\n}\ntest('positive', () => expect(check(5)).toBe('positive'));\n// Bu yerga negative test\n",
+      hint: "test('negative', () => expect(check(-1)).toBe('negative'));",
+      test: "if (code.includes('negative')) return null; return 'Coverage xato';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Kompleks - Full Test Suite",
+      instruction: "describe + multiple tests + beforeEach + matchers.",
+      startingCode: "describe('Calculator', () => {\n  let calc;\n  beforeEach(() => { calc = new Calculator(); });\n  test('add', () => { expect(calc.add(2,2)).toBe(4); });\n  // Bu yerga subtract test\n});\n",
+      hint: "test('subtract', () => { expect(calc.sub(5,2)).toBe(3); });",
+      test: "if (code.includes('beforeEach') && code.includes('describe')) return null; return 'Full suite xato';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Soxta Taymerlarni Sinash (testFakeTimers)",
+      instruction: "Jest/Vitest fake timers yordamida vaqtni boshqarishni tekshiruvchi `testFakeTimers(callback, delay)` funksiyasini yozing. Funksiya ichida soxta taymerlarni faollashtiring (`vi.useFakeTimers` yoki `jest.useFakeTimers`), `setTimeout` orqali `callback`ni `delay` vaqtga o'rnating, vaqtni bir zumda `delay` ga oldinga suring (`vi.advanceTimersByTime` yoki `jest.advanceTimersByTime`) va yakunda taymerlarni real holatga qaytaring (`vi.useRealTimers` yoki `jest.useRealTimers`).",
+      startingCode: "function testFakeTimers(callback, delay) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "vi.useFakeTimers();\nsetTimeout(callback, delay);\nvi.advanceTimersByTime(delay);\nvi.useRealTimers();",
+      test: "if (typeof testFakeTimers !== 'function') return 'testFakeTimers funksiya emas';\nif (!code.includes('useFakeTimers') || !code.includes('advanceTimersByTime') || !code.includes('useRealTimers')) {\n  return 'useFakeTimers, advanceTimersByTime va useRealTimers metodlaridan foydalaning';\n}\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ API So'rovini Mock Qilish (mockApiCall)",
+      instruction: "Tarmoq yoki ma'lumotlar bazasi so'rovlarini soxtalashtirish uchun `apiClient` obyektining `fetchData` metodini mock qiling. `fetchData` metodi har doim `{ success: true, data: mockData }` obyektini qaytaradigan Promise bo'lishi kerak. Buning uchun `vi.fn().mockResolvedValue(...)` yoki `jest.fn().mockResolvedValue(...)` metodidan foydalanuvchi `mockApiCall(apiClient, mockData)` funksiyasini yozing.",
+      startingCode: "function mockApiCall(apiClient, mockData) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "apiClient.fetchData = vi.fn().mockResolvedValue({ success: true, data: mockData });",
+      test: "if (typeof mockApiCall !== 'function') return 'mockApiCall funksiya emas';\nif (!code.includes('fn()') && !code.includes('mockResolvedValue') && !code.includes('mockReturnValue')) {\n  return 'fn() va mockResolvedValue (yoki mockReturnValue) metodlaridan foydalaning';\n}\nreturn null;"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

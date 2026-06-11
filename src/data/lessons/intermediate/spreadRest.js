@@ -152,32 +152,103 @@ Oxirgi (o'ngda) kelgan kalit qiymati undan oldin kelgan bir xil nomli kalit qiym
 Quyidagi amaliy mashqlar yordamida spread va rest operatorlarini qo'llashni mustahkamlang.
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Massivlarni Birlashtirish",
-    "instruction": "Spread operatori yordamida 'arr1' va 'arr2' massivlarini 'combined' nomli bitta yangi massivga birlashtiring.",
-    "startingCode": "const arr1 = [1, 2];\nconst arr2 = [3, 4];\n\n// Kodni shu yerda yozing\n",
-    "hint": "const combined = [...arr1, ...arr2];",
-    "test": "if (!code.includes('...')) return 'Spread operatoridan foydalanilmadi';\nconst sandbox = new Function('arr1', 'arr2', code + '; return combined;');\nconst res = sandbox([1, 2], [3, 4]);\nif (Array.isArray(res) && res.length === 4 && res[2] === 3) return null;\nreturn 'Natija noto\\'g\\'ri massiv bo\\'ldi';"
-  },
-  {
-    "id": 2,
-    "title": "Obyekt Nusxasini Olish va Yangilash",
-    "instruction": "Spread operatori yordamida 'user' obyektidan nusxa olib 'updatedUser' obyektini yarating hamda unga 'city: \"Tashkent\"' xususiyatini qo'shing.",
-    "startingCode": "const user = { name: 'Ali', age: 25 };\n\n// Kodni shu yerda yozing\n",
-    "hint": "const updatedUser = { ...user, city: 'Tashkent' };",
-    "test": "if (!code.includes('...')) return 'Spread operatori ishlatilmadi';\nconst sandbox = new Function('user', code + '; return updatedUser;');\nconst res = sandbox({ name: 'Ali', age: 25 });\nif (res.name === 'Ali' && res.city === 'Tashkent') return null;\nreturn 'updatedUser obyekti noto\\'g\\'ri tuzilgan';"
-  },
-  {
-    "id": 3,
-    "title": "Rest Parametri orqali Yig'ish",
-    "instruction": "Birinchi parametrni 'first' o'zgaruvchisiga, qolgan barcha argumentlarni esa rest parametri yordamida 'others' massiviga yig'uvchi 'collect' funksiyasini yozing. Funksiya 'others' massivini qaytarsin.",
-    "startingCode": "// Kodni shu yerda yozing\n",
-    "hint": "function collect(first, ...others) { return others; }",
-    "test": "if (!code.includes('...')) return 'Rest parametri ishlatilmadi';\nconst sandbox = new Function(code + '; return collect;');\nconst fn = sandbox();\nconst res = fn(1, 2, 3, 4);\nif (Array.isArray(res) && res.length === 3 && res[0] === 2) return null;\nreturn 'Funksiya to\\'g\\'ri ishlamadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Massivlarni birlashtirish (Spread)",
+      instruction: "Spread yordamida 'arr1' va 'arr2'ni 'combined' massiviga birlashtiring.",
+      startingCode: "const arr1 = [1, 2];\nconst arr2 = [3, 4];\n// Bu yerga yozing\nconst combined = [];\nconsole.log(combined);",
+      hint: "const combined = [...arr1, ...arr2];",
+      test: "if (combined.length === 4 && combined[3] === 4) return null; return 'Massivlar birlashmadi';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Obyektdan nusxa olish (Spread)",
+      instruction: "'user' obyektidan spread orqali 'copyUser' nomli nusxa oling va unga 'yosh: 25' xususiyatini qo'shing.",
+      startingCode: "const user = { ism: 'Ali' };\n// Bu yerga yozing\nconst copyUser = {};\nconsole.log(copyUser);",
+      hint: "const copyUser = { ...user, yosh: 25 };",
+      test: "if (copyUser.ism === 'Ali' && copyUser.yosh === 25) return null; return 'Obyekt to\\'g\\'ri nusxalanmadi';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Stringni yoyish (Spread)",
+      instruction: "'HELLO' so'zini harflar massiviga aylantiring.",
+      startingCode: "const word = 'HELLO';\n// Bu yerga yozing\nconst letters = [];\nconsole.log(letters);",
+      hint: "const letters = [...word];",
+      test: "if (letters.length === 5 && letters[0] === 'H') return null; return 'String to\\'g\\'ri yoyilmadi';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Parametrlarni yig'ish (Rest)",
+      instruction: "x, y va qolgan barcha argumentlarni yig'ib massiv qilib qaytaradigan 'getRest' funksiyasini yozing.",
+      startingCode: "function getRest(x, y, /* rest parametr */) {\n  // Bu yerga yozing\n  return [];\n}\nconsole.log(getRest(1, 2, 3, 4, 5));",
+      hint: "function getRest(x, y, ...args) { return args; }",
+      test: "if (typeof getRest === 'function' && getRest(1,2,3,4).length === 2) return null; return 'Rest parametr to\\'g\\'ri ishlatilmadi';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Math metodlarida Spread",
+      instruction: "'numbers' massivi ichidagi eng kichik sonni topish uchun Math.min() da spread ishlating.",
+      startingCode: "const numbers = [45, 12, 89, 5];\n// Bu yerga yozing\nconst min = 0;\nconsole.log(min);",
+      hint: "const min = Math.min(...numbers);",
+      test: "if (min === 5) return null; return 'Eng kichik son topilmadi';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Obyektlarni birlashtirish (Merge)",
+      instruction: "'obj1' va 'obj2' ni spread orqali birlashtirib 'merged' obyektini yarating.",
+      startingCode: "const obj1 = { a: 1, b: 2 };\nconst obj2 = { c: 3, d: 4 };\n// Bu yerga yozing\nconst merged = {};\nconsole.log(merged);",
+      hint: "const merged = { ...obj1, ...obj2 };",
+      test: "if (merged.a === 1 && merged.d === 4) return null; return 'Obyektlar birlashmadi';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Massivdan Mustaqil Nusxa olish",
+      instruction: "originalArray dan butunlay mustaqil bo'lgan yangi nusxa (newArray) yarating, shunda original o'zgarmasin.",
+      startingCode: "const originalArray = [10, 20, 30];\n// Bu yerga yozing\nconst newArray = [];\nnewArray[0] = 99;\nconsole.log(originalArray[0], newArray[0]);",
+      hint: "const newArray = [...originalArray];",
+      test: "if (newArray[0] === 99 && originalArray[0] === 10) return null; return 'Mustaqil nusxa olinmadi';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Obyekt qiymatini ustidan yozish (Override)",
+      instruction: "user obyektidan nusxa oling, lekin 'ism' ni 'Bobur' ga o'zgartiring.",
+      startingCode: "const user = { ism: 'Ali', email: 'ali@bk.ru' };\n// Bu yerga yozing\nconst newUser = {};\nconsole.log(newUser);",
+      hint: "const newUser = { ...user, ism: 'Bobur' };",
+      test: "if (newUser.ism === 'Bobur' && newUser.email === 'ali@bk.ru') return null; return 'Override noto\\'g\\'ri';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Massiv destructuring bilan Rest",
+      instruction: "Destructuring qilib 'birinchi' ga massiv boshini, 'qolganlar' o'zgaruvchisiga qolgan hammasini massiv qilib saqlang.",
+      startingCode: "const nums = [10, 20, 30, 40];\n// Bu yerga yozing\n\nconsole.log(birinchi, qolganlar);",
+      hint: "const [birinchi, ...qolganlar] = nums;",
+      test: "if (birinchi === 10 && qolganlar.length === 3) return null; return 'Rest bilan destructuring qilinmadi';"
+    },
+    {
+      id: 10,
+      title: "🔟 Obyekt destructuring bilan Rest",
+      instruction: "user obyektidan 'age' ni olib, qolgan kalitlarni 'restProps' nomli obyektga saqlang.",
+      startingCode: "const user = { ism: 'Lola', age: 22, shahar: 'Navoiy' };\n// Bu yerga yozing\n\nconsole.log(age, restProps);",
+      hint: "const { age, ...restProps } = user;",
+      test: "if (age === 22 && restProps.shahar === 'Navoiy') return null; return 'Obyekt destructuring noto\\'g\\'ri';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Funksiyaga argumentlarni yoyish (Spread)",
+      instruction: "'info' massividagi ma'lumotlarni 'greet' funksiyasiga argument sifatida spread qilib uzating.",
+      startingCode: "function greet(ism, shahar) {\n  return `${ism} ${shahar}dan`;\n}\nconst info = ['Hasan', 'Samarqand'];\n// Bu yerga yozing\nconst result = '';\nconsole.log(result);",
+      hint: "const result = greet(...info);",
+      test: "if (result === 'Hasan Samarqanddan') return null; return 'Spread ishlatilmadi';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Kompleks Array ichiga qo'shish",
+      instruction: "Eski massivdagi ob'ektlar ro'yxati boshiga va oxiriga yangi obyekt qo'shing.",
+      startingCode: "const data = [{id: 2}, {id: 3}];\n// Bu yerga yozing: result = [ {id: 1}, ...data, {id: 4} ]\nconst result = [];\nconsole.log(result);",
+      hint: "const result = [{id: 1}, ...data, {id: 4}];",
+      test: "if (result.length === 4 && result[0].id === 1 && result[3].id === 4) return null; return 'Kompleks spread qilinmadi';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

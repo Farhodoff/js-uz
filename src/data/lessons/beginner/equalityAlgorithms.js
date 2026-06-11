@@ -305,32 +305,103 @@ Quyidagi jadvalda eng ko'p solishtiriladigan qiymatlar va ularning natijalari ko
 | \`{}\` | \`{}\` | false | false | false | Xotiradagi havolalari (references) har xil. |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Obyektlarni yuzaki taqqoslash (Shallow Equality)",
-    "instruction": "JavaScript-da obyektlar xotiradagi havola (reference) bo'yicha solishtiriladi, shuning uchun `{} === {}` har doim `false` beradi. Sizga ikkita obyektni 'Shallow' (yuzaki) taqqoslaydigan `shallowEqual(obj1, obj2)` funksiyasini yozish topshiriladi. Funksiya ikkala obyektning kalitlari soni bir xilligini va mos kalitlardagi qiymatlar strict equality (`===`) orqali tengligini tekshirishi kerak. (Eslatma: Obyektlar faqat bir qavatli tekis obyekt deb hisoblansin, ichma-ich obyektlar tekshirilishi shart emas).",
-    "startingCode": "function shallowEqual(obj1, obj2) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Avvalo, `Object.keys(obj1)` va `Object.keys(obj2)` yordamida kalitlar massivini oling. Ularning uzunligi tengligini solishtiring. Keyin har bir kalitdagi qiymat `obj1[key] === obj2[key]` yordamida tengligini tekshiring.",
-    "test": "const sandbox = new Function(code + '; return shallowEqual;');\nconst fn = sandbox();\nconst o1 = { a: 1, b: 'hello' };\nconst o2 = { a: 1, b: 'hello' };\nconst o3 = { a: 1, b: 'hello', c: true };\nconst o4 = { a: 1, b: 'world' };\nif (fn(o1, o2) === true && fn(o1, o3) === false && fn(o1, o4) === false && fn({}, {}) === true) return null;\nreturn 'shallowEqual funksiyasi obyektlarni to\\'g\\'ri taqqoslamadi';"
-  },
-  {
-    "id": 2,
-    "title": "Mukammal tenglik aniqlovchisi (Object.is simulyatsiyasi)",
-    "instruction": "JavaScript-da `===` (strict equality) operatorida ham ba'zi istisnolar bor: `NaN === NaN` har doim `false` qaytaradi, hamda `-0 === +0` esa `true` qaytaradi. Siz `Object.is()` metodi kabi ishlaydigan `isIdentical(val1, val2)` funksiyasini yozing, lekin unda `Object.is` metodining o'zidan foydalanmang. Funksiya `NaN` va `NaN` ni solishtirganda `true`, `-0` va `+0` ni solishtirganda `false` qaytarishi kerak, qolgan barcha holatlarda esa oddiy `===` kabi ishlashi lozim.",
-    "startingCode": "function isIdentical(val1, val2) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "`NaN` o'ziga o'zi teng bo'lmagan yagona qiymat. Shuning uchun `val1 !== val1 && val2 !== val2` sharti ikkala qiymat ham `NaN` ekanini aniqlaydi. Nollarning farqini (ya'ni `-0` yoki `+0` ligini) tekshirish uchun esa ularni bo'lish orqali tekshirish mumkin: `1 / val` ifodasi `+0` uchun `Infinity`, `-0` uchun esa `-Infinity` beradi.",
-    "test": "const sandbox = new Function(code + '; return isIdentical;');\nconst fn = sandbox();\nif (fn(NaN, NaN) === true && fn(-0, +0) === false && fn(5, 5) === true && fn('test', 'test') === true && fn(0, 0) === true) return null;\nreturn 'isIdentical funksiyasi NaN yoki nollarni to\\'g\\'ri solishtirmadi';"
-  },
-  {
-    "id": 3,
-    "title": "Loose Equality algoritmini qo'lda simulyatsiya qilish",
-    "instruction": "JavaScript-dagi yashirin turlarni o'zgartirib taqqoslovchi loose equality (`==`) operatorining ishlash mexanizmini tushunish uchun, ushbu operatsiyani `==` yoki `!=` operatorlarisiz simulyatsiya qiluvchi `looseEqual(a, b)` funksiyasini yozing. Funksiyada faqat `===`, `typeof` va turlarni aniq o'zgartirish (`Number()`, `String()`) yordamida quyidagi qoidalarni amalga oshiring:\n1. Tiplar bir xil bo'lsa, `===` orqali taqqoslang.\n2. `null` va `undefined` o'zaro teng bo'lsin (`true`).\n3. Biri son, biri matn (string) bo'lsa, matnni songa o'tkazib taqqoslang.\n4. Biri boolean bo'lsa, uni songa o'tkazib (`true -> 1`, `false -> 0`) qayta taqqoslang.\n5. Obyekt (massiv ham) va primitiv (son, matn yoki boolean) solishtirilsa, obyektni `.toString()` yordamida stringga o'tkazib taqqoslang.",
-    "startingCode": "function looseEqual(a, b) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Taqqoslash algoritmini shartlar ketma-ketligida yozing. Agar tiplar bir xil bo'lsa, to'g'ridan-to'g'ri `a === b` ni qaytaring. Agar biri `null` va biri `undefined` bo'lsa `true` qaytaring. Agar ulardan biri boolean bo'lsa, uni songa aylantirib qaytadan funksiyaga bering (`looseEqual(Number(a), b)` yoki aksincha). Obyektlarni string qilib qayta yuboring.",
-    "test": "const sandbox = new Function(code + '; return looseEqual;');\nconst fn = sandbox();\nconst test1 = fn('5', 5) === true;\nconst test2 = fn(null, undefined) === true;\nconst test3 = fn(true, 1) === true;\nconst test4 = fn(false, 0) === true;\nconst test5 = fn([5], '5') === true;\nconst test6 = fn(false, '0') === true;\nconst test7 = fn(null, 0) === false;\nif (test1 && test2 && test3 && test4 && test5 && test6 && !test7) return null;\nreturn 'looseEqual funksiyasi loose equality-ni to\\'g\\'ri simulyatsiya qila olmadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Tenglikni tekshiring",
+      instruction: "100 sonini '100' matni bilan qat'iy tenglik (===) orqali solishtiring.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = 100 === '100';",
+      test: "if (res === false) return null; return 'Solishtirish noto\\'g\\'ri!';"
+    },
+    {
+      id: 2,
+      title: "Loose equality sinovi",
+      instruction: "100 sonini '100' matni bilan yumshoq tenglik (==) orqali solishtiring.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = 100 == '100';",
+      test: "if (res === true) return null; return 'Yumshoq tenglik true qaytarishi kerak!';"
+    },
+    {
+      id: 3,
+      title: "Null va Undefined loose",
+      instruction: "null va undefined qiymatlarini == orqali solishtiring.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = null == undefined;",
+      test: "if (res === true) return null; return 'null == undefined true bo\\'lishi kerak!';"
+    },
+    {
+      id: 4,
+      title: "Null va Undefined strict",
+      instruction: "null va undefined qiymatlarini === orqali solishtiring.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = null === undefined;",
+      test: "if (res === false) return null; return 'null === undefined false bo\\'lishi kerak!';"
+    },
+    {
+      id: 5,
+      title: "NaN solishtirish",
+      instruction: "NaN qiymatini o'zi bilan === orqali solishtirib natijani oling.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = NaN === NaN;",
+      test: "if (res === false) return null; return 'NaN === NaN har doim false bo\\'ladi!';"
+    },
+    {
+      id: 6,
+      title: "Object.is NaN",
+      instruction: "Object.is yordamida NaN qiymatlarini solishtiring.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = Object.is(NaN, NaN);",
+      test: "if (res === true) return null; return 'Object.is(NaN, NaN) true bo\\'lishi kerak!';"
+    },
+    {
+      id: 7,
+      title: "Zero comparison",
+      instruction: "-0 va +0 sonlarini === yordamida solishtiring.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = -0 === +0;",
+      test: "if (res === true) return null; return '-0 === +0 true bo\\'lishi kerak!';"
+    },
+    {
+      id: 8,
+      title: "Object.is Zeros",
+      instruction: "Object.is yordamida -0 va +0 sonlarini solishtiring.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = Object.is(-0, +0);",
+      test: "if (res === false) return null; return 'Object.is(-0, +0) false bo\\'lishi kerak!';"
+    },
+    {
+      id: 9,
+      title: "String va Boolean loose",
+      instruction: "'0' stringini false bulian qiymati bilan == orqali solishtiring.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = '0' == false;",
+      test: "if (res === true) return null; return '\"0\" == false true bo\\'lishi lozim!';"
+    },
+    {
+      id: 10,
+      title: "Bo'sh massiv va false",
+      instruction: "[] massivini false bulian qiymati bilan == orqali solishtiring.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = [] == false;",
+      test: "if (res === true) return null; return '[] == false true qaytaradi!';"
+    },
+    {
+      id: 11,
+      title: "Obyektlar reference solishtirish",
+      instruction: "Ikki xil bo'sh obyekt {} va {} ni === orqali solishtiring.",
+      startingCode: "// Bu yerga yozing\nlet res = ",
+      hint: "let res = {} === {};",
+      test: "if (res === false) return null; return '{} === {} har doim false, chunki ular alohida havolalardir!';"
+    },
+    {
+      id: 12,
+      title: "Bir xil reference",
+      instruction: "obj o'zgaruvchisini yarating. Keyin res o'zgaruvchisiga obj === obj solishtirish natijasini bering.",
+      startingCode: "const obj = { x: 1 };\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = obj === obj;",
+      test: "if (res === true) return null; return 'Bir xil havola bo\\'lgani uchun true bo\\'lishi kerak!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

@@ -205,32 +205,119 @@ async function loadDashboard(userId) {
 | \`Promise.all([p1, p2])\` | Global Promise | Promiselarni parallel ishga tushiradi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Asinxron Ma'lumot Yuklash",
-    "instruction": "Taqdim etilgan `fetchData` funksiyasini chaqirib, undan qaytgan ma'lumotni qaytaruvchi asinxron `getUserData` funksiyasini yozing. `fetchData` va'da (Promise) qaytaradi.",
-    "startingCode": "async function getUserData() {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "const data = await fetchData(); return data;",
-    "test": "if (!code.includes('await')) return 'await kalit so\\'zi ishlatilmadi';\ntry {\n  const sandbox = new Function('fetchData', code + '; return getUserData;');\n  const fn = sandbox(async () => 'ok');\n  const p = fn();\n  if (!(p instanceof Promise)) return 'getUserData funksiyasi Promise qaytarmayapti (async ekanligiga ishonch hosil qiling)';\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Xatoliklarni Try-Catch bilan Boshqarish",
-    "instruction": "Asinxron `fetchUser` funksiyasini chaqirib, natijani qaytaruvchi `safeFetch` asinxron funksiyasini yozing. Agar `fetchUser` xato bersa (reject), catch blokida 'Xato yuz berdi' satrini qaytaring.",
-    "startingCode": "async function safeFetch() {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "try {\n  return await fetchUser();\n} catch(err) {\n  return 'Xato yuz berdi';\n}",
-    "test": "if (!code.includes('try') || !code.includes('catch')) return 'try-catch blogi ishlatilmadi';\ntry {\n  const sandbox = new Function('fetchUser', code + '; return safeFetch;');\n  const fn = sandbox(async () => { throw new Error('fail'); });\n  const p = fn();\n  if (!(p instanceof Promise)) return 'safeFetch funksiyasi Promise qaytarishi kerak';\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Paralel Asinxron Amallar (Promise.all)",
-    "instruction": "Ikkita asinxron funksiya `getProfile()` va `getPosts()` berilgan. Ularni bir vaqtda (paralel) ishga tushirib, natijalarini [profile, posts] massivi ko'rinishida qaytaruvchi asinxron `getDashboardData()` funksiyasini yozing.",
-    "startingCode": "async function getDashboardData() {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "return await Promise.all([getProfile(), getPosts()]);",
-    "test": "if (!code.includes('Promise.all')) return 'Promise.all ishlatilmadi';\ntry {\n  const sandbox = new Function('getProfile', 'getPosts', code + '; return getDashboardData;');\n  const fn = sandbox(async () => 'p', async () => 'posts');\n  const p = fn();\n  if (!(p instanceof Promise)) return 'getDashboardData funksiyasi Promise qaytarishi kerak';\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Oddiy async funksiya",
+      instruction: "'Hello World' matnini qaytaradigan oddiy asinxron `sayHello()` funksiyasini yozing.",
+      startingCode: "async function sayHello() {\n  // Kodni yozing\n}",
+      hint: "return 'Hello World';",
+      test: "if (typeof sayHello !== 'function') return 'sayHello funksiya emas'; return sayHello().then(r => r === 'Hello World' ? null : 'Natija noto\\'g\\'ri');"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Await operatorini ishlatish",
+      instruction: "Berilgan promise natijasini `await` qilib qaytaradigan `getValue(promise)` funksiyasini yozing.",
+      startingCode: "async function getValue(promise) {\n  // Await qilib qaytaring\n}",
+      hint: "return await promise;",
+      test: "if (typeof getValue !== 'function') return 'getValue funksiya emas'; return getValue(Promise.resolve('test')).then(r => r === 'test' ? null : 'Await xato');"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Try-Catch yordamida xatolikni ushlash",
+      instruction: "Xato beradigan promiseni `await` qiling, xatoni `try...catch` bilan tutib, uning xabarini (message) qaytaring.",
+      startingCode: "async function catchError(promise) {\n  // try...catch yozing\n}",
+      hint: "try { return await promise; } catch(e) { return e.message; }",
+      test: "if (typeof catchError !== 'function') return 'catchError funksiya emas'; return catchError(Promise.reject(new Error('baza xatosi'))).then(r => r === 'baza xatosi' ? null : 'Xato ushlanmadi');"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Ketma-ket ikki promiseni kutish",
+      instruction: "p1 va p2 promiselarni ketma-ket `await` qilib, ularning yig'indisini qaytaring.",
+      startingCode: "async function getSum(p1, p2) {\n  // p1 va p2 ni kutib yig'indisini hisoblang\n}",
+      hint: "const a = await p1; const b = await p2; return a + b;",
+      test: "if (typeof getSum !== 'function') return 'getSum funksiya emas'; return getSum(Promise.resolve(2), Promise.resolve(3)).then(r => r === 5 ? null : 'Yig\\'indi xato');"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Parallel Promise.all kutish",
+      instruction: "Berilgan p1 va p2 promiselarni `Promise.all` bilan parallel kutib, natijaviy massivni qaytaring.",
+      startingCode: "async function getParallel(p1, p2) {\n  // Promise.all ishlating\n}",
+      hint: "return await Promise.all([p1, p2]);",
+      test: "if (typeof getParallel !== 'function') return 'getParallel funksiya emas'; return getParallel(Promise.resolve(10), Promise.resolve(20)).then(r => r && r[0] === 10 && r[1] === 20 ? null : 'Parallel xato');"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Finally asinxron tozalash",
+      instruction: "`try...catch...finally` bloki ichida promisni kutib oling va xato bo'lsa ham `finally`da 'Clean' matnini qaytaring.",
+      startingCode: "async function handleClean(promise) {\n  try {\n    return await promise;\n  } catch(e) {\n    return 'Error';\n  } finally {\n    console.log('Clean');\n  }\n}",
+      hint: "Taqdim etilgan kodni tekshiring.",
+      test: "if (typeof handleClean !== 'function') return 'handleClean funksiya emas'; return handleClean(Promise.reject()).then(() => logs.includes('Clean') ? null : 'Finally ishlamadi');"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Asinxron delay funksiyasi",
+      instruction: "Belgilangan millisekund kutadigan `delay(ms)` yordamchi funksiyasini yozing (new Promise va setTimeout orqali).",
+      startingCode: "function delay(ms) {\n  // Promise qaytaring\n}",
+      hint: "return new Promise(resolve => setTimeout(resolve, ms));",
+      test: "if (typeof delay !== 'function') return 'delay funksiya emas'; const start = Date.now(); return delay(50).then(() => { const diff = Date.now() - start; if (diff >= 45) return null; return 'Kechikish vaqti xato'; });"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Async method obyekt ichida",
+      instruction: "Obyekt ichida `async` metod yarating va u `this.name` qiymatini qaytarsin.",
+      startingCode: "const obj = {\n  name: 'JS',\n  // async metod yozing\n};",
+      hint: "async getName() { return this.name; }",
+      test: "if (typeof obj.getName !== 'function') return 'getName metod emas'; return obj.getName().then(r => r === 'JS' ? null : 'Ism xato');"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Loop ichida await (Ketma-ketlik)",
+      instruction: "Massivdagi asinxron vazifalarni `for...of` tsikli ichida navbatma-navbat `await` qilib, natijalarini console.log qiling.",
+      startingCode: "async function runTasks(tasks) {\n  // tasks massivini aylanib har birini await qiling\n}",
+      hint: "for (const task of tasks) { const res = await task(); console.log(res); }",
+      test: "if (typeof runTasks !== 'function') return 'runTasks funksiya emas'; const tasks = [() => Promise.resolve(1), () => Promise.resolve(2)]; return runTasks(tasks).then(() => logs.includes(1) && logs.includes(2) ? null : 'Tasklar bajarilmadi');"
+    },
+    {
+      id: 10,
+      title: "🔟 Promise.race orqali timeout qilish",
+      instruction: "So'rov va `delay(100)` taymeridan qaysi biri tez tugashini `Promise.race` bilan aniqlab, timeout bo'lsa 'Timeout!' qaytaradigan kod yozing.",
+      startingCode: "async function requestWithTimeout(promise) {\n  const delay = ms => new Promise((_, rej) => setTimeout(() => rej(new Error('Timeout!')), ms));\n  // Promise.race ishlatib xatolikni tuting\n}",
+      hint: "try { return await Promise.race([promise, delay(100)]); } catch(e) { return e.message; }",
+      test: "if (typeof requestWithTimeout !== 'function') return 'requestWithTimeout funksiya emas'; const slow = new Promise(r => setTimeout(() => r('ok'), 200)); return requestWithTimeout(slow).then(r => r === 'Timeout!' ? null : 'Timeout aniqlanmadi');"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Async Arrow funksiya",
+      instruction: "Qiymatni qaytaradigan `async` ko'rinishidagi arrow (o'q) funksiya yarating.",
+      startingCode: "const getResult = async () => {\n  // Natijani bering\n};",
+      hint: "const getResult = async () => 'Arrow';",
+      test: "if (typeof getResult !== 'function') return 'getResult funksiya emas'; return getResult().then(r => r === 'Arrow' ? null : 'Natija xato');"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Async function dynamically imported",
+      instruction: "Promise orqali resolve bo'ladigan asinxron oqim natijasiga 2 ni ko'paytirib qaytaring.",
+      startingCode: "async function multiplyAsync(promise) {\n  // Await qilib, natijani 2 ga ko'paytiring\n}",
+      hint: "const val = await promise; return val * 2;",
+      test: "if (typeof multiplyAsync !== 'function') return 'multiplyAsync funksiya emas'; return multiplyAsync(Promise.resolve(5)).then(r => r === 10 ? null : 'Ko\\'paytirish xato');"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Parallel API So'rovlari (fetchParallel)",
+      instruction: "Berilgan `urls` massividan barcha so'rovlarni parallel yuboradigan va ulardan kelgan javoblarni JSON sifatida o'qib, natijalar massivini qaytaradigan `fetchParallel(urls)` asinxron funksiyasini yozing.",
+      startingCode: "async function fetchParallel(urls) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "const promises = urls.map(url => fetch(url).then(res => res.json())); return await Promise.all(promises);",
+      test: "if (typeof fetchParallel !== 'function') return 'fetchParallel funksiya emas';\nconst urls = [\n  'https://jsonplaceholder.typicode.com/todos/1',\n  'https://jsonplaceholder.typicode.com/todos/2'\n];\nreturn fetchParallel(urls).then(res => {\n  if (res && res.length === 2 && res[0].id === 1 && res[1].id === 2) return null;\n  return 'Parallel natijalar noto\\'g\\'ri';\n}).catch(e => 'Xatolik: ' + e.message);"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Ketma-ket API So'rovlari (fetchSequentialWithState)",
+      instruction: "Berilgan `urls` ro'yxatidan ma'lumotlarni ketma-ket (sequential) yuklab, har bir API dan kelgan natijalarni yig'ib massiv shaklida qaytaruvchi `fetchSequentialWithState(urls)` asinxron funksiyasini yozing.",
+      startingCode: "async function fetchSequentialWithState(urls) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "let results = []; for (const url of urls) { const res = await fetch(url); results.push(await res.json()); } return results;",
+      test: "if (typeof fetchSequentialWithState !== 'function') return 'fetchSequentialWithState funksiya emas';\nconst urls = [\n  'https://jsonplaceholder.typicode.com/todos/1',\n  'https://jsonplaceholder.typicode.com/todos/2'\n];\nreturn fetchSequentialWithState(urls).then(res => {\n  if (res && res.length === 2 && res[0].id === 1 && res[1].id === 2) return null;\n  return 'Ketma-ket yuklash noto\\'g\\'ri bajarildi';\n}).catch(e => 'Xatolik: ' + e.message);"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

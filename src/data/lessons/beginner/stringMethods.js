@@ -240,32 +240,103 @@ console.log(slug); // "javascript-da-string-metodlari-toliq-qollanma"
 | \`repeat(count)\` | \`count (number)\` | \`string\` | Matnni berilgan marta takrorlab birlashtiradi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Email formatlash",
-    "instruction": "Email manzilini formatlash uchun `formatEmail(email)` funksiyasini yozing. U berilgan email'ning boshidagi va oxiridagi bo'sh joylarni olib tashlasin (`trim()`) va barcha harflarini kichik harflarga o'tkazsin (`toLowerCase()`).",
-    "startingCode": "function formatEmail(email) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "email.trim().toLowerCase() dan foydalaning.",
-    "test": "const sandbox = new Function(code + '; return formatEmail;');\nconst fn = sandbox();\nconst res = fn('  User@Example.Com  ');\nif (res === 'user@example.com') return null;\nreturn 'Email to\\'g\\'ri formatlanmadi. trim() va toLowerCase() ishlatilganini tekshiring.';"
-  },
-  {
-    "id": 2,
-    "title": "Matnni qisqartirish (Truncate)",
-    "instruction": "Matnni qisqartirish uchun `truncateText(text, maxLength)` funksiyasini yozing. Agar matn uzunligi (`text.length`) `maxLength` dan katta bo'lsa, uni `maxLength` gacha kesib (`slice` yoki `substring` yordamida) va oxiriga `...` qo'shib qaytaring. Aks holda matnning o'zini qaytaring.",
-    "startingCode": "function truncateText(text, maxLength) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Kattalikni tekshirish uchun `if` shartidan, kesish uchun esa `slice(0, maxLength)` metodidan foydalaning.",
-    "test": "const sandbox = new Function(code + '; return truncateText;');\nconst fn = sandbox();\nconst res1 = fn('Salom Dunyo', 5);\nconst res2 = fn('Salom', 10);\nif (res1 === 'Salom...' && res2 === 'Salom') return null;\nreturn 'Matn to\\'g\\'ri qisqartirilmadi. slice yoki substring metodidan foydalanib tekshiring.';"
-  },
-  {
-    "id": 3,
-    "title": "Kredit kartani maskalash",
-    "instruction": "Kredit karta raqamining oxirgi 4 ta raqamidan tashqari barcha raqamlarini yashiruvchi `maskCreditCard(cardNumber)` funksiyasini yozing. Masalan, `'8600123456789012'` berilsa, u `'************9012'` qaytarishi kerak. Karta raqami har doim 16 ta belgidan iborat bo'ladi deb hisoblang.",
-    "startingCode": "function maskCreditCard(cardNumber) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "`repeat` metodi bilan 12 ta yulduzcha yarating va unga karta raqamining oxirgi 4 ta raqamini `slice(-4)` orqali olib qo'shing.",
-    "test": "const sandbox = new Function(code + '; return maskCreditCard;');\nconst fn = sandbox();\nconst res = fn('8600123456789012');\nif (res === '************9012') return null;\nreturn 'Kredit karta raqami to\\'g\\'ri maskalanmadi. repeat va slice metodlaridan foydalaning.';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Matnni tozalash va kattalashtirish",
+      instruction: "word matnidagi ikki chetidagi bo'shliqlarni olib tashlang va hamma harflarini katta qilib res o'zgaruvchisiga saqlang.",
+      startingCode: "let word = '  js  ';\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = word.trim().toUpperCase();",
+      test: "if (res === 'JS') return null; return 'res o\\'zgaruvchisi \\'JS\\' bo\\'lishi kerak!';"
+    },
+    {
+      id: 2,
+      title: "Kichik harflarga o'tkazish",
+      instruction: "name o'zgaruvchisidagi matnni to'liq kichik harflarga o'tkazing va natijani result o'zgaruvchisiga saqlang.",
+      startingCode: "let name = 'TEMUR';\n// Bu yerga yozing\nlet result = ",
+      hint: "let result = name.toLowerCase();",
+      test: "if (result === 'temur') return null; return 'Natija \\'temur\\' bo\\'lishi kerak!';"
+    },
+    {
+      id: 3,
+      title: "Matn uzunligi",
+      instruction: "text o'zgaruvchisidagi belgilar sonini (uzunligini) aniqlang va uni len o'zgaruvchisiga saqlang.",
+      startingCode: "let text = 'JavaScript';\n// Bu yerga yozing\nlet len = ",
+      hint: "let len = text.length;",
+      test: "if (len === 10) return null; return 'Uzunligi 10 bo\\'lishi kerak!';"
+    },
+    {
+      id: 4,
+      title: "So'z mavjudligini tekshirish",
+      instruction: "text matnida 'love' so'zi qatnashganligini includes() yordamida tekshiring va natijani check o'zgaruvchisiga o'zlashtiring.",
+      startingCode: "let text = 'I love coding';\n// Bu yerga yozing\nlet check = ",
+      hint: "let check = text.includes('love');",
+      test: "if (check === true) return null; return 'love so\\'zi mavjud, check true bo\\'lishi kerak!';"
+    },
+    {
+      id: 5,
+      title: "Boshlanishini tekshirish",
+      instruction: "doc o'zgaruvchisi 'index' so'zi bilan boshlanishini startsWith() orqali tekshiring va natijani check o'zgaruvchisiga saqlang.",
+      startingCode: "let doc = 'index.html';\n// Bu yerga yozing\nlet check = ",
+      hint: "let check = doc.startsWith('index');",
+      test: "if (check === true) return null; return 'check true bo\\'lishi kerak!';"
+    },
+    {
+      id: 6,
+      title: "Tugashini tekshirish",
+      instruction: "file o'zgaruvchisi '.js' bilan tugashini endsWith() orqali tekshiring va natijani check o'zgaruvchisiga saqlang.",
+      startingCode: "let file = 'app.js';\n// Bu yerga yozing\nlet check = ",
+      hint: "let check = file.endsWith('.js');",
+      test: "if (check === true) return null; return 'check true bo\\'lishi kerak!';"
+    },
+    {
+      id: 7,
+      title: "So'zni almashtirish",
+      instruction: "msg matnidagi 'World' so'zini 'Uzbekistan' so'ziga replace() yordamida almashtiring va natijani newMsg o'zgaruvchisiga saqlang.",
+      startingCode: "let msg = 'Hello World';\n// Bu yerga yozing\nlet newMsg = ",
+      hint: "let newMsg = msg.replace('World', 'Uzbekistan');",
+      test: "if (newMsg === 'Hello Uzbekistan') return null; return 'newMsg \\'Hello Uzbekistan\\' bo\\'lishi kerak!';"
+    },
+    {
+      id: 8,
+      title: "Matnni takrorlash",
+      instruction: "str o'zgaruvchisini repeat() yordamida 3 marta takrorlang va natijani result o'zgaruvchisiga saqlang.",
+      startingCode: "let str = 'Ha';\n// Bu yerga yozing\nlet result = ",
+      hint: "let result = str.repeat(3);",
+      test: "if (result === 'HaHaHa') return null; return 'Natija \\'HaHaHa\\' bo\\'lishi kerak!';"
+    },
+    {
+      id: 9,
+      title: "Matnni massivga ajratish",
+      instruction: "cities matnini vergul (',') belgisi bo'yicha split() yordamida massivga ajrating va uni arr o'zgaruvchisiga o'zlashtiring.",
+      startingCode: "let cities = 'Tashkent,Samarkand,Bukhara';\n// Bu yerga yozing\nlet arr = ",
+      hint: "let arr = cities.split(',');",
+      test: "if (Array.isArray(arr) && arr.length === 3 && arr[1] === 'Samarkand') return null; return 'split yordamida massivga ajrating!';"
+    },
+    {
+      id: 10,
+      title: "Muayyan harfni olish",
+      instruction: "charAt() yordamida word o'zgaruvchisining 4-indeksdagi (beshinchi harf) belgisini olib, char o'zgaruvchisiga o'zlashtiring.",
+      startingCode: "let word = 'Programmer';\n// Bu yerga yozing\nlet char = ",
+      hint: "let char = word.charAt(4);",
+      test: "if (char === 'r') return null; return '4-indeksdagi harf r bo\\'lishi kerak!';"
+    },
+    {
+      id: 11,
+      title: "Indeksni aniqlash",
+      instruction: "indexOf() yordamida text matnidan 'Dev' so'zining birinchi boshlanish indeksini toping va uni idx o'zgaruvchisiga saqlang.",
+      startingCode: "let text = 'Web Development';\n// Bu yerga yozing\nlet idx = ",
+      hint: "let idx = text.indexOf('Dev');",
+      test: "if (idx === 4) return null; return 'Dev so\\'zining indeksi 4 bo\\'lishi kerak!';"
+    },
+    {
+      id: 12,
+      title: "Slice bilan kesib olish",
+      instruction: "slice() metodiga manfiy indeks (-6) berib, str matnining oxirgi 6 ta belgisini kesib oling va res o'zgaruvchisiga saqlang.",
+      startingCode: "let str = 'HelloFriend';\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = str.slice(-6);",
+      test: "if (res === 'Friend') return null; return 'Kesib olingan matn \\'Friend\\' bo\\'lishi kerak!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

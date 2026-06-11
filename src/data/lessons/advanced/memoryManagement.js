@@ -317,32 +317,119 @@ class DashboardPage {
 | **Unterminated Timer**| To'xtatilmagan \`setInterval\` | \`clearInterval()\` ishlatish |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Intervalni To'xtatish",
-    "instruction": "Taqdim etilgan interval identifikatorini (`id`) `clearInterval` yordamida to'xtatuvchi `clearLeakyInterval(id)` funksiyasini yozing.",
-    "startingCode": "function clearLeakyInterval(id) {\n  // Kodni yozing\n}",
-    "hint": "clearInterval(id);",
-    "test": "try { let cleared = false; const orig = window.clearInterval; window.clearInterval = (x) => { cleared = true; orig(x); }; clearLeakyInterval(12345); window.clearInterval = orig; if (!cleared) return 'clearInterval chaqirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 2,
-    "title": "WeakMap orqali Xavfsiz Kesh Yozish",
-    "instruction": "Foydalanuvchi obyekti (`userObj`) kaliti bilan `data` qiymatini berilgan `weakMap` obyektiga xavfsiz (kuchsiz bog'liqlik bilan) keshlovchi `cacheUserData(weakMap, userObj, data)` funksiyasini yozing.",
-    "startingCode": "function cacheUserData(weakMap, userObj, data) {\n  // Kodni yozing\n}",
-    "hint": "weakMap.set(userObj, data);",
-    "test": "try { const wm = new WeakMap(); const u = { id: 1 }; cacheUserData(wm, u, 'admin'); if (wm.get(u) !== 'admin') return 'WeakMap-ga ma\\'lumot to\\'g\\'ri yozilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 3,
-    "title": "EventListener Tozalagich (Registry)",
-    "instruction": "Berilgan `SafeListenerRegistry` klassining `destroy()` metodini shunday to'ldiringki, u `add` metodi orqali ro'yxatga olingan barcha event listenerlarni `element`dan `removeEventListener` yordamida o'chirib tashlasin va `handlers` massivini tozalasin.",
-    "startingCode": "class SafeListenerRegistry {\n  constructor(element) {\n    this.element = element;\n    this.handlers = [];\n  }\n  add(type, handler) {\n    this.element.addEventListener(type, handler);\n    this.handlers.push({ type, handler });\n  }\n  destroy() {\n    // Kodni yozing\n  }\n}",
-    "hint": "this.handlers.forEach(({ type, handler }) => this.element.removeEventListener(type, handler)); this.handlers.length = 0;",
-    "test": "try { let removes = []; const mockEl = { addEventListener() {}, removeEventListener(type, fn) { removes.push({ type, fn }); } }; const reg = new SafeListenerRegistry(mockEl); const cb = () => {}; reg.add('click', cb); reg.destroy(); if (removes.length !== 1 || reg.handlers.length !== 0) return 'destroy metodi listenerlarni to\\'liq o\\'chirmadi yoki massivni tozalamadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Xotira mashqi",
+      instruction: "Intervalni to'xtatish orqali xotira oqishining oldini oling.",
+      startingCode: "const id = setInterval(() => {}, 1000);\n// Bu yerda to'xtating",
+      hint: "clearInterval(id);",
+      test: "if (code.includes('clearInterval')) return null; return 'clearInterval ishlatilmadi';"
+    },
+    {
+      id: 2,
+      title: "Timeout tozalash",
+      instruction: "Xotirani tejash uchun setTimeout taymerini tozalang.",
+      startingCode: "const timerId = setTimeout(() => {}, 5000);\n// Bu yerda tozalang",
+      hint: "clearTimeout(timerId);",
+      test: "if (code.includes('clearTimeout')) return null; return 'clearTimeout ishlatilmadi';"
+    },
+    {
+      id: 3,
+      title: "WeakMap yaratish",
+      instruction: "'WeakMap' ob'ektini yarating va unga yangi ob'ekt kaliti bilan qiymat qo'shing.",
+      startingCode: "const wm = new WeakMap();\nconst keyObj = {};\n// Qiymat qo'shing\n",
+      hint: "wm.set(keyObj, 'data');",
+      test: "if (code.includes('wm.set') && code.includes('keyObj')) return null; return 'WeakMap-ga keyObj bilan qiymat qo\\'shing';"
+    },
+    {
+      id: 4,
+      title: "WeakSet yaratish",
+      instruction: "'WeakSet' ob'ektini yarating va unga 'item' ob'ektini qo'shing.",
+      startingCode: "const ws = new WeakSet();\nconst item = {};\n// ws ga item ni qo'shing\n",
+      hint: "ws.add(item);",
+      test: "if (code.includes('ws.add') && code.includes('item')) return null; return 'WeakSet-ga item ni qo\\'shing';"
+    },
+    {
+      id: 5,
+      title: "Remove Event Listener",
+      instruction: "Xotira oqmasligi uchun 'btn' elementidan 'click' hodisasi uchun 'onClick' listenerini o'chiring.",
+      startingCode: "const btn = { removeEventListener: (type, fn) => {} };\nfunction onClick() {}\n// btn dan listenerni o'chiring\n",
+      hint: "btn.removeEventListener('click', onClick);",
+      test: "if (code.includes('removeEventListener') && code.includes('click')) return null; return 'removeEventListener ishlatilsin';"
+    },
+    {
+      id: 6,
+      title: "Nullify Reference",
+      instruction: "'largeData' obyektiga bo'lgan bog'liqlikni yo'qotish orqali uni Garbage Collector uchun tayyorlang.",
+      startingCode: "let largeData = { payload: new Array(10000) };\n// Bog'liqlikni uzing\n",
+      hint: "largeData = null;",
+      test: "if (code.includes('largeData = null') || code.includes('largeData=null')) return null; return 'largeData ni null ga tenglang';"
+    },
+    {
+      id: 7,
+      title: "Closures memory optimization",
+      instruction: "Xotirani ortiqcha band qilmaslik uchun 'getData' funksiyasidan faqat kerakli qiymatni qaytaring (bigData o'zini emas).",
+      startingCode: "function getData() {\n  const bigData = { name: 'Ali', details: new Array(1000) };\n  // Faqat name xossasini qaytaruvchi funksiya yozing\n}",
+      hint: "const name = bigData.name; return () => name;",
+      test: "if (code.includes('bigData.name') && code.includes('return')) return null; return 'Faqat kerakli qismni closure orqali qaytaring';"
+    },
+    {
+      id: 8,
+      title: "Array Truncation",
+      instruction: "Katta massivni xotiradan bo'shatish uchun uning uzunligini (length) nolga tenglashtiring.",
+      startingCode: "const bigArray = [1, 2, 3, 4, 5];\n// Massivni tozalang\n",
+      hint: "bigArray.length = 0;",
+      test: "if (code.includes('bigArray.length = 0') || code.includes('bigArray.length=0')) return null; return 'Massiv length xossasini 0 qiling';"
+    },
+    {
+      id: 9,
+      title: "Memory checking",
+      instruction: "Brauzer memory API'sidan 'usedJSHeapSize' xossasini olish kodini yozing.",
+      startingCode: "function checkHeap() {\n  // usedJSHeapSize ni qaytaring\n}",
+      hint: "return performance.memory ? performance.memory.usedJSHeapSize : 0;",
+      test: "if (code.includes('usedJSHeapSize')) return null; return 'usedJSHeapSize xossasidan foydalaning';"
+    },
+    {
+      id: 10,
+      title: "Map item deletion",
+      instruction: "Oddiy Map ob'ektidan xotirani bo'shatish uchun 'tempKey' kalitini o'chiring.",
+      startingCode: "const cache = new Map();\ncache.set('tempKey', 'value');\n// tempKey ni o'chiring\n",
+      hint: "cache.delete('tempKey');",
+      test: "if (code.includes('cache.delete')) return null; return 'Map-dan kalitni o\\'chiring';"
+    },
+    {
+      id: 11,
+      title: "Set element remove",
+      instruction: "Set ob'ektidan 'oldUser' elementini o'chirib tashlang.",
+      startingCode: "const activeUsers = new Set();\nconst oldUser = { id: 1 };\nactiveUsers.add(oldUser);\n// oldUser ni o'chiring\n",
+      hint: "activeUsers.delete(oldUser);",
+      test: "if (code.includes('activeUsers.delete')) return null; return 'Set-dan elementni o\\'chiring';"
+    },
+    {
+      id: 12,
+      title: "WeakMap delete",
+      instruction: "WeakMap ob'ektidan 'session' kalitini o'chiring.",
+      startingCode: "const wm = new WeakMap();\nconst session = {};\nwm.set(session, 'active');\n// session ni o'chiring\n",
+      hint: "wm.delete(session);",
+      test: "if (code.includes('wm.delete')) return null; return 'WeakMap-dan session kalitini o\\'chiring';"
+    },
+    {
+      id: 13,
+      title: "EventListener Registry",
+      instruction: "Xotira oqishini (memory leak) oldini olish uchun 'EventListenerRegistry' klassini yozing. U 'addEventListener(type, listener)' metodi orqali 'window'ga hodisalarni qo'shishi va ularni ro'yxatga olishi, 'destroy()' metodi chaqirilganda esa barcha ro'yxatdan o'tgan listenerlarni 'window'dan o'chirishi hamda 'listeners' massivini tozalashi kerak.",
+      startingCode: "class EventListenerRegistry {\n  constructor() {\n    this.listeners = [];\n  }\n  addEventListener(type, listener) {\n    // window-ga listener qo'shing va registry-ga saqlang\n  }\n  destroy() {\n    // Barcha listenerlarni window-dan o'chiring va massivni tozalang\n  }\n}",
+      hint: "addEventListener(type, listener) {\n  window.addEventListener(type, listener);\n  this.listeners.push({ type, listener });\n}\ndestroy() {\n  this.listeners.forEach(({ type, listener }) => window.removeEventListener(type, listener));\n  this.listeners.length = 0;\n}",
+      test: "if (code.includes('window.removeEventListener') && code.includes('forEach') && (code.includes('length = 0') || code.includes('length=0') || code.includes('listeners = []') || code.includes('listeners=[]'))) return null;\nreturn 'EventListenerRegistry to\\'g\\'ri amalga oshirilmadi. destroy metodida removeEventListener va registry-ni tozalash tekshirilsin.';"
+    },
+    {
+      id: 14,
+      title: "WeakCache tizimi",
+      instruction: "Obyekt kalitlariga asoslangan va Garbage Collector ishlashiga xalaqit bermaydigan 'WeakCache' kesh tizimini 'WeakMap' yordamida yozing. U 'has(obj)' (keshda borligini tekshirish), 'get(obj)' (keshdan qiymatni olish), va 'set(obj, value)' (keshga qiymat qo'shish) metodlariga ega bo'lsin.",
+      startingCode: "class WeakCache {\n  constructor() {\n    this.cache = new WeakMap();\n  }\n  // has, get, set metodlarini yozing\n}",
+      hint: "has(obj) { return this.cache.has(obj); }\nget(obj) { return this.cache.get(obj); }\nset(obj, value) { this.cache.set(obj, value); }",
+      test: "if (code.includes('this.cache.has') && code.includes('this.cache.get') && code.includes('this.cache.set')) return null;\nreturn 'WeakCache metodlari (has, get, set) to\\'liq yoki to\\'g\\'ri yozilmadi.';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

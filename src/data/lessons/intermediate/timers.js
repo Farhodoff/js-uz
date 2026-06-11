@@ -198,32 +198,103 @@ Oddiy funksiya ishlatilganda \`this\` global \`window\` obyektiga ishora qiladi.
 Ushbu bo'lim ostida taqdim etilgan amaliy mashqlar yordamida taymerlar bilan ishlash, intervallarni o'rnatish va vaqtni boshqarish ko'nikmalaringizni sinab ko'ring. Har bir mashq kodni to'g'ri va xavfsiz boshqarishga qaratilgan.
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Kechiktirilgan Xabar (setTimeout)",
-    "instruction": "Taqdim etilgan `showMessage` funksiyasini 1.5 soniyadan (1500 millisekund) keyin ishga tushiradigan kod yozing. Chaqiriq vaqtida birinchi argument sifatida `\"Muvaffaqiyatli!\"` matnini uzating.",
-    "startingCode": "function showMessage(text) {\n  console.log(text);\n}\n\n// Kodni shu yerda yozing\n",
-    "hint": "setTimeout(showMessage, 1500, \"Muvaffaqiyatli!\") yoki setTimeout(() => showMessage(\"Muvaffaqiyatli!\"), 1500)",
-    "test": "const sandbox = new Function('setTimeout', 'showMessage', code);\nlet called = false;\nlet delayVal = 0;\nlet argVal = '';\nconst mockSetTimeout = (cb, delay, ...args) => {\n  called = true;\n  delayVal = delay;\n  argVal = args[0] || '';\n  if (typeof cb === 'function') cb(...args);\n};\nconst mockShowMessage = (text) => {};\nsandbox(mockSetTimeout, mockShowMessage);\nif (!called) return 'setTimeout funksiyasi chaqirilmadi';\nif (delayVal !== 1500) return 'Kechikish vaqti 1500 millisekund bo\\'lishi kerak';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Intervalni To'xtatish (clearInterval)",
-    "instruction": "Har soniyada `counter` qiymatini 1 ga oshiruvchi interval o'rnatilgan. `counter` qiymati 5 ga yetganida (ya'ni 5 marta oshgandan keyin) joriy intervalni to'liq to'xtatuvchi (bekor qiluvchi) kod yozing.",
-    "startingCode": "let counter = 0;\nconst intervalId = setInterval(() => {\n  counter++;\n  // Kodni shu yerda yozing\n  \n}, 1000);",
-    "hint": "if (counter === 5) { clearInterval(intervalId); }",
-    "test": "if (!code.includes('clearInterval')) return 'clearInterval funksiyasi ishlatilmadi';\nif (!code.includes('intervalId')) return 'clearInterval-ga to\\'g\\'ri intervalId uzatilmadi';\nif (!code.includes('counter === 5') && !code.includes('counter >= 5')) return 'counter 5 ga tengligi tekshirilmadi';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Debounce Taymeri (clearTimeout)",
-    "instruction": "Har safar input yozilganda ishlaydian `processInput` nomli funksiyani rejalashtirishimiz kerak. Agar avval rejalashtirilgan taymer (`searchTimer`) mavjud bo'lsa, uni to'xtatib (clear qilib), keyin yangi 300 millisekundlik taymerni `searchTimer`ga saqlaydigan funksiya yarating.",
-    "startingCode": "let searchTimer = null;\nfunction processInput() {\n  console.log(\"Qidirilmoqda...\");\n}\n\nfunction handleSearch() {\n  // Kodni shu yerda yozing\n  \n}",
-    "hint": "clearTimeout(searchTimer); searchTimer = setTimeout(processInput, 300);",
-    "test": "if (!code.includes('clearTimeout(searchTimer)')) return 'Avvalgi searchTimer bekor qilinmadi (clearTimeout)';\nif (!code.includes('setTimeout') || !code.includes('300')) return 'Yangi 300ms lik setTimeout rejalashtirilmadi';\nif (!code.includes('searchTimer = setTimeout')) return 'Yangi taymer ID si searchTimer o\\'zgaruvchisiga saqlanmadi';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1️⃣ Kechiktirish (Boshlang'ich)",
+      instruction: "2 soniyadan keyin 'Salom' degan yozuvni konsolga chiqaradigan kod yozing.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "setTimeout(() => console.log('Salom'), 2000);",
+      test: "if (code.includes('setTimeout') && code.includes('2000')) return null; return 'setTimeout noto\\'g\\'ri ishlatildi';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Takrorlash (Boshlang'ich)",
+      instruction: "Har 500 millisekundda 'Takror' so'zini chiqaradigan taymer yarating.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "setInterval(() => console.log('Takror'), 500);",
+      test: "if (code.includes('setInterval') && code.includes('500')) return null; return 'setInterval noto\\'g\\'ri ishlatildi';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ To'xtatish (Boshlang'ich)",
+      instruction: "'timerId' o'zgaruvchisida saqlangan intervalni to'xtating.",
+      startingCode: "const timerId = 123;\n// Bu yerga yozing\n",
+      hint: "clearInterval(timerId);",
+      test: "if (code.includes('clearInterval(timerId)')) return null; return 'clearInterval ishlatilmadi';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Sanoq (Boshlang'ich)",
+      instruction: "3 soniyadan keyin 'Tugadi' so'zini chiqaruvchi taymer yozing.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "setTimeout(() => console.log('Tugadi'), 3000);",
+      test: "if (code.includes('setTimeout') && code.includes('3000')) return null; return '3000ms kutish kerak';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Rekursiv setTimeout (O'rta)",
+      instruction: "Rekursiv setTimeout yordamida har 1000ms da konsolga 'Sanoq' so'zini chiqaradigan run funksiyasi yozing va uni ishga tushiring.",
+      startingCode: "function run() {\n  console.log('Sanoq');\n  // Kodni shu yerda yozing: run funksiyasini qayta chaqiring\n}\nrun();",
+      hint: "setTimeout(run, 1000);",
+      test: "if (code.includes('setTimeout(run') && code.includes('1000')) return null; return 'setTimeout ichida run qayta chaqirilishi kerak!';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ clearTimeout ishlatish (O'rta)",
+      instruction: "2 soniyadan keyin ishlaydigan timeoutId taymerini darhol bekor qiling (clear qiling).",
+      startingCode: "const timeoutId = setTimeout(() => {\n  console.log('Bu ishlamasligi kerak');\n}, 2000);\n\n// Kodni shu yerda yozing: timeoutId taymerini to'xtating",
+      hint: "clearTimeout(timeoutId);",
+      test: "if (code.includes('clearTimeout(timeoutId)')) return null; return 'clearTimeout ishlatilmadi!';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Parametrli setTimeout (O'rta)",
+      instruction: "setTimeout orqali sayHello funksiyasiga 'Ali' argumentini uzatib, uni 1.5 soniyadan keyin chaqiring.",
+      startingCode: "function sayHello(name) {\n  console.log('Salom, ' + name);\n}\n\n// Kodni shu yerda yozing: sayHello ni 'Ali' parametri va 1500ms bilan chaqiring",
+      hint: "setTimeout(sayHello, 1500, 'Ali');",
+      test: "if (code.includes('setTimeout') && code.includes('sayHello') && code.includes('Ali') && code.includes('1500')) return null; return 'setTimeout parametri noto\\'g\\'ri!';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Dinamik Interval To'xtatish (Qiyin)",
+      instruction: "Har 500ms da counter qiymatini 1 ga oshiruvchi interval yarating. counter qiymati 3 ga yetganda, interval to'xtashi (clear bo'lishi) kerak.",
+      startingCode: "let counter = 0;\nconst intervalId = setInterval(() => {\n  counter++;\n  console.log(counter);\n  // Kodni shu yerda yozing: counter 3 bo'lganda intervalId ni to'xtating\n}, 500);",
+      hint: "if (counter === 3) clearInterval(intervalId);",
+      test: "if (code.includes('counter === 3') && code.includes('clearInterval(intervalId)')) return null; return 'Sanoq 3 bo\\'lganda clearInterval chaqirilishi kerak!';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Delayed Promise (Qiyin)",
+      instruction: "1 soniyadan keyin 'Muvaffaqiyat' yozuvi bilan resolved bo'luvchi Promise qaytaradigan delay funksiyasini yozing.",
+      startingCode: "function delay() {\n  return new Promise((resolve) => {\n    // Kodni shu yerda yozing: 1000ms keyin resolve ni chaqiring\n  });\n}",
+      hint: "setTimeout(() => resolve('Muvaffaqiyat'), 1000);",
+      test: "if (code.includes('setTimeout') && code.includes('resolve') && code.includes('1000')) return null; return 'Promise va setTimeout xato bog\\'landi!';"
+    },
+    {
+      id: 10,
+      title: "🔟 Nested setTimeout chain (Qiyin)",
+      instruction: "1 soniyadan keyin 'Bir', undan keyin yana 2 soniyadan keyin 'Ikki' yozuvlarini chiqaruvchi ketma-ket setTimeout yozing.",
+      startingCode: "// Kodni shu yerda yozing: ketma-ket setTimeout zanjiri\n",
+      hint: "setTimeout(() => { console.log('Bir'); setTimeout(() => { console.log('Ikki'); }, 2000); }, 1000);",
+      test: "if (code.includes('1000') && code.includes('2000') && code.includes('Bir') && code.includes('Ikki')) return null; return 'Kechikish zanjiri xato!';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Debounce Timers (Eng Qiyin)",
+      instruction: "Har safar chaqirilganda oldingi taymerni o'chirib, faqat oxirgi chaqiruvdan 300ms keyin funksiyani bajaradigan debounce taymerini boshqaring.",
+      startingCode: "let debounceTimer;\nfunction onSearchInput(query) {\n  // Kodni shu yerda yozing: oldingi debounceTimer ni to'xtating va yangisini o'rnating (300ms)\n}",
+      hint: "clearTimeout(debounceTimer); debounceTimer = setTimeout(() => console.log(query), 300);",
+      test: "if (code.includes('clearTimeout(debounceTimer)') && code.includes('300')) return null; return 'Debounce taymeri to\\'g\\'ri ishlatilmadi!';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Custom Interval via Rekursiv setTimeout (Eng Qiyin)",
+      instruction: "Rekursiv setTimeout yordamida o'zgaruvchan kechikish vaqti bilan harakat qiladigan interval funksiyasini yozing.",
+      startingCode: "let delayTime = 500;\nfunction tick() {\n  console.log('Tik');\n  if (delayTime > 100) delayTime -= 100;\n  // Kodni shu yerda yozing: dynamic delayTime bilan setTimeout chaqiring\n}\nsetTimeout(tick, delayTime);",
+      hint: "setTimeout(tick, delayTime);",
+      test: "if (code.includes('setTimeout(tick') && code.includes('delayTime')) return null; return 'Rekursiv dynamic setTimeout xato!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

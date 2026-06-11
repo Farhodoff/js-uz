@@ -97,31 +97,119 @@ graph TD
 | **Observer** | Behavioral | O'zgarishlar haqida obunachilarni xabardor qilish |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "1️⃣ Singleton Pattern",
-    "instruction": "Bitta instance qaytaruvchi Singleton class yarating.",
-    "startingCode": "class Singleton {\n  static getInstance() {\n    // Bu yerga yozing\n  }\n}\n",
-    "hint": "static instance = null; if (!instance) instance = new Singleton();",
-    "test": "if (code.includes('getInstance')) return null; return 'Singleton kerak';"
-  },
-  {
-    "id": 2,
-    "title": "2️⃣ Factory Pattern",
-    "instruction": "Factory method orqali ob'ekt yarating.",
-    "startingCode": "class Factory {\n  static create(type) {\n    // Bu yerga yozing\n  }\n}\n",
-    "hint": "if (type === 'A') return new A();",
-    "test": "if (code.includes('create')) return null; return 'Factory kerak';"
-  },
-  {
-    "id": 3,
-    "title": "3️⃣ Observer Pattern",
-    "instruction": "EventEmitter bilan observer yarating.",
-    "startingCode": "class EventEmitter {\n  on(event, listener) { /* ... */ }\n  emit(event, data) { /* ... */ }\n}\n",
-    "hint": "this.events[event]?.forEach(...)",
-    "test": "if (code.includes('on') && code.includes('emit')) return null; return 'Observer kerak';"
-  }
-],
+    {
+      id: 1,
+      title: "1️⃣ Singleton Pattern",
+      instruction: "Bitta instance qaytaruvchi Singleton class yarating.",
+      startingCode: "class Singleton {\n  static getInstance() {\n    // Bu yerga yozing\n  }\n}\n",
+      hint: "static instance = null; if (!instance) instance = new Singleton();",
+      test: "if (code.includes('getInstance')) return null; return 'Singleton kerak';"
+    },
+    {
+      id: 2,
+      title: "2️⃣ Factory Pattern",
+      instruction: "Factory method orqali ob'ekt yarating.",
+      startingCode: "class Factory {\n  static create(type) {\n    // Bu yerga yozing\n  }\n}\n",
+      hint: "if (type === 'A') return new A();",
+      test: "if (code.includes('create')) return null; return 'Factory kerak';"
+    },
+    {
+      id: 3,
+      title: "3️⃣ Observer Pattern",
+      instruction: "EventEmitter bilan observer yarating.",
+      startingCode: "class EventEmitter {\n  on(event, listener) { /* ... */ }\n  emit(event, data) { /* ... */ }\n}\n",
+      hint: "this.events[event]?.forEach(...)",
+      test: "if (code.includes('on') && code.includes('emit')) return null; return 'Observer kerak';"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Decorator Pattern",
+      instruction: "Decorator orqali funksionallik qo'shing.",
+      startingCode: "class Decorator {\n  constructor(obj) { this.obj = obj; }\n}\n",
+      hint: "Wrapper pattern",
+      test: "if (code.includes('constructor')) return null; return 'Decorator kerak';"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Strategy Pattern",
+      instruction: "Turli strategiyalarni o'tqazing.",
+      startingCode: "class Context {\n  execute(strategy) {\n    // Bu yerga yozing\n  }\n}\n",
+      hint: "strategy.execute();",
+      test: "if (code.includes('strategy')) return null; return 'Strategy kerak';"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Facade Pattern",
+      instruction: "Murakkab API'ni soddalashtirib facade yarating.",
+      startingCode: "class Facade {\n  complexOperation() {\n    // Nechta subsystem ul\n  }\n}\n",
+      hint: "Bir method'da hammasini yig'ish",
+      test: "if (code.includes('Facade')) return null; return 'Facade kerak';"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Builder Pattern",
+      instruction: "Builder orqali murakkab ob'ekt yarating.",
+      startingCode: "class Builder {\n  with(prop, val) { this[prop] = val; return this; }\n  build() { /* ... */ }\n}\n",
+      hint: "Method chaining",
+      test: "if (code.includes('build')) return null; return 'Builder kerak';"
+    },
+    {
+      id: 8,
+      title: "8️⃣ State Pattern",
+      instruction: "Holat o'zgarishini state pattern bilan qiling.",
+      startingCode: "class Machine {\n  setState(state) { this.state = state; }\n}\n",
+      hint: "State almashtirish",
+      test: "if (code.includes('setState')) return null; return 'State kerak';"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Repository Pattern",
+      instruction: "Data access abstraction qiling.",
+      startingCode: "class Repository {\n  async getById(id) { /* ... */ }\n  async save(data) { /* ... */ }\n}\n",
+      hint: "Database abstraction",
+      test: "if (code.includes('getById')) return null; return 'Repository kerak';"
+    },
+    {
+      id: 10,
+      title: "1️⃣0️⃣ Adapter Pattern",
+      instruction: "Birorta API'ni boshqasiga moslang.",
+      startingCode: "class Adapter {\n  constructor(oldAPI) { this.api = oldAPI; }\n  newMethod() { return this.api.oldMethod(); }\n}\n",
+      hint: "API wrapping",
+      test: "if (code.includes('Adapter')) return null; return 'Adapter kerak';"
+    },
+    {
+      id: 11,
+      title: "1️⃣1️⃣ Module Pattern",
+      instruction: "Module pattern bilan private/public qiling.",
+      startingCode: "const Module = (function() {\n  const private = 'hidden';\n  return { public: () => private };\n})();\n",
+      hint: "IIFE pattern",
+      test: "if (code.includes('IIFE')) return null; return 'Module kerak';"
+    },
+    {
+      id: 12,
+      title: "1️⃣2️⃣ Kompleks - Pattern Kombinatsiyasi",
+      instruction: "Singleton + Factory + Observer birgalikda.",
+      startingCode: "// EventEmitter (Observer) + Factory + Singleton\nclass App {\n  static get instance() { /* singleton */ }\n  static createService() { /* factory */ }\n  subscribe(event) { /* observer */ }\n}\n",
+      hint: "Uchala pattern birgalikda",
+      test: "if (code.includes('instance') && code.includes('create')) return null; return 'Kompleks kerak';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Publish-Subscribe Brokers (createPubSub)",
+      instruction: "Publish-Subscribe (PubSub) andozasini (Observer andozasining bo'sh bog'langan ko'rinishi) amalga oshiruvchi `createPubSub()` funksiyasini yozing. U quyidagi uchta metodga ega broker obyektini qaytarsin:\n1) `subscribe(event, handler)` - voqeaga obuna bo'lish (obunachini massivga qo'shish) va obunani bekor qiluvchi `unsubscribe` anonim funksiyasini qaytarish.\n2) `publish(event, data)` - voqea bo'yicha barcha obunachilarni ma'lumotlar bilan ishga tushirish.\n3) `unsubscribe(event, handler)` - obunachini voqea ro'yxatidan o'chirish.",
+      startingCode: "function createPubSub() {\n  const events = {};\n  return {\n    subscribe(event, handler) {\n      // Kodni shu yerdan yozing\n    },\n    publish(event, data) {\n      // Kodni shu yerdan yozing\n    },\n    unsubscribe(event, handler) {\n      // Kodni shu yerdan yozing\n    }\n  };\n}",
+      hint: "subscribe(event, handler) {\n  if (!events[event]) events[event] = [];\n  events[event].push(handler);\n  return () => this.unsubscribe(event, handler);\n}\npublish(event, data) {\n  events[event]?.forEach(h => h(data));\n}\nunsubscribe(event, handler) {\n  if (!events[event]) return;\n  events[event] = events[event].filter(h => h !== handler);\n}",
+      test: "if (typeof createPubSub !== 'function') return 'createPubSub funksiya emas';\nconst broker = createPubSub();\nlet resData = null;\nconst unsub = broker.subscribe('test', (data) => { resData = data; });\nbroker.publish('test', 'hello');\nif (resData !== 'hello') return 'Hodisa to\\'g\\'ri publish qilinmadi';\nif (typeof unsub !== 'function') return 'subscribe() unsubscribe funksiyasini qaytarmadi';\nunsub();\nbroker.publish('test', 'world');\nif (resData !== 'hello') return 'Obuna bekor qilingandan so\\'ng ham chaqirildi';\nreturn null;"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ SQL Query Builder (createBuilder)",
+      instruction: "SQL so'rovlarini bosqichma-bosqich, zanjir usulida (method chaining) yig'ib beruvchi `createBuilder()` funksiyasini (Query Builder andozasi) yozing. U quyidagi zanjir metodlariga ega bo'lishi shart:\n- `select(fields)` - tanlanadigan ustunlar nomi (string).\n- `from(table)` - jadval nomi.\n- `where(condition)` - filtrlash sharti.\n- `build()` - yig'ilgan so'rovni SQL matn ko'rinishida (string) qaytaradi. Metodlar zanjiri ishlashi uchun mos metodlarda `this` qaytaring. Sukut bo'yicha fields `*` bo'lsin.",
+      startingCode: "function createBuilder() {\n  // Kodni shu yerdan yozing\n}",
+      hint: "return {\n  _select: '*',\n  _from: '',\n  _where: '',\n  select(fields) { this._select = fields; return this; },\n  from(table) { this._from = table; return this; },\n  where(cond) { this._where = cond; return this; },\n  build() {\n    let sql = `SELECT ${this._select} FROM ${this._from}`;\n    if (this._where) sql += ` WHERE ${this._where}`;\n    return sql;\n  }\n};",
+      test: "if (typeof createBuilder !== 'function') return 'createBuilder funksiya emas';\nconst builder = createBuilder();\nconst q = builder.select('id, title').from('posts').where('status = 1').build();\nif (q !== 'SELECT id, title FROM posts WHERE status = 1') return 'SQL query noto\\'g\\'ri yig\\'ildi';\nconst builder2 = createBuilder();\nif (typeof builder2.select('a') !== 'object' || typeof builder2.select('a').from !== 'function') return 'Metodlar zanjiri (method chaining) to\\'g\\'ri ishlamadi (return this; tekshiring)';\nreturn null;"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

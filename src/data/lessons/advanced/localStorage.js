@@ -218,32 +218,119 @@ window.onload = applyTheme;
 | \`localStorage.key(index)\` | Indeks bo'yicha kalit nomini olish | \`const firstKey = localStorage.key(0)\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Oddiy qiymat saqlash",
-    "instruction": "Berilgan `key` (kalit) va `value` (matnli qiymat)ni localStorage-ga saqlaydigan va so'ngra uni qayta o'qib qaytaradigan `saveStringToLocalStorage(key, value)` funksiyasini yozing.",
-    "startingCode": "function saveStringToLocalStorage(key, value) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "localStorage.setItem(key, value); dan keyin localStorage.getItem(key); ni return qiling.",
-    "test": "if (typeof localStorage === 'undefined') {\n  globalThis.localStorage = {\n    store: {},\n    setItem(k,v) { this.store[k] = String(v); },\n    getItem(k) { return this.store[k] || null; },\n    clear() { this.store = {}; }\n  };\n}\nconst sandbox = new Function(code + '; return saveStringToLocalStorage;');\nconst fn = sandbox();\nlocalStorage.clear();\nconst res = fn('name', 'Jasur');\nif (localStorage.getItem('name') === 'Jasur' && res === 'Jasur') return null;\nreturn 'LocalStorage-ga ma\\'lumot yozilmadi yoki to\\'g\\'ri o\\'qilmadi';"
-  },
-  {
-    "id": 2,
-    "title": "Obyektni satrga o'girib saqlash",
-    "instruction": "Berilgan `obj` obyektini JSON satrga aylantirib, `key` kaliti ostida localStorage-ga saqlaydigan `saveObjectToLocalStorage(key, obj)` funksiyasini yozing.",
-    "startingCode": "function saveObjectToLocalStorage(key, obj) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "JSON.stringify(obj) funksiyasidan foydalaning.",
-    "test": "if (typeof localStorage === 'undefined') {\n  globalThis.localStorage = {\n    store: {},\n    setItem(k,v) { this.store[k] = String(v); },\n    getItem(k) { return this.store[k] || null; },\n    clear() { this.store = {}; }\n  };\n}\nconst sandbox = new Function(code + '; return saveObjectToLocalStorage;');\nconst fn = sandbox();\nlocalStorage.clear();\nconst testObj = { x: 10, y: 20 };\nfn('coords', testObj);\nconst stored = localStorage.getItem('coords');\nif (stored && JSON.parse(stored).x === 10) return null;\nreturn 'Obyekt JSON formatida localStorage-ga to\\'g\\'ri saqlanmadi';"
-  },
-  {
-    "id": 3,
-    "title": "Saqlangan obyektni parse qilib olish",
-    "instruction": "localStorage-dan berilgan `key` kaliti ostidagi qiymatni olib, uni qaytadan JS obyektiga o'girib (parse qilib) qaytaradigan `getParsedObjectFromLocalStorage(key)` funksiyasini yozing. Agar bunday kalit storage-da mavjud bo'lmasa, `null` qaytaring.",
-    "startingCode": "function getParsedObjectFromLocalStorage(key) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "localStorage.getItem(key) qiymatini tekshiring, agar bor bo'lsa JSON.parse() qiling, aks holda null qaytaring.",
-    "test": "if (typeof localStorage === 'undefined') {\n  globalThis.localStorage = {\n    store: {},\n    setItem(k,v) { this.store[k] = String(v); },\n    getItem(k) { return this.store[k] || null; },\n    clear() { this.store = {}; }\n  };\n}\nconst sandbox = new Function(code + '; return getParsedObjectFromLocalStorage;');\nconst fn = sandbox();\nlocalStorage.clear();\nlocalStorage.setItem('user', JSON.stringify({ name: 'Ali' }));\nconst res = fn('user');\nconst emptyRes = fn('nonexistent');\nif (res && res.name === 'Ali' && emptyRes === null) return null;\nreturn 'Obyekt to\\'g\\'ri parse qilinmadi yoki mavjud bo\\'lmagan kalit uchun null qaytarilmadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Ma'lumot saqlash",
+      instruction: "LocalStorage'ga 'theme' kaliti bilan 'dark' qiymatini saqlang.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "localStorage.setItem('theme', 'dark');",
+      test: "if (code.includes('setItem')) return null; return 'setItem ishlatilmadi';"
+    },
+    {
+      id: 2,
+      title: "Obyektni saqlash",
+      instruction: "JSON.stringify yordamida 'car' obyektini saqlang.",
+      startingCode: "const car = { model: 'BYD' };\n// Saqlang\n",
+      hint: "localStorage.setItem('car', JSON.stringify(car));",
+      test: "if (code.includes('JSON.stringify')) return null; return 'JSON.stringify ishlatilmadi';"
+    },
+    {
+      id: 3,
+      title: "Ma'lumotni o'chirish",
+      instruction: "LocalStorage'dan 'user' kalitini o'chirib tashlang.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "localStorage.removeItem('user');",
+      test: "if (code.includes('removeItem')) return null; return 'removeItem ishlatilmadi';"
+    },
+    {
+      id: 4,
+      title: "Ma'lumotni olish",
+      instruction: "LocalStorage'dan 'theme' kaliti qiymatini oling va uni 'myTheme' o'zgaruvchisiga saqlang.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "const myTheme = localStorage.getItem('theme');",
+      test: "if (code.includes('getItem') && code.includes('theme')) return null; return 'getItem(\\'theme\\') orqali theme\\'ni oling';"
+    },
+    {
+      id: 5,
+      title: "Obyektni o'qish va parse qilish",
+      instruction: "LocalStorage'dan 'car' kalitini oling va uni JSON.parse yordamida obyektga o'tkazib 'carObj' o'zgaruvchisiga saqlang.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "const carObj = JSON.parse(localStorage.getItem('car'));",
+      test: "if (code.includes('JSON.parse') && code.includes('getItem')) return null; return 'JSON.parse va getItem orqali obyektingizni parse qiling';"
+    },
+    {
+      id: 6,
+      title: "SessionStorage yozish",
+      instruction: "SessionStorage'ga 'session_id' kaliti bilan 'xyz123' qiymatini saqlang.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "sessionStorage.setItem('session_id', 'xyz123');",
+      test: "if (code.includes('sessionStorage.setItem') && code.includes('session_id')) return null; return 'sessionStorage.setItem ishlatilmadi';"
+    },
+    {
+      id: 7,
+      title: "Kuki yozish",
+      instruction: "document.cookie orqali 'username=Farhod' kuki qiymatini yozing.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "document.cookie = 'username=Farhod';",
+      test: "if (code.includes('document.cookie') && code.includes('username=Farhod')) return null; return 'document.cookie ga username=Farhod qo\\'shing';"
+    },
+    {
+      id: 8,
+      title: "Max-Age bilan kuki yozish",
+      instruction: "document.cookie orqali 'user=Ali' kukisini uning yashash muddatini 3600 soniya qilib belgilang (max-age=3600).",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "document.cookie = 'user=Ali; max-age=3600';",
+      test: "if (code.includes('document.cookie') && code.includes('max-age=3600')) return null; return 'max-age=3600 bilan kuki yozing';"
+    },
+    {
+      id: 9,
+      title: "Balla LocalStorage'ni tozalash",
+      instruction: "LocalStorage'dagi barcha ma'lumotlarni tozalash uchun tegishli metodni chaqiring.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "localStorage.clear();",
+      test: "if (code.includes('localStorage.clear()')) return null; return 'localStorage.clear() chaqirilmadi';"
+    },
+    {
+      id: 10,
+      title: "LocalStorage hajmini tekshirish",
+      instruction: "LocalStorage'da nechta kalit saqlanganligini (length) 'len' o'zgaruvchisiga oling.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "const len = localStorage.length;",
+      test: "if (code.includes('localStorage.length')) return null; return 'localStorage.length ishlating';"
+    },
+    {
+      id: 11,
+      title: "Index bo'yicha kalit nomini olish",
+      instruction: "LocalStorage'dagi birinchi kalit nomini (index 0) .key() metodi yordamida 'firstKey' o'zgaruvchisiga oling.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "const firstKey = localStorage.key(0);",
+      test: "if (code.includes('localStorage.key(0)')) return null; return 'localStorage.key(0) ishlating';"
+    },
+    {
+      id: 12,
+      title: "SessionStorage'ni butunlay tozalash",
+      instruction: "SessionStorage'dagi barcha ma'lumotlarni tozalang.",
+      startingCode: "// Bu yerga yozing\n",
+      hint: "sessionStorage.clear();",
+      test: "if (code.includes('sessionStorage.clear()')) return null; return 'sessionStorage.clear() chaqirilmadi';"
+    },
+    {
+      id: 13,
+      title: "1️⃣3️⃣ Xavfsiz Yozish Wrapper (safeSetItem)",
+      instruction: "LocalStorage limitdan oshganda `QuotaExceededError` xatosini tashlaydi. Agar yozish jarayonida xato bo'lsa (quota exceeded), uni tutib `false` qaytaradigan, muvaffaqiyatli yozilsa `true` qaytaradigan `safeSetItem(key, value)` funksiyasini yozing.",
+      startingCode: "function safeSetItem(key, value) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "try { localStorage.setItem(key, value); return true; } catch (e) { return false; }",
+      test: "if (typeof safeSetItem !== 'function') return 'safeSetItem funksiya emas';\nconst success = safeSetItem('test_key', 'val');\nif (success && localStorage.getItem('test_key') === 'val') return null;\nreturn 'Yozish xato bajarildi';"
+    },
+    {
+      id: 14,
+      title: "1️⃣4️⃣ Kuki Parser Helper (parseCookie)",
+      instruction: "Brauzerning `document.cookie` satrini (`key1=val1; key2=val2` formatida) parse qilib, obyekt ko'rinishida qaytaruvchi `parseCookie(cookieStr)` funksiyasini yozing.",
+      startingCode: "function parseCookie(cookieStr) {\n  // Kodni shu yerdan yozing\n}",
+      hint: "if (!cookieStr) return {}; return cookieStr.split(';').reduce((acc, current) => { const [key, val] = current.trim().split('='); if (key) acc[key] = val || ''; return acc; }, {});",
+      test: "if (typeof parseCookie !== 'function') return 'parseCookie funksiya emas';\nconst parsed = parseCookie('user=Ali; theme=dark');\nif (parsed && parsed.user === 'Ali' && parsed.theme === 'dark') return null;\nreturn 'Kuki parse qilish xato';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

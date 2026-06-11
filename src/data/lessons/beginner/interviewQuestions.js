@@ -255,32 +255,103 @@ console.log(session.getCart().length); // 2 (asl savat o'zgarmadi!)
 | **Hoisting** | Memory allocation phase | \`var\` o'zgaruvchilari undefined bo'lib ko'tariladi, funksiyalar to'liq ko'tariladi. |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Turlarni Taqqoslash (Custom Equality)",
-    "instruction": "Intervyuda ko'p so'raladigan savollardan biri turlar va ularni taqqoslashdir. Shunday `compareValues(a, b, strict)` funksiyasini yozingki, u uchta parametr qabul qilsin. Agar `strict` parametri `true` bo'lsa, u `a === b` qat'iy tengligini tekshirsin va natijani qaytarsin. Agar `strict` `false` bo'lsa, u `a == b` yumshoq tengligini tekshirsin. Biroq, `null` va `undefined` yumshoq tekshirilganda (`strict` false bo'lsa) bir-biriga teng deb hisoblanmasligi kerak! Boshqa barcha holatlarda standart JS qoidalari amal qilsin.",
-    "startingCode": "function compareValues(a, b, strict) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Avval strict qiymatini tekshiring. Agar strict false bo'lsa va solishtirilayotgan qiymatlardan biri null, ikkinchisi esa undefined bo'lsa, to'g'ridan-to'g'ri false qaytaring. Qolgan hollarda oddiy == va === operatorlaridan foydalaning.",
-    "test": "const sandbox = new Function(code + '; return compareValues;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'compareValues funksiya bo\\'lishi kerak';\nif (fn(5, '5', true) !== false) return 'Strict true bo\\'lganda 5 va \"5\" teng bo\\'lmasligi kerak';\nif (fn(5, '5', false) !== true) return 'Strict false bo\\'lganda 5 va \"5\" teng bo\\'lishi kerak';\nif (fn(null, undefined, false) !== false) return 'null va undefined yumshoq tekshiruvda ham false qaytarishi kerak (shartga ko\\'re)';\nif (fn(null, null, false) !== true) return 'null va null teng bo\\'lishi kerak';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Scope va Closure yordamida Maxfiy Balans (Private State)",
-    "instruction": "JS-da inkapsulyatsiyani closures yordamida amalga oshirish mumkin. Shunday `createBankAccount(initialBalance)` funksiyasini yaratingki, u tashqaridan to'g'ridan-to'g'ri o'zgartirib bo'lmaydigan `balance` o'zgaruvchisini saqlasin. U quyidagi metodlarga ega obyekt qaytarishi kerak:\n1. `deposit(amount)` - balansni oshiradi va yangi balansni qaytaradi.\n2. `withdraw(amount)` - balansdan pul yechadi va yangi balansni qaytaradi. Agar pul yetarli bo'lmasa, balansni o'zgartirmaydi va 'Mablag\\' yetarli emas' xabarini qaytaradi.\n3. `getBalance()` - joriy balansni qaytaradi.",
-    "startingCode": "function createBankAccount(initialBalance) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Funksiya ichida `let balance = initialBalance;` o'zgaruvchisini e'lon qiling va unga kiruvchi metodlarni obyekt sifatida return qiling. Bu metodlar closure orqali `balance` o'zgaruvchisiga kirish huquqini saqlab qoladi.",
-    "test": "const sandbox = new Function(code + '; return createBankAccount;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'createBankAccount funksiya bo\\'lishi kerak';\nconst acc = fn(100);\nif (acc.getBalance() !== 100) return 'Boshlang\\'ich balans xato';\nif (acc.deposit(50) !== 150) return 'Deposit funksiyasi xato ishladi';\nif (acc.withdraw(30) !== 120) return 'Withdraw funksiyasi xato ishladi';\nif (acc.withdraw(200) !== 'Mablag\\' yetarli emas') return 'Mablag\\' yetarli bo\\'lmagan holat to\\'g\\'ri boshqarilmadi';\nif (acc.getBalance() !== 120) return 'Balans noto\\'g\\'ri saqlanmoqda';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Haqiqiy Turni Aniqlash (Safe Typeof)",
-    "instruction": "JS-dagi mashhur intervyu savoli: `typeof null` nima qaytaradi? U `object` qaytaradi, bu esa JS tarixidagi xatolikdir (bug). Shuningdek, massivlar va oddiy obyeklarning ikkalasi ham `object` qaytaradi. Shunday `safeTypeof(value)` funksiyasini yozingki, u qiymatning haqiqiy turini aniq ko'rsatsin.\nU quyidagi natijalarni qaytarishi kerak:\n- Agar qiymat `null` bo'lsa -> 'null'\n- Agar massiv bo'lsa -> 'array'\n- Qolgan barcha turlar uchun standart `typeof` natijasini qaytarsin (masalan, 'string', 'number', 'boolean', 'undefined', 'function', 'object').",
-    "startingCode": "function safeTypeof(value) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Avval qiymat `null` ekanligini tekshiring (`value === null`). Keyin `Array.isArray(value)` orqali massiv ekanligini tekshiring. Qolgan holatlar uchun oddiy `typeof value` natijasini qaytaring.",
-    "test": "const sandbox = new Function(code + '; return safeTypeof;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'safeTypeof funksiya bo\\'lishi kerak';\nif (fn(null) !== 'null') return 'null uchun \"null\" qaytishi kerak';\nif (fn([1, 2]) !== 'array') return 'Massiv uchun \"array\" qaytishi kerak';\nif (fn(5) !== 'number') return 'Son uchun \"number\" qaytishi kerak';\nif (fn('salom') !== 'string') return 'Satr uchun \"string\" qaytishi kerak';\nif (fn({}) !== 'object') return 'Obyekt uchun \"object\" qaytishi kerak';\nif (fn(undefined) !== 'undefined') return 'undefined uchun \"undefined\" qaytishi kerak';\nif (fn(() => {}) !== 'function') return 'Funksiya uchun \"function\" qaytishi kerak';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Intervyu mashqi",
+      instruction: "Berilgan sonning juft yoki toq ekanligini qaytaradigan funksiya yozing.",
+      startingCode: "function isEven(num) {\n  // Bu yerga yozing\n}",
+      hint: "return num % 2 === 0;",
+      test: "if (isEven(4) === true && isEven(5) === false) return null; return 'Mantiq xato!';"
+    },
+    {
+      id: 2,
+      title: "Palindrom tekshiruvi",
+      instruction: "Berilgan so'zning palindrom (o'ngdan ham, chapdan ham bir xil o'qiladigan) ekanligini tekshiruvchi isPalindrom funksiyasini yozing.",
+      startingCode: "function isPalindrom(str) {\n  // Bu yerga yozing\n}",
+      hint: "return str === str.split('').reverse().join('');",
+      test: "if (isPalindrom('non') === true && isPalindrom('olma') === false) return null; return 'Palindrom funksiyasi noto\\'g\\'ri ishladi!';"
+    },
+    {
+      id: 3,
+      title: "Faktorial hisoblash",
+      instruction: "n sonining faktorialini hisoblaydigan factorial funksiyasini yozing.",
+      startingCode: "function factorial(n) {\n  // Bu yerga yozing\n}",
+      hint: "if (n <= 1) return 1; return n * factorial(n - 1);",
+      test: "if (factorial(5) === 120 && factorial(0) === 1) return null; return 'Faktorial hisoblash xato!';"
+    },
+    {
+      id: 4,
+      title: "Massivdagi eng katta son",
+      instruction: "Massivdagi eng katta sonni qaytaradigan findMax funksiyasini yozing.",
+      startingCode: "function findMax(arr) {\n  // Bu yerga yozing\n}",
+      hint: "return Math.max(...arr);",
+      test: "if (findMax([1, 8, 3]) === 8) return null; return 'Eng katta sonni topish xato!';"
+    },
+    {
+      id: 5,
+      title: "Satrni teskarilash",
+      instruction: "Berilgan satrni teskarilab qaytaruvchi reverseString funksiyasini yozing.",
+      startingCode: "function reverseString(str) {\n  // Bu yerga yozing\n}",
+      hint: "return str.split('').reverse().join('');",
+      test: "if (reverseString('salom') === 'molas') return null; return 'Satrni teskarilash xato!';"
+    },
+    {
+      id: 6,
+      title: "Unlilar soni",
+      instruction: "Satrdagi unli harflar (a, e, i, o, u) sonini sanovchi countVowels funksiyasini yozing.",
+      startingCode: "function countVowels(str) {\n  // Bu yerga yozing\n}",
+      hint: "const vowels = ['a','e','i','o','u']; return str.toLowerCase().split('').filter(char => vowels.includes(char)).length;",
+      test: "if (countVowels('apple') === 2 && countVowels('sky') === 0) return null; return 'Unlilar sonini sanash xato!';"
+    },
+    {
+      id: 7,
+      title: "FizzBuzz",
+      instruction: "n soni 3 ga bo'linsa 'Fizz', 5 ga bo'linsa 'Buzz', 15 ga bo'linsa 'FizzBuzz' qaytaruvchi fizzBuzz yozing.",
+      startingCode: "function fizzBuzz(n) {\n  // Bu yerga yozing\n}",
+      hint: "if (n % 15 === 0) return 'FizzBuzz'; if (n % 3 === 0) return 'Fizz'; if (n % 5 === 0) return 'Buzz'; return n;",
+      test: "if (fizzBuzz(15) === 'FizzBuzz' && fizzBuzz(9) === 'Fizz' && fizzBuzz(10) === 'Buzz') return null; return 'FizzBuzz sharti xato!';"
+    },
+    {
+      id: 8,
+      title: "Massiv yig'indisi",
+      instruction: "Massiv elementlari yig'indisini qaytaruvchi sumArray funksiyasini yozing.",
+      startingCode: "function sumArray(arr) {\n  // Bu yerga yozing\n}",
+      hint: "return arr.reduce((sum, current) => sum + current, 0);",
+      test: "if (sumArray([1, 2, 3]) === 6) return null; return 'Yig\\'indi noto\\'g\\'ri!';"
+    },
+    {
+      id: 9,
+      title: "Dublikatlarni o'chirish",
+      instruction: "Massivdagi bir xil qiymatlarni o'chirib, faqat unikal elementli yangi massiv qaytaruvchi removeDuplicates yozing.",
+      startingCode: "function removeDuplicates(arr) {\n  // Bu yerga yozing\n}",
+      hint: "return [...new Set(arr)];",
+      test: "const res = removeDuplicates([1, 2, 2, 3]); if (res.length === 3 && res.includes(2)) return null; return 'Dublikatlar o\\'chirilmadi!';"
+    },
+    {
+      id: 10,
+      title: "Eng uzun so'z",
+      instruction: "Gapdagi eng uzun so'zni qaytaruvchi findLongestWord funksiyasini yozing.",
+      startingCode: "function findLongestWord(sentence) {\n  // Bu yerga yozing\n}",
+      hint: "const words = sentence.split(' '); return words.reduce((longest, current) => current.length > longest.length ? current : longest, '');",
+      test: "if (findLongestWord('Men dasturchiman') === 'dasturchiman') return null; return 'Eng uzun so\\'zni topish xato!';"
+    },
+    {
+      id: 11,
+      title: "Obyekt kalitlari",
+      instruction: "Obyekt kalitlarini massiv sifatida qaytaruvchi getKeys funksiyasini yozing.",
+      startingCode: "function getKeys(obj) {\n  // Bu yerga yozing\n}",
+      hint: "return Object.keys(obj);",
+      test: "const keys = getKeys({a: 1, b: 2}); if (keys.includes('a') && keys.includes('b')) return null; return 'Kalitlarni olish xato!';"
+    },
+    {
+      id: 12,
+      title: "Sonni teskari qilish",
+      instruction: "Berilgan butun sonni teskarilab qaytaruvchi reverseNumber funksiyasini yozing.",
+      startingCode: "function reverseNumber(num) {\n  // Bu yerga yozing\n}",
+      hint: "return parseFloat(num.toString().split('').reverse().join('')) * Math.sign(num);",
+      test: "if (reverseNumber(123) === 321 && reverseNumber(-45) === -54) return null; return 'Sonni teskarilash xato!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

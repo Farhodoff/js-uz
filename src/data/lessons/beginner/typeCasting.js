@@ -320,32 +320,103 @@ console.log(cleanedParams);
 | \`0\` | **Boolean** | \`Boolean(0)\` | \`false\` | Sonli \`0\` falsy qiymatdir. |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Stringni songa o'tkazish va tekshirish",
-    "instruction": "Foydalanuvchidan yosh qiymati ko'rinishida olinadigan stringni butun songa o'tkazuvchi `parseAge(ageStr)` funksiyasini yozing. Buning uchun `parseInt` funksiyasidan foydalaning va har doim 10 lik sanoq tizimini (radix) ko'rsating. Agar o'tkazish natijasi `NaN` bo'lsa yoki olingan son 0 dan kichik bo'lsa, funksiya `null` qaytarishi kerak. Aks holda o'tkazilgan sonni qaytarsin.",
-    "startingCode": "function parseAge(ageStr) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "parseInt(ageStr, 10) yordamida o'tkazing, so'ngra Number.isNaN() va yoshni tekshiring.",
-    "test": "const sandbox = new Function(code + '; return parseAge;');\nconst fn = sandbox();\nif (fn('25') !== 25) return 'parseAge(\"25\") 25 qaytarishi kerak';\nif (fn('abc') !== null) return 'parseAge(\"abc\") null qaytarishi kerak';\nif (fn('-5') !== null) return 'parseAge(\"-5\") null qaytarishi kerak';\nif (fn('30px') !== 30) return 'parseAge(\"30px\") 30 qaytarishi kerak';\nif (!code.includes('10')) return 'parseInt funksiyasida radix (10) ko\\'rsatilmagan';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Qiymatlarni boolean tipiga o'tkazish",
-    "instruction": "Istalgan qiymatni qabul qilib, uni Boolean tipiga yaqqol o'tkazuvchi `convertToBoolean(val)` funksiyasini yozing. Ammo, maxsus qoida sifatida, agar qiymat string ko'rinishidagi 'false' yoki '0' bo'lsa, funksiya `false` qaytarishi kerak. Boshqa barcha holatlarda standart Boolean conversion qoidalariga amal qiling.",
-    "startingCode": "function convertToBoolean(val) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Avval qiymat 'false' yoki '0' stringlariga tengligini tekshiring, keyin Boolean(val) orqali qaytaring.",
-    "test": "const sandbox = new Function(code + '; return convertToBoolean;');\nconst fn = sandbox();\nif (fn('false') !== false) return 'convertToBoolean(\"false\") false qaytarishi kerak';\nif (fn('0') !== false) return 'convertToBoolean(\"0\") false qaytarishi kerak';\nif (fn('') !== false) return 'convertToBoolean(\"\") false qaytarishi kerak';\nif (fn(0) !== false) return 'convertToBoolean(0) false qaytarishi kerak';\nif (fn('true') !== true) return 'convertToBoolean(\"true\") true qaytarishi kerak';\nif (fn(123) !== true) return 'convertToBoolean(123) true qaytarishi kerak';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Moliyaviy qiymatlarni tozalash va parse qilish",
-    "instruction": "Valyuta belgilari yoki boshqa matnlar aralashgan stringni qabul qiluvchi `parsePrice(priceStr)` funksiyasini yozing. Funksiya string ichidagi raqam va nuqta bo'lmagan barcha belgilarni o'chirib tashlashi, so'ngra qolgan qismni `parseFloat` orqali songa o'tkazishi kerak. Agar natijada yaroqli son hosil bo'lmasa yoki `NaN` bo'lsa, `0` qaytarilsin. Masalan: '$120.50' -> 120.5, '99.99 USD' -> 99.99, 'USD' -> 0.",
-    "startingCode": "function parsePrice(priceStr) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "priceStr.replace(/[^0-9.]/g, '') yordamida stringni tozalang va parseFloat qiling. So'ng isNaN ekanini tekshiring.",
-    "test": "const sandbox = new Function(code + '; return parsePrice;');\nconst fn = sandbox();\nif (fn('$120.50') !== 120.5) return 'parsePrice(\"$120.50\") 120.5 qaytarishi kerak';\nif (fn('99.99 USD') !== 99.99) return 'parsePrice(\"99.99 USD\") 99.99 qaytarishi kerak';\nif (fn('USD') !== 0) return 'parsePrice(\"USD\") 0 qaytarishi kerak';\nif (fn('15000') !== 15000) return 'parsePrice(\"15000\") 15000 qaytarishi kerak';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Butun sonni olish",
+      instruction: "'100px' matnidan faqat butun son qismini ajratib oling va res o'zgaruvchisiga saqlang.",
+      startingCode: "let val = '100px';\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = parseInt(val);",
+      test: "if (res === 100) return null; return 'Faqat 100 chiqishi kerak!';"
+    },
+    {
+      id: 2,
+      title: "Kasr sonni ajratish",
+      instruction: "size o'zgaruvchisidan parseFloat yordamida o'nli kasr sonni ajratib oling va natijani res o'zgaruvchisiga saqlang.",
+      startingCode: "let size = '1.75em';\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = parseFloat(size);",
+      test: "if (res === 1.75) return null; return 'res 1.75 bo\\'lishi kerak!';"
+    },
+    {
+      id: 3,
+      title: "Unary plus orqali songa o'tkazish",
+      instruction: "str o'zgaruvchisini unary plus (+) operatori yordamida songa o'tkazing va uni num o'zgaruvchisiga o'zlashtiring.",
+      startingCode: "let str = '42';\n// Bu yerga yozing\nlet num = ",
+      hint: "let num = +str;",
+      test: "if (num === 42) return null; return 'num 42 soni bo\\'lishi kerak!';"
+    },
+    {
+      id: 4,
+      title: "Xavfsiz matnga o'tkazish",
+      instruction: "val o'zgaruvchisining qiymatini String() funksiyasi yordamida matnga o'tkazing va uni res o'zgaruvchisiga saqlang.",
+      startingCode: "let val = null;\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = String(val);",
+      test: "if (res === 'null') return null; return 'res \"null\" bo\\'lishi kerak!';"
+    },
+    {
+      id: 5,
+      title: "Boolean o'tkazish (Double bang)",
+      instruction: "user o'zgaruvchisini !! (double bang) yordamida boolean qiymatga o'tkazing va uni isLoggedIn o'zgaruvchisiga o'zlashtiring.",
+      startingCode: "let user = 'Anvar';\n// Bu yerga yozing\nlet isLoggedIn = ",
+      hint: "let isLoggedIn = !!user;",
+      test: "if (isLoggedIn === true) return null; return 'isLoggedIn true bo\\'lishi kerak!';"
+    },
+    {
+      id: 6,
+      title: "Mantiqiy qiymatni songa o'tkazish",
+      instruction: "flag o'zgaruvchisini Number() yordamida songa o'tkazing va uni res o'zgaruvchisiga saqlang.",
+      startingCode: "let flag = true;\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = Number(flag);",
+      test: "if (res === 1) return null; return 'res 1 bo\\'lishi kerak!';"
+    },
+    {
+      id: 7,
+      title: "Massiv elementini songa o'tkazish",
+      instruction: "arr massividagi qiymatni Number() funksiyasi yordamida songa o'tkazing va uni res o'zgaruvchisiga saqlang.",
+      startingCode: "let arr = [7];\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = Number(arr);",
+      test: "if (res === 7) return null; return 'res 7 bo\\'lishi kerak!';"
+    },
+    {
+      id: 8,
+      title: "Obyektni matnga o'girish",
+      instruction: "obj o'zgaruvchisini String() yordamida matnga o'tkazing va uni res o'zgaruvchisiga saqlang.",
+      startingCode: "let obj = {};\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = String(obj);",
+      test: "if (res === '[object Object]') return null; return 'res \"[object Object]\" bo\\'lishi kerak!';"
+    },
+    {
+      id: 9,
+      title: "NaN ekanligini tekshirish",
+      instruction: "Number('abc') natijasini NaN ekanligini isNaN() yordamida tekshiring va natijani check o'zgaruvchisiga saqlang.",
+      startingCode: "let val = 'abc';\n// Bu yerga yozing\nlet check = ",
+      hint: "let check = isNaN(Number(val));",
+      test: "if (check === true) return null; return 'check true bo\\'lishi kerak!';"
+    },
+    {
+      id: 10,
+      title: "toString() metodini qo'llash",
+      instruction: "num o'zgaruvchisini .toString() metodi orqali matnga o'tkazing va res o'zgaruvchisiga saqlang.",
+      startingCode: "let num = 256;\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = num.toString();",
+      test: "if (res === '256') return null; return 'res \"256\" bo\\'lishi kerak!';"
+    },
+    {
+      id: 11,
+      title: "Falsy qiymatni Boolean qilish",
+      instruction: "empty o'zgaruvchisini Boolean() funksiyasi yordamida mantiqiy qiymatga o'tkazing va res o'zgaruvchisiga saqlang.",
+      startingCode: "let empty = '';\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = Boolean(empty);",
+      test: "if (res === false) return null; return 'res false bo\\'lishi kerak!';"
+    },
+    {
+      id: 12,
+      title: "Undefinedni songa o'tkazish",
+      instruction: "undef o'zgaruvchisini Number() yordamida songa o'tkazing va natijani res o'zgaruvchisiga saqlang.",
+      startingCode: "let undef = undefined;\n// Bu yerga yozing\nlet res = ",
+      hint: "let res = Number(undef);",
+      test: "if (Number.isNaN(res)) return null; return 'res NaN bo\\'lishi kerak!';"
+    }
+  ],
   quizzes: [
   {
     "id": 1,
