@@ -52,41 +52,41 @@ So'rovlarni serverlar ro'yxati bo'yicha ketma-ket aylanma yo'naltiradi.
 - **Pros:** Oddiy, serverlar kuchi teng bo'lsa yaxshi ishlaydi.
 - **Cons:** Server yuklamasini (CPU/RAM) hisobga olmaydi.
 
-![Round Robin](/roundrobin.gif)
+![Round Robin](/round_robin.gif)
 
 ### 2. Least Connections (Eng kam ulanishlar)
 Yangi so'rovni ayni damda eng kam faol ulanishlar (active connections) soniga ega serverga yuboradi.
 - **Pros:** Dinamik, yuklama notekis tarqalgan har xil quvvatli tizimlarda juda unumli.
 - **Cons:** Ulanishlar holatini doimiy kuzatib turish sababli qo'shimcha resurs (overhead) talab qiladi.
 
-![Least Connections](/last connections.gif)
+![Least Connections](/least_connections.gif)
 
 ### 3. Weighted Round Robin
 Serverlarga ularning quvvatiga qarab vazn (weight) beriladi. Masalan, 16 GB RAM-li server vazni 4, 4 GB RAM-li server vazni 1. Kuchli server 4 barobar ko'p so'rov qabul qiladi.
 
-![Weighted Round Robin](/weighted round robin.gif)
+![Weighted Round Robin](/weighted_round_robin.gif)
 
 ### 4. Weighted Least Connections
 Dinamik Least Connections algoritmini vazn (weight) bilan birlashtiradi. Serverlar quvvati hamda ayni damdagi yuklamasini parallel tekshiradi.
 
-![Weighted Least Connections](/weighted least connections.gif)
+![Weighted Least Connections](/weighted_least_connections.gif)
 
 ### 5. IP Hash (IP bo'yicha bog'lash)
 Foydalanuvchining IP manzilini hashlab, muayyan serverga bog'lab qo'yadi (Session Persistence).
 - **Pros:** Stateful ilovalarda foydalanuvchi sessiyasini saqlashni osonlashtiradi.
 - **Cons:** Agar ko'p foydalanuvchilar bitta proxy orqali (masalan, bitta ofisdan) kelsa, bitta server haddan tashqari yuklanib ketishi mumkin.
 
-![IP Hash](/iphash.gif)
+![IP Hash](/ip_hash.gif)
 
 ### 6. Least Response Time (Eng tezkor javob vaqti)
 So'rovni oxirgi davrdagi eng tez javob bergan (eng past latency-ga ega) va faol ulanishlari kam serverga yo'naltiradi.
 
-![Least Response Time](/response time.gif)
+![Least Response Time](/Least_response time.gif)
 
 ### 7. Least Bandwidth (Eng kam tarmoq trafigi)
 Ayni vaqtda eng kam tarmoq trafigini (bandwidth) sarflayotgan serverga so'rov yo'naltiradi. Katta hajmli yuklanishlar (streaming/downloads) uchun ajoyib.
 
-![Least Bandwidth](/least bandwith.gif)
+![Least Bandwidth](/least_bandwidth.gif)
 
 ### 8. Random (Tasodifiy)
 So'rovlarni serverlarga mutlaqo tasodifiy ravishda yo'naltiradi.
