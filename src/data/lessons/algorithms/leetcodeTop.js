@@ -194,9 +194,9 @@ classDiagram
 graph LR
     subgraph Stack LIFO in Heap
         direction TB
-        Node3["'[' (Top) <br/> Index 2"]
-        Node2["'{' <br/> Index 1"]
-        Node1["'(' <br/> Index 0"]
+        Node3["Square Bracket Top - Index 2"]
+        Node2["Curly Brace - Index 1"]
+        Node1["Parenthesis - Index 0"]
         
         Node3 --> Node2
         Node2 --> Node1
@@ -204,12 +204,12 @@ graph LR
     
     subgraph Input Parsing
         direction LR
-        I1["'('"] --> I2["'{'"]
-        I2 --> I3["'['"]
-        I3 --> I4["']' <-- Current Char (Triggers POP)"]
+        I1["Parenthesis"] --> I2["Curly Brace"]
+        I2 --> I3["Square Bracket"]
+        I3 --> I4["Closing Bracket - Current Char (triggers POP)"]
     end
     
-    I4 -.->|"Compares & Pops"| Node3
+    I4 -.->|"Compares and Pops"| Node3
 \`\`\`
 
 ### 3. Best Time to Buy and Sell Stock: $O(1)$ Xotira bilan Optimal Ishlash
