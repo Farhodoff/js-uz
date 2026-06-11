@@ -50,25 +50,61 @@ Ushbu bo'limda siz pastdagi 3 ta amaliy JS algoritmini va 12 ta testni yechishin
 
 ## 5. 💬 12 ta Intervyu Savollari
 
-Quyidagi testlar yordamida intervyu savollariga tayyorgarlik ko'rasiz.
+**1. DNS so'rovi yo'lida qaysi serverlar ishtirok etadi?**
+Recursive Resolver, Root Nameserver, TLD Nameserver va Authoritative Nameserver.
+
+**2. HTTP/2 va HTTP/3 orasidagi asosiy farq nima?**
+HTTP/2 bitta TCP ulanish ustida multiplexing qiladi (Head-of-Line blocking xavfi bor). HTTP/3 esa UDP ustiga qurilgan QUIC protokoli orqali ishlaydi va bu muammoni hal qiladi.
+
+**3. API Gateway va Load Balancer farqi nimada?**
+Load Balancer transport/tarmoq (L4/L7) darajasida yuk taqsimlaydi. API Gateway esa application darajasida avtorizatsiya, rate limiting va routing mantiqlarini bajaradi.
+
+**4. 99.99% Availability nima va u yiliga qancha downtime beradi?**
+Bu "Four Nines" deb ataladi va tizim yiliga maksimal 52.6 daqiqa ishlamay qolishi (downtime) mumkinligini kafolatlaydi.
+
+**5. Fault Tolerance nima?**
+Tizimdagi biron bir apparat yoki tarmoq komponenti buzilganda, foydalanuvchiga hech qanday uzilishsiz (zero downtime) xizmat ko'rsatish qobiliyati.
+
+**6. Circuit Breaker nima uchun ishlatiladi?**
+Tizimdagi kaskadli buzilishlarni (Cascading Failures) oldini olish uchun nosoz mikroxizmatga so'rov yuborishni vaqtincha to'xtatib turish mexanizmi.
+
+**7. Rate Limiting nima?**
+Muayyan foydalanuvchi yoki IP-dan belgilangan vaqt ichida keladigan so'rovlar sonini cheklash (DDoS va brute-force dan himoya).
+
+**8. CORS nima?**
+Cross-Origin Resource Sharing — brauzerga boshqa origin-dan kelayotgan resurslarni o'qishga ruxsat berish yoki cheklashni boshqaruvchi mexanizm.
+
+**9. forward Proxy va Reverse Proxy farqi nimada?**
+Forward proxy mijoz tomonini (client IP), Reverse proxy esa serverlar tomonini (backend arxitekturasini) tashqi dunyodan yashiradi va himoya qiladi.
+
+**10. Anycast DNS qanday ishlaydi?**
+Bitta IP manzil dunyoning turli nuqtalaridagi DNS serverlariga beriladi va foydalanuvchi so'rovi eng yaqin serverga yo'naltiriladi.
+
+**11. SQL va NoSQL ma'lumotlar bazalari qachon tanlanadi?**
+Moliyaviy va tranzaksion reliesion ma'lumotlar uchun SQL, yuqori masshtablanuvchi va sxemasiz katta ma'lumotlar uchun esa NoSQL mos keladi.
+
+**12. SLA va SLO farqi nima?**
+SLO (Objective) — bu erishish ko'zlangan aniq maqsad (masalan, 99.9% uptime). SLA (Agreement) — SLO bajarilmagan taqdirda mijozga beriladigan moliyaviy yoki huquqiy kafolat.
 
 ---
 
 ## 6. 🛠️ Amaliy Topshiriqlar
 
-Amaliy topshiriqlar quyida exercises bo'limida berilgan.
+Amaliy topshiriqlar quyida exercises bo'limida berilgan. Ularni bajaring va kod darajasidagi ko'nikmalaringizni tekshiring.
 
 ---
 
 ## 7. 📝 12 ta Mini Test
 
-Testlarni yechib, Phase 2 ni yakunlang.
+Testlarni yechib, Phase 2 ni yakunlang. Testlar pastdagi quizzes bo'limida keltirilgan.
 
 ---
 
 ## 8. 🎯 Real Project Case Study
 
-API Gateway yordamida microservice-larni himoyalash va so'rovlarni xavfsiz marshrutlash.
+### Case Study: API Gateway orqali xavfsiz marshrutlash va Auth markazlashtirish
+Katta loyihalarda har bir mikroxizmat (UserService, PaymentService) alohida avtorizatsiya va token tekshirish bilan shug'ullansa, kod takrorlanishi ko'payadi va tarmoq yuklamasi oshadi.
+API Gateway loyihasini o'rnatish orqali barcha kiruvchi so'rovlar dastlab shu yerda to'xtatiladi. Gateway token mavjudligi va yaroqliligini tekshiradi, so'ngra so'rov sarlavhasiga (\`headers\`) decodlangan \`X-User-Id\` ma'lumotini yozib, ichki xizmatlarga marshrutlaydi. Bu orqali ichki xizmatlar token tekshirish yukidan butunlay xalos bo'ladi.
 
 ---
 
