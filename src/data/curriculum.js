@@ -161,6 +161,7 @@ import { typeNarrowing } from "./lessons/typescript/typeNarrowing";
 
 import { todoList } from "./lessons/projects/todoList";
 import { weatherApp } from "./lessons/projects/weatherApp";
+import { fullstackRestApi } from "./lessons/projects/fullstackRestApi";
 
 import { sqlIntro } from "./lessons/sql/sqlIntro";
 import { sqlSyntax } from "./lessons/sql/sqlSyntax";
@@ -238,7 +239,7 @@ export const curriculum = {
     label: "Loyihalar",
     color: "#7a9e7e",
     icon: "🏗️",
-    lessons: [todoList, weatherApp]
+    lessons: [todoList, weatherApp, fullstackRestApi]
   },
   sql: {
     label: "SQL va Bazalar",

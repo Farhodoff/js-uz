@@ -735,14 +735,17 @@ export default function VisualizerTab({ activeLesson }) {
                     <svg className="absolute inset-0 w-full h-full pointer-events-none">
                       {Array.from({ length: cycleLength }).map((_, i) => {
                         const getCoords = (idx) => {
-                          if (idx < cycleEntry) {
-                            return { x: 60 + idx * 85, y: 140 };
+                          const entry = Number(cycleEntry) || 0;
+                          const len = Number(cycleLength) || 8;
+                          const safeIdx = Number(idx) || 0;
+                          if (safeIdx < entry) {
+                            return { x: 60 + safeIdx * 85, y: 140 };
                           } else {
-                            const loopNodes = cycleLength - cycleEntry;
+                            const loopNodes = Math.max(1, len - entry);
                             const r = 70;
-                            const cx = 60 + cycleEntry * 85 + r;
+                            const cx = 60 + entry * 85 + r;
                             const cy = 140;
-                            const angle = Math.PI + ((idx - cycleEntry) * (2 * Math.PI / loopNodes));
+                            const angle = Math.PI + ((safeIdx - entry) * (2 * Math.PI / loopNodes));
                             return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
                           }
                         };
@@ -753,7 +756,7 @@ export default function VisualizerTab({ activeLesson }) {
 
                         const dx = next.x - current.x;
                         const dy = next.y - current.y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
                         
                         const shrink = 18;
                         const startX = current.x + (dx / dist) * shrink;
@@ -790,14 +793,17 @@ export default function VisualizerTab({ activeLesson }) {
 
                     {Array.from({ length: cycleLength }).map((_, i) => {
                       const getCoords = (idx) => {
-                        if (idx < cycleEntry) {
-                          return { x: 60 + idx * 85, y: 140 };
+                        const entry = Number(cycleEntry) || 0;
+                        const len = Number(cycleLength) || 8;
+                        const safeIdx = Number(idx) || 0;
+                        if (safeIdx < entry) {
+                          return { x: 60 + safeIdx * 85, y: 140 };
                         } else {
-                          const loopNodes = cycleLength - cycleEntry;
+                          const loopNodes = Math.max(1, len - entry);
                           const r = 70;
-                          const cx = 60 + cycleEntry * 85 + r;
+                          const cx = 60 + entry * 85 + r;
                           const cy = 140;
-                          const angle = Math.PI + ((idx - cycleEntry) * (2 * Math.PI / loopNodes));
+                          const angle = Math.PI + ((safeIdx - entry) * (2 * Math.PI / loopNodes));
                           return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
                         }
                       };
