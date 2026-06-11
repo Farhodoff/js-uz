@@ -1,337 +1,440 @@
 export const functionScopeLesson = {
-  id: "function-scope",
-  title: "Function Scope: Xona sirlari",
-  theory: `## 1. KIRISH
-Tasavvur qiling, har bir funksiya — bu bitta alohida **xona**. Xona ichida nima sodir bo'layotganini tashqaridagilar ko'rmaydi. Bu o'zgaruvchilarni xavfsiz saqlashning eng oson usuli.
+  id: "functionScopeLesson",
+  title: "Function Scope",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-**Function Scope** — bu o'zgaruvchining faqat funksiya ichida "yashashi" va ishlatilishidir. Funksiya tugashi bilan uning ichidagi hamma o'zgaruvchilar o'chib ketadi.
+### Funksiya Qamrovi (Function Scope) nima?
+JavaScript-da har safar yangi funksiya yaratganingizda, u o'ziga xos **yopiq hudud** (qamrov yoki scope) yaratadi. 
+* Funksiya ichida e'lon qilingan o'zgaruvchilar (xoh \`var\`, xoh \`let\` yoki \`const\` bo'lsin) va funksiyaga uzatilgan argumentlar faqat shu funksiyaning **ichida** ishlaydi.
+* Tashqi dunyo (ya'ni funksiya tashqarisidagi kodlar) bu o'zgaruvchilarni ko'ra olmaydi va ularga to'g'ridan-to'g'ri murojaat qila olmaydi.
 
-## 1. NEGA kerak?
-Tasavvur qiling, har bir funksiyada bir xil nomli o'zgaruvchi (\`count\`) ishlatmoqchisiz. Agar "funksiya doirasi" bo'lmaganda edi, barcha funksiyalar bir-birining o'zgaruvchisini o'zgartirib yuborar edi. Scope bizga har bir funksiya uchun "shaxsiy hudud" yaratadi va dasturimizni chalkashib ketishdan asraydi.
+### Real hayotiy analogiya
+Tasavvur qiling, siz **shaxsiy xonadonsiz**:
+* **Global Scope (Ko'cha):** Hamma uchun ochiq joy. Bu yerda turgan e'lonlar taxtasini ko'chada yurgan har bir kishi o'qishi mumkin.
+* **Function Scope (Xonadon):** Sizning uyingiz. Uyingiz ichidagi jihozlar, masalan, stol ustidagi shaxsiy kundalik faqat uydagilarga (funksiya ichiga) ko'rinadi. Ko'chadan turib (tashqi global scope-dan) hech kim sizning uyingiz ichidagi narsalarni ko'ra olmaydi.
+* **Argument Isolation (Eshikdagi pochta qutisi):** Har bir xonadonning o'z pochta qutisi bor. Unga kelgan xatlar faqat shu xonadon a'zolari uchun va boshqa qo'shnilar (boshqa funksiya chaqiriqlari) ularni o'qiy olmaydi.
 
-## 2. SODDALIK (Analogiya)
-Funksiyani alohida bir **xona** deb tasavvur qiling. Xona ichida nima sodir bo'layotganini ko'chada (globalda) turganlar ko'rmaydi. Xona ichidagi shaxsiy kundalikni (o'zgaruvchini) faqat o'sha xonaga kirganlar o'qiy oladi. Tashqaridagilar esa xonaning ichini umuman ko'ra olmaydi.
+---
 
-## 3. STRUKTURA
+## 2. 💻 Real Kod Misollari
 
-### A. Funksiya ichidagi o'zgaruvchi
+### 1. Basic Example (Sodda Lokal O'zgaruvchi)
+Funksiya ichida e'lon qilingan o'zgaruvchining tashqaridan yopiqligi:
 \`\`\`javascript
-function xona() {
-  let sir = "Maxfiy";
-  console.log(sir); // Xona ichida ko'rinadi ✅
-}
-xona();
-console.log(sir); // Xato! ❌ (Xonadan tashqarida ko'rinmaydi)
-\`\`\`
-
-### B. var, let va const farqi
-Funksiya ichida e'lon qilingan bo'lsa, uchalasi ham tashqariga chiqolmaydi (ya'ni function scope-ga to'liq amal qiladi):
-\`\`\`javascript
-function test() {
-  var a = 1;
-  let b = 2;
-  const c = 3;
-}
-// a, b, c - hech biri tashqarida yo'q!
-\`\`\`
-
-## 4. AMALIYOT (Mashq)
-\`\`\`javascript
-let ism = "Ali"; // Global
-
-function salom() {
-  let ism = "Vali"; // Local (shaxsiy) - Variable Shadowing
-  console.log("Salom, " + ism);
+function showLocalSecret() {
+  const secretCode = "JS-SCOPE-2026"; // Lokal o'zgaruvchi
+  console.log("Funksiya ichida:", secretCode); // Ishlaydi
 }
 
-salom(); // Salom, Vali
-console.log(ism); // Ali (Global ism o'zgarmadi!)
+showLocalSecret();
+
+// Tashqaridan murojaat qilib ko'ramiz:
+console.log(secretCode); 
+// Xatolik: ReferenceError: secretCode is not defined
 \`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **Kalit so'zsiz o'zgaruvchi:** Funksiya ichida \`let/const\` ishlatmasdan o'zgaruvchi yaratsangiz (\`x = 10\`), u avtomatik ravishda **Global** bo'lib qoladi (strict mode bo'lmaganda) va boshqa joylarga xalaqit beradi. Doim \`let\` yoki \`const\` ishlating!
-2. **Variable Shadowing chalkashligi:** Ichki scopedagi o'zgaruvchini tashqi scope bilan chalkashtirib yuborish. Local o'zgaruvchini o'zgartirish global o'zgaruvchiga ta'sir qilmaydi (agar \`let/const\` bilan e'lon qilingan bo'lsa).
+### 2. Intermediate Example (Ichma-ich Funksiyalar va Scope Chain)
+Ichki funksiyalar tashqi funksiya qamrovidagi o'zgaruvchilarga kira oladi, lekin teskarisi ishlamaydi:
+\`\`\`javascript
+function parentFunction() {
+  let parentVar = "Men otaman";
 
-## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+  function childFunction() {
+    let childVar = "Men bolaman";
+    // Ichki funksiya tashqi funksiyaning o'zgaruvchisini ko'ra oladi
+    console.log("Child ichida parentVar:", parentVar); 
+  }
 
-**1. Function Scope nima?**
-Function Scope — funksiya ichida e'lon qilingan o'zgaruvchi va funksiyalarning faqat shu funksiya ichida mavjud bo'lishi va tashqaridan unga kirib bo'lmasligidir.
+  childFunction();
 
-**2. O'zgaruvchi funksiya ichida yaratilsa nima deyiladi?**
-Lokal o'zgaruvchi (Local variable) deyiladi.
+  // Tashqi funksiya ichki funksiyaning o'zgaruvchisini KO'RA OLMAYDI
+  console.log(childVar); 
+  // Xatolik: ReferenceError: childVar is not defined
+}
 
-**3. Nima uchun funksiya ichidagi o'zgaruvchi tashqarida ko'rinmaydi?**
-Chunki JavaScript xavfsizlik va ma'lumotlarni yashirish (encapsulation) uchun funksiyalar atrofida ko'rinish chegaralarini (scope) o'rnatadi.
+parentFunction();
+\`\`\`
 
-**4. Funksiya ichida var ishlatsa u tashqarida ko'rinadimi?**
-Yo'q, \`var\` block scope-ni tan olmasa ham, function scope-ga to'liq bo'ysunadi. Funksiya ichidagi \`var\` o'zgaruvchisi tashqaridan ko'rinmaydi.
+### 3. Advanced Example (Variable Shadowing va Parameter Isolation)
+Agar bir xil nomli o'zgaruvchi globalda va lokalda bo'lsa, lokal o'zgaruvchi globalni yopib qo'yadi (Shadowing):
+\`\`\`javascript
+let username = "GlobalJasur"; // Global o'zgaruvchi
 
-**5. Funksiya tugaganidan keyin uning ichidagi o'zgaruvchilar nima bo'ladi?**
-Ular xotirani bo'shatish uchun axlat yig'uvchi (Garbage Collector) tomonidan avtomatik ravishda o'chirib tashlanadi.
+function greet(username) {
+  // Parametrdagi username global username-ni shadow (soyada qoldirish) qiladi
+  console.log("Salom, " + username); 
+}
 
-**6. Global scope va Local scope farqi nima?**
-Global scope-dagi o'zgaruvchilar butun kod davomida ochiq bo'ladi. Local scope o'zgaruvchilari esa faqat ma'lum bir funksiya yoki blok ichida yashaydi.
+greet("Lola"); // "Salom, Lola" chiqadi (Lokal parametr ustun)
+console.log(username); // "GlobalJasur" chiqadi (Global o'zgaruvchi o'zgarmadi)
+\`\`\`
 
-**7. "Lexical Scope" nima degani?**
-Lexical Scope — o'zgaruvchilarning ko'rinish sohasi ular kodning qayerida yozilganiga qarab belgilanishidir (funksiya chaqirilgan joyga qarab emas, balki yaratilgan joyiga qarab).
+---
 
-**8. Funksiya ichida let ishlatishning afzalligi nimada?**
-\`let\` o'zgaruvchilari hoisting paytida TDZ (Temporal Dead Zone) ga tushadi va ularni e'lon qilishdan oldin ishlatish xavfini oldini oladi hamda block scope-ga rioya qiladi.
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
 
-**9. Nima uchun global va local o'zgaruvchilar nomi bir xil bo'lsa, local ustuvor bo'ladi?**
-Buni "Variable Shadowing" (to'sish) deyiladi, joriy scopedagi o'zgaruvchi tashqi scopedagisini soya ostida qoldiradi.
+### Execution Context va Call Stack
+JavaScript dvigateli kodni bajarayotganda har bir funksiya chaqiruvi uchun **Execution Context (Bajarilish Muhiti)** yaratadi:
+1. Funksiya chaqirilganda, uning bajarilish muhiti **Call Stack**-ga yuklanadi.
+2. Bu muhit o'zining **Lexical Environment (Leksik Muhit)** obyektiga ega bo'ladi. Leksik muhitda funksiya parametrlari va lokal o'zgaruvchilar saqlanadigan **Environment Record** bo'ladi.
+3. Shuningdek, u o'zining **Outer Reference** (tashqi muhit ko'rsatkichi) orqali o'zidan tepada turgan ota qamrovga bog'lanadi. Buni **Scope Chain (Qamrovlar Zanjiri)** deyiladi.
+4. Funksiya bajarilib bo'lingach, uning execution context-i Call Stack-dan o'chiriladi (pop qilinadi) va xotira bo'shatiladi (Garbage Collection).
 
-**10. Kalit so'zsiz (let/const/var) o'zgaruvchi yaratilsa nima bo'ladi?**
-Agar funksiya ichida kalit so'zsiz o'zgaruvchi e'lon qilinsa (masalan \`x = 10\`), u avtomatik ravishda global o'zgaruvchiga aylanadi (qavslar tashqarisida ham ko'rinadi).
+> [!IMPORTANT]
+> Funksiya e'lon qilingan paytning o'zida uning tashqi muhitga bo'lgan havolasi (Lexical Environment) biriktiriladi. Funksiya qayerdan chaqirilganidan qat'i nazar, u o'zi yaratilgan joydagi scope zanjiri bo'yicha o'zgaruvchilarni qidiradi.
 
-**11. Funksiya ichidagi funksiya (nested) tashqi funksiya o'zgaruvchisini ko'radimi?**
-Ha, Scope Chain zanjiri bo'yicha ichki funksiya tashqi funksiyaning o'zgaruvchilari va parametrlaridan foydalanishi mumkin (bu closure hosil qiladi).
+---
 
-**12. "Namespace pollution" nima va scope uni qanday hal qiladi?**
-Namespace pollution — global sohada o'zgaruvchilarning ko'payib ketishi va bir xil nomlarning to'qnashishidir. Local scope o'zgaruvchilarni alohida hududlarda saqlash orqali bu muammoni hal qiladi.
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. Lokal o'zgaruvchini global deb o'ylash
+#### Xato:
+\`\`\`javascript
+function calculateSum(a, b) {
+  let result = a + b;
+}
+calculateSum(5, 10);
+console.log(result); // ReferenceError: result is not defined
+\`\`\`
+#### To'g'ri usul:
+Qiymatni tashqariga chiqarish uchun \`return\` kalit so'zidan foydalanish lozim:
+\`\`\`javascript
+function calculateSum(a, b) {
+  return a + b;
+}
+let result = calculateSum(5, 10);
+console.log(result); // 15
+\`\`\`
+
+### 2. Kalit so'zsiz e'lon qilish orqali Global Scope-ni ifloslantirish (Pollution)
+#### Xato:
+\`strict mode\` yoqilmagan holatda \`var\`, \`let\` yoki \`const\` ishlatmaslik o'zgaruvchini avtomatik global qilib qo'yadi.
+\`\`\`javascript
+function initializeScore() {
+  score = 100; // Kalit so'z yo'q!
+}
+initializeScore();
+console.log(window.score); // 100 (Global ifloslandi)
+\`\`\`
+#### To'g'ri usul:
+Har doim o'zgaruvchilarni e'lon qilishda \`let\` yoki \`const\` represents ishlating va \`"use strict";\` rejimini yoqing.
+\`\`\`javascript
+"use strict";
+function initializeScore() {
+  let score = 100; // Xavfsiz lokal o'zgaruvchi
+}
+\`\`\`
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior
+1. **Savol:** Function scope nima?
+   * **Javob:** Funksiya ichida e'lon qilingan o'zgaruvchilar va parametrlarning faqat shu funksiya ichida ishlatilishi va tashqaridan yopiq bo'lishi.
+2. **Savol:** Funksiya parametrlari qayerda saqlanadi?
+   * **Javob:** Ular funksiyaning lokal qamrovida (Environment Record) saqlanadi va lokal o'zgaruvchi kabi ishlaydi.
+3. **Savol:** Variable Shadowing nima?
+   * **Javob:** Ichki scope-da tashqi scope-dagi o'zgaruvchi bilan bir xil nomli o'zgaruvchi yaratilganda, ichki o'zgaruvchi tashqi o'zgaruvchini to'sib (yashirib) qo'yishidir.
+4. **Savol:** Qamrov zanjiri (Scope Chain) qanday ishlaydi?
+   * **Javob:** JS dvigateli o'zgaruvchini dastlab lokal qamrovdan qidiradi, topolmasa ota qamrovga va eng oxirida global qamrovga murojaat qiladi.
+
+### Middle
+5. **Savol:** \`let\`/\`const\` va \`var\` o'rtasidagi qamrov bo'yicha farq nima?
+   * **Javob:** \`var\` funksiya qamroviga ega (function-scoped), ya'ni u faqat funksiya ichida cheklanadi. \`let\` va \`const\` esa blok qamroviga ega (block-scoped), ya'ni ular istalgan \`{}\` bloklari ichida lokal bo'ladi.
+6. **Savol:** Funksiya bajarilib bo'lingach, uning lokal o'zgaruvchilari nima bo'ladi?
+   * **Javob:** Ularning bajarilish konteksti call stack-dan o'chiriladi va yopilishlar (closures) mavjud bo'lmasa, Garbage Collector ularni xotiradan tozalaydi.
+7. **Savol:** \`use strict\` rejimi funksiya scope-dagi xatolarni qanday oldini oladi?
+   * **Javob:** U kalit so'zsiz o'zgaruvchilarni e'lon qilishni taqiqlaydi va bunday holatda ReferenceError beradi.
+8. **Savol:** Agar funksiya ichida \`var x = 5\` deb e'lon qilsak va keyin \`if\` bloki ichida \`var x = 10\` deb o'zgartirsak nima bo'ladi?
+   * **Javob:** \`var\` block scope-ga ega emasligi sababli, u bitta umumiy lokal \`x\` bo'lib qoladi va qiymati 10 ga o'zgaradi.
+
+### Senior
+9. **Savol:** Lexical Environment obyektining tarkibiy qismlari nimalardan iborat?
+   * **Javob:** Environment Record (lokal identifikatorlar xaritasi) va Outer Lexical Environment Reference (ota qamrovga havola).
+10. **Savol:** \`new Function('a', 'return a')\` qamrovi qanday ishlaydi?
+    * **Javob:** \`new Function\` yordamida yaratilgan funksiyalar doimo global qamrovga outer reference bog'laydi, ya'ni ular e'lon qilingan joyidagi leksik qamrovni ko'rmaydi.
+11. **Savol:** Dynamic Scope va Lexical Scope farqi nima? JS qaysi biridan foydalanadi?
+    * **Javob:** Lexical Scope o'zgaruvchilarning kod yozilgan paytdagi joylashuviga qarab scope-ni belgilaydi. Dynamic Scope esa chaqirilish vaqtiga qarab belgilaydi. JavaScript faqat Lexical Scope-dan foydalanadi.
+12. **Savol:** Argument izolyatsiyasi nima uchun JavaScript-dagi funksional dasturlashda juda muhim?
+    * **Javob:** Funksiya chaqirilganda uzatilgan argumentlar har bir chaqiruv uchun alohida execution context yaratgani sababli, bir chaqiruvdagi ma'lumotlar ikkinchi parallel chaqiruvga ta'sir qilmaydi (Side effects oldi olinadi).
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Bu bo'limda siz funksiya qamrovi, argument shadowing va ichma-ich funksiyalar bilan ishlovchi 3 ta amaliy topshiriqni bajarasiz (Mashqlar alohida faylda keltirilgan).
+
+Quyida nested funksiya e'lonlari va argument izolyatsiyasi qoidalarini tasvirlovchi diagramma berilgan:
+
+\`\`\`mermaid
+graph TD
+    subgraph GlobalScope["Global Scope (Ko'cha)"]
+        globalVar["let globalVar = 'Global'"]
+        
+        subgraph OuterScope["outerFunction Scope (Uy)"]
+            outerVar["let outerVar = 'Outer'"]
+            outerParam["Parameter: outerParam (Argument Izolyatsiyasi)"]
+            
+            subgraph InnerScope["innerFunction Scope (Xona)"]
+                innerVar["let innerVar = 'Inner'"]
+                shadowVar["let outerVar = 'Shadowed' (Shadowing)"]
+            end
+        end
+    end
+    
+    %% O'qish huquqi (Scope Chain)
+    InnerScope -->|1. Lokal topilmasa, ota qamrovdan izlaydi| OuterScope
+    OuterScope -->|2. U yerda ham bo'lmasa, globaldan izlaydi| GlobalScope
+    
+    %% Izolyatsiya to'siqlari
+    GlobalScope -.->|Tashqaridan ichkariga kirish TAQIQLANADI| OuterScope
+    OuterScope -.->|Tashqaridan ichkariga kirish TAQIQLANADI| InnerScope
+\`\`\`
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Ushbu darsning yakunida bilimlarni mustahkamlash uchun 12 ta multiple-choice interaktiv testlar mavjud bo'lib, ular JSON faylida joylashtirilgan.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Widget / Uchinchi tomon kutubxonalari uchun scope izolyatsiyasi
+Eski JS loyihalarda ES modullar yo'q paytda, bir nechta kutubxonalar global scope-dagi o'zgaruvchilarni to'qnashtirib yubormasligi uchun **IIFE (Immediately Invoked Function Expression)** yordamida funksiya qamrovi yaratilgan.
+
+\`\`\`javascript
+// Analytics widget kodi boshqa skriptlardan alohida xavfsiz qamrovda ishlaydi:
+(function() {
+  // Bu o'zgaruvchilar faqat ushbu IIFE ichida mavjud
+  let requestCounter = 0;
+  const apiKey = "ANALYTICS_KEY_999";
+  
+  function sendLog(data) {
+    requestCounter++;
+    console.log(\`Log yuborildi. Jami: \${requestCounter}\`);
+  }
+  
+  // Faqat kerakli metodni globalga xavfsiz chiqaramiz:
+  window.myAnalytics = {
+    trackEvent: function(event) {
+      sendLog(event);
+    }
+  };
+})();
+
+// Global scope-da requestCounter yoki apiKey ga to'g'ridan-to'g'ri kirib bo'lmaydi:
+console.log(window.requestCounter); // undefined
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+### 1. Funksiya ichida funksiya yaratishdan ehtiyot bo'ling (Loop ichida)
+Agar sikl (loop) ichida doimiy ravishda funksiya e'lon qilinsa, har safar yangi funksiya obyekti va yangi qamrov yaratiladi. Bu xotira sarfini ko'paytiradi.
+#### Yomon performance:
+\`\`\`javascript
+for (let i = 0; i < 1000; i++) {
+  // Har safar yangi funksiya obyekti yaratiladi
+  const process = (num) => num * 2;
+  console.log(process(i));
+}
+\`\`\`
+#### Yaxshi performance:
+\`\`\`javascript
+const process = (num) => num * 2; // Funksiya bir marta tashqarida yaratiladi
+for (let i = 0; i < 1000; i++) {
+  console.log(process(i));
+}
+\`\`\`
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Qamrov (Scope) turi | E'lon qilingan joyi | Tashqaridan kirish | Ta'rifi |
+| :--- | :--- | :--- | :--- |
+| **Global Scope** | Funksiyalardan tashqarida | Ha (hamma joydan) | Eng yuqori darajadagi umumiy scope |
+| **Function Scope** | Funksiya bloki \`{}\` ichida | Yo'q | Faqat funksiya ichidagilar kira oladi |
+| **Argument Isolation** | Funksiya parametrlari | Yo'q | Har bir chaqiruv uchun mustaqil argumentlar |
+| **Shadowing** | Ichki qamrovda e'lon | Yo'q | Bir xil nomli tashqi o'zgaruvchini to'sib qo'yish |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Scope mashqi",
-      instruction: "Funksiya ichida 'msg' o'zgaruvchisini yarating va uni faqat funksiya ichida chiqaring.",
-      startingCode: "function show() {\n  // Bu yerda yarating\n}\nshow();",
-      hint: "let msg = 'Salom';",
-      test: "if (code.includes('msg')) return null; return 'O\\'zgaruvchi yaratilmadi!';"
-    },
-    {
-      id: 2,
-      title: "Variable Shadowing",
-      instruction: "Global doirada let user = 'Ali' bor. greet() funksiyasi ichida lokal let user = 'Vali' yarating va uni konsolga chiqaring. Global user o'zgarmasligi kerak.",
-      startingCode: "let user = 'Ali';\nfunction greet() {\n  // Bu yerda local user yarating va console.log qiling\n}\ngreet();",
-      hint: "let user = 'Vali';\nconsole.log(user);",
-      test: "if (logs.includes('Vali') && code.includes('let user =') && code.match(/let\\s+user\\s*=\\s*['\"]Vali['\"]/)) return null; return 'greet funksiyasi ichida let user = \"Vali\" yaratib, log qiling!';"
-    },
-    {
-      id: 3,
-      title: "Lokal var o'zgaruvchisi",
-      instruction: "Funksiya ichidagi var o'zgaruvchisi ham tashqaridan ko'rinmaydi. testVar() funksiyasi ichida var secret = 99 yarating va konsolga chiqaring. Tashqarida chaqirmang.",
-      startingCode: "function testVar() {\n  // var secret yarating va console.log(secret) qiling\n}\ntestVar();",
-      hint: "var secret = 99;\nconsole.log(secret);",
-      test: "if (code.includes('var secret') && logs.includes(99)) return null; return 'var secret = 99 yarating va console.log qiling!';"
-    },
-    {
-      id: 4,
-      title: "Kalit so'zsiz o'zgaruvchi (leak)",
-      instruction: "Funksiya ichida kalit so'zsiz (let/const/var siz) leakedGlobal = 'leaked' yozing. Uni chaqirgandan keyin globalda qolishini ko'rish uchun tashqarida console.log(leakedGlobal) qiling.",
-      startingCode: "function leak() {\n  // leakedGlobal = 'leaked' yozing\n}\nleak();\n// globalda leakedGlobal ni log qiling",
-      hint: "leakedGlobal = 'leaked';\nconsole.log(leakedGlobal);",
-      test: "if (logs.includes('leaked') && !code.includes('let leakedGlobal') && !code.includes('var leakedGlobal') && !code.includes('const leakedGlobal')) return null; return 'leakedGlobal-ni kalit so\\'zsiz yarating va tashqarida log qiling!';"
-    },
-    {
-      id: 5,
-      title: "Parametr doirasi (Parameter Scope)",
-      instruction: "Funksiya parametrlari ham lokal o'zgaruvchi hisoblanadi. doubleNum(num) funksiyasi berilgan parametrni 2 ga ko'paytirib konsolga chiqarsin. Tashqaridan doubleNum(5) qilib chaqiring.",
-      startingCode: "function doubleNum(num) {\n  // num parametridan foydalanib uni 2 ga ko'paytirib log qiling\n}\n// Chaqiring",
-      hint: "function doubleNum(num) { console.log(num * 2); }\ndoubleNum(5);",
-      test: "if (logs.includes(10) && code.includes('doubleNum(5)')) return null; return 'doubleNum funksiyasini yozib, 5 qiymati bilan chaqiring!';"
-    },
-    {
-      id: 6,
-      title: "Ichma-ich funksiyalar (Nested Scope)",
-      instruction: "outer() funksiyasi ichida let x = 10 bor. Uning ichida inner() funksiyasini yarating va u x ni konsolga chiqarsin. outer oxirida inner() ni chaqiring.",
-      startingCode: "function outer() {\n  let x = 10;\n  // inner funksiyasini yarating va uni chaqiring\n}\nouter();",
-      hint: "function inner() { console.log(x); }\ninner();",
-      test: "if (logs.includes(10) && code.includes('inner') && code.includes('outer')) return null; return 'inner funksiyasi outer ichidagi x-ni log qilishi kerak!';"
-    },
-    {
-      id: 7,
-      title: "Lokal o'zgaruvchini yangilash",
-      instruction: "counter() funksiyasi ichida let count = 0 yarating. Ichki increment() funksiyasi uni 1 ga oshirsin. counter ichida increment() ni 2 marta chaqiring va yakuniy count ni log qiling.",
-      startingCode: "function counter() {\n  let count = 0;\n  // increment funksiyasini yozib 2 marta chaqiring va count-ni log qiling\n}\ncounter();",
-      hint: "function increment() { count++; }\nincrement(); increment(); console.log(count);",
-      test: "if (logs.includes(2) && code.includes('count++')) return null; return 'increment funksiyasi orqali count-ni 2 marta oshiring!';"
-    },
-    {
-      id: 8,
-      title: "Scope zanjiri (Scope Chain)",
-      instruction: "Globalda let a = 1. level1() ichida let b = 2. level2() ichida let c = 3 bo'lsin. level2 ichida console.log(a + b + c) qiling. level1 ichida level2() chaqirilsin, globalda esa level1() chaqirilsin.",
-      startingCode: "let a = 1;\nfunction level1() {\n  let b = 2;\n  // level2 ni yozing va chaqiring\n}\nlevel1();",
-      hint: "function level2() { let c = 3; console.log(a + b + c); }\nlevel2();",
-      test: "if (logs.includes(6) && code.includes('level2')) return null; return 'level2 ichida a + b + c yig\\'indisini (6) log qiling!';"
-    },
-    {
-      id: 9,
-      title: "Shadowing parametrlari",
-      instruction: "Global let name = 'Botir' bor. greet(name) funksiyasida parametr sifatida name qabul qilinadi. greet('Sardor') deb chaqirilganda konsolga name ni chiqaring (Sardor chiqishi kerak).",
-      startingCode: "let name = 'Botir';\nfunction greet(name) {\n  // name-ni log qiling\n}\ngreet('Sardor');",
-      hint: "function greet(name) { console.log(name); }",
-      test: "if (logs.includes('Sardor') && !logs.includes('Botir')) return null; return 'greet funksiyasi parametr name-ni chop etishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "Lokal const massivi",
-      instruction: "manageList() funksiyasi ichida const items = [] yarating. Uni ichki funksiya orqali to'ldirib, yakuniy natijani log qiling.",
-      startingCode: "function manageList() {\n  const items = [];\n  function add(val) {\n    // items-ga val qo'shing\n  }\n  add('Olma');\n  add('Anor');\n  console.log(items);\n}\nmanageList();",
-      hint: "function add(val) { items.push(val); }",
-      test: "if (logs.includes('Olma') && logs.includes('Anor') && code.includes('push')) return null; return 'items massiviga push orqali elementlarni qo\\'shing!';"
-    },
-    {
-      id: 11,
-      title: "IIFE funksiya scope",
-      instruction: "IIFE yordamida funksiya scope yarating va ichida let iifeVar = 'IIFE' e'lon qilib log qiling.",
-      startingCode: "// IIFE yozing (function() { ... })()",
-      hint: "(function() { let iifeVar = 'IIFE'; console.log(iifeVar); })();",
-      test: "if (logs.includes('IIFE') && code.match(/\\(\\s*function/)) return null; return 'IIFE shaklida funksiya scope yarating!';"
-    },
-    {
-      id: 12,
-      title: "Recursion Scope",
-      instruction: "factorial(n) funksiyasini yozing, u n-ning faktorialini hisoblasin va qaytarsin. console.log(factorial(5)) (120 bo'lishi kerak).",
-      startingCode: "function factorial(n) {\n  // n-faktorialni rekursiv hisoblang\n}\nconsole.log(factorial(5));",
-      hint: "if (n <= 1) return 1; return n * factorial(n - 1);",
-      test: "if (logs.includes(120) && code.includes('factorial')) return null; return 'Faktorial hisoblaydigan rekursiv funksiyani yozing!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Lokal o'zgaruvchi yaratish",
+    "instruction": "Funksiya qamrovini (Scope) tekshirish uchun `calculateArea(width, height)` nomli funksiya yozing. Funksiya ichida `area` nomli lokal o'zgaruvchi yarating, unga to'g'ri to'rtburchakning yuzini (width * height) hisoblab yuklang va uni qaytaring. Funksiyadan tashqarida `area` o'zgaruvchisiga murojaat qilib bo'lmasligi kerak.",
+    "startingCode": "function calculateArea(width, height) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Funksiya ichida `const area = width * height;` deb e'lon qiling va uni `return` qiling.",
+    "test": "const sandbox = new Function(code + '; return calculateArea;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'calculateArea funksiya emas';\nif (fn(5, 10) !== 50) return 'Funksiya yuzani to\\'g\\'ri hisoblamadi';\nif (!code.includes('area')) return 'Kodingizda \"area\" nomli lokal o\\'zgaruvchi ishlatilmagan';\ntry {\n  if (typeof area !== 'undefined') return 'area o\\'zgaruvchisi global scope-da aniqlanib qolgan!';\n} catch(e) {}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "O'zgaruvchini yashirish (Shadowing)",
+    "instruction": "JavaScript-da funksiya ichida e'lon qilingan o'zgaruvchi/argument global o'zgaruvchi bilan bir xil nomlansa, u global o'zgaruvchini yopib qo'yadi. Bizda global miqyosda `let name = \"Global\";` e'lon qilingan. Siz `greetUser(name)` funksiyasini yozing, u parametrda berilgan `name` o'zgaruvchisidan foydalanib `\"Salom, \" + name` qiymatini qaytarsin. Global o'zgaruvchiga ta'sir ko'rsatmang.",
+    "startingCode": "let name = \"Global\";\n\nfunction greetUser(name) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Funksiya parametridagi `name` global o'zgaruvchini avtomatik shadow qiladi. Funksiya ichida `return 'Salom, ' + name;` deb yozing.",
+    "test": "const sandbox = new Function(code + '; return { greetUser, name };');\nconst obj = sandbox();\nif (typeof obj.greetUser !== 'function') return 'greetUser funksiya emas';\nif (obj.greetUser('Jasur') !== 'Salom, Jasur') return 'Funksiya argument shadowing orqali to\\'g\\'ri salomlashmadi';\nif (obj.name !== 'Global') return 'Global \"name\" o\\'zgaruvchisi qiymati o\\'zgartirib yuborildi!';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Ichma-ich funksiya qamrovlari (Nested Scopes)",
+    "instruction": "Ichki funksiyalar tashqi funksiya o'zgaruvchilarini ko'rish qobiliyatini tekshiramiz. `outerContainer()` funksiyasini yozing. Uning ichida `let x = 100;` o'zgaruvchisini yarating. Shuningdek, uning ichida yana bir `innerContainer()` funksiyasini e'lon qiling va u tashqi funksiyadagi `x` ni 2 ga ko'paytirib qaytarsin. Nihoyat, `outerContainer()` ichidan `innerContainer()` ni chaqirib, natijani qaytaring.",
+    "startingCode": "function outerContainer() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`outerContainer` ichida `let x = 100;`, keyin `function innerContainer() { return x * 2; }` yozing. Oxirida `return innerContainer();` deb chaqiring.",
+    "test": "const sandbox = new Function(code + '; return outerContainer;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'outerContainer funksiya emas';\nconst res = fn();\nif (res !== 200) return 'Ichki funksiya tashqi funksiyadagi \"x\" ni to\\'g\\'ri ko\\'paytira olmadi yoki natija qaytarilmadi';\nif (code.includes('innerContainer') === false) return 'Kodingizda \"innerContainer\" ichki funksiyasi e\\'lon qilinmagan';\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Funksiya ichida e'lon qilingan har qanday o'zgaruvchining hayot davri (lifetime) qachon tugaydi?",
-      options: [
-        "Brauzer yopilganda",
-        "Funksiya o'z ishini bajarib bo'lganidan so'ng (funksiya tugashi bilan uning ichidagi barcha o'zgaruvchilar xotiradan o'chiriladi)",
-        "Hech qachon o'chmaydi",
-        "Faqat sahifa yangilanganda"
-      ],
-      correctAnswer: 1,
-      explanation: "Funksiya chaqirilganda uning lokal o'zgaruvchilari yaratiladi va funksiya o'z ishini tugatishi (return bo'lishi) bilan bu o'zgaruvchilar xotirani band qilmasligi uchun avtomatik ravishda yo'q qilinadi."
-    },
-    {
-      id: 2,
-      question: "Funksiya ichida e'lon qilingan `var`, `let` va `const` o'zgaruvchilaridan qaysi birlarini funksiya tashqarisidan turib chaqirish (ishlatish) mumkin?",
-      options: [
-        "Faqat `var` yordamida yaratilganini",
-        "Faqat `let` va `const` yordamida yaratilganini",
-        "Hech birini (funksiya ichida e'lon qilingan har qanday o'zgaruvchi tashqaridan mutlaqo yopiq bo'ladi)",
-        "Barchasini ishlatish mumkin"
-      ],
-      correctAnswer: 2,
-      explanation: "Qaysi kalit so'z ishlatilishidan qat'iy nazar (`var`, `let`, yoki `const`), funksiya doirasida (Function Scope) yaratilgan o'zgaruvchilar tashqi dunyodan mutlaqo himoyalangan va faqat o'sha funksiya ichida amal qiladi."
-    },
-    {
-      id: 3,
-      question: "Agar funksiya ichida o'zgaruvchi e'lon qilinayotganda hech qanday kalit so'z (`var`, `let` yoki `const`) ishlatilmasdan qiymat berilsa (masalan: `x = 10;`), bu qanday oqibatga olib keladi?",
-      options: [
-        "Bu xatolik (Error) beradi va dastur to'xtaydi",
-        "Ushbu o'zgaruvchi avtomatik ravishda Global Scope-ga qo'shiladi va butun kod bo'ylab o'zgaradi, bu esa namespace pollution xavfini keltirib chiqaradi",
-        "U faqat funksiya ichida block scope bo'ladi",
-        "U o'zgarmas `const` ga aylanadi"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScript-da kalit so'zsiz o'zgaruvchi e'lon qilinganda (strict mode bo'lmagan holatlarda) u global `window` yoki `global` obyektiga biriktirib qo'yiladi. Bu esa xavfli hisoblanadi."
-    },
-    {
-      id: 4,
-      question: "Agar bir xil nomli ham global o'zgaruvchi, ham funksiya ichida lokal o'zgaruvchi mavjud bo'lsa, funksiya ichida o'sha nom chaqirilganda qaysi biri ustuvor bo'ladi (Variable Shadowing)?",
-      options: [
-        "Global o'zgaruvchi ustuvor bo'ladi",
-        "Lokal o'zgaruvchi (chunki JS birinchi bo'lib o'zining ichki ko'rinish sohasini (local scope) tekshiradi)",
-        "Ikkalasi ham qo'shilib ketadi",
-        "Dastur xatolik beradi"
-      ],
-      correctAnswer: 1,
-      explanation: "Buni \"Variable Shadowing\" deb atashadi. Lokal o'zgaruvchi o'sha funksiya ichida tashqaridagi global o'zgaruvchining ko'rinishini to'sib qo'yadi."
-    },
-    {
-      id: 5,
-      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet data = \"A\";\nfunction change() {\n  let data = \"B\";\n}\nchange();\nconsole.log(data);\n```",
-      options: [
-        "`\"B\"`",
-        "`\"A\"` (chunki funksiya ichidagi data o'zgaruvchisi faqat lokal hududda yashaydi va tashqaridagi global data qiymatini o'zgartira olmaydi)",
-        "`undefined`",
-        "`TypeError`"
-      ],
-      correctAnswer: 1,
-      explanation: "`change()` funksiyasi ichida `let data` yordamida mutlaqo yangi lokal o'zgaruvchi yaratildi. Tashqaridagi global `data` o'zgarishsiz `\"A\"` holida qoladi."
-    },
-    {
-      id: 6,
-      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nfunction parent() {\n  let parentVar = \"ota\";\n  function child() {\n    console.log(parentVar);\n  }\n  child();\n}\nparent();\n```",
-      options: [
-        "\"ota\"",
-        "ReferenceError",
-        "undefined",
-        "\"child\""
-      ],
-      correctAnswer: 0,
-      explanation: "JavaScript lexical scoping orqali ichki funksiya tashqi funksiyaning o'zgaruvchilariga kirish huquqiga ega."
-    },
-    {
-      id: 7,
-      question: "Funksiya ichida e'lon qilingan `var` kalit so'zi blok ({}) ichida bo'lsa, uning scope-i qanday bo'ladi?",
-      options: [
-        "Blok scope-da qoladi",
-        "Global scope-ga o'tadi",
-        "Baribir function scope bo'lib qoladi (chunki var block scope-ga bo'ysunmaydi, faqat function scope-ga bo'ysunadi)",
-        "Ushbu kod ishlamaydi"
-      ],
-      correctAnswer: 2,
-      explanation: "var block scope-ni tan olmaydi, lekin function scope-ga to'liq bo'ysunadi. Funksiya ichidagi har qanday blok ({}) ichida var yozilsa ham, u butun funksiya bo'ylab lokal bo'lib qoladi."
-    },
-    {
-      id: 8,
-      question: "Quyidagi kod nima natija beradi?\n```javascript\nfunction test() {\n  console.log(x);\n  var x = 10;\n}\ntest();\n```",
-      options: [
-        "10",
-        "ReferenceError",
-        "undefined",
-        "TypeError"
-      ],
-      correctAnswer: 2,
-      explanation: "var e'lon qilinishi (hoisting) funksiya tepasiga ko'tariladi, lekin qiymat yuklash o'z joyida qoladi. Shuning uchun e'londan oldin chaqirilganda undefined beradi."
-    },
-    {
-      id: 9,
-      question: "Quyidagi kod nima natija beradi?\n```javascript\nfunction test() {\n  console.log(y);\n  let y = 10;\n}\ntest();\n```",
-      options: [
-        "10",
-        "ReferenceError (Temporal Dead Zone tufayli)",
-        "undefined",
-        "SyntaxError"
-      ],
-      correctAnswer: 1,
-      explanation: "let va const o'zgaruvchilari hoisting bo'ladi, lekin e'lon qilinmaguncha TDZ (Temporal Dead Zone) ichida bo'ladi. E'londan oldin chaqirish ReferenceError beradi."
-    },
-    {
-      id: 10,
-      question: "\"Lexical Scope\" (yoki Statik Scope) deganda nima tushuniladi?",
-      options: [
-        "Funksiya chaqirilayotgan muhitga qarab scope belgilanishi",
-        "Funksiya yozilgan (kodda joylashgan) o'rniga qarab scope belgilanishi",
-        "Faqat const o'zgaruvchilarga tegishli qoida",
-        "Dinamik ravishda o'zgaradigan scope"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScript lexical (static) scope-dan foydalanadi, ya'ni o'zgaruvchilarning ko'rinish sohasi ular kodda qayerda e'lon qilinganligi bilan aniqlanadi, chaqirilgan joyi bilan emas."
-    },
-    {
-      id: 11,
-      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet a = 5;\nfunction first() {\n  console.log(a);\n}\nfunction second() {\n  let a = 10;\n  first();\n}\nsecond();\n```",
-      options: [
-        "10",
-        "5",
-        "undefined",
-        "ReferenceError"
-      ],
-      correctAnswer: 1,
-      explanation: "Lexical scope-ga ko'ra, first() funksiyasi global doirada yozilgan. Shuning uchun u o'zining tashqi doirasi sifatida global doirani ko'radi va global a = 5 qiymatini oladi. second() ichidagi local a unga ta'sir qilmaydi."
-    },
-    {
-      id: 12,
-      question: "Quyidagi koddan so'ng xotirada nima sodir bo'ladi?\n```javascript\nfunction process() {\n  let largeArray = new Array(1000000);\n}\nprocess();\n```",
-      options: [
-        "largeArray xotirada global bo'lib qoladi",
-        "Funksiya tugagach, largeArray axlat yig'uvchi (Garbage Collector) tomonidan o'chiriladi",
-        "Xotira to'lib qoladi va brauzer qotadi",
-        "Faqat largeArray o'zgarmas bo'ladi"
-      ],
-      correctAnswer: 1,
-      explanation: "Funksiya ichidagi lokal o'zgaruvchilarga funksiya tugaganidan so'ng boshqa murojaat qilib bo'lmaydi. Shuning uchun garbage collector ularni avtomatik tarzda xotiradan tozalaydi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "JavaScript-da funksiya qamrovi (Function Scope) nima?",
+    "options": [
+      "Funksiya ichida e'lon qilingan o'zgaruvchilar faqat o'sha funksiya ichida va undan ichki bo'lgan qamrovlarda mavjud bo'lishi va tashqaridan ularga kirib bo'lmasligi",
+      "Faqat `const` va `let` bilan yaratilgan va butun blokdan tashqarida ishlaydigan o'zgaruvchilar",
+      "Brauzer yoki server o'chirilguncha xotirada saqlanadigan global o'zgaruvchilar",
+      "Dasturdagi barcha funksiyalar bir-birining o'zgaruvchilarini erkin o'qishi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Funksiya qamrovi — funksiya ichida yaratilgan har qanday o'zgaruvchi (var, let, const) va parametrlarning faqat shu funksiya ichida ishlashi hamda tashqaridan ko'rinmasligini anglatadi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nfunction testScope() {\n  var message = \"Salom\";\n}\ntestScope();\nconsole.log(message);\n```",
+    "options": [
+      "\"Salom\"",
+      "ReferenceError: message is not defined",
+      "undefined",
+      "null"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`message` o'zgaruvchisi `testScope` funksiyasining lokal qamrovida yaratilgan. Uni funksiyadan tashqarida (global scope-da) chaqirish ReferenceError xatoligini beradi."
+  },
+  {
+    "id": 3,
+    "question": "Variable Shadowing (O'zgaruvchini yashirish) deganda nima tushuniladi?",
+    "options": [
+      "Global o'zgaruvchi nomi bilan bir xil bo'lgan o'zgaruvchini funksiya yoki blok ichida qaytadan e'lon qilish va u orqali o'sha hududda global o'zgaruvchini 'yopib qo'yish'",
+      "O'zgaruvchilarni butunlay o'chirib tashlash va xotiradan joy bo'shatish",
+      "O'zgaruvchilarni faqat `setTimeout` ichida ishlatish",
+      "Barcha lokal o'zgaruvchilarni global obyektdan yashirib qo'yish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Variable Shadowing — funksiya yoki blok ichidagi o'zgaruvchi nomi ota qamrovdagi o'zgaruvchi nomi bilan bir xil bo'lganda, ichki qamrovdagi o'zgaruvchi ustunlikka ega bo'lib, ota qamrovdagisini vaqtincha yopib turishidir."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nlet name = \"Anvar\";\nfunction changeName() {\n  let name = \"Dilshod\";\n}\nchangeName();\nconsole.log(name);\n```",
+    "options": [
+      "\"Dilshod\"",
+      "\"Anvar\"",
+      "ReferenceError: name is not defined",
+      "\"Global\""
+    ],
+    "correctAnswer": 1,
+    "explanation": "`changeName` funksiyasi ichida `let name` orqali yangi lokal o'zgaruvchi yaratilgan (shadowing). U global `name` qiymatiga ta'sir qilmaydi, shuning uchun global scope-da `name` hanuz \"Anvar\" bo'lib qoladi."
+  },
+  {
+    "id": 5,
+    "question": "Funksiya parametrlari (argumentlari) qaysi qamrovga (scope) tegishli bo'ladi?",
+    "options": [
+      "Global qamrovga, chunki ularni funksiyadan tashqarida ham o'zgartirish mumkin",
+      "Faqat o'sha funksiyaning lokal qamroviga, ya'ni ulardan faqat funksiya ichida foydalanish mumkin",
+      "Block scope-ga, faqat `if` sharti bajarilganda yaratiladi",
+      "Ota qamrovga, chunki ular tashqaridan uzatiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Funksiyaning argumentlari va parametrlari faqatgina shu funksiya ichida ishlovchi lokal o'zgaruvchilar hisoblanadi va ulardan tashqarida foydalanib bo'lmaydi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nfunction outer() {\n  let count = 10;\n  function inner() {\n    console.log(count);\n  }\n  inner();\n}\nouter();\n```",
+    "options": [
+      "10",
+      "ReferenceError: count is not defined",
+      "undefined",
+      "null"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ichki funksiya (`inner`) Lexical Scope qoidasiga ko'ra o'zining tashqarisidagi funksiya (`outer`) qamrovidagi o'zgaruvchilarga erkin kira oladi."
+  },
+  {
+    "id": 7,
+    "question": "JavaScript-da Scope Chain (Qamrovlar zanjiri) deganda nima tushuniladi?",
+    "options": [
+      "Brauzerda barcha skriptlarni yuklash ketma-ketligi",
+      "O'zgaruvchi qidirilayotganda joriy qamrovdan boshlab, to global qamrovgacha bosqichma-bosqich tashqariga qarab qidirilish jarayoni",
+      "Call stack-dagi funksiyalarning bir-birini chaqirish tartibi",
+      "Xatoliklarni `try-catch` bloklari yordamida uzatish zanjiri"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Scope Chain — o'zgaruvchini qidirishda JS dvigatelining lokal qamrovdan boshlab, ota qamrovlarga o'tib, eng oxirida global qamrovdan qidirish zanjiridir."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodda nima sodir bo'ladi? (Strict mode yoqilmagan deb hisoblang)\n```javascript\nfunction setScore() {\n  score = 100;\n}\nsetScore();\nconsole.log(score);\n```",
+    "options": [
+      "ReferenceError xatosi chiqadi",
+      "Konsolga 100 chiqadi, chunki kalit so'zsiz e'lon qilingan score o'zgaruvchisi avtomatik globalga aylanib qoladi",
+      "Konsolga undefined chiqadi",
+      "Dastur cheksiz siklga tushadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar qat'iy rejim ('use strict') bo'lmasa, funksiya ichida kalit so'zsiz (var, let, const-siz) o'zgaruvchiga qiymat berish uni global obyektga (window yoki global) xossa sifatida qo'shib qo'yadi. Bu global scope ifloslanishi deb ataladi."
+  },
+  {
+    "id": 9,
+    "question": "Qat'iy rejimda (`\"use strict\";`) quyidagi kod nima qaytaradi?\n```javascript\n\"use strict\";\nfunction setScore() {\n  score = 100;\n}\nsetScore();\n```",
+    "options": [
+      "Xatosiz bajariladi va score global bo'lib qoladi",
+      "ReferenceError: score is not defined xatoligini beradi",
+      "TypeError: score is read-only xatoligini beradi",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Qat'iy rejimda (use strict) e'lon qilinmagan o'zgaruvchiga qiymat yuklash taqiqlanadi va ReferenceError xatoligi yuz beradi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nlet x = 5;\nfunction shadow(x) {\n  x = x + 2;\n}\nshadow(x);\nconsole.log(x);\n```",
+    "options": [
+      "7",
+      "5",
+      "undefined",
+      "ReferenceError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Funksiya parametri `x` global `x` ni shadow qiladi va funksiya ichidagi `x = x + 2` faqat lokal parametrning qiymatini o'zgartiradi. Global `x` ning qiymati 5 ligicha qoladi."
+  },
+  {
+    "id": 11,
+    "question": "Block Scope (`let`/`const`) va Function Scope (`var`) o'rtasidagi asosiy farq nima?",
+    "options": [
+      "`var` bilan e'lon qilingan o'zgaruvchilar bloklar (if, for) ichida ham blokdan tashqarida ko'rinadi (lekin funksiya ichida cheklanadi), `let`/`const` esa faqat blok ichida ishlaydi",
+      "Hech qanday farqi yo'q, barchasi global scope-da ishlaydi",
+      "`var` faqat brauzerda ishlaydi, `let` esa faqat Node.js-da",
+      "`let` funksiya ichida ishlamaydi, `var` esa ishlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`var` funksiya qamroviga ega, ya'ni funksiya ichida cheklanadi, ammo `if` yoki `for` kabi bloklar ichida cheklanmaydi. `let` va `const` esa blok qamroviga (block scope) ega bo'lib, har qanday `{}` qavslar ichida lokal bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod bajarilganda konsolga nima yoziladi?\n```javascript\nfunction main() {\n  if (true) {\n    var a = \"varVariable\";\n    let b = \"letVariable\";\n  }\n  console.log(a);\n  console.log(b);\n}\nmain();\n```",
+    "options": [
+      "Avval \"varVariable\", keyin \"letVariable\" chiqadi",
+      "\"varVariable\" chiqadi, so'ng ReferenceError: b is not defined xatosi chiqadi",
+      "ReferenceError: a is not defined xatosi chiqadi",
+      "\"letVariable\" chiqadi, so'ng \"varVariable\" chiqadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`var` funksiya qamroviga ega bo'lgani uchun `if` blokidan tashqarida ham, lekin `main()` ichida mavjud bo'ladi va chop etiladi. `let` esa block-scoped bo'lgani uchun faqat `if` bloki ichida ishlaydi, shuning uchun block-dan tashqarida unga murojaat qilish ReferenceError xatoligini beradi."
+  }
+]
+
 };

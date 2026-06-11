@@ -1,315 +1,496 @@
 export const typeCasting = {
-  id: "type-casting",
-  title: "Explicit Type Casting (Aniq tiplarni o'zgartirish)",
-  level: "Beginner",
-  description: "JavaScriptda ma'lumot turlarini dasturchi tomonidan aniq (explicit) ravishda bir turdan ikkinchi turga o'tkazish qoidalari.",
-  theory: `## 1. NEGA kerak?
-JavaScript ba'zan turlarni avtomatik (implicit) tarzda biz kutmagan shaklda o'zgartirib yuborishi mumkin. Dasturda xatoliklarning oldini olish va natija 100% aniq va to'g'ri bo'lishini ta'minlash uchun biz o'zgaruvchi turini maxsus funksiyalar yordamida **aniq (explicit)** ravishda o'zgartiramiz.
+  id: "typeCasting",
+  title: "Explicit Type Casting",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-## 2. SODDALIK (Analogiya)
-Buni **plastilin (loy)** deb tasavvur qiling. Plastilin o'zi ma'lum bir shaklda turibdi, lekin siz uni qo'lingiz bilan ezib, yangi shakl (masalan, koptok yoki kub) yasaysiz. Siz uning turini o'z qo'lingiz bilan o'zgartirmoqdasiz.
+### Yaqqol Tip O'tkazish (Explicit Type Casting) nima?
+Dasturlashda ma'lumotlar turli xil tiplarga (turlarga) ega bo'ladi (masalan: matn, son, boolean). **Yaqqol tip o'tkazish (Explicit Type Casting)** — bu dasturchi tomonidan kodda maxsus funksiyalar yoki operatorlar yordamida qiymatni bir tipdan ikkinchi tipga ataylab o'tkazishidir.
 
-## 3. STRUKTURA
-JavaScriptda aniq turni o'zgartirish (type casting) uchun quyidagi global funksiyalardan foydalaniladi:
-- **Number(qiymat):** Qiymatni songa o'tkazadi.
-- **String(qiymat):** Qiymatni matnga (string) o'tkazadi.
-- **Boolean(qiymat):** Qiymatni true yoki false ga o'tkazadi.
+Buni JavaScript o'zicha mustaqil bajaradigan **yashirin (implicit yoki coercion) o'tish**dan farqlash lozim. Yashirin o'tishda JS dvigateli o'zi taxmin qilib tiplarni o'zgartiradi (masalan, \`"5" + 2\` yozsangiz, JS 2 ni string qilib \`"52"\` qaytaradi). Yaqqol o'tkazishda esa siz: *"Men buni son qilib o'qimoqchiman!"* deb aniq buyruq berasiz (masalan, \`Number("5") + 2\` yozib \`7\` olasiz).
 
-Bundan tashqari matnlardan sonlarni ajratish metodlari mavjud:
-- **parseInt(matn):** Matn boshidagi butun sonni ajratadi.
-- **parseFloat(matn):** Matn boshidagi o'nli kasr sonni ajratadi.
+### Real hayotiy analogiya
+Tasavvur qiling, siz **valyuta ayirboshlash shoxobchasiga (bankka) bordingiz**:
+* **Yaqqol (Explicit) usul:** Siz dollaringizni bank xodimiga berasiz va uni so'mga almashtirib berishni so'raysiz. Siz jarayonni to'liq nazorat qilasiz, kursni bilasiz va natijani aniq son ko'rinishida qabul qilib olasiz (bu \`Number()\` yoki \`parseInt()\` funksiyalariga o'xshaydi).
+* **Yashirin (Implicit) usul:** Siz chet eldagi do'konda o'z milliy kartangiz bilan to'lov qilasiz. Terminal o'z-o'zidan orqa fonda valyutani konvertatsiya qilib, pulingizni yechib oladi. Siz konvertatsiya qoidalari va qancha komissiya ketganini to'liq nazorat qila olmaysiz (bu \`"5" - 2\` amali bajarilganda stringning avtomatik songa aylanib ketishiga o'xshaydi).
 
-## 4. AMALIYOT (Mashqlar pastda)
+---
+
+## 2. 💻 Real Kod Misollari
+
+### 1. Basic Example (Number, String va Boolean bilan ishlash)
+Eng ko'p ishlatiladigan yaqqol o'tkazish funksiyalari:
 \`\`\`javascript
-let str = "12.34px";
-console.log(parseInt(str));   // 12 (butun son)
-console.log(parseFloat(str)); // 12.34 (kasr son)
-console.log(Number(str));     // NaN (chunki harflar bor)
+// 1. Songa o'tkazish (Number)
+const stringVal = "42";
+const convertedNum = Number(stringVal); // Yaqqol songa o'tkazish
+console.log(convertedNum); // 42
+console.log(typeof convertedNum); // "number"
+
+// 2. Matnga o'tkazish (String)
+const numVal = 100;
+const convertedStr = String(numVal); // Yaqqol stringga o'tkazish
+console.log(convertedStr); // "100"
+console.log(typeof convertedStr); // "string"
+
+// 3. Mantiqiy tipga o'tkazish (Boolean)
+const emptyStr = "";
+console.log(Boolean(emptyStr)); // false (falsy qiymat)
+const hasText = "Salom";
+console.log(Boolean(hasText)); // true (truthy qiymat)
 \`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **null.toString() ishlatish:** null va undefined qiymatlari obyekt emas, shuning uchun ularda \`.toString()\` metodini chaqirish xato (\`TypeError\`) beradi. Buning o'rniga xavfsiz bo'lgan \`String(null)\` global funksiyasidan foydalanish kerak.
-2. **Bo'sh massiv va obyektni songa o'tkazish:** \`Number([])\` natijasi 0 bo'ladi, lekin \`Number({})\` natijasi \`NaN\` bo'ladi. Bu kutilmagan mantiqiy xatolarga olib kelishi mumkin.
+### 2. Intermediate Example (parseInt va parseFloat yordamida o'lchov birliklarini ajratish)
+Foydalanuvchilar kiritgan ma'lumotlar ko'pincha qo'shimcha matnlardan iborat bo'ladi (masalan, CSS dagi \`"20px"\` yoki \`"1.5rem"\`). Ularni faqat son qismini ajratib olish uchun \`parseInt\` va \`parseFloat\` ishlatiladi.
+\`\`\`javascript
+// parseInt - butun sonlarni ajratib oladi
+const width = "150px";
+const numericWidth = parseInt(width, 10); // 10 lik sanoq tizimida parse qilish
+console.log(numericWidth); // 150
 
-## 6. SAVOLLAR VA JAVOBLAR
-**1. Type Casting (Aniq o'zgartirish) nima?**
-Dasturchi tomonidan maxsus funksiyalar yoki operatorlar yordamida qiymat turining bir ko'rinishdan boshqasiga aniq o'zgartirilishi.
+// parseFloat - o'nli kasr sonlarni saqlab qoladi
+const price = "19.99 USD";
+const numericPrice = parseFloat(price);
+console.log(numericPrice); // 19.99
 
-**2. Number() va parseInt() farqi nimada?**
-Number() butun matnni son qilishga urinadi, agar harf bo'lsa NaN qaytaradi. parseInt() esa matn boshidagi sonlarni ajratib oladi va harfga yetsa to'xtaydi.
+// No-raqam belgi bilan boshlansa NaN qaytadi
+const invalid = parseInt("width: 150px", 10);
+console.log(invalid); // NaN
+\`\`\`
 
-**3. parseFloat() qachon ishlatiladi?**
-Matndan o'nli kasr sonlarni (masalan: "12.5rem" -> 12.5) ajratib olish kerak bo'lganda.
+### 3. Advanced Example (Qat'iy va Xavfsiz Tiplarni O'tkazish)
+JSON ma'lumotlar bilan ishlashda tiplarni xavfsiz boshqarish:
+\`\`\`javascript
+const rawInput = {
+  age: "28",
+  salary: "1500.50$",
+  isActive: "true"
+};
 
-**4. String() va .toString() farqi nimada?**
-String() global funksiya bo'lib, null va undefined ni ham xatosiz matnga o'tkazadi. .toString() esa metod bo'lib, null va undefined da xato beradi.
+// Ma'lumotlarni tozalab, mos tiplarga yaqqol o'tkazamiz
+const cleanData = {
+  age: parseInt(rawInput.age, 10), // 28
+  salary: parseFloat(rawInput.salary.replace("$", "")), // 1500.5
+  isActive: rawInput.isActive === "true" // true bo'lgan boolean qiymat
+};
 
-**5. Nima uchun null.toString() xato beradi?**
-Chunki null va undefined qiymatlarida metodlar mavjud emas (chunki ular obyekt emas).
+console.log(cleanData);
+// { age: 28, salary: 1500.5, isActive: true }
+\`\`\`
 
-**6. Unary plus (+) operatori nima qiladi?**
-O'zidan keyin kelgan qiymatni tezkor ravishda songa o'tkazadi (masalan, +"5" -> 5 soni).
+---
 
-**7. Boolean(undefined) natijasi nima bo'ladi?**
-false bo'ladi, chunki undefined falsy (yolg'on) qiymat hisoblanadi.
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
 
-**8. Number(true) va Number(false) nima qaytaradi?**
-Mos ravishda 1 va 0 qaytaradi.
+### Qaysi muammoni hal qiladi?
+JavaScript — **dinamik tiplangan** til. Bu shuni anglatadiki, o'zgaruvchilar ma'lum bir tipga qat'iy bog'lanmagan va operatsiyalar bajarilayotganda JavaScript o'zicha tiplarni o'zgartirishga harakat qiladi. Bu esa kutilmagan jiddiy xatolarga olib kelishi mumkin.
 
-**9. Matn ichida raqamdan keyin harf bo'lsa ("100kg"), Number() nima qaytaradi?**
-NaN (Not a Number) qaytaradi, chunki matnda son bo'lmagan belgilar bor.
+Masalan:
+\`\`\`javascript
+const input1 = "10";
+const input2 = "20";
 
-**10. parseInt("100kg") nima qaytaradi?**
-100 sonini qaytaradi.
+// Foydalanuvchi hisoblagichda 10 + 20 = 30 natijasini kutyapti.
+// Ammo yashirin o'tish tufayli matnlar birlashib ketadi (Concatenation):
+const result = input1 + input2;
+console.log(result); // "1020" (Xatolik!)
+\`\`\`
 
-**11. "Double bang" (!!) operatori nima vazifani bajaradi?**
-Qiymatni mantiqiy (boolean) turga tezkor o'zgartirish uchun ishlatiladi (Boolean() kabi).
+Agar biz yaqqol tip o'tkazishdan foydalanganimizda, bu muammo bo'lmasdi:
+\`\`\`javascript
+const result = Number(input1) + Number(input2);
+console.log(result); // 30 (To'g'ri!)
+\`\`\`
+Yaqqol tip o'tkazish dastur mantiqini aniq, tushunarli qiladi va ma'lumotlar bazasiga noto'g'ri tipli ma'lumotlar yozilishining oldini oladi.
 
-**12. Number(null) va Number(undefined) natijalari nimaga teng?**
-Number(null) -> 0 ga teng, Number(undefined) -> NaN ga teng.
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. \`null\` va \`undefined\` qiymatlarida \`.toString()\` metodini chaqirish
+\`toString()\` metodi obyektdan meros olingan bo'lib, \`null\` yoki \`undefined\` da mavjud emas. Shuning uchun u xatolik beradi.
+* **Xato (Crash):**
+  \`\`\`javascript
+  const age = null;
+  const strAge = age.toString(); // TypeError: Cannot read properties of null (reading 'toString')
+  \`\`\`
+* **Tuzatish:**
+  \`\`\`javascript
+  const age = null;
+  const strAge = String(age); // "null" matnini qaytaradi, xatosiz ishlaydi.
+  \`\`\`
+
+### 2. \`parseInt\` da sanoq tizimini (radix) yozmaslik
+Agar radix ko'rsatilmasa, eski JS dvigatellarida \`"0"\` bilan boshlangan stringlar 8 lik sanoq tizimida parse qilinishi va noto'g'ri natija berishi mumkin.
+* **Xato:**
+  \`\`\`javascript
+  const num = parseInt("015"); // Eski tizimlarda 13 qaytishi mumkin (8 likda 015 = 13)
+  \`\`\`
+* **Tuzatish:**
+  \`\`\`javascript
+  const num = parseInt("015", 10); // 15 (Har doim 10 likda ekanini aniq ko'rsating)
+  \`\`\`
+
+### 3. \`NaN\` qiymatini \`===\` operatori orqali tekshirishga urinish
+\`NaN\` (Not-a-Number) o'z-o'ziga ham teng bo'lmagan yagona qiymatdir.
+* **Xato:**
+  \`\`\`javascript
+  const parsed = parseInt("abc", 10); // NaN
+  if (parsed === NaN) { ... } // Bu shart hech qachon ishlamaydi!
+  \`\`\`
+* **Tuzatish:**
+  \`\`\`javascript
+  const parsed = parseInt("abc", 10);
+  if (Number.isNaN(parsed)) {
+    console.log("Xato: bu raqam emas!");
+  }
+  \`\`\`
+
+### 4. \`"false"\` stringini \`Boolean()\` ga berganda \`false\` qaytishini kutish
+Matn ichida nima yozilganidan qat'i nazar, agar matn bo'sh bo'lmasa, \`Boolean\` uni \`true\` deb hisoblaydi.
+* **Xato:**
+  \`\`\`javascript
+  const active = Boolean("false");
+  console.log(active); // true (Kutilmagan natija!)
+  \`\`\`
+* **Tuzatish:**
+  \`\`\`javascript
+  const active = "false" === "true"; // false (Taqqoslash orqali to'g'ri mantiq hosil qilinadi)
+  \`\`\`
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior (1–4)
+1. **Savol:** \`String(x)\` va \`x.toString()\` farqi nimada?
+   * **Javob:** \`String(x)\` global funksiya bo'lib, \`null\` va \`undefined\` qiymatlarini ham xatosiz \`"null"\` va \`"undefined"\`ga o'tkazadi. \`x.toString()\` esa metod bo'lib, \`null\` yoki \`undefined\` da chaqirilsa \`TypeError\` beradi.
+2. **Savol:** \`Number("123px")\` va \`parseInt("123px", 10)\` nima qaytaradi va nima uchun?
+   * **Javob:** \`Number("123px")\` \`NaN\` qaytaradi, chunki u butun stringni sof son sifatida o'qishga harakat qiladi. \`parseInt("123px", 10)\` esa boshidagi raqamli qismni parse qilib, \`123\` qaytaradi.
+3. **Savol:** JavaScript-da qiymatni songa o'tkazuvchi eng qisqa yaqqol operator qaysi?
+   * **Javob:** Unar plyus (\`+\`) operatori. Masalan: \`+"42"\` qiymati \`42\` soniga aylanadi.
+4. **Savol:** \`Boolean("")\` va \`Boolean(" ")\` natijalari nima bo'ladi?
+   * **Javob:** \`Boolean("")\` bo'sh string bo'lgani uchun \`false\` (falsy) qaytaradi. \`Boolean(" ")\` esa ichida bo'shliq (probel) belgisi bo'lgani uchun \`true\` (truthy) qaytaradi.
+
+### Middle (5–8)
+5. **Savol:** \`parseInt()\` funksiyasida \`radix\` parametri nima va uni yozish nega majburiy?
+   * **Javob:** \`radix\` — sanoq tizimi asosini belgilaydi (masalan, 10 lik, 16 lik, 2 lik). Uni yozish eski JS dvigatellarida \`"0"\` yoki \`"0x"\` bilan boshlanuvchi stringlar avtomatik tarzda 8 lik yoki 16 lik tizimda noto'g'ri tahlil qilinishini oldini oladi.
+6. **Savol:** \`parseFloat("12.34.56")\` qanday qiymat qaytaradi? Nima uchun?
+   * **Javob:** \`12.34\` qaytaradi. Chunki \`parseFloat\` birinchi nuqtani kasr ajratuvchisi sifatida qabul qiladi, lekin ikkinchi nuqtani ko'rgach tahlilni to'xtatadi va ungacha bo'lgan qismini qaytaradi.
+7. **Savol:** \`Number(null)\` va \`Number(undefined)\` qiymatlari nima qaytaradi?
+   * **Javob:** \`Number(null)\` qiymati \`0\` qaytaradi. \`Number(undefined)\` esa \`NaN\` qaytaradi.
+8. **Savol:** Qanday qilib biror o'zgaruvchini \`Boolean()\` funksiyasisiz yaqqol boolean tipiga o'tkazish mumkin?
+   * **Javob:** Ikki karra inkor operatori \`!!\` yordamida. Masalan: \`!!"matn"\` natijasi \`true\` bo'ladi.
+
+### Senior (9–12)
+9. **Savol:** Nima uchun \`NaN === NaN\` ifodasi \`false\` beradi va buni qanday hal qilish kerak?
+   * **Javob:** IEEE 754 standartiga ko'ra, \`NaN\` matematik jihatdan aniqlanmagan qiymat bo'lib, har qanday boshqa aniqlanmagan qiymat bilan teng bo'la olmaydi. Buni tekshirish uchun \`Number.isNaN()\` yoki global \`isNaN()\` ishlatilishi kerak.
+10. **Savol:** \`parseInt(0.0000005, 10)\` nima uchun \`5\` qaytaradi?
+    * **Javob:** JavaScript juda kichik sonlarni avtomatik ravishda eksponentsial ko'rinishga keltirib oladi: \`5e-7\`. \`parseInt\` esa birinchi argumentni string deb qabul qiladi, ya'ni \`"5e-7"\` ko'rinishida o'qiydi. U ushbu string boshidagi raqamni tahlil qilganda faqat \`5\` sonini topadi va \`5\` qaytaradi.
+11. **Savol:** \`Number(object)\` bajarilganda JavaScript obyekti qaysi ichki metodlarni chaqiradi va qanday ketma-ketlikda?
+    * **Javob:** Avval obyektdagi \`[Symbol.toPrimitive]("number")\` tekshiriladi. Agar u bo'lmasa, \`valueOf()\` metodi chaqiriladi (agar u ibtidoiy qiymat qaytarsa, shu olinadi). Agar \`valueOf()\` ibtidoiy qaytarmasa, \`toString()\` chaqiriladi. Agar u ham ibtidoiy qiymat qaytarmasa, \`TypeError\` beriladi.
+12. **Savol:** Katta hajmdagi ma'lumotlarni parse qilishda \`+str\` va \`parseInt(str, 10)\` o'rtasidagi performance (tezlik) farqini tushuntiring.
+    * **Javob:** \`+str\` (yoki \`Number(str)\`) ancha tezroq ishlaydi, chunki u stringni to'g'ridan-to'g'ri songa xaritaydi. \`parseInt(str)\` esa stringni chapdan o'ngga belgilar bo'yicha tahlil (character-by-character scan) qilib chiqadi, bu esa ortiqcha resurs talab etadi.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Quyida string, boolean, null va undefined qiymatlarini songa o'tkazishning 3 xil asosiy yo'li va ularning natija chegaralari (boundary differences) ko'rsatilgan sxema keltirilgan:
+
+\`\`\`mermaid
+graph TD
+    Input["Kiruvchi qiymat: '12.5px', true, null, undefined"] --> Routes{O'tish Yo'llari}
+    
+    Routes -->|"Number(x) yoki +x"| RouteNumber["Number() / Unar +"]
+    Routes -->|"parseInt(x, 10)"| RouteInt["parseInt()"]
+    Routes -->|"parseFloat(x)"| RouteFloat["parseFloat()"]
+    
+    %% Number outputs
+    RouteNumber --> NumberS1["'12.5px' ➔ NaN (Harf aralashgani uchun)"]
+    RouteNumber --> NumberS2["'12.5' ➔ 12.5"]
+    RouteNumber --> NumberB1["true ➔ 1 / false ➔ 0"]
+    RouteNumber --> NumberN1["null ➔ 0"]
+    RouteNumber --> NumberU1["undefined ➔ NaN"]
+    
+    %% parseInt outputs
+    RouteInt --> IntS1["'12.5px' ➔ 12 (Boshidagi butun sonni ajratadi)"]
+    RouteInt --> IntS2["'px12' ➔ NaN (No-raqam bilan boshlansa)"]
+    RouteInt --> IntB1["true / false ➔ NaN"]
+    RouteInt --> IntN1["null / undefined ➔ NaN"]
+    
+    %% parseFloat outputs
+    RouteFloat --> FloatS1["'12.5px' ➔ 12.5 (O'nli kasrni ham o'qiydi)"]
+    RouteFloat --> FloatS2["'12.34.56' ➔ 12.34 (Ikkinchi nuqtada to'xtaydi)"]
+    RouteFloat --> FloatB1["true / false ➔ NaN"]
+    RouteFloat --> FloatN1["null / undefined ➔ NaN"]
+
+    style Input fill:#f9f,stroke:#333,stroke-width:2px
+    style RouteNumber fill:#9f9,stroke:#333,stroke-width:2px
+    style RouteInt fill:#9cf,stroke:#333,stroke-width:2px
+    style RouteFloat fill:#ffc,stroke:#333,stroke-width:2px
+\`\`\`
+
+*Sxema tushuntirishi:*
+* \`Number()\` va \`+\` faqat **sof sonli** matnlarni va mantiqiy qiymatlarni o'tkazishda ishlaydi. Har qanday qo'shimcha matn (masalan, \`px\`) butun natijani \`NaN\` qiladi.
+* \`parseInt()\` va \`parseFloat()\` esa matn ichidagi raqamlarni qidirib topadi. Ular faqat birinchi no-raqamli belgigacha o'qiydi. Agar matn raqam bo'lmagan belgilar bilan boshlansa (masalan \`px12\`), \`NaN\` qaytadi.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Mavzuni to'liq o'zlashtirish va o'zingizni tekshirish uchun dars uchun tayyorlangan 12 ta test topshiriqlarini yechib chiqing. Testlar orqali \`NaN\` bilan ishlash, radix sozlamalari, \`parseFloat\` ning nozik jihatlari va boshqa muammolarni amaliy tushunishingiz mumkin.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### URL Query parametrlarini xavfsiz tahlil qilish (Query Param Parsing)
+Real veb-ilovalarda brauzer URL manzilidan sahifa raqami (\`page\`), sahifadagi elementlar soni (\`limit\`) yoki status (\`active\`) kabi ma'lumotlar olinadi. Brauzer bu parametrlarni har doim **string** ko'rinishida beradi. 
+
+Agarda biz ularni yaqqol tiplarga o'tkazmasdan to'g'ridan-to'g'ri API so'rovda yoki ma'lumotlar bazasida ishlatsak, xatoliklar kelib chiqadi.
+
+\`\`\`javascript
+// Brauzer manzilidan olingan xom ma'lumotlar (URLSearchParams)
+const rawQueryParams = {
+  page: "2",
+  limit: "10",
+  isActive: "true",
+  search: "dasturlash"
+};
+
+// API yoki Baza so'rovi uchun xavfsiz tahlil (Parsing) funksiyasi
+function parseRequestParams(params) {
+  // Sahifa raqami butun son bo'lishi kerak, minimum 1
+  let page = parseInt(params.page, 10);
+  if (Number.isNaN(page) || page <= 0) {
+    page = 1; // Default qiymat
+  }
+
+  // Sahifa limiti butun son bo'lishi kerak, odatda 10
+  let limit = parseInt(params.limit, 10);
+  if (Number.isNaN(limit) || limit <= 0) {
+    limit = 10;
+  }
+
+  // Faollik statusi faqat boolean true/false bo'lishi kerak
+  const isActive = params.isActive === "true";
+
+  // Search matn bo'ladi, agar yo'q bo'lsa bo'sh string
+  const search = params.search ? String(params.search).trim() : "";
+
+  return {
+    page,
+    limit,
+    isActive,
+    search
+  };
+}
+
+const cleanedParams = parseRequestParams(rawQueryParams);
+console.log(cleanedParams);
+// Natija: { page: 2, limit: 10, isActive: true, search: 'dasturlash' }
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+* **Plyus (\`+\`) va \`Number()\` o'rtasidagi farq:** \`+str\` operatori yozilishi qisqa va tezkorroq bo'lsa-da, katta dasturlarda o'qilishi biroz qiyin bo'lishi mumkin. \`Number(str)\` esa funksional ko'rinishda bo'lib, kod o'qilishini yaxshilaydi, ammo ishlash tezligi jihatidan unar plyusga nisbatan mikrosekund darajasida sekinroq bo'lishi mumkin.
+* **\`parseInt\` ni og'ir vazifalarda cheklash:** Agar sizda toza sonli string bo'lsa (masalan \`"42"\`), uni butun songa o'tkazish uchun \`parseInt("42", 10)\` emas, balki \`Math.floor(Number("42"))\` yoki \`Math.trunc(+"42")\` ishlatish tavsiya etiladi. \`parseInt\` matn ichidagi belgilarni tekin tekshirib chiqishi sababli qo'shimcha resurs sarflaydi.
+* **Radix optimallashtirishi:** \`parseInt\` ishlatganda radix (10) parametrini berish faqatgina xavfsizlik uchun emas, balki dvigatelga avtomatik ravishda sanoq tizimini aniqlash yukini bermaslik orqali kod ishlashini tezlashtiradi.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Asl Qiymat | O'tkaziluvchi Tip | Qo'llanilgan Metod | Natija | Izoh |
+| :--- | :--- | :--- | :--- | :--- |
+| \`"123"\` | **Number** | \`Number("123")\` yoki \`+"123"\` | \`123\` | Sof sonli string muvaffaqiyatli o'tadi. |
+| \`"123.45"\` | **Number (Integer)** | \`parseInt("123.45", 10)\` | \`123\` | Kasr qismini tashlab yuboradi. |
+| \`"123.45"\` | **Number (Float)** | \`parseFloat("123.45")\` | \`123.45\` | Nuqtani va undan keyingi sonlarni saqlaydi. |
+| \`"123px"\` | **Number** | \`Number("123px")\` | \`NaN\` | Son bo'lmagan belgilar borligi uchun xato. |
+| \`"123px"\` | **Number (Integer)** | \`parseInt("123px", 10)\` | \`123\` | Matn ichidan boshidagi sonlarni ajratadi. |
+| \`true\` / \`false\` | **Number** | \`Number(true)\` / \`Number(false)\` | \`1\` / \`0\` | Boolean qiymatlar mos ravishda 1 va 0 bo'ladi. |
+| \`null\` | **Number** | \`Number(null)\` | \`0\` | \`null\` songa aylanganda har doim 0 bo'ladi. |
+| \`undefined\` | **Number** | \`Number(undefined)\` | \`NaN\` | \`undefined\` qiymatini son qilib bo'lmaydi. |
+| \`null\` / \`undefined\` | **String** | \`String(null)\` / \`String(undefined)\` | \`"null"\` / \`"undefined"\` | Crash bo'lmaydi, matnga o'tadi. |
+| \`"false"\` | **Boolean** | \`Boolean("false")\` | \`true\` | Bo'sh bo'lmagan har qanday matn \`true\` beradi. |
+| \`""\` | **Boolean** | \`Boolean("")\` | \`false\` | Bo'sh string har doim \`false\` beradi. |
+| \`0\` | **Boolean** | \`Boolean(0)\` | \`false\` | Sonli \`0\` falsy qiymatdir. |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Butun sonni olish",
-      instruction: "'100px' matnidan faqat butun son qismini ajratib oling va res o'zgaruvchisiga saqlang.",
-      startingCode: "let val = '100px';\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = parseInt(val);",
-      test: "if (res === 100) return null; return 'Faqat 100 chiqishi kerak!';"
-    },
-    {
-      id: 2,
-      title: "Kasr sonni ajratish",
-      instruction: "size o'zgaruvchisidan parseFloat yordamida o'nli kasr sonni ajratib oling va natijani res o'zgaruvchisiga saqlang.",
-      startingCode: "let size = '1.75em';\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = parseFloat(size);",
-      test: "if (res === 1.75) return null; return 'res 1.75 bo\\'lishi kerak!';"
-    },
-    {
-      id: 3,
-      title: "Unary plus orqali songa o'tkazish",
-      instruction: "str o'zgaruvchisini unary plus (+) operatori yordamida songa o'tkazing va uni num o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "let str = '42';\n// Bu yerga yozing\nlet num = ",
-      hint: "let num = +str;",
-      test: "if (num === 42) return null; return 'num 42 soni bo\\'lishi kerak!';"
-    },
-    {
-      id: 4,
-      title: "Xavfsiz matnga o'tkazish",
-      instruction: "val o'zgaruvchisining qiymatini String() funksiyasi yordamida matnga o'tkazing va uni res o'zgaruvchisiga saqlang.",
-      startingCode: "let val = null;\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = String(val);",
-      test: "if (res === 'null') return null; return 'res \"null\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 5,
-      title: "Boolean o'tkazish (Double bang)",
-      instruction: "user o'zgaruvchisini !! (double bang) yordamida boolean qiymatga o'tkazing va uni isLoggedIn o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "let user = 'Anvar';\n// Bu yerga yozing\nlet isLoggedIn = ",
-      hint: "let isLoggedIn = !!user;",
-      test: "if (isLoggedIn === true) return null; return 'isLoggedIn true bo\\'lishi kerak!';"
-    },
-    {
-      id: 6,
-      title: "Mantiqiy qiymatni songa o'tkazish",
-      instruction: "flag o'zgaruvchisini Number() yordamida songa o'tkazing va uni res o'zgaruvchisiga saqlang.",
-      startingCode: "let flag = true;\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = Number(flag);",
-      test: "if (res === 1) return null; return 'res 1 bo\\'lishi kerak!';"
-    },
-    {
-      id: 7,
-      title: "Massiv elementini songa o'tkazish",
-      instruction: "arr massividagi qiymatni Number() funksiyasi yordamida songa o'tkazing va uni res o'zgaruvchisiga saqlang.",
-      startingCode: "let arr = [7];\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = Number(arr);",
-      test: "if (res === 7) return null; return 'res 7 bo\\'lishi kerak!';"
-    },
-    {
-      id: 8,
-      title: "Obyektni matnga o'girish",
-      instruction: "obj o'zgaruvchisini String() yordamida matnga o'tkazing va uni res o'zgaruvchisiga saqlang.",
-      startingCode: "let obj = {};\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = String(obj);",
-      test: "if (res === '[object Object]') return null; return 'res \"[object Object]\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "NaN ekanligini tekshirish",
-      instruction: "Number('abc') natijasini NaN ekanligini isNaN() yordamida tekshiring va natijani check o'zgaruvchisiga saqlang.",
-      startingCode: "let val = 'abc';\n// Bu yerga yozing\nlet check = ",
-      hint: "let check = isNaN(Number(val));",
-      test: "if (check === true) return null; return 'check true bo\\'lishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "toString() metodini qo'llash",
-      instruction: "num o'zgaruvchisini .toString() metodi orqali matnga o'tkazing va res o'zgaruvchisiga saqlang.",
-      startingCode: "let num = 256;\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = num.toString();",
-      test: "if (res === '256') return null; return 'res \"256\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 11,
-      title: "Falsy qiymatni Boolean qilish",
-      instruction: "empty o'zgaruvchisini Boolean() funksiyasi yordamida mantiqiy qiymatga o'tkazing va res o'zgaruvchisiga saqlang.",
-      startingCode: "let empty = '';\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = Boolean(empty);",
-      test: "if (res === false) return null; return 'res false bo\\'lishi kerak!';"
-    },
-    {
-      id: 12,
-      title: "Undefinedni songa o'tkazish",
-      instruction: "undef o'zgaruvchisini Number() yordamida songa o'tkazing va natijani res o'zgaruvchisiga saqlang.",
-      startingCode: "let undef = undefined;\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = Number(undef);",
-      test: "if (Number.isNaN(res)) return null; return 'res NaN bo\\'lishi kerak!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Stringni songa o'tkazish va tekshirish",
+    "instruction": "Foydalanuvchidan yosh qiymati ko'rinishida olinadigan stringni butun songa o'tkazuvchi `parseAge(ageStr)` funksiyasini yozing. Buning uchun `parseInt` funksiyasidan foydalaning va har doim 10 lik sanoq tizimini (radix) ko'rsating. Agar o'tkazish natijasi `NaN` bo'lsa yoki olingan son 0 dan kichik bo'lsa, funksiya `null` qaytarishi kerak. Aks holda o'tkazilgan sonni qaytarsin.",
+    "startingCode": "function parseAge(ageStr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "parseInt(ageStr, 10) yordamida o'tkazing, so'ngra Number.isNaN() va yoshni tekshiring.",
+    "test": "const sandbox = new Function(code + '; return parseAge;');\nconst fn = sandbox();\nif (fn('25') !== 25) return 'parseAge(\"25\") 25 qaytarishi kerak';\nif (fn('abc') !== null) return 'parseAge(\"abc\") null qaytarishi kerak';\nif (fn('-5') !== null) return 'parseAge(\"-5\") null qaytarishi kerak';\nif (fn('30px') !== 30) return 'parseAge(\"30px\") 30 qaytarishi kerak';\nif (!code.includes('10')) return 'parseInt funksiyasida radix (10) ko\\'rsatilmagan';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Qiymatlarni boolean tipiga o'tkazish",
+    "instruction": "Istalgan qiymatni qabul qilib, uni Boolean tipiga yaqqol o'tkazuvchi `convertToBoolean(val)` funksiyasini yozing. Ammo, maxsus qoida sifatida, agar qiymat string ko'rinishidagi 'false' yoki '0' bo'lsa, funksiya `false` qaytarishi kerak. Boshqa barcha holatlarda standart Boolean conversion qoidalariga amal qiling.",
+    "startingCode": "function convertToBoolean(val) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Avval qiymat 'false' yoki '0' stringlariga tengligini tekshiring, keyin Boolean(val) orqali qaytaring.",
+    "test": "const sandbox = new Function(code + '; return convertToBoolean;');\nconst fn = sandbox();\nif (fn('false') !== false) return 'convertToBoolean(\"false\") false qaytarishi kerak';\nif (fn('0') !== false) return 'convertToBoolean(\"0\") false qaytarishi kerak';\nif (fn('') !== false) return 'convertToBoolean(\"\") false qaytarishi kerak';\nif (fn(0) !== false) return 'convertToBoolean(0) false qaytarishi kerak';\nif (fn('true') !== true) return 'convertToBoolean(\"true\") true qaytarishi kerak';\nif (fn(123) !== true) return 'convertToBoolean(123) true qaytarishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Moliyaviy qiymatlarni tozalash va parse qilish",
+    "instruction": "Valyuta belgilari yoki boshqa matnlar aralashgan stringni qabul qiluvchi `parsePrice(priceStr)` funksiyasini yozing. Funksiya string ichidagi raqam va nuqta bo'lmagan barcha belgilarni o'chirib tashlashi, so'ngra qolgan qismni `parseFloat` orqali songa o'tkazishi kerak. Agar natijada yaroqli son hosil bo'lmasa yoki `NaN` bo'lsa, `0` qaytarilsin. Masalan: '$120.50' -> 120.5, '99.99 USD' -> 99.99, 'USD' -> 0.",
+    "startingCode": "function parsePrice(priceStr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "priceStr.replace(/[^0-9.]/g, '') yordamida stringni tozalang va parseFloat qiling. So'ng isNaN ekanini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return parsePrice;');\nconst fn = sandbox();\nif (fn('$120.50') !== 120.5) return 'parsePrice(\"$120.50\") 120.5 qaytarishi kerak';\nif (fn('99.99 USD') !== 99.99) return 'parsePrice(\"99.99 USD\") 99.99 qaytarishi kerak';\nif (fn('USD') !== 0) return 'parsePrice(\"USD\") 0 qaytarishi kerak';\nif (fn('15000') !== 15000) return 'parsePrice(\"15000\") 15000 qaytarishi kerak';\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "`parseInt(\"100px\")` va `Number(\"100px\")` amallarining natijalari mos ravishda qanday bo'ladi?",
-      options: [
-        "`100` va `100`",
-        "`100` va `NaN` (chunki parseInt faqat boshidagi sonni ajratib oladi, Number esa butun boshli satrni son qila olmasa NaN qaytaradi)",
-        "`NaN` va `100`",
-        "`TypeError` xatosi yuz beradi"
-      ],
-      correctAnswer: 1,
-      explanation: "`parseInt()` satr boshidagi sonlarni tahlil qilib, ularni ajratib oladi (`100`). `Number()` esa satrni to'liqligicha songa aylantirishga harakat qiladi va unda raqam bo'lmagan belgilar bo'lsa, `NaN` qaytaradi."
-    },
-    {
-      id: 2,
-      question: "Quyidagi kodlardan qaysi biri ishga tushirilganda `TypeError` xatosi (error) yuz beradi?",
-      options: [
-        "`String(null)`",
-        "`null.toString()` (chunki null va undefined qiymatlarida toString() metodi mavjud emas)",
-        "`String(undefined)`",
-        "`+(null)`"
-      ],
-      correctAnswer: 1,
-      explanation: "`null` va `undefined` qiymatlari obyekt bo'lmaganligi uchun ularda `.toString()` metodini chaqirib bo'lmaydi. Lekin `String()` global funksiyasi ularni xatosiz string ko'rinishiga o'tkazadi."
-    },
-    {
-      id: 3,
-      question: "`Number([])` va `Number([5])` o'zgarishlarining natijalari qanday bo'ladi?",
-      options: [
-        "`NaN` va `NaN`",
-        "`0` va `5`",
-        "`0` va `NaN`",
-        "`undefined` va `5`"
-      ],
-      correctAnswer: 1,
-      explanation: "Bo'sh massiv `[]` songa o'girilganda `0` ga aylanadi. Yagona elementli `[5]` massivi esa uning ichidagi elementga qarab `5` soniga o'zgaradi."
-    },
-    {
-      id: 4,
-      question: "JavaScript-da \"Double bang\" (`!!`) operatori qanday vazifani bajaradi?",
-      options: [
-        "Qiymatni ikkala tomonga ko'paytiradi",
-        "Istalgan turdagi qiymatni tez va oson tarzda unga mos Boolean (true/false) turiga o'tkazadi",
-        "Sonlarni solishtiradi",
-        "Matnni tozalaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Birinchi inkor belgisi `!` qiymatni teskari boolean turiga o'tkazadi, ikkinchi `!` esa uni yana asl mantiqiy ko'rinishiga qaytaradi (aslida `Boolean(qiymat)` bilan bir xil ishlaydi)."
-    },
-    {
-      id: 5,
-      question: "`Number(true)` va `Number(false)` natijalari mos ravishda qanday chiqadi?",
-      options: [
-        "`1` va `0`",
-        "`true` va `false`",
-        "`NaN` va `NaN`",
-        "`1` va `-1`"
-      ],
-      correctAnswer: 0,
-      explanation: "Mantiqiy `true` qiymati sonli ifodada `1` ga, mantiqiy `false` qiymati esa `0` ga teng deb hisoblanadi."
-    },
-    {
-      id: 6,
-      question: "`Number(null)` va `Number(undefined)` natijalari qanday bo'ladi?",
-      options: [
-        "`0` va `NaN` (chunki null bo'shlikni anglatib 0 bo'ladi, undefined esa noaniqligi sababli NaN bo'ladi)",
-        "`NaN` va `0`",
-        "`0` va `0`",
-        "`TypeError` xatoligi sodir bo'ladi"
-      ],
-      correctAnswer: 0,
-      explanation: "`Number(null)` ifodasi `0` qaytaradi. Biroq `undefined` aniqlanmagan qiymat bo'lgani uchun uni songa o'tkazganda `NaN` olinadi."
-    },
-    {
-      id: 7,
-      question: "Quyidagi qaysi qiymat `Boolean()` funksiyasiga kiritilganda `true` qaytaradi?",
-      options: [
-        "`\"0\"` (chunki bo'sh bo'lmagan matn har doim truthy hisoblanadi)",
-        "`0` (son)",
-        "`null`",
-        "`\"\"` (bo'sh matn)"
-      ],
-      correctAnswer: 0,
-      explanation: "JavaScriptda faqat falsy qiymatlar (0, -0, 0n, '', null, undefined, NaN, false) `false` ga aylanadi. `\"0\"` esa bo'sh bo'lmagan matn bo'lgani uchun `true` qaytaradi."
-    },
-    {
-      id: 8,
-      question: "Quyidagi kodning natijasi nima bo'ladi:\n```javascript\nlet x = \"   15   \";\nconsole.log(Number(x));\n```",
-      options: [
-        "`NaN` (chunki matnda bo'shliqlar bor)",
-        "`15` (chunki Number() matn boshidagi va oxiridagi bo'shliqlarni inobatga olmaydi)",
-        "`\"15\"`",
-        "`TypeError` xatosi kelib chiqadi"
-      ],
-      correctAnswer: 1,
-      explanation: "`Number()` funksiyasi matn boshidagi va oxiridagi bo'shliqlarni olib tashlab, ichidagi sonni o'gira oladi. Agar matn ichida (o'rtasida) bo'shliq bo'lsa, unda `NaN` bo'lardi."
-    },
-    {
-      id: 9,
-      question: "`parseInt(\"g100\")` kodi nima qaytaradi?",
-      options: [
-        "`100`",
-        "`NaN` (chunki birinchi belgi raqam emas, shuning uchun parseInt tahlilni boshlay olmaydi)",
-        "`g100`",
-        "`TypeError` xatosi beradi"
-      ],
-      correctAnswer: 1,
-      explanation: "`parseInt()` matnning faqat birinchi belgisidan boshlab sonlarni tahlil qiladi. Agar birinchi belgi son bo'lmasa, u darhol `NaN` qaytaradi."
-    },
-    {
-      id: 10,
-      question: "`String({})` ifodasi nima qaytaradi?",
-      options: [
-        "`\"{}\"`",
-        "`\"[object Object]\"` (chunki obyektlar standart tarzda shunday matn ko'rinishiga o'tadi)",
-        "`NaN`",
-        "`TypeError` xatosi"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScriptda oddiy obyektni matnga o'tkazganda u har doim `\"[object Object]\"` natijasini qaytaradi."
-    },
-    {
-      id: 11,
-      question: "Quyidagi kod natijasi qanday bo'ladi:\n```javascript\nlet res = +\"12.34\";\nconsole.log(typeof res);\n```",
-      options: [
-        "`\"string\"`",
-        "`\"number\"` (chunki unary plus operatori uni songa o'tkazdi)",
-        "`\"boolean\"`",
-        "`\"undefined\"`"
-      ],
-      correctAnswer: 1,
-      explanation: "Unary plus (`+`) operatori matnni songa o'tkazadi, shu sababli `typeof res` natijasi `\"number\"` bo'ladi."
-    },
-    {
-      id: 12,
-      question: "`Boolean([])` ifodasining qiymati nimaga teng?",
-      options: [
-        "`false`",
-        "`true` (chunki massivlar har doim obyekt hisoblanadi va barcha obyektlar truthy hisoblanadi)",
-        "`NaN`",
-        "`undefined`"
-      ],
-      correctAnswer: 1,
-      explanation: "Massivlar (hatto bo'sh bo'lsa ham) obyektdir. JavaScriptda barcha obyektlar (shu jumladan bo'sh massivlar va bo'sh obyektlar) `Boolean` kontekstida har doim `true` qiymatini beradi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "JavaScript-da qiymatni yaqqol (explicit) ravishda string tipiga o'tkazishning qaysi usuli xavfsizroq va `null` hamda `undefined` qiymatlarida xatolik (crash) bermaydi?",
+    "options": [
+      "value.toString()",
+      "String(value)",
+      "JSON.stringify(value)",
+      "value + \"\""
+    ],
+    "correctAnswer": 1,
+    "explanation": "String(value) funksiyasi null va undefined qiymatlarini ham xatosiz \"null\" va \"undefined\" stringlariga o'tkazadi. value.toString() esa null va undefined qiymatlarida TypeError beradi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kod bajarilganda konsolda qanday natija chiqadi?\n```javascript\nconsole.log(Number(\"123px\"));\nconsole.log(parseInt(\"123px\", 10));\n```",
+    "options": [
+      "123 va 123",
+      "NaN va 123",
+      "NaN va NaN",
+      "123 va NaN"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Number() funksiyasi stringda biron bir raqam bo'lmagan belgi bo'lsa, butunlay NaN qaytaradi. parseInt() esa stringning boshidagi raqamlarni ajratib olib parse qiladi va 123 qaytaradi."
+  },
+  {
+    "id": 3,
+    "question": "Unar plyus (`+`) operatori orqali tiplarni o'tkazish haqida qaysi tasdiq to'g'ri?",
+    "options": [
+      "U faqat parseInt kabi ishlaydi va oxiridagi harflarni tashlab yuboradi",
+      "U Number() funksiyasi bilan bir xil qoidalarga ko'ra qiymatni songa o'tkazadi",
+      "U har doim sonlarni butun qismigacha yaxlitlab beradi",
+      "U faqat musbat sonlarni o'z holicha saqlab, manfiylarini NaN qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Unar plyus (+value) matematik jihatdan Number(value) bilan to'liq bir xil ishlaydi va eng tez/qisqa yaqqol son tipiga o'tkazish usulidir."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi ifodaning natijasi nima bo'ladi?\n```javascript\nBoolean(\"false\")\n```",
+    "options": [
+      "false",
+      "true",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bo'sh bo'lmagan har qanday string (shu jumladan \"false\" va \"0\" ham) Boolean() ga uzatilganda true qaytaradi. Faqat bo'sh string \"\" falsy hisoblanadi."
+  },
+  {
+    "id": 5,
+    "question": "parseInt() funksiyasining ikkinchi parametri (radix) nima uchun muhim?",
+    "options": [
+      "U natija sifatida qaytadigan kasr xonalarini belgilaydi",
+      "U sanoq tizimini (masalan, 10 lik yoki 16 lik) belgilaydi va eski JS dvigatellarida boshqa sanoq tizimlari avtomatik qo'llanilishi oldini oladi",
+      "U faqat o'tkazish xato bo'lganda ishlaydigan default qiymatni beradi",
+      "U matn ichidagi raqamlarning maksimal uzunligini belgilaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Radix sanoq tizimini aniqlaydi. Ko'rsatilmaganda, \"0x\" bilan boshlangan stringlar 16 lik, \"0\" bilan boshlanganlar esa eski brauzerlarda 8 lik sanoq tizimida parse bo'lib xato natija berishi mumkin edi. Shuning uchun har doim 10 lik uchun 10 yozish shart."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilganda qanday qiymat hosil bo'ladi?\n```javascript\nNumber(true) + Number(false)\n```",
+    "options": [
+      "1",
+      "2",
+      "NaN",
+      "0"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Number(true) qiymati 1 ga, Number(false) esa 0 ga teng bo'ladi. Ularning yig'indisi esa 1 + 0 = 1 bo'ladi."
+  },
+  {
+    "id": 7,
+    "question": "parseFloat(\"12.34.56\") ifodasi qanday natija beradi?",
+    "options": [
+      "12.34",
+      "NaN",
+      "12.3456",
+      "TypeError"
+    ],
+    "correctAnswer": 0,
+    "explanation": "parseFloat() stringni chapdan o'ngga parse qiladi. Birinchi nuqtani kasr nuqtasi deb biladi, ammo ikkinchi nuqtani ko'rganda to'xtaydi va ungacha bo'lgan qismni (12.34) qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodlardan qaysi biri yaqqol (explicit) tiplarni o'tkazishga misol bo'la olmaydi?",
+    "options": [
+      "Number(\"42\")",
+      "\"42\" * 1",
+      "String(42)",
+      "Boolean(1)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "\"42\" * 1 - bu yashirin (implicit yoki coercion) tiplarni o'tkazishdir. Unda JS ko'paytirish operatorini ko'rib, stringni o'zi avtomatik songa o'tkazadi. Qolganlarida maxsus funksiyalar yaqqol yozilgan."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi ifodaning natijasi nima bo'ladi?\n```javascript\nNumber(undefined)\n```",
+    "options": [
+      "0",
+      "NaN",
+      "null",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Number(undefined) har doim NaN qaytaradi. Taqqoslash uchun: Number(null) esa 0 qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "parseInt(\"   42   \") kodi qanday ishlaydi?",
+    "options": [
+      "Boshidagi va oxiridagi bo'shliqlarni inobatga olmasdan 42 sonini qaytaradi",
+      "Bo'shliqlar bo'lgani uchun NaN qaytaradi",
+      "Bo'shliqlarni ham saqlab \"   42   \" stringini qaytaradi",
+      "TypeError xatoligini beradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "parseInt va parseFloat funksiyalari string boshidagi va oxiridagi bo'shliqlarni avtomatik tarzda tashlab yuboradi va keyin kelgan sonlarni parse qiladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(typeof String(null));\n```",
+    "options": [
+      "\"object\"",
+      "\"null\"",
+      "\"string\"",
+      "\"undefined\""
+    ],
+    "correctAnswer": 2,
+    "explanation": "String(null) ifodasi \"null\" matnini (string) qaytaradi. Uning tipi (typeof) esa \"string\" bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "parseInt(\"abc\", 10) natijasi NaN ekanligini tekshirish uchun qaysi ifodadan foydalanish kerak?",
+    "options": [
+      "parseInt(\"abc\", 10) === NaN",
+      "isNaN(parseInt(\"abc\", 10))",
+      "typeof parseInt(\"abc\", 10) === \"nan\"",
+      "parseInt(\"abc\", 10) == null"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da NaN === NaN har doim false qaytaradi. Shuning uchun qiymatning NaN ekanini tekshirish uchun faqat isNaN() yoki Number.isNaN() funksiyasini ishlatish zarur."
+  }
+]
+
 };

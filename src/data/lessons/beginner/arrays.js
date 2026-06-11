@@ -1,319 +1,473 @@
 export const arrays = {
   id: "arrays",
-  title: "Massivlar (Arrays): Ma'lumotlar ro'yxati",
-  level: "Boshlang'ich",
-  description: "Ma'lumotlar poezdi: bir nechta qiymatni bitta ro'yxatda saqlash.",
-  theory: `## 1. NEGA kerak?
-Tasavvur qiling, sizda 10 ta meva bor. Har biri uchun alohida o'zgaruvchi ochish (\`meva1\`, \`meva2\`...) juda noqulay. Massiv esa barcha mevalarni bitta "savat" (ro'yxat) ichiga yig'adi va ular bilan ishlashni osonlashtiradi.
+  title: "Massivlar (Arrays) va Ularning Metodlari",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-## 2. SODDALIK (Analogiya)
-Massivni **poezd vagonlari** deb tasavvur qiling. Har bir vagonning o'z o'rni (indeksi) bor. Eng muhimi: **JavaScriptda sanoq 0 dan boshlanadi!** Ya'ni birinchi vagon — 0-vagon.
+### Massiv (Array) nima?
+**Massiv (Array)** — bu bir nechta qiymatlarni (elementlarni) ma'lum bir tartibda o'zida saqlaydigan maxsus ma'lumotlar strukturasidir. Oddiy o'zgaruvchi faqat bitta qiymatni saqlay olsa, massiv bitta nom ostida yuzlab yoki minglab qiymatlarni tartiblangan ro'yxat ko'rinishida saqlashi mumkin. Massivdagi har bir element o'zining joylashuv tartibiga ega bo'lib, u **indeks (index)** deb ataladi. Dasturlashda indekslash har doim **0 dan boshlanadi**.
 
-## 3. STRUKTURA
+### Real hayotiy analogiya
+Tasavvur qiling, siz **poyezd bekatidasiz**:
+* **O'zgaruvchi** — bu faqat bitta odam sig'adigan kichkina taksi.
+* **Massiv (Array)** — bu ketma-ket ulangan ko'plab vagonlardan iborat yuk poyezdi.
+  * Har bir vagonning o'z tartib raqami (indeksi) bor: birinchi vagon 0-indeks, ikkinchisi 1-indeks va hokazo.
+  * Har bir vagon ichida har xil yuklar (ma'lumotlar: sonlar, matnlar yoki obyektlar) saqlanishi mumkin.
+  * Agar siz poyezd oxiriga yangi vagon qo'shmoqchi bo'lsangiz (\`push\`) yoki boshidagi vagonni uzib tashlamoqchi bo'lsangiz (\`shift\`), bu butun poyezdning umumiy uzunligiga va vagonlar indekslariga ta'sir qiladi.
 
-### A. Massiv yaratish va o'qish
+---
+
+## 2. 💻 Real Kod Misollari
+
+### 1. Basic Example (Massiv yaratish va elementlarga murojaat)
+Massiv literalidan foydalanib oddiy massiv yaratish va uning elementlarini olish/o'zgartirish:
 \`\`\`javascript
-const mevalar = ["Olma", "Banan", "Gilos"];
-console.log(mevalar[0]); // "Olma" (birinchi element)
-console.log(mevalar.length); // 3 (jami elementlar soni)
+// Massiv yaratish
+const colors = ['red', 'green', 'blue'];
+
+// Elementlarga indeks orqali murojaat qilish
+console.log(colors[0]); // "red"
+console.log(colors[2]); // "blue"
+console.log(colors[3]); // undefined (bunday indeks mavjud emas)
+
+// Element qiymatini o'zgartirish
+colors[1] = 'yellow';
+console.log(colors); // ['red', 'yellow', 'blue']
+
+// Massiv uzunligi
+console.log(colors.length); // 3
 \`\`\`
 
-### B. O'zgartirish va Metodlar
-Massiv ichidagi ma'lumotlarni o'zgartirishimiz mumkin:
-- **push() / pop():** Oxiriga qo'shish / Oxiridan o'chirish.
-- **unshift() / shift():** Boshiga qo'shish / Boshidan o'chirish.
-- **splice():** Istalgan joydan element qo'shish yoki o'chirish.
-
+### 2. Intermediate Example (Massiv oxiridan va boshidan element qo'shish/o'chirish)
+Massiv uzunligini dynamic o'zgartiruvchi asosiy mutator metodlar (\`push\`, \`pop\`, \`shift\`, \`unshift\`):
 \`\`\`javascript
-mevalar.push("Anor"); // Oxiriga qo'shildi
-mevalar[1] = "Kivi";  // "Banan" o'rniga "Kivi" keldi
+const todoList = ['Dars qilish', 'Kitob o\\'qish'];
+
+// 1. push() - massiv oxiriga element qo'shadi
+todoList.push('Yugurish'); 
+console.log(todoList); // ['Dars qilish', 'Kitob o\\'qish', 'Yugurish']
+
+// 2. pop() - massiv oxiridan elementni o'chiradi va o'chirilgan qiymatni qaytaradi
+const lastTodo = todoList.pop();
+console.log(lastTodo);  // "Yugurish"
+console.log(todoList); // ['Dars qilish', 'Kitob o\\'qish']
+
+// 3. unshift() - massiv boshiga element qo'shadi
+todoList.unshift('Choy ichish');
+console.log(todoList); // ['Choy ichish', 'Dars qilish', 'Kitob o\\'qish']
+
+// 4. shift() - massiv boshidan elementni o'chiradi va o'chirilgan qiymatni qaytaradi
+const firstTodo = todoList.shift();
+console.log(firstTodo); // "Choy ichish"
+console.log(todoList);  // ['Dars qilish', 'Kitob o\\'qish']
 \`\`\`
 
-## 4. AMALIYOT (Mashqlar pastda)
+### 3. Advanced Example (Splice, Slice va Qidiruv metodlari)
+Massiv elementlarini qirqib olish, almashtirish va massiv ichidan elementlarni qidirish:
+\`\`\`javascript
+const members = ['Ali', 'Vali', 'Sardor', 'Olim', 'Rustam'];
 
-## 5. XATOLAR (Common mistakes)
-1. **Indeksni adashtirish:** Oxirgi element indeksi doim \`length - 1\` bo'ladi.
-2. **Const bilan ishlash:** \`const\` bilan yaratilgan massiv ichidagi elementlarni o'zgartirish mumkin, lekin massivni yangi massivga qayta biriktirib (\`mevalar = [...]\`) bo'lmaydi.
+// 1. slice() - massivning ma'lum qismidan nusxa oladi (asl massiv o'zgarmaydi)
+const team = members.slice(1, 4); 
+console.log(team);    // ['Vali', 'Sardor', 'Olim'] (1-indeksdan 4-indeksgacha, 4 kirmaydi)
+console.log(members); // original o'zgarmadi
 
-## 6. SAVOLLAR VA JAVOBLAR
-**1. Massiv nima?**
-Bitta o'zgaruvchi nomi ostida bir nechta qiymatlarni saqlash imkonini beruvchi ma'lumotlar tuzilmasi.
+// 2. splice() - massiv tarkibini o'zgartiradi (elementlarni o'chiradi, qo'shadi yoki almashtiradi)
+// 2-indeksdan boshlab 2 ta elementni o'chirish va o'rniga 'Eldor'ni qo'shish:
+const deleted = members.splice(2, 2, 'Eldor');
+console.log(deleted); // ['Sardor', 'Olim'] (o'chirilgan elementlar)
+console.log(members); // ['Ali', 'Vali', 'Eldor', 'Rustam'] (original o'zgardi!)
 
-**2. Massiv yaratishda qaysi qavslar ishlatiladi?**
-Kvadrat qavslar \`[ ]\`.
+// 3. indexOf() va includes() - qidiruv metodlari
+console.log(members.indexOf('Vali'));    // 1 (indeksini qaytaradi)
+console.log(members.indexOf('Anvar'));   // -1 (topilmasa -1)
+console.log(members.includes('Eldor'));  // true (bor bo'lsa true, yo'q bo'lsa false)
+\`\`\`
 
-**3. Massivda sanoq nechadan boshlanadi?**
-0 dan boshlanadi.
+---
 
-**4. Massiv uzunligini qanday bilish mumkin?**
-\`.length\` xususiyati orqali.
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
 
-**5. push va unshift farqi nima?**
-\`push\` oxiriga qo'shadi, \`unshift\` boshiga qo'shadi.
+### JavaScript-da massivlarning haqiqiy tabiati
+C, C++ yoki Java kabi statik dasturlash tillarida massivlar xotiraning ketma-ket kelgan yagona blokida (contiguous block of memory) saqlanadi va ularning hajmi e'lon qilinganda qat'iy belgilab qo'yiladi.
+JavaScript-da esa vaziyat butunlay boshqacha:
+1. **Massivlar aslida Obyektlardir:** JavaScript-da massivlar o'ziga xos tarzda ishlovchi obyektlardir. Ularning indekslari (\`0\`, \`1\`, \`2\`...) aslida obyektning kalitlari (string properties) hisoblanadi. Ya'ni \`arr[0]\` yozuvi xotira darajasida \`arr['0']\` ko'rinishida ishlaydi.
+2. **Dynamic va Heterogen:** Massiv o'lchami oldindan belgilanmaydi va u dynamic tarzda o'sishi mumkin. Massiv ichida bir vaqtning o'zida har xil ma'lumot turlarini (\`number\`, \`string\`, \`object\`, \`function\`) saqlash mumkin.
+3. **\`length\` xususiyatining ishlashi:** Massivning \`length\` xossasi faqatgina elementlar sonini hisoblamaydi, u har doim **massivdagi eng katta indeks + 1** ga teng bo'ladi. Agar siz \`length\`ni qo'lda kichraytirsangiz, massiv oxiridagi elementlar o'chib ketadi.
 
-**6. pop va shift farqi nima?**
-\`pop\` oxiridan o'chiradi, \`shift\` boshidan o'chiradi.
+### V8 Dvigatelining Optimizatsiyasi (Fast vs Dictionary Elements)
+JavaScript massivlari oddiy obyekt bo'lsa, ulardan element o'qish juda sekin bo'lishi kerak edi. Shuning uchun JavaScript dvigatellari (masalan, Chrome-dagi V8) massivlarni optimallashtiradi:
+* **Fast Elements (Zich massivlar):** Agar massiv elementlari bir xil turdagi ma'lumotlardan tashkil topsa va indekslari ketma-ket kelgan bo'lsa (masalan: \`[1, 2, 3, 4]\`), dvigatel ularni xuddi C tilidagi kabi xotiraning ketma-ket blokida saqlaydi. Bu elementlarga juda tez kirish imkonini beradi.
+* **Dictionary Elements / Sparse Arrays (Siyrak massivlar):** Agar massivda indekslar oralig'ida bo'shliqlar bo'lsa (masalan: \`arr[0] = 1; arr[1000] = 2;\`), dvigatel uni zich saqlay olmaydi. U massivni oddiy **Hash Map (kalit-qiymat lug'ati)** ko'rinishiga o'tkazadi. Bu xotirani tejaydi, lekin ishlash tezligini pasaytiradi.
 
-**7. Massivning 3-elementini qanday o'qiymiz?**
-\`arr[2]\` orqali (chunki 0, 1, 2...).
+---
 
-**8. Massiv ichida har xil turdagi ma'lumotlar bo'lishi mumkinmi?**
-Ha, JS massivlarida bir vaqtda son, matn va obyektlarni saqlash mumkin.
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
 
-**9. includes() metodi nima qaytaradi?**
-Agar element massivda bo'lsa \`true\`, bo'lmasa \`false\`.
+### 1. Massiv elementini o'chirishda \`delete\` operatoridan foydalanish
+* **Noto'g'ri (Siyrak massiv hosil qiladi):**
+  \`\`\`javascript
+  const arr = [10, 20, 30];
+  delete arr[1]; // 20 o'chiriladi, lekin...
+  console.log(arr); // [10, <1 empty item>, 30]
+  console.log(arr.length); // 3 (uzunlik o'zgarmadi!)
+  console.log(arr[1]); // undefined (lekin xotirada joy turibdi)
+  \`\`\`
+* **To'g'ri (Splice yoki Filter ishlatish):**
+  \`\`\`javascript
+  const arr = [10, 20, 30];
+  arr.splice(1, 1); // 1-indeksdagi 1 ta elementni butunlay o'chirish
+  console.log(arr); // [10, 30]
+  console.log(arr.length); // 2
+  \`\`\`
 
-**10. indexOf() metodi nima qaytaradi?**
-Elementning indeksini. Topilmasa \`-1\` qaytaradi.
+### 2. Massivlarni \`===\` yordamida qiymat bo'yicha solishtirish
+* **Noto'g'ri:**
+  \`\`\`javascript
+  const a = [1, 2];
+  const b = [1, 2];
+  console.log(a === b); // false (chunki xotiradagi manzillar boshqa)
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  const a = [1, 2];
+  const b = [1, 2];
+  // Qiymatlarni va uzunlikni solishtirish:
+  const areEqual = a.length === b.length && a.every((val, index) => val === b[index]);
+  console.log(areEqual); // true
+  \`\`\`
 
-**11. join() metodi nima qiladi?**
-Massiv elementlarini bitta matnga birlashtiradi.
+### 3. Mavjud bo'lmagan indeks xossasiga murojaat qilish (TypeError)
+* **Noto'g'ri (Dasturni to'xtatib qo'yadigan xato):**
+  \`\`\`javascript
+  const users = [{ name: 'Ali' }];
+  // users[1] - undefined qaytaradi, uning ichidan name ni o'qish esa error beradi
+  console.log(users[1].name); // TypeError: Cannot read properties of undefined
+  \`\`\`
+* **To'g'ri (Optional Chaining yoki shartli tekshirish):**
+  \`\`\`javascript
+  const users = [{ name: 'Ali' }];
+  console.log(users[1]?.name); // undefined qaytaradi (xato bermaydi)
+  \`\`\`
 
-**12. reverse() metodi asl massivni o'zgartiradimi?**
-Ha, u massiv elementlari tartibini teskari qilib qo'yadi.
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior Darajasi (1–4)
+1. **Savol:** Massiv (Array) nima va u oddiy obyektlardan qanday farq qiladi?
+   * **Javob:** Massiv ham obyekt turi hisoblanadi. U tartiblangan ma'lumotlarni kalit sifatida 0 dan boshlanadigan butun sonlar (indekslar) yordamida saqlaydi va dynamic ravishda o'zgarib boruvchi maxsus \`length\` xususiyatiga ega.
+2. **Savol:** Massiv oxiriga element qo'shish/o'chirish va boshiga qo'shish/o'chirish metodlarini sanab bering.
+   * **Javob:** Oxiriga qo'shish: \`push()\`, oxiridan o'chirish: \`pop()\`. Boshiga qo'shish: \`unshift()\`, boshidan o'chirish: \`shift()\`.
+3. **Savol:** \`arr.length = 0\` amali bajarilganda nima sodir bo'ladi?
+   * **Javob:** Massiv to'liq tozalanadi (bo'shab qoladi), undagi barcha elementlar o'chib ketadi.
+4. **Savol:** E'lon qilingan \`const arr = [1, 2]\` massiviga yangi element qo'shsa bo'ladimi? \`const\` xatolik bermaydimi?
+   * **Javob:** Ha, yangi element qo'shish mumkin. Chunki \`const\` faqat massivning xotiradagi manziliga (reference) boshqa yangi massiv yoki qiymat biriktirishni taqiqlaydi, massiv ichidagi elementlarni o'zgartirishni emas.
+
+### Middle Darajasi (5–8)
+5. **Savol:** \`slice()\` va \`splice()\` metodlarining asosiy farqi nimada?
+   * **Javob:** \`slice()\` massivning belgilangan qismidan nusxa oladi va yangi massiv qaytaradi, asl massivni o'zgartirmaydi (pure function). \`splice()\` esa elementlarni o'chirish, qo'shish yoki almashtirish orqali asl massiv tarkibini bevosita o'zgartiradi (mutates array).
+6. **Savol:** Massivni qanday usullar bilan to'liq yoki qisman nusxalash (shallow copy) mumkin?
+   * **Javob:** Spread operator yordamida \`[...arr]\`, argumentsiz \`arr.slice()\` metodi yordamida yoki \`Array.from(arr)\` yordamida.
+7. **Savol:** Massivda ma'lum bir element mavjudligini tekshirish uchun qaysi metodlardan foydalanish afzal?
+   * **Javob:** Agar faqat bor/yo'qligini tekshirish kerak bo'lsa, \`.includes()\` (true/false). Agar element indeksini bilish kerak bo'lsa, \`.indexOf()\` (indeks yoki -1) ishlatiladi.
+8. **Savol:** "Sparse Array" (siyrak massiv) nima va u qanday hosil bo'ladi?
+   * **Javob:** Bu elementlari orasida bo'shliqlar (empty slots) bo'lgan massivdir. Masalan, massiv yaratib to'g'ridan-to'g'ri katta indeksga qiymat berilsa (\`arr[10] = 'test'\`), yoki o'chirishda \`delete arr[2]\` ishlatilsa hosil bo'ladi.
+
+### Senior Darajasi (9–12)
+9. **Savol:** Nima uchun \`push()\`/\`pop()\` amallari \`shift()\`/\`unshift()\` amallariga qaraganda tezroq ishlaydi?
+   * **Javob:** \`push()\` va \`pop()\` faqat massiv oxiri bilan ishlaydi va mavjud elementlarning xotiradagi o'rnini o'zgartirmaydi ($O(1)$). \`shift()\` va \`unshift()\` esa boshiga ta'sir qilgani uchun barcha qolgan elementlarni xotirada bitta indeks oldinga yoki orqaga surishga majbur qiladi ($O(N)$).
+10. **Savol:** V8 dvigateli kontekstida "Fast Elements" va "Dictionary Elements" (yoki Hash Map representation) farqini tushuntiring.
+    * **Javob:** Zich va homogeneous (bir xil tipli) massivlar V8 tomonidan xotirada ketma-ketlikda ("Fast Elements") saqlanadi va juda tez ishlaydi. Siyrak (sparse) va heterogenous massivlar esa sekinroq ishlovchi obyekt lug'atlari ("Dictionary Elements") shakliga o'tkaziladi.
+11. **Savol:** Massivlarni chuqur nusxalash (Deep Copy) va yuzaki nusxalash (Shallow Copy) farqi nimada va ularni massivlar uchun qanday bajaramiz?
+    * **Javob:** Shallow copy (\`[...]\`) faqat massivning birinchi darajali elementlarini nusxalaydi, agar uning ichida boshqa ichki obyekt yoki massiv bo'lsa, ularning havolasi (reference) nusxalanadi va ular o'zaro bog'liq qoladi. Deep copy esa ichki obyektlar bilan birga to'liq yangi nusxa yaratadi. Buni zamonaviy JSda \`structuredClone(arr)\` yordamida amalga oshirish mumkin.
+12. **Savol:** Massiv elementlari bo'sh (\`empty\`) ekanligini va \`undefined\` qiymatga ega ekanligini qanday farqlash mumkin?
+    * **Javob:** \`empty\` (hole) elementlar massiv kaliti sifatida umuman mavjud bo'lmaydi. Uni \`index in arr\` (masalan, \`2 in arr\`) yoki \`arr.hasOwnProperty(index)\` yordamida tekshirish mumkin. Agar element rostdan mavjud bo'lsa-yu, qiymati \`undefined\` bo'lsa, \`in\` operatori \`true\` qaytaradi, bo'sh (empty slot) bo'lsa \`false\` qaytaradi.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Quyidagi Mermaid diagrammasi massiv mutatsiyalarining massiv uzunligiga (\`length\`) va elementlarning indekslariga ko'rsatadigan ta'sirini grafik shaklda tasvirlaydi. Boshdan bajariladigan amallar nima uchun sekinroq ($O(N)$) ekanligini indekslarning siljishi orqali tushunishingiz mumkin:
+
+\`\`\`mermaid
+graph TD
+    subgraph OriginalState [Original Massiv: length = 3]
+        style OriginalState fill:#f9f9f9,stroke:#333,stroke-width:2px
+        Orig["['A', 'B', 'C'] <br/> indeks: 0, 1, 2"]
+    end
+
+    OriginalState -->|push 'D' <br/> Oxiridan qo'shish O1| PushAction["['A', 'B', 'C', 'D'] <br/> length: 4 <br/> (Indekslar o'zgarmaydi, tez ishlaydi)"]
+    OriginalState -->|pop <br/> Oxiridan o'chirish O1| PopAction["['A', 'B'] <br/> length: 2 <br/> (Indekslar o'zgarmaydi, tez ishlaydi)"]
+
+    OriginalState -->|unshift 'Z' <br/> Boshidan qo'shish ON| UnshiftAction["['Z', 'A', 'B', 'C'] <br/> length: 4 <br/> (Barcha indekslar +1 ga siljiydi - sekin)"]
+    OriginalState -->|shift <br/> Boshidan o'chirish ON| ShiftAction["['B', 'C'] <br/> length: 2 <br/> (Barcha indekslar -1 ga siljiydi - sekin)"]
+
+    style PushAction fill:#e6f7ff,stroke:#1890ff,stroke-width:1px
+    style PopAction fill:#e6f7ff,stroke:#1890ff,stroke-width:1px
+    style UnshiftAction fill:#fff7e6,stroke:#ffa940,stroke-width:1px
+    style ShiftAction fill:#fff7e6,stroke:#ffa940,stroke-width:1px
+\`\`\`
+
+* **Push/Pop:** Massiv oxiridagi o'zgarishlar faqat oxirgi elementga ta'sir qiladi. Boshqa elementlar o'z o'rnida qoladi.
+* **Shift/Unshift:** Massiv boshiga ta'sir etuvchi amallar har bir elementning indeksini o'zgartirishni talab qiladi. Dvigatel orqa fonda barcha elementlarni xotirada surib chiqadi, bu esa massiv kattalashgan sari sekinlashadi.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Darsimizning quizzes bo'limida massiv metodlari, xususiyatlari, xotira xulq-atvori va amaliy vaziyatlar bo'yicha tayyorlangan 12 ta test savolini yechib, bilimingizni sinab ko'ring. Har bir savolda to'g'ri javob bilan birga batafsil tushuntirish berilgan.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Tizim jurnali (Buffer Log) va "Undo" harakatlari tarixi
+Real loyihalarda massivlar yordamida foydalanuvchining oxirgi bajargan harakatlari ro'yxatini (History/Undo Stack) yoki tizim loglarini saqlash mumkin. Bu yerda xotirani cheklash muhim. Biz faqat oxirgi 5 ta harakatni saqlab qoladigan dynamic log tizimi misolini ko'ramiz:
+
+\`\`\`javascript
+class ActionHistory {
+  constructor(maxSize = 5) {
+    this.history = [];
+    this.maxSize = maxSize;
+  }
+
+  // Yangi harakat qo'shish
+  add(action) {
+    this.history.push(action); // Harakatni oxiriga qo'shadi
+    console.log(\`Qo'shildi: \${action}\`);
+
+    // Agar limitdan oshib ketsa, eng eskisini boshidan o'chirib yuboradi
+    if (this.history.length > this.maxSize) {
+      const removed = this.history.shift(); // 0-indeksdagi element o'chiriladi
+      console.log(\`Limit oshdi! Eng eski harakat o'chirildi: \${removed}\`);
+    }
+  }
+
+  // Tarixni ko'rish
+  getHistory() {
+    return [...this.history]; // Massiv havolasini himoya qilish uchun nusxa qaytaramiz
+  }
+}
+
+// Foydalanish:
+const userHistory = new ActionHistory(3); // Maksimim 3 ta harakat saqlaymiz
+
+userHistory.add("Sahifaga kirdi");
+userHistory.add("Profilni tahrirladi");
+userHistory.add("Rasmni yukladi");
+console.log("Hozirgi tarix:", userHistory.getHistory()); 
+// ['Sahifaga kirdi', 'Profilni tahrirladi', 'Rasmni yukladi']
+
+userHistory.add("Parolni o'zgartirdi"); // Limit oshadi! "Sahifaga kirdi" o'chiriladi.
+console.log("Yangi tarix:", userHistory.getHistory()); 
+// ['Profilni tahrirladi', 'Rasmni yukladi', 'Parolni o'zgartirdi']
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+Massiv bilan ishlashda uning metodlari vaqt murakkabligini (Time Complexity) bilish kod samaradorligini oshiradi:
+
+1. **Indeks orqali element o'qish/yozish ($O(1)$):** Massivdagi istalgan elementni indeksi bo'yicha olish (masalan \`arr[500]\`) xotira manzilini darhol hisoblagani sababli doimiy vaqt oladi.
+2. **Push/Pop ($O(1)$ amortizatsiyalangan):** Massiv oxiridan element qo'shish yoki olish eng tezkor operatsiyalardir. V8 massiv uchun xotirada biroz qo'shimcha joy ajratib qo'ygani uchun ko'pincha bu amal zudlik bilan bajariladi.
+3. **Shift/Unshift ($O(N)$):** Har safar massiv boshiga element qo'shilganda yoki olib tashlanganda, barcha $N$ ta element indekslari qayta yozilishi kerak. Bu massiv hajmi kattalashgan sari samarasiz bo'ladi.
+4. **Splice ($O(N)$):** Element o'chirilgan yoki qo'shilgan joydan boshlab undan keyingi barcha elementlar siljitilishi kerak bo'ladi.
+5. **Includes/IndexOf ($O(N)$):** Elementni topish uchun massiv boshidan oxirigacha qidirib chiqiladi (Chiziqli qidiruv - Linear Search), shuning uchun eng yomon holatda butun massiv aylanib chiqiladi.
+
+> [!TIP]
+> Agar dasturda tez-tez massiv boshidan ma'lumot qo'shish va o'chirish kerak bo'lsa, massiv o'rniga **Double-ended Queue (Deq)** yoki **Linked List (Bog'langan ro'yxat)** ma'lumotlar strukturasidan foydalanish tavsiya etiladi.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Metod | Nima qiladi? | Asl massivni o'zgartiradimi? (Mutation) | Qaytargan qiymati | Vaqt murakkabligi (Big O) |
+| :--- | :--- | :--- | :--- | :--- |
+| **\`push(el)\`** | Oxiriga element qo'shadi | **Ha** | Yangi massiv uzunligi (\`length\`) | $O(1)$ |
+| **\`pop()\`** | Oxiridan elementni o'chiradi | **Ha** | O'chirilgan element qiymati | $O(1)$ |
+| **\`unshift(el)\`** | Boshiga element qo'shadi | **Ha** | Yangi massiv uzunligi (\`length\`) | $O(N)$ |
+| **\`shift()\`** | Boshidan elementni o'chiradi | **Ha** | O'chirilgan element qiymati | $O(N)$ |
+| **\`slice(start, end)\`**| Massiv qismidan nusxa oladi | Yo'q | Yangi massiv nusxasi | $O(N)$ |
+| **\`splice(start, count, ...items)\`** | Elementlarni o'chiradi/qo'shadi | **Ha** | O'chirilgan elementlar massivi | $O(N)$ |
+| **\`indexOf(el)\`** | Element indeksini qidiradi | Yo'q | Element indeksi yoki \`-1\` | $O(N)$ |
+| **\`includes(el)\`** | Element borligini tekshiradi | Yo'q | Mantiqiy qiymat (\`true\`/\`false\`) | $O(N)$ |
+| **\`concat(arr2)\`** | Massivlarni birlashtiradi | Yo'q | Yangi birlashgan massiv | $O(N + M)$ |
+| **\`join(separator)\`** | Massivni satrga (string) o'tkazadi | Yo'q | Yig'ilgan satr (string) | $O(N)$ |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Massiv yaratish",
-      instruction: "3 ta hayvon nomidan iborat 'animals' massivini yarating.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "const animals = ['Ayiq', 'Bo\\'ri', 'Tulki'];",
-      test: "if (code.includes('animals') && code.includes('[')) return null; return 'animals nomli massiv yarating';"
-    },
-    {
-      id: 2,
-      title: "Element qo'shish",
-      instruction: "Berilgan 'colors' massiviga 'Sariq' rangini oxiridan qo'shing.",
-      startingCode: "const colors = ['Qizil', 'Ko\\'k'];\n// Bu yerga yozing\n",
-      hint: "colors.push('Sariq');",
-      test: "if (colors.includes('Sariq')) return null; return 'push ishlatib qo\\'shing';"
-    },
-    {
-      id: 3,
-      title: "Uzunlikni topish",
-      instruction: "Massiv uzunligini 'len' o'zgaruvchisiga saqlang.",
-      startingCode: "const items = [1, 2, 3, 4, 5];\n// Bu yerga yozing\n",
-      hint: "const len = items.length;",
-      test: "if (code.includes('.length')) return null; return 'length xususiyatidan foydalaning';"
-    },
-    {
-      id: 4,
-      title: "Boshidan o'chirish",
-      instruction: "Berilgan 'fruits' massivining birinchi elementini shift() orqali o'chiring va o'chirilgan qiymatni 'removed' o'zgaruvchisiga saqlang.",
-      startingCode: "const fruits = ['Olma', 'Banan'];\n// Bu yerga yozing\n",
-      hint: "const removed = fruits.shift();",
-      test: "if (code.includes('shift') && code.includes('removed')) return null; return 'shift() orqali birinchi elementni o\\'chiring va removed ga saqlang';"
-    },
-    {
-      id: 5,
-      title: "Boshiga qo'shish",
-      instruction: "Berilgan 'numbers' massivining boshiga 1 sonini unshift() orqali qo'shing.",
-      startingCode: "const numbers = [2, 3];\n// Bu yerga yozing\n",
-      hint: "numbers.unshift(1);",
-      test: "if (code.includes('unshift(1)')) return null; return 'unshift(1) orqali boshiga 1 qo\\'shing';"
-    },
-    {
-      id: 6,
-      title: "Oxiridan o'chirish",
-      instruction: "Berilgan 'list' massivining oxirgi elementini pop() orqali o'chiring va o'chirilgan qiymatni 'lastItem' o'zgaruvchisiga saqlang.",
-      startingCode: "const list = [10, 20, 30];\n// Bu yerga yozing\n",
-      hint: "const lastItem = list.pop();",
-      test: "if (code.includes('pop') && code.includes('lastItem')) return null; return 'pop() orqali oxirgi elementni o\\'chiring va lastItem ga saqlang';"
-    },
-    {
-      id: 7,
-      title: "Element borligini tekshirish",
-      instruction: "includes() orqali 'basket' massivida 'Nok' borligini tekshiring va natijani 'hasPear' o'zgaruvchisiga saqlang.",
-      startingCode: "const basket = ['Olma', 'Uzum', 'Nok'];\n// Bu yerga yozing\n",
-      hint: "const hasPear = basket.includes('Nok');",
-      test: "if (code.includes('includes') && code.includes('hasPear')) return null; return 'includes(\\'Nok\\') dan foydalanib hasPear ga saqlang';"
-    },
-    {
-      id: 8,
-      title: "Element indeksini topish",
-      instruction: "indexOf() orqali 'tech' massividagi 'JS' elementining indeksini aniqlab 'index' o'zgaruvchisiga saqlang.",
-      startingCode: "const tech = ['HTML', 'CSS', 'JS'];\n// Bu yerga yozing\n",
-      hint: "const index = tech.indexOf('JS');",
-      test: "if (code.includes('indexOf') && code.includes('index')) return null; return 'indexOf(\\'JS\\') dan foydalanib index ga saqlang';"
-    },
-    {
-      id: 9,
-      title: "Massivni teskari qilish",
-      instruction: "reverse() orqali 'letters' massivini teskari tartibga o'giring.",
-      startingCode: "const letters = ['a', 'b', 'c'];\n// Bu yerga yozing\n",
-      hint: "letters.reverse();",
-      test: "if (code.includes('reverse()')) return null; return 'reverse() metodini chaqiring';"
-    },
-    {
-      id: 10,
-      title: "Splice orqali o'chirish",
-      instruction: "splice() yordamida 'values' massividan 1-indeksdagi elementni (2 sonini) o'chiring.",
-      startingCode: "const values = [1, 2, 3];\n// Bu yerga yozing\n",
-      hint: "values.splice(1, 1);",
-      test: "if (code.includes('splice(1, 1)') || code.includes('splice(1,1)')) return null; return 'splice(1, 1) orqali 1-indeksdagi elementni o\\'chiring';"
-    },
-    {
-      id: 11,
-      title: "Massivlarni birlashtirish",
-      instruction: "concat() yordamida 'a' va 'b' massivlarini birlashtirib 'combined' o'zgaruvchisiga saqlang.",
-      startingCode: "const a = [1, 2];\nconst b = [3, 4];\n// Bu yerga yozing\n",
-      hint: "const combined = a.concat(b);",
-      test: "if (code.includes('concat') && code.includes('combined')) return null; return 'concat orqali massivlarni birlashtiring';"
-    },
-    {
-      id: 12,
-      title: "Join orqali matn qilish",
-      instruction: "join() metodi yordamida 'parts' massividagi harflarni '-' belgisi orqali birlashtirib 'joined' o'zgaruvchisiga saqlang.",
-      startingCode: "const parts = ['a', 'b', 'c'];\n// Bu yerga yozing\n",
-      hint: "const joined = parts.join('-');",
-      test: "if (code.includes('join') && code.includes('-') && code.includes('joined')) return null; return 'join(\\'-\\') orqali joined o\\'zgaruvchisiga saqlang';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Navbat (Queue) Simulyatsiyasi",
+    "instruction": "Massivni boshqaruvchi `manageQueue(arr, element)` funksiyasini yozing. Funksiya berilgan `arr` massivining oxiriga `element`ni qo'shishi, so'ngra massivning birinchi elementini o'chirib, o'sha o'chirilgan elementni qaytarishi kerak (massiv o'zgarishi kerak).",
+    "startingCode": "function manageQueue(arr, element) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "push yordamida elementni oxiriga qo'shing, shift yordamida birinchi elementni o'chiring va uni return qiling.",
+    "test": "const sandbox = new Function(code + '; return manageQueue;');\nconst fn = sandbox();\nconst testArr = [1, 2, 3];\nconst removed = fn(testArr, 4);\nif (removed !== 1) return 'manageQueue birinchi elementni to\\'g\\'ri o\\'chirmadi yoki qaytarmadi';\nif (testArr.length !== 3 || testArr[0] !== 2 || testArr[2] !== 4) return 'manageQueue elementni oxiriga qo\\'shmadi yoki massiv tarkibini to\\'g\\'ri o\\'zgartirmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Massivdan nusxa olish va kesish",
+    "instruction": "Berilgan massivning boshidan va oxiridan ma'lum miqdordagi elementlarni olib tashlab, o'rtadagi qismidan nusxa qaytaruvchi `getMiddlePart(arr, startCount, endCount)` funksiyasini yozing. Masalan: `getMiddlePart([1, 2, 3, 4, 5], 1, 1)` chaqirilganda boshidan 1 ta, oxiridan 1 ta element olib tashlanadi va `[2, 3, 4]` qaytariladi. Asl massiv o'zgarmasligi shart.",
+    "startingCode": "function getMiddlePart(arr, startCount, endCount) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "slice metodidan foydalaning. Slice asl massivni o'zgartirmaydi. arr.slice(startCount, arr.length - endCount) deb yozishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return getMiddlePart;');\nconst fn = sandbox();\nconst original = [10, 20, 30, 40, 50, 60];\nconst result = fn(original, 2, 1);\nif (original.length !== 6) return 'Asl massiv o\\'zgarmasligi kerak';\nif (!Array.isArray(result) || result.length !== 3 || result[0] !== 30 || result[2] !== 50) return 'getMiddlePart o\\'rtadagi elementlarni to\\'g\\'ri qaytarmadi. Kutilgan: [30, 40, 50], olingan: ' + JSON.stringify(result);\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Elementni almashtirish (Splice)",
+    "instruction": "Berilgan `arr` massivida `oldVal` qiymatini izlab toping va uning birinchi uchragan indeksida uni o'chirib, o'rniga `newVal`ni joylashtiradigan `replaceElement(arr, oldVal, newVal)` funksiyasini yozing. Agar `oldVal` topilmasa, massiv o'zgarmasin. Funksiya o'zgartirilgan massivni qaytarsin (massiv joyida (in-place) o'zgarishi kerak).",
+    "startingCode": "function replaceElement(arr, oldVal, newVal) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "indexOf orqali element indeksini toping. Agar indeks -1dan farqli bo'lsa, splice(index, 1, newVal) yordamida uni almashtiring va massivni qaytaring.",
+    "test": "const sandbox = new Function(code + '; return replaceElement;');\nconst fn = sandbox();\nconst testArr = ['olma', 'anor', 'behi'];\nconst result = fn(testArr, 'anor', 'shaftoli');\nif (testArr !== result) return 'replaceElement funksiyasi o\\'zgartirilgan asl massivni qaytarishi kerak';\nif (testArr[1] !== 'shaftoli' || testArr.length !== 3) return 'replaceElement qiymatni to\\'g\\'ri almashtirmadi';\nconst notFound = fn(testArr, 'anjir', 'olxo\\'ri');\nif (notFound.length !== 3 || notFound[1] !== 'shaftoli') return 'Topilmagan element bo\\'lsa massiv o\\'zgarmasligi kerak';\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "JavaScript-da massiv (array) elementlari indekslanishi qaysi sondan boshlanadi va oxirgi elementning indeksi qanday topiladi?",
-      options: [
-        "1 dan boshlanadi; oxirgi element indeksi `length` ga teng",
-        "0 dan boshlanadi; oxirgi element indeksi `length - 1` ga teng (chunki birinchi element 0-indeksda turadi)",
-        "0 dan boshlanadi; oxirgi element indeksi `length` ga teng",
-        "1 dan boshlanadi; oxirgi element indeksi `length - 1` ga teng"
-      ],
-      correctAnswer: 1,
-      explanation: "Sanoq noldan (0) boshlangani sababli, `N` ta elementdan iborat massivning oxirgi elementi `N - 1`-indeksda joylashgan bo'ladi. Masalan, 3 ta elementli massivda oxirgi element indeksi 2 bo'ladi."
-    },
-    {
-      id: 2,
-      question: "Quyidagi metodlardan qaysi biri massivning boshiga (birinchi o'ringa) yangi element qo'shadi?",
-      options: [
-        "`push()`",
-        "`unshift()` (boshiga qo'shish uchun, `push` esa oxiriga qo'shish uchun ishlatiladi)",
-        "`pop()`",
-        "`shift()`"
-      ],
-      correctAnswer: 1,
-      explanation: "`unshift()` metodi massiv boshiga elementlar qo'shadi va yangi uzunlikni qaytaradi. `push()` esa oxiriga qo'shasi. `shift()` va `pop()` o'chirish uchun."
-    },
-    {
-      id: 3,
-      question: "Massivdan muayyan qiymatga ega elementning indeksini topmoqchisiz. Agar u element massivda mavjud bo'lmasa, `indexOf()` metodi qanday qiymat qaytaradi?",
-      options: [
-        "`null`",
-        "`undefined`",
-        "`-1` (har doim izlanayotgan qiymat massivda topilmaganda -1 qaytadi)",
-        "`false`"
-      ],
-      correctAnswer: 2,
-      explanation: "`indexOf()` metodi qidirilayotgan element massiv ichida yo'q bo'lsa, har doim `-1` sonini qaytaradi."
-    },
-    {
-      id: 4,
-      question: "`const` kalit so'zi yozilgan massiv bilan ishlash bo'yicha qaysi qoida to'g'ri?",
-      options: [
-        "Massiv ichidagi elementlarni umuman o'zgartirib bo'lmaydi (o'qishgina mumkin)",
-        "Massiv elementlarini push, pop yoki indeks orqali o'zgartirish mumkin, lekin o'zgaruvchining o'ziga butunlay boshqa yangi massivni qayta biriktirib (reassign) bo'lmaydi",
-        "Massiv uzunligini o'zgartirib bo'lmaydi",
-        "Hech qanday cheklov yo'q, xuddi let kabi ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "`const` massivning xotiradagi manzilini (reference) o'zgarmas qiladi. Ammo uning ichidagi ma'lumotlarni o'zgartirish (mutatsiya) taqiqlanmaydi."
-    },
-    {
-      id: 5,
-      question: "Massiv elementlarini bitta satrga (string) birlashtirish va har bir element o'rtasida ma'lum bir ajratuvchi belgi (separator) qo'yish uchun qaysi metod ishlatiladi?",
-      options: [
-        "`concat()`",
-        "`join()` (masalan: `['a', 'b'].join('-')` natijasi `\"a-b\"` bo'ladi)",
-        "`split()`",
-        "`slice()`"
-      ],
-      correctAnswer: 1,
-      explanation: "`join()` metodi barcha elementlarni birlashtirib, bitta string yaratadi. Qavs ichida ajratuvchi belgi berilishi mumkin (agar berilmasa, vergul `,` ishlatiladi)."
-    },
-    {
-      id: 6,
-      question: "Quyidagi metodlardan qaysi biri massivning birinchi elementini o'chiradi va o'chirilgan elementni qaytaradi?",
-      options: [
-        "`pop()`",
-        "`shift()` (massiv boshidan o'chirish uchun)",
-        "`unshift()`",
-        "`splice()`"
-      ],
-      correctAnswer: 1,
-      explanation: "`shift()` metodi massivning birinchi elementini o'chiradi va qolgan elementlarning indeksini bittaga kamaytiradi."
-    },
-    {
-      id: 7,
-      question: "Quyidagi metodlardan qaysi biri massivning oxirgi elementini o'chiradi?",
-      options: [
-        "`shift()`",
-        "`pop()` (massiv oxiridan o'chirish uchun)",
-        "`push()`",
-        "`splice()`"
-      ],
-      correctAnswer: 1,
-      explanation: "`pop()` metodi massivning eng oxirgi elementini olib tashlaydi va o'chirilgan qiymatni qaytaradi."
-    },
-    {
-      id: 8,
-      question: "Massivdan elementlarni o'chirish, almashtirish yoki yangi elementlarni istalgan joyga qo'shish uchun qaysi universal metod ishlatiladi?",
-      options: [
-        "`slice()`",
-        "`splice()` (massiv tarkibini o'zgartirish uchun universal metod)",
-        "`concat()`",
-        "`join()`"
-      ],
-      correctAnswer: 1,
-      explanation: "`splice()` metodi juda universal bo'lib, uning yordamida massivning istalgan joyidan elementlarni o'chirish, almashtirish yoki yangilarini qo'shish mumkin."
-    },
-    {
-      id: 9,
-      question: "Massiv elementlarining tartibini teskari (reverse) qilib qo'yadigan metod qaysi?",
-      options: [
-        "`sort()`",
-        "`reverse()` (elementlarni teskari tartibda joylashtiradi va asl massivni o'zgartiradi)",
-        "`split()`",
-        "`join()`"
-      ],
-      correctAnswer: 1,
-      explanation: "`reverse()` metodi massivdagi elementlar tartibini teskari qiladi va bu metod asl massivni mutatsiyaga uchratadi (o'zgartiradi)."
-    },
-    {
-      id: 10,
-      question: "`includes()` metodi massivda izlanayotgan element topilmasa qanday qiymat qaytaradi?",
-      options: [
-        "`-1`",
-        "`false` (chunki includes faqat boolean qiymat qaytaradi)",
-        "`null`",
-        "`undefined`"
-      ],
-      correctAnswer: 1,
-      explanation: "`includes()` metodi massivda muayyan element bor yoki yo'qligini tekshirib, faqat `true` yoki `false` (boolean) qiymat qaytaradi."
-    },
-    {
-      id: 11,
-      question: "Ikkita massivni birlashtirib, yangi massiv yaratish uchun qaysi metod ishlatiladi?",
-      options: [
-        "`join()`",
-        "`push()`",
-        "`concat()` (ikki massivni birlashtirib yangi massiv qaytaradi)",
-        "`splice()`"
-      ],
-      correctAnswer: 2,
-      explanation: "`concat()` metodi joriy massivga boshqa massiv yoki qiymatlarni qo'shib, yangi massiv qaytaradi va asl massivlarni o'zgartirmaydi."
-    },
-    {
-      id: 12,
-      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst a = [1, 2, 3];\nconsole.log(a[5]);\n```",
-      options: [
-        "IndexOutOfBoundsException xatosi yuz beradi",
-        "undefined (chunki massivda 5-indeksda hech qanday element yo'q)",
-        "null",
-        "0"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScript-da massiv chegarasidan tashqaridagi indeksga murojaat qilinganda xatolik yuz bermaydi, balki `undefined` qiymati qaytariladi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "JavaScript-da massiv (array) yaratishning eng keng tarqalgan va tavsiya etilgan usuli qaysi?",
+    "options": [
+      "let arr = {};",
+      "let arr = [];",
+      "let arr = new Map();",
+      "let arr = \"1, 2, 3\";"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kvadrat qavslar `[]` massiv literalini ifodalaydi va u massiv yaratishning eng oddiy, tezkor va o'qilishi oson usulidir."
+  },
+  {
+    "id": 2,
+    "question": "Massivning oxiriga bitta yoki bir nechta element qo'shuvchi va massivning yangi uzunligini qaytaruvchi metod qaysi?",
+    "options": [
+      ".pop()",
+      ".shift()",
+      ".push()",
+      ".unshift()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`.push()` metodi massivning oxiriga yangi elementlarni qo'shadi va natijada massivning yangilangan `length` (uzunlik) qiymatini qaytaradi."
+  },
+  {
+    "id": 3,
+    "question": "Massiv boshidan birinchi elementni olib tashlaydigan va o'sha elementni qaytaradigan metod qaysi?",
+    "options": [
+      ".shift()",
+      ".unshift()",
+      ".pop()",
+      ".splice()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`.shift()` massivning birinchi (0-indeksdagi) elementini o'chiradi va o'sha o'chirilgan qiymatni qaytaradi. Qolgan elementlarning indekslari bittaga kamayadi (oldinga suriladi)."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilgandan keyin `fruits.length` qiymati nechaga teng bo'ladi?\n```javascript\nconst fruits = ['Apple', 'Banana'];\nfruits[5] = 'Orange';\n```",
+    "options": [
+      "3",
+      "5",
+      "6",
+      "undefined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-da massiv indekslari uzluksiz bo'lishi shart emas. Agar mavjud bo'lmagan yuqori indeksga (masalan, 5-indeksga) qiymat biriktirilsa, massiv uzunligi (length) eng katta indeks + 1 (ya'ni 5 + 1 = 6) bo'ladi. O'rtadagi 2, 3 va 4-indekslar bo'shliq bo'lib qoladi."
+  },
+  {
+    "id": 5,
+    "question": "Massivdan uning asl qiymatlarini o'zgartirmasdan nusxa olish (shallow copy) uchun qaysi metoddan foydalaniladi?",
+    "options": [
+      "arr.splice()",
+      "arr.slice()",
+      "arr.push()",
+      "arr.shift()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`arr.slice()` (hech qanday argumentsiz chaqirilganda) butun massivni nusxalab, yangi massiv qaytaradi va asl massivga zarar yetkazmaydi. `splice` esa asl massivni o'zgartiradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilsa konsolga nima chiqadi?\n```javascript\nconst arr = [10, 20, 30, 40];\narr.length = 2;\nconsole.log(arr);\n```",
+    "options": [
+      "[10, 20, 30, 40]",
+      "[10, 20]",
+      "[30, 40]",
+      "[10, 20, undefined, undefined]"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massivning `length` xossasini kichikroq songa o'zgartirish massivni o'sha uzunlikkacha qisqartiradi (kesib tashlaydi) va o'chirilgan elementlar massivdan butunlay yo'qoladi."
+  },
+  {
+    "id": 7,
+    "question": "Massiv tarkibida ma'lum bir qiymat bor yoki yo'qligini tekshirib, true yoki false qaytaruvchi eng qulay metod qaysi?",
+    "options": [
+      ".indexOf()",
+      ".includes()",
+      ".find()",
+      ".some()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`.includes()` metodi berilgan element massivda mavjud bo'lsa `true`, aks holda `false` qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "`delete arr[0]` va `arr.shift()` amallarining farqi nimada?",
+    "options": [
+      "Ikkalasi ham mutlaqo bir xil vazifani bajaradi",
+      "`delete arr[0]` element qiymatini o'chirib, o'rnida bo'shliq (empty slot) qoldiradi va uzunlikni o'zgartirmaydi; `arr.shift()` esa elementni o'chirib, qolganlarini oldinga suradi va uzunlikni kamaytiradi.",
+      "`arr.shift()` xotiradan butun massivni o'chirib yuboradi",
+      "`delete` faqat satrli (string) massivlarda ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`delete` operatori elementni o'chiradi, lekin massiv elementlari o'rnini surmaydi, natijada massivda bo'sh joy qolib uzunlik o'zgarmaydi. `.shift()` esa haqiqatda elementni o'chirib, massiv uzunligini kamaytiradi va qolgan elementlarni chapga siljitadi."
+  },
+  {
+    "id": 9,
+    "question": "Nima uchun `unshift()` metodi `push()` metodiga qaraganda ancha sekinroq (kamroq samarali) ishlaydi?",
+    "options": [
+      "Chunki `unshift()` massiv oxirigacha borib element qo'shadi",
+      "Chunki `unshift()` massiv boshiga element qo'shgandan keyin, qolgan barcha elementlarning indekslarini bittaga oshirib (siljitib) chiqishi kerak ($O(N)$)",
+      "JavaScript dvigateli `unshift` metodini faqat asinxron bajaradi",
+      "Metodlar tezligida hech qanday farq yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`push()` massiv oxiriga element qo'shadi va boshqa elementlar indeksiga ta'sir qilmaydi ($O(1)$). `unshift()` esa elementni boshiga joylagani uchun massivdagi qolgan barcha elementlarni bitta indeks o'ngga surishga majbur qiladi, bu esa $O(N)$ vaqt oladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi taqqoslash natijasi nima bo'ladi?\n```javascript\nconst a = [1, 2];\nconst b = [1, 2];\nconsole.log(a === b);\n```",
+    "options": [
+      "true",
+      "false",
+      "TypeError",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massivlar reference (havola) turi bo'lgani uchun ularni taqqoslashda qiymatlari emas, balki ularning xotiradagi manzili solishtiriladi. `a` va `b` alohida massivlar bo'lganligi sababli ularning xotiradagi manzillari har xil va natija `false` bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod bajarilgandan keyin `arr` massivining holati qanday bo'ladi?\n```javascript\nconst arr = [1, 2, 3];\narr.splice(1, 1, 'a', 'b');\n```",
+    "options": [
+      "[1, 'a', 'b', 3]",
+      "[1, 'a', 3]",
+      "[1, 2, 'a', 'b', 3]",
+      "['a', 'b', 2, 3]"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`arr.splice(1, 1, 'a', 'b')` 1-indeksdan boshlab 1 ta elementni (ya'ni `2`ni) o'chiradi va o'rniga `'a'` va `'b'` elementlarini qo'shadi. Natijada massiv `[1, 'a', 'b', 3]` holatiga keladi."
+  },
+  {
+    "id": 12,
+    "question": "JavaScript massivlarida har xil turdagi (masalan, son, satr, obyekt) ma'lumotlarni aralashtirib saqlash mumkinmi?",
+    "options": [
+      "Yo'q, massiv elementlari faqat bir xil turda bo'lishi shart",
+      "Ha, bitta massiv ichida sonlar, satrlar, obyektlar va hatto boshqa massivlarni ham aralashtirib saqlash mumkin",
+      "Faqat sonlar va booleanlarni aralashtirish mumkin",
+      "Faqat obyektlarni saqlab bo'lmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript dinamik tipli til bo'lgani sababli uning massivlari heterogen (aralash) bo'la oladi. Ya'ni bitta massiv tarkibida turli xil ma'lumot turlarini bemalol birga saqlash mumkin."
+  }
+]
+
 };

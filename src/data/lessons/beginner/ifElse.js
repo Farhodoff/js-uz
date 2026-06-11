@@ -1,338 +1,496 @@
 export const ifElseLesson = {
-  id: "if-else",
-  title: "Shartli Operatorlar: if...else va switch",
-  level: "Beginner",
-  description: "JavaScript-da shartlar bilan ishlash, tarmoqlanuvchi algoritmlar, if-else, switch va ternary operatorlar.",
-  theory: `## 1. NEGA kerak?
-Shartlarsiz dastur shunchaki ketma-ket buyruqlar to'plami bo'lib qoladi. Shartlar esa dasturni "aqlli" qiladi, u vaziyatga qarab o'z qarorlarini va bajaradigan kod bloklarini o'zgartiradi. Masalan, foydalanuvchi tizimga kirgan bo'lsa shaxsiy profilni, aks holda login sahifasini ko'rsatish shartlar orqali amalga oshiriladi.
+  id: "ifElseLesson",
+  title: "Shart Operatorlari: if, else",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-## 2. SODDALIK (Analogiya)
-Buni hayotiy svetofor qoidasiga o'xshatish mumkin:
-- **Agar (if)** chiroq yashil bo'lsa — yur.
-- **Aks holda, agar (else if)** sariq bo'lsa — tayyorlan.
-- **Aks holda (else)** — to'xta.
+### Shart Operatorlari nima?
+Dasturlashda ko'pincha ma'lum bir sharoitga qarab turli xil harakatlarni amalga oshirish kerak bo'ladi. JavaScript-da buni amalga oshirish uchun **shart operatorlari (\`if\`, \`else if\`, \`else\`)** ishlatiladi. Ular kompyuterga: "Agar mana bu shart to'g'ri bo'lsa, bu ishni qil, aks holda boshqa ishni bajar" degan ko'rsatmani beradi.
 
-## 3. STRUKTURA
+### Real hayotiy analogiya
+Tasavvur qiling, siz **ertalab ko'chaga chiqmoqchisiz**:
+* **\`if\` (Agar):** Ob-havo yomg'irli bo'lsa, soyabon olasiz (\`if (yomg'ir) { soyabon_ol() }\`).
+* **\`else if\` (Yoki bo'lmasa):** Yomg'ir yog'mayotgan bo'lsa-yu, lekin qor bo'lsa, issiq kiyinasiz (\`else if (qor) { issiq_kiyin() }\`).
+* **\`else\` (Aks holda):** Agar yuqoridagilarning hech biri bo'lmasa (masalan, havo shunchaki quyoshli bo'lsa), oddiy kiyimda chiqaverasiz (\`else { oddiy_chiq() }\`).
 
-### A. if...else
-Eng ko'p ishlatiladigan mantiqiy tarmoqlanish:
+---
+
+## 2. 💻 Real Kod Misollari
+
+### 1. Basic Example (Oddiy \`if-else\` tekshiruvi)
+Foydalanuvchining yoshiga qarab kirish ruxsatini tekshirish:
 \`\`\`javascript
-let yosh = 20;
-if (yosh >= 18) {
-  console.log("Ruxsat berildi ✅");
+const age = 19;
+
+if (age >= 18) {
+  console.log("Xush kelibsiz! Tizimga kirishga ruxsat berildi.");
 } else {
-  console.log("Ruxsat yo'q ❌");
+  console.log("Kechirasiz, tizimga kirish uchun yoshingiz yetarli emas.");
 }
 \`\`\`
 
-### B. switch (Tanlov operatori)
-Bitta o'zgaruvchini ko'p aniq qiymatlarga solishtirish kerak bo'lsa, ketma-ket \`if else\` yozishdan ko'ra \`switch\` qulayroq. Solishtirish qat'iy tenglik (\`===\`) orqali bajariladi:
+### 2. Intermediate Example (Bir nechta shartlar: \`else if\`)
+Talabaning bahosini foiziga qarab aniqlash:
 \`\`\`javascript
-let kun = "Dushanba";
-switch (kun) {
-  case "Dushanba":
-    console.log("Ish kuni");
-    break;
-  case "Yakshanba":
-    console.log("Dam olish kuni");
-    break;
-  default:
-    console.log("Oddiy kun");
+const score = 85;
+
+if (score >= 90) {
+  console.log("Sizning bahongiz: A");
+} else if (score >= 80) {
+  console.log("Sizning bahongiz: B");
+} else if (score >= 70) {
+  console.log("Sizning bahongiz: C");
+} else {
+  console.log("Siz imtihondan o'ta olmadingiz.");
 }
 \`\`\`
 
-### C. Ternary operator (Uchlik operator)
-Qisqa shartlarni bir qatorda yozish uchun:
+### 3. Advanced Example (Nested shartlar va Ternary / Short-circuit kombinatsiyasi)
+Foydalanuvchining hisobidagi mablag'ni tekshirish va xaridni amalga oshirish:
 \`\`\`javascript
-let xabar = (yosh >= 18) ? "Katta" : "Kichik";
+const user = {
+  isVIP: true,
+  balance: 150,
+  hasActiveDiscount: false
+};
+
+const price = 100;
+
+// Shartli narxni belgilash (Ternary operator)
+const finalPrice = user.isVIP ? price * 0.8 : price;
+
+if (user.balance >= finalPrice) {
+  // Nested (ichma-ich) shart
+  if (user.hasActiveDiscount) {
+    console.log("Xarid amalga oshdi va qo'shimcha bonus taqdim etildi!");
+  } else {
+    console.log("Xarid muvaffaqiyatli yakunlandi.");
+  }
+} else {
+  console.log("Hisobingizda mablag' yetarli emas.");
+}
 \`\`\`
 
-## 4. AMALIYOT (Mashqlar pastda)
+---
 
-## 5. XATOLAR (Common mistakes)
-1. **Taqqoslash o'rniga o'zlashtirish:** \`if (x = 5)\` xato! Bu \`x\`ga 5 ni yuklab yuboradi. To'g'ri ko'rinishi: \`if (x === 5)\`.
-2. **switch ichida breakni unutish:** \`break\` yozilmasa, dastur shart to'g'ri kelgan \`case\`dan keyingi barcha bloklarni ham bajarib ketadi (fall-through).
-3. **Falsy qiymatlarni unutish:** JSda faqatgina 6 ta qiymat shart ichida \`false\` beradi: \`false\`, \`0\`, \`""\` (bo'sh string), \`null\`, \`undefined\`, \`NaN\`. Qolgan barcha qiymatlar (jumladan \`[]\` va \`{}\`) \`true\` beradi.
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
 
-## 6. SAVOLLAR VA JAVOBLAR
-**1. Shartli operator nima uchun kerak?**
-Dasturga mantiq qo'shish va shartga qarab har xil kodlarni bajarish uchun.
+### Truthy va Falsy tushunchasi
+JavaScript \`if (shart)\` ichidagi ifodani baholayotganda, natijani avtomatik ravishda **Boolean** (\`true\` yoki \`false\`) turiga o'tkazadi. Bu jarayon **Type Coercion** (tur majburlash) deb ataladi.
 
-**2. else kalit so'zi nima qiladi?**
-\`if\` sharti bajarilmaganda (false bo'lganda) ishlaydigan kod blokini belgilaydi.
+Tizimda shart doimo \`false\` deb qabul qiladigan sanoqli qiymatlar mavjud, ular **Falsy qiymatlar** deyiladi:
+1. \`false\` (boolean false)
+2. \`0\` va \`-0\` (raqam nol)
+3. \`0n\` (BigInt nol)
+4. \`""\`, \`''\`, \`\\\`\` (bo'sh satr)
+5. \`null\` (qiymat mavjud emasligi)
+6. \`undefined\` (aniqlanmagan qiymat)
+7. \`NaN\` (Not-a-Number, raqam emas)
 
-**3. else if nimaga kerak?**
-Birinchi shart bajarilmaganda, boshqa bir aniq shartni tekshirish uchun.
+Qolgan barcha qiymatlar, jumladan bo'sh massiv \`[]\`, bo'sh obyekt \`{}\`, har qanday matn (hatto ichida bo'shliq bo'lsa ham \`" "\`), manfiy sonlar ham **Truthy qiymatlar** hisoblanadi va \`if\` blokini ishga tushiradi.
 
-**4. Ternary operatorining strukturasi qanday?**
-\`shart ? rost bo'lganda : yolg'on bo'lganda\` shaklida.
+---
 
-**5. Mantiqiy operatorlarni shartda qanday birlashtirish mumkin?**
-\`&&\` (VA), \`||\` (YOKI) va \`!\` (EMAS) operatorlari orqali.
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
 
-**6. switchda default qismi shartmi?**
-Majburiy emas, lekin hech bir \`case\` bajarilmagan holatni ushlash uchun tavsiya etiladi.
+### 1. Qiymat yuklash (\`=\`) bilan taqqoslash operatorini (\`===\`) adashtirish
+* **Xato:**
+  \`\`\`javascript
+  let isAdmin = false;
+  if (isAdmin = true) { // '=' ishlatildi! Bu amal har doim 'true' qaytaradi
+    console.log("Siz adminsiz."); // Bu har doim ishlaydi!
+  }
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  let isAdmin = false;
+  if (isAdmin === true) { // Yoki shunchaki if (isAdmin)
+    console.log("Siz adminsiz.");
+  }
+  \`\`\`
 
-**7. Bo'sh massiv [] shart ichida true beradimi yoki false?**
-\`true\` beradi, chunki massiv truthy obyekt hisoblanadi.
+### 2. Ortiqcha shartli nesting (Nested if-else) yaratish
+* **Xato:**
+  \`\`\`javascript
+  if (user) {
+    if (user.isLoggedIn) {
+      if (user.hasAccess) {
+        showDashboard();
+      }
+    }
+  }
+  \`\`\`
+* **To'g'ri (Guard Clauses / Mantiqiy VA yordamida optimallashtirish):**
+  \`\`\`javascript
+  if (user && user.isLoggedIn && user.hasAccess) {
+    showDashboard();
+  }
+  \`\`\`
 
-**8. switch case-larni solishtirishda qanday tenglikdan foydalanadi?**
-Qat'iy tenglik (\`===\`) operatoridan foydalanadi.
+### 3. Jingalak qavslarsiz yozilgan kodda ikkinchi buyruqni shartga bog'liq deb o'ylash
+* **Xato:**
+  \`\`\`javascript
+  let loggedIn = false;
+  if (loggedIn)
+    console.log("Tizimdasiz!");
+    showMenu(); // Qavslar yo'qligi sababli bu shartga bog'liq emas va har doim ishlaydi!
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  let loggedIn = false;
+  if (loggedIn) {
+    console.log("Tizimdasiz!");
+    showMenu();
+  }
+  \`\`\`
 
-**9. if ("") ishlaydimi?**
-Yo'q, chunki bo'sh matn - falsy qiymatdir.
+---
 
-**10. switchda break ishlatmaslikning qanday foydali tomoni bor?**
-Agar bir nechta \`case\` uchun bir xil kod ishga tushishi kerak bo'lsa, \`break\` qo'ymasdan guruhlash mumkin.
+## 5. 💬 12 ta Intervyu Savollari
 
-**11. Shart ichida yana if yozsa bo'ladimi?**
-Ha, buni "Nested if" deyiladi, lekin kod o'qilishini qiyinlashtiradi.
+### Junior level
+1. **Savol:** JavaScript-da qaysi qiymatlar \`falsy\` (noto'g'ri) deb baholanadi?
+   * **Javob:** \`false\`, \`0\`, \`-0\`, \`0n\`, \`""\` (bo'sh satr), \`null\`, \`undefined\` va \`NaN\`.
+2. **Savol:** Bo'sh massiv \`[]\` va bo'sh obyekt \`{}\` truthymi yoki falsy?
+   * **Javob:** Ikkalasi ham \`truthy\` (to'g'ri). Shart ichiga qo'yilsa, shart bajariladi.
+3. **Savol:** \`if (x === 5)\` va \`if (x = 5)\` o'rtasidagi farq nima?
+   * **Javob:** Birinchisi \`x\` ning qiymati 5 ga teng yoki teng emasligini solishtiradi. Ikkinchisi \`x\` ga 5 qiymatini yuklaydi va u har doim truthy deb baholanib, shart bajariladi.
+4. **Savol:** Ternary (uchlik) operatori nima?
+   * **Javob:** Bu \`if-else\` ning qisqacha yozilishidir. Sintaksisi: \`shart ? to'g'ri_bo'lsa : noto'g'ri_bo'lsa\`.
 
-**12. switch va if...else ning asosiy farqi nima?**
-\`if\` har qanday mantiqiy diapazonlar bilan ishlaydi, \`switch\` esa faqat aniq qiymatlar bilan ishlay oladi.
+### Middle level
+5. **Savol:** Nima uchun \`if ("0")\` sharti bajariladi?
+   * **Javob:** Chunki \`"0"\` bo'sh bo'lmagan matndir (string). Har qanday bo'sh bo'lmagan satr truthy hisoblanadi, garchi uning ichidagi belgi raqam nol bo'lsa ham.
+6. **Savol:** Guard Clause (himoya sharti) nima va u qanday foyda beradi?
+   * **Javob:** Bu funksiya boshida noto'g'ri shartlarni tekshirib, darhol funksiyani tugatish (\`return\`) usuli hisoblanadi. Bu kodning nesting (ichma-ich joylashishi) darajasini kamaytiradi.
+7. **Savol:** Short-circuit evaluation (qisqa zanjirli baholash) nima va uni shartlar o'rniga ishlatsa bo'ladimi?
+   * **Javob:** Ha. Masalan, \`isUserLoggedIn && showProfile()\` kodi \`isUserLoggedIn\` true bo'lsagina \`showProfile()\` ni chaqiradi.
+8. **Savol:** \`if-else\` zanjiri va \`switch-case\` o'rtasidagi asosiy farq nima?
+   * **Javob:** \`if-else\` har qanday mantiqiy va diapazonli shartlarni tekshira oladi. \`switch-case\` esa faqat aniq qiymatlar (literal values) ustida qat'iy tenglikni (\`===\`) tekshirish uchun qulayroqdir.
+
+### Senior level
+9. **Savol:** JavaScript dvigateli (V8 kabi) shart operatorlarini qanday optimallashtiradi?
+   * **Javob:** Dvigatel "Branch Prediction" (tarmoqni oldindan bashorat qilish) texnikasidan foydalanadi. Agar shart ko'p hollarda true bo'lsa, u kesh orqali o'sha tarmoqni tezroq bajaradi. Shuning uchun eng ko'p bajariladigan shartlarni birinchi o'ringa qo'yish maqsadga muvofiqdir.
+10. **Savol:** Quyidagi kod bajarilganda nima sodir bo'ladi va nima uchun? \`if (new Boolean(false)) { console.log("Salom"); }\`
+    * **Javob:** Ekranga "Salom" chiqadi. Chunki \`new Boolean(false)\` bu Boolean obyekti yaratadi. Har qanday obyekt (xotirada yaratilgan) truthy hisoblanadi, ichidagi qiymati false bo'lsa ham.
+11. **Savol:** Deeply nested \`if-else\` kodlarini qanday qilib refaktoring qilish mumkin?
+    * **Javob:** 1. Guard clauses qo'llash orqali; 2. Lookup Table (obyektlar xaritasi) orqali; 3. Shartlarni alohida kichik funksiyalarga bo'lish orqali.
+12. **Savol:** Mantiqiy \`||\` va \`??\` operatorlarining shart tekshirishdagi farqi nimada?
+    * **Javob:** \`||\` barcha falsy qiymatlarda default qiymatga o'tadi. \`??\` (Nullish coalescing) esa faqat \`null\` yoki \`undefined\` bo'lgandagina o'ng tomondagi qiymatni ishlatadi.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Bu bo'limda shartli tarmoqlanish (if, else if, else) oqimini vizual sxema yordamida ko'rib chiqamiz.
+
+### Shartli Oqim Diagrammasi (Flowchart)
+
+Quyidagi diagramma shartlarni tekshirish va qiymatlarni truthy/falsy bo'yicha saralash jarayonini ko'rsatadi:
+
+\`\`\`mermaid
+graph TD
+    Start["Shart Boshlanishi"] --> CheckIf{"if (shart1)"}
+    CheckIf -->|Truthy| ExecIf["if bloki kodi bajariladi"]
+    CheckIf -->|Falsy| CheckElseIf{"else if (shart2)"}
+    
+    CheckElseIf -->|Truthy| ExecElseIf["else if kodi bajariladi"]
+    CheckElseIf -->|Falsy| CheckElse{"else mavjudmi?"}
+    
+    CheckElse -->|Ha| ExecElse["else kodi bajariladi"]
+    CheckElse -->|Yo'q| Skip["Hech narsa bajarilmaydi"]
+    
+    ExecIf --> End["Keyingi kodga o'tiladi"]
+    ExecElseIf --> End
+    ExecElse --> End
+    Skip --> End
+    
+    subgraph Truthy vs Falsy Yo'li
+        Val["Qiymat (Value)"] --> Cast["Boolean ga o'tkazish"]
+        Cast --> FalsyCheck{"Qiymat: false, 0, null, undefined, NaN, bo'sh string?"}
+        FalsyCheck -->|Ha| FalsyPath["Falsy (Shart bajarilmaydi)"]
+        FalsyCheck -->|Yo'q| TruthyPath["Truthy (Shart bajariladi)"]
+    end
+\`\`\`
+
+> [!TIP]
+> Tizimda shartlarni yozayotganda, kutilmagan tiplar aralashib ketmasligi uchun har doim qat'iy tenglik (\`===\` yoki \`!==\`) operatorlaridan foydalaning. Bu mantiqiy xatolar (bug) yuzaga kelishini sezilarli darajada kamaytiradi.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Mavzu bo'yicha bilimlaringizni sinab ko'rish uchun testlardan o'ting. Testlarda shartli oqim, falsy va truthy qiymatlar, mantiqiy operatorlar kombinatsiyasi va kutilmagan tiplar solishtirilishiga oid savollar o'rin olgan. Har bir savol JavaScript-da shartlar qanday ishlashini teranroq tushunishingizga yordam beradi.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### Xarid Savatchasi va Chegirmalarni Hisoblash Tizimi
+
+Real loyihalarda shart operatorlari foydalanuvchining statusi, xarid summasi va promo-kodga qarab yakuniy to'lov miqdorini aniqlashda juda keng qo'llaniladi. Quyida sodda xarid savatchasini hisoblash kodini ko'rib chiqamiz:
+
+\`\`\`javascript
+// Foydalanuvchi va savatcha holati
+const currentCart = {
+  itemsCount: 5,
+  totalAmount: 250, // dollar
+  promoCode: "SUMMER20",
+  paymentMethod: "CARD"
+};
+
+const userAccount = {
+  isPremium: true,
+  isFirstOrder: false,
+  verifiedEmail: true
+};
+
+function calculateFinalTotal(cart, user) {
+  // 1. Guard Clause - Email tasdiqlanmagan bo'lsa xarid taqiqlanadi
+  if (!user.verifiedEmail) {
+    console.log("Xatolik: Email tasdiqlanmagan. Xarid qilish mumkin emas.");
+    return 0;
+  }
+
+  let discount = 0;
+
+  // 2. Foydalanuvchi darajasiga ko'ra chegirma (else-if zanjiri)
+  if (user.isPremium) {
+    discount += 15; // Premium a'zolarga 15% chegirma
+  } else if (user.isFirstOrder) {
+    discount += 10; // Birinchi buyurtmaga 10% chegirma
+  } else {
+    discount += 0;
+  }
+
+  // 3. Promo-kod mavjudligini tekshirish
+  if (cart.promoCode === "SUMMER20") {
+    discount += 20; // SUMMER20 kodi uchun qo'shimcha 20% chegirma
+  }
+
+  // 4. Bepul yetkazib berish shartini tekshirish
+  let shippingCost = 15;
+  if (cart.totalAmount >= 200 || user.isPremium) {
+    shippingCost = 0; // 200 dollardan oshsa yoki Premium bo'lsa yetkazib berish bepul
+  }
+
+  // Yakuniy summani hisoblash
+  const discountAmount = (cart.totalAmount * discount) / 100;
+  const finalPrice = cart.totalAmount - discountAmount + shippingCost;
+
+  return {
+    subtotal: cart.totalAmount,
+    discountPercent: discount,
+    discountAmount: discountAmount,
+    shipping: shippingCost,
+    total: finalPrice
+  };
+}
+
+const invoice = calculateFinalTotal(currentCart, userAccount);
+console.log("To'lov varaqasi:", invoice);
+// Natija:
+// { subtotal: 250, discountPercent: 35, discountAmount: 87.5, shipping: 0, total: 162.5 }
+\`\`\`
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+### 1. Guard Clauses (Dastlabki himoya shartlari)
+Ko'p joyda \`else\` ishlatmasdan, funksiya boshidayoq shartga to'g'ri kelmaydigan holatlarda \`return\` qilib chiqib ketish o'qish tezligini oshiradi va keraksiz ifodalarni hisoblashdan saqlaydi.
+
+### 2. Ko'p takrorlanuvchi shartlarni birinchi o'ringa qo'ying
+\`else if\` zanjirida eng ko'p to'g'ri keladigan shart birinchi yozilishi kerak. JS dvigateli birinchi shart bajarilsa, qolgan shartlarni ko'rib ham chiqmaydi. Bu esa operatsiyalarni tejaydi.
+
+### 3. Murakkab mantiqiy ifodalarda operatorlar ustuvorligi
+\`if (A || B)\` ifodasida \`A\` true bo'lsa, \`B\` tekshirilmaydi. Shuning uchun \`A\` qismiga sodda va tez hisoblanadigan, \`B\` qismiga esa og'irroq tekshiruvlarni qo'ying.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Shart turi / Operator | Sintaksis | Ishlash vaqti / Maqsadi | Misol |
+| :--- | :--- | :--- | :--- |
+| **\`if\`** | \`if (shart) { ... }\` | Shart to'g'ri (truthy) bo'lganda kodni bajarish uchun | \`if (x > 0) { console.log('Musbat'); }\` |
+| **\`else\`** | \`else { ... }\` | \`if\` sharti noto'g'ri (falsy) bo'lganda muqobil kodni bajarish | \`else { console.log('Manfiy yoki nol'); }\` |
+| **\`else if\`** | \`else if (shart2) { ... }\` | Birinchi shart bajarilmasa, keyingi shartni tekshirish | \`else if (x === 0) { console.log('Nol'); }\` |
+| **Ternary Operator** | \`shart ? ifoda1 : ifoda2\` | Qisqa \`if-else\` yozilishi va qiymat qaytarish | \`const status = isOk ? 'Tayyor' : 'Kuting';\` |
+| **Falsy qiymatlar** | \`false, 0, -0, 0n, "", null, undefined, NaN\` | Shart tekshirilganda har doim \`false\` ga aylanadi | \`if ("") { ... } // bajarilmaydi\` |
+| **Truthy qiymatlar** | Falsy bo'lmagan barcha boshqa qiymatlar (hatto \`[]\`, \`{}\`) | Shart tekshirilganda har doim \`true\` ga aylanadi | \`if ([]) { ... } // bajariladi\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Yoshni tekshirish",
-      instruction: "Agar 'age' 18 dan kichik bo'lsa 'Kichik', aks holda 'Katta' deb chiqaring.",
-      startingCode: "let age = 15;\n// Bu yerga yozing\n",
-      hint: "if (age < 18) { console.log('Kichik'); } else { console.log('Katta'); }",
-      test: "if (logs.includes('Kichik')) return null; return 'Xato xabar chiqyapti';"
-    },
-    {
-      id: 2,
-      title: "Switch bilan kunlar",
-      instruction: "O'zgaruvchi 'day' 1 bo'lsa 'Dushanba', 2 bo'lsa 'Seshanba' chiqaring (switch ishlatib).",
-      startingCode: "let day = 1;\n// Bu yerga yozing\n",
-      hint: "switch(day) { case 1: console.log('Dushanba'); break; case 2: console.log('Seshanba'); break; }",
-      test: "if (code.includes('switch') && logs.includes('Dushanba')) return null; return 'Switch-ni to\\'g\\'ri ishlating';"
-    },
-    {
-      id: 3,
-      title: "Ternary mashqi",
-      instruction: "Ternary operator yordamida 'a' 0 dan katta bo'lsa 'Musbat', bo'lmasa 'Manfiy' deb chiqaring.",
-      startingCode: "let a = 10;\n// Bu yerga yozing\n",
-      hint: "console.log(a > 0 ? 'Musbat' : 'Manfiy');",
-      test: "if (code.includes('?') && logs.includes('Musbat')) return null; return 'Ternary operatorni ishlating';"
-    },
-    {
-      id: 4,
-      title: "Juft yoki toq",
-      instruction: "num juft bo'lsa 'Juft', aks holda 'Toq' deb chiqaring.",
-      startingCode: "const num = 7;\n// Bu yerga yozing\n",
-      hint: "if (num % 2 === 0) { console.log('Juft'); } else { console.log('Toq'); }",
-      test: "if (logs.includes('Toq')) return null; return 'Son juft yoki toq ekanligini to\\'g\\'ri aniqlang!';"
-    },
-    {
-      id: 5,
-      title: "Bahoni aniqlash",
-      instruction: "score 90 va undan yuqori bo'lsa 'A', 80 va undan yuqori bo'lsa 'B', aks holda 'C' deb log qiling.",
-      startingCode: "const score = 85;\n// Bu yerga yozing\n",
-      hint: "if (score >= 90) { console.log('A'); } else if (score >= 80) { console.log('B'); } else { console.log('C'); }",
-      test: "if (logs.includes('B') && !logs.includes('C')) return null; return 'Baholash shartlarini tekshiring!';"
-    },
-    {
-      id: 6,
-      title: "Ternary yosh cheklovi",
-      instruction: "age 18 yoki undan katta bo'lsa yields o'zgaruvchisiga true, aks holda false qiymatini ternary orqali yuklang.",
-      startingCode: "const age = 20;\nlet yields = // Bu yerga yozing\n",
-      hint: "let yields = age >= 18 ? true : false;",
-      test: "if (yields === true && code.includes('?')) return null; return 'Ternary operator yordamida yields ga qiymat yuklang!';"
-    },
-    {
-      id: 7,
-      title: "Falsy tekshiruvi",
-      instruction: "value o'zgaruvchisi truthy bo'lsa 'Rost', aks holda 'Yolg\\'on' deb chop eting.",
-      startingCode: "const value = '';\n// Bu yerga yozing\n",
-      hint: "if (value) { console.log('Rost'); } else { console.log('Yolg\\'on'); }",
-      test: "if (logs.includes('Yolg\\'on')) return null; return 'Bo\\'sh string falsy qiymat ekanligini hisobga oling';"
-    },
-    {
-      id: 8,
-      title: "Switch fasl nomi",
-      instruction: "month o'zgaruvchisi 12, 1, 2 bo'lsa 'Qish', 3, 4, 5 bo'lsa 'Bahor' deb chiqaring.",
-      startingCode: "const month = 3;\n// Bu yerga yozing\n",
-      hint: "switch(month) { case 12: case 1: case 2: console.log('Qish'); break; case 3: case 4: case 5: console.log('Bahor'); break; }",
-      test: "if (logs.includes('Bahor') && code.includes('switch')) return null; return 'Switch orqali oylarni faslga ajrating';"
-    },
-    {
-      id: 9,
-      title: "Odd Even Ternary",
-      instruction: "res o'zgaruvchisiga x juft bo'lsa 'Even', toq bo'lsa 'Odd' matnini ternary orqali yuklang.",
-      startingCode: "const x = 12;\nlet res = // Bu yerga yozing\n",
-      hint: "let res = x % 2 === 0 ? 'Even' : 'Odd';",
-      test: "if (res === 'Even' && code.includes('?')) return null; return 'Ternary orqali Even yoki Odd yozing';"
-    },
-    {
-      id: 10,
-      title: "Qiyosiy kattalik",
-      instruction: "x va y sonlaridan qaysi biri katta bo'lsa o'shani chiqaring, teng bo'lsa 'Teng' deb log qiling.",
-      startingCode: "const x = 8, y = 8;\n// Bu yerga yozing\n",
-      hint: "if (x > y) { console.log(x); } else if (y > x) { console.log(y); } else { console.log('Teng'); }",
-      test: "if (logs.includes('Teng')) return null; return 'Tenglik holatini ham inobatga oling';"
-    },
-    {
-      id: 11,
-      title: "Login tekshiruvi",
-      instruction: "username admin bo'lsa va password 12345 bo'lsa 'Xush kelibsiz', aks holda 'Xato' deb chop eting.",
-      startingCode: "const username = 'admin', password = 'wrong';\n// Bu yerga yozing\n",
-      hint: "if (username === 'admin' && password === '12345') { console.log('Xush kelibsiz'); } else { console.log('Xato'); }",
-      test: "if (logs.includes('Xato')) return null; return 'Login parolni tekshirish shartini to\\'g\\'ri yozing';"
-    },
-    {
-      id: 12,
-      title: "Switch default holati",
-      instruction: "role o'zgaruvchisi 'admin' yoki 'user' bo'lmasa, default ravishda 'Mehmon' deb log qiluvchi switch yozing.",
-      startingCode: "const role = 'editor';\n// Bu yerga yozing\n",
-      hint: "switch(role) { case 'admin': console.log('Admin'); break; case 'user': console.log('User'); break; default: console.log('Mehmon'); }",
-      test: "if (logs.includes('Mehmon') && code.includes('default')) return null; return 'Switch default qismini yozing!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Harorat Tavsifi",
+    "instruction": "Berilgan `temp` (harorat) bo'yicha quyidagi matnlarni qaytaruvchi `getTemperatureStatus(temp)` funksiyasini yozing:\n- Agar harorat 0 dan past bo'lsa: `\"Juda sovuq\"` qaytaring;\n- Agar 0 dan 15 gacha (shu jumladan) bo'lsa: `\"Salqin\"` qaytaring;\n- Agar 16 dan 30 gacha (shu jumladan) bo'lsa: `\"Iliq\"` qaytaring;\n- Agar 30 dan yuqori bo'lsa: `\"Issiq\"` qaytaring.",
+    "startingCode": "function getTemperatureStatus(temp) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "if, else if va else operatorlaridan foydalaning. Masalan: `if (temp < 0) { return \"Juda sovuq\"; }`",
+    "test": "const sandbox = new Function(code + '; return getTemperatureStatus;');\nconst fn = sandbox();\nif (fn(-5) !== 'Juda sovuq') return 'Harorat -5 bo\\'lganda \"Juda sovuq\" qaytishi kerak';\nif (fn(10) !== 'Salqin') return 'Harorat 10 bo\\'lganda \"Salqin\" qaytishi kerak';\nif (fn(25) !== 'Iliq') return 'Harorat 25 bo\\'lganda \"Iliq\" qaytishi kerak';\nif (fn(35) !== 'Issiq') return 'Harorat 35 bo\\'lganda \"Issiq\" qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Foydalanuvchi Huquqlari",
+    "instruction": "Foydalanuvchining yoshi (`age`) va ruxsatnomasi borligi (`hasPermission` - boolean) bo'yicha tizimga kirish huquqini tekshiradigan `checkAccess(age, hasPermission)` funksiyasini yozing:\n- Agar yoshi 18 dan kichik bo'lsa, har doim `\"Taqiqlangan\"` qaytarsin.\n- Agar yoshi 18 yoki undan katta bo'lsa:\n  - Agar `hasPermission` true bo'lsa, `\"Ruxsat berildi\"` qaytarsin.\n  - Agar `hasPermission` false bo'lsa, `\"Ruxsatnoma kerak\"` qaytarsin.",
+    "startingCode": "function checkAccess(age, hasPermission) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Avval `age < 18` shartini tekshiring, so'ng `else` bloki ichida `hasPermission` ning true yoki false ekanligini if/else orqali tekshiring.",
+    "test": "const sandbox = new Function(code + '; return checkAccess;');\nconst fn = sandbox();\nif (fn(15, true) !== 'Taqiqlangan') return 'Yosh 15 va ruxsatnoma true bo\\'lganda \"Taqiqlangan\" bo\\'lsinki';\nif (fn(20, true) !== 'Ruxsat berildi') return 'Yosh 20 va ruxsatnoma true bo\\'lganda \"Ruxsat berildi\" bo\\'lsin';\nif (fn(20, false) !== 'Ruxsatnoma kerak') return 'Yosh 20 va ruxsatnoma false bo\\'lganda \"Ruxsatnoma kerak\" bo\\'lsin';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Falsy va Truthy Tekshiruvi",
+    "instruction": "Foydalanuvchi kiritgan `username` qiymatini tekshiruvchi `validateUsername(username)` funksiyasini yozing:\n- Agar `username` bo'sh satr `\"\"`, `null`, `undefined` yoki umuman kiritilmagan (ya'ni falsy qiymat) bo'lsa, `\"Noma'lum foydalanuvchi\"` matnini qaytarsin.\n- Aks holda (truthy qiymat bo'lsa), kiritilgan `username` qiymatining o'zini qaytarsin.",
+    "startingCode": "function validateUsername(username) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Oddiy `if (!username)` sharti orqali barcha falsy qiymatlarni aniqlash mumkin.",
+    "test": "const sandbox = new Function(code + '; return validateUsername;');\nconst fn = sandbox();\nif (fn('') !== 'Noma\\'lum foydalanuvchi') return 'Bo\\'sh satr uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn(null) !== 'Noma\\'lum foydalanuvchi') return 'null uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn(undefined) !== 'Noma\\'lum foydalanuvchi') return 'undefined uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn('nodir') !== 'nodir') return 'Valid username uchun uning o\\'zi qaytishi kerak';\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "JavaScript-da `if (x = 5)` yozilishi qanday natijaga olib keladi?",
-      options: [
-        "Xatolik yuz beradi",
-        "`x` o'zgaruvchisiga `5` qiymatini o'zlashtiradi va `5` truthy bo'lgani uchun shart har doim bajariladi",
-        "`x` ning qiymati `5` ga teng yoki teng emasligini solishtiradi",
-        "Hech narsa sodir bo'lmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Yagona barobar `=` o'zlashtirish operatori hisoblanadi. Shart ichida `x = 5` yozilsa, `x` ga 5 yuklanadi va shart `if (5)` ga aylanadi. 5 soni esa rost (truthy) bo'lgani uchun shart doim to'g'ri deb baholanadi."
-    },
-    {
-      id: 2,
-      question: "Quyidagilardan qaysi biri ternary (uchlik) operatorining to'g'ri sintaksisi hisoblanadi?",
-      options: [
-        "`shart ? agar rost : agar yolg'on`",
-        "`shart : agar rost ? agar yolg'on`",
-        "`if (shart) ? rost : yolg'on`",
-        "`shart ? agar rost`"
-      ],
-      correctAnswer: 0,
-      explanation: "Ternary operatori shartdan so'ng so'roq belgisi `?`, rost bo'lgandagi qiymat, keyin ikki nuqta `:` va yolg'on bo'lgandagi qiymat ko'rinishida yoziladi."
-    },
-    {
-      id: 3,
-      question: "`switch` operatorida bitta `case` bajarilgandan keyin `break` yozilmasa nima sodir bo'ladi?",
-      options: [
-        "Dastur xatolik berib to'xtaydi",
-        "Keyingi `case`larning shartlari to'g'ri yoki noto'g'ri bo'lishidan qat'iy nazar, to navbatdagi `break` uchramaguncha yoki switch tugamaguncha bajarilib ketaveradi (fall-through)",
-        "Switch avtomatik ravishda tugaydi",
-        "Faqat default qismi ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "`break` kalit so'zi switch operatoridan chiqib ketishni ta'minlaydi. U yozilmasa, kod shart bajarilgan joydan boshlab pastdagi barcha case kodlarini ketma-ket bajarib ketadi."
-    },
-    {
-      id: 4,
-      question: "Diapazonlar (masalan: `x > 10` va `x < 20`) bilan ishlashda qaysi shart operatori qulayroq va to'g'ri keladi?",
-      options: [
-        "`switch-case`",
-        "`if...else`",
-        "`while`",
-        "Bunday shartlarni tekshirib bo'lmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "`if...else` har xil diapazonlar va mantiqiy operatorlar bilan tekshirish uchun moslashuvchan. `switch` esa aniq va qat'iy qiymatlarni solishtirish uchun ishlatiladi."
-    },
-    {
-      id: 5,
-      question: "Quyidagi shart ifodasi bajarilganda nima natija chiqadi: `if (\"salom\") { console.log(\"ishladi\"); } else { console.log(\"ishlamadi\"); }`?",
-      options: [
-        "Konsolda hech narsa chiqmaydi",
-        "`\"ishladi\"` (chunki bo'sh bo'lmagan string truthy qiymat hisoblanadi)",
-        "`\"ishlamadi\"`",
-        "`TypeError` yuz beradi"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScript-da bo'sh bo'lmagan har qanday satr (string) rost (truthy) deb baholanadi, shuning uchun `if` bloki ishga tushib, konsolga `\"ishladi\"` chiqadi."
-    },
-    {
-      id: 6,
-      question: "`switch (true)` sintaksisidan nima uchun foydalaniladi?",
-      options: [
-        "Xatolik yuz beradi, bunday yozib bo'lmaydi",
-        "Switch ichida qiymatlarni emas, balki if-else kabi shartlarni va diapazonlarni tekshirish uchun",
-        "Dasturni tezlashtirish uchun",
-        "Faqat true qiymatlarini sanash uchun"
-      ],
-      correctAnswer: 1,
-      explanation: "`switch (true)` yozganda biz case qismida aniq qiymatlar emas, balki `case x > 10:` kabi mantiqiy ifodalarni yozib, ularni tekshirishimiz mumkin."
-    },
-    {
-      id: 7,
-      question: "Quyidagi qiymatlardan qaysi biri shart operatorida `true` (truthy) deb baholanadi?",
-      options: [
-        "`NaN`",
-        "`[]` (bo'sh massiv)",
-        "`\"\"` (bo'sh string)",
-        "`undefined`"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScript-da bo'sh massivlar va bo'sh obyektlar o'zgaruvchi sifatida truthy (rost) hisoblanadi. `NaN`, bo'sh string va `undefined` esa falsy hisoblanadi."
-    },
-    {
-      id: 8,
-      question: "Ternary operatorlarni zanjir (chain) shaklida ketma-ket yozish qanday nomlanadi?",
-      options: [
-        "Nested ternary (ichma-ich ternary)",
-        "Ternary loop",
-        "Double ternary",
-        "Ternary strict"
-      ],
-      correctAnswer: 0,
-      explanation: "Bir nechta ternary operatorlarni birlashtirish `condition ? value1 : condition2 ? value2 : value3` nested ternary deyiladi. Lekin kod o'qilishini qiyinlashtiradi."
-    },
-    {
-      id: 9,
-      question: "Mantiqiy short-circuit (qisqa tutashuv) `&&` operatori qanday ishlaydi?",
-      options: [
-        "Doim ikkala tomonni tekshiradi",
-        "Agar birinchi qiymat falsy bo'lsa, ikkinchi tomonni tekshirib o'tirmay darhol o'sha falsy qiymatni qaytaradi",
-        "Faqat true qiymatni qaytaradi",
-        "Xatolarni yashiradi"
-      ],
-      correctAnswer: 1,
-      explanation: "`&&` operatori birinchi qiymat false/falsy bo'lsa, keyingi shartlarni tekshirish ma'nosiz bo'lganligi uchun darhol ishlashni to'xtatadi."
-    },
-    {
-      id: 10,
-      question: "switch operatori qiymatlarni solishtirishda qaysi tenglik algoritmidan foydalanadi?",
-      options: [
-        "Loose equality (`==`)",
-        "Strict equality (`===`)",
-        "`Object.is()`",
-        "Hech qanday, u faqat stringlarni solishtiradi"
-      ],
-      correctAnswer: 1,
-      explanation: "`switch` har bir case qiymatini qat'iy tenglik (`===`) orqali solishtiradi. Ya'ni tur va qiymat mos kelishi shart."
-    },
-    {
-      id: 11,
-      question: "Quyidagi kod nimani chop etadi?\n```javascript\nlet x = 10;\nif (x > 5)\n  console.log(\"A\");\n  console.log(\"B\");\n```",
-      options: [
-        "Faqat A",
-        "Faqat B",
-        "A va B (chunki figurali qavslar qo'yilmaganligi sababli faqat birinchi log if tarkibiga kiradi, ikkinchi log esa mustaqil ravishda doimo bajariladi)",
-        "Hech narsa"
-      ],
-      correctAnswer: 2,
-      explanation: "JavaScriptda block qavslari `{}` bo'lmasa, `if` o'zidan keyingi faqat bitta satrni boshqaradi. Ikkinchi `console.log(\"B\")` shartga bog'liq bo'lmay har doim ishlaydi."
-    },
-    {
-      id: 12,
-      question: "Quyidagi ifoda nima qaytaradi?\n```javascript\nlet x = 0;\nconsole.log(x || 5);\n```",
-      options: [
-        "0",
-        "5 (chunki 0 falsy bo'lgani uchun || operatori ikkinchi qiymatni tanlaydi)",
-        "true",
-        "false"
-      ],
-      correctAnswer: 1,
-      explanation: "`||` operatori birinchi qiymat falsy bo'lsa, ikkinchi qiymatni qaytaradi. `0` falsy bo'lgani uchun `5` qaytadi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "`if` operatori JavaScript-da nima uchun ishlatiladi?",
+    "options": [
+      "Dasturni cheksiz takrorlash (sikl) yaratish uchun",
+      "Koddagi ma'lum bir qismni faqat berilgan shart to'g'ri (truthy) bo'lgandagina bajarish uchun",
+      "O'zgaruvchilar turini aniqlash uchun",
+      "Obyektlarni massivga aylantirish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`if` operatori shartni tekshiradi va u to'g'ri (truthy) bo'lsa, o'z blokidagi kodni ishga tushiradi."
+  },
+  {
+    "id": 2,
+    "question": "Qaysi kalit so'z `if` sharti noto'g'ri (falsy) bo'lganda boshqa kod blokini ishlatish uchun xizmat qiladi?",
+    "options": [
+      "`then`",
+      "`elseif`",
+      "`else`",
+      "`otherwise`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`else` kalit so'zi `if` sharti bajarilmaganda (false bo'lganda) bajariladigan muqobil kod blokini belgilaydi."
+  },
+  {
+    "id": 3,
+    "question": "Bir nechta shartlarni ketma-ket tekshirish uchun qaysi sintaksis to'g'ri hisoblanadi?",
+    "options": [
+      "`else if (shart)`",
+      "`elseif (shart)`",
+      "`else(shart)`",
+      "`if else (shart)`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JavaScript-da bir nechta shartlar ketma-ketligini yozish uchun `else if (shart)` shaklida alohida kalit so'zlardan foydalaniladi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst score = 75;\nif (score > 80) {\n  console.log('A');\n} else if (score > 60) {\n  console.log('B');\n} else {\n  console.log('C');\n}\n```",
+    "options": [
+      "`A`",
+      "`B`",
+      "`C`",
+      "Hech narsa chiqmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`score = 75` birinchi `score > 80` shartini qanoatlantirmaydi (false). Ikkinchi shart `score > 60` (75 > 60) esa to'g'ri (true), shuning uchun 'B' chiqadi."
+  },
+  {
+    "id": 5,
+    "question": "JavaScript-da quyidagi qiymatlardan qaysi biri shart tekshirilayotganda avtomatik ravishda `false` (falsy) deb baholanmaydi?",
+    "options": [
+      "`0`",
+      "`\"\"` (bo'sh satr)",
+      "`[]` (bo'sh massiv)",
+      "`undefined`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-da bo'sh massiv `[]` va bo'sh obyekt `{}` har doim `truthy` (to'g'ri) deb baholanadi. `0`, `\"\"`, `null`, `undefined` va `NaN` esa `falsy` qiymatlardir."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilganda nima chop etiladi?\n```javascript\nif (\"0\") {\n  console.log(\"Salom\");\n} else {\n  console.log(\"Xayr\");\n}\n```",
+    "options": [
+      "`\"Xayr\"`",
+      "`\"Salom\"`",
+      "`undefined`",
+      "Xatolik yuz beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`\"0\"` — bu bo'sh bo'lmagan satr (string). Har qanday bo'sh bo'lmagan satr truthy hisoblanadi, shuning uchun 'Salom' chiqadi. (Raqamli `0` falsy bo'lsa-da, string `\"0\"` truthy'dir)."
+  },
+  {
+    "id": 7,
+    "question": "Ternary (uchlik) operatori nima va u qanday yoziladi?",
+    "options": [
+      "`shart ? ifoda1 : ifoda2` ko'rinishidagi qisqa if-else yozilishi",
+      "Uchta `if` shartining birlashmasi",
+      "Faqat uchta o'zgaruvchini solishtiradigan operator",
+      "`if (shart) { else }` operatorining sinonimi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ternary operator shartni tekshiradi, agar u to'g'ri bo'lsa `?` dan keyingi birinchi ifodani, noto'g'ri bo'lsa `:` dan keyingi ikkinchi ifodani bajaradi va qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nconst age = 20;\nconst result = age >= 18 ? \"Kattalar\" : \"Bolalar\";\nconsole.log(result);\n```",
+    "options": [
+      "`\"Bolalar\"`",
+      "`\"Kattalar\"`",
+      "`true`",
+      "`undefined`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`age >= 18` (20 >= 18) sharti true bo'lgani uchun, ternary operator `?` belgisidan keyingi 'Kattalar' qiymatini qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "Qaysi holatda `if` va `else` bloklari atrofidagi jingalak qavslarni `{}` tushirib qoldirish (yozmaslik) mumkin?",
+    "options": [
+      "Hech qachon mumkin emas, qavslar majburiy",
+      "Faqat shart ichida solishtirish operatori bo'lsa",
+      "Agar blok ichida faqat bitta operator (buyruq) mavjud bo'lsa",
+      "Faqat o'zgaruvchi `let` bilan e'lon qilinganda"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Dasturchilar orasida tavsiya etilmasa-da, agar `if` yoki `else` blokida faqat bitta buyruq bo'lsa, jingalak qavslarni `{}` yozmaslik mumkin."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nlet x = 10;\nif (x = 5) {\n  console.log(\"Teng\");\n} else {\n  console.log(\"Teng emas\");\n}\n```",
+    "options": [
+      "`\"Teng emas\"`",
+      "`\"Teng\"`",
+      "Xatolik (SyntaxError) beradi",
+      "Hech narsa chiqmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`x = 5` bu solishtirish emas, qiymat yuklashdir. `x` ga 5 qiymati yuklanadi va bu ifoda `5` ni qaytaradi. `5` raqami esa `truthy` bo'lgani uchun shart bajariladi va 'Teng' deb chiqadi."
+  },
+  {
+    "id": 11,
+    "question": "Short-circuit (qisqa tutashuv) yordamida quyidagi kod blokini qanday qisqartirish mumkin?\n```javascript\nif (isLoggedIn) {\n  showDashboard();\n}\n```",
+    "options": [
+      "`isLoggedIn || showDashboard()`",
+      "`isLoggedIn && showDashboard()`",
+      "`isLoggedIn ? showDashboard()`",
+      "`isLoggedIn == showDashboard()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`&&` operatori birinchi qiymat true bo'lsagina keyingisini bajaradi. Shuning uchun `isLoggedIn && showDashboard()` ifodasi `isLoggedIn` true bo'lsa `showDashboard()` ni ishga tushiradi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst val = null;\nif (val) {\n  console.log(\"A\");\n} else if (val === null) {\n  console.log(\"B\");\n} else {\n  console.log(\"C\");\n}\n```",
+    "options": [
+      "`\"A\"`",
+      "`\"B\"`",
+      "`\"C\"`",
+      "`null`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`val` qiymati `null` bo'lgani sababli u `falsy` va birinchi `if (val)` bloki ishlamaydi. Ikkinchi shart esa qat'iy tenglikni tekshiradi (`val === null`), bu to'g'ri (true) bo'lgani uchun konsolga 'B' chiqadi."
+  }
+]
+
 };

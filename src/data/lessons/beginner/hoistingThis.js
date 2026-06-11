@@ -1,283 +1,478 @@
 export const hoistingThisLesson = {
-  id: "hoisting",
-  title: "Hoisting (Ko'tarilish)",
-  level: "Beginner",
-  description: "JavaScript kodni o'qishdan oldin nimalarni 'tepaga ko'tarib' qo'yishi haqida sirlar.",
-  theory: `
-# Hoisting – Bu nima va nima uchun kerak?
+  id: "hoistingThisLesson",
+  title: "Hoisting",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
 
-**Hoisting** (Ko'tarilish) — bu JavaScript kodni ishga tushirishdan oldin e'lon qilingan o'zgaruvchilar va funksiyalarni kodning eng tepasiga "ko'chirish" jarayonidir.
+### Hoisting nima?
+**Hoisting (Ko'tarilish)** — bu JavaScript dvigatelining (masalan, V8) kodni bajarishdan oldin uning tarkibidagi o'zgaruvchilar va funksiya e'lonlarini xotirada ro'yxatga olish jarayonidir. Kod yozilishida o'zgaruvchilar pastki qatorda e'lon qilingan bo'lsa-da, JavaScript ularni o'z doirasining (scope) eng yuqori qismiga "ko'tarilgandek" tasavvur qiladi. 
 
-## 1. NEGA kerak?
-Aslida bu JS dvigatelining (engine) ishlash tabiati bilan bog'liq. U kodni o'qishdan oldin bir marta ko'z yugurtirib chiqadi va nimalar borligini xotiraga yozib oladi. Bu bizga ba'zi funksiyalarni ular e'lon qilinishidan oldin ham ishlatish imkonini beradi.
+Muhim jihati shundaki, kodning o'zi jismonan fayl ichida yuqoriga ko'chmaydi. Shunchaki, kod bajarilishidan oldingi **kompilyatsiya fazasida** xotiradan joy ajratiladi.
 
-## 2. SODDALIK (Analogiya)
-Buni kitobning **mundarijasi** deb tasavvur qiling. Siz kitobni o'qishni boshlamasangiz ham, mundarijaga qarab qaysi mavzu qayerda ekanligini bilib olasiz. JS ham kodni o'qishdan oldin "mundarija" (xotira xaritasi) tuzib oladi.
+### Real hayotiy analogiya
+Tasavvur qiling, siz **konferensiya tashkilotchisiz**:
+* **Funksiya e'lonlari (Function Declarations) — Tayyor ma'ruzachilar:** Siz sahna orqasiga kirganingizda, ba'zi taniqli ma'ruzachilar allaqachon nutqlarining matni bilan tayyor turishibdi. Siz ularni istalgan paytda, hatto rasmiy ochilishdan oldin ham sahna olib chiqib so'zga chorlay olasiz (to'liq hoisting bo'ladi).
+* **\`var\` o'zgaruvchilari — Nomsiz stullar:** Zalda stullar qo'yilgan, lekin ularda kim o'tirishi hali yozilmagan. Ular mavjud, lekin ularga qarasangiz faqat bo'sh joyni ko'rasiz (\`undefined\` qiymatini oladi).
+* **\`let\` va \`const\` o'zgaruvchilari — Kechikayotgan maxsus mehmonlar (TDZ):** Ro'yxatda ularning ismlari bor (xotirada ro'yxatga olingan), lekin ular hali zaldagi o'z joylariga kelib o'tirishmagan. Ular o'z o'rindiqlariga kelib joylashmaguncha (e'lon qilingan qatorga yetib kelguncha) ularning nomini aytib chaqira olmaysiz. Agar chaqirsangiz, tartib qo'riqchisi sizni to'xtatadi (\`ReferenceError\` xatoligi).
 
-## 3. STRUKTURA
+---
 
-### A. var bilan Hoisting
-\`var\` tepaga ko'tariladi, lekin uning qiymati \`undefined\` bo'lib turadi:
+## 2. 💻 Real Kod Misollari
+
+### 1. Basic Example: \`var\` va \`let\` o'rtasidagi hoisting farqi
+\`var\` deklaratsiyadan oldin chaqirilganda xatolik bermaydi, \`let\` esa xatolikka sabab bo'ladi:
 \`\`\`javascript
-console.log(a); // undefined (xato bermaydi!)
-var a = 10;
+// var bilan:
+console.log(username); // undefined
+var username = "Farhod";
+console.log(username); // "Farhod"
+
+// let bilan:
+try {
+  console.log(age); // ReferenceError: Cannot access 'age' before initialization
+} catch (error) {
+  console.error(error.message);
+}
+let age = 25;
 \`\`\`
 
-### B. let va const bilan Hoisting
-Bular ham ko'tariladi, lekin ularni e'lon qilingan qatorga yetmaguncha ishlatib bo'lmaydi. Bu hudud **TDZ** (Temporal Dead Zone) deyiladi.
+### 2. Intermediate Example: Function Declaration vs Function Expression
+Function Declaration to'liq ko'tariladi, lekin o'zgaruvchiga yuklangan funksiya ifodasi (Function Expression) o'sha o'zgaruvchining turiga qarab ishlaydi:
 \`\`\`javascript
-console.log(b); // Xato! (ReferenceError)
-let b = 20;
+// 1. Function Declaration (To'liq ko'tariladi)
+sayHello(); // "Salom!" chiqadi
+
+function sayHello() {
+  console.log("Salom!");
+}
+
+// 2. Function Expression (var bilan)
+try {
+  sayGoodbye(); // TypeError: sayGoodbye is not a function
+} catch (error) {
+  console.error("Xato:", error.message); // sayGoodbye undefined bo'lgani uchun uni funksiya kabi chaqirib bo'lmaydi
+}
+
+var sayGoodbye = function() {
+  console.log("Xayr!");
+};
+
+// 3. Function Expression (const/let bilan)
+try {
+  sayGoodNight(); // ReferenceError: Cannot access 'sayGoodNight' before initialization
+} catch (error) {
+  console.error("Xato:", error.message);
+}
+
+const sayGoodNight = () => {
+  console.log("Xayrli tun!");
+};
 \`\`\`
 
-### C. Funksiya Hoisting
-Oddiy funksiyalar (declarations) to'liq ko'tariladi:
+### 3. Advanced Example: Hoisting-da Funksiya va var Ustuvorligi
+Agar bir xil nomda ham funksiya, ham \`var\` o'zgaruvchisi e'lon qilinsa, hoisting bosqichida funksiya ustuvor bo'ladi, lekin bajarilish bosqichida o'zgaruvchi qiymati uni qayta yozib yuboradi:
 \`\`\`javascript
-salom(); // "Salom!" (ishlaydi ✅)
-function salom() { console.log("Salom!"); }
+console.log(typeof test); // "function" - chunki funksiya birinchi ko'tariladi
+
+var test = "Men matnman";
+function test() {
+  return "Men funksiyaman";
+}
+
+console.log(typeof test); // "string" - chunki kod bajarilish bosqichida 'test'ga matn yuklandi
 \`\`\`
 
-## 4. AMALIYOT (Mashq)
-\`\`\`javascript
-console.log(ism); // undefined
-var ism = "Farhod";
+---
+
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+
+JavaScript dvigateli kodni ikki bosqichda bajaradi:
+1. **Kompilyatsiya fazasi (Compilation Phase):** Dvigatel kodni o'qib chiqadi va barcha deklaratsiyalarni (o'zgaruvchilar, funksiyalar, klasslar) aniqlaydi. Ular uchun xotiradan (Memory Heap) joy ajratadi va ularni mos keladigan **Leksik Muhitga (Lexical Environment)** yozadi.
+2. **Bajarilish fazasi (Execution Phase):** Kod yuqoridan pastga qarab qatorma-qator bajariladi. O'zgaruvchilarga haqiqiy qiymatlar aynan shu bosqichda yuklanadi.
+
+### Variable Environment va Lexical Environment
+* **Variable Environment:** Faqat \`var\` kalit so'zi bilan e'lon qilingan o'zgaruvchilarni saqlaydi va ularga kompilyatsiya bosqichida avtomatik ravishda \`undefined\` qiymatini biriktiradi.
+* **Lexical Environment:** \`let\`, \`const\` o'zgaruvchilar hamda klasslarni saqlaydi. Dvigatel ularni xotirada ro'yxatdan o'tkazadi, ammo ularga hech qanday qiymat biriktirmaydi (ular *uninitialized* holatda qoladi). Ular o'z e'lon qilingan qatorga yetib kelmaguncha kirish taqiqlangan hududda — **Temporal Dead Zone (TDZ)** da bo'lishadi.
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. Arrow funksiyalarni e'lon qilishdan oldin chaqirish
+Junior dasturchilar ko'pincha barcha funksiyalarni e'londan oldin chaqirish mumkin deb o'ylashadi.
+* **Noto'g'ri:**
+  \`\`\`javascript
+  const result = calculate(5); // ReferenceError!
+  const calculate = (num) => num * 2;
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  const calculate = (num) => num * 2;
+  const result = calculate(5); // To'g'ri tartib
+  \`\`\`
+
+### 2. TDZ hududida o'zgaruvchidan foydalanishga urinish
+* **Noto'g'ri:**
+  \`\`\`javascript
+  function showUser() {
+    console.log(role); // ReferenceError
+    let role = "admin";
+  }
+  showUser();
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  function showUser() {
+    let role = "admin";
+    console.log(role); // To'g'ri
+  }
+  showUser();
+  \`\`\`
+
+### 3. Tashqi o'zgaruvchini var yordamida ichkarida xatolik bilan soyalash (Shadowing Bug)
+* **Noto'g'ri:**
+  \`\`\`javascript
+  var theme = "dark";
+  function applyTheme() {
+    // Tashqi theme ishlatiladi deb o'ylaymiz, lekin pastdagi 'var theme' hoisting tufayli bu yerda undefined beradi
+    if (!theme) { 
+      console.log("Mavzu aniqlanmadi!"); // Bu ishlaydi!
+    }
+    var theme = "light";
+  }
+  applyTheme();
+  \`\`\`
+* **To'g'ri:**
+  \`\`\`javascript
+  let theme = "dark";
+  function applyTheme() {
+    // let yoki const ishlatib o'zgaruvchi nomini to'qnashishdan saqlaymiz
+    let localTheme = "light";
+    console.log(theme); // "dark" (global)
+    console.log(localTheme); // "light"
+  }
+  applyTheme();
+  \`\`\`
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior Savollar
+1. **Savol:** JavaScript-da Hoisting nima?
+   * **Javob:** Hoisting — bu JavaScript dvigateli kodni bajarishdan oldin o'zgaruvchilar va funksiya e'lonlarini xotirada ro'yxatdan o'tkazishi va ularga xotiradan joy ajratish jarayonidir.
+2. **Savol:** \`var\` va \`let\` o'rtasidagi hoisting farqi nimada?
+   * **Javob:** \`var\` hoisting bo'lganda unga \`undefined\` qiymati beriladi va e'londan oldin murojaat qilganda xato bermaydi. \`let\` esa e'londan oldin TDZ da bo'ladi va murojaat qilinganda \`ReferenceError\` beradi.
+3. **Savol:** Function Declaration va Function Expression hoisting-da qanday farq qiladi?
+   * **Javob:** Function Declaration to'liq hoist bo'ladi (tanasi bilan birga). Function Expression esa o'zgaruvchiga tenglangani uchun, u e'lon qilingan o'zgaruvchi kabi (masalan, \`var\` bo'lsa \`undefined\`, \`let\` bo'lsa TDZ) hoist bo'ladi.
+4. **Savol:** Temporal Dead Zone (TDZ) nima?
+   * **Javob:** TDZ — blokning boshlanishidan to \`let\` yoki \`const\` o'zgaruvchisi e'lon qilingan qatorgacha bo'lgan vaqt oralig'idir. Bu hududda o'zgaruvchiga kirish taqiqlanadi.
+
+### Middle Savollar
+5. **Savol:** Nima uchun quyidagi kod \`TypeError\` beradi, \`ReferenceError\` emas?
+   \`\`\`javascript
+   test();
+   var test = function() {};
+   \`\`\`
+   * **Javob:** Chunki \`var test\` hoisting bo'lib, \`undefined\` qiymatini oladi (\`ReferenceError\` chiqmaydi). So'ngra \`undefined\`ni funksiya sifatida chaqirishga harakat qilganimiz uchun \`TypeError\` xatosi yuz beradi.
+6. **Savol:** Class-lar hoisting bo'ladimi?
+   * **Javob:** Ha, klasslar ham orqada hoisting bo'ladi. Ammo ular ham \`let\` va \`const\` kabi TDZ da qoladi. E'londan oldin klassdan obyekt olishga urinsangiz, \`ReferenceError\` xatosini olasiz.
+7. **Savol:** Quyidagi kod bajarilganda konsolga nima chiqadi?
+   \`\`\`javascript
+   var a = 1;
+   function b() {
+     a = 10;
+     return;
+     function a() {}
+   }
+   b();
+   console.log(a);
+   \`\`\`
+   * **Javob:** \`1\` chiqadi. Chunki \`b\` funksiyasi ichida \`function a() {}\` hoisting bo'lib local o'zgaruvchiga aylanadi. \`a = 10\` amali local \`a\` ni o'zgartiradi. Tashqi global \`a\` esa o'zgarishsiz qoladi.
+8. **Savol:** Blok ichidagi funksiya e'lonlari (block-scoped functions) qanday ko'tariladi?
+   * **Javob:** ES6 bo'yicha blok ichidagi funksiyalar faqat o'sha blok ichida amal qiladi. Biroq eski brauzerlar va strict mode ishlatilmagan holatlarda ular blokdan tashqarida ham \`undefined\` bo'lib ko'rinishi mumkin (brauzerga bog'liq). Shuning uchun blok ichida har doim function expression ishlatish tavsiya etiladi.
+
+### Senior Savollar
+9. **Savol:** JavaScript dvigateli (V8) xotirani boshqarishda hoisting jarayonini qanday optimallashtiradi?
+   * **Javob:** V8 kompilyatsiya bosqichida barcha scope va o'zgaruvchilar joylashuvini aniqlab oladi. \`const\` o'zgaruvchilarga qiymat faqat bir marta yozilishini bilgani uchun, ularni "inline cache" va boshqa tezkor optimallashtirish usullari bilan tezroq bajaradi.
+10. **Savol:** Funksiya parametrlarida TDZ qanday yuzaga kelishi mumkin?
+    * **Javob:** Agar funksiyaning default parametrlari bir-biriga murojaat qilsa va bunda tartib buzilsa TDZ yuz beradi:
+      \`\`\`javascript
+      function foo(a = b, b = 2) {}
+      foo(); // ReferenceError: Cannot access 'b' before initialization
+      \`\`\`
+11. **Savol:** ES6 module import-lari qanday hoisting bo'ladi?
+    * **Javob:** ES6 module import-lari to'liq hoisting bo'ladi. Ular modul ichidagi har qanday kod bajarilishidan oldin yuklanadi va ishga tushadi. Shuning uchun faylning istalgan joyida \`import\` yozish mumkin, garchi qoida tariqasida eng tepada yozish lozim bo'lsa ham.
+12. **Savol:** Quyidagi kodni tahlil qiling. Nima uchun xato beradi?
+    \`\`\`javascript
+    let x = x;
+    \`\`\`
+    * **Javob:** Bu kod \`ReferenceError: Cannot access 'x' before initialization\` xatosini beradi. Chunki o'ng tomondagi \`x\` qiymati o'qilayotgan vaqtda chap tomondagi \`x\` hali to'liq e'lon qilinmagan va u TDZ ichida bo'ladi.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Amaliy topshiriqlar va mashqlar \`/Users/farhod/Desktop/github/js-uz/scratch/hoistingThisLesson_exercises.json\` faylida berilgan.
+
+### Xotira ajratilishi (Hoisting) va TDZ diagrammasi:
+
+Quyidagi diagrammada kompilyatsiya jarayonida turli e'lonlar uchun xotira ajratilishi va ularning Temporal Dead Zone (TDZ) bilan bog'liqligi ko'rsatilgan:
+
+\`\`\`mermaid
+graph TD
+    A[JavaScript Dvigateli: Kompilyatsiya Fazasi] --> B{Deklaratsiya turi qanday?}
+    B -->|var| C[var x]
+    B -->|function declaration| D[function greet()]
+    B -->|let / const| E[let y / const z]
+    
+    C --> C1[Xotiradan joy ajratiladi] --> C2[Boshlang'ich qiymat: undefined]
+    D --> D1[Xotiradan joy ajratiladi] --> D2[Funksiya tanasi to'liq yuklanadi]
+    E --> E1[Xotiradan joy ajratiladi] --> E2[Boshlang'ich qiymat: Yo'q - Uninitialized] --> E3[Temporal Dead Zone - TDZ boshlanishi]
+
+    style C2 fill:#ffeb3b,stroke:#333,stroke-width:1px
+    style D2 fill:#8bc34a,stroke:#333,stroke-width:1px
+    style E3 fill:#f44336,stroke:#333,stroke-width:1px
 \`\`\`
 
-## 5. XATOLAR (Common mistakes)
-1. **Hoistingga ishonib qolish:** Doim o'zgaruvchilarni ishlatishdan oldin e'lon qiling. Bu kodni o'qishni osonlashtiradi.
-2. **Function Expressions:** \`var x = function() {}\` ko'rinishidagi funksiyalar to'liq ko'tarilmaydi, faqat o'zgaruvchi sifatida ko'tariladi.
+---
 
-## 6. SAVOLLAR VA JAVOBLAR (12 ta)
+## 7. 📝 12 ta Mini Test
 
-**1. Hoisting nima?**
-Hoisting (Ko'tarilish) — bu JavaScript kodni ishga tushirishdan oldin e'lon qilingan o'zgaruvchilar va funksiyalarni kodning eng tepasiga "ko'chirish" jarayonidir.
+Bilimingizni sinash uchun 12 ta test savoli \`/Users/farhod/Desktop/github/js-uz/scratch/hoistingThisLesson_quizzes.json\` faylida tayyorlangan. Darsni tamomlagandan so'ng testlarni yechishni unutmang.
 
+---
 
-**2. JavaScript kodni o'qishdan oldin necha marta ko'z yugurtiradi?**
-JavaScript kodi bajarilishidan oldin 2 ta asosiy bosqichdan o'tadi: **Kompilyatsiya (Compilation)** (bu bosqichda kodga bir marta to'liq ko'z yugurtirib, scope va xotirani tayyorlaydi) va keyin **Bajarilish (Execution)** bosqichi.
+## 8. 🎯 Real Project Case Study
 
+### Kodni Strukturasi (Clean Code) va Hoisting
+Real loyihalarda hoisting dasturchilarga kodni yanada o'qishli va chiroyli tartiblashga yordam beradi.
 
-**3. var o'zgaruvchisi hoist bo'lganda qiymati nima bo'ladi?**
-\`var\` o'zgaruvchisi ko'tarilganda uning qiymati avtomatik ravishda \`undefined\` qilib sozlanadi.
+#### Stepdown Rule (Pastga qarab o'qish qoidasi)
+Clean Code (Robert Martin) kitobida yozilishicha, yuqori darajadagi mantiqiy funksiyalar faylning yuqori qismida, ularga yordam beruvchi kichik funksiyalar (utility helpers) esa pastda bo'lishi kerak. Bu kitobxon kabi kodni yuqoridan pastga oson o'qish imkonini beradi. Function declaration hoisting bizga aynan shunday kod yozish imkonini beradi:
 
+\`\`\`javascript
+// REAL PROJECT CASE: Foydalanuvchi ma'lumotlarini yuklash va qayta ishlash
+export function handleUserProfile(userId) {
+  // Asosiy mantiq tepada - nima ish bajarilayotgani darhol ko'rinadi
+  const rawData = fetchUserData(userId);
+  const validated = validateData(rawData);
+  return formatOutput(validated);
+}
 
-**4. let va const hoist bo'ladimi?**
-Ha, \`let\` va \`const\` o'zgaruvchilari ham hoist bo'ladi, lekin ular xotirada yaratilsa-da, qiymat berilmaguncha ularga kirish taqiqlanadi (TDZ).
+// Yordamchi funksiyalar pastda joylashgan (hoisting yordamida ishlaydi)
+function fetchUserData(id) {
+  return { id, name: "Ali", email: "ali@gmail.com", status: "active" };
+}
 
+function validateData(user) {
+  if (!user.email.includes("@")) throw new Error("Noto'g'ri email");
+  return user;
+}
 
-**5. Temporal Dead Zone (TDZ) nima?**
-Temporal Dead Zone (Vaqtinchalik O'lik Hudud) — o'zgaruvchining scope doirasida ko'tarilgan (hoist) qismidan boshlab, to u kodda haqiqiy e'lon qilingan qatorgacha bo'lgan oraliqdir. Bu oraliqda o'zgaruvchini ishlatish \`ReferenceError\` beradi.
+function formatOutput(user) {
+  return {
+    displayName: user.name.toUpperCase(),
+    contact: user.email
+  };
+}
+\`\`\`
+Agar biz yuqoridagi kodda \`const fetchUserData = (id) => { ... }\` kabi arrow funksiyalardan foydalanganimizda, barcha yordamchi funksiyalarni asosiy mantiqdan yuqorida e'lon qilishga majbur bo'lar edik. Bu esa fayl ochilganda asosiy mantiqni topishni qiyinlashtiradi.
 
+---
 
-**6. Qaysi turdagi funksiyalar to'liq hoist bo'ladi?**
-Faqat **Function Declaration** (oddiy \`function name() {}\` ko'rinishidagi) funksiyalar to'liq ko'tariladi, ya'ni ularni e'lon qilinishidan oldin ham chaqirish mumkin.
+## 9. 🚀 Performance va Optimization
 
+### 1. V8 Scope Analysis
+JavaScript dvigateli (masalan, Chrome va Node.js dagi V8) kodni ishga tushirishdan oldin lisoniy tahlil (Scope Analysis) o'tkazadi. \`var\` o'zgaruvchilarni topganda, u stack-dan joy ajratib \`undefined\` yozadi. \`let\` va \`const\` uchun esa u xotira uyalarini belgilaydi, lekin qiymat yozmaydi. Dvigatel darajasida bu xavfsizlik va optimallashtirish uchun juda muhimdir.
 
-**7. Funksiya expression (o'zgaruvchiga saqlangan funksiya) hoist bo'ladimi?**
-O'zgaruvchining turi \`var\` bo'lsa, u \`undefined\` bo'lib ko'tariladi va uni funksiya sifatida chaqirish \`TypeError\` xatosini veradi. \`let\` yoki \`const\` bo'lsa, TDZ sababli \`ReferenceError\` beradi.
+### 2. Static Optimization
+\`const\` o'zgaruvchilarni V8 dvigateli "static pointer" sifatida taniydi. O'zgaruvchi qiymati o'zgarmasligini bilish kompilyatorga kodni optimallashtirish va xotiradan yuklashni tezlashtirish imkonini beradi. Shuning uchun loyihada imkon qadar ko'proq \`const\` ishlatish tavsiya etiladi.
 
+---
 
-**8. undefined va ReferenceError farqi nimada (hoisting misolida)?**
-\`undefined\` — o'zgaruvchi xotirada borligini, lekin qiymat berilmaganligini bildiradi (masalan, e'londan oldin chaqirilgan \`var\`). \`ReferenceError\` — o'zgaruvchining o'zi umuman topilmaganini yoki unga TDZ ichida murojaat qilinganini bildiradi.
+## 10. 📌 Cheat Sheet
 
-
-**9. Hoisting JS tilining xatosimi yoki xususiyatimi?**
-Bu JS dvigatelining (V8) kodni ikki bosqichda qayta ishlashining tabiiy natijasidir. Garchi u kutilmagan holatlarga olib kelsa-da, u tilning o'ziga xos xususiyati hisoblanadi.
-
-
-**10. Nima uchun var o'rniga let ishlatish tavsiya etiladi (hoisting sababli)?**
-Chunki \`let\` hoisting paytidagi chalkashliklarni (e'lon qilinmasdan oldin \`undefined\` qaytarishni) oldini oladi va e'lon qilishdan oldin ishlatilganda xatolik (\`ReferenceError\`) chiqarib xavfsizroq ishlashni ta'minlaydi.
-
-
-**11. Hoisting faqat global scope'da bo'ladimi?**
-Yo'q, hoisting har qanday scope ichida (funksiya yoki blok) sodir bo'ladi va o'zgaruvchilar o'zi joylashgan scopening eng tepasiga ko'tariladi.
-
-
-**12. Klaslar (Classes) hoist bo'ladimi?**
-Ha, JavaScript-da klaslar ham e'lon qilinganda hoist bo'ladi, lekin \`let\` va \`const\` kabi TDZ ichida joylashadi, shuning uchun e'lon qilishdan oldin klasdan obyekt olinsa \`ReferenceError\` beradi.
+| Xususiyat | \`var\` | \`let\` / \`const\` | Function Declaration | Function Expression (\`const\`/\`let\`) | Class Declaration |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Hoisting bo'ladimi?** | Ha | Ha (TDZ bilan) | Ha (To'liq) | Ha (TDZ bilan) | Ha (TDZ bilan) |
+| **Boshlang'ich Qiymati** | \`undefined\` | Uninitialized | Funksiya tanasi | Uninitialized | Uninitialized |
+| **E'londan oldin chaqirish** | \`undefined\` qaytaradi | \`ReferenceError\` beradi | Muvaffaqiyatli ishlaydi | \`ReferenceError\` beradi | \`ReferenceError\` beradi |
+| **Doirasi (Scope)** | Function Scope | Block Scope | Block/Function | Block Scope | Block Scope |
+| **Qayta e'lon qilish** | Mumkin | Taqiqlangan | Mumkin (oxirgisi olinadi) | Taqiqlangan | Taqiqlangan |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Hoisting testi",
-      instruction: "Funksiyani e'lon qilinishidan oldin chaqiring.",
-      startingCode: "// Bu yerda chaqiring\n\nfunction salom() {\n  console.log('Salom');\n}",
-      hint: "salom(); deb yozing.",
-      test: "if (logs.includes('Salom')) return null; return 'Funksiya chaqirilmadi';"
-    },
-    {
-      id: 2,
-      title: "var Hoisting va Undefined",
-      instruction: "var myVar = 'test' o'zgaruvchisini e'lon qilishdan oldin console.log yordamida uning qiymatini konsolga chiqaring (u undefined bo'lishi kerak).",
-      startingCode: "// Murojaat qiling va var bilan e'lon qiling\n",
-      hint: "console.log(myVar);\nvar myVar = 'test';",
-      test: "if (code.includes('console.log(myVar)') && code.includes('var myVar') && logs.includes('undefined')) return null; return 'var o\\'zgaruvchisini e\\'lon qilishdan oldin log qilib undefined oling!';"
-    },
-    {
-      id: 3,
-      title: "const va TDZ xatosi",
-      instruction: "try-catch bloki ichida const yordamida e'lon qilingan x o'zgaruvchisini u yaratilishidan oldin o'qib, ReferenceError xatosini ushlang va konsolga chiqaring.",
-      startingCode: "try {\n  // E'londan oldin murojaat qiling\n  console.log(x);\n} catch (e) {\n  console.log(e.name);\n}\n// const x ni e'lon qiling\n",
-      hint: "const x = 5;",
-      test: "if (logs.includes('ReferenceError') && code.includes('const x')) return null; return 'const x e\\'lon qilib TDZ orqali ReferenceError ni ushlang!';"
-    },
-    {
-      id: 4,
-      title: "let Function Expression va Hoisting",
-      instruction: "try-catch ichida let bilan e'lon qilingan myFunc funksiyasini e'lon qilishdan oldin chaqiring va ReferenceError xatosini konsolga chiqaring.",
-      startingCode: "try {\n  myFunc();\n} catch (e) {\n  console.log(e.name);\n}\n// let myFunc funksiyasini yozing\n",
-      hint: "let myFunc = () => {};",
-      test: "if (logs.includes('ReferenceError') && code.includes('let myFunc')) return null; return 'let bilan e\\'lon qilingan funksiya ReferenceError berishini tekshiring!';"
-    },
-    {
-      id: 5,
-      title: "var Function Expression va TypeError",
-      instruction: "try-catch ichida var bilan e'lon qilingan myArrow funksiyasini e'lon qilishdan oldin chaqiring va TypeError xatosini konsolga chiqaring.",
-      startingCode: "try {\n  myArrow();\n} catch (e) {\n  console.log(e.name);\n}\n// var myArrow funksiyasini yozing\n",
-      hint: "var myArrow = () => {};",
-      test: "if (logs.includes('TypeError') && code.includes('var myArrow')) return null; return 'var bilan e\\'lon qilingan funksiya TypeError berishini tekshiring!';"
-    },
-    {
-      id: 6,
-      title: "Scope ichidagi Local Hoisting",
-      instruction: "Globalda var x = 10 e'lon qilingan. test() funksiyasi yaratib, uning ichida avval console.log(x) qiling, so'ngra var x = 20 e'lon qiling. Funksiya chaqirilganda local hoisting sababli undefined chiqishini ko'ring.",
-      startingCode: "var x = 10;\nfunction test() {\n  // Bu yerda local var e'lon qiling va e'londan oldin konsolga chiqaring\n}\ntest();\n",
-      hint: "console.log(x);\nvar x = 20;",
-      test: "if (logs.includes('undefined') && code.includes('var x = 20')) return null; return 'Funksiya ichida local hoisting yuz berishi kerak!';"
-    },
-    {
-      id: 7,
-      title: "Ikkita Function Declaration to'qnashuvi",
-      instruction: "Uchta bir xil nomli function declaration yozilsa, eng oxirgisi amalda bo'ladi. check() funksiyasini e'lon qilishdan oldin chaqiring. Bitta check funksiyasi 'Bir', keyingisi 'Ikki' chiqarsin. Konsolda faqat 'Ikki' chiqishini ta'minlang.",
-      startingCode: "check();\n// check funksiyalarini e'lon qiling\n",
-      hint: "function check() { console.log('Bir'); }\nfunction check() { console.log('Ikki'); }",
-      test: "if (logs.includes('Ikki') && !logs.includes('Bir')) return null; return 'Oxirgi function declaration ustun kelishi kerak!';"
-    },
-    {
-      id: 8,
-      title: "Blok ichidagi funksiyalar va strict mode",
-      instruction: "Blok ({}) ichida e'lon qilingan function declaration blok tashqarisida ReferenceError beradi. Try-catch ichida blok tashqarisidan testBlock() ni chaqiring va xatoni konsolga chiqaring.",
-      startingCode: "{\n  function testBlock() { console.log('Blok'); }\n}\ntry {\n  // Blok tashqarisida chaqiring\n} catch (e) {\n  console.log(e.name);\n}\n",
-      hint: "testBlock();",
-      test: "if (logs.includes('ReferenceError')) return null; return 'Blok ichidagi funksiya tashqarida ReferenceError berishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "Klaslarda Hoisting va TDZ",
-      instruction: "Try-catch ichida new MyClass() yarating, klasni esa let kabi pastda e'lon qiling. ReferenceError xatosini ushlab konsolga chiqaring.",
-      startingCode: "try {\n  const obj = new MyClass();\n} catch (e) {\n  console.log(e.name);\n}\n// class MyClass e'lon qiling\n",
-      hint: "class MyClass {}",
-      test: "if (logs.includes('ReferenceError') && code.includes('class MyClass')) return null; return 'Class e\\'lon qilinishidan oldin ReferenceError berishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "Parametr va let to'qnashuvi (SyntaxError)",
-      instruction: "Funksiya parametrlari scope-da yaratiladi. new Function('a', 'let a = 5;')() yordamida bir xil nomli let e'lon qilinganda yuz beradigan SyntaxError ni try-catch ichida ushlab, konsolga chiqaring.",
-      startingCode: "try {\n  // Bu yerda dynamic function bilan SyntaxError chiqaring\n} catch (e) {\n  console.log(e.name);\n}\n",
-      hint: "new Function('a', 'let a = 5;')();",
-      test: "if (logs.includes('SyntaxError')) return null; return 'Parametr va let to\\'qnashuvi tufayli SyntaxError-ni ushlang!';"
-    },
-    {
-      id: 11,
-      title: "Var shadowing va local hoisting",
-      instruction: "Globalda var name = 'global'. printName() funksiyasini yarating, unda console.log(name) qiling va keyingi qatorda var name = 'local' deb e'lon qiling. Funksiyani chaqiring. undefined chiqishini ko'ring.",
-      startingCode: "var name = 'global';\nfunction printName() {\n  // Bu yerga yozing\n}\nprintName();\n",
-      hint: "console.log(name);\nvar name = 'local';",
-      test: "if (logs.includes('undefined') && code.includes('var name =')) return null; return 'Local var name hoisting sababli undefined chiqishi kerak!';"
-    },
-    {
-      id: 12,
-      title: "Hoisting-ning yakuniy tekshiruvi",
-      instruction: "a (var) va b (let) o'zgaruvchilarini e'lon qilishdan oldin chaqiring. b ni try-catch ichida chaqirib ReferenceError log qiling. a ning undefined bo'lishini ko'rsating.",
-      startingCode: "// a ga murojaat qiling va b ni try-catch ichida chaqiring\n\n// var a va let b o'zgaruvchilarini e'lon qiling\n",
-      hint: "console.log(a);\ntry { console.log(b); } catch(e) { console.log(e.name); }\nvar a = 1; let b = 2;",
-      test: "if (logs.includes('undefined') && logs.includes('ReferenceError') && code.includes('var a') && code.includes('let b')) return null; return 'var va let hoisting farqlarini ko\\'rsating!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Funksiya Ifodasining Hoisting Muammosi",
+    "instruction": "Quyidagi kodda `greetUsers` funksiyasi ichida `sayHello` (Function Declaration) va `sayGoodbye` (Function Expression) funksiyalari chaqirilgan. `sayHello` to'liq hoisting bo'lgani sababli uni e'lon qilishdan oldin chaqirib bo'ladi. Ammo `sayGoodbye` o'zgaruvchiga yuklanganligi sababli (TDZ tufayli) uni e'lon qilishdan oldin chaqirish `ReferenceError` xatosini beradi. Kodni shunday o'zgartiringki, `sayGoodbye` funksiyasi chaqirilishidan oldin e'lon qilinsin va funksiya 'Salom va Xayr' qiymatini xatosiz qaytarsin.",
+    "startingCode": "function greetUsers() {\n  const hello = sayHello();\n  const goodbye = sayGoodbye();\n\n  function sayHello() {\n    return \"Salom\";\n  }\n\n  const sayGoodbye = function() {\n    return \"Xayr\";\n  };\n\n  return hello + \" va \" + goodbye;\n}\n",
+    "hint": "sayGoodbye o'zgaruvchisini va unga biriktirilgan funksiya ifodasini `const goodbye = sayGoodbye();` qatoridan oldinga o'tkazing.",
+    "test": "try {\n  const sandbox = new Function(code + '; return greetUsers;');\n  const fn = sandbox();\n  const res = fn();\n  if (res !== 'Salom va Xayr') {\n    return 'greetUsers funksiyasi \"Salom va Xayr\" qaytarishi kerak, hozir: ' + res;\n  }\n  const cleanCode = code.replace(/\\s+/g, '');\n  const declGoodbye = cleanCode.indexOf('constsayGoodbye=function');\n  const callGoodbye = cleanCode.indexOf('sayGoodbye()');\n  if (declGoodbye === -1) {\n    return 'sayGoodbye funksiyasini const sayGoodbye = function() { ... } ko\\'rinishida saqlang.';\n  }\n  if (declGoodbye > callGoodbye) {\n    return 'sayGoodbye funksiyasi chaqirilishidan oldin e\\'lon qilinishi shart.';\n  }\n  return null;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
+  },
+  {
+    "id": 2,
+    "title": "var Hoisting va Soyalash (Shadowing)",
+    "instruction": "Quyidagi kodda global `score = 10` qiymatiga ega. `play` funksiyasi ichida `if (score > 5)` sharti bajarilib, 'Yutdingiz' qaytarilishi kutilgan edi. Biroq, funksiya ichidagi `var score = 3;` e'loni hoisting bo'lgani sababli, `score` funksiya boshida `undefined` bo'lib qoladi va shart bajarilmay, 'Yutqazdingiz' qaytadi. Muammoni hal qilish uchun funksiya ichidagi local o'zgaruvchini boshqa nomga (masalan, `localScore`) o'zgartiring (va uni e'lon qilishda `let` yoki `const` dan foydalaning) toki u global `score` bilan to'qnashmasin va funksiya to'g'ri ishlasin.",
+    "startingCode": "var score = 10;\n\nfunction play() {\n  if (score > 5) {\n    return \"Yutdingiz\";\n  }\n  var score = 3;\n  return \"Yutqazdingiz\";\n}\n",
+    "hint": "Funksiya ichidagi var score = 3 e'lonini o'chirib, o'rniga let localScore = 3 ko'rinishida yozing va uning nomini o'zgartiring.",
+    "test": "try {\n  const sandbox = new Function(code + '; return play;');\n  const fn = sandbox();\n  const res = fn();\n  if (res !== 'Yutdingiz') {\n    return 'play funksiyasi \"Yutdingiz\" qaytarishi kerak, hozir: ' + res;\n  }\n  if (code.includes('var score =') || code.includes('var score=')) {\n    return 'Funksiya ichidagi var score e\\'lonini olib tashlang yoki o\\'zgartiring.';\n  }\n  return null;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
+  },
+  {
+    "id": 3,
+    "title": "Temporal Dead Zone (TDZ) va let/const",
+    "instruction": "Quyidagi funksiyada `console.log(message)` chaqirilganda TDZ sababli xatolik bermoqda. O'zgaruvchilar va ularning ishlatilish tartibini shunday to'g'rilangki, xatolik bartaraf etilsin va funksiya 'Salom Dunyo!' qiymatini qaytarsin. `let` o'zgaruvchisini to'g'ri joyda e'lon qiling.",
+    "startingCode": "function formatMessage() {\n  console.log(message);\n  let message = \"Salom Dunyo!\";\n  return message;\n}\n",
+    "hint": "message o'zgaruvchisini uni ishlatayotgan console.log va return qatorlaridan yuqorida e'lon qiling.",
+    "test": "try {\n  const sandbox = new Function(code + '; return formatMessage;');\n  const fn = sandbox();\n  const res = fn();\n  if (res !== 'Salom Dunyo!') {\n    return 'formatMessage funksiyasi \"Salom Dunyo!\" qaytarishi kerak.';\n  }\n  const cleanCode = code.replace(/\\s+/g, '');\n  const declIdx = cleanCode.indexOf('letmessage=');\n  const consoleIdx = cleanCode.indexOf('console.log(message)');\n  if (declIdx === -1) {\n    return 'let message = ... e\\'lonini saqlab qoling.';\n  }\n  if (declIdx > consoleIdx) {\n    return 'let message e\\'loni console.log dan oldin bo\\'lishi kerak.';\n  }\n  return null;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Quyidagi kod ishga tushganda nima chop etiladi?\n```javascript\nconsole.log(x);\nvar x = 5;\n```",
-      options: ["5", "undefined", "ReferenceError", "TypeError"],
-      correctAnswer: 1,
-      explanation: "`var` yordamida e'lon qilingan o'zgaruvchilar o'zining scope doirasida ko'tariladi (hoisting), lekin ularning qiymat tayinlovi (initialization) joyida qoladi. Shuning uchun qiymat yuklanguniga qadar uning qiymati `undefined` bo'ladi."
-    },
-    {
-      id: 2,
-      question: "Quyidagi `let` o'zgaruvchisi bilan yozilgan kod nima natija beradi?\n```javascript\nconsole.log(y);\nlet y = 10;\n```",
-      options: ["10", "undefined", "ReferenceError (Temporal Dead Zone)", "TypeError"],
-      correctAnswer: 2,
-      explanation: "`let` va `const` o'zgaruvchilari ham hoist bo'ladi, lekin uzoq vaqt e'lon qilinmaguncha TDZ (Temporal Dead Zone) ichida bo'ladi. ReferenceError xatoligi tashlanadi."
-    },
-    {
-      id: 3,
-      question: "Ushbu kodni tahlil qilib natijasini ayting:\n```javascript\ngreet();\nfunction greet() {\n  console.log(\"Salom\");\n}\n```",
-      options: ["\"Salom\"", "TypeError: greet is not a function", "ReferenceError", "undefined"],
-      correctAnswer: 0,
-      explanation: "Function Declarations to'liq (tanasi bilan birga) tepaga ko'tariladi. Shuning uchun ularni e'lon qilinishidan oldin ham bemalol chaqirish mumkin."
-    },
-    {
-      id: 4,
-      question: "Function Expression (o'zgaruvchiga yuklangan funksiya) hoisting qoidasiga ko'ra nima natija beradi?\n```javascript\ngreet();\nvar greet = function() {\n  console.log(\"Salom\");\n};\n```",
-      options: ["\"Salom\"", "TypeError: greet is not a function", "ReferenceError", "undefined"],
-      correctAnswer: 1,
-      explanation: "`var greet` o'zgaruvchi sifatida ko'tariladi va unga `undefined` qiymat beriladi. Hali funksiya yuklanmagani sababli, `undefined()` ko'rinishida chaqirilmoqda va bu `TypeError` (greet funksiya emas) xatosiga olib keladi."
-    },
-    {
-      id: 5,
-      question: "Parametr va var o'zgaruvchisi to'qnashuvida nima sodir bo'ladi?\n```javascript\nfunction test(x) {\n  console.log(x);\n  var x = 20;\n}\ntest(10);\n```",
-      options: ["10", "20", "undefined", "ReferenceError"],
-      correctAnswer: 0,
-      explanation: "Funksiya parametrlari funksiya tanasidagi kod bajarilishidan oldin scope'da yaratiladi va qiymatlanadi. `var x` e'lon qilinganda, scope'da allaqachon `x` borligi uchun u shunchaki qayta e'lon qilinadi va qiymat `var x = 20` qatoriga yetib bormaguncha parametrning qiymati (`10`) o'zgarmasdan saqlanib turadi."
-    },
-    {
-      id: 6,
-      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nvar x = 1;\nfunction test() {\n  console.log(x);\n  var x = 2;\n}\ntest();\n```",
-      options: ["1", "2", "undefined", "ReferenceError"],
-      correctAnswer: 2,
-      explanation: "Funksiya ichidagi `var x` local scope doirasida yuqoriga hoist bo'lib global `x` ni shadow qiladi. E'lon qilinishidan oldin chaqirilgan local `x` qiymati `undefined` bo'ladi."
-    },
-    {
-      id: 7,
-      question: "Agar `const` o'zgaruvchisi o'zidan oldin chaqirilsa, qanday xatolik yuz beradi?",
-      options: ["TypeError", "ReferenceError", "SyntaxError", "Xatolik bo'lmaydi, undefined chiqadi"],
-      correctAnswer: 1,
-      explanation: "`const` o'zgaruvchisi hoist bo'ladi, lekin e'lon qilinmaguncha TDZ (Vaqtinchalik O'lik Hudud)da bo'ladi va unga murojaat qilish `ReferenceError` xatosini beradi."
-    },
-    {
-      id: 8,
-      question: "Quyidagi kod qanday natija beradi?\n```javascript\nfunc();\nvar func = function() {\n  console.log(\"OK\");\n};\n```",
-      options: ["\"OK\"", "TypeError: func is not a function", "ReferenceError", "undefined"],
-      correctAnswer: 1,
-      explanation: "`var func` o'zgaruvchisi ko'tariladi va boshlang'ich qiymati `undefined` bo'ladi. `undefined` ni funksiya sifatida chaqirish esa `TypeError` beradi."
-    },
-    {
-      id: 9,
-      question: "Quyidagi kod bajarilganda konsolda nima ko'rinadi?\n```javascript\nfunction parent() {\n  var x = 'tashqi';\n  function child() {\n    console.log(x);\n    var x = 'ichki';\n  }\n  child();\n}\nparent();\n```",
-      options: ["\"tashqi\"", "\"ichki\"", "undefined", "ReferenceError"],
-      correctAnswer: 2,
-      explanation: "`child` funksiyasi ichidagi `var x` o'zining local scopesida hoist bo'lib, `parent` funksiyasidagi `x` ni to'sib qo'yadi. E'lon qilinishidan oldin log etilayotgani uchun `undefined` chiqadi."
-    },
-    {
-      id: 10,
-      question: "JavaScript-da class e'lonlari (declarations) hoist bo'ladimi?",
-      options: ["Yo'q, mutlaqo ko'tarilmaydi", "Ha, ko'tariladi va xuddi var kabi undefined qiymat oladi", "Ha, ko'tariladi lekin let/const kabi TDZ ichida bo'ladi va ReferenceError beradi", "Faqat strict mode yopiq bo'lganda ko'tariladi"],
-      correctAnswer: 2,
-      explanation: "Klaslar (classes) ham hoisting qoidasiga bo'ysunadi, lekin ularga e'londan oldin murojaat etilsa `ReferenceError` xatoligi tashlanadi."
-    },
-    {
-      id: 11,
-      question: "Strict mode ostida, biror blok (masalan `if` bloki) ichida e'lon qilingan function declaration blok tashqarisida ko'rinadimi?",
-      options: ["Ha, oddiy funksiyalar har doim global bo'ladi", "Yo'q, strict mode'da funksiyalar block scope-ga ega bo'ladi va ReferenceError beradi", "Ha, lekin undefined qiymat oladi", "Faqat var bilan e'lon qilingan bo'lsa ko'rinadi"],
-      correctAnswer: 1,
-      explanation: "Strict rejimda blok `{}` ichida yozilgan function declaration o'sha blok doirasida cheklanadi (block scope) va tashqarida unga murojaat qilib bo'lmaydi."
-    },
-    {
-      id: 12,
-      question: "Temporal Dead Zone (TDZ) qachon tugaydi?",
-      options: ["O'zgaruvchi joylashgan funksiya tugaganda", "O'zgaruvchi e'lon qilingan va qiymat tayinlangan qator bajarilganda", "Global kontekst yaratilganda", "Hech qachon tugamaydi, har doim o'lik bo'ladi"],
-      correctAnswer: 1,
-      explanation: "TDZ o'zgaruvchi e'lon qilingan va qiymat yuklangan qatorga kelib bajarilgandan so'ng rasman tugaydi va o'zgaruvchidan bemalol foydalanish mumkin bo'ladi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "JavaScript-da hoisting (ko'tarilish) nima?",
+    "options": [
+      "Kod bajarilayotganda barcha o'zgaruvchilar va funksiyalarni global window obyektiga o'tkazish",
+      "Kod bajarilishidan oldin (kompilyatsiya bosqichida) o'zgaruvchilar va funksiya e'lonlarining xotiraga joylashtirilishi",
+      "Sikl ichidagi o'zgaruvchilarning tashqi doiraga sizib chiqishi",
+      "O'zgaruvchilar qiymatlarini avtomatik ravishda o'chirib tashlash mexanizmi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Hoisting — bu JavaScript dvigateli kodni bajarishdan oldin (kompilyatsiya bosqichida) o'zgaruvchilar va funksiya deklaratsiyalarini o'z doirasining (scope) yuqori qismiga ko'tarib, ularga xotiradan joy ajratish xususiyatidir."
+  },
+  {
+    "id": 2,
+    "question": "var kalit so'zi bilan e'lon qilingan o'zgaruvchi hoisting jarayonida qanday boshlang'ich qiymatga ega bo'ladi?",
+    "options": [
+      "null",
+      "Boshlang'ich qiymatga ega bo'lmaydi va ReferenceError beradi",
+      "0",
+      "undefined"
+    ],
+    "correctAnswer": 3,
+    "explanation": "var o'zgaruvchilari hoisting paytida xotirada yaratiladi va ularga avtomatik ravishda undefined boshlang'ich qiymati biriktiriladi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi kod ishga tushirilganda konsolga nima chiqadi?\n```javascript\nconsole.log(myVar);\nvar myVar = 10;\n```",
+    "options": [
+      "10",
+      "undefined",
+      "ReferenceError: myVar is not defined",
+      "TypeError: myVar is not a function"
+    ],
+    "correctAnswer": 1,
+    "explanation": "var myVar hoisting bo'ladi va funksiya yoki global doiraning tepasiga 'undefined' bo'lib ko'tariladi, ammo qiymat berilishi (myVar = 10) o'z joyida qoladi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod ishga tushirilganda nima sodir bo'ladi?\n```javascript\nconsole.log(myLet);\nlet myLet = 20;\n```",
+    "options": [
+      "undefined chiqadi",
+      "20 chiqadi",
+      "ReferenceError: Cannot access 'myLet' before initialization",
+      "TypeError: myLet is not a constant"
+    ],
+    "correctAnswer": 2,
+    "explanation": "let va const o'zgaruvchilari hoisting bo'ladi, lekin ularga boshlang'ich qiymat berilmaguncha TDZ (Temporal Dead Zone) da qoladi. E'londan oldin kirish ReferenceError ga olib keladi."
+  },
+  {
+    "id": 5,
+    "question": "Temporal Dead Zone (Vaqtinchalik O'lik Hudud) nima?",
+    "options": [
+      "O'zgaruvchilar Garbage Collector tomonidan o'chiriladigan xotira qismi",
+      "Blok boshlanishidan to o'zgaruvchi (let/const) e'lon qilingan qatorgacha bo'lgan, o'zgaruvchiga murojaat qilib bo'lmaydigan hudud",
+      "Asinxron kodlar (masalan, setTimeout) bajarilishini kutadigan vaqt oralig'i",
+      "Sikl tugagandan keyin o'zgaruvchilar blokda qoladigan vaqt"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TDZ — bu let va const e'lon qilingan blokning boshidan boshlab, o'zgaruvchiga qiymat yuklanadigan qatorgacha bo'lgan oraliqdir. Bu hududda o'zgaruvchiga murojaat qilish ReferenceError xatosini beradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\ngreet();\nfunction greet() {\n  console.log(\"Salom!\");\n}\n```",
+    "options": [
+      "Salom!",
+      "TypeError: greet is not a function",
+      "ReferenceError: greet is not defined",
+      "undefined"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Function declaration (funksiya e'loni) to'liq hoisting bo'ladi, ya'ni uning ham tanasi, ham nomi xotiraga yoziladi va uni deklaratsiyadan oldin ham xavfsiz chaqirish mumkin."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kod bajarilganda nima sodir bo'ladi?\n```javascript\ngreet();\nvar greet = function() {\n  console.log(\"Salom!\");\n};\n```",
+    "options": [
+      "Salom! chiqadi",
+      "TypeError: greet is not a function",
+      "ReferenceError: greet is not defined",
+      "undefined chiqadi va kod to'xtaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "var greet hoisting bo'lganda 'undefined' qiymatini oladi. Uni funksiya sifatida chaqirish (greet()) 'TypeError: greet is not a function' xatosiga olib keladi, chunki undefined funksiya emas."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kod bajarilganda nima sodir bo'ladi?\n```javascript\ngreet();\nconst greet = () => {\n  console.log(\"Salom!\");\n};\n```",
+    "options": [
+      "Salom! chiqadi",
+      "TypeError: greet is not a function",
+      "ReferenceError: Cannot access 'greet' before initialization",
+      "undefined chiqadi va xatolik bo'lmaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "const greet o'zgaruvchi ifodasi bo'lgani sababli TDZ da bo'ladi. Uni e'lon qilinishidan oldin chaqirish ReferenceError xatosini beradi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nvar a = 1;\nfunction test() {\n  console.log(a);\n  var a = 2;\n}\ntest();\n```",
+    "options": [
+      "1",
+      "2",
+      "undefined",
+      "ReferenceError: a is not defined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "test() funksiyasi ichida yangi 'var a' e'lon qilingan. U funksiya doirasida hoisting bo'lib, tashqi global 'a' o'zgaruvchisini soyalaydi (shadowing). Shuning uchun console.log(a) ishlagan vaqtda ichki 'a' mavjud lekin unga hali 2 qiymati yuklanmagan (ya'ni undefined)."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nvar x = 5;\nfunction x() {}\nconsole.log(typeof x);\n```",
+    "options": [
+      "\"function\"",
+      "\"number\"",
+      "\"undefined\"",
+      "SyntaxError: Identifier 'x' has already been declared"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Hoisting bosqichida function declaration xotiraga birinchi bo'lib yoziladi. Keyin var x ro'yxatga olinadi (lekin qayta yozilmaydi). Biroq, kod bajarilish bosqichida `x = 5` qiymat berish amali bajarilganda `x` ning qiymati raqamga aylanadi. Shuning uchun `typeof x` natijasi 'number' bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet y = 10;\nfunction test() {\n  let y = 20;\n  console.log(y);\n}\ntest();\n```",
+    "options": [
+      "SyntaxError: Identifier 'y' has already been declared",
+      "10",
+      "20",
+      "undefined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Bunda hech qanday xatolik yuz bermaydi, chunki global doiradagi `y` va funksiya ichidagi `let y` har xil doiralarda (scopes) e'lon qilingan. Funksiya ichidagi `y` tashqi `y` ni soyalaydi va 20 chiqadi."
+  },
+  {
+    "id": 12,
+    "question": "Klass (Class) e'lonlarining hoisting bo'lishi haqida qaysi tasdiq to'g'ri?",
+    "options": [
+      "Klasslar funksiyalar kabi to'liq hoisting bo'ladi va e'londan oldin yangi obyekt yaratish mumkin",
+      "Klasslar mutlaqo hoisting bo'lmaydi va xotiradan joy ajratilmaydi",
+      "Klasslar ham let/const kabi hoisting bo'ladi, lekin e'lon qilinmaguncha TDZ da bo'ladi va e'londan oldin chaqirish ReferenceError beradi",
+      "Klasslar hoisting bo'ladi va e'londan oldin chaqirilganda undefined qiymatini qaytaradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Klass e'lonlari (Class declarations) ham JavaScript-da hoisting bo'ladi, lekin ular ham let/const kabi TDZ (vaqtincha o'lik hudud) da bo'ladi. E'londan oldin klassdan yangi nusxa (instance) olish ReferenceError xatosini beradi."
+  }
+]
+
 };
