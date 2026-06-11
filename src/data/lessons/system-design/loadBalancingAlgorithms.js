@@ -81,7 +81,7 @@ Foydalanuvchining IP manzilini hashlab, muayyan serverga bog'lab qo'yadi (Sessio
 ### 6. Least Response Time (Eng tezkor javob vaqti)
 So'rovni oxirgi davrdagi eng tez javob bergan (eng past latency-ga ega) va faol ulanishlari kam serverga yo'naltiradi.
 
-![Least Response Time](/Least_response time.gif)
+![Least Response Time](/least_response_time.gif)
 
 ### 7. Least Bandwidth (Eng kam tarmoq trafigi)
 Ayni vaqtda eng kam tarmoq trafigini (bandwidth) sarflayotgan serverga so'rov yo'naltiradi. Katta hajmli yuklanishlar (streaming/downloads) uchun ajoyib.
