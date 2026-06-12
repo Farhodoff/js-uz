@@ -148,6 +148,9 @@ import { reactProductionArchitecture } from "./lessons/ecosystem/reactProduction
 import { nodeArchitecture } from "./lessons/ecosystem/nodeArchitecture";
 import { dockerBasics } from "./lessons/ecosystem/dockerBasics";
 import { ciCdGithubActions } from "./lessons/ecosystem/ciCdGithubActions";
+import { dockerComposeDb } from "./lessons/ecosystem/dockerComposeDb";
+import { k8sBasics } from "./lessons/ecosystem/k8sBasics";
+import { advancedCiCd } from "./lessons/ecosystem/advancedCiCd";
 
 import { starMethod } from "./lessons/soft-skills/starMethod";
 import { behavioralQuestions } from "./lessons/soft-skills/behavioralQuestions";
@@ -228,7 +231,10 @@ export const curriculum = {
       reactProductionArchitecture,
       nodeArchitecture,
       dockerBasics,
-      ciCdGithubActions
+      ciCdGithubActions,
+      dockerComposeDb,
+      k8sBasics,
+      advancedCiCd
     ]
   },
   typescript: {
