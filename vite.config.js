@@ -10,7 +10,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'maskable-icon.png'],
       workbox: {
-        maximumFileSizeToCacheInBytes: 6000000,
+        maximumFileSizeToCacheInBytes: 9000000,
       },
       manifest: {
         name: 'JS Academy Mastery',

@@ -159,6 +159,9 @@ import { typescriptGenerics } from "./lessons/typescript/typescriptGenerics";
 import { advancedTypes } from "./lessons/typescript/advancedTypes";
 import { typeNarrowing } from "./lessons/typescript/typeNarrowing";
 import { reactTypeScript } from "./lessons/typescript/reactTypeScript";
+import { utilityTypes } from "./lessons/typescript/utilityTypes";
+import { tsConfigFile } from "./lessons/typescript/tsConfigFile";
+import { declarationFiles } from "./lessons/typescript/declarationFiles";
 
 import { todoList } from "./lessons/projects/todoList";
 import { weatherApp } from "./lessons/projects/weatherApp";
@@ -228,7 +231,7 @@ export const curriculum = {
     label: "TypeScript",
     color: "#3178c6",
     icon: "📘",
-    lessons: [typescriptBasics, interfacesTypes, typescriptFunctions, typescriptClasses, typescriptGenerics, advancedTypes, typeNarrowing, reactTypeScript]
+    lessons: [typescriptBasics, interfacesTypes, typescriptFunctions, typescriptClasses, typescriptGenerics, advancedTypes, typeNarrowing, reactTypeScript, utilityTypes, tsConfigFile, declarationFiles]
   },
   softSkills: {
     label: "Suhbat madaniyati",
