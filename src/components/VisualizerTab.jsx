@@ -1,5 +1,83 @@
 import React, { useState, useEffect, useRef } from "react";
 
+const tsSnippets = {
+  primitives: {
+    title: "Primitive Tiplar",
+    ts: `// TypeScript: Tiplar e'lon qilinishi
+let age: number = 25;
+let userName: string = "Doston";
+let isStudent: boolean = true;
+
+function welcome(name: string): string {
+  return "Salom, " + name;
+}`,
+    js: `// JavaScript: Tiplar o'chirilgan holatda
+let age = 25;
+let userName = "Doston";
+let isStudent = true;
+
+function welcome(name) {
+  return "Salom, " + name;
+}`,
+    erased: [": number", ": string", ": boolean", ": string"]
+  },
+  interfaces: {
+    title: "Interface & Obyektlar",
+    ts: `// TypeScript: Obyekt strukturalari
+interface User {
+  id: number;
+  name: string;
+  isAdmin?: boolean;
+}
+
+const user: User = {
+  id: 1,
+  name: "Alisher"
+};`,
+    js: `// JavaScript: Interface butunlay yo'q
+const user = {
+  id: 1,
+  name: "Alisher"
+};`,
+    erased: ["interface User {\n  id: number;\n  name: string;\n  isAdmin?: boolean;\n}\n\n", ": User"]
+  },
+  enums: {
+    title: "Enums (Ro'yxatlar)",
+    ts: `// TypeScript: Enum tiplari
+enum UserRole {
+  Admin = "ADMIN",
+  User = "USER"
+}
+
+let role: UserRole = UserRole.Admin;`,
+    js: `// JavaScript: Enum o'rniga IIFE obyekti yaratiladi
+var UserRole;
+(function (UserRole) {
+    UserRole["Admin"] = "ADMIN";
+    UserRole["User"] = "USER";
+})(UserRole || (UserRole = {}));
+
+let role = UserRole.Admin;`,
+    erased: [": UserRole"]
+  },
+  generics: {
+    title: "Generics (Umumlashtirish)",
+    ts: `// TypeScript: Dinamik tiplar bilan ishlash
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+let output = identity<string>("Salom");`,
+    js: `// JavaScript: T va boshqa tiplar o'chirilgan
+function identity(arg) {
+  return arg;
+}
+
+let output = identity("Salom");`,
+    erased: ["<T>", ": T", ": T", "<string>"]
+  }
+};
+
 export default function VisualizerTab({ activeLesson }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(500); // ms per step
@@ -22,6 +100,11 @@ export default function VisualizerTab({ activeLesson }) {
   const [fastPointer, setFastPointer] = useState(0);
   const [cyclePhase, setCyclePhase] = useState("collision"); // collision, find_entry, done
   const [cycleCodeLine, setCycleCodeLine] = useState(0);
+
+  // TypeScript Visualizer states
+  const [tsSnippetKey, setTsSnippetKey] = useState("primitives");
+  const [tsStep, setTsStep] = useState(0); // 0: Idle, 1: Checking, 2: Erasing, 3: Completed
+  const [tsStepDetail, setTsStepDetail] = useState("Kompilyatsiyani boshlash uchun 'Play' yoki 'Qadam' tugmasini bosing.");
 
   const [sqMode, setSqMode] = useState("stack"); // stack or queue
   const [sqItems, setSqItems] = useState([10, 20, 30]);
@@ -123,6 +206,9 @@ export default function VisualizerTab({ activeLesson }) {
       LcSetStep(0);
       setLcStack([]);
       setLcPointers({ left: 0, right: 3 });
+    } else if (activeLesson.id === "typescriptBasics") {
+      setTsStep(0);
+      setTsStepDetail("Kompilyatsiyani boshlash uchun 'Play' yoki 'Qadam' tugmasini bosing.");
     }
   };
 
@@ -195,6 +281,8 @@ export default function VisualizerTab({ activeLesson }) {
       runLeetcodeStep();
     } else if (activeLesson.id === "linkedLists" && llMode === "cycle") {
       runCycleStep();
+    } else if (activeLesson.id === "typescriptBasics") {
+      runTypeScriptStep();
     } else {
       setStepInfo("Ushbu dars uchun qadamma-qadam animatsiya tugmasi faqat boshqaruv panelidan amalga oshiriladi.");
       stopTimer();
@@ -541,6 +629,27 @@ export default function VisualizerTab({ activeLesson }) {
 
       setLcStack(stack);
       LcSetStep(step + 1);
+    }
+  };
+
+  const runTypeScriptStep = () => {
+    if (tsStep === 0) {
+      setTsStep(1);
+      setTsStepDetail("Bosqich 1: Sintaksis tahlil va Tiplarni tekshirish (Type Checking). Kompilyator har bir o'zgaruvchini tipiga mosligini tekshirmoqda...");
+      setStepInfo("Tiplar tekshirilmoqda. Hech qanday xatolik topilmadi!");
+    } else if (tsStep === 1) {
+      setTsStep(2);
+      setTsStepDetail("Bosqich 2: Tiplarni o'chirish (Type Erasure). TypeScript tiplari (interface, type annotations) faqat kompilyatsiya vaqtida mavjud bo'ladi, runtimeda esa butunlay o'chiriladi.");
+      setStepInfo("Tiplar o'chirilmoqda. Faqat toza JS kodining o'zi qoladi.");
+    } else if (tsStep === 2) {
+      setTsStep(3);
+      setTsStepDetail("Bosqich 3: JS fayl yaratildi. Ushbu JS kodi brauzerlar va Node.js tomonidan bevosita ishga tushiriladi.");
+      setStepInfo("Kompilyatsiya tugadi!");
+      stopTimer();
+    } else {
+      setTsStep(0);
+      setTsStepDetail("Kompilyatsiyani boshlash uchun 'Play' yoki 'Qadam' tugmasini bosing.");
+      setStepInfo("Tayyor.");
     }
   };
 
@@ -1191,6 +1300,117 @@ export default function VisualizerTab({ activeLesson }) {
             </div>
           </div>
         )}
+
+        {activeLesson.id === "typescriptBasics" && (() => {
+          const currentSnippet = tsSnippets[tsSnippetKey];
+          const renderCodeWithErasure = (code, erasedItems, showErasure) => {
+            if (!showErasure) return code;
+            const sortedErased = [...erasedItems].sort((a, b) => b.length - a.length);
+            const escaped = sortedErased.map(item => item.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+            const regex = new RegExp(`(${escaped.join("|")})`, 'g');
+            const parts = code.split(regex);
+            return parts.map((part, index) => {
+              if (sortedErased.includes(part)) {
+                return (
+                  <span key={index} className="line-through text-rose-500 bg-rose-500/10 px-0.5 rounded transition-all duration-1000">
+                    {part}
+                  </span>
+                );
+              }
+              return part;
+            });
+          };
+
+          return (
+            <div className="vis-ts-layout w-full flex flex-col items-center">
+              <div className="vis-controls flex gap-2 mb-4 flex-wrap justify-center">
+                {Object.keys(tsSnippets).map((key) => (
+                  <button
+                    key={key}
+                    className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
+                      tsSnippetKey === key
+                        ? "bg-blue-600 text-white shadow-lg ring-2 ring-blue-500/30"
+                        : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
+                    }`}
+                    onClick={() => {
+                      setTsSnippetKey(key);
+                      setTsStep(0);
+                      setTsStepDetail("Kompilyatsiyani boshlash uchun 'Play' yoki 'Qadam' tugmasini bosing.");
+                      setIsPlaying(false);
+                    }}
+                  >
+                    {tsSnippets[key].title}
+                  </button>
+                ))}
+              </div>
+
+              {/* Status/Step Box */}
+              <div className="w-full max-w-[680px] bg-slate-900/60 border border-slate-800/80 rounded-xl p-4 mb-5 backdrop-blur-sm shadow-inner transition-all duration-300">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className={`w-2.5 h-2.5 rounded-full ${
+                    tsStep === 1 ? "bg-amber-500 animate-ping" : 
+                    tsStep === 2 ? "bg-cyan-500 animate-pulse" : 
+                    tsStep === 3 ? "bg-emerald-500" : "bg-slate-600"
+                  }`} />
+                  <span className="text-xs uppercase font-bold tracking-wider text-slate-400 font-mono">
+                    {tsStep === 0 ? "Kompilyator kutilmoqda" :
+                     tsStep === 1 ? "Bosqich 1: Sintaksis & Tiplarni tekshirish" :
+                     tsStep === 2 ? "Bosqich 2: Tiplarni o'chirish (Type Erasure)" :
+                     "Bosqich 3: Muvaffaqiyatli transpile qilindi"}
+                  </span>
+                </div>
+                <p className="text-sm text-slate-200 leading-relaxed font-sans">{tsStepDetail}</p>
+              </div>
+
+              {/* Code Editors Display */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-[680px] font-mono text-xs">
+                {/* Left Side: TS */}
+                <div className="flex flex-col bg-slate-950 border border-slate-900 rounded-xl overflow-hidden shadow-2xl">
+                  <div className="bg-slate-900/80 px-4 py-2 border-b border-slate-900 flex justify-between items-center">
+                    <span className="text-blue-400 font-bold">TypeScript (.ts)</span>
+                    <span className="text-[10px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded font-bold">SOURCE</span>
+                  </div>
+                  <pre className="p-4 overflow-x-auto text-slate-300 leading-relaxed min-h-[220px] whitespace-pre-wrap select-none text-left">
+                    <code>
+                      {renderCodeWithErasure(currentSnippet.ts, currentSnippet.erased, tsStep === 2)}
+                    </code>
+                  </pre>
+                </div>
+
+                {/* Right Side: JS */}
+                <div className="flex flex-col bg-slate-950 border border-slate-900 rounded-xl overflow-hidden shadow-2xl">
+                  <div className="bg-slate-900/80 px-4 py-2 border-b border-slate-900 flex justify-between items-center">
+                    <span className="text-amber-500 font-bold">JavaScript (.js)</span>
+                    <span className="text-[10px] bg-amber-500/10 text-amber-500 px-1.5 py-0.5 rounded font-bold">OUTPUT</span>
+                  </div>
+                  <div className="p-4 overflow-x-auto min-h-[220px] flex items-center justify-center text-center">
+                    {tsStep < 3 ? (
+                      <div className="text-slate-500 flex flex-col items-center gap-3 py-8">
+                        {tsStep === 1 ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin" />
+                            <p className="font-sans text-[11px] animate-pulse">Tip tekshiruvi ketmoqda...</p>
+                          </>
+                        ) : tsStep === 2 ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin" />
+                            <p className="font-sans text-[11px] animate-pulse">JS kod generatsiya qilinmoqda...</p>
+                          </>
+                        ) : (
+                          <p className="font-sans text-[11px]">Kompilyatsiya boshlanishi kutilmoqda</p>
+                        )}
+                      </div>
+                    ) : (
+                      <pre className="text-slate-300 text-left w-full h-full whitespace-pre-wrap select-none leading-relaxed">
+                        <code>{currentSnippet.js}</code>
+                      </pre>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       {/* CORE CONTROLS BAR */}
