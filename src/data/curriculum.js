@@ -201,6 +201,8 @@ import { sqlModifications } from "./lessons/sql/sqlModifications";
 import { prismaOrm } from "./lessons/sql/prismaOrm";
 import { mongooseDb } from "./lessons/sql/mongooseDb";
 
+import { eventSourcingCqrs } from "./lessons/system-design/eventSourcingCqrs";
+
 export const curriculum = {
   beginner: {
     label: "Boshlang'ich",
@@ -230,7 +232,7 @@ export const curriculum = {
     label: "Tizimli Dizayn",
     color: "#c96ac8",
     icon: "🌐",
-    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, apiGatewayDiscovery, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding, microservicesServerless, eventDrivenBrokers, cdnEdgeComputing, distributedTransactions, apiGatewayRouting]
+    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, apiGatewayDiscovery, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding, microservicesServerless, eventDrivenBrokers, cdnEdgeComputing, distributedTransactions, apiGatewayRouting, eventSourcingCqrs]
   },
   ecosystem: {
     label: "Ekotizim (React & Node.js)",
