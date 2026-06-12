@@ -92,6 +92,7 @@ import { historyRouting } from "./lessons/advanced/historyRouting";
 import { asyncPolyfills } from "./lessons/advanced/asyncPolyfills";
 import { reactivePatterns } from "./lessons/advanced/reactivePatterns";
 import { performanceAlgos } from "./lessons/advanced/performanceAlgos";
+import { integrationE2eTesting } from "./lessons/advanced/integrationE2eTesting";
 
 import { dsaBasics } from "./lessons/algorithms/dsaBasics";
 import { dsaControlFlow } from "./lessons/algorithms/dsaControlFlow";
@@ -139,6 +140,8 @@ import { consistentHashing } from "./lessons/system-design/consistentHashing";
 import { messageQueues } from "./lessons/system-design/messageQueues";
 import { microservices } from "./lessons/system-design/microservices";
 import { cachingRedis } from "./lessons/system-design/cachingRedis";
+import { rateLimitingSecurity } from "./lessons/system-design/rateLimitingSecurity";
+import { dbScalingSharding } from "./lessons/system-design/dbScalingSharding";
 
 
 import { reactArchitecture } from "./lessons/ecosystem/reactArchitecture";
@@ -208,7 +211,7 @@ export const curriculum = {
     label: "Murakkab",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, iteratorsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced, webComponents, advancedWebStorage, advancedWebApis, binaryData, webAnimations, historyRouting, asyncPolyfills, reactivePatterns, performanceAlgos]
+    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, iteratorsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced, webComponents, advancedWebStorage, advancedWebApis, binaryData, webAnimations, historyRouting, asyncPolyfills, reactivePatterns, performanceAlgos, integrationE2eTesting]
   },
   algorithms: {
     label: "Algoritmlar",
@@ -220,7 +223,7 @@ export const curriculum = {
     label: "Tizimli Dizayn",
     color: "#c96ac8",
     icon: "🌐",
-    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis]
+    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding]
   },
   ecosystem: {
     label: "Ekotizim (React & Node.js)",
