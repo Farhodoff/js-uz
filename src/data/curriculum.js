@@ -144,6 +144,7 @@ import { rateLimitingSecurity } from "./lessons/system-design/rateLimitingSecuri
 import { dbScalingSharding } from "./lessons/system-design/dbScalingSharding";
 import { microservicesServerless } from "./lessons/system-design/microservicesServerless";
 import { eventDrivenBrokers } from "./lessons/system-design/eventDrivenBrokers";
+import { cdnEdgeComputing } from "./lessons/system-design/cdnEdgeComputing";
 
 
 import { reactArchitecture } from "./lessons/ecosystem/reactArchitecture";
@@ -225,7 +226,7 @@ export const curriculum = {
     label: "Tizimli Dizayn",
     color: "#c96ac8",
     icon: "🌐",
-    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding, microservicesServerless, eventDrivenBrokers]
+    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding, microservicesServerless, eventDrivenBrokers, cdnEdgeComputing]
   },
   ecosystem: {
     label: "Ekotizim (React & Node.js)",
