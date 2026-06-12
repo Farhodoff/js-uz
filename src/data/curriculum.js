@@ -204,6 +204,7 @@ import { mongooseDb } from "./lessons/sql/mongooseDb";
 
 import { eventSourcingCqrs } from "./lessons/system-design/eventSourcingCqrs";
 import { gossipProtocol } from "./lessons/system-design/gossipProtocol";
+import { vectorClocks } from "./lessons/system-design/vectorClocks";
 
 export const curriculum = {
   beginner: {
@@ -234,7 +235,7 @@ export const curriculum = {
     label: "Tizimli Dizayn",
     color: "#c96ac8",
     icon: "🌐",
-    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, apiGatewayDiscovery, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding, microservicesServerless, eventDrivenBrokers, cdnEdgeComputing, distributedTransactions, apiGatewayRouting, eventSourcingCqrs, distributedConsensus, gossipProtocol]
+    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, apiGatewayDiscovery, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding, microservicesServerless, eventDrivenBrokers, cdnEdgeComputing, distributedTransactions, apiGatewayRouting, eventSourcingCqrs, distributedConsensus, gossipProtocol, vectorClocks]
   },
   ecosystem: {
     label: "Ekotizim (React & Node.js)",
