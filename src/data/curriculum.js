@@ -207,6 +207,7 @@ import { gossipProtocol } from "./lessons/system-design/gossipProtocol";
 import { vectorClocks } from "./lessons/system-design/vectorClocks";
 import { distributedLocking } from "./lessons/system-design/distributedLocking";
 import { capPacelc } from "./lessons/system-design/capPacelc";
+import { writeReadPath } from "./lessons/system-design/writeReadPath";
 
 export const curriculum = {
   beginner: {
@@ -237,7 +238,7 @@ export const curriculum = {
     label: "Tizimli Dizayn",
     color: "#c96ac8",
     icon: "🌐",
-    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, apiGatewayDiscovery, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding, microservicesServerless, eventDrivenBrokers, cdnEdgeComputing, distributedTransactions, apiGatewayRouting, eventSourcingCqrs, distributedConsensus, gossipProtocol, vectorClocks, distributedLocking, capPacelc]
+    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, apiGatewayDiscovery, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding, microservicesServerless, eventDrivenBrokers, cdnEdgeComputing, distributedTransactions, apiGatewayRouting, eventSourcingCqrs, distributedConsensus, gossipProtocol, vectorClocks, distributedLocking, capPacelc, writeReadPath]
   },
   ecosystem: {
     label: "Ekotizim (React & Node.js)",
