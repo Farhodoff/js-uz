@@ -137,6 +137,9 @@ import { distributedCharacteristics } from "./lessons/system-design/distributedC
 import { systemDesignQuiz2 } from "./lessons/system-design/systemDesignQuiz2";
 import { consistentHashing } from "./lessons/system-design/consistentHashing";
 import { messageQueues } from "./lessons/system-design/messageQueues";
+import { microservices } from "./lessons/system-design/microservices";
+import { cachingRedis } from "./lessons/system-design/cachingRedis";
+
 
 import { reactArchitecture } from "./lessons/ecosystem/reactArchitecture";
 import { reactStateManagement } from "./lessons/ecosystem/reactStateManagement";
@@ -185,6 +188,8 @@ import { sqlTransactions } from "./lessons/sql/sqlTransactions";
 import { sqlStoredProcedures } from "./lessons/sql/sqlStoredProcedures";
 import { sqlQueryOptimization } from "./lessons/sql/sqlQueryOptimization";
 import { sqlModifications } from "./lessons/sql/sqlModifications";
+import { prismaOrm } from "./lessons/sql/prismaOrm";
+import { mongooseDb } from "./lessons/sql/mongooseDb";
 
 export const curriculum = {
   beginner: {
@@ -215,7 +220,7 @@ export const curriculum = {
     label: "Tizimli Dizayn",
     color: "#c96ac8",
     icon: "🌐",
-    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues]
+    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis]
   },
   ecosystem: {
     label: "Ekotizim (React & Node.js)",
@@ -272,7 +277,9 @@ export const curriculum = {
       sqlTransactions,
       sqlStoredProcedures,
       sqlQueryOptimization,
-      sqlModifications
+      sqlModifications,
+      prismaOrm,
+      mongooseDb
     ]
   },
   challenges: {
