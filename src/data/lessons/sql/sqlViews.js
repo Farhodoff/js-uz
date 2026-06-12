@@ -289,31 +289,87 @@ Ushbu Materialized View har 1 soatda \`REFRESH MATERIALIZED VIEW CONCURRENTLY mv
 | **WITH CHECK OPTION** | view shartida qo'shimcha | Yozilayotgan ma'lumotni tekshiradi | Noto'g'ri INSERT-ni cheklaydi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Toshkentliklar Ko'rinishi",
-    "instruction": "`users` jadvalidan yashash shahri (`city`) 'Toshkent' bo'lgan barcha foydalanuvchilarni tanlaydigan `toshkent_users` nomli virtual ko'rinish (VIEW) yarating.",
-    "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-    "hint": "CREATE VIEW toshkent_users AS SELECT * FROM users WHERE city = 'Toshkent'",
-    "test": "try { const res = db.exec('SELECT * FROM toshkent_users'); if(!Array.isArray(res) || res.length !== 3) return 'View yaratilmagan yoki noto\\'g\\'ri filtrlangan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 2,
-    "title": "Katta Buyurtmalar",
-    "instruction": "`orders` jadvalidan buyurtma summasi (`amount`) 100.00 dan yuqori bo'lgan barcha buyurtmalarni tanlaydigan `high_orders` nomli virtual ko'rinish (VIEW) yarating.",
-    "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-    "hint": "CREATE VIEW high_orders AS SELECT * FROM orders WHERE amount > 100",
-    "test": "try { const res = db.exec('SELECT * FROM high_orders'); if(!Array.isArray(res) || res.length !== 4) return 'View yaratilmagan yoki noto\\'g\\'ri cheklangan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 3,
-    "title": "Buyurtmalar Soni",
-    "instruction": "`orders` jadvalidan har bir `user_id` bo'yicha buyurtmalar sonini (`total_orders`) hisoblaydigan `user_orders_count` nomli VIEW yarating.",
-    "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-    "hint": "CREATE VIEW user_orders_count AS SELECT user_id, COUNT(id) AS total_orders FROM orders GROUP BY user_id",
-    "test": "try { const res = db.exec('SELECT * FROM user_orders_count'); if(!Array.isArray(res) || res.length !== 4) return 'View yaratilmagan yoki guruhlash xato'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  }
-]
+    {
+      "id": 1,
+      "title": "Toshkentlik foydalanuvchilar ko'rinishi",
+      "instruction": "`users` jadvalidan yashash shahri (`city`) 'Toshkent' bo'lgan barcha foydalanuvchilarni tanlaydigan `toshkent_users` nomli virtual ko'rinish (VIEW) yarating.",
+      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE VIEW toshkent_users AS SELECT * FROM users WHERE city = 'Toshkent'",
+      "test": "try { const res = db.exec('SELECT * FROM toshkent_users'); if(!Array.isArray(res) || res.length !== 3) return 'View yaratilmagan yoki noto\\'g\\'ri filtrlangan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 2,
+      "title": "Qimmat buyurtmalar ko'rinishi",
+      "instruction": "`orders` jadvalidan buyurtma summasi (`amount`) 100.00 dan yuqori bo'lgan barcha buyurtmalarni tanlaydigan `high_orders` nomli virtual ko'rinish (VIEW) yarating.",
+      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE VIEW high_orders AS SELECT * FROM orders WHERE amount > 100",
+      "test": "try { const res = db.exec('SELECT * FROM high_orders'); if(!Array.isArray(res) || res.length !== 3) return 'View yaratilmagan yoki noto\\'g\\'ri cheklangan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 3,
+      "title": "Foydalanuvchilarning asosiy ma'lumotlari",
+      "instruction": "`users` jadvalidan faqat `id`, `name` va `city` ustunlarini tanlab, ularni mos ravishda `user_id`, `full_name` va `location` deb nomlab (alias) qaytaradigan `user_basic_info` nomli VIEW yarating.",
+      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE VIEW user_basic_info AS SELECT id AS user_id, name AS full_name, city AS location FROM users",
+      "test": "try { const res = db.exec('SELECT * FROM user_basic_info'); if(!Array.isArray(res) || res.length !== 5) return 'Ko\\'rinish topilmadi yoki qatorlar soni noto\\'g\\'ri'; const row = res[0]; if(!row.hasOwnProperty('user_id') || !row.hasOwnProperty('full_name') || !row.hasOwnProperty('location')) return 'Ustun nomlari alias yordamida o\\'zgartirilmagan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 4,
+      "title": "Foydalanuvchilar va ularning buyurtmalari",
+      "instruction": "`users` va `orders` jadvallarini JOIN qilib, foydalanuvchining ismi (`name`), mahsulot nomi (`product`) va summasini (`amount`) ko'rsatadigan `user_order_details` nomli VIEW yarating.",
+      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE VIEW user_order_details AS SELECT u.name, o.product, o.amount FROM users u JOIN orders o ON u.id = o.user_id",
+      "test": "try { const res = db.exec('SELECT * FROM user_order_details'); if(!Array.isArray(res) || res.length !== 6) return 'Ko\\'rinish topilmadi yoki JOIN sharti xato'; const row = res[0]; if(!row.hasOwnProperty('name') || !row.hasOwnProperty('product') || !row.hasOwnProperty('amount')) return 'Kerakli ustunlar topilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 5,
+      "title": "Foydalanuvchilar buyurtmalari soni",
+      "instruction": "`orders` jadvalidan foydalanib, har bir `user_id` bo'yicha buyurtmalar sonini (`total_orders`) hisoblaydigan `user_orders_count` nomli VIEW yarating.",
+      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE VIEW user_orders_count AS SELECT user_id, COUNT(id) AS total_orders FROM orders GROUP BY user_id",
+      "test": "try { const res = db.exec('SELECT * FROM user_orders_count'); if(!Array.isArray(res) || res.length !== 4) return 'View yaratilmagan yoki guruhlash xato'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 6,
+      "title": "Foydalanuvchilar billing hisoboti",
+      "instruction": "Har bir foydalanuvchining ismi (`name`), jami buyurtmalar soni (`order_count`) va sarflagan umumiy summasini (`total_spent`) hisoblab beradigan `user_billing_summary` nomli VIEW yarating. Xarid qilmagan foydalanuvchilar ham ro'yxatda chiqishi va ularning xaridi NULL yoki 0 bo'lishi uchun LEFT JOIN-dan foydalaning.",
+      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE VIEW user_billing_summary AS SELECT u.name, COUNT(o.id) AS order_count, SUM(o.amount) AS total_spent FROM users u LEFT JOIN orders o ON u.id = o.user_id GROUP BY u.id, u.name",
+      "test": "try { const res = db.exec('SELECT * FROM user_billing_summary'); if(!Array.isArray(res) || res.length !== 5) return 'Barcha 5 ta foydalanuvchi hisoboti topilmadi'; const admin = res.find(r => r.name === 'Ali'); if(!admin || parseInt(admin.order_count) !== 2 || parseFloat(admin.total_spent) !== 1225.50) return 'Hisob-kitoblar yoki JOIN noto\\'g\\'ri'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 7,
+      "title": "Ko'rinishni yangilash yoki almashtirish",
+      "instruction": "`toshkent_users` ko'rinishini Toshkentda yashovchi va yoshi (`age`) 25 dan katta yoki teng bo'lgan foydalanuvchilarni tanlaydigan yangi mantiq bilan almashtiruvchi (CREATE OR REPLACE VIEW) so'rov yozing.",
+      "startingCode": "-- VIEW yangilovchi SQL so'rovini yozing\n",
+      "hint": "CREATE OR REPLACE VIEW toshkent_users AS SELECT * FROM users WHERE city = 'Toshkent' AND age >= 25",
+      "test": "try { const res = db.exec('SELECT * FROM toshkent_users'); if(!Array.isArray(res) || res.length !== 2) return 'Ko\\'rinish yangilanmagan yoki yosh bo\\'yicha filtr xato'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 8,
+      "title": "Yangilanadigan ko'rinish (Updatable View)",
+      "instruction": "`users` jadvalidan faqat `id`, `name` va `city` ustunlarini o'z ichiga olgan `updatable_users` nomli ko'rinish (VIEW) yarating.",
+      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE VIEW updatable_users AS SELECT id, name, city FROM users",
+      "test": "try { const res = db.exec('SELECT * FROM updatable_users'); if(!Array.isArray(res)) return 'Ko\\'rinish yaratilmagan'; db.exec(\"INSERT INTO updatable_users (id, name, city) VALUES (6, 'Bahodir', 'Namangan')\"); const check = db.exec(\"SELECT * FROM users WHERE id = 6\"); if(check.length === 0 || check[0].name !== 'Bahodir') return 'Ko\\'rinish orqali jismoniy jadvalga ma\\'lumot yozib bo\\'lmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 9,
+      "title": "Tekshiruvga ega ko'rinish (WITH CHECK OPTION)",
+      "instruction": "`users` jadvalidan faqat roli (`role`) 'User' bo'lgan foydalanuvchilarni ko'rsatadigan `only_users_view` nomli ko'rinish yarating va unga boshqa roldagi foydalanuvchilarni qo'shishni taqiqlash uchun `WITH CHECK OPTION` cheklovini qo'shing.",
+      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE VIEW only_users_view AS SELECT id, name, role FROM users WHERE role = 'User' WITH CHECK OPTION",
+      "test": "try { const res = db.exec('SELECT * FROM only_users_view'); if(!Array.isArray(res)) return 'Ko\\'rinish yaratilmagan'; let blockWorked = false; try { db.exec(\"INSERT INTO only_users_view (id, name, role) VALUES (7, 'Zafar', 'Admin')\"); } catch(e) { blockWorked = true; } if(!blockWorked) return 'WITH CHECK OPTION cheklovi qo\\'yilmagan yoki ishlamadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 10,
+      "title": "Ko'rinishni o'chirish (DROP VIEW)",
+      "instruction": "Quyida yaratilgan `toshkent_users` nomli ko'rinishni (VIEW) butunlay o'chirib yuboruvchi SQL so'rovini yozing.",
+      "startingCode": "CREATE VIEW toshkent_users AS SELECT * FROM users;\n-- Quyida toshkent_users ko'rinishini o'chiring\n",
+      "hint": "DROP VIEW toshkent_users",
+      "test": "try { db.exec('SELECT * FROM toshkent_users'); return 'View hali ham mavjud, o\\'chirilmagan'; } catch(e) { /* muvaffaqiyatli o'chirildi */ } return null;"
+    }
+  ]
 ,
   quizzes: [
   {

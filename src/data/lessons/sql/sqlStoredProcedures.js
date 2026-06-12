@@ -359,31 +359,87 @@ Ushbu prosedura 100,000 foydalanuvchini soniyaning ulushlarida yangilab chiqadi 
 | **quote_ident** | \`quote_ident(table_name)\` | Dinamik SQL-ni himoya qilish | SQL Injection oldini oladi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Soliq Hisoblash Funksiyasi",
-    "instruction": "Mahsulot narxiga 10% soliq qo'shib qaytaruvchi `add_tax` nomli funksiya yarating (AlaSQL formatida: `CREATE FUNCTION add_tax AS \"function(p) { return p * 1.1; }\"`).",
-    "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
-    "hint": "CREATE FUNCTION add_tax AS \"function(p) { return p * 1.1; }\"",
-    "test": "try { db.exec('CREATE FUNCTION add_tax AS \"function(p) { return p * 1.1; }\"'); const res = db.exec('SELECT add_tax(100) AS val'); if(Math.round(res[0].val) !== 110) return 'Funksiya noto\\'g\\'ri hisobladi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 2,
-    "title": "Foydalanuvchi Salomlash Funksiyasi",
-    "instruction": "Foydalanuvchi ismiga 'Salom, ' so'zini qo'shib qaytaruvchi `greet_user` nomli funksiya yarating (AlaSQL formatida: `CREATE FUNCTION greet_user AS \"function(name) { return 'Salom, ' + name; }\"`).",
-    "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
-    "hint": "CREATE FUNCTION greet_user AS \"function(name) { return 'Salom, ' + name; }\"",
-    "test": "try { db.exec('CREATE FUNCTION greet_user AS \"function(name) { return \\'Salom, \\' + name; }\"'); const res = db.exec('SELECT greet_user(\\'Ali\\') AS val'); if(res[0].val !== 'Salom, Ali') return 'Funksiya noto\\'g\\'ri salomlashdi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 3,
-    "title": "Keshbek Hisoblash",
-    "instruction": "Xarid summasidan 5% keshbek miqdorini hisoblab qaytaruvchi `calc_cashback` nomli funksiya yarating (AlaSQL formatida: `CREATE FUNCTION calc_cashback AS \"function(amt) { return amt * 0.05; }\"`).",
-    "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
-    "hint": "CREATE FUNCTION calc_cashback AS \"function(amt) { return amt * 0.05; }\"",
-    "test": "try { db.exec('CREATE FUNCTION calc_cashback AS \"function(amt) { return amt * 0.05; }\"'); const res = db.exec('SELECT calc_cashback(1000) AS val'); if(Math.round(res[0].val) !== 50) return 'Funksiya noto\\'g\\'ri hisobladi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  }
-]
+    {
+      "id": 1,
+      "title": "Soliq Hisoblash Funksiyasi",
+      "instruction": "Mahsulot narxiga 10% soliq qo'shib qaytaruvchi `add_tax` nomli funksiya yarating (AlaSQL formatida: `CREATE FUNCTION add_tax AS \"function(p) { return p * 1.1; }\"`).",
+      "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE FUNCTION add_tax AS \"function(p) { return p * 1.1; }\"",
+      "test": "try { db.exec('CREATE FUNCTION add_tax AS \"function(p) { return p * 1.1; }\"'); const res = db.exec('SELECT add_tax(100) AS val'); if(Math.round(res[0].val) !== 110) return 'Funksiya noto\\'g\\'ri hisobladi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 2,
+      "title": "Foydalanuvchi Salomlash Funksiyasi",
+      "instruction": "Foydalanuvchi ismiga 'Salom, ' so'zini qo'shib qaytaruvchi `greet_user` nomli funksiya yarating (AlaSQL formatida: `CREATE FUNCTION greet_user AS \"function(name) { return 'Salom, ' + name; }\"`).",
+      "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE FUNCTION greet_user AS \"function(name) { return 'Salom, ' + name; }\"",
+      "test": "try { db.exec('CREATE FUNCTION greet_user AS \"function(name) { return \\'Salom, \\' + name; }\"'); const res = db.exec('SELECT greet_user(\\'Ali\\') AS val'); if(res[0].val !== 'Salom, Ali') return 'Funksiya noto\\'g\\'ri salomlashdi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 3,
+      "title": "Keshbek Hisoblash",
+      "instruction": "Xarid summasidan 5% keshbek miqdorini hisoblab qaytaruvchi `calc_cashback` nomli funksiya yarating (AlaSQL formatida: `CREATE FUNCTION calc_cashback AS \"function(amt) { return amt * 0.05; }\"`).",
+      "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE FUNCTION calc_cashback AS \"function(amt) { return amt * 0.05; }\"",
+      "test": "try { db.exec('CREATE FUNCTION calc_cashback AS \"function(amt) { return amt * 0.05; }\"'); const res = db.exec('SELECT calc_cashback(1000) AS val'); if(Math.round(res[0].val) !== 50) return 'Funksiya noto\\'g\\'ri hisobladi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 4,
+      "title": "Chegirma Hisoblash (IF/ELSE)",
+      "instruction": "Agar xarid summasi 500 dan katta bo'lsa 10% chegirma, aks holda 5% chegirma hisoblab qaytaruvchi `get_discount` nomli funksiya yarating (AlaSQL formatida yozing).",
+      "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE FUNCTION get_discount AS \"function(amt) { return amt > 500 ? amt * 0.1 : amt * 0.05; }\"",
+      "test": "try { db.exec('CREATE FUNCTION get_discount AS \"function(amt) { return amt > 500 ? amt * 0.1 : amt * 0.05; }\"'); const res1 = db.exec('SELECT get_discount(600) AS val'); const res2 = db.exec('SELECT get_discount(400) AS val'); if(Math.round(res1[0].val) !== 60 || Math.round(res2[0].val) !== 20) return 'Funksiya noto\\'g\\'ri hisobladi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 5,
+      "title": "Celsius'dan Fahrenheit'ga O'tkazish",
+      "instruction": "Selsiy haroratini Farengeytga o'tkazuvchi `celsius_to_fahrenheit` funksiyasini yarating (Formula: `F = C * 1.8 + 32`).",
+      "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE FUNCTION celsius_to_fahrenheit AS \"function(c) { return c * 1.8 + 32; }\"",
+      "test": "try { db.exec('CREATE FUNCTION celsius_to_fahrenheit AS \"function(c) { return c * 1.8 + 32; }\"'); const res1 = db.exec('SELECT celsius_to_fahrenheit(0) AS val'); const res2 = db.exec('SELECT celsius_to_fahrenheit(100) AS val'); if(res1[0].val !== 32 || res2[0].val !== 212) return 'Funksiya noto\\'g\\'ri hisobladi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 6,
+      "title": "Ikki Sondan Kattasini Aniqlash",
+      "instruction": "Kiritilgan ikki sonning kattasini qaytaruvchi `get_max` nomli funksiya yarating.",
+      "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE FUNCTION get_max AS \"function(a, b) { return a > b ? a : b; }\"",
+      "test": "try { db.exec('CREATE FUNCTION get_max AS \"function(a, b) { return a > b ? a : b; }\"'); const res1 = db.exec('SELECT get_max(10, 25) AS val'); const res2 = db.exec('SELECT get_max(40, 5) AS val'); if(res1[0].val !== 25 || res2[0].val !== 40) return 'Funksiya noto\\'g\\'ri qiymat qaytardi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 7,
+      "title": "Email Formatini Tekshirish",
+      "instruction": "Kiritilgan matnda `@` belgisi borligini tekshirib, `true` yoki `false` qaytaruvchi `is_valid_email` nomli funksiya yarating.",
+      "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE FUNCTION is_valid_email AS \"function(email) { return email.indexOf('@') !== -1; }\"",
+      "test": "try { db.exec('CREATE FUNCTION is_valid_email AS \"function(email) { return email.indexOf(\\'@\\') !== -1; }\"'); const res1 = db.exec('SELECT is_valid_email(\\'test@example.com\\') AS val'); const res2 = db.exec('SELECT is_valid_email(\\'invalid-email\\') AS val'); if(!res1[0].val || res2[0].val) return 'Funksiya noto\\'g\\'ri tekshirdi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 8,
+      "title": "Bahoni Aniqlash (Ko'p Shartli)",
+      "instruction": "Talaba to'plagan ballga qarab harfli baho qaytaruvchi `get_grade` nomli funksiya yarating: 90 va undan ko'p bo'lsa 'A', 80 va undan ko'p bo'lsa 'B', 70 va undan ko'p bo'lsa 'C', aks holda 'F'.",
+      "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE FUNCTION get_grade AS \"function(score) { if(score >= 90) return 'A'; if(score >= 80) return 'B'; if(score >= 70) return 'C'; return 'F'; }\"",
+      "test": "try { db.exec('CREATE FUNCTION get_grade AS \"function(score) { if(score >= 90) return \\'A\\'; if(score >= 80) return \\'B\\'; if(score >= 70) return \\'C\\'; return \\'F\\'; }\"'); const res1 = db.exec('SELECT get_grade(95) AS val'); const res2 = db.exec('SELECT get_grade(85) AS val'); const res3 = db.exec('SELECT get_grade(75) AS val'); const res4 = db.exec('SELECT get_grade(60) AS val'); if(res1[0].val !== 'A' || res2[0].val !== 'B' || res3[0].val !== 'C' || res4[0].val !== 'F') return 'Funksiya noto\\'g\\'ri baholadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 9,
+      "title": "Faktorialni Hisoblash (Tsikl)",
+      "instruction": "Kiritilgan n sonigacha bo'lgan faktorialni (n!) loop (tsikl) yordamida hisoblab qaytaruvchi `factorial` nomli funksiya yarating.",
+      "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE FUNCTION factorial AS \"function(n) { var res = 1; for(var i = 2; i <= n; i++) { res *= i; } return res; }\"",
+      "test": "try { db.exec('CREATE FUNCTION factorial AS \"function(n) { var res = 1; for(var i = 2; i <= n; i++) { res *= i; } return res; }\"'); const res1 = db.exec('SELECT factorial(5) AS val'); const res2 = db.exec('SELECT factorial(0) AS val'); if(res1[0].val !== 120 || res2[0].val !== 1) return 'Funksiya noto\\'g\\'ri hisobladi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 10,
+      "title": "Obuna Statusini Tekshirish",
+      "instruction": "Foydalanuvchi balansi va obuna narxi qabul qilib, obuna holatini aniqlovchi `check_subscription` nomli funksiya yarating. Agar balans narxga teng yoki katta bo'lsa 'Faol', aks holda 'Faol emas' qaytarsin.",
+      "startingCode": "-- Funksiyani yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE FUNCTION check_subscription AS \"function(balance, price) { return balance >= price ? 'Faol' : 'Faol emas'; }\"",
+      "test": "try { db.exec('CREATE FUNCTION check_subscription AS \"function(balance, price) { return balance >= price ? \\'Faol\\' : \\'Faol emas\\'; }\"'); const res1 = db.exec('SELECT check_subscription(50, 30) AS val'); const res2 = db.exec('SELECT check_subscription(20, 30) AS val'); if(res1[0].val !== 'Faol' || res2[0].val !== 'Faol emas') return 'Funksiya noto\\'g\\'ri javob berdi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    }
+  ]
 ,
   quizzes: [
   {

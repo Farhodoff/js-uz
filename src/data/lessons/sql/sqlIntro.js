@@ -428,32 +428,87 @@ Relyatsion bazalarda ma'lumotlar hajmi ortganida quyidagi optimallashtirish usul
 | **ACID** | Ishonchlilik standartlari | Tranzaksiyalarni boshqarish | Barcha reliesion tizimlarda |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Foydalanuvchilar jadvali",
-    "instruction": "Tizimdagi relyatsion tuzilmani tushunish uchun `users` jadvalidagi barcha ma'lumotlarni tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM users",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Jami 5 ta foydalanuvchi bo\\'lishi kerak'; if(!result[0].role) return 'Barcha ustunlarni tanlash kerak'; return null;"
-  },
-  {
-    "id": 2,
-    "title": "Mahsulotlar ombori",
-    "instruction": "`products` jadvalidagi barcha mahsulotlar va ularning ustunlarini oling.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM products",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Jami 5 ta mahsulot bo\\'lishi kerak'; if(result[0].stock === undefined) return 'Jadval tarkibida stock (ombor qoldig\\'i) ustuni bo\\'lishi kerak'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "Buyurtmalar ro'yxati",
-    "instruction": "`orders` jadvalidagi barcha yozuvlarni tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM orders",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 6) return 'Jami 6 ta buyurtma qaytishi kerak'; return null;"
-  }
-]
-,
+    {
+      "id": 1,
+      "title": "Barcha foydalanuvchilarni tanlash",
+      "instruction": "Tizimdagi barcha foydalanuvchilarni ko'rish uchun `users` jadvalidagi barcha ustunlar va qatorlarni tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT * FROM users",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Jami 5 ta foydalanuvchi bo\\'lishi kerak'; if(!result[0].role) return 'Barcha ustunlarni (jumladan role) tanlash kerak'; return null;"
+    },
+    {
+      "id": 2,
+      "title": "Barcha mahsulotlar ro'yxati",
+      "instruction": "Do'kondagi barcha tovarlarni ko'rish uchun `products` jadvalidagi barcha ustunlar va qatorlarni tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT * FROM products",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Jami 5 ta mahsulot bo\\'lishi kerak'; if(result[0].stock === undefined) return 'Jadval tarkibida stock (ombor qoldig\\'i) ustuni bo\\'lishi kerak'; return null;"
+    },
+    {
+      "id": 3,
+      "title": "Barcha buyurtmalarni olish",
+      "instruction": "Tizimdagi barcha buyurtmalarni tekshirish uchun `orders` jadvalidagi barcha yozuvlarni tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT * FROM orders",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 6) return 'Jami 6 ta buyurtma qaytishi kerak'; return null;"
+    },
+    {
+      "id": 4,
+      "title": "Foydalanuvchilarning ismi va emaili",
+      "instruction": "`users` jadvalidan faqat foydalanuvchilarning ismi (`name`) va elektron pochta (`email`) ustunlarini tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, email FROM users",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Jami 5 ta foydalanuvchi bo\\'lishi kerak'; if(result[0].name === undefined || result[0].email === undefined) return 'Faqat name va email ustunlarini tanlashingiz kerak'; if(result[0].role !== undefined) return 'Ortiqcha ustunlarni (masalan role) tanlamang'; return null;"
+    },
+    {
+      "id": 5,
+      "title": "Mahsulotlar nomi va narxi",
+      "instruction": "`products` jadvalidan faqat mahsulot nomi (`name`) va narxi (`price`) ustunlarini oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, price FROM products",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Jami 5 ta mahsulot bo\\'lishi kerak'; if(result[0].name === undefined || result[0].price === undefined) return 'Faqat name va price ustunlarini tanlashingiz kerak'; if(result[0].stock !== undefined) return 'Stock ustunini tanlamasligingiz kerak'; return null;"
+    },
+    {
+      "id": 6,
+      "title": "Buyurtmalar ID va summasi",
+      "instruction": "`orders` jadvalidan faqat buyurtma identifikatori (`id`) va summasi (`amount`) ustunlarini tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT id, amount FROM orders",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 6) return 'Jami 6 ta buyurtma bo\\'lishi kerak'; if(result[0].id === undefined || result[0].amount === undefined) return 'Faqat id va amount ustunlarini tanlashingiz kerak'; if(result[0].product !== undefined) return 'Mahsulot nomi (product) ustunini tanlamang'; return null;"
+    },
+    {
+      "id": 7,
+      "title": "Admin rolidagi foydalanuvchilar",
+      "instruction": "`users` jadvalidan faqat roli (`role`) 'Admin' bo'lgan foydalanuvchilarning barcha ma'lumotlarini tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT * FROM users WHERE role = 'Admin'",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Roli Admin bo\\'lgan jami 1 ta foydalanuvchi bo\\'lishi kerak'; if(result[0].role !== 'Admin') return 'Faqat roli Admin bo\\'lgan foydalanuvchini tanlang'; return null;"
+    },
+    {
+      "id": 8,
+      "title": "Qimmat mahsulotlarni filtrlash",
+      "instruction": "`products` jadvalidan narxi (`price`) 500 dan qimmat bo'lgan barcha mahsulotlarni tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT * FROM products WHERE price > 500",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Narxi 500 dan yuqori bo\\'lgan 2 ta mahsulot bo\\'lishi kerak'; if(result.some(p => parseFloat(p.price) <= 500)) return 'Faqat narxi 500 dan qimmat mahsulotlarni tanlang'; return null;"
+    },
+    {
+      "id": 9,
+      "title": "Katta miqdordagi buyurtmalar",
+      "instruction": "`orders` jadvalidan buyurtma summasi (`amount`) 100 ga teng yoki undan ortiq bo'lgan barcha yozuvlarni tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT * FROM orders WHERE amount >= 100",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Summasi 100 va undan katta 3 ta buyurtma bo\\'lishi kerak'; if(result.some(o => parseFloat(o.amount) < 100)) return 'Faqat summasi 100 dan kam bo\\'lmagan buyurtmalarni tanlang'; return null;"
+    },
+    {
+      "id": 10,
+      "title": "Admin bo'lmagan foydalanuvchilar",
+      "instruction": "`users` jadvalidan roli (`role`) 'Admin' bo'lgan foydalanuvchilardan tashqari barcha foydalanuvchilarni tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT * FROM users WHERE role != 'Admin'",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Admin bo\\'lmagan jami 4 ta foydalanuvchi bo\\'lishi kerak'; if(result.some(u => u.role === 'Admin')) return 'Natijada Admin bo\\'lgan foydalanuvchilar bo\\'lmasligi shart'; return null;"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

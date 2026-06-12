@@ -382,32 +382,87 @@ Relyatsion bog'lanish va ACID tranzaksiyasi ushbu pul o'tkazmasini 100% xavfsiz 
 | **ROLLBACK TO**| \`ROLLBACK TO point_name;\`| Nuqtaga qaytish | Keyingi amallarni bekor qiladi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Tranzaksiyani Saqlash (COMMIT)",
-    "instruction": "Tranzaksiyani boshlang, `users` jadvalidan ID-si 1 bo'lgan foydalanuvchining shahrini (`city`) 'Buxoro' qilib yangilang va tranzaksiyani saqlang (COMMIT).",
-    "startingCode": "-- Tranzaksiyani yozing\n",
-    "hint": "BEGIN TRANSACTION; UPDATE users SET city = 'Buxoro' WHERE id = 1; COMMIT;",
-    "test": "const user = db.exec('SELECT city FROM users WHERE id = 1')[0]; if(user.city !== 'Buxoro') return 'Tranzaksiya saqlanmadi'; return null;"
-  },
-  {
-    "id": 2,
-    "title": "Tranzaksiyani Bekor Qilish (ROLLBACK)",
-    "instruction": "Tranzaksiyani boshlang, `users` jadvalidagi barcha foydalanuvchilarning yoshini (`age`) 100 qilib o'zgartiring, ammo keyin bu o'zgarishlarni bekor qiling (ROLLBACK).",
-    "startingCode": "-- Tranzaksiyani yozing\n",
-    "hint": "BEGIN TRANSACTION; UPDATE users SET age = 100; ROLLBACK;",
-    "test": "const users = db.exec('SELECT age FROM users'); if(users.some(u => u.age === 100)) return 'O\\'zgarishlar bekor qilinmadi'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "Yangi Foydalanuvchi va COMMIT",
-    "instruction": "Tranzaksiyani boshlang, `users` jadvaliga yangi foydalanuvchini qo'shing (id: 6, name: 'Zafar', age: 27, city: 'Navoiy', role: 'User') va tranzaksiyani yakunlang (COMMIT).",
-    "startingCode": "-- Tranzaksiyani yozing\n",
-    "hint": "BEGIN TRANSACTION; INSERT INTO users VALUES (6, 'Zafar', 27, 'Navoiy', 'User'); COMMIT;",
-    "test": "const users = db.exec('SELECT * FROM users WHERE id = 6'); if(users.length !== 1 || users[0].name !== 'Zafar') return 'Yangi foydalanuvchi muvaffaqiyatli saqlanmadi'; return null;"
-  }
-]
-,
+    {
+      "id": 1,
+      "title": "Tranzaksiyani boshlash va saqlash (COMMIT)",
+      "instruction": "Tranzaksiyani boshlang (`BEGIN;` yoki `BEGIN TRANSACTION;`), `users` jadvalidan ID-si 1 bo'lgan foydalanuvchining shahrini (`city`) 'Buxoro' qilib o'zgartiring va tranzaksiyani yakunlang (`COMMIT;`).",
+      "startingCode": "-- Tranzaksiyani yozing\n",
+      "hint": "BEGIN; UPDATE users SET city = 'Buxoro' WHERE id = 1; COMMIT;",
+      "test": "const user = db.exec(\"SELECT city FROM users WHERE id = 1\")[0]; if (!user || user.city !== 'Buxoro') return 'Foydalanuvchi shahri Buxoroga o\\'zgartirilmadi va saqlanmadi.'; return null;"
+    },
+    {
+      "id": 2,
+      "title": "Tranzaksiyani bekor qilish (ROLLBACK)",
+      "instruction": "Tranzaksiyani boshlang, `users` jadvalidan ID-si 3 bo'lgan foydalanuvchini o'chiring (`DELETE`), so'ngra ushbu o'chirish amalini bekor qiling (`ROLLBACK;`).",
+      "startingCode": "-- Tranzaksiyani yozing\n",
+      "hint": "BEGIN; DELETE FROM users WHERE id = 3; ROLLBACK;",
+      "test": "const user = db.exec(\"SELECT * FROM users WHERE id = 3\")[0]; if (!user) return 'Foydalanuvchi butunlay o\\'chib ketdi, tranzaksiya bekor qilinmagan.'; return null;"
+    },
+    {
+      "id": 3,
+      "title": "Bir nechta yangilash amallarini birgalikda saqlash",
+      "instruction": "Tranzaksiyani boshlang. ID-si 1 bo'lgan foydalanuvchining yoshini (`age`) 25 ga, ID-si 2 bo'lgan foydalanuvchining yoshini (`age`) 30 ga yangilang va o'zgarishlarni saqlang (`COMMIT;`).",
+      "startingCode": "-- Tranzaksiyani yozing\n",
+      "hint": "BEGIN; UPDATE users SET age = 25 WHERE id = 1; UPDATE users SET age = 30 WHERE id = 2; COMMIT;",
+      "test": "const u1 = db.exec(\"SELECT age FROM users WHERE id = 1\")[0]; const u2 = db.exec(\"SELECT age FROM users WHERE id = 2\")[0]; if (!u1 || u1.age !== 25 || !u2 || u2.age !== 30) return 'Yoshlar to\\'g\\'ri o\\'zgartirilmadi yoki saqlanmadi.'; return null;"
+    },
+    {
+      "id": 4,
+      "title": "Savepoint yaratish va qisman bekor qilish",
+      "instruction": "Tranzaksiyani boshlang. ID-si 1 bo'lgan foydalanuvchining rolini (`role`) 'Admin' qilib o'zgartiring. Keyin `sp1` nomli saqlash nuqtasini (`SAVEPOINT sp1;`) yarating. Keyin ID-si 2 bo'lgan foydalanuvchining rolini 'User' qilib o'zgartiring. Keyin esa faqat ikkinchi o'zgarishni bekor qilish uchun `sp1` nuqtasiga qayting (`ROLLBACK TO sp1;`). Oxirida tranzaksiyani yakunlang (`COMMIT;`).",
+      "startingCode": "-- Tranzaksiyani yozing\n",
+      "hint": "BEGIN; UPDATE users SET role = 'Admin' WHERE id = 1; SAVEPOINT sp1; UPDATE users SET role = 'User' WHERE id = 2; ROLLBACK TO sp1; COMMIT;",
+      "test": "const u1 = db.exec(\"SELECT role FROM users WHERE id = 1\")[0]; const u2 = db.exec(\"SELECT role FROM users WHERE id = 2\")[0]; if (!u1 || u1.role !== 'Admin') return 'Birinchi foydalanuvchi roli Admin bo\\'lmadi.'; if (!u2 || u2.role === 'User') return 'Ikkinchi foydalanuvchi roli bekor qilinmadi.'; return null;"
+    },
+    {
+      "id": 5,
+      "title": "Tranzaksiya ichida yangi qator qo'shish va bekor qilish",
+      "instruction": "Tranzaksiyani boshlang. `users` jadvaliga yangi foydalanuvchini qo'shing (id: 10, name: 'Sardor', age: 31, city: 'Qarshi', role: 'User'). So'ngra ushbu qo'shish amalini bekor qiling (`ROLLBACK;`).",
+      "startingCode": "-- Tranzaksiyani yozing\n",
+      "hint": "BEGIN; INSERT INTO users (id, name, age, city, role) VALUES (10, 'Sardor', 31, 'Qarshi', 'User'); ROLLBACK;",
+      "test": "const user = db.exec(\"SELECT * FROM users WHERE id = 10\")[0]; if (user) return 'Foydalanuvchi bazaga qo\\'shilib qoldi, tranzaksiya bekor qilinmagan.'; return null;"
+    },
+    {
+      "id": 6,
+      "title": "Bir nechta SAVEPOINT bilan ishlash",
+      "instruction": "Tranzaksiyani boshlang. `users` jadvaliga yangi foydalanuvchi qo'shing (id: 11, name: 'Malika', age: 22, city: 'Farg\\'ona', role: 'User'). `save_user` nomli saqlash nuqtasini yarating (`SAVEPOINT save_user;`). Keyin ID-si 1 bo'lgan foydalanuvchining shahrini 'Xiva' qilib yangilang. `save_city` nomli ikkinchi saqlash nuqtasini yarating. Keyin ID-si 2 bo'lgan foydalanuvchini o'chiring (`DELETE`). Endi faqat o'chirish amalini bekor qilish uchun `save_city` nuqtasiga qayting (`ROLLBACK TO save_city;`). Oxirida tranzaksiyani yakunlang (`COMMIT;`).",
+      "startingCode": "-- Tranzaksiyani yozing\n",
+      "hint": "BEGIN; INSERT INTO users VALUES (11, 'Malika', 22, 'Farg\\'ona', 'User'); SAVEPOINT save_user; UPDATE users SET city = 'Xiva' WHERE id = 1; SAVEPOINT save_city; DELETE FROM users WHERE id = 2; ROLLBACK TO save_city; COMMIT;",
+      "test": "const u11 = db.exec(\"SELECT * FROM users WHERE id = 11\")[0]; const u1 = db.exec(\"SELECT city FROM users WHERE id = 1\")[0]; const u2 = db.exec(\"SELECT * FROM users WHERE id = 2\")[0]; if (!u11) return 'Malika qo\\'shilmadi.'; if (!u1 || u1.city !== 'Xiva') return 'ID 1 foydalanuvchining shahri Xiva bo\\'lmadi.'; if (!u2) return 'ID 2 o\\'chirilishi bekor qilinmadi.'; return null;"
+    },
+    {
+      "id": 7,
+      "title": "Tranzaksiya izolyatsiyasi darajasini belgilash",
+      "instruction": "Tranzaksiya izolyatsiyasi darajasini `READ COMMITTED` qilib o'rnating (`SET TRANSACTION ISOLATION LEVEL READ COMMITTED;`), tranzaksiyani boshlang, ID-si 3 bo'lgan foydalanuvchining yoshini 35 ga yangilang va tranzaksiyani saqlang (`COMMIT;`).",
+      "startingCode": "-- Izolyatsiya darajasini o'rnating va tranzaksiyani bajaring\n",
+      "hint": "SET TRANSACTION ISOLATION LEVEL READ COMMITTED; BEGIN; UPDATE users SET age = 35 WHERE id = 3; COMMIT;",
+      "test": "const u3 = db.exec(\"SELECT age FROM users WHERE id = 3\")[0]; if (!u3 || u3.age !== 35) return 'Tranzaksiya muvaffaqiyatli saqlanmadi yoki yosh o\\'zgartirilmadi.'; return null;"
+    },
+    {
+      "id": 8,
+      "title": "Serializable izolyatsiya darajasida tranzaksiya",
+      "instruction": "Tranzaksiya izolyatsiyasi darajasini `SERIALIZABLE` qilib belgilang, tranzaksiyani boshlang, ID-si 4 bo'lgan foydalanuvchini o'chiring va tranzaksiyani yakunlang (`COMMIT;`).",
+      "startingCode": "-- Izolyatsiya darajasini belgilab tranzaksiyani yozing\n",
+      "hint": "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; BEGIN; DELETE FROM users WHERE id = 4; COMMIT;",
+      "test": "const u4 = db.exec(\"SELECT * FROM users WHERE id = 4\")[0]; if (u4) return 'ID-si 4 bo\\'lgan foydalanuvchi o\\'chirilmadi.'; return null;"
+    },
+    {
+      "id": 9,
+      "title": "Qatorni o'zgartirish uchun qulflash (FOR UPDATE)",
+      "instruction": "Tranzaksiyani boshlang. ID-si 1 bo'lgan foydalanuvchi qatorini boshqalar o'zgartira olmasligi uchun `SELECT ... FOR UPDATE` yordamida qulflang. Keyin uning yoshini (`age`) 40 ga o'zgartiring va tranzaksiyani saqlang (`COMMIT;`).",
+      "startingCode": "-- Tranzaksiya va FOR UPDATE ishlatib yozing\n",
+      "hint": "BEGIN; SELECT * FROM users WHERE id = 1 FOR UPDATE; UPDATE users SET age = 40 WHERE id = 1; COMMIT;",
+      "test": "const u1 = db.exec(\"SELECT age FROM users WHERE id = 1\")[0]; if (!u1 || u1.age !== 40) return 'Yosh o\\'zgartirilmadi yoki saqlanmadi.'; return null;"
+    },
+    {
+      "id": 10,
+      "title": "Tranzaksiya ichida shartli bekor qilish va saqlash",
+      "instruction": "Tranzaksiyani boshlang. ID-si 5 bo'lgan foydalanuvchining shahrini 'Namangan' qilib o'zgartiring. `sp_namangan` saqlash nuqtasini yarating. Keyin ID-si 5 bo'lgan foydalanuvchining rolini 'SuperAdmin' qilib yangilang. `sp_role` saqlash nuqtasini yarating. Keyin butun `users` jadvalidagi foydalanuvchilarni o'chirib yuboruvchi xavfli so'rovni yozing (`DELETE FROM users;`). Bu xavfli xatoni bartaraf etish uchun darhol `sp_role` nuqtasiga qayting (`ROLLBACK TO sp_role;`). Oxirida tranzaksiyani yakunlang (`COMMIT;`).",
+      "startingCode": "-- Tranzaksiyani yozing\n",
+      "hint": "BEGIN; UPDATE users SET city = 'Namangan' WHERE id = 5; SAVEPOINT sp_namangan; UPDATE users SET role = 'SuperAdmin' WHERE id = 5; SAVEPOINT sp_role; DELETE FROM users; ROLLBACK TO sp_role; COMMIT;",
+      "test": "const count = db.exec(\"SELECT COUNT(*) as cnt FROM users\")[0].cnt; if (count === 0) return 'Hamma foydalanuvchilar o\\'chirib yuborildi!'; const u5 = db.exec(\"SELECT city, role FROM users WHERE id = 5\")[0]; if (!u5 || u5.city !== 'Namangan' || u5.role !== 'SuperAdmin') return 'ID 5 o\\'zgarishlari to\\'g\\'ri saqlanmadi.'; return null;"
+    }
+  ],
   quizzes: [
   {
     "id": 1,

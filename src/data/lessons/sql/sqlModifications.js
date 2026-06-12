@@ -212,31 +212,87 @@ DML amallarini optimallashtirish qoidalari:
 | **TRUNCATE** | \`TRUNCATE TABLE users;\` | Jadvalni butunlay tozalash | ROLLBACK qilish imkonsiz (ko'p hollarda) |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Yangi foydalanuvchi qo'shish",
-    "instruction": "`users` jadvaliga yangi foydalanuvchi qo'shing. Qiymatlar: `id` = 6, `name` = 'Jasur', `age` = 24, `city` = 'Xiva', `role` = 'User'.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "INSERT INTO users (id, name, age, city, role) VALUES (6, 'Jasur', 24, 'Xiva', 'User')",
-    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT * FROM users WHERE id = 6'); if(check.length !== 1 || check[0].name !== 'Jasur') return 'Jasur foydalanuvchisi qo\\'shilmadi'; return null;"
-  },
-  {
-    "id": 2,
-    "title": "Yoshni yangilash (UPDATE)",
-    "instruction": "`users` jadvalidan `name` qiymati 'Sardor' bo'lgan foydalanuvchining yoshini (`age`) 23 ga o'zgartiring.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "UPDATE users SET age = 23 WHERE name = 'Sardor'",
-    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT age FROM users WHERE name = 'Sardor'\"); if(check.length === 0 || check[0].age !== 23) return 'Sardorning yoshi yangilanmadi'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "Menejerni o'chirish (DELETE)",
-    "instruction": "`users` jadvalidan roli `Manager` bo'lgan barcha foydalanuvchilarni o'chirib tashlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "DELETE FROM users WHERE role = 'Manager'",
-    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM users WHERE role = 'Manager'\"); if(check.length !== 0) return 'Menejer o\\'chmadi'; return null;"
-  }
-]
+    {
+      "id": 1,
+      "title": "Yangi foydalanuvchi qo'shish",
+      "instruction": "`users` jadvaliga yangi foydalanuvchi qo'shing. Qiymatlar: `id` = 6, `name` = 'Jasur', `age` = 24, `city` = 'Xiva', `role` = 'User'.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "INSERT INTO users (id, name, age, city, role) VALUES (6, 'Jasur', 24, 'Xiva', 'User')",
+      "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT * FROM users WHERE id = 6'); if(check.length !== 1 || check[0].name !== 'Jasur') return 'Jasur foydalanuvchisi qo\\'shilmadi'; return null;"
+    },
+    {
+      "id": 2,
+      "title": "Yoshni yangilash (UPDATE)",
+      "instruction": "`users` jadvalidan `name` qiymati 'Sardor' bo'lgan foydalanuvchining yoshini (`age`) 23 ga o'zgartiring.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "UPDATE users SET age = 23 WHERE name = 'Sardor'",
+      "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT age FROM users WHERE name = 'Sardor'\"); if(check.length === 0 || check[0].age !== 23) return 'Sardorning yoshi yangilanmadi'; return null;"
+    },
+    {
+      "id": 3,
+      "title": "Menejerni o'chirish (DELETE)",
+      "instruction": "`users` jadvalidan roli `Manager` bo'lgan barcha foydalanuvchilarni o'chirib tashlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "DELETE FROM users WHERE role = 'Manager'",
+      "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM users WHERE role = 'Manager'\"); if(check.length !== 0) return 'Menejer o\\'chmadi'; return null;"
+    },
+    {
+      "id": 4,
+      "title": "Bir nechta yozuv qo'shish (Batch Insert)",
+      "instruction": "`users` jadvaliga bir vaqtning o'zida ikkita yangi foydalanuvchini qo'shing:\n1. `id` = 7, `name` = 'Malika', `age` = 22, `city` = 'Buxoro', `role` = 'User'\n2. `id` = 8, `name` = 'Temur', `age` = 29, `city` = 'Samarqand', `role` = 'User'",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "INSERT INTO users (id, name, age, city, role) VALUES (7, 'Malika', 22, 'Buxoro', 'User'), (8, 'Temur', 29, 'Samarqand', 'User')",
+      "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT * FROM users WHERE id IN (7, 8)'); if(check.length !== 2) return 'Foydalanuvchilar to\\'liq qo\\'shilmadi'; return null;"
+    },
+    {
+      "id": 5,
+      "title": "Shahri aniqlanmagan foydalanuvchilarni o'chirish",
+      "instruction": "`users` jadvalidan shahri (`city`) aniqlanmagan (ya'ni `NULL` bo'lgan) barcha foydalanuvchilarni o'chiring.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "DELETE FROM users WHERE city IS NULL",
+      "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT * FROM users WHERE city IS NULL'); if(check.length !== 0) return 'Shahri NULL bo\\'lgan foydalanuvchilar o\\'chmadi'; return null;"
+    },
+    {
+      "id": 6,
+      "title": "Bir nechta maydonni yangilash",
+      "instruction": "`users` jadvalida ID-si 2 bo'lgan foydalanuvchining shahrini (`city`) 'Toshkent' ga, yoshini (`age`) 28 ga va roli (`role`) ni 'Admin' ga o'zgartiring.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "UPDATE users SET city = 'Toshkent', age = 28, role = 'Admin' WHERE id = 2",
+      "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT * FROM users WHERE id = 2'); if(check.length === 0 || check[0].city !== 'Toshkent' || check[0].age !== 28 || check[0].role !== 'Admin') return 'Foydalanuvchi ma\\'lumotlari to\\'g\\'ri yangilanmadi'; return null;"
+    },
+    {
+      "id": 7,
+      "title": "Subquery yordamida rolni yangilash",
+      "instruction": "`orders` jadvalida kamida bitta buyurtmasi bor bo'lgan foydalanuvchilarning roli (`role`) ni 'Active' ga o'zgartiring (Subquery yordamida `WHERE id IN (...)` shaklida yozing).",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "UPDATE users SET role = 'Active' WHERE id IN (SELECT DISTINCT user_id FROM orders)",
+      "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT role FROM users WHERE id IN (1, 2, 3, 4)'); if(check.some(u => u.role !== 'Active')) return 'Buyurtmasi bor barcha foydalanuvchilar roli Active bo\\'lmadi'; return null;"
+    },
+    {
+      "id": 8,
+      "title": "Subquery yordamida o'chirish",
+      "instruction": "Hech qachon buyurtma bermagan (ya'ni `id` qiymati `orders` jadvalidagi `user_id` ustunida mavjud bo'lmagan) barcha foydalanuvchilarni `users` jadvalidan o'chiring.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "DELETE FROM users WHERE id NOT IN (SELECT DISTINCT user_id FROM orders WHERE user_id IS NOT NULL)",
+      "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT * FROM users WHERE id NOT IN (SELECT DISTINCT user_id FROM orders)'); if(check.length !== 0) return 'Buyurtma bermagan foydalanuvchilar o\\'chirilmadi'; return null;"
+    },
+    {
+      "id": 9,
+      "title": "Matematik amallar bilan yangilash",
+      "instruction": "`products` jadvalidan nomi 'Laptop' bo'lgan mahsulotning ombor qoldig'ini (`stock`) 2 taga kamaytiring (ya'ni uning qiymatidan 2 ni ayiring).",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "UPDATE products SET stock = stock - 2 WHERE name = 'Laptop'",
+      "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT stock FROM products WHERE name = 'Laptop'\"); if(check.length === 0 || check[0].stock !== 8) return 'Laptopning ombor qoldig\\'i to\\'g\\'ri kamaytirilmadi'; return null;"
+    },
+    {
+      "id": 10,
+      "title": "Boshqa jadval qiymatlari asosida yangilash",
+      "instruction": "`products` jadvalidagi barcha mahsulotlarning narxini (`price`) 10% ga oshiring (narxni `price * 1.1` ga o'zgartiring), lekin faqat kategoriyasi (`category`) 'Electronics' bo'lgan mahsulotlar uchun.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "UPDATE products SET price = price * 1.1 WHERE category = 'Electronics'",
+      "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT price FROM products WHERE name = 'Laptop'\"); if(check.length === 0 || parseFloat(check[0].price) !== 1320.00) return 'Electronics mahsulotlari narxi to\\'g\\'ri yangilanmadi'; return null;"
+    }
+  ]
 ,
   quizzes: [
   {

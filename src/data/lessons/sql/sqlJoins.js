@@ -238,27 +238,83 @@ ORDER BY o.order_date DESC;
   exercises: [
   {
     "id": 1,
-    "title": "Buyurtmalar va Ismlar (INNER JOIN)",
-    "instruction": "`orders` jadvalini `users` jadvali bilan bog'lang (user_id va id orqali). Foydalanuvchining ismi (`name`), mahsulot (`product`) va summasi (`amount`) ustunlarini tanlang.",
+    "title": "Foydalanuvchilar va ularning buyurtmalari (INNER JOIN)",
+    "instruction": "`orders` jadvalini `users` jadvali bilan bog'lang (`user_id` va `id` orqali). Foydalanuvchining ismi (`name`), mahsulot (`product`) va summasi (`amount`) ustunlarini tanlang. Faqat buyurtma bergan foydalanuvchilar chiqishi kerak.",
     "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT users.name, orders.product, orders.amount FROM orders INNER JOIN users ON orders.user_id = users.id",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 6) return 'Jami 6 ta buyurtma qaytishi kerak'; if(result[0].name === undefined || result[0].product === undefined) return 'name va product ustunlarini tanlang'; return null;"
+    "hint": "SELECT u.name, o.product, o.amount FROM orders o INNER JOIN users u ON o.user_id = u.id",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 6) return 'Jami 6 ta buyurtma qaytishi kerak'; if(result[0].name === undefined || result[0].product === undefined || result[0].amount === undefined) return 'name, product va amount ustunlarini tanlang'; return null;"
   },
   {
     "id": 2,
-    "title": "Barcha foydalanuvchilar va buyurtmalar (LEFT JOIN)",
-    "instruction": "`users` jadvalini `orders` jadvali bilan `LEFT JOIN` yordamida bog'lang. Foydalanuvchining ismi (`name`), mahsulot (`product`) va summasi (`amount`) ustunlarini tanlang.",
+    "title": "Barcha foydalanuvchilar va xaridlar (LEFT JOIN)",
+    "instruction": "Tizimdagi barcha foydalanuvchilarni va ularning buyurtmalarini ko'rsating. Buning uchun `users` jadvalini `orders` jadvali bilan `LEFT JOIN` orqali bog'lang. Foydalanuvchining ismi (`name`), buyurtma qilingan mahsulot (`product`) va summasi (`amount`) ustunlarini tanlang.",
     "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT users.name, orders.product, orders.amount FROM users LEFT JOIN orders ON users.id = orders.user_id",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 7) return 'LEFT JOIN tufayli buyurtma bermagan foydalanuvchilar (masalan, Dilshod) ham chiqishi shart (jami 7 qator)'; return null;"
+    "hint": "SELECT u.name, o.product, o.amount FROM users u LEFT JOIN orders o ON u.id = o.user_id",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 7) return 'LEFT JOIN ishlatilganda jami 7 ta qator qaytishi kerak (buyurtma bermagan Dilshod ham chiqishi shart)'; const dilshod = result.find(r => r.name === 'Dilshod'); if(!dilshod) return 'Dilshod natijada bo\\\'lishi kerak'; if(dilshod.product !== null && dilshod.product !== undefined) return 'Dilshodning buyurtma mahsuloti NULL bo\\\'lishi kerak'; return null;"
   },
   {
     "id": 3,
-    "title": "Mahsulotlar va buyurtma summalari",
-    "instruction": "`orders` jadvalidagi `product` ustunini `products` jadvalidagi `name` ustuniga bog'lang (`INNER JOIN`). Mahsulot nomi (`name`), toifasi (`category`) va buyurtma qilingan summasi (`amount`) ustunlarini tanlang.",
+    "title": "Toshkentlik foydalanuvchilar buyurtmalari (INNER JOIN + WHERE)",
+    "instruction": "Faqat Toshkent shahridan bo'lgan foydalanuvchilarning buyurtmalarini toping. `orders` va `users` jadvallarini birlashtiring. Foydalanuvchi ismi (`name`), shahri (`city`), mahsulot (`product`) va summasi (`amount`) ustunlarini tanlang. Natijani Toshkent shahri bo'yicha filtrlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT u.name, u.city, o.product, o.amount FROM orders o INNER JOIN users u ON o.user_id = u.id WHERE u.city = 'Toshkent'",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Toshkentlik foydalanuvchilarning jami 3 ta buyurtmasi bo\\\'lhishi kerak'; const hasTashkentOnly = result.every(r => r.city === 'Toshkent'); if(!hasTashkentOnly) return 'Faqat Toshkent shahridagi foydalanuvchilar buyurtmalari chiqishi kerak'; return null;"
+  },
+  {
+    "id": 4,
+    "title": "Buyurtma bermagan mijozlarni aniqlash (LEFT JOIN + NULL check)",
+    "instruction": "Tizimda ro'yxatdan o'tgan, lekin hali birorta ham buyurtma bermagan foydalanuvchilarni aniqlang. `users` jadvalini `orders` jadvali bilan `LEFT JOIN` qiling va `WHERE` yordamida faqat buyurtmasi yo'q (`orders.id IS NULL`) bo'lgan foydalanuvchining ismi (`name`) va roli (`role`) ustunlarini tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT u.name, u.role FROM users u LEFT JOIN orders o ON u.id = o.user_id WHERE o.id IS NULL",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Faqat 1 ta buyurtma bermagan foydalanuvchi bo\\\'lishi kerak'; if(result[0].name !== 'Dilshod') return 'Buyurtma bermagan foydalanuvchi Dilshod bo\\\'lishi kerak'; if(result[0].role === undefined) return 'role ustunini tanlashni unutmang'; return null;"
+  },
+  {
+    "id": 5,
+    "title": "Mavjud mahsulotlar buyurtmalari (INNER JOIN)",
+    "instruction": "`orders` jadvalidagi mahsulotlarni (`product`) `products` jadvalidagi mahsulot nomi (`name`) bilan bog'lang (`INNER JOIN`). Mahsulot nomi (`name`), toifasi (`category`), va buyurtma summasi (`amount`) ustunlarini tanlang. Faqat ikkala jadvalda ham mos keluvchi mahsulotlar chiqishi kerak.",
     "startingCode": "-- SQL so'rovini yozing\n",
     "hint": "SELECT p.name, p.category, o.amount FROM orders o INNER JOIN products p ON o.product = p.name",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Orders va Products jadvallarida mos keluvchi 3 ta mahsulot bor'; return null;"
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Faqat 3 ta buyurtma mahsuloti products jadvalida mavjud (Laptop, Phone, Mouse)'; if(result[0].category === undefined) return 'category ustunini ham tanlang'; return null;"
+  },
+  {
+    "id": 6,
+    "title": "Sotilmagan mahsulotlarni topish (RIGHT JOIN)",
+    "instruction": "`orders` va `products` jadvallarini `RIGHT JOIN` yordamida birlashtirib, barcha mahsulotlar va ularga mos buyurtmalarni chiqaring. `products` jadvali o'ng tomonda bo'lsin. Mahsulot nomi (`name` - `products` jadvalidan), toifasi (`category`) va buyurtma summasi (`amount`) ustunlarini tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT p.name, p.category, o.amount FROM orders o RIGHT JOIN products p ON o.product = p.name",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'RIGHT JOIN tufayli jami 5 ta mahsulot chiqishi kerak (sotilmagan Desk va Chair bilan)'; const desk = result.find(r => r.name === \\`Desk\\`); if(!desk) return 'Desk mahsuloti natijada bo\\\'lishi kerak'; if(desk.amount !== null && desk.amount !== undefined) return 'Sotilmagan mahsulotlar uchun amount qiymati NULL bo\\\'lishi kerak'; return null;"
+  },
+  {
+    "id": 7,
+    "title": "Barcha mahsulotlar va buyurtmalar mosligi (FULL JOIN)",
+    "instruction": "Barcha buyurtmalar va barcha mahsulotlarni to'liq birlashtirib ko'rish uchun `orders` va `products` jadvallarini `FULL JOIN` orqali ulang. Buyurtmadagi mahsulot nomi (`product` - `orders` jadvalidan), mahsulotlar jadvalidagi nomi (`name` - `products` jadvalidan) va buyurtma summasini (`amount`) tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT o.product, p.name, o.amount FROM orders o FULL JOIN products p ON o.product = p.name",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 8) return 'FULL JOIN natijasida jami 8 ta qator chiqishi kerak'; const onlyInOrders = result.filter(r => r.product && !r.name); const onlyInProducts = result.filter(r => !r.product && r.name); if(onlyInOrders.length !== 3) return 'Faqat buyurtmalarda bor 3 ta mahsulot chiqishi kerak (Keyboard, Monitor, Charger)'; if(onlyInProducts.length !== 2) return 'Faqat mahsulotlarda bor 2 ta mahsulot chiqishi kerak (Desk, Chair)'; return null;"
+  },
+  {
+    "id": 8,
+    "title": "Mijoz, Buyurtma va Mahsulot toifasi (3 ta jadval JOIN)",
+    "instruction": "Foydalanuvchining ismi (`name` - `users` jadvalidan), buyurtma qilingan mahsulot nomi (`product` - `orders` jadvalidan) va uning toifasini (`category` - `products` jadvalidan) birgalikda chiqaruvchi so'rov yozing. Buning uchun `users`, `orders` va `products` jadvallarini `INNER JOIN` yordamida o'zaro bog'lang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT u.name, o.product, p.category FROM orders o INNER JOIN users u ON o.user_id = u.id INNER JOIN products p ON o.product = p.name",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return '3 ta jadvalda mos keluvchi jami 3 ta yozuv bo\\\'lishi kerak'; if(result[0].name === undefined || result[0].product === undefined || result[0].category === undefined) return 'Foydalanuvchi ismi, mahsulot va toifa ustunlarini tanlang'; return null;"
+  },
+  {
+    "id": 9,
+    "title": "Har bir foydalanuvchining xaridlari summasi (LEFT JOIN + GROUP BY)",
+    "instruction": "Har bir foydalanuvchining ismi (`name`) va u qilgan buyurtmalarning umumiy summasini (`total_spent`) hisoblang. Buning uchun `users` jadvalini `orders` jadvali bilan `LEFT JOIN` qiling, natijani foydalanuvchi ID (`u.id`) va ismi (`u.name`) bo'yicha guruhlang (`GROUP BY`). Agar foydalanuvchi xarid qilmagan bo'lsa, summani `COALESCE(SUM(o.amount), 0)` yordamida `0` qilib ko'rsating. Natijani `total_spent` nomi bilan qaytaring.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT u.name, COALESCE(SUM(o.amount), 0) AS total_spent FROM users u LEFT JOIN orders o ON u.id = o.user_id GROUP BY u.id, u.name",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Barcha 5 ta foydalanuvchi guruhlanib chiqishi kerak'; const dilshod = result.find(r => r.name === 'Dilshod'); if(!dilshod) return 'Dilshod natijada bo\\\'lishi kerak'; if(Number(dilshod.total_spent) !== 0) return 'Dilshodning jami xarajati 0 bo\\\'lishi kerak'; const ali = result.find(r => r.name === 'Ali'); if(!ali || Number(ali.total_spent) !== 1225.5) return 'Ali ning jami xarajati 1225.5 bo\\\'lishi kerak'; return null;"
+  },
+  {
+    "id": 10,
+    "title": "Foydalanuvchilar va Mahsulotlar kombinatsiyasi (CROSS JOIN)",
+    "instruction": "Kompaniya marketing kampaniyasi uchun har bir foydalanuvchiga har bir mavjud mahsulotni tavsiya qilmoqchi. `users` jadvali va `products` jadvalining barcha kombinatsiyalarini (CROSS JOIN) hosil qiling. Foydalanuvchi ismi (`name` - `users` jadvalidan) va mahsulot nomi (`name` - `products` jadvalidan) ustunlarini tanlang. Taxalluslar ishlating (`u.name AS user_name`, `p.name AS product_name`).",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT u.name AS user_name, p.name AS product_name FROM users u CROSS JOIN products p",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 25) return 'CROSS JOIN natijasida 5 ta foydalanuvchi va 5 ta mahsulot ko\\\'paytmasi bo\\\'lgan 25 ta qator hosil bo\\\'lishi kerak'; if(result[0].user_name === undefined || result[0].product_name === undefined) return 'user_name va product_name taxalluslaridan foydalaning'; return null;"
   }
 ]
 ,

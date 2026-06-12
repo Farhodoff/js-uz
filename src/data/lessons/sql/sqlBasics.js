@@ -326,31 +326,87 @@ Biz \`(status, publish_date)\` ustunlariga indeks qo'yamiz. Bu orqali foydalanuv
 | **OFFSET** | \`OFFSET 20\` | Qatorlarni tashlab o'tish | Katta raqamlarda sekinlashadi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Toshkentliklarni tartiblash",
-    "instruction": "`users` jadvalidan yashash shahri (`city`) 'Toshkent' bo'lgan barcha foydalanuvchilarning ismi (`name`) va yashash shahri (`city`) ustunlarini ismi bo'yicha alifbo tartibida (ASC) oling.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT name, city FROM users WHERE city = 'Toshkent' ORDER BY name ASC",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Toshkentda 3 ta foydalanuvchi yashaydi'; if(result[0].name !== 'Ali' || result[2].name !== 'Sardor') return 'Alifbo bo\\'yicha o\\'sish tartibida saralash xato'; return null;"
-  },
-  {
-    "id": 2,
-    "title": "Eng qimmat mahsulotlar",
-    "instruction": "`products` jadvalidan eng qimmat 3 ta mahsulotning nomi (`name`) va narxi (`price`) ustunlarini narxining kamayish tartibida (DESC) saralab oling.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT name, price FROM products ORDER BY price DESC LIMIT 3",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Faqat 3 ta mahsulot qaytishi kerak'; if(result[0].name !== 'Laptop' || parseFloat(result[0].price) !== 1200.00) return 'Narxi bo\\'yicha kamayish tartibida saralash xato'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "Oddiy foydalanuvchilarni tartiblash",
-    "instruction": "`users` jadvalidan roli (`role`) 'User' bo'lgan barcha foydalanuvchilarning ismi (`name`), yoshi (`age`) va roli (`role`) ustunlarini yoshi bo'yicha o'sish tartibida oling.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT name, age, role FROM users WHERE role = 'User' ORDER BY age ASC",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Roli User bo\\'lgan jami 3 kishi bor'; if(result[0].name !== 'Sardor' || result[2].name !== 'Dilshod') return 'Yosh bo\\'yicha saralash xato'; return null;"
-  }
-]
+    {
+      "id": 1,
+      "title": "Barcha foydalanuvchilarning ismlari",
+      "instruction": "`users` jadvalidan barcha foydalanuvchilarning ismi (`name`) ustunini tanlab oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name FROM users",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Foydalanuvchilar soni noto\\'g\\'ri'; if(result[0].name !== 'Ali' || !result[0].hasOwnProperty('name') || Object.keys(result[0]).length !== 1) return 'Faqat name ustunini tanlang'; return null;"
+    },
+    {
+      "id": 2,
+      "title": "Foydalanuvchilarning ismi va yoshi",
+      "instruction": "`users` jadvalidan barcha foydalanuvchilarning ismi (`name`) va yoshi (`age`) ustunlarini oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, age FROM users",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Foydalanuvchilar soni noto\\'g\\'ri'; if(!result[0].hasOwnProperty('name') || !result[0].hasOwnProperty('age') || Object.keys(result[0]).length !== 2) return 'Faqat name va age ustunlarini tanlang'; return null;"
+    },
+    {
+      "id": 3,
+      "title": "Foydalanuvchilarni alifbo bo'yicha saralash",
+      "instruction": "`users` jadvalidan barcha foydalanuvchilarning ismi (`name`) ustunini ismi bo'yicha alifbo tartibida (o'sish tartibida - ASC) saralab oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name FROM users ORDER BY name ASC",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Natija 5 ta qatordan iborat bo\\'lishi kerak'; if(result[0].name !== 'Ali' || result[4].name !== 'Vali') return 'Alifbo bo\\'yicha saralash xato'; return null;"
+    },
+    {
+      "id": 4,
+      "title": "Eng qimmat mahsulotlar",
+      "instruction": "`products` jadvalidan eng qimmat 3 ta mahsulotning nomi (`name`) va narxi (`price`) ustunlarini narxining kamayish tartibida (DESC) saralab oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, price FROM products ORDER BY price DESC LIMIT 3",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Faqat 3 ta mahsulot qaytishi kerak'; if(result[0].name !== 'Laptop' || parseFloat(result[0].price) !== 1200.00) return 'Narxi bo\\'yicha kamayish tartibida saralash xato'; return null;"
+    },
+    {
+      "id": 5,
+      "title": "Toshkentlik foydalanuvchilar",
+      "instruction": "`users` jadvalidan yashash shahri (`city`) 'Toshkent' bo'lgan foydalanuvchilarning ismi (`name`) va shahri (`city`) ustunlarini tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, city FROM users WHERE city = 'Toshkent'",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Toshkentda yashovchi foydalanuvchilar soni 3 ta bo\\'lishi kerak'; if(result.some(r => r.city !== 'Toshkent')) return 'Faqat Toshkentliklarni tanlang'; return null;"
+    },
+    {
+      "id": 6,
+      "title": "Katta yoshli foydalanuvchilar",
+      "instruction": "`users` jadvalidan yoshi (`age`) 25 dan katta bo'lgan foydalanuvchilarning ismi (`name`), yoshi (`age`) va roli (`role`) ustunlarini yoshi bo'yicha o'sish tartibida (ASC) saralab oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, age, role FROM users WHERE age > 25 ORDER BY age ASC",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Yoshi 25 dan katta 3 ta foydalanuvchi bor'; if(Number(result[0].age) !== 28 || Number(result[2].age) !== 35) return 'Yosh bo\\'yicha saralash yoki shart xato'; return null;"
+    },
+    {
+      "id": 7,
+      "title": "Toshkentliklarni alifbo bo'yicha saralash va cheklash",
+      "instruction": "`users` jadvalidan yashash shahri (`city`) 'Toshkent' bo'lgan barcha foydalanuvchilarning ismi (`name`) va yashash shahri (`city`) ustunlarini ismi bo'yicha alifbo tartibida (ASC) oling va dastlabki 2 ta qator bilan cheklang (LIMIT).",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, city FROM users WHERE city = 'Toshkent' ORDER BY name ASC LIMIT 2",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Faqat 2 ta qator qaytishi kerak'; if(result[0].name !== 'Ali' || result[1].name !== 'Dilshod') return 'Toshkentliklarni alifbo bo\\'yicha saralash va cheklash xato'; return null;"
+    },
+    {
+      "id": 8,
+      "title": "Sahifalash: Dastlabki buyurtmalarni o'tkazib yuborish",
+      "instruction": "`orders` jadvalidan barcha buyurtmalarning idsi (`id`) va mahsulot nomi (`product`) ustunlarini id bo'yicha o'sish tartibida (ASC) saralang, keyin dastlabki 3 ta buyurtmani tashlab (OFFSET), keyingi 2 ta buyurtmani (LIMIT) oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT id, product FROM orders ORDER BY id ASC LIMIT 2 OFFSET 3",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Natija 2 ta qatordan iborat bo\\'lishi kerak'; if(result[0].id !== 104 || result[1].id !== 105) return 'Sahifalash mantiqi xato'; return null;"
+    },
+    {
+      "id": 9,
+      "title": "Murakkab saralash: Roli va Yoshi bo'yicha",
+      "instruction": "`users` jadvalidan foydalanuvchilarning ismi (`name`), roli (`role`) va yoshi (`age`) ustunlarini tanlang. Ularni avval roli (`role`) bo'yicha o'sish tartibida (ASC), keyin esa bir xil roldagilarni yoshi (`age`) bo'yicha kamayish tartibida (DESC) saralang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, role, age FROM users ORDER BY role ASC, age DESC",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Natijada barcha 5 ta foydalanuvchi bo\\'lishi kerak'; if(result[0].role !== 'Admin') return 'Roli bo\\'yicha o\\'sish tartibi xato'; if(result[2].name !== 'Dilshod' || result[2].age !== 35) return 'Roli bir xillar yoshi bo\\'yicha kamayish tartibida saralanmagan'; return null;"
+    },
+    {
+      "id": 10,
+      "title": "Electronics kategoriyasidagi eng arzon mahsulot",
+      "instruction": "`products` jadvalidan kategoriyasi (`category`) 'Electronics' bo'lgan mahsulotlarning nomi (`name`), narxi (`price`) va ombordagi soni (`stock`) ustunlarini narx bo'yicha o'sish tartibida (ASC) saralang va faqat eng birinchi (eng arzon) 1 tasini (LIMIT) oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, price, stock FROM products WHERE category = 'Electronics' ORDER BY price ASC LIMIT 1",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Faqat 1 ta mahsulot qaytishi kerak'; if(result[0].name !== 'Mouse' || parseFloat(result[0].price) !== 25.00) return 'Electronics kategoriyasidagi eng arzon mahsulot tanlanmagan'; return null;"
+    }
+  ]
 ,
   quizzes: [
   {

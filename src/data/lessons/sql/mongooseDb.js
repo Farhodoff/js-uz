@@ -282,6 +282,62 @@ graph TD
       "startingCode": "function addUserVirtuals(schema) {\n  // Kodni shu yerda yozing\n}\n",
       "hint": "schema.virtual('fullName').get(function() { return `${this.firstName} ${this.lastName}`; })",
       "test": "let virtualName = '';\nlet getFn;\nconst mockSchema = {\n  virtual(name) {\n    virtualName = name;\n    return {\n      get(fn) {\n        getFn = fn;\n      }\n    };\n  }\n};\nconst sandbox = new Function(code + '; return addUserVirtuals;');\nconst fn = sandbox();\nfn(mockSchema);\nif (virtualName !== 'fullName') return 'fullName virtual xossasi qo\\'shilmadi';\nif (typeof getFn !== 'function') return 'fullName uchun get metodi belgilanmagan';\nconst mockDoc = { firstName: 'Ali', lastName: 'Valiyev' };\nconst res = getFn.call(mockDoc);\nif (res !== 'Ali Valiyev') return 'fullName virtual xossasi noto\\'g\\'ri qiymat qaytardi: ' + res;\nreturn null;"
+    },
+    {
+      "id": 4,
+      "title": "Custom Schema Validator qo'shish",
+      "instruction": "Mongoose schemasidagi `email` maydoniga maxsus validatsiya (custom validator) qo'shuvchi `addCustomEmailValidator(schema)` funksiyasini yozing. Validatsiya funksiyasi kiritilgan email manzilida `@` belgisi borligini tekshirishi kerak. Agar email tarkibida `@` bo'lmasa, `Noto'g'ri email formati` xatosini qaytarsin. Validatsiyani `schema.path('email').validate(validatorFunction, errorMessage)` orqali qo'shing.",
+      "startingCode": "function addCustomEmailValidator(schema) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "schema.path('email').validate(function(val) { return val && val.includes('@'); }, 'Noto\\'g\\'ri email formati')",
+      "test": "let pathName = '';\nlet validatorFn, errorMsg = '';\nconst mockSchema = {\n  path(name) {\n    pathName = name;\n    return {\n      validate(fn, msg) {\n        validatorFn = fn;\n        errorMsg = msg;\n      }\n    };\n  }\n};\nconst sandbox = new Function(code + '; return addCustomEmailValidator;');\nconst fn = sandbox();\nfn(mockSchema);\nif (pathName !== 'email') return 'email maydoni uchun validator qo\\'shilmadi';\nif (typeof validatorFn !== 'function') return 'Validator funksiyasi aniqlanmagan';\nif (validatorFn('test.com') !== false || validatorFn('test@domain.com') !== true) return 'Validator funksiyasi noto\\'g\\'ri tekshiryapti';\nif (!errorMsg || !errorMsg.includes('email')) return 'Xato xabari to\\'g\\'ri o\\'rnatilmagan';\nreturn null;"
+    },
+    {
+      "id": 5,
+      "title": "Instance va Static metodlar",
+      "instruction": "Mongoose schemasiga bitta instance metod va bitta static metod qo'shadigan `addUserMethodsAndStatics(schema)` funksiyasini yozing:\n1. Instance metod `isAdult()` deb nomlansin va u joriy foydalanuvchining yoshi (`this.age`) 18 yoki undan katta bo'lsa `true`, aks holda `false` qaytarsin.\n2. Static metod `findByEmail(email)` deb nomlansin va u model orqali `this.findOne({ email: email.toLowerCase() })` so'rovini amalga oshirib, natijani qaytarsin.",
+      "startingCode": "function addUserMethodsAndStatics(schema) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "schema.methods.isAdult = function() { ... }; schema.statics.findByEmail = function(email) { ... };",
+      "test": "const mockSchema = {\n  methods: {},\n  statics: {}\n};\nconst sandbox = new Function(code + '; return addUserMethodsAndStatics;');\nconst fn = sandbox();\nfn(mockSchema);\nif (typeof mockSchema.methods.isAdult !== 'function') return 'isAdult instance metodi qo\\'shilmadi';\nif (typeof mockSchema.statics.findByEmail !== 'function') return 'findByEmail static metodi qo\\'shilmadi';\nconst mockDoc = { age: 20 };\nif (mockSchema.methods.isAdult.call(mockDoc) !== true) return 'isAdult metodi yosh 20 bo\\'lganda true qaytarmadi';\nconst mockDocYoung = { age: 15 };\nif (mockSchema.methods.isAdult.call(mockDocYoung) !== false) return 'isAdult metodi yosh 15 bo\\'lganda false qaytarmadi';\nlet queryObj;\nconst mockModel = {\n  findOne(obj) {\n    queryObj = obj;\n    return Promise.resolve('user_found');\n  }\n};\nconst staticRes = mockSchema.statics.findByEmail.call(mockModel, 'TEST@Example.Com');\nif (!queryObj || queryObj.email !== 'test@example.com') return 'findByEmail static metodi emailni kichik harflarda qidirmadi';\nreturn null;"
+    },
+    {
+      "id": 6,
+      "title": "Reference va Population",
+      "instruction": "Mongoose-da blog postlari uchun `Post` schemasini yaratuvchi `createPostSchema(mongoose)` funksiyasini yozing. Schema quyidagi maydonlarga ega bo'lishi shart:\n- `title` (String, majburiy)\n- `content` (String, majburiy)\n- `author` (Mongoose Schema Types ObjectId turi, `User` modeliga ishora (ref: 'User'), majburiy)\n\nFunksiya yangi Mongoose Schema obyektini qaytarsin.",
+      "startingCode": "function createPostSchema(mongoose) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }",
+      "test": "const mockMongoose = {\n  Schema: class {\n    constructor(obj) {\n      this.obj = obj;\n    }\n  }\n};\nmockMongoose.Schema.Types = {\n  ObjectId: 'ObjectId'\n};\nconst sandbox = new Function(code + '; return createPostSchema;');\nconst fn = sandbox();\nconst schema = fn(mockMongoose);\nif (!schema || !schema.obj) return 'Schema obyekti qaytarilmadi';\nconst obj = schema.obj;\nif (!obj.title || obj.title.type !== String || !obj.title.required) return 'title maydoni xato';\nif (!obj.content || obj.content.type !== String || !obj.content.required) return 'content maydoni xato';\nif (!obj.author || obj.author.type !== 'ObjectId' || obj.author.ref !== 'User' || !obj.author.required) return 'author maydoni to\\'g\\'ri bog\\'lanmagan (ObjectId, ref: User, required)';\nreturn null;"
+    },
+    {
+      "id": 7,
+      "title": "Query Helpers yaratish",
+      "instruction": "Mongoose so'rovlarini zanjirband (chainable) qilishga yordam beradigan `byRole(role)` nomli query helper qo'shuvchi `addQueryHelper(schema)` funksiyasini yozing. Bu helper so'rovni `this.find({ role: role })` orqali filtrlasin. Helper `schema.query.byRole`-ga biriktirilishi shart.",
+      "startingCode": "function addQueryHelper(schema) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "schema.query.byRole = function(role) { return this.find({ role: role }); };",
+      "test": "const mockSchema = {\n  query: {}\n};\nconst sandbox = new Function(code + '; return addQueryHelper;');\nconst fn = sandbox();\nfn(mockSchema);\nif (typeof mockSchema.query.byRole !== 'function') return 'byRole query helper qo\\'shilmadi';\nlet queryObj;\nconst mockQuery = { \n  find(obj) {\n    queryObj = obj;\n    return this;\n  }\n};\nmockSchema.query.byRole.call(mockQuery, 'admin');\nif (!queryObj || queryObj.role !== 'admin') return 'byRole helperi so\\'rovni to\\'g\\'ri filtrlamadi';\nreturn null;"
+    },
+    {
+      "id": 8,
+      "title": "Post-save Hook orqali Log yozish",
+      "instruction": "Hujjat bazaga muvaffaqiyatli saqlangandan so'ng log yozadigan `addPostSaveHook(schema, logFn)` funksiyasini yozing. Funksiya schema-ga post-save hook (`post('save', ...)`) qo'shishi kerak. Hook ichida saqlangan foydalanuvchining `username` qiymati orqali `logFn(\"Foydalanuvchi saqlandi: [username]\")` ko'rinishida xabar yuborishi kerak.",
+      "startingCode": "function addPostSaveHook(schema, logFn) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "schema.post('save', function(doc) { logFn(`Foydalanuvchi saqlandi: ${doc.username}`); })",
+      "test": "let hookType, hookFn;\nconst mockSchema = {\n  post(type, fn) {\n    hookType = type;\n    hookFn = fn;\n  }\n};\nconst sandbox = new Function(code + '; return addPostSaveHook;');\nconst fn = sandbox();\nlet logMessage = '';\nfn(mockSchema, (msg) => { logMessage = msg; });\nif (hookType !== 'save') return 'save post-hook qo\\'shilmadi';\nif (typeof hookFn !== 'function') return 'Hook funksiyasi aniqlanmagan';\nconst mockDoc = { username: 'john_doe' };\nhookFn(mockDoc);\nif (logMessage !== 'Foydalanuvchi saqlandi: john_doe') return 'Log funksiyasi noto\\'g\\'ri xabar bilan chaqirildi: ' + logMessage;\nreturn null;"
+    },
+    {
+      "id": 9,
+      "title": "Aggregation pipeline orqali yosh o'rtachasini hisoblash",
+      "instruction": "Foydalanuvchilarni `status` maydoni bo'yicha guruhlab, har bir status uchun o'rtacha yoshni hisoblaydigan aggregation so'rovini bajaruvchi `getAverageAgeByStatus(UserModel)` asinxron funksiyasini yozing. Funksiya `UserModel.aggregate([...])` natijasini qaytarsin. Aggregation pipeline tarkibida `$group` bosqichi bo'lishi va u `_id` sifatida `$status`-ni, hamda `averageAge` kaliti ostida yosh o'rtachasini (`$avg: \"$age\"`) hisoblashi kerak.",
+      "startingCode": "async function getAverageAgeByStatus(UserModel) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "return await UserModel.aggregate([ { $group: { _id: \"$status\", averageAge: { $avg: \"$age\" } } } ]);",
+      "test": "let pipelineArg;\nconst mockModel = {\n  aggregate(pipeline) {\n    pipelineArg = pipeline;\n    return Promise.resolve([{ _id: 'active', averageAge: 30 }]);\n  }\n};\nconst sandbox = new Function(code + '; return getAverageAgeByStatus;');\nconst fn = sandbox();\nreturn fn(mockModel).then(res => {\n  if (!pipelineArg || !Array.isArray(pipelineArg) || pipelineArg.length === 0) return 'Aggregation pipeline ishlatilmadi';\n  const groupStage = pipelineArg.find(stage => stage.$group);\n  if (!groupStage) return '$group bosqichi pipeline ichida topilmadi';\n  if (groupStage.$group._id !== '$status') return '_id maydoni uchun status ko\\'rsatilmagan';\n  if (!groupStage.$group.averageAge || !groupStage.$group.averageAge.$avg || groupStage.$group.averageAge.$avg !== '$age') {\n    return 'averageAge uchun $avg operatori orqali $age hisoblanmagan';\n  }\n  return null;\n}).catch(err => 'Xatolik yuz berdi: ' + err.message);"
+    },
+    {
+      "id": 10,
+      "title": "Soft Delete uchun Global Pre-hook",
+      "instruction": "Tizimda ma'lumotlarni butunlay o'chirmasdan, `isDeleted: true` qilib belgilash (soft delete) amaliyoti qo'llaniladi. Siz barcha `find` va `findOne` so'rovlarida o'chirilgan hujjatlarni (`isDeleted: true`) avtomatik ravishda filtrlab tashlaydigan global pre-hook yaratuvchi `addSoftDeleteHook(schema)` funksiyasini yozing. Funksiya schema-ga `find` va `findOne` so'rovlari uchun pre hook qo'shishi va ularni `this.find({ isDeleted: { $ne: true } })` orqali filtrlab, so'ngra `next()` ni chaqirishi lozim.",
+      "startingCode": "function addSoftDeleteHook(schema) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "schema.pre('find', function(next) { this.find({ isDeleted: { $ne: true } }); next(); }); schema.pre('findOne', function(next) { this.find({ isDeleted: { $ne: true } }); next(); });",
+      "test": "const registeredHooks = {};\nconst mockSchema = {\n  pre(type, fn) {\n    registeredHooks[type] = fn;\n  }\n};\nconst sandbox = new Function(code + '; return addSoftDeleteHook;');\nconst fn = sandbox();\nfn(mockSchema);\nif (typeof registeredHooks.find !== 'function') return 'find uchun pre hook ro\\'yxatdan o\\'tmadi';\nif (typeof registeredHooks.findOne !== 'function') return 'findOne uchun pre hook ro\\'yxatdan o\\'tmadi';\nlet queryCriteria;\nlet nextCalled = false;\nconst mockQuery = {\n  find(criteria) {\n    queryCriteria = criteria;\n    return this;\n  }\n};\nregisteredHooks.find.call(mockQuery, () => { nextCalled = true; });\nif (!nextCalled) return 'find hookda next() chaqirilmadi';\nif (!queryCriteria || !queryCriteria.isDeleted || queryCriteria.isDeleted.$ne !== true) {\n  return 'find so\\'rovida isDeleted: { $ne: true } filtri qo\\'shilmadi';\n}\nreturn null;"
     }
   ],
   quizzes: [

@@ -361,31 +361,87 @@ Solishtirish va mantiqiy operatorlarning indekslarga ta'siri:
 | **ILIKE** | \`WHERE name ILIKE 'a%'\` | Case-insensitive LIKE | PostgreSQL da mavjud |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Tenglik va Sonlar",
-    "instruction": "`users` jadvalidan yoshi (`age`) roppa-rosa 25 bo'lgan foydalanuvchilarning ismi (`name`) va yoshi (`age`) ustunlarini tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT name, age FROM users WHERE age = 25",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Yoshi 25 bo\\'lgan 1 ta foydalanuvchi bor (Ali)'; if(result[0].name !== 'Ali' || result[0].age !== 25) return 'Natijada faqat 25 yoshli Ali chiqishi kerak'; return null;"
-  },
-  {
-    "id": 2,
-    "title": "Taqqoslash va DECIMAL",
-    "instruction": "`products` jadvalidan narxi (`price`) 100.00 dan yuqori bo'lgan mahsulotlarning nomi (`name`) va narxi (`price`) ustunlarini tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT name, price FROM products WHERE price > 100",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Narxi 100 dan yuqori 4 ta mahsulot bor'; if(result.some(p => p.price <= 100)) return 'Faqat narxi 100 dan yuqori bo\\'lgan mahsulotlar chiqishi kerak'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "Mantiqiy operator (AND)",
-    "instruction": "`products` jadvalidan toifasi (`category`) 'Electronics' bo'lgan va narxi (`price`) 1000.00 dan arzon bo'lgan barcha mahsulotlarni tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM products WHERE category = 'Electronics' AND price < 1000",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Shartga mos keladigan 1 ta mahsulot bor (Phone)'; if(result[0].name !== 'Phone') return 'Faqat Phone chiqishi kerak'; return null;"
-  }
-]
+    {
+      "id": 1,
+      "title": "Sodda tanlash (SELECT-FROM)",
+      "instruction": "`users` jadvalidan barcha foydalanuvchilarning ismi (`name`) va yashash shahri (`city`) ustunlarini tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, city FROM users",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Jadvaldagi barcha 5 foydalanuvchini tanlang'; if(result[0].name === undefined || result[0].city === undefined || result[0].age !== undefined) return 'Faqat name va city ustunlari bo\\'lishi kerak'; return null;"
+    },
+    {
+      "id": 2,
+      "title": "Ustun nomini o'zgartirish (AS)",
+      "instruction": "`users` jadvalidan ismi (`name`) ustunini `foydalanuvchi_ismi` va roli (`role`) ustunini `lavozimi` deb qayta nomlab (alias yordamida) oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name AS foydalanuvchi_ismi, role AS lavozimi FROM users",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Barcha 5 ta foydalanuvchi qaytishi kerak'; if(!result[0].hasOwnProperty('foydalanuvchi_ismi') || !result[0].hasOwnProperty('lavozimi')) return 'AS yordamida ustun nomlarini foydalanuvchi_ismi va lavozimi deb nomlang'; return null;"
+    },
+    {
+      "id": 3,
+      "title": "Sodda shart bilan filtrlash (WHERE)",
+      "instruction": "`products` jadvalidan zaxira miqdori (`stock`) 10 dan ortiq bo'lgan barcha mahsulotlarning nomi (`name`) va zaxirasi (`stock`) ustunlarini tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, stock FROM products WHERE stock > 10",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Zaxirasi 10 dan ortiq bo\\'lgan 3 ta mahsulot bo\\'lishi kerak'; if(result.some(p => p.stock <= 10)) return 'Faqat zaxirasi 10 dan katta bo\\'lgan mahsulotlarni tanlang'; return null;"
+    },
+    {
+      "id": 4,
+      "title": "Mantiqiy operatorlar (AND & OR)",
+      "instruction": "`users` jadvalidan yoshi 25 dan katta bo'lgan VA yashash shahri (`city`) 'Toshkent' YOKI 'Buxoro' bo'lgan barcha foydalanuvchilarning ismi (`name`), yoshi (`age`) va shahri (`city`) ustunlarini tanlang. Qavslardan to'g'ri foydalaning.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, age, city FROM users WHERE age > 25 AND (city = 'Toshkent' OR city = 'Buxoro')",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Shartga faqat Madina va Dilshod mos keladi (2 ta qator)'; if(result.some(r => r.age <= 25 || (r.city !== 'Toshkent' && r.city !== 'Buxoro'))) return 'Shartni va qavslarni qaytadan tekshiring'; return null;"
+    },
+    {
+      "id": 5,
+      "title": "Natijalarni saralash (ORDER BY)",
+      "instruction": "`orders` jadvalidan barcha buyurtmalarni narxi (`amount`) bo'yicha kamayish tartibida (DESC) saralab, ularning `id`, `product` va `amount` ustunlarini tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT id, product, amount FROM orders ORDER BY amount DESC",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 6) return 'Barcha 6 ta buyurtma qaytishi kerak'; if(parseFloat(result[0].amount) !== 1200.50 || parseFloat(result[5].amount) !== 15.00) return 'Narxlar kamayish tartibida saralanmagan'; return null;"
+    },
+    {
+      "id": 6,
+      "title": "Natijalarni cheklash (LIMIT)",
+      "instruction": "`products` jadvalidan eng arzon 2 ta mahsulotning nomi (`name`) va narxi (`price`) ustunlarini narxning o'sish tartibida (ASC) saralab oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, price FROM products ORDER BY price ASC LIMIT 2",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Faqat eng arzon 2 ta mahsulot chiqishi kerak'; if(result[0].name !== 'Mouse' || result[1].name !== 'Desk') return 'Narx bo\\'yicha eng arzon 2 ta mahsulot topilmadi yoki to\\'g\\'ri saralanmadi'; return null;"
+    },
+    {
+      "id": 7,
+      "title": "Matematik ifodalar",
+      "instruction": "`products` jadvalidagi har bir mahsulotning umumiy qiymatini (narxini zaxira miqdoriga ko'paytirib, ya'ni `price * stock`) hisoblang. Natijada mahsulot nomi (`name`) va umumiy qiymatni `jami_qiymat` deb nomlab oling.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, price * stock AS jami_qiymat FROM products",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Barcha 5 ta mahsulot hisoblanishi kerak'; if(parseFloat(result[0].jami_qiymat) !== 12000.00) return 'Jami qiymatni hisoblash formulasini tekshiring (price * stock)'; return null;"
+    },
+    {
+      "id": 8,
+      "title": "Ro'yxat ichidan qidirish (IN)",
+      "instruction": "`users` jadvalidan roli (`role`) 'Admin' yoki 'Manager' bo'lgan barcha foydalanuvchilarning ismi (`name`) va roli (`role`) ustunlarini tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT name, role FROM users WHERE role IN ('Admin', 'Manager')",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Faqat 2 ta foydalanuvchi Admin yoki Manager hisoblanadi (Ali va Madina)'; if(result.some(r => r.role !== 'Admin' && r.role !== 'Manager')) return 'Roli faqat Admin yoki Manager bo\\'lganlarni oling'; return null;"
+    },
+    {
+      "id": 9,
+      "title": "Matn shablonlari bo'yicha qidiruv (LIKE)",
+      "instruction": "`orders` jadvalidan nomi (`product`) 'K' yoki 'M' harfi bilan boshlanadigan buyurtmalarning barcha ustunlarini tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT * FROM orders WHERE product LIKE 'K%' OR product LIKE 'M%'",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Nomi K yoki M bilan boshlanuvchi 3 ta buyurtma bor (Mouse, Keyboard, Monitor)'; if(result.some(o => !o.product.startsWith('K') && !o.product.startsWith('M'))) return 'Faqat nomi K yoki M bilan boshlanuvchi mahsulotlarni tanlang'; return null;"
+    },
+    {
+      "id": 10,
+      "title": "Diapazon va NULL tekshiruvi (BETWEEN & IS NOT NULL)",
+      "instruction": "`orders` jadvalidan buyurtma sanasi (`order_date`) '2026-05-02' va '2026-05-05' oraliqlarida (chegaralarni ham hisobga olgan holda) bo'lgan, narxi (`amount`) mavjud bo'lgan (NULL bo'lmagan) buyurtmalarning `id`, `product`, `amount` va `order_date` ustunlarini tanlang.",
+      "startingCode": "-- SQL so'rovini yozing\n",
+      "hint": "SELECT id, product, amount, order_date FROM orders WHERE order_date BETWEEN '2026-05-02' AND '2026-05-05' AND amount IS NOT NULL",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Sana oralig\\'iga 4 ta buyurtma mos keladi'; if(result.some(o => o.order_date < '2026-05-02' || o.order_date > '2026-05-05')) return 'Faqat ko\\'rsatilgan sana oralig\\'idagi buyurtmalarni tanlang'; return null;"
+    }
+  ]
 ,
   quizzes: [
   {

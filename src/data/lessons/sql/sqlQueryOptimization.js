@@ -345,31 +345,87 @@ Planni qayta tekshiramiz: Baza Seq Scan o'rniga \`Index Scan\` qildi va filesort
 | **Filesort** | Explain plandagi yozuv | Xotirada saralash | Indeks qo'shish kerak |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Explain Plan Tahlili",
-    "instruction": "`users` jadvalidan yoshi (`age`) 25 bo'lgan foydalanuvchilarni topuvchi so'rov uchun `EXPLAIN` rejasini ko'ring.",
-    "startingCode": "-- EXPLAIN so'rovini yozing\n",
-    "hint": "EXPLAIN SELECT * FROM users WHERE age = 25",
-    "test": "try { const res = db.exec('EXPLAIN SELECT * FROM users WHERE age = 25'); if(!res || !res.length) return 'EXPLAIN bajarilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 2,
-    "title": "Tezkor Birlashma (UNION ALL)",
-    "instruction": "`users` jadvalidan shahri (`city`) 'Toshkent' bo'lganlar va shahri 'Samarqand' bo'lganlarning ismini (`name`) dublikatlarni tekshirmaydigan eng tezkor operator (UNION ALL) yordamida birlashtiring.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT name FROM users WHERE city = 'Toshkent' UNION ALL SELECT name FROM users WHERE city = 'Samarqand'",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Jami 4 ta foydalanuvchi chiqishi kerak (3 Toshkentlik va 1 Samarqandlik)'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "Indeksli Explain Plan",
-    "instruction": "`users` jadvalining `role` ustunida `idx_users_role` indeksini yarating va so'ngra `SELECT * FROM users WHERE role = 'User'` so'rovi uchun `EXPLAIN` planini oling.",
-    "startingCode": "-- Avval indeks yarating, so'ng EXPLAIN yozing\n",
-    "hint": "CREATE INDEX idx_users_role ON users(role); EXPLAIN SELECT * FROM users WHERE role = 'User';",
-    "test": "try { db.exec('CREATE INDEX idx_users_role ON users(role)'); const res = db.exec('EXPLAIN SELECT * FROM users WHERE role = \\'User\\''); if(!res || !res.length) return 'Explain plan ko\\'rinmadi'; } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato'; } return null;"
-  }
-]
+    {
+      "id": 1,
+      "title": "Explain Plan Tahlili",
+      "instruction": "`users` jadvalidan yoshi (`age`) 25 bo'lgan foydalanuvchilarni topuvchi so'rov uchun `EXPLAIN` rejasini ko'ring.",
+      "startingCode": "-- EXPLAIN so'rovini yozing\n",
+      "hint": "EXPLAIN SELECT * FROM users WHERE age = 25;",
+      "test": "try { const res = db.exec('EXPLAIN SELECT * FROM users WHERE age = 25'); if(!res || !res.length) return 'EXPLAIN bajarilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 2,
+      "title": "SELECT * dan qochish",
+      "instruction": "`users` jadvalidan barcha ustunlarni (`SELECT *`) emas, faqat foydalanuvchilarning ismi (`name`) va elektron pochtasini (`email`) yuklash yuklamasini kamaytirish uchun so'rab oling.",
+      "startingCode": "-- Faqat kerakli ustunlarni tanlang\n",
+      "hint": "SELECT name, email FROM users;",
+      "test": "if(!Array.isArray(result) || result.length === 0) return 'Natija topilmadi'; const row = result[0]; if(row.hasOwnProperty('id') || row.hasOwnProperty('age') || row.hasOwnProperty('city')) return 'Ortiqcha ustunlar yuklangan. Faqat name va email bo\\'lishi kerak.'; if(!row.hasOwnProperty('name') || !row.hasOwnProperty('email')) return 'Ism (name) yoki email topilmadi'; return null;"
+    },
+    {
+      "id": 3,
+      "title": "UNION ALL orqali optimallashtirish",
+      "instruction": "`users` jadvalidan shahri (`city`) 'Toshkent' bo'lganlar va shahri 'Samarqand' bo'lganlarning ismini (`name`) dublikatlarni tekshirmaydigan eng tezkor operator (`UNION ALL`) yordamida birlashtiring.",
+      "startingCode": "-- UNION ALL operatorini ishlating\n",
+      "hint": "SELECT name FROM users WHERE city = 'Toshkent' UNION ALL SELECT name FROM users WHERE city = 'Samarqand';",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Jami 4 ta foydalanuvchi chiqishi kerak (3 Toshkentlik va 1 Samarqandlik)'; return null;"
+    },
+    {
+      "id": 4,
+      "title": "Qidiruvni indekslash",
+      "instruction": "`users` jadvalining `email` ustuni uchun `idx_users_email` nomli unikal indeks yarating.",
+      "startingCode": "-- Unikal indeks yaratish buyrug'ini yozing\n",
+      "hint": "CREATE UNIQUE INDEX idx_users_email ON users(email);",
+      "test": "try { db.exec('CREATE UNIQUE INDEX idx_users_email ON users(email)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Indeks yaratib bo\\'lmadi'; } return null;"
+    },
+    {
+      "id": 5,
+      "title": "Covering Index orqali Index-Only Scan",
+      "instruction": "`users` jadvalining `email` va `name` ustunlarida `idx_users_email_name` nomli kompozit covering indeks yarating.",
+      "startingCode": "-- Kompozit covering indeks yarating\n",
+      "hint": "CREATE INDEX idx_users_email_name ON users(email, name);",
+      "test": "try { db.exec('CREATE INDEX idx_users_email_name ON users(email, name)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Indeks yaratib bo\\'lmadi'; } return null;"
+    },
+    {
+      "id": 6,
+      "title": "Subquery-ni JOIN-ga o'tkazish",
+      "instruction": "Kamida bitta buyurtma bergan foydalanuvchilarning ismini (`name`) olish uchun `IN (SELECT user_id FROM orders)` ko'rinishidagi sekin subquery o'rniga samaraliroq `INNER JOIN` va `DISTINCT` operatoridan foydalanib so'rov yozing.",
+      "startingCode": "-- JOIN yordamida optimallashtirilgan so'rov yozing\n",
+      "hint": "SELECT DISTINCT u.name FROM users u INNER JOIN orders o ON u.id = o.user_id;",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Natijada 3 ta unikal foydalanuvchi chiqishi kerak'; const names = result.map(r => r.name); if(!names.includes('Ali') || !names.includes('Vali')) return 'Natijada Ali va Vali bo\\'lishi kerak'; return null;"
+    },
+    {
+      "id": 7,
+      "title": "Sargable shart yozish",
+      "instruction": "`orders` jadvalidan `order_date` ustunida indeks bor deb hisoblab, `DATE(order_date) = '2026-06-10'` kabi indeksni o'chiradigan shart o'rniga, indeksdan foydalanadigan `BETWEEN` operatorli (2026-06-10 00:00:00 dan 23:59:59 gacha) optimal so'rov yozing.",
+      "startingCode": "-- BETWEEN operatoridan foydalanib so'rov yozing\n",
+      "hint": "SELECT * FROM orders WHERE order_date BETWEEN '2026-06-10 00:00:00' AND '2026-06-10 23:59:59';",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Faqat 1 ta buyurtma topilishi kerak edi'; if(result[0].id !== 1) return 'To\\'g\\'ri buyurtma topilmadi'; return null;"
+    },
+    {
+      "id": 8,
+      "title": "N+1 So'rovlar Muammosini Yechish",
+      "instruction": "Har bir foydalanuvchi uchun alohida buyurtmalarni so'rash (N+1) o'rniga, barcha foydalanuvchilar (`users`) va ularning jami buyurtmalar summasini (`SUM(amount)`) bitta so'rovda `LEFT JOIN` va `GROUP BY` yordamida samarali hisoblab oling.",
+      "startingCode": "-- LEFT JOIN va GROUP BY ishlating\n",
+      "hint": "SELECT u.name, SUM(o.amount) AS total_amount FROM users u LEFT JOIN orders o ON u.id = o.user_id GROUP BY u.name;",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length < 4) return 'Kamida 4 ta foydalanuvchi bo\\'lishi kerak'; const ali = result.find(r => r.name === 'Ali'); if(!ali || Math.round(ali.total_amount) !== 1225) return 'Ali uchun jami buyurtma summasi noto\\'g\\'ri'; return null;"
+    },
+    {
+      "id": 9,
+      "title": "Correlated Subquery-dan qochish",
+      "instruction": "Har bir foydalanuvchi uchun uning oxirgi buyurtma sanasini hisoblashda correlated subquery ishlatish o'rniga, `GROUP BY` va `MAX(order_date)` yordamida jadvallarni bir marta birlashtirib (JOIN) ishlatuvchi optimal so'rov yozing.",
+      "startingCode": "-- GROUP BY va MAX orqali optimallashtiring\n",
+      "hint": "SELECT u.id, u.name, MAX(o.order_date) AS last_order FROM users u INNER JOIN orders o ON u.id = o.user_id GROUP BY u.id, u.name;",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Jami 3 ta foydalanuvchining buyurtmasi chiqishi kerak'; const ali = result.find(r => r.name === 'Ali'); if(!ali || !ali.last_order.startsWith('2026-06-12')) return 'Oxirgi buyurtma sanasi noto\\'g\\'ri'; return null;"
+    },
+    {
+      "id": 10,
+      "title": "Kompozit indeks uchun qidiruv",
+      "instruction": "`users` jadvalida status va shahar bo'yicha tez-tez qidiruv bo'lgani sababli `CREATE INDEX idx_users_city_status ON users(city, status)` yaratilgan. Ushbu kompozit indeks chapdan o'ngga ishlash qoidasiga rioya qilishi uchun `city` va `status` ustunlari ishtirok etgan qidiruv so'rovini yozing.",
+      "startingCode": "-- Kompozit indeksdan to'g'ri foydalanuvchi so'rov yozing\n",
+      "hint": "SELECT * FROM users WHERE city = 'Toshkent' AND status = 'active';",
+      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Shartga mos 1 ta foydalanuvchi bo\\'shi kerak'; if(result[0].name !== 'Ali') return 'Toshkentlik active foydalanuvchi Ali bo\\'lishi kerak'; return null;"
+    }
+  ]
 ,
   quizzes: [
   {

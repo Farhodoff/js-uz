@@ -247,7 +247,7 @@ Quyidagi mashqlar va testlar yordamida Prisma ORM, sxemalar yaratish, bog'lanish
   exercises: [
     {
       id: 1,
-      title: "1️⃣ Foydalanuvchi yaratish (Prisma CLI)",
+      title: "1️⃣ Foydalanuvchi yaratish (create)",
       instruction: "Foydalanuvchini Prisma orqali ma'lumotlar bazasida saqlash uchun `createUser(prisma, email, name)` funksiyasini yozing. Funksiya yangi yaratilgan foydalanuvchi obyektini qaytarsin.",
       startingCode: "async function createUser(prisma, email, name) {\n  // Kodni shu yerda yozing\n}\n",
       hint: "return await prisma.user.create({ data: { email, name } });",
@@ -268,6 +268,62 @@ Quyidagi mashqlar va testlar yordamida Prisma ORM, sxemalar yaratish, bog'lanish
       startingCode: "async function updateUsername(prisma, id, newName) {\n  // Kodni shu yerda yozing\n}\n",
       hint: "return await prisma.user.update({ where: { id }, data: { name: newName } });",
       test: "const mockPrisma = {\n  user: {\n    update: async ({ where, data }) => {\n      if (where && where.id === 5 && data && data.name === 'Farhod') {\n        return { id: 5, name: 'Farhod', email: 'farhod@example.com' };\n      }\n      return null;\n    }\n  }\n};\nconst sandbox = new Function(code + '; return updateUsername;');\nconst fn = sandbox();\nreturn fn(mockPrisma, 5, 'Farhod')\n  .then(res => {\n    if (res && res.id === 5 && res.name === 'Farhod') return null;\n    return 'Foydalanuvchi ismi to\\'g\\'ri yangilanmadi yoki qaytarilmadi';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
+    },
+    {
+      id: 4,
+      title: "4️⃣ Nashr qilinmagan postlarni o'chirish (deleteMany)",
+      instruction: "Nashr qilinmagan (`published: false`) bo'lgan barcha postlarni o'chirib yuboruvchi hamda o'chirilgan yozuvlar sonini qaytaruvchi `deleteUnpublishedPosts(prisma)` funksiyasini yozing.",
+      startingCode: "async function deleteUnpublishedPosts(prisma) {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "return await prisma.post.deleteMany({ where: { published: false } });",
+      test: "const mockPrisma = {\n  post: {\n    deleteMany: async ({ where }) => {\n      if (where && where.published === false) {\n        return { count: 15 };\n      }\n      return { count: 0 };\n    }\n  }\n};\nconst sandbox = new Function(code + '; return deleteUnpublishedPosts;');\nconst fn = sandbox();\nreturn fn(mockPrisma)\n  .then(res => {\n    if (res && res.count === 15) return null;\n    return 'Nashr qilinmagan postlar o\\'chirilishi to\\'g\\'ri amalga oshmadi';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
+    },
+    {
+      id: 5,
+      title: "5️⃣ Nashr etilgan postlari bor foydalanuvchilar (Relation filtering)",
+      instruction: "Kamida bitta nashr etilgan postga (`published: true`) ega foydalanuvchilarni topadigan va ularning faqat nashr etilgan postlarini qo'shib yuklaydigan `getUsersWithPublishedPosts(prisma)` funksiyasini yozing.",
+      startingCode: "async function getUsersWithPublishedPosts(prisma) {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "return await prisma.user.findMany({\n  where: { posts: { some: { published: true } } },\n  include: { posts: { where: { published: true } } }\n});",
+      test: "const mockPrisma = {\n  user: {\n    findMany: async (options) => {\n      const hasSomeFilter = options?.where?.posts?.some?.published === true;\n      const hasIncludeFilter = options?.include?.posts?.where?.published === true;\n      if (hasSomeFilter && hasIncludeFilter) {\n        return [{ id: 1, email: 'u@test.com', posts: [{ id: 2, published: true }] }];\n      }\n      return [];\n    }\n  }\n};\nconst sandbox = new Function(code + '; return getUsersWithPublishedPosts;');\nconst fn = sandbox();\nreturn fn(mockPrisma)\n  .then(res => {\n    if (Array.isArray(res) && res.length === 1 && res[0].id === 1) return null;\n    return 'Filtlash yoki bog\\'liqlikni yuklash to\\'g\\'ri ishlamadi';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
+    },
+    {
+      id: 6,
+      title: "6️⃣ Foydalanuvchi va postni birgalikda yaratish (Nested Write)",
+      instruction: "Yangi foydalanuvchi yaratish bilan bir vaqtda unga tegishli bo'lgan birinchi postni ham bitta so'rovda yaratadigan `createUserWithPost(prisma, email, name, postTitle)` funksiyasini yozing. Postlarni ham qo'shib qaytaring (`include` yordamida).",
+      startingCode: "async function createUserWithPost(prisma, email, name, postTitle) {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "return await prisma.user.create({\n  data: {\n    email,\n    name,\n    posts: {\n      create: { title: postTitle }\n    }\n  },\n  include: { posts: true }\n});",
+      test: "const mockPrisma = {\n  user: {\n    create: async (options) => {\n      const email = options?.data?.email;\n      const title = options?.data?.posts?.create?.title;\n      const hasInclude = options?.include?.posts === true;\n      if (email && title && hasInclude) {\n        return { id: 1, email, name: options.data.name, posts: [{ id: 10, title }] };\n      }\n      throw new Error('Noto\\'g\\'ri tuzilgan nested so\\'rov');\n    }\n  }\n};\nconst sandbox = new Function(code + '; return createUserWithPost;');\nconst fn = sandbox();\nreturn fn(mockPrisma, 'user@test.com', 'Doston', 'Mening Postim')\n  .then(res => {\n    if (res && res.posts && res.posts[0].title === 'Mening Postim') return null;\n    return 'Nested write amalga oshirilmadi yoki posts ma\\'lumoti qaytarilmadi';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
+    },
+    {
+      id: 7,
+      title: "7️⃣ Postlar sahifalanishi (Pagination)",
+      instruction: "Postlarni `id` bo'yicha o'sish tartibida saralab, `page` va `pageSize` bo'yicha sahifalab qaytaruvchi `getPaginatedPosts(prisma, page, pageSize)` funksiyasini yozing. `page` 1 dan boshlanadi.",
+      startingCode: "async function getPaginatedPosts(prisma, page, pageSize) {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "return await prisma.post.findMany({\n  skip: (page - 1) * pageSize,\n  take: pageSize,\n  orderBy: { id: 'asc' }\n});",
+      test: "const mockPrisma = {\n  post: {\n    findMany: async (options) => {\n      if (options?.skip === 10 && options?.take === 5 && options?.orderBy?.id === 'asc') {\n        return Array.from({ length: 5 }, (_, i) => ({ id: 11 + i }));\n      }\n      return [];\n    }\n  }\n};\nconst sandbox = new Function(code + '; return getPaginatedPosts;');\nconst fn = sandbox();\nreturn fn(mockPrisma, 3, 5)\n  .then(res => {\n    if (Array.isArray(res) && res.length === 5 && res[0].id === 11) return null;\n    return 'Sahifalash yoki saralash noto\\'g\\'ri bajarildi';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
+    },
+    {
+      id: 8,
+      title: "8️⃣ Tranzaksiyalar yordamida balansni o'zgartirish ($transaction)",
+      instruction: "Bitta tranzaksiya ichida `fromUserId` ga ega foydalanuvchining balansidan (`balance` ustunidan) `amount` qiymatini kamaytiruvchi (decrement) va `toUserId` balansiga uni qo'shuvchi (increment) `transferFunds(prisma, fromUserId, toUserId, amount)` funksiyasini yozing.",
+      startingCode: "async function transferFunds(prisma, fromUserId, toUserId, amount) {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "return await prisma.$transaction([\n  prisma.user.update({ where: { id: fromUserId }, data: { balance: { decrement: amount } } }),\n  prisma.user.update({ where: { id: toUserId }, data: { balance: { increment: amount } } }]\n);",
+      test: "const mockPrisma = {\n  user: {\n    update: (options) => options\n  },\n  $transaction: async (promises) => {\n    return promises;\n  }\n};\nconst sandbox = new Function(code + '; return transferFunds;');\nconst fn = sandbox();\nreturn fn(mockPrisma, 1, 2, 500)\n  .then(res => {\n    const dec = res[0];\n    const inc = res[1];\n    if (dec && dec.where.id === 1 && dec.data.balance.decrement === 500 &&\n        inc && inc.where.id === 2 && inc.data.balance.increment === 500) {\n      return null;\n    }\n    return 'Balanslar tranzaksiyaviy yangilanmadi yoki noto\\'g\\'ri metodlar qo\\'llandi';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
+    },
+    {
+      id: 9,
+      title: "9️⃣ Mualliflar bo'yicha postlar statistikasi (groupBy)",
+      instruction: "Mualliflar (`authorId`) bo'yicha guruhlab, har bir guruhdagi jami postlar sonini (`_count: { _all: true }`) va o'rtacha ko'rishlar sonini (`_avg: { views: true }`) hisoblaydigan `getPostStatsByAuthor(prisma)` funksiyasini yozing.",
+      startingCode: "async function getPostStatsByAuthor(prisma) {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "return await prisma.post.groupBy({\n  by: ['authorId'],\n  _count: { _all: true },\n  _avg: { views: true }\n});",
+      test: "const mockPrisma = {\n  post: {\n    groupBy: async (options) => {\n      if (options?.by?.includes('authorId') && options?._count?._all && options?._avg?.views) {\n        return [{ authorId: 1, _count: { _all: 10 }, _avg: { views: 250 } }];\n      }\n      return [];\n    }\n  }\n};\nconst sandbox = new Function(code + '; return getPostStatsByAuthor;');\nconst fn = sandbox();\nreturn fn(mockPrisma)\n  .then(res => {\n    if (Array.isArray(res) && res.length === 1 && res[0].authorId === 1) return null;\n    return 'groupBy so\\'rovi parametrlari yoki natijasi noto\\'g\\'ri';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
+    },
+    {
+      id: 10,
+      title: "🔟 Seeding jarayonida foydalanuvchini Upsert qilish (upsert)",
+      instruction: "Berilgan `email` bo'yicha foydalanuvchi mavjud bo'lsa uning ismini `name` ga yangilaydigan, aks holda yangi foydalanuvchi yaratadigan (upsert qiluvchi) `upsertUser(prisma, email, name)` funksiyasini yozing.",
+      startingCode: "async function upsertUser(prisma, email, name) {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "return await prisma.user.upsert({\n  where: { email },\n  update: { name },\n  create: { email, name }\n});",
+      test: "const mockPrisma = {\n  user: {\n    upsert: async (options) => {\n      if (options?.where?.email && options?.update?.name && options?.create?.email) {\n        return { id: 1, email: options.where.email, name: options.update.name };\n      }\n      throw new Error('Notog\\'ri upsert parametrlari');\n    }\n  }\n};\nconst sandbox = new Function(code + '; return upsertUser;');\nconst fn = sandbox();\nreturn fn(mockPrisma, 'upsert@test.com', 'Shahboz')\n  .then(res => {\n    if (res && res.email === 'upsert@test.com' && res.name === 'Shahboz') return null;\n    return 'upsert operatsiyasi noto\\'g\\'ri bajarildi';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
     }
   ],
   quizzes: [

@@ -310,31 +310,87 @@ Bu mantiq har bir qidiruvni 0.002 soniyada bajarilishini ta'minlaydi.
 | **Expression**| \`CREATE INDEX ON tbl(LOWER(col));\`| Funksiya natijasini indekslash| So'rovda ham LOWER ishlatilishi shart |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Shahar Indeksi",
-    "instruction": "`users` jadvalining yashash shahri (`city`) ustunida `idx_users_city` nomli indeks yarating.",
-    "startingCode": "-- Indeks yaratuvchi SQL so'rovini yozing\n",
-    "hint": "CREATE INDEX idx_users_city ON users(city)",
-    "test": "try { db.exec('CREATE INDEX idx_users_city ON users(city)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Indeks yaratib bo\\'lmadi'; } return null;"
-  },
-  {
-    "id": 2,
-    "title": "Unikal Mahsulot Indeksi",
-    "instruction": "`products` jadvalining nomi (`name`) ustunida unikal `idx_products_name` nomli indeks yarating.",
-    "startingCode": "-- Unikal indeks yaratuvchi SQL so'rovini yozing\n",
-    "hint": "CREATE UNIQUE INDEX idx_products_name ON products(name)",
-    "test": "try { db.exec('CREATE UNIQUE INDEX idx_products_name ON products(name)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Indeks yaratib bo\\'lmadi'; } return null;"
-  },
-  {
-    "id": 3,
-    "title": "Kompozit Buyurtma Indeksi",
-    "instruction": "`orders` jadvalining `user_id` va `order_date` ustunlarida birgalikda `idx_orders_user_date` nomli kompozit indeks yarating.",
-    "startingCode": "-- Kompozit indeks yaratuvchi SQL so'rovini yozing\n",
-    "hint": "CREATE INDEX idx_orders_user_date ON orders(user_id, order_date)",
-    "test": "try { db.exec('CREATE INDEX idx_orders_user_date ON orders(user_id, order_date)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Kompozit indeks yaratib bo\\'lmadi'; } return null;"
-  }
-]
+    {
+      "id": 1,
+      "title": "Oddiy Indeks Yaratish",
+      "instruction": "`users` jadvalining yashash shahri (`city`) ustunida `idx_users_city` nomli indeks yarating.",
+      "startingCode": "-- Indeks yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE INDEX idx_users_city ON users(city);",
+      "test": "try { db.exec('CREATE INDEX idx_users_city ON users(city)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Indeks yaratib bo\\'lmadi'; } return null;"
+    },
+    {
+      "id": 2,
+      "title": "Unikal Indeks Yaratish",
+      "instruction": "`products` jadvalining nomi (`name`) ustunida unikal `idx_products_name` nomli indeks yarating.",
+      "startingCode": "-- Unikal indeks yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE UNIQUE INDEX idx_products_name ON products(name);",
+      "test": "try { db.exec('CREATE UNIQUE INDEX idx_products_name ON products(name)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Unikal indeks yaratib bo\\'lmadi'; } return null;"
+    },
+    {
+      "id": 3,
+      "title": "Kompozit Indeks Yaratish",
+      "instruction": "`orders` jadvalining `user_id` va `order_date` ustunlarida birgalikda `idx_orders_user_date` nomli kompozit indeks yarating.",
+      "startingCode": "-- Kompozit indeks yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE INDEX idx_orders_user_date ON orders(user_id, order_date);",
+      "test": "try { db.exec('CREATE INDEX idx_orders_user_date ON orders(user_id, order_date)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Kompozit indeks yaratib bo\\'lmadi'; } return null;"
+    },
+    {
+      "id": 4,
+      "title": "Indeksni O'chirish",
+      "instruction": "`users` jadvalida keraksiz bo'lib qolgan `idx_temp_users` nomli indeksni o'chirib tashlang.",
+      "startingCode": "-- Indeksni o'chirish uchun SQL so'rovini yozing\n",
+      "hint": "DROP INDEX idx_temp_users;",
+      "test": "try { const check = db.prepare(\"SELECT 1 FROM sqlite_master WHERE type='index' AND name='idx_temp_users'\").get(); if (check) return 'Xato: idx_temp_users indeksi hali ham mavjud'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+    },
+    {
+      "id": 5,
+      "title": "Qisman (Partial) Indeks Yaratish",
+      "instruction": "`users` jadvalida faqat faol foydalanuvchilarning (`status = 'active'`) elektron pochtasi uchun `idx_active_users_email` nomli qisman indeks yarating.",
+      "startingCode": "-- Qisman indeks yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE INDEX idx_active_users_email ON users(email) WHERE status = 'active';",
+      "test": "try { db.exec(\"CREATE INDEX idx_active_users_email ON users(email) WHERE status = 'active'\"); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Qisman indeks yaratib bo\\'lmadi'; } return null;"
+    },
+    {
+      "id": 6,
+      "title": "Funksional (Expression) Indeks",
+      "instruction": "`users` jadvalida elektron pochtani katta-kichik harf farqisiz qidirganda tezkor ishlashi uchun `LOWER(email)` ustida `idx_users_lower_email` nomli indeks yarating.",
+      "startingCode": "-- Funksional indeks yaratuvchi SQL so'rovini yozing\n",
+      "hint": "CREATE INDEX idx_users_lower_email ON users(LOWER(email));",
+      "test": "try { db.exec('CREATE INDEX idx_users_lower_email ON users(LOWER(email))'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Funksional indeks yaratib bo\\'lmadi'; } return null;"
+    },
+    {
+      "id": 7,
+      "title": "Qidiruv Rejasini Tahlil Qilish (EXPLAIN)",
+      "instruction": "`users` jadvalidan yoshi (`age`) 30 dan katta bo'lgan foydalanuvchilarni qidirish so'rovining bajarilish rejasini (Query Plan) tekshirish uchun so'rov yozing.",
+      "startingCode": "-- So'rov bajarilish rejasini tekshirish uchun SQL yozing\n",
+      "hint": "EXPLAIN QUERY PLAN SELECT * FROM users WHERE age > 30;",
+      "test": "if (!result || !Array.isArray(result)) return 'Xato: Natija topilmadi'; const plan = JSON.stringify(result).toLowerCase(); if (!plan.includes('explain') && !plan.includes('scan') && !plan.includes('search')) return 'Xato: EXPLAIN QUERY PLAN so\\'rovi ishlatilmagan'; return null;"
+    },
+    {
+      "id": 8,
+      "title": "Saralashni Optimallashtirish",
+      "instruction": "`orders` jadvalida buyurtmalarni avval `status` bo'yicha (tenglik), keyin esa buyurtma summasi (`amount`) bo'yicha kamayish tartibida (`DESC`) tezkor saralash uchun `idx_orders_status_amount` nomli indeks yarating.",
+      "startingCode": "-- Saralash uchun mos indeks yaratuvchi SQL yozing\n",
+      "hint": "CREATE INDEX idx_orders_status_amount ON orders(status, amount DESC);",
+      "test": "try { db.exec('CREATE INDEX idx_orders_status_amount ON orders(status, amount DESC)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Saralash uchun indeks yaratilmadi'; } return null;"
+    },
+    {
+      "id": 9,
+      "title": "Yopuvchi (Covering) Indeks",
+      "instruction": "`users` jadvalida faqat `email` orqali foydalanuvchining ismini (`name`) qidirganda jadval sahifalariga murojaat qilmaslik uchun `idx_users_email_name` nomli yopuvchi indeks yarating.",
+      "startingCode": "-- Yopuvchi indeks yaratuvchi SQL yozing\n",
+      "hint": "CREATE INDEX idx_users_email_name ON users(email, name);",
+      "test": "try { db.exec('CREATE INDEX idx_users_email_name ON users(email, name)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Yopuvchi indeks yaratilmadi'; } return null;"
+    },
+    {
+      "id": 10,
+      "title": "Unikal Kompozit Indeks",
+      "instruction": "`reviews` jadvalida bitta foydalanuvchi (`user_id`) ma'lum bir mahsulotga (`product_id`) faqat bitta sharh yozishini ta'minlash uchun unikal kompozit `idx_unique_user_product` indeksini yarating.",
+      "startingCode": "-- Unikal kompozit indeks yaratuvchi SQL yozing\n",
+      "hint": "CREATE UNIQUE INDEX idx_unique_user_product ON reviews(user_id, product_id);",
+      "test": "try { db.exec('CREATE UNIQUE INDEX idx_unique_user_product ON reviews(user_id, product_id)'); } catch(e) { if(e.message.indexOf('already exists') === -1) return 'Xato: Unikal kompozit indeks yaratilmadi'; } return null;"
+    }
+  ]
 ,
   quizzes: [
   {
