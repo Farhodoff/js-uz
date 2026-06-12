@@ -146,6 +146,8 @@ import { reactRenderingOptimization } from "./lessons/ecosystem/reactRenderingOp
 import { reactAdvancedPerformance } from "./lessons/ecosystem/reactAdvancedPerformance";
 import { reactProductionArchitecture } from "./lessons/ecosystem/reactProductionArchitecture";
 import { nodeArchitecture } from "./lessons/ecosystem/nodeArchitecture";
+import { dockerBasics } from "./lessons/ecosystem/dockerBasics";
+import { ciCdGithubActions } from "./lessons/ecosystem/ciCdGithubActions";
 
 import { starMethod } from "./lessons/soft-skills/starMethod";
 import { behavioralQuestions } from "./lessons/soft-skills/behavioralQuestions";
@@ -224,7 +226,9 @@ export const curriculum = {
       reactRenderingOptimization,
       reactAdvancedPerformance,
       reactProductionArchitecture,
-      nodeArchitecture
+      nodeArchitecture,
+      dockerBasics,
+      ciCdGithubActions
     ]
   },
   typescript: {
