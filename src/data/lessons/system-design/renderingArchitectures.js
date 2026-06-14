@@ -2,7 +2,7 @@ export const renderingArchitectures = {
   id: "renderingArchitectures",
   title: "Veb Rendering Arxitekturalari (CSR, SSR, SSG, Hydration)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Veb-ilovalar dastlab yuklanganda sahifani foydalanuvchiga qanday ko'rsatish va uning tarkibini qayerda shakllantirish (render qilish) veb-sahifa yuklanish tezligi, foydalanuvchi tajribasi (UX) va qidiruv tizimi optimallashtirilishiga (SEO) bevosita ta'sir qiladi.
 Agar biz noto'g'ri render qilish usulini tanlasak, saytimiz Google qidiruv natijalarida ko'rinmay qolishi (SEO muammosi) yoki foydalanuvchilar oq sahifani uzoq vaqt kutib turishi mumkin. Shuning uchun zamonaviy dasturchi **CSR (Client-Side Rendering)**, **SSR (Server-Side Rendering)**, **SSG (Static Site Generation)** va **Hydration** (jonlantirish) jarayonlarini chuqur tushunishi kerak.

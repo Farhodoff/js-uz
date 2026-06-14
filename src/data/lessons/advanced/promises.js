@@ -2,12 +2,12 @@ export const promises = {
   id: "promises",
   title: "Promises (Va'dalar) va Zanjirli asinxronlik",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Promise nima?
 **Promise (Va'da)** — asinxron operatsiyaning kelajakda olinadigan natijasini (muvaffaqiyatli yoki xato bilan tugashini) ifodalovchi maxsus JavaScript obyektidir. U callback funksiyalar yordamida yoziladigan murakkab asinxron kodlarni ancha soddaroq va o'qishli zanjir ko'rinishida yozish imkonini beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz do'kondan **onlayn buyurtma (masalan, telefon)** qildingiz:
 * **Buyurtma berilgan lahza:** Do'kon sizga telefonni darhol bermaydi, lekin u telefonni yetkazib berish haqida **va'da (Promise)** beradi. Hozirda va'da **Kutilmoqda (Pending)** holatida.
 * **Telefon muvaffaqiyatli yetib kelganda:** Va'da **Bajarildi (Fulfilled)** holatiga o'tadi. Siz telefonni olasiz (\`.then()\`).

@@ -2,12 +2,12 @@ export const advancedFetch = {
   id: "advancedFetch",
   title: "Advanced Fetch, so'rov sozlamalari va aborting",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Advanced Fetch va Aborting nima?
 **Fetch API** — bu brauzerdan serverga tarmoq so'rovlarini (HTTP so'rovlari) yuborish uchun ishlatiladigan zamonaviy interfeysdir. Odatda biz \`fetch(url)\` orqali oddiy so'rovlar yuboramiz, biroq katta loyihalarda so'rovlarni boshqarish (masalan: ma'lumotlar yuborishda sarlavhalar sozlash, so'rov juda cho'zilib ketganda uni to'xtatish yoki foydalanuvchi sahifadan chiqib ketganda so'rovni bekor qilish) talab etiladi. Buning uchun bizga **AbortController** va ilg'or \`fetch\` sozlamalari yordam beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **restoranda taom buyurtma qildingiz**:
 * **Oddiy Fetch:** Ofitsiantga "menga pitssa olib keling" dedingiz, u ketdi va pitssa tayyor bo'lishini kuta boshladingiz.
 * **Headers (Sarlavhalar):** Ofitsiantga "menga pitssa olib keling, faqat piyozsiz bo'lsin va achchiq sous bilan" deb qo'shimcha shartlar (sarlavhalar) berishingiz.

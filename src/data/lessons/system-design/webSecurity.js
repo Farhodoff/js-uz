@@ -2,7 +2,7 @@ export const webSecurity = {
   id: "webSecurity",
   title: "Veb Xavfsizlik Asoslari (Web Security)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Internet ochiq va xavfli hudud. Har soniyada minglab botlar va xakerlar veb-saytlar va serverlardagi zaifliklarni (vulnerabilities) qidirib, hujum uyushtirishadi. Agar dasturchi xavfsizlik qoidalarini bilmasa, foydalanuvchilarning parollari, shaxsiy ma'lumotlari yoki bank kartalari ma'lumotlari o'g'irlanishi mumkin.
 Veb xavfsizlik (Web Security) — bu faqatgina tarmoq muhandislari ishi emas. Veb-dasturchi sifatida biz XSS (Cross-Site Scripting), CSRF (Cross-Site Request Forgery), CORS (Cross-Origin Resource Sharing) va SQL Injection kabi asosiy tahdidlarni tushunishimiz va ularga qarshi kod darajasida himoya yarata olishimiz shart.

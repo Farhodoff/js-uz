@@ -2,13 +2,13 @@ export const implicitCasting = {
   id: "implicitCasting",
   title: "Implicit Type Casting",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Implicit Type Casting (Yashirin Type Casting / Coercion) nima?
 * **Implicit Type Casting:** JavaScript dasturlash tilining o'zgaruvchilar bilan ishlashda bir ma'lumot turini boshqasiga avtomatik ravishda (dasturchining ishtirokisiz) o'tkazish xususiyatidir. Bunga ko'pincha **Type Coercion** ham deyiladi.
 * **Explicit Type Casting:** Dasturchi tomonidan funksiyalar yordamida (masalan, \`Number()\`, \`String()\`) tiplarni qo'lda o'zgartirish.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **xorijiy davlatdagi kafedasiz**:
 * Kassir faqat **milliy valyutani (so'mni)** qabul qiladi.
 * Siz esa unga **dollar** uzatasiz.

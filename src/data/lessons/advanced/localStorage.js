@@ -2,14 +2,14 @@ export const localStorage = {
   id: "localStorage",
   title: "Web Storage API: localStorage va sessionStorage",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Web Storage API nima?
 Brauzer foydalanuvchiga tegishli ma'lumotlarni (masalan, sozlamalar, tanlangan mahsulotlar, til yoki ekran rejimini) foydalanuvchi kompyuterida saqlab qolishi uchun **Web Storage API**-dan foydalaniladi. U ikki xil saqlagichni taqdim etadi:
 * **localStorage:** Ma'lumotlar brauzer yopilganda ham, kompyuter o'chib yongan bo'lsa ham abadiy saqlanadi (dasturchi yoki foydalanuvchi qo'lda o'chirib yubormaguncha).
 * **sessionStorage:** Ma'lumotlar faqat joriy sahifa oynasi (tab) ochiq turganda saqlanadi. Oyna yopilishi bilan ma'lumotlar o'chib ketadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 * **localStorage (Shaxsiy daftar):** Siz o'zingizning shaxsiy daftaringizga qaydlar yozasiz. Uyquga ketib uyg'onsangiz ham, daftarni javonga qo'yib 1 yildan keyin ochsangiz ham yozuvlar joyida turadi.
 * **sessionStorage (Mehmonxona shkafi):** Mehmonxonaga joylashganingizda narsalaringizni shkafga qo'yasiz. Mehmonxonani tark etib (check-out) xonani topshirganingizdan so'ng, shkaf ichi butunlay tozalanadi (kelgusi safar kelganingizda u bo'sh bo'ladi).
 

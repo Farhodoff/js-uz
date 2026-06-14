@@ -2,11 +2,11 @@ export const distributedCharacteristics = {
   id: "distributedCharacteristics",
   title: "Taqsimlangan Tizimlar Xususiyatlari (Scalability, Availability, Fault Tolerance)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Taqsimlangan tizimlar (Distributed Systems) — bu bir nechta mustaqil kompyuterlarning foydalanuvchiga bitta yaxlit tizim bo'lib ko'rinishidir. Bunday tizimlarni loyihalashda dasturchi va arxitektorlar tizimning eng muhim xarakteristikalarini hisobga olishlari shart. Bular: **Scalability** (kengayuvchanlik), **Availability** (ishchi holatda bo'lish foizi), **Latency** (kechikish vaqti) va **Fault Tolerance** (xatoga chidamlilik).
 
-### Restoran tarmog'i analogiyasi:
+### Restoran tarmog'i o'xshatishi:
 Sizning bitta kichik pitsaxonangiz bor.
 - **Scalability (Masshtablash):** Mijozlar ko'payib ketganda, siz yangi filiallar (filiallar tarmog'i - gorizontal scaling) ochasiz va buyurtmalarni taqsimlaysiz.
 - **Availability (Mavjudlik/Ish vaqti):** Restoraningiz yiliga 365 kun, kuniga 24 soat ochiq bo'lishini ta'minlash. Agarda chiroq o'chsa, zaxira generator (backup) darhol ishga tushishi.

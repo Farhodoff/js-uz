@@ -15547,4 +15547,1211 @@ false\`.
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`0 5  8080 false\`.
 3. Variantlar ichidan to'g'ri javobni tanlang.`
   }
+,
+  {
+    id: "fcc-hello-world",
+    title: "Hello World",
+    difficulty: "easy",
+    category: "basics",
+    code: `// Quyidagi kod bajarilganda konsolda nima chiqadi?
+console.log("Hello World");`,
+    options: [
+      "Hello World",
+      "undefined",
+      "SyntaxError",
+      "null"
+    ],
+    correctAnswer: "Hello World",
+    explanation: "`console.log()` metodi qavs ichidagi matnni (string) konsolga chiqarish uchun ishlatiladi."
+  },
+  {
+    id: "fcc-console-intro",
+    title: "The console and introduction to variables",
+    difficulty: "easy",
+    category: "basics",
+    code: `// O'zgaruvchi e'lon qilinib, konsolga chiqarilmoqda:
+let greeting = "Hello JS";
+console.log(greeting);`,
+    options: [
+      "greeting",
+      "Hello JS",
+      "undefined",
+      "ReferenceError"
+    ],
+    correctAnswer: "Hello JS",
+    explanation: "O'zgaruvchi nomi konsolga uzatilganda, uning ichidagi qiymat ('Hello JS') chop etiladi."
+  },
+  {
+    id: "fcc-reassign-val",
+    title: "Reassign a value to a variable",
+    difficulty: "easy",
+    category: "basics",
+    code: `let age = 20;
+age = 21;
+console.log(age);`,
+    options: [
+      "20",
+      "21",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "21",
+    explanation: "`let` orqali e'lon qilingan o'zgaruvchining qiymatini yangidan boshqa qiymatga tenglash (reassign) mumkin. Oxirgi berilgan qiymat 21 bo'ladi."
+  },
+  {
+    id: "fcc-assign-val",
+    title: "Assign a value to a variable",
+    difficulty: "easy",
+    category: "basics",
+    code: `let x;
+x = 100;
+console.log(x);`,
+    options: [
+      "undefined",
+      "100",
+      "null",
+      "ReferenceError"
+    ],
+    correctAnswer: "100",
+    explanation: "O'zgaruvchini dastlab qiymatsiz yaratib (`let x`), keyin unga qiymat yuklash (`x = 100`) mumkin."
+  },
+  {
+    id: "fcc-assign-other-var",
+    title: "Assign the value of another variable",
+    difficulty: "easy",
+    category: "basics",
+    code: `let a = 5;
+let b = a;
+a = 10;
+console.log(b);`,
+    options: [
+      "5",
+      "10",
+      "undefined",
+      "ReferenceError"
+    ],
+    correctAnswer: "5",
+    explanation: "Primitiv sonlar qiymat bo'yicha nusxalanadi. `b = a` qilinganda b 5 qiymatni oladi va keyinchalik a o'zgarsa ham b o'zgarmaydi."
+  },
+  {
+    id: "fcc-create-missing",
+    title: "Create the missing variable",
+    difficulty: "easy",
+    category: "basics",
+    code: `// Kod to'g'ri ishlashi uchun qaysi o'zgaruvchi yetishmayapti?
+let status = "active";
+console.log(status + " " + role);`,
+    options: [
+      "role o'zgaruvchisi",
+      "status o'zgaruvchisi",
+      "console o'zgaruvchisi",
+      "Hech biri"
+    ],
+    correctAnswer: "role o'zgaruvchisi",
+    explanation: "Kodda e'lon qilinmagan va e'lon qilinmasdan ishlatilayotgan o'zgaruvchi `role` hisoblanadi (ReferenceError beradi)."
+  },
+  {
+    id: "fcc-create-const",
+    title: "Create variables with const",
+    difficulty: "easy",
+    category: "basics",
+    code: `const TAX_RATE = 0.12;
+try {
+  TAX_RATE = 0.15;
+} catch (e) {
+  console.log(e.name);
+}`,
+    options: [
+      "TypeError",
+      "SyntaxError",
+      "ReferenceError",
+      "Hech qanday xatolik chiqmaydi"
+    ],
+    correctAnswer: "TypeError",
+    explanation: "`const` bilan e'lon qilingan o'zgarmas o'zgaruvchilarga yangi qiymat qayta yuklanganda (reassign) `TypeError` yuz beradi."
+  },
+  {
+    id: "fcc-accessing-var-1",
+    title: "Accessing a variable (1)",
+    difficulty: "easy",
+    category: "basics",
+    code: `let testVar;
+console.log(testVar);`,
+    options: [
+      "undefined",
+      "null",
+      "ReferenceError",
+      "SyntaxError"
+    ],
+    correctAnswer: "undefined",
+    explanation: "JavaScript-da e'lon qilingan lekin hech qanday qiymat berilmagan o'zgaruvchining qiymati `undefined` bo'ladi."
+  },
+  {
+    id: "fcc-accessing-var-2",
+    title: "Accessing a variable (2)",
+    difficulty: "easy",
+    category: "basics",
+    code: `try {
+  console.log(myNumber);
+  let myNumber = 42;
+} catch (e) {
+  console.log(e.name);
+}`,
+    options: [
+      "ReferenceError",
+      "undefined",
+      "42",
+      "TypeError"
+    ],
+    correctAnswer: "ReferenceError",
+    explanation: "`let` o'zgaruvchilar hoisting bo'lsa-da, ularni e'lon qilishdan oldin o'qish taqiqlanadi (Temporal Dead Zone tufayli ReferenceError beradi)."
+  },
+  {
+    id: "fcc-declare-assign-num",
+    title: "Declare a variable and assign a number",
+    difficulty: "easy",
+    category: "basics",
+    code: `let count = 10;
+console.log(typeof count);`,
+    options: [
+      "\"number\"",
+      "\"string\"",
+      "\"undefined\"",
+      "\"boolean\""
+    ],
+    correctAnswer: "\"number\"",
+    explanation: "Sonli qiymat saqlovchi har qanday o'zgaruvchining turi `typeof` operatori bilan tekshirilganda `\"number\"` matnini qaytaradi."
+  },
+  {
+    id: "fcc-reassign-val-2",
+    title: "Reassign a value to a variable (2)",
+    difficulty: "easy",
+    category: "basics",
+    code: `let score = 50;
+score = score + 10;
+console.log(score);`,
+    options: [
+      "50",
+      "60",
+      "5010",
+      "TypeError"
+    ],
+    correctAnswer: "60",
+    explanation: "O'zgaruvchining joriy qiymatiga sonni qo'shib, qaytadan o'zlashtirish mumkin. `50 + 10 = 60`."
+  },
+  {
+    id: "fcc-js-comments",
+    title: "JavaScript comments",
+    difficulty: "easy",
+    category: "basics",
+    code: `// let testValue = 5;
+/* let secondValue = 10; */
+console.log(typeof testValue);`,
+    options: [
+      "\"undefined\"",
+      "\"number\"",
+      "ReferenceError",
+      "SyntaxError"
+    ],
+    correctAnswer: "\"undefined\"",
+    explanation: "Izoh (comment) ichidagi kodlar JavaScript dvigateli tomonidan bajarilmaydi, lekin o'zgaruvchi mavjud emasligi uchun `typeof` uni `\"undefined\"` deb qaytaradi (typeof mavjud bo'lmagan o'zgaruvchilarda ReferenceError o'rniga undefined qaytaradi)."
+  },
+  {
+    id: "fcc-uncomment-assign",
+    title: "Uncomment to Assign a Number",
+    difficulty: "easy",
+    category: "basics",
+    code: `// let total = 200;
+let total = 300;
+console.log(total);`,
+    options: [
+      "300",
+      "200",
+      "undefined",
+      "SyntaxError"
+    ],
+    correctAnswer: "300",
+    explanation: "Izohdan chiqarilgan va faol ishlayotgan satrdagi o'zgaruvchi qiymati konsolga chiqadi."
+  },
+  {
+    id: "fcc-time-to-uncomment",
+    title: "Time to Uncomment",
+    difficulty: "easy",
+    category: "basics",
+    code: `let output = "Before";
+// output = "After";
+console.log(output);`,
+    options: [
+      "Before",
+      "After",
+      "undefined",
+      "SyntaxError"
+    ],
+    correctAnswer: "Before",
+    explanation: "Izoh ichidagi qiymat o'zgartirish `output = \"After\"` amalga oshmaydi, shuning uchun boshlang'ich \"Before\" chiqadi."
+  },
+  {
+    id: "fcc-time-to-comment",
+    title: "Time to comment",
+    difficulty: "easy",
+    category: "basics",
+    code: `let a = 1;
+// a = 2;
+console.log(a);`,
+    options: [
+      "1",
+      "2",
+      "undefined",
+      "SyntaxError"
+    ],
+    correctAnswer: "1",
+    explanation: "Sikl yoki satrlardagi kod izohlansa, u o'z ta'sirini yo'qotadi, shuning uchun a o'z holicha 1 bo'lib qolaveradi."
+  },
+  {
+    id: "fcc-test-variables",
+    title: "Test: JavaScript variables",
+    difficulty: "easy",
+    category: "basics",
+    code: `const a = 10;
+let b = 20;
+{
+  var c = 30;
+  let b = 40;
+}
+console.log(a + b + c);`,
+    options: [
+      "60",
+      "80",
+      "70",
+      "ReferenceError"
+    ],
+    correctAnswer: "60",
+    explanation: "`a = 10` o'zgarmas. `b` ning global qiymati 20, blok ichidagi `let b = 40` faqat blokda ishlaydi va tashqaridagi `b` ni o'zgartirmaydi. `var c = 30` esa globalga sizib chiqadi. Jami: 10 + 20 + 30 = 60."
+  }
+,
+  // Booleans
+  {
+    id: "fcc-boolean-understand",
+    title: "Understanding Javascript Booleans",
+    difficulty: "easy",
+    category: "basics",
+    code: `const isTrue = true;
+const isFalse = false;
+console.log(typeof isTrue, isTrue);`,
+    options: [
+      "boolean true",
+      "string true",
+      "undefined false",
+      "boolean false"
+    ],
+    correctAnswer: "boolean true",
+    explanation: "Boolean (mantiqiy) turi faqat ikkita qiymatni qabul qiladi: true va false."
+  },
+  {
+    id: "fcc-assign-boolean",
+    title: "Assign boolean to a variable",
+    difficulty: "easy",
+    category: "basics",
+    code: `let isJavaScriptFun = true;
+console.log(isJavaScriptFun);`,
+    options: [
+      "true",
+      "false",
+      "undefined",
+      "ReferenceError"
+    ],
+    correctAnswer: "true",
+    explanation: "Boolean qiymatini o'zgaruvchiga oddiy tenglik (=) operatori yordamida yuklash mumkin."
+  },
+  {
+    id: "fcc-truthy-falsy",
+    title: "Truthy and Falsy in JavaScript",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(Boolean(""), Boolean("Hello"), Boolean(0), Boolean(1));`,
+    options: [
+      "false true false true",
+      "true false true false",
+      "false false false false",
+      "true true true true"
+    ],
+    correctAnswer: "false true false true",
+    explanation: "Bo'sh satr \"\" va 0 soni falsy (yolg'on hisoblanuvchi) qiymatlardir. To'ldirilgan satr \"Hello\" va 1 esa truthy (rost hisoblanuvchi) qiymatlardir."
+  },
+  {
+    id: "fcc-num-to-boolean",
+    title: "Convert Number to Boolean",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(Boolean(42), Boolean(-1), Boolean(0));`,
+    options: [
+      "true true false",
+      "true false false",
+      "false false false",
+      "true true true"
+    ],
+    correctAnswer: "true true false",
+    explanation: "JavaScript-da 0 dan boshqa barcha musbat va manfiy sonlar boolean ko'rinishida true qaytaradi. Faqat 0 (va NaN) false bo'ladi."
+  },
+  {
+    id: "fcc-boolean-empty-string",
+    title: "Boolean of an Empty String",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(Boolean(" "));`,
+    options: [
+      "true",
+      "false",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "true",
+    explanation: "Diqqat qiling: bo'sh satr \"\" yolg'on (falsy), lekin ichida probel bo'lgan satr \" \" esa to'ldirilgan hisoblanib true (truthy) qaytaradi."
+  },
+  {
+    id: "fcc-str-to-boolean",
+    title: "Convert a String to a Boolean",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(Boolean("false"));`,
+    options: [
+      "true",
+      "false",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "true",
+    explanation: "Ichida \"false\" yozuvi bo'lsa ham u bo'sh bo'lmagan satr hisoblanadi, shuning uchun Boolean(\"false\") bizga true qiymatini beradi."
+  },
+  {
+    id: "fcc-null-to-boolean",
+    title: "Convert null to a Boolean",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(Boolean(null), Boolean(undefined));`,
+    options: [
+      "false false",
+      "true true",
+      "false true",
+      "true false"
+    ],
+    correctAnswer: "false false",
+    explanation: "null ham, undefined ham JavaScript-da mantiqiy o'zgarishda har doim yolg'on (false) qiymatga aylanadi."
+  },
+  {
+    id: "fcc-make-truthy",
+    title: "Make the Variable Truthy",
+    difficulty: "easy",
+    category: "basics",
+    code: `let value = [];
+console.log(Boolean(value));`,
+    options: [
+      "true",
+      "false",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "true",
+    explanation: "JavaScript-da bo'sh massiv [] va bo'sh obyekt {} har doim rost (truthy) qiymat hisoblanadi."
+  },
+  {
+    id: "fcc-test-booleans",
+    title: "Test: JavaScript booleans",
+    difficulty: "easy",
+    category: "basics",
+    code: `const res = (0 || "" || "default" || false);
+console.log(res);`,
+    options: [
+      "default",
+      "0",
+      "empty string",
+      "false"
+    ],
+    correctAnswer: "default",
+    explanation: "OR (||) operatori chapdan o'ngga qarab birinchi uchragan truthy (rost) qiymatni qaytaradi. 0 va bo'sh satr falsy bo'lgani uchun keyingi \"default\" qiymatini oladi."
+  },
+  {
+    id: "fcc-compare-intro-1",
+    title: "Introduction to JavaScript Comparison Operators",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(5 == "5", 5 === "5");`,
+    options: [
+      "true false",
+      "true true",
+      "false false",
+      "false true"
+    ],
+    correctAnswer: "true false",
+    explanation: "== (kuchsiz tenglik) avtomatik ravishda turini o'zgartiradi va qiymatni solishtiradi (true). === (kuchli tenglik) esa qiymatni ham, turini ham solishtiradi (false)."
+  },
+  {
+    id: "fcc-compare-equal",
+    title: "Comparison operators - Equal",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(1 == true, 0 == false);`,
+    options: [
+      "true true",
+      "true false",
+      "false true",
+      "false false"
+    ],
+    correctAnswer: "true true",
+    explanation: "== (non-strict) taqqoslashda true son sifatida 1 ga, false esa 0 ga aylanib solishtiriladi, natijada har ikkisi ham true bo'ladi."
+  },
+  {
+    id: "fcc-compare-not-equal",
+    title: "Comparison operators - Not Equal",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(5 != "5", 5 !== "5");`,
+    options: [
+      "false true",
+      "true true",
+      "false false",
+      "true false"
+    ],
+    correctAnswer: "false true",
+    explanation: "!= (kuchsiz tengmaslik) turlarni o'zgartiradi va bir xil qiymat ko'rgani uchun false deydi. !== (kuchli tengmaslik) esa turlari har xil bo'lgani uchun rost deb topadi (true)."
+  },
+  {
+    id: "fcc-compare-intro-2",
+    title: "Introduction to JavaScript Comparison Operators II",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log("a" < "b", "apple" > "banana");`,
+    options: [
+      "true false",
+      "true true",
+      "false false",
+      "false true"
+    ],
+    correctAnswer: "true false",
+    explanation: "JavaScript-da satrlar alifbo bo'yicha (Unicode belgilar kodi asosida) solishtiriladi. a belgisi b dan kichik, apple esa banana dan kichik (chunki p harfi a dan keyin keladi, lekin birinchi harf a b dan kichik)."
+  },
+  {
+    id: "fcc-compare-gt",
+    title: "Comparison operators - Greater than",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(10 > 5, 5 > 5);`,
+    options: [
+      "true false",
+      "true true",
+      "false false",
+      "false true"
+    ],
+    correctAnswer: "true false",
+    explanation: "10 rostdan ham 5 dan katta. Lekin 5 o'zidan o'zi katta emas (u teng)."
+  },
+  {
+    id: "fcc-compare-lt",
+    title: "Comparison operators - Less than",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(3 < 7, 7 < 3);`,
+    options: [
+      "true false",
+      "true true",
+      "false false",
+      "false true"
+    ],
+    correctAnswer: "true false",
+    explanation: "3 < 7 rost (true), 7 < 3 esa noto'g'ri (false)."
+  },
+  {
+    id: "fcc-compare-gte",
+    title: "Comparison operators - Greater than or equal",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(5 >= 5, 6 >= 5);`,
+    options: [
+      "true true",
+      "true false",
+      "false true",
+      "false false"
+    ],
+    correctAnswer: "true true",
+    explanation: ">= operatori katta bo'lsa yoki teng bo'lsa rost qaytaradi. 5 va 5 teng bo'lgani uchun, 6 esa 5 dan katta bo'lgani uchun true bo'ladi."
+  },
+  {
+    id: "fcc-compare-lte",
+    title: "Comparison operators - Less than or equal",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(4 <= 4, 3 <= 2);`,
+    options: [
+      "true false",
+      "true true",
+      "false false",
+      "false true"
+    ],
+    correctAnswer: "true false",
+    explanation: "4 <= 4 rost (chunki ular teng), 3 <= 2 esa noto'g'ri (3 katta 2 dan)."
+  },
+  {
+    id: "fcc-compare-strict-equal",
+    title: "Comparison operators - Strict Equality",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(null === undefined, typeof null === typeof undefined);`,
+    options: [
+      "false false",
+      "true true",
+      "false true",
+      "true false"
+    ],
+    correctAnswer: "false false",
+    explanation: "null === undefined noto'g'ri, chunki turlari boshqa. typeof null - \"object\", typeof undefined - \"undefined\" dir, ular ham bir-biriga teng emas."
+  },
+  {
+    id: "fcc-compare-strict-inequal",
+    title: "Comparison operators - Strict Inequality",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(true !== 1);`,
+    options: [
+      "true",
+      "false",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "true",
+    explanation: "true va 1 qiymatlari boshqa-boshqa turlar bo'lgani uchun strict (kuchli) tengmaslik to'g'ri deb qaytaradi (true)."
+  },
+  {
+    id: "fcc-logical-intro",
+    title: "Introduction to JavaScript Logical Operators",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(true && false || true);`,
+    options: [
+      "true",
+      "false",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "true",
+    explanation: "&& operatori || dan ustunroq (priority yuqori). Shuning uchun true && false bajarilib false chiqadi. Keyin false || true bajarilib true chiqadi."
+  },
+  {
+    id: "fcc-logical-and",
+    title: "Logical operators - logical AND",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(5 && "hello" && 0 && "world");`,
+    options: [
+      "0",
+      "5",
+      "hello",
+      "false"
+    ],
+    correctAnswer: "0",
+    explanation: "&& (AND) operatori chapdan boshlab birinchi falsy qiymatni qaytaradi. Agar hammasi truthy bo'lsa, oxirgisini qaytaradi. Bu yerda 0 falsy qiymatdir."
+  },
+  {
+    id: "fcc-logical-or",
+    title: "Logical operators - logical OR",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log("" || 0 || null || "success" || 42);`,
+    options: [
+      "success",
+      "42",
+      "empty string",
+      "null"
+    ],
+    correctAnswer: "success",
+    explanation: "|| (OR) operatori chapdan boshlab birinchi truthy qiymatni qaytaradi. \"success\" birinchi uchragan to'ldirilgan satr hisoblanadi."
+  },
+  {
+    id: "fcc-arithmetic-intro",
+    title: "Introduction to JavaScript Arithmetic Operators",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(10 + 5 * 2 - 8 / 4);`,
+    options: [
+      "18",
+      "28",
+      "8",
+      "12"
+    ],
+    correctAnswer: "18",
+    explanation: "Matematik qoidalarga ko'ra, dastlab ko'paytirish (5 * 2 = 10) va bo'lish (8 / 4 = 2) bajariladi. Keyin qo'shish va ayirish: 10 + 10 - 2 = 18."
+  },
+  {
+    id: "fcc-arithmetic-add",
+    title: "Arithmetic operators - Addition",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log("5" + 5, 5 + 5);`,
+    options: [
+      "55 va 10",
+      "10 va 10",
+      "55 va 55",
+      "10 va 55"
+    ],
+    correctAnswer: "55 va 10",
+    explanation: "Agar qo'shish operatorining biror tomonida satr (string) bo'lsa, JavaScript qiymatlarni konkatenatsiya qiladi (matn sifatida yopishtiradi: \"55\"). Sonlar esa qo'shiladi (10)."
+  },
+  {
+    id: "fcc-arithmetic-sub",
+    title: "Arithmetic operators - Subtraction",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log("10" - 2);`,
+    options: [
+      "8",
+      "102",
+      "NaN",
+      "TypeError"
+    ],
+    correctAnswer: "8",
+    explanation: "Ayirish operatori satrni songa avtomatik o'giradi (type coercion), natijada 10 - 2 = 8 chiqadi."
+  },
+  {
+    id: "fcc-arithmetic-mul",
+    title: "Arithmetic operators - Multiplication",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log("3" * "4");`,
+    options: [
+      "12",
+      "NaN",
+      "34",
+      "TypeError"
+    ],
+    correctAnswer: "12",
+    explanation: "Ko'paytirish amali ikkala satrni ham avtomatik songa o'giradi, natijada 3 * 4 = 12 chiqadi."
+  },
+  {
+    id: "fcc-arithmetic-div",
+    title: "Arithmetic operators - Division",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(9 / 2, 5 / 0);`,
+    options: [
+      "4.5 va Infinity",
+      "4 va Infinity",
+      "4.5 va NaN",
+      "4.5 va 0"
+    ],
+    correctAnswer: "4.5 va Infinity",
+    explanation: "JavaScript-da butun bo'linish yo'q, kasr shaklida bo'ladi (4.5). Noldan farqli musbat sonni 0 ga bo'lganda esa Infinity chiqadi."
+  },
+  {
+    id: "fcc-arithmetic-exp",
+    title: "Arithmetic operators - Exponential",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(2 ** 3);`,
+    options: [
+      "8",
+      "6",
+      "9",
+      "16"
+    ],
+    correctAnswer: "8",
+    explanation: "** darajaga oshirish operatoridir. 2 ** 3 degani 2 * 2 * 2 = 8 deganidir."
+  },
+  {
+    id: "fcc-arithmetic-rem",
+    title: "Arithmetic operators - Remainder",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(10 % 3);`,
+    options: [
+      "1",
+      "3",
+      "0",
+      "10"
+    ],
+    correctAnswer: "1",
+    explanation: "% qoldiqli bo'lish (modulus) operatori. 10 ni 3 ga bo'lgandagi qoldiq 1 vaqtida qaytadi."
+  },
+  {
+    id: "fcc-test-operators",
+    title: "Test: JavaScript operators",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(1 + 2 + "3" + 4);`,
+    options: [
+      "334",
+      "1234",
+      "10",
+      "37"
+    ],
+    correctAnswer: "334",
+    explanation: "Dastlab sonli amallar bajariladi: 1 + 2 = 3. So'ngra u satr bilan qo'shiladi: 3 + \"3\" = \"33\". Oxirida yana satrga qo'shiladi: \"33\" + 4 = \"334\"."
+  },
+  {
+    id: "fcc-func-intro",
+    title: "Introduction to JavaScript functions",
+    difficulty: "easy",
+    category: "basics",
+    code: `function sayHello() {
+  return "Hello";
+}
+console.log(sayHello);`,
+    options: [
+      "[Function: sayHello]",
+      "Hello",
+      "undefined",
+      "SyntaxError"
+    ],
+    correctAnswer: "[Function: sayHello]",
+    explanation: "Funksiyani chaqirmasdan (qavslarsiz () ) faqat nomini yozsak, funksiyaning o'zini (havolasini) olamiz, natijasi (Hello) qaytmaydi."
+  },
+  {
+    id: "fcc-func-dec",
+    title: "Function declaration",
+    difficulty: "easy",
+    category: "basics",
+    code: `console.log(greet());
+function greet() {
+  return "Hi";
+}`,
+    options: [
+      "Hi",
+      "ReferenceError",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "Hi",
+    explanation: "Function declaration (funksiya deklaratsiyasi) hoisting bo'ladi, shuning uchun uni e'lon qilinishidan oldin ham chaqirish mumkin."
+  },
+  {
+    id: "fcc-func-calling",
+    title: "Function calling",
+    difficulty: "easy",
+    category: "basics",
+    code: `function run() {
+  console.log("Running");
+}
+const res = run();
+console.log(res);`,
+    options: [
+      "Running va keyin undefined",
+      "Running va keyin null",
+      "Running va keyin Running",
+      "undefined"
+    ],
+    correctAnswer: "Running va keyin undefined",
+    explanation: "Funksiya chaqirilganda \"Running\" chop etiladi. Biroq funksiya hech narsa qaytarmagani (return yo'qligi) uchun uning qaytargan qiymati undefined bo'ladi."
+  },
+  {
+    id: "fcc-func-return-1",
+    title: "Correctly return value from function (1)",
+    difficulty: "easy",
+    category: "basics",
+    code: `function add(a, b) {
+  a + b;
+}
+console.log(add(5, 5));`,
+    options: [
+      "undefined",
+      "10",
+      "null",
+      "TypeError"
+    ],
+    correctAnswer: "undefined",
+    explanation: "Funksiya hisoblashni amalga oshirsa ham, agar unga return kalit so'zi qo'yilmasa, natija qaytmaydi va undefined bo'ladi."
+  },
+  {
+    id: "fcc-func-keyword",
+    title: "Add the Missing Function Keyword",
+    difficulty: "easy",
+    category: "basics",
+    code: `// Qaysi so'z yetishmayapti?
+/* ??? */ myFunc() {
+  return true;
+}
+console.log(myFunc());`,
+    options: [
+      "function",
+      "let",
+      "const",
+      "def"
+    ],
+    correctAnswer: "function",
+    explanation: "JavaScript-da standart funksiya e'lon qilish uchun function kalit so'zi ishlatiladi."
+  },
+  {
+    id: "fcc-func-name",
+    title: "Add the Missing Function Name",
+    difficulty: "easy",
+    category: "basics",
+    code: `function (name) {
+  return name;
+}`,
+    options: [
+      "SyntaxError",
+      "undefined",
+      "To'g'ri ishlaydi",
+      "TypeError"
+    ],
+    correctAnswer: "SyntaxError",
+    explanation: "Declaration ko'rinishidagi funksiyalarga nom berish majburiy, aks holda sintaktik xato (SyntaxError) beradi."
+  },
+  {
+    id: "fcc-func-return-2",
+    title: "Correctly return value from function (2)",
+    difficulty: "easy",
+    category: "basics",
+    code: `function getSquare(n) {
+  return
+  n * n;
+}
+console.log(getSquare(3));`,
+    options: [
+      "undefined",
+      "9",
+      "NaN",
+      "TypeError"
+    ],
+    correctAnswer: "undefined",
+    explanation: "JavaScript return dan keyin qator tugagan deb hisoblab nuqtali vergul qo'yadi. Shuning uchun return; deb hisoblanadi va keyingi qator o'qilmaydi."
+  },
+  {
+    id: "fcc-func-complete",
+    title: "Complete the function",
+    difficulty: "easy",
+    category: "basics",
+    code: `function isZero(val) {
+  return val === 0;
+}
+console.log(isZero(0), isZero("0"));`,
+    options: [
+      "true false",
+      "true true",
+      "false false",
+      "false true"
+    ],
+    correctAnswer: "true false",
+    explanation: "=== kuchli taqqoslash bo'lgani sababli, son 0 satr \"0\" ga teng emas (false)."
+  },
+  {
+    id: "fcc-func-simple-dec",
+    title: "Declare a Simple Function",
+    difficulty: "easy",
+    category: "basics",
+    code: `const myFunc = function() {
+  return 100;
+};
+console.log(typeof myFunc);`,
+    options: [
+      "function",
+      "object",
+      "number",
+      "undefined"
+    ],
+    correctAnswer: "function",
+    explanation: "Funksiya o'zgaruvchiga yuklangan bo'lsa-da (Function Expression), uning turi \"function\" hisoblanadi."
+  },
+  {
+    id: "fcc-func-param-intro",
+    title: "Introduction to function parameters",
+    difficulty: "easy",
+    category: "basics",
+    code: `function multiply(a, b) {
+  return a * b;
+}
+console.log(multiply(5));`,
+    options: [
+      "NaN",
+      "5",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "NaN",
+    explanation: "Uzatilmagan parametr b ning qiymati undefined bo'ladi. 5 * undefined natijasi esa NaN (Not a Number) qaytaradi."
+  },
+  {
+    id: "fcc-func-args-1",
+    title: "Functions - parameters and arguments (1)",
+    difficulty: "easy",
+    category: "basics",
+    code: `function check(a, b) {
+  console.log(arguments.length);
+}
+check(1, 2, 3);`,
+    options: [
+      "3",
+      "2",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "3",
+    explanation: "arguments funksiyaga haqiqatda uzatilgan barcha argumentlarni o'z ichiga olgan massivsimon obyektdir. Uzatilgan qiymatlar 3 ta bo'lgani uchun 3 chiqadi."
+  },
+  {
+    id: "fcc-func-missing-param",
+    title: "Add Missing Function Parameters",
+    difficulty: "easy",
+    category: "basics",
+    code: `function printSum(a, b) {
+  console.log(a + b);
+}
+printSum(10);`,
+    options: [
+      "NaN",
+      "10",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "NaN",
+    explanation: "Ikkinchi parametr e'tiborsiz qoldirilgani uchun 10 + undefined = NaN bo'ladi."
+  },
+  {
+    id: "fcc-func-bug-subtract",
+    title: "Find the Bug: Parameters in subtract function",
+    difficulty: "easy",
+    category: "basics",
+    code: `function subtract(x, y) {
+  return y - x;
+}
+console.log(subtract(10, 3));`,
+    options: [
+      "-7",
+      "7",
+      "13",
+      "NaN"
+    ],
+    correctAnswer: "-7",
+    explanation: "Koddagi formula y - x ko'rinishida yozilgan. Shuning uchun 3 - 10 = -7 javobi chiqadi."
+  },
+  {
+    id: "fcc-func-greet",
+    title: "Complete the greet function",
+    difficulty: "easy",
+    category: "basics",
+    code: `function greet(name = "User") {
+  return "Hello " + name;
+}
+console.log(greet(null));`,
+    options: [
+      "Hello null",
+      "Hello User",
+      "Hello undefined",
+      "TypeError"
+    ],
+    correctAnswer: "Hello null",
+    explanation: "Default parametr faqat qiymat undefined bo'lgandagina ishlaydi. null uzatilganda u o'z holicha qoladi, shuning uchun Hello null chiqadi."
+  },
+  {
+    id: "fcc-func-args-2",
+    title: "Functions - parameters and arguments (2)",
+    difficulty: "easy",
+    category: "basics",
+    code: `function test(a, b = a) {
+  return a + b;
+}
+console.log(test(5));`,
+    options: [
+      "10",
+      "5",
+      "NaN",
+      "undefined"
+    ],
+    correctAnswer: "10",
+    explanation: "Keyingi parametrlar oldingi parametrlardan default qiymat sifatida foydalanishi mumkin (b = a). Shuning uchun 5 + 5 = 10 bo'ladi."
+  },
+  {
+    id: "fcc-func-args-3",
+    title: "Functions - parameters and arguments (3)",
+    difficulty: "easy",
+    category: "basics",
+    code: `function sum(...nums) {
+  return nums.reduce((acc, n) => acc + n, 0);
+}
+console.log(sum(1, 2, 3, 4));`,
+    options: [
+      "10",
+      "6",
+      "1",
+      "undefined"
+    ],
+    correctAnswer: "10",
+    explanation: "...nums - rest operatori barcha yuborilgan argumentlarni massivga yig'adi, so'ngra reduce yordamida yig'indisi 10 bo'ladi."
+  },
+  {
+    id: "fcc-func-early-return",
+    title: "Return early from function",
+    difficulty: "easy",
+    category: "basics",
+    code: `function process(n) {
+  if (n < 0) return "error";
+  return n * 2;
+}
+console.log(process(-5));`,
+    options: [
+      "error",
+      "-10",
+      "undefined",
+      "NaN"
+    ],
+    correctAnswer: "error",
+    explanation: "Funksiya ichida shart bajarilganda return orqali tezkor (vaqtidan oldin) chiqib ketish mumkin. Quyida -5 < 0 bo'lgani uchun darhol error qaytadi."
+  },
+  {
+    id: "fcc-func-is-adult",
+    title: "Is Adult Function",
+    difficulty: "easy",
+    category: "basics",
+    code: `function isAdult(age) {
+  return age >= 18;
+}
+console.log(isAdult(17));`,
+    options: [
+      "false",
+      "true",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "false",
+    explanation: "17 yosh 18 dan katta yoki teng emas, shuning uchun natija false bo'ladi."
+  },
+  {
+    id: "fcc-func-check-empty",
+    title: "Check for Empty String",
+    difficulty: "easy",
+    category: "basics",
+    code: `function isEmpty(str) {
+  return !str;
+}
+console.log(isEmpty(""), isEmpty(" "));`,
+    options: [
+      "true false",
+      "true true",
+      "false false",
+      "false true"
+    ],
+    correctAnswer: "true false",
+    explanation: "!\"\" inkor etish bo'sh satrni true qiladi. Lekin !\" \" esa probeli borligi uchun false qiladi."
+  },
+  {
+    id: "fcc-func-is-weekend",
+    title: "Is Weekend Function",
+    difficulty: "easy",
+    category: "basics",
+    code: `function isWeekend(day) {
+  return day === "Saturday" || day === "Sunday";
+}
+console.log(isWeekend("Monday"));`,
+    options: [
+      "false",
+      "true",
+      "undefined",
+      "TypeError"
+    ],
+    correctAnswer: "false",
+    explanation: "Monday na Shanba na Yakshanba, shuning uchun false chiqadi."
+  },
+  {
+    id: "fcc-func-refactor-discount",
+    title: "Refactor Repeated Discount Calculations in a Shopping Cart",
+    difficulty: "medium",
+    category: "basics",
+    code: `const getPrice = (price, discount) => price * (1 - discount);
+console.log(getPrice(100, 0.1));`,
+    options: [
+      "90",
+      "10",
+      "100",
+      "NaN"
+    ],
+    correctAnswer: "90",
+    explanation: "Kod takrorlanishining oldini olish uchun chegirmani hisoblovchi yagona funksiya yozilgan: 100 * (1 - 0.1) = 90."
+  },
+  {
+    id: "fcc-func-refactor-math",
+    title: "Refactor Duplicated Math Code into a Function",
+    difficulty: "medium",
+    category: "basics",
+    code: `function compute(op, a, b) {
+  return op === "add" ? a + b : a - b;
+}
+console.log(compute("add", 3, 4), compute("sub", 5, 2));`,
+    options: [
+      "7 3",
+      "7 -3",
+      "12 3",
+      "undefined"
+    ],
+    correctAnswer: "7 3",
+    explanation: "Kodni funksiyaga o'tkazish orqali hisoblash takrorlanishi yo'qoladi. 3 + 4 = 7 va 5 - 2 = 3 qaytadi."
+  },
+  {
+    id: "fcc-func-default-intro",
+    title: "Introduction to default parameters",
+    difficulty: "easy",
+    category: "basics",
+    code: `function greet(user = "Guest") {
+  return "Welcome " + user;
+}
+console.log(greet(undefined));`,
+    options: [
+      "Welcome Guest",
+      "Welcome undefined",
+      "Welcome null",
+      "TypeError"
+    ],
+    correctAnswer: "Welcome Guest",
+    explanation: "Agar parametrga undefined uzatilsa (yoki hech narsa yozilmasa), JS uning o'rniga default qiymatni (\"Guest\") ishlatadi."
+  },
+  {
+    id: "fcc-func-default-greeting",
+    title: "Default parameter: greeting",
+    difficulty: "easy",
+    category: "basics",
+    code: `function sayHi(msg = "Hello") {
+  return msg;
+}
+console.log(sayHi(""));`,
+    options: [
+      "empty string",
+      "Hello",
+      "undefined",
+      "null"
+    ],
+    correctAnswer: "empty string",
+    explanation: "Bo'sh satr \"\" bu haqiqiy qiymat hisoblanadi. Shuning uchun u default qiymatni almashtiradi va bo'sh satr qaytadi."
+  },
+  {
+    id: "fcc-func-default-multiplier",
+    title: "Default parameter: multiplier",
+    difficulty: "easy",
+    category: "basics",
+    code: `function multiply(val, mul = 1) {
+  return val * mul;
+}
+console.log(multiply(10, 0));`,
+    options: [
+      "0",
+      "10",
+      "1",
+      "NaN"
+    ],
+    correctAnswer: "0",
+    explanation: "0 yuborilganligi uchun u default 1 ni o'rniga ishlaydi, va natijada 10 * 0 = 0 chiqadi."
+  },
+  {
+    id: "fcc-func-default-required",
+    title: "Default parameter alongside required",
+    difficulty: "easy",
+    category: "basics",
+    code: `function build(a = 1, b) {
+  return [a, b];
+}
+console.log(build(undefined, 2));`,
+    options: [
+      "[1, 2]",
+      "[undefined, 2]",
+      "[1, undefined]",
+      "TypeError"
+    ],
+    correctAnswer: "[1, 2]",
+    explanation: "a ga undefined berilgani uchun u default 1 ni oladi, b esa unga yuborilgan 2 ni qabul qiladi."
+  }
 ];

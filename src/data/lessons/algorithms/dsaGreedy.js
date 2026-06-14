@@ -2,11 +2,11 @@ export const dsaGreedy = {
   id: "dsaGreedy",
   title: "Ochko'z Algoritmlar (Greedy Algorithms)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Ochko'z Algoritmlar (Greedy Algorithms) - bu har bir qadamda kelajakni o'ylamasdan, faqat o'sha joriy lahzada eng optimal, eng jozibador bo'lib ko'ringan qarorni qabul qilish orqali global optimal yechimga erishishni ko'zlaydigan yondashuvdir.
 
-### Do'kon xaridori analogiyasi:
+### Do'kon xaridori o'xshatishi:
 - **Ochko'z yondashuv (Greedy):** Tasavvur qiling, sizga 80 tsent pulni minimal miqdordagi tangalar bilan qaytarish kerak. Do'konda 50, 20, 10, 5 tsentlik tangalar bor.
 - Siz doimo cho'ntakka solish mumkin bo'lgan eng katta tangani tanlaysiz:
   1. Avval eng katta tanga: 50 tsent (qoldi 30).

@@ -2,13 +2,13 @@ export const bigO = {
   id: "bigO",
   title: "Algoritmlar Murakkabligi (Big O)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Big O va Algoritmlar Murakkabligi nima?
 * **Big O Notatsiyasi:** Bu algoritmning kirish ma'lumotlari hajmi (masalan, massiv uzunligi yoki matn o'lchami) o'sishi bilan uning bajarilish vaqti (Time Complexity) yoki talab etadigan qo'shimcha xotira hajmi (Space Complexity) qanchalik o'sishini ko'rsatadigan matematik o'lchovdir.
 * **Maqsad:** Kodimiz millisekundlarda qancha tez ishlashini emas (chunki u kompyuterning protsessoriga bog'liq), balki operatsiyalar soni ma'lumotlar ko'payganda qanday tezlikda o'sib borishini o'rganishdir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **do'stingizga katta hajmdagi ma'lumot faylini (masalan, 1 TB video)** yetkazishingiz kerak:
 * **1-usul (Internet orqali jo'natish):** Agar siz faylni Telegram yoki bulutli saqlagich orqali jo'natsangiz, uzatish vaqti fayl hajmiga to'g'ri proporsional ravishda oshadi. 1 GB tez uzatiladi, 1 TB esa ancha uzoq kutishni talab qiladi. Bu **O(n)** (Chiziqli murakkablik).
 * **2-usul (Samolyot yoki mashinada olib borish):** Siz faylni qattiq diskka (HDD/SSD) yozasiz-da, mashinaga o'tirib o'zingiz yetkazib berasiz. Bu holda fayl o'lchami 1 GB bo'ladimi yoki 10 TB bo'ladimi, borish vaqti bir xil bo'lib qolaveradi. Bu **O(1)** (Doimiy murakkablik).

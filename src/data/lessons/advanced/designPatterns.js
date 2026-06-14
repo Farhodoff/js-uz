@@ -2,7 +2,7 @@ export const designPatterns = {
   id: "a13",
   title: "Design Patterns: Singleton, Factory, Observer, Decorator, Strategy",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Katta va murakkab dasturlarda kod tarkibi, obyektlar o'rtasidagi bog'liqliklar tezda chalkashib ketishi mumkin. **Loyihalash andozalari (Design Patterns)** — bu dasturiy ta'minotni loyihalash jarayonida tez-tez uchraydigan muammolarga yozilgan va amaliyotda sinalgan tayyor arxitekturaviy yechimlardir. Ulardan to'g'ri foydalanish kodning qayta ishlatiluvchanligini (reusability), moslashuvchanligini va unga keyinchalik o'zgartirishlar kiritish osonligini ta'minlaydi.
 

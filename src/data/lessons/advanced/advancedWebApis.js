@@ -2,7 +2,7 @@ export const advancedWebApis = {
   id: "advancedWebApis",
   title: "Advanced Web APIs (Intersection & Mutation Observer)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Intersection Observer nima?
 **Intersection Observer API** — bu veb-sahifadagi ma'lum bir elementning foydalanuvchi ekraniga (Viewport) kirganini yoki undan chiqqanini kuzatuvchi brauzer vositasidir.
@@ -12,7 +12,7 @@ Avvallari element ekranga kirdimi-yo'qmi bilish uchun global \`scroll\` hodisasi
 **Mutation Observer API** — bu DOM daraxtida (HTML elementlarda) sodir bo'ladigan o'zgarishlarni (yangi bola element qo'shilishi, atributlar o'zgarishi, matn o'zgarishi) kuzatuvchi brauzer vositasidir.
 U DOM o'zgarganda orqa fonda biz bergan callback funksiyasini ishga tushiradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **do'kon qo'riqchisiz**:
 * **Scroll + getBoundingClientRect() (Eski yomon usul):** Siz har millisekundda do'konga kirish eshigini ochib, tashqariga qarab *"Kimdir kelyaptimi? Hozir keldimi? Hozirchi?"* deb so'rayverasiz (Juda charchaysiz va ish sekinlashadi).
 * **Intersection Observer (Yangi optimal usul):** Siz eshik tepasiga **harakat datchigi (sensor)** o'rnatasiz. Sensor faqat kimdir eshik oldiga kelgandagina (kesishganda) sizga qo'ng'iroq chaladi (Siz tinchgina ofisda dam olasiz).

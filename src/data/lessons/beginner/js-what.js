@@ -2,13 +2,13 @@ export const jsWhat = {
   id: "jsWhat",
   title: "JavaScriptga Kirish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### JavaScript nima?
 * **JavaScript (JS):** Bu veb-sahifalarni jonlantirish, ularga dinamik xatti-harakatlar va interaktivlik qo'shish uchun ishlatiladigan dasturlash tilidir. Dastlab faqat brauzerlar ichida ishlash uchun mo'ljallangan bo'lsa, bugungi kunda serverlardan tortib sun'iy intellekt tizimlarigacha qo'llaniladi.
 * **ECMAScript:** Bu JavaScript tili asoslangan standartdir. Brauzerlar bir xil standartdagi kodlarni tushunishi uchun ushbu standart qoidalari yangilanib turadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **inson tanasini yaratmoqchisiz**:
 * **HTML (Suyak karkasi):** Bu insonning skeleti. Unda ko'zlar, qo'llar va oyoqlar qayerda joylashishi ko'rsatiladi, lekin ular hali harakatlanmaydi va chiroyga ega emas.
 * **CSS (Kiyim va Teri):** Bu insonning tashqi ko'rinishi. Ko'zining rangi, sochlarining turi, kiygan kiyimlari. Bu dizayn va uslubdir.
@@ -333,7 +333,7 @@ toggleBtn.addEventListener("click", () => {
   },
   {
     "id": 2,
-    "question": "HTML, CSS va JavaScript o'rtasidagi bog'liqlikni qaysi analogiya eng yaxshi tushuntiradi?",
+    "question": "HTML, CSS va JavaScript o'rtasidagi bog'liqlikni qaysi o'xshatish eng yaxshi tushuntiradi?",
     "options": [
       "HTML — kiyim, CSS — miya, JavaScript — suyak karkasi",
       "HTML — suyak karkasi (struktura), CSS — tashqi ko'rinish (kiyim/chiroy), JavaScript — miya va muskullar (harakat/interaktivlik)",

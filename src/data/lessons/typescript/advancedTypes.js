@@ -2,12 +2,12 @@ export const advancedTypes = {
   id: "advancedTypes",
   title: "Advanced & Utility Types",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Advanced & Utility Types nima?
 TypeScript-da **Utility Types** (Yordamchi tiplar) va **Advanced Types** (Kengaytirilgan tiplar) — bu tayyor tiplarni o'zgartirish, ulardan nusxa olish yoki ularni tahrirlash orqali yangi tiplar hosil qilish usulidir. Ular kod takrorlanishini (DRY qoidasini) kamaytiradi va tiplash jarayonini osonlashtiradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Buni rasm tahrirlovchi **foto-filtrlarga (photo filters)** o'xshatish mumkin:
 * **Original Type:** Bu sizning asl rasmingiz (barcha maydonlari bo'lgan obyekt).
 * **Partial filter:** Rasmning ba'zi qismlarini xiralashtiradi yoki yashiradi. Asl rasmdagi barcha elementlar endi ixtiyoriy (optional) bo'ladi.

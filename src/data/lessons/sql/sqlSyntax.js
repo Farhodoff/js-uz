@@ -2,7 +2,7 @@ export const sqlSyntax = {
   id: "sqlSyntax",
   title: "SQL Sintaksisi va Operatorlar",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### SQL Sintaksisi nima?
 **SQL (Structured Query Language)** — bu ma'lumotlar bazasi bilan gaplashish uchun maxsus til. Undagi sintaksis (kod yozish qoidalari) ingliz tili grammatikasiga juda yaqin bo'lib, deklarativ xarakterga ega. Ya'ni, biz bazaga nimani bajarish kerakligini oddiy jumlalar orqali tushuntiramiz.
@@ -20,7 +20,7 @@ Biz ma'lumotlarni solishtirish yoki birlashtirish uchun operatorlardan foydalana
 * **Solishtirish:** \`=\`, \`!=\` yoki \`<>\` (teng emas), \`>\`, \`<\`, \`>=\`, \`<=\`
 * **Mantiqiy:** \`AND\` (va), \`OR\` (yoki), \`NOT\` (emas), \`IN\` (ichida), \`BETWEEN\` (oraliqda), \`LIKE\` (o'xshash).
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 SQL so'rovini **restorandagi mijozning ofitsiantga bergan buyurtmasiga** o'xshatish mumkin:
 * **Sintaksis:** *"Menga 2 porsiya somsa va bitta ko'k choy olib keling."* Agar siz *"Somsa ko'k choy 2 menga"* desangiz, ofitsiant tushunmaydi (Syntax Error).
 * **Ma'lumot turlari:** Ofitsiant buyurtmadagi miqdorni son ko'rinishida (\`INT\` = 2), taom nomini matn ko'rinishida (\`VARCHAR\` = 'Somsa') yozib oladi.

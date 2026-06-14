@@ -2,12 +2,12 @@ export const blockScopeLesson = {
   id: "blockScopeLesson",
   title: "Blok Ko'lami (Block Scope)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Blok Ko'lami (Block Scope) nima?
 Blok ko'lami — bu o'zgaruvchining faqat o'zi e'lon qilingan figurali qavslar \`{ ... }\` (blok) ichida ko'rinishi va undan tashqarida mavjud bo'lmasligidir. JavaScript-da \`let\` va \`const\` yordamida e'lon qilingan o'zgaruvchilar blok ko'lamiga ega. O'z navbatida, \`var\` kalit so'zi blok ko'lamini mutlaqo hisobga olmaydi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz ko'p xonali **shaxsiy uyda** yashayapsiz:
 * **\`let\` va \`const\` (Xonadagi shaxsiy buyumlar):** Siz xonangizning ichiga seyf qo'ydingiz va u yerda shaxsiy kundaligingizni saqlaysiz. Uyning boshqa xonasidagi odamlar u yerga kira olmaydi va u buyumni ko'ra olmaydi. Agar kimdir tashqaridan kundalikni so'rasa, "bunday buyum yo'q" deb javob beriladi (ReferenceError).
 * **\`var\` (Megafonli odam):** Siz xonangiz ichida turib megafonda baqiryapsiz. Garchi siz xona ichida bo'lsangiz ham, ovozingiz butun uyga tarqaladi. Uyning istalgan burchagidagi odam sizni eshitishi mumkin, chunki ovoz xona chegarasidan (blokdan) tashqariga sizib chiqqan.

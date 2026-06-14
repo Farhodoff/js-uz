@@ -2,7 +2,7 @@ export const advancedCiCd = {
   id: "advancedCiCd",
   title: "Mukammal CI/CD va Avtomatlashtirilgan Deploy",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Continuous Deployment (CD) nima?
 CI/CD darsimizning birinchi qismida biz CI (Continuous Integration - avtomatik testlash va integratsiya) haqida gaplashgan edik. **Continuous Deployment (CD - Uzluksiz joylashtirish)** esa pipeline-ning yakuniy bosqichidir. Bu bosqichda testlardan muvaffaqiyatli o'tgan kod avtomatik ravishda, inson aralashuvisiz jonli serverga (production) yuboriladi.
@@ -17,7 +17,7 @@ CI/CD darsimizning birinchi qismida biz CI (Continuous Integration - avtomatik t
 3. **Docker Registry va Konteynerlar:** Dasturni Docker image qilib o'raysiz va uni Docker Hub yoki AWS ECR kabi omborga (Registry) yuklaysiz (Push). Server esa yangi tasvirni tortib olib (Pull) konteynerni qayta ishga tushiradi.
 4. **AWS (Amazon Web Services) deployment asoslari:** Dunyodagi eng katta bulutli platforma. Unda statik fayllarni **S3** (oddiy fayl ombori) da saqlab, **CloudFront** (CDN - fayllarni foydalanuvchiga yaqin joyga yetkazib beruvchi kesh serverlari) orqali hosting qilish juda mashhur usuldir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **pishiriqlar do'konining** egasisiz:
 * **CI (Sifat nazorati):** Har bir tayyorlangan pishiriq do'konga chiqishidan oldin maxsus tekshiruvchi tomonidan tatib ko'riladi, shakli va tozaligi tekshiriladi.
 * **Continuous Delivery:** Tekshiruvdan o'tgan pishiriqlar maxsus qutilarga joylanib, peshtaxtaga olib chiqish uchun tayyorlab qo'yiladi. Siz ruxsat berishingiz bilan ular sotuvga chiqadi.

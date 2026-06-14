@@ -2,13 +2,13 @@ export const leetcodeTop = {
   id: "leetcodeTop",
   title: "Top Interview LeetCode Masalalari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Top LeetCode Masalalari nima?
 **LeetCode** — bu dasturchilar uchun algoritmik fikrlashni rivojlantirish va yirik texnologik kompaniyalar (Google, Meta, Amazon, Apple, Netflix va boshqalar) intervyulariga tayyorlanish uchun dunyodagi eng mashhur platformadir.
 Top LeetCode masalalari odatda eng ko'p so'raladigan va dasturlashning asosiy naqshlarini (patterns) o'z ichiga olgan klassik muammolardir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Algoritmlarni yechish va naqshlarni o'rganish xuddi **shaxmat o'ynashga** o'xshaydi:
 * **Brute Force (Oddiy yo'l):** Shaxmat donalarini tasodifiy surib ko'rish yoki raqibning har bir mumkin bo'lgan yurishini hisoblab chiqish (juda ko'p vaqt oladi).
 * **Algoritmik naqshlar (Patterns):** Shaxmatdagi ma'lum debyutlar, taktikalar (vilka, bog'lash, mot naqshlari) kabi, algoritmlarda ham ma'lum usullar bor (masalan, Sliding Window, Two Pointers, DFS, Dynamic Programming). Agar siz shu naqshlarni bilsangiz, masalani ko'rishingiz bilan uning optimal yechimini ko'ra olasiz.

@@ -2,14 +2,14 @@ export const spreadRest = {
   id: "spreadRest",
   title: "Spread va Rest (...) - Yoyish va Yig'ish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Spread va Rest (...) nima?
 JavaScriptda uchta nuqta (\`...\`) sintaksisi ishlatiladigan joyiga qarab ikki xil vazifani bajaradi:
 * **Spread (Yoyish):** Massiv yoki obyekt ichidagi elementlarni "yoyib", alohida-alohida qiymatlar ko'rinishida ochib beradi.
 * **Rest (Yig'ish):** Alohida qiymatlar yoki funksiya argumentlarini bitta butun massivga "yig'ib" beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 * **Spread (Yoyish):** Bu xuddi sumkaning ichidagi barcha buyumlarni stol ustiga to'kib yuborishga o'xshaydi. Hamma narsa yoyilib, alohida bo'lib qoladi.
 * **Rest (Yig'ish):** Bu esa stol ustida sochilib yotgan narsalarni bitta qutiga solib, og'zini yopib qo'yishga o'xshaydi. Hamma narsa bir joyga jamlanadi.
 

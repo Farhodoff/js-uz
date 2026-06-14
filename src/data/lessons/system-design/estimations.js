@@ -2,7 +2,7 @@ export const estimations = {
   id: "estimations",
   title: "Tizim O'lchamlarini Taxmin Qilish (Back-of-the-Envelope Estimations)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizimli dizayn intervyularida **Back-of-the-envelope estimation** (tavakkal yoki "salfetka ustidagi" hisob-kitoblar) — bu murakkab va aniq matematik formulalarsiz, taxminiy va tezkor hisoblash texnikasidir. Bu xuddi tushlik paytida kafeda salfetka orqasiga qalam bilan yozib, yangi biznes g'oyaning rentabelligini chamalashga o'xshaydi.
 

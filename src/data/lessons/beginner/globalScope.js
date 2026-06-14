@@ -2,14 +2,14 @@ export const globalScopeLesson = {
   id: "globalScopeLesson",
   title: "Global Scope",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Global Scope (Global qamrov) nima?
 * **Global Scope:** Bu JavaScript dasturining eng tashqi doirasi (miqyosi) hisoblanadi. Har qanday funksiya yoki blok (\`{}\`) tashqarisida e'lon qilingan barcha o'zgaruvchilar va funksiyalar global qamrovga tegishli bo'ladi.
 * **Kirish imkoniyati:** Global qamrovda e'lon qilingan o'zgaruvchilar dasturning istalgan joyidan (istalgan funksiya, blok yoki ichma-ich yozilgan kodlar ichidan) ko'rinadi va ularni o'qish yoki o'zgartirish mumkin.
 * **Global Obyekt:** Kod bajariladigan muhitga qarab global o'zgaruvchilar maxsus obyektga biriktiriladi. Masalan, brauzerda bu \`window\` obyekti, Node.js-da \`global\` obyekti, universal standartda esa \`globalThis\` hisoblanadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **shahar markaziy maydonidasiz**:
 * **Global o'zgaruvchi — Shahar markazidagi ulkan e'lonlar taxtasi:** Bu taxtaga yozilgan ma'lumotni shahardagi istalgan odam (istalgan funksiya) ko'ra oladi va o'qiy oladi. Biroq, agar kimdir kelib taxtadagi ma'lumotni o'chirib, o'zinikini yozib ketsa (global o'zgaruvchini o'zgartirsa), bu butun shahar aholisi uchun o'zgarib ketadi.
 * **Lokal o'zgaruvchi — Shaxsiy xonadondagi e'lon taxtasi:** Bu faqat o'sha uyda yashovchilar (funksiya ichidagilar) uchun ko'rinadi. Tashqaridagilar (global scope) bu taxtani ko'ra olmaydi.

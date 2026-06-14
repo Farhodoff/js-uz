@@ -2,13 +2,13 @@ export const dns = {
   id: "dns",
   title: "Domain Name System (DNS) va URL Manzillar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Har bir veb-sayt internetda o'zining noyob raqamli manziliga ega bo'lib, u **IP manzil (IP Address)** deb ataladi (masalan, \`142.250.190.46\`). Kompyuterlar bir-biri bilan shu raqamlar orqali bog'lanadi. Biroq, insonlar uchun bunday murakkab raqamlarni eslab qolish juda qiyin. Bizga \`google.com\` yoki \`youtube.com\` kabi so'zlardan iborat nomlar qulayroq.
 
 **DNS (Domain Name System)** — bu internetning telefon kitobi (kontaktlar ro'yxati). U siz brauzerga yozgan domen nomini (masalan, \`js-uz.uz\`) kompyuter tushunadigan IP manzilga (\`185.178.104.12\`) tarjima qilib beradi.
 
-### Telefon kontaktlari analogiyasi:
+### Telefon kontaktlari o'xshatishi:
 Siz do'stingiz "Ali"ga qo'ng'iroq qilmoqchisiz. Telefoningiz Alining haqiqiy raqamini (+998901234567) bilishi kerak. Siz kontaktlar ro'yxatidan "Ali" ismini qidirasiz va tugmani bosasiz. Telefon orqa fonda bu ismni raqamga aylantirib bog'lanadi. Bu yerda kontaktlar ro'yxati — **DNS**, "Ali" — **Domen nomi**, telefon raqami esa — **IP manzil** hisoblanadi.
 
 ---

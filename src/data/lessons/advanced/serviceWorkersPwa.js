@@ -2,14 +2,14 @@ export const serviceWorkersPwa = {
   id: "serviceWorkersPwa",
   title: "Service Workers va Progressive Web Apps (PWA)",
   language: "uz",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Service Workers va PWA nima?
 **Service Worker** — bu brauzeringiz orqa fonida (background) ishlaydigan, veb-sahifadan mustaqil bo'lgan skript (oqim) faylidir. U veb-sahifa va tarmoq (network) o'rtasida proksi vazifasini bajaradi: barcha chiquvchi so'rovlarni tutib oladi, keshlash xizmatlarini boshqaradi va veb-saytning tarmoqsiz (oflayn - offline) ishlashini ta'minlaydi.
 
 **Progressive Web Apps (PWA)** — oddiy veb-saytlarni mobil yoki desktop ilova kabi o'rnatiladigan, tezkor va oflaynda ishlaydigan darajaga olib chiquvchi texnologiyalar to'plamidir. PWA-ning yuragi Service Worker va Manifest faylidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **do'konga (serverga) borib mahsulot sotib oladigan xaridorsiz (Web Page)**:
 * **Service Workersiz (Oddiy Veb):** Siz har safar sut kerak bo'lganda ko'chaga chiqib do'konga borasiz. Agar yo'llar yopilgan bo'lsa (internet uzilgan bo'lsa), siz sut ololmay och qolasiz (sahifada xatolik chiqadi).
 * **Service Worker bilan (PWA):** Siz o'zingiz uchun **shaxsiy yordamchi (Service Worker)** yolladingiz va u uyingiz eshigi tagida turadi. Siz sut so'raganingizda, yordamchi birinchi navbatda **muzlatgichni (Cache Storage)** tekshiradi. Agar muzlatgichda sut bo'lsa, uni darhol sizga beradi (tezkor / oflayn). Agar muzlatgich bo'sh bo'lsa, u do'konga borib sut sotib oladi, uni muzlatgichga qo'yadi va sizga yetkazadi (Cache-first strategy).

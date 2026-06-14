@@ -2,7 +2,7 @@ export const behavioralQuestions = {
   id: "behavioralQuestions",
   title: "Xulq-atvorga oid savollar (Behavioral Interview)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Kompaniyalar faqat texnik jihatdan kuchli dasturchilarni emas, balki jamoada yaxshi ishlay oladigan, muammolardan qochmaydigan, tanqiddan dars oladigan va stress holatlarida o'zini yo'qotmaydigan insonlarni qidirishadi.
 Texnik suhbatdan o'tsangiz ham, **Behavioral Interview** (xulq-atvor suhbati) dan yiqilishingiz mumkin. Bu suhbatda beriladigan "Qiyin vaziyatda nima qilgansiz?", "Sizga yoqmaydigan qaror qabul qilinsa-chi?" kabi savollarga to'g'ri va madaniyatli javob berishni bilish sizning jamoaga mosligingizni (culture fit) belgilaydi.

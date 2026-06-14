@@ -2,14 +2,14 @@ export const eventLoopDeep = {
   id: "eventLoopDeep",
   title: "Event Loop chuqur tahlili va Microtasks/Macrotasks",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Microtasks va Macrotasks nima?
 Event Loop ishlashini sodda tushunganimizdan so'ng, asinxron vazifalar ham o'z ichida ikki xil turga bo'linishini bilishimiz lozim:
 1. **Macrotask (yoki shunchaki Task):** Bu brauzer yoki Node.js tomonidan rejalashtiriladigan yirikroq asinxron vazifalar (masalan: \`setTimeout\`, \`setInterval\`, I/O operatsiyalari, foydalanuvchi kliklari).
 2. **Microtask (yoki Job):** Bular to'g'ridan-to'g'ri JavaScript kodi ichidan kelib chiquvchi, o'ta yuqori ustuvorlikka ega bo'lgan kichik vazifalar (masalan: \`Promise.then/catch/finally\`, \`queueMicrotask\`, \`MutationObserver\`).
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **bank kassirisiz**:
 * **Macrotasks (Tashqaridagi navbat):** Bank eshigi oldida turgan mijozlar. Ularning har biri bittadan kelib, o'z pul amallarini bajaradi (bitta macrotask).
 * **Microtasks (Kassa oldidagi shoshilinch ishlar):** Birinchi mijoz kassaga keldi (macrotask boshlandi). U pulini o'tkazdi va kassirdan kvitansiyani muhrlab berishni so'radi. Kassir mijozga javob berayotganida, mijoz: "Voy, shoshilmang, yana bitta to'lovim bor edi, shuni ham qo'shib yubora olasizmi?" dedi (microtask yaratildi). Kassir navbatdagi tashqaridagi mijozni chaqirishdan oldin, kassa oldida turgan joriy mijozning barcha qo'shimcha mayda iltimoslarini (barcha microtask-larni) bajarib bo'lishi shart.

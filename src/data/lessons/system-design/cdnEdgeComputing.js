@@ -2,12 +2,12 @@ export const cdnEdgeComputing = {
   id: "cdnEdgeComputing",
   title: "CDN va Edge Computing",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### CDN (Content Delivery Network) nima?
 **CDN (Kontent yetkazib berish tarmog\\'i)** — bu dunyo bo\\'ylab tarqalgan serverlar tarmog\\'i bo\\'lib, veb-saytning statik va dinamik fayllarini (rasmlar, videolar, JS/CSS fayllar, HTML) foydalanuvchiga eng yaqin joylashgan server orqali yetkazib beradi. Bu serverlar joylashgan har bir nuqta **PoP (Point of Presence)** deb ataladi.
 
-### Real hayotiy analogiya (CDN)
+### Real hayotiy o'xshatish (CDN)
 Tasavvur qiling, siz **Toshkentdasiz** va **Nyu-Yorkdagi** katta onlayn do\\'kondan kitob sotib olmoqchisiz:
 * **CDN-siz holat:** Kitob har safar buyurtma qilinganda Amerika omboridan Toshkentga pochtadan yuboriladi. Yetib kelishi 10 kun davom etadi (yuqori kechikish - Latency).
 * **CDN-li holat:** Onlayn do\\'kon kitoblarining nusxalarini butun dunyo bo\\'ylab, shu jumladan **Toshkentdagi mahalliy kitob do\\'koniga** (PoP/Edge server) oldindan joylashtiradi. Siz kitobni buyurtma qilganingizda, u Amerika omboridan emas, balki uyingiz yaqinidagi mahalliy do\\'kondan darhol yetkaziladi (kichik kechikish - 1-2 soat yoki daqiqalar).

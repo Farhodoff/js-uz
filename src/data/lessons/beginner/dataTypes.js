@@ -2,7 +2,7 @@ export const dataTypesLesson = {
   id: "dataTypesLesson",
   title: "Ma'lumotlar Turlari (Data Types)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Ma'lumotlar turlari (Data Types) nima?
 JavaScript-da har bir o'zgaruvchi ma'lum bir qiymatni o'zida saqlaydi va bu qiymat o'ziga xos turga (tardagi ma'lumotga) ega bo'ladi. JavaScript-da ma'lumotlar turlari ikki guruhga bo'linadi:
@@ -11,12 +11,12 @@ JavaScript-da har bir o'zgaruvchi ma'lum bir qiymatni o'zida saqlaydi va bu qiym
 
 ---
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 
-* **Primitive type (Qiymat bo'yicha nusxalash) analogiyasi — Naqd pul:**
+* **Primitive type (Qiymat bo'yicha nusxalash) o'xshatishi — Naqd pul:**
   Tasavvur qiling, sizda 100 ming so'mlik banknota bor (\`let a = 100000\`). Siz do'stingizga xuddi shunday 100 ming so'mlik boshqa banknotani berdingiz (\`let b = a\`). Endi do'stingiz o'zidagi pulni sarflasa yoki ustiga yozsa ham, sizning hamyoningizdagi banknota o'zgarmaydi. Ular bir-biridan mustaqil (copy by value).
 
-* **Reference type (Havola bo'yicha nusxalash) analogiyasi — Seyf kaliti:**
+* **Reference type (Havola bo'yicha nusxalash) o'xshatishi — Seyf kaliti:**
   Tasavvur qiling, sizda qimmatbaho buyumlar saqlanadigan bitta seyf (Heap-dagi obyekt) bor va uning kaliti sizda turibdi (\`let key1 = #123\`). Siz do'stingizga xuddi shu kalitning nusxasini berdingiz (\`let key2 = key1\`). Endi do'stingiz o'z kaliti bilan seyfni ochib, ichidagi narsalarni o'zgartirsa (masalan, pul qo'shsa yoki olsa), siz o'z kalitingiz bilan ochganingizda ham o'sha o'zgarishlarni ko'rasiz, chunki seyf bitta, unga olib boruvchi kalitlar (havolalar) esa ikkita.
 
 ---

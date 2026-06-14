@@ -2,13 +2,13 @@ export const integrationE2eTesting = {
   id: "integrationE2eTesting",
   title: "JavaScript-da Integratsion va E2E (End-to-End) Testlash",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Integratsion va E2E (End-to-End) Testlash nima?
 * **Integratsion Testlash (Integration Testing):** Dasturning turli qismlari (masalan, API va Ma'lumotlar bazasi) bir-biri bilan to'g'ri bog'langanligini va birgalikda to'g'ri ishlashini tekshirish jarayoni.
 * **E2E (End-to-End - Boshidan Oxirigacha) Testlash:** Tizimni haqiqiy foydalanuvchi nuqtai nazaridan tekshirish. Brauzerni avtomatik boshqarib, tugmalarni bosish, formalarni to'ldirish va yakuniy natijani ko'rish.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **telefon ishlab chiqaruvchisiz**:
 * **Unit Test:** Telefon batareyasi, ekrani va kamerasini zavodda alohida-alohida tok berib tekshirish.
 * **Integratsion Test:** Batareyani telefonga ulab, quvvatlash simini tiqib, ekran foizi ko'payayotganini tekshirish (ikki tizim hamkorligi).

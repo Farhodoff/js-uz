@@ -2,7 +2,7 @@ export const requirements = {
   id: "requirements",
   title: "Funksional va Nofunksional Talablar (Functional vs. Non-functional Requirements)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizim loyihalashni boshlashdan oldin, biz nima qurayotganimizni va u qanday ishlashi kerakligini aniq bilishimiz kerak. Dasturiy ta'minot muhandisligida barcha talablar ikki toifaga bo'linadi: **Funksional talablar (Functional Requirements)** va **Nofunksional talablar (Non-functional Requirements)**.
 

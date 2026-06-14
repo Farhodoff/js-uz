@@ -2,12 +2,12 @@ export const audioVideo = {
   id: "audioVideo",
   title: "Audio va Video API: Media Elementlarini Boshqarish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Audio va Video API (HTMLMediaElement) nima?
 **Audio va Video API** — bu brauzerga o'rnatilgan audio (\`<audio>\`) va video (\`<video>\`) fayllarni JavaScript yordamida dasturiy boshqarish (o'ynatish, to'xtatish, ovozni sozlash, tezlikni o'zgartirish) imkonini beruvchi interfeysdir. HTML-dagi pleyer faqat visual element bo'lsa, JavaScript bizga uning orqasidagi "miya" vazifasini bajarib beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, sizda **avtomobil magnitolasi** va uning **masofaviy pulti (remote control)** bor:
 * **Magnitola (HTML media elementi):** Qo'shiqlarni ijro qiluvchi va ovoz chiqaruvchi asosiy qurilma.
 * **Pult (JavaScript Media API):** Magnitolani uzoqdan boshqaruvchi tugmalar to'plami:

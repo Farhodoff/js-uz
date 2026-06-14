@@ -2,11 +2,11 @@ export const dsaGraphs = {
   id: "dsaGraphs",
   title: "Graflar va Ularni Aylanib Chiqish (Graphs, BFS & DFS)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Graf (Graph) - bu obyeklar va ularning o'zaro bog'liqliklarini (munosabatlarini) ifodalovchi eng universal ma'lumotlar tuzilmasidir. Obyektlar **Tugunlar (Vertices/Nodes)**, ular o'rtasidagi bog'liqliklar esa **Shoxlar (Edges)** deb ataladi.
 
-### Ijtimoiy tarmoq (Facebook/LinkedIn) analogiyasi:
+### Ijtimoiy tarmoq (Facebook/LinkedIn) o'xshatishi:
 - **Tugunlar (Vertices):** Ijtimoiy tarmoq foydalanuvchilari (Siz, do'stingiz, tanishingiz).
 - **Shoxlar (Edges):** Do'stlik aloqalari.
   - **Yo'naltirilmagan Graf (Undirected):** Agar siz kimdir bilan do'st bo'lsangiz (Facebook), u ham siz bilan do'st bo'ladi. Aloqa ikki tomonlama.

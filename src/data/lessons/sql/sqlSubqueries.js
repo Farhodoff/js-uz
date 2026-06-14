@@ -2,12 +2,12 @@ export const sqlSubqueries = {
   id: "sqlSubqueries",
   title: "SQL Subqueries (Ichki So'rovlar)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Subquery (Ichma-ich so'rov) nima?
 Ba'zida SQL-da biror natijani olish uchun kerak bo'ladigan shart boshqa bir so'rovning natijasiga bog'liq bo'ladi. Masalan, "O'rtacha buyurtma miqdoridan qimmatroq bo'lgan barcha buyurtmalarni topish" kerak. Buning uchun avval o'rtacha buyurtma miqdorini aniqlash, so'ngra shu qiymatdan katta buyurtmalarni filtrlash lozim. SQL-da buni bitta so'rov ichida ikkinchi so'rovni joylashtirish — **Subquery** (Ichma-ich so'rov) yordamida yechish mumkin.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Buni **matematik ifodadagi qavslarga** o'xshatish mumkin:
 Masalan, $x = 5 \\times (3 + 4)$ ifodasida avval qavs ichidagi $(3 + 4) = 7$ hisoblanadi, so'ngra tashqi ko'paytirish bajariladi.
 SQL-da ham xuddi shunday: avval ichki so'rov (qavs ichidagi) ishlaydi va uning natijasi tashqi so'rovga shart sifatida uzatiladi.

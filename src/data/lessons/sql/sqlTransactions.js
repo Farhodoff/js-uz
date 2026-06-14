@@ -2,7 +2,7 @@ export const sqlTransactions = {
   id: "sqlTransactions",
   title: "Tranzaksiyalar va ACID",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Tranzaksiya (Transaction) nima?
 **Tranzaksiya** — bu ma'lumotlar bazasida bajariladigan bir nechta SQL amallarining yagona butun blok (all-or-nothing) sifatida birlashtirilishidir. Tranzaksiya ichidagi barcha so'rovlar yo hammasi muvaffaqiyatli bajarilishi shart, yoki birortasi ham bajarilmasligi kerak.
@@ -19,7 +19,7 @@ ACID — tranzaksiyalar ishonchliligini kafolatlovchi 4 ta oltin qoidadir:
 * **I (Isolation - Izolyatsiya):** Bir vaqtda ishlayotgan tranzaksiyalar bir-biriga xalaqit bermaydi.
 * **D (Durability - Bardoshlilik):** Tranzaksiya muvaffaqiyatli tugagach (Commit bo'lgach), tizim o'chib qolsa ham ma'lumotlar bazada saqlanib qoladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **do'stingizga klik orqali pul o'tkazyapsiz**:
 1. **1-qadam:** Sizning balansingizdan 100,000 so'm ayriladi.
 2. **2-qadam:** Do'stingizning balansiga 100,000 so'm qo'shiladi.

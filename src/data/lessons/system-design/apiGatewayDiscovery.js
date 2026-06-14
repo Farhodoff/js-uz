@@ -2,14 +2,14 @@ export const apiGatewayDiscovery = {
   id: "apiGatewayDiscovery",
   title: "API Gateway va Service Discovery",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### API Gateway va Service Discovery nima?
 * **API Gateway:** Tizimingizning kirish eshigi. U barcha tashqi mijozlar so'rovlarini qabul qilib, ularni ichki mikroxizmatlarga (microservices) to'g'ri yo'naltiruvchi, xavfsizlik va nazoratni boshqaruvchi markaziy tugundir.
 * **Service Registry:** Barcha ishlayotgan xizmat nusxalarining (service instances) joriy IP manzillari va portlari saqlanadigan ma'lumotlar bazasi (telefon kitobchasi).
 * **Service Discovery:** Mikroxizmatlar dinamik ravishda kengayganda (scale up/down) yoki IP manzili o'zgarganda, ularning joriy joylashuvini avtomatik ravishda aniqlash mexanizmi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **yirik mehmonxonaga** keldingiz:
 * **API Gateway (Resepshn):** Mehmonxonaga kirganingizda, resepshn sizni kutib oladi. Siz xonangizning raqamini bilishingiz yoki oshxona, basseyn qayerdaligini qidirishingiz shart emas. Siz resepshndan "Taom yemoqchiman" deb so'raysiz, u esa sizni restoran tomon yo'naltiradi. Shuningdek, resepshn sizning shaxsingizni tekshiradi (Authentication) va juda ko'p yuk bilan kelganingizda yordam beradi.
 * **Service Registry (Xonalar xaritasi / Telefon daftarchasi):** Restoran xonasi o'zgarishi, basseyn vaqtinchalik yopilishi yoki yangi xizmatlar qo'shilishi mumkin. Resepshn stolida qaysi xizmat qaysi xonada joylashganligi va ularning telefon raqamlari yozilgan dinamik ro'yxat (Service Registry) bo'ladi.

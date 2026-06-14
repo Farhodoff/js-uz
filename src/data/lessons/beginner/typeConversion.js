@@ -2,14 +2,14 @@ export const typeConversionLesson = {
   id: "typeConversionLesson",
   title: "Type Conversion",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Type Conversion (Turlarni O'zgartirish) nima?
 JavaScript **dinamik tiplangan** (dynamically typed) tildir. Bu shuni anglatadiki, o'zgaruvchilar ma'lum bir ma'lumot turi (datatype) bilan cheklanib qolmaydi va ularning turlari dastur davomida o'zgarishi mumkin. Turlarni o'zgartirish ikki xil ko'rinishda bo'ladi:
 * **Explicit Conversion (Aniq o'zgartirish):** Dasturchi o'z kodi orqali qiymat turini aniq ko'rsatib o'zgartirishi (masalan, \`Number()\`, \`String()\` funksiyalari orqali).
 * **Implicit Coercion (Yashirin o'zgartirish):** JavaScript dvigateli amallarni bajarish paytida qiymat turini o'z-o'zidan (avtomatik) boshqa turga o'tkazishi (masalan, \`5 + '5'\` bajarilganda).
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **chet elga sayohatga chiqdingiz**:
 * **Explicit Conversion (Aniq o'zgartirish):** Siz aeroportdagi bank shaxobchasiga borib, Dollaringizni aniq kurs bo'yicha So'mga almashtirasiz. Siz nima qilayotganingizni aniq bilasiz va natijani nazorat qilasiz.
 * **Implicit Coercion (Yashirin o'zgartirish):** Siz chet eldagi kafeda o'z hamyoningizdagi xalqaro plastik kartangiz orqali to'lov qilasiz. Siz terminalga Dollar kartangizni tekkizasiz, lekin orqa fonda bank tizimi avtomatik ravishda pulni mahalliy valyutaga o'zgartirib to'lovni amalga oshiradi. Siz hech qanday qo'lda almashtirish funksiyasini chaqirmadingiz, hammasi yashirincha bajarildi.

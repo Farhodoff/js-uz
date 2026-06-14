@@ -2,12 +2,12 @@ export const intlApi = {
   id: "intlApi",
   title: "Internationalization (Intl) API",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Intl API nima?
 **Intl (Internationalization) API** — bu JavaScript-ga o'rnatilgan va veb-ilovani turli davlatlar (lokallar) madaniy formatlariga avtomatik tarzda moslashtiruvchi maxsus obyektdir. U raqamlar, valyutalar, sanalar, nisbiy vaqtlar va ro'yxatlarni hech qanday tashqi kutubxonalarsiz (masalan, og'ir \`moment.js\`iz) formatlab beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **xalqaro tarjimonisiz**:
 * **Kutubxonalardan foydalanish (Eski/Og'ir usul):** Har bir davlatdan (AQSH, Germaniya, Yaponiya) kelgan sayyoh bilan gaplashish uchun uyingizdan qalin tarjima lug'atlarini (70KB lik og'ir JS paketlarini) yuklab ko'tarib yurasiz.
 * **Intl API (Modern/Optimal usul):** Sizning miyangizda barcha tillar va ularning madaniy qoidalari (sanalar, raqamlar yozilishi) oldindan o'rnatilgan. Sayyoh kelib pasportidagi kodini (masalan, \`uz-UZ\` yoki \`en-US\`) ko'rsatishi bilan u tushunadigan tilda va pul birligida gapirasiz.

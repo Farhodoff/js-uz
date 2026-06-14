@@ -2,11 +2,11 @@ export const performanceAlgos = {
   id: "performanceAlgos",
   title: "Samaradorlik va Optimallashtirish Algoritmlari (Caching & Limits)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 JavaScript dasturlari va veb-saytlar tez ishlashi uchun xotirani tejash hamda takroriy so'rovlar oqimini cheklash juda muhim. Buning uchun tizimli va kod darajasida optimallashtirish usullaridan foydalanamiz: **LRU Cache** (eng kam ishlatilgan ma'lumotlarni o'chirish), **Debounce** va **Throttle** (hodisalar chastotasini cheklash).
 
-### Restoran va Oqim analogiyalari:
+### Restoran va Oqim o'xshatishlari:
 - **LRU Cache (Tezkor kesh stoli):** Restoranda stol ustiga faqat odamlar hozirgina va eng ko'p so'ragan 5 ta taom menyusi qo'yiladi. Agarda yangi turdagi taom so'ralsa va stolda joy bo'lmasa, eng uzoq vaqt davomida hech kim so'ramagan menyu stoldan olib tashlanadi (joy ochish uchun).
 - **Debounce (Kutuvchi lift):** Lift eshigi ochildi. Lift ichkaridagi odamlarni olib ketishdan oldin har safar yangi odam kelganda yana 5 soniya kutadi. Yangi odam kelishi to'xtagandan keyingina lift yo'lga tushadi (tugma tez-tez bosilganda oxirgisini kutish).
 - **Throttle (Dozator):** Shishadagi suv dozatori. Siz uni qanchalik tez-tez bossangiz ham, u har 2 soniyada faqat bir tomchi suv beradi (tezkor bosishlarni belgilangan vaqt oralig'ida faqat bir marta bajarish).

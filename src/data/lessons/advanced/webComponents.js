@@ -2,13 +2,13 @@ export const webComponents = {
   id: "webComponents",
   title: "Web Components va Shadow DOM",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Web Components va Shadow DOM nima?
 * **Web Components (Veb Komponentlar):** Bu hech qanday framework (React, Vue, Angular va h.k.) ishlatmasdan, brauzerning o'zida yangi, maxsus HTML teglarini (masalan, \`<user-card>\`, \`<image-slider>\`) yaratishga yordam beradigan texnologiyalar to'plamidir.
 * **Shadow DOM (Soyali DOM):** Bu komponentingiz atrofida "himoya qalqoni" yaratadigan texnologiya. Shadow DOM ichidagi HTML va CSS kodlari butunlay yopiq bo'ladi: tashqi CSS stillari uning ichiga ta'sir qilmaydi, uning ichidagi CSS stillari esa tashqi sahifani buzib yubormaydi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **yangi aqlli choynak (Smart Kettle)** sotib oldingiz:
 * **Custom Element:** Bu choynakning o'zi. Uning tashqi ko'rinishi va tugmalari bor. Siz uni sahifangizga \`<smart-kettle></smart-kettle>\` deb qo'shasiz.
 * **Shadow DOM:** Bu choynakning ichki simlari, isitish elementi va sensorlari. Ular choynak korpusi bilan yopilgan (himoyalangan). Siz tashqaridan turib u simlarni o'zgartira olmaysiz. Agar uyingizdagi boshqa jihozning rangi qizil bo'lsa, bu choynakning ichki tizimiga ta'sir qilmaydi.

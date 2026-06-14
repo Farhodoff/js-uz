@@ -2,7 +2,7 @@ export const resumeOptimization = {
   id: "resumeOptimization",
   title: "Rezyume Tayyorlash va Optimallashtirish (ATS Optimization)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 IT bozorida raqobat juda kuchli. Kompaniyadagi HR (Human Resources) mutaxassisi yoki texnik rekruter bitta vakansiya uchun yuzlab rezyumelarni qabul qiladi va har bir rezyumeni ko'zdan kechirishga o'rtacha **6-10 soniya** vaqt sarflaydi, xolos.
 Agar sizning rezyumeingiz (CV) chalkash bo'lsa, unda keraksiz ma'lumotlar juda ko'p bo'lsa yoki GitHub profilingiz bo'sh bo'lsa, siz texnik suhbat (interview) bosqichigacha ham yetib bora olmaysiz. Rezyume va GitHub profilini to'g'ri optimallashtirish — suhbatga taklifnoma olishning eng birinchi va eng muhim kalitidir.

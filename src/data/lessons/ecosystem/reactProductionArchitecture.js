@@ -2,7 +2,7 @@ export const reactProductionArchitecture = {
   id: "reactProductionArchitecture",
   title: "React Production Arxitekturasi (Build, Deploy, CI/CD)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Katta va professional React loyihalarida (masalan, o\\'nlab dasturchilar ishlaydigan Enterprise tizimlarda) kod bazasini tartibli saqlash hayotiy zaruriyatdir. Junior dasturchilar odatda barcha logikani (API so\\'rovlar, ma\\'lumotlarni formatlash, form validation va holat boshqaruvi) to\\'g\\'ridan-to\\'g\\'ri UI komponentining ichiga (JSX aralash) yozib yuborishadi. Bu quyidagi muammolarga olib keladi:
 - **Spaghetti Code:** Kodni o\\'qish va tushunish o\\'ta qiyinlashadi.

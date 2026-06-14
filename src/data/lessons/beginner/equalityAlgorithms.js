@@ -2,7 +2,7 @@ export const equalityAlgorithms = {
   id: "equalityAlgorithms",
   title: "Taqqoslash va Tenglik (== vs ===)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Taqqoslash va Tenglik (== vs ===) nima?
 JavaScript-da qiymatlarni solishtirish uchun asosan ikkita operator ishlatiladi:
@@ -11,7 +11,7 @@ JavaScript-da qiymatlarni solishtirish uchun asosan ikkita operator ishlatiladi:
 
 ---
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **metroga kirmoqchisiz**:
 * **Strict Equality (\`===\`) - bu juda qat'iy nazoratchi:** U sizdan ham turniket chiptasini, ham shaxsingizni tasdiqlovchi hujjatni talab qiladi. Agar sizda chiptaning o'zi bo'lsa-yu (qiymat bor), lekin u qog'oz chipta bo'lsa (boshqa tip), elektron karta o'rniga o'tmaydi. Tiplar mos kelishi shart.
 * **Loose Equality (\`==\`) - bu yumshoq turniket:** Unga chiptaning shakli (qog'oz, elektron yoki telefon ekrandagi QR kod) muhim emas. U har qanday shakldagi chiptani avval o'zining skaneri orqali "umumiy kodga" (songa) o'tkazadi va agar u to'g'ri bo'lsa, sizni ichkariga kiritadi.

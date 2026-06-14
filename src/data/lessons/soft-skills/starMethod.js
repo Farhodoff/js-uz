@@ -2,7 +2,7 @@ export const starMethod = {
   id: "starMethod",
   title: "STAR Metodologiyasi (Suhbatdan o'tish siri)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Texnik suhbatlarda ko'pincha "O'zingiz hal qilgan eng qiyin texnik muammo haqida gapirib bering" yoki "Jamoada kelishmovchilik yuz berganda nima qilgansiz?" kabi ochiq savollar beriladi. Ko'plab dasturchilar bu savollarga javob berishda tartibsiz va uzoq gapirib, suhbatdoshni zeriktirishadi va asosiy natijani aytishni unutishadi.
 **STAR Metodi** — bu xulq-atvorga oid (behavioral) savollarga aniq, lo'nda va ta'sirchan javob berish imkonini beruvchi xalqaro standart tuzilmadir. U orqali siz o'z tajribangizni muhandislik nuqtai nazaridan chiroyli tarzda ko'rsatib bera olasiz.

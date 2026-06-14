@@ -2,11 +2,11 @@ export const dsaBacktracking = {
   id: "dsaBacktracking",
   title: "Orqaga Qaytish Algoritmlari (Backtracking)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Orqaga Qaytish (Backtracking) - bu barcha mumkin bo'lgan yechim variantlarini (holatlarni) ketma-ket sinab ko'rish, agar tanlangan yo'l noto'g'ri (muvaffaqiyatsiz) bo'lib chiqsa, bir qadam orqaga qaytib (**backtrack**), boshqa yo'ldan urinib ko'rishga asoslangan algoritmik yondashuvdir.
 
-### Labirint analogiyasi:
+### Labirint o'xshatishi:
 - **Labirintdan chiqish:** Tasavvur qiling, siz qorong'u labirintda turibsiz va chiqish yo'lini qidiryapsiz.
 - Siz birinchi chorrahaga kelasiz va **chap yo'lni** tanlaysiz. Biroz yurgach, yo'l berk bo'lib chiqadi (Tugallanish nuqtasi/Dead end).
 - Siz u yerda taslim bo'lmaysiz, balki izingizga qaytib (bir qadam orqaga yurib), yana o'sha chorrahaga kelasiz va bu safar **o'ng yo'lni** tanlab ko'rasiz.

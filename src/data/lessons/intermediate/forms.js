@@ -2,13 +2,13 @@ export const forms = {
   id: "forms",
   title: "Formalar bilan Ishlash, Validatsiya va FormData API (Forms)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Formalar va Validatsiya nima?
 * **Formalar (Forms)** — bu veb-sahifada foydalanuvchidan ma'lumot (matn, raqam, fayl, tanlovlar) yig'ishning va ularni tizimga (serverga) yuborishning asosiy interfeysidir.
 * **Validatsiya (Validation)** — foydalanuvchi kiritgan ma'lumotlar to'g'riligini (masalan: email formatidami, parol yetarlicha uzunmi, majburiy katakchalar to'ldirilganmi) serverga yuborishdan oldin tekshirish jarayonidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **xalqaro pasport olish uchun ariza topshiryapsiz**:
 * **Ariza anketasi:** HTML formasi (\`<form>\`).
 * **Input katakchalari:** Ism, yosh yoki rasm yuklash joylari.

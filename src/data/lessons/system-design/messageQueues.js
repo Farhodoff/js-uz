@@ -2,13 +2,13 @@ export const messageQueues = {
   id: "messageQueues",
   title: "Xabarlar Navbati va Asinxron Aloqa (Message Queues & Event-Driven)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizimlar kattalashgani sari, xizmatlarning o'zaro to'g'ridan-to'g'ri (sinxron - HTTP) bog'lanishi tizimni sekinlashtiradi. Masalan, foydalanuvchi buyurtma berganda, to'lov qilish, SMS yuborish, omborni tekshirish va kvitansiya tayyorlash operatsiyalari HTTP orqali birma-bir bajarilsa, foydalanuvchi sahifada 10 soniya kutib qoladi.
 
 **Message Queue (Xabarlar Navbati)** — bu tizimlar o'rtasida asinxron tarzda xabar almashish imkonini beruvchi "pochta qutisi" yoki "navbat boshqaruvchi". U yordamida bitta servis xabarni navbatga tashlab, o'z ishini davom ettiraveradi. Qolgan ishlar orqa fonda asinxron bajariladi.
 
-### Kafe Navbati analogiyasi:
+### Kafe Navbati o'xshatishi:
 Siz qahvaxonaga kirdingiz.
 - **Sinxron ulanish (HTTP):** Kassa oldida buyurtma berdingiz. Kofeni tayyorlovchi barista kofeni to'liq pishirib, sizga berguncha kassa yopilib turadi, navbatdagilar kutaveradi.
 - **Asinxron ulanish (Message Queue):** Kassa (Publisher) buyurtmani qabul qilib, sizga chek beradi va keyingi mijozga o'tadi. Buyurtma qog'ozini esa simga (Navbat - Queue) ilib qo'yadi. Barista (Consumer) simdan qog'ozlarni navbat bilan olib, kofeni tayyorlaydi. Kassa navbati kutib qolmaydi, kofe orqa fonda tayyorlanadi.

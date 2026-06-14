@@ -2,7 +2,7 @@ export const dbScalingSharding = {
   id: "dbScalingSharding",
   title: "Ma'lumotlar Bazalarini Masshtablash va Sharding (DB Scaling & Sharding)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, sizda kichik bir kutubxona bor va unga kuniga 10 ta odam keladi. Bitta kutubxonachi (baza) barcha kitoblarni saqlashga va odamlarga tarqatishga osongina ulguradi.
 
@@ -11,7 +11,7 @@ Vaqt o'tib, kutubxonaga kuniga 10,000 ta odam kela boshladi va kitoblar soni mil
 1. **Vertikal masshtablash (Vertical Scaling / Scale Up):** Kutubxonachiga kuchliroq kompyuter olib berish, tezroq yugurishni o'rgatish yoki tezkorroq ishlaydigan yangi kutubxonachi yollash. Ammo buning ham jismoniy chegarasi bor.
 2. **Gorizontal masshtablash (Horizontal Scaling / Scale Out):** Ko'plab kutubxonachilarni yollash va kitoblarni ular o'rtasida bo'lib chiqish.
 
-### Asosiy atamalar analogiyasi:
+### Asosiy atamalar o'xshatishi:
 - **Master-Slave Replication:** Kutubxona mudiri (Master) barcha yangi kitoblarni qabul qiladi va ro'yxatga oladi. Yordamchi kutubxonachilar (Slaves) esa faqat kitoblarni odamlarga o'qish uchun tarqatishadi (Read-only).
 - **Partitioning (Bo'limlarga ajratish):** Kutubxonadagi kitoblarni janrlariga qarab turli javonlarga ajratish (masalan, badiiy adabiyot alohida, ilmiy adabiyot alohida).
 - **Sharding:** Kitoblar shunchalik ko'pki, ularni bitta binoga sig'dirib bo'lmaydi. Biz kitoblarni alifbo tartibida (A-D, E-H va hokazo) turli binolarga (serverlarga) bo'lib joylashtiramiz.

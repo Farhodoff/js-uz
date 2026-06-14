@@ -2,7 +2,7 @@ export const sqlViews = {
   id: "sqlViews",
   title: "Ko'rinishlar (Views)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Ko'rinish (View) nima?
 **Ko'rinish (View)** — bu ma'lumotlar bazasidagi "virtual" jadvaldir. Virtual deganda, uning ichida ma'lumotlar jismonan saqlanmaydi. U shunchaki biz yozgan murakkab SQL so'rovining saqlab qo'yilgan nomidir (alias). Biz ushbu ko'rinishga oddiy jadval kabi so'rov yuborganimizda, u orqa fonda o'sha murakkab so'rovni bajarib ma'lumotlarni tortib keladi.
@@ -14,7 +14,7 @@ export const sqlViews = {
 ### Materialized View nima?
 Oddiy View har safar so'ralganda orqa fondagi so'rovni qayta ishga tushiradi. **Materialized View** esa orqa fondagi so'rov natijasini diskka jismoniy jadval ko'rinishida yozib oladi. Bu juda murakkab hisob-kitoblar tez ishlashi uchun juda foydali, lekin ma'lumotlar o'zgarganda uni yangilab (\`REFRESH\`) turish kerak.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **do'kon boshqaruvchisisiz**:
 * **Jismoniy jadval (Table):** Omborxonadagi barcha tovarlar va ularning batafsil hujjatlari (sotib olingan narxi, yetkazib beruvchi kontakti va h.k.).
 * **Ko'rinish (View):** Vitrina (oynali javon). Vitrinada tovarlar turadi, lekin ularning hamma hujjatlari va sotib olish narxlari yashirilgan. Mijozlar faqat o'zlari uchun kerak bo'lgan ma'lumotlarni (tovar nomi va narxi) ko'radilar.

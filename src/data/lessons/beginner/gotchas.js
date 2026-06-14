@@ -2,14 +2,14 @@ export const jsGotchas = {
   id: "jsGotchas",
   title: "JavaScript Gotchas (Tuzoqlar)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### JavaScript "Tuzoqlari" (Gotchas) nima?
 JavaScript dunyodagi eng mashhur dasturlash tillaridan biri bo'lsa-da, u juda tez va shoshilinch ravishda (atigi 10 kunda) yaratilgan. Shuning uchun tilda ba'zi g'ayrioddiy, mantiqqa zid bo'lib tuyuladigan xususiyatlar yoki tarixiy xatolar mavjud. Dasturchilar bu xususiyatlarni ko'pincha **"tuzoqlar" (gotchas/pitfalls)** deb atashadi. 
 
 Ular xato emas — ular til spetsifikatsiyasi bo'yicha shunday ishlashga mo'ljallangan, ammo inson mantig'iga to'g'ri kelmasligi sababli yosh dasturchilarni chalg'itadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz supermarketga kirib, **ikkita bo'sh savatni** birlashtirmoqchisiz. Siz ularni bir-birining ichiga kiydirsangiz, yana bir savat hosil bo'lishini kutasiz. Ammo kassir kelib: *"Qoidaga ko'ra, ikkita bo'sh savat birlashsa, ular havoga aylanib yo'q bo'lib ketadi (bo'sh matn bo'ladi)"* deydi. 
 
 Yoki bo'lmasam, taroziga **olmani** qo'ysangiz, u sizga *"Bu meva emas, bu obyektdir"* deb javob beradi. 

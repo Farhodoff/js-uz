@@ -2,13 +2,13 @@ export const functions = {
   id: "functions",
   title: "Funksiyalar va Scope",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Funksiya va Scope nima?
 * **Funksiya (Function):** Bu dasturning biror-bir muayyan vazifani bajarishga mo'ljallangan, qayta-qayta ishlatilishi mumkin bo'lgan kod blokidir. Siz unga ma'lumot uzatasiz (argumentlar), u ma'lumotlarni qayta ishlaydi va natijani qaytaradi (return).
 * **Scope (Qamrov doirasi):** Bu o'zgaruvchilar va funksiyalarning koddagi "ko'rinish" yoki ularga kirish huquqining doirasidir. Ya'ni, o'zgaruvchini qayerda e'lon qilganingizga qarab, uni kodning qaysi qismlarida ishlatish mumkinligi aniqlanadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, sizda **oshxona va taom tayyorlash mashinasi** bor:
 * **Funksiya:** Bu mikser yoki oshxona kombaynidir. Siz unga **masalliqlarni solasiz** (parametrlar/argumentlar), u ularni **aralashtiradi** (kod bajarilishi) va sizga **sharbatsiz tayyor mahsulotni qaytaradi** (return).
 * **Scope (Global va Local):** 

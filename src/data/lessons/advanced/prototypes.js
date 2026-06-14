@@ -2,13 +2,13 @@ export const prototypes = {
   id: "prototypes",
   title: "Prototypes va Vorislik (Inheritance)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Prototypes (Prototiplar) va Vorislik (Inheritance) nima?
 * **Prototype (Prototip):** Bu JavaScript-da obyektlar o'rtasida metodlar va xossalarni ulashish uchun ishlatiladigan maxsus mexanizm (ya'ni boshqa obyektga havola). Har bir obyekt yashirin \`[[Prototype]]\` (ko'pincha \`__proto__\` deb ko'rsatiladi) xossasiga ega bo'lib, u orqali o'z ota-onasidan meros oladi.
 * **Prototip zanjiri (Prototype Chain):** Agar obyektning o'zidan biron bir xossa qidirilsa va topilmasa, JavaScript uni avtomatik tarzda uning prototipidan qidirishni boshlaydi. Bu qidiruv zanjiri oxir-oqibat \`null\` qiymatiga yetganda to'xtaydi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **uy qurmoqchisiz**:
 * **Chizma (Blueprint):** Sizda tayyor uy chizmasi bor (Konstruktor / Class).
 * **Nusxalar (Objects):** Siz shu chizma asosida bir nechta uylarni qurasiz.

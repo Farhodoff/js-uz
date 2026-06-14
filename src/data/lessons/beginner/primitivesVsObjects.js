@@ -2,7 +2,7 @@ export const primitivesVsObjects = {
   id: "primitivesVsObjects",
   title: "Primitivlar va Obyektlar (Memory)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Primitivlar va Obyektlar nima?
 JavaScript-da o'zgaruvchilar va ma'lumotlar bilan ishlashda eng muhim tushunchalardan biri bu ularning xotirada qanday saqlanishidir. Ma'lumotlar turlari ikki asosiy guruhga bo'linadi:
@@ -11,7 +11,7 @@ JavaScript-da o'zgaruvchilar va ma'lumotlar bilan ishlashda eng muhim tushunchal
 
 ---
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 
 * **Primitiv qiymat (Qiymat bo'yicha nusxalash) — Qog'ozdagi raqam:**
   Tasavvur qiling, sizda bir varaq qog'oz bor va unda "42" raqami yozilgan (\`let x = 42\`). Siz do'stingizga xuddi shu qog'ozning kserokopiyasini berdingiz (\`let y = x\`). Endi do'stingiz o'zidagi qog'ozdagi raqamni o'chirib, "100" deb yozsa ham, sizning qog'ozingizdagi "42" o'zgarmaydi. Ular mutlaqo mustaqil nusxalardir.

@@ -2,7 +2,7 @@ export const sqlStoredProcedures = {
   id: "sqlStoredProcedures",
   title: "Saqlanadigan Proseduralar (Stored Procedures)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Saqlanadigan Prosedura (Stored Procedure) nima?
 **Saqlanadigan Prosedura (Stored Procedure)** — bu ma'lumotlar bazasi ichida saqlanadigan va ma'lum bir vazifani bajarish uchun yozilgan SQL kodlari to'plamidir (dasturlash tillaridagi funksiyalarga o'xshash).
@@ -16,7 +16,7 @@ export const sqlStoredProcedures = {
 * **Funksiya (Function):** Har doim bitta qiymat qaytarishi shart, tranzaksiyani boshqara olmaydi (\`COMMIT\`/\`ROLLBACK\` qila olmaydi). Uni oddiy so'rov ichida \`SELECT function_name(...)\` deb ishlatish mumkin.
 * **Prosedura (Procedure):** Qiymat qaytarishi shart emas (hech narsa qaytarmasa ham bo'ladi), lekin tranzaksiyalarni to'liq boshqara oladi. Uni \`CALL procedure_name(...)\` deb chaqiramiz.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, sizda **avtomatlashtirilgan qahva mashinasi** bor:
 * **Oddiy SQL:** Siz har safar qahva ichmoqchi bo'lganingizda, mashinani qismlarga ajratib, suv solib, qahva maydalab, stakanni joylashtirib, tugmani bosasiz (ko'p vaqt va harakat ketadi).
 * **Stored Procedure:** Mashinada tayyor "Kapuchino" tugmasi bor. Siz faqat tugmani bosasiz va mashina orqa fonda barcha qadamlarni (maydalash, suv isitish, quyish) avtomatik bajarib, sizga tayyor qahva beradi. Siz faqat parametr berasiz (shakar soni = 2).

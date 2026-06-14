@@ -2,13 +2,13 @@ export const sortingSearching = {
   id: "sortingSearching",
   title: "Saralash va Qidiruv Algoritmlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Saralash va Qidiruv Algoritmlari nima?
 * **Saralash (Sorting):** Tartibsiz joylashgan elementlar to'plamini (masalan, sonlar yoki ismlarni) o'sish yoki kamayish tartibida joylashtirish jarayonidir.
 * **Qidiruv (Searching):** Ma'lumotlar to'plami ichidan kerakli qiymatni yoki uning manzilini (indeksini) aniqlash jarayonidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 * **Saralash (Kutubxonadagi kitoblar):** Tasavvur qiling, kutubxonada kitoblar tartibsiz yotibdi. Siz ularni alifbo tartibida joylashtirib chiqasiz. Agar kitoblar ko'p bo'lsa, ularni birma-bir solishtirib chiqish (Bubble Sort) juda uzoq vaqt oladi. Buning o'rniga kitoblarni teng ikkiga bo'lib, alohida saralab, keyin birlashtirish (Merge Sort) ancha tezroq bo'ladi.
 * **Qidiruv (Lug'atdan so'z izlash):** Agar siz lug'atdan "Olma" so'zini qidirsangiz, birinchi sahifadan boshlab har bir so'zni o'qimaysiz (Linear Search). Siz lug'atni o'rtasidan ochib, alifboga qarab chap yoki o'ng tomonga o'tasiz (Binary Search).
 

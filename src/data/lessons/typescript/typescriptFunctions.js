@@ -2,13 +2,13 @@ export const typescriptFunctions = {
   id: "typescriptFunctions",
   title: "Funksiyalar va Overloads",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### TypeScript-da Funksiyalar nima?
 JavaScript-da funksiyalar juda erkin: ular har qanday tipdagi argumentlarni qabul qilaveradi va istalgan qiymatni qaytaradi. Bu esa katta loyihalarda kutilmagan xatolarga (masalan, son kutilgan joyga string yoki undefined kelib qolishiga) sabab bo'ladi.
 **TypeScript-da funksiyalar** — bu funksiyaga kirayotgan parametrlar (argumentlar) va undan qaytayotgan natijaning tiplari qat'iy nazorat qilinishidir. Shuningdek, u bizga ixtiyoriy parametrlarni, standart qiymatlarni va har xil kirish parametrlariga mos ravishda har xil chiqish tiplarini belgilash imkonini beruvchi **Function Overloads** (funksiya yuklamasi) mexanizmini taqdim etadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Funksiyani **kartoshka tozalaydigan va to'g'raydigan mashinaga** o'xshatish mumkin:
 * **JavaScript funksiyasi:** Bu mashina ichiga kartoshka o'rniga tosh, g'isht yoki poyabzal tashlasangiz ham ishlashga harakat qiladi va natijada runtime (ish jarayoni) paytida buziladi.
 * **TypeScript funksiyasi:** Bu mashinaning kirish qismida faqat "Kartoshka" (\`number\`) qabul qilinishi va chiqishida faqat "Tozalangan to'g'ralgan kartoshka" (\`string\`) olinishi oldindan qat'iy e'lon qilingan. Agar g'isht tashlamoqchi bo'lsangiz, tizim hali mashinani yoqmasdan oldinoq (kompilyatsiya bosqichida) xatolik beradi va ishlashni rad etadi.

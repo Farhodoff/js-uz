@@ -2,13 +2,13 @@ export const mongooseDb = {
   id: "mongooseDb",
   title: "Mongoose ODM va MongoDB",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### MongoDB va Mongoose nima?
 * **MongoDB:** Bu relyatsion (SQL) bazalardan farqli ravishda, ma'lumotlarni jadvallarda emas, balki **hujjatlar (documents)** ko'rinishida saqlaydigan NoSQL ma'lumotlar bazasi. Hujjatlar JSON (BSON) formatida yoziladi va ular juda moslashuvchan.
 * **Mongoose:** Bu MongoDB uchun yozilgan **ODM (Object Document Mapper)** kutubxonasi. U Node.js dasturi va MongoDB o'rtasida ko'prik vazifasini bajaradi. U bazaga yozilayotgan ma'lumotlar ma'lum bir tartibda (Schema) bo'lishini va tekshiruvlardan (Validation) o'tishini ta'minlaydi.
 
-### SQL vs MongoDB (NoSQL) analogiyasi
+### SQL vs MongoDB (NoSQL) o'xshatishi
 Keling, ularni **Kutubxona** tizimi orqali solishtiramiz:
 * **SQL (Relyatsion):** Bu an'anaviy kutubxona kartotekasi. Har bir kitob haqida ma'lumot qat'iy ustunlari bor jadvalga yoziladi (ID, Nomi, Muallif, Chiqilgan yili). Agar kitobning bir nechta muallifi bo'lsa, siz alohida \\\`Mualliflar\\\` jadvalini yaratib, ularni kitobga bog'lashingiz shart (JOIN yordamida).
 * **MongoDB (NoSQL):** Bu har bir kitob uchun alohida **kichik papka (hujjat)**. Ushbu papka ichida kitob nomi, uning mualliflari massivi va hatto boblar ro'yxatini ham bitta fayl ichida saqlash mumkin. Hech qanday murakkab bog'lanishlarsiz barcha ma'lumot bitta joyda (Document) jamlanadi.

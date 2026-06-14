@@ -2,13 +2,13 @@ export const jsPitfalls = {
   id: "jsPitfalls",
   title: "JS Pitfalls: Ko'p uchraydigan xatolar va tuzoqlar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### JS Pitfalls (JavaScript Tuzoqlari) nima?
 * **JS Pitfalls:** JavaScript dasturlash tilining tabiati, uning dinamik tiplanishi, tarixiy rivojlanishi va orqaga mos keluvchanlikni (backward compatibility) saqlash majburiyati tufayli kelib chiqqan g'alati, kutilmagan va chalkashtiruvchi xususiyatlaridir.
 * Bular xatolar emas, balki tilning o'ziga xos ishlash mexanizmlari bo'lib, ular haqida bilmagan dasturchilar osongina tuzoqqa tushib, qiyin topiladigan xatolarga (bugs) uchrashadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **yo'l harakati qoidalariga rioya qilib mashina haydayapsiz**:
 * Ko'pgina mamlakatlarda yo'lning o'ng tarafidan harakatlaniladi.
 * Lekin birdaniga yo'lda hech qanday ogohlantirishsiz **boshqa qoidalar ishlaydigan hududga** kirib qoldingiz (masalan, chorrahada o'ng tomondan kelgan mashina emas, chap tomondagi ustuvorlikka ega bo'ldi yoki chap tomondan haydash boshlandi). Agar siz bu mahalliy qoidalarni ("tuzoqlarni") bilmasangiz, qoidani buzmagan holda ham avariyaga uchraysiz.

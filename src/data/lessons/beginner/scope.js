@@ -2,13 +2,13 @@ export const scopeLesson = {
   id: "scopeLesson",
   title: "Scope (Ko'rinish Sohalari)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Scope (Ko'rinish Sohasi) nima?
 * **Scope (Ko'rinish sohasi):** Bu JavaScript-da o'zgaruvchilar, funksiyalar va obyektlarning kodimizning qaysi qismlarida "ko'rinishi" (ya'ni ularga murojaat qilish imkoniyati borligi) va ularning xotiradagi yashash muddatini belgilaydigan qoidalar to'plamidir.
 * **Lexical Scope (Leksik qamrov):** JavaScript o'zgaruvchilarning ko'rinish sohasini dinamik tarzda emas, balki kod yozilayotgan (e'lon qilinayotgan) vaqtdagi joylashuviga qarab belgilaydi. Ichki doiradagi kod har doim o'zidan tashqaridagi muhit o'zgaruvchilarini ko'ra oladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz bir **ofis binosida** ishlayapsiz:
 * **Global Scope (Umumiy bino):** Binoning hovlisi yoki kirish zali. Hovlidagi ma'lumot taxtasini binodagi barcha xodimlar, qaysi xonada bo'lishidan qat'i nazar, ko'ra oladi.
 * **Function Scope (Alohida bo'lim xonasi):** Faqat buxgalteriya bo'limi xonasi. Ushbu xona ichidagi hujjatlarni faqat buxgalteriya xodimlari ko'ra oladi. Tashqaridagilar (masalan, hovlidagilar) xona ichidagi ma'lumotlarni ko'ra olmaydi.

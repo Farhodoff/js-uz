@@ -2,12 +2,12 @@ export const sqlJoins = {
   id: "sqlJoins",
   title: "Jadvallarni Birlashtirish (JOINS)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Jadvallarni Birlashtirish (JOINS) nima?
 Relyatsion ma'lumotlar bazalarining (RDBMS) eng kuchli xususiyati — bu ma'lumotlarni turli jadvallarga bo'lib saqlash (Normalizatsiya) va so'rov paytida ularni bog'lab birlashtirish imkoniyatidir. Masalan, buyurtmalar jadvalida faqat foydalanuvchining ID si (\`user_id\`) saqlanadi. Lekin bizga hisobotda foydalanuvchining ismi (\`name\`) va u sotib olgan mahsulot nomi (\`product\`) birgalikda kerak bo'ladi. SQL-da buning uchun **JOIN** (Birlashtirish) operatorlaridan foydalaniladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, sizda ikkita qog'ozli ro'yxat bor:
 1. **O'quvchilar ro'yxati**: Har bir o'quvchining ID raqami va ismi yozilgan.
 2. **To'garaklar ro'yxati**: To'garak nomi va unga a'zo bo'lgan o'quvchining ID raqami yozilgan.

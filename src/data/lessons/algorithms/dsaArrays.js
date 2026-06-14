@@ -2,11 +2,11 @@ export const dsaArrays = {
   id: "dsaArrays",
   title: "Massivlar: Statik va Dinamik Massivlar (Static & Dynamic Arrays)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Massivlar (Arrays) - bu kompyuter xotirasida ketma-ket joylashgan, bir xil turdagi elementlarni saqlashga mo'ljallangan eng asosiy ma'lumotlar tuzilmasidir.
 
-### Poyezd vagonlari analogiyasi:
+### Poyezd vagonlari o'xshatishi:
 - **Statik Massiv (Static Array):** Tasavvur qiling, vokzalda roppa-rosa 5 ta vagondan iborat poyezd turibdi. Vagondagi o'rindiqlar soni qat'iy belgilangan. Agar 6-yo'lovchi kelib chiqsa, uni poyezdga sig'dirib bo'lmaydi. Poyezd vagonlariga o'zgartirish kiritib bo'lmaydi. Siz har bir vagon raqamiga (indeks) qarab u yerda kim o'tirganini O(1) vaqtda tezda bilib olasiz.
 - **Dinamik Massiv (Dynamic Array):** Yo'lovchilar ko'paygani sari o'z-o'zidan uzunligi kattalashadigan aqlli poyezd. Agar 5 ta vagon to'lib qolsa, temir yo'l xizmati darhol yon tomondagi bo'sh relsga borib, 10 ta vagondan iborat yangi poyezdni tayyorlaydi (hajmini 2 barobar oshiradi) va birinchi poyezddagi barcha yo'lovchilarni yangi poyezdga ko'chirib o'tadi (Resizing).
 

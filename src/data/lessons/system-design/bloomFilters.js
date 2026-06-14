@@ -2,13 +2,13 @@ export const bloomFilters = {
   id: "bloomFilters",
   title: "Bloom Filters va Ehtimolli Ma'lumotlar (Probabilistic Data Structures)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizimlar o'ta yiriklashib borganda, millionlab yoki milliardlab ma'lumotlar elementining mavjudligini tezkor tekshirish an'anaviy ma'lumotlar tuzilmalari (masalan, Set, Hash Map) uchun juda qimmatga tushadi. Chunki vaqt o'tishi bilan ular har bir elementni xotirada to'liq saqlashni talab qiladi.
 
 **Bloom Filter (Blum Filtri)** — bu elementning to'plamda mavjudligini tekshirish uchun ishlatiladigan, xotirani o'ta tejaydigan ehtimolli ma'lumotlar tuzilmasidir. U elementni o'zini saqlamaydi, balki bitlar massivi (bit array) va hash funksiyalaridan foydalanadi.
 
-### Mehmonlar Ro'yxati Analogiyasi:
+### Mehmonlar Ro'yxati O'xshatishi:
 Tasavvur qiling, siz juda katta tantanali kecha tashkil qilyapsiz va mehmonlar ro'yxatida 1 million odam bor. Har safar eshik tagiga kelgan odam ro'yxatda bor-yo'qligini qog'ozdan qidirish juda uzoq vaqt oladi.
 Buning o'rniga siz devorga 1000 ta chiroqchadan iborat panel o'rnatasiz (barcha chiroqlar dastlab o'chirilgan - 0). Har bir kelishi kutilayotgan mehmonga 3 tadan chiroq raqamini biriktirasiz (hash funksiyalar). Mehmon tasdiqlanganda, uning 3 ta chirog'ini yoqib qo'yasiz (1 ga o'zgartirasiz).
 * **Lookup (Tekshirish):** Yangi odam kelganda, uning 3 ta chirog'ini tekshirasiz.

@@ -2,12 +2,12 @@ export const sqlFiltering = {
   id: "sqlFiltering",
   title: "Ma'lumotlarni Filtrlash (Filtering)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Ma'lumotlarni Filtrlash (Filtering) nima?
 Ma'lumotlar bazasida ko'pincha millionlab qatorlar saqlanadi. Bizga har doim ham barcha qatorlar kerak bo'lavermaydi. Masalan, faqat faol foydalanuvchilarni topish, ma'lum bir narx oralig'idagi mahsulotlarni ko'rish yoki ma'lum bir harfdan boshlanuvchi ismlarni qidirish kerak bo'ladi. SQL-da shunday aniq shartlar bo'yicha ma'lumotlarni tanlab olish uchun **WHERE** bloki va turli mantiqiy operatorlar ishlatiladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Buni **do'kondagi kiyim qidirish filtrlariga** o'xshatish mumkin:
 Siz onlayn do'konga kirib, kiyim qidiryapsiz:
 * **Oddiy qidiruv:** Barcha kiyimlar ro'yxati (hech qanday filtrsiz).

@@ -2,14 +2,14 @@ export const typescriptClasses = {
   id: "typescriptClasses",
   title: "Klasslar va OOP",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Nega TypeScript klasslari kerak?
 JavaScript ES6 versiyasidan boshlab klasslarni qo'llab-quvvatlaydi, biroq JavaScript-da klass maydonlari va metodlari sukut bo'yicha har doim ochiq (**public**) bo'ladi. Ularni tashqi muhitdan ishonchli himoya qilish, faqat o'qiladigan qilish (**readonly**) yoki ma'lum qoliplarga majburlash (interfeyslar va abstrakt klasslar orqali) imkoni yo'q.
 
 **TypeScript klasslari** dasturlashda to'laqonli OOP (Obyektga Yo'naltirilgan Dasturlash) imkoniyatlarini taqdim etadi. Unda o'zgaruvchilarning ko'rinish doirasi (**Access Modifiers**), faqat o'qish rejimi (**readonly**), klass shablonlari (**Abstract Classes**) va interfeyslar mavjud.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Klasslarni **kompaniya boshqaruvi tizimiga** o'xshatish mumkin:
 * **Public (Ochiq):** Kompaniyaning **veb-saytidagi ma'lumotlar**. Uni istalgan odam (tashqaridan ham) ko'ra oladi va o'qiy oladi.
 * **Private (Yopiq):** Kompaniyaning **moliyaviy hisobotlari**. Uni faqat direktor (klassning o'zi) ko'ra oladi, xodimlar yoki tashqi odamlar ko'ra olmaydi.

@@ -2,7 +2,7 @@ export const systemDesignQuiz = {
   id: "systemDesignQuiz",
   title: "Tizimli Dizayn Phase 1: Yakuniy Quiz (System Design Phase 1 Quiz)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizimli dizayn (System Design) bo'yicha birinchi bosqichni muvaffaqiyatli yakunlaganingiz bilan tabriklaymiz! Ushbu yakuniy dars va quiz siz o'rgangan dastlabki 5 ta muhim darsning (O'rganish strategiyasi, Talablar tahlili, Taxminiy hisob-kitoblar, Intervyu xatoliklari va Yuk taqsimlash algoritmlari) xulosasidir.
 

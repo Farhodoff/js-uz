@@ -2,7 +2,7 @@ export const templateLiterals = {
   id: "templateLiterals",
   title: "Template Literals (Backticks)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Template Literals (Shablonli Satrlar) nima?
 **Template Literals** — bu JavaScript-da satrlar (stringlar) bilan ishlashning zamonaviy va qulay usuli bo'lib, ES6 (ES2015) standartida taqdim etilgan. Odatda satrlar yozish uchun yakkalik (\`' '\`) yoki qo'shaloq (\`" "\`) tirnoqlardan foydalanardik. Template Literals esa klaviaturadagi \`Esc\` tugmasining ostida joylashgan **backtick (bektik, \` \`)** belgisi yordamida yaratiladi. 
@@ -12,7 +12,7 @@ U uchta asosiy afzallikka ega:
 2. **Ko'p satrlilik (Multiline Strings):** Matnni qo'shimcha birlashtirishlarsiz yoki \`\\n\` (yangi qator) belgilarisiz to'g'ridan-to'g'ri yangi satrdan yozib ketish.
 3. **Tegli shablonlar (Tagged Templates):** Satrlarni maxsus funksiyalar yordamida tahlil qilish va qayta ishlash.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **taklifnoma xati** yozyapsiz:
 * **Eski (konkatenatsiya) usuli:** Sizda tayyor matnlar bor. Har bir taklifnoma uchun ism va manzilni alohida qog'ozchalarga yozib, qaychi bilan qirqib, asosiy matnga kley (ya'ni \`+\` operatori) yordamida yopishtirib chiqasiz. Bu juda ko'p vaqt va tartibsizlikka olib keladi.
 * **Yangi (Template Literals) usuli:** Sizda bitta shablon varaq bor va unda maxsus bo'sh joylar (placeholderlar) mavjud. Siz shunchaki ism va manzilni o'sha shablondagi bo'shliqlarga to'g'ridan-to'g'ri yozib qo'yasiz. Hech qanday qaychi va kley kerak emas!

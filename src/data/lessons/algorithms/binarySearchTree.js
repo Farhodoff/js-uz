@@ -2,7 +2,7 @@ export const binarySearchTree = {
   id: "binarySearchTree",
   title: "Ikkilik Qidiruv Daraxti (Binary Search Tree)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Ikkilik Qidiruv Daraxti (Binary Search Tree - BST) nima?
 **Ikkilik Daraxt (Binary Tree)** — bu ierarxik ma'lumotlar tuzilmasi bo'lib, unda har bir element (tugun) ko'pi bilan ikkita "farzand" (chap va o'ng tugunlar)ga ega bo'lishi mumkin.
@@ -10,7 +10,7 @@ export const binarySearchTree = {
 * Har bir tugunning **chap** ostki daraxtidagi barcha qiymatlar shu tugun qiymatidan **kichik** bo'ladi.
 * Har bir tugunning **o'ng** ostki daraxtidagi barcha qiymatlar shu tugun qiymatidan **katta** bo'ladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **telefon kitobidan kimnidir qidiryapsiz**:
 * Agar kitob sahifalari tartibsiz bo'lsa, siz boshidan boshlab birma-bir varaqlashingiz kerak (chiziqli qidiruv - O(n)).
 * Agar siz BST formatidagi tizimdan foydalanamiz desangiz, o'rtadagi ismdan boshlaysiz. Agar siz qidirayotgan ism o'rtadagidan alifbo bo'yicha oldin kelsa, kitobning butun o'ng yarmini tashlab yuborasiz va faqat chap yarmini qidirasiz. Har bir solishtirishda qidiruv maydoni ikki barobar qisqaradi (O(log n)).

@@ -2,7 +2,7 @@ export const sqlBasics = {
   id: "sqlBasics",
   title: "SQL So'rovlar Asoslari (SELECT, WHERE, ORDER BY)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### SQL So'rovlari nima?
 **SQL So'rovi (Query)** — bu ma'lumotlar bazasiga ma'lumot olish uchun yuboriladigan buyruqdir. Eng ko'p ishlatiladigan so'rov bu ma'lumotlarni o'qish uchun mo'ljallangan \`SELECT\` so'rovidir.
@@ -14,7 +14,7 @@ export const sqlBasics = {
 4. **\`ORDER BY\`:** Keladigan natijani qanday tartibda (o'sish yoki kamayish) saralashni belgilaydi.
 5. **\`LIMIT\`:** Natija sifatida necha dona qator qaytishini cheklaydi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **maktab direktorisiz** va kotibangizga topshiriq beryapsiz:
 * **\`SELECT\`:** *"Menga o'quvchilarning ismi va telefon raqami kerak"* (Faqat shu ustunlar).
 * **\`FROM\`:** *"Buni 'O'quvchilar' ro'yxatidan ol"* (Jadval nomi).

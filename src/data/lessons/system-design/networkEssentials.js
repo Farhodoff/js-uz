@@ -2,13 +2,13 @@ export const networkEssentials = {
   id: "networkEssentials",
   title: "Tarmoq Asoslari (TCP/UDP, HTTP, Proxy)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Internet orqali kompyuterlar bir-biri bilan bog'lanishi uchun ma'lum qoidalar — **tarmoq protokollari (Network Protocols)** kerak. Bular ma'lumotlarni qanday formatda jo'natish, yo'ldagi xatolarni qanday tekshirish va manzillarni qanday aniqlashni belgilaydi.
 
 Eng mashhur va muhim protokollar: **TCP (Transmission Control Protocol)** va **UDP (User Datagram Protocol)**.
 
-### Maktub va Ratsiya analogiyasi:
+### Maktub va Ratsiya o'xshatishi:
 - **TCP (Kafolatlangan xat):** Siz do'stingizga muhim hujjatlarni pochta orqali yuboryapsiz. Har bir sahifa raqamlangan. Agar bitta sahifa yetib bormasa, pochta uni qayta jo'natadi. Oxirida barcha sahifalar to'liq va tartib bilan yig'ilgandagina qabul qilinadi. Bu xavfsiz va ishonchli, ammo sekinroq.
 - **UDP (Ratsiya/Jonli efir):** Siz do'stingiz bilan ratsiya orqali gaplashyapsiz. Gapirayotganingizda 1-2 ta tovush tushib qolsa ham, siz gapirishni davom ettirasiz. Aloqani uzib, tushib qolgan harflarni qaytadan talaffuz qilmaysiz. Bu o'ta tezkor, ammo ba'zi ma'lumotlar yo'qolishi mumkin.
 

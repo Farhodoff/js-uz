@@ -2,7 +2,7 @@ export const dockerBasics = {
   id: "dockerBasics",
   title: "Docker Asoslari (Konteynerlashtirish)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Docker nima va u qaysi muammoni hal qiladi?
 Dasturchilar orasida eng ko'p aytiladigan gaplardan biri: *\"Mening kompyuterimda ishlayotgan edi, nega serverda ishlamayapti?\"*. Bu muammo kompyuterlar va serverlardagi operatsion tizim, Node.js versiyalari yoki tizim kutubxonalarining turlicha bo'lishidan kelib chiqadi.

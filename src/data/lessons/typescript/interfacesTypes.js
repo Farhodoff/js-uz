@@ -2,13 +2,13 @@ export const interfacesTypes = {
   id: "interfacesTypes",
   title: "Interfaces va Type Aliases",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Nega kerak?
 TypeScript-da murakkab ma'lumotlar tuzilmalarini (obyektlar, funksiyalar) tavsiflash uchun asosan ikki xil usuldan foydalaniladi: **Interfaces** (Interfeyslar) va **Type Aliases** (Tip taxalluslari).
 Katta va murakkab dasturlarda obyektlarning qanday xususiyat va metodlarga ega bo'lishini oldindan belgilab qo'yish juda muhimdir. Bu kodda tartibni ta'minlaydi va noto'g'ri maydonlar yozilishini oldini oladi. Ikkala usul o'xshash vazifani bajarsa-da, ularning o'ziga xos farqlari va ishlatilish o'rinlari bor.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Obyekt tiplarini **qurilish loyihasiga (blueprint)** o'xshatish mumkin:
 - **Interface** — bu uyni qurish uchun berilgan **rasmiy litsenziya va shartnoma**. Agar kelajakda shartnomaga yangi shart qo'shilsa (declaration merging), uy quruvchisi uni ham bajarishi shart. Shuningdek, bir shartnomani ikkinchisiga kengaytirish (extend) oson.
 - **Type Alias** — bu sizning o'zingiz chizgan **shaxsiy uy xaritangiz**. Siz uni e'lon qilganingizdan keyin o'zgartira olmaysiz (yangi maydon qo'shib bo'lmaydi), lekin xaritangizni boshqa loyihalar bilan birlashtirib (intersection) yangi turdagi uylar dizaynini yaratishingiz mumkin.

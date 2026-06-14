@@ -2,14 +2,14 @@ export const typeCasting = {
   id: "typeCasting",
   title: "Explicit Type Casting",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Yaqqol Tip O'tkazish (Explicit Type Casting) nima?
 Dasturlashda ma'lumotlar turli xil tiplarga (turlarga) ega bo'ladi (masalan: matn, son, boolean). **Yaqqol tip o'tkazish (Explicit Type Casting)** — bu dasturchi tomonidan kodda maxsus funksiyalar yoki operatorlar yordamida qiymatni bir tipdan ikkinchi tipga ataylab o'tkazishidir.
 
 Buni JavaScript o'zicha mustaqil bajaradigan **yashirin (implicit yoki coercion) o'tish**dan farqlash lozim. Yashirin o'tishda JS dvigateli o'zi taxmin qilib tiplarni o'zgartiradi (masalan, \`"5" + 2\` yozsangiz, JS 2 ni string qilib \`"52"\` qaytaradi). Yaqqol o'tkazishda esa siz: *"Men buni son qilib o'qimoqchiman!"* deb aniq buyruq berasiz (masalan, \`Number("5") + 2\` yozib \`7\` olasiz).
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **valyuta ayirboshlash shoxobchasiga (bankka) bordingiz**:
 * **Yaqqol (Explicit) usul:** Siz dollaringizni bank xodimiga berasiz va uni so'mga almashtirib berishni so'raysiz. Siz jarayonni to'liq nazorat qilasiz, kursni bilasiz va natijani aniq son ko'rinishida qabul qilib olasiz (bu \`Number()\` yoki \`parseInt()\` funksiyalariga o'xshaydi).
 * **Yashirin (Implicit) usul:** Siz chet eldagi do'konda o'z milliy kartangiz bilan to'lov qilasiz. Terminal o'z-o'zidan orqa fonda valyutani konvertatsiya qilib, pulingizni yechib oladi. Siz konvertatsiya qoidalari va qancha komissiya ketganini to'liq nazorat qila olmaysiz (bu \`"5" - 2\` amali bajarilganda stringning avtomatik songa aylanib ketishiga o'xshaydi).

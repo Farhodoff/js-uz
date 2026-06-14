@@ -2,12 +2,12 @@ export const dom = {
   id: "dom",
   title: "DOM Asoslari va Hujjat Daraxti (Document Object Model)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### DOM nima?
 **DOM (Document Object Model - Hujjat Obyekt Modeli)** — bu veb-brauzer tomonidan HTML hujjatini o'qish paytida tuziladigan va uni JavaScript orqali boshqarish, o'zgartirish, o'chirish yoki yangilash imkonini beruvchi dynamic daraxtsimon obyektlar tuzilmasidir. HTML kodlarimiz statik matn xolos, DOM esa ularning brauzer xotirasidagi faol va tirik vakilidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **Aqlli Uy (Smart Home)** tizimini boshqaryapsiz:
 * **HTML chizmasi (Statik):** Bu uy qurilishidan oldingi qog'ozdagi reja. U erda qaysi xonada chiroq yoki oyna bo'lishi yozilgan, lekin uni qog'oz ustida yoqib-o'chirib bo'lmaydi.
 * **DOM (Dinamik boshqaruv):** Uy tayyor bo'lgach, barcha qurilmalar umumiy boshqaruv planshetiga ulanadi. Planshetdan turib, istalgan xonaning haroratini sozlash, chirog'ini yoqish (\`style.color = "yellow"\`) yoki yangi televizor sotib olib xonaga qo'yish mumkin (\`createElement\`). Planshet — bu JavaScript, uydagi barcha jihozlar va xonalar esa — DOM elementlaridir.

@@ -2,7 +2,7 @@ export const memoryManagement = {
   id: "memoryManagement",
   title: "Memory Management (Xotira boshqaruvi) va Garbage Collection",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Xotira Boshqaruvi va Garbage Collection nima?
 * **Memory Management (Xotira boshqaruvi)** — bu dasturimiz ishlashi jarayonida o'zgaruvchilar, obyektlar va ma'lumotlar uchun kompyuter tezkor xotirasidan (RAM) joy ajratilishi, ishlatilishi va ishlatib bo'lingach u joyning qayta bo'shatilishi jarayonidir.
@@ -10,7 +10,7 @@ export const memoryManagement = {
 * **Heap (Xip)** — dynamic o'lchamga ega bo'lgan katta hajmli murakkab ma'lumotlar (obyektlar, massivlar, funksiyalar) saqlanadigan katta xotira havzasi.
 * **Garbage Collector (GC - Chiqindi yig'uvchi)** — JavaScript dvigateli tarkibidagi avtomatik xizmatchi. U xotirani doimiy tekshirib turadi va root (global \`window\`) obyektidan bog'lanish zanjiri butunlay uzilgan, ya'ni qayta murojaat qilib bo'lmaydigan (unreachable) ma'lumotlarni aniqlab, xotirani bo'shatib beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Buni **ijaraga olingan kvartira** misolida tasavvur qiling:
 * **Allocation (Xotira ajratish):** Kvartiraga ko'chib kirasiz va yangi mebellar sotib olib joylashtirasiz.
 * **Usage (Ishlatish):** Mebellardan va xonalardan foydalanasiz.

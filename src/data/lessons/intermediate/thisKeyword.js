@@ -2,12 +2,12 @@ export const thisKeyword = {
   id: "thisKeyword",
   title: "This Keyword va Context Binding",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### This kalit so'zi nima?
 **\`this\` (kontekst)** — bu JavaScript dasturlash tilidagi o'ziga xos kalit so'z bo'lib, u joriy vaqtda funksiya yoki metod kim yoki nima tomonidan bajarilayotganini ko'rsatuvchi ma'lumotnomadir. U funksiyaning yozilish joyiga emas, balki runtime-da (ishlash jarayonida) qanday chaqirilganiga qarab o'zgaradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz do'stlaringiz bilan suhbatlashyapsiz:
 * Siz: "**Mening** ismim Ali" deysiz. Bu yerda "**Mening**" = Ali.
 * Do'stingiz Zara: "**Mening** ismim Zara" deydi. Bu yerda "**Mening**" = Zara.

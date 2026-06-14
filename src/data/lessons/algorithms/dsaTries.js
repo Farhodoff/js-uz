@@ -2,11 +2,11 @@ export const dsaTries = {
   id: "dsaTries",
   title: "Trie: Prefiks Daraxtlari (Tries & Prefix Search)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Trie (talaffuzi: 'Tray') yoki Prefiks daraxti (Prefix Tree) - bu asosan satrlar (matnlar) ustida o'ta tezkor qidiruv, avto-to'ldirish (Autocomplete) va lug'at vazifalarini bajarish uchun mo'ljallangan maxsus shoxlangan daraxt tuzilmasidir.
 
-### Smartfon klaviaturasi analogiyasi:
+### Smartfon klaviaturasi o'xshatishi:
 - **Trie (Prefiks daraxti):** Siz smartfoningizda 's' harfini yozganingizda, u 'salom', 'sariq', 'sut' kabi so'zlarni taklif qiladi. Klaviatura orqa fonda 's' prefiksi bilan boshlanadigan barcha so'zlar tarmog'iga kirib boradi.
 - **Tugunlar (Nodes):** Triening har bir tuguni butun boshli so'zni emas, balki **bitta harfni** saqlaydi. Ildiz (root) tugun bo'sh bo'ladi.
 - **Path (Yo'l):** Ildizdan boshlab pastga qarab yurilgan yo'l so'zni hosil qiladi. Masalan, 's' -> 'a' -> 'l' -> 'o' -> 'm' shoxlari bo'ylab yursak, 'salom' so'zi hosil bo'ladi. Har bir so'z tugash nuqtasida maxsus belgi (masalan, \`isEndOfWord = true\`) qo'yiladi.

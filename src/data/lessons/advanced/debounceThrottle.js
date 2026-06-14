@@ -2,13 +2,13 @@ export const debounceThrottle = {
   id: "debounceThrottle",
   title: "Debounce va Throttle: Hodisalarni Optimal Boshqarish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Debounce va Throttle nima?
 * **Debounce (Kechiktirish/Guruhlash):** Tez-tez takrorlanadigan hodisalarni guruhlab, ular butunlay to'xtagandan keyin ma'lum bir vaqt (delay) o'tib, funksiyani faqat bir marta ishga tushirish mexanizmi.
 * **Throttle (Bo'g'ish/Cheklash):** Hodisalar qanchalik tez-tez sodir bo'lishidan qat'i nazar, funksiyani ma'lum bir vaqt oralig'ida (interval) ko'pi bilan 1 marta bajarilishini ta'minlash mexanizmi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **ko'p qavatli uydagi liftni** chaqiryapsiz:
 * **Debounce usuli:** Lift eshigi ochiq turibdi. Kimdir kelib tugmani bossa, lift eshigi yopilishi yana 5 soniyaga kechikadi. Yana kimdir kelsa, eshik yana 5 soniya yopilmaydi. Lift faqat odamlar kelishi to'xtab, 5 soniya davomida hech kim tugmani bosmagandan keyingina harakatni boshlaydi.
 * **Throttle usuli:** Lift har 10 soniyada bir marta pastga tushadi. Liftga odamlar qanchalik tez kelib tugmani bosishidan qat'i nazar, u faqat belgilangan vaqtda (har 10 soniyada) 1 marta harakatlanadi.

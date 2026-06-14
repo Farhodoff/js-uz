@@ -2,13 +2,13 @@ export const eventLoop = {
   id: "eventLoop",
   title: "Event Loop asoslari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Event Loop nima?
 **JavaScript** — bu **bir oqimli (single-threaded)** dasturlash tili. Bu degani, u bir vaqtning o'zida faqat bitta ishni bajara oladi. Unda nega biz bir vaqtda ham taymerlarni ishlatamiz, ham serverdan ma'lumot yuklaymiz va sahifadagi tugmalarni bosamiz? Sahifamiz qotib qolmaydi? 
 Buning siri **Event Loop (Hodisalar sikli)** mexanizmidir. Event Loop — bu JavaScript-ning bir oqimli tabiatiga qaramay, asinxron (parallel) ishlarni bajarishiga imkon beruvchi brauzer (yoki Node.js) tarkibidagi ko'prikdir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **oshxonadagi yagona bosh oshpazsiz** (JavaScript Call Stack):
 1. **Sinxron buyurtma:** Sizga "Salat tayyorlang" deyishdi. Siz sabzavotlarni to'g'rab, salatni darhol topshirdingiz.
 2. **Asinxron buyurtma:** Sizga "Tovuq pishiring" deyishdi. Tovuq duxovkada 30 daqiqa pishishi kerak. Siz duxovka yonida 30 daqiqa hech narsa qilmay qarab turmaysiz (oqimni bloklamaysiz). Siz tovuqni duxovkaga solasiz va taymer qo'yasiz (Web API-ga topshiriq berasiz).

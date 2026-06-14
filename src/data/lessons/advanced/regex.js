@@ -2,13 +2,13 @@ export const regex = {
   id: "regex",
   title: "Muntazam Ifodalar (Regular Expressions)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Muntazam Ifoda (Regular Expression) nima?
 * **Muntazam ifoda (RegEx):** Matnlar ichidan ma'lum bir andozaga (shablonga) mos keladigan qismlarni qidirish, mosligini tekshirish (validation) yoki almashtirish (replace) uchun ishlatiladigan maxsus qidiruv tili andozasidir.
 * U JavaScript-da o'rnatilgan obyekt (\`RegExp\`) bo'lib, juda murakkab matnli vazifalarni bitta qatorda hal qilish imkonini beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, sizda **minglab hujjatlar solingan quti** bor:
 * **Oddiy usul (Muntazam ifodasiz):** Siz har bir qog'ozni ochib, undagi har bir so'zni ko'zdan kechirib chiqishingiz kerak. Agar sizga "telefon raqamlari" kerak bo'lsa, har bir raqamni qo'lda tekshirasiz.
 * **Muntazam ifoda (RegEx) usuli:** Sizda sehrli skaner bor. Unga **"avval 3 ta raqam, keyin tire, keyin yana 2 ta raqam"** ko'rinishidagi qolipni (shablonni) o'rgatasiz. Skaner qutidagi barcha qog'ozlarni soniyalar ichida skanerdan o'tkazib, faqat shu qolipga mos keluvchi raqamlarni ajratib beradi.

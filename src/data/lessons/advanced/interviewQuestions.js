@@ -2,7 +2,7 @@ export const interviewQuestionsAdvanced = {
   id: "q3",
   title: "🔴 Interview Savollar (Murakkab)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 O'rta (Intermediate) darajadagi intervyu savollari sizning JavaScript-ni shunchaki ishlatishni emas, balki uning ichki ishlash mexanizmlari (scoping, references, memory, async, ES6+ xususiyatlari) qanday ishlashini bilishingizni tekshiradi. Bu savollar sizning kod sifatini va arxitekturasini tushunishingizni aniqlashga xizmat qiladi.
 

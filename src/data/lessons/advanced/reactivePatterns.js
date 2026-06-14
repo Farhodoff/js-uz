@@ -2,11 +2,11 @@ export const reactivePatterns = {
   id: "reactivePatterns",
   title: "Dasturlash Patternlari va Reaktiv Tizimlar (Proxy & PubSub)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Zamonaviy frontend frameworklar (React, Vue) va arxitekturalar ma'lumotlar o'zgarganda UI-ni avtomatik yangilash (Reaktivlik) yoki xizmatlarni o'zaro decoupling qilish uchun turli dasturlash patternlaridan foydalanadi. Bular orasida eng asosiylari: **Observer (Kuzatuvchi)**, **PubSub (Shtab-obunachi)** va JS-ning yangi imkoniyati bo'lgan **Proxy (Vositachi)** obyektlaridir.
 
-### Gazeta tahririyati analogiyasi:
+### Gazeta tahririyati o'xshatishi:
 - **PubSub (Wildcards bilan):** Siz gazeta nashriyotiga borib, uning barcha nashrlariga obuna bo'ldingiz. Wildcard \`*\` orqali: "Menga sport, siyosat yoki istalgan yangilik bo'lsa yuboring" deb obuna bo'lasiz. Nashriyot yangi sport xabari chiqarganda, sizga avtomatik yetib keladi. Nashriyot va obunachi bir-birini shaxsan tanimaydi, ular faqat mavzu (Topic) orqali bog'lanadi.
 - **Proxy (Reaktivlik):** Sizning **aqlli uyingizdagi muzlatgich**. Kimdir muzlatgich eshigini ochib ichidan sutni olsa (gett) yoki yangi tuxum qo'ysa (sett), muzlatgich orqa fonda buni sezadi (intercept qiladi) va avtomatik ravishda smartfoningizga xabar yuboradi yoki mahsulotlar ro'yxatini yangilaydi.
 

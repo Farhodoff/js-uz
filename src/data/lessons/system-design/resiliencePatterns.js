@@ -2,7 +2,7 @@ export const resiliencePatterns = {
   id: "resiliencePatterns",
   title: "Resilience Patterns (Tizim Chidamliligi)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, siz **restorandasiz** va taom buyurtma beryapsiz:
 * **Oddiy tizim:** Siz ofitsiantga buyurtma berdingiz. Ofitsiant oshxonaga ketdi. Oshxonada oshpaz hushidan ketib yiqilgan (servis ishlamayapti). Ofitsiant oshpazning uyg'onishini soatlab kutib turaveradi. Natijada siz ham, boshqa mijozlar ham stol atrofida kutib qolasiz va butun restoran falaj bo'ladi.

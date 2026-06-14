@@ -2,11 +2,11 @@ export const apiGatewayRouting = {
   id: "apiGatewayRouting",
   title: "API Gateway va Routing",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizim dizaynida (System Design) **API Gateway** butun tizimning "darvozaboni" yoki "kirish eshigi" hisoblanadi. Mikroxizmatlar (microservices) dunyosida har bir xizmat (masalan, foydalanuvchilar xizmati, to\\'lovlar xizmati) o\\'z domeniga va portiga ega. Agar API Gateway bo\\'lmasa, mijoz (klient) dasturi har bir servisning manzilini bilishi va ularga to\\'g\\'ridan-to\\'g\\'ri ulanishi kerak bo\\'ladi. Bu esa xavfsizlik va boshqaruv jihatidan juda katta muammolarni keltirib chiqaradi.
 
-### Real hayotiy analogiya:
+### Real hayotiy o'xshatish:
 Tasavvur qiling, siz **yirik aeroportga** keldingiz:
 * **API Gateway bo\\'lmaganda (Monolit yoki To\\'g\\'ridan-to\\'g\\'ri ulanish):** Siz samolyotga chiqish uchun pasport nazoratidan alohida eshikda, yuk topshirish uchun boshqa ko\\'chadagi binoda va xavfsizlik tekshiruvidan butunlay boshqa binoda o\\'tishingiz kerak bo\\'lardi. Har bir joyda pasportingizni qayta-qayta tekshirishardi.
 * **API Gateway bo\\'lganda:** Aeroportda bitta **katta markaziy terminal (Gateway)** bor. Siz terminal eshigidan kirasiz. Xavfsizlik va hujjat tekshiruvi (SSL Termination va JWT Validation) shu yerda bir marta amalga oshiriladi. Shundan so\\'ng terminal ichidagi yo\\'laklar orqali tegishli samolyotga (Routing) yo\\'naltirilasiz.

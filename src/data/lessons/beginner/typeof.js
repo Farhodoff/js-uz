@@ -2,12 +2,12 @@ export const typeofLesson = {
   id: "typeofLesson",
   title: "Typeof Operator",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### \`typeof\` operatori nima?
 JavaScript-da har qanday o'zgaruvchi yoki qiymat ma'lum bir **ma'lumot turiga (data type)** tegishli bo'ladi. \`typeof\` operatori — bu ma'lum bir o'zgaruvchi yoki qiymatning turini aniqlab beruvchi maxsus JavaScript vositasidir. U qiymat turini ifodalovchi **satr (string)** qaytaradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz do'konga bordingiz va sizga yopiq qutilarda turli mahsulotlar berildi. Siz qutining ichida nima borligini bilmaysiz (u sutmi, nonmi yoki o'yinchoqmi). 
 * **\`typeof\` operatori** — bu har bir qutining ustidagi shtrix-kodni o'qib, sizga "sut", "non" yoki "o'yinchoq" deb aytib beradigan **skaner qurilmasi**.
 * Skaner sizga qutining ichidagi aniq sut brendini yoki nonning og'irligini aytmaydi, u faqat mahsulotning umumiy turini (kategoriyasini) aniqlab beradi.

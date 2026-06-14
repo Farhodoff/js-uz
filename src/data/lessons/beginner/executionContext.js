@@ -2,7 +2,7 @@ export const executionContextLesson = {
   id: "executionContextLesson",
   title: "Bajarilish Konteksti (Execution Context)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Bajarilish Konteksti (Execution Context) nima?
 **Bajarilish Konteksti (Execution Context)** — bu JavaScript kodi bajariladigan, uning barcha o'zgaruvchilari, funksiyalari, doiralari (scopes) va \`this\` kalit so'zi qiymatlari saqlanadigan va boshqariladigan **maxsus muhit (kontekst)**. JavaScript-da har qanday kod har doim qandaydir bajarilish konteksti ichida ishlaydi.
@@ -14,7 +14,7 @@ JavaScript-da uchta asosiy kontekst turi mavjud:
 
 ---
 
-### Real hayotiy analogiya: Oshxona va Shaxsiy Reseptlar
+### Real hayotiy o'xshatish: Oshxona va Shaxsiy Reseptlar
 Tasavvur qiling, siz **professional oshpazsiz** va katta oshxonada ishlayapsiz:
 
 * **Global Bajarilish Konteksti (GEC):** Bu butun boshli **oshxona**. Oshxonada hamma uchun umumiy bo'lgan jihozlar (plita, suv, muzlatgich) va umumiy ziravorlar (global o'zgaruvchilar) bor. Siz oshxonaga kirishingiz bilan bu muhit tayyor turadi.

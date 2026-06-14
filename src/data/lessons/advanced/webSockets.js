@@ -2,7 +2,7 @@ export const webSockets = {
   id: "webSockets",
   title: "WebSockets: Real-time Ikki Tomonlama Aloqa",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### WebSockets nima?
 **WebSocket** — bu mijoz (brauzer) va server o'rtasida bitta doimiy TCP ulanishi orqali **haqiqiy vaqt rejimida (real-time)**, ikki tomonlama (bi-directional) va juda tez ma'lumot almashish imkonini beruvchi tarmoq protokolidir.
@@ -10,7 +10,7 @@ export const webSockets = {
 * **WebSocket:** Mijoz va server o'rtasida "qo'l berib ko'rishish" (Handshake) sodir bo'ladi va doimiy ochiq aloqa kanali o'rnatiladi. Ulanish yopilmaguncha, har ikki tomon ham istalgan vaqtda bir-biriga ma'lumot jo'nata oladi.
 * **ws:// va wss://**: WebSocket protokollarining nomlanishi. \`wss://\` shifrlangan (xavfsiz) ulanish bo'lib, HTTP-dagi HTTPS kabi ishlaydi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 * **HTTP (Pochta orqali xat yozish):** Siz do'stingizga xat yuborasiz (so'rov). Do'stingiz xatni olib, javob yozadi (javob). Agar sizda yangi savol tug'ilsa, yana boshqa xat yozishingiz kerak. Do'stingiz siz so'ramasangiz o'z-o'zidan xat yoza olmaydi.
 * **WebSocket (Telefon orqali gaplashish):** Siz do'stingizga qo'ng'iroq qilasiz, u go'shakni ko'taradi va ulanish o'rnatiladi. Endi telefonni qo'ymagan holda, har ikkingiz ham xohlagan paytda gapira olasiz (real-time muloqot).
 

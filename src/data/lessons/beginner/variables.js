@@ -2,7 +2,7 @@ export const variables = {
   id: "variables",
   title: "O'zgaruvchilar: var, let, const",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### O'zgaruvchilar nima va var, let, const farqlari qanday?
 JavaScript-da o'zgaruvchilar ma'lumotlarni saqlash uchun qutilardir. Ammo bu qutilar o'zining mustahkamligi va kirish doirasi (scope) bo'yicha farq qiladi:
@@ -10,7 +10,7 @@ JavaScript-da o'zgaruvchilar ma'lumotlarni saqlash uchun qutilardir. Ammo bu qut
 * **\`let\` (Zamonaviy va tartibli yordamchi):** Faqat o'zi e'lon qilingan jingalak qavslar \`{}\` (blok) ichida amal qiladi. U xonadan tashqariga chiqib ketmaydi. Bitta blok ichida bir xil nomda qayta e'lon qilsangiz, darhol xatolik beradi. Qiymatini o'zgartirish (reassign) mumkin.
 * **\`const\` (Sodiq va o'zgarmas qo'riqchi):** \`let\` kabi blok doirasida ishlaydi, lekin unga bir marta qiymat berilgach, uni butunlay yangi qiymatga qayta tayinlab bo'lmaydi. U o'ziga topshirilgan qiymatni oxirigacha himoya qiladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **ofis boshqaruvchisiz**:
 * **\`var\` (Doskadagi bo'r yozuvi):** Siz ofisning umumiy zalidagi doskaga yozuv yozdingiz. Istalgan xodim kelib, bu yozuvni o'chirib, o'rniga boshqa narsa yozishi yoki xuddi shu nom bilan boshqa ma'lumot yozishi mumkin. U hamma uchun ko'rinadi va nazorat qilish qiyin.
 * **\`let\` (Qalam bilan yozilgan daftar):** Har bir xodimning o'z xonasi (bloki) va daftari bor. Xodim faqat o'z xonasi ichida daftardagi ma'lumotlarni o'chirib, yangilay oladi (reassign). Lekin boshqa xonadagilar bu daftarni ko'ra olmaydi. Shuningdek, bir varoqda bir xil nomli ikkita yozuv yozish taqiqlanadi.

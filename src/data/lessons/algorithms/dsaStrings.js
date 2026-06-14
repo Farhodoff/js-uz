@@ -2,11 +2,11 @@ export const dsaStrings = {
   id: "dsaStrings",
   title: "Satrlar va Matnlar (DSA String Manipulations)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Satrlar (Strings) - bu kompyuter xotirasida matnli ma'lumotlarni ifodalash uchun ishlatiladigan belgilar ketma-ketligidir. Har bir belgi orqa fonda ma'lum bir songa (kodga) to'g'ri keladi.
 
-### Kitob harflari analogiyasi:
+### Kitob harflari o'xshatishi:
 - **Satrlar (Strings):** Xuddi sahifaga siyoh bilan yozilgan so'zlar kabi. Ularni to'g'ridan-to'g'ri o'chirib, o'rniga boshqa harf yozib bo'lmaydi (**Immutable / O'zgarmas**). Agar siz so'zning birgina harfini o'zgartirmoqchi bo'lsangiz, yangi sahifa olib, butun so'zni qaytadan yozishingiz kerak.
 - **ASCII va Unicode:** Bu har bir harf uchun belgilangan xalqaro raqamlar katalogidir. Masalan, 'A' harfi kompyuter tushunadigan tilda 65 sonini anglatadi.
 

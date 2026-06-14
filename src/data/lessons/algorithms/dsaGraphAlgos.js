@@ -2,11 +2,11 @@ export const dsaGraphAlgos = {
   id: "dsaGraphAlgos",
   title: "Murakkab Graf Algoritmlari (Dijkstra, Bellman-Ford, Kruskal, Prim)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Murakkab Graf Algoritmlari vaznli (Weighted) graflarda eng qisqa yo'lni topish va Minimal Yozuvchi Daraxtlarni (Minimum Spanning Tree - MST) qurish uchun ishlatiladi.
 
-### GPS va Xaritalar analogiyasi:
+### GPS va Xaritalar o'xshatishi:
 - **Dijkstra Algoritmi:** Bu sizning telefoningizdagi navigatordir. U bir shahardan ikkinchisiga borishning eng tez (yoki eng qisqa) yo'lini hisoblaydi, agar barcha yo'llar masofalari musbat (ijobiy) bo'lsa.
 - **Bellman-Ford Algoritmi:** Agar yo'llarda "pul to'lanadigan yoki pul beriladigan" (manfiy vaznli) oraliqlar bo'lsa va navigator adashib qolmasligi kerak bo'lsa, ushbu algoritm ishlaydi.
 - **Kruskal va Prim Algoritmlari (MST):** Tasavvur qiling, siz 5 ta binoni optik tolali internet bilan ulamoqchisiz. Simlar uzunligi jami eng minimal bo'lishi kerak va hech qanday yopiq aylanma (sikl) hosil bo'lmasligi lozim. Minimum Spanning Tree aynan shu eng arzon bog'lanish tarmog'ini topib beradi.

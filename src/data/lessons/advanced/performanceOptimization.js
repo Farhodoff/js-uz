@@ -2,17 +2,17 @@ export const performanceOptimization = {
   id: "performanceOptimization",
   title: "JavaScript Unumdorligini Oshirish (Performance Optimization)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### JavaScript-da Performance (Unumdorlik) nima?
 JavaScript-da unumdorlikni oshirish — bu ilovaning tezroq yuklanishi, foydalanuvchi harakatlariga (klik, skrol, yozish) lahzada javob qaytarishi va brauzer xotirasi (RAM) hamda protsessor (CPU) resurslaridan tejamkorlik bilan foydalanishini ta'minlashdir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **restoranda bosh oshpazsiz**:
 * **Optimallashtirilmagan holat:** Har bir mijoz bitta salat buyurtma qilganda, siz omborxonaga borib bitta pomidor olib kelasiz, keyin yana borib bitta bodring olib kelasiz. Bu vaqt va kuchni behuda sarflashdir (bu DOM-ga har bir elementni alohida qo'shish yoki har skrolda og'ir funksiyani chaqirishga o'xshaydi).
-* **Optimallashtirilgan holat (DocumentFragment analogiyasi):** Siz laganga salat uchun kerakli barcha sabzavotlarni bir marta yig'ib olasiz (fragment yaratasiz), stol ustida salatni tayyorlaysiz va mijozga bir martada tayyor holda taqdim etasiz (DOM-ga bir marta qo'shasiz).
-* **Debounce analogiyasi:** Mijoz buyurtma berayotganda gapini tugatishini kutasiz. U "Menga pitsa, kola va... yana... shokoladli desert" deb to'xtagunicha buyurtmani yozmaysiz. U 2 soniya jim tursa, keyin buyurtmani oshxonaga yuborasiz.
-* **Throttle analogiyasi:** Juda ko'p gapiradigan mijoz sizga tinimsiz savol beryapti. Siz unga: "Har 5 daqiqada faqat bitta savolingizga javob beraman" deysiz. U o'sha 5 daqiqa ichida 100 ta savol bersa ham, siz faqat bittasini qabul qilasiz.
+* **Optimallashtirilgan holat (DocumentFragment o'xshatishi):** Siz laganga salat uchun kerakli barcha sabzavotlarni bir marta yig'ib olasiz (fragment yaratasiz), stol ustida salatni tayyorlaysiz va mijozga bir martada tayyor holda taqdim etasiz (DOM-ga bir marta qo'shasiz).
+* **Debounce o'xshatishi:** Mijoz buyurtma berayotganda gapini tugatishini kutasiz. U "Menga pitsa, kola va... yana... shokoladli desert" deb to'xtagunicha buyurtmani yozmaysiz. U 2 soniya jim tursa, keyin buyurtmani oshxonaga yuborasiz.
+* **Throttle o'xshatishi:** Juda ko'p gapiradigan mijoz sizga tinimsiz savol beryapti. Siz unga: "Har 5 daqiqada faqat bitta savolingizga javob beraman" deysiz. U o'sha 5 daqiqa ichida 100 ta savol bersa ham, siz faqat bittasini qabul qilasiz.
 
 ---
 

@@ -2,11 +2,11 @@ export const dsaControlFlow = {
   id: "dsaControlFlow",
   title: "Boshqaruv Oqimi va Sikl Murakkabligi (Control Flow & Loops)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Dasturda kodlarning bajarilish tartibini boshqarish xuddi chorrahadagi svetofor va yo'l belgilariga o'xshaydi. Shartli o'tishlar (\`if-else\`) yo'lni ikkiga ajratsa, sikllar (\`loops\`) ma'lum bir aylanma yo'lni takroran bosib o'tishga o'xshaydi.
 
-### Svetofor va Aylanma yo'l analogiyasi:
+### Svetofor va Aylanma yo'l o'xshatishi:
 - **Shartli o'tish (Conditional / Branching):** "Agar svetofor yashil bo'lsa, to'g'riga yur, aks holda to'xta." Bu yerda faqat bitta yo'nalish tanlanadi va vaqt murakkabligi doimiy $O(1)$ bo'ladi, chunki shart tekshiruvi bir lahzada bajariladi.
 - **Sikllar (Loops):** "Aylanma yo'ldan (roundabout) 5 marta aylanib o't keyin chiq." Bu yerda operatsiyalar takrorlanadi. Agar aylanma yo'lni $N$ marta aylanib chiqish kerak bo'lsa, siz bosib o'tgan masofa va vaqt $O(N)$ chiziqli murakkablikda bo'ladi.
 - **Ichma-ich sikllar (Nested Loops):** Siz har safar katta aylanma yo'ldan o'tganingizda (tashqi sikl), ichkaridagi kichik yo'lni 3 marta aylanasiz (ichki sikl). Jami aylanishlar ko'paytiriladi.

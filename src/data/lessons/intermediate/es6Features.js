@@ -2,12 +2,12 @@ export const es6Features = {
   id: "es6Features",
   title: "ES6+ Yangi Imkoniyatlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### ES6+ nima?
 **ES6+ (ECMAScript 2015 va undan keyingi versiyalar)** — bu JavaScript dasturlash tilining rivojlanish jarayonida qo'shilgan zamonaviy, qulay va qisqa sintaktik imkoniyatlaridir. Ular kod hajmini sezilarli darajada qisqartirib, xavfsiz, oson o'qiladigan va professional loyihalar yozishga yordam beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **eski mexanik yozuv mashinkasidan** (eski JS - ES5) zamonaviy **smartfon yoki noutbukka** (ES6+) o'tdingiz:
 * **Eski yozuv mashinkasi (ES5):** Biror xato qilsangiz yoki matnni nusxalamoqchi bo'lsangiz, hammasini boshidan yozishga majbur edingiz (ortiqcha kodlar, uzun sintaksislar).
 * **Smartfon/Noutbuk (ES6+):** Endi sizda avtomatik to'ldirish (Arrow funksiyalar), nusxalash/joylash tugmalari (Spread/Rest operatori), tayyor andozalar (Template Literals) va ma'lumotlarni oson ajratish (Destructuring) kabi qulayliklar bor. Ishingiz ancha osonlashdi va vaqtingiz tejaldi.

@@ -2,12 +2,12 @@ export const reactAdvancedPerformance = {
   id: "reactAdvancedPerformance",
   title: "Murakkab Performance va Profiler",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Murakkab Performance va Profiler nima?
 React-da ilova tezligini optimallashtirish faqatgina \`useMemo\` yoki \`useCallback\` yozishdan iborat emas. Murakkab interfeyslarda, masalan, minglab satrdan iborat jadvallarda, real vaqtda ishlaydigan qidiruv tizimlarida yoki murakkab animatsiyalarda sahifaning qotishi (lag) foydalanuvchi tajribasini buzadi. Bizga brauzer oqimini (Main Thread) bloklamaydigan Concurrent (parallel) rejim va asbob-uskunalar kerak bo'ladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **yirik savdo markazining boshqaruvchisiz**:
 * **Profiler (Diagnostika):** Savdo markazining qaysi eshigi yoki yo'lagida odamlar tirband bo'layotganini ko'rsatuvchi issiqlik kamerasi (Heat Map). U orqali siz aynan qaysi do'kon (komponent) sekin ishlayotganini ko'rasiz.
 * **Debounce (Kutish):** Savdo markazining avtomat eshigi. Eshik har safar odam kelganda yopilishni boshlamaydi. U oxirgi odam o'tib bo'lgach, 2 soniya kutadi va hech kim kelmasa keyin yopiladi.

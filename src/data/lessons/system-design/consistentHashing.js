@@ -2,13 +2,13 @@ export const consistentHashing = {
   id: "consistentHashing",
   title: "Consistent Hashing (Barqaror Hashing)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Taqsimlangan tizimlarda ma'lumotlarni bir nechta serverlar o'rtasida taqsimlashda an'anaviy hashing (masalan, \`hash(key) % server_count\`) ishlatiladi. Biroq, serverlar soni o'zgarganda (yangi server qo'shilsa yoki mavjud server buzilsa), deyarli barcha kalitlar boshqa serverlarga yo'naltirilib ketadi. Bu kesh tizimlarida (masalan, Redis kesh) keskin kesh qulashi (cache miss bo'roni)ga olib keladi.
 
 **Consistent Hashing (Barqaror Hashing)** — bu serverlar soni o'zgarganda faqat minimal miqdordagi kalitlarning yo'nalishini o'zgartiruvchi maxsus hashing algoritmidir.
 
-### Doiraviy Stol analogiyasi:
+### Doiraviy Stol o'xshatishi:
 Tasavvur qiling, doiraviy stol atrofida 4 ta do'st (serverlar) o'tiribdi. Ularning har biri stolda ma'lum burchakda joylashgan.
 Siz stoldagi tasodifiy nuqtaga olma (kalit)larni qo'yasiz. Har bir olma soat mili yo'nalishi bo'ylab eng yaqin turgan do'stga tegishli bo'ladi.
 - Agarda yangi do'st (5-server) kelib stolga o'tirsa, faqatgina uning yonidagi bir nechta olmalargina yangi do'stga o'tadi. Qolgan barcha do'stlarning olmalari o'z joyida qoladi.

@@ -2,12 +2,12 @@ export const arrays = {
   id: "arrays",
   title: "Massivlar (Arrays) va Ularning Metodlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Massiv (Array) nima?
 **Massiv (Array)** — bu bir nechta qiymatlarni (elementlarni) ma'lum bir tartibda o'zida saqlaydigan maxsus ma'lumotlar strukturasidir. Oddiy o'zgaruvchi faqat bitta qiymatni saqlay olsa, massiv bitta nom ostida yuzlab yoki minglab qiymatlarni tartiblangan ro'yxat ko'rinishida saqlashi mumkin. Massivdagi har bir element o'zining joylashuv tartibiga ega bo'lib, u **indeks (index)** deb ataladi. Dasturlashda indekslash har doim **0 dan boshlanadi**.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **poyezd bekatidasiz**:
 * **O'zgaruvchi** — bu faqat bitta odam sig'adigan kichkina taksi.
 * **Massiv (Array)** — bu ketma-ket ulangan ko'plab vagonlardan iborat yuk poyezdi.

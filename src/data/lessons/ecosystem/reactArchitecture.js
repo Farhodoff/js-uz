@@ -2,7 +2,7 @@ export const reactArchitecture = {
   id: "reactArchitecture",
   title: "React Arxitekturasi (Fiber, Reconciler, Virtual DOM)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 React loyihalarida to\\'g\\'ri komponentlar dizaynini tanlash, kodning qayta ishlatilishini (reusability) va kengaytiriluvchanligini ta\\'minlaydi. Loyiha o\\'sib borgan sari komponentlar chalkashib ketmasligi uchun ularni to\\'g\\'ri guruhlash, rollarini aniqlash va vazifalarini ajratish (Separation of Concerns) muhimdir. Agar bu arxitektura to\\'g\\'ri o\\'rnatilmasa, React loyihasi qisqa muddatda "spagetti kod"ga aylanadi va uni testlash yoki kengaytirish imkonsiz bo\\'lib qoladi.
 

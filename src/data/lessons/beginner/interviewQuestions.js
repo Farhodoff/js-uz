@@ -2,12 +2,12 @@ export const interviewQuestionsBeginner = {
   id: "interviewQuestionsBeginner",
   title: "🟢 Interview Savollar (Boshlang'ich)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Junior Developer Intervyusi nima?
 Junior (boshlang'ich) dasturchilar uchun o'tkaziladigan intervyular murakkab tizimlar arxitekturasini emas, balki JavaScript-ning eng asosiy va fundamental mexanizmlarini qay darajada tushunishingizni tekshiradi. JS qanday ishlaydi, xotira bilan qanday muloqot qiladi va kod qanday tartibda bajariladi — bular asosiy savollardir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **quruvchi** bo'lib ishga kirmoqchisiz:
 * **Tajribali muhandis (Senior):** Undan butun binoning chizmasi, zilzilaga bardoshliligi va xarajatlarni hisoblash so'raladi.
 * **Boshlang'ich yordamchi (Junior):** Undan g'ishtni qanday terish, sementni qanday qorish va asboblarni qanday toza saqlash so'raladi.

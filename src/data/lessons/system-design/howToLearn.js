@@ -2,7 +2,7 @@ export const howToLearn = {
   id: "howToLearn",
   title: "System Design-ni qanday o'rganish kerak? (How to Learn System Design?)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizimli dizayn (System Design) — bu dasturlash emas, balki **shaharsozlik** kabi san'atdir. Tasavvur qiling, sizga uy qurishni topshirishdi. Agar siz oddiy bir xonali kulba qurmoqchi bo'lsangiz (Junior darajasida), sizga g'isht, qum va sement yetarli. Lekin sizga 100 qavatli osmono'par bino yoki butun boshli mega-polis shahar qurish topshirilsa (Senior/Staff darajasida), siz faqat g'isht terish bilan cheklana olmaysiz. Sizga transport yo'llari, elektr tarmoqlari, kanalizatsiya va xavfsizlik tizimlarini rejalashtirish — ya'ni tizimli yondashuv kerak bo'ladi.
 

@@ -2,11 +2,11 @@ export const dsaAdvancedDP = {
   id: "dsaAdvancedDP",
   title: "Murakkab Dinamik Dasturlash (Bitmask DP, Digit DP, DP on Trees)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Murakkab Dinamik Dasturlash (Advanced Dynamic Programming) - oddiy DP usullari (LCS, Knapsack) yetarli bo'lmagan, holatlar (states) sonini ifodalash uchun bitlar, daraxtlar yoki raqamlar strukturasidan foydalanishni talab qiluvchi masalalarni yechish uchun qo'llaniladi.
 
-### Tushunarli analogiyalar:
+### Tushunarli o'xshatishlar:
 - **Bitmask DP (Bitlar orqali holatni saqlash):** Tasavvur qiling, sizda 5 ta vazifa bor. Ularning qaysi biri bajarilgan, qaysi biri bajarilmaganligini bitta butun sonning bitlarida (0 va 1) saqlaysiz. Masalan, \`01101\` soni 1, 3 va 4-vazifalar bajarilganini, 2 va 5-vazifalar esa hali bajarilmaganini ko'rsatadi. Bit amallari yordamida holatlarni ifodalash juda tez ishlaydi.
 - **Digit DP (Raqamlar bo'yicha DP):** 1 dan $10^{18}$ gacha bo'lgan sonlar orasida raqamlar yig'indisi ma'lum shartga javob beradigan sonlar nechtaligini topmoqchisiz. Har bir sonni alohida tekshirish imkonsiz. Digit DP sonlarni chapdan o'ngga qarab xonama-xona (raqamlar bo'yicha) shakllantirib, holatni keshlab boradi.
 - **DP on Trees (Daraxtlardagi DP):** Daraxt ko'rinishidagi tashkilotda xodimlardan iborat shunday jamoa yig'moqchisizki, unda bevosita boshliq va xodim birga qatnasha olmaydi, lekin jamoaning umumiy foydasi maksimal bo'lishi kerak. Bu yerda har bir tugun (xodim) uchun DP holati uning pastki shoxlariga (subtrees) tayanib rekursiv hisoblanadi.

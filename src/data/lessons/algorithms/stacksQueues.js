@@ -2,18 +2,18 @@ export const stacksQueues = {
   id: "stacksQueues",
   title: "Stek va Navbat (Stacks & Queues)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Stack va Queue nima?
 * **Stack (Stek):** Bu LIFO (**Last In, First Out** — Oxirgi kirgan, birinchi chiqadi) tamoyiliga asoslangan ma'lumotlar tuzilmasidir. Unga element faqat eng yuqorisidan qo'shiladi va olinadi.
 * **Queue (Navbat):** Bu FIFO (**First In, First Out** — Birinchi kirgan, birinchi chiqadi) tamoyiliga asoslangan ma'lumotlar tuzilmasidir. Unga element oxiridan qo'shiladi (Enqueue) va boshidan olinadi (Dequeue).
 
-### Real hayotiy analogiya
-* **Stack analogiyasi:** Tasavvur qiling, **ustma-ust taxlangan likopchalar (plates)**:
+### Real hayotiy o'xshatish
+* **Stack o'xshatishi:** Tasavvur qiling, **ustma-ust taxlangan likopchalar (plates)**:
   * Siz yangi yuvilgan likopchani faqat eng tepasiga qo'ya olasiz (Push).
   * Ovqatlanish uchun likopcha olganda ham eng ustidagisini (oxirgi qo'yilganini) olasiz (Pop).
   * Agar tagidan olishga harakat qilsangiz, likopchalar sinishi mumkin.
-* **Queue analogiyasi:** Tasavvur qiling, **avtobus bekatidagi yoki do'kondagi odamlar navbati**:
+* **Queue o'xshatishi:** Tasavvur qiling, **avtobus bekatidagi yoki do'kondagi odamlar navbati**:
   * Navbatga yangi kelgan odam oxiriga borib turadi (Enqueue).
   * Birinchi bo'lib kelgan odamga birinchi xizmat ko'rsatiladi va u navbatni tark etadi (Dequeue).
 

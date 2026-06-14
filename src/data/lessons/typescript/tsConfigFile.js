@@ -2,7 +2,7 @@ export const tsConfigFile = {
   id: "tsConfigFile",
   title: "TypeScript Config (tsconfig.json chuqur tahlili)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### tsconfig.json nima?
 **tsconfig.json** — bu TypeScript loyihangizning \"miyasidir\". U TypeScript kompilyatoriga (tsc) kodni JavaScript-ga qanday o'girish (transpile qilish), qaysi fayllarni tekshirish va qanday qat'iylik (strictness) darajasida xatolarni aniqlash kerakligini aytib beradi.

@@ -2,13 +2,13 @@ export const ciCdGithubActions = {
   id: "ciCdGithubActions",
   title: "CI/CD va GitHub Actions",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### CI/CD nima?
 * **Continuous Integration (CI - Uzluksiz integratsiya):** Dasturchilar o'z kodlarini asosiy tarmoqqa (main branch) qo'shganda, u avtomatik ravishda testlardan o'tkazilishi va tekshirilishi jarayoni.
 * **Continuous Deployment (CD - Uzluksiz yetkazib berish):** Kod testlardan muvaffaqiyatli o'tgach, u avtomatik ravishda jonli serverga (production) deploy qilinishi (yuklanishi).
 
-**Analogiya:**
+**O'xshatish:**
 Bu xuddi **avtomobil ishlab chiqarish zavodidagi konveyerga** o'xshaydi:
 1. Har bir detal qo'shilganda (kod yozilganda), robotlar uni darhol tekshiradi, chizadi, o'lchaydi (**CI - Avtomatlashtirilgan test**).
 2. Agar hamma tekshiruvlar muvaffaqiyatli o'tsa, mashina to'g'ridan-to'g'ri do'konga yo'l oladi (**CD - Avtomatlashtirilgan yetkazib berish**). Agar biror joyida xato bo'lsa, konveyer darhol to'xtaydi va muhandislarga xabar yuboradi.

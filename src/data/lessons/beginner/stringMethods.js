@@ -2,12 +2,12 @@ export const stringMethods = {
   id: "stringMethods",
   title: "String Metodlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### String Metodlari nima?
 JavaScript-da har qanday matn (tirnoq ichidagi belgilar ketma-ketligi) **String** ma'lumot turi hisoblanadi. String metodlari — bu matnlar bilan ishlash (masalan, ularni kesish, harflarini kattalashtirish, qidirish yoki almashtirish) uchun oldindan tayyorlab qo'yilgan maxsus asboblar to'plamidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, sizda **gil (loy)** bor:
 * Agar siz undan ko'za yasamoqchi bo'lsangiz, uni ezib, shakl berasiz. Ammo JavaScript stringlari gilga emas, balki **toshga o'yilgan yozuvga** o'xshaydi.
 * Agar toshdagi yozuvni o'zgartirmoqchi bo'lsangiz, mavjud toshni o'zgartira olmaysiz (chunki stringlar o'zgarmasdir - **immutable**). Siz faqat boshqa toshni olib, unga yangi matnni o'yib yozishingiz mumkin.

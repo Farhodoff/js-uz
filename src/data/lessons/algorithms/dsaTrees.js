@@ -2,11 +2,11 @@ export const dsaTrees = {
   id: "dsaTrees",
   title: "Daraxtlar: Iyerarxik Tuzilmalar va Aylanishlar (Trees & Traversals)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Daraxtlar (Trees) - bu chiziqli bo'lmagan, iyerarxik (bo'ysunuvchi) bog'lanishga ega bo'lgan ma'lumotlar tuzilmasidir. Ular elementlarni zanjir kabi emas, balki shoxlangan ko'rinishda saqlaydi.
 
-### Shajara (Oilaviy daraxt) analogiyasi:
+### Shajara (Oilaviy daraxt) o'xshatishi:
 - **Root (Ildiz node):** Oiladagi eng katta bobo (eng yuqori node). Undan boshqa barcha a'zolar tarqaladi.
 - **Parent & Child (Ota va Farzand):** Har bir ota-ona o'z farzandlariga havola beradi. Masalan, boboning farzandlari (ota-onalar), ularning esa o'z farzandlari (nabiralar) bor.
 - **Leaf (Barg node):** Farzandi bo'lmagan, eng oxirida turgan nabiralar (daraxtning tugallanish nuqtalari).

@@ -2,11 +2,11 @@ export const dsaDP = {
   id: "dsaDP",
   title: "Dinamik Dasturlash (Dynamic Programming)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Dinamik Dasturlash (Dynamic Programming / DP) - bu murakkab muammoni kichikroq o'xshash qism-muammolarga bo'lish, ularning natijalarini xotirada saqlab qolish va shu orqali hisob-kitoblarni qayta-qayta bajarmasdan o'ta samarali yechish usulidir.
 
-### Daftar varag'i analogiyasi:
+### Daftar varag'i o'xshatishi:
 - **Eskini eslab qolish:** Men sizdan so'rayman: "1 + 1 + 1 + 1 + 1 nechaga teng?" Siz sanab aytasiz: "5". 
 - Endi men varaqning chetiga yana bitta "+ 1" yozaman va so'rayman: "Endi nechaga teng bo'ldi?" Siz boshidan sanamasdan, darhol: "6" deysiz.
 - Nega boshidan sanamadingiz? Chunki siz oldingi natija "5" ekanini **eslab qoldingiz** (Memoization/Keshlash). Dinamik dasturlash aynan shu prinsipda ishlaydi: "O'tmishni eslab qol, kelajakni tezlashtir".

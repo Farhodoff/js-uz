@@ -2,12 +2,12 @@ export const timers = {
   id: "timers",
   title: "Vaqt funksiyalari (Timers)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Vaqt funksiyalari (Timers) nima?
 **Vaqt funksiyalari (Timers)** — bu JavaScript kodini ma'lum bir vaqtdan keyin ishga tushirish (kechiktirish) yoki ma'lum bir vaqt oralig'ida takroriy ravishda bajarish imkonini beruvchi asinxron mexanizmdir. Brauzer muhiti va Node.js bizga kod oqimini vaqtinchalik to'xtatmasdan, ma'lum vazifalarni kelajakka rejalashtirish uchun ushbu taymerlarni taqdim etadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz oshxonada **ovqat pishiryapsiz**:
 * **Budilnik (setTimeout):** Pechga pirogni qo'yib, taymerni 45 daqiqaga o'rnatdingiz. Vaqt tugagach, budilnik bir marta jiringlaydi va siz pirogni olasiz. Bu faqat bir marta sodir bo'ladigan jarayon.
 * **Metronom (setInterval):** Siz har 10 soniyada qozondagi ovqatni aralashtirib turishingiz kerak. Har 10 soniyada qo'ng'iroq chalinadi, aralashtirasiz va bu jarayon siz gazni o'chirmaguningizcha (\`clearInterval\`) cheksiz takrorlanadi.

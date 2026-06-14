@@ -2,11 +2,11 @@ export const heartbeatsLeases = {
   id: "heartbeatsLeases",
   title: "Heartbeats va Leases (Taqsimlangan Tizimlar)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Taqsimlangan tizimlarda (Distributed Systems) serverlar, ma'lumotlar bazalari va mikroservislar doimiy ravishda bir-biri bilan aloqa qilib turadi. Biroq, tarmoq nosozliklari yoki serverlarning to'satdan qulashi (crash) sababli, qaysi server "tirik" (alive) va qaysi biri "o'lik" (dead) ekanligini aniqlash juda qiyin. Ushbu muammoni hal qilish uchun **Heartbeats** (Yurak urishi) va **Leases** (Ijara) mexanizmlari ishlatiladi.
 
-### Oddiy Analogiya:
+### Oddiy O'xshatish:
 
 *   **Heartbeats (Yurak urishi):** Tasavvur qiling, siz qorovulxona bilan har 10 soniyada ratsiya orqali gaplashib turibsiz. Siz shunchaki "Men shu yerdaman, hammasi yaxshi" deb turasiz. Agar qorovul sizdan 30 soniya davomida hech qanday signal olmasa, u sizni hushidan ketgan yoki biror falokatga uchragan deb hisoblaydi va qutqaruvchilarni chaqiradi.
 *   **Leases (Ijara):** Tasavvur qiling, siz kutubxonadan juda noyob kitobni faqat 1 soatga ijaraga oldingiz. Agar siz uni yana ishlatmoqchi bo'lsangiz, 1 soat tugashidan oldin ijara muddatini uzaytirishingiz (renew) kerak. Agar belgilangan vaqt tugasa va siz kelmasangiz, kutubxonachi kitobni boshqa odamga berib yuboradi. Siz kitobni ushlab turgan bo'lsangiz ham, endi unga egalik huquqingiz yo'q.

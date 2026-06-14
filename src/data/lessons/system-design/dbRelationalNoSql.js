@@ -2,14 +2,14 @@ export const dbRelationalNoSql = {
   id: "dbRelationalNoSql",
   title: "Ma'lumotlar Bazalari: Relational (SQL) vs NoSQL",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Relational (SQL) va NoSQL nima?
 Ma\\'lumotlar bazasini tanlash — bu uyingizdagi narsalarni qanday tartiblash haqida qaror qabul qilish kabidir:
 * **Relational (SQL) ma\\'lumotlar bazasi** — bu har bir tortmasi aniq o\\'lchamga ega, kiyimlar qat\\'iy qoidalar asosida guruhlangan **klassik shkaf** (Wardrobe). Har bir ko\\'ylak faqat o\\'z bo\\'limiga (Table) joylashadi va uning rangi, o\\'lchami oldindan belgilangan bo\\'lishi kerak (Schema). Agar siz shim bilan ko\\'ylakni birga ko\\'rmoqchi bo\\'lsangiz, ularni bog\\'lovchi maxsus ilgichlardan (Foreign Key/JOIN) foydalanasiz.
 * **NoSQL ma\\'lumotlar bazasi** — bu har xil turdagi qutilardan iborat **zamonaviy omborxona** (Storage unit). Bu yerda qutilar har xil o\\'lchamda bo\\'lishi (Schema-less), ba\\'zi qutilarda faqat bitta kalit va qiymat (Key-Value), boshqalarida butun boshli hujjatlar to\\'plami (Document Store), yoki bir-biri bilan arqon orqali bog\\'langan buyumlar (Graph) bo\\'lishi mumkin.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **kutubxona** yoki **kitob do\\'konini** boshqaryapsiz:
 * **SQL yondashuvi:** Sizda \\"Mualliflar\\" jadvali, \\"Kitoblar\\" jadvali va ularni bog\\'lovchi \\"Kitob_Muallif\\" bog\\'liqlik jadvali bor. Har bir kitob qat\\'iy ravishda bitta yoki bir nechta muallif ID-siga ega bo\\'lishi shart. Agar birorta muallif o\\'chsa, kitobning yetim qolmasligini kafolatlovchi qoidalar (Referential Integrity) bor.
 * **NoSQL yondashuvi (Document):** Har bir kitob alohida JSON hujjat ko\\'rinishida saqlanadi. Kitobning ichida uning mualliflari ismi, yoshi va hatto yozgan boshqa kitoblari ro\\'yxati to\\'g\\'ridan-to\\'g\\'ri kitobning ichiga \\"joylashtirilgan\\" (Embedded). JOIN qilish shart emas, bitta kitobni so\\'raganingizda unga tegishli hamma narsa bir zumda chiqib keladi.

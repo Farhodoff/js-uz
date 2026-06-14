@@ -2,13 +2,13 @@ export const optionalChaining = {
   id: "optionalChaining",
   title: "Optional Chaining & Nullish Coalescing",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Optional Chaining (\`?.\`) va Nullish Coalescing (\`??\`) nima?
 * **Optional Chaining (\`?.\`)** — bu obyekt ichidagi chuqur joylashgan xususiyatlarga yoki metodlarga xavfsiz tarzda murojaat qilish imkonini beruvchi operatordir. Agar zanjirning biror qismi \`null\` yoki \`undefined\` bo'lsa, u xatolik bermasdan murojaatni to'xtatadi va \`undefined\` qaytaradi.
 * **Nullish Coalescing (\`??\`)** — bu faqatgina qiymat \`null\` yoki \`undefined\` bo'lgan holda zaxira (default) qiymatni o'rnatish imkonini beruvchi mantiqiy operatordir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 * **Optional Chaining (Zanjir tekshiruvi):** Tasavvur qiling, siz qulflangan uylardan iborat ketma-ketlikdan kalit topmoqchisiz. Birinchi uyga borasiz, agar u ochiq bo'lsa (\`?.\`), keyingi xonaga o'tasiz. Agar uy yo'q bo'lsa yoki yopiq bo'lsa, zaxira kalitni buzib o'tirmaysiz, tinchgina uydan qaytasiz.
 * **Nullish Coalescing (Zaxira g'ildirak):** Mashinangizda "zaxira g'ildirak" (spare tire) bor. Agar asosiy g'ildirak mutlaqo yo'q bo'lsa (\`null\` yoki \`undefined\`), siz zaxira g'ildirakni o'rnatasiz. Lekin g'ildirak joyida bo'lsa, ammo uning havosi oz bo'lsa ham (masalan, \`0\` yoki \`""\`), baribir o'sha g'ildirakni ishlataverasiz (ya'ni \`??\` ularni o'chirib yubormaydi).
 

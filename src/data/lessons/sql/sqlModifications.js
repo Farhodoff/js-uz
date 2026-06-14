@@ -2,12 +2,12 @@ export const sqlModifications = {
   id: "sqlModifications",
   title: "Ma'lumotlarni o'zgartirish (INSERT, UPDATE, DELETE)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Ma'lumotlarni o'zgartirish nima?
 Ma'lumotlar bazasi faqatgina o'qish (SELECT) uchun ishlatilmaydi. Ilovangizda yangi foydalanuvchi ro'yxatdan o'tganda, u o'z profil ma'lumotlarini o'zgartirganda yoki hisobini o'chirganda siz ma'lumotlar bazasini o'zgartirishingiz kerak. Buning uchun SQL-da **DML (Data Manipulation Language)** amallari: **INSERT** (qo'shish), **UPDATE** (yangilash) va **DELETE** (o'chirish) buyruqlari xizmat qiladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Daftarda yozuvlar bilan ishlashni tasavvur qiling:
 * **INSERT**: Daftarning yangi bo'sh varag'iga yangi foydalanuvchi ma'lumotlarini qator qilib yozib qo'yish.
 * **UPDATE**: Daftardagi yozilgan qatorning biror qiymatini (masalan, yashash joyini) o'chirgich bilan o'chirib, yangisini yozish.

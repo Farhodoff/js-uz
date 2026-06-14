@@ -2,11 +2,11 @@ export const dsaInputOutput = {
   id: "dsaInputOutput",
   title: "Kiritish va Chiqarish Oqimlari (Basic I/O & DSA Intro)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Algoritmlarni yozishda ma'lumotlarni qabul qilish (Input) va natijani ko'rsatish (Output) juda muhim. Bu tizimlar ko'pincha "Oqimlar" (Streams) orqali ishlaydi.
 
-### Suv quvuri analogiyasi:
+### Suv quvuri o'xshatishi:
 - **Kiritish oqimi (Input Stream):** Tasavvur qiling, sizga juda katta hajmdagi suv kerak. Uni chelaklab (kichik-kichik o'zgaruvchilarda) tashiganingizdan ko'ra, suv quvurini ulab qo'yganingiz ma'qul. Ma'lumotlar oqimi - bu dasturga to'xtovsiz kirib keladigan ma'lumotlar zanjiridir.
 - **Chiqarish oqimi (Output Stream):** Dastur natijalarini ekranga yoki faylga chiqaruvchi quvur.
 - **Buffer (Kesh/Bufer):** Suv quvuridagi kichik suv tanki. Agar har bir tomchi suv uchun bittadan quvur ochib yopilsa, tizim juda sekin ishlaydi. Ma'lumotlarni buferga yig'ib, birdaniga uzatish ishlash tezligini (I/O performance) sezilarli darajada oshiradi.

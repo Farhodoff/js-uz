@@ -2,7 +2,7 @@ export const sqlIndexes = {
   id: "sqlIndexes",
   title: "Indekslar (Indexes)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Indeks (Index) nima?
 **Indeks (Index)** — bu ma'lumotlar bazasidan ma'lumotlarni qidirishni tezlashtirish uchun mo'ljallangan maxsus yordamchi strukturadir. U xuddi kitob oxiridagi **mundarijaga** o'xshaydi.

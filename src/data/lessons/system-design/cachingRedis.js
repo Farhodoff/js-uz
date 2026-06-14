@@ -2,12 +2,12 @@ export const cachingRedis = {
   id: "cachingRedis",
   title: "Keshlash va Redis (Caching & Redis)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Keshlash nima?
 **Keshlash (Caching)** — bu ma'lumotlarni tez-tez so'ralganda tezkor va qulay joyda (odatda tezkor xotira - RAM) vaqtinchalik saqlash texnologiyasidir. Bu ma'lumotlar bazasiga (Database) tushadigan yuklamani kamaytiradi va dastur tezligini yuzlab barobar oshiradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **oshxonada taom pishiryapsiz**:
 * **Keshsiz holat:** Har safar sizga tuz, murch yoki pichoq kerak bo'lganda, uyingizdan chiqib, 2 km uzoqlikdagi **yirik supermarketga** (Ma'lumotlar bazasiga) borib kelasiz. Taom pishirish juda uzoq vaqt oladi va charchab qolasiz.
 * **Keshli holat:** Siz ziravorlar va eng kerakli anjomlarni **oshxona stoliga** (Kesh/Redis) qo'yib qo'yasiz. Supermarketga faqat oshxona stolida yo'q bo'lgan narsalar uchun borasiz va ularni olib kelib, kelajakda tezroq foydalanish uchun stol ustiga joylashtirasiz.

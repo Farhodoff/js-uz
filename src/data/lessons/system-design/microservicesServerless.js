@@ -2,7 +2,7 @@ export const microservicesServerless = {
   id: "microservicesServerless",
   title: "Mikroxizmatlar va Serverless Arxitekturasi",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, siz **katta restoran** ochmoqchisiz:
 

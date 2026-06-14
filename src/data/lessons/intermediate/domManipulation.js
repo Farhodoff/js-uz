@@ -2,12 +2,12 @@ export const domManipulation = {
   id: "domManipulation",
   title: "DOM Manipulyatsiyasi: Elementlar Yaratish va Boshqarish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### DOM Manipulyatsiyasi nima?
 **DOM Manipulyatsiyasi (DOM Manipulation)** — bu JavaScript yordamida veb-sahifadagi HTML elementlarini dynamic (dasturiy) ravishda yaratish, ularni joylashtirish, o'zgartirish, klonlash yoki butunlay o'chirib tashlash jarayonidir. Bu orqali sahifa foydalanuvchining harakatlariga mos ravishda dynamic o'zgaradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Buni **Lego konstruktori** deb tasavvur qiling:
 * **Yaratish (Create):** Siz qutidan yangi g'ishtcha olasiz (\`document.createElement\`).
 * **Joylashtirish (Insert):** G'ishtchani konstruktor poydevoriga yopishtirasiz (\`appendChild\` yoki \`prepend\`).

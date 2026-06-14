@@ -2,7 +2,7 @@ export const thingsToAvoid = {
   id: "thingsToAvoid",
   title: "System Design Intervyuda Yo'l Qo'yiladigan Xatolar (Things to Avoid)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 System Design intervyulari faqat texnik bilimlarni emas, balki sizning muloqot va hamkorlik madaniyatingizni ham sinovdan o'tkazadi. Bu xuddi **shifokor va bemor** muloqotiga o'xshaydi:
 - **Xato (Junior yondashuv):** Bemor eshikdan kirishi bilan shifokor uning shikoyatini tinglamasdan, qon bosimini o'lchamasdan turib darhol og'ir jarrohlik amaliyotini (yoki eng kuchli dori-darmonlarni) buyuradi (talablarni so'ramay over-engineering qilish).

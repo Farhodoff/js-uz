@@ -1,14 +1,14 @@
 export const nodeArchitecture = {
   id: "nodeArchitecture",
   title: "Node.js Arxitekturasi va Event Loop",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Node.js va uning Arxitekturasi nima?
 * **Node.js** — bu JavaScript kodini brauzerdan tashqarida, server muhitida ishga tushirish imkonini beruvchi platforma. U o'zining tezligi va yengilligi bilan ajralib turadi.
 * **Single-threaded (Bir oqimli):** Node.js asosiy JavaScript kodlarini faqat bitta oqimda (Main Thread) ketma-ket bajaradi.
 * **Non-blocking I/O (Bloklamaydigan kirish-chiqish):** Server fayllarni o'qiyotganda yoki tarmoq so'rovini kutayotganda butun dasturni to'xtatib qo'ymaydi, balki ishni orqa fonga topshirib, navbatdagi so'rovlarni qabul qilaveradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **kichik qahvaxona** ochdingiz:
 * **Single-threaded Kassir (JavaScript Main Thread):** Qahvaxonada faqat bitta kassir ishlaydi. U barcha mijozlardan buyurtmalarni qabul qiladi.
 * **Asinxron buyurtma:** Kassir sizdan buyurtma oladi, unga raqam yozilgan chek (Promise/Callback) beradi va buyurtmani orqadagi **oshxonaga** uzatadi. Kassir kofe tayyor bo'lishini kutib turmasdan, navbatdagi mijozga o'tadi.

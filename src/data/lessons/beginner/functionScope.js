@@ -2,14 +2,14 @@ export const functionScopeLesson = {
   id: "functionScopeLesson",
   title: "Function Scope",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Funksiya Qamrovi (Function Scope) nima?
 JavaScript-da har safar yangi funksiya yaratganingizda, u o'ziga xos **yopiq hudud** (qamrov yoki scope) yaratadi. 
 * Funksiya ichida e'lon qilingan o'zgaruvchilar (xoh \`var\`, xoh \`let\` yoki \`const\` bo'lsin) va funksiyaga uzatilgan argumentlar faqat shu funksiyaning **ichida** ishlaydi.
 * Tashqi dunyo (ya'ni funksiya tashqarisidagi kodlar) bu o'zgaruvchilarni ko'ra olmaydi va ularga to'g'ridan-to'g'ri murojaat qila olmaydi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **shaxsiy xonadonsiz**:
 * **Global Scope (Ko'cha):** Hamma uchun ochiq joy. Bu yerda turgan e'lonlar taxtasini ko'chada yurgan har bir kishi o'qishi mumkin.
 * **Function Scope (Xonadon):** Sizning uyingiz. Uyingiz ichidagi jihozlar, masalan, stol ustidagi shaxsiy kundalik faqat uydagilarga (funksiya ichiga) ko'rinadi. Ko'chadan turib (tashqi global scope-dan) hech kim sizning uyingiz ichidagi narsalarni ko'ra olmaydi.

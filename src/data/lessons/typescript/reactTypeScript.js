@@ -2,7 +2,7 @@ export const reactTypeScript = {
   id: "reactTypeScript",
   title: "React va TypeScript Integratsiyasi",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Nega React bilan TypeScript?
 * **JS bilan React (Dinamik):** Component-ga xato prop yuborsangiz yoki state-dagi o'zgaruvchini noto'g'ri ishlatsangiz, ilova ishlaydi lekin runtime-da (foydalanuvchi ekranda ko'rayotganda) to'satdan buzilib qolishi mumkin. Bu xuddi xaritasiz yoki noto'g'ri chizilgan sxema bo'yicha mebel yig'ishga o'xshaydi.

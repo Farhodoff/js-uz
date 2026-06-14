@@ -2,12 +2,12 @@ export const serverSentEvents = {
   id: "serverSentEvents",
   title: "Server-Sent Events (SSE): Bir Tomonlama Real-time Oqim",
   language: "uz",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Server-Sent Events (SSE) nima?
 **Server-Sent Events (SSE)** — bu brauzer va server o'rtasida o'rnatiladigan bir tomonlama (one-way) doimiy aloqa kanali. U serverga real vaqt rejimida (real-time) mijozga yangi ma'lumotlarni yuborish imkonini beradi. Mijoz faqat bir marta serverga ulanish so'rovini yuboradi va server aloqani ochiq saqlab, yangiliklar paydo bo'lishi bilan ularni oqim (stream) ko'rinishida yuborib turadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **obuna bo'lgan gazeta yoki jurnalni yetkazib berish xizmati**:
 * **Polling (Soliishtirish uchun):** Siz har 5 daqiqada pochtangizga borib, "Menga gazeta keldimi?" deb so'raysiz. Agar kelmagan bo'lsa, quruq qaytasiz. Bu juda charchatadigan va samarasiz jarayon.
 * **Server-Sent Events (SSE):** Siz gazeta nashriyotiga bir marta borib **obuna bo'lasiz** (ulanish). Nashriyot har safar yangi gazeta chop etilganda, uni to'g'ridan-to'g'ri uyingizga tashlab ketadi (server-push). Siz qayta-qayta borib so'rashingiz shart emas, gazeta o'zi keladi.

@@ -2,7 +2,7 @@ export const errorHandling = {
   id: "errorHandling",
   title: "Xatolarni Boshqarish: try, catch, finally",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Xatolarni Boshqarish nima?
 Dasturlashda xatolar muqarrar. Foydalanuvchi noto'g'ri ma'lumot kiritishi, internet uzilib qolishi yoki server noto'g'ri javob qaytarishi mumkin. **try...catch...finally** bloklari — bu JavaScript-da xatolarni oldindan ko'ra bilish va dastur butunlay to'xtab qolishining (crash bo'lishining) oldini olish mexanizmidir.
@@ -11,7 +11,7 @@ Dasturlashda xatolar muqarrar. Foydalanuvchi noto'g'ri ma'lumot kiritishi, inter
 * **finally (oxir-oqibat):** Xato yuz berishidan qat'i nazar, har qanday holatda ham eng oxirida bajariladigan blok.
 * **throw (otish):** Dasturchi o'zi xohlagan shart asosida sun'iy xatolik yaratib, uni otib yuborishi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **mashinada sayohatga chiqyapsiz**:
 * **try:** Mashinani haydash jarayoni. Yo'lda g'ildirak teshilishi yoki motor buzilishi mumkin.
 * **catch:** Zaxira g'ildirak (zapaska) yoki evakuator xizmati. Agar mashina buzilsa, siz sayohatni butunlay to'xtatmaysiz, zaxira reja ishga tushadi.

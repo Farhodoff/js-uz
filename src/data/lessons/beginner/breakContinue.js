@@ -2,13 +2,13 @@ export const breakContinue = {
   id: "breakContinue",
   title: "Sikllarni Boshqarish: break, continue",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### break va continue nima?
 * **break:** Siklni (loop) darhol va butunlay to'xtatib, undan chiqib ketish buyrug'i. Siklning qolgan barcha iteratsiyalari bekor qilinadi.
 * **continue:** Siklning joriy (hozirgi) iteratsiyasini to'xtatib, qolgan kodlarini bajarmasdan, keyingi iteratsiyaga (siklning navbatdagi aylanishiga) o'tish buyrug'i.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **zinadan 10-qavatga ko'tarilyapsiz**:
 * **break (To'xtash/Chiqish):** 5-qavatga yetganingizda lift ishga tushib qoldi yoki charchadingiz va zinadan yurishni butunlay to'xtatib, zinapoyani tark etdingiz (sikl tugadi).
 * **continue (O'tkazib yuborish):** Siz har bir qavatdagi do'stingizning eshigini taqillatib ketyapsiz. Ammo 4-qavatdagi do'stingiz safarga ketganini bilasiz. Shuning uchun 4-qavat eshigi oldiga kelganda uni taqillatib o'tirmay, uni **tashlab o'tib (continue)** to'g'ri 5-qavatga chiqib ketasiz.

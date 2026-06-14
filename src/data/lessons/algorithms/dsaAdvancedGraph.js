@@ -2,11 +2,11 @@ export const dsaAdvancedGraph = {
   id: "dsaAdvancedGraph",
   title: "Murakkab Graf Strukturasi (Tarjan, Kosaraju, Euler & Hamilton Cycles, Network Flow)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Murakkab Graf Strukturasi algoritmlari graflardagi kuchli bog'langan komponentlarni topish, bir tomonlama yoki aylanma marshrutlarni hisoblash hamda tarmoqlar orqali o'tuvchi oqim (suv, ma'lumot yoki trafik) hajmini maksimallashtirish uchun qo'llaniladi.
 
-### Tushunarli analogiyalar:
+### Tushunarli o'xshatishlar:
 - **Kosaraju va Tarjan Algoritmlari (Strongly Connected Components - SCC):** Tasavvur qiling, ijtimoiy tarmoqda bir guruh foydalanuvchilar bor. Guruh ichidagi har bir inson guruhdagi istalgan boshqa insonga (bevosita yoki bilvosita yo'naltirilgan shoxlar orqali) xabar yubora oladi. Lekin bu guruhdan tashqariga chiqilsa, orqaga qaytish imkoni yo'q. Kosaraju va Tarjan algoritmlari aynan mana shunday yopiq \"o'zaro to'liq bog'langan orollar\" (kuchli bog'langan komponentlar)ni topib beradi.
 - **Eyler Yo'li va Sikli (Euler Path/Cycle):** Bu xuddi qog'ozdagi shaklni qalamni qog'ozdan uzmasdan va har bir chiziq (shox) ustidan **faqat bir marta** o'tib chizishga o'xshaydi. Agar boshlagan joyingizga qaytib kelsangiz, bu Eyler Sikli deyiladi.
 - **Hamilton Yo'li va Sikli (Hamiltonian Path/Cycle):** Eyler yo'lidan farqli o'laroq, bu yerda har bir **tugun (vertex)** ustidan **faqat bir marta** o'tishingiz kerak (shoxlar qolib ketishi mumkin). Bu juda qiyin (NP-hard) masala.

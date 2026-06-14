@@ -2,7 +2,7 @@ export const sqlQueryOptimization = {
   id: "sqlQueryOptimization",
   title: "So'rovlarni Optimallashtirish (Query Optimization)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### So'rovlarni Optimallashtirish nima?
 **So'rovlarni Optimallashtirish (Query Optimization)** — bu yozilgan SQL so'rovini ma'lumotlar bazasi tomonidan eng kam resurs (CPU, RAM, Disk I/O) va eng kam vaqt sarflab bajarilishini ta'minlash jarayonidir.
@@ -17,7 +17,7 @@ Biz ushbu rejani \`EXPLAIN\` yoki \`EXPLAIN ANALYZE\` buyruqlari yordamida o'rga
 3. **Index Scan (yoki Index Seek):** Indeksdan foydalanib faqat kerakli qatorlarni tezkor topish. Eng maqbul yo'l.
 4. **Bottlenecks (To'siqlar):** So'rovni sekinlashtiradigan joylar (indekslarning yo'qligi, ortiqcha JOIN-lar, yomon yozilgan mantiq).
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **Toshkentdan Samarqandga borishingiz kerak**:
 * **Query Optimizer:** Sizning navigatsiya ilovangiz (Google Maps).
 * **Bajarilish rejasi (Execution Plan):** Navigatsiya sizga taklif qilgan marshrutlar (eng tezkor yo'l, eng kalta yo'l).

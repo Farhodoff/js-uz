@@ -2,14 +2,14 @@ export const historyRouting = {
   id: "historyRouting",
   title: "History API va Single Page Application (SPA) Routing",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### History API va SPA Routing nima?
 **Single Page Application (SPA) Routing** — bu sahifani serverdan qayta yuklamasdan (reload bo'lmasdan), faqat brauzerning manzil satridagi URL-ni o'zgartirib, foydalanuvchiga kerakli sahifa tarkibini (DOM-ni) tezkorlik bilan almashtirib ko'rsatish texnologiyasidir. 
 
 **History API** — bu brauzerning bizga taqdim etgan maxsus obyekti bo'lib, u orqali biz manzil satrini dasturlash yo'li bilan o'zgartira olamiz va foydalanuvchi "Orqaga" (Back) yoki "Oldinga" (Forward) tugmalarini bosganini kuzatib tura olamiz.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **Sehrli Muzeydasiz**:
 * **Klassik Veb (MPA - Multi Page Application):** Muzeyda har bitta xonaga kirish uchun siz tashqariga chiqib, chiptaxonaga borib, yangi chipta olib, keyin boshqa xonaga kirishingiz kerak. Bu har safar butun saytni qayta yuklashga o'xshaydi.
 * **SPA Routing:** Siz muzeyning ichida turibsiz. Siz bir xonadan ikkinchisiga shunchaki yurib o'tasiz. Xonadagi eksponatlar (kontentlar) darhol o'zgaradi, lekin siz muzeydan tashqariga chiqmaysiz. Devordagi xona raqami va yo'nalish ko'rsatkichlari (URL) siz yurishingiz bilan avtomatik o'zgaradi. Agar siz orqaga qaytmoqchi bo'lsangiz, shunchaki ortga qadam tashlaysiz (Back button).

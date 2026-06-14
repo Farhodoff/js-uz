@@ -2,12 +2,12 @@ export const destructuring = {
   id: "destructuring",
   title: "Destructuring (Ma'lumotlarni ochish)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Destructuring (Ma'lumotlarni ochish) nima?
 **Destructuring** (Destruptizatsiya yoki Ma'lumotlarni ochish) — bu ES6 (ECMAScript 2015) standartida JavaScript-ga kiritilgan qulay va ixcham sintaksis bo'lib, u massivlar (arrays) ichidagi elementlarni yoki obyektlar (objects) ichidagi xossalarni osongina ajratib olib, alohida o'zgaruvchilarga yuklash imkonini beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz sayohatdan qaytdingiz va uyingizda **chamodoningizni ochyapgansiz (unpacking)**:
 * **Eski usul (Destructuring-siz):** Siz chamodonni ochib, kiyimlarni bittalab qidirasiz: *"Mana bu shim, uni shkafga ilaman. Mana bu ko'ylak, uni ham ilaman..."* Har bir kiyimni alohida qo'lga olib, alohida joylashtirasiz.
 * **Yangi usul (Destructuring orqali):** Chamadon maxsus bo'limlarga ega. Siz chamodonni ochishingiz bilan, bitta harakatda o'ng bo'limdagi shimni va chap bo'limdagi ko'ylakni birdaniga kerakli o'zgaruvchilarga (shkaflarga) joylab qo'yasiz.

@@ -2,12 +2,12 @@ export const dockerComposeDb = {
   id: "dockerComposeDb",
   title: "Docker Compose va Ma'lumotlar Bazasi Integratsiyasi",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Docker Compose nima?
 **Docker Compose** — bu ko'p konteynerli Docker ilovalarini ta'riflash va ishga tushirish uchun mo'ljallangan vositadir. Oddiy qilib aytganda, agar bitta konteyner (masalan, Node.js ilovasi) uchun \`Dockerfile\` retsept bo'lsa, butun boshli loyiha (backend, ma'lumotlar bazasi, Redis kesh tizimi) uchun \`docker-compose.yml\` loyihaning to'liq menyusi va uni stolga tortish yo'riqnomasidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **orkestr boshqaruvchisiz (conductor)**:
 * **Docker yordamida ishlash:** Har bir musiqachining (konteynerning) oldiga alohida borib, qachon chalishni boshlashni, qanday tovush chiqarishni qo'lda tushuntirasiz. Agar musiqachilar soni 10 ta bo'lsa, bu juda chigal va charchatadigan ish bo'ladi.
 * **Docker Compose yordamida ishlash:** Siz bitta umumiy nota varag'ini yozasiz (\`docker-compose.yml\`). Unda kim qachon boshlashi (\`depends_on\`), qay darajada baland chalishi (\`ports\`) va bir-biri bilan qanday bog'lanishi yozilgan bo'ladi. Nota varag'ini ko'tarib, qo'lingizni bir marta ko'tarsangiz (\`docker compose up\`), butun orkestr bir vaqtda mukammal uyg'unlikda chalishni boshlaydi.

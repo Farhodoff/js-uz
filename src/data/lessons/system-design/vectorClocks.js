@@ -2,7 +2,7 @@ export const vectorClocks = {
   id: "vectorClocks",
   title: "Vector Clocks va Taqsimlangan Tizimlarda Logical Clocks",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Jismoniy Soatlar Muammosi (Physical Clock Drift)
 Kundalik hayotimizda soat necha bo'lganini bilish uchun telefonga yoki devordagi soatga qaraymiz. Lekin taqsimlangan kompyuter tizimlarida (Distributed Systems) serverlarning ichki jismoniy soatlariga ishonib bo'lmaydi. Har bir serverdagi soat o'zining kvars rezonatori (quartz crystal) chastotasidagi mikroskopik farqlar tufayli bir-biridan orqada qoladi yoki oldinga o'tib ketadi. Bu holat **Clock Drift (Soat og'ishi)** deb ataladi. 
@@ -17,7 +17,7 @@ NTP (Network Time Protocol) soatlarni sinxronlashtirishga harakat qilsa ham, u t
 Lamport soatlari bitta jiddiy kamchilikka ega: agar $A$ voqeaning Lamport vaqti $3$ bo'lsa va $B$ voqeaning Lamport vaqti $4$ bo'lsa, bu $A$ albatta $B$ dan oldin sodir bo'lganini **bildirmaydi** (ular parallel va mustaqil bo'lishi ham mumkin). Sabab-oqibat zanjirini mukammal aniqlash uchun **Vector Clocks (Vektor Soatlari)** kashf qilindi.
 
 * **Tuzilishi:** Vector clock — bu tizimdagi barcha tugunlarning mantiqiy soatlari ro'yxatidir (odatda Map/Obyekt ko'rinishida: \`{ NodeA: 3, NodeB: 1 }\`).
-* **Real hayotiy analogiya (Google Docs / Figma):**
+* **Real hayotiy o'xshatish (Google Docs / Figma):**
   Tasavvur qiling, siz va do'stingiz bitta hujjat ustida ishlayapsiz.
   - Siz 3-versiyadasiz (\`{ Siz: 3, Do'st: 0 }\`).
   - Do'stingiz esa parallel ravishda o'z kompyuterida 2 ta o'zgarish qildi (\`{ Siz: 0, Do'st: 2 }\`).

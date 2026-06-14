@@ -2,13 +2,13 @@ export const switchLesson = {
   id: "switchLesson",
   title: "Switch-Case Operatorlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Switch-Case nima?
 * **\`switch-case\` operatori** — bu dasturdagi ma'lum bir o'zgaruvchi yoki ifodaning qiymatiga qarab, kodning turli tarmoqlarini (bloklarini) ishga tushirish imkonini beruvchi boshqaruv operatoridir. 
 * Agar sizda bitta o'zgaruvchini ko'plab aniq qiymatlar bilan solishtirish kerak bo'lsa, ketma-ket yozilgan \`if-else if-else\` zanjiri o'rniga \`switch-case\` operatoridan foydalanish kodni ancha sodda va o'qilishi oson holga keltiradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **vending avtomatidan (ichimlik sotadigan apparat)** foydalanyapsiz:
 * **\`if-else\` usuli:** Siz apparatdan ichimlik tanlash uchun har bir tugmani birma-bir tekshirib chiqasiz: "Bu tugma kofemi? Yo'q. Bu tugma sharbatmi? Yo'q. Bu tugma suvmi? Ha!" (Bu juda ko'p vaqt va energiya oladi).
 * **\`switch-case\` usuli:** Siz apparat panelidagi kerakli kodni kiritasiz (masalan, \`B4\`). Apparat kiritilgan kodni qabul qiladi va to'g'ridan-to'g'ri \`B4\` kamerasidagi ichimlikni chiqarib beradi (hech qanday ketma-ket savollarsiz, aniq va tez).

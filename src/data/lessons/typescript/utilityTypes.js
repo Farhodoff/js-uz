@@ -2,7 +2,7 @@ export const utilityTypes = {
   id: "utilityTypes",
   title: "TypeScript Utility Types (Yordamchi Tiplar)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Utility Types nima?
 TypeScript-da mavjud bo'lgan tiplarni qayta yozmasdan, ularni dynamic tarzda o'zgartirish va any-ga tushmasdan yangi tiplar yaratish uchun **Utility Types (Yordamchi tiplar)** ishlatiladi.

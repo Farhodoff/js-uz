@@ -2,14 +2,14 @@ export const typescriptGenerics = {
   id: "typescriptGenerics",
   title: "Generics (Umumiylashtirish)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Generics (Umumiylashtirish) nima?
 Dasturlashda ko'pincha har xil turdagi ma'lumotlar bilan ishlaydigan qayta ishlatiladigan komponentlar yoki funksiyalar yozish talab qilinadi. Masalan, massivlar bilan ishlaydigan yordamchi funksiya sonlar massivini ham, satrlar massivini ham qayta ishlay olishi kerak.
 Agar biz har bir tip uchun alohida funksiya yozsak, kod hajmi ko'payadi. Agar \`any\` tipini ishlatsak, tiplar xavfsizligidan (type safety) butunlay voz kechgan bo'lamiz.
 **Generics** esa bu muammoni hal qiladi: ular funksiya, klass yoki interfeys chaqirilayotgan vaqtda qaysi tip bilan ishlashini parametr sifatida qabul qilish imkonini beradi. Bu kodning qayta ishlatilishini oshiradi va tiplar xavfsizligini 100% saqlaydi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Generics-ni **bo'sh yuk konteynerlariga (shipping containers)** o'xshatish mumkin:
 * **Oddiy tipli klass/funksiya** — bu faqat **olma** uchun maxsus qurilgan qutidir (unga nok solib bo'lmaydi).
 * **\`any\` tipli klass/funksiya** — bu **aralash qutidir**. Unga hamma narsani tartibsiz solaverasiz, lekin ichidan olma olayotganda, u nok bo'lib chiqishi yoki buzilib ketgan bo'lishi mumkin (runtime error).

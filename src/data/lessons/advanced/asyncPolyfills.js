@@ -2,11 +2,11 @@ export const asyncPolyfills = {
   id: "asyncPolyfills",
   title: "Asinxron Dasturlash va Promise Polyfill-lar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 JavaScript tili bir vaqtning o'zida faqat bitta vazifani bajara oladi (Single-threaded). Ammo asinxron operatsiyalar (tarmoq so'rovlari, taymerlar) tufayli u bir vaqtda ko'plab ishlarni parallel bajarayotgandek tuyuladi. Buning ortida **Event Loop (Sikl hodisasi)** va **Promise (Vada)** yotadi.
 
-### Avtovokzal analogiyasi:
+### Avtovokzal o'xshatishi:
 Siz vokzaldan chipta sotib olyapsiz.
 - **Sinxron operatsiya (Call Stack):** Chiptani to'g'ridan-to'g'ri kassadan naqd pulga sotib olish. Kassa faqat siz bilan band.
 - **Asinxron operatsiya (Promise & Polyfill):** Chiptani buyurtma berib qo'ydingiz. Vokzal xodimi sizga **Vada (Promise)** berdi: "Chiptangiz tayyor bo'lishi bilan SMS yuboramiz". Siz chetda kutib turasiz, kassa esa boshqa mijozlarga xizmat ko'rsatishda davom etadi. Natija kelishi bilan siz SMS (Callback) orqali chiptani olasiz.

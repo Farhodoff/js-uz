@@ -2,7 +2,7 @@ export const moreDataTypesLesson = {
   id: "moreDataTypesLesson",
   title: "Ma'lumotlar Turlari: Null, Symbol, BigInt",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 JavaScript tilida ma'lumotlar turlari (Data Types) asosan ikki guruhga bo'linadi: **ibtidoiy (primitive)** va **murakkab (reference/object)** turlari. Keling, eng maxsus va ilg'or primitive turlar bo'lgan **Null**, **Symbol** va **BigInt** haqida batafsil gaplashamiz.
 
@@ -10,7 +10,7 @@ JavaScript tilida ma'lumotlar turlari (Data Types) asosan ikki guruhga bo'linadi
 *   **Symbol:** Obyektlar uchun mutlaqo noyob va takrorlanmas kalitlar (identifikatorlar) yaratish uchun xizmat qiladi.
 *   **BigInt:** JavaScript-dagi standart \`Number\` turi sig'dira olmaydigan juda katta butun sonlar (safe butun sonlar limitidan katta) bilan ishlash uchun ishlatiladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 
 1.  **Null (Bo'sh quti):** Tasavvur qiling, uyingizda bitta **quti** bor. Quti ichida hech narsa yo'q va siz buni yaxshi bilasiz, chunki o'zingiz uni bo'shatib qo'ygansiz. Bu \`null\`. Agar sizda umuman quti bo'lmaganida va u haqida bilmaganingizda, bu \`undefined\` bo'lar edi.
 2.  **Symbol (Barmoq izi):** Har bir insonning o'ziga xos **barmoq izi** bor. Dunyoda ikki insonning ismi bir xil bo'lishi mumkin (masalan, ikkita "Jasur"), lekin ularning barmoq izi hech qachon bir xil bo'lmaydi. \`Symbol\` — bu obyekt xossalari uchun yaratilgan o'sha takrorlanmas barmoq izidir.

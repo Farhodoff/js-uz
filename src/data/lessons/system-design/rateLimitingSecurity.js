@@ -2,12 +2,12 @@ export const rateLimitingSecurity = {
   id: "rateLimitingSecurity",
   title: "Rate Limiting va API Xavfsizligi (Rate Limiting & API Security)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Rate Limiting nima?
 **Rate Limiting (So'rovlar sonini cheklash)** — bu tizimga (API, veb-server) ma'lum vaqt oralig'ida bitta foydalanuvchi yoki IP manzilidan keladigan so'rovlar miqdorini cheklash mexanizmidir. Bu tizimni yuklamadan (DDoS hujumlaridan), spam va botlardan himoya qilish hamda resurslarni adolatli taqsimlash uchun zarur.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **tungi klub eshigidagi qo'riqchisiz (Bouncer)**:
 * Klub ichiga har daqiqada faqat 10 ta odam kirishi mumkin. Eshik tagida esa 100 kishilik navbat bor.
 * Agar 11-odam kirmoqchi bo'lsa, siz unga: "Iltimos, kutib turing, keyingi daqiqada kirasiz" deysiz (bu HTTP 429 Too Many Requests status kodiga teng).

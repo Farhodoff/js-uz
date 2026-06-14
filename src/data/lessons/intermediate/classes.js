@@ -2,12 +2,12 @@ export const classes = {
   id: "classes",
   title: "Classes (Klasslar) - OOP",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Classes (Klasslar) nima?
 **Klass (Class)** — bu obyektlar yaratish uchun ishlatiladigan maxsus shablon (qolip) hisoblanadi. JavaScript aslida prototiplarga asoslangan til bo'lsa ham, ES6 (2015) versiyasida klasslar sintaksisi kiritildi. Bu kodni o'qishni osonlashtiradi va boshqa dasturlash tillaridagi (Java, C++, C#) OOP (Obyektga yo'naltirilgan dasturlash) qoidalariga yaqinlashtiradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **pechenye pishiryapsiz**:
 * **Qolip (Klass):** Bu pechenye kesadigan metall shakl. Uning o'zi yeyiladigan oziq-ovqat emas, balki pechenye qanday shaklda bo'lishini belgilaydi.
 * **Pechenye (Obyekt/Instance):** Shu metall shakl yordamida xamirdan kesib olingan har bir alohida pechenye. Siz ularning ustiga har xil bezak yoki shokolad qo'shishingiz mumkin (\`properties\`), lekin ularning barchasi bir xil qolipdan chiqqan.

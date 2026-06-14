@@ -2,11 +2,11 @@ export const writeReadPath = {
   id: "writeReadPath",
   title: "Yozish va O'qish Yo'llarini Optimallashtirish (Write Path vs Read Path)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Har qanday ma'lumotlar bazasi yoki saqlash tizimining arxitekturasini loyihalashda eng asosiy savol ko'ndalang bo'ladi: **Biz ko'proq ma'lumot yozamizmi yoki o'qiymizmi?** Shu sababli yozish yo'li (**Write Path**) va o'qish yo'li (**Read Path**) alohida optimallashtiriladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 
 Tasavvur qiling, siz **kutubxonachisiz**:
 * **B-Tree (In-place update) yondashuvi:** Har safar yangi kitob kelganda, siz uni kutubxonaning o'z javoniga, alifbo tartibiga ko'ra kerakli joyga borib joylashtirasiz. 

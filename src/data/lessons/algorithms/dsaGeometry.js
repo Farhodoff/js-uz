@@ -2,11 +2,11 @@ export const dsaGeometry = {
   id: "dsaGeometry",
   title: "Geometrik Algoritmlar (Convex Hull, Line Intersection, Sweep Line)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Geometrik Algoritmlar (Computational Geometry) - 2D yoki 3D fazodagi nuqtalar, chiziqlar, ko'pburchaklar va boshqa geometrik obyektlar bilan bog'liq masalalarni yechish uchun ishlatiladi.
 
-### Tushunarli analogiyalar:
+### Tushunarli o'xshatishlar:
 - **Convex Hull (Qavariq Qobiq - Graham Scan / Jarvis March):** Tasavvur qiling, doskaga juda ko'p mixlar qoqilgan. Siz bitta katta elastik rezina tasmani (rubber band) olib, barcha mixlarni o'rab qo'yib yubordingiz. Rezina eng chetdagi mixlarga ilinib, barcha nuqtalarni o'rab oladi. Mana shu hosil bo'lgan eng chekka qavariq shakl Convex Hull (Qavariq qobiq) deb ataladi.
 - **Line Intersection (Chiziqlar kesishishi):** Ikki to'g'ri chiziq kesishadimi yoki yo'qmi, buni aniqlash. Bu o'yinlar fizikasi (kolliziyalarni aniqlash) va xaritalarda juda muhim.
 - **Sweep Line (Siquvchi Chiziq):** Doskada juda ko'p vertikal va gorizontal chiziqlar bor. Ularning o'zaro kesishish nuqtalarini topmoqchisiz. Barcha juftliklarni tekshirish $O(N^2)$ vaqt oladi. Sweep Line yondashuvida chapdan o'ngga qarab virtual vertikal chiziq suriladi (sweeping), u faqat o'zi kesib o'tayotgan va bir-biriga yaqin chiziqlarnigina tekshirib $O(N \\log N)$ da kesishishlarni topadi.

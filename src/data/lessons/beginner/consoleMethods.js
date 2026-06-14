@@ -2,13 +2,13 @@ export const consoleMethods = {
   id: "consoleMethods",
   title: "Console Metodlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Console nima?
 * **Console (Konsol):** Bu kodimizning ishlash jarayonini kuzatish, xatolarni aniqlash va qidirish (debugging) hamda ma'lumotlarni tahlil qilish uchun mo'ljallangan maxsus brauzer (yoki Node.js terminal) panelidir.
 * **Console metodlari:** JavaScript-da konsol bilan ishlash uchun faqatgina \`console.log()\` emas, balki turli vazifalarga ixtisoslashgan o'nlab boshqa metodlar (masalan: ogohlantirishlar, jadvallar, guruhlashlar) mavjud.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **avtomobil boshqarib bormoqdasiz**:
 * **console.log():** Avtomobilning old oynasi. Siz u orqali faqat yo'lni ko'rasiz (oddiy umumiy ma'lumot).
 * **console.warn():** Dashboard-da (asboblar panelida) **yoqilg'i tugayotgani haqidagi sariq ogohlantirish chirog'i** yonishi (ogohlantirish, lekin mashina hali harakatda).

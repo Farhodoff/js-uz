@@ -2,12 +2,12 @@ export const sqlFunctions = {
   id: "sqlFunctions",
   title: "SQL Agregat Funksiyalari va Grouping",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Agregat Funksiyalar va Guruhlash nima?
 Hisobotlar yaratish yoki ma'lumotlarni umumlashtirish uchun biz alohida qatorlarni emas, balki guruhlar bo'yicha yig'ilgan ma'lumotlarni hisoblashimiz kerak. Masalan, umumiy sotuvlar hajmini bilish, eng qimmat mahsulotni aniqlash, har bir shaharda nechtadan foydalanuvchi borligini sanash yoki har bir mijozning o'rtacha xarajatini topish. SQL-da bu vazifalar **Agregat funksiyalar** (\`COUNT\`, \`SUM\`, \`AVG\`, \`MIN\`, \`MAX\`) va **GROUP BY** operatori yordamida juda tez bajariladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz maktab direktorisiz va har bir sinfdagi o'quvchilarning **o'rtacha bahosini** bilmoqchisiz:
 1. Avval barcha o'quvchilarni sinflari bo'yicha alohida guruhlarga ajratasiz (**GROUP BY**).
 2. So'ngra har bir guruhdagi o'quvchilar bahosining o'rtacha qiymatini hisoblaysiz (**AVG**).

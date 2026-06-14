@@ -2,7 +2,7 @@ export const k8sBasics = {
   id: "k8sBasics",
   title: "Kubernetes (K8s) Asoslari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Kubernetes (K8s) nima?
 Docker yordamida ilovamizni konteynerga joyladik. Lekin real loyihalarda bizda bitta emas, balki yuzlab konteynerlar bo'lishi mumkin. Agar konteynerlardan biri to'satdan o'chib qolsa, yuklama haddan tashqari oshib ketganda uni qanday ko'paytiramiz (scale)? Ularni bir-biri bilan qanday bog'laymiz?
@@ -10,7 +10,7 @@ Docker yordamida ilovamizni konteynerga joyladik. Lekin real loyihalarda bizda b
 Mana shu muammolarni hal qilish uchun bizga **Kubernetes (K8s)** yordam beradi.
 **Kubernetes** — bu konteynerlarni avtomatlashtirilgan tarzda joylashtirish (deployment), ularni masshtablash (scaling) va boshqarish (orchestration) uchun mo'ljallangan platformadir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, sizda **katta simfonik orkestr** bor:
 * Har bir **musiqachi** — bu bitta **Konteyner** (masalan, Docker konteyneri). U faqat o'z asbobini chalishni biladi.
 * **Kubernetes** — bu **Orkestr Diriqyori**. Diriqyor musiqachilarga qachon boshlashni, qachon to'xtashni, qaysi ohangda chalishni va kim balandroq chalishi kerakligini aytadi. Agar biror cholg'uchi charchab chala olmay qolsa (konteyner o'chib qolsa), diriqyor darhol uning o'rniga zaxiradagi musiqachini chiqaradi.

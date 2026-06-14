@@ -2,11 +2,11 @@ export const dsaStringAlgos = {
   id: "dsaStringAlgos",
   title: "Satrlar bilan Ishlash Algoritmlari (KMP, Rabin-Karp, Z-Algorithm)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Satr (String) algoritmlari matnlar ichidan andozalarni (pattern) qidirish, matnlar o'xshashligini tekshirish va matnli ma'lumotlarni tahlil qilish uchun ishlatiladi.
 
-### Qidiruv tizimi analogiyasi:
+### Qidiruv tizimi o'xshatishi:
 - **KMP (Knuth-Morris-Pratt):** Tasavvur qiling, siz kitobdan "ABABAC" so'zini qidiryapsiz. Agar siz "ABABA" ni o'qib, 6-harfda adashib ketsangiz, boshidan boshlamaysiz. "ABA" allaqachon to'g'ri o'qilganini bilib, KMP andozadagi takrorlanuvchi qismlarga tayanib, chap tomonga siljimay oldinga qidirishni davom ettiradi.
 - **Rabin-Karp (Xeshli Qidiruv):** Bu xuddi andozaning "raqamli imzosi" (xesh) bilan matndagi har bir bo'lakning xeshini solishtirishga o'xshaydi. Faqat xeshlar mos kelgandagina so'zni harfma-harf solishtirib ko'radi, bu esa qidiruvni tezlashtiradi.
 - **Z-Algorithm:** Matnning har bir indeksidan boshlanadigan qism-matnning umumiy prefiksi (boshlanishi) uzunligini saqlab boruvchi "Z-massiv" yordamida andozalarni tezkor topish usuli.

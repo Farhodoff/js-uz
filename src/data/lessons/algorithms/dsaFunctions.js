@@ -2,11 +2,11 @@ export const dsaFunctions = {
   id: "dsaFunctions",
   title: "Funksiyalar va Rekursiya (Functions & Recursion Basics)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Dasturlashda funksiyalar kodning ma'lum bir bo'lagini alohida ajratib, istalgancha qayta ishlatish imkonini beradi. Rekursiya esa funksiyaning o'z-o'zini chaqirishi bo'lib, murakkab muammolarni kichikroq o'xshash muammolarga bo'lib yechishda qo'llaniladi.
 
-### Matryoshka qo'g'irchog'i analogiyasi:
+### Matryoshka qo'g'irchog'i o'xshatishi:
 - **Oddiy funksiya:** Bu xuddi zavodda bir marta loyihalashtirilgan va har safar chaqirilganda bir xil ishni bajaradigan dastgohga o'xshaydi.
 - **Rekursiya (Matryoshka):** Tasavvur qiling, siz eng katta matryoshka qo'g'irchog'ini ochasiz (tashqi chaqiriq), uning ichidan kichikrog'i chiqadi. Siz uni ham ochasiz va bu jarayon eng oxirgi, ichida boshqa qo'g'irchoq bo'lmagan eng kichik matryoshkaga yetguncha davom etadi. Shu eng kichigi - **Base Case (Tugash sharti)**. Agar siz u yerda to'xtashni bilmasangiz, cheksiz davom etib xonangiz to'lib ketadi (**Stack Overflow**). Eng kichigidan boshlab qaytadan qo'g'irchoqlarni yig'ib chiqasiz (Natijalarni qaytarish).
 

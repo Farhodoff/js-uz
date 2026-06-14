@@ -93,6 +93,10 @@ import { asyncPolyfills } from "./lessons/advanced/asyncPolyfills";
 import { reactivePatterns } from "./lessons/advanced/reactivePatterns";
 import { performanceAlgos } from "./lessons/advanced/performanceAlgos";
 import { integrationE2eTesting } from "./lessons/advanced/integrationE2eTesting";
+import { v8CompilerOptimization } from "./lessons/advanced/v8CompilerOptimization";
+import { v8GarbageCollection } from "./lessons/advanced/v8GarbageCollection";
+import { advancedTaskScheduling } from "./lessons/advanced/advancedTaskScheduling";
+import { webAssemblyIntegration } from "./lessons/advanced/webAssemblyIntegration";
 
 import { dsaBasics } from "./lessons/algorithms/dsaBasics";
 import { dsaControlFlow } from "./lessons/algorithms/dsaControlFlow";
@@ -232,7 +236,7 @@ export const curriculum = {
     label: "Murakkab",
     color: "#e07b5a",
     icon: "🔴",
-    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, iteratorsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced, webComponents, advancedWebStorage, advancedWebApis, binaryData, webAnimations, historyRouting, asyncPolyfills, reactivePatterns, performanceAlgos, integrationE2eTesting]
+    lessons: [closuresLesson, closuresDeepDive, prototypesLesson, callbacksLesson, promises, asyncAwait, eventLoopLesson, eventLoopDeep, fetchApi, advancedFetch, errorHandling, modulesLesson, localStorageLesson, debugging, webSockets, serverSentEvents, webWorkers, serviceWorkersPwa, regexLesson, iteratorsGenerators, metaprogramming, debounceThrottle, jsPitfalls, problemSolving, designPatterns, functionalProgramming, memoryManagement, performanceOptimization, securityLesson, unitTesting, higherOrderFunctions, interviewQuestionsAdvanced, webComponents, advancedWebStorage, advancedWebApis, binaryData, webAnimations, historyRouting, asyncPolyfills, reactivePatterns, performanceAlgos, integrationE2eTesting, v8CompilerOptimization, v8GarbageCollection, advancedTaskScheduling, webAssemblyIntegration]
   },
   algorithms: {
     label: "Algoritmlar",

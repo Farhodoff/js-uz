@@ -1,12 +1,12 @@
 export const reactStateManagement = {
   id: "reactStateManagement",
   title: "State Management Arxitekturasi",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Global State Management nima?
 React ilovalarida ma'lumotlar oqimi (data flow) har doim tepadan pastga (unidirectional/yagona yo'nalishli) qarab oqadi. Ya'ni ota komponentdan bola komponentga props orqali uzatiladi. Katta loyihalarda komponentlar daraxti juda chuqurlashib ketadi va ma'lumotni eng quyi komponentga yetkazish qiyinlashadi. Mana shu muammoni hal qilish va ilova holatini markazlashgan holda boshqarish **State Management** deb ataladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 * **Local State (useState):** Sizning **shaxsiy hamyoningiz**. Undagi pulni faqat o'zingiz boshqarasiz va u siz bilan birga yuragi. Boshqa odamlar hamyoningizga to'g'ridan-to'g'ri aralasha olmaydi.
 * **Props Drilling (Qo'lma-qo'l uzatish):** Ko'p qavatli binoning 5-qavatidagi do'stingizga pul bermoqchisiz. Buning uchun pulni 1-qavatdagi, keyin 2-qavatdagi va hokazo har bir qavatdagi odamlarga berib, navbatma-navbat 5-qavatga yetkazish. O'rtadagi odamlarga bu pul mutlaqo kerak bo'lmasa-da, ular baribir vositachi bo'lishga majbur.
 * **Context API (E'lonlar taxtasi):** Xonadondagi **umumiy e'lonlar taxtasi**. Unga osilgan xabarni hamma ko'ra oladi. Ammo kimdir taxtadagi xabarni o'zgartirsa, barcha oila a'zolari u bilan tanishish uchun o'z ishini to'xtatishi (re-render) kerak bo'ladi.

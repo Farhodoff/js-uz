@@ -2,12 +2,12 @@ export const modules = {
   id: "modules",
   title: "JavaScript Modullari (ES Modules va CommonJS)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### JavaScript Modullari nima?
 **JavaScript Modullari** — bu kodlarimizni alohida mustaqil fayllarga (bloklarga) bo'lish va ularni bir-biri bilan bog'lash tizimidir. Modul ichidagi barcha o'zgaruvchilar va funksiyalar faqat o'sha modul ichida yopiq bo'ladi va faqat \`export\` kalit so'zi orqali tashqariga ruxsat berilgan narsalargina boshqa fayllarga \`import\` qilinishi mumkin.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **Lego konstruktori** yordamida katta shahar quryapsiz:
 * **Modulsiz (Eski yomon usul):** Siz shahar binosini bitta yaxlit ulkan plastik bo'lakdan quyib yasadingiz. Agar biror chiroq yoki deraza buzilsa, butun binoni eritib, qaytadan yasashingiz kerak.
 * **Modulli (Yangi optimal usul):** Shahardagi har bir uy, daraxt, mashina — alohida Lego g'ishtlaridir (modullar). Siz ularni alohida qutilardan olasiz (\`import\`), birlashtirasiz va shahar qurasiz. Agar biror daraxt buzilsa, butun shaharni buzmasdan, faqat o'sha daraxt modulini almashtirasiz.

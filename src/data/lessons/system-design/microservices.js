@@ -2,7 +2,7 @@ export const microservices = {
   id: "microservices",
   title: "Mikroservislar Arxitekturasi (Microservices)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, sizda katta restoran bor.
 - **Monolit arxitektura:** Bitta universal xodim ham mijozlarni kutib oladi, ham buyurtma oladi, ham ovqat pishiradi, ham idishlarni yuvadi va hisob-kitob qiladi. Agar bu xodim kasal bo'lib qolsa yoki charchasa, butun restoran ishi to'xtaydi. Shuningdek, bu universal xodimni o'qitish va kengaytirish juda qiyin.

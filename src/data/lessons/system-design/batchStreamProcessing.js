@@ -2,11 +2,11 @@ export const batchStreamProcessing = {
   id: "batchStreamProcessing",
   title: "Batch va Stream Processing (Katta ma'lumotlarni qayta ishlash)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizimlar juda katta hajmdagi ma'lumotlar bilan ishlaganda (Big Data), ularni qayta ishlashning ikki xil asosiy falsafasi yuzaga keladi: **Batch (Guruhli) Processing** va **Stream (Oqimli) Processing**.
 
-### Real hayotiy analogiya:
+### Real hayotiy o'xshatish:
 *   **Batch Processing (Paqirda suv tashish):** Tasavvur qiling, sizda katta hovuz bor. Uni to'ldirish uchun siz chelakni (paqirni) quduqqa olib borib, suv to'ldirib, hovuzga quyasiz. Suv faqat paqir to'lgandan keyingina yetib keladi. Bu xuddi kunlik tranzaksiyalarni tun yarmida yig'ib hisoblashga o'xshaydi.
 *   **Stream Processing (Vodoprovod quvuri):** Bu safar siz quduqdan hovuzgacha to'g'ridan-to'g'ri quvur tortib qo'yasiz. Suv doimiy ravishda oqib turadi. Har bir tomchi suv real vaqtda hovuzga yetib keladi. Bu real vaqtdagi foydalanuvchilar oqimini har soniyada tahlil qilishdir.
 

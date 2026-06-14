@@ -2,12 +2,12 @@ export const operators = {
   id: "operators",
   title: "Operatorlar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Operatorlar nima?
 JavaScript-da **operatorlar** — bu qiymatlar (operandlar) ustida matematik, solishtirish yoki mantiqiy amallarni bajarishga ko'rsatma beruvchi maxsus belgilar. Masalan, \`+\` operatori ikkita sonni qo'shadi, \`===\` esa ularning tengligini tekshiradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **oshxonada taom tayyorlamoqchisiz**:
 * **O'zgaruvchilar (Variables):** Idishlar va ularning ichidagi mahsulotlar (masalan, go'sht, piyoz).
 * **Qiymatlar (Values):** Mahsulotlarning o'zi.

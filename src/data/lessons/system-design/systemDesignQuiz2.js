@@ -2,11 +2,11 @@ export const systemDesignQuiz2 = {
   id: "systemDesignQuiz2",
   title: "Tizimli Dizayn Phase 2: Yakuniy Test (Quiz & JS Challenges)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizimli dizaynning 2-bosqichida biz tarmoq asoslari, DNS, API Gateway va taqsimlangan tizimlar xususiyatlarini o'rgandik. Ushbu dars — o'rganilgan mavzularni amaliy JavaScript algoritmlari yordamida mustahkamlash va yakuniy bilimingizni sinab ko'rish uchun mo'ljallangan.
 
-### Imtihon analogiyasi:
+### Imtihon o'xshatishi:
 Siz haydovchilik guvohnomasini olish uchun test topshiryapsiz.
 - Nazariy savollar sizning yo'l qoidalarini (DNS, HTTP/3, CDN, API Gateway) qanchalik bilishingizni aniqlaydi.
 - Amaliy mashqlar esa sizning mashinani real boshqara olishingizni (JS yordamida request router, cache va latency helper yozish) sinovdan o'tkazadi.

@@ -2,7 +2,7 @@ export const webAnimations = {
   id: "webAnimations",
   title: "Web Animations API va requestAnimationFrame",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Web Animations API (WAAPI) nima?
 **Web Animations API (WAAPI)** — bu brauzer ichida CSS animatsiyalarni (Keyframes, transitions) to'g'ridan-to'g'ri JavaScript yordamida dinamik boshqarish (play, pause, reverse, speed) imkonini beruvchi kuchli brauzer vositasidir.
@@ -12,7 +12,7 @@ U CSS kuchi va JS moslashuvchanligini birlashtiradi. Animatsiyalar GPU (protsess
 **\`requestAnimationFrame\`** — bu brauzerga keyingi kadr chizilmasidan oldin (odatda soniyada 60 yoki 120 marta - FPS) ma'lum bir JS funksiyasini chaqirish haqidagi buyruqdir.
 Agar siz JS-da o'yinlar yoki murakkab animatsiyalar yaratayotgan bo'lsangiz, vaqtni o'lchashda \`setTimeout\` yoki \`setInterval\` ishlatish xato. Chunki ular brauzer kadr chizish sikli (Refreshrate) bilan sinxron emas. \`requestAnimationFrame\` esa aynan kadr chizish bilan mukammal darajada sinxron ishlaydi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **multfilm chizuvchi rassomsiz**:
 * **\`setInterval\` (Eski yomon usul):** Siz har 16 millisekundda budilnik chalishini o'rnatasiz. Budilnik chalinganda keyingi kadrni chizasiz. Agar budilnik brauzer kadrini chizayotgan millisekundga to'g'ri kelmay qolsa, multfilmingizda sakrashlar (kadr o'tishi kechikishi) yuz beradi (bu **Frame Drop** deyiladi).
 * **\`requestAnimationFrame\` (Yangi optimal usul):** Siz budilnik ishlatmaysiz. Buning o'rniga, kadrni tayyorlab, operatorga *"Kamerani yoqishingiz bilan menga signal bering, keyingi rasmni qo'yaman"* deysiz. Operator kamerani yoqqanda (brauzer kadr chizishga tayyor bo'lganda) signal beradi va siz yangi kadrni silliq joylashtirasiz.

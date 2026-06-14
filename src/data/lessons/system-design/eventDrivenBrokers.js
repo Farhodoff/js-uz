@@ -2,13 +2,13 @@ export const eventDrivenBrokers = {
   id: "eventDrivenBrokers",
   title: "Event-Driven Architecture va Xabarlar Brokerlari (RabbitMQ & Kafka)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizimlar kattalashgani sari, xizmatlarning o'zaro to'g'ridan-to'g'ri bog'lanishi (HTTP orqali) ko'plab muammolarni keltirib chiqaradi. Masalan, foydalanuvchi buyurtma berganda, to'lov xizmati, omborxona xizmati va SMS yuborish xizmatlari HTTP orqali bir-birini zanjirsimon kutib tursa, bitta xizmatdagi nosozlik butun tizimni to'xtatib qo'yishi mumkin.
 
 **Event-Driven Architecture (Hodisalarga asoslangan arxitektura - EDA)** — bu tizimlar o'rtasida to'g'ridan-to'g'ri so'rov yuborish o'rniga, tizimda sodir bo'lgan voqealar (hodisalar - events) haqida xabar tarqatish orqali aloqa o'rnatish usuli.
 
-### Analogiya: 
+### O'xshatish: 
 Tasavvur qiling, siz yangi uy sotib olmoqchisiz va hujjatlarni rasmiylashtirishingiz kerak.
 - **Sinxron (HTTP):** Siz barcha davlat idoralarini birma-bir aylanib, navbatda turib, har bir xodimning imzosini to'g'ridan-to'g'ri kutasiz. Agar bitta idora yopiq bo'lsa, butun ish to'xtaydi.
 - **Message Broker (RabbitMQ):** Siz arizani topshirib ketasiz. Ariza "navbatga" tushadi va har bir idora xodimi o'z vaqtida arizani olib ishlaydi. Ish tugagach, ariza navbatdan o'chadi.

@@ -2,12 +2,12 @@ export const distributedLocking = {
   id: "distributedLocking",
   title: "Taqsimlangan Bloklash (Distributed Locking)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Taqsimlangan Bloklash (Distributed Locking) nima?
 **Taqsimlangan bloklash (Distributed Locking)** — bu bir nechta alohida serverlar, konteynerlar yoki mikroservislar ishlayotgan muhitda bitta umumiy va bo'linmas resursga (masalan, fayl, ma'lumotlar bazasi satri yoki tashqi to'lov API-si) bir vaqtda faqat bitta jarayon murojaat qilayotganini kafolatlash mexanizmidir. Bu sinxronizatsiya tushunchasining tarmoq/tizim darajasidagi variantidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **ofisdagi umumiy yig'ilishlar xonasidan (meeting room)** foydalanmoqchisiz:
 * **Bloklamasdan ishlash (Pessimistik ssenariy):** Bir vaqtning o'zida uchta xodim turli eshiklardan xonaga bostirib kiradi. Xonadagi doskaga har kim o'z yozuvini yozib yuboradi. Natijada betartiblik (Race Condition) yuzaga keladi.
 * **Bloklash (Locking) tizimi:** Xona eshigiga **elektron qulf** o'rnatilgan. Xonaga kirmoqchi bo'lgan xodim kalit-kartani (token) bosib eshikni yopib oladi (Lock acquire). U ishini tugatmaguncha boshqalar kira olmaydi. Ishi tugagach, eshikni ochib qo'yadi (Lock release).

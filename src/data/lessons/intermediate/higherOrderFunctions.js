@@ -2,14 +2,14 @@ export const higherOrderFunctions = {
   id: "higherOrderFunctions",
   title: "Higher-Order Functions va Currying",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Higher-Order Functions va Currying nima?
 * **First-Class Functions (Birinchi darajali funksiyalar):** JavaScript-da funksiyalar boshqa har qanday qiymat (son, satr, obyekt) kabi teng huquqlidir. Ularni o'zgaruvchilarga saqlash, boshqa funksiyalarga argument qiblyuborish yoki funksiyadan qaytarish mumkin.
 * **Higher-Order Function (HOF - Oliy tartibli funksiya):** Kamida bitta funksiyani parametr (argument) sifatida qabul qiladigan yoki natija sifatida yangi funksiya qaytaradigan funksiyadir.
 * **Currying (Karring):** Bir nechta argument qabul qiladigan funksiyani bittadan argument oladigan zanjirli funksiyalar ketma-ketligiga aylantirish uslubidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 
 1. **Higher-Order Function (Ish boshqaruvchi):**
    Tasavvur qiling, siz bir **tashkilot direktorisiz (HOF)**. Siz o'zingiz jismoniy ishlar bilan shug'ullanmaysiz. Buning o'rniga, ishchini chaqirib unga topshiriq berasiz (**callback qabul qilasiz**) yoki yangi loyiha uchun alohida boshqaruvchi tayinlab, uni ishga tushirasiz (**funksiya qaytarasiz**).

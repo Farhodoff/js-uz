@@ -2,11 +2,11 @@ export const dsaHeaps = {
   id: "dsaHeaps",
   title: "Uyumlar va Navbatlar Ustuvorligi (Heaps & Priority Queues)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Uyum (Heap) - bu Complete Binary Tree (to'liq ikkilik daraxt) qoidalariga asoslangan, maxsus tartiblangan ma'lumotlar tuzilmasidir. U asosan eng katta yoki eng kichik elementni juda tez topish uchun mo'ljallangan.
 
-### Shifoxona qabulxonasi (Triage) analogiyasi:
+### Shifoxona qabulxonasi (Triage) o'xshatishi:
 - **Oddiy Navbat (FIFO Queue):** Kelgan bemorlar ro'yxatdan o'tish tartibi bo'yicha shifokor qabuliga kirishadi. Kim birinchi kelsa, o'sha kiradi.
 - **Priority Queue (Ustuvorlikka ega navbat):** Bemorlarning ahvoliga (ustuvorligiga/priority) qarab navbat belgilanadi. Tez yordam mashinasida kelgan og'ir bemor (eng yuqori ustuvorlik) navbat oxirida tursa ham, birinchi bo'lib qabul qilinadi.
 - **Heap (Uyum):** Bu ustuvorlik navbatini xotirada o'ta samarali boshqarish tizimidir. Eng muhim bemor doimo daraxtning eng yuqorisida (ildizida) turadi (**Min-Heap** yoki **Max-Heap**). Biron bemor kirib ketganidan so'ng, qolganlar tezda o'rin almashib, yangi eng muhim bemor tepaga chiqadi (**Heapify**).

@@ -2,14 +2,14 @@ export const mathObject = {
   id: "mathObject",
   title: "Math Obyekti va Matematik Metodlar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Math obyekti nima?
 JavaScript-da **\`Math\`** obyekti matematik amallar va konstantalarni (masalan, $\\pi$ soni) bajarish uchun mo'ljallangan maxsus **ichki (built-in)** obyektdir. 
 
 Boshqa ko'plab JavaScript obyektlaridan farqli o'laroq, \`Math\` konstruktor emas. Ya'ni, siz \`new Math()\` deb yozib, undan yangi nusxa ololmaysiz. Uning barcha metod va xususiyatlari **statikdir** — ularni to'g'ridan-to'g'ri \`Math.metodName()\` ko'rinishida chaqirib ishlataverasiz.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz yangi uy qurayapsiz va sizga har xil o'lchov asboblari kerak:
 * **Siz yangi chizg'ich yoki kalkulyator sotib olmaysiz (\`new Math()\` yo'q):** Devor chetida tayyor o'rnatilgan universal va bepul **ilmiy kalkulyator panelini** ko'rasiz.
 * **Math.floor(x):** Doskani kesayotganingizda uzunlikni faqat **kichik butun tomonga qarab** kesib tashlash (masalan, 3.8 metrli taxtadan faqat 3 metrini ishlatish).

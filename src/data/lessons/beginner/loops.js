@@ -2,7 +2,7 @@ export const loops = {
   id: "loops",
   title: "Sikllar: for, while, do-while",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Sikl (Loop) nima?
 Dasturlashda ko'pincha bir xil amalni bir necha marta takrorlashga to'g'ri keladi. Masalan, 1 dan 100 gacha sanash, massivdagi barcha elementlarni ekranga chiqarish yoki foydalanuvchi to'g'ri parol kiritmaguncha so'rov yuborish. Bu takrorlanuvchi jarayonlar **sikllar (loops)** orqali amalga oshiriladi.
@@ -14,7 +14,7 @@ JavaScript-da asosan uchta klassik sikl turi mavjud:
 
 ---
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 
 Tasavvur qiling, siz **sport zalidasiz va murabbiy sizga mashq topshirdi**:
 * **\`for\` sikli (10 marta turnikda tortilish):** Siz 1 dan boshlab sanaysiz, har bir tortilishda sonni 1 taga oshirasiz va 10 ga yetganda to'xtaysiz. Necha marta tortilishingiz boshidanoq aniq belgilangan.

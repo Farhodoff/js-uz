@@ -2,7 +2,7 @@ export const typescriptBasics = {
   id: "typescriptBasics",
   title: "TypeScript Asoslari va Tiplar",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### JavaScript va TypeScript farqi
 * **JavaScript (Dinamik tiplash):** O'zgaruvchining tipi oldindan belgilanmaydi va runtime-da (ishlash jarayonida) o'zgarishi mumkin. Bu xuddi vilkalar va rozetkalarsiz yalang'och simlarga o'xshaydi: istalgan simni istalgan joyga ulashingiz mumkin, lekin noto'g'ri ulasangiz, portlash (runtime error) sodir bo'ladi.

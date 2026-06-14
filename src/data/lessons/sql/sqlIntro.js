@@ -2,7 +2,7 @@ export const sqlIntro = {
   id: "sqlIntro",
   title: "Ma'lumotlar Bazasi va RDBMS Asoslari",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Ma'lumotlar Bazasi (Database) nima?
 **Ma'lumotlar bazasi** — bu har qanday ma'lumotlarni (matn, raqamlar, rasmlar, fayllar) tartibli va tizimli ravishda saqlaydigan hamda ularni tezkor qidirish, qo'shish va o'zgartirish imkonini beradigan dasturiy tizimdir.
@@ -21,7 +21,7 @@ Ma'lumotlar bazalari asosan ikki turga bo'linadi:
 * **SQL:** Qat'iy jadval va sxema (Schema), kuchli tranzaksiyalar (ACID), murakkab JOIN-lar. Eng mos joylar: Bank tizimlari, ERP, CRM, buxgalteriya.
 * **NoSQL:** Sxemasiz (Schema-less), yuqori gorizontal kengayish (Scaling), tezkor yozish. Eng mos joylar: Real-time chatlar, ijtimoiy tarmoq tasmalar, katta hajmdagi log-fayllar.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Ma'lumotlar bazasini **katta kutubxona** yoki **ombordagi javonlar tizimi** deb tasavvur qiling:
 * **Database:** Butun kutubxona binosi.
 * **Tables (Jadvallar):** Kutubxonadagi alohida bo'limlar (masalan, "Kitobxonlar", "Kitoblar").

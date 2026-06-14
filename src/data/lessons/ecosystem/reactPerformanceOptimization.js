@@ -2,12 +2,12 @@ export const reactPerformanceOptimization = {
   id: "reactPerformanceOptimization",
   title: "Performance Optimization Texnikalari",
   language: "react",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### React-da Performance Optimization nima?
 React judayam tez ishlaydigan kutubxona bo'lsa-da, loyiha kattalashib borgan sari interfeys qotib qolishi yoki keraksiz re-renderlar ko'payishi mumkin. **React Performance Optimization (Ishlash samaradorligini optimallashtirish)** — bu keraksiz qayta chizishlarni va og'ir matematik hisob-kitoblarni oldini olish orqali ilova tezligini saqlash usulidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz maktabda matematika darsidasiz:
 * **useMemo yo'q bo'lsa (Keshlanmagan):** O'qituvchi har safar sizdan "135 x 24 necha bo'ladi?" deb so'raganda, siz har safar varoq va qalam olib qaytadan hisoblaysiz. Bu vaqt va kuchingizni ketkazadi.
 * **useMemo bor bo'lsa (Keshga saqlangan):** Siz birinchi marta "135 x 24 = 3240" deb hisoblab, daftaringiz burchagiga yozib qo'yasiz. Keyingi safar so'rashganda, darhol "3240" deb javob berasiz.

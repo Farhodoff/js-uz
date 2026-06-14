@@ -2,7 +2,7 @@ export const mapSetWeak = {
   id: "mapSetWeak",
   title: "Map, Set, WeakMap va WeakSet",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Map, Set, WeakMap va WeakSet nima?
 ES6 versiyasida JavaScriptga ma'lumotlarni yanada samaraliroq saqlash va boshqarish uchun 4 ta yangi ma'lumotlar tuzilmasi qo'shildi:
@@ -11,7 +11,7 @@ ES6 versiyasida JavaScriptga ma'lumotlarni yanada samaraliroq saqlash va boshqar
 * **WeakMap (Kuchsiz lug'at):** Kaliti faqat obyekt bo'lishi mumkin va u xotirada kuchsiz saqlanadi (agar obyektga boshqa ishora qolmasa, u avtomatik xotiradan o'chadi).
 * **WeakSet (Kuchsiz to'plam):** Faqat obyektlarni unikal va kuchsiz tarzda saqlaydi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 * **Map:** Telefon kitobchasi. Odamning ismi (kalit) va uning raqami (qiymat). Obyektdan farqi - odamning rasmini (obyekt) ham kalit qilib yopishtirish mumkin!
 * **Set:** Imtihonga kirgan talabalar ro'yxati. Bir talaba imtihonga 3 marta kelgan bo'lsa ham, ro'yxatda uning ismi faqat 1 marta unikal bo'lib qoladi.
 * **WeakMap:** Vaqtincha saqlash kamerasi. Agar mehmon mehmonxonadan chiqib ketsa (obyekt xotiradan o'chirilsa), kameradagi uning yuklari (qiymat) ham avtomatik axlatga tashlanadi.

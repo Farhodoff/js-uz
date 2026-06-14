@@ -2,12 +2,12 @@ export const fetch = {
   id: "fetch",
   title: "Fetch API va Tarmoq So'rovlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Fetch API nima?
 **Fetch API** — bu brauzerga o'rnatilgan, JavaScript orqali tarmoq (network) so'rovlarini yuborish va serverdan ma'lumotlarni yuklab olish uchun ishlatiladigan modern funksionallikdir. Uning yordamida sahifani to'liq yangilamasdan (refresh) turib, fonda API-lar bilan muloqot qilish mumkin.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **kuryerlik xizmatidan foydalanyapsiz**:
 * **Eski XMLHttpRequest usuli:** Kuryerni chaqirish uchun juda uzun qog'ozbozlik shartnomasini to'ldirasiz, qayerga borishi, qanday borishi, agar xato bo'lsa nima qilishini har bir bosqichini chigal kodlar bilan belgilaysiz.
 * **Fetch API usuli:** Siz kuryerlik kompaniyasiga telefon qilib, shunchaki manzilni (\`url\`) va nima yubormoqchi ekanligingizni (\`body\`) aytasiz. Kuryer borib kelishni o'z zimmasiga oladi va sizga elektron va'da (Promise) beradi. Vaqt kelib u eshikni taqillatadi va ichida sovg'asi (Response) bo'lgan qutini uzatadi. Siz shunchaki qutini ochib ichidagidan foydalanasiz.

@@ -2,11 +2,11 @@ export const dsaHashing = {
   id: "dsaHashing",
   title: "Xeshlash va Xesh-Jadvallar (Hashing & Hash Tables)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Xeshlash (Hashing) - bu ixtiyoriy hajmdagi ma'lumotni (masalan, matn, fayl yoki kalit) olib, uni aniq bir uzunlikdagi butun songa (xesh-kodga) o'tkazib berish jarayonidir. Xesh-jadval (Hash Table) esa ushbu xesh-kodlar yordamida ma'lumotlarni o'ta tezkor ($O(1)$ vaqtda) saqlash va qidirib topish uchun mo'ljallangan tuzilmadir.
 
-### Kutubxona analogiyasi:
+### Kutubxona o'xshatishi:
 - **Xesh-funksiya (Hash Function):** Bu xuddi tajribali kutubxonachiga o'xshaydi. Siz unga kitob nomini (kalit/key) bersangiz, u maxsus formula orqali kitob nomi harflaridan foydalanib, uning qaysi shkafda (indeks/bucket) turishini bir lahzada aytib beradi.
 - **Kolliziya (Collision):** Agar kutubxonachi ikki xil kitob uchun bir xil javon raqamini hisoblab chiqsa (chunki formula sodda bo'lishi mumkin), bu to'qnashuv (Collision) deyiladi. Bitta javonga ikkala kitobni qanday joylashtirishni hal qilish kerak (**Chaining** yoki **Open Addressing**).
 

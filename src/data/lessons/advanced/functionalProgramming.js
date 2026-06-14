@@ -2,7 +2,7 @@ export const functionalProgramming = {
   id: "a14",
   title: "Functional Programming (Funksional dasturlash)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Funksional dasturlash (FP) — bu kodni matematik funksiyalar to'plami va ma'lumotlar oqimi sifatida yozish uslubidir. Ushbu yondashuv o'zgaruvchan holatlardan (mutable state) va yashirin nojo'ya ta'sirlardan (side effects) qochish orqali xatolarni kamaytirish, kodni osonroq test qilish, o'qiluvchanlikni oshirish va parallel bajarilishga tayyorlash uchun xizmat qiladi. React, Redux va zamonaviy JS arxitekturalari aynan shu tamoyillar asosida qurilgan.
 

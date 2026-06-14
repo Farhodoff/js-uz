@@ -2,13 +2,13 @@ export const unitTesting = {
   id: "unitTesting",
   title: "Javascript-da Unit Testing va Jest asoslari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Unit Testing va Jest nima?
 * **Unit Testing (Birlik testi):** Dasturimizning eng kichik mantiqiy bo'laklarini (odatda alohida funksiyalarni) butun tizimdan ajratgan holda alohida tekshirib chiqish jarayonidir.
 * **Jest:** JavaScript va TypeScript loyihalari uchun Meta (Facebook) tomonidan yaratilgan eng oson, tezkor va mashhur test yozish framework-idir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **avtomobil zavodida muhandissiz**:
 * **Haqiqiy sinov:** Mashina tayyor bo'lgandan keyin haydab ko'rish — bu *End-to-End (E2E) yoki integratsion test*. U uzoq vaqt va katta xarajat talab qiladi.
 * **Unit Test:** Mashina yig'ilishidan oldin har bir **motor porsheni, tormoz diski va fara chirog'ini** alohida-alohida stanokda tekshirish. Agar fara chirog'iga 12V tok berilganda yonsa, u sinovdan o'tadi. Bu oson, tez va xatolik qayerdaligini darhol ko'rsatib beradi.

@@ -2,14 +2,14 @@ export const webWorkers = {
   id: "webWorkers",
   title: "Web Workers: Fon Rejimida Ko'p Oqimli Ishlash",
   language: "uz",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Web Workers nima?
 JavaScript sukut bo'yicha **Single-Threaded** (bir oqimli) tildir. Bu degani, u bir vaqtning o'zida faqat bitta ishni bajara oladi. Agar siz saytda juda og'ir matematik hisob-kitob bajarsangiz (masalan, 10 millionta sonni saralash yoki rasmni qayta ishlash), foydalanuvchi interfeysi (UI) qotib qoladi, tugmalar bosilmaydi va sahifa muzlaydi.
 
 **Web Workers** — brauzerda asosiy oqimdan (Main Thread) alohida, orqa fonda (background thread) ishlaydigan mustaqil JavaScript oqimidir. U orqa fonda og'ir ishlarni bajaradi va asosiy sahifaga xalal bermaydi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **restoran bosh oshpazisiz (Main Thread)**:
 * **Workersiz usul:** Siz mijozlar buyurtmasini qabul qilasiz, ovqat pishirasiz, idishlarni yuvasiz va pollarni artasiz. Siz bitta og'ir ishni (masalan, idish yuvishni) boshlasangiz, yangi mijozlar kelganda ularga xizmat ko'rsata olmaysiz (UI qotib qoladi).
 * **Workerli usul:** Siz faqat buyurtma olasiz va taom tayyorlaysiz (Main Thread - UI tezkor). Idishlarni yuvish va pollarni artish uchun **yordamchi ishchi yollaysiz (Web Worker)**. Yordamchi orqa xonada o'z ishi bilan band bo'ladi, siz esa mijozlarga xizmat ko'rsatishda davom etaverasiz.

@@ -2,14 +2,14 @@ export const metaprogramming = {
   id: "metaprogramming",
   title: "Metaprogramming: Proxy va Reflect",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Metadasturlash (Metaprogramming), Proxy va Reflect nima?
 * **Metadasturlash (Metaprogramming):** Dasturning o'z-o'zini o'zgartirishi, tekshirishi yoki boshqa kodlarni boshqarishi bilan bog'liq dasturlash yondashuvidir. Ya'ni, dastur faqat ma'lumotlar bilan emas, balki kodning tuzilishi va xatti-harakati bilan ishlaydi.
 * **Proxy (Vakil):** JavaScript-da obyekt atrofida o'ralgan maxsus qobiq (vakil) bo'lib, u obyekt ustida bajariladigan barcha operatsiyalarni (xususiyatni o'qish, qiymat yozish, o'chirish va h.k.) o'z nazoratiga oladi.
 * **Reflect:** JavaScript-ning o'rnatilgan obyekti bo'lib, obyektlar bilan ishlashning standart metodlarini taqdim etadi. Proxy ichidagi "trap" (tutuvchi) funksiyalarni asl obyektga xavfsiz yo'naltirish uchun xizmat qiladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **mashhur shaxs (VIP)** bilan bog'lanmoqchisiz:
 * **Proxy-siz usul:** Siz to'g'ridan-to'g'ri VIP shaxsga murojaat qilasiz. U bevosita javob beradi (hech qanday nazoratsiz yoki filtrsiz).
 * **Proxy va Reflect usuli:** VIP shaxs o'ziga **shaxsiy yordamchi (Proxy)** yollaydi. Endi siz VIP shaxsga bermoqchi bo'lgan har bir savolingizni avval yordamchiga berishingiz kerak:

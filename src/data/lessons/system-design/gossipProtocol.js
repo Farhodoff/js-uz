@@ -2,13 +2,13 @@ export const gossipProtocol = {
   id: "gossipProtocol",
   title: "Gossip Protocol (Mish-mish Protokoli)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Taqsimlangan tizimlarda yuzlab yoki minglab serverlar (tugunlar) mavjud bo'lganda, ularning qaysi biri ishlayotgani va qaysi biri o'chganini (membership) aniqlash yoki yangi ma'lumotlarni barcha tugunlarga tezkor yetkazish juda qiyin. Agar bitta markaziy serverdan foydalanilsa, u tizimning zaif nuqtasi (single point of failure) va yuklama yuqori nuqtasiga (bottleneck) aylanadi.
 
 **Gossip Protocol (Mish-mish Protokoli)** — bu markazlashtirilmagan, Peer-to-Peer (P2P) aloqa usuli bo'lib, u xuddi jamiyatda mish-mishlar qanday tarqalsa, ma'lumotlarni klaster bo'ylab shunday tarqatadi.
 
-### Mish-mish analogiyasi:
+### Mish-mish o'xshatishi:
 Tasavvur qiling, maktabda 100 ta o'quvchi bor. Bir o'quvchi juda qiziq yangilik (mish-mish) bildi.
 1. U tasodifiy 3 ta do'stiga borib bu gapni aytadi (Fan-out = 3).
 2. O'sha 3 do'stning har biri yana o'z navbatida tasodifiy 3 tadan boshqa do'stlariga aytishadi.

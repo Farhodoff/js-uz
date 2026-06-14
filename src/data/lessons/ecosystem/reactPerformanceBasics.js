@@ -1,7 +1,7 @@
 export const reactPerformanceBasics = {
   id: "reactPerformanceBasics",
   title: "React Performance Asoslari",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### React Performance Asoslari nima?
 React dasturlari juda tez ishlaydi, biroq noto'g'ri yozilgan kod butun ilovani sekinlashtirib qo'yishi mumkin. React unumdorligini (performance) optimallashtirishning asosi — bu komponentlar qachon va nima uchun qayta chizilishini (re-render) tushunish hamda keraksiz renderlar oqimini jilovlashdir.
@@ -9,7 +9,7 @@ React dasturlari juda tez ishlaydi, biroq noto'g'ri yozilgan kod butun ilovani s
 * **Reconciliation (Sinxronizatsiya):** Virtual DOM dagi o'zgarishlarni real DOM bilan solishtirib, faqatgina o'zgargan qismlarni yangilash jarayoni.
 * **Diffing Algoritmi:** React ikki xil Virtual DOM daraxtini O(N) vaqtda solishtirib, farqlarni aniqlashda foydalanadigan algoritmik qoidalar to'plami.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **uydagi stol ustidagi chashkaning joyini o'zgartirmoqchisiz**:
 * **Haqiqiy DOM (Real DOM):** Butun uyni buzib yuborib, stol va chashkani yangi joyga qo'yib, uyni g'ishtma-g'isht noldan qayta qurish. Bu juda sekin va ko'p resurs talab qiladi.
 * **Virtual DOM:** Uyingizning xotiradagi **kichik maketi (3D modeli)**. Siz chashkani avval maketda surib ko'rasiz.

@@ -2,14 +2,14 @@ export const hoistingThisLesson = {
   id: "hoistingThisLesson",
   title: "Hoisting",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Hoisting nima?
 **Hoisting (Ko'tarilish)** — bu JavaScript dvigatelining (masalan, V8) kodni bajarishdan oldin uning tarkibidagi o'zgaruvchilar va funksiya e'lonlarini xotirada ro'yxatga olish jarayonidir. Kod yozilishida o'zgaruvchilar pastki qatorda e'lon qilingan bo'lsa-da, JavaScript ularni o'z doirasining (scope) eng yuqori qismiga "ko'tarilgandek" tasavvur qiladi. 
 
 Muhim jihati shundaki, kodning o'zi jismonan fayl ichida yuqoriga ko'chmaydi. Shunchaki, kod bajarilishidan oldingi **kompilyatsiya fazasida** xotiradan joy ajratiladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **konferensiya tashkilotchisiz**:
 * **Funksiya e'lonlari (Function Declarations) — Tayyor ma'ruzachilar:** Siz sahna orqasiga kirganingizda, ba'zi taniqli ma'ruzachilar allaqachon nutqlarining matni bilan tayyor turishibdi. Siz ularni istalgan paytda, hatto rasmiy ochilishdan oldin ham sahna olib chiqib so'zga chorlay olasiz (to'liq hoisting bo'ladi).
 * **\`var\` o'zgaruvchilari — Nomsiz stullar:** Zalda stullar qo'yilgan, lekin ularda kim o'tirishi hali yozilmagan. Ular mavjud, lekin ularga qarasangiz faqat bo'sh joyni ko'rasiz (\`undefined\` qiymatini oladi).

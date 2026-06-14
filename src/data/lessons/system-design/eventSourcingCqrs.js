@@ -2,13 +2,13 @@ export const eventSourcingCqrs = {
   id: "eventSourcingCqrs",
   title: "Event Sourcing va CQRS (Command Query Responsibility Segregation)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tizim dizaynida an'anaviy ma'lumotlar bazasi bilan ishlashda biz faqat joriy holatni (Current State) saqlaymiz. Masalan, foydalanuvchi balansida $100 bor. Agar u yana $50 qo'shsa, bazadagi qiymat $150 ga yangilanadi (UPDATE). Lekin bu balans ushbu holatga kelgunicha qanday bosqichlarni bosib o'tgani haqidagi tarixiy ma'lumot yo'qoladi.
 
 **Event Sourcing** va **CQRS** ushbu muammoni hal qiladi:
 
-### Analogiya: Bank Daftarchasi (Ledger) vs Seif
+### O'xshatish: Bank Daftarchasi (Ledger) vs Seif
 * **An'anaviy CRUD:** Bu seifga o'xshaydi. Seifni ochasiz, ichida qancha pul borligini ko'rasiz va pul qo'shib/olib yopasiz. Siz faqat oxirgi pul miqdorini bilasiz.
 * **Event Sourcing:** Bu bank daftarchasi yoki buxgalteriya kitobiga o'xshaydi. Unda hech narsa o'chirilmaydi va o'zgartirilmaydi (Immutable). Har bir tranzaksiya alohida yozib boriladi:
   1. *Foydalanuvchi hisob ochdi (+100 USD)*

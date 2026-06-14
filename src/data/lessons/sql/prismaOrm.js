@@ -2,7 +2,7 @@ export const prismaOrm = {
   id: "prismaOrm",
   title: "Prisma ORM va Ma'lumotlar Bazasi Modellashtirish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### ORM nima?
 **ORM (Object-Relational Mapping)** — bu relyatsion ma'lumotlar bazasidagi jadvallarni (RDBMS) dasturlash tilidagi (masalan, JavaScript/TypeScript) obyektlar va klasslar bilan bog'lash texnologiyasidir. ORM yordamida siz murakkab SQL so'rovlarini qo'lda yozmasdan, o'zingizga qulay dasturlash tili sintaksisi orqali ma'lumotlar bazasi bilan ishlay olasiz.
@@ -10,7 +10,7 @@ export const prismaOrm = {
 ### Prisma nima?
 **Prisma** — bu Node.js va TypeScript uchun zamonaviy, tezkor va xavfsiz (Typesafe) ORM hisoblanadi. U dasturchilarga ma'lumotlar bazasini deklarativ sxema (Schema) yordamida loyihalash, migratsiyalarni boshqarish va avtomatik tiplashgan (strongly typed) so'rov mijozini (Client) yaratish imkonini beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **O'zbekistonda yashaysiz va faqat o'zbekcha gapira olasiz**. Sizda **fransuz tilida so'zlashadigan hamkor (Ma'lumotlar bazasi)** bor.
 * **SQL usuli:** Siz fransuzcha so'zlashuv lug'atini ochib, har bir so'zni xato va kamchiliklarsiz terib, fransuzcha gapirishga harakat qilasiz (SQL yozish). Birgina harf xatosi butun muzokarani buzishi mumkin.
 * **ORM (Prisma) usuli:** Siz o'zingiz bilan professional **tarjimon (Prisma ORM)** olib yurasiz. Siz tarjimonga o'zbekcha gapirasiz (JavaScript/TypeScript obyekti bilan ishlaysiz), u esa buni darhol fransuz tiliga o'girib hamkoringizga yetkazadi va javobni qayta o'zbekchaga tarjima qiladi.

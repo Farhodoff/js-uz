@@ -2,13 +2,13 @@ export const closures = {
   id: "closures",
   title: "Closures (Yopilishlar) va Lexical Scope",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Closures (Yopilishlar) va Lexical Scope nima?
 * **Lexical Scope (Leksik qamrov):** Bu JavaScript-da o'zgaruvchilarning kodda yozilgan joyiga qarab qamrab olinish qoidasidir. Ya'ni, ichki funksiya har doim o'zi yozilgan leksik muhit (tashqi funksiya va global qamrov) ichidagi o'zgaruvchilarga kirish huquqiga ega.
 * **Closure (Yopilish):** Tashqi funksiya o'z ishini yakunlab, Call Stack-dan chiqib ketganidan keyin ham, uning ichida yaratilgan ichki funksiyaning o'sha tashqi o'zgaruvchilarni "eslab qolish" va ulardan foydalana olish qobiliyatidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **maktabni tamomladingiz**:
 * **Tashqi funksiya:** Sizning maktabdagi davringiz.
 * **O'zgaruvchilar:** Sizning sinfdoshlaringiz va maktabdagi xotiralar.

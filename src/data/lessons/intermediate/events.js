@@ -2,12 +2,12 @@ export const events = {
   id: "events",
   title: "Brauzer Hodisalari va Event Handling (Events)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Hodisa (Event) nima?
 **Hodisa (Event)** — bu foydalanuvchining brauzer ichida amalga oshiradigan harakatlari (klik qilish, klaviaturadan matn yozish, sahifani aylantirish, shakllarni yuborish) yoki tizim tomonidan yuz beradigan o'zgarishlardir. JavaScript bu hodisalarni "eshitib" tinglay oladi va ularga nisbatan dasturiy reaksiya (javob) qaytaradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **xizmat ko'rsatuvchi restorandasiz**:
 * **Qo'ng'iroq (Event):** Stol ustidagi maxsus tugma bosilishi.
 * **Tinglovchi (Event Listener):** Restoran xodimining shu qo'ng'iroqni tinglab, navbatchilik qilib turishi.

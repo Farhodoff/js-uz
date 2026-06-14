@@ -2,7 +2,7 @@ export const objects = {
   id: "objects",
   title: "Obyektlar (Objects)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Obyektlar (Objects) nima?
 JavaScript-da **Obyektlar** — bu kalit (key) va qiymat (value) juftliklarini o'zida saqlovchi murakkab ma'lumot tuzilmasidir. Agar oddiy o'zgaruvchilar (masalan, string, number) faqat bitta qiymatni saqlay olsa, obyektlar bitta nom ostida butun bir mavjudotga tegishli bo'lgan bir nechta xarakteristika va harakatlarni birlashtirish imkonini beradi.
@@ -10,7 +10,7 @@ JavaScript-da **Obyektlar** — bu kalit (key) va qiymat (value) juftliklarini o
 * **Xossalar (Properties):** Obyektning xususiyatlari (masalan: ismi, yoshi, rangi).
 * **Metodlar (Methods):** Obyekt bajarishi mumkin bo'lgan harakatlar (aslida funksiyalar).
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, sizda **Shaxsiy Passport** bor:
 * Passport — bu bitta yaxlit **obyekt**.
 * Undagi ma'lumotlar esa **xossalar**dir:

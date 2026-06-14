@@ -2,7 +2,7 @@ export const dbReplication = {
   id: "dbReplication",
   title: "Database Replication (Ma'lumotlar bazasi replikatsiyasi)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, siz katta bir kutubxona mudirisiz. Kutubxonangizda juda noyob va mashhur ma'lumotnoma kitobi bor. Har kuni yuzlab odamlar kelib ushbu kitobni o'qishni xohlashadi. 
 

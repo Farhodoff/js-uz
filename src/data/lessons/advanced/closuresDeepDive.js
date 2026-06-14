@@ -2,13 +2,13 @@ export const closuresDeepDive = {
   id: "closuresDeepDive",
   title: "Closures: Amaliy Tahlil va Xotira Boshqaruvi",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Closures va Xotira Boshqaruvi
 * **Closures (Yopilishlar):** Birinchi darsda o'rganganimizdek, bu ichki funksiyaning tashqi o'zgaruvchilarni saqlab qolishidir.
 * **Xotira boshqaruvi (Memory Management):** Yopilishlar o'zgaruvchilarni xotirada ushlab turar ekan, bu ma'lumotlar **Heap (uyum)** xotirasida saqlanadi. Agarda biz ularni to'g'ri boshqara olmasak, xotirada keraksiz chiqindilar yig'ilib qoladi, bu esa **Memory Leak (xotira oqishi)** ga olib keladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **ijaraga kvartira oldingiz**:
 * **Oddiy funksiya:** Siz kvartirani bir necha kunga ijaraga olasiz, ishni tugatgach kalitni topshirib ketasiz. Kvartira egasi uni tozalaydi va boshqaga beradi (Garbage Collection).
 * **Closure:** Siz kvartirani ijaraga olib, u yerdagi bir xonani **shaxsiy narsalaringizni saqlash uchun qulflab ketdingiz**. Kvartira egasi siz kalitni qaytarmaguningizcha u xonani tozalay olmaydi va boshqalarga ijaraga berolmaydi. Agar siz o'sha xonadan foydalanmayotgan bo'lsangiz ham, u band bo'lib turaveradi (Memory Leak).

@@ -2,13 +2,13 @@ export const callbacks = {
   id: "callbacks",
   title: "Callbacks va Asinxronlik asoslari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Callback va Asinxronlik nima?
 * **Callback funksiya:** Boshqa funksiyaga argument (parametr) sifatida uzatiladigan va ma'lum bir hodisa sodir bo'lgandan yoki biror amal bajarilgandan keyin chaqiriladigan funksiyadir.
 * **Asinxronlik:** Dasturning biror vaqt talab qiladigan vazifa (masalan, internetdan ma'lumot yuklash) tugashini kutmasdan, keyingi kodlarni bajarishni davom ettirish xususiyatidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **restoranga borib taom buyurtma qildingiz**:
 * **Sinxron usul:** Siz buyurtmani berasiz va taom tayyor bo'lmaguncha kassa oldida kutib turasiz. Orqangizdagi navbatdagilar ham siz tufayli kutaveradi (dastur bloklanadi).
 * **Asinxron va Callback usuli:** Siz buyurtmani berasiz va kassir sizga **pager (qo'ng'iroqcha)** berib, stolga o'tirishingizni aytadi. Siz bemalol telefoningizni titib o'tiraverasiz (bloklanmagan asinxron harakat). Taom tayyor bo'lganda, pager chalinsa (callback chaqiriladi), borib taomni olasiz.

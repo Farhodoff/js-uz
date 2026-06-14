@@ -2,7 +2,7 @@ export const linkedLists = {
   id: "linkedLists",
   title: "Bog'langan Ro'yxatlar (Linked Lists)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Bog'langan Ro'yxat (Linked List) nima?
 * **Linked List:** Bu elementlari xotirada ketma-ket emas, balki tarqoq joylashgan va har bir element (tugun) o'zidan keyingi elementga havola (ko'rsatkich) orqali bog'langan ma'lumotlar tuzilmasidir.
@@ -11,7 +11,7 @@ export const linkedLists = {
   2. **Ko'rsatkich (Next pointer):** Keyingi tugunning xotiradagi manzili.
 * **Floyd Tsikl Tizimi (Floyd's Cycle Detection):** Bog'langan ro'yxat ichida oxiri yo'q cheksiz aylanma yo'l (tsikl) bor-yo'qligini aniqlaydigan algoritm.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **xazina qidiryapsiz (Treasure Hunt)**:
 * **Massiv usuli (Array):** Sizga xarita berilgan va u yerda xazinalar qaysi uylarda ekani aniq yozilgan. Siz to'g'ridan-to'g'ri 5-uyga borib xazinani olasiz.
 * **Linked List usuli:** Siz birinchi uyga borasiz. U yerda xazina va keyingi xazina qaysi uyda ekanligi yozilgan eslatma (havola) bor. Keyingi uyga borasiz, u yerda ham qiymat va keyingi uy manzili yozilgan. Oxirgi uyda esa "Keyingi uy yo'q" deb yozilgan (\`null\`).

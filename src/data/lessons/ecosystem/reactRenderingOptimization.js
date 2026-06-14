@@ -2,13 +2,13 @@ export const reactRenderingOptimization = {
   id: "reactRenderingOptimization",
   title: "Rendering Optimization va Listlar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Rendering Optimization va Listlar nima?
 React-da unumdorlikni optimallashtirish (rendering optimization) — bu ilova interfeysining tezroq yuklanishi, ortiqcha renderlar (re-renders) sonini kamaytirish va foydalanuvchi harakatlariga lahzada javob qaytarishini ta'minlashdir.
 Ayniqsa, ro'yxatlar (lists) va katta hajmli ma'lumotlarni ekranga chiqarish eng ko'p resurs talab qiladigan qismlardan biridir.
 
-### Real hayotiy analogiyalar
+### Real hayotiy o'xshatishlar
 1. **Talabalar navbati (Reconciliation va Key):**
    Sizda navbatda turgan talabalar bor: \\\`[Ali, Vali, G'ani]\\\`. Siz navbatning boshiga \\\`Sami\\\` ismli yangi talabani qo'shmoqchisiz: \\\`[Sami, Ali, Vali, G'ani]\\\`.
    * **Indeks key ishlatilsa (yoki key umuman qo'yilmasa):** Ali 0-indeks edi, endi Sami 0-indeks bo'ldi. React navbatdagi barcha talabalarni o'z joyidan qo'zg'atib, hammani qaytadan chizib chiqadi (chunki indekslar siljigan).

@@ -2,11 +2,11 @@ export const dsaDivideConquer = {
   id: "dsaDivideConquer",
   title: "Bo'lib Tashla va Hukmronlik Qil (Divide and Conquer)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Bo'lib Tashla va Hukmronlik Qil (Divide and Conquer / Bo'l va Hukmronlik qil) - bu murakkab muammoni bir-biriga bog'liq bo'lmagan bir nechta kichik qism-muammolarga bo'lish (Divide), ularning har birini mustaqil ravishda yechish (Conquer) va oxirida olingan natijalarni birlashtirib (Combine) global yechimga erishish algoritmik strategiyasidir.
 
-### Qulupnay terish analogiyasi:
+### Qulupnay terish o'xshatishi:
 - **Muammo:** Sizga 100 kg qulupnay terish vazifasi topshirildi (Juda katta va og'ir ish).
 - **Divide (Bo'lish):** Siz ishni 10 ta do'stingizga bo'lib berdingiz: har bir kishiga 10 kg dan (qismlarga ajratish). Do'stlar bir-biriga bog'liq bo'lmagan holda mustaqil ishlaydi.
 - **Conquer (Hukmronlik/Yechish):** Har bir do'stingiz o'ziga berilgan 10 kg qulupnayni mustaqil terib chiqadi.

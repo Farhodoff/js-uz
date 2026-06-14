@@ -2,7 +2,7 @@ export const security = {
   id: "security",
   title: "Veb Xavfsizlik Asoslari (XSS, CSRF, CORS, HTTPS)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Veb Xavfsizlik Asoslari nima?
 Veb-ilovalarni yaratishda xavfsizlik eng muhim qismlardan biridir. Agar xavfsizlik choralari ko'rilmasa, buzg'unchilar foydalanuvchilarning shaxsiy ma'lumotlarini o'g'irlashi, hisoblarini egallashi yoki server ishini buzishi mumkin. Veb xavfsizlikning eng asosiy to'rtta ustuni:
@@ -11,7 +11,7 @@ Veb-ilovalarni yaratishda xavfsizlik eng muhim qismlardan biridir. Agar xavfsizl
 * **CORS (Cross-Origin Resource Sharing):** Bir saytdan boshqa saytdagi resurslarni so'rash huquqini tartibga soluvchi brauzer qoidasi.
 * **HTTPS:** Mijoz (brauzer) va server o'rtasidagi ma'lumotlar almashinuvini shifrlangan tarza himoya qiluvchi protokol.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **bank binosida xizmat ko'rsatyapsiz**:
 * **XSS:** Buzg'unchi mijozning e'lonlar doskasiga zararli ko'rsatma yozib ketadi. Boshqa kelgan mijozlar uni o'qib, o'z pullarini buzg'unchiga topshirib yuboradi.
 * **CSRF:** Siz bankda o'tirganingizda, kimdir sizning qo'lingiz va imzoingizdan foydalanib yashirincha pul o'tkazish qog'ozini imzolab yuboradi. Siz bu haqida bilmay ham qolasiz.

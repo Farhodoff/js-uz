@@ -2,12 +2,12 @@ export const arrowFunctions = {
   id: "arrowFunctions",
   title: "Arrow Functions (Arrow funksiyalar)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Arrow Functions nima?
 **Arrow Functions (Ko'rsatkichli funksiyalar)** — bu ES6 versiyasida JavaScript dasturlash tiliga kiritilgan, funksiyalarni yozishning yanada qisqa, tushunarli va zamonaviy sintaksisidir. U an'anaviy \`function\` kalit so'zi o'rniga \`=>\` (semiz ko'rsatkich/strelka) belgisidan foydalanadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz do'stingizga xat yozayapsiz:
 * **Eski usul (Rasmiy xat):** "Hurmatli do'stim, sizga shuni ma'lum qilamanki, ertaga uchrashamiz. Hurmat bilan, Ali." (Barcha kalit so'zlar va rasmiyatchiliklar joyida).
 * **Arrow funksiya (SMS tili):** "Ertaga ko'rishamiz. Ali." (Ortiqcha so'zlarsiz, maqsad qisqa va tezkor ifodalangan).

@@ -2,7 +2,7 @@ export const declarationFiles = {
   id: "declarationFiles",
   title: "TypeScript Declaration Files (.d.ts)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Declaration Files (.d.ts) nima?
 TypeScript-da yozilmagan, lekin oddiy JavaScript kutubxonalari (masalan, eski npm paketlar) uchun tiplash qoidalari va deklaratsiyalarini saqlovchi maxsus fayllar **Declaration Files (Deklaratsiya fayllari / \\\`.d.ts\\\` fayllar)** deb ataladi.

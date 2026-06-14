@@ -2,7 +2,7 @@ export const cachingScalability = {
   id: "cachingScalability",
   title: "Keshlash va Tizim Kengayuvchanligi (Caching & Scalability)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Loyiha foydalanuvchilari soni 100 tadan 1 milliontagacha ko'payganda, server va ma'lumotlar bazasi (database) juda katta yuklama ostida qoladi. So'rovlarga javob qaytarish vaqti soniyalargacha uzayadi va tizim butunlay qulashi mumkin.
 Tizimni kengaytirish (Scalability) va tezkorligini ta'minlash uchun dasturchilar ikki xil yondashuvni bilishi kerak: **Keshlash (Caching)** (ma'lumotlarni tez o'qiladigan vaqtinchalik xotirada saqlash) va **Masshtablash** (gorizontal/vertikal kengayish, Load Balancers). Bular orqali server yuklamasini 90% gacha kamaytirish va javob vaqtini millisekundlargacha qisqartirish mumkin.

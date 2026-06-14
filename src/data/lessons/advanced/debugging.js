@@ -2,7 +2,7 @@ export const debugging = {
   id: "debugging",
   title: "Javascript-da Debugging va Xatolarni aniqlash",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Debugging nima?
 **Debugging** (xatoliklarni aniqlash va tuzatish) — bu dasturdagi buglarni (xatolarni) topish, tahlil qilish va ularni bartaraf etish jarayonidir. Kodingiz kutilganidek ishlamayotganida, faqat taxmin qilish o'rniga, dasturning ma'lum bir qatorida to'xtatib, o'zgaruvchilarning o'sha paytdagi holatini tekshirish juda muhimdir.
@@ -10,7 +10,7 @@ export const debugging = {
 * **debugger (to'xtatuvchi):** Dasturning bajarilishini aynan o'sha nuqtada to'xtatib, brauzerning ishlab chiquvchilar oynasini (DevTools) ochib beruvchi maxsus JavaScript buyrug'i.
 * **Breakpoints (to'xtash nuqtalari):** DevTools oynasida kodning qaysi qatori bajarilganda to'xtashini belgilash usuli.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **detektivsiz**:
 * **console.log:** Yo'l chetiga o'rnatilgan kuzatuv kameralari. Siz ularni ma'lum joylarga qo'yib chiqasiz va keyinroq kelib kimlar o'tganini (qiymatlarni) ko'rasiz.
 * **debugger / Breakpoints:** Vaqtni to'xtatuvchi sehrli pult. Jinoyatchi (xatolik) qayerda sodir bo'lishini bilsangiz, vaqtni aynan o'sha lahzada to'xtatasiz. So'ngra atrofdagi har bir narsani (o'zgaruvchilarni, Call Stackni) diqqat bilan tekshirasiz, bir soniya oldinga yurib nima sodir bo'layotganini bosqichma-bosqich kuzatasiz.

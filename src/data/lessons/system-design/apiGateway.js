@@ -2,11 +2,11 @@ export const apiGateway = {
   id: "apiGateway",
   title: "API Gateway, Mikroxizmatlar va Ma'lumotlar Bazasi Asoslari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Zamonaviy dasturlar bir nechta kichik bo'limlardan yoki xizmatlardan tashkil topishi mumkin. Tizim dizaynida eng muhim komponentlardan biri bu kirish eshigini nazorat qiluvchi **API Gateway** hisoblanadi. Shuningdek, dasturning umumiy arxitekturasi (**Monolith vs Microservices**) va ma'lumotlarni saqlash usuli (**SQL vs NoSQL**) butun loyihaning muvaffaqiyatini belgilaydi.
 
-### API Gateway analogiyasi:
+### API Gateway o'xshatishi:
 Siz yirik savdo markaziga (Shopping Mall) kirdingiz.
 - Agar savdo markazida axborot bo'limi (Information Desk / API Gateway) bo'lmasa, siz kiyim do'koni, oziq-ovqat va kinoteatrni qidirib sarson bo'lasiz.
 - API Gateway — bu markazdagi **kirish eshigi va resepshn**. Siz undan "Kino qayerda?" deb so'raysiz va u sizni to'g'ri qavatga yo'naltiradi. Shuningdek, u kirishda xavfsizlikni tekshiradi (Authentication) va juda ko'p odam kelganda oqimni tartibga soladi (Rate Limiting).

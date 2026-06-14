@@ -2,13 +2,13 @@ export const typeNarrowing = {
   id: "typeNarrowing",
   title: "Type Narrowing va Type Guards",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Type Narrowing va Type Guards nima?
 * **Type Narrowing (Tipni toraytirish):** TypeScript-da biror o'zgaruvchi bir nechta tipni qabul qila olganda (ya'ni Union type: \\\`string | number\\\`), uning aniq metodlaridan to'g'ridan-to'g'ri foydalana olmaymiz. Masalan, \\\`string | number\\\` tipiga ega o'zgaruvchiga \\\`.toUpperCase()\\\` deb murojaat qilsak, TypeScript kompilyatori xatolik beradi. Nega? Chunki u qiymat son bo'lib qolishi mumkinligidan xavotir oladi. Type Narrowing — bu shartlar va tekshiruvlar yordamida o'zgaruvchining tipini torroq va aniqroq sohaga olib kelish jarayonidir.
 * **Type Guard (Tip qo'riqchisi):** Dasturning runtime (ishlash) vaqtida o'zgaruvchi tipini tekshiruvchi va natijasiga qarab compile-time (kompilyatsiya) vaqtida tipni toraytiruvchi maxsus ifoda yoki funksiyadir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Buni aeroportdagi **xavfsizlik nazorati (security checkpoint)** bilan solishtirish mumkin:
 Barcha yo'lovchilar va ularning yuklari bitta umumiy oqimda (union type) keladi. Lekin bojxona xodimlari ularni tekshirish vaqtida turli guruhlarga ajratishadi (narrowing):
 * Agar yuk metall buyum bo'lsa (\\\`typeof\\\` check), uni maxsus metall qidiruvchiga yuborishadi.

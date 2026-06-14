@@ -2,12 +2,12 @@ export const asyncAwait = {
   id: "asyncAwait",
   title: "Async/Await — Asinxronlikning Cho'qqisi",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Async/Await nima?
 **Async/Await** — bu JavaScript-da asinxron kodni (Promises) xuddi sinxron (ketma-ket yozilgan) kod kabi oson, chiziqli va chiroyli yozish imkonini beruvchi zamonaviy sintaksisdir. U yangi asinxron mexanizm yaratmaydi, balki mavjud va'dalar (Promises) ustiga qurilgan juda qulay qobiq ("syntactic sugar") hisoblanadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **ovqat buyurtma qilyapsiz**:
 * **Callbacks (Eski usul):** Siz kafega kirasiz va telefon raqamingizni qoldirasiz. Ovqat tayyor bo'lgach sizga telefon qilishadi (callback). Telefon qilishganidan keyin keyingi buyurtmani tushuntirishingiz kerak. Agar zanjir uzun bo'lsa, bu "Callback Hell" ga aylanadi.
 * **Promises (O'rta usul):** Buyurtma berishingiz bilan sizga elektron kvitansiya (Promise) berishadi. Siz kvitansiyani qo'lda ushlab, \`then\` (agar pishsa) va \`catch\` (agar kuyib ketgan bo'lsa) qoidalarini yozib kutasiz.

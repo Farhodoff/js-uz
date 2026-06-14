@@ -2,11 +2,11 @@ export const dsaDSU = {
   id: "dsaDSU",
   title: "DSU: Disjoint Set Union (Union-Find Algoritmi)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Disjoint Set Union (DSU / O'zaro kesishmaydigan to'plamlar birlashmasi) - bu elementlarni alohida guruhlarga (to'plamlarga) ajratish va ularni o'ta tez birlashtirish hamda bir xil guruhdaligini tekshirish uchun mo'ljallangan yuqori darajada optimallashgan ma'lumotlar tuzilmasidir.
 
-### Do'stlar davrasi va Vakil (Representative) analogiyasi:
+### Do'stlar davrasi va Vakil (Representative) o'xshatishi:
 - **Elementlar:** Odamlar. Avvalboshda hamma alohida va har bir kishi o'zining "rahbari" (vakili) hisoblanadi.
 - **Find (Qidirish):** "Sening guruh raxbari kim?" deb so'rash. Agar ikki kishining boshlig'i bitta odam bo'lsa, demak ular bitta do'stlar guruhida (connected).
 - **Union (Birlashtirish):** Ikki do'stlar davrasini birlashtirish. Buning uchun birinchi guruh rahbari ikkinchi guruh rahbariga bo'ysunadi.

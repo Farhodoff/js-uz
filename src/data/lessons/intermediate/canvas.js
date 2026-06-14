@@ -2,12 +2,12 @@ export const canvas = {
   id: "canvas",
   title: "HTML5 Canvas API",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### HTML5 Canvas nima?
 **HTML5 Canvas API** — bu veb-sahifada JavaScript yordamida dinamik ravishda grafikalar, rasmlar, o'yin sahnalari va animatsiyalarni chizish imkonini beruvchi texnologiyadir. U HTML-dagi \`<canvas>\` tegi orqali yaratiladi va asosan pikselga asoslangan (rastrli) chizmalar uchun ishlatiladi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **rassomlik ustaxonasi**dasiz:
 * **Mato (Canvas - \`<canvas>\` tegi):** Bu rassomning bo'sh oq matosi. Mato o'z-o'zidan hech narsa chiza olmaydi, u shunchaki ma'lum kenglik va balandlikka ega bo'lgan joy (ramka) xolos.
 * **Rassom va uning cho'tkasi (Context - \`getContext('2d')\`):** Bu JavaScript kodi orqali boshqariladigan obyektdir. U matoga borib shakllarni chizadi, ranglarni bo'yaydi (\`fillStyle\`), chiziq qalinligini belgilaydi va matoni tozalaydi.

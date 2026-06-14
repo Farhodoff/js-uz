@@ -2,7 +2,7 @@ export const binaryData = {
   id: "binaryData",
   title: "Binary Data va File API (Blob, File, FileReader, ArrayBuffer)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Binary Data (Ikilik ma'lumotlar) nima?
 Kompyuterlar barcha ma'lumotlarni (matn, audio, rasm, video) faqat ikkilik kodda, ya'ni \`0\` va \`1\`lar ketma-ketligi ko'rinishida saqlaydi. Brauzerda fayllar yuklash, ularni qayta ishlash yoki serverga yuborishda biz ushbu binary ma'lumotlar bilan bevosita ishlashimiz kerak bo'ladi.
@@ -13,7 +13,7 @@ Web API-da binary ma'lumotlar bilan ishlash uchun quyidagi asosiy vositalar bor:
 3. **FileReader:** Brauzerda Blob yoki File ichidagi ma'lumotlarni asinxron tarzda o'qish (masalan: rasm faylini Base64 formatidagi string-ga o'tkazib sahifaga chiqarish).
 4. **ArrayBuffer va TypedArrays:** Xotiradagi (RAM) binary ma'lumotlar bilan eng pastki (low-level) darajada byte-ma-byte tezkor ishlash uchun ishlatiladigan massivlar.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **sut mahsulotlari zavodidasiz**:
 * **Blob:** Gigant idishdagi xom **sut massasi**. U tayyor mahsulot emas, shunchaki xom ashyo. Uni bo'laklash, o'qish mumkin, lekin to'g'ridan-to'g'ri ishlatib bo'lmaydi.
 * **File:** Do'kon vitrinasi uchun qadoqlangan **sut shishasi**. Uning ustida yorliq (fayl nomi = 'Sut', ishlab chiqarilgan sana, hajmi = 1 litr) yopishtirilgan.

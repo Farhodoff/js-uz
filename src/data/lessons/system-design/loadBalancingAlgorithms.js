@@ -2,7 +2,7 @@ export const loadBalancingAlgorithms = {
   id: "loadBalancingAlgorithms",
   title: "Yuk Taqsimlash Algoritmlari (Load Balancing Algorithms)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 **Yuk taqsimlovchi (Load Balancer)** — bu tarmoq trafigini backend serverlar o'rtasida taqsimlovchi "yo'l politsiyachisi" yoki "supermarket navbat boshqaruvchisi". Agar supermarketda 5 ta kassa bo'lsa va xaridorlarning hammasi faqat 1-kassaga borsa, u yerda tirbandlik yuzaga keladi, qolgan 4 ta kassa esa bo'sh turadi. Load Balancer kelayotgan xaridorlarni kassalarga teng yo'naltiradi.
 

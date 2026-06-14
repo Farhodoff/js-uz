@@ -2,7 +2,7 @@ export const problemSolving = {
   id: "problem-solving",
   title: "Muammolarni Yechish va Algoritmlar (Problem Solving & Algorithms)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Muammolarni dasturlash orqali hal qilish (Problem Solving) va samarali algoritmlarni tanlash har qanday dasturchining eng muhim ko'nikmasidir. Dastur nafaqat to'g'ri ishlashi, balki tez va kam resurs (xotira) sarflagan holda ishlashi lozim. Ushbu darsda biz intervyularda eng ko'p so'raladigan algoritmlar, ma'lumotlar tuzilmalari va murakkab masalalarni bosqichma-bosqich yechish usullarini o'rganamiz.
 

@@ -2,11 +2,11 @@ export const distributedConsensus = {
   id: "distributedConsensus",
   title: "Distributed Consensus (Taqsimlangan Konsensus)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Taqsimlangan tizimlarda bir nechta mustaqil kompyuterlar (tugunlar yoki node'lar) umumiy bir qarorga kelishi kerak. Masalan, qaysi ma'lumot oxirgi va to'g'ri ekanligi yoki hozirda klasterda kim "Lider" ekanligini kelishib olish zarur. Bu jarayon **Distributed Consensus (Taqsimlangan Konsensus)** deb ataladi.
 
-### Saylov Komissiyasi analogiyasi:
+### Saylov Komissiyasi o'xshatishi:
 Tasavvur qiling, 5 ta hakamdan iborat hay'at a'zolari bor. Ular umumiy bayonnomaga yangi qoidalarni kiritishi kerak.
 - Agar hakamlar o'rtasidagi telefon liniyasi uzilib qolsa va ular guruhlarga bo'linib ketsa (tarmoq bo'linishi - network partition), qanday qaror qabul qilinadi?
 - Qoida oddiy: Qaror qabul qilinishi uchun kamida **Kvorum (ko'pchilik)**, ya'ni kamida 3 ta hakam (5 ning yarmidan ko'pi) rozilik berishi shart.

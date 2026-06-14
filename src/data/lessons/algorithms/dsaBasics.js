@@ -2,11 +2,11 @@ export const dsaBasics = {
   id: "dsaBasics",
   title: "DSA Asoslari: O'zgaruvchilar va Xotira (Memory Layout)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Kompyuterda ma'lumotlarni saqlash va ulardan foydalanish xuddi kiyimlar va jihozlarni tartibga solishga o'xshaydi. Dasturdagi o'zgaruvchilar - bu xotiradagi ma'lum bir katakchaga qo'yilgan yorliqlardir.
 
-### Xotira analogiyasi:
+### Xotira o'xshatishi:
 - **Stack (Stek xotira):** Bu xuddi tor va chuqur qutiga o'xshaydi. Siz kitoblarni ustma-ust taxlaysiz (LIFO - Last In First Out). Stek xotira juda tez ishlaydi, lekin hajmi cheklangan va faqat o'lchami aniq bo'lgan static ma'lumotlarni (masalan, sonlar, stringlar) saqlaydi.
 - **Heap (Xip xotira):** Bu katta va keng xona (omborxona). Siz u yerda katta va o'lchami o'zgarib turadigan narsalarni (masalan, mebellar, qutilar) saqlaysiz. Bu yerga narsa qo'yish va olish stekka qaraganda sekinroq, lekin joy juda ko'p. Obyektlar va massivlar shu yerda saqlanadi. Biz stekda faqat o'sha narsaning omborda qayerda turgani haqidagi "manzil" (ko'rsatkich yoki pointer)ni saqlaymiz.
 

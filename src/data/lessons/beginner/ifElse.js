@@ -2,12 +2,12 @@ export const ifElseLesson = {
   id: "ifElseLesson",
   title: "Shart Operatorlari: if, else",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Shart Operatorlari nima?
 Dasturlashda ko'pincha ma'lum bir sharoitga qarab turli xil harakatlarni amalga oshirish kerak bo'ladi. JavaScript-da buni amalga oshirish uchun **shart operatorlari (\`if\`, \`else if\`, \`else\`)** ishlatiladi. Ular kompyuterga: "Agar mana bu shart to'g'ri bo'lsa, bu ishni qil, aks holda boshqa ishni bajar" degan ko'rsatmani beradi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **ertalab ko'chaga chiqmoqchisiz**:
 * **\`if\` (Agar):** Ob-havo yomg'irli bo'lsa, soyabon olasiz (\`if (yomg'ir) { soyabon_ol() }\`).
 * **\`else if\` (Yoki bo'lmasa):** Yomg'ir yog'mayotgan bo'lsa-yu, lekin qor bo'lsa, issiq kiyinasiz (\`else if (qor) { issiq_kiyin() }\`).

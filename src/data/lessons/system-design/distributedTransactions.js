@@ -2,7 +2,7 @@ export const distributedTransactions = {
   id: "distributedTransactions",
   title: "Taqsimlangan Tranzaksiyalar (Distributed Transactions)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Taqsimlangan Tranzaksiya nima?
 Monolit dasturda ma'lumotlar bitta ma'lumotlar bazasida saqlanadi. Agar foydalanuvchi buyurtma bersa, uning hisobidan pul yechish va ombordan mahsulotni kamaytirish bitta tranzaksiya (ACID) ichida osongina bajariladi: yoki ikkalasi ham muvaffaqiyatli bo'ladi, yoki ikkalasi ham bekor qilinadi.
@@ -11,7 +11,7 @@ Mikroservislar arxitekturasida esa vaziyat boshqacha. Pul yechish servisi (Payme
 
 **Taqsimlangan tranzaksiya** — bu bir nechta mustaqil tarmoq tugunlari va bazalarida bajariladigan operatsiyalarning yaxlitligini ta'minlash usulidir.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **to'y tashkil qilyapsiz**:
 1. **Restoran buyurtma qilish** kerak.
 2. **San'atkorlarni chaqirish** kerak.

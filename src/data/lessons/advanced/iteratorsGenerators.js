@@ -2,14 +2,14 @@ export const iteratorsGenerators = {
   id: "iteratorsGenerators",
   title: "Iterators va Generators",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Iterators va Generators nima?
 * **Iterators (Iteratorlar)** — bu har qanday murakkab to'plam (massiv, obyekt yoki maxsus struktura) elementlarini tartib bilan, birma-bir o'qish (aylanib chiqish) mexanizmi. Ular o'zlarida joriy holatni saqlaydi va har safar chaqirilganda keyingi elementni taqdim etadi.
 * **Iterables (Iterable obyektlar)** — \`[Symbol.iterator]\` metodiga ega bo'lgan va \`for...of\` siklida aylanib chiqish mumkin bo'lgan obyektlar (masalan: \`Array\`, \`Map\`, \`Set\`, \`String\`).
 * **Generators (Generatorlar)** — bu o'z ishini ma'lum vaqtga to'xtatib (suspend), keyinroq yana qolgan joyidan davom ettira oladigan maxsus funksiyalardir. Oddiy funksiyalar chaqirilganda oxirigacha ishlab to'xtaydi, generatorlar esa har safar qiymat berganida to'xtab turadi va tashqi buyruqni kutadi.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 * **Iterator:** Bu xuddi **kitob varaqlash** kabi. Sizda qalin kitob bor (iterable). Uni bitta-bitta o'qish uchun varoqlaysiz (\`next()\`). Har safar varoqlaganingizda keyingi sahifa matnini ko'rasiz (\`value\`). Sahifalar tugagach, kitob yopiladi (\`done: true\`).
 * **Generator:** Bu xuddi **navbat bilan mahsulot beradigan avtomat**ga o'xshaydi. Siz tangani tashlab tugmani bosasiz (\`next()\`), u bitta mahsulot ishlab chiqarib chiqarib beradi (\`yield\`) va to'xtaydi. Keyingi mijoz kelib yana tugmani bosmaguncha u o'z holatida jim turaveradi.
 

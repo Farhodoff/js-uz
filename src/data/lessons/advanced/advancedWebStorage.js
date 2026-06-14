@@ -2,12 +2,12 @@ export const advancedWebStorage = {
   id: "advancedWebStorage",
   title: "Kengaytirilgan Web Storage: IndexedDB va Cookies",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va Analogiya
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Kengaytirilgan Web Storage: Cookies va IndexedDB nima?
 Brauzerda ma'lumot saqlashning bir nechta usullari bor. Agar bizga juda kichik, xavfsiz va server bilan aloqa qiladigan ma'lumot kerak bo'lsa **Cookies (Pechenyelar)** dan, agar juda katta, murakkab va indekslangan ma'lumotlar ombori kerak bo'lsa **IndexedDB** dan foydalanamiz.
 
-### Real hayotiy analogiya
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **mehmonxonaga joylashdingiz**:
 * **Cookies (Ruxsatnoma Beyjigi):** Bu sizga berilgan kichkina beyjik. Unda sizning ismingiz va xona raqamingiz yozilgan. Siz har safar oshxonaga yoki basseynga borganingizda, xizmatchilar sizdan beyjikni ko'rsatishni so'rashadi (har bir HTTP so'rovda serverga yuborilishi). Beyjik kichik va u ma'lum kundan keyin amal qilish muddatini yo'qotadi (Expires).
 * **IndexedDB (Shaxsiy Seyf):** Bu sizning xonangizdagi katta seyf (baza). Uning ichiga siz kiyimlar, hujjatlar, kitoblar va og'ir narsalarni tartib bilan joylashtirishingiz mumkin. U uydan ketguningizcha sizga xizmat qiladi. Unga kirish uchun faqat sizda kalit bor va mehmonxona xodimlari (server) uning ichidagi narsalarni siz olib chiqib ko'rsatmaguningizcha ko'ra olmaydi.
