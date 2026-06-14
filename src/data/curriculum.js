@@ -212,6 +212,7 @@ import { heartbeatsLeases } from "./lessons/system-design/heartbeatsLeases";
 import { dbRelationalNoSql } from "./lessons/system-design/dbRelationalNoSql";
 import { dbReplication } from "./lessons/system-design/dbReplication";
 import { resiliencePatterns } from "./lessons/system-design/resiliencePatterns";
+import { batchStreamProcessing } from "./lessons/system-design/batchStreamProcessing";
 
 export const curriculum = {
   beginner: {
@@ -242,7 +243,7 @@ export const curriculum = {
     label: "Tizimli Dizayn",
     color: "#c96ac8",
     icon: "🌐",
-    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, apiGatewayDiscovery, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding, microservicesServerless, eventDrivenBrokers, cdnEdgeComputing, distributedTransactions, apiGatewayRouting, eventSourcingCqrs, distributedConsensus, gossipProtocol, vectorClocks, distributedLocking, capPacelc, writeReadPath, heartbeatsLeases, dbRelationalNoSql, dbReplication, resiliencePatterns]
+    lessons: [howToLearn, requirements, estimations, thingsToAvoid, systemDesignQuiz, loadBalancingAlgorithms, webSecurity, cachingScalability, renderingArchitectures, dns, networkEssentials, apiGateway, apiGatewayDiscovery, distributedCharacteristics, systemDesignQuiz2, consistentHashing, messageQueues, microservices, cachingRedis, rateLimitingSecurity, dbScalingSharding, microservicesServerless, eventDrivenBrokers, cdnEdgeComputing, distributedTransactions, apiGatewayRouting, eventSourcingCqrs, distributedConsensus, gossipProtocol, vectorClocks, distributedLocking, capPacelc, writeReadPath, heartbeatsLeases, dbRelationalNoSql, dbReplication, resiliencePatterns, batchStreamProcessing]
   },
   ecosystem: {
     label: "Ekotizim (React & Node.js)",
