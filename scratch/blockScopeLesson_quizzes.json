@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da blok ko'lami (block scope) nima bilan aniqlanadi?",
+    "options": [
+      "Figurali qavslar `{}` yordamida yaratilgan har qanday blok bilan",
+      "Faqat `function` kalit so'zi bilan",
+      "Faqat dumaloq qavslar `()` bilan",
+      "Maxsus `scope` kalit so'zi bilan"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JavaScript-da blok doirasi figurali qavslar `{}` yordamida belgilanadi. Bloklar `if`, `for`, `while` yoki shunchaki bare block (oddiy bloklar) bo'lishi mumkin."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi o'zgaruvchilardan qaysi biri blok ko'lamiga (block scope) ega?",
+    "options": [
+      "`let` va `const`",
+      "Faqat `var`",
+      "`var` va `let`",
+      "`var`, `let` va `const`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "ES6 (ES2015) da joriy qilingan `let` va `const` o'zgaruvchilari blok ko'lamiga ega. O'z navbatida `var` funktsional yoki global ko'lamga ega."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nif (true) {\n  var a = 5;\n  let b = 10;\n}\nconsole.log(a);\nconsole.log(b);\n```",
+    "options": [
+      "Avval `5` chiqadi, so'ng `ReferenceError: b is not defined` xatosi yuz beradi",
+      "`5` va `10` chiqadi",
+      "`ReferenceError: a is not defined` xatosi yuz beradi",
+      "`undefined` va `undefined` chiqadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`var` blok ko'lamini hisobga olmaydi, shuning uchun `a` o'zgaruvchisiga blok tashqarisidan ham kirish mumkin. `let b` esa faqat `if` bloki ichida mavjud, shuning uchun tashqarida `ReferenceError` xatosi chiqadi."
+  },
+  {
+    "id": 4,
+    "question": "Temporal Dead Zone (Vaqtinchalik O'lik Zona - TDZ) nima?",
+    "options": [
+      "Blok boshlanishidan to o'zgaruvchi (`let`/`const`) e'lon qilingan qatorgacha bo'lgan, o'zgaruvchiga kirish taqiqlangan hudud",
+      "Sikl ishlashni to'xtatgan paytdagi vaqt oralig'i",
+      "Xotirada foydalanilmaydigan o'zgaruvchilar o'chib ketadigan vaqt",
+      "`setTimeout` ishlashini kutish vaqti"
+    ],
+    "correctAnswer": 0,
+    "explanation": "TDZ — bu blok boshidan o'zgaruvchi e'lon qilinadigan satrgacha bo'lgan vaqt oralig'i. Bu hududda `let` yoki `const` o'zgaruvchisidan foydalanish `ReferenceError` xatosini beradi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\n{\n  let x = 1;\n  {\n    let x = 2;\n    console.log(x);\n  }\n  console.log(x);\n}\n```",
+    "options": [
+      "`2` va `1`",
+      "`1` va `2`",
+      "`2` va `2`",
+      "`ReferenceError` xatosi chiqadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ichki blokdagi `let x = 2` o'zgaruvchisi tashqi blokdagi `x`ni soya qiladi (shadowing). Ichki blok tugagach, yana tashqi blokdagi `x` (ya'ni 1) ko'rinadi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kodda qanday muammo yuz beradi?\n```javascript\nconsole.log(myVar);\nconsole.log(myLet);\nvar myVar = 'A';\nlet myLet = 'B';\n```",
+    "options": [
+      "Avval `undefined` chiqadi, keyin `ReferenceError` xatosi beradi",
+      "Ikkalasida ham `undefined` chiqadi",
+      "Ikkalasida ham `ReferenceError` beradi",
+      "`'A'` va `'B'` chiqadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`var` o'zgaruvchisi hoist qilinib, `undefined` qiymatini oladi. `let` o'zgaruvchisi ham hoist qilinadi, lekin u TDZ da bo'lgani sababli e'londan oldin chaqirilsa `ReferenceError` xatosi chiqadi."
+  },
+  {
+    "id": 7,
+    "question": "Nima uchun `for (var i = 0; i < 3; i++)` tsikli ichidagi `setTimeout` callbacklari faqat oxirgi qiymatni chop etadi?",
+    "options": [
+      "Chunki `var` blok ko'lamiga ega emas va banyan iteratsiyalar bitta umumiy `i` o'zgaruvchisini ulashadi",
+      "Chunki `setTimeout` doimo oxirgi elementni tanlaydi",
+      "Chunki `i++` operatsiyasi juda sekin ishlaydi",
+      "Chunki tsikl faqat 3 marta aylanadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`var` blok ko'lamiga ega bo'lmagani uchun butun tsikl davomida faqat bitta `i` o'zgaruvchisi mavjud bo'ladi. Asinxron `setTimeout` ishlaguncha `i` ning qiymati allaqachon 3 ga teng bo'lib bo'ladi. `let` ishlatilganda esa, har bir iteratsiya uchun alohida blok doirasi va shaxsiy `i` o'zgaruvchisi yaratiladi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi qaysi blok turi o'zgaruvchilar doirasi uchun alohida blok (block scope) hisoblanadi?",
+    "options": [
+      "`if-else` blocklari, `for`/`while` loop blocklari va bare blocklar `{}`",
+      "Faqat funktsiya bloklari",
+      "Faqat `switch` bloklari",
+      "Faqat class ta'riflari"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Qavslar `{}` yordamida yozilgan barcha `if`, `else`, `for`, `while` bloklari va shunchaki mustaqil (bare) bloklar `let` va `const` uchun yangi blok ko'lamini (block scope) hosil qiladi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconst user = { name: \"Ali\" };\n{\n  user.name = \"Vali\";\n}\nconsole.log(user.name);\n```",
+    "options": [
+      "`\"Vali\"` chiqadi",
+      "`\"Ali\"` chiqadi",
+      "`TypeError: Assignment to constant variable`",
+      "`undefined` chiqadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`const` o'zgaruvchining qayta o'zlashtirilishini (re-assignment) cheklaydi, ammo obyektning ichki xususiyatlarini (properties) o'zgartirishga to'sqinlik qilmaydi. Blok ichida uning xususiyati o'zgartirilishi mumkin."
+  },
+  {
+    "id": 10,
+    "question": "Global ko'lamda (global scope) `var` va `let` o'rtasidagi farq nima?",
+    "options": [
+      "`var` global `window` obyektida xususiyat yaratadi, `let` esa yaratmaydi",
+      "`let` global doirada ishlamaydi",
+      "`var` global doirada xato beradi",
+      "Hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Brauzer muhitida global doirada `var x = 5` deb e'lon qilinsa, u `window.x` ga birikadi. `let y = 10` esa global doirada e'lon qilinsa ham `window.y` ga birikmaydi."
+  },
+  {
+    "id": 11,
+    "question": "`try-catch` blokidagi qaysi qism o'zining maxsus blok ko'lamiga ega bo'lib, undagi o'zgaruvchiga tashqaridan kirib bo'lmaydi?",
+    "options": [
+      "`catch(error)` qismidagi `error` argumenti",
+      "`try` bloki ichidagi barcha `var` o'zgaruvchilar",
+      "`finally` bloki ichidagi barcha o'zgaruvchilar",
+      "Bunday maxsus doira mavjud emas"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`catch(error)` blokidagi `error` parametrining o'zi catch bloki uchun alohida blok doirasini hosil qiladi va faqat o'sha catch bloki ichida mavjud bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet x = 10;\n{\n  console.log(x);\n  let x = 20;\n}\n```",
+    "options": [
+      "`ReferenceError: Cannot access 'x' before initialization`",
+      "`10` chiqadi",
+      "`undefined` chiqadi",
+      "`20` chiqadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Blok ichida `let x = 20` e'lon qilingan. Bu blok ichidagi `x` tashqi doiradagi `x`ni yashiradi. Ammo `console.log(x)` bajarilganda, blok ichidagi `x` hali e'lon qilinmagan va u TDZ da joylashgan. Shuning uchun `ReferenceError` xatosi chiqadi."
+  }
+]

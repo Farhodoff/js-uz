@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Global va Lokal O'zgaruvchilar",
+    "instruction": "Global miqyosda `appName` o'zgaruvchisini yarating va unga `\"MyJSApp\"` qiymatini bering (`const` orqali). Keyin `getAppInfo()` funksiyasini yozing, u ushbu global o'zgaruvchini olib `\"Ilova nomi: MyJSApp\"` ko'rinishidagi satrni qaytarsin.",
+    "startingCode": "// Global o'zgaruvchini shu yerda e'lon qiling\n\nfunction getAppInfo() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "const appName = \"MyJSApp\"; deb e'lon qiling va funksiyada return `Ilova nomi: ${appName}` ko'rinishida qaytaring.",
+    "test": "const sandbox = new Function(code + '; return { appName: typeof appName !== \"undefined\" ? appName : null, getAppInfo: typeof getAppInfo !== \"undefined\" ? getAppInfo : null };');\nconst context = sandbox();\nif (context.appName !== 'MyJSApp') return 'Global appName o\\'zgaruvchisi to\\'g\\'ri qiymat bilan e\\'lon qilinmagan';\nif (typeof context.getAppInfo !== 'function') return 'getAppInfo funksiyasi aniqlanmagan';\nif (context.getAppInfo() !== 'Ilova nomi: MyJSApp') return 'getAppInfo funksiyasi to\\'g\\'ri satrni qaytarmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Global Obyektga Qiymat Biriktirish",
+    "instruction": "Browser yoki Node.js muhitlaridan qat'iy nazar ishlaydigan `globalThis` obyektiga `SYSTEM_VERSION` deb nomlangan xususiyat qo'shing va unga `\"2.1.0\"` qiymatini bering. Buning uchun `setGlobalVersion()` funksiyasini yozing.",
+    "startingCode": "function setGlobalVersion() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Funksiya ichida globalThis.SYSTEM_VERSION = \"2.1.0\"; deb yozing.",
+    "test": "const sandbox = new Function(code + '; return setGlobalVersion;');\nconst fn = sandbox();\ndelete globalThis.SYSTEM_VERSION;\nfn();\nconst val = globalThis.SYSTEM_VERSION;\ndelete globalThis.SYSTEM_VERSION;\nif (val === '2.1.0') return null;\nreturn 'setGlobalVersion funksiyasi globalThis.SYSTEM_VERSION ga to\\'g\\'ri qiymat yozmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Strict Mode va Yashirin Global Xatolik",
+    "instruction": "JavaScript-da qat'iy rejim (`\"use strict\"`) ishlatilganda, e'lon qilinmagan o'zgaruvchiga qiymat berish `ReferenceError` xatosini keltirib chiqaradi. `\"use strict\"` rejimidan foydalangan holda `triggerGlobalError()` funksiyasini yozing. Bu funksiya ichida e'lon qilinmagan `tempData` o'zgaruvchisiga `100` qiymatini biriktiring, shunda funksiya chaqirilganda xatolik yuz beradi.",
+    "startingCode": "function triggerGlobalError() {\n  // Qat'iy rejim va xato keltirib chiqaruvchi kod\n}\n",
+    "hint": "Funksiya boshiga \"use strict\"; satrini qo'shing va hech qanday let, const yoki var ishlatmasdan tempData = 100; deb yozing.",
+    "test": "const sandbox = new Function(code + '; return triggerGlobalError;');\nconst fn = sandbox();\ntry {\n  fn();\n  return 'triggerGlobalError funksiyasi xatolik (ReferenceError) keltirib chiqarmadi. Qat\\'iy rejim (strict mode) ishlatilganiga ishonch hosil qiling.';\n} catch (e) {\n  if (e instanceof ReferenceError) return null;\n  return 'Kutilmagan xatolik yuz berdi: ' + e.message;\n}"
+  }
+]

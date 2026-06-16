@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da loose equality (`==`) va strict equality (`===`) operatorlarining asosiy farqi nimada?",
+    "options": [
+      "Loose equality tiplarni moslashtirmasdan faqat qiymatni solishtiradi, strict esa tiplarni o'zgartiradi",
+      "Loose equality qiymatlarni solishtirishdan oldin ularni yashirin ravishda bir xil tipga o'tkazadi (coercion), strict esa tiplarni o'zgartirmasdan solishtiradi",
+      "Hech qanday farqi yo'q, ikkalasi ham bir xil ishlaydi",
+      "Strict equality faqat obyektlar uchun ishlatiladi, loose esa faqat primitivlar uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Loose equality (`==`) operatori agar qiymatlar turlari xilma-xil bo'lsa, ularni avval orqa fonda yashirin ravishda umumiy tipga o'tkazadi (coercion), so'ngra taqqoslaydi. Strict equality (`===`) esa hech qanday o'zgartirishlarsiz ham tipni, ham qiymatni tekshiradi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi taqqoslash natijasi nima bo'ladi?\n```javascript\nconsole.log(NaN === NaN);\nconsole.log(NaN == NaN);\n```",
+    "options": [
+      "true va true",
+      "true va false",
+      "false va true",
+      "false va false"
+    ],
+    "correctAnswer": 3,
+    "explanation": "JavaScript standartiga (ECMAScript) muvofiq, `NaN` (Not-a-Number) o'ziga o'zi ham strict (`===`), ham loose (`==`) taqqoslashda teng bo'lmagan yagona qiymatdir."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi taqqoslashlardan qaysi birining natijasi `true` bo'ladi?",
+    "options": [
+      "null === undefined",
+      "null == undefined",
+      "null == 0",
+      "undefined == false"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Loose equality (`==`) qoidalariga ko'ra, `null` faqat `undefined` yoki o'ziga teng bo'la oladi. Shuning uchun `null == undefined` har doim `true` qaytaradi, lekin ularning tiplari har xil bo'lgani uchun strict equality (`===`) da `false` bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconsole.log([] == false);\n```",
+    "options": [
+      "true",
+      "false",
+      "TypeError",
+      "undefined"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tahlil bosqichlari:\n1. Loose equality-da bir taraf boolean (`false`) bo'lsa, u songa o'tkaziladi: `false -> 0`. Ifoda: `[] == 0` bo'ladi.\n2. Obyekt (`[]`) primitiv bilan solishtirilganda ToPrimitive operatsiyasi bajariladi. Bo'sh massiv `[]` string-ga aylanganda `\"\"` hosil bo'ladi. Ifoda: `\"\" == 0` bo'ladi.\n3. String va Number solishtirilganda string songa o'tkaziladi: `\"\" -> 0`. Ifoda: `0 == 0` bo'ladi va natijada `true` chiqadi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi ifodaning natijasi qanday bo'ladi?\n```javascript\nconsole.log({} === {});\n```",
+    "options": [
+      "true, chunki ikkalasi ham bo'sh obyekt",
+      "TypeError",
+      "false, chunki obyektlar xotiradagi turli havolalarga (references) ega",
+      "undefined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-da referens (havola) tiplari (obyektlar, massivlar, funksiyalar) qiymati bo'yicha emas, balki xotiradagi manzili bo'yicha solishtiriladi. Bu ikkita alohida yaratilgan bo'sh obyekt xotiraning turli joylarida joylashgani sababli ular teng emas va `false` qaytadi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi `Object.is()` metodidan foydalanib qilingan taqqoslashlar natijasi qanday bo'ladi?\n```javascript\nconsole.log(Object.is(NaN, NaN));\nconsole.log(Object.is(-0, +0));\n```",
+    "options": [
+      "false va true",
+      "true va true",
+      "false va false",
+      "true va false"
+    ],
+    "correctAnswer": 3,
+    "explanation": "`Object.is()` metodi `===` (strict equality) operatoriga juda o'xshaydi, lekin ikkita asosiy farqqa ega: u `NaN` ni o'z-o'ziga teng deb biladi (`Object.is(NaN, NaN) === true`) va `-0` bilan `+0` ni teng emas deb topadi (`Object.is(-0, +0) === false`)."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi taqqoslash nima qaytaradi?\n```javascript\nconsole.log(1 == true);\nconsole.log(1 === true);\n```",
+    "options": [
+      "true va false",
+      "true va true",
+      "false va true",
+      "false va false"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`1 == true` ifodasida loose equality sababli `true` boolean qiymati songa o'tkaziladi: `true -> 1`. Shundan so'ng `1 == 1` bajarilib, `true` qaytadi. `1 === true` da esa tiplar har xil (number va boolean) bo'lgani uchun srazu `false` qaytadi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log([10] == 10);\n```",
+    "options": [
+      "false",
+      "true",
+      "TypeError",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Taqqoslashda massiv `[10]` (obyekt) va son `10` (primitiv) ishtirok etmoqda. Massiv `ToPrimitive` bo'yicha stringga o'girilganda `\"10\"` bo'ladi. Keyin `\"10\" == 10` taqqoslashida `\"10\"` stringi songa (`10`) o'tadi va natija `10 == 10` bo'lib, `true` qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi loose equality taqqoslash natijasi nima bo'ladi?\n```javascript\nconsole.log(\"\" == 0);\n```",
+    "options": [
+      "false",
+      "true",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "String va son loose equality (`==`) yordamida solishtirilganda, string son tipiga o'tkaziladi. Bo'sh string `\"\"` son tipiga o'tkazilganda `0` ga aylanadi. Shuning uchun `0 == 0` bajarilib, natija `true` bo'ladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconsole.log(null == 0);\n```",
+    "options": [
+      "true",
+      "false",
+      "TypeError",
+      "NaN"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Matematik operatorlardan farqli ravishda, loose equality (`==`) algoritmi `null` qiymatini son tipiga (`0` ga) o'tkazmaydi. Loose equality qoidasiga ko'ra, `null` faqat `undefined` va o'ziga tengdir. Shuning uchun `null == 0` natijasi `false` bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi ifoda bajarilganda nima natija beradi?\n```javascript\nconsole.log(undefined == 0);\n```",
+    "options": [
+      "true",
+      "false",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Loose equality (`==`) algoritmi bo'yicha `undefined` hech qachon son tipiga o'tkazilmaydi va u faqat `null` hamda boshqa bir `undefined` bilan teng bo'ladi. Shuning uchun `undefined == 0` ifodasi `false` qaytaradi."
+  },
+  {
+    "id": 12,
+    "question": "Strict Equality Comparison algoritmining eng birinchi qadami nima?",
+    "options": [
+      "Qiymatlarni string tipiga o'tkazish",
+      "Taqqoslanayotgan qiymatlarning turlarini (Type) tekshirish va agar ular har xil bo'lsa false qaytarish",
+      "Qiymatlarni son tipiga o'tkazish",
+      "Qiymatlarni obyektga o'tkazish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Strict Equality Comparison algoritmi bo'yicha, eng birinchi navbatda solishtirilayotgan ikki qiymatning tiplari solishtiriladi. Agar `Type(x)` va `Type(y)` har xil bo'lsa, algoritm orqaga qaytmasdan to'g'ridan-to'g'ri `false` qiymatni qaytaradi."
+  }
+]

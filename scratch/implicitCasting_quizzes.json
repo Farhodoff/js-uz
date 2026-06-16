@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(\"5\" + 2);\n```",
+    "options": [
+      "7 (son)",
+      "\"52\" (string)",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Binary `+` operatorining bir tarafi string bo'lsa, JS boshqa tarafni ham stringga o'tkazadi va ularni birlashtiradi (concatenation). Shuning uchun \"5\" + \"2\" = \"52\" bo'ladi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(\"5\" - 2);\n```",
+    "options": [
+      "3 (son)",
+      "\"3\" (string)",
+      "\"52\"",
+      "NaN"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ayirish `-` operatori stringlar uchun aniqlanmagan, shuning uchun JS \"5\" stringini avtomatik songa o'tkazadi (5) va undan 2 ni ayiradi. Natija 3 bo'ladi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi ifodaning bajarilishidan hosil bo'lgan natijani aniqlang:\n```javascript\nconsole.log(true + true + \"5\");\n```",
+    "options": [
+      "\"truetrue5\"",
+      "\"25\"",
+      "\"7\"",
+      "NaN"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Operatsiyalar chapdan o'ngga bajariladi. Dastlab `true + true` bajariladi. Plyus operatori booleanni songa o'tkazadi (true -> 1). Natija: 1 + 1 = 2. Keyin `2 + \"5\"` bajariladi va string borligi uchun matn sifatida birlashib, \"25\" hosil bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi ifoda bajarilganda nima qaytadi?\n```javascript\nconsole.log(null + 10);\n```",
+    "options": [
+      "\"null10\"",
+      "10",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Matematik operatorlarda null qiymati songa o'tkazilganda 0 ga aylanadi. Shuning uchun 0 + 10 = 10 natijasi qaytadi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi ifoda bajarilganda nima qaytadi?\n```javascript\nconsole.log(undefined + 5);\n```",
+    "options": [
+      "\"undefined5\"",
+      "5",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Math operatsiyasida `undefined` son qilinmoqchi bo'lganda `NaN` ga aylanadi. `NaN` ga istalgan sonni qo'shish yoki ayirish har doim `NaN` beradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi loose equality (`==`) taqqoslashlardan qaysi biri true qaytaradi?",
+    "options": [
+      "[] == false",
+      "null == false",
+      "undefined == false",
+      "\"\" == undefined"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Loose equality (`==`) tekshiruvida ikkala taraf ham songa o'tadi. `[]` bo'sh massiv string-ga o'tadi (`\"\"`), keyin esa `0` ga aylanadi. `false` ham `0` ga aylanadi. `0 == 0` esa true qaytaradi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconsole.log(+\"\");\n```",
+    "options": [
+      "0",
+      "NaN",
+      "undefined",
+      "TypeError"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Bo'sh string `\"\"` unar plyus `+` yordamida son tipiga o'tkazilganda avtomatik ravishda 0 ga aylanadi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi taqqoslashlardan qaysi biri false qaytaradi?",
+    "options": [
+      "\"5\" == 5",
+      "null == undefined",
+      "NaN == NaN",
+      "0 == \"\""
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-da `NaN` o'z-o'ziga ham teng bo'lmagan yagona qiymatdir (strict va loose tenglikda ham). Shuning uchun `NaN == NaN` har doim false bo'ladi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(\"10\" / \"2\");\n```",
+    "options": [
+      "\"102\"",
+      "5",
+      "\"5\"",
+      "NaN"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bo'lish `/` operatori ikkala operandni ham son tipiga o'tishga majburlaydi. Shuning uchun \"10\" son 10 ga, \"2\" son 2 ga aylanib, 10 / 2 = 5 (son) hosil bo'ladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconsole.log(![]);\n```",
+    "options": [
+      "true",
+      "false",
+      "[]",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da barcha obyektlar (shu jumladan bo'sh massivlar `[]` ham) truthy (rost) qiymat hisoblanadi. Uni inkor qilish `!` esa false qaytaradi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconsole.log([] + []);\n```",
+    "options": [
+      "[]",
+      "\"\" (bo'sh string)",
+      "0",
+      "NaN"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Plyus `+` operatorida massivlar avval `toString()` orqali stringga aylantiriladi. Bo'sh massiv string ko'rinishida `\"\"` bo'ladi. Natijada `\"\" + \"\" = \"\"` (bo'sh string) qaytadi."
+  },
+  {
+    "id": 12,
+    "question": "JavaScript-da obyektlarni primitive turga aylantirish (ToPrimitive) jarayonida metodlar qaysi tartibda tekshiriladi?",
+    "options": [
+      "[Symbol.toPrimitive], valueOf, toString",
+      "JSON.stringify, toString",
+      "Object.keys, Object.values",
+      "constructor, prototype"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Obyektni primitive-ga o'tkazishda JS avval `[Symbol.toPrimitive]` metodi borligini qidiradi. Agar u bo'lmasa, kontekstga qarab `valueOf()` va keyin `toString()` metodlarini ishga tushiradi."
+  }
+]

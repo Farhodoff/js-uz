@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "O'zgaruvchilarni interpolatsiya qilish",
+    "instruction": "Foydalanuvchining `firstName` va `lastName` o'zgaruvchilarini qabul qilib, ularni template literal (backtick) yordamida bitta satrga bo'sh joy (space) bilan ajratib birlashtiruvchi `formatFullName(firstName, lastName)` funksiyasini yozing. Masalan: `formatFullName('Ali', 'Valiyev')` chaqirilganda `'Ali Valiyev'` qaytishi kerak.",
+    "startingCode": "function formatFullName(firstName, lastName) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Backtick (`) belgisidan foydalaning va o'zgaruvchilarni ${firstName} ko'rinishida yozing.",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return formatFullName;');\nconst fn = sandbox();\nconst res = fn('Olim', 'Sodiqov');\nif (res === 'Olim Sodiqov') return null;\nreturn 'formatFullName funksiyasi ism va familiyani to\\'g\\'ri birlashtirmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Matematik ifodani formatlash",
+    "instruction": "Ikkita `a` va `b` sonlarini qabul qilib, ularning yig'indisini quyidagi ko'rinishda shablonli satr sifatida qaytaruvchi `sumFormula(a, b)` funksiyasini yozing: `'a + b = yig'indi'`. Masalan: `sumFormula(3, 4)` chaqirilganda `'3 + 4 = 7'` qaytishi kerak.",
+    "startingCode": "function sumFormula(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Shablon ichida ${a} va ${b} ni o'zaro qo'shib ketishingiz mumkin: `${a} + ${b} = ${a + b}`",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return sumFormula;');\nconst fn = sandbox();\nconst res = fn(10, 20);\nif (res === '10 + 20 = 30') return null;\nreturn 'sumFormula funksiyasi formulani to\\'g\\'ri formatlamadi';"
+  },
+  {
+    "id": 3,
+    "title": "HTML Shabloni yaratish",
+    "instruction": "Foydalanuvchi obyekti (`user` - `name` va `age` xossalari bor) va rolni (`role` - satr) qabul qilib, ularni HTML ko'rinishida formatlovchi `renderProfile(user, role)` funksiyasini yozing. Qaytadigan matn aynan mana shunday multiline (ko'p satrli) bo'lishi kerak:\n```html\n<div class=\"profile\">\n  <h2>Name: ${user.name}</h2>\n  <p>Age: ${user.age}</p>\n  <span class=\"role\">${role}</span>\n</div>\n```\nE'tibor bering: qatorlar va bo'sh joylar formatga mos tushishi lozim.",
+    "startingCode": "function renderProfile(user, role) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Ko'p satrli matn hosil qilish uchun backtickdan foydalaning va shablon ichida tegishli o'zgaruvchilarni joylashtiring: `${user.name}`, `${user.age}` va `${role}`.",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return renderProfile;');\nconst fn = sandbox();\nconst res = fn({ name: 'Jasur', age: 25 }, 'Developer');\nconst clean = (str) => str.replace(/\\s+/g, '');\nconst expectedClean = clean('<div class=\"profile\"><h2>Name:Jasur</h2><p>Age:25</p><span class=\"role\">Developer</span></div>');\nif (clean(res) === expectedClean) return null;\nreturn 'renderProfile qaytargan HTML to\\'g\\'ri formatda emas';"
+  }
+]

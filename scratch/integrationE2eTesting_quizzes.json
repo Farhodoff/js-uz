@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Integratsion testlashning (Integration Testing) asosiy maqsadi nima?",
+    "options": [
+      "Alohida funksiyalarni boshqa kodlardan ajratgan holda tekshirish",
+      "Loyihaning turli xil modullari yoki tizimlari (masalan, API va Ma'lumotlar bazasi) birgalikda to'g'ri ishlashini tekshirish",
+      "UI dizaynining Figma maketiga mosligini tekshirish",
+      "Faqat dasturning xotira sarfini kamaytirish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Integratsion test bir nechta komponent yoki tizimlarning o'zaro hamkorligini tekshiradi."
+  },
+  {
+    "id": 2,
+    "question": "E2E (End-to-End) testlash nima?",
+    "options": [
+      "Dasturning faqat backend qismini alohida tekshirish",
+      "Tizimni haqiqiy foydalanuvchi nuqtai nazaridan, brauzerni avtomatik boshqarish orqali boshidan oxirigacha tekshirish",
+      "Faqat funksiyalarga noto'g'ri parametrlar berib sinash",
+      "Loyihaning yuklamaga chidamliligini (Load testing) tekshirish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "E2E testlash tizimni foydalanuvchi kabi brauzer orqali to'liq tekshirishdir."
+  },
+  {
+    "id": 3,
+    "question": "Node.js loyihalarida API integratsion testlarini yozishda HTTP so'rovlarini simulyatsiya qilish uchun qaysi kutubxonadan foydalaniladi?",
+    "options": [
+      "Lodash",
+      "Axios",
+      "Supertest",
+      "Morgan"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Supertest Express yoki boshqa HTTP serverlarni real portga ulamasdan test qilish imkonini beradi."
+  },
+  {
+    "id": 4,
+    "question": "Supertest-da Express ilovasini test qilish uchun qanday sintaksis to'g'ri?",
+    "options": [
+      "request(app).post('/users').send(data)",
+      "supertest.get('/users').app()",
+      "request.get(app).url('/users')",
+      "app.test('/users').send(data)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Supertest `request(app)` orqali HTTP metodlar zanjirini boshlaydi."
+  },
+  {
+    "id": 5,
+    "question": "Integratsion testlarda har bir testdan so'ng ma'lumotlar bazasini tozalash nima uchun juda muhim?",
+    "options": [
+      "Baza hajmini kamaytirish va pul tejash uchun",
+      "Testlarning bir-biriga bog'liq bo'lmasligi va mustaqil ishlashini (test isolation) ta'minlash uchun",
+      "Node.js-ning keshini tozalash uchun",
+      "Baza indekslarini yangilash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Test izolyatsiyasi buzilsa, testlar bir-birining yozgan ma'lumotlari tufayli tasodifiy yiqila boshlaydi (flaky tests)."
+  },
+  {
+    "id": 6,
+    "question": "Playwright kutubxonasida veb-sahifaga o'tish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "page.open(url)",
+      "page.goto(url)",
+      "page.redirect(url)",
+      "page.load(url)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Playwright-da sahifaga yo'naltirish `page.goto(url)` orqali amalga oshiriladi."
+  },
+  {
+    "id": 7,
+    "question": "Playwright-da input maydonini matn bilan to'ldirish uchun qaysi metoddan foydalaniladi?",
+    "options": [
+      "page.typeText(selector, text)",
+      "page.fill(selector, text)",
+      "page.input(selector, text)",
+      "page.setValue(selector, text)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`page.fill(selector, text)` input maydonlariga qiymat kiritishнинг eng tavsiya etilgan va tezkor usulidir."
+  },
+  {
+    "id": 8,
+    "question": "E2E testlarda 'Flaky test' tushunchasi nimani anglatadi?",
+    "options": [
+      "Faqat xato yozilgan kodlarni o'tkazadigan test",
+      "Koddagi hech qanday o'zgarishsiz, gohida o'tib, gohida yiqiladigan beqaror testlar",
+      "Juda tez ishlaydigan testlar",
+      "Faqat xavfsizlikka oid testlar"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Flaky testlar vaqt o'tishi bilan o'zgaruvchan tarmoq sekinligi yoki asinxron kutishlarning xatosi tufayli beqaror ishlaydi."
+  },
+  {
+    "id": 9,
+    "question": "Playwright-da qat'iy vaqt kutishlar (masalan, page.waitForTimeout(5000)) o'rniga nima tavsiya etiladi?",
+    "options": [
+      "Mutlaqo kutishlardan foydalanmaslik",
+      "Dinamik selektor kutishlari (page.waitForSelector) yoki auto-waiting xususiyatlari",
+      "Keyingi testga o'tib ketish",
+      "Testni qayta ishga tushirish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Dinamik kutishlar element yuklanishi bilanoq davom etadi va test vaqtini sezilarli darajada tejaydi."
+  },
+  {
+    "id": 10,
+    "question": "E2E testlarida har bir testdan oldin Login jarayonini qayta-qayta bajarmaslik uchun nima qilinadi?",
+    "options": [
+      "Autentifikatsiyani umuman test qilmaslik",
+      "Brauzer holatini (Cookies/LocalStorage) saqlab olib, keyingi testlarda ushbu holatni yuklash (storage state)",
+      "Parolni sahifada doimiy saqlab qo'yish",
+      "Login qilmasdan yashirin sahifalarga to'g'ridan-to'g'ri o'tish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Playwright va Cypress-da global setup orqali login holatini bir marta faylga yozib, barcha testlarda ishlatish mumkin."
+  },
+  {
+    "id": 11,
+    "question": "Integratsion testlarda haqiqiy to'lov tizimlari (Stripe kabi) API-larini test qilishda qanday yo'l tutiladi?",
+    "options": [
+      "Haqiqiy kartalar yordamida har safar to'lov o'tkaziladi",
+      "API-larni butunlay test qilmasdan o'tkazib yuboriladi",
+      "Sandbox/Test rejimidagi API kalitlaridan yoki mock/sandbox xizmatlaridan foydalaniladi",
+      "Testlarni faqat local rejimda ishga tushiriladi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Tashqi to'lov API-lari uchun ishlab chiquvchilar taqdim etgan test kalitlari yoki soxtalashtirilgan mock serverlardan foydalaniladi."
+  },
+  {
+    "id": 12,
+    "question": "Tranzaksiyalar (Transactions) orqali bazadagi testlarni izolyatsiya qilishning afzalligi nimada?",
+    "options": [
+      "Bazada yangi jadvallar yaratadi",
+      "Test ma'lumotlarini tranzaksiya tugagach rollback qilish orqali jadvalni tozalash operatsiyalarini tezlashtiradi va bazani toza saqlaydi",
+      "Dasturni xavfsizroq qiladi",
+      "API so'rovlarini optimallashtiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tranzaksiyani rollback qilish bazadan o'chirish (truncate/delete) amallariga qaraganda ancha tez ishlaydi."
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "WebAssembly (Wasm) nima?",
+    "options": [
+      "Brauzerda deyarli mahalliy tezlikda quyi darajali kodlarni bajarish imkonini beruvchi ikkilik format",
+      "JavaScript-dagi asinxron so'rovlarni boshqaruvchi kutubxona",
+      "Faqat CSS va animatsiyalar uchun mo'ljallangan grafik dvigatel",
+      "Node.js serverini avtomatik sozlaydigan tizim"
+    ],
+    "correctAnswer": 0,
+    "explanation": "WebAssembly — brauzerda yuqori tezlik talab etadigan operatsiyalarni bajarish uchun C++, Rust yoki Go kabi tillardan kompilyatsiya qilinadigan quyi darajali ikkilik formatdir."
+  },
+  {
+    "id": 2,
+    "question": "WebAssembly moduli DOM (Document Object Model) elementlariga to'g'ridan-to'g'ri kirishi mumkinmi?",
+    "options": [
+      "Yo'q, WebAssembly DOM elementlariga bevosita kira olmaydi, u JS orqali aloqa qiladi",
+      "Ha, u window va document obyektlariga to'liq kira oladi",
+      "Ha, lekin faqat read-only (faqat o'qish) rejimida",
+      "Faqat Web Worker tarkibida bo'lsa kirishi mumkin"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Wasm to'g'ridan-to'g'ri DOM bilan ishlay olmaydi. U har qanday DOM manipulyatsiyasini JavaScript-dan yordamchi funksiyalarni import qilish orqali bajaradi."
+  },
+  {
+    "id": 3,
+    "question": "WebAssembly.Memory obyekti nima vazifani bajaradi?",
+    "options": [
+      "Wasm modulining chiziqli xotirasi (Linear Memory) bo'lib, ArrayBuffer-ni o'zida saqlaydi",
+      "Faqat modul xatoliklarini log qiluvchi xotira buferi",
+      "CPU keshlash mexanizmini boshqaradigan API",
+      "Avtomatik axlat yig'uvchi (Garbage Collector) tizimi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`WebAssembly.Memory` moduli chiziqli xotira (Linear Memory) hisoblanib, undagi ma'lumotlar JS massivlari (TypedArrays) ko'rinishida o'qiladi yoki yoziladi."
+  },
+  {
+    "id": 4,
+    "question": "WebAssembly chiziqli xotirasining 1 sahifasi (1 page) necha baytga teng?",
+    "options": [
+      "64 KB (65,536 bayt)",
+      "1 MB (1,048,576 bayt)",
+      "4 KB (4,096 bayt)",
+      "256 KB (262,144 bayt)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "WebAssembly arxitekturasida chiziqli xotira sahifalarga bo'linadi va 1 sahifa har doim 64 KB (65,536 bayt) ga tengdir."
+  },
+  {
+    "id": 5,
+    "question": "Bir vaqtda bir nechta oqimlar (Workers) o'rtasida nusxalanmasdan umumiy foydalaniladigan xotira buferi qaysi?",
+    "options": [
+      "SharedArrayBuffer",
+      "ArrayBuffer",
+      "Uint8ClampedArray",
+      "DataView"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`SharedArrayBuffer` yordamida oqimlar o'rtasida ma'lumot ko'chirilmasdan, xotiraning ayni bir xil manzili parallel ravishda ulashiladi."
+  },
+  {
+    "id": 6,
+    "question": "Atomics obyekti nima uchun kerak?",
+    "options": [
+      "SharedArrayBuffer ustida bajariladigan operatsiyalarning oqimlararo xavfsizligini ta'minlash uchun",
+      "Wasm faylini siqish va tarmoq trafigini kamaytirish uchun",
+      "Sinxron kodlarni asinxron qilish uchun",
+      "CPU yadrolarini dinamik o'chirish uchun"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Atomics` obyekti oqimlararo umumiy xotiraga murojaat qilganda to'qnashuvlar (Race Conditions) yuzaga kelmasligi uchun atomik va xavfsiz operatsiyalarni taqdim etadi."
+  },
+  {
+    "id": 7,
+    "question": "Nima uchun brauzerning asosiy oqimida (Main UI Thread) `Atomics.wait()` metodini ishlatish taqiqlangan?",
+    "options": [
+      "UI oqimini bloklash butun sahifani muzlatib qo'yishi sababli",
+      "Asosiy oqimda Atomics obyekti mavjud bo'lmagani sababli",
+      "Asosiy oqim xotirasi SharedArrayBuffer-ni qo'llab-quvvatlamagani uchun",
+      "Bu metod faqat Node.js uchun yaratilgani sababli"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Atomics.wait` oqimni to'xtatib (sleep rejimida) kutib turadi. Agar u asosiy oqimda chaqirilsa, foydalanuvchi interfeysi muzlab qoladi, shuning uchun brauzerlar bunga ruxsat bermaydi."
+  },
+  {
+    "id": 8,
+    "question": "JS va WASM o'rtasida katta hajmli ma'lumotlar almashishda qaysi yondashuv eng tezkor hisoblanadi?",
+    "options": [
+      "WASM chiziqli xotirasiga pointerlar orqali to'g'ridan-to'g'ri o'qish/yozish (Zero-Copy)",
+      "Ma'lumotlarni JSON formatiga o'girib, string sifatida uzatish",
+      "Wasm funksiyasini har bir element uchun alohida chaqirish",
+      "Base64 formatiga o'girib yuborish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Zero-Copy yondashuvi yordamida Wasm xotirasiga pointerlar orqali to'g'ridan-to'g'ri murojaat qilinadi, bu ma'lumot nusxalash xarajatlarini butunlay yo'q qiladi."
+  },
+  {
+    "id": 9,
+    "question": "Atomics.compareExchange metodi qanday ishlaydi?",
+    "options": [
+      "Indeksdagi joriy qiymat kutilgan qiymatga teng bo'lsa, uni yangisiga almashtiradi va eski qiymatni qaytaradi",
+      "Indeksdagi qiymatni hech qanday shartsiz yangi qiymatga almashtiradi",
+      "Ikki xil massivdagi ma'lumotlarni o'zaro solishtirib, ularni birlashtiradi",
+      "Kutayotgan oqimlarni darhol uyg'otadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Atomics.compareExchange` bu atomik \"solishtirish va almashtirish\" (Compare-And-Swap) operatsiyasi bo'lib, sinxronizatsiya va qulflar (locks) yaratish uchun juda muhimdir."
+  },
+  {
+    "id": 10,
+    "question": "Wasm modulini yuklashda tarmoqdan yuklanish jarayoni bilan parallel ravishda kompilyatsiya qilish imkonini beruvchi metod qaysi?",
+    "options": [
+      "WebAssembly.instantiateStreaming",
+      "WebAssembly.instantiate",
+      "WebAssembly.compile",
+      "WebAssembly.loadStreaming"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`WebAssembly.instantiateStreaming` moduli o'rnatilayotgan response-dan to'g'ridan-to'g'ri kompilyatsiya boshlaydi va yuklash vaqtini tejaydi."
+  },
+  {
+    "id": 11,
+    "question": "Atomics.notify(sharedArray, 0, 1) metodi nima vazifani bajaradi?",
+    "options": [
+      "sharedArray-ning 0-indeksida kutib turgan ko'pi bilan 1 ta oqimni (Worker) uyg'otadi",
+      "Barcha oqimlarga push xabarnomasini yuboradi",
+      "Wasm modulidan yangi hodisalarni tinglaydi",
+      "Indeksdagi qiymatni 1 ga oshiradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Atomics.notify` ma'lum indeksda `Atomics.wait` orqali bloklangan oqimlardan belgilangan miqdordagisini uyg'otadi."
+  },
+  {
+    "id": 12,
+    "question": "SharedArrayBuffer-dan foydalanish uchun brauzerda qanday xavfsizlik talablari mavjud?",
+    "options": [
+      "Sahifada Cross-Origin isolation sarlavhalari (COOP va COEP) o'rnatilgan bo'lishi shart",
+      "Sayt faqat HTTP protokoli ostida ishlashi shart",
+      "Foydalanuvchidan maxsus pop-up orqali ruxsat olinishi kerak",
+      "Hech qanday cheklovlar yo'q, u har doim ochiq bo'ladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Spectre hujumining oldini olish uchun SharedArrayBuffer faqatgina Cross-Origin Isolated sharoitidagina (maxsus COOP va COEP HTTP sarlavhalari o'rnatilganda) ishlaydi."
+  }
+]

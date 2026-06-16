@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "SSL Termination Simulator",
+    "instruction": "API Gateway darajasida SSL termination jarayonini simulyatsiya qiluvchi `terminateSSL(request)` funksiyasini yozing. Kelgan `request` obyektida `secure: true` bo'lsa, uni `false` ga o'zgartiring, `protocol` ni `'http'` qiling, hamda `headers` ichiga `x-forwarded-proto: 'https'` va `x-forwarded-port: '443'` qiymatlarini qo'shing. Agar `secure` false bo'lsa, so'rovni o'zgartirmasdan qaytaring.",
+    "startingCode": "function terminateSSL(request) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "request.secure true bo'lsa, request.secure = false, request.protocol = 'http' deb o'zgartiring va headers obyektini tekshirib yangi sarlavhalarni qo'shing.",
+    "test": "const sandbox = new Function(code + '; return terminateSSL;');\nconst fn = sandbox();\nconst req1 = { secure: true, protocol: 'https', headers: {} };\nconst res1 = fn(req1);\nif (res1.secure !== false || res1.protocol !== 'http' || res1.headers['x-forwarded-proto'] !== 'https') {\n  return 'SSL Termination to\\'g\\'ri bajarilmadi!';\n}\nconst req2 = { secure: false, protocol: 'http', headers: {} };\nconst res2 = fn(req2);\nif (res2.secure !== false || res2.headers['x-forwarded-proto'] !== undefined) {\n  return 'Secure bo\\'lmagan so\\'rov o\\'zgartirilmasligi kerak!';\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Path-based Request Router",
+    "instruction": "Kelgan URL yo'liga qarab eng uzun mos keluvchi upstream xizmatini aniqlaydigan `routeRequest(path, routes)` funksiyasini yozing. `routes` obyekti `{ prefix: upstreamUrl }` formatida bo'ladi. Eng uzun mos keluvchi prefix topilib, uning upstreamUrl manzili qaytarilishi kerak. Agar birorta ham prefix mos kelmasa, `null` qaytaring.",
+    "startingCode": "function routeRequest(path, routes) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "routes obyektining kalitlarini (prefix) aylanib chiqing. path berilgan prefix bilan boshlanishini (startsWith) tekshiring va eng uzun mos kelgan kalitning qiymatini aniqlang.",
+    "test": "const sandbox = new Function(code + '; return routeRequest;');\nconst fn = sandbox();\nconst routes = {\n  '/api': 'http://main-service',\n  '/api/v1/users': 'http://user-service',\n  '/api/v1/orders': 'http://order-service'\n};\nif (fn('/api/v1/users/profile', routes) !== 'http://user-service') return 'Eng uzun mos kelgan yo\\'nalish topilmadi!';\nif (fn('/api/v2/products', routes) !== 'http://main-service') return 'Boshlang\\'ich qisqa yo\\'nalish mos kelmadi!';\nif (fn('/other', routes) !== null) return 'Mos kelmagan yo\\'nalish uchun null qaytarishi kerak!';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "CORS Dynamic Parser",
+    "instruction": "API Gateway-ga so'rov yuborgan mijozning `origin` sarlavhasiga qarab CORS javob sarlavhasini shakllantiruvchi `parseCORS(origin, allowedOrigins)` funksiyasini yozing. Agar `allowedOrigins` massivida `*` belgisi bo'lsa, origin qanday bo'lishidan qat'iy nazar `'*'` qaytarsin. Agar `origin` ruxsat etilgan ro'yxatda bo'lsa, o'sha `origin` qiymatini, aks holda `null` qaytarsin.",
+    "startingCode": "function parseCORS(origin, allowedOrigins) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "allowedOrigins.includes('*') bo'lsa darhol '*' qaytaring. Aks holda allowedOrigins.includes(origin) shartini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return parseCORS;');\nconst fn = sandbox();\nif (fn('https://my-app.com', ['*']) !== '*') return 'Wildcard (*) tekshiruvi xato';\nif (fn('https://my-app.com', ['https://my-app.com', 'https://api.com']) !== 'https://my-app.com') return 'Mavjud origin tekshiruvi xato';\nif (fn('https://malicious.com', ['https://my-app.com']) !== null) return 'Taqiqlangan origin uchun null qaytishi kerak';\nreturn null;"
+  }
+]

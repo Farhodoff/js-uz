@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "VPS Deploy uchun Branch Triggerini Sozlash",
+    "instruction": "GitHub Actions workflow loyihasi faqat `main` tarmog'iga push qilinganda va faqat `src/**` papkasidagi fayllar o'zgarganda ishga tushishi uchun `on` triggerini yozing.",
+    "startingCode": "on:\n  push:\n    # Faqat main tarmoq va src/ papkasidagi o'zgarishlar uchun trigger yozing\n",
+    "hint": "push kaliti ostida branches: [ main ] va paths: [ 'src/**' ] yozilishi kerak.",
+    "test": "if (!code.includes('branches:')) return 'branches kalit so\\'zini yozing';\nif (!code.includes('main')) return 'main branchini belgilang';\nif (!code.includes('paths:')) return 'paths kalit so\\'zini kiriting';\nif (!code.includes('src/**')) return 'src/** yo\\'lini to\\'g\\'ri ko\\'rsating';"
+  },
+  {
+    "id": 2,
+    "title": "SSH Agent yordamida Kalitlarni Yuklash",
+    "instruction": "GitHub workflow ishida `webfactory/ssh-agent@v0.9.0` action-idan foydalanib, secrets ichidagi `VPS_SSH_KEY` maxfiy kalitini yuklash qadamini yozing.",
+    "startingCode": "- name: Install SSH Key\n  # webfactory ssh-agent action-dan foydalanib VPS_SSH_KEY ni yuklang\n",
+    "hint": "uses: webfactory/ssh-agent@v0.9.0 va with: ssh-private-key: ${{ secrets.VPS_SSH_KEY }} ishlatiladi.",
+    "test": "if (!code.includes('uses: webfactory/ssh-agent')) return 'webfactory ssh-agent action-ini ishlating';\nif (!code.includes('secrets.VPS_SSH_KEY')) return 'secrets.VPS_SSH_KEY ni with/ssh-private-key orqali bering';"
+  },
+  {
+    "id": 3,
+    "title": "Docker Hub Registry-ga Avtorizatsiya",
+    "instruction": "Docker login-action-dan (`docker/login-action@v3`) foydalanib, secrets-dagi `DOCKER_USERNAME` va `DOCKER_PASSWORD` orqali Docker Hub-ga login qilish step-ini yozing.",
+    "startingCode": "- name: Login to Docker Hub\n  # docker login action yordamida secrets-dagi username va password bilan login qiling\n",
+    "hint": "uses: docker/login-action@v3 bo'limi ostida username va password parametrlarini secrets orqali bering.",
+    "test": "if (!code.includes('docker/login-action')) return 'docker/login-action action-idan foydalaning';\nif (!code.includes('secrets.DOCKER_USERNAME') || !code.includes('secrets.DOCKER_PASSWORD')) return 'Foydalanuvchi nomi va parolini secrets-dan o\\'qing';"
+  }
+]

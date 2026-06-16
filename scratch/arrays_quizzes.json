@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da massiv (array) yaratishning eng keng tarqalgan va tavsiya etilgan usuli qaysi?",
+    "options": [
+      "let arr = {};",
+      "let arr = [];",
+      "let arr = new Map();",
+      "let arr = \"1, 2, 3\";"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kvadrat qavslar `[]` massiv literalini ifodalaydi va u massiv yaratishning eng oddiy, tezkor va o'qilishi oson usulidir."
+  },
+  {
+    "id": 2,
+    "question": "Massivning oxiriga bitta yoki bir nechta element qo'shuvchi va massivning yangi uzunligini qaytaruvchi metod qaysi?",
+    "options": [
+      ".pop()",
+      ".shift()",
+      ".push()",
+      ".unshift()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`.push()` metodi massivning oxiriga yangi elementlarni qo'shadi va natijada massivning yangilangan `length` (uzunlik) qiymatini qaytaradi."
+  },
+  {
+    "id": 3,
+    "question": "Massiv boshidan birinchi elementni olib tashlaydigan va o'sha elementni qaytaradigan metod qaysi?",
+    "options": [
+      ".shift()",
+      ".unshift()",
+      ".pop()",
+      ".splice()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`.shift()` massivning birinchi (0-indeksdagi) elementini o'chiradi va o'sha o'chirilgan qiymatni qaytaradi. Qolgan elementlarning indekslari bittaga kamayadi (oldinga suriladi)."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilgandan keyin `fruits.length` qiymati nechaga teng bo'ladi?\n```javascript\nconst fruits = ['Apple', 'Banana'];\nfruits[5] = 'Orange';\n```",
+    "options": [
+      "3",
+      "5",
+      "6",
+      "undefined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-da massiv indekslari uzluksiz bo'lishi shart emas. Agar mavjud bo'lmagan yuqori indeksga (masalan, 5-indeksga) qiymat biriktirilsa, massiv uzunligi (length) eng katta indeks + 1 (ya'ni 5 + 1 = 6) bo'ladi. O'rtadagi 2, 3 va 4-indekslar bo'shliq bo'lib qoladi."
+  },
+  {
+    "id": 5,
+    "question": "Massivdan uning asl qiymatlarini o'zgartirmasdan nusxa olish (shallow copy) uchun qaysi metoddan foydalaniladi?",
+    "options": [
+      "arr.splice()",
+      "arr.slice()",
+      "arr.push()",
+      "arr.shift()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`arr.slice()` (hech qanday argumentsiz chaqirilganda) butun massivni nusxalab, yangi massiv qaytaradi va asl massivga zarar yetkazmaydi. `splice` esa asl massivni o'zgartiradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilsa konsolga nima chiqadi?\n```javascript\nconst arr = [10, 20, 30, 40];\narr.length = 2;\nconsole.log(arr);\n```",
+    "options": [
+      "[10, 20, 30, 40]",
+      "[10, 20]",
+      "[30, 40]",
+      "[10, 20, undefined, undefined]"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massivning `length` xossasini kichikroq songa o'zgartirish massivni o'sha uzunlikkacha qisqartiradi (kesib tashlaydi) va o'chirilgan elementlar massivdan butunlay yo'qoladi."
+  },
+  {
+    "id": 7,
+    "question": "Massiv tarkibida ma'lum bir qiymat bor yoki yo'qligini tekshirib, true yoki false qaytaruvchi eng qulay metod qaysi?",
+    "options": [
+      ".indexOf()",
+      ".includes()",
+      ".find()",
+      ".some()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`.includes()` metodi berilgan element massivda mavjud bo'lsa `true`, aks holda `false` qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "`delete arr[0]` va `arr.shift()` amallarining farqi nimada?",
+    "options": [
+      "Ikkalasi ham mutlaqo bir xil vazifani bajaradi",
+      "`delete arr[0]` element qiymatini o'chirib, o'rnida bo'shliq (empty slot) qoldiradi va uzunlikni o'zgartirmaydi; `arr.shift()` esa elementni o'chirib, qolganlarini oldinga suradi va uzunlikni kamaytiradi.",
+      "`arr.shift()` xotiradan butun massivni o'chirib yuboradi",
+      "`delete` faqat satrli (string) massivlarda ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`delete` operatori elementni o'chiradi, lekin massiv elementlari o'rnini surmaydi, natijada massivda bo'sh joy qolib uzunlik o'zgarmaydi. `.shift()` esa haqiqatda elementni o'chirib, massiv uzunligini kamaytiradi va qolgan elementlarni chapga siljitadi."
+  },
+  {
+    "id": 9,
+    "question": "Nima uchun `unshift()` metodi `push()` metodiga qaraganda ancha sekinroq (kamroq samarali) ishlaydi?",
+    "options": [
+      "Chunki `unshift()` massiv oxirigacha borib element qo'shadi",
+      "Chunki `unshift()` massiv boshiga element qo'shgandan keyin, qolgan barcha elementlarning indekslarini bittaga oshirib (siljitib) chiqishi kerak ($O(N)$)",
+      "JavaScript dvigateli `unshift` metodini faqat asinxron bajaradi",
+      "Metodlar tezligida hech qanday farq yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`push()` massiv oxiriga element qo'shadi va boshqa elementlar indeksiga ta'sir qilmaydi ($O(1)$). `unshift()` esa elementni boshiga joylagani uchun massivdagi qolgan barcha elementlarni bitta indeks o'ngga surishga majbur qiladi, bu esa $O(N)$ vaqt oladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi taqqoslash natijasi nima bo'ladi?\n```javascript\nconst a = [1, 2];\nconst b = [1, 2];\nconsole.log(a === b);\n```",
+    "options": [
+      "true",
+      "false",
+      "TypeError",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massivlar reference (havola) turi bo'lgani uchun ularni taqqoslashda qiymatlari emas, balki ularning xotiradagi manzili solishtiriladi. `a` va `b` alohida massivlar bo'lganligi sababli ularning xotiradagi manzillari har xil va natija `false` bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod bajarilgandan keyin `arr` massivining holati qanday bo'ladi?\n```javascript\nconst arr = [1, 2, 3];\narr.splice(1, 1, 'a', 'b');\n```",
+    "options": [
+      "[1, 'a', 'b', 3]",
+      "[1, 'a', 3]",
+      "[1, 2, 'a', 'b', 3]",
+      "['a', 'b', 2, 3]"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`arr.splice(1, 1, 'a', 'b')` 1-indeksdan boshlab 1 ta elementni (ya'ni `2`ni) o'chiradi va o'rniga `'a'` va `'b'` elementlarini qo'shadi. Natijada massiv `[1, 'a', 'b', 3]` holatiga keladi."
+  },
+  {
+    "id": 12,
+    "question": "JavaScript massivlarida har xil turdagi (masalan, son, satr, obyekt) ma'lumotlarni aralashtirib saqlash mumkinmi?",
+    "options": [
+      "Yo'q, massiv elementlari faqat bir xil turda bo'lishi shart",
+      "Ha, bitta massiv ichida sonlar, satrlar, obyektlar va hatto boshqa massivlarni ham aralashtirib saqlash mumkin",
+      "Faqat sonlar va booleanlarni aralashtirish mumkin",
+      "Faqat obyektlarni saqlab bo'lmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript dinamik tipli til bo'lgani sababli uning massivlari heterogen (aralash) bo'la oladi. Ya'ni bitta massiv tarkibida turli xil ma'lumot turlarini bemalol birga saqlash mumkin."
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "1️⃣ Supertest API So'rovi",
+    "instruction": "Supertest yordamida Express 'app' serverining '/api/users' manziliga POST so'rovi yuboradigan va javobning status kodini qaytaradigan `testUserEndpoint(app, requestBody)` asinxron funksiyasini yozing.",
+    "startingCode": "const request = require('supertest');\n\nasync function testUserEndpoint(app, requestBody) {\n  // Kodni shu yerdan yozing\n}",
+    "hint": "const response = await request(app).post('/api/users').send(requestBody);\nreturn response.status;",
+    "test": "if (typeof testUserEndpoint !== 'function') return 'testUserEndpoint funksiya emas';\nconst codeStr = code.toString();\nif (!codeStr.includes('post') || !codeStr.includes('send')) {\n  return 'Supertest orqali post va send metodlaridan foydalaning';\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "2️⃣ Playwright Formasini To'ldirish",
+    "instruction": "Playwright-ning `page` obyekti yordamida foydalanuvchi nomi va parolini to'ldirib, submit tugmasini bosuvchi `fillLoginForm(page, username, password)` asinxron funksiyasini yozing. Input selektorlari: `input[name='username']` va `input[name='password']`. Submit tugmasi selektori: `button[type='submit']`.",
+    "startingCode": "async function fillLoginForm(page, username, password) {\n  // Kodni shu yerdan yozing\n}",
+    "hint": "await page.fill(\"input[name='username']\", username);\nawait page.fill(\"input[name='password']\", password);\nawait page.click(\"button[type='submit']\");",
+    "test": "if (typeof fillLoginForm !== 'function') return 'fillLoginForm funksiya emas';\nconst codeStr = code.toString();\nif (!codeStr.includes('fill') || !codeStr.includes('click')) {\n  return 'page.fill va page.click metodlaridan foydalaning';\n}\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "3️⃣ Tranzaksiya orqali Izolyatsiya",
+    "instruction": "Testlar o'rtasida ma'lumotlar bazasini toza saqlash uchun tranzaksiyani boshlovchi ('BEGIN'), callback funksiyani bajaruvchi va yakunda tranzaksiyani bekor qiluvchi ('ROLLBACK') `runInTransaction(pool, callback)` asinxron funksiyasini yozing. Har qanday holatda ham ROLLBACK chaqirilishini ta'minlang (try-finally).",
+    "startingCode": "async function runInTransaction(pool, callback) {\n  // Kodni shu yerdan yozing\n}",
+    "hint": "await pool.query('BEGIN');\ntry {\n  await callback();\n} finally {\n  await pool.query('ROLLBACK');\n}",
+    "test": "if (typeof runInTransaction !== 'function') return 'runInTransaction funksiya emas';\nconst codeStr = code.toString();\nif (!codeStr.includes('BEGIN') || !codeStr.includes('ROLLBACK')) {\n  return 'BEGIN va ROLLBACK SQL so\'rovlaridan foydalaning';\n}\nreturn null;"
+  }
+]

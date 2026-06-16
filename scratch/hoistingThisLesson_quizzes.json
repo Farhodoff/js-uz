@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da hoisting (ko'tarilish) nima?",
+    "options": [
+      "Kod bajarilayotganda barcha o'zgaruvchilar va funksiyalarni global window obyektiga o'tkazish",
+      "Kod bajarilishidan oldin (kompilyatsiya bosqichida) o'zgaruvchilar va funksiya e'lonlarining xotiraga joylashtirilishi",
+      "Sikl ichidagi o'zgaruvchilarning tashqi doiraga sizib chiqishi",
+      "O'zgaruvchilar qiymatlarini avtomatik ravishda o'chirib tashlash mexanizmi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Hoisting — bu JavaScript dvigateli kodni bajarishdan oldin (kompilyatsiya bosqichida) o'zgaruvchilar va funksiya deklaratsiyalarini o'z doirasining (scope) yuqori qismiga ko'tarib, ularga xotiradan joy ajratish xususiyatidir."
+  },
+  {
+    "id": 2,
+    "question": "var kalit so'zi bilan e'lon qilingan o'zgaruvchi hoisting jarayonida qanday boshlang'ich qiymatga ega bo'ladi?",
+    "options": [
+      "null",
+      "Boshlang'ich qiymatga ega bo'lmaydi va ReferenceError beradi",
+      "0",
+      "undefined"
+    ],
+    "correctAnswer": 3,
+    "explanation": "var o'zgaruvchilari hoisting paytida xotirada yaratiladi va ularga avtomatik ravishda undefined boshlang'ich qiymati biriktiriladi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi kod ishga tushirilganda konsolga nima chiqadi?\n```javascript\nconsole.log(myVar);\nvar myVar = 10;\n```",
+    "options": [
+      "10",
+      "undefined",
+      "ReferenceError: myVar is not defined",
+      "TypeError: myVar is not a function"
+    ],
+    "correctAnswer": 1,
+    "explanation": "var myVar hoisting bo'ladi va funksiya yoki global doiraning tepasiga 'undefined' bo'lib ko'tariladi, ammo qiymat berilishi (myVar = 10) o'z joyida qoladi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod ishga tushirilganda nima sodir bo'ladi?\n```javascript\nconsole.log(myLet);\nlet myLet = 20;\n```",
+    "options": [
+      "undefined chiqadi",
+      "20 chiqadi",
+      "ReferenceError: Cannot access 'myLet' before initialization",
+      "TypeError: myLet is not a constant"
+    ],
+    "correctAnswer": 2,
+    "explanation": "let va const o'zgaruvchilari hoisting bo'ladi, lekin ularga boshlang'ich qiymat berilmaguncha TDZ (Temporal Dead Zone) da qoladi. E'londan oldin kirish ReferenceError ga olib keladi."
+  },
+  {
+    "id": 5,
+    "question": "Temporal Dead Zone (Vaqtinchalik O'lik Hudud) nima?",
+    "options": [
+      "O'zgaruvchilar Garbage Collector tomonidan o'chiriladigan xotira qismi",
+      "Blok boshlanishidan to o'zgaruvchi (let/const) e'lon qilingan qatorgacha bo'lgan, o'zgaruvchiga murojaat qilib bo'lmaydigan hudud",
+      "Asinxron kodlar (masalan, setTimeout) bajarilishini kutadigan vaqt oralig'i",
+      "Sikl tugagandan keyin o'zgaruvchilar blokda qoladigan vaqt"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TDZ — bu let va const e'lon qilingan blokning boshidan boshlab, o'zgaruvchiga qiymat yuklanadigan qatorgacha bo'lgan oraliqdir. Bu hududda o'zgaruvchiga murojaat qilish ReferenceError xatosini beradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\ngreet();\nfunction greet() {\n  console.log(\"Salom!\");\n}\n```",
+    "options": [
+      "Salom!",
+      "TypeError: greet is not a function",
+      "ReferenceError: greet is not defined",
+      "undefined"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Function declaration (funksiya e'loni) to'liq hoisting bo'ladi, ya'ni uning ham tanasi, ham nomi xotiraga yoziladi va uni deklaratsiyadan oldin ham xavfsiz chaqirish mumkin."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kod bajarilganda nima sodir bo'ladi?\n```javascript\ngreet();\nvar greet = function() {\n  console.log(\"Salom!\");\n};\n```",
+    "options": [
+      "Salom! chiqadi",
+      "TypeError: greet is not a function",
+      "ReferenceError: greet is not defined",
+      "undefined chiqadi va kod to'xtaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "var greet hoisting bo'lganda 'undefined' qiymatini oladi. Uni funksiya sifatida chaqirish (greet()) 'TypeError: greet is not a function' xatosiga olib keladi, chunki undefined funksiya emas."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kod bajarilganda nima sodir bo'ladi?\n```javascript\ngreet();\nconst greet = () => {\n  console.log(\"Salom!\");\n};\n```",
+    "options": [
+      "Salom! chiqadi",
+      "TypeError: greet is not a function",
+      "ReferenceError: Cannot access 'greet' before initialization",
+      "undefined chiqadi va xatolik bo'lmaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "const greet o'zgaruvchi ifodasi bo'lgani sababli TDZ da bo'ladi. Uni e'lon qilinishidan oldin chaqirish ReferenceError xatosini beradi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nvar a = 1;\nfunction test() {\n  console.log(a);\n  var a = 2;\n}\ntest();\n```",
+    "options": [
+      "1",
+      "2",
+      "undefined",
+      "ReferenceError: a is not defined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "test() funksiyasi ichida yangi 'var a' e'lon qilingan. U funksiya doirasida hoisting bo'lib, tashqi global 'a' o'zgaruvchisini soyalaydi (shadowing). Shuning uchun console.log(a) ishlagan vaqtda ichki 'a' mavjud lekin unga hali 2 qiymati yuklanmagan (ya'ni undefined)."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nvar x = 5;\nfunction x() {}\nconsole.log(typeof x);\n```",
+    "options": [
+      "\"function\"",
+      "\"number\"",
+      "\"undefined\"",
+      "SyntaxError: Identifier 'x' has already been declared"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Hoisting bosqichida function declaration xotiraga birinchi bo'lib yoziladi. Keyin var x ro'yxatga olinadi (lekin qayta yozilmaydi). Biroq, kod bajarilish bosqichida `x = 5` qiymat berish amali bajarilganda `x` ning qiymati raqamga aylanadi. Shuning uchun `typeof x` natijasi 'number' bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet y = 10;\nfunction test() {\n  let y = 20;\n  console.log(y);\n}\ntest();\n```",
+    "options": [
+      "SyntaxError: Identifier 'y' has already been declared",
+      "10",
+      "20",
+      "undefined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Bunda hech qanday xatolik yuz bermaydi, chunki global doiradagi `y` va funksiya ichidagi `let y` har xil doiralarda (scopes) e'lon qilingan. Funksiya ichidagi `y` tashqi `y` ni soyalaydi va 20 chiqadi."
+  },
+  {
+    "id": 12,
+    "question": "Klass (Class) e'lonlarining hoisting bo'lishi haqida qaysi tasdiq to'g'ri?",
+    "options": [
+      "Klasslar funksiyalar kabi to'liq hoisting bo'ladi va e'londan oldin yangi obyekt yaratish mumkin",
+      "Klasslar mutlaqo hoisting bo'lmaydi va xotiradan joy ajratilmaydi",
+      "Klasslar ham let/const kabi hoisting bo'ladi, lekin e'lon qilinmaguncha TDZ da bo'ladi va e'londan oldin chaqirish ReferenceError beradi",
+      "Klasslar hoisting bo'ladi va e'londan oldin chaqirilganda undefined qiymatini qaytaradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Klass e'lonlari (Class declarations) ham JavaScript-da hoisting bo'ladi, lekin ular ham let/const kabi TDZ (vaqtincha o'lik hudud) da bo'ladi. E'londan oldin klassdan yangi nusxa (instance) olish ReferenceError xatosini beradi."
+  }
+]

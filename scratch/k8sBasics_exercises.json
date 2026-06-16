@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Pod manifesti porti",
+    "instruction": "Kubernetes Pod manifestida konteyner portini (containerPort) `8080` qilib belgilash uchun YAML konfiguratsiyasining tegishli qismini string ko'rinishida yozing (faqat `containerPort: 8080` qatorini stringga yuklang).",
+    "startingCode": "const containerPortConfig = \"\";\n",
+    "hint": "const containerPortConfig = \"containerPort: 8080\";",
+    "test": "if (!code.includes('containerPort: 8080')) return 'containerPort xususiyati va 8080 portni to\\'g\\'ri belgilang';"
+  },
+  {
+    "id": 2,
+    "title": "Deployment Replicas soni",
+    "instruction": "Deployment manifestida nusxalar sonini (replicas) `3` qilib ko'rsatuvchi YAML konfiguratsiyasini yozing.",
+    "startingCode": "const replicasConfig = \"\";\n",
+    "hint": "const replicasConfig = \"replicas: 3\";",
+    "test": "if (!code.includes('replicas: 3')) return 'replicas xususiyatini 3 qiymati bilan to\\'g\\'ri belgilang';"
+  },
+  {
+    "id": 3,
+    "title": "Service turi",
+    "instruction": "Service tashqaridan ulanish uchun NodePort turida bo'lishi kerak. Service turi (type) uchun YAML qiymatini yozing.",
+    "startingCode": "const serviceType = \"\";\n",
+    "hint": "const serviceType = \"NodePort\";",
+    "test": "if (!code.includes('NodePort')) return 'Service turini NodePort qilib yozing';"
+  }
+]

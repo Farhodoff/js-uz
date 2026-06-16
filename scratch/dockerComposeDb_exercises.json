@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "1️⃣ Compose Asoslari (Boshlang'ich)",
+    "instruction": "Docker Compose fayllarida versiyani '3.8' deb belgilovchi va xizmatlarni (services) e'lon qilishda ishlatiladigan asosiy kalit so'zlar ro'yxatini massiv ko'rinishida qaytaruvchi getComposeBasics() funksiyasini yozing. U qaytargan obyektda { version: '3.8', rootKey: 'services' } bo'lishi lozim.",
+    "startingCode": "function getComposeBasics() {\n  // Kodni shu yerda yozing\n}",
+    "hint": "return { version: '3.8', rootKey: 'services' };",
+    "test": "const sandbox = new Function(code + '; return getComposeBasics;');\nconst fn = sandbox();\nconst res = fn();\nif (!res || res.version !== '3.8' || res.rootKey !== 'services') return 'Natija noto\\'g\\'ri';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "2️⃣ PostgreSQL Environment Sozlamalari (O'rta)",
+    "instruction": "PostgreSQL konteyneri uchun kerakli environment (muhit) o'zgaruvchilarini obyekt ko'rinishida qaytaruvchi getPostgresEnv(dbName, user, password) funksiyasini yozing. Obyektda POSTGRES_DB, POSTGRES_USER va POSTGRES_PASSWORD kalitlari mos qiymatlar bilan bo'lishi kerak.",
+    "startingCode": "function getPostgresEnv(dbName, user, password) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "return { POSTGRES_DB: dbName, POSTGRES_USER: user, POSTGRES_PASSWORD: password };",
+    "test": "const sandbox = new Function(code + '; return getPostgresEnv;');\nconst fn = sandbox();\nconst env = fn('app_db', 'admin', 'secret123');\nif (!env || env.POSTGRES_DB !== 'app_db' || env.POSTGRES_USER !== 'admin' || env.POSTGRES_PASSWORD !== 'secret123') return 'O\\'zgaruvchilar mosligi xato';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "3️⃣ Volume va Papkalarni Bog'lash (Qiyin)",
+    "instruction": "Docker Compose-da postgres ma'lumotlarini saqlash uchun ishlatiladigan named volume nomini 'db_data' deb belgilagan holda, PostgreSQL xizmati ichida uni '/var/lib/postgresql/data' papkasiga ulash (mount) string formatini qaytaruvchi getVolumeMount() funksiyasini yozing.",
+    "startingCode": "function getVolumeMount() {\n  // Kodni shu yerda yozing\n}",
+    "hint": "return 'db_data:/var/lib/postgresql/data';",
+    "test": "const sandbox = new Function(code + '; return getVolumeMount;');\nconst fn = sandbox();\nconst mountStr = fn();\nif (mountStr !== 'db_data:/var/lib/postgresql/data') return 'Volume mapping noto\\'g\\'ri. db_data:/var/lib/postgresql/data formatida qaytaring';\nreturn null;"
+  }
+]

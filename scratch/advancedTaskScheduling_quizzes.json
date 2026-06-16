@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JS Event Loop-da Microtask va Macrotask (Task) navbatlarining asosiy farqi nimada?",
+    "options": [
+      "Macrotask-lar tezroq ishlaydi, microtask-lar esa orqa fonda ishlaydi",
+      "Har bir macrotask bajarilgandan keyin, event loop microtask navbatida yig'ilgan barcha topshiriqlarni (hatto bajarilish davomida qo'shilganlarini ham) to'liq tugatmaguncha keyingi macrotask-ga o'tmaydi",
+      "Microtask-lar faqat brauzer oynasi yopilganda ishga tushadi",
+      "Macrotask va Microtask bir xil navbatda turadi va kelish tartibiga ko'ra bajariladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Event Loop har bitta macrotask tugagandan so'ng, microtask navbatidagi barcha topshiriqlarni (microtask checkpoint loop orqali) to'liq bajaradi. Keyingi macrotask-ga faqat microtask navbati bo'shagandan keyin o'tiladi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi API-lardan qaysi biri microtask navbatiga vazifa qo'shadi?",
+    "options": [
+      "setTimeout va setInterval",
+      "requestAnimationFrame",
+      "Promise.resolve().then() va queueMicrotask()",
+      "requestIdleCallback va postMessage"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Promises (.then/.catch/finally), queueMicrotask() va MutationObserver asinxron vazifalarni microtask navbatiga (Microtask Queue) joylashtiradi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi API-lardan qaysi biri macrotask (task) navbatiga vazifa qo'shadi?",
+    "options": [
+      "queueMicrotask",
+      "MutationObserver",
+      "Promise.prototype.then",
+      "setTimeout va MessageChannel"
+    ],
+    "correctAnswer": 3,
+    "explanation": "setTimeout, setInterval, setImmediate, MessageChannel, postMessage va DOM hodisalari macrotask (yoki oddiygina task) navbatiga topshiriq qo'shadi."
+  },
+  {
+    "id": 4,
+    "question": "requestAnimationFrame (rAF) callbacks qachon ishga tushadi?",
+    "options": [
+      "Har bir microtask checkpoint loop ichida",
+      "Brauzer navbatdagi kadrni render qilishdan oldin, uslublar (style) va tartib (layout) hisoblanishidan avval",
+      "Faqat CPU 100% yuklanganda va sahifa muzlab qolganda",
+      "Faqat `requestIdleCallback` ishga tushgandan so'ng"
+    ],
+    "correctAnswer": 1,
+    "explanation": "requestAnimationFrame brauzerning render qilish bosqichi (Rendering Pipeline) boshlanishidan oldin ishlaydi, bu esa vizual o'zgarishlarni kadr bilan sinxronlashtirishga imkon beradi."
+  },
+  {
+    "id": 5,
+    "question": "Microtask checkpoint loop davomida yangi qo'shilgan microtask-lar qanday boshqariladi?",
+    "options": [
+      "Ular keyingi Event Loop iteratsiyasiga (aylanishiga) qoldiriladi",
+      "Ular o'sha zahoti o'chirib yuboriladi",
+      "Navbat bo'shaguncha, yangi qo'shilgan microtask-lar ham joriy checkpoint-da bajarilaveradi (agar cheksiz bo'lsa, thread bloklanadi)",
+      "Ular avtomatik ravishda macrotask navbatiga o'tkaziladi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Microtask checkpoint loop navbat to'liq bo'shamaguncha ishlaydi. Agar biror microtask yangi microtask qo'shsa, u ham o'sha siklning o'zida bajariladi, bu esa cheksiz sikl yaratsa sahifaning butunlay qotib qolishiga sabab bo'ladi."
+  },
+  {
+    "id": 6,
+    "question": "Scheduler API (scheduler.postTask) ning an'anaviy setTimeout-dan asosiy afzalligi nimada?",
+    "options": [
+      "U faqat Node.js-da ishlaydi va brauzerlarda mavjud emas",
+      "U vazifalarni prioriteti bo'yicha ('user-blocking', 'user-visible', 'background') boshqarish va bekor qilish (AbortController) imkonini beradi",
+      "U faqat sinxron kodlarni bajarish uchun mo'ljallangan",
+      "U xotirani avtomatik tozalaydi va xatolarni oldini oladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Prioritized Task Scheduling (Scheduler API) dasturchilarga brauzerga qaysi vazifa muhimroq ekanini aytish (3 xil ustuvorlik darajasi) va AbortSignal yordamida ularni oson bekor qilish imkoniyatini beradi."
+  },
+  {
+    "id": 7,
+    "question": "Scheduler API-dagi 'user-blocking' prioriteti nima uchun ishlatiladi?",
+    "options": [
+      "Foydalanuvchining sahifadagi harakatlarini bloklash uchun",
+      "Foydalanuvchi inputi (click, keydown) yoki vizual animatsiyalar kabi kechiktirib bo'lmaydigan, interaktivlik uchun muhim vazifalarda",
+      "Orqa fondagi analitika ma'lumotlarini yuborish uchun",
+      "Faqat sahifa yuklanayotgan paytda rasmlarni yuklash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "'user-blocking' - interaktivlikni saqlab qolish uchun eng yuqori ustuvorlik darajasidir. U inputga javob berish yoki muhim animatsiyalarni silliq render qilish uchun xizmat qiladi."
+  },
+  {
+    "id": 8,
+    "question": "CPU-ni og'ir yuklovchi hisob-kitoblarda thread-blocking (asosiy oqim bloklanishi) ning qanday oldi olinadi?",
+    "options": [
+      "Kodni dynamic script sifatida import qilish orqali",
+      "while(true) siklini shunchaki for sikliga almashtirish orqali",
+      "Hisob-kitobni kichik bo'laklarga (chunks) bo'lib, har bir bo'lakdan keyin asosiy oqimga yo'l berish (yielding: scheduler.postTask yoki setTimeout orqali)",
+      "Barcha o'zgaruvchilarni const o'rniga let bilan e'lon qilish orqali"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Yielding to the main thread (asosiy oqimga yo'l berish) og'ir operatsiyalarni bo'laklab bajarish va har bir bo'lak oralig'ida brauzerga inputlarni qayta ishlash hamda kadrni render qilish uchun imkoniyat yaratishdir."
+  },
+  {
+    "id": 9,
+    "question": "requestIdleCallback-dagi 'deadline' parametri nima vazifani bajaradi?",
+    "options": [
+      "Vazifani tugatish kerak bo'lgan oxirgi sana yoki vaqtni ko'rsatadi",
+      "Brauzer joriy kadrni render qilguniga qadar qancha vaqt (millisekund) qolganini ko'rsatib, thread bloklanishining oldini olishga yordam beradi",
+      "Sahifani yopish taymerini o'rnatadi",
+      "Tarmoq so'rovining timeout vaqtini belgilaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "deadline.timeRemaining() metodi joriy kadrda brauzer bo'sh bo'lgan vaqtni qaytaradi. Dasturchilar bu vaqtdan oshib ketmasdan orqa fondagi ishlarni bajarib olishlari mumkin."
+  },
+  {
+    "id": 10,
+    "question": "JavaScript asosiy oqimida sinxron `while(true)` yoki juda uzoq davom etuvchi sikl bajarilsa nima sodir bo'ladi?",
+    "options": [
+      "Brauzer qo'shimcha CPU oqimini (thread) ishga tushirib, uni parallel bajaradi",
+      "Event Loop butunlay to'xtaydi, rendering va foydalanuvchi harakatlari bloklanadi, brauzer sahifa 'muzlab qoldi' degan ogohlantirish beradi",
+      "Microtask-lar tezroq ishlay boshlaydi",
+      "Sikl avtomatik ravishda asinxron rejimga o'tadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript bir oqimli (single-threaded) bo'lgani uchun, uzoq davom etuvchi sinxron kod Event Loop-ning aylanishini to'xtatadi. Natijada brauzer sahifani render qila olmaydi va interaktivlik butunlay yo'qoladi."
+  },
+  {
+    "id": 11,
+    "question": "Scheduler.postTask-da hech qanday ustuvorlik (priority) ko'rsatilmaganda, sukut bo'yicha (default) qaysi ustuvorlik beriladi?",
+    "options": [
+      "background",
+      "user-blocking",
+      "user-visible",
+      "low-priority"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Agar `scheduler.postTask(fn)` chaqirilganda variantlar ko'rsatilmasa, sukut bo'yicha o'rtacha ustuvorlik — 'user-visible' qo'llaniladi."
+  },
+  {
+    "id": 12,
+    "question": "Brauzer renderlash bosqichini (Rendering Pipeline) Event Loop ichida qachon ishga tushiradi?",
+    "options": [
+      "Har bir microtask bajarilgandan keyin darhol",
+      "Vaqti-vaqti bilan (odatda ekran yangilanishiga mos holda, masalan, 60fps-da har 16.7ms-da) asosiy oqim bo'sh bo'lganda",
+      "Faqat requestIdleCallback chaqirilganda",
+      "Sinxron kodlar bajarilayotgan paytda orqa fonda parallel ravishda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Renderlash har bir Event Loop iteratsiyasida majburiy emas. Brauzer sahifada o'zgarishlar bor-yo'qligi va ekranning yangilanish chastotasiga qarab renderlashni sinxronlashtiradi (odatda har 16.7ms-da oqim bo'sh bo'lgan paytda)."
+  }
+]

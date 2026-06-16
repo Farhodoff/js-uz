@@ -1,6 +1,6 @@
 export const typeofLesson = {
   id: "typeofLesson",
-  title: "Typeof Operator",
+  title: "typeof operatori",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish
 

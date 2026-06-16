@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Lokal o'zgaruvchi yaratish",
+    "instruction": "Funksiya qamrovini (Scope) tekshirish uchun `calculateArea(width, height)` nomli funksiya yozing. Funksiya ichida `area` nomli lokal o'zgaruvchi yarating, unga to'g'ri to'rtburchakning yuzini (width * height) hisoblab yuklang va uni qaytaring. Funksiyadan tashqarida `area` o'zgaruvchisiga murojaat qilib bo'lmasligi kerak.",
+    "startingCode": "function calculateArea(width, height) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Funksiya ichida `const area = width * height;` deb e'lon qiling va uni `return` qiling.",
+    "test": "const sandbox = new Function(code + '; return calculateArea;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'calculateArea funksiya emas';\nif (fn(5, 10) !== 50) return 'Funksiya yuzani to\\'g\\'ri hisoblamadi';\nif (!code.includes('area')) return 'Kodingizda \"area\" nomli lokal o\\'zgaruvchi ishlatilmagan';\ntry {\n  if (typeof area !== 'undefined') return 'area o\\'zgaruvchisi global scope-da aniqlanib qolgan!';\n} catch(e) {}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "O'zgaruvchini yashirish (Shadowing)",
+    "instruction": "JavaScript-da funksiya ichida e'lon qilingan o'zgaruvchi/argument global o'zgaruvchi bilan bir xil nomlansa, u global o'zgaruvchini yopib qo'yadi. Bizda global miqyosda `let name = \"Global\";` e'lon qilingan. Siz `greetUser(name)` funksiyasini yozing, u parametrda berilgan `name` o'zgaruvchisidan foydalanib `\"Salom, \" + name` qiymatini qaytarsin. Global o'zgaruvchiga ta'sir ko'rsatmang.",
+    "startingCode": "let name = \"Global\";\n\nfunction greetUser(name) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Funksiya parametridagi `name` global o'zgaruvchini avtomatik shadow qiladi. Funksiya ichida `return 'Salom, ' + name;` deb yozing.",
+    "test": "const sandbox = new Function(code + '; return { greetUser, name };');\nconst obj = sandbox();\nif (typeof obj.greetUser !== 'function') return 'greetUser funksiya emas';\nif (obj.greetUser('Jasur') !== 'Salom, Jasur') return 'Funksiya argument shadowing orqali to\\'g\\'ri salomlashmadi';\nif (obj.name !== 'Global') return 'Global \"name\" o\\'zgaruvchisi qiymati o\\'zgartirib yuborildi!';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Ichma-ich funksiya qamrovlari (Nested Scopes)",
+    "instruction": "Ichki funksiyalar tashqi funksiya o'zgaruvchilarini ko'rish qobiliyatini tekshiramiz. `outerContainer()` funksiyasini yozing. Uning ichida `let x = 100;` o'zgaruvchisini yarating. Shuningdek, uning ichida yana bir `innerContainer()` funksiyasini e'lon qiling va u tashqi funksiyadagi `x` ni 2 ga ko'paytirib qaytarsin. Nihoyat, `outerContainer()` ichidan `innerContainer()` ni chaqirib, natijani qaytaring.",
+    "startingCode": "function outerContainer() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`outerContainer` ichida `let x = 100;`, keyin `function innerContainer() { return x * 2; }` yozing. Oxirida `return innerContainer();` deb chaqiring.",
+    "test": "const sandbox = new Function(code + '; return outerContainer;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'outerContainer funksiya emas';\nconst res = fn();\nif (res !== 200) return 'Ichki funksiya tashqi funksiyadagi \"x\" ni to\\'g\\'ri ko\\'paytira olmadi yoki natija qaytarilmadi';\nif (code.includes('innerContainer') === false) return 'Kodingizda \"innerContainer\" ichki funksiyasi e\\'lon qilinmagan';\nreturn null;"
+  }
+]

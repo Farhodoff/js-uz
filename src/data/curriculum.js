@@ -156,6 +156,8 @@ import { distributedConsensus } from "./lessons/system-design/distributedConsens
 
 
 
+import { reactBasics } from "./lessons/ecosystem/reactBasics";
+import { nodeExpressBasics } from "./lessons/ecosystem/nodeExpressBasics";
 import { reactArchitecture } from "./lessons/ecosystem/reactArchitecture";
 import { reactStateManagement } from "./lessons/ecosystem/reactStateManagement";
 import { reactPerformanceBasics } from "./lessons/ecosystem/reactPerformanceBasics";
@@ -204,6 +206,7 @@ import { sqlStoredProcedures } from "./lessons/sql/sqlStoredProcedures";
 import { sqlQueryOptimization } from "./lessons/sql/sqlQueryOptimization";
 import { sqlModifications } from "./lessons/sql/sqlModifications";
 import { prismaOrm } from "./lessons/sql/prismaOrm";
+import { mongoDbBasics } from "./lessons/sql/mongoDbBasics";
 import { mongooseDb } from "./lessons/sql/mongooseDb";
 
 import { eventSourcingCqrs } from "./lessons/system-design/eventSourcingCqrs";
@@ -255,6 +258,8 @@ export const curriculum = {
     color: "#6ac98e",
     icon: "⚙️",
     lessons: [
+      reactBasics,
+      nodeExpressBasics,
       reactArchitecture,
       reactStateManagement,
       reactPerformanceBasics,
@@ -307,6 +312,7 @@ export const curriculum = {
       sqlQueryOptimization,
       sqlModifications,
       prismaOrm,
+      mongoDbBasics,
       mongooseDb
     ]
   },

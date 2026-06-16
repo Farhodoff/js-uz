@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Event Sourcing va an'anaviy CRUD-ning asosiy farqi nimada?",
+    "options": [
+      "CRUD faqat no-SQL bazalarda ishlaydi",
+      "Event Sourcing ma'lumotlarning faqat joriy holatini saqlaydi, CRUD esa barcha o'zgarishlar tarixini",
+      "CRUD ma'lumotlarning faqat joriy holatini saqlaydi (UPDATE/DELETE), Event Sourcing esa holatga olib kelgan barcha voqealar tarixini saqlaydi (Append-only)",
+      "Ular o'rtasida hech qanday arxitekturaviy farq yo'q"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Event Sourcing-da ma'lumotlar o'chirilmaydi va o'zgartirilmaydi, barcha o'zgarishlar ketma-ket voqealar logi sifatida yoziladi."
+  },
+  {
+    "id": 2,
+    "question": "CQRS na'munasida yozish (Write) va o'qish (Read) modellarini ajratishdan asosiy maqsad nima?",
+    "options": [
+      "Faqat xavfsizlikni oshirish",
+      "Yozish va o'qish operatsiyalarini alohida masshtablash hamda har biriga mos optimal ma'lumotlar strukturalarini qo'llash",
+      "Dasturchilar sonini ko'paytirish",
+      "Kod yozishni osonlashtirish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CQRS yozish (murakkab biznes qoidalar) va o'qish (UI uchun tezkor denormalizatsiyalangan ma'lumotlar) modellarini mustaqil optimallashtirish imkonini beradi."
+  },
+  {
+    "id": 3,
+    "question": "Nima uchun Event-lar (Voqealar) o'zgarmas (Immutable) deb hisoblanadi?",
+    "options": [
+      "Chunki JavaScript-da const kalit so'zi ishlatiladi",
+      "Chunki ular o'tmishda sodir bo'lgan inkor etib bo'lmas faktlardir va tarixni o'zgartirib bo'lmaydi",
+      "Chunki ularni o'zgartirsa, dastur xotirasi to'lib qoladi",
+      "Bunga texnik cheklovlar sababchi, xolos"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Voqealar tarixiy faktlardir. Sodir bo'lgan voqeani o'zgartirish o'rniga, agar xatolik bo'lsa, yangi tuzatuvchi/kompensatsiyalovchi voqea yoziladi."
+  },
+  {
+    "id": 4,
+    "question": "Event Replay (Voqealarni qayta tinglash) nima?",
+    "options": [
+      "Dasturdagi xatolarni aniqlash uchun loglarni qayta yuklash",
+      "Musiqa pleyerida eventlarni takrorlash",
+      "Tarixiy voqealar ketma-ketligini boshidan boshlab qayta ishlash orqali joriy holatni yoki yangi Read Modelni noldan yaratish jarayoni",
+      "Bazani tozalash algoritmi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Event Replay yordamida barcha tarixiy voqealarni qayta o'qib, ma'lumotlar bazasining joriy holatini tiklash yoki butunlay yangi bazani (masalan Elasticsearch) yaratish mumkin."
+  },
+  {
+    "id": 5,
+    "question": "Snapshot olish (Snapshotting) nima uchun kerak?",
+    "options": [
+      "Ma'lumotlar bazasini arxivlash uchun",
+      "Akkaunt rasmini saqlash uchun",
+      "Ko'p miqdordagi voqealarni boshidan boshlab qayta o'qish (replay) vaqtini tejash va joriy holatni tezroq tiklash uchun ma'lum nuqtadagi holat nusxasini saqlash",
+      "Xavfsizlik maqsadida shifrlash usuli"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Agar voqealar soni juda ko'p bo'lsa (masalan 1,000,000 ta), holatni tezroq tiklash uchun vaqti-vaqti bilan snapshot olinadi (oxirgi snapshot + qolgan voqealar tiklanadi)."
+  },
+  {
+    "id": 6,
+    "question": "Event Sourcing-da eventual consistency (yakuniy moslik) qanday yuzaga keladi?",
+    "options": [
+      "Yozish modeli voqeani saqlagandan so'ng, read model asinxron ravishda biroz kechikib yangilanishi sababli",
+      "Baza xotirasi yetishmaganida",
+      "Sinxron so'rovlar bloklanganda",
+      "Faqat server o'chib qolganida"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Yozish va o'qish modellari asinxron bog'langanligi sababli, yozilgan ma'lumotning o'qish modelida aks etishi uchun juda qisqa vaqt (kechikish) talab etiladi."
+  },
+  {
+    "id": 7,
+    "question": "Optimistic Concurrency Control (Optimistik konkurentlik nazorati) nima uchun kerak?",
+    "options": [
+      "Foydalanuvchilarga faqat ijobiy xabarlar ko'rsatish uchun",
+      "Parallel ravishda kelgan ikkita bir xil buyruq bir vaqtda bazaga yozilib, ma'lumotlarni buzib yubormasligi (race condition) va versiya mosligini ta'minlash uchun",
+      "Ma'lumotlarni tezroq shifrlash uchun",
+      "Tarmoq tezligini oshirish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Har bir o'zgarishda kutilgan versiya raqami tekshiriladi. Agar parallel tranzaksiyalardan biri versiyani oshirib yuborgan bo'lsa, keyingisi xato berib rad etiladi."
+  },
+  {
+    "id": 8,
+    "question": "Idempotent Event Handler nima?",
+    "options": [
+      "Faqat bir marta ishga tushadigan handler",
+      "Bitta voqeani necha marta qabul qilishidan qat'i nazar, faqat bir marta qayta ishlaydigan va read modelda bir xil natija qoldiradigan handler",
+      "Hech qachon xato bermaydigan funksiya",
+      "Ma'lumotlar bazasini o'chirib yuboradigan kod"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tarmoq orqali voqea bir necha marta qayta uzatilganda (retry), idempotent handler dublikatlarni aniqlab, noto'g'ri hisob-kitoblarni oldini oladi."
+  },
+  {
+    "id": 9,
+    "question": "Upcasting atamasi Event Sourcing-da nimani anglatadi?",
+    "options": [
+      "Voqealarni yuqori xotiraga yuklash",
+      "Eski sxemadagi voqealarni (masalan, v1 formatdagi) dastur xotirasida yangi sxemaga (v2 formatga) o'zgartirish va moslashtirish",
+      "Bazani o'chirish jarayoni",
+      "Ma'lumotlarni zip formatga o'tkazish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tizim o'zgarishi bilan voqea tuzilmalari o'zgarishi mumkin. Upcaster-lar eski voqealarni bazadan o'qib, o'sha vaqtning o'zida yangi ko'rinishga keltirib beradi."
+  },
+  {
+    "id": 10,
+    "question": "CQRS va Event Sourcing arxitekturasining asosiy kamchiligi nima?",
+    "options": [
+      "Faqat bitta tilda yozish mumkinligi",
+      "Tizimning murakkabligi, qo'shimcha kodlar (boilerplate), ma'lumotlarning yakuniy mosligi (consistency) va infratuzilmani boshqarish qiyinchiliklari",
+      "Tezlikning CRUD-ga qaraganda doimo past bo'lishi",
+      "Xavfsizlikning yo'qligi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tizim dizayni juda murakkablashadi, shutim chunki oddiy CRUD tizimlar uchun ushbu patternlar tavsiya etilmaydi."
+  },
+  {
+    "id": 11,
+    "question": "Event Sourcing-da xatolik yuz berganda ma'lumot qanday tuzatiladi?",
+    "options": [
+      "Event store-dagi yozuvni to'g'ridan-to'g'ri UPDATE qilib",
+      "Bakar bazani o'chirib qayta tiklab",
+      "Xatoni tuzatuvchi kompensatsiyalovchi yangi voqea (Compensating Event) qo'shish orqali",
+      "Xatoliklarni tuzatishning iloji yo'q"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Tarixni o'zgartirib bo'lmagani sababli, xato faqat teskari operatsiya yoki tuzatuvchi yangi voqea qo'shish orqali to'g'rilanadi."
+  },
+  {
+    "id": 12,
+    "question": "Saga na'munasi (Saga Pattern) qachon ishlatiladi?",
+    "options": [
+      "Faqat rasmlarni siqish kerak bo'lganda",
+      "Bir nechta mikroxizmatlar bo'ylab tarqalgan tranzaksiyalarni (distributed transactions) boshqarish va xatolik bo'lganda rollback/kompensatsiya voqealarini chaqirish uchun",
+      "Bitta bazadan boshqasiga backup olishda",
+      "UI animatsiyalarini boshqarishda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Mikroxizmatlarda yagona ACID tranzaksiyasi bo'lmagani sababli, Saga har bir qadam voqealarini boshqaradi va xato yuz berganda teskari rollback amallarini bajaradi."
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Continuous Deployment (CD) va Continuous Delivery o'rtasidagi asosiy farq nima?",
+    "options": [
+      "Continuous Deployment-da kod testlardan o'tgach avtomatik ravishda jonli serverga (production) joylanadi; Delivery-da esa deploy qilish uchun inson tasdig'i (manual trigger) talab etiladi",
+      "Continuous Delivery faqat mobil ilovalar uchun, Deployment esa faqat veb-saytlar uchun ishlatiladi",
+      "Continuous Deployment faqat local serverlarda ishlaydi",
+      "Hech qanday farqi yo'q, ikkalasi bir xil narsani anglatadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Continuous Delivery kodni istalgan vaqtda deploy qilishga tayyor holatda saqlaydi, lekin deploy qo'lda tasdiqlanadi. Continuous Deployment esa butun jarayonni to'liq avtomatlashtiradi."
+  },
+  {
+    "id": 2,
+    "question": "Vercel platformasi asosan qaysi turdagi ilovalar uchun eng qulay hosting hisoblanadi?",
+    "options": [
+      "Katta hajmdagi Java va C++ backend tizimlari",
+      "Frontend (React, Next.js, Vue) va serverless funksiyalar",
+      "Faqat relational ma'lumotlar bazalari",
+      "Faqat Docker konteynerlar"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Vercel asosan Jamstack, frontend frameworklar (Next.js kabi) va serverless arxitekturalar uchun eng mukammal va tezkor deployment platformasidir."
+  },
+  {
+    "id": 3,
+    "question": "SSH kalitlaridan foydalanib VPS serverga ulanishning parolli ulanishdan afzalligi nimada?",
+    "options": [
+      "Faqat tezkor yuklanishni ta'minlaydi",
+      "Brute-force (parol tanlash) hujumlaridan himoya qiladi va CI/CD-da parolsiz avtomatlashtirish imkonini beradi",
+      "Internet tezligini oshiradi",
+      "Serverdagi fayllarni avtomatik siqib beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "SSH kalitlari parollarga qaraganda ancha uzun va murakkab bo'lib, brute-force hujumlarini imkonsiz qiladi. Shuningdek, CI/CD skriptlariga parolni yozmasdan ulanish imkonini beradi."
+  },
+  {
+    "id": 4,
+    "question": "SSH ulanishini sozlashda serverning `~/.ssh/authorized_keys` fayliga qaysi kalit joylashtiriladi?",
+    "options": [
+      "Public key (Ochiq kalit)",
+      "Private key (Yopiq kalit)",
+      "SSL sertifikati",
+      "GitHub shaxsiy tokeni (PAT)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Serverga har doim Public Key (ochiq kalit) joylanadi. Private Key (yopiq kalit) esa sizning kompyuteringizda yoki GitHub Secrets-da maxfiy saqlanadi."
+  },
+  {
+    "id": 5,
+    "question": "GitHub Actions workflow orqali VPS-ga ulanishda shaxsiy SSH kalitimiz (Private Key) qayerda saqlanishi kerak?",
+    "options": [
+      "Repository ichidagi ochiq `.env` faylida",
+      "GitHub repository-ning 'Settings -> Secrets' bo'limida shifrlangan holda",
+      "Dockerfile ichida COPY buyrug'i yordamida",
+      "package.json ichidagi scriptlar bo'limida"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Maxfiy yopiq SSH kaliti hech qachon kod ichida ochiq yozilmasligi kerak. U xavfsiz tarzda GitHub Secrets-da saqlanadi."
+  },
+  {
+    "id": 6,
+    "question": "Docker Registry nima vazifani bajaradi?",
+    "options": [
+      "Kodni JavaScript-ga o'giruvchi transpayler",
+      "Tayyor Docker image-larini saqlash va ularni serverlarga tarqatish ombori (masalan, Docker Hub)",
+      "VPS serveridagi operatsion tizim turi",
+      "Faqat loglarni saqlovchi server"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Docker Registry (masalan Docker Hub, AWS ECR, GitHub Packages) - bu Docker tasvirlarini (imagelarini) saqlash va ularni deploy qilish uchun yuklab olish omboridir."
+  },
+  {
+    "id": 7,
+    "question": "GitHub Actions workflow-da Docker image build qilish jarayonini tezlashtirish uchun qaysi usul qo'llaniladi?",
+    "options": [
+      "Har safar barcha qatlamlarni noldan qayta qurish",
+      "Docker layer caching (qatlamli keshlash) va GitHub Actions cache backend-ni ishlatish",
+      "Docker loglarini o'chirib tashlash",
+      "Sinxron ishlarni asinxron qilish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Docker layer caching yordamida o'zgarmagan Docker qatlamlari keshdan olinadi va bu build jarayonini 5-10 barobargacha tezlashtiradi."
+  },
+  {
+    "id": 8,
+    "question": "AWS S3 xizmati CI/CD jarayonida odatda nima uchun qo'llaniladi?",
+    "options": [
+      "Dastur ma'lumotlar bazasini saqlash uchun",
+      "Statik frontend fayllarni (HTML, CSS, JS, rasmlar) saqlash va veb-sayt sifatida hosting qilish uchun",
+      "Faqat Node.js serverlarini ishga tushirish uchun",
+      "Virtual mashinalarni boshqarish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "AWS S3 (Simple Storage Service) - obyektli saqlash tizimi bo'lib, statik veb-saytlar hostingi va media fayllarni saqlash uchun juda mos keladi."
+  },
+  {
+    "id": 9,
+    "question": "AWS CloudFront CDN-dagi 'Cache Invalidation' nima degani?",
+    "options": [
+      "S3-dagi eski fayllarni to'liq o'chirib yuborish",
+      "CDN keshidagi eski fayllarni bekor qilib, tarmoq tugunlarini yangi fayllarni yuklashga majburlash",
+      "Saytni o'chirib qo'yish",
+      "Foydalanuvchilarni blocklash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CDN serverlari fayllarni keshda saqlaydi. Yangi versiya deploy bo'lganda, foydalanuvchilar eski versiyani ko'rib qolmasligi uchun keshni bekor qilish (Invalidation) buyrug'i beriladi."
+  },
+  {
+    "id": 10,
+    "question": "Nima uchun `.env` maxfiy faylini Docker image ichiga nusxalash (COPY .env) tavsiya etilmaydi?",
+    "options": [
+      "Chunki Docker image hajmi oshib ketadi",
+      "Chunki Docker image tarkibidagi barcha maxfiy kalitlar image qatlamlarida ochiq holda qolib ketadi va tarqalganda o'g'irlanishi mumkin",
+      "Bunday faylni Docker tanimaydi",
+      "Bu fayl Node.js-ga zarar yetkazadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Docker imagelari tarqatiladigan obyektlardir. Ularning ichiga sirlarni yozish xavfsizlikka ziddir. Atrof-muhit o'zgaruvchilari (env) konteyner ishga tushayotgan vaqtda (runtime) berilishi kerak."
+  },
+  {
+    "id": 11,
+    "question": "GitHub Actions-da parallel ishlovchi Job-larni ketma-ket bajariladigan qilish uchun qaysi atribut ishlatiladi?",
+    "options": [
+      "depends_on",
+      "needs",
+      "requires",
+      "after"
+    ],
+    "correctAnswer": 1,
+    "explanation": "GitHub Actions-da `needs` kalit so'zi orqali bitta job-ni boshqasiga bog'lab, ketma-ketlikni ta'minlaymiz."
+  },
+  {
+    "id": 12,
+    "question": "VPS serverda Node.js dasturi to'xtab qolmasdan va server restart bo'lganda ham avtomatik ishlab ketishi uchun qaysi vosita ishlatiladi?",
+    "options": [
+      "nodemon",
+      "PM2 (Process Manager 2)",
+      "npm start",
+      "node app.js"
+    ],
+    "correctAnswer": 1,
+    "explanation": "PM2 - bu Node.js uchun mukammal jarayonlar boshqaruvchisi. U ilovani monitoring qiladi, xatolikda qayta ishga tushiradi va server yonganda ham avtomatik yoqilishini ta'minlaydi."
+  }
+]

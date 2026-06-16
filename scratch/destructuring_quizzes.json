@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da destruptizatsiya (destructuring) nima?",
+    "options": [
+      "Massivlarni o'chirish va obyektlarni xotiradan tozalash usuli",
+      "Massiv elementlari va obyekt xossalarini alohida o'zgaruvchilarga oson ajratib olish (ochish) sintaksisi",
+      "Obyektlarni yangi class-ga o'tkazish uchun mo'ljallangan metod",
+      "Obyekt qiymatlarini faqat o'qish uchun bloklovchi operator"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Destructuring (ma'lumotlarni ochish) massiv yoki obyekt ichidagi qiymatlarni bitta qatorda alohida o'zgaruvchilarga o'zlashtirish imkonini beruvchi qulay ES6 sintaksisidir."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kod bajarilgandan keyin konsolga nima chiqadi?\n```javascript\nconst colors = ['red', 'green', 'blue'];\nconst [, color] = colors;\nconsole.log(color);\n```",
+    "options": [
+      "red",
+      "green",
+      "blue",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massiv destruptizatsiyasida vergullar orqali elementlarni tashlab ketish mumkin. Birinchi element tashlab ketilgan (red), shuning uchun color o'zgaruvchisiga ikkinchi element ya'ni 'green' yuklanadi."
+  },
+  {
+    "id": 3,
+    "question": "Obyektni destruptizatsiya qilishda o'zgaruvchini boshqa nom bilan saqlash (qayta nomlash) qanday sintaksis orqali amalga oshiriladi?",
+    "options": [
+      "const { oldName as newName } = obj;",
+      "const { oldName: newName } = obj;",
+      "const { oldName -> newName } = obj;",
+      "const { oldName = newName } = obj;"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da obyekt xossalarini qayta nomlash uchun ikki nuqta (:) operatori ishlatiladi, masalan: const { oldName: newName } = obj;."
+  },
+  {
+    "id": 4,
+    "question": "Obyektda mavjud bo'lmagan xossa destruptizatsiya qilinganda unga standart (default) qiymat qanday beriladi?",
+    "options": [
+      "const { role = 'guest' } = user;",
+      "const { role: 'guest' } = user;",
+      "const { role as 'guest' } = user;",
+      "const { role == 'guest' } = user;"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Default qiymat berish uchun tenglik (=) belgisidan foydalaniladi. Agarda obyektda role xossasi bo'lmasa yoki undefined bo'lsa, unga 'guest' biriktiriladi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst user = { name: 'Ali', age: 25 };\nconst { name: userName, age } = user;\nconsole.log(name);\n```",
+    "options": [
+      "Ali",
+      "25",
+      "ReferenceError yoki xatolik yuz beradi",
+      "undefined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Obyekt xossasini name: userName ko'rinishida qayta nomlaganimizda, faqat yangi yaratilgan userName o'zgaruvchisi mavjud bo'ladi. name nomli o'zgaruvchi umuman yaratilmaganligi sababli ReferenceError yuzaga keladi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilgandan keyin x va y ning qiymati nima bo'ladi?\n```javascript\nlet x = 5, y = 10;\n[x, y] = [y, x];\n```",
+    "options": [
+      "x = 5, y = 10",
+      "x = 10, y = 5",
+      "x = 10, y = 10",
+      "x = 5, y = 5"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massiv destruptizatsiyasi yordamida o'zgaruvchilar qiymatini uchinchi vaqtinchalik o'zgaruvchisiz osongina almashtirish mumkin. [x, y] = [y, x] yozilganda x 10 ga, y esa 5 ga teng bo'ladi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kod bajarilganda nima sodir bo'ladi?\n```javascript\nconst { email } = null;\n```",
+    "options": [
+      "email o'zgaruvchisi undefined bo'ladi",
+      "email o'zgaruvchisi null bo'ladi",
+      "TypeError (Cannot destructure property of null) yuz beradi",
+      "Dastur xatoliksiz, jimgina ishini davom ettiradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "null va undefined qiymatlarini destruptizatsiya qilib bo'lmaydi, chunki ulardan xossalarni o'qib bo'lmaydi. Bu TypeError xatoligiga olib keladi."
+  },
+  {
+    "id": 8,
+    "question": "Rest operatori (...rest) yordamida obyektning qolgan xossalarini ajratib olayotganda qaysi shart bajarilishi majburiy?",
+    "options": [
+      "Rest operatoridan faqat bitta xossani olishda foydalanish mumkin",
+      "Rest operatori har doim destruptizatsiya ro'yxatining eng oxirida yozilishi shart",
+      "Rest operatori faqat birinchi indeksda turishi kerak",
+      "Rest operatori faqat sonli xossalar uchun ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Rest operatori (...rest) qolgan barcha xossalarni yig'ib olishi uchun u har doim destruptizatsiya sintaksisida eng oxirgi element bo'lib kelishi shart."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod bajarilgach rest ning qiymati nima bo'ladi?\n```javascript\nconst [first, ...rest] = [1, 2, 3, 4];\n```",
+    "options": [
+      "2",
+      "[2, 3, 4]",
+      "[3, 4]",
+      "[1, 2, 3, 4]"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massiv destruptizatsiyasida rest operatori qolgan barcha elementlarni yangi massivga yig'adi. Shuning uchun rest massiv ko'rinishida [2, 3, 4] bo'ladi."
+  },
+  {
+    "id": 10,
+    "question": "Ichma-ich (nested) joylashgan xossalarni destruptizatsiya qilishda qanday xavf bor?",
+    "options": [
+      "Ichki obyektlar har doim readonly bo'lib qoladi",
+      "Agar tashqi obyekt mavjud bo'lmasa (undefined bo'lsa), TypeError yuzaga keladi",
+      "Ichki destruptizatsiya kodni sekinlashtiradi va xotirani to'ldiradi",
+      "Faqat bitta darajagacha ichkariga kirish mumkin"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ichma-ich destruptizatsiyada (masalan, const { address: { city } } = user;), agar address xossasi mavjud bo'lmasa (undefined bo'lsa), undefineddan cityni o'qishga urinish tufayli TypeError yuz beradi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod bajarilgandan keyin city o'zgaruvchisining qiymati nima bo'ladi?\n```javascript\nconst user = { name: 'Vali' };\nconst { address: { city } = { city: 'Toshkent' } } = user;\n```",
+    "options": [
+      "undefined",
+      "Toshkent",
+      "TypeError",
+      "ReferenceError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "user obyektida address xossasi mavjud bo'lmagani (undefined bo'lgani) untuk default qiymat sifatida berilgan { city: 'Toshkent' } obyekti ishlatiladi va undan city qiymati ochib olinib, 'Toshkent'ga teng bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "Satrni (string) destruptizatsiya qilish mumkinmi? Masalan: `const [char1, char2] = \"JS\";`",
+    "options": [
+      "Yo'q, faqat obyekt va massivlarni destruptizatsiya qilish mumkin",
+      "Ha, chunki satrlar iteratsiya qilinuvchi (iterable) obyektlardir, char1 'J' va char2 'S' bo'ladi",
+      "Faqat typeof 'object' bo'lgan satrlarda ishlaydi",
+      "Ha, lekin ikkala o'zgaruvchi ham butun satrni oladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Satrlar (strings) iteratsiya qilinuvchi obyektlar bo'lgani sababli ularni xuddi massivlar kabi destruptizatsiya qilish mumkin. Natijada har bir belgi alohida o'zgaruvchiga o'zlashtiriladi."
+  }
+]

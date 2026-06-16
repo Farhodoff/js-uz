@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "`if` operatori JavaScript-da nima uchun ishlatiladi?",
+    "options": [
+      "Dasturni cheksiz takrorlash (sikl) yaratish uchun",
+      "Koddagi ma'lum bir qismni faqat berilgan shart to'g'ri (truthy) bo'lgandagina bajarish uchun",
+      "O'zgaruvchilar turini aniqlash uchun",
+      "Obyektlarni massivga aylantirish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`if` operatori shartni tekshiradi va u to'g'ri (truthy) bo'lsa, o'z blokidagi kodni ishga tushiradi."
+  },
+  {
+    "id": 2,
+    "question": "Qaysi kalit so'z `if` sharti noto'g'ri (falsy) bo'lganda boshqa kod blokini ishlatish uchun xizmat qiladi?",
+    "options": [
+      "`then`",
+      "`elseif`",
+      "`else`",
+      "`otherwise`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`else` kalit so'zi `if` sharti bajarilmaganda (false bo'lganda) bajariladigan muqobil kod blokini belgilaydi."
+  },
+  {
+    "id": 3,
+    "question": "Bir nechta shartlarni ketma-ket tekshirish uchun qaysi sintaksis to'g'ri hisoblanadi?",
+    "options": [
+      "`else if (shart)`",
+      "`elseif (shart)`",
+      "`else(shart)`",
+      "`if else (shart)`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JavaScript-da bir nechta shartlar ketma-ketligini yozish uchun `else if (shart)` shaklida alohida kalit so'zlardan foydalaniladi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst score = 75;\nif (score > 80) {\n  console.log('A');\n} else if (score > 60) {\n  console.log('B');\n} else {\n  console.log('C');\n}\n```",
+    "options": [
+      "`A`",
+      "`B`",
+      "`C`",
+      "Hech narsa chiqmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`score = 75` birinchi `score > 80` shartini qanoatlantirmaydi (false). Ikkinchi shart `score > 60` (75 > 60) esa to'g'ri (true), shuning uchun 'B' chiqadi."
+  },
+  {
+    "id": 5,
+    "question": "JavaScript-da quyidagi qiymatlardan qaysi biri shart tekshirilayotganda avtomatik ravishda `false` (falsy) deb baholanmaydi?",
+    "options": [
+      "`0`",
+      "`\"\"` (bo'sh satr)",
+      "`[]` (bo'sh massiv)",
+      "`undefined`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-da bo'sh massiv `[]` va bo'sh obyekt `{}` har doim `truthy` (to'g'ri) deb baholanadi. `0`, `\"\"`, `null`, `undefined` va `NaN` esa `falsy` qiymatlardir."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilganda nima chop etiladi?\n```javascript\nif (\"0\") {\n  console.log(\"Salom\");\n} else {\n  console.log(\"Xayr\");\n}\n```",
+    "options": [
+      "`\"Xayr\"`",
+      "`\"Salom\"`",
+      "`undefined`",
+      "Xatolik yuz beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`\"0\"` — bu bo'sh bo'lmagan satr (string). Har qanday bo'sh bo'lmagan satr truthy hisoblanadi, shuning uchun 'Salom' chiqadi. (Raqamli `0` falsy bo'lsa-da, string `\"0\"` truthy'dir)."
+  },
+  {
+    "id": 7,
+    "question": "Ternary (uchlik) operatori nima va u qanday yoziladi?",
+    "options": [
+      "`shart ? ifoda1 : ifoda2` ko'rinishidagi qisqa if-else yozilishi",
+      "Uchta `if` shartining birlashmasi",
+      "Faqat uchta o'zgaruvchini solishtiradigan operator",
+      "`if (shart) { else }` operatorining sinonimi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ternary operator shartni tekshiradi, agar u to'g'ri bo'lsa `?` dan keyingi birinchi ifodani, noto'g'ri bo'lsa `:` dan keyingi ikkinchi ifodani bajaradi va qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nconst age = 20;\nconst result = age >= 18 ? \"Kattalar\" : \"Bolalar\";\nconsole.log(result);\n```",
+    "options": [
+      "`\"Bolalar\"`",
+      "`\"Kattalar\"`",
+      "`true`",
+      "`undefined`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`age >= 18` (20 >= 18) sharti true bo'lgani uchun, ternary operator `?` belgisidan keyingi 'Kattalar' qiymatini qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "Qaysi holatda `if` va `else` bloklari atrofidagi jingalak qavslarni `{}` tushirib qoldirish (yozmaslik) mumkin?",
+    "options": [
+      "Hech qachon mumkin emas, qavslar majburiy",
+      "Faqat shart ichida solishtirish operatori bo'lsa",
+      "Agar blok ichida faqat bitta operator (buyruq) mavjud bo'lsa",
+      "Faqat o'zgaruvchi `let` bilan e'lon qilinganda"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Dasturchilar orasida tavsiya etilmasa-da, agar `if` yoki `else` blokida faqat bitta buyruq bo'lsa, jingalak qavslarni `{}` yozmaslik mumkin."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nlet x = 10;\nif (x = 5) {\n  console.log(\"Teng\");\n} else {\n  console.log(\"Teng emas\");\n}\n```",
+    "options": [
+      "`\"Teng emas\"`",
+      "`\"Teng\"`",
+      "Xatolik (SyntaxError) beradi",
+      "Hech narsa chiqmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`x = 5` bu solishtirish emas, qiymat yuklashdir. `x` ga 5 qiymati yuklanadi va bu ifoda `5` ni qaytaradi. `5` raqami esa `truthy` bo'lgani uchun shart bajariladi va 'Teng' deb chiqadi."
+  },
+  {
+    "id": 11,
+    "question": "Short-circuit (qisqa tutashuv) yordamida quyidagi kod blokini qanday qisqartirish mumkin?\n```javascript\nif (isLoggedIn) {\n  showDashboard();\n}\n```",
+    "options": [
+      "`isLoggedIn || showDashboard()`",
+      "`isLoggedIn && showDashboard()`",
+      "`isLoggedIn ? showDashboard()`",
+      "`isLoggedIn == showDashboard()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`&&` operatori birinchi qiymat true bo'lsagina keyingisini bajaradi. Shuning uchun `isLoggedIn && showDashboard()` ifodasi `isLoggedIn` true bo'lsa `showDashboard()` ni ishga tushiradi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst val = null;\nif (val) {\n  console.log(\"A\");\n} else if (val === null) {\n  console.log(\"B\");\n} else {\n  console.log(\"C\");\n}\n```",
+    "options": [
+      "`\"A\"`",
+      "`\"B\"`",
+      "`\"C\"`",
+      "`null`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`val` qiymati `null` bo'lgani sababli u `falsy` va birinchi `if (val)` bloki ishlamaydi. Ikkinchi shart esa qat'iy tenglikni tekshiradi (`val === null`), bu to'g'ri (true) bo'lgani uchun konsolga 'B' chiqadi."
+  }
+]

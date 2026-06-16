@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Hash-based Sharding algoritmi",
+    "instruction": "Foydalanuvchining ID-sini (userId) va jami shardlar sonini (totalShards) qabul qilib, uning qaysi shard indeksiga (0 dan totalShards - 1 gacha) yozilishini aniqlaydigan `getShardIndex(userId, totalShards)` funksiyasini yozing. Buning uchun userId satridagi barcha belgilarning ASCII qiymatlari (charCodeAt) yig'indisini hisoblab, uni jami shardlar soniga bo'lgandagi qoldiqni qaytaring.",
+    "startingCode": "function getShardIndex(userId, totalShards) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "userId satrini aylanib chiqib, har bir belgi uchun codePoint yoki charCodeAt() qiymatini yig'ing va totalShards-ga modul (qoldiq) oling.",
+    "test": "if (typeof getShardIndex !== 'function') return 'getShardIndex topilmadi'; if (getShardIndex('user1', 3) !== 2) return 'user1 uchun shard indeks noto\\'g\\'ri'; if (getShardIndex('abc', 4) !== 2) return 'abc uchun shard indeks noto\\'g\\'ri'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Read-Write Splitting Router",
+    "instruction": "Ma'lumotlar bazasiga yuborilayotgan SQL so'rovini tekshirib, unga mos ravishda qaysi serverga yo'naltirish kerakligini aniqlovchi `routeQuery(sql)` funksiyasini yozing. Agar so'rov `SELECT` kalit so'zi bilan boshlansa `SLAVE`, aks holda (`INSERT`, `UPDATE`, `DELETE` va boshqalar) `MASTER` qiymatini qaytaring. Katta-kichik harflarni hisobga oling (masalan, `select` yoki `SELECT` bo'lsa ham `SLAVE` bo'lsin).",
+    "startingCode": "function routeQuery(sql) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "trim() qiling va so'rovning boshlanishini 'select' bilan solishtiring (toLowerCase orqali).",
+    "test": "if (typeof routeQuery !== 'function') return 'routeQuery topilmadi'; if (routeQuery('SELECT * FROM users') !== 'SLAVE') return 'SELECT so\\'rovi Slave serverga borishi kerak'; if (routeQuery('insert into users values(1)') !== 'MASTER') return 'INSERT so\\'rovi Master serverga borishi kerak'; if (routeQuery('  select name from items') !== 'SLAVE') return 'Boshliqlar bilan kelgan select so\\'rovi xato'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "2PC Coordinator Vote Checker",
+    "instruction": "Ikki fazali tranzaksiya (Two-Phase Commit) koordinatorining ovoz berish (Prepare Phase) bosqichini simulyatsiya qiling. `checkPrepareVotes(votes)` funksiyasi ovozlar massivini qabul qiladi (masalan, `['VOTE_COMMIT', 'VOTE_COMMIT']`). Agar barcha ishtirokchilar `VOTE_COMMIT` ovozini bergan bo'lsa, funksiya `GLOBAL_COMMIT` qaytarishi kerak. Agar bitta bo'lsa ham `VOTE_ABORT` bo'lsa yoki massiv bo'sh bo'lsa, `GLOBAL_ABORT` qaytaring.",
+    "startingCode": "function checkPrepareVotes(votes) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "Massivda har bir element 'VOTE_COMMIT' ekanligini va massiv bo'sh emasligini tekshiring.",
+    "test": "if (typeof checkPrepareVotes !== 'function') return 'checkPrepareVotes topilmadi'; if (checkPrepareVotes(['VOTE_COMMIT', 'VOTE_COMMIT']) !== 'GLOBAL_COMMIT') return 'Barcha commit ovoz berilganda xato'; if (checkPrepareVotes(['VOTE_COMMIT', 'VOTE_ABORT']) !== 'GLOBAL_ABORT') return 'Bitta abort bo\\'lganda global abort bo\\'lishi kerak'; if (checkPrepareVotes([]) !== 'GLOBAL_ABORT') return 'Bo\\'sh massiv holatida abort bo\\'lishi kerak'; return null;"
+  }
+]

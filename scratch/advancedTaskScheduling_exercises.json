@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "title": "1️⃣ Prioritetli Vazifalar Boshqaruvchisi (Prioritized Task Scheduler)",
+    "instruction": "Har xil ustuvorlikdagi topshiriqlarni ('high', 'medium', 'low') qabul qilib, ularni navbat bo'yicha (avval barcha 'high', keyin 'medium', keyin 'low') asinxron ravishda bajaruvchi `PriorityTaskScheduler` klassini yarating. Metodlar:\n- `addTask(fn, priority)`: vazifani mos ustuvorlikdagi navbatga qo'shadi.\n- `runAll(callback)`: barcha vazifalarni ustuvorlik navbatida asinxron bajaradi va tugagach callback-ni chaqiradi.",
+    "startingCode": "class PriorityTaskScheduler {\n  constructor() {\n    this.queues = { high: [], medium: [], low: [] };\n  }\n\n  addTask(fn, priority = 'medium') {\n    // Kodni shu yerda yozing\n  }\n\n  runAll(callback) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "AddTask metodida funksiyani this.queues[priority]-ga yuboring. runAll-da esa queue zanjirini Promise-lar yoki ketma-ket microtask-lar orqali chaqiring (masalan, avval high elementlarini, keyin qolganlarini asinxron run qilib, eng oxirida callback-ni ishga tushiring).",
+    "test": "const scheduler = new PriorityTaskScheduler();\nconst order = [];\nscheduler.addTask(() => order.push('low'), 'low');\nscheduler.addTask(() => order.push('high'), 'high');\nscheduler.addTask(() => order.push('medium'), 'medium');\nscheduler.runAll(() => {\n  if (order.join(',') !== 'high,medium,low') {\n    throw new Error('Vazifalar ustuvorlik bo\\'yicha bajarilmadi: ' + order.join(','));\n  }\n});\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "2️⃣ Microtask Checkpoint Simulyatori (Microtask Checkpoint Simulator)",
+    "instruction": "Event Loop microtask checkpoint loop mexanizmini simulyatsiya qiladigan `simulateMicrotaskCheckpoint(queue)` funksiyasini yozing. Funksiya massiv ko'rinishidagi navbatni oladi. U navbatdagi har bir funksiyani bajaradi. Agar bajarilayotgan funksiya ichida yangi microtask qo'shilsa (masalan, funksiya `queue.push(newFn)` qilsa), u ham joriy checkpoint-da (navbat to'liq bo'shaguncha) bajarilishi shart. Cheksiz sikllardan saqlanish uchun maksimal bajarilish limitini 100 ta topshiriq qilib belgilang va undan oshsa `Error` tashlang.",
+    "startingCode": "function simulateMicrotaskCheckpoint(queue) {\n  let count = 0;\n  // Kodni shu yerda yozing\n}",
+    "hint": "while (queue.length > 0) siklini ishlating. Har safar queue.shift() orqali birinchi elementni olib chaqiring va count-ni oshiring. Agar count > 100 bo'lsa, xato tashlang.",
+    "test": "const q = [];\nq.push(() => {\n  q.push(() => {});\n});\nsimulateMicrotaskCheckpoint(q);\nif (q.length !== 0) return 'Navbat to\\'liq bo\\'shamadi!';\n\nconst infiniteQ = [];\ninfiniteQ.push(function loop() {\n  infiniteQ.push(loop);\n});\ntry {\n  simulateMicrotaskCheckpoint(infiniteQ);\n  return 'Cheksiz sikl aniqlanmadi!';\n} catch(e) {\n  return null;\n}"
+  },
+  {
+    "id": 3,
+    "title": "3️⃣ Chunked Iterator va Asosiy Oqimni Bo'shatish (Yielding Chunked Iterator)",
+    "instruction": "Katta hajmdagi massiv elementlarini asosiy oqimni (main thread) bloklamasdan qayta ishlash uchun `chunkedProcess(items, processor, chunkSize)` funksiyasini yozing. Funksiya har safar `chunkSize` miqdordagi elementni sinxron bajarib, keyingi qismini asinxron tarzda `setTimeout(..., 0)` orqali navbatga qo'yishi lozim. Funksiya barcha elementlar tugagach hal bo'ladigan Promise qaytarsin.",
+    "startingCode": "function chunkedProcess(items, processor, chunkSize) {\n  return new Promise((resolve) => {\n    // Kodni shu yerda yozing\n  });\n}",
+    "hint": "Recursion va setTimeout-dan foydalanib, massivni bo'laklarga ajratib ishlang. Har bir bo'lakdan keyin keyingi iteratsiyani setTimeout(..., 0) orqali chaqiring.",
+    "test": "const items = Array.from({ length: 25 }, (_, i) => i);\nconst processed = [];\nchunkedProcess(items, (item) => processed.push(item), 10).then(() => {\n  if (processed.length !== 25) throw new Error('Barcha elementlar qayta ishlanmadi!');\n});\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "4️⃣ Event Loop Tartibini Bashorat Qilish (Event Loop Predictor)",
+    "instruction": "Quyidagi kod bajarilganda konsolga chiqadigan loglar tartibini aniqlang va massiv shaklida qaytaring:\n1. `console.log('start')` (sinxron)\n2. `setTimeout(() => console.log('timeout'), 0)` (macrotask)\n3. `Promise.resolve().then(() => console.log('promise'))` (microtask)\n4. `requestAnimationFrame(() => console.log('raf'))` (rAF)\n5. `console.log('end')` (sinxron)\n\nTo'g'ri tartibdagi massivni qaytaring.",
+    "startingCode": "function predictOrder() {\n  // To'g'ri ketma-ketlikni massiv shaklida qaytaring\n  return [];\n}",
+    "hint": "Sinxron kodlar birinchi bajariladi. Keyin microtask. Undan keyin brauzer render kadrini yangilaydi (requestAnimationFrame). Eng oxirida macrotask (setTimeout).",
+    "test": "const order = predictOrder();\nif (order.join(',') !== 'start,end,promise,raf,timeout') {\n  return 'Tartib xato: ' + order.join(',');\n}\nreturn null;"
+  },
+  {
+    "id": 5,
+    "title": "5️⃣ Animation Frame Scheduler (Render Sinxronizatsiyasi)",
+    "instruction": "DOM o'zgarishlarini bitta kadrda guruhlovchi `FrameScheduler` klassini yarating. Metodlar:\n- `scheduleUpdate(fn)`: funksiyani navbatga qo'shadi va agar requestAnimationFrame hali rejalashtirilmagan bo'lsa, uni rejalashtiradi.\n- Barcha rejalashtirilgan yangilanishlar navbatdagi kadrda (bitta requestAnimationFrame callback ichida) navbat bilan bajarilishi va navbat bo'shatilishi kerak.",
+    "startingCode": "class FrameScheduler {\n  constructor() {\n    this.tasks = [];\n    this.scheduled = false;\n  }\n\n  scheduleUpdate(fn) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "Vazifalarni tasks massiviga qo'shing. Agar scheduled false bo'lsa, requestAnimationFrame chaqirib, uning ichida barcha vazifalarni bajaring, scheduled-ni false qiling va tasks massivini bo'shating.",
+    "test": "const scheduler = new FrameScheduler();\nlet count = 0;\nscheduler.scheduleUpdate(() => count += 1);\nscheduler.scheduleUpdate(() => count += 2);\n// Sinxron ravishda count hali 0 bo'lishi kerak\nif (count !== 0) return 'Yangilanish sinxron bajarilib ketdi!';\nreturn null;"
+  },
+  {
+    "id": 6,
+    "title": "6️⃣ postTask Polifilli Simulyatori (postTask Polyfill)",
+    "instruction": "Scheduler API (`scheduler.postTask`) o'xshash bo'lgan va Promise qaytaradigan `postTaskMock(fn, options)` funksiyasini yarating. Options parametri `priority` ('user-blocking', 'user-visible', 'background') va `delay` (ms) qabul qiladi. Vazifalar asinxron MessageChannel yoki setTimeout yordamida bajarilishi kerak.",
+    "startingCode": "function postTaskMock(fn, options = {}) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Agar delay bo'lsa setTimeout ishlating. Agar yo'q bo'lsa, priority-ga mos ravishda Promise.resolve().then (user-blocking/microtask) yoki setTimeout (user-visible/background/macrotask) yordamida rejalashtiring.",
+    "test": "postTaskMock(() => 42).then(res => {\n  if (res !== 42) throw new Error('Natija xato!');\n});\nreturn null;"
+  },
+  {
+    "id": 7,
+    "title": "7️⃣ requestIdleCallback Background Scheduler",
+    "instruction": "Uzoq orqa fon vazifalarini (`tasks`) brauzer bo'sh bo'lgan paytda `requestIdleCallback` yordamida bajaruvchi `runIdleTasks(tasks)` funksiyasini yozing. Har bir task-ga `deadline` obyekti beriladi. Agar `deadline.timeRemaining() > 5` bo'lsa, navbatdagi vazifani bajaring, aks holda keyingi bo'sh vaqtga (requestIdleCallback orqali) qoldiring. Hamma vazifalar bajarilgach hal bo'luvchi Promise qaytaring.",
+    "startingCode": "function runIdleTasks(tasks) {\n  return new Promise((resolve) => {\n    // Kodni shu yerda yozing\n  });\n}",
+    "hint": "Har bir requestIdleCallback chaqiruvida loop yozib, timeRemaining() shartini tekshirib tasks.shift() qiling. Agar tasks tugasa resolve() chaqiring, aks holda yana requestIdleCallback rejalashtiring.",
+    "test": "const tasks = [() => 1, () => 2];\nrunIdleTasks(tasks).then(() => {\n  if (tasks.length !== 0) throw new Error('Vazifalar to\\'liq tugatilmadi!');\n});\nreturn null;"
+  },
+  {
+    "id": 8,
+    "title": "8️⃣ Asosiy Oqim Bloklanishi Detektori (Main-Thread Blocking Detector)",
+    "instruction": "Asosiy oqim (main thread) bloklanganligini aniqlash uchun `BlockingDetector` klassini yarating. U ma'lum vaqt oralig'ida (`intervalMs`) `setInterval` yoki `setTimeout` yordamida event loop aylanish vaqtini o'lchaydi. Agar kutilgan vaqtdan ko'ra ko'p vaqt o'tgan bo'lsa (ya'ni lag `thresholdMs` dan oshsa), u `onBlock(lag)` callback funksiyasini ishga tushirishi kerak. Metodlar: `start()`, `stop()`.",
+    "startingCode": "class BlockingDetector {\n  constructor(intervalMs, thresholdMs, onBlock) {\n    this.intervalMs = intervalMs;\n    this.thresholdMs = thresholdMs;\n    this.onBlock = onBlock;\n    this.timer = null;\n  }\n\n  start() {\n    // Kodni shu yerda yozing\n  }\n\n  stop() {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "start() ichida recurrent setTimeout ishlating. Har safar chaqirilganda Performance.now() orqali o'tgan vaqtni o'lchab, intervalMs + thresholdMs dan katta bo'lsa onBlock(lag) chaqiring.",
+    "test": "let blocked = false;\nconst detector = new BlockingDetector(10, 5, () => blocked = true);\ndetector.start();\ndetector.stop();\nreturn null;"
+  },
+  {
+    "id": 9,
+    "title": "9️⃣ Batch-Updater Queue (Sinxron o'zgarishlarni guruhlash)",
+    "instruction": "Bir nechta ketma-ket yuz bergan o'zgarishlarni bitta yangilanishga guruhlab (batching), keyingi microtask checkpoint-da ishga tushiradigan `BatchUpdater` klassini yarating. Metodlar:\n- `addUpdate(key, value)`: key bo'yicha qiymatni keshda yangilaydi va bir marta microtask rejalashtiradi.\n- `flush()`: barcha yig'ilgan `updates` keshini `onFlush(updates)` callback-ga uzatadi va keshni tozalaydi.\n- Barcha yangilanishlar faqat bir marta microtask navbatida flush qilinishi kerak.",
+    "startingCode": "class BatchUpdater {\n  constructor(onFlush) {\n    this.onFlush = onFlush;\n    this.updates = {};\n    this.scheduled = false;\n  }\n\n  addUpdate(key, value) {\n    // Kodni shu yerda yozing\n  }\n\n  flush() {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "addUpdate ichida this.updates[key] = value yozing. Agar this.scheduled false bo'lsa, uni true qilib queueMicrotask(() => this.flush()) chaqiring. flush ichida onFlush-ga keshni berib, scheduled-ni false qiling va keshni bo'shating.",
+    "test": "let updatesCount = 0;\nconst updater = new BatchUpdater((upd) => {\n  updatesCount++;\n  if (upd.a !== 2 || upd.b !== 3) throw new Error('Noto\\'g\\'ri qiymat keshlandi!');\n});\nupdater.addUpdate('a', 1);\nupdater.addUpdate('a', 2);\nupdater.addUpdate('b', 3);\n// flush() microtask checkpoint loopda asinxron chaqirilishi kerak\nreturn null;"
+  },
+  {
+    "id": 10,
+    "title": "🔟 Macro-Micro Queue Mixer (Event Loop simulyatsiyasi)",
+    "instruction": "Berilgan macrotasks va microtasks massivlarini HTML5 Event Loop spetsifikatsiyasi bo'yicha tartiblab bajaruvchi va bajarilish logini qaytaruvchi `mixQueues(macroTasks, microTasks)` funksiyasini yozing. Har bir task `{ name: string, run: Function }` obyektidir. Bajarilish qoidalari:\n1. Dastlab microtasks navbatidagi barcha vazifalar to'liq bajariladi.\n2. Keyin bitta macrotask olinadi va bajariladi.\n3. Undan so'ng yana microtasks navbati tekshiriladi va agar yangi microtasks qo'shilgan bo'lsa, to'liq bajariladi.\n4. Keyingi macrotask bajariladi va h.k. Bajarilgan tasklarning `name` qiymatlarini ketma-ketlikda massiv qilib qaytaring.",
+    "startingCode": "function mixQueues(macroTasks, microTasks) {\n  const result = [];\n  // Kodni shu yerda yozing\n  return result;\n}",
+    "hint": "while (macroTasks.length > 0 || microTasks.length > 0) siklini yozing. Sikl ichida avval microTasks.length > 0 bo'lganda hammasini bajarib, result-ga push qiling. Keyin bitta macroTask bajarib, result-ga push qiling.",
+    "test": "const macros = [{ name: 'macro1', run: () => {} }, { name: 'macro2', run: () => {} }];\nconst micros = [{ name: 'micro1', run: () => {} }];\nconst res = mixQueues(macros, micros);\nif (res.join(',') !== 'micro1,macro1,macro2') {\n  return 'Tartib xato: ' + res.join(',');\n}\nreturn null;"
+  }
+]

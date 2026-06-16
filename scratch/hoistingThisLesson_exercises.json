@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Funksiya Ifodasining Hoisting Muammosi",
+    "instruction": "Quyidagi kodda `greetUsers` funksiyasi ichida `sayHello` (Function Declaration) va `sayGoodbye` (Function Expression) funksiyalari chaqirilgan. `sayHello` to'liq hoisting bo'lgani sababli uni e'lon qilishdan oldin chaqirib bo'ladi. Ammo `sayGoodbye` o'zgaruvchiga yuklanganligi sababli (TDZ tufayli) uni e'lon qilishdan oldin chaqirish `ReferenceError` xatosini beradi. Kodni shunday o'zgartiringki, `sayGoodbye` funksiyasi chaqirilishidan oldin e'lon qilinsin va funksiya 'Salom va Xayr' qiymatini xatosiz qaytarsin.",
+    "startingCode": "function greetUsers() {\n  const hello = sayHello();\n  const goodbye = sayGoodbye();\n\n  function sayHello() {\n    return \"Salom\";\n  }\n\n  const sayGoodbye = function() {\n    return \"Xayr\";\n  };\n\n  return hello + \" va \" + goodbye;\n}\n",
+    "hint": "sayGoodbye o'zgaruvchisini va unga biriktirilgan funksiya ifodasini `const goodbye = sayGoodbye();` qatoridan oldinga o'tkazing.",
+    "test": "try {\n  const sandbox = new Function(code + '; return greetUsers;');\n  const fn = sandbox();\n  const res = fn();\n  if (res !== 'Salom va Xayr') {\n    return 'greetUsers funksiyasi \"Salom va Xayr\" qaytarishi kerak, hozir: ' + res;\n  }\n  const cleanCode = code.replace(/\\s+/g, '');\n  const declGoodbye = cleanCode.indexOf('constsayGoodbye=function');\n  const callGoodbye = cleanCode.indexOf('sayGoodbye()');\n  if (declGoodbye === -1) {\n    return 'sayGoodbye funksiyasini const sayGoodbye = function() { ... } ko\\'rinishida saqlang.';\n  }\n  if (declGoodbye > callGoodbye) {\n    return 'sayGoodbye funksiyasi chaqirilishidan oldin e\\'lon qilinishi shart.';\n  }\n  return null;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
+  },
+  {
+    "id": 2,
+    "title": "var Hoisting va Soyalash (Shadowing)",
+    "instruction": "Quyidagi kodda global `score = 10` qiymatiga ega. `play` funksiyasi ichida `if (score > 5)` sharti bajarilib, 'Yutdingiz' qaytarilishi kutilgan edi. Biroq, funksiya ichidagi `var score = 3;` e'loni hoisting bo'lgani sababli, `score` funksiya boshida `undefined` bo'lib qoladi va shart bajarilmay, 'Yutqazdingiz' qaytadi. Muammoni hal qilish uchun funksiya ichidagi local o'zgaruvchini boshqa nomga (masalan, `localScore`) o'zgartiring (va uni e'lon qilishda `let` yoki `const` dan foydalaning) toki u global `score` bilan to'qnashmasin va funksiya to'g'ri ishlasin.",
+    "startingCode": "var score = 10;\n\nfunction play() {\n  if (score > 5) {\n    return \"Yutdingiz\";\n  }\n  var score = 3;\n  return \"Yutqazdingiz\";\n}\n",
+    "hint": "Funksiya ichidagi var score = 3 e'lonini o'chirib, o'rniga let localScore = 3 ko'rinishida yozing va uning nomini o'zgartiring.",
+    "test": "try {\n  const sandbox = new Function(code + '; return play;');\n  const fn = sandbox();\n  const res = fn();\n  if (res !== 'Yutdingiz') {\n    return 'play funksiyasi \"Yutdingiz\" qaytarishi kerak, hozir: ' + res;\n  }\n  if (code.includes('var score =') || code.includes('var score=')) {\n    return 'Funksiya ichidagi var score e\\'lonini olib tashlang yoki o\\'zgartiring.';\n  }\n  return null;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
+  },
+  {
+    "id": 3,
+    "title": "Temporal Dead Zone (TDZ) va let/const",
+    "instruction": "Quyidagi funksiyada `console.log(message)` chaqirilganda TDZ sababli xatolik bermoqda. O'zgaruvchilar va ularning ishlatilish tartibini shunday to'g'rilangki, xatolik bartaraf etilsin va funksiya 'Salom Dunyo!' qiymatini qaytarsin. `let` o'zgaruvchisini to'g'ri joyda e'lon qiling.",
+    "startingCode": "function formatMessage() {\n  console.log(message);\n  let message = \"Salom Dunyo!\";\n  return message;\n}\n",
+    "hint": "message o'zgaruvchisini uni ishlatayotgan console.log va return qatorlaridan yuqorida e'lon qiling.",
+    "test": "try {\n  const sandbox = new Function(code + '; return formatMessage;');\n  const fn = sandbox();\n  const res = fn();\n  if (res !== 'Salom Dunyo!') {\n    return 'formatMessage funksiyasi \"Salom Dunyo!\" qaytarishi kerak.';\n  }\n  const cleanCode = code.replace(/\\s+/g, '');\n  const declIdx = cleanCode.indexOf('letmessage=');\n  const consoleIdx = cleanCode.indexOf('console.log(message)');\n  if (declIdx === -1) {\n    return 'let message = ... e\\'lonini saqlab qoling.';\n  }\n  if (declIdx > consoleIdx) {\n    return 'let message e\\'loni console.log dan oldin bo\\'lishi kerak.';\n  }\n  return null;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
+  }
+]

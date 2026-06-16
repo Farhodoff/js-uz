@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "State Machine Replication",
+    "instruction": "Taqsimlangan tizimda loglardagi buyruqlarni ketma-ket bajarib boruvchi state machine replikatsiyasini yarating. `applyLog(state, logEntry)` funksiyasini yozing. U berilgan `state` obyektiga `logEntry` ichidagi buyruqni qo'llashi kerak. `logEntry` formati: `{ command: 'SET'|'ADD'|'SUB', key: string, value: number }`. Agar command 'SET' bo'lsa key ga qiymatni o'rnating, 'ADD' bo'lsa qo'shing, 'SUB' bo'lsa ayiring. Yangilangan `state` obyektini qaytaring.",
+    "startingCode": "function applyLog(state, logEntry) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "state obyektini o'zgartiring va oxirida uni qaytaring. switch yoki if shartlaridan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return applyLog;');\nconst fn = sandbox();\nlet st = { x: 5 };\nst = fn(st, { command: 'SET', key: 'y', value: 10 });\nif (st.y !== 10) return 'SET buyrug\\'i ishlamadi!';\nst = fn(st, { command: 'ADD', key: 'x', value: 3 });\nif (st.x !== 8) return 'ADD buyrug\\'i ishlamadi!';\nst = fn(st, { command: 'SUB', key: 'x', value: 2 });\nif (st.x !== 6) return 'SUB buyrug\\'i ishlamadi!';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Quorum Validator",
+    "instruction": "Klasterda qaror qabul qilish uchun yetarli ovoz yig'ilganligini tekshiruvchi `hasQuorum(totalNodes, votesGranted)` funksiyasini yozing. U ko'pchilik ovoz bergan bo'lsa `true`, aks holda `false` qaytarsin.",
+    "startingCode": "function hasQuorum(totalNodes, votesGranted) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Kvorum formulasi: Math.floor(totalNodes / 2) + 1. votesGranted ushbu qiymatdan katta yoki teng bo'lishini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return hasQuorum;');\nconst fn = sandbox();\nif (fn(5, 3) !== true) return '5 tadan 3 ta ovoz kvorum bo\\'lishi kerak!';\nif (fn(5, 2) !== false) return '5 tadan 2 ta ovoz kvorum emas!';\nif (fn(4, 2) !== false) return '4 tadan 2 ta ovoz kvorum emas (kvorum 3 bo\\'lishi kerak)!';\nif (fn(4, 3) !== true) return '4 tadan 3 ta ovoz kvorum bo\\'lishi kerak!';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Heartbeat Tracker",
+    "instruction": "Follower'lar oxirgi marta qachon heartbeat olganligini tekshiruvchi `checkFollowersActive(nodes, now, timeout)` funksiyasini yozing. `nodes` massividagi har bir node `{ id: string, lastHeartbeat: number }` ko'rinishida bo'ladi. Agar `now - lastHeartbeat > timeout` bo'lsa, u node faol emas (dead) deb hisoblanadi. Faol bo'lmagan node'larning `id` ro'yxatidan iborat massiv qaytaring.",
+    "startingCode": "function checkFollowersActive(nodes, now, timeout) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "nodes massivini filter qiling va map yordamida faqat id larni ajratib oling.",
+    "test": "const sandbox = new Function(code + '; return checkFollowersActive;');\nconst fn = sandbox();\nconst list = [\n  { id: 'node-1', lastHeartbeat: 100 },\n  { id: 'node-2', lastHeartbeat: 450 },\n  { id: 'node-3', lastHeartbeat: 500 }\n];\nconst dead = fn(list, 600, 200);\nif (!Array.isArray(dead) || dead.length !== 1 || dead[0] !== 'node-1') {\n  return 'Faol bo\\'lmagan tugunlar noto\\'g\\'ri aniqlandi!';\n}\nreturn null;"
+  }
+]

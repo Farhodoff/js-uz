@@ -126,11 +126,11 @@ console.log(bigIntNum + 2n); // 9007199254740993n (Aniq va to'g'ri!)
 
 ### Junior (1–4)
 1. **Savol:** JavaScript-da nechta ma'lumot turi bor?
-   * **Javob:** 8 ta ma'lumot turi mavjud: String, Number, Boolean, Null, Undefined, Symbol, BigInt (bular primitive) va Object (reference).
+   * **Javob:** 8 ta ma'lumot turi mavjud: String (matn), Number (son), Boolean (mantiqiy), Null (bo'sh), Undefined (aniqlanmagan), Symbol (unikal belgi), BigInt (katta butun son) (bular primitive) va Object (obyekt - reference).
 2. **Savol:** Primitive va Reference turlarning farqi nimada?
    * **Javob:** Primitive turlar qiymat bo'yicha nusxalanadi va Stack-da saqlanadi (o'zgarmas). Reference turlar esa havola (manzil) bo'yicha nusxalanadi va Heap xotirada saqlanadi (o'zgartiriluvchan).
 3. **Savol:** Nima uchun \`typeof null\` natijasi \`'object'\` chiqadi?
-   * **Javob:** Bu JavaScript tilining birinchi versiyalaridan qolib ketgan tarixiy xato (bug) bo'lib, orqaga moslik (backward compatibility) buzilmasligi uchun tuzatilmagan.
+   * **Javob:** JS-ning ilk versiyalarida obyektlarni belgilash uchun 3-bitli tur teglari (type tags) ishlatilgan va obyektning tegi \`000\` bo'lgan. \`null\` esa xotirada barcha bitlari \`0\` bo'lgan ko'rsatkich (null pointer) bo'lgani sababli, uning dastlabki 3 biti \`000\` ga to'g'ri kelib qolgan va \`typeof\` uni adashib obyekt deb hisoblagan. Orqaga moslik buzilmasligi uchun bu tarixiy xato (bug) shu kungacha qoldirilgan.
 4. **Savol:** \`undefined\` va \`null\` orasidagi farq nima?
    * **Javob:** \`undefined\` - o'zgaruvchi e'lon qilingan ammo unga qiymat berilmaganligini anglatadi. \`null\` esa ataylab qiymat yo'qligini bildirish uchun qo'lda beriladigan qiymatdir.
 

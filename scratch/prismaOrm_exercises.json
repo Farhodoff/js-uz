@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "1️⃣ Foydalanuvchi yaratish (Prisma CLI)",
+    "instruction": "Foydalanuvchini Prisma orqali ma'lumotlar bazasida saqlash uchun `createUser(prisma, email, name)` funksiyasini yozing. Funksiya yangi yaratilgan foydalanuvchi obyektini qaytarsin.",
+    "startingCode": "async function createUser(prisma, email, name) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return await prisma.user.create({ data: { email, name } });",
+    "test": "const mockPrisma = {\n  user: {\n    create: async ({ data }) => {\n      if (!data.email || !data.name) throw new Error('Ma\\'lumotlar to\\'liq emas');\n      return { id: 1, ...data };\n    }\n  }\n};\nconst sandbox = new Function(code + '; return createUser;');\nconst fn = sandbox();\nreturn fn(mockPrisma, 'user@example.com', 'Ali')\n  .then(res => {\n    if (res && res.id === 1 && res.email === 'user@example.com' && res.name === 'Ali') return null;\n    return 'Foydalanuvchi to\\'g\\'ri yaratilmadi yoki qaytarilmadi';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
+  },
+  {
+    "id": 2,
+    "title": "2️⃣ Muallif postlarini olish (findMany)",
+    "instruction": "Berilgan muallifning ID raqami (`authorId`) bo'yicha barcha postlarni yuklovchi `getAuthorPosts(prisma, authorId)` funksiyasini yozing. Funksiya topilgan postlar massivini qaytarsin.",
+    "startingCode": "async function getAuthorPosts(prisma, authorId) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return await prisma.post.findMany({ where: { authorId } });",
+    "test": "const mockPrisma = {\n  post: {\n    findMany: async ({ where }) => {\n      if (where && where.authorId === 99) {\n        return [{ id: 10, title: 'Prisma Darslari', authorId: 99 }];\n      }\n      return [];\n    }\n  }\n};\nconst sandbox = new Function(code + '; return getAuthorPosts;');\nconst fn = sandbox();\nreturn fn(mockPrisma, 99)\n  .then(res => {\n    if (Array.isArray(res) && res.length === 1 && res[0].authorId === 99) return null;\n    return 'Muallif postlari to\\'g\\'ri filtrlanib qaytarilmadi';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
+  },
+  {
+    "id": 3,
+    "title": "3️⃣ Foydalanuvchi ismini yangilash (update)",
+    "instruction": "Berilgan `id` dagi foydalanuvchining ismini `newName` ga yangilovchi va yangilangan foydalanuvchini qaytaruvchi `updateUsername(prisma, id, newName)` funksiyasini yozing.",
+    "startingCode": "async function updateUsername(prisma, id, newName) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return await prisma.user.update({ where: { id }, data: { name: newName } });",
+    "test": "const mockPrisma = {\n  user: {\n    update: async ({ where, data }) => {\n      if (where && where.id === 5 && data && data.name === 'Farhod') {\n        return { id: 5, name: 'Farhod', email: 'farhod@example.com' };\n      }\n      return null;\n    }\n  }\n};\nconst sandbox = new Function(code + '; return updateUsername;');\nconst fn = sandbox();\nreturn fn(mockPrisma, 5, 'Farhod')\n  .then(res => {\n    if (res && res.id === 5 && res.name === 'Farhod') return null;\n    return 'Foydalanuvchi ismi to\\'g\\'ri yangilanmadi yoki qaytarilmadi';\n  })\n  .catch(err => 'Xatolik: ' + err.message);"
+  }
+]

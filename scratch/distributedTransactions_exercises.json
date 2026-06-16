@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "1️⃣ 2PC Coordinator Vote Checker",
+    "instruction": "Ikki fazali tranzaksiya (Two-Phase Commit) koordinatorining birinchi fazasida barcha ishtirokchilarning ovozini tekshiruvchi `checkPrepareVotes(votes)` funksiyasini yozing. Ovozlar massivi faqat `'VOTE_COMMIT'` va `'VOTE_ABORT'` qiymatlarini qabul qiladi. Agar barcha ishtirokchilar `'VOTE_COMMIT'` ovozini bergan bo'lsa, `'GLOBAL_COMMIT'` qaytaring. Agar kamida bitta tugun `'VOTE_ABORT'` bergan bo'lsa yoki ishtirokchilar massivi bo'sh bo'lsa, `'GLOBAL_ABORT'` qaytaring.",
+    "startingCode": "function checkPrepareVotes(votes) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Array.prototype.every() yordamida massivdagi barcha element 'VOTE_COMMIT' ekanligini va massiv uzunligi 0 dan katta ekanligini tekshiring.",
+    "test": "if (typeof checkPrepareVotes !== 'function') return 'checkPrepareVotes topilmadi';\nif (checkPrepareVotes(['VOTE_COMMIT', 'VOTE_COMMIT']) !== 'GLOBAL_COMMIT') return 'Barcha commit ovoz berilganda xato';\nif (checkPrepareVotes(['VOTE_COMMIT', 'VOTE_ABORT']) !== 'GLOBAL_ABORT') return 'Bitta abort bo\\'lganda global abort bo\\'lishi kerak';\nif (checkPrepareVotes([]) !== 'GLOBAL_ABORT') return 'Bo\\'sh massiv holatida abort bo\\'lishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "2️⃣ Saga kompensatsiya mexanizmi (Saga Rollback)",
+    "instruction": "Saga orkestratorining kompensatsiya tranzaksiyalarini (Rollback) bajarish funksiyasini yozing. `runSaga(steps, data)` funksiyasi asinxron qadamlar massivi `steps` va umumiy ob'ekt `data` ni qabul qiladi. Har bir step `{ name: string, action: function, rollback: function }` ko'rinishida bo'ladi. Funksiya har bir stepning `action(data)` metodini ketma-ket asinxron ravishda chaqirishi kerak. Agar biron-bir bosqichda xatolik yuz bersa (action false qaytarsa yoki throw qilsa), shu bosqichgacha muvaffaqiyatli bajarilgan barcha oldingi qadamlarning `rollback(data)` funksiyalarini teskari tartibda (oxirgisidan birinchisigacha) chaqiring va `{ status: 'FAILED', error: err_message }` qaytaring. Hammasi muvaffaqiyatli bo'lsa, `{ status: 'SUCCESS' }` qaytaring.",
+    "startingCode": "async function runSaga(steps, data) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Try-catch blokidan foydalaning. Har bir muvaffaqiyatli stepni alohida massivga push qilib boring. Xato bo'lsa, o'sha massivni teskari aylanib rollback funksiyalarini await qiling.",
+    "test": "if (typeof runSaga !== 'function') return 'runSaga funksiya emas';\nconst steps = [\n  { name: 'step1', action: async (d) => { d.logs.push('A'); return true; }, rollback: async (d) => { d.logs.push('RA'); } },\n  { name: 'step2', action: async (d) => { d.logs.push('B'); throw new Error('Err'); }, rollback: async (d) => { d.logs.push('RB'); } }\n];\nconst data = { logs: [] };\nreturn runSaga(steps, data).then(res => {\n  if (res.status !== 'FAILED') return 'Xato bo\\'lganda status FAILED bo\\'lishi kerak';\n  if (data.logs.join(',') !== 'A,B,RA') return 'Rollback tartibi yoki bajarilishi noto\\'g\\'ri: ' + data.logs.join(',');\n  return null;\n}).catch(e => 'Xatolik yuz berdi: ' + e.message);"
+  },
+  {
+    "id": 3,
+    "title": "3️⃣ Idempotentlik Middleware simulyatsiyasi",
+    "instruction": "Tarqatilgan tizimlarda mijoz tomonidan yuborilgan idempotent so'rovlarni boshqaruvchi `processIdempotentRequest(store, key, handler)` funksiyasini yozing. `store` — kalit-qiymat ko'rinishidagi kesh ombori. Agar `key` (idempotency key) `store` ichida oldindan mavjud bo'lsa, `handler` funksiyasini chaqirmasdan, keshdagi saqlangan qiymatni qaytaring. Agar kalit mavjud bo'lmasa, `handler` funksiyasini chaqiring, qaytgan natijani `store[key]` ga saqlang va natijani qaytaring.",
+    "startingCode": "function processIdempotentRequest(store, key, handler) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "store[key] qiymatini tekshiring. Agar u undefined bo'lmasa, uni qaytaring. Aks holda handler() natijasini keshga yozib qaytaring.",
+    "test": "if (typeof processIdempotentRequest !== 'function') return 'processIdempotentRequest topilmadi';\nconst store = {};\nlet counter = 0;\nconst handler = () => { counter++; return 'Result ' + counter; };\nconst res1 = processIdempotentRequest(store, 'key-1', handler);\nconst res2 = processIdempotentRequest(store, 'key-1', handler);\nconst res3 = processIdempotentRequest(store, 'key-2', handler);\nif (res1 !== 'Result 1') return 'Birinchi chaqiruv xato';\nif (res2 !== 'Result 1') return 'Ikkinchi chaqiruv idempotent emas (qiymat o\\'zgardi)';\nif (counter !== 2) return 'Handler noto\\'g\\'ri marta chaqirilgan: ' + counter;\nif (res3 !== 'Result 2') return 'Yangi kalit bilan chaqiruv xato';\nreturn null;"
+  }
+]

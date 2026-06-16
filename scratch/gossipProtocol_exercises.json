@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Sherik tanlash logikasi (Peer Target Selection)",
+    "instruction": "Klasterdagi tugun o'zidan boshqa va berilgan cheklov (`maxCount`) gacha bo'lgan tasodifiy tugunlar ro'yxatini tanlashi kerak. `selectGossipTargets(currentNodeId, allNodeIds, maxCount)` funksiyasini yozing. Tanlangan tugunlar takrorlanmasligi kerak.",
+    "startingCode": "function selectGossipTargets(currentNodeId, allNodeIds, maxCount) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "currentNodeId ni filtrlang, keyin qolgan massivni aralashtiring (shuffle) yoki tasodifiy indekslar yordamida maxCount gacha element oling.",
+    "test": "if (typeof selectGossipTargets !== 'function') return 'selectGossipTargets funksiya bo\\'lishi kerak';\nconst list = ['A', 'B', 'C', 'D'];\nconst res = selectGossipTargets('A', list, 2);\nif (res.includes('A')) return 'Joriy tugun tanlanmasligi kerak';\nif (res.length > 2) return 'maxCount dan ko\\'p element tanlandi';\nif (new Set(res).size !== res.length) return 'Tugunlar takrorlanmasligi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Versiyaga asoslangan ma'lumotlarni solishtirish (State Reconciliation)",
+    "instruction": "Taqsimlangan ma'lumotlar omborida ma'lumotlarning eng yangi versiyasi qolishi shart. `reconcileState(localState, remoteState)` funksiyasini yozing. U mahalliy va masofaviy holatni birlashtiradi. Har bir kalit uchun `{ value: any, version: number }` ko'rinishida ma'lumot saqlanadi. Agar versiya teng bo'lsa, local qiymat ustuvor bo'ladi.",
+    "startingCode": "function reconcileState(localState, remoteState) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Ikkala obyektning kalitlarini oling va har bir kalit uchun versiyalarni solishtiring. Katta versiyali qiymatni natijada saqlang.",
+    "test": "if (typeof reconcileState !== 'function') return 'reconcileState funksiya emas';\nconst local = { name: { value: 'A', version: 1 }, age: { value: 20, version: 3 } };\nconst remote = { name: { value: 'B', version: 2 }, age: { value: 25, version: 2 }, city: { value: 'Tashkent', version: 1 } };\nconst res = reconcileState(local, remote);\nif (res.name.value !== 'B' || res.name.version !== 2) return 'Katta versiya qabul qilinmadi';\nif (res.age.value !== 20 || res.age.version !== 3) return 'Mahalliy kattaroq versiya saqlanmadi';\nif (!res.city || res.city.value !== 'Tashkent') return 'Yangi kalit qo\\'shilmadi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "SWIM Indirect Ping Simulyatsiyasi",
+    "instruction": "Agar tugunga to'g'ridan-to'g'ri ping muvaffaqiyatsiz bo'lsa, boshqa yordamchi tugunlar orqali ping yuborish kerak. `sendIndirectPing(targetId, helpers, pingFn)` funksiyasini yozing. `pingFn(helperId, targetId)` asinxron funksiya bo'lib, `true` yoki `false` qaytaradi. Agar yordamchi tugunlardan kamida bittasi maqsadli tugunni tirik deb topsa (`true`), funksiya ham `true` qaytarsin. Agar barchasi `false` bo'lsa yoki yordamchilar bo'lmasa, `false` qaytarsin. Qidiruvni parallel bajarish tavsiya etiladi.",
+    "startingCode": "async function sendIndirectPing(targetId, helpers, pingFn) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Promise.all yordamida helpers massividagi har bir helper uchun pingFn ni ishga tushiring va natijalarni tekshiring.",
+    "test": "if (typeof sendIndirectPing !== 'function') return 'sendIndirectPing funksiya emas';\nconst pingFn = async (h, t) => h === 'C';\nreturn sendIndirectPing('target', ['B', 'C', 'D'], pingFn).then(res => {\n  if (res !== true) return 'Indirect ping muvaffaqiyatli bo\\'lishi kerak edi';\n  return sendIndirectPing('target', ['B', 'D'], pingFn).then(res2 => {\n    if (res2 !== false) return 'Barcha helperlar javob bermasa false bo\\'lishi kerak';\n    return null;\n  });\n});"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Blok Qamrovi va Soya Solish (Block Scope & Shadowing)",
+    "instruction": "Berilgan `x` parametrini qabul qiluvchi `getShadowedValue(x)` funksiyasini yozing. Funksiya ichida bitta blok (`{ ... }`) yarating. Ushbu blok ichida `x` nomli yangi o'zgaruvchini `let` yordamida e'lon qiling va unga `100` qiymatini bering. Blok tashqarisida esa, blok ichidagi `x` ning qiymati va funksiya parametri bo'lgan `x` ning yig'indisini qaytaring.\n\nEslatma: Blok ichidagi qiymatni blokdan tashqariga uzatish uchun yordamchi o'zgaruvchidan foydalanishingiz mumkin.",
+    "startingCode": "function getShadowedValue(x) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Funksiya ichida `let blockVal;` yarating. Keyin `{ let x = 100; blockVal = x; }` blokini yozing. Oxirida `x + blockVal` qiymatini qaytaring.",
+    "test": "const sandbox = new Function(code + '; return getShadowedValue;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'getShadowedValue funksiya bo\\'lishi kerak';\nif (fn(5) !== 105) return 'getShadowedValue(5) 105 qaytarishi kerak';\nif (fn(0) !== 100) return 'getShadowedValue(0) 100 qaytarishi kerak';\nif (fn(-50) !== 50) return 'getShadowedValue(-50) 50 qaytarishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Global va Lokal Qamrov Farqi (Global vs Local Scope)",
+    "instruction": "Koddagi global `let count = 0;` o'zgaruvchisidan foydalanib, `incrementCounter()` funksiyasini yozing. Funksiya har chaqirilganda global `count` o'zgaruvchisini 1 taga oshirishi va yangi qiymatni qaytarishi kerak. Muhim: funksiya ichida yangi lokal `count` o'zgaruvchisini e'lon qilmang (soyalashdan qoching).",
+    "startingCode": "let count = 0;\n\nfunction incrementCounter() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Lokal `count` yaratmang. Faqat global `count++` (yoki `count += 1`) qiling va uni `return count;` orqali qaytaring.",
+    "test": "const sandbox = new Function(code + '; return { incrementCounter, getCount: () => count };');\nconst env = sandbox();\nif (typeof env.incrementCounter !== 'function') return 'incrementCounter funksiya bo\\'lishi kerak';\nconst res1 = env.incrementCounter();\nif (res1 !== 1) return 'Birinchi safar chaqirilganda 1 qaytarishi kerak';\nconst globalCount1 = env.getCount();\nif (globalCount1 !== 1) return 'Global count o\\'zgaruvchisi 1 ga oshishi kerak';\nconst res2 = env.incrementCounter();\nif (res2 !== 2) return 'Ikkinchi safar chaqirilganda 2 qaytarishi kerak';\nconst globalCount2 = env.getCount();\nif (globalCount2 !== 2) return 'Global count o\\'zgaruvchisi 2 bo\\'lishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Leksik Qamrov Zanjiri (Scope Chain)",
+    "instruction": "Ko'p bosqichli qamrov zanjirini amalga oshirish uchun nested (ichma-ich) funksiyalar yozing. `createScopeChain(a)` funksiyasi `a` parametrini qabul qiladi va ichki `nested(b)` funksiyasini qaytaradi. `nested(b)` esa o'z navbatida `deepNested(c)` funksiyasini qaytaradi. Eng ichki `deepNested(c)` funksiyasi esa `a`, `b` va `c` qiymatlarining yig'indisini (`a + b + c`) qaytarishi kerak.",
+    "startingCode": "function createScopeChain(a) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Ichma-ich funksiyalar qaytarish uchun `return function nested(b) { return function deepNested(c) { return a + b + c; } }` tuzilmasidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return createScopeChain;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'createScopeChain funksiya bo\\'lishi kerak';\nconst nested = fn(5);\nif (typeof nested !== 'function') return 'createScopeChain(a) funksiya qaytarishi kerak';\nconst deepNested = nested(10);\nif (typeof deepNested !== 'function') return 'nested(b) funksiya qaytarishi kerak';\nconst result = deepNested(15);\nif (result !== 30) return 'createScopeChain(5)(10)(15) yig\\'indisi 30 bo\\'lishi kerak (5 + 10 + 15)';\nreturn null;"
+  }
+]

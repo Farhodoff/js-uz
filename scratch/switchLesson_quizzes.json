@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "`switch` operatori solishtirishni amalga oshirganda qaysi tenglik operatoridan (taqqoslash usulidan) foydalanadi?",
+    "options": [
+      "Qat'iy bo'lmagan tenglik (`==`), ya'ni tiplarni avtomatik o'zgartiradi (type coercion)",
+      "Qat'iy tenglik (`===`), ya'ni qiymat va tipni qat'iy solishtiradi",
+      "Faqat qiymatni tekshiradi, o'zgaruvchi tiplariga umuman e'tibor bermaydi",
+      "Faqat obyekt xossalarining mavjudligini tekshiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`switch` operatori ifoda va case qiymatlarini solishtirishda har doim qat'iy tenglik (`===`) operatoridan foydalanadi. Bunda tiplar avtomatik ravishda o'zgartirilmaydi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kod bajarilganda konsolga nima chop etiladi?\n```javascript\nconst value = \"5\";\nswitch(value) {\n  case 5:\n    console.log(\"Son besh\");\n    break;\n  case \"5\":\n    console.log(\"Satr besh\");\n    break;\n  default:\n    console.log(\"Hech biri\");\n}\n```",
+    "options": [
+      "\"Son besh\"",
+      "\"Satr besh\"",
+      "\"Hech biri\"",
+      "TypeError sintaktik xatoligi yuz beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`value` o'zgaruvchisining qiymati `\"5\"` (string) ga teng. `switch` qat'iy tenglikdan foydalanganligi sababli, `\"5\" === 5` false bo'ladi va `case 5` bajarilmaydi. `\"5\" === \"5\"` true bo'lganligi uchun esa `case \"5\"` ishlaydi."
+  },
+  {
+    "id": 3,
+    "question": "`switch-case` operatorida `break` kalit so'zi tushirib qoldirilsa nima sodir bo'ladi?",
+    "options": [
+      "Sintaktik xatolik (SyntaxError) sodir bo'ladi va dastur to'xtaydi",
+      "Dastur avtomatik ravishda `default` holatiga sakrab o'tadi",
+      "Mos kelgan case bloki bajariladi va `break` uchramaguncha keyingi barcha case bloklari ham shart tekshirilmasdan bajarilaveradi (fall-through)",
+      "Switch operatori o'sha zahoti o'z ishini to'xtatadi va hech narsa bajarmaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Agar `break` yozilmasa, JavaScript mos kelgan case kodini bajaradi va shundan keyingi case'larning shartiga qaramasdan, ularning ichidagi kodlarni ham navbatma-navbat bajarib ketadi (bunga fall-through deyiladi)."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilganda konsolga qaysi javoblar chiqadi?\n```javascript\nconst color = \"yashil\";\nswitch (color) {\n  case \"qizil\":\n    console.log(\"To'xtang\");\n  case \"yashil\":\n    console.log(\"O'ting\");\n  case \"sariq\":\n    console.log(\"Tayyorlaning\");\n  default:\n    console.log(\"Noma'lum rang\");\n}\n```",
+    "options": [
+      "\"O'ting\"",
+      "\"O'ting\" va keyin \"Tayyorlaning\"",
+      "\"O'ting\", \"Tayyorlaning\" va keyin \"Noma'lum rang\"",
+      "Faqat \"Noma'lum rang\""
+    ],
+    "correctAnswer": 2,
+    "explanation": "`color` qiymati `\"yashil\"` bo'lgani uchun kod `case \"yashil\"`dan boshlab bajariladi. Case ichida `break` yo'qligi sababli, uning ostidagi barcha bloklar (`case \"sariq\"` va `default`) ham ketma-ket bajariladi va uchta xabar ham chop etiladi."
+  },
+  {
+    "id": 5,
+    "question": "`switch` operatorida `default` bloki haqida qaysi tasdiq to'g'ri?",
+    "options": [
+      "U switch tarkibida har doim eng birinchi bo'lib yozilishi shart",
+      "U mutlaqo majburiy bo'lib, yozilmasa switch operatori ishlamaydi",
+      "Hech bir case mos kelmagan holatda ishga tushadigan ixtiyoriy (optional) blokdir",
+      "Uni faqat if-else operatorlari ichida ishlatish mumkin"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`default` bloki mutlaqo ixtiyoriy. Agar u yozilmasa va hech qaysi case sharti bajarilmasa, switch shunchaki hech qanday kod ishga tushirmasdan o'z ishini tugatadi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod ishga tushganda konsolga nima chiqadi?\n```javascript\nconst num = 10;\nswitch (num) {\n  default:\n    console.log(\"Default blok\");\n    break;\n  case 5:\n    console.log(\"Besh\");\n    break;\n}\n```",
+    "options": [
+      "Hech narsa chiqmaydi, chunki default case'lardan oldin yozilgan",
+      "\"Default blok\"",
+      "\"Besh\"",
+      "SyntaxError xatoligi beradi, chunki default boshida kela olmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da `default` bloki switch ichida istalgan joyda (hatto boshida ham) yozilishi mumkin. Agar barcha case'lar mos kelmasa (10 === 5 false), JavaScript baribir `default` blokini topadi va bajaradi."
+  },
+  {
+    "id": 7,
+    "question": "Switch operatorida bir nechta case uchun bitta umumiy kod bajarilishini qanday yozish to'g'ri bo'ladi?",
+    "options": [
+      "Case qiymatlarini vergul bilan ajratib yozish orqali, masalan: `case 1, 2, 3:`",
+      "Case shartlarini ketma-ket yozib, ular orasiga `break` qo'ymasdan (fall-through orqali)",
+      "Switch operatorida bunday imkoniyat yo'q, har biriga alohida kod yozish kerak",
+      "Qiymatlarni massiv ichida berish orqali, masalan: `case [1, 2, 3]:`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da bir nechta case bloklarini ketma-ket yozib, faqat eng oxirgisiga kod va `break` yozish orqali guruhlash mumkin. Masalan, `case 1: case 2: console.log('ok'); break;` kodida 1 yoki 2 qiymat kelsa ham 'ok' yozuvi chiqadi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kod bajarilganda nima sodir bo'ladi?\n```javascript\nconst x = 1;\nswitch (x) {\n  case 1:\n    let y = 10;\n    console.log(y);\n    break;\n  case 2:\n    let y = 20;\n    console.log(y); \n    break;\n}\n```",
+    "options": [
+      "`10` chiqadi va dastur muvaffaqiyatli tugaydi",
+      "`10` va keyin `20` chiqadi",
+      "`SyntaxError: Identifier 'y' has already been declared` xatoligi yuz beradi",
+      "`undefined` chiqadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Butun switch bloki yagona blokli qamrovni (block scope) hosil qiladi. Shuning uchun bitta switch ichida `let` yoki `const` yordamida bir xil nomli o'zgaruvchini turli case'larda qayta e'lon qilish sintaktik xatoga (`SyntaxError`) olib keladi."
+  },
+  {
+    "id": 9,
+    "question": "Case ichida o'zgaruvchi e'lon qilishdagi `SyntaxError` (Identifier has already been declared) xatoligini qanday hal qilish mumkin?",
+    "options": [
+      "O'zgaruvchilarni `let` o'rniga `const` bilan e'lon qilish orqali",
+      "Case blokidagi kodlarni jingalak qavslar `{}` ichiga olib, alohida blok qamrovi (block scope) yaratish orqali",
+      "Har doim `default` blokini eng oxirida yozish orqali",
+      "O'zgaruvchini `break` operatoridan keyin e'lon qilish orqali"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Case'dan keyin jingalak qavslar `{}` ishlatilganda yangi blok qamrovi yaratiladi: `case 1: { let y = 10; break; } case 2: { let y = 20; break; }`. Bu orqali o'zgaruvchilar to'qnashuvining oldi olinadi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst score = 85;\nswitch (true) {\n  case score > 90:\n    console.log(\"A\");\n    break;\n  case score > 80:\n    console.log(\"B\");\n    break;\n  default:\n    console.log(\"F\");\n}\n```",
+    "options": [
+      "\"B\"",
+      "\"A\" va keyin \"B\"",
+      "\"F\"",
+      "Sintaktik xatolik (SyntaxError)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`switch(true)` yondashuvida shartlar baholanadi va qaysi case sharti `true` qiymat bersa, o'sha case ishga tushadi. `85 > 80` sharti `true` bo'lgani sababli `case score > 80` bloki bajariladi va konsolga \"B\" chiqadi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod bajarilganda konsolga nima chop etiladi?\n```javascript\nconst obj1 = { name: \"Ali\" };\nconst obj2 = { name: \"Ali\" };\nswitch (obj1) {\n  case obj2:\n    console.log(\"Teng\");\n    break;\n  default:\n    console.log(\"Teng emas\");\n}\n```",
+    "options": [
+      "\"Teng\"",
+      "\"Teng emas\"",
+      "TypeError xatoligi yuz beradi",
+      "Hech narsa chop etilmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da obyektlar qiymatlari bo'yicha emas, balki xotiradagi manzili (reference) bo'yicha solishtiriladi. `obj1 === obj2` har doim `false` bo'ladi, chunki ular ikki xil obyektdir. Shuning uchun default bloki bajariladi va \"Teng emas\" chiqadi."
+  },
+  {
+    "id": 12,
+    "question": "JavaScript dvigatellari (masalan, V8) juda ko'p sondagi case'larga ega switch operatorlarini qanday optimallashtiradi?",
+    "options": [
+      "Switch operatorini avtomatik ravishda asinxron rejimga o'tkazish orqali",
+      "Case shartlari ko'p va izchil bo'lganda, chiziqli (if-else kabi) qidirish o'rniga, O(1) vaqtda kerakli blokni topish uchun lookup jadvali yoki jump table yaratish orqali",
+      "Kod ishlash vaqtida barcha case'larni bitta global obyektga aylantirish orqali",
+      "Barcha case'larni o'chira oladigan sun'iy intellekt modulini ishga tushirish orqali"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar switch ichida bir xil tipdagi (masalan, sonlar yoki satrlar) case'lar ko'p bo'lsa, JIT-kompilyator chiziqli solishtirishdan voz kechadi va qiymat bo'yicha to'g'ridan-to'g'ri kod manziliga o'tish jadvalini (jump table) tuzadi. Bu amal tezligini O(1) ga yaqinlashtiradi."
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da qiymatni yaqqol (explicit) ravishda string tipiga o'tkazishning qaysi usuli xavfsizroq va `null` hamda `undefined` qiymatlarida xatolik (crash) bermaydi?",
+    "options": [
+      "value.toString()",
+      "String(value)",
+      "JSON.stringify(value)",
+      "value + \"\""
+    ],
+    "correctAnswer": 1,
+    "explanation": "String(value) funksiyasi null va undefined qiymatlarini ham xatosiz \"null\" va \"undefined\" stringlariga o'tkazadi. value.toString() esa null va undefined qiymatlarida TypeError beradi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kod bajarilganda konsolda qanday natija chiqadi?\n```javascript\nconsole.log(Number(\"123px\"));\nconsole.log(parseInt(\"123px\", 10));\n```",
+    "options": [
+      "123 va 123",
+      "NaN va 123",
+      "NaN va NaN",
+      "123 va NaN"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Number() funksiyasi stringda biron bir raqam bo'lmagan belgi bo'lsa, butunlay NaN qaytaradi. parseInt() esa stringning boshidagi raqamlarni ajratib olib parse qiladi va 123 qaytaradi."
+  },
+  {
+    "id": 3,
+    "question": "Unar plyus (`+`) operatori orqali tiplarni o'tkazish haqida qaysi tasdiq to'g'ri?",
+    "options": [
+      "U faqat parseInt kabi ishlaydi va oxiridagi harflarni tashlab yuboradi",
+      "U Number() funksiyasi bilan bir xil qoidalarga ko'ra qiymatni songa o'tkazadi",
+      "U har doim sonlarni butun qismigacha yaxlitlab beradi",
+      "U faqat musbat sonlarni o'z holicha saqlab, manfiylarini NaN qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Unar plyus (+value) matematik jihatdan Number(value) bilan to'liq bir xil ishlaydi va eng tez/qisqa yaqqol son tipiga o'tkazish usulidir."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi ifodaning natijasi nima bo'ladi?\n```javascript\nBoolean(\"false\")\n```",
+    "options": [
+      "false",
+      "true",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bo'sh bo'lmagan har qanday string (shu jumladan \"false\" va \"0\" ham) Boolean() ga uzatilganda true qaytaradi. Faqat bo'sh string \"\" falsy hisoblanadi."
+  },
+  {
+    "id": 5,
+    "question": "parseInt() funksiyasining ikkinchi parametri (radix) nima uchun muhim?",
+    "options": [
+      "U natija sifatida qaytadigan kasr xonalarini belgilaydi",
+      "U sanoq tizimini (masalan, 10 lik yoki 16 lik) belgilaydi va eski JS dvigatellarida boshqa sanoq tizimlari avtomatik qo'llanilishi oldini oladi",
+      "U faqat o'tkazish xato bo'lganda ishlaydigan default qiymatni beradi",
+      "U matn ichidagi raqamlarning maksimal uzunligini belgilaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Radix sanoq tizimini aniqlaydi. Ko'rsatilmaganda, \"0x\" bilan boshlangan stringlar 16 lik, \"0\" bilan boshlanganlar esa eski brauzerlarda 8 lik sanoq tizimida parse bo'lib xato natija berishi mumkin edi. Shuning uchun har doim 10 lik uchun 10 yozish shart."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilganda qanday qiymat hosil bo'ladi?\n```javascript\nNumber(true) + Number(false)\n```",
+    "options": [
+      "1",
+      "2",
+      "NaN",
+      "0"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Number(true) qiymati 1 ga, Number(false) esa 0 ga teng bo'ladi. Ularning yig'indisi esa 1 + 0 = 1 bo'ladi."
+  },
+  {
+    "id": 7,
+    "question": "parseFloat(\"12.34.56\") ifodasi qanday natija beradi?",
+    "options": [
+      "12.34",
+      "NaN",
+      "12.3456",
+      "TypeError"
+    ],
+    "correctAnswer": 0,
+    "explanation": "parseFloat() stringni chapdan o'ngga parse qiladi. Birinchi nuqtani kasr nuqtasi deb biladi, ammo ikkinchi nuqtani ko'rganda to'xtaydi va ungacha bo'lgan qismni (12.34) qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodlardan qaysi biri yaqqol (explicit) tiplarni o'tkazishga misol bo'la olmaydi?",
+    "options": [
+      "Number(\"42\")",
+      "\"42\" * 1",
+      "String(42)",
+      "Boolean(1)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "\"42\" * 1 - bu yashirin (implicit yoki coercion) tiplarni o'tkazishdir. Unda JS ko'paytirish operatorini ko'rib, stringni o'zi avtomatik songa o'tkazadi. Qolganlarida maxsus funksiyalar yaqqol yozilgan."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi ifodaning natijasi nima bo'ladi?\n```javascript\nNumber(undefined)\n```",
+    "options": [
+      "0",
+      "NaN",
+      "null",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Number(undefined) har doim NaN qaytaradi. Taqqoslash uchun: Number(null) esa 0 qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "parseInt(\"   42   \") kodi qanday ishlaydi?",
+    "options": [
+      "Boshidagi va oxiridagi bo'shliqlarni inobatga olmasdan 42 sonini qaytaradi",
+      "Bo'shliqlar bo'lgani uchun NaN qaytaradi",
+      "Bo'shliqlarni ham saqlab \"   42   \" stringini qaytaradi",
+      "TypeError xatoligini beradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "parseInt va parseFloat funksiyalari string boshidagi va oxiridagi bo'shliqlarni avtomatik tarzda tashlab yuboradi va keyin kelgan sonlarni parse qiladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(typeof String(null));\n```",
+    "options": [
+      "\"object\"",
+      "\"null\"",
+      "\"string\"",
+      "\"undefined\""
+    ],
+    "correctAnswer": 2,
+    "explanation": "String(null) ifodasi \"null\" matnini (string) qaytaradi. Uning tipi (typeof) esa \"string\" bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "parseInt(\"abc\", 10) natijasi NaN ekanligini tekshirish uchun qaysi ifodadan foydalanish kerak?",
+    "options": [
+      "parseInt(\"abc\", 10) === NaN",
+      "isNaN(parseInt(\"abc\", 10))",
+      "typeof parseInt(\"abc\", 10) === \"nan\"",
+      "parseInt(\"abc\", 10) == null"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da NaN === NaN har doim false qaytaradi. Shuning uchun qiymatning NaN ekanini tekshirish uchun faqat isNaN() yoki Number.isNaN() funksiyasini ishlatish zarur."
+  }
+]

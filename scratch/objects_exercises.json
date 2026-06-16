@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Obyektni yaratish va o'zgartirish",
+    "instruction": "Berilgan `name`, `age` va `job` qiymatlaridan foydalanib yangi obyekt yarating. Keyin uning `age` xossasini 1 taga oshiring, yangi `isProgrammer` xossasini `true` qiymati bilan qo'shing va hosil bo'lgan obyektni qaytaradigan `updatePerson(name, age, job)` funksiyasini yozing.",
+    "startingCode": "function updatePerson(name, age, job) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Obyekt yaratish uchun {} dan foydalaning, keyin dot notation (.) orqali age va isProgrammer xossalarini boshqaring.",
+    "test": "const sandbox = new Function(code + '; return updatePerson;');\nconst fn = sandbox();\nconst obj = fn('Ali', 25, 'Dasturchi');\nif (obj && obj.name === 'Ali' && obj.age === 26 && obj.job === 'Dasturchi' && obj.isProgrammer === true) return null;\nreturn 'updatePerson funksiyasi obyektni to\\'g\\'ri yaratmadi yoki o\\'zgartirmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Dinamik Kalitlar (Bracket Notation)",
+    "instruction": "Berilgan `obj` obyektining dinamik `key` kaliti qiymatini berilgan `value` ga o'zgartiruvchi (yoki yangi qo'shuvchi) va o'sha obyektni qaytaruvchi `updateDynamicProperty(obj, key, value)` funksiyasini yozing. Dinamik kalitlar bilan ishlash uchun qavsli yozuvdan (Bracket Notation) foydalaning.",
+    "startingCode": "function updateDynamicProperty(obj, key, value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Dinamik kalit bilan ishlash uchun nuqta operatori o'rniga obj[key] = value; ko'rinishida yozing va obyektni return qiling.",
+    "test": "const sandbox = new Function(code + '; return updateDynamicProperty;');\nconst fn = sandbox();\nconst testObj = { brand: 'Apple' };\nconst res = fn(testObj, 'model', 'iPhone');\nif (res && res.brand === 'Apple' && res.model === 'iPhone') return null;\nreturn 'Dinamik xossa to\\'g\\'ri yangilanmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Metodlar va `this` kalit so'zi",
+    "instruction": "Berilgan `brand` va boshlang'ich `speed` qiymatlariga ega bo'lgan mashina obyektini qaytaruvchi `createCar(brand, speed)` funksiyasini yozing. Obyekt tarkibida `accelerate(amount)` metodi bo'lsin. Bu metod chaqirilganda obyektning `speed` xossasini `amount` ga oshirsin va yangilangan `speed` qiymatini qaytarsin. Metod ichida `this` kalit so'zidan foydalaning.",
+    "startingCode": "function createCar(brand, speed) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Obyekt ichida accelerate(amount) { this.speed += amount; return this.speed; } metodini yarating.",
+    "test": "const sandbox = new Function(code + '; return createCar;');\nconst fn = sandbox();\nconst car = fn('Tesla', 50);\nif (!car || typeof car.accelerate !== 'function') return 'createCar to\\'g\\'ri metodga ega obyekt qaytarmadi';\nconst newSpeed = car.accelerate(30);\nif (newSpeed === 80 && car.speed === 80) return null;\nreturn 'accelerate metodi tezlikni to\\'g\\'ri oshirmadi yoki qaytarmadi';"
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "ORM (Object-Relational Mapping) nima?",
+    "options": [
+      "Ma'lumotlar bazasidagi jadvallarni dasturlash tilidagi obyektlar va klasslar bilan bog'lovchi texnologiya",
+      "Faqat CSS stillari va animatsiyalarini boshqarish uchun maxsus JavaScript kutubxonasi",
+      "Ma'lumotlar bazasini to'liq zaxira (backup) qiladigan tashqi bulutli xizmat",
+      "Faqat SQL so'rovlarini tahlil qilib xatoliklarini ko'rsatuvchi CLI dasturi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "ORM - bu relyatsion ma'lumotlar bazasidagi jadvallar va ularning ustunlarini JavaScript/TypeScript obyektlariga moslashtirib, SQL yozmasdan bazaga so'rov yuborish imkonini beruvchi vositadir."
+  },
+  {
+    "id": 2,
+    "question": "Prisma sxema fayli (schema.prisma) qanday asosiy vazifani bajaradi?",
+    "options": [
+      "Ma'lumotlar bazasiga ulanish sozlamalari, provayder va modellar (jadvallar) tuzilishini deklarativ tavsiflaydi",
+      "Dasturning barcha sahifalari uchun HTML sahifalarni render qiladi",
+      "Faqat serverning port sozlamalari va routerlarini belgilaydi",
+      "Klient brauzerida ma'lumotlarni keshlab saqlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "schema.prisma fayli butun ma'lumotlar bazasining sxemasini (modellar, munosabatlar va bog'lanish parametrlarini) bitta joyda saqlaydi."
+  },
+  {
+    "id": 3,
+    "question": "Prisma-da model ustunini Primary Key (asosiy kalit) sifatida belgilash uchun qaysi atribut ishlatiladi?",
+    "options": [
+      "@id",
+      "@primary",
+      "@unique",
+      "@key"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Prisma sxemasida `@id` atributi ustunni jadval uchun asosiy unikal kalit (Primary Key) ekanligini bildiradi."
+  },
+  {
+    "id": 4,
+    "question": "Prisma CLI yordamida sxemadagi o'zgarishlarni bazaga qo'llash va migratsiya faylini yaratish uchun qaysi buyruq ishlatiladi?",
+    "options": [
+      "npx prisma migrate dev",
+      "npx prisma generate",
+      "npx prisma studio",
+      "npx prisma db push"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`npx prisma migrate dev` buyrug'i sxemadagi o'zgarishlarni SQL migratsiya fayllariga aylantiradi, bazaga qo'llaydi va Prisma Client-ni avtomatik generatsiya qiladi."
+  },
+  {
+    "id": 5,
+    "question": "Prisma Client-ni sxema o'zgarishlariga mos ravishda qayta generatsiya qilish uchun qaysi buyruq ishlatiladi?",
+    "options": [
+      "npx prisma generate",
+      "npx prisma db pull",
+      "npx prisma migrate reset",
+      "npx prisma format"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`npx prisma generate` buyrug'i `node_modules/.prisma/client` papkasida sxemaga moslashtirilgan tiplar va Prisma Client kodini yaratadi."
+  },
+  {
+    "id": 6,
+    "question": "Prisma Studio nima?",
+    "options": [
+      "Ma'lumotlar bazasidagi ma'lumotlarni ko'rish va tahrirlash uchun vizual GUI (brauzer interfeysi)",
+      "SQL kodlarini yozish va tahlil qilish uchun o'rnatilgan IDE dasturi",
+      "Serverni avtomatik qayta ishga tushiruvchi terminal buyrug'i",
+      "Faqat rasmlar va media fayllarini saqlash uchun mo'ljallangan bulutli ombor"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Prisma Studio — bu localhost-da ishlovchi, ma'lumotlar bazasini Excel jadvaliga o'xshab chiroyli ko'rsatuvchi va boshqaruvchi veb-ilova."
+  },
+  {
+    "id": 7,
+    "question": "Prisma-da foydalanuvchilarni yoshi (age) bo'yicha kamayish tartibida saralash uchun qaysi obyekt ishlatiladi?",
+    "options": [
+      "orderBy: { age: 'desc' }",
+      "sortBy: { age: 'desc' }",
+      "sort: { age: 'down' }",
+      "order: { age: 'desc' }"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Prisma-da ma'lumotlarni saralash (ordering) uchun `orderBy` kalit so'zi va `'asc'` yoki `'desc'` qiymatlari qo'llaniladi."
+  },
+  {
+    "id": 8,
+    "question": "Prisma sxemasida ikki model o'rtasidagi munosabatni (relation) bog'lash uchun qaysi atribut ishlatiladi?",
+    "options": [
+      "@relation",
+      "@connect",
+      "@foreignKey",
+      "@link"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`@relation` atributi orqali tashqi kalitlar (`fields`) va ularga mos keluvchi asosiy model kalitlari (`references`) aniqlanadi."
+  },
+  {
+    "id": 9,
+    "question": "Prisma-da foydalanuvchini olish bilan birga uning barcha postlarini ham qo'shib yuklash (Eager Loading) uchun qanday so'rov yoziladi?",
+    "options": [
+      "include: { posts: true }",
+      "join: { posts: true }",
+      "select: { posts: 'all' }",
+      "with: { posts: true }"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Prisma-da bog'liq modellarni qo'shib yuklash uchun `include` kalit so'zidan foydalaniladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi Prisma kodi qanday vazifani bajaradi?\nawait prisma.user.findUnique({ where: { email: 'ali@example.com' } })",
+    "options": [
+      "Email manzili 'ali@example.com' bo'lgan yagona foydalanuvchini qidiradi",
+      "Barcha foydalanuvchilarning emailini 'ali@example.com'ga o'zgartiradi",
+      "Yangi foydalanuvchi yaratadi va emailini 'ali@example.com' qiladi",
+      "Foydalanuvchini o'chirib yuboradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`findUnique` metodi faqat unikal (Unique) yoki Primary Key ustunlari bo'yicha bitta aniq yozuvni tezkor topishga mo'ljallangan."
+  },
+  {
+    "id": 11,
+    "question": "N+1 so'rovlari (N+1 query problem) deganda nima tushuniladi?",
+    "options": [
+      "Asosiy ro'yxatni olgandan keyin, unga tegishli har bir elementning bog'liq ma'lumotlarini olish uchun bazaga alohida so'rovlar yuborilishi natijasida unumdorlik pasayishi",
+      "Bazaga ulanishlar soni 1 tadan oshib ketib xatolik yuz berishi",
+      "SQL tranzaksiyasi ichida bir nechta so'rovlar bajarilishi taqiqlanishi",
+      "Faqat bitta foydalanuvchi ma'lumotini olish uchun 1 soniya vaqt ketishi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "N+1 muammosi — bu 1 ta asosiy so'rov bilan N ta yozuv olinib, har bir yozuvning bog'liqliklarini yuklash uchun yana N marta so'rov yuborilishi tufayli bazaga yuklamaning oshishidir."
+  },
+  {
+    "id": 12,
+    "question": "Prisma-da bir vaqtning o'zida bir nechta yozuvlarni yaratish uchun qaysi metoddan foydalaniladi?",
+    "options": [
+      "createMany",
+      "createList",
+      "insertMany",
+      "bulkCreate"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`createMany` metodi bir nechta yozuvdan iborat massivni qabul qilib, bitta SQL so'rov bilan bazaga yozadi."
+  }
+]

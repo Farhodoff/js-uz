@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Obyekt literalini (object literal) yaratishning eng keng tarqalgan va tavsiya etilgan usuli qaysi?",
+    "options": [
+      "let obj = [];",
+      "let obj = {};",
+      "let obj = Object.create();",
+      "let obj = new Map();"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Jingalak qavslar `{}` yordamida obyekt yaratish 'object literal' deb ataladi va bu JavaScript-da obyekt yaratishning eng sodda va keng tarqalgan usulidir."
+  },
+  {
+    "id": 2,
+    "question": "Obyekt xossasiga (property) qavsli yozuv (bracket notation) orqali murojaat qilishning nuqta (dot notation) yozuvidan asosiy afzalligi nimada?",
+    "options": [
+      "Bu usul dot notationga qaraganda tezroq ishlaydi",
+      "U faqat raqamli kalitlar bilan ishlashga ruxsat beradi",
+      "Dinamik o'zgaruvchi qiymatini yoki bo'sh joyi (space) bor kalitlarni xossa nomi sifatida ishlatish imkonini beradi",
+      "Xossalarni avtomatik ravishda muzlatib qo'yadi (freeze)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Qavsli yozuvda (`obj[variable]`) kalit sifatida o'zgaruvchidan yoki maxsus belgilar va bo'shliqlar bo'lgan satrlardan (masalan, `obj['first name']`) foydalanish mumkin, dot notation esa buni cheklaydi."
+  },
+  {
+    "id": 3,
+    "question": "Obyektdan ma'lum bir xossani (property) butunlay o'chirib tashlash uchun qaysi kalit so'z ishlatiladi?",
+    "options": [
+      "remove",
+      "clear",
+      "delete",
+      "exclude"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-da obyektdagi xossani va uning qiymatini o'chirish uchun `delete` operatori ishlatiladi, masalan: `delete user.age;`."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst user = { name: \"Aziza\" };\nconst admin = user;\nadmin.name = \"Madina\";\nconsole.log(user.name);\n```",
+    "options": [
+      "\"Aziza\"",
+      "\"Madina\"",
+      "undefined",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Obyektlar JavaScript-da havola (reference) orqali uzatiladi. `admin = user` qilinganda, ikkala o'zgaruvchi ham bitta obyektga ishora qiladi. Shuning uchun `admin.name` o'zgartirilganda `user.name` ham o'zgaradi."
+  },
+  {
+    "id": 5,
+    "question": "Obyektda ma'lum bir kalit bor yoki yo'qligini tekshirish uchun qaysi operator to'g'ri keladi?",
+    "options": [
+      "key in obj",
+      "obj.includes(key)",
+      "obj.has(key)",
+      "key of obj"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`\"key\" in obj` operatori obyektda yoki uning prototip zanjirida berilgan xossa nomi borligini tekshirib, true yoki false qaytaradi."
+  },
+  {
+    "id": 6,
+    "question": "Obyektdagi barcha kalitlarni (keys) massiv ko'rinishida olish uchun qaysi o'rnatilgan metoddan foydalaniladi?",
+    "options": [
+      "Object.values(obj)",
+      "Object.keys(obj)",
+      "Object.entries(obj)",
+      "obj.getKeys()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Object.keys(obj)` metodi berilgan obyektning barcha xususiy va sanaladigan (enumerable) kalitlarini satrli massiv shaklida qaytaradi."
+  },
+  {
+    "id": 7,
+    "question": "Obyekt tarkibidagi metod ichida ishlatilgan `this` kalit so'zi odatda nimaga ishora qiladi?",
+    "options": [
+      "Global window obyektiga",
+      "Metod chaqirilgan obyektning o'ziga",
+      "Metodning parametrlariga",
+      "undefined qiymatga"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Oddiy funksiya ko'rinishidagi metodlarda `this` kalit so'zi o'sha metod chaqirilgan obyektga (ya'ni context-ga) havola qiladi."
+  },
+  {
+    "id": 8,
+    "question": "Arrow funksiyalar (o'q funksiyalar) metod sifatida ishlatilganda, ulardagi `this` konteksti qanday aniqlanadi?",
+    "options": [
+      "this har doim o'sha obyektga bog'lanadi",
+      "Arrow funksiyaning o'z this konteksti bo'lmaydi va u tashqi (leksik) muhitdagi this ni oladi",
+      "U TypeError xatoligini beradi",
+      "U har doim null ga teng bo'ladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Arrow funksiyalarda `this` konteksti mavjud bo'lmaydi. Ular o'zlari yozilgan joyning tashqi (leksik) kontekstidagi `this` ni meros qilib oladilar. Shuning uchun ularni obyekt metodi sifatida ishlatishda ehtiyot bo'lish zarur."
+  },
+  {
+    "id": 9,
+    "question": "ES6-ga ko'ra, obyekt kaliti va unga beriladigan o'zgaruvchi nomi bir xil bo'lsa, qanday qisqartma yozish mumkin (Property Shorthand)?",
+    "options": [
+      "const user = { name: name }; o'rniga const user = { name };",
+      "const user = { name: :name };",
+      "const user = { name = name };",
+      "const user = { @name };"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Property Shorthand qoidasiga ko'ra, agar obyekt kaliti nomi va unga qiymat sifatida berilayotgan o'zgaruvchi nomi mos kelsa, ularni shunchaki bitta so'z qilib yozish kifoya: `{ name }`."
+  },
+  {
+    "id": 10,
+    "question": "Obyektni yuzaki nusxalash (shallow copy) uchun qaysi usullardan foydalanish mumkin?",
+    "options": [
+      "JSON.parse(JSON.stringify(obj))",
+      "Object.assign({}, obj) yoki Spread operatori ({ ...obj })",
+      "Object.create(obj)",
+      "obj.clone()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Spread operatori `{ ...obj }` va `Object.assign({}, obj)` yangi obyekt yaratib, unga birinchi darajali xossalarni nusxalaydi. Ichki obyektlar esa havola (reference) bo'yicha qoladi (yuzaki nusxa)."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod ishga tushganda konsolga nima chiqadi?\n```javascript\nconst target = { a: 1 };\nconst source = { b: 2, c: 3 };\nconst result = Object.assign(target, source);\nconsole.log(target);\n```",
+    "options": [
+      "{ a: 1 }",
+      "{ b: 2, c: 3 }",
+      "{ a: 1, b: 2, c: 3 }",
+      "undefined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`Object.assign` metodi manba (source) obyektlarining xossalarini nishon (target) obyektga nusxalaydi va maqsad bo'lgan `target` obyektini o'zgartiradi. Shuning uchun `target` tarkibida a, b va c bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "`Object.freeze(obj)` metodi obyekt ustidan qanday cheklov o'rnatadi?",
+    "options": [
+      "Obyekt xossalarini faqat o'chirishga ruxsat beradi",
+      "Yangi xossa qo'shish, borlarini o'chirish va ularning qiymatlarini o'zgartirishni butunlay taqiqlaydi",
+      "Obyektni faqat for...in siklida aylanishni cheklaydi",
+      "Obyektni avtomatik ravishda massivga aylantiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Object.freeze()` metodi obyektni muzlatadi, ya'ni unga o'zgartirish kiritish butunlay taqiqlanadi (xossalar o'chirilmaydi, qiymatlar o'zgarmaydi va yangi xossalar qo'shilmaydi)."
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Mongoose Schema yaratish",
+    "instruction": "Mongoose-da foydalanuvchilar (User) uchun schema yarating. Foydalanuvchi schemasi quyidagi maydonlarga va ularning validatsiyalariga ega bo'lishi shart:\n- `username` (String, majburiy (required: true), bo'sh joylar bosh va oxiridan kesilgan (trim: true))\n- `email` (String, majburiy (required: true), kichik harfga o'tkazilgan (lowercase: true))\n- `age` (Number, minimal qiymati 18 bo'lishi kerak)\n- `createdAt` (Date, sukut bo'yicha joriy vaqt ya'ni `Date.now` funksiyasi)\n\nFunksiya nomi `createUserSchema(mongoose)` bo'lsin va u yangi Mongoose Schema obyektini qaytarsin.",
+    "startingCode": "function createUserSchema(mongoose) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "new mongoose.Schema({ username: { type: String, required: true, trim: true }, ... }) ko'rinishida yozing.",
+    "test": "const mockMongoose = {\n  Schema: class {\n    constructor(obj) {\n      this.obj = obj;\n    }\n  }\n};\nconst sandbox = new Function(code + '; return createUserSchema;');\nconst fn = sandbox();\nconst schema = fn(mockMongoose);\nif (!schema || !schema.obj) return 'Schema obyekti qaytarilmadi';\nconst obj = schema.obj;\nif (!obj.username || obj.username.type !== String || !obj.username.required || !obj.username.trim) {\n  return 'username maydoni to\\'g\\'ri konfiguratsiya qilinmagan (String, required, trim)';\n}\nif (!obj.email || obj.email.type !== String || !obj.email.required || !obj.email.lowercase) {\n  return 'email maydoni to\\'g\\'ri konfiguratsiya qilinmagan (String, required, lowercase)';\n}\nif (!obj.age || obj.age.type !== Number || obj.age.min !== 18) {\n  return 'age maydoni to\\'g\\'ri konfiguratsiya qilinmagan (Number, min: 18)';\n}\nif (!obj.createdAt || obj.createdAt.type !== Date || (obj.createdAt.default !== Date.now && typeof obj.createdAt.default !== 'function')) {\n  return 'createdAt maydoni to\\'g\\'ri konfiguratsiya qilinmagan (Date, default: Date.now)';\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Pre-save Hook orqali parolni hash qilish",
+    "instruction": "Foydalanuvchi parolini bazaga saqlashdan oldin uni hash qiladigan pre-save middleware qo'shuvchi `addPasswordHook(schema, hashFunction)` funksiyasini yozing. Bu funksiya berilgan `schema`-ga pre-save hook (`pre('save', ...)`) qo'shishi kerak. Agar parol maydoni (`password`) o'zgartirilgan bo'lsa (`isModified('password')`), uni `hashFunction(password)` yordamida hashlab, parolni yangilang. Middleware yakunida keyingi bosqichga o'tish uchun `next()` funksiyasini chaqiring. (Eslatma: hook funksiyasi ichida `this` joriy hujjatni (document) anglatishi uchun oddiy funksiyadan (arrow funksiya emas) foydalaning).",
+    "startingCode": "function addPasswordHook(schema, hashFunction) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "schema.pre('save', function(next) { if (this.isModified('password')) { this.password = hashFunction(this.password); } next(); })",
+    "test": "let hookType, hookFn;\nconst mockSchema = {\n  pre(type, fn) {\n    hookType = type;\n    hookFn = fn;\n  }\n};\nconst sandbox = new Function(code + '; return addPasswordHook;');\nconst fn = sandbox();\nfn(mockSchema, (pwd) => pwd + '_hashed');\nif (hookType !== 'save') return 'save pre-hook qo\\'shilmadi';\nif (typeof hookFn !== 'function') return 'Hook funksiyasi to\\'g\\'ri yozilmagan';\nlet nextCalled = false;\nconst mockDoc = {\n  password: '123',\n  isModified(field) { return field === 'password'; },\n  next() { nextCalled = true; }\n};\nhookFn.call(mockDoc, () => { nextCalled = true; });\nif (mockDoc.password !== '123_hashed') return 'Parol hash qilinmadi';\nif (!nextCalled) return 'next() chaqirilmadi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Virtual xossa (fullName) qo'shish",
+    "instruction": "Foydalanuvchining ismi va familiyasini birlashtirib qaytaruvchi virtual xossani yaratuvchi `addUserVirtuals(schema)` funksiyasini yozing. Funksiya berilgan `schema`-ga `fullName` nomli virtual maydon qo'shishi va uning `get` metodi orqali `this.firstName` hamda `this.lastName` qiymatlarini birlashtirib (o'rtada bitta bo'sh joy bilan) qaytarishi kerak. (Eslatma: `this` konteksti to'g'ri ishlashi uchun get metodi uchun oddiy funksiya ishlating).",
+    "startingCode": "function addUserVirtuals(schema) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "schema.virtual('fullName').get(function() { return `${this.firstName} ${this.lastName}`; })",
+    "test": "let virtualName = '';\nlet getFn;\nconst mockSchema = {\n  virtual(name) {\n    virtualName = name;\n    return {\n      get(fn) {\n        getFn = fn;\n      }\n    };\n  }\n};\nconst sandbox = new Function(code + '; return addUserVirtuals;');\nconst fn = sandbox();\nfn(mockSchema);\nif (virtualName !== 'fullName') return 'fullName virtual xossasi qo\\'shilmadi';\nif (typeof getFn !== 'function') return 'fullName uchun get metodi belgilanmagan';\nconst mockDoc = { firstName: 'Ali', lastName: 'Valiyev' };\nconst res = getFn.call(mockDoc);\nif (res !== 'Ali Valiyev') return 'fullName virtual xossasi noto\\'g\\'ri qiymat qaytardi: ' + res;\nreturn null;"
+  }
+]

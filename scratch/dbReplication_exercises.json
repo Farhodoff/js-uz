@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Sinxron Replika Validatori (Synchronous Replica Validation)",
+    "instruction": "Sinxron replikatsiyada yozish muvaffaqiyatli bo'lishi uchun barcha replikalar o'z vaqtida javob berishi kerak. `validateSyncReplicas(replicas, timeoutMs)` funksiyasini yozing. Har bir replika obyekti asinxron `write(data)` metodiga ega bo'lib, u Promise qaytaradi. Agar belgilangan `timeoutMs` vaqt ichida replika yozishni tugatmasa, u rad etilgan deb hisoblanadi. Agar kamida bitta replika rad etilsa (xato bersa yoki timeout bo'lsa), funksiya `'FAIL'` qaytarsin, aks holda barcha replikalar muvaffaqiyatli tugatsa `'SUCCESS'` qaytarsin. `Promise.race` yordamida timeout-ni amalga oshiring.",
+    "startingCode": "async function validateSyncReplicas(replicas, timeoutMs) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Har bir replica yozish so'rovini timeout promise bilan poygaga (Promise.race) qo'ying. Agar birortasi yutqazsa yoki error bersa, u xato sifatida qaytadi.",
+    "test": "if (typeof validateSyncReplicas !== 'function') return 'validateSyncReplicas funksiya emas';\nconst replica1 = { write: () => new Promise(res => setTimeout(res, 10)) };\nconst replica2 = { write: () => new Promise(res => setTimeout(res, 100)) };\nreturn validateSyncReplicas([replica1], 50).then(res1 => {\n  if (res1 !== 'SUCCESS') return '10ms replica 50ms ichida muvaffaqiyatli bo\\'lishi kerak edi';\n  return validateSyncReplicas([replica1, replica2], 30).then(res2 => {\n    if (res2 !== 'FAIL') return '100ms replica 30ms timeoutda FAIL bo\\'lishi kerak edi';\n    return null;\n  });\n});"
+  },
+  {
+    "id": 2,
+    "title": "Asinxron Replikatsiya Navbati (Async Replication Queue)",
+    "instruction": "Asinxron replikatsiyada yozishlar Leader-ga bajarilib, replica-larga navbat (queue) orqali yuboriladi. `AsyncReplicationQueue` klassini yarating. Unda `enqueue(writeTx)` metodi bo'lsin. Navbat ketma-ket (sequentially) bitta-bitta qayta ishlanishi (process) lozim, ya'ni birinchi yozish replikaga yuborilib javobi olingamuncha ikkinchisi boshlanmasligi kerak. Buning uchun asinxron `processNext(replica)` metodini yozing. U navbatdagi elementlarni tugagunigacha replikaning `applyTx(tx)` metodiga yuborib qayta ishlaydi. Agar `applyTx` xato bersa, navbat to'xtab qolmasdan o'sha element tashlab yuborilib, keyingisi davom etsin.",
+    "startingCode": "class AsyncReplicationQueue {\n  constructor() {\n    this.queue = [];\n    this.processing = false;\n  }\n\n  enqueue(writeTx) {\n    // Kodni shu yerda yozing\n  }\n\n  async processNext(replica) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "processing flag-dan foydalanib, processNext faqat bitta parallel oqimda ishlashini ta'minlang. while (this.queue.length > 0) siklidan foydalanib, elementlarni shift qilib oling.",
+    "test": "if (typeof AsyncReplicationQueue !== 'function') return 'AsyncReplicationQueue klass bo\\'lishi kerak';\nconst q = new AsyncReplicationQueue();\nq.enqueue('tx1');\nq.enqueue('tx2');\nconst processed = [];\nconst replica = {\n  applyTx: async (tx) => { \n    processed.push(tx);\n    if (tx === 'tx1') throw new Error('fail');\n  }\n};\nreturn q.processNext(replica).then(() => {\n  if (processed.length !== 2 || processed[0] !== 'tx1' || processed[1] !== 'tx2') return 'Navbat to\\'g\\'ri qayta ishlanmadi yoki xato sababli to\\'xtab qoldi';\n  return null;\n});"
+  },
+  {
+    "id": 3,
+    "title": "Yarim-Sinxron Yo'naltiruvchi (Semi-Synchronous Router)",
+    "instruction": "Yarim-sinxron yozishda Leader ma'lumotni o'zida saqlaydi va bir nechta replikaga yuboradi. Agar kamida `requiredAcks` miqdordagi replikalardan muvaffaqiyatli tasdiq kelsa, yozish muvaffaqiyatli (`true`) deb hisoblanadi. Qolgan replikalardagi replikatsiya esa fonda davom etaveradi. `routeSemiSyncWrite(leader, replicas, writeTx, requiredAcks)` funksiyasini yozing. Replikalar `replicate(tx)` asinxron metodini chaqiradi va u true/false qaytaradi. Leader-ga `leader.write(tx)` sinxron tarzda darhol yoziladi. Funksiya replikalarning parallel bajarilishini kutishi va kerakli ack-lar yetishi bilanoq darhol `true` yoki `false` qaytarishi kerak. (Acks yetmasa false qaytadi).",
+    "startingCode": "async function routeSemiSyncWrite(leader, replicas, writeTx, requiredAcks) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Leader-ga yozgandan so'ng, barcha replikalarning replicate metodini chaqiring. Ular parallel ishga tushishi uchun Promise-larni kuzating. requiredAcks yetarli bo'lsa darhol true qaytarish uchun yordamchi hisoblagich va hal qiluvchi (resolver) mantiqdan foydalanish mumkin.",
+    "test": "if (typeof routeSemiSyncWrite !== 'function') return 'routeSemiSyncWrite funksiya bo\\'lishi kerak';\nconst leader = { write: () => {} };\nconst reps = [\n  { replicate: async () => true },\n  { replicate: async () => new Promise(r => setTimeout(() => r(true), 10)) },\n  { replicate: async () => false }\n];\nreturn routeSemiSyncWrite(leader, reps, 'tx', 2).then(res => {\n  if (res !== true) return '2 ta muvaffaqiyatli javob borligida true bo\\'lishi kerak edi';\n  return routeSemiSyncWrite(leader, reps, 'tx', 3).then(res2 => {\n    if (res2 !== false) return '3 ta ack olinmaganda false bo\\'lishi kerak edi';\n    return null;\n  });\n});"
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Docker Compose nima?",
+    "options": [
+      "Ko'p konteynerli Docker ilovalarini ta'riflash va ishga tushirish vositasi",
+      "Faqat ma'lumotlar bazasini optimallashtiradigan alohida SQL vositasi",
+      "JavaScript kodlarini yig'uvchi (bundler) dastur",
+      "Konteyner ichidagi rasmlarni siquvchi utilita"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Docker Compose — bu yagona YAML fayl (docker-compose.yml) yordamida ko'p konteynerli ilovalar arxitekturasini ta'riflash va ularni birgalikda boshqarish (ishga tushirish, to'xtatish) vositasidir."
+  },
+  {
+    "id": 2,
+    "question": "docker-compose.yml faylidagi `depends_on` xossasi nima vazifani bajaradi?",
+    "options": [
+      "Konteynerlarning ishga tushish ketma-ketligini (tartibini) belgilaydi",
+      "Bog'liq konteyner ichidagi ma'lumotlar to'liq yuklanmaguncha kodni to'xtatib turadi",
+      "Baza parollarini shifrlab saqlaydi",
+      "Portlarni tashqi tarmoqqa ochib beradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`depends_on` xizmatlar (services) qaysi tartibda boshlanishini belgilaydi (masalan, db va redis ishga tushgach web konteyneri boshlanadi). Ammo u bog'liq xizmatning so'rovlarni qabul qilishga tayyor (ready) bo'lganini kutmaydi, shunchaki konteyner jarayoni boshlanganini tekshiradi."
+  },
+  {
+    "id": 3,
+    "question": "Docker Compose xizmatlari konteynerlar o'chib ketganda ham ma'lumotlarni saqlab qolishi uchun qaysi xossadan foydalanadi?",
+    "options": [
+      "volumes",
+      "networks",
+      "ports",
+      "environment"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`volumes` yordamida konteyner ichidagi papkalar host tizimiga yoki Docker boshqaradigan maxsus doimiy disk qismiga (named volume) bog'lanadi. Bu ma'lumotlar yo'qolishining oldini oladi."
+  },
+  {
+    "options": [
+      "Ular avtomatik ravishda yagona umumiy tarmoqqa (bridge network) ulanadi va xizmat nomi (service name) orqali bog'lana oladi",
+      "Faqat IP manzillarini qo'lda yozib chiqish orqali bog'lanadi",
+      "Faqat portlarni bir xil qilish orqali bog'lanadi",
+      "Ular bir-biri bilan umuman bog'lana olmaydi"
+    ],
+    "question": "Docker Compose yordamida yaratilgan xizmatlar bir-biri bilan qanday aloqa qiladi?",
+    "id": 4,
+    "correctAnswer": 0,
+    "explanation": "Docker Compose default holatda loyiha uchun alohida tarmoq (network) yaratadi. Konteynerlar o'sha tarmoq ichida xizmat nomlari (masalan: `postgres`, `redis`) orqali DNS so'rov yuborib bir-biri bilan bog'lana oladi."
+  },
+  {
+    "id": 5,
+    "question": "docker-compose.yml fayliga maxfiy kalitlar va parollarni xavfsiz uzatish uchun qaysi usul eng yaxshi hisoblanadi?",
+    "options": [
+      "Loyihada `.env` faylidan foydalanish va Compose faylida `${VAR_NAME}` sintaksisini qo'llash",
+      "Parollarni to'g'ridan-to'g'ri docker-compose.yml faylida yozib ketish",
+      "Baza parolidan umuman foydalanmaslik",
+      "Parolni har safar konteyner terminaliga kirib qo'lda yozish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Maxfiy o'zgaruvchilarni `.env` faylida saqlash va docker-compose.yml-da ularni o'zgaruvchi sifatida chaqirish (masalan: `POSTGRES_PASSWORD: ${DB_PASSWORD}`) xavfsizlik va moslashuvchanlik nuqtai nazaridan eng to'g'ri yo'ldir."
+  },
+  {
+    "id": 6,
+    "question": "Barcha Docker Compose xizmatlarini orqa fonda (detached mode) ishga tushirish buyrug'i qaysi?",
+    "options": [
+      "docker compose up -d",
+      "docker compose up --build",
+      "docker compose start -all",
+      "docker compose run --bg"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`docker compose up -d` buyrug'i barcha xizmatlarni orqa fonda (detached) ishga tushiradi, natijada siz joriy terminal oynasidan boshqa buyruqlar uchun foydalanishda davom etishingiz mumkin."
+  },
+  {
+    "id": 7,
+    "question": "Docker Compose xizmatlarini o'chirish, yaratilgan tarmoq (network) va konteynerlarni butunlay tozalash buyrug'i qaysi?",
+    "options": [
+      "docker compose down",
+      "docker compose stop",
+      "docker compose clean",
+      "docker compose remove"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`docker compose down` buyrug'i ishlayotgan konteynerlarni to'xtatadi va ularni, shuningdek loyiha uchun yaratilgan tarmoqlarni (networks) butunlay o'chirib yuboradi."
+  },
+  {
+    "id": 8,
+    "question": "Rasmiy PostgreSQL konteynerida ma'lumotlar saqlanadigan standart katalog qaysi?",
+    "options": [
+      "/var/lib/postgresql/data",
+      "/data/db",
+      "/usr/share/nginx/html",
+      "/etc/postgresql"
+    ],
+    "correctAnswer": 0,
+    "explanation": "PostgreSQL o'z ma'lumotlarini konteyner ichidagi `/var/lib/postgresql/data` papkasida saqlaydi. Biz doimiy saqlash (persistence) uchun ushbu papkani volume-ga mount qilamiz."
+  },
+  {
+    "id": 9,
+    "question": "Koddagi o'zgarishlardan so'ng Docker tasvirlarini (images) qayta yig'ib, xizmatlarni ishga tushirish uchun qaysi buyruq qo'llaniladi?",
+    "options": [
+      "docker compose up --build",
+      "docker compose rebuild",
+      "docker compose up -d --no-cache",
+      "docker compose up --force-recreate"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`docker compose up --build` buyrug'i konteynerlarni ishga tushirishdan oldin Dockerfile fayllari o'zgargan xizmatlarni qaytadan yig'ish (build) majburiyatini yuklaydi."
+  },
+  {
+    "id": 10,
+    "question": "Rasmiy MongoDB konteynerida ma'lumotlar saqlanadigan standart ichki katalog qaysi?",
+    "options": [
+      "/data/db",
+      "/var/lib/mongo",
+      "/data/mongodb",
+      "/var/lib/postgresql/data"
+    ],
+    "correctAnswer": 0,
+    "explanation": "MongoDB ma'lumotlar bazasi o'z ma'lumotlarini standart holatda `/data/db` papkasida saqlaydi va ushbu joy volume orqali saqlanishi kerak."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun ma'lumotlar bazasi konteyneri ishga tushganda `depends_on` mavjudligiga qaramay backend ilovasida ulanish xatosi (Connection Error) yuz berishi mumkin?",
+    "options": [
+      "Chunki depends_on faqat konteyner boshlanganini tekshiradi, bazaning so'rovlarni qabul qilishga tayyorligini kutmaydi",
+      "Chunki bazaning portlari har doim o'zgarib turadi",
+      "Chunki backend faqat local portlar orqali bog'lana oladi",
+      "depends_on ishlatilganda bunday xatolik umuman yuz bermaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Konteynerning ishga tushishi (running) bazaning ichki tizimi to'liq yuklanib, portlarni tinglashni boshlaganini anglatmaydi. Bu muammoni hal qilish uchun `healthcheck` yoki `pg_isready` kabi tekshiruvlar yoziladi."
+  },
+  {
+    "id": 12,
+    "question": "Docker Compose faylidagi `ports` qismida `\"8080:3000\"` yozuvi nimani anglatadi?",
+    "options": [
+      "Host tizimining 8080-portini konteyner ichidagi 3000-portga bog'lash",
+      "Host tizimining 3000-portini konteyner ichidagi 8080-portga bog'lash",
+      "Faqat ichki 8080 va 3000 portlarni bog'lash",
+      "Portlarni global tarmoq uchun butunlay yopish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Port mapping-da chap tomondagi port host porti (tashqaridan kirish uchun), o'ng tomondagisi esa konteyner ichidagi xizmat tinglayotgan portdir (HOST:CONTAINER)."
+  }
+]

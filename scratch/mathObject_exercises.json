@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Tasodifiy son generatori",
+    "instruction": "Berilgan `min` va `max` butun sonlari oralig'ida (ikkala chegara ham kiruvchi, ya'ni `min <= x <= max`) tasodifiy butun sonni qaytaruvchi `getRandomInRange(min, max)` funksiyasini yozing.",
+    "startingCode": "function getRandomInRange(min, max) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Math.random() va Math.floor() metodlaridan hamda `Math.floor(Math.random() * (max - min + 1)) + min` formulasidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return getRandomInRange;');\nconst fn = sandbox();\nconst results = [];\nfor(let i=0; i<100; i++) {\n  const val = fn(5, 10);\n  results.push(val);\n  if (val < 5 || val > 10 || !Number.isInteger(val)) {\n    return 'Kutilgan oraliq: [5, 10] orasidagi butun son. Qaytarilgan qiymat: ' + val;\n  }\n}\nif (results.includes(5) && results.includes(10)) return null;\nreturn 'Funksiya har doim ham oraliq chegaralarini (min yoki max) qamrab olmayapti';"
+  },
+  {
+    "id": 2,
+    "title": "Moliyaviy yaxlitlash",
+    "instruction": "Pul qiymatlari yoki hisob-kitoblar bilan ishlaganda ma'lum xonagacha aniq yaxlitlash talab etiladi. Berilgan `num` sonini `decimals` kasr xonalarigacha matematik qoida bo'yicha yaxlitlaydigan `roundToDecimal(num, decimals)` funksiyasini yozing. (Masalan, `roundToDecimal(10.235, 2)` -> `10.24`, `roundToDecimal(1.005, 2)` -> `1.01`).",
+    "startingCode": "function roundToDecimal(num, decimals) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Sonni `10^decimals` ga ko'paytiring (buning uchun Math.pow(10, decimals) yoki 10 ** decimals dan foydalaning), so'ng Math.round() orqali yaxlitlang va natijani qayta `10^decimals` ga bo'ling.",
+    "test": "const sandbox = new Function(code + '; return roundToDecimal;');\nconst fn = sandbox();\nif (fn(10.235, 2) !== 10.24) return '10.235 ni 2 xonagacha yaxlitlashda xato. Kutilgan: 10.24, qaytarildi: ' + fn(10.235, 2);\nif (fn(1.005, 2) !== 1.01) return '1.005 ni 2 xonagacha yaxlitlashda xato. Kutilgan: 1.01';\nif (fn(5.5, 0) !== 6) return '5.5 ni 0 xonagacha yaxlitlashda xato';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Eng katta va kichik son farqi",
+    "instruction": "Sonlar massivini qabul qilib, massivdagi eng katta va eng kichik sonlar o'rtasidagi farqni (absolyut qiymatda) hisoblab beruvchi `getMinMaxDifference(arr)` funksiyasini yozing. Agar massiv bo'sh bo'lsa yoki bitta elementdan iborat bo'lsa, `0` qaytarsin.",
+    "startingCode": "function getMinMaxDifference(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Math.max() va Math.min() metodlariga massiv elementlarini yuborish uchun spread operatoridan (`...`) foydalaning. Agar massiv bo'sh bo'lsa, 0 qaytarishni unutmang.",
+    "test": "const sandbox = new Function(code + '; return getMinMaxDifference;');\nconst fn = sandbox();\nif (fn([10, 2, 38, 23, 8]) !== 36) return 'Massiv farqi noto\\'g\\'ri. Kutilgan: 36 (38 - 2)';\nif (fn([]) !== 0) return 'Bo\\'sh massiv uchun 0 qaytishi kerak';\nif (fn([5]) !== 0) return 'Bitta elementli massiv uchun 0 qaytishi kerak';\nreturn null;"
+  }
+]

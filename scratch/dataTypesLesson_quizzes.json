@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da nechta asosiy ma'lumot turi bor (ES2020 bo'yicha)?",
+    "options": [
+      "6 ta",
+      "7 ta",
+      "8 ta (7 ta primitive va 1 ta reference)",
+      "5 ta"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-da 8 ta ma'lumot turi mavjud. Ulardan 7 tasi primitive (String, Number, Boolean, Null, Undefined, Symbol, BigInt) va 1 tasi reference (Object) hisoblanadi. Array va Function ham Object turiga kiradi."
+  },
+  {
+    "id": 2,
+    "question": "Qaysi ma'lumot turlari faqat Primitive (oddiy) hisoblanadi?",
+    "options": [
+      "Object, Array, Function",
+      "Number, String, Boolean, Null, Undefined, Symbol, BigInt",
+      "String, Number, Boolean, Map, Set",
+      "Faqat Number va String"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-dagi primitive turlar: Number, String, Boolean, Null, Undefined, Symbol va BigInt. Ular o'zgartirib bo'lmas (immutable) qiymatlardir va Stack xotirasida saqlanadi."
+  },
+  {
+    "id": 3,
+    "question": "Primitive va Reference turlarining xotirada saqlanishidagi asosiy farq nima?",
+    "options": [
+      "Primitive turlar faqat Heap xotirada, Reference turlar esa faqat Stack-da saqlanadi",
+      "Ikkalasi ham faqat Stack xotirada saqlanadi",
+      "Primitive turlar qiymat bo'yicha Stack-da saqlanadi, Reference turlar esa Heap-da saqlanib, Stack-da faqat ularning manzili (havolasi) turadi",
+      "Reference turlar o'zgarmas (immutable) xotirada saqlanadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Primitive qiymatlar to'g'ridan-to'g'ri Stack xotirasida saqlanadi (chunki ularning o'lchami sobit). Reference turlar esa dinamik o'lchamga ega bo'lganligi sababli Heap xotirasida saqlanadi va Stack-da ularga ko'rsatib turuvchi havola (pointer) saqlanadi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet a = 10;\nlet b = a;\nb = 20;\nconsole.log(a);\n```",
+    "options": [
+      "20",
+      "10",
+      "undefined",
+      "ReferenceError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Number turi primitive hisoblanadi. `let b = a` bo'lganda `a` ning qiymati (`10`) nusxalanib `b` ga beriladi (copy by value). Shuning uchun `b` o'zgargani bilan `a` ning qiymati o'zgarmay qoladi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet user1 = { name: \"Ali\" };\nlet user2 = user1;\nuser2.name = \"Vali\";\nconsole.log(user1.name);\n```",
+    "options": [
+      "\"Ali\"",
+      "\"Vali\"",
+      "undefined",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Obyektlar reference turi hisoblanadi. `let user2 = user1` yozilganda, xotiradagi obyekt nusxalanmaydi, balki unga yo'naltirilgan manzil nusxalanadi (copy by reference). Ikkala o'zgaruvchi ham bitta obyektga ko'rsatgani uchun `user2.name` o'zgarishi `user1.name` ga ham ta'sir qiladi."
+  },
+  {
+    "id": 6,
+    "question": "JavaScript-dagi qaysi tarixiy xatolik (bug) tufayli `typeof null` kutilmagan qiymat qaytaradi?",
+    "options": [
+      "'undefined' qaytaradi",
+      "'null' qaytaradi",
+      "'object' qaytaradi, chunki ilk JS versiyasida obyektdan dalolat beruvchi bitlar null ko'rsatkichi bilan mos kelib qolgan",
+      "'number' qaytaradi, chunki u 0 ga tenglashtiriladi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-ning ilk yozilgan kodlarida qiymatlar turlari bitlar orqali aniqlangan. Obyektlarning bit kodi `000` bo'lgan, `null` esa butunlay nol ko'rsatkich bo'lganligi sababli uning bit kodi ham `0` (ya'ni `000`) bo'lib qolgan va JS uni `object` deb hisoblagan. Bu xato hozirgacha orqaga moslik uchun saqlab kelinmoqda."
+  },
+  {
+    "id": 7,
+    "question": "`Symbol` ma'lumot turining asosiy maqsadi nima?",
+    "options": [
+      "Katta matematik hisob-kitoblarni amalga oshirish",
+      "Obyektlar uchun takrorlanmas, mutlaqo unikal kalitlar yaratish",
+      "Matnli ma'lumotlarni shifrlash",
+      "Massivlarni tezroq saralash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Symbol - bu unikal va o'zgarmas primitive ma'lumot turi bo'lib, odatda obyektlarda hech qachon boshqa kalitlar bilan to'qnashmaydigan (collision) unikal xususiyat kalitlarini yaratish uchun ishlatiladi."
+  },
+  {
+    "id": 8,
+    "question": "BigInt turi nima uchun ishlatiladi?",
+    "options": [
+      "Matnlarni ko'p tillarga tarjima qilish uchun",
+      "Number.MAX_SAFE_INTEGER dan kattaroq butun sonlar bilan xavfsiz hisob-kitoblar bajarish uchun",
+      "Obyektlarni chuqur nusxalash uchun",
+      "Faqat kasr sonlarni yuqori aniqlikda saqlash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-dagi standart `Number` turi faqat `2^53 - 1` gacha bo'lgan sonlarni xavfsiz hisoblay oladi. BigInt esa bu chegaradan katta bo'lgan butun sonlar ustida aniq matematik amallarni bajarishga imkon beradi. BigInt sonlar oxiriga `n` harfi qo'yiladi (masalan: `9007199254740991n`)."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi taqqoslash natijasi qanday bo'ladi?\n```javascript\nlet sym1 = Symbol(\"id\");\nlet sym2 = Symbol(\"id\");\nconsole.log(sym1 === sym2);\n```",
+    "options": [
+      "true",
+      "false",
+      "undefined",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Symbol-lar har doim mutlaqo unikal bo'ladi. Hatto ularning ta'rifi (description) bir xil bo'lsa ham (`\"id\"`), ular har doim bir-biriga teng bo'lmagan turli qiymatlar deb hisoblanadi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod natijasi nima bo'ladi?\n```javascript\nlet arr1 = [1, 2];\nlet arr2 = [1, 2];\nconsole.log(arr1 === arr2);\n```",
+    "options": [
+      "true, chunki elementlari va ularning joylashuvi bir xil",
+      "false, chunki reference turlarni solishtirishda ularning xotiradagi manzillari (references) solishtiriladi va ular turli manzillarda joylashgan",
+      "undefined",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massivlar reference turga kiradi. Ikki alohida massiv `[1, 2]` deb e'lon qilinganda, ular xotiraning mutlaqo boshqa joylarida yaratiladi. Reference turlar `===` bilan solishtirilganda qiymati emas, ularning xotiradagi manzillari tekshiriladi. Ular boshqa-boshqa manzilda bo'lgani uchun natija `false` bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Obyektni yoki massivni chuqur nusxalash (deep copy) va referensial bog'liqlikni butunlay uzish uchun qaysi zamonaviy JS funksiyasidan foydalanish tavsiya etiladi?",
+    "options": [
+      "Object.assign()",
+      "Spread operator (...)",
+      "structuredClone()",
+      "Object.freeze()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`structuredClone()` - bu JavaScript-ning zamonaviy o'rnatilgan funksiyasi bo'lib, u obyekt yoki massivlarni chuqur nusxalaydi (deep copy). Bu o'z navbatida ichma-ich joylashgan obyektlar ham yangidan nusxalanishini ta'minlaydi va original obyekt bilan bog'liqlikni to'liq uzadi."
+  },
+  {
+    "id": 12,
+    "question": "JavaScript-da qaysi turdagi ma'lumotlar immutable (o'zgartirib bo'lmas) hisoblanadi?",
+    "options": [
+      "Faqat Obyektlar",
+      "Barcha Primitive ma'lumot turlari (qiymati o'zgartirilganda yangi xotira ajratiladi, eski qiymat o'zgartirilmaydi)",
+      "Barcha Reference ma'lumot turlari (massivlar va obyektlar)",
+      "Faqat const bilan e'lon qilingan o'zgaruvchilar"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Barcha primitive turlar (Number, String, Boolean, null, undefined, Symbol, BigInt) o'zgarmas (immutable) hisoblanadi. O'zgaruvchi qiymati o'zgartirilganda, eski qiymat o'zgartirilmaydi, balki xotiradan yangi qiymat uchun joy olinib, o'zgaruvchi unga bog'lanadi. Reference turlar (Obyektlar) esa mutable (o'zgartiriluvchan) hisoblanadi."
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Songa majburiy o'tkazish (Safe Addition)",
+    "instruction": "Sizga ikkita parametr qabul qiladigan `safeAdd(val1, val2)` funksiyasi berilgan. Ular har xil tipda (string, boolean, null) bo'lishi mumkin. Agar ular yordamida oddiy plyus `+` amalini bajarsak va ulardan biri string bo'lsa, JS ularni matn sifatida birlashtiradi. Siz plyus `+` unar operatorining implicit casting xususiyatidan foydalanib, har qanday holatda ham ularni songa o'tkazib matematik qo'shadigan funksiya yozing.",
+    "startingCode": "function safeAdd(val1, val2) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Plyus `+` unar operatori (masalan, `+x`) qiymatni tezkor va yashirin tarzda songa o'tkazadi.",
+    "test": "const sandbox = new Function(code + '; return safeAdd;');\nconst fn = sandbox();\nif (fn('5', '10') === 15 && fn(true, 5) === 6 && fn('3', false) === 3) return null;\nreturn 'safeAdd funksiyasi qiymatlarni to\\'g\\'ri songa o\\'tkazib qo\\'shmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Falsy qiymatlarni inkor qilish",
+    "instruction": "Berilgan istalgan qiymatni boolean tipiga o'tkazib, uning 'falsy' (noto'g'ri/bo'sh) ekanligini aniqlovchi `isFalsy(value)` funksiyasini yozing. Buning uchun mantiqiy inkor `!` operatorining implicit casting xususiyatidan foydalaning (explicit `Boolean()` ishlatilmasin).",
+    "startingCode": "function isFalsy(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Mantiqiy inkor operatori `!` har qanday qiymatni boolean-ga o'tkazadi va uni teskarisiga aylantiradi. Uni ikki marta ishlatish `!!` qiymatni o'zining boolean holatiga o'tkazadi.",
+    "test": "const sandbox = new Function(code + '; return isFalsy;');\nconst fn = sandbox();\nif (fn(0) === true && fn('') === true && fn(null) === true && fn('hello') === false && fn(5) === false) return null;\nreturn 'isFalsy funksiyasi falsy qiymatlarni to\\'g\\'ri aniqlamadi';"
+  },
+  {
+    "id": 3,
+    "title": "Massiv elementlarini songa o'tkazib yig'ish",
+    "instruction": "Massiv berilgan. Massiv elementlarini (ular son, boolean yoki songa aylanadigan string yoki null bo'lishi mumkin) implicit casting (unary `+`) yordamida songa o'tkazib yig'ib boruvchi `sumCoerced(arr)` funksiyasini yozing. Agar element songa o'tkazilganda `NaN` bo'lsa (masalan `'abc'`), uni 0 deb hisoblang.",
+    "startingCode": "function sumCoerced(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Massivni aylanib chiquvchi sikl yoki `reduce` ishlatib, har bir elementni `+item` ko'rinishida songa o'giring. Uni `isNaN()` orqali tekshirib, agar true bo'lsa, 0 qo'shing.",
+    "test": "const sandbox = new Function(code + '; return sumCoerced;');\nconst fn = sandbox();\nconst res = fn([1, '2', true, 'abc', null]);\nif (res === 4) return null;\nreturn 'sumCoerced funksiyasi to\\'g\\'ri yig\\'indini qaytarmadi';"
+  }
+]

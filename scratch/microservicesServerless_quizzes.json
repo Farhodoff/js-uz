@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Monolit va Mikroxizmatlar (Microservices) arxitekturasi orasidagi asosiy farq nimada?",
+    "options": [
+      "Monolitda butun tizim yagona kod bazasi va bitta dastur sifatida ishlaydi, mikroxizmatlarda esa tizim alohida mustaqil xizmatlarga bo'linadi",
+      "Monolit faqat SQL bazalar bilan ishlaydi, mikroxizmatlar esa faqat NoSQL bazalar bilan",
+      "Mikroxizmatlar faqat bulutli tizimlarda ishlay oladi, monolit esa ishlay olmaydi",
+      "Monolit arxitekturada xatoliklarni aniqlash mikroxizmatlarga qaraganda ancha oson"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Monolit arxitekturada barcha funksiyalar va modullar yagona dastur ichida birlashtirilgan bo'ladi. Mikroxizmatlarda esa har bir xizmat mustaqil va alohida joylashtiriladi."
+  },
+  {
+    "id": 2,
+    "question": "Mikroxizmatlar arxitekturasining qaysi jihati eng katta qiyinchiliklardan biri hisoblanadi?",
+    "options": [
+      "Dasturchilar sonini cheklashi",
+      "Tizimning murakkabligi, tarmoq orqali aloqa qilish kechikishlari va ma'lumotlar yaxlitligini saqlash qiyinligi",
+      "Faqat bitta dasturlash tilidan foydalanish zarurati",
+      "Xizmatlarni alohida masshtablash imkoniyati yo'qligi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Mikroxizmatlarda servislar o'rtasidagi tarmoq aloqalari, taqsimlangan tranzaksiyalar (distributed transactions) va deployment jarayonlari tizim murakkabligini oshiradi."
+  },
+  {
+    "id": 3,
+    "question": "Serverless (FaaS - Function as a Service) hisoblash modelining asosiy g'oyasi nima?",
+    "options": [
+      "Tizimda umuman serverlar mavjud bo'lmaydi",
+      "Serverlarni foydalanuvchilar o'zlari boshqaradi",
+      "Dasturchi server infratuzilmasini sozlamaydi va boshqarmaydi, faqat voqealar (events) orqali ishga tushuvchi kod (funksiya) yozadi",
+      "Kodni faqat frontend qismda ishga tushirish imkonini beradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Serverless nomiga qaramay orqa fonda serverlar bor, biroq ularni sozlash, masshtablash va yangilash (patching) ishlari bulut provayderi (masalan, AWS, Google Cloud) zimmasida bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "Serverless arxitekturasidagi \"Cold Start\" (Sovuq ishga tushish) nima?",
+    "options": [
+      "Funksiya ma'lum muddat chaqirilmagandan so'ng birinchi marta so'rov kelganda, konteynerning noldan yuklanishi sababli yuzaga keladigan vaqtinchalik kechikish",
+      "Server xonasidagi harorat pasayishi natijasida serverlarning sekin ishlashi",
+      "Funksiyaning xato (error) bilan tugashi va qayta ishga tushishi",
+      "Faqat qish faslida server yuklamasining oshishi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Agar funksiya tez-tez chaqirilmasa, provayder resurslarni tejash uchun uni o'chirib qo'yadi. Keyingi so'rov kelganda yangi konteyner ishga tushiriladi va bu cold start deb ataladi."
+  },
+  {
+    "id": 5,
+    "question": "Cold Start muammosini qanday qilib yumshatish (kamaytirish) mumkin?",
+    "options": [
+      "Faqat SQL ma'lumotlar bazasidan foydalanish orqali",
+      "Funksiya kodining hajmini maksimal darajada oshirish orqali",
+      "Provisioned Concurrency-ni sozlash (konteynerlarni doim tayyor saqlash) yoki vaqti-vaqti bilan funksiyani avtomatik ping qilib turish",
+      "Faqat JavaScript dasturlash tilidan voz kechish orqali"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Provisioned Concurrency bulut provayderiga ma'lum miqdordagi funksiya nusxalarini doim issiq (warm) holatda saqlashni buyuradi yoki ping-triggerlar orqali funksiya o'chib qolishining oldi olinadi."
+  },
+  {
+    "id": 6,
+    "question": "Serverless (FaaS) to'lov tizimi (pricing model) qanday ishlaydi?",
+    "options": [
+      "Serverning oylik ijarasi uchun qat'iy belgilangan narx to'lanadi",
+      "Faqat funksiya ishga tushgan (bajarilgan) millisoniyalar va foydalanilgan xotira hajmi uchun to'lanadi (Pay-as-you-go)",
+      "So'rovlar sonidan qat'i nazar faqat yuklangan kod hajmi (Megabayt) uchun to'lanadi",
+      "Tizimdan foydalanish mutlaqo bepul"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Serverless-da siz server bo'sh turgan vaqti uchun pul to'lamaysiz. To'lov faqat funksiya real ish bajargan vaqti va resurslariga qarab hisoblanadi."
+  },
+  {
+    "id": 7,
+    "question": "Serverless funksiyalarda nima uchun holatni (State) global o'zgaruvchilarda doimiy saqlash tavsiya etilmaydi?",
+    "options": [
+      "Chunki global o'zgaruvchilar xotirani buzadi",
+      "Chunki serverless funksiyalar faqat satrli ma'lumotlarni qabul qiladi",
+      "Chunki xavfsizlik nuqtai nazaridan global o'zgaruvchilar taqiqlangan",
+      "Chunki FaaS funksiyalari stateless (holatsiz) bo'lib, har bir so'rovda yangi konteyner yaratilishi yoki mavjudlari ixtiyoriy ravishda yo'q qilinishi mumkin"
+    ],
+    "correctAnswer": 3,
+    "explanation": "FaaS funksiyalari stateless ishlashi kerak. Holatni (masalan, seanslarni) saqlash uchun tashqi xizmatlar (Redis, DynamoDB, PostgreSQL) ishlatilishi lozim."
+  },
+  {
+    "id": 8,
+    "question": "API Gateway-ning serverless arxitekturadagi o'rni qanday?",
+    "options": [
+      "Mijozdan kelgan HTTP so'rovlarni qabul qilib, ularni mos FaaS funksiyalari uchun event-ga aylantiradi va yo'naltiradi",
+      "Faqat ma'lumotlar bazasini himoya qiladi",
+      "JavaScript kodini avtomatik ravishda C++ kodiga o'zgartiradi",
+      "Konteynerlarni doimiy ravishda isitib turuvchi asosiy server hisoblanadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "API Gateway kiruvchi HTTP/REST so'rovlarni qabul qilib, ularni tegishli serverless funksiyalarga marshrutlaydi va javoblarni mijozga qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "Qaysi holatda an'anaviy Monolit arxitektura Mikroxizmatlarga qaraganda afzalroq tanlov hisoblanadi?",
+    "options": [
+      "Loyiha juda katta va yuzlab dasturchilar ishlayotgan bo'lsa",
+      "Loyiha hali boshlang'ich (MVP) bosqichida, jamoa kichik va tezkor o'zgarishlar talab qilinganda",
+      "Tizim har bir modulining alohida texnologiyada yozilishi shart bo'lsa",
+      "Faqat asinxron ma'lumotlar uzatish kerak bo'lganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Monolit arxitektura kichik jamoalarga loyihani tez boshlash va murakkab taqsimlangan tizim arxitekturasini yaratish xarajatlaridan qochish imkonini beradi."
+  },
+  {
+    "id": 10,
+    "question": "Mikroxizmatlar orasidagi asinxron aloqalarni yo'lga qo'yishda qaysi texnologiyalar eng ko'p qo'llaniladi?",
+    "options": [
+      "HTML5 va LocalStorage",
+      "Faqat sinxron REST API so'rovlari",
+      "Message Broker-lar (masalan, RabbitMQ, Apache Kafka, AWS SQS)",
+      "Virtual DOM texnologiyasi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Xizmatlarning bir-biriga bog'lanib qolmasligi (loose coupling) uchun xabarlar brokeri yordamida voqealarga asoslangan (event-driven) asinxron aloqa o'rnatiladi."
+  },
+  {
+    "id": 11,
+    "question": "FaaS funksiyalaridagi Ephemeral Storage (vaqtinchalik xotira) nima?",
+    "options": [
+      "Funksiya bajarilayotgan vaqtda mavjud bo'lgan, ammo funksiya to'xtagach o'chib ketadigan mahalliy vaqtinchalik xotira (/tmp papkasi)",
+      "Hech qachon o'chib ketmaydigan bulutli saqlash ombori",
+      "Brauzerning localStorage qismi",
+      "Faqat rasmlarni saqlash uchun mo'ljallangan operativ xotira"
+    ],
+    "correctAnswer": 0,
+    "explanation": "FaaS muhitlari odatda cheklangan hajmdagi vaqtinchalik mahalliy saqlash fayl tizimini (/tmp) taqdim etadi. Konteyner yopilishi bilan bu ma'lumotlar yo'qoladi."
+  },
+  {
+    "id": 12,
+    "question": "Serverless FaaS funksiyalarining eng asosiy texnik cheklovlaridan biri nima?",
+    "options": [
+      "Hech qanday dasturlash tilini qo'llab-quvvatlamasligi",
+      "Maksimal ishlash vaqtining cheklanganligi (masalan, ko'plab platformalarda 15 daqiqa atrofida)",
+      "Faqat bitta foydalanuvchi so'roviga xizmat ko'rsata olishi",
+      "Faqat 1 KB gacha bo'lgan hajmdagi fayllarni qabul qilishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "FaaS funksiyalari qisqa muddatli vazifalar uchun mo'ljallangan bo'lib, odatda maksimal ishlash vaqti (execution timeout) cheklangan (AWS Lambda-da 15 daqiqa)."
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Taqsimlangan bloklash (Distributed Locking) ning asosiy maqsadi nima?",
+    "options": [
+      "Ma'lumotlarni tarmoq bo'ylab shifrlash",
+      "Bir nechta mustaqil tugunlar (nodes) yoki jarayonlarning bitta umumiy resursga bir vaqtda kirishini va undan foydalanishini muvofiqlashtirish (o'zaro istisno - mutual exclusion)",
+      "Barcha serverlarni bir xil vaqt zonasiga o'tkazish",
+      "Ma'lumotlar bazasidagi barcha jadvallarni shardlarga bo'lish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Taqsimlangan bloklash bir nechta server/tugun parallel ishlayotgan muhitda bitta resursga (masalan, fayl yoki ma'lumotlar bazasi satriga) faqat bitta server yozishini ta'minlash uchun xizmat qiladi."
+  },
+  {
+    "id": 2,
+    "question": "Redis-da blokirovka olish uchun ishlatiladigan `SETNX` buyrug'ining asosiy xususiyati nimada?",
+    "options": [
+      "Kalit faqat u mavjud bo'lmasa o'rnatiladi (Set if Not eXists)",
+      "Kalitni har doim majburiy yangilaydi",
+      "Kalitni faqat tranzaksiya ichida o'chiradi",
+      "Faqat raqamli qiymatlarni keshlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`SETNX` (yoki zamonaviy Redis-da `SET key value NX`) kalit mavjud bo'lmagandagina uni yaratadi. Agar kalit allaqachon mavjud bo'lsa (ya'ni bloklangan bo'lsa), u hech narsa qilmaydi."
+  },
+  {
+    "id": 3,
+    "question": "Junior dasturchilar blokirovkani o'chirishda ko'p yo'l qo'yadigan eng katta xavfli xato qaysi?",
+    "options": [
+      "Blokirovkaga TTL muddati bermaslik",
+      "Blokirovka kalitini tasodifiy token qiymatini tekshirmasdan, shunchaki oddiy `DEL` buyrug'i bilan o'chirib yuborish (boshqa klientning blokirovkasini o'chirish)",
+      "Blokirovkani o'chirish uchun Lua skript ishlatish",
+      "Faqat `EXISTS` buyrug'ini ishlatish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar klient o'z ishi cho'zilib ketgani uchun blokirovka muddati tugab qolsa va boshqa klient uni egallagan bo'lsa, birinchi klient ishini tugatib shunchaki `DEL` qilsa, ikkinchi klientning blokirovkasini o'chirib yuboradi. Buni oldini olish uchun faqat o'ziga tegishli tokenni tekshirib o'chirish kerak."
+  },
+  {
+    "id": 4,
+    "question": "Redlock algoritmi bo'yicha N ta mustaqil Redis tugunidan nechtasida blokirovka muvaffaqiyatli o'rnatilishi kerak (Quorum)?",
+    "options": [
+      "Kamida bitta (1) tugunda",
+      "Barcha (N) tugunlarda",
+      "Ko'pchilik (majority) tugunlarda, ya'ni kamida (N/2 + 1) ta tugunda",
+      "Faqat juft tugunlarda"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Redlock kabi taqsimlangan konsensusga asoslangan algoritmlarda qaror qabul qilish uchun ko'pchilik ovozi (quorum) kerak. N ta tugundan kamida (N/2 + 1) tasida blokirovka olingan bo'lishi lozim."
+  },
+  {
+    "id": 5,
+    "question": "Martin Kleppmann va Salvatore Sanfilippo o'rtasidagi bahsda Redlock algoritmining qaysi zaif jihati muhokama qilingan?",
+    "options": [
+      "Redis-ning juda sekin ishlashi",
+      "Tizimdagi soat og'ishi (clock drift) va uzoq davom etuvchi GC pause (Stop-the-world) sababli Redlock-ning mutlaq xavfsiz emasligi",
+      "Tarmoqdagi ma'lumotlar hajmi ortishi",
+      "Redis parollarining zaifligi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Martin Kleppmann soat og'ishi (clock drift) va kutilmagan uzoq GC pauzalar sababli klient blokirovka muddati tugaganini bilmay qolishi va bazaga noto'g'ri ma'lumot yozib qo'yishi mumkinligini isbotlagan."
+  },
+  {
+    "id": 6,
+    "question": "Fencing Token (To'siq belgisi) tushunchasi nima uchun kerak?",
+    "options": [
+      "Ma'lumotlar bazasida tranzaksiyalarni butunlay o'chirish uchun",
+      "Kechikkan yoki blokirovka muddati tugagan klientlarning saqlash tizimiga (storage) eski ma'lumotlarni yozishini oldini olish uchun (monoton o'suvchi raqam yordamida tekshirish)",
+      "Redis kalitlarini shifrlash uchun",
+      "Faqat foydalanuvchi parolini tekshirish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Fencing token - bu har safar blokirovka olinganda beriladigan monoton o'suvchi raqam. Saqlash tizimi (baza) har bir yozish so'rovida token avvalgisidan kattaligini tekshiradi. Agar klient uxlab qolib, keyinroq eski token bilan yozmoqchi bo'lsa, rad etiladi."
+  },
+  {
+    "id": 7,
+    "question": "ZooKeeper-dagi 'Ephemeral Node' (Vaqtinchalik tugun) blokirovka uchun qanday ishlaydi?",
+    "options": [
+      "Klient bilan aloqa (session) uzilishi bilan ZooKeeper avtomatik ravishda ushbu tugunni o'chirib yuboradi va blokirovka bo'shatiladi",
+      "Tugun har doim saqlanib qoladi",
+      "Faqat Redis serverlari bilan bog'langanda ishlaydi",
+      "Tugunni faqat klient qo'lda o'chirishi shart, aks holda abadiy qoladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "ZooKeeper-dagi ephemeral node-lar klientning sessiyasiga bog'langan bo'ladi. Klient o'chib qolsa (masalan crash bo'lsa), session tugaydi va vaqtinchalik tugun avtomatik o'chadi, bu esa blokirovkani xavfsiz bo'shatadi."
+  },
+  {
+    "id": 8,
+    "question": "Clock Drift (Soat og'ishi) deganda nima tushuniladi?",
+    "options": [
+      "Klient va server soatlarining tarmoq tezligiga qarab moslashishi",
+      "Turli serverlardagi jismoniy soatlarning har xil tezlikda yurishi yoki kutilmaganda NTP yangilanishi sababli vaqt farqi yuzaga kelishi",
+      "Kompyuter protsessorining chastotasi pasayishi",
+      "Tarmoqdagi paketlarning yo'qolishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Taqsimlangan tizimlarda turli tugunlarning jismoniy soatlari mukammal mos kelmaydi. Kichik siljish yoki NTP o'zgarishi blokirovkaning amaldagi yashash muddatini (TTL) xato hisoblashga olib kelishi mumkin."
+  },
+  {
+    "id": 9,
+    "question": "Blokirovkani avtomatik uzaytirish (Auto-renewal/Heartbeat loop) nega kerak?",
+    "options": [
+      "Blokirovkaga boshqa klientlar teginmasligi uchun uni bloklab qo'yish",
+      "Uzoq davom etadigan vazifalarda blokirovka muddati tugab, boshqa klient uni olib qo'ymasligi uchun fon rejimida blokirovka muddatini (lease time) uzaytirib turish",
+      "Serverni tezroq yuklash uchun",
+      "Redis xotirasini tejash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar vazifa qancha vaqt olishi aniq bo'lmasa, kichik TTL bilan blokirovka olinadi va fon oqimida vazifa tugaguncha blokirovka muddati uzaytirib boriladi."
+  },
+  {
+    "id": 10,
+    "question": "Optimistik blokirovka (Optimistic Locking) va Pessimistik blokirovka (Pessimistic Locking) o'rtasidagi asosiy farq nimada?",
+    "options": [
+      "Optimistik blokirovka faqat RAM-da ishlaydi",
+      "Pessimistik blokirovka resursni oldindan yopiq qiladi (hech kim yozolmaydi), optimistik esa yozish paytida versiya to'g'riligini tekshiradi va ziddiyat bo'lsa rad etadi",
+      "Optimistik blokirovka doimo sekinroq ishlaydi",
+      "Hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Pessimistik blokirovka resursni egallab, boshqalarni kutishga majbur qiladi. Optimistik esa bloklamaydi, lekin yozishda versiya/vaqt o'zgarmaganligini tekshiradi (kam ziddiyatli tizimlar uchun juda mos)."
+  },
+  {
+    "id": 11,
+    "question": "Bir vaqtning o'zida bir nechta resursni (A va B) bloklashda Deadlock (tupik) yuzaga kelmasligi uchun nima qilish kerak?",
+    "options": [
+      "Barcha resurslarni bir vaqtda o'chirib tashlash",
+      "Resurslarni har doim bir xil qat'iy ketma-ketlikda (tartiblangan holda, masalan, alifbo yoki ID bo'yicha) bloklash",
+      "Har doim tasodifiy tartibda bloklash",
+      "Faqat bitta resursdan foydalanish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar klient-1 avval A keyin B ni, klient-2 esa avval B keyin A ni bloklamoqchi bo'lsa, ular bir-birini kutib o'zaro bloklanib qoladi (Deadlock). Har doim bir xil tartibda (masalan, A keyin B) bloklansa, bu muammo bo'lmaydi."
+  },
+  {
+    "id": 12,
+    "question": "etcd kabi konsensus tizimlarida blokirovka muddati qanday mexanizm orqali boshqariladi?",
+    "options": [
+      "Leases (Ijara shartnomalari) yordamida - klient ijara muddatini yangilab (keep-alive) turadi, aloqa uzilsa ijara tugab, kalit o'chadi",
+      "Faqat tranzaksiyalar yordamida",
+      "Soatni majburiy sinxronlash orqali",
+      "Faqat SQL triggerlari yordamida"
+    ],
+    "correctAnswer": 0,
+    "explanation": "etcd-dagi Leases (ijara) mexanizmi kalitga vaqtinchalik yashash muddati beradi. Klient vaqti-vaqti bilan lease-ni yangilaydi. Klient ishdan chiqsa, lease muddati tugab kalit avtomatik o'chiriladi."
+  }
+]

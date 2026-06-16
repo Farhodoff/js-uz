@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "1 dan N gacha yig'indi",
+    "instruction": "for siklidan foydalanib, 1 dan n gacha bo'lgan barcha butun sonlarning yig'indisini hisoblovchi va qaytaruvchi sumUpTo(n) funksiyasini yozing. n soni ham yig'indiga qo'shilishi kerak.",
+    "startingCode": "function sumUpTo(n) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Boshlang'ich yig'indi uchun o'zgaruvchi yarating (masalan, let sum = 0). So'ng for (let i = 1; i <= n; i++) orqali har bir sonni sum ga qo'shib boring va yakunda sum ni qaytaring.",
+    "test": "const sandbox = new Function(code + '; return sumUpTo;');\nconst fn = sandbox();\nif (fn(5) !== 15) return 'sumUpTo(5) funksiyasi 15 qaytarmadi';\nif (fn(1) !== 1) return 'sumUpTo(1) funksiyasi 1 qaytarmadi';\nif (fn(10) !== 55) return 'sumUpTo(10) funksiyasi 55 qaytarmadi';\nif (!code.includes('for')) return 'for siklidan foydalanilmagan';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Massivdan juft sonlarni ajratish",
+    "instruction": "while siklidan foydalanib, berilgan sonlar massividan faqat juft sonlarni ajratib olib, yangi massiv ko'rinishida qaytaruvchi getEvens(arr) funksiyasini yozing.",
+    "startingCode": "function getEvens(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "while (i < arr.length) sharti yordamida elementlarni aylanib chiqing. Har bir elementni juftlikka tekshiring (element % 2 === 0). Sikl oxirida indeksni (i++) oshirishni unutmang.",
+    "test": "const sandbox = new Function(code + '; return getEvens;');\nconst fn = sandbox();\nconst res = fn([1, 2, 3, 4, 5, 6]);\nif (!Array.isArray(res) || res.join(',') !== '2,4,6') return 'getEvens([1, 2, 3, 4, 5, 6]) [2, 4, 6] qaytarmadi';\nif (fn([1, 3, 5]).length !== 0) return 'Juft sonlar bo\\'lmaganda bo\\'sh massiv qaytarilishi kerak';\nif (!code.includes('while')) return 'while siklidan foydalanilmagan';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Raqamlarni teskari tartibda birlashtirish",
+    "instruction": "do-while siklidan foydalanib, berilgan musbat butun sonning raqamlarini teskari tartibda satr (string) ko'rinishida yig'ib qaytaruvchi reverseNumberString(num) funksiyasini yozing. Masalan, 1234 yuborilsa, '4321' qaytishi kerak.",
+    "startingCode": "function reverseNumberString(num) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "do { ... } while (temp > 0) siklidan foydalaning. Har safar temp % 10 orqali oxirgi raqamni satrga qo'shib, temp = Math.floor(temp / 10) yordamida oxirgi raqamni olib tashlang.",
+    "test": "const sandbox = new Function(code + '; return reverseNumberString;');\nconst fn = sandbox();\nif (fn(1234) !== '4321') return 'reverseNumberString(1234) \"4321\" qaytarmadi';\nif (fn(5) !== '5') return 'reverseNumberString(5) \"5\" qaytarmadi';\nif (fn(0) !== '0') return 'reverseNumberString(0) \"0\" qaytarmadi';\nif (!code.includes('do') || !code.includes('while')) return 'do-while siklidan foydalanilmagan';\nreturn null;"
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "API Gateway-ning mikroxizmatlar tizimidagi eng asosiy roli nima?",
+    "options": [
+      "Ma'lumotlar bazasini boshqarish va SQL so'rovlarni optimallashtirish",
+      "Mijoz so'rovlarini qabul qiluvchi va ularni mos servisga yo'naltiruvchi yagona kirish nuqtasi bo'lish",
+      "Faqat CSS va rasm fayllarini keshlab saqlash",
+      "Klient brauzerini avtomatik yangilash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "API Gateway barcha tashqi mijozlar uchun yagona kirish eshigi bo'lib, xavfsizlik, marshrutlash (routing) va yuk taqsimlashni bitta joyda boshqaradi."
+  },
+  {
+    "id": 2,
+    "question": "SSL Termination qanday ishlaydi?",
+    "options": [
+      "Trafik butun yo'l davomida (mijozdan tortib mikroxizmatgacha) HTTPS orqali shifrlanadi",
+      "HTTPS shifrlangan trafigi Gateway darajasida yechilib, ichki tarmoqqa HTTP (shifrsiz) ko'rinishida uzatiladi",
+      "SSL sertifikatlarini butunlay o'chirib tashlash va faqat shifrsiz ulanishni majburlash",
+      "Mijoz brauzerida xavfsizlik sertifikatini avtomatik o'rnatish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "SSL Termination HTTPS so'rovini API Gateway-da yechib, ichki tarmoqdagi servislarga oddiy HTTP so'rovi sifatida yuborish orqali backend CPU yuklamasini kamaytiradi."
+  },
+  {
+    "id": 3,
+    "question": "Logging va Tracing-da Correlation ID nima uchun kerak?",
+    "options": [
+      "Tizimda foydalanuvchining login va parolini tekshirish uchun",
+      "Bitta so'rov zanjiriga aloqador barcha mikroxizmatlar loglarini yagona ID orqali osongina kuzatish uchun",
+      "Baza jadvallari orasidagi bog'liqlikni saqlash uchun",
+      "Ma'lumotlarni siqish (compression) darajasini aniqlash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Correlation ID har bir so'rovga Gateway darajasida beriladigan noyob identifikatordir. U so'rovning barcha ichki xizmatlar bo'ylab o'tishini kuzatish imkonini beradi."
+  },
+  {
+    "id": 4,
+    "question": "Token Exchange patterni qanday vazifani bajaradi?",
+    "options": [
+      "JWT tokenni kriptovalyutaga almashtirish",
+      "Tashqi og'ir JWT tokenni Gateway-da tekshirib, ichki tarmoq uchun sodda va xavfsiz identifikatorga (masalan, X-User-Id headeriga) o'tkazish",
+      "Foydalanuvchi parolini qayta tiklash havolasini yuborish",
+      "Faqat cookie fayllarini tozalash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Token Exchange tashqi murakkab/shifrlangan tokenni Gateway-da tasdiqlab, ichki mikroxizmatlar tushunadigan soddaroq shaklga almashtirish orqali tizim unumdorligini oshiradi."
+  },
+  {
+    "id": 5,
+    "question": "Path-based routing qanday yo'nalishni amalga oshiradi?",
+    "options": [
+      "So'rov yuborilgan domenga qarab yo'naltiradi (masalan, api.dastur.uz)",
+      "So'rov yuborilgan URL yo'liga qarab yo'naltiradi (masalan, /users -> User Service)",
+      "Foydalanuvchining jismoniy joylashuviga (IP manziliga) qarab yo'naltiradi",
+      "So'rov hajmi (payload size) bo'yicha yo'naltiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Path-based routing URL yo'lidagi prefiksga qarab so'rovni tegishli ichki xizmatga yo'naltiradi."
+  },
+  {
+    "id": 6,
+    "question": "Gateway-da CORS qoidalarini sozlashning asosiy afzalligi nimada?",
+    "options": [
+      "Tizimning ishlash tezligini 2 barobarga oshirishi",
+      "Har bir mikroxizmat uchun alohida CORS sarlavhalarini sozlab chiqish majburiyatini yo'qotishi",
+      "Ma'lumotlar bazasini SQL ineksiyalaridan avtomatik himoya qilishi",
+      "Faqat POST so'rovlarini qabul qilishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CORS qoidalari Gateway-da markazlashgan holda bir marta sozlansa, backend mikroxizmatlar bu sozlamadan xavotir olmasdan faqat o'z biznes mantig'iga e'tibor qaratadi."
+  },
+  {
+    "id": 7,
+    "question": "Edge Security deganda nima tushuniladi?",
+    "options": [
+      "Faqat Microsoft Edge brauzeri uchun xavfsizlikni ta'minlash",
+      "Xavfsizlik choralarini (DDoS himoya, IP filter, Auth, Rate limiting) tizimning eng chekka kirish nuqtasida (Gateway) hal qilish",
+      "Ma'lumotlar bazasida parollarni shifrlab saqlash",
+      "Faqat ichki serverlar orasidagi xavfsiz VPN aloqasi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Edge Security xavfli va yaroqsiz so'rovlarni ichki tarmoqqa va servislarimizga kirmasdanoq eng chekkada (Edge/Gateway) aniqlab bloklaydi."
+  },
+  {
+    "id": 8,
+    "question": "Host-based routing qaysi HTTP sarlavhasi asosida ishlaydi?",
+    "options": [
+      "User-Agent sarlavhasi",
+      "Host sarlavhasi (domen nomi)",
+      "Authorization sarlavhasi",
+      "Content-Type sarlavhasi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Host-based routing mijoz yuborgan so'rovdagi `Host` sarlavhasini (masalan, `admin.dastur.com` yoki `api.dastur.com`) tahlil qilib yo'naltiradi."
+  },
+  {
+    "id": 9,
+    "question": "API Gateway-da retry policies (qayta urinishlar) bilan bog'liq eng katta xavf nima?",
+    "options": [
+      "So'rovning butunlay yo'qolib qolishi",
+      "Yuklama ostidagi backend servisni yanada ko'proq so'rovlar bilan 'cho'ktirish' (Self-inflicted DDoS)",
+      "Foydalanuvchi ma'lumotlarining xato o'zgarishi",
+      "Faqat xotira yetishmasligi (Out of Memory)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar upstream servis yuklama tufayli sekin ishlayotgan bo'lsa, Gateway-ning qayta-qayta urinishi (retry) u servisga tushadigan yuklamani yanada oshiradi va uni batamom to'xtatib qo'yishi mumkin."
+  },
+  {
+    "id": 10,
+    "question": "API Gateway va standart Load Balancer o'rtasidagi asosiy farq nimada?",
+    "options": [
+      "Load Balancer faqat mobil telefonlar uchun ishlaydi",
+      "Load Balancer tarmoq darajasida yukni taqsimlaydi; API Gateway esa dastur darajasida (auth, routing, logging) biznes mantiqni tushunadi",
+      "API Gateway hech qachon yukni taqsimlay olmaydi",
+      "Ular mutlaqo bir xil vazifani bajaradigan sinonimlar hisoblanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Load Balancer L4/L7 darajasida yukni oddiy taqsimlasa, API Gateway foydalanuvchi identifikatori, CORS, tokenlar va marshrutlash kabi amaliy biznes jarayonlarni boshqaradi."
+  },
+  {
+    "id": 11,
+    "question": "Header-based routing asosan qachon qo'llaniladi?",
+    "options": [
+      "Faqat rasmlarni siqib yuklashda",
+      "Canary deploy yoki A/B testlarda foydalanuvchilar guruhini aniqlab yo'naltirishda",
+      "Baza jadvallarini bir-biriga ulashda",
+      "Faqat GET so'rovlarini POST-ga o'zgartirishda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Header-based routing so'rovning sarlavhalaridagi (masalan, `X-Version` yoki `X-User-Group`) ma'lumotlarga qarab, foydalanuvchini canary/beta yoki eski versiyaga yo'naltirish uchun juda qulay."
+  },
+  {
+    "id": 12,
+    "question": "Kubernetes muhitidagi Ingress Controller nima?",
+    "options": [
+      "Faqat loglarni yig'ib beruvchi vizual panel",
+      "Tashqi HTTPS/HTTP trafigini Kubernetes klasteri ichidagi xizmatlarga yo'naltiruvchi va boshqaruvchi API Gateway turi",
+      "Ma'lumotlar bazasining zaxira nusxalarini oluvchi vosita",
+      "Konteynerlar ichidagi xotirani tozalovchi dasturcha"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ingress Controller Kubernetes olamidagi API Gateway vazifasini bajarib, klaster ichidagi Pod'larga tashqaridan kelgan yo'nalishlarni marshrutlaydi."
+  }
+]

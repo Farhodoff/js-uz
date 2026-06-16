@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "1️⃣ Redis-like in-memory cache",
+    "instruction": "Sodda vaqtinchalik keshni simulyatsiya qiluvchi `InMemoryCache` klassini yozing. U `set(key, value, ttlMs)` va `get(key)` metodlariga ega bo'lsin. Agar `ttlMs` (millisekundlarda yashash muddati) berilgan bo'lsa, belgilangan vaqt o'tgandan keyin kalit o'chib ketsin (ya'ni `get` qilganda `null` qaytsin).",
+    "startingCode": "class InMemoryCache {\n  constructor() {\n    this.cache = new Map();\n  }\n\n  set(key, value, ttlMs) {\n    // Kodni shu yerda yozing\n  }\n\n  get(key) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "Map ichida qiymat bilan birga tugash vaqtini (Date.now() + ttlMs) saqlang. get() chaqirilganda hozirgi vaqt tugash vaqtidan o'tgan bo'lsa, kalitni o'chirib null qaytaring.",
+    "test": "if (typeof InMemoryCache !== 'function') return 'InMemoryCache klass emas';\nconst c = new InMemoryCache();\nc.set('a', 42, 50);\nif (c.get('a') !== 42) return 'Qiymat to\\'g\\'ri saqlanmadi';\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (c.get('a') === null) resolve(null);\n    else resolve('Muddati o\\'tgan kesh o\\'chirilmadi');\n  }, 60);\n});"
+  },
+  {
+    "id": 2,
+    "title": "2️⃣ LRU Eviction Cache",
+    "instruction": "Sig'imi cheklangan `LRUCache` klassini yozing. Yangi element qo'shganda sig'im to'lgan bo'lsa, eng uzoq vaqt ishlatilmagan (least recently used) elementni o'chirib tashlasin. `get(key)` va `put(key, value)` metodlari bo'lsin.",
+    "startingCode": "class LRUCache {\n  constructor(capacity) {\n    this.capacity = capacity;\n    this.cache = new Map();\n  }\n\n  get(key) {\n    // Kodni shu yerda yozing\n  }\n\n  put(key, value) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "JavaScript Map obyekti kalitlar tartibini saqlaydi. get() qilinganda kalitni o'chirib qayta qo'shish orqali eng oxiriga o'tkaziladi. O'chirish uchun esa map.keys().next().value orqali birinchi (eng eski) kalitni topsa bo'ladi.",
+    "test": "if (typeof LRUCache !== 'function') return 'LRUCache klass emas';\nconst lru = new LRUCache(2);\nlru.put(1, 'bir');\nlru.put(2, 'ikki');\nlru.get(1);\nlru.put(3, 'uch');\nif (lru.get(2) !== undefined && lru.get(2) !== null) return 'Eng eski element o\\'chib ketmadi';\nif (lru.get(1) !== 'bir' || lru.get(3) !== 'uch') return 'Elementlar noto\\'g\\'ri saqlangan';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "3️⃣ Cache-Aside Wrapper",
+    "instruction": "Asinxron `cacheAside(redisMock, key, fetchFn, ttl)` funksiyasini yozing. U keshda ma'lumot bo'lsa darhol qaytarsin. Agar keshda bo'lmasa, `fetchFn()` orqali bazadan ma'lumotni olsin, uni keshga `redisMock.set(key, value, ttl)` yordamida yozsin va natijani qaytarsin.",
+    "startingCode": "async function cacheAside(redisMock, key, fetchFn, ttl) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "await redisMock.get(key) orqali keshni tekshiring. Topilsa qaytaring, topilmasa fetchFn() chaqirib, uning natijasini set qiling va qaytaring.",
+    "test": "if (typeof cacheAside !== 'function') return 'cacheAside funksiya emas';\nlet dbCalls = 0;\nconst dbFetch = async () => { dbCalls++; return 'data_from_db'; };\nconst mockStore = {};\nconst redisMock = {\n  get: async (k) => mockStore[k] || null,\n  set: async (k, v, t) => { mockStore[k] = v; }\n};\nreturn cacheAside(redisMock, 'item', dbFetch, 60).then(res1 => {\n  if (res1 !== 'data_from_db' || dbCalls !== 1) return 'Birinchi chaqiriq xato';\n  return cacheAside(redisMock, 'item', dbFetch, 60).then(res2 => {\n    if (res2 !== 'data_from_db' || dbCalls !== 1) return 'Keshdan o\\'qish o\\'rniga yana bazaga borildi';\n    return null;\n  });\n});"
+  }
+]

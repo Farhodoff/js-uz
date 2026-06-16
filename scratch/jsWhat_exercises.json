@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Birinchi Dastur (Hello World)",
+    "instruction": "Foydalanuvchiga salom berish uchun `sayHello()` nomli funksiya yozing. U har doim `'Hello, World!'` satrini qaytarishi (return qilishi) kerak.",
+    "startingCode": "function sayHello() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`return 'Hello, World!';` deb yozing.",
+    "test": "const sandbox = new Function(code + '; return sayHello;');\nconst fn = sandbox();\nconst res = fn();\nif (res === 'Hello, World!') return null;\nreturn 'sayHello funksiyasi \"Hello, World!\" matnini qaytarmadi';"
+  },
+  {
+    "id": 2,
+    "title": "O'zgaruvchilarni E'lon Qilish",
+    "instruction": "JavaScript-da o'zgaruvchilar bilan ishlashni mashq qilamiz. `sum(a, b)` funksiyasini yozing. U ikkita sonni qabul qiladi, ularning yig'indisini `result` nomli o'zgaruvchida saqlaydi va ushbu `result`ni qaytaradi.",
+    "startingCode": "function sum(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`let result = a + b;` deb o'zgaruvchi e'lon qiling va uni `return result;` orqali qaytaring.",
+    "test": "if (!code.includes('result')) return 'Kodingizda result nomli o\\'zgaruvchi e\\'lon qilinishi shart';\nconst sandbox = new Function(code + '; return sum;');\nconst fn = sandbox();\nif (fn(5, 10) === 15 && fn(-1, 1) === 0) return null;\nreturn 'sum funksiyasi yig\\'indini to\\'g\\'ri hisoblab qaytarmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Turlarni Aniqlash",
+    "instruction": "Berilgan qiymatning ma'lumot turini (data type) aniqlab beruvchi `getType(value)` funksiyasini yozing. Buning uchun `typeof` operatoridan foydalaning va natijani qaytaring.",
+    "startingCode": "function getType(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`return typeof value;` ko'rinishida yozing.",
+    "test": "const sandbox = new Function(code + '; return getType;');\nconst fn = sandbox();\nif (fn(42) === 'number' && fn('Salom') === 'string' && fn(true) === 'boolean') return null;\nreturn 'getType funksiyasi ma\\'lumot turini to\\'g\\'ri qaytarmadi';"
+  }
+]

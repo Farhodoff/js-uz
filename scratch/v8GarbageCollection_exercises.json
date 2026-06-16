@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Cheney's copying GC simulator",
+    "instruction": "`scavenge(fromSpace, rootPointers)` funksiyasini yozing. U faqat rootPointers orqali borish mumkin bo'lgan (reachable) obyektlarni `fromSpace` dan yangi yaratilgan `toSpace` (yoki qaytariladigan toza massiv/obyekt) ga nusxalashtirishi kerak. Obyektlar `fromSpace` xaritasida (key: id, value: { id, value, refs }) ko'rinishida berilgan. `rootPointers` - bu boshlang'ich obyekt id-lari ro'yxati (massiv). Agar obyektdan boshqa obyektga havola (refs - id-lar massivi) bo'lsa, ularni ham rekursiv/iterativ ravishda To-Space ga nusxalash lozim. Funksiya faqat To-Space (nusxalangan obyektlar) xaritasini qaytarishi kerak.",
+    "startingCode": "function scavenge(fromSpace, rootPointers) {\n  const toSpace = {};\n  // Kodni shu yerda yozing\n  return toSpace;\n}",
+    "hint": "`rootPointers` massividan boshlab navbat (queue) orqali kiring. Har bir id uchun `fromSpace[id]` ni olib, `toSpace[id]` ga nusxalang va uning `refs` massividagi elementlarni ham queue-ga qo'shing (agar ular hali `toSpace` ga kiritilmagan bo'lsa).",
+    "test": "const fromSpace = {\n  1: { id: 1, value: 'A', refs: [2] },\n  2: { id: 2, value: 'B', refs: [] },\n  3: { id: 3, value: 'C', refs: [] }\n};\nconst sandbox = new Function(code + '; return scavenge;');\nconst fn = sandbox();\nconst result = fn(fromSpace, [1]);\nif (!result['1'] || !result['2']) return 'Reachable obyektlar nusxalanmadi';\nif (result['3']) return 'Unreachable obyekt nusxalanmasligi kerak edi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Sweep phase compaction simulator",
+    "instruction": "`compactHeap(heap)` funksiyasini yozing. `heap` massivining har bir elementi obyekt yoki `null` bo'ladi. Barcha `null` (keraksiz, o'chirilgan) qiymatlarni olib tashlab, qolgan obyektlarni massiv boshiga suring (zichlang) va massiv oxirini `null` bilan to'ldiring. Asl massivni joyida (in-place) o'zgartiring va uni qaytaring.",
+    "startingCode": "function compactHeap(heap) {\n  // Kodni shu yerda yozing\n  return heap;\n}",
+    "hint": "`filter` yoki ikki pointer usulidan foydalanib, barcha no-null obyektlarni yig'ing, so'ngra massiv elementlarini yangilang va oxirini `null` bilan to'ldiring.",
+    "test": "const sandbox = new Function(code + '; return compactHeap;');\nconst fn = sandbox();\nconst heap = [{id: 1}, null, {id: 2}, null, {id: 3}];\nconst result = fn(heap);\nif (result[0].id !== 1 || result[1].id !== 2 || result[2].id !== 3) return 'Zichlash noto\\'g\\'ri';\nif (result[3] !== null || result[4] !== null) return 'Massiv oxiri null bilan to\\'ldirilmadi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "WeakRef caching repository",
+    "instruction": "Kuchsiz havolalarni qo'llab-quvvatlaydigan `WeakRefCache` klassini yozing. Unda `set(key, value)` va `get(key)` metodlari bo'lsin. Qiymat keshda `WeakRef` orqali saqlanishi kerak: `new WeakRef(value)`. `get(key)` chaqirilganda, keshdagi `WeakRef` dan `deref()` orqali qiymat olinsin. Agar qiymat o'chirilgan bo'lsa (ya'ni `deref()` `undefined` bo'lsa), keshdan o'sha kalit o'chirilsin va `undefined` qaytarilsin.",
+    "startingCode": "class WeakRefCache {\n  constructor() {\n    this.cache = new Map();\n  }\n  set(key, value) {\n    // Kodni shu yerda yozing\n  }\n  get(key) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "`set` ichida `new WeakRef(value)` ishlating. `get` ichida `deref()` qiymatini tekshiring. Agar u `undefined` bo'lsa, `this.cache.delete(key)` bajaring.",
+    "test": "const sandbox = new Function(code + '; return WeakRefCache;');\nconst Cls = sandbox();\nconst myCache = new Cls();\nconst obj = { data: 'test' };\nmyCache.set('x', obj);\nif (myCache.get('x') !== obj) return 'WeakRef get to\\'g\\'ri qiymat qaytarmadi';\nmyCache.cache.set('y', { deref: () => undefined });\nif (myCache.get('y') !== undefined) return 'O\\'chirilgan obyekt uchun undefined qaytishi kerak';\nif (myCache.cache.has('y')) return 'Mavjud bo\\'lmagan obyekt keshdan o\\'chirilishi kerak';\nreturn null;"
+  }
+]

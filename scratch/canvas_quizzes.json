@@ -1,146 +1,146 @@
 [
   {
     "id": 1,
-    "question": "HTML5-da canvas elementining 2D chizish asboblarini taqdim etadigan obyekt qaysi?",
+    "question": "Canvas nima?",
     "options": [
-      "CanvasRenderingContext2D",
-      "WebGLRenderingContext",
-      "HTMLCanvasElement",
-      "Canvas2DDrawingTool"
+      "CSS orqali animatsiya qiladigan maxsus teg",
+      "Skriptlar (JavaScript) yordamida dinamik ravishda 2D/3D grafika va rasmlarni chizish uchun ishlatiladigan HTML elementi",
+      "Brauzerning ichki ma'lumotlar bazasi",
+      "Vektorli rasmlarni chizish uchun ishlatiladigan XML formatidagi teg"
     ],
-    "correctAnswer": 0,
-    "explanation": "canvas.getContext('2d') chaqirilganda brauzer bizga chizish uchun barcha 2D asboblar va xususiyatlarni o'z ichiga olgan CanvasRenderingContext2D obyekti nusxasini qaytaradi."
+    "correctAnswer": 1,
+    "explanation": "Canvas HTML5 elementi bo'lib, unga JavaScript yordamida pikselma-piksel rasm va grafikalar chiziladi."
   },
   {
     "id": 2,
-    "question": "Quyidagilardan qaysi biri Canvas koordinatalar tizimi uchun to'g'ri ta'rif?",
+    "question": "Canvas 2D kontekstini olish uchun qaysi metoddan foydalaniladi?",
     "options": [
-      "Markazi (0, 0) o'rtada joylashgan va Y o'qi tepaga qarab o'sadi",
-      "Markazi (0, 0) chap pastki burchakda joylashgan",
-      "Markazi (0, 0) chap yuqori burchakda joylashgan va Y o'qi pastga qarab o'sadi",
-      "Markazi (0, 0) o'ng yuqori burchakda joylashgan"
+      "`canvas.get2DContext()`",
+      "`canvas.getContext('2d')`",
+      "`canvas.context2d()`",
+      "`canvas.draw('2d')`"
     ],
-    "correctAnswer": 2,
-    "explanation": "Canvas-da standart koordinata boshi (0, 0) chap yuqori burchakda joylashgan. O'ngga qarab X o'qi, pastga qarab esa Y o'qi musbat yo'nalishda o'sib boradi."
+    "correctAnswer": 1,
+    "explanation": "Canvas elementidan 2D chizish imkoniyatlarini olish uchun `getContext('2d')` metodi chaqiriladi."
   },
   {
     "id": 3,
-    "question": "Canvas eni va bo'yini o'rnatishda nima uchun CSS-dan foydalanish tavsiya etilmaydi?",
+    "question": "Canvas koordinatalar tizimida koordinata boshi (0, 0) qayerda joylashgan?",
     "options": [
-      "CSS Canvas-ni umuman qo'llab-quvvatlamaydi",
-      "CSS o'lchamlari shakllarni cho'zib, rasmni piksellashib (distortion) ketishiga olib keladi",
-      "CSS o'lchamlari Canvas chizmalarining rangini o'chiradi",
-      "CSS-dan foydalansa Canvas faqat qora rangda chizadi"
+      "Canvasning markazida",
+      "Chap pastki burchakda",
+      "O'ng yuqori burchakda",
+      "Chap yuqori burchakda"
     ],
-    "correctAnswer": 1,
-    "explanation": "CSS o'lchami faqat ko'rinish oynasini cho'zadi. Canvas-ning ichki o'lchamlari o'zgarmaydi va bu grafikaning sifati buzilib, cho'zilib ketishiga sabab bo'ladi."
+    "correctAnswer": 3,
+    "explanation": "Canvas koordinata tizimining boshi (0,0) har doim chap yuqori burchakda bo'ladi. X o'ngga, Y esa pastga qarab o'sib boradi."
   },
   {
     "id": 4,
-    "question": "Ko'k rangli chegarali (to'ldirilmagan) to'rtburchak chizish uchun qaysi kod to'g'ri?",
+    "question": "Nima uchun Canvas o'lchamini CSS (style) yordamida o'zgartirish tavsiya etilmaydi?",
     "options": [
-      "ctx.strokeStyle = 'blue'; ctx.strokeRect(10, 10, 100, 100);",
-      "ctx.fillStyle = 'blue'; ctx.fillRect(10, 10, 100, 100);",
-      "ctx.borderColor = 'blue'; ctx.drawRect(10, 10, 100, 100);",
-      "ctx.color = 'blue'; ctx.rect(10, 10, 100, 100);"
+      "CSS canvasni butunlay yashirib qo'yishi mumkinligi uchun",
+      "CSS faqat ranglarni o'zgartira oladi, o'lchamlarni emas",
+      "CSS o'lcham o'rnatganda chizilgan tasvir piksel o'lchamiga mos kelmay, cho'zilib va xiralashib ketishi sababli",
+      "Canvas faqat inline CSS-ni qo'llab-quvvatlagani uchun"
     ],
-    "correctAnswer": 0,
-    "explanation": "Chegaralarni (konturlarni) chizish uchun fill o'rniga stroke ishlatiladi. Shuning uchun strokeStyle va strokeRect kombinatsiyasi to'g'ri."
+    "correctAnswer": 2,
+    "explanation": "Canvas o'zining ichki piksel o'lchamlariga ega (`width` va `height` HTML atributlari). Agar uni CSS orqali kattalashtirsak, brauzer chizilgan kichik rasmni shunchaki cho'zadi, bu esa xiralashishga olib keladi."
   },
   {
     "id": 5,
-    "question": "Chiziq yo'li tugagandan so'ng, uni boshlang'ich nuqta bilan bog'lab yopish uchun qaysi metod chaqiriladi?",
+    "question": "Yangi yo'l (path) boshlash va eski yo'llarni tozalash uchun qaysi metod chaqiriladi?",
     "options": [
-      "ctx.endPath()",
-      "ctx.closePath()",
-      "ctx.finishPath()",
-      "ctx.connect()"
+      "`ctx.beginPath()`",
+      "`ctx.newPath()`",
+      "`ctx.clearPath()`",
+      "`ctx.closePath()`"
     ],
-    "correctAnswer": 1,
-    "explanation": "ctx.closePath() joriy chizish nuqtasidan boshlang'ich nuqtagacha to'g'ri chiziq tortib, shaklni avtomatik yopadi."
+    "correctAnswer": 0,
+    "explanation": "`ctx.beginPath()` yangi chizish yo'lini boshlaydi va oldingi yo'l xotirasini tozalaydi, bu esa oldingi shakllarning qayta chizilib ketishini oldini oladi."
   },
   {
     "id": 6,
-    "question": "Rasm ichiga matn yozish va uning ichini bo'yash uchun qaysi metod ishlatiladi?",
+    "question": "Canvasda to'liq aylana chizish uchun `ctx.arc(x, y, radius, startAngle, endAngle)` metodida `endAngle` sifatida nima yozilishi kerak?",
     "options": [
-      "ctx.writeText()",
-      "ctx.fillText()",
-      "ctx.strokeText()",
-      "ctx.drawText()"
+      "`360` (daraja)",
+      "`Math.PI`",
+      "`Math.PI * 2`",
+      "`180`"
     ],
-    "correctAnswer": 1,
-    "explanation": "fillText() metodi ko'rsatilgan matnni to'ldirilgan rang (fillStyle) bilan belgilangan koordinataga yozib beradi."
+    "correctAnswer": 2,
+    "explanation": "`ctx.arc` metodida burchaklar radianlarda o'lchanadi. To'liq aylana 360 daraja bo'lib, u `2 * Math.PI` radianga tengdir."
   },
   {
     "id": 7,
-    "question": "Canvas kontekstining joriy holatini (rang, shrift, soya parametrlarini) saqlash uchun qaysi metod ishlatiladi?",
+    "question": "Quyidagi metodlardan qaysi biri to'rtburchak shaklini rang bilan to'ldirib chizadi?",
     "options": [
-      "ctx.save()",
-      "ctx.store()",
-      "ctx.backup()",
-      "ctx.freeze()"
+      "`ctx.strokeRect()`",
+      "`ctx.drawRect()`",
+      "`ctx.fillRect()`",
+      "`ctx.rect()`"
     ],
-    "correctAnswer": 0,
-    "explanation": "ctx.save() kontekstning joriy holatlarini (styles, transformation matrix) stack-ga saqlab qo'yadi. Keyinchalik ularni ctx.restore() orqali qaytarib olish mumkin."
+    "correctAnswer": 2,
+    "explanation": "`ctx.fillRect()` to'rtburchak chizib, uning ichini joriy `fillStyle` rangi bilan to'ldiradi."
   },
   {
     "id": 8,
-    "question": "ctx.arc() metodidagi burchaklar qaysi o'lchov birligida ko'rsatiladi?",
+    "question": "Canvas chizish holatini (kontekst sozlamalari, ranglar, transformatsiyalar) saqlash va keyinchalik tiklash uchun qaysi metodlar juftligi ishlatiladi?",
     "options": [
-      "Graduslarda (Degrees - masalan, 360)",
-      "Piksellarda (Pixels - masalan, 100)",
-      "Radianlarda (Radians - masalan, Math.PI * 2)",
-      "Foizlarda (Percentages - masalan, 100%)"
+      "`ctx.save()` va `ctx.restore()`",
+      "`ctx.push()` va `ctx.pop()`",
+      "`ctx.backup()` va `ctx.recover()`",
+      "`ctx.store()` va `ctx.load()`"
     ],
-    "correctAnswer": 2,
-    "explanation": "arc() metodi burchak parametrlarini faqat radian birliklarida qabul qiladi. 180 gradus Math.PI ga teng bo'ladi."
+    "correctAnswer": 0,
+    "explanation": "`ctx.save()` joriy kontekst holatini stack-ga saqlaydi, `ctx.restore()` esa oxirgi saqlangan holatni qaytarib tiklaydi."
   },
   {
     "id": 9,
-    "question": "Canvas-da chizilgan chizmalarni piksellar darajasida o'qish (matritsa olish) uchun qaysi metod xizmat qiladi?",
+    "question": "Canvasni butunlay tozalash (yoki ma'lum bir qismini o'chirish) uchun qaysi metod ishlatiladi?",
     "options": [
-      "ctx.getPixels()",
-      "ctx.getImageData()",
-      "ctx.readPixels()",
-      "ctx.getCanvasData()"
+      "`ctx.delete()`",
+      "`ctx.erase()`",
+      "`ctx.clear()`",
+      "`ctx.clearRect()`"
     ],
-    "correctAnswer": 1,
-    "explanation": "ctx.getImageData(x, y, w, h) metodi Canvas-dagi piksellarni RGBA massivi ko'rinishida saqlagan ImageData obyektini qaytaradi."
+    "correctAnswer": 3,
+    "explanation": "`ctx.clearRect(x, y, width, height)` ko'rsatilgan to'rtburchak sohadagi barcha piksellarni o'chirib tashlaydi (shaffof qora rangga o'tkazadi)."
   },
   {
     "id": 10,
-    "question": "Canvas-da aylanish yoki masshtabni o'zgartirish (transformatsiyalar) qaysi nuqtaga nisbatan amalga oshiriladi?",
+    "question": "Animatsiyani silliq va ekran yangilanish tezligiga (refresh rate) mos ravishda bajarish uchun qaysi brauzer funksiyasidan foydalanish tavsiya etiladi?",
     "options": [
-      "Canvas-ning markaziy nuqtasiga nisbatan",
-      "Sahifaning o'rtasiga nisbalan",
-      "Koordinatalar boshiga (0, 0) nuqtaga nisbatan",
-      "Shaklning eng chap nuqtasiga nisbatan"
+      "`setInterval`",
+      "`setTimeout`",
+      "`requestAnimationFrame`",
+      "`requestIdleCallback`"
     ],
     "correctAnswer": 2,
-    "explanation": "Balla transformatsiyalar (rotate, scale, translate) har doim Canvas-ning joriy koordinata boshi (dastlab 0, 0 nuqtasi)ga nisbatan bajariladi."
+    "explanation": "`requestAnimationFrame` animatsiyalar uchun maxsus ishlab chiqilgan bo'lib, u keyingi ekran yangilanish kadrida funksiyani chaqiradi, bu esa yuqori unumdorlik va silliq animatsiyani ta'minlaydi."
   },
   {
     "id": 11,
-    "question": "Boshqa bir <img id='pic'> rasmni canvas ustiga chizish uchun qaysi kod to'g'ri keladi?",
+    "question": "Canvasdagi chizilgan rasmni Base64 formatidagi URL ko'rinishida olish uchun qaysi element metodidan foydalaniladi?",
     "options": [
-      "ctx.drawImage(document.getElementById('pic'), 0, 0);",
-      "ctx.drawPicture(document.getElementById('pic'), 0, 0);",
-      "ctx.insertImage('pic', 0, 0);",
-      "ctx.fillRect('pic', 0, 0);"
+      "`ctx.getImageData()`",
+      "`canvas.toDataURL()`",
+      "`canvas.toString()`",
+      "`ctx.toDataURL()`"
     ],
-    "correctAnswer": 0,
-    "explanation": "drawImage() metodi HTML rasm elementi, boshqa canvas yoki video elementini koordinatalari bo'yicha chizib beradi."
+    "correctAnswer": 1,
+    "explanation": "`canvas.toDataURL()` metodi canvasdagi rasmni Base64 satr formatida (masalan, `data:image/png;base64,...`) qaytaradi."
   },
   {
     "id": 12,
-    "question": "Chizmalarga soya qo'shganda, uning x-o'qi bo'yicha siljishini qaysi xususiyat belgilaydi?",
+    "question": "Canvas va SVG o'rtasidagi asosiy farq nima?",
     "options": [
-      "ctx.shadowX",
-      "ctx.shadowOffsetX",
-      "ctx.shadowBlurX",
-      "ctx.shadowHorizontal"
+      "Canvas faqat 3D grafika chizadi, SVG esa faqat 2D grafika chizadi",
+      "SVG piksellarga asoslangan (raster), Canvas esa XML teglarga asoslangan (vektor)",
+      "Canvas pikselga asoslangan rastrli grafika (JavaScript orqali boshqariladi), SVG esa XML ga asoslangan vektorli grafikadir (DOM elementlari mavjud)",
+      "Canvas faqat mobil brauzerlarda, SVG esa faqat desktop brauzerlarda ishlaydi"
     ],
-    "correctAnswer": 1,
-    "explanation": "shadowOffsetX soyani o'ngga (musbat bo'lsa) yoki chapga (manfiy bo'lsa) siljitish uchun ishlatiladi."
+    "correctAnswer": 2,
+    "explanation": "Canvas — bu tezkor, pikselli rastr grafika bo'lib, DOM elementlarisiz ishlaydi. SVG esa vektor grafika bo'lib, har bir chizilgan shakl alohida DOM elementi hisoblanadi."
   }
 ]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da funksiya e'lon qilishning (Function Declaration) asosiy sintaksisi qaysi?",
+    "options": [
+      "function myFunction() {}",
+      "let myFunction = () => {}",
+      "myFunction function() {}",
+      "new Function(myFunction) {}"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`function myFunction() {}` bu klassik Function Declaration hisoblanadi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nfunction sayHi() {\n  return;\n}\nconsole.log(sayHi());\n```",
+    "options": [
+      "null",
+      "undefined",
+      "\"\" (bo'sh satr)",
+      "ReferenceError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da return kalit so'zi qiymatsiz yozilsa yoki umuman yozilmasa, funksiya har doim `undefined` qaytaradi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nconst sum = (a = 2, b = 3) => a + b;\nconsole.log(sum(5));\n```",
+    "options": [
+      "5",
+      "8",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Chaqirilganda `a` ga 5 argumenti beriladi, `b` parametriga esa hech narsa berilmagani uchun u o'zining default qiymati 3 ni saqlab qoladi. Natija: 5 + 3 = 8."
+  },
+  {
+    "id": 4,
+    "question": "Function Declaration va Function Expression o'rtasidagi asosiy farq nima?",
+    "options": [
+      "Function Expression-larni e'lon qilishdan oldin chaqirib bo'lmaydi (hoisting bo'lmaydi), Function Declaration-larni esa bo'ladi",
+      "Function Declaration parametr qabul qila olmaydi",
+      "Function Expression doimo asinxron ishlaydi",
+      "Ularning hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Function Declaration-lar hoisting (tepaga ko'tarilish) xususiyatiga ega, shuning uchun ularni koddagi e'lon qilingan joyidan yuqorida ham chaqirish mumkin. Function Expression-lar esa faqat e'lon qilingandan keyin ishlaydi."
+  },
+  {
+    "id": 5,
+    "question": "Block scope (blok qamrovi) deganda nima tushuniladi?",
+    "options": [
+      "Faqat funksiya ichida ko'rinadigan o'zgaruvchilar qamrovi",
+      "Butun dastur davomida ko'rinadigan global o'zgaruvchilar qamrovi",
+      "Jingalak qavslar `{}` ichida let va const yordamida e'lon qilingan o'zgaruvchilarning faqat shu blok ichida ko'rinishi",
+      "Brauzer oynasi yopilganda o'chib ketadigan o'zgaruvchilar"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`let` va `const` yordamida har qanday block (masalan, `if`, `for` yoki oddiy `{}`) ichida e'lon qilingan o'zgaruvchilar blokdan tashqarida ko'rinmaydi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kodda qanday xatolik yuz beradi?\n```javascript\nfunction testScope() {\n  let message = \"Salom\";\n}\ntestScope();\nconsole.log(message);\n```",
+    "options": [
+      "TypeError",
+      "SyntaxError",
+      "ReferenceError",
+      "Xatolik bo'lmaydi, konsolga \"Salom\" chiqadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`message` o'zgaruvchisi `testScope` funksiyasining lokal qamrovida (local scope) e'lon qilingan, shuning uchun tashqi (global) qamrovda unga kirishga urinilganda `ReferenceError` yuz beradi."
+  },
+  {
+    "id": 7,
+    "question": "Arrow funksiyalar (Arrow functions) haqidagi qaysi fikr to'g'ri?",
+    "options": [
+      "Ular o'zlarining shaxsiy `this` va `arguments` obyektiga ega emas",
+      "Ular faqat bir qatordan iborat bo'lishi kerak",
+      "Ularni constructor sifatida `new` kalit so'zi bilan ishlatish mumkin",
+      "Ularni hoist qilib, e'lon qilishdan oldin ishlatish mumkin"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Arrow funksiyalar o'zining `this` kontekstiga va `arguments` massivsimon obyektiga ega bo'lmaydi, balki ularni tashqi qamrovdan leksik jihatdan meros qilib oladi."
+  },
+  {
+    "id": 8,
+    "question": "Rest parameter (`...args`) nima uchun ishlatiladi?",
+    "options": [
+      "Funksiyaning bajarilishini vaqtincha to'xtatib turish uchun",
+      "Funksiyaga uzatilgan cheksiz yoki noma'lum miqdordagi argumentlarni haqiqiy massiv sifatida yig'ib olish uchun",
+      "O'zgaruvchini global qamrovda e'lon qilish uchun",
+      "Faqat oxirgi argumentni o'chirish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Rest parameter (uchta nuqta bilan boshlanadigan) funksiyaga uzatilgan qolgan barcha argumentlarni bitta haqiqiy massivga yig'adi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconst arrowFn = () => {\n  let a = 10;\n};\nconsole.log(arrowFn());\n```",
+    "options": [
+      "10",
+      "undefined",
+      "ReferenceError",
+      "null"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Arrow funksiyada jingalak qavslar `{}` ishlatilsa, natija qaytishi uchun `return` so'zi yozilishi shart. Aks holda, funksiya `undefined` qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "Global scope-da yaratilgan o'zgaruvchi bilan lokal (funksiya) scope-da yaratilgan o'zgaruvchi nomi bir xil bo'lsa nima sodir bo'ladi?",
+    "options": [
+      "Shadowing (Soya qilish) yuz beradi - funksiya ichida lokal o'zgaruvchi ustun bo'lib, global o'zgaruvchini to'sib qo'yadi",
+      "JavaScript syntax xatosi beradi",
+      "Global o'zgaruvchi avtomatik o'chib ketadi",
+      "Har doim global o'zgaruvchi ustun bo'ladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Shadowing hodisasi yuz berib, ichki scope-dagi o'zgaruvchi o'zidan yuqoridagi scope-dagi o'zgaruvchi nomini soya ostiga oladi va lokal muhitda o'z qiymatini ko'rsatadi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod natijasini aniqlang:\n```javascript\nfunction showDetails(name, ...info) {\n  console.log(info[0]);\n}\nshowDetails(\"Lola\", 25, \"Toshkent\", \"Dasturchi\");\n```",
+    "options": [
+      "\"Lola\"",
+      "25",
+      "\"Toshkent\"",
+      "[\"Toshkent\", \"Dasturchi\"]"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`name` parametri \"Lola\" ni oladi. Qolgan barcha argumentlar `[25, \"Toshkent\", \"Dasturchi\"]` ko'rinishida `info` massiviga yig'iladi. `info[0]` esa 25 ga teng bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "JavaScript-da Call Stack funksiyalarni qanday tartibda boshqaradi?",
+    "options": [
+      "FIFO (First In, First Out) - Birinchi kirgan birinchi chiqadi",
+      "LIFO (Last In, First Out) - Oxirgi kirgan birinchi chiqadi",
+      "Tartibsiz ravishda",
+      "Faqat o'lchamiga qarab"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Call Stack LIFO (Last In, First Out) tamoyili bo'yicha ishlaydi. Ya'ni oxirgi chaqirilgan funksiya birinchi bo'lib bajarilib tugaydi va stack-dan o'chiriladi."
+  }
+]

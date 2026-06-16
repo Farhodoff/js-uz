@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da qaysi ma'lumotlar turi primitiv hisoblanadi?",
+    "options": [
+      "Object",
+      "Function",
+      "String",
+      "Array"
+    ],
+    "correctAnswer": 2,
+    "explanation": "String JavaScript-dagi primitiv ma'lumot turlaridan biridir. Object, Function va Array esa reference (havola) turlariga kiradi."
+  },
+  {
+    "id": 2,
+    "question": "Primitiv qiymatlar xotiraning qaysi qismida saqlanadi?",
+    "options": [
+      "Stack xotirada",
+      "Heap xotirada",
+      "Faqat diskda",
+      "Web API-larda"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Primitiv qiymatlar o'lchami oldindan ma'lum bo'lganligi sababli tezkor va qat'iy tartibli Stack xotirasida bevosita saqlanadi."
+  },
+  {
+    "id": 3,
+    "question": "Obyektlar va massivlar kabi murakkab ma'lumotlar xotiraning qaysi qismida saqlanadi va Stack-da nima saqlanadi?",
+    "options": [
+      "Heap-da saqlanadi va Stack-da ularga ko'rsatib turuvchi havola manzili (pointer) saqlanadi",
+      "Stack-da saqlanadi va Heap-da ularga ko'rsatib turuvchi havola manzili saqlanadi",
+      "Ikkalasi ham faqat Stack-da saqlanadi",
+      "Ular hech qayerda saqlanmaydi, har doim brauzer keshidan olinadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Dinamik o'lchamli obyektlar Heap xotirada saqlanadi. Stack xotirasida esa ularning Heap-dagi manziliga havola (reference pointer) saqlanadi."
+  },
+  {
+    "id": 4,
+    "question": "let a = 5; let b = a; b = 10; kodidan so'ng a ning qiymati nechaga teng bo'ladi?",
+    "options": [
+      "10",
+      "5",
+      "undefined",
+      "ReferenceError beradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "a primitiv son bo'lganligi sababli, b = a qilinganda qiymat nusxalandi. b o'zgartirilishi a ning qiymatiga ta'sir qilmaydi, shuning uchun a hamon 5 dir."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kod bajarilgandan keyin nima konsolga chiqadi?\n\nconst user1 = { name: 'Ali' };\nconst user2 = user1;\nuser2.name = 'Vali';\nconsole.log(user1.name);",
+    "options": [
+      "'Ali'",
+      "'Vali'",
+      "undefined",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Obyektlar havola bo'yicha nusxalanadi. user2 = user1 bo'lganda ikkala o'zgaruvchi ham bitta xotira manziliga havola qiladi. Shuning uchun user2.name o'zgartirilganda original user1.name ham 'Vali' ga o'zgaradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi taqqoslash natijasi nima bo'ladi? console.log({} === {});",
+    "options": [
+      "true",
+      "false",
+      "undefined",
+      "SyntaxError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Obyektlar === orqali solishtirilganda xotiradagi manzillari solishtiriladi. Bu yerda ikkita alohida yangi obyekt yaratilmoqda, ularning xotira manzillari har xil, shuning uchun natija false bo'ladi."
+  },
+  {
+    "id": 7,
+    "question": "const kalit so'zi yordamida e'lon qilingan obyekt ustida qaysi amalni bajarib bo'lmaydi?",
+    "options": [
+      "Obyektning xususiyatini o'zgartirish (masalan: obj.id = 2)",
+      "Obyektga yangi xususiyat qo'shish (masalan: obj.newProp = 'test')",
+      "Obyektga butunlay yangi obyekt havolasini qayta yuklash (masalan: obj = { id: 2 })",
+      "Obyektdagi xususiyatni delete yordamida o'chirish"
+    ],
+    "correctAnswer": 2,
+    "explanation": "const kalit so'zi o'zgaruvchining xotiradagi havola ko'rsatkichini o'zgartirishni (reassignment) taqiqlaydi. Obyekt ichidagi xususiyatlarni o'zgartirish esa havola manzilini o'zgartirmaydi, shuning uchun u mumkin."
+  },
+  {
+    "id": 8,
+    "question": "Obyektning birinchi darajali xossalarini nusxalab, lekin ichki obyekt havolalarini saqlab qoladigan nusxalash turi nima deyiladi?",
+    "options": [
+      "Deep Copy (Chuqur nusxa)",
+      "Shallow Copy (Yuzaki nusxa)",
+      "Reference Copy (Havola nusxasi)",
+      "Absolute Copy (Mutloq nusxa)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Shallow Copy (yuzaki yoki sayoz nusxa) faqat birinchi darajali elementlarni nusxalaydi, ichki obyektlar esa original obyekt bilan bir xil havola bo'yicha qoladi."
+  },
+  {
+    "id": 9,
+    "question": "JavaScript-da obyektni chuqur nusxalash (Deep Copy) uchun qaysi standart o'rnatilgan funksiyadan foydalanish tavsiya etiladi?",
+    "options": [
+      "Object.assign()",
+      "Spread operator (...)",
+      "structuredClone()",
+      "Object.create()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "structuredClone() zamonaviy JavaScript-dagi o'rnatilgan funksiya bo'lib, murakkab ichma-ich obyektlarni xavfsiz va to'liq chuqur nusxalaydi (deep copy)."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod bajarilgandan keyin x ning qiymati nima bo'ladi?\n\nfunction addProp(obj) {\n  obj.age = 20;\n  obj = { age: 30 };\n}\nconst x = { age: 10 };\naddProp(x);",
+    "options": [
+      "{ age: 10 }",
+      "{ age: 20 }",
+      "{ age: 30 }",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Funksiya parametriga obyekt uzatilganda uning havolasi uzatiladi. obj.age = 20 original obyektni mutatsiya qiladi. Ammo keyinchalik obj = { age: 30 } qilinganda, lokal parametr havola manzili uzib yuboriladi va u yangi obyektga ko'rsatadi, bu esa tashqaridagi x ga ta'sir qilmaydi. Shuning uchun x.age qiymati 20 bo'lib qoladi."
+  },
+  {
+    "id": 11,
+    "question": "Obyektni mutatsiyadan saqlash va uning birinchi darajali barcha xususiyatlarini o'zgartirishni butunlay taqiqlash uchun qaysi metod ishlatiladi?",
+    "options": [
+      "Object.freeze()",
+      "Object.seal()",
+      "Object.preventExtensions()",
+      "Object.lock()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Object.freeze() metodi obyektning yangi xossalarini qo'shish, mavjudlarini o'chirish yoki qiymatlarini o'zgartirishni to'liq taqiqlab qo'yadi."
+  },
+  {
+    "id": 12,
+    "question": "Heap xotiradagi foydalanilmayotgan obyektlar xotiradan qanday tozalanadi?",
+    "options": [
+      "Ular Stack to'lishi bilan o'chib ketadi",
+      "Garbage Collector (Axlat yig'uvchi) tomonidan zanjirli kirish huquqi (reachability) yo'qolganda tozalanadi",
+      "Dasturchi har bir o'zgaruvchidan keyin free() funksiyasini chaqirishi shart",
+      "Hech qachon tozalanmaydi, brauzer yopilguncha saqlanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da xotirani boshqarish avtomatlashtirilgan. Garbage Collector 'Mark-and-Sweep' algoritmi yordamida Stack root-dan boshlab yetib bo'lmaydigan (unreachable) bo'lgan obyektlarni Heap xotiradan avtomatik tozalaydi."
+  }
+]

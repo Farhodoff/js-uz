@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da stringlar o'zgarmas (immutable) hisoblanadi. Quyidagi koddan keyin konsolga nima chiqadi?\n```javascript\nlet str = 'salom';\nstr.toUpperCase();\nconsole.log(str);\n```",
+    "options": [
+      "'SALOM'",
+      "'salom'",
+      "TypeError xatoligi yuz beradi",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da stringlar o'zgarmasdir. Har qanday string metodi original stringni o'zgartirmaydi, balki yangi string qaytaradi. Shuning uchun `str` o'zgarishsiz 'salom' bo'lib qoladi."
+  },
+  {
+    "id": 2,
+    "question": "Stringning uzunligini (belgilar sonini) aniqlash uchun qaysi xususiyatdan foydalaniladi?",
+    "options": [
+      "str.length()",
+      "str.getLength()",
+      "str.length",
+      "str.size"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`length` stringning metodi emas, balki xususiyatidir (property). Shuning uchun u qavslarsiz chaqiriladi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi kod bajarilgandan keyin konsolda nima chiqadi?\n```javascript\nconst word = 'JavaScript';\nconsole.log(word.slice(4, 10));\n```",
+    "options": [
+      "'Script'",
+      "'Java'",
+      "'aScrip'",
+      "'S'"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`slice(start, end)` metodi `start` indeksidan `end` indeksigacha bo'lgan qismni kesib oladi (lekin `end` indeksining o'zi natijaga kirmaydi). 4-indeks 'S', 10-indeks esa oxiri bo'lgani sababli 'Script' qaytadi."
+  },
+  {
+    "id": 4,
+    "question": "`slice()` metodiga manfiy son berilsa nima bo'ladi? Masalan: `'salom'.slice(-3)`",
+    "options": [
+      "Bo'sh string ('') qaytaradi",
+      "Xatolik (Error) beradi",
+      "Matnning oxiridan boshlab hisoblab, oxirgi 3 ta belgini qaytaradi ('lom')",
+      "Matnning boshidan boshlab 3 ta belgini olib tashlaydi ('om')"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`slice()` metodida manfiy indeks matnning oxiridan boshlab hisoblanadi. -3 oxirgi 3 ta belgini bildiradi, ya'ni 'lom' qaytadi."
+  },
+  {
+    "id": 5,
+    "question": "`indexOf()` metodi qidirilayotgan belgi yoki so'zni matn ichidan topa olmasa, qanday qiymat qaytaradi?",
+    "options": [
+      "null",
+      "undefined",
+      "false",
+      "-1"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Agar qidirilayotgan qiymat string ichida mavjud bo'lmasa, `indexOf` metodi har doim -1 sonini qaytaradi."
+  },
+  {
+    "id": 6,
+    "question": "`str.charAt(index)` va `str[index]` o'rtasidagi asosiy farq nima?",
+    "options": [
+      "Hech qanday farqi yo'q, ikkalasi ham bir xil ishlaydi",
+      "Ko'rsatilgan indeks string chegarasidan tashqarida bo'lsa, `str[index]` undefined qaytaradi, `str.charAt(index)` esa bo'sh string (\"\") qaytaradi",
+      "str[index] faqat eski brauzerlarda ishlaydi, charAt esa zamonaviy usul",
+      "charAt matnni o'zgartira oladi, index esa faqat o'qish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Chegaradan tashqaridagi indeks so'ralganda, qavs sintaksisi (`str[index]`) undefined beradi. `charAt(index)` esa har doim string turi qaytishini kafolatlash uchun bo'sh string (\"\") beradi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nconst text = 'olma olma olma';\nconsole.log(text.replace('olma', 'anor'));\n```",
+    "options": [
+      "'anor anor anor'",
+      "'anor olma olma'",
+      "'olma olma anor'",
+      "'olma anor olma'"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`replace()` metodiga birinchi argument sifatida oddiy string uzatilsa, u faqat birinchi uchragan moslikni o'zgartiradi. Barcha mosliklarni o'zgartirish uchun `replaceAll()` yoki global regex `/olma/g` ishlatish kerak."
+  },
+  {
+    "id": 8,
+    "question": "`'J-A-V-A'.split('-')` ifodasi qanday natija qaytaradi?",
+    "options": [
+      "'JAVA'",
+      "['J', 'A', 'V', 'A']",
+      "'J,A,V,A'",
+      "['J-A-V-A']"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`split(separator)` metodi stringni berilgan separator bo'yicha bo'laklarga ajratib, ulardan iborat yangi massiv (array) qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "`trim()` metodi nima vazifani bajaradi?",
+    "options": [
+      "Matn o'rtasidagi barcha bo'shliqlarni o'chiradi",
+      "Matn boshidagi va oxiridagi bo'shliqlarni (probellarni) olib tashlaydi",
+      "Matndagi barcha harflarni kichiklashtiradi",
+      "Matnning faqat o'ng tomonidagi bo'shliqlarni olib tashlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`trim()` metodi matn boshlanishi va oxiridagi barcha bo'shliqlarni (probel, tab, yangi qator) o'chiradi, lekin matn o'rtasidagi bo'shliqlarga tegmaydi."
+  },
+  {
+    "id": 10,
+    "question": "`substring()` va `slice()` metodlarining manfiy argumentlar bilan ishlashdagi farqi nimada?",
+    "options": [
+      "substring() manfiy indekslarni 0 deb hisoblaydi, slice() esa ularni oxiridan boshlab hisoblaydi",
+      "slice() manfiy indekslarni 0 deb hisoblaydi, substring() esa oxiridan boshlab hisoblaydi",
+      "Ikkalasi ham manfiy indekslarni xuddi shunday qabul qiladi",
+      "substring() manfiy indeks berilganda xatolik (Error) beradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`substring(start, end)` metodiga manfiy son berilsa, u avtomatik ravishda 0 ga tenglashtiriladi. `slice()` esa manfiy qiymatlarni string oxiridan boshlab hisoblaydi."
+  },
+  {
+    "id": 11,
+    "question": "`includes()` metodi haqidagi qaysi tasdiq to'g'ri?",
+    "options": [
+      "Matn ichidagi birinchi moslik indeksini qaytaradi va registrga sezgir emas",
+      "Boolean (true/false) qiymat qaytaradi va registrga sezgir (case-sensitive) hisoblanadi",
+      "Boolean (true/false) qiymat qaytaradi va registrga sezgir emas",
+      "Matn ichidan qidirilgan so'zni qaytaradi va registrga sezgir"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`includes()` metodi string ichida qidirilayotgan matn bor yoki yo'qligini tekshirib, true yoki false qaytaradi hamda registrga sezgir (katta-kichik harflarni farqlaydi) hisoblanadi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod natijasi nima bo'ladi?\n```javascript\n'JS'.repeat(3);\n```",
+    "options": [
+      "'JS JS JS'",
+      "['JS', 'JS', 'JS']",
+      "'JSJSJS'",
+      "'JS 3'"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`repeat(count)` metodi berilgan stringni count marta takrorlab, ularni hech qanday qo'shimcha belgi yoki bo'shliqsiz birlashtirib, bitta string sifatida qaytaradi."
+  }
+]

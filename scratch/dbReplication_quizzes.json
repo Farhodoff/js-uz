@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Synchronous replication (Sinxron replikatsiya) ning asosiy kamchiligi nima?",
+    "options": [
+      "Ma'lumotlar yo'qolish xavfi juda yuqori bo'ladi",
+      "Yozish tezligi (latency) eng sekin replika tezligiga bog'liq bo'lib qoladi",
+      "O'qish so'rovlari faqat bitta serverda bajariladi",
+      "Faqat relational bo'lmagan (NoSQL) ma'lumotlar bazalarida ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Sinxron replikatsiyada Leader barcha replikalardan tasdiq (ACK) kelishini kutadi. Shu sababli sekin replica butun yozish jarayonini sekinlashtiradi."
+  },
+  {
+    "id": 2,
+    "question": "Asynchronous replication (Asinxron replikatsiya) da yozish qanday yakunlanadi?",
+    "options": [
+      "Barcha replikalar o'z xotirasiga yozib bo'lgandan so'ng",
+      "Leader ma'lumotni o'ziga yozgan zahoti mijozga muvaffaqiyat xabarini qaytaradi",
+      "Kamida bitta replika yozgandan so'ng",
+      "Klasterdagi barcha tugunlar parallel o'qilgandan keyin"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Asinxron replikatsiyada Leader yozishni o'zida amalga oshirib mijozga tezda javob beradi. Replikatsiya esa fonda davom etadi."
+  },
+  {
+    "id": 3,
+    "question": "Semi-synchronous replication (Yarim-sinxron replikatsiya) deganda nima tushuniladi?",
+    "options": [
+      "Yozish faqat kunning birinchi yarmida sinxron, ikkinchi yarmida asinxron bo'ladi",
+      "Faqat indekslar sinxron, ma'lumotlar asinxron ko'chiriladi",
+      "Leader kamida belgilangan miqdordagi (masalan, 1 ta) replikadan tasdiq kutadi, qolganlariga esa asinxron replikatsiya qiladi",
+      "Ma'lumotlar faqat matnli fayllar ko'rinishida replikatsiya qilinadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Yarim-sinxron uslub tezlik va ma'lumot xavfsizligi o'rtasidagi kelishuvdir: eng kamida bitta replikaga yozilgani kafolatlanadi."
+  },
+  {
+    "id": 4,
+    "question": "Split-brain muammosi nima?",
+    "options": [
+      "Server CPU xotirasi ikki qismga bo'linishi",
+      "Tarmoq bo'linishi (network partition) natijasida ikkita tugun o'zini Leader deb hisoblab parallel yozishlarni qabul qilishi",
+      "Dastur kodining sinxron va asinxron qismlarga ajralishi",
+      "Replika va Leader ma'lumotlar bazasi jadvallarining har xil nomlanishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Tarmoq uzilishi sababli tugunlar bir-birini ko'rmay qolganda, ikkala guruh ham o'z liderini saylasa, split-brain yuzaga keladi va ma'lumotlar ziddiyatli holatga keladi."
+  },
+  {
+    "id": 5,
+    "question": "Read-after-write consistency (Yozgandan keyin o'qish mosligi) kafolati nima beradi?",
+    "options": [
+      "Foydalanuvchi yozgan ma'lumotlarini darhol o'zi o'qiganida yangilangan holatda ko'rishini kafolatlaydi",
+      "Faqat o'qish amallari bajarilishini ta'minlaydi",
+      "Yozishdan oldin o'qishni majburlaydi",
+      "Barcha foydalanuvchilar bir vaqtning o'zida yozishlarini talab qiladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Bu kafolat foydalanuvchi o'zgartirgan ma'lumotni darhol yangilangan holatda ko'rishini ta'minlaydi. Odatda bunga foydalanuvchining o'z profilini faqat Leader-dan o'qitish orqali erishiladi."
+  },
+  {
+    "id": 6,
+    "question": "Monotonic Reads kafolati nimani oldini oladi?",
+    "options": [
+      "Ma'lumotlar bazasi hajmining cheksiz o'sishini",
+      "Foydalanuvchi sahifani bir necha marta yangilaganda, vaqt bo'yicha orqaga qaytgan (ya'ni yangi ma'lumotdan so'ng eski replikadagi eskirgan ma'lumotni ko'rish) holatini",
+      "Barcha tranzaksiyalarning bekor qilinishini",
+      "Parallel yozishlar kelishini"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Monotonic Reads foydalanuvchining o'qish so'rovlari vaqt bo'yicha doimiy ravishda faqat oldinga siljishini yoki bir xil bo'lishini ta'minlaydi, ya'ni eskirgan replikaga ulanib qolishini oldini oladi."
+  },
+  {
+    "id": 7,
+    "question": "Leaderless (Dynamo-style) tizimda N=3 (replikalar soni), W=2 (yozish quorumi) bo'lsa, Strong Consistency-ni ta'minlash uchun R (o'qish quorumi) kamida nechaga teng bo'lishi kerak?",
+    "options": [
+      "R = 1",
+      "R = 2",
+      "R = 3",
+      "R = 0"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Strong Consistency formulasi: R + W > N. Demak, R + 2 > 3 bo'lishi uchun R kamida 2 ga teng bo'lishi kerak."
+  },
+  {
+    "id": 8,
+    "question": "Last-Write-Wins (LWW) ziddiyatlarni hal qilish usulining asosiy kamchiligi nima?",
+    "options": [
+      "U faqat kichik hajmdagi ma'lumotlarda ishlaydi",
+      "Taqsimlangan tizimlarda soatlar nomuvofiqligi (clock skew) tufayli ba'zi kechroq yozilgan haqiqiy ma'lumotlar o'chib ketishi mumkin",
+      "U juda ko'p xotira talab qiladi",
+      "Leader replikatsiyani butunlay to'xtatib qo'yadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "LWW jismoniy vaqtga tayanadi. Taqsimlangan tizimlarda server soatlari hech qachon 100% bir xil bo'lmagani uchun, millisoniyalar farqi muhim yozishlarni yo'qotishi mumkin."
+  },
+  {
+    "id": 9,
+    "question": "Read Repair (O'qish paytidagi tuzatish) jarayoni qanday ishlaydi?",
+    "options": [
+      "Admin qo'lda xatoliklarni tuzatadi",
+      "O'qish paytida eskirgan qiymat aniqlansa, client yoki coordinator fonda o'sha replikaga yangi qiymatni yozib qo'yadi",
+      "Tizim barcha replikalarni o'chirib boshqatdan yuklaydi",
+      "Faqat index fayllarini qayta yaratadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Read Repair leaderless tizimlarda o'qish paytida eskirgan replikani aniqlab, unga avtomatik tarzda eng so'nggi ma'lumotni push qilish orqali anti-entropy vazifasini bajaradi."
+  },
+  {
+    "id": 10,
+    "question": "Merkle Tree (Merkle Daraxti) replikatsiyada nima uchun ishlatiladi?",
+    "options": [
+      "Faqat parollarni shifrlash uchun",
+      "Tugunlar orasidagi ma'lumotlarni solishtirishda butun bazani yubormasdan, faqat farqlangan diapazonlarni tezkor aniqlash (Anti-Entropy) uchun",
+      "Fayllarni siqish (compress) uchun",
+      "Barcha tranzaksiyalarni o'chirib yuborish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Merkle Tree - bu hash daraxti bo'lib, u ikki tugundagi ma'lumotlar mosligini minimal tarmoq trafigi orqali solishtirishga imkon beradi."
+  },
+  {
+    "id": 11,
+    "question": "Log Sequence Number (LSN) ning vazifasi nima?",
+    "options": [
+      "Replika serverlarining IP manzillarini saqlash",
+      "Tranzaksiyalar jurnalidagi har bir yozuvning tartib raqami bo'lib, replika leader-dan qanchalik orqadaligini aniqlash imkonini beradi",
+      "Klasterdagi serverlar sonini hisoblash",
+      "Ma'lumotlar bazasi parolini saqlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "LSN replika loglarining qay darajada yangilanganini va replikatsiya lagi (lag) hajmini o'lchash uchun mantiqiy ko'rsatkichdir."
+  },
+  {
+    "id": 12,
+    "question": "Consistent Prefix Reads kafolati nimani kafolatlaydi?",
+    "options": [
+      "Ma'lumotlarning faqat bosh harflari replikatsiya qilinishini",
+      "Agar ma'lumotlar ma'lum bir ketma-ketlikda yozilgan bo'lsa, boshqa o'quvchi ham ularni aynan o'sha ketma-ketlikda o'qishini",
+      "Barcha replikalar faqat bitta tranzaksiyani bajarishini",
+      "Hech qanday ma'lumot o'zgartirilmasligini"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Consistent Prefix Reads mantiqiy sabab-oqibat (causal relation) zanjirini saqlab qoladi. Masalan, savoldan keyin javob kelishi zanjiri replikalarda buzilib qolmasligini ta'minlaydi."
+  }
+]

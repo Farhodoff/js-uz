@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da \"Global Scope\" (Global qamrov) deganda nima tushuniladi?",
+    "options": [
+      "Faqat if yoki for bloklari ichida ko'rinadigan vaqtinchalik soha",
+      "Kodning eng tashqi doirasi bo'lib, u yerda e'lon qilingan o'zgaruvchilar dasturning istalgan joyidan kirish imkoniyatiga ega bo'ladi",
+      "Faqat klasslar (classes) ichidagi maxfiy soha",
+      "Brauzer oynasi yopilganda o'chib ketadigan vaqtinchalik xotira maydoni"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Global qamrov - bu har qanday funksiya yoki blok tashqarisidagi eng yuqori darajadagi sohadir. Bu doirada e'lon qilingan o'zgaruvchilarga dasturning barcha qismlaridan kirish mumkin."
+  },
+  {
+    "id": 2,
+    "question": "Global qamrovda e'lon qilingan var kalit so'zi bilan let/const ning farqi nimada?",
+    "options": [
+      "var o'zgaruvchilari global obyektning (window/globalThis) xususiyatiga aylanadi, let/const esa aylanmaydi",
+      "let va const o'zgaruvchilari global obyekt xususiyatiga aylanadi, var esa aylanmaydi",
+      "Ikkalasi ham global obyekt xususiyatiga aylanadi va ular orasida hech qanday farq yo'q",
+      "Global qamrovda let va const kalit so'zlarini ishlatish mutlaqo taqiqlangan"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Global qamrovda var yordamida e'lon qilingan o'zgaruvchilar global obyektga (masalan, brauzerda window) biriktiriladi. let va const esa global obyekt xususiyatiga aylanmaydi, ular faqat declarative environment record-da saqlanadi."
+  },
+  {
+    "id": 3,
+    "question": "Brauzer, Node.js va boshqa JavaScript muhitlarida global obyektga murojaat qilish uchun qaysi universal kalit so'z kiritilgan?",
+    "options": [
+      "window",
+      "global",
+      "globalThis",
+      "this"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Har xil muhitlarda global obyekt turlicha nomlanadi (brauzerda window, Node.js-da global). ES2020 standartida barcha muhitlar uchun yagona va universal bo'lgan globalThis kalit so'zi kiritildi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet myVar = 'Global';\nfunction test() {\n  let myVar = 'Lokal';\n  console.log(myVar);\n}\ntest();\n```",
+    "options": [
+      "'Global'",
+      "'Lokal'",
+      "undefined",
+      "ReferenceError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Funksiya ichida o'sha nomdagi yangi o'zgaruvchi e'lon qilinsa (shadowing), funksiya o'zining lokal o'zgaruvchisidan foydalanadi. Shuning uchun 'Lokal' qiymati chiqadi."
+  },
+  {
+    "id": 5,
+    "question": "\"Implicit Global\" (yashirin global o'zgaruvchi) nima?",
+    "options": [
+      "Hech qanday kalit so'zsiz (let, const yoki var) e'lon qilinmagan o'zgaruvchiga qiymat biriktirish orqali tasodifan global o'zgaruvchi yaratilishi",
+      "Faqat let yordamida yaratilgan o'zgaruvchining turi",
+      "Funksiya ichidagi o'zgaruvchining avtomatik ravishda const ga aylanishi",
+      "Obyekt ichidagi xususiyatlarning o'z-o'zidan global bo'lib qolishi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Agar strict mode ishlatilmagan bo'lsa, e'lon qilinmagan o'zgaruvchiga qiymat berish (masalan, x = 5) uni avtomatik ravishda global obyekt xususiyatiga aylantiradi, bu esa kutilmagan bug'larga olib kelishi mumkin."
+  },
+  {
+    "id": 6,
+    "question": "\"Implicit Global\" (yashirin global) o'zgaruvchilar yaratilishini qanday qilib butunlay oldini olish mumkin?",
+    "options": [
+      "Dastur boshiga 'use strict' satrini qo'shish orqali",
+      "Kodda faqat var kalit so'zini ishlatish orqali",
+      "Barcha funksiyalarni o'chirib tashlash orqali",
+      "setTimeout funksiyasidan foydalanib"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Qat'iy rejim ('use strict') e'lon qilinmagan o'zgaruvchiga qiymat berilganda ReferenceError xatosini chiqarib, yashirin globallar yaratilishini taqiqlaydi."
+  },
+  {
+    "id": 7,
+    "question": "Global scope-dagi o'zgaruvchilarni V8 dvigatelining Garbage Collector (axlat yig'uvchi) tizimi qachon tozalaydi?",
+    "options": [
+      "Funksiya bajarilib bo'lingach darhol",
+      "Faqat dastur (yoki sahifa) yopilgandagina",
+      "Har 5 soniyada avtomatik tarzda",
+      "Ularning qiymati 0 ga teng bo'lganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Global o'zgaruvchilar global obyekt yoki global qamrov orqali doimiy ravishda 'yetib boriladigan' (reachable) bo'lib turadi. Shuning uchun ular dastur yopilguncha xotirada qoladi va Garbage Collector tomonidan tozalanmaydi."
+  },
+  {
+    "id": 8,
+    "question": "\"Global Scope Pollution\" (Global qamrovning ifloslanishi) muammosi nimaga olib keladi?",
+    "options": [
+      "Faqat fayl hajmining kamayishiga",
+      "Turli kutubxonalar yoki dastur qismlarida o'zgaruvchilar nomlarining to'qnashuvi (collision) va kutilmagan xatolarga",
+      "Kompyuter protsessorining jismoniy qizib ketishiga",
+      "Dasturning faqat Node.js-da ishlashiga"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar o'zgaruvchilar haddan tashqari ko'p global e'lon qilinsa, boshqa fayllar yoki uchinchi tomon kutubxonalari o'sha nomdagi o'zgaruvchilarni yozib yuborishi va natijada dasturning ishlashi kutilmagan tarzda buzilishi mumkin."
+  },
+  {
+    "id": 9,
+    "question": "Node.js-da faylning eng yuqori (eng tashqi) qismida e'lon qilingan o'zgaruvchi nega haqiqiy global o'zgaruvchi hisoblanmaydi?",
+    "options": [
+      "Chunki Node.js har bir faylni avtomatik ravishda modul o'rami (module wrapper) funksiyasi ichiga oladi",
+      "Chunki Node.js brauzer oynasida ishlamaydi",
+      "Chunki u yerda faqat const ishlatsa bo'ladi",
+      "Chunki Node.js-da global o'zgaruvchilar faqat process obyektida saqlanadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Node.js-da har bir JS fayli alohida modul hisoblanadi. Node.js kodni bajarishdan oldin uni maxsus o'ram funksiyasi (function(exports, require, module...) { ... }) bilan o'raydi. Shuning uchun eng tashqi o'zgaruvchilar aslida lokal modul doirasida bo'ladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nvar myVal = 10;\nfunction show() {\n  console.log(window.myVal);\n}\nshow();\n```",
+    "options": [
+      "undefined",
+      "10",
+      "ReferenceError",
+      "null"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Global doirada var orqali e'lon qilingan myVal global obyekt (window) xususiyatiga aylanadi. Shuning uchun window.myVal orqali 10 qiymati ko'rsatiladi."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun global o'zgaruvchilarga murojaat qilish lokal o'zgaruvchilarga qaraganda bir oz sekinroq bajarilishi mumkin?",
+    "options": [
+      "Chunki global o'zgaruvchilar xotiraning Heap qismida siqilgan holda saqlanadi",
+      "Chunki JS dvigateli scope chain (qamrovlar zanjiri) bo'yicha eng pastdan (lokaldan) boshlab eng tepaga (globalgacha) qidirib borishi kerak",
+      "Chunki global o'zgaruvchilar doim internet orqali tekshiriladi",
+      "Chunki global o'zgaruvchilar faqat string turida bo'ladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Dastur biror o'zgaruvchini qidirganda, dastlab joriy lokal scope-ni tekshiradi. Topilmasa, tashqi scope'larga va eng oxirida global scope'ga boradi. Qamrovlar qanchalik ko'p bo'lsa, qidiruv shunchalik ko'p vaqt oladi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod ishga tushganda konsolga nima yoziladi?\n```javascript\n\"use strict\";\nfunction assign() {\n  x = 50;\n}\nassign();\n```",
+    "options": [
+      "50",
+      "undefined",
+      "ReferenceError: x is not defined",
+      "TypeError"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Strict mode ('use strict') yoqilganda, e'lon qilinmagan x o'zgaruvchisiga qiymat biriktirishga urinish yashirin global yaratish o'rniga ReferenceError xatoligini beradi."
+  }
+]

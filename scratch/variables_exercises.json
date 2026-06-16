@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Blok Doirasi (Block Scope)",
+    "instruction": "Quyida `testScope` funksiyasi berilgan. Kodda `var` ishlatilgani sababli, `if` bloki ichidagi o'zgaruvchi blokdan tashqarida ham o'zgarib ketmoqda. Bizga `if` bloki ichidagi `x` o'zgaruvchisi faqat shu blok ichida amal qilishi (block scope bo'lishi) va funksiya oxirida dastlabki `x` (ya'ni 10) qiymati saqlanib qolishi kerak. Buning uchun `var` kalit so'zlarini to'g'ri block-scoped kalit so'zlarga (`let` yoki `const`) almashtiring.",
+    "startingCode": "function testScope() {\n  var x = 10;\n  if (true) {\n    var x = 20;\n  }\n  return x;\n}\n",
+    "hint": "if bloki ichidagi var x ni let x yoki const x ga almashtiring. Tashqi var x ni ham let x ga o'zgartirishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return testScope;');\nconst fn = sandbox();\nconst res = fn();\nif (res !== 10) return 'testScope funksiyasi 10 qaytarishi kerak, lekin ' + res + ' qaytardi.';\nif (!code.includes('let x = 20') && !code.includes('const x = 20') && !code.includes('let x=20') && !code.includes('const x=20')) {\n  return 'Blok ichidagi x o\\'zgaruvchisi uchun let yoki const kalit so\\'zidan foydalaning.';\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "O'zgarmas Obyekt (const) va Mutatsiya",
+    "instruction": "Bizga `const` orqali e'lon qilingan `user` obyekti berilgan. `const` bilan e'lon qilingan o'zgaruvchining o'zini butunlay boshqa qiymatga qayta tayinlab (reassign) bo'lmasa-da, uning xususiyatlarini (properties) o'zgartirish mumkin. `updateUserAge(user, newAge)` funksiyasini yozing, u berilgan `user` obyektining `age` xususiyatini `newAge` ga o'zgartirsin va o'sha obyektni qaytarsin. Bunda yangi obyekt yaratmang (ya'ni `return { ... }` yoki `user = ...` xato).",
+    "startingCode": "function updateUserAge(user, newAge) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "user.age = newAge; ko'rinishida obyekt xususiyatini to'g'ridan-to'g'ri o'zgartiring va user obyektini qaytaring.",
+    "test": "const sandbox = new Function(code + '; return updateUserAge;');\nconst fn = sandbox();\nconst myUser = { name: 'Ali', age: 20 };\nconst res = fn(myUser, 25);\nif (res && res.age === 25 && res.name === 'Ali') {\n  if (res === myUser) {\n    return null;\n  }\n  return 'Yangi obyekt yaratmang, aynan berilgan user obyektining xususiyatini o\\'zgartiring.';\n}\nreturn 'updateUserAge funksiyasi yoshni to\\'g\\'ri yangilamadi';"
+  },
+  {
+    "id": 3,
+    "title": "Hoisting va TDZ (Temporal Dead Zone)",
+    "instruction": "Quyidagi kodda `console.log(value)` chaqirilganda `ReferenceError` xatoligi yuz bermoqda. Buning sababi `let` va `const` o'zgaruvchilari e'lon qilinishidan oldin TDZ (Temporal Dead Zone) da bo'ladi va ulardan foydalanib bo'lmaydi. Kodni shunday o'zgartiringki, xatolik chiqmasdan, o'zgaruvchining qiymati (ya'ni 'Salom') to'g'ri chop etilsin va qaytarilsin.",
+    "startingCode": "function getGreeting() {\n  console.log(value);\n  let value = 'Salom';\n  return value;\n}\n",
+    "hint": "O'zgaruvchini console.log(value) dan oldingi qatorga ko'chiring.",
+    "test": "try {\n  const sandbox = new Function(code + '; return getGreeting;');\n  const fn = sandbox();\n  const res = fn();\n  if (res === 'Salom') {\n    const cleanCode = code.replace(/\\s+/g, '');\n    const declLet = cleanCode.indexOf('letvalue=');\n    const declConst = cleanCode.indexOf('constvalue=');\n    const declVar = cleanCode.indexOf('varvalue=');\n    const consoleIdx = cleanCode.indexOf('console.log(value)');\n    const declIdx = declLet !== -1 ? declLet : (declConst !== -1 ? declConst : declVar);\n    if (declIdx !== -1 && declIdx < consoleIdx) {\n      return null;\n    }\n    return 'value o\\'zgaruvchisini console.log(value) dan oldin e\\'lon qiling.';\n  }\n  return 'getGreeting funksiyasi \"Salom\" qaytarishi kerak, hozir: ' + res;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "To'lovlarni Filtrlash",
+    "instruction": "Berilgan massiv ichidagi barcha musbat sonlarni qo'shib jami summani hisoblovchi `sumValidTransactions(transactions)` funksiyasini yozing. Agar tranzaksiya manfiy yoki nol bo'lsa, `continue` yordamida uni o'tkazib yuboring.",
+    "startingCode": "function sumValidTransactions(transactions) {\n  let total = 0;\n  for (let i = 0; i < transactions.length; i++) {\n    // Kodni shu yerda yozing\n  }\n  return total;\n}\n",
+    "hint": "if (transactions[i] <= 0) continue; orqali manfiy yoki nol qiymatlarni o'tkazib yuboring.",
+    "test": "const sandbox = new Function(code + '; return sumValidTransactions;');\nconst fn = sandbox();\nconst res = fn([100, -50, 200, 0, 300]);\nif (res === 600) return null;\nreturn 'Musbat tranzaksiyalar yig\\'gindisi noto\\'g\\'ri hisoblandi. Kutilgan: 600, olingan: ' + res;"
+  },
+  {
+    "id": 2,
+    "title": "Birinchi Juft Sonni Topish",
+    "instruction": "Sonlar massivi `numbers` berilgan. Massiv ichidagi birinchi juft sonni topib qaytaradigan `findFirstEven(numbers)` funksiyasini yozing. Juft son topilishi bilan sikl `break` yordamida to'xtatilishi kerak. Agar juft son topilmasa, `null` qaytarsin.",
+    "startingCode": "function findFirstEven(numbers) {\n  let firstEven = null;\n  for (let i = 0; i < numbers.length; i++) {\n    // Kodni shu yerda yozing\n  }\n  return firstEven;\n}\n",
+    "hint": "if (numbers[i] % 2 === 0) { firstEven = numbers[i]; break; } shartidan foydalaning.",
+    "test": "if (!code.includes('break')) return 'Sikldan chiqish uchun break operatoridan foydalanilmadi';\nconst sandbox = new Function(code + '; return findFirstEven;');\nconst fn = sandbox();\nconst res1 = fn([1, 3, 5, 8, 9, 10]);\nconst res2 = fn([1, 3, 5, 7]);\nif (res1 === 8 && res2 === null) return null;\nreturn 'findFirstEven funksiyasi birinchi juft sonni to\\'g\\'ri topmadi yoki topilmaganda null qaytarmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Limitgacha Qo'shish",
+    "instruction": "Sizga butun sonlar massivi `numbers` va maksimal limit qiymati `limit` berilgan. Massiv elementlarini ketma-ket qo'shib boring. Agar joriy elementni qo'shganda jami yig'indi `limit` dan oshib ketadigan bo'lsa (oshgan holatda), siklni `break` yordamida to'xtating va o'sha paytdagi yig'indini qaytaring. Limitdan oshib ketgan oxirgi element yig'indiga qo'shilmasligi kerak.",
+    "startingCode": "function sumUntilLimit(numbers, limit) {\n  let total = 0;\n  for (let i = 0; i < numbers.length; i++) {\n    // Kodni shu yerda yozing\n  }\n  return total;\n}\n",
+    "hint": "if (total + numbers[i] > limit) break; sharti yordamida limitdan oshishini oldindan tekshiring.",
+    "test": "const sandbox = new Function(code + '; return sumUntilLimit;');\nconst fn = sandbox();\nconst res1 = fn([10, 20, 30, 40], 50);\nconst res2 = fn([5, 15, 25], 100);\nif (res1 === 30 && res2 === 45) return null;\nreturn 'sumUntilLimit funksiyasi limitga yetganda to\\'g\\'ri to\\'xtamadi yoki noto\\'g\\'ri qiymat qaytardi';"
+  }
+]

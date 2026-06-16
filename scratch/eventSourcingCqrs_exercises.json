@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Event Reducer Simulyatsiyasi",
+    "instruction": "Foydalanuvchi hisobining joriy holatini hisoblovchi `reduceState(initialState, events)` funksiyasini yozing. Voqealar ro'yxatida `USER_REGISTERED` (statega username va status qo'shadi) va `EMAIL_UPDATED` (state dagi emailni o'zgartiradi) voqealari bo'lishi mumkin. Har bir voqea `{ type, data }` formatida bo'ladi.",
+    "startingCode": "function reduceState(initialState, events) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "events.reduce() yoki oddiy for...of tsiklidan foydalanib state nusxasini yangilang.",
+    "test": "const sandbox = new Function(code + '; return reduceState;');\nconst fn = sandbox();\nconst init = { status: 'pending' };\nconst events = [\n  { type: 'USER_REGISTERED', data: { username: 'ali', status: 'active' } },\n  { type: 'EMAIL_UPDATED', data: { email: 'ali@mail.com' } }\n];\nconst state = fn(init, events);\nif (state.username !== 'ali' || state.email !== 'ali@mail.com' || state.status !== 'active') {\n  return 'State noto\\'g\\'ri shakllantirildi!';\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Event Store-ga yangi voqea qo'shish",
+    "instruction": "`EventStore` klassini yarating. Unda voqealarni saqlaydigan `events` massivi bo'lsin. Yangi voqea qo'shish uchun `appendEvent(aggregateId, type, data)` metodini yozing. Har bir yangi voqea saqlanganda avtomatik ravishda `sequence` (1 dan boshlanuvchi tartib raqami) va `timestamp` olsin.",
+    "startingCode": "class EventStore {\n  constructor() {\n    this.events = [];\n  }\n\n  appendEvent(aggregateId, type, data) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "this.events.length + 1 orqali sequence raqamini hisoblang. Yangi obyektni push qiling va uni qaytaring.",
+    "test": "const sandbox = new Function(code + '; return EventStore;');\nconst Store = sandbox();\nconst store = new Store();\nconst ev = store.appendEvent('user-1', 'Created', { name: 'Vali' });\nif (store.events.length !== 1) return 'Voqea omborga qo\\'shilmadi';\nif (ev.sequence !== 1 || !ev.timestamp) return 'Voqea sequence yoki timestamp-ga ega emas';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Sodda Read Model Proyektori",
+    "instruction": "Voqealarni o'qib, o'quvchilar uchun sodda kalit-qiymat ko'rinishidagi Read Model yaratadigan `Projector` klassini yozing. Unda `readModel` obyekti bo'lsin. `project(event)` metodi kelgan voqeadagi `aggregateId` bo'yicha ma'lumotlarni yangilasin. Agar voqea turi `ITEM_ADDED` bo'lsa, elementni massivga qo'shsin, agar `ITEM_REMOVED` bo'lsa, massivdan o'chirsin.",
+    "startingCode": "class Projector {\n  constructor() {\n    this.readModel = {};\n  }\n\n  project(event) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "event.aggregateId bo'yicha array mavjudligini tekshiring, agar yo'q bo'lsa bo'sh massiv yarating. Keyin type ga qarab item qo'shing yoki filter orqali o'chiring.",
+    "test": "const sandbox = new Function(code + '; return Projector;');\nconst Proj = sandbox();\nconst p = new Proj();\np.project({ aggregateId: 'u1', type: 'ITEM_ADDED', data: { item: 'apple' } });\np.project({ aggregateId: 'u1', type: 'ITEM_ADDED', data: { item: 'banana' } });\np.project({ aggregateId: 'u1', type: 'ITEM_REMOVED', data: { item: 'apple' } });\nconst list = p.readModel['u1'];\nif (!list || list.length !== 1 || list[0] !== 'banana') return 'Proyeksiya noto\\'g\\'ri ishladi';\nreturn null;"
+  }
+]

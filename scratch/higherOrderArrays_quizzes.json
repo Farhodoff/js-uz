@@ -1,146 +1,146 @@
 [
   {
     "id": 1,
-    "question": "Qaysi massiv metodi callback funksiya qaytargan natijaga qarab asl massiv elementlarini o'zgartirmasdan, butunlay yangi massiv qaytaradi?",
+    "question": "JavaScript-da massivlar uchun 'Higher Order' (yuqori tartibli) metodlar nima?",
     "options": [
-      "`map`",
-      "`forEach`",
-      "`push`",
-      "`splice`"
+      "Faqat massivning uzunligini qaytaradigan metodlar",
+      "Boshqa bir funksiyani (callback) parametr sifatida qabul qiladigan yoki funksiya qaytaradigan metodlar",
+      "Faqat asinxron ishlaydigan massiv metodlari",
+      "Massiv elementlarini butunlay o'chirib tashlaydigan metodlar"
     ],
-    "correctAnswer": 0,
-    "explanation": "`map` metodi massivdagi har bir element ustida amallar bajarib, ularning natijalaridan iborat yangi massiv qaytaradi va original massivni o'zgartirmaydi."
+    "correctAnswer": 1,
+    "explanation": "Higher-order funksiyalar yoki metodlar boshqa funksiyalarni parametr (argument) sifatida qabul qiladi yoki natija sifatida funksiya qaytaradi. `.map()`, `.filter()`, `.reduce()` kabilar bunga misoldir."
   },
   {
     "id": 2,
-    "question": "`filter` metodi callback funksiya qanday qiymat qaytarganda elementni yangi massivga qo'shadi?",
+    "question": "Quyidagi metodlardan qaysi biri chaqirilganda asl massivni o'zgartirmaydi va yangi massiv qaytaradi?",
     "options": [
-      "Faqat `true` (yoki truthy qiymat) qaytarganda",
-      "Faqat `false` (yoki falsy qiymat) qaytarganda",
-      "Faqat `1` yoki `0` qaytarganda",
-      "Har qanday qiymat qaytarganda"
+      "`.forEach()`",
+      "`.push()`",
+      "`.map()`",
+      "`.splice()`"
     ],
-    "correctAnswer": 0,
-    "explanation": "`filter` metodi har bir element uchun callback funksiyani chaqiradi. Agar u `true` yoki truthy qiymat qaytarsa, element natijaviy massivga kiritiladi."
+    "correctAnswer": 2,
+    "explanation": "`.map()` metodi asl massiv elementlarini o'zgartirmasdan, har bir element ustida callback funksiyani bajaradi va natijalardan iborat yangi massiv qaytaradi. `forEach` undefined qaytaradi, `push` va `splice` esa asl massivni mutatsiyaga uchratadi."
   },
   {
     "id": 3,
-    "question": "Quyidagi `reduce` chaqiruvining yakuniy natijasi nima bo'ladi?\n```javascript\nconst nums = [1, 2, 3];\nconst res = nums.reduce((acc, val) => acc + val, 10);\n```",
+    "question": "Quyidagi kod bajarilgandan keyin konsolga nima chiqadi?\n```javascript\nconst nums = [1, 2, 3];\nconst res = nums.map(x => { x * 2 });\nconsole.log(res);\n```",
     "options": [
-      "`6`",
-      "`16`",
-      "`10`",
-      "`undefined`"
+      "`[2, 4, 6]`",
+      "`[undefined, undefined, undefined]`",
+      "`[1, 2, 3]`",
+      "`TypeError`"
     ],
     "correctAnswer": 1,
-    "explanation": "Reduce boshlang'ich qiymat sifatida 10 ni oladi. Keyin ketma-ket massiv elementlarini qo'shib boradi: 10 + 1 + 2 + 3 = 16."
+    "explanation": "Callback funksiyada figurali qavslar `{}` ishlatilganda, qiymatni qaytarish uchun aniq `return` kalit so'zi yozilishi shart. Aks holda callback `undefined` qaytaradi va yangi massiv `[undefined, undefined, undefined]` bo'ladi."
   },
   {
     "id": 4,
-    "question": "`find` metodi massiv ichidan shartga mos element topa olmasa nima qaytaradi?",
+    "question": "Massivdan shartga mos keladigan birinchi elementning o'zini topish uchun qaysi metod eng qulay?",
     "options": [
-      "`null`",
-      "`undefined`",
-      "`-1`",
-      "Bo'sh massiv `[]`"
+      "`.filter()`",
+      "`.findIndex()`",
+      "`.find()`",
+      "`.some()`"
     ],
-    "correctAnswer": 1,
-    "explanation": "`find` metodi shartga mos keluvchi birinchi elementni qaytaradi. Agar bunday element topilmasa, u `undefined` qaytaradi."
+    "correctAnswer": 2,
+    "explanation": "`.find()` metodi shartga mos keladigan birinchi elementning qiymatini qaytaradi. Agar mos element topilmasa, `undefined` qaytaradi. `.filter()` esa barcha mos elementlardan iborat massiv qaytaradi."
   },
   {
     "id": 5,
-    "question": "`some` va `every` metodlari qanday turdagi (data type) natija qaytaradi?",
+    "question": "Bo'sh massivda boshlang'ich qiymat (initial value) ko'rsatmasdan `.reduce()` metodini chaqirish nima bilan yakunlanadi?",
     "options": [
-      "Yangi massiv (Array)",
-      "Mantiqiy qiymat (Boolean: true yoki false)",
-      "Son (Number)",
-      "Obyekt (Object)"
+      "`0` qaytaradi",
+      "`undefined` qaytaradi",
+      "`TypeError` xatoligini beradi",
+      "Bo'sh massiv `[]` qaytaradi"
     ],
-    "correctAnswer": 1,
-    "explanation": "Ikkala metod ham faqat shartning bajarilishi yoki bajarilmasligini tekshiradi va har doim `true` yoki `false` qiymat qaytaradi."
+    "correctAnswer": 2,
+    "explanation": "Agar massiv bo'sh bo'lsa va `.reduce()` metodiga boshlang'ich qiymat berilmagan bo'lsa, JavaScript `TypeError: Reduce of empty array with no initial value` xatoligini tashlaydi."
   },
   {
     "id": 6,
-    "question": "Quyidagi saralash kodidan keyin original `nums` massivi qanday o'zgaradi?\n```javascript\nconst nums = [10, 2, 30];\nnums.sort();\n```",
+    "question": "Quyidagi kod bajarilgandan keyin konsolga nima chiqadi?\n```javascript\nconst arr = [1, 2, 3, 4];\nconst val = arr.reduce((acc, curr) => acc + curr, 10);\nconsole.log(val);\n```",
     "options": [
-      "`[2, 10, 30]` ko'rinishida to'g'ri saralanadi",
-      "`[10, 2, 30]` bo'lib o'zgarishsiz qoladi",
-      "`[10, 2, 30]` alifbo tartibida saralanadi, chunki default holatda elementlar string deb qaraladi",
-      "TypeError xatosi chiqadi"
+      "`10`",
+      "`20`",
+      "`14`",
+      "`24`"
     ],
-    "correctAnswer": 2,
-    "explanation": "Default `sort()` metodida taqqoslovchi funksiya bo'lmasa, u elementlarni matnga o'tkazadi va alifbo bo'yicha solishtiradi (bu yerda '10' '2' dan oldin keladi, chunki '1' '2' dan kichik)."
+    "correctAnswer": 1,
+    "explanation": "`.reduce()` metodiga boshlang'ich qiymat sifatida `10` berilgan. Shunda akumulyator (`acc`) 10 dan boshlanadi va unga massiv elementlari (1, 2, 3, 4) qo'shib chiqiladi. Jami: 10 + 10 = 20."
   },
   {
     "id": 7,
-    "question": "Faqat birinchi voyaga yetgan foydalanuvchining ismini topish uchun qaysi metodlar zanjiri to'g'ri hisoblanadi?",
+    "question": "`.some()` va `.every()` metodlarining asosiy farqi nimada?",
     "options": [
-      "`users.filter(u => u.age >= 18).map(u => u.name)[0]`",
-      "`users.find(u => u.age >= 18)?.name`",
-      "Ikkala variant ham to'g'ri va bir xil natija beradi, lekin keyingisi optimalroq",
-      "Buning uchun faqat reduce ishlatish mumkin"
+      "`.some()` yangi massiv qaytaradi, `.every()` esa bitta qiymat qaytaradi",
+      "`.some()` shartga kamida bitta element mos kelganda `true` qaytaradi, `.every()` esa barcha elementlar shartga mos kelgandagina `true` qaytaradi",
+      "`.every()` shartga kamida bitta element mos kelganda `true` qaytaradi, `.some()` esa barcha elementlar mos kelganda",
+      "Ular o'rtasida farq yo'q, ikkalasi ham bir xil ishlaydi"
     ],
-    "correctAnswer": 2,
-    "explanation": "Ikkala usul ham to'g'ri ishlaydi. Biroq `find` metodi birinchi elementni topishi bilanoq ishlashni to'xtatadi va yangi massiv yaratmagani uchun optimalroqdir."
+    "correctAnswer": 1,
+    "explanation": "`.some()` (ba'zi) kamida bitta element shartni bajarsa `true` qaytaradi. `.every()` (barcha) esa faqat va faqat massivdagi barcha elementlar shartni bajargandagina `true` qaytaradi."
   },
   {
     "id": 8,
-    "question": "Quyidagi kodda `squares` qiymati nima bo'ladi?\n```javascript\nconst squares = [1, 2].map(n => { n * n });\n```",
+    "question": "Quyidagi kod bajarilgandan keyin konsolga nima chiqadi?\n```javascript\nconst items = [1, 2, 3];\nconst res = items.forEach(x => x * 2);\nconsole.log(res);\n```",
     "options": [
-      "`[1, 4]`",
-      "`[undefined, undefined]` (chunki arrow functionda jingalak qavs ochilsa, return yozilishi shart)",
-      "TypeError",
-      "`[]`"
+      "`[2, 4, 6]`",
+      "`undefined`",
+      "`[1, 2, 3]`",
+      "`null`"
     ],
     "correctAnswer": 1,
-    "explanation": "Arrow funksiyalarda `{}` jingalak qavslar ochilsa, return avtomatik bo'lmaydi. Return yozilmagani uchun map natijasi undefined lardan iborat bo'ladi."
+    "explanation": "`.forEach()` metodi har doim `undefined` qaytaradi. U massiv elementlarini shunchaki aylanib chiqish (tsikl) uchun mo'ljallangan va `.map()` kabi yangi massiv hosil qilmaydi."
   },
   {
     "id": 9,
-    "question": "`forEach` metodi haqida qaysi fikr noto'g'ri?",
+    "question": "`.filter()` metodining callback funksiyasi elementni natijaviy massivda saqlab qolish uchun qanday qiymat qaytarishi kerak?",
     "options": [
-      "U massiv elementlarini shunchaki aylanib chiqish uchun ishlatiladi",
-      "U har doim yangi o'zgartirilgan massiv qaytaradi",
-      "Uning ichida break yoki continue ishlatib bo'lmaydi",
-      "U undefined qaytaradi"
+      "Faqat `1` sonini",
+      "Truthy (rost) qiymat",
+      "Falsy (yolg'on) qiymat",
+      "Yangi massiv obyekti"
     ],
     "correctAnswer": 1,
-    "explanation": "`forEach` metodi yangi massiv qaytarmaydi (u har doim `undefined` qaytaradi). Yangi massiv olish uchun `map` ishlatilishi kerak."
+    "explanation": "`.filter()` callback funksiyasi har bir element uchun 'truthy' (yoki `true`) qiymat qaytarsa, o'sha element yangi massivga kiritiladi, aks holda (falsy yoki `false` bo'lsa) tashlab yuboriladi."
   },
   {
     "id": 10,
-    "question": "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconst arr = [1, 2, 3];\nconsole.log(arr.every(n => n > 0));\n```",
+    "question": "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconst numbers = [10, 5, 8];\nconst double = numbers.map(function(num) {\n  return num * this.factor;\n}, { factor: 2 });\nconsole.log(double);\n```",
     "options": [
-      "`true` (chunki barcha sonlar 0 dan katta)",
-      "`false`",
-      "`undefined`",
-      "`[1, 2, 3]`"
+      "`[20, 10, 16]`",
+      "`[NaN, NaN, NaN]`",
+      "`TypeError: Cannot read properties of undefined`",
+      "`[10, 5, 8]`"
     ],
     "correctAnswer": 0,
-    "explanation": "`every` metodi barcha elementlar shartga mos kelsa `true` qaytaradi. Massivdagi barcha elementlar (1, 2, 3) 0 dan katta bo'lgani uchun natija `true` bo'ladi."
+    "explanation": "Ko'pgina higher-order massiv metodlari (`map`, `filter`, `forEach` va h.k.) ikkinchi argument sifatida `thisArg`ni qabul qiladi. Biz bu yerda `{ factor: 2 }` obyektini uzatdik, shuning uchun callback ichidagi `this.factor` to'g'ri ishlab `2` ga ko'paytirildi."
   },
   {
     "id": 11,
-    "question": "Quyidagi kodda `total` qiymati qanday hisoblanadi?\n```javascript\nconst items = [{ price: 5 }, { price: 15 }];\nconst total = items.reduce((acc, curr) => acc + curr.price, 0);\n```",
+    "question": "Higher-order massiv metodlariga `thisArg` (ikkinchi argument) uzatishda arrow function (strelkali funksiya) ishlatishning qanday salbiy oqibati bor?",
     "options": [
-      "`20`",
-      "`[object Object]15`",
-      "`NaN`",
-      "`undefined`"
+      "Kodni sekinlashtiradi",
+      "Arrow funksiyalar o'zining shaxsiy `this` kontekstiga ega emas, shuning uchun `thisArg` inobatga olinmaydi va tashqi kontekstdagi `this` ishlatiladi",
+      "Sintaktik xato (`SyntaxError`) beradi",
+      "Hech qanday salbiy oqibati yo'q, mukammal ishlaydi"
     ],
-    "correctAnswer": 0,
-    "explanation": "Boshlang'ich qiymat 0 qilib ko'rsatilgan. Shunda 0 + 5 + 15 = 20 to'g'ri hisoblanadi."
+    "correctAnswer": 1,
+    "explanation": "Arrow funksiyalarda `this` leksik ravishda bog'lanadi (lexical binding). Ya'ni ular o'z `this`iga ega emas va `thisArg` argumentini mutlaqo inobatga olmaydi. Shuning uchun bunday holatlarda oddiy `function` kalit so'zidan foydalanish shart."
   },
   {
     "id": 12,
-    "question": "Original massivni o'zgartirmasdan saralash (sort qilish) uchun qaysi yondashuv to'g'ri?",
+    "question": "Qaysi massiv metodlari 'short-circuit evaluation' (natija aniq bo'lishi bilan zudlik bilan aylanishni to'xtatish) xususiyatiga ega?",
     "options": [
-      "`arr.sort()`",
-      "`const sorted = [...arr].sort((a, b) => a - b);`",
-      "`const sorted = arr.map().sort();`",
-      "`arr.filter().sort();`"
+      "Faqat `.map()` va `.filter()`",
+      "`.forEach()` va `.reduce()`",
+      "`.some()`, `.every()`, `.find()` va `.findIndex()`",
+      "Barcha yuqori tartibli metodlar oxirigacha aylanadi"
     ],
-    "correctAnswer": 1,
-    "explanation": "Spread `[...arr]` orqali massivdan yangi nusxa olinadi, so'ngra uning ustida `.sort` chaqiriladi. Bu original massiv o'zgarmasligini ta'minlaydi."
+    "correctAnswer": 2,
+    "explanation": "`.some()` bitta true topishi bilan, `.every()` bitta false topishi bilan, `.find()` va `.findIndex()` esa mos elementni topishi bilan tsiklni darhol to'xtatadi. Bu performance (samaradorlik) jihatidan juda foydalidir."
   }
 ]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Raqamga O'zgartirish (Explicit Conversion)",
+    "instruction": "Foydalanuvchidan olingan va turli xil ma'lumot turlarida kelishi mumkin bo'lgan qiymatni raqamga (Number) aniq o'zgartiruvchi `convertToNumber(value)` funksiyasini yozing. Agar qiymatni raqamga o'tkazishning iloji bo'lmasa yoki u `NaN` qaytarsa, funksiya `0` qiymatini qaytarsin.",
+    "startingCode": "function convertToNumber(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Number(value) funksiyasidan foydalaning va isNaN() yordamida uning NaN ekanligini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return convertToNumber;');\nconst fn = sandbox();\nif (fn('42') !== 42) return 'String ko\\'rinishidagi \"42\" raqamga o\\'girilmadi';\nif (fn('abc') !== 0) return 'Noto\\'g\\'ri matn berilganda 0 qaytishi kerak edi';\nif (fn(null) !== 0) return 'null berilganda 0 qaytishi kerak edi';\nif (fn(undefined) !== 0) return 'undefined berilganda 0 qaytishi kerak edi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Truthy yoki Falsy Tekshiruvchi",
+    "instruction": "JavaScriptda har qanday qiymat mantiqiy (boolean) kontekstda `true` yoki `false`ga aylanadi. Berilgan `value` qiymatini mantiqiy turga o'zgartirib, uning Truthy yoki Falsy ekanligini aniqlovchi `checkTruthy(value)` funksiyasini yozing. Funksiya faqat `true` yoki `false` boolean qiymatini qaytarishi lozim.",
+    "startingCode": "function checkTruthy(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Boolean(value) yoki !!value operatoridan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return checkTruthy;');\nconst fn = sandbox();\nif (fn('') !== false) return 'Bo\\'sh string uchun false qaytishi kerak';\nif (fn('hello') !== true) return 'Bo\\'sh bo\\'lmagan string uchun true qaytishi kerak';\nif (fn(0) !== false) return '0 raqami uchun false qaytishi kerak';\nif (fn(1) !== true) return '1 raqami uchun true qaytishi kerak';\nif (fn([]) !== true) return 'Bo\\'sh massiv uchun true qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Xavfsiz Qo'shish (Safe Sum)",
+    "instruction": "JavaScriptda `+` operatori matnlarni birlashtirib (concatenate) yuborishi mumkin. Ikki qiymatni qabul qilib, ularni raqamga aylantirib, so'ng qo'shish natijasini qaytaradigan `safeSum(a, b)` funksiyasini yozing. Agar berilgan qiymatlardan birontasi raqamga aylanmasa (NaN bo'lsa), o'sha qiymatni 0 deb hisoblang.",
+    "startingCode": "function safeSum(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Qiymatlarni Number() orqali o'tkazing va isNaN() orqali tekshirib, agar NaN bo'lsa 0 qiymatini bering.",
+    "test": "const sandbox = new Function(code + '; return safeSum;');\nconst fn = sandbox();\nif (fn('5', 10) !== 15) return '\"5\" va 10 yig\\'indisi 15 bo\\'lishi kerak';\nif (fn('abc', 8) !== 8) return 'Noto\\'g\\'ri qiymat o\\'rnige 0 olinib, natija 8 bo\\'lishi kerak';\nif (fn(null, undefined) !== 0) return 'null va undefined yig\\'indisi 0 bo\\'lishi kerak';\nif (fn('1.5', '2.5') !== 4) return '\"1.5\" va \"2.5\" yig\\'indisi 4 bo\\'lishi kerak';\nreturn null;"
+  }
+]

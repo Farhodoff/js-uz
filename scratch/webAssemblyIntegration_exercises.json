@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Wasm linear memory string encoder/decoder",
+    "instruction": "Wasm chiziqli xotirasini simulyatsiya qilib, berilgan `ArrayBuffer`ga berilgan `offset`dan boshlab UTF-8 satrini yozuvchi va o'quvchi ikkita funksiyani: `writeStringToMemory(buffer, offset, str)` (yozilgan baytlar sonini qaytaradi) va `readStringFromMemory(buffer, offset, length)` (o'qilgan satrni qaytaradi) yozing.",
+    "startingCode": "function writeStringToMemory(buffer, offset, str) {\n  // Kodni shu yerda yozing\n}\n\nfunction readStringFromMemory(buffer, offset, length) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "`TextEncoder` yordamida satrni baytlar massiviga o'giring, uni Uint8Array orqali `offset`dan boshlab buferga yozing. O'qishda `TextDecoder` ishlatib, buferning `offset`dan boshlab `length` uzunlikdagi qismini o'qing.",
+    "test": "if (typeof writeStringToMemory !== 'function') return 'writeStringToMemory funksiya bo\\'lishi kerak';\nif (typeof readStringFromMemory !== 'function') return 'readStringFromMemory funksiya bo\\'lishi kerak';\ntry {\n  const buffer = new ArrayBuffer(64);\n  const written = writeStringToMemory(buffer, 10, 'Hello Wasm');\n  if (written !== 10) return 'Hello Wasm 10 ta bayt yozishi kerak edi, lekin: ' + written;\n  const result = readStringFromMemory(buffer, 10, written);\n  if (result !== 'Hello Wasm') return 'O\\'qilgan string to\\'g\\'ri emas: ' + result;\n} catch (e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Atomics safe concurrent counter",
+    "instruction": "Bir vaqtda parallel oqimlarda xavfsiz sonni oshirish uchun `SharedArrayBuffer` va `Atomics` ishlatuvchi `safeIncrement(sharedArray, index)` funksiyasini yozing. U berilgan `sharedArray` (Int32Array) massivining `index` indeksidagi qiymatini atomik ravishda 1 taga oshirishi kerak.",
+    "startingCode": "function safeIncrement(sharedArray, index) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "`Atomics.add(sharedArray, index, 1)` metodidan foydalaning.",
+    "test": "if (typeof safeIncrement !== 'function') return 'safeIncrement funksiya bo\\'lishi kerak';\ntry {\n  const sab = new SharedArrayBuffer(16);\n  const sharedArray = new Int32Array(sab);\n  safeIncrement(sharedArray, 2);\n  safeIncrement(sharedArray, 2);\n  const val = Atomics.load(sharedArray, 2);\n  if (val !== 2) return 'Qiymat 2 bo\\'lishi kerak edi, lekin: ' + val;\n} catch (e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Wasm magic signature verification",
+    "instruction": "Berilgan `ArrayBuffer` tarkibidagi birinchi 4 baytni tekshirib, u WebAssembly faylining sehrli imzosi (magic bytes: `\\0asm` yoki hex ko'rinishida `0x00, 0x61, 0x73, 0x6d`) ekanligini tasdiqlovchi `verifyWasmSignature(buffer)` funksiyasini yozing. Agar imzo to'g'ri bo'lsa `true`, aks holda `false` qaytarsin. Agar bufer 4 baytdan kichik bo'lsa ham `false` qaytarsin.",
+    "startingCode": "function verifyWasmSignature(buffer) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "`Uint8Array` yarating va birinchi 4 ta bayt: `[0x00, 0x61, 0x73, 0x6d]` ga tengligini tekshiring.",
+    "test": "if (typeof verifyWasmSignature !== 'function') return 'verifyWasmSignature funksiya bo\\'lishi kerak';\ntry {\n  const wasmHeader = new Uint8Array([0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00]).buffer;\n  const badHeader = new Uint8Array([0x11, 0x22, 0x33, 0x44]).buffer;\n  const shortHeader = new Uint8Array([0x00, 0x61]).buffer;\n  if (verifyWasmSignature(wasmHeader) !== true) return 'To\\'g\\'ri Wasm sarlavhasi rad etildi';\n  if (verifyWasmSignature(badHeader) !== false) return 'Noto\\'g\\'ri Wasm sarlavhasi qabul qilindi';\n  if (verifyWasmSignature(shortHeader) !== false) return 'Kalta sarlavha rad etilishi kerak edi';\n} catch (e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  }
+]

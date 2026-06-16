@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Vertikal masshtablash (Vertical Scaling) deganda nima tushuniladi?",
+    "options": [
+      "Yangi serverlar qo'shish orqali bazani kengaytirish",
+      "Mavjud bitta serverning resurslarini (CPU, RAM, SSD) kuchaytirish",
+      "Ma'lumotlarni turli xil jadvallarga bo'lish",
+      "Bazani o'chirish va qaytadan yuklash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Vertikal masshtablash (Scale Up) bitta serverning texnik quvvatini oshirishni anglatadi."
+  },
+  {
+    "id": 2,
+    "question": "Nima uchun Gorizontal masshtablash (Horizontal Scaling) vertikal masshtablashga qaraganda afzalroq hisoblanadi?",
+    "options": [
+      "Chunki uni sozlash ancha oson",
+      "Chunki u ma'lumotlarni faqat bitta faylda saqlaydi",
+      "Chunki u fizik resurslar chegarasini yengib, tizimni deyarli cheksiz kengaytirish imkonini beradi",
+      "Chunki u SQL bazalarda tranzaksiyani talab qilmaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Gorizontal masshtablash yangi serverlarni qo'shish hisobiga jismoniy chegaralarni aylanib o'tadi va cheksiz o'sish imkoniyatini beradi."
+  },
+  {
+    "id": 3,
+    "question": "Master-Slave replikatsiyasining asosiy afzalligi nimada?",
+    "options": [
+      "O'qish yuklamasini Slave-lar o'rtasida taqsimlash va xatoga chidamlilikni oshirish",
+      "Ma'lumotlar bazasida JOIN operatsiyasini tezlashtirish",
+      "Sxemasiz (NoSQL) ma'lumotlarni saqlash",
+      "Foydalanuvchi parolini shifrlash"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Replikatsiya yordamida o'qish so'rovlari Slave-larga tarqatiladi va Master buzilsa, Slave-dan ma'lumotlarni tiklash mumkin."
+  },
+  {
+    "id": 4,
+    "question": "Replication Lag nima?",
+    "options": [
+      "Baza routerining ishdan chiqishi",
+      "Master-ga yozilgan ma'lumotning Slave-ga sinxronlashib yetib borishidagi kechikish vaqti",
+      "Tarmoqdagi umumiy uzilish vaqti",
+      "Tranzaksiyani bekor qilish (Rollback) tezligi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Asinxron replikatsiyada Master-ga yozilgan ma'lumotning Slave replica-larga yetib borishi bir oz vaqt (millisoniyalar/soniyalar) oladi, bu replication lag deyiladi."
+  },
+  {
+    "id": 5,
+    "question": "Database Partitioning va Database Sharding farqi nimada?",
+    "options": [
+      "Partitioning faqat NoSQL-da, Sharding faqat SQL-da ishlatiladi",
+      "Partitioning bitta serverda jadvallarni bo'laklaydi, Sharding esa bo'lingan qismlarni har xil jismoniy serverlarga joylashtiradi",
+      "Hech qanday farqi yo'q, ikkalasi bir xil narsa",
+      "Partitioning o'qish tezligini, Sharding faqat yozish tezligini oshiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Partitioning bitta bazada jadvallarni mantiqiy bo'lish bo'lsa, Sharding ularni turli xil serverlar o'rtasida taqsimlashdir."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagilardan qaysi biri Sharding-da 'Hotspot' muammosini keltirib chiqaradi?",
+    "options": [
+      "Ma'lumotlarning barcha shard serverlariga teng taqsimlanishi",
+      "Noto'g'ri tanlangan shard kaliti tufayli ko'plab so'rovlarning faqat bitta shard serveriga borishi",
+      "Serverlardagi RAM hajmining juda yuqoriligi",
+      "Consistent hashing-dan foydalanish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Hotspot — noto'g'ri shard kaliti (masalan, faol bo'lmagan ustun yoki teng taqsimlanmaydigan maydon) tanlanganda bitta serverga og'irlik tushib qolishidir."
+  },
+  {
+    "id": 7,
+    "question": "Consistent Hashing sharding tizimlarida qanday muammoni hal qiladi?",
+    "options": [
+      "Tranzaksiyalarni avtomatik tasdiqlash",
+      "Yangi shard qo'shilganda yoki o'chirilganda, minimal miqdordagi kalitlarni qayta taqsimlash",
+      "Ma'lumotlar bazasini to'liq formatlash",
+      "SQL injection hujumlarining oldini olish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Consistent Hashing yordamida serverlar o'zgarganda faqat ma'lumotlarning ozgina qismi boshqa serverga ko'chiriladi, oddiy qoldiqli bo'lish (modulo) esa hammasini ko'chirishga majbur qiladi."
+  },
+  {
+    "id": 8,
+    "question": "Two-Phase Commit (2PC) protokolining tayyorlanish (Prepare) bosqichida nima yuz beradi?",
+    "options": [
+      "Barcha ishtirokchilar ma'lumotlarni o'chirib yuboradi",
+      "Koordinator ishtirokchilardan tranzaksiyani bajarishga tayyorligini so'raydi va ulardan ovoz yig'adi",
+      "Tranzaksiya to'liq yakunlanib, foydalanuvchiga javob qaytariladi",
+      "Faqat bitta serverda o'zgarish tasdiqlanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Prepare bosqichida koordinator barcha tugunlardan tranzaksiyaga yozishga tayyor yoki yo'qligi haqida so'rov yuborib ovoz to'playdi."
+  },
+  {
+    "id": 9,
+    "question": "2PC protokolining eng katta kamchiliklaridan biri nima?",
+    "options": [
+      "Faqat bitta serverda ishlashi",
+      "Agar koordinator tayyorlanishdan keyin o'chib qolsa, ishtirokchi serverlarning bloklanib qolishi (blocking protocol)",
+      "Tranzaksiyalarning tezligi juda yuqoriligi",
+      "Hech qanday ma'lumot xavfsizligini ta'minlamasligi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "2PC bloklanuvchi protokol hisoblanadi. Agar koordinator ovoz berilgandan keyin qulasa, ishtirokchilar noma'lum muddatga resurslarni qulflab turadi."
+  },
+  {
+    "id": 10,
+    "question": "3PC (Three-Phase Commit) Two-Phase Commit-dan qanday farq qiladi?",
+    "options": [
+      "Undan tezroq ishlaydi",
+      "Unda master server umuman bo'lmaydi",
+      "U oraliq 'Pre-Commit' bosqichi va taym-autlarni qo'shib, bloklanish muammolarini kamaytiradi",
+      "U faqat NoSQL bazalarda ishlaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "3PC protokoli bloklanishga qarshi kurashish uchun oraliq Pre-Commit bosqichini va tugunlar uchun kutish vaqti (timeout) mexanizmini kiritadi."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun sharding qilingan tizimlarda JOIN so'rovlari tavsiya etilmaydi?",
+    "options": [
+      "Chunki SQL bazalar JOIN-ni umuman qo'llamaydi",
+      "Chunki ma'lumotlar turli serverlarda bo'lgani sababli tarmoq orqali ularni birlashtirish juda sekin va samarasiz",
+      "Chunki JOIN faqat bitta foydalanuvchiga ruxsat beradi",
+      "Chunki JOIN ma'lumotlarni o'chirib yuboradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Cross-shard join — ma'lumotlarni tarmoq orqali har xil serverlardan olib kelib birlashtirishni talab qiladi, bu juda ko'p vaqt va resurs oladi."
+  },
+  {
+    "id": 12,
+    "question": "Eventual Consistency (Oxir-oqibat moslik) nima degani?",
+    "options": [
+      "Ma'lumotlar hech qachon bir xil holatga kelmaydi",
+      "Tizimda ma'lumot yangilangandan so'ng, barcha nusxalar darhol emas, ma'lum vaqt o'tgach bir xil bo'ladi",
+      "Faqat bitta foydalanuvchi ma'lumotni ko'ra oladi",
+      "Tranzaksiyalar mutlaqo asinxron tarzda butunlay bekor bo'ladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bu replikatsiyadagi o'zgarishlar barcha tugunlarga bir zumda emas, balki bir oz vaqt o'tgach sinxronlanishini bildiradi."
+  }
+]

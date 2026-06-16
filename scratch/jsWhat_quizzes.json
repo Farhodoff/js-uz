@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript nima?",
+    "options": [
+      "Faqat ma'lumotlar bazasini boshqarish uchun ishlatiladigan server tili",
+      "Veb-sahifalarga interaktivlik va dinamik xatti-harakatlar qo'shish uchun ishlatiladigan dasturlash tili",
+      "Faqat sahifaning dizayni va ranglarini sozlash uchun ishlatiladigan uslublar jadvali",
+      "Brauzer o'rnatish dasturi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript — bu veb-sahifalarga jon kirituvchi, ularni interaktiv va dinamik qiluvchi asosiy dasturlash tilidir."
+  },
+  {
+    "id": 2,
+    "question": "HTML, CSS va JavaScript o'rtasidagi bog'liqlikni qaysi analogiya eng yaxshi tushuntiradi?",
+    "options": [
+      "HTML — kiyim, CSS — miya, JavaScript — suyak karkasi",
+      "HTML — suyak karkasi (struktura), CSS — tashqi ko'rinish (kiyim/chiroy), JavaScript — miya va muskullar (harakat/interaktivlik)",
+      "HTML — dvigatel, CSS — yoqilg'i, JavaScript — g'ildiraklar",
+      "Ular o'rtasida hech qanday bog'liqlik yo'q va alohida ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "HTML sahifaning tuzilishini (suyagini) yaratadi, CSS unga chiroy (kiyim) beradi, JavaScript esa sahifani harakatga keltiradi va miya kabi muloqotni boshqaradi."
+  },
+  {
+    "id": 3,
+    "question": "JavaScript-ni veb-sahifaga ulash uchun qaysi tegdan foydalaniladi?",
+    "options": [
+      "<style>",
+      "<link>",
+      "<script>",
+      "<javascript>"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Tashqi yoki ichki JavaScript kodlarini HTML sahifaga ulash uchun <script> tegi ishlatiladi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi yuklash usullaridan qaysi biri HTML to'liq yuklangandan keyingina skriptni bajaradi, lekin skriptni parallel ravishda yuklaydi?",
+    "options": [
+      "<script> (oddiy yuklash)",
+      "<script async>",
+      "<script defer>",
+      "<script inline>"
+    ],
+    "correctAnswer": 2,
+    "explanation": "defer atributi skriptni fonda yuklaydi va faqatgina butun HTML hujjat (DOM daraxti) to'liq tahlil qilinib bo'lingach ishga tushiradi."
+  },
+  {
+    "id": 5,
+    "question": "JavaScript tilini dastlab kim va qancha vaqtda yaratgan?",
+    "options": [
+      "Brendan Eich tomonidan 10 kunda yaratilgan",
+      "James Gosling tomonidan 1 yilda yaratilgan",
+      "Guido van Rossum tomonidan 3 oyda yaratilgan",
+      "Dennis Ritchie tomonidan 5 yilda yaratilgan"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JavaScript tili 1995-yilda Netscape kompaniyasida Brendan Eich tomonidan atigi 10 kun ichida yaratilgan."
+  },
+  {
+    "id": 6,
+    "question": "JavaScript-da qiymati keyinchalik o'zgarmaydigan o'zgaruvchini (konstanta) e'lon qilish uchun qaysi kalit so'z ishlatiladi?",
+    "options": [
+      "let",
+      "var",
+      "const",
+      "static"
+    ],
+    "correctAnswer": 2,
+    "explanation": "const (constant) kalit so'zi qiymati o'zgarmaydigan, faqat o'qish uchun mo'ljallangan o'zgaruvchilarni e'lon qilishda ishlatiladi."
+  },
+  {
+    "id": 7,
+    "question": "JavaScript-da ma'lumot turlarini aniqlash uchun qaysi operatordan foydalaniladi?",
+    "options": [
+      "typeof",
+      "instanceof",
+      "typeOf",
+      "checkType"
+    ],
+    "correctAnswer": 0,
+    "explanation": "typeof operatori uzatilgan qiymat yoki o'zgaruvchining ma'lumot turini (masalan: 'string', 'number', 'boolean') matn ko'rinishida qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "JavaScript dynamic (dinamik) yoki static (statik) tiplashga ega tilmi?",
+    "options": [
+      "Statik tiplashga ega, o'zgaruvchi turini oldindan e'lon qilish shart",
+      "Dinamik tiplashga ega, o'zgaruvchining turi unga yuklangan qiymatga qarab o'zgarishi mumkin",
+      "Tiplar umuman mavjud emas",
+      "Faqat obyektlar va massivlar bilan ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript dinamik tiplangan tildir (dynamically typed). Bu degani o'zgaruvchi yaratilayotganda uning turi ko'rsatilmaydi, balki uning ichidagi qiymat o'zgarishi bilan turi ham o'zgarishi mumkin."
+  },
+  {
+    "id": 9,
+    "question": "JavaScript brauzerda qanday bajariladi (under the hood)?",
+    "options": [
+      "Faqat HTML kodi kabi bevosita o'qiladi, kompilyatsiya qilinmaydi",
+      "JIT (Just-In-Time) kompilyatori yordamida mashina kodiga o'girilib, tezkor ishga tushiriladi",
+      "Faqat serverga yuborilib, u yerda bajariladi",
+      "Maxsus Java virtual mashinasida (JVM) ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Brauzerdagi JavaScript dvigatellari (masalan, Google Chrome-dagi V8) kodni JIT (Just-In-Time) kompilyatsiyasi yordamida tezkorlik bilan bayt-kodga va mashina kodiga o'tkazib bajaradi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(typeof null);\n```",
+    "options": [
+      "'null'",
+      "'undefined'",
+      "'object'",
+      "'error'"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Tarixiy xatolik (bug) tufayli JavaScript-da typeof null ning natijasi 'object' deb qaytadi, garchi null o'ziga xos alohida ibtidoiy tur bo'lsa ham."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun <script> tegini defer yoki asyncsiz sahifaning eng tepasiga (<head> ichiga) joylashtirish tavsiya etilmaydi?",
+    "options": [
+      "Skript ishlamay qoladi va xato beradi",
+      "Skript sahifa yuklanishini bloklab qo'yadi va DOM elementlari hali yaratilmasdan skript bajarilib, DOM manipulyatsiyasida xatolar keltirib chiqaradi",
+      "Brauzer xavfsizlik nuqtai nazaridan uni taqiqlaydi",
+      "Bu sahifaning ranglarini o'chirib yuboradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Sukut bo'yicha skript HTML tahlilini to'xtatadi (bloklaydi). Agar u tepada bo'lsa, foydalanuvchi sahifani ko'rishi kechikadi va skript pastdagi elementlarni topa olmaydi."
+  },
+  {
+    "id": 12,
+    "question": "ECMA nima va ECMAScript nima uchun kerak?",
+    "options": [
+      "Bu JavaScript-ning yangi raqobatchisi bo'lgan boshqa bir til",
+      "Bu JavaScript tilining standartlashtirilgan spetsifikatsiyasi (qoidalari to'plami) bo'leg, uning turli brauzerlarda bir xil ishlashini ta'minlaydi",
+      "Bu ma'lumotlar bazasini boshqaruvchi dastur",
+      "Faqat animatsiyalar yaratish uchun standart"
+    ],
+    "correctAnswer": 1,
+    "explanation": "ECMAScript — bu standart bo'lib, JavaScript tili shu standart qoidalari asosida rivojlanadi va barcha brauzerlar unga amal qilishga harakat qiladi."
+  }
+]

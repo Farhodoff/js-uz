@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "1️⃣ Xavfsiz Blokirovkani Bo'shatish (Safe Lock Release)",
+    "instruction": "Blokirovkani boshqa klientlar o'chirib yubormasligi uchun token tekshiruvi orqali o'chiruvchi `releaseLock(store, key, token)` funksiyasini yozing. `store` obyekti `get(key)` va `delete(key)` metodlariga ega bo'lgan Map simulyatsiyasidir. Agar keshdagi token parametrda kelgan token bilan mos kelsa, kalitni o'chiring va `true` qaytaring. Mos kelmasa yoki kalit mavjud bo'lmasa, `false` qaytaring.",
+    "startingCode": "function releaseLock(store, key, token) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "store.get(key) orqali keshdagi tokenni oling. U token bilan teng bo'lsa, store.delete(key) metodini chaqiring va true qaytaring. Aks holda false qaytaring.",
+    "test": "if (typeof releaseLock !== 'function') return 'releaseLock funksiya emas';\nconst store = new Map();\nstore.set('lock_1', 'token_abc');\nif (releaseLock(store, 'lock_1', 'token_wrong') !== false) return 'Noto\\'g\\'ri token bilan blokirovka o\\'chirilmasligi kerak';\nif (store.get('lock_1') !== 'token_abc') return 'Noto\\'g\\'ri token chaqirilganda blokirovka saqlanib qolishi kerak';\nif (releaseLock(store, 'lock_1', 'token_abc') !== true) return 'To\\'g\\'ri token bilan true qaytishi kerak';\nif (store.has('lock_1')) return 'To\\'g\\'ri token bilan blokirovka o\\'chirilishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "2️⃣ Fencing Token yordamida Bazani Himoyalash",
+    "instruction": "Kechikkan yoki muddati o'tgan blokirovkali klientlarning bazaga yozishini oldini olish uchun `processWriteWithFencing(db, token, value)` funksiyasini yozing. `db` obyekti `{ lastToken: 0, value: '' }` tuzilishiga ega. Yangi kelgan `token` (monoton o'suvchi raqam) `db.lastToken` dan qat'iy katta bo'lsagina bazani yangilang va `true` qaytaring. Aks holda rad eting va `false` qaytaring.",
+    "startingCode": "function processWriteWithFencing(db, token, value) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "If (token > db.lastToken) shartini tekshiring. Shart bajarilsa, db.value = value va db.lastToken = token qilib true qaytaring.",
+    "test": "if (typeof processWriteWithFencing !== 'function') return 'processWriteWithFencing funksiya emas';\nconst db = { lastToken: 10, value: 'eski' };\nif (processWriteWithFencing(db, 9, 'yangi_9') !== false) return 'Kichik tokenli so\\'rov rad etilishi kerak';\nif (db.value !== 'eski') return 'Rad etilgan so\\'rov bazani o\\'zgartirmasligi kerak';\nif (processWriteWithFencing(db, 10, 'yangi_10') !== false) return 'Teng tokenli so\\'rov rad etilishi kerak';\nif (processWriteWithFencing(db, 11, 'yangi_11') !== true) return 'Katta tokenli so\\'rov qabul qilinishi kerak';\nif (db.value !== 'yangi_11' || db.lastToken !== 11) return 'Qabul qilingan so\\'rov bazani yangilashi lozim';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "3️⃣ Redlock Quorum Tekshiruvi (Redlock Consensus)",
+    "instruction": "Bir nechta Redis tugunlariga ega tizimda blokirovka olinishini simulyatsiya qiluvchi asinxron `acquireRedlockQuorum(nodes, key, token)` funksiyasini yozing. `nodes` - bu har birida `set(key, token)` (muvaffaqiyatli bo'lsa `true`, aks holda `false` qaytaradigan asinxron metod) va `delete(key)` (asinxron metod) bo'lgan tugunlar massividir. Blokirovka ko'pchilik (majority, ya'ni nodes.length / 2 dan ko'p) tugunlarda muvaffaqiyatli o'rnatilsagina `true` qaytaring. Ko'pchilik ovoz bo'lmasa, barcha tugunlardagi blokirovkani o'chirib yuboring (rollback/delete) va `false` qaytaring.",
+    "startingCode": "async function acquireRedlockQuorum(nodes, key, token) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Har bir node uchun await node.set(key, token) chaqiring va muvaffaqiyatlarni hisoblang. Agar muvaffaqiyatlar soni > nodes.length / 2 bo'lsa true qaytaring. Aks holda, barcha nodelar uchun parallel ravishda await node.delete(key) chaqiring va false qaytaring.",
+    "test": "if (typeof acquireRedlockQuorum !== 'function') return 'acquireRedlockQuorum funksiya emas';\nconst createMockNode = (success) => ({\n  active: false,\n  set: async function(k, v) { if (success) { this.active = true; return true; } return false; },\n  delete: async function(k) { this.active = false; }\n});\nconst nodesSuccess = [createMockNode(true), createMockNode(true), createMockNode(false)];\nreturn acquireRedlockQuorum(nodesSuccess, 'lock_test', 'tok_123').then(res1 => {\n  if (res1 !== true) return 'Ko\\'pchilik (2/3) muvaffaqiyatli bo\\'lganda true qaytishi kerak';\n  const nodesFail = [createMockNode(true), createMockNode(false), createMockNode(false)];\n  return acquireRedlockQuorum(nodesFail, 'lock_test', 'tok_123').then(res2 => {\n    if (res2 !== false) return 'Ko\\'pchilik bo\\'lmaganda (1/3) false qaytishi kerak';\n    if (nodesFail[0].active) return 'Muvaffaqiyatsiz urinishdan keyin o\\'rnatilgan blokirovkalar o\\'chirilishi (rollback) lozim';\n    return null;\n  });\n});"
+  }
+]

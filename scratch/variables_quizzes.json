@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da var, let va const o'zgaruvchilarining qaysilari blok doirasiga (block scope) ega?",
+    "options": [
+      "var va let",
+      "Faqat var",
+      "let va const",
+      "Barchasi (var, let, const)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "let va const kalit so'zlari blok doirasiga (block scope) ega, ya'ni ular e'lon qilingan jingalak qavslar ({}) ichidagina amal qiladi. var esa funksiya doirasiga (function scope) ega."
+  },
+  {
+    "id": 2,
+    "question": "var orqali e'lon qilingan o'zgaruvchi bilan bog'liq qaysi holat let va const da xatolikka (SyntaxError) olib keladi?",
+    "options": [
+      "O'zgaruvchini funksiya ichida ishlatish",
+      "Bir xil nomdagi o'zgaruvchini ayni bir doirada (scope) qayta e'lon qilish (redeclaration)",
+      "O'zgaruvchiga yangi qiymat yuklash (reassignment)",
+      "O'zgaruvchini global obyektga biriktirish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "var bilan bir xil nomli o'zgaruvchini bitta doirada qayta-qayta e'lon qilish mumkin (masalan: var a = 1; var a = 2;). Ammo let yoki const bilan buni amalga oshirish 'Identifier has already been declared' SyntaxError xatosini beradi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(a);\nvar a = 5;\n```",
+    "options": [
+      "5",
+      "ReferenceError: a is not defined",
+      "undefined",
+      "null"
+    ],
+    "correctAnswer": 2,
+    "explanation": "var o'zgaruvchilari hoisting (tepaga ko'tarilish) xususiyatiga ega. Ularning e'lon qilinishi (declaration) tepaga ko'tariladi, ammo qiymat berilishi (initialization) o'z joyida qoladi. Shuning uchun deklaratsiyadan oldin ularning qiymati undefined bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilganda nima yuz beradi?\n```javascript\nconsole.log(b);\nlet b = 10;\n```",
+    "options": [
+      "undefined chiqadi",
+      "ReferenceError: Cannot access 'b' before initialization xatoligi yuz beradi",
+      "10 chiqadi",
+      "null chiqadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "let va const o'zgaruvchilari ham hoisting bo'ladi, lekin ular e'lon qilinmaguncha TDZ (Temporal Dead Zone - Vaqtinchalik o'lik hudud) da qoladi. Ularga e'lon qilinishidan oldin murojaat qilish ReferenceError xatosini beradi."
+  },
+  {
+    "id": 5,
+    "question": "const yordamida e'lon qilingan o'zgaruvchilar haqida qaysi tasdiq to'g'ri?",
+    "options": [
+      "Ularni e'lon qilishda qiymat berish majburiy emas",
+      "Ularning qiymatini keyinchalik butunlay qayta tayinlab (reassign) bo'lmaydi va e'lon qilinayotganda boshlang'ich qiymat berish shart",
+      "Ularning qiymati mutlaqo o'zgarmas bo'lib, ichidagi obyekt xususiyatlarini ham o'zgartirib bo'lmaydi",
+      "Ular faqat sonlar va satrlar (primitivlar) uchun ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "const o'zgaruvchisiga boshqa qiymatni qayta tenglashtirib bo'lmaydi (reassignment taqiqlangan) va uni yaratishda boshlang'ich qiymat yozilishi shart. Biroq, agar u obyekt yoki massiv bo'lsa, uning ichki elementlarini o'zgartirish (mutatsiya) mumkin."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst obj = { name: \"Anvar\" };\nobj.name = \"Dilshod\";\nconsole.log(obj.name);\n```",
+    "options": [
+      "TypeError: Assignment to constant variable",
+      "Anvar",
+      "Dilshod",
+      "undefined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "const faqat o'zgaruvchining xotiradagi havolasini (reference) o'zgarmas qiladi. Obyektning ichidagi xususiyatni o'zgartirish (mutatsiya) mumkin, shuning uchun obj.name qiymati 'Dilshod' ga muvaffaqiyatli o'zgaradi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kod bajarilganda nima sodir bo'ladi?\n```javascript\nconst numbers = [1, 2, 3];\nnumbers = [4, 5, 6];\nconsole.log(numbers);\n```",
+    "options": [
+      "[4, 5, 6]",
+      "[1, 2, 3]",
+      "TypeError: Assignment to constant variable",
+      "undefined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "const orqali yaratilgan massivga yangi massiv havolasini qayta tayinlash (reassign) xatolik beradi. Massivga element qo'shish (push) mumkin, lekin yangi massivga tenglab bo'lmaydi."
+  },
+  {
+    "id": 8,
+    "question": "Temporal Dead Zone (Vaqtinchalik o'lik hudud) nima?",
+    "options": [
+      "Funksiya ichidagi barcha o'zgaruvchilar o'chib ketadigan xotira qismi",
+      "Brauzer sahifasi yopilgandagi vaqt oralig'i",
+      "Blok doirasi boshlangan joydan to o'zgaruvchi (let/const) amalda e'lon qilingan qatorgacha bo'lgan, o'zgaruvchiga murojaat qilib bo'lmaydigan kod hududi",
+      "setTimeout funksiyasi kutadigan millisekundlar oralig'i"
+    ],
+    "correctAnswer": 2,
+    "explanation": "TDZ — kod blokining boshlanishidan boshlab, o'zgaruvchi let yoki const kalit so'zi bilan e'lon qilinadigan qatorgacha bo'lgan kod qismidir. Bu hududda o'zgaruvchiga kirish ReferenceError xatosiga sabab bo'ladi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet x = 1;\n{\n  let x = 2;\n  console.log(x);\n}\nconsole.log(x);\n```",
+    "options": [
+      "2 va 2",
+      "1 va 2",
+      "2 va 1",
+      "1 va 1"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Blok ichidagi let x = 2 faqat o'sha blok ichida amal qiladi va tashqi x ni soyalaydi (shadowing). Blok tugagach, tashqi let x = 1 o'z kuchida qoladi. Shuning uchun natija 2 va 1 bo'ladi."
+  },
+  {
+    "id": 10,
+    "question": "Global doirada (window yoki global) var va let o'rtasidagi farq nimada?",
+    "options": [
+      "Ikkala o'zgaruvchi ham global window obyektining xususiyatiga aylanadi",
+      "var orqali e'lon qilingan o'zgaruvchi window obyektiga birikadi, let esa window obyektiga birikmaydi",
+      "let orqali e'lon qilingan o'zgaruvchi window obyektiga birikadi, var esa birikmaydi",
+      "Ikkalasi ham window obyektiga biriktirilmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Global doirada (eng yuqori qismda) var orqali e'lon qilingan o'zgaruvchilar global obyektga (masalan, brauzerda window) xususiyat bo'lib qo'shiladi. let va const esa global doirada e'lon qilinsa-da, window obyektida ko'rinmaydi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod ishga tushirilganda konsolda nima ko'rinadi?\n```javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n```",
+    "options": [
+      "0, 1, 2",
+      "3, 3, 3",
+      "2, 2, 2",
+      "undefined, undefined, undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "var funksiya doirasiga (yoki global doiraga) ega bo'lgani uchun butun for sikli uchun faqat bitta 'i' o'zgaruvchisi mavjud bo'ladi. setTimeout callbacks bajarilganda sikl allaqachon tugab, i = 3 bo'lib qolgan. let ishlatilganda esa har bir qadam uchun alohida i o'zgaruvchisi yaratilib, 0, 1, 2 chiqardi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nfunction test() {\n  if (true) {\n    var a = \"olma\";\n    let b = \"anor\";\n  }\n  console.log(a);\n  console.log(b);\n}\ntest();\n```",
+    "options": [
+      "'olma' chiqadi, so'ngra ReferenceError: b is not defined xatosi yuz beradi",
+      "'olma' va 'anor' chiqadi",
+      "ReferenceError: a is not defined xatosi yuz beradi",
+      "'anor' chiqadi, so'ngra ReferenceError: a is not defined xatosi yuz beradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "var a funksiya doirasiga (function scope) ega bo'lib, if blokidan tashqarida ham ko'rinadi, shuning uchun 'olma' muvaffaqiyatli chiqadi. let b esa blok doirasiga (block scope) ega bo'lgani uchun if blokidan tashqarida ko'rinmaydi va ReferenceError xatosini beradi."
+  }
+]

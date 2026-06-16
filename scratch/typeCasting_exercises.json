@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Stringni songa o'tkazish va tekshirish",
+    "instruction": "Foydalanuvchidan yosh qiymati ko'rinishida olinadigan stringni butun songa o'tkazuvchi `parseAge(ageStr)` funksiyasini yozing. Buning uchun `parseInt` funksiyasidan foydalaning va har doim 10 lik sanoq tizimini (radix) ko'rsating. Agar o'tkazish natijasi `NaN` bo'lsa yoki olingan son 0 dan kichik bo'lsa, funksiya `null` qaytarishi kerak. Aks holda o'tkazilgan sonni qaytarsin.",
+    "startingCode": "function parseAge(ageStr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "parseInt(ageStr, 10) yordamida o'tkazing, so'ngra Number.isNaN() va yoshni tekshiring.",
+    "test": "const sandbox = new Function(code + '; return parseAge;');\nconst fn = sandbox();\nif (fn('25') !== 25) return 'parseAge(\"25\") 25 qaytarishi kerak';\nif (fn('abc') !== null) return 'parseAge(\"abc\") null qaytarishi kerak';\nif (fn('-5') !== null) return 'parseAge(\"-5\") null qaytarishi kerak';\nif (fn('30px') !== 30) return 'parseAge(\"30px\") 30 qaytarishi kerak';\nif (!code.includes('10')) return 'parseInt funksiyasida radix (10) ko\\'rsatilmagan';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Qiymatlarni boolean tipiga o'tkazish",
+    "instruction": "Istalgan qiymatni qabul qilib, uni Boolean tipiga yaqqol o'tkazuvchi `convertToBoolean(val)` funksiyasini yozing. Ammo, maxsus qoida sifatida, agar qiymat string ko'rinishidagi 'false' yoki '0' bo'lsa, funksiya `false` qaytarishi kerak. Boshqa barcha holatlarda standart Boolean conversion qoidalariga amal qiling.",
+    "startingCode": "function convertToBoolean(val) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Avval qiymat 'false' yoki '0' stringlariga tengligini tekshiring, keyin Boolean(val) orqali qaytaring.",
+    "test": "const sandbox = new Function(code + '; return convertToBoolean;');\nconst fn = sandbox();\nif (fn('false') !== false) return 'convertToBoolean(\"false\") false qaytarishi kerak';\nif (fn('0') !== false) return 'convertToBoolean(\"0\") false qaytarishi kerak';\nif (fn('') !== false) return 'convertToBoolean(\"\") false qaytarishi kerak';\nif (fn(0) !== false) return 'convertToBoolean(0) false qaytarishi kerak';\nif (fn('true') !== true) return 'convertToBoolean(\"true\") true qaytarishi kerak';\nif (fn(123) !== true) return 'convertToBoolean(123) true qaytarishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Moliyaviy qiymatlarni tozalash va parse qilish",
+    "instruction": "Valyuta belgilari yoki boshqa matnlar aralashgan stringni qabul qiluvchi `parsePrice(priceStr)` funksiyasini yozing. Funksiya string ichidagi raqam va nuqta bo'lmagan barcha belgilarni o'chirib tashlashi, so'ngra qolgan qismni `parseFloat` orqali songa o'tkazishi kerak. Agar natijada yaroqli son hosil bo'lmasa yoki `NaN` bo'lsa, `0` qaytarilsin. Masalan: '$120.50' -> 120.5, '99.99 USD' -> 99.99, 'USD' -> 0.",
+    "startingCode": "function parsePrice(priceStr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "priceStr.replace(/[^0-9.]/g, '') yordamida stringni tozalang va parseFloat qiling. So'ng isNaN ekanini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return parsePrice;');\nconst fn = sandbox();\nif (fn('$120.50') !== 120.5) return 'parsePrice(\"$120.50\") 120.5 qaytarishi kerak';\nif (fn('99.99 USD') !== 99.99) return 'parsePrice(\"99.99 USD\") 99.99 qaytarishi kerak';\nif (fn('USD') !== 0) return 'parsePrice(\"USD\") 0 qaytarishi kerak';\nif (fn('15000') !== 15000) return 'parsePrice(\"15000\") 15000 qaytarishi kerak';\nreturn null;"
+  }
+]

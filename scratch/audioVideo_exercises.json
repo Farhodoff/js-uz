@@ -1,26 +1,26 @@
 [
   {
     "id": 1,
-    "title": "Mediani Ijro Etish",
-    "instruction": "Taqdim etilgan 'video' elementini dasturiy ravishda ishga tushiring (play qiling).",
-    "startingCode": "const video = document.createElement('video');\n\n// Kodni shu yerda yozing\n",
-    "hint": "video.play();",
-    "test": "if (!code.includes('play()')) return 'video.play() chaqirilmadi';\nreturn null;"
+    "title": "Mediani boshqarish (play, pause, stop)",
+    "instruction": "HTMLMediaElement elementini qabul qilib, 'action' parametridan kelib chiqib harakat qiladigan `controlPlayback(mediaElement, action)` funksiyasini yozing. 'play' bo'lganda `.play()`ni chaqirib, Promise rad etilishini `.catch(err => {})` orqali boshqaring. 'pause' bo'lganda `.pause()`ni chaqiring. 'stop' bo'lganda esa `.pause()`ni chaqiring va `currentTime`ni `0` ga tushiring.",
+    "startingCode": "function controlPlayback(mediaElement, action) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Shartlarni tekshirish uchun if-else yoki switch foydalaning. .play() va'dasini (.catch()) tekshirishni unutmang. stop bo'lsa currentTime = 0 bo'lishi kerak.",
+    "test": "if (!code.includes('currentTime = 0') && !code.includes('currentTime=0')) return 'stop bo\\'lsa currentTime 0 ga tushirilishi kerak';\ntry {\n  let actions = [];\n  const mockMedia = {\n    play: () => { actions.push('play'); return Promise.resolve(); },\n    pause: () => { actions.push('pause'); },\n    currentTime: 10\n  };\n  const sandbox = new Function('mediaElement', 'action', code + '; return controlPlayback;');\n  const fn = sandbox();\n  fn(mockMedia, 'play');\n  fn(mockMedia, 'pause');\n  fn(mockMedia, 'stop');\n  if (!actions.includes('play') || !actions.includes('pause')) return 'play va pause amallari noto\\'g\\'ri bajarildi';\n  if (mockMedia.currentTime !== 0) return 'stop amalida currentTime 0 bo\\'lishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
   },
   {
     "id": 2,
-    "title": "Ovozsiz Rejimga O'tkazish (Mute)",
-    "instruction": "'video' elementining ovozini o'chiring (muted xususiyatini true qiling).",
-    "startingCode": "const video = document.createElement('video');\n\n// Kodni shu yerda yozing\n",
-    "hint": "video.muted = true;",
-    "test": "if (!code.includes('muted = true')) return 'muted xususiyati true qilinmadi';\nreturn null;"
+    "title": "Media sozlamalarini konfiguratsiya qilish",
+    "instruction": "`mediaElement` va sozlamalar obyekti `options` (xossalari: `volume`, `speed`, `muted`) ni qabul qiluvchi `configureMedia(mediaElement, options)` funksiyasini yozing. Sozlamalarni elementga biriktiring. Agar `volume` o'rnatilmoqchi bo'lib, uning qiymati 0.0 dan kichik yoki 1.0 dan katta bo'lsa `RangeError` xatoligini otish (throw) kerak.",
+    "startingCode": "function configureMedia(mediaElement, options) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`mediaElement.playbackRate = options.speed` orqali tezlikni sozlang. volume 0 va 1 orasida bo'lishini `if (options.volume < 0 || options.volume > 1)` orqali tekshiring.",
+    "test": "try {\n  const mockMedia = { volume: 0.5, playbackRate: 1.0, muted: false };\n  const sandbox = new Function('mediaElement', 'options', code + '; return configureMedia;');\n  const fn = sandbox();\n  \n  fn(mockMedia, { volume: 0.8, speed: 1.5, muted: true });\n  if (mockMedia.volume !== 0.8) return 'volume to\\'g\\'ri o\\'rnatilmadi';\n  if (mockMedia.playbackRate !== 1.5) return 'playbackRate (speed) to\\'g\\'ri o\\'rnatilmadi';\n  if (mockMedia.muted !== true) return 'muted to\\'g\\'ri o\\'rnatilmadi';\n  \n  try {\n    fn(mockMedia, { volume: 1.5, speed: 1.0 });\n    return '1.5 volume uchun RangeError otilishi kerak edi';\n  } catch(err) {\n    if (!(err instanceof RangeError)) return 'Noto\\'g\\'ri xatolik turi otildi. RangeError bo\\'lishi shart.';\n  }\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
   },
   {
     "id": 3,
-    "title": "Ovoz Balandligini Sozlash",
-    "instruction": "'audio' elementining ovoz balandligini (volume) 60% ga (ya'ni 0.6 qiymatga) o'zgartiring.",
-    "startingCode": "const audio = document.createElement('audio');\n\n// Kodni shu yerda yozing\n",
-    "hint": "audio.volume = 0.6;",
-    "test": "if (!code.includes('volume = 0.6')) return 'volume xususiyati 0.6 qilib belgilanmadi';\nreturn null;"
+    "title": "Media vaqtini formatlash",
+    "instruction": "Media o'yinchisida vaqtni foydalanuvchiga ko'rsatish uchun soniyalarni (masalan `125`) `MM:SS` formatidagi satr ko'rinishida (masalan `\"02:05\"`) qaytaradigan `formatTime(seconds)` funksiyasini yozing. Agar berilgan qiymat son bo'lmasa, manfiy bo'lsa yoki `NaN` bo'lsa, `\"00:00\"` qaytaring.",
+    "startingCode": "function formatTime(seconds) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Sonni tekshirish uchun `isNaN(seconds)` yoki `typeof seconds !== 'number'` ishlating. Daqiqalarni topish uchun `Math.floor(seconds / 60)` ni, sekundlarni topish uchun esa `Math.floor(seconds % 60)` ni chaqiring va `String(...).padStart(2, '0')` orqali 2 xonali ko'rinishga keltiring.",
+    "test": "try {\n  const sandbox = new Function(code + '; return formatTime;');\n  const fn = sandbox();\n  \n  if (fn(125) !== '02:05') return '125 soniya uchun \"02:05\" qaytishi kerak, lekin ' + fn(125) + ' qaytdi';\n  if (fn(9) !== '00:09') return '9 soniya uchun \"00:09\" qaytishi kerak';\n  if (fn(-5) !== '00:00') return 'Manfiy son uchun \"00:00\" qaytishi kerak';\n  if (fn(NaN) !== '00:00') return 'NaN uchun \"00:00\" qaytishi kerak';\n  if (fn(3600) !== '60:00') return '3600 soniya uchun \"60:00\" qaytishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
   }
 ]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "`typeof 42` ifoda qanday qiymat qaytaradi?",
+    "options": [
+      "'number'",
+      "'string'",
+      "'integer'",
+      "'object'"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JavaScript-da butun va haqiqiy sonlar uchun `typeof` har doim `'number'` satrini qaytaradi."
+  },
+  {
+    "id": 2,
+    "question": "`typeof null` ifoda nima qaytaradi va bu nimaning natijasi?",
+    "options": [
+      "'null', bu to'g'ri qiymat",
+      "'object', bu JavaScript-dagi tarixiy xato (bug)",
+      "'undefined', chunki qiymat bo'sh",
+      "'boolean', chunki null false hisoblanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JS yaratilgan paytda (1995-yilda) qiymatlarni ifodalovchi bit zanjirlari tuzilishi sababli null xatolik tufayli 'object' deb belgilangan va orqaga moslik (backward compatibility) uchun o'zgartirilmagan."
+  },
+  {
+    "id": 3,
+    "question": "`typeof undefined` nima qaytaradi?",
+    "options": [
+      "'null'",
+      "'object'",
+      "'undefined'",
+      "'boolean'"
+    ],
+    "correctAnswer": 2,
+    "explanation": "O'zgaruvchi e'lon qilingan ammo qiymat berilmagan bo'lsada, uning turi 'undefined' bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconsole.log(typeof (typeof 100));\n```",
+    "options": [
+      "'number'",
+      "'string'",
+      "'undefined'",
+      "'object'"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`typeof 100` ifodasi 'number' satrini qaytaradi. Keyin `typeof 'number'` bajariladi va har qanday satrning turi 'string' bo'lgani uchun natija 'string' chiqadi."
+  },
+  {
+    "id": 5,
+    "question": "JavaScript-da `typeof []` (bo'sh massiv) va `typeof {}` (bo'sh obyekt) ifodalarining natijalari qanday?",
+    "options": [
+      "'array' va 'object'",
+      "'object' va 'object'",
+      "'array' va 'array'",
+      "'list' va 'dict'"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da massivlar (arrays) ham obyektlarning bir turi hisoblanadi, shuning uchun massiv va oddiy obyekt uchun `typeof` har doim 'object' qaytaradi."
+  },
+  {
+    "id": 6,
+    "question": "`typeof NaN` natijasi nima?",
+    "options": [
+      "'NaN'",
+      "'number'",
+      "'undefined'",
+      "'null'"
+    ],
+    "correctAnswer": 1,
+    "explanation": "NaN (Not-a-Number) — bu sonli ma'lumot turiga kiruvchi maxsus sonli qiymatdir, shuning uchun `typeof NaN === 'number'` bo'ladi."
+  },
+  {
+    "id": 7,
+    "question": "`typeof (() => {})` (arrow funksiya) natijasi nima?",
+    "options": [
+      "'object'",
+      "'arrow-function'",
+      "'function'",
+      "'undefined'"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-da har qanday funksiya (oddiy yoki arrow funksiyalar) uchun `typeof` har doim 'function' satrini qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi ifodaning natijasini toping:\n```javascript\nconsole.log(typeof Symbol('id'));\n```",
+    "options": [
+      "'symbol'",
+      "'object'",
+      "'string'",
+      "'undefined'"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Symbol — bu ES6-da kiritilgan primitiv ma'lumot turi bo'lib, uning turi 'symbol' qaytadi."
+  },
+  {
+    "id": 9,
+    "question": "`typeof 10n` ifodasi nima qaytaradi?",
+    "options": [
+      "'number'",
+      "'bigint'",
+      "'int64'",
+      "'object'"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Oxirida n bo'lgan sonlar BigInt turi hisoblanadi. Ular uchun `typeof` operatori 'bigint' satrini qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi ifoda qanday qiymat qaytaradi?\n```javascript\ntypeof undeclaredVariable;\n```\n*(Eslatma: `undeclaredVariable` o'zgaruvchisi e'lon qilinmagan)*",
+    "options": [
+      "ReferenceError xatosi",
+      "'undefined'",
+      "'null'",
+      "'object'"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`typeof` e'lon qilinmagan o'zgaruvchilar uchun xatolik tashlamaydi, aksincha xavfsiz tarzda 'undefined' satrini qaytaradi. Bu typeof-ning o'ziga xos xususiyatidir."
+  },
+  {
+    "id": 11,
+    "question": "`typeof` operatori qanday sintaksis bilan ishlatilishi mumkin?",
+    "options": [
+      "Faqat 'typeof qiymat' (operator ko'rinishida)",
+      "Faqat 'typeof(qiymat)' (funksiya ko'rinishida)",
+      "Har ikkalasi ham: 'typeof qiymat' va 'typeof(qiymat)'",
+      "Hech biri, typeof faqat 'typeof = qiymat' ko'rinishida yoziladi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`typeof` funksiya emas, operator. Shuning uchun qavs ishlatish ixtiyoriydir. Qavslar faqat ifodani guruhlash uchun xizmat qiladi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(typeof new String(\"salom\"));\n```",
+    "options": [
+      "'string'",
+      "'object'",
+      "'constructor'",
+      "'function'"
+    ],
+    "correctAnswer": 1,
+    "explanation": "new kalit so'zi yordamida yaratilgan har qanday konstruktor obyekti (masalan, new String(), new Number(), new Boolean()) aslida obyekt hisoblanadi, shuning uchun `typeof` operatori ularga 'object' qaytaradi."
+  }
+]

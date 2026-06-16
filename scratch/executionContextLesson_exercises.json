@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Rekursiya va Call Stack Xavfsizligi",
+    "instruction": "Rekursiv funksiyalar Call Stack-ni to'ldirib yubormasligi (Stack Overflow bo'lmasligi) uchun cheklovga ega bo'lishi kerak. `safeRecursion(count, maxDepth)` funksiyasini yozing. Agar `count` qiymati `maxDepth` ga yetsa yoki undan oshsa, funksiya `'Stack limit reached'` satrini qaytarsin. Aks holda, `count` qiymatini 1 taga oshirib, funksiyani o'zini rekursiv chaqirsin. Agar `maxDepth` parametri berilmagan bo'lsa, u sukut bo'yicha 10 ga teng bo'lsin.",
+    "startingCode": "function safeRecursion(count, maxDepth = 10) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "if (count >= maxDepth) return 'Stack limit reached'; shartini tekshiring va aks holda safeRecursion(count + 1, maxDepth) ni return qiling.",
+    "test": "const sandbox = new Function(code + '; return safeRecursion;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'safeRecursion funksiyasi aniqlanmadi';\nconst res1 = fn(0, 5);\nconst res2 = fn(12, 10);\nconst res3 = fn(3, 3);\nif (res1 !== 'Stack limit reached') return 'SafeRecursion limitga yetganda \"Stack limit reached\" qaytarmadi';\nif (res2 !== 'Stack limit reached') return 'SafeRecursion count maxDepth dan katta bo\\\'lganda to\\\'xtamadi';\nif (res3 !== 'Stack limit reached') return 'SafeRecursion count va maxDepth teng bo\\\'lganda to\\\'xtamadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Lexical Scope va Context Scope Chain",
+    "instruction": "JavaScript-da o'zgaruvchilar scope chain bo'yicha qidirilganda, funksiya qayerda chaqirilganiga qarab emas, balki qayerda e'lon qilinganiga qarab (Lexical Scope) qidiriladi. `value` global o'zgaruvchisini `'global'` qiymati bilan yarating. Keyin `printValue()` funksiyasini e'lon qiling, u `value` o'zgaruvchisini qaytarsin. So'ngra `checkScope()` funksiyasini yarating, uning ichida mahalliy `let value = 'local'` o'zgaruvchisi bo'lsin va u `printValue()` funksiyasini chaqirib natijasini qaytarsin.",
+    "startingCode": "// O'zgaruvchi va funksiyalarni shu yerda e'lon qiling\n",
+    "hint": "global doirada 'let value = \"global\"' va 'function printValue() { return value; }' deb yozing.",
+    "test": "const sandbox = new Function(code + '; return { checkScope, printValue };');\nconst { checkScope, printValue } = sandbox();\nif (typeof checkScope !== 'function') return 'checkScope funksiyasi aniqlanmadi';\nif (typeof printValue !== 'function') return 'printValue funksiyasi aniqlanmadi';\nif (checkScope() !== 'global') return 'checkScope funksiyasi \"global\" qiymatini qaytarmadi (Lexical scope xatosi)';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Bajarilish Konteksti va this ni bog'lash",
+    "instruction": "Funksiya bajarilish konteksti `this` kalit so'zining qiymatini ham belgilaydi. Agar obyekt metodi boshqa o'zgaruvchiga o'zlashtirilsa, `this` bog'liqligi uziladi. Berilgan `person` obyektining `getName` metodini context yo'qolmasligi uchun `person` obyektining o'ziga `bind` yordamida bog'lang va hosil bo'lgan funksiyani `boundGetName` o'zgaruvchisiga o'zlashtiring.",
+    "startingCode": "const person = {\n  name: \"Sardor\",\n  getName: function() {\n    return this.name;\n  }\n};\n\n// Kodni shu yerda yozing\nconst boundGetName = \n",
+    "hint": "const boundGetName = person.getName.bind(person); ko'rinishida yozing.",
+    "test": "const sandbox = new Function(code + '; return boundGetName;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'boundGetName funksiyasi aniqlanmadi';\nif (fn() === 'Sardor') return null;\nreturn 'boundGetName chaqirilganda \"Sardor\" qiymatini qaytarmadi, demak context bog\\\'lanmagan';"
+  }
+]

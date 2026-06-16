@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Template literals (shablonli satrlar) yaratish uchun qaysi belgidan foydalaniladi?",
+    "options": [
+      "Yakkalik tirnoq (' ')",
+      "Qo'shaloq tirnoq (\" \")",
+      "Backtick (bek-tik, ` `)",
+      "Qavslar ( )"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Template literals JavaScript-da backtick (bektik, ya'ni klaviaturadagi 'Esc' tugmasining ostidagi belgi) yordamida yoziladi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nconst name = 'Ali';\nconsole.log('Salom ${name}');\n```",
+    "options": [
+      "Salom Ali",
+      "Salom ${name}",
+      "Salom undefined",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "O'zgaruvchini interpolatsiya qilish uchun oddiy tirnoqlar emas, balki backticks (`) ishlatilishi shart. Oddiy tirnoqlar ichida yozilgan ${name} oddiy matn deb hisoblanadi."
+  },
+  {
+    "id": 3,
+    "question": "Template literals yordamida ko'p satrli (multiline) matnlarni qanday yozish mumkin?",
+    "options": [
+      "Har bir satr oxiriga \\n va + belgisini qo'yish orqali",
+      "Satr oxiriga faqat \\ qo'yish orqali",
+      "Hech qanday maxsus belgisiz, shunchaki kodda yangi satrga o'tish orqali",
+      "Faqat String.multiline() metodidan foydalanib"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Template literals backticklar ichida yozilganda, qo'shimcha \\n yoki satrlarni birlashtiruvchi + belgisiz bevosita kodning o'zida Enter yordamida yangi satrga o'tish imkonini beradi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi ifodaning natijasi nima bo'ladi?\n```javascript\nconst a = 5;\nconst b = 10;\nconsole.log(`Javob: ${a + b}`);\n```",
+    "options": [
+      "Javob: 510",
+      "Javob: 15",
+      "Javob: a + b",
+      "Javob: ${15}"
+    ],
+    "correctAnswer": 1,
+    "explanation": "${} ichidagi JavaScript ifodasi (expression) bajariladi. a + b arifmetik qo'shish bo'lib, uning natijasi 15 matnga birlashtiriladi."
+  },
+  {
+    "id": 5,
+    "question": "Template literal ichida ternary (uchlik) operatorini ishlatish mumkinmi?",
+    "options": [
+      "Yo'q, shablon ichida faqat oddiy o'zgaruvchilarni ko'rsatish mumkin",
+      "Ha, chunki ternary operator qiymat qaytaruvchi ifoda (expression) hisoblanadi",
+      "Faqat agar ternary operator oldindan qavs ichiga olingan bo'lsa",
+      "Ha, lekin faqat sonli qiymatlarni solishtirish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "${} ichiga istalgan valid JavaScript ifodasini (expression) yozish mumkin. Ternary operator qiymat qaytargani uchun uni bemalol shablon ichida ishlatish mumkin."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nconst user = { name: 'Vali' };\nconsole.log(`Foydalanuvchi: ${user}`);\n```",
+    "options": [
+      "Foydalanuvchi: Vali",
+      "Foydalanuvchi: { name: 'Vali' }",
+      "Foydalanuvchi: [object Object]",
+      "TypeError"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Obyekt shablon satriga kiritilganda u avtomatik ravishda satrga o'giriladi (coerced). Obyektlarning sukut bo'yicha .toString() metodi [object Object] qiymatini qaytaradi."
+  },
+  {
+    "id": 7,
+    "question": "Tagged template literal (teg belgilangan shablon) nima?",
+    "options": [
+      "Shablonli satrni maxsus funksiya yordamida chaqirish va uning qismlarini qayta ishlash usuli",
+      "HTML-dagi <template> tegi bilan bir xil narsa",
+      "Shablon ichida faqat XML teglarini ishlatish qoidasi",
+      "Stringlarni kesib oluvchi metod"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tagged template — shablonli satrni tahlil qilish imkonini beruvchi ilg'or usul. Bunda maxsus funksiya (teg funksiya) yoziladi va u shablonli satrdagi matnlar hamda interpolatsiya qilingan qiymatlarni alohida argument sifatida qabul qiladi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi tagged template funksiyasida `strings` argumenti nimani anglatadi?\n```javascript\nfunction myTag(strings, ...values) {\n  return strings;\n}\nconst name = 'Rustam';\nmyTag`Salom ${name}! Qalaysan?`;\n```",
+    "options": [
+      "['Rustam']",
+      "['Salom ', '! Qalaysan?']",
+      "['Salom Rustam! Qalaysan?']",
+      "['Salom', 'Rustam', 'Qalaysan']"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Teg funksiyasining birinchi argumenti — shablonli satr ichidagi barcha statik matnli qismlardan (interpolatsiyadan tashqarida bo'lgan) tuzilgan massivdir. Shuning uchun ['Salom ', '! Qalaysan?'] massivi qaytadi."
+  },
+  {
+    "id": 9,
+    "question": "`String.raw` tegi nima vazifani bajaradi?",
+    "options": [
+      "Satr ichidagi barcha harflarni kichik harfga o'tkazadi",
+      "Satrdagi escape belgilarini (masalan, \\n, \\t) o'z holicha, interpretatsiya qilmasdan oddiy matn sifatida saqlaydi",
+      "Satr ichidagi o'zgaruvchilarni butunlay o'chirib yuboradi",
+      "Satrni massivga aylantiradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`String.raw` o'rnatilgan teg funksiyasi bo'lib, u escape belgilarini (masalan \\n) yangi satrga o'tkazmasdan, aynan \\ va n harflari ko'rinishida 'xom' (raw) holatda qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nconst show = () => 'Salom';\nconsole.log(`${show()}`);\n```",
+    "options": [
+      "show()",
+      "() => 'Salom'",
+      "Salom",
+      "undefined"
+    ],
+    "correctAnswer": 2,
+    "explanation": "${} ichida funksiya chaqirilgan: show(). Bu funksiya 'Salom' qiymatini qaytaradi, shuning uchun natija 'Salom' bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Shablonli satrlar yordamida funksiya chaqirilganda (tagged template), `strings.raw` xossasi nima beradi?",
+    "options": [
+      "Shablonli satrning original matn uzunligini",
+      "Satrdagi barcha interpolatsiya qilingan qiymatlarni",
+      "Escape belgilar (masalan \\n) interpretatsiya qilinmasdan saqlangan 'xom' matnlar massivini",
+      "HTML xavfsizligini ta'minlovchi metodni"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Teg funksiyasiga uzatiladigan birinchi argument (strings massivi) `raw` nomli xususiyatga ega. U o'z ichida escape belgilari qayta ishlanmagan original matn qismlarini saqlaydi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(`Natija: ${(() => {\n  let x = 2;\n  return x * 3;\n})()}`);\n```",
+    "options": [
+      "Natija: 6",
+      "Natija: x * 3",
+      "Natija: undefined",
+      "TypeError"
+    ],
+    "correctAnswer": 0,
+    "explanation": "${} ichida darhol ishga tushuvchi arrow funksiya (IIFE) yozilgan. U bajarilib, 2 * 3 = 6 qiymatini qaytaradi. Satr natijasi 'Natija: 6' bo'ladi."
+  }
+]

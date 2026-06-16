@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Taqsimlangan konsensusning (Distributed Consensus) asosiy maqsadi nima?",
+    "options": [
+      "Tarmoq ulanish tezligini oshirish",
+      "Bir nechta mustaqil tugunlar o'rtasida yagona holat bo'yicha kelishuvga erishish",
+      "Ma'lumotlar bazasini shifrlash",
+      "Foydalanuvchi interfeysini render qilish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Taqsimlangan konsensus bir-biridan mustaqil tugunlarning yagona umumiy ma'lumot yoki holat bo'yicha yakdil qarorga kelishini ta'minlaydi."
+  },
+  {
+    "id": 2,
+    "question": "Raft algoritmi bo'yicha, Follower qachon saylov boshlashga qaror qiladi?",
+    "options": [
+      "Mijozdan to'g'ridan-to'g'ri so'rov olganida",
+      "Belgilangan saylov taymauti (election timeout) ichida Liderdan heartbeat olmaganida",
+      "Klasterga yangi tugun qo'shilganida",
+      "Ma'lumotlar bazasi to'lib qolganida"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Follower ma'lum vaqt oralig'ida (election timeout) liderdan heartbeat olmasa, lider ishdan chiqdi deb hisoblaydi va yangi saylov boshlaydi."
+  },
+  {
+    "id": 3,
+    "question": "5 ta tugundan iborat klasterda kvorum (qaror qabul qilish uchun kerakli ko'pchilik) soni nechta?",
+    "options": [
+      "2 ta",
+      "3 ta",
+      "4 ta",
+      "5 ta"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kvorum formulasi: Math.floor(5 / 2) + 1 = 3 ta. Ya'ni kamida 3 ta tugun faol bo'lishi shart."
+  },
+  {
+    "id": 4,
+    "question": "Split-brain (ikki xil boshqaruv) muammosi nima?",
+    "options": [
+      "Lider tugun xotirasi to'lib qolishi",
+      "Tarmoq bo'linishi natijasida bitta klasterda ikkita alohida guruh va ikkita lider paydo bo'lishi",
+      "Bir vaqtda ikki xil dasturlash tilidan foydalanish",
+      "Klasterdagi barcha tugunlarning o'chib qolishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Split-brain - tarmoq bo'linishi sababli tugunlar guruhlarga ajralib qolganda, har bir guruh o'z liderini saylab, mustaqil ish boshlashi va ma'lumotlar ziddiyatiga olib kelishi muammosidir."
+  },
+  {
+    "id": 5,
+    "question": "Raft va Paxos o'rtasidagi asosiy farq nimada?",
+    "options": [
+      "Paxos faqat SQL ma'lumotlar bazalarida ishlaydi",
+      "Raft tushunish va loyihalash osonroq bo'lishi uchun ishlab chiqilgan va tizimni saylov, replikatsiya kabi aniq bosqichlarga ajratgan",
+      "Raft ancha sekin ishlaydi",
+      "Paxos umuman xavfsiz emas"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Raft tushunarli bo'lishi va amaliy dasturlashda oson tatbiq etilishi uchun Paxos'ga muqobil sifatida yaratilgan."
+  },
+  {
+    "id": 6,
+    "question": "Raft algoritmidagi 'Term' (Davr) nima?",
+    "options": [
+      "Tugunning ishlash muddati",
+      "Lojik soat vazifasini bajaruvchi, saylovlar va liderlik davrini belgilovchi monoton o'sib boruvchi son",
+      "Ma'lumotlar bazasining jadvali",
+      "Tarmoq ulanishining ping vaqti"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Term - bu saylovlar va liderlik davrlarini aniqlash hamda eskirgan tugun so'rovlarini rad etish uchun ishlatiladigan mantiqiy vaqt birligidir."
+  },
+  {
+    "id": 7,
+    "question": "Nima uchun klasterda tugunlar soni toq (odd) bo'lishi tavsiya etiladi?",
+    "options": [
+      "Chunki toq sonli tizimlar kamroq elektr sarflaydi",
+      "Chunki toq sonli klasterlar tarmoq bo'linganda kvorumni saqlab qolish ehtimoli yuqori va juft songa qaraganda tejamkorroq",
+      "Toq sonli tizimlarda log replikatsiya umuman ishlamaydi",
+      "Bu shunchaki tarixiy an'ana xolos"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Masalan, 4 ta node va 3 ta node uchun kvorum baribir 3 ga teng. 4 ta node bo'lsa, xarajat ko'p lekin nosozlikka bardoshlilik oshmaydi (ikkalasida ham 1 ta node o'chishiga chidaydi)."
+  },
+  {
+    "id": 8,
+    "question": "etcd, Consul va ZooKeeper qaysi maqsadda ishlatiladi?",
+    "options": [
+      "Faqat katta hajmli videofayllarni saqlash uchun",
+      "Konsensusga asoslangan konfiguratsiyalarni boshqarish, klyuch-qiymat ombori va service discovery uchun",
+      "Frontend animatsiyalarini yaratish uchun",
+      "Elektron pochta xabarlarini yuborish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ushbu vositalar konsensus algoritmlari yordamida klaster holatini, konfiguratsiyalarini va servislar koordinatalarini ishonchli saqlaydi."
+  },
+  {
+    "id": 9,
+    "question": "Raft-da Heartbeat o'zi nima?",
+    "options": [
+      "Tizim xotirasini tozalovchi dastur",
+      "Lider faol ekanligini ko'rsatish uchun yuboradigan bo'sh AppendEntries RPC xabari",
+      "Saylov natijalarini e'lon qiluvchi xabar",
+      "Mijoz so'rovini qabul qilish buyrug'i"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Heartbeat - bu Liderning tirik ekanligini Follower'larga eslatib turuvchi davriy, tarkibida yangi log yozuvlari bo'lmagan AppendEntries RPC so'rovidir."
+  },
+  {
+    "id": 10,
+    "question": "Raft-da yangi log yozuvi qachon 'committed' (yakuniy qabul qilingan) deb e'lon qilinadi?",
+    "options": [
+      "Mijoz uni yuborgan zahoti",
+      "Lider uni ko'pchilik (kvorum) tugunlarning loglariga muvaffaqiyatli nusxalaganidan keyin",
+      "Tizim qayta ishga tushganida",
+      "Faqat bitta Follower uni qabul qilganida"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Log yozuvi faqatgina kvorum (ko'pchilik) tugunlar tomonidan qabul qilinib, tasdiqlanganidan so'nggina Lider tomonidan commit qilinadi."
+  },
+  {
+    "id": 11,
+    "question": "Tarmoq bo'linishi (split-brain) vaqtida kvorumsiz qolgan segmentda nima sodir bo'ladi?",
+    "options": [
+      "U yangi ma'lumotlarni yozish so'rovlarini qabul qila olmaydi va rad etadi (yoki kutishga qo'yadi)",
+      "U klasterdagi barcha tugunlarni o'chirib yuboradi",
+      "U avtomatik ravishda boshqa baksi serverlarni format qiladi",
+      "U tezroq ishlay boshlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Kvorumsiz qolgan segment ko'pchilik ovozini yig'a olmaganligi sababli yangi yozish tranzaksiyalarini tasdiqlay olmaydi."
+  },
+  {
+    "id": 12,
+    "question": "Raft-da Candidate o'ziga kelgan boshqa Candidate'ning ovoz so'rovini qachon rad etadi?",
+    "options": [
+      "Agar nomzodning term raqami o'zinikidan kichik bo'lsa yoki loglari o'zinikidan eskirgan bo'lsa",
+      "Har doim rad etadi, chunki raqobatchi hisoblanadi",
+      "Faqat tarmoq tezligi past bo'lganda",
+      "Agar nomzodda ma'lumotlar bazasi bo'lmasa"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Raft qoidalariga ko'ra, agar nomzodning term raqami kichikroq bo'lsa yoki uning oxirgi log yozuvi eskirgan bo'lsa, ovoz so'rovi rad etiladi."
+  }
+]

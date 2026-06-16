@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Serverless Handler loyihalash",
+    "instruction": "API Gateway-dan keladigan `event` obyektini qayta ishlaydigan `handler(event)` funksiyasini yozing. `event.body` JSON formatidagi satr (string) ko'rinishida keladi. Uni obyektga parslash (JSON.parse) orqali `name` maydoni bor-yo'qligini tekshiring. Agar `name` mavjud bo'lsa, status kodi `200` va body qismida `{\"message\": \"Salom, <ism>!\"}` bo'lgan javob obyektini qaytaring. Agar `name` bo'lmasa yoki body bo'sh bo'lsa, status kodi `400` va body qismida `{\"error\": \"Ism kiritilmadi\"}` qaytaring. Qaytarilayotgan response obyekti har doim `statusCode` (number) va `body` (string) maydonlariga ega bo'lishi shart.",
+    "startingCode": "function handler(event) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "Try-catch yordamida JSON.parse(event.body) qiling. Qaytayotgan obyektda body satr bo'lishi uchun JSON.stringify ishlatilishi kerak.",
+    "test": "if (typeof handler !== 'function') return 'handler funksiyasi topilmadi'; const res1 = handler({ body: '{\"name\": \"Ali\"}' }); if (!res1 || res1.statusCode !== 200) return 'Muvaffaqiyatli so\\'rovda status kodi 200 bo\\'lishi kerak'; if (typeof res1.body !== 'string' || !res1.body.includes('Salom, Ali!')) return 'Muvaffaqiyatli so\\'rov body qismi noto\\'g\\'ri'; const res2 = handler({ body: '{}' }); if (!res2 || res2.statusCode !== 400 || !res2.body.includes('Ism kiritilmadi')) return 'Ism kiritilmaganda xatolik xabari qaytishi kerak'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Asosiy API Gateway Routeri",
+    "instruction": "Kichik serverless router funksiyasini yozing. `routeRequest(event)` funksiyasi `event` obyektini qabul qiladi, unda `httpMethod` (masalan, 'GET' yoki 'POST') va `path` (masalan, '/users' yoki '/orders') bo'ladi. Agar so'rov `GET /users` bo'lsa, `\"users_list\"` qaytaring. Agar so'rov `POST /orders` bo'lsa, `\"order_created\"` qaytaring. Qolgan barcha holatlarda `\"not_found\"` qiymatini qaytaring.",
+    "startingCode": "function routeRequest(event) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "event.httpMethod va event.path qiymatlarini tekshirib, if-else yoki switch block yozing.",
+    "test": "if (typeof routeRequest !== 'function') return 'routeRequest funksiyasi topilmadi'; if (routeRequest({ httpMethod: 'GET', path: '/users' }) !== 'users_list') return 'GET /users uchun users_list qaytishi kerak'; if (routeRequest({ httpMethod: 'POST', path: '/orders' }) !== 'order_created') return 'POST /orders uchun order_created qaytishi kerak'; if (routeRequest({ httpMethod: 'GET', path: '/unknown' }) !== 'not_found') return 'Noma\\'lum so\\'rovlar not_found qaytarishi kerak'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Cold Start uchun Keshni Simulyatsiya qilish",
+    "instruction": "FaaS muhitida global kontekstning qayta ishlatilishini simulyatsiya qiling. Global o'zgaruvchi sifatida `let cache = {};` e'lon qilingan deb hisoblang. `fetchDataWithCache(key, fallbackFetcher)` funksiyasini yozing. Agar berilgan `key` keshda mavjud bo'lsa, u keshdagi qiymatni qaytarsin. Agar keshda bo'lmasa, `fallbackFetcher()` funksiyasini chaqirib, olingan qiymatni keshga yozsin va qaytarsin.",
+    "startingCode": "let cache = {};\n\nfunction fetchDataWithCache(key, fallbackFetcher) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "cache[key] !== undefined ekanligini tekshiring. Bo'lmasa, fallbackFetcher() ni chaqiring va natijani cache[key] ga saqlang.",
+    "test": "if (typeof fetchDataWithCache !== 'function') return 'fetchDataWithCache funksiyasi topilmadi'; cache = {}; let callCount = 0; const fetcher = () => { callCount++; return 'data1'; }; const res1 = fetchDataWithCache('user1', fetcher); if (res1 !== 'data1') return 'Natija noto\\'g\\'ri'; const res2 = fetchDataWithCache('user1', fetcher); if (res2 !== 'data1') return 'Keshdan olingan natija noto\\'g\\'ri'; if (callCount !== 1) return 'Fallback fetcher keshda bor ma\\'lumot uchun chaqirilmasligi kerak edi'; return null;"
+  }
+]

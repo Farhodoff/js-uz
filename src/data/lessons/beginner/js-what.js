@@ -130,7 +130,7 @@ userRole = "admin";
 2. **Savol:** \`let\`, \`const\` va \`var\` farqlari nimada?
    * **Javob:** \`var\` global yoki funksiya scope-ga ega va hoist bo'ladi. \`let\` va \`const\` esa block scope-ga ega (figurali qavslar ichida ishlaydi). \`const\` qiymatini qayta e'lon qilib yoki o'zgartirib bo'lmaydi.
 3. **Savol:** JavaScript-da qanday ibtidoiy (primitive) ma'lumot turlari bor?
-   * **Javob:** JavaScript-da 7 ta primitive tur mavjud: String, Number, Boolean, Null, Undefined, Symbol va BigInt.
+   * **Javob:** JavaScript-da 7 ta primitive tur mavjud: String (matn), Number (son), Boolean (mantiqiy), Null (bo'sh), Undefined (aniqlanmagan), Symbol (unikal belgi) va BigInt (katta butun son).
 4. **Savol:** \`typeof\` operatori nima vazifani bajaradi?
    * **Javob:** \`typeof\` o'zgaruvchi yoki qiymatning qaysi ma'lumot turiga tegishli ekanligini matn ko'rinishida qaytaradi (masalan: \`"string"\`, \`"number"\`).
 
@@ -216,7 +216,9 @@ toggleBtn.addEventListener("click", () => {
 | **HTML** | Sahifaning tuzilishi va ma'lumotlarini belgilaydi | \`<h1>Sarlavha</h1>\` |
 | **CSS** | Sahifa elementlarini chiroyli ko'rinishga keltiradi | \`body { background: #000; }\` |
 | **JavaScript** | Sahifaga harakat va muloqot elementlarini qo'shadi | \`btn.onclick = () => alert('!')\` |
-| **let / const** | O'zgaruvchi va o'zgarmaslarni e'lon qiladi | \`let x = 5; const PI = 3.14;\` |
+| **var** | Eski usulda o'zgaruvchi e'lon qiladi | \`var name = "Ali";\` |
+| **let** | O'zgartirish mumkin bo'lgan o'zgaruvchi e'lon qiladi | \`let yosh = 20;\` |
+| **const** | O'zgartirib bo'lmaydigan o'zgarmaslarni e'lon qiladi | \`const PI = 3.14;\` |
 | **typeof** | Berilgan qiymat yoki o'zgaruvchi turini aniqlaydi | \`typeof "Salom" // "string"\` |
 | **defer** | Skriptni fonda parallel yuklab, DOM tayyor bo'lgach ishga tushiradi | \`<script src="app.js" defer></script>\` |
 `,

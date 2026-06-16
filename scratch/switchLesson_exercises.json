@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Fasllarni aniqlash",
+    "instruction": "Berilgan oy raqamiga (1 dan 12 gacha) qarab tegishli fasl nomini (\"Qish\", \"Bahor\", \"Yoz\", \"Kuz\") qaytaruvchi va noto'g'ri oy raqami berilsa \"Noto'g'ri oy\" deb qaytaruvchi `getSeason(monthNumber)` funksiyasini switch-case operatori yordamida yozing. Oy raqamlarini quyidagicha guruhlang:\n- 12, 1, 2: \"Qish\"\n- 3, 4, 5: \"Bahor\"\n- 6, 7, 8: \"Yoz\"\n- 9, 10, 11: \"Kuz\"",
+    "startingCode": "function getSeason(monthNumber) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Har bir fasl uchun case-larni ketma-ket joylashtirib (fall-through), bitta return yoki break yordamida guruhlang. Masalan:\ncase 12:\ncase 1:\ncase 2:\n  return \"Qish\";",
+    "test": "const sandbox = new Function(code + '; return getSeason;');\nconst fn = sandbox();\nif (fn(12) !== 'Qish' || fn(1) !== 'Qish' || fn(2) !== 'Qish') return 'Qish fasli uchun oylar noto\\'g\\'ri tekshirildi';\nif (fn(3) !== 'Bahor' || fn(4) !== 'Bahor' || fn(5) !== 'Bahor') return 'Bahor fasli uchun oylar noto\\'g\\'ri tekshirildi';\nif (fn(6) !== 'Yoz' || fn(7) !== 'Yoz' || fn(8) !== 'Yoz') return 'Yoz fasli uchun oylar noto\\'g\\'ri tekshirildi';\nif (fn(9) !== 'Kuz' || fn(10) !== 'Kuz' || fn(11) !== 'Kuz') return 'Kuz fasli uchun oylar noto\\'g\\'ri tekshirildi';\nif (fn(0) !== \"Noto'g'ri oy\" || fn(13) !== \"Noto'g'ri oy\") return 'Noto\\'g\\'ri oy raqamlari to\\'g\\'ri aniqlanmadi';\nif (!code.includes('switch')) return 'switch-case operatoridan foydalanilmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Oddiy Kalkulyator",
+    "instruction": "Uchta argument qabul qiladigan `calculator(num1, num2, operator)` funksiyasini yozing. `operator` argumenti string bo'lib, quyidagi qiymatlarni qabul qilishi mumkin: \"+\", \"-\", \"*\", \"/\". Funksiya switch-case yordamida tegishli matematik amalni bajarib natijani qaytarsin. Agar nolga bo'lish holati yuz bersa (\"/\" va num2 === 0 bo'lsa), \"Nolga bo'lish mumkin emas!\" deb qaytarsin. Noto'g'ri operator kiritilganda \"Noto'g'ri operator\" deb qaytarsin.",
+    "startingCode": "function calculator(num1, num2, operator) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "switch(operator) yordamida case \"+\":, case \"-\": va boshqalarni tekshiring. Bo'lish case-ida num2 nolga tengligini if orqali tekshiring va tegishli satrni qaytaring.",
+    "test": "const sandbox = new Function(code + '; return calculator;');\nconst fn = sandbox();\nif (fn(10, 5, '+') !== 15) return 'Qo\\'shish amali noto\\'g\\'ri bajarildi';\nif (fn(10, 5, '-') !== 5) return 'Ayirish amali noto\\'g\\'ri bajarildi';\nif (fn(10, 5, '*') !== 50) return 'Ko\\'paytirish amali noto\\'g\\'ri bajarildi';\nif (fn(10, 5, '/') !== 2) return 'Bo\\'lish amali noto\\'g\\'ri bajarildi';\nif (fn(10, 0, '/') !== 'Nolga bo\\'lish mumkin emas!') return 'Nolga bo\\'lish holati to\\'g\\'ri tekshirilmadi';\nif (fn(10, 5, '%') !== 'Noto\\'g\\'ri operator') return 'Noto\\'g\\'ri operator holati to\\'g\\'ri tekshirilmadi';\nif (!code.includes('switch')) return 'switch-case operatoridan foydalanilmadi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Baholash Tizimi (switch(true) patterni)",
+    "instruction": "Foydalanuvchining imtihon baliga (0 dan 100 gacha son) qarab baho harfini qaytaruvchi `getGradeScore(score)` funksiyasini yozing. Baholar quyidagicha aniqlanadi:\n- 90 va undan yuqori: \"A\"\n- 80 dan 89 gacha: \"B\"\n- 70 dan 79 gacha: \"C\"\n- 60 dan 69 gacha: \"D\"\n- 60 dan past: \"F\"\n- 0 dan kichik yoki 100 dan katta bo'lsa: \"Noto'g'ri ball\"\nBunda switch-case operatorini ishlatishingiz va switch(true) yondashuvidan foydalanishingiz kerak.",
+    "startingCode": "function getGradeScore(score) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "switch(true) dan foydalanib, har bir case-da shartlarni kiriting, masalan: case (score >= 90 && score <= 100): return \"A\";",
+    "test": "const sandbox = new Function(code + '; return getGradeScore;');\nconst fn = sandbox();\nif (fn(95) !== 'A' || fn(90) !== 'A') return '90-100 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(85) !== 'B' || fn(80) !== 'B') return '80-89 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(75) !== 'C' || fn(70) !== 'C') return '70-79 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(65) !== 'D' || fn(60) !== 'D') return '60-69 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(50) !== 'F' || fn(0) !== 'F') return '0-59 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(-5) !== \"Noto'g'ri ball\" || fn(105) !== \"Noto'g'ri ball\") return 'Noto\\'g\\'ri ball holatlari to\\'g\\'ri tekshirilmadi';\nif (!code.includes('switch') || !code.includes('true')) return 'switch(true) operatoridan foydalanilmadi';\nreturn null;"
+  }
+]

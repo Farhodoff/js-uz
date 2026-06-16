@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "MapReduce Matn Protsessori",
+    "instruction": "Berilgan matn satrini Map va Reduce bosqichlaridan o'tkazib, undagi so'zlarning umumiy sonini hisoblaydigan `mapReduce(text)` funksiyasini yozing. Matndagi tinish belgilarini yo'qoting va harflar registrini kichiklashtiring. Natija obyekt ko'rinishida bo'lsin.",
+    "startingCode": "function mapReduce(text) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "replace() yordamida tinish belgilarini olib tashlang, split() orqali so'zlarga bo'ling va reduce orqali sanang.",
+    "test": "if (typeof mapReduce !== 'function') return 'mapReduce topilmadi'; const res = mapReduce('Hello, world! Hello.'); if (res.hello !== 2 || res.world !== 1) return 'Hisoblash xato'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Tumbling Window Agregatori",
+    "instruction": "Oqimdagi eventlarni `windowSize` (millisekund) bo'yicha Tumbling Window (kesishmaydigan oynalar)ga guruhlab summana hisoblovchi `tumbleAggregate(events, windowSize)` funksiyasini yozing. Eventlar `{ timestamp, value }` shaklida bo'ladi. Har bir oyna boshlanishi: `Math.floor(timestamp / windowSize) * windowSize` ga teng. Natijani oyna boshlanish vaqti bo'yicha o'sish tartibida saralab, `{ windowStart, sum }` ko'rinishidagi massiv sifatida qaytaring.",
+    "startingCode": "function tumbleAggregate(events, windowSize) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Eventlarni windowStart kaliti bilan guruhlang, so'ngra massivga aylantirib saralang.",
+    "test": "if (typeof tumbleAggregate !== 'function') return 'tumbleAggregate topilmadi'; const evs = [{ timestamp: 12, value: 5 }, { timestamp: 18, value: 3 }, { timestamp: 25, value: 10 }]; const res = tumbleAggregate(evs, 10); if (res.length !== 2) return 'Oynalar soni noto\\'g\\'ri'; if (res[0].windowStart !== 10 || res[0].sum !== 8) return 'Birinchi oyna xato'; if (res[1].windowStart !== 20 || res[1].sum !== 10) return 'Ikkinchi oyna xato'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Sliding Window Agregatori",
+    "instruction": "Sliding Window (siljuvchi oyna) yordamida oqimdagi ma'lumotlarni hisoblang. `slideAggregate(events, windowSize, slideSize)` funksiyasi oyna hajmi (`windowSize`) va siljish qadami (`slideSize`) bo'yicha eventlarni guruhlaydi. Oyna boshlanish vaqtlari `0` dan boshlanib, maksimal timestampga yetguncha `slideSize` qadami bilan o'sadi. Oynada kamida bitta event bo'lishi va faqat `sum > 0` bo'lgan faol oynalar `windowStart` bo'yicha saralangan massivda qaytarilishi kerak.",
+    "startingCode": "function slideAggregate(events, windowSize, slideSize) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Har bir oyna [start, start + windowSize) oralig'ini qamrab oladi. start qiymatlarini 0 dan boshlab maxTimestamp gacha siljiting.",
+    "test": "if (typeof slideAggregate !== 'function') return 'slideAggregate topilmadi'; const evs = [{ timestamp: 5, value: 10 }, { timestamp: 12, value: 20 }]; const res = slideAggregate(evs, 10, 5); const w5 = res.find(w => w.windowStart === 5); if (!w5 || w5.sum !== 30) return 'Siljuvchi oyna hisobi xato'; return null;"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Tana vazni indeksini (BMI) hisoblash",
+    "instruction": "Vazn (kilogrammda) va bo'yni (metrda) qabul qilib, foydalanuvchining tana vazni indeksini (BMI) hisoblovchi `calculateBMI(weight, height)` funksiyasini yozing. BMI formulasi: vazn / bo'yning kvadrati. Natijani nuqtadan keyin ikki xonagacha yaxlitlab, son (number) ko'rinishida qaytaring.",
+    "startingCode": "function calculateBMI(weight, height) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Bo'yning kvadratini hisoblash uchun darajaga ko'tarish (**) operatoridan foydalaning. Yaxlitlash uchun esa .toFixed(2) metodini ishlatib, uni son turiga o'tkazish uchun oldiga '+' qo'shing.",
+    "test": "const sandbox = new Function(code + '; return calculateBMI;');\nconst fn = sandbox();\nconst res1 = fn(70, 1.75);\nconst res2 = fn(50, 1.6);\nif (res1 === 22.86 && res2 === 19.53) return null;\nreturn 'BMI hisoblashda xatolik. Natija kutilganidek (70kg va 1.75m uchun 22.86) emas: ' + res1;"
+  },
+  {
+    "id": 2,
+    "title": "Foydalanuvchi ismini tanlash",
+    "instruction": "Foydalanuvchi obyekti (`user`) berilgan. Agar unda `nickname` mavjud va u bo'sh bo'lmasa, uni qaytaring. Agar `nickname` bo'lmasa (yoki bo'sh bo'lsa), `fullName` qiymatini qaytaring. Agar ikkalasi ham bo'lmasa yoki bo'sh bo'lsa, 'Mehmon' so'zini qaytaring. Buning uchun mantiqiy OR (||) operatoridan foydalaning.",
+    "startingCode": "function getUserDisplayName(user) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "(user.nickname || user.fullName) || 'Mehmon' ko'rinishidagi mantiqiy zanjirdan foydalanishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return getUserDisplayName;');\nconst fn = sandbox();\nconst test1 = fn({ nickname: 'Dev1', fullName: 'Ali Valiyev' });\nconst test2 = fn({ nickname: '', fullName: 'Vali Aliyev' });\nconst test3 = fn({ nickname: '', fullName: '' });\nconst test4 = fn({ nickname: undefined, fullName: null });\nif (test1 === 'Dev1' && test2 === 'Vali Aliyev' && test3 === 'Mehmon' && test4 === 'Mehmon') return null;\nreturn 'Ismni tanlash logikasi xato yozilgan. Test qiymatlari tekshirilganda xatolik aniqlandi.';"
+  },
+  {
+    "id": 3,
+    "title": "Sonning juftlik va karralilik aloqasi",
+    "instruction": "Berilgan sonning juft yoki toqligi hamda 5 ga bo'linish-bo'linmasligini tekshiruvchi `checkNumberRelation(num)` funksiyasini yozing. Funksiya quyidagi matnlarni qaytarishi kerak:\n- Agar son juft va 5 ga bo'linsa: 'Juft va 5 ga karrali'\n- Agar son toq va 5 ga bo'linsa: 'Tog\\' va 5 ga karrali'\n- Agar son faqat juft bo'lib, 5 ga bo'linmasa: 'Faqat juft'\n- Agar son faqat toq bo'lib, 5 ga bo'linmasa: 'Faqat tog\\''",
+    "startingCode": "function checkNumberRelation(num) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Sonnining qoldig'ini tekshirish uchun '%' operatoridan va solishtirish uchun '===' operatoridan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return checkNumberRelation;');\nconst fn = sandbox();\nif (fn(10) === 'Juft va 5 ga karrali' && fn(15) === 'Tog\\' va 5 ga karrali' && fn(8) === 'Faqat juft' && fn(7) === 'Faqat tog\\'') return null;\nreturn 'Sonlarni tekshirish natijasi kutilganidek emas. Qaytarilgan qiymatlarni qayta tekshiring.';"
+  }
+]

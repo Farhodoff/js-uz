@@ -1,0 +1,145 @@
+[
+  {
+    "id": 1,
+    "question": "Mongoose nima?",
+    "options": [
+      "JavaScript ma'lumotlar bazasi boshqaruv tizimi (DBMS)",
+      "MongoDB uchun Schema asosida ishlovchi ODM (Object Document Mapper) kutubxonasi",
+      "Faqat SQL bazalar bilan ishlovchi ORM",
+      "Faqat brauzerda ma'lumotlarni keshlash uchun ishlatiladigan vosita"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Mongoose - bu Node.js muhitida MongoDB bilan ishlash uchun mo'ljallangan, obyektlarni ma'lumotlar bazasidagi hujjatlar bilan bog'laydigan va ularga sxema (Schema) hamda validatsiya beruvchi ODM kutubxonasidir."
+  },
+  {
+    "id": 2,
+    "question": "MongoDB va reliesion (SQL) bazalar o'rtasidagi asosiy farq nima?",
+    "options": [
+      "SQL ma'lumotlarni JSON ko'rinishida, MongoDB esa jadvallarda saqlaydi",
+      "MongoDB ma'lumotlarni jadvallar (tables) va qatorlarda (rows) saqlaydi",
+      "MongoDB - bu NoSQL bo'lib, hujjatga yo'naltirilgan (document-oriented, BSON/JSON formatida), SQL esa relyatsion jadvallarga asoslangan",
+      "Hech qanday farqi yo'q, ikkalasi ham bir xil ishlaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "MongoDB - bu NoSQL toifasidagi, hujjatga yo'naltirilgan ma'lumotlar bazasi bo'lib, ma'lumotlarni moslashuvchan JSON/BSON formatida saqlaydi. SQL esa qat'iy tuzilmali reliesion jadvallar va aloqalarga asoslanadi."
+  },
+  {
+    "options": [
+      "Document, Row",
+      "Schema, Model",
+      "Query, Callback",
+      "Collection, Middleware"
+    ],
+    "correctAnswer": 1,
+    "id": 3,
+    "question": "Mongoose-da ma'lumotlar strukturasini aniqlash va bazadagi hujjatlar ustida amallar bajarish uchun qaysi ikki asosiy tushunchadan foydalaniladi?"
+  },
+  {
+    "id": 4,
+    "question": "Mongoose Schema validatorida qaysi xususiyat satr (string) boshidagi va oxiridagi bo'shliqlarni avtomatik o'chiradi?",
+    "options": [
+      "clean: true",
+      "strip: true",
+      "trim: true",
+      "slice: true"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`trim: true` xossasi Mongoose-ga satr saqlanishidan oldin uning boshidagi va oxiridagi bo'shliqlarni (whitespace) avtomatik o'chirib tashlashni buyuradi."
+  },
+  {
+    "id": 5,
+    "question": "Mongoose middleware (hooks) nima?",
+    "options": [
+      "Faqat xatolarni tekshiradigan yordamchi funksiyalar",
+      "Asinxron operatsiyalarni bajarish paytida (masalan, save, validate, remove) avtomatik ravishda ishga tushadigan oraliq funksiyalar (pre va post)",
+      "Bazadagi ma'lumotlarni tozalash uchun ishlaydigan cron-skriptlar",
+      "Faqat express ilovalari uchun ishlaydigan middleware"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Mongoose-da middleware (yoki hooks) - bu ma'lum bir hodisalar (validate, save, remove, find va h.k.) bajarilishidan oldin (pre) yoki keyin (post) ishga tushuvchi funksiyalardir."
+  },
+  {
+    "id": 6,
+    "question": "Mongoose pre-save middleware hook funksiyasi ichida nega arrow funksiya `() => {}` ishlatish tavsiya etilmaydi?",
+    "options": [
+      "Arrow funksiyalarda `this` joriy hujjat (document) obyektini emas, tashqi kontekstni ifodalagani uchun",
+      "Arrow funksiyalar asinxron ishlay olmaydi",
+      "Mongoose arrow funksiyalarni umuman qo'llab-quvvatlamaydi",
+      "Arrow funksiyalar sekinroq ishlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mongoose pre/post hooklari ichida saqlanayotgan joriy hujjatga (document) `this` kalit so'zi orqali kirish mumkin. Arrow funksiyalar o'zining `this` kontekstiga ega bo'lmagani uchun, unda `this` joriy document-ni emas, balki tashqi scope-ni anglatib qoladi."
+  },
+  {
+    "id": 7,
+    "question": "Mongoose-da virtual xususiyatlar (virtuals) nima?",
+    "options": [
+      "Faqat RAM xotirasida ishlovchi maxsus ma'lumotlar bazasi",
+      "MongoDB bazasida jismonan saqlanmaydigan, lekin o'qilganda hisoblab chiqariladigan dinamik maydonlar",
+      "Faqat parollarni shifrlash uchun mo'ljallangan maydonlar",
+      "Hali yaratilmagan, kelajakda qo'shiladigan maydonlar"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Virtual maydonlar - bu MongoDB bazasining o'zida saqlanmaydigan, biroq xuddi oddiy maydondek o'qilishi (`get`) yoki yozilishi (`set`) mumkin bo'lgan, dinamik hisoblanadigan xususiyatlardir."
+  },
+  {
+    "id": 8,
+    "question": "Bitta hujjatni boshqa bir kolleksiyadagi hujjat bilan bog'lash (references) va so'rov paytida uni to'liq ma'lumotlar bilan almashtirish qanday ataladi?",
+    "options": [
+      "Aggregation",
+      "Population",
+      "Migration",
+      "Join Query"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Mongoose-da `populate()` metodi orqali bir hujjatdagi ObjectId maydonini boshqa kolleksiyadan unga mos keladigan to'liq hujjat bilan almashtirish (ya'ni bog'liqlikni yechish) `Population` deb ataladi."
+  },
+  {
+    "id": 9,
+    "question": "Query-larni optimallashtirish uchun Mongoose-da so'rov natijalarini to'liq Mongoose hujjati o'rniga oddiy JavaScript obyekti sifatida qaytarishni ta'minlovchi metod qaysi?",
+    "options": [
+      "`.toObject()`",
+      "`.toJSON()`",
+      "`.lean()`",
+      "`.raw()`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`.lean()` metodi Mongoose-ga so'rovni bajarayotganda to'liq Mongoose Document klassi instansiyasini (metodlari, change tracking va h.k.) yaratishni chetlab o'tib, oddiy, juda tez va yengil JS obyektini qaytarishni buyuradi."
+  },
+  {
+    "id": 10,
+    "question": "Mongoose-da ikkita hujjat o'rtasidagi munosabatni o'rnatishda ref kaliti nimani anglatadi?",
+    "options": [
+      "Bog'lanayotgan maqsadli modelning nomi",
+      "Ma'lumotlar bazasining IP manzili",
+      "Kalit maydonning turi",
+      "Validatsiya qoidasi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Schema-da `ref` xossasi ObjectId turi qaysi modelga ishora qilayotganini (ya'ni bog'lanish obyektini) ko'rsatish uchun ishlatiladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi Mongoose so'rovida qaysi xususiyat `users` ro'yxatidan faqat ismi va yoshini olib, parolni chetlab o'tadi?",
+    "options": [
+      "`.select('name age -password')`",
+      "`.project({ name: 1, age: 1, password: 0 })`",
+      "`.find({}, 'name age -password')`",
+      "A va C to'g'ri"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Mongoose-da so'rovga qaytadigan maydonlarni belgilash uchun `.select()` yoki `.find(filter, projection)` ishlatiladi. `name age` ularni olishni, `-password` esa parolni olib tashlashni (exclude) anglatadi. Shuning uchun A va C variantlar to'g'ri."
+  },
+  {
+    "id": 12,
+    "question": "Mongoose pre-save middleware-da `isModified('password')` metodi nima vazifani bajaradi?",
+    "options": [
+      "Parol maydoni bazada mavjudligini tekshiradi",
+      "Hujjat saqlanayotgan paytda parol maydoni qiymati yangilanganmi yoki o'zgartirilganmi ekanini aniqlaydi",
+      "Parol to'g'ri shifrlanganligini tekshiradi",
+      "Foydalanuvchi tizimga kirganligini tasdiqlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`isModified(path)` metodi ko'rsatilgan maydon qiymati yaratilganidan beri yoki oxirgi marta bazadan olinganidan beri o'zgartirilganligini tekshiradi. Bu orqali faqat parol o'zgargandagina hash qilishni ishga tushirish mumkin."
+  }
+]

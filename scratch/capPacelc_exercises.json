@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Quorum Configurator (W + R > N)",
+    "instruction": "Kvorum parametrlarini tekshiradigan `validateQuorumConfig(w, r, n)` funksiyasini yozing. Funksiya quyidagi qoidalarga ko'ra `{ isValid: boolean, isStrong: boolean, reason: string }` obyektini qaytarishi kerak:\n1. Barcha parametrlar butun sonlar va 1 dan katta yoki teng bo'lishi shart.\n2. W va R qiymatlari N dan katta bo'la olmaydi. Agar shunday bo'lsa, `isValid` false bo'ladi va sababi yoziladi.\n3. Agar sozlamalar to'g'ri bo'lsa (`isValid` true) va `W + R > N` bo'lsa, `isStrong` true bo'ladi va reason: 'Strong consistency guaranteed'.\n4. Agar `W + R <= N` bo'lsa, `isStrong` false bo'ladi va reason: 'Eventual consistency only'.",
+    "startingCode": "function validateQuorumConfig(w, r, n) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Avval parametrlar N dan oshmasligini va 1 dan kichik bo'lmasligini tekshiring. Keyin W + R > N shartini tekshirib natijani qaytaring.",
+    "test": "const sandbox = new Function(code + '; return validateQuorumConfig;');\nconst fn = sandbox();\nlet res = fn(2, 2, 3);\nif (!res.isValid || !res.isStrong || res.reason !== 'Strong consistency guaranteed') return '2,2,3 sozlamasi kuchli kvorum hisoblanadi!';\nres = fn(1, 1, 3);\nif (!res.isValid || res.isStrong || res.reason !== 'Eventual consistency only') return '1,1,3 sozlamasi eventual consistency bo\\'lishi kerak!';\nres = fn(4, 2, 3);\nif (res.isValid) return 'W qiymati N dan katta bo\\'lishi mumkin emas!';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "PACELC Teoremasi Klassifikatori",
+    "instruction": "Ma'lumotlar bazasi xatti-harakatiga qarab uni PACELC bo'yicha klassifikatsiya qiluvchi `classifyPACELC(partitionChoice, normalChoice)` funksiyasini yozing.\n- `partitionChoice` faqat 'A' (Availability) yoki 'C' (Consistency) bo'lishi mumkin.\n- `normalChoice` faqat 'L' (Latency) yoki 'C' (Consistency) bo'lishi mumkin.\n- Kiritilgan qiymatlar noto'g'ri bo'lsa, xato (`Error('Invalid inputs')`) otishi kerak.\n- Natija sifatida `{ classification: string, examples: string[] }` formatida obyekt qaytaring.\n- Misollar:\n  - PA/EL bo'lsa: `['Cassandra', 'DynamoDB']`\n  - PC/EC bo'lsa: `['MongoDB', 'Spanner']`\n  - Boshqa holatlar uchun mos ravishda mos klassifikatsiya (masalan, `PC/EL` yoki `PA/EC`) va bo'sh massiv `[]` qaytarsin.",
+    "startingCode": "function classifyPACELC(partitionChoice, normalChoice) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Kiritilgan qiymatlarni katta harflarga o'tqazib tekshiring. Klassifikatsiyani 'P' + partitionChoice + '/E' + normalChoice ko'rinishida hosil qiling.",
+    "test": "const sandbox = new Function(code + '; return classifyPACELC;');\nconst fn = sandbox();\ntry {\n  const res = fn('A', 'L');\n  if (res.classification !== 'PA/EL' || !res.examples.includes('Cassandra')) return 'PA/EL klassifikatsiyasi noto\\'g\\'ri!';\n} catch(e) {\n  return 'A va L to\\'g\\'ri parametrlar hisoblanadi!';\n}\ntry {\n  fn('X', 'Y');\n  return 'Noto\\'g\\'ri parametrlarga xatolik otilmadi!';\n} catch(e) {}\nconst res2 = fn('C', 'C');\nif (res2.classification !== 'PC/EC' || !res2.examples.includes('MongoDB')) return 'PC/EC klassifikatsiyasi xato!';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Network Partition Request Router",
+    "instruction": "Tarmoq bo'lingan yoki normal holatida so'rovlarni boshqaruvchi `routeRequest(partitioned, preferredStrategy, primaryHealthy, replicaHealthy)` funksiyasini yozing.\n- Agar tarmoq bo'linmagan bo'lsa (`partitioned` false):\n  - `primaryHealthy` true bo'lsa, `'PRIMARY'` qaytarsin.\n  - `primaryHealthy` false va `replicaHealthy` true bo'lsa, `'REPLICA'` qaytarsin.\n  - Ikkalasi ham nosoz bo'lsa, xatolik (`Error('System Down')`) yuborsin.\n- Agar tarmoq bo'lingan bo'lsa (`partitioned` true):\n  - Agar `preferredStrategy` `'CP'` bo'lsa (Consistency ustun): faqat `primaryHealthy` true bo'lsagina `'PRIMARY'` qaytarsin, aks holda xatolik (`Error('Consistency Compromised')`) yuborsin (chunki replica eskirgan bo'lishi mumkin).\n  - Agar `preferredStrategy` `'AP'` bo'lsa (Availability ustun): birinchi navbatda `primaryHealthy` true bo'lsa `'PRIMARY'`, bo'lmasa `replicaHealthy` true bo'lsa `'REPLICA'` qaytarsin. Agar ikkisi ham nosoz bo'lsa, xatolik (`Error('System Down')`) yuborsin.",
+    "startingCode": "function routeRequest(partitioned, preferredStrategy, primaryHealthy, replicaHealthy) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Avval partitioned holatini if orqali ajratib oling, keyin preferredStrategy qiymatini tekshiring va shunga mos ravishda healthy holatlarga ko'ra qiymat qaytaring.",
+    "test": "const sandbox = new Function(code + '; return routeRequest;');\nconst fn = sandbox();\nif (fn(false, 'CP', true, true) !== 'PRIMARY') return 'Normal holatda primary-ga borishi kerak';\nif (fn(false, 'CP', false, true) !== 'REPLICA') return 'Normal holatda primary ishlamasa replica-ga borishi kerak';\ntry {\n  fn(true, 'CP', false, true);\n  return 'CP strategiyasida tarmoq uzilganda va primary o\\'chganda xato otishi kerak edi!';\n} catch (e) {\n  if (e.message !== 'Consistency Compromised') return 'Xatolik xabari to\\'g\\'ri emas!';\n}\nif (fn(true, 'AP', false, true) !== 'REPLICA') return 'AP strategiyasida primary o\\'chsa ham replica ishlayverishi kerak!';\nreturn null;"
+  }
+]

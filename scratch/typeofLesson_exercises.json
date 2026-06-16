@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Qiymat Turini Aniqlash (getType)",
+    "instruction": "Berilgan qiymatning `typeof` turini qaytaradigan `getType(value)` funksiyasini yozing. JavaScript-dagi tarixiy xato tufayli `typeof null === 'object'` qaytadi. Loyihamizda bu xatoni tuzatishimiz kerak: agar qiymat `null` bo'lsa, funksiya `'null'` satrini qaytarsin. Qolgan barcha turlar uchun standart `typeof` natijasini qaytaring.",
+    "startingCode": "function getType(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Qiymat null ekanligini `value === null` orqali tekshiring. Agar null bo'lsa, 'null' qaytaring, aks holda `typeof value`dan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return getType;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'getType funksiya bo\\'lishi kerak';\nif (fn(5) !== 'number') return 'Son uchun number qaytishi kerak';\nif (fn('hello') !== 'string') return 'Satr uchun string qaytishi kerak';\nif (fn(null) !== 'null') return 'null qiymati uchun null qaytishi kerak';\nif (fn({}) !== 'object') return 'Obyekt uchun object qaytishi kerak';\nif (fn(undefined) !== 'undefined') return 'undefined uchun undefined qaytishi kerak';\nif (fn(Symbol('id')) !== 'symbol') return 'Symbol uchun symbol qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Funksiyani Aniqlash (isFunction)",
+    "instruction": "Berilgan qiymat funksiya ekanligini aniqlovchi `isFunction(value)` funksiyasini yozing. Agar qiymat funksiya bo'lsa `true`, aks holda `false` qaytarsin.",
+    "startingCode": "function isFunction(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "JavaScript-da typeof operatori oddiy va arrow funksiyalar uchun 'function' satrini qaytaradi.",
+    "test": "const sandbox = new Function(code + '; return isFunction;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'isFunction funksiya bo\\'lishi kerak';\nif (fn(() => {}) !== true) return 'Arrow funksiya uchun true bo\\'lishi kerak';\nif (fn(function() {}) !== true) return 'Oddiy funksiya uchun true bo\\'lishi kerak';\nif (fn({}) !== false) return 'Obyekt uchun false bo\\'lishi kerak';\nif (fn(null) !== false) return 'null uchun false bo\\'lishi kerak';\nif (fn(10) !== false) return 'Son uchun false bo\\'lishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Xavfsiz Qo'shish (safeSum)",
+    "instruction": "Ikkita argument qabul qilib ularning yig'indisini hisoblaydigan `safeSum(a, b)` funksiyasini yozing. Har ikkala argument ham faqat son (`number`) bo'lishini tekshirish uchun `typeof`dan foydalaning. Agar ulardan biri yoki ikkalasi son bo'lmasa, `TypeError` xatosini tashlang (`throw new TypeError(...)`). Agar ikkalasi ham son bo'lsa, ularning yig'indisini qaytaring.",
+    "startingCode": "function safeSum(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "typeof a !== 'number' yoki typeof b !== 'number' ekanligini tekshirib, throw new TypeError('Argumentlar son bo\\'lishi kerak') yozing.",
+    "test": "const sandbox = new Function(code + '; return safeSum;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'safeSum funksiya bo\\'lishi kerak';\nif (fn(5, 10) !== 15) return '5 va 10 yig\\'indisi 15 bo\\'lishi kerak';\ntry {\n  fn(5, '10');\n  return 'Sondan boshqa tur berilganda xatolik (TypeError) tashlashi kerak';\n} catch (e) {\n  if (!(e instanceof TypeError)) return 'Xatolik turi TypeError bo\\'lishi kerak';\n}\ntry {\n  fn(true, 10);\n  return 'Sondan boshqa tur berilganda xatolik (TypeError) tashlashi kerak';\n} catch (e) {\n  if (!(e instanceof TypeError)) return 'Xatolik turi TypeError bo\\'lishi kerak';\n}\nreturn null;"
+  }
+]

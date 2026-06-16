@@ -1,0 +1,333 @@
+## 1. 💡 Sodda Tushuntirish va Analogiya
+
+### Operatorlar nima?
+JavaScript-da **operatorlar** — bu qiymatlar (operandlar) ustida matematik, solishtirish yoki mantiqiy amallarni bajarishga ko'rsatma beruvchi maxsus belgilar. Masalan, `+` operatori ikkita sonni qo'shadi, `===` esa ularning tengligini tekshiradi.
+
+### Real hayotiy analogiya
+Tasavvur qiling, siz **oshxonada taom tayyorlamoqchisiz**:
+* **O'zgaruvchilar (Variables):** Idishlar va ularning ichidagi mahsulotlar (masalan, go'sht, piyoz).
+* **Qiymatlar (Values):** Mahsulotlarning o'zi.
+* **Operatorlar (Operators):** Oshxona asboblari! 
+  * **Matematik operatorlar (`+`, `-`, `*`, `/`):** Pichoq (bo'laklash uchun) yoki qirg'ich (birlashgan narsalarni ajratish uchun).
+  * **Solishtirish operatorlari (`===`, `>`, `<`):** Tarozilar. Ular mahsulotlarni bir-biri bilan solishtirib, "bu og'irroq", "bu teng" degan xulosani beradi (ya'ni `true` yoki `false`).
+  * **Mantiqiy operatorlar (`&&`, `||`, `!`):** Retsept qoidalari: "Agar kartoshka bo'lsa **VA** sabzi bo'lsa (AND), sho'rva qilamiz", "Agar olma bo'lsa **YOKI** nok bo'lsa (OR), pirog pishiramiz".
+
+---
+
+## 2. 💻 Real Kod Misollari
+
+### 1. Basic Example (Matematik va Qiymat yuklash operatorlari)
+Kundalik matematik hisob-kitoblar va o'zgaruvchi qiymatini o'zgartirish:
+```javascript
+let balance = 1000; // O'zgaruvchiga qiymat yuklash (=)
+const salary = 500;
+
+// Qo'shish (+) va ko'paytirish (*)
+let total = balance + salary * 1.1; 
+console.log(total); // 1550 (chunki ko'paytirish qo'shishdan oldin bajariladi)
+
+// Qoldiqni topish (%) va Darajaga ko'tarish (**)
+const isEven = 10 % 2 === 0; // true (qoldiqsiz bo'linadi)
+const power = 2 ** 3; // 8 (2 ning 3-darajasi)
+```
+
+### 2. Intermediate Example (Solishtirish va Mantiqiy operatorlar)
+Foydalanuvchining tizimga kirish huquqini tekshirish (Short-circuit baholash bilan):
+```javascript
+const userAge = 20;
+const hasLicense = true;
+const hasCar = false;
+
+// && (Mantiqiy VA) - barcha shartlar true bo'lishi kerak
+const canDrive = userAge >= 18 && hasLicense;
+console.log("Hayday oladimi:", canDrive); // true
+
+// || (Mantiqiy YOKI) - kamida bitta shart true bo'lishi yetarli
+const canTravel = canDrive || hasCar;
+console.log("Sayohat qila oladimi:", canTravel); // true
+
+// ! (Mantiqiy inkor) - qiymatni teskarisiga o'zgartiradi
+console.log("Mashinasi yo'qmi:", !hasCar); // true
+```
+
+### 3. Advanced Example (Nullish Coalescing va Mantiqiy qiymat yuklash)
+Default (standart) konfiguratsiyalarni o'rnatish va bitwise (bitli) operatorlar:
+```javascript
+// Obyektdagi sozlamalar
+const config = {
+  theme: "dark",
+  timeout: 0,
+  retries: null
+};
+
+// ?? operatori faqat null va undefined ni tekshiradi
+// 'timeout' 0 bo'lsa ham truthy deb oladi
+const fetchTimeout = config.timeout ?? 3000; 
+console.log(fetchTimeout); // 0 (agar || ishlatilganda, 3000 qaytardi)
+
+// ||= mantiqiy qiymat yuklash
+let defaultName = "";
+defaultName ||= "Mehmon"; // defaultName bo'sh (falsy) bo'lgani uchun "Mehmon" yuklanadi
+console.log(defaultName); // "Mehmon"
+
+// Bitwise (bitli) operator orqali ruxsatlarni tekshirish (Flag checking)
+const READ = 1;   // 0001
+const WRITE = 2;  // 0010
+let userPermission = READ | WRITE; // 0011 (Ikkala ruxsatni birlashtirish)
+
+const hasWriteAccess = (userPermission & WRITE) === WRITE;
+console.log("Yozish huquqi bormi:", hasWriteAccess); // true
+```
+
+---
+
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+
+### Operator Precedence (Prioriteti) va Associativity (Assotsiativlik)
+JavaScript koddagi ifodalarni baholayotganda matematikadagi qoidalarga bo'ysunadi. Qaysi amal birinchi bajarilishi **Precedence (Prioritet)** jadvaliga bog'liq.
+Agar ikkita operatorning prioriteti bir xil bo'lsa (masalan, `-` va `+`), u holda **Associativity (Assotsiativlik)** tartibi qo'llaniladi. Ko'p operatorlar chapdan o'ngga (`Left-to-Right`) baholanadi, ammo ba'zilari (masalan, darajaga ko'tarish `**` va qiymat yuklash `=`) o'ngdan chapga (`Right-to-Left`) baholanadi.
+
+### Short-Circuit Evaluation (Qisqa tutashuvli baholash)
+Mantiqiy `&&` va `||` operatorlari barcha ifodalarni to'liq tekshirib o'tirmaydi:
+* `&&` chap tomondagi qiymat `false` bo'lsa, o'ng tomonni **o'qib ham ko'rmaydi** va darhol `false` qaytaradi.
+* `||` chap tomondagi qiymat `true` bo'lsa, o'ng tomonni tekshirmay darhol `true` qaytaradi.
+
+### Implicit Type Coercion (Avtomatik tip o'zgartirish)
+Matematik va taqqoslash operatorlari turli tipdagi ma'lumotlarni avtomatik ravishda moslashtiradi:
+* `+` operatori matn (string) ishtirok etganda barcha o'zgaruvchilarni matnga o'tkazadi (`5 + '5' = '55'`).
+* `-`, `*`, `/` operatorlari har doim ma'lumotlarni raqamga aylantirishga harakat qiladi (`5 - '2' = 3`).
+
+---
+
+## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+
+### 1. `if` sharti ichida taqqoslash o'rniga qiymat yuklash
+* **Xato:**
+  ```javascript
+  let userRole = "guest";
+  if (userRole = "admin") { // Xato: '=' ishlatildi, shuning uchun 'admin' yuklandi
+    console.log("Xush kelibsiz, Admin!"); // Bu har doim ishlaydi
+  }
+  ```
+* **To'g'ri:**
+  ```javascript
+  let userRole = "guest";
+  if (userRole === "admin") { // To'g'ri taqqoslash
+    console.log("Xush kelibsiz, Admin!");
+  }
+  ```
+
+### 2. Kuchsiz solishtirish (`==`) oqibatida kutilmagan mantiqiy xatolar
+* **Xato:**
+  ```javascript
+  const input = "";
+  if (input == 0) {
+    // Bo'sh satr raqamli 0 ga teng deb topiladi, bu xavfli!
+    console.log("Qiymat nolga teng"); 
+  }
+  ```
+* **To'g'ri:**
+  ```javascript
+  const input = "";
+  if (input === 0) { // Turlar solishtiriladi, string !== number
+    console.log("Qiymat nolga teng");
+  }
+  ```
+
+### 3. Exponentiation (`**`) operatorining o'ngdan chapga assotsiativligini unutish
+* **Xato deb o'ylash:**
+  ```javascript
+  let result = 2 ** 3 ** 2; 
+  // Ko'pchilik buni (2**3)**2 = 8**2 = 64 deb o'ylaydi.
+  ```
+* **Aslida:**
+  ```javascript
+  let result = 2 ** 3 ** 2; // Bu 2 ** (3 ** 2) = 2 ** 9 = 512 bo'ladi.
+  ```
+
+---
+
+## 5. 💬 12 ta Intervyu Savollari
+
+### Junior level
+1. **Savol:** JavaScript-da qanday operator turlari mavjud?
+   * **Javob:** Arifmetik, solishtirish, mantiqiy, qiymat yuklash (assignment), bitli (bitwise), shartli (ternary), string va maxsus operatorlar (typeof, instanceof, delete, void).
+2. **Savol:** `==` va `===` farqi nimada?
+   * **Javob:** `==` faqat qiymatni tekshiradi va solishtirishdan oldin turlarni avtomatik o'zgartiradi. `===` esa qiymatni ham, ma'lumot turini ham o'zgartirmasdan qat'iy tekshiradi.
+3. **Savol:** `%` operatori nima qaytaradi?
+   * **Javob:** Birinchi sonni ikkinchi songa bo'lgandagi matematik qoldiqni qaytaradi. Masalan, `13 % 5 = 3`.
+4. **Savol:** Postfix va Prefix inkrement operatorlarining (`x++` va `++x`) farqi nimada?
+   * **Javob:** `x++` (postfix) avval o'zgaruvchining joriy qiymatini ifodaga qaytaradi, keyin uni oshiradi. `++x` (prefix) esa avval o'zgaruvchini oshiradi, keyin yangi qiymatni ifodaga uzatadi.
+
+### Middle level
+5. **Savol:** Short-circuit evaluation qanday ishlaydi va uning foydasi nima?
+   * **Javob:** Bu mantiqiy ifoda natijasi aniq bo'lgach, qolgan qismni hisoblamaslikdir. Bu kodning ishlash tezligini oshiradi va xatolar oldini olishda (masalan, obyektdan xossani olishdan oldin obyekt mavjudligini tekshirishda) yordam beradi.
+6. **Savol:** `??` (Nullish coalescing) operatori `||` (Logical OR) dan nimasi bilan farq qiladi?
+   * **Javob:** `||` operatori har qanday falsy (`false`, `0`, `""`, `NaN`, `null`, `undefined`) qiymatda default qiymatga o'tadi. `??` esa faqat `null` yoki `undefined` bo'lgandagina o'ng tomondagi qiymatni oladi.
+7. **Savol:** Quyidagi kod nima chiqaradi va nima uchun? `console.log(1 + 2 + "3");` va `console.log("1" + 2 + 3);`
+   * **Javob:** Birinchisi `33` chiqaradi (chunki chapdan o'ngga 1+2=3 bajariladi, keyin u matnli "3" bilan ulanadi). Ikkinchisi `123` chiqaradi (chunki birinchi amal matnli bo'lib, keyingi raqamlar ham matn qilib ulanib ketadi).
+8. **Savol:** Logical Assignment operatorlari (`&&=`, `||=`, `??=`) qanday vazifani bajaradi?
+   * **Javob:** Ular o'zgaruvchining joriy qiymati ma'lum bir mantiqiy shartga mos kelgandagina unga yangi qiymat yuklaydi. Masalan, `x ||= y` bu `x = x || y` ifodasining qisqa yozilishidir.
+
+### Senior level
+9. **Savol:** Operator assotsiativligi (Associativity) nima va u qachon ishlaydi?
+   * **Javob:** Prioritetlari teng bo'lgan operatorlar ifodada kelganda, ularning baholanish yo'nalishini (chapdan-o'ngga yoki o'ngdan-chapga) belgilaydi. Masalan, ko'p amallar chapdan o'ngga, lekin `**` yoki `=` o'ngdan chapga ishlaydi.
+10. **Savol:** Bitwise (bitli) operatorlar nima va ularning amaliy qo'llanilishiga misol keltiring.
+    * **Javob:** Sonlarni binary (ikkilik) sanoq tizimidagi bitlar (0 va 1) darajasida qayta ishlovchi operatorlar. Loyihalarda ruxsatnomalar tizimini (permissions mask) saqlashda va xotirani maksimal tejashda ishlatiladi.
+11. **Savol:** Obyektlarni solishtirishda operatorlar qanday ishlaydi? Masalan, `[] == ![]` nima qaytaradi?
+    * **Javob:** Obyektlar solishtirilganda ularning qiymatlari emas, xotiradagi havolalari (references) tekshiriladi. `[] == ![]` ifodasi `true` qaytaradi, chunki `![]` boolean `false` ga aylanadi. Keyin `[] == false` ifodasi esa tiplar majburlanishi natijasida `0 == 0` holiga kelib, `true` bo'ladi.
+12. **Savol:** `typeof` operatori qanday ishlaydi? Nima uchun u funksiyalarni `function` deb qaytaradi, vaholanki funksiyalar ham obyekt?
+    * **Javob:** `typeof` o'zgaruvchining JavaScript-dagi eng asosiy turlaridan biriga tegishliligini aniqlaydi. Funksiyalar texnik jihatdan obyekt bo'lsa-da, u chaqiriluvchan (callable object) bo'lgani uchun interfeys qulayligi nuqtai nazaridan unga alohida `"function"` tipi ajratilgan.
+
+---
+
+## 6. 🛠️ Amaliy Topshiriqlar
+
+Bu bo'limda operatorlarning ustuvorligi (precedence) va ketma-ket baholanish (associativity) tartibini vizual sxema yordamida o'rganamiz. 
+
+### Operatorlar Ustuvorligi va Baholash Oqimi
+
+Quyidagi diagrammada murakkab matematik va mantiqiy ifodalarning JavaScript dvigateli tomonidan qanday ketma-ketlikda va qaysi qoidalar asosida hisoblanishi ko'rsatilgan:
+
+```mermaid
+graph TD
+    classDef precedence fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef associativity fill:#bbf,stroke:#333,stroke-width:2px;
+    
+    Start["Matematik Ifoda: 5 + 3 * 2 ** 2"] --> Parse{"1. Operatorlarni aniqlash"}
+    Parse --> |"+, *, **"| CheckPrecedence{"2. Prioritetlarni solishtirish"}
+    
+    CheckPrecedence --> |"** (Prioritet: 13)"| EvalExp["2 ** 2 = 4"]:::precedence
+    EvalExp --> CheckMul{"3. Keyingi yuqori prioritet"}
+    CheckMul --> |"* (Prioritet: 12)"| EvalMul["3 * 4 = 12"]:::precedence
+    EvalMul --> CheckAdd{"4. Pastroq prioritet"}
+    CheckAdd --> |"+ (Prioritet: 11)"| EvalAdd["5 + 12 = 17"]:::precedence
+    
+    %% Associativity Path
+    Start2["Assotsiativlik (Chapdan O'ngga): 10 - 4 - 2"] --> Parse2{"Bir xil prioritet (- va -)"}
+    Parse2 --> |Chapdan O'ngga| EvalLeft["10 - 4 = 6"]:::associativity
+    EvalLeft --> EvalRight["6 - 2 = 4"]:::associativity
+    
+    Start3["Assotsiativlik (O'ngdan Chapga): a = b = 5"] --> Parse3{"Bir xil prioritet (= va =)"}
+    Parse3 --> |O'ngdan Chapga| EvalRightSide["b = 5"]:::associativity
+    EvalRightSide --> EvalLeftSide["a = (b ning qiymati) ya'ni a = 5"]:::associativity
+```
+
+> [!TIP]
+> Agar kodingiz o'qilishi oson bo'lishini va kutilmagan ustuvorlik xatolaridan holi bo'lishini istasangiz, har doim guruhlash qavslaridan `()` foydalaning. Bu nafaqat ifodani birinchi bajarishga majbur qiladi, balki kodni o'quvchi boshqa dasturchilarga ham tushunishni osonlashtiradi.
+
+---
+
+## 7. 📝 12 ta Mini Test
+
+Ushbu mavzu bo'yicha olgan bilimlaringizni sinab ko'rish uchun mo'ljallangan testlar. Test savollari yordamida mantiqiy amallar, avtomatik tip o'zgartirish, prioritetlar va boshqa qiziqarli holatlarni qayta ko'rib chiqing va mustahkamlang.
+
+---
+
+## 8. 🎯 Real Project Case Study
+
+### API Konfiguratsiyasi va Ruxsatlar Tizimi
+
+Katta real loyihalarda operatorlarning short-circuit xususiyati, nullish coalescing va bitwise amallari birlashtirilib dynamic boshqaruv tizimlari yaratiladi. Quyidagi kod loyihadagi foydalanuvchining ma'lumotlarini qabul qilib, uning ruxsatlarini aniqlaydi va default sozlamalarni yuklaydi:
+
+```javascript
+// 1. Tizimdagi huquqlar (Bitwise flags)
+const PERMISSIONS = {
+  NONE: 0,       // 0000
+  READ: 1,       // 0001
+  WRITE: 2,      // 0010
+  EXECUTE: 4,    // 0100
+  DELETE: 8      // 1000
+};
+
+// 2. Foydalanuvchi obyekti
+const activeUser = {
+  id: 102,
+  username: "kamron_dev",
+  // 0011 (READ va WRITE huquqlari berilgan)
+  permissions: PERMISSIONS.READ | PERMISSIONS.WRITE, 
+  settings: {
+    theme: "light",
+    fontSize: 0, // 0 - amalda falsy lekin to'g'ri qiymat
+    maxUploadSize: null
+  }
+};
+
+// 3. Foydalanuvchi huquqini tekshirish funksiyasi
+function checkUserAccess(user, requiredPermission) {
+  // Bitwise AND (&) yordamida tekshiramiz
+  return (user.permissions & requiredPermission) === requiredPermission;
+}
+
+// 4. Sozlamalarni default qiymatlar bilan yuklash
+function loadConfig(user) {
+  const userSettings = user.settings || {}; // Short-circuit orqali himoya
+  
+  return {
+    // fontSize 0 bo'lsa ham ?? operatori uni saqlab qoladi (|| bo'lsa 14 bo'lardi)
+    fontSize: userSettings.fontSize ?? 14,
+    
+    // maxUploadSize null bo'lgani uchun default 50MB yuklanadi
+    maxUploadSize: userSettings.maxUploadSize ?? 50,
+    
+    // theme bo'sh yoki yo'q bo'lsa default "dark" yuklanadi
+    theme: userSettings.theme || "dark"
+  };
+}
+
+// Sinov natijalari:
+console.log("Yozish ruxsati bormi:", checkUserAccess(activeUser, PERMISSIONS.WRITE)); // true
+console.log("O'chirish ruxsati bormi:", checkUserAccess(activeUser, PERMISSIONS.DELETE)); // false
+
+const finalConfig = loadConfig(activeUser);
+console.log("Yuklangan sozlamalar:", finalConfig);
+// { fontSize: 0, maxUploadSize: 50, theme: "light" }
+```
+
+---
+
+## 9. 🚀 Performance va Optimization
+
+### Bitwise operatorlar orqali mikro-optimallashtirish
+Sonning butun qismini ajratib olishda `Math.floor()` o'rniga double bitwise NOT `~~` yoki bitwise OR `| 0` operatorlaridan foydalanish mumkin:
+```javascript
+const num = 45.67;
+const integer1 = Math.floor(num); // 45 (Standart)
+const integer2 = ~~num;           // 45 (Tezroq ishlaydi, lekin o'qilishi qiyin)
+const integer3 = num | 0;         // 45 (Tezroq)
+```
+*Tavsiya:* Bu kabi mikro-optimallashtirishlarni faqat juda katta hajmdagi matematik hisob-kitoblar bajarilayotgan (masalan, o'yinlar yoki Canvas render qilish) joylarda ishlating. Oddiy biznes loyihalarda kodning o'qilishi (readability) muhimroq.
+
+### Short-Circuit tartibini to'g'ri tanlash
+Mantiqiy `&&` va `||` zanjirlarida eng tez baholanadigan va eng katta ehtimol bilan natijani hal qiladigan shartlarni birinchi navbatda yozing:
+```javascript
+// Noto'g'ri (og'ir funksiya birinchi ishlayapti):
+if (heavyDatabaseCheck() && isCached) { ... }
+
+// To'g'ri (Cached holati false bo'lsa, og'ir funksiya umuman ishga tushmaydi):
+if (isCached && heavyDatabaseCheck()) { ... }
+```
+
+### Strict operatorlarni afzal ko'rish
+Dvigatel `==` operatorini ishlatganda turlarni moslashtirish uchun qo'shimcha vaqt va resurs sarflaydi. `===` operatori esa turlarni o'zgartirmasligi sababli xotira va CPU resurslarini tejaydi.
+
+---
+
+## 10. 📌 Cheat Sheet
+
+| Operator turi | Belgisi | Prioritet | Assotsiativlik | Qisqa izoh |
+| :--- | :--- | :--- | :--- | :--- |
+| **Guruhlash** | `()` | 19 | Chapdan O'ngga | Qavs ichidagi amallar har doim birinchi bajariladi |
+| **A'zolik (Member)** | `.` / `[]` | 18 | Chapdan O'ngga | Obyekt xossalariga kirish |
+| **Postfix Inkrement** | `x++` / `x--` | 15 | Chapdan O'ngga | Qiymatni ishlatib, keyin oshiradi/kamaytiradi |
+| **Prefix Inkrement** | `++x` / `--x` | 14 | O'ngdan Chapga | Qiymatni oshirib, keyin ifodaga uzatadi |
+| **Darajaga ko'tarish**| `**` | 13 | O'ngdan Chapga | Matematik darajaga oshirish |
+| **Ko'paytirish/Bo'lish**| `*` / `/` / `%` | 12 | Chapdan O'ngga | Matematik ko'paytirish, bo'lish va qoldiq |
+| **Qo'shish/Ayrish** | `+` / `-` | 11 | Chapdan O'ngga | Matematik hisoblar yoki matn ulanishi (`+`) |
+| **Taqqoslash** | `<`, `<=`, `>`, `>=` | 9 | Chapdan O'ngga | Qiymatlar o'rtasida munosabatlarni solishtirish |
+| **Tenglik** | `===` / `!==` | 8 | Chapdan O'ngga | Qat'iy tenglik va teng emaslikni tekshirish |
+| **Mantiqiy VA** | `&&` | 5 | Chapdan O'ngga | Barcha shartlar true bo'lsa true qaytaradi |
+| **Mantiqiy YOKI** | `||` | 4 | Chapdan O'ngga | Kamida bitta shart true bo'lsa true qaytaradi |
+| **Nullish Coalescing**| `??` | 4 | Chapdan O'ngga | Faqat null yoki undefined bo'lganda o'ng tomonga o'tadi |
+| **Ternary (Shartli)** | `? :` | 3 | O'ngdan Chapga | Qisqa `if-else` yozilishi |
+| **Qiymat Yuklash** | `=`, `+=`, `**=` | 2 | O'ngdan Chapga | O'zgaruvchilarga yakuniy qiymatlarni saqlash |

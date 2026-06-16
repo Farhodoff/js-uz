@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Heartbeat Status Tracker",
+    "instruction": "Tugunlar ro'yxati (`nodes`), joriy vaqt (`currentTime`) va ruxsat berilgan maksimal kechikish (`timeout`) berilgan. Agar tugun oxirgi marta yuborgan heartbeat vaqtidan beri o'tgan vaqt `timeout` dan katta bo'lsa, uning holatini `'DEAD'` deb belgilang, aks holda `'ALIVE'` bo'lsin. Natijani `{ nodeId: 'ALIVE'|'DEAD' }` ko'rinishida qaytaring.",
+    "startingCode": "function checkNodesStatus(nodes, currentTime, timeout) {\n  // nodes: { nodeA: lastHeartbeatTime, nodeB: lastHeartbeatTime }\n  // Kodni shu yerda yozing\n}",
+    "hint": "nodes ob'ekti kalitlarini aylanib chiqish uchun Object.keys(nodes) yoki for...in ishlating va currentTime - lastHeartbeatTime > timeout shartini tekshiring.",
+    "test": "if (typeof checkNodesStatus !== 'function') return 'checkNodesStatus funksiyasi aniqlanmagan'; const res = checkNodesStatus({ n1: 1000, n2: 2500 }, 3000, 1000); if (res.n1 !== 'DEAD') return 'n1 DEAD bo\\'lishi kerak'; if (res.n2 !== 'ALIVE') return 'n2 ALIVE bo\\'lishi kerak'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Lease Acquire with TTL",
+    "instruction": "Ijara holati (`leaseState`), mijoz IDsi (`clientId`), joriy vaqt (`currentTime`) va TTL (`ttl`) berilgan. Agar ijara bo'sh bo'lsa (ya'ni `owner` qiymati `null` bo'lsa) yoki ijarani oldingi egasi olgan muddat o'tib ketgan bo'lsa (ya'ni `currentTime > expiresAt`), unda ijarani yangi mijozga berib `expiresAt` ni `currentTime + ttl` qiling va `true` qaytaring. Aks holda `false` qaytaring.",
+    "startingCode": "function acquireLease(leaseState, clientId, currentTime, ttl) {\n  // leaseState: { owner: string|null, expiresAt: number }\n  // Kodni shu yerda yozing\n}",
+    "hint": "if (leaseState.owner === null || currentTime > leaseState.expiresAt) shartini tekshiring va mos ravishda ob'ektni yangilab true qaytaring.",
+    "test": "if (typeof acquireLease !== 'function') return 'acquireLease funksiyasi aniqlanmagan'; const state = { owner: 'client1', expiresAt: 1000 }; if (!acquireLease(state, 'client2', 1200, 500)) return 'Muddati o\\'tgan lease qayta olinishi kerak'; if (state.owner !== 'client2' || state.expiresAt !== 1700) return 'Lease yangilanishida xato'; if (acquireLease(state, 'client3', 1500, 500)) return 'Faol lease olinmasligi kerak'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Lease Renewal Loop Simulator",
+    "instruction": "Ijara ob'ekti (`lease`), joriy vaqt (`currentTime`), yangilash chegarasi (`threshold`) va uzaytirish vaqti (`extendBy`) berilgan. Agar ijara tugashiga qolgan vaqt (`expiresAt - currentTime`) `threshold` dan kichik yoki teng bo'lsa, unda `expiresAt` ni `extendBy` qiymatiga oshiring va `true` qaytaring. Agar hali muddat yetarli bo'lsa, hech narsa o'zgartirmang va `false` qaytaring.",
+    "startingCode": "function shouldRenewAndExtend(lease, currentTime, threshold, extendBy) {\n  // lease: { owner: string, expiresAt: number }\n  // Kodni shu yerda yozing\n}",
+    "hint": "expiresAt dan currentTime ni ayiring va threshold bilan solishtiring. Shart bajarilsa, expiresAt ni extendBy ga qo'shib yangilang.",
+    "test": "if (typeof shouldRenewAndExtend !== 'function') return 'shouldRenewAndExtend topilmadi'; const lease = { owner: 'n1', expiresAt: 1500 }; if (!shouldRenewAndExtend(lease, 1000, 600, 1000)) return 'Ijara yangilanishi kerak edi'; if (lease.expiresAt !== 2500) return 'expiresAt yangilanmadi'; if (shouldRenewAndExtend(lease, 1100, 300, 1000)) return 'Ijara muddat yetarli bo\\'lsa yangilanmasligi kerak'; return null;"
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "CAP teoremasi nima?",
+    "options": [
+      "Tarqoq tizimlarda Consistency, Availability va Partition Tolerance-ni bir vaqtda to'liq ta'minlash mumkinligini isbotlovchi teorema",
+      "Tarqoq tizimlarda ma'lumotlar o'zgarishi va kechikishi o'rtasidagi bog'liqlik yo'qligini ko'rsatuvchi formula",
+      "Tarqoq tizimlarda Consistency, Availability va Partition Tolerance-dan faqat ikkitasini bir vaqtda ta'minlash mumkinligini ko'rsatuvchi teorema",
+      "Ma'lumotlar bazasining tezligini o'lchaydigan ko'rsatkich"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Eric Brewer teoremasiga ko'ra, tarqoq tizimlarda Consistency, Availability va Partition Tolerance xususiyatlaridan faqat ikkitasini bir vaqtda kafolatlash mumkin."
+  },
+  {
+    "id": 2,
+    "question": "Nima uchun real tarmoqlarda CA (Consistency + Availability) tizim bo'lishi mumkin emas?",
+    "options": [
+      "Chunki jismoniy tarmoqlarda uzilishlar (Partitions) yuz berishi muqarrar va buni chetlab o'tib bo'lmaydi",
+      "Chunki dasturchilar bunga ruxsat bermaydi",
+      "Chunki bunday tizimlar juda qimmat turadi",
+      "CA tizimlar aslida mavjud, masalan Cassandra bunga misol"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tarmoq uzilishi (P) jismoniy dunyoda muqarrar bo'lganligi sababli, har qanday tarqoq tizim P yuz berganda C va A o'rtasida tanlov qilishi shart. CA variant emas."
+  },
+  {
+    "id": 3,
+    "question": "PACELC teoremasidagi 'Else' (normal holat) nimani anglatadi?",
+    "options": [
+      "Tarmoq bo'lingan (Partition) holat",
+      "Tarmoqda hech qanday uzilish bo'lmagan, normal ish rejimi",
+      "Server butunlay o'chib qolgan holat",
+      "Foydalanuvchilar soni keskin kamaygan holat"
+    ],
+    "correctAnswer": 1,
+    "explanation": "PACELC teoremasida 'Else' (E harfi) tarmoq bo'linmagan, ya'ni hamma narsa normal ishlayotgan paytdagi holatni anglatadi."
+  },
+  {
+    "id": 4,
+    "question": "PACELC bo'yicha 'PA/EL' qanday ma'noni anglatadi?",
+    "options": [
+      "Bo'linishda Availability, normal holatda Latency tanlanadi",
+      "Bo'linishda Consistency, normal holatda Latency tanlanadi",
+      "Bo'linishda Availability, normal holatda Consistency tanlanadi",
+      "Bo'linishda Consistency, normal holatda Consistency tanlanadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "PACELC formulasi: If Partition (P) choose Availability (A), Else (E) choose Latency (L). Bu PA/EL dir."
+  },
+  {
+    "id": 5,
+    "question": "MongoDB PACELC tasnifiga ko'ra qaysi guruhga kiradi?",
+    "options": [
+      "PA/EL",
+      "PC/EC",
+      "PA/EC",
+      "PC/EL"
+    ],
+    "correctAnswer": 1,
+    "explanation": "MongoDB tarmoq bo'linganda ham (P), normal holatda ham (E) kuchli Consistency-ni (C) birinchi o'ringa qo'yadi. Shuning uchun u PC/EC tizimdir."
+  },
+  {
+    "id": 6,
+    "question": "Quorum formulasida W + R > N sharti nimani kafolatlaydi?",
+    "options": [
+      "Tizimning 100% mavjud (Available) bo'lishini",
+      "O'qish so'rovi har doim eng oxirgi yozilgan to'g'ri qiymatni olishini (Strong Consistency)",
+      "Tarmoq uzilishlari umuman sodir bo'lmasligini",
+      "Ma'lumotlar bazasining avtomatik sharding bo'lishini"
+    ],
+    "correctAnswer": 1,
+    "explanation": "W + R > N shartida o'qish va yozish to'plamlari kamida bitta umumiy replikada kesishadi, natijada o'qish har doim eng yangi yozilgan qiymatni oladi."
+  },
+  {
+    "id": 7,
+    "question": "N = 5, W = 3, R = 3 kvorum konfiguratsiyasi qanday consistency darajasini beradi?",
+    "options": [
+      "Eventual Consistency, chunki yozish va o'qish replikalari kesishmaydi",
+      "Kuchli Consistency, chunki 3 + 3 = 6 > 5",
+      "Hech qanday ma'lumot yozib bo'lmaydi, chunki N toq son",
+      "Weak Consistency"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Chunki W + R = 6 bo'lib, u N (5) dan katta. Bu kuchli consistency (strong consistency) beradi."
+  },
+  {
+    "id": 8,
+    "question": "Cassandra ma'lumotlar bazasi PACELC bo'yicha qaysi guruhga kiradi?",
+    "options": [
+      "PC/EC",
+      "PA/EL",
+      "PC/EL",
+      "PA/EC"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Cassandra asosan tarmoq bo'linganda Availability (A) va normal holatda Latency (L) uchun optimallashtirilgan, ya'ni PA/EL tizimdir."
+  },
+  {
+    "id": 9,
+    "question": "CAP-dagi Consistency (Muvofiqlik) nima degani?",
+    "options": [
+      "Ma'lumotlarning bazadagi constraint qoidalariga rioya etishi",
+      "Har qanday o'qish so'rovida barcha replikalar darhol eng oxirgi yozilgan ma'lumotni ko'rishi (Linearizability)",
+      "Serverning doimo 200 OK javobini qaytarishi",
+      "Bazaning hech qachon o'chib qolmasligi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CAP-dagi Consistency bu tarqoq tugunlar orasida barcha so'rovlar uchun bir xil va eng yangi ma'lumot ko'rinishi (Linearizability) demakdir."
+  },
+  {
+    "id": 10,
+    "question": "Spanner qanday qilib CP tizim bo'lishiga qaramay juda yuqori availability ko'rsatadi?",
+    "options": [
+      "U tarqoq tizim emas, bitta serverda ishlaydi",
+      "U TrueTime API (GPS va atom soatlari) yordamida replikalararo vaqtni sinxronlab kechikishlarni minimal qiladi",
+      "U o'qish operatsiyalarini umuman tekshirmaydi",
+      "U tarmoq uzilishlarini (P) butunlay taqiqlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Google Spanner jismoniy atom soatlari va GPS yordamida butun dunyo bo'ylab kechikish va replikatsiya sinxronizatsiyasini shunchalik mukammal qilganki, amalda yuqori darajada available bo'lib ko'rinadi."
+  },
+  {
+    "id": 11,
+    "question": "Junior dasturchilarning CAP bo'yicha eng ko'p qiladigan xatosi nima?",
+    "options": [
+      "Tarqoq tizim dizaynida CA (Consistency + Availability) ni tanlash mumkin deb o'ylash",
+      "Bazani index-larsiz ishlatish",
+      "NoSQL bazalarni haddan taxation ko'p ishlatish",
+      "REST o'rniga gRPC ishlatish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Juniorlar ko'pincha tarmoq uzilishi (P) muqarrar ekanligini hisobga olmay, real tarqoq tizimda ham C, ham A ni bir vaqtda to'liq saqlab qolmoqchi bo'lishadi."
+  },
+  {
+    "id": 12,
+    "question": "Read Repair mexanizmi nima?",
+    "options": [
+      "Ma'lumot yozish jarayonida diskni formatlash",
+      "O'qish so'rovi davomida aniqlangan eski ma'lumotni fon rejimida eng yangi ma'lumot bilan yangilab qo'yish",
+      "O'qib bo'lmaydigan buzilgan fayllarni o'chirish",
+      "Tizimni qayta yuklash (Reboot)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Read Repair - o'qish paytida aniqlangan eski replika ma'lumotlarini fon rejimida yangi qiymat bilan avtomatik tuzatish mexanizmidir."
+  }
+]

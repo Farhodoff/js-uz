@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "ACID va BASE modellarining asosiy farqi nimada?",
+    "options": [
+      "ACID har doim kuchli moslikni (Strong Consistency) kafolatlaydi, BASE esa ma'lum vaqt o'tgach keladigan moslikka (Eventual Consistency) ruxsat beradi",
+      "ACID faqat NoSQL bazalarda, BASE esa faqat relyatsion (SQL) bazalarda ishlaydi",
+      "BASE modeli tranzaksiyalarni tezlashtiradi, lekin hech qanday xatolikni tiklay olmaydi",
+      "ACID tranzaksiyalari tarmoq bo'linishiga chidamli emas, BASE esa mutlaq izolyatsiyani ta'minlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "ACID ma'lumotlarning har lahzada 100% to'g'ri bo'lishini talab qiladi. BASE esa tizim tezroq ishlashi uchun vaqtinchalik mos emaslik (Soft State) va oxir-oqibat moslik (Eventual Consistency) qoidalariga asoslanadi."
+  },
+  {
+    "id": 2,
+    "question": "Two-Phase Commit (2PC) protokolining Prepare (Tayyorgarlik) bosqichida nima sodir bo'ladi?",
+    "options": [
+      "Koordinator barcha ishtirokchi tugunlardan mahalliy tranzaksiyani bajarishga tayyorligini so'raydi va ularning ovozlarini yig'adi",
+      "Koordinator barcha tugunlarga ma'lumotlarni darhol commit qilishni buyuradi",
+      "Mijoz so'rov sarlavhasida idempotency kalitini generatsiya qiladi",
+      "Faqat bitta asosiy server tranzaksiyani tekshirib, qolganlarini bloklaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Prepare bosqichida koordinator ishtirokchi bazalardan tranzaksiyani yozishga tayyorligini so'raydi. Ishtirokchilar resurslarni qulflaydi va tayyor bo'lsa 'VOTE_COMMIT', bo'lmasa 'VOTE_ABORT' javobini berishadi."
+  },
+  {
+    "id": 3,
+    "question": "2PC (Ikki fazali tasdiqlash) protokolining eng katta kamchiligi nima?",
+    "options": [
+      "Bloklanish muammosi: agar Prepare bosqichidan keyin koordinator ishdan chiqsa, ishtirokchilar resurslarni qulflagancha kutib qolishadi",
+      "Uning faqat NoSQL ma'lumotlar bazalarida ishlashi",
+      "Unga ko'ra ma'lumotlar faqat bitta replikada saqlanishi kerakligi",
+      "Har bir so'rov uchun idempotency kalitini majburiy talab qilishi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "2PC bloklanuvchi protokol hisoblanadi. Agar koordinator ovozlar yig'ilgandan keyin va qaror qabul qilishdan oldin o'chib qolsa, ishtirokchilar tranzaksiyani commit ham, abort ham qila olmay resurslarni band qilib turaveradi."
+  },
+  {
+    "id": 4,
+    "question": "3PC (Uch fazali tasdiqlash) protokoli 2PC dagi bloklanish muammosini qanday hal qilishga urinadi?",
+    "options": [
+      "Oraliq Pre-Commit bosqichini va taym-autlarga asoslangan bekor qilish mexanizmlarini qo'shish orqali",
+      "Tranzaksiyani butunlay asinxron va navbatsiz bajarish orqali",
+      "Koordinator rolini tizimdan butunlay olib tashlash orqali",
+      "Ma'lumotlar bazasini faqat o'qish rejimiga o'tkazish orqali"
+    ],
+    "correctAnswer": 0,
+    "explanation": "3PC protokoli tayyorlanish va tasdiqlash bosqichlari orasiga Pre-Commit bosqichini qo'shadi va tugunlar uchun taym-aut belgilaydi. Agar koordinator belgilangan vaqtda javob bermasa, tugunlar o'zlari tranzaksiyani bekor qilishlari yoki davom ettirishlari mumkin."
+  },
+  {
+    "id": 5,
+    "question": "Saga pattern (Saga andozasi) nima?",
+    "options": [
+      "Ketma-ket keluvchi mahalliy tranzaksiyalar zanjiri bo'lib, har bir qadam muvaffaqiyatsiz bo'lganda oldingilarini bekor qiluvchi kompensatsiya tranzaksiyalariga ega tizim",
+      "Barcha SQL so'rovlarini keshlovchi maxsus Redis kutubxonasi",
+      "Taqsimlangan ma'lumotlar bazalarida replikatsiyani boshqaruvchi drayver",
+      "Faqat foydalanuvchi parolini shifrlaydigan xavfsizlik protokoli"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Saga mikroservislarda tranzaksiyalarni boshqarish uchun ishlatiladi. Unda bitta katta global tranzaksiya o'rniga kichik mahalliy tranzaksiyalar ishlatiladi va xatolik bo'lsa, kompensatsiya (refund/release) yordamida orqaga qaytariladi."
+  },
+  {
+    "id": 6,
+    "question": "Saga-da Orchestration va Choreography yondashuvlarining asosiy farqi nimada?",
+    "options": [
+      "Orchestration-da markaziy boshqaruvchi (Orchestrator) bo'ladi, Choreography-da esa servislar voqealar (events) orqali o'zaro asinxron bog'lanadi",
+      "Choreography faqat sinxron HTTP so'rovlari uchun mo'ljallangan, Orchestration esa faqat NoSQL bazalarda ishlaydi",
+      "Orchestration-da kompensatsiya tranzaksiyalari bo'lmaydi, Choreography-da esa bor",
+      "Choreography har doim bitta ma'lumotlar bazasiga yozishni talab qiladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Orchestrator markaziy o'yinchi bo'lib, har bir qadamni boshqaradi. Choreography-da esa har bir servis o'z ishini tugatgach voqea (event) chiqaradi va boshqa servislar bu voqealarga mustaqil reaksiya bildirishadi."
+  },
+  {
+    "id": 7,
+    "question": "Saga andozasida kompensatsiya tranzaksiyasi (Compensating Transaction) nima?",
+    "options": [
+      "Avval bajarilgan va tasdiqlangan mahalliy tranzaksiyaning biznes natijasini teskari amal bilan bekor qiluvchi tranzaksiya",
+      "Dasturchining xizmat haqini avtomatik hisoblab beruvchi funksiya",
+      "Barcha serverlarni o'chirib, ma'lumotlarni qayta tiklovchi skript",
+      "Foydalanuvchining hisobidagi pulni tekshiruvchi read-only so'rov"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Kompensatsiya tranzaksiyasi — oldingi muvaffaqiyatli qadamni bekor qiluvchi mantiqdir. Masalan, agar pul yechilgan bo'lsa (charge), uning kompensatsiyasi pulni qaytarish (refund) hisoblanadi."
+  },
+  {
+    "id": 8,
+    "question": "Nima uchun Saga patterns an'anaviy ACID kabi to'liq 'Isolation' (Izolyatsiya)ga ega emas?",
+    "options": [
+      "Chunki har bir mahalliy tranzaksiya darhol commit qilinadi va uning natijalari butun Saga tugashidan oldin boshqalarga ko'rinadi",
+      "Chunki Saga faqat bitta serverda va bitta oqimda ishlaydi",
+      "Chunki u ma'lumotlar bazasini qulflashga mutlaqo yo'l qo'ymaydi",
+      "Chunki u tranzaksiyani faqat o'qish (read-only) rejimida bajara oladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Saga-da har bir servis o'z bazasiga yozib, darhol commit qiladi. Butun jarayon hali oxiriga yetmagan bo'lsa ham, boshqa mijozlar o'sha bazadagi yangi ma'lumotni ko'ra olishadi (soft state), bu esa izolyatsiyaning yo'qligini bildiradi."
+  },
+  {
+    "id": 9,
+    "question": "Transactional Outbox Pattern-ning asosiy maqsadi nima?",
+    "options": [
+      "Mahalliy baza o'zgarishi va xabar navbatiga event yuborishni bitta tranzaksiya ichida kafolatlab, xabarlar yo'qolishining oldini olish",
+      "Foydalanuvchiga asinxron elektron xat yuborish tezligini oshirish",
+      "Ma'lumotlar bazasidagi JOIN so'rovlarini avtomatik optimallashtirish",
+      "Barcha HTTP xatoliklarini Outbox deb nomlangan maxsus faylga yozish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Outbox andozasi ma'lumot yozish va unga mos eventni brokerga yuborish orasidagi nomuvofiqlikni hal qiladi. Har ikkisi bitta bazaga bitta tranzaksiya ichida yozilgani sababli, ma'lumot ham, event ham kafolatli saqlanadi."
+  },
+  {
+    "id": 10,
+    "question": "Outbox andozasidagi Message Relayer (Xabarni yetkazuvchi) vazifasi nima?",
+    "options": [
+      "Outbox jadvalini doimiy o'qib, hali yuborilmagan xabarlarni brokerga yuborish va ularni yuborilgan deb belgilash",
+      "Foydalanuvchi parollarini shifrlab xavfsizlikni tekshirish",
+      "API shlyuz (API Gateway) orqali kelayotgan so'rovlarni load balance qilish",
+      "Tarmoqdagi sekin ulanishlarni avtomatik uzib qo'yish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Message Relayer orqa fonda ishlab, outbox jadvalidagi yuborilmagan xabarlarni brokerga (masalan, Kafka/RabbitMQ) yuboradi va statusini o'zgartiradi. Agar tarmoq uzilsa, keyinroq yana urinib ko'radi (at-least-once)."
+  },
+  {
+    "id": 11,
+    "question": "Taqsimlangan tizimlarda Idempotentlik (Idempotency) nima degani?",
+    "options": [
+      "Bir xil so'rovni bir necha marta yuborganda ham tizim holati faqat birinchi so'rovdagidek o'zgarishi va bir xil natija qaytarishi",
+      "Serverning bir vaqtning o'zida juda ko'p parallel so'rovlarni qabul qila olish xususiyati",
+      "Ma'lumotlar bazasini bir nechta serverga nusxalash tezligi",
+      "Tizimning xakerlik hujumlariga qarshi himoyalanganlik darajasi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Idempotentlik — operatsiya necha marta chaqirilishidan qat'i nazar, tizim holatiga faqat bir marta ta'sir qilishidir. Masalan, bir xil buyurtma uchun to'lovni 3 marta bossak ham, pul faqat 1 marta yechilishi kerak."
+  },
+  {
+    "id": 12,
+    "question": "Real loyihalarda Idempotency Key (Idempotentlik kaliti) odatda qayerda generatsiya qilinadi?",
+    "options": [
+      "Mijoz tomonida (masalan, frontend dasturda) so'rov yuborishdan oldin",
+      "Ma'lumotlar bazasida tranzaksiya to'liq commit qilingandan keyin",
+      "Message broker ichida xabarlarni marshrutlash paytida",
+      "Operatsion tizimning yadro (kernel) darajasida"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Idempotentlik kaliti (masalan, UUID) mijoz tomonidan yaratiladi va so'rov sarlavhasida serverga yuboriladi. Agar so'rov uzilib qolsa, mijoz aynan shu kalit bilan so'rovni qayta yuboradi, server esa uni tanib oladi."
+  }
+]

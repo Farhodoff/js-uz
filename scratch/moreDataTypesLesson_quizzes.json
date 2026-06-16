@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "`null` nima?",
+    "options": [
+      "Qiymat berilmagan va tizim tomonidan avtomatik qo'yilgan o'zgaruvchi holati",
+      "Dasturchi tomonidan qasddan belgilangan bo'sh yoki mavjud bo'lmagan qiymat ko'rsatkichi",
+      "Istallgan xatolik yuz berganda qaytadigan maxsus obyekt turi",
+      "Hech qachon o'zgarmaydigan o'zgarmas o'zgaruvchi kaliti"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`null` — bu o'zgaruvchining qiymati qasddan \"bo'sh\" yoki \"hech narsa\" qilib belgilanganligini anglatadi. Tizim tomonidan avtomatik qo'yiladigan qiymat esa `undefined` hisoblanadi."
+  },
+  {
+    "id": 2,
+    "question": "`typeof null` JavaScript-da nima qaytaradi?",
+    "options": [
+      "\"null\"",
+      "\"undefined\"",
+      "\"object\"",
+      "\"symbol\""
+    ],
+    "correctAnswer": 2,
+    "explanation": "Bu JavaScript tilining birinchi versiyasidan qolib ketgan tarixiy va mashhur xatodir. `null` aslida obyekt emas (u ibtidoiy - primitive tur), lekin `typeof null` har doim `\"object\"` qaytaradi."
+  },
+  {
+    "id": 3,
+    "question": "`null == undefined` va `null === undefined` natijalari mos ravishda qanday bo'ladi?",
+    "options": [
+      "`true` va `false`",
+      "`false` va `true`",
+      "`true` va `true`",
+      "`false` va `false`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Nomuhim solishtirishda (`==`) tiplar avtomatik o'zgartiriladi va `null == undefined` har doim `true` qaytaradi. Qat'iy solishtirishda (`===`) esa tiplar ham solishtirilgani uchun `false` bo'ladi, chunki biri Null turi, ikkinchisi esa Undefined turidir."
+  },
+  {
+    "id": 4,
+    "question": "`Symbol`ning eng asosiy xususiyati nimadan iborat?",
+    "options": [
+      "U barcha sonlarni avtomat ravishda butun songa o'tkazadi",
+      "U mutlaqo noyob (unique) va o'zgarmas (immutable) qiymat hisoblanadi",
+      "Uni faqat satrlar (strings) bilan qo'shib ishlatish mumkin",
+      "U brauzer xotirasini avtomatik tozalaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Har bir `Symbol()` chaqiruvi mutlaqo noyob va takrorlanmas qiymat qaytaradi. Hatto bir xil tavsif berilgan bo'lsa ham (`Symbol('a') === Symbol('a')`), ular o'zaro teng bo'lmaydi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconst sym1 = Symbol('maxfiy');\nconst sym2 = Symbol('maxfiy');\nconsole.log(sym1 === sym2);\n```",
+    "options": [
+      "`true`",
+      "`false`",
+      "`undefined`",
+      "`TypeError: Cannot compare symbols`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Har bir yaratilgan Symbol o'ziga xos va noyobdir. Tavsifi (`'maxfiy'`) bir xil bo'lsa ham, `sym1` va `sym2` xotirada mutlaqo alohida identifikatorlardir. Shuning uchun ularning tengligi `false` qaytaradi."
+  },
+  {
+    "id": 6,
+    "question": "Obyekt kaliti sifatida Symbol ishlatilganda, uni oddiy `for...in` sikli yordamida o'qish mumkinmi?",
+    "options": [
+      "Ha, chunki barcha kalitlar bir xil o'qiladi",
+      "Yo'q, chunki Symbol kalitlari `for...in` va `Object.keys()` uchun yashirin qoladi",
+      "Faqat `Symbol.for()` yordamida yaratilgan bo'lsa o'qish mumkin",
+      "Faqat qat'iy rejim ('use strict') o'chirilgan bo'lsa o'qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Symbol kalitli xossalar yashirin (hidden) bo'lib, oddiy sikllarda (`for...in`) yoki standart metodlarda (`Object.keys()`, `Object.getOwnPropertyNames()`) ko'rinmaydi. Ularni o'qish uchun `Object.getOwnPropertySymbols()` yoki `Reflect.ownKeys()` ishlatilishi kerak."
+  },
+  {
+    "id": 7,
+    "question": "Global darajada ro'yxatdan o'tgan va bir xil nom bilan hamma joyda bir xil Symbol qaytaradigan metod qaysi?",
+    "options": [
+      "`Symbol.create()`",
+      "`Symbol.for()`",
+      "`Symbol.keyFor()`",
+      "`Symbol.global()`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Symbol.for(key)` metodi global symbol reyestridan berilgan `key` bo'yicha Symbol qidiradi. Agar u mavjud bo'lsa o'shani qaytaradi, yo'q bo'lsa yangi yaratib reyestrga qo'shadi. Natijada `Symbol.for('app') === Symbol.for('app')` har doim `true` bo'ladi."
+  },
+  {
+    "id": 8,
+    "question": "BigInt nima uchun ishlatiladi?",
+    "options": [
+      "Juda kichik, mikroskopik kasr sonlar bilan aniq ishlash uchun",
+      "JavaScript-dagi standart `Number` turi sig'dira olmaydigan juda katta butun sonlar bilan ishlash uchun",
+      "Obyekt ichidagi xossalarni xavfsiz klonlash uchun",
+      "Faol 16-lik sanoq tizimidagi sonlarni o'girish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JS da `Number` turi safe limitga ega (`Number.MAX_SAFE_INTEGER` = 2^53 - 1). BigInt butun sonlar ustida chegarasiz aniqlik bilan ishlash imkoniyatini beradi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi kod bajarilganda nima yuz beradi?\n```javascript\nconst result = 10n + 5;\n```",
+    "options": [
+      "`15n` butun soni qaytadi",
+      "`15` oddiy soni qaytadi",
+      "`TypeError` xatoligi yuz beradi",
+      "Natija `NaN` bo'ladi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript-da BigInt va oddiy Number turlarini to'g'ridan-to'g'ri birga matematik amallarda ishlatish taqiqlangan, chunki bu precision (aniqlik) yo'qolishiga olib kelishi mumkin. Shuning uchun `TypeError` xatosi kelib chiqadi."
+  },
+  {
+    "id": 10,
+    "question": "BigInt qiymatini qanday e'lon qilish mumkin?",
+    "options": [
+      "Son oxiriga `b` harfini qo'shish orqali (masalan, `100b`)",
+      "Son oxiriga `n` harfini qo'shish yoki `BigInt()` funksiyasini chaqirish orqali (masalan, `100n` yoki `BigInt(100)`)",
+      "Son boshiga `#` belgisini qo'yish orqali (masalan, `#100`)",
+      "Faol faqat maxsus `new BigInt()` konstruktori yordamida"
+    ],
+    "correctAnswer": 1,
+    "explanation": "BigInt yaratishning ikkita yo'li bor: son oxiriga `n` qo'shish (masalan `100n`) yoki `BigInt(qiymat)` funksiyasidan foydalanish. `BigInt` konstruktor emas, shuning uchun `new BigInt()` xatolikka olib keladi."
+  },
+  {
+    "id": 11,
+    "question": "BigInt bilan qaysi standard obyekt metodlarini ishlatib bo'lmaydi?",
+    "options": [
+      "`console.log()`",
+      "`.toString()`",
+      "`Math` obyektining metodlarini (masalan, `Math.max()`, `Math.sqrt()`)",
+      "Solishtirish operatorlarini (`>`, `<`)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`Math` obyekti metodlari faqat oddiy `Number` tipidagi qiymatlar bilan ishlaydi va BigInt uzatilganda `TypeError` beradi. Solishtirish operatorlari esa BigInt va Number o'rtasida ishlayveradi (masalan, `2n > 1` true beradi)."
+  },
+  {
+    "id": 12,
+    "question": "Nima uchun BigInt o'zgaruvchisini to'g'ridan-to'g'ri `JSON.stringify()` orqali satrga o'girib bo'lmaydi?",
+    "options": [
+      "JSON spetsifikatsiyasida BigInt ko'rinishidagi sonlar qo'llab-quvvatlanmaydi, shuning uchun JS xatolik qaytaradi",
+      "BigInt faqat brauzerda ishlaydi, serverga yuborib bo'lmaydi",
+      "`JSON.stringify()` faqat obyektlar bilan ishlaydi, ibtidoiy turlar bilan emas",
+      "BigInt juda tez o'zgaruvchan qiymat bo'lgani uchun"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JSON standarti BigInt-ni tanimaydi. BigInt o'z ichiga olgan obyektni stringify qilmoqchi bo'lsak, `TypeError: Do not know how to serialize a BigInt` xatoligi chiqadi. Buni tuzatish uchun uni satrga (`toString()`) yoki oddiy son formatiga o'tkazish kerak."
+  }
+]

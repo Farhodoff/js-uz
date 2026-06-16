@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da `for` siklining sintaksisida qaysi uchta qism qavs ichida nuqtali vergul (`;`) bilan ajratiladi?",
+    "options": [
+      "initialization; condition; increment/decrement",
+      "start, stop, step",
+      "condition; check; update",
+      "declaration: condition: execution"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`for` siklining standart sintaksisi `for (initialization; condition; update)` ko'rinishida bo'lib, uning qismlari nuqtali vergul (;) bilan ajratiladi."
+  },
+  {
+    "id": 2,
+    "question": "`while` va `do-while` sikllarining eng asosiy farqi nimada?",
+    "options": [
+      "`while` sikli kamida bir marta bajariladi, `do-while` esa shart noto'g'ri bo'lsa umuman bajarilmaydi",
+      "`do-while` sikli har doim kamida bir marta bajariladi, hatto shart boshidanoq noto'g'ri (false) bo'lsa ham. `while` esa birinchi bo'lib shartni tekshiradi",
+      "`while` faqat sonlar bilan ishlaydi, `do-while` esa satrlar (string) bilan ishlaydi",
+      "Hech qanday farqi yo'q, ikkalasi ham bir xil ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`do-while` siklida kod bloki shart tekshirilishidan oldin ishga tushadi, shuning uchun shart boshidanoq noto'g'ri bo'lsa ham blok kamida bir marta ishlaydi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi kod bajarilganda `count` o'zgaruvchisining yakuniy qiymati qancha bo'ladi?\n```javascript\nlet count = 0;\nfor (let i = 0; i < 5; i++) {\n  if (i === 3) break;\n  count++;\n}\n```",
+    "options": [
+      "3",
+      "4",
+      "5",
+      "0"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Sikl i = 0, 1, 2 bo'lganda ishlaydi va count 3 marta oshadi. i = 3 bo'lganda shart bajariladi va `break` orqali sikldan chiqib ketiladi. Shunda count = 3 bo'lib qoladi."
+  },
+  {
+    "id": 4,
+    "question": "`continue` kalit so'zi siklda qanday vazifani bajaradi?",
+    "options": [
+      "Siklni butunlay to'xtatadi va undan chiqib ketadi",
+      "Siklning joriy qadamini (iteratsiyasini) to'xtatib, darhol keyingi qadamga o'tadi",
+      "Dasturni to'liq to'xtatib, xatolik qaytaradi",
+      "Siklni boshidan, ya'ni i = 0 dan qayta boshlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`continue` siklni butunlay to'xtatmaydi, balki hozirgi iteratsiyadagi qolgan kodlarni tashlab yuborib, siklning navbatdagi iteratsiyasiga o'tadi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kod ishga tushganda konsolga nima chiqadi?\n```javascript\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n```",
+    "options": [
+      "3, 3, 3",
+      "0, 1, 2",
+      "undefined, undefined, undefined",
+      "ReferenceError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Siklda `let` ishlatilgani uchun har bir iteratsiya alohida block scope yaratadi va har bir `setTimeout` o'z qadamidagi `i` ning qiymatini yopib (closure qilib) oladi. Shuning uchun natija ketma-ket 0, 1, 2 chiqadi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kod ishga tushganda konsolga nima chiqadi?\n```javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n```",
+    "options": [
+      "0, 1, 2",
+      "3, 3, 3",
+      "2, 2, 2",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`var` block scope-ga ega emas va global yoki funksiyaviy doiraga ega bo'ladi. Sikl tugagach, `i` ning qiymati 3 ga teng bo'ladi. Hamma `setTimeout` callbacklari ishga tushganda o'sha bitta `i` o'zgaruvchisiga murojaat qiladi, natijada uchta 3 chiqadi."
+  },
+  {
+    "id": 7,
+    "question": "Qaysi holatda cheksiz (infinite) sikl yuzaga keladi?",
+    "options": [
+      "Sikl sharti har doim true bo'lsa va undan chiqish uchun break/return ishlatilmasa",
+      "`do-while` siklida shart false bo'lganda",
+      "`for` siklida increment/decrement qismi yozilmasa, lekin shart o'zgarib borsa",
+      "Sikl ichida `continue` ishlatilganda"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Agar sikl sharti hech qachon false bo'lmasa va ichida break yoki return bo'lmasa, sikl to'xtamaydi va brauzer yoki Node.js jarayoni qotib qolishiga sabab bo'ladi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodda `console.log(i)` necha marta bajariladi?\n```javascript\nlet i = 10;\ndo {\n  console.log(i);\n  i++;\n} while (i < 5);\n```",
+    "options": [
+      "0 marta",
+      "1 marta",
+      "5 marta",
+      "Cheksiz marta"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`do-while` sikli shartni tekshirishdan oldin kod blokini kamida bir marta bajaradi. Boshida i = 10, console.log(i) bajariladi va i = 11 bo'ladi. Keyin 11 < 5 tekshiriladi (false) va sikl to'xtaydi. Shuning uchun 1 marta bajariladi."
+  },
+  {
+    "id": 9,
+    "question": "`for` siklida barcha uchta qismni ham tashlab ketish mumkinmi (masalan: `for (;;)` )?",
+    "options": [
+      "Yo'q, bu sintaktik xatolikka olib keladi",
+      "Ha, lekin bu cheksiz siklni yaratadi va uni to'xtatish uchun ichkarida break bo'lishi kerak",
+      "Ha, faqat agar let ishlatilmagan bo'lsa",
+      "Faqat brauzerning eski versiyalarida mumkin"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da `for (;;)` sintaksisi sintaktik jihatdan to'g'ri hisoblanadi. U cheksiz siklni anglatadi va agar ichida break yoki return bo'lmasa dastur cheksiz davom etadi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet x = 0;\nfor (let i = 0; i < 5; i++) {\n  if (i % 2 === 0) continue;\n  x += i;\n}\nconsole.log(x);\n```",
+    "options": [
+      "4",
+      "6",
+      "9",
+      "10"
+    ],
+    "correctAnswer": 0,
+    "explanation": "i = 0 da continue (x = 0). i = 1 da x += 1 (x = 1). i = 2 da continue (x = 1). i = 3 da x += 3 (x = 4). i = 4 da continue (x = 4). Jami x = 4 bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "JavaScript-dagi obyektdagi kalitlarni (keys) aylanib chiqish uchun qaysi sikl turi ishlatiladi?",
+    "options": [
+      "`for...in` sikli",
+      "`for...of` sikli",
+      "`while...in` sikli",
+      "`do...of` sikli"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`for...in` sikli obyektning barcha enumerable xususiyatlarini (kalitlarini) aylanib chiqish uchun mo'ljallangan. `for...of` esa massiv va shunga o'xshash iterativ obyektlar elementlarining qiymatlarini o'qish uchun ishlatiladi."
+  },
+  {
+    "id": 12,
+    "question": "Massiv elementlarining qiymatlarini (indekslarini emas) to'g'ridan-to'g'ri o'qib aylanib chiqish uchun qaysi sikl turi ishlatiladi?",
+    "options": [
+      "`for...in`",
+      "`for...of`",
+      "`while...in`",
+      "`do...while`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`for...of` sikli massiv, satr va boshqa iterativ obyektlar elementlarining qiymatlarini (values) aylanib chiqish uchun eng qulay va to'g'ri sintaksis hisoblanadi."
+  }
+]

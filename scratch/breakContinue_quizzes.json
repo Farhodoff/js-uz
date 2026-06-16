@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "`break` operatorining asosiy vazifasi nima?",
+    "options": [
+      "Siklning faqat joriy iteratsiyasini tashlab ketish",
+      "Siklni darhol va butunlay to'xtatib, undan chiqib ketish",
+      "Funksiyani tugatib, undan qiymat qaytarish",
+      "Dasturdagi barcha xatolarni avtomatik tuzatish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`break` operatori o'zi joylashgan siklni (yoki switch blokini) darhol to'xtatadi va undan keyingi birinchi kod satriga o'tadi."
+  },
+  {
+    "id": 2,
+    "question": "`continue` operatori nima qiladi?",
+    "options": [
+      "Siklni butunlay to'xtatib yuboradi",
+      "Siklning joriy aylanishini (iteratsiyasini) to'xtatib, navbatdagi aylanishga (iteratsiyaga) o'tadi",
+      "Funksiyadan chiqib ketishni ta'minlaydi",
+      "Sikl tezligini oshirish uchun uni parallel oqimga o'tkazadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`continue` joriy iteratsiyaning qolgan qismidagi kodlarni bajarishni tashlab o'tadi va siklning keyingi qadamiga (update/condition) o'tadi."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nfor (let i = 0; i < 5; i++) {\n  if (i === 2) continue;\n  console.log(i);\n}\n```",
+    "options": [
+      "`0, 1`",
+      "`0, 1, 2, 3, 4`",
+      "`0, 1, 3, 4`",
+      "`3, 4`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`i` qiymati 2 bo'lganda `continue` ishga tushadi va konsolga chiqarish qismini o'tkazib yuboradi. Natijada 2 dan tashqari hamma raqamlar chiqadi: 0, 1, 3, 4."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nfor (let i = 0; i < 5; i++) {\n  if (i === 2) break;\n  console.log(i);\n}\n```",
+    "options": [
+      "`0, 1`",
+      "`0, 1, 3, 4`",
+      "`0, 1, 2`",
+      "`2, 3, 4`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`i` qiymati 2 bo'lganda `break` ishga tushib, siklni butunlay tugatadi. Shuning uchun faqat 0 va 1 chop etiladi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi `while` siklida qanday muammo yuz beradi?\n```javascript\nlet i = 0;\nwhile (i < 5) {\n  if (i === 3) continue;\n  console.log(i);\n  i++;\n}\n```",
+    "options": [
+      "Sintaktik xato (SyntaxError) beradi",
+      "Konsolga `0, 1, 2` chiqadi va dastur tugaydi",
+      "Sikl cheksiz aylanib qoladi (Infinite Loop)",
+      "Konsolga faqat `3` chiqadi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`i === 3` bo'lganda `continue` bajariladi. Natijada pastdagi `i++` kodi bajarilmay qoladi va `i` o'zgarmasdan har doim 3 bo'lib qoladi, bu esa cheksiz siklga olib keladi."
+  },
+  {
+    "id": 6,
+    "question": "JavaScript-da `break` yoki `continue`ni qayerda ishlatish mumkin emas?",
+    "options": [
+      "`for` sikli ichida",
+      "`while` sikli ichida",
+      "Oddiy `if` sharti ichida (siklga aloqador bo'lmagan holda)",
+      "`do...while` sikli ichida"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`break` va `continue` operatorlari faqat sikllar ichida ishlatilishi mumkin (shuningdek `break`ni `switch` ichida ishlatish mumkin). Ularni sikl bo'lmagan joydagi oddiy `if` ichida ishlatish `SyntaxError` keltirib chiqaradi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi massiv metodlarining qaysi biri ichida `break` kalit so'zini ishlatsak `SyntaxError` beradi?",
+    "options": [
+      "Hech birida xato bermaydi",
+      "Faqat `.map()` metodida",
+      "`.forEach()` metodi ichida",
+      "Barcha callback qabul qiluvchi massiv metodlarida (`forEach`, `map`, `filter` va h.k.)"
+    ],
+    "correctAnswer": 3,
+    "explanation": "`forEach`, `map`, `filter` kabi metodlar sikl emas, balki oddiy funksiyalardir. Ularning callback funksiyalari ichida `break` yoki `continue` ishlatilsa, `SyntaxError: Illegal break statement` xatosi chiqadi."
+  },
+  {
+    "id": 8,
+    "question": "`break labelName;` sintaksisi nima uchun ishlatiladi?",
+    "options": [
+      "Faqat birinchi iteratsiyani nomlash uchun",
+      "Ichma-ich joylashgan sikllarda ichki sikldan turib belgilangan tashqi siklni butunlay to'xtatish uchun",
+      "Sikl bajarilish tezligini oshirish uchun",
+      "O'zgaruvchilarga avtomatik qiymat yuklash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Label (belgi) yordamida tashqi siklni nomlash va ichki sikl ichidan `break labelName;` orqali o'sha belgilangan tashqi siklni butunlay to'xtatish (yoki `continue` orqali keyingi qadamga o'tish) mumkin."
+  },
+  {
+    "id": 9,
+    "question": "`return` va `break` o'rtasidagi asosiy farq nima?",
+    "options": [
+      "`return` faqat siklni to'xtatadi, `break` esa butun funksiyani tugatadi",
+      "`return` butun funksiya bajarilishini tugatib qiymat qaytaradi, `break` esa faqat o'zi joylashgan siklni tugatadi",
+      "Ular mutlaqo bir xil vazifani bajaradi",
+      "`break` faqat `while` siklida, `return` esa faqat `for` siklida ishlatiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`return` joriy funksiyani butunlay tugatadi. `break` esa faqat joriy siklni tugatadi va funksiyaning sikldan keyingi qolgan qismi ishlashda davom etadi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nouter: for (let i = 0; i < 3; i++) {\n  for (let j = 0; j < 3; j++) {\n    if (i === 1 && j === 1) {\n      break outer;\n    }\n    console.log(`i:${i},j:${j}`);\n  }\n}\n```",
+    "options": [
+      "`i:0,j:0` keyin `i:0,j:1` keyin `i:0,j:2` keyin `i:1,j:0`",
+      "`i:0,j:0` keyin `i:0,j:1` keyin `i:0,j:2` keyin `i:1,j:0` keyin `i:1,j:2`",
+      "`i:0,j:0` keyin `i:0,j:1` keyin `i:1,j:0`",
+      "Hech narsa chiqmaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Sikl `i=0` bo'lganda to'liq ishlaydi (`j:0,1,2` chiqadi). Keyin `i=1` bo'lib, `j=0` bo'lganda `i:1,j:0` chiqadi. Ammo `i=1, j=1` bo'lganda `break outer` tashqi siklni tugatadi va kod butunlay to'xtaydi."
+  },
+  {
+    "id": 11,
+    "question": "`do...while` siklida `continue` ishlatilganda nima sodir bo'ladi?",
+    "options": [
+      "Sikl shartini tekshirishga (`while` qismiga) o'tiladi",
+      "Sikl boshidagi birinchi qatorga shartsiz qaytiladi",
+      "Sintaktik xato beradi",
+      "Sikl darhol to'xtaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`do...while` siklida `continue` bajarilganda, joriy iteratsiyaning qolgan qismi o'tkazib yuboriladi va dvigatel pastdagi `while (condition)` shartini tekshirishga o'tadi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi massiv metodlaridan qaysi biri ichida `return true` yoki `return false` qilish orqali `break` yoki `continue` kabi erta chiqish effektini hosil qilish mumkin?",
+    "options": [
+      "`.forEach()`",
+      "`.map()`",
+      "`.some()` yoki `.every()`",
+      "Hech qaysi metodda bunday qilib bo'lmaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`.some()` metodi callback `true` qaytargan zaxoti massiv aylanishini to'xtatadi (`break` kabi). `.every()` esa callback `false` qaytargan zaxoti aylanishni to'xtatadi."
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da \"Scope\" (Ko'rinish sohasi) nima?",
+    "options": [
+      "Dasturning bajarilish tezligini o'lchaydigan maxsus vaqt birligi",
+      "O'zgaruvchilar va funksiyalarning kodning qaysi qismlarida ko'rinishi (kirish mumkinligi) va ularning ishlash muddati",
+      "Brauzer oynasining o'lchamlarini aniqlaydigan xossa",
+      "Faqat server qismida ishlaydigan xavfsizlik protokoli"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Scope o'zgaruvchilar va funksiyalarning kodning qaysi qismlarida ko'rinishi va ularga kirish huquqini belgilaydi."
+  },
+  {
+    "id": 2,
+    "question": "JavaScript-da qaysi turdagi ko'rinish sohalari mavjud?",
+    "options": [
+      "Faqat Global va Local scope",
+      "Global, Function va Block scope",
+      "Window, Document va Element scope",
+      "Static, Dynamic va Virtual scope"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da global scope (barcha joyda ko'rinadigan), function scope (funksiya ichida ko'rinadigan) va block scope (let va const bilan blok `{}` ichida cheklangan) mavjud."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi o'zgaruvchi e'lon qilish kalit so'zlaridan qaysilari \"Block Scope\" (blok qamrovi)ga ega?",
+    "options": [
+      "Faqat `var`",
+      "`let` va `const`",
+      "`var` va `let`",
+      "Barcha o'zgaruvchilar (`var`, `let`, `const`)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`let` va `const` faqat e'lon qilingan blok `{}` ichida amal qiladi. `var` esa block scope-ni tan olmaydi va u e'lon qilingan funksiyaga (yoki global doiraga) tegishli bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nif (true) {\n  var x = 5;\n  let y = 10;\n}\nconsole.log(x);\n```",
+    "options": [
+      "`ReferenceError: x is not defined`",
+      "`5`",
+      "`undefined`",
+      "`null`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`var` block scope-ga ega bo'lmagani uchun `x` blokdan tashqarida ham mavjud bo'ladi va uning qiymati 5 ga teng."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nif (true) {\n  let y = 10;\n}\nconsole.log(y);\n```",
+    "options": [
+      "`10`",
+      "`undefined`",
+      "`ReferenceError: y is not defined`",
+      "`null`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`let` yordamida e'lon qilingan o'zgaruvchi faqat o'sha `if` blokining ichida ko'rinadi. Blokdan tashqarida unga murojaat qilinsa, `ReferenceError` xatosi yuz beradi."
+  },
+  {
+    "id": 6,
+    "question": "JavaScript leksik qamrov (Lexical Scope)ga ega deganda nima tushuniladi?",
+    "options": [
+      "O'zgaruvchilar qamrovi funksiya chaqirilgan joyga qarab dinamik ravishda aniqlanadi",
+      "O'zgaruvchilar qamrovi kodning yozilish (e'lon qilinish) vaqtidagi jismoniy joylashuviga ko'ra statik tarzda aniqlanadi",
+      "Kodni faqat qat'iy rejimda (`use strict`) yozish majburiyati",
+      "O'zgaruvchilar faqat harflardan iborat bo'lishi kerakligi qoidasi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript statik yoki leksik qamrovdan foydalanadi. Bu degani, funksiya o'zgaruvchilarini qidirishda funksiya qayerda chaqirilganiga emas, balki kodda qayerda e'lon qilinganiga qaraydi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet name = \"Anvar\";\nfunction greet() {\n  console.log(name);\n}\nfunction test() {\n  let name = \"Sardor\";\n  greet();\n}\ntest();\n```",
+    "options": [
+      "\"Sardor\"",
+      "\"Anvar\"",
+      "`undefined`",
+      "`ReferenceError`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`greet` funksiyasi global doirada e'lon qilingan. Leksik qamrov qoidasiga ko'ra, u o'zining e'lon qilingan joyidagi tashqi doiraga qaraydi, u yerda `name = \"Anvar\"`. `test` ichidagi `name` unga ta'sir qilmaydi."
+  },
+  {
+    "id": 8,
+    "question": "Scope Chain (Qamrovlar Zanjiri) nima?",
+    "options": [
+      "JavaScript-dagi funksiyalarni ketma-ket ulash protokoli",
+      "O'zgaruvchi qidirilayotganda joriy qamrovdan boshlab, to global qamrovgacha bo'lgan tashqi leksik qamrovlar zanjiri bo'yicha yuqoriga qarab qidirish mexanizmi",
+      "DOM elementlarini bir-biriga bog'lash usuli",
+      "Massivlarni birlashtirish zanjiri"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript o'zgaruvchini avval joriy (lokal) scope-dan qidiradi. Topa olmasa, bitta tashqi scope-ga chiqadi va bu jarayon global scope-gacha davom etadi. Bu Scope Chain deyiladi."
+  },
+  {
+    "id": 9,
+    "question": "Variable Shadowing (O'zgaruvchilar soyalanishi) deganda nima tushuniladi?",
+    "options": [
+      "O'zgaruvchini xotiradan butunlay o'chirib tashlash",
+      "Ichki qamrovdagi (masalan, funksiya ichidagi) o'zgaruvchining tashqi qamrovdagi xuddi shu nomli o'zgaruvchini vaqtincha \"to'sib\" (soyalab) qo'yishi",
+      "O'zgaruvchini faqat soya (kulrang) rangda konsolga chiqarish",
+      "Bir nechta o'zgaruvchini bitta qiymatga bog'lash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar ichki qamrovda tashqi qamrovdagi o'zgaruvchi bilan bir xil nomli o'zgaruvchi e'lon qilinsa, ichki qamrov ichida faqat lokal o'zgaruvchi ishlaydi va u tashqi o'zgaruvchini soyalaydi (shadowing)."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nlet a = 1;\nfunction shadow() {\n  let a = 2;\n  console.log(a);\n}\nshadow();\nconsole.log(a);\n```",
+    "options": [
+      "`2` keyin `2`",
+      "`1` keyin `2`",
+      "`2` keyin `1`",
+      "`undefined` keyin `1`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`shadow()` ichida lokal `a = 2` e'lon qilinib, global `a` ni soyalaydi va konsolga `2` chiqadi. Funksiyadan tashqarida esa global `a` o'zining dastlabki `1` qiymatini saqlab qolgan, shuning uchun `1` chiqadi."
+  },
+  {
+    "id": 11,
+    "question": "JavaScript-da \"Global Scope Pollution\" (Global qamrovning ifloslanishi) nima?",
+    "options": [
+      "Global o'zgaruvchilarning juda ko'p xotira egallashi va o'chib ketmasligi",
+      "Juda ko'p global o'zgaruvchilar e'lon qilish natijasida nomlar to'qnashuvi (naming collisions) va kutilmagan xatolar yuzaga kelishi",
+      "Brauzer keshining ortiqcha ma'lumotlar bilan to'lib ketishi",
+      "Kodda juda ko'p izohlar yozish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar juda ko'p o'zgaruvchilar global qamrovda e'lon qilinsa, loyihaning boshqa qismlari yoki kutubxonalar o'sha nomlarni tasodifan o'zgartirib yuborishi mumkin. Bu nomlar to'qnashuvi va kutilmagan xatolarga sabab bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "Strict Mode (`\"use strict\"`) yoqilganda, e'lon qilinmagan o'zgaruvchiga qiymat yuklash nima bilan yakunlanadi?",
+    "options": [
+      "U avtomatik ravishda global o'zgaruvchiga aylanadi",
+      "Kod xatosiz ishlayveradi va hech narsa bo'lmaydi",
+      "`ReferenceError` xatosi yuz beradi",
+      "O'zgaruvchi faqat o'sha fayl ichida local bo'lib qoladi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Strict Mode-da e'lon qilinmagan o'zgaruvchiga qiymat berish taqiqlanadi va u global o'zgaruvchi yaratish o'rniga `ReferenceError` chiqaradi. Bu global scope-ning bexosdan ifloslanishining oldini oladi."
+  }
+]

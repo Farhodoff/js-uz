@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Event-Driven Architecture (EDA) ning eng asosiy g'oyasi nima?",
+    "options": [
+      "Barcha ma'lumotlarni faqat bitta markaziy ma'lumotlar bazasida saqlash",
+      "Tizimlar o'rtasida hodisalar (events) orqali asinxron va bog'lanishsiz (decoupled) aloqa o'rnatish",
+      "Sinxron HTTP so'rovlar yordamida servislar zanjirini bog'lash",
+      "Brauzer sahifasini har soniyada yangilab turish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "EDA tizimlar o'rtasidagi bog'liqlikni kamaytirish (decoupling) uchun yuz bergan hodisalarni asinxron yuborish va qayta ishlashga asoslanadi."
+  },
+  {
+    "id": 2,
+    "question": "RabbitMQ kabi an'anaviy message queue va Kafka kabi event stream tizimlarining eng asosiy farqi nimada?",
+    "options": [
+      "RabbitMQ faqat SQL ma'lumotlarini o'qiydi, Kafka esa faqat NoSQL",
+      "RabbitMQ xabarni consumer o'qib tasdiqlagach (ACK) o'chiradi; Kafka esa xabarlarni diskda (immutable log) saqlab turadi",
+      "Kafka faqat bitta servis ichida ishlaydi, RabbitMQ esa tarqatilgan tizim",
+      "RabbitMQ asinxron ishlay olmaydi, Kafka esa faqat sinxron ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "RabbitMQ - bu transient (vaqtinchalik) broker bo'lib, xabarlarni muvaffaqiyatli o'qilgandan keyin o'chiradi. Kafka esa append-only disk logidan iborat bo'lib, xabarlarni retention period bo'yicha saqlaydi."
+  },
+  {
+    "id": 3,
+    "question": "Kafka tizimida 'Partition' (Bo'lim) nima vazifani bajaradi?",
+    "options": [
+      "Foydalanuvchilarni mamlakatlar bo'yicha guruhlash",
+      "Topic-ni gorizontal bo'laklarga bo'lish orqali parallel o'qish/yozish va masshtablanishni ta'minlash",
+      "Xabarlarni shifrlash kaliti",
+      "O'chirilgan xabarlarni vaqtincha saqlash xotirasi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kafka partitsiyalari yordamida bitta topic ma'lumotlari turli brokerlarga taqsimlanadi va parallel ravishda qayta ishlanadi."
+  },
+  {
+    "id": 4,
+    "question": "'At-least-once' (Kamida bir marta) yetkazib berish kafolatida qanday holat kuzatilishi mumkin?",
+    "options": [
+      "Xabarlar mutlaqo yetib bormaydi",
+      "Xabarlar yo'qolishi mumkin emas, lekin tarmoq uzilishlari sababli dublikat (takroriy) xabarlar kelishi mumkin",
+      "Har bir xabar faqat va faqat bir marta keladi",
+      "Xabarlar tartibi mutlaqo buzilib ketadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "At-least-once kafolatida broker xabarni consumer tasdiqlamaguncha qayta yuboradi, bu esa tarmoq kechikishlarida dublikatlarga olib kelishi mumkin."
+  },
+  {
+    "id": 5,
+    "question": "Tizimda 'Exactly-once' (Rppa-rosa bir marta) yetkazib berishga qanday erishiladi?",
+    "options": [
+      "Faqat tarmoq tezligini oshirish orqali",
+      "At-least-once kafolati va consumer tomonida idempotentlikni (yoki tranzaksiyalarni) qo'llash orqali",
+      "Xabarlarni navbatga yubormaslik orqali",
+      "Barcha consumer-larni o'chirib qo'yish orqali"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Exactly-once mantiqan At-least-once yetkazib berish va consumer-dagi idempotent qayta ishlash (dublikatlarni rad etish) kombinatsiyasi yordamida amalga oshiriladi."
+  },
+  {
+    "id": 6,
+    "question": "Event Sourcing arxitekturasining asosiy g'oyasi nima?",
+    "options": [
+      "Tizimning joriy holatini (state) emas, balki uning holatini o'zgartirgan barcha hodisalar tarixini (immutable events) saqlash",
+      "Ma'lumotlarni faqat vaqtincha xotirada saqlash va server o'chganda o'chirish",
+      "Barcha SQL jadvallarini bitta jadvalga birlashtirish",
+      "Hodisalarni faqat front-endda boshqarish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Event Sourcing tizim holatidagi o'zgarishlarni hodisalar oqimi (journal/event log) ko'rinishida saqlaydi va holatni shu hodisalarni qayta tiklash (replay) orqali aniqlaydi."
+  },
+  {
+    "id": 7,
+    "question": "CQRS (Command Query Responsibility Segregation) namunasi nima?",
+    "options": [
+      "Barcha so'rovlarni bitta funksiyada yozish tartibi",
+      "Ma'lumotlarni o'zgartiruvchi amallar (Write/Command) va ma'lumotlarni o'quvchi amallar (Read/Query) modellarini alohida ajratish",
+      "Faqat xatolar bilan ishlash tizimi",
+      "Ma'lumotlar bazasini har soatda klonlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CQRS yozish (Command) va o'qish (Query) operatsiyalarini va ularning ma'lumotlar modellarini ajratish orqali yuqori unumdorlikka erishadi."
+  },
+  {
+    "id": 8,
+    "question": "RabbitMQ-dagi 'Exchange' nima vazifani bajaradi?",
+    "options": [
+      "Xabarlarni diskda uzoq muddat saqlash",
+      "Producer-dan kelgan xabarlarni binding qoidalari (routing key) asosida tegishli navbatlarga (queues) yo'naltirish",
+      "Foydalanuvchi parolini tekshirish",
+      "Ma'lumotlarni siqish (zip qilish)"
+    ],
+    "correctAnswer": 1,
+    "explanation": "RabbitMQ-da producer to'g'ridan-to'g'ri navbatga yozmaydi; u xabarni Exchange-ga yuboradi, Exchange esa routing qoidalariga ko'ra xabarni navbatlarga tarqatadi."
+  },
+  {
+    "id": 9,
+    "question": "Dead Letter Queue (DLQ) nima uchun xizmat qiladi?",
+    "options": [
+      "Tizimdan o'chirilgan foydalanuvchilarning ro'yxatini saqlash uchun",
+      "Bir necha bor urinishlarga qaramasdan qayta ishlanishida xatolik yuz bergan nosoz xabarlarni keyinchalik tahlil qilish uchun ajratib qo'yish",
+      "Broker tezligini oshirish uchun vaqtincha kesh",
+      "Faqat muvaffaqiyatli tugagan xabarlarni arxivlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "DLQ qayta-qayta error berayotgan xabarlarni asosiy navbatni to'sib qo'ymasligi uchun chetlatib, monitoring uchun saqlashga xizmat qiladi."
+  },
+  {
+    "id": 10,
+    "question": "Kafka-da 'Log Compaction' (Loglarni siqish) nima?",
+    "options": [
+      "Eski xabarlarni zip formatiga o'tkazish",
+      "Mavzu (Topic) ichidagi har bir xabar kaliti uchun faqat eng so'nggi holatni saqlab qolib, eski qiymatli xabarlarni tozalash",
+      "Barcha xabarlarni o'chirib tashlash",
+      "Xabarlar hajmini kamaytirish uchun matnlarni qisqartirish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Log compaction har bir kalit uchun eng oxirgi (eng yangi) xabarni saqlab qolishni kafolatlaydi, bu esa ma'lumotlar hajmini tejaydi."
+  },
+  {
+    "id": 11,
+    "question": "Kafka-dagi 'Consumer Group' (Iste'molchilar guruhi) nima maqsadni ko'zlaydi?",
+    "options": [
+      "Barcha consumer-larni bitta serverda ishga tushirish",
+      "Bir nechta consumer-larga bitta topic partitsiyalarini bo'lib berish orqali parallel va muvozanatlashgan holda xabarlarni qayta ishlash",
+      "Ilova foydalanuvchilarini guruhlash",
+      "Barcha xabarlarni bir vaqtda faqat bitta consumer-ga nusxalash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Consumer Group yordamida topic partitsiyalari guruh a'zolariga bo'linadi, bu esa parallel o'qishni va yuklamani taqsimlashni ta'minlaydi."
+  },
+  {
+    "id": 12,
+    "question": "Transactional Outbox Pattern nima uchun kerak?",
+    "options": [
+      "Faqat elektron xatlarni yuborishni kechiktirish uchun",
+      "Ma'lumotlar bazasini yangilash va brokerga event nashr etishni yagona tranzaksiya ichida kafolatli bajarish uchun",
+      "Bazani shifrlab zaxiralash uchun",
+      "Tarmoqdagi HTTP paketlarni filtrlash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Outbox pattern yordamida biznes ma'lumotlar va yuborilishi kerak bo'lgan eventlar bitta tranzaksiya doirasida bazaga yoziladi (outbox jadvaliga), so'ngra alohida processor ularni brokerga yuboradi. Bu atomiklikni ta'minlaydi."
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da `==` (loose equality) va `===` (strict equality) operatorlari o'rtasidagi asosiy farq nimada?",
+    "options": [
+      "`==` faqat qiymatlarni solishtiradi (va kerak bo'lsa tipni o'zgartiradi), `===` esa qiymatni ham, ma'lumot turini (type) ham tekshiradi",
+      "`===` faqat obyektlarni solishtirish uchun ishlatiladi, `==` esa faqat oddiy o'zgaruvchilarni solishtiradi",
+      "`==` operatori tezroq ishlaydi, `===` esa xavfsiz emas",
+      "Ular orasida umuman farq yo'q, ikkalasi ham bir xil ishlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`==` solishtirishdan oldin tiplarni bir-biriga moslashtiradi (type coercion). `===` esa tiplarni o'zgartirmaydi, agar tiplar har xil bo'lsa darhol `false` qaytaradi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi ifodalarning natijasi mos ravishda nima bo'ladi?\n```javascript\nconsole.log('5' + 3);\nconsole.log('5' - 3);\n```",
+    "options": [
+      "`'53'` (string) va `2` (number)",
+      "`8` (number) va `2` (number)",
+      "`'53'` (string) va `NaN`",
+      "`NaN` va `2` (number)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`+` operatori string ishtirok etganda matnlarni birlashtiradi (concatenation), shuning uchun `'5' + 3` natijasi `'53'` bo'ladi. `-` operatori esa faqat matematik amal bo'lgani uchun stringni songa aylantiradi va `5 - 3 = 2` ni hisoblaydi."
+  },
+  {
+    "id": 3,
+    "question": "Nullish coalescing (`??`) operatori chap tomondagi qiymat qanday bo'lganda o'ng tomondagi qiymatga o'tadi (fallback)?",
+    "options": [
+      "Faqat qiymat `null` yoki `undefined` bo'lganda",
+      "Har qanday falsy (masalan, `0`, `false`, `\"\"`) qiymat bo'lganda",
+      "Faqat qiymat `false` bo'lganda",
+      "Faqat qiymat bo'sh satr `\"\"` bo'lganda"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`??` operatori mantiqiy `||` operatoridan farqli o'laroq, `0` yoki bo'sh satr `\"\"` kabi falsy qiymatlarni inobatga olmaydi, faqatgina `null` va `undefined` holatlaridagina o'ng tomondagi qiymatni qaytaradi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi ifodaning natijasi nima bo'ladi?\n```javascript\nconsole.log(true || false && false);\n```",
+    "options": [
+      "`true`",
+      "`false`",
+      "`undefined`",
+      "`TypeError`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mantiqiy VA (`&&`) operatori mantiqiy YOKI (`||`) operatoriga qaraganda yuqoriroq prioritetga (precedence) ega. Shuning uchun birinchi `false && false` bajarilib `false` chiqadi. So'ng `true || false` bajarilib, yakuniy natija `true` bo'ladi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kod bajarilgandan keyin `x` va `y` qiymatlari nima bo'ladi?\n```javascript\nlet x = 5;\nlet y = x++;\n```",
+    "options": [
+      "`x = 6`, `y = 5`",
+      "`x = 5`, `y = 6`",
+      "`x = 6`, `y = 6`",
+      "`x = 5`, `y = 5`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Bu yerda postfix inkrement (`x++`) ishlatilgan. Postfix avval o'zgaruvchining joriy qiymatini (`5`) ifodaga qaytaradi (ya'ni `y` ga 5 yuklanadi), so'ngra `x` ning qiymatini 1 taga oshiradi (ya'ni `x` 6 bo'ladi)."
+  },
+  {
+    "id": 6,
+    "question": "JavaScript-da quyidagi solishtirish natijasi nima bo'ladi va nima uchun?\n```javascript\nconsole.log([] == false);\n```",
+    "options": [
+      "`true`, chunki solishtirish paytida massiv bo'sh satrga `\"\"` aylanadi, u esa o'z navbatida 0 bo'ladi, false ham 0 ga aylanadi",
+      "`false`, chunki massiv har doim obyekt va u hech qachon false ga teng bo'la olmaydi",
+      "`TypeError`, chunki massivni boolean bilan solishtirib bo'lmaydi",
+      "`undefined`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Loose equality (`==`) ishlatilganda, bo'sh massiv `[]` primitive turga (`\"\"`) o'giriladi. Bo'sh satr `\"\"` esa raqamga aylantirilganda `0` bo'ladi. `false` ham raqamga aylantirilganda `0` bo'ladi. `0 == 0` esa `true` natijani beradi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi mantiqiy ifodaning qiymati nima bo'ladi?\n```javascript\nconsole.log(5 && 'hello' && 0 && true);\n```",
+    "options": [
+      "`0`",
+      "`'hello'`",
+      "`false`",
+      "`true`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mantiqiy `&&` operatori chapdan o'ngga qarab birinchi falsy qiymatni qidiradi va uni qaytaradi. Agar barcha qiymatlar truthy bo'lsa, oxirgisini qaytaradi. Ushbu ifodada birinchi falsy qiymat `0` bo'lgani uchun natija `0` bo'ladi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi operator qanday qiymat qaytaradi?\n```javascript\nconsole.log(typeof null);\n```",
+    "options": [
+      "`\"object\"`",
+      "`\"null\"`",
+      "`\"undefined\"`",
+      "`\"value\"`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JavaScript yaratilgan dastlabki versiyalardan boshlab mavjud bo'lgan xatolik (bug) sababli, `typeof null` har doim `\"object\"` matnini qaytaradi. Bu tarixiy sabablarga ko'ra tuzatilmadi."
+  },
+  {
+    "id": 9,
+    "question": "Quyidagi daraja ko'tarish ifodasining natijasi nima bo'ladi?\n```javascript\nconsole.log(2 ** 3 ** 2);\n```",
+    "options": [
+      "`512`",
+      "`64`",
+      "`18`",
+      "`81`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Darajaga ko'tarish (`**`) operatori o'ngdan chapga assotsiativlikka (right-to-left associativity) ega. Shuning uchun ifoda `2 ** (3 ** 2)` kabi guruhlanadi, ya'ni `2 ** 9 = 512` bo'ladi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi operatorlardan qaysi biri eng yuqori prioritetga (operator precedence) ega?",
+    "options": [
+      "Guruhlash `()` (Grouping)",
+      "Ko'paytirish `*` (Multiplicative)",
+      "Qo'shish `+` (Additive)",
+      "Tenglik `===` (Strict equality)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Qavslar (guruhlash `()`) JavaScript-da barcha operatorlardan ko'ra yuqori prioritetga ega bo'lib, har qanday ifodani birinchi bo'lib baholashga majbur qiladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kod bajarilgandan so'ng `x` ning qiymati nima bo'ladi?\n```javascript\nlet x = 10;\nx += 5 * 2;\n```",
+    "options": [
+      "`20`",
+      "`30`",
+      "`15`",
+      "`10`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Qiymat yuklash (`+=`) operatorining prioriteti juda past. Shuning uchun birinchi navbatda ko'paytirish (`5 * 2 = 10`) amali bajariladi. So'ngra `x += 10` amali bajarilib, `x` 20 ga aylanadi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi mantiqiy inkor ifodasi nima qaytaradi?\n```javascript\nconsole.log(!\"hello\");\n```",
+    "options": [
+      "`false`",
+      "`true`",
+      "`\"hello\"`",
+      "`undefined`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Bo'sh bo'lmagan matn (`\"hello\"`) har doim truthy qiymat hisoblanadi. Mantiqiy NOT (`!`) operatori esa uni boolean holatiga o'tkazib inkor qiladi, natijada `false` hosil bo'ladi."
+  }
+]

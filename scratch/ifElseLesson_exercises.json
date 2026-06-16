@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Harorat Tavsifi",
+    "instruction": "Berilgan `temp` (harorat) bo'yicha quyidagi matnlarni qaytaruvchi `getTemperatureStatus(temp)` funksiyasini yozing:\n- Agar harorat 0 dan past bo'lsa: `\"Juda sovuq\"` qaytaring;\n- Agar 0 dan 15 gacha (shu jumladan) bo'lsa: `\"Salqin\"` qaytaring;\n- Agar 16 dan 30 gacha (shu jumladan) bo'lsa: `\"Iliq\"` qaytaring;\n- Agar 30 dan yuqori bo'lsa: `\"Issiq\"` qaytaring.",
+    "startingCode": "function getTemperatureStatus(temp) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "if, else if va else operatorlaridan foydalaning. Masalan: `if (temp < 0) { return \"Juda sovuq\"; }`",
+    "test": "const sandbox = new Function(code + '; return getTemperatureStatus;');\nconst fn = sandbox();\nif (fn(-5) !== 'Juda sovuq') return 'Harorat -5 bo\\'lganda \"Juda sovuq\" qaytishi kerak';\nif (fn(10) !== 'Salqin') return 'Harorat 10 bo\\'lganda \"Salqin\" qaytishi kerak';\nif (fn(25) !== 'Iliq') return 'Harorat 25 bo\\'lganda \"Iliq\" qaytishi kerak';\nif (fn(35) !== 'Issiq') return 'Harorat 35 bo\\'lganda \"Issiq\" qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Foydalanuvchi Huquqlari",
+    "instruction": "Foydalanuvchining yoshi (`age`) va ruxsatnomasi borligi (`hasPermission` - boolean) bo'yicha tizimga kirish huquqini tekshiradigan `checkAccess(age, hasPermission)` funksiyasini yozing:\n- Agar yoshi 18 dan kichik bo'lsa, har doim `\"Taqiqlangan\"` qaytarsin.\n- Agar yoshi 18 yoki undan katta bo'lsa:\n  - Agar `hasPermission` true bo'lsa, `\"Ruxsat berildi\"` qaytarsin.\n  - Agar `hasPermission` false bo'lsa, `\"Ruxsatnoma kerak\"` qaytarsin.",
+    "startingCode": "function checkAccess(age, hasPermission) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Avval `age < 18` shartini tekshiring, so'ng `else` bloki ichida `hasPermission` ning true yoki false ekanligini if/else orqali tekshiring.",
+    "test": "const sandbox = new Function(code + '; return checkAccess;');\nconst fn = sandbox();\nif (fn(15, true) !== 'Taqiqlangan') return 'Yosh 15 va ruxsatnoma true bo\\'lganda \"Taqiqlangan\" bo\\'lsinki';\nif (fn(20, true) !== 'Ruxsat berildi') return 'Yosh 20 va ruxsatnoma true bo\\'lganda \"Ruxsat berildi\" bo\\'lsin';\nif (fn(20, false) !== 'Ruxsatnoma kerak') return 'Yosh 20 va ruxsatnoma false bo\\'lganda \"Ruxsatnoma kerak\" bo\\'lsin';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Falsy va Truthy Tekshiruvi",
+    "instruction": "Foydalanuvchi kiritgan `username` qiymatini tekshiruvchi `validateUsername(username)` funksiyasini yozing:\n- Agar `username` bo'sh satr `\"\"`, `null`, `undefined` yoki umuman kiritilmagan (ya'ni falsy qiymat) bo'lsa, `\"Noma'lum foydalanuvchi\"` matnini qaytarsin.\n- Aks holda (truthy qiymat bo'lsa), kiritilgan `username` qiymatining o'zini qaytarsin.",
+    "startingCode": "function validateUsername(username) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Oddiy `if (!username)` sharti orqali barcha falsy qiymatlarni aniqlash mumkin.",
+    "test": "const sandbox = new Function(code + '; return validateUsername;');\nconst fn = sandbox();\nif (fn('') !== 'Noma\\'lum foydalanuvchi') return 'Bo\\'sh satr uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn(null) !== 'Noma\\'lum foydalanuvchi') return 'null uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn(undefined) !== 'Noma\\'lum foydalanuvchi') return 'undefined uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn('nodir') !== 'nodir') return 'Valid username uchun uning o\\'zi qaytishi kerak';\nreturn null;"
+  }
+]

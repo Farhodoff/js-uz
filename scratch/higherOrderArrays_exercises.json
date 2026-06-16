@@ -1,26 +1,26 @@
 [
   {
     "id": 1,
-    "title": "Map yordamida Transformatsiya",
-    "instruction": "Taqdim etilgan 'nums' massividagi har bir sonni kvadratini hisoblab, ulardan iborat yangi massiv yarating va uni 'squares' o'zgaruvchisiga saqlang. 'map' metodidan foydalaning.",
-    "startingCode": "const nums = [1, 2, 3, 4];\n\n// Kodni shu yerda yozing\n",
-    "hint": "const squares = nums.map(n => n * n);",
-    "test": "if (!code.includes('map')) return 'map metodi ishlatilmadi';\nconst sandbox = new Function('nums', code + '; return squares;');\nconst res = sandbox([1, 2, 3, 4]);\nif (Array.isArray(res) && res[1] === 4 && res[3] === 16) return null;\nreturn 'Natija xato';"
+    "title": "Foydalanuvchilarni Filtrlash va Ismlarini Olish",
+    "instruction": "Sizga foydalanuvchilar obyekti massivi beriladi. Har bir foydalanuvchi `name` (ism), `age` (yosh) va `isActive` (faol) xususiyatlariga ega. Siz faol bo'lgan (`isActive: true`) va yoshi 18 dan katta yoki teng bo'lgan foydalanuvchilarning faqat ismlarini massiv ko'rinishida qaytaruvchi `getActiveAdultNames(users)` funksiyasini yozishingiz kerak. Buni `.filter()` va `.map()` metodlaridan foydalanib bajaring.",
+    "startingCode": "function getActiveAdultNames(users) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "users.filter(user => user.isActive && user.age >= 18).map(user => user.name) orqali yechishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return getActiveAdultNames;');\nconst fn = sandbox();\nconst testUsers = [\n  { name: 'Ali', age: 20, isActive: true },\n  { name: 'Vali', age: 16, isActive: true },\n  { name: 'Sardor', age: 25, isActive: false },\n  { name: 'Olim', age: 18, isActive: true }\n];\nconst result = fn(testUsers);\nif (!Array.isArray(result)) return 'Natija massiv bo\\'lishi kerak';\nif (result.length !== 2) return 'Natijadagi elementlar soni noto\\'g\\'ri';\nif (result[0] !== 'Ali' || result[1] !== 'Olim') return 'Natijadagi ismlar noto\\'g\\'ri. Kutilgan: [\"Ali\", \"Olim\"], Olingan: ' + JSON.stringify(result);\nreturn null;"
   },
   {
     "id": 2,
-    "title": "Filter yordamida Saralash",
-    "instruction": "Taqdim etilgan 'users' massividan faqat yoshi 18 dan katta yoki teng bo'lgan foydalanuvchilarni ajratib oling va natijani 'adults' o'zgaruvchisiga saqlang. 'filter' metodidan foydalaning.",
-    "startingCode": "const users = [\n  { name: 'Ali', age: 25 },\n  { name: 'Zara', age: 17 },\n  { name: 'Bobur', age: 18 }\n];\n\n// Kodni shu yerda yozing\n",
-    "hint": "const adults = users.filter(u => u.age >= 18);",
-    "test": "if (!code.includes('filter')) return 'filter metodi ishlatilmadi';\nconst sandbox = new Function('users', code + '; return adults;');\nconst res = sandbox([\n  { name: 'Ali', age: 25 },\n  { name: 'Zara', age: 17 },\n  { name: 'Bobur', age: 18 }\n]);\nif (Array.isArray(res) && res.length === 2 && res[1].name === 'Bobur') return null;\nreturn 'adults massivi noto\\'g\\'ri filtrlandi';"
+    "title": "Kategoriyalar Bo'yicha Mahsulotlar Narxini Jamlash",
+    "instruction": "Sizga mahsulotlar ro'yxati (massiv) beriladi. Har bir mahsulot `name`, `category` (kategoriya) va `price` (narx) xususiyatlariga ega. Berilgan kategoriya bo'yicha barcha mahsulotlar narxining umumiy yig'indisini hisoblaydigan `getTotalPriceByCategory(products, category)` funksiyasini yozing. Buning uchun `.filter()` va `.reduce()` yoki faqat `.reduce()` metodidan foydalaning. Agar mahsulotlar topilmasa, `0` qaytarsin.",
+    "startingCode": "function getTotalPriceByCategory(products, category) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Avval berilgan kategoriya bo'yicha filter qiling, so'ngra reduce yordamida price larni jamlang. reduce boshlang'ich qiymatini 0 qilib belgilashni unutmang.",
+    "test": "const sandbox = new Function(code + '; return getTotalPriceByCategory;');\nconst fn = sandbox();\nconst products = [\n  { name: 'Telefon', category: 'electronics', price: 500 },\n  { name: 'Kitob', category: 'books', price: 15 },\n  { name: 'Noutbuk', category: 'electronics', price: 1200 },\n  { name: 'Ruchka', category: 'books', price: 2 }\n];\nconst sumElec = fn(products, 'electronics');\nconst sumBooks = fn(products, 'books');\nconst sumEmpty = fn(products, 'clothing');\nif (sumElec !== 1700) return 'Electronics kategoriyasi bo\\'yicha yig\\'indi xato. Kutilgan: 1700, Olingan: ' + sumElec;\nif (sumBooks !== 17) return 'Books kategoriyasi bo\\'yicha yig\\'indi xato. Kutilgan: 17, Olingan: ' + sumBooks;\nif (sumEmpty !== 0) return 'Mavjud bo\\'lmagan kategoriya uchun 0 qaytishi kerak';\nreturn null;"
   },
   {
     "id": 3,
-    "title": "Reduce yordamida Yig'indi",
-    "instruction": "Taqdim etilgan 'items' massividagi barcha obyektlarning 'price' qiymatlarini qo'shib, umumiy summani hisoblang va natijani 'totalPrice' o'zgaruvchisiga saqlang. 'reduce' metodidan foydalaning (boshlang'ich qiymatga 0 bering).",
-    "startingCode": "const items = [\n  { name: 'Noutbuk', price: 800 },\n  { name: 'Sichqoncha', price: 20 },\n  { name: 'Klaviatura', price: 50 }\n];\n\n// Kodni shu yerda yozing\n",
-    "hint": "const totalPrice = items.reduce((sum, item) => sum + item.price, 0);",
-    "test": "if (!code.includes('reduce')) return 'reduce metodi ishlatilmadi';\nconst sandbox = new Function('items', code + '; return totalPrice;');\nconst res = sandbox([\n  { name: 'a', price: 10 },\n  { name: 'b', price: 20 }\n]);\nif (res === 30) return null;\nreturn 'totalPrice qiymati noto\\'g\\'ri hisoblandi';"
+    "title": "Talabalarni Guruhlash",
+    "instruction": "Sizga talabalar massivi beriladi. Har bir talaba `name` (ism) va `grade` (baho: 'A', 'B', 'C' va h.k.) xususiyatlariga ega. Talabalarni baholari bo'yicha guruhlaydigan `groupStudentsByGrade(students)` funksiyasini yozing. Funksiya qaytaradigan obyekt kalitlari baholar bo'lishi va qiymatlari o'sha bahoni olgan talabalarning ismlari massividan iborat bo'lishi kerak. Buning uchun `.reduce()` metodidan foydalaning.",
+    "startingCode": "function groupStudentsByGrade(students) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "reduce metodining boshlang'ich qiymatini bo'sh obyekt `{}` qilib oling. reduce ichida, agar `acc[student.grade]` mavjud bo'lmasa, uni bo'sh massiv `[]` sifatida e'lon qiling, keyin talabaning ismini unga push qiling.",
+    "test": "const sandbox = new Function(code + '; return groupStudentsByGrade;');\nconst fn = sandbox();\nconst students = [\n  { name: 'Ali', grade: 'A' },\n  { name: 'Vali', grade: 'B' },\n  { name: 'Sardor', grade: 'A' },\n  { name: 'Olim', grade: 'C' },\n  { name: 'Eldor', grade: 'B' }\n];\nconst result = fn(students);\nif (typeof result !== 'object' || result === null) return 'Natija obyekt bo\\'ish kerak';\nif (!result.A || !result.B || !result.C) return 'Natija obyektida barcha baholar kalit sifatida mavjud emas';\nif (result.A.length !== 2 || !result.A.includes('Ali') || !result.A.includes('Sardor')) return 'A baho guruhi xato';\nif (result.B.length !== 2 || !result.B.includes('Vali') || !result.B.includes('Eldor')) return 'B baho guruhi xato';\nif (result.C.length !== 1 || result.C[0] !== 'Olim') return 'C baho guruhi xato';\nreturn null;"
   }
 ]

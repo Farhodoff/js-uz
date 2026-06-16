@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da funksiya qamrovi (Function Scope) nima?",
+    "options": [
+      "Funksiya ichida e'lon qilingan o'zgaruvchilar faqat o'sha funksiya ichida va undan ichki bo'lgan qamrovlarda mavjud bo'lishi va tashqaridan ularga kirib bo'lmasligi",
+      "Faqat `const` va `let` bilan yaratilgan va butun blokdan tashqarida ishlaydigan o'zgaruvchilar",
+      "Brauzer yoki server o'chirilguncha xotirada saqlanadigan global o'zgaruvchilar",
+      "Dasturdagi barcha funksiyalar bir-birining o'zgaruvchilarini erkin o'qishi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Funksiya qamrovi — funksiya ichida yaratilgan har qanday o'zgaruvchi (var, let, const) va parametrlarning faqat shu funksiya ichida ishlashi hamda tashqaridan ko'rinmasligini anglatadi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nfunction testScope() {\n  var message = \"Salom\";\n}\ntestScope();\nconsole.log(message);\n```",
+    "options": [
+      "\"Salom\"",
+      "ReferenceError: message is not defined",
+      "undefined",
+      "null"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`message` o'zgaruvchisi `testScope` funksiyasining lokal qamrovida yaratilgan. Uni funksiyadan tashqarida (global scope-da) chaqirish ReferenceError xatoligini beradi."
+  },
+  {
+    "id": 3,
+    "question": "Variable Shadowing (O'zgaruvchini yashirish) deganda nima tushuniladi?",
+    "options": [
+      "Global o'zgaruvchi nomi bilan bir xil bo'lgan o'zgaruvchini funksiya yoki blok ichida qaytadan e'lon qilish va u orqali o'sha hududda global o'zgaruvchini 'yopib qo'yish'",
+      "O'zgaruvchilarni butunlay o'chirib tashlash va xotiradan joy bo'shatish",
+      "O'zgaruvchilarni faqat `setTimeout` ichida ishlatish",
+      "Barcha lokal o'zgaruvchilarni global obyektdan yashirib qo'yish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Variable Shadowing — funksiya yoki blok ichidagi o'zgaruvchi nomi ota qamrovdagi o'zgaruvchi nomi bilan bir xil bo'lganda, ichki qamrovdagi o'zgaruvchi ustunlikka ega bo'lib, ota qamrovdagisini vaqtincha yopib turishidir."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nlet name = \"Anvar\";\nfunction changeName() {\n  let name = \"Dilshod\";\n}\nchangeName();\nconsole.log(name);\n```",
+    "options": [
+      "\"Dilshod\"",
+      "\"Anvar\"",
+      "ReferenceError: name is not defined",
+      "\"Global\""
+    ],
+    "correctAnswer": 1,
+    "explanation": "`changeName` funksiyasi ichida `let name` orqali yangi lokal o'zgaruvchi yaratilgan (shadowing). U global `name` qiymatiga ta'sir qilmaydi, shuning uchun global scope-da `name` hanuz \"Anvar\" bo'lib qoladi."
+  },
+  {
+    "id": 5,
+    "question": "Funksiya parametrlari (argumentlari) qaysi qamrovga (scope) tegishli bo'ladi?",
+    "options": [
+      "Global qamrovga, chunki ularni funksiyadan tashqarida ham o'zgartirish mumkin",
+      "Faqat o'sha funksiyaning lokal qamroviga, ya'ni ulardan faqat funksiya ichida foydalanish mumkin",
+      "Block scope-ga, faqat `if` sharti bajarilganda yaratiladi",
+      "Ota qamrovga, chunki ular tashqaridan uzatiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Funksiyaning argumentlari va parametrlari faqatgina shu funksiya ichida ishlovchi lokal o'zgaruvchilar hisoblanadi va ulardan tashqarida foydalanib bo'lmaydi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nfunction outer() {\n  let count = 10;\n  function inner() {\n    console.log(count);\n  }\n  inner();\n}\nouter();\n```",
+    "options": [
+      "10",
+      "ReferenceError: count is not defined",
+      "undefined",
+      "null"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ichki funksiya (`inner`) Lexical Scope qoidasiga ko'ra o'zining tashqarisidagi funksiya (`outer`) qamrovidagi o'zgaruvchilarga erkin kira oladi."
+  },
+  {
+    "id": 7,
+    "question": "JavaScript-da Scope Chain (Qamrovlar zanjiri) deganda nima tushuniladi?",
+    "options": [
+      "Brauzerda barcha skriptlarni yuklash ketma-ketligi",
+      "O'zgaruvchi qidirilayotganda joriy qamrovdan boshlab, to global qamrovgacha bosqichma-bosqich tashqariga qarab qidirilish jarayoni",
+      "Call stack-dagi funksiyalarning bir-birini chaqirish tartibi",
+      "Xatoliklarni `try-catch` bloklari yordamida uzatish zanjiri"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Scope Chain — o'zgaruvchini qidirishda JS dvigatelining lokal qamrovdan boshlab, ota qamrovlarga o'tib, eng oxirida global qamrovdan qidirish zanjiridir."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kodda nima sodir bo'ladi? (Strict mode yoqilmagan deb hisoblang)\n```javascript\nfunction setScore() {\n  score = 100;\n}\nsetScore();\nconsole.log(score);\n```",
+    "options": [
+      "ReferenceError xatosi chiqadi",
+      "Konsolga 100 chiqadi, chunki kalit so'zsiz e'lon qilingan score o'zgaruvchisi avtomatik globalga aylanib qoladi",
+      "Konsolga undefined chiqadi",
+      "Dastur cheksiz siklga tushadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar qat'iy rejim ('use strict') bo'lmasa, funksiya ichida kalit so'zsiz (var, let, const-siz) o'zgaruvchiga qiymat berish uni global obyektga (window yoki global) xossa sifatida qo'shib qo'yadi. Bu global scope ifloslanishi deb ataladi."
+  },
+  {
+    "id": 9,
+    "question": "Qat'iy rejimda (`\"use strict\";`) quyidagi kod nima qaytaradi?\n```javascript\n\"use strict\";\nfunction setScore() {\n  score = 100;\n}\nsetScore();\n```",
+    "options": [
+      "Xatosiz bajariladi va score global bo'lib qoladi",
+      "ReferenceError: score is not defined xatoligini beradi",
+      "TypeError: score is read-only xatoligini beradi",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Qat'iy rejimda (use strict) e'lon qilinmagan o'zgaruvchiga qiymat yuklash taqiqlanadi va ReferenceError xatoligi yuz beradi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nlet x = 5;\nfunction shadow(x) {\n  x = x + 2;\n}\nshadow(x);\nconsole.log(x);\n```",
+    "options": [
+      "7",
+      "5",
+      "undefined",
+      "ReferenceError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Funksiya parametri `x` global `x` ni shadow qiladi va funksiya ichidagi `x = x + 2` faqat lokal parametrning qiymatini o'zgartiradi. Global `x` ning qiymati 5 ligicha qoladi."
+  },
+  {
+    "id": 11,
+    "question": "Block Scope (`let`/`const`) va Function Scope (`var`) o'rtasidagi asosiy farq nima?",
+    "options": [
+      "`var` bilan e'lon qilingan o'zgaruvchilar bloklar (if, for) ichida ham blokdan tashqarida ko'rinadi (lekin funksiya ichida cheklanadi), `let`/`const` esa faqat blok ichida ishlaydi",
+      "Hech qanday farqi yo'q, barchasi global scope-da ishlaydi",
+      "`var` faqat brauzerda ishlaydi, `let` esa faqat Node.js-da",
+      "`let` funksiya ichida ishlamaydi, `var` esa ishlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`var` funksiya qamroviga ega, ya'ni funksiya ichida cheklanadi, ammo `if` yoki `for` kabi bloklar ichida cheklanmaydi. `let` va `const` esa blok qamroviga (block scope) ega bo'lib, har qanday `{}` qavslar ichida lokal bo'ladi."
+  },
+  {
+    "id": 12,
+    "question": "Quyidagi kod bajarilganda konsolga nima yoziladi?\n```javascript\nfunction main() {\n  if (true) {\n    var a = \"varVariable\";\n    let b = \"letVariable\";\n  }\n  console.log(a);\n  console.log(b);\n}\nmain();\n```",
+    "options": [
+      "Avval \"varVariable\", keyin \"letVariable\" chiqadi",
+      "\"varVariable\" chiqadi, so'ng ReferenceError: b is not defined xatosi chiqadi",
+      "ReferenceError: a is not defined xatosi chiqadi",
+      "\"letVariable\" chiqadi, so'ng \"varVariable\" chiqadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`var` funksiya qamroviga ega bo'lgani uchun `if` blokidan tashqarida ham, lekin `main()` ichida mavjud bo'ladi va chop etiladi. `let` esa block-scoped bo'lgani uchun faqat `if` bloki ichida ishlaydi, shuning uchun block-dan tashqarida unga murojaat qilish ReferenceError xatoligini beradi."
+  }
+]

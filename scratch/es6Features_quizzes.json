@@ -97,7 +97,7 @@
   },
   {
     "id": 9,
-    "question": "Quyidagi kod bajarilganda `userRole` qiymati nima bo'ladi?\n```javascript\nlet user = { role: 'user' };\nuser.role &&= 'admin';\n```",
+    "question": "Quyidagi kod bajarilganda `user.role` qiymati nima bo'ladi?\n```javascript\nlet user = { role: 'user' };\nuser.role &&= 'admin';\n```",
     "options": [
       "`'admin'` (chunki 'user' truthy qiymat)",
       "`'user'`",

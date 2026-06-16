@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Email formatlash",
+    "instruction": "Email manzilini formatlash uchun `formatEmail(email)` funksiyasini yozing. U berilgan email'ning boshidagi va oxiridagi bo'sh joylarni olib tashlasin (`trim()`) va barcha harflarini kichik harflarga o'tkazsin (`toLowerCase()`).",
+    "startingCode": "function formatEmail(email) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "email.trim().toLowerCase() dan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return formatEmail;');\nconst fn = sandbox();\nconst res = fn('  User@Example.Com  ');\nif (res === 'user@example.com') return null;\nreturn 'Email to\\'g\\'ri formatlanmadi. trim() va toLowerCase() ishlatilganini tekshiring.';"
+  },
+  {
+    "id": 2,
+    "title": "Matnni qisqartirish (Truncate)",
+    "instruction": "Matnni qisqartirish uchun `truncateText(text, maxLength)` funksiyasini yozing. Agar matn uzunligi (`text.length`) `maxLength` dan katta bo'lsa, uni `maxLength` gacha kesib (`slice` yoki `substring` yordamida) va oxiriga `...` qo'shib qaytaring. Aks holda matnning o'zini qaytaring.",
+    "startingCode": "function truncateText(text, maxLength) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Kattalikni tekshirish uchun `if` shartidan, kesish uchun esa `slice(0, maxLength)` metodidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return truncateText;');\nconst fn = sandbox();\nconst res1 = fn('Salom Dunyo', 5);\nconst res2 = fn('Salom', 10);\nif (res1 === 'Salom...' && res2 === 'Salom') return null;\nreturn 'Matn to\\'g\\'ri qisqartirilmadi. slice yoki substring metodidan foydalanib tekshiring.';"
+  },
+  {
+    "id": 3,
+    "title": "Kredit kartani maskalash",
+    "instruction": "Kredit karta raqamining oxirgi 4 ta raqamidan tashqari barcha raqamlarini yashiruvchi `maskCreditCard(cardNumber)` funksiyasini yozing. Masalan, `'8600123456789012'` berilsa, u `'************9012'` qaytarishi kerak. Karta raqami har doim 16 ta belgidan iborat bo'ladi deb hisoblang.",
+    "startingCode": "function maskCreditCard(cardNumber) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`repeat` metodi bilan 12 ta yulduzcha yarating va unga karta raqamining oxirgi 4 ta raqamini `slice(-4)` orqali olib qo'shing.",
+    "test": "const sandbox = new Function(code + '; return maskCreditCard;');\nconst fn = sandbox();\nconst res = fn('8600123456789012');\nif (res === '************9012') return null;\nreturn 'Kredit karta raqami to\\'g\\'ri maskalanmadi. repeat va slice metodlaridan foydalaning.';"
+  }
+]

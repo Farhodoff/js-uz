@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "`console.log(typeof (\"5\" - 3))` natijasi nima bo'ladi?",
+    "options": [
+      "\"string\"",
+      "\"number\"",
+      "\"NaN\"",
+      "\"undefined\""
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ayirish `-` operatori faqat matematik amallar uchun ishlatiladi. Shuning uchun JS \"5\" matnini avtomatik ravishda 5 raqamiga o'tkazadi va `5 - 3 = 2` bo'ladi, uning turi esa \"number\" dir."
+  },
+  {
+    "id": 2,
+    "question": "`console.log(\"5\" + 3)` natijasi nima bo'ladi?",
+    "options": [
+      "8",
+      "\"53\"",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Qo'shish `+` operatori kamida bitta string ishtirok etsa, matnlarni birlashtirish (string concatenation) vazifasini bajaradi. Shuning uchun `3` ham stringga aylanib, \"5\" + \"3\" = \"53\" bo'ladi."
+  },
+  {
+    "id": 3,
+    "question": "JavaScriptda qaysi qiymat boolean kontekstda `true` (truthy) deb baholanadi?",
+    "options": [
+      "\"\" (bo'sh string)",
+      "0",
+      "[] (bo'sh massiv)",
+      "null"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Bo'sh massiv `[]` va bo'sh obyekt `{}` JavaScriptda truthy (true) hisoblanadi. \"\", 0, va null esa falsy qiymatlardir."
+  },
+  {
+    "id": 4,
+    "question": "`Number(null)` va `Number(undefined)` mos ravishda qanday qiymatlar qaytaradi?",
+    "options": [
+      "0 va NaN",
+      "NaN va 0",
+      "0 va 0",
+      "NaN va NaN"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Number(null)` chaqirilganda u 0 ga aylanadi. Ammo `Number(undefined)` aniqlanmagan qiymat bo'lganligi sababli NaN (Not a Number) qaytaradi."
+  },
+  {
+    "id": 5,
+    "question": "`console.log(true + true)` ifodasi qanday natija beradi?",
+    "options": [
+      "\"truetrue\"",
+      "2",
+      "true",
+      "NaN"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Matematik qo'shish operatori `+` ishlatilganda, boolean qiymatlar raqamga o'zgaradi (`true` -> 1, `false` -> 0). Shuning uchun 1 + 1 = 2 bo'ladi."
+  },
+  {
+    "id": 6,
+    "question": "`console.log(1 + 2 + \"3\")` ifodasining natijasi nima bo'ladi?",
+    "options": [
+      "\"6\"",
+      "\"33\"",
+      "6",
+      "\"123\""
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript kodni chapdan o'ngga qarab bajaradi. Dastlab 1 + 2 bajariladi va natija 3 bo'ladi (raqam). Keyin esa 3 + \"3\" bajariladi, bunda string ishtirok etgani sababli natija \"33\" ga aylanadi."
+  },
+  {
+    "id": 7,
+    "question": "Quyidagi ifodalardan qaysi biri `false` qaytaradi?",
+    "options": [
+      "Boolean(\"false\")",
+      "Boolean(\"0\")",
+      "Boolean(\" \")",
+      "Boolean(\"\")"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Faqatgina mutlaqo bo'sh string `\"\"` falsy hisoblanadi. \"false\", \"0\" va \" \" (bitta bo'sh joy bo'lgan string) ichida kamida bitta belgi borligi uchun truthy (true) hisoblanadi."
+  },
+  {
+    "id": 8,
+    "question": "`console.log(NaN == NaN)` va `console.log(NaN === NaN)` ifodalarining natijalari mos ravishda nima bo'ladi?",
+    "options": [
+      "true va true",
+      "true va false",
+      "false va false",
+      "false va true"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScriptda NaN o'z-o'ziga teng bo'lmagan yagona qiymatdir. Shuning uchun u qat'iy va qat'iy bo'lmagan solishtirishlarda ham false qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "`console.log(!! \"hello\")` ifodasi nima qaytaradi?",
+    "options": [
+      "\"hello\"",
+      "true",
+      "false",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`!` operatori qiymatning teskari boolean qiymatini qaytaradi. Ikkinchi marta `!` ishlatilganda esa uning asl boolean ekvivalentini qaytaradi (inkorning inkori). Bo'sh bo'lmagan string truthy bo'lgani uchun `!! \"hello\"` natijasi true bo'ladi."
+  },
+  {
+    "id": 10,
+    "question": "`console.log(\"10\" * \"2\")` ifodasi nima qaytaradi?",
+    "options": [
+      "\"20\"",
+      "20",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Ko'paytirish `*` operatori faqat matematik operator bo'lganligi sababli, ikkala string ham raqamga (10 va 2) o'zgaradi va ko'paytma 20 raqami bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "`console.log([] == false)` nima uchun `true` qaytaradi?",
+    "options": [
+      "Chunki massiv har doim yolg'on (falsy) hisoblanadi",
+      "Qat'iy bo'lmagan taqqoslashda (`==`), bo'sh massiv `[]` dastlab bo'sh string `\"\"` ga aylanadi, u esa keyin `0` raqamiga o'tadi; `false` ham `0` ga aylanadi va natijada `0 == 0` bo'ladi",
+      "Bu JavaScript dvigatelidagi to'g'irlab bo'lmaydigan xatolik (bug)",
+      "Chunki ikkala qiymat ham xotirada bitta manzilga ishora qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Qat'iy bo'lmagan tenglikda (`==`) obyekt (massiv) oddiy turga o'tkaziladi: `[].toString() => \"\"`. Keyin esa ikkala tomon raqamga o'giriladi: `Number(\"\") => 0`, `Number(false) => 0`. Natijada 0 == 0 bo'lib, true chiqadi."
+  },
+  {
+    "id": 12,
+    "question": "`parseInt(\"10.5px\")` va `parseFloat(\"10.5px\")` mos ravishda nimalarni qaytaradi?",
+    "options": [
+      "10 va 10.5",
+      "10.5 va 10.5",
+      "NaN va NaN",
+      "10 va 10"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`parseInt` butun sonni qaytaradi va nuqtadan keyingi qismni tashlab yuboradi (10). `parseFloat` esa o'nli kasr qismini ham saqlab qoladi (10.5). Ikkala funksiya ham matn boshidagi raqamlarni o'qiydi va raqam bo'lmagan belgilarga (px) yetganda to'xtaydi."
+  }
+]

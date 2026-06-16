@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Heartbeats (Yurak urishi) mexanizmining asosiy vazifasi nima?",
+    "options": [
+      "Taqsimlangan tizimda tugunlarning tirikligini va tarmoq orqali bog'lanishini aniqlash",
+      "Ma'lumotlar bazasida tranzaksiyalarni boshqarish",
+      "Kalit-qiymat omborida kalitlarni shifrlash",
+      "Yuklamani serverlar orasida teng taqsimlash"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Heartbeat - bu tugunning faol (tirik) ekanligini bildirish uchun davriy ravishda yuboriladigan signal bo'lib, uning asosiy maqsadi nosozliklarni aniqlashdir."
+  },
+  {
+    "id": 2,
+    "question": "Lease (Ijara) tushunchasining an'anaviy Lock (Qulf)dan asosiy farqi nimada?",
+    "options": [
+      "Lease aniq vaqt bo'yicha cheklangan (TTL) bo'lib, egasi qulasa ham avtomatik bo'shaydi",
+      "Lease faqat SQL ma'lumotlar bazalarida ishlatiladi",
+      "Lease hech qachon muddati tugamaydigan qulfdir",
+      "Lease faqat bitta kompyuter ichida ishlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "An'anaviy Lock egasi o'chib qolsa abadiy band bo'lib qolishi mumkin, Lease esa TTL muddati tugashi bilan o'z-o'zidan bekor bo'ladi."
+  },
+  {
+    "id": 3,
+    "question": "Split-brain holatida eski lider yozgan noto'g'ri ma'lumotlardan saqlanish uchun nima ishlatiladi?",
+    "options": [
+      "Fencing Token (ortib boruvchi hisoblagich)",
+      "Faqat IP manzillarni tekshirish",
+      "Kattaroq operativ xotira (RAM)",
+      "DNS keshlarini tozalash"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Fencing token - har safar yangi lease berilganda ortib boruvchi raqam bo'lib, baza eski tokenga ega kechikkan liderlarning yozish so'rovlarini rad etish uchun ishlatadi."
+  },
+  {
+    "id": 4,
+    "question": "Phi Accrual Failure Detector algoritmining afzalligi nimada?",
+    "options": [
+      "Ruxsat etilgan kechikishni qat'iy timeout bilan cheklamay, tarmoq holatiga qarab shubha darajasini dinamik hisoblaydi",
+      "Ma'lumotlarni tezroq shifrlaydi",
+      "Faqat Kubernetes klasterlarida ishlaydi",
+      "Ulanish tezligini sun'iy ravishda oshiradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ushbu algoritm qat'iy timeout'dan voz kechib, tarmoqning jitteri va yuklamasiga moslashgan holda shubha shkalasini hisoblab chiqadi."
+  },
+  {
+    "id": 5,
+    "question": "Clock Drift (soatlar og'ishi) muammosi deganda nima tushuniladi?",
+    "options": [
+      "Taqsimlangan tizimdagi turli serverlarning ichki tizim soatlari orasidagi vaqt farqi",
+      "Ma'lumotlar bazasi indekslarining eskirishi",
+      "Dastur kodi bajarilish tezligining pasayishi",
+      "Brauzer keshining noto'g'ri ishlashi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Clock Drift - har xil jismoniy serverlarning soatlari vaqt o'tishi bilan turlicha o'zgarishi natijasida yuzaga keladigan vaqt tafovutidir."
+  },
+  {
+    "id": 6,
+    "question": "etcd omboridagi ephemeral (vaqtinchalik) kalitlar qanday o'chiriladi?",
+    "options": [
+      "Ular bog'langan Lease muddati yangilanmay tugagandan so'ng avtomatik o'chadi",
+      "Faqat foydalanuvchi qo'lda DELETE buyrug'ini berganda o'chadi",
+      "Har safar server o'chib yonganida o'chadi",
+      "Ma'lumotlar bazasi to'lib ketganda o'chadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "etcd tizimida ephemeral kalitlar muayyan lease-ga biriktiriladi. Agar lease muddati tugasa, bog'liq kalitlar ham o'chib ketadi."
+  },
+  {
+    "id": 7,
+    "question": "Taqsimlangan tizimda keep-alive nima maqsadda ishlatiladi?",
+    "options": [
+      "Mavjud ijara (lease) muddatini uzaytirish uchun davriy so'rovlar yuborish",
+      "Yangi serverlarni klasterga qo'shish",
+      "Klasterdagi barcha loglarni tozalash",
+      "Ma'lumotlarni boshqa klasterga nusxalash"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Keep-alive - ijarani o'z vaqtida yangilab, uning muddati tugashining oldini olish uchun yuboriladigan uzaytirish signallari mexanizmidir."
+  },
+  {
+    "id": 8,
+    "question": "Kubernetes-da Node Leases mexanizmi qaysi resursni tejash uchun joriy qilingan?",
+    "options": [
+      "API Server va etcd ustidagi yuklama hamda tarmoq trafigini tejash",
+      "Ishlatiladigan umumiy RAM hajmini kamaytirish",
+      "Konteynerlar ichidagi xotirani optimallashtirish",
+      "Faqat IP manzillar sonini kamaytirish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Kubernetes-da Node statuslarini katta ob'ekt ko'rinishida yuborish o'rniga, kichik Lease ob'ekti orqali ping yuborish etcd yuklamasini kamaytiradi."
+  },
+  {
+    "id": 9,
+    "question": "Garbage Collection (GC) jarayonidagi 'Stop-the-world' failure detection-ga qanday ta'sir qiladi?",
+    "options": [
+      "Dastur faoliyatini vaqtincha to'xtatgani sababli heartbeat yuborilmay qoladi va monitor uni 'o'lik' deb o'ylaydi",
+      "Ulanish tezligini oshiradi",
+      "Serverdagi barcha tugunlarni qayta ishga tushiradi",
+      "Ma'lumotlar bazasini avtomatik tozalaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "GC pauzasi paytida barcha oqimlar to'xtashi sababli heartbeat yuborish to'xtaydi va tizim noto'g'ri nosozlik signali berishi mumkin."
+  },
+  {
+    "id": 10,
+    "question": "Consul-da session o'chganda nima sodir bo'ladi?",
+    "options": [
+      "Session yaratgan mijozga tegishli barcha lock-lar avtomatik yechiladi",
+      "Barcha serverlar o'chadi",
+      "Faqat IP manzillar o'zgaradi",
+      "Ma'lumotlar bazasi to'liq tozalab yuboriladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Consul sessionlari TTL muddati tugasa, ularga biriktirilgan barcha distributed lock va ephemeral keylar o'chirib yuboriladi."
+  },
+  {
+    "id": 11,
+    "question": "Juda qisqa heartbeat timeout muddati belgilashning salbiy oqibati nima?",
+    "options": [
+      "Tarmoqdagi kichik kechikishlar tufayli ham noto'g'ri xatoliklar aniqlanib, klasterda to'xtovsiz qayta saylovlar boshlanishi",
+      "Serverning jismoniy yonib ketishi",
+      "Barcha ma'lumotlarning shifrsiz qolishi",
+      "Foydalanuvchilarning parollari o'chib ketishi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Kichik kechikishlar yoki yuklamalar tugunlarni 'DEAD' deb baholanishiga olib kelib, asossiz failover storms (qayta saylovlar) paydo qiladi."
+  },
+  {
+    "id": 12,
+    "question": "Fencing token qiymati qanday o'zgaradi?",
+    "options": [
+      "Har safar yangi ijara (lease) berilganda yoki yangilanganda qiymati monoton ravishda oshib boradi",
+      "Har doim 0 ga qaytadi",
+      "Tasodifiy string ko'rinishida generatsiya bo'ladi",
+      "Faqat kamayib boradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Fencing token har safar yangilanganda qiymat ortib boruvchi raqam bo'ladi, shunda eski so'rovlarni oson aniqlash mumkin."
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "0.1 + 0.2 === 0.3 ifodasi nima qaytaradi va nega?",
+    "options": [
+      "true, chunki matematik hisob-kitoblar har doim to'g'ri bajariladi",
+      "false, chunki JavaScript sonlarni IEEE 754 standartida saqlaydi va natija 0.30000000000000004 bo'ladi",
+      "undefined, chunki bunday taqqoslash JavaScript-da taqiqlangan",
+      "NaN, chunki o'nlik sonlarni to'g'ridan-to'g'ri taqqoslab bo'lmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript sonlarni 64-bitli ikkilik formatda saqlagani sababli, ba'zi kasr sonlarni cheksiz davriy ko'rinishda ifodalashga to'g'ri keladi va bu hisob-kitobda kichik noaniqlik (0.30000000000000004) hosil qiladi."
+  },
+  {
+    "id": 2,
+    "question": "typeof null ifodasining natijasi nimaga teng?",
+    "options": [
+      "\"null\"",
+      "\"undefined\"",
+      "\"object\"",
+      "\"string\""
+    ],
+    "correctAnswer": 2,
+    "explanation": "typeof null natijasi \"object\" bo'lishi JavaScript-ning birinchi versiyalaridan qolgan tarixiy xato (bug) hisoblanadi, biroq orqaga moslikni saqlash uchun o'zgartirilmagan."
+  },
+  {
+    "id": 3,
+    "question": "JavaScript-da [] + [] (ikkita bo'sh massiv yig'indisi) nima qaytaradi?",
+    "options": [
+      "[] (yangi bo'sh massiv)",
+      "\"\" (bo'sh satr)",
+      "\"[object Object]\"",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "+ operatori massivlarni string (satr)ga aylantiradi. Bo'sh massiv esa bo'sh satrga (\"\") aylanadi va ikkita bo'sh satr yig'indisi bo'sh satrni beradi."
+  },
+  {
+    "id": 4,
+    "question": "[] + {} (bo'sh massiv va bo'sh obyekt yig'indisi) ifodasi nimani qaytaradi?",
+    "options": [
+      "\"[object Object]\"",
+      "0",
+      "NaN",
+      "\"{}\""
+    ],
+    "correctAnswer": 0,
+    "explanation": "Massiv bo'sh satrga (\"\") aylanadi. Obyekt esa \"[object Object]\" satriga aylanadi. Ikkalasi birlashganda (concatenation) \"[object Object]\" hosil bo'ladi."
+  },
+  {
+    "id": 5,
+    "question": "{} + [] ifodasi (oddiy expression sifatida baholanganda) nima qaytaradi?",
+    "options": [
+      "\"[object Object]\"",
+      "0",
+      "NaN",
+      "\"{}\""
+    ],
+    "correctAnswer": 0,
+    "explanation": "Agar {} ifodasi ifoda (expression) sifatida baholansa (masalan, console.log({} + []) ichida), u \"[object Object]\" ga teng bo'ladi, chunki u ham string coercion qilinadi."
+  },
+  {
+    "id": 6,
+    "question": "JavaScript-da NaN === NaN ifodasi nima qaytaradi?",
+    "options": [
+      "true",
+      "false",
+      "TypeError",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "NaN (Not-a-Number) JavaScript-da o'z-o'ziga teng bo'lmagan yagona qiymatdir. Uni tekshirish uchun Number.isNaN() yoki Object.is() ishlatiladi."
+  },
+  {
+    "id": 7,
+    "question": "null >= 0 va null == 0 taqqoslashlarining natijasi qanday bo'ladi?",
+    "options": [
+      "null >= 0 -> false, null == 0 -> true",
+      "null >= 0 -> true, null == 0 -> false",
+      "Ikkalasi ham true qaytaradi",
+      "Ikkalasi ham false qaytaradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Taqqoslash operatorlari (>=, <=, >, <) null qiymatini 0 soniga o'giradi (shuning uchun 0 >= 0 true beradi). Tenglik operatori (==) esa null-ni faqat undefined bilan teng deb hisoblaydi, boshqa hech narsaga o'girmaydi (shuning uchun null == 0 false bo'ladi)."
+  },
+  {
+    "id": 8,
+    "question": "3 > 2 > 1 ifodasi qanday natija beradi?",
+    "options": [
+      "true",
+      "false",
+      "NaN",
+      "TypeError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Taqqoslash chapdan o'ngga bajariladi. Avval 3 > 2 baholanib true beradi. So'ngra true > 1 baholanadi. true son ko'rinishida 1 ga teng bo'lgani uchun 1 > 1 ifodasi false natijasini qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "typeof NaN ifodasi nima qaytaradi?",
+    "options": [
+      "\"NaN\"",
+      "\"undefined\"",
+      "\"number\"",
+      "\"object\""
+    ],
+    "correctAnswer": 2,
+    "explanation": "Nomidan qat'i nazar (Not-a-Number), NaN JavaScript specifikatsiyasiga ko'ra raqamli ma'lumot tipi (numeric type) hisoblanadi."
+  },
+  {
+    "id": 10,
+    "question": "Quyidagi foo funksiyasi nimani qaytaradi?\n\nfunction foo() {\n  return\n  {\n    status: \"ok\"\n  };\n}",
+    "options": [
+      "{ status: \"ok\" }",
+      "undefined",
+      "null",
+      "SyntaxError"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-dagi Automatic Semicolon Insertion (ASI) qoidasiga ko'ra return so'zidan keyingi yangi qatorga avtomat ravishda nuqtali vergul (;) qo'yiladi. Natijada funksiya undefined qaytaradi va undan keyingi blok bajarilmaydi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi tsikl ishga tushsa, konsolga nima chiqadi?\n\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
+    "options": [
+      "0, 1, 2 (alohida qatorlarda)",
+      "3, 3, 3 (alohida qatorlarda)",
+      "0, 0, 0 (alohida qatorlarda)",
+      "Hech narsa chiqmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "var kalit so'zi blokli scope-ga ega emas, u funksiya yoki global scope-ga ega. setTimeout asinxron bo'lgani uchun, u ishga tushguncha tsikl tugab, i ning qiymati 3 ga yetib bo'lgan bo'ladi. Buni tuzatish uchun let ishlatish kerak."
+  },
+  {
+    "id": 12,
+    "question": "Array(3).map(x => 1) ifodasi bajarilganda qanday natija olinadi?",
+    "options": [
+      "[1, 1, 1]",
+      "[undefined, undefined, undefined]",
+      "[empty × 3] (bo'sh joyli massiv o'zgarishsiz qoladi)",
+      "[NaN, NaN, NaN]"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Array(3) faqat massiv uzunligini (length: 3) belgilaydi, ammo uning ichi bo'sh slotlardan iborat bo'ladi (sparse array). map() va forEach() kabi metodlar bo'sh slotlarni aylanib o'tadi va ularni o'zgartirmaydi."
+  }
+]

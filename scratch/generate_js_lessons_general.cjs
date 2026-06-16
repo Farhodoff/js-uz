@@ -3,8 +3,9 @@ const path = require('path');
 
 const category = process.argv[2];
 const lessonId = process.argv[3];
+const filename = process.argv[4] || lessonId;
 if (!category || !lessonId) {
-  console.error("Usage: node generate_js_lessons_general.cjs <category> <lessonId>");
+  console.error("Usage: node generate_js_lessons_general.cjs <category> <lessonId> [filename]");
   process.exit(1);
 }
 
@@ -36,7 +37,7 @@ const escapedTheory = theoryRaw
   .replace(/\${/g, '\\${');
 
 const jsContent = `export const ${lessonId} = {
-  id: "${lessonId}",
+  id: "${meta.id || lessonId}",
   title: "${meta.title}",
   language: "${meta.language || 'javascript'}",
   theory: \`${escapedTheory}\`,
@@ -45,6 +46,6 @@ const jsContent = `export const ${lessonId} = {
 };
 `;
 
-const outputPath = path.join(outputDir, `${lessonId}.js`);
+const outputPath = path.join(outputDir, `${filename}.js`);
 fs.writeFileSync(outputPath, jsContent, 'utf8');
 console.log(`Successfully generated ${outputPath}`);

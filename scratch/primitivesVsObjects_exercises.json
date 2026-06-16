@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Havolani mutatsiya qilmasdan yangilash",
+    "instruction": "Berilgan `user` obyektini o'zgartirmasdan, uning `score` xususiyatini yangi `newScore` qiymatiga o'zgartirib, yangi o'zgartirilgan obyektni qaytaruvchi `updateScore(user, newScore)` funksiyasini yozing.",
+    "startingCode": "function updateScore(user, newScore) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Spread operator `{ ...user }` yordamida yuzaki nusxa oling va unda score qiymatini o'zgartiring.",
+    "test": "const sandbox = new Function(code + '; return updateScore;');\nconst fn = sandbox();\nconst original = { name: 'Anvar', score: 50 };\nconst updated = fn(original, 100);\nif (original.score !== 50) return 'Original obyekt o\\'zgartirildi! Uni o\\'zgartirmasligingiz kerak.';\nif (updated === original) return 'Yangi obyekt qaytarilmadi, xotiradagi havola bir xil bo\\'lib qoldi.';\nif (updated.score !== 100 || updated.name !== 'Anvar') return 'Yangi obyektning xususiyatlari noto\\'g\\'ri.';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Ichma-ich obyektlarni chuqur nusxalash",
+    "instruction": "Berilgan ichma-ich tuzilishga ega `user` obyektini (masalan: `{ name: 'Vali', preferences: { theme: 'dark' } }`) xavfsiz chuqur nusxalab (deep clone) qaytaruvchi `deepCloneUser(user)` funksiyasini yozing. Shunda qaytarilgan nusxa o'zgartirilganda original obyektga hech qanday ta'sir bo'lmasin.",
+    "startingCode": "function deepCloneUser(user) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "JavaScript-dagi o'rnatilgan `structuredClone()` funksiyasidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return deepCloneUser;');\nconst fn = sandbox();\nconst original = { name: 'Vali', preferences: { theme: 'dark', lang: 'uz' } };\nconst cloned = fn(original);\nif (cloned === original) return 'Obyektning o\\'zi chuqur nusxalanmadi, havola manzili bir xil.';\nif (cloned.preferences === original.preferences) return 'Ichki preferences obyekti chuqur nusxalanmadi, u hali ham bir xil xotira manziliga ega.';\ncloned.preferences.theme = 'light';\nif (original.preferences.theme !== 'dark') return 'Nusxa o\\'zgartirilganda original obyekt ham o\\'zgarib ketdi.';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Obyektlarni qiymatlari bo'yicha solishtirish",
+    "instruction": "Ikkita obyektni ularning xotiradagi manzillariga qaramasdan, faqat birinchi darajali xususiyatlari va ularning qiymatlari bo'yicha solishtiruvchi `areObjectsEqualByValue(obj1, obj2)` funksiyasini yozing. Agar kalitlar va qiymatlar mos kelsa `true`, aks holda `false` qaytaring.",
+    "startingCode": "function areObjectsEqualByValue(obj1, obj2) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`Object.keys(obj1)` va `Object.keys(obj2)` massivlari uzunligini solishtiring. Keyin har bir kalitdagi qiymatlar bir-biriga tengligini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return areObjectsEqualByValue;');\nconst fn = sandbox();\nconst o1 = { a: 1, b: 'hello' };\nconst o2 = { a: 1, b: 'hello' };\nconst o3 = { a: 1, b: 'world' };\nconst o4 = { a: 1, b: 'hello', c: 3 };\nif (fn(o1, o2) !== true) return 'Tarkibi bir xil bo\\'lgan obyektlar uchun true qaytishi kerak edi.';\nif (fn(o1, o3) !== false) return 'Qiymatlari har xil bo\\'lgan obyektlar uchun false qaytishi kerak edi.';\nif (fn(o1, o4) !== false) return 'Kalitlar soni har xil bo\\'lgan obyektlar uchun false qaytishi kerak edi.';\nreturn null;"
+  }
+]

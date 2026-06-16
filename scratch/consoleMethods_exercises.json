@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Konsol guruhlarini yaratish",
+    "instruction": "Foydalanuvchi ma'lumotlarini chiroyli tarzda guruhlab konsolga chiqaruvchi `logUserInfo(user)` funksiyasini yozing. user obyekti `name`, `age` va `role` xossalariga ega. Chiqarish quyidagi tartibda guruhlanishi kerak: 'User Details' guruhi boshlanadi (console.group orqali), guruh ichida user.name, user.age va user.role alohida console.log yordamida chiqariladi. Guruh oxirida console.groupEnd chaqirilishi shart.",
+    "startingCode": "function logUserInfo(user) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "console.group('User Details') va console.groupEnd() lardan foydalaning.",
+    "test": "if (!code.includes('console.group') || !code.includes('console.groupEnd')) return 'console.group yoki console.groupEnd ishlatilmadi';\nconst sandbox = new Function(code + '; return logUserInfo;');\nconst fn = sandbox();\nlet logs = [];\nlet groups = [];\nconst oldLog = console.log;\nconst oldGroup = console.group;\nconst oldGroupEnd = console.groupEnd;\nconsole.log = (...args) => logs.push(args.join(' '));\nconsole.group = (label) => groups.push({ type: 'start', label });\nconsole.groupEnd = () => groups.push({ type: 'end' });\ntry {\n  fn({ name: 'Ali', age: 25, role: 'developer' });\n} finally {\n  console.log = oldLog;\n  console.group = oldGroup;\n  console.groupEnd = oldGroupEnd;\n}\nif (groups.length === 2 && groups[0].type === 'start' && groups[0].label === 'User Details' && groups[1].type === 'end' && logs.includes('Ali') && logs.includes('25') && logs.includes('developer')) {\n  return null;\n}\nreturn 'Guruhlash yoki loglar noto\\'g\\'ri yozilgan';"
+  },
+  {
+    "id": 2,
+    "title": "Konsol jadvali va Ogohlantirish",
+    "instruction": "Agar massiv bo'sh bo'lsa, `console.warn` orqali \"Massiv bo'sh!\" ogohlantirishini chiqaring. Agar massivda kamida bitta element bo'lsa, `console.table` orqali massivni jadval ko'rinishida chiqaring. Funksiya nomi `printData(arr)` bo'lsin.",
+    "startingCode": "function printData(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "arr.length === 0 bo'lganda console.warn, aks holda console.table yozing.",
+    "test": "if (!code.includes('console.warn') || !code.includes('console.table')) return 'console.warn va console.table metodlari ishlatilmadi';\nconst sandbox = new Function(code + '; return printData;');\nconst fn = sandbox();\nlet warnCalled = false;\nlet tableCalled = false;\nconst oldWarn = console.warn;\nconst oldTable = console.table;\nconsole.warn = () => warnCalled = true;\nconsole.table = () => tableCalled = true;\ntry {\n  fn([]);\n  fn([1, 2]);\n} finally {\n  console.warn = oldWarn;\n  console.table = oldTable;\n}\nif (warnCalled && tableCalled) return null;\nreturn 'Funksiya shartga mos ravishda console.warn yoki console.table ni chaqirmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Vaqtni o'lchash",
+    "instruction": "Ma'lum bir murakkab hisob-kitob bajarilishi uchun qancha vaqt ketishini o'lchash zarur. `measureExecution(fn, iterations)` funksiyasini yozing. Unda 'Loop duration' yorlig'i bilan `console.time` chaqiriladi. Keyin loop ichida berilgan `iterations` sonigacha `fn` funksiyasi chaqiriladi (hech qanday parametr uzatmasdan). Oxirida o'sha yorliq bilan `console.timeEnd` chaqirilishi kerak.",
+    "startingCode": "function measureExecution(fn, iterations) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "console.time('Loop duration') va console.timeEnd('Loop duration') ishlating.",
+    "test": "if (!code.includes('console.time') || !code.includes('console.timeEnd')) return 'console.time yoki console.timeEnd ishlatilmadi';\nif (!code.includes('Loop duration')) return 'Loop duration yorlig\\'idan foydalanilmagan';\nconst sandbox = new Function(code + '; return measureExecution;');\nconst fn = sandbox();\nlet timeLabel = '';\nlet timeEndLabel = '';\nconst oldTime = console.time;\nconst oldTimeEnd = console.timeEnd;\nconsole.time = (label) => timeLabel = label;\nconsole.timeEnd = (label) => timeEndLabel = label;\nlet count = 0;\ntry {\n  fn(() => count++, 5);\n} finally {\n  console.time = oldTime;\n  console.timeEnd = oldTimeEnd;\n}\nif (timeLabel === 'Loop duration' && timeEndLabel === 'Loop duration' && count === 5) return null;\nreturn 'Vaqtni o\\'lchash yoki tsiklda funksiyani chaqirish to\\'g\\'ri amalga oshirilmadi';"
+  }
+]

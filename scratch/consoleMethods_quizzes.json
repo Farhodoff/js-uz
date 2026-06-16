@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "console.log metodidan tashqari, xatolarni ko'rsatish va ularni qizil rangda stack trace bilan chiqarish uchun qaysi metod ishlatiladi?",
+    "options": [
+      "console.warn()",
+      "console.info()",
+      "console.error()",
+      "console.debug()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "console.error() xatolik xabarlarini qizil rangda, xatolik belgisi va to'liq stack trace (funksiyalar chaqiruv zanjiri) bilan chiqaradi."
+  },
+  {
+    "id": 2,
+    "question": "Konsolga ogohlantirish belgisi (warning icon) va sariq rangli fon bilan xabar yozish uchun qaysi metoddan foydalaniladi?",
+    "options": [
+      "console.warn()",
+      "console.info()",
+      "console.log()",
+      "console.error()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "console.warn() metodi konsolda sariq rang va ogohlantirish belgisi bilan ogohlantiruvchi xabarlarni chiqarish uchun xizmat qiladi."
+  },
+  {
+    "id": 3,
+    "question": "Qaysi console metodi murakkab massivlar va obyektlarni brauzer konsolida chiroyli jadval ko'rinishida chiqaradi?",
+    "options": [
+      "console.group()",
+      "console.table()",
+      "console.dir()",
+      "console.assert()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "console.table() massiv yoki obyektlarni satr va ustunlar ko'rinishidagi jadval shaklida chop etadi va tahlil qilishni sezilarli darajada osonlashtiradi."
+  },
+  {
+    "id": 4,
+    "question": "Bir-biriga bog'liq bo'lgan ko'plab loglarni konsolda yig'iluvchi (collapsible) iyerarxik guruhga birlashtirish uchun qaysi metodlar juftligi ishlatiladi?",
+    "options": [
+      "console.start() va console.end()",
+      "console.time() va console.timeEnd()",
+      "console.group() va console.groupEnd()",
+      "console.open() va console.close()"
+    ],
+    "correctAnswer": 2,
+    "explanation": "console.group() (yoki console.groupCollapsed()) guruhni ochadi va keyingi barcha loglar guruhga tegishli bo'ladi, to console.groupEnd() chaqirilgunga qadar."
+  },
+  {
+    "id": 5,
+    "question": "Kodning ma'lum bir bo'lagi bajarilishi uchun ketgan vaqtni (millisekundlarda) o'lchash maqsadida qaysi metodlar juftligidan foydalaniladi?",
+    "options": [
+      "console.start() va console.stop()",
+      "console.time() va console.timeEnd()",
+      "console.count() va console.countReset()",
+      "console.profile() va console.profileEnd()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "console.time('label') taymerni ishga tushiradi. console.timeEnd('label') esa taymerni to'xtatadi va o'tgan vaqtni konsolga chop etadi. Yorliqlar bir xil bo'lishi shart."
+  },
+  {
+    "id": 6,
+    "question": "console.assert(condition, message) metodi qachon konsolga xatolik xabarini chiqaradi?",
+    "options": [
+      "condition o'zgaruvchisi true bo'lganda",
+      "condition o'zgaruvchisi false bo'lganda",
+      "Har doim chaqirilganda",
+      "Faqat dasturda haqiqiy xato yuz berganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "console.assert() berilgan shart (condition) false bo'lgandagina konsolga xato xabarini yozadi. Agar shart true bo'lsa, hech narsa chiqarmaydi."
+  },
+  {
+    "id": 7,
+    "question": "Konsol loglariga o'zingizning shaxsiy CSS stillaringizni berish uchun qaysi maxsus format belgisidan (specifier) foydalaniladi?",
+    "options": [
+      "%s",
+      "%d",
+      "%c",
+      "%o"
+    ],
+    "correctAnswer": 2,
+    "explanation": "%c belgisi konsolga chiqarilayotgan matnga CSS stillarini qo'llash imkonini beradi. Masalan: console.log('%c Salom', 'color: red')."
+  },
+  {
+    "id": 8,
+    "question": "Biror funksiya yoki kod qismini necha marta chaqirilganligini konsolda hisoblab borish uchun qaysi metoddan foydalaniladi?",
+    "options": [
+      "console.time()",
+      "console.count()",
+      "console.trace()",
+      "console.log()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "console.count('label') metodiga berilgan yorliq har safar chaqirilganda uning hisoblagichi 1 taga oshadi va natija chop etiladi."
+  },
+  {
+    "id": 9,
+    "question": "console.trace() metodining asosiy vazifasi nima?",
+    "options": [
+      "Obyektning barcha xususiyatlarini daraxt ko'rinishida chiqarish",
+      "Dasturning bajarilish vaqtini mikrosekundlarda o'lchash",
+      "Metod chaqirilgan nuqtaga qadar bo'lgan funksiyalar chaqiruv zanjirini (Call Stack) ko'rsatish",
+      "Konsolni tozalash va loglarni keshini o'chirish"
+    ],
+    "correctAnswer": 2,
+    "explanation": "console.trace() chaqirilgan joygacha bo'lgan Call Stack ketma-ketligini (qaysi funksiya qaysi birining ichida chaqirilganini) konsolga chiqaradi."
+  },
+  {
+    "id": 10,
+    "question": "Nima uchun ishlab chiqarish (production) muhitiga yuklanadigan kodlarda barcha console metodlarini (ayniqsa debugging uchun yozilgan loglarni) o'chirib tashlash yoki cheklash tavsiya etiladi?",
+    "options": [
+      "Chunki ular xavfsizlikni kamaytiradi (nozik ma'lumotlar oshkor bo'lishi mumkin) va sahifa yuklanish tezligiga (performance) salbiy ta'sir qiladi",
+      "Chunki konsol loglari JS faylning hajmini megabaytlab oshirib yuboradi",
+      "Chunki brauzerlar ko'p log yozilgan sahifalarni avtomatik bloklaydi",
+      "Production muhitda console obyekti umuman ishlamaydi va dastur xato beradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Konsol metodlari obyektlarni xotirada ushlab turadi (Memory leak xavfi), ishlash tezligini sekinlashtiradi (ayniqsa, render tsikllarida) va maxfiy ma'lumotlarni foydalanuvchiga ko'rsatib qo'yishi mumkin."
+  },
+  {
+    "id": 11,
+    "question": "Qaysi console metodi obyektning barcha xossalari va metodlarini interaktiv JSON-simon daraxt ko'rinishida konsolga chiqaradi?",
+    "options": [
+      "console.log()",
+      "console.dir()",
+      "console.table()",
+      "console.group()"
+    ],
+    "correctAnswer": 1,
+    "explanation": "console.dir() metodidan foydalanib JavaScript obyektining barcha xususiyatlarini daraxt ko'rinishida batafsil ko'rish mumkin."
+  },
+  {
+    "id": 12,
+    "question": "Konsolda console.count('click') deb yozilgan hisoblagichni qaytadan noldan boshlash uchun qaysi metod ishlatiladi?",
+    "options": [
+      "console.countReset('click')",
+      "console.clear()",
+      "console.count(0)",
+      "console.resetCount('click')"
+    ],
+    "correctAnswer": 0,
+    "explanation": "console.countReset('label') metodi ko'rsatilgan yorliqdagi hisoblagich qiymatini nollashtiradi (reset qiladi)."
+  }
+]

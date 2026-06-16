@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Math obyekti haqida qaysi tasdiq to'g'ri?",
+    "options": [
+      "`new Math()` yordamida uning yangi nusxasini yaratish mumkin",
+      "U funksiya emas, balki statik obyekt bo'lib, uning konstruktori yo'q",
+      "U faqat natural sonlar bilan ishlaydigan brauzer funksiyasidir",
+      "Uning tarkibidagi metodlarni faqat Node.js da ishlatish mumkin"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Math obyekti konstruktor emas, ya'ni uni `new Math()` deb chaqirib bo'lmaydi. Uning barcha metodlari va konstantalari statikdir (to'g'ridan-to'g'ri Math ustida chaqiriladi)."
+  },
+  {
+    "id": 2,
+    "question": "`Math.floor(4.7)` va `Math.ceil(4.1)` metodlari qanday natija beradi?",
+    "options": [
+      "`4` va `5`",
+      "`5` va `4`",
+      "`4.7` va `4.1`",
+      "`4` va `4`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Math.floor()` berilgan sondan kichik yoki unga teng eng yaqin butun songacha pastga qarab yaxlitlaydi (4.7 -> 4). `Math.ceil()` esa kattaroq yoki teng eng yaqin butun songacha yuqoriga qarab yaxlitlaydi (4.1 -> 5)."
+  },
+  {
+    "id": 3,
+    "question": "`Math.round(2.5)` va `Math.round(-2.5)` natijalari mos ravishda qanday bo'ladi?",
+    "options": [
+      "`3` va `-3`",
+      "`2` va `-2`",
+      "`3` va `-2`",
+      "`2.5` va `-2.5`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`Math.round(x)` yaqinroq butun songa yaxlitlaydi. Kasr qismi `.5` yoki undan katta bo'lsa, musbat cheksizlik tomon yaxlitlaydi. Shuning uchun `Math.round(2.5)` natijasi `3`, `Math.round(-2.5)` esa `-2` ga teng (chunki -2 musbat cheksizlikka -3 ga qaraganda yaqinroq)."
+  },
+  {
+    "id": 4,
+    "question": "`Math.trunc()` metodining asosiy vazifasi nima?",
+    "options": [
+      "Sonning faqat butun qismini qoldirib, kasr qismini shunchaki tashlab yuboradi",
+      "Sonni eng yaqin juft songacha yaxlitlaydi",
+      "Musbat sonlarni pastga, manfiy sonlarni esa yuqoriga yaxlitlaydi",
+      "Sonning kvadrat ildizini hisoblaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Math.trunc()` hech qanday yaxlitlash qoidalariga rioya qilmaydi, u shunchaki nuqtadan keyingi kasr qismini butunlay kesib tashlaydi."
+  },
+  {
+    "id": 5,
+    "question": "Musbat va manfiy sonlar uchun `Math.floor()` va `Math.trunc()` qachon farqli natija beradi?",
+    "options": [
+      "Hech qachon farq qilmaydi, ular bir xil ishlaydi",
+      "Faqat musbat kasr sonlarda (masalan: 3.2)",
+      "Faqat manfiy kasr sonlarda (masalan: -3.2)",
+      "Faqat butun sonlarda (masalan: -5 yoki 5)"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Musbat sonlar uchun ikkalasi ham bir xil ishlaydi (masalan, 3.7 uchun 3). Ammo manfiy kasr sonlarda `Math.floor(-3.2)` kichikroq butun son ya'ni `-4` ni beradi, `Math.trunc(-3.2)` esa kasr qismini kesib `-3` ni beradi."
+  },
+  {
+    "id": 6,
+    "question": "`Math.random()` funksiyasi qanday diapazondagi sonlarni qaytaradi?",
+    "options": [
+      "`[0, 1]` ya'ni 0 dan 1 gacha (0 kiradi, 1 kirmaydi)",
+      "`(0, 1)` ya'ni 0 dan 1 gacha (0 ham, 1 ham kirmaydi)",
+      "`[0, 1]` ya'ni 0 va 1 oralig'idagi sonlar (har ikkala chegara ham kiradi)",
+      "`[1, 100]` oralig'idagi butun sonlar"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Math.random()` 0 dan (shu jumladan 0) 1 gacha (1 kirmaydi, ya'ni har doim 1 dan kichik) bo'lgan tasodifiy o'nlik kasr sonni qaytaradi: `0 <= x < 1`."
+  },
+  {
+    "id": 7,
+    "question": "Qaysi kod berilgan `[1, 10]` (1 va 10 ham kiradi) oralig'idan butun tasodifiy sonni qaytaradi?",
+    "options": [
+      "`Math.floor(Math.random() * 10)`",
+      "`Math.floor(Math.random() * 10) + 1`",
+      "`Math.ceil(Math.random() * 10)`",
+      "`Math.round(Math.random() * 9) + 1`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Math.random() * 10` bizga `[0, 10)` oralig'ini beradi. `Math.floor` orqali uni yaxlitlasak, `[0, 9]` oralig'idagi butun sonlar hosil bo'ladi. Keyin `+ 1` qo'shsak, oraliq `[1, 10]` ga o'tadi."
+  },
+  {
+    "id": 8,
+    "question": "`Math.min()` metodiga argumentlar berilmasa nima qaytadi?",
+    "options": [
+      "`0`",
+      "`undefined`",
+      "`Infinity`",
+      "`-Infinity`"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Qiziqarli fakt: JavaScript-da `Math.min()` argumentlarsiz chaqirilsa `Infinity` (musbat cheksizlik), `Math.max()` esa `-Infinity` qaytaradi. Bu taqqoslash algoritmlarining boshlang'ich qiymatlari uchun shunday qilingan."
+  },
+  {
+    "id": 9,
+    "question": "Massivdagi sonlarning eng kattasini topish uchun qaysi kod to'g'ri hisoblanadi?",
+    "options": [
+      "`Math.max(numbers)`",
+      "`Math.max(...numbers)`",
+      "`Math.max.apply(numbers)`",
+      "`Math.max(Array.values(numbers))`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`Math.max` metodi massivni to'g'ridan-to'g'ri qabul qilmaydi, u alohida argumentlarni kutadi. Spread operator (`...`) yordamida massiv elementlarini argumentlarga yoyib yuborish kerak: `Math.max(...numbers)`."
+  },
+  {
+    "id": 10,
+    "question": "`Math.abs(-42.5)` ning natijasi nima bo'ladi?",
+    "options": [
+      "`-42`",
+      "`42`",
+      "`43`",
+      "`42.5`"
+    ],
+    "correctAnswer": 3,
+    "explanation": "`Math.abs(x)` metodi sonning absolyut qiymatini (modulini) qaytaradi, ya'ni uning ishorasini (musbat yoki manfiyligini) olib tashlaydi. `-42.5` ning absolyut qiymati `42.5` dir."
+  },
+  {
+    "id": 11,
+    "question": "`Math.pow(8, 2)` metodi qaysi operator bilan bir xil ishlaydi?",
+    "options": [
+      "`8 * 2`",
+      "`8 ** 2`",
+      "`8 ^ 2`",
+      "`8 && 2`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Darajaga ko'tarish uchun `Math.pow(x, y)` metodidan yoki ES6 dan boshlab `x ** y` operatoridan foydalanish mumkin. `^` operatori esa JavaScript-da bitwise XOR (istisno etuvchi Yoki) operatoridir."
+  },
+  {
+    "id": 12,
+    "question": "`Math.sqrt(16)` va `Math.sqrt(-16)` natijalari qanday?",
+    "options": [
+      "`4` va `NaN`",
+      "`4` va `-4`",
+      "`4` va `TypeError`",
+      "`8` va `NaN`"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`Math.sqrt(x)` berilgan sonning kvadrat ildizini qaytaradi. Manfiy sonlarning kvadrat ildizi haqiqiy sonlar to'plamida mavjud bo'lmaganligi uchun, JS `NaN` (Not a Number) qaytaradi."
+  }
+]

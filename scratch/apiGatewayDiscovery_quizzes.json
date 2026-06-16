@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "API Gateway'ning asosiy vazifasi nima?",
+    "options": [
+      "Ma'lumotlar bazasini gorizontal kengaytirish (sharding)",
+      "Mijozlardan kelgan barcha so'rovlarni qabul qilib, ularni tegishli mikroxizmatlarga yo'naltirish (routing)",
+      "Faqat foydalanuvchilar parolini shifrlash",
+      "Kesh ma'lumotlarini qattiq diskda saqlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "API Gateway kirish eshigi vazifasini bajaradi va barcha tashqi so'rovlarni qabul qilib, ularni ichki mikroxizmatlarga yo'naltiradi."
+  },
+  {
+    "id": 2,
+    "question": "Service Discovery nima uchun kerak?",
+    "options": [
+      "Mikroxizmatlarning o'zgaruvchan IP va portlarini dinamik tarzda aniqlash va kuzatish uchun",
+      "JavaScript kodini tezroq kompilyatsiya qilish uchun",
+      "SQL so'rovlarini tahlil qilish uchun",
+      "CSS animatsiyalarini avtomatik sozlash uchun"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mikroxizmatlar dinamik ravishda kengayganda (scale up/down) ularning IP manzillari va portlari o'zgarib turadi. Service Discovery ushbu manzillarni avtomatik topish imkonini beradi."
+  },
+  {
+    "id": 3,
+    "question": "Client-side Discovery modelida servis manzillarini kim aniqlaydi va yukni qanday taqsimlaydi?",
+    "options": [
+      "DNS server barcha yukni markazlashtirilgan holda boshqaradi",
+      "Nginx yoki boshqa yuk taqsimlovchi barcha operatsiyalarni o'ziga oladi",
+      "Client (mijoz ilovasi yoki API Gateway) Service Registry'dan manzillar ro'yxatini oladi va o'zi yuk taqsimlash algoritmini ishga tushiradi",
+      "Ma'lumotlar bazasi avtomatik ravishda so'rovlarni bo'lib beradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Client-side discovery modelida mijoz (yoki API Gateway) registry'dan ro'yxatni o'zi so'rab oladi va load balancing (masalan, Round Robin) algoritmi yordamida so'rovni bevosita tanlangan servis nusxasiga yuboradi."
+  },
+  {
+    "id": 4,
+    "question": "Server-side Discovery modelining asosiy afzalligi nimada?",
+    "options": [
+      "Mijoz Service Registry haqida bilishi va unga murojaat qilishi shart emas, barcha marshrutlash va yuk taqsimlash yuk taqsimlovchi (Load Balancer) tomonidan hal qilinadi",
+      "Tarmoq kechikishini (network latency) butunlay nolga tushiradi",
+      "Hech qanday Load Balancer talab qilmaydi",
+      "Ma'lumotlar bazasi so'rovlarini keshlaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Server-side modelda mijoz faqat Load Balancer (masalan, NGINX yoki AWS ALB) manzilini biladi. Load Balancer o'zi Service Registry bilan bog'lanib, so'rovni tegishli servisga yo'naltiradi."
+  },
+  {
+    "id": 5,
+    "question": "Service Registry sifatida Consul yoki ZooKeeper'dan foydalanilganda 'Health Check' nima uchun kerak?",
+    "options": [
+      "Dasturchining sog'lig'ini tekshirish uchun",
+      "Ishlamayotgan yoki nosoz servis nusxalarini aniqlab, ularga so'rov yuborilishini to'xtatish uchun",
+      "Faqat foydalanuvchining sessiyasini tekshirish uchun",
+      "Servisning xotirasini bo'shatish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Health Check yordamida registry har bir servis nusxasining holatini kuzatib boradi. Agar nusxa nosoz bo'lsa (pingga javob bermasa yoki heartbeat yubormasa), u ro'yxatdan vaqtincha o'chiriladi."
+  },
+  {
+    "id": 6,
+    "question": "Service Discovery'da 'Heartbeat' (yurak urishi) tushunchasi nimani anglatadi?",
+    "options": [
+      "CPU haroratining oshib ketishi",
+      "Servis nusxasi hali ham tirik va ishlayotganligini ko'rsatish uchun Service Registry'ga muntazam ravishda yuboradigan signali",
+      "Ma'lumotlar bazasining zaxira nusxasini yaratish jarayoni",
+      "Brauzerning har soniyada sahifani yangilashi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Heartbeat — servis nusxasi o'zining ishchi holatini tasdiqlash uchun Service Registry serveriga har X soniyada yuboradigan HTTP yoki TCP signalidir."
+  },
+  {
+    "id": 7,
+    "question": "Consul va ZooKeeper registry modellarida consensus (konsensus) protokollarining roli nima?",
+    "options": [
+      "Barcha servis nusxalarida ma'lumotlar bazasini sinxronlashtirish",
+      "Tarmoqdagi barcha tugunlar (nodes) ro'yxat ma'lumotlari bo'yicha yagona kelishuvga (haqiqatga) ega bo'lishini ta'minlash",
+      "CSS stillarini sinxronizatsiya qilish",
+      "Foydalanuvchilar sonini cheklash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Service Registry klaster ko'rinishida ishlaydi. Consul (Raft protokoli) va ZooKeeper (Zab protokoli) kabi tizimlar tugunlar o'rtasida ma'lumotlar mutlaqo bir xil va dolzarb bo'lishini ta'minlash uchun konsensus protokollaridan foydalanadi."
+  },
+  {
+    "id": 8,
+    "question": "API Gateway'da 'SSL Termination' nima?",
+    "options": [
+      "Shifrlangan HTTPS trafigini API Gateway darajasida dekodlab, ichki servislar bilan oddiy HTTP orqali gaplashish",
+      "SSL sertifikatining muddati tugaganda tizimni o'chirish",
+      "Faqat foydalanuvchining login parolini shifrlash",
+      "Ma'lumotlarni shifrlab faqat diskda saqlash"
+    ],
+    "correctAnswer": 0,
+    "explanation": "SSL termination (yoki SSL offloading) Gateway HTTPS trafigini shifrdan yechib, ichki mikroxizmatlarga shifrsiz yo'naltirishidir. Bu ichki xizmatlar yukini kamaytiradi."
+  },
+  {
+    "id": 9,
+    "question": "Mikroxizmatlarda API Gateway orqali 'Request Aggregation' (so'rovlarni birlashtirish) qanday muammoni hal qiladi?",
+    "options": [
+      "Foydalanuvchining internet tezligini oshiradi",
+      "Mijoz ilovasi bitta sahifani yuklash uchun o'nlab mikroxizmatlarga alohida HTTP so'rov yuborishining oldini oladi (bitta so'rov orqali Gateway barchasini yig'ib beradi)",
+      "Kodning hajmini qisqartiradi",
+      "Balla xatoliklarni avtomatik tuzatadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Request Aggregation yordamida mobil yoki veb ilova bitta so'rov yuboradi, API Gateway esa orqa fonda bir nechta mikroxizmatlardan ma'lumotlarni yig'ib, mijozga yagona JSON javob qaytaradi."
+  },
+  {
+    "id": 10,
+    "question": "Service Discovery tizimida 'Self-Registration' nima?",
+    "options": [
+      "Dasturchining tizimdan ro'yxatdan o'tishi",
+      "Servis nusxasi ishga tushganda o'zining IP va portini Service Registry'ga avtomatik ravishda ro'yxatdan o'tkazishi",
+      "Administrator tomonidan har bir serverni qo'lda ro'yxatga olish",
+      "Brauzerda cookie yozish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Self-registration modelida har bir servis nusxasi ishga tushganda o'zining manzili va holatini registry'ga yuboradi va to'xtayotganda o'chirish so'rovini yuboradi."
+  },
+  {
+    "id": 11,
+    "question": "API Gateway-ni lozim darajada sozlamasdan, uni 'Single Point of Failure' (yagona qulash nuqtasi) qilib qo'yish qanday oqibatga olib keladi?",
+    "options": [
+      "Dasturdagi xotira sarfi ortadi",
+      "Agar API Gateway serveri ishlamay qolsa, barcha orqa fondagi xizmatlar sog'lom bo'lsa ham butun tizim tashqi dunyo uchun butunlay yopiq qoladi",
+      "Ma'lumotlar bazasidagi jadvallar o'chib ketadi",
+      "Faqat backend dasturchining kompyuteri qotadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "API Gateway butun tizim uchun yagona kirish eshigi bo'lganligi sababli, u buzilsa, klaster ichidagi hech bir xizmatga tashqaridan kirib bo'lmaydi. Shuning uchun Gateway klasteri ham yuqori chidamlilik (High Availability) rejimida ishlashi kerak."
+  },
+  {
+    "id": 12,
+    "question": "API Gateway va oddiy Reverse Proxy (masalan, Nginx) o'rtasidagi farq nimada?",
+    "options": [
+      "Reverse Proxy faqat past darajadagi marshrutlashni bajaradi; API Gateway esa autentifikatsiya, rate limiting, so'rovlarni o'zgartirish va monitoring kabi yuqori darajadagi biznes mantiqni boshqara oladi",
+      "API Gateway faqat ma'lumotlar bazasi so'rovlarini qabul qiladi",
+      "Reverse proxy faqat yuk taqsimlaydi, API Gateway esa yuk taqsimlay olmaydi",
+      "Hech qanday farqi yo'q"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Reverse Proxy asosan marshrutlash va yuk taqsimlash (L4/L7) bilan shug'ullansa, API Gateway dastur darajasida murakkab autentifikatsiya, API kalitlarni boshqarish, kesh va dynamic routing kabi amallarni bajaradi."
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Navbat (Queue) Simulyatsiyasi",
+    "instruction": "Massivni boshqaruvchi `manageQueue(arr, element)` funksiyasini yozing. Funksiya berilgan `arr` massivining oxiriga `element`ni qo'shishi, so'ngra massivning birinchi elementini o'chirib, o'sha o'chirilgan elementni qaytarishi kerak (massiv o'zgarishi kerak).",
+    "startingCode": "function manageQueue(arr, element) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "push yordamida elementni oxiriga qo'shing, shift yordamida birinchi elementni o'chiring va uni return qiling.",
+    "test": "const sandbox = new Function(code + '; return manageQueue;');\nconst fn = sandbox();\nconst testArr = [1, 2, 3];\nconst removed = fn(testArr, 4);\nif (removed !== 1) return 'manageQueue birinchi elementni to\\'g\\'ri o\\'chirmadi yoki qaytarmadi';\nif (testArr.length !== 3 || testArr[0] !== 2 || testArr[2] !== 4) return 'manageQueue elementni oxiriga qo\\'shmadi yoki massiv tarkibini to\\'g\\'ri o\\'zgartirmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Massivdan nusxa olish va kesish",
+    "instruction": "Berilgan massivning boshidan va oxiridan ma'lum miqdordagi elementlarni olib tashlab, o'rtadagi qismidan nusxa qaytaruvchi `getMiddlePart(arr, startCount, endCount)` funksiyasini yozing. Masalan: `getMiddlePart([1, 2, 3, 4, 5], 1, 1)` chaqirilganda boshidan 1 ta, oxiridan 1 ta element olib tashlanadi va `[2, 3, 4]` qaytariladi. Asl massiv o'zgarmasligi shart.",
+    "startingCode": "function getMiddlePart(arr, startCount, endCount) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "slice metodidan foydalaning. Slice asl massivni o'zgartirmaydi. arr.slice(startCount, arr.length - endCount) deb yozishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return getMiddlePart;');\nconst fn = sandbox();\nconst original = [10, 20, 30, 40, 50, 60];\nconst result = fn(original, 2, 1);\nif (original.length !== 6) return 'Asl massiv o\\'zgarmasligi kerak';\nif (!Array.isArray(result) || result.length !== 3 || result[0] !== 30 || result[2] !== 50) return 'getMiddlePart o\\'rtadagi elementlarni to\\'g\\'ri qaytarmadi. Kutilgan: [30, 40, 50], olingan: ' + JSON.stringify(result);\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Elementni almashtirish (Splice)",
+    "instruction": "Berilgan `arr` massivida `oldVal` qiymatini izlab toping va uning birinchi uchragan indeksida uni o'chirib, o'rniga `newVal`ni joylashtiradigan `replaceElement(arr, oldVal, newVal)` funksiyasini yozing. Agar `oldVal` topilmasa, massiv o'zgarmasin. Funksiya o'zgartirilgan massivni qaytarsin (massiv joyida (in-place) o'zgarishi kerak).",
+    "startingCode": "function replaceElement(arr, oldVal, newVal) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "indexOf orqali element indeksini toping. Agar indeks -1dan farqli bo'lsa, splice(index, 1, newVal) yordamida uni almashtiring va massivni qaytaring.",
+    "test": "const sandbox = new Function(code + '; return replaceElement;');\nconst fn = sandbox();\nconst testArr = ['olma', 'anor', 'behi'];\nconst result = fn(testArr, 'anor', 'shaftoli');\nif (testArr !== result) return 'replaceElement funksiyasi o\\'zgartirilgan asl massivni qaytarishi kerak';\nif (testArr[1] !== 'shaftoli' || testArr.length !== 3) return 'replaceElement qiymatni to\\'g\\'ri almashtirmadi';\nconst notFound = fn(testArr, 'anjir', 'olxo\\'ri');\nif (notFound.length !== 3 || notFound[1] !== 'shaftoli') return 'Topilmagan element bo\\'lsa massiv o\\'zgarmasligi kerak';\nreturn null;"
+  }
+]

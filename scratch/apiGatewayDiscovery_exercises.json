@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "API Gateway: Dynamic Routing",
+    "instruction": "Foydalanuvchi so'rovlarini yo'naltiruvchi `GatewayRouter` klassini yozing. U `register(path, targetUrl)` va `route(path)` metodlariga ega bo'lsin. `route` metodi kelgan path'ga mos keluvchi eng uzun mos kelgan targetUrl ni topib qaytarishi kerak. Agar mos kelmasa, `null` qaytarsin.",
+    "startingCode": "class GatewayRouter {\n  constructor() {\n    this.routes = new Map();\n  }\n\n  register(path, targetUrl) {\n    // Kodni shu yerda yozing\n  }\n\n  route(path) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "register orqali path va targetUrl-ni saqlang. route-da, path berilgan kalitlardan biriga to'liq mos kelishini yoki u bilan boshlanishini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return GatewayRouter;');\nconst Router = sandbox();\nconst r = new Router();\nr.register('/api/v1/users', 'http://user-service');\nr.register('/api/v1', 'http://main-service');\nif (r.route('/api/v1/users/profile') !== 'http://user-service') return 'Eng uzun mos kelgan yo\\'nalish topilmadi!';\nif (r.route('/api/v2') !== null) return 'Noma\\'lum yo\\'nalish uchun null qaytarishi kerak!';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Service Discovery: Health Filtering",
+    "instruction": "`ServiceRegistry` klassini yozing. Unda xizmat nusxalarini ro'yxatga olish uchun `register(serviceName, instanceId, url)` metodi, hamda har bir nusxaning holatini yangilash uchun `updateStatus(instanceId, status)` metodi bo'lsin (`status` 'UP' yoki 'DOWN' bo'ladi). Shuningdek, `getHealthyInstances(serviceName)` metodi faqat 'UP' holatidagi nusxalarning URL ro'yxatini qaytarsin.",
+    "startingCode": "class ServiceRegistry {\n  constructor() {\n    this.instances = []; // har biri: { serviceName, instanceId, url, status: 'UP' }\n  }\n\n  register(serviceName, instanceId, url) {\n    // Kodni shu yerda yozing\n  }\n\n  updateStatus(instanceId, status) {\n    // Kodni shu yerda yozing\n  }\n\n  getHealthyInstances(serviceName) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "register orqali obyekti massivga qo'shing (standart status: 'UP'). updateStatus orqali instanceId mos kelgan elementni topib statusini o'zgartiring. getHealthyInstances faqat serviceName mos va status === 'UP' bo'lgan nusxalarning url qiymatlarini filtrlab qaytarsin.",
+    "test": "const sandbox = new Function(code + '; return ServiceRegistry;');\nconst Registry = sandbox();\nconst reg = new Registry();\nreg.register('auth', 'auth-1', 'http://auth-1:8080');\nreg.register('auth', 'auth-2', 'http://auth-2:8080');\nreg.updateStatus('auth-2', 'DOWN');\nconst healthy = reg.getHealthyInstances('auth');\nif (!Array.isArray(healthy) || healthy.length !== 1 || healthy[0] !== 'http://auth-1:8080') {\n  return 'Sog\\'lom nusxalar to\\'g\\'ri filtrlanmadi!';\n}\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Service Discovery: Heartbeat Monitor",
+    "instruction": "`monitorHeartbeats(instances, timeoutMs, now)` funksiyasini yozing. `instances` massivi har bir elementida `{ instanceId, lastHeartbeat }` bo'lgan obyektdir. Berilgan joriy vaqt (`now`) va o'chish vaqti cheki (`timeoutMs`) asosida, oxirgi heartbeat vaqti eskirgan (ya'ni `now - lastHeartbeat > timeoutMs`) bo'lgan barcha xizmat nusxalarini aniqlab, ularning `instanceId` ro'yxatini qaytaring.",
+    "startingCode": "function monitorHeartbeats(instances, timeoutMs, now) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "instances massividan now - item.lastHeartbeat > timeoutMs shartini qanoatlantiruvchi elementlarni filtrlang va faqat ularning instanceId-larini massiv sifatida qaytaring.",
+    "test": "const sandbox = new Function(code + '; return monitorHeartbeats;');\nconst fn = sandbox();\nconst list = [\n  { instanceId: 'inst-1', lastHeartbeat: 1000 },\n  { instanceId: 'inst-2', lastHeartbeat: 2500 },\n  { instanceId: 'inst-3', lastHeartbeat: 2800 }\n];\nconst expired = fn(list, 1000, 3600);\nif (!Array.isArray(expired) || expired.length !== 2 || !expired.includes('inst-1') || !expired.includes('inst-2')) {\n  return 'Muddati o\\'tgan heartbeats noto\\'g\\'ri aniqlandi!';\n}\nreturn null;"
+  }
+]

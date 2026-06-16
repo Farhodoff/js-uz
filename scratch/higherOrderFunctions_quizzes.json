@@ -33,7 +33,7 @@
       "Koddagi barcha xatolarni o'z-o'zidan tuzatish"
     ],
     "correctAnswer": 1,
-    "explanation": "Currying `f(a, b, c)` ko'rinishidagi funksiyani `f(a)(b)(c)` ko'rinishida bittadan argument oladigan zanjirli zanjirli funksiyaga aylantirishdir."
+    "explanation": "Currying `f(a, b, c)` ko'rinishidagi funksiyani `f(a)(b)(c)` ko'rinishida bittadan argument oladigan zanjirli funksiyaga aylantirishdir."
   },
   {
     "id": 4,

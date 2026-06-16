@@ -1,26 +1,26 @@
 [
   {
     "id": 1,
-    "title": "2D Kontekstni Olish",
-    "instruction": "Taqdim etilgan 'canvas' o'zgaruvchisidan '2d' chizish kontekstini oling va uni 'ctx' o'zgaruvchisiga saqlang.",
-    "startingCode": "const canvas = document.createElement('canvas');\n\n// Kodni shu yerda yozing\n",
-    "hint": "const ctx = canvas.getContext('2d');",
-    "test": "if (!code.includes('getContext')) return 'getContext metodi ishlatilmadi';\nconst sandbox = new Function('canvas', code + '; return ctx;');\nconst el = document.createElement('canvas');\nconst res = sandbox(el);\nif (res instanceof CanvasRenderingContext2D) return null;\nreturn 'ctx o\\'zgaruvchisi 2D context emas';"
+    "title": "To'rtburchak Chizish",
+    "instruction": "Canvas 2D kontekstida berilgan `x, y` koordinatadan boshlab, berilgan `width` va `height` o'lchamli to'rtburchak shaklini chizadigan `drawRectangle(ctx, x, y, width, height, color)` funksiyasini yozing. To'rtburchak rangi `color` argumenti orqali berilgan rangga teng bo'lishi va ichi to'ldirilgan (filled) bo'lishi kerak.",
+    "startingCode": "function drawRectangle(ctx, x, y, width, height, color) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "ctx.fillStyle = color; va ctx.fillRect(x, y, width, height); buyruqlaridan foydalaning.",
+    "test": "const mockCtx = {\n  fillStyle: '',\n  fillRect(x, y, w, h) {\n    this.called = true;\n    this.args = { x, y, w, h };\n  }\n};\nconst sandbox = new Function(code + '; return drawRectangle;');\nconst fn = sandbox();\nfn(mockCtx, 10, 20, 100, 50, 'red');\nif (mockCtx.fillStyle !== 'red') return 'fillStyle rangi to\\'g\\'ri o\\'rnatilmadi';\nif (!mockCtx.called) return 'fillRect metodi chaqirilmadi';\nif (mockCtx.args.x !== 10 || mockCtx.args.y !== 20 || mockCtx.args.w !== 100 || mockCtx.args.h !== 50) return 'fillRect metodiga noto\\'g\\'ri koordinatalar yoki o\\'lchamlar uzatildi';\nreturn null;"
   },
   {
     "id": 2,
-    "title": "To'rtburchak Chizish",
-    "instruction": "'ctx' dan foydalanib x=20, y=30 koordinatada eni 100 va bo'yi 50 bo'lgan to'ldirilgan (fillRect) to'rtburchak chizing.",
-    "startingCode": "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n\n// Kodni shu yerda yozing\n",
-    "hint": "ctx.fillRect(20, 30, 100, 50);",
-    "test": "if (!code.includes('fillRect(20, 30, 100, 50)')) return 'fillRect to\\'g\\'ri koordinatalar bilan chaqirilmadi';\nreturn null;"
+    "title": "Aylana Chizish",
+    "instruction": "Canvas 2D kontekstida berilgan `x, y` markaziy nuqtada, berilgan `radius` o'lchamli va `color` rangli to'ldirilgan aylana chizadigan `drawCircle(ctx, x, y, radius, color)` funksiyasini yozing. Yo'lni `beginPath` orqali boshlashni va `fill` orqali rang bilan to'ldirishni unutmang.",
+    "startingCode": "function drawCircle(ctx, x, y, radius, color) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "ctx.beginPath(), ctx.arc(x, y, radius, 0, Math.PI * 2), ctx.fillStyle = color va ctx.fill() metodlaridan foydalaning.",
+    "test": "const mockCtx = {\n  beginPathCalled: false,\n  arcCalled: false,\n  fillCalled: false,\n  fillStyle: '',\n  beginPath() { this.beginPathCalled = true; },\n  arc(x, y, r, sa, ea) {\n    this.arcCalled = true;\n    this.arcArgs = { x, y, r, sa, ea };\n  },\n  fill() { this.fillCalled = true; }\n};\nconst sandbox = new Function(code + '; return drawCircle;');\nconst fn = sandbox();\nfn(mockCtx, 50, 50, 30, 'blue');\nif (!mockCtx.beginPathCalled) return 'beginPath() metodi chaqirilmadi';\nif (!mockCtx.arcCalled) return 'arc() metodi chaqirilmadi';\nif (!mockCtx.fillCalled) return 'fill() metodi chaqirilmadi';\nif (mockCtx.fillStyle !== 'blue') return 'fillStyle rangi noto\\'g\\'ri o\\'rnatildi';\nconst args = mockCtx.arcArgs;\nif (args.x !== 50 || args.y !== 50 || args.r !== 30 || Math.abs(args.ea - Math.PI * 2) > 0.01) return 'arc() metodiga noto\\'g\\'ri argumentlar uzatildi';\nreturn null;"
   },
   {
     "id": 3,
-    "title": "Chizish Rangini O'zgartirish",
-    "instruction": "'ctx' ning chizish rangini (fillStyle) 'green' (yashil) ga o'zgartiring va x=0, y=0, eni 50, bo'yi 50 bo'lgan to'rtburchak chizing.",
-    "startingCode": "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n\n// Kodni shu yerda yozing\n",
-    "hint": "ctx.fillStyle = 'green'; ctx.fillRect(0, 0, 50, 50);",
-    "test": "if (!code.includes('fillStyle') || !code.includes('green')) return 'fillStyle ko\\'k rangga o\\'zgartirilmadi';\nif (!code.includes('fillRect')) return 'fillRect ishlatilmadi';\nreturn null;"
+    "title": "Canvasni Tozalash",
+    "instruction": "Canvasning chap yuqori burchagidan (0, 0) boshlab, berilgan `width` va `height` o'lchamdagi butun maydonni tozalovchi (o'chiruvchi) `clearCanvas(ctx, width, height)` funksiyasini yozing.",
+    "startingCode": "function clearCanvas(ctx, width, height) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "ctx.clearRect(0, 0, width, height) metodidan foydalaning.",
+    "test": "const mockCtx = {\n  clearRectCalled: false,\n  clearRect(x, y, w, h) {\n    this.clearRectCalled = true;\n    this.args = { x, y, w, h };\n  }\n};\nconst sandbox = new Function(code + '; return clearCanvas;');\nconst fn = sandbox();\nfn(mockCtx, 300, 200);\nif (!mockCtx.clearRectCalled) return 'clearRect() metodi chaqirilmadi';\nconst args = mockCtx.args;\nif (args.x !== 0 || args.y !== 0 || args.w !== 300 || args.h !== 200) return 'clearRect() metodiga noto\\'g\\'ri o\\'lchamlar yoki koordinatalar uzatildi';\nreturn null;"
   }
 ]

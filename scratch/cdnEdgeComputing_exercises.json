@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "1️⃣ Edge Cache Simulator",
+    "instruction": "Sodda edge kesh tizimini simulyatsiya qiluvchi `EdgeCache` klassini yozing. U `set(key, value, ttlMs)` va `get(key)` metodlariga ega bo'lsin. Kalit yozilganda uning muddati tugash vaqti saqlansin. `get` metodida agar kalit muddati o'tgan bo'lsa `null` qaytsin va keshdan o'chirilsin. Agar mavjud va muddati o'tmagan bo'lsa qiymati qaytsin.",
+    "startingCode": "class EdgeCache {\n  constructor() {\n    this.store = new Map();\n  }\n\n  set(key, value, ttlMs) {\n    // Kodni shu yerda yozing\n  }\n\n  get(key) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "this.store.set(key, { value, expiry: Date.now() + ttlMs }) ko'rinishida saqlang. get() chaqirilganda, Date.now() > entry.expiry bo'lsa, delete qiling va null qaytaring.",
+    "test": "if (typeof EdgeCache !== 'function') return 'EdgeCache klass bo\\'lishi kerak';\nconst cache = new EdgeCache();\ncache.set('v1', 'data1', 50);\nif (cache.get('v1') !== 'data1') return 'Qiymat keshdan topilmadi';\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (cache.get('v1') === null) resolve(null);\n    else resolve('Muddati o\\'tgan kesh o\\'chirilmadi');\n  }, 60);\n});"
+  },
+  {
+    "id": 2,
+    "title": "2️⃣ Query String Normalization",
+    "instruction": "Kesh kalitlari fragmentatsiyasining oldini olish uchun so'rov URL manzilidagi query parametrlarni alifbo tartibida saralovchi va kalitlarni kichik harflarga o'tkazuvchi `normalizeUrl(urlStr)` funksiyasini yozing. Masalan: `https://example.com/api?b=2&A=1` -> `https://example.com/api?a=1&b=2`. Agar query parametrlar bo'lmasa, URL o'zgarishsiz qolsin.",
+    "startingCode": "function normalizeUrl(urlStr) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "new URL(urlStr) yordamida URL obyektini yarating. searchParams kalitlarini oling, tartiblang, kichik harfga o'tkazing va searchParams.set() orqali qayta yozing. Oxirida url.toString() qaytaring.",
+    "test": "if (typeof normalizeUrl !== 'function') return 'normalizeUrl funksiya bo\\'lishi kerak';\nconst u1 = 'https://site.uz/path?z=9&A=1&m=5';\nconst r1 = normalizeUrl(u1);\nif (r1 !== 'https://site.uz/path?a=1&m=5&z=9') return 'Query parametrlar tartiblanmadi yoki kalitlar kichik harfga o\\'tmadi';\nconst u2 = 'https://site.uz/path';\nif (normalizeUrl(u2) !== 'https://site.uz/path') return 'Query parametrsiz URL o\\'zgarib ketdi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "3️⃣ Stale-While-Revalidate",
+    "instruction": "Stale-while-revalidate keshlash strategiyasini simulyatsiya qiluvchi `swrFetch(cache, key, fetchFn, ttlMs, swrMs)` funksiyasini yozing. Funksiya quyidagicha ishlashi kerak:\n1. Keshda `key` bo'lsa va uning `ttlMs` muddati o'tmagan bo'lsa (ya'ni `now < entry.expiry`), keshdagi qiymatni qaytarsin.\n2. Keshda `key` bo'lsa, lekin muddati o'tgan bo'lsa-da, u `swrMs` oralig'ida bo'lsa (ya'ni `expiry <= now < expiry + swrMs`), keshdagi eski (stale) qiymatni DARHOL qaytarsin, va fonda (asinxron) `fetchFn()` orqali yangi ma'lumotni yuklab keshni yangilasin (`revalidate` qilsin).\n3. Agar keshda kalit bo'lmasa yoki `expiry + swrMs` muddati ham o'tib ketgan bo'lsa, `fetchFn()` ishga tushib tugashini KUTIB, natijani keshga yozsin va qaytarsin.",
+    "startingCode": "async function swrFetch(cache, key, fetchFn, ttlMs, swrMs) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "const entry = cache.get(key); const now = Date.now(); if (entry && now < entry.expiry) return entry.value; if (entry && now < entry.expiry + swrMs) { fetchFn().then(val => cache.set(key, { value: val, expiry: Date.now() + ttlMs })); return entry.value; } const val = await fetchFn(); cache.set(key, { value: val, expiry: Date.now() + ttlMs }); return val;",
+    "test": "if (typeof swrFetch !== 'function') return 'swrFetch funksiya bo\\'lishi kerak';\nconst mockCache = new Map();\nlet fetchCount = 0;\nconst mockFetch = async () => { fetchCount++; return 'new_val_' + fetchCount; };\nconst res1 = await swrFetch(mockCache, 'item', mockFetch, 100, 200);\nif (res1 !== 'new_val_1' || fetchCount !== 1) return 'Kesh bo\\'sh bo\\'lganda fetch to\\'g\\'ri ishlamadi';\nconst res2 = await swrFetch(mockCache, 'item', mockFetch, 100, 200);\nif (res2 !== 'new_val_1' || fetchCount !== 1) return 'Hali muddati o\\'tmagan keshda qayta fetch qilindi';\nconst entry = mockCache.get('item');\nentry.expiry = Date.now() - 50;\nconst res3 = await swrFetch(mockCache, 'item', mockFetch, 100, 200);\nif (res3 !== 'new_val_1') return 'SWR vaqtida eski qiymat qaytishi kerak edi';\nawait new Promise(r => setTimeout(r, 10));\nif (fetchCount !== 2) return 'SWR fonda revalidation chaqirmadi';\nreturn null;"
+  }
+]

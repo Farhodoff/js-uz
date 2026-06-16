@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "CDN (Content Delivery Network) ning asosiy vazifasi nima?",
+    "options": [
+      "Ma'lumotlar bazasini xavfsiz shifrlash",
+      "Statik va dinamik kontentni foydalanuvchiga geografik jihatdan eng yaqin serverlar (PoP) orqali yetkazib berish, kechikish vaqtini kamaytirish",
+      "Veb-sahifani HTML va CSS kodlariga avtomatik o'tkazish",
+      "Faqat server xotirasini tozalash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CDN dunyo bo'ylab tarqatilgan PoP serverlari tarmog'i bo'lib, foydalanuvchiga eng yaqin joylashgan server orqali kontentni tezkor yetkazib beradi."
+  },
+  {
+    "id": 2,
+    "question": "PoP (Point of Presence) deganda nima tushuniladi?",
+    "options": [
+      "CDN tarmog'ining geografik nuqtalarda joylashgan serverlar va kesh stansiyalari markazi",
+      "JavaScript-dagi push va pop metodlari",
+      "Ma'lumotlar bazasining zaxira nusxasi (backup)",
+      "Veb-brauzerning yangi oynasi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "PoP (Point of Presence) — CDN provayderining ma'lum bir mintaqadagi ma'lumotlar markazi (datacenter) bo'lib, u yerda keshlovchi serverlar joylashadi."
+  },
+  {
+    "id": 3,
+    "question": "Anycast routing qanday ishlaydi?",
+    "options": [
+      "Har bir foydalanuvchi alohida IP manzil orqali faqat bitta serverga bog'lanadi",
+      "Bitta IP manzil dunyo bo'ylab bir nechta serverlarga tegishli bo'ladi va tarmoq so'rovni eng yaqin joylashgan faol serverga yo'naltiradi",
+      "Ma'lumotlarni faqat elektron pochta orqali yuborish usuli",
+      "Faqat IP manzillarni yashirish texnologiyasi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Anycast routing yordamida dunyoning turli nuqtalaridagi PoP serverlari bir xil IP manzilni e'lon qiladi va routerlar so'rovni eng qisqa yo'l bilan eng yaqin serverga yuboradi."
+  },
+  {
+    "id": 4,
+    "question": "GeoDNS va Anycast routing farqi nimada?",
+    "options": [
+      "GeoDNS DNS darajasida foydalanuvchining joylashuviga qarab har xil IP qaytaradi, Anycast esa bitta umumiy IP manzildan foydalanib tarmoq (BGP) darajasida yo'naltiradi",
+      "GeoDNS faqat mobil qurilmalar uchun, Anycast esa desktop kompyuterlar uchun ishlaydi",
+      "GeoDNS ma'lumotlarni sekinroq uzatadi",
+      "Hech qanday farqi yo'q, ikkalasi ham bir xil texnologiya"
+    ],
+    "correctAnswer": 0,
+    "explanation": "GeoDNS so'rov yuborgan foydalanuvchining joylashuviga qarab DNS server orqali eng yaqin server IP-sini beradi. Anycast esa hamma joyda bitta IP ishlatadi va yo'naltirish tarmoq marshrutizatsiyasi (routing) orqali hal qilinadi."
+  },
+  {
+    "id": 5,
+    "question": "V8 Isolates texnologiyasi an'anaviy konteynerlardan (masalan, Docker) qanday ustunlikka ega?",
+    "options": [
+      "Faqat Windows operatsion tizimida ishlaydi",
+      "Cold start (sovuq ishga tushish) kechikishi mikrosaniyalarda o'lchanadi va xotira sarfi juda kam, chunki bir nechta virtual muhitlar bitta OS jarayonida ishlaydi",
+      "Har doim ma'lumotlar bazasiga to'g'ridan-to'g'ri ulangan bo'ladi",
+      "Faqat statik rasmlarni siqish uchun mo'ljallangan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "V8 Isolates bitta Google V8 dvigateli ichida alohida xotira va kontekstlarni izolyatsiya qiladi. Bu esa to'liq OS yoki virtual mashina ishga tushirish ehtiyojini yo'qotadi va millisekundlik kechikishlarsiz ishlaydi."
+  },
+  {
+    "id": 6,
+    "question": "Cache-Control sarlavhasidagi 'stale-while-revalidate' direktivasi nima qiladi?",
+    "options": [
+      "Kesh eskirganda xatolik qaytaradi",
+      "Eskirgan keshni darhol o'chirib, foydalanuvchini kutishga majbur qiladi",
+      "Foydalanuvchiga vaqtinchalik eski keshni tezda qaytaradi va orqa fonda (background) yangi ma'lumotni olish uchun serverga so'rov yuboradi",
+      "Keshni abadiy saqlab qoladi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "stale-while-revalidate eski kontentni ko'rsatish orqali tezkorlikni saqlaydi va fonda keshni yangilab qo'yadi, bu foydalanuvchiga kutishlarsiz sahifani yuklash imkonini beradi."
+  },
+  {
+    "id": 7,
+    "question": "Query string parametrlari tartibi har xil bo'lganda (masalan, ?a=1&b=2 va ?b=2&a=1) CDN-da qanday muammo yuzaga keladi?",
+    "options": [
+      "Dastur crash bo'ladi",
+      "Cache key fragmentation (kesh kaliti bo'linishi) yuz beradi va bir xil sahifa keshda ikki marta alohida saqlanib, kesh samaradorligini kamaytiradi",
+      "Brauzer sahifani yuklashdan bosh tortadi",
+      "Hech qanday muammo bo'lmaydi, CDN ularni avtomatik o'zi tushunadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "CDN kesh kaliti sifatida odatda butun URL-ni oladi. Agar query parametrlar tartibi o'zgarsa, kalit boshqa deb hisoblanadi. Buning oldini olish uchun Edge darajasida parametrlarni normalizatsiya qilish (tartiblash) kerak."
+  },
+  {
+    "id": 8,
+    "question": "Cache-Control sarlavhasidagi 's-maxage' nimani anglatadi?",
+    "options": [
+      "Faqat foydalanuvchining shaxsiy brauzeri keshlaydigan vaqtni",
+      "Faqat umumiy (shared) keshlar va CDN-lar uchun amal qiladigan saqlash muddatini (max-age direktivasini chetlab o'tadi)",
+      "Serverning umumiy ishlash vaqtini",
+      "Faqat HTTPS orqali kelgan so'rovlar uchun maxsus kalitni"
+    ],
+    "correctAnswer": 1,
+    "explanation": "s-maxage (shared max-age) faqat umumiy keshlar (CDN, proksi) uchun mo'ljallangan va u brauzerdagi shaxsiy kesh muddatiga ta'sir qilmaydi."
+  },
+  {
+    "id": 9,
+    "question": "Keshdan chiqarish (Eviction) siyosatlaridan biri bo'lgan LRU (Least Recently Used) algoritmi qanday ishlaydi?",
+    "options": [
+      "Eng ko'p kirilgan elementlarni o'chiradi",
+      "Keshga birinchi bo'lib kirgan elementni birinchi bo'lib o'chiradi",
+      "Eng uzoq vaqt davomida hech kim so'ramagan (foydalanilmagan) elementlarni birinchi bo'lib keshdan chiqaradi",
+      "Tasodifiy elementlarni o'chiradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "LRU (Least Recently Used) kesh sig'imi to'lganda eng oxirgi marta foydalanilgan vaqtiga qarab eng eski va foydalanilmay turgan ma'lumotni keshdan o'chiradi."
+  },
+  {
+    "id": 10,
+    "question": "Edge Computing-ning an'anaviy markaziy Cloud Serverdan asosiy afzalligi nimada?",
+    "options": [
+      "Barcha ma'lumotlar bazasini bitta joyda saqlashi",
+      "So'rovlarni foydalanuvchiga eng yaqin edge (chekka) serverlarda bajarish orqali tarmoq kechikishini (latency) minimal darajaga tushirishi",
+      "SQL so'rovlarini tezroq bajarishi",
+      "Faqat bepul xizmat ko'rsatishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Edge Computing hisob-kitoblarni va mantiqiy kodlarni foydalanuvchiga geografik yaqin bo'lgan edge serverlarda bajaradi va ma'lumotni markaziy servergacha borib-kelish vaqtini tejaydi."
+  },
+  {
+    "id": 11,
+    "question": "Nima uchun CDN-da Cache Purging (keshni tozalash) muhim ahamiyatga ega?",
+    "options": [
+      "Serverdagi disk maydonini tejash uchun",
+      "Bazada yoki serverda ma'lumotlar yangilanganda, CDN keshidagi eski (eski qolgan) ma'lumotlarni o'chirib, foydalanuvchilarga darhol yangi versiyani taqdim etish uchun",
+      "Foydalanuvchi parolini tekshirish uchun",
+      "Internet tezligini oshirish uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kesh tozalanganda (purged), keyingi so'rov to'g'ridan-to'g'ri serverga (origin) boradi va yangi ma'lumot keshga yoziladi, bu foydalanuvchiga eskirgan ma'lumot ko'rsatilishini oldini oladi."
+  },
+  {
+    "id": 12,
+    "question": "BGP Anycast tarmoq marshruti qanday holatda boshqa PoP-ga yo'naltiriladi?",
+    "options": [
+      "Foydalanuvchi parolini noto'g'ri kiritganda",
+      "Eng yaqin PoP ishdan chiqqanda yoki tarmoq uzilganda, BGP protokoli avtomatik tarzda trafigini eng yaqin keyingi PoP serveriga yo'naltiradi",
+      "Faqat kechasi, serverlar uxlaganda",
+      "Foydalanuvchi brauzerini yangilaganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "BGP (Border Gateway Protocol) Anycast routing yuqori bardoshlilikka (fault tolerance) ega. Agar eng yaqin stansiya o'chsa, routerlar so'rovni navbatdagi eng yaqin stansiya IP-siga yo'naltiradi."
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "JavaScript-da qaysi ma'lumot turi primitive (sodda) tur hisoblanmaydi?",
+    "options": [
+      "Symbol",
+      "Object",
+      "Undefined",
+      "BigInt"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JavaScript-da 7 ta primitive tur mavjud: string, number, bigint, boolean, undefined, symbol va null. Object esa reference (murakkab/havolali) tur hisoblanadi."
+  },
+  {
+    "id": 2,
+    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(typeof null);\n```",
+    "options": [
+      "\"null\"",
+      "\"undefined\"",
+      "\"object\"",
+      "\"error\""
+    ],
+    "correctAnswer": 2,
+    "explanation": "JavaScript tilining ilk dizaynidagi xatolik (bug) sababli, `typeof null` har doim \"object\" qaytaradi. Bu orqaga moslikni (backward compatibility) saqlash maqsadida o'zgartirilmagan."
+  },
+  {
+    "id": 3,
+    "question": "Quyidagi taqqoslashlardan qaysi biri `false` qaytaradi?",
+    "options": [
+      "null == undefined",
+      "null === undefined",
+      "false == 0",
+      "'' == false"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`null == undefined` yumshoq tenglikda `true` qaytaradi, chunki ular o'zaro o'xshash qiymatlar deb hisoblanadi. Lekin qat'iy tenglik operatori `===` turlarni solishtiradi (null - object, undefined - undefined) va `false` qaytaradi."
+  },
+  {
+    "id": 4,
+    "question": "Quyidagi kodda hoisting qanday natija beradi?\n```javascript\nconsole.log(a);\nvar a = 10;\n```",
+    "options": [
+      "ReferenceError xatosi",
+      "undefined",
+      "10",
+      "TypeError xatosi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`var` o'zgaruvchilari hoisting bo'lganda faqat ularning e'loni (declaration) yuqoriga ko'tariladi va unga boshlang'ich `undefined` qiymati beriladi. Qiymat tayinlash (assignment) esa o'z joyida qoladi."
+  },
+  {
+    "id": 5,
+    "question": "Quyidagi kod bajarilganda qanday xatolik yuz beradi?\n```javascript\nconsole.log(b);\nlet b = 20;\n```",
+    "options": [
+      "Hech qanday xatolik yo'q, undefined chiqadi",
+      "SyntaxError",
+      "ReferenceError: Cannot access 'b' before initialization",
+      "TypeError"
+    ],
+    "correctAnswer": 2,
+    "explanation": "`let` va `const` o'zgaruvchilari ham hoisting bo'ladi, lekin ular e'lon qilinishidan oldin Temporal Dead Zone (Vaqtinchalik o'lik hudud)da bo'ladi. Ularga e'lon qilinishidan oldin murojaat qilinsa, ReferenceError yuz beradi."
+  },
+  {
+    "id": 6,
+    "question": "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconsole.log(1 + \"2\" - 1);\n```",
+    "options": [
+      "12",
+      "11",
+      "2",
+      "NaN"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Avval `1 + \"2\"` bajariladi. JS plyus operatori va string ko'rsa, sonni ham stringga o'tkazib konkat (birlashtirish) qiladi: `\"12\"` hosil bo'ladi. Keyin `\"12\" - 1` bajariladi. Minus operatori string konkat qila olmaydi, shuning uchun `\"12\"` ni songa o'tkazadi va matematik ayirishni bajaradi: `12 - 1 = 11`."
+  },
+  {
+    "id": 7,
+    "question": "Sohalar (Scopes) bo'yicha global sohadan e'lon qilingan `var` va `let` o'zgaruvchilarining `window` (global) obyektiga ulanishi bo'yicha qaysi fikr to'g'ri?",
+    "options": [
+      "Ikkalasi ham window obyektida xususiyat (property) sifatida paydo bo'ladi",
+      "Hech qaysisi window obyektiga ulanmaydi",
+      "Faqat `var` o'zgaruvchisi window obyektida paydo bo'ladi, `let` esa yo'q",
+      "Faqat `let` o'zgaruvchisi window obyektida paydo bo'ladi, `var` esa yo'q"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Brauzerda global scope-da `var` yordamida e'lon qilingan o'zgaruvchilar `window` obyektining property-siga aylanadi. `let` va `const` o'zgaruvchilari esa global e'lon qilinsa ham `window` obyektida paydo bo'lmaydi."
+  },
+  {
+    "id": 8,
+    "question": "Quyidagi kod ishga tushirilganda nima sodir bo'ladi?\n```javascript\nsayHello();\nvar sayHello = function() {\n  console.log(\"Salom!\");\n};\n```",
+    "options": [
+      "Kod muvaffaqiyatli ishlaydi va \"Salom!\" deb chiqaradi",
+      "TypeError: sayHello is not a function xatoligi beradi",
+      "ReferenceError beradi, chunki funksiya topilmaydi",
+      "Hech narsa chiqmaydi va xatolik ham bo'lmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`sayHello` o'zgaruvchisi `var` bilan e'lon qilinganligi uchun uning faqat e'loni hoisting bo'ladi va qiymati `undefined` bo'lib turadi. Uni funksiya sifatida chaqirmoqchi bo'lsak, `undefined()` chaqirilgan bo'ladi va bu `TypeError` xatosini beradi."
+  },
+  {
+    "id": 9,
+    "question": "Temporal Dead Zone (TDZ - Vaqtinchalik o'lik hudud) nima?",
+    "options": [
+      "Xotira to'lib qolganda JS o'z-o'zidan o'chib qoladigan vaqt oralig'i",
+      "O'zgaruvchi e'lon qilingan sohaning (scope) boshidan to o'sha o'zgaruvchi let/const orqali e'lon qilinmaguncha unga murojaat qilib bo'lmaydigan hudud",
+      "Asinxron funksiyalar bajarilishini kutadigan call stack qismi",
+      "Faqat internet aloqasi bo'lmaganda ishlaydigan kod qismi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "TDZ — bu blok boshlanishidan boshlab `let` yoki `const` o'zgaruvchisi kodda e'lon qilingan joygacha bo'lgan oraliq. Bu oraliqda o'zgaruvchidan foydalanish taqiqlanadi va ReferenceError beradi."
+  },
+  {
+    "id": 10,
+    "question": "JavaScript-da funksiyalarga parametrlar qanday uzatiladi (Pass by Value / Pass by Reference)?",
+    "options": [
+      "Hamma turlar har doim reference orqali uzatiladi",
+      "Hamma turlar har doim qiymat (value) orqali uzatiladi",
+      "Primitive turlar qiymat (value) orqali, obyektlar (reference turlar) esa havola (reference) orqali uzatiladi",
+      "Faqat sonlar qiymat bo'yicha uzatiladi, qolgan hammasi reference bo'yicha"
+    ],
+    "correctAnswer": 2,
+    "explanation": "JS-da primitive ma'lumotlar funksiyaga nusxa olinib (pass by value) uzatiladi, ularning asl qiymati o'zgarmaydi. Obyektlar va massivlar esa xotiradagi manzil (reference) bo'yicha uzatiladi, shuning uchun funksiya ichidagi o'zgarish tashqariga ham ta'sir qiladi."
+  },
+  {
+    "id": 11,
+    "question": "Quyidagi kodning natijasi nima bo'ladi?\n```javascript\nconst arr = [1, 2, 3];\nconst newArr = arr;\nnewArr.push(4);\nconsole.log(arr);\n```",
+    "options": [
+      "[1, 2, 3]",
+      "[1, 2, 3, 4]",
+      "TypeError xatosi beradi, chunki arr const bilan e'lon qilingan",
+      "undefined"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Massivlar obyekt bo'lib, ular reference (havola) orqali ishlaydi. `const newArr = arr` yozganimizda, yangi massiv yaratilmaydi, balki `newArr` ham xuddi shu massivga havola qiladi. Shuning uchun `newArr`ga element qo'shilsa, `arr` ham o'zgaradi."
+  },
+  {
+    "id": 12,
+    "question": "JavaScript-da asinxronlik qanday mexanizmga tayanadi va nima uchun JS bitta oqimli (single-threaded) hisoblanadi?",
+    "options": [
+      "JS bir nechta oqimda ishlaydi, faqat junior-lar buni bilishmaydi",
+      "JS faqat Call Stack-ga ega bitta oqimli til, lekin asinxron operatsiyalar brauzer (Web APIs) va Event Loop yordamida fonga o'tkazilib boshqariladi",
+      "JS faqat asinxron ishlaydi, sinxron kod yozib bo'lmaydi",
+      "Asinxronlik faqat node.js muhitida mavjud, brauzerda yo'q"
+    ],
+    "correctAnswer": 1,
+    "explanation": "JS asosi bitta oqimli (Call Stack). Sinxron kodlar ketma-ket bajariladi. Asinxron amallar (setTimeout, fetch) esa Web APIs yordamida brauzer yoki node.js muhitida fonga yuklanadi va ularning natijalari Event Loop orqali Call Stack bo'shagandan keyin navbat bilan bajariladi."
+  }
+]

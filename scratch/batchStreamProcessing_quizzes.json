@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Batch processing va Stream processing o'rtasidagi asosiy farq nima?",
+    "options": [
+      "Batch processing real vaqtda ishlaydi, Stream processing esa ma'lumotlarni to'plab keyin qayta ishlaydi",
+      "Batch processing to'plangan tarixiy ma'lumotlarni guruhlab (offline) ishlaydi, Stream processing esa ma'lumotlar oqimini doimiy ravishda real vaqtda qayta ishlaydi",
+      "Batch processing faqat ma'lumotlar bazasida ishlaydi, Stream processing esa faqat brauzerda",
+      "Stream processing faqat video formatdagi fayllarni qayta ishlay oladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Batch processing ma'lumotlarni to'plab, ma'lum bir vaqt oralig'ida (masalan, kunda bir marta) qayta ishlaydi. Stream processing esa ma'lumotlar paydo bo'lishi bilan ularni darhol (real vaqtda) qayta ishlaydi."
+  },
+  {
+    "id": 2,
+    "question": "MapReduce paradigmida 'Shuffle' qadami nima vazifani bajaradi?",
+    "options": [
+      "Ma'lumotlarni jismonan o'chirib yuboradi",
+      "Map bosqichida hosil bo'lgan kalit-qiymat (key-value) juftliklarini kalitlari bo'yicha guruhlab, tegishli Reduce tugunlariga (nodes) tarqatadi",
+      "Faqat tasodifiy sonlarni generatsiya qiladi",
+      "Ma'lumotlarni siqib (compress) diskka yozadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Shuffle bosqichi Map natijalarini kaliti bo'yicha guruhlab, tarmoq orqali kerakli Reduce node-lariga yuborish vazifasini bajaradi."
+  },
+  {
+    "id": 3,
+    "question": "Apache Spark va Apache Flink o'rtasidagi qayta ishlash modeli bo'yicha asosiy farq nima?",
+    "options": [
+      "Spark faqat SQL so'rovlarni qo'llab-quvvatlaydi, Flink esa yo'q",
+      "Spark oqimni micro-batch (kichik guruhlar) ko'rinishida qayta ishlaydi, Flink esa har bir elementni real vaqtda (native stream) alohida qayta ishlaydi",
+      "Flink faqat Hadoop ustida ishlaydi, Spark esa mustaqil ishlaydi",
+      "Spark faqat offline rejimda ishlay oladi, Flink esa faqat online"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Apache Spark oqimni micro-batchlarga bo'lib qayta ishlasa, Apache Flink har bir elementni alohida, real vaqtda (real streaming) qayta ishlaydi."
+  },
+  {
+    "id": 4,
+    "question": "Tumbling Window (kesishmaydigan oyna) qanday ishlaydi?",
+    "options": [
+      "Oynalar bir-birining ustiga tushadi va umumiy elementlarga ega bo'bali",
+      "Ruxsat etilgan kechikish vaqti tugagandan so'ng oynalar yopiladi",
+      "Ruxsat etilgan oyna o'lchami bo'yicha ma'lumotlarni kesishmaydigan va bir-biri bilan ustma-ust tushmaydigan vaqt intervallariga bo'ladi",
+      "Faqat sessiya vaqtiga qarab oyna hajmini dinamik o'zgartiradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Tumbling window oynalari qat'iy vaqt oraliqlarida kesishmaydi va ustma-ust tushmaydi (masalan: 0-5 daqiqa, 5-10 daqiqa)."
+  },
+  {
+    "id": 5,
+    "question": "Sliding Window (siljuvchi oyna) ning Tumbling Window dan asosiy farqi nima?",
+    "options": [
+      "Sliding window oynalari bir-biri bilan ustma-ust (overlap) tushishi mumkin, chunki ular oyna hajmi (window size) va siljish qadami (slide interval) orqali aniqlanadi",
+      "Sliding window faqat foydalanuvchi tizimdan chiqqanda ishlaydi",
+      "Sliding window ma'lumotlarni faqat bitta serverda saqlaydi",
+      "Sliding windowda hech qachon kechikkan ma'lumotlar qayta ishlanmaydi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Sliding window oynalari ma'lum bir siljish qadami bo'yicha siljiydi va ular bir-biri bilan kesishishi yoki ustma-ust tushishi mumkin."
+  },
+  {
+    "id": 6,
+    "question": "Event Time va Processing Time farqi nimada?",
+    "options": [
+      "Event Time - event serverga yetib kelgan vaqt, Processing Time - event hosil bo'lgan vaqt",
+      "Event Time - hodisa (event) manbada sodir bo'lgan jismoniy vaqt, Processing Time - tizim/server ushbu eventni qayta ishlayotgan vaqt",
+      "Ikkalasi ham bir xil vaqtni anglatadi, faqat turli kutubxonalarda boshqacha nomlanadi",
+      "Event Time faqat brauzerda, Processing Time esa faqat ma'lumotlar bazasida hisoblanadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Event Time hodisa haqiqatda sodir bo'lgan vaqt (smartfon yoki datchikda), Processing Time esa server ushbu hodisani qayta ishlayotgan vaqtdir."
+  },
+  {
+    "id": 7,
+    "question": "Oqimli ma'lumotlarda Watermark nima vazifani bajaradi?",
+    "options": [
+      "Ma'lumotlarni shifrlash kaliti",
+      "Tizimga event vaqti (Event Time) bo'yicha ma'lumotlar ma'lum bir vaqtgacha to'liq yetib kelganini va undan oldingi oynalarni yopish mumkinligini bildiruvchi temporal chegara",
+      "Foydalanuvchilar sessiyasini tugatish signali",
+      "Ma'lumotlar bazasini tozalash funksiyasi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Watermark oqimli tizimga 'ushbu vaqtgacha bo'lgan barcha eventlar yetib keldi' deb signal beradi va oynalarni yopishga yordam beradi."
+  },
+  {
+    "id": 8,
+    "question": "Lambda arxitekturasi nima va uning tarkibiy qismlari qanday?",
+    "options": [
+      "Faqat Lambda funksiyalaridan (Serverless) foydalangan holda ilova yaratish",
+      "Tarixiy aniqlik uchun Batch Layer va past kechikish (low latency) uchun Speed Layer (real-time) ni parallel ishlatib, so'rov paytida ularni Serving Layer-da birlashtirish",
+      "Ma'lum ma'lumotlarni faqat bitta oqimli broker orqali qayta o'qish",
+      "SQL bazalarini NoSQL bazalariga replikatsiya qilish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Lambda batch va speed layerlarni parallel ishlatadi va ularni serving layerda birlashtiradi."
+  },
+  {
+    "id": 9,
+    "question": "Kappa arxitekturasining Lambda arxitekturasidan asosiy ustunligi nimada?",
+    "options": [
+      "U batch layer-ni butunlay olib tashlab, barcha ma'lumotlarni yagona oqimli (stream) dvigatel yordamida qayta ishlaydi va kodning takrorlanishini (ikki marta yozishni) oldini oladi",
+      "U faqat SQL tilidan foydalanadi",
+      "U ma'lumotlarni hech qachon diskda saqlamaydi",
+      "U faqat Hadoop bilan mos keladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Kappa arxitekturasida kod va infratuzilmani ikki xil yozish kerak emas, chunki batch va real-time uchun faqat bitta streaming dvigateli ishlatiladi."
+  },
+  {
+    "id": 10,
+    "question": "At-least-once (kamida bir marta) yetkazib berish modelida duch kelinadigan eng katta xavf nima?",
+    "options": [
+      "Ma'lumotlarning butunlay yo'qolib qolishi",
+      "Bir xil xabarning qayta-qayta kelishi (duplicates) tufayli tizimda takroriy operatsiyalar bajarilishi",
+      "Tarmoq tezligining juda pasayib ketishi",
+      "Serverning doimiy ravishda o'chib qolishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "At-least-once yetkazib berishda xabarlar yo'qolmaydi, biroq tarmoq xatoliklari sababli dublikatlar kelishi mumkin. Shu sababli consumer idempotent bo'lishi shart."
+  },
+  {
+    "id": 11,
+    "question": "Session Window (sessiya oynasi) boshqa oynalardan qaysi xususiyati bilan farq qiladi?",
+    "options": [
+      "U har doim 1 soat davom etadi",
+      "U statik vaqt oralig'iga ega emas, balki foydalanuvchining ma'lum vaqt davomida faolsizligi (inactivity gap) asosida dinamik ravishda hosil bo'ladi va yopiladi",
+      "U faqat tranzaksiyalar uchun ishlatiladi",
+      "Uni faqat Apache Spark qo'llab-quvvatlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Session Window statik o'lchamga ega emas, u foydalanuvchining faolsizlik davriga (inactivity gap) qarab dinamik ochiladi va yopiladi."
+  },
+  {
+    "id": 12,
+    "question": "Katta hajmdagi ma'lumotlar oqimida 'Late Data' (kechikkan ma'lumot) deb nimaga aytiladi?",
+    "options": [
+      "Tarmoq yoki qurilmalar uzilishi sababli Event Time bo'yicha watermark o'tib ketgandan so'ng tizimga yetib kelgan hodisalar",
+      "Serverda kechasi soat 12 dan keyin qayta ishlangan fayllar",
+      "Faol foydalanuvchi bekor qilgan tranzaksiyalar",
+      "Formatida xatolik bo'lgan JSON xabarlar"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Late Data - bu joriy watermark vaqtidan kichik timestamp bilan kechikib kelgan ma'lumotlardir."
+  }
+]

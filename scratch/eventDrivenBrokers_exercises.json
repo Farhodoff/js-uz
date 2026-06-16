@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Sodda Event Broker (Pub/Sub)",
+    "instruction": "Klass `EventBroker` yarating. U quyidagi metodlarga ega bo'lsin:\n1. `subscribe(event, callback)`: Hodisaga obuna bo'lish. Ushbu metod obunani bekor qiluvchi (unsubscribe) funksiyasini qaytarsin.\n2. `publish(event, data)`: Hodisani barcha obunachilarga e'lon qilish.",
+    "startingCode": "class EventBroker {\n  constructor() {\n    this.listeners = {};\n  }\n\n  subscribe(event, callback) {\n    // Kodni shu yerga yozing\n  }\n\n  publish(event, data) {\n    // Kodni shu yerga yozing\n  }\n}",
+    "hint": "listeners obyektida massiv saqlang. Obunani o'chirish funksiyasi callbackni listeners massividan filtrlab tashlashi kerak.",
+    "test": "if (typeof EventBroker !== 'function') return 'EventBroker klassi topilmadi'; const broker = new EventBroker(); let count = 0; const unsub = broker.subscribe('test', (val) => { count += val; }); broker.publish('test', 5); if (count !== 5) return 'Publish xato'; unsub(); broker.publish('test', 10); if (count !== 5) return 'Unsubscribe ishlamadi'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Kafkadagi Partition Router",
+    "instruction": "Xabarlarni ma'lum bir partitionga yo'naltirish uchun hashing-dan foydalanuvchi `getPartition(key, totalPartitions)` funksiyasini yozing. U kalitning (string ko'rinishidagi `key`) har bir belgisining ASCII kodlari yig'indisini hisoblab, `totalPartitions` ga bo'lgandagi qoldiqni (modulo) qaytarsin. Agar kalit berilmagan (null yoki undefined) bo'lsa, tasodifiy partition indeksini (0 dan totalPartitions - 1 gacha butun son) qaytarsin.",
+    "startingCode": "function getPartition(key, totalPartitions) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "Kalit yo'q bo'lsa, Math.random() yoki shunga o'xshash mantiq yordamida partitionni aniqlang. Kalit bor bo'lsa, satr bo'ylab charCodeAt(i) yig'indisini topib, totalPartitions ga bo'ling.",
+    "test": "if (typeof getPartition !== 'function') return 'getPartition topilmadi'; const p1 = getPartition('user123', 4); const p2 = getPartition('user123', 4); if (p1 !== p2) return 'Bir xil kalit har doim bir xil partitionga borishi kerak'; if (p1 < 0 || p1 >= 4) return 'Partition indeksi oraliqdan tashqarida'; const pRandom = getPartition(null, 5); if (pRandom < 0 || pRandom >= 5) return 'Kalitsiz xabar uchun partition noto\\'g\\'ri'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Event Sourcing: Balansni Replay orqali tiklash",
+    "instruction": "Event Sourcing tizimida holat eventlar ketma-ketligidan yig'iladi. `calculateBalance(events)` funksiyasini yozing. U boshlang'ich balansni 0 deb oladi va eventlar massividagi har bir hodisani qayta ishlaydi. Eventlar quyidagi ko'rinishda bo'ladi:\n- `{ type: 'DEPOSIT', amount: 100 }` (balansga amount qo'shiladi)\n- `{ type: 'WITHDRAW', amount: 50 }` (balansdan amount ayiriladi)\n- `{ type: 'INTEREST', rate: 0.1 }` (balans rate foizga oshadi, ya'ni `balans = balans * (1 + rate)`)\nBarcha eventlar bajarilgandan keyin yakuniy balansni qaytaring.",
+    "startingCode": "function calculateBalance(events) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "Boshlang'ich balansni 0 deb belgilab, events massivini loop yoki reduce orqali aylanib chiqing. Har bir event.type ga qarab mantiqni bajaring.",
+    "test": "if (typeof calculateBalance !== 'function') return 'calculateBalance topilmadi'; const evs = [{ type: 'DEPOSIT', amount: 100 }, { type: 'WITHDRAW', amount: 30 }, { type: 'INTEREST', rate: 0.1 }]; const bal = calculateBalance(evs); if (bal !== 77) return 'Yakuniy balans noto\\'g\\'ri: ' + bal; return null;"
+  }
+]

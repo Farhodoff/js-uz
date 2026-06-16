@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "question": "Bloom Filter-ning eng asosiy xususiyati nimada?",
+    "options": [
+      "Ma'lumotlar mavjudligini xotirani o'ta tejagan holda, ammo False Positive ehtimoli bilan tekshirish",
+      "Elementlarni kalitlar bo'yicha saralab saqlash",
+      "Faqat satrli ma'lumotlarni shifrlab diskda saqlash",
+      "Ma'lumotlarni o'chirish tezligini O(1) qilish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Bloom Filter elementlarni o'zini saqlamay bitlar va hash funksiyalar yordamida tekshiradi. Bunda False Positive (xato ijobiy javob) bo'lishi mumkin, ammo False Negative (xato inkor) bo'lmaydi."
+  },
+  {
+    "id": 2,
+    "question": "Bloom Filter-da 'False Positive' nima degani?",
+    "options": [
+      "Element filtrda bor bo'lsa-da, filtr uni yo'q deb xato topishi",
+      "Element aslida to'plamda yo'q bo'lsa-da, filtr uni 'bo'lishi mumkin' (bor) deb xato javob berishi",
+      "Bitlar massividagi barcha bitlarning 0 bo'lib qolishi",
+      "Hash funksiyalarining cheksiz siklga tushib qolishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "False Positive - element aslida mavjud bo'lmasa ham, bitlar to'qnashuvi tufayli filtr uni 'bor bo'lishi mumkin' deb xato xulosa qilishi."
+  },
+  {
+    "id": 3,
+    "question": "Nima uchun standart Bloom Filter-dan elementni o'chirib bo'lmaydi?",
+    "options": [
+      "Chunki u faqat o'qish uchun mo'ljallangan fayl tizimida yashaydi",
+      "Chunki elementlar shifrlangan bo'ladi",
+      "Chunki bir nechta element bitta bit indeksini birgalikda 1 ga o'zgartirgan bo'lishi mumkin, uni o'chirish boshqalarni ham yo'q qiladi",
+      "Chunki o'chirish operatsiyasi O(N^2) vaqt oladi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Bitlar birgalikda foydalanilganligi sababli, bitta element bitini o'chirish boshqa elementlarning tekshiruvini ham buzadi."
+  },
+  {
+    "id": 4,
+    "question": "Optimal hash funksiyalar sonini (k) hisoblash formulasi qaysi?",
+    "options": [
+      "k = m * n * ln(2)",
+      "k = (m / n) * ln(2)",
+      "k = (n / m) * ln(2)",
+      "k = m / (n * ln(2))"
+    ],
+    "correctAnswer": 1,
+    "explanation": "k = (m / n) * ln(2) formulasi eng minimal False Positive darajasini beruvchi optimal hash funksiyalari sonini hisoblaydi."
+  },
+  {
+    "id": 5,
+    "question": "Standart bitlar o'rniga sonli hisoblagichlarni ishlatib, o'chirishni qo'llaydigan tuzilma qaysi?",
+    "options": [
+      "Counting Bloom Filter",
+      "Cuckoo Filter",
+      "HyperLogLog",
+      "Count-Min Sketch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Counting Bloom Filter har bir bit uchun hisoblagich (counter) saqlaydi va qo'shganda oshirib, o'chirganda kamaytiradi."
+  },
+  {
+    "id": 6,
+    "question": "HyperLogLog algoritmining asosiy vazifasi nima?",
+    "options": [
+      "Elementlar chastotasini hisoblash",
+      "Yirik oqimlardagi unikal elementlar sonini (cardinality estimation) o'ta kam xotira bilan hisoblash",
+      "Ma'lumotlarni shifrlash",
+      "Serverlar o'rtasida yuklamani taqsimlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "HyperLogLog (HLL) o'ta yirik ma'lumotlar oqimida (masalan, kunlik unikal foydalanuvchilar) unikal elementlar sonini juda kam xotira sarflab baholaydi."
+  },
+  {
+    "id": 7,
+    "question": "Count-Min Sketch chastotani qanday baholaydi?",
+    "options": [
+      "Barcha hash qiymatlarini qo'shish orqali",
+      "Faqat bitta hash funksiya yordamida",
+      "Elementning o'zini saqlab sanash orqali",
+      "Bir nechta hash funksiyalardan olingan indekslardagi qiymatlarning eng kichigini (minimum) olish orqali"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Count-Min Sketch element chastotasini aniqlashda to'qnashuvlar tufayli qiymat oshib ketishini hisobga olib, barcha hashlar bo'yicha eng kichik qiymatni qaytaradi."
+  },
+  {
+    "id": 8,
+    "question": "Cuckoo Hashing algoritmining o'ziga xosligi nimada?",
+    "options": [
+      "To'qnashuv paytida mavjud elementni boshqa jadvalga siqib chiqarish (kick-out) va zanjir hosil qilish",
+      "Faqat bitta hash funksiyasidan foydalanish",
+      "Hech qachon to'qnashuv sodir bo'lmasligi",
+      "Faqat diskda ishlashi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cuckoo Hashing to'qnashuv bo'lganda eski elementni o'z uyasidan siqib chiqarib, muqobil uyasiga o'tkazadi."
+  },
+  {
+    "id": 9,
+    "question": "Agar Bloom Filter ma'lumot 'yo'q' deb javob bersa, uning haqiqatda mavjud bo'lish ehtimoli qancha?",
+    "options": [
+      "50% ehtimol bilan bor",
+      "0% (ya'ni mutlaqo yo'q, False Negative imkonsiz)",
+      "10% ehtimol bilan bor",
+      "Faqat kesh tozalangandan keyin bor"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bloom Filter hech qachon bor elementni yo'q demaydi. Shuning uchun filtr 'yo'q' desa, bu 100% aniq haqiqatdir."
+  },
+  {
+    "id": 10,
+    "question": "Bloom Filter uchun qaysi hash funksiyalari eng to'g'ri tanlov hisoblanadi?",
+    "options": [
+      "SHA-256 va bcrypt",
+      "AES va RSA",
+      "MurmurHash3, FNV-1a, yoki xxHash kabi kriptografik bo'lmagan tezkor hashlar",
+      "Faqat oddiy string uzunligi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Kriptografik bo'lmagan hashlar o'ta tez ishlaydi va Bloom Filter uchun eng mosidir. Kriptografik hashlar (SHA-256 kabi) tizimni sekinlashtiradi."
+  },
+  {
+    "id": 11,
+    "question": "Cassandra yoki BigTable kabi bazalarda Bloom Filter qanday yordam beradi?",
+    "options": [
+      "Bazadagi SQL xatolarni tuzatadi",
+      "Mavjud bo'lmagan kalitlar uchun diskdagi SSTable fayllarini qidirishni (Disk I/O) aylanib o'tish orqali tezlashtiradi",
+      "Tranzaksiyalarni avtomatik bekor qiladi",
+      "Faqat administrator parollarini saqlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "RAM-da turuvchi Bloom Filter diskdagi SSTable ichida kalit bor-yo'qligini tezda tekshiradi va diskka keraksiz murojaatlarni kamaytiradi."
+  },
+  {
+    "id": 12,
+    "question": "HyperLogLog taxminan qancha xotira bilan millionlab unikal elementlarni sanay oladi?",
+    "options": [
+      "Atigi 12KB atrofida",
+      "Kamida 1GB",
+      "Har bir element uchun 8 baytdan",
+      "Filtr o'lchami o'zgarmas 512MB bo'ladi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "HyperLogLog o'ta kichik xotirada (odatda 12KB) log-log hashing va yetakchi nollarni hisoblash yordamida o'ta aniq hisoblab bera oladi."
+  }
+]
