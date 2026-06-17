@@ -2,7 +2,7 @@ export const jsWhat = {
   id: "jsWhat",
   title: "JavaScriptga Kirish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### JavaScript nima?
 * **JavaScript (JS):** Bu veb-sahifalarni jonlantirish, ularga dinamik xatti-harakatlar va interaktivlik qo'shish uchun ishlatiladigan dasturlash tilidir. Dastlab faqat brauzerlar ichida ishlash uchun mo'ljallangan bo'lsa, bugungi kunda serverlardan tortib sun'iy intellekt tizimlarigacha qo'llaniladi.
@@ -130,7 +130,7 @@ userRole = "admin";
 2. **Savol:** \`let\`, \`const\` va \`var\` farqlari nimada?
    * **Javob:** \`var\` global yoki funksiya scope-ga ega va hoist bo'ladi. \`let\` va \`const\` esa block scope-ga ega (figurali qavslar ichida ishlaydi). \`const\` qiymatini qayta e'lon qilib yoki o'zgartirib bo'lmaydi.
 3. **Savol:** JavaScript-da qanday ibtidoiy (primitive) ma'lumot turlari bor?
-   * **Javob:** JavaScript-da 7 ta primitive tur mavjud: String (matn), Number (son), Boolean (mantiqiy), Null (bo'sh), Undefined (aniqlanmagan), Symbol (unikal belgi) va BigInt (katta butun son).
+   * **Javob:** JavaScript-da 7 ta primitive tur mavjud: String, Number, Boolean, Null, Undefined, Symbol va BigInt.
 4. **Savol:** \`typeof\` operatori nima vazifani bajaradi?
    * **Javob:** \`typeof\` o'zgaruvchi yoki qiymatning qaysi ma'lumot turiga tegishli ekanligini matn ko'rinishida qaytaradi (masalan: \`"string"\`, \`"number"\`).
 
@@ -216,110 +216,37 @@ toggleBtn.addEventListener("click", () => {
 | **HTML** | Sahifaning tuzilishi va ma'lumotlarini belgilaydi | \`<h1>Sarlavha</h1>\` |
 | **CSS** | Sahifa elementlarini chiroyli ko'rinishga keltiradi | \`body { background: #000; }\` |
 | **JavaScript** | Sahifaga harakat va muloqot elementlarini qo'shadi | \`btn.onclick = () => alert('!')\` |
-| **var** | Eski usulda o'zgaruvchi e'lon qiladi | \`var name = "Ali";\` |
-| **let** | O'zgartirish mumkin bo'lgan o'zgaruvchi e'lon qiladi | \`let yosh = 20;\` |
-| **const** | O'zgartirib bo'lmaydigan o'zgarmaslarni e'lon qiladi | \`const PI = 3.14;\` |
+| **let / const** | O'zgaruvchi va o'zgarmaslarni e'lon qiladi | \`let x = 5; const PI = 3.14;\` |
 | **typeof** | Berilgan qiymat yoki o'zgaruvchi turini aniqlaydi | \`typeof "Salom" // "string"\` |
 | **defer** | Skriptni fonda parallel yuklab, DOM tayyor bo'lgach ishga tushiradi | \`<script src="app.js" defer></script>\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Birinchi qadam",
-      instruction: "Konsolga 'Salom Dunyo' matnini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.log('Salom Dunyo');",
-      test: "if (logs.includes('Salom Dunyo')) return null; return 'Konsolga Salom Dunyo chiqmagan!';"
-    },
-    {
-      id: 2,
-      title: "Matematika",
-      instruction: "Konsolga 5 va 10 sonlarining yig'indisini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.log(5 + 10);",
-      test: "if (logs.includes(15)) return null; return 'Natija 15 chiqishi kerak!';"
-    },
-    {
-      id: 3,
-      title: "Ism chiqish",
-      instruction: "O'z ismingizni konsolga text ko'rinishida chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.log('Ali');",
-      test: "if (logs.length > 0 && typeof logs[0] === 'string' && logs[0].length > 0) return null; return 'Ismingizni matn ko\\'rinishida chiqaring!';"
-    },
-    {
-      id: 4,
-      title: "Ogohlantirish oynasi",
-      instruction: "alert() funksiyasi yordamida 'Xush kelibsiz!' xabarini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "alert('Xush kelibsiz!');",
-      test: "if (code.includes('alert') && code.includes('Xush kelibsiz')) return null; return 'alert funksiyasidan foydalanib Xush kelibsiz! deb yozing!';"
-    },
-    {
-      id: 5,
-      title: "Konsol xatosi",
-      instruction: "console.error() yordamida 'Tizimda xatolik!' xabarini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.error('Tizimda xatolik!');",
-      test: "if (code.includes('console.error') && code.includes('Tizimda xatolik')) return null; return 'console.error orqali Tizimda xatolik! xabarini chiqaring!';"
-    },
-    {
-      id: 6,
-      title: "Konsol ogohlantirishi",
-      instruction: "console.warn() yordamida 'Diqqat!' deb xabar chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.warn('Diqqat!');",
-      test: "if (code.includes('console.warn') && code.includes('Diqqat')) return null; return 'console.warn yordamida Diqqat! xabarini chiqaring!';"
-    },
-    {
-      id: 7,
-      title: "Ko'p satrli xabar",
-      instruction: "Konsolga bitta console.log ichida '\\n' yordamida ikki satrda: 'Satr 1' va 'Satr 2' matnlarini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.log('Satr 1\\nSatr 2');",
-      test: "if (logs.length > 0 && logs[0].includes('Satr 1') && logs[0].includes('Satr 2')) return null; return 'console.log ichida \\\\n orqali ikki qatorda matn chiqaring!';"
-    },
-    {
-      id: 8,
-      title: "Ko'paytirish amali",
-      instruction: "Konsolga 4 va 8 ning ko'paytmasini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.log(4 * 8);",
-      test: "if (logs.includes(32)) return null; return 'Ko\\'paytma natijasi 32 chiqishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "Bir necha ma'lumot",
-      instruction: "console.log ichida vergul bilan ajratib 'Yosh:' matni va 25 sonini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.log('Yosh:', 25);",
-      test: "if (code.includes('console.log') && code.includes('25') && code.includes('Yosh')) return null; return 'console.log(\\'Yosh:\\', 25) yozuvini kiriting!';"
-    },
-    {
-      id: 10,
-      title: "Konsolni tozalash",
-      instruction: "Konsolni tozalash uchun mo'ljallangan console.clear() metodini chaqiring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.clear();",
-      test: "if (code.includes('console.clear')) return null; return 'console.clear() metodini chaqiring!';"
-    },
-    {
-      id: 11,
-      title: "Matn turini aniqlash",
-      instruction: "console.log ichida typeof operatori yordamida 'Salom' matnining turini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.log(typeof 'Salom');",
-      test: "if (logs.includes('string')) return null; return 'typeof yordamida string chiqaring!';"
-    },
-    {
-      id: 12,
-      title: "Murakkab ifoda",
-      instruction: "Konsolga (20 - 5) / 3 ifodasining natijasini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.log((20 - 5) / 3);",
-      test: "if (logs.includes(5)) return null; return 'Natija 5 bo\\'lishi kerak!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Birinchi Dastur (Hello World)",
+    "instruction": "Foydalanuvchiga salom berish uchun `sayHello()` nomli funksiya yozing. U har doim `'Hello, World!'` satrini qaytarishi (return qilishi) kerak.",
+    "startingCode": "function sayHello() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`return 'Hello, World!';` deb yozing.",
+    "test": "const sandbox = new Function(code + '; return sayHello;');\nconst fn = sandbox();\nconst res = fn();\nif (res === 'Hello, World!') return null;\nreturn 'sayHello funksiyasi \"Hello, World!\" matnini qaytarmadi';"
+  },
+  {
+    "id": 2,
+    "title": "O'zgaruvchilarni E'lon Qilish",
+    "instruction": "JavaScript-da o'zgaruvchilar bilan ishlashni mashq qilamiz. `sum(a, b)` funksiyasini yozing. U ikkita sonni qabul qiladi, ularning yig'indisini `result` nomli o'zgaruvchida saqlaydi va ushbu `result`ni qaytaradi.",
+    "startingCode": "function sum(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`let result = a + b;` deb o'zgaruvchi e'lon qiling va uni `return result;` orqali qaytaring.",
+    "test": "if (!code.includes('result')) return 'Kodingizda result nomli o\\'zgaruvchi e\\'lon qilinishi shart';\nconst sandbox = new Function(code + '; return sum;');\nconst fn = sandbox();\nif (fn(5, 10) === 15 && fn(-1, 1) === 0) return null;\nreturn 'sum funksiyasi yig\\'indini to\\'g\\'ri hisoblab qaytarmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Turlarni Aniqlash",
+    "instruction": "Berilgan qiymatning ma'lumot turini (data type) aniqlab beruvchi `getType(value)` funksiyasini yozing. Buning uchun `typeof` operatoridan foydalaning va natijani qaytaring.",
+    "startingCode": "function getType(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`return typeof value;` ko'rinishida yozing.",
+    "test": "const sandbox = new Function(code + '; return getType;');\nconst fn = sandbox();\nif (fn(42) === 'number' && fn('Salom') === 'string' && fn(true) === 'boolean') return null;\nreturn 'getType funksiyasi ma\\'lumot turini to\\'g\\'ri qaytarmadi';"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,
@@ -335,7 +262,7 @@ toggleBtn.addEventListener("click", () => {
   },
   {
     "id": 2,
-    "question": "HTML, CSS va JavaScript o'rtasidagi bog'liqlikni qaysi o'xshatish eng yaxshi tushuntiradi?",
+    "question": "HTML, CSS va JavaScript o'rtasidagi bog'liqlikni qaysi analogiya eng yaxshi tushuntiradi?",
     "options": [
       "HTML — kiyim, CSS — miya, JavaScript — suyak karkasi",
       "HTML — suyak karkasi (struktura), CSS — tashqi ko'rinish (kiyim/chiroy), JavaScript — miya va muskullar (harakat/interaktivlik)",

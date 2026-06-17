@@ -2,7 +2,7 @@ export const sqlSubqueries = {
   id: "sqlSubqueries",
   title: "SQL Subqueries (Ichki So'rovlar)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Subquery (Ichma-ich so'rov) nima?
 Ba'zida SQL-da biror natijani olish uchun kerak bo'ladigan shart boshqa bir so'rovning natijasiga bog'liq bo'ladi. Masalan, "O'rtacha buyurtma miqdoridan qimmatroq bo'lgan barcha buyurtmalarni topish" kerak. Buning uchun avval o'rtacha buyurtma miqdorini aniqlash, so'ngra shu qiymatdan katta buyurtmalarni filtrlash lozim. SQL-da buni bitta so'rov ichida ikkinchi so'rovni joylashtirish — **Subquery** (Ichma-ich so'rov) yordamida yechish mumkin.
@@ -220,87 +220,31 @@ Subquery'larni optimallashtirish qoidalari:
 | **EXISTS Subquery** | \`SELECT * FROM u WHERE EXISTS (SELECT 1 FROM o WHERE o.user_id = u.id)\` | Mavjudlikni tezkor tekshirishda | Yuqori |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "O'rtacha narxdan qimmat mahsulotlar",
-      instruction: "`products` jadvalidan narxi o'rtacha narxdan (`AVG(price)`) katta bo'lgan barcha mahsulotlarni tanlang.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "SELECT * FROM products WHERE price > (SELECT AVG(price) FROM products)",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'O\\'rtacha narxdan (466) katta jami 2 ta mahsulot bor'; if(result.some(p => p.price <= 466)) return 'Faqat o\\'rtachadan qimmat mahsulotlar qaytishi kerak'; return null;"
-    },
-    {
-      id: 2,
-      title: "Adminlarning buyurtmalari",
-      instruction: "`orders` jadvalidan roli `Admin` bo'lgan foydalanuvchilarning barcha buyurtmalarini subquery (`IN` operatori) orqali tanlang.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "SELECT * FROM orders WHERE user_id IN (SELECT id FROM users WHERE role = 'Admin')",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Admin foydalanuvchiga tegishli 2 ta buyurtma bor'; if(result.some(o => o.user_id !== 1)) return 'Faqat Admin buyurtmalari chiqishi kerak'; return null;"
-    },
-    {
-      id: 3,
-      title: "Minimal qoldiqdan ko'p mahsulotlar",
-      instruction: "`products` jadvalidan `stock` (ombor qoldig'i) eng minimal qoldiqdan (`MIN(stock)`) ko'p bo'lgan barcha mahsulotlarni oling.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "SELECT * FROM products WHERE stock > (SELECT MIN(stock) FROM products)",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Minimal qoldiq 5 ga teng, undan katta 4 ta mahsulot bor'; return null;"
-    },
-    {
-      id: 4,
-      title: "Buyurtma bermagan foydalanuvchilar",
-      instruction: "`users` jadvalidan umuman buyurtma bermagan (ya'ni `orders` jadvalidagi `user_id`lar ro'yxatida yo'q) barcha foydalanuvchilarni `NOT IN` yordamida aniqlang.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "SELECT * FROM users WHERE id NOT IN (SELECT user_id FROM orders)",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Buyurtma bermagan faqat 1 ta foydalanuvchi bor (Dilshod)'; if(result[0].name !== 'Dilshod') return 'Noto\\'g\\'ri foydalanuvchi qaytarildi'; return null;"
-    },
-    {
-      id: 5,
-      title: "O'rtacha xarajatdan qimmat buyurtmalar",
-      instruction: "`orders` jadvalidan har bir foydalanuvchining o'zining o'rtacha buyurtma summasidan (`AVG(amount)`) katta bo'lgan buyurtmalarini correlated subquery orqali tanlang.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "SELECT * FROM orders o1 WHERE o1.amount > (SELECT AVG(o2.amount) FROM orders o2 WHERE o2.user_id = o1.user_id)",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Jami 2 ta buyurtma foydalanuvchining o\\'z o\\'rtacha xarajatidan ko\\'p'; if(!result.some(o => o.id === 101) || !result.some(o => o.id === 102)) return 'Noto\\'g\\'ri buyurtmalar qaytarildi'; return null;"
-    },
-    {
-      id: 6,
-      title: "Katta buyurtma bergan foydalanuvchilar",
-      instruction: "`users` jadvalidan 500 dan qimmatroq bo'lgan kamida bitta buyurtma bergan foydalanuvchilarni `EXISTS` operatori yordamida tanlang.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "SELECT * FROM users u WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id AND o.amount > 500)",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return '500 dan katta buyurtma bergan 2 ta foydalanuvchi bor (Ali va Vali)'; if(!result.some(u => u.name === 'Ali') || !result.some(u => u.name === 'Vali')) return 'Faqat Ali va Vali bo\\'lishi kerak'; return null;"
-    },
-    {
-      id: 7,
-      title: "Shahardagi eng yosh foydalanuvchilar",
-      instruction: "`users` jadvalidan har bir shahar bo'yicha eng yoshi kichik (minimal `age`) bo'lgan foydalanuvchilarni correlated subquery yordamida aniqlang.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "SELECT * FROM users u1 WHERE u1.age = (SELECT MIN(u2.age) FROM users u2 WHERE u2.city = u1.city)",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Har bir shahar uchun bittadan jami 3 ta foydalanuvchi bo\\'lishi kerak'; if(!result.some(u => u.name === 'Sardor' && u.city === 'Toshkent')) return 'Toshkentdagi eng yoshi kichik - Sardor bo\\'lishi kerak'; return null;"
-    },
-    {
-      id: 8,
-      title: "Dinamik buyurtmalar soni",
-      instruction: "`users` jadvalidan foydalanuvchining `id`si, `name`i va u bergan buyurtmalar sonini (`order_count` deb nomlab) SELECT ustunlari qismidagi subquery orqali hisoblab chiqaring.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "SELECT id, name, (SELECT COUNT(*) FROM orders WHERE user_id = users.id) AS order_count FROM users",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 5) return 'Jami 5 ta foydalanuvchi chiqishi kerak'; const ali = result.find(r => r.name === 'Ali'); if(!ali || ali.order_count !== 2) return 'Alining buyurtmalari soni 2 ga teng bo\\'lishi kerak'; const dil = result.find(r => r.name === 'Dilshod'); if(!dil || dil.order_count !== 0) return 'Dilshodning buyurtmalari soni 0 bo\\'lishi kerak'; return null;"
-    },
-    {
-      id: 9,
-      title: "Katta xarajatli foydalanuvchilar (Derived Table)",
-      instruction: "`FROM` qismida derived table (subquery) yordamida har bir foydalanuvchining `user_id` va umumiy xarajatini (`total_spent`) hisoblang. Tashqi so'rovda umumiy xarajati 1000 dan katta bo'lgan foydalanuvchilarning `user_id` va `total_spent` qiymatlarini oling.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "SELECT user_id, total_spent FROM (SELECT user_id, SUM(amount) AS total_spent FROM orders GROUP BY user_id) temp WHERE total_spent > 1000",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Umumiy xarajati 1000 dan oshgan faqat 1 ta foydalanuvchi bor'; if(result[0].user_id !== 1 || Number(result[0].total_spent) !== 1225.50) return 'Faqat 1-user (1225.50 xarajat bilan) qaytishi kerak'; return null;"
-    },
-    {
-      id: 10,
-      title: "Boshqa toifadagi qimmat mahsulotlar",
-      instruction: "`products` jadvalidan `Electronics` (Elektronika) toifasidagi eng arzon mahsulot narxidan qimmat bo'lgan boshqa toifadagi barcha mahsulotlarni subquery orqali tanlang.",
-      startingCode: "-- SQL so'rovini yozing\n",
-      hint: "SELECT * FROM products WHERE category != 'Electronics' AND price > (SELECT MIN(price) FROM products WHERE category = 'Electronics')",
-      test: "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Elektronika toifasidagi eng arzon narx 25 (Mouse) ga teng. Boshqa toifalarda undan qimmat 2 ta mahsulot bor (Desk va Chair)'; if(result.some(p => p.category === 'Electronics')) return 'Faqat boshqa toifadagi (Electronics bo\\'lmagan) mahsulotlar chiqishi kerak'; return null;"
-    }
-  ]
+  {
+    "id": 1,
+    "title": "Eng qimmat mahsulotlar",
+    "instruction": "`products` jadvalidan narxi eng o'rtacha narxdan (`AVG(price)`) katta bo'lgan barcha mahsulotlarni tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT * FROM products WHERE price > (SELECT AVG(price) FROM products)",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Ortacha narxdan (451) katta jami 2 ta mahsulot bor'; if(result.some(p => p.price < 451)) return 'Faqat o\\'rtachadan qimmat mahsulotlar qaytishi kerak'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Adminlarning buyurtmalari",
+    "instruction": "`orders` jadvalidan roli `Admin` bo'lgan foydalanuvchilarning barcha buyurtmalarini subquery orqali tanlang.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT * FROM orders WHERE user_id IN (SELECT id FROM users WHERE role = 'Admin')",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Admin foydalanuviga (Ali) tegishli 2 ta buyurtma bor'; if(result.some(o => o.user_id !== 1)) return 'Faqat Admin buyurtmalari chiqishi kerak'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Kam qolgan mahsulotlar",
+    "instruction": "`products` jadvalidan `stock` (ombor qoldig'i) eng minimal qoldiqdan (`MIN(stock)`) ko'proq bo'lgan barcha mahsulotlarni oling.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT * FROM products WHERE stock > (SELECT MIN(stock) FROM products)",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Minimal qoldiq 5 ga teng, undan katta 4 ta mahsulot bor'; return null;"
+  }
+]
 ,
   quizzes: [
   {

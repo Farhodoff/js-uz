@@ -2,7 +2,7 @@ export const dom = {
   id: "dom",
   title: "DOM Asoslari va Hujjat Daraxti (Document Object Model)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### DOM nima?
 **DOM (Document Object Model - Hujjat Obyekt Modeli)** — bu veb-brauzer tomonidan HTML hujjatini o'qish paytida tuziladigan va uni JavaScript orqali boshqarish, o'zgartirish, o'chirish yoki yangilash imkonini beruvchi dynamic daraxtsimon obyektlar tuzilmasidir. HTML kodlarimiz statik matn xolos, DOM esa ularning brauzer xotirasidagi faol va tirik vakilidir.
@@ -293,103 +293,32 @@ function renderUsersTable(usersData) {
 | **getBoundingClientRect()**| \`el.getBoundingClientRect()\` | Koordinatalar va o'lchamlarni beradi| Reflow chaqirishi mumkin |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Elementni tanlash",
-      instruction: "querySelector yordamida 'h1' elementini tanlab oling va uni 'title' o'zgaruvchisiga saqlang.",
-      startingCode: "// Kodni shu yerda yozing\n",
-      hint: "const title = document.querySelector('h1');",
-      test: "if (code.includes('document.querySelector') && code.includes('h1')) return null; return 'h1 tegini tanlang';"
-    },
-    {
-      id: 2,
-      title: "Matnni o'zgartirish",
-      instruction: "O'zgaruvchi 'header' ning textContent xususiyatini 'Salom JS' ga o'zgartiring.",
-      startingCode: "const header = { textContent: '' }; // Mock element\n// Kodni shu yerga yozing\n",
-      hint: "header.textContent = 'Salom JS';",
-      test: "if (header.textContent === 'Salom JS') return null; return 'Matn noto\\'g\\'ri';"
-    },
-    {
-      id: 3,
-      title: "Style o'zgartirish",
-      instruction: "Elementning fon rangini (backgroundColor) 'blue' qiling.",
-      startingCode: "const el = { style: { backgroundColor: '' } };\n// Bu yerga yozing\n",
-      hint: "el.style.backgroundColor = 'blue';",
-      test: "if (el.style.backgroundColor === 'blue') return null; return 'Rang ko\\'k bo\\'lishi kerak';"
-    },
-    {
-      id: 4,
-      title: "Class qo'shish",
-      instruction: "Elementga 'highlight' klassini qo'shing.",
-      startingCode: "const el = { classList: { add: (c) => el.className = c } };\n// Bu yerga yozing\n",
-      hint: "el.classList.add('highlight');",
-      test: "if (el.className === 'highlight') return null; return 'Class qo\\'shilmadi';"
-    },
-    {
-      id: 5,
-      title: "querySelectorAll ishlatish",
-      instruction: "querySelectorAll yordamida barcha 'li' elementlarini tanlang va ularni 'listItems' o'zgaruvchisiga saqlang.",
-      startingCode: "// Kodni shu yerda yozing\n",
-      hint: "const listItems = document.querySelectorAll('li');",
-      test: "if (code.includes('querySelectorAll') && code.includes('li')) return null; return 'querySelectorAll yordamida li elementlarini tanlang';"
-    },
-    {
-      id: 6,
-      title: "Class o'chirish",
-      instruction: "Elementdan classList.remove yordamida 'hidden' klassini o'chiring.",
-      startingCode: "const el = { classList: { remove: (c) => el.className = '' } };\n// Bu yerga yozing\n",
-      hint: "el.classList.remove('hidden');",
-      test: "if (code.includes('classList.remove') && code.includes('hidden')) return null; return 'hidden klassini o\\'chiring';"
-    },
-    {
-      id: 7,
-      title: "innerHTML orqali yozish",
-      instruction: "Elementning innerHTML xususiyatiga '<span>Yangi</span>' matnini yozing.",
-      startingCode: "const el = { innerHTML: '' };\n// Bu yerga yozing\n",
-      hint: "el.innerHTML = '<span>Yangi</span>';",
-      test: "if (el.innerHTML === '<span>Yangi</span>') return null; return 'innerHTML qiymati noto\\'g\\'ri';"
-    },
-    {
-      id: 8,
-      title: "Class toggle qilish",
-      instruction: "Elementning classList xususiyatidagi toggle metodi yordamida 'dark-mode' klassini almashtiring.",
-      startingCode: "const el = { classList: { toggle: (c) => el.toggled = c } };\n// Bu yerga yozing\n",
-      hint: "el.classList.toggle('dark-mode');",
-      test: "if (el.toggled === 'dark-mode') return null; return 'classList.toggle yordamida dark-mode klassini ishlating';"
-    },
-    {
-      id: 9,
-      title: "Ota elementga murojaat",
-      instruction: "Elementning ota elementini 'parent' o'zgaruvchisiga saqlang.",
-      startingCode: "const el = { parentElement: { id: 'parent-id' } };\n// Bu yerga yozing\n",
-      hint: "const parent = el.parentElement;",
-      test: "if (code.includes('parentElement')) return null; return 'parentElement xususiyatidan foydalaning';"
-    },
-    {
-      id: 10,
-      title: "Qo'shni elementni topish",
-      instruction: "Elementdan keyingi qo'shni elementni (nextElementSibling) 'nextEl' o'zgaruvchisiga saqlang.",
-      startingCode: "const el = { nextElementSibling: { tagName: 'DIV' } };\n// Bu yerga yozing\n",
-      hint: "const nextEl = el.nextElementSibling;",
-      test: "if (code.includes('nextElementSibling')) return null; return 'nextElementSibling xususiyatidan foydalaning';"
-    },
-    {
-      id: 11,
-      title: "Bolalarini topish",
-      instruction: "Elementning 'children' ro'yxatidan birinchi elementni (0-indeks) 'firstChildEl' o'zgaruvchisiga saqlang.",
-      startingCode: "const el = { children: [{ text: 'child' }] };\n// Bu yerga yozing\n",
-      hint: "const firstChildEl = el.children[0];",
-      test: "if (code.includes('children[0]')) return null; return 'children massividan 0-indeksni oling';"
-    },
-    {
-      id: 12,
-      title: "Input qiymatini olish",
-      instruction: "Element 'myInput' ning value xususiyatini 'inputValue' o'zgaruvchisiga saqlang.",
-      startingCode: "const myInput = { value: 'Salom' };\n// Bu yerga yozing\n",
-      hint: "const inputValue = myInput.value;",
-      test: "if (code.includes('.value')) return null; return 'value xususiyatini o\\'qing';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "querySelector yordamida element tanlash",
+    "instruction": "`document.querySelector` yordamida sahifadagi birinchi `h1` elementini tanlang va uni `title` o'zgaruvchisiga saqlang.",
+    "startingCode": "// Kodni shu yerda yozing\n",
+    "hint": "const title = document.querySelector('h1');",
+    "test": "if (code.includes('document.querySelector') && (code.includes('h1') || code.includes(\"h1\"))) return null; return 'document.querySelector yordamida h1 elementini tanlang';"
+  },
+  {
+    "id": 2,
+    "title": "textContent yordamida matnni o'zgartirish",
+    "instruction": "Berilgan `header` elementining `textContent` xususiyatini 'Salom JS' matniga o'zgartiruvchi `changeText(header)` funksiyasini yozing.",
+    "startingCode": "function changeText(header) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "header.textContent = 'Salom JS';",
+    "test": "try { const mockHeader = { textContent: '' }; changeText(mockHeader); if (mockHeader.textContent !== 'Salom JS') return 'header.textContent to\\'g\\'ri o\\'zgartirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 3,
+    "title": "classList yordamida klassni o'zgartirish (Toggle)",
+    "instruction": "Berilgan `element` obyekti klasslari ichida `active` klassi borligini `classList.toggle` yordamida almashtiruvchi `toggleActive(element)` funksiyasini yozing.",
+    "startingCode": "function toggleActive(element) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "element.classList.toggle('active');",
+    "test": "try { let toggled = null; const mockEl = { classList: { toggle: (c) => toggled = c } }; toggleActive(mockEl); if (toggled !== 'active') return 'classList.toggle yordamida active klassi almashtirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

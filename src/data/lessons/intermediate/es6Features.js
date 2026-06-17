@@ -2,7 +2,7 @@ export const es6Features = {
   id: "es6Features",
   title: "ES6+ Yangi Imkoniyatlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### ES6+ nima?
 **ES6+ (ECMAScript 2015 va undan keyingi versiyalar)** — bu JavaScript dasturlash tilining rivojlanish jarayonida qo'shilgan zamonaviy, qulay va qisqa sintaktik imkoniyatlaridir. Ular kod hajmini sezilarli darajada qisqartirib, xavfsiz, oson o'qiladigan va professional loyihalar yozishga yordam beradi.

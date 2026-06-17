@@ -2,7 +2,7 @@ export const integrationE2eTesting = {
   id: "integrationE2eTesting",
   title: "JavaScript-da Integratsion va E2E (End-to-End) Testlash",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Integratsion va E2E (End-to-End) Testlash nima?
 * **Integratsion Testlash (Integration Testing):** Dasturning turli qismlari (masalan, API va Ma'lumotlar bazasi) bir-biri bilan to'g'ri bog'langanligini va birgalikda to'g'ri ishlashini tekshirish jarayoni.

@@ -2,7 +2,7 @@ export const closures = {
   id: "closures",
   title: "Closures (Yopilishlar) va Lexical Scope",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Closures (Yopilishlar) va Lexical Scope nima?
 * **Lexical Scope (Leksik qamrov):** Bu JavaScript-da o'zgaruvchilarning kodda yozilgan joyiga qarab qamrab olinish qoidasidir. Ya'ni, ichki funksiya har doim o'zi yozilgan leksik muhit (tashqi funksiya va global qamrov) ichidagi o'zgaruvchilarga kirish huquqiga ega.
@@ -223,119 +223,32 @@ window.addEventListener('scroll', optimizedScroll);
 | **Currying** | Parametrlarni ketma-ket qabul qilish | \`add(x)(y)\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Private Counter (Boshlang'ich)",
-      instruction: "createCounter funksiyasi 'count'ni saqlab qolsin va oshirsin.",
-      startingCode: "function createCounter() {\n  let count = 0;\n  return () => ++count;\n}\nconst c = createCounter();",
-      hint: "Ichki funksiya 'count'ni eslab qoladi.",
-      test: "if (c() === 1 && c() === 2) return null; return 'Xato!';"
-    },
-    {
-      id: 2,
-      title: "2️⃣ Salomlashish generatori (Boshlang'ich)",
-      instruction: "makeGreeting funksiyasini yozing, u greeting parametrini (masalan, 'Salom') eslab qoladi va name parametrini oladigan hamda 'greeting, name' stringini qaytaradigan yangi funksiya qaytaradi.",
-      startingCode: "function makeGreeting(greeting) {\n  // Kodni shu yerda yozing\n}",
-      hint: "return function(name) { return greeting + ', ' + name; };",
-      test: "const welcome = makeGreeting('Salom'); if (welcome && typeof welcome === 'function' && welcome('Ali') === 'Salom, Ali') return null; return 'makeGreeting to\\'g\\'ri string qaytarmadi';"
-    },
-    {
-      id: 3,
-      title: "3️⃣ Secret Holder (Boshlang'ich)",
-      instruction: "createSecretHolder funksiyasini yozing, u secret qiymatini yashiradi va ikkita metodli obyekt qaytaradi: getSecret() va setSecret(val).",
-      startingCode: "function createSecretHolder(secret) {\n  // Kodni shu yerda yozing\n}",
-      hint: "return { getSecret: () => secret, setSecret: (val) => { secret = val; } };",
-      test: "const holder = createSecretHolder('top-secret'); if (holder && typeof holder.getSecret === 'function' && holder.getSecret() === 'top-secret') { holder.setSecret('new'); if (holder.getSecret() === 'new') return null; } return 'Metodlar secretni to\\'g\\'ri saqlay olmadi';"
-    },
-    {
-      id: 4,
-      title: "4️⃣ Multiplier Factory (Boshlang'ich)",
-      instruction: "createMultiplier funksiyasi factor sonini oladi va boshqa sonni factorga ko'paytiradigan funksiya qaytaradi.",
-      startingCode: "function createMultiplier(factor) {\n  // Kodni shu yerda yozing\n}",
-      hint: "return (num) => num * factor;",
-      test: "const double = createMultiplier(2); if (double && double(5) === 10) return null; return 'Multiplier factorga to\\'g\\'ri ko\\'paytirmadi';"
-    },
-    {
-      id: 5,
-      title: "5️⃣ Sodda Memoize (O'rta)",
-      instruction: "memoizeDouble funksiyasi closure yordamida natijalarni cache obyektida saqlasin. Agar bir xil raqam uzatilsa, natijani keshdan qaytarsin.",
-      startingCode: "function memoizeDouble() {\n  const cache = {};\n  return (num) => {\n    // Kodni yozing\n  };\n}",
-      hint: "if (num in cache) return cache[num]; cache[num] = num * 2; return cache[num];",
-      test: "const memo = memoizeDouble(); if (memo(5) === 10 && memo(5) === 10) return null; return 'Memoize xato ishlamoqda';"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Cheklangan chaqiruvchi (Once) (O'rta)",
-      instruction: "once funksiyasini yozing. U berilgan fn funksiyasini faqat bir marta chaqirishga ruxsat beradi. Keyingi safar chaqirilganda birinchi safargi natijani qaytarsin.",
-      startingCode: "function once(fn) {\n  let called = false;\n  let result;\n  return function(...args) {\n    // Kodni yozing\n  };\n}",
-      hint: "if (!called) { called = true; result = fn(...args); } return result;",
-      test: "let cnt = 0; const run = once(() => ++cnt); run(); run(); if (cnt === 1) return null; return 'Funksiya faqat bir marta ishga tushishi kerak edi';"
-    },
-    {
-      id: 7,
-      title: "7️⃣ Parol validator (O'rta)",
-      instruction: "makePasswordValidator funksiyasini yozing. U correctPassword qiymatini yashirin saqlaydi va kiritilgan parolni tekshirib true/false qaytaradigan validator funksiya beradi.",
-      startingCode: "function makePasswordValidator(correctPassword) {\n  // Kodni yozing\n}",
-      hint: "return (pass) => pass === correctPassword;",
-      test: "const val = makePasswordValidator('secret'); if (val('wrong') === false && val('secret') === true) return null; return 'Validator xato ishladi';"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Yig'uvchi (Accumulator) (O'rta)",
-      instruction: "createAccumulator funksiyasini yozing. U boshlang'ich sum qiymatini oladi va har safar chaqirilganda sum-ga berilgan argumentni qo'shib joriy sum-ni qaytaradi.",
-      startingCode: "function createAccumulator(initialValue = 0) {\n  // Kodni yozing\n}",
-      hint: "let sum = initialValue; return (val) => { sum += val; return sum; };",
-      test: "const acc = createAccumulator(10); if (acc(5) === 15 && acc(5) === 20) return null; return 'Accumulator summani noto\\'g\\'ri hisobladi';"
-    },
-    {
-      id: 9,
-      title: "9️⃣ Prefixli Logger (Qiyin)",
-      instruction: "createLogger funksiyasini yozing. U prefix qabul qilib, 'log(message)' chaqirilganda '[prefix]: message' formatidagi stringni qaytaruvchi funksiya bersin.",
-      startingCode: "function createLogger(prefix) {\n  // Kodni yozing\n}",
-      hint: "return (msg) => `[${prefix}]: ${msg}`;",
-      test: "const info = createLogger('INFO'); if (info('Ok') === '[INFO]: Ok') return null; return 'Logger formati noto\\'g\\'ri';"
-    },
-    {
-      id: 10,
-      title: "🔟 Bank hisobi simulyatori (Qiyin)",
-      instruction: "createBankAccount funksiyasi balance qiymatini saqlab qoladi va deposit(amount) hamda withdraw(amount) funksiyalariga ega bo'lgan obyekt qaytaradi. withdraw funksiyasi balansdan ko'p yechmoqchi bo'lsa 'Mablag\\' yetarli emas' deb qaytarsin.",
-      startingCode: "function createBankAccount(initialBalance) {\n  let balance = initialBalance;\n  // Kodni yozing\n}",
-      hint: "return { deposit(amt) { balance += amt; return balance; }, withdraw(amt) { if (amt > balance) return 'Mablag\\' yetarli emas'; balance -= amt; return balance; } };",
-      test: "const acct = createBankAccount(100); acct.deposit(50); if (acct.withdraw(200) === 'Mablag\\' yetarli emas' && acct.withdraw(50) === 100) return null; return 'Bank hisobi simulyatsiyasi xato';"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ Stepper funksiyasi (Qiyin)",
-      instruction: "createStepper funksiyasini yozing, u step parametrini oladi va ichki count qiymatini step ga oshirib qaytaruvchi funksiya qaytaradi.",
-      startingCode: "function createStepper(step) {\n  // Kodni yozing\n}",
-      hint: "let count = 0; return () => { count += step; return count; };",
-      test: "const st = createStepper(5); if (st() === 5 && st() === 10) return null; return 'Stepper hisobi noto\\'g\\'ri';"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Savat tizimi (Eng Qiyin)",
-      instruction: "createCart funksiyasini yozing. U ichki items massivini saqlaydi va addItem(item), getItems(), va getTotalPrice() metodlari bo'lgan obyekt qaytaradi.",
-      startingCode: "function createCart() {\n  const items = [];\n  // Kodni yozing\n}",
-      hint: "return { addItem(i) { items.push(i); }, getItems() { return items; }, getTotalPrice() { return items.reduce((s, i) => s + i.price, 0); } };",
-      test: "const cart = createCart(); cart.addItem({ price: 10 }); cart.addItem({ price: 5 }); if (cart.getItems().length === 2 && cart.getTotalPrice() === 15) return null; return 'Savat to\\'g\\'ri ishlamadi';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Object.defineProperty va Closure hamkorligi",
-      instruction: "`createSecureUser(name)` funksiyasini yozing. U closure ichidagi `name` o'zgaruvchisini saqlab, `Object.defineProperty()` yordamida faqat getter-ga ega bo'lgan, writable bo'lmagan va configurable bo'lmagan `name` xossasini qaytaruvchi obyekt bersin.",
-      startingCode: "function createSecureUser(initialName) {\n  let name = initialName;\n  const obj = {};\n  // Object.defineProperty ishlating\n  return obj;\n}",
-      hint: "Object.defineProperty(obj, 'name', {\n  get() { return name; },\n  enumerable: true,\n  configurable: false\n});",
-      test: "if (typeof createSecureUser !== 'function') return 'createSecureUser topilmadi'; const user = createSecureUser('Jasur'); if (user.name !== 'Jasur') return 'Getter xato'; user.name = 'Ali'; if(user.name !== 'Jasur') return null; return 'Xossa yozishdan himoyalanmagan';"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Object.seal va Closure bilan Secure Wallet",
-      instruction: "`createSecureWallet(initialBalance)` funksiyasini yozing. U closure-da `balance`ni saqlasin va `deposit(amt)` hamda `getBalance()` metodlariga ega bo'lgan va `Object.seal()` orqali yangi maydon qo'shilishi taqiqlangan obyektni qaytarsin.",
-      startingCode: "function createSecureWallet(initialBalance) {\n  let balance = initialBalance;\n  const wallet = {\n    // Metodlarni yozing\n  };\n  // Walletni seal qiling\n}",
-      hint: "const wallet = {\n  deposit(amt) { balance += amt; },\n  getBalance() { return balance; }\n};\nreturn Object.seal(wallet);",
-      test: "if (typeof createSecureWallet !== 'function') return 'createSecureWallet topilmadi'; const w = createSecureWallet(100); w.deposit(50); if (w.getBalance() !== 150) return 'Balans yangilanmadi'; if (Object.isSealed(w) !== true) return 'Obyekt seal qilinmagan'; return null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Sodda Hisoblagich",
+    "instruction": "Har safar chaqirilganda qiymati 1 taga oshib boradigan funksiyani qaytaruvchi `createCounter()` funksiyasini yozing. Qiymat 1 dan boshlanishi kerak.",
+    "startingCode": "function createCounter() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Ichki o'zgaruvchi `let count = 0;` yarating va ichki funksiya qaytaring, u `count`ni oshirib qaytarsin.",
+    "test": "const sandbox = new Function(code + '; return createCounter;');\nconst fn = sandbox();\nconst counter = fn();\nif (typeof counter !== 'function') return 'createCounter funksiya qaytarishi kerak';\nif (counter() !== 1) return 'Birinchi chaqiruvda 1 qaytishi kerak';\nif (counter() !== 2) return 'Ikkinchi chaqiruvda 2 qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Maxfiy Kalit Saqlovchi (Encapsulation)",
+    "instruction": "Berilgan `secret` qiymatini yashirin holda saqlovchi va uni boshqarish uchun `getSecret()` hamda `setSecret(newSecret)` metodlariga ega bo'lgan obyekt qaytaruvchi `createSecretHolder(secret)` funksiyasini yozing.",
+    "startingCode": "function createSecretHolder(secret) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Obyekt qaytaring: `{ getSecret: () => ..., setSecret: (val) => ... }` ko'rinishida yozing va `secret` o'zgaruvchisini yopilishda saqlang.",
+    "test": "const sandbox = new Function(code + '; return createSecretHolder;');\nconst fn = sandbox();\nconst holder = fn('maxfiy');\nif (typeof holder !== 'object') return 'Obyekt qaytarilishi kerak';\nif (typeof holder.getSecret !== 'function' || typeof holder.setSecret !== 'function') return 'getSecret va setSecret metodlari bo\\'lishi kerak';\nif (holder.getSecret() !== 'maxfiy') return 'Boshlang\\'ich maxfiy qiymat xato';\nholder.setSecret('yangi');\nif (holder.getSecret() !== 'yangi') return 'setSecret metodi qiymatni o\\'zgartirmadi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Ko'paytiruvchi Funksiya (Currying)",
+    "instruction": "Birinchi bosqichda `multiplier` (ko'paytiruvchi) sonini oladigan va ikkinchi bosqichda boshqa bir son olib, ularning ko'paytmasini qaytaradigan funksiya yozing.",
+    "startingCode": "function multiplyBy(multiplier) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "multiplier-ni yopilish orqali saqlovchi va boshqa `num` parametrini qabul qiluvchi ichki funksiya qaytaring.",
+    "test": "const sandbox = new Function(code + '; return multiplyBy;');\nconst fn = sandbox();\nconst double = fn(2);\nif (typeof double !== 'function') return 'multiplyBy funksiya qaytarishi kerak';\nif (double(5) !== 10) return '2 ga ko\\'paytirish xato bajarildi';\nconst triple = fn(3);\nif (triple(4) !== 12) return '3 ga ko\\'paytirish xato bajarildi';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

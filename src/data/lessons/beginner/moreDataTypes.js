@@ -2,7 +2,7 @@ export const moreDataTypesLesson = {
   id: "moreDataTypesLesson",
   title: "Ma'lumotlar Turlari: Null, Symbol, BigInt",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 JavaScript tilida ma'lumotlar turlari (Data Types) asosan ikki guruhga bo'linadi: **ibtidoiy (primitive)** va **murakkab (reference/object)** turlari. Keling, eng maxsus va ilg'or primitive turlar bo'lgan **Null**, **Symbol** va **BigInt** haqida batafsil gaplashamiz.
 
@@ -252,103 +252,32 @@ console.log(nextPostId); // 18451874981728374913n
 | **BigInt** | \`const b = 100n;\` | \`"bigint"\` | Standart limitdan katta butun sonlarni hisoblash | Standart Number turlari bilan aralashtirib bo'lmasligi |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "BigInt mashqi",
-      instruction: "Son oxiriga 'n' qo'shish orqali big o'zgaruvchisiga 100 qiymatini BigInt turida saqlang.",
-      startingCode: "// Bu yerda yarating\nconst big = ",
-      hint: "const big = 100n;",
-      test: "if (typeof big === 'bigint' && big === 100n) return null; return 'big o\\'zgaruvchisiga 100n qiymatini bering!';"
-    },
-    {
-      id: 2,
-      title: "Null qiymat",
-      instruction: "car nomli o'zgaruvchiga ataylab bo'sh qiymat berish uchun null ni o'zlashtiring.",
-      startingCode: "// Bu yerga yozing\nconst car = ",
-      hint: "const car = null;",
-      test: "if (car === null) return null; return 'car o\\'zgaruvchisiga null qiymatini o\\'zlashtiring!';"
-    },
-    {
-      id: 3,
-      title: "Symbol yaratish",
-      instruction: "mySymbol nomli o'zgaruvchiga 'tavsif' tavsifiga ega bo'lgan Symbol yarating.",
-      startingCode: "// Bu yerga yozing\nconst mySymbol = ",
-      hint: "const mySymbol = Symbol('tavsif');",
-      test: "if (typeof mySymbol === 'symbol' && mySymbol.description === 'tavsif') return null; return 'Tavsifi \\'tavsif\\' bo\\'lgan Symbol yarating!';"
-    },
-    {
-      id: 4,
-      title: "BigInt global funksiyasi",
-      instruction: "BigInt() funksiyasi yordamida '9007199254740995' stringini BigIntga o'tkazing va uni large o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\nconst large = ",
-      hint: "const large = BigInt('9007199254740995');",
-      test: "if (typeof large === 'bigint' && large === 9007199254740995n) return null; return 'Stringni BigInt funksiyasi orqali o\\'tkazing!';"
-    },
-    {
-      id: 5,
-      title: "Symbol tavsifini olish",
-      instruction: "sym o'zgaruvchisining description xususiyatidan foydalanib uning tavsifini desc o'zgaruvchisiga oling.",
-      startingCode: "const sym = Symbol('kalit');\n// Bu yerga yozing\nconst desc = ",
-      hint: "const desc = sym.description;",
-      test: "if (desc === 'kalit') return null; return 'desc o\\'zgaruvchisiga sym.description ni o\\'zlashtiring!';"
-    },
-    {
-      id: 6,
-      title: "Obyekt va Symbol",
-      instruction: "user obyektida yashirin kalit sifatida sym Symbolidan foydalaning va unga 101 qiymatini bering.",
-      startingCode: "const sym = Symbol('id');\nconst user = {\n  // Bu yerga yozing\n};",
-      hint: "const user = { [sym]: 101 };",
-      test: "if (user[sym] === 101) return null; return 'user obyektida [sym]: 101 kalitini belgilang!';"
-    },
-    {
-      id: 7,
-      title: "Null turi",
-      instruction: "typeof null natijasini typeOfNull o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "// Bu yerga yozing\nconst typeOfNull = ",
-      hint: "const typeOfNull = typeof null;",
-      test: "if (typeOfNull === 'object') return null; return 'typeof null natijasi \\'object\\' bo\\'lishi kerak!';"
-    },
-    {
-      id: 8,
-      title: "BigIntlar ko'paytmasi",
-      instruction: "10n va 20n sonlarini ko'paytiring va natijani result o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "const num1 = 10n;\nconst num2 = 20n;\n// Bu yerga yozing\nconst result = ",
-      hint: "const result = num1 * num2;",
-      test: "if (result === 200n) return null; return 'Natija 200n bo\\'lishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "Oddiy sonni BigIntga o'tkazish",
-      instruction: "BigInt() funksiyasi yordamida num o'zgaruvchisini BigInt ga o'tkazing va bigintNum o'zgaruvchisiga saqlang.",
-      startingCode: "const num = 45;\n// Bu yerga yozing\nconst bigintNum = ",
-      hint: "const bigintNum = BigInt(num);",
-      test: "if (bigintNum === 45n) return null; return 'bigintNum o\\'zgaruvchisi 45n ga teng bo\\'lishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "Bo'shliqlarni taqqoslash",
-      instruction: "null va undefined ning qat'iy bo'lmagan (==) tenglik natijasini eq o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "// Bu yerga yozing\nconst eq = ",
-      hint: "const eq = (null == undefined);",
-      test: "if (eq === true) return null; return 'null == undefined natijasi true bo\\'lishi kerak!';"
-    },
-    {
-      id: 11,
-      title: "Qat'iy taqqoslash",
-      instruction: "null va undefined ning qat'iy (===) tenglik natijasini seq o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "// Bu yerga yozing\nconst seq = ",
-      hint: "const seq = (null === undefined);",
-      test: "if (seq === false) return null; return 'null === undefined natijasi false bo\\'lishi kerak!';"
-    },
-    {
-      id: 12,
-      title: "Symbol taqqoslash",
-      instruction: "Tavsifi bir xil bo'lgan ikkita sym1 va sym2 Symbolini qat'iy tenglik (===) orqali solishtirib, natijasini result o'zgaruvchisiga saqlang.",
-      startingCode: "const sym1 = Symbol('a');\nconst sym2 = Symbol('a');\n// Bu yerga yozing\nconst result = ",
-      hint: "const result = (sym1 === sym2);",
-      test: "if (result === false) return null; return 'Ikkala symbol bir-biriga teng bo\\'la olmaydi, natija false bo\\'lishi kerak!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "BigInt bilan Katta Sonlarni Qo'shish",
+    "instruction": "Sizga katta ma'lumotlar bazasidan kelgan ikkita katta butun sonlar satr ko'rinishida beriladi (ular `Number.MAX_SAFE_INTEGER`dan kattaroq bo'lishi mumkin). Siz `addLargeNumbers(str1, str2)` funksiyasini yozishingiz kerak. Funksiya ushbu sonlarni BigInt sifatida qo'shib, natijani **BigInt** ko'rinishida qaytarishi lozim.",
+    "startingCode": "function addLargeNumbers(str1, str2) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Satrlarni BigInt-ga o'tkazish uchun BigInt(str) dan foydalaning va ularni qo'shing.",
+    "test": "const sandbox = new Function(code + '; return addLargeNumbers;');\nconst fn = sandbox();\nconst res = fn('9007199254740991', '12345678901234567890');\nif (typeof res === 'bigint' && res === 12345687908433822881n) return null;\nreturn 'addLargeNumbers funksiyasi katta sonlarni to\\'g\\'ri hisoblamadi yoki BigInt qaytarmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Symbol Yordamida Maxfiy Xossa Qo'shish",
+    "instruction": "Obyekt va undagi maxfiy kalit bilan ishlovchi funksiya yarating. `addSecretProperty(obj, secretValue)` funksiyasi berilgan `obj` obyektiga mutlaqo noyob `Symbol` kaliti orqali `secretValue` qiymatini qo'shishi va o'sha `Symbol` kalitining o'zini qaytarishi kerak. Shunda obyektda bu qiymat saqlanadi, lekin u oddiy kalitlar ro'yxatida yashirin bo'ladi.",
+    "startingCode": "function addSecretProperty(obj, secretValue) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Funksiya ichida const key = Symbol('secret') yarating, uni obj[key] = secretValue orqali obyektga yozing va keyin key o'zgaruvchisini return qiling.",
+    "test": "const sandbox = new Function(code + '; return addSecretProperty;');\nconst fn = sandbox();\nconst obj = { name: 'Ali' };\nconst sym = fn(obj, 'my-secret-123');\nif (typeof sym !== 'symbol') return 'Qaytarilgan qiymat Symbol turi emas';\nif (obj[sym] !== 'my-secret-123') return 'Obyektga maxfiy qiymat to\\'g\\'ri biriktirilmadi';\nif (Object.keys(obj).length !== 1) return 'Maxfiy xossa oddiy kalitlar ro\\'yxatida yashirin bo\\'lishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Sessiyani Tekshirish va Null/Undefined bilan Ishlash",
+    "instruction": "Foydalanuvchi ma'lumotlarini tozalash yoki tekshirish uchun `validateSession(session)` funksiyasini yozing. Agarda `session` parametri `null` yoki `undefined` bo'lsa, funksiya `'No active session'` satrini qaytarsin. Agar `session` haqiqiy obyekt bo'lsa, uning ichidagi `username` xossasini qaytarsin (agar `username` ham bo'lmasa, `'Anonymous'` qaytarsin).",
+    "startingCode": "function validateSession(session) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "null va undefined ekanligini session == null (qisqa usul) yoki session === null || session === undefined yordamida tekshiring. Keyin session.username mavjudligini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return validateSession;');\nconst fn = sandbox();\nif (fn(null) !== 'No active session') return 'null yuborilganda xato javob qaytdi';\nif (fn(undefined) !== 'No active session') return 'undefined yuborilganda xato javob qaytdi';\nif (fn({ username: 'diyor' }) !== 'diyor') return 'Foydalanuvchi ismi to\\'g\\'ri qaytarilmadi';\nif (fn({ age: 25 }) !== 'Anonymous') return 'Ism bo\\'lmagan obyekt yuborilganda Anonymous qaytmadi';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

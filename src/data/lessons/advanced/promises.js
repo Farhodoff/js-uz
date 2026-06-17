@@ -2,7 +2,7 @@ export const promises = {
   id: "promises",
   title: "Promises (Va'dalar) va Zanjirli asinxronlik",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Promise nima?
 **Promise (Va'da)** — asinxron operatsiyaning kelajakda olinadigan natijasini (muvaffaqiyatli yoki xato bilan tugashini) ifodalovchi maxsus JavaScript obyektidir. U callback funksiyalar yordamida yoziladigan murakkab asinxron kodlarni ancha soddaroq va o'qishli zanjir ko'rinishida yozish imkonini beradi.
@@ -195,119 +195,32 @@ Promise holati allaqachon bajarilgan bo'lsa ham, \`.then()\` ulanishi bilanoq un
 Quyidagi testlar va mashqlar yordamida Promises (Va'dalar) va asinxron zanjirlar bo'yicha ko'nikmalaringizni tekshiring.
 `,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Oddiy Promise yaratish",
-      instruction: "Konstruktor yordamida 'Hello' qiymati bilan darhol resolve bo'ladigan Promise qaytaring.",
-      startingCode: "function getPromise() {\n  // Kodni shu yerda yozing\n}",
-      hint: "return new Promise(resolve => resolve('Hello'));",
-      test: "if (typeof getPromise !== 'function') return 'getPromise funksiya emas'; return getPromise().then(r => r === 'Hello' ? null : 'Natija noto\\'g\\'ri');"
-    },
-    {
-      id: 2,
-      title: "2️⃣ Xatolik bilan reject qilish",
-      instruction: "Konstruktor yordamida 'Xato yuz berdi' matni bilan reject bo'ladigan Promise qaytaring.",
-      startingCode: "function getRejectedPromise() {\n  // Kodni shu yerda yozing\n}",
-      hint: "return new Promise((resolve, reject) => reject('Xato yuz berdi'));",
-      test: "if (typeof getRejectedPromise !== 'function') return 'getRejectedPromise funksiya emas'; return getRejectedPromise().then(() => 'Resolve bo\\'lib ketdi, xato!').catch(e => e === 'Xato yuz berdi' ? null : 'Xato matni noto\\'g\\'ri');"
-    },
-    {
-      id: 3,
-      title: "3️⃣ Zanjirli then() chaqiruvi",
-      instruction: "Berilgan promise natijasiga 10 ni qo'shib, keyingi then() ga uzatuvchi kod yozing.",
-      startingCode: "function addTen(promise) {\n  return promise.then(num => {\n    // Kodni shu yerda yozing\n  });\n}",
-      hint: "return num + 10;",
-      test: "if (typeof addTen !== 'function') return 'addTen funksiya emas'; return addTen(Promise.resolve(5)).then(r => r === 15 ? null : 'Natija xato');"
-    },
-    {
-      id: 4,
-      title: "4️⃣ Catch yordamida xatoni ushlash",
-      instruction: "Xato tashlaydigan promiseni catch orqali ushlab, 'Qayta ishlandi' deb qaytaring.",
-      startingCode: "function catchError(promise) {\n  return promise.catch(err => {\n    // Natijani qaytaring\n  });\n}",
-      hint: "return 'Qayta ishlandi';",
-      test: "if (typeof catchError !== 'function') return 'catchError funksiya emas'; return catchError(Promise.reject('error')).then(r => r === 'Qayta ishlandi' ? null : 'Xato ushlanmadi');"
-    },
-    {
-      id: 5,
-      title: "5️⃣ Finally ishlatilishi",
-      instruction: "Promisning statusidan qat'i nazar, oxirida 'Tugadi' matnini konsolga chiqaradigan `.finally()` bloki qo'shing.",
-      startingCode: "function logFinally(promise) {\n  return promise.finally(() => {\n    // Konsolga chiqaring\n  });\n}",
-      hint: "console.log('Tugadi');",
-      test: "if (typeof logFinally !== 'function') return 'logFinally funksiya emas'; logFinally(Promise.resolve()); if (logs.includes('Tugadi')) return null; return 'finally ishga tushmadi';"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Promise.all parallel kutish",
-      instruction: "Berilgan p1, p2, p3 promiselarini parallel kutib, ularning natijalari yig'indisini qaytaring.",
-      startingCode: "function sumPromises(p1, p2, p3) {\n  // Promise.all ishlating\n}",
-      hint: "return Promise.all([p1, p2, p3]).then(([r1, r2, r3]) => r1 + r2 + r3);",
-      test: "if (typeof sumPromises !== 'function') return 'sumPromises funksiya emas'; return sumPromises(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)).then(r => r === 6 ? null : 'Yig\\'indi xato');"
-    },
-    {
-      id: 7,
-      title: "7️⃣ Promise.race eng birinchisi",
-      instruction: "Berilgan p1 va p2 promiselardan qaysi biri birinchi bajarilsa, o'shaning natijasini qaytaring.",
-      startingCode: "function getFastest(p1, p2) {\n  // Promise.race\n}",
-      hint: "return Promise.race([p1, p2]);",
-      test: "if (typeof getFastest !== 'function') return 'getFastest funksiya emas'; const p1 = new Promise(r => setTimeout(() => r(1), 50)); const p2 = new Promise(r => setTimeout(() => r(2), 10)); return getFastest(p1, p2).then(r => r === 2 ? null : 'Eng tezi olinmadi');"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Xavfsiz Promise.all (allSettled)",
-      instruction: "p1 (resolve) va p2 (reject) berilgan. `Promise.allSettled` yordamida ikkalasini ham kutib, natijaviy massivni qaytaring.",
-      startingCode: "function checkAll(p1, p2) {\n  // allSettled ishlating\n}",
-      hint: "return Promise.allSettled([p1, p2]);",
-      test: "if (typeof checkAll !== 'function') return 'checkAll funksiya emas'; return checkAll(Promise.resolve(1), Promise.reject('xato')).then(r => r.length === 2 && r[1].status === 'rejected' ? null : 'allSettled ishlamadi');"
-    },
-    {
-      id: 9,
-      title: "9️⃣ Promise qayta urinish (Retry delay)",
-      instruction: "Berilgan asinxron `fn` funksiyani bajarib ko'ring, xato bo'lsa, 50ms kutib yana bir marta bajaring.",
-      startingCode: "function retryOnce(fn) {\n  return fn().catch(() => {\n    // 50ms kutib fn() ni qayta chaqiring\n  });\n}",
-      hint: "return new Promise(resolve => setTimeout(resolve, 50)).then(() => fn());",
-      test: "if (typeof retryOnce !== 'function') return 'retryOnce funksiya emas'; let count = 0; const fn = () => { count++; return count < 2 ? Promise.reject('err') : Promise.resolve('ok'); }; return retryOnce(fn).then(r => r === 'ok' && count === 2 ? null : 'Qayta urinish xato');"
-    },
-    {
-      id: 10,
-      title: "🔟 Promislarni ketma-ket bajarish",
-      instruction: "Massivdagi asinxron funksiyalarni (promiselarni) \`reduce\` yordamida navbatma-navbat (ketma-ket) ishga tushiring.",
-      startingCode: "function runSequence(funcs) {\n  // Navbatma-navbat chain qiling\n}",
-      hint: "return funcs.reduce((promise, fn) => promise.then(fn), Promise.resolve());",
-      test: "if (typeof runSequence !== 'function') return 'runSequence funksiya emas'; let list = []; const f1 = () => new Promise(r => setTimeout(() => { list.push(1); r(); }, 20)); const f2 = () => new Promise(r => setTimeout(() => { list.push(2); r(); }, 10)); return runSequence([f1, f2]).then(() => list[0] === 1 && list[1] === 2 ? null : 'Ketma-ketlik buzildi');"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ Promise statusini o'qish",
-      instruction: "Promise resolved bo'lsa true, pending bo'lsa false qaytaruvchi sinov funksiyasini yozing (Promise.race orqali).",
-      startingCode: "async function isResolved(promise) {\n  const temp = {};\n  const r = await Promise.race([promise, temp]);\n  return r !== temp;\n}",
-      hint: "Berilgan tayyor kodni tahlil qiling va return null qaytishi uchun tasdiqlang",
-      test: "if (typeof isResolved !== 'function') return 'isResolved funksiya emas'; return isResolved(Promise.resolve()).then(r => r === true ? null : 'Status noto\\'g\\'ri');"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Promise zanjiri xato otish",
-      instruction: "then() ichida `throw new Error('muammo')` yozib, xato keyingi catch ga yetib borishini ta'minlang.",
-      startingCode: "function throwInChain(promise) {\n  return promise.then(() => {\n    // Xato tashlang\n  });\n}",
-      hint: "throw new Error('muammo');",
-      test: "if (typeof throwInChain !== 'function') return 'throwInChain funksiya emas'; return throwInChain(Promise.resolve()).catch(e => e.message === 'muammo' ? null : 'Xato yetib bormadi');"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Node-Style Promisify (promisify)",
-      instruction: "Node.js error-first callback stilidagi funksiyani Promise qaytaradigan funksiyaga o'tkazuvchi `promisify(fn)` helper funksiyasini yozing.",
-      startingCode: "function promisify(fn) {\n  return function(...args) {\n    // Kodni shu yerdan yozing\n  };\n}",
-      hint: "return new Promise((resolve, reject) => { fn(...args, (err, data) => { if (err) reject(err); else resolve(data); }); });",
-      test: "if (typeof promisify !== 'function') return 'promisify funksiya emas';\nconst asyncFunc = (x, cb) => setTimeout(() => cb(null, x * 3), 10);\nconst promised = promisify(asyncFunc);\nreturn promised(4).then(res => {\n  if (res === 12) return null;\n  return 'Promisify natijasi noto\\'g\\'ri';\n}).catch(e => 'Xatolik: ' + e.message);"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Kechiktirilgan Va'da (delayPromise)",
-      instruction: "Berilgan `ms` millisekunddan keyin belgilangan `value` qiymati bilan resolve bo'ladigan `delayPromise(ms, value)` funksiyasini yozing.",
-      startingCode: "function delayPromise(ms, value) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "return new Promise(resolve => setTimeout(() => resolve(value), ms));",
-      test: "if (typeof delayPromise !== 'function') return 'delayPromise funksiya emas';\nconst start = Date.now();\nreturn delayPromise(50, 'success').then(res => {\n  const duration = Date.now() - start;\n  if (res !== 'success') return 'Qiymat noto\\'g\\'ri';\n  if (duration >= 40) return null;\n  return 'Kechikish vaqti xato';\n});"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Muvaffaqiyatli Promise yaratish",
+    "instruction": "Qabul qilingan `value` qiymati bilan darhol hal bo'ladigan (resolve) `resolveWithValue(value)` funksiyasini yozing. U Promise qaytarishi shart.",
+    "startingCode": "function resolveWithValue(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return new Promise((resolve) => resolve(value)); yoki Promise.resolve(value) dan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return resolveWithValue;');\nconst fn = sandbox();\nconst p = fn('Salom');\nif (p instanceof Promise) {\n  return p.then(val => val === 'Salom' ? null : 'Noto\\'g\\'ri qiymat bilan resolve qilingan');\n}\nreturn 'Promise qaytarilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Kechikuvchi Va'da (Promisification)",
+    "instruction": "Berilgan millisekund (`ms`) o'tgandan so'ng muvaffaqiyatli hal bo'ladigan `delay(ms)` funksiyasini yozing. U Promise qaytarishi lozim.",
+    "startingCode": "function delay(ms) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "new Promise((resolve) => setTimeout(resolve, ms)) shaklida yozing.",
+    "test": "if (!code.includes('Promise')) return 'Promise ishlatilmadi';\nif (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\nconst sandbox = new Function(code + '; return delay;');\nconst fn = sandbox();\nconst p = fn(100);\nif (p instanceof Promise) return null;\nreturn 'delay funksiyasi Promise qaytarmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Promise Zanjiri (Chaining)",
+    "instruction": "Berilgan sonni olib, uni 2 ga ko'paytiradigan, so'ngra hosil bo'lgan songa 10 ni qo'shadigan Promise zanjirini hosil qiluvchi `processNumber(num)` funksiyasini yozing. Boshlang'ich Promise `Promise.resolve(num)` bo'lishi kerak.",
+    "startingCode": "function processNumber(num) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Promise.resolve(num).then(val => val * 2).then(val => val + 10) shaklida yozishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return processNumber;');\nconst fn = sandbox();\nconst p = fn(5);\nif (p instanceof Promise) {\n  return p.then(val => val === 20 ? null : 'Zanjir yakunidagi natija noto\\'g\\'ri');\n}\nreturn 'processNumber funksiyasi Promise qaytarmadi';"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

@@ -2,7 +2,7 @@ export const mathObject = {
   id: "mathObject",
   title: "Math Obyekti va Matematik Metodlar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Math obyekti nima?
 JavaScript-da **\`Math\`** obyekti matematik amallar va konstantalarni (masalan, $\\pi$ soni) bajarish uchun mo'ljallangan maxsus **ichki (built-in)** obyektdir. 
@@ -336,103 +336,32 @@ console.log(\`Tranzaksiya: \${FinanceUtility.generateShortReferenceID()}\`); // 
 | \`Math.cos(x)\` | Radian burchakning kosinus qiymati | \`Math.cos(Math.PI) // -1\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Random mashqi",
-      instruction: "1 dan 6 gacha bo'lgan tasodifiy butun son hosil qiling va uni dice o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "// Bu yerga yozing\nlet dice = ",
-      hint: "let dice = Math.floor(Math.random() * 6) + 1;",
-      test: "if (dice >= 1 && dice <= 6 && Math.floor(dice) === dice) return null; return '1 va 6 oralig\\'idagi butun son bo\\'lishi kerak!';"
-    },
-    {
-      id: 2,
-      title: "Pastga yaxlitlash",
-      instruction: "4.7 sonini pastga qarab yaxlitlang va natijani result o'zgaruvchisiga saqlang.",
-      startingCode: "let num = 4.7;\n// Bu yerga yozing\nlet result = ",
-      hint: "let result = Math.floor(num);",
-      test: "if (result === 4) return null; return 'Natija 4 bo\\'lishi kerak!';"
-    },
-    {
-      id: 3,
-      title: "Tepaga yaxlitlash",
-      instruction: "4.1 sonini har doim yuqoriga yaxlitlang va natijani result o'zgaruvchisiga saqlang.",
-      startingCode: "let num = 4.1;\n// Bu yerga yozing\nlet result = ",
-      hint: "let result = Math.ceil(num);",
-      test: "if (result === 5) return null; return 'Natija 5 bo\\'lishi kerak!';"
-    },
-    {
-      id: 4,
-      title: "Kvadrat ildiz",
-      instruction: "64 sonining kvadrat ildizini hisoblang va natijani result o'zgaruvchisiga saqlang.",
-      startingCode: "let num = 64;\n// Bu yerga yozing\nlet result = ",
-      hint: "let result = Math.sqrt(num);",
-      test: "if (result === 8) return null; return 'Natija 8 bo\\'lishi kerak!';"
-    },
-    {
-      id: 5,
-      title: "Darajaga ko'tarish",
-      instruction: "3 ning 4-darajasini Math.pow() yordamida hisoblang va natijani result o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\nlet result = ",
-      hint: "let result = Math.pow(3, 4);",
-      test: "if (result === 81) return null; return 'Natija 81 bo\\'lishi kerak!';"
-    },
-    {
-      id: 6,
-      title: "Eng katta son",
-      instruction: "12, 45, 78 va 34 sonlari ichidan eng kattasini aniqlang va natijani result o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\nlet result = ",
-      hint: "let result = Math.max(12, 45, 78, 34);",
-      test: "if (result === 78) return null; return 'Eng katta son 78 bo\\'lishi kerak!';"
-    },
-    {
-      id: 7,
-      title: "Eng kichik son",
-      instruction: "12, 45, 7 va 34 sonlari ichidan eng kichigini aniqlang va natijani result o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\nlet result = ",
-      hint: "let result = Math.min(12, 45, 7, 34);",
-      test: "if (result === 7) return null; return 'Eng kichik son 7 bo\\'lishi kerak!';"
-    },
-    {
-      id: 8,
-      title: "Absolyut qiymat",
-      instruction: "-99 sonining modulini (absolyut qiymatini) toping va natijani result o'zgaruvchisiga saqlang.",
-      startingCode: "let num = -99;\n// Bu yerga yozing\nlet result = ",
-      hint: "let result = Math.abs(num);",
-      test: "if (result === 99) return null; return 'Natija 99 bo\\'lishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "Kasr qismini kesish",
-      instruction: "Math.trunc() yordamida 15.99 sonining faqat butun qismini olib, result o'zgaruvchisiga saqlang.",
-      startingCode: "let num = 15.99;\n// Bu yerga yozing\nlet result = ",
-      hint: "let result = Math.trunc(num);",
-      test: "if (result === 15) return null; return 'Natija 15 bo\\'lishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "Aylana yuzi",
-      instruction: "Aylana radiusi r = 5. Math.PI va Math.pow() yordamida aylana yuzini (S = π * r²) hisoblang va uni area o'zgaruvchisiga saqlang.",
-      startingCode: "let r = 5;\n// Bu yerga yozing\nlet area = ",
-      hint: "let area = Math.PI * Math.pow(r, 2);",
-      test: "if (area > 78.5 && area < 78.6) return null; return 'Aylana yuzi noto\\'g\\'ri hisoblandi!';"
-    },
-    {
-      id: 11,
-      title: "Yaqin songa yaxlitlash",
-      instruction: "Math.round() yordamida 5.5 sonini eng yaqin butun songa yaxlitlang va result o'zgaruvchisiga saqlang.",
-      startingCode: "let num = 5.5;\n// Bu yerga yozing\nlet result = ",
-      hint: "let result = Math.round(num);",
-      test: "if (result === 6) return null; return 'Natija 6 bo\\'lishi kerak!';"
-    },
-    {
-      id: 12,
-      title: "Tasodifiy oraliq",
-      instruction: "10 va 50 oralig'ida (10 va 50 ham kirishi mumkin) tasodifiy butun son hosil qilib, uni result o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\nlet result = ",
-      hint: "let result = Math.floor(Math.random() * 41) + 10;",
-      test: "if (result >= 10 && result <= 50 && Math.floor(result) === result) return null; return '10 va 50 oralig\\'idagi butun son bo\\'lishi kerak!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Tasodifiy son generatori",
+    "instruction": "Berilgan `min` va `max` butun sonlari oralig'ida (ikkala chegara ham kiruvchi, ya'ni `min <= x <= max`) tasodifiy butun sonni qaytaruvchi `getRandomInRange(min, max)` funksiyasini yozing.",
+    "startingCode": "function getRandomInRange(min, max) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Math.random() va Math.floor() metodlaridan hamda `Math.floor(Math.random() * (max - min + 1)) + min` formulasidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return getRandomInRange;');\nconst fn = sandbox();\nconst results = [];\nfor(let i=0; i<100; i++) {\n  const val = fn(5, 10);\n  results.push(val);\n  if (val < 5 || val > 10 || !Number.isInteger(val)) {\n    return 'Kutilgan oraliq: [5, 10] orasidagi butun son. Qaytarilgan qiymat: ' + val;\n  }\n}\nif (results.includes(5) && results.includes(10)) return null;\nreturn 'Funksiya har doim ham oraliq chegaralarini (min yoki max) qamrab olmayapti';"
+  },
+  {
+    "id": 2,
+    "title": "Moliyaviy yaxlitlash",
+    "instruction": "Pul qiymatlari yoki hisob-kitoblar bilan ishlaganda ma'lum xonagacha aniq yaxlitlash talab etiladi. Berilgan `num` sonini `decimals` kasr xonalarigacha matematik qoida bo'yicha yaxlitlaydigan `roundToDecimal(num, decimals)` funksiyasini yozing. (Masalan, `roundToDecimal(10.235, 2)` -> `10.24`, `roundToDecimal(1.005, 2)` -> `1.01`).",
+    "startingCode": "function roundToDecimal(num, decimals) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Sonni `10^decimals` ga ko'paytiring (buning uchun Math.pow(10, decimals) yoki 10 ** decimals dan foydalaning), so'ng Math.round() orqali yaxlitlang va natijani qayta `10^decimals` ga bo'ling.",
+    "test": "const sandbox = new Function(code + '; return roundToDecimal;');\nconst fn = sandbox();\nif (fn(10.235, 2) !== 10.24) return '10.235 ni 2 xonagacha yaxlitlashda xato. Kutilgan: 10.24, qaytarildi: ' + fn(10.235, 2);\nif (fn(1.005, 2) !== 1.01) return '1.005 ni 2 xonagacha yaxlitlashda xato. Kutilgan: 1.01';\nif (fn(5.5, 0) !== 6) return '5.5 ni 0 xonagacha yaxlitlashda xato';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Eng katta va kichik son farqi",
+    "instruction": "Sonlar massivini qabul qilib, massivdagi eng katta va eng kichik sonlar o'rtasidagi farqni (absolyut qiymatda) hisoblab beruvchi `getMinMaxDifference(arr)` funksiyasini yozing. Agar massiv bo'sh bo'lsa yoki bitta elementdan iborat bo'lsa, `0` qaytarsin.",
+    "startingCode": "function getMinMaxDifference(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Math.max() va Math.min() metodlariga massiv elementlarini yuborish uchun spread operatoridan (`...`) foydalaning. Agar massiv bo'sh bo'lsa, 0 qaytarishni unutmang.",
+    "test": "const sandbox = new Function(code + '; return getMinMaxDifference;');\nconst fn = sandbox();\nif (fn([10, 2, 38, 23, 8]) !== 36) return 'Massiv farqi noto\\'g\\'ri. Kutilgan: 36 (38 - 2)';\nif (fn([]) !== 0) return 'Bo\\'sh massiv uchun 0 qaytishi kerak';\nif (fn([5]) !== 0) return 'Bitta elementli massiv uchun 0 qaytishi kerak';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

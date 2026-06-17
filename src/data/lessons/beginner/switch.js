@@ -2,7 +2,7 @@ export const switchLesson = {
   id: "switchLesson",
   title: "Switch-Case Operatorlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Switch-Case nima?
 * **\`switch-case\` operatori** — bu dasturdagi ma'lum bir o'zgaruvchi yoki ifodaning qiymatiga qarab, kodning turli tarmoqlarini (bloklarini) ishga tushirish imkonini beruvchi boshqaruv operatoridir. 
@@ -347,103 +347,32 @@ JavaScript kompilyatorlari (JIT Compiler) switch tarkibida ko'plab case'lar mavj
 | **\`case qiymat: { }\`** | Case ichida o'zgaruvchi e'lon qilishda scope ziddiyatlarini yechish | \`case 1: { let x = 10; break; }\` | Jingalak qavslar alohida block scope yaratadi. |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Kunni toping",
-      instruction: "day o'zgaruvchisiga qarab, agar u 1 bo'lsa 'Dushanba', 2 bo'lsa 'Seshanba' qiymatini res o'zgaruvchisiga yozing (switch orqali).",
-      startingCode: "let day = 1;\nlet res = '';\n// Bu yerga yozing\n",
-      hint: "switch(day) {\n  case 1:\n    res = 'Dushanba';\n    break;\n  case 2:\n    res = 'Seshanba';\n    break;\n}",
-      test: "if (res === 'Dushanba') return null; return 'res qiymati Dushanba bo\\'lishi kerak!';"
-    },
-    {
-      id: 2,
-      title: "Faslni aniqlash",
-      instruction: "month o'zgaruvchisi qiymatiga qarab (12, 1, 2) fasl nomini 'Qish' deb season o'zgaruvchisiga yozing. switch ishlating.",
-      startingCode: "let month = 1;\nlet season = '';\n// Bu yerga yozing\n",
-      hint: "switch(month) {\n  case 12:\n  case 1:\n  case 2:\n    season = 'Qish';\n    break;\n}",
-      test: "if (season === 'Qish') return null; return 'season Qish bo\\'lishi kerak!';"
-    },
-    {
-      id: 3,
-      title: "Strict type check",
-      instruction: "score o'zgaruvchisi '5' (string) bo'lsa, switch orqali tekshirib res o'zgaruvchisiga 'Matn' deb yozing. (Strict equality ishlatilishini inobatga oling).",
-      startingCode: "let score = '5';\nlet res = '';\n// Bu yerga yozing\n",
-      hint: "switch(score) {\n  case '5':\n    res = 'Matn';\n    break;\n  case 5:\n    res = 'Son';\n    break;\n}",
-      test: "if (res === 'Matn') return null; return 'res Matn bo\\'lishi kerak!';"
-    },
-    {
-      id: 4,
-      title: "Default holati",
-      instruction: "animal o'zgaruvchisi qiymati mos keladigan case topilmasa, default blokida status o'zgaruvchisiga 'Noma'lum' qiymatini bering.",
-      startingCode: "let animal = 'ayiq';\nlet status = '';\n// Bu yerga yozing\n",
-      hint: "switch(animal) {\n  case 'kuchuk': status = 'Uy hayvoni'; break;\n  default: status = 'Noma\\'lum';\n}",
-      test: "if (status === 'Noma\\'lum') return null; return 'status Noma\\'lum bo\\'lishi kerak!';"
-    },
-    {
-      id: 5,
-      title: "Fall-through hodisasi",
-      instruction: "month o'zgaruvchisi 4 bo'lganda, break yozmasdan case 3, case 4, case 5 zanjiri yordamida xabar o'zgaruvchisiga 'Bahor' qiymatini bering.",
-      startingCode: "let month = 4;\nlet xabar = '';\n// Bu yerga yozing\n",
-      hint: "switch(month) {\n  case 3:\n  case 4:\n  case 5:\n    xabar = 'Bahor';\n    break;\n}",
-      test: "if (xabar === 'Bahor') return null; return 'xabar Bahor bo\\'lishi kerak!';"
-    },
-    {
-      id: 6,
-      title: "Meva narxi",
-      instruction: "fruit o'zgaruvchisiga qarab narx o'zgaruvchisiga qiymat bering: 'olma' bo'lsa 10000, 'anor' bo'lsa 15000, boshqa hollarda 0. switch ishlating.",
-      startingCode: "let fruit = 'anor';\nlet narx = 0;\n// Bu yerga yozing\n",
-      hint: "switch(fruit) {\n  case 'olma': narx = 10000; break;\n  case 'anor': narx = 15000; break;\n  default: narx = 0;\n}",
-      test: "if (narx === 15000) return null; return 'narx 15000 bo\\'lishi kerak!';"
-    },
-    {
-      id: 7,
-      title: "switch(true) yordamida shart tekshirish",
-      instruction: "yosh o'zgaruvchisi 20 ga teng. switch(true) yordamida yosh >= 18 bo'lsa ruxsat o'zgaruvchisiga 'Ruxsat etilgan' qiymatini yozing.",
-      startingCode: "let yosh = 20;\nlet ruxsat = '';\n// Bu yerga yozing\n",
-      hint: "switch(true) {\n  case yosh >= 18:\n    ruxsat = 'Ruxsat etilgan';\n    break;\n}",
-      test: "if (ruxsat === 'Ruxsat etilgan') return null; return 'ruxsat Ruxsat etilgan bo\\'lishi kerak!';"
-    },
-    {
-      id: 8,
-      title: "Svetofor",
-      instruction: "light o'zgaruvchisi 'yashil' bo'lsa action o'zgaruvchisiga 'O'tish', 'sariq' bo'lsa 'Kutish', 'qizil' bo'lsa 'To'xtash', boshqa holatda 'Nosoz' deb yozing.",
-      startingCode: "let light = 'yashil';\nlet action = '';\n// Bu yerga yozing\n",
-      hint: "switch(light) {\n  case 'yashil': action = 'O\\'tish'; break;\n  case 'sariq': action = 'Kutish'; break;\n  case 'qizil': action = 'To\\'xtash'; break;\n  default: action = 'Nosoz';\n}",
-      test: "if (action === 'O\\'tish') return null; return 'action O\\'tish bo\\'lishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "Baholash tizimi",
-      instruction: "grade o'zgaruvchisi 'A' bo'lsa natija 'Alo', 'B' yoki 'C' bo'lsa 'Yaxshi', boshqa bo'lsa 'Qoniqarsiz'. switch orqali yozing.",
-      startingCode: "let grade = 'B';\nlet natija = '';\n// Bu yerga yozing\n",
-      hint: "switch(grade) {\n  case 'A': natija = 'Alo'; break;\n  case 'B':\n  case 'C': natija = 'Yaxshi'; break;\n  default: natija = 'Qoniqarsiz';\n}",
-      test: "if (natija === 'Yaxshi') return null; return 'natija Yaxshi bo\\'lishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "Raqamni so'zga o'tkazish",
-      instruction: "num o'zgaruvchisi 0 bo'lsa word o'zgaruvchisiga 'nol', 1 bo'lsa 'bir' yozing. Boshqa hollarda 'boshqa'.",
-      startingCode: "let num = 0;\nlet word = '';\n// Bu yerga yozing\n",
-      hint: "switch(num) {\n  case 0: word = 'nol'; break;\n  case 1: word = 'bir'; break;\n  default: word = 'boshqa';\n}",
-      test: "if (word === 'nol') return null; return 'word nol bo\\'lishi kerak!';"
-    },
-    {
-      id: 11,
-      title: "Foydalanuvchi roli",
-      instruction: "role o'zgaruvchisi 'guest' bo'lsa access o'zgaruvchisiga 'Mehmon' qiymatini bering. 'admin' bo'lsa 'To'liq', 'user' bo'lsa 'Cheklangan'.",
-      startingCode: "let role = 'guest';\nlet access = '';\n// Bu yerga yozing\n",
-      hint: "switch(role) {\n  case 'admin': access = 'To\\'liq'; break;\n  case 'user': access = 'Cheklangan'; break;\n  default: access = 'Mehmon';\n}",
-      test: "if (access === 'Mehmon') return null; return 'access Mehmon bo\\'lishi kerak!';"
-    },
-    {
-      id: 12,
-      title: "Kalkulyator amallari",
-      instruction: "op o'zgaruvchisi '+' bo'lsa res o'zgaruvchisiga a va b ning yig'indisini, '-' bo'lsa ayirmasini o'zlashtiring. a=10, b=5.",
-      startingCode: "let a = 10;\nlet b = 5;\nlet op = '+';\nlet res = 0;\n// Bu yerga yozing\n",
-      hint: "switch(op) {\n  case '+': res = a + b; break;\n  case '-': res = a - b; break;\n}",
-      test: "if (res === 15) return null; return 'res 15 bo\\'lishi kerak!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Fasllarni aniqlash",
+    "instruction": "Berilgan oy raqamiga (1 dan 12 gacha) qarab tegishli fasl nomini (\"Qish\", \"Bahor\", \"Yoz\", \"Kuz\") qaytaruvchi va noto'g'ri oy raqami berilsa \"Noto'g'ri oy\" deb qaytaruvchi `getSeason(monthNumber)` funksiyasini switch-case operatori yordamida yozing. Oy raqamlarini quyidagicha guruhlang:\n- 12, 1, 2: \"Qish\"\n- 3, 4, 5: \"Bahor\"\n- 6, 7, 8: \"Yoz\"\n- 9, 10, 11: \"Kuz\"",
+    "startingCode": "function getSeason(monthNumber) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Har bir fasl uchun case-larni ketma-ket joylashtirib (fall-through), bitta return yoki break yordamida guruhlang. Masalan:\ncase 12:\ncase 1:\ncase 2:\n  return \"Qish\";",
+    "test": "const sandbox = new Function(code + '; return getSeason;');\nconst fn = sandbox();\nif (fn(12) !== 'Qish' || fn(1) !== 'Qish' || fn(2) !== 'Qish') return 'Qish fasli uchun oylar noto\\'g\\'ri tekshirildi';\nif (fn(3) !== 'Bahor' || fn(4) !== 'Bahor' || fn(5) !== 'Bahor') return 'Bahor fasli uchun oylar noto\\'g\\'ri tekshirildi';\nif (fn(6) !== 'Yoz' || fn(7) !== 'Yoz' || fn(8) !== 'Yoz') return 'Yoz fasli uchun oylar noto\\'g\\'ri tekshirildi';\nif (fn(9) !== 'Kuz' || fn(10) !== 'Kuz' || fn(11) !== 'Kuz') return 'Kuz fasli uchun oylar noto\\'g\\'ri tekshirildi';\nif (fn(0) !== \"Noto'g'ri oy\" || fn(13) !== \"Noto'g'ri oy\") return 'Noto\\'g\\'ri oy raqamlari to\\'g\\'ri aniqlanmadi';\nif (!code.includes('switch')) return 'switch-case operatoridan foydalanilmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Oddiy Kalkulyator",
+    "instruction": "Uchta argument qabul qiladigan `calculator(num1, num2, operator)` funksiyasini yozing. `operator` argumenti string bo'lib, quyidagi qiymatlarni qabul qilishi mumkin: \"+\", \"-\", \"*\", \"/\". Funksiya switch-case yordamida tegishli matematik amalni bajarib natijani qaytarsin. Agar nolga bo'lish holati yuz bersa (\"/\" va num2 === 0 bo'lsa), \"Nolga bo'lish mumkin emas!\" deb qaytarsin. Noto'g'ri operator kiritilganda \"Noto'g'ri operator\" deb qaytarsin.",
+    "startingCode": "function calculator(num1, num2, operator) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "switch(operator) yordamida case \"+\":, case \"-\": va boshqalarni tekshiring. Bo'lish case-ida num2 nolga tengligini if orqali tekshiring va tegishli satrni qaytaring.",
+    "test": "const sandbox = new Function(code + '; return calculator;');\nconst fn = sandbox();\nif (fn(10, 5, '+') !== 15) return 'Qo\\'shish amali noto\\'g\\'ri bajarildi';\nif (fn(10, 5, '-') !== 5) return 'Ayirish amali noto\\'g\\'ri bajarildi';\nif (fn(10, 5, '*') !== 50) return 'Ko\\'paytirish amali noto\\'g\\'ri bajarildi';\nif (fn(10, 5, '/') !== 2) return 'Bo\\'lish amali noto\\'g\\'ri bajarildi';\nif (fn(10, 0, '/') !== 'Nolga bo\\'lish mumkin emas!') return 'Nolga bo\\'lish holati to\\'g\\'ri tekshirilmadi';\nif (fn(10, 5, '%') !== 'Noto\\'g\\'ri operator') return 'Noto\\'g\\'ri operator holati to\\'g\\'ri tekshirilmadi';\nif (!code.includes('switch')) return 'switch-case operatoridan foydalanilmadi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Baholash Tizimi (switch(true) patterni)",
+    "instruction": "Foydalanuvchining imtihon baliga (0 dan 100 gacha son) qarab baho harfini qaytaruvchi `getGradeScore(score)` funksiyasini yozing. Baholar quyidagicha aniqlanadi:\n- 90 va undan yuqori: \"A\"\n- 80 dan 89 gacha: \"B\"\n- 70 dan 79 gacha: \"C\"\n- 60 dan 69 gacha: \"D\"\n- 60 dan past: \"F\"\n- 0 dan kichik yoki 100 dan katta bo'lsa: \"Noto'g'ri ball\"\nBunda switch-case operatorini ishlatishingiz va switch(true) yondashuvidan foydalanishingiz kerak.",
+    "startingCode": "function getGradeScore(score) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "switch(true) dan foydalanib, har bir case-da shartlarni kiriting, masalan: case (score >= 90 && score <= 100): return \"A\";",
+    "test": "const sandbox = new Function(code + '; return getGradeScore;');\nconst fn = sandbox();\nif (fn(95) !== 'A' || fn(90) !== 'A') return '90-100 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(85) !== 'B' || fn(80) !== 'B') return '80-89 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(75) !== 'C' || fn(70) !== 'C') return '70-79 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(65) !== 'D' || fn(60) !== 'D') return '60-69 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(50) !== 'F' || fn(0) !== 'F') return '0-59 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(-5) !== \"Noto'g'ri ball\" || fn(105) !== \"Noto'g'ri ball\") return 'Noto\\'g\\'ri ball holatlari to\\'g\\'ri tekshirilmadi';\nif (!code.includes('switch') || !code.includes('true')) return 'switch(true) operatoridan foydalanilmadi';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

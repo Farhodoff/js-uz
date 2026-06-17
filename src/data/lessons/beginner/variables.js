@@ -2,7 +2,7 @@ export const variables = {
   id: "variables",
   title: "O'zgaruvchilar: var, let, const",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### O'zgaruvchilar nima va var, let, const farqlari qanday?
 JavaScript-da o'zgaruvchilar ma'lumotlarni saqlash uchun qutilardir. Ammo bu qutilar o'zining mustahkamligi va kirish doirasi (scope) bo'yicha farq qiladi:
@@ -287,103 +287,32 @@ Zamonaviy JS dvigatellari \`const\` ishlatilgan o'zgaruvchilarni "read-only poin
 | **Global obyektga birikish (\`window\`)** | Ha | Yo'q | Yo'q |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "O'zgaruvchi yaratish",
-      instruction: "'name' nomli o'zgarmas (const) va 'score' nomli o'zgaruvchan (let) yarating.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "const name = 'Ali'; let score = 0;",
-      test: "if (code.includes('const') && code.includes('let')) return null; return 'Kalit so\\'zlarni to\\'g\\'ri ishlating';"
-    },
-    {
-      id: 2,
-      title: "Qiymatni yangilash",
-      instruction: "'ball' o'zgaruvchisini yarating, unga 10 bering va keyingi qatorda uni 15 ga o'zgartiring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "let ball = 10; ball = 15;",
-      test: "if (code.includes('let') && typeof ball !== 'undefined' && ball === 15) return null; return 'Qiymatni to\\'g\\'ri yangilang';"
-    },
-    {
-      id: 3,
-      title: "O'zgarmas PI qiymati",
-      instruction: "'PI' nomli o'zgarmas o'zgaruvchi yarating va unga 3.14159 qiymatini bering.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "const PI = 3.14159;",
-      test: "if (code.includes('const') && code.includes('PI') && code.includes('3.14159')) return null; return 'const PI o\\'zgarmasini to\\'g\\'ri e\\'lon qiling';"
-    },
-    {
-      id: 4,
-      title: "Ism va Familiya",
-      instruction: "'firstName' o'zgaruvchisiga 'Ali' va 'lastName' o'zgaruvchisiga 'Valiyev' qiymatlarini bering.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "let firstName = 'Ali';\nlet lastName = 'Valiyev';",
-      test: "if (code.includes('firstName') && code.includes('lastName')) return null; return 'firstName va lastName o\\'zgaruvchilarini yarating';"
-    },
-    {
-      id: 5,
-      title: "Qiymatlarni almashtirish",
-      instruction: "Berilgan 'a' va 'b' o'zgaruvchilarining qiymatlarini alohida 'temp' o'zgaruvchisi yordamida almashtiring.",
-      startingCode: "let a = 5;\nlet b = 10;\nlet temp;\n// Bu yerga yozing\n",
-      hint: "temp = a;\na = b;\nb = temp;",
-      test: "if (code.includes('temp = a') && code.includes('a = b') && code.includes('b = temp')) return null; return 'Qiymatlarni temp yordamida almashtiring';"
-    },
-    {
-      id: 6,
-      title: "CamelCase uslubida nomlash",
-      instruction: "CamelCase uslubidan foydalanib 'foydalanuvchi yoshi' va 'tizimga kirish vaqti' degan ma'nolarni anglatuvchi let o'zgaruvchilarini yarating.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "let userAge;\nlet loginTime;",
-      test: "if (code.includes('userAge') && code.includes('loginTime')) return null; return 'O\\'zgaruvchilarni camelCase shaklida nomlang (userAge, loginTime)';"
-    },
-    {
-      id: 7,
-      title: "Dinamik tiplashtirish",
-      instruction: "'data' o'zgaruvchisini let orqali yarating, dastlab unga 100 sonini bering va keyingi qatorda unga 'Salom' matnini yuklang.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "let data = 100;\ndata = 'Salom';",
-      test: "if (code.includes('let data') && code.includes('100') && code.includes('Salom')) return null; return 'data o\\'zgaruvchisini yarating va keyin matn qiymat yuklang';"
-    },
-    {
-      id: 8,
-      title: "Undefined o'zgaruvchi",
-      instruction: "'message' nomli o'zgaruvchini qiymat bermasdan e'lon qiling va uni console.log() orqali konsolga chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "let message;\nconsole.log(message);",
-      test: "if (code.includes('let message') && code.includes('console.log')) return null; return 'message ni qiymat bermay e\\'lon qiling va konsolga chiqaring';"
-    },
-    {
-      id: 9,
-      title: "O'zgarmas massivni o'zgartirish",
-      instruction: "const bilan 'numbers' massivini [1, 2] ko'rinishida yarating va unga push() metodi yordamida 3 sonini qo'shing.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "const numbers = [1, 2];\nnumbers.push(3);",
-      test: "if (code.includes('const numbers') && code.includes('push(3)')) return null; return 'const massiv yarating va 3 ni push qiling';"
-    },
-    {
-      id: 10,
-      title: "O'zgarmas obyektni yangilash",
-      instruction: "const bilan 'car' obyektini yarating (ichida brand: 'Tesla' bo'lsin). Keyingi qatorda brand qiymatini 'BYD' ga o'zgartiring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "const car = { brand: 'Tesla' };\ncar.brand = 'BYD';",
-      test: "if (code.includes('const car') && code.includes('BYD')) return null; return 'Obyekt ichidagi xususiyatni yangilang';"
-    },
-    {
-      id: 11,
-      title: "Bir qatorda bir nechta o'zgaruvchi",
-      instruction: "Bir dona 'let' kalit so'zi yordamida bir qatorning o'zida a = 1, b = 2, c = 3 o'zgaruvchilarini yarating.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "let a = 1, b = 2, c = 3;",
-      test: "if (code.includes('let') && code.includes('a = 1') && code.includes('b = 2') && code.includes('c = 3')) return null; return 'Bir qatorda e\\'lon qilish qoidasiga rioya qiling';"
-    },
-    {
-      id: 12,
-      title: "TDZ va ReferenceError",
-      instruction: "Try-catch bloki ichida, 'y' o'zgaruvchisini let bilan e'lon qilishdan oldin console.log(y) qiling va xatoni ushlab e.name ni konsolga chiqaring.",
-      startingCode: "try {\n  // Bu yerga yozing\n  \n  let y = 5;\n} catch (e) {\n  console.log(e.name);\n}",
-      hint: "console.log(y);",
-      test: "if (code.includes('console.log(y)') && code.includes('let y')) return null; return 'y e\\'lon qilinishidan oldin konsolga chiqarilishi kerak';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Blok Doirasi (Block Scope)",
+    "instruction": "Quyida `testScope` funksiyasi berilgan. Kodda `var` ishlatilgani sababli, `if` bloki ichidagi o'zgaruvchi blokdan tashqarida ham o'zgarib ketmoqda. Bizga `if` bloki ichidagi `x` o'zgaruvchisi faqat shu blok ichida amal qilishi (block scope bo'lishi) va funksiya oxirida dastlabki `x` (ya'ni 10) qiymati saqlanib qolishi kerak. Buning uchun `var` kalit so'zlarini to'g'ri block-scoped kalit so'zlarga (`let` yoki `const`) almashtiring.",
+    "startingCode": "function testScope() {\n  var x = 10;\n  if (true) {\n    var x = 20;\n  }\n  return x;\n}\n",
+    "hint": "if bloki ichidagi var x ni let x yoki const x ga almashtiring. Tashqi var x ni ham let x ga o'zgartirishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return testScope;');\nconst fn = sandbox();\nconst res = fn();\nif (res !== 10) return 'testScope funksiyasi 10 qaytarishi kerak, lekin ' + res + ' qaytardi.';\nif (!code.includes('let x = 20') && !code.includes('const x = 20') && !code.includes('let x=20') && !code.includes('const x=20')) {\n  return 'Blok ichidagi x o\\'zgaruvchisi uchun let yoki const kalit so\\'zidan foydalaning.';\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "O'zgarmas Obyekt (const) va Mutatsiya",
+    "instruction": "Bizga `const` orqali e'lon qilingan `user` obyekti berilgan. `const` bilan e'lon qilingan o'zgaruvchining o'zini butunlay boshqa qiymatga qayta tayinlab (reassign) bo'lmasa-da, uning xususiyatlarini (properties) o'zgartirish mumkin. `updateUserAge(user, newAge)` funksiyasini yozing, u berilgan `user` obyektining `age` xususiyatini `newAge` ga o'zgartirsin va o'sha obyektni qaytarsin. Bunda yangi obyekt yaratmang (ya'ni `return { ... }` yoki `user = ...` xato).",
+    "startingCode": "function updateUserAge(user, newAge) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "user.age = newAge; ko'rinishida obyekt xususiyatini to'g'ridan-to'g'ri o'zgartiring va user obyektini qaytaring.",
+    "test": "const sandbox = new Function(code + '; return updateUserAge;');\nconst fn = sandbox();\nconst myUser = { name: 'Ali', age: 20 };\nconst res = fn(myUser, 25);\nif (res && res.age === 25 && res.name === 'Ali') {\n  if (res === myUser) {\n    return null;\n  }\n  return 'Yangi obyekt yaratmang, aynan berilgan user obyektining xususiyatini o\\'zgartiring.';\n}\nreturn 'updateUserAge funksiyasi yoshni to\\'g\\'ri yangilamadi';"
+  },
+  {
+    "id": 3,
+    "title": "Hoisting va TDZ (Temporal Dead Zone)",
+    "instruction": "Quyidagi kodda `console.log(value)` chaqirilganda `ReferenceError` xatoligi yuz bermoqda. Buning sababi `let` va `const` o'zgaruvchilari e'lon qilinishidan oldin TDZ (Temporal Dead Zone) da bo'ladi va ulardan foydalanib bo'lmaydi. Kodni shunday o'zgartiringki, xatolik chiqmasdan, o'zgaruvchining qiymati (ya'ni 'Salom') to'g'ri chop etilsin va qaytarilsin.",
+    "startingCode": "function getGreeting() {\n  console.log(value);\n  let value = 'Salom';\n  return value;\n}\n",
+    "hint": "O'zgaruvchini console.log(value) dan oldingi qatorga ko'chiring.",
+    "test": "try {\n  const sandbox = new Function(code + '; return getGreeting;');\n  const fn = sandbox();\n  const res = fn();\n  if (res === 'Salom') {\n    const cleanCode = code.replace(/\\s+/g, '');\n    const declLet = cleanCode.indexOf('letvalue=');\n    const declConst = cleanCode.indexOf('constvalue=');\n    const declVar = cleanCode.indexOf('varvalue=');\n    const consoleIdx = cleanCode.indexOf('console.log(value)');\n    const declIdx = declLet !== -1 ? declLet : (declConst !== -1 ? declConst : declVar);\n    if (declIdx !== -1 && declIdx < consoleIdx) {\n      return null;\n    }\n    return 'value o\\'zgaruvchisini console.log(value) dan oldin e\\'lon qiling.';\n  }\n  return 'getGreeting funksiyasi \"Salom\" qaytarishi kerak, hozir: ' + res;\n} catch (err) {\n  return 'Xatolik yuz berdi: ' + err.message;\n}"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

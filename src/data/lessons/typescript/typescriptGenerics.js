@@ -2,7 +2,7 @@ export const typescriptGenerics = {
   id: "typescriptGenerics",
   title: "Generics (Umumiylashtirish)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Generics (Umumiylashtirish) nima?
 Dasturlashda ko'pincha har xil turdagi ma'lumotlar bilan ishlaydigan qayta ishlatiladigan komponentlar yoki funksiyalar yozish talab qilinadi. Masalan, massivlar bilan ishlaydigan yordamchi funksiya sonlar massivini ham, satrlar massivini ham qayta ishlay olishi kerak.

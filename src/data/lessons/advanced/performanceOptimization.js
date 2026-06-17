@@ -2,7 +2,7 @@ export const performanceOptimization = {
   id: "performanceOptimization",
   title: "JavaScript Unumdorligini Oshirish (Performance Optimization)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### JavaScript-da Performance (Unumdorlik) nima?
 JavaScript-da unumdorlikni oshirish — bu ilovaning tezroq yuklanishi, foydalanuvchi harakatlariga (klik, skrol, yozish) lahzada javob qaytarishi va brauzer xotirasi (RAM) hamda protsessor (CPU) resurslaridan tejamkorlik bilan foydalanishini ta'minlashdir.
@@ -10,9 +10,9 @@ JavaScript-da unumdorlikni oshirish — bu ilovaning tezroq yuklanishi, foydalan
 ### Real hayotiy o'xshatish
 Tasavvur qiling, siz **restoranda bosh oshpazsiz**:
 * **Optimallashtirilmagan holat:** Har bir mijoz bitta salat buyurtma qilganda, siz omborxonaga borib bitta pomidor olib kelasiz, keyin yana borib bitta bodring olib kelasiz. Bu vaqt va kuchni behuda sarflashdir (bu DOM-ga har bir elementni alohida qo'shish yoki har skrolda og'ir funksiyani chaqirishga o'xshaydi).
-* **Optimallashtirilgan holat (DocumentFragment o'xshatishi):** Siz laganga salat uchun kerakli barcha sabzavotlarni bir marta yig'ib olasiz (fragment yaratasiz), stol ustida salatni tayyorlaysiz va mijozga bir martada tayyor holda taqdim etasiz (DOM-ga bir marta qo'shasiz).
-* **Debounce o'xshatishi:** Mijoz buyurtma berayotganda gapini tugatishini kutasiz. U "Menga pitsa, kola va... yana... shokoladli desert" deb to'xtagunicha buyurtmani yozmaysiz. U 2 soniya jim tursa, keyin buyurtmani oshxonaga yuborasiz.
-* **Throttle o'xshatishi:** Juda ko'p gapiradigan mijoz sizga tinimsiz savol beryapti. Siz unga: "Har 5 daqiqada faqat bitta savolingizga javob beraman" deysiz. U o'sha 5 daqiqa ichida 100 ta savol bersa ham, siz faqat bittasini qabul qilasiz.
+* **Optimallashtirilgan holat (DocumentFragment o'xshatishsi):** Siz laganga salat uchun kerakli barcha sabzavotlarni bir marta yig'ib olasiz (fragment yaratasiz), stol ustida salatni tayyorlaysiz va mijozga bir martada tayyor holda taqdim etasiz (DOM-ga bir marta qo'shasiz).
+* **Debounce o'xshatishsi:** Mijoz buyurtma berayotganda gapini tugatishini kutasiz. U "Menga pitsa, kola va... yana... shokoladli desert" deb to'xtagunicha buyurtmani yozmaysiz. U 2 soniya jim tursa, keyin buyurtmani oshxonaga yuborasiz.
+* **Throttle o'xshatishsi:** Juda ko'p gapiradigan mijoz sizga tinimsiz savol beryapti. Siz unga: "Har 5 daqiqada faqat bitta savolingizga javob beraman" deysiz. U o'sha 5 daqiqa ichida 100 ta savol bersa ham, siz faqat bittasini qabul qilasiz.
 
 ---
 
@@ -263,119 +263,32 @@ lazyImages.forEach(image => imageObserver.observe(image));
 | **requestAnimationFrame** | Animatsiya chizishda | Sahifa yangilanishiga moslashib, silliq animatsiya beradi |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Oddiy Debounce",
-      instruction: "setTimeout bilan 500ms kechikuvchi funksiya yozing.",
-      startingCode: "function delayedLog() {\n  // 500ms kutib keyin console.log('OK')\n}\n",
-      hint: "setTimeout(() => console.log('OK'), 500);",
-      test: "if (code.includes('setTimeout')) return null; return 'setTimeout xato';"
-    },
-    {
-      id: 2,
-      title: "Debounce Funksiyasi",
-      instruction: "Debounce factory yarating - fn va delay'ni parametr qabul qilsin.",
-      startingCode: "function debounce(fn, delay) {\n  // Bu yerga yozing\n}\n",
-      hint: "let timeoutId; return function() { clearTimeout(timeoutId); timeoutId = setTimeout(() => fn(), delay); }",
-      test: "if (code.includes('clearTimeout') && code.includes('setTimeout')) return null; return 'Debounce noto\\'g\\'ri';"
-    },
-    {
-      id: 3,
-      title: "Throttle Funksiyasi",
-      instruction: "Throttle factory yarating - vaqt oralig'ida bir marta chaqirsin.",
-      startingCode: "function throttle(fn, limit) {\n  // Bu yerga yozing\n}\n",
-      hint: "let inThrottle; return function() { if (!inThrottle) { fn(); inThrottle = true; setTimeout(() => inThrottle = false, limit); } }",
-      test: "if (code.includes('inThrottle')) return null; return 'Throttle noto\\'g\\'ri';"
-    },
-    {
-      id: 4,
-      title: "Debounce vs Throttle Farqi",
-      instruction: "Debounce oxirgi chaqiriqdan keyin, Throttle vaqt oralig'ida.",
-      startingCode: "// Qidiruv inputi uchun qaysi kerak?\nconst search = /* Debounce yoki Throttle? */;\n",
-      hint: "Debounce - foydalanuvchi yozib bo'lishini kutish",
-      test: "if (code.includes('Debounce')) return null; return 'Qidiruv uchun Debounce kerak';"
-    },
-    {
-      id: 5,
-      title: "Memoization",
-      instruction: "Natijani kesh qilib, second call'ni tezlangtirib ol.",
-      startingCode: "function memoize(fn) {\n  const cache = {};\n  // Bu yerga yozing\n}\n",
-      hint: "return function(...args) { const key = JSON.stringify(args); if (key in cache) return cache[key]; return cache[key] = fn(...args); }",
-      test: "if (code.includes('cache')) return null; return 'Memoization noto\\'g\\'ri';"
-    },
-    {
-      id: 6,
-      title: "IntersectionObserver - Lazy Loading",
-      instruction: "Rasm ko'rinavchi bo'lganda yuklash.",
-      startingCode: "const observer = new IntersectionObserver((entries) => {\n  // Bu yerga yozing - rasm.src = rasm.dataset.src\n});\n",
-      hint: "entries.forEach(entry => { if (entry.isIntersecting) { entry.target.src = entry.target.dataset.src; } });",
-      test: "if (code.includes('isIntersecting')) return null; return 'Lazy loading noto\\'g\\'ri';"
-    },
-    {
-      id: 7,
-      title: "requestAnimationFrame",
-      instruction: "RAF bilan smooth animatsiya qiling.",
-      startingCode: "function animate() {\n  element.style.left = (parseInt(element.style.left) + 1) + 'px';\n  // Bu yerga RAF\n}\n",
-      hint: "requestAnimationFrame(animate);",
-      test: "if (code.includes('requestAnimationFrame')) return null; return 'RAF noto\\'g\\'ri';"
-    },
-    {
-      id: 8,
-      title: "Performance.measure()",
-      instruction: "Kodning ishlash vaqtini o'lchang.",
-      startingCode: "performance.mark('start');\n// ... some code\nperformance.mark('end');\n// Bu yerga measure\n",
-      hint: "performance.measure('operation', 'start', 'end');",
-      test: "if (code.includes('performance.measure')) return null; return 'Measure noto\\'g\\'ri';"
-    },
-    {
-      id: 9,
-      title: "Debounce + Search",
-      instruction: "Search input uchun debounce API so'rovini qiling.",
-      startingCode: "const search = debounce((text) => {\n  console.log('API so\\'rov: ' + text);\n}, 300);\n\n// Tez yozish simulyatsiyasi\n// Natija: oxirgi yozuv uchun faqat 1 marta so'rov\n",
-      hint: "Debounce'dan foydalanib har harfda emas, oxirigina so'rov ketadi",
-      test: "if (code.includes('debounce')) return null; return 'Search debounce noto\\'g\\'ri';"
-    },
-    {
-      id: 10,
-      title: "Throttle + Scroll",
-      instruction: "Scroll event'da har 1s'da bir marta event handler chaqir.",
-      startingCode: "const onScroll = throttle(() => {\n  console.log('Scroll event');\n}, 1000);\n\nwindow.addEventListener('scroll', onScroll);\n",
-      hint: "Throttle qo'llangan handler har 1s'da bir marta ishlaydi",
-      test: "if (code.includes('throttle') && code.includes('addEventListener')) return null; return 'Scroll throttle noto\\'g\\'ri';"
-    },
-    {
-      id: 11,
-      title: "Memory Leak Oldini Olish",
-      instruction: "Event listener'ni component destroy'da olib tashlang.",
-      startingCode: "class Component {\n  constructor() {\n    this.onResize = this.onResize.bind(this);\n    window.addEventListener('resize', this.onResize);\n  }\n  destroy() {\n    // Bu yerga olib tashlash\n  }\n}\n",
-      hint: "window.removeEventListener('resize', this.onResize);",
-      test: "if (code.includes('removeEventListener')) return null; return 'Cleanup noto\\'g\\'ri';"
-    },
-    {
-      id: 12,
-      title: "Kompleks - Optimized Search Component",
-      instruction: "Debounce + memoize bilan optimal search qiling.",
-      startingCode: "const fetchUsers = async (query) => {\n  // API call\n};\n\nconst memoized = memoize(fetchUsers);\nconst optimized = debounce(memoized, 300);\n\n// Natija: \n// 1. 300ms kutadi\n// 2. Cached natija bo'lsa tez qaytaradi\n",
-      hint: "Debounce + memoize kombinatsiyasi",
-      test: "if (code.includes('debounce') && code.includes('memoize')) return null; return 'Kompleks optimization noto\\'g\\'ri';"
-    },
-    {
-      id: 13,
-      title: "Scroll Throttle Coordinates Logger",
-      instruction: "Foydalanuvchi scroll qilganda sahifaning vertikal koordinatasini (window.scrollY) konsolga chiqaruvchi hodisa handlerini yozing. Sayt samaradorligini oshirish va scroll eventlarini kamaytirish uchun ushbu logScroll funksiyasini 'throttle' yordamida har 200msda bir marta ishlaydigan qiling va window-ga 'scroll' hodisasi bilan bog'lang.",
-      startingCode: "const logScroll = throttle(() => {\n  console.log(window.scrollY);\n}, 200);\n// window-ga scroll hodisasini qo'shing\n",
-      hint: "window.addEventListener('scroll', logScroll);",
-      test: "if (code.includes('addEventListener') && code.includes('scroll') && code.includes('logScroll')) return null;\nreturn 'window-ga scroll listener biriktirilmadi yoki logScroll ishlatilmadi';"
-    },
-    {
-      id: 14,
-      title: "Performance Profiling Wrapper",
-      instruction: "Kodni bajarilish vaqtini User Timing API yordamida o'lchash uchun 'profileFunction(name, fn)' wrapper funksiyasini yozing. U funksiyani chaqirishdan oldin 'performance.mark(name + \"-start\")' belgisini qo'ysin, funksiyani ishga tushirsin, bajarilgandan keyin 'performance.mark(name + \"-end\")' belgisini qo'ysin va 'performance.measure(name, name + \"-start\", name + \"-end\")' yordamida o'lchasin. Yakunda funksiya natijasini qaytarsin.",
-      startingCode: "function profileFunction(name, fn) {\n  // performance.mark va performance.measure lardan foydalaning\n}",
-      hint: "performance.mark(name + '-start');\nconst result = fn();\nperformance.mark(name + '-end');\nperformance.measure(name, name + '-start', name + '-end');\nreturn result;",
-      test: "if (code.includes('performance.mark') && code.includes('performance.measure') && code.includes('return')) return null;\nreturn 'performance.mark yoki performance.measure orqali profiling to\\'g\\'ri amalga oshirilmadi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Debounce Funksiyasini Yozish",
+    "instruction": "Foydalanuvchi tez-tez tugmani bosganda yoki matn kiritganda, funksiya faqat kiritish to'xtaganidan so'ng ma'lum bir `delay` (ms) o'tgach ishga tushadigan `debounce(fn, delay)` funksiyasini yarating.",
+    "startingCode": "function debounce(fn, delay) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Har safar funksiya chaqirilganda, avvalgi taymerni `clearTimeout` yordamida tozalang va yangi `setTimeout` o'rnating.",
+    "test": "if (!code.includes('clearTimeout')) return 'debounce ichida clearTimeout ishlatilishi kerak';\nif (!code.includes('setTimeout')) return 'debounce ichida setTimeout ishlatilishi kerak';\nconst sandbox = new Function(code + '; return debounce;');\nconst db = sandbox();\nlet count = 0;\nconst debounced = db(() => count++, 50);\nif (typeof debounced !== 'function') return 'debounce funksiyasi wrapper funksiya qaytarishi kerak';\ndebounced(); debounced(); debounced();\nif (count !== 0) return 'Taymer tugashidan oldin funksiya bajarilmasligi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Throttle Funksiyasini Yozish",
+    "instruction": "Hodisa juda ko'p chaqirilganda (masalan, `scroll` yoki `resize`), funksiya har `limit` (ms) vaqt oralig'ida faqat bir marta bajarilishini ta'minlovchi `throttle(fn, limit)` funksiyasini yozing.",
+    "startingCode": "function throttle(fn, limit) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Chaqiruv ruxsat etilganligini ko'rsatuvchi bayroqcha (flag) o'zgaruvchisidan foydalaning va taymer orqali uni qayta tiklang.",
+    "test": "if (!code.includes('setTimeout')) return 'throttle ichida setTimeout ishlatilishi kerak';\nconst sandbox = new Function(code + '; return throttle;');\nconst th = sandbox();\nlet count = 0;\nconst throttled = th(() => count++, 100);\nif (typeof throttled !== 'function') return 'throttle funksiyasi wrapper funksiya qaytarishi kerak';\nthrottled(); throttled();\nif (count !== 1) return 'Throttle vaqtida birinchi chaqiriq darhol ishlashi va keyingilari cheklanishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "DocumentFragment yordamida DOM optimallashtirish",
+    "instruction": "Berilgan `container` (DOM elementi) ichiga ko'p miqdordagi `items` (matnli massiv) elementlarini `li` ko'rinishida qo'shing. DOM-ga qayta-qayta murojaat qilib (reflow/repaint) unumdorlikni pasaytirmaslik uchun `document.createDocumentFragment()` dan foydalaning.",
+    "startingCode": "function appendItemsOptimized(container, items) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Avval fragment yarating, so'ng tsikl ichida har bir elementni fragmentga `appendChild` qiling. Eng oxirida fragmentni `container`ga bir marta qo'shing.",
+    "test": "if (!code.includes('createDocumentFragment')) return 'createDocumentFragment dan foydalanilishi shart';\ntry {\n  const mockContainer = { appendChild: function(el) { this.child = el; } };\n  const mockDoc = {\n    createDocumentFragment: () => {\n      const fragment = { children: [], appendChild: function(el) { this.children.push(el); } };\n      return fragment;\n    },\n    createElement: (tag) => ({ tag, textContent: '' })\n  };\n  const sandbox = new Function('document', code + '; return appendItemsOptimized;');\n  const fn = sandbox(mockDoc);\n  fn(mockContainer, ['Olma', 'Anor']);\n  if (!mockContainer.child) return 'Elementlar containerga qo\\'shilmadi';\n  if (mockContainer.child.children && mockContainer.child.children.length !== 2) return 'Barcha elementlar fragmentga qo\\'shilmagan';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

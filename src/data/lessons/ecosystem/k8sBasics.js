@@ -2,7 +2,7 @@ export const k8sBasics = {
   id: "k8sBasics",
   title: "Kubernetes (K8s) Asoslari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Kubernetes (K8s) nima?
 Docker yordamida ilovamizni konteynerga joyladik. Lekin real loyihalarda bizda bitta emas, balki yuzlab konteynerlar bo'lishi mumkin. Agar konteynerlardan biri to'satdan o'chib qolsa, yuklama haddan tashqari oshib ketganda uni qanday ko'paytiramiz (scale)? Ularni bir-biri bilan qanday bog'laymiz?
@@ -100,7 +100,7 @@ spec:
 ### Kubernetes qaysi muammolarni hal qiladi?
 1. **Self-Healing (O'zini davolash):** Agar konteyner buzilsa yoki tugun (node) ishdan chiqsa, K8s buni darhol sezadi va yangi konteynerni boshqa tugunda avtomatik ishga tushiradi.
 2. **Horizontal Scaling (Masshtablash):** Saytga odam ko'payganda (masalan, aksiyalar paytida) bitta buyruq bilan Pod-lar sonini 1 tadan 10 taga oshirish mumkin. Yuklama kamayganda esa resurslarni tejash uchun yana kamaytiriladi.
-3. **Service Discovery va Load Balancing:** K8s pod-larga avtomatik ravishda o'z IP-manzillarini beradi va ovaqtinchalik o'zgarishlar orasida yuklamani teng taqsimlaydi (Load Balancer).
+3. **Service Discovery va Load Balancing:** K8s pod-larga avtomatik ravishda o'z IP-manzillarini beradi va ular orasida kelayotgan so'rovlarni teng taqsimlaydi (Load Balancer).
 4. **Automated Rollouts & Rollbacks:** Yangi versiyani yuklaganda (Update), K8s foydalanuvchilarga bildirmasdan, eski podlarni birma-bir o'chirib, o'rniga yangilarini qo'shadi (Rolling Update). Agar yangi versiyada xato chiqsa, avtomatik ravishda eski versiyaga qaytadi (Rollback).
 
 ---
@@ -125,7 +125,7 @@ spec:
 
 ### Junior
 1. **Savol:** Kubernetes (K8s) nima va 8 nima anglatadi?
-   * **Javob:** Konteynerlarni orkestratsiya qiluvchi ochiq kodli vosita. \"8\" esa \"K\" va \"s\" harflari orasidagi 8 ta harfni (ubernete) bildiradi.
+   * **Javob:** Konteynerlarni orkestratsiya qiluvchi ochiq kodli vosita. "8" esa "K" va "s" harflari orasidagi 8 ta harfni (ubernete) bildiradi.
 2. **Savol:** Pod nima?
    * **Javob:** Kubernetes-dagi eng kichik hisoblash birligi bo'lib, uning ichida bitta yoki bir nechta konteyner bo'lishi mumkin.
 3. **Savol:** Service nima uchun kerak?
@@ -231,7 +231,7 @@ spec:
 
 * **Kichik Image hajmi:** Worker Node-larga yuklanish tez bo'lishi uchun Alpine kabi yengil bazaviy tasvirlardan foydalaning.
 * **Probes sozlash:** \`initialDelaySeconds\`ni ilovangiz haqiqatda ishga tushish vaqtiga moslang, aks holda K8s ishga tushishga ulgurmagan konteynerni buzilgan deb hisoblab, cheksiz qayta o'rnataveradi.
-* **Requests va Limits optimal qiymatlari:** Monitoringsiz limits belgilamang. CPU limit haddan taxation kam bo'lsa CPU throttling (ilovaning sekinlashishi), Memory limit kam bo'lsa OOMKilled (xotira yetishmay o'chib qolish) yuz beradi.
+* **Requests va Limits optimal qiymatlari:** Monitoringsiz limits belgilamang. CPU limit haddan tashqari kam bo'lsa CPU throttling (ilovaning sekinlashishi), Memory limit kam bo'lsa OOMKilled (xotira yetishmay o'chib qolish) yuz beradi.
 
 ---
 
@@ -247,175 +247,177 @@ spec:
 | \`kubectl exec -it <pod> -- sh\` | Pod ichiga kirish | \`kubectl exec -it my-pod -- sh\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Pod manifesti porti",
-      instruction: "Kubernetes Pod manifestida konteyner portini (containerPort) `8080` qilib belgilash uchun YAML konfiguratsiyasining tegishli qismini string ko'rinishida yozing (faqat `containerPort: 8080` qatorini stringga yuklang).",
-      startingCode: "const containerPortConfig = \"\";\n",
-      hint: "const containerPortConfig = \"containerPort: 8080\";",
-      test: "if (!code.includes('containerPort: 8080')) return 'containerPort xususiyati va 8080 portni to\\'g\\'ri belgilang';"
-    },
-    {
-      id: 2,
-      title: "Deployment Replicas soni",
-      instruction: "Deployment manifestida nusxalar sonini (replicas) `3` qilib ko'rsatuvchi YAML konfiguratsiyasini yozing.",
-      startingCode: "const replicasConfig = \"\";\n",
-      hint: "const replicasConfig = \"replicas: 3\";",
-      test: "if (!code.includes('replicas: 3')) return 'replicas xususiyatini 3 qiymati bilan to\\'g\\'ri belgilang';"
-    },
-    {
-      id: 3,
-      title: "Service turi",
-      instruction: "Service tashqaridan ulanish uchun NodePort turida bo'lishi kerak. Service turi (type) uchun YAML qiymatini yozing.",
-      startingCode: "const serviceType = \"\";\n",
-      hint: "const serviceType = \"NodePort\";",
-      test: "if (!code.includes('NodePort')) return 'Service turini NodePort qilib yozing';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Pod manifesti porti",
+    "instruction": "Kubernetes Pod manifestida konteyner portini (containerPort) `8080` qilib belgilash uchun YAML konfiguratsiyasining tegishli qismini string ko'rinishida yozing (faqat `containerPort: 8080` qatorini stringga yuklang).",
+    "startingCode": "const containerPortConfig = \"\";\n",
+    "hint": "const containerPortConfig = \"containerPort: 8080\";",
+    "test": "if (!code.includes('containerPort: 8080')) return 'containerPort xususiyati va 8080 portni to\\'g\\'ri belgilang';"
+  },
+  {
+    "id": 2,
+    "title": "Deployment Replicas soni",
+    "instruction": "Deployment manifestida nusxalar sonini (replicas) `3` qilib ko'rsatuvchi YAML konfiguratsiyasini yozing.",
+    "startingCode": "const replicasConfig = \"\";\n",
+    "hint": "const replicasConfig = \"replicas: 3\";",
+    "test": "if (!code.includes('replicas: 3')) return 'replicas xususiyatini 3 qiymati bilan to\\'g\\'ri belgilang';"
+  },
+  {
+    "id": 3,
+    "title": "Service turi",
+    "instruction": "Service tashqaridan ulanish uchun NodePort turida bo'lishi kerak. Service turi (type) uchun YAML qiymatini yozing.",
+    "startingCode": "const serviceType = \"\";\n",
+    "hint": "const serviceType = \"NodePort\";",
+    "test": "if (!code.includes('NodePort')) return 'Service turini NodePort qilib yozing';"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Kubernetes (K8s) nima?",
-      options: [
-        "Konteynerlarni avtomatlashtirilgan tarzda boshqarish (orkestratsiya) platformasi",
-        "Faqat JavaScript-ni serverda ishga tushirish muhiti",
-        "Relatsion ma'lumotlar bazasi tizimi",
-        "Konteyner ichidagi operatsion tizim"
-      ],
-      correctAnswer: 0,
-      explanation: "Kubernetes (K8s) — bu ochiq kodli konteyner orkestratsiyasi platformasi bo'lib, u konteynerlashgan ilovalarni avtomatik tarzda joylashtirish, masshtablash va boshqarish uchun xizmat qilami."
-    },
-    {
-      id: 2,
-      question: "Kubernetes-dagi eng kichik va eng oddiy deploy qilinadigan birlik nima?",
-      options: [
-        "Service",
-        "Pod",
-        "Deployment",
-        "Volume"
-      ],
-      correctAnswer: 1,
-      explanation: "Pod — Kubernetes-dagi eng kichik hisoblash birligi bo'lib, u o'z ichiga bitta yoki bir nechta konteynerlarni (masalan, Docker) oladi va ular umumiy tarmoq va xotirani baham ko'rishadi."
-    },
-    {
-      id: 3,
-      question: "Bir nechta Pod nusxalarini yaratish, boshqarish va ularning belgilangan sonda ishlab turishini ta'minlovchi resurs nima?",
-      options: [
-        "Namespace",
-        "Secret",
-        "ReplicaSet / Deployment",
-        "Ingress"
-      ],
-      correctAnswer: 2,
-      explanation: "Deployment (va uning ostidagi ReplicaSet) cluster ichide kerakli sondagi Pod-lar nusxalari (replicas) har doim ishlab turishini va avtomatik yangilanishini (rollout) ta'minlaydi."
-    },
-    {
-      id: 4,
-      question: "Pod-larga doimiy IP beruvchi va ular o'rtasida yuklamani taqsimlovchi (load balancing) K8s resursi qaysi?",
-      options: [
-        "Service",
-        "ConfigMap",
-        "Kubelet",
-        "Kubectl"
-      ],
-      correctAnswer: 0,
-      explanation: "Service — bu Pod-lar guruhi uchun barqaror tarmoq IP-manzili va DNS nomini ta'minlab beruvchi, shuningdek, kelayotgan so'rovlarni Pod-larga taqsimlovchi resursdir."
-    },
-    {
-      id: 5,
-      question: "Kubernetes arxitekturasida barcha cluster holati va konfiguratsiyasini saqlaydigan kalit-qiymat (key-value) bazasi nima?",
-      options: [
-        "API Server",
-        "etcd",
-        "Kube-proxy",
-        "Redis"
-      ],
-      correctAnswer: 1,
-      explanation: "etcd — bu Kubernetes cluster-ning barcha ma'lumotlari, holati va konfiguratsiyalarini ishonchli tarzda saqlaydigan, taqsimlangan kalit-qiymat (key-value) ma'lumotlar bazasidir."
-    },
-    {
-      id: 6,
-      question: "Kubernetes buyruqlar satri (CLI) interfeysi nima deb ataladi?",
-      options: [
-        "docker-compose",
-        "minikube",
-        "kubectl",
-        "kube-scheduler"
-      ],
-      correctAnswer: 2,
-      explanation: "kubectl — bu Kubernetes cluster-ni boshqarish, manifestlarni yuborish va resurslarni tekshirish uchun ishlatiladigan rasmiy buyruqlar satri interfeysidir (CLI)."
-    },
-    {
-      id: 7,
-      question: "Mahalliy kompyuterda Kubernetes klasterini sinab ko'rish uchun ishlatiladigan yengil vosita qaysi?",
-      options: [
-        "Minikube / K3s",
-        "VirtualBox",
-        "Kubectl",
-        "Docker Swarm"
-      ],
-      correctAnswer: 0,
-      explanation: "Minikube va K3s mahalliy (local) kompyuterda bitta tugunli (single-node) yengil Kubernetes klasterini tezda ishga tushirish va o'rganish uchun juda qulay vositalardir."
-    },
-    {
-      id: 8,
-      question: "Pod-ning sog'lomligini va uning so'rovlarni qabul qilishga tayyorligini tekshirish uchun qaysi mexanizmlar ishlatiladi?",
-      options: [
-        "ConfigMaps",
-        "Liveness va Readiness Probes",
-        "Secrets",
-        "Ingress Controller"
-      ],
-      correctAnswer: 1,
-      explanation: "Liveness Probe Pod-ning tirikligini (ishdan chiqsa qayta ishga tushirish uchun) va Readiness Probe so'rovlarni qabul qilishga tayyorligini (tayyor bo'lguncha unga trafik yubormaslik uchun) tekshiradi."
-    },
-    {
-      id: 9,
-      question: "Worker Node ichida Pod-larni ishga tushiruvchi, to'xtatuvchi va ularning holatini Control Plane-ga xabar berib turuvchi agent qaysi?",
-      options: [
-        "Kubelet",
-        "Kube-scheduler",
-        "etcd",
-        "Docker Desktop"
-      ],
-      correctAnswer: 0,
-      explanation: "Kubelet — har bir Worker Node (tugun) ichida ishlaydigan agent bo'lib, u API Server-dan kelgan ko'rsatmalarga asosan konteynerlarni (Pod-larni) ishga tushiradi va ularning holatini nazorat qiladi."
-    },
-    {
-      id: 10,
-      question: "Loyihadagi maxfiy ma'lumotlarni (masalan, API kalitlar, parollar) Kubernetes-da xavfsiz saqlash uchun qaysi resurs ishlatiladi?",
-      options: [
-        "ConfigMap",
-        "Deployment",
-        "Secret",
-        "Service"
-      ],
-      correctAnswer: 2,
-      explanation: "Secret — Kubernetes-da parollar, tokenlar yoki kalitlar kabi nozik va maxfiy ma'lumotlarni shifrlangan holatda (Base64) xavfsiz saqlash uchun mo'ljallangan maxsus obyektdir."
-    },
-    {
-      id: 11,
-      question: "Hozirgi ishlab turgan Pod-larning loglarini konsolga chiqarish uchun qaysi kubectl buyrug'i ishlatiladi?",
-      options: [
-        "kubectl logs <pod-nomi>",
-        "kubectl get <pod-nomi>",
-        "kubectl describe <pod-nomi>",
-        "kubectl run <pod-nomi>"
-      ],
-      correctAnswer: 0,
-      explanation: "`kubectl logs <pod-nomi>` buyrug'i Pod ichidagi asosiy konteynerning standart chiqish oqimidagi (stdout) xabarlar va xatoliklarni konsolga chop etadi."
-    },
-    {
-      id: 12,
-      question: "YAML fayli orqali Kubernetes konfiguratsiyasini klasterga qo'llash buyrug'i qaysi?",
-      options: [
-        "kubectl apply -f <fayl-nomi>",
-        "kubectl run -f <fayl-nomi>",
-        "kubectl build -f <fayl-nomi>",
-        "kubectl create deploy <fayl-nomi>"
-      ],
-      correctAnswer: 0,
-      explanation: "`kubectl apply -f <fayl-nomi>` (odatda dynamic manifestlar bilan) deklarativ usulda Kubernetes resurslarini yaratish va yangilash uchun eng asosiy buyruq hisoblanadi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Kubernetes (K8s) nima?",
+    "options": [
+      "Konteynerlarni avtomatlashtirilgan tarzda boshqarish (orkestratsiya) platformasi",
+      "Faqat JavaScript-ni serverda ishga tushirish muhiti",
+      "Relatsion ma'lumotlar bazasi tizimi",
+      "Konteyner ichidagi operatsion tizim"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Kubernetes (K8s) — bu ochiq kodli konteyner orkestratsiyasi platformasi bo'lib, u konteynerlashgan ilovalarni avtomatik tarzda joylashtirish, masshtablash va boshqarish uchun xizmat qiladi."
+  },
+  {
+    "id": 2,
+    "question": "Kubernetes-dagi eng kichik va eng oddiy deploy qilinadigan birlik nima?",
+    "options": [
+      "Service",
+      "Pod",
+      "Deployment",
+      "Volume"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Pod — Kubernetes-dagi eng kichik hisoblash birligi bo'lib, u o'z ichiga bitta yoki bir nechta konteynerlarni (masalan, Docker) oladi va ular umumiy tarmoq va xotirani baham ko'radi."
+  },
+  {
+    "id": 3,
+    "question": "Bir nechta Pod nusxalarini yaratish, boshqarish va ularning belgilangan sonda ishlab turishini ta'minlovchi resurs nima?",
+    "options": [
+      "Namespace",
+      "Secret",
+      "ReplicaSet / Deployment",
+      "Ingress"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Deployment (va uning ostidagi ReplicaSet) cluster ichida kerakli sondagi Pod-lar nusxalari (replicas) har doim ishlab turishini va avtomatik yangilanishini (rollout) ta'minlaydi."
+  },
+  {
+    "id": 4,
+    "question": "Pod-larga doimiy IP beruvchi va ular o'rtasida yuklamani taqsimlovchi (load balancing) K8s resursi qaysi?",
+    "options": [
+      "Service",
+      "ConfigMap",
+      "Kubelet",
+      "Kubectl"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Service — bu Pod-lar guruhi uchun barqaror tarmoq IP-manzili va DNS nomini ta'minlab beruvchi, shuningdek, kelayotgan so'rovlarni Pod-larga taqsimlovchi resursdir."
+  },
+  {
+    "id": 5,
+    "question": "Kubernetes arxitekturasida barcha cluster holati va konfiguratsiyasini saqlaydigan kalit-qiymat (key-value) bazasi nima?",
+    "options": [
+      "API Server",
+      "etcd",
+      "Kube-proxy",
+      "Redis"
+    ],
+    "correctAnswer": 1,
+    "explanation": "etcd — bu Kubernetes cluster-ning barcha ma'lumotlari, holati va konfiguratsiyalarini ishonchli tarzda saqlaydigan, taqsimlangan kalit-qiymat (key-value) ma'lumotlar bazasidir."
+  },
+  {
+    "id": 6,
+    "question": "Kubernetes buyruqlar satri (CLI) interfeysi nima deb ataladi?",
+    "options": [
+      "docker-compose",
+      "minikube",
+      "kubectl",
+      "kube-scheduler"
+    ],
+    "correctAnswer": 2,
+    "explanation": "kubectl — bu Kubernetes cluster-ni boshqarish, manifestlarni yuborish va resurslarni tekshirish uchun ishlatiladigan rasmiy buyruqlar satri interfeysidir (CLI)."
+  },
+  {
+    "id": 7,
+    "question": "Mahalliy kompyuterda Kubernetes klasterini sinab ko'rish uchun ishlatiladigan yengil vosita qaysi?",
+    "options": [
+      "Minikube / K3s",
+      "VirtualBox",
+      "Kubectl",
+      "Docker Swarm"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Minikube va K3s mahalliy (local) kompyuterda bitta tugunli (single-node) yengil Kubernetes klasterini tezda ishga tushirish va o'rganish uchun juda qulay vositalardir."
+  },
+  {
+    "id": 8,
+    "question": "Pod-ning sog'lomligini va uning so'rovlarni qabul qilishga tayyorligini tekshirish uchun qaysi mexanizmlar ishlatiladi?",
+    "options": [
+      "ConfigMaps",
+      "Liveness va Readiness Probes",
+      "Secrets",
+      "Ingress Controller"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Liveness Probe Pod-ning tirikligini (ishdan chiqsa qayta ishga tushirish uchun) va Readiness Probe so'rovlarni qabul qilishga tayyorligini (tayyor bo'lmaguncha unga trafik yubormaslik uchun) tekshiradi."
+  },
+  {
+    "id": 9,
+    "question": "Worker Node ichida Pod-larni ishga tushiruvchi, to'xtatuvchi va ularning holatini Control Plane-ga xabar berib turuvchi agent qaysi?",
+    "options": [
+      "Kubelet",
+      "Kube-scheduler",
+      "etcd",
+      "Docker Desktop"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Kubelet — har bir Worker Node (tugun) ichida ishlaydigan agent bo'lib, u API Server-dan kelgan ko'rsatmalarga asosan konteynerlarni (Pod-larni) ishga tushiradi va ularning holatini nazorat qiladi."
+  },
+  {
+    "id": 10,
+    "question": "Loyihadagi maxfiy ma'lumotlarni (masalan, API kalitlar, parollar) Kubernetes-da xavfsiz saqlash uchun qaysi resurs ishlatiladi?",
+    "options": [
+      "ConfigMap",
+      "Deployment",
+      "Secret",
+      "Service"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Secret — Kubernetes-da parollar, tokenlar yoki kalitlar kabi nozik va maxfiy ma'lumotlarni shifrlangan holatda (Base64) xavfsiz saqlash uchun mo'ljallangan maxsus obyektdir."
+  },
+  {
+    "id": 11,
+    "question": "Hozirgi ishlab turgan Pod-larning loglarini konsolga chiqarish uchun qaysi kubectl buyrug'i ishlatiladi?",
+    "options": [
+      "kubectl logs <pod-nomi>",
+      "kubectl get <pod-nomi>",
+      "kubectl describe <pod-nomi>",
+      "kubectl run <pod-nomi>"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`kubectl logs <pod-nomi>` buyrug'i Pod ichidagi asosiy konteynerning standart chiqish oqimidagi (stdout) xabarlar va xatoliklarni konsolga chop etadi."
+  },
+  {
+    "id": 12,
+    "question": "YAML fayli orqali Kubernetes konfiguratsiyasini klasterga qo'llash buyrug'i qaysi?",
+    "options": [
+      "kubectl apply -f <fayl-nomi>",
+      "kubectl run -f <fayl-nomi>",
+      "kubectl build -f <fayl-nomi>",
+      "kubectl create deploy <fayl-nomi>"
+    ],
+    "correctAnswer": 0,
+    "explanation": "`kubectl apply -f <fayl-nomi>` (odatda dynamic manifestlar bilan) deklarativ usulda Kubernetes resurslarini yaratish va yangilash uchun eng asosiy buyruq hisoblanadi."
+  }
+]
+
 };

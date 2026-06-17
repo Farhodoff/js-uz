@@ -2,7 +2,7 @@ export const metaprogramming = {
   id: "metaprogramming",
   title: "Metaprogramming: Proxy va Reflect",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Metadasturlash (Metaprogramming), Proxy va Reflect nima?
 * **Metadasturlash (Metaprogramming):** Dasturning o'z-o'zini o'zgartirishi, tekshirishi yoki boshqa kodlarni boshqarishi bilan bog'liq dasturlash yondashuvidir. Ya'ni, dastur faqat ma'lumotlar bilan emas, balki kodning tuzilishi va xatti-harakati bilan ishlaydi.
@@ -250,119 +250,32 @@ reactiveState.title = "Dars muvaffaqiyatli yakunlandi!";
 | \`construct(target, argumentsList, newTarget)\` | Konstruktor chaqiruvini tutadi | \`new ProxyClass()\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Proxy Validatsiya",
-      instruction: "Obyektga yangi xususiyat qo'shishni taqiqlovchi Proxy yozing (faqat mavjud xususiyatni o'zgartirishga ruxsat bersin).",
-      startingCode: "const data = { name: 'JS' };\nconst proxy = new Proxy(data, {\n  set(target, prop, value) {\n    // faqat bor xususiyatni o'zgartirishga ruxsat bering\n  }\n});",
-      hint: "if (!(prop in target)) return false; target[prop] = value; return true;",
-      test: "if (code.includes('in target')) return null; return 'In operatoridan foydalanib tekshiring';"
-    },
-    {
-      id: 2,
-      title: "2️⃣ ReadOnly Proxy",
-      instruction: "Obyekt xususiyatlarini o'zgartirishni yoki yangi qo'shishni butunlay taqiqlab, faqat o'qishga (read-only) ruxsat beruvchi Proxy yarating.",
-      startingCode: "const user = { role: 'admin' };\nconst readOnlyUser = new Proxy(user, {\n  // set trap-ni to'ldiring\n});",
-      hint: "set(target, prop, value) { return false; }",
-      test: "if (code.includes('return false')) return null; return 'Set trap-i ichida doim false qaytaring';"
-    },
-    {
-      id: 3,
-      title: "3️⃣ Property Logger",
-      instruction: "Obyekt xususiyati o'qilganda, uning nomini console-ga chiqaradigan get trap-ni yozing.",
-      startingCode: "const obj = { secret: '123' };\nconst loggedObj = new Proxy(obj, {\n  // get trap-ni yozing\n});",
-      hint: "get(target, prop) { console.log(prop); return target[prop]; }",
-      test: "if (code.includes('console.log') && code.includes('target[prop]')) return null; return 'get trap ichida console.log(prop) va qiymatni qaytarishni yozing';"
-    },
-    {
-      id: 4,
-      title: "4️⃣ Default Value (Fallback)",
-      instruction: "Obyektda mavjud bo'lmagan xususiyat o'qilganda undefined o'rniga doim 'Not Found' qaytaradigan Proxy yarating.",
-      startingCode: "const settings = { theme: 'dark' };\nconst safeSettings = new Proxy(settings, {\n  // get trap-ni to'ldiring\n});",
-      hint: "get(target, prop) { return prop in target ? target[prop] : 'Not Found'; }",
-      test: "if (code.includes('in target') && code.includes('Not Found')) return null; return 'Mavjud bo\\'lmagan kalitlar uchun \\'Not Found\\' qaytaring';"
-    },
-    {
-      id: 5,
-      title: "5️⃣ Private Property",
-      instruction: "Agar xususiyat nomi ostki chiziq (_) bilan boshlansa (masalan _id), unga tashqaridan kirishni (get) taqiqlab undefined qaytaradigan Proxy yarating.",
-      startingCode: "const account = { username: 'john', _id: 'acc_999' };\nconst secureAccount = new Proxy(account, {\n  // get trap-ni to'ldiring\n});",
-      hint: "get(target, prop) { if (prop.startsWith('_')) return undefined; return target[prop]; }",
-      test: "if (code.includes('startsWith') || code.includes('_[0]') || code.includes(\"'_'\")) return null; return 'Ostki chiziq (_) bilan boshlangan xususiyatlarga ruxsat bermang';"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Reflect.get ishlatish",
-      instruction: "Proxy get trap-i ichida obyekt xususiyatini o'qish uchun Reflect.get()-dan foydalaning.",
-      startingCode: "const user = { name: 'Ali' };\nconst proxyUser = new Proxy(user, {\n  get(target, prop, receiver) {\n    // Reflect.get orqali qiymatni qaytaring\n  }\n});",
-      hint: "return Reflect.get(target, prop, receiver);",
-      test: "if (code.includes('Reflect.get')) return null; return 'Reflect.get metodidan foydalaning';"
-    },
-    {
-      id: 7,
-      title: "7️⃣ Delete Property Trap",
-      instruction: "Ostki chiziq bilan boshlangan xususiyatlarni o'chirishni (delete) taqiqlovchi Proxy yarating (boshqalarini esa o'chirishga ruxsat bersin).",
-      startingCode: "const data = { _id: 1, age: 20 };\nconst proxyData = new Proxy(data, {\n  deleteProperty(target, prop) {\n    // Trap-ni yozing\n  }\n});",
-      hint: "if (prop.startsWith('_')) return false; return Reflect.deleteProperty(target, prop);",
-      test: "if (code.includes('deleteProperty') && (code.includes('startsWith') || code.includes('_[0]'))) return null; return 'deleteProperty tuzog\\'i va startsWith dan foydalaning';"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Negative Index Array",
-      instruction: "Manfiy indekslarni qo'llab-quvvatlaydigan (masalan, [-1] massivning oxirgi elementini qaytarsin) massiv uchun Proxy yaratuvchi createSmartArray funksiyasini yozing.",
-      startingCode: "function createSmartArray(arr) {\n  return new Proxy(arr, {\n    get(target, prop) {\n      // Manfiy indekslarni tekshiring\n    }\n  });\n}",
-      hint: "let index = Number(prop); if (index < 0) index = target.length + index; return target[index];",
-      test: "if (code.includes('length') && code.includes('Number')) return null; return 'Smart array manfiy indekslarni to\\'g\\'ri hisoblamadi';"
-    },
-    {
-      id: 9,
-      title: "9️⃣ Reflect.has operatori",
-      instruction: "in operatori xatti-harakatini boshqaruvchi has trap-i ichida Reflect.has() operatoridan foydalaning.",
-      startingCode: "const user = { name: 'Ali', role: 'guest' };\nconst proxy = new Proxy(user, {\n  has(target, prop) {\n    // has trap-ni to'ldiring\n  }\n});",
-      hint: "return Reflect.has(target, prop);",
-      test: "if (code.includes('Reflect.has') && code.includes('has')) return null; return 'has trap va Reflect.has metodidan foydalaning';"
-    },
-    {
-      id: 10,
-      title: "1️⃣0️⃣ Only Numbers Object",
-      instruction: "Obyektga faqat sonli qiymatlarni yozishga ruxsat beruvchi Proxy yarating. Agar qiymat son bo'lmasa, TypeError tashlasin (throw).",
-      startingCode: "const score = { points: 10 };\nconst numericScore = new Proxy(score, {\n  set(target, prop, value) {\n    // set trap-ni to'ldiring\n  }\n});",
-      hint: "if (typeof value !== 'number') throw new TypeError(); target[prop] = value; return true;",
-      test: "if (code.includes('TypeError') && code.includes('typeof')) return null; return 'Son bo\\'lmagan qiymatlar uchun TypeError tashlang';"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ Reflect.ownKeys operatori",
-      instruction: "Obyekt kalitlarini ro'yxat qilganda ostki chiziq bilan boshlangan xususiyatlarni yashirish uchun ownKeys trap-ni yozing.",
-      startingCode: "const user = { _password: '123', name: 'Ali' };\nconst proxy = new Proxy(user, {\n  ownKeys(target) {\n    // ownKeys trap-ni to'ldiring\n  }\n});",
-      hint: "return Reflect.ownKeys(target).filter(key => typeof key !== 'string' || !key.startsWith('_'));",
-      test: "if (code.includes('Reflect.ownKeys') && code.includes('filter')) return null; return 'ownKeys va filter yordamida ostki chiziqli kalitlarni yashiring';"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Proxy Revocable",
-      instruction: "Proxy.revocable yordamida bekor qilinadigan proxy yarating. Funksiya obyekt va uning proxy'sini bekor qilish funksiyasini (revoke) qaytarsin.",
-      startingCode: "function createRevocable(target) {\n  // Proxy.revocable ishlatib qaytaring\n}",
-      hint: "return Proxy.revocable(target, {});",
-      test: "if (code.includes('Proxy.revocable')) return null; return 'Proxy.revocable orqali obekt va revoke funksiyasini qaytaring';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ To'liq read-only Proxy (createReadOnlyProxy)",
-      instruction: "Obyektga har qanday yangi qiymat yozish (`set`) yoki o'chirish (`deleteProperty`) harakatlarida xatolik (`Error`) tashlaydigan to'liq read-only Proxy qaytaruvchi `createReadOnlyProxy(obj)` funksiyasini yozing. O'chirish va yozish rad etilganda `'Bu obyekt faqat o\\'qish uchun!'` xabari bilan Error tashlanishi shart.",
-      startingCode: "function createReadOnlyProxy(obj) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "return new Proxy(obj, {\n  set() { throw new Error(\"Bu obyekt faqat o'qish uchun!\"); },\n  deleteProperty() { throw new Error(\"Bu obyekt faqat o'qish uchun!\"); }\n});",
-      test: "if (typeof createReadOnlyProxy !== 'function') return 'createReadOnlyProxy funksiya emas';\nconst o = { a: 1 };\nconst p = createReadOnlyProxy(o);\ntry {\n  p.a = 2;\n  return 'Qiymat yozishda xato tashlanmadi';\n} catch (e) {\n  if (e.message !== \"Bu obyekt faqat o'qish uchun!\") return 'Xato xabari noto\\'g\\'ri';\n}\ntry {\n  delete p.a;\n  return 'Qiymat o\\'chirishda xato tashlanmadi';\n} catch (e) {\n  if (e.message !== \"Bu obyekt faqat o'qish uchun!\") return 'Xato xabari noto\\'g\\'ri';\n}\nreturn null;"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Schema bo'yicha validatsiya (createValidationProxy)",
-      instruction: "Berilgan `target` obyekti va `schema` (kalit-turlar juftligi) bo'yicha qiymatlarni validatsiya qiluvchi `createValidationProxy(target, schema)` funksiyasini yozing. Agar o'rnatilayotgan qiymat turi `schema`-dagi turga mos kelmasa (va kalit schema-da mavjud bo'lsa), `TypeError` tashlang. Agarda kalit schema ichida bo'lmasa, yoki tur to'g'ri bo'lsa, qiymatni asl obyektga o'rnating. O'rnatish muvaffaqiyatli bo'lsa `Reflect.set` yordamida haqiqiy holatni qaytaring.",
-      startingCode: "function createValidationProxy(target, schema) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "return new Proxy(target, {\n  set(tar, prop, val) {\n    if (prop in schema && typeof val !== schema[prop]) {\n      throw new TypeError(`Noto'g'ri tur`);\n    }\n    return Reflect.set(tar, prop, val);\n  }\n});",
-      test: "if (typeof createValidationProxy !== 'function') return 'createValidationProxy funksiya emas';\nconst schema = { name: 'string', age: 'number' };\nconst target = { name: 'Ali', age: 20 };\nconst p = createValidationProxy(target, schema);\ntry {\n  p.age = 'yosh';\n  return 'Noto\\'g\\'ri tur o\\'rnatilganda TypeError tashlanmadi';\n} catch (e) {\n  if (!(e instanceof TypeError)) return 'Xato turi TypeError bo\\'lishi kerak';\n}\np.age = 25;\nif (target.age !== 25) return 'To\\'g\\'ri qiymat o\\'rnatilmadi';\np.role = 'admin';\nif (target.role !== 'admin') return 'Schema-da bo\\'lmagan kalit o\\'rnatilmadi';\nreturn null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Proxy yordamida Validatsiya",
+    "instruction": "Foydalanuvchi obyektini tekshiruvchi `createValidatedUser(user)` funksiyasini yozing. U quyidagi shartlar bilan Proxy qaytarishi kerak:\n1. `age` xususiyati faqat son bo'lishi va 18 dan kichik bo'lmasligi kerak, aks holda Error tashlasin.\n2. `name` xususiyati faqat satr (string) bo'lishi va uzunligi kamida 3 ta belgidan iborat bo'lishi kerak, aks holda Error tashlasin.",
+    "startingCode": "function createValidatedUser(user) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Proxy set(target, prop, value) trap-idan foydalaning. Validatsiyadan o'tgach, Reflect.set(target, prop, value) yoki target[prop] = value orqali qiymatni yozing.",
+    "test": "const sandbox = new Function(code + '; return createValidatedUser;');\nconst fn = sandbox();\nconst target = { name: 'Ali', age: 20 };\nconst proxy = fn(target);\nproxy.age = 25;\nif (proxy.age !== 25) return 'Proxy qiymatni o\\'zgartira olmadi';\ntry {\n  proxy.age = 'yosh';\n  return 'Age string qabul qilinganda xato tashlamadi';\n} catch (e) {}\ntry {\n  proxy.age = 15;\n  return 'Age 18 dan kichik bo\\'lganda xato tashlamadi';\n} catch (e) {}\ntry {\n  proxy.name = 'Ab';\n  return 'Name 3 ta harfdan kam bo\\'lganda xato tashlamadi';\n} catch (e) {}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Property Logger (Obyekt Logeri)",
+    "instruction": "Obyekt ustidagi har bir o'qish (get) va yozish (set) operatsiyalarini kuzatib boruvchi `createLogger(obj)` funksiyasini yozing. Funksiya `{ proxy, logs }` ko'rinishidagi obyekt qaytarishi kerak. Bu yerda:\n- `proxy` - yaratilgan Proxy obyekti.\n- `logs` - operatsiyalarni yozib boruvchi massiv. Agar xususiyat o'qilsa, massivga `GET <prop>` ko'rinishida, yozilsa `SET <prop>=<value>` ko'rinishida satr qo'shilsin.",
+    "startingCode": "function createLogger(obj) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Proxy get va set traplari ichida `logs` massiviga tegishli matnni push qiling va Reflect.get/Reflect.set orqali asl amalni bajaring.",
+    "test": "const sandbox = new Function(code + '; return createLogger;');\nconst fn = sandbox();\nconst target = { name: 'Jasur' };\nconst { proxy, logs } = fn(target);\nconst n = proxy.name;\nproxy.age = 22;\nif (n !== 'Jasur') return 'GET operatsiyasi noto\\'g\\'ri qiymat qaytardi';\nif (logs[0] !== 'GET name') return 'GET logi noto\\'g\\'ri yozildi: ' + logs[0];\nif (logs[1] !== 'SET age=22') return 'SET logi noto\\'g\\'ri yozildi: ' + logs[1];\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Maxfiy Xususiyatlar (Safe Object)",
+    "instruction": "Obyektning pastki chiziq (`_`) bilan boshlanadigan xususiyatlarini yashiruvchi va himoyalovchi `createSafeObject(obj)` funksiyasini yozing. U quyidagi qoidalarga ega Proxy qaytarsin:\n1. Pastki chiziq bilan boshlangan xususiyat o'qilganda `undefined` qaytsin.\n2. Pastki chiziq bilan boshlangan xususiyatga yozishga harakat qilinganda `Error('Access Denied')` xatosi tashlansin.\n3. Obyekt kalitlari ro'yxati olinganda (Object.keys yoki for...in da) pastki chiziq bilan boshlanadigan xususiyatlar ko'rinmasin (filtrlab tashlansin).",
+    "startingCode": "function createSafeObject(obj) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "get, set va ownKeys traplaridan foydalaning. ownKeys-da Reflect.ownKeys(target) orqali barcha kalitlarni olib, key.startsWith('_') bo'lmaganlarini saqlang.",
+    "test": "const sandbox = new Function(code + '; return createSafeObject;');\nconst fn = sandbox();\nconst target = { name: 'Ali', _secret: '12345' };\nconst proxy = fn(target);\nif (proxy.name !== 'Ali') return 'Oddiy xususiyatlarni o\\'qishda xatolik';\nif (proxy._secret !== undefined) return '_ bilan boshlanuvchi xususiyatni o\\'qish yopilmadi';\ntry {\n  proxy._secret = 'change';\n  return '_ bilan boshlanuvchi xususiyatga yozishda xato tashlamadi';\n} catch(e) {}\nconst keys = Object.keys(proxy);\nif (keys.includes('_secret')) return 'ownKeys orqali _secret ko\\'rinib qoldi';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

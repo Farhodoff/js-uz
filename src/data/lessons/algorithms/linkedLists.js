@@ -2,7 +2,7 @@ export const linkedLists = {
   id: "linkedLists",
   title: "Bog'langan Ro'yxatlar (Linked Lists)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Bog'langan Ro'yxat (Linked List) nima?
 * **Linked List:** Bu elementlari xotirada ketma-ket emas, balki tarqoq joylashgan va har bir element (tugun) o'zidan keyingi elementga havola (ko'rsatkich) orqali bog'langan ma'lumotlar tuzilmasidir.

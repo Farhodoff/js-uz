@@ -2,7 +2,7 @@ export const advancedFetch = {
   id: "advancedFetch",
   title: "Advanced Fetch, so'rov sozlamalari va aborting",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Advanced Fetch va Aborting nima?
 **Fetch API** — bu brauzerdan serverga tarmoq so'rovlarini (HTTP so'rovlari) yuborish uchun ishlatiladigan zamonaviy interfeysdir. Odatda biz \`fetch(url)\` orqali oddiy so'rovlar yuboramiz, biroq katta loyihalarda so'rovlarni boshqarish (masalan: ma'lumotlar yuborishda sarlavhalar sozlash, so'rov juda cho'zilib ketganda uni to'xtatish yoki foydalanuvchi sahifadan chiqib ketganda so'rovni bekor qilish) talab etiladi. Buning uchun bizga **AbortController** va ilg'or \`fetch\` sozlamalari yordam beradi.
@@ -254,119 +254,32 @@ searchService.search('abc'); // Faqat mana shu so'rov natijasi ekranga chiqadi
 | \`cache\` | Kesh strategiyasini belgilash | \`cache: 'no-store'\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "res.ok tekshiruvi",
-      instruction: "Fetch so'rovda res.ok false bo'lsa, xato tashlaydigan (throw) kod yozing.",
-      startingCode: "fetch(url).then(res => {\n  // Bu yerda tekshiring\n});",
-      hint: "if (!res.ok) throw new Error('Xato');",
-      test: "if (code.includes('res.ok')) return null; return 'res.ok xususiyatini tekshiring';"
-    },
-    {
-      id: 2,
-      title: "AbortController signalini ulanishi",
-      instruction: "fetch parametrlariga 'controller'dan olingan signalni ulang.",
-      startingCode: "const controller = new AbortController();\nfetch(url, {\n  // Signalni ulang\n});",
-      hint: "signal: controller.signal",
-      test: "if (code.includes('signal: controller.signal') || code.includes('signal:controller.signal')) return null; return 'signalni controller.signal ga tenglang';"
-    },
-    {
-      id: 3,
-      title: "Fetch POST Request",
-      instruction: "Method POST, Content-Type application/json bo'lgan fetch so'rovi sozlamalarini yozing.",
-      startingCode: "fetch(url, {\n  // Method va headers qo'shing\n});",
-      hint: "method: 'POST', headers: { 'Content-Type': 'application/json' }",
-      test: "if (code.includes('POST') && code.includes('application/json')) return null; return 'method POST va Content-Type headerini qo\\'shing';"
-    },
-    {
-      id: 4,
-      title: "Simple Retry loops",
-      instruction: "Xatolik yuz berganda 3 marta qayta urinadigan so'rov yozing.",
-      startingCode: "async function getWithRetry(url) {\n  for (let i = 0; i < 3; i++) {\n    try {\n      return await fetch(url);\n    } catch(e) {\n      // Oxirgi qadamda xatoni qayta tashlang\n    }\n  }\n}",
-      hint: "if (i === 2) throw e;",
-      test: "if (code.includes('throw') && code.includes('catch')) return null; return 'catch ichida oxirgi urinishda xatoni qayta tashlang';"
-    },
-    {
-      id: 5,
-      title: "URL Parameters (URLSearchParams)",
-      instruction: "URLSearchParams orqali 'page=2' va 'limit=10' parametrlarini URL-ga qo'shing.",
-      startingCode: "const params = new URLSearchParams();\n// Parametrlarni set qiling\n",
-      hint: "params.set('page', '2'); params.set('limit', '10');",
-      test: "if (code.includes('page') && code.includes('limit') && code.includes('set')) return null; return 'params.set yordamida parametrlar o\\'rnating';"
-    },
-    {
-      id: 6,
-      title: "Promise.all bilan Concurrency",
-      instruction: "Promise.all yordamida bir vaqtda url1 va url2 so'rovlarini yuboring.",
-      startingCode: "const url1 = 'url1', url2 = 'url2';\nconst fetchAll = () => {\n  // Promise.all ishlating\n};",
-      hint: "return Promise.all([fetch(url1), fetch(url2)]);",
-      test: "if (code.includes('Promise.all') && code.includes('fetch')) return null; return 'Promise.all yordamida fetch so\\'rovlarini birlashtiring';"
-    },
-    {
-      id: 7,
-      title: "Response Headers olish",
-      instruction: "Kelgan javobdan (res) 'content-type' sarlavhasini olib qaytaring.",
-      startingCode: "function getContentType(res) {\n  // Content-Type ni qaytaring\n}",
-      hint: "return res.headers.get('content-type');",
-      test: "if (code.includes('headers.get')) return null; return 'res.headers.get metodidan foydalaning';"
-    },
-    {
-      id: 8,
-      title: "Text formatida o'qish",
-      instruction: "Javobni json emas, balki oddiy text formatida o'qib qaytaruvchi kod yozing.",
-      startingCode: "fetch(url).then(res => {\n  // Text formatida qaytaring\n});",
-      hint: "return res.text();",
-      test: "if (code.includes('res.text()')) return null; return 'res.text() metodini ishlating';"
-    },
-    {
-      id: 9,
-      title: "AbortError checking",
-      instruction: "Catch blokida xatoning nomi 'AbortError' ekanligini tekshiring.",
-      startingCode: "try {\n  await fetch(url);\n} catch(err) {\n  // AbortError ekanini tekshiring\n}",
-      hint: "if (err.name === 'AbortError') { }",
-      test: "if (code.includes(\"err.name === 'AbortError'\") || code.includes('err.name === \"AbortError\"')) return null; return 'err.name ni tekshiring';"
-    },
-    {
-      id: 10,
-      title: "Promise.race for Fast Response",
-      instruction: "Promise.race yordamida url1 va url2 dan birinchi bo'lib kelganini oling.",
-      startingCode: "const getFastest = (url1, url2) => {\n  // Promise.race yozing\n};",
-      hint: "return Promise.race([fetch(url1), fetch(url2)]);",
-      test: "if (code.includes('Promise.race') && code.includes('fetch')) return null; return 'Promise.race dan foydalaning';"
-    },
-    {
-      id: 11,
-      title: "Fetch image blob",
-      instruction: "res ob'ektidan blob ko'rinishidagi ma'lumotni o'qib qaytaring.",
-      startingCode: "fetch(imageUrl).then(res => {\n  // Blob qaytaring\n});",
-      hint: "return res.blob();",
-      test: "if (code.includes('res.blob()')) return null; return 'res.blob() metodini chaqiring';"
-    },
-    {
-      id: 12,
-      title: "FormData request body",
-      instruction: "Fetch so'rovining 'body'siga 'formData' ob'ektini uzating.",
-      startingCode: "const formData = new FormData();\nfetch(url, {\n  method: 'POST',\n  // FormData ni uzating\n});",
-      hint: "body: formData",
-      test: "if (code.includes('body: formData') || code.includes('body:formData')) return null; return 'body qismiga formData ni bering';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Exponential Backoff Retry (fetchWithBackoff)",
-      instruction: "Xatolik yuz berganda (tarmoq uzilishi yoki 5xx xatolik) exponential backoff algoritmi bilan (`initialDelay` har safar 2 barobar ko'payadi) `maxRetries` marta qayta urinadigan `fetchWithBackoff(url, maxRetries, initialDelay)` funksiyasini yozing.",
-      startingCode: "async function fetchWithBackoff(url, maxRetries = 3, initialDelay = 50) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "for (let i = 0; i < maxRetries; i++) { try { const res = await fetch(url); if (res.ok) return res; } catch(e) { if (i === maxRetries - 1) throw e; } await new Promise(r => setTimeout(r, initialDelay * Math.pow(2, i))); }",
-      test: "if (typeof fetchWithBackoff !== 'function') return 'fetchWithBackoff funksiya emas';\nreturn fetchWithBackoff('https://jsonplaceholder.typicode.com/todos/1', 2, 10).then(res => {\n  if (res && res.status === 200) return null;\n  return 'Muvaffaqiyatli so\\'rov bajarilmadi';\n}).catch(e => 'Xatolik: ' + e.message);"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Promise.any orqali eng tezkor so'rov (fetchFastestWithFallback)",
-      instruction: "Berilgan `urls` massividan `Promise.any` yordamida eng tez javob berganini qaytaring. Agar barcha URL-lar xato bilan tugasa, `fallbackUrl` ga so'rov yuborib, uning natijasini qaytaring.",
-      startingCode: "async function fetchFastestWithFallback(urls, fallbackUrl) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "try { return await Promise.any(urls.map(url => fetch(url))); } catch (e) { return await fetch(fallbackUrl); }",
-      test: "if (typeof fetchFastestWithFallback !== 'function') return 'fetchFastestWithFallback funksiya emas';\nreturn fetchFastestWithFallback([\n  'https://invalid-url-1.com/nonexistent',\n  'https://invalid-url-2.com/nonexistent'\n], 'https://jsonplaceholder.typicode.com/todos/1').then(res => {\n  if (res && res.status === 200) return null;\n  return 'Fallback URL-ga murojaat qilinmadi yoki noto\\'g\\'ri javob qaytdi';\n}).catch(e => 'Xatolik: ' + e.message);"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "AbortController yordamida So'rovni Bekor Qilish",
+    "instruction": "Keltirilgan `fetchWithTimeout(url, ms)` funksiyasini yozing. U berilgan URL bo'yicha `fetch` qilishi va agar so'rov `ms` vaqt ichida javob bermasa, uni AbortController yordamida bekor qilib, 'Timeout' xatoligini qaytarishi (reject qilishi) kerak.",
+    "startingCode": "async function fetchWithTimeout(url, ms) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "AbortController yaratib, uning signalini fetch sozlamalarida uzating. setTimeout yordamida ms vaqtdan keyin controller.abort() ni chaqiring.",
+    "test": "if (!code.includes('AbortController')) return 'AbortController ishlatilmadi';\nif (!code.includes('signal')) return 'Fetch signal parametri ko\\'rsatilmadi';\nconst sandbox = new Function('fetch', code + '; return fetchWithTimeout;');\nlet aborted = false;\nconst mockFetch = (url, options) => {\n  return new Promise((resolve, reject) => {\n    if (options && options.signal) {\n      options.signal.addEventListener('abort', () => {\n        aborted = true;\n        reject(new Error('AbortError'));\n      });\n    }\n  });\n};\nconst fn = sandbox(mockFetch);\nfn('https://api.test', 50).catch(() => {});\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (aborted) resolve(null);\n    else resolve('So\\'rov belgilangan vaqtda bekor qilinmadi');\n  }, 100);\n});"
+  },
+  {
+    "id": 2,
+    "title": "POST so'rovi va Headers sozlamalari",
+    "instruction": "Berilgan URL ga JSON formatidagi ma'lumotlarni POST so'rovi orqali jo'natuvchi `sendPostData(url, data)` funksiyasini yozing. So'rovda `Content-Type: application/json` va `Accept: application/json` sarlavhalari (headers) ko'rsatilishi shart.",
+    "startingCode": "async function sendPostData(url, data) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "fetch parametrlariga method: 'POST', body: JSON.stringify(data) va tegishli headers obyektini qo'shing.",
+    "test": "if (!code.includes('method') || !code.includes('POST')) return 'POST metodi ko\\'rsatilmadi';\nif (!code.includes('body')) return 'So\\'rov body qismi ko\\'rsatilmadi';\nif (!code.includes('headers')) return 'Headers sozlamalari ko\\'rsatilmadi';\nconst sandbox = new Function('fetch', code + '; return sendPostData;');\nlet sentOptions = null;\nconst mockFetch = (url, options) => {\n  sentOptions = options;\n  return Promise.resolve({ json: () => Promise.resolve({ success: true }) });\n};\nconst fn = sandbox(mockFetch);\nreturn fn('https://api.test', { name: 'Test' }).then(() => {\n  if (!sentOptions) return 'Fetch chaqirilmadi';\n  const headers = sentOptions.headers;\n  const bodyObj = JSON.parse(sentOptions.body);\n  if (bodyObj.name === 'Test' && (headers['Content-Type'] === 'application/json' || headers['content-type'] === 'application/json')) return null;\n  return 'So\\'rov sarlavhalari yoki tana qismi noto\\'g\\'ri';\n}).catch(err => err.message);"
+  },
+  {
+    "id": 3,
+    "title": "HTTP Status Xatolarini Tekshirish",
+    "instruction": "Berilgan URL dan ma'lumotlarni fetch qiluvchi `fetchSafe(url)` funksiyasini yozing. Agar javob muvaffaqiyatli bo'lsa (response.ok === true), JSON ma'lumotni qaytarsin. Agar status 2xx bo'lmasa, `new Error('HTTP status: ' + response.status)` ko'rinishida xatolik tashlasin (throw).",
+    "startingCode": "async function fetchSafe(url) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "response.ok qiymatini tekshiring va agar false bo'lsa, response.status qiymati bilan xato tashlang.",
+    "test": "if (!code.includes('ok')) return 'response.ok tekshiruvi ishlatilmadi';\nif (!code.includes('status')) return 'status xossasi ishlatilmadi';\nconst sandbox = new Function('fetch', code + '; return fetchSafe;');\nlet statusOk = true;\nconst mockFetch = (url) => {\n  return Promise.resolve({\n    ok: statusOk,\n    status: statusOk ? 200 : 404,\n    json: () => Promise.resolve({ data: 'ok' })\n  });\n};\nconst fn = sandbox(mockFetch);\nreturn fn('https://api.test').then((res) => {\n  if (res.data !== 'ok') return 'Muvaffaqiyatli javob qaytarilmadi';\n  statusOk = false;\n  return fn('https://api.test')\n    .then(() => 'Xato statusda xatolik tashlanmadi')\n    .catch((err) => {\n      if (err.message.includes('404')) return null;\n      return 'Xatolik xabarida 404 status kodi yo\\'q';\n    });\n});"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

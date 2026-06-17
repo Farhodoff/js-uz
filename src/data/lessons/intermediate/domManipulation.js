@@ -2,7 +2,7 @@ export const domManipulation = {
   id: "domManipulation",
   title: "DOM Manipulyatsiyasi: Elementlar Yaratish va Boshqarish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### DOM Manipulyatsiyasi nima?
 **DOM Manipulyatsiyasi (DOM Manipulation)** — bu JavaScript yordamida veb-sahifadagi HTML elementlarini dynamic (dasturiy) ravishda yaratish, ularni joylashtirish, o'zgartirish, klonlash yoki butunlay o'chirib tashlash jarayonidir. Bu orqali sahifa foydalanuvchining harakatlariga mos ravishda dynamic o'zgaradi.
@@ -293,103 +293,32 @@ class KanbanBoard {
 | **closest()** | \`el.closest('.wrapper')\` | Eng yaqin ota selektorni topadi| Tepaga qarab qidiradi |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Oddiy Element Yaratish",
-      instruction: "'p' elementi yarating, unga 'Salom, Dunyo!' matnini bering va 'myPara' o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\n\nconsole.log(typeof myPara); // element bo'lishi kerak\n",
-      hint: "const myPara = document.createElement('p'); myPara.textContent = 'Salom, Dunyo!';",
-      test: "if (code.includes('createElement') && code.includes('textContent')) return null; return 'Element yaratib matn bering';"
-    },
-    {
-      id: 2,
-      title: "Element DOM-ga Qo'shish",
-      instruction: "Yaratilgan 'div' elementini 'document.body' ichiga appendChild() orqali qo'shing.",
-      startingCode: "const div = document.createElement('div');\ndiv.textContent = 'Men ekranda!';\n\n// Bu yerga yozing - div'ni body-ga qo'shing\n",
-      hint: "document.body.appendChild(div);",
-      test: "if (code.includes('appendChild') && code.includes('body')) return null; return 'appendChild() orqali body-ga qo'shing';"
-    },
-    {
-      id: 3,
-      title: "Element Tanlovchisi (Selector)",
-      instruction: "'container' ID'si bo'lgan element'ni tanlang va 'getContainer' o'zgaruvchisiga saqlang.",
-      startingCode: "// container ID'si bo'lgan elementni tanlang\n\nconsole.log(getContainer !== null); // true bo'lishi kerak\n",
-      hint: "const getContainer = document.querySelector('#container');",
-      test: "if (code.includes('querySelector') && code.includes('#container')) return null; return 'querySelector orqali container ID'ni tanlang';"
-    },
-    {
-      id: 4,
-      title: "Klaslar bilan Ishlash",
-      instruction: "'box' elementiga 'active' klassini classList.add() orqali qo'shing.",
-      startingCode: "const box = document.createElement('div');\n\n// active klassini qo'shing\n\nconsole.log(box.classList.contains('active')); // true\n",
-      hint: "box.classList.add('active');",
-      test: "if (code.includes('classList.add') && code.includes('active')) return null; return 'classList.add() orqali active klassini qo\\'shing';"
-    },
-    {
-      id: 5,
-      title: "Element O'chirish",
-      instruction: "'removed' elementini o'chirib tashlang. Avval elementni yarating, keyin remove() qiling.",
-      startingCode: "// Elementni yarating\nconst removed = document.createElement('span');\ndocument.body.appendChild(removed);\n\n// Bu yerga yozing - o'chirib tashlang\n",
-      hint: "removed.remove();",
-      test: "if (code.includes('remove()')) return null; return 'remove() metodini chaqiring';"
-    },
-    {
-      id: 6,
-      title: "innerHTML orqali HTML Qo'shish",
-      instruction: "'container' elementining ichiga '<p>Yangi paragraf</p>' HTML'ni innerHTML orqali qo'shing.",
-      startingCode: "const container = document.createElement('div');\n\n// innerHTML orqali HTML qo'shing\n\nconsole.log(container.innerHTML); // '<p>Yangi paragraf</p>' o'z ichiga olishi kerak\n",
-      hint: "container.innerHTML = '<p>Yangi paragraf</p>';",
-      test: "if (code.includes('innerHTML') && code.includes('<p>')) return null; return 'innerHTML orqali HTML qo\\'shing';"
-    },
-    {
-      id: 7,
-      title: "Element Klonlash",
-      instruction: "'original' elementini cloneNode(true) orqali klonlab, 'cloned' o'zgaruvchisiga saqlang.",
-      startingCode: "const original = document.createElement('div');\noriginal.textContent = 'Original';\n\n// Klonlang\n\nconsole.log(cloned.textContent); // 'Original' bo'lishi kerak\n",
-      hint: "const cloned = original.cloneNode(true);",
-      test: "if (code.includes('cloneNode')) return null; return 'cloneNode(true) orqali klonlang';"
-    },
-    {
-      id: 8,
-      title: "Event Listener Qo'shish",
-      instruction: "'button' elementiga 'click' event'i uchun listener qo'shing. Bosilganda 'Tugma bosildi!' consolga chiqarsin.",
-      startingCode: "const button = document.createElement('button');\nbutton.textContent = 'Bosing';\n\n// Event listener qo'shing\n\n// Tekshirish (shuning uchun click simulyatsiyasi):\nbutton.click(); // console.log() ga 'Tugma bosildi!' chiqishi kerak\n",
-      hint: "button.addEventListener('click', () => { console.log('Tugma bosildi!'); });",
-      test: "if (code.includes('addEventListener') && code.includes('click')) return null; return 'addEventListener() orqali click event'i qo\\'shing';"
-    },
-    {
-      id: 9,
-      title: "Prepend - Boshiga Qo'shish",
-      instruction: "'container' elementining boshiga 'div' elementi qo'shing. appendChild bilan emas, prepend() orqali.",
-      startingCode: "const container = document.createElement('div');\nconst existingChild = document.createElement('p');\nexistingChild.textContent = 'Mavjud';\ncontainer.appendChild(existingChild);\n\nconst newDiv = document.createElement('div');\nnewDiv.textContent = 'Yangi';\n\n// prepend orqali boshiga qo'shing\n\nconsole.log(container.firstElementChild.textContent); // 'Yangi' bo'lishi kerak\n",
-      hint: "container.prepend(newDiv);",
-      test: "if (code.includes('prepend')) return null; return 'prepend() orqali boshiga qo\\'shing';"
-    },
-    {
-      id: 10,
-      title: "setAttribute va getAttribute",
-      instruction: "'img' elementi yarating, 'src' atributini 'photo.jpg' ga o'rnatib, keyin getAttribute() orqali o'qing.",
-      startingCode: "const img = document.createElement('img');\n\n// setAttribute orqali src'ni o'rnating\n// getAttribute orqali o'qing\n\n// Tekshirish:\nconsole.log(imgSrc); // 'photo.jpg' bo'lishi kerak\n",
-      hint: "img.setAttribute('src', 'photo.jpg'); const imgSrc = img.getAttribute('src');",
-      test: "if (code.includes('setAttribute') && code.includes('getAttribute')) return null; return 'setAttribute va getAttribute ishlatib ko\\'ring';"
-    },
-    {
-      id: 11,
-      title: "classList.toggle()",
-      instruction: "'toggle-box' elementi yarating. classList.toggle('active')'ni ikki marta chaqiring. Birinchisida true, ikkinchisida false qaytarsin.",
-      startingCode: "const toggleBox = document.createElement('div');\n\n// toggle() birinchi chaqiruv\nconst firstCall = toggleBox.classList.toggle('active');\n\n// toggle() ikkinchi chaqiruv\nconst secondCall = toggleBox.classList.toggle('active');\n\nconsole.log(firstCall, secondCall); // true, false bo'lishi kerak\n",
-      hint: "toggle() 'boolean qaytaradi - true bo'lsa klass qo'shildi, false bo'lsa o'chirildi.",
-      test: "if (code.includes('toggle') && code.includes('classList')) return null; return 'classList.toggle() to\\'g\\'ri ishlatib ko\\'ring';"
-    },
-    {
-      id: 12,
-      title: "Kompleks - To-do Qo'shish",
-      instruction: "'ul' ro'yxati yarating. 'addTodo' funksiyasi yarating u argument sifatida 'todoText' qabul qilib, yangi 'li' elementini ul-ga qo'shashin. Funksiyani 3 ta vazifa bilan chaqiring.",
-      startingCode: "const ul = document.createElement('ul');\n\n// addTodo funksiyasini yozing\n\n// Funksiyani chaqiring\naddTodo('Kitob o\\'qish');\naddTodo('Dastur yozish');\naddTodo('Harid qilish');\n\nconsole.log(ul.children.length); // 3 bo'lishi kerak\n",
-      hint: "function addTodo(todoText) { const li = document.createElement('li'); li.textContent = todoText; ul.appendChild(li); }",
-      test: "if (code.includes('createElement') && code.includes('appendChild') && code.includes('addTodo')) return null; return 'Kompleks to-do sistemani to\\'g\\'ri yarating';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Yanggi Element Yaratish va Joylashtirish",
+    "instruction": "`document.createElement` yordamida 'div' elementi yarating, uning klassiga 'box' qo'shing va uni `document.body` oxiriga appendChild yordamida ulovchi `createBox()` funksiyasini yozing.",
+    "startingCode": "function createBox() {\n  // Kodni yozing\n}",
+    "hint": "const div = document.createElement('div'); div.classList.add('box'); document.body.appendChild(div);",
+    "test": "try { createBox(); const boxes = document.body.querySelectorAll('.box'); if (boxes.length === 0) return 'Box klassli element qo\\'shilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 2,
+    "title": "Boshiga Qo'shish (Prepend)",
+    "instruction": "Berilgan `newElement` obyektini `container` elementining eng boshiga birinchi bola element sifatida joylashtiruvchi `addToStart(container, newElement)` funksiyasini yozing.",
+    "startingCode": "function addToStart(container, newElement) {\n  // Kodni yozing\n}",
+    "hint": "container.prepend(newElement);",
+    "test": "try { let added = null; const mockContainer = { prepend: (el) => added = el }; const testEl = { id: 'test' }; addToStart(mockContainer, testEl); if (added !== testEl) return 'newElement boshiga joylashtirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 3,
+    "title": "Element Klonlash va ID o'zgartirish",
+    "instruction": "Berilgan `original` elementini uning bolalari bilan birga to'liq klonlovchi, klonlangan nusxaning ID sini 'cloned-item' ga o'zgartiruvchi va o'sha klonlangan elementni qaytaruvchi `cloneElement(original)` funksiyasini yozing.",
+    "startingCode": "function cloneElement(original) {\n  // Kodni yozing\n}",
+    "hint": "const cloned = original.cloneNode(true); cloned.id = 'cloned-item'; return cloned;",
+    "test": "try { const orig = document.createElement('div'); orig.id = 'original-id'; const res = cloneElement(orig); if (!res || res.id !== 'cloned-item') return 'Klonlangan element IDsi cloned-item bo\\'lmadi'; if (res === orig) return 'Klonlanmagan, asl element qaytarilgan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

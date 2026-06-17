@@ -2,7 +2,7 @@ export const consoleMethods = {
   id: "consoleMethods",
   title: "Console Metodlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Console nima?
 * **Console (Konsol):** Bu kodimizning ishlash jarayonini kuzatish, xatolarni aniqlash va qidirish (debugging) hamda ma'lumotlarni tahlil qilish uchun mo'ljallangan maxsus brauzer (yoki Node.js terminal) panelidir.
@@ -308,103 +308,32 @@ Logger.group("API So'rovi", () => {
 | \`console.clear()\` | Konsol ekranini tozalash | \`console.clear();\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Table mashqi",
-      instruction: "['BMW', 'Audi'] massivini jadval ko'rinishida chiqaring.",
-      startingCode: "const cars = ['BMW', 'Audi'];\n// Kodni yozing",
-      hint: "console.table(cars);",
-      test: "if (code.includes('console.table')) return null; return 'console.table ishlatilmadi';"
-    },
-    {
-      id: 2,
-      title: "Xatolikni chiqarish",
-      instruction: "Konsolga 'Tizimda xatolik yuz berdi!' degan qizil xatolik logini chiqaring.",
-      startingCode: "// Kodni yozing\n",
-      hint: "console.error('Tizimda xatolik yuz berdi!');",
-      test: "if (code.includes('console.error')) return null; return 'console.error ishlatilmadi';"
-    },
-    {
-      id: 3,
-      title: "Ogohlantirish logi",
-      instruction: "Konsolga 'Ehtiyot bo\\'ling!' ogohlantirish xabarini chiqaring.",
-      startingCode: "// Kodni yozing\n",
-      hint: "console.warn('Ehtiyot bo\\'ling!');",
-      test: "if (code.includes('console.warn')) return null; return 'console.warn ishlatilmadi';"
-    },
-    {
-      id: 4,
-      title: "Vaqtni o'lchash",
-      instruction: "'TestTime' nomli taymerni boshlang va kod oxirida tugating.",
-      startingCode: "// Taymerni boshlang\n\n// Taymerni tugating\n",
-      hint: "console.time('TestTime');\nconsole.timeEnd('TestTime');",
-      test: "if (code.includes('console.time') && code.includes('console.timeEnd')) return null; return 'console.time va console.timeEnd ishlatilishi kerak';"
-    },
-    {
-      id: 5,
-      title: "Sanagich",
-      instruction: "Konsolga 'Click' nomli sanagichni 3 marta chaqiring.",
-      startingCode: "// Kodni yozing\n",
-      hint: "console.count('Click'); console.count('Click'); console.count('Click');",
-      test: "if (code.includes('console.count')) return null; return 'console.count ishlatilmadi';"
-    },
-    {
-      id: 6,
-      title: "Konsolni tozalash",
-      instruction: "Konsol ekranidagi barcha ma'lumotlarni tozalab yuboring.",
-      startingCode: "// Kodni yozing\n",
-      hint: "console.clear();",
-      test: "if (code.includes('console.clear')) return null; return 'console.clear ishlatilmadi';"
-    },
-    {
-      id: 7,
-      title: "Guruhlash",
-      instruction: "'Ma\\'lumot' nomli guruh oching va uni yoping.",
-      startingCode: "// Guruhni oching\n\n// Guruhni yoping",
-      hint: "console.group('Ma\\'lumot');\nconsole.groupEnd();",
-      test: "if (code.includes('console.group') && code.includes('console.groupEnd')) return null; return 'console.group va console.groupEnd ishlatilmadi';"
-    },
-    {
-      id: 8,
-      title: "Tekshiruv (Assert)",
-      instruction: "x = 5 bo'lganda, x > 10 sharti false bo'lishi sababli xatolik chiqaruvchi console.assert yozing.",
-      startingCode: "const x = 5;\n// Kodni yozing",
-      hint: "console.assert(x > 10, 'x 10 dan katta bo\\'lishi kerak');",
-      test: "if (code.includes('console.assert')) return null; return 'console.assert ishlatilmadi';"
-    },
-    {
-      id: 9,
-      title: "Obyektni batafsil chiqarish",
-      instruction: "user obyektini console.dir orqali ko'ring.",
-      startingCode: "const user = { name: 'Ali', age: 20 };\n// Kodni yozing",
-      hint: "console.dir(user);",
-      test: "if (code.includes('console.dir')) return null; return 'console.dir ishlatilmadi';"
-    },
-    {
-      id: 10,
-      title: "Trace chiqarish",
-      instruction: "Kod bajarilish stack trace-ini konsolga chiqarish metodini yozing.",
-      startingCode: "// Kodni yozing\n",
-      hint: "console.trace();",
-      test: "if (code.includes('console.trace')) return null; return 'console.trace ishlatilmadi';"
-    },
-    {
-      id: 11,
-      title: "Rangli konsol",
-      instruction: "Konsolga '%cSalom' matnini 'color: red' stili bilan chiqaring.",
-      startingCode: "// Kodni yozing\n",
-      hint: "console.log('%cSalom', 'color: red');",
-      test: "if (code.includes('%c') && code.includes('color:')) return null; return 'Stillangan log yozing!';"
-    },
-    {
-      id: 12,
-      title: "Yopiq guruh",
-      instruction: "'Tafsilotlar' nomli yopiq guruh ochib uni yoping.",
-      startingCode: "// Kodni yozing\n",
-      hint: "console.groupCollapsed('Tafsilotlar'); console.groupEnd();",
-      test: "if (code.includes('console.groupCollapsed') && code.includes('console.groupEnd')) return null; return 'console.groupCollapsed ishlatilmadi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Konsol guruhlarini yaratish",
+    "instruction": "Foydalanuvchi ma'lumotlarini chiroyli tarzda guruhlab konsolga chiqaruvchi `logUserInfo(user)` funksiyasini yozing. user obyekti `name`, `age` va `role` xossalariga ega. Chiqarish quyidagi tartibda guruhlanishi kerak: 'User Details' guruhi boshlanadi (console.group orqali), guruh ichida user.name, user.age va user.role alohida console.log yordamida chiqariladi. Guruh oxirida console.groupEnd chaqirilishi shart.",
+    "startingCode": "function logUserInfo(user) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "console.group('User Details') va console.groupEnd() lardan foydalaning.",
+    "test": "if (!code.includes('console.group') || !code.includes('console.groupEnd')) return 'console.group yoki console.groupEnd ishlatilmadi';\nconst sandbox = new Function(code + '; return logUserInfo;');\nconst fn = sandbox();\nlet logs = [];\nlet groups = [];\nconst oldLog = console.log;\nconst oldGroup = console.group;\nconst oldGroupEnd = console.groupEnd;\nconsole.log = (...args) => logs.push(args.join(' '));\nconsole.group = (label) => groups.push({ type: 'start', label });\nconsole.groupEnd = () => groups.push({ type: 'end' });\ntry {\n  fn({ name: 'Ali', age: 25, role: 'developer' });\n} finally {\n  console.log = oldLog;\n  console.group = oldGroup;\n  console.groupEnd = oldGroupEnd;\n}\nif (groups.length === 2 && groups[0].type === 'start' && groups[0].label === 'User Details' && groups[1].type === 'end' && logs.includes('Ali') && logs.includes('25') && logs.includes('developer')) {\n  return null;\n}\nreturn 'Guruhlash yoki loglar noto\\'g\\'ri yozilgan';"
+  },
+  {
+    "id": 2,
+    "title": "Konsol jadvali va Ogohlantirish",
+    "instruction": "Agar massiv bo'sh bo'lsa, `console.warn` orqali \"Massiv bo'sh!\" ogohlantirishini chiqaring. Agar massivda kamida bitta element bo'lsa, `console.table` orqali massivni jadval ko'rinishida chiqaring. Funksiya nomi `printData(arr)` bo'lsin.",
+    "startingCode": "function printData(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "arr.length === 0 bo'lganda console.warn, aks holda console.table yozing.",
+    "test": "if (!code.includes('console.warn') || !code.includes('console.table')) return 'console.warn va console.table metodlari ishlatilmadi';\nconst sandbox = new Function(code + '; return printData;');\nconst fn = sandbox();\nlet warnCalled = false;\nlet tableCalled = false;\nconst oldWarn = console.warn;\nconst oldTable = console.table;\nconsole.warn = () => warnCalled = true;\nconsole.table = () => tableCalled = true;\ntry {\n  fn([]);\n  fn([1, 2]);\n} finally {\n  console.warn = oldWarn;\n  console.table = oldTable;\n}\nif (warnCalled && tableCalled) return null;\nreturn 'Funksiya shartga mos ravishda console.warn yoki console.table ni chaqirmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Vaqtni o'lchash",
+    "instruction": "Ma'lum bir murakkab hisob-kitob bajarilishi uchun qancha vaqt ketishini o'lchash zarur. `measureExecution(fn, iterations)` funksiyasini yozing. Unda 'Loop duration' yorlig'i bilan `console.time` chaqiriladi. Keyin loop ichida berilgan `iterations` sonigacha `fn` funksiyasi chaqiriladi (hech qanday parametr uzatmasdan). Oxirida o'sha yorliq bilan `console.timeEnd` chaqirilishi kerak.",
+    "startingCode": "function measureExecution(fn, iterations) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "console.time('Loop duration') va console.timeEnd('Loop duration') ishlating.",
+    "test": "if (!code.includes('console.time') || !code.includes('console.timeEnd')) return 'console.time yoki console.timeEnd ishlatilmadi';\nif (!code.includes('Loop duration')) return 'Loop duration yorlig\\'idan foydalanilmagan';\nconst sandbox = new Function(code + '; return measureExecution;');\nconst fn = sandbox();\nlet timeLabel = '';\nlet timeEndLabel = '';\nconst oldTime = console.time;\nconst oldTimeEnd = console.timeEnd;\nconsole.time = (label) => timeLabel = label;\nconsole.timeEnd = (label) => timeEndLabel = label;\nlet count = 0;\ntry {\n  fn(() => count++, 5);\n} finally {\n  console.time = oldTime;\n  console.timeEnd = oldTimeEnd;\n}\nif (timeLabel === 'Loop duration' && timeEndLabel === 'Loop duration' && count === 5) return null;\nreturn 'Vaqtni o\\'lchash yoki tsiklda funksiyani chaqirish to\\'g\\'ri amalga oshirilmadi';"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

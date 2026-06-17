@@ -2,7 +2,7 @@ export const sqlFiltering = {
   id: "sqlFiltering",
   title: "Ma'lumotlarni Filtrlash (Filtering)",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Ma'lumotlarni Filtrlash (Filtering) nima?
 Ma'lumotlar bazasida ko'pincha millionlab qatorlar saqlanadi. Bizga har doim ham barcha qatorlar kerak bo'lavermaydi. Masalan, faqat faol foydalanuvchilarni topish, ma'lum bir narx oralig'idagi mahsulotlarni ko'rish yoki ma'lum bir harfdan boshlanuvchi ismlarni qidirish kerak bo'ladi. SQL-da shunday aniq shartlar bo'yicha ma'lumotlarni tanlab olish uchun **WHERE** bloki va turli mantiqiy operatorlar ishlatiladi.
@@ -250,38 +250,6 @@ WHERE category IN ('Laptops', 'Smartphones')
   exercises: [
   {
     "id": 1,
-    "title": "Toshkentlik foydalanuvchilar (WHERE)",
-    "instruction": "`users` jadvalidan yashash shahri (`city`) 'Toshkent' bo'lgan barcha foydalanuvchilarni tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM users WHERE city = 'Toshkent'",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Toshkentda 3 ta foydalanuvchi yashaydi'; if(result.some(u => u.city !== 'Toshkent')) return 'Faqat Toshkent shahridagi foydalanuvchilar chiqishi kerak'; return null;"
-  },
-  {
-    "id": 2,
-    "title": "Yoshi katta foydalanuvchilar (WHERE >)",
-    "instruction": "`users` jadvalidan yoshi 25 dan katta bo'lgan barcha foydalanuvchilarning ismi (`name`) va yoshi (`age`) ustunlarini tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT name, age FROM users WHERE age > 25",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Yoshi 25 dan katta bo\\'lgan 3 ta foydalanuvchi bor'; if(result.some(u => u.age <= 25)) return 'Faqat yoshi 25 dan katta bo\\'lganlar bo\\'lishi kerak'; if(result[0].city !== undefined) return 'Faqat name va age ustunlarini tanlang'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "Toshkentlik va yoshi kichik foydalanuvchilar (AND)",
-    "instruction": "`users` jadvalidan yashash shahri (`city`) 'Toshkent' bo'lgan VA yoshi 25 dan kichik bo'lgan foydalanuvchilarning barcha ustunlarini tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM users WHERE city = 'Toshkent' AND age < 25",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Shartga mos 1 ta foydalanuvchi bo\\'lishi kerak'; if(result[0].name !== 'Sardor') return 'Noto\\'g\\'ri foydalanuvchi tanlandi'; return null;"
-  },
-  {
-    "id": 4,
-    "title": "Buxoro yoki Samarqandliklar (OR)",
-    "instruction": "`users` jadvalidan yashash shahri (`city`) 'Buxoro' yoki 'Samarqand' bo'lgan barcha foydalanuvchilarning ismi (`name`) va shahri (`city`) ustunlarini tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT name, city FROM users WHERE city = 'Buxoro' OR city = 'Samarqand'",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Buxoro va Samarqandda jami 2 ta foydalanuvchi bor'; if(result.some(u => u.city !== 'Buxoro' && u.city !== 'Samarqand')) return 'Faqat Buxoro yoki Samarqandlik foydalanuvchilar bo\\'lishi kerak'; if(result[0].role !== undefined) return 'Faqat name va city ustunlarini tanlang'; return null;"
-  },
-  {
-    "id": 5,
     "title": "Yosh oralig'i (BETWEEN)",
     "instruction": "`users` jadvalidan yoshi 25 va 30 oralig'ida bo'lgan (25 va 30 ni ham qo'shib) barcha foydalanuvchilarni tanlang.",
     "startingCode": "-- SQL so'rovini yozing\n",
@@ -289,7 +257,7 @@ WHERE category IN ('Laptops', 'Smartphones')
     "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Ushbu oraliqda 3 ta foydalanuvchi bor'; if(result.some(u => u.age < 25 || u.age > 30)) return 'Faqat 25 va 30 yosh oralig\\'idagi foydalanuvchilar chiqishi shart'; return null;"
   },
   {
-    "id": 6,
+    "id": 2,
     "title": "Rollar filtri (IN)",
     "instruction": "`users` jadvalidan roli `Admin` yoki `Manager` bo'lgan foydalanuvchilarning ismi (`name`) va roli (`role`) ustunlarini tanlang.",
     "startingCode": "-- SQL so'rovini yozing\n",
@@ -297,36 +265,12 @@ WHERE category IN ('Laptops', 'Smartphones')
     "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Admin va Manager roli bo\\'lgan jami 2 kishi bor'; if(result[0].city !== undefined) return 'Faqat name va role ustunlari tanlanishi kerak'; return null;"
   },
   {
-    "id": 7,
+    "id": 3,
     "title": "Ism bo'yicha qidiruv (LIKE)",
     "instruction": "`users` jadvalidan ismi 'M' harfi bilan boshlanadigan barcha foydalanuvchilarni tanlang.",
     "startingCode": "-- SQL so'rovini yozing\n",
     "hint": "SELECT * FROM users WHERE name LIKE 'M%'",
     "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1 || result[0].name !== 'Madina') return 'Faqat Madina ismi qaytishi kerak'; return null;"
-  },
-  {
-    "id": 8,
-    "title": "Toshkentlik bo'lmagan foydalanuvchilar (NOT IN)",
-    "instruction": "`users` jadvalidan yashash shahri (`city`) 'Toshkent' bo'lmagan (NOT IN orqali) barcha foydalanuvchilarni tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM users WHERE city NOT IN ('Toshkent')",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Toshkentdan boshqa shaharlik 2 ta foydalanuvchi bor'; if(result.some(u => u.city === 'Toshkent')) return 'Toshkentlik foydalanuvchilar chiqmasligi kerak'; return null;"
-  },
-  {
-    "id": 9,
-    "title": "Murakkab shartli mahsulotlar (AND, OR va Qavslar)",
-    "instruction": "`products` jadvalidan toifasi (`category`) 'Furniture' bo'lgan yoki (toifasi 'Electronics' bo'lib narxi 200 dan kam bo'lgan) mahsulotlarning barcha ustunlarini tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM products WHERE category = 'Furniture' OR (category = 'Electronics' AND price < 200)",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Natijada 3 ta mahsulot bo\\'lishi kerak (Desk, Chair, Mouse)'; if(result.some(p => p.name === 'Laptop' || p.name === 'Phone')) return 'Qimmat elektronika mahsulotlari chiqmasligi kerak'; return null;"
-  },
-  {
-    "id": 10,
-    "title": "Mavjud elektronika tovarlari (IS NOT NULL)",
-    "instruction": "`products` jadvalidan toifasi (`category`) 'Electronics' bo'lgan, ombor qoldig'i bo'sh bo'lmagan (ya'ni `stock IS NOT NULL`) va narxi (`price`) 1000 dan kam bo'lgan mahsulotlarning barcha ustunlarini tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM products WHERE category = 'Electronics' AND stock IS NOT NULL AND price < 1000",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Natijada 2 ta mahsulot (Phone, Mouse) bo\\'lishi kerak'; if(result.some(p => p.price >= 1000)) return 'Faqat narxi 1000 dan kam bo\\'lgan mahsulotlar chiqishi kerak'; return null;"
   }
 ]
 ,

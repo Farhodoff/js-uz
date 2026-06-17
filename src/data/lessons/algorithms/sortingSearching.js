@@ -2,7 +2,7 @@ export const sortingSearching = {
   id: "sortingSearching",
   title: "Saralash va Qidiruv Algoritmlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Saralash va Qidiruv Algoritmlari nima?
 * **Saralash (Sorting):** Tartibsiz joylashgan elementlar to'plamini (masalan, sonlar yoki ismlarni) o'sish yoki kamayish tartibida joylashtirish jarayonidir.

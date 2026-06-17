@@ -2,7 +2,7 @@ export const mapSetWeak = {
   id: "mapSetWeak",
   title: "Map, Set, WeakMap va WeakSet",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Map, Set, WeakMap va WeakSet nima?
 ES6 versiyasida JavaScriptga ma'lumotlarni yanada samaraliroq saqlash va boshqarish uchun 4 ta yangi ma'lumotlar tuzilmasi qo'shildi:

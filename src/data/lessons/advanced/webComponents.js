@@ -2,7 +2,7 @@ export const webComponents = {
   id: "webComponents",
   title: "Web Components va Shadow DOM",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Web Components va Shadow DOM nima?
 * **Web Components (Veb Komponentlar):** Bu hech qanday framework (React, Vue, Angular va h.k.) ishlatmasdan, brauzerning o'zida yangi, maxsus HTML teglarini (masalan, \`<user-card>\`, \`<image-slider>\`) yaratishga yordam beradigan texnologiyalar to'plamidir.

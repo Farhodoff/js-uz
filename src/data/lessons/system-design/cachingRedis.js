@@ -2,7 +2,7 @@ export const cachingRedis = {
   id: "cachingRedis",
   title: "Keshlash va Redis (Caching & Redis)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Keshlash nima?
 **Keshlash (Caching)** — bu ma'lumotlarni tez-tez so'ralganda tezkor va qulay joyda (odatda tezkor xotira - RAM) vaqtinchalik saqlash texnologiyasidir. Bu ma'lumotlar bazasiga (Database) tushadigan yuklamani kamaytiradi va dastur tezligini yuzlab barobar oshiradi.
@@ -256,184 +256,187 @@ sequenceDiagram
 
 | Buyruq | Vazifasi | Misol |
 | :--- | :--- | :--- |
-| \`SET key val\` | Kalitga qiymat yozish | \`SET user:1 \"Ali\"\` |
+| \`SET key val\` | Kalitga qiymat yozish | \`SET user:1 "Ali"\` |
 | \`GET key\` | Kalit qiymatini o'qish | \`GET user:1\` |
 | \`DEL key\` | Kalitni keshdan o'chirish | \`DEL user:1\` |
 | \`EXISTS key\` | Kalit borligini tekshirish | \`EXISTS user:1\` |
 | \`EXPIRE key sec\` | Kalitga yashash muddati berish | \`EXPIRE user:1 60\` |
-| \`SETEX key sec val\` | Yashash muddati bilan yozish | \`SETEX user:1 60 \"Ali\"\` |
+| \`SETEX key sec val\` | Yashash muddati bilan yozish | \`SETEX user:1 60 "Ali"\` |
 | \`TTL key\` | Qolgan yashash vaqtini bilish | \`TTL user:1\` |
-| \`FLUSHALL\` | Barcha keshni tozalash | \`FLUSHALL\` |`,
+| \`FLUSHALL\` | Barcha keshni tozalash | \`FLUSHALL\` |
+`,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Redis-like in-memory cache",
-      instruction: "Sodda vaqtinchalik keshni simulyatsiya qiluvchi `InMemoryCache` klassini yozing. U `set(key, value, ttlMs)` va `get(key)` metodlariga ega bo'lsin. Agar `ttlMs` (millisekundlarda yashash muddati) berilgan bo'lsa, belgilangan vaqt o'tgandan keyin kalit o'chib ketsin (ya'ni `get` qilganda `null` qaytsin).",
-      startingCode: "class InMemoryCache {\n  constructor() {\n    this.cache = new Map();\n  }\n\n  set(key, value, ttlMs) {\n    // Kodni shu yerda yozing\n  }\n\n  get(key) {\n    // Kodni shu yerda yozing\n  }\n}",
-      hint: "Map ichida qiymat bilan birga tugash vaqtini (Date.now() + ttlMs) saqlang. get() chaqirilganda hozirgi vaqt tugash vaqtidan o'tgan bo'lsa, kalitni o'chirib null qaytaring.",
-      test: "if (typeof InMemoryCache !== 'function') return 'InMemoryCache klass emas';\nconst c = new InMemoryCache();\nc.set('a', 42, 50);\nif (c.get('a') !== 42) return 'Qiymat to\\'g\\'ri saqlanmadi';\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (c.get('a') === null) resolve(null);\n    else resolve('Muddati o\\'tgan kesh o\\'chirilmadi');\n  }, 60);\n});"
-    },
-    {
-      id: 2,
-      title: "2️⃣ LRU Eviction Cache",
-      instruction: "Sig'imi cheklangan `LRUCache` klassini yozing. Yangi element qo'shganda sig'im to'lgan bo'lsa, eng uzoq vaqt ishlatilmagan (least recently used) elementni o'chirib tashlasin. `get(key)` va `put(key, value)` metodlari bo'lsin.",
-      startingCode: "class LRUCache {\n  constructor(capacity) {\n    this.capacity = capacity;\n    this.cache = new Map();\n  }\n\n  get(key) {\n    // Kodni shu yerda yozing\n  }\n\n  put(key, value) {\n    // Kodni shu yerda yozing\n  }\n}",
-      hint: "JavaScript Map obyekti kalitlar tartibini saqlaydi. get() qilinganda kalitni o'chirib qayta qo'shish orqali eng oxiriga o'tkaziladi. O'chirish uchun esa map.keys().next().value orqali birinchi (eng eski) kalitni topsa bo'ladi.",
-      test: "if (typeof LRUCache !== 'function') return 'LRUCache klass emas';\nconst lru = new LRUCache(2);\nlru.put(1, 'bir');\nlru.put(2, 'ikki');\nlru.get(1);\nlru.put(3, 'uch');\nif (lru.get(2) !== undefined && lru.get(2) !== null) return 'Eng eski element o\\'chib ketmadi';\nif (lru.get(1) !== 'bir' || lru.get(3) !== 'uch') return 'Elementlar noto\\'g\\'ri saqlangan';\nreturn null;"
-    },
-    {
-      id: 3,
-      title: "3️⃣ Cache-Aside Wrapper",
-      instruction: "Asinxron `cacheAside(redisMock, key, fetchFn, ttl)` funksiyasini yozing. U keshda ma'lumot bo'lsa darhol qaytarsin. Agar keshda bo'lmasa, `fetchFn()` orqali bazadan ma'lumotni olsin, uni keshga `redisMock.set(key, value, ttl)` yordamida yozsin va natijani qaytarsin.",
-      startingCode: "async function cacheAside(redisMock, key, fetchFn, ttl) {\n  // Kodni shu yerda yozing\n}",
-      hint: "await redisMock.get(key) orqali keshni tekshiring. Topilsa qaytaring, topilmasa fetchFn() chaqirib, uning natijasini set qiling va qaytaring.",
-      test: "if (typeof cacheAside !== 'function') return 'cacheAside funksiya emas';\nlet dbCalls = 0;\nconst dbFetch = async () => { dbCalls++; return 'data_from_db'; };\nconst mockStore = {};\nconst redisMock = {\n  get: async (k) => mockStore[k] || null,\n  set: async (k, v, t) => { mockStore[k] = v; }\n};\nreturn cacheAside(redisMock, 'item', dbFetch, 60).then(res1 => {\n  if (res1 !== 'data_from_db' || dbCalls !== 1) return 'Birinchi chaqiriq xato';\n  return cacheAside(redisMock, 'item', dbFetch, 60).then(res2 => {\n    if (res2 !== 'data_from_db' || dbCalls !== 1) return 'Keshdan o\\'qish o\\'rniga yana bazaga borildi';\n    return null;\n  });\n});"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "1️⃣ Redis-like in-memory cache",
+    "instruction": "Sodda vaqtinchalik keshni simulyatsiya qiluvchi `InMemoryCache` klassini yozing. U `set(key, value, ttlMs)` va `get(key)` metodlariga ega bo'lsin. Agar `ttlMs` (millisekundlarda yashash muddati) berilgan bo'lsa, belgilangan vaqt o'tgandan keyin kalit o'chib ketsin (ya'ni `get` qilganda `null` qaytsin).",
+    "startingCode": "class InMemoryCache {\n  constructor() {\n    this.cache = new Map();\n  }\n\n  set(key, value, ttlMs) {\n    // Kodni shu yerda yozing\n  }\n\n  get(key) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "Map ichida qiymat bilan birga tugash vaqtini (Date.now() + ttlMs) saqlang. get() chaqirilganda hozirgi vaqt tugash vaqtidan o'tgan bo'lsa, kalitni o'chirib null qaytaring.",
+    "test": "if (typeof InMemoryCache !== 'function') return 'InMemoryCache klass emas';\nconst c = new InMemoryCache();\nc.set('a', 42, 50);\nif (c.get('a') !== 42) return 'Qiymat to\\'g\\'ri saqlanmadi';\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (c.get('a') === null) resolve(null);\n    else resolve('Muddati o\\'tgan kesh o\\'chirilmadi');\n  }, 60);\n});"
+  },
+  {
+    "id": 2,
+    "title": "2️⃣ LRU Eviction Cache",
+    "instruction": "Sig'imi cheklangan `LRUCache` klassini yozing. Yangi element qo'shganda sig'im to'lgan bo'lsa, eng uzoq vaqt ishlatilmagan (least recently used) elementni o'chirib tashlasin. `get(key)` va `put(key, value)` metodlari bo'lsin.",
+    "startingCode": "class LRUCache {\n  constructor(capacity) {\n    this.capacity = capacity;\n    this.cache = new Map();\n  }\n\n  get(key) {\n    // Kodni shu yerda yozing\n  }\n\n  put(key, value) {\n    // Kodni shu yerda yozing\n  }\n}",
+    "hint": "JavaScript Map obyekti kalitlar tartibini saqlaydi. get() qilinganda kalitni o'chirib qayta qo'shish orqali eng oxiriga o'tkaziladi. O'chirish uchun esa map.keys().next().value orqali birinchi (eng eski) kalitni topsa bo'ladi.",
+    "test": "if (typeof LRUCache !== 'function') return 'LRUCache klass emas';\nconst lru = new LRUCache(2);\nlru.put(1, 'bir');\nlru.put(2, 'ikki');\nlru.get(1);\nlru.put(3, 'uch');\nif (lru.get(2) !== undefined && lru.get(2) !== null) return 'Eng eski element o\\'chib ketmadi';\nif (lru.get(1) !== 'bir' || lru.get(3) !== 'uch') return 'Elementlar noto\\'g\\'ri saqlangan';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "3️⃣ Cache-Aside Wrapper",
+    "instruction": "Asinxron `cacheAside(redisMock, key, fetchFn, ttl)` funksiyasini yozing. U keshda ma'lumot bo'lsa darhol qaytarsin. Agar keshda bo'lmasa, `fetchFn()` orqali bazadan ma'lumotni olsin, uni keshga `redisMock.set(key, value, ttl)` yordamida yozsin va natijani qaytarsin.",
+    "startingCode": "async function cacheAside(redisMock, key, fetchFn, ttl) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "await redisMock.get(key) orqali keshni tekshiring. Topilsa qaytaring, topilmasa fetchFn() chaqirib, uning natijasini set qiling va qaytaring.",
+    "test": "if (typeof cacheAside !== 'function') return 'cacheAside funksiya emas';\nlet dbCalls = 0;\nconst dbFetch = async () => { dbCalls++; return 'data_from_db'; };\nconst mockStore = {};\nconst redisMock = {\n  get: async (k) => mockStore[k] || null,\n  set: async (k, v, t) => { mockStore[k] = v; }\n};\nreturn cacheAside(redisMock, 'item', dbFetch, 60).then(res1 => {\n  if (res1 !== 'data_from_db' || dbCalls !== 1) return 'Birinchi chaqiriq xato';\n  return cacheAside(redisMock, 'item', dbFetch, 60).then(res2 => {\n    if (res2 !== 'data_from_db' || dbCalls !== 1) return 'Keshdan o\\'qish o\\'rniga yana bazaga borildi';\n    return null;\n  });\n});"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Keshlash (Caching) ning eng asosiy maqsadi nima?",
-      options: [
-        "Ma'lumotlarni xavfsiz shifrlab saqlash",
-        "Tez-tez so'raladigan og'ir ma'lumotlarni RAM kabi tezkor xotiraga vaqtinchalik yozib, tizim tezligini oshirish va bazaga yuklamani kamaytirish",
-        "Serverni yangi operatsion tizimga o'tkazish",
-        "Veb-sahifa dizaynini chiroyli va qulay qilish"
-      ],
-      correctAnswer: 1,
-      explanation: "Keshlash tez-tez o'qiladigan og'ir so'rovlar natijasini tezkor RAM xotirasiga saqlash orqali bazaga qayta-qayta murojaat qilishni oldini oladi va javob tezligini oshiradi."
-    },
-    {
-      id: 2,
-      question: "Redis qanday ma'lumotlar bazasi hisoblanadi?",
-      options: [
-        "SQL relyatsion ma'lumotlar bazasi",
-        "RAM-da o'ta tezkor ishlaydigan Key-Value (kalit-qiymat) in-memory kesh tizimi va bazadir",
-        "Faqat diskda fayllar saqlaydigan arxiv tizimi",
-        "Hujjatlarga asoslangan NoSQL MongoDB analogi"
-      ],
-      correctAnswer: 1,
-      explanation: "Redis in-memory (tezkor xotirada ishlaydigan) kalit-qiymat ma'lumotlar do'konidir va asosan kesh yuritishda qo'llaniladi."
-    },
-    {
-      id: 3,
-      question: "Keshde saqlanayotgan ma'lumotlarning yashash muddati nima deyiladi?",
-      options: [
-        "DNS (Domain Name System)",
-        "CORS (Cross-Origin Resource Sharing)",
-        "TTL (Time To Live)",
-        "API Gateway Lifetime"
-      ],
-      correctAnswer: 2,
-      explanation: "TTL (Time To Live) ma'lumotning keshda qancha soniya yoki millisekund davomida saqlanishini belgilaydi."
-    },
-    {
-      id: 4,
-      question: "Cache-Aside (Lazy Loading) strategiyasi qanday ishlaydi?",
-      options: [
-        "Har doim faqat bazadan o'qiladi, keshga yozilmaydi",
-        "Avval kesh tekshiriladi, topilmasa bazadan o'qilib, keshga yoziladi va qaytariladi",
-        "Ma'lumot faqat keshga yoziladi va bazaga hech qachon yozilmaydi",
-        "Har doim kesh va baza parallel o'chiriladi"
-      ],
-      correctAnswer: 1,
-      explanation: "Cache-Aside uslubida ilova keshni o'qiydi (hit bo'lsa darhol qaytaradi), agar ma'lumot keshda bo'lmasa (miss), bazadan olib keshga yozib qo'yadi."
-    },
-    {
-      id: 5,
-      question: "Redis single-threaded bo'lishiga qaramay nega juda tez ishlaydi?",
-      options: [
-        "Chunki u faqat bitta kompyuterda ishlay oladi",
-        "Chunki u to'liq operativ xotirada (RAM) ishlaydi va non-blocking I/O multiplexing ishlatadi",
-        "Chunki u barcha so'rovlarni diskka yozadi",
-        "Chunki u ko'p yadroli protsessorni to'liq band qiladi"
-      ],
-      correctAnswer: 1,
-      explanation: "Redis RAM-da ishlashi va I/O multiplexing (non-blocking) ishlatishi tufayli CPU oqimlarini almashtirish kechikishlarisiz o'ta tez ishlaydi."
-    },
-    {
-      id: 6,
-      question: "Redis-da ma'lumotlarni saqlash muddati (TTL) bilan birga yozish uchun qaysi buyruq qo'llaniladi?",
-      options: [
-        "`SET`",
-        "`SETEX`",
-        "`GET`",
-        "`EXISTS`"
-      ],
-      correctAnswer: 1,
-      explanation: "`SETEX` buyrug'i qiymatni keshga yozish bilan bir qatorda uning yashash muddatini (expiry in seconds) atomar tarzda belgilaydi."
-    },
-    {
-      id: 7,
-      question: "Kesh to'lib ketganda, eng uzoq vaqt davomida ishlatilmagan elementlarni o'chirish algoritmi qaysi?",
-      options: [
-        "FIFO (First In First Out)",
-        "LRU (Least Recently Used)",
-        "LFU (Least Frequently Used)",
-        "Random Eviction"
-      ],
-      correctAnswer: 1,
-      explanation: "LRU (Least Recently Used) eng uzoq vaqt so'ralmagan (kirilmagan) elementlarni birinchi bo'lib keshdan chiqarib tashlaydi."
-    },
-    {
-      id: 8,
-      question: "Cache Stampede (Kesh bo'roni/shovqini) muammosi qanday yuz beradi?",
-      options: [
-        "Kesh kaliti o'chirilganda server o'chib qolsa",
-        "Kesh muddati (TTL) tugashi bilan parallel ravishda juda ko'p so'rovlar bir vaqtda bazaga yuborilganda",
-        "Redis-da xotira to'lib qolganda",
-        "Redis-ga noto'g'ri parol kiritilganda"
-      ],
-      correctAnswer: 1,
-      explanation: "Kesh muddati tugagani uchun barcha parallel so'rovlar keshdan o'tolmay, birdaniga bazaga yuklama bersa, bu Cache Stampede deyiladi."
-    },
-    {
-      id: 9,
-      question: "Sessiyalarni (Sessions) Redis keshda saqlashning eng katta foydasi nimada?",
-      options: [
-        "Xavfsiz HTTP sarlavhalarini tekshirish",
-        "Gorizontal kengaytirilgan (Horizontal scaling) serverlarda foydalanuvchi qaysi serverga bormasin sessiya uzilib qolmasligi",
-        "SQL injection hujumlarining oldini olish",
-        "Statik rasmlarni avtomatik siqish"
-      ],
-      correctAnswer: 1,
-      explanation: "Sessiyalarni Redis-da markazlashtirib saqlash orqali har qaysi backend server foydalanuvchini muvaffaqiyatli autentifikatsiya qila oladi."
-    },
-    {
-      id: 10,
-      question: "Redis Hash (HSET/HGET) ma'lumot turidan qanday maqsadda foydalaniladi?",
-      options: [
-        "Faqat sonli qiymatlarni hisoblash uchun",
-        "Obyekt ko'rinishidagi ma'lumotlarni saqlash va ularning alohida maydonlarini o'qish/yozish uchun",
-        "Cheksiz matnlarni saqlash uchun",
-        "Faqat ro'yxatlarni saqlash uchun"
-      ],
-      correctAnswer: 1,
-      explanation: "Hash kalit ostida maydon-qiymat (field-value) juftliklarini (xuddi JS obyektidek) saqlashga imkon beradi va xotirani tejaydi."
-    },
-    {
-      id: 11,
-      question: "Cache Invalidation (Keshni tozalash) nima?",
-      options: [
-        "Keshga noto'g'ri ma'lumot turlarini yozish",
-        "Bazadagi ma'lumot o'zgarganda keshdagi eski nusxasini yangilash yoki o'chirish jarayoni",
-        "Kesh tezligini oshiruvchi yangi algoritm",
-        "Redis serverini qayta ishga tushirish"
-      ],
-      correctAnswer: 1,
-      explanation: "Bazada ma'lumot o'zgarganda keshdagi ma'lumot eskiradi. Uni tozalash yoki yangilash jarayoni Cache Invalidation deb nomlanadi."
-    },
-    {
-      id: 12,
-      question: "Redis-da barcha kesh ma'lumotlarini butunlay o'chirib tashlash uchun qaysi buyruq ishlatiladi?",
-      options: [
-        "`DEL ALL`",
-        "`FLUSHALL`",
-        "`REMOVE`",
-        "`CLEAR`"
-      ],
-      correctAnswer: 1,
-      explanation: "`FLUSHALL` buyrug'i Redis-dagi barcha ma'lumotlarni va kalitlarni to'liq o'chirib tashlaydi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Keshlash (Caching) ning eng asosiy maqsadi nima?",
+    "options": [
+      "Ma'lumotlarni xavfsiz shifrlab saqlash",
+      "Tez-tez so'raladigan og'ir ma'lumotlarni RAM kabi tezkor xotiraga vaqtinchalik yozib, tizim tezligini oshirish va bazaga yuklamani kamaytirish",
+      "Serverni yangi operatsion tizimga o'tkazish",
+      "Veb-sahifa dizaynini chiroyli va qulay qilish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Keshlash tez-tez o'qiladigan og'ir so'rovlar natijasini tezkor RAM xotirasiga saqlash orqali bazaga qayta-qayta murojaat qilishni oldini oladi va javob tezligini oshiradi."
+  },
+  {
+    "id": 2,
+    "question": "Redis qanday ma'lumotlar bazasi hisoblanadi?",
+    "options": [
+      "SQL relyatsion ma'lumotlar bazasi",
+      "RAM-da o'ta tezkor ishlaydigan Key-Value (kalit-qiymat) in-memory kesh tizimi va bazadir",
+      "Faqat diskda fayllar saqlaydigan arxiv tizimi",
+      "Hujjatlarga asoslangan NoSQL MongoDB analogi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Redis in-memory (tezkor xotirada ishlaydigan) kalit-qiymat ma'lumotlar do'konidir va asosan kesh yuritishda qo'llaniladi."
+  },
+  {
+    "id": 3,
+    "question": "Keshda saqlanayotgan ma'lumotlarning yashash muddati nima deyiladi?",
+    "options": [
+      "DNS (Domain Name System)",
+      "CORS (Cross-Origin Resource Sharing)",
+      "TTL (Time To Live)",
+      "API Gateway Lifetime"
+    ],
+    "correctAnswer": 2,
+    "explanation": "TTL (Time To Live) ma'lumotning keshda qancha soniya yoki millisekund davomida saqlanishini belgilaydi."
+  },
+  {
+    "id": 4,
+    "question": "Cache-Aside (Lazy Loading) strategiyasi qanday ishlaydi?",
+    "options": [
+      "Har doim faqat bazadan o'qiladi, keshga yozilmaydi",
+      "Avval kesh tekshiriladi, topilmasa bazadan o'qilib, keshga yoziladi va qaytariladi",
+      "Ma'lumot faqat keshga yoziladi va bazaga hech qachon yozilmaydi",
+      "Har doim kesh va baza parallel o'chiriladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Cache-Aside uslubida ilova keshni o'qiydi (hit bo'lsa darhol qaytaradi), agar ma'lumot keshda bo'lmasa (miss), bazadan olib keshga yozib qo'yadi."
+  },
+  {
+    "id": 5,
+    "question": "Redis single-threaded bo'lishiga qaramay nega juda tez ishlaydi?",
+    "options": [
+      "Chunki u faqat bitta kompyuterda ishlay oladi",
+      "Chunki u to'liq operativ xotirada (RAM) ishlaydi va non-blocking I/O multiplexing ishlatadi",
+      "Chunki u barcha so'rovlarni diskka yozadi",
+      "Chunki u ko'p yadroli protsessorni to'liq band qiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Redis RAM-da ishlashi va I/O multiplexing (non-blocking) ishlatishi tufayli CPU oqimlarini almashtirish kechikishlarisiz o'ta tez ishlaydi."
+  },
+  {
+    "id": 6,
+    "question": "Redis-da ma'lumotlarni saqlash muddati (TTL) bilan birga yozish uchun qaysi buyruq qo'llaniladi?",
+    "options": [
+      "`SET`",
+      "`SETEX`",
+      "`GET`",
+      "`EXISTS`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`SETEX` buyrug'i qiymatni keshga yozish bilan bir qatorda uning yashash muddatini (expiry in seconds) atomar tarzda belgilaydi."
+  },
+  {
+    "id": 7,
+    "question": "Kesh to'lib ketganda, eng uzoq vaqt davomida ishlatilmagan elementlarni o'chirish algoritmi qaysi?",
+    "options": [
+      "FIFO (First In First Out)",
+      "LRU (Least Recently Used)",
+      "LFU (Least Frequently Used)",
+      "Random Eviction"
+    ],
+    "correctAnswer": 1,
+    "explanation": "LRU (Least Recently Used) eng uzoq vaqt so'ralmagan (kirilmagan) elementlarni birinchi bo'lib keshdan chiqarib tashlaydi."
+  },
+  {
+    "id": 8,
+    "question": "Cache Stampede (Kesh bo'roni/shovqini) muammosi qanday yuz beradi?",
+    "options": [
+      "Kesh kaliti o'chirilganda server o'chib qolsa",
+      "Kesh muddati (TTL) tugashi bilan parallel ravishda juda ko'p so'rovlar bir vaqtda bazaga yuborilganda",
+      "Redis-da xotira to'lib qolganda",
+      "Redis-ga noto'g'ri parol kiritilganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Kesh muddati tugagani uchun barcha parallel so'rovlar keshdan o'tolmay, birdaniga bazaga yuklama bersa, bu Cache Stampede deyiladi."
+  },
+  {
+    "id": 9,
+    "question": "Sessiyalarni (Sessions) Redis keshda saqlashning eng katta foydasi nimada?",
+    "options": [
+      "Xavfsiz HTTP sarlavhalarini tekshirish",
+      "Gorizontal kengaytirilgan (Horizontal scaling) serverlarda foydalanuvchi qaysi serverga bormasin sessiya uzilib qolmasligi",
+      "SQL injection hujumlarining oldini olish",
+      "Statik rasmlarni avtomatik siqish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Sessiyalarni Redis-da markazlashtirib saqlash orqali har qaysi backend server foydalanuvchini muvaffaqiyatli autentifikatsiya qila oladi."
+  },
+  {
+    "id": 10,
+    "question": "Redis Hash (HSET/HGET) ma'lumot turidan qanday maqsadda foydalaniladi?",
+    "options": [
+      "Faqat sonli qiymatlarni hisoblash uchun",
+      "Obyekt ko'rinishidagi ma'lumotlarni saqlash va ularning alohida maydonlarini o'qish/yozish uchun",
+      "Cheksiz matnlarni saqlash uchun",
+      "Faqat ro'yxatlarni saqlash uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Hash kalit ostida maydon-qiymat (field-value) juftliklarini (xuddi JS obyektidek) saqlashga imkon beradi va xotirani tejaydi."
+  },
+  {
+    "id": 11,
+    "question": "Cache Invalidation (Keshni tozalash) nima?",
+    "options": [
+      "Keshga noto'g'ri ma'lumot turlarini yozish",
+      "Bazadagi ma'lumot o'zgarganda keshdagi eski nusxasini yangilash yoki o'chirish jarayoni",
+      "Kesh tezligini oshiruvchi yangi algoritm",
+      "Redis serverini qayta ishga tushirish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bazada ma'lumot o'zgarganda keshdagi ma'lumot eskiradi. Uni tozalash yoki yangilash jarayoni Cache Invalidation deb nomlanadi."
+  },
+  {
+    "id": 12,
+    "question": "Redis-da barcha kesh ma'lumotlarini butunlay o'chirib tashlash uchun qaysi buyruq ishlatiladi?",
+    "options": [
+      "`DEL ALL`",
+      "`FLUSHALL`",
+      "`REMOVE`",
+      "`CLEAR`"
+    ],
+    "correctAnswer": 1,
+    "explanation": "`FLUSHALL` buyrug'i Redis-dagi barcha ma'lumotlarni va kalitlarni to'liq o'chirib tashlaydi."
+  }
+]
+
 };

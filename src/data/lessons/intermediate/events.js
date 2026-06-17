@@ -2,7 +2,7 @@ export const events = {
   id: "events",
   title: "Brauzer Hodisalari va Event Handling (Events)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Hodisa (Event) nima?
 **Hodisa (Event)** — bu foydalanuvchining brauzer ichida amalga oshiradigan harakatlari (klik qilish, klaviaturadan matn yozish, sahifani aylantirish, shakllarni yuborish) yoki tizim tomonidan yuz beradigan o'zgarishlardir. JavaScript bu hodisalarni "eshitib" tinglay oladi va ularga nisbatan dasturiy reaksiya (javob) qaytaradi.
@@ -270,103 +270,32 @@ cartContainer.addEventListener('click', (event) => {
 | **passive: true**| Options obyekti ichida | true | Scroll tezligini oshiradi |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Click Event",
-      instruction: "Berilgan 'btn' obyektiga 'click' eventini qo'shing va u bosilganda consolega 'OK' chiqaring.",
-      startingCode: "const btn = { addEventListener: (type, cb) => btn.click = cb }; // Mock\n// Bu yerga yozing\n",
-      hint: "btn.addEventListener('click', () => console.log('OK'));",
-      test: "if (typeof btn.click === 'function') { btn.click(); if (logs.includes('OK')) return null; } return 'Consolega OK chiqmadi';"
-    },
-    {
-      id: 2,
-      title: "Input Event",
-      instruction: "Inputga biror narsa yozilganda uning qiymatini (value) konsolga chiqaring.",
-      startingCode: "const input = { value: 'test', addEventListener: (type, cb) => input.oninput = cb };\n// Bu yerga yozing\n",
-      hint: "input.addEventListener('input', (e) => console.log(e.target.value));",
-      test: "if (typeof input.oninput === 'function') { input.oninput({target: input}); if (logs.includes('test')) return null; } return 'Input qiymati chiqmadi';"
-    },
-    {
-      id: 3,
-      title: "Prevent Default",
-      instruction: "Eventning standart harakatini to'xtatuvchi metodni chaqiring.",
-      startingCode: "const event = { preventDefault: () => event.stopped = true };\nfunction handler(e) {\n  // Bu yerga yozing\n}\nhandler(event);",
-      hint: "e.preventDefault();",
-      test: "if (event.stopped) return null; return 'preventDefault() chaqirilmadi';"
-    },
-    {
-      id: 4,
-      title: "Double Click",
-      instruction: "'img' elementiga ikki marta bosilganda (dblclick) 'Rasm' so'zini chiqaring.",
-      startingCode: "const img = { addEventListener: (type, cb) => img.ondblclick = cb };\n// Bu yerga yozing\n",
-      hint: "img.addEventListener('dblclick', () => console.log('Rasm'));",
-      test: "if (typeof img.ondblclick === 'function') { img.ondblclick(); if (logs.includes('Rasm')) return null; } return 'Double click ishlamadi';"
-    },
-    {
-      id: 5,
-      title: "Remove Event Listener",
-      instruction: "'btn' elementiga ulangan 'handler' event listenerini o'chirib tashlang.",
-      startingCode: "const btn = { addEventListener: (type, cb) => btn.click = cb, removeEventListener: (type, cb) => btn.click = null };\nconst handler = () => console.log('Click');\nbtn.addEventListener('click', handler);\n\n// Bu yerga yozing - handler'ni o'chiring\n",
-      hint: "btn.removeEventListener('click', handler);",
-      test: "if (btn.click === null) return null; return 'removeEventListener orqali handler\\'ni o\\'chiring';"
-    },
-    {
-      id: 6,
-      title: "Mouse Over Event",
-      instruction: "'box' elementiga sichqoncha yaqinlashganda (mouseover) konsolga 'Hover' deb chiqaring.",
-      startingCode: "const box = { addEventListener: (type, cb) => box.onmouseover = cb };\n// Bu yerga yozing\n",
-      hint: "box.addEventListener('mouseover', () => console.log('Hover'));",
-      test: "if (typeof box.onmouseover === 'function') { box.onmouseover(); if (logs.includes('Hover')) return null; } return 'mouseover hodisasini to\\'g\\'ri sozlang';"
-    },
-    {
-      id: 7,
-      title: "Stop Propagation",
-      instruction: "Event handler ichida event bubbling tarqalishini to'xtatuvchi metodni chaqiring.",
-      startingCode: "const event = { stopPropagation: () => event.stopped = true };\nfunction handler(e) {\n  // Bu yerga yozing\n}\nhandler(event);",
-      hint: "e.stopPropagation();",
-      test: "if (event.stopped) return null; return 'stopPropagation() chaqirilmadi';"
-    },
-    {
-      id: 8,
-      title: "Keydown Event",
-      instruction: "'input' elementida tugma bosilganda (keydown), agar u 'Enter' tugmasi bo'lsa, konsolga 'Enter bosildi' deb yozing.",
-      startingCode: "const input = { addEventListener: (type, cb) => input.onkeydown = cb };\n// Bu yerga yozing\n",
-      hint: "input.addEventListener('keydown', (e) => { if (e.key === 'Enter') console.log('Enter bosildi'); });",
-      test: "if (typeof input.onkeydown === 'function') { input.onkeydown({ key: 'Enter' }); if (logs.includes('Enter bosildi')) return null; } return 'Keydown hodisasida Enter\\'ni tekshiring';"
-    },
-    {
-      id: 9,
-      title: "Event Delegation",
-      instruction: "Ota element 'parent'ga click listener qo'shing. Agar bosilgan elementning klassida 'item' bo'lsa, uning textContent qiymatini konsolga chiqaring.",
-      startingCode: "const parent = { addEventListener: (type, cb) => parent.click = cb };\n// Bu yerga yozing\n",
-      hint: "parent.addEventListener('click', (e) => { if (e.target.classList.contains('item')) console.log(e.target.textContent); });",
-      test: "if (typeof parent.click === 'function') { parent.click({ target: { classList: { contains: (c) => c === 'item' }, textContent: 'salom' } }); if (logs.includes('salom')) return null; } return 'Event delegation to\\'g\\'ri sozlanmadi';"
-    },
-    {
-      id: 10,
-      title: "Change Event",
-      instruction: "'select' elementining tanlangan qiymati o'zgarganda (change), uning qiymatini (value) konsolga chiqaring.",
-      startingCode: "const select = { value: 'uz', addEventListener: (type, cb) => select.onchange = cb };\n// Bu yerga yozing\n",
-      hint: "select.addEventListener('change', (e) => console.log(e.target.value));",
-      test: "if (typeof select.onchange === 'function') { select.onchange({ target: select }); if (logs.includes('uz')) return null; } return 'change hodisasini to\\'g\\'ri sozlang';"
-    },
-    {
-      id: 11,
-      title: "Focus Event",
-      instruction: "'input' elementiga fokus berilganda (focus), konsolga 'Focused' deb yozing.",
-      startingCode: "const input = { addEventListener: (type, cb) => input.onfocus = cb };\n// Bu yerga yozing\n",
-      hint: "input.addEventListener('focus', () => console.log('Focused'));",
-      test: "if (typeof input.onfocus === 'function') { input.onfocus(); if (logs.includes('Focused')) return null; } return 'focus hodisasini to\\'g\\'ri sozlang';"
-    },
-    {
-      id: 12,
-      title: "DOMContentLoaded",
-      instruction: "'doc' elementiga 'DOMContentLoaded' eventini qo'shing va u sodir bo'lganda 'DOM ready' so'zini konsolga chiqaring.",
-      startingCode: "const doc = { addEventListener: (type, cb) => doc.onload = cb };\n// Bu yerga yozing\n",
-      hint: "doc.addEventListener('DOMContentLoaded', () => console.log('DOM ready'));",
-      test: "if (typeof doc.onload === 'function') { doc.onload(); if (logs.includes('DOM ready')) return null; } return 'DOMContentLoaded hodisasini to\\'g\\'ri sozlang';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Klik Hodisasini Tinglash (addEventListener)",
+    "instruction": "Berilgan `button` elementiga 'click' hodisasini eshituvchi va bosilganda `callback` funksiyasini ishga tushiruvchi `setupClick(button, callback)` funksiyasini yozing.",
+    "startingCode": "function setupClick(button, callback) {\n  // Kodni yozing\n}",
+    "hint": "button.addEventListener('click', callback);",
+    "test": "try { let clicked = false; const mockBtn = { addEventListener: (t, cb) => { if(t === 'click') cb(); } }; setupClick(mockBtn, () => clicked = true); if (!clicked) return 'click hodisasi ulanmadi yoki callback chaqirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 2,
+    "title": "Standart Harakatni Bekor Qilish (preventDefault)",
+    "instruction": "Forma yuborilish (submit) hodisasini qabul qilib, uning standart sahifani yangilash harakatini bekor qiluvchi `handleSubmit(event)` funksiyasini yozing.",
+    "startingCode": "function handleSubmit(event) {\n  // Kodni yozing\n}",
+    "hint": "event.preventDefault();",
+    "test": "try { let prevented = false; const mockEvent = { preventDefault: () => prevented = true }; handleSubmit(mockEvent); if (!prevented) return 'preventDefault() chaqirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 3,
+    "title": "Hodisalarni Delegatsiya Qilish (Event Delegation)",
+    "instruction": "Berilgan `parent` elementiga click listener ulang. Agar bosilgan element (`event.target`) `item` klassiga ega bo'lsa, `callback` funksiyasini ishga tushirib, unga o'sha bosilgan elementni argument qilib uzatuvchi `delegateClick(parent, callback)` funksiyasini yozing.",
+    "startingCode": "function delegateClick(parent, callback) {\n  // Kodni yozing\n}",
+    "hint": "parent.addEventListener('click', (e) => { if (e.target.classList.contains('item')) callback(e.target); });",
+    "test": "try { let calledWith = null; let listener = null; const mockParent = { addEventListener: (t, cb) => { listener = cb; } }; delegateClick(mockParent, (el) => calledWith = el); const mockTarget = { classList: { contains: (c) => c === 'item' } }; listener({ target: mockTarget }); if (calledWith !== mockTarget) return 'Delegatsiya ishlamadi yoki callback to\\'g\\'ri element bilan chaqirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

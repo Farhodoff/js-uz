@@ -2,7 +2,7 @@ export const advancedTaskScheduling = {
   id: "advancedTaskScheduling",
   title: "Advanced Task Scheduling va Event Loop",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Asinxronlik va Task Scheduling nima?
 JavaScript **bitta oqimli (single-threaded)** til bo'lib, u bir vaqtning o'zida faqat bitta kod bo'lagini bajara oladi. Bu bitta oqim (Main Thread) nafaqat JavaScript-ni bajaradi, balki sahifani chizish (rendering) va foydalanuvchi hodisalarini (click, type) qayta ishlash bilan ham shug'ullanadi. 

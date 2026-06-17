@@ -1,13 +1,14 @@
 export const reactStateManagement = {
   id: "reactStateManagement",
   title: "State Management Arxitekturasi",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Global State Management nima?
 React ilovalarida ma'lumotlar oqimi (data flow) har doim tepadan pastga (unidirectional/yagona yo'nalishli) qarab oqadi. Ya'ni ota komponentdan bola komponentga props orqali uzatiladi. Katta loyihalarda komponentlar daraxti juda chuqurlashib ketadi va ma'lumotni eng quyi komponentga yetkazish qiyinlashadi. Mana shu muammoni hal qilish va ilova holatini markazlashgan holda boshqarish **State Management** deb ataladi.
 
 ### Real hayotiy o'xshatish
-* **Local State (useState):** Sizning **shaxsiy hamyoningiz**. Undagi pulni faqat o'zingiz boshqarasiz va u siz bilan birga yuragi. Boshqa odamlar hamyoningizga to'g'ridan-to'g'ri aralasha olmaydi.
+* **Local State (useState):** Sizning **shaxsiy hamyoningiz**. Undagi pulni faqat o'zingiz boshqarasiz va u siz bilan birga yuradi. Boshqa odamlar hamyoningizga to'g'ridan-to'g'ri aralasha olmaydi.
 * **Props Drilling (Qo'lma-qo'l uzatish):** Ko'p qavatli binoning 5-qavatidagi do'stingizga pul bermoqchisiz. Buning uchun pulni 1-qavatdagi, keyin 2-qavatdagi va hokazo har bir qavatdagi odamlarga berib, navbatma-navbat 5-qavatga yetkazish. O'rtadagi odamlarga bu pul mutlaqo kerak bo'lmasa-da, ular baribir vositachi bo'lishga majbur.
 * **Context API (E'lonlar taxtasi):** Xonadondagi **umumiy e'lonlar taxtasi**. Unga osilgan xabarni hamma ko'ra oladi. Ammo kimdir taxtadagi xabarni o'zgartirsa, barcha oila a'zolari u bilan tanishish uchun o'z ishini to'xtatishi (re-render) kerak bo'ladi.
 * **Global State Store (Zustand / Redux - Markaziy Muzlatgich):** Oshxonadagi **umumiy muzlatgich**. Istalgan kishi u yerdan mahsulot olishi yoki qo'yishi mumkin. Agar kimdir pishloq olsa, faqat pishloq kutayotgan odam reaksiyaga kirishadi (selective subscription), qolganlar esa chalg'imaydi.
@@ -38,7 +39,7 @@ export function ThemeButton() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   return (
     <button onClick={toggleTheme} style={{ background: theme === "light" ? "#fff" : "#333", color: theme === "light" ? "#000" : "#fff" }}>
-      Mavzuni o'zgartirish: \${theme}
+      Mavzuni o'zgartirish: {theme}
     </button>
   );
 }
@@ -64,7 +65,7 @@ export function CounterComponent() {
 
   return (
     <div>
-      <h1>Hisoblagich: \${count}</h1>
+      <h1>Hisoblagich: {count}</h1>
       <button onClick={increase}>Oshirish</button>
     </div>
   );
@@ -82,7 +83,7 @@ const todoSlice = createSlice({
   initialState: [],
   reducers: {
     addTodo: (state, action) => {
-      // Immer.js tufayli xavfsiz mutatsiya (fonda baribir immutable bo'ladi)
+      // Immer.js tufayli xavfsiz mutatsiya (fondi baribir immutable bo'ladi)
       state.push({ id: Date.now(), text: action.payload, completed: false });
     },
     toggleTodo: (state, action) => {
@@ -287,177 +288,180 @@ export const useCartStore = create(
 | **Local UI State** | Faqat bitta komponent ichida (modal, input) | \`useState\`, \`useReducer\` | Faqat shu komponent render bo'ladi |
 | **Global UI Config** | Kam o'zgaruvchan global ma'lumotlar (Theme, Til) | Context API | Bog'langan barcha komponentlar render bo'ladi |
 | **Global High-Freq** | Tez o'zgaradigan murakkab UI ma'lumotlar | Zustand, Redux Toolkit | Faqat kerakli selektorli komponent render bo'ladi |
-| **Server State** | Tashqi API orqali keladigan ma'lumotlar | React Query (TanStack Query) | Keshlar va fonda sinxronlanadi |`,
+| **Server State** | Tashqi API orqali keladigan ma'lumotlar | React Query (TanStack Query) | Keshlar va fonda sinxronlanadi |
+`,
   exercises: [
-    {
-      id: 1,
-      title: "Immutable List Adder",
-      instruction: "Massiv ko'rinishidagi state-ga element qo'shish uchun massivni o'zgartirmasdan (immutable) yangi massiv qaytaruvchi `addItem(state, item)` funksiyasini yozing.",
-      startingCode: "function addItem(state, item) {\n  // Spread operator orqali yozing\n}",
-      hint: "return [...state, item];",
-      test: "if (typeof addItem !== 'function') return 'addItem topilmadi'; const s = [1, 2]; const res = addItem(s, 3); if(s.length !== 2) return 'Asl state o\\'zgartirildi (mutated)'; if(res[2] !== 3) return 'Yangi element qo\\'shilmadi'; return null;"
-    },
-    {
-      id: 2,
-      title: "Immutable Object Updater",
-      instruction: "User obyektini o'zgartirmasdan (immutable), uning yoshini (`age`) yangi qiymatga o'zgartirib qaytaruvchi `updateUserAge(user, newAge)` funksiyasini yozing.",
-      startingCode: "function updateUserAge(user, newAge) {\n  // user obyektini o'zgartirmasdan yozing\n}",
-      hint: "return { ...user, age: newAge };",
-      test: "if (typeof updateUserAge !== 'function') return 'updateUserAge topilmadi'; const u = { name: 'Ali', age: 20 }; const res = updateUserAge(u, 21); if(u.age !== 20) return 'Asl obyekt o\\'zgartirildi'; if(res.age !== 21) return 'Yosh yangilanmadi'; return null;"
-    },
-    {
-      id: 3,
-      title: "Store Merger",
-      instruction: "Ikkita do'kon obyektlarini birlashtirib qaytaruvchi `combineStores(storeA, storeB)` funksiyasini yozing.",
-      startingCode: "function combineStores(storeA, storeB) {\n  // Obyektlarni birlashtiring\n}",
-      hint: "return { ...storeA, ...storeB };",
-      test: "if (typeof combineStores !== 'function') return 'combineStores topilmadi'; const a = { x: 1 }; const b = { y: 2 }; const res = combineStores(a, b); if(res.x !== 1 || res.y !== 2) return 'Birlashtirishda xato'; return null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Immutable List Adder",
+    "instruction": "Massiv ko'rinishidagi state-ga element qo'shish uchun massivni o'zgartirmasdan (immutable) yangi massiv qaytaruvchi `addItem(state, item)` funksiyasini yozing.",
+    "startingCode": "function addItem(state, item) {\n  // Spread operator orqali yozing\n}",
+    "hint": "return [...state, item];",
+    "test": "if (typeof addItem !== 'function') return 'addItem topilmadi'; const s = [1, 2]; const res = addItem(s, 3); if(s.length !== 2) return 'Asl state o\\'zgartirildi (mutated)'; if(res[2] !== 3) return 'Yangi element qo\\'shilmadi'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Immutable Object Updater",
+    "instruction": "User obyektini o'zgartirmasdan (immutable), uning yoshini (`age`) yangi qiymatga o'zgartirib qaytaruvchi `updateUserAge(user, newAge)` funksiyasini yozing.",
+    "startingCode": "function updateUserAge(user, newAge) {\n  // user obyektini o'zgartirmasdan yozing\n}",
+    "hint": "return { ...user, age: newAge };",
+    "test": "if (typeof updateUserAge !== 'function') return 'updateUserAge topilmadi'; const u = { name: 'Ali', age: 20 }; const res = updateUserAge(u, 21); if(u.age !== 20) return 'Asl obyekt o\\'zgartirildi'; if(res.age !== 21) return 'Yosh yangilanmadi'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Store Merger",
+    "instruction": "Ikkita do'kon obyektlarini birlashtirib qaytaruvchi `combineStores(storeA, storeB)` funksiyasini yozing.",
+    "startingCode": "function combineStores(storeA, storeB) {\n  // Obyektlarni birlashtiring\n}",
+    "hint": "return { ...storeA, ...storeB };",
+    "test": "if (typeof combineStores !== 'function') return 'combineStores topilmadi'; const a = { x: 1 }; const b = { y: 2 }; const res = combineStores(a, b); if(res.x !== 1 || res.y !== 2) return 'Birlashtirishda xato'; return null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Nega array state-ga `state.push(item)` deb to'g'ridan-to'g'ri element qo'shish tavsiya etilmaydi?",
-      options: [
-        "Chunki bu JS sintaksisi emas",
-        "Chunki u xotira manzilini (reference) o'zgartirmaydi va React re-render qilmaydi",
-        "Faqat CSS-ga zarar beradi",
-        "React-da push metodi butunlay o'chirilgan"
-      ],
-      correctAnswer: 1,
-      explanation: "React elementlarning o'zgarganini xotira havolasini solishtirish orqali biladi. Obyekt mutatsiya qilinganda reference o'zgarmasdan qoladi."
-    },
-    {
-      id: 2,
-      question: "Props drilling muammosini qanday hal qilish mumkin?",
-      options: [
-        "Faqat bitta faylga yozib chiqish orqali",
-        "Context API yoki global state manager (Zustand, Redux) ishlatish orqali",
-        "CSS flexbox yordamida",
-        "Node.js serverini qayta yoqish orqali"
-      ],
-      correctAnswer: 1,
-      explanation: "Context API va global do'konlar ma'lumotni to'g'ridan-to'g'ri kerakli komponentga uzatishga imkon beradi, o'rta qatlamlarni aylanib o'tadi."
-    },
-    {
-      id: 3,
-      question: "Context API-dan qachon foydalanish eng to'g'ri hisoblanadi?",
-      options: [
-        "Tez o'zgaruvchan murakkab o'yin statelari uchun",
-        "Kam o'zgaruvchan global ma'lutmotlar (Theme, Til, Autentifikatsiya holati) uchun",
-        "Har soniyada API-dan ma'lumot olganda",
-        "Faqat HTML input qiymatlarini saqlashda"
-      ],
-      correctAnswer: 1,
-      explanation: "Context tez o'zgarsa, provayder ichidagi barcha komponentlar qayta render bo'ladi. Shuning uchun u kam yangilanadigan ma'lumotlar uchun mos keladi."
-    },
-    {
-      id: 4,
-      question: "Redux-dagi 'Single Source of Truth' nima degani?",
-      options: [
-        "Barcha kodlar bitta faylda bo'lishi",
-        "Ilovaning barcha global holati (state) bitta markaziy store-da saqlanishi",
-        "Saytda faqat bitta sahifa borligi",
-        "API ma'lumotlarini bir marta olish"
-      ],
-      correctAnswer: 1,
-      explanation: "Bu prinsip ilova holatini markaziy va bir joyda xatolarsiz, toza boshqarishni ta'minlaydi."
-    },
-    {
-      id: 5,
-      question: "Zustand-da selectordan foydalanish maqsadi nima?",
-      options: [
-        "Stil tanlash",
-        "Komponentga faqat kerakli state qiymatini olib kelish va ortiqcha renderlarni oldini olish",
-        "API so'rov yuborish",
-        "Database-dan jadval tanlash"
-      ],
-      correctAnswer: 1,
-      explanation: "Selector yordamida komponent faqat o'ziga kerakli state bo'lagiga obuna bo'ladi, qolgan o'zgarishlarda u qayta render bo'lmaydi."
-    },
-    {
-      id: 6,
-      question: "Redux Toolkit (RTK) qaysi kutubxona yordamida obyektlarni 'mutatsiya' qilish imkonini beradi?",
-      options: [
-        "React Query",
-        "Immer.js",
-        "Axios",
-        "Lodash"
-      ],
-      correctAnswer: 1,
-      explanation: "RTK ichida Immer.js ishlaydi. U koddagi o'zgartirishlarni (state.user.age = 20) fonda avtomatik tarzda immutable shaklga aylantiradi."
-    },
-    {
-      id: 7,
-      question: "React-da 'State' tushunchasi o'zi nima?",
-      options: [
-        "Brauzerning offline kesh xotirasi",
-        "Komponentning o'zgaruvchan local xotirasi",
-        "CSS animatsiyalari to'plami",
-        "Serverdan kelgan statik HTML fayl"
-      ],
-      correctAnswer: 1,
-      explanation: "State - bu komponent ichida saqlanadigan va u o'zgarganda komponentni qayta chizadigan (re-render) ma'lumotdir."
-    },
-    {
-      id: 8,
-      question: "Zustand global state manager Context API-dan qanday qilib yaxshiroq ishlaydi?",
-      options: [
-        "U brauzerda ishlamaydi",
-        "Selector obunalari orqali faqatgina o'zgargan state qiymatini olgan komponentlarni render qiladi",
-        "U Virtual DOM-ni chetlab o'tadi",
-        "U CSS o'zgaruvchilari orqali ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Zustand selectorlar bilan komponentlarni bog'laydi. Context-dan farqli o'laroq, keraksiz komponentlar re-render bo'lmaydi."
-    },
-    {
-      id: 9,
-      question: "Redux Middleware-ning asosiy vazifasi nima?",
-      options: [
-        "Komponentlarni bezash",
-        "Action-lar reducer-ga yetib borguncha ularni ushlab, asinxron API yoki log yozish ishlarini bajarish",
-        "HTML teglari yaratish",
-        "Sayt tezligini o'lchash"
-      ],
-      correctAnswer: 1,
-      explanation: "Middleware (masalan Thunk) Redux oqimini kengaytirib, asinxron harakatlarni boshqarishga yordam beradi."
-    },
-    {
-      id: 10,
-      question: "Jotai/Recoil atomic state manager-larning eng muhim xususiyati nima?",
-      options: [
-        "Hamma state-ni bitta katta obyektda saqlashi",
-        "Global state-ni komponentlar to'g'ridan-to'g'ri obuna bo'la oladigan mustaqil 'atom'larga bo'lib tashlashi",
-        "Faqat server logikasini yozishi",
-        "CSS-ni avtomatik generatsiya qilishi"
-      ],
-      correctAnswer: 1,
-      explanation: "Atomic yondashuvda global state atomlarga bo'linadi va faqat o'sha atom o'zgarganda unga bog'langan komponent re-render bo'ladi."
-    },
-    {
-      id: 11,
-      question: "Nega form inputlaridagi tezkor o'zgaruvchan state-larni Zustand/Redux-ga yozish tavsiya etilmaydi?",
-      options: [
-        "Chunki global store string-larni tushunmaydi",
-        "Har bir harf yozilganda global store yangilanib, butun sahifa komponentlarini keraksiz qayta render qilmasligi uchun",
-        "Inputlar faqat local state bilan ishlay olgani uchun",
-        "Bu xavfsizlikka zarar keltirgani uchun"
-      ],
-      correctAnswer: 1,
-      explanation: "Input holatlari local bo'lgani afzal. Bo'lmasa, har safar harf kiritilganda global o'zgarish sodir bo'ladi va butun ilova sekinlashadi."
-    },
-    {
-      id: 12,
-      question: "State Management-dagi 'Immutable State' atamasi nimani anglatadi?",
-      options: [
-        "Hech qachon o'zgartirib bo'lmaydigan state",
-        "State obyektini to'g'ridan-to'g'ri o'zgartirmasdan, har doim yangi nusxa (copy) yaratish orqali yangilash yondashuvi",
-        "Serverda saqlanadigan ma'lumotlar",
-        "Faqat CSS o'zgaruvchilari"
-      ],
-      correctAnswer: 1,
-      explanation: "Immutable yondashuvda eski obyekt o'zgartirilmaydi, balki spread operator yordamida uning nusxasi olinib yangilanadi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Nega array state-ga `state.push(item)` deb to'g'ridan-to'g'ri element qo'shish tavsiya etilmaydi?",
+    "options": [
+      "Chunki bu JS sintaksisi emas",
+      "Chunki u xotira manzilini (reference) o'zgartirmaydi va React re-render qilmaydi",
+      "Faqat CSS-ga zarar beradi",
+      "React-da push metodi butunlay o'chirilgan"
+    ],
+    "correctAnswer": 1,
+    "explanation": "React elementlarning o'zgarganini xotira havolasini solishtirish orqali biladi. Obyekt mutatsiya qilinganda reference o'zgarmasdan qoladi."
+  },
+  {
+    "id": 2,
+    "question": "Props drilling muammosini qanday hal qilish mumkin?",
+    "options": [
+      "Faqat bitta faylga yozib chiqish orqali",
+      "Context API yoki global state manager (Zustand, Redux) ishlatish orqali",
+      "CSS flexbox yordamida",
+      "Node.js serverini qayta yoqish orqali"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Context API va global do'konlar ma'lumotni to'g'ridan-to'g'ri kerakli komponentga uzatishga imkon beradi, o'rta qatlamlarni aylanib o'tadi."
+  },
+  {
+    "id": 3,
+    "question": "Context API-dan qachon foydalanish eng to'g'ri hisoblanadi?",
+    "options": [
+      "Tez o'zgaruvchan murakkab o'yin statelari uchun",
+      "Kam o'zgaruvchan global ma'lumotlar (Theme, Til, Autentifikatsiya holati) uchun",
+      "Har soniyada API-dan ma'lumot olganda",
+      "Faqat HTML input qiymatlarini saqlashda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Context tez o'zgarsa, provayder ichidagi barcha komponentlar qayta render bo'ladi. Shuning uchun u kam yangilanadigan ma'lumotlar uchun mos keladi."
+  },
+  {
+    "id": 4,
+    "question": "Redux-dagi 'Single Source of Truth' nima degani?",
+    "options": [
+      "Barcha kodlar bitta faylda bo'lishi",
+      "Ilovaning barcha global holati (state) bitta markaziy store-da saqlanishi",
+      "Saytda faqat bitta sahifa borligi",
+      "API ma'lumotlarini bir marta olish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Bu prinsip ilova holatini markaziy va bir joyda xatolarsiz, toza boshqarishni ta'minlaydi."
+  },
+  {
+    "id": 5,
+    "question": "Zustand-da selectordan foydalanish maqsadi nima?",
+    "options": [
+      "Stil tanlash",
+      "Komponentga faqat kerakli state qiymatini olib kelish va ortiqcha renderlarni oldini olish",
+      "API so'rov yuborish",
+      "Database-dan jadval tanlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Selector yordamida komponent faqat o'ziga kerakli state bo'lagiga obuna bo'ladi, qolgan o'zgarishlarda u qayta render bo'lmaydi."
+  },
+  {
+    "id": 6,
+    "question": "Redux Toolkit (RTK) qaysi kutubxona yordamida obyektlarni 'mutatsiya' qilish imkonini beradi?",
+    "options": [
+      "React Query",
+      "Immer.js",
+      "Axios",
+      "Lodash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "RTK ichida Immer.js ishlaydi. U koddagi o'zgartirishlarni (state.user.age = 20) fonda avtomatik tarzda immutable shaklga aylantiradi."
+  },
+  {
+    "id": 7,
+    "question": "React-da 'State' tushunchasi o'zi nima?",
+    "options": [
+      "Brauzerning offline kesh xotirasi",
+      "Komponentning o'zgaruvchan local xotirasi",
+      "CSS animatsiyalari to'plami",
+      "Serverdan kelgan statik HTML fayl"
+    ],
+    "correctAnswer": 1,
+    "explanation": "State - bu komponent ichida saqlanadigan va u o'zgarganda komponentni qayta chizadigan (re-render) ma'lumotdir."
+  },
+  {
+    "id": 8,
+    "question": "Zustand global state manager Context API-dan qanday qilib yaxshiroq ishlaydi?",
+    "options": [
+      "U brauzerda ishlamaydi",
+      "Selector obunalari orqali faqatgina o'zgargan state qiymatini olgan komponentlarni render qiladi",
+      "U Virtual DOM-ni chetlab o'tadi",
+      "U CSS o'zgaruvchilari orqali ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Zustand selectorlar bilan komponentlarni bog'laydi. Context-dan farqli o'laroq, keraksiz komponentlar re-render bo'lmaydi."
+  },
+  {
+    "id": 9,
+    "question": "Redux Middleware-ning asosiy vazifasi nima?",
+    "options": [
+      "Komponentlarni bezash",
+      "Action-lar reducer-ga yetib borguncha ularni ushlab, asinxron API yoki log yozish ishlarini bajarish",
+      "HTML teglari yaratish",
+      "Sayt tezligini o'lchash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Middleware (masalan Thunk) Redux oqimini kengaytirib, asinxron harakatlarni boshqarishga yordam beradi."
+  },
+  {
+    "id": 10,
+    "question": "Jotai/Recoil atomic state manager-larning eng muhim xususiyati nima?",
+    "options": [
+      "Hamma state-ni bitta katta obyektda saqlashi",
+      "Global state-ni komponentlar to'g'ridan-to'g'ri obuna bo'la oladigan mustaqil 'atom'larga bo'lib tashlashi",
+      "Faqat server logikasini yozishi",
+      "CSS-ni avtomatik generatsiya qilishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Atomic yondashuvda global state atomlarga bo'linadi va faqat o'sha atom o'zgarganda unga bog'langan komponent re-render bo'ladi."
+  },
+  {
+    "id": 11,
+    "question": "Nega form inputlaridagi tezkor o'zgaruvchan state-larni Zustand/Redux-ga yozish tavsiya etilmaydi?",
+    "options": [
+      "Chunki global store string-larni tushunmaydi",
+      "Har bir harf yozilganda global store yangilanib, butun sahifa komponentlarini keraksiz qayta render qilmasligi uchun",
+      "Inputlar faqat local state bilan ishlay olgani uchun",
+      "Bu xavfsizlikka zarar keltirgani uchun"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Input holatlari local bo'lgani afzal. Bo'lmasa, har safar harf kiritilganda global o'zgarish sodir bo'ladi va butun ilova sekinlashadi."
+  },
+  {
+    "id": 12,
+    "question": "State Management-dagi 'Immutable State' atamasi nimani anglatami?",
+    "options": [
+      "Hech qachon o'zgartirib bo'lmaydigan state",
+      "State obyektini to'g'ridan-to'g'ri o'zgartirmasdan, har doim yangi nusxa (copy) yaratish orqali yangilash yondashuvi",
+      "Serverda saqlanadigan ma'lumotlar",
+      "Faqat CSS o'zgaruvchilari"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Immutable yondashuvda eski obyekt o'zgartirilmaydi, balki spread operator yordamida uning nusxasi olinib yangilanadi."
+  }
+]
+
 };

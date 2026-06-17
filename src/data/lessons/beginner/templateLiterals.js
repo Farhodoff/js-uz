@@ -2,7 +2,7 @@ export const templateLiterals = {
   id: "templateLiterals",
   title: "Template Literals (Backticks)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Template Literals (Shablonli Satrlar) nima?
 **Template Literals** — bu JavaScript-da satrlar (stringlar) bilan ishlashning zamonaviy va qulay usuli bo'lib, ES6 (ES2015) standartida taqdim etilgan. Odatda satrlar yozish uchun yakkalik (\`' '\`) yoki qo'shaloq (\`" "\`) tirnoqlardan foydalanardik. Template Literals esa klaviaturadagi \`Esc\` tugmasining ostida joylashgan **backtick (bektik, \` \`)** belgisi yordamida yaratiladi. 
@@ -276,103 +276,32 @@ Template literals zamonaviy dvigatellarda juda yaxshi optimallashtirilgan bo'lsa
 | **Tegli shablonlar** | Oddiy funksiya chaqiruvi | \`\` tag\`Matn \${qiymat}\` \`\` | Funksiya qavslarsiz chaqiriladi |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "O'zingizni tanishtiring",
-      instruction: "Name, Age o'zgaruvchilarini template literal orqali 'Mening ismim ... yoshim ...da' ko'rinishida chiqaring.",
-      startingCode: "const name = 'Farhod';\nconst age = 25;\n// Kodni shu yerda yozing\nconst result = ``;\nconsole.log(result);",
-      hint: "result = `Mening ismim ${name}, yoshim ${age}da`;",
-      test: "if (code.includes('${name}') && code.includes('${age}')) return null; return 'Template literals ishlatilmadi';"
-    },
-    {
-      id: 2,
-      title: "Matnlarni birlashtirish",
-      instruction: "'firstName' va 'lastName' o'zgaruvchilarini template literal yordamida birlashtirib, bitta 'fullName' o'zgaruvchisiga yozing.",
-      startingCode: "const firstName = 'Farhod';\nconst lastName = 'Soylir';\n// Kodni shu yerda yozing\nconst fullName = ``;\nconsole.log(fullName);",
-      hint: "const fullName = `${firstName} ${lastName}`;",
-      test: "if (fullName === 'Farhod Soylir' && code.includes('${firstName}') && code.includes('${lastName}')) return null; return 'Matnlar to\\'g\\'ri birlashtirilmadi';"
-    },
-    {
-      id: 3,
-      title: "Hisob-kitob ifodasi",
-      instruction: "'a' va 'b' sonlarini ko'paytmasini template literal yordamida 'Kopaytma: [natija]' ko'rinishida 'result' o'zgaruvchisiga yuklang.",
-      startingCode: "const a = 6;\nconst b = 7;\n// Kodni shu yerda yozing\nconst result = ``;\nconsole.log(result);",
-      hint: "const result = `Kopaytma: ${a * b}`;",
-      test: "if (result === 'Kopaytma: 42' && code.includes('${a * b}')) return null; return 'Ko\\'paytma natijasi xato';"
-    },
-    {
-      id: 4,
-      title: "Ternary operator matnda",
-      instruction: "'isGoldMember' boolean qiymatiga qarab, agar true bo'lsa 'VIP', aks holda 'Oddiy' so'zini 'statusMsg'ga yozing.",
-      startingCode: "const isGoldMember = true;\n// Kodni shu yerda yozing\nconst statusMsg = ``;\nconsole.log(statusMsg);",
-      hint: "const statusMsg = `${isGoldMember ? 'VIP' : 'Oddiy'}`;",
-      test: "if (statusMsg === 'VIP' && code.includes('?')) return null; return 'Status noto\\'g\\'ri aniqlandi';"
-    },
-    {
-      id: 5,
-      title: "Ko'p qatorli matn yaratish",
-      instruction: "Backtick yordamida ko'p qatorli manzil formatini hosil qiling (yangi qatorga o'tish bilan).",
-      startingCode: "const street = 'Amir Temur';\nconst city = 'Toshkent';\n// Multi-line matn yarating\nconst address = ``;\nconsole.log(address);",
-      hint: "const address = `${city}\n${street}`;",
-      test: "if (address.includes('\\n') && address.includes('Toshkent')) return null; return 'Ko\\'p qatorli matn yaratilmadi';"
-    },
-    {
-      id: 6,
-      title: "Funksiya chaqirish matnda",
-      instruction: "'word' o'zgaruvchisini template literal ichida `.toUpperCase()` orqali katta harfga o'giring va log qiling.",
-      startingCode: "const word = 'javascript';\n// Kodni shu yerda yozing\nconst result = ``;\nconsole.log(result);",
-      hint: "const result = `${word.toUpperCase()}`;",
-      test: "if (result === 'JAVASCRIPT' && code.includes('toUpperCase')) return null; return 'Funksiya chaqirilmadi';"
-    },
-    {
-      id: 7,
-      title: "HTML shablon yaratish",
-      instruction: "'title' o'zgaruvchisini HTML '<h1>' teglari ichiga joylashtirib, 'html' o'zgaruvchisiga yozing.",
-      startingCode: "const title = 'Darslik';\n// HTML shablon yarating\nconst html = ``;\nconsole.log(html);",
-      hint: "const html = `<h1>${title}</h1>`;",
-      test: "if (html === '<h1>Darslik</h1>') return null; return 'HTML shablon noto\\'g\\'ri';"
-    },
-    {
-      id: 8,
-      title: "Qo'shtirnoqlardan qochish",
-      instruction: "Backtick ichida ham oddiy (') ham ikkitalik (\") qo'shtirnoq qatnashgan 'Men \"JS\"ni o'rganyapman' matnini yarating.",
-      startingCode: "// Qo'shtirnoqlar bilan yozing\nconst quote = ``;\nconsole.log(quote);",
-      hint: "const quote = `Men \"JS\"ni o'rganyapman`;",
-      test: "if (quote.includes('\"JS\"') && quote.includes('o\\'rganyapman')) return null; return 'Matn kutilganidek emas';"
-    },
-    {
-      id: 9,
-      title: "Dinamik URL yaratish",
-      instruction: "'userId' va 'postId' o'zgaruvchilaridan foydalanib 'https://api.com/users/[userId]/posts/[postId]' dinamik URL hosil qiling.",
-      startingCode: "const userId = 45;\nconst postId = 102;\n// URL yarating\nconst url = ``;\nconsole.log(url);",
-      hint: "const url = `https://api.com/users/${userId}/posts/${postId}`;",
-      test: "if (url === 'https://api.com/users/45/posts/102') return null; return 'Dinamik URL noto\\'g\\'ri';"
-    },
-    {
-      id: 10,
-      title: "Object xususiyatini ko'rsatish",
-      instruction: "'user' obyektining 'brand' va 'model' xususiyatlarini template literal orqali 'Mashina: [brand] [model]' ko'rinishida yozing.",
-      startingCode: "const car = { brand: 'BYD', model: 'Song Plus' };\n// Obyekt qiymatlarini ishlating\nconst message = ``;\nconsole.log(message);",
-      hint: "const message = `Mashina: ${car.brand} ${car.model}`;",
-      test: "if (message === 'Mashina: BYD Song Plus' && code.includes('car.brand')) return null; return 'Obyekt qiymatlari noto\\'g\\'ri chiqdi';"
-    },
-    {
-      id: 11,
-      title: "Massivni matnga aylantirish",
-      instruction: "'tags' massivini template literal ichida `.join(', ')` orqali birlashtirib 'Kalit so'zlar: [tags]' ko'rinishiga keltiring.",
-      startingCode: "const tags = ['js', 'html', 'css'];\n// Massivni birlashtiring\nconst result = ``;\nconsole.log(result);",
-      hint: "const result = `Kalit so'zlar: ${tags.join(', ')}`;",
-      test: "if (result === 'Kalit so\\'zlar: js, html, css' && code.includes('tags.join')) return null; return 'Massiv noto\\'g\\'ri birlashtirildi';"
-    },
-    {
-      id: 12,
-      title: "Kompleks - Xarid Cheki",
-      instruction: "'item', 'price', va 'qty' yordamida ko'p qatorli chek matnini tayyorlang va oxirida jami summani hisoblang.",
-      startingCode: "const item = 'Kitob';\nconst price = 25000;\nconst qty = 3;\n// Chek matnini yozing\nconst receipt = ``;\nconsole.log(receipt);",
-      hint: "const receipt = `Nomi: ${item}\nSoni: ${qty}\nJami: ${price * qty}`;",
-      test: "if (receipt.includes('Kitob') && receipt.includes('75000') && receipt.includes('\\n')) return null; return 'Chek matni noto\\'g\\'ri';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "O'zgaruvchilarni interpolatsiya qilish",
+    "instruction": "Foydalanuvchining `firstName` va `lastName` o'zgaruvchilarini qabul qilib, ularni template literal (backtick) yordamida bitta satrga bo'sh joy (space) bilan ajratib birlashtiruvchi `formatFullName(firstName, lastName)` funksiyasini yozing. Masalan: `formatFullName('Ali', 'Valiyev')` chaqirilganda `'Ali Valiyev'` qaytishi kerak.",
+    "startingCode": "function formatFullName(firstName, lastName) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Backtick (`) belgisidan foydalaning va o'zgaruvchilarni ${firstName} ko'rinishida yozing.",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return formatFullName;');\nconst fn = sandbox();\nconst res = fn('Olim', 'Sodiqov');\nif (res === 'Olim Sodiqov') return null;\nreturn 'formatFullName funksiyasi ism va familiyani to\\'g\\'ri birlashtirmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Matematik ifodani formatlash",
+    "instruction": "Ikkita `a` va `b` sonlarini qabul qilib, ularning yig'indisini quyidagi ko'rinishda shablonli satr sifatida qaytaruvchi `sumFormula(a, b)` funksiyasini yozing: `'a + b = yig'indi'`. Masalan: `sumFormula(3, 4)` chaqirilganda `'3 + 4 = 7'` qaytishi kerak.",
+    "startingCode": "function sumFormula(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Shablon ichida ${a} va ${b} ni o'zaro qo'shib ketishingiz mumkin: `${a} + ${b} = ${a + b}`",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return sumFormula;');\nconst fn = sandbox();\nconst res = fn(10, 20);\nif (res === '10 + 20 = 30') return null;\nreturn 'sumFormula funksiyasi formulani to\\'g\\'ri formatlamadi';"
+  },
+  {
+    "id": 3,
+    "title": "HTML Shabloni yaratish",
+    "instruction": "Foydalanuvchi obyekti (`user` - `name` va `age` xossalari bor) va rolni (`role` - satr) qabul qilib, ularni HTML ko'rinishida formatlovchi `renderProfile(user, role)` funksiyasini yozing. Qaytadigan matn aynan mana shunday multiline (ko'p satrli) bo'lishi kerak:\n```html\n<div class=\"profile\">\n  <h2>Name: ${user.name}</h2>\n  <p>Age: ${user.age}</p>\n  <span class=\"role\">${role}</span>\n</div>\n```\nE'tibor bering: qatorlar va bo'sh joylar formatga mos tushishi lozim.",
+    "startingCode": "function renderProfile(user, role) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Ko'p satrli matn hosil qilish uchun backtickdan foydalaning va shablon ichida tegishli o'zgaruvchilarni joylashtiring: `${user.name}`, `${user.age}` va `${role}`.",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return renderProfile;');\nconst fn = sandbox();\nconst res = fn({ name: 'Jasur', age: 25 }, 'Developer');\nconst clean = (str) => str.replace(/\\s+/g, '');\nconst expectedClean = clean('<div class=\"profile\"><h2>Name:Jasur</h2><p>Age:25</p><span class=\"role\">Developer</span></div>');\nif (clean(res) === expectedClean) return null;\nreturn 'renderProfile qaytargan HTML to\\'g\\'ri formatda emas';"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

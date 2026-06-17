@@ -2,7 +2,7 @@ export const eventLoop = {
   id: "eventLoop",
   title: "Event Loop asoslari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Event Loop nima?
 **JavaScript** — bu **bir oqimli (single-threaded)** dasturlash tili. Bu degani, u bir vaqtning o'zida faqat bitta ishni bajara oladi. Unda nega biz bir vaqtda ham taymerlarni ishlatamiz, ham serverdan ma'lumot yuklaymiz va sahifadagi tugmalarni bosamiz? Sahifamiz qotib qolmaydi? 
@@ -239,119 +239,32 @@ processLargeArray(giantList, (item) => {
 | **setTimeout(fn, 0)** | Kodni darhol emas, eng kamida joriy stack tugagach bajarish | \`setTimeout(cb, 0)\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Call Stack Chaqiruv Ketma-ketligi",
-      instruction: "Konsolga avval 'ikkinchi', keyin ise 'birinchi' degan yozuv chiqishi uchun funksiyalar chaqiruvini to'g'rilang.",
-      startingCode: "function birinchi() {\n  console.log('birinchi');\n}\n\nfunction ikkinchi() {\n  console.log('ikkinchi');\n}\n\n// Chaqiriqlarni shu yerda boshqaring\nbirinchi();\nikkinchi();",
-      hint: "ikkinchi() funksiyasini birinchi() dan oldin chaqiring.",
-      test: "if (logs[0] === 'ikkinchi' && logs[1] === 'birinchi') return null; return 'Ketma-ketlik noto\\'g\\'ri!';"
-    },
-    {
-      id: 2,
-      title: "setTimeout Yordamida Macrotask",
-      instruction: "0 millisoniyadan keyin konsolga 'Asinxron ish' deb chiqaruvchi setTimeout yozing.",
-      startingCode: "// setTimeout shu yerda bo'lsin\n",
-      hint: "setTimeout(() => console.log('Asinxron ish'), 0); shaklida yozing.",
-      test: "if (code.includes('setTimeout') && logs.includes('Asinxron ish')) return null; return 'setTimeout yoki log matni noto\\'g\\'ri!';"
-    },
-    {
-      id: 3,
-      title: "Rekursiyaga Cheklov Qo'yish",
-      instruction: "Quyidagi rekursiv funksiyaga to'xtash shartini qo'shing, toki u n noldan kichik yoki teng bo'lganda to'xtasin va Stack Overflow bo'lmasin.",
-      startingCode: "function hisobla(n) {\n  console.log(n);\n  // To'xtash shartini yozing\n  \n  hisobla(n - 1);\n}\nhisobla(3);",
-      hint: "if (n <= 0) return; shartini funksiya boshiga qo'shing.",
-      test: "if (code.includes('return') && logs.includes(3) && logs.includes(1) && !logs.includes(0)) return null; return 'To\\'xtash sharti xato yoki cheksiz rekursiya yuz berdi!';"
-    },
-    {
-      id: 4,
-      title: "Memory Heap Allocation",
-      instruction: "Memory Heap-dan joy oluvchi va ichida 'ism' hamda 'yosh' xususiyatlari mavjud bo'lgan 'talaba' ob'ektini yarating.",
-      startingCode: "const talaba = // Ob'ekt yozing\n",
-      hint: "const talaba = { ism: 'Ali', yosh: 20 };",
-      test: "if (typeof talaba === 'object' && talaba !== null && 'ism' in talaba) return null; return 'talaba ob\\'ekti to\\'g\\'ri yaratilmadi!';"
-    },
-    {
-      id: 5,
-      title: "Microtask Yaratish",
-      instruction: "Promise yordamida Microtask Queue-ga vazifa qo'shing va u konsolga 'Microtask' so'zini chiqarsin.",
-      startingCode: "// Promise resolve yozing\n",
-      hint: "Promise.resolve().then(() => console.log('Microtask'));",
-      test: "if (code.includes('Promise') && logs.includes('Microtask')) return null; return 'Promise orqali microtask yaratilmadi!';"
-    },
-    {
-      id: 6,
-      title: "Sinxron va Asinxron Ketma-ketlik",
-      instruction: "Kodning oxirgi natijasida konsolga ketma-ketlikda 'Sinxron', keyin 'Vada', keyin 'Taymer' chiqishi uchun koddagi asinxron metodlarni moslang.",
-      startingCode: "// Quyidagi 3 ta logning chiqarilish tartibini to'g'rilang\nsetTimeout(() => console.log('Taymer'), 0);\nconsole.log('Sinxron');\nPromise.resolve().then(() => console.log('Vada'));",
-      hint: "Sinxron kod darhol, Promise microtask sifatida va setTimeout macrotask sifatida navbati bilan ishlaydi.",
-      test: "if (logs[0] === 'Sinxron' && logs[1] === 'Vada' && logs[2] === 'Taymer') return null; return 'Tartib noto\\'g\\'ri!';"
-    },
-    {
-      id: 7,
-      title: "queueMicrotask-dan Foydalanish",
-      instruction: "`queueMicrotask` API-dan foydalanib, konsolga 'Tezkor asinxron' yozuvini chiqaring.",
-      startingCode: "// queueMicrotask ishlating\n",
-      hint: "queueMicrotask(() => console.log('Tezkor asinxron'));",
-      test: "if (code.includes('queueMicrotask') && logs.includes('Tezkor asinxron')) return null; return 'queueMicrotask to\\'g\\'ri ishlatilmadi!';"
-    },
-    {
-      id: 8,
-      title: "Call Stack bloklanishini tekshirish",
-      instruction: "Call Stack-da 5 tagacha funksiyani bir-birining ichida chaqirib, eng ichkaridagi funksiyada 'Stack Ichida' yozuvini chiqaring.",
-      startingCode: "function f1() { f2(); }\nfunction f2() { f3(); }\nfunction f3() { f4(); }\nfunction f4() { f5(); }\nfunction f5() { console.log('Stack Ichida'); }\nf1();",
-      hint: "Chaqiruv zanjirini saqlang va f1-ni chaqiring.",
-      test: "if (logs.includes('Stack Ichida')) return null; return 'Zanjirli chaqiruv bajarilmadi!';"
-    },
-    {
-      id: 9,
-      title: "Taymerni Bekor Qilish",
-      instruction: "Xotira va resurslarni asrash uchun setTimeout taymerini u bajarilishidan oldin bekor qiling.",
-      startingCode: "const timerId = setTimeout(() => console.log('Ishlamaydi'), 1000);\n// Taymerni bekor qiling",
-      hint: "clearTimeout(timerId); metodidan foydalaning.",
-      test: "if (code.includes('clearTimeout') && !logs.includes('Ishlamaydi')) return null; return 'Taymer bekor qilinmadi!';"
-    },
-    {
-      id: 10,
-      title: "Heap-dagi Referenceni Tozalash (Garbage Collection uchun)",
-      instruction: "Katta ob'ekt o'zgaruvchisiga bo'lgan havolani tozalab, uni Garbage Collector tomonidan yig'ib olinishiga tayyorlang.",
-      startingCode: "let kattaMalumot = { data: new Array(100000) };\n// Havolani tozalang",
-      hint: "kattaMalumot = null; deb yozib havolani uzing.",
-      test: "if (kattaMalumot === null) return null; return 'kattaMalumot tozalab yuborilmadi!';"
-    },
-    {
-      id: 11,
-      title: "Ikki Bosqichli Asinxronlik",
-      instruction: "Birinchi Promise bajarilgach, uning ichida ikkinchi Promiseni qaytaruvchi zanjir yarating va natijada 'Yakuniy' so'zini log qiling.",
-      startingCode: "Promise.resolve()\n  .then(() => {\n    // Shu yerda resolved Promise qaytaring\n  })\n  .then(val => console.log(val));",
-      hint: "return Promise.resolve('Yakuniy'); deb yozing.",
-      test: "if (logs.includes('Yakuniy')) return null; return 'Yakuniy natija qaytmadi!';"
-    },
-    {
-      id: 12,
-      title: "Ob'ekt Mutatsiyasi va Reference",
-      instruction: "Heap-dagi bitta ob'ektga ishora qiluvchi user1 va user2 o'zgaruvchilarini yarating, keyin user2 orqali obyekt nomini o'zgartiring va user1 nomini tekshiring.",
-      startingCode: "const user1 = { name: 'Ali' };\nconst user2 = user1;\n// user2 orqali name o'zgartiring\n",
-      hint: "user2.name = 'Vali'; deb yozing.",
-      test: "if (user1.name === 'Vali') return null; return 'O\\'zgarish user1 da aks etmadi!';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ CPU band qiluvchi og'ir vazifani setTimeout orqali bo'lish",
-      instruction: "Berilgan `n` sonigacha bo'lgan yig'indini 1000 talik bo'laklarga bo'lib, har bir bo'lakdan so'ng asinxron kutadigan va oxirida yig'indini callback `cb(sum)` ga qaytaradigan `splitHeavyTask(n, cb, currentSum = 0, currentIndex = 1)` funksiyasini yozing. `setTimeout` ishlating.",
-      startingCode: "function splitHeavyTask(n, cb, currentSum = 0, currentIndex = 1) {\n  let limit = Math.min(currentIndex + 999, n);\n  for (let i = currentIndex; i <= limit; i++) {\n    currentSum += i;\n  }\n  \n  if (limit < n) {\n    // Keyingi bo'lakni setTimeout orqali chaqiring\n  } else {\n    // Yakuniy yig'indini cb ga uzating\n  }\n}",
-      hint: "setTimeout(() => splitHeavyTask(n, cb, currentSum, limit + 1), 0);\nand\ncb(currentSum);",
-      test: "if (typeof splitHeavyTask !== 'function') return 'splitHeavyTask topilmadi'; let res = 0; splitHeavyTask(5000, val => res = val); setTimeout(() => { if (res === 12502500) return null; }, 50); return null;"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Microtask va Macrotask Zanjiri",
-      instruction: "Konsolga ketma-ketlikda 'Sinxron', 'Promise', 'queueMicrotask', va 'setTimeout' so'zlari chiqishi uchun asinxron loglarni to'g'rilang.",
-      startingCode: "// Tartibni to'g'rilang\nsetTimeout(() => console.log('setTimeout'), 0);\nPromise.resolve().then(() => console.log('Promise'));\nqueueMicrotask(() => console.log('queueMicrotask'));\nconsole.log('Sinxron');",
-      hint: "Sinxron kod darhol ishlaydi, keyin Promise va queueMicrotask navbatma-navbat microtask sifatida ishlaydi, setTimeout esa macrotask bo'lgani uchun oxirida ishlaydi.",
-      test: "if (logs[0] === 'Sinxron' && logs[1] === 'Promise' && logs[2] === 'queueMicrotask' && logs[3] === 'setTimeout') return null; return 'Tartib xato!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Sinxron va Asinxron Ketma-ketlik",
+    "instruction": "Quyidagi `scheduleLogs(logFn)` funksiyasini yozing. U berilgan `logFn` funksiyasini quyidagi tartibda chaqirsin:\n1. Birinchi bo'lib sinxron ravishda 'Start' qiymati bilan\n2. Keyin asinxron ravishda (setTimeout 0ms yordamida) 'Middle' qiymati bilan\n3. Oxirida sinxron ravishda 'End' qiymati bilan.",
+    "startingCode": "function scheduleLogs(logFn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "logFn('Start') va logFn('End') ni sinxron chaqiring. logFn('Middle') ni esa setTimeout ichiga joylashtiring.",
+    "test": "if (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\nconst sandbox = new Function(code + '; return scheduleLogs;');\nconst fn = sandbox();\nconst logs = [];\nconst logFn = (msg) => logs.push(msg);\nfn(logFn);\nif (logs.length === 2 && logs[0] === 'Start' && logs[1] === 'End') {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      if (logs.length === 3 && logs[2] === 'Middle') resolve(null);\n      else resolve('Ketma-ketlik xato yoki \"Middle\" asinxron chaqirilmadi');\n    }, 20);\n  });\n}\nreturn 'Sinxron qism to\\'g\\'ri bajarilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Promise va setTimeout yordamida Kechikish (Delay)",
+    "instruction": "Berilgan `ms` (millisekundlar) vaqt o'tganidan keyin resolve bo'ladigan Promise qaytaruvchi `delay(ms)` funksiyasini yozing.",
+    "startingCode": "function delay(ms) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Yangi Promise qaytaring va uning resolve funksiyasini setTimeout ichida ms vaqtdan keyin chaqiring.",
+    "test": "if (!code.includes('Promise') || !code.includes('setTimeout')) return 'Promise va setTimeout ikkalasi ham ishlatilishi shart';\nconst sandbox = new Function(code + '; return delay;');\nconst fn = sandbox();\nconst start = Date.now();\nreturn fn(50).then(() => {\n  const diff = Date.now() - start;\n  if (diff >= 40 && diff <= 120) return null;\n  return 'Kutish vaqti noto\\'g\\'ri yoki kechikish sodir bo\\'lmadi: ' + diff + 'ms';\n});"
+  },
+  {
+    "id": 3,
+    "title": "Funksiyani Asinxron Chaqirish",
+    "instruction": "Uzatilgan `fn` funksiyasini har doim asinxron ravishda (Event Loop navbatiga qo'yib) chaqiradigan `callAsync(fn)` funksiyasini yozing. Ya'ni `callAsync(fn)` chaqirilganda, u o'zidan keyingi sinxron kodlar ishlab bo'lganidan so'nggina `fn`ni bajarsin.",
+    "startingCode": "function callAsync(fn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "setTimeout(fn, 0) yordamida funksiyani asinxron navbatga qo'shishingiz mumkin.",
+    "test": "if (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\nconst sandbox = new Function(code + '; return callAsync;');\nconst fn = sandbox();\nlet called = false;\nfn(() => { called = true; });\nif (called === true) return 'Funksiya sinxron chaqirib yuborildi, asinxron bo\\'lishi kerak';\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (called === true) resolve(null);\n    else resolve('Funksiya umuman chaqirilmadi');\n  }, 10);\n});"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

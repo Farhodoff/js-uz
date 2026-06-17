@@ -2,7 +2,7 @@ export const regex = {
   id: "regex",
   title: "Muntazam Ifodalar (Regular Expressions)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Muntazam Ifoda (Regular Expression) nima?
 * **Muntazam ifoda (RegEx):** Matnlar ichidan ma'lum bir andozaga (shablonga) mos keladigan qismlarni qidirish, mosligini tekshirish (validation) yoki almashtirish (replace) uchun ishlatiladigan maxsus qidiruv tili andozasidir.
@@ -196,119 +196,32 @@ console.log(checkPasswordStrength("SecurePass123!")); // valid: true (Kuchli!)
 | \`(abc)\` | Guruhlash (capturing group) | \`/(\\d{2})/\` -> guruh 1 |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Raqam borligini tekshirish",
-      instruction: "Matn ichida kamida bitta raqam borligini tekshiruvchi RegEx yozing va test() bilan ishlatib true qaytaring.",
-      startingCode: "const matn = 'Yoshim 25 da';\n// RegEx yozing\nconst regex = /\\d/;\nconst result = regex.test(matn);\nconsole.log(result);",
-      hint: "const regex = /\\d/;",
-      test: "if (result === true) return null; return 'Raqam topilmadi';"
-    },
-    {
-      id: 2,
-      title: "2️⃣ Telefon raqami validatsiyasi",
-      instruction: "+998XXXXXXXXX formatidagi telefon raqamini tekshiruvchi RegEx yozing.",
-      startingCode: "const phone = '+998901234567';\n// RegEx yozing\nconst phoneRegex = /^\\+998\\d{9}$/;\nconsole.log(phoneRegex.test(phone));",
-      hint: "const phoneRegex = /^\\+998\\d{9}$/;",
-      test: "if (phoneRegex.test('+998901234567') === true && phoneRegex.test('998901234567') === false) return null; return 'Telefon regex noto\\'g\\'ri';"
-    },
-    {
-      id: 3,
-      title: "3️⃣ Barcha sonlarni ajratib olish",
-      instruction: "Matn ichidagi barcha sonlarni match() yordamida massiv sifatida oling.",
-      startingCode: "const matn = '12 ta olma va 34 ta anor bor';\n// match() ishlatib sonlarni oling\nconst sonlar = matn.match(/\\d+/g);\nconsole.log(sonlar);",
-      hint: "const sonlar = matn.match(/\\d+/g);",
-      test: "if (Array.isArray(sonlar) && sonlar[0] === '12' && sonlar[1] === '34') return null; return 'Sonlar topilmadi';"
-    },
-    {
-      id: 4,
-      title: "4️⃣ So'zni almashtirish (global replace)",
-      instruction: "Matn ichidagi barcha 'JavaScript' so'zlarini (katta-kichik harfdan qat'iy nazar) 'JS' bilan almashtiring.",
-      startingCode: "const matn = 'Javascript zo\\'r. JAVASCRIPT tili!';\n// replace() ishlating\nconst yangi = matn.replace(/javascript/gi, 'JS');\nconsole.log(yangi);",
-      hint: "const yangi = matn.replace(/javascript/gi, 'JS');",
-      test: "if (yangi === 'JS zo\\'r. JS tili!') return null; return 'Almashtirish noto\\'g\\'ri';"
-    },
-    {
-      id: 5,
-      title: "5️⃣ Email tekshirish",
-      instruction: "Oddiy email manzilini tekshiruvchi RegEx yozing.",
-      startingCode: "const email1 = 'ali@gmail.com';\nconst email2 = 'noto\\'g\\'ri-email';\n// RegEx yozing\nconst emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\nconsole.log(emailRegex.test(email1), emailRegex.test(email2));",
-      hint: "const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;",
-      test: "if (emailRegex.test('ali@gmail.com') === true && emailRegex.test('noto\\'g\\'ri') === false) return null; return 'Email regex noto\\'g\\'ri';"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Bosh harfni topish",
-      instruction: "Matn ichidagi barcha so'zlarning bosh harflarini topib massiv qiling.",
-      startingCode: "const matn = 'Ali Bobur Zara';\n// Bosh harflarni toping\nconst boshHarflar = matn.match(/[A-Z]/g);\nconsole.log(boshHarflar);",
-      hint: "const boshHarflar = matn.match(/[A-Z]/g);",
-      test: "if (Array.isArray(boshHarflar) && boshHarflar.length === 3) return null; return 'Bosh harflar topilmadi';"
-    },
-    {
-      id: 7,
-      title: "7️⃣ Satr boshi va oxiri",
-      instruction: "Faqat 'Salom' so'zidan boshlanadigan va oxirida '!' bilan tugaydigan satrni tekshiring.",
-      startingCode: "const satr1 = 'Salom dunyo!';\nconst satr2 = 'Dunyo Salom!';\n// RegEx yozing\nconst regex = /^Salom.*!$/;\nconsole.log(regex.test(satr1), regex.test(satr2));",
-      hint: "const regex = /^Salom.*!$/;",
-      test: "if (regex.test('Salom dunyo!') === true && regex.test('Dunyo Salom!') === false) return null; return 'Regex noto\\'g\\'ri';"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Parol kuchi tekshirish",
-      instruction: "Parol kamida 8 ta belgi, kamida 1 ta raqam va 1 ta harf bo'lishini tekshiring.",
-      startingCode: "const parol1 = 'Salom123';\nconst parol2 = 'qisqa1';\n// RegEx yozing\nconst parolRegex = /^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$/;\nconsole.log(parolRegex.test(parol1), parolRegex.test(parol2));",
-      hint: "const parolRegex = /^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$/;",
-      test: "if (parolRegex.test('Salom123') === true && parolRegex.test('qisqa1') === false) return null; return 'Parol regex noto\\'g\\'ri';"
-    },
-    {
-      id: 9,
-      title: "9️⃣ Bo'shliqlar bilan ajratish",
-      instruction: "Matnni bir yoki ko'p bo'shliqlar bo'yicha split() qiling.",
-      startingCode: "const matn = 'bir   ikki  uch';\n// RegEx bilan split qiling\nconst qismlar = matn.split(/\\s+/);\nconsole.log(qismlar);",
-      hint: "const qismlar = matn.split(/\\s+/);",
-      test: "if (qismlar.length === 3 && qismlar[0] === 'bir') return null; return 'Split noto\\'g\\'ri';"
-    },
-    {
-      id: 10,
-      title: "🔟 Guruh bilan sana ajratish",
-      instruction: "'2024-05-19' formatidagi sanadan yil, oy va kunni capturing groups yordamida ajratib oling.",
-      startingCode: "const sana = '2024-05-19';\n// Capturing groups ishlatib match qiling\nconst natija = sana.match(/(\\d{4})-(\\d{2})-(\\d{2})/);\nconsole.log(natija[1], natija[2], natija[3]);",
-      hint: "sana.match(/(\\d{4})-(\\d{2})-(\\d{2})/)",
-      test: "const n = '2024-05-19'.match(/(\\d{4})-(\\d{2})-(\\d{2})/); if (n && n[1] === '2024') return null; return 'Guruh ajratish noto\\'g\\'ri';"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ URL dan protokolni ajratish",
-      instruction: "'https://example.com' URL dan faqat protokolni ('https') ajratib oling.",
-      startingCode: "const url = 'https://example.com';\n// Protokolni ajrating\nconst protokol = url.match(/^(https?)/)?.[1];\nconsole.log(protokol);",
-      hint: "url.match(/^(https?)/)?.[1]",
-      test: "const p = 'https://example.com'.match(/^(https?)/)?.[1]; if (p === 'https') return null; return 'Protokol ajratilmadi';"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Maxfiy ma'lumotlarni yashirish (Eng Qiyin)",
-      instruction: "Matn ichidagi kredit karta raqamini (16 ta raqam) yulduzchalar bilan yashiring (faqat oxirgi 4 ta ko'rinsin).",
-      startingCode: "const matn = 'Karta: 1234567890123456';\n// replace bilan yashiring\nconst yashirilgan = matn.replace(/\\d(?=\\d{4})/g, '*');\nconsole.log(yashirilgan);",
-      hint: "matn.replace(/\\d(?=\\d{4})/g, '*')",
-      test: "const y = 'Karta: 1234567890123456'.replace(/\\d(?=\\d{4})/g, '*'); if (y.includes('3456') && y.includes('*')) return null; return 'Yashirish noto\\'g\\'ri';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Murakkab Parol Tekshiruvi (validatePasswordStrength)",
-      instruction: "Lookahead assertion-lardan foydalanib, parolni murakkablikka tekshiruvchi `validatePasswordStrength(password)` funksiyasini yozing. Parol kamida 8 ta belgidan iborat bo'lishi, kamida bitta katta harf, bitta kichik harf, bitta raqam va kamida bitta maxsus belgi (`@`, `$`, `!`, `%`, `*`, `?`, `&`) o'z ichiga olishi shart. Barcha shartlar bajarilsa `true`, aks holda `false` qaytarsin.",
-      startingCode: "function validatePasswordStrength(password) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/; return regex.test(password);",
-      test: "if (typeof validatePasswordStrength !== 'function') return 'validatePasswordStrength funksiya emas';\nif (validatePasswordStrength('Salom123!') !== true) return 'To\\'g\\'ri parolga false berildi';\nif (validatePasswordStrength('salom123!') !== false) return 'Katta harfi yo\\'q parolga true berildi';\nif (validatePasswordStrength('Salom!!!') !== false) return 'Raqami yo\\'q parolga true berildi';\nif (validatePasswordStrength('Salom123') !== false) return 'Maxsus belgisi yo\\'q parolga true berildi';\nreturn null;"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Nomli Guruhlarni Ajratuvchi (parseNamedGroups)",
-      instruction: "Nomli capturing groups (`(?<groupName>...)`) bo'lgan `regex` andozasini `str` satrida ishlatib, mos kelgan guruh nomlari va ularning qiymatlarini kalit-qiymat obyekt ko'rinishida qaytaruvchi `parseNamedGroups(regex, str)` funksiyasini yozing. Agar moslik topilmasa, bo'sh obyekt `{}` qaytarsin.",
-      startingCode: "function parseNamedGroups(regex, str) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "const match = str.match(regex); return match && match.groups ? match.groups : {};",
-      test: "if (typeof parseNamedGroups !== 'function') return 'parseNamedGroups funksiya emas';\nconst regex = /(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})/;\nconst res = parseNamedGroups(regex, 'Bugun 2026-06-01 sanasi');\nif (res && res.year === '2026' && res.month === '06' && res.day === '01') {\n  if (Object.keys(parseNamedGroups(regex, 'noto\\'g\\'ri')).length === 0) return null;\n}\nreturn 'Guruhlar noto\\'g\\'ri ajratildi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Email Manzilini Tekshirish",
+    "instruction": "Kiritilgan satrning haqiqiy email manzili ekanligini tekshiruvchi `validateEmail(email)` funksiyasini yozing. Funksiya to'g'ri bo'lsa `true`, noto'g'ri bo'lsa `false` qaytarsin.",
+    "startingCode": "function validateEmail(email) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "/^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$/ kabi muntazam ifoda va regex.test(email) metodidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return validateEmail;');\nconst fn = sandbox();\nif (fn('test@example.com') !== true) return 'To\\'g\\'ri emailni tekshirishda false qaytdi';\nif (fn('invalid-email') !== false) return 'Noto\\'g\\'ri emailni tekshirishda true qaytdi';\nif (fn('abc@def') !== false) return 'Domeni yo\\'q emailni tekshirishda true qaytdi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Telefon Raqamini Formatlash",
+    "instruction": "998901234567 ko'rinishidagi 12 ta raqamdan iborat O'zbekiston telefon raqamini regex yordamida guruhlarga ajratib, `+998 (90) 123-45-67` ko'rinishiga keltiruvchi `formatPhoneNumber(str)` funksiyasini yozing.",
+    "startingCode": "function formatPhoneNumber(str) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "RegEx guruhlari (capturing groups) va `.replace()` metodidan foydalaning. Masalan: `str.replace(/(\\d{3})(\\d{2})(\\d{3})(\\d{2})(\\d{2})/, '+$1 ($2) $3-$4-$5')`.",
+    "test": "const sandbox = new Function(code + '; return formatPhoneNumber;');\nconst fn = sandbox();\nconst res = fn('998901234567');\nif (res === '+998 (90) 123-45-67') return null;\nreturn 'Telefon raqamini formatlash xato: ' + res;"
+  },
+  {
+    "id": 3,
+    "title": "Hashtaglarni Ajratib Olish",
+    "instruction": "Berilgan matndan barcha hashtaglarni (masalan, `#javascript`, `#code`) ajratib olib, massiv ko'rinishida qaytaruvchi `extractHashtags(text)` funksiyasini yozing. Agar matnda hashtaglar topilmasa, bo'sh massiv `[]` qaytishi kerak.",
+    "startingCode": "function extractHashtags(text) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "/#[a-zA-Z0-9_]+/g yoki /#\\w+/g shablonidan va `.match()` metodidan foydalaning. Match natijasi `null` bo'lsa, `[]` qaytarishni unutmang.",
+    "test": "const sandbox = new Function(code + '; return extractHashtags;');\nconst fn = sandbox();\nconst res = fn('Bugun #javascript va #regex o\\'rganamiz!');\nif (!Array.isArray(res) || res.length !== 2 || res[0] !== '#javascript' || res[1] !== '#regex') {\n  return 'Hashtaglarni ajratib olishda xatolik: ' + JSON.stringify(res);\n}\nconst empty = fn('Hech qanday hashtag yo\\'q');\nif (!Array.isArray(empty) || empty.length !== 0) {\n  return 'Topilmagan holatda bo\\'sh massiv qaytarilmadi';\n}\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

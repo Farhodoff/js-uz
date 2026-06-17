@@ -2,7 +2,7 @@ export const jsGotchas = {
   id: "jsGotchas",
   title: "JavaScript Gotchas (Tuzoqlar)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### JavaScript "Tuzoqlari" (Gotchas) nima?
 JavaScript dunyodagi eng mashhur dasturlash tillaridan biri bo'lsa-da, u juda tez va shoshilinch ravishda (atigi 10 kunda) yaratilgan. Shuning uchun tilda ba'zi g'ayrioddiy, mantiqqa zid bo'lib tuyuladigan xususiyatlar yoki tarixiy xatolar mavjud. Dasturchilar bu xususiyatlarni ko'pincha **"tuzoqlar" (gotchas/pitfalls)** deb atashadi. 
@@ -236,103 +236,32 @@ console.log(roundTo(total)); // 0.3
 | \`typeof NaN\` | \`"number"\` | NaN raqamli ma'lumot tipiga kiradi | \`Number.isNaN()\` bilan aniqlang |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "G'alatilikni toping",
-      instruction: "Konsolga '5' + 5 va '5' - 5 natijalarini chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.log('5' + 5); console.log('5' - 5);",
-      test: "if (logs.includes('55') && logs.includes(0)) return null; return 'Natija xato!';"
-    },
-    {
-      id: 2,
-      title: "Precision error",
-      instruction: "res o'zgaruvchisiga 0.1 + 0.2 amalini yuklang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = 0.1 + 0.2;",
-      test: "if (res > 0.3 && res < 0.3000000000000001) return null; return 'Kasr qo\\'shish natijasini bering';"
-    },
-    {
-      id: 3,
-      title: "Boolean Addition",
-      instruction: "res o'zgaruvchisiga true + true yig'indisini yuklang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = true + true;",
-      test: "if (res === 2) return null; return 'true + true natijasi 2 bo\\'lishi kerak!';"
-    },
-    {
-      id: 4,
-      title: "Array Concatenation",
-      instruction: "res o'zgaruvchisiga [] + [] ifodasini yuklang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = [] + [];",
-      test: "if (res === '') return null; return '[] + [] bo\\'sh string qaytarishi kerak!';"
-    },
-    {
-      id: 5,
-      title: "Object addition gotcha",
-      instruction: "res o'zgaruvchisiga [] + {} ifodasini yuklang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = [] + {};",
-      test: "if (res === '[object Object]') return null; return '[] + {} ning natijasi [object Object] bo\\'lishi kerak';"
-    },
-    {
-      id: 6,
-      title: "Null compare gotchas",
-      instruction: "res1 o'zgaruvchisiga null == 0, res2 ga esa null >= 0 natijalarini bering.",
-      startingCode: "// Bu yerga yozing\nlet res1 = \nlet res2 = ",
-      hint: "let res1 = null == 0; let res2 = null >= 0;",
-      test: "if (res1 === false && res2 === true) return null; return 'null solishtirish qoidalari xato!';"
-    },
-    {
-      id: 7,
-      title: "Strict NaN check",
-      instruction: "res o'zgaruvchisiga NaN === NaN ifodasini yuklang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = NaN === NaN;",
-      test: "if (res === false) return null; return 'NaN === NaN har doim false bo\\'lishi kerak';"
-    },
-    {
-      id: 8,
-      title: "String subtraction",
-      instruction: "res o'zgaruvchisiga '10' - '2' ifodasini yuklang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = '10' - '2';",
-      test: "if (res === 8) return null; return 'Ayirish amali sonlar bilan bajarilishi kerak';"
-    },
-    {
-      id: 9,
-      title: "String addition",
-      instruction: "res o'zgaruvchisiga '10' + '2' ifodasini yuklang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = '10' + '2';",
-      test: "if (res === '102') return null; return 'Qo\\'shish amali satrlarni birlashtirishi kerak';"
-    },
-    {
-      id: 10,
-      title: "Undefined math",
-      instruction: "res o'zgaruvchisiga undefined + 5 amalini yuklang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = undefined + 5;",
-      test: "if (Number.isNaN(res)) return null; return 'undefined son bilan qo\\'shilsa NaN qaytadi';"
-    },
-    {
-      id: 11,
-      title: "Null math",
-      instruction: "res o'zgaruvchisiga null + 5 amalini yuklang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = null + 5;",
-      test: "if (res === 5) return null; return 'null son bilan qo\\'shilsa 0 deb hisoblanib 5 chiqadi';"
-    },
-    {
-      id: 12,
-      title: "Typeof Array gotcha",
-      instruction: "res o'zgaruvchisiga typeof [] natijasini yuklang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof [];",
-      test: "if (res === 'object') return null; return 'typeof [] har doim object qaytaradi!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Suzuvchi nuqtali sonlar yig'indisi",
+    "instruction": "JavaScript-da suzuvchi nuqtali sonlar bilan hisob-kitob qilishda aniqlik yo'qolishi mumkin (masalan, `0.1 + 0.2` natijasi `0.30000000000000004` bo'ladi). Berilgan ikkita `a` va `b` sonlarini qo'shib, natijani verguldan keyin ko'pi bilan 12 ta xona aniqligida yaxlitlab qaytaradigan `safeAdd(a, b)` funksiyasini yozing. Qaytarilgan qiymat son (number) tipida bo'lishi shart.",
+    "startingCode": "function safeAdd(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "a + b yig'indisini hisoblab, toFixed(12) metodini qo'llang va natijani Number() orqali yana songa o'giring.",
+    "test": "const sandbox = new Function(code + '; return safeAdd;');\nconst fn = sandbox();\nif (fn(0.1, 0.2) === 0.3 && fn(0.1, 0.7) === 0.8 && fn(1.000000000001, 2) === 3.000000000001) return null;\nreturn 'Natija suzuvchi nuqta aniqligi bo\\'yicha to\\'g\\'ri yaxlitlanmadi yoki qaytarilgan qiymat son tipi emas';"
+  },
+  {
+    "id": 2,
+    "title": "NaN qiymatini aniqlash",
+    "instruction": "JavaScript-da `NaN === NaN` ifodasi `false` qaytaradi. `Number.isNaN()` yoki `Object.is()` metodlaridan foydalanmasdan, berilgan `value` qiymati aynan `NaN` ekanligini aniqlovchi `isExactlyNaN(value)` funksiyasini yozing.",
+    "startingCode": "function isExactlyNaN(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "JavaScript-da faqat bitta qiymat o'z-o'ziga teng emas, u ham bo'lsa NaN. Ya'ni value !== value ifodasi faqat value NaN bo'lganda true beradi.",
+    "test": "const sandbox = new Function(code + '; return isExactlyNaN;');\nconst fn = sandbox();\nif (fn(NaN) === true && fn(123) === false && fn('hello') === false && fn(undefined) === false) return null;\nreturn 'Aynan NaN qiymati to\\'g\\'ri aniqlanmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Obyekt kalitiga xavfsiz murojaat",
+    "instruction": "Obyektning ichki xususiyatlariga murojaat qilishda (masalan, `obj.user.profile.age`), agar yo'ldagi biror-bir xususiyat `null` yoki `undefined` bo'lsa, xatolik yuz beradi. Berilgan obyekt `obj` va nuqtalar bilan ajratilgan yo'l `path` (masalan, `'user.profile.age'`) bo'yicha xavfsiz qiymatni qaytaradigan `getSafeValue(obj, path)` funksiyasini yozing. Agar yo'l mavjud bo'lmasa yoki xatolik yuz berishi mumkin bo'lsa, `undefined` qaytaring.",
+    "startingCode": "function getSafeValue(obj, path) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "path parametrini split('.') orqali massivga ajrating va reduce yordamida har bir qadamdagi qiymat null/undefined emasligini tekshirib borib yakuniy qiymatni oling.",
+    "test": "const sandbox = new Function(code + '; return getSafeValue;');\nconst fn = sandbox();\nconst testObj = { a: { b: { c: 42 } }, x: null };\nif (fn(testObj, 'a.b.c') === 42 && fn(testObj, 'a.x.y') === undefined && fn(testObj, 'x.y') === undefined && fn(testObj, 'nonexistent') === undefined) return null;\nreturn 'Obyektdan xavfsiz qiymat olish funksiyasi to\\'g\\'ri ishlamadi';"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

@@ -2,7 +2,7 @@ export const callbacks = {
   id: "callbacks",
   title: "Callbacks va Asinxronlik asoslari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Callback va Asinxronlik nima?
 * **Callback funksiya:** Boshqa funksiyaga argument (parametr) sifatida uzatiladigan va ma'lum bir hodisa sodir bo'lgandan yoki biror amal bajarilgandan keyin chaqiriladigan funksiyadir.
@@ -175,119 +175,32 @@ Uni Promises (Va'dalar) yoki \`async/await\` sintaksisi orqali chiroyli va o'qis
 Quyidagi testlar va mashqlar yordamida Callbacks va asinxron JavaScript asoslari bo'yicha ko'nikmalaringizni tekshiring.
 `,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Oddiy Callback (Boshlang'ich)",
-      instruction: "greet() funksiyasi callback qabul qilsin va uni darhol chaqirsin.",
-      startingCode: "function greet(name, callback) {\n  // Kodni shu yerda yozing\n}\n\ngreet('Ali', () => console.log('Callback!'));",
-      hint: "callback();",
-      test: "if (logs.includes('Callback!')) return null; return 'Callback chaqirilmadi!';"
-    },
-    {
-      id: 2,
-      title: "2️⃣ setTimeout (Boshlang'ich)",
-      instruction: "1 soniyadan keyin 'Salom!' konsolga chiqaring.",
-      startingCode: "// Kodni shu yerda yozing\nconsole.log('Boshlandi');\n// setTimeout...\nconsole.log('Tugadi');",
-      hint: "setTimeout(() => console.log('Salom!'), 1000);",
-      test: "if (logs.includes('Boshlandi') && logs.includes('Tugadi')) return null; return 'setTimeout xato!';"
-    },
-    {
-      id: 3,
-      title: "3️⃣ Callback Parametrlar (O'rta)",
-      instruction: "calculator(a, b, operation, callback) yarating. Asinxron hisoblansin (setTimeout).",
-      startingCode: "function calculator(a, b, operation, callback) {\n  // Kodni shu yerda yozing\n}\n\ncalculator(5, 3, '+', (result) => console.log('Natija:', result));",
-      hint: "setTimeout(() => { let result = a + b; callback(result); }, 500);",
-      test: "if (logs.some(l => l.includes('Natija: 8'))) return null; return 'Calculator xato!';"
-    },
-    {
-      id: 4,
-      title: "4️⃣ Error Callback (O'rta)",
-      instruction: "getData(success_cb, error_cb) yarating. Xatolik bo'lganda error_cb chaqirsin.",
-      startingCode: "function getData(successCb, errorCb) {\n  const error = false; // Xatolik bo'lsa true\n  // Kodni shu yerda yozing\n}\n\ngetData(\n  (data) => console.log('Success:', data),\n  (err) => console.log('Error:', err)\n);",
-      hint: "if (error) errorCb('Xato!'); else successCb('Data');",
-      test: "if (logs.some(l => l.includes('Success'))) return null; return 'Success callback xato!';"
-    },
-    {
-      id: 5,
-      title: "5️⃣ setInterval (O'rta)",
-      instruction: "Har 500ms da raqam chiqaradigan contador yarating. 3 marta chiqargandan so'ng to'xtasing.",
-      startingCode: "// Kodni shu yerda yozing\nlet counter = 0;\nconst interval = setInterval(() => {\n  counter++;\n  console.log(counter);\n  // To'xtash shartini yozing\n}, 500);",
-      hint: "if (counter >= 3) clearInterval(interval);",
-      test: "if (logs.includes(1) && logs.includes(2) && logs.includes(3)) return null; return 'Contador xato!';"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Multiple Callbacks (O'rta)",
-      instruction: "processUser(id, onSuccess, onError) yarating. ID 0 bo'lsa error, bo'lmasa success.",
-      startingCode: "function processUser(id, onSuccess, onError) {\n  setTimeout(() => {\n    // Kodni shu yerda yozing\n  }, 500);\n}\n\nprocessUser(1, \n  (user) => console.log('OK:', user),\n  (err) => console.log('ERROR:', err)\n);",
-      hint: "if (id === 0) onError('ID invalidi'); else onSuccess('User' + id);",
-      test: "if (logs.some(l => l.includes('OK'))) return null; return 'Xato!';"
-    },
-    {
-      id: 7,
-      title: "7️⃣ Chain Callbacks (O'rta)",
-      instruction: "Ikki callbackni ketma-ketlik qiling: avval login, keyin getData.",
-      startingCode: "function login(username, callback) {\n  setTimeout(() => callback('Token: ABC'), 500);\n}\n\nfunction getData(token, callback) {\n  setTimeout(() => callback('Data...'), 500);\n}\n\n// Kodni shu yerda yozing\nlogin('ali', (token) => {\n  // getData chaqiring\n});",
-      hint: "getData(token, (data) => console.log(data));",
-      test: "if (logs.includes('Data...')) return null; return 'Chain callback xato!';"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Callback Hell Example (O'rta)",
-      instruction: "Callback Hell'ni ko'rish uchun 3-qavat callback yozing.",
-      startingCode: "function step1(cb) { setTimeout(() => { console.log('Step 1'); cb(); }, 300); }\nfunction step2(cb) { setTimeout(() => { console.log('Step 2'); cb(); }, 300); }\nfunction step3(cb) { setTimeout(() => { console.log('Step 3'); cb(); }, 300); }\n\n// Kodni shu yerda yozing\nstep1(() => { /* ... */ });",
-      hint: "step1(() => step2(() => step3(() => console.log('Done!'))));",
-      test: "if (logs.includes('Step 1') && logs.includes('Step 2') && logs.includes('Step 3')) return null; return 'Callback hell xato!';"
-    },
-    {
-      id: 9,
-      title: "9️⃣ setTimeout with Variables (Qiyin)",
-      instruction: "Loop bilan 5 marta 'hello' konsolga chiqarish, har 200ms oraliq bilan.",
-      startingCode: "// Kodni shu yerda yozing\nfor (let i = 0; i < 5; i++) {\n  // setTimeout yozing\n}",
-      hint: "setTimeout(() => console.log('hello'), i * 200);",
-      test: "if (logs.filter(l => l === 'hello').length >= 5) return null; return 'Loop timeout xato!';"
-    },
-    {
-      id: 10,
-      title: "🔟 Promise tayyorligiga o'tish (Qiyin)",
-      instruction: "Promise qabul qiluvchi funksiya yarating va Promise qaytaring.",
-      startingCode: "function getData() {\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      // Kodni shu yerda yozing\n    }, 500);\n  });\n}\n\ngetData().then(data => console.log(data));",
-      hint: "resolve('Data alindi');",
-      test: "if (logs.includes('Data alindi')) return null; return 'Promise xato!';"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ Event Listener with Callback (Qiyin)",
-      instruction: "Button'ga click listener qo'ying, click bo'lganda callback chaqiring.",
-      startingCode: "const button = document.createElement('button');\nbutton.textContent = 'Click me';\n// Kodni shu yerda yozing\nbutton.addEventListener('click', () => {\n  console.log('Clicked!');\n});",
-      hint: "// Ba'zi muhit'larda DOM qo'shimchasi yo'q bo'lishi mumkin, shuni yodda tuting",
-      test: "if (code.includes('addEventListener')) return null; return 'Event listener xato!';"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Combine: Loop + setTimeout + Callback (Eng Qiyin)",
-      instruction: "1-5 raqamlari har 300ms oraliq bilan konsolga chiqarting (callback yordamida).",
-      startingCode: "// Kodni shu yerda yozing\nfunction printNumbers(callback) {\n  for (let i = 1; i <= 5; i++) {\n    // setTimeout + callback\n  }\n}\n\nprintNumbers(() => console.log('Done!'));",
-      hint: "setTimeout(() => { console.log(i); callback(); }, i * 300);",
-      test: "if (logs.includes(1) && logs.includes(5) && logs.includes('Done!')) return null; return 'Combine xato!';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Asinxron Massiv Map (mapAsync)",
-      instruction: "Massiv elementlarini asinxron qayta ishlovchi `mapAsync(arr, callback, finalCallback)` funksiyasini yozing. `callback(item, cb)` har bir elementni asinxron o'zgartiradi va natijani `cb(err, mappedItem)` orqali qaytaradi. Barcha elementlar muvaffaqiyatli qayta ishlangach, `finalCallback(null, results)` chaqirilsin. Agar biron elementda xato bo'lsa, jarayon to'xtab, darhol `finalCallback(err)` chaqirilsin.",
-      startingCode: "function mapAsync(arr, callback, finalCallback) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "let results = []; let completed = 0; let hasError = false; if (arr.length === 0) return finalCallback(null, []); arr.forEach((item, index) => { callback(item, (err, mappedItem) => { if (hasError) return; if (err) { hasError = true; return finalCallback(err); } results[index] = mappedItem; completed++; if (completed === arr.length) finalCallback(null, results); }); });",
-      test: "if (typeof mapAsync !== 'function') return 'mapAsync funksiya emas';\nconst items = [1, 2, 3];\nconst cb = (item, done) => setTimeout(() => done(null, item * 2), 10);\nreturn new Promise(resolve => {\n  mapAsync(items, cb, (err, res) => {\n    if (err) resolve('Xatolik yuz berdi');\n    if (res && res[0] === 2 && res[1] === 4 && res[2] === 6) resolve(null);\n    else resolve('Natija noto\\'g\\'ri');\n  });\n});"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Error-First Callback Wrapper (nodeReadFileStyle)",
-      instruction: "Node.js error-first callback uslubini simulyatsiya qiluvchi `nodeReadFileStyle(filename, callback)` funksiyasini yozing. `filename === 'data.txt'` bo'lsa, 10ms dan keyin `callback(null, 'Fayl mazmuni')` deb natija qaytarsin. Agar boshqa filename bo'lsa, `callback(new Error('Mavjud emas'))` chaqirilsin.",
-      startingCode: "function nodeReadFileStyle(filename, callback) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "setTimeout(() => { if (filename === 'data.txt') { callback(null, 'Fayl mazmuni'); } else { callback(new Error('Mavjud emas')); } }, 10);",
-      test: "if (typeof nodeReadFileStyle !== 'function') return 'nodeReadFileStyle funksiya emas';\nreturn new Promise(resolve => {\n  nodeReadFileStyle('invalid.txt', (err, data) => {\n    if (!err) return resolve('Xatolik tashlanmadi');\n    nodeReadFileStyle('data.txt', (err2, data2) => {\n      if (err2) return resolve('To\\'g\\'ri faylda xato berildi');\n      if (data2 === 'Fayl mazmuni') return resolve(null);\n      resolve('Fayl mazmuni noto\\'g\\'ri');\n    });\n  });\n});"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Oddiy Callback",
+    "instruction": "Foydalanuvchi ismini olib, uni tabriklovchi callback funksiyasini chaqiradigan `greetUser(name, callback)` funksiyasini yozing. Callback funksiyaga argument sifatida ism uzatilishi kerak.",
+    "startingCode": "function greetUser(name, callback) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "callback(name); ko'rinishida chaqiring.",
+    "test": "let namePassed = '';\nconst sandbox = new Function(code + '; return greetUser;');\nconst fn = sandbox();\nfn('Jasur', (n) => namePassed = n);\nif (namePassed === 'Jasur') return null;\nreturn 'greetUser callback funksiyasini to\\'g\\'ri chaqirmadi yoki ismni uzatmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Asinxron Hisoblagich",
+    "instruction": "2 soniyadan (2000 ms) keyin callback funksiyasini ishga tushiradigan `delayExecution(callback)` funksiyasini yozing. Buning uchun `setTimeout` funksiyasidan foydalaning.",
+    "startingCode": "function delayExecution(callback) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "setTimeout(callback, 2000);",
+    "test": "if (!code.includes('setTimeout')) return 'setTimeout funksiyasidan foydalanilmadi';\nif (!code.includes('2000')) return 'Kutish vaqti 2000 ms qilib belgilanmadi';\nconst sandbox = new Function(code + '; return delayExecution;');\nconst fn = sandbox();\nlet called = false;\nfn(() => called = true);\nif (typeof fn === 'function') return null;\nreturn 'delayExecution funksiyasida xatolik';"
+  },
+  {
+    "id": 3,
+    "title": "Massiv elementlarini filtrlash",
+    "instruction": "O'zingizning shaxsiy massiv filtrlovchi funksiyangizni yarating. `customFilter(arr, callback)` funksiyasi berilgan `arr` massividan faqat `callback(element)` true qaytargan elementlarni yangi massivga yig'ib qaytarsin.",
+    "startingCode": "function customFilter(arr, callback) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Massiv bo'ylab aylanib chiqib, callback(arr[i]) true bo'lsa, elementni yangi massivga push qiling.",
+    "test": "const sandbox = new Function(code + '; return customFilter;');\nconst fn = sandbox();\nconst res = fn([1, 2, 3, 4], (x) => x % 2 === 0);\nif (Array.isArray(res) && res.length === 2 && res[0] === 2 && res[1] === 4) return null;\nreturn 'customFilter to\\'g\\'ri filtrlamadi';"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

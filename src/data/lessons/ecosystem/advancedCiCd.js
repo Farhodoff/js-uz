@@ -2,7 +2,7 @@ export const advancedCiCd = {
   id: "advancedCiCd",
   title: "Mukammal CI/CD va Avtomatlashtirilgan Deploy",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Continuous Deployment (CD) nima?
 CI/CD darsimizning birinchi qismida biz CI (Continuous Integration - avtomatik testlash va integratsiya) haqida gaplashgan edik. **Continuous Deployment (CD - Uzluksiz joylashtirish)** esa pipeline-ning yakuniy bosqichidir. Bu bosqichda testlardan muvaffaqiyatli o'tgan kod avtomatik ravishda, inson aralashuvisiz jonli serverga (production) yuboriladi.

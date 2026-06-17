@@ -2,7 +2,7 @@ export const destructuring = {
   id: "destructuring",
   title: "Destructuring (Ma'lumotlarni ochish)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Destructuring (Ma'lumotlarni ochish) nima?
 **Destructuring** (Destruptizatsiya yoki Ma'lumotlarni ochish) — bu ES6 (ECMAScript 2015) standartida JavaScript-ga kiritilgan qulay va ixcham sintaksis bo'lib, u massivlar (arrays) ichidagi elementlarni yoki obyektlar (objects) ichidagi xossalarni osongina ajratib olib, alohida o'zgaruvchilarga yuklash imkonini beradi.
@@ -291,103 +291,32 @@ Natija:
 | **Rest operatori (Obyekt)** | \`const { id, ...details } = product;\` | \`details\` obyektida \`id\`dan tashqari hamma xossalar qoladi |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Oddiy Obyekt Destructuring",
-      instruction: "'user' objektidan 'name' va 'age' ni destructuring orqali chiqaring va console.log() qiling.",
-      startingCode: "const user = { name: 'Ali', age: 25, city: 'Tashkent' };\n\n// Destructuring bu yerga\n",
-      hint: "const { name, age } = user; console.log(name, age);",
-      test: "if (logs.includes('Ali') && logs.includes('25')) return null; return 'Destructuring noto\\'g\\'ri';"
-    },
-    {
-      id: 2,
-      title: "Massiv Destructuring",
-      instruction: "'colors' massividan birinchi va uchinchi elementlarni destructuring orqali olip, console.log() qiling.",
-      startingCode: "const colors = ['red', 'green', 'blue', 'yellow'];\n\n// Destructuring bu yerga\n",
-      hint: "const [first, , third] = colors; console.log(first, third);",
-      test: "if (logs.includes('red') && logs.includes('blue')) return null; return 'Massiv destructuring noto\\'g\\'ri';"
-    },
-    {
-      id: 3,
-      title: "Aliasing - Nom o'zgartirish",
-      instruction: "'car' objektidagi 'model' ni 'marka' deb o'zgaruvchiga olip, console.log() qiling.",
-      startingCode: "const car = { model: 'BYD', year: 2024 };\n\n// Aliasing orqali model -> marka\n",
-      hint: "const { model: marka } = car; console.log(marka);",
-      test: "if (logs.includes('BYD')) return null; return 'Aliasing noto\\'g\\'ri';"
-    },
-    {
-      id: 4,
-      title: "Default Qiymatlar",
-      instruction: "'person' objektida 'age' kaliti yo'q. Default 30 qiymatini berip destructuring qiling.",
-      startingCode: "const person = { name: 'Farhod', city: 'Tashkent' };\n\n// Default qiymat bilan destructuring\n",
-      hint: "const { name, age = 30 } = person; console.log(age);",
-      test: "if (logs.includes('30')) return null; return 'Default qiymat noto\\'g\\'ri';"
-    },
-    {
-      id: 5,
-      title: "Nested Objektlarni Destructuring",
-      instruction: "'user' objektidagi ichma-ich 'address.city' ni destructuring orqali olip, console.log() qiling.",
-      startingCode: "const user = {\n  name: 'Ali',\n  address: { city: 'Tashkent', street: 'Amir Temur' }\n};\n\n// Nested destructuring\n",
-      hint: "const { address: { city } } = user; console.log(city);",
-      test: "if (logs.includes('Tashkent')) return null; return 'Nested destructuring noto\\'g\\'ri';"
-    },
-    {
-      id: 6,
-      title: "Rest Operatori Massivda",
-      instruction: "'numbers' massividan birinchi va ikkinchi elementlarni olip, qolganlarini 'rest' o'zgaruvchiga saqlang.",
-      startingCode: "const numbers = [1, 2, 3, 4, 5];\n\n// Rest operatori bilan destructuring\n",
-      hint: "const [first, second, ...rest] = numbers; console.log(rest);",
-      test: "if (logs.includes('3') && logs.includes('4') && logs.includes('5')) return null; return 'Rest operatori noto\\'g\\'ri';"
-    },
-    {
-      id: 7,
-      title: "Qiymatlarni Almashtirish",
-      instruction: "Ikkita o'zgaruvchi 'a = 5' va 'b = 10'. Destructuring orqali ularni almashtiring (swap).",
-      startingCode: "let a = 5;\nlet b = 10;\n\n// Destructuring orqali almashtiring\n\nconsole.log(a, b);\n",
-      hint: "[a, b] = [b, a]; console.log(a, b);",
-      test: "if (logs.includes('10') && logs.includes('5')) return null; return 'Swap noto\\'g\\'ri';"
-    },
-    {
-      id: 8,
-      title: "Funksiya Parametrlarida Destructuring",
-      instruction: "'displayUser' funksiyasiga destructuring bilan 'name' va 'city' parametrlarni qo'ying. Funksiya ishga tushganda chiqarsin.",
-      startingCode: "// Destructuring bilan funksiya yarating\n\nconst user = { name: 'Bobur', city: 'Samarqand' };\ndisplayUser(user);\n",
-      hint: "function displayUser({ name, city }) { console.log(name, city); }",
-      test: "if (logs.includes('Bobur') && logs.includes('Samarqand')) return null; return 'Funksiya parametrlarida destructuring noto\\'g\\'ri';"
-    },
-    {
-      id: 9,
-      title: "Massiv Destructuringda Default",
-      instruction: "'coords' massivida faqat bitta element bor. Destructuring orqali birinchi va ikkinchi (default: 0) olip console.log() qiling.",
-      startingCode: "const coords = [10];\n\n// Default qiymat bilan destructuring\n",
-      hint: "const [x = 0, y = 0] = coords; console.log(x, y);",
-      test: "if (logs.includes('10') && logs.includes('0')) return null; return 'Massiv default noto\\'g\\'ri';"
-    },
-    {
-      id: 10,
-      title: "Objekt ichidagi Massiv",
-      instruction: "'team' objektidagi 'members' massividan birinchi va ikkinchi nomlarni destructuring orqali olip console.log() qiling.",
-      startingCode: "const team = {\n  name: 'Developers',\n  members: ['Ali', 'Bobur', 'Farhod']\n};\n\n// Nested destructuring - obekt + massiv\n",
-      hint: "const { members: [first, second] } = team; console.log(first, second);",
-      test: "if (logs.includes('Ali') && logs.includes('Bobur')) return null; return 'Nested massiv destructuring noto\\'g\\'ri';"
-    },
-    {
-      id: 11,
-      title: "Murakkab Pattern - API Response",
-      instruction: "API javobidan 'status' va 'data.message' ni destructuring orqali olip console.log() qiling.",
-      startingCode: "const response = {\n  status: 'success',\n  data: { message: 'Muvaffaqiyatli', count: 10 }\n};\n\n// Murakkab destructuring\n",
-      hint: "const { status, data: { message } } = response; console.log(status, message);",
-      test: "if (logs.includes('success') && logs.includes('Muvaffaqiyatli')) return null; return 'Murakkab destructuring noto\\'g\\'ri';"
-    },
-    {
-      id: 12,
-      title: "Kompleks - Barcha Patterns Birgalikda",
-      instruction: "'data' objektidagi 'users' massivini destructuring qiling. Birinchi userdan 'name', ikkinchi userdan 'email', qolgan userslarni 'rest' ga saqlang.",
-      startingCode: "const data = {\n  users: [\n    { name: 'Ali', email: 'ali@example.com' },\n    { name: 'Bobur', email: 'bobur@example.com' },\n    { name: 'Farhod', email: 'farhod@example.com' }\n  ]\n};\n\n// Kompleks destructuring\n",
-      hint: "const { users: [{ name }, { email }, ...rest] } = data; console.log(name, email, rest.length);",
-      test: "if (logs.includes('Ali') && logs.includes('bobur@example.com') && logs.includes('1')) return null; return 'Kompleks destructuring noto\\'g\\'ri';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "O'zgaruvchilar qiymatini almashtirish va massivni ochish",
+    "instruction": "Berilgan `swapAndUnpack(arr)` funksiyasiga kamida 2 ta elementdan iborat massiv uzatiladi. Funksiya massivning birinchi va ikkinchi elementlarining o'rnini faqat massiv destruptizatsiyasidan (array destructuring) foydalanib almashtirishi (swapping) va ularni yangi massiv ko'rinishida qaytarishi kerak. Boshqa vaqtinchalik o'zgaruvchilardan foydalanmang.",
+    "startingCode": "function swapAndUnpack(arr) {\n  // Faqat destructuring yordamida birinchi va ikkinchi elementlarni almashtiring\n  // Kodni shu yerda yozing\n}",
+    "hint": "let [a, b] = arr; [a, b] = [b, a]; return [a, b];",
+    "test": "const sandbox = new Function(code + '; return swapAndUnpack;');\nconst fn = sandbox();\nconst result = fn([10, 20]);\nif (!Array.isArray(result) || result[0] !== 20 || result[1] !== 10) return 'swapAndUnpack funksiyasi elementlar o\\'rnini to\\'g\\'ri almashtirmadi. Kutilgan: [20, 10], olingan: ' + JSON.stringify(result);\nconst result2 = fn(['olma', 'anor', 'behi']);\nif (result2[0] !== 'anor' || result2[1] !== 'olma') return 'Ko\\'p elementli massivlar uchun ham to\\'g\\'ri ishlashi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "API ma'lumotlarini qayta ishlash",
+    "instruction": "Foydalanuvchi obyekti (`user`) berilgan. Undan destruptizatsiya yordamida `firstName`ni `name` o'zgaruvchisiga, `email`ni esa o'zgaruvchining o'ziga oling. Shuningdek, `role` xossasini ajrating, agar u mavjud bo'lmasa unga default (boshlang'ich) qiymat sifatida `'user'`ni bering. Funksiya yakunda yangi obyekt ko'rinishida `{ name, email, role }`ni qaytarsin.",
+    "startingCode": "function processUser(user) {\n  // Destructuring yordamida firstName -> name, email, va role (default: 'user') o'zgaruvchilarini oching\n  // Kodni shu yerda yozing\n}",
+    "hint": "const { firstName: name, email, role = 'user' } = user; return { name, email, role };",
+    "test": "const sandbox = new Function(code + '; return processUser;');\nconst fn = sandbox();\nconst user1 = { firstName: 'Sardor', email: 's@gmail.com', role: 'admin' };\nconst res1 = fn(user1);\nif (!res1 || res1.name !== 'Sardor' || res1.email !== 's@gmail.com' || res1.role !== 'admin') return 'firstName qayta nomlanishi yoki role qiymati noto\\'g\\'ri olingan';\nconst user2 = { firstName: 'Madina', email: 'm@mail.ru' };\nconst res2 = fn(user2);\nif (!res2 || res2.role !== 'user') return 'role xossasi bo\\'lmaganda default \"user\" qiymati biriktirilishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Murakkab obyektlarni destruptizatsiya qilish",
+    "instruction": "Berilgan buyurtma (`order`) obyektidan `id`ni, uning ichidagi `customer` obyektidan `city`ni destruptizatsiya qilib oling. Shuningdek, buyurtmaning boshqa barcha xossalarini `details` nomli o'zgaruvchiga (rest operator orqali) yig'ing. Yakunda funksiya `{ id, city, details }` obyektini qaytarsin.",
+    "startingCode": "function getOrderSummary(order) {\n  // Ichma-ich destructuring va rest operatoridan foydalaning\n  // Kodni shu yerda yozing\n}",
+    "hint": "const { id, customer: { city }, ...details } = order; return { id, city, details };",
+    "test": "const sandbox = new Function(code + '; return getOrderSummary;');\nconst fn = sandbox();\nconst orderData = { id: 501, date: '2026-06-11', customer: { name: 'Eldor', city: 'Samarqand' }, items: ['tel', 'keys'], total: 1500 };\nconst res = fn(orderData);\nif (!res || res.id !== 501 || res.city !== 'Samarqand') return 'id yoki ichki customer.city noto\\'g\\'ri ochildi';\nif (!res.details || res.details.total !== 1500 || res.details.customer !== undefined) return 'Rest operatori yordamida qolgan xossalar details obyektiga to\\'g\\'ri yig\\'ilmadi';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

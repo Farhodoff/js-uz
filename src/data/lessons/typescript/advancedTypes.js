@@ -2,7 +2,7 @@ export const advancedTypes = {
   id: "advancedTypes",
   title: "Advanced & Utility Types",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Advanced & Utility Types nima?
 TypeScript-da **Utility Types** (Yordamchi tiplar) va **Advanced Types** (Kengaytirilgan tiplar) — bu tayyor tiplarni o'zgartirish, ulardan nusxa olish yoki ularni tahrirlash orqali yangi tiplar hosil qilish usulidir. Ular kod takrorlanishini (DRY qoidasini) kamaytiradi va tiplash jarayonini osonlashtiradi.
@@ -259,7 +259,7 @@ type GuestData = RestrictData<EmployeeData, GuestPermissions>;
     "instruction": "Agar berilgan tip `T` massiv bo'lsa uning element tipini (array element type), aks holda `T` ning o'zini qaytaradigan `UnwrapArray<T>` conditional tipini e'lon qiling. Ushbu tip yordamida `string[]`dan `string` tipini ajratib olib, satr qaytaruvchi `getFirstWord(words)` funksiyasini yozing.",
     "startingCode": "type UnwrapArray<T> = any; // Bu yerga conditional yozing\n\nfunction getFirstWord(words: string[]): string {\n  // words[0] ni qaytaring\n}",
     "hint": "type UnwrapArray<T> = T extends (infer U)[] ? U : T;\nfunction getFirstWord(words: string[]): UnwrapArray<string[]> {\n  return words[0];\n}",
-    "test": "if (typeof getFirstWord !== 'function') return 'getFirstWord topilmadi'; if (getFirstWord(['Salom', 'Dunyo']) !== 'Salom') return 'Birinchi so\'z noto\'g\'ri'; return null;"
+    "test": "if (typeof getFirstWord !== 'function') return 'getFirstWord topilmadi'; if (getFirstWord(['Salom', 'Dunyo']) !== 'Salom') return 'Birinchi so'z noto'g'ri'; return null;"
   }
 ]
 ,

@@ -2,7 +2,7 @@ export const audioVideo = {
   id: "audioVideo",
   title: "Audio va Video API: Media Elementlarini Boshqarish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Audio va Video API (HTMLMediaElement) nima?
 **Audio va Video API** — bu brauzerga o'rnatilgan audio (\`<audio>\`) va video (\`<video>\`) fayllarni JavaScript yordamida dasturiy boshqarish (o'ynatish, to'xtatish, ovozni sozlash, tezlikni o'zgartirish) imkonini beruvchi interfeysdir. HTML-dagi pleyer faqat visual element bo'lsa, JavaScript bizga uning orqasidagi "miya" vazifasini bajarib beradi.
@@ -386,103 +386,32 @@ progressContainer.addEventListener("click", (e) => {
 | \`'waiting'\` | Tarmoq sekinligi sababli video to'xtab, buferlash boshlanganda |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Mediani ijro etish",
-      instruction: "Berilgan 'video' elementini dasturiy ravishda ishga tushiring (o'ynating).",
-      startingCode: "const video = document.createElement('video');\n// Bu yerga yozing\n",
-      hint: "video.play();",
-      test: "if (code.includes('video.play()')) return null; return 'video.play() metodini chaqiring.';"
-    },
-    {
-      id: 2,
-      title: "Mediani pauza qilish",
-      instruction: "Berilgan 'audio' elementini ijro etilishini vaqtincha to'xtating (pause qiling).",
-      startingCode: "const audio = document.createElement('audio');\n// Bu yerga yozing\n",
-      hint: "audio.pause();",
-      test: "if (code.includes('audio.pause()')) return null; return 'audio.pause() metodini chaqiring.';"
-    },
-    {
-      id: 3,
-      title: "Ovozni o'chirish",
-      instruction: "'video' elementining ovozini dasturiy ravishda o'chirib qo'ying (muted qiling).",
-      startingCode: "const video = document.createElement('video');\n// Bu yerga yozing\n",
-      hint: "video.muted = true;",
-      test: "if (code.includes('video.muted = true')) return null; return 'muted xususiyatini true qiling.';"
-    },
-    {
-      id: 4,
-      title: "Ovoz balandligini sozlash",
-      instruction: "'audio' elementining ovoz balandligini 70% ga (0.7) sozlang.",
-      startingCode: "const audio = document.createElement('audio');\n// Bu yerga yozing\n",
-      hint: "audio.volume = 0.7;",
-      test: "if (code.includes('audio.volume = 0.7')) return null; return 'volume qiymatini 0.7 qiling.';"
-    },
-    {
-      id: 5,
-      title: "Media manbasini yuklash",
-      instruction: "'video' elementining manbasiga (src) 'clip.mp4' faylini biriktiring.",
-      startingCode: "const video = document.createElement('video');\n// Bu yerga yozing\n",
-      hint: "video.src = 'clip.mp4';",
-      test: "if (code.includes(\"video.src = 'clip.mp4'\") || code.includes('video.src = \"clip.mp4\"')) return null; return 'src atributiga clip.mp4 ni yuklang.';"
-    },
-    {
-      id: 6,
-      title: "Joriy vaqtni aniqlash",
-      instruction: "'video' elementining hozirgi ijro vaqtini 15-soniyaga o'tkazing.",
-      startingCode: "const video = document.createElement('video');\n// Bu yerga yozing\n",
-      hint: "video.currentTime = 15;",
-      test: "if (code.includes('video.currentTime = 15')) return null; return 'currentTime ni 15 qiling.';"
-    },
-    {
-      id: 7,
-      title: "Avtomatik takrorlash",
-      instruction: "'audio' elementi tugaganda avtomatik boshidan boshlanadigan (loop) qilib sozlang.",
-      startingCode: "const audio = document.createElement('audio');\n// Bu yerga yozing\n",
-      hint: "audio.loop = true;",
-      test: "if (code.includes('audio.loop = true')) return null; return 'loop xususiyatini true qiling.';"
-    },
-    {
-      id: 8,
-      title: "Ijro tezligi",
-      instruction: "'video' ijro etilish tezligini 1.5 barobar tezlashtiring (playbackRate).",
-      startingCode: "const video = document.createElement('video');\n// Bu yerga yozing\n",
-      hint: "video.playbackRate = 1.5;",
-      test: "if (code.includes('video.playbackRate = 1.5')) return null; return 'playbackRate ni 1.5 qiling.';"
-    },
-    {
-      id: 9,
-      title: "Ijro tugaganini eshitish",
-      instruction: "'video' elementi tugagani (ended) haqida konsolga 'Tugadi' deb yozadigan hodisa tinglovchisini qo'shing.",
-      startingCode: "const video = document.createElement('video');\n// Bu yerga yozing\n",
-      hint: "video.addEventListener('ended', () => console.log('Tugadi'));",
-      test: "if (code.includes(\"addEventListener('ended'\") || code.includes('addEventListener(\"ended\"')) return null; return 'ended hodisasi uchun addEventListener yozing.';"
-    },
-    {
-      id: 10,
-      title: "Metadata yuklanganda davomiylikni bilish",
-      instruction: "Metama'lumotlar yuklanganda (loadedmetadata) video davomiyligini konsolga chiqaruvchi tinglovchi yozing.",
-      startingCode: "const video = document.createElement('video');\n// Bu yerga yozing\n",
-      hint: "video.addEventListener('loadedmetadata', () => console.log(video.duration));",
-      test: "if (code.includes('loadedmetadata') && code.includes('duration')) return null; return 'loadedmetadata hodisasi va duration xususiyatidan foydalaning.';"
-    },
-    {
-      id: 11,
-      title: "Ovoz o'zgarganini tekshirish",
-      instruction: "'audio' da ovoz o'zgarganini (volumechange) aniqlovchi event listener qo'shing.",
-      startingCode: "const audio = document.createElement('audio');\n// Bu yerga yozing\n",
-      hint: "audio.addEventListener('volumechange', () => {});",
-      test: "if (code.includes('volumechange')) return null; return 'volumechange hodisasini eshiting.';"
-    },
-    {
-      id: 12,
-      title: "Media manbaini yangilash va qayta yuklash",
-      instruction: "'video' manbasini o'zgartirgandan keyin yangi mediani qayta yuklash (load) metodini chaqiring.",
-      startingCode: "const video = document.createElement('video');\nvideo.src = 'new.mp4';\n// Bu yerga yozing\n",
-      hint: "video.load();",
-      test: "if (code.includes('video.load()')) return null; return 'video.load() metodini chaqiring.';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Mediani boshqarish (play, pause, stop)",
+    "instruction": "HTMLMediaElement elementini qabul qilib, 'action' parametridan kelib chiqib harakat qiladigan `controlPlayback(mediaElement, action)` funksiyasini yozing. 'play' bo'lganda `.play()`ni chaqirib, Promise rad etilishini `.catch(err => {})` orqali boshqaring. 'pause' bo'lganda `.pause()`ni chaqiring. 'stop' bo'lganda esa `.pause()`ni chaqiring va `currentTime`ni `0` ga tushiring.",
+    "startingCode": "function controlPlayback(mediaElement, action) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Shartlarni tekshirish uchun if-else yoki switch foydalaning. .play() va'dasini (.catch()) tekshirishni unutmang. stop bo'lsa currentTime = 0 bo'lishi kerak.",
+    "test": "if (!code.includes('currentTime = 0') && !code.includes('currentTime=0')) return 'stop bo\\'lsa currentTime 0 ga tushirilishi kerak';\ntry {\n  let actions = [];\n  const mockMedia = {\n    play: () => { actions.push('play'); return Promise.resolve(); },\n    pause: () => { actions.push('pause'); },\n    currentTime: 10\n  };\n  const sandbox = new Function('mediaElement', 'action', code + '; return controlPlayback;');\n  const fn = sandbox();\n  fn(mockMedia, 'play');\n  fn(mockMedia, 'pause');\n  fn(mockMedia, 'stop');\n  if (!actions.includes('play') || !actions.includes('pause')) return 'play va pause amallari noto\\'g\\'ri bajarildi';\n  if (mockMedia.currentTime !== 0) return 'stop amalida currentTime 0 bo\\'lishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Media sozlamalarini konfiguratsiya qilish",
+    "instruction": "`mediaElement` va sozlamalar obyekti `options` (xossalari: `volume`, `speed`, `muted`) ni qabul qiluvchi `configureMedia(mediaElement, options)` funksiyasini yozing. Sozlamalarni elementga biriktiring. Agar `volume` o'rnatilmoqchi bo'lib, uning qiymati 0.0 dan kichik yoki 1.0 dan katta bo'lsa `RangeError` xatoligini otish (throw) kerak.",
+    "startingCode": "function configureMedia(mediaElement, options) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`mediaElement.playbackRate = options.speed` orqali tezlikni sozlang. volume 0 va 1 orasida bo'lishini `if (options.volume < 0 || options.volume > 1)` orqali tekshiring.",
+    "test": "try {\n  const mockMedia = { volume: 0.5, playbackRate: 1.0, muted: false };\n  const sandbox = new Function('mediaElement', 'options', code + '; return configureMedia;');\n  const fn = sandbox();\n  \n  fn(mockMedia, { volume: 0.8, speed: 1.5, muted: true });\n  if (mockMedia.volume !== 0.8) return 'volume to\\'g\\'ri o\\'rnatilmadi';\n  if (mockMedia.playbackRate !== 1.5) return 'playbackRate (speed) to\\'g\\'ri o\\'rnatilmadi';\n  if (mockMedia.muted !== true) return 'muted to\\'g\\'ri o\\'rnatilmadi';\n  \n  try {\n    fn(mockMedia, { volume: 1.5, speed: 1.0 });\n    return '1.5 volume uchun RangeError otilishi kerak edi';\n  } catch(err) {\n    if (!(err instanceof RangeError)) return 'Noto\\'g\\'ri xatolik turi otildi. RangeError bo\\'lishi shart.';\n  }\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Media vaqtini formatlash",
+    "instruction": "Media o'yinchisida vaqtni foydalanuvchiga ko'rsatish uchun soniyalarni (masalan `125`) `MM:SS` formatidagi satr ko'rinishida (masalan `\"02:05\"`) qaytaradigan `formatTime(seconds)` funksiyasini yozing. Agar berilgan qiymat son bo'lmasa, manfiy bo'lsa yoki `NaN` bo'lsa, `\"00:00\"` qaytaring.",
+    "startingCode": "function formatTime(seconds) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Sonni tekshirish uchun `isNaN(seconds)` yoki `typeof seconds !== 'number'` ishlating. Daqiqalarni topish uchun `Math.floor(seconds / 60)` ni, sekundlarni topish uchun esa `Math.floor(seconds % 60)` ni chaqiring va `String(...).padStart(2, '0')` orqali 2 xonali ko'rinishga keltiring.",
+    "test": "try {\n  const sandbox = new Function(code + '; return formatTime;');\n  const fn = sandbox();\n  \n  if (fn(125) !== '02:05') return '125 soniya uchun \"02:05\" qaytishi kerak, lekin ' + fn(125) + ' qaytdi';\n  if (fn(9) !== '00:09') return '9 soniya uchun \"00:09\" qaytishi kerak';\n  if (fn(-5) !== '00:00') return 'Manfiy son uchun \"00:00\" qaytishi kerak';\n  if (fn(NaN) !== '00:00') return 'NaN uchun \"00:00\" qaytishi kerak';\n  if (fn(3600) !== '60:00') return '3600 soniya uchun \"60:00\" qaytishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

@@ -2,7 +2,7 @@ export const ifElseLesson = {
   id: "ifElseLesson",
   title: "Shart Operatorlari: if, else",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Shart Operatorlari nima?
 Dasturlashda ko'pincha ma'lum bir sharoitga qarab turli xil harakatlarni amalga oshirish kerak bo'ladi. JavaScript-da buni amalga oshirish uchun **shart operatorlari (\`if\`, \`else if\`, \`else\`)** ishlatiladi. Ular kompyuterga: "Agar mana bu shart to'g'ri bo'lsa, bu ishni qil, aks holda boshqa ishni bajar" degan ko'rsatmani beradi.
@@ -320,103 +320,32 @@ Ko'p joyda \`else\` ishlatmasdan, funksiya boshidayoq shartga to'g'ri kelmaydiga
 | **Truthy qiymatlar** | Falsy bo'lmagan barcha boshqa qiymatlar (hatto \`[]\`, \`{}\`) | Shart tekshirilganda har doim \`true\` ga aylanadi | \`if ([]) { ... } // bajariladi\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Yoshni tekshirish",
-      instruction: "Agar 'age' 18 dan kichik bo'lsa 'Kichik', aks holda 'Katta' deb chiqaring.",
-      startingCode: "let age = 15;\n// Bu yerga yozing\n",
-      hint: "if (age < 18) { console.log('Kichik'); } else { console.log('Katta'); }",
-      test: "if (logs.includes('Kichik')) return null; return 'Xato xabar chiqyapti';"
-    },
-    {
-      id: 2,
-      title: "Switch bilan kunlar",
-      instruction: "O'zgaruvchi 'day' 1 bo'lsa 'Dushanba', 2 bo'lsa 'Seshanba' chiqaring (switch ishlatib).",
-      startingCode: "let day = 1;\n// Bu yerga yozing\n",
-      hint: "switch(day) { case 1: console.log('Dushanba'); break; case 2: console.log('Seshanba'); break; }",
-      test: "if (code.includes('switch') && logs.includes('Dushanba')) return null; return 'Switch-ni to\\'g\\'ri ishlating';"
-    },
-    {
-      id: 3,
-      title: "Ternary mashqi",
-      instruction: "Ternary operator yordamida 'a' 0 dan katta bo'lsa 'Musbat', bo'lmasa 'Manfiy' deb chiqaring.",
-      startingCode: "let a = 10;\n// Bu yerga yozing\n",
-      hint: "console.log(a > 0 ? 'Musbat' : 'Manfiy');",
-      test: "if (code.includes('?') && logs.includes('Musbat')) return null; return 'Ternary operatorni ishlating';"
-    },
-    {
-      id: 4,
-      title: "Juft yoki toq",
-      instruction: "num juft bo'lsa 'Juft', aks holda 'Toq' deb chiqaring.",
-      startingCode: "const num = 7;\n// Bu yerga yozing\n",
-      hint: "if (num % 2 === 0) { console.log('Juft'); } else { console.log('Toq'); }",
-      test: "if (logs.includes('Toq')) return null; return 'Son juft yoki toq ekanligini to\\'g\\'ri aniqlang!';"
-    },
-    {
-      id: 5,
-      title: "Bahoni aniqlash",
-      instruction: "score 90 va undan yuqori bo'lsa 'A', 80 va undan yuqori bo'lsa 'B', aks holda 'C' deb log qiling.",
-      startingCode: "const score = 85;\n// Bu yerga yozing\n",
-      hint: "if (score >= 90) { console.log('A'); } else if (score >= 80) { console.log('B'); } else { console.log('C'); }",
-      test: "if (logs.includes('B') && !logs.includes('C')) return null; return 'Baholash shartlarini tekshiring!';"
-    },
-    {
-      id: 6,
-      title: "Ternary yosh cheklovi",
-      instruction: "age 18 yoki undan katta bo'lsa yields o'zgaruvchisiga true, aks holda false qiymatini ternary orqali yuklang.",
-      startingCode: "const age = 20;\nlet yields = // Bu yerga yozing\n",
-      hint: "let yields = age >= 18 ? true : false;",
-      test: "if (yields === true && code.includes('?')) return null; return 'Ternary operator yordamida yields ga qiymat yuklang!';"
-    },
-    {
-      id: 7,
-      title: "Falsy tekshiruvi",
-      instruction: "value o'zgaruvchisi truthy bo'lsa 'Rost', aks holda 'Yolg\\'on' deb chop eting.",
-      startingCode: "const value = '';\n// Bu yerga yozing\n",
-      hint: "if (value) { console.log('Rost'); } else { console.log('Yolg\\'on'); }",
-      test: "if (logs.includes('Yolg\\'on')) return null; return 'Bo\\'sh string falsy qiymat ekanligini hisobga oling';"
-    },
-    {
-      id: 8,
-      title: "Switch fasl nomi",
-      instruction: "month o'zgaruvchisi 12, 1, 2 bo'lsa 'Qish', 3, 4, 5 bo'lsa 'Bahor' deb chiqaring.",
-      startingCode: "const month = 3;\n// Bu yerga yozing\n",
-      hint: "switch(month) { case 12: case 1: case 2: console.log('Qish'); break; case 3: case 4: case 5: console.log('Bahor'); break; }",
-      test: "if (logs.includes('Bahor') && code.includes('switch')) return null; return 'Switch orqali oylarni faslga ajrating';"
-    },
-    {
-      id: 9,
-      title: "Odd Even Ternary",
-      instruction: "res o'zgaruvchisiga x juft bo'lsa 'Even', toq bo'lsa 'Odd' matnini ternary orqali yuklang.",
-      startingCode: "const x = 12;\nlet res = // Bu yerga yozing\n",
-      hint: "let res = x % 2 === 0 ? 'Even' : 'Odd';",
-      test: "if (res === 'Even' && code.includes('?')) return null; return 'Ternary orqali Even yoki Odd yozing';"
-    },
-    {
-      id: 10,
-      title: "Qiyosiy kattalik",
-      instruction: "x va y sonlaridan qaysi biri katta bo'lsa o'shani chiqaring, teng bo'lsa 'Teng' deb log qiling.",
-      startingCode: "const x = 8, y = 8;\n// Bu yerga yozing\n",
-      hint: "if (x > y) { console.log(x); } else if (y > x) { console.log(y); } else { console.log('Teng'); }",
-      test: "if (logs.includes('Teng')) return null; return 'Tenglik holatini ham inobatga oling';"
-    },
-    {
-      id: 11,
-      title: "Login tekshiruvi",
-      instruction: "username admin bo'lsa va password 12345 bo'lsa 'Xush kelibsiz', aks holda 'Xato' deb chop eting.",
-      startingCode: "const username = 'admin', password = 'wrong';\n// Bu yerga yozing\n",
-      hint: "if (username === 'admin' && password === '12345') { console.log('Xush kelibsiz'); } else { console.log('Xato'); }",
-      test: "if (logs.includes('Xato')) return null; return 'Login parolni tekshirish shartini to\\'g\\'ri yozing';"
-    },
-    {
-      id: 12,
-      title: "Switch default holati",
-      instruction: "role o'zgaruvchisi 'admin' yoki 'user' bo'lmasa, default ravishda 'Mehmon' deb log qiluvchi switch yozing.",
-      startingCode: "const role = 'editor';\n// Bu yerga yozing\n",
-      hint: "switch(role) { case 'admin': console.log('Admin'); break; case 'user': console.log('User'); break; default: console.log('Mehmon'); }",
-      test: "if (logs.includes('Mehmon') && code.includes('default')) return null; return 'Switch default qismini yozing!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Harorat Tavsifi",
+    "instruction": "Berilgan `temp` (harorat) bo'yicha quyidagi matnlarni qaytaruvchi `getTemperatureStatus(temp)` funksiyasini yozing:\n- Agar harorat 0 dan past bo'lsa: `\"Juda sovuq\"` qaytaring;\n- Agar 0 dan 15 gacha (shu jumladan) bo'lsa: `\"Salqin\"` qaytaring;\n- Agar 16 dan 30 gacha (shu jumladan) bo'lsa: `\"Iliq\"` qaytaring;\n- Agar 30 dan yuqori bo'lsa: `\"Issiq\"` qaytaring.",
+    "startingCode": "function getTemperatureStatus(temp) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "if, else if va else operatorlaridan foydalaning. Masalan: `if (temp < 0) { return \"Juda sovuq\"; }`",
+    "test": "const sandbox = new Function(code + '; return getTemperatureStatus;');\nconst fn = sandbox();\nif (fn(-5) !== 'Juda sovuq') return 'Harorat -5 bo\\'lganda \"Juda sovuq\" qaytishi kerak';\nif (fn(10) !== 'Salqin') return 'Harorat 10 bo\\'lganda \"Salqin\" qaytishi kerak';\nif (fn(25) !== 'Iliq') return 'Harorat 25 bo\\'lganda \"Iliq\" qaytishi kerak';\nif (fn(35) !== 'Issiq') return 'Harorat 35 bo\\'lganda \"Issiq\" qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Foydalanuvchi Huquqlari",
+    "instruction": "Foydalanuvchining yoshi (`age`) va ruxsatnomasi borligi (`hasPermission` - boolean) bo'yicha tizimga kirish huquqini tekshiradigan `checkAccess(age, hasPermission)` funksiyasini yozing:\n- Agar yoshi 18 dan kichik bo'lsa, har doim `\"Taqiqlangan\"` qaytarsin.\n- Agar yoshi 18 yoki undan katta bo'lsa:\n  - Agar `hasPermission` true bo'lsa, `\"Ruxsat berildi\"` qaytarsin.\n  - Agar `hasPermission` false bo'lsa, `\"Ruxsatnoma kerak\"` qaytarsin.",
+    "startingCode": "function checkAccess(age, hasPermission) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Avval `age < 18` shartini tekshiring, so'ng `else` bloki ichida `hasPermission` ning true yoki false ekanligini if/else orqali tekshiring.",
+    "test": "const sandbox = new Function(code + '; return checkAccess;');\nconst fn = sandbox();\nif (fn(15, true) !== 'Taqiqlangan') return 'Yosh 15 va ruxsatnoma true bo\\'lganda \"Taqiqlangan\" bo\\'lsinki';\nif (fn(20, true) !== 'Ruxsat berildi') return 'Yosh 20 va ruxsatnoma true bo\\'lganda \"Ruxsat berildi\" bo\\'lsin';\nif (fn(20, false) !== 'Ruxsatnoma kerak') return 'Yosh 20 va ruxsatnoma false bo\\'lganda \"Ruxsatnoma kerak\" bo\\'lsin';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Falsy va Truthy Tekshiruvi",
+    "instruction": "Foydalanuvchi kiritgan `username` qiymatini tekshiruvchi `validateUsername(username)` funksiyasini yozing:\n- Agar `username` bo'sh satr `\"\"`, `null`, `undefined` yoki umuman kiritilmagan (ya'ni falsy qiymat) bo'lsa, `\"Noma'lum foydalanuvchi\"` matnini qaytarsin.\n- Aks holda (truthy qiymat bo'lsa), kiritilgan `username` qiymatining o'zini qaytarsin.",
+    "startingCode": "function validateUsername(username) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Oddiy `if (!username)` sharti orqali barcha falsy qiymatlarni aniqlash mumkin.",
+    "test": "const sandbox = new Function(code + '; return validateUsername;');\nconst fn = sandbox();\nif (fn('') !== 'Noma\\'lum foydalanuvchi') return 'Bo\\'sh satr uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn(null) !== 'Noma\\'lum foydalanuvchi') return 'null uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn(undefined) !== 'Noma\\'lum foydalanuvchi') return 'undefined uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn('nodir') !== 'nodir') return 'Valid username uchun uning o\\'zi qaytishi kerak';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

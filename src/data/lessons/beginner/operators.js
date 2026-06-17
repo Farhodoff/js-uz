@@ -2,7 +2,7 @@ export const operators = {
   id: "operators",
   title: "Operatorlar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Operatorlar nima?
 JavaScript-da **operatorlar** — bu qiymatlar (operandlar) ustida matematik, solishtirish yoki mantiqiy amallarni bajarishga ko'rsatma beruvchi maxsus belgilar. Masalan, \`+\` operatori ikkita sonni qo'shadi, \`===\` esa ularning tengligini tekshiradi.
@@ -337,103 +337,32 @@ Dvigatel \`==\` operatorini ishlatganda turlarni moslashtirish uchun qo'shimcha 
 | **Qiymat Yuklash** | \`=\`, \`+=\`, \`**=\` | 2 | O'ngdan Chapga | O'zgaruvchilarga yakuniy qiymatlarni saqlash |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Qoldiq operatori",
-      instruction: "10 ni 3 ga bo'lgandagi qoldiqni toping va uni rem o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\nlet rem = ",
-      hint: "let rem = 10 % 3;",
-      test: "if (rem === 1) return null; return 'Qoldiq 1 bo\\'lishi kerak!';"
-    },
-    {
-      id: 2,
-      title: "Darajaga ko'tarish",
-      instruction: "2 ning 5-darajasini darajaga ko'tarish operatori (**) yordamida hisoblab, power o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\nlet power = ",
-      hint: "let power = 2 ** 5;",
-      test: "if (power === 32) return null; return 'Natija 32 chiqishi kerak!';"
-    },
-    {
-      id: 3,
-      title: "Oddiy tenglik",
-      instruction: "5 sonini va '5' stringini oddiy tenglik (==) operatori orqali solishtirib, natijani check o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\nlet check = ",
-      hint: "let check = (5 == '5');",
-      test: "if (check === true) return null; return 'check o\\'zgaruvchisi true bo\\'lishi kerak!';"
-    },
-    {
-      id: 4,
-      title: "Qat'iy tenglik",
-      instruction: "5 sonini va '5' stringini qat'iy tenglik (===) operatori orqali solishtirib, natijani strictCheck o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\nlet strictCheck = ",
-      hint: "let strictCheck = (5 === '5');",
-      test: "if (strictCheck === false) return null; return 'strictCheck o\\'zgaruvchisi false bo\\'lishi kerak!';"
-    },
-    {
-      id: 5,
-      title: "Mantiqiy VA",
-      instruction: "isAdult va hasTicket shartlarining mantiqiy VA (&&) natijasini canEnter o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "let isAdult = true;\nlet hasTicket = true;\n// Bu yerga yozing\nlet canEnter = ",
-      hint: "let canEnter = isAdult && hasTicket;",
-      test: "if (canEnter === true) return null; return 'canEnter true bo\\'lishi kerak!';"
-    },
-    {
-      id: 6,
-      title: "Mantiqiy YOKI",
-      instruction: "isWeekend va isHoliday shartlaridan kamida biri true bo'lganda ishlaydigan mantiqiy YOKI (||) amali natijasini freeTime o'zgaruvchisiga saqlang.",
-      startingCode: "let isWeekend = true;\nlet isHoliday = false;\n// Bu yerga yozing\nlet freeTime = ",
-      hint: "let freeTime = isWeekend || isHoliday;",
-      test: "if (freeTime === true) return null; return 'freeTime true bo\\'lishi kerak!';"
-    },
-    {
-      id: 7,
-      title: "Mantiqiy inkor",
-      instruction: "isRaining qiymatining teskarisini mantiqiy inkor (!) operatori orqali topib, goWalk o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "let isRaining = false;\n// Bu yerga yozing\nlet goWalk = ",
-      hint: "let goWalk = !isRaining;",
-      test: "if (goWalk === true) return null; return 'goWalk true bo\\'lishi kerak!';"
-    },
-    {
-      id: 8,
-      title: "Increment",
-      instruction: "count o'zgaruvchisini postfix increment (++) operatori yordamida 1 taga oshiring.",
-      startingCode: "let count = 5;\n// Bu yerga yozing\n",
-      hint: "count++;",
-      test: "if (count === 6) return null; return 'count qiymati 6 bo\\'lishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "Decrement",
-      instruction: "count o'zgaruvchisini postfix decrement (--) operatori yordamida 1 taga kamaytiring.",
-      startingCode: "let count = 10;\n// Bu yerga yozing\n",
-      hint: "count--;",
-      test: "if (count === 9) return null; return 'count qiymati 9 bo\\'lishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "Stringlarni birlashtirish",
-      instruction: "name1 va name2 stringlarini qo'shish (+) yordamida oralarida bitta bo'sh joy bilan birlashtiring va fullName o'zgaruvchisiga saqlang.",
-      startingCode: "let name1 = 'Ali';\nlet name2 = 'Valiyev';\n// Bu yerga yozing\nlet fullName = ",
-      hint: "let fullName = name1 + ' ' + name2;",
-      test: "if (fullName === 'Ali Valiyev') return null; return 'fullName\\'Ali Valiyev\\' bo\\'lishi kerak!';"
-    },
-    {
-      id: 11,
-      title: "Qisqartirilgan qo'shish",
-      instruction: "x o'zgaruvchisining qiymatiga qo'shimcha 5 sonini qisqartirilgan (+=) operator yordamida qo'shing.",
-      startingCode: "let x = 10;\n// Bu yerga yozing\n",
-      hint: "x += 5;",
-      test: "if (x === 15) return null; return 'x qiymati 15 bo\\'lishi kerak!';"
-    },
-    {
-      id: 12,
-      title: "Qat'iy teng emaslik",
-      instruction: "10 soni 20 soniga qat'iy teng emasligini (!==) tekshiring va natijani notEqual o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "// Bu yerga yozing\nlet notEqual = ",
-      hint: "let notEqual = (10 !== 20);",
-      test: "if (notEqual === true) return null; return 'notEqual o\\'zgaruvchisi true bo\\'lishi kerak!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Tana vazni indeksini (BMI) hisoblash",
+    "instruction": "Vazn (kilogrammda) va bo'yni (metrda) qabul qilib, foydalanuvchining tana vazni indeksini (BMI) hisoblovchi `calculateBMI(weight, height)` funksiyasini yozing. BMI formulasi: vazn / bo'yning kvadrati. Natijani nuqtadan keyin ikki xonagacha yaxlitlab, son (number) ko'rinishida qaytaring.",
+    "startingCode": "function calculateBMI(weight, height) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Bo'yning kvadratini hisoblash uchun darajaga ko'tarish (**) operatoridan foydalaning. Yaxlitlash uchun esa .toFixed(2) metodini ishlatib, uni son turiga o'tkazish uchun oldiga '+' qo'shing.",
+    "test": "const sandbox = new Function(code + '; return calculateBMI;');\nconst fn = sandbox();\nconst res1 = fn(70, 1.75);\nconst res2 = fn(50, 1.6);\nif (res1 === 22.86 && res2 === 19.53) return null;\nreturn 'BMI hisoblashda xatolik. Natija kutilganidek (70kg va 1.75m uchun 22.86) emas: ' + res1;"
+  },
+  {
+    "id": 2,
+    "title": "Foydalanuvchi ismini tanlash",
+    "instruction": "Foydalanuvchi obyekti (`user`) berilgan. Agar unda `nickname` mavjud va u bo'sh bo'lmasa, uni qaytaring. Agar `nickname` bo'lmasa (yoki bo'sh bo'lsa), `fullName` qiymatini qaytaring. Agar ikkalasi ham bo'lmasa yoki bo'sh bo'lsa, 'Mehmon' so'zini qaytaring. Buning uchun mantiqiy OR (||) operatoridan foydalaning.",
+    "startingCode": "function getUserDisplayName(user) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "(user.nickname || user.fullName) || 'Mehmon' ko'rinishidagi mantiqiy zanjirdan foydalanishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return getUserDisplayName;');\nconst fn = sandbox();\nconst test1 = fn({ nickname: 'Dev1', fullName: 'Ali Valiyev' });\nconst test2 = fn({ nickname: '', fullName: 'Vali Aliyev' });\nconst test3 = fn({ nickname: '', fullName: '' });\nconst test4 = fn({ nickname: undefined, fullName: null });\nif (test1 === 'Dev1' && test2 === 'Vali Aliyev' && test3 === 'Mehmon' && test4 === 'Mehmon') return null;\nreturn 'Ismni tanlash logikasi xato yozilgan. Test qiymatlari tekshirilganda xatolik aniqlandi.';"
+  },
+  {
+    "id": 3,
+    "title": "Sonning juftlik va karralilik aloqasi",
+    "instruction": "Berilgan sonning juft yoki toqligi hamda 5 ga bo'linish-bo'linmasligini tekshiruvchi `checkNumberRelation(num)` funksiyasini yozing. Funksiya quyidagi matnlarni qaytarishi kerak:\n- Agar son juft va 5 ga bo'linsa: 'Juft va 5 ga karrali'\n- Agar son toq va 5 ga bo'linsa: 'Tog\\' va 5 ga karrali'\n- Agar son faqat juft bo'lib, 5 ga bo'linmasa: 'Faqat juft'\n- Agar son faqat toq bo'lib, 5 ga bo'linmasa: 'Faqat tog\\''",
+    "startingCode": "function checkNumberRelation(num) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Sonnining qoldig'ini tekshirish uchun '%' operatoridan va solishtirish uchun '===' operatoridan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return checkNumberRelation;');\nconst fn = sandbox();\nif (fn(10) === 'Juft va 5 ga karrali' && fn(15) === 'Tog\\' va 5 ga karrali' && fn(8) === 'Faqat juft' && fn(7) === 'Faqat tog\\'') return null;\nreturn 'Sonlarni tekshirish natijasi kutilganidek emas. Qaytarilgan qiymatlarni qayta tekshiring.';"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

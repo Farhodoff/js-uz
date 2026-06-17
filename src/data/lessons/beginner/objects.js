@@ -2,7 +2,7 @@ export const objects = {
   id: "objects",
   title: "Obyektlar (Objects)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Obyektlar (Objects) nima?
 JavaScript-da **Obyektlar** — bu kalit (key) va qiymat (value) juftliklarini o'zida saqlovchi murakkab ma'lumot tuzilmasidir. Agar oddiy o'zgaruvchilar (masalan, string, number) faqat bitta qiymatni saqlay olsa, obyektlar bitta nom ostida butun bir mavjudotga tegishli bo'lgan bir nechta xarakteristika va harakatlarni birlashtirish imkonini beradi.
@@ -335,151 +335,32 @@ Tez-tez kalitlarni qo'shish va o'chirish talab qilinsa, xotira samaradorligi va 
 | \`Object.freeze(obj)\` | Obyektni o'zgarishlardan butunlay muzlatish | \`Object.freeze(user)\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Oddiy Obekt yaratish",
-      instruction: "Foydalanuvchi uchun 'user' objekti yarating. Ichida 'ism', 'yosh' va 'email' bo'lsin. Keyin ularni console.log() qilib chiqaring.",
-      startingCode: "// Foydalanuvchi objekti\nconst user = {\n  // Bu yerga yozing\n};\n\n// Qiymatlarni chiqaring\n",
-      hint: "const user = { ism: 'Ali', yosh: 25, email: 'ali@example.com' }; console.log(user.ism);",
-      test: "if (code.includes('ism') && code.includes('yosh') && code.includes('email') && code.includes('console.log')) return null; return 'Obekt to\\'g\\'ri yarating va qiymatlarni chiqaring';"
-    },
-    {
-      id: 2,
-      title: "Bracket Notation ishlatish",
-      instruction: "'avtomobil' objektidan 'model' qiymatini bracket notation orqali o'qing va console.log() qiling.",
-      startingCode: "const avtomobil = { marka: 'BYD', model: 'Yuan Plus', yil: 2024 };\n\n// Bracket notation orqali o'qing\n",
-      hint: "console.log(avtomobil['model']);",
-      test: "if (logs.includes('Yuan Plus')) return null; return 'avtomobil[\"model\"] ni chiqaring';"
-    },
-    {
-      id: 3,
-      title: "Obekt xususiyatini o'zgartirish",
-      instruction: "'kitob' objektining 'narxi' xususiyatini 50000 ga o'zgartiring.",
-      startingCode: "const kitob = { nomi: 'JavaScript', muallif: 'Farhod', narxi: 35000 };\n\n// Narxni o'zgartiring\n",
-      hint: "kitob.narxi = 50000;",
-      test: "if (code.includes('narxi') && code.includes('50000')) return null; return 'Narxni to\\'g\\'ri o\\'zgartiring';"
-    },
-    {
-      id: 4,
-      title: "Yangi xususiyat qo'shish",
-      instruction: "'product' objektiga 'soni' xususiyatini (value: 100) qo'shing.",
-      startingCode: "const product = { nomi: 'Qalam', narxi: 5000 };\n\n// Yangi xususiyat qo'shing\n",
-      hint: "product.soni = 100;",
-      test: "if (code.includes('soni') && code.includes('100')) return null; return 'Yangi xususiyatni to\\'g\\'ri qo\\'shing';"
-    },
-    {
-      id: 5,
-      title: "Ichma-ich Obekt",
-      instruction: "'shaxs' objektiga 'manzil' ichma-ich objekti bo'lsin. Ichida 'shahar' va 'ko_cha' bo'lsin. Manzilni console.log() qiling.",
-      startingCode: "const shaxs = {\n  ism: 'Ali',\n  // Ichma-ich manzil objekti bu yerga\n};\n\n// Manzilni chiqaring\n",
-      hint: "const shaxs = { ism: 'Ali', manzil: { shahar: 'Toshkent', ko_cha: 'Amir Temur' } }; console.log(shaxs.manzil);",
-      test: "if (code.includes('manzil') && code.includes('shahar') && code.includes('ko_cha')) return null; return 'Ichma-ich obekt to\\'g\\'ri yarating';"
-    },
-    {
-      id: 6,
-      title: "Object.keys() ishlatish",
-      instruction: "'talaba' objektining barcha kalitlarini Object.keys() orqali o'qib, console.log() qiling.",
-      startingCode: "const talaba = { ism: 'Bobur', guruh: 'A101', baho: 4.5 };\n\n// Barcha kalitlarni chiqaring\n",
-      hint: "console.log(Object.keys(talaba));",
-      test: "if (logs.includes('ism') && logs.includes('guruh') && logs.includes('baho')) return null; return 'Object.keys() orqali kalitlarni chiqaring';"
-    },
-    {
-      id: 7,
-      title: "Metod yaratish",
-      instruction: "'kalkulator' objektiga 'qosh' metodi qo'shing. U 'a' va 'b' qiymatlarini qo'shib natijani qaytarsin.",
-      startingCode: "const kalkulator = { a: 10, b: 5 };\n\n// qosh metodi qo'shing\n\n// Tekshirish:\n",
-      hint: "kalkulator.qosh = function() { return this.a + this.b; };",
-      test: "if (typeof kalkulator.qosh === 'function' && kalkulator.qosh() === 15) return null; return 'Metod to\\'g\\'ri yarating';"
-    },
-    {
-      id: 8,
-      title: "Delete operatori",
-      instruction: "'kompaniya' objektidan 'fax' xususiyatini o'chirib tashlang.",
-      startingCode: "const kompaniya = { nomi: 'TechStart', telefon: '+998901234567', fax: '(79) 1234' };\n\n// fax ni o'chirib tashlaing\n",
-      hint: "delete kompaniya.fax;",
-      test: "if (code.includes('delete') && code.includes('fax')) return null; return 'delete orqali fax ni o\\'chirib tashlaing';"
-    },
-    {
-      id: 9,
-      title: "Spread Operator bilan birlashtirish",
-      instruction: "Ikkita objektni spread operatori (...) orqali birlashtirib, yangi objektga saqlang.",
-      startingCode: "const rasm1 = { nomi: 'Portret', artist: 'Usmon' };\nconst rasm2 = { yil: 2024 };\n\n// Ikkalasini birlashtirib yangi obekt yarating\n",
-      hint: "const birlashgan = { ...rasm1, ...rasm2 };",
-      test: "if (code.includes('...') && code.includes('rasm1') && code.includes('rasm2')) return null; return 'Spread operator orqali birlashtiring';"
-    },
-    {
-      id: 10,
-      title: "Getter orqali o'qish",
-      instruction: "'do_kon' objektiga 'jami_narx' getter'i qo'shing. U 'narx * soni' ni qaytarsin.",
-      startingCode: "const do_kon = {\n  nomi: 'Kitob Do\\'koni',\n  narx: 50000,\n  soni: 3,\n  // getter bu yerga\n};\n\nconsole.log(do_kon.jami_narx);\n",
-      hint: "get jami_narx() { return this.narx * this.soni; }",
-      test: "if (logs.includes('150000')) return null; return 'Getter to\\'g\\'ri yarating';"
-    },
-    {
-      id: 11,
-      title: "Object.assign() orqali nusxalash",
-      instruction: "'original' objektining to'liq nusxasini yarating va uni 'yangi' o'zgaruvchiga saqlang.",
-      startingCode: "const original = { a: 1, b: 2, c: 3 };\n\n// To'liq nusxani yarating\n",
-      hint: "const yangi = Object.assign({}, original);",
-      test: "if (code.includes('Object.assign') && code.includes('{}')) return null; return 'Object.assign() orqali nusxalang';"
-    },
-    {
-      id: 12,
-      title: "Ichma-ich qiymatni o'zgartirish va o'qish",
-      instruction: "'shaxs' objektisining 'manzil.shahar' qiymatini 'Samarqand' ga o'zgartiring. Keyin yangi qiymatni console.log() qiling.",
-      startingCode: "const shaxs = {\n  ism: 'Farhod',\n  manzil: { shahar: 'Toshkent', ko_cha: 'Amir Temur' }\n};\n\n// Shaharni Samarqandga o'zgartiring va chiqaring\n",
-      hint: "shaxs.manzil.shahar = 'Samarqand'; console.log(shaxs.manzil.shahar);",
-      test: "if (logs.includes('Samarqand')) return null; return 'Shaharni to\\'g\\'ri o\\'zgartiring va chiqaring';"
-    },
-    {
-      id: 13,
-      title: "structuredClone orqali chuqur nusxa olish",
-      instruction: "Berilgan 'user' obyektining to'liq chuqur nusxasini (deep copy) structuredClone yordamida 'clone' o'zgaruvchisiga nusxalang.",
-      startingCode: "const user = { name: 'Ali', details: { age: 25 } };\n\n// structuredClone yordamida nusxalang\nconst clone = null;\n",
-      hint: "const clone = structuredClone(user);",
-      test: "if (code.includes('structuredClone') && clone !== user && clone.details !== user.details && clone.details.age === 25) return null; return 'structuredClone orqali to\\'g\\'ri deep copy qiling';"
-    },
-    {
-      id: 14,
-      title: "Object.defineProperty() orqali read-only property yaratish",
-      instruction: "Object.defineProperty yordamida 'book' obyektining 'title' xususiyatini o'zgartirib bo'lmaydigan (writable: false) qilib sozlang.",
-      startingCode: "const book = { title: 'JS Manual' };\n\n// defineProperty yordamida writable: false qiling\n",
-      hint: "Object.defineProperty(book, 'title', { writable: false });",
-      test: "const d = Object.getOwnPropertyDescriptor(book, 'title'); if (d && d.writable === false && code.includes('defineProperty')) return null; return 'defineProperty yordamida writable: false o\\'rnating';"
-    },
-    {
-      id: 15,
-      title: "Object.freeze() orqali obyektni muzlatish",
-      instruction: "'config' obyektini Object.freeze yordamida o'zgartirib bo'lmaydigan qilib muzlating.",
-      startingCode: "const config = { theme: 'dark', version: 1.0 };\n\n// Obyektni muzlating\n",
-      hint: "Object.freeze(config);",
-      test: "if (Object.isFrozen(config) && code.includes('freeze')) return null; return 'Object.freeze orqali config obektini muzlating';"
-    },
-    {
-      id: 16,
-      title: "Object.seal() orqali obyektni muhrlash",
-      instruction: "'state' obyektini Object.seal yordamida yangi xususiyat qo'shib va o'chirib bo'lmaydigan qilib muhrlang.",
-      startingCode: "const state = { count: 0 };\n\n// Obyektni muhrlang\n",
-      hint: "Object.seal(state);",
-      test: "if (Object.isSealed(state) && code.includes('seal')) return null; return 'Object.seal orqali state obektini muhrlang';"
-    },
-    {
-      id: 17,
-      title: "Object.fromEntries() orqali massivdan obyekt yaratish",
-      instruction: "'pairs' massividagi kalit-qiymat juftliklarini Object.fromEntries yordamida 'user' obyektiga o'tkazing.",
-      startingCode: "const pairs = [['name', 'Ali'], ['role', 'admin']];\n\n// Obyektga aylantiring\nconst user = null;\n",
-      hint: "const user = Object.fromEntries(pairs);",
-      test: "if (user && user.name === 'Ali' && user.role === 'admin' && code.includes('fromEntries')) return null; return 'Object.fromEntries yordamida pairs ni obektga aylantiring';"
-    },
-    {
-      id: 18,
-      title: "Object.create() descriptors bilan ishlash",
-      instruction: "Object.create yordamida 'proto' obyektidan meros olgan va o'zining o'zgartirib bo'lmaydigan 'id' (value: 123, writable: false) xususiyatiga ega 'child' obyektini yarating.",
-      startingCode: "const proto = { greet() { return 'Hi'; } };\n\n// Object.create yordamida child obyektini yarating\nconst child = null;\n",
-      hint: "const child = Object.create(proto, { id: { value: 123, writable: false } });",
-      test: "if (child && Object.getPrototypeOf(child) === proto && child.id === 123 && Object.getOwnPropertyDescriptor(child, 'id').writable === false) return null; return 'Object.create orqali descriptors bilan child obyektini yarating';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Obyektni yaratish va o'zgartirish",
+    "instruction": "Berilgan `name`, `age` va `job` qiymatlaridan foydalanib yangi obyekt yarating. Keyin uning `age` xossasini 1 taga oshiring, yangi `isProgrammer` xossasini `true` qiymati bilan qo'shing va hosil bo'lgan obyektni qaytaradigan `updatePerson(name, age, job)` funksiyasini yozing.",
+    "startingCode": "function updatePerson(name, age, job) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Obyekt yaratish uchun {} dan foydalaning, keyin dot notation (.) orqali age va isProgrammer xossalarini boshqaring.",
+    "test": "const sandbox = new Function(code + '; return updatePerson;');\nconst fn = sandbox();\nconst obj = fn('Ali', 25, 'Dasturchi');\nif (obj && obj.name === 'Ali' && obj.age === 26 && obj.job === 'Dasturchi' && obj.isProgrammer === true) return null;\nreturn 'updatePerson funksiyasi obyektni to\\'g\\'ri yaratmadi yoki o\\'zgartirmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Dinamik Kalitlar (Bracket Notation)",
+    "instruction": "Berilgan `obj` obyektining dinamik `key` kaliti qiymatini berilgan `value` ga o'zgartiruvchi (yoki yangi qo'shuvchi) va o'sha obyektni qaytaruvchi `updateDynamicProperty(obj, key, value)` funksiyasini yozing. Dinamik kalitlar bilan ishlash uchun qavsli yozuvdan (Bracket Notation) foydalaning.",
+    "startingCode": "function updateDynamicProperty(obj, key, value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Dinamik kalit bilan ishlash uchun nuqta operatori o'rniga obj[key] = value; ko'rinishida yozing va obyektni return qiling.",
+    "test": "const sandbox = new Function(code + '; return updateDynamicProperty;');\nconst fn = sandbox();\nconst testObj = { brand: 'Apple' };\nconst res = fn(testObj, 'model', 'iPhone');\nif (res && res.brand === 'Apple' && res.model === 'iPhone') return null;\nreturn 'Dinamik xossa to\\'g\\'ri yangilanmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Metodlar va `this` kalit so'zi",
+    "instruction": "Berilgan `brand` va boshlang'ich `speed` qiymatlariga ega bo'lgan mashina obyektini qaytaruvchi `createCar(brand, speed)` funksiyasini yozing. Obyekt tarkibida `accelerate(amount)` metodi bo'lsin. Bu metod chaqirilganda obyektning `speed` xossasini `amount` ga oshirsin va yangilangan `speed` qiymatini qaytarsin. Metod ichida `this` kalit so'zidan foydalaning.",
+    "startingCode": "function createCar(brand, speed) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Obyekt ichida accelerate(amount) { this.speed += amount; return this.speed; } metodini yarating.",
+    "test": "const sandbox = new Function(code + '; return createCar;');\nconst fn = sandbox();\nconst car = fn('Tesla', 50);\nif (!car || typeof car.accelerate !== 'function') return 'createCar to\\'g\\'ri metodga ega obyekt qaytarmadi';\nconst newSpeed = car.accelerate(30);\nif (newSpeed === 80 && car.speed === 80) return null;\nreturn 'accelerate metodi tezlikni to\\'g\\'ri oshirmadi yoki qaytarmadi';"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

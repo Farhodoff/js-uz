@@ -2,7 +2,7 @@ export const advancedWebStorage = {
   id: "advancedWebStorage",
   title: "Kengaytirilgan Web Storage: IndexedDB va Cookies",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Kengaytirilgan Web Storage: Cookies va IndexedDB nima?
 Brauzerda ma'lumot saqlashning bir nechta usullari bor. Agar bizga juda kichik, xavfsiz va server bilan aloqa qiladigan ma'lumot kerak bo'lsa **Cookies (Pechenyelar)** dan, agar juda katta, murakkab va indekslangan ma'lumotlar ombori kerak bo'lsa **IndexedDB** dan foydalanamiz.

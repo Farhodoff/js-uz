@@ -2,7 +2,7 @@ export const higherOrderFunctions = {
   id: "higherOrderFunctions",
   title: "Higher-Order Functions va Currying",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Higher-Order Functions va Currying nima?
 * **First-Class Functions (Birinchi darajali funksiyalar):** JavaScript-da funksiyalar boshqa har qanday qiymat (son, satr, obyekt) kabi teng huquqlidir. Ularni o'zgaruvchilarga saqlash, boshqa funksiyalarga argument qiblyuborish yoki funksiyadan qaytarish mumkin.

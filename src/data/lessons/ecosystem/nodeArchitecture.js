@@ -1,7 +1,8 @@
 export const nodeArchitecture = {
   id: "nodeArchitecture",
   title: "Node.js Arxitekturasi va Event Loop",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Node.js va uning Arxitekturasi nima?
 * **Node.js** — bu JavaScript kodini brauzerdan tashqarida, server muhitida ishga tushirish imkonini beruvchi platforma. U o'zining tezligi va yengilligi bilan ajralib turadi.
@@ -255,177 +256,180 @@ async function filterErrorLogs(inputPath, outputPath) {
 | **Check** | Event Loop (5-faza) | \`setImmediate\` callbacklarini bajarish |
 | **Microtask** | Har bir faza orasida | \`process.nextTick\` va \`Promise.then\` ni zudlik bilan ishlatish |
 | **Buffer** | RAM | Ikkilik ma'lumotlarni tezkor xotirada saqlash |
-| **Stream** | Xotira va Disk | Ma'lumotlarni oqimli (bo'laklab) uzatish |`,
+| **Stream** | Xotira va Disk | Ma'lumotlarni oqimli (bo'laklab) uzatish |
+`,
   exercises: [
-    {
-      id: 1,
-      title: "Buffer Yaratish",
-      instruction: "Berilgan satrdan (string) UTF-8 formatida yangi Buffer obyektini yaratib qaytaruvchi `createBuffer(str)` funksiyasini yozing.",
-      startingCode: "function createBuffer(str) {\n  // Kodni shu yerda yozing\n}",
-      hint: "Buffer.from(str, 'utf8') dan foydalaning.",
-      test: "const sandbox = new Function(code + '; return createBuffer;');\nconst fn = sandbox();\nconst buf = fn('Salom');\nif (!buf || typeof buf.toString !== 'function') return 'Buffer obyekti qaytarilmadi';\nif (buf.toString('utf8') !== 'Salom') return 'Buffer ichidagi qiymat to\\'g\\'ri kelmadi';\nreturn null;"
-    },
-    {
-      id: 2,
-      title: "Fayl hajmini olish",
-      instruction: "Node.js-dagi `fs.stat` qaytargan stat obyektidan fayl hajmini baytlarda qaytaruvchi `getFileSize(stats)` funksiyasini yozing.",
-      startingCode: "function getFileSize(stats) {\n  // Kodni shu yerda yozing\n}",
-      hint: "stats obyektining `size` xossasini qaytaring.",
-      test: "const sandbox = new Function(code + '; return getFileSize;');\nconst fn = sandbox();\nif (fn({ size: 2048 }) !== 2048) return 'Foydalanuvchi obyektdan size xossasini to\\'g\\'ri qaytarmadi';\nif (fn({ size: 0 }) !== 0) return '0 o\\'lchamdagi fayl uchun noto\\'g\\'ri javob';\nreturn null;"
-    },
-    {
-      id: 3,
-      title: "Windows Platformasini Tekshirish",
-      instruction: "Node.js platformasi 'win32' (Windows) ekanligini tekshirib `true` yoki `false` qaytaradigan `isWindows(platform)` funksiyasini yozing.",
-      startingCode: "function isWindows(platform) {\n  // Kodni shu yerda yozing\n}",
-      hint: "platform === 'win32' ifodasi qiymatini qaytaring.",
-      test: "const sandbox = new Function(code + '; return isWindows;');\nconst fn = sandbox();\nif (fn('win32') !== true) return 'win32 platformasi uchun true qaytishi kerak';\nif (fn('darwin') !== false) return 'darwin (macOS) platformasi uchun false qaytishi kerak';\nreturn null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Buffer Yaratish",
+    "instruction": "Berilgan satrdan (string) UTF-8 formatida yangi Buffer obyektini yaratib qaytaruvchi `createBuffer(str)` funksiyasini yozing.",
+    "startingCode": "function createBuffer(str) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "Buffer.from(str, 'utf8') dan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return createBuffer;');\nconst fn = sandbox();\nconst buf = fn('Salom');\nif (!buf || typeof buf.toString !== 'function') return 'Buffer obyekti qaytarilmadi';\nif (buf.toString('utf8') !== 'Salom') return 'Buffer ichidagi qiymat to\\'g\\'ri kelmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Fayl hajmini olish",
+    "instruction": "Node.js-dagi `fs.stat` qaytargan stat obyektidan fayl hajmini baytlarda qaytaruvchi `getFileSize(stats)` funksiyasini yozing.",
+    "startingCode": "function getFileSize(stats) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "stats obyektining `size` xossasini qaytaring.",
+    "test": "const sandbox = new Function(code + '; return getFileSize;');\nconst fn = sandbox();\nif (fn({ size: 2048 }) !== 2048) return 'Foydalanuvchi obyektdan size xossasini to\\'g\\'ri qaytarmadi';\nif (fn({ size: 0 }) !== 0) return '0 o\\'lchamdagi fayl uchun noto\\'g\\'ri javob';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Windows Platformasini Tekshirish",
+    "instruction": "Node.js platformasi 'win32' (Windows) ekanligini tekshirib `true` yoki `false` qaytaradigan `isWindows(platform)` funksiyasini yozing.",
+    "startingCode": "function isWindows(platform) {\n  // Kodni shu yerda yozing\n}",
+    "hint": "platform === 'win32' ifodasi qiymatini qaytaring.",
+    "test": "const sandbox = new Function(code + '; return isWindows;');\nconst fn = sandbox();\nif (fn('win32') !== true) return 'win32 platformasi uchun true qaytishi kerak';\nif (fn('darwin') !== false) return 'darwin (macOS) platformasi uchun false qaytishi kerak';\nreturn null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Node.js nima uchun yuqori yuklamali tarmoq so'rovlarini juda samarali va tez bajara oladi?",
-      options: [
-        "Chunki u ma'lumotlarni faqat sonlarda saqlaydi",
-        "Asinxron, Non-blocking I/O modeliga va hodisalarga asoslangan arxitekturasiga ko'ra",
-        "Chunki unda 100 dan ortiq asosiy oqimlar (threads) ishlaydi",
-        "U faqat Windows operatsion tizimida tez ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Node.js bloklamaydigan I/O arxitekturasi tufayli og'ir ishlarni orqa fonga topshirib, o'zining yagona oqimini doimo bo'sh saqlaydi va tezkor javob beradi."
-    },
-    {
-      id: 2,
-      question: "libuv kutubxonasi Node.js-dagi asosiy vazifasi nima?",
-      options: [
-        "Sayt dizaynini boshqarish",
-        "Asinxron ishlarni, tarmoq voqealarini va Thread Pool (ishchilar guruhi)ni boshqarib berish",
-        "HTML sahifani render qilish",
-        "Parollarni Bcrypt orqali hashlash"
-      ],
-      correctAnswer: 1,
-      explanation: "libuv — Node.js-ga asinxron Non-blocking I/O va ko'p oqimli Thread Pool-ni taqdim etadigan, C tilida yozilgan platformalararo yordamchi kutubxonadir."
-    },
-    {
-      id: 3,
-      question: "Event Loop-dagi 'Poll' fazasining vazifasi nima?",
-      options: [
-        "Faqat setTimeout taymerlarini tekshirish",
-        "Yangi tarmoq so'rovlari va fayl tizimi (I/O) callbacklarini qabul qilish hamda bajarish",
-        "Dasturni to'liq o'chirish",
-        "Strict mode ogohlantirishlarini chiqarish"
-      ],
-      correctAnswer: 1,
-      explanation: "Poll fazasi Event Loop-ning eng muhim qismi bo'lib, u yangi kiruvchi I/O operatsiyalarini va ularning bajarilgan natijalarini qabul qiladi."
-    },
-    {
-      id: 4,
-      question: "setImmediate() va setTimeout(fn, 0) farqi nimada?",
-      options: [
-        "setTimeout tezroq ishlaydi",
-        "I/O (fayl o'qish) callbacklari ichida setImmediate har doim setTimeout dan birinchi ishga tushishi kafolatlanadi",
-        "Ikkalasi mutlaqo har xil kompyuterda ishlaydi",
-        "setImmediate faqat server o'chganda ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Fayl o'qish (I/O) yakunlangach, Event Loop Check fazasiga o'tadi va u yerda birinchi bo'lib setImmediate bajariladi, setTimeout taymerlari esa keyingi aylanmada ko'riladi."
-    },
-    {
-      id: 5,
-      question: "Nima uchun Event Loop-ni bloklash (Blocking the Event Loop) xavfli?",
-      options: [
-        "Chunki bu xotirani tozalab yuboradi",
-        "JavaScript yagona oqimda bo'lgani sababli, u sinxron og'ir amal bilan band bo'lganda boshqa foydalanuvchilarning so'rovlariga javob bera olmay, sayt to'liq qotib qoladi",
-        "Faqat CSS kodlari buziladi",
-        "Server avtomatik o'chadi"
-      ],
-      correctAnswer: 1,
-      explanation: "Agar asinxron bo'lmagan og'ir sikl yoki sinxron fayl o'qish bajarsak, yagona Main Thread band bo'ladi va boshqa mijozlar navbatda javobsiz qolib ketadi."
-    },
-    {
-      id: 6,
-      question: "Buffer (Bufer) nima va u ma'lumotlarni qanday shaklda saqlaydi?",
-      options: [
-        "Faqat JSON formatidagi matn",
-        "Xotirada (V8 tashqarisida) vaqtinchalik ajratilgan xom baytlar va ikkilik (binary) ma'lumotlar to'plami",
-        "CSS klasslari ro'yxati",
-        "O'z-o'zidan o'sadigan massiv"
-      ],
-      correctAnswer: 1,
-      explanation: "Buffer xotiradagi ma'lum bir bayt o'lchamdagi to'g'ridan-to'g'ri raqamlar (binary bytes) to'plamidir."
-    },
-    {
-      id: 7,
-      question: "Nima uchun katta fayllarni (masalan, 1 GB) o'qishda fs.readFile o'rniga fs.createReadStream (Streams) tavsiya etiladi?",
-      options: [
-        "readFile faqat Windows-da ishlaydi",
-        "readFile butun faylni xotiraga (RAM) yuklashga harakat qiladi va xotira to'lib ketishiga olib keladi, Stream esa faylni mayda bo'laklar (chunks) holida uzatadi",
-        "Stream faylni shifrlaydi",
-        "Chunki Stream tezroq yopiladi"
-      ],
-      correctAnswer: 1,
-      explanation: "Stream ma'lumotni oqimli (chunk-by-chunk) uzatgani uchun xotira sarfi minimal (taxminan 20-30 MB) bo'lib qoladi va har qanday ulkan faylni xavfsiz o'qiy oladi."
-    },
-    {
-      id: 8,
-      question: "Node.js-da microtasklar (Promises, process.nextTick) qachon bajariladi?",
-      options: [
-        "Faqat Event Loop yakunida",
-        "Event Loop-ning har bir fazasi orasida, joriy faza tugashi bilan zudlik bilan",
-        "Faqat setTimeout dan keyin",
-        "Ular hech qachon bajarilmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "Microtask navbatlari eng yuqori ustuvorlikka ega. Event Loop bir fazadan ikkinchisiga o'tish arafasida turgan har qanday soniyada barcha microtasklarni bajarib bo'shatadi."
-    },
-    {
-      id: 9,
-      question: "Libuv Thread Pool standart oqimlar soni (threads) nechaga teng?",
-      options: [
-        "1 ta",
-        "2 ta",
-        "4 ta",
-        "8 ta"
-      ],
-      correctAnswer: 2,
-      explanation: "Libuv oqimlar hovuzining (Thread Pool) standart o'lchami 4 ta oqimdan iborat."
-    },
-    {
-      id: 10,
-      question: "process.nextTick() ning vazifasi nima?",
-      options: [
-        "Navbatdagi tizim vaqtini aniqlash",
-        "Callback funksiyani joriy kod bajarilib bo'lishi bilan (Event Loop fazasi o'zgarishidan oldin) zudlik bilan ishga tushirish",
-        "Faqat yangi oqim ochish",
-        "LocalStorage-ni tozalash"
-      ],
-      correctAnswer: 1,
-      explanation: "nextTick() callbacklarini Event Loop doirasiga kirmasdan, joriy call stack bo'shashi bilanoq eng birinchi navbatda bajaradi."
-    },
-    {
-      id: 11,
-      question: "Node.js muhitida asinxronlikni boshqaruvchi C++ da yozilgan yadro nima deb nomlanadi?",
-      options: [
-        "React Dvigateli",
-        "V8 Engine va libuv",
-        "Express JS",
-        "Node Webpack"
-      ],
-      correctAnswer: 1,
-      explanation: "Node.js-ning yadrosi Google V8 JS engine (kodni tezlatish uchun) va libuv (asinxron tarmoq/fayl I/O va oqimlar uchun) dan iborat."
-    },
-    {
-      id: 12,
-      question: "EventEmitter-da once(event, listener) metodining vazifasi nima?",
-      options: [
-        "Hodisani o'chirib yuboradi",
-        "Hodisa tinglovchisini faqat bir marta ishlashga sozlaydi (birinchi chaqiriqdan keyin u avtomatik o'chadi)",
-        "Faqat soniyalarni sanaydi",
-        "Hodisani serverga yuboradi"
-      ],
-      correctAnswer: 1,
-      explanation: "once metodi hodisa birinchi marta trigger (emit) bo'lganda tinglovchini ishga tushiradi va darhol o'chib ketadi, qayta ishlamaydi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Node.js nima uchun yuqori yuklamali tarmoq so'rovlarini juda samarali va tez bajara oladi?",
+    "options": [
+      "Chunki u ma'lumotlarni faqat sonlarda saqlaydi",
+      "Asinxron, Non-blocking I/O modeliga va hodisalarga asoslangan arxitekturasiga ko'ra",
+      "Chunki unda 100 dan ortiq asosiy oqimlar (threads) ishlaydi",
+      "U faqat Windows operatsion tizimida tez ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Node.js bloklamaydigan I/O arxitekturasi tufayli og'ir ishlarni orqa fonga topshirib, o'zining yagona oqimini doimo bo'sh saqlaydi va tezkor javob beradi."
+  },
+  {
+    "id": 2,
+    "question": "libuv kutubxonasi Node.js-dagi asosiy vazifasi nima?",
+    "options": [
+      "Sayt dizaynini boshqarish",
+      "Asinxron ishlarni, tarmoq voqealarini va Thread Pool (ishchilar guruhi)ni boshqarib berish",
+      "HTML sahifani render qilish",
+      "Parollarni Bcrypt orqali hashlash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "libuv — Node.js-ga asinxron Non-blocking I/O va ko'p oqimli Thread Pool-ni taqdim etadigan, C tilida yozilgan platformalararo yordamchi kutubxonadir."
+  },
+  {
+    "id": 3,
+    "question": "Event Loop-dagi 'Poll' fazasining vazifasi nima?",
+    "options": [
+      "Faqat setTimeout taymerlarini tekshirish",
+      "Yangi tarmoq so'rovlari va fayl tizimi (I/O) callbacklarini qabul qilish hamda bajarish",
+      "Dasturni to'liq o'chirish",
+      "Strict mode ogohlantirishlarini chiqarish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Poll fazasi Event Loop-ning eng muhim qismi bo'lib, u yangi kiruvchi I/O operatsiyalarini va ularning bajarilgan natijalarini qabul qiladi."
+  },
+  {
+    "id": 4,
+    "question": "setImmediate() va setTimeout(fn, 0) farqi nimada?",
+    "options": [
+      "setTimeout tezroq ishlaydi",
+      "I/O (fayl o'qish) callbacklari ichida setImmediate har doim setTimeout dan birinchi ishga tushishi kafolatlanadi",
+      "Ikkalasi mutlaqo har xil kompyuterda ishlaydi",
+      "setImmediate faqat server o'chganda ishlaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Fayl o'qish (I/O) yakunlangach, Event Loop Check fazasiga o'tadi va u yerda birinchi bo'lib setImmediate bajariladi, setTimeout taymerlari esa keyingi aylanmada ko'riladi."
+  },
+  {
+    "id": 5,
+    "question": "Nima uchun Event Loop-ni bloklash (Blocking the Event Loop) xavfli?",
+    "options": [
+      "Chunki bu xotirani tozalab yuboradi",
+      "JavaScript yagona oqimda bo'lgani sababli, u sinxron og'ir amal bilan band bo'lganda boshqa foydalanuvchilarning so'rovlariga javob bera olmay, sayt to'liq qotib qoladi",
+      "Faqat CSS kodlari buziladi",
+      "Server avtomatik o'chadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Agar asinxron bo'lmagan og'ir sikl yoki sinxron fayl o'qish bajarsak, yagona Main Thread band bo'ladi va boshqa mijozlar navbatda javobsiz qolib ketadi."
+  },
+  {
+    "id": 6,
+    "question": "Buffer (Bufer) nima va u ma'lumotlarni qanday shaklda saqlaydi?",
+    "options": [
+      "Faqat JSON formatidagi matn",
+      "Xotirada (V8 tashqarisida) vaqtinchalik ajratilgan xom baytlar va ikkilik (binary) ma'lumotlar to'plami",
+      "CSS klasslari ro'yxati",
+      "O'z-o'zidan o'sadigan massiv"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Buffer xotiradagi ma'lum bir bayt o'lchamdagi to'g'ridan-to'g'ri raqamlar (binary bytes) to'plamidir."
+  },
+  {
+    "id": 7,
+    "question": "Nima uchun katta fayllarni (masalan, 1 GB) o'qishda fs.readFile o'rniga fs.createReadStream (Streams) tavsiya etiladi?",
+    "options": [
+      "readFile faqat Windows-da ishlaydi",
+      "readFile butun faylni xotiraga (RAM) yuklashga harakat qiladi va xotira to'lib ketishiga olib keladi, Stream esa faylni mayda bo'laklar (chunks) holida uzatadi",
+      "Stream faylni shifrlaydi",
+      "Chunki Stream tezroq yopiladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Stream ma'lumotni oqimli (chunk-by-chunk) uzatgani uchun xotira sarfi minimal (taxminan 20-30 MB) bo'lib qoladi va har qanday ulkan faylni xavfsiz o'qiy oladi."
+  },
+  {
+    "id": 8,
+    "question": "Node.js-da microtasklar (Promises, process.nextTick) qachon bajariladi?",
+    "options": [
+      "Faqat Event Loop yakunida",
+      "Event Loop-ning har bir fazasi orasida, joriy faza tugashi bilan zudlik bilan",
+      "Faqat setTimeout dan keyin",
+      "Ular hech qachon bajarilmaydi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Microtask navbatlari eng yuqori ustuvorlikka ega. Event Loop bir fazadan ikkinchisiga o'tish arafasida turgan har qanday soniyada barcha microtasklarni bajarib bo'shatadi."
+  },
+  {
+    "id": 9,
+    "question": "Libuv Thread Pool standart oqimlar soni (threads) nechaga teng?",
+    "options": [
+      "1 ta",
+      "2 ta",
+      "4 ta",
+      "8 ta"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Libuv oqimlar hovuzining (Thread Pool) standart o'lchami 4 ta oqimdan iborat."
+  },
+  {
+    "id": 10,
+    "question": "process.nextTick() ning vazifasi nima?",
+    "options": [
+      "Navbatdagi tizim vaqtini aniqlash",
+      "Callback funksiyani joriy kod bajarilib bo'lishi bilan (Event Loop fazasi o'zgarishidan oldin) zudlik bilan ishga tushirish",
+      "Faqat yangi oqim ochish",
+      "LocalStorage-ni tozalash"
+    ],
+    "correctAnswer": 1,
+    "explanation": "nextTick() callbacklarini Event Loop doirasiga kirmasdan, joriy call stack bo'shashi bilanoq eng birinchi navbatda bajaradi."
+  },
+  {
+    "id": 11,
+    "question": "Node.js muhitida asinxronlikni boshqaruvchi C++ da yozilgan yadro nima deb nomlanadi?",
+    "options": [
+      "React Dvigateli",
+      "V8 Engine va libuv",
+      "Express JS",
+      "Node Webpack"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Node.js-ning yadrosi Google V8 JS engine (kodni tezlatish uchun) va libuv (asinxron tarmoq/fayl I/O va oqimlar uchun) dan iborat."
+  },
+  {
+    "id": 12,
+    "question": "EventEmitter-da once(event, listener) metodining vazifasi nima?",
+    "options": [
+      "Hodisani o'chirib yuboradi",
+      "Hodisa tinglovchisini faqat bir marta ishlashga sozlaydi (birinchi chaqiriqdan keyin u avtomatik o'chadi)",
+      "Faqat soniyalarni sanaydi",
+      "Hodisani serverga yuboradi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "once metodi hodisa birinchi marta trigger (emit) bo'lganda tinglovchini ishga tushiradi va darhol o'chib ketadi, qayta ishlamaydi."
+  }
+]
+
 };

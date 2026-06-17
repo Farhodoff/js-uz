@@ -2,7 +2,7 @@ export const loops = {
   id: "loops",
   title: "Sikllar: for, while, do-while",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Sikl (Loop) nima?
 Dasturlashda ko'pincha bir xil amalni bir necha marta takrorlashga to'g'ri keladi. Masalan, 1 dan 100 gacha sanash, massivdagi barcha elementlarni ekranga chiqarish yoki foydalanuvchi to'g'ri parol kiritmaguncha so'rov yuborish. Bu takrorlanuvchi jarayonlar **sikllar (loops)** orqali amalga oshiriladi.
@@ -334,103 +334,32 @@ Sikldan qanchalik erta chiqib ketilsa, CPU resurslari shunchalik tejaladi. Masal
 | **\`for...in\`** | Obyekt kalitlarini (keys) aylanib chiqishda | Faqat obyekt xususiyatlari nomlarini beradi | \`for(let key in obj)\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Takrorlash",
-      instruction: "for sikli yordamida 1 dan 5 gacha bo'lgan sonlarni chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "for (let i = 1; i <= 5; i++) { console.log(i); }",
-      test: "if (logs.length >= 5 && logs.includes('1') && logs.includes('5')) return null; return '1 dan 5 gacha sonlar chiqishi kerak!';"
-    },
-    {
-      id: 2,
-      title: "While sikli",
-      instruction: "while sikli yordamida 'count' 3 bo'lguncha uning qiymatini chiqaring.",
-      startingCode: "let count = 1;\n// Bu yerga yozing\n",
-      hint: "while (count <= 3) { console.log(count); count++; }",
-      test: "if (logs.includes('1') && logs.includes('3')) return null; return 'While siklini to\\'g\\'ri yozing';"
-    },
-    {
-      id: 3,
-      title: "Yig'indi",
-      instruction: "1 dan 10 gacha sonlar yig'indisini hisoblang va konsolga chiqaring.",
-      startingCode: "let sum = 0;\n// Bu yerga yozing\n",
-      hint: "for (let i = 1; i <= 10; i++) { sum += i; } console.log(sum);",
-      test: "if (logs.includes('55')) return null; return 'Yig\\'indi 55 chiqishi kerak!';"
-    },
-    {
-      id: 4,
-      title: "Juft sonlar",
-      instruction: "for sikli yordamida 1 dan 10 gacha bo'lgan juft sonlarni konsolga chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "for (let i = 2; i <= 10; i += 2) { console.log(i); }",
-      test: "if (logs.includes('2') && logs.includes('10') && !logs.includes('3')) return null; return 'Faqat juft sonlarni chiqaring';"
-    },
-    {
-      id: 5,
-      title: "Teskari tartib",
-      instruction: "for sikli yordamida 5 dan 1 gacha teskari tartibda sonlarni konsolga chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "for (let i = 5; i >= 1; i--) { console.log(i); }",
-      test: "if (logs.indexOf('5') < logs.indexOf('1') && logs.includes('5') && logs.includes('1')) return null; return '5 dan 1 gacha kamayib borishini ta\\'minlang';"
-    },
-    {
-      id: 6,
-      title: "Massiv elementlarini aylanish",
-      instruction: "for...of sikli yordamida 'fruits' massivi elementlarini ketma-ket konsolga chiqaring.",
-      startingCode: "const fruits = ['Olma', 'Banan', 'Nok'];\n// Bu yerga yozing\n",
-      hint: "for (const fruit of fruits) { console.log(fruit); }",
-      test: "if (logs.includes('Olma') && logs.includes('Banan') && logs.includes('Nok')) return null; return 'for...of yordamida mevalarni chiqaring';"
-    },
-    {
-      id: 7,
-      title: "Obyekt kalitlarini aylanish",
-      instruction: "for...in sikli yordamida 'user' obyektining kalitlarini konsolga chiqaring.",
-      startingCode: "const user = { name: 'Ali', age: 20 };\n// Bu yerga yozing\n",
-      hint: "for (const key in user) { console.log(key); }",
-      test: "if (logs.includes('name') && logs.includes('age')) return null; return 'for...in yordamida kalitlarni chiqaring';"
-    },
-    {
-      id: 8,
-      title: "Break operatori",
-      instruction: "for sikli yordamida 1 dan 10 gacha sonlarni aylaning, lekin son 5 ga teng bo'lganda break orqali siklni to'xtating va sonlarni chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "for (let i = 1; i <= 10; i++) { if (i === 5) break; console.log(i); }",
-      test: "if (logs.includes('4') && !logs.includes('5')) return null; return '5 ga yetganda break ishlatib siklni to\\'xtating';"
-    },
-    {
-      id: 9,
-      title: "Continue operatori",
-      instruction: "for sikli yordamida 1 dan 5 gacha sonlarni aylaning, lekin son 3 ga teng bo'lganda continue orqali uni o'tkazib yuboring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "for (let i = 1; i <= 5; i++) { if (i === 3) continue; console.log(i); }",
-      test: "if (logs.includes('2') && logs.includes('4') && !logs.includes('3')) return null; return '3 qiymatini continue yordamida o\\'tkazib yuboring';"
-    },
-    {
-      id: 10,
-      title: "Do...While sikli",
-      instruction: "do...while sikli yordamida 'x' o'zgaruvchisi 1 dan 3 gacha bo'lgan sonlarni konsolga chiqaring.",
-      startingCode: "let x = 1;\n// Bu yerga yozing\n",
-      hint: "do { console.log(x); x++; } while (x <= 3);",
-      test: "if (logs.includes('1') && logs.includes('3') && code.includes('do') && code.includes('while')) return null; return 'do...while siklini to\\'g\\'ri yozing';"
-    },
-    {
-      id: 11,
-      title: "Ko'paytirish hisoblash",
-      instruction: "Loop yordamida 5 ning kvadratini (5 ta 5 ni qo'shish orqali) hisoblang va natijani konsolga chiqaring.",
-      startingCode: "let result = 0;\n// Bu yerga yozing\n",
-      hint: "for (let i = 0; i < 5; i++) { result += 5; } console.log(result);",
-      test: "if (logs.includes('25')) return null; return 'Natija 25 chiqishi kerak';"
-    },
-    {
-      id: 12,
-      title: "Massiv sonlarini yig'ish",
-      instruction: "for...of yordamida 'numbers' massividagi sonlar yig'indisini hisoblang va 'total' o'zgaruvchisiga saqlang.",
-      startingCode: "const numbers = [10, 20, 30];\nlet total = 0;\n// Bu yerga yozing\n",
-      hint: "for (const num of numbers) { total += num; }",
-      test: "if (code.includes('for') && code.includes('total') && code.includes('of')) return null; return 'for...of yordamida numbers yig\\'indisini total ga qo\\'shing';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "1 dan N gacha yig'indi",
+    "instruction": "for siklidan foydalanib, 1 dan n gacha bo'lgan barcha butun sonlarning yig'indisini hisoblovchi va qaytaruvchi sumUpTo(n) funksiyasini yozing. n soni ham yig'indiga qo'shilishi kerak.",
+    "startingCode": "function sumUpTo(n) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Boshlang'ich yig'indi uchun o'zgaruvchi yarating (masalan, let sum = 0). So'ng for (let i = 1; i <= n; i++) orqali har bir sonni sum ga qo'shib boring va yakunda sum ni qaytaring.",
+    "test": "const sandbox = new Function(code + '; return sumUpTo;');\nconst fn = sandbox();\nif (fn(5) !== 15) return 'sumUpTo(5) funksiyasi 15 qaytarmadi';\nif (fn(1) !== 1) return 'sumUpTo(1) funksiyasi 1 qaytarmadi';\nif (fn(10) !== 55) return 'sumUpTo(10) funksiyasi 55 qaytarmadi';\nif (!code.includes('for')) return 'for siklidan foydalanilmagan';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Massivdan juft sonlarni ajratish",
+    "instruction": "while siklidan foydalanib, berilgan sonlar massividan faqat juft sonlarni ajratib olib, yangi massiv ko'rinishida qaytaruvchi getEvens(arr) funksiyasini yozing.",
+    "startingCode": "function getEvens(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "while (i < arr.length) sharti yordamida elementlarni aylanib chiqing. Har bir elementni juftlikka tekshiring (element % 2 === 0). Sikl oxirida indeksni (i++) oshirishni unutmang.",
+    "test": "const sandbox = new Function(code + '; return getEvens;');\nconst fn = sandbox();\nconst res = fn([1, 2, 3, 4, 5, 6]);\nif (!Array.isArray(res) || res.join(',') !== '2,4,6') return 'getEvens([1, 2, 3, 4, 5, 6]) [2, 4, 6] qaytarmadi';\nif (fn([1, 3, 5]).length !== 0) return 'Juft sonlar bo\\'lmaganda bo\\'sh massiv qaytarilishi kerak';\nif (!code.includes('while')) return 'while siklidan foydalanilmagan';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Raqamlarni teskari tartibda birlashtirish",
+    "instruction": "do-while siklidan foydalanib, berilgan musbat butun sonning raqamlarini teskari tartibda satr (string) ko'rinishida yig'ib qaytaruvchi reverseNumberString(num) funksiyasini yozing. Masalan, 1234 yuborilsa, '4321' qaytishi kerak.",
+    "startingCode": "function reverseNumberString(num) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "do { ... } while (temp > 0) siklidan foydalaning. Har safar temp % 10 orqali oxirgi raqamni satrga qo'shib, temp = Math.floor(temp / 10) yordamida oxirgi raqamni olib tashlang.",
+    "test": "const sandbox = new Function(code + '; return reverseNumberString;');\nconst fn = sandbox();\nif (fn(1234) !== '4321') return 'reverseNumberString(1234) \"4321\" qaytarmadi';\nif (fn(5) !== '5') return 'reverseNumberString(5) \"5\" qaytarmadi';\nif (fn(0) !== '0') return 'reverseNumberString(0) \"0\" qaytarmadi';\nif (!code.includes('do') || !code.includes('while')) return 'do-while siklidan foydalanilmagan';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

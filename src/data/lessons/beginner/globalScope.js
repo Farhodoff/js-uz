@@ -2,7 +2,7 @@ export const globalScopeLesson = {
   id: "globalScopeLesson",
   title: "Global Scope",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Global Scope (Global qamrov) nima?
 * **Global Scope:** Bu JavaScript dasturining eng tashqi doirasi (miqyosi) hisoblanadi. Har qanday funksiya yoki blok (\`{}\`) tashqarisida e'lon qilingan barcha o'zgaruvchilar va funksiyalar global qamrovga tegishli bo'ladi.
@@ -274,103 +274,32 @@ TrackerSDK.sendEvent("page_view", { path: "/home" });
 | **Hoisting (Ko'tarilish) tabiati** | \`undefined\` bilan ko'tariladi | TDZ (Temporal Dead Zone) ga tushadi | Ko'tarilmaydi (bajarilish vaqtida yaratiladi) |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Global mashqi",
-      instruction: "Global o'zgaruvchi yarating va uni funksiya ichida 1 ga oshiring.",
-      startingCode: "let count = 0;\nfunction inc() {\n  // Bu yerda countni oshiring\n}\ninc();",
-      hint: "count++;",
-      test: "if (count === 1) return null; return 'O\\'zgaruvchi oshmadi!';"
-    },
-    {
-      id: 2,
-      title: "var va window bog'liqligi",
-      instruction: "Global doirada var globalVar = 'Hello' e'lon qiling va window.globalVar ni konsolga chiqarish orqali uning global obyektga qo'shilishini tekshiring.",
-      startingCode: "// var globalVar ni yarating va window.globalVar ni konsolga chiqaring\n",
-      hint: "var globalVar = 'Hello';\nconsole.log(window.globalVar);",
-      test: "if (code.includes('var globalVar') && logs.includes('Hello')) return null; return 'var global o\\'zgaruvchisini window orqali olishni tekshiring!';"
-    },
-    {
-      id: 3,
-      title: "Global let va window farqi",
-      instruction: "Globalda let globalLet = 'Hi' e'lon qiling va window.globalLet ni konsolga chiqaring (u undefined bo'lishi kerak).",
-      startingCode: "// let globalLet ni yarating va window.globalLet ni konsolga chiqaring\n",
-      hint: "let globalLet = 'Hi';\nconsole.log(window.globalLet);",
-      test: "if (code.includes('let globalLet') && logs.includes('undefined')) return null; return 'let o\\'zgaruvchisi window-da undefined bo\\'lishini tekshiring!';"
-    },
-    {
-      id: 4,
-      title: "Global o'zgarmas const",
-      instruction: "Global doirada o'zgarmas API_URL yarating (qiymati 'https://api.com'). printUrl() funksiyasi ichida uni konsolga chiqaring.",
-      startingCode: "// API_URL const yarating\nfunction printUrl() {\n  // API_URL ni konsolga chiqaring\n}\nprintUrl();\n",
-      hint: "const API_URL = 'https://api.com';\nconsole.log(API_URL);",
-      test: "if (code.includes('const API_URL') && logs.includes('https://api.com')) return null; return 'API_URL global const yarating va funksiya ichida log qiling!';"
-    },
-    {
-      id: 5,
-      title: "globalThis orqali global o'zgaruvchi",
-      instruction: "globalThis yordamida siteName = 'JS Academy' global o'zgaruvchisini yarating va konsolga chiqaring.",
-      startingCode: "// globalThis orqali yarating\n",
-      hint: "globalThis.siteName = 'JS Academy';\nconsole.log(globalThis.siteName);",
-      test: "if (logs.includes('JS Academy') && code.includes('globalThis.siteName')) return null; return 'globalThis orqali siteName-ni sozlang va konsolga chiqaring!';"
-    },
-    {
-      id: 6,
-      title: "Global funksiya yaratish",
-      instruction: "Global doirada greetUser() funksiyasini yarating, u konsolga 'Xush kelibsiz!' yozsin va uni chaqiring.",
-      startingCode: "// Global funksiya yarating va chaqiring\n",
-      hint: "function greetUser() { console.log('Xush kelibsiz!'); }\ngreetUser();",
-      test: "if (code.includes('greetUser()') && logs.includes('Xush kelibsiz!')) return null; return 'greetUser funksiyasini yaratib chaqiring!';"
-    },
-    {
-      id: 7,
-      title: "Global o'zgaruvchini funksiyada yangilash",
-      instruction: "Globalda let status = 'offline' o'zgaruvchisini yarating. goOnline() funksiyasi status ni 'online' ga o'zgartirsin va uni chaqiring.",
-      startingCode: "let status = 'offline';\n// goOnline funksiyasini yozing\n\ngoOnline();\nconsole.log(status);\n",
-      hint: "function goOnline() { status = 'online'; }",
-      test: "if (logs.includes('online') && code.includes('status =')) return null; return 'goOnline statusni online ga o\\'zgartirishi kerak!';"
-    },
-    {
-      id: 8,
-      title: "Global va Local to'qnashuvi",
-      instruction: "Globalda let user = 'Mehmon' yarating. greet() funksiyasi ichida yana let user = 'Admin' yarating va konsolga chiqaring. Tashqarida ham konsolga chiqaring.",
-      startingCode: "let user = 'Mehmon';\nfunction greet() {\n  // Bu yerda local user yarating\n}\ngreet();\nconsole.log('Global:', user);\n",
-      hint: "let user = 'Admin'; console.log('Local:', user);",
-      test: "if (logs.includes('Local: Admin') && logs.includes('Global: Mehmon')) return null; return 'Local o\\'zgaruvchi globalni shadowing qilishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "globalThis bilan ishlash",
-      instruction: "globalThis obyektiga APP_VERSION = '1.0.0' qiymatini yuklang va uni console.log orqali konsolga chiqaring.",
-      startingCode: "// APP_VERSION ni globalThis-ga yuklang\n",
-      hint: "globalThis.APP_VERSION = '1.0.0';\nconsole.log(globalThis.APP_VERSION);",
-      test: "if (logs.includes('1.0.0') && code.includes('globalThis.APP_VERSION')) return null; return 'globalThis yordamida APP_VERSION ni yozib chiqaring!';"
-    },
-    {
-      id: 10,
-      title: "Global counter yaratish",
-      instruction: "Global doirada let steps = 0 yarating. walk() funksiyasi steps ni 10 ga oshirsin. Funksiyani 3 marta chaqiring va steps qiymatini konsolga chiqaring.",
-      startingCode: "let steps = 0;\n// walk funksiyasini yarating va chaqiring\n",
-      hint: "function walk() { steps += 10; }\nwalk(); walk(); walk(); console.log(steps);",
-      test: "if (logs.includes('30') && code.includes('steps += 10')) return null; return 'steps ni har safar 10 ga oshirib 3 marta chaqiring!';"
-    },
-    {
-      id: 11,
-      title: "Global massivni to'ldirish",
-      instruction: "Global doirada const list = [] yarating. addItem(item) funksiyasi list massiviga element push qilsin. Nol va Bir parametrlarini qo'shing.",
-      startingCode: "const list = [];\n// addItem funksiyasini yozing\n\naddItem('Nol');\naddItem('Bir');\nconsole.log(list);\n",
-      hint: "function addItem(item) { list.push(item); }",
-      test: "if (logs.includes('Nol') && logs.includes('Bir') && code.includes('push')) return null; return 'list massiviga push orqali elementlarni qo\\'shing!';"
-    },
-    {
-      id: 12,
-      title: "this va globalThis tengligi",
-      instruction: "Global sohadagi this globalThis ga tengligini tasdiqlovchi console.log('Equal:', this === globalThis) kodini yozing.",
-      startingCode: "// this va globalThis ni solishtiring\n",
-      hint: "console.log('Equal:', this === globalThis);",
-      test: "if (logs.includes('Equal: true')) return null; return 'this === globalThis ekanligini konsolga chiqaring!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Global va Lokal O'zgaruvchilar",
+    "instruction": "Global miqyosda `appName` o'zgaruvchisini yarating va unga `\"MyJSApp\"` qiymatini bering (`const` orqali). Keyin `getAppInfo()` funksiyasini yozing, u ushbu global o'zgaruvchini olib `\"Ilova nomi: MyJSApp\"` ko'rinishidagi satrni qaytarsin.",
+    "startingCode": "// Global o'zgaruvchini shu yerda e'lon qiling\n\nfunction getAppInfo() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "const appName = \"MyJSApp\"; deb e'lon qiling va funksiyada return `Ilova nomi: ${appName}` ko'rinishida qaytaring.",
+    "test": "const sandbox = new Function(code + '; return { appName: typeof appName !== \"undefined\" ? appName : null, getAppInfo: typeof getAppInfo !== \"undefined\" ? getAppInfo : null };');\nconst context = sandbox();\nif (context.appName !== 'MyJSApp') return 'Global appName o\\'zgaruvchisi to\\'g\\'ri qiymat bilan e\\'lon qilinmagan';\nif (typeof context.getAppInfo !== 'function') return 'getAppInfo funksiyasi aniqlanmagan';\nif (context.getAppInfo() !== 'Ilova nomi: MyJSApp') return 'getAppInfo funksiyasi to\\'g\\'ri satrni qaytarmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Global Obyektga Qiymat Biriktirish",
+    "instruction": "Browser yoki Node.js muhitlaridan qat'iy nazar ishlaydigan `globalThis` obyektiga `SYSTEM_VERSION` deb nomlangan xususiyat qo'shing va unga `\"2.1.0\"` qiymatini bering. Buning uchun `setGlobalVersion()` funksiyasini yozing.",
+    "startingCode": "function setGlobalVersion() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Funksiya ichida globalThis.SYSTEM_VERSION = \"2.1.0\"; deb yozing.",
+    "test": "const sandbox = new Function(code + '; return setGlobalVersion;');\nconst fn = sandbox();\ndelete globalThis.SYSTEM_VERSION;\nfn();\nconst val = globalThis.SYSTEM_VERSION;\ndelete globalThis.SYSTEM_VERSION;\nif (val === '2.1.0') return null;\nreturn 'setGlobalVersion funksiyasi globalThis.SYSTEM_VERSION ga to\\'g\\'ri qiymat yozmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Strict Mode va Yashirin Global Xatolik",
+    "instruction": "JavaScript-da qat'iy rejim (`\"use strict\"`) ishlatilganda, e'lon qilinmagan o'zgaruvchiga qiymat berish `ReferenceError` xatosini keltirib chiqaradi. `\"use strict\"` rejimidan foydalangan holda `triggerGlobalError()` funksiyasini yozing. Bu funksiya ichida e'lon qilinmagan `tempData` o'zgaruvchisiga `100` qiymatini biriktiring, shunda funksiya chaqirilganda xatolik yuz beradi.",
+    "startingCode": "function triggerGlobalError() {\n  // Qat'iy rejim va xato keltirib chiqaruvchi kod\n}\n",
+    "hint": "Funksiya boshiga \"use strict\"; satrini qo'shing va hech qanday let, const yoki var ishlatmasdan tempData = 100; deb yozing.",
+    "test": "const sandbox = new Function(code + '; return triggerGlobalError;');\nconst fn = sandbox();\ntry {\n  fn();\n  return 'triggerGlobalError funksiyasi xatolik (ReferenceError) keltirib chiqarmadi. Qat\\'iy rejim (strict mode) ishlatilganiga ishonch hosil qiling.';\n} catch (e) {\n  if (e instanceof ReferenceError) return null;\n  return 'Kutilmagan xatolik yuz berdi: ' + e.message;\n}"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

@@ -2,7 +2,7 @@ export const functionScopeLesson = {
   id: "functionScopeLesson",
   title: "Function Scope",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Funksiya Qamrovi (Function Scope) nima?
 JavaScript-da har safar yangi funksiya yaratganingizda, u o'ziga xos **yopiq hudud** (qamrov yoki scope) yaratadi. 
@@ -264,103 +264,32 @@ for (let i = 0; i < 1000; i++) {
 | **Shadowing** | Ichki qamrovda e'lon | Yo'q | Bir xil nomli tashqi o'zgaruvchini to'sib qo'yish |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Scope mashqi",
-      instruction: "Funksiya ichida 'msg' o'zgaruvchisini yarating va uni faqat funksiya ichida chiqaring.",
-      startingCode: "function show() {\n  // Bu yerda yarating\n}\nshow();",
-      hint: "let msg = 'Salom';",
-      test: "if (code.includes('msg')) return null; return 'O\\'zgaruvchi yaratilmadi!';"
-    },
-    {
-      id: 2,
-      title: "Variable Shadowing",
-      instruction: "Global doirada let user = 'Ali' bor. greet() funksiyasi ichida lokal let user = 'Vali' yarating va uni konsolga chiqaring. Global user o'zgarmasligi kerak.",
-      startingCode: "let user = 'Ali';\nfunction greet() {\n  // Bu yerda local user yarating va console.log qiling\n}\ngreet();",
-      hint: "let user = 'Vali';\nconsole.log(user);",
-      test: "if (logs.includes('Vali') && code.includes('let user =') && code.match(/let\\s+user\\s*=\\s*['\"]Vali['\"]/)) return null; return 'greet funksiyasi ichida let user = \"Vali\" yaratib, log qiling!';"
-    },
-    {
-      id: 3,
-      title: "Lokal var o'zgaruvchisi",
-      instruction: "Funksiya ichidagi var o'zgaruvchisi ham tashqaridan ko'rinmaydi. testVar() funksiyasi ichida var secret = 99 yarating va konsolga chiqaring. Tashqarida chaqirmang.",
-      startingCode: "function testVar() {\n  // var secret yarating va console.log(secret) qiling\n}\ntestVar();",
-      hint: "var secret = 99;\nconsole.log(secret);",
-      test: "if (code.includes('var secret') && logs.includes(99)) return null; return 'var secret = 99 yarating va console.log qiling!';"
-    },
-    {
-      id: 4,
-      title: "Kalit so'zsiz o'zgaruvchi (leak)",
-      instruction: "Funksiya ichida kalit so'zsiz (let/const/var siz) leakedGlobal = 'leaked' yozing. Uni chaqirgandan keyin globalda qolishini ko'rish uchun tashqarida console.log(leakedGlobal) qiling.",
-      startingCode: "function leak() {\n  // leakedGlobal = 'leaked' yozing\n}\nleak();\n// globalda leakedGlobal ni log qiling",
-      hint: "leakedGlobal = 'leaked';\nconsole.log(leakedGlobal);",
-      test: "if (logs.includes('leaked') && !code.includes('let leakedGlobal') && !code.includes('var leakedGlobal') && !code.includes('const leakedGlobal')) return null; return 'leakedGlobal-ni kalit so\\'zsiz yarating va tashqarida log qiling!';"
-    },
-    {
-      id: 5,
-      title: "Parametr doirasi (Parameter Scope)",
-      instruction: "Funksiya parametrlari ham lokal o'zgaruvchi hisoblanadi. doubleNum(num) funksiyasi berilgan parametrni 2 ga ko'paytirib konsolga chiqarsin. Tashqaridan doubleNum(5) qilib chaqiring.",
-      startingCode: "function doubleNum(num) {\n  // num parametridan foydalanib uni 2 ga ko'paytirib log qiling\n}\n// Chaqiring",
-      hint: "function doubleNum(num) { console.log(num * 2); }\ndoubleNum(5);",
-      test: "if (logs.includes(10) && code.includes('doubleNum(5)')) return null; return 'doubleNum funksiyasini yozib, 5 qiymati bilan chaqiring!';"
-    },
-    {
-      id: 6,
-      title: "Ichma-ich funksiyalar (Nested Scope)",
-      instruction: "outer() funksiyasi ichida let x = 10 bor. Uning ichida inner() funksiyasini yarating va u x ni konsolga chiqarsin. outer oxirida inner() ni chaqiring.",
-      startingCode: "function outer() {\n  let x = 10;\n  // inner funksiyasini yarating va uni chaqiring\n}\nouter();",
-      hint: "function inner() { console.log(x); }\ninner();",
-      test: "if (logs.includes(10) && code.includes('inner') && code.includes('outer')) return null; return 'inner funksiyasi outer ichidagi x-ni log qilishi kerak!';"
-    },
-    {
-      id: 7,
-      title: "Lokal o'zgaruvchini yangilash",
-      instruction: "counter() funksiyasi ichida let count = 0 yarating. Ichki increment() funksiyasi uni 1 ga oshirsin. counter ichida increment() ni 2 marta chaqiring va yakuniy count ni log qiling.",
-      startingCode: "function counter() {\n  let count = 0;\n  // increment funksiyasini yozib 2 marta chaqiring va count-ni log qiling\n}\ncounter();",
-      hint: "function increment() { count++; }\nincrement(); increment(); console.log(count);",
-      test: "if (logs.includes(2) && code.includes('count++')) return null; return 'increment funksiyasi orqali count-ni 2 marta oshiring!';"
-    },
-    {
-      id: 8,
-      title: "Scope zanjiri (Scope Chain)",
-      instruction: "Globalda let a = 1. level1() ichida let b = 2. level2() ichida let c = 3 bo'lsin. level2 ichida console.log(a + b + c) qiling. level1 ichida level2() chaqirilsin, globalda esa level1() chaqirilsin.",
-      startingCode: "let a = 1;\nfunction level1() {\n  let b = 2;\n  // level2 ni yozing va chaqiring\n}\nlevel1();",
-      hint: "function level2() { let c = 3; console.log(a + b + c); }\nlevel2();",
-      test: "if (logs.includes(6) && code.includes('level2')) return null; return 'level2 ichida a + b + c yig\\'indisini (6) log qiling!';"
-    },
-    {
-      id: 9,
-      title: "Shadowing parametrlari",
-      instruction: "Global let name = 'Botir' bor. greet(name) funksiyasida parametr sifatida name qabul qilinadi. greet('Sardor') deb chaqirilganda konsolga name ni chiqaring (Sardor chiqishi kerak).",
-      startingCode: "let name = 'Botir';\nfunction greet(name) {\n  // name-ni log qiling\n}\ngreet('Sardor');",
-      hint: "function greet(name) { console.log(name); }",
-      test: "if (logs.includes('Sardor') && !logs.includes('Botir')) return null; return 'greet funksiyasi parametr name-ni chop etishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "Lokal const massivi",
-      instruction: "manageList() funksiyasi ichida const items = [] yarating. Uni ichki funksiya orqali to'ldirib, yakuniy natijani log qiling.",
-      startingCode: "function manageList() {\n  const items = [];\n  function add(val) {\n    // items-ga val qo'shing\n  }\n  add('Olma');\n  add('Anor');\n  console.log(items);\n}\nmanageList();",
-      hint: "function add(val) { items.push(val); }",
-      test: "if (logs.includes('Olma') && logs.includes('Anor') && code.includes('push')) return null; return 'items massiviga push orqali elementlarni qo\\'shing!';"
-    },
-    {
-      id: 11,
-      title: "IIFE funksiya scope",
-      instruction: "IIFE yordamida funksiya scope yarating va ichida let iifeVar = 'IIFE' e'lon qilib log qiling.",
-      startingCode: "// IIFE yozing (function() { ... })()",
-      hint: "(function() { let iifeVar = 'IIFE'; console.log(iifeVar); })();",
-      test: "if (logs.includes('IIFE') && code.match(/\\(\\s*function/)) return null; return 'IIFE shaklida funksiya scope yarating!';"
-    },
-    {
-      id: 12,
-      title: "Recursion Scope",
-      instruction: "factorial(n) funksiyasini yozing, u n-ning faktorialini hisoblasin va qaytarsin. console.log(factorial(5)) (120 bo'lishi kerak).",
-      startingCode: "function factorial(n) {\n  // n-faktorialni rekursiv hisoblang\n}\nconsole.log(factorial(5));",
-      hint: "if (n <= 1) return 1; return n * factorial(n - 1);",
-      test: "if (logs.includes(120) && code.includes('factorial')) return null; return 'Faktorial hisoblaydigan rekursiv funksiyani yozing!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Lokal o'zgaruvchi yaratish",
+    "instruction": "Funksiya qamrovini (Scope) tekshirish uchun `calculateArea(width, height)` nomli funksiya yozing. Funksiya ichida `area` nomli lokal o'zgaruvchi yarating, unga to'g'ri to'rtburchakning yuzini (width * height) hisoblab yuklang va uni qaytaring. Funksiyadan tashqarida `area` o'zgaruvchisiga murojaat qilib bo'lmasligi kerak.",
+    "startingCode": "function calculateArea(width, height) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Funksiya ichida `const area = width * height;` deb e'lon qiling va uni `return` qiling.",
+    "test": "const sandbox = new Function(code + '; return calculateArea;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'calculateArea funksiya emas';\nif (fn(5, 10) !== 50) return 'Funksiya yuzani to\\'g\\'ri hisoblamadi';\nif (!code.includes('area')) return 'Kodingizda \"area\" nomli lokal o\\'zgaruvchi ishlatilmagan';\ntry {\n  if (typeof area !== 'undefined') return 'area o\\'zgaruvchisi global scope-da aniqlanib qolgan!';\n} catch(e) {}\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "O'zgaruvchini yashirish (Shadowing)",
+    "instruction": "JavaScript-da funksiya ichida e'lon qilingan o'zgaruvchi/argument global o'zgaruvchi bilan bir xil nomlansa, u global o'zgaruvchini yopib qo'yadi. Bizda global miqyosda `let name = \"Global\";` e'lon qilingan. Siz `greetUser(name)` funksiyasini yozing, u parametrda berilgan `name` o'zgaruvchisidan foydalanib `\"Salom, \" + name` qiymatini qaytarsin. Global o'zgaruvchiga ta'sir ko'rsatmang.",
+    "startingCode": "let name = \"Global\";\n\nfunction greetUser(name) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Funksiya parametridagi `name` global o'zgaruvchini avtomatik shadow qiladi. Funksiya ichida `return 'Salom, ' + name;` deb yozing.",
+    "test": "const sandbox = new Function(code + '; return { greetUser, name };');\nconst obj = sandbox();\nif (typeof obj.greetUser !== 'function') return 'greetUser funksiya emas';\nif (obj.greetUser('Jasur') !== 'Salom, Jasur') return 'Funksiya argument shadowing orqali to\\'g\\'ri salomlashmadi';\nif (obj.name !== 'Global') return 'Global \"name\" o\\'zgaruvchisi qiymati o\\'zgartirib yuborildi!';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Ichma-ich funksiya qamrovlari (Nested Scopes)",
+    "instruction": "Ichki funksiyalar tashqi funksiya o'zgaruvchilarini ko'rish qobiliyatini tekshiramiz. `outerContainer()` funksiyasini yozing. Uning ichida `let x = 100;` o'zgaruvchisini yarating. Shuningdek, uning ichida yana bir `innerContainer()` funksiyasini e'lon qiling va u tashqi funksiyadagi `x` ni 2 ga ko'paytirib qaytarsin. Nihoyat, `outerContainer()` ichidan `innerContainer()` ni chaqirib, natijani qaytaring.",
+    "startingCode": "function outerContainer() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`outerContainer` ichida `let x = 100;`, keyin `function innerContainer() { return x * 2; }` yozing. Oxirida `return innerContainer();` deb chaqiring.",
+    "test": "const sandbox = new Function(code + '; return outerContainer;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'outerContainer funksiya emas';\nconst res = fn();\nif (res !== 200) return 'Ichki funksiya tashqi funksiyadagi \"x\" ni to\\'g\\'ri ko\\'paytira olmadi yoki natija qaytarilmadi';\nif (code.includes('innerContainer') === false) return 'Kodingizda \"innerContainer\" ichki funksiyasi e\\'lon qilinmagan';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

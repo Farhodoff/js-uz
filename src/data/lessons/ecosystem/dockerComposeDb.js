@@ -2,7 +2,7 @@ export const dockerComposeDb = {
   id: "dockerComposeDb",
   title: "Docker Compose va Ma'lumotlar Bazasi Integratsiyasi",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Docker Compose nima?
 **Docker Compose** — bu ko'p konteynerli Docker ilovalarini ta'riflash va ishga tushirish uchun mo'ljallangan vositadir. Oddiy qilib aytganda, agar bitta konteyner (masalan, Node.js ilovasi) uchun \`Dockerfile\` retsept bo'lsa, butun boshli loyiha (backend, ma'lumotlar bazasi, Redis kesh tizimi) uchun \`docker-compose.yml\` loyihaning to'liq menyusi va uni stolga tortish yo'riqnomasidir.

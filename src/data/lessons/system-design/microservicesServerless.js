@@ -1,8 +1,8 @@
 export const microservicesServerless = {
   id: "microservicesServerless",
-  title: "Mikroxizmatlar va Serverless Arxitekturasi",
+  title: "Mikroxizmatlar va Serverless Arxitekturasi (Microservices & Serverless)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 Tasavvur qiling, siz **katta restoran** ochmoqchisiz:
 
@@ -19,7 +19,7 @@ Quyida serverless funksiyalar va mikroxizmatlar kontekstini tushunish uchun sodd
 ### Misol 1: AWS Lambda uslubidagi Serverless Handler
 Serverless funksiyalar hodisalarga (Events) asoslanib ishlaydi:
 
-\\\`\\\`\\\`javascript
+\`\`\`javascript
 // Serverless funksiya faqat so'rov kelganda ishga tushadi
 exports.handler = async (event) => {
   console.log("So'rov kelib tushdi:", event.path);
@@ -31,29 +31,29 @@ exports.handler = async (event) => {
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: \\\`Salom, \\\${name}!\\\` }),
+    body: JSON.stringify({ message: \`Salom, \${name}!\` }),
   };
 };
-\\\`\\\`\\\`
+\`\`\`
 
 ### Misol 2: Stateless vs Stateful (State boshqaruvi)
 Serverless funksiyalar xotirada ma'lumot saqlamaydi (Stateless). Quyidagi kod noto'g'ri va to'g'ri yo'llarni ko'rsatadi:
 
-\\\`\\\`\\\`javascript
+\`\`\`javascript
 // ❌ NOTO'G'RI: FaaS konteyneri istalgan vaqtda o'chishi mumkin
 let requestCount = 0; 
 exports.handler = async (event) => {
   requestCount++; // Bu o'zgaruvchi keyingi so'rovlarda kafolatlanmagan!
-  return { statusCode: 200, body: \\\`Jami so'rovlar: \\\${requestCount}\\\` };
+  return { statusCode: 200, body: \`Jami so'rovlar: \${requestCount}\` };
 };
 
 //  TO'G'RI: Tashqi ma'lumotlar omboridan (Redis/Database) foydalanish
 const redis = require("redis-client"); // Shartli kutubxona
 exports.handler = async (event) => {
   const count = await redis.incr("global_request_count");
-  return { statusCode: 200, body: \\\`Jami so'rovlar: \\\${count}\\\` };
+  return { statusCode: 200, body: \`Jami so'rovlar: \${count}\` };
 };
-\\\`\\\`\\\`
+\`\`\`
 
 ---
 
@@ -177,231 +177,177 @@ flowchart TD
 | **Serverless (FaaS)** | Provayder tomonidan boshqariladi | Zudlik bilan (millisoniyalar) | Faqat real ishlagan vaqtga | Voqealarga asoslangan API, fon ishlari |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Event Path Parser (Boshlang'ich)",
-      instruction: "event obyektidagi path (masalan, '/users') va httpMethod (masalan, 'GET') qiymatlarini birlashtirib `\"GET:/users\"` shaklida qaytaruvchi `parseEvent(event)` funksiyasini yozing.",
-      startingCode: "function parseEvent(event) {\n  // Kodni shu yerga yozing\n}",
-      hint: "event.httpMethod va event.path qiymatlarini string template yordamida birlashtiring.",
-      test: "if (typeof parseEvent !== 'function') return 'parseEvent topilmadi'; if (parseEvent({httpMethod: 'POST', path: '/login'}) !== 'POST:/login') return 'Birlashish noto\\'g\\'ri'; return null;"
-    },
-    {
-      id: 2,
-      title: "2️⃣ API Gateway Response formatlagich (Boshlang'ich)",
-      instruction: "Berilgan status kodi va obyekt ko'rinishidagi body-ni API Gateway formatida qaytaruvchi `createResponse(status, data)` funksiyasini yozing. Response obyekti `statusCode` va JSON formatida stringlashtirilgan `body` dan iborat bo'lsin.",
-      startingCode: "function createResponse(status, data) {\n  // Kodni shu yerga yozing\n}",
-      hint: "JSON.stringify(data) dan foydalaning.",
-      test: "if (typeof createResponse !== 'function') return 'createResponse topilmadi'; const r = createResponse(200, {ok: true}); if (r.statusCode !== 200 || typeof r.body !== 'string') return 'Natija formati xato'; return null;"
-    },
-    {
-      id: 3,
-      title: "3️⃣ Serverless Handler Router (O'rta)",
-      instruction: "Agar `event.path` qiymati `\"/ping\"` bo'lsa `\"pong\"`, boshqa har qanday path uchun `\"not_found\"` qaytaruvchi `simpleRouter(event)` funksiyasini yozing.",
-      startingCode: "function simpleRouter(event) {\n  // Kodni shu yerga yozing\n}",
-      hint: "if-else yoki switch orqali tekshiring.",
-      test: "if (typeof simpleRouter !== 'function') return 'simpleRouter topilmadi'; if (simpleRouter({path: '/ping'}) !== 'pong') return '/ping to\\'g\\'ri ishlamadi'; if (simpleRouter({path: '/random'}) !== 'not_found') return 'not_found holati xato'; return null;"
-    },
-    {
-      id: 4,
-      title: "4️⃣ Query Parameter Safe Parser (O'rta)",
-      instruction: "Agar event obyektida `queryStringParameters` mavjud bo'lsa va unda kalit (key) bo'lsa, uning qiymatini qaytaring, aks holda `defaultVal` qaytaradigan `getQueryParam(event, key, defaultVal)` funksiyasini yozing.",
-      startingCode: "function getQueryParam(event, key, defaultVal) {\n  // Kodni shu yerga yozing\n}",
-      hint: "event && event.queryStringParameters && event.queryStringParameters[key] borligini tekshiring.",
-      test: "if (typeof getQueryParam !== 'function') return 'getQueryParam topilmadi'; if (getQueryParam({queryStringParameters: {name: 'Jasur'}}, 'name', 'Mehmon') !== 'Jasur') return 'Parametr topilmadi'; if (getQueryParam({}, 'name', 'Mehmon') !== 'Mehmon') return 'Default qiymat qaytishida xato'; return null;"
-    },
-    {
-      id: 5,
-      title: "5️⃣ FaaS Memory Cache simulation (O'rta)",
-      instruction: "Statik keshni tekshirib, kalit bo'lsa qiymatni, bo'lmasa fetcher orqali yuklab keshga yozib beruvchi `fetchDataWithCache(key, fallbackFetcher)` funksiyasini yozing. Global `cache` o'zgaruvchisidan foydalaning.",
-      startingCode: "let cache = {};\nfunction fetchDataWithCache(key, fallbackFetcher) {\n  // Kodni shu yerga yozing\n}",
-      hint: "cache[key] mavjudligini tekshiring.",
-      test: "if (typeof fetchDataWithCache !== 'function') return 'fetchDataWithCache topilmadi'; cache = {}; let called = 0; fetchDataWithCache('a', () => { called++; return 100; }); const val = fetchDataWithCache('a', () => 200); if (val !== 100 || called !== 1) return 'Kesh to\\'g\\'ri ishlamayapti'; return null;"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Stateless IP Rate Limiter (O'rta)",
-      instruction: "Berilgan IP manzil uchun ruxsat etilgan limitni tekshiruvchi va oshib ketsa false qaytaradigan `rateLimit(ip, limit, ipStore)` funksiyasini yozing. `ipStore` - IP kaliti bilan so'rovlar sonini saqlovchi obyekt.",
-      startingCode: "function rateLimit(ip, limit, ipStore) {\n  // Kodni shu yerga yozing\n}",
-      hint: "ipStore[ip] ni oshiring va u limitdan katta bo'lsa false, kichik yoki teng bo'lsa true qaytaring.",
-      test: "if (typeof rateLimit !== 'function') return 'rateLimit topilmadi'; const store = {}; if (!rateLimit('1.1.1.1', 2, store)) return 'Ilk so\\'rov o\\'tishi kerak edi'; if (!rateLimit('1.1.1.1', 2, store)) return 'Ikkinchi so\\'rov o\\'tishi kerak edi'; if (rateLimit('1.1.1.1', 2, store)) return 'Uchinchi so\\'rov cheklanishi kerak edi'; return null;"
-    },
-    {
-      id: 7,
-      title: "7️⃣ JSON Request Validation (O'rta)",
-      instruction: "`event.body` dagi JSON satrini parslab, unda `requiredFields` ro'yxatidagi barcha kalitlar borligini tekshiruvchi `validateBody(event, requiredFields)` funksiyasini yozing. Agar hammasi bo'lsa true, birortasi yo'q bo'lsa yoki parsing xato bo'lsa false qaytaring.",
-      startingCode: "function validateBody(event, requiredFields) {\n  // Kodni shu yerga yozing\n}",
-      hint: "try-catch ichida JSON.parse qiling va every() metodi yordamida tekshiring.",
-      test: "if (typeof validateBody !== 'function') return 'validateBody topilmadi'; if (!validateBody({body: '{\"id\": 1, \"name\": \"A\"}'}, ['id', 'name'])) return 'To\\'g\\'ri obyekt rad etildi'; if (validateBody({body: '{\"id\": 1}'}, ['id', 'name'])) return 'Kamchilik maydoni bor xato body o\\'tib ketdi'; return null;"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Microservices Event Broker simulation (Qiyin)",
-      instruction: "Sodda voqealar brokeri `publish(event, services)` funksiyasini yozing. U berilgan `event` obyektini (masalan, `{type: 'USER_CREATED', data: {...}}`) massivdagi barcha mos servislar (har biri `.onEvent(event)` metodiga ega) ga yuborishi kerak.",
-      startingCode: "function publish(event, services) {\n  // Kodni shu yerga yozing\n}",
-      hint: "services massividagi har bir servis uchun onEvent(event) ni chaqiring.",
-      test: "if (typeof publish !== 'function') return 'publish topilmadi'; let count = 0; const s = { onEvent: (e) => { if (e.type === 'TEST') count++; } }; publish({type: 'TEST'}, [s, s]); if (count !== 2) return 'Tadbir hammaga yetib bormadi'; return null;"
-    },
-    {
-      id: 9,
-      title: "9️⃣ FaaS Timeout execution prevention (Qiyin)",
-      instruction: "Serverless billingni tejash uchun berilgan asinxron operatsiyani `ms` vaqt ichida bajarilmasa \"timeout\" xatosi bilan bekor qiladigan `withTimeout(promise, ms)` funksiyasini yozing. Buning uchun `Promise.race` ishlating.",
-      startingCode: "function withTimeout(promise, ms) {\n  // Kodni shu yerga yozing\n}",
-      hint: "Kutish vaqtidan so'ng reject bo'ladigan yangi Promise yaratib, Promise.race-ga bering.",
-      test: "if (typeof withTimeout !== 'function') return 'withTimeout topilmadi'; const p = new Promise(resolve => setTimeout(() => resolve('OK'), 200)); return withTimeout(p, 50).catch(err => { if (err === 'timeout') return null; throw 'Xato'; }).then(res => { if (res === null) return null; return 'Taym-aut ishlamadi'; });"
-    },
-    {
-      id: 10,
-      title: "🔟 Saga Pattern Transaction Coordinator (Qiyin)",
-      instruction: "Taqsimlangan tranzaksiya qadamlarini bajaruvchi `executeSaga(steps)` funksiyasini yozing. `steps` - `{ action: Function, rollback: Function }` obyektlaridan iborat massiv. Agar biror qadamning `action()` funksiyasi xatolik berib (throw) ishdan chiqsa, unga qadar muvaffaqiyatli bajarilgan barcha qadamlarning `rollback()` funksiyasini teskari tartibda chaqirib chiqishi va xatolikni throw qilishi kerak.",
-      startingCode: "async function executeSaga(steps) {\n  // Kodni shu yerga yozing\n}",
-      hint: "Bajarilgan qadamlarni massivga yig'ib boring. Xatolik bo'lsa, try-catch ichida reverse() qilib rollback chaqiring.",
-      test: "if (typeof executeSaga !== 'function') return 'executeSaga topilmadi'; let log = []; const steps = [ { action: () => log.push('a1'), rollback: () => log.push('r1') }, { action: () => { throw new Error('x'); }, rollback: () => log.push('r2') } ]; return executeSaga(steps).then(() => 'Saga xato bo\\'lganda muvaffaqiyatli yakunlanmasligi kerak').catch(() => { if (log.join(',') === 'a1,r1') return null; return 'Rollback tartibi yoki bajarilishi xato'; });"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Serverless Handler loyihalash",
+    "instruction": "API Gateway-dan keladigan `event` obyektini qayta ishlaydigan `handler(event)` funksiyasini yozing. `event.body` JSON formatidagi satr (string) ko'rinishida keladi. Uni obyektga parslash (JSON.parse) orqali `name` maydoni bor-yo'qligini tekshiring. Agar `name` mavjud bo'lsa, status kodi `200` va body qismida `{\"message\": \"Salom, <ism>!\"}` bo'lgan javob obyektini qaytaring. Agar `name` bo'lmasa yoki body bo'sh bo'lsa, status kodi `400` va body qismida `{\"error\": \"Ism kiritilmadi\"}` qaytaring. Qaytarilayotgan response obyekti har doim `statusCode` (number) va `body` (string) maydonlariga ega bo'lishi shart.",
+    "startingCode": "function handler(event) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "Try-catch yordamida JSON.parse(event.body) qiling. Qaytayotgan obyektda body satr bo'lishi uchun JSON.stringify ishlatilishi kerak.",
+    "test": "if (typeof handler !== 'function') return 'handler funksiyasi topilmadi'; const res1 = handler({ body: '{\"name\": \"Ali\"}' }); if (!res1 || res1.statusCode !== 200) return 'Muvaffaqiyatli so\\'rovda status kodi 200 bo\\'lishi kerak'; if (typeof res1.body !== 'string' || !res1.body.includes('Salom, Ali!')) return 'Muvaffaqiyatli so\\'rov body qismi noto\\'g\\'ri'; const res2 = handler({ body: '{}' }); if (!res2 || res2.statusCode !== 400 || !res2.body.includes('Ism kiritilmadi')) return 'Ism kiritilmaganda xatolik xabari qaytishi kerak'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Asosiy API Gateway Routeri",
+    "instruction": "Kichik serverless router funksiyasini yozing. `routeRequest(event)` funksiyasi `event` obyektini qabul qiladi, unda `httpMethod` (masalan, 'GET' yoki 'POST') va `path` (masalan, '/users' yoki '/orders') bo'ladi. Agar so'rov `GET /users` bo'lsa, `\"users_list\"` qaytaring. Agar so'rov `POST /orders` bo'lsa, `\"order_created\"` qaytaring. Qolgan barcha holatlarda `\"not_found\"` qiymatini qaytaring.",
+    "startingCode": "function routeRequest(event) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "event.httpMethod va event.path qiymatlarini tekshirib, if-else yoki switch block yozing.",
+    "test": "if (typeof routeRequest !== 'function') return 'routeRequest funksiyasi topilmadi'; if (routeRequest({ httpMethod: 'GET', path: '/users' }) !== 'users_list') return 'GET /users uchun users_list qaytishi kerak'; if (routeRequest({ httpMethod: 'POST', path: '/orders' }) !== 'order_created') return 'POST /orders uchun order_created qaytishi kerak'; if (routeRequest({ httpMethod: 'GET', path: '/unknown' }) !== 'not_found') return 'Noma\\'lum so\\'rovlar not_found qaytarishi kerak'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Cold Start uchun Keshni Simulyatsiya qilish",
+    "instruction": "FaaS muhitida global kontekstning qayta ishlatilishini simulyatsiya qiling. Global o'zgaruvchi sifatida `let cache = {};` e'lon qilingan deb hisoblang. `fetchDataWithCache(key, fallbackFetcher)` funksiyasini yozing. Agar berilgan `key` keshda mavjud bo'lsa, u keshdagi qiymatni qaytarsin. Agar keshda bo'lmasa, `fallbackFetcher()` funksiyasini chaqirib, olingan qiymatni keshga yozsin va qaytarsin.",
+    "startingCode": "let cache = {};\n\nfunction fetchDataWithCache(key, fallbackFetcher) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "cache[key] !== undefined ekanligini tekshiring. Bo'lmasa, fallbackFetcher() ni chaqiring va natijani cache[key] ga saqlang.",
+    "test": "if (typeof fetchDataWithCache !== 'function') return 'fetchDataWithCache funksiyasi topilmadi'; cache = {}; let callCount = 0; const fetcher = () => { callCount++; return 'data1'; }; const res1 = fetchDataWithCache('user1', fetcher); if (res1 !== 'data1') return 'Natija noto\\'g\\'ri'; const res2 = fetchDataWithCache('user1', fetcher); if (res2 !== 'data1') return 'Keshdan olingan natija noto\\'g\\'ri'; if (callCount !== 1) return 'Fallback fetcher keshda bor ma\\'lumot uchun chaqirilmasligi kerak edi'; return null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "Monolit va Mikroxizmatlar (Microservices) arxitekturasi orasidagi asosiy farq nimada?",
-      options: [
-        "Monolitda butun tizim yagona kod bazasi va bitta dastur sifatida ishlaydi, mikroxizmatlarda esa tizim alohida mustaqil xizmatlarga bo'linadi",
-        "Monolit faqat SQL bazalar bilan ishlaydi, mikroxizmatlar esa faqat NoSQL bazalar bilan",
-        "Mikroxizmatlar faqat bulutli tizimlarda ishlay oladi, monolit esa ishlay olmaydi",
-        "Monolit arxitekturada xatoliklarni aniqlash mikroxizmatlarga qaraganda ancha oson"
-      ],
-      correctAnswer: 0,
-      explanation: "Monolit arxitekturada barcha funksiyalar va modullar yagona dastur ichida birlashtirilgan bo'ladi. Mikroxizmatlarda esa har bir xizmat mustaqil va alohida joylashtiriladi."
-    },
-    {
-      id: 2,
-      question: "Mikroxizmatlar arxitekturasining qaysi jihati eng katta qiyinchiliklardan biri hisoblanadi?",
-      options: [
-        "Dasturchilar sonini cheklashi",
-        "Tizimning murakkabligi, tarmoq orqali aloqa qilish kechikishlari va ma'lumotlar yaxlitligini saqlash qiyinligi",
-        "Faqat bitta dasturlash tilidan foydalanish zarurati",
-        "Xizmatlarni alohida masshtablash imkoniyati yo'qligi"
-      ],
-      correctAnswer: 1,
-      explanation: "Mikroxizmatlarda servislar o'rtasidagi tarmoq aloqalari, taqsimlangan tranzaksiyalar (distributed transactions) va deployment jarayonlari tizim murakkabligini oshiradi."
-    },
-    {
-      id: 3,
-      question: "Serverless (FaaS - Function as a Service) hisoblash modelining asosiy g'oyasi nima?",
-      options: [
-        "Tizimda umuman serverlar mavjud bo'lmaydi",
-        "Serverlarni foydalanuvchilar o'zlari boshqaradi",
-        "Dasturchi server infratuzilmasini sozlamaydi va boshqarmaydi, faqat voqealar (events) orqali ishga tushuvchi kod (funksiya) yozadi",
-        "Kodni faqat frontend qismda ishga tushirish imkonini beradi"
-      ],
-      correctAnswer: 2,
-      explanation: "Serverless nomiga qaramay orqa fonda serverlar bor, biroq ularni sozlash, masshtablash va yangilash (patching) ishlari bulut provayderi (masalan, AWS, Google Cloud) zimmasida bo'ladi."
-    },
-    {
-      id: 4,
-      question: "Serverless arxitekturasidagi \"Cold Start\" (Sovuq ishga tushish) nima?",
-      options: [
-        "Funksiya ma'lum muddat chaqirilmagandan so'ng birinchi marta so'rov kelganda, konteynerning noldan yuklanishi sababli yuzaga keladigan vaqtinchalik kechikish",
-        "Server xonasidagi harorat pasayishi natijasida serverlarning sekin ishlashi",
-        "Funksiyaning xato (error) bilan tugashi va qayta ishga tushishi",
-        "Faqat qish faslida server yuklamasining oshishi"
-      ],
-      correctAnswer: 0,
-      explanation: "Agar funksiya vaqtinchalik chaqirilmasa, provayder resurslarni tejash uchun uni o'chirib qo'yadi. Keyingi so'rov kelganda yangi konteyner ishga tushiriladi va bu cold start deb ataladi."
-    },
-    {
-      id: 5,
-      question: "Cold Start muammosini qanday qilib yumshatish (kamaytirish) mumkin?",
-      options: [
-        "Faqat SQL ma'lumotlar bazasidan foydalanish orqali",
-        "Funksiya kodining hajmini maksimal darajada oshirish orqali",
-        "Provisioned Concurrency-ni sozlash (konteynerlarni doim tayyor saqlash) yoki vaqti-vaqti bilan funksiyani avtomatik ping qilib turish",
-        "Faqat JavaScript dasturlash tilidan voz kechish orqali"
-      ],
-      correctAnswer: 2,
-      explanation: "Provisioned Concurrency bulut provayderiga ma'lum miqdordagi funksiya nusxalarini doim issiq (warm) holatda saqlashni buyuradi yoki ping-triggerlar orqali funksiya o'chib qolishining oldi olinadi."
-    },
-    {
-      id: 6,
-      question: "Serverless (FaaS) to'lov tizimi (pricing model) qanday ishlaydi?",
-      options: [
-        "Serverning oylik ijarasi uchun qat'iy belgilangan narx to'lanadi",
-        "Faqat funksiya ishga tushgan (bajarilgan) millisoniyalar va foydalanilgan xotira hajmi uchun to'lanadi (Pay-as-you-go)",
-        "So'rovlar sonidan qat'i nazar faqat yuklangan kod hajmi (Megabayt) uchun to'lanadi",
-        "Tizimdan foydalanish mutlaqo bepul"
-      ],
-      correctAnswer: 1,
-      explanation: "Serverless-da siz server bo'sh turgan vaqti uchun pul to'lamaysiz. To'lov faqat funksiya real ish bajargan vaqti va resurslariga qarab hisoblanadi."
-    },
-    {
-      id: 7,
-      question: "Serverless funksiyalarda nima uchun holatni (State) global o'zgaruvchilarda doimiy saqlash tavsiya etilmaydi?",
-      options: [
-        "Chunki global o'zgaruvchilar xotirani buzadi",
-        "Chunki serverless funksiyalar faqat satrli ma'lumotlarni qabul qiladi",
-        "Chunki xavfsizlik nuqtai nazaridan global o'zgaruvchilar taqiqlangan",
-        "Chunki FaaS funksiyalari stateless (holatsiz) bo'lib, har bir so'rovda yangi konteyner yaratilishi yoki mavjudlari ixtiyoriy ravishda yo'q qilinishi mumkin"
-      ],
-      correctAnswer: 3,
-      explanation: "FaaS funksiyalari stateless ishlashi kerak. Holatni (masalan, seanslarni) saqlash uchun tashqi xizmatlar (Redis, DynamoDB, PostgreSQL) ishlatilishi lozim."
-    },
-    {
-      id: 8,
-      question: "API Gateway-ning serverless arxitekturadagi o'rni qanday?",
-      options: [
-        "Mijozdan kelgan HTTP so'rovlarni qabul qilib, ularni mos FaaS funksiyalari uchun event-ga aylantiradi va yo'naltiradi",
-        "Faqat ma'lumotlar bazasini himoya qiladi",
-        "JavaScript kodini avtomatik ravishda C++ kodiga o'zgartiradi",
-        "Konteynerlarni doimiy ravishda isitib turuvchi asosiy server hisoblanadi"
-      ],
-      correctAnswer: 0,
-      explanation: "API Gateway kiruvchi HTTP/REST so'rovlarni qabul qilib, ularni tegishli serverless funksiyalarga marshrutlaydi va javoblarni mijozga qaytaradi."
-    },
-    {
-      id: 9,
-      question: "Qaysi holatda an'anaviy Monolit arxitektura Mikroxizmatlarga qaraganda afzalroq tanlov hisoblanadi?",
-      options: [
-        "Loyiha juda katta va yuzlab dasturchilar ishlayotgan bo'lsa",
-        "Loyiha hali boshlang'ich (MVP) bosqichida, jamoa kichik va tezkor o'zgarishlar talab qilinganda",
-        "Tizim har bir modulining alohida texnologiyada yozilishi shart bo'lsa",
-        "Faqat asinxron ma'lumotlar uzatish kerak bo'lganda"
-      ],
-      correctAnswer: 1,
-      explanation: "Monolit arxitektura kichik jamoalarga loyihani tez boshlash va murakkab taqsimlangan tizim arxitekturasini yaratish xarajatlaridan qochish imkonini beradi."
-    },
-    {
-      id: 10,
-      question: "Mikroxizmatlar orasidagi asinxron aloqalarni yo'lga qo'yishda qaysi texnologiyalar eng ko'p qo'llaniladi?",
-      options: [
-        "HTML5 va LocalStorage",
-        "Faqat sinxron REST API so'rovlari",
-        "Message Broker-lar (masalan, RabbitMQ, Apache Kafka, AWS SQS)",
-        "Virtual DOM texnologiyasi"
-      ],
-      correctAnswer: 2,
-      explanation: "Xizmatlarning bir-biriga bog'lanib qolmasligi (loose coupling) uchun xabarlar brokeri yordamida voqealarga asoslangan (event-driven) asinxron aloqa o'rnatiradi."
-    },
-    {
-      id: 11,
-      question: "FaaS funksiyalaridagi Ephemeral Storage (vaqtinchalik xotira) nima?",
-      options: [
-        "Funksiya bajarilayotgan vaqtda mavjud bo'lgan, ammo funksiya to'xtagach o'chib ketadigan mahalliy vaqtinchalik xotira (/tmp papkasi)",
-        "Hech qachon o'chib ketmaydigan bulutli saqlash ombori",
-        "Brauzerning localStorage qismi",
-        "Faqat rasmlarni saqlash uchun mo'ljallangan operativ xotira"
-      ],
-      correctAnswer: 0,
-      explanation: "FaaS muhitlari odatda cheklangan hajmdagi vaqtinchalik mahalliy saqlash fayl tizimini (/tmp) taqdim etadi. Konteyner yopilishi bilan bu ma'lumotlar yo'qoladi."
-    },
-    {
-      id: 12,
-      question: "Serverless FaaS funksiyalarining eng asosiy texnik cheklovlaridan biri nima?",
-      options: [
-        "Hech qanday dasturlash tilini qo'llab-quvvatlamasligi",
-        "Maksimal ishlash vaqtining cheklanganligi (masalan, ko'plab platformalarda 15 daqiqa atrofida)",
-        "Faqat bitta foydalanuvchi so'roviga xizmat ko'rsata olishi",
-        "Faqat 1 KB gacha bo'lgan hajmdagi fayllarni qabul qilishi"
-      ],
-      correctAnswer: 1,
-      explanation: "FaaS funksiyalari qisqa muddatli vazifalar uchun mo'ljallangan bo'lib, odatda maksimal ishlash vaqti (execution timeout) cheklangan (AWS Lambda-da 15 daqiqa)."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "Monolit va Mikroxizmatlar (Microservices) arxitekturasi orasidagi asosiy farq nimada?",
+    "options": [
+      "Monolitda butun tizim yagona kod bazasi va bitta dastur sifatida ishlaydi, mikroxizmatlarda esa tizim alohida mustaqil xizmatlarga bo'linadi",
+      "Monolit faqat SQL bazalar bilan ishlaydi, mikroxizmatlar esa faqat NoSQL bazalar bilan",
+      "Mikroxizmatlar faqat bulutli tizimlarda ishlay oladi, monolit esa ishlay olmaydi",
+      "Monolit arxitekturada xatoliklarni aniqlash mikroxizmatlarga qaraganda ancha oson"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Monolit arxitekturada barcha funksiyalar va modullar yagona dastur ichida birlashtirilgan bo'ladi. Mikroxizmatlarda esa har bir xizmat mustaqil va alohida joylashtiriladi."
+  },
+  {
+    "id": 2,
+    "question": "Mikroxizmatlar arxitekturasining qaysi jihati eng katta qiyinchiliklardan biri hisoblanadi?",
+    "options": [
+      "Dasturchilar sonini cheklashi",
+      "Tizimning murakkabligi, tarmoq orqali aloqa qilish kechikishlari va ma'lumotlar yaxlitligini saqlash qiyinligi",
+      "Faqat bitta dasturlash tilidan foydalanish zarurati",
+      "Xizmatlarni alohida masshtablash imkoniyati yo'qligi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Mikroxizmatlarda servislar o'rtasidagi tarmoq aloqalari, taqsimlangan tranzaksiyalar (distributed transactions) va deployment jarayonlari tizim murakkabligini oshiradi."
+  },
+  {
+    "id": 3,
+    "question": "Serverless (FaaS - Function as a Service) hisoblash modelining asosiy g'oyasi nima?",
+    "options": [
+      "Tizimda umuman serverlar mavjud bo'lmaydi",
+      "Serverlarni foydalanuvchilar o'zlari boshqaradi",
+      "Dasturchi server infratuzilmasini sozlamaydi va boshqarmaydi, faqat voqealar (events) orqali ishga tushuvchi kod (funksiya) yozadi",
+      "Kodni faqat frontend qismda ishga tushirish imkonini beradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Serverless nomiga qaramay orqa fonda serverlar bor, biroq ularni sozlash, masshtablash va yangilash (patching) ishlari bulut provayderi (masalan, AWS, Google Cloud) zimmasida bo'ladi."
+  },
+  {
+    "id": 4,
+    "question": "Serverless arxitekturasidagi \"Cold Start\" (Sovuq ishga tushish) nima?",
+    "options": [
+      "Funksiya ma'lum muddat chaqirilmagandan so'ng birinchi marta so'rov kelganda, konteynerning noldan yuklanishi sababli yuzaga keladigan vaqtinchalik kechikish",
+      "Server xonasidagi harorat pasayishi natijasida serverlarning sekin ishlashi",
+      "Funksiyaning xato (error) bilan tugashi va qayta ishga tushishi",
+      "Faqat qish faslida server yuklamasining oshishi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Agar funksiya tez-tez chaqirilmasa, provayder resurslarni tejash uchun uni o'chirib qo'yadi. Keyingi so'rov kelganda yangi konteyner ishga tushiriladi va bu cold start deb ataladi."
+  },
+  {
+    "id": 5,
+    "question": "Cold Start muammosini qanday qilib yumshatish (kamaytirish) mumkin?",
+    "options": [
+      "Faqat SQL ma'lumotlar bazasidan foydalanish orqali",
+      "Funksiya kodining hajmini maksimal darajada oshirish orqali",
+      "Provisioned Concurrency-ni sozlash (konteynerlarni doim tayyor saqlash) yoki vaqti-vaqti bilan funksiyani avtomatik ping qilib turish",
+      "Faqat JavaScript dasturlash tilidan voz kechish orqali"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Provisioned Concurrency bulut provayderiga ma'lum miqdordagi funksiya nusxalarini doim issiq (warm) holatda saqlashni buyuradi yoki ping-triggerlar orqali funksiya o'chib qolishining oldi olinadi."
+  },
+  {
+    "id": 6,
+    "question": "Serverless (FaaS) to'lov tizimi (pricing model) qanday ishlaydi?",
+    "options": [
+      "Serverning oylik ijarasi uchun qat'iy belgilangan narx to'lanadi",
+      "Faqat funksiya ishga tushgan (bajarilgan) millisoniyalar va foydalanilgan xotira hajmi uchun to'lanadi (Pay-as-you-go)",
+      "So'rovlar sonidan qat'i nazar faqat yuklangan kod hajmi (Megabayt) uchun to'lanadi",
+      "Tizimdan foydalanish mutlaqo bepul"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Serverless-da siz server bo'sh turgan vaqti uchun pul to'lamaysiz. To'lov faqat funksiya real ish bajargan vaqti va resurslariga qarab hisoblanadi."
+  },
+  {
+    "id": 7,
+    "question": "Serverless funksiyalarda nima uchun holatni (State) global o'zgaruvchilarda doimiy saqlash tavsiya etilmaydi?",
+    "options": [
+      "Chunki global o'zgaruvchilar xotirani buzadi",
+      "Chunki serverless funksiyalar faqat satrli ma'lumotlarni qabul qiladi",
+      "Chunki xavfsizlik nuqtai nazaridan global o'zgaruvchilar taqiqlangan",
+      "Chunki FaaS funksiyalari stateless (holatsiz) bo'lib, har bir so'rovda yangi konteyner yaratilishi yoki mavjudlari ixtiyoriy ravishda yo'q qilinishi mumkin"
+    ],
+    "correctAnswer": 3,
+    "explanation": "FaaS funksiyalari stateless ishlashi kerak. Holatni (masalan, seanslarni) saqlash uchun tashqi xizmatlar (Redis, DynamoDB, PostgreSQL) ishlatilishi lozim."
+  },
+  {
+    "id": 8,
+    "question": "API Gateway-ning serverless arxitekturadagi o'rni qanday?",
+    "options": [
+      "Mijozdan kelgan HTTP so'rovlarni qabul qilib, ularni mos FaaS funksiyalari uchun event-ga aylantiradi va yo'naltiradi",
+      "Faqat ma'lumotlar bazasini himoya qiladi",
+      "JavaScript kodini avtomatik ravishda C++ kodiga o'zgartiradi",
+      "Konteynerlarni doimiy ravishda isitib turuvchi asosiy server hisoblanadi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "API Gateway kiruvchi HTTP/REST so'rovlarni qabul qilib, ularni tegishli serverless funksiyalarga marshrutlaydi va javoblarni mijozga qaytaradi."
+  },
+  {
+    "id": 9,
+    "question": "Qaysi holatda an'anaviy Monolit arxitektura Mikroxizmatlarga qaraganda afzalroq tanlov hisoblanadi?",
+    "options": [
+      "Loyiha juda katta va yuzlab dasturchilar ishlayotgan bo'lsa",
+      "Loyiha hali boshlang'ich (MVP) bosqichida, jamoa kichik va tezkor o'zgarishlar talab qilinganda",
+      "Tizim har bir modulining alohida texnologiyada yozilishi shart bo'lsa",
+      "Faqat asinxron ma'lumotlar uzatish kerak bo'lganda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Monolit arxitektura kichik jamoalarga loyihani tez boshlash va murakkab taqsimlangan tizim arxitekturasini yaratish xarajatlaridan qochish imkonini beradi."
+  },
+  {
+    "id": 10,
+    "question": "Mikroxizmatlar orasidagi asinxron aloqalarni yo'lga qo'yishda qaysi texnologiyalar eng ko'p qo'llaniladi?",
+    "options": [
+      "HTML5 va LocalStorage",
+      "Faqat sinxron REST API so'rovlari",
+      "Message Broker-lar (masalan, RabbitMQ, Apache Kafka, AWS SQS)",
+      "Virtual DOM texnologiyasi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Xizmatlarning bir-biriga bog'lanib qolmasligi (loose coupling) uchun xabarlar brokeri yordamida voqealarga asoslangan (event-driven) asinxron aloqa o'rnatiladi."
+  },
+  {
+    "id": 11,
+    "question": "FaaS funksiyalaridagi Ephemeral Storage (vaqtinchalik xotira) nima?",
+    "options": [
+      "Funksiya bajarilayotgan vaqtda mavjud bo'lgan, ammo funksiya to'xtagach o'chib ketadigan mahalliy vaqtinchalik xotira (/tmp papkasi)",
+      "Hech qachon o'chib ketmaydigan bulutli saqlash ombori",
+      "Brauzerning localStorage qismi",
+      "Faqat rasmlarni saqlash uchun mo'ljallangan operativ xotira"
+    ],
+    "correctAnswer": 0,
+    "explanation": "FaaS muhitlari odatda cheklangan hajmdagi vaqtinchalik mahalliy saqlash fayl tizimini (/tmp) taqdim etadi. Konteyner yopilishi bilan bu ma'lumotlar yo'qoladi."
+  },
+  {
+    "id": 12,
+    "question": "Serverless FaaS funksiyalarining eng asosiy texnik cheklovlaridan biri nima?",
+    "options": [
+      "Hech qanday dasturlash tilini qo'llab-quvvatlamasligi",
+      "Maksimal ishlash vaqtining cheklanganligi (masalan, ko'plab platformalarda 15 daqiqa atrofida)",
+      "Faqat bitta foydalanuvchi so'roviga xizmat ko'rsata olishi",
+      "Faqat 1 KB gacha bo'lgan hajmdagi fayllarni qabul qilishi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "FaaS funksiyalari qisqa muddatli vazifalar uchun mo'ljallangan bo'lib, odatda maksimal ishlash vaqti (execution timeout) cheklangan (AWS Lambda-da 15 daqiqa)."
+  }
+]
+
 };

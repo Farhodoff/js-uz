@@ -2,7 +2,7 @@ export const typescriptFunctions = {
   id: "typescriptFunctions",
   title: "Funksiyalar va Overloads",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### TypeScript-da Funksiyalar nima?
 JavaScript-da funksiyalar juda erkin: ular har qanday tipdagi argumentlarni qabul qilaveradi va istalgan qiymatni qaytaradi. Bu esa katta loyihalarda kutilmagan xatolarga (masalan, son kutilgan joyga string yoki undefined kelib qolishiga) sabab bo'ladi.

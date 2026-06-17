@@ -2,7 +2,7 @@ export const reactPerformanceOptimization = {
   id: "reactPerformanceOptimization",
   title: "Performance Optimization Texnikalari",
   language: "react",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### React-da Performance Optimization nima?
 React judayam tez ishlaydigan kutubxona bo'lsa-da, loyiha kattalashib borgan sari interfeys qotib qolishi yoki keraksiz re-renderlar ko'payishi mumkin. **React Performance Optimization (Ishlash samaradorligini optimallashtirish)** — bu keraksiz qayta chizishlarni va og'ir matematik hisob-kitoblarni oldini olish orqali ilova tezligini saqlash usulidir.
@@ -26,7 +26,7 @@ import React, { useState, useCallback } from 'react';
 // Bolakay komponent - faqat props o'zgarganda render bo'ladi
 const ChildButton = React.memo(({ onClick, label }) => {
   console.log(\`\${label} tugmasi render bo'ldi!\`);
-  return <button onClick={onClick}>\${label}</button>;
+  return <button onClick={onClick}>{label}</button>;
 });
 
 export function ParentComponent() {
@@ -40,7 +40,7 @@ export function ParentComponent() {
 
   return (
     <div>
-      <h3>Sanoq: \${count}</h3>
+      <h3>Sanoq: {count}</h3>
       <input 
         value={text} 
         onChange={(e) => setText(e.target.value)} 
@@ -80,7 +80,7 @@ export function SearchList({ items }) {
       />
       <ul>
         {filteredItems.map(item => (
-          <li key={item.id}>\${item.name}</li>
+          <li key={item.id}>{item.name}</li>
         ))}
       </ul>
     </div>
@@ -238,8 +238,8 @@ const TableRow = React.memo(({ item, onAddToCart }) => {
   console.log(\`Row render: \${item.name}\`);
   return (
     <tr>
-      <td>\${item.name}</td>
-      <td>\${item.price} \\$</td>
+      <td>{item.name}</td>
+      <td>{item.price} $</td>
       <td>
         <button onClick={() => onAddToCart(item.id)}>Savatga</button>
       </td>
@@ -276,7 +276,7 @@ export function ProductTable({ items }) {
 ## 9. 🚀 Performance va Optimization
 
 * **Virtualizatsiya (Windowing):** Agar jadvalda o'n minglab qator bo'lsa, hatto \`React.memo\` ham yetarli bo'lmaydi. Buning uchun \`react-window\` yoki \`react-virtualized\` yordamida faqat ekranga ko'rinib turgan qatorlarnigina render qilish kerak.
-* **Inline funksiyalar va obyektlardan qochish:** JSX ichida to'g'ridan-to'g'ri <Component style={{color: 'red'}} onClick={() => {}} /> yozish har doim yangi referencelar yaratadi. Ularni tashqariga yoki \`useMemo\`/\`useCallback\`ga o'tkazing.
+* **Inline funksiyalar va obyektlardan qochish:** JSX ichida to'g'ridan-to'g'ri \`<Component style={{color: 'red'}} onClick={() => {}} />\` yozish har doim yangi referencelar yaratadi. Ularni tashqariga yoki \`useMemo\`/\`useCallback\`ga o'tkazing.
 
 ---
 
@@ -287,177 +287,180 @@ export function ProductTable({ items }) {
 | **React.memo** | Props o'zgarmaganda butun komponent re-renderini to'xtatish uchun | Ha (prevProps vs nextProps) |
 | **useMemo** | Og'ir hisob-kitoblar va obyekt referencelarini saqlash uchun | Ha (dependency massivi) |
 | **useCallback** | Funksiyalar havolasini (reference) saqlash uchun | Ha (dependency massivi) |
-| **React.lazy** | Kodni bo'lish (Code Splitting) va tezkor yuklash uchun | N/A |`,
+| **React.lazy** | Kodni bo'lish (Code Splitting) va tezkor yuklash uchun | N/A |
+`,
   exercises: [
-    {
-      id: 1,
-      title: "Sodda useMemo simulyatsiyasi",
-      instruction: "Qiymat va dependencylar berilganda, agar dependency o'zgarmasa keshdagi qiymatni qaytaradigan `memoizeValue(fn, deps, lastDeps, lastValue)` funksiyasini yozing. (massiv deps tengligini solishtiring).",
-      startingCode: "function memoizeValue(fn, deps, lastDeps, lastValue) {\n  const depsEqual = lastDeps && deps.every((d, i) => d === lastDeps[i]);\n  // Agar teng bo'lsa eski qiymatni, bo'lmasa fn() ni chaqirib yangisini qaytaring\n}",
-      hint: "if (depsEqual) return lastValue;\nreturn fn();",
-      test: "if (typeof memoizeValue !== 'function') return 'memoizeValue topilmadi'; const fn = () => 10; if(memoizeValue(fn, [1], [1], 5) !== 5) return 'Dependency o\\'zgarmaganda kesh xato'; if(memoizeValue(fn, [2], [1], 5) !== 10) return 'Dependency o\\'zgarganda fn() chaqirilmadi'; return null;"
-    },
-    {
-      id: 2,
-      title: "Sodda useCallback simulyatsiyasi",
-      instruction: "Berilgan funksiya havolasini dependencylar o'zgarmasa keshlab saqlaydigan `memoizeCallback(fn, deps, lastDeps, lastFn)` funksiyasini yozing.",
-      startingCode: "function memoizeCallback(fn, deps, lastDeps, lastFn) {\n  const depsEqual = lastDeps && deps.every((d, i) => d === lastDeps[i]);\n  // Teng bo'lsa eski funksiyani, bo'lmasa yangisini qaytaring\n}",
-      hint: "if (depsEqual) return lastFn;\nreturn fn;",
-      test: "if (typeof memoizeCallback !== 'function') return 'memoizeCallback topilmadi'; const f = () => {}; if (memoizeCallback(f, [1], [1], f) !== f) return 'Callback keshlanmadi'; return null;"
-    },
-    {
-      id: 3,
-      title: "Bundle Limit Checker",
-      instruction: "Sahifa to'liq hidratatsiya bo'lishidan oldin yuklanadigan bundle hajmini tekshiruvchi `checkBundleSize(sizeKB, limitKB)` funksiyasini yozing (agar limitdan oshsa true, bo'lmasa false).",
-      startingCode: "function checkBundleSize(sizeKB, limitKB) {\n  // Limit tekshirish\n}",
-      hint: "return sizeKB > limitKB;",
-      test: "if (typeof checkBundleSize !== 'function') return 'checkBundleSize topilmadi'; if(checkBundleSize(600, 500) !== true || checkBundleSize(400, 500) !== false) return 'Limit tekshirish xato'; return null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Sodda useMemo simulyatsiyasi",
+    "instruction": "Qiymat va dependencylar berilganda, agar dependency o'zgarmasa keshdagi qiymatni qaytaradigan `memoizeValue(fn, deps, lastDeps, lastValue)` funksiyasini yozing. (massiv deps tengligini solishtiring).",
+    "startingCode": "function memoizeValue(fn, deps, lastDeps, lastValue) {\n  const depsEqual = lastDeps && deps.every((d, i) => d === lastDeps[i]);\n  // Agar teng bo'lsa eski qiymatni, bo'lmasa fn() ni chaqirib yangisini qaytaring\n}",
+    "hint": "if (depsEqual) return lastValue;\nreturn fn();",
+    "test": "if (typeof memoizeValue !== 'function') return 'memoizeValue topilmadi'; const fn = () => 10; if(memoizeValue(fn, [1], [1], 5) !== 5) return 'Dependency o\\'zgarmaganda kesh xato'; if(memoizeValue(fn, [2], [1], 5) !== 10) return 'Dependency o\\'zgarganda fn() chaqirilmadi'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Sodda useCallback simulyatsiyasi",
+    "instruction": "Berilgan funksiya havolasini dependencylar o'zgarmasa keshlab saqlaydigan `memoizeCallback(fn, deps, lastDeps, lastFn)` funksiyasini yozing.",
+    "startingCode": "function memoizeCallback(fn, deps, lastDeps, lastFn) {\n  const depsEqual = lastDeps && deps.every((d, i) => d === lastDeps[i]);\n  // Teng bo'lsa eski funksiyani, bo'lmasa yangisini qaytaring\n}",
+    "hint": "if (depsEqual) return lastFn;\nreturn fn;",
+    "test": "if (typeof memoizeCallback !== 'function') return 'memoizeCallback topilmadi'; const f = () => {}; if (memoizeCallback(f, [1], [1], f) !== f) return 'Callback keshlanmadi'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Bundle Limit Checker",
+    "instruction": "Sahifa to'liq hidratatsiya bo'lishidan oldin yuklanadigan bundle hajmini tekshiruvchi `checkBundleSize(sizeKB, limitKB)` funksiyasini yozing (agar limitdan oshsa true, bo'lmasa false).",
+    "startingCode": "function checkBundleSize(sizeKB, limitKB) {\n  // Limit tekshirish\n}",
+    "hint": "return sizeKB > limitKB;",
+    "test": "if (typeof checkBundleSize !== 'function') return 'checkBundleSize topilmadi'; if(checkBundleSize(600, 500) !== true || checkBundleSize(400, 500) !== false) return 'Limit tekshirish xato'; return null;"
+  }
+]
+,
   quizzes: [
-    {
-      id: 1,
-      question: "`React.memo` qachon ishlatiladi?",
-      options: [
-        "API-dan keladigan ma'lumotlarni keshga saqlashda",
-        "Props-lar o'zgarmasa, komponent re-renderini to'xtatishda",
-        "HTML button tugmasini yaratishda",
-        "Faqat CSS animasiyalarini tezlashtirishda"
-      ],
-      correctAnswer: 1,
-      explanation: "React.memo yordamida props shallow solishtirilib, o'zgarish bo'lmasagina komponent qayta chizilishi to'xtatiladi."
-    },
-    {
-      id: 2,
-      question: "`useCallback` ning asosiy maqsadi nima?",
-      options: [
-        "Funksiya havolasini (reference) renderlararo keshlab qolish",
-        "Hisoblangan qiymatni keshlash",
-        "Faqat server so'rovlarini boshqarish",
-        "Input qiymatlarini tozalash"
-      ],
-      correctAnswer: 0,
-      explanation: "useCallback har renderda yangi funksiya yaratilishini (xotirada yangi manzil hosil bo'lishini) cheklaydi."
-    },
-    {
-      id: 3,
-      question: "Nega keraksiz joyda `useMemo` ishlatish tavsiya etilmaydi?",
-      options: [
-        "Chunki u JS xatoligiga sabab bo'ladi",
-        "Faqat rasmlarga ta'sir qiladi",
-        "Chunki dependencylarni solishtirish va keshga yozish ham qo'shimcha resurs (overhead) talab qiladi",
-        "Chunki u butun state-ni o'chirib yuboradi"
-      ],
-      correctAnswer: 2,
-      explanation: "useMemo-da dependencylarni solishtirish va qiymatni xotirada ushlab turish ham bepul emas. Oddiy hisob-kitoblar uchun u keraksiz overhead yaratadi."
-    },
-    {
-      id: 4,
-      question: "React-da 'Lazy loading' nima?",
-      options: [
-        "Saytni sekin ishlaydigan qilish",
-        "Komponent yoki sahifani faqat foydalanuvchiga kerak bo'lganda (user ochganda) yuklash",
-        "CSS-ni brauzerdan o'chirish",
-        "Ma'lumotlarni kechiktirib serverga jo'natish"
-      ],
-      correctAnswer: 1,
-      explanation: "React.lazy yordamida sahifalar dynamic import qilinadi va birinchi sahifa ochilganda boshqa keraksiz sahifalar yuklanmaydi, bundle hajmi kichrayadi."
-    },
-    {
-      id: 5,
-      question: "Suspense komponentidagi 'fallback' prop nima vazifa bajaradi?",
-      options: [
-        "Lazy komponent yuklangunga qadar ekranga chiqariladigan loading (spinner, shablon) interfeysi",
-        "Saytdagi xatolarni ko'rsatadi",
-        "Hech narsa ko'rsatmaydi",
-        "Server o'chganligini bildiradi"
-      ],
-      correctAnswer: 0,
-      explanation: "Fallback - asinxron dynamic import yuklanayotgan vaqtda foydalanuvchiga vaqtinchalik visual interfeys taqdim etadi."
-    },
-    {
-      id: 6,
-      question: "Stale Closure muammosi qachon yuz beradi?",
-      options: [
-        "State mutable bo'lganda",
-        "CSS kodi eskirib qolganda",
-        "API error 404 qaytarganda",
-        "Keshlab qo'yilgan callback funksiya ichida ishlatilgan o'zgaruvchi dependency massivga yozilmay qolib ketganda"
-      ],
-      correctAnswer: 3,
-      explanation: "Callback-da dependency yozilmasa, u o'zgaruvchining eski holatdagi (stale) holatini keshlab qotirib qo'yadi."
-    },
-    {
-      id: 7,
-      question: "`React.memo` default holatda props-larni qanday solishtiradi?",
-      options: [
-        "Yuzaki (shallow comparison) solishtiradi",
-        "Chuqur (deep comparison) solishtiradi",
-        "Solishtirmaydi",
-        "Faqat string formatga tekshiradi"
-      ],
-      correctAnswer: 0,
-      explanation: "React.memo default holatda props obyektlarining birinchi darajali kalitlarini yuzaki (`Object.is` orqali) tekshiradi."
-    },
-    {
-      id: 8,
-      question: "`useMemo` va `useCallback` hooklarining farqi nimada?",
-      options: [
-        "useMemo klasslarda, useCallback funksiyalarda ishlaydi",
-        "useMemo hisoblangan qiymatni (value), useCallback esa funksiya havolasini (reference) keshlaydi",
-        "Ikkalasi mutlaqo bir xil narsadir",
-        "Faqat useCallback serverda ishlay oladi"
-      ],
-      correctAnswer: 1,
-      explanation: "useMemo qiymatni keshlab saqlaydi. useCallback esa qayta yaratilishini oldini olish uchun funksiyani o'zini keshlaydi."
-    },
-    {
-      id: 9,
-      question: "`useCallback` hookini ishlatish qachon haqiqiy foyda keltiradi?",
-      options: [
-        "Hamma yaratilgan funksiyalarga yozganda",
-        "Faqat CSS stillarini o'zgartirganda",
-        "Funksiyani props orqali `React.memo` bilan optimallashtirilgan bola komponentga yuborganda",
-        "Hech qachon foyda keltirmaydi"
-      ],
-      correctAnswer: 2,
-      explanation: "useCallback-ning maqsadi funksiya reference-ini saqlashdir, bu esa React.memo bolaning keraksiz render bo'lishidan saqlaydi."
-    },
-    {
-      id: 10,
-      question: "React-dagi 'dynamic import()' nima?",
-      options: [
-        "Kodni asinxron va faqat kerak bo'lganda yuklash (Code Splitting asoschisi)",
-        "Require yordamida yuklash",
-        "Faqat rasmlarni yuklash",
-        "API-ga tezkor so'rov yuborish"
-      ],
-      correctAnswer: 0,
-      explanation: "Dynamic import `import('./file')` orqali JS faylni alohida chunk qilib yig'adi va foydalanuvchi faqat kerak bo'lganda yuklab oladi."
-    },
-    {
-      id: 11,
-      question: "Code splitting (kodni bo'lish) ning eng asosiy performance foydasi nima?",
-      options: [
-        "Serverni tezroq yuklaydi",
-        "Database so'rovlarini birlashtiradi",
-        "Xavfsizlikni kuchaytiradi",
-        "Brauzer birinchi yuklab oladigan JS bundle hajmini kamaytiradi (sayt tez ochiladi)"
-      ],
-      correctAnswer: 3,
-      explanation: "Code splitting barcha sahifalarni bitta JS faylga tiqmasdan, bo'laklab yuborgani uchun sayt tez yuklanadi."
-    },
-    {
-      id: 12,
-      question: "Agar komponent `React.memo` qilingan bo'lsa-yu, unga har renderda parent ichida yangi obyekt props qilib uzatilsa nima bo'ladi?",
-      options: [
-        "React xato berib to'xtaydi",
-        "Obyekt reference-i o'zgargani uchun, React.memo baribir komponentni qayta render qiladi",
-        "Render bo'lmaydi",
-        "State o'chib ketadi"
-      ],
-      correctAnswer: 1,
-      explanation: "React.memo yuzaki tekshiradi. Obyekt har safar yangi manzilga ega bo'lgani uchun, u o'zgardi deb hisoblanadi va render bo'laveradi."
-    }
-  ]
+  {
+    "id": 1,
+    "question": "`React.memo` qachon ishlatiladi?",
+    "options": [
+      "API-dan keladigan ma'lumotlarni keshga saqlashda",
+      "Props-lar o'zgarmasa, komponent re-renderini to'xtatishda",
+      "HTML button tugmasini yaratishda",
+      "Faqat CSS animasiyalarini tezlashtirishda"
+    ],
+    "correctAnswer": 1,
+    "explanation": "React.memo yordamida props shallow solishtirilib, o'zgarish bo'lmasagina komponent qayta chizilishi to'xtatiladi."
+  },
+  {
+    "id": 2,
+    "question": "`useCallback` ning asosiy maqsadi nima?",
+    "options": [
+      "Funksiya havolasini (reference) renderlararo keshlab qolish",
+      "Hisoblangan qiymatni keshlash",
+      "Faqat server so'rovlarini boshqarish",
+      "Input qiymatlarini tozalash"
+    ],
+    "correctAnswer": 0,
+    "explanation": "useCallback har renderda yangi funksiya yaratilishini (xotirada yangi manzil hosil bo'lishini) cheklaydi."
+  },
+  {
+    "id": 3,
+    "question": "Nega keraksiz joyda `useMemo` ishlatish tavsiya etilmaydi?",
+    "options": [
+      "Chunki u JS xatoligiga sabab bo'ladi",
+      "Faqat rasmlarga ta'sir qiladi",
+      "Chunki dependencylarni solishtirish va keshga yozish ham qo'shimcha resurs (overhead) talab qiladi",
+      "Chunki u butun state-ni o'chirib yuboradi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "useMemo-da dependencylarni solishtirish va qiymatni xotirada ushlab turish ham bepul emas. Oddiy hisob-kitoblar uchun u keraksiz overhead yaratadi."
+  },
+  {
+    "id": 4,
+    "question": "React-da 'Lazy loading' nima?",
+    "options": [
+      "Saytni sekin ishlaydigan qilish",
+      "Komponent yoki sahifani faqat foydalanuvchiga kerak bo'lganda (user ochganda) yuklash",
+      "CSS-ni brauzerdan o'chirish",
+      "Ma'lumotlarni kechiktirib serverga jo'natish"
+    ],
+    "correctAnswer": 1,
+    "explanation": "React.lazy yordamida sahifalar dynamic import qilinadi va birinchi sahifa ochilganda boshqa keraksiz sahifalar yuklanmaydi, bundle hajmi kichrayadi."
+  },
+  {
+    "id": 5,
+    "question": "Suspense komponentidagi 'fallback' prop nima vazifa bajaradi?",
+    "options": [
+      "Lazy komponent yuklangunga qadar ekranga chiqariladigan loading (spinner, shablon) interfeysi",
+      "Saytdagi xatolarni ko'rsatadi",
+      "Hech narsa ko'rsatmaydi",
+      "Server o'chganligini bildiradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Fallback - asinxron dynamic import yuklanayotgan vaqtda foydalanuvchiga vaqtinchalik visual interfeys taqdim etadi."
+  },
+  {
+    "id": 6,
+    "question": "Stale Closure muammosi qachon yuz beradi?",
+    "options": [
+      "State mutable bo'lganda",
+      "CSS kodi eskirib qolganda",
+      "API error 404 qaytarganda",
+      "Keshlab qo'yilgan callback funksiya ichida ishlatilgan o'zgaruvchi dependency massivga yozilmay qolib ketganda"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Callback-da dependency yozilmasa, u o'zgaruvchining eski holatdagi (stale) holatini keshlab qotirib qo'yadi."
+  },
+  {
+    "id": 7,
+    "question": "`React.memo` default holatda props-larni qanday solishtiradi?",
+    "options": [
+      "Yuzaki (shallow comparison) solishtiradi",
+      "Chuqur (deep comparison) solishtiradi",
+      "Solishtirmaydi",
+      "Faqat string formatga tekshiradi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "React.memo default holatda props obyektlarining birinchi darajali kalitlarini yuzaki (`Object.is` orqali) tekshiradi."
+  },
+  {
+    "id": 8,
+    "question": "`useMemo` va `useCallback` hooklarining farqi nimada?",
+    "options": [
+      "useMemo klasslarda, useCallback funksiyalarda ishlaydi",
+      "useMemo hisoblangan qiymatni (value), useCallback esa funksiya havolasini (reference) keshlaydi",
+      "Ikkalasi mutlaqo bir xil narsadir",
+      "Faqat useCallback serverda ishlay oladi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "useMemo qiymatni keshlab saqlaydi. useCallback esa qayta yaratilishini oldini olish uchun funksiyani o'zini keshlaydi."
+  },
+  {
+    "id": 9,
+    "question": "`useCallback` hookini ishlatish qachon haqiqiy foyda keltiradi?",
+    "options": [
+      "Hamma yaratilgan funksiyalarga yozganda",
+      "Faqat CSS stillarini o'zgartirganda",
+      "Funksiyani props orqali `React.memo` bilan optimallashtirilgan bola komponentga yuborganda",
+      "Hech qachon foyda keltirmaydi"
+    ],
+    "correctAnswer": 2,
+    "explanation": "useCallback-ning maqsadi funksiya reference-ini saqlashdir, bu esa React.memo bolaning keraksiz render bo'lishidan saqlaydi."
+  },
+  {
+    "id": 10,
+    "question": "React-dagi 'dynamic import()' nima?",
+    "options": [
+      "Kodni asinxron va faqat kerak bo'lganda yuklash (Code Splitting asoschisi)",
+      "Require yordamida yuklash",
+      "Faqat rasmlarni yuklash",
+      "API-ga tezkor so'rov yuborish"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Dynamic import `import('./file')` orqali JS faylni alohida chunk qilib yig'adi va foydalanuvchi faqat kerak bo'lganda yuklab oladi."
+  },
+  {
+    "id": 11,
+    "question": "Code splitting (kodni bo'lish) ning eng asosiy performance foydasi nima?",
+    "options": [
+      "Serverni tezroq yuklaydi",
+      "Database so'rovlarini birlashtiradi",
+      "Xavfsizlikni kuchaytiradi",
+      "Brauzer birinchi yuklab oladigan JS bundle hajmini kamaytiradi (sayt tez ochiladi)"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Code splitting barcha sahifalarni bitta JS faylga tiqmasdan, bo'laklab yuborgani uchun sayt tez yuklanadi."
+  },
+  {
+    "id": 12,
+    "question": "Agar komponent `React.memo` qilingan bo'lsa-yu, unga har renderda parent ichida yangi obyekt props qilib uzatilsa nima bo'ladi?",
+    "options": [
+      "React xato berib to'xtaydi",
+      "Obyekt reference-i o'zgargani uchun, React.memo baribir komponentni qayta render qiladi",
+      "Render bo'lmaydi",
+      "State o'chib ketadi"
+    ],
+    "correctAnswer": 1,
+    "explanation": "React.memo yuzaki tekshiradi. Obyekt har safar yangi manzilga ega bo'lgani uchun, u o'zgardi deb hisoblanadi va render bo'laveradi."
+  }
+]
+
 };

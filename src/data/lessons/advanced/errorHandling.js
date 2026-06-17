@@ -2,7 +2,7 @@ export const errorHandling = {
   id: "errorHandling",
   title: "Xatolarni Boshqarish: try, catch, finally",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Xatolarni Boshqarish nima?
 Dasturlashda xatolar muqarrar. Foydalanuvchi noto'g'ri ma'lumot kiritishi, internet uzilib qolishi yoki server noto'g'ri javob qaytarishi mumkin. **try...catch...finally** bloklari — bu JavaScript-da xatolarni oldindan ko'ra bilish va dastur butunlay to'xtab qolishining (crash bo'lishining) oldini olish mexanizmidir.
@@ -250,119 +250,32 @@ function processApiResponse(rawJson) {
 | \`error.stack\` | Xato yuz bergan joygacha bo'lgan funksiyalar chaqiruvi | \`console.log(err.stack);\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "JSON Parse Xatosini Tutish",
-      instruction: "Berilgan noto'g'ri JSON matnini parse qilayotganda yuz beradigan xatoni `try...catch` yordamida tuting va konsolga 'Xato yuz berdi' deb chiqaring.",
-      startingCode: "const jsonStr = '{ invalid json }';\ntry {\n  // JSON parse qiling\n} catch (e) {\n  // Konsolga yozing\n}",
-      hint: "JSON.parse(jsonStr) va console.log('Xato yuz berdi')",
-      test: "if (logs.includes('Xato yuz berdi')) return null; return 'Xato to\\'g\\'ri tutilmadi';"
-    },
-    {
-      id: 2,
-      title: "Yosh Cheklovi Xatosini Tashlash",
-      instruction: "`checkAge` funksiyasida agar `age` 18 dan kichik bo'lsa, `throw new Error('Yosh yetarli emas')` yordamida xato tashlang.",
-      startingCode: "function checkAge(age) {\n  // Kodni shu yerga yozing\n}",
-      hint: "if (age < 18) { throw new Error('Yosh yetarli emas'); }",
-      test: "try { checkAge(15); return 'Xato tashlanmadi'; } catch (e) { if (e.message === 'Yosh yetarli emas') return null; return 'Xato xabari noto\\'g\\'ri'; }"
-    },
-    {
-      id: 3,
-      title: "Finally Bloki Bilan Ishlash",
-      instruction: "`processData` funksiyasida `try...catch...finally` ishlating. Har qanday holatda ham `finally` blokida konsolga 'Tugadi' deb chiqaring.",
-      startingCode: "function processData() {\n  try {\n    throw new Error('Test xato');\n  } catch (e) {\n    console.log('Ushlandi');\n  }\n  // finally blokini yozing\n}",
-      hint: "finally { console.log('Tugadi'); }",
-      test: "if (logs.includes('Ushlandi') && logs.includes('Tugadi')) return null; return 'Finally ishlamadi';"
-    },
-    {
-      id: 4,
-      title: "Xato Turini Aniqlash",
-      instruction: "`catch` blokida tutilgan xato `TypeError` ekanligini `instanceof` yordamida tekshiring va agar shunday bo'lsa konsolga 'Tip xatosi' deb chiqaring.",
-      startingCode: "try {\n  const num = null;\n  num.toUpperCase();\n} catch (e) {\n  // e instanceof TypeError ni tekshiring\n}",
-      hint: "if (e instanceof TypeError) { console.log('Tip xatosi'); }",
-      test: "if (logs.includes('Tip xatosi')) return null; return 'TypeError aniqlanmadi';"
-    },
-    {
-      id: 5,
-      title: "Xavfsiz Bo'lish Funksiyasi",
-      instruction: "Ikki sonni bo'luvchi funksiya yarating. Agar maxraj (`b`) 0 bo'lsa, `throw new Error('Nolga bo\\'lish mumkin emas')` tashlasin.",
-      startingCode: "function divide(a, b) {\n  // Kodni yozing\n}",
-      hint: "if (b === 0) throw new Error('Nolga bo\\'lish mumkin emas'); return a / b;",
-      test: "try { if (divide(10, 2) !== 5) return 'Bo\\'lish xato'; divide(10, 0); return '0 ga bo\\'lganda xato tashlanmadi'; } catch(e) { if (e.message === 'Nolga bo\\'lish mumkin emas') return null; return 'Xato xabari mos kelmadi'; }"
-    },
-    {
-      id: 6,
-      title: "Maxsus Xato Klassi (Custom Error)",
-      instruction: "`ValidationError` nomli maxsus xato klassini yarating (u `Error` klassidan voris olsin). `constructor` ichida xato xabarini `super()` orqali o'rnating va uning `name` xususiyatini `'ValidationError'` qiling.",
-      startingCode: "// ValidationError klassini yarating\n",
-      hint: "class ValidationError extends Error { constructor(message) { super(message); this.name = 'ValidationError'; } }",
-      test: "const err = new ValidationError('Email xato'); if (err instanceof Error && err.name === 'ValidationError' && err.message === 'Email xato') return null; return 'ValidationError klassi to\\'g\\'ri yaratilmadi';"
-    },
-    {
-      id: 7,
-      title: "Promise Xatosini Catch Qilish",
-      instruction: "Promise orqali yuborilgan xatoni `.catch()` yordamida tuting va konsolga 'Xato: [error message]' ko'rinishida yozing.",
-      startingCode: "function handleFetchError() {\n  return Promise.reject(new Error('Ulanish xatosi'))\n    // catch blokini qo'shing\n}",
-      hint: ".catch(err => console.log('Xato: ' + err.message))",
-      test: "return handleFetchError().then(() => { if (logs.some(l => l.includes('Xato: Ulanish xatosi'))) return null; return 'Promise xatosi tutilmadi'; });"
-    },
-    {
-      id: 8,
-      title: "Async/Await va Try-Catch",
-      instruction: "`fetchData` asinxron funksiyasida xato tashlaydigan Promise chaqirilgan. Uni `try...catch` yordamida o'rab, xato xabarini konsolga chiqaring.",
-      startingCode: "async function fetchData() {\n  const getPromise = () => Promise.reject(new Error('Server band'));\n  // try...catch ichida getPromise() ni await qiling\n}",
-      hint: "try { await getPromise(); } catch(e) { console.log(e.message); }",
-      test: "return fetchData().then(() => { if (logs.includes('Server band')) return null; return 'Asinxron xato to\\'g\\'ri tutilmadi'; });"
-    },
-    {
-      id: 9,
-      title: "Xatoni Qayta Tashlash (Rethrow)",
-      instruction: "`readConfig` funksiyasida xato sodir bo'lsa, agar u `SyntaxError` bo'lsa uni tutib konsolga 'Sintaksis xato' deb yozing. Boshqa har qanday kutilmagan xatoni esa qayta tashlang (`throw e`).",
-      startingCode: "function readConfig(fn) {\n  try {\n    fn();\n  } catch (e) {\n    // SyntaxError bo'lsa konsolga yozing, aks holda qayta throw qiling\n  }\n}",
-      hint: "if (e instanceof SyntaxError) { console.log('Sintaksis xato'); } else { throw e; }",
-      test: "let rethrown = false; try { readConfig(() => { throw new TypeError('Tur xatosi'); }); } catch(e) { if (e instanceof TypeError) rethrown = true; } let handled = false; try { readConfig(() => { throw new SyntaxError('Sintaksis'); }); handled = logs.includes('Sintaksis xato'); } catch(e) {} if (rethrown && handled) return null; return 'Rethrowing mantiqi noto\\'g\\'ri bajarildi';"
-    },
-    {
-      id: 10,
-      title: "Ichma-ich Try-Catch",
-      instruction: "Ichki `try...catch` blokida xato yuz beradi va u ushlanib, qayta boshqa xato ko'rinishida tashlanadi (`throw new Error('Yangi')`). Tashqi `try...catch` esa bu yangi xatoni tutib konsolga chiqarsin.",
-      startingCode: "try {\n  try {\n    throw new Error('Eski');\n  } catch (innerError) {\n    // Yangi xato tashlang\n  }\n} catch (outerError) {\n  // Konsolga chiqaring\n}",
-      hint: "throw new Error('Yangi') ichki catchda, console.log(outerError.message) tashqi catchda.",
-      test: "if (logs.includes('Yangi')) return null; return 'Tashqi catch yangi xatoni tutmadi';"
-    },
-    {
-      id: 11,
-      title: "Massiv O'lchami Xatosini Oldini Olish",
-      instruction: "Berilgan o'lcham bo'yicha massiv yaratadigan `createArray` funksiyasini yozing. Noto'g'ri o'lcham tufayli kelib chiqadigan `RangeError`ni `try...catch` bilan tutib konsolga 'Noto\\'g\\'ri o\\'lcham' deb yozing.",
-      startingCode: "function createArray(size) {\n  try {\n    // new Array(size) qiling\n  } catch (e) {\n    // RangeError ekanligini tekshirib konsolga chiqaring\n  }\n}",
-      hint: "try { new Array(size); } catch(e) { if (e instanceof RangeError) console.log('Noto\\'g\\'ri o\\'lcham'); }",
-      test: "createArray(-5); if (logs.includes('Noto\\'g\\'ri o\\'lcham')) return null; return 'RangeError tutilmadi';"
-    },
-    {
-      id: 12,
-      title: "Obyekt Maydonlarini Validatsiya Qilish",
-      instruction: "`validateUser(user)` funksiyasini yozing. Agar `user` obyektida `username` bo'lmasa, `throw new Error('Foydalanuvchi nomi majburiy')` qilsin.",
-      startingCode: "function validateUser(user) {\n  // Kodni yozing\n}",
-      hint: "if (!user.username) throw new Error('Foydalanuvchi nomi majburiy');",
-      test: "try { validateUser({ age: 25 }); return 'Xato tashlanmadi'; } catch (e) { if (e.message === 'Foydalanuvchi nomi majburiy') return null; return 'Xato xabari noto\\'g\\'ri'; }"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Xavfsiz JSON Parse (safeJSONParse)",
-      instruction: "Berilgan satrni xavfsiz JSON.parse qiladigan `safeJSONParse(str, fallback)` funksiyasini yozing. Noto'g'ri JSON bo'lsa, xato tashlamasdan `fallback` qiymatini qaytarsin.",
-      startingCode: "function safeJSONParse(str, fallback) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "try { return JSON.parse(str); } catch (e) { return fallback; }",
-      test: "if (typeof safeJSONParse !== 'function') return 'safeJSONParse funksiya emas';\nif (safeJSONParse('{\"a\": 1}', {})?.a !== 1) return 'To\\'g\\'ri JSON xato parse qilindi';\nif (JSON.stringify(safeJSONParse('{invalid}', { b: 2 })) !== '{\"b\":2}') return 'Fallback noto\\'g\\'ri qaytdi';\nreturn null;"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Error cause bog'lash (fetchWithErrorCause)",
-      instruction: "Berilgan `url`ga fetch yuboring. Agar tarmoq xatosi yuz bersa (catch), uni ushlab, `new Error('Tarmoq yuklash xatosi', { cause: err })` deb original xatoni ulab qayta tashlang (throw).",
-      startingCode: "async function fetchWithErrorCause(url) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "try { return await fetch(url); } catch (err) { throw new Error('Tarmoq yuklash xatosi', { cause: err }); }",
-      test: "if (typeof fetchWithErrorCause !== 'function') return 'fetchWithErrorCause funksiya emas';\nreturn fetchWithErrorCause('https://invalid-domain-does-not-exist.xyz').then(() => 'Xato tashlanmadi').catch(err => {\n  if (err.message === 'Tarmoq yuklash xatosi' && err.cause instanceof Error) return null;\n  return 'Error cause zanjiri noto\\'g\\'ri shakllantirilgan';\n});"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Xavfsiz JSON Parse",
+    "instruction": "Berilgan satrni JSON formatida o'qiydigan `safeJSONParse(str)` funksiyasini yozing. Agar satr to'g'ri JSON bo'lsa, hosil bo'lgan obyektni qaytaring, aks holda dastur qulashining oldini olib `null` qaytaring.",
+    "startingCode": "function safeJSONParse(str) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "try { return JSON.parse(str); } catch (e) { return null; } ko'rinishida yozing.",
+    "test": "const sandbox = new Function(code + '; return safeJSONParse;');\nconst fn = sandbox();\nconst success = fn('{\"a\":1}');\nconst failure = fn('{a:1}');\nif (success && success.a === 1 && failure === null) return null;\nreturn 'safeJSONParse funksiyasi xatolikni to\\'g\\'ri boshqarmadi yoki to\\'g\\'ri JSONni parse qilmadi';"
+  },
+  {
+    "id": 2,
+    "title": "Yoshni tekshirish",
+    "instruction": "Foydalanuvchining yoshini tekshiradigan `validateAge(age)` funksiyasini yozing. Agar yosh manfiy bo'lsa (0 dan kichik), funksiya `\"Yosh manfiy bo'lishi mumkin emas\"` xabari bilan yangi Error otsin. Agar yosh to'g'ri bo'lsa, `true` qaytarsin.",
+    "startingCode": "function validateAge(age) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "if (age < 0) throw new Error(...); shartidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return validateAge;');\nconst fn = sandbox();\ntry {\n  fn(-5);\n  return 'Manfiy yosh kiritilganda xato otilmadi';\n} catch (e) {\n  if (e.message.includes('manfiy')) {\n    if (fn(20) === true) return null;\n  }\n  return 'Xatolik xabari noto\\'g\\'ri: ' + e.message;\n}"
+  },
+  {
+    "id": 3,
+    "title": "Kafolatlangan Tozalash",
+    "instruction": "Ikkita callback funksiyani qabul qiluvchi `executeAndCleanup(fn, cleanup)` funksiyasini yozing. Funksiya `fn` ni ishga tushirsin. Agar `fn` xato bersa, xatoni yuqoriga qayta otib yuboring (rethrow), lekin har qanday holatda ham (xato bo'lsa ham, bo'lmasa ham) oxirida `cleanup` funksiyasi chaqirilishini ta'minlang.",
+    "startingCode": "function executeAndCleanup(fn, cleanup) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "try-finally blokidan foydalaning va catch ichida throw ishlatib xatoni qayta oting.",
+    "test": "const sandbox = new Function(code + '; return executeAndCleanup;');\nconst myFn = sandbox();\nlet cleaned = false;\nconst clean = () => { cleaned = true; };\ntry {\n  myFn(() => { throw new Error('Boom'); }, clean);\n} catch(e) {\n  if (cleaned) {\n    cleaned = false;\n    myFn(() => {}, clean);\n    if (cleaned) return null;\n  }\n}\nreturn 'cleanup funksiyasi kafolatlangan holda chaqirilmadi yoki xatolik qayta otilmadi';"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

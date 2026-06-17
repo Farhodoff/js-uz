@@ -1,8 +1,8 @@
 export const typeofLesson = {
   id: "typeofLesson",
-  title: "typeof operatori",
+  title: "Typeof Operator",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### \`typeof\` operatori nima?
 JavaScript-da har qanday o'zgaruvchi yoki qiymat ma'lum bir **ma'lumot turiga (data type)** tegishli bo'ladi. \`typeof\` operatori — bu ma'lum bir o'zgaruvchi yoki qiymatning turini aniqlab beruvchi maxsus JavaScript vositasidir. U qiymat turini ifodalovchi **satr (string)** qaytaradi.
@@ -283,103 +283,32 @@ console.log(validateSchema(badResponse, userSchema));
 | \`{}\` | \`'object'\` | Oddiy obyekt |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Turini tekshiring",
-      instruction: "100 sonining turini typeof orqali aniqlang va konsolga chiqaring.",
-      startingCode: "// Bu yerga yozing\n",
-      hint: "console.log(typeof 100);",
-      test: "if (logs.includes('number')) return null; return 'Xato chiqdi!';"
-    },
-    {
-      id: 2,
-      title: "Matn turini aniqlash",
-      instruction: "word o'zgaruvchisining turini typeof yordamida aniqlang va natijani res o'zgaruvchisiga saqlang.",
-      startingCode: "let word = 'Salom';\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof word;",
-      test: "if (res === 'string') return null; return 'res \"string\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 3,
-      title: "Boolean turini aniqlash",
-      instruction: "isTrue o'zgaruvchisining turini typeof orqali aniqlab res o'zgaruvchisiga yozing.",
-      startingCode: "let isTrue = false;\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof isTrue;",
-      test: "if (res === 'boolean') return null; return 'res \"boolean\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 4,
-      title: "null qiymatning turini tekshirish",
-      instruction: "null qiymatining turini typeof orqali aniqlang va res o'zgaruvchisiga yozing.",
-      startingCode: "let val = null;\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof val;",
-      test: "if (res === 'object') return null; return 'res \"object\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 5,
-      title: "NaN turini tekshirish",
-      instruction: "NaN qiymatining turini typeof orqali aniqlang va res o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "let val = NaN;\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof val;",
-      test: "if (res === 'number') return null; return 'res \"number\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 6,
-      title: "Obyekt turini aniqlash",
-      instruction: "Obyekt ({}) turini typeof orqali aniqlang va res o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "let obj = {};\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof obj;",
-      test: "if (res === 'object') return null; return 'res \"object\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 7,
-      title: "Massiv turini aniqlash",
-      instruction: "Massiv ([]) turini typeof orqali aniqlab res o'zgaruvchisiga yozing.",
-      startingCode: "let arr = [];\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof arr;",
-      test: "if (res === 'object') return null; return 'res \"object\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 8,
-      title: "Funksiya turini aniqlash",
-      instruction: "myFn funksiyasining turini typeof orqali aniqlang va res o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "let myFn = function() {};\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof myFn;",
-      test: "if (res === 'function') return null; return 'res \"function\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "Double typeof",
-      instruction: "typeof typeof 123 ifodasining natijasini res o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof typeof 123;",
-      test: "if (res === 'string') return null; return 'res \"string\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "Undefined turini aniqlash",
-      instruction: "val o'zgaruvchisining turini typeof orqali aniqlab res o'zgaruvchisiga saqlang.",
-      startingCode: "let val = undefined;\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof val;",
-      test: "if (res === 'undefined') return null; return 'res \"undefined\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 11,
-      title: "Amal natijasining turi",
-      instruction: "5 * '10' ko'paytirish amali natijasining turini typeof orqali aniqlang va res o'zgaruvchisiga saqlang.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof (5 * '10');",
-      test: "if (res === 'number') return null; return 'res \"number\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 12,
-      title: "Taqqoslash natijasining turi",
-      instruction: "typeof 5 === 'number' mantiqiy ifodasining turini typeof orqali aniqlang va res o'zgaruvchisiga yozing.",
-      startingCode: "// Bu yerga yozing\nlet res = ",
-      hint: "let res = typeof (typeof 5 === 'number');",
-      test: "if (res === 'boolean') return null; return 'res \"boolean\" bo\\'lishi kerak!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Qiymat Turini Aniqlash (getType)",
+    "instruction": "Berilgan qiymatning `typeof` turini qaytaradigan `getType(value)` funksiyasini yozing. JavaScript-dagi tarixiy xato tufayli `typeof null === 'object'` qaytadi. Loyihamizda bu xatoni tuzatishimiz kerak: agar qiymat `null` bo'lsa, funksiya `'null'` satrini qaytarsin. Qolgan barcha turlar uchun standart `typeof` natijasini qaytaring.",
+    "startingCode": "function getType(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Qiymat null ekanligini `value === null` orqali tekshiring. Agar null bo'lsa, 'null' qaytaring, aks holda `typeof value`dan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return getType;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'getType funksiya bo\\'lishi kerak';\nif (fn(5) !== 'number') return 'Son uchun number qaytishi kerak';\nif (fn('hello') !== 'string') return 'Satr uchun string qaytishi kerak';\nif (fn(null) !== 'null') return 'null qiymati uchun null qaytishi kerak';\nif (fn({}) !== 'object') return 'Obyekt uchun object qaytishi kerak';\nif (fn(undefined) !== 'undefined') return 'undefined uchun undefined qaytishi kerak';\nif (fn(Symbol('id')) !== 'symbol') return 'Symbol uchun symbol qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Funksiyani Aniqlash (isFunction)",
+    "instruction": "Berilgan qiymat funksiya ekanligini aniqlovchi `isFunction(value)` funksiyasini yozing. Agar qiymat funksiya bo'lsa `true`, aks holda `false` qaytarsin.",
+    "startingCode": "function isFunction(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "JavaScript-da typeof operatori oddiy va arrow funksiyalar uchun 'function' satrini qaytaradi.",
+    "test": "const sandbox = new Function(code + '; return isFunction;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'isFunction funksiya bo\\'lishi kerak';\nif (fn(() => {}) !== true) return 'Arrow funksiya uchun true bo\\'lishi kerak';\nif (fn(function() {}) !== true) return 'Oddiy funksiya uchun true bo\\'lishi kerak';\nif (fn({}) !== false) return 'Obyekt uchun false bo\\'lishi kerak';\nif (fn(null) !== false) return 'null uchun false bo\\'lishi kerak';\nif (fn(10) !== false) return 'Son uchun false bo\\'lishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Xavfsiz Qo'shish (safeSum)",
+    "instruction": "Ikkita argument qabul qilib ularning yig'indisini hisoblaydigan `safeSum(a, b)` funksiyasini yozing. Har ikkala argument ham faqat son (`number`) bo'lishini tekshirish uchun `typeof`dan foydalaning. Agar ulardan biri yoki ikkalasi son bo'lmasa, `TypeError` xatosini tashlang (`throw new TypeError(...)`). Agar ikkalasi ham son bo'lsa, ularning yig'indisini qaytaring.",
+    "startingCode": "function safeSum(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "typeof a !== 'number' yoki typeof b !== 'number' ekanligini tekshirib, throw new TypeError('Argumentlar son bo\\'lishi kerak') yozing.",
+    "test": "const sandbox = new Function(code + '; return safeSum;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'safeSum funksiya bo\\'lishi kerak';\nif (fn(5, 10) !== 15) return '5 va 10 yig\\'indisi 15 bo\\'lishi kerak';\ntry {\n  fn(5, '10');\n  return 'Sondan boshqa tur berilganda xatolik (TypeError) tashlashi kerak';\n} catch (e) {\n  if (!(e instanceof TypeError)) return 'Xatolik turi TypeError bo\\'lishi kerak';\n}\ntry {\n  fn(true, 10);\n  return 'Sondan boshqa tur berilganda xatolik (TypeError) tashlashi kerak';\n} catch (e) {\n  if (!(e instanceof TypeError)) return 'Xatolik turi TypeError bo\\'lishi kerak';\n}\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

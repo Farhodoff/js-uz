@@ -2,7 +2,7 @@ export const eventDrivenBrokers = {
   id: "eventDrivenBrokers",
   title: "Event-Driven Architecture va Xabarlar Brokerlari (RabbitMQ & Kafka)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 Tizimlar kattalashgani sari, xizmatlarning o'zaro to'g'ridan-to'g'ri bog'lanishi (HTTP orqali) ko'plab muammolarni keltirib chiqaradi. Masalan, foydalanuvchi buyurtma berganda, to'lov xizmati, omborxona xizmati va SMS yuborish xizmatlari HTTP orqali bir-birini zanjirsimon kutib tursa, bitta xizmatdagi nosozlik butun tizimni to'xtatib qo'yishi mumkin.
 

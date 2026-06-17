@@ -2,7 +2,7 @@ export const jsPitfalls = {
   id: "jsPitfalls",
   title: "JS Pitfalls: Ko'p uchraydigan xatolar va tuzoqlar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### JS Pitfalls (JavaScript Tuzoqlari) nima?
 * **JS Pitfalls:** JavaScript dasturlash tilining tabiati, uning dinamik tiplanishi, tarixiy rivojlanishi va orqaga mos keluvchanlikni (backward compatibility) saqlash majburiyati tufayli kelib chiqqan g'alati, kutilmagan va chalkashtiruvchi xususiyatlaridir.
@@ -208,119 +208,32 @@ console.log(calculateTotalSafe([19.99, 9.99, 0.02])); // 30.00 (Aniq!)
 | construct \`Array(3)\` | Bo'sh slotlar yaratiladi | \`Array.from({ length: 3 })\` yoki \`.fill()\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Strict Equality",
-      instruction: "Taqqoslash algoritmini qat'iy tenglik (strict equality) ishlatadigan qilib to'g'rilang, toki u noo'rin coercion (tip o'zgarishi) ga yo'l qo'ymasin.",
-      startingCode: "function isEqual(a, b) {\n  return a == b;\n}\n",
-      hint: "=== operatorini ishlating.",
-      test: "if (!code.includes('==') && code.includes('===')) return null; return 'Kat\\'iy tenglikdan foydalaning!';"
-    },
-    {
-      id: 2,
-      title: "Safe typeof null",
-      instruction: "Foydalanuvchi bergan qiymat haqiqatan ham 'object' ekanini tekshiruvchi va null bo'lsa false qaytaruvchi xavfsiz funksiya yozing.",
-      startingCode: "function isRealObject(val) {\n  // Kodni shu yerga yozing\n}\n",
-      hint: "typeof val === 'object' && val !== null",
-      test: "if (isRealObject(null) === false && isRealObject({}) === true) return null; return 'Null qiymat ob\\'yekt emas deb topilishi kerak!';"
-    },
-    {
-      id: 3,
-      title: "forEach Async Tuzog'i",
-      instruction: "forEach asinxron ishlamasligini bilgan holda, berilgan urls massividagi har bir manzilni ketma-ket (sequential) fetch qiluvchi sequentialFetch funksiyasini for...of yordamida yozing.",
-      startingCode: "async function sequentialFetch(urls, fetcher) {\n  // Kodni for...of yordamida yozing\n}\n",
-      hint: "for (const url of urls) { await fetcher(url); }",
-      test: "if (code.includes('for') && code.includes('await')) return null; return 'for...of va await ishlating';"
-    },
-    {
-      id: 4,
-      title: "Nested Object Copy (Shallow vs Deep)",
-      instruction: "JSON.parse/JSON.stringify yoki boshqa deep copy usuli yordamida nested obyektni to'liq nusxalang, toki uning ichki qismini o'zgartirganda original o'zgarmasin.",
-      startingCode: "function deepCopy(obj) {\n  // Kodni yozing\n}\n",
-      hint: "return JSON.parse(JSON.stringify(obj));",
-      test: "const orig = { a: { b: 1 } }; const cp = deepCopy(orig); cp.a.b = 2; if (orig.a.b === 1) return null; return 'Deep copy to\\'g\\'ri amalga oshmadi';"
-    },
-    {
-      id: 5,
-      title: "Massiv Mutation-siz Saralash",
-      instruction: "Massivni o'zgartirmasdan, uning elementlarini o'sib borish tartibida saralangan yangi nusxasini qaytaruvchi safeSort funksiyasini yozing.",
-      startingCode: "function safeSort(arr) {\n  // Kodni yozing\n}\n",
-      hint: "return [...arr].sort((a,b) => a-b);",
-      test: "const a = [3, 1, 2]; const res = safeSort(a); if (a[0] === 3 && res[0] === 1) return null; return 'Original massiv o\\'zgarmasligi shart';"
-    },
-    {
-      id: 6,
-      title: "Immutable Update",
-      instruction: "User obyektini o'zgartirmagan holda, uning ichidagi 'role' qiymatini 'moderator' qilib yangilovchi va yangi obyekt qaytaruvchi updateUser funksiyasini yozing.",
-      startingCode: "function updateUser(user) {\n  // Kodni yozing\n}\n",
-      hint: "return { ...user, role: 'moderator' };",
-      test: "const u = { name: 'Ali', role: 'user' }; const updated = updateUser(u); if (u.role === 'user' && updated.role === 'moderator') return null; return 'User ob\\'yekti o\\'zgarib ketdi yoki role yangilanmadi';"
-    },
-    {
-      id: 7,
-      title: "Closure in Loop (let fix)",
-      instruction: "Berilgan loop-da var o'rniga let ishlatib, callbacks massividagi funksiyalar chaqirilganda har bir i qiymatini (0, 1, 2) to'g'ri qaytarishini ta'minlang.",
-      startingCode: "function createCallbacks() {\n  const callbacks = [];\n  for (var i = 0; i < 3; i++) {\n    callbacks.push(function() {\n      return i;\n    });\n  }\n  return callbacks;\n}\n",
-      hint: "var i o'rniga let i ishlating.",
-      test: "const fns = createCallbacks(); if (fns[0]() === 0 && fns[2]() === 2) return null; return 'Loopda closure xato ishlayapti';"
-    },
-    {
-      id: 8,
-      title: "Safe NaN Check",
-      instruction: "Berilgan qiymat NaN ekanini aniqlaydigan xavfsiz isItNaN funksiyasini yozing (NaN === NaN ishlamasligini yodda tuting).",
-      startingCode: "function isItNaN(val) {\n  // Kodni yozing\n}\n",
-      hint: "Number.isNaN(val)",
-      test: "if (isItNaN(NaN) === true && isItNaN(5) === false) return null; return 'NaN qiymatni to\\'g\\'ri aniqlang';"
-    },
-    {
-      id: 9,
-      title: "this context binding",
-      instruction: "Obyekt metodini callback qilib uzatganda this yo'qolishining oldini olish uchun greet metodini person obyektiga bind qiling.",
-      startingCode: "const person = {\n  name: 'Ali',\n  greet() {\n    return 'Salom ' + this.name;\n  }\n};\nconst unboundGreet = person.greet;\n// bind yordamida bog'lang\nconst boundGreet = unboundGreet; \n",
-      hint: "unboundGreet.bind(person)",
-      test: "if (code.includes('bind') || (typeof boundGreet === 'function' && boundGreet() === 'Salom Ali')) return null; return 'greet metodini bind orqali bog\\'lang';"
-    },
-    {
-      id: 10,
-      title: "Fix Arrow Function this",
-      instruction: "Quyidagi obyektda user.getName() ishlashi uchun uning arrow funksiya bo'lgan metodini oddiy funksiyaga o'zgartiring (Arrow funksiyalarda dynamic this yo'qligi sababli).",
-      startingCode: "const user = {\n  name: 'Vali',\n  getName: () => {\n    return this.name;\n  }\n};\n",
-      hint: "getName() { return this.name; } ko'rinishida yozing.",
-      test: "if (!code.includes('=>')) return null; return 'Metodda arrow funksiyadan voz keching';"
-    },
-    {
-      id: 11,
-      title: "Array clear mutation danger",
-      instruction: "Massivni yangi massivga bog'lamagan holda (chunki boshqa reference-lar bo'lishi mumkin), uning ichidagi barcha elementlarni xavfsiz va to'liq o'chirib tashlang.",
-      startingCode: "function clearArray(arr) {\n  // Kodni yozing\n}\n",
-      hint: "arr.length = 0;",
-      test: "const list = [1, 2, 3]; const ref = list; clearArray(list); if (list.length === 0 && ref.length === 0) return null; return 'Massiv toliq tozalanmadi yoki reference buzildi';"
-    },
-    {
-      id: 12,
-      title: "Stale closure fix via object ref",
-      instruction: "Callback ichida state o'zgaruvchisining eng yangi qiymatini o'qish uchun uni ref.current kabi obyekt ichida saqlang va callback ichida shu obyekt orqali o'qing.",
-      startingCode: "function setupCallback(refObj) {\n  return function() {\n    // refObj.current ni qaytaring\n  };\n}\n",
-      hint: "return refObj.current;",
-      test: "const ref = { current: 1 }; const fn = setupCallback(ref); ref.current = 2; if (fn() === 2) return null; return 'Eski qiymat qaytarilmoqda, reference-dan o\\'qing';"
-    },
-    {
-      id: 13,
-      title: "Floating-point xatolarini to'g'rilash",
-      instruction: "JavaScriptda floating-point sonlarni qo'shishda kelib chiqadigan xatolarni (masalan, `0.1 + 0.2` natijasi `0.30000000000000004` bo'lishini) bartaraf etuvchi va aniq yig'indini qaytaruvchi `safeAdd(a, b)` funksiyasini yozing.",
-      startingCode: "function safeAdd(a, b) {\n  // a va b yig'indisini floating-point xatolarisiz qaytaring\n}",
-      hint: "return parseFloat((a + b).toFixed(12));",
-      test: "if (safeAdd(0.1, 0.2) === 0.3 && safeAdd(0.1, 0.7) === 0.8) return null;\nreturn 'safeAdd funksiyasi to\\'g\\'ri yig\\'indi qaytarmadi';"
-    },
-    {
-      id: 14,
-      title: "Obyektni chuqur muzlatish (Deep Freeze)",
-      instruction: "Berilgan obyektni va uning barcha ichki nested obyektlarini rekursiv tarzda to'liq muzlatib (immutable), o'zgartirishlardan saqlovchi va xavfsiz qiluvchi `deepFreeze(obj)` funksiyasini yozing.",
-      startingCode: "function deepFreeze(obj) {\n  // Obyekt va uning ichidagi barcha obyektlarni muzlating\n}",
-      hint: "Object.freeze(obj);\nObject.keys(obj).forEach(key => {\n  if (typeof obj[key] === 'object' && obj[key] !== null) {\n    deepFreeze(obj[key]);\n  }\n});\nreturn obj;",
-      test: "const o = { a: { b: 1 } };\ndeepFreeze(o);\nif (Object.isFrozen(o) && Object.isFrozen(o.a)) return null;\nreturn 'deepFreeze funksiyasi obyektni chuqur muzlatmadi';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Float hisob-kitoblarni to'g'rilash",
+    "instruction": "JavaScript-dagi suzuvchi nuqtali sonlar (floating point numbers) tuzog'idan qutulish uchun `preciseAdd(a, b)` funksiyasini yozing. Masalan, `preciseAdd(0.1, 0.2)` chaqirilganda `0.30000000000000004` emas, balki aniq `0.3` sonini qaytarishi lozim.",
+    "startingCode": "function preciseAdd(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Sonlarni qo'shib, keyin `.toFixed(12)` yoki o'xshash metod orqali yaxlitlang va `parseFloat()` orqali qaytadan son ko'rinishiga o'tkazing.",
+    "test": "const sandbox = new Function(code + '; return preciseAdd;');\nconst fn = sandbox();\nif (fn(0.1, 0.2) !== 0.3) return 'preciseAdd(0.1, 0.2) 0.3 ni qaytarmadi';\nif (fn(0.2, 0.4) !== 0.6) return 'preciseAdd(0.2, 0.4) 0.6 ni qaytarmadi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Obyektlardan Chuqur Nusxa Olish",
+    "instruction": "JavaScript-da obyektlar havola (reference) orqali uzatiladi. Obyekt ichidagi boshqa ichki obyektlarni ham to'liq mustaqil nusxalovchi `deepClone(obj)` funksiyasini yozing. Nusxa o'zgartirilganda original obyekt o'zgarmasligi shart.",
+    "startingCode": "function deepClone(obj) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Eng sodda usul - `JSON.parse(JSON.stringify(obj))` dan yoki yangi `structuredClone(obj)` metodidan foydalanishdir.",
+    "test": "const sandbox = new Function(code + '; return deepClone;');\nconst fn = sandbox();\nconst original = { name: 'Ali', details: { age: 20, hobbies: ['coding'] } };\nconst clone = fn(original);\nif (clone === original) return 'Nusxa asl obyekt bilan bir xil havola bo\\'lib qoldi';\nif (clone.details === original.details) return 'details obyekti chuqur nusxalanmadi (referensial bog\\'liqlik qoldi)';\nclone.details.hobbies.push('gaming');\nif (original.details.hobbies.includes('gaming')) return 'Clone o\\'zgartirilganda original ham o\\'zgardi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Sikl ichidagi Closure (Yopilish) xatosini tuzatish",
+    "instruction": "Berilgan `createCallbacks()` funksiyasi 5 ta elementdan iborat massiv qaytaradi. Har bir element funksiya bo'lib, o'z indeksini (ya'ni 0, 1, 2, 3, 4) qaytarishi kerak. Quyidagi kodda `var` ishlatilganligi sababli barcha funksiyalar `5` qaytarib yubormoqda. Ushbu xatolikni (closure pitfall) faqat kodni to'g'ri o'zgartirish orqali tuzating.",
+    "startingCode": "function createCallbacks() {\n  var callbacks = [];\n  for (var i = 0; i < 5; i++) {\n    callbacks.push(function() {\n      return i;\n    });\n  }\n  return callbacks;\n}\n",
+    "hint": "`var` kalit so'zi block scope-ga ega emas. Uni block scope-ga ega bo'lgan `let` kalit so'zi bilan almashtiring.",
+    "test": "const sandbox = new Function(code + '; return createCallbacks;');\nconst fn = sandbox();\nconst fns = fn();\nif (fns.length !== 5) return 'Massivda 5 ta funksiya bo\\'lishi kerak';\nif (fns[0]() === 5) return 'Barcha funksiyalar 5 qaytarmoqda (tuzoqqa tushdingiz!)';\nif (fns[0]() !== 0 || fns[1]() !== 1 || fns[4]() !== 4) {\n  return 'Funksiyalar o\\'zlarining tegishli indekslarini qaytarmadi';\n}\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

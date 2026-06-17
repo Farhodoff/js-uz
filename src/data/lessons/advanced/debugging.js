@@ -2,7 +2,7 @@ export const debugging = {
   id: "debugging",
   title: "Javascript-da Debugging va Xatolarni aniqlash",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Debugging nima?
 **Debugging** (xatoliklarni aniqlash va tuzatish) — bu dasturdagi buglarni (xatolarni) topish, tahlil qilish va ularni bartaraf etish jarayonidir. Kodingiz kutilganidek ishlamayotganida, faqat taxmin qilish o'rniga, dasturning ma'lum bir qatorida to'xtatib, o'zgaruvchilarning o'sha paytdagi holatini tekshirish juda muhimdir.
@@ -204,119 +204,32 @@ function findFactorial(n) {
 | \`debugger;\` | Dasturni to'xtatib, DevTools-ni ishga tushirish | \`if(!data) { debugger; }\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "1️⃣ Console Table",
-      instruction: "Obyektni jadval ko'rinishida chiqaring.",
-      startingCode: "const car = { model: 'Tesla', year: 2023 };\n// Bu yerda console.table ishlating\n",
-      hint: "console.table(car);",
-      test: "if (code.includes('console.table')) return null; return 'console.table ishlatilmadi';"
-    },
-    {
-      id: 2,
-      title: "2️⃣ Console Error log",
-      instruction: "'Xatolik yuz berdi!' xabarini console.error yordamida konsolga chiqaring.",
-      startingCode: "// Error log yozing\n",
-      hint: "console.error('Xatolik yuz berdi!');",
-      test: "if (code.includes('console.error')) return null; return 'console.error dan foydalaning';"
-    },
-    {
-      id: 3,
-      title: "3️⃣ Console Warn log",
-      instruction: "'Ogohlantirish!' xabarini console.warn yordamida konsolga chiqaring.",
-      startingCode: "// Warn log yozing\n",
-      hint: "console.warn('Ogohlantirish!');",
-      test: "if (code.includes('console.warn')) return null; return 'console.warn dan foydalaning';"
-    },
-    {
-      id: 4,
-      title: "4️⃣ Debugger kalit so'zi",
-      instruction: "Funksiya ichida 'result' hisoblangandan keyin kodni pauza qilish uchun 'debugger' kalit so'zini joylashtiring.",
-      startingCode: "function checkResult(x) {\n  const result = x * 2;\n  // debugger yozing\n  return result;\n}",
-      hint: "debugger;",
-      test: "if (code.includes('debugger;')) return null; return 'debugger kalit so\\'zini yozing';"
-    },
-    {
-      id: 5,
-      title: "5️⃣ Console Time",
-      instruction: "'testTime' yorlig'i ostida vaqtni o'lchashni boshlang va tugating.",
-      startingCode: "// Vaqtni o'lchashni boshlang va tugating\n",
-      hint: "console.time('testTime'); console.timeEnd('testTime');",
-      test: "if (code.includes('console.time') && code.includes('console.timeEnd')) return null; return 'console.time va console.timeEnd dan foydalaning';"
-    },
-    {
-      id: 6,
-      title: "6️⃣ Console Count",
-      instruction: "'counter' yorlig'i necha marta chaqirilganini sanash uchun console.count ni yozing.",
-      startingCode: "function clickEvent() {\n  // console.count chaqiring\n}",
-      hint: "console.count('counter');",
-      test: "if (code.includes('console.count')) return null; return 'console.count dan foydalaning';"
-    },
-    {
-      id: 7,
-      title: "7️⃣ Console Group",
-      instruction: "'MyLogs' yorlig'i ostida konsol loglarini guruhlang va guruhni yoping.",
-      startingCode: "// Guruhni oching, log yozing va guruhni yoping\n",
-      hint: "console.group('MyLogs'); console.log('Hi'); console.groupEnd();",
-      test: "if (code.includes('console.group') && code.includes('console.groupEnd')) return null; return 'console.group va console.groupEnd ishlatilsin';"
-    },
-    {
-      id: 8,
-      title: "8️⃣ Console Trace",
-      instruction: "Funksiya qanday chaqirilganini (Call Stack trace) ko'rish uchun console.trace ni ishlating.",
-      startingCode: "function processTask() {\n  // Trace ni chaqiring\n}",
-      hint: "console.trace();",
-      test: "if (code.includes('console.trace()')) return null; return 'console.trace() dan foydalaning';"
-    },
-    {
-      id: 9,
-      title: "9️⃣ Try...Catch Error logging",
-      instruction: "Catch blokida xato xabarini (err.message) console.error yordamida chiqaring.",
-      startingCode: "try {\n  throw new Error('Test xatosi');\n} catch(err) {\n  // Error log yozing\n}",
-      hint: "console.error(err.message);",
-      test: "if (code.includes('console.error(err.message)') || code.includes('console.error(err.message)')) return null; return 'err.message ni console.error yordamida chiqaring';"
-    },
-    {
-      id: 10,
-      title: "1️⃣0️⃣ Console Assert",
-      instruction: "Yoshi 18 dan kichik bo'lsa 'Yosh yetarli emas' xabarini chiqaruvchi console.assert yozing.",
-      startingCode: "const age = 15;\n// console.assert yozing\n",
-      hint: "console.assert(age >= 18, 'Yosh yetarli emas');",
-      test: "if (code.includes('console.assert') && code.includes('age >= 18')) return null; return 'console.assert dan foydalaning';"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ Conditional Breakpoint sharti",
-      instruction: "Agar index 5 bo'lsa kodni to'xtatuvchi shartli debugger yozing (if orqali).",
-      startingCode: "const index = 5;\n// if sharti bilan debugger yozing\n",
-      hint: "if (index === 5) debugger;",
-      test: "if (code.includes('if') && code.includes('index') && code.includes('debugger')) return null; return 'if orqali index === 5 bo\\'lganda debugger qo\\'shing';"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Console Clear",
-      instruction: "Konsolni dasturiy ravishda tozalash buyrug'ini yozing.",
-      startingCode: "// Konsolni tozalang\n",
-      hint: "console.clear();",
-      test: "if (code.includes('console.clear()')) return null; return 'console.clear() metodini chaqiring';"
-    },
-    {
-      id: 13,
-      title: "1️⃣3️⃣ Operatsiya vaqtini o'lchash (timeOperation)",
-      instruction: "`console.time` va `console.timeEnd` metodlaridan foydalanib, berilgan `callback` funksiyasining bajarilish vaqtini `label` yorlig'i ostida o'lchovchi va callback natijasini qaytaruvchi `timeOperation(label, callback)` funksiyasini yozing.",
-      startingCode: "function timeOperation(label, callback) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "console.time(label);\nconst res = callback();\nconsole.timeEnd(label);\nreturn res;",
-      test: "if (typeof timeOperation !== 'function') return 'timeOperation funksiya emas';\nlet called = false;\nconst res = timeOperation('test', () => { called = true; return 42; });\nif (!called || res !== 42) return 'Callback to\\'g\\'ri bajarilmadi yoki natija qaytarilmadi';\nif (!code.includes('console.time') || !code.includes('console.timeEnd')) return 'console.time va console.timeEnd ishlatilmadi';\nreturn null;"
-    },
-    {
-      id: 14,
-      title: "1️⃣4️⃣ Call Stack izlarini chiqarish (traceCallStack)",
-      instruction: "Chaqirilayotgan funksiyalarning to'liq izini (`Call Stack trace`) konsolga chiqarish uchun `console.trace()` metodidan foydalanuvchi va `callback` funksiyasini chaqirib natijasini qaytaruvchi `traceCallStack(callback)` funksiyasini yozing. Agarda callback bajarilishida xatolik yuz bersa, uni ushlab olib, xato xabarini `console.error` orqali chiqaring va `null` qaytaring.",
-      startingCode: "function traceCallStack(callback) {\n  // Kodni shu yerdan yozing\n}",
-      hint: "try {\n  console.trace();\n  return callback();\n} catch(err) {\n  console.error(err.message);\n  return null;\n}",
-      test: "if (typeof traceCallStack !== 'function') return 'traceCallStack funksiya emas';\nif (!code.includes('console.trace')) return 'console.trace() ishlatilmadi';\nif (!code.includes('try') || !code.includes('catch') || !code.includes('console.error')) return 'Try-catch yoki console.error ishlatilmadi';\nconst successRes = traceCallStack(() => 'ok');\nif (successRes !== 'ok') return 'Muvaffaqiyatli callback natijasi noto\\'g\\'ri';\nconst failRes = traceCallStack(() => { throw new Error('err'); });\nif (failRes !== null) return 'Xatolik yuz berganda null qaytarilmadi';\nreturn null;"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Bajarilish vaqtini o'lchash",
+    "instruction": "Berilgan `fn` callback funksiyasining bajarilish vaqtini o'lchaydigan `measureExecutionTime(fn)` funksiyasini yozing. Buning uchun `console.time('execTime')` va `console.timeEnd('execTime')` metodlaridan foydalaning va funksiya oxirida callback qaytargan qiymatni qaytaring.",
+    "startingCode": "function measureExecutionTime(fn) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "fn() chaqirilishidan oldin console.time('execTime') ni, keyin esa console.timeEnd('execTime') ni chaqiring.",
+    "test": "let timeCalled = false;\nlet timeEndCalled = false;\nconst originalTime = console.time;\nconst originalTimeEnd = console.timeEnd;\nconsole.time = (label) => { if (label === 'execTime') timeCalled = true; };\nconsole.timeEnd = (label) => { if (label === 'execTime') timeEndCalled = true; };\ntry {\n  const sandbox = new Function(code + '; return measureExecutionTime;');\n  const fn = sandbox();\n  const result = fn(() => 42);\n  if (result === 42 && timeCalled && timeEndCalled) return null;\n  return 'console.time(\\'execTime\\') yoki console.timeEnd(\\'execTime\\') chaqirilmadi';\n} finally {\n  console.time = originalTime;\n  console.timeEnd = originalTimeEnd;\n}"
+  },
+  {
+    "id": 2,
+    "title": "Debugger bilan faktorial",
+    "instruction": "Faktorialni hisoblovchi `debugFactorial(n)` funksiyasini yozing. Agar berilgan `n` soni manfiy yoki butun son bo'lmasa, `debugger` kalit so'zi yordamida to'xtash nuqtasini hosil qiling va `0` qaytaring. To'g'ri sonlar uchun faktorialni hisoblab qaytaring.",
+    "startingCode": "function debugFactorial(n) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "if (n < 0 || !Number.isInteger(n)) { debugger; return 0; } shartini yozing, so'ngra faktorial hisoblash algoritmini qo'shing.",
+    "test": "if (!code.includes('debugger')) return 'debugger kalit so\\'zi kod ichida yozilmagan';\nconst sandbox = new Function(code + '; return debugFactorial;');\nconst fn = sandbox();\nconst normalRes = fn(5);\nconst invalidRes = fn(-3);\nif (normalRes === 120 && invalidRes === 0) return null;\nreturn 'Faktorialni hisoblash yoki debugger sharti to\\'g\\'ri ishlamadi';"
+  },
+  {
+    "id": 3,
+    "title": "Chaqiriq Stackini kuzatish",
+    "instruction": "Berilgan `callback` funksiyasini bajarishdan oldin `console.trace('Chaqiriqlar stacki:')` orqali chaqiriqlar izini konsolga chiqaradigan `traceCallStack(callback)` funksiyasini yozing va callback qaytargan qiymatni qaytaring.",
+    "startingCode": "function traceCallStack(callback) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "console.trace('Chaqiriqlar stacki:') chaqiring va so'ngra callback funksiyasini ishga tushiring.",
+    "test": "let traceCalled = false;\nconst originalTrace = console.trace;\nconsole.trace = (msg) => { if (msg === 'Chaqiriqlar stacki:') traceCalled = true; };\ntry {\n  const sandbox = new Function(code + '; return traceCallStack;');\n  const fn = sandbox();\n  const res = fn(() => 'success');\n  if (res === 'success' && traceCalled) return null;\n  return 'console.trace(\\'Chaqiriqlar stacki:\\') to\\'g\\'ri chaqirilmadi';\n} finally {\n  console.trace = originalTrace;\n}"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

@@ -2,7 +2,7 @@ export const canvas = {
   id: "canvas",
   title: "HTML5 Canvas API",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### HTML5 Canvas nima?
 **HTML5 Canvas API** — bu veb-sahifada JavaScript yordamida dinamik ravishda grafikalar, rasmlar, o'yin sahnalari va animatsiyalarni chizish imkonini beruvchi texnologiyadir. U HTML-dagi \`<canvas>\` tegi orqali yaratiladi va asosan pikselga asoslangan (rastrli) chizmalar uchun ishlatiladi.
@@ -482,103 +482,32 @@ Agar o'yinda yoki animatsiyada o'zgarmas murakkab orqa fon bo'lsa, uni har bir k
 * \`ctx.restore()\` — Xotiradan eng oxirgi saqlangan holatni qaytarib tiklaydi.
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Kontekstni olish",
-      instruction: "Berilgan 'canvas' o'zgaruvchisidan '2d' kontekstni oling va uni 'ctx' o'zgaruvchisiga saqlang.",
-      startingCode: "const canvas = document.createElement('canvas');\n// Bu yerga yozing\nconst ctx = ",
-      hint: "canvas.getContext('2d')",
-      test: "if (code.includes(\"canvas.getContext('2d')\") || code.includes('canvas.getContext(\"2d\")')) return null; return '2d kontekstni to\\'g\\'ri oling.';"
-    },
-    {
-      id: 2,
-      title: "To'rtburchak chizish",
-      instruction: "'ctx' dan foydalanib x=50, y=50 koordinatada eni 100 va bo'yi 80 bo'lgan to'ldirilgan to'rtburchak chizing.",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n// Bu yerga yozing\n",
-      hint: "ctx.fillRect(50, 50, 100, 80);",
-      test: "if (code.includes('fillRect(50, 50, 100, 80)')) return null; return 'fillRect metodini to\\'g\\'ri parametrlari bilan chaqiring.';"
-    },
-    {
-      id: 3,
-      title: "Rasm rangini ko'k qilish",
-      instruction: "Chizish rangi (fillStyle)ni 'blue' ga o'zgartiring va x=0, y=0, eni 200, bo'yi 200 bo'lgan to'rtburchak chizing.",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n// Bu yerga yozing\n",
-      hint: "ctx.fillStyle = 'blue';\nctx.fillRect(0, 0, 200, 200);",
-      test: "if (code.includes(\"fillStyle = 'blue'\") && code.includes('fillRect(0, 0, 200, 200)')) return null; return 'fillStyle ni ko\\'k qilib to\\'rtburchak chizing.';"
-    },
-    {
-      id: 4,
-      title: "Kvadrat o'chirish",
-      instruction: "'ctx.clearRect' yordamida canvas-ning (10, 10) koordinatasidan boshlab eni 50, bo'yi 50 bo'lgan qismni tozalang (o'chiring).",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n// Bu yerga yozing\n",
-      hint: "ctx.clearRect(10, 10, 50, 50);",
-      test: "if (code.includes('clearRect(10, 10, 50, 50)')) return null; return 'clearRect metodini to\\'g\\'ri ishlating.';"
-    },
-    {
-      id: 5,
-      title: "Chiziq tortish",
-      instruction: "Yangi yo'l boshlang, (0, 0) nuqtaga boring va (100, 100) nuqtagacha chiziq chizib, uni stroke() qiling.",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n// Bu yerga yozing\n",
-      hint: "ctx.beginPath();\nctx.moveTo(0, 0);\nctx.lineTo(100, 100);\nctx.stroke();",
-      test: "if (code.includes('beginPath()') && code.includes('moveTo(0, 0)') && code.includes('lineTo(100, 100)') && code.includes('stroke()')) return null; return 'Yo\\'lni boshlab, moveTo, lineTo va stroke-dan foydalaning.';"
-    },
-    {
-      id: 6,
-      title: "Aylana chizish",
-      instruction: "x=150, y=150 koordinatada radiusi 50 bo'lgan butun (to'liq) aylana yo'lini chizing (burchak radianlarda: 0 dan Math.PI * 2 gacha).",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n// Bu yerga yozing\nctx.beginPath();\n",
-      hint: "ctx.arc(150, 150, 50, 0, Math.PI * 2);\nctx.stroke();",
-      test: "if (code.includes('arc(150, 150, 50, 0, Math.PI * 2)')) return null; return 'arc() metodi yordamida to\\'g\\'ri aylana hosil qiling.';"
-    },
-    {
-      id: 7,
-      title: "Chiziq qalinligi",
-      instruction: "Chiziq qalinligini 8 pikselga sozlang va ramkali to'rtburchak (strokeRect) chizing (x=10, y=10, w=100, h=100).",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n// Bu yerga yozing\n",
-      hint: "ctx.lineWidth = 8;\nctx.strokeRect(10, 10, 100, 100);",
-      test: "if (code.includes('lineWidth = 8') && code.includes('strokeRect(10, 10, 100, 100)')) return null; return 'lineWidth va strokeRect ishlating.';"
-    },
-    {
-      id: 8,
-      title: "Matn yozish",
-      instruction: "'ctx.fillText' yordamida (50, 120) koordinatada 'Salom Dunyo' matnini chizing.",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n// Bu yerga yozing\n",
-      hint: "ctx.fillText('Salom Dunyo', 50, 120);",
-      test: "if (code.includes('fillText') && code.includes('Salom Dunyo') && code.includes('50, 120')) return null; return 'Matnni to\\'g\\'ri koordinataga chizing.';"
-    },
-    {
-      id: 9,
-      title: "Uchburchak chizish",
-      instruction: "Nuqtalarni (50, 10) -> (10, 80) -> (90, 80) qilib chiziq torting, yo'lni yoping (closePath) va ichini bo'yang (fill).",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\nctx.beginPath();\n// Bu yerga yozing\n",
-      hint: "ctx.moveTo(50, 10);\nctx.lineTo(10, 80);\nctx.lineTo(90, 80);\nctx.closePath();\nctx.fill();",
-      test: "if (code.includes('closePath()') && code.includes('fill()') && code.includes('moveTo(50, 10)')) return null; return 'Uchburchak chizish bosqichlarini bajaring.';"
-    },
-    {
-      id: 10,
-      title: "Shriftni o'zgartirish",
-      instruction: "Kontekst fontini '30px Arial' ga o'zgartiring va keyin 'CSS' matnini (10, 50) ga yozing.",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n// Bu yerga yozing\n",
-      hint: "ctx.font = '30px Arial';\nctx.fillText('CSS', 10, 50);",
-      test: "if (code.includes(\"font = '30px Arial'\") || code.includes('font = \"30px Arial\"')) return null; return 'font xususiyatini o\\'zgartiring va matn yozing.';"
-    },
-    {
-      id: 11,
-      title: "Soya qo'shish",
-      instruction: "Soya bluri (shadowBlur)ni 15 ga va soya rangini (shadowColor) 'gray' ga tenglang.",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n// Bu yerga yozing\n",
-      hint: "ctx.shadowBlur = 15;\nctx.shadowColor = 'gray';",
-      test: "if (code.includes('shadowBlur = 15') && (code.includes(\"shadowColor = 'gray'\") || code.includes('shadowColor = \"gray\"'))) return null; return 'shadowBlur va shadowColor ni to\\'g\\'ri belgilang.';"
-    },
-    {
-      id: 12,
-      title: "Aylana ichini bo'yash",
-      instruction: "Rangni 'green' ga sozlang, x=50, y=50, r=30 li aylana chizib uning ichini bo'yang (fill).",
-      startingCode: "const canvas = document.createElement('canvas');\nconst ctx = canvas.getContext('2d');\n// Bu yerga yozing\n",
-      hint: "ctx.fillStyle = 'green';\nctx.beginPath();\nctx.arc(50, 50, 30, 0, Math.PI * 2);\nctx.fill();",
-      test: "if (code.includes(\"fillStyle = 'green'\") && code.includes('fill()') && code.includes('arc(50, 50, 30')) return null; return 'Yashil aylana chizib ichini bo\\'yang.';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "To'rtburchak Chizish",
+    "instruction": "Canvas 2D kontekstida berilgan `x, y` koordinatadan boshlab, berilgan `width` va `height` o'lchamli to'rtburchak shaklini chizadigan `drawRectangle(ctx, x, y, width, height, color)` funksiyasini yozing. To'rtburchak rangi `color` argumenti orqali berilgan rangga teng bo'lishi va ichi to'ldirilgan (filled) bo'lishi kerak.",
+    "startingCode": "function drawRectangle(ctx, x, y, width, height, color) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "ctx.fillStyle = color; va ctx.fillRect(x, y, width, height); buyruqlaridan foydalaning.",
+    "test": "const mockCtx = {\n  fillStyle: '',\n  fillRect(x, y, w, h) {\n    this.called = true;\n    this.args = { x, y, w, h };\n  }\n};\nconst sandbox = new Function(code + '; return drawRectangle;');\nconst fn = sandbox();\nfn(mockCtx, 10, 20, 100, 50, 'red');\nif (mockCtx.fillStyle !== 'red') return 'fillStyle rangi to\\'g\\'ri o\\'rnatilmadi';\nif (!mockCtx.called) return 'fillRect metodi chaqirilmadi';\nif (mockCtx.args.x !== 10 || mockCtx.args.y !== 20 || mockCtx.args.w !== 100 || mockCtx.args.h !== 50) return 'fillRect metodiga noto\\'g\\'ri koordinatalar yoki o\\'lchamlar uzatildi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Aylana Chizish",
+    "instruction": "Canvas 2D kontekstida berilgan `x, y` markaziy nuqtada, berilgan `radius` o'lchamli va `color` rangli to'ldirilgan aylana chizadigan `drawCircle(ctx, x, y, radius, color)` funksiyasini yozing. Yo'lni `beginPath` orqali boshlashni va `fill` orqali rang bilan to'ldirishni unutmang.",
+    "startingCode": "function drawCircle(ctx, x, y, radius, color) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "ctx.beginPath(), ctx.arc(x, y, radius, 0, Math.PI * 2), ctx.fillStyle = color va ctx.fill() metodlaridan foydalaning.",
+    "test": "const mockCtx = {\n  beginPathCalled: false,\n  arcCalled: false,\n  fillCalled: false,\n  fillStyle: '',\n  beginPath() { this.beginPathCalled = true; },\n  arc(x, y, r, sa, ea) {\n    this.arcCalled = true;\n    this.arcArgs = { x, y, r, sa, ea };\n  },\n  fill() { this.fillCalled = true; }\n};\nconst sandbox = new Function(code + '; return drawCircle;');\nconst fn = sandbox();\nfn(mockCtx, 50, 50, 30, 'blue');\nif (!mockCtx.beginPathCalled) return 'beginPath() metodi chaqirilmadi';\nif (!mockCtx.arcCalled) return 'arc() metodi chaqirilmadi';\nif (!mockCtx.fillCalled) return 'fill() metodi chaqirilmadi';\nif (mockCtx.fillStyle !== 'blue') return 'fillStyle rangi noto\\'g\\'ri o\\'rnatildi';\nconst args = mockCtx.arcArgs;\nif (args.x !== 50 || args.y !== 50 || args.r !== 30 || Math.abs(args.ea - Math.PI * 2) > 0.01) return 'arc() metodiga noto\\'g\\'ri argumentlar uzatildi';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Canvasni Tozalash",
+    "instruction": "Canvasning chap yuqori burchagidan (0, 0) boshlab, berilgan `width` va `height` o'lchamdagi butun maydonni tozalovchi (o'chiruvchi) `clearCanvas(ctx, width, height)` funksiyasini yozing.",
+    "startingCode": "function clearCanvas(ctx, width, height) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "ctx.clearRect(0, 0, width, height) metodidan foydalaning.",
+    "test": "const mockCtx = {\n  clearRectCalled: false,\n  clearRect(x, y, w, h) {\n    this.clearRectCalled = true;\n    this.args = { x, y, w, h };\n  }\n};\nconst sandbox = new Function(code + '; return clearCanvas;');\nconst fn = sandbox();\nfn(mockCtx, 300, 200);\nif (!mockCtx.clearRectCalled) return 'clearRect() metodi chaqirilmadi';\nconst args = mockCtx.args;\nif (args.x !== 0 || args.y !== 0 || args.w !== 300 || args.h !== 200) return 'clearRect() metodiga noto\\'g\\'ri o\\'lchamlar yoki koordinatalar uzatildi';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

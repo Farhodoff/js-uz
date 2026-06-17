@@ -2,7 +2,7 @@ export const typeConversionLesson = {
   id: "typeConversionLesson",
   title: "Type Conversion",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Type Conversion (Turlarni O'zgartirish) nima?
 JavaScript **dinamik tiplangan** (dynamically typed) tildir. Bu shuni anglatadiki, o'zgaruvchilar ma'lum bir ma'lumot turi (datatype) bilan cheklanib qolmaydi va ularning turlari dastur davomida o'zgarishi mumkin. Turlarni o'zgartirish ikki xil ko'rinishda bo'ladi:
@@ -320,103 +320,32 @@ Tsikllar ichida yoki tez-tez chaqiriladigan funksiyalarda yashirin o'zgartirishl
 | \`{}\` (bo'sh obyekt) | \`"[object Object]"\` | \`NaN\` | \`true\` |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Son qilish",
-      instruction: "'str' o'zgaruvchisini songa o'tkazing va 'num' o'zgaruvchisiga saqlang.",
-      startingCode: "let str = '123';\n// Bu yerga yozing\nlet num = ",
-      hint: "let num = Number(str); yoki let num = +str;",
-      test: "if (typeof num === 'number' && num === 123) return null; return 'Noto\\'g\\'ri o\\'tkazildi!';"
-    },
-    {
-      id: 2,
-      title: "Matn qilish",
-      instruction: "num o'zgaruvchisini String() yordamida matnga o'tkazing va uni str o'zgaruvchisiga saqlang.",
-      startingCode: "let num = 456;\n// Bu yerga yozing\nlet str = ",
-      hint: "let str = String(num);",
-      test: "if (typeof str === 'string' && str === '456') return null; return 'Noto\\'g\\'ri o\\'tkazildi!';"
-    },
-    {
-      id: 3,
-      title: "Matnlarni qo'shish xatoligini to'g'rilash",
-      instruction: "Foydalanuvchidan kelgan a va b matnli qiymatlarini songa o'tkazib, ularning yig'indisini sum o'zgaruvchisiga saqlang.",
-      startingCode: "let a = '15';\nlet b = '25';\n// Bu yerga yozing\nlet sum = ",
-      hint: "let sum = Number(a) + Number(b);",
-      test: "if (sum === 40) return null; return 'sum 40 bo\\'lishi kerak!';"
-    },
-    {
-      id: 4,
-      title: "Mantiqiy qiymatga o'tkazish",
-      instruction: "val o'zgaruvchisini Boolean() orqali mantiqiy qiymatga o'tkazing va bool o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "let val = 1;\n// Bu yerga yozing\nlet bool = ",
-      hint: "let bool = Boolean(val);",
-      test: "if (bool === true) return null; return 'bool true bo\\'lishi kerak!';"
-    },
-    {
-      id: 5,
-      title: "Qisqa usulda songa o'tkazish",
-      instruction: "price o'zgaruvchisini unary plus (+) operatori yordamida songa o'tkazing va res o'zgaruvchisiga saqlang.",
-      startingCode: "let price = '99.9';\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = +price;",
-      test: "if (res === 99.9) return null; return 'res 99.9 bo\\'lishi kerak!';"
-    },
-    {
-      id: 6,
-      title: "NaN tekshiruvi",
-      instruction: "Number('salom') natijasi NaN ekanligini isNaN() yordamida aniqlang va uni check o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "// Bu yerga yozing\nlet check = ",
-      hint: "let check = isNaN(Number('salom'));",
-      test: "if (check === true) return null; return 'check true bo\\'lishi kerak!';"
-    },
-    {
-      id: 7,
-      title: "toString() metodidan foydalanish",
-      instruction: "age o'zgaruvchisini .toString() metodi yordamida matnga o'tkazing va res o'zgaruvchisiga saqlang.",
-      startingCode: "let age = 18;\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = age.toString();",
-      test: "if (res === '18') return null; return 'res \"18\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 8,
-      title: "Massivni String qilish",
-      instruction: "arr o'zgaruvchisini String() yordamida matnga o'tkazing va res o'zgaruvchisiga saqlang.",
-      startingCode: "let arr = [1, 2, 3];\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = String(arr);",
-      test: "if (res === '1,2,3') return null; return 'res \"1,2,3\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 9,
-      title: "Boolean(0) qiymatini tekshirish",
-      instruction: "num o'zgaruvchisini Boolean() orqali o'tkazing va boolVal o'zgaruvchisiga o'zlashtiring.",
-      startingCode: "let num = 0;\n// Bu yerga yozing\nlet boolVal = ",
-      hint: "let boolVal = Boolean(num);",
-      test: "if (boolVal === false) return null; return 'boolVal false bo\\'lishi kerak!';"
-    },
-    {
-      id: 10,
-      title: "Bo'sh joyli matnni Boolean qilish",
-      instruction: "Bo'sh joylardan iborat spaceStr matnini Boolean() orqali o'tkazib res o'zgaruvchisiga yozing.",
-      startingCode: "let spaceStr = '   ';\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = Boolean(spaceStr);",
-      test: "if (res === true) return null; return 'res true bo\\'lishi kerak!';"
-    },
-    {
-      id: 11,
-      title: "Mantiqiy qiymatni string qilish",
-      instruction: "bool o'zgaruvchisini String() yordamida string ko'rinishiga keltiring va res o'zgaruvchisiga saqlang.",
-      startingCode: "let bool = false;\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = String(bool);",
-      test: "if (res === 'false') return null; return 'res \"false\" bo\\'lishi kerak!';"
-    },
-    {
-      id: 12,
-      title: "O'nli kasr matnni songa o'tkazish",
-      instruction: "percent o'zgaruvchisini Number() yordamida o'nli kasr songa o'tkazing va res o'zgaruvchisiga saqlang.",
-      startingCode: "let percent = '85.5';\n// Bu yerga yozing\nlet res = ",
-      hint: "let res = Number(percent);",
-      test: "if (res === 85.5) return null; return 'res 85.5 bo\\'lishi kerak!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Raqamga O'zgartirish (Explicit Conversion)",
+    "instruction": "Foydalanuvchidan olingan va turli xil ma'lumot turlarida kelishi mumkin bo'lgan qiymatni raqamga (Number) aniq o'zgartiruvchi `convertToNumber(value)` funksiyasini yozing. Agar qiymatni raqamga o'tkazishning iloji bo'lmasa yoki u `NaN` qaytarsa, funksiya `0` qiymatini qaytarsin.",
+    "startingCode": "function convertToNumber(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Number(value) funksiyasidan foydalaning va isNaN() yordamida uning NaN ekanligini tekshiring.",
+    "test": "const sandbox = new Function(code + '; return convertToNumber;');\nconst fn = sandbox();\nif (fn('42') !== 42) return 'String ko\\'rinishidagi \"42\" raqamga o\\'girilmadi';\nif (fn('abc') !== 0) return 'Noto\\'g\\'ri matn berilganda 0 qaytishi kerak edi';\nif (fn(null) !== 0) return 'null berilganda 0 qaytishi kerak edi';\nif (fn(undefined) !== 0) return 'undefined berilganda 0 qaytishi kerak edi';\nreturn null;"
+  },
+  {
+    "id": 2,
+    "title": "Truthy yoki Falsy Tekshiruvchi",
+    "instruction": "JavaScriptda har qanday qiymat mantiqiy (boolean) kontekstda `true` yoki `false`ga aylanadi. Berilgan `value` qiymatini mantiqiy turga o'zgartirib, uning Truthy yoki Falsy ekanligini aniqlovchi `checkTruthy(value)` funksiyasini yozing. Funksiya faqat `true` yoki `false` boolean qiymatini qaytarishi lozim.",
+    "startingCode": "function checkTruthy(value) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Boolean(value) yoki !!value operatoridan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return checkTruthy;');\nconst fn = sandbox();\nif (fn('') !== false) return 'Bo\\'sh string uchun false qaytishi kerak';\nif (fn('hello') !== true) return 'Bo\\'sh bo\\'lmagan string uchun true qaytishi kerak';\nif (fn(0) !== false) return '0 raqami uchun false qaytishi kerak';\nif (fn(1) !== true) return '1 raqami uchun true qaytishi kerak';\nif (fn([]) !== true) return 'Bo\\'sh massiv uchun true qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 3,
+    "title": "Xavfsiz Qo'shish (Safe Sum)",
+    "instruction": "JavaScriptda `+` operatori matnlarni birlashtirib (concatenate) yuborishi mumkin. Ikki qiymatni qabul qilib, ularni raqamga aylantirib, so'ng qo'shish natijasini qaytaradigan `safeSum(a, b)` funksiyasini yozing. Agar berilgan qiymatlardan birontasi raqamga aylanmasa (NaN bo'lsa), o'sha qiymatni 0 deb hisoblang.",
+    "startingCode": "function safeSum(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Qiymatlarni Number() orqali o'tkazing va isNaN() orqali tekshirib, agar NaN bo'lsa 0 qiymatini bering.",
+    "test": "const sandbox = new Function(code + '; return safeSum;');\nconst fn = sandbox();\nif (fn('5', 10) !== 15) return '\"5\" va 10 yig\\'indisi 15 bo\\'lishi kerak';\nif (fn('abc', 8) !== 8) return 'Noto\\'g\\'ri qiymat o\\'rnige 0 olinib, natija 8 bo\\'lishi kerak';\nif (fn(null, undefined) !== 0) return 'null va undefined yig\\'indisi 0 bo\\'lishi kerak';\nif (fn('1.5', '2.5') !== 4) return '\"1.5\" va \"2.5\" yig\\'indisi 4 bo\\'lishi kerak';\nreturn null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

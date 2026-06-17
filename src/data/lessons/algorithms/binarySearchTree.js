@@ -2,7 +2,7 @@ export const binarySearchTree = {
   id: "binarySearchTree",
   title: "Ikkilik Qidiruv Daraxti (Binary Search Tree)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Ikkilik Qidiruv Daraxti (Binary Search Tree - BST) nima?
 **Ikkilik Daraxt (Binary Tree)** — bu ierarxik ma'lumotlar tuzilmasi bo'lib, unda har bir element (tugun) ko'pi bilan ikkita "farzand" (chap va o'ng tugunlar)ga ega bo'lishi mumkin.

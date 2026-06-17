@@ -2,7 +2,7 @@ export const sqlFunctions = {
   id: "sqlFunctions",
   title: "SQL Agregat Funksiyalari va Grouping",
   language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Agregat Funksiyalar va Guruhlash nima?
 Hisobotlar yaratish yoki ma'lumotlarni umumlashtirish uchun biz alohida qatorlarni emas, balki guruhlar bo'yicha yig'ilgan ma'lumotlarni hisoblashimiz kerak. Masalan, umumiy sotuvlar hajmini bilish, eng qimmat mahsulotni aniqlash, har bir shaharda nechtadan foydalanuvchi borligini sanash yoki har bir mijozning o'rtacha xarajatini topish. SQL-da bu vazifalar **Agregat funksiyalar** (\`COUNT\`, \`SUM\`, \`AVG\`, \`MIN\`, \`MAX\`) va **GROUP BY** operatori yordamida juda tez bajariladi.
@@ -237,87 +237,32 @@ HAVING AVG(amount) > 500;
 | **\`DISTINCT\`** | \`COUNT(DISTINCT city)\` | Unikal qiymatlarni sanash | Takrorlanishlarni chetlab o'tishda |
 `,
   exercises: [
-    {
-      "id": 1,
-      "title": "Jami buyurtmalar summasi (SUM)",
-      "instruction": "`orders` jadvalidagi barcha buyurtmalar summasi yig'indisini (`SUM`) toping.",
-      "startingCode": "-- SQL so'rovini yozing\n",
-      "hint": "SELECT SUM(amount) FROM orders",
-      "test": "if(!Array.isArray(result) || result.length === 0) return 'Natija topilmadi'; const sum = Object.values(result[0])[0]; if(Math.abs(Number(sum) - 2386) > 10) return 'Jami summa noto\\'g\\'ri';"
-    },
-    {
-      "id": 2,
-      "title": "Foydalanuvchilarning o'rtacha yoshi (AVG)",
-      "instruction": "`users` jadvalidagi barcha foydalanuvchilarning o'rtacha yoshini (`AVG`) hisoblang.",
-      "startingCode": "-- SQL so'rovini yozing\n",
-      "hint": "SELECT AVG(age) FROM users",
-      "test": "if(!Array.isArray(result) || result.length === 0) return 'Natija topilmadi'; const avg = Object.values(result[0])[0]; if(Math.abs(Number(avg) - 27) > 0.5) return 'O\\'rtacha yosh noto\\'g\\'ri';"
-    },
-    {
-      "id": 3,
-      "title": "Eng qimmat mahsulot narxi (MAX)",
-      "instruction": "`products` jadvalidan eng qimmat mahsulot narxini (`MAX`) toping.",
-      "startingCode": "-- SQL so'rovini yozing\n",
-      "hint": "SELECT MAX(price) FROM products",
-      "test": "if(!Array.isArray(result) || result.length === 0) return 'Natija topilmadi'; const maxVal = Object.values(result[0])[0]; if(Number(maxVal) !== 1200) return 'Eng qimmat mahsulot narxi 1200 bo\\'lishi kerak';"
-    },
-    {
-      "id": 4,
-      "title": "Electronics mahsulotlari soni (COUNT)",
-      "instruction": "`products` jadvalidan faqat 'Electronics' toifasidagi mahsulotlar sonini (`COUNT`) aniqlang.",
-      "startingCode": "-- SQL so'rovini yozing\n",
-      "hint": "SELECT COUNT(*) FROM products WHERE category = 'Electronics'",
-      "test": "if(!Array.isArray(result) || result.length === 0) return 'Natija topilmadi'; const countVal = Object.values(result[0])[0]; if(Number(countVal) !== 3) return 'Electronics toifasida 3 ta mahsulot bor';"
-    },
-    {
-      "id": 5,
-      "title": "Shaharlar bo'yicha guruhlash (GROUP BY)",
-      "instruction": "`users` jadvalidan har bir shaharda (`city`) nechtadan foydalanuvchi borligini (`COUNT`) guruhlab aniqlang.",
-      "startingCode": "-- SQL so'rovini yozing\n",
-      "hint": "SELECT city, COUNT(*) FROM users GROUP BY city",
-      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Jami 3 ta alohida shahar bo\\'lishi kerak'; const toshkent = result.find(r => r.city === 'Toshkent'); if(!toshkent || Number(Object.values(toshkent)[1]) !== 3) return 'Toshkentda 3 ta foydalanuvchi bo\\'lishi kerak';"
-    },
-    {
-      "id": 6,
-      "title": "Toifalar bo'yicha o'rtacha narx (GROUP BY)",
-      "instruction": "`products` jadvalidan har bir toifa (`category`) bo'yicha mahsulotlarning o'rtacha narxini (`AVG`) hisoblang.",
-      "startingCode": "-- SQL so'rovini yozing\n",
-      "hint": "SELECT category, AVG(price) FROM products GROUP BY category",
-      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Jami 2 ta toifa bo\\'lishi kerak'; const elec = result.find(r => r.category === 'Electronics'); if(!elec || Math.abs(Number(Object.values(elec)[1]) - 675) > 10) return 'Electronics o\\'rtacha narxi noto\\'g\\'ri';"
-    },
-    {
-      "id": 7,
-      "title": "Foydalanuvchilar bo'yicha jami xaridlar",
-      "instruction": "`orders` jadvalidan har bir foydalanuvchi (`user_id`) bo'yicha uning jami xarid summasini (`SUM`) hisoblang.",
-      "startingCode": "-- SQL so'rovini yozing\n",
-      "hint": "SELECT user_id, SUM(amount) FROM orders GROUP BY user_id",
-      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 4) return 'Jami 4 ta foydalanuvchi buyurtma bergan'; const user1 = result.find(r => Number(r.user_id) === 1); if(!user1 || Math.abs(Number(Object.values(user1)[1]) - 1225.5) > 1) return 'IDsi 1 bo\\'lgan foydalanuvchining jami summasi 1225.5 bo\\'lishi kerak';"
-    },
-    {
-      "id": 8,
-      "title": "Kamida 2 ta buyurtma berganlar (HAVING)",
-      "instruction": "`orders` jadvalidan kamida 2 ta buyurtma bergan (`COUNT(id) >= 2`) foydalanuvchilarning ID-si (`user_id`) va buyurtmalar sonini toping.",
-      "startingCode": "-- SQL so'rovini yozing\n",
-      "hint": "SELECT user_id, COUNT(id) FROM orders GROUP BY user_id HAVING COUNT(id) >= 2",
-      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Faqat 2 ta foydalanuvchi 2 ta va undan ko\\'p buyurtma bergan'; if(result.some(r => Number(Object.values(r)[1]) < 2)) return 'Faqat buyurtmalar soni 2 yoki undan ko\\'p bo\\'lganlar chiqishi kerak';"
-    },
-    {
-      "id": 9,
-      "title": "O'rtacha buyurtmasi yuqori bo'lganlar (HAVING)",
-      "instruction": "`orders` jadvalidan har bir foydalanuvchining (`user_id`) o'rtacha buyurtma summasini (`AVG`) hisoblang va faqat o'rtacha summasi 100 dan katta bo'lganlarni chiqaring.",
-      "startingCode": "-- SQL so'rovini yozing\n",
-      "hint": "SELECT user_id, AVG(amount) FROM orders GROUP BY user_id HAVING AVG(amount) > 100",
-      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Shartga mos 3 ta foydalanuvchi bo\\'lishi kerak'; if(result.some(r => Number(Object.values(r)[1]) <= 100)) return 'Faqat o\\'rtacha summasi 100 dan katta bo\\'lgan foydalanuvchilar bo\\'lishi kerak';"
-    },
-    {
-      "id": 10,
-      "title": "Ombor qoldig'i va o'rtacha narx (WHERE, GROUP, HAVING)",
-      "instruction": "`products` jadvalidan omborda qoldig'i 5 tadan ko'p bo'lgan (`stock > 5`) mahsulotlarni toifalari (`category`) bo'yicha guruhlang va faqat o'rtacha narxi (`AVG(price)`) 200 dan yuqori bo'lgan toifalarni, ularning o'rtacha narxi bilan birga qaytaring.",
-      "startingCode": "-- SQL so'rovini yozing\n",
-      "hint": "SELECT category, AVG(price) FROM products WHERE stock > 5 GROUP BY category HAVING AVG(price) > 200",
-      "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1) return 'Natijada faqat 1 ta toifa chiqishi kerak'; if(result[0].category !== 'Electronics') return 'Toifa Electronics bo\\'lishi kerak'; if(Math.abs(Number(Object.values(result[0])[1]) - 675) > 10) return 'O\\'rtacha narx 675 bo\\'lishi kerak';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "Jami buyurtmalar summasi (SUM)",
+    "instruction": "`orders` jadvalidagi barcha buyurtmalar summasi yig'indisini (`SUM`) toping.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT SUM(amount) FROM orders",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; const sum = result[0]['SUM(amount)'] || result[0]['sum(amount)'] || Object.values(result[0])[0]; if(Math.abs(Number(sum) - 2386) > 10) return 'Jami summa noto\\'g\\'ri'; return null;"
+  },
+  {
+    "id": 2,
+    "title": "Rollar bo'yicha guruhlash",
+    "instruction": "`users` jadvalidan har bir roldagi (`role`) foydalanuvchilar sonini (`COUNT`) guruhlab oling.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT role, COUNT(*) FROM users GROUP BY role",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Jami 3 ta alohida rol bor'; return null;"
+  },
+  {
+    "id": 3,
+    "title": "Eng arzon mahsulot narxi (MIN)",
+    "instruction": "`products` jadvalidan eng arzon mahsulot narxini (`MIN`) toping.",
+    "startingCode": "-- SQL so'rovini yozing\n",
+    "hint": "SELECT MIN(price) FROM products",
+    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; const minVal = Object.values(result[0])[0]; if(Number(minVal) !== 25) return 'Eng arzon narx 25 bo\\'lishi kerak'; return null;"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,

@@ -2,7 +2,7 @@ export const capPacelc = {
   id: "capPacelc",
   title: "CAP va PACELC Teomalari: Tarqoq Tizimlar Muvozanati",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 Tasavvur qiling, siz va do'stingiz (Ali va Vali) birgalikda eslatmalar xizmatini yo'lga qo'ydingiz. Mijozlar sizga telefon qilib, eslatmalar qoldirishadi yoki oldingi yozilganlarini so'rashadi. Sizlar alohida xonalarda o'tirasizlar, lekin har safar yangi yozuv yozilganda, bir-biringizga qog'oz orqali xabar yuborib, daftarlaringizni sinxronlab turasiz.
 

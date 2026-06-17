@@ -2,7 +2,7 @@ export const breakContinue = {
   id: "breakContinue",
   title: "Sikllarni Boshqarish: break, continue",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### break va continue nima?
 * **break:** Siklni (loop) darhol va butunlay to'xtatib, undan chiqib ketish buyrug'i. Siklning qolgan barcha iteratsiyalari bekor qilinadi.
@@ -315,103 +315,32 @@ Agar sizga faqat massiv elementlaridan chiqib ketish emas, balki massivni mutats
 | **\`switch\`** | Ha | Yo'q | Faqat \`break\` case-ni yakunlash uchun ishlatiladi |
 `,
   exercises: [
-    {
-      id: 1,
-      title: "Break sinovi",
-      instruction: "0 dan 10 gacha sonlarni chiqaring, lekin 7 ga yetganda to'xtating.",
-      startingCode: "for (let i = 0; i <= 10; i++) {\n  // Bu yerga yozing\n  console.log(i);\n}",
-      hint: "if (i === 7) break;",
-      test: "if (logs.includes(6) && !logs.includes(7)) return null; return '7 da to\\'xtamadi!';"
-    },
-    {
-      id: 2,
-      title: "Continue sinovi",
-      instruction: "1 dan 5 gacha sonlarni chiqaring, lekin 3 ni tashlab keting.",
-      startingCode: "for (let i = 1; i <= 5; i++) {\n  // Bu yerga yozing\n  console.log(i);\n}",
-      hint: "if (i === 3) continue;",
-      test: "if (logs.includes(2) && !logs.includes(3) && logs.includes(4)) return null; return '3 tashlab ketilmadi!';"
-    },
-    {
-      id: 3,
-      title: "Juft sonlar filteri",
-      instruction: "1 dan 10 gacha bo'lgan sonlar ichidan faqat juftlarini chiqaring. Toq bo'lsa continue qiling.",
-      startingCode: "for (let i = 1; i <= 10; i++) {\n  // Bu yerga yozing\n  console.log(i);\n}",
-      hint: "if (i % 2 !== 0) continue;",
-      test: "if (logs.includes(2) && !logs.includes(3) && logs.includes(4) && !logs.includes(5)) return null; return 'Faqat juft sonlar chiqishi kerak!';"
-    },
-    {
-      id: 4,
-      title: "Ism qidirish",
-      instruction: "Ismlar massividan 'Ali'ni qidirib toping, topilsa 'Topildi' deb log qiling va qidiruvni to'xtating.",
-      startingCode: "const names = ['Vali', 'Sami', 'Ali', 'Hasan'];\nfor (let name of names) {\n  // Bu yerga yozing\n}",
-      hint: "if (name === 'Ali') { console.log('Topildi'); break; }",
-      test: "if (logs.includes('Topildi') && !logs.includes('Hasan')) return null; return 'Ali topilganda break qiling va Topildi deb log qiling';"
-    },
-    {
-      id: 5,
-      title: "Yig'indi cheklovi",
-      instruction: "1 dan 100 gacha bo'lgan sonlarni qo'shing. Agar yig'indi 50 dan oshsa, darhol to'xtating va yig'indini log qiling.",
-      startingCode: "let sum = 0;\nfor (let i = 1; i <= 100; i++) {\n  // Bu yerga yozing\n}",
-      hint: "sum += i; if (sum > 50) { console.log(sum); break; }",
-      test: "if (logs.length > 0 && logs[0] > 50 && logs[0] < 100) return null; return 'Yig\\'indi 50 dan oshganda break qiling va logga chiqaring!';"
-    },
-    {
-      id: 6,
-      title: "Manfiylarni o'tkazish",
-      instruction: "Massivdagi faqat musbat sonlarni ko'paytirib boring. Manfiy bo'lsa continue qiling.",
-      startingCode: "const nums = [2, -3, 4, -5, 3];\nlet prod = 1;\nfor (let n of nums) {\n  // Bu yerga yozing\n}\nconsole.log(prod);",
-      hint: "if (n < 0) continue; prod *= n;",
-      test: "if (logs.includes(24)) return null; return 'Manfiy sonlar ko\\'paytmaga qo\\'shilmasligi kerak (2 * 4 * 3 = 24)';"
-    },
-    {
-      id: 7,
-      title: "Qizil chiroqda to'xtash",
-      instruction: "Ranglar massividan aylanib, ranglarni chop eting. Agar 'qizil' kelsa to'xtating.",
-      startingCode: "const colors = ['yashil', 'sariq', 'qizil', 'ko\\'k'];\nfor (let c of colors) {\n  // Bu yerga yozing\n}",
-      hint: "if (c === 'qizil') break; console.log(c);",
-      test: "if (logs.includes('sariq') && !logs.includes('qizil') && !logs.includes('ko\\'k')) return null; return 'qizil kelganda break qiling!';"
-    },
-    {
-      id: 8,
-      title: "while break",
-      instruction: "while siklida counter 5 ga teng bo'lganda break qilib chiqing.",
-      startingCode: "let count = 0;\nwhile (true) {\n  // Bu yerga yozing\n}",
-      hint: "count++; if (count === 5) break;",
-      test: "if (code.includes('break')) return null; return 'while siklini break orqali to\\'xtating!';"
-    },
-    {
-      id: 9,
-      title: "3 ga karrali sonlarni o'tkazib yuborish",
-      instruction: "1 dan 10 gacha sonlarni ko'rsating, lekin 3 ga bo'linadiganlarini continue qiling.",
-      startingCode: "for (let i = 1; i <= 10; i++) {\n  // Bu yerga yozing\n  console.log(i);\n}",
-      hint: "if (i % 3 === 0) continue;",
-      test: "if (logs.includes(2) && !logs.includes(3) && logs.includes(5) && !logs.includes(6)) return null; return '3 ga bo\\'linadiganlarni continue qiling!';"
-    },
-    {
-      id: 10,
-      title: "Birinchi manfiy son",
-      instruction: "Massivdagi birinchi manfiy sonni aniqlang va log qiling, keyin siklni to'xtating.",
-      startingCode: "const numbers = [4, 8, -2, 9, -5];\nfor (let num of numbers) {\n  // Bu yerga yozing\n}",
-      hint: "if (num < 0) { console.log(num); break; }",
-      test: "if (logs.includes(-2) && !logs.includes(-5)) return null; return 'Birinchi manfiy son topilishi bilanoq break qiling!';"
-    },
-    {
-      id: 11,
-      title: "Bo'sh joylarni o'tkazish",
-      instruction: "Massivdagi bo'sh string bo'lmagan so'zlarni log qiling. Bo'sh bo'lsa continue qiling.",
-      startingCode: "const words = ['olma', '', 'anor', '', 'behi'];\nfor (let w of words) {\n  // Bu yerga yozing\n}",
-      hint: "if (w === '') continue; console.log(w);",
-      test: "if (logs.includes('olma') && !logs.includes('') && logs.includes('anor')) return null; return 'Bo\\'sh stringlarni continue qiling!';"
-    },
-    {
-      id: 12,
-      title: "Cheksiz while to'xtatilishi",
-      instruction: "1 dan boshlab har bir sonni kvadratini log qiling, lekin kvadrat 100 dan oshsa yoki teng bo'lsa to'xtating.",
-      startingCode: "let i = 1;\nwhile (true) {\n  // Bu yerga yozing\n}",
-      hint: "let sq = i * i; if (sq >= 100) break; console.log(sq); i++;",
-      test: "if (logs.includes(81) && !logs.includes(100)) return null; return 'Kvadrat 100 dan oshganda break qiling!';"
-    }
-  ],
+  {
+    "id": 1,
+    "title": "To'lovlarni Filtrlash",
+    "instruction": "Berilgan massiv ichidagi barcha musbat sonlarni qo'shib jami summani hisoblovchi `sumValidTransactions(transactions)` funksiyasini yozing. Agar tranzaksiya manfiy yoki nol bo'lsa, `continue` yordamida uni o'tkazib yuboring.",
+    "startingCode": "function sumValidTransactions(transactions) {\n  let total = 0;\n  for (let i = 0; i < transactions.length; i++) {\n    // Kodni shu yerda yozing\n  }\n  return total;\n}\n",
+    "hint": "if (transactions[i] <= 0) continue; orqali manfiy yoki nol qiymatlarni o'tkazib yuboring.",
+    "test": "const sandbox = new Function(code + '; return sumValidTransactions;');\nconst fn = sandbox();\nconst res = fn([100, -50, 200, 0, 300]);\nif (res === 600) return null;\nreturn 'Musbat tranzaksiyalar yig\\'gindisi noto\\'g\\'ri hisoblandi. Kutilgan: 600, olingan: ' + res;"
+  },
+  {
+    "id": 2,
+    "title": "Birinchi Juft Sonni Topish",
+    "instruction": "Sonlar massivi `numbers` berilgan. Massiv ichidagi birinchi juft sonni topib qaytaradigan `findFirstEven(numbers)` funksiyasini yozing. Juft son topilishi bilan sikl `break` yordamida to'xtatilishi kerak. Agar juft son topilmasa, `null` qaytarsin.",
+    "startingCode": "function findFirstEven(numbers) {\n  let firstEven = null;\n  for (let i = 0; i < numbers.length; i++) {\n    // Kodni shu yerda yozing\n  }\n  return firstEven;\n}\n",
+    "hint": "if (numbers[i] % 2 === 0) { firstEven = numbers[i]; break; } shartidan foydalaning.",
+    "test": "if (!code.includes('break')) return 'Sikldan chiqish uchun break operatoridan foydalanilmadi';\nconst sandbox = new Function(code + '; return findFirstEven;');\nconst fn = sandbox();\nconst res1 = fn([1, 3, 5, 8, 9, 10]);\nconst res2 = fn([1, 3, 5, 7]);\nif (res1 === 8 && res2 === null) return null;\nreturn 'findFirstEven funksiyasi birinchi juft sonni to\\'g\\'ri topmadi yoki topilmaganda null qaytarmadi';"
+  },
+  {
+    "id": 3,
+    "title": "Limitgacha Qo'shish",
+    "instruction": "Sizga butun sonlar massivi `numbers` va maksimal limit qiymati `limit` berilgan. Massiv elementlarini ketma-ket qo'shib boring. Agar joriy elementni qo'shganda jami yig'indi `limit` dan oshib ketadigan bo'lsa (oshgan holatda), siklni `break` yordamida to'xtating va o'sha paytdagi yig'indini qaytaring. Limitdan oshib ketgan oxirgi element yig'indiga qo'shilmasligi kerak.",
+    "startingCode": "function sumUntilLimit(numbers, limit) {\n  let total = 0;\n  for (let i = 0; i < numbers.length; i++) {\n    // Kodni shu yerda yozing\n  }\n  return total;\n}\n",
+    "hint": "if (total + numbers[i] > limit) break; sharti yordamida limitdan oshishini oldindan tekshiring.",
+    "test": "const sandbox = new Function(code + '; return sumUntilLimit;');\nconst fn = sandbox();\nconst res1 = fn([10, 20, 30, 40], 50);\nconst res2 = fn([5, 15, 25], 100);\nif (res1 === 30 && res2 === 45) return null;\nreturn 'sumUntilLimit funksiyasi limitga yetganda to\\'g\\'ri to\\'xtamadi yoki noto\\'g\\'ri qiymat qaytardi';"
+  }
+]
+,
   quizzes: [
   {
     "id": 1,
