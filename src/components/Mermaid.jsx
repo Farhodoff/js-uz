@@ -8,6 +8,8 @@ mermaid.initialize({
   fontFamily: 'Segoe UI, sans-serif',
 });
 
+let renderQueue = Promise.resolve();
+
 const Mermaid = ({ chart }) => {
   const [svg, setSvg] = useState('');
   const [error, setError] = useState(null);
@@ -17,29 +19,34 @@ const Mermaid = ({ chart }) => {
     // Remove any special characters or spaces that could break element IDs
     const id = `mermaid-${Math.random().toString(36).substring(2, 9)}`;
 
-    const renderChart = async () => {
-      try {
-        setError(null);
-        const { svg: renderedSvg } = await mermaid.render(id, chart);
-        if (isMounted) {
-          setSvg(renderedSvg);
+    const renderChart = () => {
+      renderQueue = renderQueue.then(async () => {
+        if (!isMounted) return;
+        try {
+          setError(null);
+          // chart may be passed as array if it contains html tags like <br>
+          const chartText = Array.isArray(chart) ? chart.join('') : String(chart);
+          const { svg: renderedSvg } = await mermaid.render(id, chartText);
+          if (isMounted) {
+            setSvg(renderedSvg);
+          }
+        } catch (err) {
+          console.error("Mermaid render error:", err);
+          if (isMounted) {
+            setError(err);
+          }
+          // Clean up bad elements created by mermaid in the body/DOM
+          const badEl = document.getElementById(id);
+          if (badEl) {
+            badEl.remove();
+          }
+          // Also clean up any bindElement / wrapper if exists
+          const bindEl = document.getElementById(`d${id}`);
+          if (bindEl) {
+            bindEl.remove();
+          }
         }
-      } catch (err) {
-        console.error("Mermaid render error:", err);
-        if (isMounted) {
-          setError(err);
-        }
-        // Clean up bad elements created by mermaid in the body/DOM
-        const badEl = document.getElementById(id);
-        if (badEl) {
-          badEl.remove();
-        }
-        // Also clean up any bindElement / wrapper if exists
-        const bindEl = document.getElementById(`d${id}`);
-        if (bindEl) {
-          bindEl.remove();
-        }
-      }
+      });
     };
 
     renderChart();

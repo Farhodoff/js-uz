@@ -104,7 +104,14 @@ export default function ChallengeTab() {
     { id: "scope", label: "Scope & Closures" },
     { id: "arrays", label: "Massivlar" },
     { id: "objects", label: "Obyektlar" },
-    { id: "async", label: "Asinxronlik" }
+    { id: "async", label: "Asinxronlik" },
+    { id: "this", label: "This & Context" },
+    { id: "oop", label: "Prototypes & OOP" },
+    { id: "eventloop", label: "Event Loop & Timing" },
+    { id: "tricky", label: "Type Coercion & Tricky JS" },
+    { id: "es6", label: "ES6+ Imkoniyatlar" },
+    { id: "dom", label: "DOM & Web APIs" },
+    { id: "functional", label: "Functional Programming" }
   ];
 
   return (

@@ -1,7 +1,11 @@
 import React from 'react';
 import LayoutIcon from './icons/LayoutIcon';
+import { useAppStore } from '../store/useAppStore';
 
-export default function Header({ activeLesson, sec, sidebarOpen, setSidebarOpen }) {
+export default function Header({ activeLesson, sec }) {
+  const sidebarOpen = useAppStore(state => state.sidebarOpen);
+  const setSidebarOpen = useAppStore(state => state.setSidebarOpen);
+
   return (
     <header className="app-header">
       {!sidebarOpen && (

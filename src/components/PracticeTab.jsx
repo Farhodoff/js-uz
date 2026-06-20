@@ -4,7 +4,7 @@ import { registerUzbekMonacoHover } from '../utils/editorExtensions';
 
 export default function PracticeTab({
   code, setCode, runCode, showHint, setShowHint, activeLesson,
-  currentExerciseIndex, setCurrentExerciseIndex, output, outputRef
+  currentExerciseIndex, setCurrentExerciseIndex, output
 }) {
   const [editorHeight, setEditorHeight] = useState(280);
   const isResizingHeight = useRef(false);
@@ -197,7 +197,11 @@ export default function PracticeTab({
     }
   };
 
-  const hasError = output.includes('❌');
+  const handleFormat = () => {
+    if (editorRef.current) {
+      editorRef.current.getAction('editor.action.formatDocument').run();
+    }
+  };
 
   return (
     <div className="practice-panel" onKeyDown={handleKeyDown}>
@@ -245,6 +249,8 @@ export default function PracticeTab({
             wordWrap: 'on',
             lineNumbers: 'on',
             folding: true,
+            formatOnPaste: true,
+            formatOnType: true,
             bracketPairColorization: { enabled: true },
             automaticLayout: true,
             quickSuggestions: {
@@ -265,6 +271,13 @@ export default function PracticeTab({
         <div className="action-bar-left">
           <button className="btn btn-primary" onClick={runCode} aria-label="Kodni tekshirish">
             <span>▶</span> Tekshirish
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={handleFormat}
+            aria-label="Kodni formatlash"
+          >
+            ✨ Format
           </button>
           <button
             className="btn btn-secondary"

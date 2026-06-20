@@ -1,5 +1,220 @@
 export const challenges = [
   {
+    id: "hc-functional-1",
+    title: "Currying va Arity (Functional Programming)",
+    difficulty: "hard",
+    category: "functional",
+    code: `function curry(fn) {
+  return function curried(...args) {
+    if (args.length >= fn.length) {
+      return fn.apply(this, args);
+    } else {
+      return function(...args2) {
+        return curried.apply(this, args.concat(args2));
+      }
+    }
+  };
+}
+
+const sum = curry((a, b, c) => a + b + c);
+console.log(sum(1)(2)(3));
+console.log(sum(1, 2)(3));
+console.log(sum(1, 2, 3));`,
+    options: [
+      "6\\n6\\n6",
+      "Function\\nFunction\\n6",
+      "6\\nNaN\\nNaN",
+      "Error: fn.apply is not a function"
+    ],
+    correctAnswer: "6\\n6\\n6",
+    explanation: `**Currying (Karrirovanie)** funksiyalarni qismlarga bo'lib chaqirish imkonini beradi. 
+\`curry\` funksiyasi original funksiyaning argumentlar sonini (\`fn.length\`) tekshiradi. Agar yetarlicha argument berilgan bo'lsa, uni ishga tushiradi. Agar kam bo'lsa, qolgan argumentlarni kutuvchi yangi funksiya qaytaradi.
+Shuning uchun \`sum(1)(2)(3)\`, \`sum(1, 2)(3)\` va \`sum(1, 2, 3)\` barchasi 6 qaytaradi.`
+  },
+  {
+    id: "hc-dom-1",
+    title: "Event Delegation va Bubbling",
+    difficulty: "medium",
+    category: "dom",
+    code: `// Faraz qiling HTML shunday:
+// <div id="parent">
+//   <button id="child">Click Me</button>
+// </div>
+
+const parent = document.getElementById('parent');
+const child = document.getElementById('child');
+
+parent.addEventListener('click', () => console.log('Parent Clicked'), true);
+child.addEventListener('click', () => console.log('Child Clicked'), false);
+parent.addEventListener('click', () => console.log('Parent Clicked Again'), false);
+
+// Agar foydalanuvchi "Click Me" tugmasini bossa nima chiqadi?`,
+    options: [
+      "Child Clicked\\nParent Clicked\\nParent Clicked Again",
+      "Parent Clicked\\nChild Clicked\\nParent Clicked Again",
+      "Parent Clicked\\nParent Clicked Again\\nChild Clicked",
+      "Child Clicked\\nParent Clicked Again"
+    ],
+    correctAnswer: "Parent Clicked\\nChild Clicked\\nParent Clicked Again",
+    explanation: `**Hodisa fazalari (Event Phases):**
+1. **Capturing (Qabramoq):** Hodisa tepadan pastga qarab tushadi. \`true\` (uchinchi argument) bilan qo'shilgan eventListener'lar shu fazada ishlaydi. Demak, birinchi \`Parent Clicked\` chiqadi.
+2. **Target:** Hodisa bosilgan elementning o'ziga yetib keladi. \`Child Clicked\` chiqadi.
+3. **Bubbling (Pufaklanish):** Hodisa pastdan tepaga qarab qaytadi. \`false\` yoki yozilmagan argumentli listener'lar shu fazada ishlaydi. Shuning uchun oxirida \`Parent Clicked Again\` chiqadi.`
+  },
+  {
+    id: "hc-es6-1",
+    title: "Spread, Rest va Default parametrlarning siri",
+    difficulty: "medium",
+    category: "es6",
+    code: `const obj1 = { a: 1, b: 2 };
+const obj2 = { b: 3, c: 4 };
+
+const result = { ...obj1, ...obj2, a: 5 };
+
+const { a, ...rest } = result;
+
+console.log(a);
+console.log(rest.b);`,
+    options: [
+      "1 va 3",
+      "5 va 2",
+      "5 va 3",
+      "1 va 2"
+    ],
+    correctAnswer: "5 va 3",
+    explanation: `**Qadam-baqadam tahlil:**
+1. Obyektlarni birlashtirish: \`{ ...obj1, ...obj2, a: 5 }\`. \`obj1\` dan \`a:1, b:2\` keladi. Keyin \`obj2\` dagi \`b:3\` kelib, eski \`b\` ni ustidan yozadi. Keyin eng oxirida qo'lda berilgan \`a:5\` eski \`a:1\` ni ustidan yozadi.
+2. Shunday qilib \`result = { a: 5, b: 3, c: 4 }\` bo'ladi.
+3. Destructuring qilinganda \`a\` = 5 ga teng bo'ladi, \`rest\` obyekti esa \`{ b: 3, c: 4 }\` bo'lib qoladi.
+4. \`rest.b\` = 3 chiqadi.`
+  },
+  {
+    id: "hc-tricky-1",
+    title: "JavaScript'dagi eng g'alati arifmetika",
+    difficulty: "hard",
+    category: "tricky",
+    code: `console.log([] + []);
+console.log([] + {});
+console.log({} + []);
+console.log({} + {});`,
+    options: [
+      '"" \\n "[object Object]" \\n 0 \\n NaN',
+      '[] \\n [object Object] \\n [object Object] \\n [object Object]',
+      '"" \\n "[object Object]" \\n "[object Object]" \\n "[object Object][object Object]"',
+      "Xatolik yuz beradi"
+    ],
+    correctAnswer: '"" \\n "[object Object]" \\n 0 \\n NaN',
+    explanation: `**Bu yerda JavaScript ning tur o'zgartirish (Type Coercion) qoidalari yashiringan:**
+1. \`[] + []\`: Massiv string'ga o'tsa bo'sh satr \`""\` bo'ladi. \`"" + ""\` = \`""\`.
+2. \`[] + {}\`: \`"" + "[object Object]"\` = \`"[object Object]"\`.
+3. \`{} + []\`: Ko'plab brauzerlarda birinchi \`{}\` kod bloki deb hisoblanadi. Shunda u \`+[]\` ni hisoblaydi. Bo'sh massiv raqamga o'tganda \`0\` bo'ladi. Shuning uchun javob \`0\`. (Lekin \`console.log\` ichida bo'lsa, u \`"[object Object]"\` ham chiqishi mumkin. Lekin an'anaviy to'g'ri javob 0 deb o'qitiladi).
+4. \`{} + {}\`: Blok \`{}\` deb o'qiladi, va u \`+{...}\` qismini hisoblaydi, ya'ni obyektdan son yasamoqchi bo'ladi va \`NaN\` chiqadi.`
+  },
+  {
+    id: "hc-eventloop-1",
+    title: "Event Loop, Microtasks va Macrotasks",
+    difficulty: "hard",
+    category: "eventloop",
+    code: `console.log(1);
+
+setTimeout(() => console.log(2), 0);
+
+Promise.resolve().then(() => {
+  console.log(3);
+  setTimeout(() => console.log(4), 0);
+});
+
+new Promise((resolve) => {
+  console.log(5);
+  resolve();
+}).then(() => console.log(6));
+
+console.log(7);`,
+    options: [
+      "1, 5, 7, 3, 6, 2, 4",
+      "1, 2, 3, 5, 6, 7, 4",
+      "1, 7, 5, 3, 6, 2, 4",
+      "1, 5, 7, 6, 3, 2, 4"
+    ],
+    correctAnswer: "1, 5, 7, 3, 6, 2, 4",
+    explanation: `**Event Loop qoidalari:**
+1. **Synchronous code:** Birinchi navbatda sinxron kod ishlaydi. 1 chiqadi.
+2. Promise konstruktori ichi (executor function) sinxron ishlaydi! Shuning uchun 5 chiqadi.
+3. 7 chiqadi. Sinxron kod tugadi.
+4. **Microtasks:** Endi V8 microtask (Promise.then) navbatiga qaraydi. Birinchi navbatda 3 chiqadi va yangi macrotask (4) ro'yxatga qo'shiladi. Keyin 6 chiqadi.
+5. **Macrotasks:** Microtasklar tugagach, setTimeout ga navbat keladi. Birinchi 2 chiqadi, eng oxirida 4 chiqadi.`
+  },
+  {
+    id: "hc-oop-1",
+    title: "Prototypal Inheritance siri",
+    difficulty: "hard",
+    category: "oop",
+    code: `function Animal(name) {
+  this.name = name;
+}
+Animal.prototype.speak = function() {
+  return this.name + " makes a noise.";
+};
+
+function Dog(name) {
+  Animal.call(this, name);
+}
+// Bu yerda qandaydir kod yozilgan...
+Dog.prototype.speak = function() {
+  return this.name + " barks.";
+};
+
+const d = new Dog("Rex");
+console.log(d.speak());
+console.log(d instanceof Animal);`,
+    options: [
+      "Rex barks. \\ntrue",
+      "Rex makes a noise. \\nfalse",
+      "Rex barks. \\nfalse",
+      "Xatolik (TypeError)"
+    ],
+    correctAnswer: "Rex barks. \\nfalse",
+    explanation: `**Merosxo'rlik zanjirining uzilishi:**
+\`Dog\` ichida \`Animal.call(this, name)\` chaqirilgani bilan, bu faqat konstruktorni ulaydi. Ammo \`Dog.prototype = Object.create(Animal.prototype)\` deb yozilmagan!
+Shuning uchun \`Dog\` prototipi \`Animal\` bilan bog'lanmagan. 
+Natijada, \`d.speak()\` o'zining \`Dog.prototype\` dagi kodini ishlatib "Rex barks." qaytaradi. Lekin \`d instanceof Animal\` tekshirilganda, prototip zanjirida \`Animal\` yo'qligi sababli \`false\` chiqadi.`
+  },
+  {
+    id: "hc-this-1",
+    title: "This kalit so'zi va Arrow Function larning tuzog'i",
+    difficulty: "medium",
+    category: "this",
+    code: `const hero = {
+  name: "Batman",
+  getName: function() {
+    return this.name;
+  },
+  getNameArrow: () => {
+    return this.name;
+  },
+  getDelayedName: function() {
+    setTimeout(function() {
+      console.log(this.name);
+    }, 100);
+  }
+};
+
+console.log(hero.getName());
+console.log(hero.getNameArrow());
+hero.getDelayedName();`,
+    options: [
+      "Batman\\nBatman\\nBatman",
+      "Batman\\nundefined\\nundefined",
+      "Batman\\nundefined\\nBatman",
+      "undefined\\nundefined\\nundefined"
+    ],
+    correctAnswer: "Batman\\nundefined\\nundefined",
+    explanation: `**This nimalarga bog'langanini tahlil qilamiz:**
+1. \`hero.getName()\`: Oddiy funksiya, \`this\` funksiyani chaqirgan obyekt (\`hero\`) ga teng. "Batman" chiqadi.
+2. \`hero.getNameArrow()\`: Arrow function! Arrow function o'zining \`this\` iga ega emas, u o'zini o'rab turgan lexical scopeni (global / window) oladi. Obyekt skop yaratmaydi, shuning uchun \`window.name\` asosan \`undefined\` bo'ladi.
+3. \`hero.getDelayedName()\`: Funksiya ichida yana oddiy \`function()\` yozilgan. \`setTimeout\` callbacklarni odatda global (\`window\`) kontekst bilan chaqiradi. Arrow function yozilganda edi, u to'g'ri ishlardi, ammo oddiy funksiyada yana \`undefined\` qaytadi.`
+  },
+  {
     id: "tg-3223-new",
     title: "Custom Event Emitter va Chaining",
     difficulty: "hard",

@@ -1,57 +1,35 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import TheoryTab from "./components/TheoryTab";
 import PracticeTab from "./components/PracticeTab";
 import QuizTab from "./components/QuizTab";
-import AiTab from "./components/AiTab";
 import VisualizerTab from "./components/VisualizerTab";
 import { useLesson } from "./hooks/useLesson";
 import { useCodeRunner } from "./hooks/useCodeRunner";
 import { useAI } from "./hooks/useAI";
-import { useProgress } from "./hooks/useProgress";
+import { useAppStore } from "./store/useAppStore";
+import { useResizable } from "./hooks/useResizable";
 import ChallengeTab from "./components/ChallengeTab";
+import Playground from "./pages/Playground";
+import AiModal from "./components/AiModal";
 
 function LessonPage() {
   const [showHint, setShowHint] = useState(false);
   const [showAI, setShowAI] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const outputRef = useRef(null);
+
+  const sidebarOpen = useAppStore((state) => state.sidebarOpen);
+  const setSidebarOpen = useAppStore((state) => state.setSidebarOpen);
+  const markComplete = useAppStore((state) => state.markComplete);
+  const isComplete = useAppStore((state) => state.isComplete);
 
   const lesson = useLesson();
   const { output, runCode, resetOutput } = useCodeRunner();
   const ai = useAI();
-  const progress = useProgress();
 
   // Resizing state
-  const [leftWidth, setLeftWidth] = useState(50); // percentage
-  const isResizing = useRef(false);
-
-  const startResizing = () => {
-    isResizing.current = true;
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", stopResizing);
-    document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none";
-  };
-
-  const stopResizing = () => {
-    isResizing.current = false;
-    document.removeEventListener("mousemove", handleMouseMove);
-    document.removeEventListener("mouseup", stopResizing);
-    document.body.style.cursor = "default";
-    document.body.style.userSelect = "auto";
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isResizing.current) return;
-    const offsetLeft = sidebarOpen && window.innerWidth > 768 ? 270 : 0;
-    const newWidth = ((e.clientX - offsetLeft) / (window.innerWidth - offsetLeft)) * 100;
-    if (newWidth > 20 && newWidth < 80) {
-      setLeftWidth(newWidth);
-    }
-  };
+  const { leftWidth, startResizing } = useResizable(50, 20, 80, sidebarOpen ? 270 : 0);
 
   const {
     activeSection, setActiveSection,
@@ -64,6 +42,12 @@ function LessonPage() {
 
   useEffect(() => {
     if (activeLesson) {
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        setActiveRightTab("theory");
+        return;
+      }
+      
       const exercisesExist = !!activeLesson.exercises?.length;
       const quizzesExist = !!activeLesson.quizzes?.length;
       if (exercisesExist) {
@@ -77,22 +61,22 @@ function LessonPage() {
   function handleRunCode() {
     runCode(code, activeLesson, currentExerciseIndex, () => {
       // Mark exercise complete
-      progress.markComplete(`${activeLesson.id}_${currentExerciseIndex}`);
+      markComplete(`${activeLesson.id}_${currentExerciseIndex}`);
       
       // Check if all exercises done
       const exercises = activeLesson.exercises || [];
       const allExercisesDone = exercises.every((_, i) =>
-        i === currentExerciseIndex || progress.isComplete(`${activeLesson.id}_${i}`)
+        i === currentExerciseIndex || isComplete(`${activeLesson.id}_${i}`)
       );
 
       // Check if all quizzes done
       const quizzes = activeLesson.quizzes || [];
       const allQuizzesDone = quizzes.every((_, i) =>
-        progress.isComplete(`${activeLesson.id}_quiz_${i}`)
+        isComplete(`${activeLesson.id}_quiz_${i}`)
       );
 
       if (allExercisesDone && allQuizzesDone) {
-        progress.markComplete(activeLesson.id);
+        markComplete(activeLesson.id);
       }
     });
     setShowHint(false);
@@ -101,22 +85,22 @@ function LessonPage() {
   function handleCompleteQuiz(quizIndex, isCorrect) {
     if (!activeLesson) return;
     if (isCorrect) {
-      progress.markComplete(`${activeLesson.id}_quiz_${quizIndex}`);
+      markComplete(`${activeLesson.id}_quiz_${quizIndex}`);
 
       // Check if all quizzes are completed
       const quizzes = activeLesson.quizzes || [];
       const allQuizzesDone = quizzes.every((_, i) =>
-        i === quizIndex || progress.isComplete(`${activeLesson.id}_quiz_${i}`)
+        i === quizIndex || isComplete(`${activeLesson.id}_quiz_${i}`)
       );
 
       // Check if all exercises are also completed (if any)
       const exercises = activeLesson.exercises || [];
       const allExercisesDone = exercises.every((_, i) =>
-        progress.isComplete(`${activeLesson.id}_${i}`)
+        isComplete(`${activeLesson.id}_${i}`)
       );
 
       if (allQuizzesDone && allExercisesDone) {
-        progress.markComplete(activeLesson.id);
+        markComplete(activeLesson.id);
       }
     }
   }
@@ -142,19 +126,12 @@ function LessonPage() {
         setActiveSection={setActiveSection}
         activeLesson={activeLesson}
         openLesson={handleOpenLesson}
-        completed={progress.completed}
-        getStats={progress.getStats}
-        totalCompleted={progress.totalCompleted}
-        sidebarOpen={sidebarOpen}
-        setSidebarOpen={setSidebarOpen}
       />
 
       <div className="app-main">
         <Header
           activeLesson={activeLesson}
           sec={sec}
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
         />
 
         {activeSection === "challenges" ? (
@@ -180,9 +157,15 @@ function LessonPage() {
               <div className="pane-divider-handle"></div>
             </div>
 
-            {/* Right: Practice / Quiz / Visualizer */}
-            <div className="pane" style={{ width: `${100 - leftWidth}%` }}>
+            {/* Right: Practice / Quiz / Visualizer / Theory (Mobile) */}
+            <div className="pane pane-right-mobile" style={{ width: `${100 - leftWidth}%` }}>
               <div className="pane-tabs-header">
+                <button
+                  className={`pane-tab-btn mobile-theory-tab ${activeRightTab === "theory" ? "active" : ""}`}
+                  onClick={() => setActiveRightTab("theory")}
+                >
+                  📖 Nazariya
+                </button>
                 <button
                   className={`pane-tab-btn ${activeRightTab === "practice" ? "active" : ""}`}
                   onClick={() => setActiveRightTab("practice")}
@@ -205,7 +188,9 @@ function LessonPage() {
                 )}
               </div>
 
-              {activeRightTab === "practice" ? (
+              {activeRightTab === "theory" ? (
+                <TheoryTab activeLesson={activeLesson} />
+              ) : activeRightTab === "practice" ? (
                 <PracticeTab
                   code={code}
                   setCode={setCode}
@@ -216,7 +201,6 @@ function LessonPage() {
                   currentExerciseIndex={currentExerciseIndex}
                   setCurrentExerciseIndex={setCurrentExerciseIndex}
                   output={output}
-                  outputRef={outputRef}
                 />
               ) : activeRightTab === "quiz" ? (
                 <QuizTab
@@ -224,7 +208,7 @@ function LessonPage() {
                   completedQuizzes={progress.completed}
                   onCompleteQuiz={handleCompleteQuiz}
                 />
-              ) : activeSection === "algorithms" ? (
+              ) : activeSection === "algorithms" && activeRightTab === "visualizer" ? (
                 <VisualizerTab activeLesson={activeLesson} />
               ) : (
                 <PracticeTab
@@ -237,7 +221,6 @@ function LessonPage() {
                   currentExerciseIndex={currentExerciseIndex}
                   setCurrentExerciseIndex={setCurrentExerciseIndex}
                   output={output}
-                  outputRef={outputRef}
                 />
               )}
             </div>
@@ -256,31 +239,15 @@ function LessonPage() {
         </div>
 
         {/* AI Modal */}
-        {showAI && (
-          <div className="ai-overlay" onClick={(e) => {
-            if (e.target === e.currentTarget) setShowAI(false);
-          }}>
-            <div className="ai-modal" role="dialog" aria-label="AI Yordamchi">
-              <div className="ai-modal-header">
-                <h3>🤖 Robotdan so'rash</h3>
-                <button
-                  className="ai-close-btn"
-                  onClick={() => setShowAI(false)}
-                  aria-label="Yopish"
-                >
-                  ✕
-                </button>
-              </div>
-              <AiTab
-                aiQuestion={ai.aiQuestion}
-                setAiQuestion={ai.setAiQuestion}
-                askAI={() => ai.askAI(activeLesson?.title)}
-                aiLoading={ai.aiLoading}
-                aiAnswer={ai.aiAnswer}
-              />
-            </div>
-          </div>
-        )}
+        <AiModal 
+          showAI={showAI} 
+          setShowAI={setShowAI}
+          aiQuestion={ai.aiQuestion}
+          setAiQuestion={ai.setAiQuestion}
+          askAI={() => ai.askAI(activeLesson?.title, code)}
+          aiLoading={ai.aiLoading}
+          aiAnswer={ai.aiAnswer}
+        />
       </div>
     </div>
   );
@@ -289,6 +256,7 @@ function LessonPage() {
 export default function App() {
   return (
     <Routes>
+      <Route path="/playground" element={<Playground />} />
       <Route path="/:section/:lessonId" element={<LessonPage />} />
       <Route path="/:section" element={<LessonPage />} />
       <Route path="*" element={<Navigate to="/beginner" replace />} />

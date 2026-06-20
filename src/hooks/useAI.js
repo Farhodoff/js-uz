@@ -5,7 +5,7 @@ export function useAI() {
   const [aiAnswer, setAiAnswer] = useState('');
   const [aiLoading, setAiLoading] = useState(false);
 
-  const askAI = useCallback(async (lessonTitle) => {
+  const askAI = useCallback(async (lessonTitle, activeCode = '') => {
     if (!aiQuestion.trim()) return;
     setAiLoading(true);
     setAiAnswer('');
@@ -15,7 +15,8 @@ export function useAI() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question: aiQuestion,
-          lesson: lessonTitle || 'Umumiy'
+          lesson: lessonTitle || 'Umumiy',
+          code: activeCode
         })
       });
       const data = await res.json();

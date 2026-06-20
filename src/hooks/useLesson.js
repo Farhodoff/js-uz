@@ -15,36 +15,51 @@ export function useLesson() {
 
   // Initialize from URL params
   useEffect(() => {
-    const secKey = SECTIONS.includes(urlSection) ? urlSection : 'beginner';
-    setActiveSectionState(secKey);
+    let isCancelled = false;
 
-    if (secKey === 'challenges') {
-      setActiveLesson({ id: 'challenges', title: 'JS Challenges' });
-      return;
-    }
+    const loadLesson = async () => {
+      const secKey = SECTIONS.includes(urlSection) ? urlSection : 'beginner';
+      setActiveSectionState(secKey);
 
-    const sectionData = curriculum[secKey];
-    if (!sectionData || !sectionData.lessons || sectionData.lessons.length === 0) return;
-
-    if (urlLessonId) {
-      const lesson = sectionData.lessons.find(l => l.id === urlLessonId);
-      if (lesson) {
-        setActiveLesson(lesson);
-        setCurrentExerciseIndex(0);
-        setCode(lesson.exercises?.[0]?.startingCode || lesson.task || '');
+      if (secKey === 'challenges') {
+        setActiveLesson({ id: 'challenges', title: 'JS Challenges' });
         return;
       }
-    }
 
-    // Fallback: If lessonId not found or missing, go to first lesson
-    const first = sectionData.lessons[0];
-    if (first) {
-      setActiveLesson(first);
-      setCurrentExerciseIndex(0);
-      setCode(first.exercises?.[0]?.startingCode || first.task || '');
-      // Update URL to match first lesson ID
-      navigate(`/${secKey}/${first.id}`, { replace: true });
-    }
+      const sectionData = curriculum[secKey];
+      if (!sectionData || !sectionData.lessons || sectionData.lessons.length === 0) return;
+
+      let targetLessonRef = urlLessonId 
+        ? sectionData.lessons.find(l => l.id === urlLessonId) 
+        : sectionData.lessons[0];
+
+      if (!targetLessonRef) targetLessonRef = sectionData.lessons[0];
+
+      if (targetLessonRef) {
+        if (!urlLessonId || urlLessonId !== targetLessonRef.id) {
+          navigate(`/${secKey}/${targetLessonRef.id}`, { replace: true });
+        } else {
+          setActiveLesson(null); // trigger loading state
+          try {
+            // Check if it's already a full module (legacy/missed replacements) or needs dynamic load
+            const loadedData = targetLessonRef.load ? await targetLessonRef.load() : targetLessonRef;
+            if (!isCancelled) {
+              const fullLesson = { ...targetLessonRef, ...loadedData };
+              setActiveLesson(fullLesson);
+              setCurrentExerciseIndex(0);
+              setCode(fullLesson.exercises?.[0]?.startingCode || fullLesson.task || '');
+            }
+          } catch (error) {
+            console.error("Darsni yuklashda xatolik:", error);
+          }
+        }
+      }
+    };
+
+    loadLesson();
+    return () => {
+      isCancelled = true;
+    };
   }, [urlSection, urlLessonId, navigate]);
 
   const setActiveSection = useCallback((key) => {

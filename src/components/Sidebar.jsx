@@ -1,11 +1,22 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { curriculum, SECTIONS } from '../data/curriculum';
 import LayoutIcon from './icons/LayoutIcon';
+import { useAppStore } from '../store/useAppStore';
 
 export default function Sidebar({
-  activeSection, setActiveSection, activeLesson, openLesson,
-  completed, getStats, totalCompleted, sidebarOpen, setSidebarOpen
+  activeSection, setActiveSection, activeLesson, openLesson
 }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isPlayground = location.pathname === '/playground';
+
+  const sidebarOpen = useAppStore(state => state.sidebarOpen);
+  const setSidebarOpen = useAppStore(state => state.setSidebarOpen);
+  const getStats = useAppStore(state => state.getStats);
+  const totalCompleted = useAppStore(state => state.totalCompleted());
+  const completed = useAppStore(state => state.completed);
+
   return (
     <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`} role="navigation" aria-label="Darslar navigatsiyasi">
       <div className="sidebar-header">
@@ -23,6 +34,32 @@ export default function Sidebar({
       </div>
 
       <div className="sidebar-content">
+        <div style={{ paddingBottom: '10px', borderBottom: '1px solid #334155', marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <button
+            className={`section-item ${isPlayground ? 'active' : ''}`}
+            onClick={() => navigate('/playground')}
+            style={isPlayground ? { borderLeftColor: '#3b82f6', background: '#1e293b' } : undefined}
+          >
+            <div className="section-label" style={{ color: isPlayground ? '#3b82f6' : '#e2e8f0' }}>
+              🛠️ Qumdon (Playground)
+            </div>
+            <div className="section-progress">Interaktiv CodePen</div>
+          </button>
+
+          <button
+            className={`section-item ${activeSection === 'challenges' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveSection('challenges');
+              navigate('/challenges');
+            }}
+            style={activeSection === 'challenges' ? { borderLeftColor: '#9b59b6', background: '#1e293b' } : undefined}
+          >
+            <div className="section-label" style={{ color: activeSection === 'challenges' ? '#9b59b6' : '#e2e8f0' }}>
+              🏆 JS Challenges
+            </div>
+            <div className="section-progress">1600+ Mashqlar va Masalalar</div>
+          </button>
+        </div>
         {SECTIONS.map(key => {
           const s = curriculum[key];
           const stats = getStats(s.lessons);
