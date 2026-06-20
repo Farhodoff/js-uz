@@ -42,5 +42,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "State boshqaruvini murakkab kutubxonalarga o'tkazishdan oldin qaysi asosiy qoidani qo'llash kerak?",
+    options: [
+      "Lifting State Up (Holatni tepaga ko'tarish)",
+      "Redux o'rnatish",
+      "Global Context yaratish",
+      "Local Storage'ga yozish"
+    ],
+    correctAnswer: 0,
+    explanation: "Ko'p hollarda state'ni yaqin umumiy ota-komponentga ko'chirish orqali ortiqcha qiyinchiliklarning oldi olinadi."
+  }
+]
 };

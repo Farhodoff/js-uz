@@ -38,5 +38,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "useEffect qachon ishga tushadi agar uning dependency array'i bo'sh [] bo'lsa?",
+    options: [
+      "Har safar komponent qayta render bo'lganda",
+      "Faqat komponent birinchi marta chizilganda (mount)",
+      "Hech qachon ishga tushmaydi",
+      "Sahifa yopilayotganda"
+    ],
+    correctAnswer: 1,
+    explanation: "Bo'sh array [] bo'lsa, u faqat birinchi renderdan so'ng bir marta ishlaydi."
+  }
+]
 };

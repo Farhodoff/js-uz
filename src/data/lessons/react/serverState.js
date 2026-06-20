@@ -36,5 +36,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "TanStack Query (React Query) qanday muammoni hal qiladi?",
+    options: [
+      "HTML stillarini o'zgartirish",
+      "Server holati (ma'lumotlarni keshlash, yuklash va yangilash)",
+      "Redux ni o'chirish",
+      "Local state'ni saqlash"
+    ],
+    correctAnswer: 1,
+    explanation: "TanStack Query aynan backend ma'lumotlarini samarali saqlash va boshqarish uchun yaratilgan."
+  }
+]
 };

@@ -41,5 +41,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "React Profiler'da 'Flamegraph' nima uchun kerak?",
+    options: [
+      "Dizaynni o'zgartirish uchun",
+      "Qaysi komponentlar ko'proq vaqt olganini aniq ko'rish uchun",
+      "CSS ni tekshirish",
+      "Redux ni debug qilish"
+    ],
+    correctAnswer: 1,
+    explanation: "Flamegraph daraxt ko'rinishida komponentlarning render vaqtini ranglar bilan ajratadi."
+  }
+]
 };

@@ -35,5 +35,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "React'da 'Render Phase' nima qiladi?",
+    options: [
+      "O'zgarishlarni darhol haqiqiy DOM ga chizadi",
+      "Faqat API dan ma'lumot olib keladi",
+      "Komponentni chaqirib yangi Virtual DOM daraxtini yasaydi",
+      "Browser oynasini yangilaydi"
+    ],
+    correctAnswer: 2,
+    explanation: "Render bosqichi bu faqat Virtual DOM'ni hisob-kitob qilishdir. U haqiqiy DOM'ga umuman tegmaydi."
+  }
+]
 };

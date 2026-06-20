@@ -15,5 +15,17 @@ React foydalanuvchi interfeysini yangilashda eng tezkor yo'lni tanlaydi.
 `,
   code: `import React from "react";\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Virtual DOM & Fiber</h1>\n      <p>React qanday qilib bunchalik tez ishlashining siri!</p>\n    </div>\n  );\n}`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "React'ning Virtual DOM ishlash prinsipida qanday algoritm muhim o'rin tutadi?",
+    options: [
+      "Bubble Sort",
+      "Diffing Algorithm",
+      "Binary Search",
+      "Hash Map"
+    ],
+    correctAnswer: 1,
+    explanation: "React yangi va eski Virtual DOM daraxtlarini solishtirish uchun O(n) murakkablikdagi Diffing Algoritmidan foydalanadi."
+  }
+]
 };

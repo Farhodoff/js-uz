@@ -49,5 +49,17 @@ export default function LikeButton() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "React Server Components (RSC) ni qachon ishlatish ZARARLI?",
+    options: [
+      "Bazaga to'g'ridan-to'g'ri ulanishda",
+      "Fayl hajmini kichraytirishda",
+      "Tugmada onClick, useState kerak bo'lganda",
+      "API ni yashirish uchun"
+    ],
+    correctAnswer: 2,
+    explanation: "Agar komponent interaktiv bo'lishi kerak bo'lsa u oddiy Client Component bo'lishi shart."
+  }
+]
 };

@@ -38,5 +38,17 @@ test('tugmani bosganda matn o'zgaradi', () => {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "RTL qanday falsafaga asoslangan?",
+    options: [
+      "Private state test qilish",
+      "Kapot ostidagi kodni emas, foydalanuvchi ekranda aynan nima ko'rayotganini tekshirish",
+      "Faqat CSS ni tekshirish",
+      "Uzun test yozish"
+    ],
+    correctAnswer: 1,
+    explanation: "Dastur mantiqini refactor qilsangiz ham testlar o'tishini ta'minlaydi."
+  }
+]
 };

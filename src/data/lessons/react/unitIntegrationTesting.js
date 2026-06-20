@@ -35,5 +35,17 @@ test('adds 1 + 2 to equal 3', () => {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "Integration Testing maqsadi?",
+    options: [
+      "Bitta funksiyani test qilish",
+      "Dastur fayllarini sanash",
+      "Bir nechta komponentlar va funksiyalar birgalikda to'g'ri aloqa qilayotganini tekshirish",
+      "Tezlikni o'lchash"
+    ],
+    correctAnswer: 2,
+    explanation: "Foydalanuvchi tugmani bosganda zanjirli jarayonlar to'g'ri ishlashini tekshiradi."
+  }
+]
 };

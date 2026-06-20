@@ -42,5 +42,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "React.memo() ning vazifasi nima?",
+    options: [
+      "Ota komponent render bo'lganda, bola komponent proplari o'zgarmagan bo'lsa uni qayta render qilishdan himoya qilish",
+      "Formani tozalash",
+      "useEffect ni to'xtatish",
+      "Ma'lumot saqlash"
+    ],
+    correctAnswer: 0,
+    explanation: "Faqat prop'larni solishtirib, agar ular o'zgarmagan bo'lsa render qadamini o'tkazib yuboradi."
+  }
+]
 };

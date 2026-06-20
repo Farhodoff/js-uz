@@ -39,5 +39,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "React.lazy() qanday vazifani bajaradi?",
+    options: [
+      "Kodlarni tekshiradi",
+      "Komponentni faqatgina kerak paytida serverdan yuklaydi",
+      "Sekinlashtiradi",
+      "Suspense ni o'chirib qo'yadi"
+    ],
+    correctAnswer: 1,
+    explanation: "Ilovaning dastlabki ochilish hajmini kamaytirishning eng oson yo'li."
+  }
+]
 };

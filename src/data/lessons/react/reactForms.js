@@ -36,5 +36,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "React Hook Form formalarni tezlashtirish uchun asosan nimaga tayanadi?",
+    options: [
+      "useState ga",
+      "Uncontrolled Components va DOM ref'larga",
+      "Tailwind CSS'ga",
+      "Redux'ga"
+    ],
+    correctAnswer: 1,
+    explanation: "Inputlarni har bir harfda render qilmasdan, faqatgina forma jo'natilayotganda o'qiydi."
+  }
+]
 };

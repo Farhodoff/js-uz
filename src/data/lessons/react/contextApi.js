@@ -32,5 +32,17 @@ function Toolbar() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "Context API qachon eng ko'p asqotadi?",
+    options: [
+      "Tez o'zgaradigan API javoblarini saqlash uchun",
+      "Ilovadagi har bir inputni boshqarish uchun",
+      "Kam o'zgaradigan global ma'lumotlar (Theme, Til) uchun",
+      "Component Lifecycle o'rniga"
+    ],
+    correctAnswer: 2,
+    explanation: "Context API tez-tez o'zgaradigan ma'lumotlar uchun mos emas, u butun ilovaga ta'sir qiluvchi sozlamalar uchun idealdir."
+  }
+]
 };

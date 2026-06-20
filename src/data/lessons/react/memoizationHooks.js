@@ -46,5 +46,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "useCallback va useMemo qachon ishlatilishi ZARARLI?",
+    options: [
+      "Hech qachon",
+      "API dan ma'lumot olayotganda",
+      "Oddiy yengil hisob-kitoblar va mayda komponentlar uchun",
+      "React.memo bilan birga"
+    ],
+    correctAnswer: 2,
+    explanation: "Memoization (keshlash) o'zi xotira oladi. Shuning uchun mayda narsaga ishlataverish dasturni sekinlashtiradi."
+  }
+]
 };

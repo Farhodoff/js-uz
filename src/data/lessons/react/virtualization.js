@@ -37,5 +37,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "Minglab qatorli jadval (table) ni qotmasdan chizish texnikasi?",
+    options: [
+      "Reconciliation",
+      "Memoization",
+      "Virtualization (Windowing)",
+      "Code Splitting"
+    ],
+    correctAnswer: 2,
+    explanation: "Bu usul yordamida faqat ekranda ko'rinib turgan elementlargina yasaladi."
+  }
+]
 };

@@ -36,5 +36,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "Tailwind CSS'ning 'Utility-First' yondashuvi nima?",
+    options: [
+      "External CSS",
+      "Hech qanday class ishlatmaslik",
+      "Tayyor CSS sinflari (flex, p-4) orqali JSX o'zida yozish",
+      "Faqat inline-styles"
+    ],
+    correctAnswer: 2,
+    explanation: "CSS hajmini kichik saqlaydi va stillashni tezlashtiradi."
+  }
+]
 };

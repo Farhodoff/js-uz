@@ -35,5 +35,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "React + TypeScript kodi paytida Props qanday tekshiriladi?",
+    options: [
+      "Himoyalanmaydi",
+      "PropType orqali",
+      "Maxsus 'interface' yaratilib ishga tushishdan oldin (compile-time) xatolar ko'rsatiladi",
+      "Konsol orqali"
+    ],
+    correctAnswer: 2,
+    explanation: "Eng katta kuch bu ishga tushishdan oldingi qat'iy tahlil."
+  }
+]
 };

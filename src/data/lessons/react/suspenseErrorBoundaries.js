@@ -36,5 +36,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "Error Boundary nima ish qiladi?",
+    options: [
+      "Syntax xatolarni tuzatadi",
+      "Bitta komponentda xatolik bo'lsa, uni ushlab qolib dastur qulamasligini ta'minlaydi",
+      "Yuklanishni tezlashtiradi",
+      "Networkni tekshiradi"
+    ],
+    correctAnswer: 1,
+    explanation: "Oq ekran o'rniga tushunarli yozuv ko'rsatib, sayt ishlashini davom ettiradi."
+  }
+]
 };

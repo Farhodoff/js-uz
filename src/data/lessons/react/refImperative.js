@@ -43,5 +43,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "useRef ning qanday asosiy xususiyati bor?",
+    options: [
+      "O'zgarsa komponent re-render bo'ladi",
+      "Faqat raqam saqlashi mumkin",
+      "Qiymati o'zgarganda komponent qayta render BO'LMAYDI",
+      "Faqat formalar uchun kerak"
+    ],
+    correctAnswer: 2,
+    explanation: "useRef ma'lumotni renderlarsiz saqlash va DOM ga to'g'ridan-to'g'ri bog'lanish uchun xizmat qiladi."
+  }
+]
 };

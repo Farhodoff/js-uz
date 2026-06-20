@@ -36,5 +36,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "Nega ro'yxatlarda (lists) index'ni key sifatida ishlatish tavsiya etilmaydi?",
+    options: [
+      "React xato berib ishlamay qoladi",
+      "Ular juda ko'p xotira band qiladi",
+      "Elementlar o'rni almashsa, React ularni chalkashtirib DOM ni noto'g'ri yangilashi mumkin",
+      "Browser indexlarni raqam emas harf deb tushunadi"
+    ],
+    correctAnswer: 2,
+    explanation: "Indexlar doimiylikni saqlamaydi. Agar ro'yxatning boshiga yangi element qo'shilsa, barcha indexlar o'zgarib ketadi."
+  }
+]
 };

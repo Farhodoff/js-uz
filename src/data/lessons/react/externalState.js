@@ -38,5 +38,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "Zustand kutubxonasining Redux'dan asosiy ustunligi nima?",
+    options: [
+      "Faqat TypeScript da yozilgani",
+      "Boilerplate (ortiqcha) kodsiz, juda yengil va oddiy ishlashi",
+      "Faqat Class komponentlar uchun ekanligi",
+      "React jamoasi tomonidan yozilgani"
+    ],
+    correctAnswer: 1,
+    explanation: "Zustand juda sodda API ga ega bo'lib, Redux kabi ko'plab fayllar (reducers, actions) yaratishni talab qilmaydi."
+  }
+]
 };

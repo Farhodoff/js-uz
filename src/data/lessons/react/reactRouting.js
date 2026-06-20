@@ -37,5 +37,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "React Router v6+ da Nested Routes nima degani?",
+    options: [
+      "Router ishlatmaslik",
+      "Bitta ota sahifa ichida qolgan qismlarni (panellarni) almashtirish",
+      "Sahifani serverda render qilish",
+      "Ma'lumotlarni yashirin uzatish"
+    ],
+    correctAnswer: 1,
+    explanation: "URL o'zgarsa-da, butun sahifa almashtirilmasdan faqat uning belgilangan qismi yangilanadi."
+  }
+]
 };

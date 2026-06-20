@@ -45,5 +45,17 @@ export default function App() {
   );
 }\`,
   exercises: [],
-  quizzes: []
+  quizzes: [
+  {
+    question: "Custom Hook larning asosiy qoidasi nima?",
+    options: [
+      "Faqat Component qaytarishi kerak",
+      "Ular 'use' so'zi bilan boshlanishi va state mantiqini UI dan ajratishi kerak",
+      "Ular faqat useEffect ichida ishlashi kerak",
+      "Ular hech qachon parametr qabul qilolmaydi"
+    ],
+    correctAnswer: 1,
+    explanation: "Custom hooklar 'use' prefiksi bilan yoziladi va sof JS mantiqini ajratish uchun xizmat qiladi."
+  }
+]
 };
