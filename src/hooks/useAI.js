@@ -12,10 +12,9 @@ export function useAI() {
     
     try {
       const apiKey = localStorage.getItem('gemini_api_key');
-      const isWindowAiAvailable = window.ai && (window.ai.languageModel || window.ai.createTextSession);
       
-      if (!isWindowAiAvailable && !apiKey) {
-        setAiAnswer("⚠️ Kechirasiz, sizning brauzeringizda lokal AI ishlamayapti.\n\nIltimos, ishlatish uchun pastdagi maydonga shaxsiy **Gemini API Key** kiritib saqlang (U faqat sizning brauzeringizda saqlanadi).");
+      if (!apiKey) {
+        setAiAnswer("⚠️ Kechirasiz, AI dan foydalanish uchun pastdagi maydonga o'zingizning bepul **Gemini API Key** kalitingizni kiriting. U faqat shu brauzerda xavfsiz saqlanadi.");
         setAiLoading(false);
         return;
       }
@@ -28,27 +27,18 @@ ${activeCode}
 \`\`\`
 Savol: ${aiQuestion}`;
 
-      if (isWindowAiAvailable) {
-        let session;
-        if (window.ai.languageModel) {
-          session = await window.ai.languageModel.create();
-        } else {
-          session = await window.ai.createTextSession();
-        }
-        const response = await session.prompt(promptText);
-        setAiAnswer(response || "Javob olinmadi.");
-      } else if (apiKey) {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: promptText }] }]
-          })
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error.message);
-        setAiAnswer(data.candidates[0].content.parts[0].text || "Javob olinmadi.");
-      }
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: promptText }] }]
+        })
+      });
+      
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message);
+      
+      setAiAnswer(data.candidates[0].content.parts[0].text || "Javob olinmadi.");
       
     } catch (e) {
       setAiAnswer("❌ AI ishga tushishida xatolik: " + e.message);

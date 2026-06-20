@@ -45,11 +45,11 @@ export default function AiTab({ aiQuestion, setAiQuestion, askAI, aiLoading, aiA
         </div>
       )}
       
-      {(!window.ai || (!window.ai.languageModel && !window.ai.createTextSession)) && (
+      {true && (
         <div style={{ marginTop: 20, padding: 15, background: 'rgba(0,0,0,0.2)', borderRadius: 8, fontSize: 14 }}>
-          <div style={{ marginBottom: 8, color: '#f1c40f', fontWeight: 'bold' }}>Gemini API Kaliti (Ixtiyoriy)</div>
+          <div style={{ marginBottom: 8, color: '#f1c40f', fontWeight: 'bold' }}>Gemini API Kaliti</div>
           <div style={{ color: 'var(--text-muted)', marginBottom: 10, fontSize: 12 }}>
-            Sizda lokal AI ishlamayapti. O'zingizning bepul Gemini API kalitingizni kiritib ishlating. U faqat shu brauzerda saqlanadi.
+            AIdan bepul foydalanish uchun o'zingizning Gemini API kalitingizni kiriting. U faqat shu brauzerda saqlanadi.
           </div>
           <div style={{ display: 'flex', gap: 10 }}>
             <input 
