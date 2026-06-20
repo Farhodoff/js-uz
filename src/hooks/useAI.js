@@ -27,7 +27,19 @@ ${activeCode}
 \`\`\`
 Savol: ${aiQuestion}`;
 
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      // Dynamically find a valid model to avoid "not found" errors
+      const modelsRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+      const modelsData = await modelsRes.json();
+      if (modelsData.error) throw new Error(modelsData.error.message);
+      
+      const availableModels = modelsData.models.filter(m => m.supportedGenerationMethods.includes("generateContent"));
+      // Prefer a flash model, fallback to any available model
+      let selectedModel = availableModels.find(m => m.name.includes("flash"));
+      if (!selectedModel) selectedModel = availableModels[0];
+      
+      if (!selectedModel) throw new Error("Qo'llab-quvvatlanadigan model topilmadi.");
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/${selectedModel.name}:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
