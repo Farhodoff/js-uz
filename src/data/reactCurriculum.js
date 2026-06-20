@@ -70,6 +70,16 @@ export const reactCurriculum = {
       { id: "serverComponents", title: "Server Components (RSC)", load: () => import("./lessons/react/serverComponents.js").then(m => m.serverComponents) },
       { id: "suspenseErrorBoundaries", title: "Suspense va Error Boundaries", load: () => import("./lessons/react/suspenseErrorBoundaries.js").then(m => m.suspenseErrorBoundaries) }
     ]
+  },
+  reactProjects: {
+    label: "Amaliy Loyihalar",
+    color: "#e67e22",
+    icon: "💼",
+    lessons: [
+      { id: "todoApp", title: "Murakkab To-Do App (Zustand bilan)", load: () => import("./lessons/react/todoApp.js").then(m => m.todoApp) },
+      { id: "ecommerceCart", title: "E-commerce Savat (Context API)", load: () => import("./lessons/react/ecommerceCart.js").then(m => m.ecommerceCart) },
+      { id: "dashboardApp", title: "Admin Dashboard (React Router)", load: () => import("./lessons/react/dashboardApp.js").then(m => m.dashboardApp) }
+    ]
   }
 };
 
@@ -80,5 +90,6 @@ export const REACT_SECTIONS = [
   "reactPerformance",
   "reactArchitecture",
   "reactTesting",
-  "reactModern"
+  "reactModern",
+  "reactProjects"
 ];
