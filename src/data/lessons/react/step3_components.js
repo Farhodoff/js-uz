@@ -131,36 +131,218 @@ export default function App() {
 }`,
   exercises: [
     {
-      id: 1,
-      title: "Header, Main va Footer",
-      instruction: "O'ng tomondagi muharrirda `Main` nomli yangi komponent yarating. Uning ichida `<h2>Bu asosiy qism</h2>` bo'lsin. Va bu `Main` komponentini `App` komponenti ichida, Header va Footer o'rtasiga chaqiring.",
-      startingCode: "import React from 'react';\n\nfunction Header() {\n  return <header>Header</header>;\n}\n\nfunction Footer() {\n  return <footer>Footer</footer>;\n}\n\n// Shu yerda Main komponentini yarating!\n\n\nexport default function App() {\n  return (\n    <div>\n      <Header />\n      {/* Main ni shu yerdan chaqiring */}\n      <Footer />\n    </div>\n  );\n}",
-      hint: "function Main() { return <main><h2>Bu asosiy qism</h2></main>; } va App ichida <Main /> yozing.",
-      test: "if (!code.includes('<Main />') || !code.includes('function Main')) return 'Main komponentini to\\'g\\'ri yaratib, App ichida chaqirganingizga ishonch hosil qiling.'; return null;"
+      "id": 1,
+      "title": "Main komponentini yaratish",
+      "instruction": "`Main` nomli komponent yarating va undan `<h2>Asosiy qism</h2>` qaytaring. Uni `App` ichida `Header` va `Footer` orasida ishlating.",
+      "startingCode": "import React from 'react';\n\nfunction Header() {\n  return <header>Header</header>;\n}\n\nfunction Footer() {\n  return <footer>Footer</footer>;\n}\n\n// Shu yerda Main komponentini yarating!\n\n\nexport default function App() {\n  return (\n    <div>\n      <Header />\n      {/* Main ni shu yerdan chaqiring */}\n      <Footer />\n    </div>\n  );\n}",
+      "hint": "function Main() { return <main><h2>Asosiy qism</h2></main>; } va App ichida <Main /> yozing.",
+      "test": "if(!code.match(/function Main/)) return 'Main komponentini yarating'; if(!code.match(/<Main\\s*\\/>/)) return 'Main komponentini App ichida chaqiring'; return null;"
+    },
+    {
+      "id": 2,
+      "title": "Kichik harfli nomni to'g'irlash",
+      "instruction": "Dasturchi `navbar` deb kichik harf bilan komponent yaratgan va u ishlamayapti. Uni katta harf bilan `Navbar` ga o'zgartiring va `App` ichida to'g'ri chaqiring.",
+      "startingCode": "import React from 'react';\n\nfunction navbar() {\n  return <nav>Menyular</nav>;\n}\n\nexport default function App() {\n  return (\n    <div>\n      <navbar />\n    </div>\n  );\n}",
+      "hint": "Komponent nomini `function Navbar()` deb va uni ishlatish joyida `<Navbar />` deb yozing.",
+      "test": "if(code.includes('function navbar') || code.includes('<navbar />')) return 'Kichik harfda emas, katta harfda bo\\'lishi kerak.'; if(!code.includes('function Navbar') || !code.includes('<Navbar />')) return 'Navbar komponentini va uni chaqirishni to\\'g\\'irlamadingiz.'; return null;"
+    },
+    {
+      "id": 3,
+      "title": "Komponentni qayta ishlatish (Reusability)",
+      "instruction": "`Button` nomli komponent yarating va u `<button>Click me</button>` qaytarsin. `App` ichidagi `div` da bu komponentni ketma-ket **3 marta** chaqiring.",
+      "startingCode": "import React from 'react';\n\n// Button komponentini yarating\n\n\nexport default function App() {\n  return (\n    <div>\n      {/* Shu yerda Button ni 3 marta chaqiring */}\n    </div>\n  );\n}",
+      "hint": "Bitta kod yozib `<Button />` ni 3 marta takrorlang.",
+      "test": "let count = (code.match(/<Button\\s*\\/>/g) || []).length; if(count < 3) return 'Button komponentini 3 marta chaqirmadingiz'; return null;"
+    },
+    {
+      "id": 4,
+      "title": "Komponentlarni ichma-ich joylash (Nesting)",
+      "instruction": "`Logo` va `Menu` nomli ikkita kichik komponentlar mavjud. Vazifangiz: `Header` komponenti ichida avval `<Logo />`, keyin `<Menu />` ni chaqirish.",
+      "startingCode": "import React from 'react';\n\nfunction Logo() { return <h1>LOGO</h1>; }\nfunction Menu() { return <ul><li>Asosiy</li></ul>; }\n\nfunction Header() {\n  return (\n    <header>\n      {/* Logo va Menu ni shu yerda chaqiring */}\n    </header>\n  );\n}\n\nexport default function App() {\n  return <Header />;\n}",
+      "hint": "<header> ichida xuddi HTML tegdek ularni yozing: <Logo /> va tagidan <Menu />.",
+      "test": "if(!code.includes('<Logo />') || !code.includes('<Menu />')) return 'Header ichida Logo va Menu komponentlarini chaqirish esdan chiqdi.'; return null;"
+    },
+    {
+      "id": 5,
+      "title": "Return dagi ota teg xatosi",
+      "instruction": "`Profile` komponentidan 2 ta teg qaytarilmoqda, lekin ular bitta ota elementga (masalan `div`) o'ralmagan. Shuni to'g'irlang.",
+      "startingCode": "import React from 'react';\n\nfunction Profile() {\n  return (\n    <h2>Eshmat Toshmatov</h2>\n    <p>Dasturchi</p>\n  );\n}\n\nexport default function App() {\n  return <Profile />;\n}",
+      "hint": "Ikkala elementni bitta <div> ... </div> ichiga oling.",
+      "test": "if(code.match(/return\\s*\\(\\s*<h2/)) return 'Elementlarni bitta ota teg (masalan div) ichiga olishni unutmang!'; return null;"
+    },
+    {
+      "id": 6,
+      "title": "Arrow function ko'rinishidagi komponent",
+      "instruction": "`Banner` komponentini ES6 dagi **Arrow function** yordamida yarating. U `<div>Reklama</div>` qaytarsin.",
+      "startingCode": "import React from 'react';\n\n// Banner komponentini shu yerda arrow function ko'rinishida yarating\n\n\nexport default function App() {\n  return <Banner />;\n}",
+      "hint": "const Banner = () => { return <div>Reklama</div>; };",
+      "test": "if(!code.includes('const Banner') && !code.includes('let Banner')) return 'Banner komponentini Arrow function (const Banner = () => ...) orqali yarating'; return null;"
+    },
+    {
+      "id": 7,
+      "title": "Fragmentdan foydalanish",
+      "instruction": "`Section` nomli komponent yarating va undan JSX qaytarishda bo'sh teglardan (ya'ni `<> ... </>` Fragmentdan) foydalaning. Ichida sarlavha va matn bo'lsin. Va uni App da ishlating.",
+      "startingCode": "import React from 'react';\n\nexport default function App() {\n  return (\n    <div className=\"app\">\n      {/* Section komponentini yarating va shu yerda ishlating */}\n    </div>\n  );\n}",
+      "hint": "function Section() { return (<> <h3>Sarlavha</h3> <p>Matn</p> </>); } va App ichida <Section /> yozing.",
+      "test": "if(!code.includes('<>') || !code.includes('</>')) return 'Fragment (<> ... </>) ishlatganingizga ishonch hosil qiling.'; if(!code.match(/<Section\\s*\\/>/)) return 'Section ni App ichida chaqiring.'; return null;"
+    },
+    {
+      "id": 8,
+      "title": "Return dagi probel xatosi",
+      "instruction": "`Card` komponentida `return` va ochilgan qavs `(` boshqa-boshqa qatorlarda. JavaScript buni xato deb o'ylaydi. Qavsni `return` bilan bir qatorga chiqaring.",
+      "startingCode": "import React from 'react';\n\nfunction Card() {\n  return \n  (\n    <div className=\"card\">\n      <p>Karta kontenti</p>\n    </div>\n  );\n}\n\nexport default function App() {\n  return <Card />;\n}",
+      "hint": "Qavs `return (` ko'rinishida bo'lishi kerak.",
+      "test": "if(code.match(/return\\s*\\n\\s*\\(/)) return 'return va ( orasida yangi qator bo\\'lmasligi kerak, bir xatorda yozing!'; return null;"
+    },
+    {
+      "id": 9,
+      "title": "Export default qo'shish",
+      "instruction": "`Sidebar` komponenti boshqa faylda ishlatilishi uchun uni eksport qilishni esdan chiqarishdi. Faylga to'g'ri eksport qoidasini qo'shing.",
+      "startingCode": "import React from 'react';\n\nfunction Sidebar() {\n  return <aside>Yon menyu</aside>;\n}\n\n// Shu joyda Sidebar ni export default qiling",
+      "hint": "Eng tagida `export default Sidebar;` deb yozing, yoki tepadagi function so'zi oldidan yozib qo'ying.",
+      "test": "if(!code.includes('export default Sidebar') && !code.includes('export default function Sidebar')) return 'export default kalit so\\'zlari yozilmadi.'; return null;"
+    },
+    {
+      "id": 10,
+      "title": "Ko'p marta ishlatish",
+      "instruction": "Sizda `User` nomli komponent bor. `App` ichidagi `ul` tegi orasida bu `User` komponentini **4 marta** ishlating.",
+      "startingCode": "import React from 'react';\n\nfunction User() {\n  return <li>Foydalanuvchi</li>;\n}\n\nexport default function App() {\n  return (\n    <ul>\n      {/* Shu yerda User ni 4 marta chaqiring */}\n    </ul>\n  );\n}",
+      "hint": "<ul> tegi ichida to'rt marta ketma-ket <User /> deb yozing.",
+      "test": "let m = code.match(/<User\\s*\\/>/g); if(!m || m.length < 4) return 'User komponenti 4 marta ishlatilishi kerak.'; return null;"
     }
   ],
   quizzes: [
     {
-      question: "Nega komponent nomi doim katta harf bilan boshlanishi kerak?",
-      options: [
+      "question": "Nega komponent nomi doim katta harf bilan boshlanishi kerak?",
+      "options": [
         "Bu JavaScript ning qat'iy qoidasi bo'lgani uchun",
-        "React kichik harfda yozilganlarni oddiy HTML teglari (div, span) deb tushunadi. Katta harflini esa Custom (o'zimiz yaratgan) Komponent deb biladi.",
+        "React kichik harfda yozilganlarni oddiy HTML teglari (div, span) deb tushunadi, katta harflini esa Custom Komponent deb biladi",
         "Katta harfda yozilmasa CSS ishlamay qoladi",
         "Bu xususiyat faqat React ning eski versiyalarida bor"
       ],
-      correctAnswer: 1,
-      explanation: "Babel kompilyatorida kichik harfli teglar to'g'ridan-to'g'ri string (<div/>) sifatida uzatilsa, katta harflilari funksiya (<Header/> -> React.createElement(Header)) sifatida chaqiriladi."
+      "correctAnswer": 1,
+      "explanation": "Babel kompilyatorida kichik harfli teglar to'g'ridan-to'g'ri string (<div/>) sifatida uzatilsa, katta harflilari funksiya (<Header/> -> React.createElement(Header)) sifatida chaqiriladi."
     },
     {
-      question: "React ilovasida eski Class komponentlar o'rnini nima to'liq egalladi?",
-      options: [
+      "question": "React ilovasida eski Class komponentlar o'rnini nima to'liq egalladi?",
+      "options": [
         "Object komponentlar",
         "Array komponentlar",
         "Funksional (Functional) komponentlar",
         "Server komponentlar"
       ],
-      correctAnswer: 2,
-      explanation: "React Hooks (2018 yil) paydo bo'lgandan so'ng, sodda va o'qilishi oson bo'lgan Funksional komponentlar Class komponentlarni butunlay siqib chiqardi."
+      "correctAnswer": 2,
+      "explanation": "React Hooks (2018 yil) paydo bo'lgandan so'ng, sodda va o'qilishi oson bo'lgan Funksional komponentlar Class komponentlarni butunlay siqib chiqardi."
+    },
+    {
+      "question": "React Komponenti o'zi nima?",
+      "options": [
+        "Brauzerning yangi funksiyasi",
+        "Oddiy HTML fayl",
+        "O'zining ko'rinishi va mantiqiga ega, mustaqil va qayta ishlatiladigan UI bo'lagi",
+        "Bu shunchaki o'zgaruvchi"
+      ],
+      "correctAnswer": 2,
+      "explanation": "React'da Komponentlar (Components) - bu dasturning interfeysini qismlarga bo'lish uchun ishlatiladigan mustaqil va mantiqqa ega bo'lgan qurilish g'ishtchalaridir."
+    },
+    {
+      "question": "Komponentlarni alohida fayllarda yaratgandan so'ng, ularni boshqa joyda qanday ishlatamiz?",
+      "options": [
+        "require() yordamida",
+        "import orqali faylga ulab, keyin HTML teg kabi chaqiramiz",
+        "Ular avtomatik ishlaydi",
+        "HTML dagi <link> orqali"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Zamonaviy React'da ES6 ning import/export mexanizmi ishlatiladi va ular maxsus teg sifatida (<ComponentName />) yoziladi."
+    },
+    {
+      "question": "Komponentlarning eng afzal tomonlaridan biri nima?",
+      "options": [
+        "Ular dasturni sekinlashtiradi",
+        "Ularni faqat bir marta ishlatish mumkin",
+        "Ularni yozish juda qiyin",
+        "Qayta ishlatuvchanlik (Reusability) - bitta kodni ko'p joyda takrorlamasdan ishlatish"
+      ],
+      "correctAnswer": 3,
+      "explanation": "Dasturlashdagi DRY (Don't Repeat Yourself) qoidasini React komponentlar orqali amalga oshiradi."
+    },
+    {
+      "question": "Reactda eng asosiy (ota) komponent odatda qanday nomlanadi?",
+      "options": [
+        "Index",
+        "Root",
+        "App",
+        "Main"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Barcha yaratilgan komponentlar oxir-oqibat App komponentiga yig'iladi va App dasturning ildizi hisoblanadi."
+    },
+    {
+      "question": "Komponent nima qaytarishi (return qilishi) shart?",
+      "options": [
+        "JSX kod (yoki null/bo'shliq)",
+        "HTML fayl",
+        "CSS kod",
+        "Boshqa bir fayl nomi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Har bir React komponenti React elementlarini ifodalovchi JSX qaytarishi kerak. Ba'zida ekranga hech narsa chizilmasa null qaytarishi ham mumkin."
+    },
+    {
+      "question": "Bitta komponent ichida boshqa bir komponentni ishlatish nima deb ataladi?",
+      "options": [
+        "Styling",
+        "Nesting (Ichma-ich joylashtirish)",
+        "Fetching",
+        "Routing"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Nesting bu huddi ruslarning 'Matryoshka' qo'g'irchog'idek komponentlarni bir-birining ichiga joylashtirish va yig'ishdir."
+    },
+    {
+      "question": "Zamonaviy Funksional Komponent yaratish uchun JavaScript'ning qaysi kalit so'zi ishlatiladi?",
+      "options": [
+        "class",
+        "function (yoki let/const bilan arrow function)",
+        "new",
+        "component"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Funksional komponentlar nomidan ham ma'lumki 'function' so'zi yoki ES6 Arrow function ko'rinishida yoziladi."
+    },
+    {
+      "question": "Quyidagi nomlashlardan qaysi biri React komponenti uchun mos keladi?",
+      "options": [
+        "headerSection",
+        "HeaderSection",
+        "header-section",
+        "HEADER_SECTION"
+      ],
+      "correctAnswer": 1,
+      "explanation": "React komponentlari doim katta harf bilan (PascalCase) boshlanishi va yozilishi qabul qilingan."
+    },
+    {
+      "question": "Agar komponent bir nechta element qaytarishi kerak bo'lsa va siz ortiqcha 'div' bo'lishini xohlamasangiz nima qilasiz?",
+      "options": [
+        "Elementlarni array [] ichida yozaman",
+        "Bo'sh teglar (Fragment: <> ... </>) ishlataman",
+        "Hech qanday ota element yozmayman",
+        "style={display: none} yozib qo'yaman"
+      ],
+      "correctAnswer": 1,
+      "explanation": "React Fragment (<React.Fragment> yoki uning qisqa shakli <>) ortiqcha DOM tugunlarini (node) yaratmasdan elementlarni guruhlash imkonini beradi."
+    },
+    {
+      "question": "Komponentni boshqa faylda ishlata olish uchun fayl oxirida ko'pincha qaysi kod yoziladi?",
+      "options": [
+        "export default ComponentName;",
+        "import ComponentName;",
+        "module.export ComponentName;",
+        "save ComponentName;"
+      ],
+      "correctAnswer": 0,
+      "explanation": "ES6 modullarida 'export default' yordamida eksport qilingan elementni boshqa faylda istalgan nom bilan chaqirib olish mumkin."
     }
   ]
 };

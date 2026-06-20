@@ -171,35 +171,217 @@ export default function UsersList() {
   exercises: [
     {
       id: 1,
-      title: "Bo'sh ro'yxat uchun xabar",
-      instruction: "Quyidagi kodda shartli render orqali `items` massivi bo'sh (`length === 0`) bo'lsa, ekranga `<h3>Savat bo'sh!</h3>` degan yozuv chiqadigan qilib yozing.",
-      startingCode: "import React, { useState } from 'react';\n\nexport default function App() {\n  const [items, setItems] = useState([]);\n\n  return (\n    <div>\n      {/* Shu yerda shart yozing */}\n      \n\n      <ul>\n        {items.map(i => <li key={i}>{i}</li>)}\n      </ul>\n    </div>\n  );\n}",
-      hint: "{items.length === 0 && <h3>Savat bo'sh!</h3>} ishlating.",
-      test: "if (!code.includes('items.length === 0')) return 'items.length === 0 yoki shunga o\\'xshash shart tekshiruvi ishlatilmagan.'; return null;"
+      title: "Oddiy ro'yxat chizish",
+      instruction: "Berilgan `fruits` massivini aylanib chiqib, har bir meva nomini `<li>` tegida chizing. `key` sifatida mevaning o'zini ishlating.",
+      startingCode: "import React from 'react';\n\nexport default function App() {\n  const fruits = ['Olma', 'Banan', 'Gilos'];\n  return (\n    <ul>\n      {/* Shu yerda fruits massivini map qiling */}\n    </ul>\n  );\n}",
+      hint: "`fruits.map(fruit => <li key={fruit}>{fruit}</li>)` dan foydalaning.",
+      test: "if (!code.includes('.map')) return 'map metodidan foydalanmadingiz.'; if (!code.includes('key=')) return 'key propini ishlatmadingiz.'; return null;"
+    },
+    {
+      id: 2,
+      title: "Obyektlar ro'yxati",
+      instruction: "`users` massivi berilgan. Har bir foydalanuvchining ismini `<li>` ichida chiqaring. `key` sifatida obyektning `id` sini ishlating.",
+      startingCode: "import React from 'react';\n\nexport default function App() {\n  const users = [{id: 1, name: 'Ali'}, {id: 2, name: 'Vali'}];\n  return (\n    <ul>\n      {/* Shu yerda users ni map qiling */}\n    </ul>\n  );\n}",
+      hint: "`users.map(user => <li key={user.id}>{user.name}</li>)` dan foydalaning.",
+      test: "if (!code.includes('user.name')) return 'Foydalanuvchi ismini (user.name) ekranga chiqarmadingiz.'; if (!code.includes('user.id')) return 'key uchun user.id ishlatilmadi.'; return null;"
+    },
+    {
+      id: 3,
+      title: "Shartli render: && operatori",
+      instruction: "`unreadCount` o'zgaruvchisi 0 dan katta bo'lsa, `<p>Yangi xabarlar bor</p>` xabarini chiqaring.",
+      startingCode: "import React from 'react';\n\nexport default function App() {\n  const unreadCount = 3;\n  return (\n    <div>\n      {/* Shartni shu yerda yozing */}\n    </div>\n  );\n}",
+      hint: "`unreadCount > 0 && <p>Yangi xabarlar bor</p>` shaklida yozing.",
+      test: "if (!code.includes('unreadCount > 0') && !code.includes('unreadCount>0')) return 'unreadCount 0 dan kattaligini tekshirmadingiz.'; return null;"
+    },
+    {
+      id: 4,
+      title: "Ternary operator",
+      instruction: "`isLoggedIn` holatiga qarab ekranga turlicha yozuv chiqaring. Agar true bo'lsa, `<h2>Xush kelibsiz!</h2>`, agar false bo'lsa `<h2>Iltimos, kiring</h2>` yozuvi chiqsin.",
+      startingCode: "import React from 'react';\n\nexport default function App() {\n  const isLoggedIn = true;\n  return (\n    <div>\n      {/* Ternary operator ishlating */}\n    </div>\n  );\n}",
+      hint: "`isLoggedIn ? <h2>Xush kelibsiz!</h2> : <h2>Iltimos, kiring</h2>`",
+      test: "if (!code.includes('?') || !code.includes(':')) return 'Ternary operatordan (? va :) foydalanilmadi.'; return null;"
+    },
+    {
+      id: 5,
+      title: "Komponentlar ro'yxati",
+      instruction: "`tasks` massivini aylanib chiqib, har bir vazifa uchun `<TaskItem>` komponentini chizing. `TaskItem` ga `task={task}` tarzida prop bering va `key` qilib `task.id` ni ishlating.",
+      startingCode: "import React from 'react';\n\nfunction TaskItem({ task }) {\n  return <li>{task.title}</li>;\n}\n\nexport default function App() {\n  const tasks = [{id: 1, title: 'Dars qilish'}, {id: 2, title: 'Kitob o\\'qish'}];\n  return (\n    <ul>\n      {/* TaskItem larni shu yerda map qiling */}\n    </ul>\n  );\n}",
+      hint: "`tasks.map(task => <TaskItem key={task.id} task={task} />)`",
+      test: "if (!code.includes('<TaskItem')) return 'TaskItem komponentini chizmadingiz.'; return null;"
+    },
+    {
+      id: 6,
+      title: "Ro'yxatni filtrlash",
+      instruction: "Berilgan `numbers` massivini chizishdan oldin faqat juft sonlarni qoldiring va keyin `.map()` orqali `<li>` larda ekranga chiqaring. `key` sifatida sonning o'zini ishlating.",
+      startingCode: "import React from 'react';\n\nexport default function App() {\n  const numbers = [1, 2, 3, 4, 5, 6];\n  return (\n    <ul>\n      {/* Avval filter, keyin map ishlating */}\n    </ul>\n  );\n}",
+      hint: "`numbers.filter(n => n % 2 === 0).map(n => <li key={n}>{n}</li>)`",
+      test: "if (!code.includes('.filter')) return 'Ro\\'yxatni filtrlash uchun .filter metodidan foydalanmadingiz.'; return null;"
+    },
+    {
+      id: 7,
+      title: "Elementni o'chirish",
+      instruction: "`items` ro'yxatida har bir element yonida 'O\\'chirish' tugmasi bo'lsin. Tugma bosilganda o'sha elementni id orqali ro'yxatdan olib tashlovchi `handleDelete(item.id)` funksiyasini yozing.",
+      startingCode: "import React, { useState } from 'react';\n\nexport default function App() {\n  const [items, setItems] = useState([{id: 1, text: 'A'}, {id: 2, text: 'B'}]);\n\n  const handleDelete = (id) => {\n    // Shu yerda filter orqali o'chiring\n  };\n\n  return (\n    <ul>\n      {items.map(item => (\n        <li key={item.id}>\n          {item.text} <button onClick={() => handleDelete(item.id)}>O'chirish</button>\n        </li>\n      ))}\n    </ul>\n  );\n}",
+      hint: "`setItems(items.filter(item => item.id !== id))` tarzida yozing.",
+      test: "if (!code.includes('.filter(')) return 'O\\'chirish uchun .filter ishlatmadingiz.'; return null;"
+    },
+    {
+      id: 8,
+      title: "Shartli stillar (Styling)",
+      instruction: "`todos` massivini chizing. Agar todo ning `completed` xususiyati true bo'lsa, uning matni o'chirilgan (`textDecoration: 'line-through'`) bo'lsin, aks holda `none` bo'lsin.",
+      startingCode: "import React from 'react';\n\nexport default function App() {\n  const todos = [{id: 1, text: 'Xarid', completed: true}, {id: 2, text: 'Sport', completed: false}];\n  return (\n    <ul>\n      {todos.map(todo => (\n        <li key={todo.id} style={{ textDecoration: 'none' /* shartli yozing */ }}>\n          {todo.text}\n        </li>\n      ))}\n    </ul>\n  );\n}",
+      hint: "`style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}` qilib yozing.",
+      test: "if (!code.includes('line-through')) return 'line-through qiymatini ko\\'rsatmadingiz.'; return null;"
+    },
+    {
+      id: 9,
+      title: "Shartli klasslar",
+      instruction: "`isActive` propiga qarab elementning klassini aniqlang. Agar `isActive` true bo'lsa, `className` ga 'active', false bo'lsa 'inactive' bering.",
+      startingCode: "import React from 'react';\n\nexport default function App() {\n  const isActive = true;\n  return (\n    <div className={/* shartli klass yozing */ ''}>\n      Holat\n    </div>\n  );\n}",
+      hint: "`className={isActive ? 'active' : 'inactive'}` dan foydalaning.",
+      test: "if (!code.includes('active') || !code.includes('inactive')) return 'Klass nomlarini to\\'g\\'ri bermadingiz.'; return null;"
+    },
+    {
+      id: 10,
+      title: "Ro'yxatdagi elementni yangilash",
+      instruction: "`toggleComplete` funksiyasida `map` orqali massivni aylanib chiqib, id si mos kelgan ob'ektning `completed` qiymatini teskarisiga (`!completed`) o'zgartiring va state ni yangilang.",
+      startingCode: "import React, { useState } from 'react';\n\nexport default function App() {\n  const [tasks, setTasks] = useState([{id: 1, title: 'Test', completed: false}]);\n\n  const toggleComplete = (id) => {\n    // tasks ni map qilib, mos id dagi completed ni o'zgartiring\n    \n  };\n\n  return (\n    <ul>\n      {tasks.map(t => (\n        <li key={t.id} onClick={() => toggleComplete(t.id)}>{t.title}</li>\n      ))}\n    </ul>\n  );\n}",
+      hint: "setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));",
+      test: "if (!code.includes('!t.completed') && !code.includes('!task.completed') && !code.includes('!item.completed')) return 'completed qiymatini teskarisiga o\\'zgartirmadingiz.'; return null;"
     }
   ],
   quizzes: [
     {
-      question: "Nega ro'yxat (list) larda React 'key' propini talab qiladi?",
+      question: "React'da ro'yxatlarni chizish uchun qaysi massiv metodi eng ko'p ishlatiladi?",
       options: [
-        "Bu xavfsizlik (security) uchun, ma'lumotlarni o'g'irlashdan asraydi",
-        "Bu React ga ro'yxat ichida aynan qaysi element o'zgargani, qo'shilgani yoki o'chirilganini tezkor topish (Diffing) ga yordam beradi",
-        "React da key bo'lmasa ro'yxatlar umuman chizilmaydi, Error beradi",
-        "Backend bilan aloqa qilish uchun kerak"
+        ".map()",
+        ".forEach()",
+        ".reduce()",
+        ".filter()"
       ],
-      correctAnswer: 1,
-      explanation: "Key larsiz Virtual DOM daraxtidagi qaysi tugun qayerga ko'chganligini bilib bo'lmaydi. React hammasini boshidan chizishga majbur bo'ladi, bu esa performance ga yomon ta'sir qiladi."
+      correctAnswer: 0,
+      explanation: "React JSX ichida yangi elementlar massivini qaytarishi kerak, `.map()` metodi aynan har bir element uchun yangi JSX element qaytaradi."
     },
     {
-      question: "Ro'yxatdan bitta elementni olib tashlash (o'chirish) ning eng to'g'ri React usuli qaysi?",
+      question: "key propining asosiy vazifasi nima?",
       options: [
-        "list.splice(index, 1); setList(list)",
-        "delete list[index]; setList(list)",
-        "setList(list.filter(item => item.id !== idToDelete))",
-        "list.pop(); setList(list)"
+        "Brauzerga massiv elementlari sonini bildirish.",
+        "React'ga qaysi element o'zgargani, o'chirilgani yoki qo'shilganini farqlashga (diffing) yordam berish.",
+        "Faqat xatoliklarni oldini olish, u hech narsaga ta'sir qilmaydi.",
+        "Boshqa komponentlarga ma'lumot uzatish."
+      ],
+      correctAnswer: 1,
+      explanation: "key React'ning Virtual DOM da qaysi tugunlar qanday o'zgarganini tezroq aniqlashi uchun yordam beruvchi noyob identifikator hisoblanadi."
+    },
+    {
+      question: "Ro'yxat elementlari uchun qanday qiymatni key sifatida ishlatish tavsiya etilmaydi?",
+      options: [
+        "Obyektning noyob ID si (masalan, bazadagi ID)",
+        "Massiv indekslari (index), agar massiv tartibi o'zgarishi mumkin bo'lsa",
+        "uuid kutubxonasi orqali generatsiya qilingan id (ma'lumot yaratilayotganda)",
+        "Barchasi xato"
+      ],
+      correctAnswer: 1,
+      explanation: "Massiv indekslari ishlatilganda, massiv elementlari o'rni almashsa yoki element o'chirilsa, index'lar o'zgarib ketadi. Bu React ni chalg'itishi va bug'larga olib kelishi mumkin."
+    },
+    {
+      question: "Shartli render qilishning && (Logical AND) operatori orqali qanday ishlanadi?",
+      options: [
+        "Faqatgina shart xato bo'lganda elementni ko'rsatadi",
+        "Shart true bo'lsa elementni ko'rsatadi, aks holda hech nima qilmaydi",
+        "Bir vaqtning o'zida ikkita har xil elementni ko'rsatadi",
+        "JSX da && operatori ishlamaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "condition && <Element/> ko'rinishida yozilganda, agar condition true bo'lsa <Element/> chiziladi, false bo'lsa umuman e'tiborga olinmaydi."
+    },
+    {
+      question: "Ternary operator (? :) qanday vazifani bajaradi?",
+      options: [
+        "Bir qator ichida if/else mantiqini yozish uchun ishlatiladi.",
+        "Ikkita massivni birlashtirish uchun xizmat qiladi.",
+        "Funksiyaga parametr uzatishda ishlatiladi.",
+        "Bu operator faqat stringlar bilan ishlaydi."
+      ],
+      correctAnswer: 0,
+      explanation: "Ternary operator shartga qarab ikkita holatdan birini tanlaydi: shart ? true_bo'lsa : false_bo'lsa."
+    },
+    {
+      question: "Qaysi holatda odatdagi if / else bilan shartli render qilish ma'qul?",
+      options: [
+        "Ro'yxat elementlari ichida",
+        "Inline stillar berayotganda",
+        "Agar butun bir komponentni boshqacha chizish yoki murakkab mantiq talab qilinsa, JSX dan tashqarida",
+        "React da if / else ishlatish umuman mumkin emas"
       ],
       correctAnswer: 2,
-      explanation: "State ni mutate (o'zgartirish) qilish mumkin emas. Shuning uchun array dagi splice, pop, shift kabi original array ni o'zgartiruvchi metodlar o'rniga filter kabi yangi array qaytaruvchi metodlar ishlatiladi."
+      explanation: "Murakkab yoki butunlay boshqa view chizish kerak bo'lganda komponent qaytarish (return) dan oldin if / else ishlatish kodning o'qilishini osonlashtiradi."
+    },
+    {
+      question: "React state dagi massivdan elementni o'chirishning to'g'ri usuli qaysi?",
+      options: [
+        "list.splice(index, 1); setList(list);",
+        "setList(list.filter(item => item.id !== id))",
+        "list.pop(); setList(list);",
+        "delete list[index]; setList(list);"
+      ],
+      correctAnswer: 1,
+      explanation: "React da state immutable (o'zgarmas) bo'lishi shart. filter yangi massiv qaytaradi va state ni mutatsiya qilmasdan xavfsiz yangilaydi. splice, pop kabi metodlar esa bor massivni o'zgartiradi va bu xato hisoblanadi."
+    },
+    {
+      question: "JSX ichida quyidagi kod nima qaytaradi: {false && <h1>Assalom</h1>}?",
+      options: [
+        "xatolik yuz beradi",
+        "Hech narsa ekranga chiqmaydi (bo'sh qoladi)",
+        "Assalom yozuvi",
+        "false so'zi ekranga chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "false && ifoda ifodada boolean false qaytaradi, React esa boolean qiymatlarni (true, false) ekranga chizmaydi va uni e'tiborsiz qoldiradi. (Lekin 0 kabi falsy raqamlar ekranga chiqib qolishi mumkin, shuning ehtiyot bo'lish kerak)."
+    },
+    {
+      question: "Berilgan ob'ektlar massividan yangilangan bitta elementni state ga qanday saqlaymiz?",
+      options: [
+        ".map() bilan massivni aylanib, faqat kerakli ID li elementning xususiyatini o'zgartirib (nusxalab), qolganlarini shundayligicha qaytarib",
+        "list[index].completed = true qilib, keyin setList(list) qilib",
+        "Faqat o'sha ob'ektning o'zini set qilib",
+        "Buning imkoni yo'q, yangi element qo'shish kerak"
+      ],
+      correctAnswer: 0,
+      explanation: "React state-ni mutate qilmaslik uchun map orqali yangi array yaratiladi, o'zgarishi kerak bo'lgan obyekt spread operator (...) orqali nusxalanib o'zgartiriladi."
+    },
+    {
+      question: "Quyidagi kodning natijasi nima? {message ? <div>Xabar: {message}</div> : null}",
+      options: [
+        "message o'zgaruvchisi mavjud va truthy bo'lsa div chiziladi, aks holda hech nima chizilmaydi.",
+        "Xato beradi, chunki null qaytarish mumkin emas.",
+        "Har doim div chiziladi, faqat message qismi bo'sh bo'ladi.",
+        "message dan qat'i nazar doim null qaytadi."
+      ],
+      correctAnswer: 0,
+      explanation: "Ternary operator ishlatilganda, agar message true bo'lsa div render qilinadi, false bo'lsa null render qilinadi (ya'ni ekranda hech narsa ko'rinmaydi)."
+    },
+    {
+      question: "Ro'yxatda map metodidan foydalanganda har doim return bo'lishi shartmi?",
+      options: [
+        "Yo'q, return yozish mumkin emas.",
+        "Ha, massivdagi har bir iteratsiya qaytarilgan elementlardan tashkil topgan yangi massiv hosil qilishi uchun.",
+        "Faqatgina map ni oxirgi qatorda ishlatsak shart emas.",
+        "Bu JavaScript versiyasiga bog'liq."
+      ],
+      correctAnswer: 1,
+      explanation: "map() metodining xususiyati shundaki, u iteratsiya qilingan elementlarni qaytaradi (return). Agar return yozilmasa (yoki arrow functionda implicit return ishlatilmasa), massiv undefined elementlar bilan to'ladi va ekranga hech narsa chizilmaydi."
+    },
+    {
+      question: "Quyidagi ifodada bo'sh ro'yxat uchun nima ko'rsatiladi: items.length ? <List items={items} /> : <EmptyState />",
+      options: [
+        "Bo'sh ro'yxat berilganda Error bo'ladi",
+        "<EmptyState /> komponenti ko'rsatiladi",
+        "<List items={items} /> komponenti ishlaydi",
+        "Hech narsa ko'rinmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "items.length bo'sh ro'yxat bo'lganda 0 ga teng bo'ladi (falsy qiymat). Ternary operatorning ikkinchi qismi, ya'ni <EmptyState /> bajariladi."
     }
   ]
 };

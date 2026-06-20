@@ -1,113 +1,28 @@
-export const step1_setup = {
-  title: "1-DARS: Tayyorgarlik va O'rnatish",
-  content: `
-# 1. ⚛️ React nima va nima uchun kerak?
+const fs = require('fs');
+const filePath = '/Users/farhod/Desktop/github/js-uz/src/data/lessons/react/step1_setup.js';
+let content = fs.readFileSync(filePath, 'utf8');
 
-**React** — bu foydalanuvchi interfeyslarini (UI) yaratish uchun Meta (sobiq Facebook) tomonidan ishlab chiqilgan mashhur JavaScript kutubxonasi. U dastlab 2013-yilda e'lon qilingan bo'lib, hozirda dunyodagi eng ko'p ishlatiladigan frontend texnologiyasi hisoblanadi.
-
-**Nima uchun aynan React?**
-*   **SPA (Single Page Application):** React ilovalari bitta HTML sahifasidan iborat bo'ladi. Sahifadan sahifaga o'tganda brauzer umuman yangilanmaydi (refresh bo'lmaydi), faqatgina kerakli qismlar qayta chiziladi. Bu dasturni xuddi mobil ilovalardek tez ishlashini ta'minlaydi.
-*   **Komponentli yondashuv:** Interfeys kichik-kichik bo'laklarga (Lego kabi) bo'linadi (masalan: Tugma, Karta, Navbar). Bu ularni qayta-qayta turli joylarda ishlatish imkonini beradi.
-
----
-
-## 2. 🚀 Virtual DOM tushunchasi
-
-Oddiy HTML va JS da brauzerning DOM (Document Object Model) i juda sekin ishlaydi. Qachonki biror kichik narsa o'zgarsa, butun brauzer ekranni boshqatdan chizishiga to'g'ri keladi.
-
-React bu muammoni **Virtual DOM** yordamida hal qildi:
-1.  React haqiqiy DOM ning xotirada yengil nusxasi (Virtual DOM) ni yaratib oladi.
-2.  Siz dasturda biron ma'lumotni o'zgartirsangiz, React butunlay yangi Virtual DOM yaratadi.
-3.  **Diffing:** React avvalgi va yangi Virtual DOM larni bir-biriga solishtirib, qayeri o'zgarganini topadi.
-4.  **Reconciliation:** Faqatgina o'zgargan kichik bir qismnigina haqiqiy brauzer DOM'iga olib o'tadi.
-
-Bu jarayon React ni daxshatli darajada tez ishlashiga sabab bo'lgan asosiy texnologiyadir!
-
----
-
-## 3. 🛠 Ish muhitini tayyorlash
-
-React'da ishlash uchun kompyuteringizga ba'zi dasturlarni o'rnatish kerak.
-
-### 1. Node.js va npm
-React o'z ishlashi uchun Node.js muhitini talab qiladi. [nodejs.org](https://nodejs.org/) saytidan LTS (Long Term Support) versiyasini ko'chirib, o'rnating.
-O'rnatgach, terminalni ochib tekshiring:
-\`\`\`bash
-node -v
-npm -v
-\`\`\`
-*(npm - Node Package Manager, u Node.js bilan birga avtomatik o'rnatiladi va bizga React kutubxonalarini tortib olish uchun kerak)*
-
-### 2. Loyiha yaratish (\`create-react-app\`)
-Endi terminalda React loyihasini yaratamiz:
-\`\`\`bash
-npx create-react-app mening-loyiham
-cd mening-loyiham
-npm start
-\`\`\`
-*(npm start buyrug'idan so'ng, brauzeringiz avtomatik ochiladi va http://localhost:3000 da React logotipi aylanib turgan sahifa paydo bo'ladi).*
-
----
-
-## 4. 📁 Loyiha tuzilishi (Strukturasi)
-
-Loyiha yaratilgach, siz quyidagi fayl va papkalarni ko'rasiz:
-
-*   **\`node_modules/\`**: Loyihamiz ishlashi uchun kerakli barcha kutubxonalar va kodlar shu yerga yuklanadi. (Bu papkaga umuman tegmaymiz).
-*   **\`public/\`**: Ommaviy fayllar. Eng muhimi — \`index.html\`. React butun dasturni shu fayldagi \`<div id="root"></div>\` ichiga joylashtiradi.
-*   **\`src/\`**: Bizning ish joyimiz! Barcha React kodlarimiz (komponentlar, rasmlar, CSS) shu yerda bo'ladi.
-*   **\`package.json\`**: Loyiha pasporti. Qanday kutubxonalar o'rnatilgani va qanday skriptlar (\`start\`, \`build\`) borligi yoziladi.
-
-### Asosiy Fayllar:
-*   **\`src/index.js\`**: React dasturining yuragi. U \`App\` komponentini olib, brauzerdagi \`root\` div ga yopishtirib beradi.
-*   **\`src/App.js\`**: Asosiy (Ota) komponent. Biz o'z kodlarimizni asosan shu yerdan yozishni boshlaymiz.
-`,
-  code: `import React from "react";
-
-// Bu bizning eng birinchi React komponentimiz
-export default function App() {
-  return (
-    <div style={{ textAlign: "center", padding: "50px", fontFamily: "sans-serif" }}>
-      <h1>Salom, React! 👋</h1>
-      <p>Bu mening birinchi React ilovam.</p>
-      
-      <div style={{ 
-        marginTop: 30, 
-        padding: 20, 
-        border: '1px solid #ddd', 
-        borderRadius: 8,
-        background: '#f9f9f9'
-      }}>
-        <h2>Amaliyot qismi</h2>
-        <p>Chap tarafdagi kod muharririda <strong>h1</strong> tegining ichidagi yozuvni o'zgartirib ko'ring.</p>
-        <button style={{ padding: '10px 20px', background: '#61dafb', border: 'none', borderRadius: 4, fontWeight: 'bold' }}>
-          Tugmacha
-        </button>
-      </div>
-    </div>
-  );
-}`,
-  exercises: [
+const newCode = `  exercises: [
     {
       id: 1,
       title: "1. O'z ismingizni yozing",
-      instruction: "Kod muharririda `App` komponentining ichidagi `h1` tegini toping va `Salom, React!` yozuvini `Salom, [O'z ismingiz]!` ga o'zgartiring.",
+      instruction: "Kod muharririda \`App\` komponentining ichidagi \`h1\` tegini toping va \`Salom, React!\` yozuvini \`Salom, [O'z ismingiz]!\` ga o'zgartiring.",
       startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Salom, React!</h1>\n    </div>\n  );\n}",
       hint: "<h1>Salom, Ali!</h1> ko'rinishida yozib ko'ring.",
-      test: "if (code.includes('Salom, React!')) return 'Siz hali ham \"Salom, React!\" yozuvini qoldirgansiz. O\'z ismingizni yozing.'; return null;"
+      test: "if (code.includes('Salom, React!')) return 'Siz hali ham \"Salom, React!\" yozuvini qoldirgansiz. O\\'z ismingizni yozing.'; return null;"
     },
     {
       id: 2,
       title: "2. Yangi xatboshi (paragraf) qo'shish",
-      instruction: "Komponent ichiga `<p>` tegi orqali 'Bu mening birinchi vazifam' degan yozuvni qo'shing.",
+      instruction: "Komponent ichiga \`<p>\` tegi orqali 'Bu mening birinchi vazifam' degan yozuvni qo'shing.",
       startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Asosiy sarlavha</h1>\n      {/* Shu yerga paragraf qo'shing */}\n    </div>\n  );\n}",
       hint: "<p>Bu mening birinchi vazifam</p> tegini qo'shing.",
-      test: "if (!code.includes('<p>') || !code.includes('Bu mening birinchi vazifam')) return 'Paragraf (<p>) va to\'g\'ri matn qo\'shilganini tekshiring.'; return null;"
+      test: "if (!code.includes('<p>') || !code.includes('Bu mening birinchi vazifam')) return 'Paragraf (<p>) va to\\'g\\'ri matn qo\\'shilganini tekshiring.'; return null;"
     },
     {
       id: 3,
       title: "3. Tugma yaratish",
-      instruction: "`Bosing` degan yozuvga ega bo'lgan tugma (`<button>`) elementini yarating.",
+      instruction: "\`Bosing\` degan yozuvga ega bo'lgan tugma (\`<button>\`) elementini yarating.",
       startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Tugma misoli</h1>\n      {/* Tugmani shu yerga qo'shing */}\n    </div>\n  );\n}",
       hint: "<button>Bosing</button> elementidan foydalaning.",
       test: "if (!code.includes('<button>') || !code.includes('Bosing')) return 'Tugma (<button>) va ichida \"Bosing\" yozuvi borligiga ishonch hosil qiling.'; return null;"
@@ -115,23 +30,23 @@ export default function App() {
     {
       id: 4,
       title: "4. Ro'yxat elementlari",
-      instruction: "Sartaroshxona xizmatlari uchun ro'yxat (`<ul>` va ikkita `<li>`) yarating. `<li>` larning ichida 'Soch kesish' va 'Soqol olish' yozuvlari bo'lsin.",
+      instruction: "Sartaroshxona xizmatlari uchun ro'yxat (\`<ul>\` va ikkita \`<li>\`) yarating. \`<li>\` larning ichida 'Soch kesish' va 'Soqol olish' yozuvlari bo'lsin.",
       startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Xizmatlar</h1>\n      {/* Ro'yxatni shu yerga qo'shing */}\n    </div>\n  );\n}",
       hint: "<ul>\n  <li>Soch kesish</li>\n  <li>Soqol olish</li>\n</ul>",
-      test: "if (!code.includes('<ul>') || !code.includes('<li>Soch kesish</li>') || !code.includes('<li>Soqol olish</li>')) return 'Ro\'yxat elementlarini to\'g\'ri shakllantirmadingiz.'; return null;"
+      test: "if (!code.includes('<ul>') || !code.includes('<li>Soch kesish</li>') || !code.includes('<li>Soqol olish</li>')) return 'Ro\\'yxat elementlarini to\\'g\\'ri shakllantirmadingiz.'; return null;"
     },
     {
       id: 5,
       title: "5. Rasm qo'shish",
-      instruction: "`<img>` tegi yordamida rasm qo'shing. Rasm manbasi `src` uchun 'https://via.placeholder.com/150' ishlating. `alt` atributiga 'Namuna rasm' deb yozing.",
+      instruction: "\`<img>\` tegi yordamida rasm qo'shing. Rasm manbasi \`src\` uchun 'https://via.placeholder.com/150' ishlating. \`alt\` atributiga 'Namuna rasm' deb yozing.",
       startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Rasm qo'shish</h1>\n      {/* Rasmni shu yerga joylashtiring */}\n    </div>\n  );\n}",
       hint: "<img src='https://via.placeholder.com/150' alt='Namuna rasm' /> shaklida o'z-o'zini yopuvchi teg ishlating.",
-      test: "if (!code.includes('<img') || !code.includes('src=') || !code.includes('https://via.placeholder.com/150') || !code.includes('alt=')) return 'Rasm manbasi (src) va alt atributi to\'g\'ri yozilganini tekshiring.'; return null;"
+      test: "if (!code.includes('<img') || !code.includes('src=') || !code.includes('https://via.placeholder.com/150') || !code.includes('alt=')) return 'Rasm manbasi (src) va alt atributi to\\'g\\'ri yozilganini tekshiring.'; return null;"
     },
     {
       id: 6,
       title: "6. Havola (Link) yaratish",
-      instruction: "`<a>` tegi yordamida 'React rasmiy sayti' degan havola yarating. `href` atributiga 'https://react.dev' manzili ko'rsatilsin.",
+      instruction: "\`<a>\` tegi yordamida 'React rasmiy sayti' degan havola yarating. \`href\` atributiga 'https://react.dev' manzili ko'rsatilsin.",
       startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h2>Foydali havolalar</h2>\n      {/* Havolani shu yerga qo'shing */}\n    </div>\n  );\n}",
       hint: "<a href='https://react.dev'>React rasmiy sayti</a> ko'rinishida yozing.",
       test: "if (!code.includes('<a') || !code.includes('href=') || !code.includes('https://react.dev')) return 'Havola (<a>) tegi va href manzilini tekshiring.'; return null;"
@@ -139,23 +54,23 @@ export default function App() {
     {
       id: 7,
       title: "7. Qalin va qiya matnlar",
-      instruction: "Matn ichidagi 'React' so'zini qalin (`<strong>`), 'ajoyib' so'zini esa qiya (`<em>`) qiling.",
+      instruction: "Matn ichidagi 'React' so'zini qalin (\`<strong>\`), 'ajoyib' so'zini esa qiya (\`<em>\`) qiling.",
       startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <p>React - bu ajoyib kutubxona.</p>\n    </div>\n  );\n}",
       hint: "<p><strong>React</strong> - bu <em>ajoyib</em> kutubxona.</p>",
-      test: "if (!code.includes('<strong>React</strong>') || !code.includes('<em>ajoyib</em>')) return 'React so\'zini <strong> bilan, ajoyib so\'zini <em> bilan o\'rang.'; return null;"
+      test: "if (!code.includes('<strong>React</strong>') || !code.includes('<em>ajoyib</em>')) return 'React so\\'zini <strong> bilan, ajoyib so\\'zini <em> bilan o\\'rang.'; return null;"
     },
     {
       id: 8,
       title: "8. Ko'p qatorli matn",
-      instruction: "Ikkita `<p>` (paragraf) tegini bitta `<div>` ota tegiga o'rab chiqaring. Birinchi paragrafda 'Birinchi qator', ikkinchisida 'Ikkinchi qator' deb yozilsin.",
+      instruction: "Ikkita \`<p>\` (paragraf) tegini bitta \`<div>\` ota tegiga o'rab chiqaring. Birinchi paragrafda 'Birinchi qator', ikkinchisida 'Ikkinchi qator' deb yozilsin.",
       startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    // Kodingizni yozing\n  );\n}",
       hint: "return (<div><p>Birinchi qator</p><p>Ikkinchi qator</p></div>);",
-      test: "if (!code.includes('<p>Birinchi qator</p>') || !code.includes('<p>Ikkinchi qator</p>')) return 'Ikkita paragraf yaratganingizga va yozuvlar to\'g\'riligiga ishonch hosil qiling.'; if ((code.match(/<div/g)||[]).length < 1) return 'Paragraflarni ota div ichiga olishingiz kerak.'; return null;"
+      test: "if (!code.includes('<p>Birinchi qator</p>') || !code.includes('<p>Ikkinchi qator</p>')) return 'Ikkita paragraf yaratganingizga va yozuvlar to\\'g\\'riligiga ishonch hosil qiling.'; if ((code.match(/<div/g)||[]).length < 1) return 'Paragraflarni ota div ichiga olishingiz kerak.'; return null;"
     },
     {
       id: 9,
       title: "9. Bo'sh teg (Fragment) ishlatish",
-      instruction: "Komponentda ikkita `<button>` bor, ammo ular ota tegsiz xato beradi. Ularni `<div>` o'rniga bo'sh teg (Fragment, ya'ni `<></>`) ichiga oling.",
+      instruction: "Komponentda ikkita \`<button>\` bor, ammo ular ota tegsiz xato beradi. Ularni \`<div>\` o'rniga bo'sh teg (Fragment, ya'ni \`<></>\`) ichiga oling.",
       startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <button>Kirish</button>\n    <button>Ro'yxatdan o'tish</button>\n  );\n}",
       hint: "return (\n  <>\n    <button>Kirish</button>\n    <button>Ro'yxatdan o'tish</button>\n  </>\n);",
       test: "if (!code.includes('<>') || !code.includes('</>')) return 'Fragment (<></>) dan foydalanganingizga ishonch hosil qiling.'; return null;"
@@ -163,10 +78,10 @@ export default function App() {
     {
       id: 10,
       title: "10. H1 dan H3 gacha elementlar",
-      instruction: "Sahifada H1 dan boshlab H3 gacha sarlavhalar yarating. Yozuvlari ketma-ket: 'Katta sarlavha', 'O\'rta sarlavha', 'Kichik sarlavha' bo'lsin.",
+      instruction: "Sahifada H1 dan boshlab H3 gacha sarlavhalar yarating. Yozuvlari ketma-ket: 'Katta sarlavha', 'O\\'rta sarlavha', 'Kichik sarlavha' bo'lsin.",
       startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      {/* Sarlavhalarni qo'shing */}\n    </div>\n  );\n}",
       hint: "<h1>Katta sarlavha</h1>, <h2>...</h2>",
-      test: "if (!code.includes('<h1>Katta sarlavha</h1>') || !code.includes('<h2>O\'rta sarlavha</h2>') || !code.includes('<h3>Kichik sarlavha</h3>')) return 'H1, H2, H3 teglari va ularning matnlarini to\'g\'ri yozganingizni tekshiring.'; return null;"
+      test: "if (!code.includes('<h1>Katta sarlavha</h1>') || !code.includes('<h2>O\\'rta sarlavha</h2>') || !code.includes('<h3>Kichik sarlavha</h3>')) return 'H1, H2, H3 teglari va ularning matnlarini to\\'g\\'ri yozganingizni tekshiring.'; return null;"
     }
   ],
   quizzes: [
@@ -304,3 +219,13 @@ export default function App() {
     }
   ]
 };
+`;
+
+let index = content.indexOf('  exercises: [');
+if (index !== -1) {
+    let newContent = content.substring(0, index) + newCode;
+    fs.writeFileSync(filePath, newContent, 'utf8');
+    console.log('Update successful');
+} else {
+    console.log('Failed to find exercises array');
+}

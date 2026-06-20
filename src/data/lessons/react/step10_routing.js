@@ -174,35 +174,217 @@ export default function App() {
   exercises: [
     {
       id: 1,
-      title: "Havolalarni (Link) to'g'rilash",
-      instruction: "React Router da odatiy `<a href='...'>` ishlatilmaydi, chunki u sahifani yangilaydi. Quyidagi kodda `a` teglari bor. Ularni react-router-dom dagi `Link` elementiga o'zgartiring.",
-      startingCode: "import React from 'react';\nimport { Link } from 'react-router-dom';\n\nexport default function Navigation() {\n  return (\n    <nav>\n      {/* a teglarini Link to= ga almashtiring */}\n      <a href=\"/\">Asosiy sahifa</a>\n      <a href=\"/profile\">Profil sahifasi</a>\n    </nav>\n  );\n}",
-      hint: "<Link to=\"/\">Asosiy sahifa</Link> ko'rinishida yozing.",
-      test: "if (code.includes('<a ') || code.includes('href=')) return 'Xato. a tegini va href atributini ishlatmang, ularning o\\'rniga Link va to ishlating.'; return null;"
+      title: "Link komponentidan foydalanish",
+      instruction: "React loyihada sahifalar orasida o'tish uchun `a` tegi ishlatilmaydi. Uning o'rniga `react-router-dom` dan `Link` ishlatiladi. `a` teglarini `Link` komponentiga o'zgartiring va `href` atributini `to` atributiga almashtiring.",
+      startingCode: "import React from 'react';\nimport { Link } from 'react-router-dom';\n\nexport default function Menu() {\n  return (\n    <nav>\n      <a href=\"/\">Asosiy</a>\n      <a href=\"/about\">Biz haqimizda</a>\n    </nav>\n  );\n}",
+      hint: "<Link to=\"/\">Asosiy</Link> ko'rinishida yozing.",
+      test: "if (code.includes('<a ') || code.includes('href=')) return 'Xato! a tegi yoki href atributi qolib ketdi.'; if (!code.includes('<Link to=\"/\">') || !code.includes('<Link to=\"/about\">')) return 'Link komponenti to\\'g\\'ri yozilmadi.'; return null;"
+    },
+    {
+      id: 2,
+      title: "Route ni o'rnatish",
+      instruction: "`/contact` yo'li uchun `Contact` komponentini ko'rsatadigan `Route` yozing. Buning uchun `Route` komponentining `path` va `element` atributlaridan foydalaning.",
+      startingCode: "import React from 'react';\nimport { Routes, Route } from 'react-router-dom';\n\nfunction Contact() {\n  return <h1>Aloqa</h1>;\n}\n\nexport default function App() {\n  return (\n    <Routes>\n      <Route path=\"/\" element={<h1>Asosiy</h1>} />\n      {/* /contact yo'li uchun Route ni shu yerga yozing */}\n      \n    </Routes>\n  );\n}",
+      hint: "<Route path=\"/contact\" element={<Contact />} /> ko'rinishida yozing.",
+      test: "if (!code.match(/<Route\\s+path=[\"']\\/contact[\"']\\s+element=\\{\\s*<Contact\\s*\\/?\\>\\s*\\}\\s*\\/?>/)) return 'Route komponenti to\\'g\\'ri yozilmadi. path=\"/contact\" va element={<Contact />} bo\\'lishi kerak.'; return null;"
+    },
+    {
+      id: 3,
+      title: "Dinamik marshrut (Dynamic Route)",
+      instruction: "Foydalanuvchi profiliga o'tish uchun dinamik marshrut yarating. `Route` ning `path` atributiga `/user/:id` deb yozing va `element` qilib `<UserProfile />` komponentini bering.",
+      startingCode: "import React from 'react';\nimport { Routes, Route } from 'react-router-dom';\n\nfunction UserProfile() {\n  return <h1>Foydalanuvchi profili</h1>;\n}\n\nexport default function App() {\n  return (\n    <Routes>\n      {/* Dinamik Route ni shu yerga yozing */}\n      \n    </Routes>\n  );\n}",
+      hint: "<Route path=\"/user/:id\" element={<UserProfile />} /> ko'rinishida bo'lishi kerak.",
+      test: "if (!code.match(/<Route\\s+path=[\"']\\/user\\/:id[\"']\\s+element=\\{\\s*<UserProfile\\s*\\/?>\\s*\\}\\s*\\/?>/)) return 'Dinamik Route to\\'g\\'ri yozilmadi. path=\"/user/:id\" ekanligiga ishonch hosil qiling.'; return null;"
+    },
+    {
+      id: 4,
+      title: "URL dan parametrni o'qish (useParams)",
+      instruction: "`useParams` hooki yordamida URL dagi `id` parametrini o'qib oling va ekranda \"Foydalanuvchi ID: [id]\" matnida ko'rsating.",
+      startingCode: "import React from 'react';\nimport { useParams } from 'react-router-dom';\n\nexport default function UserProfile() {\n  // useParams orqali id ni oling\n  \n  return (\n    <h1>Foydalanuvchi ID: {/* id ni shu yerda ko'rsating */}</h1>\n  );\n}",
+      hint: "const { id } = useParams(); deb yozing va {id} qilib ishlating.",
+      test: "if (!code.includes('const { id } = useParams()') && !code.includes('const {id} = useParams()')) return 'useParams dan id ni to\\'g\\'ri ajratib oling.'; if (!code.match(/Foydalanuvchi ID:\\s*\\{\\s*id\\s*\\}/)) return 'id ni ekranda to\\'g\\'ri ko\\'rsating.'; return null;"
+    },
+    {
+      id: 5,
+      title: "Dasturiy ravishda sahifaga o'tish (useNavigate)",
+      instruction: "`useNavigate` hooki yordamida foydalanuvchini tugma bosilganda `/dashboard` sahifasiga yo'naltiring.",
+      startingCode: "import React from 'react';\nimport { useNavigate } from 'react-router-dom';\n\nexport default function Login() {\n  // useNavigate ni e'lon qiling\n  \n\n  const handleLogin = () => {\n    // shu yerda '/dashboard' ga o'tishni yozing\n    \n  };\n\n  return <button onClick={handleLogin}>Kirish</button>;\n}",
+      hint: "const navigate = useNavigate(); va ichkarida navigate('/dashboard'); deb yozing.",
+      test: "if (!code.includes('const navigate = useNavigate()') && !code.includes('const navigate=useNavigate()')) return 'useNavigate hookini chaqiring.'; if (!code.includes(\"navigate('/dashboard')\") && !code.includes('navigate(\"/dashboard\")')) return 'navigate funksiyasiga /dashboard yo\\'lini bering.'; return null;"
+    },
+    {
+      id: 6,
+      title: "404 - Sahifa topilmadi",
+      instruction: "Mavjud bo'lmagan barcha manzillar uchun `NotFound` komponentini ko'rsatadigan qoida yozing. `path` atributiga `*` belgisini bering.",
+      startingCode: "import React from 'react';\nimport { Routes, Route } from 'react-router-dom';\n\nfunction NotFound() {\n  return <h1>Sahifa topilmadi!</h1>;\n}\n\nexport default function App() {\n  return (\n    <Routes>\n      <Route path=\"/\" element={<h1>Asosiy</h1>} />\n      {/* 404 Route ni shu yerga yozing */}\n      \n    </Routes>\n  );\n}",
+      hint: "<Route path=\"*\" element={<NotFound />} /> ko'rinishida yozing.",
+      test: "if (!code.match(/<Route\\s+path=[\"']\\*[\"']\\s+element=\\{\\s*<NotFound\\s*\\/?>\\s*\\}\\s*\\/?>/)) return '404 sahifa uchun yulduzcha (*) path bilan Route yozilmadi.'; return null;"
+    },
+    {
+      id: 7,
+      title: "NavLink komponentidan foydalanish",
+      instruction: "`react-router-dom` dan `NavLink` komponentini chaqiring. U sahifa faol bo'lsa avtomatik \"active\" klassini qo'shadi. Kodda `Link` o'rniga `NavLink` dan foydalaning.",
+      startingCode: "import React from 'react';\n// NavLink ni import qiling va pastda ishlating\nimport { Link } from 'react-router-dom';\n\nexport default function Menu() {\n  return (\n    <nav>\n      <Link to=\"/\">Asosiy</Link>\n      <Link to=\"/about\">Biz haqimizda</Link>\n    </nav>\n  );\n}",
+      hint: "import { NavLink } ... va <NavLink to=\"/\">Asosiy</NavLink> shaklida ishlating.",
+      test: "if (code.includes('<Link ') || code.includes('</Link>')) return 'Link o\\'rniga NavLink ishlating.'; if (!code.includes('<NavLink to=\"/\">') || !code.includes('<NavLink to=\"/about\">')) return 'NavLink komponentlarini to\\'g\\'ri yozing.'; return null;"
+    },
+    {
+      id: 8,
+      title: "useLocation orqali URL yo'lini o'qish",
+      instruction: "`useLocation` hooki joriy URL ma'lumotlarini qaytaradi. Undan `pathname` ni o'qib olib ekranda \"Siz turgan manzil: [pathname]\" shaklida ko'rsating.",
+      startingCode: "import React from 'react';\nimport { useLocation } from 'react-router-dom';\n\nexport default function CurrentPath() {\n  // useLocation dan foydalaning\n  \n  return (\n    <p>Siz turgan manzil: {/* pathname ni yozing */}</p>\n  );\n}",
+      hint: "const location = useLocation(); va keyin ekranda {location.pathname} ishlating.",
+      test: "if (!code.includes('useLocation()')) return 'useLocation hookidan foydalaning.'; if (!code.match(/\\{\\s*\\w+\\.pathname\\s*\\}|\\{\\s*pathname\\s*\\}/)) return 'Ekranda pathname xususiyatini ko\\'rsating (masalan, location.pathname).'; return null;"
+    },
+    {
+      id: 9,
+      title: "Ichma-ich yo'nalishlarsiz 2 ta sahifa",
+      instruction: "Bitta App ichida 2 ta sahifa: Bosh sahifa (`/`) va Maqolalar (`/posts`) uchun `Route` yarating. Komponentlar Home va Posts allaqachon mavjud.",
+      startingCode: "import React from 'react';\nimport { Routes, Route } from 'react-router-dom';\n\nfunction Home() { return <h2>Home</h2>; }\nfunction Posts() { return <h2>Posts</h2>; }\n\nexport default function App() {\n  return (\n    <Routes>\n      {/* Home va Posts uchun Route larni yozing */}\n      \n    </Routes>\n  );\n}",
+      hint: "Ikkita <Route /> komponentini yozing, path=\"/\" va path=\"/posts\" bo'lsin.",
+      test: "if (!code.match(/<Route\\s+path=[\"']\\/[\"']\\s+element=\\{\\s*<Home\\s*\\/?>\\s*\\}\\s*\\/?>/)) return 'Home sahifasi uchun Route to\\'g\\'ri emas.'; if (!code.match(/<Route\\s+path=[\"']\\/posts[\"']\\s+element=\\{\\s*<Posts\\s*\\/?>\\s*\\}\\s*\\/?>/)) return 'Posts sahifasi uchun Route to\\'g\\'ri emas.'; return null;"
+    },
+    {
+      id: 10,
+      title: "Hamma narsani birlashtirish",
+      instruction: "`BrowserRouter` butun dasturimizni o'rab turishi kerak. Qoida tariqasida `App` komponenti ichidagi `Routes` ni `BrowserRouter` ichiga oling. (Eslatma: BrowserRouter import qilingan).",
+      startingCode: "import React from 'react';\nimport { BrowserRouter, Routes, Route } from 'react-router-dom';\n\nfunction Home() { return <h2>Home</h2>; }\n\nexport default function App() {\n  return (\n    // BrowserRouter ga o'rab oling\n    <Routes>\n      <Route path=\"/\" element={<Home />} />\n    </Routes>\n  );\n}",
+      hint: "<BrowserRouter> va uni yopuvchi </BrowserRouter> teglari bilan <Routes> qismini o'rang.",
+      test: "if (!code.includes('<BrowserRouter>') || !code.includes('</BrowserRouter>')) return 'BrowserRouter teglarini ishlating.'; if (code.indexOf('<BrowserRouter>') > code.indexOf('<Routes>') || code.indexOf('</BrowserRouter>') < code.indexOf('</Routes>')) return 'Routes ni BrowserRouter ichiga o\\'rang.'; return null;"
     }
   ],
   quizzes: [
     {
-      question: "Nega React da oddiy HTML ning <a href='/page'>...</a> o'rniga <Link to='/page'>...</Link> ishlatilishi shart?",
+      question: "React Router nima maqsadda ishlatiladi?",
       options: [
-        "Link tegi chiroyliroq animatsiya bilan o'tadi",
-        "<a> tegi brauzerni va butun sahifani qaytadan yangilab (refresh qilib) yuboradi va dastur boshidan boshlanadi. <Link> esa faqat komponentlarni (URL ga mos ravishda) almashtiradi xolos.",
-        "React dagi JSX ichiga <a> deb yozsa xatolik beradi",
-        "Hech qanday farqi yo'q, xohlasak href ham ishlataveramiz"
-      ],
-      correctAnswer: 1,
-      explanation: "Single Page Application larning butun mo'jizasi ham shunda. Brauzer bir marta yuklanadi, qolgan barcha ko'chishlar faqat JavaScript yordamida miltillashlarsiz amalga oshadi."
-    },
-    {
-      question: "URL dagi dinamik ma'lumotni (masalan: '/user/145' dagi 145 ni) o'qib olish uchun qaysi hook dan foydalaniladi?",
-      options: [
-        "useNavigate",
-        "useLocation",
-        "useParams",
-        "useURL"
+        "Dasturni serverga yuklash uchun",
+        "React da ma'lumotlar bazasini boshqarish uchun",
+        "Saytni qayta yuklamasdan (refresh qilmasdan) sahifalar o'rtasida o'tishni ta'minlash uchun",
+        "Faqat CSS uslublarini o'zgartirish uchun"
       ],
       correctAnswer: 2,
-      explanation: "Route da path='/user/:id' qilib parametr e'lon qilinadi, ichkarida esa const { id } = useParams() yordamida o'sha qism (masalan 145) sug'urib olinadi."
+      explanation: "React Router foydalanuvchi URL ni o'zgartirganda sahifani yangilamay turib, kerakli komponentni ekranga chiqarib beradi, bu Single Page Application (SPA) asosi hisoblanadi."
+    },
+    {
+      question: "Oddiy <a> tegi o'rniga nima uchun <Link> dan foydalaniladi?",
+      options: [
+        "<a> tegi React'da xatolik beradi",
+        "<a> tegi butun sahifani qaytadan serverdan yuklaydi, <Link> esa buni to'xtatib faqat JavaScript orqali sahifani yangilaydi",
+        "<a> tegi faqat tashqi havolalar uchun ishlatiladi",
+        "Hech qanday farqi yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "<Link> brauzerning default harakatini (sahifani yangilashni) to'xtatib, react-router-dom ga o'zgarishni bildiradi."
+    },
+    {
+      question: "Dasturimizda React Router ishlashi uchun butun loyihani qaysi komponent bilan o'rashimiz kerak?",
+      options: [
+        "<RouterContainer>",
+        "<AppRouter>",
+        "<BrowserRouter>",
+        "<Navigation>"
+      ],
+      correctAnswer: 2,
+      explanation: "BrowserRouter barcha marshrutlar va Link'lar ishlashi uchun kerak bo'ladigan global holatni (kontekstni) yaratib beradi."
+    },
+    {
+      question: "Barcha <Route> komponentlari qaysi ota komponent ichida yozilishi shart?",
+      options: [
+        "<Switch>",
+        "<Routes>",
+        "<RouterGroup>",
+        "<RouteContainer>"
+      ],
+      correctAnswer: 1,
+      explanation: "React Router v6 versiyasida barcha <Route> lar <Routes> komponenti ichida bo'lishi shart."
+    },
+    {
+      question: "<Route path='/about' element={<About />} /> bu kod nima qiladi?",
+      options: [
+        "About komponentini hamma sahifada ko'rsatadi",
+        "URL da /about bo'lganda ekranga About komponentini chiqaradi",
+        "Foydalanuvchini avtomatik ravishda /about sahifasiga o'tkazadi",
+        "About sahifasidan Bosh sahifaga yo'naltiradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Route ma'lum bir path (manzil) ga to'g'ri kelganda o'zining element (komponent) ini render qiladi."
+    },
+    {
+      question: "URL dan o'zgaruvchi (parametr) larni o'qib olish uchun qaysi Hook ishlatiladi?",
+      options: [
+        "useLocation",
+        "useHistory",
+        "useParams",
+        "useNavigate"
+      ],
+      correctAnswer: 2,
+      explanation: "useParams() URL dagi dinamik qismlarni (masalan, :id) o'qib olish va ularni obyekt sifatida qaytarish uchun xizmat qiladi."
+    },
+    {
+      question: "Dinamik marshrut qanday ko'rinishda e'lon qilinadi?",
+      options: [
+        "<Route path='/user-id' ... />",
+        "<Route path='/user/{id}' ... />",
+        "<Route path='/user/:id' ... />",
+        "<Route path='/user/*id' ... />"
+      ],
+      correctAnswer: 2,
+      explanation: "Ikki nuqta (:) yordamida dinamik parametrlar belgilanadi, shunda react-router bu qism istalgan qiymat qabul qilishini biladi."
+    },
+    {
+      question: "Tugma bosilganda foydalanuvchini boshqa sahifaga dasturiy tarzda (JavaScript orqali) o'tkazish uchun qaysi Hook kerak?",
+      options: [
+        "useRedirect",
+        "useHistory",
+        "useNavigate",
+        "useLink"
+      ],
+      correctAnswer: 2,
+      explanation: "useNavigate() hooki navigate funksiyasini qaytaradi, uni chaqirib istalgan yo'lga o'tish mumkin, masalan: navigate('/home')."
+    },
+    {
+      question: "404 - Sahifa topilmadi (Not Found) sahifasini tutib qolish uchun Route qanday yoziladi?",
+      options: [
+        "<Route path='404' element={<NotFound />} />",
+        "<Route path='*' element={<NotFound />} />",
+        "<Route path='not-found' element={<NotFound />} />",
+        "<Route path='?' element={<NotFound />} />"
+      ],
+      correctAnswer: 1,
+      explanation: "Yulduzcha (*) path barcha oldingi marshrutlarga mos kelmagan har qanday URL ni ushlab oladi va 404 sahifa ko'rsatishga yordam beradi."
+    },
+    {
+      question: "<NavLink> va <Link> ning asosiy farqi nima?",
+      options: [
+        "NavLink tezroq ishlaydi",
+        "NavLink joriy sahifaga mos kelsa, o'ziga avtomatik 'active' degan klassni yoki isActive qiymatini qo'shadi",
+        "Link faqat tashqi linklar uchun ishlatiladi",
+        "Hech qanday farqi yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "NavLink asosan menyularda (Navbar) qaysi sahifada turganimizni ajratib (masalan, rangini qizil qilib) ko'rsatish uchun ishlatiladi."
+    },
+    {
+      question: "SPA (Single Page Application) ning afzalligi nimada?",
+      options: [
+        "Saytning xavfsizligi mutlaq mustahkam bo'ladi",
+        "Sahifalar almashayotganda butun HTML serverdan qayta yuklanmaydi, o'tishlar juda tez va silliq bo'ladi",
+        "Faqat bitta turdagi shrift ishlatishga majbur qiladi",
+        "Ma'lumotlar bazasiga ehtiyoj qolmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "SPA yondashuvida HTML sahifa faqat bir marta yuklanadi va qolgan hamma o'zgarishlar faqat JavaScript yordamida lokal ravishda chizib beriladi."
+    },
+    {
+      question: "Joriy turgan URL manzil (masalan, path, search) haqida ma'lumotlarni qaysi Hook yordamida olish mumkin?",
+      options: [
+        "usePath",
+        "useURL",
+        "useLocation",
+        "useRoute"
+      ],
+      correctAnswer: 2,
+      explanation: "useLocation() hooki qayerda ekanligimiz haqida obyekt qaytaradi (pathname, search, hash kabi qiymatlarni o'z ichiga oladi)."
     }
   ]
 };
