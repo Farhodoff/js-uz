@@ -279,6 +279,86 @@ Natija:
     "startingCode": "function countVowels(str) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "Satrdagi har bir belgini tekshiring, agar u unli harflardan biri bo'lsa, hisoblagichni oshiring. Satrni `.toLowerCase()` qilish yordam beradi.",
     "test": "const sandbox = new Function(code + '; return countVowels;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'countVowels funksiya bo\\'lishi kerak';\nif (fn(\"hello\") !== 2) return '\"hello\" so\\'zida 2 ta unli bor';\nif (fn(\"JavaScript\") !== 3) return '\"JavaScript\" so\\'zida 3 ta unli bor';\nif (fn(\"Uzbekistan\") !== 4) return '\"Uzbekistan\" so\\'zida 4 ta unli bor';\nif (fn(\"xyz\") !== 0) return '\"xyz\" so\\'zida 0 ta unli bor';\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "Sonning Kvadrati",
+    "instruction": "Berilgan sonning kvadratini (o'zini o'ziga ko'paytmasini) hisoblovchi `square(n)` funksiyasini yozing.",
+    "startingCode": "function square(n) {\n  // Kodni yozing\n}",
+    "hint": "n ni n ga ko'paytirib return qiling.",
+    "test": "const fn = new Function(code + '; return square;')(); if(fn(5) !== 25) return '5 kvadrati 25'; if(fn(0) !== 0) return '0 kvadrati 0'; return null;"
+  },
+  {
+    "id": 5,
+    "title": "Salomlashish Funksiyasi",
+    "instruction": "Foydalanuvchi ismini qabul qilib, unga 'Salom, [ism]!' matnini qaytaradigan `greet(name)` funksiyasini yozing.",
+    "startingCode": "function greet(name) {\n  // Kodni yozing\n}",
+    "hint": "Satrlarni birlashtirish (+) yoki Template Literals (`Salom, ${name}!`) foydalaning.",
+    "test": "const fn = new Function(code + '; return greet;')(); if(fn('Ali') !== 'Salom, Ali!') return 'Ali uchun xato'; return null;"
+  },
+  {
+    "id": 6,
+    "title": "Eng Katta Sonni Topish",
+    "instruction": "Ikkita son qabul qilib, ularning eng kattasini qaytaruvchi `getMax(a, b)` funksiyasini yozing. Agar teng bo'lsa, istalganini qaytarsin.",
+    "startingCode": "function getMax(a, b) {\n  // Kodni yozing\n}",
+    "hint": "if/else sharti yoki Math.max() ni ishlating.",
+    "test": "const fn = new Function(code + '; return getMax;')(); if(fn(10, 20) !== 20) return '10 va 20 da 20 katta'; if(fn(5, 5) !== 5) return 'teng bo\\'lsa 5'; return null;"
+  },
+  {
+    "id": 7,
+    "title": "Juft yoki Toq",
+    "instruction": "Son qabul qilib, agar juft bo'lsa `true`, toq bo'lsa `false` qaytaruvchi `isEven(n)` funksiyasini yozing.",
+    "startingCode": "function isEven(n) {\n  // Kodni yozing\n}",
+    "hint": "Sonni 2 ga bo'lganda qoldiq 0 bo'lsa juft bo'ladi (`n % 2 === 0`).",
+    "test": "const fn = new Function(code + '; return isEven;')(); if(fn(4) !== true) return '4 juft'; if(fn(7) !== false) return '7 toq'; return null;"
+  },
+  {
+    "id": 8,
+    "title": "To'rtburchak Yuzi",
+    "instruction": "To'rtburchakning eni (width) va bo'yi (height) qabul qilib uning yuzasini hisoblovchi `getArea(width, height)` yozing.",
+    "startingCode": "function getArea(width, height) {\n  // Kodni yozing\n}",
+    "hint": "Yuza = eni * bo'yi",
+    "test": "const fn = new Function(code + '; return getArea;')(); if(fn(5, 10) !== 50) return '5x10=50'; return null;"
+  },
+  {
+    "id": 9,
+    "title": "Sonni Teskarisiga O'girish",
+    "instruction": "Masalan 123 bersa, uni 321 ko'rinishida qaytaruvchi `reverseNumber(n)` yozing. (Satrga o'girib keyin massivga va yana satrga yig'ish yordam beradi)",
+    "startingCode": "function reverseNumber(n) {\n  // Kodni yozing\n}",
+    "hint": "n ni String(n) qilib, .split('').reverse().join('') orqali aylantiring va Number ga o'tkazing.",
+    "test": "const fn = new Function(code + '; return reverseNumber;')(); if(fn(123) !== 321) return '123 teskarisi 321'; return null;"
+  },
+  {
+    "id": 10,
+    "title": "So'zning Birinchi Harfi",
+    "instruction": "Satr qabul qilib, uning faqat birinchi harfini katta qilib qaytaradigan `capitalizeFirst(str)` funksiyasini tuzing.",
+    "startingCode": "function capitalizeFirst(str) {\n  // Kodni yozing\n}",
+    "hint": "str[0].toUpperCase() + str.slice(1) ni ishlating.",
+    "test": "const fn = new Function(code + '; return capitalizeFirst;')(); if(fn('apple') !== 'Apple') return 'apple Apple bo\\'lishi kerak'; return null;"
+  },
+  {
+    "id": 11,
+    "title": "Kalkulyator Funksiya",
+    "instruction": "`calc(a, b, op)` funksiyasini yozing. Agar op '+' bo'lsa a+b, '-' bo'lsa a-b, '*' bo'lsa a*b, '/' bo'lsa a/b qilsin.",
+    "startingCode": "function calc(a, b, op) {\n  // Kodni yozing\n}",
+    "hint": "switch-case yoki if-else ishlatish tavsiya qilinadi.",
+    "test": "const fn = new Function(code + '; return calc;')(); if(fn(5, 3, '+') !== 8) return '5+3=8'; if(fn(10, 2, '/') !== 5) return '10/2=5'; return null;"
+  },
+  {
+    "id": 12,
+    "title": "Yoshni Tekshirish",
+    "instruction": "`age` parametrini qabul qilib, agar 18 yoki undan baland bo'lsa `true`, aks holda `false` qaytaruvchi `isAdult(age)` yozing.",
+    "startingCode": "function isAdult(age) {\n  // Kodni yozing\n}",
+    "hint": "return age >= 18; ni ishlatishingiz mumkin.",
+    "test": "const fn = new Function(code + '; return isAdult;')(); if(fn(20) !== true) return '20 > 18'; if(fn(16) !== false) return '16 < 18'; return null;"
+  },
+  {
+    "id": 13,
+    "title": "Eng Qisqa So'z",
+    "instruction": "So'zlardan iborat massiv qabul qilib, ularning ichidan eng qisqasini qaytaruvchi `getShortestWord(words)` yozing.",
+    "startingCode": "function getShortestWord(words) {\n  // Kodni yozing\n}",
+    "hint": "reduce yordamida massivni aylanib, a.length va b.length ni solishtirish orqali eng qisqasini ushlab qoling.",
+    "test": "const fn = new Function(code + '; return getShortestWord;')(); if(fn(['apple', 'hi', 'orange']) !== 'hi') return 'hi eng qisqasi'; return null;"
   }
 ]
 ,

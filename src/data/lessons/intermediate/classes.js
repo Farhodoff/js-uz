@@ -304,6 +304,86 @@ Quyidagi amaliy mashqlar va testlar yordamida klasslar bo'yicha bilimlaringizni 
       startingCode: "class Shape {\n  constructor(name) { this.name = name; }\n}\n\nclass Circle extends Shape {\n  // Kodni shu yerda yozing: constructor radius bilan\n  \n  get area() {\n    return Math.PI * this.radius ** 2;\n  }\n}\n\nconst circle = new Circle('Doira', 5);\nconsole.log(circle.area.toFixed(2)); // '78.50'",
       hint: "constructor(name, radius) { super(name); this.radius = radius; }",
       test: "if (logs.some(l => l.includes('78.50') || l.includes('78.5'))) return null; return 'Combine xato!';"
+    },
+    {
+      "id": 13,
+      "title": "Klass va Array ishlari",
+      "instruction": "Ichida qator saqlaydigan `StringList` klassini yozing. Uning `add(str)` metodi qatorni qo'shsin va `getAll()` metodi barcha qatorlar massivini qaytarsin.",
+      "startingCode": "class StringList {\n  constructor() {\n    this.items = [];\n  }\n  // add(str) va getAll() ni yozing\n}",
+      "hint": "add(str) da this.items.push(str) va getAll() da return this.items ishlating.",
+      "test": "const fn = new Function(code + '; const sl = new StringList(); sl.add(\"hello\"); return sl.getAll();')(); if(fn[0] === 'hello' && fn.length === 1) return null; return 'Xato';"
+    },
+    {
+      "id": 14,
+      "title": "To'rtburchak va Yuza",
+      "instruction": "`Rectangle` klassini tuzing. `constructor(w, h)` qabul qilsin. `getArea()` metodi `w*h` ni qaytarsin.",
+      "startingCode": "class Rectangle {\n  // Kodni yozing\n}",
+      "hint": "this.w = w, this.h = h. Va getArea() { return this.w * this.h; }",
+      "test": "const fn = new Function(code + '; return new Rectangle(4, 5).getArea();')(); if(fn === 20) return null; return 'Xato';"
+    },
+    {
+      "id": 15,
+      "title": "Avtomobil Oynasi",
+      "instruction": "`Window` klassi `isOpen` (boshida false) xossasiga ega. `open()` metodi uni true qilsin, `close()` metodi false qilsin.",
+      "startingCode": "class Window {\n  // Kodni yozing\n}",
+      "hint": "constructor() { this.isOpen = false; } qilib, open va close larda true/false qiling.",
+      "test": "const fn = new Function(code + '; const w=new Window(); w.open(); return w.isOpen;')(); if(fn===true) return null; return 'Xato';"
+    },
+    {
+      "id": 16,
+      "title": "Student va Baho",
+      "instruction": "`Student` klassida `score` bor. `isPassed()` metodi `score >= 60` bo'lsa true, aks holda false qaytarsin.",
+      "startingCode": "class Student {\n  constructor(score) {\n    this.score = score;\n  }\n  // isPassed() yozing\n}",
+      "hint": "isPassed() { return this.score >= 60; }",
+      "test": "const fn = new Function(code + '; return new Student(60).isPassed();')(); if(fn===true) return null; return 'Xato';"
+    },
+    {
+      "id": 17,
+      "title": "Klass metodida zanjir (Chaining)",
+      "instruction": "`Calc` klassi boshida `value=0` ga ega. `add(n)` qoshib, o'zini (`this`) qaytarsin, shunda `.add(5).add(3)` qila olishimiz kerak.",
+      "startingCode": "class Calc {\n  constructor() { this.value = 0; }\n  add(n) {\n    // Kodni yozing va o'zini qaytaring\n  }\n}",
+      "hint": "this.value += n; return this;",
+      "test": "const fn = new Function(code + '; return new Calc().add(5).add(3).value;')(); if(fn === 8) return null; return 'Chaining xato';"
+    },
+    {
+      "id": 18,
+      "title": "Xodim va Maosh",
+      "instruction": "`Employee` klassi `baseSalary` bilan yaratilsin. `getSalary(bonus)` metodi `baseSalary + bonus` qaytarsin.",
+      "startingCode": "class Employee {\n  // Kodni yozing\n}",
+      "hint": "getSalary(bonus) { return this.baseSalary + bonus; }",
+      "test": "const fn = new Function(code + '; return new Employee(100).getSalary(20);')(); if(fn===120) return null; return 'Xato';"
+    },
+    {
+      "id": 19,
+      "title": "Private Maydonda Ism",
+      "instruction": "`User` klassida `#name` private maydoni bo'lsin. Konstruktorda `#name = name` o'rnating va `getName()` metodi qaytarsin.",
+      "startingCode": "class User {\n  // Kodni yozing\n}",
+      "hint": "#name; constructor(name) { this.#name = name; } getName() { return this.#name; }",
+      "test": "const fn = new Function(code + '; const u = new User(\"Ali\"); return u.getName();')(); if(fn===\"Ali\") return null; return 'Xato';"
+    },
+    {
+      "id": 20,
+      "title": "Parolni Yashirish",
+      "instruction": "`Account` klassi parol bilan yaratiladi. Ammo parolni o'qib bo'lmasligi kerak, faqat `checkPassword(pwd)` true/false qaytarsin.",
+      "startingCode": "class Account {\n  // Kodni yozing\n}",
+      "hint": "#password private qilib ishlating.",
+      "test": "const fn = new Function(code + '; const a = new Account(\"123\"); return a.checkPassword(\"123\");')(); if(fn===true) return null; return 'Xato';"
+    },
+    {
+      "id": 21,
+      "title": "Super() chaqirish qoidasi",
+      "instruction": "`Box` klassi tuzing (weight=10). `GiftBox` klassi undan voris bo'lsin va konstruktorda super() chaqirsin, so'ng `this.color = \"red\"`.",
+      "startingCode": "class Box {\n  constructor() { this.weight = 10; }\n}\nclass GiftBox extends Box {\n  // Kodni yozing\n}",
+      "hint": "constructor() { super(); this.color = 'red'; }",
+      "test": "const fn = new Function(code + '; const g = new GiftBox(); return g.weight === 10 && g.color === \"red\";')(); if(fn===true) return null; return 'Xato';"
+    },
+    {
+      "id": 22,
+      "title": "Static funksiya yordamida obyekt yaratish",
+      "instruction": "`Point` klassida x, y bor. `Point.origin()` degan static metod sifr(0,0) li yangi Point qaytarsin.",
+      "startingCode": "class Point {\n  constructor(x, y) { this.x=x; this.y=y; }\n  // static origin() yozing\n}",
+      "hint": "static origin() { return new Point(0,0); }",
+      "test": "const fn = new Function(code + '; return Point.origin();')(); if(fn.x===0 && fn.y===0) return null; return 'Xato';"
     }
   ],
   quizzes: [

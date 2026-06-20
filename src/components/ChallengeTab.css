@@ -143,6 +143,13 @@
   line-height: 1.6;
 }
 
+.challenge-code-body pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+
 /* Options */
 .challenge-options {
   padding: var(--space-5);

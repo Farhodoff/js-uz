@@ -320,6 +320,86 @@ Massiv bilan ishlashda uning metodlari vaqt murakkabligini (Time Complexity) bil
     "startingCode": "function replaceElement(arr, oldVal, newVal) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "indexOf orqali element indeksini toping. Agar indeks -1dan farqli bo'lsa, splice(index, 1, newVal) yordamida uni almashtiring va massivni qaytaring.",
     "test": "const sandbox = new Function(code + '; return replaceElement;');\nconst fn = sandbox();\nconst testArr = ['olma', 'anor', 'behi'];\nconst result = fn(testArr, 'anor', 'shaftoli');\nif (testArr !== result) return 'replaceElement funksiyasi o\\'zgartirilgan asl massivni qaytarishi kerak';\nif (testArr[1] !== 'shaftoli' || testArr.length !== 3) return 'replaceElement qiymatni to\\'g\\'ri almashtirmadi';\nconst notFound = fn(testArr, 'anjir', 'olxo\\'ri');\nif (notFound.length !== 3 || notFound[1] !== 'shaftoli') return 'Topilmagan element bo\\'lsa massiv o\\'zgarmasligi kerak';\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "Massivdagi Eng Katta Element",
+    "instruction": "Faqat sonlardan iborat massiv berilgan. Massivdagi eng katta sonni qaytaradigan `findMax(arr)` yozing.",
+    "startingCode": "function findMax(arr) {\n  // Kodni yozing\n}",
+    "hint": "Math.max(...arr) orqali yechish juda oson yoki sikl ishlating.",
+    "test": "const fn = new Function(code + '; return findMax;')(); if(fn([1, 5, 3]) !== 5) return 'Xato'; if(fn([-10, -2, -5]) !== -2) return 'Manfiy sonlarda xato'; return null;"
+  },
+  {
+    "id": 5,
+    "title": "Barcha Elementlar Yig'indisi",
+    "instruction": "Sonlardan iborat massiv berilgan. Ularning yig'indisini qaytaruvchi `sumArray(arr)` yozing.",
+    "startingCode": "function sumArray(arr) {\n  // Kodni yozing\n}",
+    "hint": "reduce((a, b) => a + b, 0) yordamida yig'indini olish mumkin.",
+    "test": "const fn = new Function(code + '; return sumArray;')(); if(fn([1, 2, 3]) !== 6) return '1+2+3=6'; if(fn([]) !== 0) return 'Bo\\'sh massiv uchun 0 qaytishi kerak'; return null;"
+  },
+  {
+    "id": 6,
+    "title": "Massivni Teskarisiga Aylantirish",
+    "instruction": "Massiv elementlarini teskari tartibda joylashtirib (yangi massiv sifatida) qaytaradigan `reverseArray(arr)` funksiyasini yozing.",
+    "startingCode": "function reverseArray(arr) {\n  // Kodni yozing\n}",
+    "hint": "arr.slice().reverse() ishlatishingiz yoki siklni oxiridan boshlab yangi massivga yig'ishingiz mumkin.",
+    "test": "const fn = new Function(code + '; return reverseArray;')(); const a = [1,2,3]; const r = fn(a); if(r[0]!==3 || r[2]!==1) return 'Teskari bo\\'lmadi'; if(a[0]===3) return 'Asl massiv o\\'zgarmasligi kerak'; return null;"
+  },
+  {
+    "id": 7,
+    "title": "Elementlar Sonini Topish",
+    "instruction": "Massiv ichida berilgan element necha marta takrorlanganini hisoblovchi `countOccurrences(arr, val)` yozing.",
+    "startingCode": "function countOccurrences(arr, val) {\n  // Kodni yozing\n}",
+    "hint": "filter(x => x === val).length qilib ishlashingiz mumkin.",
+    "test": "const fn = new Function(code + '; return countOccurrences;')(); if(fn([1,2,2,3,2], 2) !== 3) return '2 soni 3 marta bor'; return null;"
+  },
+  {
+    "id": 8,
+    "title": "Toq Sonlarni Ajratish",
+    "instruction": "Massivdan faqat toq sonlarni ajratib, yangi massivda qaytaruvchi `getOdds(arr)` yozing.",
+    "startingCode": "function getOdds(arr) {\n  // Kodni yozing\n}",
+    "hint": "arr.filter(n => n % 2 !== 0) ni ishlating.",
+    "test": "const fn = new Function(code + '; return getOdds;')(); const r = fn([1,2,3,4,5]); if(r.length !== 3 || r[1] !== 3) return 'Faqat toq sonlar olinmadi'; return null;"
+  },
+  {
+    "id": 9,
+    "title": "Massivlarni Birlashtirish",
+    "instruction": "Ikkita massivni bitta yangi massivga aylantiradigan `mergeArrays(arr1, arr2)` yozing.",
+    "startingCode": "function mergeArrays(arr1, arr2) {\n  // Kodni yozing\n}",
+    "hint": "[...arr1, ...arr2] yoki arr1.concat(arr2) foydalaning.",
+    "test": "const fn = new Function(code + '; return mergeArrays;')(); const r = fn([1,2], [3,4]); if(r.length !== 4 || r[2] !== 3) return 'To\\'g\\'ri birlashmadi'; return null;"
+  },
+  {
+    "id": 10,
+    "title": "Dublikatlarni O'chirish",
+    "instruction": "Massiv ichidagi takroriy (bir xil) elementlarni o'chirib yuboradigan va faqat unique qoldiradigan `removeDuplicates(arr)` yozing.",
+    "startingCode": "function removeDuplicates(arr) {\n  // Kodni yozing\n}",
+    "hint": "Array.from(new Set(arr)) juda zo'r usul.",
+    "test": "const fn = new Function(code + '; return removeDuplicates;')(); const r = fn([1,1,2,3,3]); if(r.length !== 3 || r[1] !== 2) return 'Takroriylar o\\'chmadi'; return null;"
+  },
+  {
+    "id": 11,
+    "title": "Massiv Oxiriga Qo'shish (Push)",
+    "instruction": "Berilgan massivning oxiriga berilgan elementni qoshib, shu massivning o'zini qaytaruvchi `appendElement(arr, val)` yozing.",
+    "startingCode": "function appendElement(arr, val) {\n  // Kodni yozing\n}",
+    "hint": "arr.push(val) dan so'ng arr ni return qiling.",
+    "test": "const fn = new Function(code + '; return appendElement;')(); const a = [1]; const r = fn(a, 2); if(r[1] !== 2 || r !== a) return 'Push noto\\'g\\'ri'; return null;"
+  },
+  {
+    "id": 12,
+    "title": "Satrlar Massivini Birlashtirish (Join)",
+    "instruction": "So'zlar massivini vergul va probel bilan qo'shib bitta satrga aylantiradigan `joinWords(words)` yozing. Masalan: `['Olma', 'Anor']` -> `'Olma, Anor'`",
+    "startingCode": "function joinWords(words) {\n  // Kodni yozing\n}",
+    "hint": "words.join(', ') yordam beradi.",
+    "test": "const fn = new Function(code + '; return joinWords;')(); if(fn(['A', 'B']) !== 'A, B') return 'To\\'g\\'ri biriktirilmadi'; return null;"
+  },
+  {
+    "id": 13,
+    "title": "Istalgan Element Mavjudligi (Includes)",
+    "instruction": "Massivda kutilayotgan element bor yo'qligini tekshiradigan (true/false) `containsElement(arr, val)` yozing.",
+    "startingCode": "function containsElement(arr, val) {\n  // Kodni yozing\n}",
+    "hint": "arr.includes(val) qulay usul.",
+    "test": "const fn = new Function(code + '; return containsElement;')(); if(fn([1,2,3], 2) !== true) return '2 bor (true)'; if(fn([1,2], 5) !== false) return '5 yo\\'q (false)'; return null;"
   }
 ]
 ,

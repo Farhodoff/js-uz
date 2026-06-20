@@ -218,6 +218,86 @@ Quyidagi testlar va mashqlar yordamida Promises (Va'dalar) va asinxron zanjirlar
     "startingCode": "function processNumber(num) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "Promise.resolve(num).then(val => val * 2).then(val => val + 10) shaklida yozishingiz mumkin.",
     "test": "const sandbox = new Function(code + '; return processNumber;');\nconst fn = sandbox();\nconst p = fn(5);\nif (p instanceof Promise) {\n  return p.then(val => val === 20 ? null : 'Zanjir yakunidagi natija noto\\'g\\'ri');\n}\nreturn 'processNumber funksiyasi Promise qaytarmadi';"
+  },
+  {
+    "id": 4,
+    "title": "Kechikish (Delay) Promise",
+    "instruction": "Kiritilgan ms millisoniyadan keyin `resolve` bo'ladigan Promise qaytaruvchi `delay(ms)` funksiyasini yozing. U hech qanday qiymat bilan resolve bo'lishi shart emas (faqat setTimeout ichida resolve()).",
+    "startingCode": "function delay(ms) {\n  // Kodni yozing\n}",
+    "hint": "return new Promise(resolve => setTimeout(resolve, ms)); ishlating.",
+    "test": "const fn = new Function(code + '; return delay;')(); const p = fn(10); if(!(p instanceof Promise)) return 'Promise qaytarmadi'; return p.then(() => null);"
+  },
+  {
+    "id": 5,
+    "title": "To'g'ridan-to'g'ri Rad etish (Reject)",
+    "instruction": "Faqatgina ma'lum bir matn bilan to'g'ridan-to'g'ri `reject` qilingan Promise qaytaruvchi `instantReject(msg)` yozing.",
+    "startingCode": "function instantReject(msg) {\n  // Kodni yozing\n}",
+    "hint": "Promise.reject(msg) eng to'g'ri va oson yo'l.",
+    "test": "const fn = new Function(code + '; return instantReject;')(); const p = fn('Xato'); return p.then(() => 'Reject bo\\'lmadi').catch(err => err === 'Xato' ? null : 'Noma\\'lum xato qaytdi');"
+  },
+  {
+    "id": 6,
+    "title": "Ikkita Promise.all",
+    "instruction": "Ikkita promise qabul qilib, ularni `Promise.all` orqali birlashtirib qaytaruvchi `combinePromises(p1, p2)` yozing.",
+    "startingCode": "function combinePromises(p1, p2) {\n  // Kodni yozing\n}",
+    "hint": "return Promise.all([p1, p2]);",
+    "test": "const fn = new Function(code + '; return combinePromises;')(); const p = fn(Promise.resolve(1), Promise.resolve(2)); return p.then(res => res[0]===1 && res[1]===2 ? null : 'Noto\\'g\\'ri massiv');"
+  },
+  {
+    "id": 7,
+    "title": "Promise.race amaliyoti",
+    "instruction": "Bir nechta promislardan iborat massiv qabul qilib, ulardan birinchi bo'lib tugaganining (resolve yoki reject) natijasini qaytaradigan `getFirstResult(promises)` yozing.",
+    "startingCode": "function getFirstResult(promises) {\n  // Kodni yozing\n}",
+    "hint": "Promise.race(promises) ni qaytaring.",
+    "test": "const fn = new Function(code + '; return getFirstResult;')(); const p = fn([new Promise(r => setTimeout(()=>r(1), 50)), Promise.resolve(2)]); return p.then(res => res === 2 ? null : 'Xato');"
+  },
+  {
+    "id": 8,
+    "title": "Matnni Kattalashtirish (Zanjir)",
+    "instruction": "Promise qabul qiladigan va uning natijasi satr bo'lsa, uni bosh harflarga o'tkazuvchi `toUpperCasePromise(promise)` yozing.",
+    "startingCode": "function toUpperCasePromise(promise) {\n  // Kodni yozing\n}",
+    "hint": "return promise.then(str => str.toUpperCase());",
+    "test": "const fn = new Function(code + '; return toUpperCasePromise;')(); return fn(Promise.resolve('hi')).then(r => r === 'HI' ? null : 'Xato');"
+  },
+  {
+    "id": 9,
+    "title": "Soni Tekshirish (Resolve/Reject)",
+    "instruction": "Son qabul qiluvchi `checkEvenPromise(num)` yozing. Agar juft bo'lsa `resolve('Juft')`, toq bo'lsa `reject('Toq')` qaytarsin.",
+    "startingCode": "function checkEvenPromise(num) {\n  // Kodni yozing\n}",
+    "hint": "return new Promise((resolve, reject) => { num%2===0 ? resolve('Juft') : reject('Toq'); });",
+    "test": "const fn = new Function(code + '; return checkEvenPromise;')(); return fn(2).then(r => r==='Juft' ? fn(3).catch(e => e==='Toq' ? null : 'Xato') : 'Xato');"
+  },
+  {
+    "id": 10,
+    "title": "Muvaffaqiyatsizlikni Ushlash (Catch)",
+    "instruction": "Promiseni qabul qilib, agar u xato (reject) bersa, xato xabarini emas, balki standart `'Xato yuz berdi'` degan satr bilan resolve qiladigan `safePromise(promise)` yozing.",
+    "startingCode": "function safePromise(promise) {\n  // Kodni yozing\n}",
+    "hint": "return promise.catch(() => 'Xato yuz berdi');",
+    "test": "const fn = new Function(code + '; return safePromise;')(); return fn(Promise.reject('123')).then(r => r === 'Xato yuz berdi' ? null : 'Xato');"
+  },
+  {
+    "id": 11,
+    "title": "Finally orqali tozalash",
+    "instruction": "Promise va tozalash funksiyasi (callback) berilgan. Promise muvaffaqiyatli yoki xato bilan tugasa ham callbackni chaqiruvchi `withCleanup(promise, callback)` yozing. Asl promise natijasini qaytarsin.",
+    "startingCode": "function withCleanup(promise, callback) {\n  // Kodni yozing\n}",
+    "hint": "return promise.finally(callback); ishlatish eng to'g'risi.",
+    "test": "const fn = new Function(code + '; return withCleanup;')(); let ran=false; return fn(Promise.resolve(1), ()=>ran=true).then(r => ran && r===1 ? null : 'Xato');"
+  },
+  {
+    "id": 12,
+    "title": "Promise.any yordamida Izlash",
+    "instruction": "Promislar massivi ichidan birinchi muvaffaqiyatli bo'lganining natijasini qaytaradigan `getAnyResult(promises)` yozing. Agar hammasi xato bo'lsa reject bo'lsin.",
+    "startingCode": "function getAnyResult(promises) {\n  // Kodni yozing\n}",
+    "hint": "Promise.any(promises) ni qaytaring.",
+    "test": "const fn = new Function(code + '; return getAnyResult;')(); return fn([Promise.reject(1), Promise.resolve(2)]).then(r => r === 2 ? null : 'Xato');"
+  },
+  {
+    "id": 13,
+    "title": "Kechikish bilan Qiymat Qaytarish",
+    "instruction": "`value` va `ms` millisoniya oladigan `resolveAfter(value, ms)` yozing. Belgilangan vaqtdan keyin `value` bilan resolve bo'lsin.",
+    "startingCode": "function resolveAfter(value, ms) {\n  // Kodni yozing\n}",
+    "hint": "return new Promise(resolve => setTimeout(() => resolve(value), ms));",
+    "test": "const fn = new Function(code + '; return resolveAfter;')(); return fn('Ok', 10).then(r => r === 'Ok' ? null : 'Xato');"
   }
 ]
 ,

@@ -314,6 +314,86 @@ Natija:
     "startingCode": "function getOrderSummary(order) {\n  // Ichma-ich destructuring va rest operatoridan foydalaning\n  // Kodni shu yerda yozing\n}",
     "hint": "const { id, customer: { city }, ...details } = order; return { id, city, details };",
     "test": "const sandbox = new Function(code + '; return getOrderSummary;');\nconst fn = sandbox();\nconst orderData = { id: 501, date: '2026-06-11', customer: { name: 'Eldor', city: 'Samarqand' }, items: ['tel', 'keys'], total: 1500 };\nconst res = fn(orderData);\nif (!res || res.id !== 501 || res.city !== 'Samarqand') return 'id yoki ichki customer.city noto\\'g\\'ri ochildi';\nif (!res.details || res.details.total !== 1500 || res.details.customer !== undefined) return 'Rest operatori yordamida qolgan xossalar details obyektiga to\\'g\\'ri yig\\'ilmadi';\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "Ikki o'zgaruvchining o'rnini almashtirish",
+    "instruction": "`a` va `b` o'zgaruvchilarini massiv destruptizatsiyasi yordamida almashtirib, `[b, a]` ni qaytaradigan `swapVariables(a, b)` yozing.",
+    "startingCode": "function swapVariables(a, b) {\n  // Kodni yozing\n}",
+    "hint": "return [a, b] = [b, a];",
+    "test": "const fn = new Function(code + '; return swapVariables;')(); const r = fn(1, 2); if(r[0]!==2 || r[1]!==1) return 'Xato'; return null;"
+  },
+  {
+    "id": 5,
+    "title": "Massivdan birinchi va uchinchi",
+    "instruction": "Uchta elementli massiv keladi. Birinchi va uchinchi elementlarni olib (ikkinchisini tashlab), ularni yangi massiv qilib qaytaruvchi `getFirstAndThird(arr)` yozing.",
+    "startingCode": "function getFirstAndThird(arr) {\n  // Kodni yozing\n}",
+    "hint": "const [first, , third] = arr; return [first, third];",
+    "test": "const fn = new Function(code + '; return getFirstAndThird;')(); const r = fn([10,20,30]); if(r[0]!==10||r[1]!==30) return 'Xato'; return null;"
+  },
+  {
+    "id": 6,
+    "title": "Rest operatori bilan massiv",
+    "instruction": "Massiv qabul qilib, uning birinchi elementini olib, qolgan hamma elementlarini bitta alohida massiv qilib [first, restArr] ko'rinishida qaytaruvchi `headAndTail(arr)` tuzing.",
+    "startingCode": "function headAndTail(arr) {\n  // Kodni yozing\n}",
+    "hint": "const [head, ...tail] = arr; return [head, tail];",
+    "test": "const fn = new Function(code + '; return headAndTail;')(); const r=fn([1,2,3]); if(r[0]!==1 || r[1][0]!==2) return 'Xato'; return null;"
+  },
+  {
+    "id": 7,
+    "title": "Funksiya parametridagi obyekt",
+    "instruction": "Funksiya `{name, age}` qabul qiladi. Faqat age ni qaytarsin. `getAge({name, age})` degan funksiya argumentida destructuring ishlating.",
+    "startingCode": "function getAge({ /* kodni yozing */ }) {\n  // Kodni yozing\n}",
+    "hint": "getAge({ age }) { return age; }",
+    "test": "const fn = new Function(code + '; return getAge;')(); if(fn({name:'Ali', age:25}) !== 25) return 'Xato'; return null;"
+  },
+  {
+    "id": 8,
+    "title": "Default Qiymatlar (Massiv)",
+    "instruction": "Massiv keladi, unda 1 ta yo 2 ta element bo'lishi mumkin. Ularni olib a, b ga yozing, agar b yo'q bo'lsa `0` qilib bering. Va ularni yig'indisini qaytaring `sumTwo(arr)`.",
+    "startingCode": "function sumTwo(arr) {\n  // Kodni yozing\n}",
+    "hint": "const [a, b = 0] = arr; return a + b;",
+    "test": "const fn = new Function(code + '; return sumTwo;')(); if(fn([5])!==5 || fn([5,3])!==8) return 'Xato'; return null;"
+  },
+  {
+    "id": 9,
+    "title": "Obyektni o'zgarmas qilib birlashtirish (Spread)",
+    "instruction": "`obj1` va `obj2` keladi, ularni destructuring/spread orqali bitta qilib qaytaruvchi `mergeObj(obj1, obj2)` yozing.",
+    "startingCode": "function mergeObj(obj1, obj2) {\n  // Kodni yozing\n}",
+    "hint": "return { ...obj1, ...obj2 };",
+    "test": "const fn = new Function(code + '; return mergeObj;')(); const r=fn({a:1},{b:2}); if(r.a!==1 || r.b!==2) return 'Xato'; return null;"
+  },
+  {
+    "id": 10,
+    "title": "Ko'p qavatli Destructuring",
+    "instruction": "`{ user: { address: { city } } }` obyektidan faqat city ni olib qaytaradigan `getCity(data)` yozing.",
+    "startingCode": "function getCity(data) {\n  // Kodni yozing\n}",
+    "hint": "const { user: { address: { city } } } = data; return city;",
+    "test": "const fn = new Function(code + '; return getCity;')(); if(fn({user:{address:{city:'Tashkent'}}}) !== 'Tashkent') return 'Xato'; return null;"
+  },
+  {
+    "id": 11,
+    "title": "Massiv va Obyekt aralash",
+    "instruction": "`users` degan obyektlar massivi keladi: `[{name: 'A'}, {name: 'B'}]`. Ikkinchi elementning name'ini qaytaruvchi `getSecondName(users)` yozing. (Faqat destructuring ishlating).",
+    "startingCode": "function getSecondName(users) {\n  // Kodni yozing\n}",
+    "hint": "const [, { name }] = users; return name;",
+    "test": "const fn = new Function(code + '; return getSecondName;')(); if(fn([{name:'1'},{name:'2'}]) !== '2') return 'Xato'; return null;"
+  },
+  {
+    "id": 12,
+    "title": "Computed Property Name Destructuring",
+    "instruction": "Dinamik kalit orqali obyekt xossasini ajratib oling. `extractValue(obj, key)` yozing va obj ichidan shu key'dagi qiymatni destructuring bilan (ya'ni `const { [key]: value } = obj`) oling.",
+    "startingCode": "function extractValue(obj, key) {\n  // Kodni yozing\n}",
+    "hint": "const { [key]: val } = obj; return val;",
+    "test": "const fn = new Function(code + '; return extractValue;')(); if(fn({x:99}, 'x') !== 99) return 'Xato'; return null;"
+  },
+  {
+    "id": 13,
+    "title": "Stringni massivga ajratish",
+    "instruction": "Satrni spread operatori bilan harflarga massiv shaklida yoyib, dastlabki ikki harfni qaytaruvchi `getFirstTwoChars(str)` tuzing (masalan `['s', 't']`).",
+    "startingCode": "function getFirstTwoChars(str) {\n  // Kodni yozing\n}",
+    "hint": "const [first, second] = [...str]; return [first, second];",
+    "test": "const fn = new Function(code + '; return getFirstTwoChars;')(); const r = fn('hi'); if(r[0]!=='h'||r[1]!=='i') return 'Xato'; return null;"
   }
 ]
 ,

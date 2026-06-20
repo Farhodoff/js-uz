@@ -343,6 +343,86 @@ Ko'p joyda \`else\` ishlatmasdan, funksiya boshidayoq shartga to'g'ri kelmaydiga
     "startingCode": "function validateUsername(username) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "Oddiy `if (!username)` sharti orqali barcha falsy qiymatlarni aniqlash mumkin.",
     "test": "const sandbox = new Function(code + '; return validateUsername;');\nconst fn = sandbox();\nif (fn('') !== 'Noma\\'lum foydalanuvchi') return 'Bo\\'sh satr uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn(null) !== 'Noma\\'lum foydalanuvchi') return 'null uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn(undefined) !== 'Noma\\'lum foydalanuvchi') return 'undefined uchun \"Noma\\'lum foydalanuvchi\" qaytishi kerak';\nif (fn('nodir') !== 'nodir') return 'Valid username uchun uning o\\'zi qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "Musbat yoki Manfiy",
+    "instruction": "Son qabul qilib, agar u noldan katta bo'lsa 'Musbat', kichik bo'lsa 'Manfiy', nolga teng bo'lsa 'Nol' qaytaruvchi `checkSign(n)` yozing.",
+    "startingCode": "function checkSign(n) {\n  // Kodni yozing\n}",
+    "hint": "if, else if, va else lardan foydalaning.",
+    "test": "const fn = new Function(code + '; return checkSign;')(); if(fn(5) !== 'Musbat') return 'Xato'; if(fn(-2) !== 'Manfiy') return 'Xato'; if(fn(0) !== 'Nol') return 'Xato'; return null;"
+  },
+  {
+    "id": 5,
+    "title": "Parolni Tekshirish",
+    "instruction": "Parol (satr) qabul qiladigan `checkPassword(pwd)` yozing. Agar uzunligi 8 dan kichik bo'lsa 'Kuchsz', 8 va undan katta bo'lsa 'Kuchli' deb qaytarsin.",
+    "startingCode": "function checkPassword(pwd) {\n  // Kodni yozing\n}",
+    "hint": "pwd.length qandayligini if/else yoki ternary operatori bilan tekshiring.",
+    "test": "const fn = new Function(code + '; return checkPassword;')(); if(fn('1234567') !== 'Kuchsz') return 'Kuchsz bo\\'lishi kerak'; if(fn('12345678') !== 'Kuchli') return 'Kuchli bo\\'lishi kerak'; return null;"
+  },
+  {
+    "id": 6,
+    "title": "Katta Yosh (Adult)",
+    "instruction": "Yosh parametrini (age) oladigan `isAdult(age)` yozing. 18 va undan katta bo'lsa `true`, bo'lmasa `false` qaytarsin.",
+    "startingCode": "function isAdult(age) {\n  // Kodni yozing\n}",
+    "hint": "Bu yerda if yozish shart ham emas, `return age >= 18;` yetarli. Shuni qilib ko'ring.",
+    "test": "const fn = new Function(code + '; return isAdult;')(); if(fn(18) !== true) return '18 yosh adult'; if(fn(17) !== false) return '17 yosh emas'; return null;"
+  },
+  {
+    "id": 7,
+    "title": "Eng Katta Ikki Son",
+    "instruction": "Ikkita son olib `a` va `b`, ularning eng kattasini `if/else` orqali qaytaruvchi `maxTwo(a, b)` yozing.",
+    "startingCode": "function maxTwo(a, b) {\n  // Kodni yozing\n}",
+    "hint": "Agar a > b bo'lsa a ni qaytaring, aks holda b ni.",
+    "test": "const fn = new Function(code + '; return maxTwo;')(); if(fn(10, 5) !== 10) return '10 katta'; if(fn(3, 7) !== 7) return '7 katta'; return null;"
+  },
+  {
+    "id": 8,
+    "title": "Baho Baholash",
+    "instruction": "Talaba bali (score) qabul qilib baho qaytaruvchi `getGrade(score)` yozing. 90-100 'A', 80-89 'B', 70-79 'C', 60-69 'D', qolganiga 'F'.",
+    "startingCode": "function getGrade(score) {\n  // Kodni yozing\n}",
+    "hint": "if (score >= 90) return 'A'; else if (score >= 80)...",
+    "test": "const fn = new Function(code + '; return getGrade;')(); if(fn(85) !== 'B') return '85 ball B'; if(fn(50) !== 'F') return '50 ball F'; return null;"
+  },
+  {
+    "id": 9,
+    "title": "Kabisa Yilini Aniqlash",
+    "instruction": "Berilgan yil kabisa (leap year) yili bo'lsa `true` yo'qsa `false` qaytaruvchi `isLeapYear(year)` yozing.",
+    "startingCode": "function isLeapYear(year) {\n  // Kodni yozing\n}",
+    "hint": "Yil 4 ga qoldiqsiz bo'linsa va 100 ga bo'linmasa YOKI 400 ga qoldiqsiz bo'linsa, kabisa yilidir.",
+    "test": "const fn = new Function(code + '; return isLeapYear;')(); if(fn(2020) !== true) return '2020 kabisa'; if(fn(2021) !== false) return '2021 kabisa emas'; if(fn(1900) !== false) return '1900 emas'; return null;"
+  },
+  {
+    "id": 10,
+    "title": "Mavsum nomini topish",
+    "instruction": "Oy raqami (1-12) qabul qilib, fasl qaytaradigan `getSeason(month)` yozing. (12,1,2 - 'Qish', 3,4,5 - 'Bahor', 6,7,8 - 'Yoz', 9,10,11 - 'Kuz').",
+    "startingCode": "function getSeason(month) {\n  // Kodni yozing\n}",
+    "hint": "if-else yordamida har bir oraliqni ifodalang yoki && operatoridan foydalaning.",
+    "test": "const fn = new Function(code + '; return getSeason;')(); if(fn(1) !== 'Qish') return '1-oy Qish'; if(fn(4) !== 'Bahor') return '4-oy Bahor'; return null;"
+  },
+  {
+    "id": 11,
+    "title": "Ternary Operatori",
+    "instruction": "`isRaining` mantiqiy qiymatini olib, agar rost bo'lsa 'Soyabon oling', yolg'on bo'lsa 'Kerak emas' qaytaruvchi `checkWeather(isRaining)` yozing. Majburiy: `? :` ternary ishlatilsin.",
+    "startingCode": "function checkWeather(isRaining) {\n  // Kodni yozing\n}",
+    "hint": "return isRaining ? 'Soyabon oling' : 'Kerak emas';",
+    "test": "const fn = new Function(code + '; return checkWeather;')(); if(fn(true) !== 'Soyabon oling') return 'True bo\\'lsa soyabon'; if(!code.includes('?')) return 'Ternary ishlatilmadi'; return null;"
+  },
+  {
+    "id": 12,
+    "title": "Faqat Ikkisi Katta",
+    "instruction": "Uchta son berilgan. Ularning faqat 2 tasi noldan katta bo'lsa `true`, aks holda `false` qaytaruvchi `exactlyTwoPositives(a, b, c)` yozing.",
+    "startingCode": "function exactlyTwoPositives(a, b, c) {\n  // Kodni yozing\n}",
+    "hint": "Uchala holatni alohida ++ hisoblab 2 tami deb bilsa yoki logik && || orqali hal qilsa bo'ladi.",
+    "test": "const fn = new Function(code + '; return exactlyTwoPositives;')(); if(fn(1, 2, -1) !== true) return 'To\\'g\\'ri holat'; if(fn(1, 2, 3) !== false) return 'Uchalasi ham musbat, false bo\\'lishi kerak'; return null;"
+  },
+  {
+    "id": 13,
+    "title": "Sonning Oralig'i",
+    "instruction": "Son 10 va 20 (ikkalasi ham kiradi) oralig'ida bo'lsa true, yo'qsa false qaytaruvchi `inRange(n)` tuzing.",
+    "startingCode": "function inRange(n) {\n  // Kodni yozing\n}",
+    "hint": "return n >= 10 && n <= 20; qiling.",
+    "test": "const fn = new Function(code + '; return inRange;')(); if(fn(15) !== true) return '15 shu oraliqda'; if(fn(9) !== false) return '9 kirmaydi'; return null;"
   }
 ]
 ,

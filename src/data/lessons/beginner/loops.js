@@ -357,6 +357,86 @@ Sikldan qanchalik erta chiqib ketilsa, CPU resurslari shunchalik tejaladi. Masal
     "startingCode": "function reverseNumberString(num) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "do { ... } while (temp > 0) siklidan foydalaning. Har safar temp % 10 orqali oxirgi raqamni satrga qo'shib, temp = Math.floor(temp / 10) yordamida oxirgi raqamni olib tashlang.",
     "test": "const sandbox = new Function(code + '; return reverseNumberString;');\nconst fn = sandbox();\nif (fn(1234) !== '4321') return 'reverseNumberString(1234) \"4321\" qaytarmadi';\nif (fn(5) !== '5') return 'reverseNumberString(5) \"5\" qaytarmadi';\nif (fn(0) !== '0') return 'reverseNumberString(0) \"0\" qaytarmadi';\nif (!code.includes('do') || !code.includes('while')) return 'do-while siklidan foydalanilmagan';\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "1 dan N gacha Yig'indi",
+    "instruction": "1 dan berilgan `N` sonigacha bo'lgan barcha butun sonlar yig'indisini hisoblovchi (for siklidan foydalanib) `sumToN(n)` yozing.",
+    "startingCode": "function sumToN(n) {\n  // Kodni yozing\n}",
+    "hint": "let sum = 0; yaratib, 1 dan n gacha for bilan aylanib chiqing va sum ga qo'shing.",
+    "test": "const fn = new Function(code + '; return sumToN;')(); if(fn(5) !== 15) return '1+2+3+4+5=15'; return null;"
+  },
+  {
+    "id": 5,
+    "title": "Juft Sonlarni Sanash",
+    "instruction": "0 dan berilgan `n` gacha (n ham kiradi) bo'lgan barcha juft sonlar nechtaligini hisoblovchi `countEvens(n)` yozing.",
+    "startingCode": "function countEvens(n) {\n  // Kodni yozing\n}",
+    "hint": "i=0 dan boshlab n gacha i+=2 yoki if(i%2===0) bilan hisoblang.",
+    "test": "const fn = new Function(code + '; return countEvens;')(); if(fn(10) !== 6) return '0,2,4,6,8,10 jami 6 ta'; return null;"
+  },
+  {
+    "id": 6,
+    "title": "Toq Sonlar Yig'indisi",
+    "instruction": "Massiv qabul qilib, faqat toq elementlari yig'indisini hisoblaydigan `sumOdds(arr)` yozing (for yoki for-of ishlating).",
+    "startingCode": "function sumOdds(arr) {\n  // Kodni yozing\n}",
+    "hint": "if (arr[i] % 2 !== 0) sum += arr[i].",
+    "test": "const fn = new Function(code + '; return sumOdds;')(); if(fn([1,2,3,4,5]) !== 9) return '1+3+5=9'; return null;"
+  },
+  {
+    "id": 7,
+    "title": "Qoldiqli Bo'lish (FizzBuzz sodda)",
+    "instruction": "`n` son qabul qilib, 1 dan n gacha aylanib barcha sonlarni ekranga chiqarish (satrga yig'ish) kerak. Agar son 3 ga karrali bo'lsa 'X', aks holda o'zini qo'shing. Barchasini vergul bilan ajratilgan satrda qaytaring `fizzBuzzLite(n)`.",
+    "startingCode": "function fizzBuzzLite(n) {\n  // Kodni yozing\n}",
+    "hint": "for bilan aylanib, satrga i yoki 'X' qoshing va orasiga vergul qoshing.",
+    "test": "const fn = new Function(code + '; return fizzBuzzLite;')(); if(fn(4) !== '1,2,X,4') return 'Xato chiqdi'; return null;"
+  },
+  {
+    "id": 8,
+    "title": "Factorial Hisoblash",
+    "instruction": "Berilgan musbat sonning faktorialini hisoblovchi `factorial(n)` yozing. M: 5! = 1*2*3*4*5 = 120. (while yoki for ishlating)",
+    "startingCode": "function factorial(n) {\n  // Kodni yozing\n}",
+    "hint": "result = 1 deb i ni 1 dan n gacha ko'paytiring.",
+    "test": "const fn = new Function(code + '; return factorial;')(); if(fn(5) !== 120) return '5! = 120'; if(fn(0) !== 1) return '0! = 1'; return null;"
+  },
+  {
+    "id": 9,
+    "title": "Satr Ichidagi 'a' Harfini Sanash",
+    "instruction": "Berilgan satr ichida 'a' harfi (kichik 'a') necha marta ishtirok etganini hisoblovchi `countA(str)` yozing. Sikl orqali.",
+    "startingCode": "function countA(str) {\n  // Kodni yozing\n}",
+    "hint": "for bilan 0 dan str.length gacha aylanib str[i] ni 'a' bilan solishtiring.",
+    "test": "const fn = new Function(code + '; return countA;')(); if(fn('banana') !== 3) return '3 marta a bor'; return null;"
+  },
+  {
+    "id": 10,
+    "title": "Eng Kichik Sonni Topish (Sikl)",
+    "instruction": "Faqat sonlardan iborat massiv beriladi, for orqali aylanib eng kichik sonni topuvchi `findMin(arr)` yozing. (Math.min ishlata ko'rmang, o'rganish uchun!)",
+    "startingCode": "function findMin(arr) {\n  // Kodni yozing\n}",
+    "hint": "let min = arr[0] deb oling va qolganini solishtiring.",
+    "test": "const fn = new Function(code + '; return findMin;')(); if(fn([4,1,9]) !== 1) return 'Xato'; return null;"
+  },
+  {
+    "id": 11,
+    "title": "Massivni Nusxalash",
+    "instruction": "Massiv elementlarini bittalab aylanib yangi massivga ko'chiradigan va qaytaradigan `copyArray(arr)` tuzing.",
+    "startingCode": "function copyArray(arr) {\n  // Kodni yozing\n}",
+    "hint": "yangi massiv `res = []` qilib, ichiga push() qiling.",
+    "test": "const fn = new Function(code + '; return copyArray;')(); const a=[1,2]; const r=fn(a); if(r[0]!==1 || r===a) return 'Nusxa emas'; return null;"
+  },
+  {
+    "id": 12,
+    "title": "Yulduzchalar Yasash",
+    "instruction": "Berilgan `n` qatorli yulduzchalar (\n bilan ajratilgan) satrini hosil qiling `stars(n)`. Har qatorda i ta yulduzcha bo'lsin. M: n=3 bo'lsa `*\\n**\\n***`.",
+    "startingCode": "function stars(n) {\n  // Kodni yozing\n}",
+    "hint": "Ichma-ich 2 ta sikl yoki repeat() dan foydalansangiz bo'ladi.",
+    "test": "const fn = new Function(code + '; return stars;')(); if(fn(3) !== '*\\n**\\n***') return 'Xato naqsh'; return null;"
+  },
+  {
+    "id": 13,
+    "title": "while yordamida qidiruv",
+    "instruction": "Massiv va maqsadli son berilgan. `while` sikli yordamida sonni qidiring, topilsa indeksini, aks holda -1 qaytaring `searchItem(arr, target)`.",
+    "startingCode": "function searchItem(arr, target) {\n  // Kodni yozing\n}",
+    "hint": "let i = 0; while(i < arr.length) { ... i++; } qilib ishlating.",
+    "test": "const fn = new Function(code + '; return searchItem;')(); if(fn([10,20,30], 20) !== 1) return '1 indeks'; if(fn([1], 5) !== -1) return '-1'; return null;"
   }
 ]
 ,

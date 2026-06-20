@@ -228,6 +228,86 @@ async function loadDashboard(userId) {
     "startingCode": "async function getDashboardData() {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "return await Promise.all([getProfile(), getPosts()]);",
     "test": "if (!code.includes('Promise.all')) return 'Promise.all ishlatilmadi';\ntry {\n  const sandbox = new Function('getProfile', 'getPosts', code + '; return getDashboardData;');\n  const fn = sandbox(async () => 'p', async () => 'posts');\n  const p = fn();\n  if (!(p instanceof Promise)) return 'getDashboardData funksiyasi Promise qaytarishi kerak';\n} catch(e) { return 'Xatolik: ' + e.message; }\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "Oddiy async funksiya",
+    "instruction": "Hech qanday maxsus asinxron amalsiz faqat `'Hello'` satrini qaytaruvchi asinxron `sayHello()` funksiyasini yozing.",
+    "startingCode": "async function sayHello() {\n  // Kodni yozing\n}",
+    "hint": "async funksiyada shunchaki `return 'Hello';` yozishingiz kifoya, u o'zi Promise.resolve qaytaradi.",
+    "test": "const fn = new Function(code + '; return sayHello;')(); return fn().then(r => r === 'Hello' ? null : 'Xato');"
+  },
+  {
+    "id": 5,
+    "title": "Await yordamida qiymat olish",
+    "instruction": "`getSecret()` asinxron funksiyasi bor deb faraz qiling. Uning natijasini kutib (await) va qaytaradigan asinxron `revealSecret()` yozing.",
+    "startingCode": "async function revealSecret() {\n  // Kodni yozing\n}",
+    "hint": "return await getSecret();",
+    "test": "const fn = new Function('getSecret', code + '; return revealSecret;'); const r = fn(async () => 'Secret'); return r().then(x => x === 'Secret' ? null : 'Xato');"
+  },
+  {
+    "id": 6,
+    "title": "Xatoliklarni Try/Catch orqali ushlash",
+    "instruction": "Asinxron `failFunction()` doim reject bo'ladi deb faraz qiling. Uni `try/catch` orqali chaqiradigan va catch blokida uning xato xabarini qaytaradigan `safeCall()` yozing.",
+    "startingCode": "async function safeCall() {\n  // Kodni yozing\n}",
+    "hint": "try { return await failFunction(); } catch(e) { return e; }",
+    "test": "const fn = new Function('failFunction', code + '; return safeCall;'); const r = fn(async () => { throw 'Xatolik'; }); return r().then(x => x === 'Xatolik' ? null : 'Xato');"
+  },
+  {
+    "id": 7,
+    "title": "Ikkita amallarni ketma-ket (Sequential) bajarish",
+    "instruction": "`step1()` va undan keyin `step2()` ni ketma-ket chaqiruvchi va ikkalasi tugagach `'Done'` qaytaruvchi asinxron `runSteps()` yozing.",
+    "startingCode": "async function runSteps() {\n  // Kodni yozing\n}",
+    "hint": "await step1(); await step2(); return 'Done';",
+    "test": "let c=0; const fn=new Function('step1', 'step2', code+'; return runSteps;'); const r = fn(async ()=>c++, async ()=>c++); return r().then(x => x==='Done'&&c===2?null:'Xato');"
+  },
+  {
+    "id": 8,
+    "title": "Boshqa Async funksiya kutish",
+    "instruction": "`multiply(a, b)` deb nomlangan funksiya `a*b` ni Promise qaytarsin. `calc()` asinxron funksiya yozing, u await orqali multiply(2, 5) ni olsin va qaytarsin.",
+    "startingCode": "async function calc() {\n  // Kodni yozing\n}",
+    "hint": "return await multiply(2, 5);",
+    "test": "const fn = new Function('multiply', code + '; return calc;'); const r=fn(async (x,y)=>x*y); return r().then(x=>x===10?null:'Xato');"
+  },
+  {
+    "id": 9,
+    "title": "JSON Parsed",
+    "instruction": "Berilgan url (satr) ga fetch so'rov yuboradigan va `await res.json()` ni qaytaradigan `fetchData(url)` ni qisman taqlid qilib yozing. (Fetch haqida o'ylamang, json() metodli ob'yekt qaytaruvchi mock `mockFetch(url)` ni kuting).",
+    "startingCode": "async function fetchData(url) {\n  // Kodni yozing\n}",
+    "hint": "const res = await mockFetch(url); return await res.json();",
+    "test": "const fn = new Function('mockFetch', code + '; return fetchData;'); const r=fn(async()=>({json:async()=>'OK'})); return r().then(x=>x==='OK'?null:'Xato');"
+  },
+  {
+    "id": 10,
+    "title": "Asinxron If",
+    "instruction": "Asinxron `checkAccess()` yordamida tekshiring: agar u true qaytarsa `'Welcome'`, false qaytarsa `'Denied'` qaytarsin. Yechim asinxron bo'lsin.",
+    "startingCode": "async function login() {\n  // Kodni yozing\n}",
+    "hint": "const ok = await checkAccess(); return ok ? 'Welcome' : 'Denied';",
+    "test": "const fn = new Function('checkAccess', code + '; return login;'); return fn(async()=>false)().then(x=>x==='Denied'?null:'Xato');"
+  },
+  {
+    "id": 11,
+    "title": "Throw orqali xato chiqarish",
+    "instruction": "Agar parametrdagi raqam manfiy bo'lsa darhol xato (throw 'Manfiy son') chiqaradigan, musbat bo'lsa uning kvadratini qaytaruvchi asinxron `squareAsync(n)` yozing.",
+    "startingCode": "async function squareAsync(n) {\n  // Kodni yozing\n}",
+    "hint": "if (n<0) throw 'Manfiy son'; return n*n;",
+    "test": "const fn = new Function(code + '; return squareAsync;')(); return fn(-1).catch(e => e==='Manfiy son' ? null : 'Xato');"
+  },
+  {
+    "id": 12,
+    "title": "Promise.all bilan optimallashtirish",
+    "instruction": "`getUser()` va `getRole()` mustaqil asinxron amallar. Ularni ketma-ket emas, balki bir vaqtda await qilib natijasini qo'shib (masalan `{user, role}`) qaytaruvchi asinxron `getInfo()` yozing.",
+    "startingCode": "async function getInfo() {\n  // Kodni yozing\n}",
+    "hint": "const [user, role] = await Promise.all([getUser(), getRole()]); return {user, role};",
+    "test": "const fn = new Function('getUser','getRole',code+'; return getInfo;'); const r=fn(async()=>'A', async()=>'B'); return r().then(x=>x.user==='A'&&x.role==='B'?null:'Xato');"
+  },
+  {
+    "id": 13,
+    "title": "Async Loop (For...of)",
+    "instruction": "Asinxron funksiyalar massivi berilgan: `funcs`. Ularni `for...of` bilan birma-bir asinxron kutib (await), natijalarini yangi massivga yig'ib qaytaradigan asinxron `runSequence(funcs)` yozing.",
+    "startingCode": "async function runSequence(funcs) {\n  // Kodni yozing\n}",
+    "hint": "for (let f of funcs) { res.push(await f()); }",
+    "test": "const fn = new Function(code + '; return runSequence;')(); return fn([async()=>1, async()=>2]).then(r=>r[1]===2?null:'Xato');"
   }
 ]
 ,

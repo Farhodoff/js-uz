@@ -358,6 +358,86 @@ Tez-tez kalitlarni qo'shish va o'chirish talab qilinsa, xotira samaradorligi va 
     "startingCode": "function createCar(brand, speed) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "Obyekt ichida accelerate(amount) { this.speed += amount; return this.speed; } metodini yarating.",
     "test": "const sandbox = new Function(code + '; return createCar;');\nconst fn = sandbox();\nconst car = fn('Tesla', 50);\nif (!car || typeof car.accelerate !== 'function') return 'createCar to\\'g\\'ri metodga ega obyekt qaytarmadi';\nconst newSpeed = car.accelerate(30);\nif (newSpeed === 80 && car.speed === 80) return null;\nreturn 'accelerate metodi tezlikni to\\'g\\'ri oshirmadi yoki qaytarmadi';"
+  },
+  {
+    "id": 4,
+    "title": "Obyekt Qismi",
+    "instruction": "Kiritilgan kalit va qiymatdan iborat yangi obyekt qaytaruvchi `makeObject(key, value)` yozing.",
+    "startingCode": "function makeObject(key, value) {\n  // Kodni yozing\n}",
+    "hint": "ES6 dagi qisqa yozish yoki Computed Property Names `{[key]: value}` ishlating.",
+    "test": "const fn = new Function(code + '; return makeObject;')(); const o = fn('name', 'Ali'); if(o.name !== 'Ali') return 'Xato'; return null;"
+  },
+  {
+    "id": 5,
+    "title": "Kalitlar Massivi",
+    "instruction": "Berilgan obyektning barcha kalitlarini massiv sifatida qaytaradigan `getKeys(obj)` yozing.",
+    "startingCode": "function getKeys(obj) {\n  // Kodni yozing\n}",
+    "hint": "Object.keys(obj) eng to'g'ri va oson usul.",
+    "test": "const fn = new Function(code + '; return getKeys;')(); if(fn({a:1, b:2}).join(',') !== 'a,b') return 'To\\'g\\'ri kalitlar olinmadi'; return null;"
+  },
+  {
+    "id": 6,
+    "title": "Qiymatlar Massivi",
+    "instruction": "Berilgan obyektning barcha qiymatlarini massiv sifatida qaytaruvchi `getValues(obj)` yozing.",
+    "startingCode": "function getValues(obj) {\n  // Kodni yozing\n}",
+    "hint": "Object.values(obj) orqali hal qiling.",
+    "test": "const fn = new Function(code + '; return getValues;')(); if(fn({a:10, b:20}).join(',') !== '10,20') return 'Xato'; return null;"
+  },
+  {
+    "id": 7,
+    "title": "Obyektda Kalitning Borligi",
+    "instruction": "Obyekt va kalit satri berilgan. Agar o'sha kalit obyektda bor bo'lsa `true`, aks holda `false` qaytaruvchi `hasKey(obj, key)` yozing.",
+    "startingCode": "function hasKey(obj, key) {\n  // Kodni yozing\n}",
+    "hint": "obj.hasOwnProperty(key) yoki key in obj ishlatsa bo'ladi.",
+    "test": "const fn = new Function(code + '; return hasKey;')(); if(fn({x:1}, 'x') !== true) return 'Bor'; if(fn({x:1}, 'y') !== false) return 'Yo\\'q'; return null;"
+  },
+  {
+    "id": 8,
+    "title": "Ikki Obyektni Birlashtirish",
+    "instruction": "Ikkita obyekt qabul qilib ularning xossalarini bitta yangi obyektga yig'ib qaytaradigan `mergeObjects(obj1, obj2)` yozing.",
+    "startingCode": "function mergeObjects(obj1, obj2) {\n  // Kodni yozing\n}",
+    "hint": "Spread operatori `{...obj1, ...obj2}` yoki Object.assign ishlating.",
+    "test": "const fn = new Function(code + '; return mergeObjects;')(); const r = fn({a:1}, {b:2}); if(r.a !== 1 || r.b !== 2) return 'Xato'; return null;"
+  },
+  {
+    "id": 9,
+    "title": "Xossani O'chirish",
+    "instruction": "Berilgan obyektdan ko'rsatilgan kalitni o'chirib, obyektning o'zini qaytaruvchi `removeProperty(obj, key)` yozing.",
+    "startingCode": "function removeProperty(obj, key) {\n  // Kodni yozing\n}",
+    "hint": "delete obj[key] ishlatib keyin obj ni qaytaring.",
+    "test": "const fn = new Function(code + '; return removeProperty;')(); const r = fn({a:1, b:2}, 'a'); if(r.a !== undefined || r.b !== 2) return 'Xato'; return null;"
+  },
+  {
+    "id": 10,
+    "title": "Bo'sh Obyektmi?",
+    "instruction": "Obyekt qabul qilib, agar uning ichida hech qanday xossa bo'lmasa `true` qaytaradigan `isEmptyObject(obj)` yozing.",
+    "startingCode": "function isEmptyObject(obj) {\n  // Kodni yozing\n}",
+    "hint": "Object.keys(obj).length === 0 ekanligini tekshiring.",
+    "test": "const fn = new Function(code + '; return isEmptyObject;')(); if(fn({}) !== true) return 'Bo\\'sh uchun true'; if(fn({a:1}) !== false) return 'To\\'la uchun false'; return null;"
+  },
+  {
+    "id": 11,
+    "title": "Yosh bo'yicha Tartiblash",
+    "instruction": "Odamlar obyektlaridan tashkil topgan massivni `age` qiymati bo'yicha o'sish tartibida joylashtirib qaytaruvchi `sortByAge(arr)` yozing.",
+    "startingCode": "function sortByAge(arr) {\n  // Kodni yozing\n}",
+    "hint": "arr.sort((a, b) => a.age - b.age) tavsiya etiladi.",
+    "test": "const fn = new Function(code + '; return sortByAge;')(); const r = fn([{age:30},{age:10},{age:20}]); if(r[0].age !== 10) return 'Noto\\'g\\'ri'; return null;"
+  },
+  {
+    "id": 12,
+    "title": "Maoshlar Yig'indisi",
+    "instruction": "`salaries` nomli obyekt berilgan (masalan `{John: 100, Ann: 160}`). Undagi barcha qiymatlar yig'indisini hisoblovchi `sumSalaries(salaries)` yozing.",
+    "startingCode": "function sumSalaries(salaries) {\n  // Kodni yozing\n}",
+    "hint": "Object.values() ni olib reduce bilan qoshing.",
+    "test": "const fn = new Function(code + '; return sumSalaries;')(); if(fn({a:10, b:20, c:30}) !== 60) return 'Yig\\'indi 60 bo\\'lishi kerak'; return null;"
+  },
+  {
+    "id": 13,
+    "title": "Obyekt Nusxasi (Clone)",
+    "instruction": "Berilgan obyektning sayoz nusxasini (shallow clone) yaratib qaytaradigan `cloneObject(obj)` yozing.",
+    "startingCode": "function cloneObject(obj) {\n  // Kodni yozing\n}",
+    "hint": "return {...obj} buni yaxshi bajaradi.",
+    "test": "const fn = new Function(code + '; return cloneObject;')(); const o = {a:1}; const c = fn(o); if(c===o || c.a!==1) return 'Nusxa emas yoki qiymat xato'; return null;"
   }
 ]
 ,
