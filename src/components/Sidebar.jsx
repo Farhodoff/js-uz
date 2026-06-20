@@ -4,6 +4,7 @@ import { curriculum, SECTIONS } from '../data/curriculum';
 import { PATHS, PATH_KEYS } from '../data/paths';
 import LayoutIcon from './icons/LayoutIcon';
 import { useAppStore } from '../store/useAppStore';
+import { reactCurriculum, REACT_SECTIONS } from '../data/reactCurriculum';
 
 export default function Sidebar({
   activeSection, setActiveSection, activeLesson, openLesson
@@ -17,6 +18,11 @@ export default function Sidebar({
   const getStats = useAppStore(state => state.getStats);
   const totalCompleted = useAppStore(state => state.totalCompleted());
   const completed = useAppStore(state => state.completed);
+  const activeTrack = useAppStore(state => state.activeTrack || 'js');
+  const setActiveTrack = useAppStore(state => state.setActiveTrack);
+
+  const currentCurriculum = activeTrack === 'react' ? reactCurriculum : curriculum;
+  const currentSections = activeTrack === 'react' ? REACT_SECTIONS : SECTIONS;
 
   return (
     <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`} role="navigation" aria-label="Darslar navigatsiyasi">
@@ -34,12 +40,36 @@ export default function Sidebar({
         </button>
       </div>
 
+      <div style={{ display: 'flex', borderBottom: '1px solid #334155' }}>
+        <button 
+          onClick={() => {
+            setActiveTrack('js');
+            setActiveSection('beginner');
+            navigate('/beginner');
+          }}
+          style={{ flex: 1, padding: '10px', background: activeTrack === 'js' ? '#1e293b' : 'transparent', color: activeTrack === 'js' ? '#f1c40f' : '#64748b', border: 'none', borderBottom: activeTrack === 'js' ? '2px solid #f1c40f' : '2px solid transparent', cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          JavaScript
+        </button>
+        <button 
+          onClick={() => {
+            setActiveTrack('react');
+            setActiveSection('reactBeginner');
+            navigate('/reactBeginner');
+          }}
+          style={{ flex: 1, padding: '10px', background: activeTrack === 'react' ? '#1e293b' : 'transparent', color: activeTrack === 'react' ? '#61dafb' : '#64748b', border: 'none', borderBottom: activeTrack === 'react' ? '2px solid #61dafb' : '2px solid transparent', cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          React
+        </button>
+      </div>
+
       <div className="sidebar-content">
-        <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '5px', marginBottom: '8px', paddingLeft: '12px' }}>
-          To'liq Katalog
+        <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '10px', marginBottom: '8px', paddingLeft: '12px' }}>
+          {activeTrack === 'react' ? "React Katalogi" : "To'liq Katalog"}
         </div>
-        {SECTIONS.filter(key => key !== 'challenges').map(key => {
-          const s = curriculum[key];
+        {currentSections.filter(key => key !== 'challenges').map(key => {
+          const s = currentCurriculum[key];
+          if (!s) return null;
           const stats = getStats(s.lessons);
           const isActive = activeSection === key;
 
@@ -47,7 +77,10 @@ export default function Sidebar({
             <div key={key}>
               <button
                 className={`section-item ${isActive ? 'active' : ''}`}
-                onClick={() => setActiveSection(key)}
+                onClick={() => {
+                  setActiveSection(key);
+                  navigate(`/${key}`);
+                }}
                 style={isActive ? { borderLeftColor: s.color } : undefined}
                 aria-expanded={isActive}
               >

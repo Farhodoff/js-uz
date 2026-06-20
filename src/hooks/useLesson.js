@@ -1,14 +1,20 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { curriculum, SECTIONS } from '../data/curriculum';
+import { reactCurriculum, REACT_SECTIONS } from '../data/reactCurriculum';
 import { PATHS, PATH_KEYS } from '../data/paths';
+import { useAppStore } from '../store/useAppStore';
 
 export function useLesson() {
   const navigate = useNavigate();
   const { section: urlSection, lessonId: urlLessonId } = useParams();
+  const activeTrack = useAppStore(state => state.activeTrack || 'js');
+  
+  const currentCurriculum = activeTrack === 'react' ? reactCurriculum : curriculum;
+  const currentSections = activeTrack === 'react' ? REACT_SECTIONS : SECTIONS;
 
   const [activeSection, setActiveSectionState] = useState(() => {
-    return (SECTIONS.includes(urlSection) || PATH_KEYS.includes(urlSection)) ? urlSection : 'beginner';
+    return (currentSections.includes(urlSection) || PATH_KEYS.includes(urlSection)) ? urlSection : currentSections[0];
   });
   const [activeLesson, setActiveLesson] = useState(null);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -19,7 +25,7 @@ export function useLesson() {
     let isCancelled = false;
 
     const loadLesson = async () => {
-      const secKey = (SECTIONS.includes(urlSection) || PATH_KEYS.includes(urlSection)) ? urlSection : 'beginner';
+      const secKey = (currentSections.includes(urlSection) || PATH_KEYS.includes(urlSection)) ? urlSection : currentSections[0];
       setActiveSectionState(secKey);
 
       if (secKey === 'challenges') {
@@ -27,7 +33,7 @@ export function useLesson() {
         return;
       }
 
-      const sectionData = PATH_KEYS.includes(secKey) ? PATHS[secKey] : curriculum[secKey];
+      const sectionData = PATH_KEYS.includes(secKey) ? PATHS[secKey] : currentCurriculum[secKey];
       if (!sectionData || !sectionData.lessons || sectionData.lessons.length === 0) return;
 
       let targetLessonRef = urlLessonId 
@@ -61,16 +67,16 @@ export function useLesson() {
     return () => {
       isCancelled = true;
     };
-  }, [urlSection, urlLessonId, navigate]);
+  }, [urlSection, urlLessonId, navigate, currentCurriculum, currentSections]);
 
   const setActiveSection = useCallback((key) => {
-    const sec = PATH_KEYS.includes(key) ? PATHS[key] : curriculum[key];
+    const sec = PATH_KEYS.includes(key) ? PATHS[key] : currentCurriculum[key];
     if (key === 'challenges') {
       navigate('/challenges');
     } else if (sec && sec.lessons.length > 0) {
       navigate(`/${key}/${sec.lessons[0].id}`);
     }
-  }, [navigate]);
+  }, [navigate, currentCurriculum]);
 
   const openLesson = useCallback((lesson, section) => {
     const sec = section || activeSection;
@@ -88,7 +94,7 @@ export function useLesson() {
     }
   }, [activeLesson]);
 
-  const sec = PATH_KEYS.includes(activeSection) ? PATHS[activeSection] : curriculum[activeSection];
+  const sec = PATH_KEYS.includes(activeSection) ? PATHS[activeSection] : currentCurriculum[activeSection];
 
   return {
     activeSection,

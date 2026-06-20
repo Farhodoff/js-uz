@@ -5,6 +5,8 @@ export const useAppStore = create(
   persist(
     (set, get) => ({
       // Global UI State
+      activeTrack: 'js',
+      setActiveTrack: (track) => set({ activeTrack: track }),
       sidebarOpen: true,
       setSidebarOpen: (isOpen) => set({ sidebarOpen: isOpen }),
       isSearchOpen: false,
