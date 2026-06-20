@@ -84,7 +84,7 @@ export default function Sidebar({
         <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '20px', marginBottom: '8px', paddingLeft: '12px' }}>
           To'liq Katalog
         </div>
-        {SECTIONS.map(key => {
+        {SECTIONS.filter(key => key !== 'challenges').map(key => {
           const s = curriculum[key];
           const stats = getStats(s.lessons);
           const isActive = activeSection === key;
@@ -101,16 +101,14 @@ export default function Sidebar({
                   {s.icon} {s.label}
                 </div>
                 <div className="section-progress">
-                  {key === 'challenges' ? 'Kodni tahlil qilish' : `${stats.done}/${stats.total} bajarildi`}
+                  {stats.done}/{stats.total} bajarildi
                 </div>
-                {key !== 'challenges' && (
-                  <div className="section-progress-bar">
-                    <div
-                      className="section-progress-fill"
-                      style={{ width: `${stats.percent}%`, background: s.color }}
-                    />
-                  </div>
-                )}
+                <div className="section-progress-bar">
+                  <div
+                    className="section-progress-fill"
+                    style={{ width: `${stats.percent}%`, background: s.color }}
+                  />
+                </div>
               </button>
 
               {isActive && s.lessons.map(l => (
