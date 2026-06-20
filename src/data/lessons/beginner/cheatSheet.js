@@ -462,4 +462,39 @@ myPromise
 - Node.js
 - jQuery
 - RegEx tester`,
+  quizzes: [
+    {
+      question: "Qaysi xato turi o'zgaruvchi e'lon qilinmasdan ishlatilganda yuz beradi?",
+      options: [
+        "TypeError",
+        "SyntaxError",
+        "ReferenceError",
+        "URIError"
+      ],
+      correctAnswer: 2,
+      explanation: "ReferenceError - mavjud bo'lmagan (e'lon qilinmagan) o'zgaruvchiga murojaat qilinganda yuz beradi."
+    },
+    {
+      question: "JavaScript'da massiv oxiriga element qo'shish uchun qaysi metod ishlatiladi?",
+      options: [
+        "shift()",
+        "push()",
+        "pop()",
+        "unshift()"
+      ],
+      correctAnswer: 1,
+      explanation: "push() metodi massiv oxiriga yangi element qo'shadi."
+    },
+    {
+      question: "Qaysi operator 'qiymati va turi bo'yicha tenglik' ni tekshiradi?",
+      options: [
+        "==",
+        "=",
+        "!==",
+        "==="
+      ],
+      correctAnswer: 3,
+      explanation: "=== operatori qat'iy tenglikni (Strict Equality) tekshiradi: ham qiymat, ham tip bir xil bo'lishi kerak."
+    }
+  ]
 };
