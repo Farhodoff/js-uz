@@ -12,8 +12,8 @@ export const refImperative = {
 ### 2. forwardRef va useImperativeHandle
 * Odatda siz bola komponentning DOM elementiga ota komponentdan turib murojaat qila olmaysiz. Bunga ruxsat berish uchun **\`forwardRef\`** ishlatiladi.
 * **\`useImperativeHandle\`:** Agar siz ota komponentga butun bir DOM elementni emas, balki faqatgina o'zingiz belgilagan maxsus funksiyalarni (masalan, \`play()\`, \`pause()\`, \`focus()\`) bermoqchi bo'lsangiz, shu hookdan foydalanasiz. Bu React'da imperativ kod yozishning kamdan-kam holatlaridan biridir va u faqat zarurat tug'ilganda ishlatilishi kerak.
-\`,
-  code: \`import React, { useRef, useImperativeHandle, forwardRef } from "react";
+`,
+  code: `import React, { useRef, useImperativeHandle, forwardRef } from "react";
 
 // Bola komponent (faqat focus funksiyasini tashqariga beradi)
 const CustomInput = forwardRef((props, ref) => {
@@ -41,7 +41,7 @@ export default function App() {
       </button>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

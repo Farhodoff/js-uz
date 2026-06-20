@@ -14,8 +14,8 @@ Odatda komponent ichida ham dizayn (JSX), ham ma'lumotlarni olish mantiqi (fetch
 Agar bir xil mantiq (masalan, dark/light rejimini almashtirish, oyna o'lchamini kuzatish yoki serverdan ma'lumot olish) bir nechta joyda kerak bo'lsa, uni har bir komponentda qayta yozish o'rniga bitta \`useTheme\`, \`useWindowSize\` yoki \`useFetch\` hookiga aylantiramiz.
 
 **Muhim qoida:** Custom hooklar faqatgina **state mantiqini** ulashadi, state'ning o'zini emas! Ya'ni bitta hookni ikkita komponentda ishlatsangiz, ularning har birida mutlaqo mustaqil va alohida state yaratiladi.
-\`,
-  code: \`import React, { useState, useEffect } from "react";
+`,
+  code: `import React, { useState, useEffect } from "react";
 
 // CUSTOM HOOK YARATISH
 function useWindowWidth() {
@@ -43,7 +43,7 @@ export default function App() {
       <p>Oynani kichraytirib kattalashtirib ko'ring.</p>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

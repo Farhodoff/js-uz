@@ -7,8 +7,8 @@ React'ning o'rnatilgan funksiyasi bo'lib, Global State'ni boshqarish uchun qulay
 
 * **Qachon ishlatiladi:** Kam o'zgaradigan global ma'lumotlar uchun (masalan, Theme (Dark/Light), Language (Til sozlamalari)).
 * **Kamchiligi:** Agar Context qiymati tez-tez o'zgarib tursa, Context'ga ulangan **barcha** komponentlar qayta render bo'ladi (bu ishlash unumdorligi muammosiga olib keladi). Shuning uchun har bir kichik holat uchun Context ishlatish tavsiya etilmaydi.
-\`,
-  code: \`import React, { createContext, useContext, useState } from "react";
+`,
+  code: `import React, { createContext, useContext, useState } from "react";
 
 const ThemeContext = createContext();
 
@@ -30,7 +30,7 @@ function Toolbar() {
       <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>Mavzuni o'zgartirish</button>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

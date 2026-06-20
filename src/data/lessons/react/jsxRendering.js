@@ -16,8 +16,8 @@ Komponent qachon qayta render bo'ladi?
 1. State o'zgarganda (\`useState\`, \`useReducer\`).
 2. Prop'lar o'zgarganda (obyekt/massiv kabi \`reference\` turlari har doim yangi xotira manziliga ega bo'lsa, render triggerlanadi).
 3. Ota komponent render bo'lsa, barcha bola komponentlar (agar \`memo\` ishlatilmagan bo'lsa) ham qayta render bo'ladi.
-\`,
-  code: \`import React, { useState } from "react";
+`,
+  code: `import React, { useState } from "react";
 
 export default function App() {
   const [count, setCount] = useState(0);
@@ -33,7 +33,7 @@ export default function App() {
       <p>Konsolni tekshiring: har safar bosganda qanday qilib render trigger bo'lishini ko'rasiz.</p>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

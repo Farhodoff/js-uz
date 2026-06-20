@@ -11,8 +11,8 @@ React ilovalari (ayniqsa SPA - Single Page Application) kattalashgani sari, dast
 ### React.lazy va Suspense
 React'da komponentlarni "dangasa" (lazy) usulda yuklash uchun \`React.lazy()\` dan foydalaniladi.
 U komponentni darhol import qilmaydi, balki ekranda ko'rsatilishi kerak bo'lgandagina serverdan chaqiradi. Komponent yuklanayotgan paytda ekranda xato chiqmasligi uchun u albatta \`<Suspense>\` komponenti bilan o'ralishi va \`fallback\` (masalan, Spinner) berilishi shart.
-\`,
-  code: \`import React, { Suspense, useState } from "react";
+`,
+  code: `import React, { Suspense, useState } from "react";
 
 // Komponentni faqat kerak bo'lganda (tugma bosilganda) yuklaymiz!
 const HeavyComponent = React.lazy(() => {
@@ -37,7 +37,7 @@ export default function App() {
       )}
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

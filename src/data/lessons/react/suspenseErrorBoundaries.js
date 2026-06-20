@@ -11,8 +11,8 @@ Odatda biz datani yuklashda \`if (loading) return <Spinner/>\` deb yozamiz. \`Su
 ### 2. Error Boundaries
 Tasavvur qiling, qandaydir uchinchi tomon kutubxonasida (masalan, kichik bir tugma ichida) xatolik yuz berdi. React butunlay ishdan chiqadi va ekranda **"Oq ekran" (White Screen of Death)** paydo bo'ladi.
 * **Error Boundary** (Xatolik chegarasi) — bu xato yuz bergan komponentni o'rab turadigan maxsus qobiqdir. U ichkaridagi xatoni o'zida tutib qolib, dasturning qolgan qismi ishlashini davom ettirishga imkon beradi va foydalanuvchiga "Kechirasiz, xatolik yuz berdi" degan tushunarli yozuvni ko'rsatadi.
-\`,
-  code: \`import React, { Suspense } from "react";
+`,
+  code: `import React, { Suspense } from "react";
 
 // Dastur qulamasligi uchun React da odatda ErrorBoundary yoziladi (Class component orqali yoki 'react-error-boundary' kutubxonasi)
 
@@ -21,7 +21,7 @@ export default function App() {
     <div>
       <h1>Suspense & Error Boundary</h1>
       <pre style={{ background: '#eee', padding: 10, borderRadius: 5 }}>
-{`<ErrorBoundary fallback={<h2>Nimadir xato ketdi!</h2>}>
+{\`<ErrorBoundary fallback={<h2>Nimadir xato ketdi!</h2>}>
   <Suspense fallback={<h2>Ma'lumotlar yuklanmoqda...</h2>}>
     <DashboardData />
   </Suspense>
@@ -30,11 +30,11 @@ export default function App() {
 // Agar DashboardData yuklanayotgan bo'lsa -> "Ma'lumotlar yuklanmoqda..." chiqadi.
 // Agar DashboardData ichida API dan xato kelsa (JavaScript Error) -> "Nimadir xato ketdi!" chiqadi.
 // Va eng asosiysi: BUTUN Ilovaning boshqa qismlari ishlashda davom etadi!
-`}
+\`}
       </pre>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

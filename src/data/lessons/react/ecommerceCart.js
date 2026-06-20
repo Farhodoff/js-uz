@@ -11,8 +11,8 @@ Ikkinchi loyihamizda biz onlayn do'konlarning eng muhim qismi bo'lgan **"Savatch
 * **Actions:** \`ADD_TO_CART\`, \`REMOVE_FROM_CART\`, \`UPDATE_QUANTITY\` kabi harakatlarni (actions) Dispatch qilishni.
 
 Bu usul ko'plab o'rta hajmali loyihalar uchun Redux'ning o'rnini to'liq bosa oladi.
-\`,
-  code: \`import React, { useReducer, createContext, useContext } from "react";
+`,
+  code: `import React, { useReducer, createContext, useContext } from "react";
 
 // 1. Initial State
 const initialState = { items: [], total: 0 };
@@ -61,7 +61,7 @@ function Navbar() {
   return (
     <div style={{ background: '#333', color: 'white', padding: 15, display: 'flex', justifyContent: 'space-between' }}>
       <b>Mening Do'konim</b>
-      <span>Savat: {state.items.length} ta (Jami: ${state.total})</span>
+      <span>Savat: {state.items.length} ta (Jami: \${state.total})</span>
     </div>
   );
 }
@@ -81,7 +81,7 @@ function Products() {
       </div>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
     {

@@ -9,8 +9,8 @@ Backend'dan keladigan ma'lumotlarni (Server holatini) boshqarish qiyin vazifa. A
 
 * **Vazifasi:** API so'rovlarini avtomatlashtirish, ma'lumotlarni keshlash (caching), avtomatik yangilash (refetch in background), yuklanish (\`loading\`) va xatolik (\`error\`) holatlarini boshqarish.
 * **Muhim jihat:** Bu kutubxona ishlatilgach, ko'pincha global "state" (masalan Redux) ga ehtiyoj qolmaydi. Backend ma'lumotlari to'g'ridan-to'g'ri keshdan istalgan komponentda ishlatilishi mumkin bo'ladi.
-\`,
-  code: \`import React from "react";
+`,
+  code: `import React from "react";
 // Odatda _app.js da QueryClientProvider bilan o'raladi.
 // import { useQuery } from "@tanstack/react-query";
 
@@ -34,7 +34,7 @@ export default function App() {
       <p>Bu erda TanStack Query so'rovlari ko'rsatiladi. Kod ichidagi izoh (comment)larni o'qing.</p>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

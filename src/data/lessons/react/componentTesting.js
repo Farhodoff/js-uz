@@ -7,8 +7,8 @@ export const componentTesting = {
 
 * **Falsafasi:** RTL dasturni "kapot ostidagi" implementatsiyasi (masalan, \`state\`da qanday ob'ekt saqlanayotgani yoki qaysi hook ishlayotgani) bilan umuman qiziqmaydi. U faqatgina **foydalanuvchiga nima ko'rinyapti** va **tugmani bosganda ekranda qanday HTML paydo bo'lyapti**, shuni tekshiradi.
 * **Nega bu muhim?** Agar siz dasturingiz kodi implementatsiyasini (Refactor) qilsangiz — masalan \`useState\` dan \`useReducer\` ga o'tsangiz — foydalanuvchi buni sezmaydi. RTL bilan yozilgan testlaringiz ham xato bermasdan o'tishda davom etadi. Demak siz kodni emas, natijani test qilasiz.
-\`,
-  code: \`import React, { useState } from "react";
+`,
+  code: `import React, { useState } from "react";
 
 export default function App() {
   const [text, setText] = useState("");
@@ -17,7 +17,7 @@ export default function App() {
     <div>
       <h1>RTL Falsafasi</h1>
       <pre style={{ background: '#eee', padding: 10, borderRadius: 5 }}>
-{`// App.test.jsx
+{\`// App.test.jsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
@@ -32,11 +32,11 @@ test('tugmani bosganda matn o'zgaradi', () => {
   
   // Ekranda yangi matn paydo bo'lganini tekshirish
   expect(screen.getByText(/Muvaffaqiyatli/i)).toBeInTheDocument();
-});`}
+});\`}
       </pre>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

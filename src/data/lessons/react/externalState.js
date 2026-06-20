@@ -14,8 +14,8 @@ Hozirgi kunda eng tez ommalashayotgan kutubxona.
 Murakkab va katta ilovalar uchun sanoat standarti.
 * **Afzalligi:** Katta jamoalar uchun juda qulay, markazlashgan va "predictable" (oldindan bashorat qilinadigan) ma'lumotlar oqimi.
 * **Kamchiligi:** Ko'p "boilerplate" kod talab qiladi.
-\`,
-  code: \`import React from "react";
+`,
+  code: `import React from "react";
 import { create } from "zustand";
 
 // 1. Store yaratamiz
@@ -36,7 +36,7 @@ export default function App() {
       <button onClick={increasePopulation}>Ayiq qo'shish</button>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

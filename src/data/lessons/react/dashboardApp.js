@@ -9,8 +9,8 @@ Va nihoyat uchinchi amaliyot loyihamiz: **Admin Dashboard**. Ushbu loyiha ko'pla
 * **React Router:** Ilovani sahifalarga bo'lish (Asosiy, Foydalanuvchilar, Sozlamalar) va ularni brauzerni yangilamasdan navigatsiya qilish.
 * **Layouts & Outlet:** Saytning chap tomonidagi menyu (Sidebar) har doim joyida qolishi, o'ng tomondagi kontent (\`<Outlet />\`) esa URL ga qarab o'zgarishi (Nested Routing).
 * **Mock Data:** Jadval (Table) ko'rinishidagi ma'lumotlar bilan ishlash.
-\`,
-  code: \`import React from "react";
+`,
+  code: `import React from "react";
 // Odatda: import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 
 // MOCK Router o'rniga oddiy namuna
@@ -60,7 +60,7 @@ export default function App() {
       
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
     {

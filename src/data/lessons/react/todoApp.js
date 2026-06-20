@@ -13,8 +13,8 @@ Siz hozirgacha nazariy bilimlarni o'rgandingiz. Endi ularni amaliyotga tatbiq et
 
 **Nima uchun Zustand?**
 Chunki u React uchun eng oson va kuchli state management kutubxonalaridan biri. Unda ortiqcha boilerplate (ko'p kod) yozilmaydi.
-\`,
-  code: \`import React, { useState } from "react";
+`,
+  code: `import React, { useState } from "react";
 // Odatda: import { create } from "zustand"
 
 // Zustand o'rniga namuna uchun oddiy state (MOCK)
@@ -62,7 +62,7 @@ export default function App() {
       </ul>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
     {

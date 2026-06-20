@@ -9,8 +9,8 @@ SPA (Single Page Application) da sahifalar aslida butunlay yangilanmaydi, shunch
 * **Nested Routes (Ichma-ich marshrutlar):** Ota sahifa o'zgarishsiz qolib, uning faqat ma'lum qismini (masalan, dashboard ichidagi panellarni) almashtirish.
 * **Data Loaders:** Komponent render bo'lishidan oldin unga kerakli ma'lumotlarni serverdan yuklab olish (bu "render-as-you-fetch" yondashuvini ta'minlaydi).
 * **Actions:** Forma ma'lumotlarini jo'natish (submit) mantiqini marshrutning o'zida deklarativ ravishda boshqarish.
-\`,
-  code: \`import React from "react";
+`,
+  code: `import React from "react";
 // Odatda React Router "BrowserRouter" orqali ilovani o'rab oladi.
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
@@ -35,7 +35,7 @@ export default function App() {
       </div>
     </BrowserRouter>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

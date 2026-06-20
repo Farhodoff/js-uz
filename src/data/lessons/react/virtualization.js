@@ -13,8 +13,8 @@ Bu shunday texnikaki, u qancha ma'lumot bo'lishidan qat'i nazar, faqat **ayni pa
 2. **tanstack-virtual:** Zamonaviy, "headless" (faqat mantiqni beradigan, dizaynga aralashmaydigan) va juda moslashuvchan yechim (tavsiya etiladi).
 
 **Natija:** 10,000 ta qatordan iborat ro'yxat ham xuddi 10 ta qator boridek silliq ishlaydi!
-\`,
-  code: \`import React from "react";
+`,
+  code: `import React from "react";
 
 export default function App() {
   return (
@@ -35,7 +35,7 @@ export default function App() {
       <p style={{marginTop: 10, fontSize: "0.9rem", color: "gray"}}>Yuqoridagi oyna 5000px balandlikka ega ro'yxatni o'zida saqlayapti, lekin ichkarida faqat 3 dona qator chizilgan (qolganlarini o'chirilgan holatda tasavvur qiling).</p>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

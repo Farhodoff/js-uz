@@ -7,8 +7,8 @@ export const reactKeys = {
 
 * Agar siz \`index\` dan foydalansangiz, ro'yxatga element qo'shilganda React eski va yangi elementlarni chalkashtirib yuboradi va DOM'ni keraksiz qayta chizadi (yoki state'larni noto'g'ri bog'laydi).
 * Unique ID (\`id\`) ishlatish orqali React elementlar o'rnini almashtirganda DOM'ni to'liq qayta render qilmaydi, balki shunchaki "ko'chirib o'tkazadi".
-\`,
-  code: \`import React, { useState } from "react";
+`,
+  code: `import React, { useState } from "react";
 
 export default function App() {
   const [items, setItems] = useState([
@@ -34,7 +34,7 @@ export default function App() {
       </ul>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

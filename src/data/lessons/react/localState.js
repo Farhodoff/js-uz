@@ -25,8 +25,8 @@ State boshqaruvini murakkablashtirishdan oldin, **"Lifting State Up"** (holatni 
 | **Global, kam o'zgaruvchan** | \`Context API\` |
 | **Global, tez o'zgaruvchan** | \`Zustand\` yoki \`Redux\` |
 | **Backend ma'lumotlari** | \`TanStack Query\` |
-\`,
-  code: \`import React, { useState } from "react";
+`,
+  code: `import React, { useState } from "react";
 
 export default function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,7 +40,7 @@ export default function App() {
       {isOpen && <p>Bu matn Local State orqali boshqarilmoqda!</p>}
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

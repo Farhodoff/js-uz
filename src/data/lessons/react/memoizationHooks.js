@@ -14,8 +14,8 @@ React'da **Memoization** — bu qimmatli (og'ir) hisob-kitoblarni yoki funksiyal
 * **Vazifasi:** Funksiyaning xotiradagi o'rnini (reference) saqlab qolish. React'da har bir render paytida barcha o'zgaruvchilar va funksiyalar boshqatdan yaratiladi. 
 * **Qachon ishlatilishi kerak:** Agar siz funksiyani \`React.memo\` bilan o'ralgan bola komponentga (child component) Prop sifatida uzatayotgan bo'lsangiz. Agar \`useCallback\` ishlatmasangiz, bola komponent funksiya o'zgardi deb o'ylab keraksiz qayta render bo'laveradi.
 * **Qachon KERAK EMAS:** Oddiy HTML tugmalari (\`<button onClick={handleClick}>\`) ga uzatiladigan funksiyalar uchun \`useCallback\` ishlatishdan foyda yo'q.
-\`,
-  code: \`import React, { useState, useMemo } from "react";
+`,
+  code: `import React, { useState, useMemo } from "react";
 
 export default function App() {
   const [count, setCount] = useState(0);
@@ -44,7 +44,7 @@ export default function App() {
       <p>Sanoqni yoki matnni o'zgartirganda "Qimmatli hisob-kitob" qayta bajarilmaydi.</p>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

@@ -10,8 +10,8 @@ React'da formalarni boshqarish odatda juda ko'p state (\`useState\`) yozishni ta
 
 ### 2. Zod (Schema Validation)
 * Formalardagi xatoliklarni (masalan, parol kamida 8 harf bo'lishi kerak, email to'g'ri bo'lishi kerak) tekshirish uchun Zod ishlatiladi. Zod yordamida kiritilayotgan ma'lumotlarning qat'iy "sxemasi" yoziladi va u React Hook Form bilan ajoyib tarzda integratsiya qilinadi.
-\`,
-  code: \`import React from "react";
+`,
+  code: `import React from "react";
 // Odatda quyidagicha import qilinadi:
 // import { useForm } from "react-hook-form";
 
@@ -34,7 +34,7 @@ export default function App() {
       </p>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

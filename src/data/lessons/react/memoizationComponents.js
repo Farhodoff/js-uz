@@ -15,8 +15,8 @@ Odatda React'da ota komponent qayta render bo'lsa, uning ichidagi barcha bola ko
 ### Qachon ishlatish FOYDASIZ (va zararli)?
 * Agar komponent har doim yangi proplar qabul qilsa (masalan \`children\` prop yoki har safar yangi yaratiladigan ob'ektlar / inline funksiyalar).
 * Oddiy kichkina komponentlar uchun (React ularni shundoq ham juda tez render qiladi, ularni xotirada eslab qolish va solishtirish jarayoni esa ba'zan render qilishdan ham ko'proq vaqt olishi mumkin).
-\`,
-  code: \`import React, { useState, memo } from "react";
+`,
+  code: `import React, { useState, memo } from "react";
 
 // React.memo bilan o'ralgan bola komponent
 const ExpensiveChild = memo(({ name }) => {
@@ -40,7 +40,7 @@ export default function App() {
       <p>Konsolni tekshiring: tugmani bosganingizda bola komponent qayta ishlamayapti.</p>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

@@ -13,8 +13,8 @@ React komponentlarini stillash (dizayn berish) uchun bugungi kunda asosan 2 ta e
 * **Vazifasi:** CSS'ni to'g'ridan-to'g'ri JavaScript (yoki TypeScript) ichida yozish. 
 * **Afzalligi:** Dinamik stillar yaratish juda qulay (masalan, props orqali rangni mantiqan o'zgartirish).
 * **Kamchiligi:** Odatda ilova ishlash paytida (runtime) CSS'ni hisoblagani uchun tezlikka biroz ta'sir ko'rsatadi. Server Components (Next.js 13+) bilan ishlashda qiyinchiliklar tug'dirishi mumkin.
-\`,
-  code: \`import React from "react";
+`,
+  code: `import React from "react";
 
 export default function App() {
   return (
@@ -34,7 +34,7 @@ export default function App() {
       <p style={{ marginTop: '20px' }}>Tailwind loyihangizga o'rnatilgach, siz class="bg-blue-500 p-4" kabi classlar orqali dizayn berasiz.</p>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

@@ -14,8 +14,8 @@ Buning uchun brauzerga o'rnatiladigan **React Developer Tools** kengaytmasidan (
 * **Nima uchun render bo'ldi?** Profiler aynan qaysi state yoki prop o'zgargani uchun komponent qayta chizilganini aniq ko'rsatib beradi. Buni topgachgina optimallashtirish qilish mumkin.
 
 **Qoida:** Profilerni doim Production (yoqilgan \`build\`) versiyada emas, balki Development muhitida ishlating, lekin Development muhit React ishini biroz sekinroq ko'rsatishini unutmang.
-\`,
-  code: \`import React, { Profiler, useState } from "react";
+`,
+  code: `import React, { Profiler, useState } from "react";
 
 // Profiler ichki komponentlar qancha vaqt olishini hisoblaydi
 function onRenderCallback(
@@ -39,7 +39,7 @@ export default function App() {
       </div>
     </Profiler>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

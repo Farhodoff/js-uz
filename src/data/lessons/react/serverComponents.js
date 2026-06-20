@@ -12,15 +12,15 @@ Odatda React kodi brauzerga js fayl (bundle) sifatida tushadi va foydalanuvchi q
 ### Asosiy qoidalar:
 1. **Server Component (Default):** Agar sizga ma'lumotlar bazasidan (Database) to'g'ridan-to'g'ri narsa olish kerak bo'lsa yoki API kalitlarni sir saqlash kerak bo'lsa buni ishlating. Ular SEO uchun juda zo'r va tez ishlaydi.
 2. **Client Component (\`"use client"\`):** Agar sizga foydalanuvchi bilan interaktivlik (\`onClick\`, \`useState\`, \`useEffect\`) kerak bo'lsa, faylning eng tepasiga \`"use client"\` yozib aynan shu qismni brauzerga hisoblash uchun jo'natasiz.
-\`,
-  code: \`import React from "react";
+`,
+  code: `import React from "react";
 
 export default function App() {
   return (
     <div>
       <h1>Server Components vs Client Components</h1>
       <pre style={{ background: '#eee', padding: 10, borderRadius: 5 }}>
-{`// layout.js (Server Component)
+{\`// layout.js (Server Component)
 import db from './database';
 
 export default async function Layout({ children }) {
@@ -43,11 +43,11 @@ import { useState } from 'react';
 export default function LikeButton() {
   const [likes, setLikes] = useState(0);
   return <button onClick={() => setLikes(l => l+1)}>❤️ {likes}</button>;
-}`}
+}\`}
       </pre>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {

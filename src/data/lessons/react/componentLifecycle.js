@@ -14,8 +14,8 @@ React komponentlari qanday qilib "eslab qoladi"?
 
 * **Synchronization (Sinxronizatsiya):** \`useEffect\` komponent hayot sikli emas, balki "tashqi tizim" (API, DOM, Event Listeners) bilan komponent state'ini sinxronlashtirish vositasi.
 * **Dependencies:** \`dependency array\` ( \`[]\`) bu "qachon ishga tushish" emas, balki "qachon qayta sinxronizatsiya qilish" deganidir. Agar array bo'sh bo'lsa, u faqat bir marta ishlaydi.
-\`,
-  code: \`import React, { useState, useEffect } from "react";
+`,
+  code: `import React, { useState, useEffect } from "react";
 
 export default function App() {
   const [count, setCount] = useState(0);
@@ -36,7 +36,7 @@ export default function App() {
       <button onClick={() => setCount(c => c + 1)}>Oshirish</button>
     </div>
   );
-}\`,
+}`,
   exercises: [],
   quizzes: [
   {
