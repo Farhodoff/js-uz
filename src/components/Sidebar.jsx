@@ -35,34 +35,7 @@ export default function Sidebar({
       </div>
 
       <div className="sidebar-content">
-        <div style={{ paddingBottom: '10px', borderBottom: '1px solid #334155', marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <button
-            className={`section-item ${isPlayground ? 'active' : ''}`}
-            onClick={() => navigate('/playground')}
-            style={isPlayground ? { borderLeftColor: '#3b82f6', background: '#1e293b' } : undefined}
-          >
-            <div className="section-label" style={{ color: isPlayground ? '#3b82f6' : '#e2e8f0' }}>
-              🛠️ Qumdon (Playground)
-            </div>
-            <div className="section-progress">Interaktiv CodePen</div>
-          </button>
-
-          <button
-            className={`section-item ${activeSection === 'challenges' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveSection('challenges');
-              navigate('/challenges');
-            }}
-            style={activeSection === 'challenges' ? { borderLeftColor: '#9b59b6', background: '#1e293b' } : undefined}
-          >
-            <div className="section-label" style={{ color: activeSection === 'challenges' ? '#9b59b6' : '#e2e8f0' }}>
-              🏆 JS Challenges
-            </div>
-            <div className="section-progress">1600+ Mashqlar va Masalalar</div>
-          </button>
-        </div>
-
-        <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '10px', marginBottom: '8px', paddingLeft: '12px' }}>
+        <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '5px', marginBottom: '8px', paddingLeft: '12px' }}>
           O'quv Yo'laklari
         </div>
         {PATH_KEYS.map(key => {
@@ -155,6 +128,33 @@ export default function Sidebar({
             </div>
           );
         })}
+
+        <div style={{ paddingTop: '10px', borderTop: '1px solid #334155', marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <button
+            className={`section-item ${isPlayground ? 'active' : ''}`}
+            onClick={() => navigate('/playground')}
+            style={isPlayground ? { borderLeftColor: '#3b82f6', background: '#1e293b' } : undefined}
+          >
+            <div className="section-label" style={{ color: isPlayground ? '#3b82f6' : '#e2e8f0' }}>
+              🛠️ Qumdon (Playground)
+            </div>
+            <div className="section-progress">Interaktiv CodePen</div>
+          </button>
+
+          <button
+            className={`section-item ${activeSection === 'challenges' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveSection('challenges');
+              navigate('/challenges');
+            }}
+            style={activeSection === 'challenges' ? { borderLeftColor: '#9b59b6', background: '#1e293b' } : undefined}
+          >
+            <div className="section-label" style={{ color: activeSection === 'challenges' ? '#9b59b6' : '#e2e8f0' }}>
+              🏆 JS Challenges
+            </div>
+            <div className="section-progress">1600+ Mashqlar va Masalalar</div>
+          </button>
+        </div>
       </div>
 
       <div className="sidebar-footer">
