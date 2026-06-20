@@ -71,6 +71,14 @@ export const reactCurriculum = {
       { id: "suspenseErrorBoundaries", title: "Suspense va Error Boundaries", load: () => import("./lessons/react/suspenseErrorBoundaries.js").then(m => m.suspenseErrorBoundaries) }
     ]
   },
+  reactInterview: {
+    label: "Intervyu Savollari",
+    color: "#16a085",
+    icon: "🎤",
+    lessons: [
+      { id: "reactInterviewQuestions", title: "Top 20+ React Intervyu Savollari va Javoblar", load: () => import("./lessons/react/reactInterviewQuestions.js").then(m => m.reactInterviewQuestions) }
+    ]
+  },
   reactProjects: {
     label: "Amaliy Loyihalar",
     color: "#e67e22",
@@ -91,5 +99,6 @@ export const REACT_SECTIONS = [
   "reactArchitecture",
   "reactTesting",
   "reactModern",
+  "reactInterview",
   "reactProjects"
 ];
