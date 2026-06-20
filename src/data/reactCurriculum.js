@@ -4,12 +4,18 @@ export const reactCurriculum = {
     color: "#61dafb",
     icon: "⚛️",
     lessons: [
-      { id: "reactIntro", title: "1. Tayyorgarlik va Virtual DOM", load: () => import("./lessons/react/reactIntro.js").then(m => m.reactIntro) },
-      { id: "jsxRendering", title: "2. JSX Sintaksisi", load: () => import("./lessons/react/jsxRendering.js").then(m => m.jsxRendering) },
-      { id: "componentsProps", title: "3. Komponentlar va Props", load: () => import("./lessons/react/componentsProps.js").then(m => m.componentsProps) },
-      { id: "eventsConditionals", title: "4. Hodisalar (Events) va Shartli Render", load: () => import("./lessons/react/eventsConditionals.js").then(m => m.eventsConditionals) },
-      { id: "reactKeys", title: "5. Ro'yxatlar (Lists) va Keys", load: () => import("./lessons/react/reactKeys.js").then(m => m.reactKeys) },
-      { id: "componentLifecycle", title: "6. Asosiy Hooklar va API (useEffect)", load: () => import("./lessons/react/componentLifecycle.js").then(m => m.componentLifecycle) }
+      { id: "step1_setup", title: "1. Tayyorgarlik va O'rnatish", load: () => import("./lessons/react/step1_setup.js").then(m => m.step1_setup) },
+      { id: "step2_jsx", title: "2. JSX Sintaksisi", load: () => import("./lessons/react/step2_jsx.js").then(m => m.step2_jsx) },
+      { id: "step3_components", title: "3. Komponentlar", load: () => import("./lessons/react/step3_components.js").then(m => m.step3_components) },
+      { id: "step4_props", title: "4. Props (Properties)", load: () => import("./lessons/react/step4_props.js").then(m => m.step4_props) },
+      { id: "step5_state", title: "5. State (Holat)", load: () => import("./lessons/react/step5_state.js").then(m => m.step5_state) },
+      { id: "step6_events", title: "6. Hodisalar (Events)", load: () => import("./lessons/react/step6_events.js").then(m => m.step6_events) },
+      { id: "step7_hooks", title: "7. React Hooks (Asosiy)", load: () => import("./lessons/react/step7_hooks.js").then(m => m.step7_hooks) },
+      { id: "step8_lists", title: "8. Ro'yxatlar va Shartli Render", load: () => import("./lessons/react/step8_lists.js").then(m => m.step8_lists) },
+      { id: "step9_forms", title: "9. Formalar bilan ishlash", load: () => import("./lessons/react/step9_forms.js").then(m => m.step9_forms) },
+      { id: "step10_routing", title: "10. Marshrutlash (Routing)", load: () => import("./lessons/react/step10_routing.js").then(m => m.step10_routing) },
+      { id: "step11_context", title: "11. Holatni boshqarish (Context API)", load: () => import("./lessons/react/step11_context.js").then(m => m.step11_context) },
+      { id: "step12_api", title: "12. API bilan ishlash (HTTP So'rovlar)", load: () => import("./lessons/react/step12_api.js").then(m => m.step12_api) }
     ]
   },
   reactStateManagement: {
