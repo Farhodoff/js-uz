@@ -329,5 +329,5 @@ export const curriculum = {
   }
 };
 
-export const SECTIONS = ["beginner", "intermediate", "advanced", "typescript", "algorithms", "sql", "systemDesign", "ecosystem", "softSkills", "projects"];
+export const SECTIONS = ["beginner", "intermediate", "advanced", "typescript", "algorithms", "sql", "systemDesign", "ecosystem", "softSkills", "projects", "challenges"];
 
