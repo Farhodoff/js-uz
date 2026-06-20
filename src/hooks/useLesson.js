@@ -94,7 +94,10 @@ export function useLesson() {
     }
   }, [activeLesson]);
 
-  const sec = PATH_KEYS.includes(activeSection) ? PATHS[activeSection] : currentCurriculum[activeSection];
+  let sec = PATH_KEYS.includes(activeSection) ? PATHS[activeSection] : currentCurriculum[activeSection];
+  if (!sec) {
+    sec = currentCurriculum[currentSections[0]];
+  }
 
   return {
     activeSection,
