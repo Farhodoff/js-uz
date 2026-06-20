@@ -26,7 +26,7 @@ function Greeting() {
 \`\`\`
 
 ### Eski usul (Class Components) - Faqat bilib qo'yish uchun
-Bunda `React.Component` dan meros (extends) olinadi va majburiy `render()` metodi bo'ladi.
+Bunda \`React.Component\` dan meros (extends) olinadi va majburiy \`render()\` metodi bo'ladi.
 \`\`\`jsx
 class Greeting extends React.Component {
   render() {
