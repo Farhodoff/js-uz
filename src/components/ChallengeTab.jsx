@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ChallengeCard from "./ChallengeCard";
 import ExplanationBox from "./ExplanationBox";
 import ChallengeBuilder from "./ChallengeBuilder";
@@ -15,6 +15,24 @@ export default function ChallengeTab() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [attempts, setAttempts] = useState({});
   const [visibleResults, setVisibleResults] = useState(20);
+  const observerTarget = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting) {
+          setVisibleResults(prev => prev + 20);
+        }
+      },
+      { rootMargin: "100px" }
+    );
+    
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+    
+    return () => observer.disconnect();
+  }, [filteredChallenges.length]);
 
   const bookmarks = useAppStore(state => state.bookmarks);
   const toggleBookmark = useAppStore(state => state.toggleBookmark);
@@ -229,14 +247,11 @@ export default function ChallengeTab() {
                     );
                   })}
                 </div>
+                
                 {visibleResults < filteredChallenges.length && (
-                  <button 
-                    className="btn btn-ghost" 
-                    onClick={() => setVisibleResults(prev => prev + 20)}
-                    style={{ marginTop: "var(--space-3)", width: "100%", padding: "var(--space-2)", fontSize: "var(--text-sm)" }}
-                  >
-                    Ko'proq ko'rsatish ({filteredChallenges.length - visibleResults} ta qoldi) ↓
-                  </button>
+                  <div ref={observerTarget} style={{ height: "20px", marginTop: "10px", textAlign: "center", color: "var(--text-secondary)" }}>
+                    Yuklanmoqda...
+                  </div>
                 )}
               </div>
 

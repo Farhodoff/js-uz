@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-export default function BackupModal({ isOpen, onClose }) {
+export default function SettingsModal({ isOpen, onClose }) {
   const fileInputRef = useRef(null);
   const [status, setStatus] = useState("");
 

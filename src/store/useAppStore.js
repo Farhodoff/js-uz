@@ -9,6 +9,8 @@ export const useAppStore = create(
       setSidebarOpen: (isOpen) => set({ sidebarOpen: isOpen }),
       isSearchOpen: false,
       setSearchOpen: (isOpen) => set({ isSearchOpen: isOpen }),
+      isSettingsOpen: false,
+      setSettingsOpen: (isOpen) => set({ isSettingsOpen: isOpen }),
 
       // Progress & Bookmark State
       completed: {},
