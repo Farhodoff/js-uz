@@ -27,7 +27,7 @@ export default function TheoryTab({ activeLesson }) {
           },
         }}
       >
-        {activeLesson.theory}
+        {activeLesson.theory || activeLesson.content}
       </ReactMarkdown>
     </div>
   );

@@ -235,7 +235,7 @@ export default function PracticeTab({
           )}
         </div>
         <div className="exercise-instruction">
-          {currentExercise?.instruction || activeLesson.task}
+          {currentExercise?.instruction || activeLesson.task || "Quyidagi kod muharririda berilgan namunani o'rganing va tahrirlang."}
         </div>
       </div>
 

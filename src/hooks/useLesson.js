@@ -54,7 +54,7 @@ export function useLesson() {
               const fullLesson = { ...targetLessonRef, ...loadedData };
               setActiveLesson(fullLesson);
               setCurrentExerciseIndex(0);
-              setCode(fullLesson.exercises?.[0]?.startingCode || fullLesson.task || '');
+              setCode(fullLesson.exercises?.[0]?.startingCode || fullLesson.code || fullLesson.task || '');
             }
           } catch (error) {
             console.error("Darsni yuklashda xatolik:", error);
@@ -82,7 +82,7 @@ export function useLesson() {
     const sec = section || activeSection;
     setActiveLesson(lesson);
     setCurrentExerciseIndex(0);
-    setCode(lesson.exercises?.[0]?.startingCode || lesson.task || '');
+    setCode(lesson.exercises?.[0]?.startingCode || lesson.code || lesson.task || '');
     navigate(`/${sec}/${lesson.id}`);
   }, [activeSection, navigate]);
 
