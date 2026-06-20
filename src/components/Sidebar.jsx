@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { curriculum, SECTIONS } from '../data/curriculum';
 import { PATHS, PATH_KEYS } from '../data/paths';
 import LayoutIcon from './icons/LayoutIcon';
+import BackupModal from './BackupModal';
 import { useAppStore } from '../store/useAppStore';
 
 export default function Sidebar({
@@ -11,6 +12,7 @@ export default function Sidebar({
   const navigate = useNavigate();
   const location = useLocation();
   const isPlayground = location.pathname === '/playground';
+  const [isBackupOpen, setIsBackupOpen] = React.useState(false);
 
   const sidebarOpen = useAppStore(state => state.sidebarOpen);
   const setSidebarOpen = useAppStore(state => state.setSidebarOpen);
@@ -157,9 +159,18 @@ export default function Sidebar({
         })}
       </div>
 
-      <div className="sidebar-footer">
-        Jami: {totalCompleted} dars bajarildi
+      <div className="sidebar-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span>Jami: {totalCompleted} dars bajarildi</span>
+        <button 
+          onClick={() => setIsBackupOpen(true)}
+          style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '1.2rem' }}
+          title="Sozlamalar va Zaxira"
+        >
+          ⚙️
+        </button>
       </div>
+
+      <BackupModal isOpen={isBackupOpen} onClose={() => setIsBackupOpen(false)} />
     </nav>
   );
 }

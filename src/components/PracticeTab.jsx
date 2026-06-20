@@ -7,6 +7,7 @@ export default function PracticeTab({
   currentExerciseIndex, setCurrentExerciseIndex, output
 }) {
   const [editorHeight, setEditorHeight] = useState(280);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const isResizingHeight = useRef(false);
 
   const runCodeRef = useRef(runCode);
@@ -144,7 +145,23 @@ export default function PracticeTab({
     };
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   if (!activeLesson) return null;
+
+  const insertText = (text) => {
+    if (editorRef.current) {
+      const editor = editorRef.current;
+      const selection = editor.getSelection();
+      const op = { range: selection, text: text, forceMoveMarkers: true };
+      editor.executeEdits("mobile-toolbar", [op]);
+      editor.focus();
+    }
+  };
 
   const exercises = activeLesson.exercises || [];
   const currentExercise = exercises[currentExerciseIndex] || null;
@@ -224,6 +241,20 @@ export default function PracticeTab({
 
       {/* Code Editor */}
       <div className="editor-wrapper" style={{ minHeight: '150px' }}>
+        {isMobile && (
+          <div className="mobile-toolbar">
+            {['{', '}', '(', ')', '[', ']', '=>', '"', "'", '`', ';', '=', 'console.log()'].map(char => (
+              <button 
+                key={char} 
+                className="mobile-toolbar-btn"
+                onClick={() => insertText(char === 'console.log()' ? 'console.log()' : char)}
+                title={`Kiritish: ${char}`}
+              >
+                {char}
+              </button>
+            ))}
+          </div>
+        )}
         <Editor
           height={`${editorHeight}px`}
           language={

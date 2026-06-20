@@ -2317,3 +2317,37 @@ body {
   background: rgba(255,255,255,0.1);
   color: var(--text-primary);
 }
+
+/* Mobile Toolbar Styles */
+.mobile-toolbar {
+  display: flex;
+  overflow-x: auto;
+  background: #1e1e1e;
+  padding: 4px;
+  border-bottom: 1px solid var(--border-primary);
+  gap: 4px;
+  /* Hide scrollbar */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.mobile-toolbar::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-toolbar-btn {
+  background: #2d2d2d;
+  color: #d4d4d4;
+  border: 1px solid #3e3e42;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mobile-toolbar-btn:active {
+  background: #094771;
+  color: #fff;
+}

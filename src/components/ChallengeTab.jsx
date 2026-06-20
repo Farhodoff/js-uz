@@ -14,6 +14,7 @@ export default function ChallengeTab() {
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [attempts, setAttempts] = useState({});
+  const [visibleResults, setVisibleResults] = useState(20);
 
   const bookmarks = useAppStore(state => state.bookmarks);
   const toggleBookmark = useAppStore(state => state.toggleBookmark);
@@ -53,6 +54,7 @@ export default function ChallengeTab() {
     setCurrentIndex(0);
     setSelectedOption("");
     setIsSubmitted(false);
+    setVisibleResults(20);
   };
 
   const filteredChallenges = challenges.filter(c => {
@@ -97,6 +99,7 @@ export default function ChallengeTab() {
     setCurrentIndex(0);
     setSelectedOption("");
     setIsSubmitted(false);
+    setVisibleResults(20);
     
     // Clear attempts for current filtered challenges
     const updatedAttempts = { ...attempts };
@@ -201,7 +204,7 @@ export default function ChallengeTab() {
               <div style={{ textAlign: "left", margin: "var(--space-5) 0 var(--space-6) 0" }}>
                 <h4 style={{ marginBottom: "var(--space-3)", color: "var(--text-primary)" }}>Natijalarni qayta ko'rish:</h4>
                 <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
-                  {filteredChallenges.map((c, idx) => {
+                  {filteredChallenges.slice(0, visibleResults).map((c, idx) => {
                     const isCorrect = attempts[c.id]?.isCorrect;
                     return (
                       <div 
@@ -226,6 +229,15 @@ export default function ChallengeTab() {
                     );
                   })}
                 </div>
+                {visibleResults < filteredChallenges.length && (
+                  <button 
+                    className="btn btn-ghost" 
+                    onClick={() => setVisibleResults(prev => prev + 20)}
+                    style={{ marginTop: "var(--space-3)", width: "100%", padding: "var(--space-2)", fontSize: "var(--text-sm)" }}
+                  >
+                    Ko'proq ko'rsatish ({filteredChallenges.length - visibleResults} ta qoldi) ↓
+                  </button>
+                )}
               </div>
 
               <div style={{ display: "flex", gap: "var(--space-3)", justifyContent: "center" }}>
