@@ -39,24 +39,32 @@ export default function ChallengeTab() {
 
   // Load challenges and attempts from LocalStorage
   useEffect(() => {
-    const savedChallenges = localStorage.getItem("js_challenges");
-    if (savedChallenges) {
-      const parsed = JSON.parse(savedChallenges);
-      // Agarda fayldagi baza hajmi o'zgargan bo'lsa (yangi savollar yuklanganda), localStorageni yangilaymiz
-      if (parsed.length !== seedChallenges.length) {
+    try {
+      const savedChallenges = localStorage.getItem("js_challenges");
+      if (savedChallenges) {
+        const parsed = JSON.parse(savedChallenges);
+        if (Array.isArray(parsed) && parsed.length === seedChallenges.length) {
+          setChallenges(parsed);
+        } else {
+          setChallenges(seedChallenges);
+          localStorage.setItem("js_challenges", JSON.stringify(seedChallenges));
+        }
+      } else {
         setChallenges(seedChallenges);
         localStorage.setItem("js_challenges", JSON.stringify(seedChallenges));
-      } else {
-        setChallenges(parsed);
       }
-    } else {
+    } catch (error) {
+      console.error("Storage error:", error);
       setChallenges(seedChallenges);
-      localStorage.setItem("js_challenges", JSON.stringify(seedChallenges));
     }
 
-    const savedAttempts = localStorage.getItem("js_attempts");
-    if (savedAttempts) {
-      setAttempts(JSON.parse(savedAttempts));
+    try {
+      const savedAttempts = localStorage.getItem("js_attempts");
+      if (savedAttempts) {
+        setAttempts(JSON.parse(savedAttempts));
+      }
+    } catch (error) {
+      setAttempts({});
     }
   }, []);
 
