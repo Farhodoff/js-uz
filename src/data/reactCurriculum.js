@@ -4,10 +4,12 @@ export const reactCurriculum = {
     color: "#61dafb",
     icon: "⚛️",
     lessons: [
-      { id: "reactIntro", title: "Virtual DOM va Reconciliation", load: () => import("./lessons/react/reactIntro.js").then(m => m.reactIntro) },
-      { id: "jsxRendering", title: "JSX va Rendering", load: () => import("./lessons/react/jsxRendering.js").then(m => m.jsxRendering) },
-      { id: "componentLifecycle", title: "Component Lifecycle va useEffect", load: () => import("./lessons/react/componentLifecycle.js").then(m => m.componentLifecycle) },
-      { id: "reactKeys", title: "Keys va Listlar bilan ishlash", load: () => import("./lessons/react/reactKeys.js").then(m => m.reactKeys) }
+      { id: "reactIntro", title: "1. Tayyorgarlik va Virtual DOM", load: () => import("./lessons/react/reactIntro.js").then(m => m.reactIntro) },
+      { id: "jsxRendering", title: "2. JSX Sintaksisi", load: () => import("./lessons/react/jsxRendering.js").then(m => m.jsxRendering) },
+      { id: "componentsProps", title: "3. Komponentlar va Props", load: () => import("./lessons/react/componentsProps.js").then(m => m.componentsProps) },
+      { id: "eventsConditionals", title: "4. Hodisalar (Events) va Shartli Render", load: () => import("./lessons/react/eventsConditionals.js").then(m => m.eventsConditionals) },
+      { id: "reactKeys", title: "5. Ro'yxatlar (Lists) va Keys", load: () => import("./lessons/react/reactKeys.js").then(m => m.reactKeys) },
+      { id: "componentLifecycle", title: "6. Asosiy Hooklar va API (useEffect)", load: () => import("./lessons/react/componentLifecycle.js").then(m => m.componentLifecycle) }
     ]
   },
   reactStateManagement: {
