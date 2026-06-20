@@ -1,5 +1,487 @@
 export const challenges = [
   {
+    id: "hc-es6-2",
+    title: "Destructuring va Default qiymatlar",
+    difficulty: "medium",
+    category: "es6",
+    code: `const user = { 
+  profile: { name: "Ali" } 
+};
+
+const { profile: { age = 20, name } = {} } = user;
+const { settings: { theme = "dark" } = {} } = user;
+
+console.log(age, name, theme);`,
+    options: [
+      "20 Ali undefined",
+      "20 Ali dark",
+      "Xatolik (Cannot read property 'theme' of undefined)",
+      "undefined Ali dark"
+    ],
+    correctAnswer: "20 Ali dark",
+    explanation: `**Deep Destructuring xavfsizligi:**
+1. \`profile\` obyekti ichidan \`age\` qidirildi, u yo'q. Shuning uchun default qiymat \`20\` olindi. \`name\` = "Ali".
+2. \`settings\` obyekti \`user\` ichida yo'q. Lekin \`= {}\` qilib unga fallback bo'sh obyekt berilgan. Shuning uchun \`settings\` bo'sh obyekt hisoblanib, ichidan \`theme\` olinadi va default "dark" qo'yiladi. Xatolik yuz bermaydi!`
+  },
+  {
+    id: "hc-dom-2",
+    title: "innerHTML vs textContent xavfsizligi",
+    difficulty: "hard",
+    category: "dom",
+    code: `// Foydalanuvchi quyidagi matnni kiritdi:
+const userInput = "<img src='x' onerror='alert(1)'>";
+
+const div1 = document.createElement("div");
+const div2 = document.createElement("div");
+
+div1.innerHTML = userInput;
+div2.textContent = userInput;
+
+// Dastur ishga tushganda nima bo'ladi?`,
+    options: [
+      "Hech narsa bo'lmaydi",
+      "Ikkalasida ham alert chiqadi",
+      "Faqat div1 da alert chiqadi",
+      "Faqat div2 da alert chiqadi"
+    ],
+    correctAnswer: "Faqat div1 da alert chiqadi",
+    explanation: `**XSS (Cross-Site Scripting) Hujumi:**
+\`innerHTML\` xususiyati unga berilgan matnni haqiqiy HTML elementlar kabi DOM ga qo'shib yuboradi. Rasmning manzili (\`x\`) xato bo'lgani uchun \`onerror\` ishga tushib, kod \`alert(1)\` ni chaqiradi.
+\`textContent\` esa matnni xavfsiz matn (string) sifatida o'qiydi va hech qanday teglarni ishga tushirmaydi. Shuning uchun tashqi datalarni DOM ga qo'shganda doim \`textContent\` ishlatish xavfsizroq.`
+  },
+  {
+    id: "hc-functional-2",
+    title: "Closure va xotira sizib chiqishi (Memory Leak)",
+    difficulty: "hard",
+    category: "functional",
+    code: `function createCounter() {
+  let count = 0;
+  return function() {
+    return ++count;
+  };
+}
+
+const c1 = createCounter();
+const c2 = createCounter();
+
+console.log(c1(), c1(), c2(), c1());`,
+    options: [
+      "1 2 1 3",
+      "1 2 3 4",
+      "1 1 1 1",
+      "1 2 1 2"
+    ],
+    correctAnswer: "1 2 1 3",
+    explanation: `**Closures (Yopilishlar) va Xotira:**
+\`createCounter()\` har gal chaqirilganda, u yangi mustaqil \`count\` o'zgaruvchisini o'z ichiga olgan yangi lexical environment (xotira joyi) yaratadi. 
+Shuning uchun \`c1\` ning o'zining shaxsiy hisoblagichi (1, 2, 3), \`c2\` ning esa butunlay boshqa noldan boshlanadigan shaxsiy hisoblagichi (1) bo'ladi. Ular bir-biriga ta'sir qilmaydi.`
+  },
+  {
+    id: "hc-eventloop-2",
+    title: "Promise.all vs Promise.race",
+    difficulty: "medium",
+    category: "eventloop",
+    code: `const p1 = new Promise(res => setTimeout(() => res("A"), 100));
+const p2 = new Promise((res, rej) => setTimeout(() => rej("B"), 50));
+const p3 = new Promise(res => setTimeout(() => res("C"), 150));
+
+Promise.race([p1, p2, p3])
+  .then(val => console.log("Yutdi: " + val))
+  .catch(err => console.log("Xato: " + err));`,
+    options: [
+      "Yutdi: A",
+      "Xato: B",
+      "Yutdi: C",
+      "Xatolik (Unhandled Promise Rejection)"
+    ],
+    correctAnswer: "Xato: B",
+    explanation: `**Promise.race() qanday ishlaydi:**
+Bu metod unga berilgan promislardan QAYSI BIRI eng birinchi yakunlansa (farqi yo'q u resolve bo'ladimi yoki reject) o'shaning natijasini oladi.
+\`p2\` 50ms da \`reject\` bo'ldi, qolganlari esa 100 va 150ms. Demak p2 birinchi bo'lib marraga yetadi va u xatolik qaytargani uchun \`.catch()\` bloki ishlaydi.`
+  },
+  {
+    id: "hc-eventloop-3",
+    title: "Microtask va DOM render navbati",
+    difficulty: "hard",
+    category: "eventloop",
+    code: `console.log("1");
+
+requestAnimationFrame(() => console.log("2"));
+
+Promise.resolve().then(() => console.log("3"));
+
+setTimeout(() => console.log("4"), 0);
+
+console.log("5");`,
+    options: [
+      "1, 5, 3, 2, 4",
+      "1, 5, 3, 4, 2",
+      "1, 3, 5, 2, 4",
+      "1, 5, 2, 3, 4"
+    ],
+    correctAnswer: "1, 5, 3, 4, 2",
+    explanation: `**Brauzer Event Loop zanjiri:**
+1. Sinxron kod: 1 va 5.
+2. Microtasklar navbati (\`Promise.then\`): 3.
+3. Macrotasklar navbati (\`setTimeout\`): 4.
+4. \`requestAnimationFrame\` asosan ekranni qayta chizishdan oldin ishlaydi, va u odatda \`setTimeout(..., 0)\` dan keyin bajariladi (chunki u ekranning 60fps yangilanishiga bog'langan).
+Shuning uchun javob: 1, 5, 3, 4, 2.`
+  },
+  {
+    id: "hc-eventloop-4",
+    title: "Async/Await qulflanishi",
+    difficulty: "hard",
+    category: "eventloop",
+    code: `async function foo() {
+  console.log("A");
+  await Promise.resolve();
+  console.log("B");
+}
+
+console.log("C");
+foo();
+console.log("D");`,
+    options: [
+      "C, A, B, D",
+      "C, D, A, B",
+      "C, A, D, B",
+      "A, C, D, B"
+    ],
+    correctAnswer: "C, A, D, B",
+    explanation: `**Async/Await aslida Generator+Promise dir:**
+1. Eng birinchi \`console.log("C")\` chiqadi.
+2. \`foo()\` funksiyasi chaqiriladi. Uning ichidagi BIRINCHI qator \`await\` ga qadar sinxron ishlaydi! Shuning uchun "A" chiqadi.
+3. \`await Promise.resolve()\` ga kelganda funksiya to'xtaydi va qolgan qismini Microtask navbatiga tashlab beradi.
+4. Funksiyadan tashqariga chiqib "D" ishlaydi.
+5. Sinxron kod tugagach, Microtaskdagi "B" ishlaydi.`
+  },
+  {
+    id: "hc-tricky-2",
+    title: "Matematik illuziyalar",
+    difficulty: "medium",
+    category: "tricky",
+    code: `console.log(0.1 + 0.2 === 0.3);
+console.log(9007199254740992 === 9007199254740993);`,
+    options: [
+      "true \\n false",
+      "false \\n true",
+      "false \\n false",
+      "true \\n true"
+    ],
+    correctAnswer: "false \\n true",
+    explanation: `**Floating point va Number.MAX_SAFE_INTEGER:**
+1. \`0.1 + 0.2\` asosan \`0.30000000000000004\` qaytaradi. Bu IEEE 754 float standartining noaniqligi. Demak \`false\`.
+2. JS da eng katta xavfsiz butun son \`Number.MAX_SAFE_INTEGER\` (9007199254740991) dir. Undan o'tgan sonlar xotira cheklovlari tufayli yaxlitlanib ketadi. Shuning uchun \`...92\` va \`...93\` kompyuter xotirasida bitta bir xil son deb hisoblanadi. Demak \`true\`.`
+  },
+  {
+    id: "hc-tricky-3",
+    title: "isNaN va Number.isNaN farqi",
+    difficulty: "medium",
+    category: "tricky",
+    code: `console.log(isNaN("Hello"));
+console.log(Number.isNaN("Hello"));`,
+    options: [
+      "true \\n false",
+      "false \\n true",
+      "true \\n true",
+      "false \\n false"
+    ],
+    correctAnswer: "true \\n false",
+    explanation: `**Global isNaN vs Number.isNaN:**
+- \`isNaN("Hello")\` eski global metod bo'lib, u argumentni avval Number ga o'tkazmoqchi bo'ladi. \`Number("Hello")\` NaN bo'ladi. Shunday qilib \`isNaN(NaN)\` => \`true\`.
+- \`Number.isNaN("Hello")\` ES6 dagi yangi va qat'iy metod. U umuman type-coercion (tur o'zgartirish) qilmaydi. Argument aniq qilib typeof jihatdan \`NaN\` bo'lsagina true beradi. String esa NaN emas, shuning uchun \`false\`.`
+  },
+  {
+    id: "hc-tricky-4",
+    title: "Array bo'shliqlarini sanash",
+    difficulty: "hard",
+    category: "tricky",
+    code: `const arr = [1, 2, , 4];
+
+console.log(arr.length);
+console.log(arr.map(x => x * 2));`,
+    options: [
+      "4 \\n [2, 4, NaN, 8]",
+      "3 \\n [2, 4, 8]",
+      "4 \\n [2, 4, empty, 8]",
+      "Xatolik"
+    ],
+    correctAnswer: "4 \\n [2, 4, empty, 8]",
+    explanation: `**Sparse Arrays (Teshik massivlar):**
+Array ichida 2 ta vergul qatorasiga kelsa, u o'rtada \`empty\` (bo'sh) slot yaratadi. U \`undefined\` emas, u umuman mavjud bo'lmagan indeks.
+1. Length baribir 4 ni ko'rsatadi.
+2. \`map\`, \`filter\`, \`forEach\` kabi metodlar bo'sh slotlarni shunchaki O'TKAZIB YUBORADI. Ular ustida callback ishlamaydi. Shuning uchun u yana bo'shligicha qoladi: \`[2, 4, empty, 8]\`.`
+  },
+  {
+    id: "hc-oop-2",
+    title: "Object.create va Null Prototip",
+    difficulty: "medium",
+    category: "oop",
+    code: `const obj1 = {};
+const obj2 = Object.create(null);
+
+console.log(obj1.toString ? "Bor" : "Yo'q");
+console.log(obj2.toString ? "Bor" : "Yo'q");`,
+    options: [
+      "Bor \\n Bor",
+      "Bor \\n Yo'q",
+      "Yo'q \\n Yo'q",
+      "Xatolik yuz beradi"
+    ],
+    correctAnswer: "Bor \\n Yo'q",
+    explanation: `**Object.create(null) siri:**
+Odatda \`{}\` qilib yaratilgan obyektlar avtomatik ravishda \`Object.prototype\` dan meros oladi va ularda \`toString\`, \`hasOwnProperty\` kabi metodlar mavjud bo'ladi.
+Biroq \`Object.create(null)\` qilinganda, u HECH QANDAY prototipsiz top-toza, bo'm-bo'sh obyekt yaratadi (hatto \`Object.prototype\` ham ulanmaydi). Shuning uchun \`obj2.toString\` umuman mavjud emas va \`undefined\` qaytaradi.`
+  },
+  {
+    id: "hc-oop-3",
+    title: "Classlarda Xususiy (Private) Maydonlar",
+    difficulty: "hard",
+    category: "oop",
+    code: `class BankAccount {
+  #balance = 1000;
+
+  getBalance() {
+    return this.#balance;
+  }
+}
+
+const myAccount = new BankAccount();
+console.log(myAccount.balance);
+console.log(myAccount.#balance);`,
+    options: [
+      "undefined \\n Xatolik (SyntaxError)",
+      "1000 \\n 1000",
+      "undefined \\n 1000",
+      "Xatolik (ReferenceError)"
+    ],
+    correctAnswer: "undefined \\n Xatolik (SyntaxError)",
+    explanation: `**Private Fields (#):**
+ES2022 dagi yangilanishlarga ko'ra \`#\` bilan boshlangan class maydonlari xususiy (private) hisoblanadi va ularga class tashqarisidan umuman murojaat qilib bo'lmaydi.
+\`myAccount.balance\` chaqirilganda bunday ochiq maydon yo'qligi uchun \`undefined\` qaytadi.
+Lekin \`myAccount.#balance\` qilib tashqaridan chaqirish to'g'ridan-to'g'ri Sintaksis xatoligiga (SyntaxError) olib keladi. Brauzer kodni hatto o'qishni boshlamasdan qulaydi.`
+  },
+  {
+    id: "hc-oop-4",
+    title: "__proto__ vs prototype",
+    difficulty: "hard",
+    category: "oop",
+    code: `function Car() {}
+
+console.log(Car.__proto__ === Car.prototype);
+console.log(Car.__proto__ === Function.prototype);`,
+    options: [
+      "false \\n true",
+      "true \\n false",
+      "false \\n false",
+      "true \\n true"
+    ],
+    correctAnswer: "false \\n true",
+    explanation: `**__proto__ va prototype farqi:**
+- \`prototype\` - faqat konstruktor funksiyalarda bo'ladigan xususiyat bo'lib, kelajakda undan yasaladigan (\`new Car()\`) obyektlarga beriladigan shablondir.
+- \`__proto__\` - har bir mavjud obyekt (shu jumladan funksiyalar) ning o'zini yaratgan onasiga (konstruktoriga) ko'rsatuvchi ichki zanjirdir.
+\`Car\` o'zi funksiya bo'lgani uchun, u \`Function\` dan yasalgan. Shuning uchun \`Car.__proto__\` aynan \`Function.prototype\` ga teng.`
+  },
+  {
+    id: "hc-oop-5",
+    title: "Prototipni to'g'ridan to'g'ri o'zgartirish",
+    difficulty: "medium",
+    category: "oop",
+    code: `function Person(name) {
+  this.name = name;
+}
+
+const p1 = new Person("Ali");
+
+Person.prototype = {
+  sayHi() {
+    return "Hi!";
+  }
+};
+
+const p2 = new Person("Vali");
+
+console.log(p1.sayHi ? "Ishladi" : "Yo'q");
+console.log(p2.sayHi ? "Ishladi" : "Yo'q");`,
+    options: [
+      "Ishladi \\n Ishladi",
+      "Yo'q \\n Ishladi",
+      "Ishladi \\n Yo'q",
+      "Yo'q \\n Yo'q"
+    ],
+    correctAnswer: "Yo'q \\n Ishladi",
+    explanation: `**Merosxo'rlik yo'llarini kesish:**
+\`p1\` yaratilganda, o'sha paytdagi dastlabki \`Person.prototype\` (bo'sh obyekt) ga qattiq bog'lanadi. 
+Keyin \`Person.prototype = {...}\` qilib uni butunlay YANGI obyekt bilan almashtirildi. 
+Endi eski \`p1\` o'sha eski bo'sh prototipda qolib ketadi (\`sayHi\` unda Yo'q). Yangi yaratilgan \`p2\` esa yangi prototipga ulanadi va unda \`sayHi\` Ishladi.`
+  },
+  {
+    id: "hc-oop-6",
+    title: "Klasslarni extends orqali uzatish siri",
+    difficulty: "hard",
+    category: "oop",
+    code: `class Parent {
+  constructor() {
+    this.name = "Parent";
+  }
+}
+
+class Child extends Parent {
+  constructor() {
+    // this.name = "Child"; (super() yozilmagan)
+  }
+}
+
+const c = new Child();
+console.log(c.name);`,
+    options: [
+      "Parent",
+      "Child",
+      "undefined",
+      "Xatolik yuz beradi (ReferenceError)"
+    ],
+    correctAnswer: "Xatolik yuz beradi (ReferenceError)",
+    explanation: `**Meros olingan Class'larda konstruktor:**
+Agar \`class Child extends Parent\` qilib meros olsak va ichida \`constructor()\` ochsak, eng birinchi \`super()\` (ya'ni ota klassni) chaqirishimiz SHART.
+Agar \`super()\` ni chaqirmasdan \`this\` dan foydalanmoqchi bo'lsak yoki shunchaki \`this\` ga tegmasdan bo'sh qoldirsak ham, JavaScript \`ReferenceError: Must call super constructor in derived class before accessing 'this'\` xatoligini tashlaydi.`
+  },
+  {
+    id: "hc-this-2",
+    title: "Method chaqiruvlari va Obyektlar",
+    difficulty: "medium",
+    category: "this",
+    code: `const user = {
+  name: "Ali",
+  greet() {
+    return \`Salom, \${this.name}\`;
+  }
+};
+
+const sayHello = user.greet;
+console.log(user.greet());
+console.log(sayHello());`,
+    options: [
+      "Salom, Ali \\n Salom, Ali",
+      "Salom, Ali \\n Salom, undefined",
+      "Salom, undefined \\n Salom, undefined",
+      "Xatolik (TypeError)"
+    ],
+    correctAnswer: "Salom, Ali \\n Salom, undefined",
+    explanation: `**Kontekstning yo'qolishi:** 
+\`user.greet()\` chaqirilganda, nuqtadan oldingi obyekt \`user\` hisoblanadi, shuning uchun \`this = user\`.
+Lekin \`const sayHello = user.greet\` qilib uni alohida o'zgaruvchiga olganimizda, u obyektga bo'lgan bog'liqligini yo'qotadi. \`sayHello()\` shunchaki global funksiya sifatida chaqiriladi. Bunday holatda \`this\` asosan \`window\` (yoki strict modeda \`undefined\`) ga teng bo'ladi. Natijada \`this.name\` qidirilganda \`undefined\` chiqadi.`
+  },
+  {
+    id: "hc-this-3",
+    title: "Bind va uning qayta bog'lanishi",
+    difficulty: "hard",
+    category: "this",
+    code: `function identify() {
+  return this.name.toUpperCase();
+}
+
+const me = { name: "Vali" };
+const you = { name: "G'ani" };
+
+const boundIdentify = identify.bind(me);
+const doubleBound = boundIdentify.bind(you);
+
+console.log(boundIdentify());
+console.log(doubleBound());`,
+    options: [
+      "VALI \\n G'ANI",
+      "VALI \\n VALI",
+      "G'ANI \\n G'ANI",
+      "VALI \\n undefined"
+    ],
+    correctAnswer: "VALI \\n VALI",
+    explanation: `**.bind() qoidasi:** 
+JavaScript da \`bind()\` yordamida yaratilgan funksiyaning konteksti (\`this\`) faqatgina BIR MAROTABA o'rnatilishi mumkin. Keyinchalik unga yana qancha \`bind()\` ishlatsangiz ham, original bog'langan kontekst o'zgarmaydi.
+Shuning uchun \`doubleBound\` aslida hali ham \`me\` (Vali) obyektiga bog'langan bo'lib qoladi. Ikkalasida ham "VALI" chiqadi.`
+  },
+  {
+    id: "hc-this-4",
+    title: "Callback funksiyalarda This qayerda?",
+    difficulty: "medium",
+    category: "this",
+    code: `const myTimer = {
+  time: 10,
+  start() {
+    setTimeout(function() {
+      this.time++;
+      console.log(this.time);
+    }, 100);
+  }
+};
+
+myTimer.start();`,
+    options: [
+      "11",
+      "10",
+      "undefined",
+      "NaN"
+    ],
+    correctAnswer: "NaN",
+    explanation: `**Asinxron funksiyalardagi kontekst:**
+\`setTimeout\` ichiga oddiy \`function()\` yozilganda, uning \`this\` qiymati global obyekti (\`window\`) ni bildiradi. \`window.time\` asosan \`undefined\` ga teng.
+Qachonki \`undefined\` ga 1 raqamini qo'shmoqchi bo'lsak (\`undefined + 1\`), u matematik amaliyot bo'lgani uchun JavaScript uni \`NaN\` (Not a Number) ga aylantiradi.`
+  },
+  {
+    id: "hc-this-5",
+    title: "Class metodlari va React'ga xos muammo",
+    difficulty: "hard",
+    category: "this",
+    code: `class Button {
+  constructor(name) {
+    this.name = name;
+  }
+  
+  click() {
+    console.log(this.name + " tıklandı");
+  }
+}
+
+const btn = new Button("Login");
+setTimeout(btn.click, 100);`,
+    options: [
+      "Login tıklandı",
+      "undefined tıklandı",
+      "Xatolik yuz beradi (Cannot read property 'name' of undefined)",
+      "Hech narsa chiqmaydi"
+    ],
+    correctAnswer: "Xatolik yuz beradi (Cannot read property 'name' of undefined)",
+    explanation: `**Class larning xavfsizligi:**
+Barcha ES6 Class metodlari avtomatik ravishda \`strict mode\` (qat'iy rejim) da ishlaydi. 
+Agar \`btn.click\` ni boshqa joyga (\`setTimeout\`) ga oddiy funksiya sifatida uzatsak, kontekst yo'qoladi. Va strict mode bo'lgani uchun global \`window\` o'rniga \`undefined\` qaytadi. Shunda \`undefined.name\` ga murojaat qilinganda xatolik (TypeError) yuz beradi. Buni to'g'irlash uchun arrow function \`() => btn.click()\` ishlatiladi.`
+  },
+  {
+    id: "hc-this-6",
+    title: "Apply vs Call - Massivlar bilan ishlash",
+    difficulty: "medium",
+    category: "this",
+    code: `const obj = { num: 2 };
+function add(a, b) {
+  return this.num + a + b;
+}
+
+const res1 = add.call(obj, 3, 4);
+const res2 = add.apply(obj, [3, 4]);
+
+console.log(res1 === res2);`,
+    options: [
+      "true",
+      "false",
+      "Xatolik (apply faqat bitta argument oladi)",
+      "undefined"
+    ],
+    correctAnswer: "true",
+    explanation: `**call va apply farqi:**
+Ikkala metod ham funksiyani aniq bir \`this\` (obj) bilan chaqirish uchun xizmat qiladi. Ularning yagona farqi shundaki:
+- \`call()\` argumentlarni vergul bilan qabul qiladi: \`call(obj, arg1, arg2)\`.
+- \`apply()\` argumentlarni massiv sifatida qabul qiladi: \`apply(obj, [arg1, arg2])\`.
+Ikkala holatda ham funksiya e'loniga ko'ra (a=3, b=4) keladi va javob 9 bo'lib, ular tengdir (\`true\`).`
+  },
+  {
     id: "hc-functional-1",
     title: "Currying va Arity (Functional Programming)",
     difficulty: "hard",
