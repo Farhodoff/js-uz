@@ -13,6 +13,7 @@ import { useAppStore } from "./store/useAppStore";
 import { useResizable } from "./hooks/useResizable";
 import ChallengeTab from "./components/ChallengeTab";
 import Playground from "./pages/Playground";
+import SearchModal from "./components/SearchModal";
 import AiModal from "./components/AiModal";
 
 function LessonPage() {
@@ -21,6 +22,8 @@ function LessonPage() {
 
   const sidebarOpen = useAppStore((state) => state.sidebarOpen);
   const setSidebarOpen = useAppStore((state) => state.setSidebarOpen);
+  const isSearchOpen = useAppStore((state) => state.isSearchOpen);
+  const setSearchOpen = useAppStore((state) => state.setSearchOpen);
   const markComplete = useAppStore((state) => state.markComplete);
   const isComplete = useAppStore((state) => state.isComplete);
 
@@ -57,6 +60,18 @@ function LessonPage() {
       }
     }
   }, [activeLesson]);
+
+  // Global Search Shortcut
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [setSearchOpen]);
 
   function handleRunCode() {
     runCode(code, activeLesson, currentExerciseIndex, () => {
@@ -247,6 +262,12 @@ function LessonPage() {
           askAI={() => ai.askAI(activeLesson?.title, code)}
           aiLoading={ai.aiLoading}
           aiAnswer={ai.aiAnswer}
+        />
+
+        {/* Global Search Modal */}
+        <SearchModal 
+          isOpen={isSearchOpen} 
+          onClose={() => setSearchOpen(false)} 
         />
       </div>
     </div>

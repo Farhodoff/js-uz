@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ChallengeCard from "./ChallengeCard";
 import ExplanationBox from "./ExplanationBox";
 import ChallengeBuilder from "./ChallengeBuilder";
+import { useAppStore } from "../store/useAppStore";
 import { challenges as seedChallenges } from "../data/challenges";
 import "./ChallengeTab.css";
 
@@ -13,6 +14,9 @@ export default function ChallengeTab() {
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [attempts, setAttempts] = useState({});
+
+  const bookmarks = useAppStore(state => state.bookmarks);
+  const toggleBookmark = useAppStore(state => state.toggleBookmark);
 
   // Load challenges and attempts from LocalStorage
   useEffect(() => {
@@ -51,9 +55,11 @@ export default function ChallengeTab() {
     setIsSubmitted(false);
   };
 
-  const filteredChallenges = challenges.filter(c => 
-    categoryFilter === "all" ? true : c.category === categoryFilter
-  );
+  const filteredChallenges = challenges.filter(c => {
+    if (categoryFilter === "all") return true;
+    if (categoryFilter === "bookmarks") return bookmarks.includes(c.id);
+    return c.category === categoryFilter;
+  });
 
   const currentChallenge = filteredChallenges[currentIndex];
 
@@ -77,6 +83,14 @@ export default function ChallengeTab() {
     setSelectedOption("");
     setIsSubmitted(false);
     setCurrentIndex(prev => prev + 1);
+  };
+
+  const handleRandom = () => {
+    if (filteredChallenges.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * filteredChallenges.length);
+    setCurrentIndex(randomIndex);
+    setSelectedOption("");
+    setIsSubmitted(false);
   };
 
   const handleRestart = () => {
@@ -111,7 +125,8 @@ export default function ChallengeTab() {
     { id: "tricky", label: "Type Coercion & Tricky JS" },
     { id: "es6", label: "ES6+ Imkoniyatlar" },
     { id: "dom", label: "DOM & Web APIs" },
-    { id: "functional", label: "Functional Programming" }
+    { id: "functional", label: "Functional Programming" },
+    { id: "bookmarks", label: "⭐ Saqlanganlar" }
   ];
 
   return (
@@ -121,13 +136,22 @@ export default function ChallengeTab() {
         <h2 style={{ fontSize: "var(--text-xl)", fontWeight: 800, color: "var(--accent)" }}>
           🏆 JavaScript Challenges
         </h2>
-        <button 
-          className="btn btn-secondary"
-          onClick={() => setMode(mode === "quiz" ? "builder" : "quiz")}
-          style={{ padding: "var(--space-2) var(--space-4)", fontSize: "var(--text-xs)" }}
-        >
-          {mode === "quiz" ? "Yangi Savol +" : "Testlarga qaytish"}
-        </button>
+        <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}>
+          <button 
+            className="btn btn-ghost"
+            onClick={handleRandom}
+            style={{ padding: "var(--space-2) var(--space-4)", fontSize: "var(--text-xs)", border: "1px solid var(--border-color)" }}
+          >
+            🎲 Tasodifiy
+          </button>
+          <button 
+            className="btn btn-secondary"
+            onClick={() => setMode(mode === "quiz" ? "builder" : "quiz")}
+            style={{ padding: "var(--space-2) var(--space-4)", fontSize: "var(--text-xs)" }}
+          >
+            {mode === "quiz" ? "Yangi Savol +" : "Testlarga qaytish"}
+          </button>
+        </div>
       </div>
 
       {mode === "builder" ? (
@@ -233,6 +257,8 @@ export default function ChallengeTab() {
                 setIsSubmitted={handleCheckAnswer}
                 onNext={handleNext}
                 isLast={currentIndex === filteredChallenges.length - 1}
+                isBookmarked={bookmarks.includes(currentChallenge?.id)}
+                toggleBookmark={toggleBookmark}
               />
 
               {isSubmitted && (

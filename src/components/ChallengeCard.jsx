@@ -48,7 +48,9 @@ export default function ChallengeCard({
   isSubmitted,
   setIsSubmitted,
   onNext,
-  isLast
+  isLast,
+  isBookmarked,
+  toggleBookmark
 }) {
   const letters = ["A", "B", "C", "D"];
 
@@ -74,7 +76,19 @@ export default function ChallengeCard({
     <div className="challenge-card">
       {/* Header */}
       <div className="challenge-header">
-        <div className="challenge-title">{challenge.title}</div>
+        <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+          <div className="challenge-title">{challenge.title}</div>
+          <button 
+            onClick={() => toggleBookmark(challenge.id)}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer', 
+              fontSize: '1.2rem', color: isBookmarked ? '#f1c40f' : 'var(--text-secondary)'
+            }}
+            title="Saqlanganlarga qo'shish"
+          >
+            {isBookmarked ? '⭐' : '☆'}
+          </button>
+        </div>
         <div className="challenge-meta">
           <span className={`badge-diff ${challenge.difficulty}`}>
             {challenge.difficulty === "easy" ? "Oson" : challenge.difficulty === "medium" ? "O'rta" : "Qiyin"}

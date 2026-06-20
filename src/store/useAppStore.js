@@ -7,11 +7,23 @@ export const useAppStore = create(
       // Global UI State
       sidebarOpen: true,
       setSidebarOpen: (isOpen) => set({ sidebarOpen: isOpen }),
+      isSearchOpen: false,
+      setSearchOpen: (isOpen) => set({ isSearchOpen: isOpen }),
 
-      // Progress State
+      // Progress & Bookmark State
       completed: {},
+      bookmarks: [],
       xp: 0,
       level: 1,
+
+      toggleBookmark: (id) => set((state) => {
+        const isBookmarked = state.bookmarks.includes(id);
+        return {
+          bookmarks: isBookmarked 
+            ? state.bookmarks.filter(b => b !== id) 
+            : [...state.bookmarks, id]
+        };
+      }),
 
       markComplete: (key, rewardXp = 10) => set((state) => {
         if (state.completed[key]) return state; // Already completed, no double XP
@@ -44,6 +56,7 @@ export const useAppStore = create(
       name: 'js-academy-progress-store',
       partialize: (state) => ({ 
         completed: state.completed,
+        bookmarks: state.bookmarks,
         xp: state.xp,
         level: state.level
       }),

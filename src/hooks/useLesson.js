@@ -1,13 +1,14 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { curriculum, SECTIONS } from '../data/curriculum';
+import { PATHS, PATH_KEYS } from '../data/paths';
 
 export function useLesson() {
   const navigate = useNavigate();
   const { section: urlSection, lessonId: urlLessonId } = useParams();
 
   const [activeSection, setActiveSectionState] = useState(() => {
-    return SECTIONS.includes(urlSection) ? urlSection : 'beginner';
+    return (SECTIONS.includes(urlSection) || PATH_KEYS.includes(urlSection)) ? urlSection : 'beginner';
   });
   const [activeLesson, setActiveLesson] = useState(null);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -18,7 +19,7 @@ export function useLesson() {
     let isCancelled = false;
 
     const loadLesson = async () => {
-      const secKey = SECTIONS.includes(urlSection) ? urlSection : 'beginner';
+      const secKey = (SECTIONS.includes(urlSection) || PATH_KEYS.includes(urlSection)) ? urlSection : 'beginner';
       setActiveSectionState(secKey);
 
       if (secKey === 'challenges') {
@@ -26,7 +27,7 @@ export function useLesson() {
         return;
       }
 
-      const sectionData = curriculum[secKey];
+      const sectionData = PATH_KEYS.includes(secKey) ? PATHS[secKey] : curriculum[secKey];
       if (!sectionData || !sectionData.lessons || sectionData.lessons.length === 0) return;
 
       let targetLessonRef = urlLessonId 
@@ -63,7 +64,7 @@ export function useLesson() {
   }, [urlSection, urlLessonId, navigate]);
 
   const setActiveSection = useCallback((key) => {
-    const sec = curriculum[key];
+    const sec = PATH_KEYS.includes(key) ? PATHS[key] : curriculum[key];
     if (key === 'challenges') {
       navigate('/challenges');
     } else if (sec && sec.lessons.length > 0) {
@@ -87,7 +88,7 @@ export function useLesson() {
     }
   }, [activeLesson]);
 
-  const sec = curriculum[activeSection];
+  const sec = PATH_KEYS.includes(activeSection) ? PATHS[activeSection] : curriculum[activeSection];
 
   return {
     activeSection,

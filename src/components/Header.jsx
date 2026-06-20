@@ -17,6 +17,13 @@ export default function Header({ activeLesson, sec }) {
           <LayoutIcon />
         </button>
       )}
+      <button 
+        className="search-shortcut-btn" 
+        onClick={() => useAppStore.getState().setSearchOpen(true)}
+        style={{ marginLeft: sidebarOpen ? '0' : '10px' }}
+      >
+        🔍 Qidiruv (Cmd + K)
+      </button>
       <div className="header-info">
         <span className="header-icon" style={{ color: sec.color }}>{sec.icon}</span>
         <div>
