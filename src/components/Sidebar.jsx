@@ -36,52 +36,6 @@ export default function Sidebar({
 
       <div className="sidebar-content">
         <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '5px', marginBottom: '8px', paddingLeft: '12px' }}>
-          O'quv Yo'laklari
-        </div>
-        {PATH_KEYS.map(key => {
-          const s = PATHS[key];
-          const stats = getStats(s.lessons);
-          const isActive = activeSection === key;
-
-          return (
-            <div key={key}>
-              <button
-                className={`section-item ${isActive ? 'active' : ''}`}
-                onClick={() => setActiveSection(key)}
-                style={isActive ? { borderLeftColor: s.color } : undefined}
-                aria-expanded={isActive}
-              >
-                <div className="section-label" style={isActive ? { color: s.color } : undefined}>
-                  {s.icon} {s.label}
-                </div>
-                <div className="section-progress">
-                  {stats.done}/{stats.total} bajarildi
-                </div>
-                <div className="section-progress-bar">
-                  <div
-                    className="section-progress-fill"
-                    style={{ width: `${stats.percent}%`, background: s.color }}
-                  />
-                </div>
-              </button>
-
-              {isActive && s.lessons.map(l => (
-                <button
-                  key={l.id}
-                  className={`lesson-item ${activeLesson?.id === l.id ? 'active' : ''}`}
-                  onClick={() => openLesson(l, key)}
-                >
-                  <span className="lesson-status">
-                    {completed[l.id] ? '✅' : '○'}
-                  </span>
-                  {l.title}
-                </button>
-              ))}
-            </div>
-          );
-        })}
-
-        <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '20px', marginBottom: '8px', paddingLeft: '12px' }}>
           To'liq Katalog
         </div>
         {SECTIONS.filter(key => key !== 'challenges').map(key => {
