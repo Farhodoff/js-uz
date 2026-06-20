@@ -17,22 +17,7 @@ export default function ChallengeTab() {
   const [visibleResults, setVisibleResults] = useState(20);
   const observerTarget = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting) {
-          setVisibleResults(prev => prev + 20);
-        }
-      },
-      { rootMargin: "100px" }
-    );
-    
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
-    }
-    
-    return () => observer.disconnect();
-  }, [filteredChallenges.length]);
+
 
   const bookmarks = useAppStore(state => state.bookmarks);
   const toggleBookmark = useAppStore(state => state.toggleBookmark);
@@ -88,6 +73,23 @@ export default function ChallengeTab() {
     if (categoryFilter === "bookmarks") return bookmarks.includes(c.id);
     return c.category === categoryFilter;
   });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting) {
+          setVisibleResults(prev => prev + 20);
+        }
+      },
+      { rootMargin: "100px" }
+    );
+    
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+    
+    return () => observer.disconnect();
+  }, [filteredChallenges.length]);
 
   const currentChallenge = filteredChallenges[currentIndex];
 
