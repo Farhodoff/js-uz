@@ -11,10 +11,11 @@ export function useAI() {
     setAiAnswer('');
     
     try {
+      const apiKey = localStorage.getItem('gemini_api_key');
       const isWindowAiAvailable = window.ai && (window.ai.languageModel || window.ai.createTextSession);
       
-      if (!isWindowAiAvailable) {
-        setAiAnswer("⚠️ Kechirasiz, sizning brauzeringizda o'rnatilgan AI (Gemini Nano) yoqilmagan. Uni yoqish uchun Chrome'da:\n1. **chrome://flags** manziliga kiring.\n2. **Prompt API for Gemini Nano** ni izlang va **Enabled** qiling.\n3. **Enables optimization guide on device** parametrini ham yoqing.\n4. Brauzerni qayta ishga tushiring.");
+      if (!isWindowAiAvailable && !apiKey) {
+        setAiAnswer("⚠️ Kechirasiz, sizning brauzeringizda lokal AI ishlamayapti.\n\nIltimos, ishlatish uchun pastdagi maydonga shaxsiy **Gemini API Key** kiritib saqlang (U faqat sizning brauzeringizda saqlanadi).");
         setAiLoading(false);
         return;
       }
@@ -27,18 +28,30 @@ ${activeCode}
 \`\`\`
 Savol: ${aiQuestion}`;
 
-      let session;
-      if (window.ai.languageModel) {
-        session = await window.ai.languageModel.create();
-      } else {
-        session = await window.ai.createTextSession();
+      if (isWindowAiAvailable) {
+        let session;
+        if (window.ai.languageModel) {
+          session = await window.ai.languageModel.create();
+        } else {
+          session = await window.ai.createTextSession();
+        }
+        const response = await session.prompt(promptText);
+        setAiAnswer(response || "Javob olinmadi.");
+      } else if (apiKey) {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: promptText }] }]
+          })
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error.message);
+        setAiAnswer(data.candidates[0].content.parts[0].text || "Javob olinmadi.");
       }
-
-      const response = await session.prompt(promptText);
-      setAiAnswer(response || "Javob olinmadi.");
       
     } catch (e) {
-      setAiAnswer("❌ AI ishga tushishida xatolik: " + e.message + "\n\nModel hali qurilmangizga yuklanmagan bo'lishi mumkin. Iltimos, **chrome://components** manziliga kirib, **Optimization Guide On Device Model** ni toping va **Check for update** tugmasini bosing.");
+      setAiAnswer("❌ AI ishga tushishida xatolik: " + e.message);
     }
     
     setAiLoading(false);
