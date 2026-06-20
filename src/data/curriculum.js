@@ -291,7 +291,12 @@ export const curriculum = {
     label: "Loyihalar",
     color: "#7a9e7e",
     icon: "🏗️",
-    lessons: [{ id: "p1", title: "Loyiha: Todo List (Vazifalar boshqaruvchisi)", load: () => import("./lessons/projects/todoList.js").then(m => m.todoList) }, { id: "p2", title: "Ob-havo ilovasi (Mini-loyiha)", load: () => import("./lessons/projects/weatherApp.js").then(m => m.weatherApp) }, { id: "p3", title: "Loyiha: Express.js va React REST API (Full-stack)", load: () => import("./lessons/projects/fullstackRestApi.js").then(m => m.fullstackRestApi) }]
+    lessons: [
+      { id: "p1", title: "Loyiha: Todo List (Vazifalar boshqaruvchisi)", load: () => import("./lessons/projects/todoList.js").then(m => m.todoList) },
+      { id: "p2", title: "Ob-havo ilovasi (Mini-loyiha)", load: () => import("./lessons/projects/weatherApp.js").then(m => m.weatherApp) },
+      { id: "p3", title: "Loyiha: Express.js va React REST API (Full-stack)", load: () => import("./lessons/projects/fullstackRestApi.js").then(m => m.fullstackRestApi) },
+      { id: "movieSearchApi", title: "Loyiha: API va Backend (Kino Izlash Loyihasi)", load: () => import("./lessons/projects/movieSearchApi.js").then(m => m.default) }
+    ]
   },
   sql: {
     label: "SQL va Bazalar",
