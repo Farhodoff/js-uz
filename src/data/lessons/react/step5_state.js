@@ -174,6 +174,10 @@ function badUpdate() {
 }
 \`\`\`
 
+> 💡 **"Dangasa React" va Reference Equality haqiqati:**
+> Ko'p dasturchilar yig'lab so'rashadi: "Nega oddiygina \`array.push()\` qilib qo'ya qolmayman?! Nega doim eski obyektni yoyib, keyin yozishim kerak?!". Sababi — React o'ta "dangasa". Siz \`setUser(user)\` qilganingizda, React obyekt ichidagi har bir xossani tekshirib o'tirmaydi. U shunchaki obyektning "Manzili" (Reference) o'zgardimi yoki yo'qmi, shunga qaraydi. \`user.age = 21\` qilsangiz, obyektning ichi o'zgardi, lekin manzil (reference) o'sha-o'sha eski obyektligicha qoldi. React esa bunga qarab: "Aha, manzil eski, demak hech narsa o'zgarmabdi, render qilmayman!" deb ishlamay yotib oladi.
+> *Qutqaruvchi yechim:* Agar katta va chuqur obyektlarni \`...\` spread bilan yangilash joningizga tegsa, **Immer** nomli mo'jizaviy kutubxonadan foydalaning. U sizga to'g'ridan-to'g'ri mutatsiya qilish imkonini beradi (huddi \`array.push()\` kabi), orqa fonda esa u avtomatik tarzda immutable obyekt yaratib beradi!
+
 Buning o'rniga doimo **Spread Operator (\`...\`)** yordamida yangi obyekt yoki massiv yarating:
 
 \`\`\`jsx

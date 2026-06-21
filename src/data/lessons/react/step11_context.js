@@ -43,6 +43,9 @@ const Menu = ({ theme }) => {
 
 Bu holat kodni o'qishni qiyinlashtiradi, refactoring (kodni tozalash va o'zgartirish) qilishni azobga aylantiradi. O'rtadagi komponentlar o'ziga kerak bo'lmagan props'larni qabul qilib, o'z bolalariga uzatishi — antpattern hisoblanadi.
 
+> 💡 **Roast qilinadigan haqiqat:**
+> Prop Drilling — bu "Bobomning bobosidan meros" qolgandek gap. 5 qavat pastdagi komponentga bitta ismni uzatish uchun yo'ldagi 4 ta mutlaqo aloqasi yo'q komponentlarga ham shu prop'ni yuklab o'tish... bu xuddi qo'shniga tuz berish uchun butun qishloq orqali qo'lma-qo'l qilishdek gap! Yaxshiyamki, React bizga qutqaruvchi yechimlarni taqdim etgan.
+
 ---
 
 ## Context API: Muammoning Oqlangan Yechimi

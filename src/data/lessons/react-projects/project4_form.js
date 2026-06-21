@@ -140,6 +140,10 @@ Inputlar ostida xato borligini ko'rsatishimiz kerak:
 
 ❌ **DON'T:** Formani yuborayotganda \`e.preventDefault()\` ni yozishni unutmang. Bu ma'lumotlar yo'qolishiga sabab bo'ladi.
 ❌ **DON'T:** Xato xabarlarini alert qilib chiqarmang, ularni bevosita inputning yonida ko'rsating!
+
+> 💡 **"Re-render Bayrami" haqiqati (Performans ogohlantirishi):**
+> Bu loyihada biz 10 ta inputni boshqarish uchun juda qulay bo'lgan "Yagona State" (\`formData\`) dan foydalandik. Ammo buning bitta katta aybi bor: siz bitta inputga bitta harf yozganingizda (\`onChange\` ishlaganda), state o'zgaradi va **butun forma boshqatdan chiziladi (re-render bo'ladi)**! React juda tez bo'lgani uchun siz buni ko'zingiz bilan sezmaysiz. Ammo yuzlab inputlari bor ulkan formalarda kompyuter qiynalishni boshlaydi.
+> **Katta loyihalarda qanday qilinadi?** Katta kompaniyalar bu muammodan qochish uchun **Uncontrolled Components** (state o'rniga \`useRef\` ishlatish) yoki bu ishlarni orqa fonda juda tez bajarib beruvchi **React Hook Form** kutubxonasidan foydalanishadi. Buni keyingi darajaga chiqqaningizda albatta o'rganing!
   `,
   code: `import React, { useState } from 'react';
 

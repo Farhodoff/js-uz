@@ -142,6 +142,9 @@ useEffect(() => {
 \`\`\`
 *Tushuntirish: Komponent render bo'ladi -> useEffect ishlaydi -> counter + 1 ga o'zgaradi -> State o'zgargani uchun komponent qayta render bo'ladi -> useEffect yana ishlaydi -> va h.k. cheksiz!*
 
+> 💡 **Junior dasturchilarning "Tungi Dahshati" va React Strict Mode:**
+> Agar siz ushbu xatoni qilsangiz, kompyuteringiz feni (ventilyatori) samolyot kabi ovoz chiqarib, brauzeringiz "qotib" qoladi. Yana bir qiziq jihat: "Nega men \`useEffect\` ichida bitta \`console.log\` yozsam, u terminalda **ikki marta** chiqyapti?!" deb o'ylayotgan bo'lsangiz — siz yolg'iz emassiz. Bu React 18 ning **Strict Mode** (Qat'iy rejim) funksiyasi. Development (ishlab chiqish) vaqtida React atayin sizning effectlaringizni ikki marta ishga tushirib ko'radi (Mount -> Unmount -> Mount). Maqsad: siz "Cleanup" (tozalash) funksiyasini to'g'ri yozganmisiz yoki yo'qmi, shuni tekshirish! Production (jonli) versiyada esa faqat 1 marta ishlaydi. Xavotirga o'rin yo'q!
+
 ✅ **Yaxshi amaliyot:**
 \`\`\`javascript
 const [counter, setCounter] = useState(0);

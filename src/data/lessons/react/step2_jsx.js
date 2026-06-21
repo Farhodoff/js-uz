@@ -79,6 +79,10 @@ HTML da \`<input>\` yoki \`<img>\` kabi teglarni yopmasdan tashlab ketish mumkin
 JSX da yozilgan narsa asosan JavaScript bo'lganligi sababli, atribut nomlari JS qoidalariga bo'ysunadi. 
 - HTML dagi \`class\` atributi JSX da \`className\` ga aylanadi (chunki \`class\` bu JavaScript da zaxiralangan so'z - keyword).
 - \`for\` o'rniga \`htmlFor\`.
+
+> 💡 **"JSX - HTML va JS'ning g'alati gibridi" haqiqati:**
+> Dasturchilar yillar davomida "HTML va JS alohida bo'lishi kerak" degan qoidaga ishonib kelishgan. React esa kelib ularni aralashtirib yubordi! Natijada, oddiy CSS klassini berish uchun ham \`className\` deb yozishga majburmiz. Bu boshida kulgili va g'alati tuyuladi. Lekin esda tuting: Siz HTML yozmayapsiz, siz "Niqoblangan JavaScript obyektlarini" yozyapsiz! Shuning uchun JavaScript qoidalari bu yerda "podsho" hisoblanadi.
+
 - Voqealarni ushlash (Event listeners) ham camelCase da: \`onclick\` emas \`onClick\`, \`onchange\` emas \`onChange\`, \`tabindex\` emas \`tabIndex\`.
 
 ### 4. JavaScript ni HTML ichiga olib kirish uchun jingalak qavslar \`{}\` ishlatiladi

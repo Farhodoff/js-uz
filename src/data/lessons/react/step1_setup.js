@@ -99,15 +99,20 @@ React loyihasini noldan barcha fayllarni ulab chiqib qilish juda mashaqqatli. Sh
 
 Bir necha yil oldin barcha React loyihalari \`npx create-react-app my-app\` komandasi orqali yaratilardi. Bu Facebook tomonidan qilingan rasmiy "tayyor shablon" edi.
 
-Ammo hozirgi kunda CRA eskirib qoldi. O'rniga **Vite** keng qo'llanilmoqda.
+Node.js va npm:
+- Node.js: JavaScript'ni faqat brauzerda emas, balki kompyuterda (serverda) ham ishlashiga imkon beruvchi muhit.
+- npm (Node Package Manager): JavaScript kutubxonalari do'koni.
 
 > **Nima uchun CRA'dan Vite'ga o'tilmoqda?**
 > - **Sekinlik:** CRA loyihani ishga tushirish (dev serverni yoqish) va kodni o'zgartirganda ekranda ko'rinishi uchun barcha fayllarni bitta qilib yig'ardi (bundler - Webpack). Loyiha kattalashgani sari loyihani yoqishga 30 soniyadan bir necha daqiqagacha vaqt ketib qolardi.
 > - **Vite (fransuzcha "tez" degani):** Vite bundler emas, u ES Module yordamida ishlaydi. Ya'ni u butun kodni emas, faqat siz o'zgartirgan faylnigina brauzerga uzatadi. Natijada loyiha kattaligidan qat'iy nazar server 1 soniyaga qolmasdan yonadi. O'zgartirishlar ham millisoniyalarda ekranda paydo bo'ladi (Hot Module Replacement - HMR).
 
-**Do's and Don'ts:**
+> 💡 **"Install Everything, Configure Forever" haqiqati:**
+> React'ni endi o'rganayotganlar ko'pincha "React bu hamma narsani hal qiluvchi freymvork" deb o'ylashadi. Aslida esa React — faqatgina UI chizish uchun kichik bir kutubxona. Sahifalarni ulash uchun (React Router), holatni boshqarish uchun (Redux/Zustand), API ga so'rov yuborish uchun (Axios/React Query) alohida kutubxonalar o'rnatishingiz va ularni bir-biriga moslashtirishingiz kerak bo'ladi. Boshida bu biroz charchatuvchi (Install fatigue) bo'lishi mumkin. Lekin xavotir olmang, asoslarni yaxshi o'zlashtirganingizdan so'ng, **Next.js** kabi to'laqonli freymvorklarga o'tasiz, unda bularning bari tayyor qilib o'rnatilgan bo'ladi!
 
-❌ *Don't (Qilmang):* Yangi loyiha boshlayotganda \`create-react-app\` dan foydalanmang. (Hatto React rasmiy hujjatlari ham buni endi tavsiya etmayapti).
+## ✅ Do's and ❌ Don'ts
+
+❌ *Don't (Qilmang):* Hozirgi kunda yangi loyihalarni \`create-react-app\` orqali yaratmang. U ancha sekin va eskirgan.
 \`\`\`bash
 npx create-react-app eski-loyiha
 \`\`\`
