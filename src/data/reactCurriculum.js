@@ -15,7 +15,9 @@ export const reactCurriculum = {
       { id: "step9_forms", title: "9. Formalar bilan ishlash", load: () => import("./lessons/react/step9_forms.js").then(m => m.step9_forms) },
       { id: "step10_routing", title: "10. Marshrutlash (Routing)", load: () => import("./lessons/react/step10_routing.js").then(m => m.step10_routing) },
       { id: "step11_context", title: "11. Holatni boshqarish (Context API)", load: () => import("./lessons/react/step11_context.js").then(m => m.step11_context) },
-      { id: "step12_api", title: "12. API bilan ishlash (HTTP So'rovlar)", load: () => import("./lessons/react/step12_api.js").then(m => m.step12_api) }
+      { id: "step12_api", title: "12. API bilan ishlash (HTTP So'rovlar)", load: () => import("./lessons/react/step12_api.js").then(m => m.step12_api) },
+      { id: "step13_advanced_hooks", title: "13. Ilg'or Hooklar va Optimizatsiya", load: () => import("./lessons/react/step13_advanced_hooks.js").then(m => m.step13_advanced_hooks) },
+      { id: "step14_class_components_and_errors", title: "14. Klass Komponentlar va Xatolarni Boshqarish", load: () => import("./lessons/react/step14_class_components_and_errors.js").then(m => m.step14_class_components_and_errors) }
     ]
   },
   reactStateManagement: {
