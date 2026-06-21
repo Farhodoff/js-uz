@@ -39,7 +39,7 @@ class Greeting extends React.Component {
 
 ## 3. 📦 Import va Export qoidalari
 
-Loyihada yuzlab komponentlar bo'lishi mumkin. Ularni bitta faylda yozish daxshatli ish! Shuning uchun har bir komponent o'zining alohida `.js` (yoki `.jsx`) faylida yaratiladi. Boshqa joyda ishlata olish uchun uni **export** qilish kerak.
+Loyihada yuzlab komponentlar bo'lishi mumkin. Ularni bitta faylda yozish daxshatli ish! Shuning uchun har bir komponent o'zining alohida \`.js\` (yoki \`.jsx\`) faylida yaratiladi. Boshqa joyda ishlata olish uchun uni **export** qilish kerak.
 
 **Header.js faylida:**
 \`\`\`jsx
