@@ -1,125 +1,224 @@
 export const step8_lists = {
   title: "8-DARS: Ro'yxatlar va Shartli Render",
   content: `
-# 1. 🔄 Ro'yxatlarni (Lists) chizish
+# React'da Ro'yxatlar (Lists) va Shartli Renderlash (Conditional Rendering)
 
-Dasturlashda ko'pincha serverdan (API dan) massiv (array) ko'rinishida ma'lumotlar keladi. Biz ularni React da aylanib chiqish (iterate) va har biri uchun alohida komponent yoki UI element chizishimiz kerak.
+Dasturlashda eng ko'p uchraydigan holatlardan biri bu — ma'lumotlar to'plamini (array) ekranga chiqarish va qandaydir shartlarga asosan ba'zi qismlarni yashirish yoki ko'rsatishdir. React bu ishlarni juda qulay va chiroyli usulda amalga oshirishga yordam beradi.
 
-Buning uchun standart JavaScript metodlaridan **\`map()\`** eng ko'p qo'llaniladi.
-
-\`\`\`jsx
-const mevalar = ["Olma", "Banan", "Gilos"];
-
-return (
-  <ul>
-    {mevalar.map((meva) => (
-      <li key={meva}>{meva}</li>
-    ))}
-  </ul>
-)
-\`\`\`
+Ushbu darsda biz ro'yxatlarni qanday qilib to'g'ri renderlash, \`key\` propining siri, React'ning orqa fondagi Diffing algoritmi va shartli renderlashdagi muhim qoidalar haqida chuqur gaplashamiz.
 
 ---
 
-## 2. 🔑 "Key" propining muhimligi
+## 1. Ro'yxatlarni renderlash: \`.map()\` qanday ishlaydi?
 
-Tepadagi misolda e'tibor bersangiz, \`<li>\` tegiga \`key\` nomli atribut (prop) berilgan.
+React'da HTML ro'yxatlarini yaratish uchun JavaScript'ning standart **\`.map()\`** metodidan foydalaniladi.
 
-**Nima uchun \`key\` shart?**
-Agar array dagi elementlar o'rni almashsa, o'chirilsa yoki yangi element qo'shilsa, React ro'yxatni qanday tezkor yangilashni bilishi kerak. \`key\` aynan shu identifikasiyani (ID) ta'minlaydi.
-U React dagi **Virtual DOM** ga farqlarni tez topib, faqatgina o'zgargan qismini ekranga chizishiga katta yordam beradi.
+### 💡 Nega kerak?
+Deylik, sizda 100 ta foydalanuvchi haqida ma'lumot bor. Har bir foydalanuvchi uchun alohida \`<UserCard />\` komponentini qo'lda yozib chiqish imkonsiz va xato. Bizga ma'lumotlarni aylanib chiqib, har bir ma'lumot uchun JSX qaytaradigan avtomatlashtirilgan mexanizm kerak. \`map\` aynan shu ishni bajaradi.
 
-❌ **Index'ni key sifatida ishlatish xatosi:**
-Boshlovchilar ko'pincha \`map((item, index))\` deb \`index\` ni \`key\` ga berishadi. Agar ro'yxat qat'iy (static) bo'lsa, bu ishlaydi. Lekin ro'yxat tartibi o'zgarsa (element qo'shilsa/o'chirilsa), barcha index'lar o'zgarib ketadi, oqibatda React adashib ketib inputdagi qiymatlarni yo'qotishi yoki ilovani sekinlashtirishi mumkin. Doim noyob \`id\` lardan foydalaning!
+### 🍔 Real-hayot analogiyasi
+Tasavvur qiling, siz pitsaxona oshpazisiz va oldingizda 10 xil pitsa retseptlari ro'yxati (Array) bor. Siz har bir retseptga (item) qarab, bir xil qolipdagi, lekin ichidagi masallig'i har xil bo'lgan pitsalarni (JSX) tayyorlab chiqasiz.
 
----
+### ✅ Do's and ❌ Don'ts (Qanday qilish kerak va qanday emas?)
 
-## 3. 🎭 Shartli Render (Conditional Rendering)
+❌ **Yomon amaliyot (Don't)**: Odatda JavaScript'da \`for\` siklidan foydalanishga o'rganganmiz, lekin React JSX ichida \`for\` ishlata olmaysiz, chunki u expression (qiymat) emas, statement (buyruq) hisoblanadi.
 
-Ko'pincha qandaydir shart bajarilgandagina nimanidir ekranda ko'rsatish talab qilinadi. React'da buni 3 xil usulda amalga oshirish mumkin:
-
-### 1-usul: Odatdagi \`if / else\` (JSX dan tashqarida)
-Agar mantiq juda murakkab bo'lsa, uni \`return\` qilishdan oldin ishlatgan ma'qul.
 \`\`\`jsx
-if (isLoading) {
-  return <h2>Yuklanmoqda... Kuting!</h2>;
+// XATO: JSX ichida for loop ishlata olmaysiz!
+function UserList({ users }) {
+  return (
+    <div>
+      {for (let i = 0; i < users.length; i++) {
+        return <p>{users[i].name}</p>
+      }}
+    </div>
+  );
 }
-return <h2>Ma'lumotlar tayyor.</h2>;
 \`\`\`
 
-### 2-usul: Ternary Operator \`? :\` (JSX ichida)
-Ikki xil holatni bitta qatorda yozish uchun:
-\`\`\`jsx
-return (
-  <div>
-    {isOnline ? <p>Tizimda 🟢</p> : <p>Oflayn 🔴</p>}
-  </div>
-);
-\`\`\`
+✅ **To'g'ri amaliyot (Do)**: Har doim \`.map()\` dan foydalaning, chunki u asl arrayni o'zgartirmasdan, har bir element uchun yangi JSX elementlaridan iborat yangi array qaytaradi.
 
-### 3-usul: Logical AND \`&&\` (JSX ichida)
-Faqat shart to'g'ri bo'lsagina ko'rsatish, aks holda hech narsa qilmaslik uchun:
 \`\`\`jsx
-return (
-  <div>
-    {unreadMessages > 0 && <p>Sizda o'qilmagan xabarlar bor!</p>}
-  </div>
-);
+function UserList({ users }) {
+  return (
+    <ul>
+      {users.map((user) => (
+        // E'tibor bering: ro'yxat elementlariga doim 'key' kerak! (bu haqida pastroqda)
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
 \`\`\`
 
 ---
 
-## 4. 🧹 Ro'yxatni Filtrlash (\`filter\`)
+## 2. \`key\` prop'ining hal qiluvchi roli va React Diffing Algoritmi
 
-React'da massivdan qaysidir ma'lumotni **o'chirish** yoki **saralash** uchun \`filter()\` ishlatiladi. Esingizda bo'lsin: State doimo O'zgarmas (Immutable) dir! \`splice()\` ishlata ko'rmang!
+Ro'yxatlarni render qilganingizda, React sizdan har bir element uchun takrorlanmas \`key\` (kalit) propini berishni talab qiladi. Agar bermasangiz, konsolda "Warning: Each child in a list should have a unique 'key' prop" degan qizil xatolikni ko'rasiz.
 
-\`\`\`jsx
-const handleDelete = (id) => {
-  // id ga teng bo'lmagan qolgan barcha elementlarni qaytaradi
-  const updatedList = list.filter(item => item.id !== id);
-  setList(updatedList); // State ni yangilaymiz
-};
-\`\`\`
+### 💡 Nega kerak?
+React DOM'ni (ekranni) tezkorlik bilan yangilash uchun **Virtual DOM** va **Diffing algoritmi**dan foydalanadi. Qachonki state o'zgarsa, React eski ro'yxat va yangi ro'yxatni solishtiradi. Agar siz \`key\` bermasangiz, React ro'yxatga yangi element qo'shilganini, o'chirilganini yoki joyi almashganini tushunishga qiynaladi va butun ro'yxatni boshidan chizishiga to'g'ri keladi. Bu esa juda katta ishlash tezligi (performance) muammolariga olib keladi.
 
-## 🧠 Chuqurlashtirilgan Nazariya: Nima uchun "key" bunchalik muhim?
+### 🍔 Real-hayot analogiyasi
+Tasavvur qiling, 5 ta farzandingiz bor. Ularning pasporti yoki takrorlanmas ismlari yo'q. Faqat "1-farzand", "2-farzand" deb chaqirasiz. Agar eng kattasi uydan chiqib ketsa, qolgan hamma farzandlarning raqami o'zgarib ketadi (2-farzand 1-bo'lib qoladi va hokazo). Lekin ularning har birida "Pasport raqami" (\`key\`) bo'lsa, kim qayerga ketganini yoki yangi odam kelganini darhol aniqlaysiz.
 
-React ekrandagi o'zgarishlarni tezroq va samaraliroq chizish uchun **Diffing Algoritmi**dan (yoki *Reconciliation*) foydalanadi. React eski va yangi Virtual DOM-ni solishtirib, faqatgina o'zgargan joylarni haqiqiy DOM-ga o'tkazadi. 
+### 📊 React Diffing Algoritmi: \`key\` bilan va \`key\` siz
 
-Agar siz ro'yxatga yangi element qo'shsangiz yoki o'rnini o'zgartirsangiz, React qaysi element qaerdaligini tushunishga qiynaladi. Aynan shu joyda \`key\` yordamga keladi!
-
-### 🔑 "key" ishlatilmaganda nima bo'ladi?
-Faraz qilaylik, biz ro'yxatning **boshiga** yangi element qo'shdik. React birinchi element o'zgarganini ko'radi, keyin ikkinchisini, keyin uchinchisini... U aslida ro'yxatga bitta element qo'shilganini bilmaydi va barcha elementlarni **boshidan oxirigacha yangitdan chizib chiqadi (re-render)**. Bu juda samarasiz!
-
-### 🔑 "key" ishlatilganda nima bo'ladi?
-\`key\` (noyob identifikator) orqali React tushunadiki: *"Aha, eski ro'yxatdagi id=1, id=2 bo'lgan elementlar joyida qolibdi, faqat id=3 degan yangi element oldinga qo'shilibdi!"*. Natijada faqat bittagina yangi element DOM-ga qo'shiladi. Qolganlari faqat o'rnini siljitadi xolos.
-
-Quyidagi diagrammada ushbu jarayon qanday ishlashi ko'rsatilgan:
+Quyidagi Mermaid diagrammasi orqali React DOM'ni qanday yangilashini ko'rib chiqamiz:
 
 \`\`\`mermaid
 flowchart TD
-    subgraph "Noyob 'key' ISHLATILMAGANDA (Index bilan)"
-    A1[Eski ro'yxat:<br/>1. Olma<br/>2. Banan] --> B1[Yangi ro'yxatga Gilos qo'shildi:<br/>1. Gilos<br/>2. Olma<br/>3. Banan]
-    B1 --> C1{React tekshiradi:<br/>1-element o'zgardimi?}
-    C1 -- "Ha (Olma -> Gilos)" --> D1[1-elementni yangilaydi]
-    D1 --> E1{2-element o'zgardimi?}
-    E1 -- "Ha (Banan -> Olma)" --> F1[2-elementni yangilaydi]
-    F1 --> G1[Oxirida 3-elementni noldan yaratadi]
-    G1 --> H1((Natija: <br/>Barcha elementlar <br/>qayta chizildi! ❌))
+    subgraph Without_Keys ["Key'lar ishlatilmaganda (YOMON)"]
+        A1[Eski ro'yxat: <br/> 1. Olma <br/> 2. Banan]
+        A2[Yangi ro'yxat: <br/> 1. Anor (yangi) <br/> 2. Olma <br/> 3. Banan]
+        
+        A1 -->|React 1-elementni tekshiradi| A3[Olma -> Anor ga o'zgardi <br> Yangilash]
+        A1 -->|React 2-elementni tekshiradi| A4[Banan -> Olma ga o'zgardi <br> Yangilash]
+        A1 -.->|React 3-elementni ko'radi| A5[Banan qo'shildi <br> Yaratish]
+        
+        A6[Xulosa: React hamma narsani o'zgartirib, <br/> qayta chizib chiqdi. Bu juda sekin!]
+        A3 & A4 & A5 --> A6
     end
 
-    subgraph "Noyob 'key' ISHLATILGANDA (ID bilan)"
-    A2[Eski ro'yxat:<br/>id:1 - Olma<br/>id:2 - Banan] --> B2[Yangi ro'yxatga Gilos qo'shildi:<br/>id:3 - Gilos<br/>id:1 - Olma<br/>id:2 - Banan]
-    B2 --> C2{React 'key' larni tekshiradi}
-    C2 -- "id:1 va id:2 mavjud" --> D2[Olma va Bananni joyini o'zgartiradi xolos]
-    C2 -- "id:3 bu yangi" --> E2[Faqat Gilosni noldan chizadi]
-    D2 & E2 --> F2((Natija: <br/>Juda tez va samarali <br/>yangilanish! ✅))
+    subgraph With_Keys ["Key'lar bilan (YAXSHI)"]
+        B1[Eski ro'yxat: <br/> id:1 Olma <br/> id:2 Banan]
+        B2[Yangi ro'yxat: <br/> id:3 Anor <yangi> <br/> id:1 Olma <br/> id:2 Banan]
+        
+        B1 -->|React id:3 ni izlaydi| B3[Eskisida id:3 yo'q -> Anor yaratildi]
+        B1 -->|React id:1 ni izlaydi| B4[Eskisida id:1 bor -> Olma tegilmadi, faqat surildi]
+        B1 -->|React id:2 ni izlaydi| B5[Eskisida id:2 bor -> Banan tegilmadi, faqat surildi]
+        
+        B6[Xulosa: React faqat bitta element yaratdi. <br/> Qolganlarini o'z joyida olib qoldi. Super tez!]
+        B3 & B4 & B5 --> B6
     end
-    
-    style H1 fill:#f9d0c4,stroke:#e74c3c,stroke-width:2px,color:#000
-    style F2 fill:#d4efdf,stroke:#27ae60,stroke-width:2px,color:#000
 \`\`\`
 
-> **Xulosa:** Hech qachon ro'yxat indeksini (index) \`key\` sifatida ulamang, agar ro'yxatingiz tartibi o'zgarishi, filtrlanishi yoki unga yangi element qo'shilishi mumkin bo'lsa. Doim bazadan kelayotgan noyob id'ni ishlating!
+---
+
+## 3. Nima uchun Array Index'ni \`key\` sifatida ishlatish xavfli? (Anti-pattern)
+
+Juda ko'p boshlang'ich dasturchilar \`key\` muammosidan qutulish uchun \`.map\` ning ikkinchi parametri bo'lmish \`index\` (0, 1, 2...) dan foydalanishadi. Bu qat'iyan man etiladi!
+
+❌ **Yomon amaliyot (Don't)**:
+\`\`\`jsx
+// BUNDAY QILMANG!
+{items.map((item, index) => (
+  <ListItem key={index} data={item} />
+))}
+\`\`\`
+
+### Nima uchun bu xavfli?
+Agar ro'yxatingiz statik bo'lsa (hech qachon o'zgarmasa, o'chirilmasa, joyi almashmasa), \`index\` ishlatish xavfsiz. Lekin ro'yxatga yangi element qo'shilsa (ayniqsa boshiga yoki o'rtasiga) yoki o'chirilsa, React qattiq adashadi.
+
+Tasavvur qiling, ro'yxatingizda input qutilari bor.
+1. Dastlab: \`[A, B, C]\` — ularning index keylari \`[0, 1, 2]\`. 
+2. Siz 'A' elementini o'chirdingiz.
+3. Yangi ro'yxat: \`[B, C]\` bo'ldi.
+4. Endi 'B' ning indexi 0, 'C' niki 1 bo'lib qoldi.
+5. React o'ylaydi: "Aha! 0 va 1 kalitli elementlar joyida ekan, faqat oxiridagi 2 kalitli element o'chirilibdi". 
+6. Natijada ekranda eski ma'lumotlar chalkashib, boshqa inputning ichidagi yozuvlar boshqasiga o'tib qoladi!
+
+✅ **To'g'ri amaliyot (Do)**: Har doim ma'lumotlar bazasidan keladigan takrorlanmas \`id\` (masalan, UUID yoki DB id) ishlating.
+
+\`\`\`jsx
+// YAXSHI!
+{items.map((item) => (
+  <ListItem key={item.uuid} data={item} />
+))}
+\`\`\`
+
+---
+
+## 4. Shartli Renderlash (Conditional Rendering)
+
+Komponentlar har doim ham bir xil narsani ko'rsatavermaydi. Ba'zida foydalanuvchi tizimga kirgan bo'lsa (logged in) boshqa narsani, kirmagan bo'lsa boshqa narsani ko'rsatishimiz kerak.
+
+React'da maxsus if-else teglar yo'q. Biz oddiy JavaScript mantiqlaridan foydalanamiz.
+
+### 4.1. If-else mantig'i bilan Erta Qaytish (Early Return)
+Agar butun boshli komponent qandaydir shartga ko'ra butunlay boshqa narsa ko'rsatishi kerak bo'lsa, uni to'g'ridan-to'g'ri funksiyaning boshida tekshiramiz.
+
+\`\`\`jsx
+function Dashboard({ isLoading, user }) {
+  if (isLoading) {
+    return <div>Yuklanmoqda...</div>; // Erta qaytish
+  }
+
+  return <div>Xush kelibsiz, {user.name}!</div>;
+}
+\`\`\`
+
+### 4.2. Ternary operator (\`shart ? rost : yolg'on\`)
+JSX ichida biz \`if\` ishlata olmaymiz, shuning uchun JavaScript'ning uchinchi darajali operatoridan foydalanamiz. Bu eng ko'p ishlatiladigan usul.
+
+\`\`\`jsx
+function LogInOutButton({ isLoggedIn }) {
+  return (
+    <div>
+      {isLoggedIn ? (
+        <button>Tizimdan chiqish</button>
+      ) : (
+        <button>Tizimga kirish</button>
+      )}
+    </div>
+  );
+}
+\`\`\`
+
+### 4.3. Logical AND (\`&&\`)
+Agar qandaydir shart bajarilsagina biror narsani ko'rsatish kerak bo'lsa, aks holda hech narsa ko'rsatilmasa, \`&&\` dan foydalanamiz.
+
+\`\`\`jsx
+function Notifications({ messages }) {
+  return (
+    <div>
+      <h1>Sizning xabarlaringiz</h1>
+      {/* Agar xabarlar mavjud bo'lsa, quyidagi xabarni chiqaramiz */}
+      {messages.length > 0 && <p>Sizda yangi xabarlar bor!</p>}
+    </div>
+  );
+}
+\`\`\`
+
+### ⚠️ Keng tarqalgan xavfli xato: \`0 &&\` muammosi
+
+Yuqoridagi misolda \`messages.length > 0 && ...\` deb yozdik. Ko'p dasturchilar buni qisqartirib \`messages.length && ...\` deb yozishadi. Bu juda katta xato!
+
+❌ **Yomon amaliyot (Don't)**:
+\`\`\`jsx
+function Cart({ items }) {
+  // Agar items.length 0 bo'lsa, React ekranga 0 raqamini yozib qo'yadi!
+  return (
+    <div>
+      {items.length && <p>Savatda mahsulotlar bor</p>}
+    </div>
+  );
+}
+\`\`\`
+
+**Sababi:** JavaScript'da \`0\` bu *falsy* qiymat. Aytaylik savat bo'sh, \`items.length\` 0 ga teng. \`0 && <p>...</p>\` ifodasi JavaScript qoidalariga ko'ra \`0\` natijasini qaytaradi. React esa ekranga HTML o'rniga oddiy \`0\` raqamini chizib qo'yadi!
+
+✅ **To'g'ri amaliyot (Do)**: Har doim ifodangiz aniq **Boolean** (true/false) qaytarayotganiga ishonch hosil qiling.
+
+\`\`\`jsx
+// 1-usul: Aniq shart berish
+{items.length > 0 && <p>Savatda mahsulotlar bor</p>}
+
+// 2-usul: Ochiqchasiga boolean ga o'girish (!!)
+{!!items.length && <p>Savatda mahsulotlar bor</p>}
+\`\`\`
+
+---
+
+## Xulosa
+
+1. **\`.map()\`** - React'da ro'yxatlarni chizishning yagona va eng zo'r yo'li.
+2. **\`key\`** - Bu ro'yxat elementlarining pasporti. U React'ga komponentlarni samarali yangilash imkonini beradi.
+3. **\`index\` ni key qilmang** - Agar ro'yxat tartibi o'zgarishi mumkin bo'lsa, bu UI'da jiddiy va topish qiyin bo'lgan xatoliklarga olib keladi.
+4. **Shartli renderlash** - \`if\` (erta qaytish), \`? :\` (ikki xil holat uchun) va \`&&\` (bor yoki yo'q holati uchun) operatorlaridan to'g'ri o'rinda foydalaning.
+5. **Falsy muammosi** - \`&&\` ishlatganda ifodaning chap qismi raqamli \`0\` qaytarib, ekranda tushunarsiz \`0\` hosil bo'lishidan ehtiyot bo'ling. Doim mantiqni to'liq boolean ko'rinishiga olib keling (\`> 0\`).
+
 `,
   code: `import React, { useState } from "react";
 

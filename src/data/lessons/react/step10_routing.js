@@ -1,144 +1,216 @@
 export const step10_routing = {
   title: "10-DARS: Marshrutlash (Routing)",
   content: `
-# 1. 🛣️ React'da Routing nima?
+# React Routing (Marshrutizatsiya) asoslari va React Router DOM
 
-Eski uslubdagi veb-saytlarda (masalan, PHP yoki faqat HTML dagi), "Biz Haqimizda" sahifasiga o'tish uchun brauzer \`about.html\` faylini serverdan so'rar va butun sahifa boshqatdan yuklanar edi (Oq ekran miltillashi).
+## Routing nima o'zi? (What is Routing?)
 
-**React esa SPA (Single Page Application - Bir Sahifali Ilova)** hisoblanadi. U hech qachon sahifani yangilamaydi. Xo'sh, unda foydalanuvchini boshqa sahifaga qanday olib o'tamiz? 
+Tasavvur qiling, siz katta savdo markazidasiz (Mall). Savdo markazi ko'plab do'konlardan iborat. Qaysi do'konga borishni xohlasangiz, yo'laklar orqali kerakli manzilga kelasiz. Savdo markazidagi yo'l ko'rsatkichlar va xaritalar sizga qaysi qavatda qaysi do'kon borligini ko'rsatadi. 
 
-Bunining yechimi — **Kutubxona orqali yolg'on sahifalar yaratish!** 
-Odatda bu ish uchun **\`react-router-dom\`** degan eng mashhur kutubxona ishlatiladi. U URL manziliga qarab turadi va manzilda \`/about\` paydo bo'lganda \`About\` komponentini, \`/contact\` paydo bo'lganda \`Contact\` komponentini ekranda chizib beradi. Sahifa umuman miltillamaydi!
+Veb-dasturlashda **Routing** (marshrutizatsiya) xuddi shu xarita va yo'naltirgich rolini o'ynaydi. Foydalanuvchi qaysi manzilni (URL ni) brauzerda qidirishiga yoki qaysi havolani (link) bosishiga qarab, unga tegishli sahifani yoki komponentni ko'rsatish jarayoni routing deb ataladi. Masalan, foydalanuvchi \`www.saytim.uz/about\` ga kirsa, unga "Biz haqimizda" ma'lumoti chiqishi kerak, \`www.saytim.uz/contact\` ga kirsa, "Aloqa" sahifasi ochilishi kerak.
+
+### Client-Side Routing vs Server-Side Routing (Mijoz va Server tomonidagi marshrutizatsiya)
+
+An'anaviy veb-saytlar (MPA - Multi-Page Applications) **Server-Side Routing** (SSR) dan foydalanadi. Bunda siz biror havolani bossangiz, brauzer serverga yangi sahifa so'rovini yuboradi. Server HTML sahifa shakllantiradi va qaytaradi. Brauzer esa oq ekran bo'lib, sahifani to'liq boshidan qayta yuklaydi.
+
+React kabi zamonaviy kutubxonalar esa **Client-Side Routing** (CSR) dan foydalanib **SPA** (Single Page Application - Yagona sahifali ilova) qurish imkonini beradi. Bunda saytga birinchi marta kirganda barcha asosiy kodlar yuklanadi. Endi siz havolani bossangiz, brauzer serverga bormaydi! Shunchaki brauzerning URL manzili o'zgaradi va JavaScript darhol ekrandagi eski komponentni olib tashlab, o'rniga yangi komponentni chizib (render qilib) ko'rsatadi. Qayta yuklanish (refresh/blink) umuman bo'lmaydi!
+
+#### Mermaid: SPA va MPA taqqoslovi
+
+\`\`\`mermaid
+sequenceDiagram
+    participant B as Browser
+    participant S as Server
+    
+    Note over B,S: An'anaviy MPA (Server-Side Routing)
+    B->>S: GET /about (sahifani yuklash)
+    S-->>B: Yuborildi: about.html (To'liq HTML fayl)
+    B->>B: Ekranni tozalash va to'liq qayta chizish (Blink/Reload)
+    
+    Note over B,S: React SPA (Client-Side Routing)
+    B->>S: GET / (ilk marta kirish)
+    S-->>B: Yuborildi: index.html va React JS bundle
+    B->>B: React ilovani ishga tushirish (DOM ni yaratish)
+    B->>B: Foydalanuvchi 'About' linkini bosdi
+    B->>B: URL '/about' ga o'zgardi. React faqat DOM ni o'zgartiradi (Serverga so'rov yo'q, sahifa miltillamaydi!)
+\`\`\`
 
 ---
 
-## 2. 🔌 O'rnatish va Asosiy Konfiguratsiya
+## React Router DOM asoslari
 
-Terminalda loyihangiz papkasiga kirib quyidagi buyruq orqali kutubxonani o'rnatasiz:
-\`\`\`bash
-npm install react-router-dom
+React kutubxonasi o'zida ichki routing tizimiga ega emas (u faqat UI yaratish uchun). Shuning uchun, bu ishni amalga oshirishda biz eng ommabop va kuchli kutubxona bo'lgan **React Router DOM** dan foydalanamiz. O'rnatish uchun: \`npm install react-router-dom\` buyrug'i ishlatiladi.
+
+### Nega kerak?
+Agar React Router bo'lmasa, har bir URL uchun o'zimiz shartlar yozishimizga to'g'ri kelardi: \`if (window.location.pathname === '/about') return <About />\`. Bu juda noqulay, boshqarish qiyin va xatoliklarga moyil yondashuv. React Router DOM bularning barchasini o'z zimmasiga oladi va juda oson sintaksis taqdim etadi.
+
+### Asosiy komponentlar: \`BrowserRouter\`, \`Routes\`, \`Route\`, \`Link\`
+
+1. **\`BrowserRouter\`**: Bu butun dasturingizni qamrab oluvchi bosh komponent. U brauzerning HTML5 History API-dan foydalanib URL-ni boshqaradi. Odatda dastur boshlanishida (masalan \`main.jsx\` yoki \`index.jsx\`) yoziladi. U butun savdo markazini boshqaradigan tizim kabi barcha yo'nalishlarni nazorat qiladi.
+2. **\`Routes\`**: Barcha mumkin bo'lgan yo'llarni (routelarni) o'zida saqlovchi quti. URL o'zgarganda, bu quti o'z ichidagi eng mos keladigan bitta \`Route\` ni tanlab ekranga chiqaradi.
+3. **\`Route\`**: Haqiqiy xarita va qoida. U ikkita asosiy props qabul qiladi: \`path\` (yo'l) va \`element\` (shu yo'lda nima ko'rinishi kerakligi). "Agar foydalanuvchi \`/contact\` yo'liga borsa, \`<ContactComponent />\` ni ko'rsat" deydigan qat'iy ko'rsatma.
+4. **\`Link\`**: Boshqa sahifaga (komponentga) o'tish uchun maxsus havola (teg) komponenti. U tashqi ko'rinishidan oddiy \`<a>\` tegiga o'xshaydi, lekin ishlash mantig'i umuman boshqa.
+
+---
+
+## \`<a>\` tegi muammosi va nega \`<Link>\` ishlatamiz?
+
+**Nega kerak?** Nima uchun shunchaki oddiy HTML \`<a>\` tegidan foydalana olmaymiz? Sababi oddiy \`<a>\` tegi o'zining tabiatiga ko'ra brauzerga sahifani **to'liq qayta yuklashni** (full page refresh) buyuradi. Bu bizning SPA (Single Page Application) g'oyamizga butunlay zid! Agar siz sahifani qayta yuklasangiz, barcha React state'lar o'chib ketadi, kiritilgan formalar o'chadi va dastur qayta boshidan ishlashga majbur bo'ladi.
+
+\`<Link>\` komponenti esa xuddi qutqaruvchidek ishlaydi. U bosilganda ichki \`event.preventDefault()\` mexanizmini ishga tushiradi (refreshni to'xtatadi) va HTML History API orqali URL-ni sekingina o'zgartiradi. Natijada faqat ekrandagi kerakli komponentlar o'zgaradi. Dastur xotirasi (State) esa o'z o'rnida qolaveradi!
+
+### Do's and Don'ts (Yaxshi va Yomon Amaliyotlar)
+
+❌ **Yomon amaliyot (Don't do this):**
+\`\`\`jsx
+// HTML dagi oddiy 'a' tegi butun sahifani qayta yuklaydi va barcha State'larni xotiradan o'chiradi
+export default function Navbar() {
+  return (
+    <nav>
+      <a href="/about">Biz haqimizda (Xato)</a>
+      <a href="/contact">Aloqa (Xato)</a>
+    </nav>
+  );
+}
 \`\`\`
 
-Undan foydalanishning 3 ta asosiy qadami bor:
-1.  **\`BrowserRouter\`**: Butun loyihamizdagi \`App\` komponentini shu bilan o'rab chiqishimiz kerak (Odatda \`index.js\` faylida qilinadi).
-2.  **\`Routes\`**: Barcha marshrutlarni jamlaydigan ota quti.
-3.  **\`Route\`**: Aniq bir manzil (URL) va u uchun ishlashi kerak bo'lgan Komponent.
-
+✅ **Yaxshi amaliyot (Do this):**
 \`\`\`jsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-function App() {
+// React Router 'Link' tegi faqatgina URL'ni o'zgartiradi, sahifa tezkor va miltillashsiz yangilanadi!
+export default function Navbar() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        {/* 404 xatolik sahifasi uchun yulduzcha (*) */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <nav>
+      <Link to="/about">Biz haqimizda (To'g'ri)</Link>
+      <Link to="/contact">Aloqa (To'g'ri)</Link>
+    </nav>
   );
 }
 \`\`\`
 
 ---
 
-## 3. 🔗 Sahifadan-Sahifaga o'tish (Link)
+## Dynamic Parameters (Dinamik parametrlar) va Navigation Hooks
 
-Oddiy HTML da boshqa joyga o'tish uchun \`<a href="/about">\` yozardik. Lekin React'da bunday qilsak brauzer sahifani yangilab yuboradi (Refresh bo'ladi).
+### Dinamik Parametrlar (URL Parameters)
 
-Buning o'rniga biz \`react-router-dom\` dan **\`Link\`** komponentini ishlatishimiz shart!
+Tasavvur qiling, sizda katta internet-do'kon bor va u yerda 10 000 ta mahsulot bor. Har bir mahsulot uchun alohida Route yozish (\`/product/1\`, \`/product/2\`, ... \`/product/10000\`) aqlga umuman sig'maydigan ish. Buning o'rniga biz dinamik parametrlardan foydalanamiz. Bu xuddi funksiya qabul qiladigan argumentga o'xshaydi. URL dagi ikki nuqta \`:\` belgisidan keyin kelgan nom o'zgaruvchi (parametr) deb o'qiladi.
 
 \`\`\`jsx
-import { Link } from "react-router-dom";
+// App.jsx faylida routelarni sozlash
+import { Routes, Route } from 'react-router-dom';
 
-// ...
-<nav>
-  <Link to="/">Bosh sahifa</Link>
-  <Link to="/about">Biz haqimizda</Link>
-</nav>
-\`\`\`
-
-> Eslatma: \`<NavLink>\` degan maxsus turi ham bor, uning farqi - agar foydalanuvchi hozir o'sha sahifada turgan bo'lsa unga avtomatik tarzda \`active\` degan CSS class qo'shib beradi (menyularni qizil qilib belgilab qo'yish uchun zo'r).
-
----
-
-## 4. 动态 Dinamik Yo'nalishlar (Dynamic Routes)
-
-Ko'pincha bizda bitta maxsus sahifa turli xil ma'lumotlarni ko'rsatishi kerak bo'ladi. Masalan, "Mahsulot Tafsilotlari" sahifasi.
-Brauzer tepasida: \`/product/1\` yoki \`/product/123\` bo'lishi mumkin.
-
-Buning uchun \`Route\` da ikki nuqta (\`:\`) bilan o'zgaruvchi e'lon qilinadi:
-\`\`\`jsx
-<Route path="/product/:id" element={<ProductDetail />} />
-\`\`\`
-
-O'sha komponent (ProductDetail) ichiga kirgandan keyin o'sha "123" raqamini (ID ni) olish uchun \`useParams\` hookidan foydalaniladi:
-\`\`\`jsx
-import { useParams } from 'react-router-dom';
-
-function ProductDetail() {
-  const { id } = useParams();
-  return <h2>Siz tanlagan mahsulot ID raqami: {id}</h2>;
+function App() {
+  return (
+    <Routes>
+      <Route path="/products" element={<ProductList />} />
+      
+      {/* ':id' - bu yerda dinamik parametr hisoblanadi */}
+      <Route path="/products/:id" element={<ProductDetails />} />
+    </Routes>
+  );
 }
 \`\`\`
 
----
+#### Nega kerak?
+Dinamik parametrlar orqali qaysi aniq mahsulot bosilganini bilib olamiz va serverdan faqatgina o'sha kerakli mahsulot ma'lumotini so'raymiz.
+Bu dinamik qiymatni komponent ichida tutib olish uchun esa \`useParams\` custom hook'idan foydalanamiz.
 
-## 5. 🚜 Dasturiy o'tish (useNavigate)
+\`\`\`jsx
+// ProductDetails.jsx
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-Ba'zida foydalanuvchi linkni o'zi bosmaydi, balki bironta amalni bajarganidan so'ng (masalan tizimga kirdi - login qildi) uni majburan Bosh sahifaga uloqtirib yuborish kerak bo'ladi.
-Buning uchun \`useNavigate\` hooki kerak:
+export default function ProductDetails() {
+  // URL dagi :id (masalan /products/42 bo'lsa, id = "42") ni ushlab olamiz
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    // Endi shu 'id' yordamida haqiqiy API dan aynan bitta mahsulotni yuklab olamiz
+    fetch(\`https://fakestoreapi.com/products/\${id}\`)
+      .then(res => res.json())
+      .then(data => setProduct(data));
+  }, [id]);
+
+  if (!product) return <h2>Yuklanmoqda...</h2>;
+
+  return (
+    <div>
+      <h1>Mahsulot raqami: {id}</h1>
+      <h2>Nomi: {product.title}</h2>
+      <p>Narxi: \${product.price}</p>
+    </div>
+  );
+}
+\`\`\`
+
+### Navigation Hooks (Dasturiy ravishda navigatsiya)
+
+Odatda sahifalararo o'tishlar \`<Link>\` bosish orqali amalga oshadi. Lekin ba'zida biz foydalanuvchini **dastur mantig'iga asosan**, u linkni bosmagan holatda ham boshqa sahifaga yo'naltirishimiz kerak bo'lib qoladi.
+Masalan:
+- Login va parolni to'g'ri kiritgandan so'ng, tizim o'zi avtomat "Profil" sahifasiga o'tkazishi.
+- Xarid muvaffaqiyatli amalga oshganda "Tabriklaymiz" deb, keyin Bosh sahifaga qaytarishi.
+- Faylni yuklash tugagandan so'ng natija sahifasiga otishi.
+
+Bunday holatlar uchun React Router bizga \`useNavigate\` hook'ini sovg'a qiladi. Bu bizga istalgan funksiya ichidan turib yo'nalishni o'zgartirish (navigate) kuchini beradi.
 
 \`\`\`jsx
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-function LoginForm() {
-  const navigate = useNavigate();
+export default function LoginForm() {
+  const navigate = useNavigate(); // Navigate obyektini chaqirib olamiz
+  const [username, setUsername] = useState('');
 
-  const handleLogin = () => {
-    // API tekshiruvi muvaffaqiyatli o'tdi...
-    navigate('/dashboard'); // Dasturiy o'tkazish
+  const handleLogin = (e) => {
+    e.preventDefault();
+    
+    // Tasavvur qilamiz, bu yerda server tekshiruvi bor
+    if (username === 'admin') {
+      alert('Tizimga muvaffaqiyatli kirdingiz!');
+      // Foydalanuvchini avtomatik tarzda '/dashboard' manziliga jo'natamiz
+      navigate('/dashboard');
+    } else {
+      alert('Noto\'g'ri foydalanuvchi!');
+    }
   };
 
-  return <button onClick={handleLogin}>Kirish</button>;
+  return (
+    <form onSubmit={handleLogin}>
+      <h2>Tizimga kirish</h2>
+      <input 
+        placeholder="Ismingiz (admin deb yozing)" 
+        value={username} 
+        onChange={(e) => setUsername(e.target.value)} 
+      />
+      <button type="submit">Kirish</button>
+    </form>
+  );
 }
 \`\`\`
 
-## 🧠 Chuqurlashtirilgan Nazariya: Client-Side Routing vs Server-Side Routing
+#### Brauzer tarixida orqaga qaytish (Go Back)
+\`useNavigate\` shunchaki yangi sahifaga yo'naltiribgina qolmay, balki brauzer tarixida orqaga yoki oldinga qaytishni ham eplaydi. Agar funksiyaga manzil o'rniga manfiy raqam bersangiz, xuddi brauzerdagi ⬅️ orqaga (back) tugmasi bosilgandek ishlaydi.
 
-Veb-dasturlashda sahifalararo o'tishning asosan ikki xil yondashuvi mavjud: an'anaviy Server-Side Routing (Server tomonida marshrutlash) va Client-Side Routing (Mijoz tomonida marshrutlash). React asosan SPA (Single Page Application - Bir Sahifali Ilova) bo'lgani sababli, unda **Client-Side Routing** ishlatiladi.
-
-**1. Server-Side Routing (An'anaviy usul):**
-Foydalanuvchi biron linkni bosganda, brauzer yangi sahifa so'rovini internet orqali bevosita serverga yuboradi. Server so'ralgan manzilga mos keluvchi butunlay yangi HTML hujjatni noldan tuzib qaytaradi. Brauzer esa ekrandagi eski ma'lumotlarni tozalab, yangi sahifani chizadi (refresh - oq ekran miltillashi sodir bo'ladi).
-
-**2. Client-Side Routing (React usuli):**
-Foydalanuvchi ilova ichida linkni bosganda, kutubxona (masalan, \`react-router-dom\`) bu holatni tutib qoladi (intercept qiladi). Brauzerning serverga so'rov yuborishiga yo'l qo'ymaydi. Manzillar qatoridagi URL o'zgaradi, lekin faqat kerakli komponentlar o'zgaradi (masalan, \`Home\` ketib o'rniga \`About\` keladi).
-- *Afzalligi:* Sahifani qayta yuklash bo'lmaydi. O'tishlar bir zumda yuz beradi, natijada dastur xuddi tezkor mobil ilova kabi silliq va qulay ishlaydi.
-
-Quyidagi diagrammada bu ikki yondashuv farqi batafsil tasvirlangan:
-
-\`\`\`mermaid
-sequenceDiagram
-    participant B as Brauzer (Mijoz)
-    participant R as React Router (Mijozda)
-    participant S as Server
-    
-    rect rgb(255, 230, 230)
-    note over B, S: 🔴 SERVER-SIDE ROUTING (An'anaviy veb-sayt)
-    B->>S: 1. Foydalanuvchi /about linkini bosdi
-    S-->>B: 2. Yangi about.html sahifasi to'liq yuborildi
-    note over B: 3. ♻️ Brauzer miltillab, butun sahifani qaytadan chizadi!
-    end
-    
-    rect rgb(230, 255, 230)
-    note over B, S: 🟢 CLIENT-SIDE ROUTING (React SPA)
-    B->>R: 1. Foydalanuvchi <Link to="/about"> bosdi
-    note right of R: 2. Router voqeani tutib qoladi (Intercept)
-    R->>B: 3. URL o'zgarib, faqat <About /> komponenti chiziladi
-    note over B: 4. ⚡ Miltillash yo'q! Sahifa o'sha zahoti o'zgaradi!
-    end
+\`\`\`jsx
+// Bir qadam orqaga qaytish uchun (-1 ni beramiz)
+<button onClick={() => navigate(-1)}>⬅️ Orqaga qaytish</button>
 \`\`\`
+
+---
+
+## Xulosa qilib aytganda:
+
+1. **Routing** veb-ilovangizni mantiqiy qismlarga va turli xil manzil (URL) larga ajratadi.
+2. **React Router DOM** yordamida brauzerni umuman qayta yuklamasdan tezgina sahifalar o'rtasida poyezddek harakatlanish (SPA tajribasi) ta'minlanadi.
+3. Katta va yagona qoida: React ichida boshqa sahifalarga o'tishda **hech qachon HTML \`<a href="...">\` tegidan foydalanmang**, barcha harakatlanishlar uchun faqat React Router DOM ning \`<Link to="...">\` komponentidan foydalaning.
+4. **Dinamik parametrlar (\`useParams\`)** orqali yagona sahifa shablonini ko'plab mahsulotlar yoxud ma'lumotlar detallarini ko'rsatish uchun qayta ishlata olamiz.
+5. **Dasturiy navigatsiya (\`useNavigate\`)** kod mantig'i tugagach (masalan muvaffaqiyatli avtorizatsiyadan keyin) foydalanuvchini avtomatik tarzda kerakli sahifaga olib borib qo'yadi.
+
+Ushbu bilimlarni o'zlashtirganingizdan so'ng, sizning React ilovangiz oddiy bir varaqli saytdan haqiqiy, mukammal, ko'p sahifali web dasturiy platformaga aylanadi!
+
 `,
   code: `import React from "react";
 // Bu yerda interaktiv oyna uchun Router imitatsiyasini o'rnatamiz

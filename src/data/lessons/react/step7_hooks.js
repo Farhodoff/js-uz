@@ -1,110 +1,202 @@
 export const step7_hooks = {
   title: "7-DARS: React Hooks (Asosiy)",
   content: `
-# 1. 🪝 Hook o'zi nima?
+# 7-qadam: React Hooklari va useEffect'ga Chuqur Sho'ng'ish
 
-React 16.8 versiyasidan oldin, Funksional Komponentlar faqatgina JSX qaytaradigan sodda (dumb) funksiyalar edi. Ularda na State saqlab bo'lardi, na komponent qachon chizilib qachon o'chganini (Lifecycle) bilib bo'lardi. Hamma qiyin ishlar Class komponentlarda yozilardi.
-
-**Hooks (Ilmoqlar)** paydo bo'lgach esa, hamma narsa o'zgardi! 
-Hook — bu oddiy funksional komponentga React ning eng kuchli xususiyatlarini (State, Context, Lifecycle) "ilib" beruvchi (hooked into) maxsus funksiyalardir. Ularning barchasi **\`use\`** so'zi bilan boshlanadi: \`useState\`, \`useEffect\`, \`useRef\`.
-
-### Hook larning 2 ta oltin qoidasi bor:
-1. **Faqat React komponentlari ichida chaqiriladi:** Oddiy JS funksiyalari ichida Hook chaqirib bo'lmaydi.
-2. **Faqat eng yuqorida (top-level) chaqiriladi:** Hooklarni hech qachon \`if/else\`, \`for\` tsikllari yoki ichma-ich funksiyalar (callback) ichida chaqirmang. Har bir renderda hooklar xuddi o'sha tartibda chaqirilishi kafolatlangan bo'lishi shart!
+React'ning eng kuchli xususiyatlaridan biri bu **Hook**lardir. Ular funksional komponentlarga "kuch" bag'ishlaydi. Ushbu darsda biz Hooklar tushunchasi va ayniqsa, \`useEffect\` bilan mukammal ishlashni o'rganamiz.
 
 ---
 
-## 2. ⚡ \`useEffect\` — Yon ta'sirlarni boshqarish
+## Hooklar o'zi nima?
 
-Biz \`useState\` nima ekanini o'rgandik. Endigi eng muhim ikkinchi hook — bu **\`useEffect\`**.
+**Hooklar** (ilmoqlar) – bu React'ning "state" (holat) va hayot sikli xususiyatlariga "ilinish" (ulanish) imkonini beruvchi maxsus funksiyalardir. Ularsiz funksional komponentlar shunchaki ma'lumot qabul qilib, UI qaytaradigan oddiy va "xotirasiz" funksiyalar bo'lar edi. Hooklar yordamida esa biz komponentlarga xotira (\`useState\`) va tashqi dunyo bilan ishlash qobiliyatini (\`useEffect\`) qo'shamiz.
 
-Komponent asosiy vazifasi bo'lgan **"UI chizish"** (return) dan tashqari har qanday ishlarni (API dan ma'lumot olish, Taymer yoqish, LocalStorage ga yozish) bajarishiga **Side Effect (Yon ta'sir)** deyiladi. Bular aynan \`useEffect\` ichida qilinadi.
+> **Analogiya:** Tasavvur qiling, sizning komponentingiz - bu oddiy bir xona. Hooklar - bu shu xonaga elektr toki, suv yoki internet olib kiruvchi kabellar va quvurlardir. Siz kerakli "hook"ni chaqirish orqali o'sha xonani jonlantirasiz.
 
-\`\`\`jsx
-import { useEffect } from 'react';
+### Nega kerak?
+Eski React'da murakkab ishlarni faqat Klass (Class) komponentlari yordamida qilish mumkin edi. Bu esa kodni o'qishni va yozishni qiyinlashtirardi (masalan, \`this\` kalit so'zi bilan bog'liq chalkashliklar). Hooklar bizga butun ilovani oddiy, toza va tushunarli funksiyalar orqali yozish imkonini berdi.
 
-useEffect(() => {
-  // Nimadir ish qilish (masalan console.log yoki API fetch)
-});
+---
+
+## Hooklarning Oltin Qoidalari (Rules of Hooks)
+
+Hooklardan foydalanishning qat'iy qoidalari mavjud. Agar bu qoidalarni buzsangiz, React xatoga uchraydi.
+
+1. **Faqat eng yuqori darajada chaqiring (Top-level only):** 
+   Hooklarni tsikllar (\`for\`, \`while\`), shartlar (\`if\`, \`else\`) yoki ichki funksiyalar ichida chaqirmang. Har safar komponent render bo'lganda, Hooklar aniq bir xil tartibda chaqirilishi kerak.
+
+   ❌ **Yomon amaliyot (Don't):**
+   \`\`\`javascript
+   if (isUserLoggedIn) {
+     const [name, setName] = useState("Ali"); // Xato! Shart ichida Hook ishlatish mumkin emas.
+   }
+   \`\`\`
+
+   ✅ **Yaxshi amaliyot (Do):**
+   \`\`\`javascript
+   const [name, setName] = useState("Ali"); // To'g'ri! Komponentning eng yuqori qismida.
+   if (isUserLoggedIn) {
+     // endi nimadir qilish mumkin
+   }
+   \`\`\`
+
+2. **Faqat React funksiyalaridan chaqiring:**
+   Hooklarni oddiy JavaScript funksiyalaridan chaqirmang. Ularni faqat React funksional komponentlaridan yoki o'zingiz yaratgan "Custom Hook" (Maxsus hook)lardan chaqirishingiz mumkin.
+
+---
+
+## useEffect Hookiga Chuqur Sho'ng'ish
+
+React'da \`useEffect\` - bu komponentingizni tashqi tizimlar bilan sinxronlashtirish uchun mo'ljallangan hook. "Tashqi tizim" deganda internetdan ma'lumot yuklab olish (API fetch), brauzer hujjatini (DOM) o'zgartirish, taymerlar (setTimeout) o'rnatish yoki boshqa kutubxonalar bilan ishlash tushuniladi.
+
+### Komponent Hayot Sikli (Component Lifecycle)
+
+Har bir React komponentining xuddi odamlar kabi o'z "hayot sikli" mavjud:
+1. **Tug'ilish (Mounting):** Komponent birinchi marta ekranda paydo bo'ladi.
+2. **O'zgarish (Updating):** Komponentning \`state\` yoki \`props\` lari o'zgaradi va u qayta chiziladi (re-render).
+3. **O'lim (Unmounting):** Komponent ekrandan o'chiriladi.
+
+Biz \`useEffect\` yordamida mana shu 3 ta bosqichning har biriga reksiya bildirishimiz mumkin.
+
+#### Hayot sikli va useEffect qaramliklari (Mermaid diagram)
+
+\`\`\`mermaid
+graph TD
+    A([Komponent ekranga chiqdi - Mount]) --> B{useEffect qaramliklari qanday?}
+    
+    B -->|Qaramlik massivi yo'q| C[Har bir renderdan keyin ishlaydi]
+    B -->|Bo'sh massiv: [ ]| D[Faqat 1 marta, boshida ishlaydi]
+    B -->|Massivda elementlar: [x, y]| E[Faqat x yoki y o'zgarsa ishlaydi]
+    
+    C --> F((Komponent yangilanadi - Update))
+    E --> F
+    
+    F -.-> G{State yoki Props o'zgardi}
+    G --> B
+    
+    D --> H([Komponent ekrandan o'chmoqda - Unmount])
+    C -.-> |"Cleanup ishga tushadi"| H
+    E -.-> |"Cleanup ishga tushadi"| H
+    
+    H --> I((Cleanup funksiyasi ishlaydi))
 \`\`\`
 
 ---
 
-## 3. 🎯 Dependency Array (Qaramlik massivi)
+## Qaramliklar Massivi (The Dependency Array)
 
-\`useEffect\` ning qachon ishlashi unga beriladigan ikkinchi parametr — massivga (\`[]\`) bog'liq. Bu mavzu intervyularda eng ko'p so'raladigan savoldir!
+\`useEffect\` ikkita argument qabul qiladi:
+1. Bajarilishi kerak bo'lgan funksiya (Effect).
+2. Qaramliklar massivi (Dependency array) - opsional.
 
-1. **Massiv umuman yozilmasa:** Effekt **har safar** komponent qayta chizilganda (re-render) ishlayveradi. (Buni kamdan-kam ishlatamiz, chunki kompyuterni qotirib qo'yishi mumkin).
-   \`\`\`jsx
-   useEffect(() => { console.log("Har doim ishlaydi!") });
-   \`\`\`
-2. **Bo'sh massiv \`[]\` yozilsa:** Effekt faqatgina eng birinchi marta komponent ekranga chiqqanida **BIR marta** ishlaydi va qaytib ishlamaydi. (API dan dastlabki ma'lumotni tortib kelish uchun zo'r usul).
-   \`\`\`jsx
-   useEffect(() => { console.log("Faqat birinchi chizilganda ishlaydi") }, []);
-   \`\`\`
-3. **Massiv ichida nimadir bo'lsa \`[state]\`:** Effekt birinchi marta va faqatgina o'sha \`state\` ning qiymati o'zgargandagina ishlaydi.
-   \`\`\`jsx
-   useEffect(() => { console.log("id o'zgarganda ishlaydi") }, [id]);
-   \`\`\`
+Mana shu 2-argument sizning effektingiz qachon va necha marta ishlashini hal qiladi. Bu eng ko'p xato qilinadigan joy!
+
+### 1. Hech narsa berilmasa (Massiv yo'q)
+Agar siz qaramliklar massivini umuman yozmasangiz, sizning effektingiz **har bir renderdan so'ng** ishlayveradi.
+
+\`\`\`javascript
+useEffect(() => {
+  console.log("Men har safar komponent o'zgarganda ishlayman!");
+}); // E'tibor bering, vergul va massiv yo'q
+\`\`\`
+
+### 2. Bo'sh massiv \`[]\` (Tug'ilish / Mount)
+Agar bo'sh massiv bersangiz, React bu effektni komponent **faqatgina birinchi marta yaratilganda** (Mount) 1 marta ishlatadi, boshqa hech qachon ishlatmaydi. Odatda API dan dastlabki ma'lumotlarni tortish uchun (fetch) ishlatiladi.
+
+\`\`\`javascript
+useEffect(() => {
+  console.log("Men faqatgina 1 marta, eng boshida ishlayman!");
+}, []); // Bo'sh massiv
+\`\`\`
+
+### 3. To'ldirilgan massiv \`[var1, var2]\` (O'zgarish / Update)
+Massiv ichiga qandaydir o'zgaruvchilarni (state yoki props) solsangiz, React faqatgina shu o'zgaruvchilardan biri o'zgargandagina effektni qayta ishga tushiradi.
+
+\`\`\`javascript
+const [count, setCount] = useState(0);
+
+useEffect(() => {
+  console.log(\`Count qiymati o'zgardi: \${count}\`);
+}, [count]); // Faqat 'count' o'zgarganda ishlaydi
+\`\`\`
 
 ---
 
-## 4. 🧹 Tozalash (Cleanup function)
+## Cheksiz Tsikllar Tuzog'i (Infinite Loops Trap)
 
-Agar \`useEffect\` ichida \`setInterval\` yoqsangiz yoki brauzerga oynani kuzatish (\`addEventListener\`) hodisasini ulasangiz, komponent ekrandan o'chib ketganda bu narsalar fonda ishlamasligi (xotirani to'ldirmasligi) uchun ularni "tozalash" kerak.
+React dasturchilari o'z faoliyati davomida kamida bir marta (ko'pincha yuzlab marta) cheksiz tsikl tuzog'iga tushishadi. Bu brauzerni qotib qolishiga olib keladi.
 
-Buning uchun \`useEffect\` ichidan bitta mitti funksiya **return** qilinadi:
-\`\`\`jsx
+### Qanday qilib bu yuzaga keladi?
+Agar siz \`useEffect\` ichida biror \`state\`ni o'zgartirsangiz va \`useEffect\` shu \`state\` o'zgarganda ishlashga sozlangan bo'lsa (yoki qaramliklar massivi umuman berilmagan bo'lsa), ular bir-birini cheksiz chaqirishni boshlaydi.
+
+> **Analogiya:** Bu xuddi kuchukka o'z dumini tishlashini aytishga o'xshaydi. U dumiga yetib olganda yana aylanib ketaveradi va hech qachon to'xtamaydi.
+
+❌ **Yomon amaliyot (Cheksiz tsikl):**
+\`\`\`javascript
+const [counter, setCounter] = useState(0);
+
 useEffect(() => {
-  const timer = setInterval(() => console.log('Tiktak'), 1000);
+  // XATO! Effect har renderda ishlaydi, va o'zi ham re-render chaqiryapti!
+  setCounter(counter + 1); 
+});
+\`\`\`
+*Tushuntirish: Komponent render bo'ladi -> useEffect ishlaydi -> counter + 1 ga o'zgaradi -> State o'zgargani uchun komponent qayta render bo'ladi -> useEffect yana ishlaydi -> va h.k. cheksiz!*
+
+✅ **Yaxshi amaliyot:**
+\`\`\`javascript
+const [counter, setCounter] = useState(0);
+
+// Faqatgina biz xohlagan qat'iy holatda ishlaydi (masalan, faqat boshida)
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setCounter((prev) => prev + 1);
+  }, 1000);
   
-  // Komponent o'chayotganda ishlaydigan tozalovchi funksiya:
+  return () => clearTimeout(timer); // Tozalash (Cleanup)
+}, []); // Yoki faqatgina biror aniq shart asosida ishlaydigan qilib sozlash
+\`\`\`
+
+---
+
+## Tozalash Funksiyalari (Cleanup Functions)
+
+\`useEffect\` sizga funksiya ichidan yana bir funksiya qaytarishga imkon beradi. Bu **Tozalash funksiyasi (Cleanup function)** deb ataladi.
+
+### Nega kerak?
+Ba'zi effektlar "iz" qoldiradi. Masalan, siz setInterval bilan taymer yoqdingiz yoki qandaydir hodisani tinglashni boshladingiz (\`window.addEventListener\`). Agar komponent ekrandan o'chirilsa (Unmount), u taymerlar orqada ishlayveradi va xotira sizib chiqishiga (Memory Leak) hamda xatolarga olib keladi.
+
+> **Analogiya:** Siz mehmonxona xonasini ijaraga oldingiz (Mount). Xonada musiqa qo'yib berishini so'radingiz (Effect). Mehmonxonadan chiqib ketayotganingizda (Unmount), musiqani o'chirib ketishingiz kerak, aks holda u kimsasiz xonada bo'shga jiringlab yotaveradi (Memory Leak).
+
+### Qachon ishlaydi?
+1. Komponent ekrandan butunlay o'chirilishidan oldin (Unmount).
+2. Effekt keyingi marta qayta ishga tushishidan oldin (oldingi effektning qoldiqlarini tozalash uchun).
+
+❌ **Yomon amaliyot (Tozalamaslik):**
+\`\`\`javascript
+useEffect(() => {
+  window.addEventListener('resize', handleResize);
+  // Agar foydalanuvchi sahifadan chiqib ketsa, bu "listener" brauzer xotirasida osilib qoladi!
+}, []);
+\`\`\`
+
+✅ **Yaxshi amaliyot (Tozalash bilan):**
+\`\`\`javascript
+useEffect(() => {
+  const handleResize = () => console.log(window.innerWidth);
+  
+  window.addEventListener('resize', handleResize);
+  
+  // Cleanup funksiyasi:
   return () => {
-    clearInterval(timer);
+    window.removeEventListener('resize', handleResize);
+    console.log("Listener tozalandi!");
   };
 }, []);
 \`\`\`
 
----
+### Xulosa
+Hooklar qoidalariga amal qiling. \`useEffect\` dagi qaramliklar massiviga (\`[]\`) doim e'tibor qarating, chunki kodning ishlash mantig'i va tezligi to'g'ridan-to'g'ri unga bog'liq. Har doim ishlatilgan obunalar (subscriptions) yoki taymerlarni "Cleanup" qilishni unutmang!
 
-## 5. 🎯 \`useRef\` Hook (Qisqacha)
-
-\`useRef\` bu o'zgarganda **komponentni qayta render qilmaydigan (chizmaydigan)** o'zgaruvchi yaratish uchun kerak. Yana bir eng katta foydasi — haqiqiy DOM dagi biron elementni (masalan Inputni) to'g'ridan-to'g'ri tutib olish va unga fokus qaratishdir. (\`document.getElementById\` ning React'dagi varianti).
-
----
-
-## 6. 🧠 Chuqurlashtirilgan Nazariya: \`useEffect\` Hayot Sikli (Lifecycle)
-
-React komponentining hayot sikli 3 bosqichdan iborat: **Mount** (ekranga chiqish), **Update** (yangilanish) va **Unmount** (ekrandan o'chish). \`useEffect\` va uning tozalash (cleanup) funksiyasi aynan shu bosqichlarga bog'langan holda ishlaydi.
-
-1. **Mount (Yaralish):** Komponent birinchi marta chizilganda, avval UI render bo'ladi, keyin \`useEffect\` ichidagi asosiy kod ishga tushadi.
-2. **Update (Yangilanish):** Dependency array (qaramlik massivi) ichidagi biror qiymat (masalan, \`state\` yoki \`prop\`) o'zgarganda, React avvalgi effectdan qolgan tozalash funksiyasini (cleanup) ishga tushiradi, so'ng yangi effectni bajaradi.
-3. **Unmount (O'chish):** Komponent butunlay ekrandan o'chib ketayotganda, oxirgi marta faqat tozalash funksiyasi (cleanup) ishlaydi.
-
-Quyidagi diagrammada bu jarayon qanday ketma-ketlikda ishlashi vizual tarzda ko'rsatilgan:
-
-\`\`\`mermaid
-sequenceDiagram
-    participant C as Komponent
-    participant R as React (DOM)
-    participant E as useEffect
-    participant Cl as Cleanup (Tozalash)
-
-    Note over C, Cl: 🟢 1. MOUNT (Birinchi marta chizilish)
-    C->>R: 1️⃣ JSX ni render qilish
-    R->>E: 2️⃣ Effect ni ishga tushirish (Setup)
-
-    Note over C, Cl: 🟡 2. UPDATE (State yoki Prop o'zgarishi)
-    C->>R: 3️⃣ Yangi JSX ni render qilish
-    R->>Cl: 4️⃣ Avvalgi Effect ni tozalash (Cleanup run)
-    R->>E: 5️⃣ Yangi Effect ni ishga tushirish (Setup run)
-
-    Note over C, Cl: 🔴 3. UNMOUNT (Komponent o'chishi)
-    C->>R: 6️⃣ Komponentni DOM dan olib tashlash
-    R->>Cl: 7️⃣ Oxirgi Cleanup ni ishga tushirish
-\`\`\`
-
-💡 **Esda tuting:** Cleanup funksiya faqat **Unmount** vaqtida emas, balki har bir **Update** (yangilanish) vaqtida ham *yangi effect ishga tushishidan oldin* avvalgisini tozalash uchun ishlaydi!
 `,
   code: `import React, { useState, useEffect, useRef } from "react";
 
