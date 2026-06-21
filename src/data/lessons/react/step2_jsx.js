@@ -98,7 +98,7 @@ Quyida keng tarqalgan xatolar va ularning to'g'ri yechimlari bilan tanishamiz.
 
 🔴 **YOMON (Don't):** Xatolik yuz beradi, chunki ikkita h1 va p teglari yonma-yon turibdi, ularni o'rab turuvchi qop yo'q.
 \`\`\`jsx
-// XATO! 
+// XATO! - Bu yerda ikkita alohida element (h1 va p) qaytarilmoqda, ammo ularni o'rab turuvchi umumiy ota-ona elementi yo'q.
 function UserProfile() {
   return (
     <h1>Farhod</h1>
@@ -109,7 +109,7 @@ function UserProfile() {
 
 🟢 **YAXSHI (Do):** Ularni \`<div>\` yoki React Fragment (\`<> ... </>\`) ichiga oling. Fragment ortiqcha HTML tugun (node) yaratmaydi, kodni toza saqlaydi.
 \`\`\`jsx
-// TO'G'RI!
+// TO'G'RI! - Fragment (<></>) yordamida ikkala element bitta umumiy "qop" ga solindi. Bu HTML'da ortiqcha teg (masalan div) yaratmaydi.
 function UserProfile() {
   return (
     <>
@@ -124,6 +124,7 @@ function UserProfile() {
 
 🔴 **YOMON (Don't):** Input va br teglari yopilmagan.
 \`\`\`jsx
+// XATO! - input va br teglari yopilmagan. JSX'da har qanday teg (hatto HTML'da yopilishi shart bo'lmaganlari ham) yopilishi shart.
 function Form() {
   return (
     <form>
@@ -137,6 +138,7 @@ function Form() {
 
 🟢 **YAXSHI (Do):** Oxiriga \`/\` qo'yib yopish shart.
 \`\`\`jsx
+// TO'G'RI! - input va br teglari oxiriga slash (/) qo'yish orqali to'g'ri yopilgan.
 function Form() {
   return (
     <form>
@@ -152,6 +154,7 @@ function Form() {
 
 🔴 **YOMON (Don't):** \`class\`, \`onclick\` kabi HTML xususiyatlari ishlatilmoqda. Inline stil (style) oddiy matn kabi yozilgan.
 \`\`\`jsx
+// XATO! - 'class' atributi ishlatilgan, hodisalar (onclick) kichik harflarda va inline uslublar matn ko'rinishida berilgan.
 function Button() {
   return (
     <button class="btn-primary" onclick={submitData} style="color: white; background-color: blue;">
@@ -163,6 +166,7 @@ function Button() {
 
 🟢 **YAXSHI (Do):** \`className\`, \`onClick\` ishlatilmoqda. \`style\` esa ikkita jingalak qavs \`{{}}\` ichida JS obyekti sifatida berilmoqda (birinchi qavs JSX qoidasi, ikkinchisi obyekt ekanligini bildiradi). Xususiyatlar camelCase qilingan (background-color emas backgroundColor).
 \`\`\`jsx
+// TO'G'RI! - 'className' ishlatilgan, hodisa 'onClick' (camelCase) qilib yozilgan, inline style esa JS obyekti sifatida uzatilgan.
 function Button() {
   return (
     <button 
@@ -183,7 +187,9 @@ Siz \`if\`, \`for\`, \`while\` kabi "qoidalar" (statements) ni to'g'ridan-to'g'r
 
 🔴 **YOMON (Don't):** JSX ichida \`if\` yozish mumkin emas.
 \`\`\`jsx
+// XATO! - JSX'ning {} qavslari ichida 'if' kabi to'g'ridan-to'g'ri JS qoidalarini (statements) ishlatib bo'lmaydi.
 function Greeting({ isLogin }) {
+  // 'isLogin' - bu tashqaridan (ota komponentdan) keluvchi prop bo'lib, foydalanuvchining tizimga kirgan yoki kirmaganini bildiradi.
   return (
     <div>
       { 
@@ -202,6 +208,7 @@ function Greeting({ isLogin }) {
 \`\`\`jsx
 // 1-usul: Uchlik (Ternary) operator
 function Greeting({ isLogin }) {
+  // 'isLogin' qiymatiga qarab, mos h1 tegi qaytariladi (ifoda / expression)
   return (
     <div>
       {isLogin ? <h1>Xush kelibsiz!</h1> : <h1>Iltimos, kiring.</h1>}
@@ -211,14 +218,17 @@ function Greeting({ isLogin }) {
 
 // 2-usul: Mantiqni JSX dan tashqarida tayyorlash
 function Greeting2({ isLogin }) {
+  // O'zgaruvchi e'lon qilamiz, unda interfeys qismini saqlaymiz
   let message;
   
+  // Shart tekshiriladi, bu yerda oddiy if ishlatish mumkin, chunki bu joy JSX'dan tashqarida
   if (isLogin) {
     message = <h1>Xush kelibsiz!</h1>;
   } else {
     message = <h1>Iltimos, kiring.</h1>;
   }
 
+  // Yakuniy o'zgaruvchini JSX ichida render qilamiz
   return (
     <div>
       {message}
@@ -244,40 +254,43 @@ Navbatdagi qadamlarda bu kodlarni turli fayllarga bo'lishni, komponentlar yarati
   code: `import React from "react";
 
 export default function App() {
-  // 1. JavaScript o'zgaruvchilari
-  const name = "Sardor";
-  const age = 22;
-  const isStudent = true;
+  // 1. JavaScript o'zgaruvchilari - bu ma'lumotlar JSX ichida namoyish etiladi
+  const name = "Sardor"; // Matn turidagi o'zgaruvchi
+  const age = 22; // Raqam turidagi o'zgaruvchi
+  const isStudent = true; // Mantiqiy (boolean) turdagi o'zgaruvchi
   
-  // Massiv
+  // Massiv - ro'yxat ko'rinishida chiqarish uchun
   const skills = ["JavaScript", "React", "Node.js"];
 
+  // return qismi - brauzerda nima ko'rinishini belgilaydi
   return (
     // Qoida 1: Faqat bitta ota div (yoki Fragment) bo'lishi shart
+    // className - bu CSS klasini ulash uchun (class o'rniga), style esa obyekt ko'rinishida berilgan
     <div className="container" style={{ padding: 20, fontFamily: 'sans-serif' }}>
       
       {/* Qoida 3: JSX ichida JS ishlatish uchun { } qavslar */}
+      {/* name va age o'zgaruvchilarini to'g'ridan-to'g'ri ekranga chiqaramiz */}
       <h1 style={{ color: '#2c3e50' }}>Foydalanuvchi: {name}</h1>
       <p>Yoshi: {age} da</p>
       
-      {/* Shartli render (Ternary operator) */}
+      {/* Shartli render (Ternary operator) - agar isStudent true bo'lsa birinchi qiymat, false bo'lsa ikkinchisi olinadi */}
       <div style={{ padding: 10, background: isStudent ? '#d4edda' : '#f8d7da', borderRadius: 5 }}>
         Status: {isStudent ? "Talaba 🎓" : "Xodim 💼"}
       </div>
 
       <h3 style={{ marginTop: 20 }}>Texnologiyalar:</h3>
       
-      {/* Massivni ro'yxat qilib chiqarish (map) */}
+      {/* Massivni ro'yxat qilib chiqarish (map funksiyasi yordamida har bir element uchun <li> yasaladi) */}
       <ul>
         {skills.map((skill, index) => (
-          // Har doim yagona key berishni unutmang
+          // Har doim yagona key (kalit) berishni unutmang, bu React'ga elementlarni farqlashga yordam beradi
           <li key={index} style={{ marginBottom: 5 }}>
             {skill}
           </li>
         ))}
       </ul>
 
-      {/* Logical AND && */}
+      {/* Logical AND && - agar massivda elementlar bo'lsa (length > 0), unda o'ng tomondagi <p> ekranga chiqadi */}
       {skills.length > 0 && (
         <p style={{ color: 'gray', fontSize: 12 }}>Jami {skills.length} ta texnologiya biladi.</p>
       )}

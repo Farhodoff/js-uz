@@ -21,8 +21,11 @@ Klass komponent - bu ES6 klassi bo'lib, u React'ning \`Component\` klassidan mer
 \`\`\`jsx
 import React, { Component } from 'react';
 
+// React.Component dan meros oluvchi klass komponent yaratamiz
 class Salomi extends Component {
+  // render() metodi UI da nima chiqishini belgilaydi
   render() {
+    // this.props orqali ota komponentdan kelgan ma'lumotlarga (masalan ism) kiramiz
     return <h1>Salom, {this.props.ism}!</h1>;
   }
 }
@@ -34,16 +37,19 @@ Klass komponentlarda boshlang'ich sozlamalarni, ayniqsa *state* (holat) ni o'rna
 
 \`\`\`jsx
 class MeningKomponentim extends Component {
+  // constructor - komponent yaratilayotganda birinchi bo'lib ishga tushadigan qism
   constructor(props) {
-    super(props); // Ota klassning konstruktorini chaqirish shart!
+    super(props); // Ota klassning (Component) konstruktorini chaqirish shart!
     
-    // Boshlang'ich holatni o'rnatish
+    // Boshlang'ich holatni (state) o'rnatish
     this.state = {
-      sanoq: 0
+      sanoq: 0 // sanoq o'zgaruvchisiga dastlabki 0 qiymatini beramiz
     };
   }
 
+  // Ekranda ko'rsatiladigan JSX kodini qaytaradi
   render() {
+    // this.state orqali holat qiymatini (sanoq) o'qib, ekranga chiqaramiz
     return <div>Sanoq: {this.state.sanoq}</div>;
   }
 }
@@ -61,18 +67,22 @@ Klass komponentlarda holatni o'zgartirish faqat \`this.setState()\` orqali amalg
 class Hisoblagich extends Component {
   constructor(props) {
     super(props);
+    // Boshlang'ich state (holat) ni o'rnatamiz
     this.state = { sanoq: 0 };
     
-    // Metodni this ga bog'lash (binding)
+    // Metodni this ga bog'lash (binding). Aks holda oshirish() ichida 'this' undefined bo'lib qoladi
     this.oshirish = this.oshirish.bind(this);
   }
 
+  // Oddiy funksiya (metod), uni ishlatish uchun yuqorida bind qilish kerak bo'ldi
   oshirish() {
+    // Holatni yangilash uchun har doim this.setState ishlatamiz
     this.setState({ sanoq: this.state.sanoq + 1 });
   }
 
-  // ES6 Arrow function orqali binding'dan qutulish mumkin
+  // ES6 Arrow function orqali binding'dan qutulish mumkin, this har doim klassni bildiradi
   kamaytirish = () => {
+    // Avvalgi holatga (prevState) qarab yangilashning eng xavfsiz va to'g'ri usuli
     this.setState(prevState => ({ sanoq: prevState.sanoq - 1 }));
   }
 
@@ -80,6 +90,7 @@ class Hisoblagich extends Component {
     return (
       <div>
         <h2>Sanoq: {this.state.sanoq}</h2>
+        {/* Tugmalar bosilganda tegishli funksiyalar chaqiriladi */}
         <button onClick={this.oshirish}>+1</button>
         <button onClick={this.kamaytirish}>-1</button>
       </div>
@@ -111,11 +122,14 @@ Komponent ekranga birinchi marta chizilganidan so'ng darhol ishga tushadi.
 **Qachon ishlatiladi?** API dan ma'lumot yuklash, taymerlarni yoqish yoki DOM ni to'g'ridan-to'g'ri o'zgartirish kerak bo'lganda.
 
 \`\`\`jsx
+// Komponent birinchi marta chizilganidan keyin darhol ishga tushadi
 componentDidMount() {
+  // Odatda API lardan ma'lumotlarni shu yerda yuklaymiz
   fetch('/api/data')
-    .then(res => res.json())
-    .then(data => this.setState({ data }));
+    .then(res => res.json()) // Kelgan ma'lumotni JSON formatiga aylantiramiz
+    .then(data => this.setState({ data })); // Ma'lumotni holatga saqlaymiz
     
+  // Har soniyada ishlaydigan taymer (interval) o'rnatamiz
   this.timerID = setInterval(() => this.tick(), 1000);
 }
 \`\`\`
@@ -137,7 +151,9 @@ Komponent ekrandan o'chirilishidan darhol oldin ishga tushadi.
 **Qachon ishlatiladi?** Taymerlarni to'xtatish, obunalarni (subscriptions) bekor qilish uchun (Memory leak oldini olish).
 
 \`\`\`jsx
+// Komponent ekrandan olib tashlanishidan darhol oldin ishlaydi
 componentWillUnmount() {
+  // Xotiradan joy tejash uchun taymerni to'xtatamiz (memory leak ning oldini olish)
   clearInterval(this.timerID); // Taymerni o'chirish
 }
 \`\`\`
@@ -159,28 +175,33 @@ Komponent xatolar chegarasiga aylanishi uchun u kamida bitta quyidagi metodni o'
 2. \`componentDidCatch(error, errorInfo)\` - xatoni log faylga (masalan Sentry'ga) yuborish uchun.
 
 \`\`\`jsx
+// Xatolarni chegaralash (ErrorBoundary) vazifasini bajaruvchi maxsus komponent
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
+    // Dastlab xato yo'q deb faraz qilamiz
     this.state = { hasError: false };
   }
 
+  // Bu Reactning maxsus metodi bo'lib, uning yordamida state ni yangilaymiz
   static getDerivedStateFromError(error) {
-    // Xato yuz berganda keyingi renderda Fallback UI ko'rsatish uchun
+    // Xato yuz berganda keyingi renderda Fallback (zaxira) UI ko'rsatish uchun state ni true qilamiz
     return { hasError: true };
   }
 
+  // Bu metod xato bo'lganda qo'shimcha ishlar qilish imkonini beradi
   componentDidCatch(error, errorInfo) {
-    // Xatoni serverga jo'natishingiz mumkin
+    // Xatoni serverga jo'natishingiz yoki konsolda ko'rishingiz mumkin
     console.error("Xato yuz berdi:", error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
-      // Zaxira UI
+      // Zaxira UI: Agar dastur ishdan chiqsa, oq ekran qolib ketmasligi uchun shu chiqadi
       return <h2>Kechirasiz, nimadir xato ketdi! Dasturchilarimiz buni tuzatishmoqda.</h2>;
     }
 
+    // Xato bo'lmasa, bolalar (children) komponentlarini odatdagidek chizamiz
     return this.props.children; 
   }
 }
@@ -191,6 +212,7 @@ class ErrorBoundary extends React.Component {
 Siz Error Boundary komponentingizni butun dastur atrofida yoki alohida muhim qismlar atrofida o'rashingiz mumkin.
 
 \`\`\`jsx
+{/* Xato yuz berishi ehtimoli bo'lgan komponentimizni ErrorBoundary ichiga o'raymiz */}
 <ErrorBoundary>
   <MeningXavfliKomponentim />
 </ErrorBoundary>
@@ -219,22 +241,29 @@ Klass komponentlar eskiroq loyihalarda juda ko'p uchraydi, shuning uchun ularni 
 
 // Klass komponent yaratish va state bilan ishlash
 class MeningKomponentim extends Component {
+  // Konstruktor - ob'ekt (komponent) yaratilayotganda ishga tushadigan dastlabki funksiya
   constructor(props) {
-    super(props);
+    super(props); // Ota komponent(Component)ning constructorini ishga tushirish majburiy
+    // Komponentning state (holat) ob'ektini dastlabki qiymatlar bilan yaratamiz
     this.state = {
       sanoq: 0
     };
   }
 
+  // Tugma bosilganda ishlaydigan va state ni yangilaydigan metod
   oshirish = () => {
+    // setState orqali holatni o'zgartiramiz, bu esa ekranning yangilanishiga (re-render) olib keladi
     this.setState({ sanoq: this.state.sanoq + 1 });
   }
 
+  // Ekranga chiziladigan JSX kodini render metodi qaytaradi
   render() {
     return (
       <div className="p-4 border rounded shadow-sm">
         <h2 className="text-xl font-bold">Klass Komponentlar</h2>
+        {/* this.state orqali holat o'zgaruvchisiga murojaat qilamiz */}
         <p className="mt-2">Sanoq: {this.state.sanoq}</p>
+        {/* onClick orqali 'oshirish' metodini tugmaga ulaymiz */}
         <button 
           onClick={this.oshirish}
           className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -254,14 +283,17 @@ export default MeningKomponentim;`,
       description: "\`SalomDunyo\` nomli klass komponent yarating. U ekranga \`<h1>Salom, React Klasslari!</h1>\` matnini chiqarsin.",
       startingCode: `import React, { Component } from 'react';
 
+// Klass komponent e'lon qilamiz
 class SalomDunyo extends Component {
   // Shu yerda render() metodini yozing
+  // Masalan: render() { return ...; }
 }
 
 export default SalomDunyo;`,
       solution: `import React, { Component } from 'react';
 
 class SalomDunyo extends Component {
+  // UI chizish uchun majburiy render metodi
   render() {
     return <h1>Salom, React Klasslari!</h1>;
   }
@@ -278,9 +310,10 @@ export default SalomDunyo;`,
 
 class Shaxs extends Component {
   // Konstruktor yarating va state o'rnating
+  // constructor(props) { super(props); this.state = { ism: '...' } }
   
   render() {
-    // JSX da state dan foydalaning
+    // JSX da state dan foydalaning (masalan, {this.state.ism})
     return <div>Mening ismim ...</div>;
   }
 }
@@ -289,14 +322,16 @@ export default Shaxs;`,
       solution: `import React, { Component } from 'react';
 
 class Shaxs extends Component {
+  // Boshlang'ich holat (state) ni o'rnatish
   constructor(props) {
-    super(props);
+    super(props); // Ota klassni chaqirish
     this.state = {
       ism: 'Farhod'
     };
   }
 
   render() {
+    // Ekranda state dagi 'ism' qiymatini chiqaramiz
     return <div>Mening ismim {this.state.ism}</div>;
   }
 }
@@ -313,18 +348,19 @@ export default Shaxs;`,
 class Holat extends Component {
   constructor(props) {
     super(props);
+    // Dastlabki state yoniq: false deb o'rnatilgan
     this.state = { yoniq: false };
   }
 
   // tugmani bosish uchun funksiya yozing
   toggle = () => {
-    // state ni o'zgartiring
+    // this.setState yordamida yoniq holatini uning teskarisiga o'zgartiring
   }
 
   render() {
     return (
       <button onClick={this.toggle}>
-        {/* Yozuvni state ga qarab chiqaring */}
+        {/* Yozuvni state ga qarab chiqaring, masalan this.state.yoniq yordamida */}
       </button>
     );
   }
@@ -336,16 +372,20 @@ export default Holat;`,
 class Holat extends Component {
   constructor(props) {
     super(props);
+    // Holat uchun boshlang'ich qiymat beramiz
     this.state = { yoniq: false };
   }
 
+  // Holatni o'zgartiruvchi arrow function
   toggle = () => {
+    // prevState (oldingi holat) dan foydalanib xavfsiz yangilash
     this.setState(prevState => ({ yoniq: !prevState.yoniq }));
   }
 
   render() {
     return (
       <button onClick={this.toggle}>
+        {/* Holat true/false bo'lishiga qarab turli matn chiqaramiz */}
         {this.state.yoniq ? 'O\'chirish' : 'Yoqish'}
       </button>
     );
@@ -364,14 +404,17 @@ export default Holat;`,
 class Vaqt extends Component {
   constructor(props) {
     super(props);
+    // Boshlang'ich holat yuklandi: false
     this.state = { yuklandi: false };
   }
 
   // componentDidMount metodini yozing
+  // Ichida setTimeout ishlatib 2 soniyadan so'ng this.setState qiling
   
   render() {
     return (
       <div>
+        {/* Shartli (conditional) render */}
         {this.state.yuklandi ? 'Yuklandi!' : 'Yuklanmoqda...'}
       </div>
     );
@@ -387,7 +430,9 @@ class Vaqt extends Component {
     this.state = { yuklandi: false };
   }
 
+  // Komponent render bo'lgach (ekranga chiqqach) darhol ishlaydi
   componentDidMount() {
+    // 2 soniyadan keyin holatni true qilamiz
     setTimeout(() => {
       this.setState({ yuklandi: true });
     }, 2000);
@@ -396,6 +441,7 @@ class Vaqt extends Component {
   render() {
     return (
       <div>
+        {/* Agar yuklandi true bo'lsa 'Yuklandi!', aks holda 'Yuklanmoqda...' ko'rinadi */}
         {this.state.yuklandi ? 'Yuklandi!' : 'Yuklanmoqda...'}
       </div>
     );
@@ -417,11 +463,13 @@ class Soat extends Component {
     this.state = { vaqt: new Date() };
   }
 
+  // Taymerni o'rnatish
   componentDidMount() {
     this.timerID = setInterval(() => this.tick(), 1000);
   }
 
   // Shu yerda componentWillUnmount yozing
+  // Va ichida clearInterval yordamida taymerni to'xtating
   
   tick() {
     this.setState({ vaqt: new Date() });
@@ -441,14 +489,17 @@ class Soat extends Component {
     this.state = { vaqt: new Date() };
   }
 
+  // Komponent chizilganda taymer o'rnatamiz
   componentDidMount() {
     this.timerID = setInterval(() => this.tick(), 1000);
   }
 
+  // Komponent o'chirilayotganda taymerni tozalaymiz (Memory leak oldini olish)
   componentWillUnmount() {
     clearInterval(this.timerID);
   }
 
+  // Vaqtni yangilovchi funksiya
   tick() {
     this.setState({ vaqt: new Date() });
   }
@@ -473,6 +524,7 @@ class Son extends Component {
     this.state = { qiymat: 0, ogohlantirish: false };
   }
 
+  // Qiymatni 1 taga oshiruvchi metod
   oshirish = () => {
     this.setState(prev => ({ qiymat: prev.qiymat + 1 }));
   }
@@ -484,6 +536,7 @@ class Son extends Component {
     return (
       <div>
         <p>Qiymat: {this.state.qiymat}</p>
+        {/* Agar ogohlantirish true bo'lsa, qizil matn chiqadi */}
         {this.state.ogohlantirish && <p style={{color:'red'}}>Chegaradan o'tdingiz!</p>}
         <button onClick={this.oshirish}>+1</button>
       </div>
@@ -504,8 +557,11 @@ class Son extends Component {
     this.setState(prev => ({ qiymat: prev.qiymat + 1 }));
   }
 
+  // State yoki props yangilanganda avtomatik ishlaydi
   componentDidUpdate(prevProps, prevState) {
+    // Agar qiymat 5 dan oshgan va ogohlantirish hali false bo'lsa
     if (this.state.qiymat > 5 && !this.state.ogohlantirish) {
+      // Ogohlantirishni true qilamiz
       this.setState({ ogohlantirish: true });
     }
   }
@@ -536,7 +592,8 @@ class XatoChegarasi extends Component {
     this.state = { hasError: false };
   }
 
-  // static getDerivedStateFromError ni yozing
+  // static getDerivedStateFromError(error) ni yozing
+  // va u yerdan { hasError: true } obyektini qaytaring
 
   render() {
     // Agar xato bo'lsa <h1>Xatolik yuz berdi.</h1> ni qaytaring
@@ -550,17 +607,22 @@ export default XatoChegarasi;`,
 class XatoChegarasi extends Component {
   constructor(props) {
     super(props);
+    // Dastlab xato yo'q deb saqlaymiz
     this.state = { hasError: false };
   }
 
+  // Ichki komponentlarda xato chiqsa, bu metod ishga tushadi
   static getDerivedStateFromError(error) {
+    // hasError ni true qilish orqali xato yuz berganini bildiramiz
     return { hasError: true };
   }
 
   render() {
+    // Agar hasError true bo'lsa, zaxira UI ni ko'rsatamiz
     if (this.state.hasError) {
       return <h1>Xatolik yuz berdi.</h1>;
     }
+    // Aks holda oddiy kontent chiziladi
     return this.props.children;
   }
 }
@@ -580,11 +642,13 @@ class XatoLog extends Component {
     this.state = { hasError: false };
   }
 
+  // Xato yuz berganda state ni yangilovchi metod
   static getDerivedStateFromError(error) {
     return { hasError: true };
   }
 
-  // componentDidCatch ni yozing
+  // componentDidCatch(error, errorInfo) ni yozing
+  // ichida console.log orqali xatoni va xato ma'lumotlarini chiqaring
 
   render() {
     if (this.state.hasError) {
@@ -603,11 +667,14 @@ class XatoLog extends Component {
     this.state = { hasError: false };
   }
 
+  // Xatoni ushlab zaxira state yaratish
   static getDerivedStateFromError(error) {
     return { hasError: true };
   }
 
+  // Xato haqida tafsilotlarni olish
   componentDidCatch(error, errorInfo) {
+    // Olingan xato va xato fayl/qatorlari haqidagi info ni konsolga chiqarish
     console.log("Ushlangan xato:", error, errorInfo);
   }
 
@@ -635,6 +702,7 @@ class Xabar extends Component {
   }
 
   // Bu funksiya klik qilinganda this.setState ni topolmaydi, xato beradi!
+  // Sababi uni 'bind' qilinmagan yoki Arrow Function emas
   ozgartir() {
     this.setState({ matn: 'Xayr' });
   }
@@ -658,6 +726,7 @@ class Xabar extends Component {
     this.state = { matn: 'Assalomu alaykum' };
   }
 
+  // Arrow function dan foydalanish 'this' kontekstini klassga bog'lab (bind) beradi
   ozgartir = () => {
     this.setState({ matn: 'Xayr' });
   }
@@ -684,7 +753,7 @@ export default Xabar;`,
 class Kattalashuvchi extends Component {
   constructor(props) {
     super(props);
-    // state ni props.boshlangich ga o'rnating
+    // state ni props.boshlangich qiymatiga o'rnating
     this.state = { raqam: 0 };
   }
 
@@ -699,6 +768,8 @@ export default Kattalashuvchi;`,
 class Kattalashuvchi extends Component {
   constructor(props) {
     super(props);
+    // Ota komponentdan (props.boshlangich) kelgan ma'lumot asosida 
+    // boshlang'ich state (holat) yaratamiz
     this.state = { raqam: props.boshlangich };
   }
 

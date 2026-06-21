@@ -173,24 +173,41 @@ Loyiha "pasporti". Loyiha nomi, versiyasi va eng muhimi - loyiha ishlashi uchun 
 *Xulosa:* Endi biz React qanday paydo bo'lgani, u muammolarni qanday hal qilishi (VDOM va SPA orqali), hamda yangi loyihani o'rnatish va uni strukturasini chuqur o'zlashtirib oldik. Keyingi darsda shu komponentlarning ichiga kirib, JSX sintaksisini va komponentlar qanday tuzilishini o'rganamiz!
 
 `,
-  code: `import React from "react";
+  code: `import React from "react"; // React kutubxonasini loyihamizga chaqirib olamiz
 
-// Bu bizning eng birinchi React komponentimiz
+// Bu bizning eng birinchi React komponentimiz.
+// React'da komponentlar funksiya ko'rinishida yoziladi va doim bosh harf bilan boshlanadi (App).
+// export default - bu komponentni boshqa fayllarda ham ishlatish (import qilish) imkonini beradi.
 export default function App() {
+  // return qismi foydalanuvchiga ekranda nima ko'rinishini (UI) belgilaydi
   return (
+    // React'da barcha elementlar bitta umumiy ota elementga (masalan <div>) o'ralgan bo'lishi shart.
+    // style atributi orqali elementlarga CSS uslublarini obyekt ({}) ko'rinishida beramiz.
+    // E'tibor bering: CSS xususiyatlari camelCase (masalan, textAlign) formatida yoziladi.
     <div style={{ textAlign: "center", padding: "50px", fontFamily: "sans-serif" }}>
+      
+      {/* <h1> - bu sahifaning eng katta sarlavhasi hisoblanadi */}
       <h1>Salom, React! 👋</h1>
+      
+      {/* <p> - bu oddiy matn (paragraf) uchun ishlatiladigan teg */}
       <p>Bu mening birinchi React ilovam.</p>
       
+      {/* Yana bir <div> qutisi. U o'z ichiga amaliyot qismini oladi. */}
       <div style={{ 
-        marginTop: 30, 
-        padding: 20, 
-        border: '1px solid #ddd', 
-        borderRadius: 8,
-        background: '#f9f9f9'
+        marginTop: 30, // Yuqoridan 30px joy tashlaydi
+        padding: 20, // Ichki bo'shliq (chegaradan ichkariga) 20px
+        border: '1px solid #ddd', // Atrofida och kulrang chegara chizig'i
+        borderRadius: 8, // Qutining burchaklarini bir oz yumaloqlaydi
+        background: '#f9f9f9' // Quti orqa fon rangi (och kulrang)
       }}>
+        
+        {/* <h2> - bu ikkinchi darajali sarlavha */}
         <h2>Amaliyot qismi</h2>
+        
+        {/* <strong> tegi o'z ichidagi matnni qalin qilib ko'rsatadi */}
         <p>Chap tarafdagi kod muharririda <strong>h1</strong> tegining ichidagi yozuvni o'zgartirib ko'ring.</p>
+        
+        {/* <button> - foydalanuvchi bosishi mumkin bo'lgan tugmacha */}
         <button style={{ padding: '10px 20px', background: '#61dafb', border: 'none', borderRadius: 4, fontWeight: 'bold' }}>
           Tugmacha
         </button>

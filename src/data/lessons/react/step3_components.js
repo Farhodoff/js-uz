@@ -57,24 +57,33 @@ Dastlabki yillarda (React 16.8 gacha) komponentda qandaydir holat (state) saqlas
 \`\`\`jsx
 import React, { Component } from 'react';
 
+// Eski usul: Komponentni Class yordamida yaratish
 class OltinSoat extends Component {
+  // constructor - komponent yaratilayotganda ishga tushadigan birinchi metod
   constructor(props) {
     super(props);
+    // state (holat) obyekti shu yerda saqlanadi
     this.state = { vaqt: new Date() };
   }
 
+  // componentDidMount - komponent ekranga chiqqanidan so'ng ishlaydi
   componentDidMount() {
+    // Har soniyada vaqtni yangilab turish uchun taymer yoqamiz
     this.timerID = setInterval(() => this.tick(), 1000);
   }
 
+  // componentWillUnmount - komponent ekrandan o'chayotganda ishlaydi
   componentWillUnmount() {
+    // Xotira to'lib ketmasligi uchun taymerni tozalaymiz
     clearInterval(this.timerID);
   }
 
+  // tick metodi state'dagi vaqtni hozirgi yangi vaqtga o'zgartiradi
   tick() {
     this.setState({ vaqt: new Date() });
   }
 
+  // render - ekranga nima chiqishini belgilaydigan metod
   render() {
     return <h1>Hozirgi vaqt: {this.state.vaqt.toLocaleTimeString()}</h1>;
   }
@@ -90,17 +99,26 @@ React 16.8 da **Hooks** (Ilmoqlar) kiritilgach, biz oddiy JavaScript funktsiyala
 \`\`\`jsx
 import React, { useState, useEffect } from 'react';
 
+// Yangi usul: Komponentni oddiy funksiya yordamida yaratish
 const OltinSoat = () => {
+  // useState - komponent holatini (state) saqlash uchun ilmoq (hook)
+  // vaqt - hozirgi holat, setVaqt - holatni o'zgartiradigan funksiya
   const [vaqt, setVaqt] = useState(new Date());
 
+  // useEffect - Class'dagi componentDidMount va componentWillUnmount o'rnini bosadi
   useEffect(() => {
+    // Har soniyada setVaqt orqali vaqtni yangilaymiz
     const timerID = setInterval(() => setVaqt(new Date()), 1000);
-    return () => clearInterval(timerID); // Tozalash
-  }, []);
+    
+    // return qismi - komponent ekrandan o'chayotganda taymerni tozalaydi (Cleanup)
+    return () => clearInterval(timerID); 
+  }, []); // Bo'sh massiv [] komponent faqat bir marta ishga tushganda ishlashini bildiradi
 
+  // HTML ekranga chizilishi
   return <h1>Hozirgi vaqt: {vaqt.toLocaleTimeString()}</h1>;
 };
 
+// Boshqa joyda ishlatish uchun default eksport qilamiz
 export default OltinSoat;
 \`\`\`
 ### Nega biz Functional Komponentlarga o'tdik?
@@ -131,17 +149,20 @@ Bu komponentlar ilovaning "yuzi" hisoblanadi. Ular faqatgina o'ziga berilgan ma'
 
 👎 **Yomon: Hamma narsani bitta joyga tiqish (Spaghetti code)**
 \`\`\`jsx
-// Bitta komponent ham API chaqiradi, ham dizaynni chizadi
+// Bitta komponent ham API'dan malumot olib keladi (mantiq), ham UI qismini (dizaynni) chizadi
 const UserProfile = () => {
+  // user holatini saqlash uchun useState ishlatamiz
   const [user, setUser] = useState(null);
 
+  // Komponent ekranga chiqqanda API orqali ma'lumot yuklab olish
   useEffect(() => {
     fetch('/api/user/1').then(res => res.json()).then(setUser);
   }, []);
 
+  // Ma'lumot kelib ulgurmaguncha "Yuklanmoqda..." xabarini ko'rsatamiz
   if (!user) return <p>Yuklanmoqda...</p>;
 
-  // Dizayn ham shu yerda! Qayta ishlata olmaymiz.
+  // Barcha HTML va mantiq bir joyda bo'lganligi sababli kodni o'qish qiyin va dizaynni boshqa joyda ishlata olmaymiz
   return (
     <div className="card shadow-lg p-4 rounded-xl">
       <img src={user.avatar} className="w-24 h-24 rounded-full" />
@@ -156,12 +177,16 @@ const UserProfile = () => {
 
 **1. Dumb Component (Aqlsiz, faqat ko'rinish):**
 \`\`\`jsx
-// UserCard.jsx - Faqat Props oladi va chizadi. Boshqa joyda ham ishlatsak bo'ladi!
+// UserCard.jsx - "Aqlsiz" (Dumb) komponent. Faqat Props (ma'lumotlar) qabul qiladi va chizadi.
+// Unda qandaydir murakkab API so'rovlar yoki davlat (state) bo'lmaydi.
 export const UserCard = ({ name, avatar, onFollow }) => {
   return (
     <div className="card shadow-lg p-4 rounded-xl">
+      {/* avatar va name kabi ma'lumotlar tashqaridan props sifatida keladi */}
       <img src={avatar} alt={name} className="w-24 h-24 rounded-full" />
       <h2 className="text-xl font-bold">{name}</h2>
+      
+      {/* onFollow ham tashqaridan berilgan funksiya bo'lib, tugma bosilganda ishlaydi */}
       <button onClick={onFollow} className="bg-blue-500 text-white px-4 py-2">
         Follow
       </button>
@@ -172,23 +197,29 @@ export const UserCard = ({ name, avatar, onFollow }) => {
 
 **2. Smart Component (Aqlli, mantiq):**
 \`\`\`jsx
-// UserProfileContainer.jsx - Mantiqni hal qiladi, ma'lumot olib keladi.
+// UserProfileContainer.jsx - "Aqlli" (Smart) komponent. 
+// U barcha murakkab mantiq va ma'lumotlarni tortib olishga javob beradi.
 import { UserCard } from './UserCard';
 
 const UserProfileContainer = () => {
+  // Foydalanuvchi ma'lumotlarini saqlash uchun state
   const [user, setUser] = useState(null);
 
+  // API dan ma'lumot olib keladigan qism
   useEffect(() => {
     fetch('/api/user/1').then(res => res.json()).then(setUser);
   }, []);
 
+  // Follow tugmasi bosilganda ishlaydigan funksiya
   const handleFollow = () => {
     console.log("Foydalanuvchiga obuna bo'lindi: ", user.name);
-    // API ga jo'natish mantiqi...
+    // Masalan, shu joyda serverga so'rov (API request) yuborilishi mumkin
   };
 
+  // Agar user hali kelib ulgurmagan bo'lsa
   if (!user) return <p>Yuklanmoqda...</p>;
 
+  // "Aqlsiz" komponentni (UserCard) chaqirib, unga kerakli ma'lumotlarni props sifatida uzatamiz
   return <UserCard name={user.name} avatar={user.avatar} onFollow={handleFollow} />;
 };
 \`\`\`
@@ -208,6 +239,7 @@ const Button = () => {
   return <button>Meni bos</button>;
 };
 
+// Ushbu fayldan Button komponentini asosiy eksport sifatida yuborish
 export default Button; 
 \`\`\`
 
@@ -222,9 +254,10 @@ Bitta fayldan bir nechta o'zgaruvchi, funksiya yoki komponentlarni eksport qilis
 
 \`\`\`jsx
 // utils.jsx fayli
+// Bir fayldan bir nechta elementlarni eksport qilish ("Named Export")
 export const qoShish = (a, b) => a + b;
 export const ayirish = (a, b) => a - b;
-export const PI = 3.14;
+export const PI = 3.14; // Oddiy o'zgaruvchilarni ham eksport qilish mumkin
 \`\`\`
 
 **Qanday import qilinadi?**
@@ -246,8 +279,9 @@ React'ning qudrati uning komponentli yondashuvidadir. Katta muammolarni (katta v
 `,
   code: `import React from "react";
 
-// 1-Komponent: Header (Sayt tepasi)
+// 1-Komponent: Header (Sayt tepasi uchun "aqlsiz" komponent)
 function Header() {
+  // Funksiya faqat JSX qaytaradi, ekranda yuqori qismni (header) chizadi
   return (
     <header style={{ background: "#2c3e50", color: "white", padding: "15px", textAlign: "center" }}>
       <h1>Mening Veb-saytim</h1>
@@ -255,7 +289,7 @@ function Header() {
   );
 }
 
-// 2-Komponent: Xodim Kartasi
+// 2-Komponent: Xodim Kartasi (Takror-takror ishlatiladigan UI bo'lagi)
 function EmployeeCard() {
   return (
     <div style={{ 
@@ -264,7 +298,7 @@ function EmployeeCard() {
       margin: "10px", 
       borderRadius: "8px",
       width: "200px",
-      display: "inline-block" // Yana yonma-yon turishi uchun
+      display: "inline-block" // Elementlar ekranda yonma-yon turishi uchun
     }}>
       <h3>👨‍💻 Xodim</h3>
       <p>Kasbi: Dasturchi</p>
@@ -273,7 +307,7 @@ function EmployeeCard() {
   );
 }
 
-// 3-Komponent: Footer (Sayt tagi)
+// 3-Komponent: Footer (Sayt tagi qismi uchun yana bir komponent)
 function Footer() {
   return (
     <footer style={{ background: "#bdc3c7", padding: "10px", textAlign: "center", marginTop: "20px" }}>
@@ -282,23 +316,25 @@ function Footer() {
   );
 }
 
-// Asosiy App komponenti
+// Asosiy "App" komponenti - Dasturning ildizi (Root). 
+// Barcha kichik qismlar shuning ichida yig'iladi.
 export default function App() {
   return (
     <div>
-      {/* Yuqorida yaratilgan komponentlarni yig'amiz (Nesting) */}
+      {/* Yaratilgan "Header" komponenti shu yerga o'rnatilmoqda (Nesting) */}
       <Header />
       
       <main style={{ padding: "20px", textAlign: "center" }}>
         <h2>Bizning Jamoa</h2>
         <p>Quyida komponent orqali 3 marta qayta ishlatilgan (Reuse) kartochkalarni ko'ryapsiz:</p>
         
-        {/* Bitta kodni 3 marta ishlatdik! */}
+        {/* Biz yozgan "EmployeeCard" komponenti bitta bo'lsa-da, biz uni ketma-ket 3 marta ishlata olyapmiz! */}
         <EmployeeCard />
         <EmployeeCard />
         <EmployeeCard />
       </main>
 
+      {/* Sayt tagiga "Footer" komponentini o'rnatdik */}
       <Footer />
     </div>
   );

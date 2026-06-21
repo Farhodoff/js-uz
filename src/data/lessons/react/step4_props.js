@@ -14,6 +14,7 @@ Agar bizda props bo'lmaganida, har bir komponent faqat bitta xil narsani ko'rsat
 
 \`\`\`jsx
 // ❌ YOMON AMALIYOT (Don'ts): Har bir foydalanuvchi uchun alohida komponent yaratish
+// Har bir foydalanuvchi uchun alohida funksiya yozish kodni ko'paytirib yuboradi va takrorlanishga olib keladi.
 function UserAli() {
   return <h1>Salom, Ali! Sen 20 yoshdasan.</h1>;
 }
@@ -23,14 +24,18 @@ function UserVali() {
 }
 
 // ✅ YAXSHI AMALIYOT (Do's): Bitta komponent yaratib, unga Props berish
+// 'props' bu ota komponentdan keladigan maxsus obyekt. Uning ichida 'name' va 'age' kabi qadriyatlar keladi.
 function UserProfile(props) {
+  // props orqali kelgan ma'lumotlarni JSX ichida jingalak qavslar {props.nomi} shaklida ekranga chiqaramiz
   return <h1>Salom, {props.name}! Sen {props.age} yoshdasan.</h1>;
 }
 
 // Ota komponentda ishlatilishi:
+// Bu yerda App komponenti ota (Parent) hisoblanadi.
 function App() {
   return (
     <div>
+      {/* Bitta UserProfile komponentiga turli xil qiymatlarni props orqali yuborib, ko'p marotaba ishlatsak bo'ladi */}
       <UserProfile name="Ali" age={20} />
       <UserProfile name="Vali" age={25} />
     </div>
@@ -72,20 +77,24 @@ Odatda biz \`props\` obyekti ichidan qiymatlarni olish uchun \`props.name\`, \`p
 
 \`\`\`jsx
 // ❌ YOMON AMALIYOT (Eski usul)
+// Odatda props obyektidan har bir xususiyatni "props.nomi" deb chaqirish kodni uzunlashtiradi va o'qishni qiyinlashtiradi
 function ProductCard(props) {
   return (
     <div>
       <h2>{props.title}</h2>
       <p>Narxi: {props.price}$</p>
+      {/* inStock - mahsulot omborda mavjud yoki yo'qligini bildiruvchi mantiqiy (boolean) prop */}
       <button disabled={!props.inStock}>Sotib olish</button>
     </div>
   );
 }
 
 // ✅ YAXSHI AMALIYOT (Destructuring bilan)
+// Destructuring yordamida props obyektining ichidan o'zimizga kerakli xususiyatlarni parametr qismidayoq to'g'ridan-to'g'ri ajratib olamiz
 function ProductCard({ title, price, inStock }) {
   return (
     <div>
+      {/* Endi to'g'ridan-to'g'ri o'zgaruvchi nomini yozishimiz mumkin, har safar 'props.' yozish shart emas */}
       <h2>{title}</h2>
       <p>Narxi: {price}$</p>
       <button disabled={!inStock}>Sotib olish</button>
@@ -101,9 +110,12 @@ Ba'zan ota komponent ma'lum bir prop'ni berishni unutilishi mumkin yoki o'sha ma
 
 \`\`\`jsx
 // Destructuring vaqtida standart qiymat berish (Eng zamonaviy va tavsiya etilgan usul)
+// Agar imageUrl yoki size prop sifatida berilmasa, avtomatik ravishda tenglikdan keyingi ko'rsatilgan standart (default) qiymatlar qabul qilinadi
 function Avatar({ imageUrl = "https://default-image.com/user.png", size = "medium" }) {
+  // size propini tekshirib, shartli ravishda rasmning hajmini aniqlaymiz
   const imageSize = size === "large" ? "100px" : "50px";
   
+  // imageUrl va aniqlangan imageSize ni img tegiga xususiyat qilib beramiz
   return <img src={imageUrl} alt="Foydalanuvchi rasmi" width={imageSize} />;
 }
 
@@ -117,17 +129,20 @@ Katta loyihalarda komponentga noto'g'ri ma'lumot tipi (masalan, string o'rniga n
 **Nega kerak?** Dasturchi xatolarini erta aniqlash va qat'iy ma'lumotlar tipini ta'minlash uchun.
 
 \`\`\`jsx
+// prop-types kutubxonasini loyihaga import qilib olamiz
 import PropTypes from 'prop-types';
 
+// Button (tugma) komponentini yaratamiz. U uchta prop qabul qiladi: text (matni), color (rangi) va onClick (bosilgandagi bajariladigan funksiya)
 function Button({ text, color, onClick }) {
   return <button style={{ backgroundColor: color }} onClick={onClick}>{text}</button>;
 }
 
-// Qanday turdagi props kelishi kerakligini qat'iy belgilaymiz
+// Qanday turdagi props kelishi kerakligini qat'iy belgilaymiz.
+// Bu bizga kod yozayotganda noto'g'ri tipdagi ma'lumot yuborilsa ogohlantirish (warning) beradi
 Button.propTypes = {
-  text: PropTypes.string.isRequired,    // isRequired - albatta berilishi shart
-  color: PropTypes.string,              // ixtiyoriy
-  onClick: PropTypes.func               // funksiya bo'lishi kerak
+  text: PropTypes.string.isRequired,    // isRequired - albatta matn (string) turida berilishi shart ekanligini bildiradi
+  color: PropTypes.string,              // ixtiyoriy matn (rang nomi yoki HEX kodi)
+  onClick: PropTypes.func               // funksiya (function) turi bo'lishi kerak
 };
 \`\`\`
 
@@ -155,27 +170,29 @@ sequenceDiagram
 \`\`\`jsx
 // Ota komponent
 function Dashboard() {
-  // Callback funksiya
+  // Callback funksiya - bu funksiya ota komponentda yaratiladi, lekin bola komponentga prop orqali yuboriladi
   const handleDelete = (itemId) => {
+    // Bola komponent bu funksiyani chaqirganda shu yerga signal yetib keladi va ishga tushadi
     console.log(\`O'chirilayotgan element ID: \${itemId}\`);
-    // Bu yerda API ga so'rov yuborib elementni o'chirish mumkin
+    // Bu yerda backend API ga so'rov yuborib ma'lumotlar bazasidan elementni o'chirish mumkin
   };
 
   return (
     <div>
       <h1>Boshqaruv paneli</h1>
-      {/* Funksiyani prop orqali uzatish */}
+      {/* Funksiyani prop orqali uzatamiz. onDelete nomli propga handleDelete funksiyasini yuboramiz */}
       <ItemCard id={1} title="Maqola 1" onDelete={handleDelete} />
     </div>
   );
 }
 
 // Farzand komponent
+// Otadan kelgan id, title va onDelete funksiyasini destructuring orqali qabul qilib olyapmiz
 function ItemCard({ id, title, onDelete }) {
   return (
     <div className="card">
       <h3>{title}</h3>
-      {/* Tugma bosilganda otadan kelgan funksiya ishga tushadi */}
+      {/* Tugma bosilganda otadan kelgan onDelete funksiyasi ishga tushadi. Unga shu kartaning maxsus 'id' raqamini argument qilib berib yuboramiz */}
       <button onClick={() => onDelete(id)}>
         O'chirish
       </button>
@@ -195,6 +212,7 @@ Props bu o'qish uchun mo'ljallangan (read-only). Hech qachon farzand komponent i
 \`\`\`jsx
 // ❌ QILMANG: React bu yerda qattiq xato tashlaydi!
 function UserPanel(props) {
+  // Props o'zgarmas (read-only / immutable) bo'lgani sababli, unga bevosita yangi qiymat berib o'zgartirish qat'iyan taqiqlanadi
   props.name = "Yangi ism"; // XATO! Props o'zgarmasdir!
   return <div>{props.name}</div>;
 }
@@ -209,12 +227,16 @@ Ba'zi HTML atributlari React'da boshqacha nomlanadi, buni eslab qolish muhim:
 
 \`\`\`jsx
 // ❌ QILMANG
+// HTML da yozishga o'rganib qolganimizdek oddiy atributlarni React (JSX) da xuddi shunday ishlatsak xatolikka olib kelishi mumkin
 function Box(props) {
+  // Masalan: 'class' o'rniga 'className' va kichik harflardagi 'onclick' o'rniga camelCase shaklidagi 'onClick' ishlatilishi shart!
   return <div class="box-style" onclick={props.clickEvent}>{props.text}</div>
 }
 
 // ✅ QILING
+// To'g'ri nomlangan props lar va JSX dagi React qoidalariga rioya qilingan holat
 function Box({ customClass, onClickEvent, text }) {
+  // Shuningdek, qavslar ichidagi o'zgaruvchilarni matn bilan dinamik birlashtirish uchun template literal (\`) hamda \${} dan foydalanish mumkin
   return <div className={\`box-style \${customClass}\`} onClick={onClickEvent}>{text}</div>
 }
 \`\`\`
@@ -230,7 +252,9 @@ Bu noto'g'ri amaliyot hisoblanadi, chunki o'rtadagi komponentlar o'ziga kerak bo
 `,
   code: `import React from "react";
 
-// 1-Komponent: Bola (Props ni qabul qilib, ko'rsatib beradi)
+// 1-Komponent: Bola (Props ni qabul qilib, ko'rsatib beruvchi qism)
+// name, role va isOnline ota komponentdan kelgan qadriyatlar.
+// 'children' prop esa - ochuvchi va yopuvchi komponent teglari o'rtasidagi har qanday narsani (HTML teglari yoki oddiy matnni) saqlaydigan maxsus qiymatdir.
 function UserProfile({ name, role, isOnline, children }) {
   return (
     <div style={{ 
@@ -244,12 +268,14 @@ function UserProfile({ name, role, isOnline, children }) {
       <h3 style={{ margin: "0 0 10px 0" }}>{name}</h3>
       <p style={{ color: "#7f8c8d", margin: "0 0 10px 0" }}>Kasbi: {role}</p>
       
-      {/* Boolean (true/false) ni shartli render orqali ko'rsatamiz */}
+      {/* Mantiqiy qiymat bo'lgan Boolean (true/false) ni shartli render (ternary operator) orqali ko'rsatamiz */}
+      {/* isOnline true (rost) bo'lsa Onlayn, false (yolg'on) bo'lsa Oflayn yozuvi ko'rsatiladi */}
       <p style={{ margin: 0 }}>
         Status: {isOnline ? <span style={{ color: "green" }}>Onlayn 🟢</span> : <span style={{ color: "red" }}>Oflayn 🔴</span>}
       </p>
 
-      {/* Agar children yuborilgan bo'lsa, shu yerda chiqadi */}
+      {/* Agar ota komponent tomonidan children yuborilgan bo'lsa, u aynan mana shu yerda chiqadi. */}
+      {/* Ota komponent uni qanday ko'rinishda qo'shgan bo'lsa, xuddi shunday holatda ekranga render qilinadi. */}
       <div style={{ marginTop: "15px", paddingTop: "15px", borderTop: "1px solid #eee" }}>
         {children}
       </div>
@@ -257,21 +283,22 @@ function UserProfile({ name, role, isOnline, children }) {
   );
 }
 
-// 2-Komponent: Ota (Ma'lumotlarni yuboradi)
+// 2-Komponent: Ota (Ma'lumotlarni yuboruvchi asosiy qism)
+// App bu bizning asosiy va ota komponentimiz, u o'zining ichida UserProfile bolalarini turli xil ma'lumotlar bilan hosil qiladi va xususiyatlar yuboradi.
 export default function App() {
   return (
     <div style={{ padding: "20px" }}>
       <h2>Ota komponentdan kelgan ma'lumotlar:</h2>
 
-      {/* Birinchi user */}
+      {/* Birinchi user - Farhod. 'name', 'role' va 'isOnline' xususiyatlarini prop sifatida yubordik */}
       <UserProfile name="Farhod" role="Frontend Dasturchi" isOnline={true}>
-        {/* children orqali tugma yuboryapmiz */}
+        {/* Ushbu button (tugma) o'z-o'zidan "children" deb nomlanuvchi maxsus prop sifatida UserProfile komponentining ichiga o'tib ketadi */}
         <button style={{ padding: "5px 10px", background: "#3498db", color: "white", border: "none" }}>Xabar yozish</button>
       </UserProfile>
 
-      {/* Ikkinchi user */}
+      {/* Ikkinchi user - Zebo. Bunga isOnline ga false (yolg'on) ma'lumoti yuborilyapti */}
       <UserProfile name="Zebo" role="Loyiha Menejeri" isOnline={false}>
-        {/* children orqali matn yuboryapmiz */}
+        {/* children prop orqali endi tugma emas, balki oddiy <i> tegi orasida qiya qilib yozilgan matn yuboryapmiz */}
         <i>Hozir tarmoqda emas, keyinroq bog'laning.</i>
       </UserProfile>
     </div>

@@ -27,16 +27,22 @@ Hooklardan foydalanishning qat'iy qoidalari mavjud. Agar bu qoidalarni buzsangiz
 
    ❌ **Yomon amaliyot (Don't):**
    \`\`\`javascript
+   // Agar foydalanuvchi tizimga kirgan bo'lsa
    if (isUserLoggedIn) {
-     const [name, setName] = useState("Ali"); // Xato! Shart ichida Hook ishlatish mumkin emas.
+     // XATO: Hooklarni shart (if/else) ichida ishlatish mumkin emas!
+     // React har safar bir xil tartibda hooklar chaqirilishini kutadi.
+     const [name, setName] = useState("Ali"); 
    }
    \`\`\`
 
    ✅ **Yaxshi amaliyot (Do):**
    \`\`\`javascript
-   const [name, setName] = useState("Ali"); // To'g'ri! Komponentning eng yuqori qismida.
+   // TO'G'RI YONDASHUV: Hookni komponentning eng yuqori (top-level) qismida e'lon qilamiz
+   const [name, setName] = useState("Ali"); 
+   
+   // Shartli mantiqni hookdan keyin yozish kerak
    if (isUserLoggedIn) {
-     // endi nimadir qilish mumkin
+     // foydalanuvchi tizimga kirgan bo'lsa, kerakli amallarni shu yerda bajaramiz
    }
    \`\`\`
 
@@ -95,29 +101,34 @@ Mana shu 2-argument sizning effektingiz qachon va necha marta ishlashini hal qil
 Agar siz qaramliklar massivini umuman yozmasangiz, sizning effektingiz **har bir renderdan so'ng** ishlayveradi.
 
 \`\`\`javascript
+// Bu useEffect har bir render (qayta chizilish) dan keyin ishga tushadi
 useEffect(() => {
   console.log("Men har safar komponent o'zgarganda ishlayman!");
-}); // E'tibor bering, vergul va massiv yo'q
+}); // E'tibor bering: ikkinchi argument (qaramlik massivi) umuman berilmagan
 \`\`\`
 
 ### 2. Bo'sh massiv \`[]\` (Tug'ilish / Mount)
 Agar bo'sh massiv bersangiz, React bu effektni komponent **faqatgina birinchi marta yaratilganda** (Mount) 1 marta ishlatadi, boshqa hech qachon ishlatmaydi. Odatda API dan dastlabki ma'lumotlarni tortish uchun (fetch) ishlatiladi.
 
 \`\`\`javascript
+// Bu useEffect faqat 1 marta, komponent birinchi marta ekranga chiqqanda ishlaydi
 useEffect(() => {
   console.log("Men faqatgina 1 marta, eng boshida ishlayman!");
-}, []); // Bo'sh massiv
+}, []); // Bo'sh massiv (dependency array) buni ta'minlaydi
 \`\`\`
 
 ### 3. To'ldirilgan massiv \`[var1, var2]\` (O'zgarish / Update)
 Massiv ichiga qandaydir o'zgaruvchilarni (state yoki props) solsangiz, React faqatgina shu o'zgaruvchilardan biri o'zgargandagina effektni qayta ishga tushiradi.
 
 \`\`\`javascript
+// 'count' nomli state (holat) yaratamiz va uning boshlang'ich qiymatini 0 ga tenglaymiz
 const [count, setCount] = useState(0);
 
+// Bu effect faqatgina 'count' state'i o'zgarganda ishga tushadi
 useEffect(() => {
+  // count ning yangi qiymatini konsolga chiqaramiz
   console.log(\`Count qiymati o'zgardi: \${count}\`);
-}, [count]); // Faqat 'count' o'zgarganda ishlaydi
+}, [count]); // [count] - bu qaramlik massivi. React shu massiv ichidagi qiymatlarni kuzatadi
 \`\`\`
 
 ---
@@ -133,12 +144,14 @@ Agar siz \`useEffect\` ichida biror \`state\`ni o'zgartirsangiz va \`useEffect\`
 
 ❌ **Yomon amaliyot (Cheksiz tsikl):**
 \`\`\`javascript
+// Boshlang'ich qiymati 0 bo'lgan 'counter' holatini yaratamiz
 const [counter, setCounter] = useState(0);
 
 useEffect(() => {
-  // XATO! Effect har renderda ishlaydi, va o'zi ham re-render chaqiryapti!
+  // XATO: Cheksiz tsikl (Infinite loop) yuzaga keladi!
+  // Sababi: Effect ishlaydi -> state ni o'zgartiradi -> komponent qayta render bo'ladi -> effect yana ishlaydi
   setCounter(counter + 1); 
-});
+}); // Qaramlik massivi yo'qligi uchun u har renderdan keyin qayta-qayta ishlayveradi
 \`\`\`
 *Tushuntirish: Komponent render bo'ladi -> useEffect ishlaydi -> counter + 1 ga o'zgaradi -> State o'zgargani uchun komponent qayta render bo'ladi -> useEffect yana ishlaydi -> va h.k. cheksiz!*
 
@@ -147,16 +160,20 @@ useEffect(() => {
 
 ✅ **Yaxshi amaliyot:**
 \`\`\`javascript
+// 'counter' nomli holat (state) yaratamiz
 const [counter, setCounter] = useState(0);
 
-// Faqatgina biz xohlagan qat'iy holatda ishlaydi (masalan, faqat boshida)
+// useEffect faqat komponent tug'ilganda (mount) bir marta ishlaydi
 useEffect(() => {
+  // 1 soniyadan so'ng counterni 1 taga oshiruvchi taymer o'rnatamiz
   const timer = setTimeout(() => {
+    // Eng so'nggi holat (prev) asosida yangi qiymat o'rnatish xavfsizroq
     setCounter((prev) => prev + 1);
   }, 1000);
   
-  return () => clearTimeout(timer); // Tozalash (Cleanup)
-}, []); // Yoki faqatgina biror aniq shart asosida ishlaydigan qilib sozlash
+  // TOZALASH (Cleanup): komponent ekrandan o'chirilganda taymerni bekor qilamiz
+  return () => clearTimeout(timer); 
+}, []); // Bo'sh massiv orqali effect faqat boshida ishlashini aytamiz
 \`\`\`
 
 ---
@@ -176,21 +193,31 @@ Ba'zi effektlar "iz" qoldiradi. Masalan, siz setInterval bilan taymer yoqdingiz 
 
 ❌ **Yomon amaliyot (Tozalamaslik):**
 \`\`\`javascript
+// Komponent birinchi marta chizilganda (mount) ishlaydi
 useEffect(() => {
+  // Brauzer oynasi o'lchami o'zgarganini eshituvchi listener (kuzatuvchi) qo'shamiz
   window.addEventListener('resize', handleResize);
-  // Agar foydalanuvchi sahifadan chiqib ketsa, bu "listener" brauzer xotirasida osilib qoladi!
+  
+  // XATO: Bu yerda tozalash funksiyasi (cleanup) yo'q!
+  // Agar foydalanuvchi boshqa sahifaga o'tib ketsa, bu listener brauzer xotirasida qolib ketadi
+  // va xotira sizishiga (Memory Leak) sabab bo'lishi mumkin.
 }, []);
 \`\`\`
 
 ✅ **Yaxshi amaliyot (Tozalash bilan):**
 \`\`\`javascript
+// Komponent bir marta ishga tushganda bajariladigan effect
 useEffect(() => {
+  // Oyna kengligini konsolga chiqaruvchi funksiya
   const handleResize = () => console.log(window.innerWidth);
   
+  // Brauzerga listener ni ulaymiz
   window.addEventListener('resize', handleResize);
   
-  // Cleanup funksiyasi:
+  // TOZALASH FUNKSIYASI (Cleanup function):
+  // Komponent yo'q qilinishidan oldin ishga tushadi
   return () => {
+    // Ulangan listener ni brauzerdan olib tashlaymiz
     window.removeEventListener('resize', handleResize);
     console.log("Listener tozalandi!");
   };
@@ -204,32 +231,35 @@ Hooklar qoidalariga amal qiling. \`useEffect\` dagi qaramliklar massiviga (\`[]\
   code: `import React, { useState, useEffect, useRef } from "react";
 
 export default function HooksDemo() {
+  // seconds holati taymerning necha soniya ishlaganini saqlaydi
   const [seconds, setSeconds] = useState(0);
+  // isPlaying holati taymer yoqilgan yoki o'chirilganligini bildiradi
   const [isPlaying, setIsPlaying] = useState(false);
   
-  // DOM elementni ushlab olish uchun Ref
+  // DOM elementga to'g'ridan-to'g'ri bog'lanish uchun Ref yaratamiz
   const inputRef = useRef(null);
 
-  // 1. Taymer uchun useEffect
+  // 1. Taymerni boshqarish uchun useEffect
   useEffect(() => {
-    let timer;
+    let timer; // Taymer id si saqlanadi
+    
     if (isPlaying) {
-      // Taymer yoqildi
+      // Agar isPlaying rost (true) bo'lsa, har 1 soniyada taymer oshadi
       timer = setInterval(() => {
         setSeconds(prev => prev + 1);
       }, 1000);
     }
 
     // CLEANUP (Tozalash) funksiyasi
-    // Agar taymer to'xtatilsa yoki komponent ekrandan o'chsa, intervalni tozalaymiz
+    // Komponent yo'q bo'lganda yoki isPlaying o'zgarganda ishga tushib, avvalgi intervalni tozalaydi
     return () => {
       clearInterval(timer);
     };
-  }, [isPlaying]); // Dependency array: isPlaying o'zgarganidagina bu effect boshidan ishlaydi
+  }, [isPlaying]); // Qaramlik massivi: faqat isPlaying o'zgarganda bu effect qayta ishlaydi
 
-  // 2. Fokus uchun useRef dan foydalanish
+  // 2. Input elementiga kursor fokusini qaratish funksiyasi
   const handleFocus = () => {
-    // inputRef.current orqali haqiqiy input DOM elementiga murojaat qilamiz
+    // inputRef.current orqali haqiqiy input DOM elementiga murojaat qilamiz va focus() metodini chaqiramiz
     inputRef.current.focus();
   };
 
@@ -268,7 +298,7 @@ export default function HooksDemo() {
       id: 1,
       title: "Bo'sh dependency array (faqat birinchi render)",
       instruction: "Quyidagi kodda `useEffect` har safar tugma bosilganda (komponent yangilanganda) ishlab ketmoqda. Uni shunday o'zgartiringki, u faqatgina komponent birinchi marta ekranga chiqqanda ishlasin (bo'sh qaramlik massivi qo'shing).",
-      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  const [count, setCount] = useState(0);\n\n  useEffect(() => {\n    console.log('Komponent ishga tushdi!');\n  });\n\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={() => setCount(count + 1)}>Oshirish</button>\n    </div>\n  );\n}",
+      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  // count steytini yaratamiz\n  const [count, setCount] = useState(0);\n\n  // VAZIFA: Ushbu useEffect faqat bir marta ishlashi uchun unga bo'sh qaramlik massivini qo'shing\n  useEffect(() => {\n    console.log('Komponent ishga tushdi!');\n  });\n\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={() => setCount(count + 1)}>Oshirish</button>\n    </div>\n  );\n}",
       hint: "useEffect(() => { ... }, []); ko'rinishida bo'sh massiv yozish kerak.",
       test: "if (!code.includes('}, [])') && !code.includes('},[])') && !code.includes('}, [ ])')) return 'useEffect funksiyasiga bo\\'sh qaramlik massivini (dependency array) qo\\'shing.'; return null;"
     },
@@ -276,7 +306,7 @@ export default function HooksDemo() {
       id: 2,
       title: "Dependency array (qaramlik massivi) bilan ishlash",
       instruction: "`name` steyti o'zgarganda konsolga xabar chiqaruvchi `useEffect` yozing. Buning uchun qaramlik massivi ichiga `name` o'zgaruvchisini qo'shishingiz kerak.",
-      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  const [name, setName] = useState('Ali');\n  const [age, setAge] = useState(20);\n\n  useEffect(() => {\n    console.log(`Ism o'zgardi: ${name}`);\n  } /* Shu yerda qaramlik massivi kerak */);\n\n  return (\n    <div>\n      <input value={name} onChange={e => setName(e.target.value)} />\n      <button onClick={() => setAge(age + 1)}>Yosh: {age}</button>\n    </div>\n  );\n}",
+      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  // Ikki xil steyt yaratamiz\n  const [name, setName] = useState('Ali');\n  const [age, setAge] = useState(20);\n\n  // VAZIFA: Quyidagi useEffect name o'zgargandagina ishlashi uchun qaramlik massivini kiriting\n  useEffect(() => {\n    console.log(`Ism o'zgardi: ${name}`);\n  } /* Shu yerda qaramlik massivi kerak */);\n\n  return (\n    <div>\n      <input value={name} onChange={e => setName(e.target.value)} />\n      <button onClick={() => setAge(age + 1)}>Yosh: {age}</button>\n    </div>\n  );\n}",
       hint: "useEffect ikkinchi parametriga [name] yozish kerak.",
       test: "if (!code.includes('[name]') && !code.match(/,\\s*\\[\\s*name\\s*\\]/)) return 'useEffect qaramlik massiviga `name` ni qo\\'shing.'; return null;"
     },
@@ -284,7 +314,7 @@ export default function HooksDemo() {
       id: 3,
       title: "Sahifa sarlavhasini (document.title) yangilash",
       instruction: "`count` steyti o'zgarganda sahifaning sarlavhasi (document.title) `Sanoq: {count}` ko'rinishida yangilanishi uchun `useEffect` yozing. Bu `useEffect` qaramlik massiviga `count` o'zgaruvchisini qo'shish esdan chiqmasin.",
-      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  const [count, setCount] = useState(0);\n\n  // Shu yerda useEffect yozing\n\n  return (\n    <div>\n      <button onClick={() => setCount(count + 1)}>Sanoq: {count}</button>\n    </div>\n  );\n}",
+      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  // count nomli holat (state)\n  const [count, setCount] = useState(0);\n\n  // VAZIFA: Shu yerda useEffect yozing. Uning ichida sahifa sarlavhasini (document.title) yangilang\n  // va qaramlik massiviga [count] o'zgaruvchisini bering\n\n  return (\n    <div>\n      <button onClick={() => setCount(count + 1)}>Sanoq: {count}</button>\n    </div>\n  );\n}",
       hint: "useEffect ichida document.title = `Sanoq: ${count}` deb yozing va [count] dependency bering.",
       test: "if (!code.includes('useEffect') || !code.includes('document.title') || !code.includes('[count]')) return 'useEffect ishlatib, ichida document.title ni yangilang va [count] qaramligini bering.'; return null;"
     },
@@ -292,7 +322,7 @@ export default function HooksDemo() {
       id: 4,
       title: "useEffect Cleanup (tozalash) funksiyasi",
       instruction: "Komponent o'chirilganda `setInterval` fonda ishlab qolmasligi uchun uni tozalash (cleanup) kerak. Berilgan `useEffect` ichida `clearInterval(timer)` ni qaytaruvchi (return) tozalash funksiyasini yozing.",
-      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function Timer() {\n  const [seconds, setSeconds] = useState(0);\n\n  useEffect(() => {\n    const timer = setInterval(() => setSeconds(s => s + 1), 1000);\n\n    // Shu yerda return orqali cleanup funksiyasini yozing\n    \n  }, []);\n\n  return <h2>Soniya: {seconds}</h2>;\n}",
+      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function Timer() {\n  const [seconds, setSeconds] = useState(0);\n\n  useEffect(() => {\n    // Har 1 soniyada soniyani oshiruvchi interval\n    const timer = setInterval(() => setSeconds(s => s + 1), 1000);\n\n    // VAZIFA: Shu yerda return orqali tozalash (cleanup) funksiyasini yozing.\n    // Uning ichida clearInterval(timer) chaqirilishi kerak.\n    \n  }, []); // Bo'sh massiv - effect faqat boshida ishlaydi\n\n  return <h2>Soniya: {seconds}</h2>;\n}",
       hint: "return () => { clearInterval(timer); } ko'rinishida yoziladi.",
       test: "if (!code.includes('return') || !code.includes('clearInterval(timer)')) return 'useEffect ichida tozalash funksiyasini (return) yozing va unda clearInterval ni ishlating.'; return null;"
     },
@@ -300,7 +330,7 @@ export default function HooksDemo() {
       id: 5,
       title: "useRef bilan DOM elementni tutib olish",
       instruction: "Input elementiga avtomatik fokus (fokus qaratish) uchun `useRef` dan foydalaning. `inputRef` degan ref yarating, uni `<input>` ga bog'lang va `focusInput` funksiyasi ichida unga fokus bering (`inputRef.current.focus()`).",
-      startingCode: "import React, { useRef } from 'react';\n\nexport default function App() {\n  // 1. inputRef yarating (useRef null bilan)\n  \n  const focusInput = () => {\n    // 3. inputRef ga fokus bering\n    \n  };\n\n  return (\n    <div>\n      {/* 2. ref atributini inputga bog'lang */}\n      <input type=\"text\" placeholder=\"Yozing...\" />\n      <button onClick={focusInput}>Fokus berish</button>\n    </div>\n  );\n}",
+      startingCode: "import React, { useRef } from 'react';\n\nexport default function App() {\n  // 1. VAZIFA: inputRef o'zgaruvchisini yarating (useRef null bilan)\n  \n  const focusInput = () => {\n    // 3. VAZIFA: inputRef.current orqali input elementiga fokus (focus) bering\n    \n  };\n\n  return (\n    <div>\n      {/* 2. VAZIFA: ref atributi orqali yaratilgan inputRef ni ushbu inputga bog'lang */}\n      <input type=\"text\" placeholder=\"Yozing...\" />\n      <button onClick={focusInput}>Fokus berish</button>\n    </div>\n  );\n}",
       hint: "const inputRef = useRef(null); yozing, so'ng input ichida ref={inputRef} deb bog'lab, funksiyada inputRef.current.focus() ni chaqiring.",
       test: "if (!code.includes('useRef') || !code.includes('ref={inputRef}') || !code.includes('inputRef.current.focus()')) return 'useRef yaratib, inputga ref orqali bog\\'lang va focus() chaqiring.'; return null;"
     },
@@ -308,7 +338,7 @@ export default function HooksDemo() {
       id: 6,
       title: "useRef - render qilmaydigan o'zgaruvchi sifatida",
       instruction: "Oddiy o'zgaruvchi o'rniga komponent qayta chizilganda yo'qolib ketmaydigan qiymat saqlash uchun `useRef` ishlatamiz. `renderCount` degan ref yarating va har safar komponent chizilganda uning `current` qiymatini 1 taga oshiruvchi `useEffect` yozing.",
-      startingCode: "import React, { useState, useEffect, useRef } from 'react';\n\nexport default function App() {\n  const [text, setText] = useState('');\n  // 1. renderCount useRef ni 0 qiymati bilan yarating\n  \n  // 2. useEffect ichida renderCount.current ni 1 taga oshiring (bo'sh qaramlik massivisiz!)\n\n  return (\n    <div>\n      <input value={text} onChange={e => setText(e.target.value)} />\n      {/* 3. renderCount.current ni ekranga chiqaring */}\n      <p>Renderlar soni: 0</p>\n    </div>\n  );\n}",
+      startingCode: "import React, { useState, useEffect, useRef } from 'react';\n\nexport default function App() {\n  // Matn kiritish uchun state\n  const [text, setText] = useState('');\n  \n  // 1. VAZIFA: renderCount nomli useRef yarating va uning boshlang'ich qiymatini 0 qiling\n  \n  // 2. VAZIFA: useEffect ichida har safar render bo'lganda renderCount.current ni 1 taga oshiring \n  // (E'tibor bering: qaramlik massivi kerak emas!)\n\n  return (\n    <div>\n      <input value={text} onChange={e => setText(e.target.value)} />\n      {/* 3. VAZIFA: 0 o'rnida renderCount.current qiymatini ekranga chiqaring */}\n      <p>Renderlar soni: 0</p>\n    </div>\n  );\n}",
       hint: "const renderCount = useRef(0); va useEffect ichida renderCount.current = renderCount.current + 1; (yoki ++) deng. JSX da {renderCount.current} chiqaring.",
       test: "if (!code.includes('useRef(0)') || !code.includes('renderCount.current') || !code.includes('useEffect')) return 'useRef orqali renderCount ni e\\'lon qiling va useEffect ichida uni oshiring.'; return null;"
     },
@@ -316,7 +346,7 @@ export default function HooksDemo() {
       id: 7,
       title: "useEffect da Event Listener",
       instruction: "Oynaning o'lchami o'zgarganini kuzatuvchi o'zgaruvchi yaratamiz. `useEffect` ichida `window.addEventListener('resize', handleResize)` ni ulang va uni `return` ichida `removeEventListener` yordamida tozalashni unutmang.",
-      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  const [width, setWidth] = useState(window.innerWidth);\n\n  useEffect(() => {\n    const handleResize = () => setWidth(window.innerWidth);\n    // 1. window ga 'resize' hodisasini (handleResize) ulang\n    \n    // 2. return orqali 'resize' hodisasini olib tashlang (cleanup)\n    \n  }, []);\n\n  return <p>Oyna kengligi: {width}px</p>;\n}",
+      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  // Oyna kengligini saqlovchi state\n  const [width, setWidth] = useState(window.innerWidth);\n\n  useEffect(() => {\n    // Oyna o'zgarganda ishlaydigan funksiya\n    const handleResize = () => setWidth(window.innerWidth);\n    \n    // 1. VAZIFA: window ob'ektiga 'resize' hodisasini (handleResize funksiyasini) qo'shing\n    \n    // 2. VAZIFA: return orqali 'resize' hodisasini tozalang (removeEventListener dan foydalaning)\n    \n  }, []); // Bo'sh massiv tufayli u faqat komponent chizilganda 1 marta ishlaydi\n\n  return <p>Oyna kengligi: {width}px</p>;\n}",
       hint: "window.addEventListener('resize', handleResize); va return () => window.removeEventListener('resize', handleResize); yozing.",
       test: "if (!code.includes('addEventListener') || !code.includes('removeEventListener')) return 'Hodisani eshituvchi qushish va o\\'chirish funksiyalari (addEventListener / removeEventListener) dan foydalaning.'; return null;"
     },
@@ -324,7 +354,7 @@ export default function HooksDemo() {
       id: 8,
       title: "useEffect da Fetch (Ma'lumot tortish)",
       instruction: "Komponent ochilganda API dan foydalanuvchi ma'lumotini olishni simulyatsiya qilamiz. `useEffect` ichida `fetchData` funksiyasini chaqiring. `useEffect` faqat **bir marta** ishlashi uchun bo'sh massiv `[]` qo'shishni unutmang.",
-      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  const [data, setData] = useState('Yuklanmoqda...');\n\n  const fetchData = () => {\n    setTimeout(() => setData('Salom, bu serverdan olingan ma\\'lumot!'), 2000);\n  };\n\n  // Shu yerda useEffect yozing va fetchData ni chaqiring\n\n  return <h1>{data}</h1>;\n}",
+      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  // Ma'lumotlarni saqlash uchun state\n  const [data, setData] = useState('Yuklanmoqda...');\n\n  // Serverdan ma'lumot olishni taqlid qiluvchi funksiya\n  const fetchData = () => {\n    setTimeout(() => setData('Salom, bu serverdan olingan ma\\'lumot!'), 2000);\n  };\n\n  // VAZIFA: Shu yerda useEffect yozing, ichida fetchData() ni chaqiring \n  // va u faqat bir marta ishlashi uchun unga bo'sh qaramlik massivi [] bering\n\n  return <h1>{data}</h1>;\n}",
       hint: "useEffect(() => { fetchData(); }, []); qilib yoziladi.",
       test: "if (!code.includes('useEffect') || !code.includes('fetchData()') || !code.includes('[]')) return 'useEffect orqali fetchData ni faqat bir marta ishlating (bo\\'sh qaramlik massivi qo\\'shing).'; return null;"
     },
@@ -332,7 +362,7 @@ export default function HooksDemo() {
       id: 9,
       title: "Bir nechta Hook larni birga ishlatish",
       instruction: "Ikki xil state o'zgaruvchilari: `count` (sanoq) va `step` (qadam) bor. `count` o'zgaruvchisi o'zgarganda faqat uning qiymatini konsolga chiqaruvchi bitta `useEffect`, `step` o'zgarganda faqat `step` ni konsolga chiqaruvchi boshqa bir `useEffect` yozing.",
-      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  const [count, setCount] = useState(0);\n  const [step, setStep] = useState(1);\n\n  // 1. count uchun useEffect\n  \n  // 2. step uchun useEffect\n\n  return (\n    <div>\n      <p>Sanoq: {count}, Qadam: {step}</p>\n      <button onClick={() => setCount(count + step)}>Oshirish</button>\n      <button onClick={() => setStep(step + 1)}>Qadamni kattalashtirish</button>\n    </div>\n  );\n}",
+      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  const [count, setCount] = useState(0);\n  const [step, setStep] = useState(1);\n\n  // 1. VAZIFA: faqat count o'zgarganda uning qiymatini konsolga chiqaruvchi useEffect yozing\n  \n  // 2. VAZIFA: faqat step o'zgarganda uning qiymatini konsolga chiqaruvchi boshqa bir useEffect yozing\n\n  return (\n    <div>\n      <p>Sanoq: {count}, Qadam: {step}</p>\n      <button onClick={() => setCount(count + step)}>Oshirish</button>\n      <button onClick={() => setStep(step + 1)}>Qadamni kattalashtirish</button>\n    </div>\n  );\n}",
       hint: "Ikkita alohida useEffect yozing. Birida [count], ikkinchisida [step] dependency bo'lsin.",
       test: "if (code.match(/useEffect/g)?.length < 2 || !code.includes('[count]') || !code.includes('[step]')) return 'Ikkita alohida useEffect yozing, ularga tegishli qaramlik massivlarini bering.'; return null;"
     },
@@ -340,7 +370,7 @@ export default function HooksDemo() {
       id: 10,
       title: "Hook larni faqat eng yuqorida ishlatish",
       instruction: "Hook larning qoidalaridan biri - ularni shartlar (`if`) ichida yozib bo'lmaydi. Quyidagi kodda `useEffect` `if` ichiga yashirib qo'yilgan. Uni shunday to'g'rilangki, `useEffect` yuqoriga chiqsin, `if` sharti esa `useEffect` ichida bo'lsin.",
-      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  const [isLogged, setIsLogged] = useState(false);\n\n  // XATO YONDASHUV: Hook shart ichida!\n  if (isLogged) {\n    useEffect(() => {\n      console.log('Tizimga kirdingiz!');\n    }, [isLogged]);\n  }\n\n  return (\n    <button onClick={() => setIsLogged(true)}>Kirish</button>\n  );\n}",
+      startingCode: "import React, { useState, useEffect } from 'react';\n\nexport default function App() {\n  const [isLogged, setIsLogged] = useState(false);\n\n  // XATO YONDASHUV: Hook shart ichida (if) yozilgan!\n  // VAZIFA: useEffect ni if dan tashqariga chiqaring va if shartini useEffect ning ichiga ko'chiring.\n  if (isLogged) {\n    useEffect(() => {\n      console.log('Tizimga kirdingiz!');\n    }, [isLogged]);\n  }\n\n  return (\n    <button onClick={() => setIsLogged(true)}>Kirish</button>\n  );\n}",
       hint: "useEffect ni if dan tashqariga chiqaring va if shartini useEffect ning callback funksiyasi ichida yozing.",
       test: "if (code.match(/if\\s*\\([^)]+\\)\\s*\\{\\s*useEffect/)) return 'useEffect ni if shartidan tashqariga olib chiqing!'; return null;"
     }

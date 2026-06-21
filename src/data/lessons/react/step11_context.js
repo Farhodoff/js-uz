@@ -18,8 +18,9 @@ React-da aynan shu jarayon **Prop Drilling** (Prop burg'ulash) deb ataladi. Ma'l
 ### Prop Drilling Kod Misoli (Bad Practice - Yomon yondashuv)
 
 \`\`\`jsx
-// ❌ YOMON: Prop Drilling
+// ❌ YOMON: Prop Drilling (Prop burg'ulash)
 const App = () => {
+  // 'theme' nomli holatni (state) yaratamiz, boshlang'ich qiymati 'dark'
   const [theme, setTheme] = useState('dark');
   
   return <Header theme={theme} />;
@@ -37,6 +38,7 @@ const NavBar = ({ theme }) => {
 
 // Va nihoyat Menu bu theme'dan foydalanadi!
 const Menu = ({ theme }) => {
+  // 'theme' prop orqali tugma rangini (class'ini) belgilaymiz
   return <button className={theme}>Menyu</button>;
 }
 \`\`\`
@@ -109,7 +111,8 @@ Birinchi navbatda alohida faylda (yoki komponentning tashqarisida) o'zimizning r
 \`\`\`jsx
 import { createContext } from 'react';
 
-// 1. Context yaratamiz. Boshlang'ich qiymat berishimiz ham mumkin.
+// 1. Context yaratamiz. Boshlang'ich qiymat sifatida 'light' ni berishimiz ham mumkin.
+// 'ThemeContext' boshqa fayllarda ishlatilishi uchun eksport qilinadi.
 export const ThemeContext = createContext('light');
 \`\`\`
 
@@ -123,15 +126,19 @@ import { ThemeContext } from './ThemeContext';
 import NavBar from './NavBar';
 
 const App = () => {
+  // Mavzuni saqlash uchun 'theme' holatini yaratamiz, default qiymati 'dark'
   const [theme, setTheme] = useState('dark');
 
+  // Mavzuni o'zgartiruvchi funksiya
+  // Oldingi mavzu holatiga qarab (prevTheme), uni almashtiradi
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
   };
 
   return (
     // 2. Provider orqali ma'lumotni uzatamiz. 
-    // "value" propiga o'zgaruvchilar, funksiyalar yoki obyekt berish mumkin.
+    // "value" propiga { theme, toggleTheme } obyektini beramiz, shunda 
+    // Provider ichidagi har qanday komponent bu qiymatlardan foydalana oladi.
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div className={\`app-container \${theme}\`}>
         <NavBar />
@@ -153,13 +160,16 @@ import React, { useContext } from 'react';
 import { ThemeContext } from './ThemeContext';
 
 const ThemeToggleButton = () => {
-  // 3. useContext Hook'i orqali stansiyaga ulanib, "value" ni olamiz
+  // 3. useContext Hook'i orqali ThemeContext dagi ma'lumotlarni (value) olamiz.
+  // Bu yerda o'rtadagi komponentlarga ehtiyoj yo'q, to'g'ridan-to'g'ri o'qiymiz!
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
+    // Tugma bosilganda 'toggleTheme' funksiyasi ishga tushadi
     <button 
       onClick={toggleTheme}
       style={{
+        // Joriy 'theme' ga qarab tugmaning foni va yozuv rangini dinamik o'zgartiramiz
         backgroundColor: theme === 'dark' ? '#333' : '#FFF',
         color: theme === 'dark' ? '#FFF' : '#333'
       }}
@@ -196,7 +206,9 @@ Context'ning eng katta kamchiligi — **Re-renders (Qayta chizish)**.
 Context'ning \`value\` qismiga berilgan ma'lumot o'zgarganda, ushbu context'ni \`useContext\` orqali eshitib turgan **BARCHA** komponentlar majburiy tarzda qayta render bo'ladi. Hatto obyektning kichkina bir xususiyati o'zgarsa ham!
 
 \`\`\`jsx
-// ❌ YOMON: Tez o'zgaruvchi ma'lumotlarni bitta katta Context'ga yig'ish
+// ❌ YOMON: Tez o'zgaruvchi ma'lumotlarni bitta katta Context'ga yig'ish.
+// Agar 'mousePositionX' doim o'zgarsa, GlobalContext dan 
+// foydalanayotgan barcha komponentlar majburan qayta-qayta render bo'laveradi.
 <GlobalContext.Provider value={{ theme, user, mousePositionX, searchInputValue }}>
    <App />
 </GlobalContext.Provider>
@@ -230,17 +242,21 @@ Katta loyihalarda Context API — Redux kabi katta kutubxonalarni o'rnatmasdan t
   code: `import React, { useState, createContext, useContext } from "react";
 
 // 1. Wi-Fi (Context) yaratamiz
+// Context obyektlarini yaratish. Ularning ichiga ma'lumot joylab, keyin boshqa joyda o'qib olamiz.
 const ThemeContext = createContext();
 const LanguageContext = createContext();
 
 export default function ContextDemo() {
-  const [theme, setTheme] = useState("light"); // light yoki dark
-  const [lang, setLang] = useState("uz");      // uz yoki en
+  // Asosiy ota komponentda holatlar (states) saqlanmoqda
+  const [theme, setTheme] = useState("light"); // Mavzu: light yoki dark
+  const [lang, setLang] = useState("uz");      // Til: uz yoki en
 
   // 2. Butun ilovani Providerlar bilan o'raymiz
   // Ularning ichiga value propini beramiz
   return (
+    // ThemeContext orqali 'theme' holati va uni o'zgartiruvchi 'setTheme' ni uzatamiz
     <ThemeContext.Provider value={{ theme, setTheme }}>
+      {/* LanguageContext orqali 'lang' va 'setLang' ni uzatamiz */}
       <LanguageContext.Provider value={{ lang, setLang }}>
         <div style={{ padding: 20, border: "2px dashed #3498db" }}>
           <h2>Asosiy App (Ota komponent)</h2>
@@ -249,6 +265,7 @@ export default function ContextDemo() {
           <hr />
           
           {/* O'rtadagi Hech Nima Qilmaydigan Komponent */}
+          {/* Biz unga hech qanday props (theme, lang) bermayapmiz! */}
           <MiddleComponent />
 
         </div>
@@ -276,14 +293,17 @@ function MiddleComponent() {
 // Va nihoyat eng ichkaridagi (chuqur) komponent.
 function TargetComponent() {
   // 3. To'g'ridan-to'g'ri Context ga ulanamiz! (useContext)
+  // 'useContext' huki yordamida Provider bergan 'value' ni qabul qilib olamiz.
   const { theme, setTheme } = useContext(ThemeContext);
   const { lang, setLang } = useContext(LanguageContext);
 
   // Tema ranglari
+  // Joriy mavzuga qarab orqa fon va matn rangini belgilaymiz
   const background = theme === "dark" ? "#2c3e50" : "#ecf0f1";
   const color = theme === "dark" ? "#ecf0f1" : "#2c3e50";
 
   // Tilga qarab so'zlar
+  // Joriy tilga mos matnni tanlaymiz
   const greeting = lang === "uz" ? "Salom! Men eng ichki komponentman." : "Hello! I am the innermost component.";
 
   return (
@@ -293,11 +313,13 @@ function TargetComponent() {
 
       <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
         {/* Tilni o'zgartirish tugmasi */}
+        {/* Tugma bosilganda 'setLang' funksiyasi chaqirilib, tilni teskarisiga o'zgartiradi */}
         <button onClick={() => setLang(lang === "uz" ? "en" : "uz")}>
           {lang === "uz" ? "🇺🇸 English" : "🇺🇿 O'zbekcha"}
         </button>
 
         {/* Mavzuni o'zgartirish tugmasi */}
+        {/* Tugma bosilganda 'setTheme' funksiyasi chaqirilib, mavzuni teskarisiga o'zgartiradi */}
         <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
           {theme === "dark" ? "☀️ Yorug' rejim" : "🌙 Tungi rejim"}
         </button>

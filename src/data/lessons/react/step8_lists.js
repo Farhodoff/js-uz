@@ -25,9 +25,12 @@ Tasavvur qiling, siz pitsaxona oshpazisiz va oldingizda 10 xil pitsa retseptlari
 
 \`\`\`jsx
 // XATO: JSX ichida for loop ishlata olmaysiz!
+// React'da JSX ichiga ifoda (expression) yozish mumkin, lekin for sikli buyruq (statement) hisoblanadi.
 function UserList({ users }) {
+  // Komponent foydalanuvchilar (users) massivini qabul qiladi
   return (
     <div>
+      {/* Bu yerda xatolik yuz beradi, chunki for loop JSX ichida bevosita ishlatilmaydi */}
       {for (let i = 0; i < users.length; i++) {
         return <p>{users[i].name}</p>
       }}
@@ -42,8 +45,10 @@ function UserList({ users }) {
 function UserList({ users }) {
   return (
     <ul>
+      {/* .map() yordamida users massividagi har bir element uchun bittadan <li> tegi yaratamiz */}
       {users.map((user) => (
         // E'tibor bering: ro'yxat elementlariga doim 'key' kerak! (bu haqida pastroqda)
+        // 'key' React'ga qaysi element o'zgarganini tezda topishga yordam beradi
         <li key={user.id}>{user.name}</li>
       ))}
     </ul>
@@ -102,7 +107,8 @@ Juda ko'p boshlang'ich dasturchilar \`key\` muammosidan qutulish uchun \`.map\` 
 
 ❌ **Yomon amaliyot (Don't)**:
 \`\`\`jsx
-// BUNDAY QILMANG!
+// BUNDAY QILMANG: Element tartib raqami (index) ni 'key' sifatida ishlatmang!
+// Agar ro'yxat tartibi o'zgarsa, React xato ishlashi mumkin.
 {items.map((item, index) => (
   <ListItem key={index} data={item} />
 ))}
@@ -122,8 +128,9 @@ Tasavvur qiling, ro'yxatingizda input qutilari bor.
 ✅ **To'g'ri amaliyot (Do)**: Har doim ma'lumotlar bazasidan keladigan takrorlanmas \`id\` (masalan, UUID yoki DB id) ishlating.
 
 \`\`\`jsx
-// YAXSHI!
+// YAXSHI: Obyektning o'ziga xos bo'lgan va o'zgarmas ID (uuid) qiymatini ishlating!
 {items.map((item) => (
+  // Bu yerda item.uuid ma'lumotlar bazasidan kelgan yagona takrorlanmas qiymat
   <ListItem key={item.uuid} data={item} />
 ))}
 \`\`\`
@@ -140,11 +147,14 @@ React'da maxsus if-else teglar yo'q. Biz oddiy JavaScript mantiqlaridan foydalan
 Agar butun boshli komponent qandaydir shartga ko'ra butunlay boshqa narsa ko'rsatishi kerak bo'lsa, uni to'g'ridan-to'g'ri funksiyaning boshida tekshiramiz.
 
 \`\`\`jsx
+// Dashboard komponenti isLoading (yuklanish holati) va user (foydalanuvchi) ma'lumotlarini prop sifatida oladi
 function Dashboard({ isLoading, user }) {
+  // Agar ma'lumotlar hali yuklanayotgan bo'lsa (isLoading = true), qolgan kodni kutmasdan shu joyning o'zidan ekranga "Yuklanmoqda..." ni qaytaramiz (Erta qaytish / Early Return)
   if (isLoading) {
     return <div>Yuklanmoqda...</div>; // Erta qaytish
   }
 
+  // Agar yuklanish tugagan bo'lsa, foydalanuvchining ismini ekranga chiqaramiz
   return <div>Xush kelibsiz, {user.name}!</div>;
 }
 \`\`\`
@@ -153,12 +163,16 @@ function Dashboard({ isLoading, user }) {
 JSX ichida biz \`if\` ishlata olmaymiz, shuning uchun JavaScript'ning uchinchi darajali operatoridan foydalanamiz. Bu eng ko'p ishlatiladigan usul.
 
 \`\`\`jsx
+// LogInOutButton komponenti isLoggedIn (tizimga kirganmi yoki yo'q) holatini qabul qiladi
 function LogInOutButton({ isLoggedIn }) {
   return (
     <div>
+      {/* Ternary (uchinchi darajali) operator: 'shart ? ha : yo'q' */}
       {isLoggedIn ? (
+        // Agar foydalanuvchi tizimga kirgan bo'lsa (true)
         <button>Tizimdan chiqish</button>
       ) : (
+        // Agar foydalanuvchi tizimga kirmagan bo'lsa (false)
         <button>Tizimga kirish</button>
       )}
     </div>
@@ -174,7 +188,8 @@ function Notifications({ messages }) {
   return (
     <div>
       <h1>Sizning xabarlaringiz</h1>
-      {/* Agar xabarlar mavjud bo'lsa, quyidagi xabarni chiqaramiz */}
+      {/* Logical AND (&&) - Mantiqiy VA operatori */}
+      {/* Agar 'messages.length > 0' sharti Rost (true) bo'lsa, o'ng tarafdagi <p> tegi ekranga chiziladi. Aks holda hech narsa chizilmaydi. */}
       {messages.length > 0 && <p>Sizda yangi xabarlar bor!</p>}
     </div>
   );
@@ -188,9 +203,10 @@ Yuqoridagi misolda \`messages.length > 0 && ...\` deb yozdik. Ko'p dasturchilar 
 ❌ **Yomon amaliyot (Don't)**:
 \`\`\`jsx
 function Cart({ items }) {
-  // Agar items.length 0 bo'lsa, React ekranga 0 raqamini yozib qo'yadi!
+  // YOMON AMALIYOT: Agar items.length 0 ga teng bo'lsa (ya'ni savat bo'sh), React ekranga mantiqiy xato qilib '0' raqamini yozib qo'yadi!
   return (
     <div>
+      {/* XATO! Hech qachon shartli renderda quruq raqam qoldirmang */}
       {items.length && <p>Savatda mahsulotlar bor</p>}
     </div>
   );
@@ -202,10 +218,10 @@ function Cart({ items }) {
 ✅ **To'g'ri amaliyot (Do)**: Har doim ifodangiz aniq **Boolean** (true/false) qaytarayotganiga ishonch hosil qiling.
 
 \`\`\`jsx
-// 1-usul: Aniq shart berish
+// 1-usul: Aniq taqqoslash orqali natijani aniq Boolean (Rost/Yolg'on) qiymatiga aylantiramiz
 {items.length > 0 && <p>Savatda mahsulotlar bor</p>}
 
-// 2-usul: Ochiqchasiga boolean ga o'girish (!!)
+// 2-usul: Ikkita inkor (!!) operatori yordamida raqamni Boolean'ga o'giramiz (0 bo'lsa false bo'ladi)
 {!!items.length && <p>Savatda mahsulotlar bor</p>}
 \`\`\`
 
@@ -223,7 +239,7 @@ function Cart({ items }) {
   code: `import React, { useState } from "react";
 
 export default function UsersList() {
-  // Boshlang'ich ro'yxat (State)
+  // Boshlang'ich ro'yxatni saqlash uchun state (holat) yaratamiz
   const [users, setUsers] = useState([
     { id: 1, name: "Farhod", isBanned: false },
     { id: 2, name: "Ali", isBanned: true },
@@ -231,20 +247,26 @@ export default function UsersList() {
     { id: 4, name: "Zebo", isBanned: false }
   ]);
 
-  // Foydalanuvchini o'chirish (Filter)
+  // Foydalanuvchini ro'yxatdan o'chirish uchun funksiya
   const deleteUser = (idToDelete) => {
-    // Tanlangan id dan tashqari hamma userlarni saqlab qolamiz
+    // Array.filter() yordamida o'chirilishi kerak bo'lgan foydalanuvchini tashlab, 
+    // qolganlarini yangi massivga yig'amiz va state'ni yangilaymiz
     setUsers(users.filter((user) => user.id !== idToDelete));
   };
 
-  // Foydalanuvchini ban qilish / bandan ochish (Map yordamida obyektni yangilash)
+  // Foydalanuvchini ban qilish (bloklash) yoki bandan ochish funksiyasi
   const toggleBan = (id) => {
+    // Array.map() yordamida massivni aylanib chiqib, mos foydalanuvchini topamiz
     const updatedUsers = users.map((user) => {
+      // Agar hozirgi iteratsiyadagi user.id bosilgan id bilan mos kelsa
       if (user.id === id) {
-        return { ...user, isBanned: !user.isBanned }; // holatini teskarisiga o'zgartiramiz
+        // user obyektidan nusxa olib, uning isBanned holatini teskarisiga (!user.isBanned) o'zgartiramiz
+        return { ...user, isBanned: !user.isBanned };
       }
-      return user; // Qolganlarini o'zgarishsiz qaytaramiz
+      // Agar id mos kelmasa, userni o'zgarishsiz qaytaramiz
+      return user; 
     });
+    // Yangilangan ro'yxatni state'ga joylaymiz
     setUsers(updatedUsers);
   };
 
@@ -252,17 +274,19 @@ export default function UsersList() {
     <div style={{ padding: 20, fontFamily: 'sans-serif' }}>
       <h2>Barcha Foydalanuvchilar</h2>
       
-      {/* 1. Shartli Render (Logical AND) - Agar ro'yxat bo'shab qolsa */}
+      {/* 1. Shartli Renderlash (Logical AND) */}
+      {/* Agar users massivi bo'shab qolsa (uzunligi 0 bo'lsa), ogohlantirish xabarini chiqaramiz */}
       {users.length === 0 && (
         <div style={{ padding: 15, background: "#f8d7da", color: "#721c24", borderRadius: 5 }}>
           Afsuski, hech qanday foydalanuvchi qolmadi 😔
         </div>
       )}
 
-      {/* 2. Ro'yxatni ekranga chizish (Map) */}
+      {/* 2. Ro'yxatni ekranga chizish */}
       <ul style={{ listStyle: "none", padding: 0 }}>
+        {/* map() orqali users massividagi har bir obyektni JSX komponentga aylantiramiz */}
         {users.map((user) => (
-          // Eng muhim narsa: UNIKAL KEY
+          // Eng muhim qoida: Ro'yxatdagi har bir element uchun UNIKAL 'key' bo'lishi shart
           <li 
             key={user.id} 
             style={{ 
@@ -271,29 +295,33 @@ export default function UsersList() {
               display: "flex", 
               justifyContent: "space-between",
               alignItems: "center",
-              // Shartli styling (ban qilinganlarning foni qizilroq)
+              // Shartli styling (Ternary operator): Ban qilinganlarning foni och qizil (#fff3f3), qolganlariniki oq (#fff)
               background: user.isBanned ? "#fff3f3" : "#fff"
             }}
           >
             <div>
+              {/* Shartli matn stili: Ban qilingan foydalanuvchi ismi ustiga chiziq tortiladi */}
               <strong style={{ fontSize: 18, textDecoration: user.isBanned ? "line-through" : "none" }}>
                 {user.name}
               </strong>
               
-              {/* Shartli Render (Ternary) */}
+              {/* Shartli Renderlash (Ternary operator): isBanned holatiga qarab xabar matni o'zgaradi */}
               <span style={{ marginLeft: 10, fontSize: 12 }}>
                 {user.isBanned ? "❌ Bloklangan" : "✅ Faol"}
               </span>
             </div>
 
             <div>
+              {/* Tugma bosilganda toggleBan funksiyasi chaqiriladi va unga user.id uzatiladi */}
               <button 
                 onClick={() => toggleBan(user.id)}
                 style={{ padding: "5px 10px", marginRight: 10, cursor: "pointer" }}
               >
+                {/* Tugma matni ham holatga qarab o'zgaradi */}
                 {user.isBanned ? "Qulfdan ochish" : "Ban berish"}
               </button>
               
+              {/* O'chirish tugmasi, onClick bo'lganda deleteUser'ni ishga tushiradi */}
               <button 
                 onClick={() => deleteUser(user.id)}
                 style={{ padding: "5px 10px", background: "#e74c3c", color: "white", border: "none", cursor: "pointer" }}

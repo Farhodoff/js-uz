@@ -66,7 +66,9 @@ Agar React Router bo'lmasa, har bir URL uchun o'zimiz shartlar yozishimizga to'g
 // HTML dagi oddiy 'a' tegi butun sahifani qayta yuklaydi va barcha State'larni xotiradan o'chiradi
 export default function Navbar() {
   return (
+    // <nav> - navigatsiya qismi uchun HTML tegi
     <nav>
+      {/* <a> tegi bosilganda brauzer sahifani boshqatdan to'liq yuklaydi (reload). Bu xato yondashuv! */}
       <a href="/about">Biz haqimizda (Xato)</a>
       <a href="/contact">Aloqa (Xato)</a>
     </nav>
@@ -76,12 +78,14 @@ export default function Navbar() {
 
 ✅ **Yaxshi amaliyot (Do this):**
 \`\`\`jsx
+// react-router-dom kutubxonasidan Link komponentini chaqirib olamiz
 import { Link } from 'react-router-dom';
 
 // React Router 'Link' tegi faqatgina URL'ni o'zgartiradi, sahifa tezkor va miltillashsiz yangilanadi!
 export default function Navbar() {
   return (
     <nav>
+      {/* <Link> komponenti sahifani qayta yuklamasdan (refreshsiz) boshqa manzilga o'tish imkonini beradi */}
       <Link to="/about">Biz haqimizda (To'g'ri)</Link>
       <Link to="/contact">Aloqa (To'g'ri)</Link>
     </nav>
@@ -99,14 +103,17 @@ Tasavvur qiling, sizda katta internet-do'kon bor va u yerda 10 000 ta mahsulot b
 
 \`\`\`jsx
 // App.jsx faylida routelarni sozlash
+// Routes va Route komponentlarini kutubxonadan chaqiramiz
 import { Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
+    // <Routes> barcha yo'nalishlarni (marshrutlarni) o'zida saqlaydigan asosiy quti
     <Routes>
+      {/* Agar manzil /products bo'lsa, ekranda ProductList komponenti ko'rinadi */}
       <Route path="/products" element={<ProductList />} />
       
-      {/* ':id' - bu yerda dinamik parametr hisoblanadi */}
+      {/* ':id' - bu yerda dinamik parametr hisoblanadi. Masalan: /products/1, /products/2 */}
       <Route path="/products/:id" element={<ProductDetails />} />
     </Routes>
   );
@@ -119,23 +126,29 @@ Bu dinamik qiymatni komponent ichida tutib olish uchun esa \`useParams\` custom 
 
 \`\`\`jsx
 // ProductDetails.jsx
+// URL dan parametrlarni o'qib olish uchun useParams hookini chaqiramiz
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 export default function ProductDetails() {
   // URL dagi :id (masalan /products/42 bo'lsa, id = "42") ni ushlab olamiz
   const { id } = useParams();
+  
+  // Mahsulot ma'lumotlarini saqlash uchun state (boshlang'ich qiymati null)
   const [product, setProduct] = useState(null);
 
+  // Komponent ekranga chiqqanda yoki 'id' o'zgarganda ishlaydigan effect hook
   useEffect(() => {
     // Endi shu 'id' yordamida haqiqiy API dan aynan bitta mahsulotni yuklab olamiz
     fetch(\`https://fakestoreapi.com/products/\${id}\`)
-      .then(res => res.json())
-      .then(data => setProduct(data));
+      .then(res => res.json()) // Javobni JSON formatiga o'giramiz
+      .then(data => setProduct(data)); // Olingan ma'lumotni state-ga joylaymiz
   }, [id]);
 
+  // Agar ma'lumot hali kelmagan bo'lsa, yuklanmoqda yozuvini ko'rsatamiz
   if (!product) return <h2>Yuklanmoqda...</h2>;
 
+  // Ma'lumot kelgach, ekranga chiqaramiz
   return (
     <div>
       <h1>Mahsulot raqami: {id}</h1>
@@ -157,15 +170,19 @@ Masalan:
 Bunday holatlar uchun React Router bizga \`useNavigate\` hook'ini sovg'a qiladi. Bu bizga istalgan funksiya ichidan turib yo'nalishni o'zgartirish (navigate) kuchini beradi.
 
 \`\`\`jsx
+// Boshqa sahifaga yo'naltirish uchun useNavigate hooki kerak
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function LoginForm() {
   const navigate = useNavigate(); // Navigate obyektini chaqirib olamiz
+  
+  // Foydalanuvchi ismini saqlash uchun state
   const [username, setUsername] = useState('');
 
+  // Forma yuborilganda ishlaydigan funksiya
   const handleLogin = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Sahifa yangilanishini to'xtatamiz
     
     // Tasavvur qilamiz, bu yerda server tekshiruvi bor
     if (username === 'admin') {
@@ -173,13 +190,14 @@ export default function LoginForm() {
       // Foydalanuvchini avtomatik tarzda '/dashboard' manziliga jo'natamiz
       navigate('/dashboard');
     } else {
-      alert('Noto\'g'ri foydalanuvchi!');
+      alert('Noto\\'g\\'ri foydalanuvchi!');
     }
   };
 
   return (
     <form onSubmit={handleLogin}>
       <h2>Tizimga kirish</h2>
+      {/* Ismni yozish uchun maydon, kiritilgan matn state'ga saqlanadi */}
       <input 
         placeholder="Ismingiz (admin deb yozing)" 
         value={username} 
@@ -195,6 +213,7 @@ export default function LoginForm() {
 \`useNavigate\` shunchaki yangi sahifaga yo'naltiribgina qolmay, balki brauzer tarixida orqaga yoki oldinga qaytishni ham eplaydi. Agar funksiyaga manzil o'rniga manfiy raqam bersangiz, xuddi brauzerdagi ⬅️ orqaga (back) tugmasi bosilgandek ishlaydi.
 
 \`\`\`jsx
+{/* navigate funksiyasiga manfiy son (-1) bersak, brauzer tarixida 1 qadam orqaga qaytadi */}
 // Bir qadam orqaga qaytish uchun (-1 ni beramiz)
 <button onClick={() => navigate(-1)}>⬅️ Orqaga qaytish</button>
 \`\`\`
@@ -214,14 +233,16 @@ Ushbu bilimlarni o'zlashtirganingizdan so'ng, sizning React ilovangiz oddiy bir 
 `,
   code: `import React from "react";
 // Bu yerda interaktiv oyna uchun Router imitatsiyasini o'rnatamiz
-// Haqiqiy loyihada 'react-router-dom' dan olinadi
+// Haqiqiy loyihada 'react-router-dom' kutubxonasidan import qilinadi
 import { BrowserRouter, Routes, Route, Link, useParams } from "react-router-dom";
 
 // 1. Sahifa komponentlari
+// Bosh sahifa komponenti
 function Home() {
   return <h2>Bosh Sahifaga Xush Kelibsiz! 🏠</h2>;
 }
 
+// Biz haqimizda sahifasi komponenti
 function About() {
   return (
     <div>
@@ -231,17 +252,21 @@ function About() {
   );
 }
 
+// Mahsulot detallari sahifasi
 function ProductDetail() {
-  // URL dagi :id parametrini ushlab olish
+  // URL dagi :id parametrini ushlab olish (dinamik id ni olish)
   const { id } = useParams();
+  
   return (
     <div style={{ padding: 10, background: '#fcf3cf', border: '1px solid #f1c40f', borderRadius: 4 }}>
       <h2>Mahsulot Tafsiloti 🎁</h2>
+      {/* id qiymatini ekranda ko'rsatamiz */}
       <p>Siz <strong>{id} - raqamli</strong> mahsulot sahifasidasiz!</p>
     </div>
   );
 }
 
+// Noto'g'ri URL kiritilganda ko'rsatiladigan 404 sahifa komponenti
 function NotFound() {
   return <h2 style={{ color: 'red' }}>404 - Bunday sahifa topilmadi! ❌</h2>;
 }
@@ -255,7 +280,7 @@ export default function App() {
         
         {/* Navigatsiya menyusi */}
         <nav style={{ display: 'flex', gap: 15, marginBottom: 20, paddingBottom: 10, borderBottom: '2px solid #eee' }}>
-          {/* Odatdagi <a> tegini o'rniga <Link> */}
+          {/* Odatdagi <a> tegini o'rniga sahifani qayta yuklamaydigan <Link> dan foydalanamiz */}
           <Link to="/">Bosh Sahifa</Link>
           <Link to="/about">Biz Haqimizda</Link>
           <Link to="/product/85">Mahsulot: 85</Link>
@@ -263,14 +288,18 @@ export default function App() {
         </nav>
 
         {/* Marshrutlarni (Routerlarni) belgilash qismi */}
+        {/* Barcha yo'nalishlar Routes ichiga yoziladi */}
         <Routes>
+          {/* "/" manziliga kirganda Home komponenti ko'rinadi */}
           <Route path="/" element={<Home />} />
+          
+          {/* "/about" manziliga kirganda About komponenti ko'rinadi */}
           <Route path="/about" element={<About />} />
           
-          {/* Dinamik route */}
+          {/* Dinamik route: :id o'rniga har qanday qiymat kelishi mumkin */}
           <Route path="/product/:id" element={<ProductDetail />} />
           
-          {/* Boshqa hamma linklar uchun 404 (Yulduzcha hamma narsani bildiradi) */}
+          {/* Boshqa hamma xato linklar uchun 404 (Yulduzcha hamma mos kelmagan yo'llarni bildiradi) */}
           <Route path="*" element={<NotFound />} />
         </Routes>
 

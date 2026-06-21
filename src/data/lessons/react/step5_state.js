@@ -23,15 +23,17 @@ Keling, oddiy o'zgaruvchi yordamida hisoblagich (counter) yasashga urinib ko'ram
 \`\`\`jsx
 // ❌ YOMON AMALIYOT (DON'T)
 function BadCounter() {
-  let count = 0; // Oddiy o'zgaruvchi
+  let count = 0; // Oddiy o'zgaruvchi - bu o'zgarganda ekranni yangilamaydi (re-render bo'lmaydi)
 
+  // Tugma bosilganda ishlaydigan funksiya
   function handleClick() {
-    count = count + 1;
+    count = count + 1; // Qiymat oshadi, lekin React bundan bexabar
     console.log(count); // Konsolda son oshadi, lekin ekranda EMAS!
   }
 
   return (
     <div>
+      {/* count o'zgarsa ham, bu yerda hamisha 0 ko'rinib turaveradi */}
       <h1>Sanoq: {count}</h1>
       <button onClick={handleClick}>Qo'shish</button>
     </div>
@@ -47,19 +49,23 @@ Endi buni React'ning \`useState\` yordamida to'g'rilaymiz:
 
 \`\`\`jsx
 // ✅ TO'G'RI AMALIYOT (DO)
-import { useState } from 'react';
+import { useState } from 'react'; // React'dan useState hook'ini chaqirib olamiz
 
 function GoodCounter() {
-  // count - joriy holat, setCount - uni o'zgartiruvchi funksiya
+  // count - joriy holat (state), setCount - uni o'zgartiruvchi va ekranni yangilovchi funksiya
+  // 0 - bu count'ning boshlang'ich qiymati
   const [count, setCount] = useState(0); 
 
+  // Tugma bosilganda ishlaydigan funksiya
   function handleClick() {
     setCount(count + 1); // React'ga "state o'zgardi, ekranni yangila!" deymiz
   }
 
   return (
     <div>
+      {/* Joriy count qiymatini ekranga chiqaramiz */}
       <h1>Sanoq: {count}</h1>
+      {/* onClick hodisasiga handleClick funksiyasini bog'laymiz */}
       <button onClick={handleClick}>Qo'shish</button>
     </div>
   );
@@ -107,11 +113,15 @@ React'da state'ni o'zgartirganingizda, o'zgarish **darhol** sodir bo'lmaydi. Rea
 \`\`\`jsx
 // ❌ YOMON TUSHUNCHA
 function AsynchronousProblem() {
+  // count holatini yaratamiz, boshlang'ich qiymati 0
   const [count, setCount] = useState(0);
 
   function handleClick() {
+    // setCount asinxron ishlaydi, u holatni keyingi render uchun o'zgartirishni so'raydi
     setCount(count + 1);
-    console.log(count); // Bu yerda count HALI HAM 0 bo'ladi!
+    
+    // Shuning uchun bu yerda count HALI HAM eski qiymatini (0 ni) ko'rsatadi!
+    console.log(count); 
   }
 }
 \`\`\`
@@ -130,6 +140,7 @@ function WrongMultipleUpdates() {
   const [count, setCount] = useState(0);
 
   function handleClick() {
+    // Bu yerda uchala setCount ham bitta (eski) count = 0 ga asoslanadi
     setCount(count + 1); // React: "Tushundim, count ni 0 + 1 = 1 qilaman"
     setCount(count + 1); // React: "Tushundim, count ni 0 + 1 = 1 qilaman"
     setCount(count + 1); // React: "Tushundim, count ni 0 + 1 = 1 qilaman"
@@ -148,6 +159,8 @@ function CorrectMultipleUpdates() {
   const [count, setCount] = useState(0);
 
   function handleClick() {
+    // Oldingi holat (prevCount) asosida yangilash eng xavfsiz usul hisoblanadi
+    // Har bir setCount yangi qiymatni oldingi callback natijasidan oladi
     setCount(prevCount => prevCount + 1); // prevCount: 0 => 1
     setCount(prevCount => prevCount + 1); // prevCount: 1 => 2
     setCount(prevCount => prevCount + 1); // prevCount: 2 => 3
@@ -166,11 +179,12 @@ JavaScript'da string, number yoki boolean (primitivlar) o'zgarmas (immutable). L
 
 \`\`\`jsx
 // ❌ YOMON AMALIYOT (Mutatsiya)
+// user obyekti state sifatida saqlanmoqda
 const [user, setUser] = useState({ name: 'Ali', age: 20 });
 
 function badUpdate() {
-  user.age = 21; // XATO! State'ni to'g'ridan-to'g'ri o'zgartirish!
-  setUser(user); // React o'zgarishni sezmaydi, chunki obyekt reference'i o'zgarmadi
+  user.age = 21; // XATO! Obyekt xususiyatini to'g'ridan-to'g'ri o'zgartirmaslik kerak (Mutatsiya)!
+  setUser(user); // React o'zgarishni sezmaydi, chunki obyektning xotira manzili (reference'i) o'zgarmadi
 }
 \`\`\`
 
@@ -183,9 +197,10 @@ Buning o'rniga doimo **Spread Operator (\`...\`)** yordamida yangi obyekt yoki m
 \`\`\`jsx
 // ✅ TO'G'RI AMALIYOT (Immutability)
 function goodUpdate() {
+  // Har doim yepyangi obyekt yaratamiz
   setUser({
-    ...user, // eski obyekt xossalarini nusxalaymiz
-    age: 21  // o'zgarishi kerak bo'lgan qismini ustidan yozamiz
+    ...user, // eski obyekt xossalarini spread (...) orqali nusxalaymiz
+    age: 21  // o'zgarishi kerak bo'lgan qismini (age) ustidan yozamiz
   });
 }
 \`\`\`
@@ -216,24 +231,28 @@ Xuddi shunday massivlar uchun:
   code: `import React, { useState } from "react";
 
 export default function CounterApp() {
-  // 1. State yaratamiz (Boshlang'ich qiymati 0)
+  // 1. State yaratamiz: count - joriy raqam, setCount - o'zgartiruvchi funksiya
+  // Boshlang'ich qiymati 0
   const [count, setCount] = useState(0);
 
-  // 2. Obyekt ko'rinishidagi State
+  // 2. Obyekt ko'rinishidagi State: user - foydalanuvchi ma'lumotlari
   const [user, setUser] = useState({ name: "Dasturchi", isHappy: true });
 
   // Funksiyalar
   const increment = () => {
-    // To'g'ri usul (oldingi holat asosida oshirish)
+    // To'g'ri usul: holatni oshirish uchun oldingi qiymatdan (prev) foydalanamiz
     setCount((prev) => prev + 1);
   };
 
   const decrement = () => {
+    // Oldingi holatdan 1 ni ayiramiz
     setCount((prev) => prev - 1);
   };
 
   const toggleMood = () => {
-    // Obyektli state ni yangilash (eskisidan nusxa olib, keraklisini o'zgartiramiz)
+    // Obyektli state ni yangilash:
+    // Avval oldingi obyektni (prevUser) nusxalaymiz (...prevUser)
+    // Keyin faqat kerakli maydonni (isHappy) teskarisiga (!prevUser.isHappy) o'zgartiramiz
     setUser((prevUser) => ({
       ...prevUser,
       isHappy: !prevUser.isHappy
@@ -244,10 +263,10 @@ export default function CounterApp() {
     <div style={{ textAlign: "center", padding: 30, fontFamily: "sans-serif" }}>
       <h2>1. Oddiy Hisoblagich (Counter)</h2>
       
-      {/* Ekranga state o'zgaruvchisini chiqaramiz */}
+      {/* Ekranga state o'zgaruvchisini (count) chiqaramiz. Noldan kichik bo'lsa qizil, yo'qsa yashil bo'ladi */}
       <h1 style={{ fontSize: 48, color: count < 0 ? "red" : "green" }}>{count}</h1>
       
-      {/* State ni yangilovchi (setter) funksiyalarni tugmaga ulaymiz */}
+      {/* Tugmalar bosilganda mos funksiyalar (decrement, increment) ishga tushadi */}
       <button onClick={decrement} style={btnStyle}>- Ayirish</button>
       <button onClick={() => setCount(0)} style={btnStyle}>Nol qilish</button>
       <button onClick={increment} style={btnStyle}>+ Qo'shish</button>
@@ -255,6 +274,7 @@ export default function CounterApp() {
       <hr style={{ margin: "40px 0", borderColor: "#ddd" }} />
 
       <h2>2. Obyektli State</h2>
+      {/* Obyekt ichidagi xususiyatlarni (name, isHappy) o'qish */}
       <p>Foydalanuvchi: <strong>{user.name}</strong></p>
       <p>Kayfiyati: <strong>{user.isHappy ? "Xursand 😄" : "Xafa 😢"}</strong></p>
       
@@ -265,6 +285,7 @@ export default function CounterApp() {
   );
 }
 
+// Tugmalar uchun umumiy CSS stillari
 const btnStyle = {
   padding: "10px 20px",
   margin: "0 5px",

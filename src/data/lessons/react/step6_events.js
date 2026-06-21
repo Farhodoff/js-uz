@@ -24,10 +24,11 @@ React-da hodisalarni boshqarish odatiy (Vanilla) JavaScript-ga juda o'xshaydi, l
 \`\`\`
 
 #### ✅ Yaxshi amaliyot (React uslubi):
-\`\`\`jsx
+\`\`jsx
 // React
+// React-da hodisalar camelCase (onClick) shaklida yoziladi va funksiya qavslarsiz uzatiladi
 <button onClick={handleClick}>Bosing</button>
-\`\`\`
+\`\`
 
 > **Diqqat!** \`handleClick()\` qavslar bilan yozilmayapti! Agar qavslar bilan yozsangiz, komponent chizilayotganda (render) funksiya avtomatik ishlab ketadi. Biz esa u faqat bosilganda ishlashini xohlaymiz.
 
@@ -84,51 +85,59 @@ Ko'pincha biz qaysi element bosilganini bilish uchun funksiyaga qandaydir ma'lum
 Bu yerda yangi o'rganuvchilar juda ko'p xato qilishadi.
 
 #### ❌ Yomon amaliyot (Don'ts):
-\`\`\`jsx
+\`\`jsx
 function App() {
+  // deleteItem - bu elementni o'chirish uchun xizmat qiladigan funksiya
+  // id parametrini qabul qiladi
   const deleteItem = (id) => {
     console.log(id + " o'chirildi!");
   }
 
   return (
-    // XATO: Funksiya to'g'ridan-to'g'ri chaqirilib ketdi! Sahifa yuklanishi bilan ishlaydi.
+    // XATO: Funksiya qavslar bilan yozilgani uchun, komponent render bo'lishi bilan darhol ishlab ketadi!
+    // Ya'ni tugma bosilishini kutib o'tirmaydi.
     <button onClick={deleteItem(1)}>O'chirish</button>
   );
 }
-\`\`\`
+\`\`
 
 #### ✅ Yaxshi amaliyot (Do's) - Anonim funksiya (Arrow function) orqali:
 Biz tugma bosilgandagina ishga tushadigan "vositachi" (wrapper) funksiya yaratishimiz kerak.
 
-\`\`\`jsx
+\`\`jsx
 function App() {
+  // deleteItem funksiyasi id qabul qiladi va uni o'chiradi
   const deleteItem = (id) => {
     console.log(id + " o'chirildi!");
   }
 
   return (
-    // TO'G'RI: Tugma bosilganda oldin anonim funksiya ishlaydi, keyin u deleteItem'ni chaqiradi.
+    // TO'G'RI usul: onClick ichida arrow function (anonim funksiya) ishlatildi.
+    // Tugma bosilgandagina anonim funksiya ishlaydi va deleteItem'ga 1 argumentini yuboradi.
     <button onClick={() => deleteItem(1)}>O'chirish</button>
   );
 }
-\`\`\`
+\`\`
 
 #### ✅ Yaxshi amaliyot (Do's) - Hodisa obyekti (\`e\`) bilan birga argument o'tkazish:
 Agar sizga ham React hodisa obyekti (\`e\`), ham o'zingizning argumentingiz kerak bo'lsa:
 
-\`\`\`jsx
+\`\`jsx
 function App() {
+  // Bu funksiya ham hodisa obyektini (e), ham id ni qabul qiladi
   const deleteItem = (e, id) => {
+    // e.type orqali qanday hodisa ro'y berganini ko'rishimiz mumkin (masalan, "click")
     console.log("Hodisa turi:", e.type); // "click"
     console.log(id + " o'chirildi!");
   }
 
   return (
-    // 'e' ni qabul qilib olamiz va funksiyamizga uzatamiz
+    // Anonim funksiya avtomatik ravishda 'e' (event) parametrini qabul qiladi
+    // va biz uni deleteItem funksiyasiga kerakli argument (42) bilan birga yuboramiz
     <button onClick={(e) => deleteItem(e, 42)}>O'chirish</button>
   );
 }
-\`\`\`
+\`\`
 
 ---
 
@@ -140,26 +149,31 @@ Web-sahifada hodisalar suv ostidagi pufakchaga o'xshaydi. Agar siz bitta tugmani
 
 **Analgiya:** Siz xonangizda baqirdingiz. Ovozingiz oldin xonangizga, keyin uyingizga, keyin ko'chaga eshitiladi. Agar siz ovozingiz faqat xonangizda qolishini (boshqalar eshitmasligini) xohlasangiz, derazalarni yopishingiz kerak bo'ladi. Bu darsimizdagi \`e.stopPropagation()\` ga to'g'ri keladi.
 
-\`\`\`jsx
+\`\`jsx
 function Card() {
+  // Div element (karta) bosilganda ishlaydigan funksiya
   const handleCardClick = () => {
-    console.log("Karta bosildi!"); // Div bosilganda ishlaydi
+    console.log("Karta bosildi!"); // Faqat Div bosilganda ishlaydi
   };
 
+  // Tugma bosilganda ishlaydigan funksiya
   const handleButtonClick = (e) => {
-    e.stopPropagation(); // Hodisa yuqoriga ko'tarilishini shu yerda to'xtatadi!
+    // e.stopPropagation() hodisaning tashqi elementlarga tarqalishini (bubbling) to'xtatadi.
+    // Busiz tugma bosilganda uning tashqarisidagi div dagi onClick ham ishlab ketardi!
+    e.stopPropagation(); 
     console.log("Tugma bosildi!");
   };
 
   return (
+    // Asosiy karta elementi, uni bossangiz handleCardClick ishlaydi
     <div onClick={handleCardClick} style={{ padding: 20, background: 'lightgray' }}>
       <h3>Mahsulot nomi</h3>
-      {/* Agar stopPropagation bo'lmasa, bu tugmani bosganda Card ham bosildi deb hisoblanadi */}
+      {/* Agar stopPropagation ishlatilmaganida, bu tugmani bosish Card ni ham bosildi deb hisoblar edi */}
       <button onClick={handleButtonClick}>Sotib olish</button>
     </div>
   );
 }
-\`\`\`
+\`\`
 
 ### e.preventDefault() - Standart xulq-atvorni to'xtatish
 
@@ -170,22 +184,26 @@ Masalan:
 
 React - bu Single Page Application (SPA). Biz sahifaning qayta yuklanishini xohlamaymiz! Biz bu elementlarning o'zining "standart" xulq-atvorini to'xtatishimiz kerak.
 
-\`\`\`jsx
+\`\`jsx
 function MyForm() {
+  // Forma yuborilganda chaqiriladigan funksiya
   const handleSubmit = (e) => {
-    // 🛑 MUHIM: Sahifa qayta yuklanishini oldini oladi!
+    // 🛑 MUHIM: e.preventDefault() brauzerning standart formani jo'natganda
+    // sahifani qayta yuklab yuborish odatini to'xtatib qoladi.
+    // React ilovalarda (SPA) sahifa yangilanishi mutlaqo kerak emas!
     e.preventDefault(); 
     console.log("Forma yuborildi, lekin sahifa yangilanmadi!");
   };
 
   return (
+    // onSubmit hodisasi foydalanuvchi "submit" tugmasini bossa yoki Enter tugmasini bossa ishlaydi
     <form onSubmit={handleSubmit}>
       <input type="text" placeholder="Ismingiz" />
       <button type="submit">Yuborish</button>
     </form>
   );
 }
-\`\`\`
+\`\`
 
 ### Nega kerak? (Why do we need this?)
 Agar siz \`e.preventDefault()\` dan foydalanmasangiz, React-dagi state'laringiz (holatingiz) formani yuborganda sahifa yangilangani sababli butunlay o'chib ketadi (reset bo'ladi). Dasturiy mantiqni o'zingiz boshqarishingiz va holatni saqlab qolishingiz uchun brauzerning avtomatik qiliqlarini o'chirib qo'yishingiz shart.
@@ -206,32 +224,39 @@ Ushbu qoidalarni tushunib olish sizga React-da har qanday murakkab interfeyslarn
   code: `import React, { useState } from "react";
 
 export default function EventDemo() {
+  // inputText - foydalanuvchi inputga kiritgan qiymatni saqlaydigan holat (state)
   const [inputText, setInputText] = useState("");
+  // tasks - hamma vazifalarni o'zida jamlovchi massiv state
   const [tasks, setTasks] = useState(["Uyqudan turish", "Kofe ichish"]);
 
-  // 1. Oddiy onClick hodisasi
+  // 1. Oddiy onClick hodisasi uchun mas'ul funksiya
   const handleClick = () => {
     alert("Tugma muvaffaqiyatli bosildi! 🚀");
   };
 
-  // 2. onChange hodisasi (Inputdagi ma'lumotni state ga yozamiz)
+  // 2. onChange hodisasi uchun (Inputdagi har bir harf o'zgarishini ushlab turadi)
   const handleChange = (e) => {
-    // e.target.value orqali inputdagi yozuv olinadi
+    // e.target.value orqali aynan inputdagi eng oxirgi matnni olib state'ga yozamiz
     setInputText(e.target.value);
   };
 
-  // 3. onSubmit hodisasi (Forma jo'natilganda ishlashi uchun)
+  // 3. onSubmit hodisasi (Forma jo'natilganda, ya'ni Submit qilinganda ishlaydi)
   const handleSubmit = (e) => {
-    e.preventDefault(); // Brauzer sahifani yangilab yuborishining oldini oladi
+    // Sahifa butunlay qayta yuklanib ketmasligi uchun standart xulqni to'xtatamiz
+    e.preventDefault(); 
     
+    // Agar input bo'sh bo'lmasa, uni vazifalar ro'yxatiga qo'shamiz
     if(inputText.trim() !== "") {
-      setTasks([...tasks, inputText]); // Yangi vazifani eski vazifalarga qo'shamiz
-      setInputText(""); // Inputni tozalaymiz
+      // Oldingi vazifalarni yoyib (...tasks) ularning yoniga yangisini qo'shamiz
+      setTasks([...tasks, inputText]); 
+      // Input qutisini yangi vazifa kiritish uchun bo'shatib qo'yamiz
+      setInputText(""); 
     }
   };
 
-  // 4. Parametrli hodisa (O'chirish tugmasi uchun)
+  // 4. Parametrli hodisa (aynan qaysi vazifa o'chirilishini ko'rsatish uchun index qabul qiladi)
   const handleDelete = (indexToDelete) => {
+    // filter yordamida o'chirilayotgan indeksdagi vazifani ro'yxatdan olib tashlaymiz
     const newTasks = tasks.filter((task, index) => index !== indexToDelete);
     setTasks(newTasks);
   };
@@ -239,14 +264,16 @@ export default function EventDemo() {
   return (
     <div style={{ padding: 20, fontFamily: 'sans-serif' }}>
       <h2>1. Tugma bosilishi (onClick)</h2>
+      {/* onClick xususiyatiga funksiyani nomi qavslarsiz beriladi */}
       <button onClick={handleClick} style={btnStyle}>Salom deyish</button>
       
       <hr style={{ margin: "30px 0" }}/>
 
       <h2>2. Forma va Input (onChange, onSubmit)</h2>
       
-      {/* Formaga onSubmit biriktiramiz */}
+      {/* Formaga onSubmit hodisasi biriktirilgan, uni ichidagi button(type="submit") yuboradi */}
       <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
+        {/* value qismiga state bog'langan, onChange ga esa handleChange */}
         <input 
           type="text" 
           value={inputText}
@@ -259,12 +286,12 @@ export default function EventDemo() {
         </button>
       </form>
 
-      {/* Vazifalar ro'yxatini chiqaramiz */}
+      {/* Vazifalar ro'yxatini map orqali ekranga chiqaramiz */}
       <ul style={{ background: "#f8f9fa", padding: 20, borderRadius: 8, listStyle: 'none' }}>
         {tasks.map((task, index) => (
           <li key={index} style={{ marginBottom: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <span>{index + 1}. {task}</span>
-            {/* Diqqat: handleDelete parametr qabul qilgani uchun uni anonim funksiya orqali yuboryapmiz! */}
+            {/* Diqqat: handleDelete parametr qabul qilgani uchun uni albatta anonim (arrow) funksiya orqali chaqiryapmiz! */}
             <button onClick={() => handleDelete(index)} style={{ padding: 5, background: "#e74c3c", color: "white", border: "none", cursor: "pointer" }}>
               O'chirish 🗑️
             </button>
@@ -275,6 +302,7 @@ export default function EventDemo() {
   );
 }
 
+// Qayta ishlatiladigan tugma uslubi (style)
 const btnStyle = {
   padding: "10px 15px",
   cursor: "pointer",

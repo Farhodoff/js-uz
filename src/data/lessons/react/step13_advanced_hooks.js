@@ -39,10 +39,14 @@ Tasavvur qiling, qahvaxonaga kelib murakkab va tayyorlanishi qiyin qahva so'radi
 \\\`useMemo\\\` xuddi shunday ishlaydi: u og'ir (qimmatbaho) hisob-kitob natijasini xotirada eslab qoladi. Funksiya faqat unga berilgan "qaramliklar" (dependency array) o'zgargandagina boshqatdan hisoblaydi.
 
 \\\`\\\`\\\`javascript
+// useMemo - qimmat hisob-kitob natijasini xotirada saqlaydi (keshlaydi).
+// Bu funksiya ichidagi mantiq faqat qaramliklar array'i ([]) o'zgargandagina qayta ishlaydi.
 const expensiveResult = useMemo(() => {
+  // Og'ir yoki ko'p vaqt oladigan amal (masalan filtrlash yoki katta sikl)
   console.log("Juda uzoq hisoblanmoqda...");
+  // Natija qaytariladi va \\\`expensiveResult\\\` ga o'zlashtiriladi
   return [1, 2, 3, 4, 5].filter(num => num > 2);
-}, []); // Qaramliklar yo'q, faqat bir marta hisoblanadi
+}, []); // Qaramliklar yo'q, faqat komponent birinchi marta chizilganda (mount) bir marta hisoblanadi
 \\\`\\\`\\\`
 
 > **Ehtiyot bo'ling!** Hamma narsani ham \\\`useMemo\\\` bilan o'rayvermang. Xotira tekin emas! Keshga saqlashning o'zi ham qanchadir xarajat (vaqt va xotira). Uni faqat o'ta murakkab sikllar, og'ir filtrlash yoki massivlar bilan ishlaganda qo'llang.
@@ -57,13 +61,15 @@ React komponenti har safar qayta chizilganda, uning ichidagi barcha funksiyalar 
 \\\`useCallback\\\` esa qimmatbaho funksiyaning **O'ZINI** keshlab qoladi (uni har renderda qayta yaratmaydi).
 
 \\\`\\\`\\\`javascript
-// Har renderda YANGI funksiya yaratiladi:
+// Har safar komponent re-render (qayta chizilgan) bo'lganda YANGI funksiya (yangi xotira manzili bilan) yaratiladi:
 const handleClick = () => console.log('Salom');
 
-// Faqat qaramliklar o'zgarganda yangi funksiya yaratiladi, aks holda ESKISI ishlatiladi:
+// useCallback funksiyaning O'ZINI xotirada eslab qoladi (keshlaydi).
+// Faqat qaramliklar o'zgarganda yangi funksiya yaratiladi, aks holda doim ESKISI (keshlangan) funksiya ishlatiladi:
 const memoizedClick = useCallback(() => {
+  // Bu yerda bajariladigan logika
   console.log('Salom');
-}, []);
+}, []); // Bo'sh array - qaramliklar yo'q, demak funksiya faqat bir marta yaratiladi va aslo o'zgarmaydi.
 \\\`\\\`\\\`
 
 > **Qachon kerak?** \\\`useCallback\\\` asosan funksiyani **bola komponentga** props qilib berayotganingizda va bola komponentni ortiqcha renderdan saqlamoqchi bo'lganingizda kerak. Oddiy holatlarda buning hojati yo'q.
@@ -77,8 +83,12 @@ Ota komponent o'zgarganda (masalan uning state-i yangilanganda), u barcha bola k
 \\\`React.memo\\\` - bu himoyachi (qorovul). U bola komponentni o'rab oladi va deydi: "Agar senga kelayotgan propslar aynan oldingi safargidek bo'lsa, sen qayta render bo'lmaysan, o'z joyingda qol!"
 
 \\\`\\\`\\\`javascript
+// React.memo - High Order Component (HOC). U komponentni keraksiz re-renderlardan (qayta chizilishlardan) saqlaydi.
 const ChildComponent = React.memo(function Child({ text }) {
+  // Agar ota komponent re-render bo'lsa ham, lekin \\\`text\\\` props o'zgarmasa,
+  // bu Child komponenti qayta chizilmaydi va bu console.log ishlamaydi.
   console.log("Men faqat text o'zgarganda render bo'laman!");
+  // Komponentning UI (interfeys) qismi
   return <div>{text}</div>;
 });
 \\\`\\\`\\\`
@@ -108,9 +118,12 @@ graph TD
   code: `import React, { useState, useRef, useMemo, useCallback } from 'react';
 
 // React.memo bilan o'ralgan bola komponent
+// React.memo - komponentga kelayotgan propslar (onClick, children) o'zgarmasa, uni keraksiz qayta chizilishdan (re-render) saqlaydi
 const Button = React.memo(({ onClick, children }) => {
+  // Bu xabar faqat onClick funksiyasi yoki children (matn) o'zgargandagina konsolga chiqadi
   console.log("Button render bo'ldi:", children);
   return (
+    // Tugma bosilganda onClick props orqali kelgan funksiyani ishga tushiradi
     <button onClick={onClick} className="px-4 py-2 bg-blue-500 text-white rounded mt-2">
       {children}
     </button>
@@ -118,20 +131,27 @@ const Button = React.memo(({ onClick, children }) => {
 });
 
 export default function AdvancedHooksDemo() {
+  // count - komponentdagi hisoblagich holati (state)
   const [count, setCount] = useState(0);
+  // text - input maydoniga yozilgan matnni saqlaydigan holat
   const [text, setText] = useState("");
+  // inputRef - ma'lum bir DOM elementiga bevosita murojaat qilish uchun ishlatiladigan "ko'rsatkich" (referans)
   const inputRef = useRef(null);
 
   // useMemo misoli: Katta tsikl (simulyatsiya)
+  // useMemo - qimmat va og'ir hisob-kitoblar natijasini keshlaydi (xotirada eslab qoladi).
   const expensiveCalculation = useMemo(() => {
+    // Bu kod faqat 'count' o'zgargandagina qaytadan ishlaydi. Inputga matn yozganda esa ishlamaydi!
     console.log("Og'ir hisob-kitob bajarilmoqda...");
     return count * 1000;
-  }, [count]);
+  }, [count]); // Qaramlik sifatida faqat 'count' belgilangan
 
   // useCallback misoli: Funksiyani eslab qolish
+  // useCallback - funksiyaning o'zini xotirada eslab qoladi.
   const handleIncrement = useCallback(() => {
+    // Holatni yangilashda joriy qiymat (c) ga 1 qo'shish
     setCount(c => c + 1);
-  }, []); // qaramliklar yo'q, funksiya faqat 1 marta yaratiladi
+  }, []); // qaramliklar yo'q bo'sh array [], ya'ni funksiya faqat dastlabki render vaqtida 1 marta yaratiladi va aslo o'zgarmaydi
 
   return (
     <div className="p-6 text-black bg-white rounded-lg shadow-md">
@@ -141,14 +161,18 @@ export default function AdvancedHooksDemo() {
       <div className="mb-6 p-4 border rounded bg-gray-50">
         <h3 className="font-semibold mb-2">1. useRef - Fokus berish</h3>
         <input 
+          // inputRef shu input elementiga bog'lanadi (endilikda inputRef.current orqali ushbu input DOM elementiga kira olamiz)
           ref={inputRef} 
           type="text" 
+          // text state'i inputning qiymati hisoblanadi (controlled component)
           value={text} 
+          // Foydalanuvchi matn yozganda text state'ini yangilaydi, bu esa komponentni re-render qiladi
           onChange={(e) => setText(e.target.value)} 
           className="border border-gray-300 p-2 mr-2 rounded"
           placeholder="Nimadir yozing..."
         />
         <button 
+          // Tugma bosilganda inputRef yordamida input elementini topib, unga avtomatik fokus qaratadi
           onClick={() => inputRef.current.focus()} 
           className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
         >
@@ -166,6 +190,8 @@ export default function AdvancedHooksDemo() {
         <p className="mb-4">Qimmat natija (count * 1000): <span className="font-bold">{expensiveCalculation}</span></p>
         
         {/* React.memo qo'llanilgan Button */}
+        {/* Biz useCallback orqali keshlab olingan 'handleIncrement' funksiyasini onClick propsiga beryapmiz. */}
+        {/* Agar oddiy funksiya bo'lganda, inputga xat yozish kabi har bir renderda bu Button ham re-render bo'lardi! */}
         <Button onClick={handleIncrement}>Oshirish (+1)</Button>
         <p className="text-sm text-gray-500 mt-2">
           Inputga matn yozganingizda tepada o'zgarish bo'ladi, ammo bu Button qayta chizilmaydi, chunki u React.memo va useCallback bilan himoyalangan! Konsolni tekshiring.

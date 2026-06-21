@@ -40,19 +40,23 @@ Har bir input uchun alohida state yaratish o'rniga (\`name\`, \`email\`, \`passw
 
 \`\`\`jsx
 const [formData, setFormData] = useState({
-  name: '',
-  email: '',
-  password: ''
+  name: '',      // Foydalanuvchi ismini saqlash uchun
+  email: '',     // Email manzilni saqlash uchun
+  password: ''   // Parolni saqlash uchun
 });
 \`\`\`
 
 Input o'zgarganda qanday yangilaymiz?
 \`\`\`jsx
+// Har qanday input qiymati o'zgarganda ishlaydigan universal funksiya.
 const handleChange = (e) => {
+  // O'zgarayotgan inputning name atributi va uning yangi qiymatini (value) olamiz.
   const { name, value } = e.target;
+  
+  // setFormData orqali formData obyektini yangilaymiz.
   setFormData({
-    ...formData,
-    [name]: value
+    ...formData,   // Eski qiymatlarni yo'qotmaslik uchun nusxalaymiz (spread operator)
+    [name]: value  // Qaysi input o'zgargan bo'lsa, o'shaning qiymatini yangilaymiz
   });
 };
 \`\`\`
@@ -64,31 +68,41 @@ Bu yerda \`name\` o'zgaruvchisi inputning \`name\` atributini bildiradi. Biz oby
 Validatsiya formani yuborishdan oldin ma'lumotlarni tekshirish jarayonidir. Biz xatoliklarni saqlash uchun alohida state yaratamiz:
 
 \`\`\`jsx
+// Validatsiya natijasidagi xatoliklarni saqlash uchun xatolar state'i.
+// Masalan: { name: "Ism kiritish majburiy!" } shaklida saqlanadi.
 const [errors, setErrors] = useState({});
 \`\`\`
 
 Tekshirish mantiqini yozamiz:
 \`\`\`jsx
+// Formadagi ma'lumotlarni tekshiruvchi validatsiya funksiyasi.
 const validate = () => {
+  // Yangi xatolarni vaqtincha saqlash uchun bo'sh obyekt yaratamiz.
   let newErrors = {};
 
+  // Ism bo'sh qoldirilmaganini tekshiramiz (.trim() probellarni olib tashlaydi).
   if (!formData.name.trim()) {
     newErrors.name = "Ism kiritish majburiy!";
   }
 
+  // Email tekshiruvi: avval bo'sh emasligini, so'ng Regex orqali to'g'ri formatdaligini tekshiramiz.
   if (!formData.email) {
     newErrors.email = "Email kiritish majburiy!";
   } else if (!/\\S+@\\S+\\.\\S+/.test(formData.email)) {
     newErrors.email = "Noto'g'ri email formati!";
   }
 
+  // Parol tekshiruvi: bo'sh emasligini va kamida 6 ta belgi ekanligini tekshiramiz.
   if (!formData.password) {
     newErrors.password = "Parol kiritish majburiy!";
   } else if (formData.password.length < 6) {
     newErrors.password = "Parol kamida 6 belgidan iborat bo'lishi kerak!";
   }
 
+  // Topilgan xatolarni state'ga saqlaymiz.
   setErrors(newErrors);
+  
+  // Agar newErrors obyekti bo'sh bo'lsa (hech qanday xato topilmasa), true qaytaradi.
   return Object.keys(newErrors).length === 0; // Agar xato bo'lmasa, true qaytaradi
 };
 \`\`\`
@@ -98,16 +112,19 @@ const validate = () => {
 Forma yuborilganda \`onSubmit\` hodisasi ishlaydi. Sahifa yangilanib ketmasligi uchun birinchi navbatda \`e.preventDefault()\` ni chaqiramiz.
 
 \`\`\`jsx
+// Submit tugmasi bosilganda ishlaydigan funksiya.
 const handleSubmit = (e) => {
-  e.preventDefault(); // Sahifa yangilanishini to'xtatadi
+  e.preventDefault(); // Sahifa avtomatik yangilanib ketishini to'xtatadi
   
+  // Validatsiyadan o'tkazamiz (true yoki false qaytadi)
   const isValid = validate();
   
+  // Agar hamma ma'lumot to'g'ri bo'lsa (xato bo'lmasa)
   if (isValid) {
     console.log("Forma muvaffaqiyatli yuborildi!", formData);
     alert("Ro'yxatdan muvaffaqiyatli o'tdingiz!");
     
-    // Formani tozalash
+    // Formani muvaffaqiyatli yuborgandan keyin inputlarni tozalab qo'yamiz
     setFormData({ name: '', email: '', password: '' });
   }
 };
@@ -123,9 +140,10 @@ Inputlar ostida xato borligini ko'rsatishimiz kerak:
   <input 
     type="text" 
     name="name" 
-    value={formData.name} 
-    onChange={handleChange} 
+    value={formData.name} // Input qiymatini state'ga bog'laymiz
+    onChange={handleChange} // O'zgarishni tutib oluvchi funksiyamiz
   />
+  {/* Agar errors.name mavjud bo'lsa, xato xabarini qizil rangda chiqaramiz */}
   {errors.name && <span className="error" style={{color: 'red'}}>{errors.name}</span>}
 </div>
 \`\`\`
@@ -148,27 +166,37 @@ Inputlar ostida xato borligini ko'rsatishimiz kerak:
   code: `import React, { useState } from 'react';
 
 export default function App() {
+  // Formadagi ma'lumotlarni jamlab saqlovchi yagona obyekt state.
   const [formData, setFormData] = useState({
     name: '',
     email: ''
   });
+  // Xatoliklarni saqlash uchun obyekt state.
   const [errors, setErrors] = useState({});
 
+  // Inputlardagi o'zgarishlarni ushlab oluvchi funksiya.
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Inputning name atributi va yozilgan qiymati
+    // Eski formData ni saqlagan holda, faqat o'zgargan input qiymatini yangilaymiz.
     setFormData({ ...formData, [name]: value });
   };
 
+  // Forma yuborilganda (Submit) ishlovchi funksiya.
   const handleSubmit = (e) => {
-    e.preventDefault();
-    let newErrors = {};
+    e.preventDefault(); // Sahifa yangilanishini to'xtatish
+    let newErrors = {}; // Vaqtincha xatoliklarni saqlash obyekti
+
+    // Oddiy validatsiya: agar ism yoki email bo'sh bo'lsa, xatolik qo'shamiz
     if(!formData.name) newErrors.name = 'Ism kiritilmadi';
     if(!formData.email) newErrors.email = 'Email kiritilmadi';
     
+    // Topilgan xatolarni state'ga o'tkazamiz
     setErrors(newErrors);
     
+    // Agar xatolar obyekti bo'sh bo'lsa (ya'ni hech qanday xato yo'q bo'lsa)
     if(Object.keys(newErrors).length === 0) {
       alert("Muvaffaqiyatli!");
+      // Formani qayta bo'sh holatga keltiramiz
       setFormData({ name: '', email: '' });
     }
   };
@@ -183,10 +211,11 @@ export default function App() {
             type="text" 
             name="name" 
             placeholder="Ismingiz" 
-            value={formData.name}
-            onChange={handleChange}
+            value={formData.name} // Input qiymatini state'ga bog'lash
+            onChange={handleChange} // O'zgarish bo'lganda ishlaydigan hodisa
             style={{ width: '100%', padding: '8px' }}
           />
+          {/* Agar errors obyektida name xatosi bo'lsa, qizil yozuvda ko'rsatiladi */}
           {errors.name && <div style={{color: 'red', fontSize: '12px', marginTop: '5px'}}>{errors.name}</div>}
         </div>
 
@@ -195,10 +224,11 @@ export default function App() {
             type="email" 
             name="email" 
             placeholder="Emailingiz" 
-            value={formData.email}
+            value={formData.email} // Input qiymatini state'ga bog'lash
             onChange={handleChange}
             style={{ width: '100%', padding: '8px' }}
           />
+          {/* Agar errors obyektida email xatosi bo'lsa, ko'rsatamiz */}
           {errors.email && <div style={{color: 'red', fontSize: '12px', marginTop: '5px'}}>{errors.email}</div>}
         </div>
 

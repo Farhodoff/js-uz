@@ -23,16 +23,19 @@ npm install react-router-dom
 Ilovamiz marshrutlarni tushunishi uchun uni **BrowserRouter** bilan o'rashimiz kerak. Odatda bu \\\`index.js\\\` yoki \\\`App.js\\\` da qilinadi.
 
 \\\`\\\`\\\`javascript
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './Home';
-import About from './About';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'; // React Router'dan kerakli komponentlarni chaqiramiz
+import Home from './Home'; // Bosh sahifa komponentini import qilamiz
+import About from './About'; // Biz haqimizda sahifasini import qilamiz
 
 function App() {
   return (
+    // BrowserRouter - ilovamizda marshrutlash (routing) ishlashi uchun barcha narsani o'rab turadi
     <BrowserRouter>
+      {/* Routes - barcha Route'larni o'z ichiga oladi va to'g'ri kelgan sahifani topadi */}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        {/* Route - aniq bitta yo'l (path) va u ochilganda qaysi komponent (element) ko'rsatilishini belgilaydi */}
+        <Route path="/" element={<Home />} /> {/* Asosiy sahifa (/) ochilganda <Home /> ko'rsatiladi */}
+        <Route path="/about" element={<About />} /> {/* /about yo'lida <About /> komponenti ko'rsatiladi */}
       </Routes>
     </BrowserRouter>
   );
@@ -59,11 +62,12 @@ graph TD;
 Qanday qilib foydalanuvchi "Home" dan "About" ga o'tadi? Oddiy HTML dagi \\\`<a href="...">\\\` tegi ishlatilsa, sahifa yangilanib ketadi (bu SPA qoidasini buzadi). Shuning uchun React Router bizga **Link** komponentini beradi.
 
 \\\`\\\`\\\`javascript
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Sahifalar o'rtasida o'tish uchun Link komponentini chaqiramiz
 
 function Navbar() {
   return (
     <nav>
+      {/* Link komponenti HTML dagi <a> tagining vazifasini bajaradi, lekin sahifani qayta yuklamaydi (refresh qilmaydi) */}
       <Link to="/">Bosh sahifa</Link>
       <Link to="/about">Biz haqimizda</Link>
     </nav>
@@ -74,13 +78,15 @@ function Navbar() {
 Agar faol bo'lgan (hozir qaysi sahifada ekanligingizni bildiruvchi) linkni ajratib ko'rsatmoqchi bo'lsangiz, **NavLink** dan foydalanasiz. U o'zida \\\`isActive\\\` xususiyatini saqlaydi.
 
 \\\`\\\`\\\`javascript
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'; // Faol sahifani ajratib ko'rsatish imkonini beruvchi NavLink komponenti
 
 function Navbar() {
   return (
     <nav>
+      {/* NavLink - bu oddiy Link kabi ishlaydi, ammo qo'shimcha ravishda 'isActive' (hozir shu sahifadami yoki yo'q) holatini bera oladi */}
       <NavLink 
         to="/" 
+        // Agar ushbu sahifa faol (active) bo'lsa, "active-link" klassini qo'shamiz, aks holda bo'sh qoldiramiz
         className={({ isActive }) => isActive ? "active-link" : ""}
       >
         Bosh sahifa
@@ -95,17 +101,22 @@ function Navbar() {
 Ko'pincha bizga o'zgaruvchan URL lar kerak bo'ladi, masalan foydalanuvchi profili: \`/user/1\`, \`/user/2\`. Buni Route da \`:id\` yordamida belgilaymiz:
 
 \\\`\\\`\\\`javascript
+// Dinamik marshrut (Dynamic Route). :id - bu o'zgaruvchan qism bo'lib,
+// har qanday qiymat (masalan 1, 2, "ali") qabul qilishi mumkin
 <Route path="/user/:id" element={<UserProfile />} />
 \\\`\\\`\\\`
 
 Komponent ichida esa bu qiymatni **useParams** hook'i yordamida olib ishlatamiz:
 
 \\\`\\\`\\\`javascript
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom'; // URL dagi parametrlarni o'qish uchun useParams hook'i kerak
 
 function UserProfile() {
-  const { id } = useParams(); // URL dan 'id' ni ajratib oladi
-  return <h1>Foydalanuvchi IDsi: {id}</h1>;
+  // useParams() URL manzilidagi o'zgaruvchilarni ob'ekt sifatida qaytaradi.
+  // Biz :id deb nomlaganimiz uchun URL dan 'id' ni ajratib olamiz
+  const { id } = useParams(); 
+  
+  return <h1>Foydalanuvchi IDsi: {id}</h1>; // Olingan id ni ekranga chiqaramiz
 }
 \\\`\\\`\\\`
 
@@ -114,16 +125,20 @@ function UserProfile() {
 Ba'zan foydalanuvchi linkka bosganda emas, balki qandaydir amal bajarilganda (masalan, forma yuborilganda yoki tizimga kirgandan so'ng) boshqa sahifaga o'tkazishimiz kerak bo'ladi. Bunda bizga **useNavigate** yordam beradi.
 
 \\\`\\\`\\\`javascript
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Dastur orqali boshqa sahifaga o'tish imkonini beruvchi hook
 
 function Login() {
+  // navigate funksiyasi orqali biz foydalanuvchini kod ichidan kerakli joyga yo'naltira olamiz
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // ... login logikasi ...
-    navigate('/dashboard'); // Foydalanuvchini dashboard ga yo'naltirish
+    // ... bu yerda login tizimi tekshiriladi (parol, login va h.k.) ...
+    
+    // Tizimga muvaffaqiyatli kirgandan so'ng, foydalanuvchini /dashboard sahifasiga o'tkazib yuboramiz
+    navigate('/dashboard'); 
   };
 
+  // Tugma bosilganda handleLogin funksiyasi ishga tushadi
   return <button onClick={handleLogin}>Tizimga kirish</button>;
 }
 \\\`\\\`\\\`
@@ -138,26 +153,35 @@ function Login() {
 - **QILMANG (DON'T):** \\\`BrowserRouter\\\` ni ichkaridagi kichik komponentlarda bir necha marta ishlatmang. U butun loyihada bitta bo'lishi kerak.
   `,
   code: `import React from 'react';
+// React Router'dan barcha kerakli qismlarni chaqiramiz
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
+// Bosh sahifa komponenti
 function Home() {
   return <h2>Bosh sahifa</h2>;
 }
 
+// Biz haqimizda sahifasi komponenti
 function About() {
   return <h2>Biz haqimizda</h2>;
 }
 
 export default function App() {
   return (
+    // Butun loyiha Router ichida ishlashi uchun BrowserRouter bilan o'raymiz
     <BrowserRouter>
+      {/* Navigatsiya menyusi */}
       <nav style={{ padding: '10px', backgroundColor: '#f0f0f0' }}>
+        {/* Link - bu sahifani yangilamasdan sahifalararo o'tishni ta'minlaydi */}
         <Link to="/" style={{ marginRight: '10px' }}>Home</Link>
         <Link to="/about">About</Link>
       </nav>
       <div style={{ padding: '20px' }}>
+        {/* Routes - turli yo'llarni (paths) boshqaruvchi qism */}
         <Routes>
+          {/* '/' yo'liga kirsak, Home komponenti ko'rinadi */}
           <Route path="/" element={<Home />} />
+          {/* '/about' yo'liga kirsak, About komponenti ko'rinadi */}
           <Route path="/about" element={<About />} />
         </Routes>
       </div>

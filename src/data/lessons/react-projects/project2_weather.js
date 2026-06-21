@@ -24,8 +24,11 @@ Tarmoq bilan ishlash (network request) vaqt talab etadi. Shuning uchun bizda oda
 3. **Success (Muvaffaqiyat):** Ma'lumot muvaffaqiyatli yetib keldi. (Ekranda daraja va namlikni ko'rsatish uchun)
 
 \\\`\\\`\\\`javascript
+// Olingan ob-havo ma'lumotini saqlash uchun state
 const [data, setData] = useState(null);
+// API dan ma'lumot yuklanayotganini bildirish uchun (true/false)
 const [isLoading, setIsLoading] = useState(false);
+// Xatolik yuz bersa, xato matnini saqlash uchun
 const [error, setError] = useState(null);
 \\\`\\\`\\\`
 
@@ -57,34 +60,41 @@ sequenceDiagram
 - **QILMASLIK KERAK:** \\\`useEffect\\\` ichida funksiyani to'g'ridan-to'g'ri \\\`async\\\` qilib belgilamang. Uning ichida alohida \\\`async\\\` funksiya yaratib, keyin uni chaqiring.
 
 \\\`\\\`\\\`javascript
-// YOMON (Don't)
+// YOMON USUL (Bunday qilmang)
+// useEffect ichiga to'g'ridan-to'g'ri async yozish xato,
+// chunki u tozalash (cleanup) funksiyasini qaytarishi kerak.
 useEffect(async () => {
-  const res = await fetch('...');
+  const res = await fetch('...'); // XATO
 }, []);
 
-// YAXSHI (Do)
+// YAXSHI USUL (To'g'ri yo'l)
+// useEffect ichida alohida async funksiya yaratiladi
+// va u shu yerning o'zida chaqiriladi.
 useEffect(() => {
   const fetchData = async () => {
-    const res = await fetch('...');
+    const res = await fetch('...'); // API dan ma'lumot kutish
   };
-  fetchData();
-}, []);
+  fetchData(); // Yaratilgan async funksiyani ishga tushirish
+}, []); // Bo'sh massiv - faqat komponent ekranga chiqqanda 1 marta ishlaydi
 \\\`\\\`\\\`
   `,
   code: `import React, { useState, useEffect } from 'react';
 
 export default function WeatherApp() {
+  // Qidirilayotgan shahar nomini saqlash uchun state
   const [city, setCity] = useState('Tashkent');
+  // API dan kelgan ob-havo ma'lumotini saqlash uchun state
   const [weather, setWeather] = useState(null);
   
-  // Bu yerda useEffect yordamida fetch yoziladi
+  // Bu yerda useEffect yordamida fetch yoziladi (API so'rovi)
   
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
       <h1>Ob-havo Ilovasi</h1>
+      {/* Foydalanuvchi shahar nomini kiritadigan maydon */}
       <input 
-        value={city} 
-        onChange={(e) => setCity(e.target.value)} 
+        value={city} // Input qiymati city state'iga bog'langan
+        onChange={(e) => setCity(e.target.value)} // Har bir o'zgarishda city yangilanadi
         placeholder="Shahar nomini kiriting"
       />
       <button>Qidirish</button>
@@ -105,18 +115,24 @@ export default function WeatherApp() {
       startingCode: `import React, { useState } from 'react';
 
 export default function WeatherApp() {
+  // Shahar nomi uchun state
   const [city, setCity] = useState('Tashkent');
+  // Ob-havo ma'lumotlarini saqlash uchun state
   const [weather, setWeather] = useState(null);
-  // YOUR CODE HERE
+  // YOUR CODE HERE (Sizning kodingiz shu yerda)
   
   return <div>Weather App</div>;
 }`,
       solution: `import React, { useState } from 'react';
 
 export default function WeatherApp() {
+  // Shahar nomi va ob-havo ma'lumoti holatlari
   const [city, setCity] = useState('Tashkent');
   const [weather, setWeather] = useState(null);
+  
+  // Yuklanish jarayonini bildirish uchun state (boshida false)
   const [isLoading, setIsLoading] = useState(false);
+  // Xatolikni saqlash uchun state (boshida null)
   const [error, setError] = useState(null);
   
   return <div>Weather App</div>;
@@ -130,9 +146,10 @@ export default function WeatherApp() {
       startingCode: `import React, { useState, useEffect } from 'react';
 
 export default function WeatherApp() {
+  // Ob-havoni saqlash uchun state
   const [weather, setWeather] = useState(null);
   
-  // YOUR CODE HERE
+  // YOUR CODE HERE (Sizning kodingiz shu yerda)
   
   return <div>App</div>;
 }`,
@@ -141,12 +158,14 @@ export default function WeatherApp() {
 export default function WeatherApp() {
   const [weather, setWeather] = useState(null);
   
+  // useEffect orqali API so'rovini boshqarish
   useEffect(() => {
+    // Asinxron ma'lumot olish funksiyasi
     const fetchWeather = async () => {
       // kelajakda fetch qilinadi
     };
-    fetchWeather();
-  }, []);
+    fetchWeather(); // Funksiyani ishga tushirish
+  }, []); // Bo'sh massiv: faqat komponent yaratilganda ishlaydi
   
   return <div>App</div>;
 }`,
@@ -159,11 +178,12 @@ export default function WeatherApp() {
       startingCode: `import React, { useState, useEffect } from 'react';
 
 export default function WeatherApp() {
+  // Yuklanish holatini bildiruvchi state
   const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
     const fetchWeather = async () => {
-      // YOUR CODE HERE
+      // YOUR CODE HERE (Sizning kodingiz shu yerda)
     };
     fetchWeather();
   }, []);
@@ -178,9 +198,10 @@ export default function WeatherApp() {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        setIsLoading(true);
+        setIsLoading(true); // Yuklanishni boshlash
         console.log("tugadi");
       } finally {
+        // Natija qanday bo'lishidan qat'iy nazar yuklanishni to'xtatish
         setIsLoading(false);
       }
     };
@@ -202,7 +223,7 @@ export default function WeatherApp() {
   
   useEffect(() => {
     const fetchWeather = async () => {
-      // YOUR CODE HERE
+      // YOUR CODE HERE (Sizning kodingiz shu yerda)
     };
     fetchWeather();
   }, []);
@@ -212,16 +233,20 @@ export default function WeatherApp() {
       solution: `import React, { useState, useEffect } from 'react';
 
 export default function WeatherApp() {
+  // Ob-havo ma'lumoti state-i
   const [weather, setWeather] = useState(null);
   
   useEffect(() => {
     const fetchWeather = async () => {
+      // API manziliga so'rov yuborish va kutish
       const response = await fetch('https://api.mockweather.com/v1/Tashkent');
+      // Kelgan javobni JSON formatiga o'tkazish
       const data = await response.json();
+      // Olingan ma'lumotni state-ga saqlash
       setWeather(data);
     };
     fetchWeather();
-  }, []);
+  }, []); // Komponent ekranga chiqqanda bir marta ishlaydi
   
   return <div>App</div>;
 }`,
@@ -235,11 +260,11 @@ export default function WeatherApp() {
 
 export default function WeatherApp() {
   const [weather, setWeather] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // Xatolik holati
   
   useEffect(() => {
     const fetchWeather = async () => {
-      // YOUR CODE HERE
+      // YOUR CODE HERE (Sizning kodingiz shu yerda)
     };
     fetchWeather();
   }, []);
@@ -255,13 +280,17 @@ export default function WeatherApp() {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
+        // API ga so'rov yuborish
         const response = await fetch('https://api.mockweather.com/v1/Tashkent');
+        // Agar javob muvaffaqiyatli bo'lmasa (masalan 404), o'zimiz xato otdiramiz
         if (!response.ok) {
           throw new Error('Ma\'lumotni yuklashda xatolik');
         }
+        // Javobni JSON qilib o'qish
         const data = await response.json();
         setWeather(data);
       } catch (err) {
+        // Try ichida yuz bergan har qanday xatolik ushlanadi va state-ga yoziladi
         setError(err.message);
       }
     };
@@ -279,7 +308,8 @@ export default function WeatherApp() {
       startingCode: `import React from 'react';
 
 export default function WeatherApp({ isLoading, error, weather }) {
-  // YOUR CODE HERE
+  // YOUR CODE HERE (Sizning kodingiz shu yerda)
+  // isLoading va error qiymatlariga qarab shartli qaytarish (return) qiling
   
   return (
     <div>
@@ -289,10 +319,14 @@ export default function WeatherApp({ isLoading, error, weather }) {
 }`,
       solution: `import React from 'react';
 
+// Props orqali holatlarni qabul qilib olamiz
 export default function WeatherApp({ isLoading, error, weather }) {
+  // Agar yuklanish jarayoni bo'lsa, foydalanuvchiga xabar beramiz
   if (isLoading) return <div><p>Yuklanmoqda...</p></div>;
+  // Agar xatolik bo'lsa, xatoni ko'rsatamiz
   if (error) return <div><p>Xato: {error}</p></div>;
   
+  // Agar ma'lumot muvaffaqiyatli kelgan bo'lsa, haroratni ko'rsatamiz
   return (
     <div>
       {weather ? <p>Havo harorati: {weather.temp}C</p> : <p>Ma\'lumot yo\'q</p>}
@@ -312,12 +346,13 @@ export default function WeatherApp({ city }) {
   
   useEffect(() => {
     const fetchWeather = async () => {
+      // Tashkent o'rniga city prop'ini ishlating
       const response = await fetch('https://api.mockweather.com/v1/Tashkent');
       const data = await response.json();
       setWeather(data);
     };
     fetchWeather();
-  }, []); // <-- YOUR CODE HERE
+  }, []); // <-- YOUR CODE HERE (city'ni bu yerga qo'shing)
   
   return <div>App</div>;
 }`,
@@ -328,11 +363,13 @@ export default function WeatherApp({ city }) {
   
   useEffect(() => {
     const fetchWeather = async () => {
+      // city o'zgaruvchisi yordamida dinamik URL yaratish (template literal)
       const response = await fetch(\`https://api.mockweather.com/v1/\${city}\`);
       const data = await response.json();
       setWeather(data);
     };
     fetchWeather();
+  // city o'zgarganida useEffect qayta ishga tushishi uchun massivga qo'shamiz
   }, [city]);
   
   return <div>App</div>;
@@ -351,10 +388,10 @@ export default function WeatherApp() {
   const [weather, setWeather] = useState(null);
 
   // useEffect shunday yozilsinki, faqat searchCity o'zgarganda ishlasin
-  // YOUR CODE HERE
+  // YOUR CODE HERE (Sizning kodingiz)
 
   const handleSearch = () => {
-    // YOUR CODE HERE
+    // YOUR CODE HERE (Sizning kodingiz)
   };
 
   return <div>App</div>;
@@ -362,7 +399,9 @@ export default function WeatherApp() {
       solution: `import React, { useState, useEffect } from 'react';
 
 export default function WeatherApp() {
+  // Inputdagi yozuvni saqlash uchun
   const [inputCity, setInputCity] = useState('');
+  // Qidirish uchun jo'natiladigan shahar nomi (tugma bosilganda yangilanadi)
   const [searchCity, setSearchCity] = useState('Tashkent');
   const [weather, setWeather] = useState(null);
 
@@ -373,10 +412,12 @@ export default function WeatherApp() {
       setWeather(data);
     };
     fetchWeather();
+  // Effect faqat searchCity o'zgargandagina ishlaydi
   }, [searchCity]);
 
+  // Tugma bosilganda ishlaydigan funksiya
   const handleSearch = () => {
-    setSearchCity(inputCity);
+    setSearchCity(inputCity); // Asosiy qidiruv stateni yangilaymiz
   };
 
   return <div>App</div>;
@@ -395,7 +436,7 @@ export default function WeatherApp() {
   
   useEffect(() => {
     const fetchWeather = async () => {
-      // YOUR CODE HERE
+      // YOUR CODE HERE (Eski ma'lumotlarni tozalang)
       
       try {
         const response = await fetch('https://api.mockweather.com/v1/Tashkent');
@@ -418,6 +459,7 @@ export default function WeatherApp() {
   
   useEffect(() => {
     const fetchWeather = async () => {
+      // Yangi so'rov boshlanishidan oldin eski natija va xatolarni tozalaymiz
       setWeather(null);
       setError(null);
       
@@ -447,7 +489,7 @@ export default function WeatherApp({ searchCity }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // YOUR CODE HERE
+  // YOUR CODE HERE (To'liq fetch mantiqini yozing)
 
   return <div>Weather is ready</div>;
 }`,
@@ -459,27 +501,31 @@ export default function WeatherApp({ searchCity }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Agar shahar nomi kiritilmagan bo'lsa, so'rov yubormaymiz
     if (!searchCity) return;
     
     const fetchWeather = async () => {
+      // Dastlabki holatlarni tozalash va yuklanishni boshlash
       setWeather(null);
       setError(null);
       setIsLoading(true);
       
       try {
+        // API so'rovi
         const res = await fetch(\`https://api.mockweather.com/v1/\${searchCity}\`);
-        if (!res.ok) throw new Error("Shahar topilmadi");
-        const data = await res.json();
-        setWeather(data);
+        if (!res.ok) throw new Error("Shahar topilmadi"); // 404 yoki xatolarni ushlash
+        
+        const data = await res.json(); // JSON ga o'tkazish
+        setWeather(data); // Natijani saqlash
       } catch (err) {
-        setError(err.message);
+        setError(err.message); // Xatoni saqlash
       } finally {
-        setIsLoading(false);
+        setIsLoading(false); // Har qanday holatda yuklanishni to'xtatish
       }
     };
     
-    fetchWeather();
-  }, [searchCity]);
+    fetchWeather(); // Funksiyani chaqirish
+  }, [searchCity]); // Qachonki searchCity o'zgarsa ishlaydi
 
   return <div>Weather is ready</div>;
 }`,
