@@ -72,6 +72,35 @@ setUser(user);
 // TO'G'RI (Nusxa olib, faqat bitta joyini o'zgartirish):
 setUser({ ...user, age: 21 });
 \`\`\`
+
+---
+
+## 6. ⚙️ State Yangilanish Sikli (Trigger -> Render -> Commit)
+
+React'da state yangilanganda (masalan, \`setState\` chaqirilganda), darhol ekranda o'zgarish paydo bo'lmaydi. React bu jarayonni qat'iy tartibdagi **3 ta asosiy bosqichga** bo'lib bajaradi. Buni restoran misolida tushunish juda qulay:
+
+1. **Trigger (Buyurtma berish):** Siz tugmani bosib, \`setState\` ni chaqirganingizda, React-ga *"Mening holatim o'zgardi, iltimos meni qayta chiz!"* degan signal (trigger) yuborasiz. Bu xuddi ofitsiantga yangi taom buyurtma qilishga o'xshaydi.
+2. **Render (Tayyorlash):** React signalni qabul qilgach, komponent funksiyasini *yangi state qiymatlari bilan* qaytadan ishga tushiradi (chaqiradi). Bu bosqichda React yangi HTML ko'rinishi qanday bo'lishi kerakligini o'zining xotirasida (Virtual DOM) chizib chiqadi. Bu jarayon – oshpazning retsept asosida oshxonada ovqat tayyorlashiga o'xshaydi. *Diqqat: bu bosqichda foydalanuvchi hali ekranda hech qanday o'zgarishni ko'rmaydi!*
+3. **Commit (Yetkazib berish):** React xotirada yasagan yangi natijani avvalgi holat bilan solishtiradi (Diffing algoritmi) va faqatgina farq qilgan joylarnigina haqiqiy brauzer ekraniga (Real DOM) qo'llaydi. Mana endi biz ekranda o'zgarishni ko'ramiz. Bu tayyor bo'lgan ovqatni ofitsiant stolingizga olib kelishidek gap.
+
+Quyidagi chizmada ushbu uzviy jarayon ko'rsatilgan:
+
+\`\`\`mermaid
+sequenceDiagram
+    actor User as Foydalanuvchi
+    participant Browser as Brauzer Ekrani (DOM)
+    participant React as React (Virtual DOM)
+    
+    User->>Browser: Tugmani bosadi (onClick)
+    Browser->>React: 1. TRIGGER (setCount chaqirildi)
+    Note over React: React o'zgarishni qayd etadi <br/>va re-render rejalashtiradi.
+    
+    React->>React: 2. RENDER (Qayta hisoblash)
+    Note over React: Komponent yangi state bilan <br/>qaytadan ishga tushadi.<br/>Yangi UI tuzilmasi yasaladi.
+    
+    React->>Browser: 3. COMMIT (Ekranga tushirish)
+    Note over Browser: Faqatgina o'zgargan qismlar <br/>haqiqiy DOM'da yangilanadi.<br/>Foydalanuvchi natijani ko'radi!
+\`\`\`
 `,
   code: `import React, { useState } from "react";
 

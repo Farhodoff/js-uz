@@ -61,6 +61,47 @@ Loyiha yaratilgach, siz quyidagi fayl va papkalarni ko'rasiz:
 ### Asosiy Fayllar:
 *   **\`src/index.js\`**: React dasturining yuragi. U \`App\` komponentini olib, brauzerdagi \`root\` div ga yopishtirib beradi.
 *   **\`src/App.js\`**: Asosiy (Ota) komponent. Biz o'z kodlarimizni asosan shu yerdan yozishni boshlaymiz.
+
+---
+
+## 🧠 Chuqurlashtirilgan Nazariya: SPA vs MPA va Virtual DOM
+
+React o'zining ishlash arxitekturasi va DOM bilan ishlash tezligi orqali veb-dasturlashda inqilob qildi. Keling, bu qanday ishlashini chuqurroq ko'rib chiqamiz.
+
+### SPA (Single Page Application) vs MPA (Multi Page Application)
+
+*   **MPA (Multi Page Application):** An'anaviy veb-saytlar arxitekturasi. Foydalanuvchi biror havolani bossa yoki shakl (form) to'ldirsa, brauzer serverga so'rov yuboradi va server butunlay yangi HTML sahifani qaytaradi. Bu jarayon tufayli sahifa har gal yangilanib, "miltillab" (refresh bo'lib) ochiladi.
+*   **SPA (Single Page Application):** React ilovalari aynan SPA yondashuviga asoslanadi. Dastur birinchi marta ochilganda, server bitta \`index.html\` faylini va barcha kerakli JavaScript kodlarini yuboradi. Keyingi navigatsiya va o'zgarishlar faqat JavaScript orqali amalga oshiriladi, ya'ni brauzer sahifani umuman yangilamaydi. Faqat sahifaning kerakli qismlarigina (komponentlar) yangilanadi.
+
+### Real DOM va Virtual DOM qanday ishlaydi?
+
+Barcha veb-saytlar HTML elementlarini ko'rsatish uchun **DOM (Document Object Model)** dan foydalanadi. DOM brauzer tomonidan HTML teglarini daraxt (tree) shaklida saqlaydigan xotira tuzilmasidir.
+
+*   **Real DOM muammosi:** Kichik bir o'zgarish (masalan, ro'yxatga yangi element qo'shish) yuz berganda ham, brauzer butun DOM daraxtini qayta hisoblab chiqadi va ekranni boshqatdan chizadi (Repaint & Reflow). Bu jarayon kompyuter resurslarini ko'p talab qiladi va ilovani sekinlashtiradi.
+*   **Virtual DOM yechimi:** React xotirada Real DOM ning yengil kopyasini (Virtual DOM) ushlab turadi. Har qanday ma'lumot o'zgarganda quyidagi jarayonlar yuz beradi:
+
+\`\`\`mermaid
+graph TD
+    A[State yoki Props o'zgardi] --> B[Yangi Virtual DOM yaratiladi]
+    B --> C{Diffing Algoritmi}
+    C -- Eski va Yangi Virtual DOMni solishtiradi --> D[Farqlar o'zgarishlar topiladi]
+    D --> E[Reconciliation]
+    E -- Faqat o'zgargan tugunlar yangilanadi --> F((Real DOM))
+    F --> G[Foydalanuvchi interfeysi tezkor yangilanadi]
+    
+    style A fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px
+    style B fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+    style C fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+    style D fill:#fce4ec,stroke:#e91e63,stroke-width:2px
+    style E fill:#ede7f6,stroke:#9c27b0,stroke-width:2px
+    style F fill:#ffebee,stroke:#f44336,stroke-width:2px
+    style G fill:#e0f7fa,stroke:#00bcd4,stroke-width:2px
+\`\`\`
+
+**Diffing** — bu joriy (eski) Virtual DOM daraxtini yangi yaratilgan Virtual DOM bilan solishtirish va ulardagi farqlarni topish algoritmi.
+**Reconciliation** — bu Diffing orqali topilgan farqlarni to'plab, haqiqiy brauzer DOMiga eng optimal (eng kam kuch sarflaydigan) yo'l bilan kiritish jarayoni.
+
+Aynan mana shu mexanizm sababli React millionlab ma'lumotlarni sekundning yuzdan bir bo'lagida ekranda muammosiz aks ettira oladi!
 `,
   code: `import React from "react";
 

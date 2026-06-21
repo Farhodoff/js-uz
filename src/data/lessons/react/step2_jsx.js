@@ -93,6 +93,44 @@ return (
   </ul>
 );
 \`\`\`
+
+## 🧠 Chuqurlashtirilgan Nazariya: Babel kompilyatsiyasi
+
+Yuqorida aytib o'tilganidek, JSX brauzer tushunadigan oddiy JavaScript emas. Shuning uchun u **Babel** deb nomlanuvchi maxsus vosita (kompilyator) orqali odatiy JavaScript kodiga o'giriladi.
+
+Babel JSX da yozilgan har bir tegingizni \`React.createElement()\` funksiyasining chaqiruviga aylantiradi. Aynan shuning uchun ham React 17-versiyasigacha har bir JSX faylida \`import React from 'react'\` yozish majburiy edi. Yangi versiyalarda bu jarayon avtomatlashtirilgan.
+
+### Kompilyatsiya jarayoni qanday kechadi?
+
+Masalan, siz quyidagicha JSX yozdingiz:
+\`\`\`jsx
+const element = <h1 className="title">Salom, React!</h1>;
+\`\`\`
+
+Babel uni quyidagi oddiy JavaScript obyektiga aylantiradi:
+\`\`\`javascript
+const element = React.createElement(
+  'h1', 
+  { className: 'title' }, 
+  'Salom, React!'
+);
+\`\`\`
+
+Quyidagi diagrammada JSX kodining brauzerga yetib borguncha qanday bosqichlardan o'tishi vizual tarzda tasvirlangan:
+
+\`\`\`mermaid
+flowchart TD
+    A["JSX Kod<br>&lt;div className='box'&gt;Hi&lt;/div&gt;"] -->|Kompilyatsiya qilinadi| B(Babel)
+    B -->|O'zgartiriladi| C["React.createElement('div', ...)"]
+    C -->|Brauzer o'qiydi| D(React / Virtual DOM)
+    D -->|Haqiqiy DOM ga aylantiriladi| E["Haqiqiy DOM<br>Browser ekranida"]
+    
+    style A fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style B fill:#f1e05a,stroke:#333,stroke-width:2px,color:#000
+    style C fill:#f0db4f,stroke:#333,stroke-width:2px,color:#000
+    style D fill:#61dafb,stroke:#333,stroke-width:2px,color:#000
+    style E fill:#4caf50,stroke:#333,stroke-width:2px,color:#fff
+\`\`\`
 `,
   code: `import React from "react";
 

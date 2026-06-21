@@ -91,6 +91,39 @@ const handleChange = (e) => {
 
 Agar inputingiz juda oddiy bo'lsa va uni har safar o'zgarganini kuzatish (validatsiya) kerak bo'lmasa, uni "boshqarilmaydigan" qilib qo'yishingiz mumkin. Buning uchun State ishlatilmaydi, uning o'rniga \`useRef\` orqali to'g'ridan-to'g'ri DOM dan o'qib olinadi. 
 *(Eslatma: Murakkab formalar uchun bu usul tavsiya etilmaydi).*
+
+---
+
+## 6. 🧠 Chuqurlashtirilgan Nazariya: Controlled vs Uncontrolled Komponentlar
+
+React'da formalar bilan ishlashda "Nazorat qilinadigan" (Controlled) va "Nazorat qilinmaydigan" (Uncontrolled) yondashuvlarning farqini to'liq tushunib olish juda muhim.
+
+### Boshqariladigan (Controlled) Komponentlar
+Bu yondashuvda formadagi elementlar (input, textarea, select) React'ning **State**'i orqali to'liq nazorat qilinadi. Brauzerning o'zida saqlanadigan standart "DOM state" o'rniga, React ma'lumotlarning **yagona haqiqat manbai (Single Source of Truth)** ga aylanadi.
+
+- **Afzalliklari:** Ma'lumotlarni real vaqtda validatsiya qilish (masalan, parol uzunligini tekshirish), tugmalarni bloklash/faollashtirish va input formatini aniqlash oson.
+- **Ishlash mexanizmi (Bir tomonlama ma'lumotlar oqimi):** Foydalanuvchi inputga nima yozsa, u birdaniga \`onChange\` orqali state'ga uzatiladi. State yangilangach, React komponentni qayta render qiladi (re-render) va input'ning \`value\` qiymatiga yangi state'ni yozib qo'yadi.
+
+### Boshqarilmaydigan (Uncontrolled) Komponentlar
+Bunda forma elementlari an'anaviy HTML kabi ishlaydi. Ular ma'lumotlarni o'zining ichki DOM xotirasida saqlaydi. React faqatgina ma'lumot kerak bo'lganda (masalan, \`onSubmit\` bo'lganda) \`useRef\` yordamida qiymatni "sug'urib" oladi.
+
+- **Qachon ishlatiladi?** Fayl yuklash (\`<input type="file" />\`) kabi maxsus holatlarda, chunki fayllarni State'ga saqlab, value qilib berib bo'lmaydi. Yoki oddiy, validatsiya talab qilmaydigan shakllar uchun (masalan, kichik bir qidiruv maydoni).
+
+### 🔄 Bir tomonlama ma'lumot bog'lash (One-way Data Binding)
+Quyidagi diagramma Boshqariladigan (Controlled) komponentlarda ma'lumotlar oqimi qanday aylanishini ko'rsatadi:
+
+\`\`\`mermaid
+flowchart TD
+    Input["🔤 Input Elementi"] -- "Foydalanuvchi yozadi<br/>(onChange hodisasi)" --> Event["⚡ e.target.value olinadi"]
+    Event -- "State yangilanadi" --> State["💾 React State (setState)"]
+    State -- "Komponent qayta chiziladi<br/>(Re-render)" --> Value["🔄 Yangi qiymat (value={state})"]
+    Value -- "Inputda aks etadi" --> Input
+    
+    style Input fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px
+    style State fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+\`\`\`
+
+Shu zanjir uzluksiz ishlashi evaziga React formadagi barcha ma'lumotlarga egalik qiladi va har qanday o'zgarishlarga darhol munosabat bildira oladi!
 `,
   code: `import React, { useState } from "react";
 

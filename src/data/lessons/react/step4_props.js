@@ -83,6 +83,28 @@ function OrovchiCard({ children }) {
   <button>Men ham children'man</button>
 </OrovchiCard>
 \`\`\`
+
+---
+
+## 6. 🌊 Bir yo'nalishli Ma'lumotlar Oqimi (Unidirectional Data Flow)
+
+React arxitekturasining eng asosiy tamoyillaridan biri — **Bir yo'nalishli ma'lumotlar oqimi** (Unidirectional Data Flow). Bu degani ma'lumot (props) har doim **Ota (Parent) komponentdan Bola (Child) komponentga**, ya'ni yuqoridan pastga (top-down) qarab harakatlanadi.
+
+Bola komponent hech qachon o'z otasiga to'g'ridan-to'g'ri props jo'nata olmaydi yoki kelgan propsni o'zgartira olmaydi. Ushbu yondashuv dasturda ma'lumot qayerdan kelayotganini va qayerda o'zgarayotganini kuzatishni osonlashtiradi, hamda koddagi xatolarni topishni tezlashtiradi.
+
+\`\`\`mermaid
+graph TD
+    A["Ota Komponent (Parent)"] -->|"Props"| B["Bola Komponent 1 (Child)"]
+    A -->|"Props"| C["Bola Komponent 2 (Child)"]
+    B -->|"Props"| D["Nabira Komponent (Grandchild)"]
+    
+    style A fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style B fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+    style C fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+    style D fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+\`\`\`
+
+Ma'lumotlar faqat pastga qarab oqadi. Agar pastki (Bola) komponent yuqoridagi (Ota) komponentning ma'lumotiga ta'sir qilishi kerak bo'lsa, Ota o'zining ichidagi maxsus funksiyani props orqali Bolaga uzatadi, va Bola shu funksiyani chaqiradi (bu haqida keyingi darslarda batafsil o'rganamiz).
 `,
   code: `import React from "react";
 

@@ -70,6 +70,41 @@ useEffect(() => {
 ## 5. 🎯 \`useRef\` Hook (Qisqacha)
 
 \`useRef\` bu o'zgarganda **komponentni qayta render qilmaydigan (chizmaydigan)** o'zgaruvchi yaratish uchun kerak. Yana bir eng katta foydasi — haqiqiy DOM dagi biron elementni (masalan Inputni) to'g'ridan-to'g'ri tutib olish va unga fokus qaratishdir. (\`document.getElementById\` ning React'dagi varianti).
+
+---
+
+## 6. 🧠 Chuqurlashtirilgan Nazariya: \`useEffect\` Hayot Sikli (Lifecycle)
+
+React komponentining hayot sikli 3 bosqichdan iborat: **Mount** (ekranga chiqish), **Update** (yangilanish) va **Unmount** (ekrandan o'chish). \`useEffect\` va uning tozalash (cleanup) funksiyasi aynan shu bosqichlarga bog'langan holda ishlaydi.
+
+1. **Mount (Yaralish):** Komponent birinchi marta chizilganda, avval UI render bo'ladi, keyin \`useEffect\` ichidagi asosiy kod ishga tushadi.
+2. **Update (Yangilanish):** Dependency array (qaramlik massivi) ichidagi biror qiymat (masalan, \`state\` yoki \`prop\`) o'zgarganda, React avvalgi effectdan qolgan tozalash funksiyasini (cleanup) ishga tushiradi, so'ng yangi effectni bajaradi.
+3. **Unmount (O'chish):** Komponent butunlay ekrandan o'chib ketayotganda, oxirgi marta faqat tozalash funksiyasi (cleanup) ishlaydi.
+
+Quyidagi diagrammada bu jarayon qanday ketma-ketlikda ishlashi vizual tarzda ko'rsatilgan:
+
+\`\`\`mermaid
+sequenceDiagram
+    participant C as Komponent
+    participant R as React (DOM)
+    participant E as useEffect
+    participant Cl as Cleanup (Tozalash)
+
+    Note over C, Cl: 🟢 1. MOUNT (Birinchi marta chizilish)
+    C->>R: 1️⃣ JSX ni render qilish
+    R->>E: 2️⃣ Effect ni ishga tushirish (Setup)
+
+    Note over C, Cl: 🟡 2. UPDATE (State yoki Prop o'zgarishi)
+    C->>R: 3️⃣ Yangi JSX ni render qilish
+    R->>Cl: 4️⃣ Avvalgi Effect ni tozalash (Cleanup run)
+    R->>E: 5️⃣ Yangi Effect ni ishga tushirish (Setup run)
+
+    Note over C, Cl: 🔴 3. UNMOUNT (Komponent o'chishi)
+    C->>R: 6️⃣ Komponentni DOM dan olib tashlash
+    R->>Cl: 7️⃣ Oxirgi Cleanup ni ishga tushirish
+\`\`\`
+
+💡 **Esda tuting:** Cleanup funksiya faqat **Unmount** vaqtida emas, balki har bir **Update** (yangilanish) vaqtida ham *yangi effect ishga tushishidan oldin* avvalgisini tozalash uchun ishlaydi!
 `,
   code: `import React, { useState, useEffect, useRef } from "react";
 

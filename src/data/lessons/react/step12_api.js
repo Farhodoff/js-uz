@@ -96,6 +96,37 @@ useEffect(() => {
 
 Ushbu 12-dars bilan React.js dagi barcha poydevor bilimlarni (State, Props, Hooks, API, Routing) mukammal o'zlashtirdingiz. 
 Siz endi o'z loyihalaringizni bemalol noldan qurishingiz mumkin. Bundan keyingi qadamlar – "Arxitektura", "State Management (Zustand/Redux)" va "Next.js" kabi advanced (kengaytirilgan) mavzular bo'ladi!
+
+---
+
+## 🧠 Chuqurlashtirilgan Nazariya: Ma'lumot Olib Kelish Hayotiy Sikli (Fetching Data Lifecycle)
+
+React komponentida ma'lumotlarni serverdan olib kelish aniq bir ketma-ketlikda (hayotiy sikl) amalga oshadi. Quyidagi jarayonni yaxshi tushunish React dasturchisi uchun o'ta muhimdir.
+
+1. **Component Mount (Komponent ekranga chizilishi)**: Komponent birinchi marta render qilinadi. Bu vaqtda odatda \`isLoading\` state \`true\` bo'ladi.
+2. **useEffect ishga tushadi**: Komponent ekranga chizilgandan so'ng, React \`useEffect\` hook'ini ishga tushiradi.
+3. **API so'rovi (fetch)**: \`useEffect\` ichidagi \`fetch\` funksiyasi serverga ma'lumot so'rab HTTP so'rovini yuboradi.
+4. **Promise Resolves (Javob kelishi)**: Serverdan ma'lumot yetib kelgach, kutib turgan Promise bajariladi.
+5. **State yangilanishi (setState)**: Kelgan ma'lumot \`setState\` yordamida komponent xotirasiga yoziladi. Shuningdek, \`isLoading\` holati \`false\` qilinadi.
+6. **Re-render (Qayta chizilish)**: State o'zgargani uchun, React komponentni qayta render qiladi va bu safar ekranda yuklanish jarayoni emas, balki serverdan kelgan haqiqiy ma'lumotlar ko'rsatiladi.
+
+\`\`\`mermaid
+sequenceDiagram
+    participant B as Brauzer (UI)
+    participant C as React Komponenti
+    participant E as useEffect
+    participant S as API Server
+
+    B->>C: 1. Component Mount (Ekranga chizish)
+    Note over C: isLoading: true
+    C->>E: 2. useEffect ishga tushadi
+    E->>S: 3. fetch('api/data') GET So'rovi yuboriladi
+    Note over B,C: Ekranda "Yuklanmoqda..." ko'rinadi
+    S-->>E: 4. Promise Resolves (JSON data keladi)
+    E->>C: 5. setState(data) va setIsLoading(false)
+    C->>B: 6. Re-render (Qayta chizish)
+    Note over B: Ekranda haqiqiy ma'lumotlar paydo bo'ladi
+\`\`\`
 `,
   code: `import React, { useState, useEffect } from "react";
 

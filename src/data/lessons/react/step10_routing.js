@@ -104,6 +104,41 @@ function LoginForm() {
   return <button onClick={handleLogin}>Kirish</button>;
 }
 \`\`\`
+
+## 🧠 Chuqurlashtirilgan Nazariya: Client-Side Routing vs Server-Side Routing
+
+Veb-dasturlashda sahifalararo o'tishning asosan ikki xil yondashuvi mavjud: an'anaviy Server-Side Routing (Server tomonida marshrutlash) va Client-Side Routing (Mijoz tomonida marshrutlash). React asosan SPA (Single Page Application - Bir Sahifali Ilova) bo'lgani sababli, unda **Client-Side Routing** ishlatiladi.
+
+**1. Server-Side Routing (An'anaviy usul):**
+Foydalanuvchi biron linkni bosganda, brauzer yangi sahifa so'rovini internet orqali bevosita serverga yuboradi. Server so'ralgan manzilga mos keluvchi butunlay yangi HTML hujjatni noldan tuzib qaytaradi. Brauzer esa ekrandagi eski ma'lumotlarni tozalab, yangi sahifani chizadi (refresh - oq ekran miltillashi sodir bo'ladi).
+
+**2. Client-Side Routing (React usuli):**
+Foydalanuvchi ilova ichida linkni bosganda, kutubxona (masalan, \`react-router-dom\`) bu holatni tutib qoladi (intercept qiladi). Brauzerning serverga so'rov yuborishiga yo'l qo'ymaydi. Manzillar qatoridagi URL o'zgaradi, lekin faqat kerakli komponentlar o'zgaradi (masalan, \`Home\` ketib o'rniga \`About\` keladi).
+- *Afzalligi:* Sahifani qayta yuklash bo'lmaydi. O'tishlar bir zumda yuz beradi, natijada dastur xuddi tezkor mobil ilova kabi silliq va qulay ishlaydi.
+
+Quyidagi diagrammada bu ikki yondashuv farqi batafsil tasvirlangan:
+
+\`\`\`mermaid
+sequenceDiagram
+    participant B as Brauzer (Mijoz)
+    participant R as React Router (Mijozda)
+    participant S as Server
+    
+    rect rgb(255, 230, 230)
+    note over B, S: 🔴 SERVER-SIDE ROUTING (An'anaviy veb-sayt)
+    B->>S: 1. Foydalanuvchi /about linkini bosdi
+    S-->>B: 2. Yangi about.html sahifasi to'liq yuborildi
+    note over B: 3. ♻️ Brauzer miltillab, butun sahifani qaytadan chizadi!
+    end
+    
+    rect rgb(230, 255, 230)
+    note over B, S: 🟢 CLIENT-SIDE ROUTING (React SPA)
+    B->>R: 1. Foydalanuvchi <Link to="/about"> bosdi
+    note right of R: 2. Router voqeani tutib qoladi (Intercept)
+    R->>B: 3. URL o'zgarib, faqat <About /> komponenti chiziladi
+    note over B: 4. ⚡ Miltillash yo'q! Sahifa o'sha zahoti o'zgaradi!
+    end
+\`\`\`
 `,
   code: `import React from "react";
 // Bu yerda interaktiv oyna uchun Router imitatsiyasini o'rnatamiz

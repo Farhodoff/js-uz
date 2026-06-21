@@ -71,6 +71,42 @@ function MainContent() {
 
 Context kichik va o'rta loyihalar (Mavzular, Tillarni o'zgartirish, Auth statusi) uchun ajoyib. Lekin tez-tez o'zgarib turadigan katta ma'lumotlar uchun mos emas, chunki Context dagi bitta ma'lumot o'zgarsa, shu Context ga ulangan barcha komponentlar bir vaqtda qayta chiziladi (Keraksiz Re-renderlar).
 Bunday paytda Redux yoki Zustand kabi tashqi (External) State Manager'lar kerak bo'ladi.
+
+## 🧠 Chuqurlashtirilgan Nazariya: Prop Drilling va Context API
+
+Keling, **Prop Drilling** (ma'lumotlarni qavatma-qavat uzatish) va **Context API** (ma'lumotni global tarqatish) o'rtasidagi farqni vizual tarzda ko'rib chiqamiz.
+
+**Prop Drilling** da eng yuqoridagi komponentdan (\`App\`) eng pastdagi komponentga (\`DeepChild\`) ma'lumot uzatish uchun o'rtadagi barcha komponentlar (\`Parent\`, \`Child\`) bu ma'lumotni qabul qilib, o'zining bolasiga uzatib borishi kerak. Bu esa ularga umuman aloqador bo'lmagan "ortiqcha yuk" ni tashiydi.
+
+**Context API** da esa \`Provider\` orqali ma'lumot "havoga" (kontekstga) tarqatiladi. Pastdagi istalgan komponent (masalan, \`DeepChild\`) o'rtadagi qavatlarni bezovta qilmasdan, to'g'ridan-to'g'ri \`useContext\` orqali o'ziga kerakli ma'lumotni oladi.
+
+Quyidagi chizmada bu jarayon qanday ishlashi aniq ko'rsatilgan:
+
+\`\`\`mermaid
+graph TD
+    subgraph Prop Drilling
+        A1[App <br/> state: user] -->|user| B1(Parent)
+        B1 -->|user| C1(Child)
+        C1 -->|user| D1(DeepChild)
+        style B1 stroke-dasharray: 5 5, fill:#ffcccc,stroke:#ff0000
+        style C1 stroke-dasharray: 5 5, fill:#ffcccc,stroke:#ff0000
+        style D1 fill:#ccffcc,stroke:#00aa00
+    end
+
+    subgraph Context API
+        A2[App + Provider <br/> value: user] -.-> B2(Parent)
+        B2 -.-> C2(Child)
+        C2 -.-> D2(DeepChild)
+        A2 ==>|useContext| D2
+        style B2 fill:#f9f9f9,stroke:#999
+        style C2 fill:#f9f9f9,stroke:#999
+        style D2 fill:#ccffcc,stroke:#00aa00
+    end
+\`\`\`
+
+**Asosiy farqlar:**
+- **Prop Drilling** o'rtadagi komponentlarni o'ziga kerak bo'lmagan ma'lumot bilan ifloslantiradi va komponentlarni qayta ishlashni (reusability) qiyinlashtiradi.
+- **Context API** kodning tozaligini saqlaydi. \`Parent\` va \`Child\` komponentlar faqat o'ziga kerakli ishlarni qiladi, ortiqcha ma'lumot tashimaydi. Lekin yodda tuting: Context'dagi qiymat o'zgarsa, undan foydalanayotgan barcha komponentlar qayta chiziladi (re-render). Shuning uchun tez o'zgaradigan holatlar uchun ehtiyotkorlik bilan foydalanish kerak.
 `,
   code: `import React, { useState, createContext, useContext } from "react";
 

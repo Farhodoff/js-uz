@@ -69,6 +69,33 @@ function App() {
 
 Nega komponentlar kerak degan savolga eng yaxshi javob — **Qayta ishlatuvchanlik (Reusability)**. 
 Bitta tugma (Button) yoki Karta (Card) komponentini yaratib, uni loyiha bo'ylab 100 marta, kodni qayta-qayta yozmasdan ishlatish mumkin! Buni amaliyot (code) qismida ko'rishingiz mumkin.
+
+---
+
+## 5. 🧩 UI Modulligi Falsafasi (UI Modularity Philosophy)
+
+React ning eng katta kuchlaridan biri bu **UI modulligi** falsafasidir. Modullik — bu katta va murakkab tizimni kichik, mustaqil va oson boshqariladigan qismlarga (modullarga) bo'lish demakdir.
+
+Oddiy veb-sahifani tasavvur qiling. Unda yuqori qism (Header), asosiy qism (Main) va pastki qism (Footer) mavjud. React'da biz butun sahifani bitta katta faylda yozmaymiz. Buning o'rniga, har bir qismni alohida komponent sifatida yaratamiz va ularni birlashtiramiz.
+
+**Nima uchun modullik muhim?**
+1. **Oson boshqaruv (Maintainability):** Agar sahifadagi tugma xato ishlayotgan bo'lsa, minglab qator kodlar orasidan qidirmaysiz. To'g'ridan-to'g'ri \`Button\` komponentiga kirib xatoni tuzatasiz.
+2. **Jamoaviy ishlash (Collaboration):** Bir dasturchi \`Header\` ustida ishlasa, boshqasi \`Footer\` ustida ishlashi mumkin. Ular bir-biriga xalaqit bermaydi.
+3. **Mustaqillik (Isolation):** Bir komponentning o'zgarishi boshqa komponentlarga ta'sir qilmaydi.
+
+Quyidagi chizmada tipik React ilovasining komponentlar daraxti (Component Tree) tasvirlangan. \`App\` barchasini o'z ichiga oluvchi ota komponent hisoblanadi:
+
+\`\`\`mermaid
+graph TD
+    App["App (Asosiy Komponent)"] --> Header["Header (Yuqori qism)"]
+    App --> Main["Main (Asosiy kontent)"]
+    App --> Footer["Footer (Pastki qism)"]
+    
+    style App fill:#61dafb,stroke:#333,stroke-width:2px,color:#000
+    style Header fill:#f9f9f9,stroke:#333,stroke-width:1px,color:#000
+    style Main fill:#f9f9f9,stroke:#333,stroke-width:1px,color:#000
+    style Footer fill:#f9f9f9,stroke:#333,stroke-width:1px,color:#000
+\`\`\`
 `,
   code: `import React from "react";
 

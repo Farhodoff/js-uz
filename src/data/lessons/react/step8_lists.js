@@ -80,6 +80,46 @@ const handleDelete = (id) => {
   setList(updatedList); // State ni yangilaymiz
 };
 \`\`\`
+
+## 🧠 Chuqurlashtirilgan Nazariya: Nima uchun "key" bunchalik muhim?
+
+React ekrandagi o'zgarishlarni tezroq va samaraliroq chizish uchun **Diffing Algoritmi**dan (yoki *Reconciliation*) foydalanadi. React eski va yangi Virtual DOM-ni solishtirib, faqatgina o'zgargan joylarni haqiqiy DOM-ga o'tkazadi. 
+
+Agar siz ro'yxatga yangi element qo'shsangiz yoki o'rnini o'zgartirsangiz, React qaysi element qaerdaligini tushunishga qiynaladi. Aynan shu joyda \`key\` yordamga keladi!
+
+### 🔑 "key" ishlatilmaganda nima bo'ladi?
+Faraz qilaylik, biz ro'yxatning **boshiga** yangi element qo'shdik. React birinchi element o'zgarganini ko'radi, keyin ikkinchisini, keyin uchinchisini... U aslida ro'yxatga bitta element qo'shilganini bilmaydi va barcha elementlarni **boshidan oxirigacha yangitdan chizib chiqadi (re-render)**. Bu juda samarasiz!
+
+### 🔑 "key" ishlatilganda nima bo'ladi?
+\`key\` (noyob identifikator) orqali React tushunadiki: *"Aha, eski ro'yxatdagi id=1, id=2 bo'lgan elementlar joyida qolibdi, faqat id=3 degan yangi element oldinga qo'shilibdi!"*. Natijada faqat bittagina yangi element DOM-ga qo'shiladi. Qolganlari faqat o'rnini siljitadi xolos.
+
+Quyidagi diagrammada ushbu jarayon qanday ishlashi ko'rsatilgan:
+
+\`\`\`mermaid
+flowchart TD
+    subgraph "Noyob 'key' ISHLATILMAGANDA (Index bilan)"
+    A1[Eski ro'yxat:<br/>1. Olma<br/>2. Banan] --> B1[Yangi ro'yxatga Gilos qo'shildi:<br/>1. Gilos<br/>2. Olma<br/>3. Banan]
+    B1 --> C1{React tekshiradi:<br/>1-element o'zgardimi?}
+    C1 -- "Ha (Olma -> Gilos)" --> D1[1-elementni yangilaydi]
+    D1 --> E1{2-element o'zgardimi?}
+    E1 -- "Ha (Banan -> Olma)" --> F1[2-elementni yangilaydi]
+    F1 --> G1[Oxirida 3-elementni noldan yaratadi]
+    G1 --> H1((Natija: <br/>Barcha elementlar <br/>qayta chizildi! ❌))
+    end
+
+    subgraph "Noyob 'key' ISHLATILGANDA (ID bilan)"
+    A2[Eski ro'yxat:<br/>id:1 - Olma<br/>id:2 - Banan] --> B2[Yangi ro'yxatga Gilos qo'shildi:<br/>id:3 - Gilos<br/>id:1 - Olma<br/>id:2 - Banan]
+    B2 --> C2{React 'key' larni tekshiradi}
+    C2 -- "id:1 va id:2 mavjud" --> D2[Olma va Bananni joyini o'zgartiradi xolos]
+    C2 -- "id:3 bu yangi" --> E2[Faqat Gilosni noldan chizadi]
+    D2 & E2 --> F2((Natija: <br/>Juda tez va samarali <br/>yangilanish! ✅))
+    end
+    
+    style H1 fill:#f9d0c4,stroke:#e74c3c,stroke-width:2px,color:#000
+    style F2 fill:#d4efdf,stroke:#27ae60,stroke-width:2px,color:#000
+\`\`\`
+
+> **Xulosa:** Hech qachon ro'yxat indeksini (index) \`key\` sifatida ulamang, agar ro'yxatingiz tartibi o'zgarishi, filtrlanishi yoki unga yangi element qo'shilishi mumkin bo'lsa. Doim bazadan kelayotgan noyob id'ni ishlating!
 `,
   code: `import React, { useState } from "react";
 

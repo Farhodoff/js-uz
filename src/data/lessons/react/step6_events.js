@@ -55,6 +55,43 @@ Buning uchun uni albatta strelkali (arrow) anonim funksiya ichiga o'rash kerak:
 *   **\`onChange\`**: Input (matn maydoni) da nimadir o'zgarganda. Yozilgan matnni \`e.target.value\` orqali tutib olinadi va odatda State ga yozib boriladi.
 *   **\`onSubmit\`**: Forma (Form) yuborilganda ishlashi kerak. Odatda sahifa qayta yuklanmasligi uchun formaning birinchi qatorida \`e.preventDefault()\` deb yoziladi.
 *   **\`onKeyDown\` / \`onKeyUp\`**: Klaviatura tugmasi bosilganda (masalan, Enter tugmasini tekshirish uchun).
+
+---
+
+## 5. 🧠 Chuqurlashtirilgan Nazariya: Synthetic Events va Event Delegation (Hodisalar Delegatsiyasi)
+
+React oddiy JavaScript (Native Events) kabi har bir DOM elementiga alohida hodisa (event listener) bog'lamaydi. Buning o'rniga u **Event Delegation** (Hodisalar Delegatsiyasi) naqshidan foydalanadi.
+
+### Native Events (Tabiiy Hodisalar) va Synthetic Events (Sintetik Hodisalar) farqi:
+1. **Native Event:** Agar 1000 ta tugma bo'lsa, oddiy JS ularning har biriga alohida-alohida \`addEventListener\` biriktiradi. Bu xotira (RAM) uchun juda og'ir.
+2. **Synthetic Event:** React faqat bitta markaziy \`EventListener\` ni eng yuqoridagi **Root** tuguniga (React 17 gacha \`document\` ga, 17 dan boshlab \`root\` div ga) o'rnatadi. Qaysi tugma bosilmasin, hodisa pufaksimon tepaga ko'tariladi (Event Bubbling) va Root dagi markaziy "quloq soluvchi" qaysi tugma bosilganini bilib, tegishli React funksiyangizni chaqiradi. 
+
+Bu usul dastur ishlash tezligini keskin oshiradi va xotirani tejaydi.
+
+\`\`\`mermaid
+graph TD
+    subgraph Ekranda
+      Root["div#root (Markaziy Event Listener shu yerda!)"]
+      App["<App />"]
+      List["<ul />"]
+      Btn1["<button /> 1"]
+      Btn2["<button /> 2"]
+      Btn3["<button /> n..."]
+    end
+    
+    Root --> App
+    App --> List
+    List --> Btn1
+    List --> Btn2
+    List --> Btn3
+    
+    Btn1 -.-|Event Bubbling| Root
+    Btn2 -.-|Event Bubbling| Root
+    Btn3 -.-|Event Bubbling| Root
+    
+    style Root fill:#f9f,stroke:#333,stroke-width:2px
+    style Btn1 fill:#bbf,stroke:#333,stroke-width:1px
+\`\`\`
 `,
   code: `import React, { useState } from "react";
 
