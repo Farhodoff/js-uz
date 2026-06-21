@@ -14,11 +14,11 @@ Ushbu darsda biz Klass komponentlar qanday ishlashini, ulardagi holat (state) va
 
 ### Klass Komponent nima?
 
-Klass komponent - bu ES6 klassi bo'lib, u React'ning \\\`Component\\\` klassidan meros oladi va o'zida \\\`render()\\\` metodini saqlaydi.
+Klass komponent - bu ES6 klassi bo'lib, u React'ning \`Component\` klassidan meros oladi va o'zida \`render()\` metodini saqlaydi.
 
 **Analogi:** Agar Funksional Komponentlar bitta savolga javob beruvchi oddiy ishchilar bo'lsa, Klass Komponentlar - o'z ofisiga (state), kundalik rejasiga (lifecycle) va shaxsiy jurnaliga ega bo'lgan bo'lim boshliqlari kabi.
 
-\\\`\\\`\\\`jsx
+\`\`\`jsx
 import React, { Component } from 'react';
 
 class Salomi extends Component {
@@ -26,13 +26,13 @@ class Salomi extends Component {
     return <h1>Salom, {this.props.ism}!</h1>;
   }
 }
-\\\`\\\`\\\`
+\`\`\`
 
 ### Konstruktor (Constructor)
 
-Klass komponentlarda boshlang'ich sozlamalarni, ayniqsa *state* (holat) ni o'rnatish uchun \\\`constructor\\\` ishlatiladi.
+Klass komponentlarda boshlang'ich sozlamalarni, ayniqsa *state* (holat) ni o'rnatish uchun \`constructor\` ishlatiladi.
 
-\\\`\\\`\\\`jsx
+\`\`\`jsx
 class MeningKomponentim extends Component {
   constructor(props) {
     super(props); // Ota klassning konstruktorini chaqirish shart!
@@ -47,17 +47,17 @@ class MeningKomponentim extends Component {
     return <div>Sanoq: {this.state.sanoq}</div>;
   }
 }
-\\\`\\\`\\\`
+\`\`\`
 
-> **Muhim Qoida:** Agar klassda konstruktor yozsangiz, doimo birinchi qatorda \\\`super(props)\\\` ni chaqirishingiz shart. Aks holda, \\\`this.props\\\` ishlamaydi!
+> **Muhim Qoida:** Agar klassda konstruktor yozsangiz, doimo birinchi qatorda \`super(props)\` ni chaqirishingiz shart. Aks holda, \`this.props\` ishlamaydi!
 
 ---
 
-## 2. State Boshqaruvi: \\\`this.setState\\\`
+## 2. State Boshqaruvi: \`this.setState\`
 
-Klass komponentlarda holatni o'zgartirish faqat \\\`this.setState()\\\` orqali amalga oshiriladi. Hech qachon \\\`this.state.sanoq = 1\\\` deb to'g'ridan-to'g'ri o'zgartirmang!
+Klass komponentlarda holatni o'zgartirish faqat \`this.setState()\` orqali amalga oshiriladi. Hech qachon \`this.state.sanoq = 1\` deb to'g'ridan-to'g'ri o'zgartirmang!
 
-\\\`\\\`\\\`jsx
+\`\`\`jsx
 class Hisoblagich extends Component {
   constructor(props) {
     super(props);
@@ -86,12 +86,12 @@ class Hisoblagich extends Component {
     );
   }
 }
-\\\`\\\`\\\`
+\`\`\`
 
 ### Do's and Don'ts (Qilish kerak va Mumkin emas)
 
-✅ **QILING:** Oldingi holatga asoslanib o'zgartirmoqchi bo'lsangiz, \\\`setState\\\` ichiga funksiya bering: \\\`this.setState((prevState) => ({ x: prevState.x + 1 }))\\\`.
-❌ **QILMANG:** \\\`this.state.x = 2\\\` kabi o'zgaruvchini to'g'ridan-to'g'ri mutatsiya qilmang. React komponentni qayta chizmaydi!
+✅ **QILING:** Oldingi holatga asoslanib o'zgartirmoqchi bo'lsangiz, \`setState\` ichiga funksiya bering: \`this.setState((prevState) => ({ x: prevState.x + 1 }))\`.
+❌ **QILMANG:** \`this.state.x = 2\` kabi o'zgaruvchini to'g'ridan-to'g'ri mutatsiya qilmang. React komponentni qayta chizmaydi!
 
 ---
 
@@ -99,18 +99,18 @@ class Hisoblagich extends Component {
 
 Komponentning tug'ilishidan (Mounting) tortib, to ekrandan o'chib ketishigacha (Unmounting) bo'lgan jarayon hayot tsikli deb ataladi.
 
-\\\`\\\`\\\`mermaid
+\`\`\`mermaid
 flowchart TD
     A["Mounting <br/> Tug'ilish"] --> B["componentDidMount"]
     C["Updating <br/> O'zgarish"] --> D["componentDidUpdate"]
     E["Unmounting <br/> O'lish"] --> F["componentWillUnmount"]
-\\\`\\\`\\\`
+\`\`\`
 
-### 1. \\\`componentDidMount()\\\`
+### 1. \`componentDidMount()\`
 Komponent ekranga birinchi marta chizilganidan so'ng darhol ishga tushadi. 
 **Qachon ishlatiladi?** API dan ma'lumot yuklash, taymerlarni yoqish yoki DOM ni to'g'ridan-to'g'ri o'zgartirish kerak bo'lganda.
 
-\\\`\\\`\\\`jsx
+\`\`\`jsx
 componentDidMount() {
   fetch('/api/data')
     .then(res => res.json())
@@ -118,29 +118,29 @@ componentDidMount() {
     
   this.timerID = setInterval(() => this.tick(), 1000);
 }
-\\\`\\\`\\\`
+\`\`\`
 
-### 2. \\\`componentDidUpdate(prevProps, prevState)\\\`
+### 2. \`componentDidUpdate(prevProps, prevState)\`
 Komponentning state yoki props'i o'zgargandan so'ng va u qayta chizilgandan keyin ishga tushadi.
 **Qachon ishlatiladi?** Agar ma'lum bir state o'zgarganda yana qandaydir qo'shimcha ish qilish kerak bo'lsa.
 
-\\\`\\\`\\\`jsx
+\`\`\`jsx
 componentDidUpdate(prevProps, prevState) {
   if (this.state.sanoq !== prevState.sanoq) {
-    document.title = \\\`Siz \\\${this.state.sanoq} marta bosdingiz\\\`;
+    document.title = \`Siz \\\${this.state.sanoq} marta bosdingiz\`;
   }
 }
-\\\`\\\`\\\`
+\`\`\`
 
-### 3. \\\`componentWillUnmount()\\\`
+### 3. \`componentWillUnmount()\`
 Komponent ekrandan o'chirilishidan darhol oldin ishga tushadi.
 **Qachon ishlatiladi?** Taymerlarni to'xtatish, obunalarni (subscriptions) bekor qilish uchun (Memory leak oldini olish).
 
-\\\`\\\`\\\`jsx
+\`\`\`jsx
 componentWillUnmount() {
   clearInterval(this.timerID); // Taymerni o'chirish
 }
-\\\`\\\`\\\`
+\`\`\`
 
 ---
 
@@ -155,10 +155,10 @@ Tasavvur qiling, sizning ilovangizda kichik bir komponent ishdan chiqdi. Default
 ### Error Boundary yaratish
 
 Komponent xatolar chegarasiga aylanishi uchun u kamida bitta quyidagi metodni o'z ichiga olishi kerak:
-1. \\\`static getDerivedStateFromError(error)\\\` - zaxira UI (fallback UI) ko'rsatish uchun state ni yangilash.
-2. \\\`componentDidCatch(error, errorInfo)\\\` - xatoni log faylga (masalan Sentry'ga) yuborish uchun.
+1. \`static getDerivedStateFromError(error)\` - zaxira UI (fallback UI) ko'rsatish uchun state ni yangilash.
+2. \`componentDidCatch(error, errorInfo)\` - xatoni log faylga (masalan Sentry'ga) yuborish uchun.
 
-\\\`\\\`\\\`jsx
+\`\`\`jsx
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -184,33 +184,33 @@ class ErrorBoundary extends React.Component {
     return this.props.children; 
   }
 }
-\\\`\\\`\\\`
+\`\`\`
 
 ### Error Boundary'dan Foydalanish
 
 Siz Error Boundary komponentingizni butun dastur atrofida yoki alohida muhim qismlar atrofida o'rashingiz mumkin.
 
-\\\`\\\`\\\`jsx
+\`\`\`jsx
 <ErrorBoundary>
   <MeningXavfliKomponentim />
 </ErrorBoundary>
-\\\`\\\`\\\`
+\`\`\`
 
-\\\`\\\`\\\`mermaid
+\`\`\`mermaid
 flowchart TD
     A["Ilova"] --> B["ErrorBoundary"]
     B --> C{"Xato bormi?"}
     C -->|"Yo'q"| D["MeningXavfliKomponentim ko'rinadi"]
     C -->|"Ha"| E["Fallback UI - Kechirasiz, xato... ko'rinadi"]
-\\\`\\\`\\\`
+\`\`\`
 
 ---
 
 ## 5. Xulosa
 
 1. **Klass Komponentlar** holatni va hayot tsiklini boshqarish uchun ES6 klasslaridan foydalanadi.
-2. **State** o'zgartirish doim \\\`this.setState()\\\` orqali bo'lishi kerak.
-3. Hayot tsikli metodlari (\\\`componentDidMount\\\`, \\\`componentDidUpdate\\\`, \\\`componentWillUnmount\\\`) komponent hayotining muayyan bosqichlarida aralashishga imkon beradi.
+2. **State** o'zgartirish doim \`this.setState()\` orqali bo'lishi kerak.
+3. Hayot tsikli metodlari (\`componentDidMount\`, \`componentDidUpdate\`, \`componentWillUnmount\`) komponent hayotining muayyan bosqichlarida aralashishga imkon beradi.
 4. **Error Boundaries** yordamida kichik komponentdagi xatolik tufayli butun sayt oq ekran bo'lib qolishining oldi olinadi. Zaxira UI (Fallback UI) ko'rsatiladi.
 
 Klass komponentlar eskiroq loyihalarda juda ko'p uchraydi, shuning uchun ularni qanday o'qish va tushunishni bilish har bir professional React dasturchisi uchun shartdir!
