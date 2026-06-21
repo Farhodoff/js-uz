@@ -22,10 +22,10 @@ Tasavvur qiling, sizda shaxsiy qutingiz bor. Uning ichiga nima solsangiz ham, ta
 
 \\\`\\\`\\\`mermaid
 graph TD
-    A[Component Render] --> B{Ma'lumot qayerda saqlanadi?}
-    B -- useState --> C[Qiymat o'zgarsa: RE-RENDER yuz beradi]
-    B -- useRef --> D[Qiymat o'zgarsa: RE-RENDER yuz BERMAYDI]
-    D --> E(Faqat xotirada saqlanadi yoki DOMga ulanadi)
+    A["Component Render"] --> B{"Ma'lumot qayerda saqlanadi?"}
+    B -- useState --> C["Qiymat o'zgarsa: RE-RENDER yuz beradi"]
+    B -- useRef --> D["Qiymat o'zgarsa: RE-RENDER yuz BERMAYDI"]
+    D --> E("Faqat xotirada saqlanadi yoki DOMga ulanadi")
 \\\`\\\`\\\`
 
 > **Qoida:** Agar ma'lumot UI (ekran) da ko'rinishi kerak bo'lsa, \\\`useState\\\` ishlating. Agar u faqat ichki hisob-kitob yoki qandaydir elementni ushlab turish uchun kerak bo'lsa, \\\`useRef\\\` ishlating.

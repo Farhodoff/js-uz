@@ -101,9 +101,9 @@ Komponentning tug'ilishidan (Mounting) tortib, to ekrandan o'chib ketishigacha (
 
 \\\`\\\`\\\`mermaid
 flowchart TD
-    A[Mounting <br/> Tug'ilish] --> B[componentDidMount]
-    C[Updating <br/> O'zgarish] --> D[componentDidUpdate]
-    E[Unmounting <br/> O'lish] --> F[componentWillUnmount]
+    A["Mounting <br/> Tug'ilish"] --> B["componentDidMount"]
+    C["Updating <br/> O'zgarish"] --> D["componentDidUpdate"]
+    E["Unmounting <br/> O'lish"] --> F["componentWillUnmount"]
 \\\`\\\`\\\`
 
 ### 1. \\\`componentDidMount()\\\`
@@ -198,10 +198,10 @@ Siz Error Boundary komponentingizni butun dastur atrofida yoki alohida muhim qis
 
 \\\`\\\`\\\`mermaid
 flowchart TD
-    A[Ilova] --> B[ErrorBoundary]
-    B --> C{Xato bormi?}
-    C -->|Yo'q| D[MeningXavfliKomponentim ko'rinadi]
-    C -->|Ha| E[Fallback UI - Kechirasiz, xato... ko'rinadi]
+    A["Ilova"] --> B["ErrorBoundary"]
+    B --> C{"Xato bormi?"}
+    C -->|"Yo'q"| D["MeningXavfliKomponentim ko'rinadi"]
+    C -->|"Ha"| E["Fallback UI - Kechirasiz, xato... ko'rinadi"]
 \\\`\\\`\\\`
 
 ---
