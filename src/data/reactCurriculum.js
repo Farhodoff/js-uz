@@ -20,6 +20,17 @@ export const reactCurriculum = {
       { id: "step14_class_components_and_errors", title: "14. Klass Komponentlar va Xatolarni Boshqarish", load: () => import("./lessons/react/step14_class_components_and_errors.js").then(m => m.step14_class_components_and_errors) }
     ]
   },
+  reactProjects: {
+    label: "Amaliy Loyihalar",
+    color: "#f5a623",
+    icon: "🏗️",
+    lessons: [
+      { id: "project1_todo", title: "1. Todo List (useState, map)", load: () => import("./lessons/react-projects/project1_todo.js").then(m => m.project1_todo) },
+      { id: "project2_weather", title: "2. Ob-havo Ilovasi (useEffect, fetch)", load: () => import("./lessons/react-projects/project2_weather.js").then(m => m.project2_weather) },
+      { id: "project3_router", title: "3. Ko'p sahifali ilova (React Router)", load: () => import("./lessons/react-projects/project3_router.js").then(m => m.project3_router) },
+      { id: "project4_form", title: "4. Murakkab Forma (Validatsiya)", load: () => import("./lessons/react-projects/project4_form.js").then(m => m.project4_form) }
+    ]
+  },
   reactStateManagement: {
     label: "State Management",
     color: "#4a90e2",
