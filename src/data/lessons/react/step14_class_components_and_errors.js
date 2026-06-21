@@ -236,6 +236,22 @@ flowchart TD
 4. **Error Boundaries** yordamida kichik komponentdagi xatolik tufayli butun sayt oq ekran bo'lib qolishining oldi olinadi. Zaxira UI (Fallback UI) ko'rsatiladi.
 
 Klass komponentlar eskiroq loyihalarda juda ko'p uchraydi, shuning uchun ularni qanday o'qish va tushunishni bilish har bir professional React dasturchisi uchun shartdir!
+
+---
+
+## 🎤 Intervyu Savollari
+
+**1. Class component va Functional component asosiy farqlari?**
+*Javob:* Class: extends React.Component, this.state, this.setState, lifecycle metodlar (componentDidMount va h.k.). Functional: hooks (useState, useEffect), sodda sintaksis, kichik kod hajmi. Zamonaviy React da funksional + hooks tavsiya etiladi.
+
+**2. Error Boundary nima va qachon kerak?**
+*Javob:* Error Boundary — farzand komponentlardagi JavaScript xatolarini ushlab, fallback UI ko'rsatadigan class komponent. getDerivedStateFromError (state yangilash) va componentDidCatch (xatoni log qilish) metodlarini amalga oshiradi. Funksional komponentda Error Boundary yaratib bo'lmaydi.
+
+**3. componentDidMount va useEffect([]) farqi?**
+*Javob:* componentDidMount — class komponentda komponent DOM ga qo'shilgandan keyin bitta ishlaydigan lifecycle metod. useEffect(() => {}, []) — funksional komponentdagi muqobil. Ikkalasi ham "mount" hodisasiga javob beradi, lekin useEffect StrictMode da ikki marta ishlaydi.
+
+**4. this.setState asinxronmi?**
+*Javob:* Ha, this.setState asinxron — React bir necha setState ni birlashtirishi mumkin (batching). Shuning uchun this.setState dan keyin darhol this.state ni o'qib bo'lmaydi. Callback ishlating: this.setState(prev => ({...}), callback).
   `,
   code: `import React, { Component } from 'react';
 

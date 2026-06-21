@@ -1,434 +1,431 @@
 export const step1_setup = {
-  title: "1-DARS: Tayyorgarlik va O'rnatish",
+  id: "step1_setup",
+  title: "1-DARS: React ga Kirish va Loyihani Sozlash",
   content: `
-# 1-qadam: React'ga Kirish va Loyihani Sozlash (Setup)
+# 1-DARS: React ga Kirish va Loyihani Sozlash
 
-## 1. React Tarixi va Arxitekturasi
+## 1. React Nima va Nima Uchun Kerak?
 
-React - bu foydalanuvchi interfeyslarini (UI) yaratish uchun mo'ljallangan ochiq kodli JavaScript kutubxonasi. U dastlab Facebook (hozirgi Meta) muhandisi Jordan Walke tomonidan 2011 yilda yaratilgan.
+React — bu Facebook (Meta) tomonidan 2013-yilda ochiq manbaga (open-source) chiqarilgan **JavaScript kutubxonasi** bo'lib, foydalanuvchi interfeyslarini (UI) yaratish uchun mo'ljallangan.
 
-**Tarixiy fon:**
-2010-yillarning boshlarida Facebook kundan-kunga kattalashib, murakkablashib borayotgan edi. "Chat" va "Yangiliklar tasmasi" (News Feed) kabi qismlar bir-biriga bog'liq bo'lsa-da, ularning ma'lumotlarini sinxronlash (masalan, kimdir xabar yozganda chat ikonkasida bildirishnoma sonini to'g'ri ko'rsatish) an'anaviy JavaScript usullari bilan juda qiyinlashib ketdi. Kod bazasi "spagetti" ga aylanib, xatolar (buglar) ko'payib ketaverdi. 
+### Muammo: Katta ilovalar "spagetti" ga aylanadi
 
-Shu muammoni hal qilish uchun Jordan Walke React'ni yaratdi. React 2013-yilda ochiq kodli (open-source) qilib e'lon qilindi va tez orada butun dunyo dasturchilari orasida mashhur bo'lib ketdi.
+2010-yillar boshida Facebook murakkablashib borardi. "Chat", "Yangiliklar tasmasi" kabi qismlar bir-biriga bog'liq edi. Bir joyda o'zgarish bo'lsa, boshqa joylar buzilardi. Oddiy jQuery bilan boshqarish imkonsiz bo'lib qoldi.
 
-**Arxitekturasi:**
-React asosan **Komponentlarga asoslangan (Component-based)** arxitekturaga ega. 
-Buni qanday tushunamiz? Katta va murakkab veb-saytni bitta butun narsa sifatida emas, balki kichik, mustaqil va qayta ishlatsa bo'ladigan lego qismlariga (komponentlarga) bo'lib chiqamiz. Masalan: Navbar komponenti, Sidebar komponenti, Footer komponenti va hokazo.
+**Hayotiy o'xshatish:** 1000 ta chiroq bilan bezatilgan xonangiz bor. Har bir chiroq alohida simga ulangan. Bitta simni o'zgartirmoqchi bo'lsangiz, qaysi sim qaysi chiroqqa borishini bilmaysiz. React bu muammoni **komponentlarga asoslangan arxitektura** orqali hal qildi.
 
-*Analogi:* Tasavvur qiling, siz avtomobil yig'yapsiz. Avtomobilni bitta yaxlit temir bo'lagidan quymaysiz. Uning g'ildiraklari, dvigateli, eshiklari alohida tayyorlanadi va oxirida yig'iladi. Agar bitta g'ildirak teshib qolsa, faqat o'sha g'ildirakni almashtirasiz, butun mashinani emas. React komponentlari ham xuddi shunday ishlaydi!
+### React ning asosiy afzalliklari:
 
-> **Nega kerak? (Nima uchun aynan React?)**
-> Oddiy HTML/CSS/JS bilan ham sayt qilsa bo'ladi-ku? Ha, bo'ladi. Lekin sayt kattalashgani sari UI'ni boshqarish qiyinlashadi. React bizga ma'lumotlar o'zgarganda faqat kerakli qismni o'zini yangilash, kodni qayta ishlatish (reusability) va murakkab interfeyslarni oson boshqarish imkonini beradi.
+| Xususiyat | Tushuntirish |
+|-----------|-------------|
+| **Komponent asosli** | UI ni kichik, qayta ishlatiladigan qismlarga bo'lamiz |
+| **Virtual DOM** | Faqat o'zgargan qismlarni yangilaydi |
+| **Bir yo'nalishli ma'lumot oqimi** | Ma'lumotlar yuqoridan pastga oqadi |
+| **Katta ekosistema** | React Router, Redux, Next.js va minglab kutubxonalar |
 
 ---
 
-## 2. SPA (Single Page Application) vs MPA (Multi Page Application)
+## 2. Virtual DOM — React ning Siri
 
-Web dasturlash olamida ikkita asosiy yondashuv bor: MPA va SPA. React aynan SPA yaratish uchun ishlatiladi.
+### Real DOM sekin, Virtual DOM tez
 
-### MPA (Multi Page Application) - Ko'p Sahifali Ilovalar
-Bu an'anaviy usul. Foydalanuvchi biror havolani (linkni) bossa, brauzer serverga so'rov yuboradi, server esa butunlay yangi HTML sahifani (tepadan pastgacha) qaytaradi. Brauzer oq rangga kirib, qaytadan sahifani yuklaydi.
-*Analogi:* Har safar kitobning yangi sahifasini o'qish uchun kutubxonachining oldiga borib, eski sahifani topshirib, yangisini olib kelishingizga to'g'ri keladi. Qanchalik vaqt talab qilishini tasavvur qilyapsizmi?
+React xotirada Real DOM ning **engil nusxasini** (Virtual DOM) saqlaydi. State o'zgarganda:
+1. React yangi Virtual DOM yaratadi
+2. Eski bilan solishtiradi (**Diffing** algoritmi)
+3. Faqat farqli qismlarni Real DOM ga yozadi (**Reconciliation**)
 
-### SPA (Single Page Application) - Yagona Sahifali Ilovalar
-Bu zamonaviy usul (React shunday ishlaydi). Foydalanuvchi saytga kirganda, faqat bitta HTML sahifa (\`index.html\`) yuklanadi. Keyin sahifa ichidagi ma'lumotlar foydalanuvchi harakatiga qarab JavaScript orqali orqa fonda (serverdan faqat kerakli ma'lumot, masalan JSON ko'rinishida olinib) almashtirib qo'yiladi. Sahifa umuman "perezagruzka" (reload) bo'lmaydi.
-*Analogi:* Sizga bitta sehrli doska berishgan. Siz u yerdan qimirlamaysiz, shunchaki tugmani bossangiz, doskadagi yozuvlarning faqat kerakli qismi o'zgarib qoladi. Doska hamisha sizning oldingizda turadi.
+**Hayotiy o'xshatish:** Katta restoran menyu kitobini to'liq qayta bosish o'rniga, faqat narx o'zgargan sahifalarni almashtirish kabi.
 
 \`\`\`mermaid
 graph TD
-    subgraph MPA[Multi Page Application]
-        direction LR
-        M_User((Foydalanuvchi)) -->|1. Bosadi: Haqimizda| M_Browser[Brauzer]
-        M_Browser -->|2. /about so'rovi| M_Server[(Server)]
-        M_Server -->|3. YANGI about.html| M_Browser
-        M_Browser -->|4. Butun sahifa qayta chiziladi| M_User
-    end
-
-    subgraph SPA[Single Page Application - React]
-        direction LR
-        S_User((Foydalanuvchi)) -->|1. Bosadi: Haqimizda| S_React[React Router]
-        S_React -->|2. Hech qanday HTML so'ralmaydi| S_API[Faqat JSON ma'lumot olinadi]
-        S_API -->|3. DOM'ning faqat kerakli qismi o'zgaradi| S_User
-    end
+    A["State yoki Props o'zgarishi"] --> B["Yangi Virtual DOM yaratiladi"]
+    B --> C["Diffing: eski vs yangi Virtual DOM"]
+    C --> D{"Farq bormi?"}
+    D -->|Ha| E["Faqat farqli qismlar Real DOM ga yoziladi"]
+    D -->|Yo'q| F["Hech narsa o'zgarmaydi"]
+    E --> G["Brauzer ekranni yangilaydi"]
+    style A fill:#e74c3c,color:#fff
+    style E fill:#2ecc71,color:#fff
 \`\`\`
 
 ---
 
-## 3. Virtual DOM vs Real DOM (Nega React tez?)
+## 3. SPA vs MPA
 
-Browser o'zida tushunadigan asosiy obyekt bu DOM (Document Object Model) - HTML hujjatining daraxt ko'rinishidagi tuzilishi.
+### MPA (Multi-Page Application)
+Har safar foydalanuvchi havolani bosganda, server yangi HTML sahifasini yuboradi va brauzer qaytadan yuklaydi.
 
-**Real DOM muammosi:**
-Deylik, sizning 5000 ta qatorli jadvalingiz bor. Agar 1 ta katakning rangi o'zgarsa, qadimgi usulda butun jadvalni qayta chizish yoki DOM bo'ylab uzoq qidirish kerak bo'lardi. DOM elementlarini har gal o'zgartirish brauzer uchun eng sekin va "qimmat" (ko'p resurs yeydigan) jarayon hisoblanadi.
-
-**React qanday yechim topgan? (Virtual DOM):**
-React "Virtual DOM" (VDOM) tushunchasini olib kirdi. Virtual DOM - bu Real DOM'ning shunchaki xotiradagi nusxasi (yengil vaznli JavaScript obyekti).
-
-**Jarayon qanday kechadi (Reconciliation jarayoni)?**
-1. Ma'lumot (State) o'zgardi.
-2. React darhol yangi VDOM yaratadi (xotirada bu juda tez amalga oshadi).
-3. Yangi VDOM ni eski VDOM bilan solishtiradi. Bu jarayon **Diffing** deb ataladi.
-4. Faqat o'zgargan joylarni topadi.
-5. So'ngra, topilgan qismlarnigina paketlab turib, Real DOM'ga jo'natadi va faqat o'sha o'zgargan nuqtani Real DOM'da yangilaydi (Bu jarayon Patching / **Reconciliation** deb ataladi).
+### SPA (Single-Page Application) — React
+Faqat bir marta HTML yuklanadi. Keyingi navigatsiyalarda JavaScript faqat JSON oladi va React DOM ni yangilaydi.
 
 \`\`\`mermaid
-flowchart TD
-    State[State o'zgardi] --> VDOM_New[Yangi Virtual DOM yaratiladi]
-    VDOM_New --> Diff[Diffing: Yangi VDOM va Eski VDOM solishtiriladi]
-    Diff -->|Faqat O'zgargan qism| Patch[Patching: Real DOM'da faqat farqli tugun yangilanadi]
-    Patch --> View[Foydalanuvchiga yangi ko'rinish]
-
-    style State fill:#f9f,stroke:#333,stroke-width:2px
-    style View fill:#bbf,stroke:#333,stroke-width:2px
+graph LR
+    subgraph MPA["MPA - Ko'p Sahifali"]
+        M1["Havola bosiladi"] --> M2["Server yangi HTML"]
+        M2 --> M3["Sahifa qayta yuklanadi"]
+    end
+    subgraph SPA["SPA - React"]
+        S1["Havola bosiladi"] --> S2["fetch JSON"]
+        S2 --> S3["React DOM yangilaydi"]
+    end
+    style M3 fill:#e74c3c,color:#fff
+    style S3 fill:#2ecc71,color:#fff
 \`\`\`
 
-*Analogi:* Siz uyning chizmasini (VDOM) tayyorladingiz. Keyin xotiningiz oshxonaga bitta deraza qo'shmoqchi bo'ldi. Siz eshikni, tomni, boshqa xonalarni buzmaysiz. Shunchaki chizmaga o'zgartirish kiritasiz va usta (React) kelib faqat o'sha devorni teshib deraza o'rnatadi. Butun uyni qaytadan qurish (Real DOM perezagruzkasi) shart emas!
+| Xususiyat | MPA | SPA (React) |
+|-----------|-----|-------------|
+| Navigatsiya | Sekin, oq ekran | Tez, silliq |
+| SEO | Oson | Murakkabroq |
+| UX | Oddiy | Ilova kabi |
 
 ---
 
-## 4. O'rnatish Vositalari (Setup tools): Node, npm, CRA vs Vite
+## 4. Vite bilan Loyiha Yaratish
 
-React loyihasini noldan barcha fayllarni ulab chiqib qilish juda mashaqqatli. Shuning uchun tayyor o'rnatish vositalari ishlatiladi. Lekin undan oldin kompyuterimizda muhit bo'lishi kerak.
-
-**Node.js va npm:**
-- **Node.js:** JavaScript'ni faqat brauzerda emas, balki kompyuterda (serverda) ham ishlashiga imkon beruvchi muhit (runtime). React loyihalarini kompyuterimizda run qilish uchun Node.js kerak.
-- **npm (Node Package Manager):** Bu JavaScript kutubxonalari do'koni. Loyihamizga kimgadir tegishli bo'lgan tayyor kodni (paketni) olib kirish uchun ishlatamiz. Buni xuddi telefoningizdagi "App Store" yoki "Play Market" deb tushunishingiz mumkin.
-
-**Create React App (CRA) vs Vite:**
-
-Bir necha yil oldin barcha React loyihalari \`npx create-react-app my-app\` komandasi orqali yaratilardi. Bu Facebook tomonidan qilingan rasmiy "tayyor shablon" edi.
-
-Node.js va npm:
-- Node.js: JavaScript'ni faqat brauzerda emas, balki kompyuterda (serverda) ham ishlashiga imkon beruvchi muhit.
-- npm (Node Package Manager): JavaScript kutubxonalari do'koni.
-
-> **Nima uchun CRA'dan Vite'ga o'tilmoqda?**
-> - **Sekinlik:** CRA loyihani ishga tushirish (dev serverni yoqish) va kodni o'zgartirganda ekranda ko'rinishi uchun barcha fayllarni bitta qilib yig'ardi (bundler - Webpack). Loyiha kattalashgani sari loyihani yoqishga 30 soniyadan bir necha daqiqagacha vaqt ketib qolardi.
-> - **Vite (fransuzcha "tez" degani):** Vite bundler emas, u ES Module yordamida ishlaydi. Ya'ni u butun kodni emas, faqat siz o'zgartirgan faylnigina brauzerga uzatadi. Natijada loyiha kattaligidan qat'iy nazar server 1 soniyaga qolmasdan yonadi. O'zgartirishlar ham millisoniyalarda ekranda paydo bo'ladi (Hot Module Replacement - HMR).
-
-> 💡 **"Install Everything, Configure Forever" haqiqati:**
-> React'ni endi o'rganayotganlar ko'pincha "React bu hamma narsani hal qiluvchi freymvork" deb o'ylashadi. Aslida esa React — faqatgina UI chizish uchun kichik bir kutubxona. Sahifalarni ulash uchun (React Router), holatni boshqarish uchun (Redux/Zustand), API ga so'rov yuborish uchun (Axios/React Query) alohida kutubxonalar o'rnatishingiz va ularni bir-biriga moslashtirishingiz kerak bo'ladi. Boshida bu biroz charchatuvchi (Install fatigue) bo'lishi mumkin. Lekin xavotir olmang, asoslarni yaxshi o'zlashtirganingizdan so'ng, **Next.js** kabi to'laqonli freymvorklarga o'tasiz, unda bularning bari tayyor qilib o'rnatilgan bo'ladi!
-
-## ✅ Do's and ❌ Don'ts
-
-❌ *Don't (Qilmang):* Hozirgi kunda yangi loyihalarni \`create-react-app\` orqali yaratmang. U ancha sekin va eskirgan.
 \`\`\`bash
-npx create-react-app eski-loyiha
+# Yangi loyiha yaratish
+npm create vite@latest mening-ilovam -- --template react
+
+# Papkaga kirish
+cd mening-ilovam
+
+# Kutubxonalarni o'rnatish
+npm install
+
+# Ishga tushirish
+npm run dev
 \`\`\`
 
-✅ *Do (Qiling):* Vite dan foydalaning.
-\`\`\`bash
-# Vite orqali yangi React loyiha yaratish komandasi:
-npm create vite@latest my-react-app -- --template react
-\`\`\`
+| Xususiyat | CRA (Eski) | Vite (Yangi) |
+|-----------|-----------|-------------|
+| Ishga tushirish | 30-60 soniya | < 1 soniya |
+| HMR | Sekin | Bir zumda |
+| Holati | Tashlab ketilgan | Faol |
 
 ---
 
-## 5. Loyiha Papkalar Strukturasi (Deep Dive into Folder Structure)
+## 5. Loyiha Tuzilmasi
 
-Vite orqali loyiha yaratib, uni VS Code kabi muharrirda ochsangiz quyidagi papka va fayllarni ko'rasiz. Keling, har birining vazifasini chuqur tushunib olamiz:
-
-\`\`\`text
-my-react-app/
-├── node_modules/       # (Tegib bo'lmaydigan hudud!)
-├── public/             # (Ommaviy statik fayllar)
-│   └── vite.svg        
-├── src/                # (Sizning ijod maydoningiz - asosan shu yerda ishlaysiz)
-│   ├── assets/         # Rasm, fontlar uchun
-│   ├── App.css         # App komponentining stillari
-│   ├── App.jsx         # BOSH KOMPONENT!
-│   ├── index.css       # Global stillar
-│   └── main.jsx        # Dasturning kirish nuqtasi (Entry point)
-├── .gitignore          # Git ga kirmasligi kerak bo'lgan fayllar ro'yxati
-├── index.html          # O'sha yagona HTML sahifa (SPA ning asosi)
-├── package-lock.json   # Paketlarning aniq versiyalarini qulflash
-├── package.json        # Loyihamiz pasporti (qanday paketlar bor, qanday ishga tushadi)
-└── vite.config.js      # Vite uchun sozlamalar
+\`\`\`
+mening-ilovam/
+├── node_modules/      ← O'rnatilgan kutubxonalar (gitga yuklamang!)
+├── public/            ← Statik fayllar
+├── src/               ← Bizning kodlarimiz shu yerda!
+│   ├── App.jsx        ← Asosiy komponent
+│   ├── App.css        ← App uchun CSS
+│   └── main.jsx       ← Kirish nuqtasi (entry point)
+├── index.html         ← Asosiy HTML (bitta!)
+└── package.json       ← Loyiha "pasporti"
 \`\`\`
 
-**Batafsil tushuntirish:**
+**\`src/main.jsx\`** — React ni ishga tushiradi:
+\`\`\`jsx
+// React va ReactDOM kutubxonalarini import qilamiz
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
 
-1. \`node_modules/\`:
-Bu yerda \`npm\` orqali yuklab olingan barcha kutubxonalar va ularning qaramliklari (dependencies) joylashadi.
-*Qoida:* Bu papkaga hech qachon kirmang va undagi hech narsani o'zgartirmang. Agar xato qilib o'chirib yuborsangiz, terminalda \`npm install\` yozsangiz, o'zi qaytadan yaratib oladi. Github'ga ham bu papka yuklanmaydi.
+// 'root' ID li div ni topib, React ilovasini joylashtiramiz
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
+\`\`\`
 
-2. \`public/\`:
-Bu papkaga tashlangan fayllar Vite tomonidan hech qanday o'zgarishsiz, to'g'ridan-to'g'ri brauzerga uzatiladi. Masalan, saytning Favicon'i (tepada brauzer tab'ida turadigan mitti rasm) yoki SEO uchun kerakli \`robots.txt\` kabi fayllar shu yerda turadi.
+**\`src/App.jsx\`** — Asosiy komponent:
+\`\`\`jsx
+// CSS faylini import qilamiz
+import './App.css'
 
-3. \`src/\` (Source - Manba):
-Sizning barcha kodingiz, komponentlaringiz, mantiqlar shu papka ichida yoziladi.
-- \`main.jsx\`: Bu React dasturining **Kirish nuqtasi**. U \`index.html\` dagi \`<div id="root"></div>\` ni topib, bizning butun React kodimizni (VDOM ni) o'sha devorga yopishtiradi.
-- \`App.jsx\`: Bu eng katta, ona (Root) komponent. Qolgan barcha kichik komponentlar shu fayl ichiga yig'iladi.
-
-4. \`index.html\`:
-Bizning sahifamizning "skeleti". E'tibor bersangiz ichida deyarli hech narsa yo'q, faqat bitta \`<div id="root"></div>\` bor. Bizning butun React dasturimiz sehrgarlik kabi shu bitta \`div\` ichiga chiziladi.
-
-5. \`package.json\`:
-Loyiha "pasporti". Loyiha nomi, versiyasi va eng muhimi - loyiha ishlashi uchun qanday tashqi paketlar kerakligi ro'yxati yozilgan fayl. 
-
-> **Nega kerak?**
-> Tasavvur qiling do'stingizga loyihangizni bermoqchisiz. Siz unga butun \`node_modules\` papkasini bermaysiz (u juda og'ir, ba'zan 500mb dan oshadi). Siz faqat o'z kodingiz va \`package.json\` ni berasiz. Do'stingiz loyihani ochib \`npm install\` ni bossa, npm u yerda yozilgan "retsept" (paketlar ro'yxati) asosida hamma narsani internetdan qayta yuklab oladi.
-
-*Xulosa:* Endi biz React qanday paydo bo'lgani, u muammolarni qanday hal qilishi (VDOM va SPA orqali), hamda yangi loyihani o'rnatish va uni strukturasini chuqur o'zlashtirib oldik. Keyingi darsda shu komponentlarning ichiga kirib, JSX sintaksisini va komponentlar qanday tuzilishini o'rganamiz!
-
-`,
-  code: `import React from "react"; // React kutubxonasini loyihamizga chaqirib olamiz
-
-// Bu bizning eng birinchi React komponentimiz.
-// React'da komponentlar funksiya ko'rinishida yoziladi va doim bosh harf bilan boshlanadi (App).
-// export default - bu komponentni boshqa fayllarda ham ishlatish (import qilish) imkonini beradi.
-export default function App() {
-  // return qismi foydalanuvchiga ekranda nima ko'rinishini (UI) belgilaydi
+// App — asosiy komponentimiz (katta harf bilan boshlanadi!)
+function App() {
   return (
-    // React'da barcha elementlar bitta umumiy ota elementga (masalan <div>) o'ralgan bo'lishi shart.
-    // style atributi orqali elementlarga CSS uslublarini obyekt ({}) ko'rinishida beramiz.
-    // E'tibor bering: CSS xususiyatlari camelCase (masalan, textAlign) formatida yoziladi.
-    <div style={{ textAlign: "center", padding: "50px", fontFamily: "sans-serif" }}>
-      
-      {/* <h1> - bu sahifaning eng katta sarlavhasi hisoblanadi */}
-      <h1>Salom, React! 👋</h1>
-      
-      {/* <p> - bu oddiy matn (paragraf) uchun ishlatiladigan teg */}
-      <p>Bu mening birinchi React ilovam.</p>
-      
-      {/* Yana bir <div> qutisi. U o'z ichiga amaliyot qismini oladi. */}
-      <div style={{ 
-        marginTop: 30, // Yuqoridan 30px joy tashlaydi
-        padding: 20, // Ichki bo'shliq (chegaradan ichkariga) 20px
-        border: '1px solid #ddd', // Atrofida och kulrang chegara chizig'i
-        borderRadius: 8, // Qutining burchaklarini bir oz yumaloqlaydi
-        background: '#f9f9f9' // Quti orqa fon rangi (och kulrang)
-      }}>
-        
-        {/* <h2> - bu ikkinchi darajali sarlavha */}
-        <h2>Amaliyot qismi</h2>
-        
-        {/* <strong> tegi o'z ichidagi matnni qalin qilib ko'rsatadi */}
-        <p>Chap tarafdagi kod muharririda <strong>h1</strong> tegining ichidagi yozuvni o'zgartirib ko'ring.</p>
-        
-        {/* <button> - foydalanuvchi bosishi mumkin bo'lgan tugmacha */}
-        <button style={{ padding: '10px 20px', background: '#61dafb', border: 'none', borderRadius: 4, fontWeight: 'bold' }}>
-          Tugmacha
-        </button>
-      </div>
+    <div className="App">
+      <h1>Salom, React!</h1>
     </div>
-  );
-}`,
+  )
+}
+
+export default App
+\`\`\`
+
+---
+
+## 6. ❌ YOMON va ✅ YAXSHI Yondashuvlar
+
+### node_modules ni gitga yuklash
+
+\`\`\`bash
+# ❌ YOMON — hech qachon bu qilinmasin!
+git add node_modules/
+
+# ✅ YAXSHI — .gitignore ga qo'shing
+# .gitignore:
+node_modules/
+dist/
+.env
+\`\`\`
+
+### Import yo'llari
+
+\`\`\`jsx
+// ❌ YOMON — noto'g'ri yo'l
+import App from 'App'
+
+// ✅ YAXSHI — to'g'ri nisbiy yo'l
+import App from './App'
+\`\`\`
+
+### CSS class qo'shish
+
+\`\`\`jsx
+// ❌ YOMON — HTML da class ishlatiladi, JSX da emas!
+<div class="card">
+
+// ✅ YAXSHI — JSX da className ishlatiladi
+<div className="card">
+\`\`\`
+
+---
+
+## 7. Intervyu Savollari
+
+**1. Virtual DOM nima va u qanday ishlaydi?**
+*Javob:* Virtual DOM — Real DOM ning xotiradagi engil JavaScript obyekt nusxasi. State o'zgarganda React yangi Virtual DOM yaratadi, diffing algoritmi orqali eski vs yangi ni solishtiradi, va faqat farqli qismlarni Real DOM ga yozadi (reconciliation). Bu Real DOM ni to'g'ridan-to'g'ri manipulatsiya qilishdan ancha tezroq.
+
+**2. SPA va MPA ning asosiy farqlari qanday?**
+*Javob:* MPA da har bir navigatsiyada server yangi HTML sahifasini yuboradi, brauzer qaytadan yuklaydi (sekin, oq ekran). SPA da faqat bir marta HTML yuklanadi, keyingi navigatsiyalarda JavaScript JSON ma'lumotni oladi, React DOM ni yangilaydi (tez, oq ekran yo'q).
+
+**3. Vite va CRA farqi nimada?**
+*Javob:* CRA eski, sekin (30-60 soniya ishga tushirish) va hozirda qo'llab-quvvatlanmayapti. Vite zamonaviy, ESM asosida ishlaydi, 1 soniyadan kam ishga tushadi, HMR tez. Yangi loyihalar uchun Vite tavsiya etiladi.
+
+**4. package.json faylining vazifasi nima?**
+*Javob:* Loyiha "pasporti" — unda loyiha nomi, versiyasi, skriptlari (dev, build) va barcha kutubxonalar ro'yxati saqlanadi. npm install bu faylni o'qib, kerakli kutubxonalarni o'rnatadi.
+`,
+  code: `// src/App.jsx — Birinchi React komponentingiz
+import React from 'react'
+
+// App — bu bizning asosiy komponentimiz
+// Funksiya nomi katta harf bilan boshlanishi SHART!
+function App() {
+  // JSX qaytaramiz (HTML ga o'xshash JavaScript sintaksisi)
+  return (
+    <div>
+      <h1>Salom, React! 👋</h1>
+      <p>Bu mening birinchi React ilovam</p>
+    </div>
+  )
+}
+
+// Boshqa fayllar bu komponentni import qilishi uchun
+export default App`,
   exercises: [
     {
       id: 1,
-      title: "1. O'z ismingizni yozing",
-      instruction: "Kod muharririda `App` komponentining ichidagi `h1` tegini toping va `Salom, React!` yozuvini `Salom, [O'z ismingiz]!` ga o'zgartiring.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Salom, React!</h1>\n    </div>\n  );\n}",
-      hint: "<h1>Salom, Ali!</h1> ko'rinishida yozib ko'ring.",
-      test: "if (code.includes('Salom, React!')) return 'Siz hali ham \"Salom, React!\" yozuvini qoldirgansiz. O\'z ismingizni yozing.'; return null;"
+      title: "Birinchi Komponent",
+      instruction: "App funksiyasini o'zgartiring: u h1 da ismingizni va p da sevimli tilni ko'rsatsin.",
+      startingCode: "function App() {\n  return (\n    <div>\n      <h1>Salom Dunyo</h1>\n    </div>\n  )\n}\n\nexport default App",
+      hint: "return ichida h1 va p teglarini yozing. Barcha teglar bitta ota elementga o'ralgan bo'lishi kerak.",
+      solution: "function App() {\n  return (\n    <div>\n      <h1>Salom, men Abdulloh!</h1>\n      <p>Sevimli tilim: JavaScript</p>\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('<h1>') || !code.includes('<p>')) return 'h1 va p teglarini qo\'shing'; return null;"
     },
     {
       id: 2,
-      title: "2. Yangi xatboshi (paragraf) qo'shish",
-      instruction: "Komponent ichiga `<p>` tegi orqali 'Bu mening birinchi vazifam' degan yozuvni qo'shing.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Asosiy sarlavha</h1>\n      {/* Shu yerga paragraf qo'shing */}\n    </div>\n  );\n}",
-      hint: "<p>Bu mening birinchi vazifam</p> tegini qo'shing.",
-      test: "if (!code.includes('<p>') || !code.includes('Bu mening birinchi vazifam')) return 'Paragraf (<p>) va to\'g\'ri matn qo\'shilganini tekshiring.'; return null;"
+      title: "Ro'yxat ko'rsatish",
+      instruction: "ul va li teglari yordamida 3 ta sevimli ovqat nomini ro'yxat qilib ko'rsating.",
+      startingCode: "function App() {\n  return (\n    <div>\n      {/* Bu yerga kod yozing */}\n    </div>\n  )\n}\n\nexport default App",
+      hint: "<ul> ichiga uchta <li> qo'shing",
+      solution: "function App() {\n  return (\n    <div>\n      <h2>Sevimli ovqatlarim:</h2>\n      <ul>\n        <li>Osh</li>\n        <li>Manti</li>\n        <li>Somsa</li>\n      </ul>\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('<ul>') || !code.includes('<li>')) return 'ul va li teglarini qo\'shing'; return null;"
     },
     {
       id: 3,
-      title: "3. Tugma yaratish",
-      instruction: "`Bosing` degan yozuvga ega bo'lgan tugma (`<button>`) elementini yarating.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Tugma misoli</h1>\n      {/* Tugmani shu yerga qo'shing */}\n    </div>\n  );\n}",
-      hint: "<button>Bosing</button> elementidan foydalaning.",
-      test: "if (!code.includes('<button>') || !code.includes('Bosing')) return 'Tugma (<button>) va ichida \"Bosing\" yozuvi borligiga ishonch hosil qiling.'; return null;"
+      title: "className ishlatish",
+      instruction: "div ga className='card', h2 ga className='title' bering. React da class o'rniga className ishlatiladi!",
+      startingCode: "function App() {\n  return (\n    <div>\n      <h2>Sarlavha</h2>\n      <p>Matn</p>\n    </div>\n  )\n}\n\nexport default App",
+      hint: "HTML dagi class=\"...\" o'rniga JSX da className=\"...\" yoziladi.",
+      solution: "function App() {\n  return (\n    <div className='card'>\n      <h2 className='title'>Sarlavha</h2>\n      <p>Matn</p>\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('className')) return 'className ishlatishni unutmang!'; return null;"
     },
     {
       id: 4,
-      title: "4. Ro'yxat elementlari",
-      instruction: "Sartaroshxona xizmatlari uchun ro'yxat (`<ul>` va ikkita `<li>`) yarating. `<li>` larning ichida 'Soch kesish' va 'Soqol olish' yozuvlari bo'lsin.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Xizmatlar</h1>\n      {/* Ro'yxatni shu yerga qo'shing */}\n    </div>\n  );\n}",
-      hint: "<ul>\n  <li>Soch kesish</li>\n  <li>Soqol olish</li>\n</ul>",
-      test: "if (!code.includes('<ul>') || !code.includes('<li>Soch kesish</li>') || !code.includes('<li>Soqol olish</li>')) return 'Ro\'yxat elementlarini to\'g\'ri shakllantirmadingiz.'; return null;"
+      title: "Fragment ishlatish",
+      instruction: "Qo'shimcha div o'rniga React Fragment (<>...</>) ishlatib, h1 va p ni qaytaring.",
+      startingCode: "function App() {\n  return (\n    <div>\n      <h1>Sarlavha</h1>\n      <p>Matn</p>\n    </div>\n  )\n}\n\nexport default App",
+      hint: "<div> ni <> va </> bilan almashtiring.",
+      solution: "function App() {\n  return (\n    <>\n      <h1>Sarlavha</h1>\n      <p>Matn</p>\n    </>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('<>') || !code.includes('</>')) return 'Fragment <> </> ishlatishni unutmang!'; return null;"
     },
     {
       id: 5,
-      title: "5. Rasm qo'shish",
-      instruction: "`<img>` tegi yordamida rasm qo'shing. Rasm manbasi `src` uchun 'https://via.placeholder.com/150' ishlating. `alt` atributiga 'Namuna rasm' deb yozing.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Rasm qo'shish</h1>\n      {/* Rasmni shu yerga joylashtiring */}\n    </div>\n  );\n}",
-      hint: "<img src='https://via.placeholder.com/150' alt='Namuna rasm' /> shaklida o'z-o'zini yopuvchi teg ishlating.",
-      test: "if (!code.includes('<img') || !code.includes('src=') || !code.includes('https://via.placeholder.com/150') || !code.includes('alt=')) return 'Rasm manbasi (src) va alt atributi to\'g\'ri yozilganini tekshiring.'; return null;"
+      title: "Self-closing tegler",
+      instruction: "img va input teglarini to'g'ri self-closing formatda yozing: <img /> va <input />",
+      startingCode: "function App() {\n  return (\n    <div>\n      {/* img va input bu yerga */}\n    </div>\n  )\n}\n\nexport default App",
+      hint: "JSX da <img src='...' alt='...' /> va <input type='text' /> shaklida yozing.",
+      solution: "function App() {\n  return (\n    <div>\n      <img src='https://via.placeholder.com/150' alt='Rasm' />\n      <input type='text' placeholder='Matn kiriting' />\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('<img') || !code.includes('<input')) return 'img va input teglarini qo\'shing'; if (!code.includes('/>')) return 'Self-closing formatda yozing: <img /> <input />'; return null;"
     },
     {
       id: 6,
-      title: "6. Havola (Link) yaratish",
-      instruction: "`<a>` tegi yordamida 'React rasmiy sayti' degan havola yarating. `href` atributiga 'https://react.dev' manzili ko'rsatilsin.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h2>Foydali havolalar</h2>\n      {/* Havolani shu yerga qo'shing */}\n    </div>\n  );\n}",
-      hint: "<a href='https://react.dev'>React rasmiy sayti</a> ko'rinishida yozing.",
-      test: "if (!code.includes('<a') || !code.includes('href=') || !code.includes('https://react.dev')) return 'Havola (<a>) tegi va href manzilini tekshiring.'; return null;"
+      title: "Inline stil",
+      instruction: "p tegiga inline stil bering: matn rangi qizil, font hajmi 24px. style={{color: 'red', fontSize: '24px'}}",
+      startingCode: "function App() {\n  return (\n    <div>\n      <p>Bu matn stillanishi kerak</p>\n    </div>\n  )\n}\n\nexport default App",
+      hint: "style={} ichiga JS obyekt yozing: {{color: 'red', fontSize: '24px'}}",
+      solution: "function App() {\n  return (\n    <div>\n      <p style={{color: 'red', fontSize: '24px'}}>Bu matn stillanishi kerak</p>\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('style={{')) return 'style={{...}} formatida yozing'; return null;"
     },
     {
       id: 7,
-      title: "7. Qalin va qiya matnlar",
-      instruction: "Matn ichidagi 'React' so'zini qalin (`<strong>`), 'ajoyib' so'zini esa qiya (`<em>`) qiling.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <p>React - bu ajoyib kutubxona.</p>\n    </div>\n  );\n}",
-      hint: "<p><strong>React</strong> - bu <em>ajoyib</em> kutubxona.</p>",
-      test: "if (!code.includes('<strong>React</strong>') || !code.includes('<em>ajoyib</em>')) return 'React so\'zini <strong> bilan, ajoyib so\'zini <em> bilan o\'rang.'; return null;"
+      title: "O'zgaruvchi ko'rsatish",
+      instruction: "const ism = 'Kamola' va const yosh = 25 yarating va ularni JSX da {ism} va {yosh} orqali ko'rsating.",
+      startingCode: "function App() {\n  // O'zgaruvchilarni bu yerda yarating\n  \n  return (\n    <div>\n      {/* O'zgaruvchilarni bu yerda ko'rsating */}\n    </div>\n  )\n}\n\nexport default App",
+      hint: "return dan OLDIN: const ism = 'Kamola'. Keyin JSX da {ism} deb ko'rsating.",
+      solution: "function App() {\n  const ism = 'Kamola'\n  const yosh = 25\n\n  return (\n    <div>\n      <p>Ism: {ism}</p>\n      <p>Yosh: {yosh}</p>\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('{ism}') && !code.includes('{ ism }')) return 'ism o\'zgaruvchisini {} ichida ko\'rsating'; return null;"
     },
     {
       id: 8,
-      title: "8. Ko'p qatorli matn",
-      instruction: "Ikkita `<p>` (paragraf) tegini bitta `<div>` ota tegiga o'rab chiqaring. Birinchi paragrafda 'Birinchi qator', ikkinchisida 'Ikkinchi qator' deb yozilsin.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    // Kodingizni yozing\n  );\n}",
-      hint: "return (<div><p>Birinchi qator</p><p>Ikkinchi qator</p></div>);",
-      test: "if (!code.includes('<p>Birinchi qator</p>') || !code.includes('<p>Ikkinchi qator</p>')) return 'Ikkita paragraf yaratganingizga va yozuvlar to\'g\'riligiga ishonch hosil qiling.'; if ((code.match(/<div/g)||[]).length < 1) return 'Paragraflarni ota div ichiga olishingiz kerak.'; return null;"
+      title: "Shartli ko'rsatish",
+      instruction: "const kirganmi = true yarating. Ternary operator: {kirganmi ? <p>Xush kelibsiz!</p> : <p>Iltimos kiring</p>}",
+      startingCode: "function App() {\n  const kirganmi = true\n  \n  return (\n    <div>\n      {/* Shartli ko'rsatish bu yerda */}\n    </div>\n  )\n}\n\nexport default App",
+      hint: "{ kirganmi ? <p>Xush kelibsiz!</p> : <p>Iltimos kiring</p> }",
+      solution: "function App() {\n  const kirganmi = true\n  \n  return (\n    <div>\n      {kirganmi ? <p>Xush kelibsiz!</p> : <p>Iltimos kiring</p>}\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('?') || !code.includes(':')) return 'Ternary operator ? : ishlatishni unutmang'; return null;"
     },
     {
       id: 9,
-      title: "9. Bo'sh teg (Fragment) ishlatish",
-      instruction: "Komponentda ikkita `<button>` bor, ammo ular ota tegsiz xato beradi. Ularni `<div>` o'rniga bo'sh teg (Fragment, ya'ni `<></>`) ichiga oling.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <button>Kirish</button>\n    <button>Ro'yxatdan o'tish</button>\n  );\n}",
-      hint: "return (\n  <>\n    <button>Kirish</button>\n    <button>Ro'yxatdan o'tish</button>\n  </>\n);",
-      test: "if (!code.includes('<>') || !code.includes('</>')) return 'Fragment (<></>) dan foydalanganingizga ishonch hosil qiling.'; return null;"
+      title: "Komponentni chaqirish",
+      instruction: "Salom nomli komponent yarating (p qaytarsin). App da <Salom /> ni chaqiring.",
+      startingCode: "// Salom komponentini bu yerda yarating\n\n\nfunction App() {\n  return (\n    <div>\n      {/* Salom komponentini bu yerga qo'shing */}\n    </div>\n  )\n}\n\nexport default App",
+      hint: "function Salom() { return <p>Salom Dunyo!</p> }. Keyin App ichida: <Salom />",
+      solution: "function Salom() {\n  return <p>Salom Dunyo!</p>\n}\n\nfunction App() {\n  return (\n    <div>\n      <Salom />\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('function Salom') && !code.includes('const Salom')) return 'Salom komponentini yarating'; if (!code.includes('<Salom')) return 'App ichida <Salom /> ni chaqiring'; return null;"
     },
     {
       id: 10,
-      title: "10. H1 dan H3 gacha elementlar",
-      instruction: "Sahifada H1 dan boshlab H3 gacha sarlavhalar yarating. Yozuvlari ketma-ket: 'Katta sarlavha', 'O\'rta sarlavha', 'Kichik sarlavha' bo'lsin.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      {/* Sarlavhalarni qo'shing */}\n    </div>\n  );\n}",
-      hint: "<h1>Katta sarlavha</h1>, <h2>...</h2>",
-      test: "if (!code.includes('<h1>Katta sarlavha</h1>') || !code.includes('<h2>O\'rta sarlavha</h2>') || !code.includes('<h3>Kichik sarlavha</h3>')) return 'H1, H2, H3 teglari va ularning matnlarini to\'g\'ri yozganingizni tekshiring.'; return null;"
+      title: "npm skriptlarini bilish",
+      instruction: "const ishgaTushirish = 'npm run dev' o'zgaruvchisini yarating va uni p tegida ko'rsating.",
+      startingCode: "// Vite loyihasini ishga tushirish uchun:\n// const ishgaTushirish = ???\n\nexport default function App() {\n  return <p>Buyruq shu yerda ko'rinsin</p>\n}",
+      hint: "Vite da ishga tushirish buyrug'i: npm run dev",
+      solution: "const ishgaTushirish = 'npm run dev'\n\nexport default function App() {\n  return <p>{ishgaTushirish}</p>\n}",
+      test: "if (!code.includes('npm run dev')) return 'npm run dev ni yozing'; return null;"
     }
   ],
   quizzes: [
     {
-      question: "React nima?",
-      options: [
-        "Foydalanuvchi interfeyslarini (UI) yaratish uchun JavaScript kutubxonasi",
-        "Ma'lumotlar bazasini boshqarish tizimi",
-        "Backend server yaratish uchun freymvork",
-        "Faqat mobil ilovalar yaratadigan dastur"
-      ],
-      correctAnswer: 0,
-      explanation: "React — bu foydalanuvchi interfeyslarini (UI) yaratish uchun Meta tomonidan ishlab chiqilgan mashhur JavaScript kutubxonasi hisoblanadi."
+      question: "React qaysi yilda va qaysi kompaniya tomonidan ochiq manbaga chiqarildi?",
+      options: ["2010, Google", "2013, Facebook (Meta)", "2015, Microsoft", "2011, Twitter"],
+      correctAnswer: 1,
+      explanation: "React 2013-yilda Facebook (hozirgi Meta) tomonidan ochiq manbaga chiqarildi. Uni Jordan Walke yaratgan."
     },
     {
-      question: "React dastlab qaysi kompaniya tomonidan ishlab chiqilgan?",
+      question: "Virtual DOM nima?",
       options: [
-        "Google",
-        "Microsoft",
-        "Meta (sobiq Facebook)",
-        "Amazon"
+        "Brauzerning maxsus DOM turi",
+        "Real DOM ning xotiradagi engil JavaScript obyekt nusxasi",
+        "Serverda saqlanadigan HTML nusxasi",
+        "CSS ni boshqarish tuzilmasi"
+      ],
+      correctAnswer: 1,
+      explanation: "Virtual DOM — React tomonidan xotirada saqlanadigan Real DOM ning engil JavaScript obyekt nusxasi. U Real DOM ni to'g'ridan-to'g'ri manipulatsiya qilmasdan, avval o'zida o'zgartirish qiladi."
+    },
+    {
+      question: "React Reconciliation jarayonida nima sodir bo'ladi?",
+      options: [
+        "Butun sahifa qayta yuklanadi",
+        "Faqat o'zgargan qismlar Real DOM ga yoziladi",
+        "Server yangi HTML yuboradi",
+        "CSS fayllar qayta o'qiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Reconciliation — React ning Virtual DOM dagi farqlarni aniqlash va faqat o'zgargan qismlarni Real DOM ga yozish jarayoni."
+    },
+    {
+      question: "SPA ning asosiy afzalligi nima?",
+      options: [
+        "SEO uchun juda qulay",
+        "Har sahifada yangi HTML yuklanadi",
+        "Navigatsiya tez, oq ekran ko'rinmaydi",
+        "Server har safar yangi HTML yuboradi"
       ],
       correctAnswer: 2,
-      explanation: "React 2013-yilda Meta (Facebook) kompaniyasi tomonidan yaratilgan va ommaga taqdim etilgan."
+      explanation: "SPA da faqat bir marta HTML yuklanadi. Keyingi navigatsiyalarda JavaScript faqat JSON oladi, React DOM ni yangilaydi — tez va silliq."
     },
     {
-      question: "SPA nima degani?",
+      question: "Yangi React loyiha yaratishda qaysi vosita hozir tavsiya etiladi?",
+      options: ["Create React App (CRA)", "jQuery", "Vite", "Webpack CLI"],
+      correctAnswer: 2,
+      explanation: "Vite — zamonaviy, tez va faol rivojlanayotgan build vositasi. CRA endi qo'llab-quvvatlanmayapti va sekin."
+    },
+    {
+      question: "node_modules/ papkasi nima uchun kerak?",
       options: [
-        "Simple Programming Application",
-        "Single Page Application",
-        "Server Page Architecture",
-        "Standard Processing API"
+        "Bizning asosiy kodlarimiz shu yerda",
+        "O'rnatilgan kutubxonalar shu yerda saqlanadi",
+        "Produksiya build fayllari shu yerda",
+        "HTML va CSS fayllar shu yerda"
       ],
       correctAnswer: 1,
-      explanation: "SPA (Single Page Application) - bitta HTML sahifasidan iborat bo'lgan ilova degani. Sahifadan sahifaga o'tganda brauzer yangilanmaydi."
+      explanation: "node_modules/ da npm orqali o'rnatilgan barcha kutubxonalar saqlanadi. Bu papkani gitga yuklamaslik kerak — .gitignore ga qo'shiladi."
     },
     {
-      question: "React ilovalarining 'SPA' deb atalishiga nima sabab bo'lgan?",
-      options: [
-        "Ular faqat bitta komponentdan iborat bo'ladi",
-        "Brauzer sahifadan sahifaga o'tganda sahifani yangilamaydi, faqat kerakli qismini o'zgartiradi",
-        "Unda faqat bitta CSS fayli bo'lishi shart",
-        "Bu ilovalarni faqat bitta odam ishlata oladi"
-      ],
-      correctAnswer: 1,
-      explanation: "SPA larda HTML sahifa faqat bir marta serverdan yuklab olinadi. Qolgan barcha navigatsiya va UI o'zgarishlarini JavaScript o'z zimmasiga oladi va sahifani umuman miltillatmasdan yangilaydi."
+      question: "React loyihasining 'kirish nuqtasi' (entry point) qaysi fayl?",
+      options: ["App.jsx", "index.html", "src/main.jsx", "package.json"],
+      correctAnswer: 2,
+      explanation: "src/main.jsx — React ilovasining kirish nuqtasi. U ReactDOM.createRoot() bilan 'root' div ni topadi va App komponentini render qiladi."
     },
     {
-      question: "Virtual DOM qanday ishlaydi?",
-      options: [
-        "Bu haqiqiy brauzer DOM ini butunlay o'chirib tashlaydigan virus",
-        "Bu xotiradagi yengil nusxa bo'lib, React o'zgarishlarni avval Virtual DOMda solishtirib, faqat farqni haqiqiy DOMga o'tkazadi",
-        "Bu faqat Mac kompyuterlarida ishlaydigan xususiyat",
-        "Bu serverda saqlanuvchi va har safar yangilanuvchi fayl"
-      ],
-      correctAnswer: 1,
-      explanation: "Virtual DOM React ga aynan qaysi HTML tegi o'zgarganini topish va faqat o'sha tegni o'zgartirish orqali tezlikni oshirish imkonini beradi."
+      question: "package.json da 'dev' skriptini qanday ishga tushirish mumkin?",
+      options: ["vite dev", "node vite", "npm run dev", "npx dev"],
+      correctAnswer: 2,
+      explanation: "npm run <skript_nomi> buyrug'i package.json dagi scripts bo'limidagi buyruqni ishga tushiradi."
     },
     {
-      question: "Reactda 'Diffing' jarayoni nimani anglatadi?",
-      options: [
-        "Kodni xatolardan tozalash",
-        "Eski va yangi Virtual DOM larni solishtirib, o'zgargan qismini topish",
-        "Ilovani serverga yuklash",
-        "CSS uslublarini HTMLga ulash"
-      ],
-      correctAnswer: 1,
-      explanation: "Diffing - bu qadimgi va yangi Virtual DOM daraxtini bir-biriga solishtirish va ulardagi farqlarni (o'zgarishlarni) topish algoritmiga aytiladi."
+      question: "React da CSS class qo'shish uchun qaysi atributdan foydalaniladi?",
+      options: ["class", "cssClass", "className", "classList"],
+      correctAnswer: 2,
+      explanation: "JSX da class o'rniga className ishlatiladi, chunki class JavaScript da reserved keyword (zahiralangan so'z)."
     },
     {
-      question: "React o'z ishlashi uchun qanday dasturiy muhitni talab qiladi?",
+      question: "Vite ishga tushirganda qaysi URL da ko'rish mumkin?",
+      options: ["http://localhost:3000", "http://localhost:8080", "http://localhost:5173", "http://localhost:4200"],
+      correctAnswer: 2,
+      explanation: "Vite default port sifatida 5173 ni ishlatadi. CRA esa 3000 portidan foydalanadi."
+    },
+    {
+      question: "MPA da foydalanuvchi havolani bosganida nima sodir bo'ladi?",
       options: [
-        "Python",
-        "Java",
-        "Node.js",
-        "PHP"
+        "JavaScript DOM ni yangilaydi",
+        "React Virtual DOM ni o'zgartiradi",
+        "Brauzer serverdan yangi HTML sahifasini yuklab, qayta ko'rsatadi",
+        "Faqat zarur JSON ma'lumot olinadi"
       ],
       correctAnswer: 2,
-      explanation: "React kutubxonalari va mahalliy serverni ishga tushirish uchun Node.js muhiti talab etiladi."
+      explanation: "MPA da har bir navigatsiyada server yangi HTML sahifasini yuboradi va brauzer qaytadan yuklaydi — sekin va 'oq ekran' ko'rinadi."
     },
     {
-      question: "React loyihasini terminal orqali avtomatik yaratish uchun qaysi buyruqdan foydalaniladi?",
+      question: "React da export default App nima uchun yoziladi?",
       options: [
-        "npm install react",
-        "node create-react",
-        "npx create-react-app loyiha-nomi",
-        "git clone react-app"
-      ],
-      correctAnswer: 2,
-      explanation: "'npx create-react-app' - bu barcha kerakli sozlamalar, fayllar va papkalar bilan to'liq React loyihasini yaratib beradigan rasmiy vositadir."
-    },
-    {
-      question: "React dasturining barcha kutubxonalari va kodlari yuklanadigan papka qanday nomlanadi?",
-      options: [
-        "src/",
-        "public/",
-        "build/",
-        "node_modules/"
-      ],
-      correctAnswer: 3,
-      explanation: "node_modules/ papkasi loyihamiz ishlashi uchun kerakli bo'lgan barcha tashqi paketlar va kutubxonalarni o'z ichiga oladi."
-    },
-    {
-      question: "Loyihamizning ommaviy fayllari (masalan, index.html) qaysi papkada saqlanadi?",
-      options: [
-        "src/",
-        "public/",
-        "node_modules/",
-        "assets/"
+        "App ni serverga yuborish uchun",
+        "App komponentini boshqa fayllar import qilishi uchun",
+        "App ni HTML ga ulash uchun",
+        "CSS stillarni qo'llash uchun"
       ],
       correctAnswer: 1,
-      explanation: "public/ papkasi to'g'ridan-to'g'ri brauzerga taqdim etiluvchi statik fayllar (index.html, favicon va hk) ni saqlaydi."
+      explanation: "export default App — boshqa fayllarda import App from './App' deb import qilib ishlatish imkonini beradi."
     },
     {
-      question: "Biz o'z kodlarimizni (komponentlar, rasmlar, CSS) asosan qaysi papkada yozamiz?",
+      question: "React.StrictMode nima uchun ishlatiladi?",
       options: [
-        "src/",
-        "public/",
-        "node_modules/",
-        "bin/"
-      ],
-      correctAnswer: 0,
-      explanation: "src/ (source) papkasi React loyihamizning asosiy ish joyi bo'lib, biz barcha JS/JSX va CSS fayllarimizni shu yerda yaratamiz."
-    },
-    {
-      question: "React loyiha pasporti (qanday kutubxonalar va skriptlar borligi) qaysi faylda saqlanadi?",
-      options: [
-        "index.html",
-        "App.js",
-        "package.json",
-        "readme.md"
+        "Ilovani produksiyaga tayyorlash uchun",
+        "CSS stillarni qo'llash uchun",
+        "Rivojlanish vaqtida potensial muammolarni aniqlash uchun",
+        "Virtual DOM ni o'chirish uchun"
       ],
       correctAnswer: 2,
-      explanation: "package.json fayli loyiha haqidagi barcha muhim ma'lumotlarni (nomi, versiyasi, skriptlari va o'rnatilgan kutubxonalar ro'yxati) o'zida saqlaydi."
+      explanation: "React.StrictMode rivojlanish vaqtida qo'shimcha tekshiruvlar o'tkazadi: deprecated API lar, kutilmagan yon effektlar. Produksiyada hech qanday ta'siri yo'q."
     }
   ]
 };

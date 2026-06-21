@@ -238,6 +238,23 @@ Agar ma'lumot faqat 1-2 qatlam pastga ketayotgan bo'lsa, **Prop Drilling unchali
 
 Katta loyihalarda Context API — Redux kabi katta kutubxonalarni o'rnatmasdan turib, state'ni global boshqarishning ajoyib va native (tug'ma) yechimidir. Undan to'g'ri maqsadlarda, joyida foydalaning!
 
+
+---
+
+## 🎤 Intervyu Savollari
+
+**1. Context API nima va qachon kerak?**
+*Javob:* Context API — global ma'lumotlarni (foydalanuvchi, til, tema) barcha komponentlarga props drilling siz uzatish imkonini beradi. createContext(), Provider, useContext() uchligidan iborat. Ko'p qatlamdagi prop drilling muammosini hal qiladi.
+
+**2. Context va Props ning farqi?**
+*Javob:* Props — faqat bir qatlam pastga uzatiladi (ota → bevosita bola). Context — Provider ichidagi har qanday chuqurlikdagi komponent subscribe bo'lishi mumkin, o'rta qatlamlardan o'tmasdan.
+
+**3. Context ning kamchiliklari?**
+*Javob:* Context qiymati o'zgarganda, unga subscribe bo'lgan barcha komponentlar qayta render bo'ladi — bu unumdorlik muammosi. Shuning uchun: (1) Tez-tez o'zgaradigan ma'lumotlar uchun Redux/Zustand yaxshiroq, (2) Kontekstni kichik, mavzuga bo'lingan qilib yarating.
+
+**4. useContext hook qanday ishlatiladi?**
+*Javob:* \`const qiymat = useContext(MenimContext)\`. Bu hook qiymati Provider dan keladi. Komponent Provider dan tashqarida bo'lsa, createContext ga berilgan default qiymat qaytariladi.
+
 `,
   code: `import React, { useState, createContext, useContext } from "react";
 

@@ -227,6 +227,23 @@ useEffect(() => {
 ### Xulosa
 Hooklar qoidalariga amal qiling. \`useEffect\` dagi qaramliklar massiviga (\`[]\`) doim e'tibor qarating, chunki kodning ishlash mantig'i va tezligi to'g'ridan-to'g'ri unga bog'liq. Har doim ishlatilgan obunalar (subscriptions) yoki taymerlarni "Cleanup" qilishni unutmang!
 
+
+---
+
+## 🎤 Intervyu Savollari
+
+**1. useEffect hook nima va u qachon ishlaydi?**
+*Javob:* useEffect — yon effektlar (side effects) uchun: API chaqiruvlar, DOM manipulatsiya, obuna (subscription). Dependency array bo'yicha ishlaydi: \`[]\` — faqat mount da, \`[dep]\` — dep o'zgarganda, yo'q array — har render da.
+
+**2. useEffect da infinite loop qanday yuzaga keladi va qanday oldini olish mumkin?**
+*Javob:* Agar useEffect ichida state o'zgartirish bo'lsa va shu state dependency arrayda bo'lsa — cheksiz sikl bo'ladi. Oldini olish: dependency arrayni to'g'ri belgilash, state dan mustaqil mantiqni ajratish.
+
+**3. Cleanup funksiya nima?**
+*Javob:* useEffect qaytargan funksiya — cleanup. U komponent unmount bo'lganda yoki keyingi effect ishlaganda chaqiriladi. Timer tozalash, event listener olib tashlash, fetch abortlash uchun zarur.
+
+**4. Hook larning asosiy qoidalari qanday?**
+*Javob:* (1) Faqat React funksional komponentlari yoki custom hooklarda ishlatish. (2) Doimo komponent tepasida chaqirish — if, loop, nested funksiya ichida emas. Bu hook larning tartibini saqlaydi.
+
 `,
   code: `import React, { useState, useEffect, useRef } from "react";
 

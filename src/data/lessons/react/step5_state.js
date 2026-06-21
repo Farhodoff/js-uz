@@ -227,6 +227,23 @@ Xuddi shunday massivlar uchun:
 > **State qayerda turishi kerak?**
 > Agar ikkita komponent bitta ma'lumotga ehtiyoj sezsa, state'ni ularning ota (parent) komponentiga olib chiqing (Lifting state up). Bu haqda keyingi darslarda batafsil gaplashamiz.
 
+
+---
+
+## 🎤 Intervyu Savollari
+
+**1. useState hook nima va u qanday ishlaydi?**
+*Javob:* useState — React da funksional komponentda holat (state) saqlash uchun ishlatiladigan hook. U ikkita qiymat qaytaradi: joriy state qiymati va state ni yangilovchi funksiya. \`const [count, setCount] = useState(0)\`. State o'zgarganda komponent qayta render bo'ladi.
+
+**2. State ni to'g'ridan-to'g'ri o'zgartirish mumkinmi?**
+*Javob:* Yo'q! \`count = count + 1\` — bu noto'g'ri. Faqat setter funksiyasi orqali o'zgartirish kerak: \`setCount(count + 1)\`. Aks holda React o'zgarishni sezib, UI ni qayta render qilmaydi.
+
+**3. Previous state nima va qachon kerak?**
+*Javob:* Yangi state oldingi state asosida hisoblanganda, \`setState(prevState => ...)\` funksional formadan foydalanish kerak. Bu asinxron state yangilanishlari paytida to'g'ri qiymatni olish kafolatlaydi. Masalan: \`setCount(prev => prev + 1)\`.
+
+**4. Nima uchun state o'zgarishi darhol ko'rinmaydi?**
+*Javob:* State yangilanishlari asinxron — React ularni birlashtiradi (batching) va keyin qayta render qiladi. Shuning uchun setCount dan keyin darhol count ni console.log qilsangiz, eski qiymatni ko'rasiz.
+
 `,
   code: `import React, { useState } from "react";
 

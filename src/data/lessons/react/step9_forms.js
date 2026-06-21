@@ -298,6 +298,23 @@ React'da formalar bilan ishlash boshlanishiga biroz qiyinroq va oddiy HTML'ga ni
 
 > **💡 Bonus Maslahat:** Agar loyihangizda formalar juda ko'p, katta va murakkab bo'lsa (masalan, 20-30 ta input maydonlari, qiyin va chuqur validatsiyalar), bu ishlarni qo'lda qilish o'rniga **Formik** yoki **React Hook Form** kabi tayyor va mashhur kutubxonalardan foydalanish tavsiya etiladi. Ular sizni ortiqcha qozon-kod (boilerplate) yozishdan qutqaradi, ishlash tezligini (performance) oshiradi va qulay validatsiya vositalarini taqdim etadi. Ammo ularni ishlatishga o'tishdan oldin, hozirgina o'rgangan "Controlled Components" mexanizmini to'liq o'zlashtirib, tushunib olishingiz shart!
 
+
+---
+
+## 🎤 Intervyu Savollari
+
+**1. Controlled va Uncontrolled komponent farqi nimada?**
+*Javob:* Controlled — input qiymati React state bilan boshqariladi, har o'zgarishda onChange state yangilanadi. Uncontrolled — qiymat DOM da saqlanadi, ref orqali olinadi. React Controlled usulni tavsiya qiladi — state bir manba bo'ladi (single source of truth).
+
+**2. Form submit da e.preventDefault() nima uchun kerak?**
+*Javob:* Standart forma submit sahifani qayta yuklaydi (server ga POST). React SPA da bu kerak emas. \`e.preventDefault()\` sahifa qayta yuklanishining oldini oladi va JavaScript bilan ma'lumotni boshqarish imkonini beradi.
+
+**3. Bir formada ko'p inputni boshqarish uchun qanday yondashuv bor?**
+*Javob:* Yagona state obyekti va umumiy handler: \`const [forma, setForma] = useState({ism: '', email: ''})\`. Handler: \`e => setForma(p => ({...p, [e.target.name]: e.target.value}))\`. Har input ga \`name\` atributi beriladi.
+
+**4. Forma validatsiyasi qanday amalga oshiriladi?**
+*Javob:* (1) HTML5 required, minLength — oddiy; (2) Submit da tekshirish — state da xato xabarlari saqlash; (3) onChange da real vaqt tekshirish; (4) React Hook Form, Zod kabi kutubxonalar — katta formalarda tavsiya.
+
 `,
   code: `import React, { useState } from "react"; // React va useState hook'i
 

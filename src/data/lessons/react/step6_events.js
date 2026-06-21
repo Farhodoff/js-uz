@@ -220,6 +220,23 @@ Agar siz \`e.preventDefault()\` dan foydalanmasangiz, React-dagi state'laringiz 
 
 Ushbu qoidalarni tushunib olish sizga React-da har qanday murakkab interfeyslarni bexato va samarali yaratishga mustahkam zamin yaratadi!
 
+
+---
+
+## 🎤 Intervyu Savollari
+
+**1. React da Event Handling qanday ishlaydi?**
+*Javob:* React o'zining Synthetic Event tizimiga ega. Barcha hodisalar React tomonidan yuqori darajada (root element) bitta listener bilan ushlanadi (Event Delegation). Bu haqiqiy DOM hodisalaridan farq qiladi va barcha brauzerlarda bir xil ishlaydi.
+
+**2. onClick={handler} va onClick={handler()} farqi nimada?**
+*Javob:* \`onClick={handler}\` — funksiyaning o'zini bog'laydi, u faqat click bo'lganda chaqiriladi. \`onClick={handler()}\` — funksiyani render paytida darhol chaqiradi va natijasini (masalan, undefined) bog'laydi. Doimo birinchi usuldan foydalaning.
+
+**3. Event Delegation nima va React nima uchun undan foydalanadi?**
+*Javob:* Event Delegation — ko'p elementlarga alohida listener o'rniga, yagona ota elementga listener qo'yish. React barcha hodisalarni root da ushlaydi. Bu unumdorlikni oshiradi: har bir element o'z listenerini yaratmaydi.
+
+**4. Hodisada default xatti-harakatni to'xtatish?**
+*Javob:* \`e.preventDefault()\` — masalan, formani submit bo'lishini to'xtatish. \`e.stopPropagation()\` — hodisaning ota elementlarga tarqalishini to'xtatish (bubbling).
+
 `,
   code: `import React, { useState } from "react";
 

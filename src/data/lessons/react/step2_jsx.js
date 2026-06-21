@@ -1,237 +1,262 @@
 export const step2_jsx = {
+  id: "step2_jsx",
   title: "2-DARS: JSX Sintaksisi",
   content: `
-# 2-qadam: JSX - JavaScript va HTML ning mukammal nikohi
+# 2-DARS: JSX Sintaksisi (JavaScript XML)
 
-Xush kelibsiz! React olamiga kirib borarkanmiz, birinchi navbatda duch keladigan eng g'ayrioddiy, ammo eng kuchli tushunchalardan biri bu — **JSX**. Agar siz ilgari faqat oddiy HTML va JavaScript (Vanilla JS) bilan ishlagan bo'lsangiz, JSX boshida biroz g'alati tuyulishi mumkin. Ammo ishonavering, uning sehrini tushunib yetganingizdan so'ng, usiz kod yozishni tasavvur qila olmaysiz!
+## 1. JSX Nima?
 
----
+JSX (JavaScript XML) — bu JavaScript kodi ichida HTML ga o'xshash sintaksisni yozish imkonini beruvchi **sintaktik qand** (syntactic sugar). U aslida JavaScript dir, lekin HTML kabi ko'rinadi.
 
-## 🧐 JSX o'zi nima?
+**Hayotiy o'xshatish:** JSX — bu xuddi o'zbek tilida "Salom!" deyish o'rniga, rasmiy "Assalomu alaykum!" deyish kabi. Ikkalasi ham bir narsani anglatadi, lekin biri o'qish uchun qulayroq.
 
-**JSX (JavaScript XML)** — bu JavaScript tilining sintaksis kengaytmasi. U ko'rinishidan xuddi HTML ga o'xshaydi, lekin to'liq JavaScript quvvatiga ega. JSX orqali biz foydalanuvchi interfeysini (UI) to'g'ridan-to'g'ri JavaScript kodimiz ichida tasvirlashimiz mumkin.
+\`\`\`jsx
+// JSX yozish usuli (qulayroq)
+const element = <h1>Salom, Dunyo!</h1>;
 
-### 💡 Hayotiy o'xshashlik (Analogy)
-Tasavvur qiling, siz aqlli uy quryapsiz. An'anaviy veb-dasturlashda:
-- **HTML** — bu uyning g'ishtlari, devorlari va xonalari (Struktura).
-- **JavaScript** — bu uyning elektr tizimi, avtomatika va kalitlari (Mantiq va Harakat).
-
-Odatda siz g'ishtlarni alohida terib chiqib, keyin ularga sim tortib, ularni birlashtirishingiz kerak bo'lardi (\`document.getElementById\` va hokazo). 
-**JSX esa — bu o'zining ichiga oldindan mikrosxema va tugmalar o'rnatilgan "aqlli g'ishtlar"** dir! Siz strukturani qurayotgan vaqtingizning o'zida unga mantiqni ham qo'shib ketasiz. Siz UI qanday ko'rinishini va qanday ishlashini bitta yaxlit joyda ko'rasiz.
-
----
-
-## ❓ Nega bizga JSX kerak? (Nega mantiq va ko'rinishni aralashtiramiz?)
-
-O'nlab yillar davomida veb-dasturchilarga "Mantiq (JS) va Ko'rinish (HTML) ni alohida fayllarda saqlang" deb o'rgatib kelingan. Bunga "Vazifalarni ajratish" (Separation of Concerns) deyilardi.
-
-Xo'sh, nega React bu qoidani buzadi?
-
-React ijodkorlari anglab yetishdiki, zamonaviy veb-ilovalarda **UI va Mantiq bir-biri bilan uzviy bog'liq**. Tugma qanday ko'rinishi va uni bosganda nima sodir bo'lishi — bu bitta yaxlit narsa (komponent). Kodni fayl turlariga (HTML, JS, CSS) qarab emas, balki **vazifasiga qarab (Komponentlarga)** ajratish ancha mantiqli va samaraliroq.
-
-**JSX ning afzalliklari:**
-1. **O'qilishi oson:** Kodga qarashingiz bilan interfeys qanday tuzilganini darhol tushunasiz.
-2. **Kamroq xato:** JavaScript ichida HTML yozish orqali, siz xatoliklarni kompilyatsiya vaqtidayoq (brauzerga yetib bormasdan) ko'ra olasiz.
-3. **To'liq JS quvvati:** HTML ichida sikllar (\`map\`), shartlar (\`if\`/\`ternary\`) va o'zgaruvchilardan erkin foydalanish mumkin.
-
----
-
-## ⚙️ Parda ortida: Babel qanday ishlaydi?
-
-Brauzerlar (Chrome, Safari, Edge) JSX ni tushunmaydi! Ularning "tili" — faqat toza JavaScript, HTML va CSS.
-
-Agar shunday bo'lsa, brauzer JSX ni qanday o'qiydi?
-Bu yerda maydonga **Babel** tushadi. Babel — bu zamonaviy JS kodini (va JSX ni) eski, barcha brauzerlar tushunadigan oddiy JavaScript kodiga aylantirib beruvchi vosita (kompilyator/transpilyator).
-
-Babel har bir JSX tegingizni olib, uni React'ning \`React.createElement()\` funksiyasi chaqiruviga aylantiradi.
-
-### 🔄 JSX -> Babel -> React Element jarayoni:
-
-\`\`\`mermaid
-flowchart TD
-    A[Siz yozgan JSX kod\n < div > Salom < /div >] -->|Babel kompilyatori orqali o'tadi| B(JavaScript'ga aylantiriladi\n React.createElement\n'div', null, 'Salom')
-    B -->|React Virtual DOM'ga qo'shadi| C{React Element Obyekti}
-    C -->|React DOM| D[(Brauzerdagi haqiqiy DOM\n Haqiqiy ko'rinish)]
-    
-    style A fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px
-    style B fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
-    style C fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
-    style D fill:#ffccbc,stroke:#ff5722,stroke-width:2px
+// JSX aslida quyidagiga aylanadi (Babel tomonidan):
+const element = React.createElement('h1', null, 'Salom, Dunyo!');
 \`\`\`
 
-*Ko'rib turganingizdek, JSX shunchaki \`React.createElement\` ni oson va chiroyli yozish uchun "sintaktik shakar" (syntactic sugar) xolos.*
+### Nima uchun JSX kerak?
+
+- **O'qish oson:** HTML va JS ni birgalikda ko'rish mantiqni tushunishni osonlashtiradi
+- **Xatolarni aniqlash:** Sintaksis xatolari build paytida ko'rinadi
+- **Kuchli:** JavaScript ning to'liq quvvatidan foydalanish mumkin
 
 ---
 
-## ⚠️ JSX ning qat'iy qoidalari
+## 2. Babel: JSX dan JS ga
 
-JSX HTML ga juda o'xshasa-da, uning o'ziga xos qat'iy qoidalari bor. U oddiy HTML ga qaraganda ancha talabchan. Bu qoidalarni bilish juda muhim.
+Brauzerlar JSX ni tushunmaydi. **Babel** degan vosita JSX ni oddiy JavaScript ga aylantiradi.
 
-### 1. Barcha elementlar Yagona Ota-ona (Single Parent) ichida bo'lishi shart
-Komponent har doim bitta yaxlit element qaytarishi kerak. Agar bir nechta yonma-yon element qaytarmoqchi bo'lsangiz, ularni bitta "qopga" solishingiz kerak.
+\`\`\`mermaid
+graph LR
+    A["JSX kodi\n(<h1>Salom</h1>)"] --> B["Babel Compiler"]
+    B --> C["React.createElement()\nchaqiruvlari"]
+    C --> D["Virtual DOM\nobyekti"]
+    D --> E["Real DOM"]
 
-Nima uchun? Chunki har bir JSX aslini olganda funksiya (\`React.createElement\`) va funksiya faqat bitta qiymat (obyekt) qaytara oladi.
+    style A fill:#f39c12,color:#fff
+    style B fill:#8e44ad,color:#fff
+    style C fill:#3498db,color:#fff
+    style D fill:#2ecc71,color:#fff
+    style E fill:#e74c3c,color:#fff
+\`\`\`
 
-### 2. Barcha teglar albatta yopilishi shart (Self-closing tags)
-HTML da \`<input>\` yoki \`<img>\` kabi teglarni yopmasdan tashlab ketish mumkin. JSX da bunday qilib bo'lmaydi. Har bir teg albatta yopilishi shart: \`<input />\`, \`<img />\`, \`<br />\`.
+**Babel qanday ishlaydi:**
 
-### 3. Atributlar nomlanishi TuyaKo'rinishida (camelCase) bo'lishi kerak
-JSX da yozilgan narsa asosan JavaScript bo'lganligi sababli, atribut nomlari JS qoidalariga bo'ysunadi. 
-- HTML dagi \`class\` atributi JSX da \`className\` ga aylanadi (chunki \`class\` bu JavaScript da zaxiralangan so'z - keyword).
-- \`for\` o'rniga \`htmlFor\`.
-
-> 💡 **"JSX - HTML va JS'ning g'alati gibridi" haqiqati:**
-> Dasturchilar yillar davomida "HTML va JS alohida bo'lishi kerak" degan qoidaga ishonib kelishgan. React esa kelib ularni aralashtirib yubordi! Natijada, oddiy CSS klassini berish uchun ham \`className\` deb yozishga majburmiz. Bu boshida kulgili va g'alati tuyuladi. Lekin esda tuting: Siz HTML yozmayapsiz, siz "Niqoblangan JavaScript obyektlarini" yozyapsiz! Shuning uchun JavaScript qoidalari bu yerda "podsho" hisoblanadi.
-
-- Voqealarni ushlash (Event listeners) ham camelCase da: \`onclick\` emas \`onClick\`, \`onchange\` emas \`onChange\`, \`tabindex\` emas \`tabIndex\`.
-
-### 4. JavaScript ni HTML ichiga olib kirish uchun jingalak qavslar \`{}\` ishlatiladi
-Agar siz JSX ichida biror JS o'zgaruvchisini ko'rsatmoqchi, funksiya ishlatmoqchi yoki hisob-kitob qilmoqchi bo'lsangiz, buni faqat jingalak qavslar \`{}\` ichida qilishingiz mumkin. Bu React ga "bu yerda JavaScript kodini hisobla" degan belgidir.
-
----
-
-## ✅ Do's and Don'ts (Yaxshi va Yomon amaliyotlar)
-
-Quyida keng tarqalgan xatolar va ularning to'g'ri yechimlari bilan tanishamiz.
-
-### 1-qoida: Ota-ona elementi
-
-🔴 **YOMON (Don't):** Xatolik yuz beradi, chunki ikkita h1 va p teglari yonma-yon turibdi, ularni o'rab turuvchi qop yo'q.
 \`\`\`jsx
-// XATO! - Bu yerda ikkita alohida element (h1 va p) qaytarilmoqda, ammo ularni o'rab turuvchi umumiy ota-ona elementi yo'q.
-function UserProfile() {
+// Biz yozgan JSX
+function Salom() {
   return (
-    <h1>Farhod</h1>
-    <p>React Dasturchi</p>
+    <div className="card">
+      <h1>Salom!</h1>
+      <p>Bu paragraf</p>
+    </div>
+  );
+}
+
+// Babel ga'ylantirgandan keyin:
+function Salom() {
+  return React.createElement(
+    'div',
+    { className: 'card' },
+    React.createElement('h1', null, 'Salom!'),
+    React.createElement('p', null, 'Bu paragraf')
   );
 }
 \`\`\`
 
-🟢 **YAXSHI (Do):** Ularni \`<div>\` yoki React Fragment (\`<> ... </>\`) ichiga oling. Fragment ortiqcha HTML tugun (node) yaratmaydi, kodni toza saqlaydi.
+---
+
+## 3. JSX ning Asosiy Qoidalari
+
+### Qoida 1: Bitta Ildiz Element (Root Element)
+
+JSX doimo bitta ildiz elementga ega bo'lishi kerak.
+
 \`\`\`jsx
-// TO'G'RI! - Fragment (<></>) yordamida ikkala element bitta umumiy "qop" ga solindi. Bu HTML'da ortiqcha teg (masalan div) yaratmaydi.
-function UserProfile() {
+// ❌ YOMON — ikkita alohida element
+function App() {
+  return (
+    <h1>Sarlavha</h1>
+    <p>Paragraf</p>   // Xato! Ikkita ildiz element!
+  );
+}
+
+// ✅ YAXSHI — bitta div ichida
+function App() {
+  return (
+    <div>
+      <h1>Sarlavha</h1>
+      <p>Paragraf</p>
+    </div>
+  );
+}
+
+// ✅ YAXSHI — Fragment ishlatish (qo'shimcha div qo'shmaslik)
+function App() {
   return (
     <>
-      <h1>Farhod</h1>
-      <p>React Dasturchi</p>
+      <h1>Sarlavha</h1>
+      <p>Paragraf</p>
     </>
   );
 }
 \`\`\`
 
-### 2-qoida: Teglarni yopish
+### Qoida 2: Self-closing Tegler
 
-🔴 **YOMON (Don't):** Input va br teglari yopilmagan.
+HTML da ba'zi tegler yopilmasdan ishlatiladi (\`<br>\`, \`<img>\`, \`<input>\`). JSX da ular self-closing formatda yopilishi SHART.
+
 \`\`\`jsx
-// XATO! - input va br teglari yopilmagan. JSX'da har qanday teg (hatto HTML'da yopilishi shart bo'lmaganlari ham) yopilishi shart.
-function Form() {
-  return (
-    <form>
-      Ism: <input type="text">
-      <br>
-      <button>Yuborish</button>
-    </form>
-  );
-}
+// ❌ YOMON — yopilmagan tegler
+<img src="rasm.jpg">
+<input type="text">
+<br>
+
+// ✅ YAXSHI — / bilan yopilgan
+<img src="rasm.jpg" />
+<input type="text" />
+<br />
 \`\`\`
 
-🟢 **YAXSHI (Do):** Oxiriga \`/\` qo'yib yopish shart.
+### Qoida 3: className va htmlFor
+
+JavaScript da \`class\` va \`for\` — reserved keywords (zahiralangan so'zlar). Shuning uchun JSX da ular boshqacha nomlanadi.
+
 \`\`\`jsx
-// TO'G'RI! - input va br teglari oxiriga slash (/) qo'yish orqali to'g'ri yopilgan.
-function Form() {
-  return (
-    <form>
-      Ism: <input type="text" />
-      <br />
-      <button>Yuborish</button>
-    </form>
-  );
-}
+// ❌ YOMON — HTML atributlari
+<div class="card">
+<label for="email">Email:</label>
+
+// ✅ YAXSHI — JSX atributlari
+<div className="card">
+<label htmlFor="email">Email:</label>
 \`\`\`
 
-### 3-qoida: camelCase va CSS klasslar
+### Qoida 4: camelCase Atributlar
 
-🔴 **YOMON (Don't):** \`class\`, \`onclick\` kabi HTML xususiyatlari ishlatilmoqda. Inline stil (style) oddiy matn kabi yozilgan.
+JSX da HTML atributlari camelCase formatida yoziladi.
+
 \`\`\`jsx
-// XATO! - 'class' atributi ishlatilgan, hodisalar (onclick) kichik harflarda va inline uslublar matn ko'rinishida berilgan.
-function Button() {
-  return (
-    <button class="btn-primary" onclick={submitData} style="color: white; background-color: blue;">
-      Tasdiqlash
-    </button>
-  );
-}
+// ❌ YOMON — HTML uslubida
+<button onclick="handler()" tabindex="1">
+
+// ✅ YAXSHI — JSX da camelCase
+<button onClick={handler} tabIndex={1}>
 \`\`\`
 
-🟢 **YAXSHI (Do):** \`className\`, \`onClick\` ishlatilmoqda. \`style\` esa ikkita jingalak qavs \`{{}}\` ichida JS obyekti sifatida berilmoqda (birinchi qavs JSX qoidasi, ikkinchisi obyekt ekanligini bildiradi). Xususiyatlar camelCase qilingan (background-color emas backgroundColor).
+| HTML Atribut | JSX Atribut |
+|-------------|-------------|
+| \`class\` | \`className\` |
+| \`for\` | \`htmlFor\` |
+| \`onclick\` | \`onClick\` |
+| \`onchange\` | \`onChange\` |
+| \`tabindex\` | \`tabIndex\` |
+| \`readonly\` | \`readOnly\` |
+
+---
+
+## 4. JSX ichida JavaScript Ifodalar
+
+JSX ichida har qanday JavaScript ifodani \`{}\` ichida yozish mumkin.
+
 \`\`\`jsx
-// TO'G'RI! - 'className' ishlatilgan, hodisa 'onClick' (camelCase) qilib yozilgan, inline style esa JS obyekti sifatida uzatilgan.
-function Button() {
-  return (
-    <button 
-      className="btn-primary" 
-      onClick={submitData} 
-      style={{ color: 'white', backgroundColor: 'blue' }}
-    >
-      Tasdiqlash
-    </button>
-  );
-}
-\`\`\`
+const ism = "Abdulloh";
+const yosh = 25;
+const isKatta = yosh >= 18;
 
-### 4-qoida: JavaScript ifodalari (Expressions) vs Qoidalar (Statements)
-
-JSX ichidagi \`{}\` ga siz faqat natija qaytaradigan "ifoda" (expression) larni yozishingiz mumkin (masalan: \`2 + 2\`, \`user.name\`, \`array.map()\`, uchlik (ternary) operator \`isTrue ? 'Ha' : 'Yoq'\`). 
-Siz \`if\`, \`for\`, \`while\` kabi "qoidalar" (statements) ni to'g'ridan-to'g'ri JSX ichida ishlata olmaysiz.
-
-🔴 **YOMON (Don't):** JSX ichida \`if\` yozish mumkin emas.
-\`\`\`jsx
-// XATO! - JSX'ning {} qavslari ichida 'if' kabi to'g'ridan-to'g'ri JS qoidalarini (statements) ishlatib bo'lmaydi.
-function Greeting({ isLogin }) {
-  // 'isLogin' - bu tashqaridan (ota komponentdan) keluvchi prop bo'lib, foydalanuvchining tizimga kirgan yoki kirmaganini bildiradi.
+function App() {
   return (
     <div>
-      { 
-        if (isLogin) { 
-          return <h1>Xush kelibsiz!</h1> 
-        } else {
-          return <h1>Iltimos, kiring.</h1>
-        }
-      }
+      {/* O'zgaruvchi ko'rsatish */}
+      <p>Ism: {ism}</p>
+
+      {/* Hisob-kitob */}
+      <p>Ikki yil keyin: {yosh + 2}</p>
+
+      {/* Uchlik operator (Ternary) */}
+      <p>{isKatta ? "Voyaga yetgan" : "Voyaga yetmagan"}</p>
+
+      {/* && operatori — shartli ko'rsatish */}
+      {isKatta && <p>Huquqlaringiz bor!</p>}
+
+      {/* Funksiya chaqirish */}
+      <p>{ism.toUpperCase()}</p>
     </div>
   );
 }
 \`\`\`
 
-🟢 **YAXSHI (Do):** Buning o'rniga uchlik operator (ternary) yoki mantiqiy \`&&\` dan foydalaning, yoki \`if\` mantiqini asil \`return\` dan oldin tepada yozing.
+### JSX ichida NIMALAR ishlatish MUMKIN EMAS:
+
 \`\`\`jsx
-// 1-usul: Uchlik (Ternary) operator
-function Greeting({ isLogin }) {
-  // 'isLogin' qiymatiga qarab, mos h1 tegi qaytariladi (ifoda / expression)
+// ❌ if/else to'g'ridan-to'g'ri JSX ichida ishlatib bo'lmaydi
+function App() {
   return (
     <div>
-      {isLogin ? <h1>Xush kelibsiz!</h1> : <h1>Iltimos, kiring.</h1>}
+      {if (true) { return <p>Ha</p> }}  // XATO!
     </div>
   );
 }
 
-// 2-usul: Mantiqni JSX dan tashqarida tayyorlash
-function Greeting2({ isLogin }) {
-  // O'zgaruvchi e'lon qilamiz, unda interfeys qismini saqlaymiz
-  let message;
-  
-  // Shart tekshiriladi, bu yerda oddiy if ishlatish mumkin, chunki bu joy JSX'dan tashqarida
-  if (isLogin) {
-    message = <h1>Xush kelibsiz!</h1>;
-  } else {
-    message = <h1>Iltimos, kiring.</h1>;
-  }
-
-  // Yakuniy o'zgaruvchini JSX ichida render qilamiz
+// ✅ Ternary ishlatish
+function App() {
   return (
     <div>
-      {message}
+      {true ? <p>Ha</p> : <p>Yo'q</p>}
+    </div>
+  );
+}
+
+// ✅ Yoki funksiya ichida if/else
+function App() {
+  const renderContent = () => {
+    if (true) return <p>Ha</p>;
+    return <p>Yo'q</p>;
+  };
+
+  return <div>{renderContent()}</div>;
+}
+\`\`\`
+
+---
+
+## 5. Inline Stil
+
+\`\`\`jsx
+// ❌ YOMON — string sifatida
+<p style="color: red; font-size: 16px;">
+
+// ✅ YAXSHI — JavaScript obyekti sifatida
+<p style={{ color: 'red', fontSize: '16px' }}>
+
+// ✅ O'zgaruvchida saqlash
+const stillar = {
+  color: 'blue',
+  fontSize: '18px',
+  fontWeight: 'bold',
+  backgroundColor: '#f0f0f0'
+};
+
+<p style={stillar}>Stillantirilgan matn</p>
+\`\`\`
+
+**E'tibor bering:** CSS xususiyatlari camelCase da yoziladi: \`font-size\` → \`fontSize\`, \`background-color\` → \`backgroundColor\`.
+
+---
+
+## 6. JSX Kommentarlar
+
+\`\`\`jsx
+function App() {
+  // Bu JavaScript kommentari — render bo'lmaydi
+  return (
+    <div>
+      {/* Bu JSX kommentari — render bo'lmaydi */}
+      <p>Ko'rinadigan matn</p>
     </div>
   );
 }
@@ -239,279 +264,331 @@ function Greeting2({ isLogin }) {
 
 ---
 
-## 🎯 Xulosa
-JSX - bu React ning eng go'zal xususiyatlaridan biri. U sizga mantiq va vizual ko'rinishni bitta qulay va tushunarli formatda birlashtirish imkonini beradi. Boshida qat'iy qoidalar biroz noqulay tuyulishi mumkin, lekin vaqt o'tishi bilan siz bu qoidalar qanchalik ko'p xatolarning oldini olishini tushunib yetasiz.
+## 7. Fragment
 
-**Asosiy qoidalar eslatmasi:**
-1. Hamma narsani bitta teg (yoki fragment \`<></>\`) ichiga o'rang.
-2. Barcha teglarni oxirigacha yoping (\`<img />\`).
-3. Atributlarni \`camelCase\` formatida yozing (\`className\`, \`onClick\`).
-4. JavaScript ishlatish uchun \`{}\` dan foydalaning.
+Fragment — bu qo'shimcha DOM elementi qo'shmay, bir necha elementni guruhlash imkonini beradi.
 
-Navbatdagi qadamlarda bu kodlarni turli fayllarga bo'lishni, komponentlar yaratish va ular orasida ma'lumot almashish (Props) tushunchalarini ko'rib chiqamiz!
-
-`,
-  code: `import React from "react";
-
-export default function App() {
-  // 1. JavaScript o'zgaruvchilari - bu ma'lumotlar JSX ichida namoyish etiladi
-  const name = "Sardor"; // Matn turidagi o'zgaruvchi
-  const age = 22; // Raqam turidagi o'zgaruvchi
-  const isStudent = true; // Mantiqiy (boolean) turdagi o'zgaruvchi
-  
-  // Massiv - ro'yxat ko'rinishida chiqarish uchun
-  const skills = ["JavaScript", "React", "Node.js"];
-
-  // return qismi - brauzerda nima ko'rinishini belgilaydi
+\`\`\`jsx
+// ❌ Keraksiz div qo'shish
+function Jadval() {
   return (
-    // Qoida 1: Faqat bitta ota div (yoki Fragment) bo'lishi shart
-    // className - bu CSS klasini ulash uchun (class o'rniga), style esa obyekt ko'rinishida berilgan
-    <div className="container" style={{ padding: 20, fontFamily: 'sans-serif' }}>
-      
-      {/* Qoida 3: JSX ichida JS ishlatish uchun { } qavslar */}
-      {/* name va age o'zgaruvchilarini to'g'ridan-to'g'ri ekranga chiqaramiz */}
-      <h1 style={{ color: '#2c3e50' }}>Foydalanuvchi: {name}</h1>
-      <p>Yoshi: {age} da</p>
-      
-      {/* Shartli render (Ternary operator) - agar isStudent true bo'lsa birinchi qiymat, false bo'lsa ikkinchisi olinadi */}
-      <div style={{ padding: 10, background: isStudent ? '#d4edda' : '#f8d7da', borderRadius: 5 }}>
-        Status: {isStudent ? "Talaba 🎓" : "Xodim 💼"}
-      </div>
-
-      <h3 style={{ marginTop: 20 }}>Texnologiyalar:</h3>
-      
-      {/* Massivni ro'yxat qilib chiqarish (map funksiyasi yordamida har bir element uchun <li> yasaladi) */}
-      <ul>
-        {skills.map((skill, index) => (
-          // Har doim yagona key (kalit) berishni unutmang, bu React'ga elementlarni farqlashga yordam beradi
-          <li key={index} style={{ marginBottom: 5 }}>
-            {skill}
-          </li>
-        ))}
-      </ul>
-
-      {/* Logical AND && - agar massivda elementlar bo'lsa (length > 0), unda o'ng tomondagi <p> ekranga chiqadi */}
-      {skills.length > 0 && (
-        <p style={{ color: 'gray', fontSize: 12 }}>Jami {skills.length} ta texnologiya biladi.</p>
-      )}
-
+    <div>           {/* Bu div table strukturasini buzadi! */}
+      <td>1</td>
+      <td>2</td>
     </div>
   );
-}`,
+}
+
+// ✅ Fragment ishlatish
+function Jadval() {
+  return (
+    <>
+      <td>1</td>
+      <td>2</td>
+    </>
+  );
+}
+
+// ✅ Uzun yozuv — key atribut bilan ishlatiladigan holat
+import { Fragment } from 'react';
+
+function Jadval() {
+  return (
+    <Fragment>
+      <td>1</td>
+      <td>2</td>
+    </Fragment>
+  );
+}
+\`\`\`
+
+---
+
+## 8. ❌ YOMON va ✅ YAXSHI — Keng ko'rsatmalar
+
+\`\`\`jsx
+// ❌ YOMON — string yoki number ni to'g'ridan-to'g'ri render qilish mumkin
+// lekin false, null, undefined ni renderlash bo'sh chiqadi (yaxshi)
+// LEKIN 0 renderlansa, u ekranda "0" deb ko'rinadi!
+{count && <p>Elementlar: {count}</p>}
+// Agar count = 0 bo'lsa, ekranda "0" ko'rinadi (bug!)
+
+// ✅ YAXSHI — aniq solishtirish
+{count > 0 && <p>Elementlar: {count}</p>}
+// Yoki ternary
+{count ? <p>Elementlar: {count}</p> : null}
+\`\`\`
+
+\`\`\`jsx
+// ❌ YOMON — JSX da quotes bilan atribut va expression
+<Component value="{someVariable}" />  // String sifatida o'tadi, expression emas!
+
+// ✅ YAXSHI — curly braces bilan
+<Component value={someVariable} />
+\`\`\`
+
+---
+
+## 9. Intervyu Savollari
+
+**1. JSX nima va u nima uchun kerak?**
+*Javob:* JSX (JavaScript XML) — React da HTML ga o'xshash sintaksis yozish imkonini beruvchi sintaktik qand. U aslida \`React.createElement()\` chaqiruvlariga aylanadi (Babel orqali). JSX kodni o'qishni osonlashtiradi, UI strukturasini mantiqqa yaqin yozish imkonini beradi va sintaksis xatolarini build paytida aniqlaydi.
+
+**2. JSX da \`className\` va \`htmlFor\` nima uchun ishlatiladi?**
+*Javob:* JavaScript da \`class\` va \`for\` — reserved keywords (zahiralangan so'zlar), ular boshqa maqsadlarda ishlatiladi (class deklaratsiyasi, for sikli). Shuning uchun JSX da HTML \`class\` atributi \`className\` ga, \`for\` esa \`htmlFor\` ga o'zgartirilgan.
+
+**3. JSX ichida \`if/else\` ni qanday ishlatish mumkin?**
+*Javob:* JSX ichida to'g'ridan-to'g'ri \`if/else\` blokini ishlatib bo'lmaydi, chunki \`{}\` faqat ifodalarni (expressions) qabul qiladi. Muqobil usullar: (1) Ternary operator: \`{shart ? <A/> : <B/>}\`, (2) \`&&\` operatori: \`{shart && <A/>}\`, (3) Funksiya ichida if/else yozib, funksiyani chaqirish.
+
+**4. Fragment (\`<>\`) nima uchun kerak?**
+*Javob:* React da komponent har doim bitta ildiz elementni qaytarishi kerak. Fragment qo'shimcha DOM elementi (masalan, div) qo'shmay, bir necha elementni guruhlash imkonini beradi. Bu ayniqsa table, flexbox, grid kabi holatlarda muhim — ortiqcha div tuzilmani buzmaydi.
+`,
+  code: `// JSX Sintaksisining asosiy misollari
+import React from 'react'
+
+// O'zgaruvchilar
+const ism = "Abdulloh"
+const yosh = 25
+const isKatta = yosh >= 18
+
+// Inline stil obyekti
+const sarlavhaStili = {
+  color: '#2c3e50',
+  fontSize: '24px',
+  fontWeight: 'bold'
+}
+
+function App() {
+  return (
+    // Fragment — qo'shimcha div qo'shmasdan ildiz element
+    <>
+      {/* Sarlavha — stillantirilgan */}
+      <h1 style={sarlavhaStili}>JSX Misollari</h1>
+
+      {/* O'zgaruvchi ko'rsatish */}
+      <p>Ism: {ism}</p>
+      <p>Yosh: {yosh}</p>
+
+      {/* Ternary operator */}
+      <p>{isKatta ? "Voyaga yetgan ✅" : "Voyaga yetmagan ❌"}</p>
+
+      {/* && operatori */}
+      {isKatta && <p>Ovoz berish huquqi bor!</p>}
+
+      {/* className ishlatish */}
+      <div className="card">
+        <p>Bu div ga className='card' berilgan</p>
+      </div>
+    </>
+  )
+}
+
+export default App`,
   exercises: [
     {
       id: 1,
-      title: "Fragment bilan o'rash",
-      instruction: "Quyidagi kodda ikkita ketma-ket `<h1>` va `<p>` teglar qaytarilmoqda, ammo React faqat bitta ota (root) teg kutadi. Ortiqcha div yozmaslik uchun ularni Fragment (`<></>`) ichiga oling.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <h1>Salom, React!</h1>\n    <p>JSX da bir nechta element qaytarish mumkin emas.</p>\n  );\n}",
-      hint: "Elementlarni `<></>` va `</>` arasiiga oling.",
-      test: "if (code.includes('<>') && code.includes('</>')) { return null; } return 'Elementlarni Fragment (<></>) bilan o\\'rashingiz kerak!';"
+      title: "className bilan div yaratish",
+      instruction: "className='container' li div yarating. Ichida className='title' li h1 va className='text' li p bo'lsin.",
+      startingCode: "function App() {\n  return (\n    <div>\n      <h1>Sarlavha</h1>\n      <p>Paragraf</p>\n    </div>\n  )\n}\n\nexport default App",
+      hint: "div ga className='container', h1 ga className='title', p ga className='text' bering.",
+      solution: "function App() {\n  return (\n    <div className='container'>\n      <h1 className='title'>Sarlavha</h1>\n      <p className='text'>Paragraf</p>\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('className')) return 'className ishlatishni unutmang!'; return null;"
     },
     {
       id: 2,
-      title: "O'zgaruvchini render qilish",
-      instruction: "Kodda `meva` nomli o'zgaruvchi bor. Uni `h1` tegi ichiga JSX jingalak qavslari yordamida joylashtiring.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  const meva = 'Olma';\n\n  return (\n    <div>\n      <h1>Mening sevimli mevam: </h1>\n    </div>\n  );\n}",
-      hint: "O'zgaruvchini `{meva}` ko'rinishida yozing.",
-      test: "if (code.includes('{meva}')) { return null; } return 'O\\'zgaruvchini ko\\'rsatish uchun jingalak qavslardan foydalaning!';"
+      title: "Self-closing teglar",
+      instruction: "img (src va alt bilan) va input (type='email') teglarini self-closing formatda yozing.",
+      startingCode: "function App() {\n  return (\n    <div>\n      {/* img va input bu yerga */}\n    </div>\n  )\n}\n\nexport default App",
+      hint: "<img src='...' alt='...' /> va <input type='email' />",
+      solution: "function App() {\n  return (\n    <div>\n      <img src='https://via.placeholder.com/100' alt='Test rasm' />\n      <input type='email' placeholder='Email kiriting' />\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('/>')) return 'Self-closing formatda yozing: <img /> <input />'; return null;"
     },
     {
       id: 3,
-      title: "Matematik amalni bajarish",
-      instruction: "JSX ichida hisoblash ham mumkin. Jingalak qavslar ichida a va b o'zgaruvchilar yig'indisini chiqaring.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  const a = 5;\n  const b = 10;\n\n  return (\n    <div>\n      <p>Natija: </p>\n    </div>\n  );\n}",
-      hint: "{a + b} ni yozishingiz kerak.",
-      test: "if (code.includes('{a + b}') || code.includes('{a+b}')) { return null; } return 'Jingalak qavs ichida {a + b} amalni bajaring!';"
+      title: "Fragment ishlatish",
+      instruction: "Qo'shimcha div qo'shmasdan Fragment (<>) ishlatib, h2 va ul ni qaytaring.",
+      startingCode: "function App() {\n  return (\n    <div>\n      <h2>Ro'yxat</h2>\n      <ul><li>Birinchi</li></ul>\n    </div>\n  )\n}\n\nexport default App",
+      hint: "<div> ni <> va </> bilan almashtiring.",
+      solution: "function App() {\n  return (\n    <>\n      <h2>Ro'yxat</h2>\n      <ul><li>Birinchi</li></ul>\n    </>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('<>')) return 'Fragment <> ishlatishni unutmang!'; return null;"
     },
     {
       id: 4,
-      title: "className dan foydalanish",
-      instruction: "Quyidagi div elementiga `box` klassini qo'shing. E'tibor bering, JSX da oddiy HTML dan farqli ravishda boshqa atribut nomi ishlatiladi.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>Men qutiman</div>\n  );\n}",
-      hint: "HTML dagi `class` JSX da `className` deb yoziladi.",
-      test: "if (code.includes('className=\"box\"') || code.includes(\"className='box'\")) { return null; } return 'div tegi uchun className=\"box\" atributini qo\\'shing!';"
+      title: "O'zgaruvchi va ifodalar",
+      instruction: "const narx = 150000 va const mahsulot = 'Kitob' yarating. JSX da {mahsulot}: {narx} so'm ko'rsating.",
+      startingCode: "function App() {\n  // O'zgaruvchilarni bu yerda yarating\n  \n  return (\n    <div>\n      {/* O'zgaruvchilarni ko'rsating */}\n    </div>\n  )\n}\n\nexport default App",
+      hint: "return dan oldin const narx = 150000 va const mahsulot = 'Kitob'. JSX da: {mahsulot}: {narx} so'm",
+      solution: "function App() {\n  const narx = 150000\n  const mahsulot = 'Kitob'\n  \n  return (\n    <div>\n      <p>{mahsulot}: {narx} so'm</p>\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('{narx}') && !code.includes('{ narx }')) return 'narx o\'zgaruvchisini {} ichida ko\'rsating'; return null;"
     },
     {
       id: 5,
-      title: "Inline stil (Inline style)",
-      instruction: "Tegga inline usulda stil bering. H1 matnining rangini `red` va shrift o'lchamini `24px` qiling. JSX da style obyekt kutishini unutmang.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <h1>Qizil matn</h1>\n  );\n}",
-      hint: "<h1 style={{ color: 'red', fontSize: '24px' }}> yoki fontSize: 24",
-      test: "const str = code.replace(/\\s/g, ''); if (str.includes('style={{color') && str.includes('fontSize:')) { return null; } return 'To\\'g\\'ri obyekt berishga e\\'tibor qarating, inline stil yozilishi xato';"
+      title: "Ternary operator",
+      instruction: "const ombordami = false yarating. JSX da ternary bilan: ombordami = true bo'lsa 'Mavjud ✅', false bo'lsa 'Tugagan ❌' ko'rsating.",
+      startingCode: "function App() {\n  const ombordami = false\n  \n  return (\n    <div>\n      {/* Ternary bu yerda */}\n    </div>\n  )\n}\n\nexport default App",
+      hint: "{ ombordami ? <p>Mavjud ✅</p> : <p>Tugagan ❌</p> }",
+      solution: "function App() {\n  const ombordami = false\n  \n  return (\n    <div>\n      {ombordami ? <p>Mavjud ✅</p> : <p>Tugagan ❌</p>}\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('?') || !code.includes(':')) return 'Ternary operator ? : ishlatishni unutmang'; return null;"
     },
     {
       id: 6,
-      title: "Teglarni yopish (Self-closing tags)",
-      instruction: "HTML da yopilmaydigan `<img src='...'>`, `<br>`, `<input>` kabi teglar JSX da albatta yopilishi shart. Quyidagi koddagi xatolikni tuzating.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  return (\n    <div>\n      <h2>Rasm:</h2>\n      <img src=\"https://via.placeholder.com/150\">\n      <br>\n      <input type=\"text\">\n    </div>\n  );\n}",
-      hint: "Teglarning oxiriga slash (/) qo'ying: `<img ... />`, `<br />`, `<input ... />`",
-      test: "if (code.includes('/>') && code.match(/\\/>/g) && code.match(/\\/>/g).length >= 3) { return null; } return 'Barcha img, br, input teglar oxiriga / qoyib yoping!';"
+      title: "&& operatori",
+      instruction: "const xabarBor = true yarating. JSX da && bilan: xabarBor true bo'lsagina <p>Sizda yangi xabar bor!</p> ko'rsating.",
+      startingCode: "function App() {\n  const xabarBor = true\n  \n  return (\n    <div>\n      <h2>Panel</h2>\n      {/* && bu yerda */}\n    </div>\n  )\n}\n\nexport default App",
+      hint: "{ xabarBor && <p>Sizda yangi xabar bor!</p> }",
+      solution: "function App() {\n  const xabarBor = true\n  \n  return (\n    <div>\n      <h2>Panel</h2>\n      {xabarBor && <p>Sizda yangi xabar bor!</p>}\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('&&')) return '&& operatorini ishlatishni unutmang'; return null;"
     },
     {
       id: 7,
-      title: "Ternary operator",
-      instruction: "`isLogin` o'zgaruvchisiga qarab shartli matn chiqaring. Agar rost bo'lsa \"Tizimga kirdingiz\", yolg'on bo'lsa \"Iltimos, kiring\" matni chiqsin.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  const isLogin = true;\n\n  return (\n    <div>\n      <p></p>\n    </div>\n  );\n}",
-      hint: "{isLogin ? 'Tizimga kirdingiz' : 'Iltimos, kiring'} dan foydalaning.",
-      test: "if (code.includes('isLogin ?') && code.includes(':')) { return null; } return 'Shartli render uchun ternary operatordan (shart ? A : B) foydalaning!';"
+      title: "Inline stil",
+      instruction: "h1 ga inline stil bering: color='#e74c3c', fontSize='28px', textAlign='center'. style={{...}} formatida.",
+      startingCode: "function App() {\n  return (\n    <div>\n      <h1>Sarlavha</h1>\n    </div>\n  )\n}\n\nexport default App",
+      hint: "<h1 style={{color: '#e74c3c', fontSize: '28px', textAlign: 'center'}}>",
+      solution: "function App() {\n  return (\n    <div>\n      <h1 style={{color: '#e74c3c', fontSize: '28px', textAlign: 'center'}}>Sarlavha</h1>\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('style={{')) return 'style={{...}} formatida yozing (ikki qavsga e\'tibor bering)'; return null;"
     },
     {
       id: 8,
-      title: "Logical AND (&&)",
-      instruction: "Agar `hasMessages` true bo'lsa, xabarlar borligini ko'rsatadigan `<p>Sizda xabarlar bor!</p>` tegi chiqsin, false bo'lsa, hech narsa chiqmasin.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  const hasMessages = true;\n\n  return (\n    <div>\n      <h1>Xabarlar qutisi</h1>\n      \n    </div>\n  );\n}",
-      hint: "{hasMessages && <p>Sizda xabarlar bor!</p>} yozish kerak.",
-      test: "if (code.includes('hasMessages &&') && code.includes('Sizda xabarlar bor!')) { return null; } return '&& orqali shartli tegingizni yozing!';"
+      title: "Stil obyektida saqlash",
+      instruction: "const kartaStili = { backgroundColor: '#f8f9fa', padding: '20px', borderRadius: '8px' } yarating va div ga style={kartaStili} orqali qo'llang.",
+      startingCode: "function App() {\n  // Stil obyektini bu yerda yarating\n  \n  return (\n    <div>\n      <p>Bu karta</p>\n    </div>\n  )\n}\n\nexport default App",
+      hint: "const kartaStili = {...} yarating va <div style={kartaStili}> deng.",
+      solution: "function App() {\n  const kartaStili = {\n    backgroundColor: '#f8f9fa',\n    padding: '20px',\n    borderRadius: '8px'\n  }\n  \n  return (\n    <div style={kartaStili}>\n      <p>Bu karta</p>\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('kartaStili') || !code.includes('style={kartaStili}')) return 'Stil obyektini yarating va style={kartaStili} orqali qo\'llang'; return null;"
     },
     {
       id: 9,
-      title: "Array bilan map ishlashi",
-      instruction: "`ismlar` massividan foydalanib, har bir ismni `<li>` ichida chiqaring. `map` dan foydalaning.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  const ismlar = ['Ali', 'Vali', 'Gani'];\n\n  return (\n    <ul>\n      \n    </ul>\n  );\n}",
-      hint: "ismlar.map((ism, index) => <li key={index}>{ism}</li>) dan foydalaning.",
-      test: "if (code.includes('ismlar.map') && code.includes('key={') && code.includes('<li>')) { return null; } return 'map() funksiyasi orqali massiv elementlarini chiqarib, <li> teglari uchun key atributini bering!';"
+      title: "JSX kommentari",
+      instruction: "JSX da kommentarni qanday yozish kerakligini ko'rsating: {/* ... */} formatida. Bir matn kommentini va bir element kommentini yozing.",
+      startingCode: "function App() {\n  return (\n    <div>\n      Bu yerda komment bo'lsin\n      <p>Ko'rinadigan matn</p>\n      Bu ham komment bo'lsin\n    </div>\n  )\n}\n\nexport default App",
+      hint: "JSX kommentari: {/* komment matni */}",
+      solution: "function App() {\n  return (\n    <div>\n      {/* Bu birinchi komment */}\n      <p>Ko'rinadigan matn</p>\n      {/* Bu ikkinchi komment */}\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('{/*') || !code.includes('*/}')) return 'JSX kommentari {/* ... */} formatida yozing'; return null;"
     },
     {
       id: 10,
-      title: "Obyektlar bilan map ishlashi",
-      instruction: "Quyidagi obyektlar massividagi foydalanuvchilar ismini ko'rsating.",
-      startingCode: "import React from 'react';\n\nexport default function App() {\n  const users = [\n    { id: 1, name: 'Aziz' },\n    { id: 2, name: 'Sardor' }\n  ];\n\n  return (\n    <div>\n      {/* Shu yerda map ishlating */}\n    </div>\n  );\n}",
-      hint: "users.map(user => <p key={user.id}>{user.name}</p>)",
-      test: "if (code.includes('users.map') && code.includes('user.name') && code.includes('key=')) { return null; } return 'users.map() ni ishlatib user.name ni chiqaring va key={user.id} kabi unique kalit bering!';"
+      title: "JSX ifoda qiymatlari",
+      instruction: "const raqamlar = [10, 20, 30] yarating. JSX da bu massivning uzunligini ({raqamlar.length}) va birinchi elementini ({raqamlar[0]}) ko'rsating.",
+      startingCode: "function App() {\n  const raqamlar = [10, 20, 30]\n  \n  return (\n    <div>\n      {/* Massiv uzunligi va birinchi element */}\n    </div>\n  )\n}\n\nexport default App",
+      hint: "{raqamlar.length} va {raqamlar[0]}",
+      solution: "function App() {\n  const raqamlar = [10, 20, 30]\n  \n  return (\n    <div>\n      <p>Elementlar soni: {raqamlar.length}</p>\n      <p>Birinchi element: {raqamlar[0]}</p>\n    </div>\n  )\n}\n\nexport default App",
+      test: "if (!code.includes('raqamlar.length') && !code.includes('raqamlar[0]')) return 'raqamlar.length va raqamlar[0] ni ko\'rsating'; return null;"
     }
   ],
   quizzes: [
     {
-      question: "JSX so'zining kengaytmasi nima?",
+      question: "JSX nima?",
       options: [
-        "JavaScript Extension",
-        "JavaScript XML",
-        "Java Standard XML",
-        "JSON Syntax XML"
+        "Bu alohida dasturlash tili",
+        "JavaScript kodi ichida HTML ga o'xshash sintaksis yozish imkonini beruvchi sintaktik qand",
+        "Bu brauzerga to'g'ridan-to'g'ri yuboriladigan format",
+        "Bu CSS yozish usuli"
       ],
       correctAnswer: 1,
-      explanation: "JSX — JavaScript XML ning qisqartmasi bo'lib, React da HTML va JS ni bitta faylda yozish imkonini beruvchi sintaksisdir."
+      explanation: "JSX (JavaScript XML) — React da HTML ga o'xshash sintaksis yozish imkonini beruvchi sintaktik qand. U aslida React.createElement() chaqiruvlariga aylanadi."
     },
     {
-      question: "JSX kodini brauzer to'g'ridan-to'g'ri o'qiy oladimi?",
-      options: [
-        "Ha, JSX bu oddiy HTML ning yangi versiyasi hisoblanadi",
-        "Yo'q, brauzer faqat JS ni tushunadi. JSX avval Babel kabi vositalar orqali JS ga o'girilishi shart",
-        "Ha, lekin faqat Google Chrome da o'qiy oladi",
-        "Yo'q, u maxsus serverda ishlashi kerak"
-      ],
-      correctAnswer: 1,
-      explanation: "Brauzer JSX (<div/>) ni o'qisa darhol SyntaxError beradi. Babel JSX ni React.createElement() kabi tushunarli JS ko'rinishiga o'girib beradi."
+      question: "JSX ni JavaScript ga qaysi vosita aylantiradi?",
+      options: ["Node.js", "Webpack", "Babel", "ESLint"],
+      correctAnswer: 2,
+      explanation: "Babel — bu JavaScript kompilyatori bo'lib, JSX ni brauzer tushunadigan oddiy JavaScript (React.createElement() chaqiruvlari) ga aylantiradi."
     },
     {
-      question: "Nima uchun JSX da CSS class yozish uchun 'class' o'rniga 'className' ishlatiladi?",
+      question: "JSX da HTML dagi class atributining muqobili qaysi?",
+      options: ["cssClass", "classList", "className", "styleClass"],
+      correctAnswer: 2,
+      explanation: "JSX da class o'rniga className ishlatiladi, chunki class JavaScript da zahiralangan so'z (class deklaratsiyasi uchun)."
+    },
+    {
+      question: "JSX da bir necha elementni bitta root element sifatida qaytarish uchun qaysi ishlatiladi?",
+      options: ["<section>", "<main>", "<container>", "<> (Fragment)"],
+      correctAnswer: 3,
+      explanation: "Fragment (<>...</>) qo'shimcha DOM elementi qo'shmay, bir necha elementni guruhlash imkonini beradi. Bu ayniqsa table va flexbox tuzilmalarida muhim."
+    },
+    {
+      question: "JSX da inline stil qanday yoziladi?",
       options: [
-        "className chiroyliroq ko'ringani uchun",
-        "class HTML da ishlamaydi",
-        "'class' so'zi JavaScript da zaxiralangan so'z (Class komponentlar yoki OOP da ishlatiladi)",
-        "React da class lardan voz kechilgan"
+        'style="color: red"',
+        'style={color: "red"}',
+        'style={{color: "red"}}',
+        'css={{color: "red"}}'
       ],
       correctAnswer: 2,
-      explanation: "JSX aslida tag zamirida JavaScript bo'lganligi sababli, JS ning kalit so'zi bo'lgan 'class' ni atribut sifatida ishlatib bo'lmaydi. Shuning uchun DOM ning asl xossasi bo'lgan 'className' ishlatiladi."
+      explanation: "JSX da inline stil JavaScript obyekti sifatida beriladi: style={{}}. Tashqi {} JSX ifodasi, ichki {} JavaScript obyekti."
     },
     {
-      question: "JSX da barcha teglarni yopish shartmi?",
+      question: "JSX da img tegini to'g'ri yozish usuli qaysi?",
       options: [
-        "Yo'q, <img> kabi HTML da yopilmaydigan teglar yopilmasa ham bo'ladi",
-        "Ha, barcha teglar, jumladan <img> va <br> ham (<img />, <br />) kabi yopilishi shart",
-        "Faqat block elementlari yopilishi shart",
-        "React o'zi avtomatik yopib oladi"
-      ],
-      correctAnswer: 1,
-      explanation: "JSX qat'iy XML qoidalariga asoslanadi, shuning uchun bitta ham ochiq teg qolishi mumkin emas, barchasi yopilishi qat'iyan talab qilinadi."
-    },
-    {
-      question: "React komponenti qancha asosiy (root) element qaytarishi mumkin?",
-      options: [
-        "Istalgancha",
-        "Bitta va faqat bitta (ichida boshqa teglar bo'lishi mumkin)",
-        "Ikkita (biri ota, biri bola)",
-        "Umuman teg qaytarishi shart emas"
-      ],
-      correctAnswer: 1,
-      explanation: "Har bir React komponenti return qilganda faqatgina bitta eng asosiy ota (root) teg qaytarishi shart, barcha kod shu teg ichida joylashadi."
-    },
-    {
-      question: "Ortiqcha HTML div larni yaratmasdan, faqat guruhlash uchun ishlatiladigan vosita nima?",
-      options: [
-        "React.Group",
-        "<React.Fragment> yoki uning qisqa ko'rinishi <></>",
-        "<hidden></hidden> tegi",
-        "CSS dagi display: none"
-      ],
-      correctAnswer: 1,
-      explanation: "DOM ni ortiqcha div lar bilan ifloslantirmaslik uchun React da Fragment ya'ni <></> ishlatiladi, u to'g'ridan-to'g'ri hech qanday tugun (node) hosil qilmaydi."
-    },
-    {
-      question: "JSX ichida JS kodini (masalan, o'zgaruvchilarni) ishlatish uchun nima qilinadi?",
-      options: [
-        "O'zgaruvchini oddiy yozib ketaveramiz",
-        "Qo'shtirnoq (\"\") ichida yozamiz",
-        "Jingalak qavslar { } ichida yozamiz",
-        "Maxsus $ belgisi bilan yozamiz"
+        '<img src="rasm.jpg" alt="rasm">',
+        '<img src="rasm.jpg" alt="rasm"/>',
+        '<img src="rasm.jpg" alt="rasm" />',
+        "A va B ikkisi ham to'g'ri"
       ],
       correctAnswer: 2,
-      explanation: "JSX ning ichida istalgan JavaScript ifodasini (expression) bajarish uchun { } jingalak qavslardan foydalaniladi."
+      explanation: "JSX da barcha teglar yopilishi kerak. img kabi HTML da yopilmaydigan tegler JSX da /> bilan yopiladi: <img src='...' alt='...' />"
     },
     {
-      question: "Shartga asoslanib ma'lumotni render qilishda (if/else o'rniga) qaysi usullar qo'llaniladi?",
-      options: [
-        "Faqat if else ni oddiy JSX teglari ichida",
-        "Ternary operator (shart ? true : false) va mantiqiy AND (&&)",
-        "switch/case lardan teglarning ustida foydalanib",
-        "React maxsus <if></if> tegiga ega"
-      ],
-      correctAnswer: 1,
-      explanation: "JSX ni ichida if/else blokini yozib bo'lmaydi, shuning uchun odatda xuddi shu ishni bajaradigan qisqaroq usullar - ternary operator va shart true bo'lsa && ishlatiladi."
+      question: "JSX ichida JavaScript ifodasini ko'rsatish uchun qaysi sintaksis ishlatiladi?",
+      options: ["[[ifoda]]", "((ifoda))", "{ifoda}", "(ifoda)"],
+      correctAnswer: 2,
+      explanation: "JSX da JavaScript ifodalarini {} (curly braces) ichida yoziladi. Masalan: {ism}, {1 + 2}, {shart ? 'Ha' : 'Yo\'q'}"
     },
     {
-      question: "Ro'yxatlarni (Arraylarni) qanday qilib ketma-ket teglarga aylantirib chiqaramiz?",
+      question: "Quyidagi JSX da qaysi xato bor? <div class='card'><p>Salom</p></div>",
       options: [
-        "for sikli orqali",
-        "forEach metodi bilan",
-        "map() metodi orqali massivdan yangi teglar massivini hosil qilib",
-        "while sikli orqali"
+        "p teg yopilmagan",
+        "div yopilmagan",
+        "class o'rniga className ishlatilishi kerak",
+        "Xato yo'q"
       ],
       correctAnswer: 2,
-      explanation: "React da asosan array.map() orqali ma'lumotlar ustidan yurilib, natija sifatida JSX teglar massivi qaytariladi, react buni avtomatik chizadi."
+      explanation: "JSX da class o'rniga className ishlatiladi. To'g'ri yozuv: <div className='card'>"
     },
     {
-      question: "map() funksiyasini ishlatgan holda ro'yxat chiqarganda nima qilish majburiy?",
-      options: [
-        "id degan class berish",
-        "Har bir eng ustki tegga unikal 'key' atributini berish",
-        "Ma'lumotlarni saralash (sort)",
-        "Hech qanday qo'shimcha ish talab qilinmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "React elementlarning qaysi biri o'zgargani, qo'shilgani yoki o'chirilganini kuzatib borishi (Virtual DOM reconcilation) uchun, takrorlanayotgan har bir tegga unikal key prop si berilishi shart."
+      question: "JSX da for atributining muqobili qaysi?",
+      options: ["forId", "labelFor", "htmlFor", "inputFor"],
+      correctAnswer: 2,
+      explanation: "JSX da for o'rniga htmlFor ishlatiladi (label tegida), chunki for JavaScript da zahiralangan so'z (for sikli uchun)."
     },
     {
-      question: "JSX dagi inline style larni yozish tartibi qanday bo'ladi?",
+      question: "JSX da quyidagilardan qaysi biri ishlatib bo'lmaydi?",
       options: [
-        "style=\"color: red; font-size: 16px;\"",
-        "style={color: 'red', font-size: '16px'}",
-        "style={{ color: 'red', fontSize: '16px' }}",
-        "style={'color: red', 'font-size: 16px'}"
+        "Ternary operator",
+        "&& operatori",
+        "if/else bloki to'g'ridan-to'g'ri",
+        "Funksiya chaqiruvlari"
       ],
       correctAnswer: 2,
-      explanation: "Bitta qavs JS dagi yozuv degani, ikkinchisi esa obyekt boshlanishini bildiradi. CSS property lar camelCase shaklida yoziladi (fontSize)."
+      explanation: "JSX {} ichida faqat ifodalar (expressions) qabul qilinadi. if/else bloki bu statement, shuning uchun to'g'ridan-to'g'ri ishlatib bo'lmaydi. Muqobil: ternary yoki && operatorlari."
     },
     {
-      question: "HTML label larida ishlatiladigan 'for' atributi JSX da nima deb yoziladi?",
+      question: "CSS xususiyati font-size ni JSX inline stilida qanday yoziladi?",
+      options: ["font-size", "'font-size'", "fontSize", "fontsize"],
+      correctAnswer: 2,
+      explanation: "JSX da CSS xususiyatlari camelCase da yoziladi: font-size → fontSize, background-color → backgroundColor, border-radius → borderRadius."
+    },
+    {
+      question: "Quyidagi kodda qaysi muammo bor? {count && <p>Soni: {count}</p>}",
       options: [
-        "for",
-        "htmlFor",
-        "labelFor",
-        "idFor"
+        "count aniqlanmagan",
+        "Agar count = 0 bo'lsa, ekranda '0' ko'rinadi (noto'g'ri yon ta'sir)",
+        "p teg yopilmagan",
+        "Xato yo'q"
       ],
       correctAnswer: 1,
-      explanation: "JavaScript da 'for' sikl nomini bildiradi, shuning uchun chalkashlik bo'lmasligi uchun JSX da 'htmlFor' deb nomlangan."
+      explanation: "Agar count = 0 bo'lsa, 0 && ... false sifatida baholanadi, lekin React 0 ni render qiladi! Ekranda '0' ko'rinadi. To'g'ri: {count > 0 && <p>...</p>} yoki {count ? <p>...</p> : null}"
+    },
+    {
+      question: "JSX da komment qanday yoziladi?",
+      options: [
+        "// komment",
+        "<!-- komment -->",
+        "{/* komment */}",
+        "/* komment */"
+      ],
+      correctAnswer: 2,
+      explanation: "JSX da kommentlar {/* ... */} formatida yoziladi. Bu JavaScript blok kommentining JSX ga moslashtirilgan versiyasi."
     }
   ]
 };

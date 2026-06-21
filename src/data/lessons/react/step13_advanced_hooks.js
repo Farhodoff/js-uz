@@ -114,6 +114,42 @@ graph TD
 \\\`\\\`\\\`
 
 > **Maslahat:** Har doim standart sifatida \\\`useEffect\\\` dan foydalaning. Agar elementlar ekranda miltillab sakrayotgan (flicker) bo'lsa va ularning aniq o'lchami kerak bo'lsagina \\\`useLayoutEffect\\\` ga o'ting.
+
+---
+
+## 6. ❌ YOMON va ✅ YAXSHI Yondashuvlar
+
+### Premature Optimization (O'rinsiz Optimallashtirish)
+
+\\\`\\\`\\\`jsx
+// ❌ YOMON — Har bir funksiyani useCallback bilan, har bir obyektni useMemo bilan o'rash
+// Bu xotirani to'ldiradi va aslini olganda ilovani sekinlashtirib yuborishi mumkin!
+const handleClick = useCallback(() => { console.log('Salom') }, []);
+const user = useMemo(() => ({ name: 'John' }), []);
+\\\`\\\`\\\`
+
+\\\`\\\`\\\`jsx
+// ✅ YAXSHI — useMemo va useCallback ni faqat quyidagi hollardagina ishlating:
+// 1. Hisob-kitob rostdan ham og'ir bo'lsa (masalan, 1000+ elementli ro'yxatni saralash)
+// 2. Funksiya yoki obyekt React.memo bilan o'ralgan bola komponentga props orqali uzatilayotgan bo'lsa
+// 3. Obyekt/funksiya qandaydir Effect ning qaramliklar ro'yxatida (dependency array) turgan bo'lsa
+\\\`\\\`\\\`
+
+---
+
+## 🎤 Intervyu Savollari
+
+**1. useRef va useState farqi nimada?**
+*Javob:* useState qiymati o'zgarganda komponent qayta render bo'ladi. useRef qiymati o'zgarganda qayta render bo'lmaydi. useRef DOM elementga murojaat qilish yoki render lar o'rtasida komponentning hayot tsikli davomida saqlanib turishi kerak bo'lgan, lekin ekranga to'g'ridan-to'g'ri bog'lanmagan o'zgaruvchilarni saqlash uchun ishlatiladi.
+
+**2. useMemo va useCallback farqi?**
+*Javob:* useMemo — qimmat va og'ir hisob-kitob natijasini xotirada saqlaydi (keshlaydi): \\\`useMemo(() => heavyCalc(n), [n])\\\`. useCallback — funksiyaning o'zini referansini xotirada saqlaydi, uni qayta-qayta yangidan yaratishni oldini oladi: \\\`useCallback(() => handler(), [dep])\\\`. Qisqasi: useMemo natijani, useCallback funksiyaning o'zini qaytaradi.
+
+**3. React.memo nima va u qachon kerak?**
+*Javob:* React.memo — Higher Order Component (HOC) bo'lib, u bola komponentni qamrab oladi va faqatgina uning props lari o'zgarsagina qayta render bo'lishga ruxsat beradi. U props larni oldingi holati bilan tekshiradi (shallow comparison). Faqat og'ir va ko'p qayta render bo'ladigan komponentlardagina foydalidir — uni barcha komponentlarga qo'llash mantiqsiz va unumdorlikni pasaytiradi.
+
+**4. Premature optimization nima?**
+*Javob:* Muammo yuzaga kelmasidan oldin \\\`useMemo\\\`, \\\`useCallback\\\`, yoki \\\`React.memo\\\` larni har joyda ishlatish — premature (barvaqt) optimallashtirish deyiladi. Bu kodni murakkablashtiradi, xotirada ortiqcha yuk yaratadi, va ko'pincha ilovani tezlashtirish o'rniga sekinlashtiradi. To'g'ri yondashuv: avval React DevTools Profiler yordamida muammoni aniqlang, keyin zarur joydagina optimallashtiring.
   `,
   code: `import React, { useState, useRef, useMemo, useCallback } from 'react';
 

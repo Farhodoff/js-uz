@@ -294,6 +294,23 @@ useEffect(() => {
 
 Ushbu qadam orqali siz React-da eng muhim ko'nikmalardan biri bo'lgan ma'lumotlar bilan ishlashni, hayot tsiklini boshqarishni va uchinchi tomon vositalari bilan professional darajada integratsiya qilishni o'rgandingiz!
 
+
+---
+
+## 🎤 Intervyu Savollari
+
+**1. useEffect da API chaqiruvi qanday amalga oshiriladi?**
+*Javob:* useEffect ichida async funksiya yaratib chaqirish: \`useEffect(() => { const fetchData = async () => { const res = await fetch(url); const data = await res.json(); setData(data); }; fetchData(); }, [])\`. Async/await to'g'ridan-to'g'ri useEffect callbackiga qo'yib bo'lmaydi.
+
+**2. Loading va Error holatlarini qanday boshqarish kerak?**
+*Javob:* Uchlik holat: \`loading\`, \`error\`, \`data\`. API chaqiruv boshida loading=true, muvaffaqiyatda data set va loading=false, xatoda error set va loading=false. UI da har uchala holatni ko'rsating.
+
+**3. Race condition nima va qanday oldini olish mumkin?**
+*Javob:* Tez-tez o'zgaruvchi so'rovlarda eski so'rov yangi dan keyin kelishi mumkin — bu race condition. Yechim: cleanup funksiyada ignore flag yoki AbortController bilan fetch ni bekor qilish: \`const controller = new AbortController(); fetch(url, { signal: controller.signal })\`.
+
+**4. fetch va axios farqi?**
+*Javob:* fetch — brauzer native API, kichik va kutubxonasiz. axios — kichik kutubxona, JSON auto-parsing, request/response interceptors, timeout, keng brauzer qo'llab-quvvatlash. Katta loyihalarda axios qulay.
+
 `,
   code: `import React, { useState, useEffect } from "react";
 

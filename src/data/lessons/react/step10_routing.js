@@ -230,6 +230,23 @@ export default function LoginForm() {
 
 Ushbu bilimlarni o'zlashtirganingizdan so'ng, sizning React ilovangiz oddiy bir varaqli saytdan haqiqiy, mukammal, ko'p sahifali web dasturiy platformaga aylanadi!
 
+
+---
+
+## 🎤 Intervyu Savollari
+
+**1. React Router nima va nima uchun kerak?**
+*Javob:* React Router — React SPA da client-side routing (brauzerda sahifalar o'rtasida o'tish) uchun kutubxona. URL o'zgarganda server ga so'rov yubormasdan, React komponentlarni almashtiradi. Foydalanuvchi uchun odatiy ko'p sahifali sayt kabi ko'rinadi.
+
+**2. Link va a tegi farqi nimada?**
+*Javob:* \`<a href='...'>\` brauzerda sahifani to'liq qayta yuklaydi. \`<Link to='...'>\` React Router ning komponenti bo'lib, sahifani qayta yuklamasdan URL ni o'zgartiradi va kerakli komponentni ko'rsatadi. React da doimo Link ishlatish kerak.
+
+**3. useParams hook nima uchun kerak?**
+*Javob:* URL dagi dinamik parametrlarni olish uchun. Masalan, \`/mahsulot/:id\` da useParams() \`{ id: '42' }\` qaytaradi. Bu API so'rov uchun, ma'lum elementni ko'rsatish uchun ishlatiladi.
+
+**4. useNavigate hook qanday ishlatiladi?**
+*Javob:* Dasturiy yo'naltirish uchun: \`const navigate = useNavigate()\`. Keyin \`navigate('/sahifa')\` yoki \`navigate(-1)\` (orqaga). Form submit, login muvaffaqiyati kabi hollarda foydalaniladi.
+
 `,
   code: `import React from "react";
 // Bu yerda interaktiv oyna uchun Router imitatsiyasini o'rnatamiz

@@ -235,6 +235,23 @@ function Cart({ items }) {
 4. **Shartli renderlash** - \`if\` (erta qaytish), \`? :\` (ikki xil holat uchun) va \`&&\` (bor yoki yo'q holati uchun) operatorlaridan to'g'ri o'rinda foydalaning.
 5. **Falsy muammosi** - \`&&\` ishlatganda ifodaning chap qismi raqamli \`0\` qaytarib, ekranda tushunarsiz \`0\` hosil bo'lishidan ehtiyot bo'ling. Doim mantiqni to'liq boolean ko'rinishiga olib keling (\`> 0\`).
 
+
+---
+
+## 🎤 Intervyu Savollari
+
+**1. React da ro'yxat render qilishda key props nima uchun kerak?**
+*Javob:* key — React ga ro'yxat elementlarini aniqlash (identify) imkonini beradi. Diffing paytida React qaysi element qo'shilgani, o'chirilgani yoki tartib o'zgarganini aniqlash uchun key dan foydalanadi. Key olmasa, React butun ro'yxatni qayta render qilishi mumkin — bu sekin.
+
+**2. Index ni key sifatida ishlatish nima uchun yomon?**
+*Javob:* Agar ro'yxat tartibi o'zgarsa (sort, filter, delete), index key sifatida noto'g'ri elementni ifodalaydi. Bu xato UI holatlarga, animatsiya muammolariga olib keladi. Yaxshisi — unikal ID (UUID, ma'lumotlar bazasi ID si).
+
+**3. map() va filter() ni birgalikda qanday ishlatish mumkin?**
+*Javob:* \`.filter()\` avval kerakli elementlarni tanlaydi, keyin \`.map()\` ularni JSX ga aylantiradi: \`massiv.filter(x => x.faol).map(x => <Komponent key={x.id} {...x} />)\`.
+
+**4. Shartli rendering usullari qanday?**
+*Javob:* (1) Ternary: \`{shart ? <A/> : <B/>}\`, (2) && operatori: \`{shart && <A/>}\`, (3) Funksiya: \`{renderContent()}\`, (4) Early return: komponent ichida if(shart) return null.
+
 `,
   code: `import React, { useState } from "react";
 
