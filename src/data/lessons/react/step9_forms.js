@@ -67,18 +67,15 @@ Keling, ism kiritish uchun oddiy formani ko'ramiz.
 Agar siz inputga \`value\` bersangiz-u, lekin \`onChange\` yozmasangiz, React xato beradi va input qotib qoladi (Read-only bo'lib qoladi). Sababi, siz "Input qiymati har doim state'dagi qiymat bilan bir xil bo'lsin" dedingiz, lekin u qiymatni o'zgartirish yo'lini (onChange) ko'rsatmadingiz.
 
 \`\`\`jsx
-// ❌ YOMON USUL: Input bloklanib qoladi (Uncontrolled holatiga tushib qolishi mumkin yoxud o'zgarmas bo'lib qoladi)
-import { useState } from 'react'; // React'dan useState hook'ini chaqirib olamiz
+// ❌ YOMON USUL: Input bloklanib qoladi
+import { useState } from 'react';
 
 function BadForm() {
-  // 'name' o'zgaruvchisi yaratildi va unga boshlang'ich 'Ali' qiymati berildi.
   const [name, setName] = useState('Ali');
 
   return (
     <form>
-      {/* Diqqat: Bu yerda onChange hodisasi yo'q! 
-          React state'dagi 'name' doim 'Ali' bo'lib qolaveradi. 
-          Shuning uchun foydalanuvchi yozuvni ekranda o'zgartira olmaydi! */}
+      {/* Diqqat: Bu yerda onChange yo'q, shuning uchun foydalanuvchi yozuvni o'zgartira olmaydi! */}
       <input type="text" value={name} />
     </form>
   );
@@ -89,17 +86,14 @@ function BadForm() {
 To'g'ri ulangan Boshqariladigan Komponent:
 
 \`\`\`jsx
-// ✅ YAXSHI USUL: To'liq nazorat (Controlled Component)
-import { useState } from 'react'; // useState orqali formadagi qiymatni boshqaramiz
+// ✅ YAXSHI USUL: To'liq nazorat
+import { useState } from 'react';
 
 function GoodForm() {
-  // Boshlang'ich holat bo'sh string ('') bo'lgan 'name' o'zgaruvchisini yaratamiz.
   const [name, setName] = useState('');
 
-  // Inputga har bir harf kiritilganda ushbu funksiya ishga tushadi
   const handleChange = (e) => {
     // Biz bu yerda aralashishimiz mumkin!
-    // 'e.target.value' - foydalanuvchi kiritayotgan harflar
     // Masalan: Kiritilayotgan qiymatni faqat katta harflarga o'tkazamiz
     setName(e.target.value.toUpperCase());
   };
@@ -110,12 +104,11 @@ function GoodForm() {
         Ismingiz:
         <input 
           type="text" 
-          value={name} /* Input qiymati doimo React state'ga bog'langan */
-          onChange={handleChange} /* Har bir o'zgarishni tutib olish uchun hodisa */
+          value={name} 
+          onChange={handleChange} 
           placeholder="Ismingizni kiriting..."
         />
       </label>
-      {/* State'dagi qiymatni jonli ravishda ekranga chiqaramiz */}
       <p>Siz kiritdingiz: {name}</p>
     </form>
   );
@@ -134,11 +127,10 @@ Har bir xodim haqidagi ma'lumot (ismi, yoshi, kasbi) uchun alohida qog'oz ishlat
 Buning siri – inputlarga \`name\` atributini to'g'ri berish va \`onChange\` funksiyasida shu \`name\`dan kalit (key) sifatida foydalanish.
 
 \`\`\`jsx
-import { useState } from 'react'; // React'dan holatni saqlash hook'i
+import { useState } from 'react';
 
 function UserProfileForm() {
-  // Barcha ma'lumotlar uchun bitta state obyekti (object) yaratamiz
-  // Bu orqali 4 ta alohida useState yaratishdan qutulamiz
+  // Barcha ma'lumotlar uchun bitta state obyekti
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -146,15 +138,14 @@ function UserProfileForm() {
     age: ''
   });
 
-  // Umumiy o'zgartiruvchi universal funksiya: Har qanday input o'zgarganda shu ishlaydi
+  // Umumiy o'zgartiruvchi universal funksiya
   const handleInputChange = (event) => {
-    // event.target dan inputning 'name' atributini va kiritilgan 'value' (qiymat)ni ajratib olamiz (Destructuring)
+    // event.target dan 'name' atributini va kiritilgan 'value' ni ajratib olamiz
     const { name, value } = event.target;
 
-    // setFormData orqali obyektni yangilaymiz
     setFormData((prevData) => ({
-      ...prevData, // Oldingi qolgan ma'lumotlarni (masalan boshqa inputlarni) o'chib ketmasligi uchun nusxalaymiz
-      [name]: value // Qaysi input o'zgargan bo'lsa (name orqali topamiz), faqat shuning qiymatini yangilaymiz (Computed property names)
+      ...prevData, // Oldingi qolgan ma'lumotlarni o'chib ketmasligi uchun nusxalaymiz
+      [name]: value // Qaysi input o'zgargan bo'lsa (name orqali topamiz), faqat shuni yangilaymiz
     }));
   };
 
@@ -162,34 +153,33 @@ function UserProfileForm() {
     <form>
       <input 
         type="text" 
-        name="firstName" // State dagi kalit (property) nomiga aynan mos kelishi kerak!
-        value={formData.firstName} // Input o'z qiymatini formData.firstName'dan oladi
-        onChange={handleInputChange} // Yozganimizda state yangilanadi
+        name="firstName" // State dagi kalit nomiga aynan mos kelishi kerak
+        value={formData.firstName} 
+        onChange={handleInputChange} 
         placeholder="Ism"
       />
       <input 
         type="text" 
-        name="lastName" // Bu yerda name "lastName", demak obyektning lastName qismi yangilanadi
+        name="lastName" 
         value={formData.lastName} 
         onChange={handleInputChange} 
         placeholder="Familiya"
       />
       <input 
         type="email" 
-        name="email" // Obyektdagi "email" kalitiga mos
+        name="email" 
         value={formData.email} 
         onChange={handleInputChange} 
         placeholder="Pochta"
       />
       <input 
         type="number" 
-        name="age" // Obyektdagi "age" kalitiga mos
+        name="age" 
         value={formData.age} 
         onChange={handleInputChange} 
         placeholder="Yosh"
       />
       
-      {/* Jonli ravishda ma'lumotlar o'zgarishini kuzatish uchun */}
       <div style={{ marginTop: '20px', padding: '10px', background: '#f4f4f4' }}>
         <strong>Sizning profilingiz:</strong>
         <p>Ism-familiya: {formData.firstName} {formData.lastName}</p>
@@ -220,65 +210,60 @@ Kiritilayotgan ma'lumotlar to'g'ri, xavfsiz va biz kutgan formatda ekanligini te
 Quyida amaliy validatsiyaga misol:
 
 \`\`\`jsx
-import { useState } from 'react'; // React'dan useState funksiyasini chaqirib olamiz
+import { useState } from 'react';
 
 function RegistrationForm() {
-  // Forma maydonlari uchun alohida state'lar yaratamiz
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // Xatoliklarni foydalanuvchiga ko'rsatish uchun maxsus state
+  const [error, setError] = useState(''); // Xatoliklarni foydalanuvchiga ko'rsatish uchun state
 
-  // "Yuborish" tugmasi bosilganda ishlashi kerak bo'lgan asosiy funksiya
   const handleSubmit = (event) => {
-    // 1. Brauzer formani yuborganda sahifani qayta yuklashini (refresh) qat'iyan to'xtatamiz!
+    // 1. Brauzer sahifani yangilashini qat'iyan to'xtatamiz!
     event.preventDefault();
 
     // 2. Validatsiya (Tekshiruv bosqichi)
-    // Agar email ichida '@' belgisi bo'lmasa...
     if (!email.includes('@')) {
       setError("Iltimos, to'g'ri email manzilini kiriting.");
-      return; // Xato topildimi? Kodni davom ettirmay, jarayonni shu yerda to'xtatamiz!
+      return; // Xato topildimi? Jarayonni shu yerda to'xtatamiz!
     }
     
-    // Agar parol uzunligi 6 ta belgidan kam bo'lsa...
     if (password.length < 6) {
       setError("Xavfsizlik talabi: Parol kamida 6 ta belgidan iborat bo'lishi kerak.");
-      return; // Yana jarayonni to'xtatamiz
+      return;
     }
 
-    // 3. Agar yuqoridagi barcha tekshiruvlardan muvaffaqiyatli o'tsa, oldingi paydo bo'lgan xatoliklarni tozalaymiz
+    // 3. Agar tekshiruvlardan muvaffaqiyatli o'tsa, oldingi xatoliklarni tozalaymiz
     setError('');
 
-    // 4. Serverga yuborish mantiqi (API call) qilinadigan joy
-    // Bu yerda hozircha faqat konsolga ob'yekt sifatida chiqaramiz
+    // 4. Serverga yuborish mantiqi (API call)
+    // Bu yerda hozircha faqat konsolga chiqaramiz
     console.log("Ma'lumotlar tekshirildi va yuborishga tayyor!", { email, password });
     
-    // 5. Muvaffaqiyatli yuborilgandan so'ng ekrandagi formani yana bo'shatib (tozalab) qo'yishimiz mumkin (ixtiyoriy)
+    // 5. Yuborilgandan so'ng formani tozalab qo'yishimiz mumkin (ixtiyoriy)
     setEmail('');
     setPassword('');
     alert("Muvaffaqiyatli ro'yxatdan o'tdingiz!");
   };
 
   return (
-    // onSubmit form yuborilganda handleSubmit funksiyasini chaqiradi
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px' }}>
       <h2>Tizimga kirish</h2>
       
-      {/* Agar error state da qandaydir matn (xato) bo'lsa, uni qizil rangda ko'rsatamiz */}
+      {/* Agar xato mavjud bo'lsa, uni qizil rangda ko'rsatamiz */}
       {error && <p style={{ color: 'red', fontWeight: 'bold' }}>⚠️ {error}</p>}
       
       <input 
         type="text" 
-        value={email} // Qiymat doim email state'ga bog'langan
-        onChange={(e) => setEmail(e.target.value)} // Har bir klaviatura bosilganda email state yangilanadi
+        value={email} 
+        onChange={(e) => setEmail(e.target.value)} 
         placeholder="Email manzil"
         style={{ marginBottom: '10px', padding: '8px' }}
       />
       
       <input 
         type="password" 
-        value={password} // Qiymat password state bilan bog'langan
-        onChange={(e) => setPassword(e.target.value)} // Parolni xuddi shunday o'zgartiramiz
+        value={password} 
+        onChange={(e) => setPassword(e.target.value)} 
         placeholder="Yashirin parol"
         style={{ marginBottom: '10px', padding: '8px' }}
       />
@@ -297,23 +282,6 @@ React'da formalar bilan ishlash boshlanishiga biroz qiyinroq va oddiy HTML'ga ni
 ---
 
 > **💡 Bonus Maslahat:** Agar loyihangizda formalar juda ko'p, katta va murakkab bo'lsa (masalan, 20-30 ta input maydonlari, qiyin va chuqur validatsiyalar), bu ishlarni qo'lda qilish o'rniga **Formik** yoki **React Hook Form** kabi tayyor va mashhur kutubxonalardan foydalanish tavsiya etiladi. Ular sizni ortiqcha qozon-kod (boilerplate) yozishdan qutqaradi, ishlash tezligini (performance) oshiradi va qulay validatsiya vositalarini taqdim etadi. Ammo ularni ishlatishga o'tishdan oldin, hozirgina o'rgangan "Controlled Components" mexanizmini to'liq o'zlashtirib, tushunib olishingiz shart!
-
-
----
-
-## 🎤 Intervyu Savollari
-
-**1. Controlled va Uncontrolled komponent farqi nimada?**
-*Javob:* Controlled — input qiymati React state bilan boshqariladi, har o'zgarishda onChange state yangilanadi. Uncontrolled — qiymat DOM da saqlanadi, ref orqali olinadi. React Controlled usulni tavsiya qiladi — state bir manba bo'ladi (single source of truth).
-
-**2. Form submit da e.preventDefault() nima uchun kerak?**
-*Javob:* Standart forma submit sahifani qayta yuklaydi (server ga POST). React SPA da bu kerak emas. \`e.preventDefault()\` sahifa qayta yuklanishining oldini oladi va JavaScript bilan ma'lumotni boshqarish imkonini beradi.
-
-**3. Bir formada ko'p inputni boshqarish uchun qanday yondashuv bor?**
-*Javob:* Yagona state obyekti va umumiy handler: \`const [forma, setForma] = useState({ism: '', email: ''})\`. Handler: \`e => setForma(p => ({...p, [e.target.name]: e.target.value}))\`. Har input ga \`name\` atributi beriladi.
-
-**4. Forma validatsiyasi qanday amalga oshiriladi?**
-*Javob:* (1) HTML5 required, minLength — oddiy; (2) Submit da tekshirish — state da xato xabarlari saqlash; (3) onChange da real vaqt tekshirish; (4) React Hook Form, Zod kabi kutubxonalar — katta formalarda tavsiya.
 
 `,
   code: `import React, { useState } from "react"; // React va useState hook'i
