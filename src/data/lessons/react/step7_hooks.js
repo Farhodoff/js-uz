@@ -27,22 +27,16 @@ Hooklardan foydalanishning qat'iy qoidalari mavjud. Agar bu qoidalarni buzsangiz
 
    ❌ **Yomon amaliyot (Don't):**
    \`\`\`javascript
-   // Agar foydalanuvchi tizimga kirgan bo'lsa
    if (isUserLoggedIn) {
-     // XATO: Hooklarni shart (if/else) ichida ishlatish mumkin emas!
-     // React har safar bir xil tartibda hooklar chaqirilishini kutadi.
-     const [name, setName] = useState("Ali"); 
+     const [name, setName] = useState("Ali"); // Xato! Shart ichida Hook ishlatish mumkin emas.
    }
    \`\`\`
 
    ✅ **Yaxshi amaliyot (Do):**
    \`\`\`javascript
-   // TO'G'RI YONDASHUV: Hookni komponentning eng yuqori (top-level) qismida e'lon qilamiz
-   const [name, setName] = useState("Ali"); 
-   
-   // Shartli mantiqni hookdan keyin yozish kerak
+   const [name, setName] = useState("Ali"); // To'g'ri! Komponentning eng yuqori qismida.
    if (isUserLoggedIn) {
-     // foydalanuvchi tizimga kirgan bo'lsa, kerakli amallarni shu yerda bajaramiz
+     // endi nimadir qilish mumkin
    }
    \`\`\`
 
@@ -101,34 +95,29 @@ Mana shu 2-argument sizning effektingiz qachon va necha marta ishlashini hal qil
 Agar siz qaramliklar massivini umuman yozmasangiz, sizning effektingiz **har bir renderdan so'ng** ishlayveradi.
 
 \`\`\`javascript
-// Bu useEffect har bir render (qayta chizilish) dan keyin ishga tushadi
 useEffect(() => {
   console.log("Men har safar komponent o'zgarganda ishlayman!");
-}); // E'tibor bering: ikkinchi argument (qaramlik massivi) umuman berilmagan
+}); // E'tibor bering, vergul va massiv yo'q
 \`\`\`
 
 ### 2. Bo'sh massiv \`[]\` (Tug'ilish / Mount)
 Agar bo'sh massiv bersangiz, React bu effektni komponent **faqatgina birinchi marta yaratilganda** (Mount) 1 marta ishlatadi, boshqa hech qachon ishlatmaydi. Odatda API dan dastlabki ma'lumotlarni tortish uchun (fetch) ishlatiladi.
 
 \`\`\`javascript
-// Bu useEffect faqat 1 marta, komponent birinchi marta ekranga chiqqanda ishlaydi
 useEffect(() => {
   console.log("Men faqatgina 1 marta, eng boshida ishlayman!");
-}, []); // Bo'sh massiv (dependency array) buni ta'minlaydi
+}, []); // Bo'sh massiv
 \`\`\`
 
 ### 3. To'ldirilgan massiv \`[var1, var2]\` (O'zgarish / Update)
 Massiv ichiga qandaydir o'zgaruvchilarni (state yoki props) solsangiz, React faqatgina shu o'zgaruvchilardan biri o'zgargandagina effektni qayta ishga tushiradi.
 
 \`\`\`javascript
-// 'count' nomli state (holat) yaratamiz va uning boshlang'ich qiymatini 0 ga tenglaymiz
 const [count, setCount] = useState(0);
 
-// Bu effect faqatgina 'count' state'i o'zgarganda ishga tushadi
 useEffect(() => {
-  // count ning yangi qiymatini konsolga chiqaramiz
   console.log(\`Count qiymati o'zgardi: \${count}\`);
-}, [count]); // [count] - bu qaramlik massivi. React shu massiv ichidagi qiymatlarni kuzatadi
+}, [count]); // Faqat 'count' o'zgarganda ishlaydi
 \`\`\`
 
 ---
@@ -144,36 +133,27 @@ Agar siz \`useEffect\` ichida biror \`state\`ni o'zgartirsangiz va \`useEffect\`
 
 ❌ **Yomon amaliyot (Cheksiz tsikl):**
 \`\`\`javascript
-// Boshlang'ich qiymati 0 bo'lgan 'counter' holatini yaratamiz
 const [counter, setCounter] = useState(0);
 
 useEffect(() => {
-  // XATO: Cheksiz tsikl (Infinite loop) yuzaga keladi!
-  // Sababi: Effect ishlaydi -> state ni o'zgartiradi -> komponent qayta render bo'ladi -> effect yana ishlaydi
+  // XATO! Effect har renderda ishlaydi, va o'zi ham re-render chaqiryapti!
   setCounter(counter + 1); 
-}); // Qaramlik massivi yo'qligi uchun u har renderdan keyin qayta-qayta ishlayveradi
+});
 \`\`\`
 *Tushuntirish: Komponent render bo'ladi -> useEffect ishlaydi -> counter + 1 ga o'zgaradi -> State o'zgargani uchun komponent qayta render bo'ladi -> useEffect yana ishlaydi -> va h.k. cheksiz!*
 
-> 💡 **Junior dasturchilarning "Tungi Dahshati" va React Strict Mode:**
-> Agar siz ushbu xatoni qilsangiz, kompyuteringiz feni (ventilyatori) samolyot kabi ovoz chiqarib, brauzeringiz "qotib" qoladi. Yana bir qiziq jihat: "Nega men \`useEffect\` ichida bitta \`console.log\` yozsam, u terminalda **ikki marta** chiqyapti?!" deb o'ylayotgan bo'lsangiz — siz yolg'iz emassiz. Bu React 18 ning **Strict Mode** (Qat'iy rejim) funksiyasi. Development (ishlab chiqish) vaqtida React atayin sizning effectlaringizni ikki marta ishga tushirib ko'radi (Mount -> Unmount -> Mount). Maqsad: siz "Cleanup" (tozalash) funksiyasini to'g'ri yozganmisiz yoki yo'qmi, shuni tekshirish! Production (jonli) versiyada esa faqat 1 marta ishlaydi. Xavotirga o'rin yo'q!
-
 ✅ **Yaxshi amaliyot:**
 \`\`\`javascript
-// 'counter' nomli holat (state) yaratamiz
 const [counter, setCounter] = useState(0);
 
-// useEffect faqat komponent tug'ilganda (mount) bir marta ishlaydi
+// Faqatgina biz xohlagan qat'iy holatda ishlaydi (masalan, faqat boshida)
 useEffect(() => {
-  // 1 soniyadan so'ng counterni 1 taga oshiruvchi taymer o'rnatamiz
   const timer = setTimeout(() => {
-    // Eng so'nggi holat (prev) asosida yangi qiymat o'rnatish xavfsizroq
     setCounter((prev) => prev + 1);
   }, 1000);
   
-  // TOZALASH (Cleanup): komponent ekrandan o'chirilganda taymerni bekor qilamiz
-  return () => clearTimeout(timer); 
-}, []); // Bo'sh massiv orqali effect faqat boshida ishlashini aytamiz
+  return () => clearTimeout(timer); // Tozalash (Cleanup)
+}, []); // Yoki faqatgina biror aniq shart asosida ishlaydigan qilib sozlash
 \`\`\`
 
 ---
@@ -193,31 +173,21 @@ Ba'zi effektlar "iz" qoldiradi. Masalan, siz setInterval bilan taymer yoqdingiz 
 
 ❌ **Yomon amaliyot (Tozalamaslik):**
 \`\`\`javascript
-// Komponent birinchi marta chizilganda (mount) ishlaydi
 useEffect(() => {
-  // Brauzer oynasi o'lchami o'zgarganini eshituvchi listener (kuzatuvchi) qo'shamiz
   window.addEventListener('resize', handleResize);
-  
-  // XATO: Bu yerda tozalash funksiyasi (cleanup) yo'q!
-  // Agar foydalanuvchi boshqa sahifaga o'tib ketsa, bu listener brauzer xotirasida qolib ketadi
-  // va xotira sizishiga (Memory Leak) sabab bo'lishi mumkin.
+  // Agar foydalanuvchi sahifadan chiqib ketsa, bu "listener" brauzer xotirasida osilib qoladi!
 }, []);
 \`\`\`
 
 ✅ **Yaxshi amaliyot (Tozalash bilan):**
 \`\`\`javascript
-// Komponent bir marta ishga tushganda bajariladigan effect
 useEffect(() => {
-  // Oyna kengligini konsolga chiqaruvchi funksiya
   const handleResize = () => console.log(window.innerWidth);
   
-  // Brauzerga listener ni ulaymiz
   window.addEventListener('resize', handleResize);
   
-  // TOZALASH FUNKSIYASI (Cleanup function):
-  // Komponent yo'q qilinishidan oldin ishga tushadi
+  // Cleanup funksiyasi:
   return () => {
-    // Ulangan listener ni brauzerdan olib tashlaymiz
     window.removeEventListener('resize', handleResize);
     console.log("Listener tozalandi!");
   };
@@ -226,23 +196,6 @@ useEffect(() => {
 
 ### Xulosa
 Hooklar qoidalariga amal qiling. \`useEffect\` dagi qaramliklar massiviga (\`[]\`) doim e'tibor qarating, chunki kodning ishlash mantig'i va tezligi to'g'ridan-to'g'ri unga bog'liq. Har doim ishlatilgan obunalar (subscriptions) yoki taymerlarni "Cleanup" qilishni unutmang!
-
-
----
-
-## 🎤 Intervyu Savollari
-
-**1. useEffect hook nima va u qachon ishlaydi?**
-*Javob:* useEffect — yon effektlar (side effects) uchun: API chaqiruvlar, DOM manipulatsiya, obuna (subscription). Dependency array bo'yicha ishlaydi: \`[]\` — faqat mount da, \`[dep]\` — dep o'zgarganda, yo'q array — har render da.
-
-**2. useEffect da infinite loop qanday yuzaga keladi va qanday oldini olish mumkin?**
-*Javob:* Agar useEffect ichida state o'zgartirish bo'lsa va shu state dependency arrayda bo'lsa — cheksiz sikl bo'ladi. Oldini olish: dependency arrayni to'g'ri belgilash, state dan mustaqil mantiqni ajratish.
-
-**3. Cleanup funksiya nima?**
-*Javob:* useEffect qaytargan funksiya — cleanup. U komponent unmount bo'lganda yoki keyingi effect ishlaganda chaqiriladi. Timer tozalash, event listener olib tashlash, fetch abortlash uchun zarur.
-
-**4. Hook larning asosiy qoidalari qanday?**
-*Javob:* (1) Faqat React funksional komponentlari yoki custom hooklarda ishlatish. (2) Doimo komponent tepasida chaqirish — if, loop, nested funksiya ichida emas. Bu hook larning tartibini saqlaydi.
 
 `,
   code: `import React, { useState, useEffect, useRef } from "react";
