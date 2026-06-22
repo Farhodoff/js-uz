@@ -89,7 +89,7 @@ function App() {
 \`\`\`
 
 ### Xulosa:
-1. Ilova sekin ochilayotgan bo'lsa barcha ayb Reactda emas, ulkan `bundle.js` da bo'lishi mumkin.
+1. Ilova sekin ochilayotgan bo'lsa barcha ayb Reactda emas, ulkan \`bundle.js\` da bo'lishi mumkin.
 2. Kattaroq va mustaqil komponentlarni \`React.lazy()\` yordamida alohida fayllarga ajrating.
 3. Albatta bu komponentlarni qayerdadir yuqoriroqda \`<Suspense fallback={...}>\` bilan o'rashni unutmang!
   `,
