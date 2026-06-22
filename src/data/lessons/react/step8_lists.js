@@ -25,12 +25,9 @@ Tasavvur qiling, siz pitsaxona oshpazisiz va oldingizda 10 xil pitsa retseptlari
 
 \`\`\`jsx
 // XATO: JSX ichida for loop ishlata olmaysiz!
-// React'da JSX ichiga ifoda (expression) yozish mumkin, lekin for sikli buyruq (statement) hisoblanadi.
 function UserList({ users }) {
-  // Komponent foydalanuvchilar (users) massivini qabul qiladi
   return (
     <div>
-      {/* Bu yerda xatolik yuz beradi, chunki for loop JSX ichida bevosita ishlatilmaydi */}
       {for (let i = 0; i < users.length; i++) {
         return <p>{users[i].name}</p>
       }}
@@ -45,10 +42,8 @@ function UserList({ users }) {
 function UserList({ users }) {
   return (
     <ul>
-      {/* .map() yordamida users massividagi har bir element uchun bittadan <li> tegi yaratamiz */}
       {users.map((user) => (
         // E'tibor bering: ro'yxat elementlariga doim 'key' kerak! (bu haqida pastroqda)
-        // 'key' React'ga qaysi element o'zgarganini tezda topishga yordam beradi
         <li key={user.id}>{user.name}</li>
       ))}
     </ul>
@@ -107,8 +102,7 @@ Juda ko'p boshlang'ich dasturchilar \`key\` muammosidan qutulish uchun \`.map\` 
 
 ❌ **Yomon amaliyot (Don't)**:
 \`\`\`jsx
-// BUNDAY QILMANG: Element tartib raqami (index) ni 'key' sifatida ishlatmang!
-// Agar ro'yxat tartibi o'zgarsa, React xato ishlashi mumkin.
+// BUNDAY QILMANG!
 {items.map((item, index) => (
   <ListItem key={index} data={item} />
 ))}
@@ -128,9 +122,8 @@ Tasavvur qiling, ro'yxatingizda input qutilari bor.
 ✅ **To'g'ri amaliyot (Do)**: Har doim ma'lumotlar bazasidan keladigan takrorlanmas \`id\` (masalan, UUID yoki DB id) ishlating.
 
 \`\`\`jsx
-// YAXSHI: Obyektning o'ziga xos bo'lgan va o'zgarmas ID (uuid) qiymatini ishlating!
+// YAXSHI!
 {items.map((item) => (
-  // Bu yerda item.uuid ma'lumotlar bazasidan kelgan yagona takrorlanmas qiymat
   <ListItem key={item.uuid} data={item} />
 ))}
 \`\`\`
@@ -147,14 +140,11 @@ React'da maxsus if-else teglar yo'q. Biz oddiy JavaScript mantiqlaridan foydalan
 Agar butun boshli komponent qandaydir shartga ko'ra butunlay boshqa narsa ko'rsatishi kerak bo'lsa, uni to'g'ridan-to'g'ri funksiyaning boshida tekshiramiz.
 
 \`\`\`jsx
-// Dashboard komponenti isLoading (yuklanish holati) va user (foydalanuvchi) ma'lumotlarini prop sifatida oladi
 function Dashboard({ isLoading, user }) {
-  // Agar ma'lumotlar hali yuklanayotgan bo'lsa (isLoading = true), qolgan kodni kutmasdan shu joyning o'zidan ekranga "Yuklanmoqda..." ni qaytaramiz (Erta qaytish / Early Return)
   if (isLoading) {
     return <div>Yuklanmoqda...</div>; // Erta qaytish
   }
 
-  // Agar yuklanish tugagan bo'lsa, foydalanuvchining ismini ekranga chiqaramiz
   return <div>Xush kelibsiz, {user.name}!</div>;
 }
 \`\`\`
@@ -163,16 +153,12 @@ function Dashboard({ isLoading, user }) {
 JSX ichida biz \`if\` ishlata olmaymiz, shuning uchun JavaScript'ning uchinchi darajali operatoridan foydalanamiz. Bu eng ko'p ishlatiladigan usul.
 
 \`\`\`jsx
-// LogInOutButton komponenti isLoggedIn (tizimga kirganmi yoki yo'q) holatini qabul qiladi
 function LogInOutButton({ isLoggedIn }) {
   return (
     <div>
-      {/* Ternary (uchinchi darajali) operator: 'shart ? ha : yo'q' */}
       {isLoggedIn ? (
-        // Agar foydalanuvchi tizimga kirgan bo'lsa (true)
         <button>Tizimdan chiqish</button>
       ) : (
-        // Agar foydalanuvchi tizimga kirmagan bo'lsa (false)
         <button>Tizimga kirish</button>
       )}
     </div>
@@ -188,8 +174,7 @@ function Notifications({ messages }) {
   return (
     <div>
       <h1>Sizning xabarlaringiz</h1>
-      {/* Logical AND (&&) - Mantiqiy VA operatori */}
-      {/* Agar 'messages.length > 0' sharti Rost (true) bo'lsa, o'ng tarafdagi <p> tegi ekranga chiziladi. Aks holda hech narsa chizilmaydi. */}
+      {/* Agar xabarlar mavjud bo'lsa, quyidagi xabarni chiqaramiz */}
       {messages.length > 0 && <p>Sizda yangi xabarlar bor!</p>}
     </div>
   );
@@ -203,10 +188,9 @@ Yuqoridagi misolda \`messages.length > 0 && ...\` deb yozdik. Ko'p dasturchilar 
 ❌ **Yomon amaliyot (Don't)**:
 \`\`\`jsx
 function Cart({ items }) {
-  // YOMON AMALIYOT: Agar items.length 0 ga teng bo'lsa (ya'ni savat bo'sh), React ekranga mantiqiy xato qilib '0' raqamini yozib qo'yadi!
+  // Agar items.length 0 bo'lsa, React ekranga 0 raqamini yozib qo'yadi!
   return (
     <div>
-      {/* XATO! Hech qachon shartli renderda quruq raqam qoldirmang */}
       {items.length && <p>Savatda mahsulotlar bor</p>}
     </div>
   );
@@ -218,10 +202,10 @@ function Cart({ items }) {
 ✅ **To'g'ri amaliyot (Do)**: Har doim ifodangiz aniq **Boolean** (true/false) qaytarayotganiga ishonch hosil qiling.
 
 \`\`\`jsx
-// 1-usul: Aniq taqqoslash orqali natijani aniq Boolean (Rost/Yolg'on) qiymatiga aylantiramiz
+// 1-usul: Aniq shart berish
 {items.length > 0 && <p>Savatda mahsulotlar bor</p>}
 
-// 2-usul: Ikkita inkor (!!) operatori yordamida raqamni Boolean'ga o'giramiz (0 bo'lsa false bo'ladi)
+// 2-usul: Ochiqchasiga boolean ga o'girish (!!)
 {!!items.length && <p>Savatda mahsulotlar bor</p>}
 \`\`\`
 
@@ -234,23 +218,6 @@ function Cart({ items }) {
 3. **\`index\` ni key qilmang** - Agar ro'yxat tartibi o'zgarishi mumkin bo'lsa, bu UI'da jiddiy va topish qiyin bo'lgan xatoliklarga olib keladi.
 4. **Shartli renderlash** - \`if\` (erta qaytish), \`? :\` (ikki xil holat uchun) va \`&&\` (bor yoki yo'q holati uchun) operatorlaridan to'g'ri o'rinda foydalaning.
 5. **Falsy muammosi** - \`&&\` ishlatganda ifodaning chap qismi raqamli \`0\` qaytarib, ekranda tushunarsiz \`0\` hosil bo'lishidan ehtiyot bo'ling. Doim mantiqni to'liq boolean ko'rinishiga olib keling (\`> 0\`).
-
-
----
-
-## 🎤 Intervyu Savollari
-
-**1. React da ro'yxat render qilishda key props nima uchun kerak?**
-*Javob:* key — React ga ro'yxat elementlarini aniqlash (identify) imkonini beradi. Diffing paytida React qaysi element qo'shilgani, o'chirilgani yoki tartib o'zgarganini aniqlash uchun key dan foydalanadi. Key olmasa, React butun ro'yxatni qayta render qilishi mumkin — bu sekin.
-
-**2. Index ni key sifatida ishlatish nima uchun yomon?**
-*Javob:* Agar ro'yxat tartibi o'zgarsa (sort, filter, delete), index key sifatida noto'g'ri elementni ifodalaydi. Bu xato UI holatlarga, animatsiya muammolariga olib keladi. Yaxshisi — unikal ID (UUID, ma'lumotlar bazasi ID si).
-
-**3. map() va filter() ni birgalikda qanday ishlatish mumkin?**
-*Javob:* \`.filter()\` avval kerakli elementlarni tanlaydi, keyin \`.map()\` ularni JSX ga aylantiradi: \`massiv.filter(x => x.faol).map(x => <Komponent key={x.id} {...x} />)\`.
-
-**4. Shartli rendering usullari qanday?**
-*Javob:* (1) Ternary: \`{shart ? <A/> : <B/>}\`, (2) && operatori: \`{shart && <A/>}\`, (3) Funksiya: \`{renderContent()}\`, (4) Early return: komponent ichida if(shart) return null.
 
 `,
   code: `import React, { useState } from "react";
