@@ -66,9 +66,7 @@ Agar React Router bo'lmasa, har bir URL uchun o'zimiz shartlar yozishimizga to'g
 // HTML dagi oddiy 'a' tegi butun sahifani qayta yuklaydi va barcha State'larni xotiradan o'chiradi
 export default function Navbar() {
   return (
-    // <nav> - navigatsiya qismi uchun HTML tegi
     <nav>
-      {/* <a> tegi bosilganda brauzer sahifani boshqatdan to'liq yuklaydi (reload). Bu xato yondashuv! */}
       <a href="/about">Biz haqimizda (Xato)</a>
       <a href="/contact">Aloqa (Xato)</a>
     </nav>
@@ -78,14 +76,12 @@ export default function Navbar() {
 
 ✅ **Yaxshi amaliyot (Do this):**
 \`\`\`jsx
-// react-router-dom kutubxonasidan Link komponentini chaqirib olamiz
 import { Link } from 'react-router-dom';
 
 // React Router 'Link' tegi faqatgina URL'ni o'zgartiradi, sahifa tezkor va miltillashsiz yangilanadi!
 export default function Navbar() {
   return (
     <nav>
-      {/* <Link> komponenti sahifani qayta yuklamasdan (refreshsiz) boshqa manzilga o'tish imkonini beradi */}
       <Link to="/about">Biz haqimizda (To'g'ri)</Link>
       <Link to="/contact">Aloqa (To'g'ri)</Link>
     </nav>
@@ -103,17 +99,14 @@ Tasavvur qiling, sizda katta internet-do'kon bor va u yerda 10 000 ta mahsulot b
 
 \`\`\`jsx
 // App.jsx faylida routelarni sozlash
-// Routes va Route komponentlarini kutubxonadan chaqiramiz
 import { Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    // <Routes> barcha yo'nalishlarni (marshrutlarni) o'zida saqlaydigan asosiy quti
     <Routes>
-      {/* Agar manzil /products bo'lsa, ekranda ProductList komponenti ko'rinadi */}
       <Route path="/products" element={<ProductList />} />
       
-      {/* ':id' - bu yerda dinamik parametr hisoblanadi. Masalan: /products/1, /products/2 */}
+      {/* ':id' - bu yerda dinamik parametr hisoblanadi */}
       <Route path="/products/:id" element={<ProductDetails />} />
     </Routes>
   );
@@ -126,29 +119,23 @@ Bu dinamik qiymatni komponent ichida tutib olish uchun esa \`useParams\` custom 
 
 \`\`\`jsx
 // ProductDetails.jsx
-// URL dan parametrlarni o'qib olish uchun useParams hookini chaqiramiz
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 export default function ProductDetails() {
   // URL dagi :id (masalan /products/42 bo'lsa, id = "42") ni ushlab olamiz
   const { id } = useParams();
-  
-  // Mahsulot ma'lumotlarini saqlash uchun state (boshlang'ich qiymati null)
   const [product, setProduct] = useState(null);
 
-  // Komponent ekranga chiqqanda yoki 'id' o'zgarganda ishlaydigan effect hook
   useEffect(() => {
     // Endi shu 'id' yordamida haqiqiy API dan aynan bitta mahsulotni yuklab olamiz
     fetch(\`https://fakestoreapi.com/products/\${id}\`)
-      .then(res => res.json()) // Javobni JSON formatiga o'giramiz
-      .then(data => setProduct(data)); // Olingan ma'lumotni state-ga joylaymiz
+      .then(res => res.json())
+      .then(data => setProduct(data));
   }, [id]);
 
-  // Agar ma'lumot hali kelmagan bo'lsa, yuklanmoqda yozuvini ko'rsatamiz
   if (!product) return <h2>Yuklanmoqda...</h2>;
 
-  // Ma'lumot kelgach, ekranga chiqaramiz
   return (
     <div>
       <h1>Mahsulot raqami: {id}</h1>
@@ -170,19 +157,15 @@ Masalan:
 Bunday holatlar uchun React Router bizga \`useNavigate\` hook'ini sovg'a qiladi. Bu bizga istalgan funksiya ichidan turib yo'nalishni o'zgartirish (navigate) kuchini beradi.
 
 \`\`\`jsx
-// Boshqa sahifaga yo'naltirish uchun useNavigate hooki kerak
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function LoginForm() {
   const navigate = useNavigate(); // Navigate obyektini chaqirib olamiz
-  
-  // Foydalanuvchi ismini saqlash uchun state
   const [username, setUsername] = useState('');
 
-  // Forma yuborilganda ishlaydigan funksiya
   const handleLogin = (e) => {
-    e.preventDefault(); // Sahifa yangilanishini to'xtatamiz
+    e.preventDefault();
     
     // Tasavvur qilamiz, bu yerda server tekshiruvi bor
     if (username === 'admin') {
@@ -190,14 +173,13 @@ export default function LoginForm() {
       // Foydalanuvchini avtomatik tarzda '/dashboard' manziliga jo'natamiz
       navigate('/dashboard');
     } else {
-      alert('Noto\\'g\\'ri foydalanuvchi!');
+      alert('Noto\'g'ri foydalanuvchi!');
     }
   };
 
   return (
     <form onSubmit={handleLogin}>
       <h2>Tizimga kirish</h2>
-      {/* Ismni yozish uchun maydon, kiritilgan matn state'ga saqlanadi */}
       <input 
         placeholder="Ismingiz (admin deb yozing)" 
         value={username} 
@@ -213,7 +195,6 @@ export default function LoginForm() {
 \`useNavigate\` shunchaki yangi sahifaga yo'naltiribgina qolmay, balki brauzer tarixida orqaga yoki oldinga qaytishni ham eplaydi. Agar funksiyaga manzil o'rniga manfiy raqam bersangiz, xuddi brauzerdagi ⬅️ orqaga (back) tugmasi bosilgandek ishlaydi.
 
 \`\`\`jsx
-{/* navigate funksiyasiga manfiy son (-1) bersak, brauzer tarixida 1 qadam orqaga qaytadi */}
 // Bir qadam orqaga qaytish uchun (-1 ni beramiz)
 <button onClick={() => navigate(-1)}>⬅️ Orqaga qaytish</button>
 \`\`\`
@@ -229,23 +210,6 @@ export default function LoginForm() {
 5. **Dasturiy navigatsiya (\`useNavigate\`)** kod mantig'i tugagach (masalan muvaffaqiyatli avtorizatsiyadan keyin) foydalanuvchini avtomatik tarzda kerakli sahifaga olib borib qo'yadi.
 
 Ushbu bilimlarni o'zlashtirganingizdan so'ng, sizning React ilovangiz oddiy bir varaqli saytdan haqiqiy, mukammal, ko'p sahifali web dasturiy platformaga aylanadi!
-
-
----
-
-## 🎤 Intervyu Savollari
-
-**1. React Router nima va nima uchun kerak?**
-*Javob:* React Router — React SPA da client-side routing (brauzerda sahifalar o'rtasida o'tish) uchun kutubxona. URL o'zgarganda server ga so'rov yubormasdan, React komponentlarni almashtiradi. Foydalanuvchi uchun odatiy ko'p sahifali sayt kabi ko'rinadi.
-
-**2. Link va a tegi farqi nimada?**
-*Javob:* \`<a href='...'>\` brauzerda sahifani to'liq qayta yuklaydi. \`<Link to='...'>\` React Router ning komponenti bo'lib, sahifani qayta yuklamasdan URL ni o'zgartiradi va kerakli komponentni ko'rsatadi. React da doimo Link ishlatish kerak.
-
-**3. useParams hook nima uchun kerak?**
-*Javob:* URL dagi dinamik parametrlarni olish uchun. Masalan, \`/mahsulot/:id\` da useParams() \`{ id: '42' }\` qaytaradi. Bu API so'rov uchun, ma'lum elementni ko'rsatish uchun ishlatiladi.
-
-**4. useNavigate hook qanday ishlatiladi?**
-*Javob:* Dasturiy yo'naltirish uchun: \`const navigate = useNavigate()\`. Keyin \`navigate('/sahifa')\` yoki \`navigate(-1)\` (orqaga). Form submit, login muvaffaqiyati kabi hollarda foydalaniladi.
 
 `,
   code: `import React from "react";
