@@ -2,619 +2,249 @@ export const step3_components = {
   id: 'step3_components',
   title: '3-DARS: Komponentlar (Components)',
   content: `
-# 🧱 React Komponentlari — Hamma Narsa Lego Dan Boshlanadi
+# 3-Qadam: React Komponentlari (Components) - UI'ni bo'laklarga ajratish
 
-## Komponent nima? — Lego Analogiyasi
+React'ning eng asosiy ustunlaridan biri bu **Komponentlar (Components)** hisoblanadi. Agar siz komponentlarni tushunmasangiz, React'ni tushunmaysiz. Ushbu darsda biz komponentlar nima ekanligi, ularning turlari va qanday qilib to'g'ri arxitektura qurish kerakligini chuqur o'rganamiz.
 
-Tasavvur qiling: siz katta Lego qo'rg'on quryapsiz. Har bir Lego bo'lagi alohida, mustaqil, va qayta ishlatiladi. Devorni bir marta yigsangiz, uni qayta-qayta ishlatasiz. Aynan shu mantiq React **komponentlari** (component) ga ham tegishli.
+## 1. UI Modulligi Falsafasi (Lego bloklari analogiyasi)
 
-> 💡 **Komponent** — bu UI (foydalanuvchi interfeysi) ning mustaqil, qayta ishlatiladigan qismi. U o'z ko'rinishi (HTML), logikasi (JavaScript) va uslubini (CSS) o'z ichiga oladi.
+Tasavvur qiling, sizga juda katta va murakkab kosmik kema qurish vazifasi berildi. Agar siz uni butunlay bitta qolipdan quyib yasamog'chi bo'lsangiz, bitta xato butun kemani yaroqsiz holga keltirishi mumkin. Lekin, agar siz uni kichik, alohida qismlardan (dvigatel, qanotlar, kabina) yig'sangiz, xato chiqqan qismni osongina almashtirishingiz mumkin.
 
-### Real Hayot Misoli
+**React komponentlari - bu dasturlash olamidagi Lego bloklaridir.**
+Biz butun bir veb-saytni bitta ulkan kod qismi sifatida yozmaymiz. Buning o'rniga, har bir tugma (button), har bir forma (form), har bir rasm (image) uchun alohida kichik "Lego bloklarini" yaratamiz.
 
-Katta veb-saytni ko'z oldingizga keltiring — masalan, **YouTube**:
-
-- Yuqoridagi navigatsiya paneli → \`<Navbar />\`
-- Har bir video kartochkasi → \`<VideoCard />\`
-- Yon panel → \`<Sidebar />\`
-- Izohlar bo'limi → \`<Comments />\`
-- Har bir izoh → \`<CommentItem />\`
-
-Bular hammasi alohida komponentlar! Har birini mustaqil yaratib, keyin yig'asiz — xuddi Lego kabi.
+### Nega bu kerak? (Why do we need this?)
+1. **Qayta foydalanish (Reusability):** Siz bitta chiroyli tugma (button) yaratasiz va uni saytning 10 xil joyida hech qanday kodni nusxalamasdan ishlata olasiz.
+2. **Qulay xato izlash (Easier Debugging):** Agar "Savatga qo'shish" tugmasi ishlamasa, siz butun sayt kodini emas, faqat \`AddToCartButton\` komponentini tekshirasiz.
+3. **Jamoada ishlash (Teamwork):** Bitta dasturchi \`Header\` (yuqori qism) ustida ishlasa, boshqasi \`Footer\` (pastki qism) ustida bemalol, bir-biriga xalaqit bermasdan ishlashi mumkin.
 
 ---
 
-## Komponent Daraxti (Component Tree)
+## 2. Mermaid Komponentlar Daraxti Diagrammasi
 
-React ilovasi komponentlardan iborat **daraxt** (tree) hosil qiladi. Eng yuqorida \`App\` komponent turadi, undan pastda qolganlar joylashadi:
+React ilovasi doimo bitta asosiy (Root) komponentdan boshlanadi, odatda bu \`App\` deb ataladi. Uning ichida boshqa komponentlar shoxlanib ketadi.
 
 \`\`\`mermaid
 graph TD
-  App["🏠 App (ildiz komponent)"]
-  App --> Navbar["🔝 Navbar"]
-  App --> Main["📄 Main"]
-  App --> Footer["⬇️ Footer"]
-  Navbar --> Logo["🖼️ Logo"]
-  Navbar --> NavLinks["🔗 NavLinks"]
-  Navbar --> SearchBar["🔍 SearchBar"]
-  Main --> Sidebar["📌 Sidebar"]
-  Main --> Content["📝 Content"]
-  Content --> ArticleCard["🃏 ArticleCard"]
-  Content --> ArticleCard2["🃏 ArticleCard"]
-  Content --> ArticleCard3["🃏 ArticleCard"]
-  Sidebar --> UserProfile["👤 UserProfile"]
-  Sidebar --> TrendingList["📈 TrendingList"]
+    App((App Component)) --> Header(Header Component)
+    App --> Main(Main Content Component)
+    App --> Footer(Footer Component)
+
+    Header --> Logo[Logo]
+    Header --> Nav[Navigation]
+
+    Main --> Sidebar[Sidebar]
+    Main --> PostList[Post List]
+
+    PostList --> PostItem1[Post Item]
+    PostList --> PostItem2[Post Item]
+    
+    Footer --> Copyright[Copyright Info]
+    Footer --> SocialLinks[Social Links]
 \`\`\`
 
-Bu daraxtda ko'rib turganingizdek, \`ArticleCard\` komponent **3 marta** qayta ishlatilmoqda — Lego bo'lagini bir marta yasab, ko'p joyda ishlatish!
+*Bu daraxt tuzilmasiga e'tibor bering: Ma'lumotlar doimo yuqoridan pastga (App'dan pastdagi komponentlarga) oqadi.*
 
 ---
 
-## Funksional Komponent Sintaksisi
+## 3. Class va Functional Komponentlar (Tarix va Nega Functional'ga o'tdik?)
 
-React da komponent yozishning **2 xil usuli** bor:
+React tarixida komponentlarni yaratishning ikki xil usuli mavjud bo'lgan: **Class Components** va **Functional Components**.
 
-### 1. Arrow Function (Zamonaviy, tavsiya etiladi)
+### Class Components (Eski maktab)
+Dastlabki yillarda (React 16.8 gacha) komponentda qandaydir holat (state) saqlash yoki "hayot tsikli" (lifecycle) usullaridan foydalanish uchun albatta JS Class'laridan foydalanish kerak edi.
 
+👎 **Yomon (Eskirgan) amaliyot - Class Component:**
 \`\`\`jsx
-// Arrow function yordamida komponent
-const Salom = () => {
-  return <h1>Salom, Dunyo!</h1>;
-};
+import React, { Component } from 'react';
 
-// Qisqaroq yozuv — qavslar bilan bir qatorda
-const Tugma = () => <button>Bosing!</button>;
-\`\`\`
+class OltinSoat extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { vaqt: new Date() };
+  }
 
-### 2. Function Declaration (Klassik usul)
+  componentDidMount() {
+    this.timerID = setInterval(() => this.tick(), 1000);
+  }
 
-\`\`\`jsx
-// Oddiy funksiya e'loni bilan komponent
-function Salom() {
-  return <h1>Salom, Dunyo!</h1>;
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {
+    this.setState({ vaqt: new Date() });
+  }
+
+  render() {
+    return <h1>Hozirgi vaqt: {this.state.vaqt.toLocaleTimeString()}</h1>;
+  }
 }
 \`\`\`
+*Muammo nima edi?* 
+Class komponentlar juda ko'p "boilerplate" (keraksiz, qayta-qayta yoziladigan) kod talab qilardi. \`this\` kalit so'zi atrofida chalkashliklar ko'p edi. Kodni o'qish va tushunish murakkab edi.
 
-### Qaysi Birini Tanlash Kerak?
+### Functional Components + Hooks (Yangi standart)
+React 16.8 da **Hooks** (Ilmoqlar) kiritilgach, biz oddiy JavaScript funktsiyalari yordamida ham Class komponentlar qila oladigan barcha ishlarni (state, lifecycle) qila oladigan bo'ldik.
 
-| Xususiyat | Arrow Function | Function Declaration |
-|-----------|---------------|---------------------|
-| Zamonaviylik | ✅ Zamonaviy | ⚠️ Klassik |
-| \`this\` binding | Yo'q (hooks bilan kerak emas) | Bor |
-| Hoisting | ❌ Yo'q | ✅ Bor |
-| Qisqalik | ✅ Qisqa | ⚠️ Uzunroq |
-| Jamoaviy kod | Ko'p ishlatiladigan | Ham ishlatiladigan |
+👍 **Zo'r (Zamonaviy) amaliyot - Functional Component:**
+\`\`\`jsx
+import React, { useState, useEffect } from 'react';
 
-> 💡 **Tavsiya**: Darsda ikkalasini ham o'rganamiz, lekin amalda ko'pincha **arrow function** ishlatiladi.
+const OltinSoat = () => {
+  const [vaqt, setVaqt] = useState(new Date());
+
+  useEffect(() => {
+    const timerID = setInterval(() => setVaqt(new Date()), 1000);
+    return () => clearInterval(timerID); // Tozalash
+  }, []);
+
+  return <h1>Hozirgi vaqt: {vaqt.toLocaleTimeString()}</h1>;
+};
+
+export default OltinSoat;
+\`\`\`
+### Nega biz Functional Komponentlarga o'tdik?
+1. **Soddalik:** Kod sezilarli darajada qisqardi va o'qish osonlashdi. \`this\` bilan bog'liq muammolar yo'qoldi.
+2. **Kodni qayta ishlatish (Custom Hooks):** Mantiqni (logic) boshqa komponentlar bilan bo'lishish Hooks yordamida juda osonlashdi.
+3. **Ishlash tezligi (Performance):** Funktsiyalar sinflarga (classes) qaraganda biroz yengilroq ishlaydi va React kelajakda ularni optimallashtirishi osonroq.
 
 ---
 
-## ⚠️ MUHIM: Komponent Nomi KATTA Harf bilan Boshlanishi SHART!
+## 4. Dumb (Aqlsiz) vs Smart (Aqlli) Komponentlar Arxitekturasi
 
-Bu React ning eng muhim qoidalaridan biri. Nima uchun?
+React'da katta ilovalar qurishda kodingizni toza saqlash uchun "Presentational vs Container" (yoki Dumb vs Smart) komponentlar arxitekturasidan foydalaniladi.
 
-React JSX ni render (ko'rsatish) qilganda quyidagicha farqlaydi:
+### Smart (Container / Aqlli) Komponentlar
+Bu komponentlar ilovaning "miyasi" hisoblanadi. Ular qanday ishlashini bilishadi.
+- Ma'lumotlarni serverdan olib keladi (API calls).
+- Holatni (state) boshqaradi.
+- Mantiqni va funksiyalarni o'zida saqlaydi.
+- Tashqi ko'rinishga (CSS) unchalik ahamiyat bermaydi.
 
-- **Kichik harf** → HTML tegi deb o'ylaydi: \`<div>\`, \`<p>\`, \`<button>\`
-- **Katta harf** → React komponent deb o'ylaydi: \`<MyButton>\`, \`<UserCard>\`
+### Dumb (Presentational / Aqlsiz) Komponentlar
+Bu komponentlar ilovaning "yuzi" hisoblanadi. Ular faqatgina o'ziga berilgan ma'lumotni ekranga chiroyli qilib chiqarishni biladi.
+- Hech qanday murakkab mantiq (state, API fetch) bo'lmaydi.
+- Ma'lumotlarni faqat **props** orqali oladi.
+- Qayta foydalanish uchun juda mos keladi.
 
-### ❌ YOMON — Kichik harf bilan komponent
+#### Do's and Don'ts (Yaxshi va yomon yondashuvlar)
 
+👎 **Yomon: Hamma narsani bitta joyga tiqish (Spaghetti code)**
 \`\`\`jsx
-// XATO! React buni HTML tegi deb o'ylaydi
-function myButton() {
-  return <button>Bosing</button>;
-}
+// Bitta komponent ham API chaqiradi, ham dizaynni chizadi
+const UserProfile = () => {
+  const [user, setUser] = useState(null);
 
-// Natija: React "myButton" nomli HTML tegini qidiradi
-// va uni topa olmaydi — xatolik yoki kutilmagan natija!
-const myarticle = () => {
-  return <article>Maqola</article>;
-};
-\`\`\`
+  useEffect(() => {
+    fetch('/api/user/1').then(res => res.json()).then(setUser);
+  }, []);
 
-### ✅ YAXSHI — Katta harf bilan komponent
+  if (!user) return <p>Yuklanmoqda...</p>;
 
-\`\`\`jsx
-// TO'G'RI! Katta M harfi bilan boshlaymiz
-function MyButton() {
-  return <button>Bosing</button>;
-}
-
-// Katta A harfi bilan — React uni komponent deb biladi
-const MyArticle = () => {
-  return <article>Maqola</article>;
-};
-
-// Ishlatganda:
-function App() {
+  // Dizayn ham shu yerda! Qayta ishlata olmaymiz.
   return (
-    <div>
-      <MyButton />   {/* ✅ Komponent sifatida ishlaydi */}
-      <MyArticle />  {/* ✅ Komponent sifatida ishlaydi */}
+    <div className="card shadow-lg p-4 rounded-xl">
+      <img src={user.avatar} className="w-24 h-24 rounded-full" />
+      <h2 className="text-xl font-bold">{user.name}</h2>
+      <button className="bg-blue-500 text-white px-4 py-2">Follow</button>
     </div>
   );
-}
+};
 \`\`\`
 
-### Nomga Oid Qoidalar
+👍 **Yaxshi: Smart va Dumb ga ajratish**
 
+**1. Dumb Component (Aqlsiz, faqat ko'rinish):**
 \`\`\`jsx
-// ✅ TO'G'RI nomlar:
-const UserCard = () => { ... };      // PascalCase
-const NavigationBar = () => { ... }; // Ko'p so'z — barini katta boshlanadi
-const APIHandler = () => { ... };    // Qisqartma ham bo'lishi mumkin
+// UserCard.jsx - Faqat Props oladi va chizadi. Boshqa joyda ham ishlatsak bo'ladi!
+export const UserCard = ({ name, avatar, onFollow }) => {
+  return (
+    <div className="card shadow-lg p-4 rounded-xl">
+      <img src={avatar} alt={name} className="w-24 h-24 rounded-full" />
+      <h2 className="text-xl font-bold">{name}</h2>
+      <button onClick={onFollow} className="bg-blue-500 text-white px-4 py-2">
+        Follow
+      </button>
+    </div>
+  );
+};
+\`\`\`
 
-// ❌ NOTO'G'RI nomlar:
-const userCard = () => { ... };      // camelCase — HTML teg deb o'ylaydi
-const user_card = () => { ... };     // snake_case — ishlamaydi
-const USER-CARD = () => { ... };     // Tire — sintaksis xatosi
+**2. Smart Component (Aqlli, mantiq):**
+\`\`\`jsx
+// UserProfileContainer.jsx - Mantiqni hal qiladi, ma'lumot olib keladi.
+import { UserCard } from './UserCard';
+
+const UserProfileContainer = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/user/1').then(res => res.json()).then(setUser);
+  }, []);
+
+  const handleFollow = () => {
+    console.log("Foydalanuvchiga obuna bo'lindi: ", user.name);
+    // API ga jo'natish mantiqi...
+  };
+
+  if (!user) return <p>Yuklanmoqda...</p>;
+
+  return <UserCard name={user.name} avatar={user.avatar} onFollow={handleFollow} />;
+};
 \`\`\`
 
 ---
 
-## Export — Komponentni Tashqariga Chiqarish
+## 5. Export va Import Qoidalari (Modullarni ulash)
+
+Komponentlarni alohida fayllarga ajratganimizdan so'ng, ularni bir-biriga ulashimiz kerak. JavaScript'da (va React'da) buni **ES6 Modules** (\`import\` va \`export\`) yordamida qilamiz. Asosan ikki xil export usuli bor: **Default** va **Named**.
 
 ### Default Export (Asosiy eksport)
+Har bir faylda faqat **bitta** default eksport bo'lishi mumkin. Odatda bitta faylda bitta katta komponent yozilsa, shundan foydalaniladi.
 
 \`\`\`jsx
-// UserCard.jsx fayli
-
-// Komponentni yaratamiz
-const UserCard = () => {
-  return (
-    <div className="user-card">
-      <h2>Foydalanuvchi</h2>
-    </div>
-  );
+// tugma.jsx fayli
+const Button = () => {
+  return <button>Meni bos</button>;
 };
 
-// Faylning ASOSIY eksporti — faqat bittasi bo'lishi mumkin
-export default UserCard;
+export default Button; 
 \`\`\`
 
+**Qanday import qilinadi?**
+Nomini xohlagancha o'zgartirib chaqirib olishingiz mumkin (chunki u faylning yagona asosiy eksporti).
 \`\`\`jsx
-// Boshqa faylda import qilish — ISTALGAN nom berishingiz mumkin
-import UserCard from './UserCard';      // to'g'ri
-import Card from './UserCard';          // ham to'g'ri — nom o'zgartirildi
-import MyCard from './UserCard';        // ham to'g'ri
+import MeningTugmam from './tugma'; // Hech qanday jingalak qavslarsiz!
 \`\`\`
 
 ### Named Export (Nomlangan eksport)
+Bitta fayldan bir nechta o'zgaruvchi, funksiya yoki komponentlarni eksport qilish uchun ishlatiladi.
 
 \`\`\`jsx
-// utils.jsx fayli — bir necha narsa export qilinadi
-
-// Named export — figurali qavslar bilan e'lon
-export const Button = () => <button>Bosing</button>;
-export const Input = () => <input type="text" />;
-export const Label = ({ text }) => <label>{text}</label>;
-
-// Yoki oxirida birdan export qilish:
-const Title = () => <h1>Sarlavha</h1>;
-const Subtitle = () => <h2>Kichik sarlavha</h2>;
-export { Title, Subtitle };
+// utils.jsx fayli
+export const qoShish = (a, b) => a + b;
+export const ayirish = (a, b) => a - b;
+export const PI = 3.14;
 \`\`\`
 
+**Qanday import qilinadi?**
+Aynan o'sha nom bilan, **jingalak qavslar \`{}\`** ichida import qilinishi **shart**.
 \`\`\`jsx
-// Import qilish — ANIQ nomlarini yozish kerak, figurali qavslar bilan
-import { Button, Input } from './utils';       // faqat keraklilarini
-import { Button, Input, Label } from './utils'; // barchasini
-
-// Nomni o'zgartirish ham mumkin (alias)
-import { Button as MyBtn } from './utils';
+import { qoShish, PI } from './utils';
 \`\`\`
 
-### Qachon Qaysinisini Ishlatish Kerak?
+### Qaysi birini qachon ishlatamiz?
+- **Komponentlar uchun:** Ko'pchilik dasturchilar har bir komponentni alohida faylda yaratib, **Default Export** qilishni ma'qul ko'rishadi (masalan: \`Header.jsx\` dan default export \`Header\`). Lekin so'nggi paytlarda katta jamoalarda nomlar chalkashib ketmasligi uchun **Named Export** (faqat jingalak qavs bilan olinadigan) usuli ham juda mashhur bo'lib bormoqda.
+- **Yordamchi funksiyalar (utils, constants):** Har doim **Named Export** ishlating.
 
-| Holat | Default Export | Named Export |
-|-------|---------------|--------------|
-| Bir faylda bitta komponent | ✅ Ideal | ⚠️ Ortiqcha |
-| Bir faylda bir necha narsa | ❌ Faqat bittasi | ✅ Ideal |
-| Utility funksiyalar | ⚠️ | ✅ Afzal |
-| Yagona sahifa komponentlari | ✅ Afzal | ⚠️ |
-
-\`\`\`jsx
-// ✅ YAXSHI amaliyot — har bir komponent o'z faylida
-// Button.jsx
-const Button = ({ label }) => <button>{label}</button>;
-export default Button;
-
-// ✅ YAXSHI amaliyot — kichik utility komponentlar
-// ui/index.js
-export { default as Button } from './Button';
-export { default as Input } from './Input';
-export { default as Modal } from './Modal';
-// Boshqa joyda: import { Button, Input } from './ui';
-\`\`\`
+> **💡 Oltin Maslahat:** Ilovangizda standart yarating! Yoki hamma komponentlar uchun "Default export" ishlating, yoki hammaga "Named export". Ikkalasini aralashtirib yuborish jamoa a'zolarini chalg'itishi mumkin.
 
 ---
+## Xulosa
+React'ning qudrati uning komponentli yondashuvidadir. Katta muammolarni (katta veb-saytlarni) mayda, boshqarish oson bo'lgan bo'laklarga (komponentlarga) ajratish orqali biz toza, qayta ishlatiladigan va xatosiz kod yozishga erishamiz. Keyingi darsda ushbu Lego bloklarini bir-biriga qanday qilib "Props" orqali bog'lashni o'rganamiz!
 
-## Komponentlarni Nesting (Ichida Ishlatish)
-
-Komponentlarni bir-birining ichida ishlatish — **compositing** (yig'ish) deyiladi:
-
-\`\`\`jsx
-// Kichik, oddiy komponent
-const Avatar = () => {
-  return (
-    <img
-      src="https://picsum.photos/50"
-      alt="Foydalanuvchi rasmi"
-      className="avatar"
-    />
-  );
-};
-
-// Kartochka komponent — Avatar ni ichida ishlatadi
-const UserCard = () => {
-  return (
-    <div className="card">
-      <Avatar />          {/* Avatar komponentni qo'shamiz */}
-      <h3>Ali Valiyev</h3>
-      <p>Frontend Dasturchi</p>
-    </div>
-  );
-};
-
-// Ro'yxat komponent — UserCard ni ko'p marta ishlatadi
-const UserList = () => {
-  return (
-    <section>
-      <h2>Foydalanuvchilar Ro'yxati</h2>
-      <UserCard />   {/* 1-foydalanuvchi */}
-      <UserCard />   {/* 2-foydalanuvchi */}
-      <UserCard />   {/* 3-foydalanuvchi */}
-    </section>
-  );
-};
-
-// App — eng yuqori komponent
-function App() {
-  return (
-    <main>
-      <UserList />   {/* UserList -> UserCard -> Avatar */}
-    </main>
-  );
-}
-
-export default App;
-\`\`\`
-
----
-
-## Kichik Komponentlarga Bo'lib Chiqish
-
-### Qachon Yangi Komponent Yaratish Kerak?
-
-Bu savolga "**Single Responsibility Principle**" (Yagona Mas'uliyat Tamoyili) yordam beradi: **Har bir komponent faqat bitta ishni bajarsin.**
-
-Quyidagi holatlarda yangi komponent yarating:
-
-\`\`\`
-✅ Komponent katta bo'lib ketganda (30-50 qatordan oshsa)
-✅ Kod takrorlanayotganda (copy-paste qilayotgansiz)
-✅ Mantiqiy ajratish mumkin bo'lsa (header, footer, card)
-✅ Mustaqil holda test qilishingiz kerak bo'lsa
-✅ Boshqa sahifalarda ham ishlatish mumkin bo'lsa
-\`\`\`
-
-### ❌ YOMON — Hamma narsa bitta komponentda
-
-\`\`\`jsx
-// Bu komponent JUDA KATTA — refaktor qilish kerak!
-function App() {
-  return (
-    <div>
-      {/* Navigatsiya — 20 qator HTML */}
-      <nav>
-        <div className="logo">
-          <img src="/logo.png" alt="Logo" />
-          <span>MyApp</span>
-        </div>
-        <ul>
-          <li><a href="/">Bosh sahifa</a></li>
-          <li><a href="/about">Haqida</a></li>
-          <li><a href="/contact">Aloqa</a></li>
-        </ul>
-        <button>Kirish</button>
-      </nav>
-
-      {/* Asosiy kontent — 30 qator HTML */}
-      <main>
-        <div className="hero">
-          <h1>Xush Kelibsiz!</h1>
-          <p>Bu ajoyib platforma...</p>
-          <button>Boshlash</button>
-        </div>
-        <div className="features">
-          <div className="feature-card">
-            <span>⚡</span>
-            <h3>Tez</h3>
-            <p>Juda tez ishlaydi</p>
-          </div>
-          {/* Yana 10 ta shunday card... */}
-        </div>
-      </main>
-
-      {/* Footer — 15 qator HTML */}
-      <footer>
-        <p>© 2024 MyApp. Barcha huquqlar himoyalangan.</p>
-      </footer>
-    </div>
-  );
-}
-// Natija: 100+ qatorlik, o'qib bo'lmaydigan, qayta
-// ishlatib bo'lmaydigan komponent 😱
-\`\`\`
-
-### ✅ YAXSHI — Mantiqiy bo'lingan komponentlar
-
-\`\`\`jsx
-// Navbar.jsx — faqat navigatsiya uchun mas'ul
-const Navbar = () => (
-  <nav>
-    <Logo />
-    <NavLinks />
-    <LoginButton />
-  </nav>
-);
-
-// HeroSection.jsx — faqat hero qism uchun mas'ul
-const HeroSection = () => (
-  <div className="hero">
-    <h1>Xush Kelibsiz!</h1>
-    <p>Bu ajoyib platforma...</p>
-    <button>Boshlash</button>
-  </div>
-);
-
-// FeatureCard.jsx — bitta kartochka
-const FeatureCard = ({ icon, title, description }) => (
-  <div className="feature-card">
-    <span>{icon}</span>
-    <h3>{title}</h3>
-    <p>{description}</p>
-  </div>
-);
-
-// Footer.jsx — faqat footer uchun
-const Footer = () => (
-  <footer>
-    <p>© 2024 MyApp. Barcha huquqlar himoyalangan.</p>
-  </footer>
-);
-
-// App.jsx — faqat yig'ish/layout uchun mas'ul
-function App() {
-  return (
-    <div>
-      <Navbar />
-      <HeroSection />
-      <FeaturesSection />
-      <Footer />
-    </div>
-  );
-}
-// Natija: Har bir fayl 10-30 qator, toza, qayta ishlatiladi ✅
-\`\`\`
-
----
-
-## Smart vs Dumb Komponentlar
-
-Bu arxitektura (tuzilma) pattern'i (qolip) React da juda mashhur:
-
-### 🧠 Smart (Aqlli) Komponentlar — Container Components
-
-- Biznes mantiqini (logic) boshqaradi
-- State (holat) saqlaydi
-- API dan ma'lumot oladi
-- Ko'rinish emas, **mantiq** bilan shug'ullanadi
-
-\`\`\`jsx
-// UserListContainer.jsx — SMART komponent
-import { useState, useEffect } from 'react';
-import UserList from './UserList'; // Dumb komponent
-
-const UserListContainer = () => {
-  // State saqlaydi
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // API dan ma'lumot oladi
-  useEffect(() => {
-    fetch('https://api.example.com/users')
-      .then(res => res.json())
-      .then(data => {
-        setUsers(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
-
-  // Dumb komponentga ma'lumot uzatadi
-  if (loading) return <p>Yuklanmoqda...</p>;
-  if (error) return <p>Xatolik: {error}</p>;
-  return <UserList users={users} />;
-};
-\`\`\`
-
-### 🎨 Dumb (Soddа) Komponentlar — Presentational Components
-
-- Faqat ko'rsatish uchun
-- Props (xususiyatlar) qabul qiladi va render qiladi
-- State yo'q (yoki minimal)
-- Qayta ishlatish oson
-
-\`\`\`jsx
-// UserList.jsx — DUMB komponent (Presentational)
-const UserList = ({ users }) => {
-  // Faqat ko'rsatish bilan shug'ullanadi
-  return (
-    <ul className="user-list">
-      {users.map(user => (
-        <li key={user.id} className="user-item">
-          <img src={user.avatar} alt={user.name} />
-          <span>{user.name}</span>
-          <span>{user.email}</span>
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-export default UserList;
-\`\`\`
-
-\`\`\`mermaid
-graph LR
-  SC["🧠 Smart Component\n(Container)"]
-  DC1["🎨 Dumb Component\n(UserList)"]
-  DC2["🎨 Dumb Component\n(UserCard)"]
-  DC3["🎨 Dumb Component\n(Button)"]
-
-  SC -->|"users props"| DC1
-  SC -->|"user props"| DC2
-  SC -->|"onClick props"| DC3
-
-  API["🌐 API / State"]
-  API -->|"ma'lumot"| SC
-\`\`\`
-
-> 💡 **Zamonaviy React** da bu chegarani React Hooks xiralashtirgani bilan, bu kontseptsiya hali ham kodni tartibli saqlashda foydali.
-
----
-
-## Komponent Papka Tuzilmasi (Best Practices)
-
-### Variant 1: Sodda Tuzilma (Kichik loyihalar)
-
-\`\`\`
-src/
-├── components/
-│   ├── Navbar.jsx
-│   ├── Footer.jsx
-│   ├── Button.jsx
-│   ├── UserCard.jsx
-│   └── Modal.jsx
-├── pages/
-│   ├── Home.jsx
-│   ├── About.jsx
-│   └── Contact.jsx
-└── App.jsx
-\`\`\`
-
-### Variant 2: Feature-based Tuzilma (O'rta loyihalar)
-
-\`\`\`
-src/
-├── components/
-│   ├── common/           # Qayta ishlatiladigan umumiy
-│   │   ├── Button/
-│   │   │   ├── Button.jsx
-│   │   │   ├── Button.css
-│   │   │   └── index.js  # Re-export
-│   │   └── Modal/
-│   │       ├── Modal.jsx
-│   │       └── index.js
-│   ├── layout/           # Layout komponentlari
-│   │   ├── Navbar.jsx
-│   │   └── Footer.jsx
-│   └── features/         # Xususiyat bo'yicha
-│       ├── auth/
-│       │   ├── LoginForm.jsx
-│       │   └── RegisterForm.jsx
-│       └── products/
-│           ├── ProductCard.jsx
-│           └── ProductList.jsx
-├── pages/
-└── App.jsx
-\`\`\`
-
-### Komponent Papkasi Ichki Tuzilmasi (Recommended)
-
-\`\`\`jsx
-// Button/index.js — Foydalanish oson: import Button from './Button'
-export { default } from './Button';
-
-// Button/Button.jsx — Asosiy komponent kodi
-const Button = ({ label, onClick, variant = 'primary' }) => {
-  return (
-    <button
-      className={\`btn btn-\${variant}\`}  // dinamik class
-      onClick={onClick}
-    >
-      {label}
-    </button>
-  );
-};
-export default Button;
-
-// Button/Button.module.css — Komponent uslublari
-// Button/Button.test.js — Komponent testlari
-\`\`\`
-
----
-
-## 🎤 Intervyu Savol-Javoblari
-
-### 1️⃣ "React da komponent nima va u oddiy JavaScript funksiyasidan nima bilan farq qiladi?"
-
-**Javob:**
-React komponent — bu UI ning qayta ishlatiladigan, mustaqil bo'lagi. U JavaScript funksiyasidan farqli ravishda:
-1. **JSX** qaytaradi (HTML-ga o'xshash sintaksis)
-2. **Lifecycle** (hayot aylanishi) bor — mount, update, unmount
-3. **Props** orqali ma'lumot qabul qiladi
-4. **State** saqlashi mumkin (useState bilan)
-5. React tomonidan boshqariladi va optimallashtiriladi
-
-Texnik jihatdan funksional komponent — bu JSX qaytaradigan oddiy JavaScript funksiyasi, lekin React uni maxsus tarzda qayta ishlaydi.
-
----
-
-### 2️⃣ "Nima uchun React komponent nomini katta harf bilan yozish shart?"
-
-**Javob:**
-React **JSX transpiler** (Babel/SWC) kichik harfli nomlarni **native HTML elementlari** (\`div\`, \`span\`, \`p\`) deb, katta harfli nomlarni esa **React komponentlari** deb qabul qiladi.
-
-\`<button>\` yozilsa — bu HTML button elementi yaratadi.
-\`<Button>\` yozilsa — bu React \`Button\` komponentini chaqiradi.
-
-Agar komponentni kichik harf bilan yozsangiz, React uni DOM elementiga o'tkazishga harakat qiladi, bu esa xatolikka yoki noto'g'ri renderga olib keladi.
-
----
-
-### 3️⃣ "Default export va named export orasidagi farq nima? Qachon qaysinisini tanlaysiz?"
-
-**Javob:**
-- **Default export**: Bir fayldan faqat bittasi bo'lishi mumkin. Import qilganda xohlagan nom bersangiz bo'ladi. Asosiy komponent bo'lganda ishlatiladi.
-- **Named export**: Bir fayldan ko'p bo'lishi mumkin. Import qilganda aniq nomini {} ichida yozish kerak.
-
-**Qoidam:**
-- Bir faylda — bitta asosiy komponent → \`export default\`
-- Bir faylda bir necha utility/kichik komponent → \`export { ... }\` (named)
-- UI kutubxona komponentlari (Button, Input, Modal) → named export afzal, chunki treeshaking yaxshi ishlaydi
-
----
-
-## 🔑 Xulosa
-
-\`\`\`
-✅ Komponent = UI ning qayta ishlatiladigan qismi (Lego!)
-✅ Nom DOIM PascalCase (katta harf) bilan boshlanadi
-✅ Funksional komponent — arrow function yoki function declaration
-✅ Export default — yagona asosiy komponent uchun
-✅ Named export — bir faylda bir necha narsa uchun
-✅ Katta komponentlarni kichiklarga bo'ling
-✅ Smart = Mantiq, Dumb = Ko'rinish
-✅ Har bir komponent faqat bitta ishni bajarsin
-\`\`\`
-  `,
+`,
   code: `// 3-DARS: Komponentlar (Components)
 // Quyida oddiy komponentlar namunasi ko'rsatilgan
 
