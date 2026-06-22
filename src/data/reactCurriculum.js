@@ -20,7 +20,7 @@ export const reactCurriculum = {
       { id: "step14_class_components_and_errors", title: "14. Klass Komponentlar va Xatolarni Boshqarish", load: () => import("./lessons/react/step14_class_components_and_errors.js").then(m => m.step14_class_components_and_errors) }
     ]
   },
-  reactProjects: {
+  reactBasicsProjects: {
     label: "Amaliy Loyihalar",
     color: "#f5a623",
     icon: "🏗️",
@@ -114,6 +114,7 @@ export const reactCurriculum = {
 
 export const REACT_SECTIONS = [
   "reactBasics",
+  "reactBasicsProjects",
   "reactStateManagement",
   "reactHooksAdvanced",
   "reactPerformance",

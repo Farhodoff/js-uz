@@ -7,7 +7,8 @@ const mdDir = path.join(__dirname, 'temp_md');
 const files = [
   'step1_setup', 'step2_jsx', 'step3_components', 'step4_props',
   'step5_state', 'step6_events', 'step7_hooks', 'step8_lists',
-  'step9_forms', 'step10_routing', 'step11_context', 'step12_api'
+  'step9_forms', 'step10_routing', 'step11_context', 'step12_api',
+  'step13_advanced_hooks', 'step14_class_components_and_errors'
 ];
 
 files.forEach(basename => {
