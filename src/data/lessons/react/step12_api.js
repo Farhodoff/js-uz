@@ -24,22 +24,20 @@ Agar siz bu array'ni bermasangiz, \`useEffect\` har bir render bo'lganda (ya'ni 
 \`\`\`jsx
 // ❌ YOMON AMALIYOT (Cheksiz loop)
 useEffect(() => {
-  // fetchData API-dan ma'lumot oladi va state-ni yangilaydi
   fetchData().then(data => setData(data)); 
   // Nima yuz beradi:
-  // 1. Komponent render bo'ladi (ekranga chiziladi).
-  // 2. useEffect ishga tushib, tarmoqdan fetch (so'rov) qiladi.
-  // 3. setData() ishga tushib state-ni yangilaydi.
+  // 1. Komponent render bo'ladi.
+  // 2. useEffect ishga tushib, fetch qiladi.
+  // 3. setData() ishga tushadi.
   // 4. State o'zgargani uchun React komponentni QAYTA render qiladi.
-  // 5. Dependency array (qaramliklar ro'yxati) berilmagani uchun useEffect YANA ishga tushadi va fetch qiladi...
-  // 💥 Natijada brauzer qotib qoladi yoki serverga sekundiga yuzlab so'rov ketib server qulaydi!
+  // 5. Array berilmagani uchun useEffect YANA ishga tushadi va fetch qiladi...
+  // 💥 Natijada brauzer qotib qoladi yoki serverga sekundiga yuzlab so'rov ketadi!
 });
 
 // ✅ YAXSHI AMALIYOT
 useEffect(() => {
-  // Komponent faqat birinchi marta ekranga chiqqanda ma'lumotni yuklab oladi
   fetchData().then(data => setData(data));
-}, []); // <-- Bo'sh array: bu useEffect faqat 1 marta (mount bo'lganda) ishlashini ta'minlaydi
+}, []); // <-- Bo'sh array
 \`\`\`
 
 \`[]\` qaramliklar ro'yxati React'ga shunday deydi: *"Bu effekt hech qanday state yoki prop'ga qaram emas. Shuning uchun uni faqat komponent ekranga birinchi marta chiqqanida (mount bo'lganda) bir marta bajar, boshqa bezovta qilma!"*
@@ -96,20 +94,17 @@ import React, { useState, useEffect } from 'react';
 
 function UserList() {
   // 1. Uchta asosiy state'ni e'lon qilamiz
-  // users: API-dan kelgan foydalanuvchilar ro'yxatini saqlaydi
   const [users, setUsers] = useState([]);
-  // isLoading: Ma'lumot yuklanish jarayonida ekanligini (spinner ko'rsatishni) bildiradi
   const [isLoading, setIsLoading] = useState(true); // Dastlab true bo'ladi
-  // error: API chaqiruvda xatolik bo'lsa, xato matnini saqlaydi
   const [error, setError] = useState(null); // Dastlab xato yo'q
 
   useEffect(() => {
-    // async funksiyani useEffect ichida yaratamiz (chunki useEffect o'zi async bo'la olmaydi)
+    // async funksiyani useEffect ichida yaratamiz
     const fetchUsers = async () => {
       try {
-        setIsLoading(true); // So'rov boshlanganini tasdiqlaymiz va yuklanishni boshlaymiz
+        setIsLoading(true); // So'rov boshlanganini tasdiqlaymiz
         
-        // Asinxron fetch so'rovi orqali ma'lumotlarni so'raymiz
+        // Asinxron fetch so'rovi
         const response = await fetch('https://jsonplaceholder.typicode.com/users');
         
         // Fetch API da HTTP xatolar (masalan 404, 500) avtomatik tarzda 
@@ -118,13 +113,11 @@ function UserList() {
           throw new Error(\`Xatolik yuz berdi: \${response.status}\`);
         }
         
-        // Javobni (response) JSON obyektiga aylantiramiz
         const data = await response.json();
-        setUsers(data); // Ma'lumotni users state'ga muvaffaqiyatli saqlaymiz
+        setUsers(data); // Ma'lumotni state ga muvaffaqiyatli saqlaymiz
         
       } catch (err) {
-        // Agar try blokida biron xatolik chiqsa, shu yerda tutamiz (catch)
-        setError(err.message); // Xatoni error state'ga yozamiz
+        setError(err.message); // Agar catch ga tushsa, xatoni state ga yozamiz
       } finally {
         // Muvaffaqiyatli bo'ladimi yoki xatomi, eng oxirida bu blok albatta ishlaydi.
         // Biz yuklanish jarayoni tugaganini belgilab qo'yamiz.
@@ -132,12 +125,11 @@ function UserList() {
       }
     };
 
-    fetchUsers(); // Yuqorida yaratilgan funksiyani chaqiramiz
-  }, []); // <-- Bo'sh dependency array! Komponent yuklanganda faqat 1 marta ishlaydi.
+    fetchUsers(); // Funksiyani chaqiramiz
+  }, []); // <-- Bo'sh dependency array! 
 
   // 2. State'larning holatiga qarab, UIni mos ravishda render qilamiz (Conditional Rendering)
   
-  // Agar ma'lumot yuklanayotgan bo'lsa, spinner ko'rsatamiz
   if (isLoading) {
     return (
       <div className="spinner">
@@ -146,7 +138,6 @@ function UserList() {
     );
   }
 
-  // Agar xatolik bo'lsa, xato xabarini ko'rsatamiz
   if (error) {
     return (
       <div className="error-message">
@@ -156,12 +147,10 @@ function UserList() {
   }
 
   // Agar loading tugagan va xato bo'lmasa, demak ma'lumot bor
-  // U holda foydalanuvchilar ro'yxatini chizamiz
   return (
     <div>
       <h2>Foydalanuvchilar ro'yxati</h2>
       <ul>
-        {/* users massivini aylanib chiqib, har bir foydalanuvchini ekranga chiqaramiz */}
         {users.map(user => (
           <li key={user.id}>
             <strong>{user.name}</strong> - {user.email}
@@ -199,38 +188,27 @@ JavaScript-da tarmoqqa so'rov yuborish uchun hozirda ikki xil keng tarqalgan tex
 
 ### 1. Fetch API bilan yozish (Standart yo'l)
 \`\`\`javascript
-// Fetch API orqali serverga so'rov jo'natamiz
 fetch('https://api.example.com/data')
   .then(response => {
-    // 404 yoki 500 kabi HTTP xatolar catch'ga avtomatik kirmagani uchun
-    // response.ok holatini qo'lda tekshiramiz
+    // 404 yoki 500 kabi xatolar catch ga kirmagani uchun qo'lda tekshiramiz
     if (!response.ok) {
-      throw new Error('Tarmoq xatosi yuz berdi'); // Xatolikni o'zimiz hosil qilamiz
+      throw new Error('Tarmoq xatosi yuz berdi');
     }
-    // Kelgan javobni oddiy matndan (stringdan) JavaScript obyektga (JSON formatga) o'tkazamiz
+    // Kelgan javobni stringdan JSON formatga o'tkazish
     return response.json(); 
   })
-  .then(data => {
-    // Ma'lumot tayyor bo'lgach, uni konsolga chiqaramiz (yoki state'ga saqlaymiz)
-    console.log(data);
-  })
-  .catch(error => {
-    // Har qanday tarmoq xatosi yoki yuqorida biz tashlagan xatolikni tutib olamiz
-    console.error(error);
-  });
+  .then(data => console.log(data))
+  .catch(error => console.error(error));
 \`\`\`
 
 ### 2. Axios bilan yozish (Zamonaviy qulaylik)
 \`\`\`javascript
-// Axios kutubxonasini import qilamiz
 import axios from 'axios';
 
-// axios.get orqali serverga GET so'rov jo'natamiz
 axios.get('https://api.example.com/data')
-  // Axios qatorlarni avtomat tarzda JSONga o'giradi va uni response'ning "data" kaliti ichiga joylaydi
-  // Shuning uchun qo'shimcha ".json()" qilib o'tirishga hojat yo'q
+  // Axios qatorlarni avtomat tarzda JSONga o'giradi va uni "data" kaliti ichiga joylaydi
   .then(response => console.log(response.data)) 
-  // Agar API dan 400, 401, 404, 500 kabi HTTP xato kodlari kelsa to'g'ridan-to'g'ri catch ishlaydi
+  // Agar API dan 400, 401, 404, 500 kabi xato kodlari kelsa to'g'ridan-to'g'ri catch ishlaydi
   .catch(error => console.error(error.message)); 
 \`\`\`
 
@@ -261,55 +239,32 @@ axios.get('https://api.example.com/data')
 **Memory Leak oldini olish namunasi:**
 \`\`\`javascript
 useEffect(() => {
-  // isMounted flagi komponentning ekranda (DOM-da) mavjudligini bildiradi
   let isMounted = true; // Komponent hozircha ekranda bor
 
-  // Asinxron ma'lumot yuklash funksiyasi
   const fetchData = async () => {
     try {
-      // API-ga so'rov jo'natamiz
       const response = await fetch('/api/data');
-      const result = await response.json(); // Javobni JSON'ga o'giramiz
+      const result = await response.json();
       
-      // FAQATGINA komponent hali ham ekranda bo'lsa (unmount bo'lmagan bo'lsa), state'ni yangilaymiz
-      // Bu bizni "Memory Leak" xatosidan saqlaydi
+      // FAQATGINA komponent hali ham ekranda bo'lsa, state'ni yangila
       if (isMounted) {
         setData(result);
       }
     } catch(err) {
-      // Xato yuz bersa va komponent hali ham ekranda bo'lsa, xatoni state'ga saqlaymiz
       if(isMounted) setError(err);
     }
   };
   
-  fetchData(); // Funksiyani ishga tushiramiz
+  fetchData();
 
-  // Cleanup function: Komponent ekrandan yo'qolganda (unmount bo'lganda) ishlaydi
-  // Agar boshqa sahifaga o'tib ketsak, isMounted false bo'ladi va state yangilanmaydi
+  // Cleanup function: Komponent yo'qolganda ishlaydi
   return () => {
-    isMounted = false; // Flag false bo'ladi
+    isMounted = false; // Flag false bo'ladi va state yangilanmaydi
   };
 }, []);
 \`\`\`
 
 Ushbu qadam orqali siz React-da eng muhim ko'nikmalardan biri bo'lgan ma'lumotlar bilan ishlashni, hayot tsiklini boshqarishni va uchinchi tomon vositalari bilan professional darajada integratsiya qilishni o'rgandingiz!
-
-
----
-
-## 🎤 Intervyu Savollari
-
-**1. useEffect da API chaqiruvi qanday amalga oshiriladi?**
-*Javob:* useEffect ichida async funksiya yaratib chaqirish: \`useEffect(() => { const fetchData = async () => { const res = await fetch(url); const data = await res.json(); setData(data); }; fetchData(); }, [])\`. Async/await to'g'ridan-to'g'ri useEffect callbackiga qo'yib bo'lmaydi.
-
-**2. Loading va Error holatlarini qanday boshqarish kerak?**
-*Javob:* Uchlik holat: \`loading\`, \`error\`, \`data\`. API chaqiruv boshida loading=true, muvaffaqiyatda data set va loading=false, xatoda error set va loading=false. UI da har uchala holatni ko'rsating.
-
-**3. Race condition nima va qanday oldini olish mumkin?**
-*Javob:* Tez-tez o'zgaruvchi so'rovlarda eski so'rov yangi dan keyin kelishi mumkin — bu race condition. Yechim: cleanup funksiyada ignore flag yoki AbortController bilan fetch ni bekor qilish: \`const controller = new AbortController(); fetch(url, { signal: controller.signal })\`.
-
-**4. fetch va axios farqi?**
-*Javob:* fetch — brauzer native API, kichik va kutubxonasiz. axios — kichik kutubxona, JSON auto-parsing, request/response interceptors, timeout, keng brauzer qo'llab-quvvatlash. Katta loyihalarda axios qulay.
 
 `,
   code: `import React, { useState, useEffect } from "react";
