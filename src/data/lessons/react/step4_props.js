@@ -2,315 +2,232 @@ export const step4_props = {
   id: "step4_props",
   title: "4-DARS: Props (Xususiyatlar)",
   content: `
-# 4-DARS: Props (Xususiyatlar)
+# 4-Qadam: React Props - Komponentlar o'rtasidagi aloqa vositasi
 
-## 1. Props Nima?
+## Props o'zi nima?
 
-Props (Properties — xususiyatlar) — bu ma'lumotlarni **ota komponentdan bola komponentga** uzatish usuli. Props yordamida bir xil komponentni turli ma'lumotlar bilan qayta-qayta ishlatishimiz mumkin.
+Tasavvur qiling, siz inson tanasini yaratmoqchisiz. Har bir insonning o'ziga xos xususiyatlari bor: ko'zining rangi, bo'yi, sochining shakli. Bu xususiyatlar insonga qayerdan keladi? Albatta, ota-onasidan gen (DNK) orqali o'tadi. React-da ham xuddi shunday!
 
-**Hayotiy o'xshatish:** Tasavvur qiling, "Tabrik xati" shabloni bor. Ota ushbu shablonga **ism**, **sana**, va **xabar** ni to'ldiradi. Shablon (bola komponent) bu ma'lumotlarni ko'rsatadi. Bir xil shablon, turli ma'lumotlar bilan!
+**Props** (inglizcha *properties* - xususiyatlar so'zining qisqartmasi) - bu ota komponentdan farzand komponentga ma'lumot uzatish usuli. Ular xuddi ota-onadan farzandga o'tadigan DNKga o'xshaydi: farzand uni qabul qiladi va shunga mos shakllanadi, lekin farzand o'z DNK-sini o'zi o'zgartira olmaydi.
+
+### Nega bizga Props kerak?
+Agar bizda props bo'lmaganida, har bir komponent faqat bitta xil narsani ko'rsata olar edi (statik bo'lardi). Props yordamida biz **bitta komponentni yaratib, unga turlicha ma'lumotlar berib, ko'p marotaba ishlata olamiz** (Reusability).
+
+\`\`\`jsx
+// ❌ YOMON AMALIYOT (Don'ts): Har bir foydalanuvchi uchun alohida komponent yaratish
+function UserAli() {
+  return <h1>Salom, Ali! Sen 20 yoshdasan.</h1>;
+}
+
+function UserVali() {
+  return <h1>Salom, Vali! Sen 25 yoshdasan.</h1>;
+}
+
+// ✅ YAXSHI AMALIYOT (Do's): Bitta komponent yaratib, unga Props berish
+function UserProfile(props) {
+  return <h1>Salom, {props.name}! Sen {props.age} yoshdasan.</h1>;
+}
+
+// Ota komponentda ishlatilishi:
+function App() {
+  return (
+    <div>
+      <UserProfile name="Ali" age={20} />
+      <UserProfile name="Vali" age={25} />
+    </div>
+  );
+}
+\`\`\`
+
+> [!WARNING]
+> **Props o'zgarmasdir (Read-only / Immutable)!**
+> Farzand komponent hech qachon o'ziga kelgan props'ni o'zgartirmasligi kerak. Ular faqat o'qish uchun mo'ljallangan.
+
+## Bir yo'nalishli ma'lumotlar oqimi (Unidirectional Data Flow)
+
+React-da ma'lumotlar har doim **tepadan pastga** (ota komponentdan farzand komponentga) qarab harakatlanadi. Bunga "Unidirectional Data Flow" yoki bir yo'nalishli oqim deyiladi. Ma'lumot hech qachon o'z-o'zidan pastdan tepaga qarab oqmaydi.
+
+### Nega bu muhim?
+Ilovaning holati (state) va ma'lumotlari qayerdan kelayotganini kuzatish juda oson bo'ladi. Agar qandaydir ma'lumot xato chiqayotgan bo'lsa, siz uni faqat tepadagi ota komponentlardan izlaysiz, bu esa xatolarni (bug) topishni va arxitekturani tushunishni juda osonlashtiradi.
 
 \`\`\`mermaid
 graph TD
-    A["OtaKomponent"] -->|"props: { ism, yosh }"| B["BolaKomponent"]
-    A -->|"props: { ism, yosh }"| C["BolaKomponent 2"]
-    A -->|"props: { ism, yosh }"| D["BolaKomponent 3"]
-
-    style A fill:#3498db,color:#fff
-    style B fill:#2ecc71,color:#fff
-    style C fill:#2ecc71,color:#fff
-    style D fill:#2ecc71,color:#fff
+    A[Ota Komponent <br> App] -->|props: {users}| B(Farzand Komponent <br> UserList)
+    A -->|props: {theme}| C(Farzand Komponent <br> Header)
+    B -->|props: {name, age}| D(Nabira Komponent <br> UserCard 1)
+    B -->|props: {name, age}| E(Nabira Komponent <br> UserCard 2)
+    
+    style A fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:white
+    style B fill:#2196F3,stroke:#1976D2,stroke-width:2px,color:white
+    style C fill:#2196F3,stroke:#1976D2,stroke-width:2px,color:white
+    style D fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:white
+    style E fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:white
 \`\`\`
 
----
+## Props'dan Ilg'or Foydalanish (Advanced Prop Usage)
 
-## 2. Props ni Uzatish va Qabul Qilish
+### 1. Destructuring (Qismlarga ajratish)
+Odatda biz \`props\` obyekti ichidan qiymatlarni olish uchun \`props.name\`, \`props.age\` deb yozamiz. Lekin bu kodni biroz uzun qilib yuboradi. ES6 ning "Destructuring" xususiyati yordamida biz props'ni bevosita parametrlar qismidayoq ajratib olishimiz mumkin.
 
-### Uzatish (Ota komponentda)
+**Nega kerak?** Kodni toza, qisqa va o'qishga qulay qilish uchun. Bir qarashda komponent qanday xususiyatlarni qabul qilishini ko'rish mumkin.
 
 \`\`\`jsx
-// Ota komponent — props ni uzatadi
-function OtaKomponent() {
+// ❌ YOMON AMALIYOT (Eski usul)
+function ProductCard(props) {
   return (
     <div>
-      {/* ism va yosh proplarini uzatamiz */}
-      <Tabrik ism="Abdulloh" yosh={25} />
-      <Tabrik ism="Kamola" yosh={22} />
-      <Tabrik ism="Jasur" yosh={30} />
+      <h2>{props.title}</h2>
+      <p>Narxi: {props.price}$</p>
+      <button disabled={!props.inStock}>Sotib olish</button>
+    </div>
+  );
+}
+
+// ✅ YAXSHI AMALIYOT (Destructuring bilan)
+function ProductCard({ title, price, inStock }) {
+  return (
+    <div>
+      <h2>{title}</h2>
+      <p>Narxi: {price}$</p>
+      <button disabled={!inStock}>Sotib olish</button>
     </div>
   );
 }
 \`\`\`
 
-### Qabul Qilish (Bola komponentda)
+### 2. Default Props (Standart xususiyatlar)
+Ba'zan ota komponent ma'lum bir prop'ni berishni unutilishi mumkin yoki o'sha ma'lumot vaqtincha mavjud bo'lmasligi mumkin. Shunday paytlarda komponent "sinib qolmasligi" uchun biz standart qiymatlarni (Default Props) belgilashimiz mumkin.
+
+**Nega kerak?** Ilova ishonchliligini oshirish va "undefined" yoki xatoliklarning oldini olish uchun.
 
 \`\`\`jsx
-// Bola komponent — props ni qabul qiladi
-// Usul 1: props obyekti orqali
-function Tabrik(props) {
-  // props.ism va props.yosh ga murojaat qilamiz
-  return (
-    <div>
-      <h2>Salom, {props.ism}!</h2>
-      <p>Sizning yoshingiz: {props.yosh}</p>
-    </div>
-  );
-}
-\`\`\`
-
-\`\`\`jsx
-// Usul 2: Destructuring bilan (tavsiya etiladi)
-function Tabrik({ ism, yosh }) {
-  // To'g'ridan-to'g'ri ism va yosh ga murojaat
-  return (
-    <div>
-      <h2>Salom, {ism}!</h2>
-      <p>Sizning yoshingiz: {yosh}</p>
-    </div>
-  );
-}
-\`\`\`
-
----
-
-## 3. Props Turlari
-
-### String props
-
-\`\`\`jsx
-// String props — tirnoq ichida yozing
-<Komponent sarlavha="Yangiliklar" rang="ko'k" />
-\`\`\`
-
-### Number va Boolean props
-
-\`\`\`jsx
-// Number va Boolean — {} ichida yozing
-<Komponent son={42} faol={true} kattalik={1.5} />
-
-// Boolean props: faqat nom yozilsa true bo'ladi
-<Input majburiy />         {/* majburiy={true} bilan bir xil */}
-<Input majburiy={false} /> {/* false qilish uchun aniq yozish kerak */}
-\`\`\`
-
-### Obyekt va Massiv props
-
-\`\`\`jsx
-// Obyekt props
-<Profil
-  foydalanuvchi={{ ism: "Abdulloh", yosh: 25, shahar: "Toshkent" }}
-/>
-
-// Massiv props
-<Ro'yxat elementlar={["React", "Vue", "Angular"]} />
-\`\`\`
-
-### Funksiya props (Callback)
-
-\`\`\`jsx
-// Funksiya props — boladan otaga xabar berish uchun
-function Ota() {
-  const bosildi = () => {
-    console.log("Tugma bosildi!");
-  };
-
-  // bosildi funksiyasini props sifatida uzatamiz
-  return <Tugma onClick={bosildi} />;
+// Destructuring vaqtida standart qiymat berish (Eng zamonaviy va tavsiya etilgan usul)
+function Avatar({ imageUrl = "https://default-image.com/user.png", size = "medium" }) {
+  const imageSize = size === "large" ? "100px" : "50px";
+  
+  return <img src={imageUrl} alt="Foydalanuvchi rasmi" width={imageSize} />;
 }
 
-function Tugma({ onClick }) {
-  // Props orqali kelgan funksiyani chaqiramiz
-  return <button onClick={onClick}>Bosing!</button>;
-}
+// Agar ota komponent hech narsa bermasa ham, xato chiqmaydi:
+// <Avatar />  => imageUrl va size o'zining standart qiymatini oladi.
 \`\`\`
 
----
+### 3. PropTypes (Tiplarni tekshirish)
+Katta loyihalarda komponentga noto'g'ri ma'lumot tipi (masalan, string o'rniga number) yuborilishi xavfi mavjud. Buning oldini olish uchun React-da \`prop-types\` kutubxonasidan foydalaniladi. Garchi bugungi kunda TypeScript bu vazifani a'lo darajada bajarsa ham, oddiy JavaScript loyihalarida PropTypes bilish juda muhim.
 
-## 4. Default Props (Standart Qiymatlar)
-
-Agar props uzatilmasa, standart qiymat ishlatiladi.
-
-\`\`\`jsx
-// Usul 1: Destructuring da standart qiymat
-function Tugma({ matn = "Bosing", rang = "ko'k", kattalik = "o'rta" }) {
-  return (
-    <button style={{ background: rang }}>
-      {matn}
-    </button>
-  );
-}
-
-// Quyidagilar bir xil natija beradi:
-<Tugma />                               {/* Standart qiymatlar ishlatiladi */}
-<Tugma matn="Yuborish" rang="yashil" /> {/* Ko'rsatilgan qiymatlar */}
-\`\`\`
+**Nega kerak?** Dasturchi xatolarini erta aniqlash va qat'iy ma'lumotlar tipini ta'minlash uchun.
 
 \`\`\`jsx
-// Usul 2: defaultProps (eski usul, hali ishlatiladi)
-function Karta({ sarlavha, matn }) {
-  return <div><h3>{sarlavha}</h3><p>{matn}</p></div>;
+import PropTypes from 'prop-types';
+
+function Button({ text, color, onClick }) {
+  return <button style={{ backgroundColor: color }} onClick={onClick}>{text}</button>;
 }
 
-Karta.defaultProps = {
-  sarlavha: "Standart sarlavha",
-  matn: "Standart matn"
+// Qanday turdagi props kelishi kerakligini qat'iy belgilaymiz
+Button.propTypes = {
+  text: PropTypes.string.isRequired,    // isRequired - albatta berilishi shart
+  color: PropTypes.string,              // ixtiyoriy
+  onClick: PropTypes.func               // funksiya bo'lishi kerak
 };
 \`\`\`
 
----
+## Funksiyalarni Props orqali uzatish (Callback Props)
 
-## 5. children Props
+Yuqorida aytganimizdek, ma'lumot faqat tepadan pastga qarab oqadi. Xo'sh, farzand komponent ota komponentdagi qandaydir ma'lumotni o'zgartirishi yoki unga xabar berishi kerak bo'lsa-chi?
 
-\`\`\`children\` — bu maxsus props bo'lib, komponent teglari o'rtasiga qo'yilgan barcha narsani o'z ichiga oladi.
+Buning yechimi oddiy: Ota komponent farzandga ma'lumot emas, balki **bajarilishi kerak bo'lgan funksiya (callback)** yuboradi. Farzand kerakli vaqtda (masalan, tugma bosilganda) o'sha funksiyani chaqiradi va unga kerakli ma'lumotni argument sifatida berib yuboradi. Shu tariqa biz pastdan tepaga ma'lumot yuborgandek bo'lamiz!
 
-\`\`\`jsx
-// children props ni qabul qiluvchi komponent
-function Konteyner({ children, sarlavha }) {
-  return (
-    <div className="konteyner">
-      <h2>{sarlavha}</h2>
-      {/* children — ichiga qo'yilgan barcha narsalar */}
-      <div className="tarkib">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-// Ishlatish — teglar orasiga qo'yilgan narsa children bo'ladi
-function App() {
-  return (
-    <Konteyner sarlavha="Mening konteynerim">
-      <p>Bu paragraf children sifatida keladi</p>
-      <button>Bu tugma ham children</button>
-    </Konteyner>
-  );
-}
-\`\`\`
-
----
-
-## 6. Props Immutability (O'zgarmaslik)
-
-Props **o'zgartirib bo'lmaydi** (read-only). Bu React ning asosiy tamoyili.
-
-\`\`\`jsx
-// ❌ YOMON — props ni o'zgartirish MUMKIN EMAS!
-function Komponent(props) {
-  props.ism = "Boshqa ism"; // Bu XATO! TypeScript xatolik beradi, oddiy JS da xatosiz ishlasa ham mantiqan noto'g'ri
-  return <p>{props.ism}</p>;
-}
-
-// ✅ YAXSHI — props ni o'qish va ko'rsatish
-function Komponent({ ism }) {
-  // props ni o'zgartirmasdan ishlatamiz
-  const kattaHarf = ism.toUpperCase(); // Yangi o'zgaruvchi yaratamiz
-  return <p>{kattaHarf}</p>;
-}
-\`\`\`
-
-**Nima uchun?** Agar props o'zgartirilsa, React qaysi komponent nima qilayotganini kuzatib bo'lmaydi va UI bashorat qilib bo'lmaydi. Bu "Data Down, Events Up" tamoyilidir.
-
----
-
-## 7. Callback Props — Boladan Otaga Ma'lumot Yuborish
+**Nega kerak?** Farzand komponentlarda yuz bergan hodisalarga (bosish, yozish) ota komponent javob qaytara olishi uchun.
 
 \`\`\`mermaid
-graph TD
-    A["Ota Komponent\nstate: sanoq"] -->|"onBosish funksiyasi (prop)"| B["Bola Komponent\nTugma"]
-    B -->|"onClick chaqirildi!"| A
-    A -->|"Yangi state bilan re-render"| C["UI yangilandi"]
-
-    style A fill:#3498db,color:#fff
-    style B fill:#e67e22,color:#fff
-    style C fill:#2ecc71,color:#fff
+sequenceDiagram
+    participant Ota as Ota Komponent (App)
+    participant Farzand as Farzand Komponent (SearchBox)
+    
+    Ota->>Farzand: Props: onSearch(term) funksiyasini yuboradi
+    Note right of Farzand: Foydalanuvchi qidiruvga "React" yozdi
+    Farzand-->>Ota: onSearch("React") ni chaqiradi
+    Note left of Ota: Ota komponent "React" ni qabul qildi <br>va o'zining holatini yangilaydi
 \`\`\`
 
-\`\`\`jsx
-// Ota komponent — state saqlaydi va callback beradi
-function Hisoblagich() {
-  const [sanoq, setSanoq] = React.useState(0);
+### Kod namunasi:
 
-  // Bu funksiya bola komponentga props sifatida uzatiladi
-  const oshir = () => setSanoq(s => s + 1);
-  const kamayt = () => setSanoq(s => s - 1);
+\`\`\`jsx
+// Ota komponent
+function Dashboard() {
+  // Callback funksiya
+  const handleDelete = (itemId) => {
+    console.log(\`O'chirilayotgan element ID: \${itemId}\`);
+    // Bu yerda API ga so'rov yuborib elementni o'chirish mumkin
+  };
 
   return (
     <div>
-      <p>Sanoq: {sanoq}</p>
-      {/* Callback funksiyalarni props sifatida uzatamiz */}
-      <TugmaGruhi onOshir={oshir} onKamayt={kamayt} />
+      <h1>Boshqaruv paneli</h1>
+      {/* Funksiyani prop orqali uzatish */}
+      <ItemCard id={1} title="Maqola 1" onDelete={handleDelete} />
     </div>
   );
 }
 
-// Bola komponent — callback ni chaqiradi
-function TugmaGruhi({ onOshir, onKamayt }) {
+// Farzand komponent
+function ItemCard({ id, title, onDelete }) {
   return (
-    <div>
-      <button onClick={onKamayt}>-</button>
-      <button onClick={onOshir}>+</button>
+    <div className="card">
+      <h3>{title}</h3>
+      {/* Tugma bosilganda otadan kelgan funksiya ishga tushadi */}
+      <button onClick={() => onDelete(id)}>
+        O'chirish
+      </button>
     </div>
   );
 }
 \`\`\`
 
+> [!TIP]
+> E'tibor bering, \`ItemCard\` o'zini o'zi o'chirmaydi. U shunchaki otasiga "Meni o'chirish knopkamni bosishdi, bu mening ID raqamim" deb xabar beradi. Asosiy ishni Ota komponent hal qiladi.
+
+## Props bilan ishlashda eng ko'p yo'l qo'yiladigan xatolar (Common Mistakes)
+
+### 1. Props-ni to'g'ridan-to'g'ri o'zgartirishga urinish (Mutating Props)
+Props bu o'qish uchun mo'ljallangan (read-only). Hech qachon farzand komponent ichida prop-ga qiymat biriktirmang!
+
+\`\`\`jsx
+// ❌ QILMANG: React bu yerda qattiq xato tashlaydi!
+function UserPanel(props) {
+  props.name = "Yangi ism"; // XATO! Props o'zgarmasdir!
+  return <div>{props.name}</div>;
+}
+\`\`\`
+Agar props asosida qandaydir o'zgarish qilmoqchi bo'lsangiz, uni state (holat) yoki yangi o'zgaruvchiga oling.
+
+### 2. Oddiy HTML atributlari va Props'ni chalkashtirish
+Ba'zi HTML atributlari React'da boshqacha nomlanadi, buni eslab qolish muhim:
+- \`class\` o'rniga \`className\`
+- \`for\` o'rniga \`htmlFor\`
+- Hodisalar camelCase usulida yoziladi: \`onclick\` o'rniga \`onClick\`, \`onchange\` o'rniga \`onChange\`.
+
+\`\`\`jsx
+// ❌ QILMANG
+function Box(props) {
+  return <div class="box-style" onclick={props.clickEvent}>{props.text}</div>
+}
+
+// ✅ QILING
+function Box({ customClass, onClickEvent, text }) {
+  return <div className={\`box-style \${customClass}\`} onClick={onClickEvent}>{text}</div>
+}
+\`\`\`
+
+### 3. Ortiqcha props yuborish (Prop Drilling)
+Tasavvur qiling, ota komponentda ma'lumot bor. Lekin u ma'lumot eng chuqurdagi 5-darajali farzand komponentga kerak. O'rtadagi 4 ta komponent bu ma'lumotdan foydalanmasa ham, uni pastga uzatish uchun o'zidan o'tkazishi kerak. Bu **Prop Drilling** deyiladi.
+
+Bu noto'g'ri amaliyot hisoblanadi, chunki o'rtadagi komponentlar o'ziga kerak bo'lmagan ma'lumotni tashib yuradi. Buning yechimi sifatida kelajakda **Context API** yoki **Redux/Zustand** kabi state menejerlarini o'rganamiz. Hozircha esa komponentlarni iloji boricha ixcham saqlashga harakat qiling.
+
 ---
+**Xulosa:** Props - bu React komponentlari o'rtasida ma'lumot tashuvchi ko'prik. U tepadan pastga (Unidirectional) harakatlanadi, doim o'zgarmas (immutable) bo'ladi va ilovangizni bo'laklarga (reusable components) bo'lib ishlashga imkon beradi. Ularni to'g'ri tushunish, React-dagi ilk katta g'alabangizdir!
 
-## 8. ❌ YOMON va ✅ YAXSHI Yondashuvlar
-
-### Prop Drilling — Muammo
-
-\`\`\`jsx
-// ❌ YOMON — "Prop drilling": ma'lumot juda ko'p qatlam orqali uzatiladi
-function App() {
-  const [foydalanuvchi, setFoydalanuvchi] = useState({ ism: "Abdulloh" });
-  return <A foydalanuvchi={foydalanuvchi} />;
-}
-
-function A({ foydalanuvchi }) {
-  return <B foydalanuvchi={foydalanuvchi} />; // A bu props ni ishlatmaydi, faqat uzatadi!
-}
-
-function B({ foydalanuvchi }) {
-  return <C foydalanuvchi={foydalanuvchi} />; // B ham ishlatmaydi!
-}
-
-function C({ foydalanuvchi }) {
-  return <p>{foydalanuvchi.ism}</p>; // Faqat C ishlatadi
-}
-\`\`\`
-
-\`\`\`jsx
-// ✅ YAXSHI — Context API ishlatish (keyingi darsda o'rganamiz)
-// Yoki komponent tuzilmasini qayta ko'rib chiqish
-\`\`\`
-
-### Props ni aniq nomlash
-
-\`\`\`jsx
-// ❌ YOMON — noaniq nomlar
-<Komponent x={true} y="qizil" z={handler} />
-
-// ✅ YAXSHI — aniq va ma'noli nomlar
-<Komponent faol={true} rang="qizil" onBosish={handler} />
-\`\`\`
-
----
-
-## 9. Intervyu Savollari
-
-**1. Props nima va State dan qanday farq qiladi?**
-*Javob:* Props (properties) — tashqaridan (ota komponentdan) keluvchi, o'zgartirib bo'lmaydigan ma'lumotlar. State esa komponentning ichki, o'zgartirib bo'ladigan ma'lumotlari. Props "read-only" (faqat o'qish uchun), State esa o'zgartirilishi mumkin. Props yuqoridan pastga (ota → bola), State esa komponentning o'zida saqlanadi.
-
-**2. Callback props nima uchun kerak?**
-*Javob:* React da ma'lumotlar faqat yuqoridan pastga (ota → bola) oqadi. Lekin bola komponent ota komponentga xabar berishi kerak bo'lganda (masalan, tugma bosildi), callback funksiyani props orqali uzatib, bola uni chaqiradi. Bu "Data Down, Events Up" tamoyili.
-
-**3. children props nima?**
-*Javob:* \`children\` — maxsus React props bo'lib, komponent teglari orasiga qo'yilgan barcha narsani ifodalaydi. Masalan, \`<Konteyner><p>Salom</p></Konteyner>\` da \`<p>Salom</p>\` children bo'ladi. Bu komponentlarni moslashuvchan va qayta ishlatiluvchi qiladi.
-
-**4. Prop drilling nima va qanday hal qilish mumkin?**
-*Javob:* Prop drilling — ma'lumotni bir necha qatlam orqali uzatish, ayniqsa o'rta qatlamlar bu ma'lumotni ishlatmasa. Yechimlar: (1) Komponent tuzilmasini qayta ko'rish, (2) Context API ishlatish, (3) Redux/Zustand kabi state management kutubxonalari.
 `,
   code: `// Props ning asosiy misoli
 import React from 'react'
