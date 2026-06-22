@@ -2,6 +2,7 @@ export const step14_class_components_and_errors = {
   id: 'step14_class_components_and_errors',
   title: '14. Klass Komponentlar va Xatolarni Boshqarish',
   content: `
+
 # 14. Klass Komponentlar (Class Components) va Xatolarni Boshqarish (Error Boundaries)
 
 React olamida bugungi kunda Functional Components va Hooks (Hooklar) dominant bo'lsa-da, Klass Komponentlar (Class Components) uzoq yillar davomida React'ning asosi bo'lib kelgan. Shuningdek, ba'zi muhim xususiyatlar, masalan, **Error Boundaries** (Xatolar chegarasi) faqat klass komponentlar orqali amalga oshiriladi.
@@ -141,7 +142,7 @@ Komponentning state yoki props'i o'zgargandan so'ng va u qayta chizilgandan keyi
 \`\`\`jsx
 componentDidUpdate(prevProps, prevState) {
   if (this.state.sanoq !== prevState.sanoq) {
-    document.title = \`Siz \\\${this.state.sanoq} marta bosdingiz\`;
+    document.title = \`Siz \${this.state.sanoq} marta bosdingiz\`;
   }
 }
 \`\`\`
@@ -252,7 +253,8 @@ Klass komponentlar eskiroq loyihalarda juda ko'p uchraydi, shuning uchun ularni 
 
 **4. this.setState asinxronmi?**
 *Javob:* Ha, this.setState asinxron — React bir necha setState ni birlashtirishi mumkin (batching). Shuning uchun this.setState dan keyin darhol this.state ni o'qib bo'lmaydi. Callback ishlating: this.setState(prev => ({...}), callback).
-  `,
+  
+`,
   code: `import React, { Component } from 'react';
 
 // Klass komponent yaratish va state bilan ishlash
