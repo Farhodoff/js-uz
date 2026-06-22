@@ -23,17 +23,15 @@ Keling, oddiy o'zgaruvchi yordamida hisoblagich (counter) yasashga urinib ko'ram
 \`\`\`jsx
 // ❌ YOMON AMALIYOT (DON'T)
 function BadCounter() {
-  let count = 0; // Oddiy o'zgaruvchi - bu o'zgarganda ekranni yangilamaydi (re-render bo'lmaydi)
+  let count = 0; // Oddiy o'zgaruvchi
 
-  // Tugma bosilganda ishlaydigan funksiya
   function handleClick() {
-    count = count + 1; // Qiymat oshadi, lekin React bundan bexabar
+    count = count + 1;
     console.log(count); // Konsolda son oshadi, lekin ekranda EMAS!
   }
 
   return (
     <div>
-      {/* count o'zgarsa ham, bu yerda hamisha 0 ko'rinib turaveradi */}
       <h1>Sanoq: {count}</h1>
       <button onClick={handleClick}>Qo'shish</button>
     </div>
@@ -49,23 +47,19 @@ Endi buni React'ning \`useState\` yordamida to'g'rilaymiz:
 
 \`\`\`jsx
 // ✅ TO'G'RI AMALIYOT (DO)
-import { useState } from 'react'; // React'dan useState hook'ini chaqirib olamiz
+import { useState } from 'react';
 
 function GoodCounter() {
-  // count - joriy holat (state), setCount - uni o'zgartiruvchi va ekranni yangilovchi funksiya
-  // 0 - bu count'ning boshlang'ich qiymati
+  // count - joriy holat, setCount - uni o'zgartiruvchi funksiya
   const [count, setCount] = useState(0); 
 
-  // Tugma bosilganda ishlaydigan funksiya
   function handleClick() {
     setCount(count + 1); // React'ga "state o'zgardi, ekranni yangila!" deymiz
   }
 
   return (
     <div>
-      {/* Joriy count qiymatini ekranga chiqaramiz */}
       <h1>Sanoq: {count}</h1>
-      {/* onClick hodisasiga handleClick funksiyasini bog'laymiz */}
       <button onClick={handleClick}>Qo'shish</button>
     </div>
   );
@@ -113,15 +107,11 @@ React'da state'ni o'zgartirganingizda, o'zgarish **darhol** sodir bo'lmaydi. Rea
 \`\`\`jsx
 // ❌ YOMON TUSHUNCHA
 function AsynchronousProblem() {
-  // count holatini yaratamiz, boshlang'ich qiymati 0
   const [count, setCount] = useState(0);
 
   function handleClick() {
-    // setCount asinxron ishlaydi, u holatni keyingi render uchun o'zgartirishni so'raydi
     setCount(count + 1);
-    
-    // Shuning uchun bu yerda count HALI HAM eski qiymatini (0 ni) ko'rsatadi!
-    console.log(count); 
+    console.log(count); // Bu yerda count HALI HAM 0 bo'ladi!
   }
 }
 \`\`\`
@@ -140,7 +130,6 @@ function WrongMultipleUpdates() {
   const [count, setCount] = useState(0);
 
   function handleClick() {
-    // Bu yerda uchala setCount ham bitta (eski) count = 0 ga asoslanadi
     setCount(count + 1); // React: "Tushundim, count ni 0 + 1 = 1 qilaman"
     setCount(count + 1); // React: "Tushundim, count ni 0 + 1 = 1 qilaman"
     setCount(count + 1); // React: "Tushundim, count ni 0 + 1 = 1 qilaman"
@@ -159,8 +148,6 @@ function CorrectMultipleUpdates() {
   const [count, setCount] = useState(0);
 
   function handleClick() {
-    // Oldingi holat (prevCount) asosida yangilash eng xavfsiz usul hisoblanadi
-    // Har bir setCount yangi qiymatni oldingi callback natijasidan oladi
     setCount(prevCount => prevCount + 1); // prevCount: 0 => 1
     setCount(prevCount => prevCount + 1); // prevCount: 1 => 2
     setCount(prevCount => prevCount + 1); // prevCount: 2 => 3
@@ -179,28 +166,22 @@ JavaScript'da string, number yoki boolean (primitivlar) o'zgarmas (immutable). L
 
 \`\`\`jsx
 // ❌ YOMON AMALIYOT (Mutatsiya)
-// user obyekti state sifatida saqlanmoqda
 const [user, setUser] = useState({ name: 'Ali', age: 20 });
 
 function badUpdate() {
-  user.age = 21; // XATO! Obyekt xususiyatini to'g'ridan-to'g'ri o'zgartirmaslik kerak (Mutatsiya)!
-  setUser(user); // React o'zgarishni sezmaydi, chunki obyektning xotira manzili (reference'i) o'zgarmadi
+  user.age = 21; // XATO! State'ni to'g'ridan-to'g'ri o'zgartirish!
+  setUser(user); // React o'zgarishni sezmaydi, chunki obyekt reference'i o'zgarmadi
 }
 \`\`\`
-
-> 💡 **"Dangasa React" va Reference Equality haqiqati:**
-> Ko'p dasturchilar yig'lab so'rashadi: "Nega oddiygina \`array.push()\` qilib qo'ya qolmayman?! Nega doim eski obyektni yoyib, keyin yozishim kerak?!". Sababi — React o'ta "dangasa". Siz \`setUser(user)\` qilganingizda, React obyekt ichidagi har bir xossani tekshirib o'tirmaydi. U shunchaki obyektning "Manzili" (Reference) o'zgardimi yoki yo'qmi, shunga qaraydi. \`user.age = 21\` qilsangiz, obyektning ichi o'zgardi, lekin manzil (reference) o'sha-o'sha eski obyektligicha qoldi. React esa bunga qarab: "Aha, manzil eski, demak hech narsa o'zgarmabdi, render qilmayman!" deb ishlamay yotib oladi.
-> *Qutqaruvchi yechim:* Agar katta va chuqur obyektlarni \`...\` spread bilan yangilash joningizga tegsa, **Immer** nomli mo'jizaviy kutubxonadan foydalaning. U sizga to'g'ridan-to'g'ri mutatsiya qilish imkonini beradi (huddi \`array.push()\` kabi), orqa fonda esa u avtomatik tarzda immutable obyekt yaratib beradi!
 
 Buning o'rniga doimo **Spread Operator (\`...\`)** yordamida yangi obyekt yoki massiv yarating:
 
 \`\`\`jsx
 // ✅ TO'G'RI AMALIYOT (Immutability)
 function goodUpdate() {
-  // Har doim yepyangi obyekt yaratamiz
   setUser({
-    ...user, // eski obyekt xossalarini spread (...) orqali nusxalaymiz
-    age: 21  // o'zgarishi kerak bo'lgan qismini (age) ustidan yozamiz
+    ...user, // eski obyekt xossalarini nusxalaymiz
+    age: 21  // o'zgarishi kerak bo'lgan qismini ustidan yozamiz
   });
 }
 \`\`\`
@@ -226,23 +207,6 @@ Xuddi shunday massivlar uchun:
 > [!IMPORTANT]
 > **State qayerda turishi kerak?**
 > Agar ikkita komponent bitta ma'lumotga ehtiyoj sezsa, state'ni ularning ota (parent) komponentiga olib chiqing (Lifting state up). Bu haqda keyingi darslarda batafsil gaplashamiz.
-
-
----
-
-## 🎤 Intervyu Savollari
-
-**1. useState hook nima va u qanday ishlaydi?**
-*Javob:* useState — React da funksional komponentda holat (state) saqlash uchun ishlatiladigan hook. U ikkita qiymat qaytaradi: joriy state qiymati va state ni yangilovchi funksiya. \`const [count, setCount] = useState(0)\`. State o'zgarganda komponent qayta render bo'ladi.
-
-**2. State ni to'g'ridan-to'g'ri o'zgartirish mumkinmi?**
-*Javob:* Yo'q! \`count = count + 1\` — bu noto'g'ri. Faqat setter funksiyasi orqali o'zgartirish kerak: \`setCount(count + 1)\`. Aks holda React o'zgarishni sezib, UI ni qayta render qilmaydi.
-
-**3. Previous state nima va qachon kerak?**
-*Javob:* Yangi state oldingi state asosida hisoblanganda, \`setState(prevState => ...)\` funksional formadan foydalanish kerak. Bu asinxron state yangilanishlari paytida to'g'ri qiymatni olish kafolatlaydi. Masalan: \`setCount(prev => prev + 1)\`.
-
-**4. Nima uchun state o'zgarishi darhol ko'rinmaydi?**
-*Javob:* State yangilanishlari asinxron — React ularni birlashtiradi (batching) va keyin qayta render qiladi. Shuning uchun setCount dan keyin darhol count ni console.log qilsangiz, eski qiymatni ko'rasiz.
 
 `,
   code: `import React, { useState } from "react";
