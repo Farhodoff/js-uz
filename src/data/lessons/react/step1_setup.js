@@ -2,207 +2,172 @@ export const step1_setup = {
   id: "step1_setup",
   title: "1-DARS: React ga Kirish va Loyihani Sozlash",
   content: `
-# 1-DARS: React ga Kirish va Loyihani Sozlash
+# 1-qadam: React'ga Kirish va Loyihani Sozlash (Setup)
 
-## 1. React Nima va Nima Uchun Kerak?
+## 1. React Tarixi va Arxitekturasi
 
-React — bu Facebook (Meta) tomonidan 2013-yilda ochiq manbaga (open-source) chiqarilgan **JavaScript kutubxonasi** bo'lib, foydalanuvchi interfeyslarini (UI) yaratish uchun mo'ljallangan.
+React - bu foydalanuvchi interfeyslarini (UI) yaratish uchun mo'ljallangan ochiq kodli JavaScript kutubxonasi. U dastlab Facebook (hozirgi Meta) muhandisi Jordan Walke tomonidan 2011 yilda yaratilgan.
 
-### Muammo: Katta ilovalar "spagetti" ga aylanadi
+**Tarixiy fon:**
+2010-yillarning boshlarida Facebook kundan-kunga kattalashib, murakkablashib borayotgan edi. "Chat" va "Yangiliklar tasmasi" (News Feed) kabi qismlar bir-biriga bog'liq bo'lsa-da, ularning ma'lumotlarini sinxronlash (masalan, kimdir xabar yozganda chat ikonkasida bildirishnoma sonini to'g'ri ko'rsatish) an'anaviy JavaScript usullari bilan juda qiyinlashib ketdi. Kod bazasi "spagetti" ga aylanib, xatolar (buglar) ko'payib ketaverdi. 
 
-2010-yillar boshida Facebook murakkablashib borardi. "Chat", "Yangiliklar tasmasi" kabi qismlar bir-biriga bog'liq edi. Bir joyda o'zgarish bo'lsa, boshqa joylar buzilardi. Oddiy jQuery bilan boshqarish imkonsiz bo'lib qoldi.
+Shu muammoni hal qilish uchun Jordan Walke React'ni yaratdi. React 2013-yilda ochiq kodli (open-source) qilib e'lon qilindi va tez orada butun dunyo dasturchilari orasida mashhur bo'lib ketdi.
 
-**Hayotiy o'xshatish:** 1000 ta chiroq bilan bezatilgan xonangiz bor. Har bir chiroq alohida simga ulangan. Bitta simni o'zgartirmoqchi bo'lsangiz, qaysi sim qaysi chiroqqa borishini bilmaysiz. React bu muammoni **komponentlarga asoslangan arxitektura** orqali hal qildi.
+**Arxitekturasi:**
+React asosan **Komponentlarga asoslangan (Component-based)** arxitekturaga ega. 
+Buni qanday tushunamiz? Katta va murakkab veb-saytni bitta butun narsa sifatida emas, balki kichik, mustaqil va qayta ishlatsa bo'ladigan lego qismlariga (komponentlarga) bo'lib chiqamiz. Masalan: Navbar komponenti, Sidebar komponenti, Footer komponenti va hokazo.
 
-### React ning asosiy afzalliklari:
+*Analogi:* Tasavvur qiling, siz avtomobil yig'yapsiz. Avtomobilni bitta yaxlit temir bo'lagidan quymaysiz. Uning g'ildiraklari, dvigateli, eshiklari alohida tayyorlanadi va oxirida yig'iladi. Agar bitta g'ildirak teshib qolsa, faqat o'sha g'ildirakni almashtirasiz, butun mashinani emas. React komponentlari ham xuddi shunday ishlaydi!
 
-| Xususiyat | Tushuntirish |
-|-----------|-------------|
-| **Komponent asosli** | UI ni kichik, qayta ishlatiladigan qismlarga bo'lamiz |
-| **Virtual DOM** | Faqat o'zgargan qismlarni yangilaydi |
-| **Bir yo'nalishli ma'lumot oqimi** | Ma'lumotlar yuqoridan pastga oqadi |
-| **Katta ekosistema** | React Router, Redux, Next.js va minglab kutubxonalar |
+> **Nega kerak? (Nima uchun aynan React?)**
+> Oddiy HTML/CSS/JS bilan ham sayt qilsa bo'ladi-ku? Ha, bo'ladi. Lekin sayt kattalashgani sari UI'ni boshqarish qiyinlashadi. React bizga ma'lumotlar o'zgarganda faqat kerakli qismni o'zini yangilash, kodni qayta ishlatish (reusability) va murakkab interfeyslarni oson boshqarish imkonini beradi.
 
 ---
 
-## 2. Virtual DOM — React ning Siri
+## 2. SPA (Single Page Application) vs MPA (Multi Page Application)
 
-### Real DOM sekin, Virtual DOM tez
+Web dasturlash olamida ikkita asosiy yondashuv bor: MPA va SPA. React aynan SPA yaratish uchun ishlatiladi.
 
-React xotirada Real DOM ning **engil nusxasini** (Virtual DOM) saqlaydi. State o'zgarganda:
-1. React yangi Virtual DOM yaratadi
-2. Eski bilan solishtiradi (**Diffing** algoritmi)
-3. Faqat farqli qismlarni Real DOM ga yozadi (**Reconciliation**)
+### MPA (Multi Page Application) - Ko'p Sahifali Ilovalar
+Bu an'anaviy usul. Foydalanuvchi biror havolani (linkni) bossa, brauzer serverga so'rov yuboradi, server esa butunlay yangi HTML sahifani (tepadan pastgacha) qaytaradi. Brauzer oq rangga kirib, qaytadan sahifani yuklaydi.
+*Analogi:* Har safar kitobning yangi sahifasini o'qish uchun kutubxonachining oldiga borib, eski sahifani topshirib, yangisini olib kelishingizga to'g'ri keladi. Qanchalik vaqt talab qilishini tasavvur qilyapsizmi?
 
-**Hayotiy o'xshatish:** Katta restoran menyu kitobini to'liq qayta bosish o'rniga, faqat narx o'zgargan sahifalarni almashtirish kabi.
+### SPA (Single Page Application) - Yagona Sahifali Ilovalar
+Bu zamonaviy usul (React shunday ishlaydi). Foydalanuvchi saytga kirganda, faqat bitta HTML sahifa (\`index.html\`) yuklanadi. Keyin sahifa ichidagi ma'lumotlar foydalanuvchi harakatiga qarab JavaScript orqali orqa fonda (serverdan faqat kerakli ma'lumot, masalan JSON ko'rinishida olinib) almashtirib qo'yiladi. Sahifa umuman "perezagruzka" (reload) bo'lmaydi.
+*Analogi:* Sizga bitta sehrli doska berishgan. Siz u yerdan qimirlamaysiz, shunchaki tugmani bossangiz, doskadagi yozuvlarning faqat kerakli qismi o'zgarib qoladi. Doska hamisha sizning oldingizda turadi.
 
 \`\`\`mermaid
 graph TD
-    A["State yoki Props o'zgarishi"] --> B["Yangi Virtual DOM yaratiladi"]
-    B --> C["Diffing: eski vs yangi Virtual DOM"]
-    C --> D{"Farq bormi?"}
-    D -->|Ha| E["Faqat farqli qismlar Real DOM ga yoziladi"]
-    D -->|Yo'q| F["Hech narsa o'zgarmaydi"]
-    E --> G["Brauzer ekranni yangilaydi"]
-    style A fill:#e74c3c,color:#fff
-    style E fill:#2ecc71,color:#fff
+    subgraph MPA[Multi Page Application]
+        direction LR
+        M_User((Foydalanuvchi)) -->|1. Bosadi: Haqimizda| M_Browser[Brauzer]
+        M_Browser -->|2. /about so'rovi| M_Server[(Server)]
+        M_Server -->|3. YANGI about.html| M_Browser
+        M_Browser -->|4. Butun sahifa qayta chiziladi| M_User
+    end
+
+    subgraph SPA[Single Page Application - React]
+        direction LR
+        S_User((Foydalanuvchi)) -->|1. Bosadi: Haqimizda| S_React[React Router]
+        S_React -->|2. Hech qanday HTML so'ralmaydi| S_API[Faqat JSON ma'lumot olinadi]
+        S_API -->|3. DOM'ning faqat kerakli qismi o'zgaradi| S_User
+    end
 \`\`\`
 
 ---
 
-## 3. SPA vs MPA
+## 3. Virtual DOM vs Real DOM (Nega React tez?)
 
-### MPA (Multi-Page Application)
-Har safar foydalanuvchi havolani bosganda, server yangi HTML sahifasini yuboradi va brauzer qaytadan yuklaydi.
+Browser o'zida tushunadigan asosiy obyekt bu DOM (Document Object Model) - HTML hujjatining daraxt ko'rinishidagi tuzilishi.
 
-### SPA (Single-Page Application) — React
-Faqat bir marta HTML yuklanadi. Keyingi navigatsiyalarda JavaScript faqat JSON oladi va React DOM ni yangilaydi.
+**Real DOM muammosi:**
+Deylik, sizning 5000 ta qatorli jadvalingiz bor. Agar 1 ta katakning rangi o'zgarsa, qadimgi usulda butun jadvalni qayta chizish yoki DOM bo'ylab uzoq qidirish kerak bo'lardi. DOM elementlarini har gal o'zgartirish brauzer uchun eng sekin va "qimmat" (ko'p resurs yeydigan) jarayon hisoblanadi.
+
+**React qanday yechim topgan? (Virtual DOM):**
+React "Virtual DOM" (VDOM) tushunchasini olib kirdi. Virtual DOM - bu Real DOM'ning shunchaki xotiradagi nusxasi (yengil vaznli JavaScript obyekti).
+
+**Jarayon qanday kechadi (Reconciliation jarayoni)?**
+1. Ma'lumot (State) o'zgardi.
+2. React darhol yangi VDOM yaratadi (xotirada bu juda tez amalga oshadi).
+3. Yangi VDOM ni eski VDOM bilan solishtiradi. Bu jarayon **Diffing** deb ataladi.
+4. Faqat o'zgargan joylarni topadi.
+5. So'ngra, topilgan qismlarnigina paketlab turib, Real DOM'ga jo'natadi va faqat o'sha o'zgargan nuqtani Real DOM'da yangilaydi (Bu jarayon Patching / **Reconciliation** deb ataladi).
 
 \`\`\`mermaid
-graph LR
-    subgraph MPA["MPA - Ko'p Sahifali"]
-        M1["Havola bosiladi"] --> M2["Server yangi HTML"]
-        M2 --> M3["Sahifa qayta yuklanadi"]
-    end
-    subgraph SPA["SPA - React"]
-        S1["Havola bosiladi"] --> S2["fetch JSON"]
-        S2 --> S3["React DOM yangilaydi"]
-    end
-    style M3 fill:#e74c3c,color:#fff
-    style S3 fill:#2ecc71,color:#fff
+flowchart TD
+    State[State o'zgardi] --> VDOM_New[Yangi Virtual DOM yaratiladi]
+    VDOM_New --> Diff[Diffing: Yangi VDOM va Eski VDOM solishtiriladi]
+    Diff -->|Faqat O'zgargan qism| Patch[Patching: Real DOM'da faqat farqli tugun yangilanadi]
+    Patch --> View[Foydalanuvchiga yangi ko'rinish]
+
+    style State fill:#f9f,stroke:#333,stroke-width:2px
+    style View fill:#bbf,stroke:#333,stroke-width:2px
 \`\`\`
 
-| Xususiyat | MPA | SPA (React) |
-|-----------|-----|-------------|
-| Navigatsiya | Sekin, oq ekran | Tez, silliq |
-| SEO | Oson | Murakkabroq |
-| UX | Oddiy | Ilova kabi |
+*Analogi:* Siz uyning chizmasini (VDOM) tayyorladingiz. Keyin xotiningiz oshxonaga bitta deraza qo'shmoqchi bo'ldi. Siz eshikni, tomni, boshqa xonalarni buzmaysiz. Shunchaki chizmaga o'zgartirish kiritasiz va usta (React) kelib faqat o'sha devorni teshib deraza o'rnatadi. Butun uyni qaytadan qurish (Real DOM perezagruzkasi) shart emas!
 
 ---
 
-## 4. Vite bilan Loyiha Yaratish
+## 4. O'rnatish Vositalari (Setup tools): Node, npm, CRA vs Vite
 
+React loyihasini noldan barcha fayllarni ulab chiqib qilish juda mashaqqatli. Shuning uchun tayyor o'rnatish vositalari ishlatiladi. Lekin undan oldin kompyuterimizda muhit bo'lishi kerak.
+
+**Node.js va npm:**
+- **Node.js:** JavaScript'ni faqat brauzerda emas, balki kompyuterda (serverda) ham ishlashiga imkon beruvchi muhit (runtime). React loyihalarini kompyuterimizda run qilish uchun Node.js kerak.
+- **npm (Node Package Manager):** Bu JavaScript kutubxonalari do'koni. Loyihamizga kimgadir tegishli bo'lgan tayyor kodni (paketni) olib kirish uchun ishlatamiz. Buni xuddi telefoningizdagi "App Store" yoki "Play Market" deb tushunishingiz mumkin.
+
+**Create React App (CRA) vs Vite:**
+
+Bir necha yil oldin barcha React loyihalari \`npx create-react-app my-app\` komandasi orqali yaratilardi. Bu Facebook tomonidan qilingan rasmiy "tayyor shablon" edi.
+
+Ammo hozirgi kunda CRA eskirib qoldi. O'rniga **Vite** keng qo'llanilmoqda.
+
+> **Nima uchun CRA'dan Vite'ga o'tilmoqda?**
+> - **Sekinlik:** CRA loyihani ishga tushirish (dev serverni yoqish) va kodni o'zgartirganda ekranda ko'rinishi uchun barcha fayllarni bitta qilib yig'ardi (bundler - Webpack). Loyiha kattalashgani sari loyihani yoqishga 30 soniyadan bir necha daqiqagacha vaqt ketib qolardi.
+> - **Vite (fransuzcha "tez" degani):** Vite bundler emas, u ES Module yordamida ishlaydi. Ya'ni u butun kodni emas, faqat siz o'zgartirgan faylnigina brauzerga uzatadi. Natijada loyiha kattaligidan qat'iy nazar server 1 soniyaga qolmasdan yonadi. O'zgartirishlar ham millisoniyalarda ekranda paydo bo'ladi (Hot Module Replacement - HMR).
+
+**Do's and Don'ts:**
+
+❌ *Don't (Qilmang):* Yangi loyiha boshlayotganda \`create-react-app\` dan foydalanmang. (Hatto React rasmiy hujjatlari ham buni endi tavsiya etmayapti).
 \`\`\`bash
-# Yangi loyiha yaratish
-npm create vite@latest mening-ilovam -- --template react
-
-# Papkaga kirish
-cd mening-ilovam
-
-# Kutubxonalarni o'rnatish
-npm install
-
-# Ishga tushirish
-npm run dev
+npx create-react-app eski-loyiha
 \`\`\`
 
-| Xususiyat | CRA (Eski) | Vite (Yangi) |
-|-----------|-----------|-------------|
-| Ishga tushirish | 30-60 soniya | < 1 soniya |
-| HMR | Sekin | Bir zumda |
-| Holati | Tashlab ketilgan | Faol |
-
----
-
-## 5. Loyiha Tuzilmasi
-
-\`\`\`
-mening-ilovam/
-├── node_modules/      ← O'rnatilgan kutubxonalar (gitga yuklamang!)
-├── public/            ← Statik fayllar
-├── src/               ← Bizning kodlarimiz shu yerda!
-│   ├── App.jsx        ← Asosiy komponent
-│   ├── App.css        ← App uchun CSS
-│   └── main.jsx       ← Kirish nuqtasi (entry point)
-├── index.html         ← Asosiy HTML (bitta!)
-└── package.json       ← Loyiha "pasporti"
-\`\`\`
-
-**\`src/main.jsx\`** — React ni ishga tushiradi:
-\`\`\`jsx
-// React va ReactDOM kutubxonalarini import qilamiz
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-
-// 'root' ID li div ni topib, React ilovasini joylashtiramiz
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
-\`\`\`
-
-**\`src/App.jsx\`** — Asosiy komponent:
-\`\`\`jsx
-// CSS faylini import qilamiz
-import './App.css'
-
-// App — asosiy komponentimiz (katta harf bilan boshlanadi!)
-function App() {
-  return (
-    <div className="App">
-      <h1>Salom, React!</h1>
-    </div>
-  )
-}
-
-export default App
-\`\`\`
-
----
-
-## 6. ❌ YOMON va ✅ YAXSHI Yondashuvlar
-
-### node_modules ni gitga yuklash
-
+✅ *Do (Qiling):* Vite dan foydalaning.
 \`\`\`bash
-# ❌ YOMON — hech qachon bu qilinmasin!
-git add node_modules/
-
-# ✅ YAXSHI — .gitignore ga qo'shing
-# .gitignore:
-node_modules/
-dist/
-.env
-\`\`\`
-
-### Import yo'llari
-
-\`\`\`jsx
-// ❌ YOMON — noto'g'ri yo'l
-import App from 'App'
-
-// ✅ YAXSHI — to'g'ri nisbiy yo'l
-import App from './App'
-\`\`\`
-
-### CSS class qo'shish
-
-\`\`\`jsx
-// ❌ YOMON — HTML da class ishlatiladi, JSX da emas!
-<div class="card">
-
-// ✅ YAXSHI — JSX da className ishlatiladi
-<div className="card">
+# Vite orqali yangi React loyiha yaratish komandasi:
+npm create vite@latest my-react-app -- --template react
 \`\`\`
 
 ---
 
-## 7. Intervyu Savollari
+## 5. Loyiha Papkalar Strukturasi (Deep Dive into Folder Structure)
 
-**1. Virtual DOM nima va u qanday ishlaydi?**
-*Javob:* Virtual DOM — Real DOM ning xotiradagi engil JavaScript obyekt nusxasi. State o'zgarganda React yangi Virtual DOM yaratadi, diffing algoritmi orqali eski vs yangi ni solishtiradi, va faqat farqli qismlarni Real DOM ga yozadi (reconciliation). Bu Real DOM ni to'g'ridan-to'g'ri manipulatsiya qilishdan ancha tezroq.
+Vite orqali loyiha yaratib, uni VS Code kabi muharrirda ochsangiz quyidagi papka va fayllarni ko'rasiz. Keling, har birining vazifasini chuqur tushunib olamiz:
 
-**2. SPA va MPA ning asosiy farqlari qanday?**
-*Javob:* MPA da har bir navigatsiyada server yangi HTML sahifasini yuboradi, brauzer qaytadan yuklaydi (sekin, oq ekran). SPA da faqat bir marta HTML yuklanadi, keyingi navigatsiyalarda JavaScript JSON ma'lumotni oladi, React DOM ni yangilaydi (tez, oq ekran yo'q).
+\`\`\`text
+my-react-app/
+├── node_modules/       # (Tegib bo'lmaydigan hudud!)
+├── public/             # (Ommaviy statik fayllar)
+│   └── vite.svg        
+├── src/                # (Sizning ijod maydoningiz - asosan shu yerda ishlaysiz)
+│   ├── assets/         # Rasm, fontlar uchun
+│   ├── App.css         # App komponentining stillari
+│   ├── App.jsx         # BOSH KOMPONENT!
+│   ├── index.css       # Global stillar
+│   └── main.jsx        # Dasturning kirish nuqtasi (Entry point)
+├── .gitignore          # Git ga kirmasligi kerak bo'lgan fayllar ro'yxati
+├── index.html          # O'sha yagona HTML sahifa (SPA ning asosi)
+├── package-lock.json   # Paketlarning aniq versiyalarini qulflash
+├── package.json        # Loyihamiz pasporti (qanday paketlar bor, qanday ishga tushadi)
+└── vite.config.js      # Vite uchun sozlamalar
+\`\`\`
 
-**3. Vite va CRA farqi nimada?**
-*Javob:* CRA eski, sekin (30-60 soniya ishga tushirish) va hozirda qo'llab-quvvatlanmayapti. Vite zamonaviy, ESM asosida ishlaydi, 1 soniyadan kam ishga tushadi, HMR tez. Yangi loyihalar uchun Vite tavsiya etiladi.
+**Batafsil tushuntirish:**
 
-**4. package.json faylining vazifasi nima?**
-*Javob:* Loyiha "pasporti" — unda loyiha nomi, versiyasi, skriptlari (dev, build) va barcha kutubxonalar ro'yxati saqlanadi. npm install bu faylni o'qib, kerakli kutubxonalarni o'rnatadi.
+1. \`node_modules/\`:
+Bu yerda \`npm\` orqali yuklab olingan barcha kutubxonalar va ularning qaramliklari (dependencies) joylashadi.
+*Qoida:* Bu papkaga hech qachon kirmang va undagi hech narsani o'zgartirmang. Agar xato qilib o'chirib yuborsangiz, terminalda \`npm install\` yozsangiz, o'zi qaytadan yaratib oladi. Github'ga ham bu papka yuklanmaydi.
+
+2. \`public/\`:
+Bu papkaga tashlangan fayllar Vite tomonidan hech qanday o'zgarishsiz, to'g'ridan-to'g'ri brauzerga uzatiladi. Masalan, saytning Favicon'i (tepada brauzer tab'ida turadigan mitti rasm) yoki SEO uchun kerakli \`robots.txt\` kabi fayllar shu yerda turadi.
+
+3. \`src/\` (Source - Manba):
+Sizning barcha kodingiz, komponentlaringiz, mantiqlar shu papka ichida yoziladi.
+- \`main.jsx\`: Bu React dasturining **Kirish nuqtasi**. U \`index.html\` dagi \`<div id="root"></div>\` ni topib, bizning butun React kodimizni (VDOM ni) o'sha devorga yopishtiradi.
+- \`App.jsx\`: Bu eng katta, ona (Root) komponent. Qolgan barcha kichik komponentlar shu fayl ichiga yig'iladi.
+
+4. \`index.html\`:
+Bizning sahifamizning "skeleti". E'tibor bersangiz ichida deyarli hech narsa yo'q, faqat bitta \`<div id="root"></div>\` bor. Bizning butun React dasturimiz sehrgarlik kabi shu bitta \`div\` ichiga chiziladi.
+
+5. \`package.json\`:
+Loyiha "pasporti". Loyiha nomi, versiyasi va eng muhimi - loyiha ishlashi uchun qanday tashqi paketlar kerakligi ro'yxati yozilgan fayl. 
+
+> **Nega kerak?**
+> Tasavvur qiling do'stingizga loyihangizni bermoqchisiz. Siz unga butun \`node_modules\` papkasini bermaysiz (u juda og'ir, ba'zan 500mb dan oshadi). Siz faqat o'z kodingiz va \`package.json\` ni berasiz. Do'stingiz loyihani ochib \`npm install\` ni bossa, npm u yerda yozilgan "retsept" (paketlar ro'yxati) asosida hamma narsani internetdan qayta yuklab oladi.
+
+*Xulosa:* Endi biz React qanday paydo bo'lgani, u muammolarni qanday hal qilishi (VDOM va SPA orqali), hamda yangi loyihani o'rnatish va uni strukturasini chuqur o'zlashtirib oldik. Keyingi darsda shu komponentlarning ichiga kirib, JSX sintaksisini va komponentlar qanday tuzilishini o'rganamiz!
+
 `,
   code: `// src/App.jsx — Birinchi React komponentingiz
 import React from 'react'
