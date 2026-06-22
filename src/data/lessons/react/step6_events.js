@@ -24,11 +24,10 @@ React-da hodisalarni boshqarish odatiy (Vanilla) JavaScript-ga juda o'xshaydi, l
 \`\`\`
 
 #### ✅ Yaxshi amaliyot (React uslubi):
-\`\`jsx
+\`\`\`jsx
 // React
-// React-da hodisalar camelCase (onClick) shaklida yoziladi va funksiya qavslarsiz uzatiladi
 <button onClick={handleClick}>Bosing</button>
-\`\`
+\`\`\`
 
 > **Diqqat!** \`handleClick()\` qavslar bilan yozilmayapti! Agar qavslar bilan yozsangiz, komponent chizilayotganda (render) funksiya avtomatik ishlab ketadi. Biz esa u faqat bosilganda ishlashini xohlaymiz.
 
@@ -85,59 +84,51 @@ Ko'pincha biz qaysi element bosilganini bilish uchun funksiyaga qandaydir ma'lum
 Bu yerda yangi o'rganuvchilar juda ko'p xato qilishadi.
 
 #### ❌ Yomon amaliyot (Don'ts):
-\`\`jsx
+\`\`\`jsx
 function App() {
-  // deleteItem - bu elementni o'chirish uchun xizmat qiladigan funksiya
-  // id parametrini qabul qiladi
   const deleteItem = (id) => {
     console.log(id + " o'chirildi!");
   }
 
   return (
-    // XATO: Funksiya qavslar bilan yozilgani uchun, komponent render bo'lishi bilan darhol ishlab ketadi!
-    // Ya'ni tugma bosilishini kutib o'tirmaydi.
+    // XATO: Funksiya to'g'ridan-to'g'ri chaqirilib ketdi! Sahifa yuklanishi bilan ishlaydi.
     <button onClick={deleteItem(1)}>O'chirish</button>
   );
 }
-\`\`
+\`\`\`
 
 #### ✅ Yaxshi amaliyot (Do's) - Anonim funksiya (Arrow function) orqali:
 Biz tugma bosilgandagina ishga tushadigan "vositachi" (wrapper) funksiya yaratishimiz kerak.
 
-\`\`jsx
+\`\`\`jsx
 function App() {
-  // deleteItem funksiyasi id qabul qiladi va uni o'chiradi
   const deleteItem = (id) => {
     console.log(id + " o'chirildi!");
   }
 
   return (
-    // TO'G'RI usul: onClick ichida arrow function (anonim funksiya) ishlatildi.
-    // Tugma bosilgandagina anonim funksiya ishlaydi va deleteItem'ga 1 argumentini yuboradi.
+    // TO'G'RI: Tugma bosilganda oldin anonim funksiya ishlaydi, keyin u deleteItem'ni chaqiradi.
     <button onClick={() => deleteItem(1)}>O'chirish</button>
   );
 }
-\`\`
+\`\`\`
 
 #### ✅ Yaxshi amaliyot (Do's) - Hodisa obyekti (\`e\`) bilan birga argument o'tkazish:
 Agar sizga ham React hodisa obyekti (\`e\`), ham o'zingizning argumentingiz kerak bo'lsa:
 
-\`\`jsx
+\`\`\`jsx
 function App() {
-  // Bu funksiya ham hodisa obyektini (e), ham id ni qabul qiladi
   const deleteItem = (e, id) => {
-    // e.type orqali qanday hodisa ro'y berganini ko'rishimiz mumkin (masalan, "click")
     console.log("Hodisa turi:", e.type); // "click"
     console.log(id + " o'chirildi!");
   }
 
   return (
-    // Anonim funksiya avtomatik ravishda 'e' (event) parametrini qabul qiladi
-    // va biz uni deleteItem funksiyasiga kerakli argument (42) bilan birga yuboramiz
+    // 'e' ni qabul qilib olamiz va funksiyamizga uzatamiz
     <button onClick={(e) => deleteItem(e, 42)}>O'chirish</button>
   );
 }
-\`\`
+\`\`\`
 
 ---
 
@@ -149,31 +140,26 @@ Web-sahifada hodisalar suv ostidagi pufakchaga o'xshaydi. Agar siz bitta tugmani
 
 **Analgiya:** Siz xonangizda baqirdingiz. Ovozingiz oldin xonangizga, keyin uyingizga, keyin ko'chaga eshitiladi. Agar siz ovozingiz faqat xonangizda qolishini (boshqalar eshitmasligini) xohlasangiz, derazalarni yopishingiz kerak bo'ladi. Bu darsimizdagi \`e.stopPropagation()\` ga to'g'ri keladi.
 
-\`\`jsx
+\`\`\`jsx
 function Card() {
-  // Div element (karta) bosilganda ishlaydigan funksiya
   const handleCardClick = () => {
-    console.log("Karta bosildi!"); // Faqat Div bosilganda ishlaydi
+    console.log("Karta bosildi!"); // Div bosilganda ishlaydi
   };
 
-  // Tugma bosilganda ishlaydigan funksiya
   const handleButtonClick = (e) => {
-    // e.stopPropagation() hodisaning tashqi elementlarga tarqalishini (bubbling) to'xtatadi.
-    // Busiz tugma bosilganda uning tashqarisidagi div dagi onClick ham ishlab ketardi!
-    e.stopPropagation(); 
+    e.stopPropagation(); // Hodisa yuqoriga ko'tarilishini shu yerda to'xtatadi!
     console.log("Tugma bosildi!");
   };
 
   return (
-    // Asosiy karta elementi, uni bossangiz handleCardClick ishlaydi
     <div onClick={handleCardClick} style={{ padding: 20, background: 'lightgray' }}>
       <h3>Mahsulot nomi</h3>
-      {/* Agar stopPropagation ishlatilmaganida, bu tugmani bosish Card ni ham bosildi deb hisoblar edi */}
+      {/* Agar stopPropagation bo'lmasa, bu tugmani bosganda Card ham bosildi deb hisoblanadi */}
       <button onClick={handleButtonClick}>Sotib olish</button>
     </div>
   );
 }
-\`\`
+\`\`\`
 
 ### e.preventDefault() - Standart xulq-atvorni to'xtatish
 
@@ -184,26 +170,22 @@ Masalan:
 
 React - bu Single Page Application (SPA). Biz sahifaning qayta yuklanishini xohlamaymiz! Biz bu elementlarning o'zining "standart" xulq-atvorini to'xtatishimiz kerak.
 
-\`\`jsx
+\`\`\`jsx
 function MyForm() {
-  // Forma yuborilganda chaqiriladigan funksiya
   const handleSubmit = (e) => {
-    // 🛑 MUHIM: e.preventDefault() brauzerning standart formani jo'natganda
-    // sahifani qayta yuklab yuborish odatini to'xtatib qoladi.
-    // React ilovalarda (SPA) sahifa yangilanishi mutlaqo kerak emas!
+    // 🛑 MUHIM: Sahifa qayta yuklanishini oldini oladi!
     e.preventDefault(); 
     console.log("Forma yuborildi, lekin sahifa yangilanmadi!");
   };
 
   return (
-    // onSubmit hodisasi foydalanuvchi "submit" tugmasini bossa yoki Enter tugmasini bossa ishlaydi
     <form onSubmit={handleSubmit}>
       <input type="text" placeholder="Ismingiz" />
       <button type="submit">Yuborish</button>
     </form>
   );
 }
-\`\`
+\`\`\`
 
 ### Nega kerak? (Why do we need this?)
 Agar siz \`e.preventDefault()\` dan foydalanmasangiz, React-dagi state'laringiz (holatingiz) formani yuborganda sahifa yangilangani sababli butunlay o'chib ketadi (reset bo'ladi). Dasturiy mantiqni o'zingiz boshqarishingiz va holatni saqlab qolishingiz uchun brauzerning avtomatik qiliqlarini o'chirib qo'yishingiz shart.
@@ -219,23 +201,6 @@ Agar siz \`e.preventDefault()\` dan foydalanmasangiz, React-dagi state'laringiz 
 5. \`e.stopPropagation()\` ota elementlarga hodisa o'tishini, \`e.preventDefault()\` esa brauzerning avtomatik sahifani yangilash kabi harakatlarini bloklaydi.
 
 Ushbu qoidalarni tushunib olish sizga React-da har qanday murakkab interfeyslarni bexato va samarali yaratishga mustahkam zamin yaratadi!
-
-
----
-
-## 🎤 Intervyu Savollari
-
-**1. React da Event Handling qanday ishlaydi?**
-*Javob:* React o'zining Synthetic Event tizimiga ega. Barcha hodisalar React tomonidan yuqori darajada (root element) bitta listener bilan ushlanadi (Event Delegation). Bu haqiqiy DOM hodisalaridan farq qiladi va barcha brauzerlarda bir xil ishlaydi.
-
-**2. onClick={handler} va onClick={handler()} farqi nimada?**
-*Javob:* \`onClick={handler}\` — funksiyaning o'zini bog'laydi, u faqat click bo'lganda chaqiriladi. \`onClick={handler()}\` — funksiyani render paytida darhol chaqiradi va natijasini (masalan, undefined) bog'laydi. Doimo birinchi usuldan foydalaning.
-
-**3. Event Delegation nima va React nima uchun undan foydalanadi?**
-*Javob:* Event Delegation — ko'p elementlarga alohida listener o'rniga, yagona ota elementga listener qo'yish. React barcha hodisalarni root da ushlaydi. Bu unumdorlikni oshiradi: har bir element o'z listenerini yaratmaydi.
-
-**4. Hodisada default xatti-harakatni to'xtatish?**
-*Javob:* \`e.preventDefault()\` — masalan, formani submit bo'lishini to'xtatish. \`e.stopPropagation()\` — hodisaning ota elementlarga tarqalishini to'xtatish (bubbling).
 
 `,
   code: `import React, { useState } from "react";
