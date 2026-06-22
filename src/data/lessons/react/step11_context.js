@@ -18,9 +18,8 @@ React-da aynan shu jarayon **Prop Drilling** (Prop burg'ulash) deb ataladi. Ma'l
 ### Prop Drilling Kod Misoli (Bad Practice - Yomon yondashuv)
 
 \`\`\`jsx
-// ❌ YOMON: Prop Drilling (Prop burg'ulash)
+// ❌ YOMON: Prop Drilling
 const App = () => {
-  // 'theme' nomli holatni (state) yaratamiz, boshlang'ich qiymati 'dark'
   const [theme, setTheme] = useState('dark');
   
   return <Header theme={theme} />;
@@ -38,15 +37,11 @@ const NavBar = ({ theme }) => {
 
 // Va nihoyat Menu bu theme'dan foydalanadi!
 const Menu = ({ theme }) => {
-  // 'theme' prop orqali tugma rangini (class'ini) belgilaymiz
   return <button className={theme}>Menyu</button>;
 }
 \`\`\`
 
 Bu holat kodni o'qishni qiyinlashtiradi, refactoring (kodni tozalash va o'zgartirish) qilishni azobga aylantiradi. O'rtadagi komponentlar o'ziga kerak bo'lmagan props'larni qabul qilib, o'z bolalariga uzatishi — antpattern hisoblanadi.
-
-> 💡 **Roast qilinadigan haqiqat:**
-> Prop Drilling — bu "Bobomning bobosidan meros" qolgandek gap. 5 qavat pastdagi komponentga bitta ismni uzatish uchun yo'ldagi 4 ta mutlaqo aloqasi yo'q komponentlarga ham shu prop'ni yuklab o'tish... bu xuddi qo'shniga tuz berish uchun butun qishloq orqali qo'lma-qo'l qilishdek gap! Yaxshiyamki, React bizga qutqaruvchi yechimlarni taqdim etgan.
 
 ---
 
@@ -111,8 +106,7 @@ Birinchi navbatda alohida faylda (yoki komponentning tashqarisida) o'zimizning r
 \`\`\`jsx
 import { createContext } from 'react';
 
-// 1. Context yaratamiz. Boshlang'ich qiymat sifatida 'light' ni berishimiz ham mumkin.
-// 'ThemeContext' boshqa fayllarda ishlatilishi uchun eksport qilinadi.
+// 1. Context yaratamiz. Boshlang'ich qiymat berishimiz ham mumkin.
 export const ThemeContext = createContext('light');
 \`\`\`
 
@@ -126,19 +120,15 @@ import { ThemeContext } from './ThemeContext';
 import NavBar from './NavBar';
 
 const App = () => {
-  // Mavzuni saqlash uchun 'theme' holatini yaratamiz, default qiymati 'dark'
   const [theme, setTheme] = useState('dark');
 
-  // Mavzuni o'zgartiruvchi funksiya
-  // Oldingi mavzu holatiga qarab (prevTheme), uni almashtiradi
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
   };
 
   return (
     // 2. Provider orqali ma'lumotni uzatamiz. 
-    // "value" propiga { theme, toggleTheme } obyektini beramiz, shunda 
-    // Provider ichidagi har qanday komponent bu qiymatlardan foydalana oladi.
+    // "value" propiga o'zgaruvchilar, funksiyalar yoki obyekt berish mumkin.
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div className={\`app-container \${theme}\`}>
         <NavBar />
@@ -160,16 +150,13 @@ import React, { useContext } from 'react';
 import { ThemeContext } from './ThemeContext';
 
 const ThemeToggleButton = () => {
-  // 3. useContext Hook'i orqali ThemeContext dagi ma'lumotlarni (value) olamiz.
-  // Bu yerda o'rtadagi komponentlarga ehtiyoj yo'q, to'g'ridan-to'g'ri o'qiymiz!
+  // 3. useContext Hook'i orqali stansiyaga ulanib, "value" ni olamiz
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    // Tugma bosilganda 'toggleTheme' funksiyasi ishga tushadi
     <button 
       onClick={toggleTheme}
       style={{
-        // Joriy 'theme' ga qarab tugmaning foni va yozuv rangini dinamik o'zgartiramiz
         backgroundColor: theme === 'dark' ? '#333' : '#FFF',
         color: theme === 'dark' ? '#FFF' : '#333'
       }}
@@ -206,9 +193,7 @@ Context'ning eng katta kamchiligi — **Re-renders (Qayta chizish)**.
 Context'ning \`value\` qismiga berilgan ma'lumot o'zgarganda, ushbu context'ni \`useContext\` orqali eshitib turgan **BARCHA** komponentlar majburiy tarzda qayta render bo'ladi. Hatto obyektning kichkina bir xususiyati o'zgarsa ham!
 
 \`\`\`jsx
-// ❌ YOMON: Tez o'zgaruvchi ma'lumotlarni bitta katta Context'ga yig'ish.
-// Agar 'mousePositionX' doim o'zgarsa, GlobalContext dan 
-// foydalanayotgan barcha komponentlar majburan qayta-qayta render bo'laveradi.
+// ❌ YOMON: Tez o'zgaruvchi ma'lumotlarni bitta katta Context'ga yig'ish
 <GlobalContext.Provider value={{ theme, user, mousePositionX, searchInputValue }}>
    <App />
 </GlobalContext.Provider>
@@ -237,23 +222,6 @@ Agar ma'lumot faqat 1-2 qatlam pastga ketayotgan bo'lsa, **Prop Drilling unchali
 4. **Ogohlantirish:** Context ishlashi tez-tez o'zgaradigan murakkab state'lar uchun mo'ljallanmagan. U global sozlamalar, mavzular va foydalanuvchi ma'lumotlari kabi sekin o'zgaruvchi ma'lumotlar uchundir.
 
 Katta loyihalarda Context API — Redux kabi katta kutubxonalarni o'rnatmasdan turib, state'ni global boshqarishning ajoyib va native (tug'ma) yechimidir. Undan to'g'ri maqsadlarda, joyida foydalaning!
-
-
----
-
-## 🎤 Intervyu Savollari
-
-**1. Context API nima va qachon kerak?**
-*Javob:* Context API — global ma'lumotlarni (foydalanuvchi, til, tema) barcha komponentlarga props drilling siz uzatish imkonini beradi. createContext(), Provider, useContext() uchligidan iborat. Ko'p qatlamdagi prop drilling muammosini hal qiladi.
-
-**2. Context va Props ning farqi?**
-*Javob:* Props — faqat bir qatlam pastga uzatiladi (ota → bevosita bola). Context — Provider ichidagi har qanday chuqurlikdagi komponent subscribe bo'lishi mumkin, o'rta qatlamlardan o'tmasdan.
-
-**3. Context ning kamchiliklari?**
-*Javob:* Context qiymati o'zgarganda, unga subscribe bo'lgan barcha komponentlar qayta render bo'ladi — bu unumdorlik muammosi. Shuning uchun: (1) Tez-tez o'zgaradigan ma'lumotlar uchun Redux/Zustand yaxshiroq, (2) Kontekstni kichik, mavzuga bo'lingan qilib yarating.
-
-**4. useContext hook qanday ishlatiladi?**
-*Javob:* \`const qiymat = useContext(MenimContext)\`. Bu hook qiymati Provider dan keladi. Komponent Provider dan tashqarida bo'lsa, createContext ga berilgan default qiymat qaytariladi.
 
 `,
   code: `import React, { useState, createContext, useContext } from "react";
