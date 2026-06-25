@@ -25,6 +25,11 @@ export default function AppLayout({
 
   return (
     <div className="app-layout">
+      {/* Decorative Glows */}
+      <div className="glow-circle glow-circle-1" />
+      <div className="glow-circle glow-circle-2" />
+      <div className="glow-circle glow-circle-3" />
+
       {/* Mobile backdrop */}
       {sidebarOpen && (
         <div
