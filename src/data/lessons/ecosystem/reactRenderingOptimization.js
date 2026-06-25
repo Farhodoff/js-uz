@@ -1,490 +1,306 @@
 export const reactRenderingOptimization = {
-  id: "reactRenderingOptimization",
-  title: "Rendering Optimization va Listlar",
+  id: "react-rendering-optimization",
+  title: "React Render Jarayonini Optimallashtirish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Sodda Tushuntirish
 
-### Rendering Optimization va Listlar nima?
-React-da unumdorlikni optimallashtirish (rendering optimization) — bu ilova interfeysining tezroq yuklanishi, ortiqcha renderlar (re-renders) sonini kamaytirish va foydalanuvchi harakatlariga lahzada javob qaytarishini ta'minlashdir.
-Ayniqsa, ro'yxatlar (lists) va katta hajmli ma'lumotlarni ekranga chiqarish eng ko'p resurs talab qiladigan qismlardan biridir.
+React'da render jarayoni – bu holat (state) o'zgarganida UI'ni yangilashdir. Agar siz state'ni ilovaning eng yuqori qismida (App.js) saqlasangiz va u o'zgarsa, barcha pastki komponentlar ham qayta render bo'lishi mumkin. Buni oldini olish uchun **State Colocation** (holatni qayerda kerak bo'lsa o'sha yerning o'zida saqlash) ishlatiladi. Shuningdek, Context API dan noto'g'ri foydalanish ham butun dasturni sekinlashtiradi. Yana bir muhim narsa - ro'yxatlarda **key** prop'ni to'g'ri ishlatish (index o'rniga id berish), shunda React qaysi element o'zgarganini aniq topadi.
 
-### Real hayotiy o'xshatishlar
-1. **Talabalar navbati (Reconciliation va Key):**
-   Sizda navbatda turgan talabalar bor: \`[Ali, Vali, G'ani]\`. Siz navbatning boshiga \`Sami\` ismli yangi talabani qo'shmoqchisiz: \`[Sami, Ali, Vali, G'ani]\`.
-   * **Indeks key ishlatilsa (yoki key umuman qo'yilmasa):** Ali 0-indeks edi, endi Sami 0-indeks bo'ldi. React navbatdagi barcha talabalarni o'z joyidan qo'zg'atib, hammani qaytadan chizib chiqadi (chunki indekslar siljigan).
-   * **Unikal ID key ishlatilsa (\`key="id-val"\`):** React Sami yangi ekanligini, Ali, Vali va G'ani esa shunchaki joyini o'zgartirganini ko'radi va ularni qayta render qilmaydi. Faqat Samini yangi qo'shadi.
+## 2. ❌ YOMON va ✅ YAXSHI Yondashuvlar
 
-2. **Kino tasmasi (Virtualization):**
-   Sizda 10 000 ta kadrli film bor. Ammo proyektor ekrani faqat bitta kadrni ko'rsata oladi. Siz butun lentani bir vaqtning o'zida ekranga yoymaysiz. Faqat ko'rinib turgan kadrni ekranga chiqarasiz va lentani siljitasiz.
-   * **Virtualizatsiya** ham xuddi shunday ishlaydi: ro'yxatda 10 000 ta element bo'lsa ham, faqat ekranda ko'rinib turgan 10-20 tasini render qiladi, qolganlarini esa foydalanuvchi skrol qilganda dinamik ravishda chizadi.
-
-3. **Darsliklar (Code Splitting):**
-   Maktabga borayotganingizda uydagi barcha 100 ta kitobni portfelga solib yurmaysiz. Faqat bugungi darslar uchun kerakli 5 ta kitobni olasiz.
-   * **Code Splitting (Kodni bo'laklash)** ham sayt yuklanganda butun JS kodni emas, faqat hozirgi sahifaga kerakli bo'lakni yuklash imkonini beradi.
-
----
-
-## 2. 💻 Real Kod Misollari
-
-### 1. React.memo va To'g'ri Kalit (Key) ishlatish
-Katta ro'yxatlarda faqat o'zgargan elementni qayta render qilish:
-\`\`\`jsx
-import React, { useState } from 'react';
-
-// Memoized komponent - agar props o'zgarmasa, qayta render bo'lmaydi
-const ListItem = React.memo(({ item, onDelete }) => {
-  console.log(\`ListItem render bo'ldi: \${item.text}\`);
-  return (
-    <li>
-      {item.text} 
-      <button onClick={() => onDelete(item.id)}>O'chirish</button>
-    </li>
-  );
-});
-
-export function TodoList() {
-  const [todos, setTodos] = useState([
-    { id: '1', text: 'React o\\'rganish' },
-    { id: '2', text: 'Optimallashtirishni o\\'rganish' },
-    { id: '3', text: 'Loyihani tugatish' }
-  ]);
-
-  const handleDelete = (id) => {
-    setTodos(prev => prev.filter(todo => todo.id !== id));
-  };
-
+❌ **YOMON Yondashuv:**
+Ro'yxatda \`key\` o'rniga massiv indeksidan foydalanish (agar ro'yxat tartibi o'zgaradigan bo'lsa):
+\`\`\`javascript
+function List({ items }) {
+  // YOMON: index ishlatish ro'yxatdan element o'chirilganda xatolarga olib keladi
   return (
     <ul>
-      {todos.map(todo => (
-        // Unikal va barqaror ID kalit sifatida berilmoqda
-        <ListItem key={todo.id} item={todo} onDelete={handleDelete} />
+      {items.map((item, index) => (
+        <li key={index}>{item.name}</li>
       ))}
     </ul>
   );
 }
 \`\`\`
 
-### 2. useMemo va useCallback yordamida referensial butunlikni saqlash
-Renderlar davomida funksiyalar va obyektlarning qayta yaratilishini oldini olish:
-\`\`\`jsx
-import React, { useState, useMemo, useCallback } from 'react';
-
-export function SearchFilter() {
-  const [query, setQuery] = useState('');
-  const [items] = useState(['Olma', 'Anor', 'Banan', 'Gilos', 'Shaftoli']);
-
-  // Og'ir filtr amalini faqat query o'zgargandagina qayta hisoblaymiz
-  const filteredItems = useMemo(() => {
-    console.log("Filtrlash bajarilmoqda...");
-    return items.filter(item => item.toLowerCase().includes(query.toLowerCase()));
-  }, [query, items]);
-
-  // Funksiya har renderda qayta yaratilmaydi, referensial xotirasi saqlanadi
-  const handleClear = useCallback(() => {
-    setQuery('');
-  }, []);
-
+✅ **YAXSHI Yondashuv:**
+O'ziga xos va o'zgarmas ID dan foydalanish:
+\`\`\`javascript
+function List({ items }) {
   return (
-    <div>
-      <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Qidirish..." />
-      <button onClick={handleClear}>Tozalash</button>
-      <ul>
-        {filteredItems.map((item, idx) => <li key={idx}>{item}</li>)}
-      </ul>
-    </div>
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>{item.name}</li>
+      ))}
+    </ul>
   );
 }
 \`\`\`
 
-### 3. Code Splitting va Suspense Boundaries
-Katta komponentlarni faqat kerak bo'lganda yuklash:
-\`\`\`jsx
-import React, { useState, lazy, Suspense } from 'react';
+❌ **YOMON Yondashuv (State'ni keraksiz joyga ko'tarish):**
+\`App\` da faqatgina bitta input uchun \`state\` saqlash barcha komponentlarni (hatto o'sha inputga aloqasi yo'qlarni ham) qayta render qiladi.
 
-// Og'ir komponent dinamik import qilinadi
-const HeavyChart = lazy(() => import('./HeavyChart'));
+✅ **YAXSHI Yondashuv (State Colocation):**
+Input state'ni faqat o'zining kichik komponenti ichida saqlash.
 
-export function Dashboard() {
-  const [showChart, setShowChart] = useState(false);
+## 3. 🎤 Intervyu Savollari
 
-  return (
-    <div>
-      <h1>Tahlillar Paneli</h1>
-      <button onClick={() => setShowChart(true)}>Grafikni Yuklash</button>
-      
-      {showChart && (
-        <Suspense fallback={<div>Grafik yuklanmoqda...</div>}>
-          <HeavyChart />
-        </Suspense>
-      )}
-    </div>
-  );
-}
-\`\`\`
+1. **Nima uchun React'da ro'yxatlarga (lists) \`key\` prop'ini berish kerak?**
+   Javob: React ro'yxatdagi elementlarni o'zgartirish, qo'shish yoki o'chirishni samarali bajarishi uchun \`key\` ga suyanadi. Agar \`key\` bo'lmasa yoki u index bo'lsa, React qaysi element haqiqatda o'zgarganini chalkashtirib, keraksiz DOM yangilanishlariga va inputdagi yo'qotishlarga sabab bo'lishi mumkin.
 
----
+2. **State Colocation nima?**
+   Javob: Holatni (state) iloji boricha faqat u kerak bo'lgan komponentning o'zida yozish. Ota komponentga keraksiz state qo'yishdan qochish. Bu ortiqcha re-renderlarni kamaytiradi.
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+3. **React 18 da Automatic Batching nima?**
+   Javob: React 18 gacha bir vaqtda bir nechta \`setState\` chaqirilsa va u \`setTimeout\` kabi asinxron joyda bo'lsa, har bitta \`setState\` uchun bittadan render bo'lar edi. Batching esa barcha \`setState\` larni bitta guruhga yig'ib bitta renderda yangilashdir.
 
-### 1. Reconciliation (Virtual DOM Diffing)
-React Virtual DOM yaratadi va uni haqiqiy DOM bilan solishtiradi. Ushbu jarayon **Reconciliation** deb ataladi:
-* React ikkita daraxtni solishtirganda, birinchi navbatda ota elementlarning turi o'zgarganini tekshiradi. Agar tur o'zgarsa (masalan, \`<div>\` o'rniga \`<span>\`), butun eski daraxt o'chiriladi (unmount) va yangisi quriladi.
-* Agar elementlar ro'yxatida \`key\` prop berilsa, React ularni o'tgan renderdagi mos kalitlar bilan solishtiradi. Bu React-ga elementlarning joyi o'zgarganini, o'chganini yoki yangi qo'shilganini aniq tushunishga va DOM-ga minimal o'zgartirish kiritishga yordam beradi.
-
-### 2. List Virtualization (Oyna printsipi)
-Virtualizatsiya kutubxonalari (masalan, \`react-window\` yoki \`react-virtualized\`) quyidagicha ishlaydi:
-* Skrol bo'luvchi konteyner yaratiladi va uning umumiy balandligi hisoblab chiqiladi (masalan, \`10 000 * 50px = 500 000px\`).
-* Mutlaq joylashuv (absolute positioning) yordamida faqat foydalanuvchiga ko'rinib turgan qism (viewport) va uning tepa hamda pastki qismidagi bir nechta zaxira (buffer) elementlar chiziladi.
-* Foydalanuvchi skrol qilganda elementlar o'chib-taqilaveradi, natijada DOM-da bir vaqtning o'zida faqat 20-30 ta tugun (node) saqlanib qoladi.
-
----
-
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
-
-### 1. \`key={Math.random()}\` yozish
-* **XATO:** Har renderda mutlaqo yangi key yaratiladi, natijada butun ro'yxat va uning bolalari noldan qayta o'rnatiladi (unmount va mount).
-* **OQIBAT:** Local state-lar yo'qoladi, input fokuslari yo'qoladi va sahifa qattiq qotadi.
-* **TO'G'RI:** Faqat ma'lumotlar bazasidan kelgan unikal \`id\` yoki barqaror qiymatlardan foydalaning.
-
-### 2. Har doim \`index\`ni kalit sifatida ishlatish
-* **XATO:** Dinamik saralanadigan yoki o'chiriladigan ro'yxatlarda massiv indeksini \`key={index}\` qilish.
-* **OQIBAT:** Element o'chirilganda keyingi element uning indeksini oladi, React esa UI va inputlardagi ma'lumotlarni adashtirib yuboradi.
-* **TO'G'RI:** Faqat mutlaqo o'zgarmas (statik) ro'yxatlar uchungina indeksni kalit qilish mumkin.
-
-### 3. Inline funksiyalar va obyektlarni noo'rin ishlatish
-* **XATO:** \`React.memo\` bilan optimallashtirilgan bolaga har renderda inline funksiya berish: \`<Child onClick={() => doSomething()} />\`.
-* **OQIBAT:** Har renderda yangi funksiya referensi yaratiladi va \`React.memo\` baribir bolani qayta render qilib yuboradi.
-* **TO'G'RI:** Bunday funksiyalarni \`useCallback\` ichida e'lon qiling.
-
----
-
-## 5. 💬 12 ta Intervyu Savollari
-
-### Junior
-1. **Savol:** Nima uchun React-da ro'yxatlar renderida \`key\` props bo'lishi shart?
-   * **Javob:** React Virtual DOM reconciliation (solishtirish) jarayonida elementlarning shaxsiyatini saqlash va faqatgina o'zgarganlarini qayta chizish uchun \`key\`dan foydalanadi.
-2. **Savol:** Nega \`key={Math.random()}\` yozish tavsiya qilinmaydi?
-   * **Javob:** Chunki bu har safar render bo'lganda komponentlarni o'chirib qayta quradi, barcha local state yo'qoladi va tezlik keskin pasayadi.
-3. **Savol:** React Fragment-ga key prop yozsa bo'ladimi?
-   * **Javob:** Ha, faqat to'liq yozilgan \`<React.Fragment key={id}>\` ko'rinishida yozish mumkin. Qisqa \`<>\` tegi prop qabul qilmaydi.
-4. **Savol:** React-da \`React.lazy\` va \`Suspense\` nima uchun kerak?
-   * **Javob:** Ular Code Splitting (kodni bo'laklash) uchun xizmat qiladi. Komponentlarni faqat kerakli paytda asinxron yuklash va u yuklangunicha loading ko'rsatish imkonini beradi.
-
-### Middle
-5. **Savol:** Indeksni kalit (key) sifatida ishlatish qachon xavfsiz va qachon xavfli?
-   * **Javob:** Ro'yxat o'zgarmas, saralanmas va o'chirilmas bo'lsa xavfsiz. Elementlar qo'shilishi, o'chirilishi yoki tartiblanishi mumkin bo'lsa, xavfli (UI chalkashib ketadi).
-6. **Savol:** \`React.memo\` nima va u qanday ishlaydi?
-   * **Javob:** Bu yuqori tartibli komponent (HOC) bo'lib, uning props-lari o'zgarmasa, ushbu komponentni qayta render bo'lishdan himoya qiladi (shuningdek, shallow comparison bajaradi).
-7. **Savol:** \`useMemo\` va \`useCallback\` o'rtasidagi farq nima?
-   * **Javob:** \`useMemo\` funksiya qaytargan *qiymatni* keshlaydi. \`useCallback\` esa funksiyaning *o'zini* (referensini) keshlaydi.
-8. **Savol:** List Virtualization (Virtualizatsiya) nima va u qachon ishlatiladi?
-   * **Javob:** Katta hajmli ro'yxatlarni (masalan, 10 000+ satr) ekranga chizishda faqat viewport (ko'rinish hududi) dagi elementlarni DOM-da saqlab, performance-ni oshirish texnikasi.
-
-### Senior
-9. **Savol:** Reconciliation algoritmining o'tish murakkabligi (Big O) qanday va React buni qanday qilib O(n) ga tushirgan?
-   * **Javob:** Ikki daraxtni solishtirishning umumiy algoritmi O(n³) vaqtni oladi. React ikkita evristik taxmin yordamida buni O(n) ga tushirgan: har xil turdagi elementlar har xil daraxtlarni beradi va ishlab chiquvchi \`key\` yordamida elementlar barqarorligini ta'minlaydi.
-10. **Savol:** \`React.memo\` ning ikkinchi argumenti nima va undan qanday maqsadda foydalaniladi?
-    * **Javob:** Ikkinchi argument solishtirish funksiyasi (\`arePropsEqual(prevProps, nextProps)\`) bo'lib, props o'zgarishini qo'lda tekshirish va renderni boshqarish imkonini beradi.
-11. **Savol:** Code Splitting qilingan komponentlarning yuklanishini optimallashtirish uchun qanday yondashuvlar mavjud?
-    * **Javob:** Foydalanuvchi hover qilganda yoki sahifaga kirishidan oldin kodni oldindan yuklash (Prefetching/Preloading) va Webpack magic comments (\`/* webpackPrefetch: true */\`) ishlatish.
-12. **Savol:** Virtualizatsiyada "Layout Thrashing" ning oldini olish uchun nimalarga e'tibor berish kerak?
-    * **Javob:** Har bir satr balandligini oldindan ma'lum qilish (dinamik bo'lsa keshlab borish) va skrol paytida DOM elementlarining stillarini o'qish/yozishni guruhlash (batching).
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Bu bo'limda siz asinxron komponentlarni yuklash (Code Splitting) va unumdorlik chegaralarini, shuningdek listlarni optimallashtirish prinsiplarini o'rganishingiz kerak.
-
-### Virtualizatsiya (List Virtualization) arxitekturasi:
-Foydalanuvchi faqat ma'lum bir ekrandagi "Oyna" (Viewport) ni ko'radi. Qolgan minglab elementlar xotirada saqlansa-da, real DOM-ga chizilmaydi:
+## 4. 🛠️ Amaliy Topshiriqlar
 
 \`\`\`mermaid
 graph TD
-    A[Butun Ro'yxat: 10 000 element] --> B[Virtualizatsiya Konteyneri]
-    B --> C[Yuqori bo'shliq: Offset Y]
-    B --> D[Viewport - Ekranda ko'rinuvchi qism: faqat 10 ta element]
-    B --> E[Pastki bo'shliq: Qolgan balandlik]
-    D --> F[DOM-da faqat 10 ta element render bo'ladi]
+    A[Ota Komponent] --> B[Bola 1]
+    A --> C[Bola 2]
+    B --> D[State faqat Bola 1 da bo'lsa]
+    D --> E[Faqat Bola 1 qayta render bo'ladi]
+    F[State Ota komponentda bo'lsa] --> G[Barcha komponentlar render bo'ladi!]
 \`\`\`
-
-### Code Splitting va Suspense chegaralari arxitekturasi:
-Katta ilovalarda foydalanuvchiga faqat kerakli sahifa kodini yuklash sxemasi:
-
-\`\`\`mermaid
-graph TD
-    Parent[App Komponenti - Main Bundle] -->|Static Import| Header[Header Komponenti]
-    Parent -->|Dynamic Import| SuspenseBoundary[Suspense Boundary]
-    SuspenseBoundary -->|Yuklanmoqda...| Fallback[Loading Spinner]
-    SuspenseBoundary -->|Yuklangandan so'ng| LazyComponent[Lazy Dashboard - 1.2MB bo'lingan bundle]
-\`\`\`
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Bilimingizni sinab ko'rish uchun mashqlardan so'ng berilgan 12 ta test savollariga javob bering. Ular orqali list rendering va optimallashtirish bo'yicha bilimlaringiz mustahkamlanadi.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### Muammo: 10 000 ta qatorli Real-time Dashboard jadvali
-Katta moliyaviy ilovada har soniyada aksiyalar narxlari o'zgarib turadi. Jadvalda 10 000 ta qator bor. Har safar birgina aksiya narxi o'zgarganda butun jadval qayta render bo'lib, sahifa qotib qoladi (Lag).
-
-### Yechim va Optimallashtirish bosqichlari:
-1. **Virtualizatsiya:**
-   \`react-window\` yordamida faqat ekrandagi 20 ta qatorni chizamiz.
-2. **Komponentlarni bo'lish va Memoizatsiya:**
-   Har bir jadval qatorini \`React.memo\` bilan o'raymiz. Props sifatida kelayotgan o'chirish yoki tahrirlash funksiyalarini \`useCallback\` bilan keshlaymiz.
-3. **Optimallashtirilgan Kod:**
-   \`\`\`jsx
-   import React, { useState, useCallback, useMemo } from 'react';
-   import { FixedSizeList as List } from 'react-window';
-
-   // Memoized Row
-   const Row = React.memo(({ index, style, data }) => {
-     const { items, onToggle } = data;
-     const item = items[index];
-     return (
-       <div style={style} className="table-row">
-         <span>{item.name}</span> - <span>{item.price} USD</span>
-         <button onClick={() => onToggle(item.id)}>
-           {item.active ? 'Faol' : 'Nofaol'}
-         </button>
-       </div>
-     );
-   });
-
-   export function FinancialDashboard() {
-     const [stocks, setStocks] = useState(
-       Array.from({ length: 10000 }, (_, i) => ({
-         id: i,
-         name: \`Aksiya \${i}\`,
-         price: (Math.random() * 100).toFixed(2),
-         active: true
-       }))
-     );
-
-     const handleToggle = useCallback((id) => {
-       setStocks(prev => prev.map(stock => 
-         stock.id === id ? { ...stock, active: !stock.active } : stock
-       ));
-     }, []);
-
-     // Data obyekti o'zgarmasligini ta'minlash
-     const itemData = useMemo(() => ({
-       items: stocks,
-       onToggle: handleToggle
-     }), [stocks, handleToggle]);
-
-     return (
-       <List
-         height={500}
-         itemCount={stocks.length}
-         itemSize={50}
-         width="100%"
-         itemData={itemData}
-       >
-         {Row}
-       </List>
-     );
-   }
-   \`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-* **Barqaror Kalitlar:** Hech qachon \`key\` sifatida massiv indeksini yoki random qiymatlarni asossiz ishlatmang.
-* **Faqat Kerakli Vaqtda Render:** \`React.memo\`, \`useMemo\` va \`useCallback\`dan to'g'ri foydalaning. Ammo ularni har doim va har qayerda ishlatavermang (keshlashning ham o'z xotira xarajatlari bor).
-* **Bundle Hajmini Nazorat Qiling:** \`lazy\` va \`Suspense\` yordamida foydalanuvchiga faqat kerakli sahifa yoki komponent kodlarini yuklang.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Texnika | Muammo | Yechim / Sintaksis |
-| :--- | :--- | :--- |
-| **Reconciliation Key** | Elementlarning o'rni chalkashishi | \`<div key={item.id}>...</div>\` |
-| **React.memo** | Keraksiz bolalar renderi | \`export default React.memo(MyComponent)\` |
-| **useCallback** | Funksiya referensining o'zgarishi | \`const fn = useCallback(() => {}, [])\` |
-| **useMemo** | Qimmat hisob-kitoblar | \`const val = useMemo(() => heavy(a), [a])\` |
-| **Virtualization** | DOM elementlarining haddan ortiq ko'pligi | \`react-window\` yoki \`react-virtualized\` |
-| **Code Splitting** | Boshlang'ich bundle hajmining kattaligi | \`const LazyComp = lazy(() => import('./Comp'))\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Unikal Key Tekshiruvi",
-    "instruction": "Ro'yxat elementlari React-da render bo'lishi uchun ularning tarkibida `key` xossasi (unikal ID) borligini tekshiradigan `validateKeys(elements)` funksiyasini yozing (barchasida bo'lsa true, kamida bittasida yo'q bo'lsa false).",
-    "startingCode": "function validateKeys(elements) {\n  // every orqali tekshiring\n}",
-    "hint": "return elements.every(el => el.key !== undefined && el.key !== null);",
-    "test": "if (typeof validateKeys !== 'function') return 'validateKeys topilmadi'; if(validateKeys([{id: 1, key: 'a'}, {id: 2, key: 'b'}]) !== true) return 'To\\'g\\'ri keys rad etildi'; if(validateKeys([{id: 1, key: 'a'}, {id: 2}]) !== false) return 'Key yo\\'qligi aniqlanmadi'; return null;"
-  },
-  {
-    "id": 2,
-    "title": "React Key String Format",
-    "instruction": "Element kaliti (`key`) string ko'rinishida bo'lishini ta'minlovchi `formatReactKey(id)` funksiyasini yozing (masalan, `element-5`).",
-    "startingCode": "function formatReactKey(id) {\n  // formatlang\n}",
-    "hint": "return `element-${id}`;",
-    "test": "if (typeof formatReactKey !== 'function') return 'formatReactKey topilmadi'; if(formatReactKey(12) !== 'element-12') return 'Key formatlash xato'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "React Children Counter",
-    "instruction": "React-ga o'xshash bolalar massividagi barcha elementlar sonini hisoblaydigan `countChildren(children)` funksiyasini yozing (agar array bo'lmasa 1, bo'lsa array uzunligi, null bo'lsa 0).",
-    "startingCode": "function countChildren(children) {\n  // Shartlarni yozing\n}",
-    "hint": "if (children === null || children === undefined) return 0;\nif (Array.isArray(children)) return children.length;\nreturn 1;",
-    "test": "if (typeof countChildren !== 'function') return 'countChildren topilmadi'; if (countChildren(null) !== 0) return 'Null uchun xato'; if (countChildren([1, 2]) !== 2) return 'Massiv uchun xato'; if (countChildren('hi') !== 1) return 'Yagona bola uchun xato'; return null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Key Uniqueness Tekshiruvi",
+      instruction: "Ro'yxatdagi (massivdagi) ob'ektlarning berilgan 'key' maydoni takrorlanmas (unique) ekanligini tekshiruvchi funksiya yozing. Agar hammasi unikal bo'lsa true, bo'lmasa false qaytarsin.",
+      startingCode: "function isKeyUnique(arr, keyField) {\n  // tekshiring\n}",
+      hint: "Set dan foydalanib uzunliklarni solishtiring.",
+      solution: "function isKeyUnique(arr, keyField) {\n  const keys = arr.map(item => item[keyField]);\n  const uniqueKeys = new Set(keys);\n  return keys.length === uniqueKeys.size;\n}",
+      test: "const fn = new Function(code + '; return isKeyUnique;')(); if(!fn([{id:1}, {id:2}], 'id') || fn([{id:1}, {id:1}], 'id')) throw new Error('Xato');"
+    },
+    {
+      id: 2,
+      title: "Diffing Analogi (Element qidirish)",
+      instruction: "Ikki massiv (oldList, newList) berilgan. Har bir elementda 'id' bor. Qaysi id li elementlar olib tashlanganini qaytaruvchi funksiya yozing.",
+      startingCode: "function getRemovedItems(oldList, newList) {\n  // id lar bo'yicha olib tashlanganlarini qaytaring\n}",
+      hint: "newList dagi barcha id larni yig'ib, oldList dan topilmaganlarini ajrating.",
+      solution: "function getRemovedItems(oldList, newList) {\n  const newIds = new Set(newList.map(item => item.id));\n  return oldList.filter(item => !newIds.has(item.id));\n}",
+      test: "const fn = new Function(code + '; return getRemovedItems;')(); const res = fn([{id:1}, {id:2}], [{id:2}]); if(res.length !== 1 || res[0].id !== 1) throw new Error('Xato');"
+    },
+    {
+      id: 3,
+      title: "Automatic Batching Simulyatori",
+      instruction: "Bir nechta funksiya chaqiriqlarini bitta tsiklda emas, balki keyingi Event Loop tick (Promise.resolve().then) gacha kutib, oxirida ularning hammasini bittada chaqiruvchi batcher yozing. Parametr sifatida bitta chaqiriladigan callback olasiz, unga barcha yangilanishlar massiv qilib beriladi.",
+      startingCode: "function createBatcher(flushCallback) {\n  // funksiya qaytaringki u value olsin va yig'sin\n}",
+      hint: "O'zgaruvchida value larni yig'ib borib, setTimeout(..., 0) yordamida flushCallback ga yuboring.",
+      solution: "function createBatcher(flushCallback) {\n  let queue = [];\n  let isScheduled = false;\n  return function(value) {\n    queue.push(value);\n    if (!isScheduled) {\n      isScheduled = true;\n      Promise.resolve().then(() => {\n        flushCallback(queue);\n        queue = [];\n        isScheduled = false;\n      });\n    }\n  };\n}",
+      test: "const fn = new Function(code + '; return createBatcher;')(); let res = []; const b = fn((q) => res = q); b(1); b(2); b(3); setTimeout(()=>{ if(res.length!==3 || res[2]!==3) throw new Error('Xato'); }, 10);"
+    },
+    {
+      id: 4,
+      title: "Re-render Tekshiruvchi",
+      instruction: "React.memo yuzaki solishtirish qilib, agar o'zgarmagan bo'lsa render qilmaydi. Ikki obyektni yuzaki tekshirib (true - o'zgargan, false - bir xil) qaytaruvchi funksiya.",
+      startingCode: "function shouldRender(prevProps, nextProps) {\n  // o'zgarganini toping\n}",
+      hint: "Agar bittagina kalit qiymati boshqacha bo'lsa true, umuman farqi bo'lmasa false qaytarsin.",
+      solution: "function shouldRender(prevProps, nextProps) {\n  if (Object.is(prevProps, nextProps)) return false;\n  const keys1 = Object.keys(prevProps);\n  const keys2 = Object.keys(nextProps);\n  if (keys1.length !== keys2.length) return true;\n  for (let key of keys1) {\n    if (prevProps[key] !== nextProps[key]) return true;\n  }\n  return false;\n}",
+      test: "const fn = new Function(code + '; return shouldRender;')(); if(fn({a:1}, {a:1}) || !fn({a:1}, {a:2})) throw new Error('Xato');"
+    },
+    {
+      id: 5,
+      title: "State Colocation yordamchisi",
+      instruction: "Umumiy bitta katta 'state' obyekti bor. Agar biron kalit faqatgina 'allowed' (ruxsat berilganlar) ro'yxatida yo'q bo'lsa, o'sha kalitlarni olib tashlab yangi state qaytaring. Bu state colocation prinsipidek keraksizlarni tozalasin.",
+      startingCode: "function colocateState(globalState, allowedKeys) {\n  // globalState dan allowedKeys dagilarni ajratib oling\n}",
+      hint: "Obyektni aylanib chiqib, allowedKeys ga moslarini oling.",
+      solution: "function colocateState(globalState, allowedKeys) {\n  const newState = {};\n  allowedKeys.forEach(key => {\n    if (key in globalState) newState[key] = globalState[key];\n  });\n  return newState;\n}",
+      test: "const fn = new Function(code + '; return colocateState;')(); const r = fn({a:1, b:2, c:3}, ['a']); if(r.b || r.c || r.a !== 1) throw new Error('Xato');"
+    },
+    {
+      id: 6,
+      title: "Lazy Initialization Analogi",
+      instruction: "useState da boshlang'ich qiymat hisoblash og'ir bo'lsa u funksiya sifatida beriladi. Shunga o'xshab, agar parametr funksiya bo'lsa uni ishlating, aks holda o'zini qaytaring.",
+      startingCode: "function initializeState(init) {\n  // agar init funksiya bo'lsa typeof orqali topib, ishlating\n}",
+      hint: "typeof init === 'function'",
+      solution: "function initializeState(init) {\n  return typeof init === 'function' ? init() : init;\n}",
+      test: "const fn = new Function(code + '; return initializeState;')(); if(fn(()=>5) !== 5 || fn(10) !== 10) throw new Error('Xato');"
+    },
+    {
+      id: 7,
+      title: "Event Pooling",
+      instruction: "Qadimgi React da voqealar (events) pool orqali ishlatilardi. Obyekt berilganda, u ma'lum vaqtdan so'ng barcha qiymatlarini null ga aylantiradigan pooler yozing.",
+      startingCode: "function poolEvent(eventObj) {\n  // eventObj ni setTimeout orqali null qiymatlar bilan to'ldiring\n}",
+      hint: "Object.keys orqali for loop yozib qiymatlarni null qiling.",
+      solution: "function poolEvent(eventObj) {\n  setTimeout(() => {\n    Object.keys(eventObj).forEach(key => {\n      eventObj[key] = null;\n    });\n  }, 0);\n  return eventObj;\n}",
+      test: "const fn = new Function(code + '; return poolEvent;')(); const ev = {type: 'click'}; fn(ev); setTimeout(()=>{ if(ev.type !== null) throw new Error('Tozalanmadi'); }, 10);"
+    },
+    {
+      id: 8,
+      title: "Context Splitter",
+      instruction: "Bitta obyektda data va funksiyalar aralashib yotibdi. Ularni { state, dispatchers } ikkita alohida obyektga ajratuvchi funksiya yozing.",
+      startingCode: "function splitContext(contextValue) {\n  // return { state: {}, dispatchers: {} }\n}",
+      hint: "typeof qiymat 'function' bo'lsa dispatchers ga qo'shing.",
+      solution: "function splitContext(contextValue) {\n  const res = { state: {}, dispatchers: {} };\n  for (let key in contextValue) {\n    if (typeof contextValue[key] === 'function') {\n      res.dispatchers[key] = contextValue[key];\n    } else {\n      res.state[key] = contextValue[key];\n    }\n  }\n  return res;\n}",
+      test: "const fn = new Function(code + '; return splitContext;')(); const res = fn({ val: 1, setVal: ()=>{} }); if(!res.state.val || !res.dispatchers.setVal) throw new Error('Xato');"
+    },
+    {
+      id: 9,
+      title: "Deep Equality Check",
+      instruction: "Faqat bir qatlamli emas, balki chuqur obyektlarni ham solishtiradigan funksiya. Renderdan qutulishning murakkab usuli.",
+      startingCode: "function deepEqual(obj1, obj2) {\n  // ...\n}",
+      hint: "JSON.stringify ishlatib yoki rekursiya bilan hal qiling.",
+      solution: "function deepEqual(obj1, obj2) {\n  if (obj1 === obj2) return true;\n  if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 == null || obj2 == null) return false;\n  const keys1 = Object.keys(obj1);\n  const keys2 = Object.keys(obj2);\n  if (keys1.length !== keys2.length) return false;\n  for (let key of keys1) {\n    if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) return false;\n  }\n  return true;\n}",
+      test: "const fn = new Function(code + '; return deepEqual;')(); if(!fn({a:{b:1}}, {a:{b:1}}) || fn({a:{b:1}}, {a:{b:2}})) throw new Error('Xato');"
+    },
+    {
+      id: 10,
+      title: "Render Sanagich (Closure)",
+      instruction: "Har gal funksiya chaqirilganda necha marta chaqirilganini saqlab boruvchi counter funksiya qaytaring. (Komponent necha marta re-render bo'lganini bilish kabi).",
+      startingCode: "function createRenderCounter() {\n  // return funksiya\n}",
+      hint: "Ichkarida let count = 0 saqlang.",
+      solution: "function createRenderCounter() {\n  let count = 0;\n  return function() {\n    count++;\n    return count;\n  }\n}",
+      test: "const fn = new Function(code + '; return createRenderCounter;')()(); fn(); if(fn() !== 2) throw new Error('Xato');"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "Nega `key={Math.random()}` yozish juda yomon amaliyot hisoblanadi?",
-    "options": [
-      "Chunki random sonlar o'zgarmasdir",
-      "Har renderda yangi key yaratilib, komponent to'liq noldan o'rnatiladi va barcha local state yo'qoladi",
-      "Faqat serverga so'rov sekinlashadi",
-      "Bu JavaScript xatosiga olib keladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Kalit o'zgarganda React uning eski holatini butunlay o'chirib (unmount), noldan qayta quradi (mount), bu barcha local statelarni tozalaydi va qotishga sabab bo'ladi."
-  },
-  {
-    "id": 2,
-    "question": "Ro'yxatlarni chizishda qachon indeksni (`index`) key sifatida ishlatsa bo'ladi?",
-    "options": [
-      "Doim ishlatsa bo'ladi",
-      "Faqat ro'yxat statik (hech qachon tartibi o'zgarmaydigan va o'chirilmaydigan) bo'lganda",
-      "Hech qachon ishlatib bo'lmaydi",
-      "Faqat asinxron so'rovlarda"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Dinamik ro'yxatlarda indekslarni ishlatish xavfli, chunki qatorlar siljishi indekslarning yangilanishiga va UI xatoliklariga olib keladi."
-  },
-  {
-    "id": 3,
-    "question": "React-da key va ref qiymatlarini prop sifatida o'qish mumkinmi?",
-    "options": [
-      "Ha, albatta",
-      "Yo'q, u maxsus kalitlar bo'lib, React ichki hisob-kitoblar uchun ishlatadi va props-ga uzatmaydi",
-      "Faqat input teglari ichida o'qish mumkin",
-      "Faqat klasslarda ruxsat etilgan"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Ushbu qiymatlar React-ning o'ziga ajratilgan bo'lib, bolalar komponentga props sifatida o'tib bormaydi."
-  },
-  {
-    "id": 4,
-    "question": "React Fragment-da key qanday ishlatiladi?",
-    "options": [
-      "Key fragmentga qo'yilmaydi",
-      "Faqat `<React.Fragment key={id}>` shaklida to'liq yozilganda",
-      "`< key={id}>` yozish orqali",
-      "Faqat HTML class ishlatganda"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Fragment sintaksisining qisqa ko'rinishi (`<>`) hech qanday prop qabul qilmaydi, shuning uchun to'liq yozilishi shart."
-  },
-  {
-    "id": 5,
-    "question": "List rendering optimizatsiyasining eng sodda va samarali usuli qaysi?",
-    "options": [
-      "CSS flex-direction ishlatish",
-      "Elementlarni `React.memo` bilan o'rash va unikal, barqaror key props qo'llash",
-      "Massivni o'chirib yuborish",
-      "Uni context api provayderiga ulash"
-    ],
-    "correctAnswer": 1,
-    "explanation": "React.memo yordamida ro'yxat elementlari faqat props o'zgargandagina qayta chiziladi va unikal keys bilan reconciliation tezlashadi."
-  },
-  {
-    "id": 6,
-    "question": "Key o'zgarishi orqali komponent state-ini tozalash (Resetting state) qanday amalga oshiriladi?",
-    "options": [
-      "setState(null) chaqirish orqali",
-      "Komponentga unikal key berib, state tozalanishi kerak bo'lganda o'sha key qiymatini o'zgartirish orqali",
-      "Brauzerni yangilash orqali",
-      "Faqat storage o'chirilganda"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Komponentning kaliti o'zgarganda React eski elementni butunlay o'chirib yuborib, yangisini yaratgani uchun state ham toza noldan boshlanadi."
-  },
-  {
-    "id": 7,
-    "question": "Ro'yxat renderingida unikal 'key' prop-ni yozmaslik nima keltirib chiqaradi?",
-    "options": [
-      "Sayt umuman ochilmay qoladi",
-      "React standart indekslardan (index) foydalanadi, bu esa elementlar o'zgarganda UI xatoliklarga va sekinlashuvga olib keladi",
-      "Faqat CSS-ga xalaqit beradi",
-      "Dizayn buziladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Key bo'lmasa, React indeksni oladi. Agar elementlar o'chsa yoki surilsa, React ularni chalkashtirib qayta render qiladi."
-  },
-  {
-    "id": 8,
-    "question": "React-da komponentga berilgan 'key' o'zgarganda DOM elementiga nima bo'ladi?",
-    "options": [
-      "U o'sha joyida matni o'zgaradi",
-      "Eski element butunlay o'chib (unmount), noldan yangi DOM elementi (mount) yaratiladi",
-      "Stili o'zgaradi",
-      "LocalStorage-ga saqlanadi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Key o'zgarishi React-ga bu butunlay boshqa komponent ekanligini bildiradi, eski komponent unmount bo'lib, yangi mount qilinadi."
-  },
-  {
-    "id": 9,
-    "question": "React-da ro'yxat virtualizatsiyasi (virtualization) nima?",
-    "options": [
-      "Ro'yxat elementlarini CSS visual effektlari yordamida yashirish",
-      "Juda katta ro'yxatda faqat ekranga ko'rinadigan (viewport dagi) elementlarni render qilish orqali DOM-ni yengillashtirish texnikasi",
-      "Elementlarni 3D ko'rinishga keltirish",
-      "Ma'lumotlarni serverga yubormasdan keshda saqlash"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Virtualizatsiya DOM elementlari sonini kamaytirish orqali sahifa unumdorligini va skrol tezligini sezilarli darajada oshiradi."
-  },
-  {
-    "id": 10,
-    "question": "Code Splitting (React.lazy va Suspense) rendering unumdorligiga qanday ta'sir qiladi?",
-    "options": [
-      "U barcha JS fayllarni CSS-ga o'zgartiradi",
-      "Boshlang'ich yuklanadigan bundle hajmini kamaytiradi va sahifa yuklanish tezligini oshiradi",
-      "Komponentlarni tezroq render qiladi",
-      "Brauzer keshini tozalaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Kodni bo'laklash foydalanuvchiga faqat kerakli sahifaning kodlarini yuklash imkonini beradi va ortiqcha kod yuklanishining oldini oladi."
-  },
-  {
-    "id": 11,
-    "question": "Virtual DOM reconciliation jarayonida 'key' qanday ishlaydi?",
-    "options": [
-      "U faqat dizayn beradi",
-      "U yangi va eski Virtual DOM daraxtlari o'rtasidagi elementlarni bog'lovchi unikal ko'prik (identifikator) vazifasini bajaradi",
-      "Tugmalarni ishlatish uchun kerak",
-      "API javobini keshlaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Reconciliation davrida React aynan o'sha key-li element o'zgarganmi yoki yo'qligini tekshiradi."
-  },
-  {
-    "id": 12,
-    "question": "10000 ta elementdan iborat ro'yxatda bitta satr o'zgarganda qolgan 9999 tasi render bo'lmasligi uchun nima qilish kerak?",
-    "options": [
-      "Context API ishlatish",
-      "Ro'yxat satr komponentini `React.memo` bilan o'rab, unga unikal barqaror (stable) key berish",
-      "Massivni bo'shatish",
-      "Absolute positioning qo'llash"
-    ],
-    "correctAnswer": 1,
-    "explanation": "React.memo props o'zgarmagan qolgan 9999 ta komponentning render bo'lishini to'xtatadi."
-  }
-]
-
+    {
+      id: 1,
+      question: "Nega ro'yxatlarni (list) render qilganda massivning indeksini (index) 'key' sifatida ishlatish xavfli?",
+      options: [
+        "Chunki brauzer qotib qoladi",
+        "Agar ro'yxatga yangi element qo'shilsa yoki o'chirilsa (tartibi o'zgarsa), React qaysi element o'zgarganini adashtirib qo'yishi va xato ko'rsatishi mumkin",
+        "Index ishlatish ruxsat etilmagan va har doim Error beradi",
+        "Bu React.memo ni o'chirib qoyadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Tartib o'zgarganda element indekslari ham siljiydi, natijada React elementlarning eskilarini yangisi deb o'ylab xato render qiladi."
+    },
+    {
+      id: 2,
+      question: "State Colocation nima anglatadi?",
+      options: [
+        "Dasturdagi barcha state'larni bitta faylga yig'ish (Redux kabi)",
+        "State'ni iloji boricha uni ishlatadigan komponentga yaqinroq joylashtirish (ota komponentda emas)",
+        "State'ni faqat useEffect ichida e'lon qilish",
+        "LocalStorage ga state larni saqlash"
+      ],
+      correctAnswer: 1,
+      explanation: "Kerakli ma'lumot faqat o'z komponentida yotsa, ota komponent re-render bo'lishidan va butun dastur qayta chizilishidan saqlanamiz."
+    },
+    {
+      id: 3,
+      question: "React 18 dagi 'Automatic Batching' funksiyasi qanday ishlaydi?",
+      options: [
+        "Bir nechta ketma-ket state o'zgarishlarini yig'ib bitta renderda aks ettiradi (hatto setTimeout kabi asinxron joylarda ham)",
+        "Komponentlarni avtomatik ravishda zip faylga siqadi",
+        "Har bir state o'zgarishi uchun alohida render qiladi",
+        "Render vaqtini belgilaydi"
+      ],
+      correctAnswer: 0,
+      explanation: "Avvalgi versiyalarda setTimeout ichidagi 2 ta setState dasturni 2 marta render qilardi, React 18 da bu optimallashtirilib 1 marta render bo'ladi."
+    },
+    {
+      id: 4,
+      question: "Context API ishlashida unumdorlik muammosi qachon paydo bo'ladi?",
+      options: [
+        "Context ishlatsa har doim sekinlashadi",
+        "Context'dagi birorta qiymat o'zgarganda, ushbu contextni ishlatayotgan BARCHA komponentlar qayta render bo'ladi",
+        "Faqat useContext ishlatilgan qismni o'chirmasa",
+        "Context.Provider props lari string bo'lsa"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar Context obyekti ichida bitta tez o'zgaruvchi va bitta sekin o'zgaruvchi maydon bo'lsa, tez o'zgaruvchisi yangilanganda sekinni ishlatuvchilar ham render bo'ladi. Shuning uchun ularni ajratish kerak."
+    },
+    {
+      id: 5,
+      question: "useState ga funksiya (lazy initialization) berish qachon samarali?",
+      options: [
+        "Hech qachon",
+        "Boshlang'ich qiymatni hisoblash (masalan looplar) og'ir operatsiya bo'lganda, u faqat birinchi marta ishlaydi",
+        "Barcha obyektlarni useState ga kiritish uchun",
+        "State har doim yangilanishini ta'minlash uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "useState(() => expensiveCalculation()) tarzida yozilsa, hisoblash faqat initial renderda bir marta amalga oshadi."
+    },
+    {
+      id: 6,
+      question: "Komponent re-renderini qaysi hook nazorat qila olmaydi?",
+      options: [
+        "useMemo",
+        "useCallback",
+        "useEffect",
+        "React.memo"
+      ],
+      correctAnswer: 2,
+      explanation: "useEffect renderdan keyin sodir bo'ladigan nojo'ya ta'sirlarni (side effects) bajaradi, u re-renderni o'z-o'zidan to'xtatmaydi yoki keshlamaydi."
+    },
+    {
+      id: 7,
+      question: "React-da bir komponent necha usul bilan re-renderga uchrashi mumkin?",
+      options: [
+        "1 ta (faqat state)",
+        "3 ta (State o'zgarganda, Props o'zgarganda, Ota komponent render bo'lganda)",
+        "Istalgan vaqtda avtomatik",
+        "Faqat ForceUpdate() chaqirilganda"
+      ],
+      correctAnswer: 1,
+      explanation: "Asosiy sabablar uchta: state o'zgarishi, proplar o'zgarishi, yoki parent (ota) komponent qayta chizilishi tufayli."
+    },
+    {
+      id: 8,
+      question: "Key prop'ining asl maqsadi nima?",
+      options: [
+        "CSS klasslarni biriktirish uchun",
+        "React'ga DOMdagi elementlar bilan VDOM dagi elementlarni solishtirishda aniqlik kiritish (Diffing algoritmi uchun)",
+        "Elementlarni tartiblash",
+        "Ma'lumotlar bazasida saqlash uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "Key'lar yordamida React farqlarni tez topadi va faqat o'zgargan (yangi qo'shilgan) qisminigina yaratadi."
+    },
+    {
+      id: 9,
+      question: "Ro'yxat (list) chizayotganda key sifatida uuid ishlatishning nima yomon tarafi bor?",
+      options: [
+        "UUID ishlamaydi",
+        "Agar map() ichida har renderda yangi uuid yasalib berilsa, React ularni har safar yangi element deb o'ylaydi va eskisini o'chirib boshqatdan yaratadi",
+        "Faqat ID qabul qilinadi",
+        "Xavfsizlik muammosi yaratadi"
+      ],
+      correctAnswer: 1,
+      explanation: "uuid() chaqirig'i har renderda yangi ID beradi. Bu elementning key'si doim o'zgaradi va unumdorlik batamom buziladi. Key'lar ma'lumotning o'zidan kelishi kerak."
+    },
+    {
+      id: 10,
+      question: "Qaysi xolatda UseMemo foyda bermaydi?",
+      options: [
+        "10 ming elementli massivni saralashda",
+        "Funksiya juda qisqa (O(1) komplekslikda) va qaytariladigan qiymat primitiv bo'lganda",
+        "Bolaga prop uzatishda",
+        "Renderlar soni ko'p bo'lganda"
+      ],
+      correctAnswer: 1,
+      explanation: "Oddiy amallar (masalan a+b) uchun useMemo ni ishlatish, uning o'zini keshini boshqarishdan olinadigan foydadan zarari ko'proq bo'lishi mumkin."
+    },
+    {
+      id: 11,
+      question: "React.PureComponent vazifasi nima edi?",
+      options: [
+        "Faqat klass komponentlarda React.memo kabi vazifani bajarardi",
+        "Hech narsa",
+        "Redux bilan ishlash uchun",
+        "Xatolarni topish uchun"
+      ],
+      correctAnswer: 0,
+      explanation: "PureComponent o'zining ichki shouldComponentUpdate metodida state va prop'larni yuzaki solishtiradi."
+    },
+    {
+      id: 12,
+      question: "FlushSync() (React-dom/flushSync) nima uchun kerak?",
+      options: [
+        "Fayllarni tozalash",
+        "Automatic Batching ni aylanib o'tib, zudlik bilan (sinxron ravishda) render qilishni talab etish",
+        "Redux ni ulash",
+        "DOM ni o'chirish"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar render qilinishini keyingi tick'gacha kutish imkoni bo'lmasa (masalan input fokusini tezkor o'qish), flushSync ishlatiladi."
+    }
+  ]
 };

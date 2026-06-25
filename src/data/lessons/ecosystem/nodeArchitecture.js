@@ -1,435 +1,224 @@
 export const nodeArchitecture = {
-  id: "nodeArchitecture",
-  title: "Node.js Arxitekturasi va Event Loop",
+  id: "node-architecture",
+  title: "Node.js Architecture",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Sodda Tushuntirish
+Node.js bitta thread'da ishlaydigan (Single-threaded), asinxron va Non-blocking I/O modeliga asoslangan arxitekturaga ega. Uning yuragi **Event Loop** bo'lib, u orqali minglab parallel so'rovlarni juda kam operativ xotira (RAM) sarflagan holda boshqarish mumkin. Lekin video render qilish kabi CPU'ni ko'p talab qiluvchi vazifalar uchun Node.js yakkaxon (single) thread'ni band qilib qo'yishi mumkin.
 
-### Node.js va uning Arxitekturasi nima?
-* **Node.js** — bu JavaScript kodini brauzerdan tashqarida, server muhitida ishga tushirish imkonini beruvchi platforma. U o'zining tezligi va yengilligi bilan ajralib turadi.
-* **Single-threaded (Bir oqimli):** Node.js asosiy JavaScript kodlarini faqat bitta oqimda (Main Thread) ketma-ket bajaradi.
-* **Non-blocking I/O (Bloklamaydigan kirish-chiqish):** Server fayllarni o'qiyotganda yoki tarmoq so'rovini kutayotganda butun dasturni to'xtatib qo'ymaydi, balki ishni orqa fonga topshirib, navbatdagi so'rovlarni qabul qilaveradi.
+## ❌ YOMON va ✅ YAXSHI Yondashuvlar
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **kichik qahvaxona** ochdingiz:
-* **Single-threaded Kassir (JavaScript Main Thread):** Qahvaxonada faqat bitta kassir ishlaydi. U barcha mijozlardan buyurtmalarni qabul qiladi.
-* **Asinxron buyurtma:** Kassir sizdan buyurtma oladi, unga raqam yozilgan chek (Promise/Callback) beradi va buyurtmani orqadagi **oshxonaga** uzatadi. Kassir kofe tayyor bo'lishini kutib turmasdan, navbatdagi mijozga o'tadi.
-* **Baristalar jamoasi (Libuv Thread Pool):** Oshxonada kofe tayyorlaydigan 4 ta barista (ishchi oqimlar) bor. Ular og'ir contributes (qahva qaynatish, shirinlik pishirish) bilan band.
-* **Buyurtma yetkazuvchi (Event Loop):** Kofe tayyor bo'lgani haqida signal chalinganda (Event), uni kassir orqali mijozga topshiradi va siklni davom ettiradi.
-
----
-
-## 2. 💻 Real Kod Misollari
-
-### 1. Basic Example (Bajarilish tartibi: nextTick, Promise, setTimeout, setImmediate)
+❌ **YOMON:** Event Loop'ni to'sib qo'yuvchi sinxron amallar (Blocking I/O).
 \`\`\`javascript
-console.log("1. Sinxron boshlanish");
-
-setTimeout(() => {
-  console.log("2. setTimeout (Timers Phase)");
-}, 0);
-
-setImmediate(() => {
-  console.log("3. setImmediate (Check Phase)");
-});
-
-Promise.resolve().then(() => {
-  console.log("4. Promise (Microtask)");
-});
-
-process.nextTick(() => {
-  console.log("5. process.nextTick (Microtask)");
-});
-
-console.log("6. Sinxron yakun");
-
-// Natija tartibi:
-// 1. Sinxron boshlanish
-// 6. Sinxron yakun
-// 5. process.nextTick (Microtask)
-// 4. Promise (Microtask)
-// 2. setTimeout (Timers Phase)
-// 3. setImmediate (Check Phase)
+const fs = require('fs');
+// Katta faylni sinxron o'qish serverdagi boshqa barcha so'rovlarni kutishga majbur qiladi
+const data = fs.readFileSync('/katta-fayl.txt'); 
 \`\`\`
 
-### 2. Intermediate Example (Buffer yordamida vaqtinchalik ma'lumot saqlash)
+✅ **YAXSHI:** Asinxron amallar va Streamlardan foydalanish.
 \`\`\`javascript
-// Matndan Buffer yaratish
-const textBuffer = Buffer.from("Salom, Node.js!", "utf-8");
-
-console.log(textBuffer); // <Buffer 53 61 6c 6f 6d 2c 20 4e 6f 64 65 2e 6a 73 21>
-console.log(textBuffer.toString("utf-8")); // Salom, Node.js!
-console.log(textBuffer.length); // 15 bayt
+const fs = require('fs');
+// Asinxron o'qish orqali boshqa mijozlarning so'rovlari bloklanmaydi
+const stream = fs.createReadStream('/katta-fayl.txt');
+stream.pipe(response);
 \`\`\`
 
-### 3. Advanced Example (Streams yordamida katta faylni oqimli o'qish va yozish)
-\`\`\`javascript
-const fs = require("fs");
-const zlib = require("zlib");
+## 🎤 Intervyu Savollari
+1. **Event Loop nima?**
+   Javob: Event Loop Node.js dagi tsikl bo'lib, barcha asinxron operatsiyalarni (callbacklar, taymerlar, I/O) navbat bilan bajaradi va single-thread bo'lishiga qaramay tizim parallel ishlash imkoniyatini beradi.
+2. **Cluster moduli nima uchun kerak?**
+   Javob: Node.js faqat bitta CPU yadrosini ishlatadi. Ko'p yadroli serverlarda barcha yadrolardan foydalanish uchun Cluster yordamida bir nechta Node.js jarayonlarini (workers) yaratamiz.
+3. **Microservices arxitekturasi Monolith'dan nimasi bilan farq qiladi?**
+   Javob: Monolith'da hamma vazifalar bitta dastur ichida jamlangan bo'ladi. Microservices'da esa dastur kichik, mustaqil va alohida ishlaydigan xizmatlarga bo'linadi. Bu ularni alohida masshtablash imkonini beradi.
 
-// Katta faylni oqimli o'qish, siqish (gzip) va yangi faylga yozish
-const readStream = fs.createReadStream("big_video.mp4");
-const gzip = zlib.createGzip();
-const writeStream = fs.createWriteStream("big_video.mp4.gz");
+## 🛠️ Amaliy Topshiriqlar
+Quyidagi diagrammada Node.js so'rovlarni qanday qayta ishlashi ko'rsatilgan:
 
-// Pipeline yordamida oqimlarni zanjirlash
-readStream
-  .pipe(gzip)
-  .pipe(writeStream)
-  .on("finish", () => {
-    console.log("Fayl muvaffaqiyatli siqildi va saqlandi!");
-  });
-\`\`\`
-
----
-
-## 3. ⚠️ Muammo va Nima uchun Muhimligi
-
-### Nima uchun Node.js arxitekturasini tushunish shart?
-1. **Event Loop-ni bloklash xavfi (Blocking the Event Loop):** Agar siz yagona Main Thread ichida juda og'ir va ko'p vaqt oladigan sinxron operatsiyani (masalan, 10 millionlik sikl yoki \`fs.readFileSync\`) bajarsangiz, server butunlay qotib qoladi. Boshqa hech bir foydalanuvchi serverga ulana olmaydi.
-2. **Xotira to'lib qolishi (Out of Memory):** 3 GB hajmli faylni \`fs.readFile()\` bilan o'qiganingizda, Node.js butun faylni bir vaqtning o'zida tezkor xotiraga (RAM) yuklashga urinadi. Natijada xotira yetishmay dastur o'chib qoladi. Buni faqat **Streams (Oqimlar)** yordamida hal qilish mumkin.
-
----
-
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
-
-### 1. So'rov kelganda sinxron metodlardan foydalanish
-* **Noto'g'ri:**
-  \`\`\`javascript
-  app.get("/data", (req, res) => {
-    const data = fs.readFileSync("data.json"); // Event loop bloklanadi!
-    res.send(data);
-  });
-  \`\`\`
-* **To'g'ri:**
-  \`\`\`javascript
-  app.get("/data", (req, res) => {
-    fs.readFile("data.json", (err, data) => {
-      if (err) return res.status(500).send(err);
-      res.send(data);
-    });
-  });
-  \`\`\`
-
-### 2. Stream o'rniga oddiy readFile orqali ulkan fayllarni yuklash
-Agar fayl hajmi juda katta bo'lsa, RAM to'ladi. Katta fayllarni har doim bo'laklab (\`chunk\`) uzatish zarur.
-
-### 3. \`setImmediate\` va \`setTimeout(fn, 0)\` tartibini noto'g'ri taxmin qilish
-Oddiy skriptda ularning qaysi biri birinchi ishlashi kafolatlanmaydi. Lekin I/O callback ichida \`setImmediate\` har doim birinchi bajariladi.
-
----
-
-## 5. 💬 12 ta Intervyu Savollari
-
-### Junior
-1. **Savol:** Node.js bir oqimli (single-threaded) bo'lsa, qanday qilib bir vaqtda minglab so'rovlarni boshqara oladi?
-   * **Javob:** Asinxron, bloklamaydigan I/O arxitekturasi tufayli. U og'ir fayl va tarmoq operatsiyalarini operatsion tizim yoki Thread Pool-ga yuklaydi, Main Thread esa bo'sh qolib yangi so'rovlarni qabul qiladi.
-2. **Savol:** Node.js arxitekturasidagi V8 dvigatelining vazifasi nima?
-   * **Javob:** JavaScript kodini tezkor mashina kodiga tarjima qilib beradi.
-3. **Savol:** Buffer nima?
-   * **Javob:** V8 xotirasidan tashqarida joylashgan, xom ikkilik (binary) ma'lumotlarni baytlar ko'rinishida saqlaydigan vaqtinchalik xotira bo'lagi.
-4. **Savol:** Stream nima va uning qanday turlari bor?
-   * **Javob:** Katta ma'lumotlarni kichik bo'laklarga bo'lib uzatish texnologiyasi. Turlari: Readable, Writable, Duplex, Transform.
-
-### Middle
-5. **Savol:** Libuv nima va u Node.js uchun nega kerak?
-   * **Javob:** C tilida yozilgan kutubxona bo'lib, u Event Loop va Thread Pool (ishchilar oqimi) faoliyatini boshqaradi va asinxronlikni ta'minlaydi.
-6. **Savol:** Event Loop fazalarini sanab bering.
-   * **Javob:** Timers, Pending Callbacks, Idle/Prepare, Poll, Check, Close Callbacks.
-7. **Savol:** \`process.nextTick()\` va \`setImmediate()\` farqi nima?
-   * **Javob:** \`process.nextTick()\` joriy operatsiya tugashi bilan zudlik bilan ishga tushadi. \`setImmediate()\` esa Check fazasida ishlaydi.
-8. **Savol:** \`EventEmitter\` klassi nima uchun ishlatiladi?
-   * **Javob:** Node.js-da hodisalarni (events) yaratish va ularga obuna bo'lish (on/emit) orqali asinxron muloqot o'rnatish uchun.
-
-### Senior
-9. **Savol:** Libuv Thread Pool o'lchamini qanday o'zgartirish mumkin?
-   * **Javob:** Standart o'lcham 4 ta. Uni \`process.env.UV_THREADPOOL_SIZE\` orqali dastur ishga tushishidan oldin o'zgartirish mumkin.
-10. **Savol:** Event Loop-ni nimalar bloklashi mumkin?
-    * **Javob:** Sinxron CPU-intensive hisob-kitoblar (masalan, JSON.parse juda katta satr uchun), sinxron fayl operatsiyalari, crypto yoki zlib-ning sinxron metodlari.
-11. **Savol:** Stream-dagi "Backpressure" muammosi nima va u qanday hal qilinadi?
-    * **Javob:** Ma'lumotlarni o'qish tezligi yozish tezligidan ancha yuqori bo'lganda, bufer to'lib ketishi. Uni \`.pipe()\` yordamida yoki oqimlarning \`drain\` hodisasini tinglash orqali boshqarish mumkin.
-12. **Savol:** \`Buffer.alloc\` va \`Buffer.allocUnsafe\` farqi nimada?
-    * **Javob:** \`Buffer.alloc\` xotirani tozalab (nol bilan to'ldirib) ajratadi. \`Buffer.allocUnsafe\` tezroq ajratadi, ammo eski ma'lumotlar qoldiqlarini o'z ichiga olishi mumkinligi sababli xavfsizlikka salbiy ta'sir qilishi mumkin.
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Quyidagi Mermaid diagrammalari Node.js tizimining qanday ishlashini tushunishga yordam beradi:
-
-### Node.js Event Loop Fazalari Diagrammasi
 \`\`\`mermaid
 graph TD
-    A[Start] --> B[1. Timers: setTimeout, setInterval]
-    B --> C[2. Pending Callbacks: Tizimli xatolar]
-    C --> D[3. Idle, Prepare: Ichki tizim]
-    D --> E[4. Poll: Tarmoq, Fayl I/O va yangi ulanishlar]
-    E --> F[5. Check: setImmediate]
-    F --> G[6. Close Callbacks: socket.on close]
-    G --> H{Vazifalar bormi?}
-    H -- Ha --> B
-    H -- Yo'q --> I[Exit]
-    
-    subgraph Microtasks [Har bir faza orasida Microtask Queue bajariladi]
-        M1[process.nextTick]
-        M2[Promise.then]
-    end
+    A[Klient So'rovi] --> B{Event Loop}
+    B -->|Tezkor/Sinxron| C[Natija Qaytarish]
+    B -->|Asinxron I/O| D[Worker Threads / Thread Pool]
+    D --> E[Fayl / Database]
+    E --> D
+    D -->|Callback orqali| B
 \`\`\`
-
-### Libuv Thread Pool va Main Thread Diagrammasi
-\`\`\`mermaid
-graph TD
-    JS[JavaScript Kod] --> Main[Main Thread - Bir Oqimli]
-    Main -->|Og'ir Operatsiyalar| Libuv[Libuv API]
-    
-    subgraph Pool [Libuv Thread Pool - Standart: 4 ta oqim]
-        T1[Thread 1: fs / Kripto]
-        T2[Thread 2: fs / Kripto]
-        T3[Thread 3: DNS / Zlib]
-        T4[Thread 4: DNS / Zlib]
-    end
-    
-    Libuv --> T1
-    Libuv --> T2
-    Libuv --> T3
-    Libuv --> T4
-    
-    T1 -->|Callback tayyor| Queue[Callback Navbati]
-    T2 -->|Callback tayyor| Queue
-    T3 -->|Callback tayyor| Queue
-    T4 -->|Callback tayyor| Queue
-    
-    Queue -->|Event Loop orqali| Main
-\`\`\`
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Dars bo'yicha bilimlaringizni tekshirish uchun quyidagi testlarni yeching.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### Katta Log Fayllarni Qidirish va Filtrlash
-Katta hajmdagi (masalan, 5 GB) log faylini ochib, undagi faqat "[ERROR]" kalit so'zi qatnashgan qatorlarni boshqa faylga yozishimiz kerak.
-
-\`\`\`javascript
-const fs = require("fs");
-const readline = require("readline");
-
-async function filterErrorLogs(inputPath, outputPath) {
-  const readStream = fs.createReadStream(inputPath);
-  const writeStream = fs.createWriteStream(outputPath);
-  
-  const rl = readline.createInterface({
-    input: readStream,
-    crlfDelay: Infinity
-  });
-
-  for await (const line of rl) {
-    if (line.includes("[ERROR]")) {
-      writeStream.write(line + "\\n");
-    }
-  }
-  
-  writeStream.end();
-  console.log("Filtrlash yakunlandi!");
-}
-\`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-* **Oqim o'lchamini sozlash:** Stream-larda \`highWaterMark\` parametrini sozlash orqali bir vaqtning o'zida o'qiladigan bufer o'lchamini boshqarish mumkin.
-* **Main Threadni bo'sh saqlang:** Hech qachon og'ir matematik hisob-kitoblarni asosiy oqimda bajarmang. Ular uchun \`Worker Threads\` modulidan foydalaning.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Faza / Metod | Bajarilish Joyi | Asosiy Vazifasi |
-| :--- | :--- | :--- |
-| **Timers** | Event Loop (1-faza) | \`setTimeout\` va \`setInterval\` callbacklarini bajarish |
-| **Poll** | Event Loop (4-faza) | Fayl va tarmoq (I/O) callbacklarini qabul qilish |
-| **Check** | Event Loop (5-faza) | \`setImmediate\` callbacklarini bajarish |
-| **Microtask** | Har bir faza orasida | \`process.nextTick\` va \`Promise.then\` ni zudlik bilan ishlatish |
-| **Buffer** | RAM | Ikkilik ma'lumotlarni tezkor xotirada saqlash |
-| **Stream** | Xotira va Disk | Ma'lumotlarni oqimli (bo'laklab) uzatish |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Buffer Yaratish",
-    "instruction": "Berilgan satrdan (string) UTF-8 formatida yangi Buffer obyektini yaratib qaytaruvchi `createBuffer(str)` funksiyasini yozing.",
-    "startingCode": "function createBuffer(str) {\n  // Kodni shu yerda yozing\n}",
-    "hint": "Buffer.from(str, 'utf8') dan foydalaning.",
-    "test": "const sandbox = new Function(code + '; return createBuffer;');\nconst fn = sandbox();\nconst buf = fn('Salom');\nif (!buf || typeof buf.toString !== 'function') return 'Buffer obyekti qaytarilmadi';\nif (buf.toString('utf8') !== 'Salom') return 'Buffer ichidagi qiymat to\\'g\\'ri kelmadi';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Fayl hajmini olish",
-    "instruction": "Node.js-dagi `fs.stat` qaytargan stat obyektidan fayl hajmini baytlarda qaytaruvchi `getFileSize(stats)` funksiyasini yozing.",
-    "startingCode": "function getFileSize(stats) {\n  // Kodni shu yerda yozing\n}",
-    "hint": "stats obyektining `size` xossasini qaytaring.",
-    "test": "const sandbox = new Function(code + '; return getFileSize;');\nconst fn = sandbox();\nif (fn({ size: 2048 }) !== 2048) return 'Foydalanuvchi obyektdan size xossasini to\\'g\\'ri qaytarmadi';\nif (fn({ size: 0 }) !== 0) return '0 o\\'lchamdagi fayl uchun noto\\'g\\'ri javob';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Windows Platformasini Tekshirish",
-    "instruction": "Node.js platformasi 'win32' (Windows) ekanligini tekshirib `true` yoki `false` qaytaradigan `isWindows(platform)` funksiyasini yozing.",
-    "startingCode": "function isWindows(platform) {\n  // Kodni shu yerda yozing\n}",
-    "hint": "platform === 'win32' ifodasi qiymatini qaytaring.",
-    "test": "const sandbox = new Function(code + '; return isWindows;');\nconst fn = sandbox();\nif (fn('win32') !== true) return 'win32 platformasi uchun true qaytishi kerak';\nif (fn('darwin') !== false) return 'darwin (macOS) platformasi uchun false qaytishi kerak';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Parse Environment",
+      instruction: "`.env` fayl mazmunini obyektga aylantiruvchi `parseEnv(str)` funksiyasini yozing. Masalan: `'PORT=3000\\nHOST=local'` qabul qilsa `{ PORT: '3000', HOST: 'local' }` qaytarsin.",
+      startingCode: "function parseEnv(str) {\n  // code\n}",
+      hint: "split('\\n') va reduce ishlating.",
+      solution: "function parseEnv(str) {\n  return str.split('\\n').reduce((acc, line) => {\n    const [k, v] = line.split('=');\n    if(k && v) acc[k] = v;\n    return acc;\n  }, {});\n}",
+      test: "const fn = new Function(code + '; return parseEnv;')();\nif(fn('A=1\\nB=2').B !== '2') throw new Error('Xato');"
+    },
+    {
+      id: 2,
+      title: "Parse Route",
+      instruction: "`parseRoute(url)` funksiyasini yozing. U URL'ni bo'laklab obyektga aylantirsin: `/users/123` formatini `{ path: 'users', id: '123' }` qilsin. id bo'lmasa null.",
+      startingCode: "function parseRoute(url) {\n  // code\n}",
+      hint: "split('/') orqali bo'lib chiqing.",
+      solution: "function parseRoute(url) {\n  const parts = url.split('/').filter(Boolean);\n  return { path: parts[0] || '', id: parts[1] || null };\n}",
+      test: "const fn = new Function(code + '; return parseRoute;')();\nif(fn('/users/123').id !== '123' || fn('/home').id !== null) throw new Error('Xato');"
+    },
+    {
+      id: 3,
+      title: "Optimal Workers",
+      instruction: "`calcWorkers(cpu, load)` yozing. Agar server yuklanishi (load) > 80 bo'lsa `cpu` sonini, aks holda Math.max(1, Math.floor(cpu / 2)) qaytarsin.",
+      startingCode: "function calcWorkers(cpu, load) {\n  // code\n}",
+      hint: "Shart operatorini ishlating.",
+      solution: "function calcWorkers(cpu, load) {\n  return load > 80 ? cpu : Math.max(1, Math.floor(cpu / 2));\n}",
+      test: "const fn = new Function(code + '; return calcWorkers;')();\nif(fn(4, 90) !== 4 || fn(4, 50) !== 2) throw new Error('Xato');"
+    },
+    {
+      id: 4,
+      title: "Format Response",
+      instruction: "`formatRes(data, err)` funksiyasi agar error bo'lsa `{ success: false, error: err.message }`, bo'lmasa `{ success: true, data }` qaytarsin.",
+      startingCode: "function formatRes(data, err) {\n  // code\n}",
+      hint: "Ternary operator mos keladi.",
+      solution: "function formatRes(data, err) {\n  return err ? { success: false, error: err.message } : { success: true, data };\n}",
+      test: "const fn = new Function(code + '; return formatRes;')();\nif(fn(null, {message:'x'}).success !== false || fn('ok', null).data !== 'ok') throw new Error('Xato');"
+    },
+    {
+      id: 5,
+      title: "Rate Limiter",
+      instruction: "`rateLimit(ips, currentIp, limit)` ips obyektida joriy ip necha marta ko'rilganini sanaydi. Limitdan oshsa false, oshmasa true qaytarsin (va oshirsin).",
+      startingCode: "function rateLimit(ips, currentIp, limit) {\n  // code\n}",
+      hint: "Obyekt kalitlariga qiymat yozing.",
+      solution: "function rateLimit(ips, currentIp, limit) {\n  ips[currentIp] = (ips[currentIp] || 0) + 1;\n  return ips[currentIp] <= limit;\n}",
+      test: "const fn = new Function(code + '; return rateLimit;')();\nconst d = {}; fn(d,'ip',1); if(fn(d,'ip',1) !== false) throw new Error('Xato');"
+    },
+    {
+      id: 6,
+      title: "Cache Key",
+      instruction: "`getCacheKey(req)` req obyekti `{ method: 'GET', url: '/data' }` ko'rinishida beriladi. Uni `'GET:/data'` formatidagi stringga aylantiring.",
+      startingCode: "function getCacheKey(req) {\n  // code\n}",
+      hint: "Template literal yordam beradi.",
+      solution: "function getCacheKey(req) {\n  return `${req.method}:${req.url}`;\n}",
+      test: "const fn = new Function(code + '; return getCacheKey;')();\nif(fn({method:'GET', url:'/abc'}) !== 'GET:/abc') throw new Error('Xato');"
+    },
+    {
+      id: 7,
+      title: "Check Memory Leak",
+      instruction: "`hasLeak(memories)` sonlardan iborat massiv oladi (xotira hajmi). Agar barcha sonlar qat'iy o'sib borsa (hech qachon kamaymasa) va massiv uzunligi >= 3 bo'lsa true.",
+      startingCode: "function hasLeak(mem) {\n  // code\n}",
+      hint: "for sikli orqali oldingi element bilan solishtiring.",
+      solution: "function hasLeak(mem) {\n  if(mem.length < 3) return false;\n  for(let i=1; i<mem.length; i++) if(mem[i] <= mem[i-1]) return false;\n  return true;\n}",
+      test: "const fn = new Function(code + '; return hasLeak;')();\nif(fn([1,2,3,4]) !== true || fn([1,3,2,4]) !== false) throw new Error('Xato');"
+    },
+    {
+      id: 8,
+      title: "Chunk Stream",
+      instruction: "`chunkStream(str, size)` kiritilgan matnni Node stream'lariga o'xshab berilgan size (o'lcham) li bo'laklarga ajratib, massiv qaytarsin.",
+      startingCode: "function chunkStream(str, size) {\n  // code\n}",
+      hint: "slice ishlatish mumkin.",
+      solution: "function chunkStream(str, size) {\n  const res = [];\n  for(let i=0; i<str.length; i+=size) res.push(str.slice(i, i+size));\n  return res;\n}",
+      test: "const fn = new Function(code + '; return chunkStream;')();\nif(fn('abcd', 2).length !== 2) throw new Error('Xato');"
+    },
+    {
+      id: 9,
+      title: "Retry Mechanism",
+      instruction: "Mikroservislarda qulay bo'lgan `retryFunc(fn, max)` funksiyasini yozing. U `fn` chaqirib, agar xato bo'lsa yana uring, jami `max` marta. Oxirida ham xato bo'lsa throw qilsin.",
+      startingCode: "function retryFunc(fn, max) {\n  // code\n}",
+      hint: "try/catch va sikl.",
+      solution: "function retryFunc(fn, max) {\n  let err;\n  for(let i=0; i<max; i++) { try { return fn(); } catch(e) { err = e; } }\n  throw err;\n}",
+      test: "const fn = new Function(code + '; return retryFunc;')();\nlet x=0; fn(() => { x++; if(x<2) throw new Error('e'); return 'ok'; }, 3);\nif(x !== 2) throw new Error('Xato');"
+    },
+    {
+      id: 10,
+      title: "CORS Allowed",
+      instruction: "`isAllowed(origin, allowedList)` funksiyasi agar `origin` massiv ichida bo'lsa yoki massiv ichida `'*'` bo'lsa true qaytarsin.",
+      startingCode: "function isAllowed(origin, allowed) {\n  // code\n}",
+      hint: "includes ishlatish qulay.",
+      solution: "function isAllowed(origin, allowed) {\n  return allowed.includes('*') || allowed.includes(origin);\n}",
+      test: "const fn = new Function(code + '; return isAllowed;')();\nif(fn('a.com', ['b.com', '*']) !== true || fn('a', ['b']) !== false) throw new Error('Xato');"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "Node.js nima uchun yuqori yuklamali tarmoq so'rovlarini juda samarali va tez bajara oladi?",
-    "options": [
-      "Chunki u ma'lumotlarni faqat sonlarda saqlaydi",
-      "Asinxron, Non-blocking I/O modeliga va hodisalarga asoslangan arxitekturasiga ko'ra",
-      "Chunki unda 100 dan ortiq asosiy oqimlar (threads) ishlaydi",
-      "U faqat Windows operatsion tizimida tez ishlaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Node.js bloklamaydigan I/O arxitekturasi tufayli og'ir ishlarni orqa fonga topshirib, o'zining yagona oqimini doimo bo'sh saqlaydi va tezkor javob beradi."
-  },
-  {
-    "id": 2,
-    "question": "libuv kutubxonasi Node.js-dagi asosiy vazifasi nima?",
-    "options": [
-      "Sayt dizaynini boshqarish",
-      "Asinxron ishlarni, tarmoq voqealarini va Thread Pool (ishchilar guruhi)ni boshqarib berish",
-      "HTML sahifani render qilish",
-      "Parollarni Bcrypt orqali hashlash"
-    ],
-    "correctAnswer": 1,
-    "explanation": "libuv — Node.js-ga asinxron Non-blocking I/O va ko'p oqimli Thread Pool-ni taqdim etadigan, C tilida yozilgan platformalararo yordamchi kutubxonadir."
-  },
-  {
-    "id": 3,
-    "question": "Event Loop-dagi 'Poll' fazasining vazifasi nima?",
-    "options": [
-      "Faqat setTimeout taymerlarini tekshirish",
-      "Yangi tarmoq so'rovlari va fayl tizimi (I/O) callbacklarini qabul qilish hamda bajarish",
-      "Dasturni to'liq o'chirish",
-      "Strict mode ogohlantirishlarini chiqarish"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Poll fazasi Event Loop-ning eng muhim qismi bo'lib, u yangi kiruvchi I/O operatsiyalarini va ularning bajarilgan natijalarini qabul qiladi."
-  },
-  {
-    "id": 4,
-    "question": "setImmediate() va setTimeout(fn, 0) farqi nimada?",
-    "options": [
-      "setTimeout tezroq ishlaydi",
-      "I/O (fayl o'qish) callbacklari ichida setImmediate har doim setTimeout dan birinchi ishga tushishi kafolatlanadi",
-      "Ikkalasi mutlaqo har xil kompyuterda ishlaydi",
-      "setImmediate faqat server o'chganda ishlaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Fayl o'qish (I/O) yakunlangach, Event Loop Check fazasiga o'tadi va u yerda birinchi bo'lib setImmediate bajariladi, setTimeout taymerlari esa keyingi aylanmada ko'riladi."
-  },
-  {
-    "id": 5,
-    "question": "Nima uchun Event Loop-ni bloklash (Blocking the Event Loop) xavfli?",
-    "options": [
-      "Chunki bu xotirani tozalab yuboradi",
-      "JavaScript yagona oqimda bo'lgani sababli, u sinxron og'ir amal bilan band bo'lganda boshqa foydalanuvchilarning so'rovlariga javob bera olmay, sayt to'liq qotib qoladi",
-      "Faqat CSS kodlari buziladi",
-      "Server avtomatik o'chadi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Agar asinxron bo'lmagan og'ir sikl yoki sinxron fayl o'qish bajarsak, yagona Main Thread band bo'ladi va boshqa mijozlar navbatda javobsiz qolib ketadi."
-  },
-  {
-    "id": 6,
-    "question": "Buffer (Bufer) nima va u ma'lumotlarni qanday shaklda saqlaydi?",
-    "options": [
-      "Faqat JSON formatidagi matn",
-      "Xotirada (V8 tashqarisida) vaqtinchalik ajratilgan xom baytlar va ikkilik (binary) ma'lumotlar to'plami",
-      "CSS klasslari ro'yxati",
-      "O'z-o'zidan o'sadigan massiv"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Buffer xotiradagi ma'lum bir bayt o'lchamdagi to'g'ridan-to'g'ri raqamlar (binary bytes) to'plamidir."
-  },
-  {
-    "id": 7,
-    "question": "Nima uchun katta fayllarni (masalan, 1 GB) o'qishda fs.readFile o'rniga fs.createReadStream (Streams) tavsiya etiladi?",
-    "options": [
-      "readFile faqat Windows-da ishlaydi",
-      "readFile butun faylni xotiraga (RAM) yuklashga harakat qiladi va xotira to'lib ketishiga olib keladi, Stream esa faylni mayda bo'laklar (chunks) holida uzatadi",
-      "Stream faylni shifrlaydi",
-      "Chunki Stream tezroq yopiladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Stream ma'lumotni oqimli (chunk-by-chunk) uzatgani uchun xotira sarfi minimal (taxminan 20-30 MB) bo'lib qoladi va har qanday ulkan faylni xavfsiz o'qiy oladi."
-  },
-  {
-    "id": 8,
-    "question": "Node.js-da microtasklar (Promises, process.nextTick) qachon bajariladi?",
-    "options": [
-      "Faqat Event Loop yakunida",
-      "Event Loop-ning har bir fazasi orasida, joriy faza tugashi bilan zudlik bilan",
-      "Faqat setTimeout dan keyin",
-      "Ular hech qachon bajarilmaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Microtask navbatlari eng yuqori ustuvorlikka ega. Event Loop bir fazadan ikkinchisiga o'tish arafasida turgan har qanday soniyada barcha microtasklarni bajarib bo'shatadi."
-  },
-  {
-    "id": 9,
-    "question": "Libuv Thread Pool standart oqimlar soni (threads) nechaga teng?",
-    "options": [
-      "1 ta",
-      "2 ta",
-      "4 ta",
-      "8 ta"
-    ],
-    "correctAnswer": 2,
-    "explanation": "Libuv oqimlar hovuzining (Thread Pool) standart o'lchami 4 ta oqimdan iborat."
-  },
-  {
-    "id": 10,
-    "question": "process.nextTick() ning vazifasi nima?",
-    "options": [
-      "Navbatdagi tizim vaqtini aniqlash",
-      "Callback funksiyani joriy kod bajarilib bo'lishi bilan (Event Loop fazasi o'zgarishidan oldin) zudlik bilan ishga tushirish",
-      "Faqat yangi oqim ochish",
-      "LocalStorage-ni tozalash"
-    ],
-    "correctAnswer": 1,
-    "explanation": "nextTick() callbacklarini Event Loop doirasiga kirmasdan, joriy call stack bo'shashi bilanoq eng birinchi navbatda bajaradi."
-  },
-  {
-    "id": 11,
-    "question": "Node.js muhitida asinxronlikni boshqaruvchi C++ da yozilgan yadro nima deb nomlanadi?",
-    "options": [
-      "React Dvigateli",
-      "V8 Engine va libuv",
-      "Express JS",
-      "Node Webpack"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Node.js-ning yadrosi Google V8 JS engine (kodni tezlatish uchun) va libuv (asinxron tarmoq/fayl I/O va oqimlar uchun) dan iborat."
-  },
-  {
-    "id": 12,
-    "question": "EventEmitter-da once(event, listener) metodining vazifasi nima?",
-    "options": [
-      "Hodisani o'chirib yuboradi",
-      "Hodisa tinglovchisini faqat bir marta ishlashga sozlaydi (birinchi chaqiriqdan keyin u avtomatik o'chadi)",
-      "Faqat soniyalarni sanaydi",
-      "Hodisani serverga yuboradi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "once metodi hodisa birinchi marta trigger (emit) bo'lganda tinglovchini ishga tushiradi va darhol o'chib ketadi, qayta ishlamaydi."
-  }
-]
-
+    {
+      id: 1,
+      question: "Node.js qanday arxitekturaga asoslangan?",
+      options: ["Multi-threaded", "Single-threaded Non-blocking I/O", "Blocking sinxron arxitektura", "Faqat frontend arxitektura"],
+      correctAnswer: 1,
+      explanation: "Node.js asosan bitta thread'da asinxron ravishda ishlaydi, shuning uchun juda ko'p parallel so'rovlarni bloklamasdan bajara oladi."
+    },
+    {
+      id: 2,
+      question: "Event Loop vazifasi nima?",
+      options: ["Xatolarni ushlash", "Dastur kodini o'chirish", "Barcha asinxron operatsiyalarni va callbacklarni navbat bilan boshqarish", "Faqat API so'rov yuborish"],
+      correctAnswer: 2,
+      explanation: "Event Loop asinxron amallarni kutib, ular tayyor bo'lganda natijani (callback'ni) asosiy thread'ga taqdim etadi."
+    },
+    {
+      id: 3,
+      question: "Microservices arxitekturasining asosiy afzalligi nimada?",
+      options: ["Kodni bitta joyda jamlash", "Bitta kattagina ma'lumotlar bazasi", "Mustaqil xizmatlarni alohida ishlab chiqish, test qilish va miqyosini kengaytirish (scale) qulayligi", "Dasturning kichrayishi"],
+      correctAnswer: 2,
+      explanation: "Microservices yordamida har bir xizmat (masalan, foydalanuvchi qismi) qolganlaridan qat'iy nazar yangilanishi va kengaytirilishi mumkin."
+    },
+    {
+      id: 4,
+      question: "Node.js'da Cluster moduli qachon ishlatiladi?",
+      options: ["Fayllarni o'qishda", "Barcha CPU yadrolaridan foydalanish maqsadida Node.js process'lar nusxalarini yaratish uchun", "Memory leak'larni tuzatish uchun", "Brauzerga ulash uchun"],
+      correctAnswer: 1,
+      explanation: "Cluster orqali 8 yadroli serverda 8 ta Node.js instansiyasi yaratilib, serverning to'liq kuchidan foydalanish imkoni tug'iladi."
+    },
+    {
+      id: 5,
+      question: "Worker Threads moduli qanday holatda kerak bo'ladi?",
+      options: ["Ma'lumotlar bazasi saqlash", "CPU-intensive (og'ir hisob-kitob, rasm ishlash) vazifalarni asosiy thread'ni to'sib qo'ymasligi uchun", "HTML sahifalar tuzish", "So'rovlarni tezlashtirish"],
+      correctAnswer: 1,
+      explanation: "Asosiy thread bloklanmasligi uchun, og'ir tsikl yoki murakkab algoritmlar Worker Thread ichida bajariladi."
+    },
+    {
+      id: 6,
+      question: "Node.js Stream'larining eng muhim xususiyati nima?",
+      options: ["Matn rangini o'zgartiradi", "Katta hajmdagi ma'lumotlarni qismlab (chunk) uzatib operativ xotirani tejaydi", "Kod hajmini qisqartiradi", "Tezlikni pasaytiradi"],
+      correctAnswer: 1,
+      explanation: "Stream'lar 1 GB lik videoni atigi bir necha MB xotira bilan o'qish va yozish imkonini beradi."
+    },
+    {
+      id: 7,
+      question: "Express.js da Middleware nima?",
+      options: ["Faqat xatolarni tahlil qiluvchi klass", "So'rov (Request) va Javob (Response) o'rtasida ishlaydigan funksiyalar zanjiri", "Ma'lumotlar bazasi texnologiyasi", "Frontend ulash qismi"],
+      correctAnswer: 1,
+      explanation: "Middleware req obyekti ustida ma'lum amallar bajaradi (masalan, log yozish, ruxsat tekshirish) va next() chaqirib keyingisiga o'tadi."
+    },
+    {
+      id: 8,
+      question: "Monolithic (Yaxlit) arxitekturaning eng asosiy kamchiliklaridan biri qaysi?",
+      options: ["Umutaman ishlamaydi", "Dastur kattalashgani sari uni o'zgartirish, test qilish va build jarayonining o'ta murakkab va sekinlashishi", "Kichik dasturlar yasab bo'lmaydi", "Pythonni qo'llab quvvatlamaydi"],
+      correctAnswer: 1,
+      explanation: "Katta monolit ilovada bir qatordagi xatolik ham butun dasturning ishdan chiqishiga olib kelishi mumkin."
+    },
+    {
+      id: 9,
+      question: "Message Broker (RabbitMQ, Kafka) mikroservislarda nima maqsadda qo'llaniladi?",
+      options: ["Frontend chizish", "Ma'lumotlarni asinxron, ishonchli va navbat (queue) asosida servislar o'rtasida almashish uchun", "Kodni tekshirish", "Tasvirlarni kesish"],
+      correctAnswer: 1,
+      explanation: "Broker orqali bitta servis o'chib qolgan taqdirda ham unga kelgan xabarlar navbatda saqlanib turadi."
+    },
+    {
+      id: 10,
+      question: "PM2 kabi Process Manager'larning production'dagi o'rni qanday?",
+      options: ["Dasturni tezkor kompyilyatsiya qilish", "Dastur kutilmaganda xato berib to'xtab qolsa (crash) avtomatik qayta ishga tushirish va loglarni to'plash", "Faqat React uchun kerak", "Baza bilan ishlash"],
+      correctAnswer: 1,
+      explanation: "PM2 Node.js dasturingiz uzluksiz 24/7 ishlashini ta'minlaydi."
+    },
+    {
+      id: 11,
+      question: "Nima sababdan Node.js API'lari 'non-blocking' deb ataladi?",
+      options: ["Boshqa so'rovlarni o'ziga jalb qiladi", "I/O (masalan baza yoki fayl) kutilayotganda, thread vaqtni bekor ketkazmasdan boshqa so'rovlarni ishlashda davom etadi", "Sinxron ishlagani uchun", "Asinxron kod yozib bo'lmagani uchun"],
+      correctAnswer: 1,
+      explanation: "Kutish jarayonida Node.js uxlab qolmaydi, balki keyingi funksiyaga o'tadi."
+    },
+    {
+      id: 12,
+      question: "API Gateway mikroservislarda nima vazifani bajaradi?",
+      options: ["Fayllarni o'qish", "Barcha tashqi so'rovlarni o'zida qabul qilib, kerakli xizmatlarga yo'naltiruvchi, markazlashgan boshqaruv nuqtasi (kirish eshigi)", "Baza zaxirasi", "CSS'larni birlashtirish"],
+      correctAnswer: 1,
+      explanation: "API Gateway orqali token tekshirish va rate limit kabi vazifalarni hamma mikroservislarda qayta takrorlamasdan hal qilish mumkin."
+    }
+  ]
 };
