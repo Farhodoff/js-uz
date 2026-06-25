@@ -1,293 +1,301 @@
 export const tsConfigFile = {
-  id: "tsConfigFile",
-  title: "TypeScript Config (tsconfig.json chuqur tahlili)",
-  language: "typescript",
+  id: "ts-config-file",
+  title: "tsconfig.json (Konfiguratsiya)",
+  language: "json",
   theory: `## 1. 💡 Sodda Tushuntirish
+**\`tsconfig.json\`** — bu TypeScript loyihangizning boshqaruv pulti (sozlamalar fayli). U TypeScript kompyutatoriga (compiler) kodingizni qanday o'qishi, qanday tekshirishi va qanday JavaScript (qaysi versiya) fayllariga aylantirishi kerakligini aytadi.
+Agar loyihangizda \`tsconfig.json\` fayli bo'lsa, bu o'sha papka TypeScript loyihasining asosiy (root) qismi ekanligini bildiradi.
 
-### tsconfig.json nima?
-**tsconfig.json** — bu TypeScript loyihangizning \"miyasidir\". U TypeScript kompilyatoriga (tsc) kodni JavaScript-ga qanday o'girish (transpile qilish), qaysi fayllarni tekshirish va qanday qat'iylik (strictness) darajasida xatolarni aniqlash kerakligini aytib beradi.
-Bu xuddi **avtomobil sozlamalari paneliga** o'xshaydi: siz unda sport rejimini (strict mode), qaysi yo'nalish bo'yicha harakatlanishni (target output) va xavfsizlik yostiqchalari sezgirligini (module resolution) sozlashingiz mumkin. Noto'g'ri sozlangan config kodingizni ishlamasligiga yoki xavfsizlik darajasining pasayishiga olib keladi.
+Eng ko'p ishlatiladigan sozlamalar (\`compilerOptions\` ichida):
+- \`target\`: Qaysi JavaScript versiyasiga o'girish kerakligi (masalan, \`"ES5"\`, \`"ES2015"\`, \`"ESNext"\`).
+- \`module\`: Qaysi modul tizimidan foydalanish (masalan, \`"CommonJS"\`, \`"ESNext"\`).
+- \`strict\`: Qat'iy tur tekshiruvlarini (strict mode) yoqish. Buni doim \`true\` qilib qo'yish tavsiya etiladi.
+- \`outDir\`: Yig'ilgan (kompilyatsiya qilingan) \`.js\` fayllar qayerga saqlanishi kerakligi.
+- \`rootDir\`: Asosiy \`.ts\` fayllar joylashgan papka.
 
----
+## ❌ YOMON va ✅ YAXSHI Yondashuvlar
 
-## 2. 💻 Real Kod Misollari
-
-### 1. Asosiy tsconfig.json tuzilmasi
-Quyida standart va tavsiya etiladigan \\\`tsconfig.json\\\` sozlamalari berilgan:
-\\\`\\\`\\\`json
+❌ **YOMON Yondashuv (Yumshoq tekshiruvlar):**
+\`\`\`json
 {
   "compilerOptions": {
-    "target": "es2022",                /* Target JS versiyasi (brauzerlar tushunishi uchun) */
-    "module": "commonjs",              /* Modul tizimi (commonjs yoki esnext) */
-    "strict": true,                    /* Barcha strict tiplash qoidalarini yoqish */
-    "esModuleInterop": true,           /* CommonJS va ES modullari o'rtasidagi kelishuv */
-    "forceConsistentCasingInFileNames": true, /* Fayl nomlarining registriga e'tibor berish */
-    "skipLibCheck": true,              /* Kutubxonalar (.d.ts) ichidagi tiplarni tekshirmaslik */
-    "outDir": "./dist"                 /* JS kodlari saqlanadigan papka */
-  },
-  "include": ["src/**/*"],             /* Faqat src ichidagi fayllarni tekshirish */
-  "exclude": ["node_modules", "dist"]  /* Tekshiruvdan tashqari qilinadigan papkalar */
-}
-\\\`\\\`\\\`
-
-### 2. Strict bayroqlari (Strict Flags)
-\\\`"strict": true\\\` yoqilganda TypeScript quyidagi qoidalarni avtomatik tarzda majburiy qiladi:
-* **\\\`noImplicitAny\\\`** — Tip aniq ko'rsatilmagan va TS uni aniqlay olmagan o'zgaruvchilarga avtomatik \\\`any\\\` berilishini taqiqlaydi.
-* **\\\`strictNullChecks\\\`** — O'zgaruvchilarga \\\`null\\\` va \\\`undefined\\\` berilishini alohida tekshiradi.
-\\\`\\\`\\\`typescript
-// strictNullChecks: true bo'lganda
-let name: string = "Doston";
-// name = null; // XATO! string tipiga null berib bo'lmaydi.
-
-// To'g'rilash:
-let optionalName: string | null = null;
-\\\`\\\`\\\`
-
-### 3. Path Aliases (Yo'l taxalluslari)
-Katta loyihalarda juda uzun nisbiy yo'llardan (masalan \\\`../../components/Button\\\`) qochish uchun path taxalluslari ishlatiladi:
-\\\`\\\`\\\`json
-{
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": ["src/components/*"],
-      "@utils/*": ["src/utils/*"]
-    }
+    "target": "ES5",
+    "strict": false,
+    "noImplicitAny": false
   }
 }
-\\\`\\\`\\\`
-Endi kodingizda to'g'ridan-to'g'ri \\\`import { Button } from "@components/Button"\\\` ko'rinishida yozishingiz mumkin.
+\`\`\`
+*Izoh: \`strict: false\` bo'lsa, xatolar o'tkazib yuboriladi va TypeScript ning ko'p foydasi yo'qoladi.*
 
----
-
-## 3. 🎨 Kompilyator Oqimi (Compiler Pipeline)
-
-TypeScript faylining JavaScript-ga o'girilish jarayonidagi \\\`tsconfig.json\\\` o'rni:
-
-\`\`\`mermaid
-graph LR
-    TS["TypeScript Source (.ts)"] -->|tsconfig: include/exclude| TSC["TS Compiler (tsc)"]
-    TSC -->|tsconfig: strict rules| Checker["Type Checker"]
-    Checker -->|tsconfig: target/module| JS["JavaScript Output (.js)"]
-    TSC -->|tsconfig: declaration| DTS["Declaration Files (.d.ts)"]
+✅ **YAXSHI Yondashuv (Qat'iy tekshiruvlar va aniq tuzilma):**
+\`\`\`json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "strict": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
 \`\`\`
 
----
+## 🎤 Intervyu Savollari
+1. **\`tsconfig.json\` fayli nima uchun kerak?**
+   - Javob: TypeScript kompilyatori uchun sozlamalarni belgilaydi: qaysi fayllarni kompilyatsiya qilish va qay tartibda tekshirishni ko'rsatadi.
+2. **\`target\` va \`module\` ning farqi nima?**
+   - Javob: \`target\` natijaviy JS kodining sintaksis versiyasini (ES5, ES6) belgilaydi. \`module\` esa fayllar bir-biriga qanday ulanishini (import/export tizimini, masalan CommonJS yoki ESModules) bildiradi.
+3. **Nima uchun \`strict\` rejimni \`true\` qilish kerak?**
+   - Javob: U barcha qat'iy tekshiruvlarni (\`noImplicitAny\`, \`strictNullChecks\` kabi) yoqadi, bu esa kelajakda xatolar (bug) chiqishining oldini oladi va sifatli kod yozishga majbur qiladi.
 
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
-
-### 1. \`strict: false\` qilish
-Yangi boshlovchilar tiplash xatolaridan qochish va osonroq kod yozish uchun strict rejimini o'chirib qo'yishadi. Bu TypeScript ishlatishning asosiy xavfsizlik ma'nosini yo'q qiladi.
-* **Tuzatish:** Har doim \\\`strict: true\\\` qilib ishlang va yuzaga kelgan tiplash muammolarini generic yoki conditional tiplar yordamida yeching.
-
-### 2. \`target\` ni eski versiyada qoldirish
-Agar kodingiz faqat eng zamonaviy Node.js muhitida ishlasa, \\\`target\\\` parametrini \\\`es5\\\` deb sozlash keraksiz transpilyatsiya va keraksiz polyfill generatorlariga olib keladi.
-* **Tuzatish:** Ishga tushadigan muhitingizga mos ravishda moslashtiring (masalan, \\\`es2022\\\` yoki \\\`esnext\\\`).
-
----
-
-## 5. 💬 12 ta Intervyu Savollari (Junior/Middle)
-
-### Junior
-1. **Savol:** \`tsconfig.json\` fayli nima uchun xizmat qiladi?
-   * **Javob:** TypeScript kompilyatoriga (tsc) kodni tekshirish va transpile qilish bo'yicha ko'rsatmalar beruvchi konfiguratsiya faylidir.
-2. **Savol:** Loyihada qaysi fayllar tekshirilishini qaysi sozlamalar hal qiladi?
-   * **Javob:** \\\`include\\\` (kiritiladigan fayllar) va \\\`exclude\\\` (tekshirilmaydigan fayllar) massivlari orqali belgilanadi.
-3. **Savol:** \`"strict": true\` nimani anglatadi?
-   * **Javob:** Barcha qat'iy tip tekshirish qoidalarini (noImplicitAny, strictNullChecks va boshqalar) birgalikda faollashtiradi.
-4. **Savol:** \`"target"\` konfiguratsiyasi nima?
-   * **Javob:** TypeScript kodi o'giriladigan JavaScript versiyasini belgilaydi (masalan: es5, es6, es2022).
-
-### Middle
-5. **Savol:** \`"noImplicitAny"\` yoqilganda kompilyator nima qiladi?
-   * **Javob:** Agar funksiya argumenti yoki o'zgaruvchi tipi ko'rsatilmagan bo'lsa va uni avtomatik aniqlash iloji bo'lmasa, TS xatolik beradi (yashirin any-ga ruxsat yo't).
-6. **Savol:** \`"strictNullChecks"\` qanday ishlaydi?
-   * **Javob:** O'zgaruvchilarga to'g'ridan-to'g'ri \\\`null\\\` yoki \\\`undefined\\\` berishni taqiqlaydi. Ular alohida union tip sifatida ko'rsatilishi shart (\\\`string | null\\\`).
-7. **Savol:** \`"esModuleInterop"\` nimani hal qiladi?
-   * **Javob:** CommonJS va ES6 Modullari (import/export) o'rtasidagi moslikni ta'minlaydi. Masalan \\\`import express from "express"\\\` shaklida yozishga imkon beradi.
-8. **Savol:** \`"skipLibCheck"\` nima uchun kerak?
-   * **Javob:** Uchinchi tomon kutubxonalari (.d.ts) ichidagi tiplarni tekshirmaslik orqali kompilyatsiya tezligini oshiradi.
-
-### Senior
-9. **Savol:** \`"declaration": true\` nima beradi?
-   * **Javob:** Har bir TS fayli uchun JavaScript kodi bilan birga uning tiplarini saqlovchi \\\`.d.ts\\\` faylini avtomatik yaratib boradi.
-10. **Savol:** \`"moduleResolution"\` nimani anglatadi?
-    * **Javob:** Modullarni import qilishda ularning joylashuvini qanday qidirib topishni (masalan: 'node' yoki 'bundler' algoritmlari) belgilaydi.
-11. **Savol:** tsconfig-da \`"extends"\` xususiyati qachon qo'llaniladi?
-    * **Javob:** Monorepo yoki bir nechta loyihalar uchun umumiy bo'lgan base (asosiy) tsconfig sozlamalarini meros qilib olishda ishlatiladi.
-12. **Savol:** \`"incremental": true\` qanday ishlaydi va uning foydasi nima?
-    * **Javob:** Avvalgi kompilyatsiya natijalarini keshga yozib qo'yadi va faqat o'zgargan fayllarni kompilyatsiya qiladi, bu esa build vaqtini sezilarli darajada qisqartiradi.
+## 🛠️ Amaliy Topshiriqlar
+\`\`\`mermaid
+graph LR;
+    TS[src/app.ts] --> Compiler[TS Compiler];
+    TS2[src/utils.ts] --> Compiler;
+    Config(tsconfig.json) -.->|Sozlamalar| Compiler;
+    Compiler --> JS1[dist/app.js];
+    Compiler --> JS2[dist/utils.js];
+\`\`\`
 `,
   exercises: [
     {
       id: 1,
-      title: "strictNullChecks muammosini tuzatish",
-      instruction: "Quyidagi kodda strictNullChecks yoqilgan deb hisoblab, `User` interfeysidagi `address` maydoni string yoki null bo'lishi uchun to'g'ri tiplang.",
-      startingCode: "interface User {\n  id: number;\n  name: string;\n  // address string yoki null bo'la olsin\n  address: string;\n}\n",
-      hint: "address: string | null;",
-      test: "if (!code.includes('address: string | null') && !code.includes('address: null | string')) return 'address-ga string | null tipini bering';"
+      title: "Strict Rejim",
+      instruction: "Loyiha xavfsizroq bo'lishi uchun `compilerOptions` ichida qat'iy rejimni (`strict`) yoqing.",
+      startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
+      hint: "\"strict\": true qilib yozing.",
+      solution: "{\n  \"compilerOptions\": {\n    \"strict\": true\n  }\n}",
+      test: "return /\"strict\"\\s*:\\s*true/.test(code);"
     },
     {
       id: 2,
-      title: "noImplicitAny xatosini to'g'rilash",
-      instruction: "Quyidagi funksiyaga argumentlarga tegishli tiplarni yozib, implicit any xatosini bartaraf eting.",
-      startingCode: "function addNumbers(a, b) {\n  return a + b;\n}\n",
-      hint: "function addNumbers(a: number, b: number) {",
-      test: "if (code.includes('(a, b)')) return 'a va b argumentlariga tiplarni biriktiring';\nif (!code.includes('number')) return 'Argumentlar son bo\\'lishi lozim (number)';"
+      title: "Target ES6",
+      instruction: "Loyihangizdagi TypeScript kodi zamonaviyroq ES6 versiyasidagi JavaScript-ga o'girilishi uchun `target` ni `\"ES6\"` qilib belgilang.",
+      startingCode: "{\n  \"compilerOptions\": {\n    \"strict\": true\n  }\n}",
+      hint: "\"target\": \"ES6\" qilib yozing.",
+      solution: "{\n  \"compilerOptions\": {\n    \"strict\": true,\n    \"target\": \"ES6\"\n  }\n}",
+      test: "return /\"target\"\\s*:\\s*\"ES6\"/.test(code);"
     },
     {
       id: 3,
-      title: "tsconfig.json sozlash",
-      instruction: "Compiler targets variantlarida es2022 versiyasini o'rnatish uchun yoziladigan xossani string formatida ko'rsating (o'zgaruvchi qiymati sifatida).",
-      startingCode: "const configTargetSetting = '';\n",
-      hint: "const configTargetSetting = 'target';",
-      test: "if (!code.includes('target')) return 'Xossa nomi target bo\\'lishi kerak';"
+      title: "CommonJS moduli",
+      instruction: "Kodingiz Node.js muhitida ishlashi uchun `module` tizimini `\"CommonJS\"` qilib belgilang.",
+      startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
+      hint: "\"module\": \"CommonJS\" qo'shing.",
+      solution: "{\n  \"compilerOptions\": {\n    \"module\": \"CommonJS\"\n  }\n}",
+      test: "return /\"module\"\\s*:\\s*\"CommonJS\"/.test(code);"
+    },
+    {
+      id: 4,
+      title: "outDir (Chiqish papkasi)",
+      instruction: "Kompilyatsiya qilingan `.js` fayllar alohida papkada saqlanishi uchun `outDir` parametrini `\"./dist\"` ga o'rnating.",
+      startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
+      hint: "\"outDir\": \"./dist\" qo'shing.",
+      solution: "{\n  \"compilerOptions\": {\n    \"outDir\": \"./dist\"\n  }\n}",
+      test: "return /\"outDir\"\\s*:\\s*\"\\.\\/dist\"/.test(code);"
+    },
+    {
+      id: 5,
+      title: "rootDir (Asosiy papka)",
+      instruction: "Kompilyator faqat ma'lum bir papkadagi kodlarni kuzatishi uchun `rootDir` parametrini `\"./src\"` ga o'rnating.",
+      startingCode: "{\n  \"compilerOptions\": {\n    \"outDir\": \"./dist\"\n  }\n}",
+      hint: "\"rootDir\": \"./src\" yozing.",
+      solution: "{\n  \"compilerOptions\": {\n    \"outDir\": \"./dist\",\n    \"rootDir\": \"./src\"\n  }\n}",
+      test: "return /\"rootDir\"\\s*:\\s*\"\\.\\/src\"/.test(code);"
+    },
+    {
+      id: 6,
+      title: "allowJs (JS fayllarga ruxsat)",
+      instruction: "Loyiha ichidagi mavjud `.js` fayllarni ham kompilyatordan o'tkazishga ruxsat berish uchun `allowJs` ni `true` qiling.",
+      startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
+      hint: "\"allowJs\": true yozing.",
+      solution: "{\n  \"compilerOptions\": {\n    \"allowJs\": true\n  }\n}",
+      test: "return /\"allowJs\"\\s*:\\s*true/.test(code);"
+    },
+    {
+      id: 7,
+      title: "noImplicitAny",
+      instruction: "Agar tip aniq ko'rsatilmagan bo'lsa va uni avtomatik topib bo'lmasa xato berishi uchun `noImplicitAny` ni `true` qiling.",
+      startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
+      hint: "\"noImplicitAny\": true qilib yozing.",
+      solution: "{\n  \"compilerOptions\": {\n    \"noImplicitAny\": true\n  }\n}",
+      test: "return /\"noImplicitAny\"\\s*:\\s*true/.test(code);"
+    },
+    {
+      id: 8,
+      title: "esModuleInterop",
+      instruction: "CommonJS va ES Modullar o'rtasida ishlashni osonlashtirish uchun `esModuleInterop` parametrini `true` qiling.",
+      startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
+      hint: "\"esModuleInterop\": true qilib yozing.",
+      solution: "{\n  \"compilerOptions\": {\n    \"esModuleInterop\": true\n  }\n}",
+      test: "return /\"esModuleInterop\"\\s*:\\s*true/.test(code);"
+    },
+    {
+      id: 9,
+      title: "include (Qo'shish)",
+      instruction: "`compilerOptions` dan **tashqarida**, kompilyator faqatgina `\"src/**/*\"` ichidagi fayllarni o'qishini ta'minlash uchun `include` massivini kiriting.",
+      startingCode: "{\n  \"compilerOptions\": {\n    \"strict\": true\n  }\n}",
+      hint: "Bosh obyekt ichida \"include\": [\"src/**/*\"] qo'shing.",
+      solution: "{\n  \"compilerOptions\": {\n    \"strict\": true\n  },\n  \"include\": [\"src/**/*\"]\n}",
+      test: "return /\"include\"\\s*:\\s*\\[\\s*\"src\\/\\*\\*\\/\\*\"\\s*\\]/.test(code);"
+    },
+    {
+      id: 10,
+      title: "exclude (Chiqarib tashlash)",
+      instruction: "`compilerOptions` dan **tashqarida**, kompilyator chetlab o'tishi kerak bo'lgan fayllar papkasi `\"node_modules\"` ni `exclude` massiviga kiriting.",
+      startingCode: "{\n  \"compilerOptions\": {},\n  \"include\": [\"src/**/*\"]\n}",
+      hint: "\"exclude\": [\"node_modules\"] ni kiriting.",
+      solution: "{\n  \"compilerOptions\": {},\n  \"include\": [\"src/**/*\"],\n  \"exclude\": [\"node_modules\"]\n}",
+      test: "return /\"exclude\"\\s*:\\s*\\[\\s*\"node_modules\"\\s*\\]/.test(code);"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "tsconfig.json-da TypeScript kodi o'giriladigan JavaScript versiyasini qaysi xususiyat belgilaydi?",
+      question: "tsconfig.json fayli nima vazifani bajaradi?",
       options: [
-        "module",
-        "target",
-        "lib",
-        "outDir"
+        "Loyiha modullari va kutubxonalarini yuklab beradi",
+        "TypeScript kompilyatoriga qanday sozlamalar bilan ishlashni ko'rsatadi",
+        "Faqat CSS fayllarni tahrirlaydi",
+        "React komponentlarini render qiladi"
       ],
       correctAnswer: 1,
-      explanation: "target xossasi es5, es6, es2022 kabi JavaScript-ning yakuniy versiyasini belgilaydi."
+      explanation: "tsconfig.json — bu TypeScript uchun asosiy konfiguratsiya faylidir."
     },
     {
       id: 2,
-      question: "Qaysi konfiguratsiya barcha qat'iy tip tekshirish qoidalarini bir vaqtda yoqadi?",
+      question: "compilerOptions.target qaysi ma'noni bildiradi?",
       options: [
-        "strict: true",
-        "strictNullChecks: true",
-        "noImplicitAny: true",
-        "forceConsistentCasingInFileNames: true"
+        "Kompilyatsiya bo'lgan JS kodning versiyasini (ES5, ES6 va hokazo)",
+        "Dastur ishga tushadigan operatsion tizimni",
+        "Qaysi brauzer ishlatilishini",
+        "Modullarning eksport tizimini"
       ],
       correctAnswer: 0,
-      explanation: "strict: true barcha qat'iy tekshiruvlarni, jumladan noImplicitAny va strictNullChecks-ni faollashtiradi."
+      explanation: "Target kompilyator natijasida chiqadigan JavaScript sintaksisi versiyasini ko'rsatadi."
     },
     {
       id: 3,
-      question: "noImplicitAny yoqilganda qaysi holatda kompilyator xatolik beradi?",
+      question: "strict sozlamasi true bo'lsa nima sodir bo'ladi?",
       options: [
-        "Funksiya argumentining tipi ko'rsatilmaganda va TS uni aniqlay olmaganda",
-        "O'zgaruvchiga null qiymat berilganda",
-        "Standard let o'zgaruvchi ishlatilganda",
-        "Kodda console.log yozilganda"
+        "Kompilyatsiya vaqti uzayadi lekin ishlamaydi",
+        "Barcha xavfsizlik va tip tekshiruvlari qat'iy rejimda ishlaydi",
+        "Faqat ob'ektlar bilan ishlash taqiqlanadi",
+        "Loyihani avtomatik formatlaydi"
       ],
-      correctAnswer: 0,
-      explanation: "noImplicitAny yashirin any tiplariga ruxsat bermaydi va tip ko'rsatilmagan parametrlar uchun error beradi."
+      correctAnswer: 1,
+      explanation: "strict: true barcha asosiy tur xavfsizligi qoidalarini faollashtiradi (masalan, null tekshiruvi va any taqiqi)."
     },
     {
       id: 4,
-      question: "outDir sozlamasining vazifasi nima?",
+      question: "Kompilyatsiya qilingan JS fayllar alohida papkaga tushishi uchun qaysi xususiyat ishlatiladi?",
       options: [
-        "TypeScript fayllarining joylashuv papkasi",
-        "Kompilyatsiya qilingan JavaScript fayllari saqlanadigan maqsad papka",
-        "Uchinchi tomon kutubxonalari papkasi",
-        "Faqat CSS fayllari papkasi"
+        "outDir",
+        "rootDir",
+        "targetDir",
+        "files"
       ],
-      correctAnswer: 1,
-      explanation: "outDir (output directory) kompilyator yaratgan JS fayllarini qaysi papkaga yozishini belgilaydi."
+      correctAnswer: 0,
+      explanation: "outDir (output directory) belgilangan papkaga tayyor JS fayllarni joylashtiradi."
     },
     {
       id: 5,
-      question: "esModuleInterop nima uchun kerak?",
+      question: "Loyihada faqat qaysi fayllarni kompilyatsiya qilish kerakligini qanday belgilaymiz?",
       options: [
-        "Kodni tezroq kompilyatsiya qilish uchun",
-        "CommonJS va ES modullari (import/export) o'rtasidagi kelishuvni ta'minlash uchun",
-        "CSS modullari bilan ishlash uchun",
-        "Faqat JSON fayllarini o'qish uchun"
+        "exclude orqali",
+        "compilerOptions ichida only xususiyatida",
+        "include va files massivlarida",
+        "outDir da fayllarni sanab"
       ],
-      correctAnswer: 1,
-      explanation: "esModuleInterop CommonJS modullarini xuddi ES6 default importlari kabi qulay yuklash imkonini beradi."
+      correctAnswer: 2,
+      explanation: "include massivi orqali kerakli fayl va papkalar (masalan ['src/**/*']) belgilab beriladi."
     },
     {
       id: 6,
-      question: "skipLibCheck nima uchun foydali?",
+      question: "noImplicitAny sozlamasi nima ish qiladi?",
       options: [
-        "O'zimizning kodimizni tekshirmaydi",
-        "Loyiha tez yig'ilishi (build) uchun kutubxonalar ichidagi .d.ts fayllarini tekshirishni tashlab ketadi",
-        "TypeScript-ni o'chirib qo'yadi",
-        "Faqat src ichidagi fayllarni tekshiradi"
+        "Har qanday turdan foydalanishga ruxsat beradi",
+        "any tipini umuman ishlatishni man qiladi",
+        "Tipi ko'rsatilmagan bo'lsa va avtomatik 'any' tipiga tushib qolsa, xato beradi",
+        "Kodni xatosiz o'tkazib yuboradi"
       ],
-      correctAnswer: 1,
-      explanation: "skipLibCheck node_modules ichidagi kutubxonalar deklaratsiya fayllarini tekshirishdan qochib, tezlikni oshiradi."
+      correctAnswer: 2,
+      explanation: "Agar TS tur topa olmasa uni 'any' deydi. noImplicitAny yashirin (implicit) any larni taqiqlaydi."
     },
     {
       id: 7,
-      question: "Kompilyatsiya paytida har bir fayl uchun uning tiplarini saqlovchi .d.ts faylini yaratish qaysi buyruq bilan yoqiladi?",
+      question: "allowJs sozlamasining vazifasi nima?",
       options: [
-        "declaration: true",
-        "declarationMap: true",
-        "dts: true",
-        "emitDeclarationOnly: true"
+        "Loyiha papkasidagi JS fayllarini kompilyatsiya qilishga ruxsat beradi",
+        "Barcha TypeScript fayllarni JS ga aylantirmaydi",
+        "Faqat JS fayllarni qabul qiladi",
+        "Brauzerga JS ni yuklashga yordam beradi"
       ],
       correctAnswer: 0,
-      explanation: "declaration: true sozlamasi kompilyatorga har bir JS uchun tegishli tiplar faylini (.d.ts) ham yaratishni buyuradi."
+      explanation: "Loyiha aralash (ham JS, ham TS) bo'lganda js fayllarni import qilish va tekshirish uchun allowJs: true ishlatiladi."
     },
     {
       id: 8,
-      question: "tsconfig.json-da include va exclude nima vazifani bajaradi?",
+      question: "rootDir nimani bildiradi?",
       options: [
-        "Kompilyatsiya qilinadigan fayllar ro'yxatini belgilaydi va chiqarib tashlaydi",
-        "Uchinchi tomon kutubxonalarini o'chiradi",
-        "Target versiyasini o'zgartiradi",
-        "Faqat Node.js modullarini sozlaydi"
+        "HTML fayllar saqlanadigan joyni",
+        "Kompyuterdagi bosh papkani",
+        "Asosiy TypeScript kodlari saqlanadigan papka, shu strukturani outDir da saqlaydi",
+        "NPM paketlari joylashgan joyni"
       ],
-      correctAnswer: 0,
-      explanation: "include qaysi fayllarni tekshirish kerakligini, exclude esa qaysi papkalarni (masalan node_modules) chetlab o'tishni aytadi."
+      correctAnswer: 2,
+      explanation: "rootDir kompilyator qaysi papkani o'zak sifatida qabul qilishini ko'rsatadi, u yerdagi struktura outDir ichiga xuddi shunday saqlanadi."
     },
     {
       id: 9,
-      question: "noEmit: true sozlamasi kompilyatorda qanday ta'sir qiladi?",
+      question: "esModuleInterop nima uchun ishlatiladi?",
       options: [
-        "Kodni tekshiradi, lekin JS fayllarini diskka yozmaydi (faqat type-checking)",
-        "Kompilyatsiyani to'xtatadi",
-        "Faqat xatolarni yashiradi",
-        "Fayllarni o'chirib yuboradi"
+        "TypeScript ni o'chirib qo'yish uchun",
+        "CommonJS modullarini xuddi ES6 Modullari kabi import qilish uchun sharoit yaratadi",
+        "Xatoliklarni terminalda chiroyli ko'rsatadi",
+        "Loyihani git ga avtomatik yuklaydi"
       ],
-      correctAnswer: 0,
-      explanation: "noEmit faqat tiplarning to'g'riligini tekshiradi (Type Checking) va natijada hech qanday JS faylini yaratmaydi."
+      correctAnswer: 1,
+      explanation: "Masalan: import React from 'react' degan ES6 sintaksisini React kutubxonasi kabi CommonJS asosidagi modullar uchun xatosiz ishlashiga imkon beradi."
     },
     {
       id: 10,
-      question: "removeComments: true sozlamasi nimaga xizmat qiladi?",
+      question: "Agar include ham, files ham ko'rsatilmagan bo'lsa, TypeScript qaysi fayllarni kompilyatsiya qiladi?",
       options: [
-        "Koddagi barcha izohlarni (comments) o'chirib, toza JS kodini generatsiya qiladi",
-        "Koddagi tiplarni o'chiradi",
-        "Faqat console.loglarni o'chiradi",
-        "TypeScript-ni tezlashtiradi"
+        "Faqat app.ts ni",
+        "Hech qaysi faylni",
+        "exclude dan tashqari papkadagi barcha .ts, .tsx va .d.ts fayllarni",
+        "Faqat package.json ichida ko'rsatilganlarni"
       ],
-      correctAnswer: 0,
-      explanation: "removeComments yakuniy JavaScript faylidan barcha izohlarni (comments) tozalab tashlaydi."
+      correctAnswer: 2,
+      explanation: "Odatiy holatda, u loyihadagi barcha TypeScript fayllarni qidirib topib oladi."
     },
     {
       id: 11,
-      question: "incremental: true sozlamasining foydasi nimada?",
+      question: "Barcha izohlarni (comments) tayyor JS fayllardan olib tashlash uchun qaysi sozlama kerak?",
       options: [
-        "Loyiha hajmini kichraytiradi",
-        "Faqat o'zgargan fayllarni kompilyatsiya qilib, keyingi build tezligini oshiradi",
-        "Dinamik importlarni yoqadi",
-        "Loyiha xavfsizligini kuchaytiradi"
+        "noComments",
+        "removeComments",
+        "deleteComments",
+        "cleanJs"
       ],
       correctAnswer: 1,
-      explanation: "incremental keshdan foydalanib faqat tahrirlangan fayllarni qayta tekshiradi va build tezligini oshiradi."
+      explanation: "removeComments: true bo'lsa, chiqadigan JS fayllarda izohlar tozalanadi va kod hajmi kichiklashadi."
     },
     {
       id: 12,
-      question: "strictNullChecks true bo'lganda quyidagi kodlardan qaysi biri xato beradi?",
+      question: "sourceMap sozlamasi true bo'lsa nima yaratiladi?",
       options: [
-        "let a: string = 'test';",
-        "let a: string | null = null;",
-        "let a: string = null;",
-        "let a: any = null;"
+        "Loyihaning geografik xaritasi",
+        "Faqat CSS xaritalar",
+        ".js.map fayllari yaratiladi, ular JS dan asl TS kodini topish (debug) imkonini beradi",
+        "Kompilyatsiya vaqtini hisoblaydigan jadval"
       ],
       correctAnswer: 2,
-      explanation: "strictNullChecks yoqilgan bo'lsa, string tipiga to'g'ridan-to'g'ri null yoki undefined qiymat berib bo'lmaydi (xato beradi)."
+      explanation: "sourceMap brauzerda yoki Node da nosozliklarni izlashda (debug), bevosita JS ni emas, siz yozgan TS kodni ko'rish uchun yo'riqnoma yaratadi."
     }
   ]
 };

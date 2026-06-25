@@ -1,307 +1,299 @@
 export const utilityTypes = {
-  id: "utilityTypes",
-  title: "TypeScript Utility Types (Yordamchi Tiplar)",
+  id: "ts-utility-types",
+  title: "Utility Types",
   language: "typescript",
   theory: `## 1. 💡 Sodda Tushuntirish
+TypeScript'da **Utility Types** — bu mavjud turlarni (types) o'zgartirish, ulardan yangi turlar yaratish uchun ishlatiladigan tayyor vositalar (yordamchi turlar). Tasavvur qiling, sizda bitta shablon (qolip) bor va siz shu qolipdan har xil pishiriqlar pishirmoqchisiz. Kichkina o'zgarishlar uchun noldan yangi qolip yasash o'rniga, Utility Types orqali kerakli joylarini moslashtirib olasiz.
 
-### Utility Types nima?
-TypeScript-da mavjud bo'lgan tiplarni qayta yozmasdan, ularni dynamic tarzda o'zgartirish va any-ga tushmasdan yangi tiplar yaratish uchun **Utility Types (Yordamchi tiplar)** ishlatiladi.
-Ular xuddi mebel transformatoriga o'xshaydi: sizda bitta asosiy divan bor va siz uni yig'ib to'shakka yoki stolga aylantirishingiz mumkin. Xuddi shunday, yordamchi tiplar yordamida mavjud \\\`interface\\\` yoki \\\`type\\\` ning ba'zi xossalarini ixtiyoriy (optional) qilish, o'chirish yoki faqat o'qish (read-only) rejimiga o'tkazish mumkin.
+Asosiy yordamchi turlar:
+- \`Partial<T>\`: T ning barcha maydonlarini ixtiyoriy (optional) qiladi.
+- \`Required<T>\`: T ning barcha maydonlarini majburiy qiladi.
+- \`Readonly<T>\`: T ning barcha maydonlarini o'zgartirib bo'lmaydigan (readonly) qiladi.
+- \`Pick<T, K>\`: T dan faqat K maydonlarni tanlab oladi.
+- \`Omit<T, K>\`: T dan K maydonlarni olib tashlaydi.
 
----
+## ❌ YOMON va ✅ YAXSHI Yondashuvlar
 
-## 2. 💻 Real Kod Misollari
-
-### 1. Partial va Required
-* **\\\`Partial<T>\\\`** — Tipdagi barcha xossalarni ixtiyoriy (optional, \\\`?\\\`) qiladi.
-* **\\\`Required<T>\\\`** — Tipdagi barcha ixtiyoriy xossalarni majburiy (required) qiladi.
-\\\`\\\`\\\`typescript
+❌ **YOMON Yondashuv (Turlarni qayta-qayta yozish):**
+\`\`\`typescript
 interface User {
   id: number;
   name: string;
-  email?: string;
+  email: string;
 }
 
-// Barcha xossalar optional bo'ladi (masalan, PATCH update uchun)
-type UpdateUser = Partial<User>; 
-// { id?: number; name?: string; email?: string; }
-
-// Barcha xossalar majburiy bo'ladi
-type StrictUser = Required<User>;
-// { id: number; name: string; email: string; }
-\\\`\\\`\\\`
-
-### 2. Pick va Omit
-* **\\\`Pick<T, K>\\\`** — Berilgan tipdan faqat ko'rsatilgan xossalarni tanlab oladi.
-* **\\\`Omit<T, K>\\\`** — Berilgan tipdan ko'rsatilgan xossalarni tashlab ketib, qolganini oladi.
-\\\`\\\`\\\`typescript
-interface Product {
-  id: number;
+// Faqat email va name kerak bo'lsa, noldan yozish
+interface UserWithoutId {
   name: string;
-  price: number;
-  description: string;
+  email: string;
 }
-
-// Faqat nom va narx kerak bo'lgan holatda
-type ProductPreview = Pick<Product, "name" | "price">;
-// { name: string; price: number; }
-
-// ID va tavsifdan tashqari hammasini olish
-type NewProductInput = Omit<Product, "id" | "description">;
-// { name: string; price: number; }
-\\\`\\\`\\\`
-
-### 3. Record va ReturnType
-* **\\\`Record<K, T>\\\`** — Kalitlari \\\`K\\\` tipida, qiymatlari \\\`T\\\` tipida bo'lgan obyekt tipini yaratadi.
-* **\\\`ReturnType<T>\\\`** — Funksiyaning qaytaradigan qiymati tipini aniqlaydi.
-\\\`\\\`\\\`typescript
-// Kalitlari string, qiymatlari son bo'lgan lug'at (Dictionary)
-type UserAgeMap = Record<string, number>;
-const ages: UserAgeMap = {
-  "Ali": 20,
-  "Vali": 25
-};
-
-// Funksiya qaytaradigan qiymat tipini olish
-function getResponse() {
-  return { status: 200, data: "Muvaffaqiyatli" };
-}
-type ApiResponse = ReturnType<typeof getResponse>;
-// { status: number; data: string; }
-\\\`\\\`\\\`
-
----
-
-## 3. 🎨 Tiplar Transformatsiyasi (Mermaid diagrammasi)
-
-Quyidagi diagrammada original \\\`User\\\` interfeysidan yordamchi tiplar orqali yangi tiplar hosil qilinishi ko'rsatilgan:
-
-\`\`\`mermaid
-graph TD
-    User["User { id: number, name: string, role: string }"]
-    User -->|Partial| PartialUser["{ id?, name?, role? }"]
-    User -->|Pick name/role| PickUser["{ name, role }"]
-    User -->|Omit id| OmitUser["{ name, role }"]
-    User -->|Readonly| ReadonlyUser["readonly { id, name, role }"]
 \`\`\`
 
----
+✅ **YAXSHI Yondashuv (Utility Types ishlatish):**
+\`\`\`typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
 
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+// Omit yordamida id ni olib tashlaymiz
+type UserWithoutId = Omit<User, 'id'>;
+\`\`\`
 
-### 1. \`Omit\` ichida noto'g'ri kalit yozish
-TypeScript \\\`Omit\\\` ichida mavjud bo'lmagan kalit yozsangiz xabar bermasligi mumkin (agar strict null checks o'chirilgan bo'lsa), lekin bu chalkashliklarga olib keladi.
-* **Yechim:** Har doim o'chirilayotgan xossalar original tipda mavjudligini tekshiring.
+## 🎤 Intervyu Savollari
+1. **Utility Types nima va nima uchun kerak?**
+   - Javob: Ular mavjud turlar asosida yangi turlar yaratishni osonlashtiruvchi tayyor shablonlardir. Kod takrorlanishining (DRY) oldini oladi va kodning tozaligini saqlaydi.
+2. **\`Pick\` va \`Omit\` ning farqi nima?**
+   - Javob: \`Pick\` berilgan turdan faqat ko'rsatilgan maydonlarni *oladi*. \`Omit\` esa berilgan turdan ko'rsatilgan maydonlarni *olib tashlaydi*.
+3. **\`Partial\` qanday vaziyatlarda ishlatiladi?**
+   - Javob: Obyektni yangilash (update) funksiyalarida juda qulay. Chunki yangilashda biz obyektning hamma qismini emas, faqat bazilarini yuborishimiz mumkin.
 
-### 2. \`ReturnType\` uchun funksiya tipini emas, o'zini uzatish
-\\\`ReturnType\\\` faqat funksiya tipi bilan ishlaydi. Funksiya o'zgaruvchisining o'zini uzatsangiz xatolik beradi:
-* **Noto'g'ri:** \\\`type Result = ReturnType<myFunc>;\\\`
-* **To'g'ri:** \\\`type Result = ReturnType<typeof myFunc>;\\\`
-
----
-
-## 5. 💬 12 ta Intervyu Savollari (Junior/Middle)
-
-### Junior
-1. **Savol:** Utility Types nima?
-   * **Javob:** Mavjud tiplarni o'zgartirish va ulardan yangi tiplar yaratish uchun ishlatiladigan tayyor global yordamchi tiplardir.
-2. **Savol:** \`Partial<T>\` nima vazifani bajaradi?
-   * **Javob:** Berilgan tipdagi barcha xossalarni ixtiyoriy (optional) qiladi.
-3. **Savol:** \`Readonly<T>\` nima va u qachon ishlatiladi?
-   * **Javob:** Barcha xossalarni faqat o'qiladigan qiladi. Qiymatlarni keyinchalik o'zgartirishga harakat qilinsa, TS xatolik beradi.
-4. **Savol:** \`Pick\` va \`Omit\` farqi nimada?
-   * **Javob:** \\\`Pick\\\` belgilangan xossalarni tanlab oladi, \\\`Omit\\\` esa belgilangan xossalarni tashlab yuboradi.
-
-### Middle
-5. **Savol:** Obyekt lug'atlarini yaratishda \`Record<K, T>\` qanday yordam beradi?
-   * **Javob:** Kalit va qiymatlar tiplarini qat'iy cheklash orqali dinamik kalitli obyektlar yaratishda yordam beradi, masalan \\\`Record<string, User>\\\`.
-6. **Savol:** \`ReturnType<T>\` nima uchun kerak va unga argument qanday beriladi?
-   * **Javob:** Funksiya qaytaradigan qiymat turini aniqlash uchun kerak. Argument sifatida unga \\\`typeof funksiyaNomi\\\` beriladi.
-7. **Savol:** \`Required<T>\` tipi \`Partial<T>\` ning teskarisimi? Tushuntiring.
-   * **Javob:** Ha, \\\`Required\\\` barcha optional (\\\`?\\\`) xossalardan so'roq belgisini olib tashlab, ularni majburiy qiladi.
-8. **Savol:** \`NonNullable<T>\` nima va u qachon qo'llaniladi?
-   * **Javob:** T tipidan \\\`null\\\` va \\\`undefined\\\` qiymatlarini olib tashlaydi.
-
-### Senior
-9. **Savol:** \`Parameters<T>\` yordamchi tipi nima qaytaradi?
-   * **Javob:** Funksiya qabul qiladigan argumentlar (parametrlar) tiplarini kortej (tuple) ko'rinishida qaytaradi.
-10. **Savol:** Utility tiplar orqasida qanday TypeScript mexanizmi yotadi?
-    * **Javob:** Ular \\\`Mapped Types\\\`, \\\`Conditional Types\\\` va \\\`Index Signatures\\\` kabi TypeScript-ning ichki dinamik tiplash imkoniyatlaridan foydalanib yozilgan.
-11. **Savol:** \`Exclude\` va \`Extract\` tiplari qanday ishlaydi va ularning farqi nima?
-    * **Javob:** Ikkalasi ham Union tiplar bilan ishlaydi. \\\`Exclude<T, U>\\\` T-dan U-ga mos keladiganlarini olib tashlaydi, \\\`Extract<T, U>\\\` esa faqat ikkala tipda ham bor bo'lgan (kesishish) tiplarni oladi.
-12. **Savol:** \`Omit\` tipi \`Pick\` va \`Exclude\` yordamida qanday qurilganligini tushuntira olasizmi?
-    * **Javob:** Ha, TypeScript-da \\\`Omit\\\` quyidagicha yozilgan: \\\`type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>\\\`. Ya'ni original kalitlar ro'yxatidan K olib tashlanadi va qolgan kalitlar \\\`Pick\\\` qilinadi.
+## 🛠️ Amaliy Topshiriqlar
+\`\`\`mermaid
+graph TD;
+    User[User Type] -->|Partial| OptionalUser[Maydonlari ixtiyoriy User]
+    User -->|Pick| PickedUser[Faqat kerakli maydonlar]
+    User -->|Omit| OmittedUser[Keraksiz maydonlar olib tashlangan]
+    User -->|Readonly| ReadonlyUser[O'zgartirib bo'lmaydigan User]
+\`\`\`
 `,
   exercises: [
     {
       id: 1,
-      title: "Partial yordamida yangilash tipi",
-      instruction: "Berilgan `User` interfeysi asosida barcha xossalari ixtiyoriy bo'lgan `UpdateUserDto` tipini yarating.",
-      startingCode: "interface User {\n  id: number;\n  name: string;\n  age: number;\n}\n\n// UpdateUserDto tipini yozing\n",
-      hint: "type UpdateUserDto = Partial<User>;",
-      test: "if (!code.includes('type UpdateUserDto')) return 'UpdateUserDto tipini e\\'lon qiling';\nif (!code.includes('Partial<User>')) return 'Partial yordamchi tipidan foydalaning';"
+      title: "Partial",
+      instruction: "\`User\` tipidagi barcha maydonlarni ixtiyoriy qiluvchi parametr tipini \`Partial\` yordamida belgilang.",
+      startingCode: "interface User {\n  id: number;\n  name: string;\n}\n\nfunction updateUser(user: ___) {\n  return user;\n}",
+      hint: "Partial<User> dan foydalaning.",
+      solution: "interface User {\n  id: number;\n  name: string;\n}\n\nfunction updateUser(user: Partial<User>) {\n  return user;\n}",
+      test: "return /Partial\\s*<\\s*User\\s*>/.test(code);"
     },
     {
       id: 2,
-      title: "Pick yordamida to'plam olish",
-      instruction: "`Article` interfeysidan faqat `title` va `author` xossalarini tanlab oluvchi `ArticleHeader` tipini yarating.",
-      startingCode: "interface Article {\n  id: number;\n  title: string;\n  body: string;\n  author: string;\n}\n\n// ArticleHeader tipini yarating\n",
-      hint: "type ArticleHeader = Pick<Article, 'title' | 'author'>;",
-      test: "if (!code.includes('type ArticleHeader')) return 'ArticleHeader tipini yarating';\nif (!code.includes('Pick<Article')) return 'Pick yordamchi tipini ishlating';"
+      title: "Required",
+      instruction: "Barcha maydonlari ixtiyoriy bo'lgan \`Config\` interfeysidan barcha maydonlari majburiy bo'lgan yangi tipni \`Required\` bilan yarating.",
+      startingCode: "interface Config {\n  port?: number;\n  host?: string;\n}\n\ntype FullConfig = ___;\n",
+      hint: "Required<Config> ishlating.",
+      solution: "interface Config {\n  port?: number;\n  host?: string;\n}\n\ntype FullConfig = Required<Config>;\n",
+      test: "return /Required\\s*<\\s*Config\\s*>/.test(code);"
     },
     {
       id: 3,
-      title: "ReturnType tahlili",
-      instruction: "`createSession` funksiyasining qaytadigan qiymat turini `SessionData` nomi ostida oling.",
-      startingCode: "function createSession() {\n  return { token: 'xyz123', expires: 3600 };\n}\n\n// SessionData tipini oling\n",
-      hint: "type SessionData = ReturnType<typeof createSession>;",
-      test: "if (!code.includes('type SessionData')) return 'SessionData tipini e\\'lon qiling';\nif (!code.includes('ReturnType<typeof createSession>')) return 'ReturnType va typeof dan to\\'g\\'ri foydalaning';"
+      title: "Readonly",
+      instruction: "\`Settings\` obyektini o'zgartirib bo'lmaydigan (readonly) qilish uchun mos Utility turdan foydalaning.",
+      startingCode: "interface Settings {\n  theme: string;\n}\n\nconst mySettings: ___ = {\n  theme: 'dark'\n};",
+      hint: "Readonly<Settings> yozing.",
+      solution: "interface Settings {\n  theme: string;\n}\n\nconst mySettings: Readonly<Settings> = {\n  theme: 'dark'\n};",
+      test: "return /Readonly\\s*<\\s*Settings\\s*>/.test(code);"
+    },
+    {
+      id: 4,
+      title: "Pick",
+      instruction: "\`Product\` turidan faqat \`id\` va \`name\` maydonlarini olib, \`ProductSummary\` turini yasang.",
+      startingCode: "interface Product {\n  id: number;\n  name: string;\n  price: number;\n  desc: string;\n}\n\ntype ProductSummary = ___;\n",
+      hint: "Pick<Product, 'id' | 'name'> ishlating.",
+      solution: "interface Product {\n  id: number;\n  name: string;\n  price: number;\n  desc: string;\n}\n\ntype ProductSummary = Pick<Product, 'id' | 'name'>;\n",
+      test: "return /Pick\\s*<\\s*Product\\s*,\\s*(['\"]id['\"]\\s*\\|\\s*['\"]name['\"]|['\"]name['\"]\\s*\\|\\s*['\"]id['\"])\\s*>/.test(code);"
+    },
+    {
+      id: 5,
+      title: "Omit",
+      instruction: "\`Product\` turidan \`desc\` (description) maydonini olib tashlab, \`ProductCard\` turini yasang.",
+      startingCode: "interface Product {\n  id: number;\n  name: string;\n  price: number;\n  desc: string;\n}\n\ntype ProductCard = ___;\n",
+      hint: "Omit<Product, 'desc'> ishlating.",
+      solution: "interface Product {\n  id: number;\n  name: string;\n  price: number;\n  desc: string;\n}\n\ntype ProductCard = Omit<Product, 'desc'>;\n",
+      test: "return /Omit\\s*<\\s*Product\\s*,\\s*['\"]desc['\"]\\s*>/.test(code);"
+    },
+    {
+      id: 6,
+      title: "Record",
+      instruction: "Kallitlari \`string\`, qiymatlari \`number\` bo'lgan obyekt tipini yaratish uchun \`Record\` ishlating.",
+      startingCode: "type StringNumberMap = ___;\n\nconst ages: StringNumberMap = {\n  ali: 25,\n  vali: 30\n};",
+      hint: "Record<string, number> dan foydalaning.",
+      solution: "type StringNumberMap = Record<string, number>;\n\nconst ages: StringNumberMap = {\n  ali: 25,\n  vali: 30\n};",
+      test: "return /Record\\s*<\\s*string\\s*,\\s*number\\s*>/.test(code);"
+    },
+    {
+      id: 7,
+      title: "Exclude",
+      instruction: "\`T0\` turida \`'a' | 'b' | 'c'\` mavjud. Undan \`'a'\` ni chiqarib tashlab \`T1\` turini yasang.",
+      startingCode: "type T0 = 'a' | 'b' | 'c';\n\ntype T1 = ___;\n",
+      hint: "Exclude<T0, 'a'> ishlating.",
+      solution: "type T0 = 'a' | 'b' | 'c';\n\ntype T1 = Exclude<T0, 'a'>;\n",
+      test: "return /Exclude\\s*<\\s*T0\\s*,\\s*['\"]a['\"]\\s*>/.test(code);"
+    },
+    {
+      id: 8,
+      title: "Extract",
+      instruction: "\`T0\` turidagi \`'a' | 'b' | 'c'\` qiymatlaridan faqat \`'a' | 'f'\` lar bilan umumiy bo'lganlarini (kesishmasini) ajratib oling.",
+      startingCode: "type T0 = 'a' | 'b' | 'c';\n\ntype T1 = ___;\n",
+      hint: "Extract<T0, 'a' | 'f'> ishlating.",
+      solution: "type T0 = 'a' | 'b' | 'c';\n\ntype T1 = Extract<T0, 'a' | 'f'>;\n",
+      test: "return /Extract\\s*<\\s*T0\\s*,\\s*(['\"]a['\"]\\s*\\|\\s*['\"]f['\"]|['\"]f['\"]\\s*\\|\\s*['\"]a['\"])\\s*>/.test(code);"
+    },
+    {
+      id: 9,
+      title: "NonNullable",
+      instruction: "\`T0\` turida \`string | number | null | undefined\` mavjud. Ularning ichidan \`null\` va \`undefined\` larni olib tashlang.",
+      startingCode: "type T0 = string | number | null | undefined;\n\ntype ValidTypes = ___;\n",
+      hint: "NonNullable<T0> ishlating.",
+      solution: "type T0 = string | number | null | undefined;\n\ntype ValidTypes = NonNullable<T0>;\n",
+      test: "return /NonNullable\\s*<\\s*T0\\s*>/.test(code);"
+    },
+    {
+      id: 10,
+      title: "ReturnType",
+      instruction: "\`myFunction\` nomli funksiyaning qaytaradigan (return) qiymati turini avtomatik ajratib oling.",
+      startingCode: "function myFunction() {\n  return { name: 'Ali', age: 20 };\n}\n\ntype MyResult = ___;\n",
+      hint: "ReturnType<typeof myFunction> ishlating.",
+      solution: "function myFunction() {\n  return { name: 'Ali', age: 20 };\n}\n\ntype MyResult = ReturnType<typeof myFunction>;\n",
+      test: "return /ReturnType\\s*<\\s*typeof\\s+myFunction\\s*>/.test(code);"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Mavjud tipdagi barcha xossalarni ixtiyoriy (optional) qiladigan yordamchi tip qaysi?",
+      question: "Utility Types (Yordamchi turlar) nima?",
       options: [
-        "Required<T>",
-        "Partial<T>",
-        "Omit<T>",
-        "Pick<T>"
+        "Mavjud turlar (types) asosida yangilarini yaratish shablonlari",
+        "Turlarni o'chirib yuboruvchi mexanizm",
+        "React komponentlari uchun maxsus ilgaklar (hooks)",
+        "Dastur ishlayotgan (runtime) vaqtida ishlaydigan mantiq"
       ],
-      correctAnswer: 1,
-      explanation: "Partial<T> barcha xossalarni optional qiladi va PATCH kabi yangilash so'rovlarida juda asqotadi."
+      correctAnswer: 0,
+      explanation: "Utility Types kod takrorlanishini kamaytirish uchun, mavjud turlarni modifikatsiya qilib yangilarini hosil qiladi."
     },
     {
       id: 2,
-      question: "Omit<User, 'id' | 'password'> nima qaytaradi?",
+      question: "Qaysi Utility Type barcha maydonlarni ixtiyoriy (?) qiladi?",
       options: [
-        "Faqat 'id' va 'password' maydonlaridan iborat yangi tip",
-        "'id' va 'password' maydonlari olib tashlangan yangi User tipi",
-        "Bo'sh obyekt tipi",
-        "Xatolik qaytaradi"
+        "Readonly",
+        "Partial",
+        "Omit",
+        "Required"
       ],
       correctAnswer: 1,
-      explanation: "Omit belgilangan xossalarni o'chirib tashlaydi va qolgan xossalardan iborat tip qaytaradi."
+      explanation: "Partial<T> berilgan T ning barcha maydonlarini optional (ixtiyoriy) holatga o'tkazadi."
     },
     {
       id: 3,
-      question: "Pick<User, 'email'> nima qaytaradi?",
+      question: "Required<T> ning vazifasi nima?",
       options: [
-        "Faqat 'email' maydonidan tashkil topgan obyekt tipi",
-        "'email' maydoni optional bo'lgan User tipi",
-        "'email' maydoni o'chirilgan User tipi",
-        "Faqat string tipi"
+        "Tur maydonlarini readonly qiladi",
+        "Ixtiyoriy maydonlarni olib tashlaydi",
+        "Barcha maydonlarni majburiy (required) holatga keltiradi",
+        "Faqat kerakli maydonlarni tanlaydi"
       ],
-      correctAnswer: 0,
-      explanation: "Pick ko'rsatilgan xossalarni tanlab oladi. Bu yerda faqat 'email' bo'lgan yangi tip hosil bo'ladi."
+      correctAnswer: 2,
+      explanation: "Required<T> ixtiyoriy belgisini (?) olib tashlab, har bir maydon kiritilishini majburiy qilib qoyadi."
     },
     {
       id: 4,
-      question: "Required<T> ning vazifasi nima?",
+      question: "Pick<T, K> qanday ishlaydi?",
       options: [
-        "Barcha xossalarni readonly qiladi",
-        "Barcha optional xossalarni majburiy qiladi",
-        "Barcha xossalarni string qiladi",
-        "Hech narsani o'zgartirmaydi"
+        "T ichidan faqat K maydonlarni tanlab oladi",
+        "T ichidan K maydonlarni olib tashlaydi",
+        "T va K ni birlashtiradi",
+        "T ichidagi faqat sonli turlarni tanlaydi"
       ],
-      correctAnswer: 1,
-      explanation: "Required barcha optional (?) xossalarni majburiy qilib o'zgartiradi."
+      correctAnswer: 0,
+      explanation: "Pick, ya'ni 'tanlash'. U berilgan turdan aynan kerakli maydonlarni sug'urib oladi."
     },
     {
       id: 5,
-      question: "Kalitlari string, qiymatlari User obyekti bo'lgan tipni qanday e'lon qilish mumkin?",
+      question: "Omit<T, K> nima vazifani bajaradi?",
       options: [
-        "Record<string, User>",
-        "Map<string, User>",
-        "Dictionary<User>",
-        "Record<User, string>"
+        "T dan barcha K larni tanlaydi",
+        "T dan K bilan ko'rsatilgan maydonlarni olib tashlaydi",
+        "T ning qiymatini o'zgartiradi",
+        "T ni K ga o'zgartiradi"
       ],
-      correctAnswer: 0,
-      explanation: "Record<K, T> yordamida obyekt kaliti va qiymati tiplarini belgilash mumkin. Kalit string, qiymat User bo'ladi."
+      correctAnswer: 1,
+      explanation: "Omit (inkor qilish, tashlab ketish) ko'rsatilgan maydonni o'chirib, qolgan maydonlardan tur yaratadi."
     },
     {
       id: 6,
-      question: "ReturnType yordamchi tipiga to'g'ridan-to'g'ri funksiya nomini uzatish mumkinmi?",
+      question: "Record<K, T> qanday ob'ekt yaratadi?",
       options: [
-        "Ha, mumkin",
-        "Yo'q, chunki u funksiya qiymatini emas, tipini talab qiladi, shuning uchun 'typeof' ishlatish shart",
-        "Faqat arrow funksiyalar uchun mumkin",
-        "Faqat class metodlari uchun mumkin"
+        "Kalitlari K va qiymatlari T bo'lgan ob'ekt turini yaratadi",
+        "Massiv yaratadi",
+        "Faqat o'qish uchun funksiya yaratadi",
+        "Ixtiyoriy maydonlardan iborat ob'ekt yaratadi"
       ],
-      correctAnswer: 1,
-      explanation: "ReturnType funksiya o'zgaruvchisining tipi ustida ishlaydi, shuning uchun uning yoniga 'typeof' yozilishi shart."
+      correctAnswer: 0,
+      explanation: "Record asosan xarita (map) ob'ektlar yaratishda qulay: Record<string, number>."
     },
     {
       id: 7,
-      question: "Readonly<T> tipidagi obyektning xossasini o'zgartirmoqchi bo'lsak nima yuz beradi?",
+      question: "Readonly<T> bilan e'lon qilingan o'zgaruvchini nima qilib bo'lmaydi?",
       options: [
-        "Runtime-da xatolik beradi",
-        "TypeScript kompilyatsiya vaqtidayoq xatolik beradi",
-        "Hech qanday xatolik bo'lmaydi",
-        "Obyekt avtomatik nusxalanadi"
+        "Konsolga chiqarib bo'lmaydi",
+        "Yangi ob'ektga nusxalab bo'lmaydi",
+        "O'qib bo'lmaydi",
+        "Maydonlarini qayta o'zgartirib bo'lmaydi"
       ],
-      correctAnswer: 1,
-      explanation: "Readonly kompilyatsiya vaqtida xossalarni qayta yozishga ruxsat bermaydi va TS compiler error chiqaradi."
+      correctAnswer: 3,
+      explanation: "Readonly bilan maydonlar faqat o'qish uchun bo'ladi (re-assign qilish mumkin emas)."
     },
     {
       id: 8,
-      question: "NonNullable<string | null | undefined> qaysi tiplarni qaytaradi?",
+      question: "Exclude<T, U> yordamchi turi qanday ishlaydi?",
       options: [
-        "string",
-        "null | undefined",
-        "any",
-        "never"
+        "T dan U ga teng bo'lgan qismlarini olib tashlaydi",
+        "T va U ni kesishmasini topadi",
+        "Obyekt maydonlarini yashiradi",
+        "Faqat interfeyslarda ishlaydi"
       ],
       correctAnswer: 0,
-      explanation: "NonNullable union tip tarkibidagi null va undefined qiymatlarini chiqarib tashlaydi, faqat string qoladi."
+      explanation: "Union (Birlashma) turlar bilan ishlaganda, Exclude ko'rsatilgan turlarni chiqarib yuboradi."
     },
     {
       id: 9,
-      question: "Parameters<(a: number, b: string) => void> nimani qaytaradi?",
+      question: "Extract<T, U> qaysi ishni bajaradi?",
       options: [
-        "[number, string] kortej (tuple) tipi",
-        "void tipi",
-        "Obyekt tipi",
-        "number tipi"
+        "Exclude bilan bir xil ishlaydi",
+        "T va U orasida umumiy (ikkalasida ham bor) qismlarni tanlab oladi",
+        "Barcha xatolarni ekstratsiya qiladi",
+        "U ni T ga o'zgartiradi"
       ],
-      correctAnswer: 0,
-      explanation: "Parameters funksiya parametrlarining turlarini kortej (tuple) shaklida qaytaradi."
+      correctAnswer: 1,
+      explanation: "Extract (ajratib olish) faqat ikkala turda mavjud bo'lgan (intersect) tiplarni qoldiradi."
     },
     {
       id: 10,
-      question: "Exclude<'a' | 'b' | 'c', 'a'> nimani qaytaradi?",
+      question: "NonNullable<T> ning natijasi nima bo'ladi?",
       options: [
-        "'b' | 'c'",
-        "'a'",
-        "never",
-        "any"
+        "Barcha maydonlarni null qiladi",
+        "null va undefined larni olib tashlaydi",
+        "Faqat null larni qoldiradi",
+        "Bo'sh obyekt yaratadi"
       ],
-      correctAnswer: 0,
-      explanation: "Exclude birinchi uniondan ikkinchisiga mos keladigan barcha tiplarni olib tashlaydi."
+      correctAnswer: 1,
+      explanation: "T ichidan null va undefined ni o'chiradi, faqat haqiqiy qiymatli turlar qoladi."
     },
     {
       id: 11,
-      question: "Extract<'a' | 'b' | 'c', 'a' | 'f'> nimani qaytaradi?",
+      question: "ReturnType<T> dan qachon foydalanamiz?",
       options: [
-        "'a'",
-        "'a' | 'b' | 'c' | 'f'",
-        "'b' | 'c'",
-        "never"
+        "Funksiyaning argumentlari tipini olish uchun",
+        "Funksiyani ishga tushirish uchun",
+        "Funksiya qaytaradigan qiymat (return) turini olish uchun",
+        "Class qaytarish uchun"
       ],
-      correctAnswer: 0,
-      explanation: "Extract ikkala to'plam (union) ichida mavjud bo'lgan umumiy elementlarni tanlab oladi."
+      correctAnswer: 2,
+      explanation: "typeof myFunction bilan birga ishlatilib, uning nimani return qilishini avtomatik tiplaydi."
     },
     {
       id: 12,
-      question: "Any-dan farqli o'laroq, Omit qaysi tipdagi kalitlarni qabul qilmaydi (strict rejimda)?",
+      question: "Omit qaysi ikki yordamchi turning kombinatsiyasiga o'xshash?",
       options: [
-        "Mavjud bo'lmagan yoki noto'g'ri yozilgan kalitlarni",
-        "Faqat string kalitlarni",
-        "Faqat number kalitlarni",
-        "Hammasini qabul qiladi"
+        "Pick va Exclude",
+        "Partial va Pick",
+        "Required va Record",
+        "Readonly va Partial"
       ],
       correctAnswer: 0,
-      explanation: "Strict rejimda mavjud bo'lmagan kalitlarni Omit-ga verish xatolik keltirib chiqaradi."
+      explanation: "Omit orqa fonda 'Pick<T, Exclude<keyof T, K>>' orqali ishlaydi."
     }
   ]
 };

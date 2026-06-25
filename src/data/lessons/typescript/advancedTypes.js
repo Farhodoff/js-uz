@@ -1,413 +1,288 @@
 export const advancedTypes = {
-  id: "advancedTypes",
-  title: "Advanced & Utility Types",
+  id: "advanced-types",
+  title: "TypeScript Advanced Types (Murakkab Toifalar)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Sodda Tushuntirish
+TypeScript-da oddiy toifalardan (string, number) tashqari, bir necha toifalarni birlashtirish yoki aniqlashtirish uchun Murakkab Toifalar (Advanced Types) mavjud. 
 
-### Advanced & Utility Types nima?
-TypeScript-da **Utility Types** (Yordamchi tiplar) va **Advanced Types** (Kengaytirilgan tiplar) — bu tayyor tiplarni o'zgartirish, ulardan nusxa olish yoki ularni tahrirlash orqali yangi tiplar hosil qilish usulidir. Ular kod takrorlanishini (DRY qoidasini) kamaytiradi va tiplash jarayonini osonlashtiradi.
+- **Intersection Types (\`&\`)**: Ikkita yoki undan ko'p toifani birlashtiradi (AND mantiqi).
+- **Union Types (\`|\`)**: Bir necha toifadan biri bo'lishi mumkinligini bildiradi (OR mantiqi).
+- **Type Guards**: Kod ichida toifani aniqlashtirish usullari (\`typeof\`, \`instanceof\`, \`in\`).
+- **Type Casting (Toifani o'zgartirish)**: Kompyuterga "men bu nima ekanligini yaxshiroq bilaman" deyish (\`as\` operatori).
 
-### Real hayotiy o'xshatish
-Buni rasm tahrirlovchi **foto-filtrlarga (photo filters)** o'xshatish mumkin:
-* **Original Type:** Bu sizning asl rasmingiz (barcha maydonlari bo'lgan obyekt).
-* **Partial filter:** Rasmning ba'zi qismlarini xiralashtiradi yoki yashiradi. Asl rasmdagi barcha elementlar endi ixtiyoriy (optional) bo'ladi.
-* **Readonly filter:** Rasmni shisha ramkaga soladi. Uni faqat tomosha qilishingiz mumkin, lekin ustiga chizib bo'lmaydi.
-* **Pick filter:** Rasmdan faqat sizga kerakli qismini (masalan, faqat yuzingizni) qirqib (crop) oladi.
-* **Omit filter:** Rasm fonidagi keraksiz detalni o'chirib tashlaydi va qolgan hamma narsani saqlaydi.
+## ❌ YOMON va ✅ YAXSHI Yondashuvlar
 
----
-
-## 2. 💻 Real Kod Misollari
-
-### 1. Basic Example (Partial va Readonly yordamida obyektlar bilan ishlash)
+**❌ YOMON: Union tiplarida tekshirmasdan ishlatish**
 \`\`\`typescript
-interface User {
-  id: number;
-  name: string;
-  email: string;
+function printId(id: number | string) {
+  console.log(id.toUpperCase()); // XATO! Agar id number bo'lsa, toUpperCase() ishlamaydi.
 }
-
-// Barcha maydonlar ixtiyoriy: { id?, name?, email? }
-type UpdateUser = Partial<User>;
-
-// Barcha maydonlar faqat o'qish uchun: o'zgartirib bo'lmaydi
-type ReadonlyUser = Readonly<User>;
-
-const user: ReadonlyUser = {
-  id: 1,
-  name: "Farhod",
-  email: "farhod@example.com"
-};
-
-// user.name = "Ali"; // Xatolik! Readonly maydonni o'zgartirib bo'lmaydi.
 \`\`\`
 
-### 2. Intermediate Example (Record, Pick va Omit orqali ma'lumotlarni filtrlash)
+**✅ YAXSHI: Type Guard yordamida tekshirish**
 \`\`\`typescript
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
+function printId(id: number | string) {
+  if (typeof id === "string") {
+    console.log(id.toUpperCase()); // Bu yerda TS id albatta string ekanini biladi.
+  } else {
+    console.log(id); // Bu yerda esa TS id number ekanini biladi.
+  }
 }
-
-// Faqat nom va narx kerak bo'lgan holat
-type ProductCardInfo = Pick<Product, "name" | "price">;
-
-// Tavsif (description) va ID dan tashqari hamma narsani olish
-type InsertProduct = Omit<Product, "id" | "description">;
-
-// Mahsulotlar lug'atini yaratish (Kalit - string, qiymat - Product)
-type ProductCatalog = Record<string, Product>;
-
-const catalog: ProductCatalog = {
-  "laptop-01": { id: 101, name: "Noutbuk", price: 1200, description: "Zo'r noutbuk" }
-};
 \`\`\`
 
-### 3. Advanced Example (Conditional Types va \`infer\` yordamida funksiya qaytarish tipini aniqlash)
-\`\`\`typescript
-// Agarda T funksiya bo'lsa, uning qaytarish tipini (R) ajratib oladi, aks holda never qaytaradi
-type MyReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+## 🎤 Intervyu Savollari
+1. **Union va Intersection tiplarning farqi nima?**
+   *Javob:* Union (\`|\`) ikki yoki undan ortiq tiplardan biriga ruxsat beradi (masalan, \`string | number\`). Intersection (\`&\`) esa bir nechta tiplarni bitta qilib birlashtiradi, ob'ektlar uchun ko'p ishlatiladi (har ikkala tip xususiyatlariga ega bo'ladi).
+2. **Type Guard nima?**
+   *Javob:* Biror o'zgaruvchining aniq qaysi tipga tegishli ekanligini if / else bloklari yoki maxsus funksiyalar yordamida aniqlashtirish. \`typeof\`, \`instanceof\`, yoki \`in\` operatorlari yordamida amalga oshiriladi.
+3. **Type Assertion (Casting) qachon ishlatiladi?**
+   *Javob:* TypeScript avtomatik ravishda to'g'ri tipni aniqlay olmaganda, lekin dasturchi aniq bilsa (\`as HTMLElement\` yoki \`<HTMLElement>...\` yordamida) ko'rsatib yuborish uchun ishlatiladi.
 
-const getUserRole = () => "admin" as const;
-
-type UserRole = MyReturnType<typeof getUserRole>; // "admin"
-\`\`\`
-
----
-
-## 3. ⚠️ Muammo va Nima uchun Muhimligi
-
-### Qaysi muammoni hal qiladi?
-Katta loyihalarda bitta tipning har xil ko'rinishlari talab etiladi. Masalan, ma'lumotlar bazasidagi \`User\` modeli barcha maydonlarga ega, lekin API orqali uni tahrirlashda (\`PATCH\` so'rovida) faqat bitta-ikkita maydon yuborilishi mumkin. Agarda yordamchi tiplar bo'lmaganida, dasturchi har bir holat uchun alohida \`UserUpdate\`, \`UserCard\`, \`UserReadOnly\` kabi o'nlab o'xshash interfeyslarni qo'lda yozishi kerak bo'lardi. Bu esa kod takrorlanishiga va keyinchalik bitta maydon o'zgarganda barcha tiplarni yangilab chiqish qiyinchiligiga (maintenance do'zaxiga) sabab bo'lardi.
-
----
-
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
-
-### 1. Mapped yoki Omit tiplarida mavjud bo'lmagan kalitlarni ishlatish
-#### Xato:
-\`\`\`typescript
-interface User {
-  id: number;
-  name: string;
-}
-// Loyihada xato ko'rsatmasligi mumkin, lekin mantiqan noto'g'ri
-type InvalidOmit = Omit<User, "password">; 
-\`\`\`
-
-### 2. \`typeof\` va \`keyof\` operatorlarini chalkashtirish
-\`typeof\` qiymatning tipini oladi, \`keyof\` esa obyekt tipining barcha kalitlarini union (birlashma) sifatida qaytaradi.
-#### Xato:
-\`\`\`typescript
-const config = { theme: "dark" };
-type ConfigKeys = keyof config; // Xatolik! Obyekt o'zgaruvchisiga to'g'ridan-to'g'ri keyof berib bo'lmaydi.
-\`\`\`
-#### Tuzatish:
-\`\`\`typescript
-const config = { theme: "dark" };
-type ConfigKeys = keyof typeof config; // "theme"
-\`\`\`
-
-### 3. Partial qiymat maydonlarini tekshirmasdan ishlatish
-\`Partial<T>\` qilinganda barcha maydonlar \`undefined\` bo'lishi mumkinligini inobatga olmaslik.
-
----
-
-## 5. 💬 12 ta Intervyu Savollari
-
-### Junior (1–4)
-1. **Savol:** \`Partial<T>\` va \`Required<T>\` farqi nimada?
-   * **Javob:** \`Partial<T>\` barcha xossalarni ixtiyoriy (\`?\`) qiladi, \`Required<T>\` esa aksincha barcha ixtiyoriy xossalarni majburiy qiladi.
-2. **Savol:** Obyekt maydonlarini faqat o'qiladigan qilish uchun qaysi utility tip ishlatiladi?
-   * **Javob:** \`Readonly<T>\`.
-3. **Savol:** \`Pick<T, K>\` qanday ishlaydi?
-   * **Javob:** Berilgan \`T\` tipidan faqat \`K\` kalitlari orqali ko'rsatilgan xossalarni tanlab olib, yangi tip yaratadi.
-4. **Savol:** \`Record<K, T>\` nima uchun ishlatiladi?
-   * **Javob:** Obyekt lug'atlari (dictionary) yoki xaritalar (map) uchun kalit va qiymat tiplarini belgilab berishda qo'llaniladi.
-
-### Middle (5–8)
-5. **Savol:** \`Omit<T, K>\` va \`Exclude<T, U>\` farqi nimada?
-   * **Javob:** \`Omit\` obyekt tipidan ma'lum kalitlarni olib tashlaydi, \`Exclude\` esa union (birlashma) tiplardan ma'lum tiplarni chiqarib yuboradi.
-6. **Savol:** Mapped Types (Xaritalangan tiplar) nima?
-   * **Javob:** Mavjud tip kalitlari ro'yxatini aylanib chiqib (sikl kabi), xususiyatlarini va qiymat tiplarini o'zgartirib yangi tip yaratish texnikasi.
-7. **Savol:** \`NonNullable<T>\` qanday qiymatlarni filtrlaydi?
-   * **Javob:** Berilgan tip tarkibidan \`null\` va \`undefined\` tiplarini butunlay olib tashlaydi.
-8. **Savol:** TypeScript-da \`typeof\` operatori nima vazifani bajaradi?
-   * **Javob:** JavaScript o'zgaruvchisi yoki obyektining strukturasini TypeScript tipi darajasida aniqlab beradi.
-
-### Senior (9–12)
-9. **Savol:** Conditional Types (Shartli tiplar) qanday yoziladi?
-   * **Javob:** Ternary operator yordamida: \`T extends U ? X : Y\` ko'rinishida yoziladi.
-10. **Savol:** Conditional tiplardagi \`infer\` kalit so'zining vazifasi nima?
-    * **Javob:** Shart tekshiruvi jarayonida aniqlanmagan yoki yashirin bo'lgan tipni ajratib olish va unga o'zgaruvchi nomi berish uchun ishlatiladi.
-11. **Savol:** Mapped Types-da \`+\` va \`-\` modifierlari nima qiladi?
-    * **Javob:** \`readonly\` yoki \`?\` (optional) xususiyatlarni qo'shish (\`+\`) yoki olib tashlash (\`-\`) uchun qo'llaniladi. Masalan, \`-readonly\` maydonni o'zgaruvchan qiladi.
-12. **Savol:** Utility tiplari JavaScript dasturi ishlash (runtime) tezligiga ta'sir qiladimi?
-    * **Javob:** Yo'q. TypeScript-dagi barcha tiplar va utility vositalari transpayl paytida o'chiriladi va JS kodga hech qanday ta'sir o'tkazmaydi.
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Quyida Mapped va Conditional tiplarni yechish va qayta ishlash jarayonini aks ettiruvchi sxema ko'rsatilgan:
+## 🛠️ Amaliy Topshiriqlar
 
 \`\`\`mermaid
 graph TD
-    Input["Input Type: T"] --> Check{"T extends Array?"}
-    Check -->|Yes| Extract["Extract Element Type: infer U"]
-    Check -->|No| Return["Return T as is"]
-    Extract --> OutputArray["UnwrapArray<T> = U"]
-    Return --> OutputPlain["UnwrapArray<T> = T"]
-
-    style Input fill:#f9f,stroke:#333,stroke-width:2px
-    style OutputArray fill:#9f9,stroke:#333,stroke-width:2px
-    style OutputPlain fill:#9cf,stroke:#333,stroke-width:2px
+    A[Union Type: A | B] --> B(A yoki B dan birini qabul qiladi)
+    C[Intersection Type: A & B] --> D(Ham A, ham B ning barcha xususiyatlarini qabul qiladi)
+    E[Type Guard] --> F(typeof x === 'string')
 \`\`\`
-
-\`\`\`mermaid
-graph TD
-    Original["Original Type: { id: number, role: string }"] --> Loop["Map Keys: [K in keyof T]"]
-    Loop --> Modify["Apply modifier: boolean"]
-    Modify --> Result["Result: { id: boolean, role: boolean }"]
-
-    style Original fill:#f9f,stroke:#333,stroke-width:2px
-    style Result fill:#bbf,stroke:#333,stroke-width:2px
-\`\`\`
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Dars yakunidagi testlar orqali mavzuni qanchalik yaxshi o'zlashtirganingizni sinab ko'ring.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### API Response Mapper va Permission Checker
-Katta loyihalarda API orqali keladigan ma'lumotlarni foydalanuvchi huquqlariga qarab cheklash talab etiladi. Mapped va Conditional tiplar yordamida ma'lumotlarni faqat ruxsat berilgan qismini ko'rish uchun dinamik tiplash mumkin:
-
-\`\`\`typescript
-type Permissions = {
-  canReadEmail: boolean;
-  canReadSalary: boolean;
-};
-
-type EmployeeData = {
-  email: string;
-  salary: number;
-  fullName: string;
-};
-
-// Shartli ravishda huquqlarga qarab Employee data qiymatlarini tiplaymiz
-type RestrictData<Data, Perms extends Permissions> = {
-  [K in keyof Data]: K extends "email" 
-    ? (Perms["canReadEmail"] extends true ? string : null)
-    : K extends "salary"
-    ? (Perms["canReadSalary"] extends true ? number : null)
-    : Data[K];
-};
-
-type GuestPermissions = { canReadEmail: false; canReadSalary: false };
-type GuestData = RestrictData<EmployeeData, GuestPermissions>;
-// GuestData = { email: null; salary: null; fullName: string; }
-\`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-* **TypeScript kompilyator tezligi:** Murakkab shartli yoki rekurziv tiplar (\`extends\` zanjirlari juda chuqur bo'lsa) VS Code va IDE-larda tip tekshiruvini sekinlashtirishi mumkin.
-* **Transpilation:** Utility va Advanced tiplar faqat loyiha ishlab chiqilayotgan paytda xavfsizlik uchun xizmat qiladi. JavaScript-ga o'girilganda barcha tiplar butunlay olib tashlanishi sababli runtime performance-ga 0% ta'sir qiladi.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Yordamchi Tip | Sintaksis | Vazifasi |
-| :--- | :--- | :--- |
-| \`Partial<T>\` | \`Partial<User>\` | Barcha maydonlarni ixtiyoriy (\`?\`) qiladi |
-| \`Required<T>\` | \`Required<User>\` | Barcha ixtiyoriy maydonlarni majburiy qiladi |
-| \`Readonly<T>\` | \`Readonly<User>\` | Barcha maydonlarni o'zgartirib bo'lmaydigan (\`readonly\`) qiladi |
-| \`Record<K, T>\` | \`Record<string, number>\` | Dinamik kalit-qiymat obyektlari tipini yaratadi |
-| \`Pick<T, K>\` | \`Pick<User, "name">\` | Faqat tanlangan maydonlardan iborat yangi tip yaratadi |
-| \`Omit<T, K>\` | \`Omit<User, "id">\` | Tanlangan maydonlarni olib tashlab, qolganlaridan tip yaratadi |
-| \`NonNullable<T>\` | \`NonNullable<string \\| null>\` | \`null\` va \`undefined\` qiymatlarini olib tashlaydi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Partial (Ixtiyoriy obyekt) simulyatsiyasi",
-    "instruction": "User obyektini (`{ id, name, email }`) va qisman yangilanuvchi ma'lumotlarni (`Partial` kabi optional) qabul qilib, ularni birlashtirib qaytaruvchi `updateUser(user, fields)` funksiyasini yozing.",
-    "startingCode": "interface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\nfunction updateUser(user: User, fields: Partial<User>): User {\n  // user va fields obyektlarini birlashtiring\n}",
-    "hint": "return { ...user, ...fields };",
-    "test": "if (typeof updateUser !== 'function') return 'updateUser topilmadi'; const u = { id: 1, name: 'Ali', email: 'a@a.com' }; const res = updateUser(u, { name: 'Vali' }); if(res.name !== 'Vali' || res.email !== 'a@a.com') return 'Obyekt yangilanmadi'; return null;"
-  },
-  {
-    "id": 2,
-    "title": "Custom Mapped Type (BooleanFlags)",
-    "instruction": "Berilgan `T` tipidagi barcha maydonlarning tipini `boolean` qilib o'zgartiradigan custom mapped type `BooleanFlags<T>` e'lon qiling va uni `{ name: string; age: number }` interfeysiga tatbiq etib, `{ name: true, age: false }` obyektini qaytaradigan `getUserFlags()` funksiyasini yozing.",
-    "startingCode": "type BooleanFlags<T> = {\n  // Mapped type qismini yozing\n};\n\nfunction getUserFlags() {\n  // Bu yerga yozing\n}",
-    "hint": "type BooleanFlags<T> = {\n  [K in keyof T]: boolean;\n};\nfunction getUserFlags() {\n  return { name: true, age: false };\n}",
-    "test": "if (typeof getUserFlags !== 'function') return 'getUserFlags topilmadi'; const res = getUserFlags(); if (res.name !== true || res.age !== false) return 'Flags qiymatlari xato'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "Conditional Type va infer kalit so'zi",
-    "instruction": "Agar berilgan tip `T` massiv bo'lsa uning element tipini (array element type), aks holda `T` ning o'zini qaytaradigan `UnwrapArray<T>` conditional tipini e'lon qiling. Ushbu tip yordamida `string[]`dan `string` tipini ajratib olib, satr qaytaruvchi `getFirstWord(words)` funksiyasini yozing.",
-    "startingCode": "type UnwrapArray<T> = any; // Bu yerga conditional yozing\n\nfunction getFirstWord(words: string[]): string {\n  // words[0] ni qaytaring\n}",
-    "hint": "type UnwrapArray<T> = T extends (infer U)[] ? U : T;\nfunction getFirstWord(words: string[]): UnwrapArray<string[]> {\n  return words[0];\n}",
-    "test": "if (typeof getFirstWord !== 'function') return 'getFirstWord topilmadi'; if (getFirstWord(['Salom', 'Dunyo']) !== 'Salom') return 'Birinchi so'z noto'g'ri'; return null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1. Union Type bilan ishlash",
+      instruction: "`format(input: string | number)` funksiyasini yozing. Agar input string bo'lsa uning uzunligini qaytaring, agar number bo'lsa uni stringga aylantirib qaytaring.",
+      startingCode: "function format(input: string | number): number | string {\n  // kodingizni yozing\n}",
+      hint: "typeof input === 'string' tekshiruvidan foydalaning.",
+      solution: "function format(input: string | number): number | string {\n  if (typeof input === 'string') {\n    return input.length;\n  }\n  return input.toString();\n}",
+      test: "const fn = new Function('return function(input) { if (typeof input === \"string\") return input.length; return input.toString(); }')();\nconst format = fn;\nreturn format('test') === 4 && format(123) === '123';"
+    },
+    {
+      id: 2,
+      title: "2. Intersection Type (Birlashtirish)",
+      instruction: "Ikkita interfeys berilgan: `Admin` va `User`. Ularning birlashmasidan iborat `AdminUser` toifasini qaytaradigan ob'ekt yarating.",
+      startingCode: "interface Admin { role: string; }\ninterface User { name: string; }\ntype AdminUser = Admin & User;\n\nfunction createAdminUser(): AdminUser {\n  // kodingizni yozing\n}",
+      hint: "{ role: 'admin', name: 'Ali' } qaytaring",
+      solution: "interface Admin { role: string; }\ninterface User { name: string; }\ntype AdminUser = Admin & User;\n\nfunction createAdminUser(): AdminUser {\n  return { role: 'admin', name: 'Ali' };\n}",
+      test: "const fn = new Function('return function() { return { role: \"admin\", name: \"Ali\" }; }')();\nconst createAdminUser = fn;\nconst res = createAdminUser();\nreturn res.role === 'admin' && res.name === 'Ali';"
+    },
+    {
+      id: 3,
+      title: "3. Type Assertion (as operatori)",
+      instruction: "Uzatilgan `value` `any` toifasida, uni `string` sifatida qabul qilib `.toUpperCase()` ni chaqiring.",
+      startingCode: "function forceUpper(value: any): string {\n  // kodingizni yozing\n}",
+      hint: "(value as string).toUpperCase()",
+      solution: "function forceUpper(value: any): string {\n  return (value as string).toUpperCase();\n}",
+      test: "const fn = new Function('return function(value) { return value.toUpperCase(); }')();\nconst forceUpper = fn;\nreturn forceUpper('test') === 'TEST';"
+    },
+    {
+      id: 4,
+      title: "4. in Operator bilan Type Guard",
+      instruction: "`Fish` va `Bird` interfeyslari bor. Agar ob'ektda `swim` xususiyati bo'lsa uni chaqiradigan, aks holda `fly` ni chaqiradigan funksiya yozing. Funksiya true qaytarsin.",
+      startingCode: "interface Fish { swim: () => boolean; }\ninterface Bird { fly: () => boolean; }\n\nfunction move(animal: Fish | Bird): boolean {\n  // kodingizni yozing (in operatoridan foydalaning)\n}",
+      hint: "if ('swim' in animal) { return animal.swim(); } return animal.fly();",
+      solution: "interface Fish { swim: () => boolean; }\ninterface Bird { fly: () => boolean; }\n\nfunction move(animal: Fish | Bird): boolean {\n  if ('swim' in animal) {\n    return animal.swim();\n  }\n  return animal.fly();\n}",
+      test: "const fn = new Function('return function(animal) { if (\"swim\" in animal) return animal.swim(); return animal.fly(); }')();\nconst move = fn;\nreturn move({ swim: () => true }) === true && move({ fly: () => true }) === true;"
+    },
+    {
+      id: 5,
+      title: "5. instanceof bilan Type Guard",
+      instruction: "`Date` yoki `string` qabul qiladigan funksiyada, agar u Date bo'lsa `getTime()` ni, string bo'lsa uni son qilib (`Number()`) qaytaring.",
+      startingCode: "function getMilliseconds(value: Date | string): number {\n  // kodingizni yozing\n}",
+      hint: "if (value instanceof Date)",
+      solution: "function getMilliseconds(value: Date | string): number {\n  if (value instanceof Date) {\n    return value.getTime();\n  }\n  return Number(value);\n}",
+      test: "const fn = new Function('return function(value) { if (value instanceof Date) return value.getTime(); return Number(value); }')();\nconst getMilliseconds = fn;\nconst d = new Date(1000);\nreturn getMilliseconds(d) === 1000 && getMilliseconds('2000') === 2000;"
+    },
+    {
+      id: 6,
+      title: "6. Literal Types",
+      instruction: "`direction` parametri faqat 'left', 'right', 'up', 'down' qiymatlarini qabul qilsin. Qabul qilib, o'sha stringni qaytarsin.",
+      startingCode: "type Direction = 'left' | 'right' | 'up' | 'down';\n\nfunction moveDir(dir: Direction): string {\n  // kodingizni yozing\n}",
+      hint: "Shunchaki return dir;",
+      solution: "type Direction = 'left' | 'right' | 'up' | 'down';\n\nfunction moveDir(dir: Direction): string {\n  return dir;\n}",
+      test: "const fn = new Function('return function(dir) { return dir; }')();\nconst moveDir = fn;\nreturn moveDir('left') === 'left';"
+    },
+    {
+      id: 7,
+      title: "7. Optional Chaining (?)",
+      instruction: "User ob'ekti va uning ixtiyoriy address xususiyati bo'lishi mumkin. Agar address va city mavjud bo'lsa city-ni qaytaring, aks holda 'N/A' qaytaring.",
+      startingCode: "interface UserProfile {\n  address?: { city?: string };\n}\nfunction getCity(user: UserProfile): string {\n  // kodingizni yozing\n}",
+      hint: "return user.address?.city ?? 'N/A';",
+      solution: "interface UserProfile {\n  address?: { city?: string };\n}\nfunction getCity(user: UserProfile): string {\n  return user.address?.city ?? 'N/A';\n}",
+      test: "const fn = new Function('return function(user) { var _a; return (_a = user.address) === null || _a === void 0 ? void 0 : _a.city ? user.address.city : \"N/A\"; }')();\nconst getCity = fn;\nreturn getCity({ address: { city: 'Tashkent' } }) === 'Tashkent' && getCity({}) === 'N/A';"
+    },
+    {
+      id: 8,
+      title: "8. Nullish Coalescing (??)",
+      instruction: "`value` parametri raqam, `null` yoki `undefined` bo'lishi mumkin. Agar u null/undefined bo'lsa 100 qaytaring. Agar 0 bo'lsa ham 0 ning o'zini qaytarishi muhim (ya'ni `||` emas, `??` ishlating).",
+      startingCode: "function checkValue(value: number | null | undefined): number {\n  // kodingizni yozing\n}",
+      hint: "return value ?? 100;",
+      solution: "function checkValue(value: number | null | undefined): number {\n  return value ?? 100;\n}",
+      test: "const fn = new Function('return function(value) { return value !== null && value !== void 0 ? value : 100; }')();\nconst checkValue = fn;\nreturn checkValue(0) === 0 && checkValue(null) === 100;"
+    },
+    {
+      id: 9,
+      title: "9. Index Properties",
+      instruction: "Xohlagancha string kalitlar va raqamli qiymatlar qabul qiladigan `Dictionary` ob'ektini yarating.",
+      startingCode: "interface Dictionary {\n  [key: string]: number;\n}\n\nfunction createDict(): Dictionary {\n  // kodingizni yozing\n}",
+      hint: "{ a: 1, b: 2 } qaytaring",
+      solution: "interface Dictionary {\n  [key: string]: number;\n}\n\nfunction createDict(): Dictionary {\n  return { age: 25, height: 180 };\n}",
+      test: "const fn = new Function('return function() { return { age: 25 }; }')();\nconst createDict = fn;\nconst res = createDict();\nreturn typeof res.age === 'number';"
+    },
+    {
+      id: 10,
+      title: "10. Type Aliases (Toifa Taxalluslari)",
+      instruction: "`ID` nomli type yarating, u `string | number` bo'lsin va uni qabul qiladigan funksiya yozing.",
+      startingCode: "type ID = string | number;\nfunction checkId(id: ID): ID {\n  // kodingizni yozing\n}",
+      hint: "return id;",
+      solution: "type ID = string | number;\nfunction checkId(id: ID): ID {\n  return id;\n}",
+      test: "const fn = new Function('return function(id) { return id; }')();\nconst checkId = fn;\nreturn checkId(5) === 5 && checkId('abc') === 'abc';"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "Partial<T> yordamchi tipi (Utility Type) qanday vazifani bajaradi?",
-    "options": [
-      "Maydonlarni faqat sonlar bilan cheklaydi",
-      "Obyekt tipidagi barcha maydonlarni ixtiyoriy (optional) qiladi",
-      "Barcha maydonlarni o'chirib tashlaydi",
-      "T tipini funksiyaga aylantiradi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Partial<T> barcha maydonlarni ixtiyoriy qiladi, ya'ni ularni e'lon qilishda `?` belgisi qo'shilgandek ta'sir ko'rsatadi."
-  },
-  {
-    "id": 2,
-    "question": "Required<T> tipining vazifasi nima?",
-    "options": [
-      "Barcha maydonlarni o'chirish",
-      "Barcha ixtiyoriy (optional) maydonlarni majburiy (required) holga keltirish",
-      "Maydonlarni faqat o'qish uchun sozlash",
-      "Obyektga yangi kalitlar qo'shish"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Required<T> tipidagi barcha `?` optional belgilarini olib tashlab, har bir maydonga qiymat berilishini majburiy qiladi."
-  },
-  {
-    "id": 3,
-    "question": "Obyektning hech bir maydonini o'zgartirib bo'lmaydigan qilishda qaysi utility tipdan foydalaniladi?",
-    "options": [
-      "Freeze<T>",
-      "Readonly<T>",
-      "Const<T>",
-      "Immutable<T>"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Readonly<T> obyekt tarkibidagi barcha maydonlarni `readonly` qilib belgilaydi, natijada qiymatlarni o'zgartirish taqiqlanadi."
-  },
-  {
-    "id": 4,
-    "question": "Quyidagi tip nima deb ataladi?\ntype AgeMap = Record<string, number>;",
-    "options": [
-      "Oddiy massiv tipi",
-      "Kalitlari string bo'lgan va qiymatlari son bo'lgan obyekt lug'ati",
-      "Tuple korteji",
-      "Conditional Type"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Record<K, T> yordamida kalitlari K tipida va qiymatlari T tipida bo'lgan xarita/lug'at obyektlari tiplanadi."
-  },
-  {
-    "id": 5,
-    "question": "Mavjud tipdan faqat ko'rsatilgan bir nechta maydonlarni tanlab olishda qaysi utility tip ishlatiladi?",
-    "options": [
-      "Omit",
-      "Pick",
-      "Select",
-      "Filter"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Pick<T, K> orqali T tipidan faqat K kalitlari ajratib olinib, yangi kichik tip yaratiladi."
-  },
-  {
-    "id": 6,
-    "question": "Mavjud tipdan ko'rsatilgan bir nechta maydonlarni o'chirib tashlab, qolgan maydonlardan tip hosil qilishda qaysi utility tip ishlatiladi?",
-    "options": [
-      "Pick",
-      "Omit",
-      "Exclude",
-      "Delete"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Omit<T, K> turi T tarkibidan K ro'yxatidagi maydonlarni o'chirib, qolgan maydonlardan iborat yangi tip qaytaradi."
-  },
-  {
-    "id": 7,
-    "question": "NonNullable<T> tipi T tarkibidan qaysi tiplarni avtomatik ravishda olib tashlaydi?",
-    "options": [
-      "Faqat any tipini",
-      "null va undefined tiplarini",
-      "Faqat bo'sh satrlarni",
-      "Faqat raqamlarni"
-    ],
-    "correctAnswer": 1,
-    "explanation": "NonNullable<T> qiymatlarda null yoki undefined mavjud bo'lishi ehtimolini yo'qotib, xavfsizlikni ta'minlaydi."
-  },
-  {
-    "id": 8,
-    "question": "TypeScript-da typeof operatorining asosiy vazifasi nima?",
-    "options": [
-      "Faqat runtime-da tiplarni tekshirish",
-      "Mavjud JavaScript o'zgaruvchisining tipini aniqlab, uni TypeScript kodi darajasida tip sifatida qo'llash",
-      "Kodni siqish",
-      "Error handling bajarish"
-    ],
-    "correctAnswer": 1,
-    "explanation": "TypeScript darajasidagi typeof o'zgaruvchining tipini o'ziga ko'chirib olish uchun qulay. Masalan: `let y: typeof x = 10;`."
-  },
-  {
-    "id": 9,
-    "question": "Conditional Type (Shartli tip) sintaksisi qaysi operatorga juda o'xshash?",
-    "options": [
-      "If-else operatoriga",
-      "Ternary (uchlik) shart operatoriga (A extends B ? C : D)",
-      "Switch-case operatoriga",
-      "Bitwise operatoriga"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Conditional type shartli tip tanlash uchun ternary operator sintaksisini qo'llaydi: `T extends U ? X : Y`."
-  },
-  {
-    "id": 10,
-    "question": "Mavjud tipdagi har bir maydonni aylanib chiqib, ularning xususiyatlarini o'zgartirish orqali yangi tip yaratish nima deyiladi?",
-    "options": [
-      "Mapped Types (Xaritalangan tiplar)",
-      "Intersection Types",
-      "Union Types",
-      "Enum Types"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Mapped types yordamida mavjud tip maydonlarining tiplarini siklda o'zgartirib chiqish mumkin, masalan: barcha maydonlarni readonly yoki optional qilish."
-  },
-  {
-    "id": 11,
-    "question": "Funksiyaning qaytaradigan natijasi tipini aniqlab beradigan utility tip qaysi?",
-    "options": [
-      "FunctionReturn<T>",
-      "ReturnType<T>",
-      "GetReturn<T>",
-      "ResultOf<T>"
-    ],
-    "correctAnswer": 1,
-    "explanation": "ReturnType<T> funksiya tipi T ning return qiladigan qiymati qanday tipdaligini aniqlab beradi."
-  },
-  {
-    "id": 12,
-    "question": "Utility tiplar loyiha JavaScript-ga o'girilganda kod hajmiga qanday ta'sir ko'rsatadi?",
-    "options": [
-      "Kod hajmini 2 barobar ko'paytiradi",
-      "Hech qanday ta'sir qilmaydi - ular kompilyatsiya vaqtida o'chib ketadi, JS faylda qolmaydi",
-      "JS fayllarni import qilishni qiyinlashtiradi",
-      "Faqat local keshda saqlanib qoladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Balla TypeScript utility tiplari faqat tip tekshiruvi uchun mavjud bo'lgani sababli, tayyor JS fayllardan to'liq olib tashlanadi."
-  }
-]
-
+    {
+      id: 1,
+      question: "Intersection Type (A & B) qanday ishlaydi?",
+      options: [
+        "Faqat A tipini oladi",
+        "A yoki B tipidan birini olishni talab qiladi",
+        "A va B xususiyatlarini o'zida to'liq mujassamlashtiradi (birlashtiradi)",
+        "Xato qaytaradi"
+      ],
+      correctAnswer: 2,
+      explanation: "Intersection (&) ikkala tipning barcha xususiyatlarini bitta tipda birlashtiradi."
+    },
+    {
+      id: 2,
+      question: "Union Type (A | B) qanday ishlaydi?",
+      options: [
+        "A va B tiplarning barcha xususiyatlarini birlashtiradi",
+        "A yoki B tipidagi qiymatni qabul qila oladi",
+        "Kodni xavfsizroq qilmaydi, `any` bilan bir xil",
+        "Faqat massivlarda ishlatiladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Union (|) yordamida o'zgaruvchi berilgan tiplardan xohlagan bittasi bo'lishi mumkinligi ko'rsatiladi."
+    },
+    {
+      id: 3,
+      question: "Type Guard nima?",
+      options: [
+        "Toifani kompilatorga majburan ko'rsatish (Type Casting)",
+        "Dastur ishlashi davomida aniq qaysi toifa ishlatilayotganini tekshirish usuli (masalan typeof)",
+        "TypeScript o'rnatuvchi dastur",
+        "Faqat klasslarda ishlatiladigan himoya metodi"
+      ],
+      correctAnswer: 1,
+      explanation: "Type Guard - bu `typeof`, `instanceof` yoki maxsus funksiyalar orqali Union tiplarning aniq qaysi biri ekanligini if/else bloki ichida aniqlashdir."
+    },
+    {
+      id: 4,
+      question: "`as` operatori nima ish qiladi (Type Casting)?",
+      options: [
+        "JavaScript-ga kompilatsiya bo'lganda o'zgaruvchini tipini o'zgartiradi",
+        "TypeScript kompilatoriga \"bu o'zgaruvchining toifasini o'zim bilaman\" deb ko'rsatish",
+        "Yangi toifa yaratadi",
+        "Faqat raqamlarni string-ga o'tkazadi"
+      ],
+      correctAnswer: 1,
+      explanation: "`as` (Type Assertion) kompilatorga tayanmasdan, o'zgaruvchining tipini o'zingiz aniq belgilab yuborish uchun ishlatiladi."
+    },
+    {
+      id: 5,
+      question: "`in` operatori TypeScript-da nima maqsadda ko'p ishlatiladi?",
+      options: [
+        "For loop aylantirish uchun",
+        "Type Guard sifatida ob'ekt ichida xususiyat bor-yo'qligini tekshirish uchun",
+        "String qidirish uchun",
+        "Massiv uzunligini bilish uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar ob'ektda aniq bir propertining mavjudligi uning qaysi interfeysga tegishli ekanligini bildirsa, `in` yordamida Type Guard qilinadi."
+    },
+    {
+      id: 6,
+      question: "Literal types deganda nima tushuniladi?",
+      options: [
+        "Faqat `string` bo'lgan tiplar",
+        "Qat'iy aniq qiymatni toifa sifatida belgilash (masalan `type Dir = 'left' | 'right'` )",
+        "Mantiqiy ifodalar",
+        "Regex"
+      ],
+      correctAnswer: 1,
+      explanation: "Literal tipda o'zgaruvchi qabul qilishi mumkin bo'lgan aniq bir string, raqam yoki boolean qiymatlar ko'rsatiladi."
+    },
+    {
+      id: 7,
+      question: "Index Properties nima?",
+      options: [
+        "Faqat array indekslari",
+        "`[key: string]: any;` ko'rinishida yozilib, ob'ekt xohlagancha qo'shimcha dinamik xususiyatlar qabul qila olishi",
+        "Index.html faylini ko'rsatuvchi propertilar",
+        "Bunday tushuncha yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "Ob'ektning barcha kalitlari oldindan ma'lum bo'lmaganda `[key: string]: type` sintaksisi orqali dinamik xususiyatlarga ruxsat beriladi."
+    },
+    {
+      id: 8,
+      question: "`nullish coalescing` operatori (`??`) `||` (OR) dan nimasi bilan farq qiladi?",
+      options: [
+        "Hech qanday farqi yo'q",
+        "`??` faqat `null` yoki `undefined` ni e'tiborga oladi, `||` esa 0, '', false kabi barcha falsy qiymatlarni ham e'tiborga oladi",
+        "`??` faqat raqamlar bilan ishlaydi",
+        "`||` faqat TypeScript-da ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`??` ishlatilganda, agar chap tomon 0 yoki bo'sh string bo'lsa ham shu o'zi olinadi. Faqat null yoki undefined bo'lsagina o'ng tomonga o'tiladi."
+    },
+    {
+      id: 9,
+      question: "Optional chaining (`?.`) nega foydali?",
+      options: [
+        "JS ishlashini tezlashtiradi",
+        "Agar ob'ekt yoki xususiyat mavjud bo'lmasa, dastur qotib qolishini (TypeError) oldini oladi va undefined qaytaradi",
+        "Kodni qisqartirmaydi, lekin chiroyli qiladi",
+        "Faqat class larda ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`obj?.prop?.subProp` yozilganda, agar `obj` yoki `prop` null bo'lsa xato berish o'rniga xavfsizgina undefined qaytaradi."
+    },
+    {
+      id: 10,
+      question: "`type` va `interface` asosiy farqlaridan biri nima?",
+      options: [
+        "Type Union va Intersection qila oladi, Interface ko'proq obyekt shaklini tasvirlashga (extends) moslangan",
+        "Type umuman ishlatilmaydi",
+        "Interface faqat React-da ishlaydi",
+        "Ikkalasi mutlaqo bir xil"
+      ],
+      correctAnswer: 0,
+      explanation: "`type` orqali Union (|) yoki Tuple yozish qulay, `interface` esa obyekt va class strukturalari uchun kengaytirishga (extends) moslashtirilgan."
+    },
+    {
+      id: 11,
+      question: "`Discriminated Unions` nima uchun kerak?",
+      options: [
+        "Union tiplarda umumiy biror xususiyatni (masalan `type: 'success' | 'error'`) belgilab, o'sha orqali tiplarni oson ajratib (Type Guard) olish uchun",
+        "Tiplarni bloklash uchun",
+        "Tizim xavfsizligi uchun",
+        "Faqat Redux uchun kerak"
+      ],
+      correctAnswer: 0,
+      explanation: "Bir xil nomli lekin qiymati har xil literal xususiyat (masalan `kind` yoki `type`) orqali ob'ektlarni if/switch orqali xavfsiz va tez ajratib olish (Discriminated Unions) JS va TS da juda ommabop shablondir."
+    },
+    {
+      id: 12,
+      question: "Type Assertion ning qanday ikkita yozilishi mavjud?",
+      options: [
+        "`as Type` va `<Type>value`",
+        "`value: Type` va `value = Type`",
+        "`typeof value` va `instanceof value`",
+        "`value => Type` va `Type => value`"
+      ],
+      correctAnswer: 0,
+      explanation: "TypeScript da toifani tasdiqlash uchun `value as SomeType` yoki `<SomeType>value` ishlatiladi. JSX (React) muhitida faqat `as` ishlatiladi chunki `< >` taglar bilan adashib ketadi."
+    }
+  ]
 };

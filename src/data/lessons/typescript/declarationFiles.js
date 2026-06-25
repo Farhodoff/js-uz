@@ -1,283 +1,288 @@
 export const declarationFiles = {
-  id: "declarationFiles",
-  title: "TypeScript Declaration Files (.d.ts)",
+  id: "ts-declaration-files",
+  title: "Declaration Files (.d.ts)",
   language: "typescript",
   theory: `## 1. 💡 Sodda Tushuntirish
+TypeScript'da **Declaration Files** (Ta'riflash fayllari) — bu kengaytmasi \`.d.ts\` bo'lgan maxsus fayllardir. Ularning yagona maqsadi — TypeScript ga mavjud JavaScript kodining **turlari (types)** haqida ma'lumot berish.
+Tasavvur qiling, siz toza JavaScript da yozilgan kutubxonani (masalan, jQuery yoki Lodash) TypeScript loyihangizda ishlatmoqchisiz. TypeScript ularning ichida qanday funksiyalar borligini bilmaydi. Shunda siz yoki tayyor \`.d.ts\` faylini yuklab olasiz, yoki o'zingiz "Bu yerda shunday funksiya bor va u raqam qaytaradi" deb yozib qo'yasiz.
 
-### Declaration Files (.d.ts) nima?
-TypeScript-da yozilmagan, lekin oddiy JavaScript kutubxonalari (masalan, eski npm paketlar) uchun tiplash qoidalari va deklaratsiyalarini saqlovchi maxsus fayllar **Declaration Files (Deklaratsiya fayllari / \\\`.d.ts\\\` fayllar)** deb ataladi.
-Ular xuddi **dorilar qutisidagi yo'riqnomaga** o'xshaydi: qutining ichida haqiqiy dori (JavaScript kodi) bor, lekin uning qanday ishlashi, qanday dozalarda ichilishi haqidagi ma'lumot qog'ozda (yo'riqnomada / \\\`.d.ts\\\` faylda) yozilgan. Brauzer dorini (kodni) qabul qiladi, IDE va kompilyator esa yo'riqnomani (tiplarni) o'qib, sizga yordam beradi.
+Asosiy kalit so'z — \`declare\`. U TypeScript ga: "Menga ishon, dastur ishlaganda shu narsa albatta mavjud bo'ladi" deydi.
 
----
+## ❌ YOMON va ✅ YAXSHI Yondashuvlar
 
-## 2. 💻 Real Kod Misollari
-
-### 1. Global o'zgaruvchini e'lon qilish (declare)
-Agar HTML faylingizda tashqi skript orqali global o'zgaruvchi (masalan, \\\`Kakao\\\` yoki \\\`analytics\\\`) qo'shilgan bo'lsa, TypeScript-ga bu haqda e'lon qilishingiz shart:
-\\\`\\\`\\\`typescript
-// src/global.d.ts fayli ichida:
-declare const analytics: {
-  trackEvent: (name: string, data?: object) => void;
-};
-
-// Endi istalgan TS faylida bemalol ishlatiladi:
-analytics.trackEvent("user_login", { method: "google" });
-\\\`\\\`\\\`
-
-### 2. JavaScript Modulini tiplash
-Agar sizda tiplari bo'lmagan oddiy \\\`math-utils.js\\\` fayli bo'lsa, unga xuddi shu nomdagi \\\`math-utils.d.ts\\\` faylini yaratib, tiplash kiritishingiz mumkin:
-\\\`\\\`\\\`typescript
-// src/utils/math-utils.d.ts fayli ichida:
-declare module "math-utils" {
-  export function add(a: number, b: number): number;
-  export function subtract(a: number, b: number): number;
-}
-\\\`\\\`\\\`
-
-### 3. Window obyektini kengaytirish
-Window global obyektiga yangi xususiyat qo'shganda, uni TS tushunishi uchun interfeyslarni birlashtiramiz:
-\\\`\\\`\\\`typescript
-// global.d.ts ichida:
-interface Window {
-  myCustomConfig?: {
-    apiKey: string;
-    theme: "light" | "dark";
-  };
-}
-
-// Kod ichida:
-window.myCustomConfig = { apiKey: "key123", theme: "dark" };
-\\\`\\\`\\\`
-
----
-
-## 3. 🎨 Tiplar Qayerdan Keladi? (Definitely Typed)
-
-TypeScript-da uchinchi tomon JavaScript kutubxonalarining tiplarini qanday yuklash sxemasi:
-
-\`\`\`mermaid
-graph TD
-    JS[npm install lodash - Faqat JS kod]
-    JS -->|TS compiler error: No types found| InstallTypes[npm install @types/lodash - devDependency]
-    InstallTypes -->|Types linked| IDE[TypeScript + VS Code: Autocomplete va Type checking ishlaydi]
+❌ **YOMON Yondashuv (Xavfsizliksiz any):**
+\`\`\`typescript
+// tashqi JS fayldagi noma'lum o'zgaruvchi
+const lodash: any = require('lodash'); 
+// hech qanday yordam (autocomplete) va xato tekshiruvi yo'q!
+lodash.chunk([1,2,3]);
 \`\`\`
 
----
+✅ **YAXSHI Yondashuv (Ta'riflash fayli bilan):**
+\`\`\`typescript
+// custom.d.ts fayli ichida yozamiz:
+declare module "lodash" {
+  export function chunk<T>(array: T[], size?: number): T[][];
+}
 
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+// app.ts ichida endi autocomplete va tiplar ishlaydi
+import { chunk } from 'lodash';
+chunk([1, 2, 3, 4], 2);
+\`\`\`
 
-### 1. .d.ts fayli ichida haqiqiy JS kodini yozish (Implementatsiya)
-Deklaratsiya fayllari faqat va faqat **tiplarni e'lon qilish** uchun mo'ljallangan. Ular ichida haqiqiy funksiya tanasi yoki o'zgaruvchi qiymati yozilmasligi kerak.
-* **Noto'g'ri:** \\\`declare function greet() { return "hello"; }\\\`
-* **To'g'ri:** \\\`declare function greet(): string;\\\`
+## 🎤 Intervyu Savollari
+1. **\`.d.ts\` va \`.ts\` fayllarning farqi nima?**
+   - Javob: \`.ts\` faylida amaliy kod va mantiq yoziladi va u oxirida JS ga kompilyatsiya bo'ladi. \`.d.ts\` faylida esa faqat turlar e'lon qilinadi (declare), unda mantiq bo'lmaydi va u JS faylga o'girilmaydi.
+2. **\`declare module\` nima uchun kerak?**
+   - Javob: TypeScript tanimaydigan JavaScript kutubxonalari (npm paketlar) uchun maxsus modul ekanligini va uning ichida qanday metodlar borligini ko'rsatish uchun.
+3. **\`@types/...\` nima?**
+   - Javob: Mashhur JavaScript kutubxonalarining (masalan \`@types/node\`, \`@types/react\`) jamoat tomonidan yozib qo'yilgan \`.d.ts\` fayllari to'plami (DefinitelyTyped).
 
-### 2. declare kalit so'zini import/export bilan noto'g'ri ishlatish
-Agar \\\`.d.ts\\\` faylida \\\`import\\\` yoki \\\`export\\\` yozilsa, u avtomatik ravishda tashqi modulga aylanadi va global doiradan chiqib ketadi. Bunga e'tibor berish shart.
-
----
-
-## 5. 💬 12 ta Intervyu Savollari (Junior/Middle)
-
-### Junior
-1. **Savol:** \`.d.ts\` kengaytmasidagi fayllar nima?
-   * **Javob:** Faqat tiplar va deklaratsiyalarni saqlaydigan, ichida hech qanday bajariladigan JavaScript kodi bo'lmagan TypeScript fayllaridir.
-2. **Savol:** Ular kompilyatsiyadan keyin nima bo'ladi?
-   * **Javob:** TypeScript tiplarni olib tashlagani (Type Erasure) kabi, \\\`.d.ts\\\` fayllari ham yakuniy JS buildidan butunlay o'chiriladi va hech qanday kod hosil qilmaydi.
-3. **Savol:** Definitely Typed nima?
-   * **Javob:** TypeScript hamjamiyati tomonidan JavaScript kutubxonalari uchun yozilgan tiplar to'plamidir (ular npm-ga \\\`@types/kutubxonaNomi\\\` shaklida yuklanadi).
-4. **Savol:** \`declare\` kalit so'zi nima uchun ishlatiladi?
-   * **Javob:** Runtimeda mavjud bo'lgan, lekin TypeScript hozircha bilmaydigan o'zgaruvchi yoki modul borligini kompilyatorga bildirish uchun.
-
-### Middle
-5. **Savol:** Nima uchun \`window\` obyektiga yangi xossa qo'shganda TS xato beradi va u qanday hal qilinadi?
-   * **Javob:** Chunki global \\\`Window\\\` interfeysida u xossa mavjud emas. Hal qilish uchun global d.ts faylida \\\`interface Window\\\` e'lon qilinib, kerakli xossa qo'shib qo'yiladi (Interface Merging).
-6. **Savol:** Tashqi JS faylini tiplash uchun \`.d.ts\` faylini qayerga va qanday nom bilan joylashtirish kerak?
-   * **Javob:** JS fayli bilan bir xil papkaga va xuddi shu nom ostida joylashtiriladi (masalan, \\\`helper.js\\\` va \\\`helper.d.ts\\\`).
-7. **Savol:** Ambient Declarations nima?
-   * **Javob:** Koddan tashqarida (global skriptlarda yoki boshqa muhitda) mavjud bo'lgan o'zgaruvchilar, classlar yoki modullarning tiplarini \\\`declare\\\` yordamida e'lon qilishdir.
-8. **Savol:** \`declare module "nom"\` qachon ishlatiladi?
-   * **Javob:** Tiplari bo'lmagan uchinchi tomon kutubxonasiga vaqtinchalik tip berish yoki uni to'liq tiplash uchun.
-
-### Senior
-9. **Savol:** Triple-slash directive (\`/// <reference path="..." />\`) nima vazifani bajaradi?
-   * **Javob:** Deklaratsiya fayllari o'rtasidagi bog'liqlikni (dependency) ko'rsatish uchun ishlatiladigan eski, lekin hali ham qo'llaniladigan XML ko'rinishidagi yo'riqnomadir.
-10. **Savol:** \`.d.ts\` fayllarini global qilish va modul qilish o'rtasidagi farq nima?
-    * **Javob:** Fayl ichida hech qanday top-level \\\`import\\\` yoki \\\`export\\\` bo'lmasa, u global hisoblanadi. Agar bitta \\\`import\\\` yoki \\\`export\\\` yozilsa, u modulga aylanadi va uni global ishlatish uchun \\\`declare global { ... }\\\` blokidan foydalanish kerak bo'ladi.
-11. **Savol:** Nima uchun npm-ga kutubxona yuklaganda deklaratsiyalarni \\\`@types\\\` orqali emas, paket tarkibida tarqatish yaxshi hisoblanadi?
-    * **Javob:** Chunki tiplar kod bilan birga sinxron yangilanadi va foydalanuvchi alohida \\\`@types\\\` paketini o'rnatishi shart bo'lmaydi. tsconfig-dagi \\\`types\\\` yoki \\\`typings\\\` xossasi orqali paket entry-pointi ko'rsatiladi.
-12. **Savol:** \`declare global\` bloki qachon ishlatiladi va uning vazifasi nima?
-    * **Javob:** Modul fayl (import/export-i bor) ichidan turib global doiradagi (global scope) tiplarni, window obyektini yoki global o'zgaruvchilarni kengaytirish uchun ishlatiladi.
+## 🛠️ Amaliy Topshiriqlar
+\`\`\`mermaid
+graph TD;
+    JS[Lodash.js] --> TSCode[TypeScript kodi];
+    DTS[lodash.d.ts] -.->|Turlar ta'rifi| TSCode;
+    TSCode --> Compiler[TS Compiler];
+    Compiler -->|Faqat JS kompilyatsiya bo'ladi| JSFinal[Natijaviy JS];
+\`\`\`
 `,
   exercises: [
     {
       id: 1,
-      title: "Global o'zgaruvchi e'lon qilish",
-      instruction: "Runtimeda mavjud bo'lgan global `API_VERSION` nomli o'zgarmas son (const number) mavjudligini TypeScript kompilyatoriga bildiring.",
-      startingCode: "// API_VERSION o'zgaruvchisini declare qiling\n",
-      hint: "declare const API_VERSION: number;",
-      test: "if (!code.includes('declare const API_VERSION')) return 'declare const API_VERSION dan foydalaning';\nif (!code.includes('number')) return 'Tipini number qilib belgilang';"
+      title: "Global o'zgaruvchi",
+      instruction: "Loyiha bo'ylab HTML ichidan keladigan `PI` degan global o'zgaruvchi mavjudligini TypeScript ga tanitish uchun uni `number` sifatida e'lon qiling (`declare var`).",
+      startingCode: "// PI ni e'lon qiling\n",
+      hint: "declare var PI: number; yozing.",
+      solution: "declare var PI: number;",
+      test: "return /declare\\s+var\\s+PI\\s*:\\s*number/.test(code);"
     },
     {
       id: 2,
-      title: "Tashqi modulni declare qilish",
-      instruction: "\"my-custom-slider\" nomli tashqi modulni TypeScript import qila olishi uchun uni declare qiling.",
-      startingCode: "// Modulni declare qiling\n",
-      hint: "declare module 'my-custom-slider';",
-      test: "if (!code.includes('declare module')) return 'declare module kalit so\\'zini ishlating';\nif (!code.includes('my-custom-slider')) return 'Modul nomini to\\'g\\'ri yozing';"
+      title: "Global funksiya",
+      instruction: "`showAlert` nomli global funksiya mavjud bo'lib, u `msg: string` parametr oladi va hech narsa qaytarmaydi. Buni e'lon qiling.",
+      startingCode: "// showAlert funksiyasini ta'riflang\n",
+      hint: "declare function showAlert(msg: string): void;",
+      solution: "declare function showAlert(msg: string): void;",
+      test: "return /declare\\s+function\\s+showAlert\\s*\\(\\s*msg\\s*:\\s*string\\s*\\)\\s*:\\s*void/.test(code);"
     },
     {
       id: 3,
+      title: "Modul ta'rifi",
+      instruction: "`\"my-lib\"` nomli tashqi kutubxona uchun modul e'lon qiling. Modul ichida bo'sh tana `{}` qo'ying.",
+      startingCode: "// my-lib modulini declare qiling\n",
+      hint: "declare module \"my-lib\" { }",
+      solution: "declare module \"my-lib\" {\n\n}",
+      test: "return /declare\\s+module\\s+['\"]my-lib['\"]\\s*\\{/.test(code);"
+    },
+    {
+      id: 4,
       title: "Window interfeysini kengaytirish",
-      instruction: "Global `window` obyektiga `appTheme` (string) ixtiyoriy xossasini interfeyslarni birlashtirish orqali qo'shing.",
-      startingCode: "interface Window {\n  // appTheme maydonini qo'shing\n}\n",
-      hint: "appTheme?: string;",
-      test: "if (!code.includes('appTheme')) return 'appTheme maydonini qo\\'shing';\nif (!code.includes('string')) return 'Unga string tipini bering';"
+      instruction: "Brauzerning `Window` obyektiga `myPlugin` obyekti qo'shilgan. TypeScript xato bermasligi uchun `Window` interfeysini kengaytirib unga `myPlugin: any` xususiyatini yozing.",
+      startingCode: "interface Window {\n  // shu yerga yozing\n}",
+      hint: "myPlugin: any; kiriting.",
+      solution: "interface Window {\n  myPlugin: any;\n}",
+      test: "return /interface\\s+Window\\s*\\{\\s*myPlugin\\s*:\\s*any\\s*;?\\s*\\}/.test(code);"
+    },
+    {
+      id: 5,
+      title: "Global class",
+      instruction: "`Logger` nomli global klass borligini ta'riflang. Uning ichida `log(message: string): void` metodi bo'lsin.",
+      startingCode: "// Logger classini e'lon qiling\n",
+      hint: "declare class Logger { ... }",
+      solution: "declare class Logger {\n  log(message: string): void;\n}",
+      test: "return /declare\\s+class\\s+Logger\\s*\\{\\s*log\\s*\\(\\s*message\\s*:\\s*string\\s*\\)\\s*:\\s*void\\s*;?\\s*\\}/.test(code);"
+    },
+    {
+      id: 6,
+      title: "Rasm fayllari uchun modul",
+      instruction: "TypeScript da `.png` rasm fayllarini import qilganda xato chiqmasligi uchun `\"*.png\"` modulini ta'riflang va undan `any` qiymat export bo'lishini ko'rsating.",
+      startingCode: "declare module \"*.png\" {\n  const value: any;\n  // shu yerdan value ni export qiling (export default value)\n}",
+      hint: "export default value; yozing.",
+      solution: "declare module \"*.png\" {\n  const value: any;\n  export default value;\n}",
+      test: "return /declare\\s+module\\s+['\"]\\*\\.png['\"]\\s*\\{[^}]*export\\s+default\\s+value/.test(code);"
+    },
+    {
+      id: 7,
+      title: "Namespace",
+      instruction: "`MathLib` degan global obyekt (namespace) ichida `add(a: number, b: number): number` funksiyasi bor. Buni `declare namespace` orqali ta'riflang.",
+      startingCode: "// MathLib ni e'lon qiling\n",
+      hint: "declare namespace MathLib { export function add(...) }",
+      solution: "declare namespace MathLib {\n  export function add(a: number, b: number): number;\n}",
+      test: "return /declare\\s+namespace\\s+MathLib\\s*\\{[^}]*export\\s+function\\s+add\\s*\\(\\s*[ab]\\s*:\\s*number\\s*,\\s*[ab]\\s*:\\s*number\\s*\\)\\s*:\\s*number/.test(code);"
+    },
+    {
+      id: 8,
+      title: "Global o'zgarmas (const)",
+      instruction: "Webpack yoki Vite kabi bundler'lar orqali keladigan `VERSION` nomli global konstantani `string` sifatida declare qiling.",
+      startingCode: "// VERSION ni declare qiling\n",
+      hint: "declare const VERSION: string;",
+      solution: "declare const VERSION: string;",
+      test: "return /declare\\s+const\\s+VERSION\\s*:\\s*string/.test(code);"
+    },
+    {
+      id: 9,
+      title: "Turlarni export qilish",
+      instruction: "Boshqa fayllarda ishlatish uchun `User` nomli interfeysni (`id: number`) to'g'ridan-to'g'ri `export` kalit so'zi bilan e'lon qiling.",
+      startingCode: "// User interfeysini e'lon qilib export qiling\n",
+      hint: "export interface User { id: number; }",
+      solution: "export interface User {\n  id: number;\n}",
+      test: "return /export\\s+interface\\s+User\\s*\\{\\s*id\\s*:\\s*number\\s*;?\\s*\\}/.test(code);"
+    },
+    {
+      id: 10,
+      title: "NodeJS Environment",
+      instruction: "`process.env.PORT` uchun TypeScript yordam berishi maqsadida, `NodeJS` nomli namespace ichida `ProcessEnv` interfeysini e'lon qilib `PORT: string` qo'shing.",
+      startingCode: "declare namespace NodeJS {\n  // ProcessEnv interfeysini yarating\n}",
+      hint: "interface ProcessEnv { PORT: string; }",
+      solution: "declare namespace NodeJS {\n  interface ProcessEnv {\n    PORT: string;\n  }\n}",
+      test: "return /declare\\s+namespace\\s+NodeJS\\s*\\{\\s*interface\\s+ProcessEnv\\s*\\{\\s*PORT\\s*:\\s*string\\s*;?\\s*\\}\\s*\\}/.test(code);"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "TypeScript-da .d.ts fayllarining asosiy vazifasi nima?",
+      question: "Ta'riflash (.d.ts) faylining asosiy maqsadi nima?",
       options: [
-        "Loyiha uchun CSS stillarini saqlash",
-        "JavaScript kodlarining tiplarini (deklaratsiyalarini) saqlash",
-        "Ma'lumotlar bazasi so'rovlarini optimallashtirish",
-        "Kodni siqib berish (minifikatsiya)"
+        "Loyiha tezligini oshirish",
+        "TypeScript ga JavaScript kodining turlari haqida ma'lumot berish",
+        "React komponentlarini render qilish",
+        "Ma'lumotlar bazasiga ulanish"
       ],
       correctAnswer: 1,
-      explanation: "Deklaratsiya fayllari (.d.ts) JavaScript kodining tiplari va e'lonlarini saqlaydi, lekin bajariladigan kod saqlamaydi."
+      explanation: "TypeScript faqat .ts fayllarni tekshira oladi. JS kodlar uchun unga ularning 'shablonlari' (.d.ts) kerak bo'ladi."
     },
     {
       id: 2,
-      question: "npm-da tiplarsiz kutubxonalar (masalan lodash) tiplari Definitely Typed-dan qanday o'rnatiladi?",
+      question: "declare kalit so'zi qanday ma'noni beradi?",
       options: [
-        "npm install types-lodash",
-        "npm install @types/lodash --save-dev",
-        "npm install lodash-ts",
-        "Tiplarni o'rnatib bo'lmaydi"
+        "Yangi fayl yaratish",
+        "O'zgaruvchini avtomatik o'chirish",
+        "O'zgaruvchi yoki funksiya dastur ishlaganda qayerdandir aniq kelishini kompilyatorga aytish",
+        "Class dan nusxa olish"
       ],
-      correctAnswer: 1,
-      explanation: "Uchinchi tomon kutubxonalari tiplari hamjamiyat tomonidan @types/kutubxonaNomi nomi ostida devDependency sifatida o'rnatiladi."
+      correctAnswer: 2,
+      explanation: "declare orqali TS ga xato bermaslik kerakligi, chunki amaliyotda bu narsa global obyektlarda borligi tushuntiriladi."
     },
     {
       id: 3,
-      question: "d.ts fayllari ichida quyidagi amallardan qaysi birini bajarish mumkin emas?",
+      question: ".d.ts fayllari oxirida JS kodiga kompilyatsiya qilinadimi?",
       options: [
-        "Funksiya tiplarini e'lon qilish",
-        "Haqiqiy funksiya tanasini yozish (implementatsiya)",
-        "Interfeyslarni e'lon qilish",
-        "Modul strukturalarini yozish"
+        "Ha, har doim",
+        "Faqat ichida funksiya yozilgan bo'lsa",
+        "Yo'q, ular faqat TS tekshiruvi uchun ishlatilib, kompilyatsiya qilinmaydi",
+        "Ular CSS ga aylanadi"
       ],
-      correctAnswer: 1,
-      explanation: "d.ts fayllarida faqat deklaratsiyalar yoziladi, haqiqiy JS bajariladigan kodini yozish taqiqlanadi (xato beradi)."
+      correctAnswer: 2,
+      explanation: "Declaration fayllari butunlay 'xayoliy' bo'lib, JS dagi ko'rinishi mavjud bo'lmaydi."
     },
     {
       id: 4,
-      question: "declare kalit so'zi nima vazifani bajaradi?",
+      question: "Tashqi JavaScript kutubxona uchun TS ko'rsatmalarini qayerdan topamiz?",
       options: [
-        "Yangi ma'lumotlar ombori yaratadi",
-        "Kompilyatorga tashqarida/runtimeda mavjud bo'lgan o'zgaruvchi borligini bildiradi",
-        "O'zgaruvchini localstorage-ga saqlaydi",
-        "Kodni serverga yuklaydi"
+        "Kutubxonani JS kodini o'qib",
+        "DefinitelyTyped hamjamiyati yaratgan @types/paket-nomi paketlaridan",
+        "Uni qilib bo'lmaydi",
+        "tsconfig.json dan"
       ],
       correctAnswer: 1,
-      explanation: "declare o'zgaruvchining haqiqiy qiymatni yaratmasdan, uning runtimeda borligini e'lon qiladi."
+      explanation: "Mashhur kutubxonalarning turlari npm da @types/... ko'rinishida saqlanadi (masalan, @types/react)."
     },
     {
       id: 5,
-      question: "Window global obyektini kengaytirish uchun qaysi TypeScript mexanizmi ishlatiladi?",
+      question: "Kutubxonani @types/ versiyasi bo'lmasa nima qilish kerak?",
       options: [
-        "Interface Merging (Interfeyslarni birlashtirish)",
-        "Type Alias",
-        "Inheritance (Merosxo'rlik)",
-        "Generics"
+        "U kutubxonadan foydalana olmaymiz",
+        "JS kutubxonani o'chirib TS da noldan yozamiz",
+        "O'zimiz loyihada maxsus 'declare module' orqali yozib qo'yamiz",
+        "Brauzerni o'zgartiramiz"
       ],
-      correctAnswer: 0,
-      explanation: "Bir xil nomli interfeyslar (masalan Window) avtomatik tarzda birlashadi va yangi xossalar global window-ga qo'shiladi."
+      correctAnswer: 2,
+      explanation: "Shunday holatlarda 'declare module \"kutubxona-nomi\"' yozib custom declaration qilsak muammo hal bo'ladi."
     },
     {
       id: 6,
-      question: "Triple-slash directives (/// <reference ... />) qaysi formatda yoziladi?",
+      question: "Rasm, CSS yoki JSON fayllarni TS da import qilganda xato bermasligi uchun qaysi sintaksis ishlatiladi?",
       options: [
-        "Component izohi",
-        "XML shaklidagi izoh yo'riqnomasi",
-        "JSON formatida",
-        "YAML formatida"
+        "declare file '*.css'",
+        "declare module '*.css'",
+        "import as '*'",
+        "ignore file"
       ],
       correctAnswer: 1,
-      explanation: "Triple-slash yo'riqnomalari XML formatidagi bir qatorli izohlardir (/// <reference path='...' />)."
+      explanation: "TS ga modullarni import qilish xavfsiz ekanini bildirish uchun 'declare module \"*.kengaytma\"' qilinadi."
     },
     {
       id: 7,
-      question: ".d.ts fayli tarkibida import/export kalit so'zi yozilsa u nima deb hisoblanadi?",
+      question: "interface Window { ... } yordamida nima qilish mumkin?",
       options: [
-        "Global deklaratsiya fayli",
-        "Modul deklaratsiya fayli",
-        "JSON konfiguratsiyasi",
-        "Standard .ts fayli"
+        "Ekranda oyna ochish",
+        "Mavjud global Window ob'ektiga o'zimizning qo'shimcha turlarimizni qo'shib qo'yish (Declaration Merging)",
+        "React ilovasini yopish",
+        "Serverga murojaat qilish"
       ],
       correctAnswer: 1,
-      explanation: "Faylda import yoki export ishtirok etsa, u modul deb hisoblanadi va global scope-dan ajraladi."
+      explanation: "TypeScript da bir xil nomdagi Interfeyslar birlashib ketadi (Merging), bu global ob'ektlarni o'zgartirishga juda qulay."
     },
     {
       id: 8,
-      question: "Modul bo'lgan .d.ts fayli ichidan global doirani (scope) kengaytirish uchun qaysi blok ishlatiladi?",
+      question: ".d.ts fayli ichida amaliy mantiq (masalan console.log('salom')) yozish mumkinmi?",
       options: [
-        "declare global",
-        "global scope",
-        "declare module",
-        "export global"
+        "Ha, mumkin",
+        "Mumkin emas, .d.ts fayllarida faqat type e'lonlari (declarations) bo'lishi shart",
+        "Faqat function tana qismida",
+        "Ha, agar export bo'lsa"
       ],
-      correctAnswer: 0,
-      explanation: "Modul ichida turib global tiplarni kengaytirish uchun declare global { ... } blokidan foydalaniladi."
+      correctAnswer: 1,
+      explanation: ".d.ts faqat turlarni ta'riflaydi, kodning qanday ishlashi (implementation) u yerga yozilmaydi."
     },
     {
       id: 9,
-      question: "Kutubxona yaratib uni npm-ga chiqarayotganda tiplarni ulash uchun package.json faylining qaysi maydoni ishlatiladi?",
+      question: "declare namespace nima uchun ishlatiladi?",
       options: [
-        "types (yoki typings)",
-        "main",
-        "module",
-        "dependencies"
+        "HTML nomlarini guruhlash",
+        "Global obyektning xususiyatlarini va funksiyalarini tartibli guruhlash uchun (masalan, jQuery ning '$' obyekti kabi)",
+        "Kodni xavfsiz qilish uchun",
+        "Hech qanday ma'nosi yo'q"
       ],
-      correctAnswer: 0,
-      explanation: "package.json-dagi 'types' (yoki 'typings') maydoni loyiha deklaratsiyalari kirish nuqtasini ko'rsatadi."
+      correctAnswer: 1,
+      explanation: "Bir qancha metodlarni o'zida jamlagan global o'zgaruvchilarni (masalan, Math) yozishda namespace qulay."
     },
     {
       id: 10,
-      question: "declare function log(message: string): void; kodi kompilyatsiyadan keyin qanday JS kodini hosil qiladi?",
+      question: "declare var va declare let / const o'rtasida katta farq bormi?",
       options: [
-        "function log(message) {}",
-        "Hech qanday kod hosil qilmaydi (o'chib ketadi)",
-        "console.log(message);",
-        "Xatolik beradi"
+        "Umuman farqi yo'q",
+        "TypeScript da turlarni e'lon qilishda barchasi qabul qilinadi, lekin const bilan qilingani faqat o'qish uchun (readonly) ekanligini ham bildiradi",
+        "declare var xato hisoblanadi",
+        "let har doim number qaytaradi"
       ],
       correctAnswer: 1,
-      explanation: "Kompilyatsiya vaqtida barcha declare e'lonlari o'chirib yuboriladi, chunki runtimeda bu narsa tashqi muhitda allaqachon mavjud deb hisoblanadi."
+      explanation: "declare const TS ga bu global o'zgaruvchini qayta o'zgartirib bo'lmasligini oldindan bildiradi."
     },
     {
       id: 11,
-      question: "Qaysi variantda declare to'g'ri qo'llanilgan?",
+      question: "Muhit o'zgaruvchilari (process.env) turlarini qo'shish qanday qilinadi?",
       options: [
-        "declare var x = 10;",
-        "declare var x: number;",
-        "declare function f() { return 1; }",
-        "declare class C { x = 2; }"
+        "declare module 'env'",
+        "declare namespace NodeJS qilib uning ichidagi ProcessEnv interfeysini kengaytirib",
+        "process.ts fayl ochish orqali",
+        "React dagi props kabi"
       ],
       correctAnswer: 1,
-      explanation: "declare ishlatilganda qiymatlar yoki funksiya tanalari (implementatsiya) yozilmaydi, faqat tiplar e'lon qilinadi."
+      explanation: "Node muhitida ishlaydigan TS da, aynan NodeJS namespace'ini va uning ProcessEnv'ini kengaytiramiz."
     },
     {
       id: 12,
-      question: "TS config-dagi skippedLibCheck uchinchi tomon tiplarini qayerdan skip qiladi?",
+      question: "Nima sababdan ba'zan biz o'zimiz .d.ts fayl yaratmaymiz?",
       options: [
-        "node_modules ichidagi .d.ts fayllardan",
-        "src ichidagi fayllardan",
-        "Faqat JSON fayllardan",
-        "Faqat HTML fayllardan"
+        "Chunki ular zararli",
+        "Agar biz TS da kod yozib komplyatsiya qilsak (declaration: true bilan), u avtomatik ravishda d.ts faylini yaratib beradi",
+        "Chunki JS yetarli",
+        "TS tezligini pasaytiradi"
       ],
-      correctAnswer: 0,
-      explanation: "skipLibCheck node_modules ichida keladigan kutubxonalarning tip fayllarini tekshirishdan qochib, tezlikni oshiradi."
+      correctAnswer: 1,
+      explanation: "tsconfig.json da 'declaration: true' qilinganda TS har bir .ts fayl uchun tayyor .d.ts generatsiya qilib beradi."
     }
   ]
 };

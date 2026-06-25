@@ -1,452 +1,288 @@
 export const typescriptGenerics = {
-  id: "typescriptGenerics",
-  title: "Generics (Umumiylashtirish)",
+  id: "typescript-generics",
+  title: "TypeScript Generics (Umumlashgan Toifalar)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Sodda Tushuntirish
+Generics (Umumlashgan Toifalar) - bu TypeScript-da xuddi funksiyalar uchun argumentlar kabi ishlaydigan tushuncha. Ammo ular qiymatlarni emas, balki **toifalarni (types)** qabul qiladi. Ular yordamida har xil turdagi ma'lumotlar bilan ishlashi mumkin bo'lgan, qayta ishlatiladigan va turlari xavfsiz (type-safe) kod yozishimiz mumkin.
 
-### Generics (Umumiylashtirish) nima?
-Dasturlashda ko'pincha har xil turdagi ma'lumotlar bilan ishlaydigan qayta ishlatiladigan komponentlar yoki funksiyalar yozish talab qilinadi. Masalan, massivlar bilan ishlaydigan yordamchi funksiya sonlar massivini ham, satrlar massivini ham qayta ishlay olishi kerak.
-Agar biz har bir tip uchun alohida funksiya yozsak, kod hajmi ko'payadi. Agar \`any\` tipini ishlatsak, tiplar xavfsizligidan (type safety) butunlay voz kechgan bo'lamiz.
-**Generics** esa bu muammoni hal qiladi: ular funksiya, klass yoki interfeys chaqirilayotgan vaqtda qaysi tip bilan ishlashini parametr sifatida qabul qilish imkonini beradi. Bu kodning qayta ishlatilishini oshiradi va tiplar xavfsizligini 100% saqlaydi.
+Tasavvur qiling, sizda bir quti bor. Qutiga faqat "olma" solsa bo'ladi desangiz, ertaga "nok" sololmaysiz. Lekin qutining o'zini qandaydir bir T narsa solinadigan quti deb e'lon qilsangiz, qachon "olma" uchun quti ochsangiz, faqat "olma" solasiz, "nok" uchun ochsangiz faqat "nok".
 
-### Real hayotiy o'xshatish
-Generics-ni **bo'sh yuk konteynerlariga (shipping containers)** o'xshatish mumkin:
-* **Oddiy tipli klass/funksiya** — bu faqat **olma** uchun maxsus qurilgan qutidir (unga nok solib bo'lmaydi).
-* **\`any\` tipli klass/funksiya** — bu **aralash qutidir**. Unga hamma narsani tartibsiz solaverasiz, lekin ichidan olma olayotganda, u nok bo'lib chiqishi yoki buzilib ketgan bo'lishi mumkin (runtime error).
-* **Generic klass/funksiya (\`Container<T>\`)** — bu **universal bo'sh konteynerdir**. Uni ishlatish paytida siz unga \`Apple\` yorlig'ini yopishtirasiz va u faqat olmalarni xavfsiz saqlaydi. Boshqa safar esa unga \`Orange\` yorlig'ini urib, faqat apelsinlar uchun ishlata olasiz.
+## ❌ YOMON va ✅ YAXSHI Yondashuvlar
 
----
-
-## 2. 💻 Real Kod Misollari
-
-### 1. Basic Example (Generic Identity Funksiyasi)
-Qiymatni o'zidek qaytaruvchi oddiy generic funksiya:
+**❌ YOMON: \`any\` ishlatish (Toifa xavfsizligini yo'qotish)**
 \`\`\`typescript
-function identity<T>(arg: T): T {
-  return arg;
+function getFirstElement(arr: any[]) {
+  return arr[0]; // Qaytayotgan ma'lumot tipi ham 'any' bo'ladi
 }
 
-// Ishlatilishi (majburiy tip ko'rsatish)
-let output1 = identity<string>("Salom Dunyo"); 
-
-// Avtomatik aniqlash (Type Inference)
-let output2 = identity(100); // T avtomatik ravishda number deb topiladi
+const num = getFirstElement([1, 2, 3]);
+num.toUpperCase(); // XATO yo'q! Lekin ishga tushirganda xatolik beradi, chunki raqamda toUpperCase yo'q.
 \`\`\`
 
-### 2. Intermediate Example (Generic Constraints va keyof)
-Generic tip parametrlarini cheklash (\`extends\`) va obyekt kalitlarini tekshirish:
+**✅ YAXSHI: Generics ishlatish**
 \`\`\`typescript
-interface Lengthwise {
-  length: number;
+function getFirstElement<T>(arr: T[]): T {
+  return arr[0];
 }
 
-// T faqat .length xossasiga ega bo'lgan tiplarni qabul qila oladi
-function loggingIdentity<T extends Lengthwise>(arg: T): T {
-  console.log(arg.length);
-  return arg;
-}
-
-// Obyektdan kalit bo'yicha qiymat olish (keyof constraint)
-function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
-  return obj[key];
-}
-
-const x = { a: 1, b: 2, c: 3 };
-getProperty(x, "a"); // To'g'ri: 1 qaytadi
-// getProperty(x, "m"); // Xato: "m" xossasi x da mavjud emas!
+const num = getFirstElement<number>([1, 2, 3]);
+// num.toUpperCase(); // ❌ TypeScript bu yerda xatoni darhol ushlaydi, chunki num tipi 'number'.
 \`\`\`
 
-### 3. Advanced Example (Generic Class va Factory Funksiyalar)
-Ma'lumotlarni xavfsiz saqlash klassi va klass konstruktori yordamida obyekt yaratuvchi factory funksiya:
-\`\`\`typescript
-class DataStore<T> {
-  private items: T[] = [];
+## 🎤 Intervyu Savollari
+1. **Generic'lar o'zi nima va nega \`any\` o'rniga ularni ishlatish kerak?**
+   *Javob:* Generics kodning qayta ishlatiluvchanligini oshirib, toifa xavfsizligini (type safety) saqlaydi. \`any\` ishlatilganda, kompyuter toifalarni tekshirishni to'xtatadi. Generics esa aynan qaysi toifa ekanligini ushlab turadi.
+2. **Generics-dagi \`T\`, \`K\`, \`V\` nima degani?**
+   *Javob:* Bular shunchaki o'zgaruvchi nomlari. \`T\` (Type), \`K\` (Key), \`V\` (Value) deb nomlash qabul qilingan kelishuvdir. Hohlasak \`MyType\` deb ham nomlash mumkin.
+3. **Generic Constraint (Cheklov) nima?**
+   *Javob:* Generic toifaga ma'lum bir shart qo'yish (masalan, \`T extends { length: number }\`). Shunda faqat \`length\` xususiyati bor toifalar (masalan, string, array) uzatilishi mumkin.
 
-  addItem(item: T): void {
-    this.items.push(item);
-  }
-
-  getItems(): T[] {
-    return this.items;
-  }
-}
-
-// Klass tiplari bilan factory yaratish
-function createInstance<T>(clazz: new () => T): T {
-  return new clazz();
-}
-
-class Car {
-  drive() {
-    console.log("Mashina haydalmoqda...");
-  }
-}
-const myCar = createInstance(Car); // Car instansiyasi xavfsiz yaratiladi
-\`\`\`
-
----
-
-## 3. ⚠️ Muammo va Nima uchun Muhimligi
-
-### Qaysi muammolarni hal qiladi?
-* **Kod takrorlanishi (Code Duplication):** Agar loyihada \`number\`, \`string\` va \`User\` obyektlari uchun alohida ro'yxat (List/Queue) klasslari kerak bo'lsa, generic-siz 3 ta alohida klass yozishga majbur bo'lar edik. Generics buni bitta \`List<T>\` klassiga jamlaydi.
-* **\`any\` xavfi (Loss of Type Safety):** \`any\` tipidan foydalanilganda TypeScript o'zining asosiy kuchi — tiplar nazoratini yo'qotadi. Generics esa har xil tiplarni qabul qilsa ham, kirish va chiqish qiymatlarining bog'liqligini qat'iy saqlaydi.
-* **Tushunarsiz Kast qilishlar (Type Casting):** Generics yordamida ma'lumotlarni o'qiyotganda qo'shimcha \`as targetType\` deb majburiy o'tkazish (casting) qilishga hojat qolmaydi.
-
----
-
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
-
-### 1. Generic xususiyatlarni asossiz cheklash
-#### Xato:
-\`\`\`typescript
-function getLength<T>(arg: T): number {
-  return arg.length; // Xatolik: T tipida 'length' xossasi borligi kafolatlanmagan
-}
-\`\`\`
-#### To'g'ri usul:
-\`\`\`typescript
-function getLength<T extends { length: number }>(arg: T): number {
-  return arg.length; // extends yordamida cheklov qo'shildi
-}
-\`\`\`
-
-### 2. Generics-ni keraksiz joyda ishlatish
-#### Xato:
-\`\`\`typescript
-function logValue<T>(value: T): void {
-  console.log(value); // Agar T faqat kirishda ishlatilib, qaytishda yoki o'zaro bog'liqlikda kerak bo'lmasa
-}
-\`\`\`
-#### To'g'ri usul:
-\`\`\`typescript
-function logValue(value: unknown): void {
-  console.log(value); // Generics o'rniga unknown yoki konkret tip ishlatish koddagi murakkablikni kamaytiradi
-}
-\`\`\`
-
-### 3. Static a'zolarda generic-ni ishlatishga urinish
-#### Xato:
-\`\`\`typescript
-class Box<T> {
-  static defaultValue: T; // Xato: static a'zolar generic tiplardan foydalana olmaydi
-}
-\`\`\`
-#### To'g'ri usul:
-Static a'zolar klass instansiyasi yaratilmasdan oldin mavjud bo'lgani sababli, ular generic tiplardan mustaqil bo'lishi kerak. Kerak bo'lsa, static metodning o'ziga alohida generic parametr bering.
-
----
-
-## 5. 💬 12 ta Intervyu Savollari
-
-### Junior (1–4)
-1. **Savol:** Generics nima va u \`any\` tipidan nimasi bilan farq qiladi?
-   * **Javob:** Generics tiplar xavfsizligini saqlagan holda moslashuvchan kod yozish imkonini beradi. \`any\` esa barcha tiplar tekshiruvini o'chirib yuboradi.
-2. **Savol:** Generic funksiyada \`<T>\` nimani anglatadi?
-   * **Javob:** Bu tip o'zgaruvchisi bo'lib, funksiya chaqirilgan vaqtda uzatiladigan aniq tipni vaqtinchalik saqlaydi.
-3. **Savol:** Type Inference (Tipni aniqlash) generics bilan qanday ishlaydi?
-   * **Javob:** Agar funksiya chaqirilganda burchak qavslarda tip yozilmasa, TypeScript argumentlarga qarab tipni o'zi aniqlab oladi (masalan, \`identity(5)\` -> \`T\` son deb olinadi).
-4. **Savol:** Default Generic Parameters nima?
-   * **Javob:** Agar tip uzatilmasa, sukut bo'yicha ishlatiladigan tip. Masalan: \`<T = string>\`.
-
-### Middle (5–8)
-5. **Savol:** Generic constraints (Cheklovlar) nima uchun kerak va u qanday yoziladi?
-   * **Javob:** Generic tip qabul qilishi mumkin bo'lgan tiplarni cheklash uchun. \`extends\` kalit so'zi yordamida yoziladi. Masalan: \`<T extends string>\`.
-6. **Savol:** \`keyof\` kalit so'zi generics-da qanday qo'llaniladi?
-   * **Javob:** Biror obyekt tipining barcha kalitlarini union tip qilib olish uchun. Masalan, \`<K extends keyof T>\` orqali \`K\` faqat \`T\` obyektining kalitlaridan biri bo'lishini ta'minlaydi.
-7. **Savol:** Generic Interface nima?
-   * **Javob:** Ichidagi maydonlari yoki metodlari o'zgaruvchan tiplarni qabul qila oladigan interfeys. Masalan: \`interface ApiResponse<T> { data: T; status: number; }\`.
-8. **Savol:** Nima uchun static metod yoki maydonlarda sinfning generic parametridan foydalanib bo'lmaydi?
-   * **Javob:** Chunki static a'zolar sinf instansiyasi yaratilishidan oldin yuklanadi va instansiyadagi generic tip bilan bog'liq bo'lmaydi.
-
-### Senior (9–12)
-9. **Savol:** TypeScript-da factory funksiya yozishda klass tipi generic parametr sifatida qanday uzatiladi?
-   * **Javob:** \`new () => T\` yoki \`new (...args: any[]) => T\` konstruktor signaturasi orqali uzatiladi.
-10. **Savol:** Type Erasure (Tiplarning o'chirilishi) nima va generics runtime-da mavjud bo'ladimi?
-    * **Javob:** TypeScript kodi JavaScript-ga transpayl qilinganda barcha generic tiplar, cheklovlar va burchak qavslar o'chiriladi. Runtime-da generics mavjud bo'lmaydi.
-11. **Savol:** generic parametrlar bilan \`T & U\` (Intersection) qanday ishlaydi?
-    * **Javob:** Ikkita alohida generic obyekt tiplarini birlashtirib, har ikkala obyektning barcha xossalariga ega yangi yagona tip yaratishda ishlatiladi.
-12. **Savol:** \`Record<K, T>\` utility tipi qanday yozilgan?
-    * **Javob:** U ichki generic tip bo'lib, \`type Record<K extends keyof any, T> = { [P in K]: T; }\` ko'rinishida yozilgan.
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Bu bo'limda siz generics bilan bog'liq asosiy amallarni bajarasiz.
-
-### Generic Type Constraints va Mappings Vizualizatsiyasi
-
-Quyidagi diagrammada generic tiplar uchun cheklovlar (\`extends\`) va uning tekshirilish jarayoni tasvirlangan:
+## 🛠️ Amaliy Topshiriqlar
 
 \`\`\`mermaid
 graph TD
-    T["T (Generic Type)"] -->|extends| Constraint["{ id: number } (Constraint)"]
-    Input1["{ id: 1, name: 'Ali' }"] -->|Valid (Matches Constraint)| T
-    Input2["{ name: 'Vali' }"] -->|Invalid (Missing id property)| T
+    A[Generic Funksiya: identity<T>(arg: T)] --> B(Chaqirish: identity<string>('salom'))
+    A --> C(Chaqirish: identity<number>(42))
+    B --> D[Qaytaradi: string]
+    C --> E[Qaytaradi: number]
 \`\`\`
-
-Quyidagi diagrammada esa \`keyof\` kalit so'zi yordamida kalitlar union-ini yaratish va uni cheklash sxemasi ko'rsatilgan:
-
-\`\`\`mermaid
-graph LR
-    T["Type T = { name: string, age: number }"]
-    K["Type K extends keyof T"]
-    K -->|Can be| K1["'name'"]
-    K -->|Can be| K2["'age'"]
-    K -->|Invalid| K3["'other' (Error)"]
-\`\`\`
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Dars oxiridagi test topshiriqlari orqali bilimlaringizni sinab ko'ring.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### Xavfsiz HTTP Client Adapteri
-Katta loyihalarda tashqi API'lar bilan ishlaganda ma'lumotlar turli shaklda qaytadi. Quyida API'dan ma'lumotlarni tiplar xavfsizligi bilan oluvchi generic HTTP service yozilgan:
-
-\`\`\`typescript
-interface ApiResponse<T> {
-  data: T;
-  status: number;
-  message: string;
-}
-
-class ApiClient {
-  private baseUrl: string;
-
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
-  }
-
-  // Generic request metodi
-  async get<T>(path: string): Promise<ApiResponse<T>> {
-    const response = await fetch(\`\${this.baseUrl}\${path}\`);
-    if (!response.ok) {
-      throw new Error(\`HTTP xatosi! Status: \${response.status}\`);
-    }
-    const data = (await response.json()) as T;
-    return {
-      data,
-      status: response.status,
-      message: "Muvaffaqiyatli yuklandi"
-    };
-  }
-}
-
-// Loyihadagi foydalanish misoli:
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-const client = new ApiClient("https://api.example.com");
-
-async function loadUser() {
-  // get metodi User qaytarishini aniq bilamiz
-  const response = await client.get<User>("/users/1");
-  console.log(response.data.name); // Ali (Autocomplete va Type safety ishlaydi!)
-}
-\`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-* **Zero Runtime Overhead:** TypeScript generics faqat kompilyatsiya vaqtida (compile-time) tekshiriladi. JavaScript transpayl bo'lganda barcha tiplar o'chirib yuborilgani bois, u ishlab chiqarish muhitida hech qanday yuklama (overhead) hosil qilmaydi.
-* **Avoid redundant generics:** Loyihalarda build va type-checking tezligini saqlash uchun generics-ni faqat haqiqatan ham parametrli moslashuvchanlik kerak bo'lgan joylardagina qo'llash tavsiya etiladi.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Tushuncha | Sintaksis / Misol | Tavsifi |
-| :--- | :--- | :--- |
-| **Generic Funksiya** | \`function f<T>(x: T): T\` | Har xil tiplarni qabul qiladigan va bog'liqlikni saqlaydigan funksiya |
-| **Generic Interface** | \`interface Box<T> { val: T }\` | Maydonlari tipi o'zgaruvchan bo'lgan obyekt shakli |
-| **Generic Class** | \`class Store<T> { item: T }\` | Obyekt yaratilishida tip parametrlari aniqlanadigan sinf |
-| **Generic Constraints** | \`T extends Lengthwise\` | Generic tipni ma'lum bir interfeys yoki shart bilan cheklash |
-| **Obyekt Kalitlari Cheklovi** | \`K extends keyof T\` | Parametrni faqat obyektdagi mavjud kalitlar bilan cheklash |
-| **Default Generic Param** | \`<T = string>\` | Agar chaqiruvda tip ko'rsatilmasa, sukut bo'yicha string-ni olish |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Generic Key-Value Juftligi",
-    "instruction": "Ikkita turli tipdagi kalit (`key`) va qiymat (`value`) qabul qilib, ularni `{ key, value }` shaklidagi obyektda qaytaradigan generic `createPair(key, value)` funksiyasini yozing.",
-    "startingCode": "function createPair<K, V>(key: K, value: V): { key: K; value: V } {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "return { key, value };",
-    "test": "if (typeof createPair !== 'function') return 'createPair funksiyasi topilmadi';\nconst pair = createPair('age', 25);\nif (pair.key !== 'age' || pair.value !== 25) return 'Juftlik to\\'g\\'ri yaratilmadi';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Constraint: Uzunlik mulkini tekshirish",
-    "instruction": "Tarkibida `.length` xossasi (number tipida) mavjud bo'lgan har qanday obyektni qabul qilib, uning uzunligini qaytaruvchi generic `getLength(obj)` funksiyasini yozing. Buning uchun generic tipga mos cheklov qo'llang.",
-    "startingCode": "function getLength<T extends { length: number }>(obj: T): number {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "return obj.length;",
-    "test": "if (typeof getLength !== 'function') return 'getLength funksiyasi topilmadi';\nif (getLength('hello') !== 5 || getLength([1, 2, 3]) !== 3) return 'Uzunlik noto\\'g\\'ri qaytarilmoqda';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "keyof cheklovi bilan obyekt xossasini olish",
-    "instruction": "Obyekt va uning kalitini qabul qilib, obyekt ichidagi shu kalitga tegishli qiymatni qaytaruvchi `getProperty(obj, key)` funksiyasini yozing. Kalit faqat obyektda mavjud xossalardan biri bo'lishini ta'minlash uchun `keyof` operatoridan foydalaning.",
-    "startingCode": "function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "return obj[key];",
-    "test": "if (typeof getProperty !== 'function') return 'getProperty funksiyasi topilmadi';\nconst user = { name: 'Ali', age: 20 };\nif (getProperty(user, 'name') !== 'Ali' || getProperty(user, 'age') !== 20) return 'Obyekt xossasi noto\\'g\\'ri qaytarildi';\nreturn null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1. Eng oddiy Generic funksiya",
+      instruction: "Generic `identity<T>` funksiyasini yozing. U o'ziga berilgan `arg` ni xuddi shunday qaytarsin.",
+      startingCode: "function identity<T>(arg: T): T {\n  // kodingizni yozing\n}",
+      hint: "Shunchaki return arg qiling",
+      solution: "function identity<T>(arg: T): T {\n  return arg;\n}",
+      test: "const fn = new Function('return function(arg) { return arg; }')();\nconst identity = fn; \nreturn identity(5) === 5 && identity('salom') === 'salom';"
+    },
+    {
+      id: 2,
+      title: "2. Generic Array",
+      instruction: "Array-ning faqat birinchi elementini qaytaruvchi `getFirst<T>` funksiyasini yozing.",
+      startingCode: "function getFirst<T>(arr: T[]): T | undefined {\n  // kodingizni yozing\n}",
+      hint: "arr[0] ni qaytaring",
+      solution: "function getFirst<T>(arr: T[]): T | undefined {\n  return arr[0];\n}",
+      test: "const fn = new Function('return function(arr) { return arr[0]; }')();\nconst getFirst = fn;\nreturn getFirst([10, 20]) === 10 && getFirst(['a', 'b']) === 'a';"
+    },
+    {
+      id: 3,
+      title: "3. Ikkita Generic Parametr",
+      instruction: "Ikkita turli toifadagi parametrlarni (a va b) qabul qilib, ularni massivda qaytaruvchi `pair<T, U>` funksiyasini yarating.",
+      startingCode: "function pair<T, U>(a: T, b: U): [T, U] {\n  // kodingizni yozing\n}",
+      hint: "return [a, b] qiling",
+      solution: "function pair<T, U>(a: T, b: U): [T, U] {\n  return [a, b];\n}",
+      test: "const fn = new Function('return function(a, b) { return [a, b]; }')();\nconst pair = fn;\nconst res = pair(1, 'one');\nreturn res[0] === 1 && res[1] === 'one';"
+    },
+    {
+      id: 4,
+      title: "4. Generic Class (Quti)",
+      instruction: "`Box<T>` class-ini yozing. Unda `content: T` property bo'lsin. Konstruktor uni qabul qilsin va `getContent(): T` metodi uni qaytarsin.",
+      startingCode: "class Box<T> {\n  content: T;\n  constructor(c: T) {\n    this.content = c;\n  }\n  getContent(): T {\n    // kodingizni yozing\n  }\n}",
+      hint: "return this.content",
+      solution: "class Box<T> {\n  content: T;\n  constructor(c: T) {\n    this.content = c;\n  }\n  getContent(): T {\n    return this.content;\n  }\n}",
+      test: "const fn = new Function('return class Box { constructor(c) { this.content = c; } getContent() { return this.content; } }')();\nconst Box = fn;\nconst b = new Box(42);\nreturn b.getContent() === 42;"
+    },
+    {
+      id: 5,
+      title: "5. Generic Constraints (Cheklovlar)",
+      instruction: "`length` propertysi mavjud bo'lgan argumentni qabul qilib, uning uzunligini qaytaruvchi `getLength<T extends { length: number }>(item: T)` funksiyasini yozing.",
+      startingCode: "function getLength<T extends { length: number }>(item: T): number {\n  // kodingizni yozing\n}",
+      hint: "item.length ni qaytaring",
+      solution: "function getLength<T extends { length: number }>(item: T): number {\n  return item.length;\n}",
+      test: "const fn = new Function('return function(item) { return item.length; }')();\nconst getLength = fn;\nreturn getLength('salom') === 5 && getLength([1, 2, 3]) === 3;"
+    },
+    {
+      id: 6,
+      title: "6. Generic Interface",
+      instruction: "`KeyValue<K, V>` interface asosida obyekt yarating va u orqali qiymat saqlang.",
+      startingCode: "interface KeyValue<K, V> {\n  key: K;\n  value: V;\n}\n\nfunction makeKeyValue<K, V>(k: K, v: V): KeyValue<K, V> {\n  // kodingizni yozing\n}",
+      hint: "Ob'ekt qaytaring: { key: k, value: v }",
+      solution: "interface KeyValue<K, V> {\n  key: K;\n  value: V;\n}\n\nfunction makeKeyValue<K, V>(k: K, v: V): KeyValue<K, V> {\n  return { key: k, value: v };\n}",
+      test: "const fn = new Function('return function(k, v) { return { key: k, value: v }; }')();\nconst makeKeyValue = fn;\nconst obj = makeKeyValue('id', 123);\nreturn obj.key === 'id' && obj.value === 123;"
+    },
+    {
+      id: 7,
+      title: "7. Obyektni Generic bilan nusxalash",
+      instruction: "Ikkita ob'ektni qabul qilib ularni birlashtiruvchi `merge<U, V>(obj1: U, obj2: V)` funksiyasini yozing.",
+      startingCode: "function merge<U, V>(obj1: U, obj2: V): U & V {\n  // kodingizni yozing\n}",
+      hint: "return { ...obj1, ...obj2 };",
+      solution: "function merge<U, V>(obj1: U, obj2: V): U & V {\n  return { ...obj1, ...obj2 };\n}",
+      test: "const fn = new Function('return function(obj1, obj2) { return Object.assign({}, obj1, obj2); }')();\nconst merge = fn;\nconst res = merge({ a: 1 }, { b: 2 });\nreturn res.a === 1 && res.b === 2;"
+    },
+    {
+      id: 8,
+      title: "8. Default Generic Types",
+      instruction: "Generic uchun default (standart) tip bering: `function createArray<T = string>(length: number, value: T): T[]`",
+      startingCode: "function createArray<T = string>(length: number, value: T): T[] {\n  // kodingizni yozing\n}",
+      hint: "Array(length).fill(value)",
+      solution: "function createArray<T = string>(length: number, value: T): T[] {\n  return Array(length).fill(value);\n}",
+      test: "const fn = new Function('return function(length, value) { return Array(length).fill(value); }')();\nconst createArray = fn;\nconst res = createArray(3, 'x');\nreturn res.length === 3 && res[0] === 'x';"
+    },
+    {
+      id: 9,
+      title: "9. Generic yordamida obyekt kalitlarini o'qish (keyof T)",
+      instruction: "Obyekt va uning kalitini qabul qilib qiymatini qaytaruvchi funksiya yozing: `getProperty<T, K extends keyof T>(obj: T, key: K)`",
+      startingCode: "function getProperty<T, K extends keyof T>(obj: T, key: K) {\n  // kodingizni yozing\n}",
+      hint: "return obj[key]",
+      solution: "function getProperty<T, K extends keyof T>(obj: T, key: K) {\n  return obj[key];\n}",
+      test: "const fn = new Function('return function(obj, key) { return obj[key]; }')();\nconst getProperty = fn;\nreturn getProperty({x: 10, y: 20}, 'x') === 10;"
+    },
+    {
+      id: 10,
+      title: "10. Generic Qidiruv (Search)",
+      instruction: "Generic massivdan shartga javob beruvchi elementni topadigan `findItem<T>(arr: T[], predicate: (item: T) => boolean)` funksiyasini yozing.",
+      startingCode: "function findItem<T>(arr: T[], predicate: (item: T) => boolean): T | undefined {\n  // kodingizni yozing\n}",
+      hint: "return arr.find(predicate)",
+      solution: "function findItem<T>(arr: T[], predicate: (item: T) => boolean): T | undefined {\n  return arr.find(predicate);\n}",
+      test: "const fn = new Function('return function(arr, predicate) { return arr.find(predicate); }')();\nconst findItem = fn;\nreturn findItem([1,2,3], x => x === 2) === 2;"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "TypeScript-da Generics nima uchun xizmat qiladi?",
-    "options": [
-      "Faqat CSS o'zgaruvchilarini boshqarish uchun",
-      "Turlicha ma'lumotlar tiplagi bilan xavfsiz va qayta ishlatiladigan (reusable) kod yozish uchun",
-      "Koddagi cheksiz sikllarni to'xtatish uchun",
-      "Faqat ma'lumotlar bazasi so'rovlarini tiplash uchun"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Generics yordamida funksiya, klass yoki interfeys ishlatilish vaqtida qaysi tip bilan ishlashini parametr sifatida qabul qila oladi."
-  },
-  {
-    "id": 2,
-    "question": "Generic tiplashda odatiy holda birinchi tip parametri sifatida qaysi harf ishlatiladi?",
-    "options": [
-      "G",
-      "T",
-      "V",
-      "K"
-    ],
-    "correctAnswer": 1,
-    "explanation": "T harfi 'Type' (Tip) so'zining qisqartmasi bo'lib, generic kodlarda an'anaviy ravishda birinchi bo'lib qo'llaniladi."
-  },
-  {
-    "id": 3,
-    "question": "Generic parametrning qabul qilishi mumkin bo'lgan turlarini cheklash (Generic Constraint) uchun qaysi kalit so'z ishlatiladi?",
-    "options": [
-      "implements",
-      "extends",
-      "as",
-      "is"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`extends` kalit so'zi generic parametr ma'lum interfeys yoki xossalarga ega bo'lishini shart qilib qo'yadi. Masalan: `T extends Lengthwise`."
-  },
-  {
-    "id": 4,
-    "question": "Quyidagilardan qaysi biri generic funksiya e'lon qilinishining to'g'ri sintaksisidir?",
-    "options": [
-      "function identity(arg: T) <T>",
-      "function identity<T>(arg: T): T",
-      "function <T> identity(arg: T)",
-      "let identity = <T>(arg) as T"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Generic funksiyada tip parametri funksiya nomidan keyin burchak qavslarda `<T>` yoziladi va parametrlar hamda qaytish tipida ishlatiladi."
-  },
-  {
-    "id": 5,
-    "question": "keyof kalit so'zi generics bilan birga ishlatilganda qanday vazifani bajaradi?",
-    "options": [
-      "Faqat ob'ekt uzunligini qaytaradi",
-      "Tip parametrini obyektning kalitlari (keys) birlashmasi bilan cheklaydi (Union type of object keys)",
-      "Static a'zolarni tekshiradi",
-      "Kodni xavfsiz transpayl qiladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`keyof T` yozuvi T obyektining barcha kalitlari birlashmasini beradi. `K extends keyof T` esa K faqat T obyektida mavjud kalitlardan biri bo'lishini shart qiladi."
-  },
-  {
-    "id": 6,
-    "question": "Default Generic Parameters (standart generic tip parametrlari) nima uchun kerak?",
-    "options": [
-      "Faqat xatolar yuz berganda o'rnini bosish uchun",
-      "Generic funksiya yoki klass chaqirilganda tip parametri uzatilmasa, sukut bo'yicha ishlatiladigan zaxira tipini belgilash uchun",
-      "Klass static metodlarini tiplash uchun",
-      "TypeScript build tezligini oshirish uchun"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Agar klass yoki interfeys chaqirilganda tip ko'rsatilmasa, standart ko'rsatilgan tip (masalan: `class Box<T = string>`) ishlatiladi."
-  },
-  {
-    "id": 7,
-    "question": "Quyidagi e'londa T qanday aniqlanadi (Type Inference orqali)? `function log<T>(val: T) {}` va `log(45);` chaqiruvi.",
-    "options": [
-      "string",
-      "number",
-      "any",
-      "unknown"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Uzatilgan argument `45` son (number) bo'lganligi sababli, TypeScript-ning Type Inference tizimi T tipini avtomatik ravishda `number` deb belgilaydi."
-  },
-  {
-    "id": 8,
-    "question": "Nima uchun klasslarning static maydonlari va metodlarida generic tiplarni ishlatib bo'lmaydi?",
-    "options": [
-      "Chunki static a'zolar xotirada saqlanmaydi",
-      "Chunki static a'zolar klass instansiyasi (obyekti) yaratilmasdan ishlaydi va ular obyekt yaratishdagi generic tiplarni bilmaydi",
-      "Chunki static faqat CSS-da ishlaydi",
-      "Chunki static metodlar return qilmaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Static a'zolar ob'ekt nusxalariga emas, balki klassning o'ziga tegishlidir. Generic tiplar esa har bir yangi obyekt yaratishda har xil aniqlanadi, shu sababli static a'zolarda generic ishlamaydi."
-  },
-  {
-    "id": 9,
-    "question": "Generics-ning any tipini ishlatishdan asosiy afzalligi nimada?",
-    "options": [
-      "Kod tezligini oshirishi",
-      "Kirish va chiqish qiymatlari orasidagi tiplar bog'liqligini qat'iy saqlab, tiplar xavfsizligini ta'minlashi",
-      "HTML kodlarini validatsiya qilishi",
-      "Barcha xatolarni avtomatik tozalashi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "any tiplar tekshiruvini butunlay buzadi, Generics esa tiplar xavfsizligini 100% saqlab, moslashuvchan funksiyalar yaratishga imkon beradi."
-  },
-  {
-    "id": 10,
-    "question": "TypeScript-da generic interfeys qanday e'lon qilinadi?",
-    "options": [
-      "interface Box<T> { value: T; }",
-      "interface Box(T) { value: T; }",
-      "interface <T> Box { value: T; }",
-      "interface Box { value: T; } as generic"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Generic interfeys nomi yoniga burchak qavsda `<T>` yoziladi, masalan: `interface Box<T> { value: T; }`."
-  },
-  {
-    "id": 11,
-    "question": "Obyekt kesishuvida (Intersection) generic tiplar qanday birlashtiriladi?",
-    "options": [
-      "function merge<T, U>(a: T, b: U): T & U",
-      "function merge<T, U>(a: T, b: U): T | U",
-      "function merge<T, U>(a: T, b: U): T + U",
-      "function merge<T, U>(a: T, b: U): T && U"
-    ],
-    "correctAnswer": 0,
-    "explanation": "T va U tiplarini birlashtirish va har ikkala tipdagi maydonlarga ega obyekt qaytarish uchun `T & U` (Intersection) yoziladi."
-  },
-  {
-    "id": 12,
-    "question": "TypeScript generics-dan transpayl qilingan JavaScript kodi qayerda generics parametrlarini saqlaydi?",
-    "options": [
-      "Klass prototipida",
-      "Hech qayerda - JS-da generics yo'q, shuning uchun ular kompilyatsiyada butunlay o'chib ketadi",
-      "Global o'zgaruvchilarda",
-      "JSON formatida local-keshda"
-    ],
-    "correctAnswer": 1,
-    "explanation": "TypeScript faqat compile-time uchun kerak. JS faylga o'girilganda barcha `<T>` kabi yozuvlar va generic cheklovlar to'liq o'chiriladi."
-  }
-]
-
+    {
+      id: 1,
+      question: "Generics nima?",
+      options: [
+        "Faqat massivlar bilan ishlaydigan ma'lumot turi",
+        "Turlarni (types) parametr sifatida uzatish mexanizmi",
+        "React-ning maxsus kutubxonasi",
+        "Xatolarni tekshirmaydigan `any` ning bir ko'rinishi"
+      ],
+      correctAnswer: 1,
+      explanation: "Generics yordamida tiplarni o'zgaruvchi (parametr) kabi boshqa funksiya, class yoki interfeyslarga uzatish mumkin."
+    },
+    {
+      id: 2,
+      question: "Generic constraint (cheklov) qanday yoziladi?",
+      options: [
+        "<T implements Array>",
+        "<T super Object>",
+        "<T extends SomeType>",
+        "<T restricts SomeType>"
+      ],
+      correctAnswer: 2,
+      explanation: "`extends` kalit so'zi orqali Generic tipga ma'lum bir cheklov (constraint) qo'yiladi."
+    },
+    {
+      id: 3,
+      question: "Nima uchun Generics o'rniga har doim `any` ishlatmaymiz?",
+      options: [
+        "`any` tezroq ishlaydi, lekin hajmi katta",
+        "`any` toifa tekshiruvini umuman o'chirib qo'yadi va xavfsizlikni buzadi",
+        "`any` faqat obyektlar uchun",
+        "TypeScript-da `any` endi umuman ishlamaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`any` TypeScript-ning eng asosiy afzalligi bo'lgan Type Safety'ni yo'q qiladi, Generics esa uni saqlab qoladi."
+    },
+    {
+      id: 4,
+      question: "Klasslarda Generics qanday e'lon qilinadi?",
+      options: [
+        "class Box<T> { }",
+        "class <T>Box { }",
+        "GenericClass Box<T> { }",
+        "class Box(T) { }"
+      ],
+      correctAnswer: 0,
+      explanation: "Klass nomidan so'ng <T> orqali Generic e'lon qilinadi."
+    },
+    {
+      id: 5,
+      question: "Interfeyslarda Generics-ni qanday ishlatish mumkin?",
+      options: [
+        "interface Box(T) {}",
+        "interface Box { T: generic; }",
+        "interface Box<T> { value: T; }",
+        "Interfeyslarda Generics ishlatib bo'lmaydi"
+      ],
+      correctAnswer: 2,
+      explanation: "Interfeys nomidan keyin <T> yoziladi va u ichidagi xususiyatlar uchun tip sifatida ishlatilishi mumkin."
+    },
+    {
+      id: 6,
+      question: "Funksiyada ko'p Generic parametr qabul qilish qanday yoziladi?",
+      options: [
+        "function fn<T, U>(a: T, b: U)",
+        "function fn(T, U)(a: T, b: U)",
+        "function fn<T & U>(a: T, b: U)",
+        "function <T><U>fn(a: T, b: U)"
+      ],
+      correctAnswer: 0,
+      explanation: "Vergul bilan ajratilgan holda bir nechta Generic parametr uzatish mumkin."
+    },
+    {
+      id: 7,
+      question: "`keyof` operatori Generics bilan qanday maqsadlarda ishlatiladi?",
+      options: [
+        "Obyekt qiymatlarini olish uchun",
+        "Obyektning xususiyat kalitlariga qat'iy toifa belgilash uchun (masalan K extends keyof T)",
+        "Yangi obyekt yaratish uchun",
+        "Generics-ni bloklash uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "`keyof T` orqali obyekt kalitlari ro'yxatini olish va bu orqali toifalar yozish mumkin."
+    },
+    {
+      id: 8,
+      question: "Default Generic Tip qanday yoziladi?",
+      options: [
+        "<T: string>",
+        "<T == string>",
+        "<T = string>",
+        "<T is string>"
+      ],
+      correctAnswer: 2,
+      explanation: "<T = string> orqali tip ko'rsatilmaganda avtomatik `string` tipi qo'llaniladi."
+    },
+    {
+      id: 9,
+      question: "Generics faqat TypeScript'ga xosmi yoki toza JavaScript'da ham mavjudmi?",
+      options: [
+        "Toza JavaScript-da ham xuddi shunday bor",
+        "Faqat TypeScript-ga (va ba'zi boshqa strongly-typed tillarga) xos, kompilatsiya paytida JS-dan o'chib ketadi",
+        "Brauzerlarda JS ichida <T> kabi ishlatsa bo'ladi",
+        "Node.js'da ishlatsa bo'ladi, brauzerda yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "Generics – kompilatsiya bosqichida turlarni tekshirish uchun kerak, brauzer yoki Node.js dagi toza JavaScript'da bunday narsa yo'q."
+    },
+    {
+      id: 10,
+      question: "Array<number> va number[] farqi nimada?",
+      options: [
+        "Ikkalasi mutlaqo bir xil ma'noni anglatadi",
+        "Array<number> faqat o'qish uchun",
+        "number[] faqat TypeScript 3.0 gacha ishlagan",
+        "Array<number> bu obyektdir, number[] esa massivdir"
+      ],
+      correctAnswer: 0,
+      explanation: "Sintaksisi boshqacha xolos, ikkalasi ham butun sonlardan iborat massivni anglatadi."
+    },
+    {
+      id: 11,
+      question: "Keling `function merge<U, V>(obj1: U, obj2: V)` dedik, bu funksiya nima qaytarishi mumkin?",
+      options: [
+        "Faqat `any`",
+        "`U & V` tipini, ya'ni ikkala turdagi xususiyatlar birlashmasi (Intersection type)",
+        "Faqat `U` tipini",
+        "Xato beradi, ikkita generic bo'lishi mumkin emas"
+      ],
+      correctAnswer: 1,
+      explanation: "Intersection type (`&`) orqali ikkala ob'ekt xususiyatlari birlashtirib qaytarilishi TypeScript-da juda keng tarqalgan amaliyotdir."
+    },
+    {
+      id: 12,
+      question: "`const x = <T>(arg: T) => arg;` Bu nima?",
+      options: [
+        "Bu JSX (React) dagi tag",
+        "Arrow funksiyalarida Generics yozilish usuli",
+        "Obyekt e'lon qilish turi",
+        "Syntax error"
+      ],
+      correctAnswer: 1,
+      explanation: "Arrow funksiyalarda Generics `(arg: T) => arg` ko'rinishida yoziladi (React TSX'da <T,> deb yozishga to'g'ri kelishi mumkin, ammo sof TS da shunday)."
+    }
+  ]
 };
