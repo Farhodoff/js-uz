@@ -1,511 +1,273 @@
 export const sqlViews = {
-  id: "sqlViews",
-  title: "Ko'rinishlar (Views)",
-  language: "sql",
+  id: "sql_views_1",
+  title: "SQL Views (Virtual Jadvallar)",
+  language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish
+**View (Ko'rinish)** — bu haqiqiy jadvalga o'xshab ko'rinadigan, lekin ichida o'zining xususiy ma'lumotlarini saqlamaydigan "Virtual Jadval". U aslida saqlab qo'yilgan (kombinatsiyalangan) **SQL so'rovidir**.
+Agar siz doim 3-4 ta jadvalni JOIN qilib, aynan bir xil qiyin so'rovni yozishdan charchagan bo'lsangiz, uni bitta \`View\` qilib saqlab qo'yishingiz mumkin. Keyin esa xuddi oddiy jadval kabi \`SELECT * FROM mening_view_im\` deb ishlataverasiz.
 
-### Ko'rinish (View) nima?
-**Ko'rinish (View)** — bu ma'lumotlar bazasidagi "virtual" jadvaldir. Virtual deganda, uning ichida ma'lumotlar jismonan saqlanmaydi. U shunchaki biz yozgan murakkab SQL so'rovining saqlab qo'yilgan nomidir (alias). Biz ushbu ko'rinishga oddiy jadval kabi so'rov yuborganimizda, u orqa fonda o'sha murakkab so'rovni bajarib ma'lumotlarni tortib keladi.
+**Turlari**:
+1. **Simple View (Oddiy)**: Odatda faqat bitta jadval asosida yasaladi. Uni ustida INSERT/UPDATE qilish imkoni ham bo'lishi mumkin (Updatable View).
+2. **Complex View (Murakkab)**: Bir nechta jadvallarni JOIN qilib, GROUP BY va funksiyalar ishlatilgan view. Unga ma'lumot kiritib bo'lmaydi.
+3. **Materialized View (Moddiylashgan ko'rinish)**: Xuddi keshga (cache) o'xshaydi. O'zining ichida haqiqiy natijalarni vaqtincha saqlab qoladi (PostgreSQL, Oracle va boshqalarda bor).
 
-### Nima uchun kerak?
-1. **Soddalashtirish:** Murakkab va 5-6 ta jadvalni JOIN qiladigan so'rovlarni har safar qaytadan yozmaslik uchun ularni bitta View-ga o'rab qo'yamiz.
-2. **Xavfsizlik:** Foydalanuvchilarga jismoniy jadvallarni emas, balki faqat kerakli ustunlar ko'rinadigan View-larni berish orqali maxfiy ma'lumotlarni (masalan parollarni) yashirish mumkin.
+## ❌ YOMON va ✅ YAXSHI Yondashuvlar
 
-### Materialized View nima?
-Oddiy View har safar so'ralganda orqa fondagi so'rovni qayta ishga tushiradi. **Materialized View** esa orqa fondagi so'rov natijasini diskka jismoniy jadval ko'rinishida yozib oladi. Bu juda murakkab hisob-kitoblar tez ishlashi uchun juda foydali, lekin ma'lumotlar o'zgarganda uni yangilab (\`REFRESH\`) turish kerak.
+❌ **YOMON**: View ichidan View, uning ichidan yana View chaqirish (Nested Views). Bu performance'ni juda yomonlashtiradi, chunki har safar eng chuqur qatlamgacha so'rov borib kelishi kerak.
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **do'kon boshqaruvchisisiz**:
-* **Jismoniy jadval (Table):** Omborxonadagi barcha tovarlar va ularning batafsil hujjatlari (sotib olingan narxi, yetkazib beruvchi kontakti va h.k.).
-* **Ko'rinish (View):** Vitrina (oynali javon). Vitrinada tovarlar turadi, lekin ularning hamma hujjatlari va sotib olish narxlari yashirilgan. Mijozlar faqat o'zlari uchun kerak bo'lgan ma'lumotlarni (tovar nomi va narxi) ko'radilar.
-* **Materialized View:** Vitrinadagi mahsulotlarning **fotografiyasi**. Surat tayyor turadi (juda tez ko'rish mumkin), lekin omborda tovar o'zgarsa, yangi suratga olish kerak (\`REFRESH\`).
+✅ **YAXSHI**: Maxfiy ma'lumotlarni yashirish uchun View ishlatish. Masalan, xodimlarning \`salary\` (maosh) ustunini olib tashlab, qolgan ma'lumotlarni qamrab oluvchi View yaratish va boshqa bo'limlarga faqat shu View'ni o'qishga ruxsat berish.
 
----
+## 🎤 Intervyu Savollari
+1. **View'ga ma'lumot qo'shsa (INSERT) bo'ladimi?**
+   - Ha, agar u "Simple View" bo'lsa va unda agregat funksiyalar, DISTINCT, GROUP BY ishlatilmagan bo'lsa (y'ani to'g'ridan-to'g'ri asl jadvalga bog'lansa).
+2. **Materialized View nima?**
+   - Bu oddiy View'dan farqli o'laroq natijalarni fizik (disk) xotirada ma'lum vaqtgacha saqlab turadigan, keyinchalik periyodik tarzda (yoki triggerlar orqali) yangilanadigan (REFRESH) ko'rinishdir. Tezlikni juda oshiradi.
 
-## 2. 💻 Real SQL Kod Misollari
-
-### 1. Basic Example (Oddiy View Yaratish)
-Faqat Toshkentlik foydalanuvchilarni ko'rsatadigan virtual ko'rinish yaratish:
-\`\`\`sql
--- View yaratish
-CREATE VIEW toshkent_users AS
-SELECT id, name, email 
-FROM users 
-WHERE city = 'Toshkent';
-
--- View-dan foydalanish (oddiy jadval kabi)
-SELECT * FROM toshkent_users;
+## 🛠️ Amaliy Topshiriqlar
+\`\`\`mermaid
+graph TD;
+    T1[(Users Jadvali)] --> V(User Orders View);
+    T2[(Orders Jadvali)] --> V;
+    V --> UserQuery[Dasturchi: SELECT * FROM view_ismi];
+    style V fill:#ff9,stroke:#333,stroke-dasharray: 5 5
 \`\`\`
-* **Natija:** Toshkentda yashovchi faol foydalanuvchilar ro'yxati chiqadi.
-* **Qachon ishlatiladi:** Backend-da faqat Toshkent mintaqasi uchun yoziladigan kodlarni soddalashtirishda.
-* **Performance jihati:** Bu virtual so'rov bo'lgani sababli, foydalanilganda orqa fonda \`users\` jadvalidan qidiradi. \`city\` ustunida indeks bo'lsa, tez ishlaydi.
-
-### 2. Intermediate Example (JOIN-li murakkab View)
-Foydalanuvchilarning buyurtmalari va sarflagan summalari hisobotini beruvchi View:
-\`\`\`sql
--- Foydalanuvchi buyurtmalar hisoboti View-sini yaratish
-CREATE VIEW user_order_summaries AS
-SELECT u.id AS user_id,
-       u.name,
-       COUNT(o.id) AS total_orders,
-       SUM(o.amount) AS total_spent
-FROM users u
-LEFT JOIN orders o ON u.id = o.user_id
-GROUP BY u.id, u.name;
-
--- Hisobotni ishlatish
-SELECT * FROM user_order_summaries WHERE total_spent > 1000.00;
-\`\`\`
-* **Natija:** Jami 1000 dan ko'p xarid qilgan foydalanuvchilar hisoboti.
-* **Qachon ishlatiladi:** Biznes hisobotlarini tayyorlashda backend kodini sodda saqlash uchun.
-* **Performance jihati:** \`users\` va \`orders\` jadvallari katta bo'lsa, bu so'rov har safar chaqirilganda og'ir JOIN va \`GROUP BY\` ishlaydi.
-
-### 3. Advanced Example (Materialized View va Refresh)
-Hisobotlarni tezkor yuklash uchun Materialized View yaratish (PostgreSQL):
-\`\`\`sql
--- Og'ir hisobotni jismoniy saqlovchi Materialized View yaratish
-CREATE MATERIALIZED VIEW mv_user_order_summaries AS
-SELECT u.id AS user_id,
-       u.name,
-       COUNT(o.id) AS total_orders,
-       SUM(o.amount) AS total_spent
-FROM users u
-LEFT JOIN orders o ON u.id = o.user_id
-GROUP BY u.id, u.name;
-
--- Ma'lumotlarni yangilash (omborda o'zgarish bo'lgandan keyin)
-REFRESH MATERIALIZED VIEW mv_user_order_summaries;
-\`\`\`
-* **Natija:** Natijalar diskka yoziladi. Uni o'qish oddiy jadvalni o'qish bilan bir xil tezlikda (JOINlarsiz) bo'ladi.
-* **Qachon ishlatiladi:** Har soniyada o'zgarishi shart bo'lmagan, lekin yuklanishi tez bo'lishi kerak bo'lgan dashboard-larda.
-* **Performance jihati:** Ma'lumotlarni yangilash uchun \`REFRESH\` amali bajarilganda jadval vaqtincha qulflanishi (Lock) mumkin. PostgreSQL-da \`REFRESH MATERIALIZED VIEW CONCURRENTLY\` yordamida qulflashlarsiz yangilash mumkin.
-
-### 4. Production Example (Xavfsizlik uchun ustunlarni yashirish)
-Foydalanuvchilar jadvalidan parollar va maxfiy ma'lumotlarni yashirib, faqat ommaviy profillar uchun View yaratish:
-\`\`\`sql
--- Ommaviy profillar uchun View (parollar va maxfiy ustunlar olib tashlangan)
-CREATE VIEW public_user_profiles AS
-SELECT id, 
-       name, 
-       city, 
-       created_at 
-FROM users 
-WHERE status = 'active';
-\`\`\`
-* **Natija:** Tashqi API yoki UI uchun xavfsiz ma'lumotlar ko'rinishi.
-* **Qachon ishlatiladi:** Tashqi dasturlar yoki uchinchi tomon integratsiyalari uchun bazaga ruxsat berganda.
-* **Performance jihati:** Jismoniy jadval yuklamasini kamaytiradi va xavfsizlik auditidan oson o'tishga yordam beradi.
-
-### 5. Enterprise Example (Updatable Views - Yangilanadigan View-lar)
-PostgreSQL-da to'g'ridan-to'g'ri View orqali jismoniy jadvalga ma'lumot yozish:
-\`\`\`sql
--- Sodda filtrlangan View yaratish
-CREATE VIEW active_users_view AS
-SELECT id, name, city, status
-FROM users
-WHERE status = 'active'
-WITH CHECK OPTION; -- 'inactive' statusda ma'lumot yozishni taqiqlaydi
-
--- View orqali INSERT qilish (avtomatik users jadvaliga yozadi)
-INSERT INTO active_users_view (id, name, city, status)
-VALUES (99, 'Shirin', 'Samarqand', 'active');
-\`\`\`
-* **Natija:** Yangi foydalanuvchi jismoniy \`users\` jadvaliga qo'shiladi.
-* **Qachon ishlatiladi:** Ma'lumotlar bazasini qatlamli (layered) arxitektura asosida qurishda.
-* **Performance jihati:** \`WITH CHECK OPTION\` yozilayotgan ma'lumotlar View filtriga (WHERE) mos kelishini tekshiradi, bu esa ma'lumotlar sofligini ta'minlaydi.
-
----
-
-## 3. ⚠️ Muammo va Nima uchun Muhimligi
-
-### Qaysi muammoni hal qiladi?
-* **Kodning takrorlanishi (DRY):** Har xil backend xizmatlarida bir xil og'ir JOIN so'rovlarini qayta-qayta yozishni oldini oladi.
-* **Xavfsizlik (Data Security):** Bazadagi nozik ma'lumotlarni (telefon raqam, parol, balans) keraksiz foydalanuvchilardan himoya qiladi.
-* **Qadimgi tizimlar integratsiyasi (Legacy database conversion):** Bazadagi jadvallar nomi o'zgarganda, eski dasturlar ishlamay qolmasligi uchun eski nom bilan View yaratib qo'yiladi.
-
----
-
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
-
-### 1. View orqali yozishda (INSERT/UPDATE) murakkab View-larni ishlatish
-#### Xato:
-\`GROUP BY\` yoki \`JOIN\` ishlatilgan \`user_order_summaries\` ko'rinishiga ma'lumot qo'shishga (INSERT) urinish.
-#### Nima uchun noto'g'ri:
-RDBMS guruhlangan yoki bog'langan ma'lumotlarning qaysi jadvalga va qanday yozilishini avtomatik aniqlay olmaydi.
-#### To'g'ri usul:
-Faqat bitta jadvaldan iborat, agregatsiyalarsiz sodda View-lar orqali yozish mumkin yoki baza darajasida \`INSTEAD OF TRIGGER\` yozish kerak.
-#### Izoh:
-Murakkab View-lar faqat o'qish (Read-only) uchun mo'ljallangan.
-
-### 2. Materialized View ni yangilashni (REFRESH) unutib qo'yish
-#### Xato:
-Bazada foydalanuvchilar o'zgardi, lekin dashboard hali ham eski ma'lumotlarni ko'rsatyapti.
-#### Nima uchun noto'g'ri:
-Materialized view jismoniy ma'lumotlarni saqlaydi va avtomatik ravishda yangilanmaydi.
-#### To'g'ri usul:
-Cron orqali yoki jadvaldagi trigger yordamida \`REFRESH MATERIALIZED VIEW\` so'rovini davriy bajarib turish.
-#### Izoh:
-Materialized view-lar kesh (Cache) kabi ishlaydi va invalidatsiya talab qiladi.
-
-### 3. View-larga haddan tashqari ko'p JOIN-lar qo'shish (View nesting)
-#### Xato:
-Bitta View-ni ikkinchi View-ga ulab, uni uchinchisiga ulab yuborish.
-#### Nima uchun noto'g'ri:
-Bu "so'rovlar portlashi"ga (Query explosion) olib keladi. Optimizer chalkashadi va bitta sodda so'rov orqa fonda 50 ta jadvalni o'qib ketishi mumkin.
-#### To'g'ri usul:
-Jadvallarni to'g'ridan-to'g'ri bog'laydigan toza, sodda View-lar yaratish.
-#### Izoh:
-View nesting reliesion bazalarni sekinlashtiruvchi eng og'ir muammolardan biridir.
-
-### 4. View ustiga indeks qo'yishga urinish
-#### Xato:
-\`CREATE INDEX idx_view ON toshkent_users(name);\` deb yozish.
-#### Nima uchun noto'g'ri:
-Oddiy View virtual bo'lgani sababli jismoniy ma'lumotga ega emas va unga indeks qo'yib bo'lmaydi.
-#### To'g'ri usul:
-Indeksni jismoniy jadvalga (\`users\` ustiga) yaratish kerak yoki Materialized View ishlatish kerak.
-#### Izoh:
-Materialized View-lar ustiga jismoniy indekslar yaratish mumkin.
-
-### 5. \`DROP VIEW\` ni jadval o'rniga ishlatish
-#### Xato:
-\`DROP VIEW users;\` yozish.
-#### Nima uchun noto'g'ri:
-Agar u jadval bo'lsa, xatolik qaytaradi.
-#### To'g'ri usul:
-\`DROP VIEW view_name;\` yoki \`DROP TABLE table_name;\`
-#### Izoh:
-View va Table sintaksislari alohida hisoblanadi.
-
----
-
-## 5. 💬 12 ta Intervyu Savollari
-
-### Junior (1–4)
-1. **Savol:** SQL-da View nima?
-   * **Javob:** View — bu saqlangan SQL so'rovidan iborat virtual jadvaldir.
-   * **Intervyuda qanday javob berish kerak:** *"View ma'lumotlarni diskda saqlamaydi, u shunchaki tayyor mantiqiy filtr va JOIN-larni soddalashtirish uchun virtual qobiqdir."*
-
-2. **Savol:** View va oddiy Jadval (Table) farqi nimada?
-   * **Javob:** Jadval jismoniy ma'lumotlarni saqlaydi, View esa faqat SQL so'rovini saqlaydi.
-   * **Intervyuda qanday javob berish kerak:** *"Jadvalda real ma'lumotlar saqlansa, View jadval ustiga qurilgan virtual oyna vazifasini bajaradi."*
-
-3. **Savol:** View orqali ma'lumotlarni o'zgartirish (INSERT, UPDATE) mumkinmi?
-   * **Javob:** Ha, faqat sodda, bitta jadvalga tayanadigan va agregatsiyalarsiz View-lar orqali mumkin.
-   * **Intervyuda qanday javob berish kerak:** *"Agar View JOIN-lar yoki GROUP BY ishlatmagan bo'lsa, u orqali bazadagi jadvalga yozish mumkin."*
-
-4. **Savol:** View-ni o'chirish qanday sintaksis bilan amalga oshiriladi?
-   * **Javob:** \`DROP VIEW view_name;\`
-   * **Intervyuda qanday javob berish kerak:** *"Ko'rinishlarni o'chirish uchun DROP VIEW, agar mavjudligiga ishonch bo'lmasa DROP VIEW IF EXISTS ishlatiladi."*
-
-### Middle (5–8)
-5. **Savol:** Materialized View nima va u oddiy View-dan qanday farq qiladi?
-   * **Javob:** Materialized View o'z natijasini jismonan diskda saqlaydi, oddiy View esa har safar so'ralganda bazadan qaytadan o'qiydi.
-   * **Intervyuda qanday javob berish kerak:** *"Materialized View og'ir hisobotlar tez ishlashi uchun kesh vazifasini bajaradi, lekin ma'lumot yangilanishi uchun REFRESH talab qiladi."*
-
-6. **Savol:** \`REFRESH MATERIALIZED VIEW\` nimani anglatadi?
-   * **Javob:** Materialized View tarkibidagi ma'lumotlarni jismoniy jadvallardagi so'nggi holatga qarab qayta hisoblab diskka yozadi.
-   * **Intervyuda qanday javob berish kerak:** *"Bu keshni yangilash kabi ishlaydi. Uni ma'lum vaqt oralig'ida (Cron) yoki tranzaksiyadan so'ng bajarish kerak."*
-
-7. **Savol:** View-larda xavfsizlik (Security) qanday ta'minlanadi?
-   * **Javob:** Foydalanuvchiga to'liq jadvalga ruxsat bermasdan, faqat maxfiy bo'lmagan ustunlarni o'z ichiga olgan View yaratib beriladi.
-   * **Intervyuda qanday javob berish kerak:** *"Masalan, parollar ustunini SELECT qilmaydigan View yaratib, tashqi dasturlarga faqat shu View-dan o'qish huquqini (GRANT SELECT ON view_name) berish mumkin."*
-
-8. **Savol:** \`WITH CHECK OPTION\` nima uchun kerak?
-   * **Javob:** View orqali ma'lumot yozilayotganda, yozilayotgan ma'lumot View ning filtrlash shartiga mos kelishini kafolatlaydi.
-   * **Intervyuda qanday javob berish kerak:** *"Agar toshkentliklar View-siga samarqandlik foydalanuvchini qo'shmoqchi bo'lsak, WITH CHECK OPTION xatolik berib, ma'lumot ziddiyatini oldini oladi."*
-
-### Senior (9–12)
-9. **Savol:** Nested Views (Ichma-ich View-lar) qanday performance muammolariga olib kelishi mumkin?
-   * **Javob:** Ular so'rov murakkabligini keskin oshirib yuboradi, optimizer indekslardan to'g'ri foydalana olmay qoladi va natijada kichik qidiruv ham bir necha soniya vaqt oladi.
-   * **Intervyuda qanday javob berish kerak:** *"Nested view-lar production tizimlarda eng ko'p yuklama keltiradigan xatolardan. Baza orqa fonda juda ko'p subquery va JOIN-larni bajarishga majbur bo'ladi. Ularni toza SQL yoki CTE-lar bilan almashtirish lozim."*
-
-10. **Savol:** Materialized View-ni blokirovkasiz (non-blocking) qanday yangilash mumkin?
-    * **Javob:** PostgreSQL-da \`CONCURRENTLY\` kalit so'zidan foydalanib yangilash orqali.
-    * **Intervyuda qanday javob berish kerak:** *"Buning uchun Materialized View-da kamida bitta unikal indeks (Unique Index) bo'lishi shart va REFRESH MATERIALIZED VIEW CONCURRENTLY view_name so'rovi bajariladi."*
-
-11. **Savol:** SQL-da \`INSTEAD OF TRIGGER\` nima va u View-lar bilan qanday bog'liq?
-    * **Javob:** Murakkab View-larga \`INSERT\`, \`UPDATE\` yoki \`DELETE\` so'rovlari kelganida, o'sha so'rov o'rniga ishlaydigan va ma'lumotlarni jismoniy jadvallarga to'g'ri taqsimlaydigan triggerdir.
-    * **Intervyuda qanday javob berish kerak:** *"Biz JOIN-li og'ir View-larni ham yoziladigan (updatable) qilishimiz uchun uning ustiga INSTEAD OF trigger yozib, mantiqni boshqaramiz."*
-
-12. **Savol:** View orqali amalga oshiriladigan so'rovning Execution Plan-i jismoniy jadvalnikidan farq qiladimi?
-    * **Javob:** Yo'q, oddiy View-da baza optimizeri View-ni ochib yuboradi (Query Merging) va jismoniy jadvallarga to'g'ridan-to'g'ri so'rov yozgandek plan tuzadi.
-    * **Intervyuda qanday javob berish kerak:** *"Baza mantiqan View-ni oddiy so'rovga aylantiradi. Shuning uchun plan jismoniy jadvallardagi indekslarga qarab tuziladi."*
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Mashqlar interaktiv muhitda bajariladi.
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Dars oxirida testlarni yechib ko'ring.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### SaaS loyihalarida billing va hisobot tizimi uchun Materialized View
-Bizda **SaaS (masalan CRM)** loyihasi bor. Unda har bir mijoz kompaniya o'z xodimlarining savdolarini ko'rib turadi. Dashboard yuklanganda oylik jami savdo aylanmasi hisoblab berilishi kerak.
-
-#### Muammo:
-Ushbu hisobotni har safar foydalanuvchi sahifani yangilaganda millionlab qatorli \`transactions\` va \`users\` jadvallaridan hisoblash serverni qotiradi.
-
-#### Yechim:
-Har bir kompaniya uchun savdolar hisobotini beruvchi Materialized View yaratamiz:
-\`\`\`sql
-CREATE MATERIALIZED VIEW mv_tenant_sales AS
-SELECT tenant_id,
-       DATE_TRUNC('month', created_at) AS sales_month,
-       SUM(amount) AS total_revenue
-FROM tenant_transactions
-GROUP BY tenant_id, DATE_TRUNC('month', created_at);
-
--- Kompaniya ID si bo'yicha indeks yaratamiz
-CREATE UNIQUE INDEX idx_mv_tenant_sales ON mv_tenant_sales(tenant_id, sales_month);
-\`\`\`
-Ushbu Materialized View har 1 soatda \`REFRESH MATERIALIZED VIEW CONCURRENTLY mv_tenant_sales\` so'rovi yordamida orqa fonda yangilab turiladi va mijozlar dashboard-ni bir zumda (0.01 soniyada) ochishadi.
-
----
-
-## 9. 🚀 Performance va Optimization
-
-* **Virtual View:** Qo'shimcha saqlash joyi talab qilmaydi, lekin har safar chaqirilganda so'rov qayta ishlaydi.
-* **Materialized View:** Diskda joy egallaydi, yangilanishi vaqt oladi, lekin o'qish tezligi oddiy jismoniy jadval bilan bir xil (o'ta tez).
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Buyruq | Sintaksis | Vazifasi | Eslatma |
-| :--- | :--- | :--- | :--- |
-| **CREATE VIEW** | \`CREATE VIEW name AS SELECT...\` | Virtual ko'rinish yaratish | Xotirada ma'lumot saqlamaydi |
-| **DROP VIEW** | \`DROP VIEW name;\` | Ko'rinishni o'chirish | Jismoniy jadvalga ta'sir qilmaydi |
-| **CREATE MATERIALIZED VIEW** | \`CREATE MATERIALIZED VIEW name AS...\` | Hisobotni diskka yozuvchi View | Kesh kabi ishlaydi |
-| **REFRESH MATERIALIZED VIEW** | \`REFRESH MATERIALIZED VIEW name;\` | Materialized View ma'lumotlarini yangilash | Yangilanishda jadvalni qulflaydi |
-| **WITH CHECK OPTION** | view shartida qo'shimcha | Yozilayotgan ma'lumotni tekshiradi | Noto'g'ri INSERT-ni cheklaydi |
 `,
   exercises: [
     {
-      "id": 1,
-      "title": "Toshkentlik foydalanuvchilar ko'rinishi",
-      "instruction": "`users` jadvalidan yashash shahri (`city`) 'Toshkent' bo'lgan barcha foydalanuvchilarni tanlaydigan `toshkent_users` nomli virtual ko'rinish (VIEW) yarating.",
-      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-      "hint": "CREATE VIEW toshkent_users AS SELECT * FROM users WHERE city = 'Toshkent'",
-      "test": "try { const res = db.exec('SELECT * FROM toshkent_users'); if(!Array.isArray(res) || res.length !== 3) return 'View yaratilmagan yoki noto\\'g\\'ri filtrlangan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+      id: 1,
+      title: "CREATE VIEW",
+      instruction: "Faqat 'active' (status = 1) bo'lgan userlarni o'z ichiga oladigan 'active_users' nomli View yarating.",
+      startingCode: "function myFunction() {\n  return \"\";\n}",
+      hint: "CREATE VIEW active_users AS SELECT * FROM users WHERE status = 1",
+      solution: "function myFunction() {\n  return \"CREATE VIEW active_users AS SELECT * FROM users WHERE status = 1;\";\n}",
+      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('CREATE VIEW ACTIVE_USERS AS') || !res.includes('WHERE STATUS = 1')) throw new Error('Xato so\\'rov');"
     },
     {
-      "id": 2,
-      "title": "Qimmat buyurtmalar ko'rinishi",
-      "instruction": "`orders` jadvalidan buyurtma summasi (`amount`) 100.00 dan yuqori bo'lgan barcha buyurtmalarni tanlaydigan `high_orders` nomli virtual ko'rinish (VIEW) yarating.",
-      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-      "hint": "CREATE VIEW high_orders AS SELECT * FROM orders WHERE amount > 100",
-      "test": "try { const res = db.exec('SELECT * FROM high_orders'); if(!Array.isArray(res) || res.length !== 3) return 'View yaratilmagan yoki noto\\'g\\'ri cheklangan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+      id: 2,
+      title: "View dan ma'lumot o'qish",
+      instruction: "Endi biz yaratgan 'active_users' virtual jadvalidan hamma ma'lumotni o'qib oling.",
+      startingCode: "function myFunction() {\n  return \"\";\n}",
+      hint: "SELECT * FROM active_users",
+      solution: "function myFunction() {\n  return \"SELECT * FROM active_users;\";\n}",
+      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('SELECT * FROM ACTIVE_USERS')) throw new Error('Xato so\\'rov');"
     },
     {
-      "id": 3,
-      "title": "Foydalanuvchilarning asosiy ma'lumotlari",
-      "instruction": "`users` jadvalidan faqat `id`, `name` va `city` ustunlarini tanlab, ularni mos ravishda `user_id`, `full_name` va `location` deb nomlab (alias) qaytaradigan `user_basic_info` nomli VIEW yarating.",
-      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-      "hint": "CREATE VIEW user_basic_info AS SELECT id AS user_id, name AS full_name, city AS location FROM users",
-      "test": "try { const res = db.exec('SELECT * FROM user_basic_info'); if(!Array.isArray(res) || res.length !== 5) return 'Ko\\'rinish topilmadi yoki qatorlar soni noto\\'g\\'ri'; const row = res[0]; if(!row.hasOwnProperty('user_id') || !row.hasOwnProperty('full_name') || !row.hasOwnProperty('location')) return 'Ustun nomlari alias yordamida o\\'zgartirilmagan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+      id: 3,
+      title: "JOIN bilan Murakkab View",
+      instruction: "'users' va 'orders' ni qo'shib 'user_orders_view' degan View yarating (faqat users.name, orders.amount ustunlari bilan).",
+      startingCode: "function myFunction() {\n  return \"\";\n}",
+      hint: "CREATE VIEW user_orders_view AS SELECT users.name, orders.amount FROM users JOIN orders ON ...",
+      solution: "function myFunction() {\n  return \"CREATE VIEW user_orders_view AS SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;\";\n}",
+      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('CREATE VIEW USER_ORDERS_VIEW') || !res.includes('JOIN ORDERS')) throw new Error('Xato so\\'rov');"
     },
     {
-      "id": 4,
-      "title": "Foydalanuvchilar va ularning buyurtmalari",
-      "instruction": "`users` va `orders` jadvallarini JOIN qilib, foydalanuvchining ismi (`name`), mahsulot nomi (`product`) va summasini (`amount`) ko'rsatadigan `user_order_details` nomli VIEW yarating.",
-      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-      "hint": "CREATE VIEW user_order_details AS SELECT u.name, o.product, o.amount FROM users u JOIN orders o ON u.id = o.user_id",
-      "test": "try { const res = db.exec('SELECT * FROM user_order_details'); if(!Array.isArray(res) || res.length !== 6) return 'Ko\\'rinish topilmadi yoki JOIN sharti xato'; const row = res[0]; if(!row.hasOwnProperty('name') || !row.hasOwnProperty('product') || !row.hasOwnProperty('amount')) return 'Kerakli ustunlar topilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+      id: 4,
+      title: "Ko'rinishni (View) O'chirish",
+      instruction: "Ortiqcha bo'lgan 'old_users_view' ni ma'lumotlar bazasidan o'chirib yuboruvchi SQL so'rovini yozing.",
+      startingCode: "function myFunction() {\n  return \"\";\n}",
+      hint: "DROP VIEW view_name",
+      solution: "function myFunction() {\n  return \"DROP VIEW old_users_view;\";\n}",
+      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('DROP VIEW OLD_USERS_VIEW')) throw new Error('Xato so\\'rov');"
     },
     {
-      "id": 5,
-      "title": "Foydalanuvchilar buyurtmalari soni",
-      "instruction": "`orders` jadvalidan foydalanib, har bir `user_id` bo'yicha buyurtmalar sonini (`total_orders`) hisoblaydigan `user_orders_count` nomli VIEW yarating.",
-      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-      "hint": "CREATE VIEW user_orders_count AS SELECT user_id, COUNT(id) AS total_orders FROM orders GROUP BY user_id",
-      "test": "try { const res = db.exec('SELECT * FROM user_orders_count'); if(!Array.isArray(res) || res.length !== 4) return 'View yaratilmagan yoki guruhlash xato'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+      id: 5,
+      title: "Viewni o'zgartirish (CREATE OR REPLACE)",
+      instruction: "'active_users' ni o'zgartiring (yangi ustunlar yoki shart qo'shing). Buni 'CREATE OR REPLACE VIEW' orqali bajaring (status = 1 va age > 18).",
+      startingCode: "function myFunction() {\n  return \"\";\n}",
+      hint: "CREATE OR REPLACE VIEW active_users AS ...",
+      solution: "function myFunction() {\n  return \"CREATE OR REPLACE VIEW active_users AS SELECT * FROM users WHERE status = 1 AND age > 18;\";\n}",
+      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('CREATE OR REPLACE VIEW ACTIVE_USERS') || !res.includes('AGE > 18')) throw new Error('Xato so\\'rov');"
     },
     {
-      "id": 6,
-      "title": "Foydalanuvchilar billing hisoboti",
-      "instruction": "Har bir foydalanuvchining ismi (`name`), jami buyurtmalar soni (`order_count`) va sarflagan umumiy summasini (`total_spent`) hisoblab beradigan `user_billing_summary` nomli VIEW yarating. Xarid qilmagan foydalanuvchilar ham ro'yxatda chiqishi va ularning xaridi NULL yoki 0 bo'lishi uchun LEFT JOIN-dan foydalaning.",
-      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-      "hint": "CREATE VIEW user_billing_summary AS SELECT u.name, COUNT(o.id) AS order_count, SUM(o.amount) AS total_spent FROM users u LEFT JOIN orders o ON u.id = o.user_id GROUP BY u.id, u.name",
-      "test": "try { const res = db.exec('SELECT * FROM user_billing_summary'); if(!Array.isArray(res) || res.length !== 5) return 'Barcha 5 ta foydalanuvchi hisoboti topilmadi'; const admin = res.find(r => r.name === 'Ali'); if(!admin || parseInt(admin.order_count) !== 2 || parseFloat(admin.total_spent) !== 1225.50) return 'Hisob-kitoblar yoki JOIN noto\\'g\\'ri'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+      id: 6,
+      title: "Yashirilgan ma'lumot View (Security)",
+      instruction: "Xodimlarning maoshini (salary) qolganlardan yashirish uchun 'employees_public' nomli View yarating, faqat (id, name, department) ustunlarini olsin.",
+      startingCode: "function myFunction() {\n  return \"\";\n}",
+      hint: "CREATE VIEW employees_public AS SELECT id, name, department FROM employees",
+      solution: "function myFunction() {\n  return \"CREATE VIEW employees_public AS SELECT id, name, department FROM employees;\";\n}",
+      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('CREATE VIEW EMPLOYEES_PUBLIC') || res.includes('SALARY')) throw new Error('Xato so\\'rov');"
     },
     {
-      "id": 7,
-      "title": "Ko'rinishni yangilash yoki almashtirish",
-      "instruction": "`toshkent_users` ko'rinishini Toshkentda yashovchi va yoshi (`age`) 25 dan katta yoki teng bo'lgan foydalanuvchilarni tanlaydigan yangi mantiq bilan almashtiruvchi (CREATE OR REPLACE VIEW) so'rov yozing.",
-      "startingCode": "-- VIEW yangilovchi SQL so'rovini yozing\n",
-      "hint": "CREATE OR REPLACE VIEW toshkent_users AS SELECT * FROM users WHERE city = 'Toshkent' AND age >= 25",
-      "test": "try { const res = db.exec('SELECT * FROM toshkent_users'); if(!Array.isArray(res) || res.length !== 2) return 'Ko\\'rinish yangilanmagan yoki yosh bo\\'yicha filtr xato'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+      id: 7,
+      title: "View ichida Agregatsiya",
+      instruction: "Har bir foydalanuvchining umumiy xarid summalarini ('total_spent') saqlovchi 'customer_stats' degan View yarating.",
+      startingCode: "function myFunction() {\n  return \"\";\n}",
+      hint: "CREATE VIEW customer_stats AS SELECT user_id, SUM(amount) AS total_spent FROM orders GROUP BY user_id",
+      solution: "function myFunction() {\n  return \"CREATE VIEW customer_stats AS SELECT user_id, SUM(amount) AS total_spent FROM orders GROUP BY user_id;\";\n}",
+      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('CREATE VIEW CUSTOMER_STATS') || !res.includes('GROUP BY')) throw new Error('Xato so\\'rov');"
     },
     {
-      "id": 8,
-      "title": "Yangilanadigan ko'rinish (Updatable View)",
-      "instruction": "`users` jadvalidan faqat `id`, `name` va `city` ustunlarini o'z ichiga olgan `updatable_users` nomli ko'rinish (VIEW) yarating.",
-      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-      "hint": "CREATE VIEW updatable_users AS SELECT id, name, city FROM users",
-      "test": "try { const res = db.exec('SELECT * FROM updatable_users'); if(!Array.isArray(res)) return 'Ko\\'rinish yaratilmagan'; db.exec(\"INSERT INTO updatable_users (id, name, city) VALUES (6, 'Bahodir', 'Namangan')\"); const check = db.exec(\"SELECT * FROM users WHERE id = 6\"); if(check.length === 0 || check[0].name !== 'Bahodir') return 'Ko\\'rinish orqali jismoniy jadvalga ma\\'lumot yozib bo\\'lmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+      id: 8,
+      title: "Ma'lumot qo'shish (Updatable View)",
+      instruction: "Oddiy View ('usa_customers') ustiga ma'lumot kiritish: unga (id, name, country) qilib (1, 'John', 'USA') qiymatini INSERT qiling.",
+      startingCode: "function myFunction() {\n  return \"\";\n}",
+      hint: "INSERT INTO usa_customers (id, name, country) VALUES ...",
+      solution: "function myFunction() {\n  return \"INSERT INTO usa_customers (id, name, country) VALUES (1, 'John', 'USA');\";\n}",
+      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('INSERT INTO USA_CUSTOMERS')) throw new Error('Xato so\\'rov');"
     },
     {
-      "id": 9,
-      "title": "Tekshiruvga ega ko'rinish (WITH CHECK OPTION)",
-      "instruction": "`users` jadvalidan faqat roli (`role`) 'User' bo'lgan foydalanuvchilarni ko'rsatadigan `only_users_view` nomli ko'rinish yarating va unga boshqa roldagi foydalanuvchilarni qo'shishni taqiqlash uchun `WITH CHECK OPTION` cheklovini qo'shing.",
-      "startingCode": "-- VIEW yaratuvchi SQL so'rovini yozing\n",
-      "hint": "CREATE VIEW only_users_view AS SELECT id, name, role FROM users WHERE role = 'User' WITH CHECK OPTION",
-      "test": "try { const res = db.exec('SELECT * FROM only_users_view'); if(!Array.isArray(res)) return 'Ko\\'rinish yaratilmagan'; let blockWorked = false; try { db.exec(\"INSERT INTO only_users_view (id, name, role) VALUES (7, 'Zafar', 'Admin')\"); } catch(e) { blockWorked = true; } if(!blockWorked) return 'WITH CHECK OPTION cheklovi qo\\'yilmagan yoki ishlamadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+      id: 9,
+      title: "WITH CHECK OPTION",
+      instruction: "'usa_customers' view'siga yozayotganda faqat country = 'USA' ekanligini ta'minlovchi 'WITH CHECK OPTION' bilan view yarating.",
+      startingCode: "function myFunction() {\n  return \"\";\n}",
+      hint: "CREATE VIEW usa_customers AS SELECT * FROM users WHERE country = 'USA' WITH CHECK OPTION",
+      solution: "function myFunction() {\n  return \"CREATE VIEW usa_customers AS SELECT * FROM users WHERE country = 'USA' WITH CHECK OPTION;\";\n}",
+      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('WITH CHECK OPTION')) throw new Error('Xato so\\'rov');"
     },
     {
-      "id": 10,
-      "title": "Ko'rinishni o'chirish (DROP VIEW)",
-      "instruction": "Quyida yaratilgan `toshkent_users` nomli ko'rinishni (VIEW) butunlay o'chirib yuboruvchi SQL so'rovini yozing.",
-      "startingCode": "CREATE VIEW toshkent_users AS SELECT * FROM users;\n-- Quyida toshkent_users ko'rinishini o'chiring\n",
-      "hint": "DROP VIEW toshkent_users",
-      "test": "try { db.exec('SELECT * FROM toshkent_users'); return 'View hali ham mavjud, o\\'chirilmagan'; } catch(e) { /* muvaffaqiyatli o'chirildi */ } return null;"
+      id: 10,
+      title: "View yordamida filtrlash",
+      instruction: "Sizda 'customer_stats' degan view bor (7-masala). O'sha view'dan total_spent > 100 bo'lganlarni o'qiydigan so'rov yozing.",
+      startingCode: "function myFunction() {\n  return \"\";\n}",
+      hint: "SELECT * FROM customer_stats WHERE total_spent > 100",
+      solution: "function myFunction() {\n  return \"SELECT * FROM customer_stats WHERE total_spent > 100;\";\n}",
+      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('FROM CUSTOMER_STATS') || !res.includes('TOTAL_SPENT > 100')) throw new Error('Xato so\\'rov');"
+    }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "View o'zi nima?",
+      options: [
+        "Fayl tizimidagi papka",
+        "Ma'lumotlarni jismonan ikkinchi marta saqlovchi zaxira jadvallar",
+        "Saqlab qo'yilgan mantiqiy so'rov (Virtual jadval)",
+        "Dasturlash tilining bir qismi"
+      ],
+      correctAnswer: 2,
+      explanation: "View - diskda ma'lumot o'rniga so'rovning o'zini (CREATE VIEW...) saqlaydi va chaqirilganda o'sha so'rovni ishga tushirib natijani beradi."
+    },
+    {
+      id: 2,
+      question: "Nega View dan foydalanamiz?",
+      options: [
+        "Baza hajmini kamaytirish uchun",
+        "Murakkab so'rovlarni soddalashtirish, kodni takrorlamaslik va ma'lumotlar xavfsizligi (ruxsatlarni boshqarish) uchun",
+        "Serverni sekinlashtirish uchun",
+        "Faqat ma'lumotlarni o'chirish uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "View orqali uzun JOINlarni qisqa 'SELECT * FROM view_ism' qilib ishlatishimiz, hamda maxfiy ustunlarni tushirib qoldirib, xavfsizlikni ta'minlashimiz mumkin."
+    },
+    {
+      id: 3,
+      question: "View ichiga qachon ma'lumot (INSERT) qilsa bo'ladi?",
+      options: [
+        "Har qanday holatda ham mumkin",
+        "Faqat bitta jadvalga tayanuvchi (Simple) ko'rinish bo'lsa va unda GROUP BY, DISTINCT ishlatilmagan bo'lsa",
+        "Hech qachon INSERT qilib bo'lmaydi",
+        "Faqat MySQL da mumkin"
+      ],
+      correctAnswer: 1,
+      explanation: "Agar ko'rinish oddiy (birma-bir xaritada ko'rinadigan) bo'lsa, undan o'tib kelgan ma'lumot to'g'ridan-to'g'ri asl jadvalga tushadi (Updatable View)."
+    },
+    {
+      id: 4,
+      question: "Materialized View (Moddiylashgan ko'rinish) oddiy View dan qanday farq qiladi?",
+      options: [
+        "Materialized View ma'lumotni saqlamaydi, faqat so'rov",
+        "Farqi yo'q, ikkisi bitta",
+        "Materialized View so'rov natijalarini qattiq diskda real jadval kabi saqlaydi (keshlaydi) va o'qish juda tez bo'ladi",
+        "Unda faqat sonlarni ko'rish mumkin"
+      ],
+      correctAnswer: 2,
+      explanation: "Tez-tez hisoblanadigan murakkab hisobotlarni Materialized View da yig'ish tizimga tushadigan yukni (load) ancha yengillashtiradi."
+    },
+    {
+      id: 5,
+      question: "Mavjud View ni tuzilishini o'zgartirish uchun qaysi ifoda to'g'ri keladi?",
+      options: [
+        "UPDATE VIEW ...",
+        "ALTER TABLE ...",
+        "CREATE OR REPLACE VIEW ...",
+        "MODIFY VIEW ..."
+      ],
+      correctAnswer: 2,
+      explanation: "Ko'plab SQL bazalarida ko'rinishni tezda yangilash uchun CREATE OR REPLACE VIEW sintaksisi ishlatiladi."
+    },
+    {
+      id: 6,
+      question: "WITH CHECK OPTION nima vazifa bajaradi?",
+      options: [
+        "Viewni o'chirib yuboradi",
+        "View yaratishda yozilgan WHERE shartiga to'g'ri kelmaydigan ma'lumotni kiritish/o'zgartirishga yo'l qo'ymaydi",
+        "Ma'lumotlar to'g'riligini AI orqali tekshiradi",
+        "Jadvallarga ruxsatlarni ochadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Bu orqali View ni filtridan (masalan faqat O'zbekiston mijozlari) tashqari bo'lgan ma'lumot kiritib qo'yishdan himoyalanamiz."
+    },
+    {
+      id: 7,
+      question: "Oddiy foydalanuvchiga (User) faqat u o'z ma'lumotlarini ko'rishi uchun qanday qilib View qo'llash mumkin?",
+      options: [
+        "Har bir user uchun alohida jadval yaratib",
+        "Userlarni o'chirib yuborish",
+        "WHERE ichiga hozirgi avtorizatsiyadan o'tgan userni filtrlash logikasini qo'shib, shu View ga o'qish huquqi beriladi",
+        "Buni faqat JavaScript da qilib bo'ladi"
+      ],
+      correctAnswer: 2,
+      explanation: "Database Row-Level Security (Qator darajasidagi xavfsizlik) yoki joriy sessiyaga (current_user) bog'lab View yaratish juda xavfsiz va samaralidir."
+    },
+    {
+      id: 8,
+      question: "Ko'rinishni yo'qotish qanday kalit so'z orqali bajariladi?",
+      options: [
+        "DELETE VIEW",
+        "REMOVE VIEW",
+        "DROP VIEW",
+        "TRUNCATE VIEW"
+      ],
+      correctAnswer: 2,
+      explanation: "Ma'lumotlar bazasidan tizimli obyektlarni (jadval, view, index) o'chirish DROP buyrug'i orqali qilinadi."
+    },
+    {
+      id: 9,
+      question: "Agar asosiy (Tagidagi) jadvalda bir ustun DROP qilinsa va u View da ishlatilgan bo'lsa, nima sodir bo'ladi?",
+      options: [
+        "Hech nima bo'lmaydi, View o'z-o'zidan to'g'rilanadi",
+        "View invalid (yaroqsiz) holatga keladi va uni chaqirganda SQL xatolik beradi",
+        "U ustun nol bilan to'ldiriladi",
+        "Asosiy jadvaldan uni DROP qilib bo'lmaydi (ko'p DB larda to'g'ridan to'g'ri ta'qiq ham bor)"
+      ],
+      correctAnswer: 1,
+      explanation: "Baza uni ishlata olmay qoladi yoki o'sha jadvalni (DROP CASCADE bo'lmaguncha) o'chirishga ruxsat bermasligi mumkin."
+    },
+    {
+      id: 10,
+      question: "Ko'rinishlar (Views) performanceni (tezlikni) o'z-o'zidan oshiradimi?",
+      options: [
+        "Ha, chunki u maxsus texnologiya",
+        "Yo'q, u shunchaki so'rovning boshqa nomi bo'lib, bajarilish paytida ichidagi so'rov o'rniga qo'yilib real-vaqtda qayta ishga tushadi",
+        "Ha, chunki indekslanadi",
+        "Bunday tushuncha yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "Oddiy View tezlikni oshirmaydi, u faqat kodni (logikani) toza saqlash uchun. (Moddiylashgani - Materialized View esa tezlashtiradi)."
+    },
+    {
+      id: 11,
+      question: "Quyidagilardan qaysi biri View haqida to'g'ri tasdiq?",
+      options: [
+        "Bitta View boshqa View ga aslida murojaat qila olmaydi",
+        "Bitta View ni yaratayotganda boshqa Viewlardan ham foydalanish (Nested views) mumkin",
+        "View ning o'zida PRIMARY KEY bo'ladi",
+        "Faqat SELECT kalit so'zisiz yasaladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Mumkin, lekin buni suiste'mol qilish (qavat-qavat view qilish) tezlikka salbiy ta'sir ko'rsatadi."
+    },
+    {
+      id: 12,
+      question: "CREATE VIEW da 'AS' so'zi nimani anglatadi?",
+      options: [
+        "Jadvalning ko'paytmasini",
+        "Qanday so'rov qolibiga asoslanishini ko'rsatadi (masalan AS SELECT ...)",
+        "O'zgaruvchilar yaratish uchun",
+        "Ustun turini aniqlash uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "'CREATE VIEW x AS' ko'rsatmasidan so'ng haqiqiy so'rov (SELECT) yozilishi shart."
     }
   ]
-,
-  quizzes: [
-  {
-    "id": 1,
-    "question": "View (Ko'rinish) o'zida ma'lumot saqlaydimi?",
-    "options": [
-      "Ha, u ma'lumotlarni jismonan diskka saqlaydi",
-      "Yo'q, u ma'lumot saqlamaydi, faqat SQL so'rovini saqlaydi",
-      "Faqat server o'chguncha RAMda saqlaydi",
-      "Faqat sonli ustunlarni saqlaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Oddiy View virtual jadval bo'lib, o'zida hech qanday jismoniy ma'lumot saqlamaydi. U faqat belgilangan SQL so'rovini o'z ichiga oladi."
-  },
-  {
-    "id": 2,
-    "question": "Materialized View-ning oddiy View-dan asosiy farqi nimada?",
-    "options": [
-      "U faqat PostgreSQL da ishlaydi",
-      "U o'z natijasini jismonan diskda saqlaydi (kesh kabi)",
-      "U orqali ma'lumot yozish (INSERT) osonroq",
-      "U hech qanday xotira egallamaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Materialized View so'rov natijasini diskda jismoniy jadval ko'rinishida saqlaydi, bu esa og'ir hisobotlarni bir zumda o'qish imkonini beradi."
-  },
-  {
-    "id": 3,
-    "question": "Materialized View tarkibidagi ma'lumotlarni yangilash uchun qaysi buyruq bajariladi?",
-    "options": [
-      "UPDATE MATERIALIZED VIEW",
-      "REFRESH MATERIALIZED VIEW",
-      "ALTER MATERIALIZED VIEW",
-      "RELOAD MATERIALIZED VIEW"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Materialized View ma'lumotlarini asosiy jadvallardagi so'nggi holatga moslab yangilash uchun 'REFRESH MATERIALIZED VIEW' buyrug'i ishlatiladi."
-  },
-  {
-    "id": 4,
-    "question": "Ko'p jadvalli (JOIN-li) murakkab View orqali jismoniy jadvallarga ma'lumot qo'shish (INSERT) mumkinmi?",
-    "options": [
-      "Ha, baza avtomatik barcha jadvallarga taqsimlaydi",
-      "Yo'q, murakkab View-lar faqat o'qish (Read-only) uchun mo'ljallangan",
-      "Faqat administratordan ruxsat bo'lsa mumkin",
-      "Faqat MySQL-da mumkin"
-    ],
-    "correctAnswer": 1,
-    "explanation": "JOIN yoki GROUP BY ishlatilgan murakkab View-lar orqali to'g'ridan-to'g'ri INSERT/UPDATE qilish mumkin emas, chunki baza qaysi jadvalga qanday yozishni aniqlay olmaydi."
-  },
-  {
-    "id": 5,
-    "question": "View yaratish uchun qaysi SQL operatori ishlatiladi?",
-    "options": ["MAKE VIEW", "CREATE VIEW", "NEW VIEW", "ADD VIEW"],
-    "correctAnswer": 1,
-    "explanation": "SQL-da ko'rinish yaratish uchun standart 'CREATE VIEW view_name AS SELECT...' sintaksisi qo'llaniladi."
-  },
-  {
-    "id": 6,
-    "question": "PostgreSQL-da Materialized View-ni blokirovkasiz (non-blocking) yangilash qanday bajariladi?",
-    "options": [
-      "REFRESH MATERIALIZED VIEW CONCURRENTLY",
-      "REFRESH MATERIALIZED VIEW ONLINE",
-      "REFRESH MATERIALIZED VIEW WITHOUT LOCK",
-      "REFRESH MATERIALIZED VIEW FAST"
-    ],
-    "correctAnswer": 0,
-    "explanation": "CONCURRENTLY kalit so'zi Materialized View-ni yangilash paytida o'qish so'rovlarini qulflamasdan orqa fonda tezkor bajarish imkonini beradi (unikal indeks talab qilinadi)."
-  },
-  {
-    "id": 7,
-    "question": "Quyidagi View-lardan qaysi biri ustiga jismoniy indeks (INDEX) yaratish mumkin?",
-    "options": [
-      "Faqat oddiy View ustiga",
-      "Faqat Materialized View ustiga",
-      "Ikkalasi ustiga ham yaratib bo'lmaydi",
-      "Ikkalasi ustiga ham yaratsa bo'ladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Materialized View diskda jismoniy ma'lumot saqlagani uchun uning ustunlariga xuddi oddiy jadvallardek indekslar qo'yish mumkin. Oddiy View-da esa ma'lumot bo'lmagani uchun indeks qo'yilmaydi."
-  },
-  {
-    "id": 8,
-    "question": "WITH CHECK OPTION nima uchun xizmat qiladi?",
-    "options": [
-      "View-ni har soniyada tekshirib turish uchun",
-      "View orqali yozilayotgan ma'lumotlar View filtri (WHERE) shartiga mos kelishini tekshirish uchun",
-      "Indekslarni tekshirish uchun",
-      "Xavfsizlik parolini o'rnatish uchun"
-    ],
-    "correctAnswer": 1,
-    "explanation": "WITH CHECK OPTION View orqali INSERT/UPDATE qilinayotgan qatorlar View ning WHERE shartiga mos kelishini ta'minlaydi, aks holda xatolik qaytaradi."
-  },
-  {
-    "id": 9,
-    "question": "View-ni o'chirish uchun to'g'ri SQL buyrug'i qaysi?",
-    "options": ["DELETE VIEW view_name", "DROP VIEW view_name", "REMOVE VIEW view_name", "CLEAR VIEW view_name"],
-    "correctAnswer": 1,
-    "explanation": "SQL-da ko'rinishni o'chirish uchun 'DROP VIEW view_name' buyrug'i ishlatiladi."
-  },
-  {
-    "id": 10,
-    "question": "View-lar xavfsizlikka (Security) qanday yordam beradi?",
-    "options": [
-      "Ular ma'lumotlarni shifrlaydi (encrypt)",
-      "Ular maxfiy ustunlarni yashirib, faqat ruxsat berilgan ma'lumotlarni ommaviy qilish imkonini beradi",
-      "Ular SQL Injection hujumlarini avtomatik to'xtatadi",
-      "Ular parollarni avtomatik o'chiradi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Foydalanuvchilarga jismoniy jadvallarga emas, balki faqat kerakli xavfsiz ustunlar tanlangan View-larga ruxsat berish orqali maxfiy ma'lumotlar himoya qilinadi."
-  },
-  {
-    "id": 11,
-    "question": "Nested Views (Ichma-ich View-lar) nima uchun tavsiya etilmaydi?",
-    "options": [
-      "Ular SQL-da taqiqlangan",
-      "Ular so'rov murakkabligini oshirib, performance-ni keskin pasaytiradi",
-      "Ular faqat MySQL-da ishlaydi",
-      "Ular xotirani o'chirib yuboradi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "View ichida View yaratilganda baza optimizeri so'rovni tahlil qilishda qiynaladi va indekslardan unumli foydalana olmay Sequential Scan-ga majbur bo'ladi."
-  },
-  {
-    "id": 12,
-    "question": "INSTEAD OF TRIGGER nima uchun ishlatiladi?",
-    "options": [
-      "Jadvalga ma'lumot yozishni taqiqlash uchun",
-      "Murakkab View-larga kelgan INSERT/UPDATE/DELETE amallarini jismoniy jadvallarga to'g'ri taqsimlash uchun",
-      "Avtomatik keshni o'chirish uchun",
-      "Sanalarni solishtirish uchun"
-    ],
-    "correctAnswer": 1,
-    "explanation": "INSTEAD OF triggeri yozib bo'lmaydigan (non-updatable) murakkab View-larga kelgan yozish amallarini backend kabi boshqarish imkonini beradi."
-  }
-]
-
 };

@@ -1,383 +1,234 @@
 export const sqlModifications = {
-  id: "sqlModifications",
-  title: "Ma'lumotlarni o'zgartirish (INSERT, UPDATE, DELETE)",
-  language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  id: "sql_modifications",
+  title: "SQL Ma'lumotlarni O'zgartirish (INSERT, UPDATE, DELETE)",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish
 
-### Ma'lumotlarni o'zgartirish nima?
-Ma'lumotlar bazasi faqatgina o'qish (SELECT) uchun ishlatilmaydi. Ilovangizda yangi foydalanuvchi ro'yxatdan o'tganda, u o'z profil ma'lumotlarini o'zgartirganda yoki hisobini o'chirganda siz ma'lumotlar bazasini o'zgartirishingiz kerak. Buning uchun SQL-da **DML (Data Manipulation Language)** amallari: **INSERT** (qo'shish), **UPDATE** (yangilash) va **DELETE** (o'chirish) buyruqlari xizmat qiladi.
+Ma'lumotlar bazasida (DB) ma'lumotlarni nafaqat o'qish (SELECT), balki ularni yozish, tahrirlash va o'chirish ham mumkin. Ushbu operatsiyalar **DML** (Data Manipulation Language) deyiladi:
+- **INSERT**: Yangi ma'lumot (qator) qo'shish.
+- **UPDATE**: Mavjud ma'lumotni o'zgartirish.
+- **DELETE**: Mavjud ma'lumotni o'chirib tashlash.
 
-### Real hayotiy o'xshatish
-Daftarda yozuvlar bilan ishlashni tasavvur qiling:
-* **INSERT**: Daftarning yangi bo'sh varag'iga yangi foydalanuvchi ma'lumotlarini qator qilib yozib qo'yish.
-* **UPDATE**: Daftardagi yozilgan qatorning biror qiymatini (masalan, yashash joyini) o'chirgich bilan o'chirib, yangisini yozish.
-* **DELETE**: Daftardagi biror qatorning ustidan butunlay chiziq tortib (yoki o'chirib) tashlash.
+Tasavvur qiling, ma'lumotlar bazasi xuddi Excel jadvali:
+- \`INSERT\` - yangi qator yozish.
+- \`UPDATE\` - qatordagi biron katakchani o'zgartirish.
+- \`DELETE\` - butun qatorni o'chirish.
 
----
+## ❌ YOMON va ✅ YAXSHI Yondashuvlar
 
-## 2. 💻 Real SQL Kod Misollari
-
-Ushbu bo'limda ma'lumotlarni qo'shish, yangilash va o'chirish bo'yicha real amaliy misollarni ko'rib chiqamiz.
-
-### 1. Basic Example (INSERT INTO)
-Yangi foydalanuvchi ma'lumotlarini jadvalga kiritish:
+**❌ YOMON (UPDATE va DELETE amallarini WHERE shartizsiz ishlatish):**
 \`\`\`sql
-INSERT INTO users (id, name, age, city, role) 
-VALUES (6, 'Jasur', 27, 'Farg''ona', 'User');
-\`\`\`
-* **Natija:** \`users\` jadvalida yangi qator paydo bo'ladi.
-* **Qachon ishlatiladi:** Ro'yxatdan o'tish jarayonida.
-* **Performance jihati:** Faqat kerakli ustunlarni belgilash va keraksiz indekslarni vaqtincha cheklash orqali yozish tezligini oshirish mumkin.
+-- DIQQAT! Bu butun jadvaldagi barcha yozuvlarni o'chirib yuboradi!
+DELETE FROM users;
 
-### 2. Intermediate Example (UPDATE with WHERE)
-Sardor ismli foydalanuvchining yoshini yangilash:
-\`\`\`sql
-UPDATE users 
-SET age = 23 
-WHERE name = 'Sardor';
-\`\`\`
-* **Natija:** Ismi 'Sardor' bo'lgan barcha foydalanuvchilarning yoshi 23 ga o'zgaradi.
-* **Qachon ishlatiladi:** Profil sozlamalarini o'zgartirishda.
-* **Performance jihati:** \`WHERE\` shartida indekslangan ustundan foydalanish (masalan, \`id\`) jadvalni to'liq skaner qilishdan (Full Table Scan) saqlaydi va tez ishlaydi.
-
-### 3. Advanced Example (UPDATE with Subquery)
-Faqatgina buyurtmalarining umumiy summasi 500 dan oshgan foydalanuvchilarning rolini 'VIP' ga o'zgartirish:
-\`\`\`sql
-UPDATE users 
-SET role = 'VIP' 
-WHERE id IN (
-    SELECT user_id 
-    FROM orders 
-    GROUP BY user_id 
-    HAVING SUM(amount) > 500
-);
-\`\`\`
-* **Natija:** Baza subquery orqali kerakli foydalanuvchilarni aniqlaydi va faqat ularning rolini o'zgartiradi.
-* **Qachon ishlatiladi:** Foydalanuvchilar holatini ularning faolligi bo'yicha avtomatik yangilashda.
-* **Performance jihati:** Bu so'rov ichki agregatsiyaga bog'liq. Katta hajmlarda tranzaksiya qulflanishiga (row locking) olib kelmasligi uchun ehtiyotkorlik bilan ishlatilishi lozim.
-
-### 4. Production Example (DELETE and Foreign Key constraints)
-Roli 'Manager' bo'lgan foydalanuvchini o'chirish:
-\`\`\`sql
-DELETE FROM users 
-WHERE role = 'Manager';
-\`\`\`
-* **Natija:** Roli menejer bo'lgan barcha foydalanuvchilar o'chiriladi.
-* **Qachon ishlatiladi:** Tizimdan keraksiz yoki faol bo'lmagan foydalanuvchilarni o'chirishda.
-* **Performance jihati:** Agar boshqa jadvallarda (masalan, \`orders\`) ushbu foydalanuvchiga bog'liq yozuvlar bo'lsa va \`ON DELETE CASCADE\` o'rnatilmagan bo'lsa, baza xatolik beradi va o'chirishga ruxsat bermaydi.
-
-### 5. Enterprise Example (Upsert - INSERT ... ON CONFLICT)
-PostgreSQL-da yangi foydalanuvchi ma'lumotlarini kiritish, agar email oldindan mavjud bo'lsa, shunchaki oxirgi kirish vaqtini yangilash (Upsert amaliyoti):
-\`\`\`sql
-INSERT INTO users (id, name, email, last_login) 
-VALUES (10, 'Bobur', 'bobur@example.com', CURRENT_TIMESTAMP)
-ON CONFLICT (email) 
-DO UPDATE SET last_login = EXCLUDED.last_login;
-\`\`\`
-* **Natija:** Email bazada bo'lmasa yangi qator qo'shiladi, agar bo'lsa xatolik yuz bermaydi va mavjud foydalanuvchining login vaqti yangilanadi.
-* **Qachon ishlatiladi:** Sinxronizatsiya jarayonlarida, login tizimida, API integratsiyalarida.
-* **Performance jihati:** \`ON CONFLICT\` ishlashi uchun mo'ljallangan ustunda albatta unikal indeks (Unique Index) yoki Primary Key bo'lishi shart.
-
----
-
-## 3. ⚠️ Muammo va Nima uchun Muhimligi
-
-### DML amallari qaysi muammoni hal qiladi?
-DML amallari ma'lumotlar bazasini statik (faqat o'qiladigan) holatdan dinamik (hayotiy) holatga o'tkazadi. Agar bu buyruqlar bo'lmaganda, foydalanuvchi faolligini saqlash, tovar qoldiqlarini yangilash yoki hisob-kitoblarni real vaqtda yangilab borish imkonsiz bo'lar edi.
-
-### Real Dunyoda Qo'llanilishi:
-* **E-commerce:** Xaridor mahsulot sotib olganda \`products\` jadvalidagi \`stock\` (ombor qoldig'i) miqdorini kamaytirish (\`UPDATE\`).
-* **Ijtimoiy Tarmoqlar:** Foydalanuvchi o'z postini o'chirib tashlaganida (\`DELETE\`).
-
----
-
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
-
-### 1. UPDATE va DELETE amallarida WHERE shartini yozishni unutish
-#### Xato:
-\`\`\`sql
--- XATO! Bazadagi barcha foydalanuvchilarning shahrini Toshkent qilib qo'yadi!
-UPDATE users SET city = 'Toshkent';
-\`\`\`
-#### Nima uchun noto'g'ri:
-\`WHERE\` sharti berilmasa, SQL bazadagi barcha qatorlarni yangilaydi yoki o'chiradi. Bu loyihalarda juda katta ma'lumot yo'qolishiga (data loss) olib keladi.
-#### To'g'ri usul:
-\`\`\`sql
-UPDATE users SET city = 'Toshkent' WHERE id = 3;
+-- Bu barcha foydalanuvchilarning parolini '123' qilib qo'yadi!
+UPDATE users SET password = '123';
 \`\`\`
 
-### 2. Qiymatlar tartibini adashtirish
-#### Xato:
+**✅ YAXSHI (Doim WHERE shartini qo'shing):**
 \`\`\`sql
--- XATO! Ustunlar tartibi va values mos emas
-INSERT INTO users (name, age) VALUES (25, 'Ali');
-\`\`\`
-#### Nima uchun noto'g'ri:
-String turi kutilgan joyga raqam, yoki aksincha qiymat kiritilsa, baza ma'lumotlar turi mos kelmasligi (data type mismatch) sababli xato beradi.
-#### To'g'ri usul:
-\`\`\`sql
-INSERT INTO users (name, age) VALUES ('Ali', 25);
+-- Faqat id=5 bo'lgan foydalanuvchini o'chirish
+DELETE FROM users WHERE id = 5;
+
+-- Faqat id=10 bo'lgan foydalanuvchining parolini yangilash
+UPDATE users SET password = '123' WHERE id = 10;
 \`\`\`
 
----
+## 🎤 Intervyu Savollari
 
-## 5. 💬 12 ta Intervyu Savollari
+1. **INSERT, UPDATE, DELETE nima?**
+   - *Javob*: Bu SQL dagi DML (Data Manipulation Language) komandalari bo'lib, bazaga ma'lumot qo'shish, o'zgartirish va o'chirish uchun ishlatiladi.
+2. **DELETE va TRUNCATE farqi nima?**
+   - *Javob*: DELETE yozuvlarni birma-bir o'chiradi va shart (WHERE) qo'yish mumkin, TRUNCATE esa jadvalni butunlay tozalaydi, WHERE sharti ishlamaydi va DELETE ga qaraganda tezroq ishlaydi.
+3. **RETURNING (yoki OUTPUT) qanday ishlaydi?**
+   - *Javob*: PostgreSQL (va ba'zi boshqa DB larda) yozish, o'chirish yoki o'zgartirish amali bajarilgandan so'ng qayta natijani o'qib olish (masalan, yangi qo'shilgan qatorning ID sini olish) uchun \`RETURNING\` kalit so'zi ishlatiladi.
 
-### Junior (1–4)
-1. **Savol:** SQL-da ma'lumotlarni o'zgartirish uchun qaysi asosiy buyruqlar ishlatiladi?
-   * **Javob:** \`INSERT\` (qo'shish), \`UPDATE\` (yangilash) va \`DELETE\` (o'chirish).
-2. **Savol:** UPDATE so'rovida \`WHERE\` sharti yozilmasa nima bo'ladi?
-   * **Javob:** Jadvaldagi barcha qatorlarning qiymatlari yangilanib ketadi.
-3. **Savol:** \`DELETE\` va \`TRUNCATE\` farqi nimada?
-   * **Javob:** \`DELETE\` ma'lum shart bo'yicha qatorlarni o'chiradi va sekinroq ishlaydi. \`TRUNCATE\` esa butun jadval ma'lumotlarini tezda tozalaydi, lekin jadval strukturasini saqlab qoladi.
-4. **Savol:** String formatidagi qiymatlar SQL buyruqlarida qanday yoziladi?
-   * **Javob:** Yagona tirnoqlar \`'...'\` ichida yozilishi shart.
+## 🛠️ Amaliy Topshiriqlar
 
-### Middle (5–8)
-5. **Savol:** \`ON DELETE CASCADE\` nima vazifani bajaradi?
-   * **Javob:** Agar asosiy jadvaldagi qator o'chirilsa, unga bog'liq bo'lgan tashqi kalitli (Foreign Key) jadvallardagi barcha tegishli qatorlarni ham avtomatik o'chiradi.
-6. **Savol:** Bitta \`UPDATE\` so'rovida bir nechta ustunlarni qanday yangilash mumkin?
-   * **Javob:** \`SET\` kalit so'zidan keyin ustunlarni vergul bilan ajratgan holda: \`SET city = 'Toshkent', age = 30\`.
-7. **Savol:** \`INSERT INTO ... SELECT\` nima vazifani bajaradi?
-   * **Javob:** Bir jadvaldagi ma'lumotlarni tanlab (SELECT), ikkinchi jadvalga to'g'ridan-to'g'ri yozish (INSERT) imkonini beradi.
-8. **Savol:** Tranzaksiya ichida \`DELETE\` qilingan ma'lumotlarni qaytarish mumkinmi?
-   * **Javob:** Ha, agar tranzaksiya hali \`COMMIT\` qilinmagan bo'lsa, \`ROLLBACK\` buyrug'i bilan o'chirishni bekor qilish mumkin.
-
-### Senior (9–12)
-9. **Savol:** UPSERT nima va PostgreSQL-da u qanday amalga oshiriladi?
-   * **Javob:** UPSERT — bu kiritish va yangilash birlashmasi. \`INSERT ... ON CONFLICT (ustun) DO UPDATE SET ...\` sintaksisi orqali bajariladi.
-10. **Savol:** Katta hajmli jadvalda (masalan, 100 mln qator) \`DELETE\` so'rovini optimallashtirish qanday amalga oshiriladi?
-    * **Javob:** Barcha qatorlarni birdaniga o'chirish bazani va loglarni qulflab qo'yishi mumkin. Shuning uchun ma'lumotlar partiyalarga bo'lib (chunking) o'chiriladi yoki jadval qayta yaratiladi.
-11. **Savol:** \`UPDATE\` so'rovida \`RETURNING\` kalit so'zi nima uchun ishlatiladi?
-    * **Javob:** Yangilangan qatorlarning yangi qiymatlarini qaytarib olish uchun ishlatiladi (PostgreSQL va ba'zi boshqa bazalarda).
-12. **Savol:** Jadvalni butunlay o'chirish (\`DROP\`) bilan ma'lumotlarini tozalash (\`TRUNCATE\`) farqi nimada?
-    * **Javob:** \`DROP\` jadval tuzilishi va indekslarini ham o'chirib tashlaydi. \`TRUNCATE\` esa faqat ma'lumotlarni tozalaydi, jadval strukturasi qoladi.
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Amaliy topshiriqlarni quyidagi mashqlar bo'limida bajarishingiz mumkin.
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Dars oxirida o'rganilgan material bo'yicha interaktiv testlardan o'ting.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### Elektron Tijorat Platformasida Buyurtma Rasmiylashtirish va Ombor Qoldig'i
-Mijoz savatchadagi mahsulotlarni sotib olganida, tizim quyidagi DML amallarini zanjir ko'rinishida bajarishi kerak:
-1. Yangi buyurtma yaratish (\`INSERT INTO orders\`).
-2. Har bir mahsulotning ombor qoldig'ini sotib olingan miqdorga kamaytirish (\`UPDATE products\`).
-
-Agar mahsulot omborida yetarli miqdor qolmagan bo'lsa yoki birinchi amal bajarilib, ikkinchisi to'xtab qolsa, ma'lumotlar butunligi buziladi. Buning oldini olish uchun ushbu amallar yagona tranzaksiya blokida bajariladi:
-\`\`\`sql
-BEGIN;
-
--- 1. Yangi buyurtma kiritiladi
-INSERT INTO orders (id, user_id, product, amount, order_date) 
-VALUES (108, 2, 'Chair', 120.00, '2026-06-10');
-
--- 2. Ombor qoldig'i kamaytiriladi
-UPDATE products 
-SET stock = stock - 1 
-WHERE name = 'Chair' AND stock >= 1;
-
-COMMIT;
+\`\`\`mermaid
+graph TD
+    A[SQL So'rovi] --> B{Amal turi}
+    B -- INSERT --> C[Yangi qator qo'shiladi]
+    B -- UPDATE --> D[Ma'lumot yangilanadi]
+    B -- DELETE --> E[Qator o'chiriladi]
 \`\`\`
-Agar \`stock >= 1\` sharti bajarilmasa, dastur tranzaksiyani bekor qiladi (\`ROLLBACK\`).
-
----
-
-## 9. 🚀 Performance va Optimization
-
-DML amallarini optimallashtirish qoidalari:
-1. **Indekslar ta'siri:** Har bir \`INSERT\`, \`UPDATE\`, \`DELETE\` amali jadvaldagi barcha indekslarni qayta yangilashga majbur qiladi. Katta hajmli yuklashlarda indekslarni vaqtincha o'chirib turish tavsiya etiladi.
-2. **Batching:** 10,000 ta qatorni alohida 10,000 ta \`INSERT\` so'rovi bilan kiritgandan ko'ra, ularni bitta massiv ko'rinishida (Batch Insert) kiritish 50 barobar tezroq ishlaydi.
-3. **Primary Key orqali yangilash:** \`UPDATE\` va \`DELETE\` amallarida doimo Primary Key ustunidan foydalaning.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Buyruq | Sintaksis | Vazifasi | Ehtiyot bo'lish kerak bo'lgan jihati |
-| :--- | :--- | :--- | :--- |
-| **INSERT** | \`INSERT INTO users (name) VALUES ('Ali');\` | Yangi qator qo'shish | Ma'lumotlar turlarining mosligi |
-| **UPDATE** | \`UPDATE users SET age = 20 WHERE id = 1;\` | Qiymatni yangilash | \`WHERE\` shartini unutmaslik |
-| **DELETE** | \`DELETE FROM users WHERE id = 1;\` | Qatorlarni o'chirish | \`WHERE\` shartini unutmaslik |
-| **TRUNCATE** | \`TRUNCATE TABLE users;\` | Jadvalni butunlay tozalash | ROLLBACK qilish imkonsiz (ko'p hollarda) |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Yangi foydalanuvchi qo'shish",
-    "instruction": "`users` jadvaliga yangi foydalanuvchi qo'shing. Qiymatlar: `id` = 6, `name` = 'Jasur', `age` = 24, `city` = 'Xiva', `role` = 'User'.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "INSERT INTO users (id, name, age, city, role) VALUES (6, 'Jasur', 24, 'Xiva', 'User')",
-    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec('SELECT * FROM users WHERE id = 6'); if(check.length !== 1 || check[0].name !== 'Jasur') return 'Jasur foydalanuvchisi qo\\'shilmadi'; return null;"
-  },
-  {
-    "id": 2,
-    "title": "Yoshni yangilash (UPDATE)",
-    "instruction": "`users` jadvalidan `name` qiymati 'Sardor' bo'lgan foydalanuvchining yoshini (`age`) 23 ga o'zgartiring.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "UPDATE users SET age = 23 WHERE name = 'Sardor'",
-    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT age FROM users WHERE name = 'Sardor'\"); if(check.length === 0 || check[0].age !== 23) return 'Sardorning yoshi yangilanmadi'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "Menejerni o'chirish (DELETE)",
-    "instruction": "`users` jadvalidan roli `Manager` bo'lgan barcha foydalanuvchilarni o'chirib tashlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "DELETE FROM users WHERE role = 'Manager'",
-    "test": "if(!Array.isArray(result) && typeof result !== 'number') return 'Xatolik yuz berdi'; const check = db.exec(\"SELECT * FROM users WHERE role = 'Manager'\"); if(check.length !== 0) return 'Menejer o\\'chmadi'; return null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Yangi ma'lumot qo'shish (INSERT)",
+      instruction: "\`users\` jadvaliga \`name\` va \`age\` ustunlari bilan ma'lumot qo'shuvchi SQL so'rovini qaytaruvchi \`insertUser\` funksiyasini yozing. Matnli qiymatlar bir tirnoq ichida bo'lishi kerak.",
+      startingCode: "function insertUser(name, age) {\n  \n}",
+      hint: "INSERT INTO users (name, age) VALUES ('Qiymat', Son);",
+      solution: "function insertUser(name, age) {\n  return `INSERT INTO users (name, age) VALUES ('${name}', ${age});`;\n}",
+      test: "const fn = new Function(code + '; return insertUser;')(); \nif (fn('Ali', 25).trim().toUpperCase() !== \"INSERT INTO USERS (NAME, AGE) VALUES ('ALI', 25);\") throw new Error('Xato so\\'rov qaytdi');"
+    },
+    {
+      id: 2,
+      title: "Bir nechta yozuv qo'shish",
+      instruction: "Bir nechta yozuvlarni birdaniga qo'shish so'rovini qaytaradigan \`insertMultiple\` funksiyasini yozing. U \`users(name)\` uchun ikki ismni qo'shsin.",
+      startingCode: "function insertMultiple(name1, name2) {\n  \n}",
+      hint: "INSERT INTO users (name) VALUES ('ism1'), ('ism2');",
+      solution: "function insertMultiple(name1, name2) {\n  return `INSERT INTO users (name) VALUES ('${name1}'), ('${name2}');`;\n}",
+      test: "const fn = new Function(code + '; return insertMultiple;')(); \nif (!fn('Ali', 'Vali').toUpperCase().includes(\"('ALI'), ('VALI')\")) throw new Error('Values qismi xato');"
+    },
+    {
+      id: 3,
+      title: "Ma'lumotni yangilash (UPDATE)",
+      instruction: "\`users\` jadvalidagi \`status\` ni berilgan id bo'yicha yangilaydigan SQL so'rovini qaytaruvchi \`updateStatus\` funksiyasini yozing.",
+      startingCode: "function updateStatus(id, newStatus) {\n  \n}",
+      hint: "UPDATE users SET status = 'yangi_status' WHERE id = id_raqami;",
+      solution: "function updateStatus(id, newStatus) {\n  return `UPDATE users SET status = '${newStatus}' WHERE id = ${id};`;\n}",
+      test: "const fn = new Function(code + '; return updateStatus;')(); \nif (fn(5, 'active').trim().toUpperCase() !== \"UPDATE USERS SET STATUS = 'ACTIVE' WHERE ID = 5;\") throw new Error('Xato UPDATE so\\'rovi');"
+    },
+    {
+      id: 4,
+      title: "Ko'p ustunni yangilash",
+      instruction: "\`users\` jadvalidagi id ga asosan ham \`name\`, ham \`age\` ni yangilaydigan funksiya \`updateUser\` yozing.",
+      startingCode: "function updateUser(id, newName, newAge) {\n  \n}",
+      hint: "SET ustun1 = 'qiymat1', ustun2 = qiymat2 ...",
+      solution: "function updateUser(id, newName, newAge) {\n  return `UPDATE users SET name = '${newName}', age = ${newAge} WHERE id = ${id};`;\n}",
+      test: "const fn = new Function(code + '; return updateUser;')(); \nif (!fn(1, 'Hasan', 30).toUpperCase().includes(\"NAME = 'HASAN', AGE = 30\")) throw new Error('SET qismi xato');"
+    },
+    {
+      id: 5,
+      title: "Ma'lumotni o'chirish (DELETE)",
+      instruction: "\`users\` jadvalidan berilgan id ga asosan foydalanuvchini o'chiruvchi \`deleteUser\` funksiyasini yozing.",
+      startingCode: "function deleteUser(id) {\n  \n}",
+      hint: "DELETE FROM users WHERE id = ...;",
+      solution: "function deleteUser(id) {\n  return `DELETE FROM users WHERE id = ${id};`;\n}",
+      test: "const fn = new Function(code + '; return deleteUser;')(); \nif (fn(10).trim().toUpperCase() !== 'DELETE FROM USERS WHERE ID = 10;') throw new Error('Xato DELETE so\\'rovi');"
+    },
+    {
+      id: 6,
+      title: "Shart bilan o'chirish",
+      instruction: "\`users\` jadvalidagi barcha \`age\` dan kichik bo'lgan yoshlarni o'chiruvchi \`deleteByAge\` funksiyasini yozing.",
+      startingCode: "function deleteByAge(maxAge) {\n  \n}",
+      hint: "DELETE FROM users WHERE age < maxAge;",
+      solution: "function deleteByAge(maxAge) {\n  return `DELETE FROM users WHERE age < ${maxAge};`;\n}",
+      test: "const fn = new Function(code + '; return deleteByAge;')(); \nif (fn(18).trim().toUpperCase() !== 'DELETE FROM USERS WHERE AGE < 18;') throw new Error('Xato WHERE sharti');"
+    },
+    {
+      id: 7,
+      title: "INSERT va RETURNING",
+      instruction: "PostgreSQL da qo'shilgan ma'lumotning id sini qaytarib olish uchun \`RETURNING id\` ishlatiladi. Yangi foydalanuvchi qo'shadigan va id sini qaytaradigan SQL so'rov \`insertAndReturnId(name)\` yozing.",
+      startingCode: "function insertAndReturnId(name) {\n  \n}",
+      hint: "INSERT INTO ... VALUES (...) RETURNING id;",
+      solution: "function insertAndReturnId(name) {\n  return `INSERT INTO users (name) VALUES ('${name}') RETURNING id;`;\n}",
+      test: "const fn = new Function(code + '; return insertAndReturnId;')(); \nif (!fn('Jasur').toUpperCase().includes('RETURNING ID')) throw new Error('RETURNING id so\\'zi topilmadi');"
+    },
+    {
+      id: 8,
+      title: "Barcha ma'lumotni tozalash",
+      instruction: "Barcha ma'lumotlarni WHERE shartizsiz o'chiruvchi xavfli (DELETE FROM) so'rovni qaytaruvchi \`deleteAll\` yozing (faqat jadval nomini parametr sifatida oladi).",
+      startingCode: "function deleteAll(tableName) {\n  \n}",
+      hint: "DELETE FROM tableName;",
+      solution: "function deleteAll(tableName) {\n  return `DELETE FROM ${tableName};`;\n}",
+      test: "const fn = new Function(code + '; return deleteAll;')(); \nif (fn('logs').trim().toUpperCase() !== 'DELETE FROM LOGS;') throw new Error('Xato so\\'rov');"
+    },
+    {
+      id: 9,
+      title: "INSERT INTO ... SELECT ...",
+      instruction: "Bir jadvaldan o'qib ikkinchisiga yozish mumkin. \`old_users\` dan barcha ma'lumotlarni \`new_users\` ga yozuvchi so'rovni qaytaruvchi \`copyUsers\` funksiyasini yozing.",
+      startingCode: "function copyUsers() {\n  \n}",
+      hint: "INSERT INTO new_users SELECT * FROM old_users;",
+      solution: "function copyUsers() {\n  return `INSERT INTO new_users SELECT * FROM old_users;`;\n}",
+      test: "const fn = new Function(code + '; return copyUsers;')(); \nif (fn().trim().toUpperCase() !== 'INSERT INTO NEW_USERS SELECT * FROM OLD_USERS;') throw new Error('So\\'rov noto\\'g\\'ri');"
+    },
+    {
+      id: 10,
+      title: "TRUNCATE yordamida jadvalni tozalash",
+      instruction: "DELETE dan ko'ra tezroq ishlovchi TRUNCATE so'rovini qaytaruvchi \`truncateTable(tableName)\` funksiyasini yozing.",
+      startingCode: "function truncateTable(tableName) {\n  \n}",
+      hint: "TRUNCATE TABLE tableName;",
+      solution: "function truncateTable(tableName) {\n  return `TRUNCATE TABLE ${tableName};`;\n}",
+      test: "const fn = new Function(code + '; return truncateTable;')(); \nif (fn('sessions').trim().toUpperCase() !== 'TRUNCATE TABLE SESSIONS;') throw new Error('Xato TRUNCATE so\\'rovi');"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "Mavjud ma'lumotlarni o'zgartirish (tahrirlash) uchun qaysi SQL buyrug'i ishlatiladi?",
-    "options": ["INSERT", "UPDATE", "CHANGE", "MODIFY"],
-    "correctAnswer": 1,
-    "explanation": "Mavjud qatorlardagi qiymatlarni yangilash yoki o'zgartirish uchun UPDATE buyrug'i ishlatiladi."
-  },
-  {
-    "id": 2,
-    "question": "UPDATE yoki DELETE so'rovlarida WHERE shartini yozish unutilsa nima sodir bo'ladi?",
-    "options": [
-      "Faqat birinchi qator o'zgaradi / o'chadi",
-      "Loyiha xatolik berib to'xtaydi va hech narsa o'zgarmaydi",
-      "Jadvaldagi barcha qatorlar o'zgaradi / o'chadi",
-      "Oxirgi qo'shilgan qator o'zgaradi"
-    ],
-    "correctAnswer": 2,
-    "explanation": "WHERE sharti yozilmasa, buyruq butun jadval bo'yicha qo'llaniladi. Bu barcha ma'lumotlarning o'zgarishi yoki o'chib ketishiga olib keladi."
-  },
-  {
-    "id": 3,
-    "question": "Jadvalga yangi qator kiritish uchun to'g'ri sintaksis qaysi?",
-    "options": [
-      "INSERT INTO users VALUES (name, age) VALUES ('Ali', 20)",
-      "INSERT INTO users (name, age) VALUES ('Ali', 20)",
-      "UPDATE users ADD (name = 'Ali', age = 20)",
-      "INSERT INTO users SET name = 'Ali', age = 20"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Standard INSERT sintaksisi: INSERT INTO jadval (ustunlar) VALUES (qiymatlar) ko'rinishida bo'ladi."
-  },
-  {
-    "id": 4,
-    "question": "INSERT INTO jadval_nomi VALUES (...) so'rovida ustunlar nomlari yozilmasa nima bo'ladi?",
-    "options": [
-      "Xatolik yuz beradi, ustun nomlari yozilishi shart",
-      "Qiymatlar jadvaldagi barcha ustunlarga tartib bo'yicha to'liq va mos ravishda kiritilishi kerak",
-      "Faqat birinchi ustunga ma'lumot yoziladi",
-      "Jadvaldagi tasodifiy ustunlarga yoziladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Jadval ustunlari ko'rsatilmaganda, VALUES qismidagi qiymatlar jadvalning barcha ustunlariga yaratilgan tartibda mos ravishda taqdim etilishi kerak."
-  },
-  {
-    "id": 5,
-    "question": "Bitta UPDATE so'rovida bir nechta ustun qiymatini o'zgartirish uchun ular qanday ajratiladi?",
-    "options": [
-      "AND kalit so'zi bilan",
-      "Vergul (,) belgisi bilan",
-      "Nuqtali vergul (;) bilan",
-      "OR kalit so'zi bilan"
-    ],
-    "correctAnswer": 1,
-    "explanation": "UPDATE so'rovida bir nechta ustunlarni yangilashda SET ustun1 = qiymat1, ustun2 = qiymat2 ko'rinishida vergul bilan ajratiladi."
-  },
-  {
-    "id": 6,
-    "question": "Jadvaldagi barcha ma'lumotlarni o'chirish uchun qaysi so'rov ishlatiladi (lekin jadval strukturasini saqlab qoladi)?",
-    "options": [
-      "DROP TABLE jadval_nomi",
-      "DELETE FROM jadval_nomi",
-      "REMOVE TABLE jadval_nomi",
-      "CLEAR jadval_nomi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "DELETE FROM jadval_nomi so'rovi shartsiz (WHERE-siz) bajarilsa, jadvaldagi barcha qatorlar o'chib ketadi, lekin jadvalning o'zi va ustunlari o'chmaydi."
-  },
-  {
-    "id": 7,
-    "question": "UPDATE so'rovida SET kalit so'zi nima vazifani bajaradi?",
-    "options": [
-      "Filtrlash shartini o'rnatadi",
-      "Yangilanadigan ustunlar va ularning yangi qiymatlarini belgilaydi",
-      "Qatorlarni o'chirish uchun ishlatiladi",
-      "Natijalarni saralaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "SET kalit so'zi yangilanadigan ustun(lar) nomini va ularga beriladigan yangi qiymat(lar)ni ko'rsatish uchun ishlatiladi."
-  },
-  {
-    "id": 8,
-    "question": "INSERT buyrug'ida VALUES ichiga yoziladigan matnli ma'lumotlar qanday yoziladi?",
-    "options": [
-      "Qavssiz va tirnoqsiz",
-      "Bir tirnoq (') ichida",
-      "Kvadrat qavs [ ] ichida",
-      "Faqat katta harflar bilan"
-    ],
-    "correctAnswer": 1,
-    "explanation": "SQL standartiga ko'ra har qanday string (matn) qiymati bir tirnoq ichida yozilishi shart."
-  },
-  {
-    "id": 9,
-    "question": "DELETE FROM users WHERE age IS NULL so'rovi nima qiladi?",
-    "options": [
-      "Yoshi 0 bo'lgan foydalanuvchilarni o'chiradi",
-      "Yoshi ko'rsatilmagan (NULL bo'lgan) foydalanuvchilarni o'chiradi",
-      "Bacha foydalanuvchilarni o'chiradi",
-      "Haqiqiy foydalanuvchilarni saqlab, qolganlarini o'chiradi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "IS NULL operatori qiymat mavjud bo'lmagan (bo'sh) qatorlarni aniqlaydi. Ushbu so'rov yoshi NULL bo'lgan foydalanuvchilarni o'chiradi."
-  },
-  {
-    "id": 10,
-    "question": "TRUNCATE TABLE va DELETE FROM farqi nimada?",
-    "options": [
-      "TRUNCATE jadvalni butunlay o'chiradi (DROP kabi), DELETE esa qatorlarni",
-      "TRUNCATE tezroq ishlaydi, tranzaksiya jurnallarini kamroq yozadi va WHERE shartini qabul qilmaydi",
-      "DELETE faqat bitta qatorni o'chira oladi, TRUNCATE esa ko'p qatorni",
-      "Ular o'rtasida hech qanday farq yo'q"
-    ],
-    "correctAnswer": 1,
-    "explanation": "TRUNCATE yirik jadvallardagi barcha ma'lumotlarni juda tez o'chirish uchun mo'ljallangan, WHERE shartini qo'llab-quvvatlamaydi va DELETE kabi qatorlar bo'yicha triggerlarni ishga tushirmaydi."
-  },
-  {
-    "id": 11,
-    "question": "Jadvalga bir vaqtning o'zida bir nechta yangi qator kiritish mumkinmi?",
-    "options": [
-      "Yo'q, har bir INSERT so'rovi faqat bitta qator kiritadi",
-      "Ha, VALUES qismidan keyin qavslarni vergul bilan ajratib yozish orqali",
-      "Faqat UPDATE so'rovi orqali ko'p qator kiritish mumkin",
-      "Ha, faqat maxsus MULTI INSERT buyrug'i orqali"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Ko'pgina SQL tizimlarida INSERT INTO jadval (...) VALUES (...), (...), (...) ko'rinishida bir so'rov bilan ko'plab qatorlarni qo'shish mumkin."
-  },
-  {
-    "id": 12,
-    "question": "UPDATE users SET age = age + 1 so'rovi nima ish bajaradi?",
-    "options": [
-      "Faqat birinchi foydalanuvchining yoshini 1 taga oshiradi",
-      "Bacha foydalanuvchilarning yoshini 1 taga oshiradi",
-      "Xatolik beradi, chunki o'ng tomonda ustun nomi yozilgan",
-      "Yangi foydalanuvchi qo'shadi va uning yoshini 1 qiladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "WHERE sharti ko'rsatilmagani sababli, ushbu so'rov jadvaldagi barcha foydalanuvchilarning yoshini (`age`) 1 taga oshiradi."
-  }
-]
-
+    {
+      id: 1,
+      question: "Ma'lumotlar bazasiga yangi qator qo'shish uchun qaysi SQL operatori ishlatiladi?",
+      options: ["ADD", "INSERT", "CREATE", "NEW"],
+      correctAnswer: 1,
+      explanation: "Yangi ma'lumot qatorini jadvalga qo'shish uchun INSERT INTO operatori ishlatiladi."
+    },
+    {
+      id: 2,
+      question: "Jadvaldagi ma'lumotni yangilash uchun nima ishlatiladi?",
+      options: ["MODIFY", "CHANGE", "UPDATE", "ALTER"],
+      correctAnswer: 2,
+      explanation: "Mavjud ma'lumotlarni o'zgartirish uchun UPDATE va SET kalit so'zlari birgalikda ishlatiladi."
+    },
+    {
+      id: 3,
+      question: "Agar UPDATE so'rovida WHERE sharti tushirib qoldirilsa nima bo'ladi?",
+      options: ["Xato yuz beradi", "Faqat birinchi qator o'zgaradi", "Jadvaldagi barcha qatorlar o'zgarib ketadi", "Hech narsa o'zgarmaydi"],
+      correctAnswer: 2,
+      explanation: "WHERE sharti bo'lmasa, DB yangilanishni jadvaldagi hamma qatorlarga qo'llaydi. Bu odatda jiddiy xato (bug) hisoblanadi."
+    },
+    {
+      id: 4,
+      question: "Qatorlarni o'chirish uchun to'g'ri operatorni toping:",
+      options: ["REMOVE FROM", "DELETE FROM", "DROP FROM", "CLEAR"],
+      correctAnswer: 1,
+      explanation: "Jadvaldan ma'lumot (qator) larni o'chirish uchun DELETE FROM ishlatiladi."
+    },
+    {
+      id: 5,
+      question: "DELETE va TRUNCATE o'rtasidagi asosiy farq nimada?",
+      options: ["Farqi yo'q", "TRUNCATE WHERE sharti bilan ishlaydi, DELETE esa yo'q", "DELETE sekinroq, ammo WHERE sharti ishlatish mumkin. TRUNCATE jadvalni butunlay tozalaydi va juda tez ishlaydi.", "TRUNCATE faqat ustunlarni o'chiradi"],
+      correctAnswer: 2,
+      explanation: "TRUNCATE jadvaldagi hamma yozuvlarni o'chiradi, odatda tranzaksiya jurnaliga kamroq yozadi, shuning uchun tezroq ishlaydi. Unda WHERE sharti qatnashmaydi."
+    },
+    {
+      id: 6,
+      question: "Yangi kiritilgan ma'lumotning ID sini darhol olish uchun PostgreSQL'da qaysi kalit so'z ishlatiladi?",
+      options: ["RETURNING", "OUTPUT", "GET", "FETCH"],
+      correctAnswer: 0,
+      explanation: "PostgreSQL da INSERT/UPDATE/DELETE oxirida RETURNING ustun_nomi yozib natijani qaytarib olish mumkin."
+    },
+    {
+      id: 7,
+      question: "Birdaniga bir nechta qator qo'shish (Bulk Insert) to'g'ri ko'rsatilgan variant:",
+      options: ["INSERT INTO users (id) VALUES (1) AND (2)", "INSERT INTO users (id) VALUES (1), (2)", "INSERT INTO users (id) VALUES (1); INSERT (2);", "INSERT MULTIPLE (1), (2) INTO users"],
+      correctAnswer: 1,
+      explanation: "VALUES so'zidan keyin har bir qator qiymatlari vergul bilan ajratilib qavs ichida yoziladi."
+    },
+    {
+      id: 8,
+      question: "Quyidagilardan qaysi biri DML (Data Manipulation Language) ga kirmaydi?",
+      options: ["INSERT", "UPDATE", "DELETE", "CREATE"],
+      correctAnswer: 3,
+      explanation: "CREATE bu DDL (Data Definition Language) ga kiradi, chunki u ma'lumotni emas, jadval strukturasini (schema) yaratadi."
+    },
+    {
+      id: 9,
+      question: "Agar jadval nomidan keyin ustunlar nomi kiritilmasa (INSERT INTO users VALUES ...), nima bo'ladi?",
+      options: ["Sintaksis xatosi", "Barcha ustunlarga mos tartibda qiymat berish talab qilinadi", "Faqat birinchi ustunga qiymat ketadi", "Jadval tasodifiy qiymatlar bilan to'ladi"],
+      correctAnswer: 1,
+      explanation: "Agar ustunlar aniq ko'rsatilmasa, jadvalda qancha ustun bo'lsa, VALUES ichida ham shuncha qiymat ketma-ket (tartib bo'yicha) kiritilishi shart."
+    },
+    {
+      id: 10,
+      question: "O'zgartirilgan ustunning oldingi va keyingi holatini bir vaqtda qaytarish mumkinmi?",
+      options: ["Yo'q, faqat keyingi holati qaytadi", "Ha, agar RETURNING ishlatilsa faqat yangisi, ammo ba'zi DB larda eski/yangi olish mumkin", "Ha, doim avtomatik 2 ta qiymat qaytadi", "SQL da umuman javob qaytarilmaydi"],
+      correctAnswer: 1,
+      explanation: "Ba'zi RDMS (masalan, MS SQL Server) da OUTPUT deleted.*, inserted.* orqali olish mumkin, PostgreSQL da RETURNING yangi qatorni qaytaradi."
+    },
+    {
+      id: 11,
+      question: "Matnli va sanali ma'lumotlar kiritilayotganda qanday yozilishi kerak?",
+      options: ["Hech qanday qo'shimchasiz", "Ikkita tirnoq (Double quotes) ichida", "Bitta tirnoq (Single quotes) ichida", "Kvadrat qavslar ichida"],
+      correctAnswer: 2,
+      explanation: "SQL da odatda satr (string) va sana (date) turidagi ma'lumotlar bitta tirnoq (' ') ichida yoziladi."
+    },
+    {
+      id: 12,
+      question: "Boshqa jadvaldan o'qib, o'zimizning jadvalga to'g'ridan to'g'ri yozishning eng qisqa usuli qaysi?",
+      options: ["JS orqali SELECT qilib keyin for-loop orqali INSERT qilish", "INSERT INTO table1 SELECT * FROM table2", "COPY table1 FROM table2", "TRANSFER table2 TO table1"],
+      correctAnswer: 1,
+      explanation: "Buning eng yaxshi yo'li SQL ni o'zida INSERT INTO ... SELECT ... qolipini ishlatish. Bu tarmoq orqali o'qib-yozishdan ko'ra ancha tezroq."
+    }
+  ]
 };

@@ -1,369 +1,242 @@
 export const sqlFiltering = {
-  id: "sqlFiltering",
-  title: "Ma'lumotlarni Filtrlash (Filtering)",
-  language: "sql",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  id: "sql_filtering",
+  title: "SQL Ma'lumotlarni Filtrlash",
+  language: "javascript",
+  theory: `## 1. 💡 Sodda Tushuntirish
+SQL da bizga kerakli aniq ma'lumotni izlab topish uchun filtrlardan foydalanamiz. Bu xuddi onlayn do'konda "narxi 100$ gacha", "rangi qora" va "brandi Apple" bo'lgan telefonlarni qidirishga o'xshaydi.
 
-### Ma'lumotlarni Filtrlash (Filtering) nima?
-Ma'lumotlar bazasida ko'pincha millionlab qatorlar saqlanadi. Bizga har doim ham barcha qatorlar kerak bo'lavermaydi. Masalan, faqat faol foydalanuvchilarni topish, ma'lum bir narx oralig'idagi mahsulotlarni ko'rish yoki ma'lum bir harfdan boshlanuvchi ismlarni qidirish kerak bo'ladi. SQL-da shunday aniq shartlar bo'yicha ma'lumotlarni tanlab olish uchun **WHERE** bloki va turli mantiqiy operatorlar ishlatiladi.
+Eng ko'p ishlatiladigan filter operatorlari:
+- **AND, OR, NOT:** Mantiqiy bog'lovchilar.
+- **IN:** Bir nechta variantlardan biriga mos kelishini tekshirish.
+- **BETWEEN:** Ikki qiymat oralig'ida ekanligini tekshirish.
+- **LIKE:** Matnning ma'lum bir qismiga o'xshashlikni qidirish.
 
-### Real hayotiy o'xshatish
-Buni **do'kondagi kiyim qidirish filtrlariga** o'xshatish mumkin:
-Siz onlayn do'konga kirib, kiyim qidiryapsiz:
-* **Oddiy qidiruv:** Barcha kiyimlar ro'yxati (hech qanday filtrsiz).
-* **AND filtri:** Rangi *qora* **VA** o'lchami *XL* bo'lgan kiyimlar. (Ikkala shartga ham mos kelishi shart).
-* **OR filtri:** Rangi *qizil* **YOKI** *ko'k* bo'lgan kiyimlar. (Kamida bittasiga mos kelishi yetarli).
-* **BETWEEN filtri:** Narxi *100,000* va *300,000* so'm oralig'idagi kiyimlar.
-* **IN filtri:** Ishlab chiqarilgan davlati *O'zbekiston, Turkiya yoki Italiya* bo'lgan kiyimlar.
-* **LIKE filtri:** Nomi *'Komp%'* deb boshlanadigan kiyimlar (masalan, Kompakt, Komplekt).
+\\\`\\\`\\\`sql
+-- AND (va): Yosh 18 dan katta VA shahri 'Toshkent' bo'lsa
+SELECT * FROM users WHERE age > 18 AND city = 'Toshkent';
 
----
+-- OR (yoki): Yosh 18 dan katta YOKI shahri 'Toshkent' bo'lsa
+SELECT * FROM users WHERE age > 18 OR city = 'Toshkent';
 
-## 2. 💻 Real SQL Kod Misollari
+-- IN: Shahar quyidagilardan biri bo'lsa
+SELECT * FROM users WHERE city IN ('Toshkent', 'Samarqand', 'Buxoro');
 
-### 1. Basic Example (Oddiy Tenglik va AND operatori)
-Faqat Toshkent shahrida yashaydigan va yoshi 25 dan katta bo'lgan foydalanuvchilarni tanlash:
+-- BETWEEN: Yosh 18 va 30 orasida bo'lsa
+SELECT * FROM users WHERE age BETWEEN 18 AND 30;
+
+-- LIKE: Ismi 'A' harfidan boshlanadiganlarni topish
+SELECT * FROM users WHERE name LIKE 'A%';
+\\\`\\\`\\\`
+
+## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+
+**❌ YOMON:** Bir nechta \`OR\` larni qatorasiga yozaverish.
 \`\`\`sql
-SELECT id, name, city, age 
-FROM users 
-WHERE city = 'Toshkent' AND age > 25;
-\`\`\`
-* **Natija:** Toshkentlik va 25 yoshdan katta foydalanuvchilar ro'yxati chiqadi.
-* **Qachon ishlatiladi:** Bir nechta shartlar bir vaqtda bajarilishi talab qilinganda.
-* **Performance jihati:** \`city\` ustunida B-Tree indeks bo'lsa, baza tezda kerakli qatorlarni filtrlab oladi.
-
-### 2. Intermediate Example (BETWEEN va IN operatorlari)
-Narxi 100 dan 500 gacha bo'lgan va toifasi 'Electronics' yoki 'Furniture' bo'lgan mahsulotlarni tanlash:
-\`\`\`sql
-SELECT id, name, price, category 
-FROM products 
-WHERE price BETWEEN 100 AND 500 
-  AND category IN ('Electronics', 'Furniture');
-\`\`\`
-* **Natija:** Ko'rsatilgan narx va toifalarga mos keluvchi mahsulotlar chiqadi.
-* **Qachon ishlatiladi:** Qiymatlarni ma'lum bir oraliq (range) va to'plam (set) ichidan qidirganda.
-* **Performance jihati:** \`IN\` operatori ko'p sonli qiymatlarni o'z ichiga olganda, ularni indeks yordamida tezkor tekshiradi.
-
-### 3. Advanced Example (LIKE shablonli qidiruv va NULL tekshiruvi)
-Ismi 'A' bilan boshlanadigan va email manzili kiritilmagan (bo'sh qolgan) foydalanuvchilarni topish:
-\`\`\`sql
-SELECT id, name, email 
-FROM users 
-WHERE name LIKE 'A%' AND email IS NULL;
-\`\`\`
-* **Natija:** Ismi 'A' bilan boshlanadigan, ammo email ustuni bo'sh (NULL) bo'lgan foydalanuvchilar chiqadi.
-* **Qachon ishlatiladi:** Matnlar ichidan qisman qidirishda va bo'sh qiymatlarni aniqlashda.
-* **Performance jihati:** \`LIKE 'A%'\` (oldidan wildcard bo'lmagan holda) indeksdan foydalana oladi. Ammo \`%A%\` ko'rinishidagi qidiruv indeksdan foydalana olmaydi va to'liq jadvalni o'qib chiqishga majbur bo'ladi (\`Seq Scan\`).
-
-### 4. Production Example (Sanalarni filtrlash va dynamic interval)
-Oxirgi 30 kun ichida berilgan va holati 'Completed' bo'lmagan buyurtmalarni filtrlash:
-\`\`\`sql
-SELECT id, user_id, amount, order_date 
-FROM orders 
-WHERE order_date >= CURRENT_DATE - INTERVAL '30 days' 
-  AND status <> 'Completed';
-\`\`\`
-* **Natija:** Oxirgi bir oy ichidagi faol (yakunlanmagan) buyurtmalar ro'yxati.
-* **Qachon ishlatiladi:** Hisobotlar va real vaqtdagi faol tranzaksiyalarni kuzatishda.
-* **Performance jihati:** \`order_date\` ustunida indeks bo'lishi juda muhim, aks holda millionlab eski buyurtmalar har safar qayta skaner qilinadi.
-
-### 5. Enterprise Example (Composite Index va query shartlari)
-Katta hajmli jadvallarda bir vaqtning o'zida shahar va status bo'yicha tezkor filtrlash:
-\`\`\`sql
--- composite index mavjud: CREATE INDEX idx_users_city_status ON users(city, status);
-SELECT id, name, email 
-FROM users 
-WHERE city = 'Samarqand' AND status = 'Active';
-\`\`\`
-* **Natija:** Samarqandlik faol foydalanuvchilar.
-* **Qachon ishlatiladi:** Yuqori yuklamali SaaS tizimlarida.
-* **Performance jihati:** Kompozit indeks (ikki yoki undan ko'p ustunga birgalikda o'rnatilgan indeks) faqat WHERE shartida ustunlar indeks yaratilgan tartibda kelganda to'liq ishlaydi.
-
----
-
-## 3. ⚠️ Muammo va Nima uchun Muhimligi
-
-### Nega filtrlash o'ta muhim?
-Agar SQL-da filtrlash operatorlari bo'lmaganida, backend dasturlar barcha ma'lumotlarni xotiraga yuklab olib, kod darajasida (masalan, JavaScript-da \`filter\` metodi orqali) filtrlashga majbur bo'lardi. Bu quyidagi global muammolarni keltirib chiqaradi:
-1. **Network Congestion (Tarmoq bandligi):** Millionlab qatorlarni ma'lumotlar bazasidan backend serverga uzatish tarmoqni butunlay qotirib qo'yadi.
-2. **Memory Overflow (RAM to'lib ketishi):** Gigabitlab ma'lumotlarni backend operativ xotirasida saqlash serverning qulashiga (Out of Memory) olib keladi.
-3. **Database Performance:** Ma'lumotlar bazasi indekslar yordamida filtrlashni disk darajasida juda tez bajarish uchun optimallashtirilgan.
-
----
-
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
-
-### 1. NULL qiymatlarni tenglik operatori (\`=\`) bilan tekshirish
-#### Xato:
-\`\`\`sql
-SELECT * FROM users WHERE email = NULL;
-\`\`\`
-#### Nima uchun noto'g'ri:
-SQL-da \`NULL\` hech qanday qiymatga teng emas (xatto o'ziga ham). Shuning uchun tenglik operatori bilan tekshirilganda har doim bo'sh natija qaytadi.
-#### To'g'ri usul:
-\`\`\`sql
-SELECT * FROM users WHERE email IS NULL;
-\`\`\`
-#### Izoh:
-Bo'sh qiymatlarni aniqlash uchun har doim \`IS NULL\` yoki \`IS NOT NULL\` operatorlaridan foydalaning.
-
-### 2. LIKE operatorida Wildcard (\`%\`) belgisini unutish
-#### Xato:
-\`\`\`sql
-SELECT * FROM users WHERE name LIKE 'Ali';
-\`\`\`
-#### Nima uchun noto'g'ri:
-Bu so'rov xuddi \`name = 'Ali'\` sharti kabi ishlaydi va 'Alisher' yoki 'Alijon' kabi ismlarni topmaydi.
-#### To'g'ri usul:
-\`\`\`sql
-SELECT * FROM users WHERE name LIKE 'Ali%';
-\`\`\`
-#### Izoh:
-\`%\` belgisi ixtiyoriy uzunlikdagi (hatto 0 ta) belgilar o'rniga o'tadi.
-
-### 3. AND va OR operatorlarining ustuvorligini qavssiz yozish
-#### Xato:
-\`\`\`sql
-SELECT * FROM users 
-WHERE city = 'Toshkent' OR city = 'Buxoro' AND role = 'Admin';
-\`\`\`
-#### Nima uchun noto'g'ri:
-SQL-da \`AND\` operatori \`OR\` operatoriga qaraganda yuqori ustuvorlikka ega. Yuqoridagi so'rov: "Toshkentdagi barcha foydalanuvchilar YOKI Buxorodagi faqat Adminlar" deb talqin qilinadi.
-#### To'g'ri usul:
-\`\`\`sql
-SELECT * FROM users 
-WHERE (city = 'Toshkent' OR city = 'Buxoro') AND role = 'Admin';
-\`\`\`
-#### Izoh:
-Mantiqiy ustuvorlikni to'g'ri belgilash uchun \`OR\` shartlarini doimo qavs ichiga oling.
-
-### 4. NOT IN operatori ichida NULL qiymat bo'lishi
-#### Xato:
-\`\`\`sql
-SELECT * FROM users 
-WHERE city NOT IN ('Toshkent', NULL);
-\`\`\`
-#### Nima uchun noto'g'ri:
-Agar \`NOT IN\` ro'yxatida birorta ham \`NULL\` qiymat bo'lsa, SQL butun so'rov uchun bo'sh natija qaytaradi. Chunki u har bir element bilan solishtiradi va \`NOT IN NULL\` har doim \`UNKNOWN\` (noma'lum) qiymat beradi.
-#### To'g'ri usul:
-\`\`\`sql
-SELECT * FROM users 
-WHERE city NOT IN ('Toshkent') OR city IS NULL;
+SELECT * FROM products WHERE color = 'Red' OR color = 'Blue' OR color = 'Green';
 \`\`\`
 
----
-
-## 5. 💬 12 ta Intervyu Savollari
-
-### Junior (1–4)
-1. **Savol:** SQL-da \`WHERE\` bloki nima uchun ishlatiladi?
-   * **Javob:** Jadvaldan faqat berilgan shartga mos keladigan qatorlarni tanlab olish uchun ishlatiladi.
-2. **Savol:** \`BETWEEN\` operatori chegaradagi qiymatlarni ham o'z ichiga oladimi?
-   * **Javob:** Ha, \`BETWEEN\` inclusive (chegaraviy qiymatlarni ham hisobga oluvchi) operator hisoblanadi.
-3. **Savol:** \`LIKE\` operatorida \`%\` va \`_\` belgilari nima farq qiladi?
-   * **Javob:** \`%\` ixtiyoriy miqdordagi (shu jumladan 0 ta) belgilarni anglatsa, \`_\` (pastki chiziq) roppa-rosa bitta ixtiyoriy belgini ifodalaydi.
-4. **Savol:** Qanday qilib ustunda qiymat bor-yo'qligini tekshirish mumkin?
-   * **Javob:** \`IS NULL\` yordamida qiymati yo'qligini, \`IS NOT NULL\` yordamida qiymat mavjudligini tekshirish mumkin.
-
-### Middle (5–8)
-5. **Savol:** \`IN\` operatori qanday ishlaydi va uning o'rniga nima ishlatish mumkin?
-   * **Javob:** Qiymat ro'yxat ichidan mos kelishini tekshiradi. Uni bir nechta \`OR\` operatorlari bilan almashtirsa bo'ladi, lekin \`IN\` yozilishi osonroq va optimizator uni yaxshiroq qayta ishlaydi.
-6. **Savol:** \`AND\` va \`OR\` operatorlari birgalikda kelganda qaysi biri birinchi bajariladi?
-   * **Javob:** \`AND\` operatori ustuvorroq. Shuning uchun mantiq buzilmasligi uchun \`OR\` shartlari qavslarga olinishi shart.
-7. **Savol:** Nega \`WHERE name LIKE '%Ali'\` so'rovi sekin ishlaydi?
-   * **Javob:** Chunki wildcard (\`%\`) so'z boshida kelganda, baza standart B-Tree indeksidan foydalana olmaydi va to'liq jadvalni skaner qilishga majbur bo'ladi.
-8. **Savol:** \`NOT IN\` ro'yxatida \`NULL\` qiymat bo'lsa nima sodir bo'ladi?
-   * **Javob:** So'rov natijasi har doim bo'sh bo'ladi, chunki \`NULL\` bilan tenglik tekshiruvi \`UNKNOWN\` qaytaradi va mantiqiy ziddiyat vujudga keladi.
-
-### Senior (9–12)
-9. **Savol:** SQL dialektlarida \`LIKE\` va \`ILIKE\` farqi nimada?
-   * **Javob:** \`LIKE\` katta-kichik harflarni farqlaydi (case-sensitive), \`ILIKE\` esa farqlamaydi (case-insensitive - asosan PostgreSQL da).
-10. **Savol:** Qanday qilib funksiya qo'llanilgan ustun bo'yicha filtrlashni optimallashtirish mumkin?
-    * **Javob:** \`WHERE UPPER(name) = 'ALI'\` indeksdan foydalana olmaydi. Buning uchun yo bazada \`Functional Index\` yaratish kerak yoki so'rovni o'zgartirish kerak.
-11. **Savol:** \`EXISTS\` va \`IN\` operatorlarining filtrlashda ishlash tezligi qanday farq qiladi?
-    * **Javob:** Katta hajmli ichki so'rovlarda (Subqueries) \`EXISTS\` odatda tezroq ishlaydi, chunki u mos keluvchi birinchi qatorni topishi bilan tekshirishni to'xtatadi (\`short-circuiting\`).
-12. **Savol:** Wildcard yordamida \`%\` yoki \`_\` belgilarining o'zini qanday qidirish mumkin?
-    * **Javob:** Buning uchun \`ESCAPE\` belgisidan foydalanamiz. Masalan: \`WHERE discount LIKE '10\\%' ESCAPE '\\'\`.
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Darsning pastki qismida siz uchun SQL-da filtrlash bo'yicha amaliy topshiriqlar joylashtirilgan. Ularni bajarib ko'nikmalaringizni mustahkamlang.
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Dars yakunidagi testlar sizning nazariy bilimlaringizni tekshirish uchun xizmat qiladi.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### E-commerce mahsulotlarini dynamic filtrlash tizimi
-Tasavvur qiling, siz **Amazon** kabi do'kon uchun mahsulotlarni filtrlash backend qismini yozyapsiz. Foydalanuvchi quyidagi filtrlarni tanladi:
-1. Toifasi: 'Laptops' yoki 'Smartphones'
-2. Narxi: 500 dan 1500 dollargacha
-3. Ombor qoldig'i mavjud bo'lgan (stock > 0)
-4. Nomi tarkibida 'Pro' so'zi bor
-
-#### Muammo:
-Agar so'rov noto'g'ri yozilsa yoki indekslar hisobga olinmasa, millionlab tovarlar ichidan qidiruv bir necha soniya vaqt oladi va server qotadi.
-
-#### SQL Yechim:
+**✅ YAXSHI:** \`OR\` lar o'rniga \`IN\` dan foydalanish. Bu ancha tushunarli va tezroq ishlashi mumkin.
 \`\`\`sql
-SELECT id, name, price, stock, category 
-FROM products 
-WHERE category IN ('Laptops', 'Smartphones') 
-  AND price BETWEEN 500 AND 1500 
-  AND stock > 0 
-  AND name LIKE '%Pro%';
+SELECT * FROM products WHERE color IN ('Red', 'Blue', 'Green');
 \`\`\`
 
-#### Arxitektura va Optimallashtirish:
-* Biz \`products\` jadvalidagi \`category\`, \`price\` va \`stock\` ustunlariga indeks qo'yamiz.
-* Nom tarkibida \`%Pro%\` qidiruvi indeksdan foydalana olmaydi, shuning uchun katta bazalarda **Full-Text Search (FTS)** yoki **Trigram Index** (PostgreSQL-da \`pg_trgm\`) ishlatish tavsiya etiladi.
+## 🎤 Intervyu Savollari
+1. **\`LIKE '%a%'\` va \`LIKE 'a%'\` farqi nima?**
+   - \`'a%'\` matn aynan "a" harfi bilan boshlanishini, \`'%a%'\` esa matnning istalgan joyida "a" qatnashganini bildiradi.
+2. **\`BETWEEN\` oraliq chegaralarini (18 va 30 ni) ham hisobga oladimi (inclusive)?**
+   - Ha, aksariyat SQL bazalarida \`BETWEEN 18 AND 30\` deganda 18 ham, 30 ham natijaga kiradi (>= 18 AND <= 30).
+3. **\`AND\` va \`OR\` ni birga ishlatganda nimalarga e'tibor berish kerak?**
+   - Ularning ustuvorligi turlicha. \`AND\` birinchi bajariladi. Xatolikni oldini olish uchun qavslardan \`()\` foydalanish shart. Masalan: \`WHERE (age > 18 OR role = 'admin') AND active = true\`.
 
----
-
-## 9. 🚀 Performance va Optimization
-
-* **Index Skanerlash:** \`WHERE status = 'Active'\` kabi tez-tez filtrlanadigan ustunlarga har doim indeks qo'ying.
-* **Wildcards o'rni:** \`LIKE '%text'\` kabi so'rovlardan qoching. Buning o'rniga matn boshidan qidiruvchi \`LIKE 'text%'\` ni afzal ko'ring.
-* **SDB (Sargable Queries):** Ustunlarni funksiya ichiga olmang. \`WHERE DATE(created_at) = '2026-06-10'\` o'rniga \`WHERE created_at >= '2026-06-10 00:00:00' AND created_at < '2026-06-11 00:00:00'\` deb yozing. Bu bazaga indeksdan foydalanish imkonini beradi.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Operator | Sintaksis | Vazifasi | Misol |
-| :--- | :--- | :--- | :--- |
-| **\`=\`** / **\`!=\`** | \`WHERE status = 'Active'\` | Qiymat teng yoki teng emasligini tekshiradi | \`status != 'Pending'\` |
-| **\`AND\`** | \`WHERE cond1 AND cond2\` | Ikkala shart ham to'g'ri bo'lishi shart | \`age > 18 AND city = 'Toshkent'\` |
-| **\`OR\`** | \`WHERE cond1 OR cond2\` | Shartlardan biri to'g'ri bo'lsa yetarli | \`role = 'Admin' OR role = 'Manager'\` |
-| **\`BETWEEN\`** | \`WHERE price BETWEEN a AND b\` | Qiymat oraliqda ekanligini tekshiradi | \`price BETWEEN 10 AND 50\` |
-| **\`IN\`** | \`WHERE city IN ('a', 'b')\` | Berilgan to'plamdan moslikni tekshiradi | \`id IN (1, 3, 5)\` |
-| **\`LIKE\`** | \`WHERE name LIKE 'A%'\` | Shablon bo'yicha qidiradi | \`email LIKE '%@gmail.com'\` |
-| **\`IS NULL\`** | \`WHERE email IS NULL\` | Bo'sh qiymatlarni aniqlaydi | \`phone IS NULL\` |
+## 🛠️ Amaliy Topshiriqlar
+\`\`\`mermaid
+flowchart TD
+    A[WHERE Sharti] --> B(Mantiqiy)
+    A --> C(Kengaytirilgan)
+    B --> D(AND)
+    B --> E(OR)
+    B --> F(NOT)
+    C --> G(IN)
+    C --> H(BETWEEN)
+    C --> I(LIKE)
+\`\`\`
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Yosh oralig'i (BETWEEN)",
-    "instruction": "`users` jadvalidan yoshi 25 va 30 oralig'ida bo'lgan (25 va 30 ni ham qo'shib) barcha foydalanuvchilarni tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM users WHERE age BETWEEN 25 AND 30",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 3) return 'Ushbu oraliqda 3 ta foydalanuvchi bor'; if(result.some(u => u.age < 25 || u.age > 30)) return 'Faqat 25 va 30 yosh oralig\\'idagi foydalanuvchilar chiqishi shart'; return null;"
-  },
-  {
-    "id": 2,
-    "title": "Rollar filtri (IN)",
-    "instruction": "`users` jadvalidan roli `Admin` yoki `Manager` bo'lgan foydalanuvchilarning ismi (`name`) va roli (`role`) ustunlarini tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT name, role FROM users WHERE role IN ('Admin', 'Manager')",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 2) return 'Admin va Manager roli bo\\'lgan jami 2 kishi bor'; if(result[0].city !== undefined) return 'Faqat name va role ustunlari tanlanishi kerak'; return null;"
-  },
-  {
-    "id": 3,
-    "title": "Ism bo'yicha qidiruv (LIKE)",
-    "instruction": "`users` jadvalidan ismi 'M' harfi bilan boshlanadigan barcha foydalanuvchilarni tanlang.",
-    "startingCode": "-- SQL so'rovini yozing\n",
-    "hint": "SELECT * FROM users WHERE name LIKE 'M%'",
-    "test": "if(!Array.isArray(result)) return 'Natija topilmadi'; if(result.length !== 1 || result[0].name !== 'Madina') return 'Faqat Madina ismi qaytishi kerak'; return null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "1-Topshiriq: VA (AND)",
+      instruction: "Ikkita shart ham bir vaqtda to'g'ri bo'lishi kerak bo'lganda qaysi mantiqiy operator ishlatiladi?",
+      startingCode: "function getAndOperator() {\n  return '';\n}",
+      hint: "AND so'zini qaytaring.",
+      solution: "function getAndOperator() {\n  return 'AND';\n}",
+      test: "const fn = new Function(code + '; return getAndOperator;')();\nif (fn().toUpperCase() !== 'AND') throw new Error(\"AND kutilgandi\");"
+    },
+    {
+      id: 2,
+      title: "2-Topshiriq: YOKI (OR)",
+      instruction: "Shartlardan bittasi to'g'ri bo'lsa ham qabul qilinishi uchun qaysi operator ishlatiladi?",
+      startingCode: "function getOrOperator() {\n  return '';\n}",
+      hint: "OR so'zini qaytaring.",
+      solution: "function getOrOperator() {\n  return 'OR';\n}",
+      test: "const fn = new Function(code + '; return getOrOperator;')();\nif (fn().toUpperCase() !== 'OR') throw new Error(\"OR kutilgandi\");"
+    },
+    {
+      id: 3,
+      title: "3-Topshiriq: IN operatori",
+      instruction: "Ko'p 'OR' larning o'rnini bosuvchi va qavslar ichidagi ro'yxatni tekshiruvchi operator qaysi?",
+      startingCode: "function getInOperator() {\n  return '';\n}",
+      hint: "IN so'zini qaytaring.",
+      solution: "function getInOperator() {\n  return 'IN';\n}",
+      test: "const fn = new Function(code + '; return getInOperator;')();\nif (fn().toUpperCase() !== 'IN') throw new Error(\"IN kutilgandi\");"
+    },
+    {
+      id: 4,
+      title: "4-Topshiriq: Oraliq (BETWEEN)",
+      instruction: "Ikkita raqam yoki sananing orasidagi ma'lumotlarni olish uchun qaysi operator ishlatiladi?",
+      startingCode: "function getBetweenOperator() {\n  return '';\n}",
+      hint: "BETWEEN",
+      solution: "function getBetweenOperator() {\n  return 'BETWEEN';\n}",
+      test: "const fn = new Function(code + '; return getBetweenOperator;')();\nif (fn().toUpperCase() !== 'BETWEEN') throw new Error(\"BETWEEN kutilgandi\");"
+    },
+    {
+      id: 5,
+      title: "5-Topshiriq: O'xshashlik (LIKE)",
+      instruction: "Matnning ma'lum bir qismiga o'xshashlikni qidirish uchun (masalan '%son') qaysi operator ishlatiladi?",
+      startingCode: "function getLikeOperator() {\n  return '';\n}",
+      hint: "LIKE",
+      solution: "function getLikeOperator() {\n  return 'LIKE';\n}",
+      test: "const fn = new Function(code + '; return getLikeOperator;')();\nif (fn().toUpperCase() !== 'LIKE') throw new Error(\"LIKE kutilgandi\");"
+    },
+    {
+      id: 6,
+      title: "6-Topshiriq: Inkor (NOT)",
+      instruction: "Shartning teskarisini bajarish uchun qaysi operator ishlatiladi? (Masalan null EMAS)",
+      startingCode: "function getNotOperator() {\n  return '';\n}",
+      hint: "NOT",
+      solution: "function getNotOperator() {\n  return 'NOT';\n}",
+      test: "const fn = new Function(code + '; return getNotOperator;')();\nif (fn().toUpperCase() !== 'NOT') throw new Error(\"NOT kutilgandi\");"
+    },
+    {
+      id: 7,
+      title: "7-Topshiriq: Boshlanishni qidirish",
+      instruction: "'M' harfi bilan boshlanadigan ismlarni topish uchun LIKE operatoriga qanday qiymat beramiz? (Faqat matnni qaytaring)",
+      startingCode: "function getStartsWithM() {\n  return '';\n}",
+      hint: "M% deb qaytaring.",
+      solution: "function getStartsWithM() {\n  return 'M%';\n}",
+      test: "const fn = new Function(code + '; return getStartsWithM;')();\nif (fn() !== 'M%') throw new Error(\"M% kutilgandi\");"
+    },
+    {
+      id: 8,
+      title: "8-Topshiriq: Oxirini qidirish",
+      instruction: "'son' so'zi bilan tugaydigan ismlarni topish uchun (masalan 'Jackson', 'Johnson') LIKE ga qanday qiymat beramiz?",
+      startingCode: "function getEndsWithSon() {\n  return '';\n}",
+      hint: "%son deb qaytaring.",
+      solution: "function getEndsWithSon() {\n  return '%son';\n}",
+      test: "const fn = new Function(code + '; return getEndsWithSon;')();\nif (fn() !== '%son') throw new Error(\"%son kutilgandi\");"
+    },
+    {
+      id: 9,
+      title: "9-Topshiriq: O'rtasidan qidirish",
+      instruction: "Ismning qayeridadir 'a' harfi bo'lsa topish uchun LIKE ga qanday qiymat beramiz?",
+      startingCode: "function getContainsA() {\n  return '';\n}",
+      hint: "%a% deb qaytaring.",
+      solution: "function getContainsA() {\n  return '%a%';\n}",
+      test: "const fn = new Function(code + '; return getContainsA;')();\nif (fn() !== '%a%') throw new Error(\"%a% kutilgandi\");"
+    },
+    {
+      id: 10,
+      title: "10-Topshiriq: Bo'sh emaslik (IS NOT NULL)",
+      instruction: "Biror ustun bo'sh (NULL) emasligini tekshirish uchun IS NULL emas, qanday yoziladi? (IS NOT NULL)",
+      startingCode: "function getIsNotNull() {\n  return '';\n}",
+      hint: "IS NOT NULL",
+      solution: "function getIsNotNull() {\n  return 'IS NOT NULL';\n}",
+      test: "const fn = new Function(code + '; return getIsNotNull;')();\nif (fn().toUpperCase().replace(/\\s+/g, ' ') !== 'IS NOT NULL') throw new Error(\"IS NOT NULL kutilgandi\");"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "SQL-da ma'lumotlar bazasida qiymat saqlanmagan (bo'sh) kataklarni tekshirish uchun qaysi ifoda to'g'ri?",
-    "options": ["= NULL", "IS NULL", "IS EMPTY", "== NULL"],
-    "correctAnswer": 1,
-    "explanation": "SQL-da NULL qiymat tenglik operatori bilan tekshirilmaydi, buning o'rniga maxsus 'IS NULL' yoki 'IS NOT NULL' operatorlari ishlatiladi."
-  },
-  {
-    "id": 2,
-    "question": "LIKE operatorida faqat bitta belgini almashtirish uchun qaysi wildcard ishlatiladi?",
-    "options": ["%", "_", "*", "?"],
-    "correctAnswer": 1,
-    "explanation": "% belgisi ixtiyoriy uzunlikdagi matn o'rniga o'tadi, _ (pastki chiziq) esa roppa-rosa bitta ixtiyoriy belgi o'rnini egallaydi."
-  },
-  {
-    "id": 3,
-    "question": "BETWEEN operatori qanday oraliqni ifodalaydi?",
-    "options": [
-      "Faqat kichik va katta qiymatlarni hisobga olmaydigan eksklyuziv oraliq",
-      "Chegaraviy qiymatlarni ham o'z ichiga oluvchi (inclusive) oraliq",
-      "Faqat manfiy sonlar oralig'i",
-      "Ixtiyoriy matnlar oralig'i"
-    ],
-    "correctAnswer": 1,
-    "explanation": "BETWEEN operatori chegaralarni ham o'z ichiga oladi (masalan, BETWEEN 1 AND 5 yozilsa, 1 va 5 ham oraliqqa kiradi)."
-  },
-  {
-    "id": 4,
-    "question": "AND va OR operatorlari birga kelganda qaysi biri yuqori ustuvorlikka ega?",
-    "options": ["OR", "AND", "Ikkalasi teng", "Faqat birinchi yozilgani"],
-    "correctAnswer": 1,
-    "explanation": "AND operatori OR operatoriga qaraganda ustuvorroq hisoblanadi. Shuning uchun OR shartlarini doimo qavsga olish tavsiya etiladi."
-  },
-  {
-    "id": 5,
-    "question": "Ro'yxatdan qidiruvchi IN operatorining teskari ko'rinishi qaysi?",
-    "options": ["EXCLUDE", "NOT IN", "WITHOUT", "NOT BETWEEN"],
-    "correctAnswer": 1,
-    "explanation": "NOT IN operatori qiymat berilgan ro'yxatda yo'qligini tekshiradi."
-  },
-  {
-    "id": 6,
-    "question": "Ismi 'Ali' bilan tugaydigan barcha ismlarni topish uchun LIKE shabloni qanday yoziladi?",
-    "options": ["'Ali%'", "'%Ali'", "'%Ali%'", "'_Ali'"],
-    "correctAnswer": 1,
-    "explanation": "%Ali shabloni satr istalgan belgilar bilan boshlanib, 'Ali' bilan tugashini anglatadi."
-  },
-  {
-    "id": 7,
-    "question": "Teng emas mantiqiy operatori SQL-da qanday yoziladi?",
-    "options": ["!=", "<>", "Ikkalasi ham to'g'ri", "!=="],
-    "correctAnswer": 2,
-    "explanation": "SQL-da teng emaslikni ifodalash uchun ham != ham <> operatorlari ishlatiladi va ikkalasi ham standartdir."
-  },
-  {
-    "id": 8,
-    "question": "Toshkent yoki Buxoroda yashaydigan foydalanuvchilarni topish uchun to'g'ri shart qaysi?",
-    "options": ["WHERE city = 'Toshkent' AND city = 'Buxoro'", "WHERE city = 'Toshkent' OR city = 'Buxoro'", "WHERE city IN ('Toshkent' AND 'Buxoro')", "WHERE city = 'Toshkent', 'Buxoro'"],
-    "correctAnswer": 1,
-    "explanation": "Foydalanuvchi bir vaqtda ikkita shaharda yashay olmaydi. Shuning uchun OR yoki IN ('Toshkent', 'Buxoro') ishlatilishi shart."
-  },
-  {
-    "id": 9,
-    "question": "Quyidagilardan qaysi biri '20 dan 30 gacha bo'lgan' sonlar oralig'ini to'g'ri tekshiradi?",
-    "options": ["WHERE age >= 20 OR age <= 30", "WHERE age BETWEEN 20 AND 30", "WHERE age IN (20, 30)", "WHERE age > 20 AND age < 30"],
-    "correctAnswer": 1,
-    "explanation": "BETWEEN 20 AND 30 operatori 20 va 30 ni o'z ichiga olgan mukammal oraliq filtridir."
-  },
-  {
-    "id": 10,
-    "question": "LIKE operatorida '_a%' shabloni nimani anglatadi?",
-    "options": ["Birinchi harfi 'a' bo'lgan istalgan so'z", "Ikkinchi harfi 'a' bo'lgan istalgan so'z", "Faqat 2 ta harfdan iborat va 'a' bilan tugaydigan so'z", "Tarkibida pastki chiziq bo'lgan so'z"],
-    "correctAnswer": 1,
-    "explanation": "Tag chiziq (_) roppa-rosa bitta ixtiyoriy belgini, 'a' esa ikkinchi o'rinda turishini, % esa keyin ixtiyoriy belgilar kelishini anglatadi."
-  },
-  {
-    "id": 11,
-    "question": "NULL qiymatga ega bo'lmagan (qiymat kiritilgan) qatorlarni topish uchun nima yoziladi?",
-    "options": ["IS NOT NULL", "!= NULL", "<> NULL", "IS FILLED"],
-    "correctAnswer": 0,
-    "explanation": "SQL-da qiymat mavjudligini tekshirish uchun IS NOT NULL operatoridan foydalaniladi."
-  },
-  {
-    "id": 12,
-    "question": "Matnlarni qidirishda katta-kichik harflarni farqlamaydigan LIKE o'rniga ba'zi SQL dialektlarida qaysi operator ishlatiladi?",
-    "options": ["SLIKE", "ILIKE", "LIKE_IGNORE", "MATCH"],
-    "correctAnswer": 1,
-    "explanation": "ILIKE operatori case-insensitive LIKE hisoblanadi (faqat PostgreSQL kabi ba'zi dialektlarda mavjud)."
-  }
-]
-
+    {
+      id: 1,
+      question: "Ikkita shart ham albatta to'g'ri bo'lishini talab qiluvchi operator qaysi?",
+      options: ["OR", "AND", "NOT", "LIKE"],
+      correctAnswer: 1,
+      explanation: "AND operatori orqali birlashtirilgan barcha shartlar true (to'g'ri) bo'lishi shart."
+    },
+    {
+      id: 2,
+      question: "Shartlardan hech bo'lmaganda bittasi to'g'ri bo'lsa kifoya qiladigan operator qaysi?",
+      options: ["AND", "OR", "BETWEEN", "IN"],
+      correctAnswer: 1,
+      explanation: "OR operatori qatorda shartlardan bittasi to'g'ri bo'lsa ham qabul qiladi."
+    },
+    {
+      id: 3,
+      question: "age BETWEEN 18 AND 30 qaysi operatorlarga ekvivalent?",
+      options: ["age > 18 OR age < 30", "age >= 18 AND age <= 30", "age = 18 AND age = 30", "age > 18 AND age < 30"],
+      correctAnswer: 1,
+      explanation: "BETWEEN oraliqni o'z ichiga oladi (inclusive), ya'ni >= va <= ga teng."
+    },
+    {
+      id: 4,
+      question: "Ko'plab OR shartlarini yozishni osonlashtiruvchi operator qaysi?",
+      options: ["BETWEEN", "LIKE", "IN", "IS"],
+      correctAnswer: 2,
+      explanation: "IN operatori qavs ichida bir nechta qiymatlarni berish orqali OR zanjirini qisqartiradi."
+    },
+    {
+      id: 5,
+      question: "Matn ichidan qidiruvchi LIKE operatorida '%' belgisi nimani anglatadi?",
+      options: ["Faqat bitta harf", "0 yoki undan ko'p ixtiyoriy belgilar", "Raqam", "Probel"],
+      correctAnswer: 1,
+      explanation: "% belgisi istalgancha (hatto 0 ta) belgilar ketma-ketligini bildiradi."
+    },
+    {
+      id: 6,
+      question: "Matn ichida 'a' harfi bilan boshlanadigan ismni qanday qidiramiz?",
+      options: ["LIKE '%a'", "LIKE 'a%'", "LIKE '%a%'", "LIKE '_a_'"],
+      correctAnswer: 1,
+      explanation: "'a%' degani birinchi harf 'a' bo'lsin, qolgani nima bo'lsa ham mayli degani."
+    },
+    {
+      id: 7,
+      question: "LIKE dagi '_' (pastki chiziq) belgisi nimani anglatadi?",
+      options: ["Probel", "Faqat bitta ixtiyoriy belgi", "Istalgancha belgi", "Raqam"],
+      correctAnswer: 1,
+      explanation: "_ (pastki chiziq) har doim aynan bitta belgining o'rnini bosadi."
+    },
+    {
+      id: 8,
+      question: "Qaysi biri NULL qiymatni to'g'ri tekshiradi?",
+      options: ["= NULL", "IS NULL", "== NULL", "LIKE NULL"],
+      correctAnswer: 1,
+      explanation: "SQL da NULL oddiy qiymat emas, u 'hech narsa yo'q' degani, shuning uchun '=' bilan emas, IS NULL bilan tekshiriladi."
+    },
+    {
+      id: 9,
+      question: "city IN ('Toshkent', 'Buxoro') ni OR bilan qanday yozish mumkin?",
+      options: ["city = 'Toshkent' AND city = 'Buxoro'", "city = 'Toshkent' OR city = 'Buxoro'", "city LIKE 'Toshkent' OR 'Buxoro'", "city BETWEEN 'Toshkent' AND 'Buxoro'"],
+      correctAnswer: 1,
+      explanation: "IN operatori asosan ko'plab '=' va 'OR' larning qisqartmasidir."
+    },
+    {
+      id: 10,
+      question: "AND va OR ni aralash ishlatganda nima yuz beradi?",
+      options: ["Xato beradi", "OR birinchi bajariladi", "AND birinchi bajariladi", "Chapdan ongga bajariladi"],
+      correctAnswer: 2,
+      explanation: "Matematikadagi ko'paytirish qo'shishdan oldin bajarilganidek, mantiqda AND OR dan oldin bajariladi."
+    },
+    {
+      id: 11,
+      question: "Shartni inkor qilish uchun qaysi so'z ishlatiladi?",
+      options: ["NOT", "NO", "FALSE", "MINUS"],
+      correctAnswer: 0,
+      explanation: "NOT shartning qiymatini teskarisiga o'zgartiradi (masalan NOT IN, NOT LIKE)."
+    },
+    {
+      id: 12,
+      question: "LIKE '%book%' nimani izlaydi?",
+      options: ["book bilan boshlanadigan", "book bilan tugaydigan", "Faqat book", "Ichida book so'zi bor istalgan matn"],
+      correctAnswer: 3,
+      explanation: "Ikki tomondan % bo'lsa, qidirilayotgan so'z qayerda qatnashganidan qat'iy nazar topiladi."
+    }
+  ]
 };
