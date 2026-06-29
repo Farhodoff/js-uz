@@ -66,61 +66,56 @@ console.log([] == false); // true
 
 ### ECMAScript Abstract Operations
 JavaScript dvigateli tiplarni yashirin o'zgartirishda ichki (abstract) operatsiyalardan foydalanadi:
-1. **\`ToPrimitive(input, PreferredType)\`:** Obyekt turidagi qiymatlarni oddiy (primitive) qiymatga aylantiradi. Bunda obyektning \`[Symbol.toPrimitive]\`, \`valueOf()\` yoki \`toString()\` metodlari tekshiriladi.
+1. **\`ToPrimitive(input, PreferredType)\`:** Obyekt turidagi qiymatlarni oddiy (primitive) qiymatga aylantiradi.
 2. **\`ToNumber(input)\`:** Qiymatni son tipiga o'tkazadi. Masalan, \`"123"\` -> \`123\`, \`true\` -> \`1\`, \`false\` -> \`0\`, \`null\` -> \`0\`, \`undefined\` -> \`NaN\`.
-3. **\`ToString(input)\`:** Qiymatni string tipiga o'tkazadi. Masalan, \`123\` -> \`"123"\`, \`true\` -> \`"true"\`, \`null\` -> \`"null"\`.
-4. **\`ToBoolean(input)\`:** Qiymatni boolean holatiga o'tkazadi. JavaScript-da faqat ma'lum qiymatlar **falsy** (noto'g'ri) hisoblanadi, qolgan barchasi esa **truthy** (rost).
+3. **\`ToString(input)\`:** Qiymatni string tipiga o'tkazadi.
+4. **\`ToBoolean(input)\`:** Qiymatni boolean holatiga o'tkazadi.
 
 > [!IMPORTANT]
 > **Falsy qiymatlar ro'yxati:**
-> \`false\`, \`0\`, \`-0\`, \`0n\` (BigInt nol), \`""\` (bo'sh string), \`null\`, \`undefined\`, \`NaN\`.
-> Qolgan barcha qiymatlar, shu jumladan bo'sh obyekt \`{}\` va bo'sh massiv \`[]\` ham **truthy** hisoblanadi.
+> \`false\`, \`0\`, \`-0\`, \`0n\`, \`""\` (bo'sh string), \`null\`, \`undefined\`, \`NaN\`.
 
 ---
 
 ## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
 
 ### 1. Loose Equality (\`==\`) operatoridan foydalanish
-\`==\` operatori taqqoslashdan oldin yashirin casting bajaradi va kutilmagan xatolarga olib keladi.
-* **Xato:**
+* **YOMON:**
   \`\`\`javascript
   const count = "";
   if (count == 0) {
-    console.log("Qiymat nolga teng!"); // Bu kod ishga tushadi, chunki "" -> 0 ga aylanadi
+    console.log("Nolga teng!"); // count "" dan 0 ga aylanadi
   }
   \`\`\`
-* **To'g'ri:**
+* **YAXSHI:**
   \`\`\`javascript
   const count = "";
   if (count === 0) {
-    console.log("Qiymat nolga teng!"); // Ishga tushmaydi, chunki tiplar ham tekshiriladi
+    console.log("Nolga teng!"); // Ishga tushmaydi
   }
   \`\`\`
 
 ### 2. Forma (Input) ma'lumotlarini to'g'ridan-to'g'ri hisoblash
-Foydalanuvchi kiritgan ma'lumot har doim \`string\` bo'ladi.
-* **Xato:**
+* **YOMON:**
   \`\`\`javascript
   const ageInput = "25";
-  const nextYearAge = ageInput + 1; // "251" chiqadi
+  const nextYearAge = ageInput + 1; // "251"
   \`\`\`
-* **To'g'ri:** Explicit (aniq) tarzda son qilish yoki unar plyus ishlatish:
+* **YAXSHI:**
   \`\`\`javascript
   const ageInput = "25";
   const nextYearAge = Number(ageInput) + 1; // 26
-  // yoki:
-  const nextYearAge2 = +ageInput + 1; // 26
   \`\`\`
 
 ### 3. \`undefined\` o'zgaruvchi bilan matematik amallar
-* **Xato:**
+* **YOMON:**
   \`\`\`javascript
   let total; // undefined
-  total += 10; // NaN (Not a Number) ga aylanadi va keyingi barcha hisoblar buziladi
+  total += 10; // NaN
   \`\`\`
-* **To'g'ri:**
+* **YAXSHI:**
   \`\`\`javascript
-  let total = 0; // default qiymat berish kerak
+  let total = 0;
   total += 10; // 10
   \`\`\`
 
@@ -129,291 +124,243 @@ Foydalanuvchi kiritgan ma'lumot har doim \`string\` bo'ladi.
 ## 5. 💬 12 ta Intervyu Savollari
 
 ### Junior
-1. **Savol:** Implicit type casting nima va u qachon sodir bo'ladi?
-   * **Javob:** JS operatorlar yordamida ikki xil tipdagi qiymatlarni hisoblaganda, ularni avtomatik tarzda umumiy bir tipga o'tkazish jarayonidir.
-2. **Savol:** \`"5" + 3\` va \`"5" - 3\` natijalari qanday bo'ladi va nega?
-   * **Javob:** \`"5" + 3\` -> \`"53"\`, chunki \`+\` stringni birlashtiradi. \`"5" - 3\` -> \`2\`, chunki ayirish faqat sonlar bilan ishlaydi va \`"5"\` son bo'lib ketadi.
-3. **Savol:** Falsy qiymatlar nima va ularni sanab bering?
-   * **Javob:** Boolean shartida \`false\` ga aylanadigan qiymatlar: \`false\`, \`0\`, \`-0\`, \`0n\`, \`""\`, \`null\`, \`undefined\`, \`NaN\`.
-4. **Savol:** \`==\` va \`===\` farqi nimada?
-   * **Javob:** \`==\` qiymatlarni taqqoslashdan oldin yashirin casting qiladi, \`===\` esa casting qilmasdan ham qiymatni, ham tipni tekshiradi.
+1. **Savol:** Implicit type casting nima?
+   * **Javob:** JS operatorlar yordamida tiplarni avtomatik o'tkazishi.
+2. **Savol:** \`"5" + 3\` va \`"5" - 3\` natijasi nima?
+   * **Javob:** "53" va 2.
+3. **Savol:** Falsy qiymatlar qaysilar?
+   * **Javob:** \`false\`, \`0\`, \`""\`, \`null\`, \`undefined\`, \`NaN\`.
+4. **Savol:** \`==\` va \`===\` farqi?
+   * **Javob:** \`==\` casting qiladi, \`===\` qilmaydi.
 
 ### Middle
-5. **Savol:** \`[] == false\` ifodasi nega \`true\` qaytaradi?
-   * **Javob:** \`[]\` obyekti ToPrimitive bo'yicha bo'sh stringga (\`""\`) aylanadi. Keyin \`"" == false\` taqqoslashida ikkala tomon ham songa o'tkaziladi: \`0 == 0\`. Natijada \`true\` chiqadi.
-6. **Savol:** \`null == undefined\` va \`null === undefined\` natijalari qanday bo'ladi?
-   * **Javob:** Birinchisi \`true\` (loose tenglikda ular bir-biriga teng deb belgilangan), ikkinchisi \`false\` (chunki tiplari har xil: null va undefined).
-7. **Savol:** \`NaN == NaN\` nega \`false\` chiqadi?
-   * **Javob:** ECMAScript standartiga ko'ra, NaN (Not-a-Number) o'ziga o'zi ham teng bo'lmagan yagona qiymatdir.
-8. **Savol:** Unar plyus (\`+\`) va mantiqiy inkor (\`!\`) operatorlari qanday casting amalini bajaradi?
-   * **Javob:** Unar plyus son tipiga (\`ToNumber\`), mantiqiy inkor esa boolean tipiga (\`ToBoolean\`) aylantiradi.
+5. **Savol:** \`[] == false\` nega \`true\` qaytaradi?
+   * **Javob:** Ikkalasi ham \`0\` raqamiga aylanadi.
+6. **Savol:** \`null == undefined\` nima?
+   * **Javob:** \`true\`, lekin qat'iy tekshiruvda \`false\`.
+7. **Savol:** \`NaN == NaN\` nega \`false\`?
+   * **Javob:** Standart bo'yicha NaN o'ziga teng emas.
+8. **Savol:** \`+[]\` va \`+{}\` nimaga aylanadi?
+   * **Javob:** \`+[]\` = 0, \`+{}\` = NaN.
 
 ### Senior
-9. **Savol:** Obyektlarni primitivga o'tkazishda \`[Symbol.toPrimitive]\` qanday rol o'ynaydi?
-   * **Javob:** Agar obyektda ushbu metod mavjud bo'lsa, u yashirin casting vaqtida avtomatik chaqiriladi va qaytarilishi kutilayotgan tip (string, number, default) haqida ma'lumot beradi.
-10. **Savol:** \`{} + []\` va \`[] + {}\` natijalari brauzer konsolida qanday farq qilishi mumkin?
-    * **Javob:** \`[] + {}\` har doim \`"[object Object]"\` chiqadi. \`{} + []\` esa ba'zi konsollarda \`{}\` ni bo'sh blok deb tushunib, shunchaki \`+[]\` ni hisoblaydi va \`0\` qaytaradi. Zamonaviy JS dvigatellarida bu farqlar kamaytirilgan.
-11. **Savol:** Loose equality qoidalarida \`object == primitive\` holatida nima sodir bo'ladi?
-    * **Javob:** Obyekt avval ToPrimitive operatsiyasi orqali primitive ko'rinishga (string yoki number) o'tkaziladi, so'ngra taqqoslash davom ettiriladi.
-12. **Savol:** Nima uchun katta loyihalarda implicit casting-dan qochish tavsiya etiladi?
-    * **Javob:** Chunki u kodning o'qilishini qiyinlashtiradi va kutilmagan, aniqlash juda qiyin bo'lgan mantiqiy xatolarni (bugs) keltirib chiqaradi.
+9. **Savol:** \`[Symbol.toPrimitive]\` nima?
+   * **Javob:** Obyektlarni primitivga o'tkazishni boshqaradigan maxsus metod.
+10. **Savol:** \`{} + []\` va \`[] + {}\` farqi?
+    * **Javob:** Konsolda biri blok deb o'qilib \`0\` qaytarishi mumkin, ikkinchisi \`"[object Object]"\`.
+11. **Savol:** object va primitive taqqoslansa nima bo'ladi?
+    * **Javob:** Obyekt \`valueOf\` yoki \`toString\` orqali primitivga o'tadi.
+12. **Savol:** Nega implicit casting'dan qochish kerak?
+    * **Javob:** Kodni o'qishni qiyinlashtirib, bug'lar olib keladi.
 
 ---
 
 ## 6. 🛠️ Amaliy Topshiriqlar
 
-Quyidagi diagramma orqali \`+\` operatori va boshqa matematik operatorlar (\`-\`, \`*\`, \`/\`) ishlaganda JavaScript-da tiplar qanday qilib yashirin ravishda o'zgarishini ko'rishingiz mumkin:
-
 \`\`\`mermaid
 graph TD
     Operator{"Operator turi?"}
-    Operator -->|"+"| PlusOp{"+ Operandi tarkibida string bormi?"}
-    Operator -->|"-, *, /, %"| MathOp["Barcha operandlar Son (Number) turiga o'tkaziladi"]
-    
-    PlusOp -->|Ha| Concat["Matnlarni birlashtirish (String Concatenation)"]
-    PlusOp -->|Yo'q| Add["Matematik qo'shish (Number Addition)"]
-
-    Concat --> Example1["Misol: '5' + 2 = '52'"]
-    Add --> Example2["Misol: true + 5 = 6"]
-    MathOp --> Example3["Misol: '5' - 2 = 3"]
+    Operator -->|"+"| PlusOp{"+ Operandi stringmi?"}
+    Operator -->|"-, *, /, %"| MathOp["Barchasi songa o'tadi"]
+    PlusOp -->|Ha| Concat["String Concatenation"]
+    PlusOp -->|Yo'q| Add["Number Addition"]
 \`\`\`
-
-### Mashhur ifodalar ustida bosqichma-bosqich tahlil:
-
-1. **\`"5" - - "3"\`**
-   * Dastlab, ikkinchi qismdagi \`-"3"\` bajariladi. Unar minus operatori \`"3"\` stringini songa o'tkazadi va ishorasini o'zgartiradi: \`-3\`.
-   * So'ngra, \`"5" - (-3)\` amali qoladi. Ayirish \`-\` binary operatori \`"5"\` stringini \`5\` soniga o'tkazadi.
-   * \`5 - (-3) = 8\` natijasi hosil bo'ladi.
-
-2. **\`[] + {}\`**
-   * Plyus operatori ishlamoqda. Ikkala operand ham obyekt bo'lgani uchun ularga \`ToPrimitive\` qo'llaniladi.
-   * \`[]\` massivi default \`toString()\` bo'yicha bo'sh stringga (\`""\`) aylanadi.
-   * \`{}\` obyekti \`toString()\` bo'yicha \`"[object Object]"\` stringiga aylanadi.
-   * \`"" + "[object Object]"\` amali bajarilib, natija \`"[object Object]"\` bo'ladi.
 
 ---
 
 ## 7. 📝 12 ta Mini Test
 
-Dars yakunidagi bilimingizni sinash va olingan nazariy bilimlarni mustahkamlash uchun alohida taqdim etilgan testlarni bajaring. U yerda asosan loose equality va matematik casting-ga oid murakkab savollar jamlangan.
+Testlar pastroqda e'lon qilingan.
 
 ---
 
 ## 8. 🎯 Real Project Case Study
 
-### URL Query parametrlari bilan hisob-kitob qilishdagi muammo
-Ko'p uchraydigan holat: backend yoki frontenda sahifa raqamini hisoblash uchun URL-dan query parametr olinadi. Masalan, foydalanuvchi keyingi sahifaga o'tmoqchi bo'lganda, hozirgi sahifaga 1 qo'shiladi.
-
-* **Muammoli kod:**
-  \`\`\`javascript
-  const queryParams = { page: "2" }; // URL dan olingan qiymat har doim String bo'ladi
-  const nextPage = queryParams.page + 1; 
-  
-  console.log(nextPage); // "21" (sahifa raqami kutilmagan holda 21-sahifaga aylanib ketdi!)
-  \`\`\`
-* **Loyiha darajasidagi yechim:**
-  Har doim dynamic qiymatlarni arifmetik amallardan oldin explicit (aniq) songa o'tkazib olish kerak yoki implicit casting-ni aniq unar operator orqali ta'kidlash lozim:
-  \`\`\`javascript
-  // Yechim 1: Explicit casting (Tavsiya etiladi)
-  const nextPage1 = Number(queryParams.page) + 1; // 3
-  
-  // Yechim 2: Implicit casting unar plyus orqali
-  const nextPage2 = +queryParams.page + 1; // 3
-  \`\`\`
+### URL Query parametrlari bilan hisoblash
+\`\`\`javascript
+const queryParams = { page: "2" };
+const nextPage = Number(queryParams.page) + 1; // 3
+\`\`\`
 
 ---
 
 ## 9. 🚀 Performance va Optimization
-
-* **Dvigatel yuklamasi:** Implicit casting amalga oshirilganda, JS dvigateli orqa fonda bir nechta abstract operatsiyalarni (\`ToPrimitive\`, \`valueOf\`, \`toString\`) ketma-ket bajarishga majbur bo'ladi. Bu oz bo'lsa-da runtime-da ishlash unumdorligiga (performance) ta'sir qiladi. Explicit o'tkazish (masalan \`Number()\`) to'g'ridan-to'g'ri mos metodni chaqirgani uchun tezroq va xotiradan tejamkorroq ishlaydi.
-* **Kodni o'qish tezligi (Readability):** Dasturchining kodni o'qib tushunishi ham muhim performance ko'rsatkichi. Aniq yozilgan explicit kodda boshqa dasturchilar xato qidirib vaqt yo'qotmaydi.
+Explicit o'tkazish (masalan \`Number()\`) dvigatel uchun implicit ga qaraganda tezroq hisoblanadi.
 
 ---
 
 ## 10. 📌 Cheat Sheet
-
-| Amal / Taqqoslash | Qanday aylantiriladi | Natija |
+| Amal | Qanday | Natija |
 | :--- | :--- | :--- |
-| \`any + string\` | Barcha operandlar string bo'ladi | \`"value" + "string"\` |
-| \`any - number\` | Barcha operandlar songa o'tadi | Son qiymati yoki \`NaN\` |
-| \`+value\` (Unar plyus) | Qiymatni songa o'tishga majburlaydi | Son qiymati yoki \`NaN\` |
-| \`!!value\` | Qiymatni boolean tipiga o'tkazadi | \`true\` yoki \`false\` |
-| \`null == undefined\` | Yashirin casting-siz to'g'ridan-to'g'ri teng | \`true\` |
-| \`NaN == NaN\` | Standart bo'yicha hech qachon teng emas | \`false\` |
-| \`[]\` (Bo'sh massiv) | Bo'sh stringga, so'ngra 0 soniga o'tadi | \`""\` yoki \`0\` |
+| \`any + string\` | Barcha string bo'ladi | \`"value" + "string"\` |
+| \`any - number\` | Barchasi songa o'tadi | Son yoki \`NaN\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Songa majburiy o'tkazish (Safe Addition)",
-    "instruction": "Sizga ikkita parametr qabul qiladigan `safeAdd(val1, val2)` funksiyasi berilgan. Ular har xil tipda (string, boolean, null) bo'lishi mumkin. Agar ular yordamida oddiy plyus `+` amalini bajarsak va ulardan biri string bo'lsa, JS ularni matn sifatida birlashtiradi. Siz plyus `+` unar operatorining implicit casting xususiyatidan foydalanib, har qanday holatda ham ularni songa o'tkazib matematik qo'shadigan funksiya yozing.",
-    "startingCode": "function safeAdd(val1, val2) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Plyus `+` unar operatori (masalan, `+x`) qiymatni tezkor va yashirin tarzda songa o'tkazadi.",
-    "test": "const sandbox = new Function(code + '; return safeAdd;');\nconst fn = sandbox();\nif (fn('5', '10') === 15 && fn(true, 5) === 6 && fn('3', false) === 3) return null;\nreturn 'safeAdd funksiyasi qiymatlarni to\\'g\\'ri songa o\\'tkazib qo\\'shmadi';"
-  },
-  {
-    "id": 2,
-    "title": "Falsy qiymatlarni inkor qilish",
-    "instruction": "Berilgan istalgan qiymatni boolean tipiga o'tkazib, uning 'falsy' (noto'g'ri/bo'sh) ekanligini aniqlovchi `isFalsy(value)` funksiyasini yozing. Buning uchun mantiqiy inkor `!` operatorining implicit casting xususiyatidan foydalaning (explicit `Boolean()` ishlatilmasin).",
-    "startingCode": "function isFalsy(value) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Mantiqiy inkor operatori `!` har qanday qiymatni boolean-ga o'tkazadi va uni teskarisiga aylantiradi. Uni ikki marta ishlatish `!!` qiymatni o'zining boolean holatiga o'tkazadi.",
-    "test": "const sandbox = new Function(code + '; return isFalsy;');\nconst fn = sandbox();\nif (fn(0) === true && fn('') === true && fn(null) === true && fn('hello') === false && fn(5) === false) return null;\nreturn 'isFalsy funksiyasi falsy qiymatlarni to\\'g\\'ri aniqlamadi';"
-  },
-  {
-    "id": 3,
-    "title": "Massiv elementlarini songa o'tkazib yig'ish",
-    "instruction": "Massiv berilgan. Massiv elementlarini (ular son, boolean yoki songa aylanadigan string yoki null bo'lishi mumkin) implicit casting (unary `+`) yordamida songa o'tkazib yig'ib boruvchi `sumCoerced(arr)` funksiyasini yozing. Agar element songa o'tkazilganda `NaN` bo'lsa (masalan `'abc'`), uni 0 deb hisoblang.",
-    "startingCode": "function sumCoerced(arr) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Massivni aylanib chiquvchi sikl yoki `reduce` ishlatib, har bir elementni `+item` ko'rinishida songa o'giring. Uni `isNaN()` orqali tekshirib, agar true bo'lsa, 0 qo'shing.",
-    "test": "const sandbox = new Function(code + '; return sumCoerced;');\nconst fn = sandbox();\nconst res = fn([1, '2', true, 'abc', null]);\nif (res === 4) return null;\nreturn 'sumCoerced funksiyasi to\\'g\\'ri yig\\'indini qaytarmadi';"
-  }
-]
-,
+    {
+      "id": 1,
+      "title": "Songa majburiy o'tkazish (Safe Addition)",
+      "instruction": "Ikkita parametr qabul qiladigan `safeAdd(val1, val2)` funksiyasi yozing. Unar `+` yordamida ularni songa o'tkazib qo'shing.",
+      "startingCode": "function safeAdd(val1, val2) {\n  // Kodni yozing\n}",
+      "hint": "return +val1 + +val2;",
+      "test": "const fn = new Function(code + '; return safeAdd;')(); if(fn('5', '10') === 15) return null; return 'Xato';"
+    },
+    {
+      "id": 2,
+      "title": "Falsy qiymatlarni inkor qilish",
+      "instruction": "Istalgan qiymatni mantiqiy inkor `!` bilan tekshiradigan `isFalsy(value)` yozing.",
+      "startingCode": "function isFalsy(value) {\n  // Kodni yozing\n}",
+      "hint": "return !value;",
+      "test": "const fn = new Function(code + '; return isFalsy;')(); if(fn('') === true && fn(5) === false) return null; return 'Xato';"
+    },
+    {
+      "id": 3,
+      "title": "Massiv elementlarini songa o'tkazib yig'ish",
+      "instruction": "Massivdagi hamma elementni songa (unar `+`) o'tkazib yig'uvchi `sumCoerced(arr)` tuzing. NaN bo'lsa 0 deb hisoblang.",
+      "startingCode": "function sumCoerced(arr) {\n  // Kodni yozing\n}",
+      "hint": "reduce va isNaN ishlating.",
+      "test": "const fn = new Function(code + '; return sumCoerced;')(); if(fn([1, '2', 'abc']) === 3) return null; return 'Xato';"
+    },
+    {
+      "id": 4,
+      "title": "Implicit ayirish",
+      "instruction": "`subtractStr(str1, str2)` yozingki, u shunchaki `-` ishlatsin (casting bo'ladi) va qaytarsin.",
+      "startingCode": "function subtractStr(str1, str2) {\n  // Kodni yozing\n}",
+      "hint": "return str1 - str2;",
+      "test": "const fn = new Function(code + '; return subtractStr;')(); if(fn('10', '3') === 7) return null; return 'Xato';"
+    },
+    {
+      "id": 5,
+      "title": "Bo'sh massiv casting",
+      "instruction": "`checkArray(arr)` funksiyasida `arr == false` ni qaytaring (bo'sh massiv uchun u implicit tarzda nima qaytaradi ko'ramiz).",
+      "startingCode": "function checkArray(arr) {\n  // Kodni yozing\n}",
+      "hint": "return arr == false;",
+      "test": "const fn = new Function(code + '; return checkArray;')(); if(fn([]) === true) return null; return 'Xato';"
+    },
+    {
+      "id": 6,
+      "title": "Booleans qoshish",
+      "instruction": "`addBooleans(b1, b2)` 2 ta boolean qiymatini yig'ib qaytarsin (implicit coercion bilan 1 va 0 ga aylanadi).",
+      "startingCode": "function addBooleans(b1, b2) {\n  // Kodni yozing\n}",
+      "hint": "return b1 + b2;",
+      "test": "const fn = new Function(code + '; return addBooleans;')(); if(fn(true, false) === 1 && fn(true, true) === 2) return null; return 'Xato';"
+    },
+    {
+      "id": 7,
+      "title": "Ikki marta inkor (!!)",
+      "instruction": "Qiymatni sof boolean holatiga o'tkazuvchi `toBool(val)` yozing. `!!` ishlating.",
+      "startingCode": "function toBool(val) {\n  // Kodni yozing\n}",
+      "hint": "return !!val;",
+      "test": "const fn = new Function(code + '; return toBool;')(); if(fn('hello') === true && fn(0) === false) return null; return 'Xato';"
+    },
+    {
+      "id": 8,
+      "title": "Null va matematik amal",
+      "instruction": "`addNull(val)` ga 5 raqamini va kiritilgan val (agar null bo'lsa) ni oddiy `+` qilib yig'ing.",
+      "startingCode": "function addNull(val) {\n  // Kodni yozing\n}",
+      "hint": "return val + 5;",
+      "test": "const fn = new Function(code + '; return addNull;')(); if(fn(null) === 5) return null; return 'Xato';"
+    },
+    {
+      "id": 9,
+      "title": "Undefined va NaN",
+      "instruction": "`addUndefined()` funksiyasi `undefined + 10` amalini bajarsin va qaytarsin. U `NaN` chiqishi kutiladi.",
+      "startingCode": "function addUndefined() {\n  // Kodni yozing\n}",
+      "hint": "return undefined + 10;",
+      "test": "const fn = new Function(code + '; return addUndefined;')(); if(isNaN(fn())) return null; return 'Xato';"
+    },
+    {
+      "id": 10,
+      "title": "Strict va Loose taqqoslash",
+      "instruction": "`compareObj(obj)` da obyektni string \"[object Object]\" ga yumshoq (loose) teng bo'lsa `true` qaytarsin.",
+      "startingCode": "function compareObj(obj) {\n  // Kodni yozing\n}",
+      "hint": "return obj == \"[object Object]\";",
+      "test": "const fn = new Function(code + '; return compareObj;')(); if(fn({}) === true) return null; return 'Xato';"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(\"5\" + 2);\n```",
-    "options": [
-      "7 (son)",
-      "\"52\" (string)",
-      "NaN",
-      "TypeError"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Binary `+` operatorining bir tarafi string bo'lsa, JS boshqa tarafni ham stringga o'tkazadi va ularni birlashtiradi (concatenation). Shuning uchun \"5\" + \"2\" = \"52\" bo'ladi."
-  },
-  {
-    "id": 2,
-    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(\"5\" - 2);\n```",
-    "options": [
-      "3 (son)",
-      "\"3\" (string)",
-      "\"52\"",
-      "NaN"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Ayirish `-` operatori stringlar uchun aniqlanmagan, shuning uchun JS \"5\" stringini avtomatik songa o'tkazadi (5) va undan 2 ni ayiradi. Natija 3 bo'ladi."
-  },
-  {
-    "id": 3,
-    "question": "Quyidagi ifodaning bajarilishidan hosil bo'lgan natijani aniqlang:\n```javascript\nconsole.log(true + true + \"5\");\n```",
-    "options": [
-      "\"truetrue5\"",
-      "\"25\"",
-      "\"7\"",
-      "NaN"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Operatsiyalar chapdan o'ngga bajariladi. Dastlab `true + true` bajariladi. Plyus operatori booleanni songa o'tkazadi (true -> 1). Natija: 1 + 1 = 2. Keyin `2 + \"5\"` bajariladi va string borligi uchun matn sifatida birlashib, \"25\" hosil bo'ladi."
-  },
-  {
-    "id": 4,
-    "question": "Quyidagi ifoda bajarilganda nima qaytadi?\n```javascript\nconsole.log(null + 10);\n```",
-    "options": [
-      "\"null10\"",
-      "10",
-      "NaN",
-      "TypeError"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Matematik operatorlarda null qiymati songa o'tkazilganda 0 ga aylanadi. Shuning uchun 0 + 10 = 10 natijasi qaytadi."
-  },
-  {
-    "id": 5,
-    "question": "Quyidagi ifoda bajarilganda nima qaytadi?\n```javascript\nconsole.log(undefined + 5);\n```",
-    "options": [
-      "\"undefined5\"",
-      "5",
-      "NaN",
-      "TypeError"
-    ],
-    "correctAnswer": 2,
-    "explanation": "Math operatsiyasida `undefined` son qilinmoqchi bo'lganda `NaN` ga aylanadi. `NaN` ga istalgan sonni qo'shish yoki ayirish har doim `NaN` beradi."
-  },
-  {
-    "id": 6,
-    "question": "Quyidagi loose equality (`==`) taqqoslashlardan qaysi biri true qaytaradi?",
-    "options": [
-      "[] == false",
-      "null == false",
-      "undefined == false",
-      "\"\" == undefined"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Loose equality (`==`) tekshiruvida ikkala taraf ham songa o'tadi. `[]` bo'sh massiv string-ga o'tadi (`\"\"`), keyin esa `0` ga aylanadi. `false` ham `0` ga aylanadi. `0 == 0` esa true qaytaradi."
-  },
-  {
-    "id": 7,
-    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconsole.log(+\"\");\n```",
-    "options": [
-      "0",
-      "NaN",
-      "undefined",
-      "TypeError"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Bo'sh string `\"\"` unar plyus `+` yordamida son tipiga o'tkazilganda avtomatik ravishda 0 ga aylanadi."
-  },
-  {
-    "id": 8,
-    "question": "Quyidagi taqqoslashlardan qaysi biri false qaytaradi?",
-    "options": [
-      "\"5\" == 5",
-      "null == undefined",
-      "NaN == NaN",
-      "0 == \"\""
-    ],
-    "correctAnswer": 2,
-    "explanation": "JavaScript-da `NaN` o'z-o'ziga ham teng bo'lmagan yagona qiymatdir (strict va loose tenglikda ham). Shuning uchun `NaN == NaN` har doim false bo'ladi."
-  },
-  {
-    "id": 9,
-    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(\"10\" / \"2\");\n```",
-    "options": [
-      "\"102\"",
-      "5",
-      "\"5\"",
-      "NaN"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Bo'lish `/` operatori ikkala operandni ham son tipiga o'tishga majburlaydi. Shuning uchun \"10\" son 10 ga, \"2\" son 2 ga aylanib, 10 / 2 = 5 (son) hosil bo'ladi."
-  },
-  {
-    "id": 10,
-    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconsole.log(![]);\n```",
-    "options": [
-      "true",
-      "false",
-      "[]",
-      "TypeError"
-    ],
-    "correctAnswer": 1,
-    "explanation": "JavaScript-da barcha obyektlar (shu jumladan bo'sh massivlar `[]` ham) truthy (rost) qiymat hisoblanadi. Uni inkor qilish `!` esa false qaytaradi."
-  },
-  {
-    "id": 11,
-    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconsole.log([] + []);\n```",
-    "options": [
-      "[]",
-      "\"\" (bo'sh string)",
-      "0",
-      "NaN"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Plyus `+` operatorida massivlar avval `toString()` orqali stringga aylantiriladi. Bo'sh massiv string ko'rinishida `\"\"` bo'ladi. Natijada `\"\" + \"\" = \"\"` (bo'sh string) qaytadi."
-  },
-  {
-    "id": 12,
-    "question": "JavaScript-da obyektlarni primitive turga aylantirish (ToPrimitive) jarayonida metodlar qaysi tartibda tekshiriladi?",
-    "options": [
-      "[Symbol.toPrimitive], valueOf, toString",
-      "JSON.stringify, toString",
-      "Object.keys, Object.values",
-      "constructor, prototype"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Obyektni primitive-ga o'tkazishda JS avval `[Symbol.toPrimitive]` metodi borligini qidiradi. Agar u bo'lmasa, kontekstga qarab `valueOf()` va keyin `toString()` metodlarini ishga tushiradi."
-  }
-]
-
+    {
+      "id": 1,
+      "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\\n```javascript\\nconsole.log('5' + 2);\\n```",
+      "options": ["7", "\"52\"", "NaN", "TypeError"],
+      "correctAnswer": 1,
+      "explanation": "Plyus operatori stringni birlashtiradi."
+    },
+    {
+      "id": 2,
+      "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\\n```javascript\\nconsole.log('5' - 2);\\n```",
+      "options": ["3", "\"3\"", "\"52\"", "NaN"],
+      "correctAnswer": 0,
+      "explanation": "Minus faqat sonlar bilan ishlaydi."
+    },
+    {
+      "id": 3,
+      "question": "Natija?\\n```javascript\\nconsole.log(true + true + '5');\\n```",
+      "options": ["\"truetrue5\"", "\"25\"", "\"7\"", "NaN"],
+      "correctAnswer": 1,
+      "explanation": "1 + 1 = 2, so'ngra '2' + '5' = '25'."
+    },
+    {
+      "id": 4,
+      "question": "Natija?\\n```javascript\\nconsole.log(null + 10);\\n```",
+      "options": ["\"null10\"", "10", "NaN", "TypeError"],
+      "correctAnswer": 1,
+      "explanation": "null son bo'lganda 0 ga aylanadi."
+    },
+    {
+      "id": 5,
+      "question": "Natija?\\n```javascript\\nconsole.log(undefined + 5);\\n```",
+      "options": ["\"undefined5\"", "5", "NaN", "TypeError"],
+      "correctAnswer": 2,
+      "explanation": "undefined math-da NaN."
+    },
+    {
+      "id": 6,
+      "question": "Qaysi biri true?\\n```javascript\\n[] == false\\n```",
+      "options": ["[] == false", "null == false", "undefined == false", "\"\" == undefined"],
+      "correctAnswer": 0,
+      "explanation": "[] -> '' -> 0, false -> 0."
+    },
+    {
+      "id": 7,
+      "question": "Natija?\\n```javascript\\nconsole.log(+'');\\n```",
+      "options": ["0", "NaN", "undefined", "TypeError"],
+      "correctAnswer": 0,
+      "explanation": "Bo'sh string unar plyus bilan 0."
+    },
+    {
+      "id": 8,
+      "question": "Qaysi biri false?",
+      "options": ["'5' == 5", "null == undefined", "NaN == NaN", "0 == \"\""],
+      "correctAnswer": 2,
+      "explanation": "NaN o'ziga teng emas."
+    },
+    {
+      "id": 9,
+      "question": "Natija?\\n```javascript\\nconsole.log('10' / '2');\\n```",
+      "options": ["\"102\"", "5", "\"5\"", "NaN"],
+      "correctAnswer": 1,
+      "explanation": "Bo'lish faqat son bilan ishlaydi."
+    },
+    {
+      "id": 10,
+      "question": "Natija?\\n```javascript\\nconsole.log(![]);\\n```",
+      "options": ["true", "false", "[]", "TypeError"],
+      "correctAnswer": 1,
+      "explanation": "Massiv truthy, inkor false."
+    },
+    {
+      "id": 11,
+      "question": "Natija?\\n```javascript\\nconsole.log([] + []);\\n```",
+      "options": ["[]", "\"\"", "0", "NaN"],
+      "correctAnswer": 1,
+      "explanation": "Massivlar bo'sh satrga o'tadi."
+    },
+    {
+      "id": 12,
+      "question": "ToPrimitive dagi metodlar tartibi?",
+      "options": ["[Symbol.toPrimitive], valueOf, toString", "JSON.stringify", "Object.keys", "constructor"],
+      "correctAnswer": 0,
+      "explanation": "JavaScript шу tartibda tekshiradi."
+    }
+  ]
 };

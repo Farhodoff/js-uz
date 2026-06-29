@@ -88,14 +88,15 @@ Dvigatel ishlash bosqichlari:
 ## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
 
 ### 1. Skriptni HTML hujjat boshida defer/async-siz chaqirish
-#### Xato:
+🔴 **YOMON:**
 \`\`\`html
 <head>
   <script src="main.js"></script>
 </head>
 \`\`\`
 Bu holda brauzer skriptni to'liq yuklab, ishga tushirgunicha HTML sahifa yuklanishi to'xtab qoladi (render-blocking). Skript DOM elementlarini topa olmay xato berishi mumkin.
-#### To'g'ri usul:
+
+🟢 **YAXSHI:**
 \`\`\`html
 <head>
   <script src="main.js" defer></script>
@@ -104,12 +105,13 @@ Bu holda brauzer skriptni to'liq yuklab, ishga tushirgunicha HTML sahifa yuklani
 \`defer\` atributi skriptni orqa fonda yuklab, faqat butun HTML tahlil qilinib bo'lingach ishga tushiradi.
 
 ### 2. \`const\` bilan yaratilgan o'zgaruvchini qayta o'zgartirishga urinish
-#### Xato:
+🔴 **YOMON:**
 \`\`\`javascript
 const userRole = "user";
 userRole = "admin"; // TypeError: Assignment to constant variable.
 \`\`\`
-#### To'g'ri usul:
+
+🟢 **YAXSHI:**
 Qiymati keyinchalik o'zgaradigan o'zgaruvchilar uchun har doim \`let\` kalit so'zidan foydalaning:
 \`\`\`javascript
 let userRole = "user";
@@ -128,31 +130,31 @@ userRole = "admin";
 1. **Savol:** JavaScript nima va u qaysi standartga asoslangan?
    * **Javob:** JavaScript — bu veb-sahifalarga dinamiklik va interaktivlik beruvchi til bo'lib, u ECMAScript (ES) standartiga asoslanadi.
 2. **Savol:** \`let\`, \`const\` va \`var\` farqlari nimada?
-   * **Javob:** \`var\` global yoki funksiya scope-ga ega va hoist bo'ladi. \`let\` va \`const\` esa block scope-ga ega (figurali qavslar ichida ishlaydi). \`const\` qiymatini qayta e'lon qilib yoki o'zgartirib bo'lmaydi.
+   * **Javob:** \`var\` global yoki funksiya scope-ga ega va hoist bo'ladi. \`let\` va \`const\` esa block scope-ga ega. \`const\` qiymatini qayta e'lon qilib yoki o'zgartirib bo'lmaydi.
 3. **Savol:** JavaScript-da qanday ibtidoiy (primitive) ma'lumot turlari bor?
-   * **Javob:** JavaScript-da 7 ta primitive tur mavjud: String, Number, Boolean, Null, Undefined, Symbol va BigInt.
+   * **Javob:** 7 ta primitive tur mavjud: String, Number, Boolean, Null, Undefined, Symbol va BigInt.
 4. **Savol:** \`typeof\` operatori nima vazifani bajaradi?
-   * **Javob:** \`typeof\` o'zgaruvchi yoki qiymatning qaysi ma'lumot turiga tegishli ekanligini matn ko'rinishida qaytaradi (masalan: \`"string"\`, \`"number"\`).
+   * **Javob:** \`typeof\` o'zgaruvchi yoki qiymatning ma'lumot turini matn ko'rinishida qaytaradi (masalan: \`"string"\`, \`"number"\`).
 
 ### Middle (5–8)
 5. **Savol:** Dynamic Typing (Dinamik tiplash) nima degani?
-   * **Javob:** O'zgaruvchi yaratilayotganda uning turi aniq ko'rsatilmaydi. Uning turi ichiga yuklangan qiymatga qarab dinamik ravishda aniqlanadi va o'zgarishi mumkin.
+   * **Javob:** O'zgaruvchi yaratilayotganda uning turi aniq ko'rsatilmaydi. Uning turi ichiga yuklangan qiymatga qarab dinamik ravishda aniqlanadi va ish jarayonida o'zgarishi mumkin.
 6. **Savol:** \`==\` va \`===\` operatorlarining farqi nimada?
-   * **Javob:** \`==\` taqqoslashdan oldin qiymatlarning turini bir xil ko'rinishga keltirib tekshiradi (implicit type coercion). \`===\` esa ham turni, ham qiymatni qat'iy tekshiradi (strict equality).
+   * **Javob:** \`==\` (loosely equal) solishtirishdan oldin tiplarni bir xil ko'rinishga keltirib tekshiradi. \`===\` (strictly equal) esa ham turni, ham qiymatni qat'iy tekshiradi.
 7. **Savol:** Nima uchun \`typeof null\` ning javobi \`"object"\` chiqadi?
-   * **Javob:** Bu JavaScript tili ilk yaratilgan vaqtda yuz bergan va keyinchalik eski kodlar buzilib ketmasligi uchun o'zgartirilmagan tarixiy xatolik (bug) hisoblanadi.
+   * **Javob:** Bu JavaScript tili ilk yaratilgan vaqtda yuz bergan va keyinchalik eski kodlar buzilib ketmasligi uchun o'zgartirilmagan tarixiy bug (xatolik) hisoblanadi.
 8. **Savol:** \`defer\` va \`async\` atributlarining farqi nimada?
-   * **Javob:** Ikkisi ham skriptni parallel ravishda fonda yuklaydi. \`async\` skript tayyor bo'lishi bilanoq sahifani to'xtatib uni bajaradi. \`defer\` esa faqat HTML hujjat to'liq yuklangandan keyingina kodlarni ketma-ket bajaradi.
+   * **Javob:** Ikkisi ham skriptni parallel yuklaydi. \`async\` skript tayyor bo'lishi bilanoq ishga tushadi va HTML tahlilini to'xtatib qo'yishi mumkin. \`defer\` esa faqat HTML hujjat to'liq yuklangandan so'ng kodlarni ketma-ket bajaradi.
 
 ### Senior (9–12)
 9. **Savol:** Just-In-Time (JIT) kompilyatsiyasi qanday ishlaydi?
-   * **Javob:** JS Dvigateli kod bajarilishi jarayonida tez-tez chaqiriladigan funksiyalarni (hot functions) kuzatadi (profiling) va ularni interpretatordan to'g'ridan-to'g'ri tezkor mashina kodiga o'tkazadi. Agar kiritilgan ma'lumot turi o'zgarsa, dvigatel uni qaytadan interpretator rejimiga qaytaradi (deoptimization).
+   * **Javob:** JS Dvigateli kod bajarilishi jarayonida tez-tez chaqiriladigan funksiyalarni (hot functions) kuzatadi va ularni interpretatordan to'g'ridan-to'g'ri tezkor mashina kodiga o'tkazadi (profiling va kompilyatsiya qorishmasi).
 10. **Savol:** Garbage Collector xotirani qanday tozalaydi?
-    * **Javob:** Asosan "Mark-and-Sweep" algoritmi yordamida. Global obyekt (root) dan boshlab, bog'lanishlar tarmog'i bo'ylab barcha obyeklar tekshiriladi. Global doiradan mutlaqo kirish imkoni bo'lmagan (erishib bo'lmaydigan) obyektlar xotiradan o'chirib yuboriladi.
-11. **Savol:** Nima uchun JavaScript Event Loop tufayli Single-Threaded bo'lsa ham ko'p vazifali (non-blocking) bo'lib ko'rinadi?
-    * **Javob:** Chunki og'ir asinxron topshiriqlar (taymerlar, tarmoq so'rovlari) brauzerning ichki Web API tizimiga beriladi. Ular bajarilib bo'lingach, ularning callback funksiyalari Callback Queue-ga tushadi. Event Loop faqatgina Call Stack bo'sh bo'lganda, queue-dagi kodlarni stack-ga o'tkazib ishlatadi.
-12. **Savol:** Strict Mode (\`'use strict'\`) nima va u qanday xavfsizlikni ta'minlaydi?
-    * **Javob:** Kodni qat'iy rejimda ishlatish uchun fayl boshiga yoziladi. U e'lon qilinmagan o'zgaruvchilar ishlatilishini taqiqlaydi, xavfsiz bo'lmagan xatti-harakatlarda xatoliklarni chiqaradi (silent errors to throwing errors) va kelajakdagi ES standartlari uchun zamin yaratadi.
+    * **Javob:** Asosan "Mark-and-Sweep" algoritmi orqali. Global obyekt (root) dan boshlab bog'lanishlar bo'ylab obyeklar tekshiriladi. Kirish imkoni bo'lmagan (erishib bo'lmaydigan) obyektlar xotiradan tozalanadi.
+11. **Savol:** Nima uchun JavaScript Single-Threaded bo'lsa ham non-blocking (qotib qolmaydigan) hisoblanadi?
+    * **Javob:** Chunki og'ir asinxron topshiriqlar (taymerlar, API so'rovlari) brauzerning Web API qismiga uzatiladi. Ular tugagach Event Loop orqali asinxron callbacklar Call Stack bo'shaganda ishga tushiriladi.
+12. **Savol:** Strict Mode (\`'use strict'\`) nima va u qanday foyda beradi?
+    * **Javob:** Kodni qat'iy rejimda ishlatish uchun mo'ljallangan. U e'lon qilinmagan o'zgaruvchilardan foydalanishni taqiqlaydi, xavfsiz bo'lmagan amallarda xatolik otadi va JS dvigateliga kodni yaxshiroq optimallashtirishga imkon beradi.
 
 ---
 
@@ -169,7 +171,7 @@ graph TD
     JS -->|Dinamik uslub beradi / Stil manipulyatsiyasi| CSS
 \`\`\`
 
-Ushbu darsning amaliy topshiriqlari yordamida siz o'zingizning ilk JavaScript funksiyangizni yozasiz, o'zgaruvchilarni e'lon qilasiz va ma'lumot turlarini \`typeof\` operatori bilan aniqlashni o'rganasiz.
+Ushbu darsning amaliy topshiriqlari yordamida o'zingizning ilk JS funksiyangizni yozasiz, o'zgaruvchilarni e'lon qilasiz va ma'lumot turlarini \`typeof\` operatori bilan aniqlashni o'rganasiz.
 
 ---
 
@@ -191,7 +193,7 @@ const toggleBtn = document.querySelector(".theme-toggle");
 
 // 2. Tugma bosilishini doimiy eshitamiz
 toggleBtn.addEventListener("click", () => {
-  // 3. body elementining 'dark-theme' klassini o'zgartiramiz (bor bo'lsa o'chiradi, yo'q bo'lsa qo'shadi)
+  // 3. body elementining 'dark-theme' klassini o'zgartiramiz
   document.body.classList.toggle("dark-theme");
   
   // 4. Holatni tekshirib konsolda aks ettiramiz
@@ -206,192 +208,233 @@ toggleBtn.addEventListener("click", () => {
 
 * **defer yordamida yuklash:** Sahifa yuklanish tezligini (LCP ko'rsatkichini) oshirish uchun har doim JavaScript fayllarini \`<script defer>\` atributi bilan yuklang.
 * **Minifikatsiya qilish:** Ishlab chiqarishga (production) yuborishdan oldin keraksiz bo'shliqlar va izohlardan tozalash orqali JavaScript fayllarining hajmini kamaytiring.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Vosita / Atribut | Vazifasi | Misol |
-| :--- | :--- | :--- |
-| **HTML** | Sahifaning tuzilishi va ma'lumotlarini belgilaydi | \`<h1>Sarlavha</h1>\` |
-| **CSS** | Sahifa elementlarini chiroyli ko'rinishga keltiradi | \`body { background: #000; }\` |
-| **JavaScript** | Sahifaga harakat va muloqot elementlarini qo'shadi | \`btn.onclick = () => alert('!')\` |
-| **let / const** | O'zgaruvchi va o'zgarmaslarni e'lon qiladi | \`let x = 5; const PI = 3.14;\` |
-| **typeof** | Berilgan qiymat yoki o'zgaruvchi turini aniqlaydi | \`typeof "Salom" // "string"\` |
-| **defer** | Skriptni fonda parallel yuklab, DOM tayyor bo'lgach ishga tushiradi | \`<script src="app.js" defer></script>\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Birinchi Dastur (Hello World)",
-    "instruction": "Foydalanuvchiga salom berish uchun `sayHello()` nomli funksiya yozing. U har doim `'Hello, World!'` satrini qaytarishi (return qilishi) kerak.",
-    "startingCode": "function sayHello() {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "`return 'Hello, World!';` deb yozing.",
-    "test": "const sandbox = new Function(code + '; return sayHello;');\nconst fn = sandbox();\nconst res = fn();\nif (res === 'Hello, World!') return null;\nreturn 'sayHello funksiyasi \"Hello, World!\" matnini qaytarmadi';"
-  },
-  {
-    "id": 2,
-    "title": "O'zgaruvchilarni E'lon Qilish",
-    "instruction": "JavaScript-da o'zgaruvchilar bilan ishlashni mashq qilamiz. `sum(a, b)` funksiyasini yozing. U ikkita sonni qabul qiladi, ularning yig'indisini `result` nomli o'zgaruvchida saqlaydi va ushbu `result`ni qaytaradi.",
-    "startingCode": "function sum(a, b) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "`let result = a + b;` deb o'zgaruvchi e'lon qiling va uni `return result;` orqali qaytaring.",
-    "test": "if (!code.includes('result')) return 'Kodingizda result nomli o\\'zgaruvchi e\\'lon qilinishi shart';\nconst sandbox = new Function(code + '; return sum;');\nconst fn = sandbox();\nif (fn(5, 10) === 15 && fn(-1, 1) === 0) return null;\nreturn 'sum funksiyasi yig\\'indini to\\'g\\'ri hisoblab qaytarmadi';"
-  },
-  {
-    "id": 3,
-    "title": "Turlarni Aniqlash",
-    "instruction": "Berilgan qiymatning ma'lumot turini (data type) aniqlab beruvchi `getType(value)` funksiyasini yozing. Buning uchun `typeof` operatoridan foydalaning va natijani qaytaring.",
-    "startingCode": "function getType(value) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "`return typeof value;` ko'rinishida yozing.",
-    "test": "const sandbox = new Function(code + '; return getType;');\nconst fn = sandbox();\nif (fn(42) === 'number' && fn('Salom') === 'string' && fn(true) === 'boolean') return null;\nreturn 'getType funksiyasi ma\\'lumot turini to\\'g\\'ri qaytarmadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Birinchi Dastur (Hello World)",
+      instruction: "Foydalanuvchiga salom berish uchun `sayHello()` nomli funksiya yozing. U har doim `'Hello, World!'` satrini qaytarishi kerak.",
+      startingCode: "function sayHello() {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "`return 'Hello, World!';` deb yozing.",
+      test: "const sandbox = new Function(code + '; return sayHello;');\nconst fn = sandbox();\nconst res = fn();\nif (res === 'Hello, World!') return null;\nreturn 'sayHello funksiyasi \"Hello, World!\" matnini qaytarmadi';"
+    },
+    {
+      id: 2,
+      title: "O'zgaruvchilarni E'lon Qilish",
+      instruction: "JavaScript-da o'zgaruvchilar bilan ishlashni mashq qilamiz. `sum(a, b)` funksiyasini yozing. U ikkita sonni qabul qiladi, ularning yig'indisini `result` nomli o'zgaruvchida saqlaydi va ushbu `result`ni qaytaradi.",
+      startingCode: "function sum(a, b) {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "`let result = a + b;` deb o'zgaruvchi e'lon qiling va uni `return result;` orqali qaytaring.",
+      test: "if (!code.includes('result')) return 'Kodingizda result nomli o\\'zgaruvchi e\\'lon qilinishi shart';\nconst sandbox = new Function(code + '; return sum;');\nconst fn = sandbox();\nif (fn(5, 10) === 15 && fn(-1, 1) === 0) return null;\nreturn 'sum funksiyasi yig\\'indini to\\'g\\'ri hisoblab qaytarmadi';"
+    },
+    {
+      id: 3,
+      title: "Turlarni Aniqlash (typeof)",
+      instruction: "Berilgan qiymatning ma'lumot turini (data type) aniqlab beruvchi `getType(value)` funksiyasini yozing. Buning uchun `typeof` operatoridan foydalaning.",
+      startingCode: "function getType(value) {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "`return typeof value;` ko'rinishida yozing.",
+      test: "const sandbox = new Function(code + '; return getType;');\nconst fn = sandbox();\nif (fn(42) === 'number' && fn('Salom') === 'string' && fn(true) === 'boolean') return null;\nreturn 'getType funksiyasi ma\\'lumot turini to\\'g\\'ri qaytarmadi';"
+    },
+    {
+      id: 4,
+      title: "O'zgarmaslar (const)",
+      instruction: "`getPi()` funksiyasini yozing. Uning ichida `PI` nomli o'zgarmas `const` e'lon qilib, unga `3.14` qiymatini bering va uni qaytaring.",
+      startingCode: "function getPi() {\n  // Kodni shu yerda yozing\n}\n",
+      hint: "const PI = 3.14; qilib uni return qiling.",
+      test: "if (!code.includes('const PI')) return 'const PI e\\'lon qilinishi kerak';\nconst fn = new Function(code + '; return getPi;')();\nif (fn() === 3.14) return null;\nreturn 'Funksiya 3.14 qaytarishi kerak';"
+    },
+    {
+      id: 5,
+      title: "Bo'sh qiymat (null)",
+      instruction: "Foydalanuvchini tizimdan chiqaruvchi `logout()` funksiyasini tuzing. U shunchaki `null` qiymatini qaytarsin (ya'ni foydalanuvchi yo'q).",
+      startingCode: "function logout() {\n  // Kodni yozing\n}",
+      hint: "return null; ishlating.",
+      test: "const fn = new Function(code + '; return logout;')();\nif (fn() === null) return null;\nreturn 'null qaytarilmadi';"
+    },
+    {
+      id: 6,
+      title: "Qiymat berilmaganlik (undefined)",
+      instruction: "`getUndefined()` funksiyasi hech narsa qaytarmasligini (yoki to'g'ridan to'g'ri `undefined` qaytarishini) ta'minlang.",
+      startingCode: "function getUndefined() {\n  // Kodni yozing\n}",
+      hint: "Shunchaki funksiya ichini bo'sh qoldiring yoki return undefined; yozing.",
+      test: "const fn = new Function(code + '; return getUndefined;')();\nif (fn() === undefined) return null;\nreturn 'undefined qaytmadi';"
+    },
+    {
+      id: 7,
+      title: "Ikki xil o'zgaruvchi",
+      instruction: "`createVariables()` funksiyasida bitta `let age = 20;` va bitta `const name = \"Ali\";` yarating va ularni massivda `[age, name]` ko'rinishida qaytaring.",
+      startingCode: "function createVariables() {\n  // Kodni yozing\n}",
+      hint: "let va const e'lon qilib return [age, name] qiling.",
+      test: "const fn = new Function(code + '; return createVariables;')();\nconst res = fn();\nif (res[0] === 20 && res[1] === 'Ali') return null;\nreturn 'Natija noto\\'g\\'ri';"
+    },
+    {
+      id: 8,
+      title: "Matnlarni qo'shish (String concatenation)",
+      instruction: "`greet(name)` funksiyasi foydalanuvchi ismini qabul qilib, unga salom matnini qo'shib qaytarsin. Masalan: greet('Sardor') => 'Salom Sardor'",
+      startingCode: "function greet(name) {\n  // Kodni yozing\n}",
+      hint: "return 'Salom ' + name; dan foydalaning.",
+      test: "const fn = new Function(code + '; return greet;')();\nif (fn('Ali') === 'Salom Ali') return null;\nreturn 'Salomlashuv formati xato';"
+    },
+    {
+      id: 9,
+      title: "Boolean qiymatlar",
+      instruction: "`isAdult(age)` funksiyasi yosh 18 yoki undan katta bo'lsa `true`, aks holda `false` qaytarsin.",
+      startingCode: "function isAdult(age) {\n  // Kodni yozing\n}",
+      hint: "return age >= 18; deb yozsangiz kifoya.",
+      test: "const fn = new Function(code + '; return isAdult;')();\nif (fn(18) === true && fn(17) === false) return null;\nreturn 'Yoshni tekshirish xato ishladi';"
+    },
+    {
+      id: 10,
+      title: "Solishtirish (== va ===)",
+      instruction: "Kiritilgan ikki son qat'iy tengligini (type ham, qiymat ham bir xil) tekshiruvchi `isStrictlyEqual(a, b)` yozing.",
+      startingCode: "function isStrictlyEqual(a, b) {\n  // Kodni yozing\n}",
+      hint: "return a === b; ishlating.",
+      test: "const fn = new Function(code + '; return isStrictlyEqual;')();\nif (fn(5, '5') === false && fn(5, 5) === true) return null;\nreturn 'Qat\\'iy tenglik noto\\'g\\'ri ishladi';"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "JavaScript nima?",
-    "options": [
-      "Faqat ma'lumotlar bazasini boshqarish uchun ishlatiladigan server tili",
-      "Veb-sahifalarga interaktivlik va dinamik xatti-harakatlar qo'shish uchun ishlatiladigan dasturlash tili",
-      "Faqat sahifaning dizayni va ranglarini sozlash uchun ishlatiladigan uslublar jadvali",
-      "Brauzer o'rnatish dasturi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "JavaScript — bu veb-sahifalarga jon kirituvchi, ularni interaktiv va dinamik qiluvchi asosiy dasturlash tilidir."
-  },
-  {
-    "id": 2,
-    "question": "HTML, CSS va JavaScript o'rtasidagi bog'liqlikni qaysi analogiya eng yaxshi tushuntiradi?",
-    "options": [
-      "HTML — kiyim, CSS — miya, JavaScript — suyak karkasi",
-      "HTML — suyak karkasi (struktura), CSS — tashqi ko'rinish (kiyim/chiroy), JavaScript — miya va muskullar (harakat/interaktivlik)",
-      "HTML — dvigatel, CSS — yoqilg'i, JavaScript — g'ildiraklar",
-      "Ular o'rtasida hech qanday bog'liqlik yo'q va alohida ishlaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "HTML sahifaning tuzilishini (suyagini) yaratadi, CSS unga chiroy (kiyim) beradi, JavaScript esa sahifani harakatga keltiradi va miya kabi muloqotni boshqaradi."
-  },
-  {
-    "id": 3,
-    "question": "JavaScript-ni veb-sahifaga ulash uchun qaysi tegdan foydalaniladi?",
-    "options": [
-      "<style>",
-      "<link>",
-      "<script>",
-      "<javascript>"
-    ],
-    "correctAnswer": 2,
-    "explanation": "Tashqi yoki ichki JavaScript kodlarini HTML sahifaga ulash uchun <script> tegi ishlatiladi."
-  },
-  {
-    "id": 4,
-    "question": "Quyidagi yuklash usullaridan qaysi biri HTML to'liq yuklangandan keyingina skriptni bajaradi, lekin skriptni parallel ravishda yuklaydi?",
-    "options": [
-      "<script> (oddiy yuklash)",
-      "<script async>",
-      "<script defer>",
-      "<script inline>"
-    ],
-    "correctAnswer": 2,
-    "explanation": "defer atributi skriptni fonda yuklaydi va faqatgina butun HTML hujjat (DOM daraxti) to'liq tahlil qilinib bo'lingach ishga tushiradi."
-  },
-  {
-    "id": 5,
-    "question": "JavaScript tilini dastlab kim va qancha vaqtda yaratgan?",
-    "options": [
-      "Brendan Eich tomonidan 10 kunda yaratilgan",
-      "James Gosling tomonidan 1 yilda yaratilgan",
-      "Guido van Rossum tomonidan 3 oyda yaratilgan",
-      "Dennis Ritchie tomonidan 5 yilda yaratilgan"
-    ],
-    "correctAnswer": 0,
-    "explanation": "JavaScript tili 1995-yilda Netscape kompaniyasida Brendan Eich tomonidan atigi 10 kun ichida yaratilgan."
-  },
-  {
-    "id": 6,
-    "question": "JavaScript-da qiymati keyinchalik o'zgarmaydigan o'zgaruvchini (konstanta) e'lon qilish uchun qaysi kalit so'z ishlatiladi?",
-    "options": [
-      "let",
-      "var",
-      "const",
-      "static"
-    ],
-    "correctAnswer": 2,
-    "explanation": "const (constant) kalit so'zi qiymati o'zgarmaydigan, faqat o'qish uchun mo'ljallangan o'zgaruvchilarni e'lon qilishda ishlatiladi."
-  },
-  {
-    "id": 7,
-    "question": "JavaScript-da ma'lumot turlarini aniqlash uchun qaysi operatordan foydalaniladi?",
-    "options": [
-      "typeof",
-      "instanceof",
-      "typeOf",
-      "checkType"
-    ],
-    "correctAnswer": 0,
-    "explanation": "typeof operatori uzatilgan qiymat yoki o'zgaruvchining ma'lumot turini (masalan: 'string', 'number', 'boolean') matn ko'rinishida qaytaradi."
-  },
-  {
-    "id": 8,
-    "question": "JavaScript dynamic (dinamik) yoki static (statik) tiplashga ega tilmi?",
-    "options": [
-      "Statik tiplashga ega, o'zgaruvchi turini oldindan e'lon qilish shart",
-      "Dinamik tiplashga ega, o'zgaruvchining turi unga yuklangan qiymatga qarab o'zgarishi mumkin",
-      "Tiplar umuman mavjud emas",
-      "Faqat obyektlar va massivlar bilan ishlaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "JavaScript dinamik tiplangan tildir (dynamically typed). Bu degani o'zgaruvchi yaratilayotganda uning turi ko'rsatilmaydi, balki uning ichidagi qiymat o'zgarishi bilan turi ham o'zgarishi mumkin."
-  },
-  {
-    "id": 9,
-    "question": "JavaScript brauzerda qanday bajariladi (under the hood)?",
-    "options": [
-      "Faqat HTML kodi kabi bevosita o'qiladi, kompilyatsiya qilinmaydi",
-      "JIT (Just-In-Time) kompilyatori yordamida mashina kodiga o'girilib, tezkor ishga tushiriladi",
-      "Faqat serverga yuborilib, u yerda bajariladi",
-      "Maxsus Java virtual mashinasida (JVM) ishlaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Brauzerdagi JavaScript dvigatellari (masalan, Google Chrome-dagi V8) kodni JIT (Just-In-Time) kompilyatsiyasi yordamida tezkorlik bilan bayt-kodga va mashina kodiga o'tkazib bajaradi."
-  },
-  {
-    "id": 10,
-    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(typeof null);\n```",
-    "options": [
-      "'null'",
-      "'undefined'",
-      "'object'",
-      "'error'"
-    ],
-    "correctAnswer": 2,
-    "explanation": "Tarixiy xatolik (bug) tufayli JavaScript-da typeof null ning natijasi 'object' deb qaytadi, garchi null o'ziga xos alohida ibtidoiy tur bo'lsa ham."
-  },
-  {
-    "id": 11,
-    "question": "Nima uchun <script> tegini defer yoki asyncsiz sahifaning eng tepasiga (<head> ichiga) joylashtirish tavsiya etilmaydi?",
-    "options": [
-      "Skript ishlamay qoladi va xato beradi",
-      "Skript sahifa yuklanishini bloklab qo'yadi va DOM elementlari hali yaratilmasdan skript bajarilib, DOM manipulyatsiyasida xatolar keltirib chiqaradi",
-      "Brauzer xavfsizlik nuqtai nazaridan uni taqiqlaydi",
-      "Bu sahifaning ranglarini o'chirib yuboradi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Sukut bo'yicha skript HTML tahlilini to'xtatadi (bloklaydi). Agar u tepada bo'lsa, foydalanuvchi sahifani ko'rishi kechikadi va skript pastdagi elementlarni topa olmaydi."
-  },
-  {
-    "id": 12,
-    "question": "ECMA nima va ECMAScript nima uchun kerak?",
-    "options": [
-      "Bu JavaScript-ning yangi raqobatchisi bo'lgan boshqa bir til",
-      "Bu JavaScript tilining standartlashtirilgan spetsifikatsiyasi (qoidalari to'plami) bo'leg, uning turli brauzerlarda bir xil ishlashini ta'minlaydi",
-      "Bu ma'lumotlar bazasini boshqaruvchi dastur",
-      "Faqat animatsiyalar yaratish uchun standart"
-    ],
-    "correctAnswer": 1,
-    "explanation": "ECMAScript — bu standart bo'lib, JavaScript tili shu standart qoidalari asosida rivojlanadi va barcha brauzerlar unga amal qilishga harakat qiladi."
-  }
-]
-
+    {
+      id: 1,
+      question: "JavaScript nima?",
+      options: [
+        "Faqat ma'lumotlar bazasini boshqarish uchun ishlatiladigan server tili",
+        "Veb-sahifalarga interaktivlik va dinamik xatti-harakatlar qo'shish uchun ishlatiladigan dasturlash tili",
+        "Faqat sahifaning dizayni va ranglarini sozlash uchun ishlatiladigan uslublar jadvali",
+        "Brauzer o'rnatish dasturi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript — bu veb-sahifalarga jon kirituvchi, ularni interaktiv va dinamik qiluvchi asosiy dasturlash tilidir."
+    },
+    {
+      id: 2,
+      question: "HTML, CSS va JavaScript o'rtasidagi bog'liqlikni qaysi analogiya eng yaxshi tushuntiradi?",
+      options: [
+        "HTML — kiyim, CSS — miya, JavaScript — suyak karkasi",
+        "HTML — suyak karkasi, CSS — tashqi ko'rinish (kiyim), JavaScript — miya (harakat)",
+        "HTML — dvigatel, CSS — yoqilg'i, JavaScript — g'ildiraklar",
+        "Ular o'rtasida hech qanday bog'liqlik yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "HTML sahifaning tuzilishini (suyagini) yaratadi, CSS unga chiroy (kiyim) beradi, JavaScript esa sahifani harakatga keltiradi."
+    },
+    {
+      id: 3,
+      question: "JavaScript-ni veb-sahifaga ulash uchun qaysi tegdan foydalaniladi?",
+      options: [
+        "<style>",
+        "<link>",
+        "<script>",
+        "<javascript>"
+      ],
+      correctAnswer: 2,
+      explanation: "Tashqi yoki ichki JavaScript kodlarini HTML sahifaga ulash uchun <script> tegi ishlatiladi."
+    },
+    {
+      id: 4,
+      question: "Quyidagi yuklash usullaridan qaysi biri HTML to'liq yuklangandan keyingina skriptni bajaradi, lekin skriptni parallel ravishda yuklaydi?",
+      options: [
+        "<script> (oddiy yuklash)",
+        "<script async>",
+        "<script defer>",
+        "<script inline>"
+      ],
+      correctAnswer: 2,
+      explanation: "defer atributi skriptni fonda yuklaydi va faqatgina butun HTML hujjat to'liq tahlil qilingach ishga tushiradi."
+    },
+    {
+      id: 5,
+      question: "JavaScript tilini dastlab kim va qancha vaqtda yaratgan?",
+      options: [
+        "Brendan Eich tomonidan 10 kunda yaratilgan",
+        "James Gosling tomonidan 1 yilda yaratilgan",
+        "Guido van Rossum tomonidan 3 oyda yaratilgan",
+        "Dennis Ritchie tomonidan 5 yilda yaratilgan"
+      ],
+      correctAnswer: 0,
+      explanation: "JavaScript tili 1995-yilda Netscape kompaniyasida Brendan Eich tomonidan atigi 10 kun ichida yaratilgan."
+    },
+    {
+      id: 6,
+      question: "JavaScript-da qiymati keyinchalik o'zgarmaydigan o'zgaruvchini (konstanta) e'lon qilish uchun qaysi kalit so'z ishlatiladi?",
+      options: [
+        "let",
+        "var",
+        "const",
+        "static"
+      ],
+      correctAnswer: 2,
+      explanation: "const (constant) kalit so'zi qiymati o'zgarmaydigan, faqat o'qish uchun mo'ljallangan o'zgaruvchilarni e'lon qilishda ishlatiladi."
+    },
+    {
+      id: 7,
+      question: "JavaScript-da ma'lumot turlarini aniqlash uchun qaysi operatordan foydalaniladi?",
+      options: [
+        "typeof",
+        "instanceof",
+        "typeOf",
+        "checkType"
+      ],
+      correctAnswer: 0,
+      explanation: "typeof operatori uzatilgan qiymat yoki o'zgaruvchining ma'lumot turini matn ko'rinishida qaytaradi."
+    },
+    {
+      id: 8,
+      question: "JavaScript dynamic (dinamik) yoki static (statik) tiplashga ega tilmi?",
+      options: [
+        "Statik tiplashga ega, o'zgaruvchi turini oldindan e'lon qilish shart",
+        "Dinamik tiplashga ega, o'zgaruvchining turi unga yuklangan qiymatga qarab o'zgarishi mumkin",
+        "Tiplar umuman mavjud emas",
+        "Faqat obyektlar va massivlar bilan ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript dinamik tiplangan tildir (dynamically typed). O'zgaruvchi turi ichidagi qiymatga qarab belgilanadi va o'zgarishi mumkin."
+    },
+    {
+      id: 9,
+      question: "JavaScript brauzerda qanday bajariladi (under the hood)?",
+      options: [
+        "Faqat HTML kodi kabi bevosita o'qiladi, kompilyatsiya qilinmaydi",
+        "JIT (Just-In-Time) kompilyatori yordamida mashina kodiga o'girilib, tezkor ishga tushiriladi",
+        "Faqat serverga yuborilib, u yerda bajariladi",
+        "Maxsus Java virtual mashinasida (JVM) ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Brauzerdagi JavaScript dvigatellari kodni JIT kompilyatsiyasi yordamida tezkorlik bilan mashina kodiga o'tkazib bajaradi."
+    },
+    {
+      id: 10,
+      question: "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nconsole.log(typeof null);\n```",
+      options: [
+        "'null'",
+        "'undefined'",
+        "'object'",
+        "'error'"
+      ],
+      correctAnswer: 2,
+      explanation: "Tarixiy xatolik (bug) tufayli JavaScript-da typeof null ning natijasi 'object' deb qaytadi."
+    },
+    {
+      id: 11,
+      question: "Nima uchun <script> tegini defer yoki asyncsiz sahifaning eng tepasiga (<head> ichiga) joylashtirish tavsiya etilmaydi?",
+      options: [
+        "Skript ishlamay qoladi va xato beradi",
+        "Skript sahifa yuklanishini bloklab qo'yadi va DOM elementlari hali yaratilmasdan skript bajarilib, xatolar kelib chiqadi",
+        "Brauzer xavfsizlik nuqtai nazaridan uni taqiqlaydi",
+        "Bu sahifaning ranglarini o'chirib yuboradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Sukut bo'yicha skript HTML tahlilini to'xtatadi. Agar u tepada bo'lsa, skript pastdagi elementlarni topa olmaydi va sahifa sekinlashadi."
+    },
+    {
+      id: 12,
+      question: "ECMA nima va ECMAScript nima uchun kerak?",
+      options: [
+        "Bu JavaScript-ning yangi raqobatchisi bo'lgan boshqa bir til",
+        "Bu JavaScript tilining standartlashtirilgan qoidalari bo'lib, turli brauzerlarda bir xil ishlashini ta'minlaydi",
+        "Bu ma'lumotlar bazasini boshqaruvchi dastur",
+        "Faqat animatsiyalar yaratish uchun standart"
+      ],
+      correctAnswer: 1,
+      explanation: "ECMAScript — bu standart bo'lib, JavaScript tili shu standart qoidalari asosida rivojlanadi va barcha brauzerlar unga amal qilishga harakat qiladi."
+    }
+  ]
 };

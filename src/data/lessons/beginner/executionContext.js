@@ -5,472 +5,374 @@ export const executionContextLesson = {
   theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Bajarilish Konteksti (Execution Context) nima?
-**Bajarilish Konteksti (Execution Context)** — bu JavaScript kodi bajariladigan, uning barcha o'zgaruvchilari, funksiyalari, doiralari (scopes) va \`this\` kalit so'zi qiymatlari saqlanadigan va boshqariladigan **maxsus muhit (kontekst)**. JavaScript-da har qanday kod har doim qandaydir bajarilish konteksti ichida ishlaydi.
-
-JavaScript-da uchta asosiy kontekst turi mavjud:
-1. **Global Bajarilish Konteksti (GEC):** Har qanday JS kodi ishga tushganda yaratiladigan birlamchi kontekst. U faqat bitta bo'ladi va global obyektni (\`window\` yoki \`global\`) hamda \`this\`ni yaratadi.
-2. **Funksiya Bajarilish Konteksti (FEC):** Har safar biror funksiya chaqirilganda (ishga tushirilganda) o'sha funksiya uchun alohida dynamic yaratiladigan kontekst.
-3. **Eval Konteksti:** \`eval()\` funksiyasi ichidagi kod bajariladigan kontekst (xavfsizlik sababli deyarli ishlatilmaydi).
+**Bajarilish Konteksti** — bu JavaScript kodi qayerda ishlayotgani va uning o'zgaruvchilari qayerda saqlanayotganini bildituvchi maxsus ichki muhit (kontekst).
+JavaScript-da har qanday kod bajarilayotganda doimo biror-bir kontekst ichida bo'ladi.
+Asosiy turlari:
+1. **Global Bajarilish Konteksti (GEC):** Siz dasturni ishga tushirishingiz bilan yaratiladi. U bitta bo'ladi va barcha funksiyalar uchun yagona asos vazifasini bajaradi.
+2. **Funksiya Bajarilish Konteksti (FEC):** Har safar biror funksiya chaqirilganda, JS aynan o'sha funksiya uchun alohida yangi kontekst yaratadi.
 
 ---
 
-### Real hayotiy o'xshatish: Oshxona va Shaxsiy Reseptlar
-Tasavvur qiling, siz **professional oshpazsiz** va katta oshxonada ishlayapsiz:
-
-* **Global Bajarilish Konteksti (GEC):** Bu butun boshli **oshxona**. Oshxonada hamma uchun umumiy bo'lgan jihozlar (plita, suv, muzlatgich) va umumiy ziravorlar (global o'zgaruvchilar) bor. Siz oshxonaga kirishingiz bilan bu muhit tayyor turadi.
-* **Funksiya Bajarilish Konteksti (FEC):** Siz maxsus taom, masalan, **"Shokoladli Tort"** tayyorlashga buyurtma oldingiz. Siz tort tayyorlash uchun alohida stolga o'tasiz va faqat shu tortga tegishli bo'lgan ingredientlarni (tuxum, un, shokolad - local o'zgaruvchilar va parametrlar) yig'asiz. Tortni tayyorlab bo'lgach, siz bu stolni tozalaysiz (kontekst o'chiriladi) va yana umumiy oshxona (GEC) ishiga qaytasiz.
-* **Call Stack (Chaqiriqlar Steki):** Bu sizning stolingizdagi **reseptlar dasta-varag'i (stack)**. 
-  1. Birinchi bo'lib oshxonaga kirdingiz (GEC stakning tagida).
-  2. Tort reseptini oldingiz va uni GEC ustiga qo'ydingiz (\`bakeCake()\`).
-  3. Tort ichiga krem tayyorlash kerak bo'lib qoldi. Siz tort reseptini to'xtatib turib, krem tayyorlash reseptini uning ustiga qo'ydingiz (\`makeCream()\`).
-  4. Krem tayyor bo'lgach, uning reseptini stakdan olib tashlaysiz (pop) va yana tort pishirishga qaytasiz.
-  5. Tort pishib bo'lgach, uning ham reseptini olib tashlaysiz. Stolingizda faqat umumiy oshxona ishlari qoladi.
+### Real hayotiy o'xshatish: Oshpaz va Oshxona
+* **Global Kontekst (GEC):** Bu **katta oshxona**. Oshxonada qozon, tuz, shakar kabi hamma uchun umumiy anjomlar (global o'zgaruvchilar) bor. Dastur yopilmaguncha oshxona doim ishlaydi.
+* **Funksiya Konteksti (FEC):** Siz maxsus **"Tort"** tayyorlashingiz kerak. Siz alohida kichik stolga o'tasiz va shu tort uchun tuxum, un kabi ingrediyentlarni tayyorlaysiz (mahalliy o'zgaruvchilar). Tort bitishi bilan bu stol tozalanadi (kontekst yo'q qilinadi).
+* **Call Stack (Kontekstlar to'plami):** Siz tortni tayyorlayotganda ichida **"Krem"** yasashingiz kerak bo'lib qoldi. Tort tayyorlashni vaqtincha pauza qilib, kremni yasaysiz, keyin yana tortga qaytasiz. Mana shu jarayonlarni yozib, qaysi biri birinchi bajarilishini tartibga soluvchi mexanizm - Call Stack hisoblanadi.
 
 ---
 
 ## 2. 💻 Real Kod Misollari
 
-### 1. Basic Example (Global va Funksiya Konteksti)
-Sodda o'zgaruvchilar va funksiya chaqiruvi orqali kontekst yaratilishi:
-\`\`\`javascript
-// GEC (Global Execution Context) yaratildi
-let developer = "Sardor"; 
+### 1. Basic Example (Global va Funksiya)
+\\\`\\\`\\\`javascript
+// Global Kontekst yaratildi
+let adminName = "Sardor"; 
 
 function welcome(name) {
-  // FEC (Function Execution Context) yaratildi
-  let message = "Salom, " + name; 
-  return message; 
-  // FEC stackdan chiqib ketadi va yo'q qilinadi
+  // Funksiya Konteksti yaratildi
+  return "Salom, " + name; 
+} // Funksiya ishlagach, kontekst o'chadi
+
+console.log(welcome(adminName)); 
+\\\`\\\`\\\`
+
+### 2. Intermediate Example (Call Stack qanday ishlaydi)
+\\\`\\\`\\\`javascript
+function birinchi() {
+  console.log("Birinchi boshlandi");
+  ikkinchi(); // 2-chi funksiya stack'ga tushadi
+  console.log("Birinchi tugadi");
 }
 
-console.log(welcome(developer));
-\`\`\`
-
-### 2. Intermediate Example (Ichma-ich funksiyalar va Chaqiriqlar Steki)
-Ichma-ich funksiya chaqirilganda stakning o'zgarishi:
-\`\`\`javascript
-function greet() {
-  console.log("Greet boshlandi");
-  sayName(); // Yangi kontekst stakka qo'shiladi
-  console.log("Greet tugadi");
+function ikkinchi() {
+  console.log("Ikkinchi ishlab ketdi");
 }
 
-function sayName() {
-  console.log("Mening ismim Sardor");
-}
+birinchi();
+// Natija:
+// Birinchi boshlandi
+// Ikkinchi ishlab ketdi
+// Birinchi tugadi
+\\\`\\\`\\\`
 
-greet();
-// Konsoldagi natija:
-// Greet boshlandi
-// Mening ismim Sardor
-// Greet tugadi
-\`\`\`
+### 3. Advanced Example (Hoisting va Kontekst bosqichlari)
+\\\`\\\`\\\`javascript
+console.log(myVar); // undefined (Hoisting tufayli yaratilgan, lekin undefined)
+// console.log(myLet); // Xato (Temporal Dead Zone)
 
-### 3. Advanced Example (Hoisting va Kontekst Fazalari)
-Creation Phase (Yaratilish fazasi) da \`var\` va \`let\` o'zgaruvchilarining xatti-harakati:
-\`\`\`javascript
-console.log(city); // undefined (var hoisted bo'lib, initsializatsiya qilingan)
-// console.log(country); // ReferenceError: Cannot access 'country' before initialization (let hoisted, lekin initsializatsiya qilinmagan - TDZ da)
+var myVar = 10;
+let myLet = 20;
 
-var city = "Toshkent";
-let country = "O'zbekiston";
+testFunc(); // "Salom!" (Funksiya to'liq hoisted bo'ladi)
 
-// Funksiya e'loni (Function Declaration) to'liq hoisting bo'ladi
-sayHello(); // "Salom!" deb konsolga chiqadi
-
-function sayHello() {
+function testFunc() {
   console.log("Salom!");
 }
-\`\`\`
+\\\`\\\`\\\`
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
-
-JavaScript dvigateli (masalan, V8) kodni bajarishdan oldin har bir Bajarilish Kontekstini **ikki bosqichda** yaratadi va boshqaradi:
-
-### 1. Creation Phase (Yaratilish Bosqichi)
-Kodni bajarishdan oldin, dvigatel kontekst tarkibini tuzib chiqadi:
-* **Lexical Environment (Leksik Muhit) yaratiladi:**
-  * **Environment Record:** \`let\`, \`const\` o'zgaruvchilar, funksiya argumentlari (parametrlar) va ichki funksiyalar e'lonlari saqlanadi. Ular xotirada joylashadi, lekin initsializatsiya qilinmaydi (Temporal Dead Zone).
-  * **Outer Reference (Tashqi havola):** Scope Chain-ni hosil qilish uchun tashqi (parent) leksik muhitga havola yaratiladi.
-  * **\`this\` binding:** \`this\` kalit so'zining qiymati aniqlanadi va bog'lanadi.
-* **Variable Environment (O'zgaruvchilar Muhiti) yaratiladi:**
-  * Faqat \`var\` yordamida e'lon qilingan o'zgaruvchilar saqlanadi va ularga boshlang'ich qiymat sifatida darhol \`undefined\` biriktiriladi (Hoisting).
-
-### 2. Execution Phase (Bajarilish Bosqichi)
-Bu bosqichda JS dvigateli kodni yuqoridan pastga qarab satrma-satr ishga tushiradi:
-* O'zgaruvchilarga haqiqiy qiymatlari biriktiriladi (\`city = "Toshkent"\`).
-* Funksiyalar chaqiriladi va bajariladi.
+## 3. ⚠️ Muammo va Nima uchun Muhimligi
+Kontekst qanday yaratilishi va yo'q qilinishini bilmaslik memory leak (xotirani ortiqcha band qilish) yoki stack overflow (cheksiz aylanib xotirani to'ldirib yuborish) xatolariga olib keladi. Qolaversa, "hoisting" (o'zgaruvchilarni ko'tarilishi) ni tushunish, kodda noto'g'ri o'zgaruvchilarni e'lon qilinmasidan avval ishlatib qo'yishning oldini oladi.
 
 ---
 
-### Call Stack va LIFO (Last In First Out)
-JavaScript bir vaqtning o'zida faqat bitta amal bajara oladigan (Single-Threaded) til bo'lganligi sababli, bajarilish kontekstlarini tartiblash uchun **Call Stack**-dan foydalanadi. Chaqirilgan funksiyalar stack-ga push qilinadi va bajarib bo'lingach stakdan pop (o'chirib tashlash) qilinadi.
+## 4. ❌ YOMON va ✅ YAXSHI Misollar (Ko'p Uchraydigan Xatolar)
+
+### 1. Cheksiz rekursiya (Stack Overflow)
+❌ **YOMON:**
+\\\`\\\`\\\`javascript
+function cheksiz() {
+  cheksiz(); // Hech qachon to'xtamaydi
+}
+cheksiz(); 
+// JS xato beradi: Maximum call stack size exceeded
+\\\`\\\`\\\`
+
+✅ **YAXSHI:**
+\\\`\\\`\\\`javascript
+function xavfsiz(limit) {
+  if (limit <= 0) return; // To'xtash sharti (Base Case)
+  xavfsiz(limit - 1);
+}
+xavfsiz(5);
+\\\`\\\`\\\`
+
+### 2. Temporal Dead Zone (TDZ)
+❌ **YOMON:**
+\\\`\\\`\\\`javascript
+function printName() {
+  console.log(name); // ReferenceError beradi
+  let name = "Ali";
+}
+\\\`\\\`\\\`
+
+✅ **YAXSHI:**
+\\\`\\\`\\\`javascript
+function printName() {
+  let name = "Ali";
+  console.log(name); // Oldin qiymat berilib, keyin ishlatilishi kerak
+}
+\\\`\\\`\\\`
 
 ---
 
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+## 5. 📊 Mermaid Diagrammasi
 
-### 1. Temporal Dead Zone (TDZ) ga tushib qolish
-* **Noto'g'ri (Error beradi):**
-  \`\`\`javascript
-  function showPrice() {
-    console.log(price); // ReferenceError: Cannot access 'price' before initialization
-    let price = 100;
-  }
-  showPrice();
-  \`\`\`
-  *Junior xatosi:* "Let ham hoisting bo'ladi, nega undefined qaytarmadi?" deb o'ylash. Aslida, \`let\` va \`const\` yaratilish bosqichida xotiradan joy oladi, lekin ularga e'lon qilingan qatorgacha murojaat qilib bo'lmaydi (TDZ).
-* **To'g'ri:**
-  \`\`\`javascript
-  function showPrice() {
-    let price = 100;
-    console.log(price); // 100
-  }
-  showPrice();
-  \`\`\`
+JS da Call Stack ishlash printsipi (LIFO - Oxirgi kirgan birinchi chiqadi):
 
-### 2. Cheksiz rekursiya sababli Stack Overflow xatosi
-* **Noto'g'ri (Dastur qotib qoladi):**
-  \`\`\`javascript
-  function runForever() {
-    runForever(); // To'xtash shartisiz o'zini chaqirmoqda
-  }
-  runForever(); // RangeError: Maximum call stack size exceeded
-  \`\`\`
-  Har bir chaqiruv Call Stack-ga yangi FEC qo'shadi. Stack to'lib ketgach, JS dvigateli xatolik bilan dasturni to'xtatadi.
-* **To'g'ri:**
-  \`\`\`javascript
-  function runSafely(counter) {
-    if (counter <= 0) return; // To'xtash sharti (Base case)
-    runSafely(counter - 1);
-  }
-  runSafely(5);
-  \`\`\`
-
-### 3. Blok Scope va Kontekstni adashtirish
-* **Xato tushuncha:** \`if\` yoki \`for\` bloklari yangi Bajarilish Kontekstini yaratadi deb o'ylash.
-  *Haqiqat:* Bloklar (\`{ ... }\`) faqat yangi **Block Lexical Environment** yaratadi, lekin alohida Bajarilish Konteksti (Execution Context) yaratmaydi. Faqat funksiya chaqirilgandagina yangi FEC hosil bo'ladi.
-
----
-
-## 5. 💬 12 ta Intervyu Savollari
-
-### Junior Darajasi (1–4)
-1. **Savol:** Bajarilish Konteksti (Execution Context) nima?
-   * **Javob:** Bu JavaScript kodi bajariladigan, o'zgaruvchilar, scope va \`this\` qiymati saqlanadigan maxsus muhitdir.
-2. **Savol:** JavaScript-da qanday asosiy kontekstlar bor?
-   * **Javob:** Global Bajarilish Konteksti (GEC) va Funksiya Bajarilish Konteksti (FEC).
-3. **Savol:** Call Stack nima va u qanday tartibda ishlaydi?
-   * **Javob:** Call Stack - bu joriy bajarilayotgan kontekstlarni kuzatib boruvchi mexanizm. U LIFO (Last In First Out - oxirgi kirgan birinchi chiqadi) printsipi asosida ishlaydi.
-4. **Savol:** Funksiya bajarilib bo'lingach, uning konteksti bilan nima sodir bo'ladi?
-   * **Javob:** U Call Stack-dan chiqariladi (pop) va o'chiriladi (agar closure tomonidan xotirada ushlab turilmagan bo'lsa).
-
-### Middle Darajasi (5–8)
-5. **Savol:** Yaratilish bosqichi (Creation Phase) va Bajarilish bosqichi (Execution Phase) farqi nimada?
-   * **Javob:** Creation Phase-da xotiradan o'zgaruvchi va funksiyalar uchun joy ajratiladi, outer reference va \`this\` aniqlanadi. Execution Phase-da esa kod satrma-satr bajarilib, o'zgaruvchilarga qiymat yuklanadi.
-6. **Savol:** Nima uchun \`var\` o'zgaruvchisi e'londan oldin chaqirilganda \`undefined\` beradi, \`let\` esa xatolik beradi?
-   * **Javob:** \`var\` yaratilish bosqichida \`undefined\` qiymati bilan initsializatsiya qilinadi. \`let\` esa xotiradan joy oladi, lekin initsializatsiya qilinmaydi va e'lon qilinishigacha Temporal Dead Zone (TDZ) da bo'ladi.
-7. **Savol:** Scope Chain nima va u Bajarilish Konteksti bilan qanday bog'liq?
-   * **Javob:** Har bir kontekst o'zining Leksik Muhitiga ega va unda tashqi muhitga havola (\`outer reference\`) bo'ladi. O'zgaruvchi joriy kontekstdan topilmasa, tashqi havola orqali zanjir bo'ylab Global kontekstgacha izlanadi. Bu Scope Chain deyiladi.
-8. **Savol:** Bajarilish konteksti va Scope (Sfera) o'rtasidagi farq nimada?
-   * **Javob:** Scope (Sfera) - bu kod yozilayotgan paytda (fizik joylashuvida) o'zgaruvchilarning ko'rinish chegarasidir. Execution Context esa runtime (kod ishga tushganda) yaratiladigan va scope chain, \`this\` hamda o'zgaruvchilarni o'z ichiga oluvchi amaliy muhitdir.
-
-### Senior Darajasi (9–12)
-9. **Savol:** Variable Environment va Lexical Environment o'rtasidagi farq nima?
-   * **Javob:** \`Lexical Environment\` \`let\`, \`const\` o'zgaruvchilarini, block scope-larni va funksiya parametrlarini saqlaydi. \`Variable Environment\` esa faqat \`var\` kalit so'zi bilan e'lon qilingan o'zgaruvchilarni saqlaydi.
-10. **Savol:** Funksiya stakdan o'chirilgandan keyin ham uning leksik muhiti xotirada qanday saqlanib qolishi mumkin? (Closures muammosi)
-    * **Javob:** Agar funksiya ichidan qaytarilgan boshqa bir ichki funksiya tashqi o'zgaruvchilarga murojaat qilsa (closure), JS Garbage Collector ushbu tashqi funksiyaning Leksik Muhitini xotiradan o'chirmaydi, chunki unga havola (reference) saqlanib qolgan bo'ladi.
-11. **Savol:** Call Stack to'lib ketishining (Stack Overflow) oldini olish uchun qanday amaliy choralar ko'riladi?
-    * **Javob:** Rekursiv amallarni sikllarga (iteration) o'tkazish, Tail Call Optimization (TCO) dan foydalanish (agar brauzer qo'llab-quvvatlasa) yoki asinxron yondashuv (\`setTimeout\`, \`Promise\`) orqali chaqiriqlarni Event Loop-ga o'tkazib stakni bo'shatish.
-12. **Savol:** Asinxron funksiyalar va callbacklar Call Stack-ga qanday ta'sir qiladi?
-    * **Javob:** Asinxron amallar Call Stack-ga to'g'ridan-to'g'ri kirmaydi. Ular brauzer API orqali bajarilib, keyin Callback Queue-ga tushadi. Event Loop faqat Call Stack butunlay bo'shaganidan keyingina ularni stakka o'tkazadi.
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Quyidagi Mermaid diagrammasi global koddan boshlab ichma-ich funksiyalar chaqirilishi va ular bajarilib bo'lgach stakdan o'chirilishi jarayonini (LIFO printsipi) ko'rsatadi:
-
-\`\`\`mermaid
+\\\`\\\`\\\`mermaid
 graph TD
-    subgraph Call Stack LIFO Bajarilishi
+    subgraph Call Stack (LIFO)
         direction TB
+        S1["[ Bo'sh ]"]
+        S2["[ Global Kontekst ]"]
+        S3["[ birinchi() ]<br>[ Global Kontekst ]"]
+        S4["[ ikkinchi() ]<br>[ birinchi() ]<br>[ Global Kontekst ]"]
         
-        step1["1. Dars boshlanishi <br/> [ Global Context (GEC) ] <br/> (Stack tagida Global doim turadi)"]
-        step2["2. outer() chaqirilganda <br/> [ outer() FEC ] <br/> [ Global Context (GEC) ]"]
-        step3["3. inner() chaqirilganda <br/> [ inner() FEC ] <br/> [ outer() FEC ] <br/> [ Global Context (GEC) ] <br/> (Stack cho'qqisi)"]
-        step4["4. inner() tugagach (Pop) <br/> [ outer() FEC ] <br/> [ Global Context (GEC) ] <br/> (inner xotiradan o'chdi)"]
-        step5["5. outer() tugagach (Pop) <br/> [ Global Context (GEC) ] <br/> (outer xotiradan o'chdi)"]
-        step6["6. Dastur butunlay tugagach <br/> [ (Bo'sh Stack) ]"]
-
-        step1 -->|Push outer()| step2
-        step2 -->|Push inner()| step3
-        step3 -->|Pop inner()| step4
-        step4 -->|Pop outer()| step5
-        step5 -->|Pop GEC| step6
+        S1 -->|"Dastur ishga tushdi"| S2
+        S2 -->|"birinchi() chaqirildi (Push)"| S3
+        S3 -->|"ikkinchi() chaqirildi (Push)"| S4
+        S4 -.->|"ikkinchi() tugadi (Pop)"| S3
+        S3 -.->|"birinchi() tugadi (Pop)"| S2
+        S2 -.->|"Dastur tugadi (Pop)"| S1
     end
-\`\`\`
-
-### Amaliy mashq uchun kod namunasi:
-Yuqoridagi diagrammaga mos keluvchi JavaScript kodi:
-\`\`\`javascript
-function inner() {
-  console.log("inner bajarilmoqda");
-}
-
-function outer() {
-  console.log("outer boshlandi");
-  inner();
-  console.log("outer tugadi");
-}
-
-outer();
-\`\`\`
+\\\`\\\`\\\`
 
 ---
 
-## 7. 📝 12 ta Mini Test
+## 6. 💬 12 ta Intervyu Savollari
 
-Darsimizning quizzes bo'limida Bajarilish Konteksti, hoisting, stack overflow, leksik muhit va \`this\` bog'lanishi bo'yicha tayyorlangan 12 ta test savolini yechib, bilimingizni tekshirib ko'ring. Har bir savolda to'g'ri javob bilan birga batafsil tushuntirish berilgan.
+### Junior (1–4)
+1. **Savol:** Bajarilish Konteksti (Execution Context) nima?
+   **Javob:** Bu JavaScript kodi ishlaydigan muhit. U funksiya o'zgaruvchilarini, scope chain'ni saqlaydi.
+2. **Savol:** Call Stack qanday ishlaydi?
+   **Javob:** Call stack - LIFO (Oxirgi kirgan, birinchi chiqadi) mexanizmi asosida funksiyalar ketma-ketligini boshqaradi.
+3. **Savol:** GEC (Global Execution Context) necha marta yaratiladi?
+   **Javob:** Dastur ishlaganda faqat 1 marta yaratiladi.
+4. **Savol:** Hoisting nima?
+   **Javob:** O'zgaruvchi va funksiya e'lonlarining xotiraga yozilishi (ular kodda yozilishidan avvalroq engine tomonidan bilib olinadi).
 
----
+### Middle (5–8)
+5. **Savol:** Creation Phase va Execution Phase nima?
+   **Javob:** Creation phase - JS muhitni tuzib, xotiradan joy oladi. Execution phase - kodni qatorma-qator o'qib ishga tushiradi.
+6. **Savol:** Nega \`var\` undefined qaytaradi, \`let\` esa xatolik?
+   **Javob:** \`var\` creation bosqichida undefined bilan to'ldiriladi. \`let\` esa qiymat o'qilishidan avval bloklangan holatda TDZ da turadi.
+7. **Savol:** Variable Environment va Lexical Environment ni farqi nima?
+   **Javob:** Variable env. - \`var\` o'zgaruvchilarini saqlaydi. Lexical env. - \`let\`, \`const\`, va funksiyalarni saqlaydi.
+8. **Savol:** Stack Overflow nima degani?
+   **Javob:** O'z-o'zini to'xtovsiz chaqiraveradigan rekursiya oqibatida Call Stack to'lib portlab ketishi (limitdan oshishi).
 
-## 8. 🎯 Real Project Case Study
-
-### Rekursiya chuqurligi limitini va Call Stack to'lib ketishini boshqarish
-Real loyihalarda, masalan, fayllar tizimini (folder tree) yoki murakkab JSON daraxtlarni parsing qilishda rekursiyadan foydalaniladi. Agar daraxt juda chuqur bo'lsa (minglab darajalar), stack overflow xatosi yuz beradi.
-
-Buning oldini olish uchun loyihalarda **Iterativ yondashuv (Stack-ni array yordamida simulyatsiya qilish)** ishlatiladi. Bu xotirani Call Stack-dan Heap (xotira ombori)ga o'tkazadi, chunki Heap hajmi stakka qaraganda ancha katta.
-
-#### Rekursiv (Stack Overflow xavfi bor) usul:
-\`\`\`javascript
-function traverseDirectoryRecursive(node) {
-  console.log("Joriy papka:", node.name);
-  if (node.children) {
-    node.children.forEach(child => traverseDirectoryRecursive(child));
-  }
-}
-\`\`\`
-
-#### Iterativ (Xavfsiz va Call Stack-ni to'ldirmaydigan) usul:
-\`\`\`javascript
-function traverseDirectoryIterative(rootNode) {
-  // Biz xotiraning heap qismida o'z stack-imizni (massiv) yaratamiz
-  const stack = [rootNode];
-
-  while (stack.length > 0) {
-    const currentNode = stack.pop(); // Oxirgi qo'shilgan elementni olamiz
-    console.log("Joriy papka:", currentNode.name);
-
-    if (currentNode.children) {
-      // Bolalarini stack-ga qo'shamiz, bu Call Stack-ga og'irlik solmaydi
-      for (let i = currentNode.children.length - 1; i >= 0; i--) {
-        stack.push(currentNode.children[i]);
-      }
-    }
-  }
-}
-\`\`\`
-
-> [!IMPORTANT]
-> Loyihalarda chuqur ma'lumotlarni qayta ishlashda iterativ stack yoki asinxron bo'laklash (\`setTimeout\` / \`requestAnimationFrame\`) yordamida Call Stack-ni bo'shatib turish tavsiya etiladi.
-
----
-
-## 9. 🚀 Performance va Optimization
-
-1. **Closures tufayli xotira leaks (Memory Leaks):**
-   Qachonki ichki funksiya tashqi o'zgaruvchilarga murojaat qilsa, ota funksiya konteksti stakdan o'chsa ham uning leksik muhiti xotirada (Heap) saqlanib qoladi. Keraksiz closures ishlatish xotirani band qiladi. Ishlatib bo'lingach, bog'lanishni uzish uchun o'zgaruvchini \`null\` ga tenglash tavsiya etiladi.
-2. **Deep Stack Traces samaradorligi:**
-   Xatolik yuz berganda brauzer konsolga \`Error.stack\` (Stack Trace) chiqaradi. Deep nesting (chuqur ketma-ket chaqiriqlar) bo'lgan loyihalarda stack trace-ni yig'ish va render qilish biroz resurs talab qiladi. Dvigatellarda stack trace limiti bo'ladi (sukut bo'yicha Chrome-da 10 ta freym).
-3. **Tail Call Optimization (TCO):**
-   ES6 standartida agar rekursiv chaqiruv funksiyaning eng oxirgi amali (return) bo'lsa, dvigatel yangi stack freym yaratmasdan joriy freymni qayta ishlatishi mumkin. Biroq, bu optimallash hozircha faqat ba'zi dvigatellarda (masalan, Safari's JavaScriptCore) to'liq qo'llab-quvvatlanadi.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Kontekst/Muhit | Qachon yaratiladi? | Nimalarni saqlaydi? | Stack-dagi o'rni |
-| :--- | :--- | :--- | :--- |
-| **Global Context (GEC)** | Skript yuklanib ishga tushganda | Global obyekt (\`window\`), \`this\`, global o'zgaruvchilar | Har doim eng tagida joylashadi |
-| **Function Context (FEC)** | Funksiya chaqirilganda (\`fn()\`) | Argumentlar, local o'zgaruvchilar, \`this\`, outer reference | Chaqirilganda tepaga qo'shiladi (push), tugagach o'chiriladi (pop) |
-| **Lexical Environment** | Kontekst yaratilish bosqichida | \`let\`, \`const\`, funksiya e'lonlari, tashqi scope havolasi | Kontekstning ichki tarkibiy qismi |
-| **Variable Environment** | Kontekst yaratilish bosqichida | Faqat \`var\` bilan e'lon qilingan o'zgaruvchilar | Kontekstning ichki tarkibiy qismi |
+### Senior (9–12)
+9. **Savol:** Funksiya ichida qaytarilgan Closure xotirada qanday saqlanadi?
+   **Javob:** Closure qaytargan Leksik muhit Garbage Collector tomonidan o'chirilmaydi, chunki unga qaratilgan havola tirik qolgan bo'ladi.
+10. **Savol:** JavaScript asinxron amallarni (setTimeout) Qanday qilib Call Stack'da boshqaradi?
+    **Javob:** Ularni Web API orqali fonda ishlatib, so'ngra Event Queue ga uzatadi. Event Loop stack bo'shagandan so'ng ularni bajaradi.
+11. **Savol:** "this" kalit so'zi Execution Context bilan qanday bog'liq?
+    **Javob:** \`this\` faqatgina funksiyaning execution bosqichida funksiya qay usulda chaqirilganiga ko'ra (dot notation, bind va h.k.) kontekstga dinamik tarzda bog'lanadi.
+12. **Savol:** Block Scope yangi Execution Context yaratadimi?
+    **Javob:** Yo'q. Block (\`{ ... }\`) faqat yangi Lexical Environment yaratadi xolos, to'liq kontekst (FEC) faqat funksiya chaqirilganda yasaladi.
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Rekursiya va Call Stack Xavfsizligi",
-    "instruction": "Rekursiv funksiyalar Call Stack-ni to'ldirib yubormasligi (Stack Overflow bo'lmasligi) uchun cheklovga ega bo'lishi kerak. `safeRecursion(count, maxDepth)` funksiyasini yozing. Agar `count` qiymati `maxDepth` ga yetsa yoki undan oshsa, funksiya `'Stack limit reached'` satrini qaytarsin. Aks holda, `count` qiymatini 1 taga oshirib, funksiyani o'zini rekursiv chaqirsin. Agar `maxDepth` parametri berilmagan bo'lsa, u sukut bo'yicha 10 ga teng bo'lsin.",
-    "startingCode": "function safeRecursion(count, maxDepth = 10) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "if (count >= maxDepth) return 'Stack limit reached'; shartini tekshiring va aks holda safeRecursion(count + 1, maxDepth) ni return qiling.",
-    "test": "const sandbox = new Function(code + '; return safeRecursion;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'safeRecursion funksiyasi aniqlanmadi';\nconst res1 = fn(0, 5);\nconst res2 = fn(12, 10);\nconst res3 = fn(3, 3);\nif (res1 !== 'Stack limit reached') return 'SafeRecursion limitga yetganda \"Stack limit reached\" qaytarmadi';\nif (res2 !== 'Stack limit reached') return 'SafeRecursion count maxDepth dan katta bo\\\'lganda to\\\'xtamadi';\nif (res3 !== 'Stack limit reached') return 'SafeRecursion count va maxDepth teng bo\\\'lganda to\\\'xtamadi';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Lexical Scope va Context Scope Chain",
-    "instruction": "JavaScript-da o'zgaruvchilar scope chain bo'yicha qidirilganda, funksiya qayerda chaqirilganiga qarab emas, balki qayerda e'lon qilinganiga qarab (Lexical Scope) qidiriladi. `value` global o'zgaruvchisini `'global'` qiymati bilan yarating. Keyin `printValue()` funksiyasini e'lon qiling, u `value` o'zgaruvchisini qaytarsin. So'ngra `checkScope()` funksiyasini yarating, uning ichida mahalliy `let value = 'local'` o'zgaruvchisi bo'lsin va u `printValue()` funksiyasini chaqirib natijasini qaytarsin.",
-    "startingCode": "// O'zgaruvchi va funksiyalarni shu yerda e'lon qiling\n",
-    "hint": "global doirada 'let value = \"global\"' va 'function printValue() { return value; }' deb yozing.",
-    "test": "const sandbox = new Function(code + '; return { checkScope, printValue };');\nconst { checkScope, printValue } = sandbox();\nif (typeof checkScope !== 'function') return 'checkScope funksiyasi aniqlanmadi';\nif (typeof printValue !== 'function') return 'printValue funksiyasi aniqlanmadi';\nif (checkScope() !== 'global') return 'checkScope funksiyasi \"global\" qiymatini qaytarmadi (Lexical scope xatosi)';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Bajarilish Konteksti va this ni bog'lash",
-    "instruction": "Funksiya bajarilish konteksti `this` kalit so'zining qiymatini ham belgilaydi. Agar obyekt metodi boshqa o'zgaruvchiga o'zlashtirilsa, `this` bog'liqligi uziladi. Berilgan `person` obyektining `getName` metodini context yo'qolmasligi uchun `person` obyektining o'ziga `bind` yordamida bog'lang va hosil bo'lgan funksiyani `boundGetName` o'zgaruvchisiga o'zlashtiring.",
-    "startingCode": "const person = {\n  name: \"Sardor\",\n  getName: function() {\n    return this.name;\n  }\n};\n\n// Kodni shu yerda yozing\nconst boundGetName = \n",
-    "hint": "const boundGetName = person.getName.bind(person); ko'rinishida yozing.",
-    "test": "const sandbox = new Function(code + '; return boundGetName;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'boundGetName funksiyasi aniqlanmadi';\nif (fn() === 'Sardor') return null;\nreturn 'boundGetName chaqirilganda \"Sardor\" qiymatini qaytarmadi, demak context bog\\\'lanmagan';"
-  }
-]
-,
+    {
+      "id": 1,
+      "title": "Global o'zgaruvchi yaratish",
+      "instruction": "`appVersion` nomli o'zgaruvchi e'lon qiling va unga `\"1.0.0\"` qiymatini biriktiring.",
+      "startingCode": "let appVersion = ;",
+      "hint": "\"1.0.0\"",
+      "test": "const sandbox = new Function(code + '; let appVersion = \"1.0.0\"; return appVersion === \"1.0.0\";');\nreturn sandbox() ? null : 'Xato';"
+    },
+    {
+      "id": 2,
+      "title": "Local o'zgaruvchi funksiya ichida",
+      "instruction": "`getName` funksiyasi ichida `name` nomli mahalliy (local) o'zgaruvchi yaratib, unga `\"Sardor\"` biriktiring va qaytaring.",
+      "startingCode": "function getName() {\n  // local let name yarating\n  return name;\n}",
+      "hint": "let name = \"Sardor\";",
+      "test": "const sandbox = new Function(code + '; function getName(){ let name = \"Sardor\"; return name; } return getName() === \"Sardor\";');\nreturn sandbox() ? null : 'Xato';"
+    },
+    {
+      "id": 3,
+      "title": "Block scope",
+      "instruction": "Biror if blogi ichida `const` dan foydalanib `blockVar` deb nomlangan o'zgaruvchiga 5 sonini yuklang.",
+      "startingCode": "if(true){\n  // const blockVar yarating\n}",
+      "hint": "const blockVar = 5;",
+      "test": "const sandbox = new Function(code + '; if(true){ const blockVar = 5; if(blockVar!==5) throw new Error(\"xato\"); } return true;');\nreturn sandbox() ? null : 'Xato';"
+    },
+    {
+      "id": 4,
+      "title": "Rekursiya to'xtash sharti (Base Case)",
+      "instruction": "`countdown(n)` funksiyasida shunday shart qo'shingki, agar `n <= 0` bo'lsa darhol `return` qilsin. Aks holda o'zini chaqirsin.",
+      "startingCode": "function countdown(n) {\n  // shu yerga if shartini yozing\n  countdown(n - 1);\n}",
+      "hint": "if (n <= 0) return;",
+      "test": "const sandbox = new Function(code + '; function countdown(n){ if(n<=0) return \"done\"; return countdown(n-1); } return countdown(3) === \"done\";');\nreturn sandbox() ? null : 'Xato';"
+    },
+    {
+      "id": 5,
+      "title": "Var hoisting xatosi",
+      "instruction": "`hoistedVar` o'zgaruvchisini `var` yordamida qiymatini lentalab 10 deb pastda qoldiring. Uni qanday qilib `undefined` berishini eslang. Siz shunchaki e'lonni yozib qo'ying.",
+      "startingCode": "console.log(hoistedVar);\n// var bilan hoistedVar ni 10 ga tenglashtiring\n",
+      "hint": "var hoistedVar = 10;",
+      "test": "const sandbox = new Function(code + '; var hoistedVar = 10; return hoistedVar === 10;');\nreturn sandbox() ? null : 'Xato';"
+    },
+    {
+      "id": 6,
+      "title": "Let (TDZ) xatosi tasavvuri",
+      "instruction": "Kodni to'g'irlang. `console.log(x); let x = 5;` xato (TDZ) beradi. Buni to'g'irlash uchun log'ni e'londan pastga tushiring.",
+      "startingCode": "console.log(x);\nlet x = 5;",
+      "hint": "let x = 5; console.log(x);",
+      "test": "const sandbox = new Function(code + '; let x = 5; let r = x; return r===5;');\nreturn sandbox() ? null : 'Xato';"
+    },
+    {
+      "id": 7,
+      "title": "Nested funksiya chaqiruvi",
+      "instruction": "`first()` funksiyasi ichidan `second()` funksiyasini chaqiring, shunda u stakka tushadi.",
+      "startingCode": "function second() { return 2; }\nfunction first() {\n  // second() ni qaytaring\n}",
+      "hint": "return second();",
+      "test": "const sandbox = new Function(code + '; function second(){return 2;} function first(){return second();} return first()===2;');\nreturn sandbox() ? null : 'Xato';"
+    },
+    {
+      "id": 8,
+      "title": "Funksiya deklaratsiyasi hoisting'i",
+      "instruction": "Tepa qismda ishlatilgan bo'lishiga qaramay, pastda `hello()` degan oddiy funksiya yozib, ichida `\"Hi\"` qaytaradigan qiling.",
+      "startingCode": "const x = hello();\n// hello() funksiyasini shu yerga yozing",
+      "hint": "function hello() { return 'Hi'; }",
+      "test": "const sandbox = new Function(code + '; function hello(){return \"Hi\";} return hello() === \"Hi\";');\nreturn sandbox() ? null : 'Xato';"
+    },
+    {
+      "id": 9,
+      "title": "Closure yordamida Scope'ni saqlash",
+      "instruction": "Tashqi funksiya \`outer()\` ichida `count` ni e'lon qilib, uning ichida qiymatni oshiradigan ichki funksiya qaytaring.",
+      "startingCode": "function outer() {\n  let count = 0;\n  return function() {\n    // count ni oshiring va qaytaring\n  }\n}",
+      "hint": "count++; return count;",
+      "test": "const sandbox = new Function(code + '; function outer(){let count = 0; return function(){count++; return count;}} let c = outer(); return c()===1;');\nreturn sandbox() ? null : 'Xato';"
+    },
+    {
+      "id": 10,
+      "title": "Limit qo'shish orqali rekursiyani himoyalash",
+      "instruction": "`factorial(n)` funksiyasida `n === 0` sharti uchun `1` qaytarilishini (base case) yozing.",
+      "startingCode": "function factorial(n) {\n  // agar n === 0 bo'lsa return 1;\n  return n * factorial(n - 1);\n}",
+      "hint": "if (n === 0) return 1;",
+      "test": "const sandbox = new Function(code + '; function factorial(n){ if(n===0) return 1; return n*factorial(n-1); } return factorial(3)===6;');\nreturn sandbox() ? null : 'Xato';"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "JavaScript-da Bajarilish Konteksti (Execution Context) nima?",
-    "options": [
-      "Faqat funksiyalarning ishlash vaqtini o'lchaydigan maxsus API",
-      "JavaScript kodi bajariladigan, uning o'zgaruvchilari, scope chain va this qiymati saqlanadigan muhit",
-      "Sahifadagi HTML elementlarining joylashuvini boshqaradigan CSS qismi",
-      "Dasturdagi sintaktik xatolarni avtomatik tarzda tuzatuvchi tizim"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Bajarilish konteksti (Execution Context) - bu JavaScript kodi baholanadigan va bajariladigan muhitdir. Har qanday JS kodi bajarilganda, u ma'lum bir kontekst (GEC yoki FEC) ichida ishlaydi."
-  },
-  {
-    "id": 2,
-    "question": "Global Bajarilish Konteksti (Global Execution Context) dastur ishga tushganda necha marta yaratiladi?",
-    "options": [
-      "Har bir funksiya chaqirilganda yangidan yaratiladi",
-      "Faqat bir marta yaratiladi va dastur bajarilishi tugaguncha mavjud bo'ladi",
-      "Har bir 'let' yoki 'const' o'zgaruvchisi e'lon qilinganda boshqadan yaratiladi",
-      "Event Loop har bir aylanganda o'chib qaytadan yaratiladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Global Bajarilish Konteksti (GEC) dastur birinchi marta ishga tushganda faqat bir marta yaratiladi. U global obyekt (masalan, brauzerda window) va global scope-ni hosil qiladi."
-  },
-  {
-    "id": 3,
-    "question": "Funksiya Bajarilish Konteksti (Function Execution Context) qachon yaratiladi?",
-    "options": [
-      "Funksiya kodda e'lon qilingan (yozilgan) paytda",
-      "Funksiya chaqirilgan (ishga tushirilgan/invoke qilingan) paytda",
-      "Faqat funksiya ichida 'var' o'zgaruvchisi ishlatilganda",
-      "Faqat funksiya 'return' kalit so'zi bilan tugaganda"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Funksiya Bajarilish Konteksti (FEC) funksiya yozilgan paytda emas, balki u kodda chaqirilganda (masalan, 'myFunc()') dynamic ravishda yaratiladi va stack-ga qo'shiladi."
-  },
-  {
-    "id": 4,
-    "question": "Call Stack (Chaqiriqlar Steki) qaysi ma'lumotlar strukturasi printsipi asosida ishlaydi?",
-    "options": [
-      "FIFO (First In, First Out - Birinchi kirgan birinchi chiqadi)",
-      "LIFO (Last In, First Out - Oxirgi kirgan birinchi chiqadi)",
-      "Random (Elementlar mutlaqo ixtiyoriy tartibda ishlaydi)",
-      "Faqat hajmi eng kichik funksiyalar birinchi bajariladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Call Stack LIFO (Last In, First Out) printsipida ishlaydi. Eng oxirgi chaqirilgan funksiya stack-ga oxirgi bo'lib kiradi va birinchi bo'lib tugatilib, stack-dan chiqariladi."
-  },
-  {
-    "id": 5,
-    "question": "Bajarilish kontekstining Yaratilish Bosqichida (Creation Phase) nima sodir bo'ladi?",
-    "options": [
-      "Kod satrma-satr bajariladi va barcha o'zgaruvchilarga yakuniy qiymatlar yuklanadi",
-      "O'zgaruvchilar va funksiyalar e'lonlari uchun xotiradan joy ajratiladi (Hoisting), Scope Chain va this aniqlanadi",
-      "Barcha asinxron API va tarmoq so'rovlari bajarib bo'linadi",
-      "Dastur xatoliklarini tekshirish uchun uchinchi tomon kutubxonalari yuklanadi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Creation Phase davomida JS dvigateli xotirani tayyorlaydi: o'zgaruvchilar va funksiyalar e'lonlarini xotiraga yozadi (hoisting), tashqi scope-ga bog'lanishlarni (Scope Chain) va this qiymatini belgilaydi."
-  },
-  {
-    "id": 6,
-    "question": "Quyidagi kodda hoisting sababli konsolda nima chop etiladi?\n```javascript\nconsole.log(myVar);\nvar myVar = 5;\n```",
-    "options": [
-      "5",
-      "ReferenceError: myVar is not defined",
-      "undefined",
-      "TypeError: myVar is not a function"
-    ],
-    "correctAnswer": 2,
-    "explanation": "'var' bilan e'lon qilingan o'zgaruvchilar Creation Phase-da hoisting bo'lib, ularga 'undefined' boshlang'ich qiymati beriladi. Shuning uchun e'lon qilinishidan oldin chaqirilsa, xatolik o'rniga undefined chiqadi."
-  },
-  {
-    "id": 7,
-    "question": "Quyidagi kod ishga tushganda konsolda nima yuz beradi?\n```javascript\nconsole.log(myLet);\nlet myLet = 10;\n```",
-    "options": [
-      "10",
-      "undefined",
-      "ReferenceError (Temporal Dead Zone sababli)",
-      "Hech narsa chop etilmaydi va dastur xatosiz tugaydi"
-    ],
-    "correctAnswer": 2,
-    "explanation": "'let' va 'const' ham hoisting bo'ladi, lekin ularga boshlang'ich qiymat berilmaydi. Ular e'lon qilingan qatorgacha bo'lgan hudud Temporal Dead Zone (TDZ) deyiladi va unda o'zgaruvchini chaqirish ReferenceError beradi."
-  },
-  {
-    "id": 8,
-    "question": "Bajarilish Bosqichida (Execution Phase) JavaScript dvigateli nima ishni bajaradi?",
-    "options": [
-      "Faqat sintaktik xatolarni tekshirib chiqadi",
-      "Dastur kodini satrma-satr o'qib, o'zgaruvchilarga qiymat yuklaydi va funksiyalarni ishga tushiradi",
-      "Faqat global o'zgaruvchilarni o'chirib yuboradi",
-      "Barcha asinxron funksiyalarni sinxron kodga o'tkazadi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Execution Phase - bu yaratilgan kontekst (muhit) ichida kodning satrma-satr bajarilish bosqichidir. Bu yerda o'zgaruvchilarga qiymatlar biriktiriladi va funksiya kodlari ishga tushiriladi."
-  },
-  {
-    "id": 9,
-    "question": "Cheksiz rekursiv funksiya chaqirilganda Call Stack-da nima sodir bo'ladi?",
-    "options": [
-      "Xotira hajmi avtomatik kengayib boraveradi",
-      "Maximum call stack size exceeded (Stack Overflow) xatoligi bilan dastur to'xtaydi",
-      "Dastur avtomatik ravishda barcha funksiyalarni o'chirib yuboradi",
-      "JS dvigateli uni asinxron operatsiyaga aylantiradi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Har safar rekursiv chaqiriq bo'lganda, Call Stack-ga yangi kontekst qo'shilaveradi. To'xtash sharti bo'lmasa, stack hajmi to'lib ketadi va stack overflow xatoligi yuz beradi."
-  },
-  {
-    "id": 10,
-    "question": "Lexical Environment (Leksik muhit) nima?",
-    "options": [
-      "Dasturdagi o'zgaruvchilarning nomlarini saqlaydigan lug'at",
-      "O'zgaruvchilar va funksiyalar e'lon qilingan kodning fizik joylashuviga ko'ra ularning scope (doira)larini belgilovchi JS ichki tuzilmasi",
-      "Faqat vaqtincha saqlanadigan ma'lumotlar bazasi",
-      "Brauzer konsolidagi xatolar ro'yxati"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Lexical Environment - bu o'zgaruvchilar va funksiyalar kodning aynan qayerida yozilganligi (fizik joylashuvi) asosida o'zaro aloqalar, scope va o'zgaruvchilar bog'lanishlarini boshqaruvchi ichki tuzilmadir."
-  },
-  {
-    "id": 11,
-    "question": "Scope Chain (Sferalar zanjiri) Bajarilish Kontekstida qanday ishlaydi?",
-    "options": [
-      "Faqat global o'zgaruvchilarni local funksiyalardan himoya qiladi",
-      "Joriy kontekstda topilmagan o'zgaruvchilarni tashqi (parent) leksik muhitlardan tortib Global kontekstgacha qidirish zanjirini hosil qiladi",
-      "Har bir kontekstni faqat o'z ichida cheklab qo'yadi",
-      "Faqat 'use strict' rejimi yoqilganda ishlaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Scope Chain - bu joriy kontekstda topilmagan o'zgaruvchilarni uning tashqi (lexical parent) kontekstlaridan qidirish zanjiridir. Agar o'zgaruvchi global kontekstda ham topilmasa, ReferenceError qaytadi."
-  },
-  {
-    "id": 12,
-    "question": "Funksiya bajarilib bo'lingach, uning Bajarilish Konteksti bilan nima sodir bo'ladi?",
-    "options": [
-      "U xotirada o'zgarmasdan saqlanib qoladi",
-      "U Call Stack-dan chiqarib yuboriladi (pop) va o'chiriladi (agar closure tomonidan ushlab turilmagan bo'lsa)",
-      "U avtomatik ravishda boshqa funksiyalarga nusxalanadi",
-      "U faqat sahifa yangilanganda o'chadi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Funksiya o'z ishini tugatgandan so'ng, uning bajarilish konteksti Call Stack-dan chiqariladi (popped) va xotiradan (Garbage Collector yordamida) o'chiriladi, agar biror closure uning Lexical Environment-iga bog'lanmagan bo'lsa."
-  }
-]
-
+    {
+      "id": 1,
+      "question": "JavaScript kodida funksiya o'z ishini tugatganda nima bo'ladi?",
+      "options": [
+        "Call Stack dan o'chirilib (pop qilinib) kontekst yo'qoladi",
+        "Stack tagiga tushiriladi",
+        "U cheksiz xotirada qoladi",
+        "Funksiyalar o'chirilmaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Funksiya tugashi bilan uning FEC (Function Execution Context) qismi Call Stack dan pop qilinadi va xotira tozalanadi."
+    },
+    {
+      "id": 2,
+      "question": "JavaScript Call Stack qaysi tamoyil asosida ishlaydi?",
+      "options": ["LIFO (Oxirgi kirdi, Birinchi chiqdi)", "FIFO (Birinchi kirdi, Birinchi chiqdi)", "Random", "Eng tez ishlaydigani oldin"],
+      "correctAnswer": 0,
+      "explanation": "Call stack LIFO (Last In First Out) prinsipi orqali oxirgi chaqirilgan funksiyani birinchi bo'lib o'qiydi."
+    },
+    {
+      "id": 3,
+      "question": "JavaScript-dagi o'zgaruvchi va funksiyalarning deklaratsiya qilinishidan avval ham mavjud bo'lib turishi nima deb ataladi?",
+      "options": ["Hoisting", "Lexical Scoping", "Execution", "Stacking"],
+      "correctAnswer": 0,
+      "explanation": "Dvigatel creation fazasida e'lonlarni oldindan xotiraga yuklab olishi Hoisting deb ataladi."
+    },
+    {
+      "id": 4,
+      "question": "Var va Let hoisting jihatdan qanday farq qiladi?",
+      "options": [
+        "Faqat var hoisting bo'ladi",
+        "Var ga undefined qiymati beriladi, Let esa Temporal Dead Zone'da qolib ketadi",
+        "Hech qanday farqi yo'q",
+        "Let to'liq hoisting bo'ladi, var esa bo'lmaydi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Ikkisi ham hoisting bo'ladi, biroq var ga engine undefined beradi. Let esa TDZ da ushlanib o'qishga ruxsat etilmaydi."
+    },
+    {
+      "id": 5,
+      "question": "Global Bajarilish Konteksti qachon yaratiladi?",
+      "options": ["Funksiya chaqirilganda", "Kod yuklanib eng birinchi ishga tushganda", "Xatolik bo'lganda", "API dan malumot kelganda"],
+      "correctAnswer": 1,
+      "explanation": "GEC JS dagi asosiy baza hisoblanadi va fayl ishga tushishi bilan bir marta yaratiladi."
+    },
+    {
+      "id": 6,
+      "question": "Lexical Environment o'z ichiga nimalarni oladi?",
+      "options": [
+        "Faqat var o'zgaruvchilarni",
+        "Funksiya, o'zgaruvchilar va ularning tashqi qobiq (outer scope) ga bo'lgan havolasini",
+        "Tarmoq ma'lumotlarini",
+        "Faqat HTML dom-ni"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Lexical Environment bu scope'lar zanjirini tuzuvchi mexanizm bo'lib o'zgaruvchilar va parent scope referenceni ushlab turadi."
+    },
+    {
+      "id": 7,
+      "question": "Stack Overflow nima sababdan sodir bo'ladi?",
+      "options": [
+        "Xotira yetishmovchiligidan",
+        "Ko'p o'zgaruvchi elon qilingandan",
+        "Rekursiya sharti noto'g'ri yozilib funksiyalar Call Stack-ga to'xtovsiz qo'shilaverganda",
+        "Tarmoq uzilib qolganda"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Rekursiya bazaviy cheklovga (base case) ega bo'lmasa cheksiz ishga tushib stack to'lib ketishiga olib keladi."
+    },
+    {
+      "id": 8,
+      "question": "Tashqi funksiyadagi local o'zgaruvchining ichki (nested) funksiya orqali xotirada qulflanib qolishi nima deyiladi?",
+      "options": ["Closure (Yopilma)", "Hoisting", "Context", "Execution"],
+      "correctAnswer": 0,
+      "explanation": "Closure tufayli, ota funksiya tugagan taqdirda ham uning Lexical Environment'ini ichki funksiya ushlab tura oladi."
+    },
+    {
+      "id": 9,
+      "question": "Bajarilish Kontekstining ikkita bosqichi qaysi?",
+      "options": [
+        "Loading va Saving",
+        "Creation (Yaratish) va Execution (Bajarish)",
+        "Compiling va Rendering",
+        "Pushing va Popping"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Har bir kontekst oldin yaratiladi (Creation) va keyin u yerdagi kod bajariladi (Execution)."
+    },
+    {
+      "id": 10,
+      "question": "this qiymati qachon aniqlanadi?",
+      "options": [
+        "Kod yozilayotgan paytda yozilgan joyiga (scope) ko'ra",
+        "Funksiya chaqirilgan usuliga va Kontekst bosqichiga qarab dinamik tarzda",
+        "Faqat o'zgaruvchi ishlatilganda",
+        "Ixtiyoriy o'zgaradi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "this doimo execution kontekstiga moslashadi, ya'ni qanday ob'yekt orqali yoki qayerda chaqirilganligiga qarab uning qiymati belgilanadi."
+    },
+    {
+      "id": 11,
+      "question": "Asinxron kodlar qayerda navbat kutadi?",
+      "options": ["Call Stack'da kutib o'tiradi", "Event Queue (yoki Callback Queue) va Microtask Queue'da", "Global scope'da", "Xotira keshida"],
+      "correctAnswer": 1,
+      "explanation": "Asinxron kod Call stack ni band qilmaydi. Web API ishlab bo'lgach Queue'ga tushadi, va Call Stack bo'shaganda Event loop uni ichkariga kiritadi."
+    },
+    {
+      "id": 12,
+      "question": "{...} kabi if yoki for bloklari alohida Kontekst (FEC) yaratadimi?",
+      "options": [
+        "Ha, har bir qavs alohida FEC",
+        "Yo'q, FEC faqat funksiyalar uchun yaratiladi. Ular faqat Lexical Environment ni hosil qiladi xolos.",
+        "Yo'q, ularni scope'i yo'q",
+        "Ha, Globalni to'xtatadi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Bloklar alohida Context (Execution Context) yaratmaydi, ular shunchaki o'zining Lexical scope block'iga ega bo'lishadi."
+    }
+  ]
 };

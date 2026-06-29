@@ -343,6 +343,62 @@ console.log(cleanedParams);
     "startingCode": "function parsePrice(priceStr) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "priceStr.replace(/[^0-9.]/g, '') yordamida stringni tozalang va parseFloat qiling. So'ng isNaN ekanini tekshiring.",
     "test": "const sandbox = new Function(code + '; return parsePrice;');\nconst fn = sandbox();\nif (fn('$120.50') !== 120.5) return 'parsePrice(\"$120.50\") 120.5 qaytarishi kerak';\nif (fn('99.99 USD') !== 99.99) return 'parsePrice(\"99.99 USD\") 99.99 qaytarishi kerak';\nif (fn('USD') !== 0) return 'parsePrice(\"USD\") 0 qaytarishi kerak';\nif (fn('15000') !== 15000) return 'parsePrice(\"15000\") 15000 qaytarishi kerak';\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "String qilib aylantirish",
+    "instruction": "Kiritilgan istalgan turni satrga (string) o'tkazuvchi `toStringValue(val)` funksiyasini yozing. `String(val)` yoki `val + ''` dan foydalaning.",
+    "startingCode": "function toStringValue(val) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Return String(val); ishlating.",
+    "test": "const sandbox = new Function(code + '; return toStringValue;');\nconst fn = sandbox();\nif (fn(123) !== '123' || fn(true) !== 'true') return 'Qiymatlar satrga o\\'girilmadi';\nreturn null;"
+  },
+  {
+    "id": 5,
+    "title": "Qat'iy raqamga o'girish",
+    "instruction": "Raqamni Number tipiga qat'iy o'giradigan `toNumber(val)` yozing. Agar valni o'girib bo'lmasa, `NaN` qaytishi kerak.",
+    "startingCode": "function toNumber(val) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Number(val) ishlating.",
+    "test": "const sandbox = new Function(code + '; return toNumber;');\nconst fn = sandbox();\nif (fn('55') !== 55 || Number.isNaN(fn('abc')) !== true) return 'toNumber xato ishlayapti';\nreturn null;"
+  },
+  {
+    "id": 6,
+    "title": "Mantiqiy ifodani teskarisi",
+    "instruction": "`invertBoolean(val)` yozing, u berilgan qiymatni mantiqiy teskarisiga (falsy ni true ga, truthy ni false ga) o'girsin.",
+    "startingCode": "function invertBoolean(val) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "!val (bitta undov) kifoya qiladi.",
+    "test": "const sandbox = new Function(code + '; return invertBoolean;');\nconst fn = sandbox();\nif (fn(1) !== false || fn('') !== true) return 'Mantiqiy o\\'girish noto\\'g\\'ri';\nreturn null;"
+  },
+  {
+    "id": 7,
+    "title": "Plus operatori orqali songa o'tkazish",
+    "instruction": "Biror satr kiritilganda `+` operatori (Unary Plus) bilan uni songa aylantiradigan `unaryToNumber(val)` funksiyasini yozing.",
+    "startingCode": "function unaryToNumber(val) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return +val;",
+    "test": "const sandbox = new Function(code + '; return unaryToNumber;');\nconst fn = sandbox();\nif (fn('42') !== 42 || fn('') !== 0) return '+ operatoridan to\\'g\\'ri foydalaning';\nreturn null;"
+  },
+  {
+    "id": 8,
+    "title": "Boolean Constructor orqali o'girish",
+    "instruction": "Ikkita undov o'rniga aniq mantiqqa o'giruvchi Boolean konstruktoridan foydalanadigan `strictBool(val)` yozing.",
+    "startingCode": "function strictBool(val) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return Boolean(val);",
+    "test": "const sandbox = new Function(code + '; return strictBool;');\nconst fn = sandbox();\nif (fn('hello') !== true || fn(0) !== false) return 'Boolean() orqali tekshirish xato';\nreturn null;"
+  },
+  {
+    "id": 9,
+    "title": "Float parse (o'nlik kasr)",
+    "instruction": "`extractFloat(str)` funksiyasi satrdan o'nlik kasr sonni aniqlab olsin, `parseFloat()` orqali.",
+    "startingCode": "function extractFloat(str) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return parseFloat(str);",
+    "test": "const sandbox = new Function(code + '; return extractFloat;');\nconst fn = sandbox();\nif (fn('3.14px') !== 3.14) return 'O\\'nlik sonni ajratish xato';\nreturn null;"
+  },
+  {
+    "id": 10,
+    "title": "Bo'sh qiymatlarni aniqlash",
+    "instruction": "`checkFalsy(val)` agar parametr falsy bo'lsa \"Yolg'on\", aks holda \"Rost\" degan yozuv qaytarsin.",
+    "startingCode": "function checkFalsy(val) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Ternary ishlatsangiz qulay: return val ? 'Rost' : 'Yolg\\'on';",
+    "test": "const sandbox = new Function(code + '; return checkFalsy;');\nconst fn = sandbox();\nif (fn(0) !== 'Yolg\\'on' || fn('Hi') !== 'Rost') return 'Falsy qiymatlar to\\'g\\'ri aniqlanmadi';\nreturn null;"
   }
 ]
 ,

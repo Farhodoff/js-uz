@@ -5,408 +5,374 @@ export const jsGotchas = {
   theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### JavaScript "Tuzoqlari" (Gotchas) nima?
-JavaScript dunyodagi eng mashhur dasturlash tillaridan biri bo'lsa-da, u juda tez va shoshilinch ravishda (atigi 10 kunda) yaratilgan. Shuning uchun tilda ba'zi g'ayrioddiy, mantiqqa zid bo'lib tuyuladigan xususiyatlar yoki tarixiy xatolar mavjud. Dasturchilar bu xususiyatlarni ko'pincha **"tuzoqlar" (gotchas/pitfalls)** deb atashadi. 
-
-Ular xato emas — ular til spetsifikatsiyasi bo'yicha shunday ishlashga mo'ljallangan, ammo inson mantig'iga to'g'ri kelmasligi sababli yosh dasturchilarni chalg'itadi.
+JavaScript tezda (atigi 10 kunda) yaratilgan til bo'lganligi sababli, unda o'ziga xos qoidalar (tarixiy baglar yoki dizayn qarorlari) bor. Ular ko'pincha "Gotchas" (Tuzoqlar) deb ataladi. Ular tilning rasmiy qoidalari, lekin odatdagi inson mantig'ini chalg'itishi mumkin.
 
 ### Real hayotiy o'xshatish
-Tasavvur qiling, siz supermarketga kirib, **ikkita bo'sh savatni** birlashtirmoqchisiz. Siz ularni bir-birining ichiga kiydirsangiz, yana bir savat hosil bo'lishini kutasiz. Ammo kassir kelib: *"Qoidaga ko'ra, ikkita bo'sh savat birlashsa, ular havoga aylanib yo'q bo'lib ketadi (bo'sh matn bo'ladi)"* deydi. 
-
-Yoki bo'lmasam, taroziga **olmani** qo'ysangiz, u sizga *"Bu meva emas, bu obyektdir"* deb javob beradi. 
-
-JavaScript-dagi ba'zi qoidalar ham xuddi shunday g'alati va kutilmagan qoidalarga asoslangan. Ushbu darsda biz ana shunday "g'alati" qoidalarni o'rganamiz va ulardan qanday qochishni bilib olamiz.
+Tasavvur qiling, siz supermarketda **ikkita bo'sh savatni** birlashtirsangiz, u havoga aylanadi. Yoki taroziga **olmani** qo'ysangiz, u sizga "Bu meva emas, obyektdir" deydi. JavaScript-dagi avtomatik tip o'zgarishlari (coercion) aynan shunga o'xshaydi.
 
 ---
 
 ## 2. 💻 Real Kod Misollari
 
-### 1. Type Coercion (Tiplarni avtomatik o'zgartirish)
-JavaScript ikki xil tipdagi ma'lumotlarni qo'shganda yoki solishtirganda ularni yashirincha bir xil tipga o'tkazishga harakat qiladi:
+### 1. Type Coercion (Avtomatik tip o'zgarishi)
 \`\`\`javascript
-// Massivlar yig'indisi
-console.log([] + []); // "" (Bo'sh satr)
-// Tushuntirish: Massivlar satrga o'giriladi: String([]) + String([]) -> "" + "" -> ""
-
-// Massiv va Obyekt
+console.log([] + []); // "" (Bo'sh satrlar birlashadi)
 console.log([] + {}); // "[object Object]"
-// Tushuntirish: Bo'sh massiv "" bo'ladi, obyekt esa "[object Object]" ga aylanadi.
-
-// Zanjirli taqqoslash
-console.log(1 < 2 < 3); // true  (Chunki: 1 < 2 -> true. Keyin true < 3 baholanadi. true -> 1 ga aylanadi va 1 < 3 -> true)
-console.log(3 > 2 > 1); // false (Chunki: 3 > 2 -> true. Keyin true > 1 baholanadi. true -> 1 bo'ladi va 1 > 1 -> false)
+console.log(1 < 2 < 3); // true (1<2 -> true; true<3 -> 1<3 -> true)
+console.log(3 > 2 > 1); // false (3>2 -> true; true>1 -> 1>1 -> false)
 \`\`\`
 
 ### 2. NaN (Not-a-Number) injiqliklari
-\`NaN\` sonli tip bo'lsa-da, u o'ziga xos xususiyatlarga ega:
 \`\`\`javascript
 console.log(typeof NaN); // "number" (Garchi nomi "Son emas" bo'lsa ham!)
-
-console.log(NaN === NaN); // false (JS-da o'z-o'ziga teng bo'lmagan yagona qiymat)
-
-// NaN ni tekshirishning to'g'ri va noto'g'ri usuli:
-console.log(isNaN("salom"));        // true  (Chunki an'anaviy isNaN() satrni songa o'girib tekshiradi)
-console.log(Number.isNaN("salom")); // false (Faqatgina qiymat rostdan ham NaN bo'lsa true qaytaradi)
+console.log(NaN === NaN); // false (JS-da o'z-o'ziga teng emas)
+console.log(Number.isNaN("salom")); // false (Qat'iy tekshiruv)
+console.log(isNaN("salom")); // true (Eski usul, stringni NaN deb oladi)
 \`\`\`
 
 ### 3. null va 0 ning o'zaro munosabati
-\`null\` solishtirilganda juda g'alati o'zini tutadi:
 \`\`\`javascript
-console.log(null > 0);  // false (null 0 ga o'giriladi: 0 > 0 -> false)
-console.log(null == 0); // false (Tenglik tekshiruvida null faqat undefined bilan teng bo'la oladi)
-console.log(null >= 0); // true  (Taqqoslovda null yana 0 ga o'girilib, 0 >= 0 -> true beradi)
+console.log(null > 0);  // false 
+console.log(null == 0); // false (null faqat undefined bilan teng)
+console.log(null >= 0); // true  (Taqqoslash null ni 0 ga aylantiradi)
 \`\`\`
 
-### 4. Floating Point (Suzuvchi nuqta) xatosi
-Kompyuterlar sonlarni ikkilik tizimda saqlagani uchun o'nlik kasrlarni har doim ham aniq hisoblay olmaydi:
+### 4. Floating Point xatosi
 \`\`\`javascript
 console.log(0.1 + 0.2 === 0.3); // false
 console.log(0.1 + 0.2); // 0.30000000000000004
-
-// Yechim:
-const sum = 0.1 + 0.2;
-console.log(Number(sum.toFixed(12)) === 0.3); // true
 \`\`\`
 
-### 5. Automatic Semicolon Insertion (ASI) tuzog'i
-JS kodni o'qiyotganda qator oxiriga avtomatik ravishda nuqtali vergul (;) qo'yishi mumkin:
+### 5. Automatic Semicolon Insertion (ASI)
 \`\`\`javascript
 function getObject() {
-  return // JS bu yerga avtomatik ravishda ';' qo'yadi
+  return 
   {
-    status: "success"
+    status: "ok"
   };
 }
-
-console.log(getObject()); // undefined (Obyekt qaytmaydi!)
-
-// Tuzatilgan shakli:
-function getObjectFixed() {
-  return {
-    status: "success"
-  };
-}
-console.log(getObjectFixed()); // { status: "success" }
+console.log(getObject()); // undefined (return yoniga ; tushgan)
 \`\`\`
 
 ---
 
-## 3. ⚠️ Muammo va Nima uchun Muhimligi
-
-### Qaysi muammolarni keltirib chiqaradi?
-1. **Moliyaviy hisob-kitoblardagi xatolar:** Floating point xatosi tufayli onlayn do'konlarda mahsulot narxi noto'g'ri hisoblanib, kassa xarajatlari mos kelmay qolishi mumkin (\`0.1 + 0.2\` xatosi kabi).
-2. **Kutilmagan shartlar bajarilishi:** \`null >= 0\` yoki \`1 < 2 < 3\` kabi ifodalar if-else shartlarida mutlaqo boshqa natija berib, dastur mantig'ini buzadi.
-3. **Sinxronizatsiya va ma'lumot yo'qolishi:** ASI tuzog'iga tushib qolganda, funksiyalar \`undefined\` qaytarib, loyihada \`TypeError: Cannot read properties of undefined\` xatolarini keltirib chiqaradi.
+## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+1. JavaScript qat'iy tipli emas, u imkoni boricha hamma narsani string, son yoki boolean ga avtomatik (implicit) tarzda o'girishga urinadi. Bu algoritmlar "ToPrimitive", "ToString", "ToNumber" deb ataladi.
+2. IEEE-754 standarti tufayli suzuvchi nuqtali sonlarda mantiqiy xatolar bor.
+3. typeof null === "object" xatosi tarixiy qoldiqdir va eski saytlar buzilmasligi uchun to'g'irlanmagan.
 
 ---
 
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+## 4. ❌ Ko'p Uchraydigan Xatolar (YOMON / YAXSHI)
 
-### 1. \`==\` (noqattiq tenglik) ishlatish
-Junior dasturchilar ko'pincha tiplarni avtomatik o'zgartiruvchi \`==\` operatorini ishlatishadi.
-* **Xato:** \`"" == 0\` -> \`true\`, \`[] == false\` -> \`true\`.
-* **Tuzatish:** Har doim \`===\` (qattiq tenglik) operatoridan foydalaning. U qiymatdan tashqari ma'lumot tipini ham tekshiradi: \`"" === 0\` -> \`false\`.
+### 1. \`==\` noqattiq tenglik ishlati
+🔴 **YOMON:** 
+\`\`\`javascript
+if (0 == false) { ... } // true, lekin xavfli 
+\`\`\`
+🟢 **YAXSHI:** (Qat'iy tenglik \`===\`)
+\`\`\`javascript
+if (0 === false) { ... } // false, tiplar ham solishtiriladi
+\`\`\`
 
-### 2. \`typeof null\` natijasiga ishonish
-* **Xato:** Obyektni tekshirish uchun \`if (typeof value === "object")\` deb yozish, agar \`value\` o'rniga \`null\` kelsa ham bu blok ishga tushib ketadi (chunki \`typeof null === "object"\`).
-* **Tuzatish:** Obyektni tekshirishda \`null\` emasligini ham qo'shib tekshiring:
-  \`\`\`javascript
-  if (value !== null && typeof value === "object") { ... }
-  \`\`\`
+### 2. \`typeof null\` ga ishonish
+🔴 **YOMON:** 
+\`\`\`javascript
+if (typeof obj === "object") { // null ham shu blokga tushib ketadi }
+\`\`\`
+🟢 **YAXSHI:** 
+\`\`\`javascript
+if (obj !== null && typeof obj === "object") { // endi xavfsiz }
+\`\`\`
 
-### 3. Loop ichida \`var\` ishlatish va asinxronlik
-* **Xato:** \`for (var i = 0; i < 3; i++) { setTimeout(...) }\` kodida \`i\` global yoki funksiya scope-da bo'lgani uchun hamma asinxron chaqiriqlar oxirgi \`3\` qiymatini oladi.
-* **Tuzatish:** Har doim \`let\` kalit so'zidan foydalaning. \`let\` blok scope-ga ega bo'lgani uchun har bir sikl bosqichida yangi o'zgaruvchi yaratadi.
+### 3. ASI va \`return\` xatosi
+🔴 **YOMON:**
+\`\`\`javascript
+return
+  { id: 1 }; // undefined
+\`\`\`
+🟢 **YAXSHI:**
+\`\`\`javascript
+return { 
+  id: 1 
+}; 
+\`\`\`
 
 ---
 
 ## 5. 💬 12 ta Intervyu Savollari
 
-### Junior (1–4)
-1. **Savol:** Nima uchun \`0.1 + 0.2 === 0.3\` ifodasi \`false\` qaytaradi?
-   * **Javob:** Kompyuterlar kasr sonlarni IEEE 754 standarti bo'yicha ikkilik sanoq tizimida saqlaydi. Ba'zi o'nlik kasrlar ikkilikda cheksiz davriy bo'lganligi sababli, yaxlitlashda xatolik yuzaga keladi va natija \`0.30000000000000004\` bo'ladi.
-2. **Savol:** JavaScript-da \`typeof null\` nima qaytaradi va nega?
-   * **Javob:** \`"object"\` qaytaradi. Bu til yaratuvchilarining ilk versiyadagi xatosi bo'lib, eski kodlar ishlamay qolmasligi uchun tuzatishlarsiz qoldirilgan.
-3. **Savol:** \`NaN === NaN\` ifodasi nima qaytaradi?
-   * **Javob:** \`false\` qaytaradi. JavaScript-da \`NaN\` o'z-o'ziga teng bo'lmagan yagona qiymatdir.
-4. **Savol:** Qiymat rostdan ham \`NaN\` ekanligini qanday qilib ishonchli aniqlash mumkin?
-   * **Javob:** \`Number.isNaN(value)\` metodi yoki \`Object.is(value, NaN)\` yordamida aniqlash mumkin.
-
-### Middle (5–8)
-5. **Savol:** \`null == undefined\` va \`null === undefined\` natijalari qanday farq qiladi?
-   * **Javob:** \`null == undefined\` -> \`true\` qaytaradi (chunki noqattiq tenglikda ular teng deb hisoblanadi). \`null === undefined\` -> \`false\` qaytaradi, chunki ularning ma'lumot tiplari har xil (\`Null\` va \`Undefined\`).
-6. **Savol:** Nima uchun \`[] + []\` bo'sh satr beradi, \`[] + {}\` esa \`"[object Object]"\` beradi?
-   * **Javob:** \`+\` operatori qo'llanilganda massivlar o'z-o'zidan satrga (\`""\`) aylanadi. Obyekt esa \`"[object Object]"\` satriga o'giriladi.
-7. **Savol:** Nega \`null >= 0\` ifodasi \`true\` bo'lsa-da, \`null > 0\` va \`null == 0\` ifodalari \`false\` bo'ladi?
-   * **Javob:** Relatsion operatorlar (\`>=\`, \`>\`) \`null\` qiymatini \`0\` soniga aylantiradi (shu sababli \`0 >= 0\` -> \`true\`). Lekin tenglik (\`==\`) tekshiruvi \`null\`ni raqamga aylantirmaydi, u faqat \`undefined\` bilan teng bo'la oladi.
-8. **Savol:** \`3 > 2 > 1\` ifodasining natijasi nima bo'ladi va nima uchun?
-   * **Javob:** Natija \`false\` bo'ladi. Avval \`3 > 2\` solishtirilib, \`true\` qiymatini beradi. Keyin \`true > 1\` baholanadi. \`true\` qiymati songa o'girilganda \`1\` bo'ladi va \`1 > 1\` ifodasi \`false\` qaytaradi.
-
-### Senior (9–12)
-9. **Savol:** Automatic Semicolon Insertion (ASI) nima va u qanday holatda kutilmagan bug (xatolik) hosil qilishi mumkin?
-   * **Javob:** ASI — JavaScript interpretatori tomonidan qatorlar oxiriga nuqtali vergullarni avtomatik qo'yish mexanizmi. Masalan, \`return\` so'zidan keyingi qatorda obyekt yoki ifoda yozilsa, ASI \`return\` oxiriga \`;\` qo'yadi va funksiya \`undefined\` qaytaradi.
-10. **Savol:** \`Object.is()\` metodining \`===\` operatoridan qanday farqlari bor?
-    * **Javob:** \`Object.is()\` asosan ikkita holatda \`===\` dan farq qiladi:
-      * \`Object.is(NaN, NaN)\` -> \`true\` (lekin \`NaN === NaN\` -> \`false\`)
-      * \`Object.is(-0, +0)\` -> \`false\` (lekin \`-0 === +0\` -> \`true\`)
-11. **Savol:** \`Array(5)\` orqali yaratilgan massiv va \`[undefined, undefined, undefined, undefined, undefined]\` o'rtasida qanday amaliy farq bor?
-    * **Javob:** \`Array(5)\` massivining uzunligi 5 ga teng bo'lsa-da, uning ichida haqiqiy indekslar mavjud emas (sparse array — bo'sh slotlar). \`map()\` yoki \`forEach()\` metodlari bo'sh slotlarni aylanib o'tadi va ularga ishlov bermaydi. Ikkinchi massivda esa indekslar mavjud va ularning qiymati \`undefined\` ga teng, bu metodlar ularni to'liq qayta ishlaydi.
-12. **Savol:** \`typeof\` operatori \`"function"\` qaytargan holda, nima uchun funksiyalar aslida alohida ma'lumot tipi emas?
-    * **Javob:** JavaScript-da funksiyalar chaqiriluvchi obyektlar (callable objects) hisoblanadi. Ular ichki \`[[Call]]\` metodiga ega bo'lgan maxsus obyektlardir. \`typeof\` ularni dasturchilarga qulay bo'lishi uchun alohida tip sifatida ko'rsatadi, biroq ular baribir obyekt sinfiga tegishlidir.
+1. **Savol:** \`0.1 + 0.2 === 0.3\` nima qaytaradi va nega?
+   * **Javob:** \`false\`. Ikkilik (binary) kasrlarda cheksizlik yuz bergani sababli IEEE-754 xatosi.
+2. **Savol:** \`typeof null\` nimaga teng?
+   * **Javob:** \`"object"\` qaytaradi, bu dastlabki JS versiyalaridagi qolgan bug.
+3. **Savol:** \`NaN === NaN\` natijasi nima?
+   * **Javob:** \`false\`. Uni tekshirish uchun \`Number.isNaN()\` kerak.
+4. **Savol:** \`[] + []\` natijasi nima?
+   * **Javob:** \`""\` (bo'sh satr).
+5. **Savol:** \`null >= 0\` va \`null == 0\` farqi?
+   * **Javob:** \`null >= 0\` true qaytaradi chunki relatsion operatorlar nullni 0 qiladi. \`null == 0\` esa false.
+6. **Savol:** \`[] + {}\` natijasi nima?
+   * **Javob:** \`"[object Object]"\`.
+7. **Savol:** ASI nima?
+   * **Javob:** Automatic Semicolon Insertion - JavaScript qator oxiriga o'zi nuqtali vergul qistiradi.
+8. **Savol:** \`3 > 2 > 1\` natijasi?
+   * **Javob:** \`false\`. (\`true > 1\` -> \`1 > 1\` -> \`false\`).
+9. **Savol:** Obyekt deb ishonishdan oldin null ni qanday ajratasiz?
+   * **Javob:** \`val !== null && typeof val === 'object'\`.
+10. **Savol:** \`Array(3)\` qanday massiv yaratadi?
+    * **Javob:** Bo'sh slotlarga ega massiv (sparse array). Metodlar ularni hisobga olmaydi.
+11. **Savol:** \`Object.is()\` nima?
+    * **Javob:** Bu yanada aniq tenglik tekshiruvi. Masalan \`Object.is(NaN, NaN)\` true beradi.
+12. **Savol:** Sof tiplarni solishtirish uchun qaysi vositalar kerak?
+    * **Javob:** \`===\`, \`Number.isNaN()\`, yoki maxsus tiplash metodlari.
 
 ---
 
 ## 6. 🛠️ Amaliy Topshiriqlar
 
-Bu bo'limda siz turli xil qiymatlarni solishtirish va ularni to'g'ri tekshirish ko'nikmalaringizni shakllantirasiz. Quyidagi diagrammada JavaScript-ning eng g'alati o'zgarishlarining (coercion) umumiy manzarasi keltirilgan:
-
 \`\`\`mermaid
 graph TD
-    A[JavaScript Tuzoqlari / Coercion] --> B[Massivlar va Obyektlar]
-    A --> C[NaN va typeof]
-    A --> D[null va 0 Taqqoslash]
+    A[JS Tuzoqlari] --> B[Coercion]
+    A --> C[NaN]
+    A --> D[ASI]
 
-    B --> B1["[] + [] ==> '' (Bo'sh satr)"]
-    B --> B2["[] + {} ==> '[object Object]'"]
-    B --> B3["{} + [] ==> '[object Object]'"]
-
-    C --> C1["NaN === NaN ==> false"]
-    C --> C2["typeof NaN ==> 'number'"]
-    C --> C3["Object.is(NaN, NaN) ==> true"]
-
-    D --> D1["null == 0 ==> false (Tenglik algoritmi)"]
-    D --> D2["null >= 0 ==> true (Taqqoslovda null -> 0 soniga o'tadi)"]
-    D --> D3["null > 0 ==> false"]
+    B --> B1["[] + [] -> ''"]
+    B --> B2["null >= 0 -> true"]
+    C --> C1["NaN === NaN -> false"]
+    D --> D1["return (newline) {} -> undefined"]
 \`\`\`
 
 ---
 
 ## 7. 📝 12 ta Mini Test
 
-Dars yakunida bilimingizni tekshirish uchun testlarni topshiring va noto'g'ri javoblardagi tushuntirishlarni yaxshilab o'rganing.
+Dars oxirida mini-testlarni tekshirib chiqing.
 
 ---
 
 ## 8. 🎯 Real Project Case Study
 
-### Elektron tijorat (E-commerce) savatidagi narxlarni aniq hisoblash
-Agar siz xaridlar savatidagi tovarlar yig'indisini hisoblayotgan bo'lsangiz, suzuvchi nuqta xatosi foydalanuvchiga noto'g'ri narx chiqishiga sabab bo'ladi:
-
+E-commerce loyihalarida summa:
 \`\`\`javascript
-// Muammoli kod:
-const items = [
-  { name: "Qalam", price: 0.10 },
-  { name: "O'chirg'ich", price: 0.20 }
-];
-
-const total = items.reduce((sum, item) => sum + item.price, 0);
-console.log(total); // 0.30000000000000004
-
-// YECHIM 1: Tiyinlar (cents) shaklida butun sonlar bilan ishlash
-// Narxlar sent yoki tiyinlarda (butun son) saqlanadi: 10 tiyin va 20 tiyin
-const totalInCents = items.reduce((sum, item) => sum + (item.price * 100), 0);
-const finalTotal = totalInCents / 100;
-console.log(finalTotal); // 0.3 (Mutlaqo aniq!)
-
-// YECHIM 2: Yaxlitlash metodini qo'llash (Decimal rounding)
-function roundTo(num, decimals = 2) {
-  return Number(Math.round(num + 'e' + decimals) + 'e-' + decimals);
-}
-console.log(roundTo(total)); // 0.3
+const price = 0.10;
+const tax = 0.20;
+// Yomon usul
+const total = price + tax; // 0.300000000004
+// Yaxshi usul (Cents / Tiyinlarda)
+const finalTotal = ((price * 100) + (tax * 100)) / 100; // 0.3
 \`\`\`
 
 ---
 
 ## 9. 🚀 Performance va Optimization
 
-* **Qattiq tenglikdan foydalaning (\`===\`):** Noqattiq tenglik (\`==\`) ishlatilganda brauzer JS dvigateli (V8 kabi) tiplarni o'zgartirish algoritmlarini (Abstract Equality Comparison) bajaradi. Bu esa qo'shimcha vaqt va resurs talab qiladi. Qattiq tenglikda esa tiplar mos kelmasa, tekshirish o'sha zahoti to'xtatiladi.
-* **Katta aniqlikdagi matematik hisoblar uchun kutubxonalar:** Agar loyihangiz moliya yoki kriptovalyutalar bilan bog'liq bo'lsa, JS-ning standart arifmetikasiga ishonmang. \`decimal.js\`, \`big.js\` yoki \`bignumber.js\` kabi maxsus kutubxonalardan foydalaning.
+* Tiplar tekshiruvini qattiq (\`===\`) qiling. V8 kabi dvigatellar buni oson optimallashtiradi.
+* Moliya bilan ishlayotganda JS standart arifmetikasiga ishonmang. Tiynlarda ishlang yoki decimal.js dan foydalaning.
 
 ---
 
 ## 10. 📌 Cheat Sheet
 
-| Amal / Ifoda | Natija | Sabab / Izoh | Tavsiya / Yechim |
-| :--- | :--- | :--- | :--- |
-| \`0.1 + 0.2\` | \`0.30000000000000004\` | IEEE 754 ikkilik aniqlik xatosi | \`Number(sum.toFixed(10))\` |
-| \`typeof null\` | \`"object"\` | Dastlabki JS versiyasidagi xato | \`val !== null && typeof val === 'object'\` |
-| \`NaN === NaN\` | \`false\` | Specifikatsiyaga ko'ra o'ziga teng emas | \`Number.isNaN(val)\` |
-| \`[] + []\` | \`""\` | Ikkita bo'sh massiv satrga o'tadi | Massivlarni \`concat\` qiling |
-| \`null >= 0\` | \`true\` | Taqqoslovda \`null\` qiymati \`0\` bo'ladi | Tipini alohida tekshiring |
-| \`return \\n { ... }\` | \`undefined\` | ASI avtomatik \`;\` qo'yib yuboradi | \`{\` qavsni return bilan bir qatorda yozing |
-| \`typeof NaN\` | \`"number"\` | NaN raqamli ma'lumot tipiga kiradi | \`Number.isNaN()\` bilan aniqlang |
+| Amal | Natija | Sababi |
+| :--- | :--- | :--- |
+| \`0.1 + 0.2\` | \`0.300...4\` | IEEE 754 float xatosi |
+| \`typeof null\` | \`"object"\` | Tarixiy bug |
+| \`NaN === NaN\` | \`false\` | O'ziga o'zi teng emas |
+| \`[] + []\` | \`""\` | Massivlar stringga o'tadi |
+| \`null >= 0\` | \`true\` | Null son sifatida 0 deb olinadi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Suzuvchi nuqtali sonlar yig'indisi",
-    "instruction": "JavaScript-da suzuvchi nuqtali sonlar bilan hisob-kitob qilishda aniqlik yo'qolishi mumkin (masalan, `0.1 + 0.2` natijasi `0.30000000000000004` bo'ladi). Berilgan ikkita `a` va `b` sonlarini qo'shib, natijani verguldan keyin ko'pi bilan 12 ta xona aniqligida yaxlitlab qaytaradigan `safeAdd(a, b)` funksiyasini yozing. Qaytarilgan qiymat son (number) tipida bo'lishi shart.",
-    "startingCode": "function safeAdd(a, b) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "a + b yig'indisini hisoblab, toFixed(12) metodini qo'llang va natijani Number() orqali yana songa o'giring.",
-    "test": "const sandbox = new Function(code + '; return safeAdd;');\nconst fn = sandbox();\nif (fn(0.1, 0.2) === 0.3 && fn(0.1, 0.7) === 0.8 && fn(1.000000000001, 2) === 3.000000000001) return null;\nreturn 'Natija suzuvchi nuqta aniqligi bo\\'yicha to\\'g\\'ri yaxlitlanmadi yoki qaytarilgan qiymat son tipi emas';"
-  },
-  {
-    "id": 2,
-    "title": "NaN qiymatini aniqlash",
-    "instruction": "JavaScript-da `NaN === NaN` ifodasi `false` qaytaradi. `Number.isNaN()` yoki `Object.is()` metodlaridan foydalanmasdan, berilgan `value` qiymati aynan `NaN` ekanligini aniqlovchi `isExactlyNaN(value)` funksiyasini yozing.",
-    "startingCode": "function isExactlyNaN(value) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "JavaScript-da faqat bitta qiymat o'z-o'ziga teng emas, u ham bo'lsa NaN. Ya'ni value !== value ifodasi faqat value NaN bo'lganda true beradi.",
-    "test": "const sandbox = new Function(code + '; return isExactlyNaN;');\nconst fn = sandbox();\nif (fn(NaN) === true && fn(123) === false && fn('hello') === false && fn(undefined) === false) return null;\nreturn 'Aynan NaN qiymati to\\'g\\'ri aniqlanmadi';"
-  },
-  {
-    "id": 3,
-    "title": "Obyekt kalitiga xavfsiz murojaat",
-    "instruction": "Obyektning ichki xususiyatlariga murojaat qilishda (masalan, `obj.user.profile.age`), agar yo'ldagi biror-bir xususiyat `null` yoki `undefined` bo'lsa, xatolik yuz beradi. Berilgan obyekt `obj` va nuqtalar bilan ajratilgan yo'l `path` (masalan, `'user.profile.age'`) bo'yicha xavfsiz qiymatni qaytaradigan `getSafeValue(obj, path)` funksiyasini yozing. Agar yo'l mavjud bo'lmasa yoki xatolik yuz berishi mumkin bo'lsa, `undefined` qaytaring.",
-    "startingCode": "function getSafeValue(obj, path) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "path parametrini split('.') orqali massivga ajrating va reduce yordamida har bir qadamdagi qiymat null/undefined emasligini tekshirib borib yakuniy qiymatni oling.",
-    "test": "const sandbox = new Function(code + '; return getSafeValue;');\nconst fn = sandbox();\nconst testObj = { a: { b: { c: 42 } }, x: null };\nif (fn(testObj, 'a.b.c') === 42 && fn(testObj, 'a.x.y') === undefined && fn(testObj, 'x.y') === undefined && fn(testObj, 'nonexistent') === undefined) return null;\nreturn 'Obyektdan xavfsiz qiymat olish funksiyasi to\\'g\\'ri ishlamadi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Suzuvchi nuqta qo'shilishi",
+      instruction: "`safeAdd(a, b)` a va b ni qo'shib uning `toFixed(12)` dan o'tkazilgan `Number` variantini qaytarsin.",
+      startingCode: "function safeAdd(a, b) {\n  \n}",
+      hint: "return Number((a+b).toFixed(12));",
+      test: "const fn = new Function(code + '; return safeAdd;')(); if(fn(0.1, 0.2)!==0.3) return 'Xato'; return null;"
+    },
+    {
+      id: 2,
+      title: "Haqiqiy NaN",
+      instruction: "`isExactlyNaN(val)` agar aynan NaN bo'lsa true qaytarsin (`Number.isNaN()` ni ishlatish mumkin).",
+      startingCode: "function isExactlyNaN(val) {\n  \n}",
+      hint: "return Number.isNaN(val);",
+      test: "const fn = new Function(code + '; return isExactlyNaN;')(); if(fn(NaN)!==true || fn('123')!==false) return 'Xato'; return null;"
+    },
+    {
+      id: 3,
+      title: "ASI dan qochish",
+      instruction: "Quyidagi `getObj()` da xato bor, `return` dan keyin obyekt tushib qolgan. Shuni tuzatingki u to'g'ri qaytarsin.",
+      startingCode: "function getObj() {\n  return \n  {\n    name: \"JS\"\n  };\n}",
+      hint: "return { ni bir qatorda yozing.",
+      test: "const fn = new Function(code + '; return getObj;')(); if(fn() && fn().name === 'JS') return null; return 'ASI xatosi saqlanib qoldi';"
+    },
+    {
+      id: 4,
+      title: "null tekshiruvi",
+      instruction: "`isObject(val)` yozing. U agar val obyekt bo'lsa va null bo'lmasa true qaytarsin.",
+      startingCode: "function isObject(val) {\n  \n}",
+      hint: "return val !== null && typeof val === 'object';",
+      test: "const fn = new Function(code + '; return isObject;')(); if(fn(null)!==false || fn({})!==true) return 'Xato'; return null;"
+    },
+    {
+      id: 5,
+      title: "[] + []",
+      instruction: "`concatArrays()` shunchaki `[] + []` ifodasi natijasini string sifatida qaytarsin.",
+      startingCode: "function concatArrays() {\n  \n}",
+      hint: "return [] + [];",
+      test: "const fn = new Function(code + '; return concatArrays;')(); if(fn()!=='') return 'Xato'; return null;"
+    },
+    {
+      id: 6,
+      title: "null >= 0 qizig'i",
+      instruction: "`nullCompare()` yozing, u massivda uchta natijani qaytarsin: `[null>0, null>=0, null==0]`.",
+      startingCode: "function nullCompare() {\n  \n}",
+      hint: "return [null>0, null>=0, null==0];",
+      test: "const fn = new Function(code + '; return nullCompare;')(); const res=fn(); if(res[0]!==false || res[1]!==true || res[2]!==false) return 'Xato'; return null;"
+    },
+    {
+      id: 7,
+      title: "3 > 2 > 1",
+      instruction: "`weirdCompare()` 3 > 2 > 1 ifodasi qiymatini qaytarsin.",
+      startingCode: "function weirdCompare() {\n  \n}",
+      hint: "return 3 > 2 > 1;",
+      test: "const fn = new Function(code + '; return weirdCompare;')(); if(fn()!==false) return 'Xato'; return null;"
+    },
+    {
+      id: 8,
+      title: "Sparse Array muammosi",
+      instruction: "`Array(3)` yaratib ichini to'ldirish kerak, toki map ishlasin. Buning uchun `Array(3).fill(0)` yordamida `[0,0,0]` qilib qaytaruvchi `getFilled()` yozing.",
+      startingCode: "function getFilled() {\n  \n}",
+      hint: "return Array(3).fill(0);",
+      test: "const fn = new Function(code + '; return getFilled;')(); const r = fn(); if(r.length!==3 || r[0]!==0) return 'Xato'; return null;"
+    },
+    {
+      id: 9,
+      title: "== va ===",
+      instruction: "`compareStrings(a, b)` yozing, `a==b` ni qaytarsin. Agar \"\" va 0 ni bersak true qaytishi kerak.",
+      startingCode: "function compareStrings(a, b) {\n  \n}",
+      hint: "return a == b;",
+      test: "const fn = new Function(code + '; return compareStrings;')(); if(fn(\"\", 0)!==true) return 'Xato'; return null;"
+    },
+    {
+      id: 10,
+      title: "Object.is ishlatilishi",
+      instruction: "`checkSame(a, b)` yozing, agar aynan bir xil (Object.is bo'yicha) bo'lsa true, aks holda false.",
+      startingCode: "function checkSame(a, b) {\n  \n}",
+      hint: "return Object.is(a, b);",
+      test: "const fn = new Function(code + '; return checkSame;')(); if(fn(NaN,NaN)!==true || fn(-0, 0)!==false) return 'Xato'; return null;"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "0.1 + 0.2 === 0.3 ifodasi nima qaytaradi va nega?",
-    "options": [
-      "true, chunki matematik hisob-kitoblar har doim to'g'ri bajariladi",
-      "false, chunki JavaScript sonlarni IEEE 754 standartida saqlaydi va natija 0.30000000000000004 bo'ladi",
-      "undefined, chunki bunday taqqoslash JavaScript-da taqiqlangan",
-      "NaN, chunki o'nlik sonlarni to'g'ridan-to'g'ri taqqoslab bo'lmaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "JavaScript sonlarni 64-bitli ikkilik formatda saqlagani sababli, ba'zi kasr sonlarni cheksiz davriy ko'rinishda ifodalashga to'g'ri keladi va bu hisob-kitobda kichik noaniqlik (0.30000000000000004) hosil qiladi."
-  },
-  {
-    "id": 2,
-    "question": "typeof null ifodasining natijasi nimaga teng?",
-    "options": [
-      "\"null\"",
-      "\"undefined\"",
-      "\"object\"",
-      "\"string\""
-    ],
-    "correctAnswer": 2,
-    "explanation": "typeof null natijasi \"object\" bo'lishi JavaScript-ning birinchi versiyalaridan qolgan tarixiy xato (bug) hisoblanadi, biroq orqaga moslikni saqlash uchun o'zgartirilmagan."
-  },
-  {
-    "id": 3,
-    "question": "JavaScript-da [] + [] (ikkita bo'sh massiv yig'indisi) nima qaytaradi?",
-    "options": [
-      "[] (yangi bo'sh massiv)",
-      "\"\" (bo'sh satr)",
-      "\"[object Object]\"",
-      "undefined"
-    ],
-    "correctAnswer": 1,
-    "explanation": "+ operatori massivlarni string (satr)ga aylantiradi. Bo'sh massiv esa bo'sh satrga (\"\") aylanadi va ikkita bo'sh satr yig'indisi bo'sh satrni beradi."
-  },
-  {
-    "id": 4,
-    "question": "[] + {} (bo'sh massiv va bo'sh obyekt yig'indisi) ifodasi nimani qaytaradi?",
-    "options": [
-      "\"[object Object]\"",
-      "0",
-      "NaN",
-      "\"{}\""
-    ],
-    "correctAnswer": 0,
-    "explanation": "Massiv bo'sh satrga (\"\") aylanadi. Obyekt esa \"[object Object]\" satriga aylanadi. Ikkalasi birlashganda (concatenation) \"[object Object]\" hosil bo'ladi."
-  },
-  {
-    "id": 5,
-    "question": "{} + [] ifodasi (oddiy expression sifatida baholanganda) nima qaytaradi?",
-    "options": [
-      "\"[object Object]\"",
-      "0",
-      "NaN",
-      "\"{}\""
-    ],
-    "correctAnswer": 0,
-    "explanation": "Agar {} ifodasi ifoda (expression) sifatida baholansa (masalan, console.log({} + []) ichida), u \"[object Object]\" ga teng bo'ladi, chunki u ham string coercion qilinadi."
-  },
-  {
-    "id": 6,
-    "question": "JavaScript-da NaN === NaN ifodasi nima qaytaradi?",
-    "options": [
-      "true",
-      "false",
-      "TypeError",
-      "undefined"
-    ],
-    "correctAnswer": 1,
-    "explanation": "NaN (Not-a-Number) JavaScript-da o'z-o'ziga teng bo'lmagan yagona qiymatdir. Uni tekshirish uchun Number.isNaN() yoki Object.is() ishlatiladi."
-  },
-  {
-    "id": 7,
-    "question": "null >= 0 va null == 0 taqqoslashlarining natijasi qanday bo'ladi?",
-    "options": [
-      "null >= 0 -> false, null == 0 -> true",
-      "null >= 0 -> true, null == 0 -> false",
-      "Ikkalasi ham true qaytaradi",
-      "Ikkalasi ham false qaytaradi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Taqqoslash operatorlari (>=, <=, >, <) null qiymatini 0 soniga o'giradi (shuning uchun 0 >= 0 true beradi). Tenglik operatori (==) esa null-ni faqat undefined bilan teng deb hisoblaydi, boshqa hech narsaga o'girmaydi (shuning uchun null == 0 false bo'ladi)."
-  },
-  {
-    "id": 8,
-    "question": "3 > 2 > 1 ifodasi qanday natija beradi?",
-    "options": [
-      "true",
-      "false",
-      "NaN",
-      "TypeError"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Taqqoslash chapdan o'ngga bajariladi. Avval 3 > 2 baholanib true beradi. So'ngra true > 1 baholanadi. true son ko'rinishida 1 ga teng bo'lgani uchun 1 > 1 ifodasi false natijasini qaytaradi."
-  },
-  {
-    "id": 9,
-    "question": "typeof NaN ifodasi nima qaytaradi?",
-    "options": [
-      "\"NaN\"",
-      "\"undefined\"",
-      "\"number\"",
-      "\"object\""
-    ],
-    "correctAnswer": 2,
-    "explanation": "Nomidan qat'i nazar (Not-a-Number), NaN JavaScript specifikatsiyasiga ko'ra raqamli ma'lumot tipi (numeric type) hisoblanadi."
-  },
-  {
-    "id": 10,
-    "question": "Quyidagi foo funksiyasi nimani qaytaradi?\n\nfunction foo() {\n  return\n  {\n    status: \"ok\"\n  };\n}",
-    "options": [
-      "{ status: \"ok\" }",
-      "undefined",
-      "null",
-      "SyntaxError"
-    ],
-    "correctAnswer": 1,
-    "explanation": "JavaScript-dagi Automatic Semicolon Insertion (ASI) qoidasiga ko'ra return so'zidan keyingi yangi qatorga avtomat ravishda nuqtali vergul (;) qo'yiladi. Natijada funksiya undefined qaytaradi va undan keyingi blok bajarilmaydi."
-  },
-  {
-    "id": 11,
-    "question": "Quyidagi tsikl ishga tushsa, konsolga nima chiqadi?\n\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
-    "options": [
-      "0, 1, 2 (alohida qatorlarda)",
-      "3, 3, 3 (alohida qatorlarda)",
-      "0, 0, 0 (alohida qatorlarda)",
-      "Hech narsa chiqmaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "var kalit so'zi blokli scope-ga ega emas, u funksiya yoki global scope-ga ega. setTimeout asinxron bo'lgani uchun, u ishga tushguncha tsikl tugab, i ning qiymati 3 ga yetib bo'lgan bo'ladi. Buni tuzatish uchun let ishlatish kerak."
-  },
-  {
-    "id": 12,
-    "question": "Array(3).map(x => 1) ifodasi bajarilganda qanday natija olinadi?",
-    "options": [
-      "[1, 1, 1]",
-      "[undefined, undefined, undefined]",
-      "[empty × 3] (bo'sh joyli massiv o'zgarishsiz qoladi)",
-      "[NaN, NaN, NaN]"
-    ],
-    "correctAnswer": 2,
-    "explanation": "Array(3) faqat massiv uzunligini (length: 3) belgilaydi, ammo uning ichi bo'sh slotlardan iborat bo'ladi (sparse array). map() va forEach() kabi metodlar bo'sh slotlarni aylanib o'tadi va ularni o'zgartirmaydi."
-  }
-]
-
+    {
+      id: 1,
+      question: "0.1 + 0.2 nima uchun 0.3 emas?",
+      options: [
+        "Ikkilik sanoq tizimidagi (IEEE 754) float xatosi tufayli",
+        "JS xato qilingani uchun",
+        "Bu xususiyat emas, brauzer buggi",
+        "Faqat 0.2+0.1 ishlagani uchun"
+      ],
+      correctAnswer: 0,
+      explanation: "Kompyuter o'nlik kasrlarni ikkilikka o'tkazganda aniqlikni yo'qotadi."
+    },
+    {
+      id: 2,
+      question: "typeof null natijasi?",
+      options: ["'null'", "'undefined'", "'object'", "Error"],
+      correctAnswer: 2,
+      explanation: "Tarixiy bug sababli 'object' qaytadi."
+    },
+    {
+      id: 3,
+      question: "NaN === NaN ?",
+      options: ["true", "false", "ReferenceError", "undefined"],
+      correctAnswer: 1,
+      explanation: "NaN o'ziga o'zi teng emas."
+    },
+    {
+      id: 4,
+      question: "[] + [] ?",
+      options: ["[]", "'[object Object]'", "'' (bo'sh satr)", "TypeError"],
+      correctAnswer: 2,
+      explanation: "Ikkita massiv ham bo'sh stringga o'tadi va qo'shiladi."
+    },
+    {
+      id: 5,
+      question: "[] + {} ?",
+      options: ["'['", "''", "'[object Object]'", "TypeError"],
+      correctAnswer: 2,
+      explanation: "Obyekt '[object Object]' ga o'girilib, qo'shiladi."
+    },
+    {
+      id: 6,
+      question: "null >= 0 va null == 0 mos ravishda qanday?",
+      options: ["true va true", "true va false", "false va true", "false va false"],
+      correctAnswer: 1,
+      explanation: ">= operatori null ni 0 qilib ko'radi. == esa faqat undefined bilan tenglaydi."
+    },
+    {
+      id: 7,
+      question: "3 > 2 > 1 qanday ishlaydi?",
+      options: ["true", "false", "Error", "NaN"],
+      correctAnswer: 1,
+      explanation: "3>2 (true). Keyin true>1, bu 1>1 bo'ladi (false)."
+    },
+    {
+      id: 8,
+      question: "ASI nima?",
+      options: [
+        "Advanced Semicolon Integration",
+        "Automatic Semicolon Insertion",
+        "Abstract String Interface",
+        "Array System Index"
+      ],
+      correctAnswer: 1,
+      explanation: "O'zidan o'zi qator oxiriga ';' nuqtali vergul qo'yish."
+    },
+    {
+      id: 9,
+      question: "Object.is(NaN, NaN) natijasi?",
+      options: ["false", "true", "undefined", "Null"],
+      correctAnswer: 1,
+      explanation: "Object.is === dan aniqroq tekshiradi, shu jumladan NaN larni ham."
+    },
+    {
+      id: 10,
+      question: "Array(5) nega map ni to'g'ri ishlata olmaydi?",
+      options: [
+        "JS arrayni qo'llab quvvatlamaydi",
+        "Massiv uzunligi 5, lekin ichi ochiq (sparse) qolib ketgan",
+        "Array is not defined",
+        "Bu ob'yekt"
+      ],
+      correctAnswer: 1,
+      explanation: "Bo'sh slotlarga tsikl va map ta'sir qilmaydi."
+    },
+    {
+      id: 11,
+      question: "Nega typeof array 'object'?",
+      options: [
+        "Array bu obyekt hisoblanadi (kalitlari sonli)",
+        "Bu xato",
+        "String qilish imkoni yo'q",
+        "Obyekt bo'lmagani uchun"
+      ],
+      correctAnswer: 0,
+      explanation: "JS-da array - bu Array prototype idan nasl olgan obyekt."
+    },
+    {
+      id: 12,
+      question: "E-commerce do'konda pul summasini qanday hisoblash afzal?",
+      options: [
+        "Faqat Float da saqlash",
+        "Stringda saqlash",
+        "Yuz baravar ko'paytirib butun son (cents) qilib saqlash",
+        "Hexadecimalda saqlash"
+      ],
+      correctAnswer: 2,
+      explanation: "Butun sonlar tiynlarda bo'lsa suzuvchi nuqta muammosi bo'lmaydi."
+    }
+  ]
 };

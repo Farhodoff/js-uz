@@ -299,6 +299,62 @@ Template literals zamonaviy dvigatellarda juda yaxshi optimallashtirilgan bo'lsa
     "startingCode": "function renderProfile(user, role) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "Ko'p satrli matn hosil qilish uchun backtickdan foydalaning va shablon ichida tegishli o'zgaruvchilarni joylashtiring: `${user.name}`, `${user.age}` va `${role}`.",
     "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return renderProfile;');\nconst fn = sandbox();\nconst res = fn({ name: 'Jasur', age: 25 }, 'Developer');\nconst clean = (str) => str.replace(/\\s+/g, '');\nconst expectedClean = clean('<div class=\"profile\"><h2>Name:Jasur</h2><p>Age:25</p><span class=\"role\">Developer</span></div>');\nif (clean(res) === expectedClean) return null;\nreturn 'renderProfile qaytargan HTML to\\'g\\'ri formatda emas';"
+  },
+  {
+    "id": 4,
+    "title": "Yoshni hisoblash",
+    "instruction": "`getAgeMessage(name, birthYear)` yozing, u 2026-yilda nechaga kirganligini chiqaradi. Masalan: `'Ali joriy yilda 36 yoshda.'` deb template literal (backtick) qaytarsin.",
+    "startingCode": "function getAgeMessage(name, birthYear) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Yilni to'g'ridan-to'g'ri ifoda orqali ${2026 - birthYear} qilib hisoblang.",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return getAgeMessage;');\nconst fn = sandbox();\nif (fn('Ali', 1990) !== 'Ali joriy yilda 36 yoshda.') return 'Yoshi yoki matn noto\\'g\\'ri hisoblandi';\nreturn null;"
+  },
+  {
+    "id": 5,
+    "title": "Ko'p qatorli oddiy matn",
+    "instruction": "Uch qatorli matnni (line1, line2, line3 qabul qiladi) bitta ko'p qatorli stringda qaytaruvchi funksiya tuzing.",
+    "startingCode": "function multiLine(line1, line2, line3) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Template literal ichida \nEnter/Return ni bosing.",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return multiLine;');\nconst fn = sandbox();\nconst res = fn('a','b','c');\nif (res.split('\\n').length !== 3) return 'Uch qator qilib qaytarish kerak';\nreturn null;"
+  },
+  {
+    "id": 6,
+    "title": "Mantiqiy ifoda",
+    "instruction": "Ism va baho (`score`) qabul qilib, agar 50 dan baland bo'lsa `'Otdi'`, aks holda `'Yiqildi'` ni template literal ichida xabar sifatida qaytaring: `'Olim imtihondan Otdi'`. Ternary ishlatib interpolatsiya qiling.",
+    "startingCode": "function examResult(name, score) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`${name} imtihondan ${score > 50 ? 'Otdi' : 'Yiqildi'}`",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return examResult;');\nconst fn = sandbox();\nif (fn('Ali', 60) !== 'Ali imtihondan Otdi' || fn('Vali', 40) !== 'Vali imtihondan Yiqildi') return 'Natija no\\'to\\'gri';\nreturn null;"
+  },
+  {
+    "id": 7,
+    "title": "Massiv elementlarini birlashtirish",
+    "instruction": "Do'kon nomi va mevalar massivi (`fruits`) berilgan. Funksiya quyidagini qaytarsin: `'Do'kon: Makro, mevalar: olma, anor'`. Massivni `.join(', ')` bilan chiqaring.",
+    "startingCode": "function storeFruits(storeName, fruits) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`${storeName}` va `${fruits.join(', ')}`",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return storeFruits;');\nconst fn = sandbox();\nif (fn('Makro', ['olma', 'anor']) !== \"Do'kon: Makro, mevalar: olma, anor\") return 'Massivni birlashtirish xato';\nreturn null;"
+  },
+  {
+    "id": 8,
+    "title": "Matn ichida qo'shtirnoq va bittalik tirnoq",
+    "instruction": "Quyidagi matnni Template Literal bilan qaytaradigan funksiya yozing: `Ali aytdi: \"Men bugun 'JS' o'rgandim!\"`. Echib o'tish (backslash) ishlatilmasin.",
+    "startingCode": "function createQuote() {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Barcha qo'shtirnoq va tirnoqlarni orqasida shunchaki kiritib qo'ying: `Ali aytdi: \"Men...\"`",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return createQuote;');\nconst fn = sandbox();\nif (fn() !== 'Ali aytdi: \"Men bugun \\'JS\\' o\\'rgandim!\"') return 'Tirnoqlar bilan to\\'g\\'ri yozilmadi';\nreturn null;"
+  },
+  {
+    "id": 9,
+    "title": "Funksiyani ifodada ishlatish",
+    "instruction": "`getGreeting(name)` funksiyasi bor deb tasavvur qiling. Siz `welcomeUser(name)` funksiyasi ichida uni shablon sifatida chaqirishingiz kerak: `'Xabar: ${getGreeting(name)}'`. Biz getGreeting('Ali') -> 'Salom Ali' tarzida ishlashini ta'minlaymiz.",
+    "startingCode": "function getGreeting(name) { return 'Salom ' + name; }\nfunction welcomeUser(name) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`${getGreeting(name)}`",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nconst sandbox = new Function(code + '; return welcomeUser;');\nconst fn = sandbox();\nif (fn('Ali') !== 'Xabar: Salom Ali') return 'Funksiya to\\'g\\'ri chaqirilmadi';\nreturn null;"
+  },
+  {
+    "id": 10,
+    "title": "Tagged Template (qo'shimcha malaka)",
+    "instruction": "Bir string template ni `highlight` deb nomlangan funksiya orqali tag qiladigan kod qoldiring. Bu shunchaki `highlight\`Mening ismim ${name}\`` qaytarsin.",
+    "startingCode": "function makeTagged(name) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Faqat string qaytaring: `return highlight\\`Mening ismim ${name}\\`` (Bu shunchaki sintaksisni yozishni mashq qilish)",
+    "test": "if (!code.includes('`')) return 'Template literal (backtick) ishlatilishi shart!';\nif (!code.includes('highlight`')) return 'Tagged template ishlatilmadi';\nreturn null;"
   }
 ]
 ,

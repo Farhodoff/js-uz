@@ -5,65 +5,49 @@ export const functions = {
   theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Funksiya va Scope nima?
-* **Funksiya (Function):** Bu dasturning biror-bir muayyan vazifani bajarishga mo'ljallangan, qayta-qayta ishlatilishi mumkin bo'lgan kod blokidir. Siz unga ma'lumot uzatasiz (argumentlar), u ma'lumotlarni qayta ishlaydi va natijani qaytaradi (return).
-* **Scope (Qamrov doirasi):** Bu o'zgaruvchilar va funksiyalarning koddagi "ko'rinish" yoki ularga kirish huquqining doirasidir. Ya'ni, o'zgaruvchini qayerda e'lon qilganingizga qarab, uni kodning qaysi qismlarida ishlatish mumkinligi aniqlanadi.
+* **Funksiya (Function):** Bu dasturning biror-bir muayyan vazifani bajarishga mo'ljallangan, qayta-qayta ishlatilishi mumkin bo'lgan kod blokidir.
+* **Scope (Qamrov doirasi):** Bu o'zgaruvchilar va funksiyalarning koddagi "ko'rinish" yoki ularga kirish huquqining doirasidir.
 
 ### Real hayotiy o'xshatish
 Tasavvur qiling, sizda **oshxona va taom tayyorlash mashinasi** bor:
-* **Funksiya:** Bu mikser yoki oshxona kombaynidir. Siz unga **masalliqlarni solasiz** (parametrlar/argumentlar), u ularni **aralashtiradi** (kod bajarilishi) va sizga **sharbatsiz tayyor mahsulotni qaytaradi** (return).
+* **Funksiya:** Bu mikser. Siz unga masalliqlarni solasiz (parametrlar), u ularni aralashtiradi (kod bajarilishi) va sizga tayyor mahsulotni qaytaradi (return).
 * **Scope (Global va Local):** 
-  * **Global Scope:** Sizning butun uyingiz. Uy ichidagi muzlatgichdagi mevalarni xohlagan xonangizda yoki mikser ichida ishlata olasiz.
-  * **Local Scope (Oshxona/Mikser ichi):** Mikserning ichidagi pichoqlar yoki mikser idishiga solingan suv faqat o'sha mikser ichida mavjud. Siz mehmonxonada turib mikser ichidagi suvni to'g'ridan-to'g'ri ololmaysiz. Mikser yopilib, ishini tugatgandan so'ng u yerdagi lokal narsalar yo'qoladi.
+  * **Global Scope:** Sizning butun uyingiz. 
+  * **Local Scope (Mikser ichi):** Mikserning ichidagi pichoqlar faqat o'sha mikser ichida mavjud.
 
 ---
 
 ## 2. 💻 Real Kod Misollari
 
-### 1. Basic Example (Oddiy Funksiya e'loni va return)
+### 1. Basic Example (Oddiy Funksiya e'loni)
 \`\`\`javascript
-// Funksiya e'lon qilish (Function Declaration)
 function calculateArea(width, height) {
-  // width va height - parametrlar
-  const area = width * height; // lokal o'zgaruvchi
-  return area; // natijani qaytarish
+  const area = width * height;
+  return area; 
 }
-
-// Funksiyani chaqirish va argumentlar uzatish
-const room1 = calculateArea(5, 4); // 5 va 4 - argumentlar
-console.log(room1); // 20
+console.log(calculateArea(5, 4)); // 20
 \`\`\`
 
-### 2. Intermediate Example (Scope farqi va Function Expression)
-Global va Local scope o'rtasidagi bog'liqlik hamda funksiyani o'zgaruvchiga yuklash:
+### 2. Intermediate Example (Scope farqi)
 \`\`\`javascript
-const globalName = "Sardor"; // Global o'zgaruvchi
+const globalName = "Sardor"; 
 
-// Function Expression (Funksiya ifodasi)
 const introduce = function() {
-  const localRole = "Dasturchi"; // Lokal o'zgaruvchi
-  
+  const localRole = "Dasturchi"; 
   console.log(\`Mening ismim \${globalName}. Men \${localRole}man.\`);
 };
 
 introduce(); // "Mening ismim Sardor. Men Dasturchiman."
-// console.log(localRole); // ReferenceError: localRole is not defined (chunki u lokal scope-da)
+// console.log(localRole); // ReferenceError
 \`\`\`
 
-### 3. Advanced Example (Arrow Function, Default Parameters, Rest Parameter)
-Zamonaviy JavaScript (ES6+) imkoniyatlari:
+### 3. Advanced Example (Arrow Function, Rest Parameter)
 \`\`\`javascript
-// Default parameters (standart qiymat) va Arrow function (ko'rsatkichli funksiya)
 const greet = (name = "Mehmon") => \`Salom, \${name}!\`;
-console.log(greet()); // "Salom, Mehmon!"
 console.log(greet("Lobar")); // "Salom, Lobar!"
 
-// Rest Parameter (...args) - istalgancha argumentni massiv shaklida qabul qilish
-const sumAll = (...numbers) => {
-  return numbers.reduce((total, num) => total + num, 0);
-};
-
+const sumAll = (...numbers) => numbers.reduce((a, b) => a + b, 0);
 console.log(sumAll(10, 20, 30)); // 60
-console.log(sumAll(1, 2, 3, 4, 5)); // 15
 \`\`\`
 
 ---
@@ -71,21 +55,16 @@ console.log(sumAll(1, 2, 3, 4, 5)); // 15
 ## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
 
 ### Execution Context va Call Stack
-JavaScript dvigateli funksiyalarni bajarishda quyidagi bosqichlardan o'tadi:
-1. **Creation Phase (Yaratilish bosqichi):** Dastur ishga tushganda yoki funksiya chaqirilganda, yangi **Execution Context** (Bajarilish muhiti) yaratiladi. JavaScript dvigateli o'zgaruvchilar va funksiyalarni aniqlab, xotiradan joy ajratadi (bu jarayon **Hoisting** deb ataladi).
-2. **Execution Phase (Bajarilish bosqichi):** Kod satrma-satr bajariladi, o'zgaruvchilarga qiymat yuklanadi va funksiya ichidagi amallar bajariladi.
-
-Funksiya chaqirilganda, u **Call Stack** (chaqiriqlar to'plami) tepasiga joylashtiriladi. Funksiya bajarilib, \`return\` kalit so'zi bilan natija qaytargach, u stack-dan olib tashlanadi (pop) va nazorat uni chaqirgan kodga qaytadi.
-
-> [!IMPORTANT]
-> \`let\` va \`const\` yordamida e'lon qilingan o'zgaruvchilar **Block Scope** (blok qamrovi) ga ega bo'lib, \`{}\` qavslar ichida yopiq bo'ladi. \`var\` esa **Function Scope** ga ega bo'lib, blok qavslarni chetlab o'tadi, lekin funksiya ichida cheklanadi.
+1. **Creation Phase:** Funksiya chaqirilganda, yangi Execution Context yaratiladi. O'zgaruvchilar xotiradan joy oladi (Hoisting).
+2. **Execution Phase:** Kod satrma-satr bajariladi.
+Funksiya chaqirilganda u **Call Stack** ga yuklanadi va tugagach, undan olib tashlanadi (pop).
 
 ---
 
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+## 4. ❌ Ko'p Uchraydigan Xatolar (YOMON / YAXSHI)
 
-### 1. \`return\` yozishni unutish yoki noto'g'ri joylashtirish
-#### Xato:
+### 1. \`return\` yozishni unutish
+🔴 **YOMON:** 
 \`\`\`javascript
 function double(num) {
   const result = num * 2;
@@ -93,7 +72,7 @@ function double(num) {
 }
 console.log(double(5)); // undefined
 \`\`\`
-#### Tuzatish:
+🟢 **YAXSHI:**
 \`\`\`javascript
 function double(num) {
   return num * 2;
@@ -101,412 +80,306 @@ function double(num) {
 console.log(double(5)); // 10
 \`\`\`
 
-### 2. Blok va Lokal scope o'zgaruvchilarini tashqaridan chaqirish
-#### Xato:
-\`\`\`javascript
-if (true) {
-  let blockVariable = "Faqat shu blokda";
-}
-console.log(blockVariable); // ReferenceError
-\`\`\`
-#### Tuzatish:
-O'zgaruvchi qayerda ko'rinishi kerak bo'lsa, o'sha doirada (scope) yoki undan yuqoriroqda e'lon qiling:
-\`\`\`javascript
-let blockVariable;
-if (true) {
-  blockVariable = "Qiymat o'zgartirildi";
-}
-console.log(blockVariable); // "Qiymat o'zgartirildi"
-\`\`\`
-
-### 3. Parametr va Argumentlarni chalkashtirish
-* **Parametr:** Funksiya e'lon qilinayotganda qavs ichida yoziladigan o'zgaruvchilar (masalan: \`function add(a, b)\` dagi \`a\` va \`b\`).
-* **Argument:** Funksiya chaqirilganda parametrlar o'rniga uzatiladigan aniq qiymatlar (masalan: \`add(5, 10)\` dagi \`5\` va \`10\`).
+### 2. Parametr va Argumentlarni chalkashtirish
+🔴 **YOMON:** (Tushunchani chalkashtirish)
+Odamlar ko'pincha "argument" deb funksiya e'lonidagi o'zgaruvchilarni aytishadi.
+🟢 **YAXSHI:**
+* **Parametr:** Funksiya e'lonidagi o'zgaruvchilar \`function add(a, b)\`.
+* **Argument:** Funksiyani chaqirishda berilgan aniq qiymatlar \`add(5, 10)\`.
 
 ---
 
 ## 5. 💬 12 ta Intervyu Savollari
 
-### Junior
-1. **Savol:** Function Declaration va Function Expression farqi nimada?
-   * **Javob:** Function Declaration hoisting bo'ladi (uni e'londan oldin chaqirsa bo'ladi). Function Expression esa o'zgaruvchiga yuklanadi va hoisting bo'lmaydi.
-2. **Savol:** Funksiyada default parametr nima va u qachon ishlatiladi?
-   * **Javob:** Funksiya chaqirilganda argument berilmasa yoki \`undefined\` bo'lsa, parametrga avtomatik biriktiriladigan qiymatdir.
-3. **Savol:** Funksiya ichida \`return\` kalit so'zidan keyin yozilgan kodlar ishlaydimi?
-   * **Javob:** Yo'q, \`return\` funksiya bajarilishini darhol to'xtatadi va boshqa kodlarga o'tmaydi.
-4. **Savol:** Global scope va Local scope nima?
-   * **Javob:** Global scope - koddagi har qanday joydan kirish mumkin bo'lgan o'zgaruvchilar doirasi. Local scope esa faqat ma'lum bir funksiya yoki blok ichida ko'rinadigan doiradir.
-
-### Middle
-5. **Savol:** Rest parametr (\`...args\`) nima va u \`arguments\` obyektidan nimasi bilan farq qiladi?
-   * **Javob:** Rest parameter haqiqiy massiv bo'lib, unga barcha massiv metodlarini (map, filter) qo'llash mumkin. \`arguments\` esa massivsimon obyekt bo'lib, massiv metodlariga ega emas va arrow funksiyalarda mavjud emas.
-6. **Savol:** Shadowing (Soya solish) hodisasi nima?
-   * **Javob:** Ichki (lokal) qamrovda e'lon qilingan o'zgaruvchining tashqi (global) qamrovdagi bir xil nomli o'zgaruvchini to'sib qo'yishidir.
-7. **Savol:** Arrow funksiyaning an'anaviy funksiyalardan asosiy farqlari nimalar?
-   * **Javob:** Arrow funksiyalar o'zining \`this\` va \`arguments\` obyektiga ega emas. Shuningdek ularni \`new\` kalit so'zi orqali constructor sifatida ishlatib bo'lmaydi.
-8. **Savol:** Block Scope (\`let\`/\`const\`) va Function Scope (\`var\`) farqini tushuntiring.
-   * **Javob:** \`let\` va \`const\` faqat jingalak qavslar \`{}\` ichida yashaydi. \`var\` esa faqat funksiya bilan chegaralanadi, oddiy \`if\` yoki \`for\` bloklaridan tashqariga chiqib keta oladi.
-
-### Senior
-9. **Savol:** JavaScript-da IIFE (Immediately Invoked Function Expression) nima va uning zamonaviy koddagi o'rni qanday?
-   * **Javob:** IIFE e'lon qilingan zahoti darhol ishga tushadigan funksiyadir. Ilgari u global scope-ni ifloslantirmaslik va xususiy qamrov yaratish uchun ishlatilgan. Hozirgi kunda bu vazifani asosan ES modullar va blok qamrovlar (\`let\`/\`const\`) bajaradi.
-10. **Savol:** Callback funksiya nima va u qanday ishlaydi?
-    * **Javob:** Callback - parametr sifatida boshqa funksiyaga uzatib yuboriladigan va ma'lum bir amal yoki voqeadan keyin chaqiriladigan funksiyadir.
-11. **Savol:** Pure Function (Sof funksiya) nima?
-    * **Javob:** Bir xil argumentlar berilganda har doim bir xil natija qaytaradigan va tashqi muhitga hech qanday nojo'ya ta'sir (side effect) ko'rsatmaydigan funksiyadir.
-12. **Savol:** Call Stack to'lib qolishi (Stack Overflow) qanday yuz beradi?
-    * **Javob:** Rekursiv funksiya (o'z-o'zini chaqiruvchi) to'xtash shartisiz cheksiz marta chaqirilganda, Call Stack to'lib ketadi va dastur xatolik beradi (\`Maximum call stack size exceeded\`).
+1. **Savol:** Function Declaration va Function Expression farqi?
+   * **Javob:** Declaration hoisting bo'ladi, Expression esa o'zgaruvchiga yuklanadi va hoisting bo'lmaydi.
+2. **Savol:** Default parametr nima?
+   * **Javob:** Argument berilmaganda ishlatiladigan standart qiymat.
+3. **Savol:** \`return\` dan keyingi kod ishlaydimi?
+   * **Javob:** Yo'q, u funksiyani darhol to'xtatadi.
+4. **Savol:** Global va Local scope nima?
+   * **Javob:** Global barchaga ko'rinadi, Local faqat funksiya yoki blok ichida.
+5. **Savol:** Rest parametr (\`...args\`) va \`arguments\` farqi?
+   * **Javob:** Rest - haqiqiy massiv, \`arguments\` esa massivsimon obyekt (arrow funksiyalarda yo'q).
+6. **Savol:** Shadowing nima?
+   * **Javob:** Lokal o'zgaruvchi global o'zgaruvchi bilan bir xil nomda bo'lib uni to'sib qo'yishi.
+7. **Savol:** Arrow funksiyaning xususiyatlari?
+   * **Javob:** O'zining \`this\` va \`arguments\`iga ega emas.
+8. **Savol:** Block Scope va Function Scope farqi?
+   * **Javob:** \`let\`/\`const\` blok ichida yashaydi, \`var\` funksiya ichida.
+9. **Savol:** IIFE nima?
+   * **Javob:** Darhol ishga tushuvchi funksiya bo'lib, lokal scope yaratish uchun xizmat qiladi.
+10. **Savol:** Callback funksiya nima?
+    * **Javob:** Boshqa funksiyaga argument sifatida beriladigan funksiya.
+11. **Savol:** Pure Function nima?
+    * **Javob:** Bir xil argumentga doim bir xil natija qaytaradigan va nojo'ya ta'siri yo'q funksiya.
+12. **Savol:** Stack Overflow nima?
+    * **Javob:** Call stack to'lib ketishi, ko'pincha to'xtovsiz rekursiya sababli.
 
 ---
 
 ## 6. 🛠️ Amaliy Topshiriqlar
 
-Bu bo'limda siz funksiyalarni amalda qo'llashni o'rganasiz. Quyidagi chizma funksiya chaqirilganda argumentlarning parametrlar bilan mos kelishi, lokal o'zgaruvchilar va natijaning qaytarilish zanjirini ko'rsatadi:
-
 \`\`\`mermaid
 graph TD
-    Caller["Chaqiruvchi Kontekst (Caller Context)"] -->|Argumentlar: C = 20| FEC["Funksiya Execution Context"]
+    Caller["Chaqiruvchi Kontekst"] -->|C = 20| FEC["Funksiya Execution Context"]
     subgraph FEC ["Funksiya Execution Context"]
-        Params["Parametrlar (Parameters): celsius = 20"]
-        LocalVars["Lokal Scope: let fahrenheit = celsius * 9/5 + 32"]
-        ReturnStmt["Natija qaytarish: return fahrenheit"]
+        Params["celsius = 20"]
+        LocalVars["fahrenheit = celsius * 9/5 + 32"]
+        ReturnStmt["return fahrenheit"]
         Params --> LocalVars
         LocalVars --> ReturnStmt
     end
-    ReturnStmt -->|Qaytgan qiymat: 68| Caller
+    ReturnStmt -->|68| Caller
 \`\`\`
 
 ---
 
 ## 7. 📝 12 ta Mini Test
 
-Bilimingizni sinash uchun \`functions_quizzes.json\` faylidagi 12 ta test savollarini javoblang. U yerda scope, parametrlar, arrow funksiyalar va return qiymatlari bo'yicha muhim savollar joy olgan.
+Dars oxiridagi testlarni yechishni unutmang.
 
 ---
 
 ## 8. 🎯 Real Project Case Study
 
-### Savdo Savatchasi Hisoblagichi (Shopping Cart Calculator)
-Haqiqiy loyihalarda mahsulotlar savatchasini hisoblash, chegirmalar va soliqlarni qo'llash uchun moslashuvchan funksiyalardan foydalaniladi. Quyidagi kodda biz funksiyalar yordamida savatchadagi umumiy summani hisoblaymiz:
-
+### Savdo Savatchasi
 \`\`\`javascript
-// Har bir mahsulot summasini hisoblovchi funksiya
-const calculateItemTotal = (price, quantity = 1) => price * quantity;
+const calculateItem = (price, qty = 1) => price * qty;
 
-// Savatchadagi umumiy summani hisoblovchi asosiy funksiya
-function calculateCartTotal(cartItems, discountPercent = 0, taxPercent = 12) {
-  let subtotal = 0;
-
-  // Har bir mahsulot ustidan aylanib chiqamiz
-  for (const item of cartItems) {
-    subtotal += calculateItemTotal(item.price, item.quantity);
+function getCartTotal(items) {
+  let total = 0;
+  for (const item of items) {
+    total += calculateItem(item.price, item.qty);
   }
-
-  // Chegirmani hisoblaymiz
-  const discountAmount = subtotal * (discountPercent / 100);
-  const totalAfterDiscount = subtotal - discountAmount;
-
-  // Soliqni hisoblaymiz
-  const taxAmount = totalAfterDiscount * (taxPercent / 100);
-  const finalTotal = totalAfterDiscount + taxAmount;
-
-  return {
-    subtotal: subtotal,
-    discountAmount: discountAmount,
-    taxAmount: taxAmount,
-    finalTotal: finalTotal
-  };
+  return total;
 }
-
-// Chaqirishga misol:
-const myCart = [
-  { price: 15000, quantity: 2 }, // 30000 UZS
-  { price: 50000, quantity: 1 }  // 50000 UZS
-];
-
-const bill = calculateCartTotal(myCart, 10, 12); // 10% chegirma, 12% soliq
-console.log(bill);
-/*
-Natija:
-{
-  subtotal: 80000,
-  discountAmount: 8000,
-  taxAmount: 8640,
-  finalTotal: 80640
-}
-*/
 \`\`\`
 
 ---
 
 ## 9. 🚀 Performance va Optimization
 
-* **Funksiyalarni sikl (loop) ichida yaratmang:** Sikl har safar aylanganda yangi funksiya obyekti yaratilishi xotira sarfini oshiradi. Funksiyani sikldan tashqarida e'lon qilib, ichida faqat chaqirish tavsiya etiladi.
-* **Sof funksiyalar (Pure Functions) yozishga harakat qiling:** Sof funksiyalarni keshlashtirish (memoization) oson bo'ladi va ular dasturdagi boshqa o'zgaruvchilarni kutilmaganda o'zgartirib yubormaydi.
-* **Kichik funksiyalar yarating:** Yagona mas'uliyat tamoyiliga (Single Responsibility Principle) muvofiq, bitta funksiya faqat bitta ishni mukammal darajada bajarishi lozim. Bu kodni testlash va o'qishni osonlashtiradi.
+* Funksiyalarni sikl ichida yaratmang.
+* Sof (pure) funksiyalar yarating.
+* Yagona mas'uliyat tamoyiliga (SRP) qat'iy amal qiling.
 
 ---
 
 ## 10. 📌 Cheat Sheet
 
-| Funksiya turi | Sintaksis | Hoisting | \`this\` bog'lanishi | Qachon ishlatiladi |
-| :--- | :--- | :--- | :--- | :--- |
-| **Function Declaration** | \`function foo() {}\` | Ha | Dinamik (chaqirilgan joyga qarab) | Kodning istalgan joyidan chaqirish imkoni kerak bo'lganda |
-| **Function Expression** | \`const foo = function() {}\` | Yo'q | Dinamik (chaqirilgan joyga qarab) | Funksiya faqat ma'lum shartdan keyin aniqlanishi kerak bo'lganda |
-| **Arrow Function** | \`const foo = () => {}\` | Yo'q | Leksik (tashqi muhitdan oladi) | Callback-lar yozishda, qisqa bir qatorli amallarda, \`this\`ni yo'qotmaslik uchun |
+| Turi | Sintaksis | Hoisting | \`this\` |
+| :--- | :--- | :--- | :--- |
+| **Declaration** | \`function foo(){}\` | Ha | Dinamik |
+| **Expression** | \`const foo = function(){}\` | Yo'q | Dinamik |
+| **Arrow** | \`const foo = () => {}\` | Yo'q | Leksik |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Selsiyni Farengeytga O'tkazish",
-    "instruction": "Selsiy shkalasidagi haroratni Farengeyt shkalasiga o'tkazuvchi `celsiusToFahrenheit(celsius)` funksiyasini yozing. Formula: `F = C * 9/5 + 32`.",
-    "startingCode": "function celsiusToFahrenheit(celsius) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Parametr `celsius`-ni 9 ga ko'paytiring, 5 ga bo'ling va natijaga 32 qo'shib `return` kalit so'zi orqali qaytaring.",
-    "test": "const sandbox = new Function(code + '; return celsiusToFahrenheit;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'celsiusToFahrenheit funksiya bo\\'lishi kerak';\nif (fn(0) !== 32) return '0 C bo\\'lganda 32 F bo\\'lishi kerak';\nif (fn(100) !== 212) return '100 C bo\\'lganda 212 F bo\\'lishi kerak';\nif (fn(-40) !== -40) return '-40 C bo\\'lganda -40 F bo\\'lishi kerak';\nreturn null;"
-  },
-  {
-    "id": 2,
-    "title": "Sonlarning O'rtacha Qiymati",
-    "instruction": "Istalgan miqdordagi sonlarni qabul qilib, ularning o'rtacha qiymatini hisoblaydigan `calculateAverage(...numbers)` funksiyasini yozing. Agar hech qanday son berilmasa, 0 qaytarsin.",
-    "startingCode": "function calculateAverage(...numbers) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Rest parametridan foydalanib massivni oling. Agar massiv uzunligi 0 bo'lsa, 0 qaytaring. Aks holda, elementlar yig'indisini hisoblab, ularning soniga bo'ling.",
-    "test": "const sandbox = new Function(code + '; return calculateAverage;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'calculateAverage funksiya bo\\'lishi kerak';\nif (fn() !== 0) return 'Hech narsa berilmasa, 0 qaytishi kerak';\nif (fn(10, 20, 30) !== 20) return '10, 20, 30 ning o\\'rtachasi 20 bo\\'shu kerak';\nif (fn(5, 5, 5, 5) !== 5) return '5, 5, 5, 5 ning o\\'rtachasi 5 bo\\'lishi kerak';\nreturn null;"
-  },
-  {
-    "id": 3,
-    "title": "Unli Tovushlar Soni",
-    "instruction": "Berilgan satrdagi (string) ingliz tilidagi unli harflar (`a, e, i, o, u`) sonini aniqlaydigan `countVowels(str)` funksiyasini yozing. Katta-kichik harflarni farqlamasligi lozim.",
-    "startingCode": "function countVowels(str) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "Satrdagi har bir belgini tekshiring, agar u unli harflardan biri bo'lsa, hisoblagichni oshiring. Satrni `.toLowerCase()` qilish yordam beradi.",
-    "test": "const sandbox = new Function(code + '; return countVowels;');\nconst fn = sandbox();\nif (typeof fn !== 'function') return 'countVowels funksiya bo\\'lishi kerak';\nif (fn(\"hello\") !== 2) return '\"hello\" so\\'zida 2 ta unli bor';\nif (fn(\"JavaScript\") !== 3) return '\"JavaScript\" so\\'zida 3 ta unli bor';\nif (fn(\"Uzbekistan\") !== 4) return '\"Uzbekistan\" so\\'zida 4 ta unli bor';\nif (fn(\"xyz\") !== 0) return '\"xyz\" so\\'zida 0 ta unli bor';\nreturn null;"
-  },
-  {
-    "id": 4,
-    "title": "Sonning Kvadrati",
-    "instruction": "Berilgan sonning kvadratini (o'zini o'ziga ko'paytmasini) hisoblovchi `square(n)` funksiyasini yozing.",
-    "startingCode": "function square(n) {\n  // Kodni yozing\n}",
-    "hint": "n ni n ga ko'paytirib return qiling.",
-    "test": "const fn = new Function(code + '; return square;')(); if(fn(5) !== 25) return '5 kvadrati 25'; if(fn(0) !== 0) return '0 kvadrati 0'; return null;"
-  },
-  {
-    "id": 5,
-    "title": "Salomlashish Funksiyasi",
-    "instruction": "Foydalanuvchi ismini qabul qilib, unga 'Salom, [ism]!' matnini qaytaradigan `greet(name)` funksiyasini yozing.",
-    "startingCode": "function greet(name) {\n  // Kodni yozing\n}",
-    "hint": "Satrlarni birlashtirish (+) yoki Template Literals (`Salom, ${name}!`) foydalaning.",
-    "test": "const fn = new Function(code + '; return greet;')(); if(fn('Ali') !== 'Salom, Ali!') return 'Ali uchun xato'; return null;"
-  },
-  {
-    "id": 6,
-    "title": "Eng Katta Sonni Topish",
-    "instruction": "Ikkita son qabul qilib, ularning eng kattasini qaytaruvchi `getMax(a, b)` funksiyasini yozing. Agar teng bo'lsa, istalganini qaytarsin.",
-    "startingCode": "function getMax(a, b) {\n  // Kodni yozing\n}",
-    "hint": "if/else sharti yoki Math.max() ni ishlating.",
-    "test": "const fn = new Function(code + '; return getMax;')(); if(fn(10, 20) !== 20) return '10 va 20 da 20 katta'; if(fn(5, 5) !== 5) return 'teng bo\\'lsa 5'; return null;"
-  },
-  {
-    "id": 7,
-    "title": "Juft yoki Toq",
-    "instruction": "Son qabul qilib, agar juft bo'lsa `true`, toq bo'lsa `false` qaytaruvchi `isEven(n)` funksiyasini yozing.",
-    "startingCode": "function isEven(n) {\n  // Kodni yozing\n}",
-    "hint": "Sonni 2 ga bo'lganda qoldiq 0 bo'lsa juft bo'ladi (`n % 2 === 0`).",
-    "test": "const fn = new Function(code + '; return isEven;')(); if(fn(4) !== true) return '4 juft'; if(fn(7) !== false) return '7 toq'; return null;"
-  },
-  {
-    "id": 8,
-    "title": "To'rtburchak Yuzi",
-    "instruction": "To'rtburchakning eni (width) va bo'yi (height) qabul qilib uning yuzasini hisoblovchi `getArea(width, height)` yozing.",
-    "startingCode": "function getArea(width, height) {\n  // Kodni yozing\n}",
-    "hint": "Yuza = eni * bo'yi",
-    "test": "const fn = new Function(code + '; return getArea;')(); if(fn(5, 10) !== 50) return '5x10=50'; return null;"
-  },
-  {
-    "id": 9,
-    "title": "Sonni Teskarisiga O'girish",
-    "instruction": "Masalan 123 bersa, uni 321 ko'rinishida qaytaruvchi `reverseNumber(n)` yozing. (Satrga o'girib keyin massivga va yana satrga yig'ish yordam beradi)",
-    "startingCode": "function reverseNumber(n) {\n  // Kodni yozing\n}",
-    "hint": "n ni String(n) qilib, .split('').reverse().join('') orqali aylantiring va Number ga o'tkazing.",
-    "test": "const fn = new Function(code + '; return reverseNumber;')(); if(fn(123) !== 321) return '123 teskarisi 321'; return null;"
-  },
-  {
-    "id": 10,
-    "title": "So'zning Birinchi Harfi",
-    "instruction": "Satr qabul qilib, uning faqat birinchi harfini katta qilib qaytaradigan `capitalizeFirst(str)` funksiyasini tuzing.",
-    "startingCode": "function capitalizeFirst(str) {\n  // Kodni yozing\n}",
-    "hint": "str[0].toUpperCase() + str.slice(1) ni ishlating.",
-    "test": "const fn = new Function(code + '; return capitalizeFirst;')(); if(fn('apple') !== 'Apple') return 'apple Apple bo\\'lishi kerak'; return null;"
-  },
-  {
-    "id": 11,
-    "title": "Kalkulyator Funksiya",
-    "instruction": "`calc(a, b, op)` funksiyasini yozing. Agar op '+' bo'lsa a+b, '-' bo'lsa a-b, '*' bo'lsa a*b, '/' bo'lsa a/b qilsin.",
-    "startingCode": "function calc(a, b, op) {\n  // Kodni yozing\n}",
-    "hint": "switch-case yoki if-else ishlatish tavsiya qilinadi.",
-    "test": "const fn = new Function(code + '; return calc;')(); if(fn(5, 3, '+') !== 8) return '5+3=8'; if(fn(10, 2, '/') !== 5) return '10/2=5'; return null;"
-  },
-  {
-    "id": 12,
-    "title": "Yoshni Tekshirish",
-    "instruction": "`age` parametrini qabul qilib, agar 18 yoki undan baland bo'lsa `true`, aks holda `false` qaytaruvchi `isAdult(age)` yozing.",
-    "startingCode": "function isAdult(age) {\n  // Kodni yozing\n}",
-    "hint": "return age >= 18; ni ishlatishingiz mumkin.",
-    "test": "const fn = new Function(code + '; return isAdult;')(); if(fn(20) !== true) return '20 > 18'; if(fn(16) !== false) return '16 < 18'; return null;"
-  },
-  {
-    "id": 13,
-    "title": "Eng Qisqa So'z",
-    "instruction": "So'zlardan iborat massiv qabul qilib, ularning ichidan eng qisqasini qaytaruvchi `getShortestWord(words)` yozing.",
-    "startingCode": "function getShortestWord(words) {\n  // Kodni yozing\n}",
-    "hint": "reduce yordamida massivni aylanib, a.length va b.length ni solishtirish orqali eng qisqasini ushlab qoling.",
-    "test": "const fn = new Function(code + '; return getShortestWord;')(); if(fn(['apple', 'hi', 'orange']) !== 'hi') return 'hi eng qisqasi'; return null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Selsiyni Farengeytga O'tkazish",
+      instruction: "`celsiusToFahrenheit(celsius)` funksiyasini yozing. Formula: `F = C * 9/5 + 32`.",
+      startingCode: "function celsiusToFahrenheit(celsius) {\n  \n}",
+      hint: "return celsius * 9/5 + 32;",
+      test: "const fn = new Function(code + '; return celsiusToFahrenheit;')(); if(fn(0)!==32) return 'Xato'; return null;"
+    },
+    {
+      id: 2,
+      title: "O'rtacha Qiymat",
+      instruction: "`calculateAverage(...numbers)` yarating, sonlarning o'rtachasini qaytarsin. Agar bomb'sh bo'lsa 0 qaytsin.",
+      startingCode: "function calculateAverage(...numbers) {\n  \n}",
+      hint: "if(!numbers.length) return 0; return numbers.reduce((a,b)=>a+b)/numbers.length;",
+      test: "const fn = new Function(code + '; return calculateAverage;')(); if(fn(10,20)!==15) return 'Xato'; if(fn()!==0) return '0 qaytishi kerak'; return null;"
+    },
+    {
+      id: 3,
+      title: "Unli Tovushlar Soni",
+      instruction: "`countVowels(str)` yozing, faqat `a,e,i,o,u` sonini qaytarsin.",
+      startingCode: "function countVowels(str) {\n  \n}",
+      hint: "str.match(/[aeiou]/gi)?.length || 0 ishlatishingiz mumkin.",
+      test: "const fn = new Function(code + '; return countVowels;')(); if(fn('hello')!==2) return 'Xato'; return null;"
+    },
+    {
+      id: 4,
+      title: "Sonning Kvadrati",
+      instruction: "`square(n)` n*n ni qaytarsin.",
+      startingCode: "function square(n) {\n  \n}",
+      hint: "return n*n;",
+      test: "const fn = new Function(code + '; return square;')(); if(fn(5)!==25) return 'Xato'; return null;"
+    },
+    {
+      id: 5,
+      title: "Salomlashish Funksiyasi",
+      instruction: "`greet(name)` 'Salom, [name]!' qaytarsin.",
+      startingCode: "function greet(name) {\n  \n}",
+      hint: "return `Salom, ${name}!`;",
+      test: "const fn = new Function(code + '; return greet;')(); if(fn('Ali')!=='Salom, Ali!') return 'Xato'; return null;"
+    },
+    {
+      id: 6,
+      title: "Eng Katta Sonni Topish",
+      instruction: "`getMax(a, b)` kattasini qaytarsin.",
+      startingCode: "function getMax(a, b) {\n  \n}",
+      hint: "return Math.max(a, b);",
+      test: "const fn = new Function(code + '; return getMax;')(); if(fn(10,5)!==10) return 'Xato'; return null;"
+    },
+    {
+      id: 7,
+      title: "Juft yoki Toq",
+      instruction: "`isEven(n)` juft bo'lsa true, toq bo'lsa false.",
+      startingCode: "function isEven(n) {\n  \n}",
+      hint: "return n % 2 === 0;",
+      test: "const fn = new Function(code + '; return isEven;')(); if(fn(4)!==true) return 'Xato'; return null;"
+    },
+    {
+      id: 8,
+      title: "To'rtburchak Yuzi",
+      instruction: "`getArea(w, h)` ni hisoblang.",
+      startingCode: "function getArea(w, h) {\n  \n}",
+      hint: "return w * h;",
+      test: "const fn = new Function(code + '; return getArea;')(); if(fn(5,2)!==10) return 'Xato'; return null;"
+    },
+    {
+      id: 9,
+      title: "Yoshni Tekshirish",
+      instruction: "`isAdult(age)` 18+ bo'lsa true qaytarsin.",
+      startingCode: "function isAdult(age) {\n  \n}",
+      hint: "return age >= 18;",
+      test: "const fn = new Function(code + '; return isAdult;')(); if(fn(19)!==true) return 'Xato'; return null;"
+    },
+    {
+      id: 10,
+      title: "Kalkulyator",
+      instruction: "`calc(a, b, op)` agar '+' bo'lsa a+b ni qaytarsin. '-' da ayirsin, '*' va '/'.",
+      startingCode: "function calc(a, b, op) {\n  \n}",
+      hint: "switch(op) ishlatish",
+      test: "const fn = new Function(code + '; return calc;')(); if(fn(5,3,'+')!==8) return 'Xato'; if(fn(10,2,'/')!==5) return 'Xato'; return null;"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "JavaScript-da funksiya e'lon qilishning (Function Declaration) asosiy sintaksisi qaysi?",
-    "options": [
-      "function myFunction() {}",
-      "let myFunction = () => {}",
-      "myFunction function() {}",
-      "new Function(myFunction) {}"
-    ],
-    "correctAnswer": 0,
-    "explanation": "`function myFunction() {}` bu klassik Function Declaration hisoblanadi."
-  },
-  {
-    "id": 2,
-    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nfunction sayHi() {\n  return;\n}\nconsole.log(sayHi());\n```",
-    "options": [
-      "null",
-      "undefined",
-      "\"\" (bo'sh satr)",
-      "ReferenceError"
-    ],
-    "correctAnswer": 1,
-    "explanation": "JavaScript-da return kalit so'zi qiymatsiz yozilsa yoki umuman yozilmasa, funksiya har doim `undefined` qaytaradi."
-  },
-  {
-    "id": 3,
-    "question": "Quyidagi kodda konsolga nima chiqadi?\n```javascript\nconst sum = (a = 2, b = 3) => a + b;\nconsole.log(sum(5));\n```",
-    "options": [
-      "5",
-      "8",
-      "NaN",
-      "TypeError"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Chaqirilganda `a` ga 5 argumenti beriladi, `b` parametriga esa hech narsa berilmagani uchun u o'zining default qiymati 3 ni saqlab qoladi. Natija: 5 + 3 = 8."
-  },
-  {
-    "id": 4,
-    "question": "Function Declaration va Function Expression o'rtasidagi asosiy farq nima?",
-    "options": [
-      "Function Expression-larni e'lon qilishdan oldin chaqirib bo'lmaydi (hoisting bo'lmaydi), Function Declaration-larni esa bo'ladi",
-      "Function Declaration parametr qabul qila olmaydi",
-      "Function Expression doimo asinxron ishlaydi",
-      "Ularning hech qanday farqi yo'q"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Function Declaration-lar hoisting (tepaga ko'tarilish) xususiyatiga ega, shuning uchun ularni koddagi e'lon qilingan joyidan yuqorida ham chaqirish mumkin. Function Expression-lar esa faqat e'lon qilingandan keyin ishlaydi."
-  },
-  {
-    "id": 5,
-    "question": "Block scope (blok qamrovi) deganda nima tushuniladi?",
-    "options": [
-      "Faqat funksiya ichida ko'rinadigan o'zgaruvchilar qamrovi",
-      "Butun dastur davomida ko'rinadigan global o'zgaruvchilar qamrovi",
-      "Jingalak qavslar `{}` ichida let va const yordamida e'lon qilingan o'zgaruvchilarning faqat shu blok ichida ko'rinishi",
-      "Brauzer oynasi yopilganda o'chib ketadigan o'zgaruvchilar"
-    ],
-    "correctAnswer": 2,
-    "explanation": "`let` va `const` yordamida har qanday block (masalan, `if`, `for` yoki oddiy `{}`) ichida e'lon qilingan o'zgaruvchilar blokdan tashqarida ko'rinmaydi."
-  },
-  {
-    "id": 6,
-    "question": "Quyidagi kodda qanday xatolik yuz beradi?\n```javascript\nfunction testScope() {\n  let message = \"Salom\";\n}\ntestScope();\nconsole.log(message);\n```",
-    "options": [
-      "TypeError",
-      "SyntaxError",
-      "ReferenceError",
-      "Xatolik bo'lmaydi, konsolga \"Salom\" chiqadi"
-    ],
-    "correctAnswer": 2,
-    "explanation": "`message` o'zgaruvchisi `testScope` funksiyasining lokal qamrovida (local scope) e'lon qilingan, shuning uchun tashqi (global) qamrovda unga kirishga urinilganda `ReferenceError` yuz beradi."
-  },
-  {
-    "id": 7,
-    "question": "Arrow funksiyalar (Arrow functions) haqidagi qaysi fikr to'g'ri?",
-    "options": [
-      "Ular o'zlarining shaxsiy `this` va `arguments` obyektiga ega emas",
-      "Ular faqat bir qatordan iborat bo'lishi kerak",
-      "Ularni constructor sifatida `new` kalit so'zi bilan ishlatish mumkin",
-      "Ularni hoist qilib, e'lon qilishdan oldin ishlatish mumkin"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Arrow funksiyalar o'zining `this` kontekstiga va `arguments` massivsimon obyektiga ega bo'lmaydi, balki ularni tashqi qamrovdan leksik jihatdan meros qilib oladi."
-  },
-  {
-    "id": 8,
-    "question": "Rest parameter (`...args`) nima uchun ishlatiladi?",
-    "options": [
-      "Funksiyaning bajarilishini vaqtincha to'xtatib turish uchun",
-      "Funksiyaga uzatilgan cheksiz yoki noma'lum miqdordagi argumentlarni haqiqiy massiv sifatida yig'ib olish uchun",
-      "O'zgaruvchini global qamrovda e'lon qilish uchun",
-      "Faqat oxirgi argumentni o'chirish uchun"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Rest parameter (uchta nuqta bilan boshlanadigan) funksiyaga uzatilgan qolgan barcha argumentlarni bitta haqiqiy massivga yig'adi."
-  },
-  {
-    "id": 9,
-    "question": "Quyidagi kod konsolga nima chiqaradi?\n```javascript\nconst arrowFn = () => {\n  let a = 10;\n};\nconsole.log(arrowFn());\n```",
-    "options": [
-      "10",
-      "undefined",
-      "ReferenceError",
-      "null"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Arrow funksiyada jingalak qavslar `{}` ishlatilsa, natija qaytishi uchun `return` so'zi yozilishi shart. Aks holda, funksiya `undefined` qaytaradi."
-  },
-  {
-    "id": 10,
-    "question": "Global scope-da yaratilgan o'zgaruvchi bilan lokal (funksiya) scope-da yaratilgan o'zgaruvchi nomi bir xil bo'lsa nima sodir bo'ladi?",
-    "options": [
-      "Shadowing (Soya qilish) yuz beradi - funksiya ichida lokal o'zgaruvchi ustun bo'lib, global o'zgaruvchini to'sib qo'yadi",
-      "JavaScript syntax xatosi beradi",
-      "Global o'zgaruvchi avtomatik o'chib ketadi",
-      "Har doim global o'zgaruvchi ustun bo'ladi"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Shadowing hodisasi yuz berib, ichki scope-dagi o'zgaruvchi o'zidan yuqoridagi scope-dagi o'zgaruvchi nomini soya ostiga oladi va lokal muhitda o'z qiymatini ko'rsatadi."
-  },
-  {
-    "id": 11,
-    "question": "Quyidagi kod natijasini aniqlang:\n```javascript\nfunction showDetails(name, ...info) {\n  console.log(info[0]);\n}\nshowDetails(\"Lola\", 25, \"Toshkent\", \"Dasturchi\");\n```",
-    "options": [
-      "\"Lola\"",
-      "25",
-      "\"Toshkent\"",
-      "[\"Toshkent\", \"Dasturchi\"]"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`name` parametri \"Lola\" ni oladi. Qolgan barcha argumentlar `[25, \"Toshkent\", \"Dasturchi\"]` ko'rinishida `info` massiviga yig'iladi. `info[0]` esa 25 ga teng bo'ladi."
-  },
-  {
-    "id": 12,
-    "question": "JavaScript-da Call Stack funksiyalarni qanday tartibda boshqaradi?",
-    "options": [
-      "FIFO (First In, First Out) - Birinchi kirgan birinchi chiqadi",
-      "LIFO (Last In, First Out) - Oxirgi kirgan birinchi chiqadi",
-      "Tartibsiz ravishda",
-      "Faqat o'lchamiga qarab"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Call Stack LIFO (Last In, First Out) tamoyili bo'yicha ishlaydi. Ya'ni oxirgi chaqirilgan funksiya birinchi bo'lib bajarilib tugaydi va stack-dan o'chiriladi."
-  }
-]
-
+    {
+      id: 1,
+      question: "JavaScript-da Function Declaration sintaksisi?",
+      options: [
+        "function myFunction() {}",
+        "let myFunction = () => {}",
+        "myFunction function() {}",
+        "new Function(myFunction) {}"
+      ],
+      correctAnswer: 0,
+      explanation: "`function myFunction() {}` bu klassik Function Declaration."
+    },
+    {
+      id: 2,
+      question: "return yozilmagan funksiya nima qaytaradi?",
+      options: ["null", "undefined", "\"\"", "ReferenceError"],
+      correctAnswer: 1,
+      explanation: "Funksiya har doim undefined qaytaradi agar return qilinmasa."
+    },
+    {
+      id: 3,
+      question: "Default parametr qanday ishlaydi?",
+      options: [
+        "Faqat argument null bo'lsa ishlaydi",
+        "Argument undefined yoki uzatilmasa ishlaydi",
+        "Har doim ishlaydi",
+        "Faqat stringlarda ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Default qiymatlar argument undefined bo'lsa o'rnini to'ldiradi."
+    },
+    {
+      id: 4,
+      question: "Declaration va Expression asosiy farqi?",
+      options: [
+        "Declaration hoisting bo'ladi, Expression esa yo'q",
+        "Declaration parametr qabul qilmaydi",
+        "Expression asinxron ishlaydi",
+        "Farqi yo'q"
+      ],
+      correctAnswer: 0,
+      explanation: "Declaration larni fayl boshida ishlatish mumkin."
+    },
+    {
+      id: 5,
+      question: "Block scope nima?",
+      options: [
+        "Faqat funksiya ichida ishlaydi",
+        "Global o'zgaruvchilar",
+        "{} qavslar ichida let va const bilan yopiq muhit",
+        "Maxsus blok"
+      ],
+      correctAnswer: 2,
+      explanation: "let/const jingalak qavslardan tashqariga chiqmaydi."
+    },
+    {
+      id: 6,
+      question: "Funksiya lokal qamrovidagi o'zgaruvchini tashqaridan o'qish mumkinmi?",
+      options: ["Ha", "Yo'q (ReferenceError beradi)", "Yo'q (undefined qaytaradi)", "Ha (ammo null bo'lib)"],
+      correctAnswer: 1,
+      explanation: "Lokal o'zgaruvchilar tashqi scope uchun yo'q (ReferenceError)."
+    },
+    {
+      id: 7,
+      question: "Arrow funksiyalarning an'anaviydan farqi?",
+      options: [
+        "O'zining this obyekti mavjud emas",
+        "Ko'p qatordan iborat bo'la olmaydi",
+        "Constructor bo'la oladi",
+        "Faqat default parametr oladi"
+      ],
+      correctAnswer: 0,
+      explanation: "Arrow funksiyalar this va arguments ga ega emas."
+    },
+    {
+      id: 8,
+      question: "Rest parameter (...args) vazifasi?",
+      options: [
+        "Massivni yoyish",
+        "Qolgan argumentlarni massiv ko'rinishida bitta o'zgaruvchiga to'plash",
+        "Funksiyani to'xtatish",
+        "Hech qanday argument olmaslik"
+      ],
+      correctAnswer: 1,
+      explanation: "Rest - qolgan hamma argumentlarni haqiqiy arrayga yig'adi."
+    },
+    {
+      id: 9,
+      question: "Arrow funksiya `{}` ichida return yozilmasa nima bo'ladi?",
+      options: ["10", "undefined", "ReferenceError", "null"],
+      correctAnswer: 1,
+      explanation: "Jingalak qavslar qo'yilsa, avtomatik return bekor qilinadi va explicit return kutadi."
+    },
+    {
+      id: 10,
+      question: "Shadowing yuz bersa nima bo'ladi?",
+      options: [
+        "Ichki o'zgaruvchi globalni vaqtincha to'sib qo'yadi",
+        "Xato beradi",
+        "Global o'chib ketadi",
+        "Tashqi ustun bo'ladi"
+      ],
+      correctAnswer: 0,
+      explanation: "Shadowing - bu aynan ota scope dagi nomni soya qilishdir."
+    },
+    {
+      id: 11,
+      question: "Call Stack qanday tartibda ishlaydi?",
+      options: ["FIFO", "LIFO", "Tartibsiz", "Kattaligiga qarab"],
+      correctAnswer: 1,
+      explanation: "LIFO (Oxirgi kirgan, birinchi chiqadi) tamoyili asosida ishlaydi."
+    },
+    {
+      id: 12,
+      question: "Pure Function xususiyati?",
+      options: [
+        "Bir xil kiruvchiga har doim har xil chiquvchi",
+        "Bir xil argumentga bir xil natija + side effects yo'qligi",
+        "Internetdan tez ishlaydi",
+        "Xatosiz funksiya"
+      ],
+      correctAnswer: 1,
+      explanation: "Sof funksiyalar kutilgan va mutlaq aniq natijalar beradi."
+    }
+  ]
 };

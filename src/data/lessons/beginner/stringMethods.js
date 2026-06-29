@@ -254,15 +254,71 @@ console.log(slug); // "javascript-da-string-metodlari-toliq-qollanma"
     "instruction": "Matnni qisqartirish uchun `truncateText(text, maxLength)` funksiyasini yozing. Agar matn uzunligi (`text.length`) `maxLength` dan katta bo'lsa, uni `maxLength` gacha kesib (`slice` yoki `substring` yordamida) va oxiriga `...` qo'shib qaytaring. Aks holda matnning o'zini qaytaring.",
     "startingCode": "function truncateText(text, maxLength) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "Kattalikni tekshirish uchun `if` shartidan, kesish uchun esa `slice(0, maxLength)` metodidan foydalaning.",
-    "test": "const sandbox = new Function(code + '; return truncateText;');\nconst fn = sandbox();\nconst res1 = fn('Salom Dunyo', 5);\nconst res2 = fn('Salom', 10);\nif (res1 === 'Salom...' && res2 === 'Salom') return null;\nreturn 'Matn to\\'g\\'ri qisqartirilmadi. slice yoki substring metodidan foydalanib tekshiring.';"
+    "test": "const sandbox = new Function(code + '; return truncateText;');\nconst fn = sandbox();\nconst res1 = fn('Salom Dunyo', 5);\nconst res2 = fn('Salom', 10);\nif (res1 === 'Salom...' && res2 === 'Salom') return null;\nreturn 'Matn to\\'g\\'ri qisqartirilmadi. slice yoki substring metodidan foydalaning.';"
   },
   {
     "id": 3,
     "title": "Kredit kartani maskalash",
-    "instruction": "Kredit karta raqamining oxirgi 4 ta raqamidan tashqari barcha raqamlarini yashiruvchi `maskCreditCard(cardNumber)` funksiyasini yozing. Masalan, `'8600123456789012'` berilsa, u `'************9012'` qaytarishi kerak. Karta raqami har doim 16 ta belgidan iborat bo'ladi deb hisoblang.",
+    "instruction": "Kredit karta raqamining oxirgi 4 ta raqamidan tashqari barcha raqamlarini yashiruvchi `maskCreditCard(cardNumber)` funksiyasini yozing. Masalan, `'8600123456789012'` berilsa, u `'************9012'` qaytarishi kerak. Karta raqami har doim 16 ta belgidan iborat deb hisoblang.",
     "startingCode": "function maskCreditCard(cardNumber) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "`repeat` metodi bilan 12 ta yulduzcha yarating va unga karta raqamining oxirgi 4 ta raqamini `slice(-4)` orqali olib qo'shing.",
+    "hint": "`repeat` metodi bilan 12 ta yulduzcha yarating va unga oxirgi 4 ta raqamni `slice(-4)` orqali qo'shing.",
     "test": "const sandbox = new Function(code + '; return maskCreditCard;');\nconst fn = sandbox();\nconst res = fn('8600123456789012');\nif (res === '************9012') return null;\nreturn 'Kredit karta raqami to\\'g\\'ri maskalanmadi. repeat va slice metodlaridan foydalaning.';"
+  },
+  {
+    "id": 4,
+    "title": "So'zning birinchi harfini kattalashtirish",
+    "instruction": "`capitalize(word)` funksiyasini yarating. U kiritilgan so'zning birinchi harfini katta qilib, qolganlarini kichik qilib qaytarsin.",
+    "startingCode": "function capitalize(word) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`word.charAt(0).toUpperCase()` va `word.slice(1).toLowerCase()` ni birlashtiring.",
+    "test": "const sandbox = new Function(code + '; return capitalize;');\nconst fn = sandbox();\nif (fn('jAVAsCript') !== 'Javascript') return 'Katta-kichik harflar noto\\'g\\'ri formatlandi';\nreturn null;"
+  },
+  {
+    "id": 5,
+    "title": "Ma'lum so'z borligini tekshirish",
+    "instruction": "`containsWord(text, word)` funksiyasi berilgan `text` ichida `word` qatnashganligini qaytarsin (boolean).",
+    "startingCode": "function containsWord(text, word) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`includes()` metodidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return containsWord;');\nconst fn = sandbox();\nif (fn('Assalomu alaykum', 'alaykum') !== true) return 'includes() dan to\\'g\\'ri foydalaning';\nreturn null;"
+  },
+  {
+    "id": 6,
+    "title": "Barcha bo'shliqlarni olib tashlash",
+    "instruction": "`removeAllSpaces(text)` funksiyasi berilgan matndagi barcha bo'shliqlarni olib tashlasin.",
+    "startingCode": "function removeAllSpaces(text) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`replaceAll(' ', '')` ishlatishingiz mumkin.",
+    "test": "const sandbox = new Function(code + '; return removeAllSpaces;');\nconst fn = sandbox();\nif (fn('a b c') !== 'abc') return 'Probellar to\\'g\\'ri o\\'chirilmadi';\nreturn null;"
+  },
+  {
+    "id": 7,
+    "title": "Ism va familiyani ajratish",
+    "instruction": "`splitName(fullName)` funksiyasi berilgan to'liq ismni massiv ko'rinishida `['Ism', 'Familiya']` qaytarsin.",
+    "startingCode": "function splitName(fullName) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`split(' ')` metodidan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return splitName;');\nconst fn = sandbox();\nconst res = fn('Ali Valiyev');\nif (!Array.isArray(res) || res[0] !== 'Ali' || res[1] !== 'Valiyev') return 'split metodidan noto\\'g\\'ri foydalanildi';\nreturn null;"
+  },
+  {
+    "id": 8,
+    "title": "URL manzilni tozalash",
+    "instruction": "`cleanUrl(url)` funksiyasi URL manzil oxiridagi slash `/` belgisini olib tashlasin (agar bor bo'lsa).",
+    "startingCode": "function cleanUrl(url) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Oxirgi belgi `/` ekanini `endsWith()` bilan tekshirib, `slice(0, -1)` qiling.",
+    "test": "const sandbox = new Function(code + '; return cleanUrl;');\nconst fn = sandbox();\nif (fn('https://site.com/') !== 'https://site.com' || fn('https://site.uz') !== 'https://site.uz') return 'URL to\\'g\\'ri tozalanmadi';\nreturn null;"
+  },
+  {
+    "id": 9,
+    "title": "Fayl kengaytmasini topish",
+    "instruction": "`getExtension(filename)` funksiyasi berilgan fayl nomining kengaytmasini (nuqtadan keyingi qismini) topib bersin.",
+    "startingCode": "function getExtension(filename) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "`split('.')` yordamida massivga ajratib, oxirgi elementini oling yoki `indexOf` va `slice` dan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return getExtension;');\nconst fn = sandbox();\nif (fn('document.pdf') !== 'pdf' || fn('image.jpeg') !== 'jpeg') return 'Kengaytma noto\\'g\\'ri aniqlandi';\nreturn null;"
+  },
+  {
+    "id": 10,
+    "title": "Raqamni formatlash (Padding)",
+    "instruction": "`padNumber(num)` funksiyasi kiritilgan raqamni oldidan kerakli miqdorda nollar qo'shib, doim 5 xonali matn ko'rinishida qaytarsin.",
+    "startingCode": "function padNumber(num) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Raqamni stringga o'girib (`String(num)`), so'ngra `padStart(5, '0')` dan foydalaning.",
+    "test": "const sandbox = new Function(code + '; return padNumber;');\nconst fn = sandbox();\nif (fn(42) !== '00042' || fn(12345) !== '12345') return 'padStart dan foydalanishda xatolik';\nreturn null;"
   }
 ]
 ,

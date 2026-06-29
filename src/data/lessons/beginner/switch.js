@@ -370,6 +370,62 @@ JavaScript kompilyatorlari (JIT Compiler) switch tarkibida ko'plab case'lar mavj
     "startingCode": "function getGradeScore(score) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "switch(true) dan foydalanib, har bir case-da shartlarni kiriting, masalan: case (score >= 90 && score <= 100): return \"A\";",
     "test": "const sandbox = new Function(code + '; return getGradeScore;');\nconst fn = sandbox();\nif (fn(95) !== 'A' || fn(90) !== 'A') return '90-100 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(85) !== 'B' || fn(80) !== 'B') return '80-89 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(75) !== 'C' || fn(70) !== 'C') return '70-79 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(65) !== 'D' || fn(60) !== 'D') return '60-69 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(50) !== 'F' || fn(0) !== 'F') return '0-59 ball oralig\\'i noto\\'g\\'ri baholandi';\nif (fn(-5) !== \"Noto'g'ri ball\" || fn(105) !== \"Noto'g'ri ball\") return 'Noto\\'g\\'ri ball holatlari to\\'g\\'ri tekshirilmadi';\nif (!code.includes('switch') || !code.includes('true')) return 'switch(true) operatoridan foydalanilmadi';\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "Hafta kuni",
+    "instruction": "Hafta kuni raqamiga (1-7) qarab nomini (\"Dushanba\", \"Seshanba\" va hokazo) qaytaruvchi funksiya `getDay(num)` ni switch yordamida yozing. Boshqa holatlar uchun \"Noma'lum\" deb qaytaring.",
+    "startingCode": "function getDay(num) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "case 1:, case 2: ... default: ishlating.",
+    "test": "const sandbox = new Function(code + '; return getDay;');\nconst fn = sandbox();\nif(fn(1)!=='Dushanba' || fn(7)!=='Yakshanba' || fn(8)!=='Noma\\'lum') return 'switch operatori orqali to\\'g\\'ri kunlarni qaytarmadi';\nreturn null;"
+  },
+  {
+    "id": 5,
+    "title": "Hayvon ovozi",
+    "instruction": "Berilgan hayvon nomi (\"it\", \"mushuk\", \"sigir\") ga mos ravishda ularning ovozini (\"Vov\", \"Miyov\", \"Moo\") qaytaruvchi `getAnimalSound(animal)` yozing. Qolgan hayvonlarga \"Bilmayman\" yozing.",
+    "startingCode": "function getAnimalSound(animal) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "case 'it': return 'Vov'; kabi yozing.",
+    "test": "const sandbox = new Function(code + '; return getAnimalSound;');\nconst fn = sandbox();\nif(fn('it')!=='Vov' || fn('mushuk')!=='Miyov' || fn('qush')!=='Bilmayman') return 'Hayvon ovozi noto\\'g\\'ri qaytdi';\nreturn null;"
+  },
+  {
+    "id": 6,
+    "title": "Svetofor ranglari",
+    "instruction": "`trafficLight(color)` yozing. \"qizil\" bo'lsa \"To'xtang\", \"sariq\" -> \"Tayyorlaning\", \"yashil\" -> \"Yuring\", boshqa holatlarda \"Buzilgan\" deb qaytarsin.",
+    "startingCode": "function trafficLight(color) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Uchta asosiy holatni case bilan yozing va break/return qiling.",
+    "test": "const sandbox = new Function(code + '; return trafficLight;');\nconst fn = sandbox();\nif(fn('qizil')!=='To\\'xtang' || fn('yashil')!=='Yuring' || fn('ko\\'k')!=='Buzilgan') return 'Svetofor mantig\\'i noto\\'g\\'ri';\nreturn null;"
+  },
+  {
+    "id": 7,
+    "title": "Yo'nalish komandasi",
+    "instruction": "Foydalanuvchi yo'nalishini (\"N\", \"S\", \"E\", \"W\") olib, \"Shimol\", \"Janub\", \"Sharq\", \"G'arb\" qiymatlarini beruvchi `getDirection(dir)` yozing. Noto'g'ri bo'lsa, \"Xato\" qaytarsin.",
+    "startingCode": "function getDirection(dir) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Harfni tekshirish uchun case ishlatish kerak.",
+    "test": "const sandbox = new Function(code + '; return getDirection;');\nconst fn = sandbox();\nif(fn('N')!=='Shimol' || fn('S')!=='Janub' || fn('A')!=='Xato') return 'Yo\\'nalish noto\\'g\\'ri';\nreturn null;"
+  },
+  {
+    "id": 8,
+    "title": "Foydalanuvchi roliklari",
+    "instruction": "`getRole(role)` funksiyasi role (\"admin\", \"editor\", \"viewer\") qabul qiladi va mos ravishda \"To'liq huquq\", \"O'zgartirish huquqi\", \"Faqat o'qish\" qaytaradi. Qolgan hollarda \"Mehmon\".",
+    "startingCode": "function getRole(role) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "case \"admin\": ...",
+    "test": "const sandbox = new Function(code + '; return getRole;');\nconst fn = sandbox();\nif(fn('admin')!=='To\\'liq huquq' || fn('mehmon')!=='Mehmon') return 'Rol xatosi';\nreturn null;"
+  },
+  {
+    "id": 9,
+    "title": "Buyurtma holati",
+    "instruction": "`getOrderStatus(status)` kodi 1 bo'lsa \"Qabul qilindi\", 2 -> \"Tayyorlanmoqda\", 3 -> \"Yetkazilmoqda\", qolganlarga \"Noma'lum\".",
+    "startingCode": "function getOrderStatus(status) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Sonlarni qat'iy tipda tekshiradi (masalan case 1:).",
+    "test": "const sandbox = new Function(code + '; return getOrderStatus;');\nconst fn = sandbox();\nif(fn(1)!=='Qabul qilindi' || fn(3)!=='Yetkazilmoqda' || fn(5)!=='Noma\\'lum') return 'Buyurtma holati noto\\'g\\'ri';\nreturn null;"
+  },
+  {
+    "id": 10,
+    "title": "Oyliklar chegarasi",
+    "instruction": "Foydalanuvchi mablag'iga ko'ra darajasini aniqlovchi `getSalaryLevel(amount)` ni switch(true) orqali yozing: > 1000 - 'Yuqori', > 500 - 'O'rta', qolgani 'Past'.",
+    "startingCode": "function getSalaryLevel(amount) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "switch (true) { case amount > 1000: ... }",
+    "test": "const sandbox = new Function(code + '; return getSalaryLevel;');\nconst fn = sandbox();\nif(fn(1500)!=='Yuqori' || fn(700)!=='O\\'rta' || fn(200)!=='Past') return 'Oylik darajalari hisobi xato';\nreturn null;"
   }
 ]
 ,
