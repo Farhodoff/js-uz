@@ -80,9 +80,7 @@ export function useLesson() {
 
   const openLesson = useCallback((lesson, section) => {
     const sec = section || activeSection;
-    setActiveLesson(lesson);
-    setCurrentExerciseIndex(0);
-    setCode(lesson.exercises?.[0]?.startingCode || lesson.code || lesson.task || '');
+    // Let the useEffect handle the loading to avoid setting an unloaded reference
     navigate(`/${sec}/${lesson.id}`);
   }, [activeSection, navigate]);
 
