@@ -296,7 +296,7 @@ function renderUsersTable(usersData) {
   {
     "id": 1,
     "title": "querySelector yordamida element tanlash",
-    "instruction": "`document.querySelector` yordamida sahifadagi birinchi `h1` elementini tanlang va uni `title` o'zgaruvchisiga saqlang.",
+    "instruction": "\`document.querySelector\` yordamida sahifadagi birinchi \`h1\` elementini tanlang va uni \`title\` o'zgaruvchisiga saqlang.",
     "startingCode": "// Kodni shu yerda yozing\n",
     "hint": "const title = document.querySelector('h1');",
     "test": "if (code.includes('document.querySelector') && (code.includes('h1') || code.includes(\"h1\"))) return null; return 'document.querySelector yordamida h1 elementini tanlang';"
@@ -304,7 +304,7 @@ function renderUsersTable(usersData) {
   {
     "id": 2,
     "title": "textContent yordamida matnni o'zgartirish",
-    "instruction": "Berilgan `header` elementining `textContent` xususiyatini 'Salom JS' matniga o'zgartiruvchi `changeText(header)` funksiyasini yozing.",
+    "instruction": "Berilgan \`header\` elementining \`textContent\` xususiyatini 'Salom JS' matniga o'zgartiruvchi \`changeText(header)\` funksiyasini yozing.",
     "startingCode": "function changeText(header) {\n  // Kodni shu yerga yozing\n}",
     "hint": "header.textContent = 'Salom JS';",
     "test": "try { const mockHeader = { textContent: '' }; changeText(mockHeader); if (mockHeader.textContent !== 'Salom JS') return 'header.textContent to\\'g\\'ri o\\'zgartirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
@@ -312,10 +312,66 @@ function renderUsersTable(usersData) {
   {
     "id": 3,
     "title": "classList yordamida klassni o'zgartirish (Toggle)",
-    "instruction": "Berilgan `element` obyekti klasslari ichida `active` klassi borligini `classList.toggle` yordamida almashtiruvchi `toggleActive(element)` funksiyasini yozing.",
+    "instruction": "Berilgan \`element\` obyekti klasslari ichida \`active\` klassi borligini \`classList.toggle\` yordamida almashtiruvchi \`toggleActive(element)\` funksiyasini yozing.",
     "startingCode": "function toggleActive(element) {\n  // Kodni shu yerga yozing\n}",
     "hint": "element.classList.toggle('active');",
     "test": "try { let toggled = null; const mockEl = { classList: { toggle: (c) => toggled = c } }; toggleActive(mockEl); if (toggled !== 'active') return 'classList.toggle yordamida active klassi almashtirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 4,
+    "title": "getElementById yordamida element topish",
+    "instruction": "\`document.getElementById\` yordamida sahifadan \`main-content\` ID-li elementni topib, uni \`content\` o'zgaruvchisiga saqlovchi \`findContent()\` funksiyasini yozing va uni qaytaring.",
+    "startingCode": "function findContent() {\n  // Kodni shu yerga yozing\n}",
+    "hint": "const content = document.getElementById('main-content'); return content;",
+    "test": "if (code.includes('document.getElementById') && code.includes('main-content')) return null; return 'document.getElementById yordamida main-content elementini toping';"
+  },
+  {
+    "id": 5,
+    "title": "querySelectorAll va forEach bilan ishlash",
+    "instruction": "Sahifadagi barcha \`.item\` klassli elementlarni \`document.querySelectorAll\` yordamida tanlang va ularning har biriga \`forEach\` yordamida \`highlighted\` klassini qo'shuvchi \`highlightAll()\` funksiyasini yozing.",
+    "startingCode": "function highlightAll() {\n  // Kodni shu yerga yozing\n}",
+    "hint": "document.querySelectorAll('.item').forEach(el => el.classList.add('highlighted'));",
+    "test": "if (code.includes('querySelectorAll') && code.includes('forEach') && code.includes('highlighted')) return null; return 'querySelectorAll, forEach va highlighted klassidan foydalaning';"
+  },
+  {
+    "id": 6,
+    "title": "Element stilini o'zgartirish (style)",
+    "instruction": "Berilgan \`element\` ning fon rangini (backgroundColor) \`#3498db\` ga va matn rangini (color) \`white\` ga o'zgartiruvchi \`applyStyle(element)\` funksiyasini yozing.",
+    "startingCode": "function applyStyle(element) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "element.style.backgroundColor = '#3498db'; element.style.color = 'white';",
+    "test": "try { const mockEl = { style: {} }; applyStyle(mockEl); if (mockEl.style.backgroundColor !== '#3498db') return 'backgroundColor #3498db bo\\'lishi kerak'; if (mockEl.style.color !== 'white') return 'color white bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 7,
+    "title": "parentElement yordamida ota elementga murojaat",
+    "instruction": "Berilgan \`child\` elementining ota elementini topib, ota elementga \`parent-active\` klassini qo'shuvchi \`markParent(child)\` funksiyasini yozing.",
+    "startingCode": "function markParent(child) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "child.parentElement.classList.add('parent-active');",
+    "test": "try { let addedClass = null; const mockChild = { parentElement: { classList: { add: (c) => addedClass = c } } }; markParent(mockChild); if (addedClass !== 'parent-active') return 'Ota elementga parent-active klassi qo\\'shilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 8,
+    "title": "dataset yordamida custom atribut o'qish",
+    "instruction": "Berilgan \`element\` ning \`data-user-id\` atributi qiymatini \`dataset\` orqali o'qib, uni qaytaruvchi \`getUserId(element)\` funksiyasini yozing.",
+    "startingCode": "function getUserId(element) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "return element.dataset.userId;",
+    "test": "try { const mockEl = { dataset: { userId: '42' } }; const result = getUserId(mockEl); if (result !== '42') return 'dataset.userId qiymati qaytarilishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 9,
+    "title": "children xususiyati bilan bolalarni sanash",
+    "instruction": "Berilgan \`container\` elementining nechta bola elementi borligini \`children.length\` orqali aniqlab qaytaruvchi \`countChildren(container)\` funksiyasini yozing.",
+    "startingCode": "function countChildren(container) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "return container.children.length;",
+    "test": "try { const mockContainer = { children: { length: 5 } }; const result = countChildren(mockContainer); if (result !== 5) return 'children.length qiymati qaytarilishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 10,
+    "title": "getAttribute va setAttribute bilan ishlash",
+    "instruction": "Berilgan \`element\` ning \`href\` atributini \`getAttribute\` orqali o'qib, agar u \`#\` ga teng bo'lsa, \`setAttribute\` yordamida uni \`https://example.com\` ga o'zgartiruvchi \`fixLink(element)\` funksiyasini yozing.",
+    "startingCode": "function fixLink(element) {\n  // Kodni shu yerga yozing\n}",
+    "hint": "if (element.getAttribute('href') === '#') { element.setAttribute('href', 'https://example.com'); }",
+    "test": "try { let currentHref = '#'; const mockEl = { getAttribute: (a) => currentHref, setAttribute: (a, v) => { currentHref = v; } }; fixLink(mockEl); if (currentHref !== 'https://example.com') return 'href atributi https://example.com ga o\\'zgartirilishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
   }
 ]
 ,

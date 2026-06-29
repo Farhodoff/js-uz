@@ -1,99 +1,355 @@
 export const strictMode = {
-  title: "Qat'iy Rejim (Strict Mode): 'use strict'",
-  content: `
-JavaScript dastlab juda yumshoq tillardan biri edi. Ya'ni, u ko'plab kichik xatolarga ko'z yumar va dastur ishini davom ettiraverardi. Bu kichik loyihalarda oson tuyulsa-da, katta loyihalarda juda ko'p "topib bo'lmas" xatolarga sabab bo'lardi.
-ES5 (2009-yil) bilan birga JavaScript'da **Qat'iy rejim (Strict Mode)** joriy etildi.
+  id: "strictMode",
+  title: "Strict Mode (Qat'iy Rejim)",
+  language: "javascript",
+  theory: `
+## 1. 💡 Sodda Tushuntirish
+**Strict Mode** (\`"use strict";\`) — bu JavaScript-da xatolarni kamaytirish, xavfsizlikni oshirish va eski, noto'g'ri odatlarni cheklash uchun mo'ljallangan maxsus rejim. U JavaScript kodini yanada e'tiborli va qat'iy tekshiradi.
 
-### 1. Uni qanday yoqish kerak?
-Qat'iy rejimni yoqish uchun faylning yoki funksiyaning eng boshiga \`"use strict";\` (qo'shtirnoq ichida) yozib qo'yish kerak.
+Oddiy rejimda JavaScript ko'plab xatolarni jimgina o'tkazib yuboradi. Strict Mode-da esa bu xatolar ko'rsatiladi (Exception tashlanadi).
 
+## 2. 💻 Real Kod Misollari
+**Strict mode-ni yoqish:**
 \`\`\`javascript
 "use strict";
 
-// Bu fayldagi barcha kodlar qat'iy rejimda ishlaydi
-let message = "Hello";
+x = 10; // ReferenceError: x is not defined (chunki var/let/const yozilmagan)
 \`\`\`
 
-Agar siz faqat bitta funksiya ichida yoqmoqchi bo'lsangiz:
+**Funksiya ichida yoqish:**
 \`\`\`javascript
-function strictFunction() {
+function qatiyFunksiya() {
   "use strict";
-  // faqat shu funksiya qat'iy
+  y = 20; // ReferenceError
 }
 \`\`\`
 
-*(ES6 Modullar \`import/export\` va \`class\` lar avtomatik tarzda qat'iy rejimda ishlaydi. Shuning uchun React yoki Node.js loyihalarda ko'pincha qo'lda "use strict" yozilmaydi).*
+## 3. ⚙️ Qanday Ishlaydi
+Strict mode quyidagi holatlarni cheklaydi:
+1. **E'lon qilinmagan o'zgaruvchilardan foydalanish:** \`x = 10;\` xato beradi.
+2. **O'chirish mumkin bo'lmagan narsalarni o'chirish:** \`delete Object.prototype;\` xato beradi.
+3. **Parametr nomlarining takrorlanishi:** \`function func(p1, p1) {}\` xato beradi.
+4. **Sakkizlik sanoq sistemasi (Octal):** \`010\` xato beradi.
+5. **\`this\` ning qiymati:** Global kontekstda \`this\` qat'iy rejimda \`undefined\` bo'ladi (oddiy rejimda \`window\`).
 
-### 2. Strict Mode nimalarni o'zgartiradi?
-
-**A. E'lon qilinmagan o'zgaruvchilarni taqiqlaydi (Accidental Globals)**
-Oddiy rejimda agar \`let\` yoki \`const\` yozish esdan chiqsa, u yashirincha \`window\` obyektiga qo'shilib qolardi. Strict rejim buni darhol to'xtatadi.
-
+## 4. 🔥 ROAST (Juniorlarning Sharmandali Xatolari)
+### YOMON:
 \`\`\`javascript
-"use strict";
-
-userAge = 25; // XATOLIK! (ReferenceError: userAge is not defined)
-// chunki oldiga let yoki var yozilmagan.
+function hisobla(narx) {
+  soliq = 0.12; // var/let/const yo'q, global obyektni ifloslayapti
+  return narx + (narx * soliq);
+}
 \`\`\`
+Juniorlar ko'pincha \`use strict\` ishlatmaydilar va jimgina paydo bo'ladigan global o'zgaruvchilar ("leak") tufayli soatlab xato qidiradilar.
 
-**B. O'chirib bo'lmaydigan narsalarni o'chirishga ruxsat bermaydi**
-\`delete\` operatori orqali o'zgaruvchilarni, funksiyalarni yoki muzlatilgan obyektlarni (Object.freeze) o'chirishga harakat qilsangiz, strict rejim jim turmasdan xato tashlaydi.
-
+### YAXSHI:
 \`\`\`javascript
 "use strict";
 
-const person = Object.freeze({ name: "Ali" });
-delete person.name; // XATOLIK! (TypeError)
-\`\`\`
-
-**C. Parametrlarda bir xil nomlarni taqiqlaydi**
-Oddiy rejimda funksiyaga bitta ismli ikki xil parametr berib yuborish mumkin edi.
-\`\`\`javascript
-"use strict";
-
-function sum(a, a, c) { // XATOLIK! Duplicate parameter name
-  return a + a + c;
+function hisobla(narx) {
+  const soliq = 0.12;
+  return narx + (narx * soliq);
 }
 \`\`\`
 
-**D. \`this\` kalit so'zi \`window\` ga emas, \`undefined\` ga teng bo'ladi**
-Oddiy rejimda oddiy funksiya chaqirilganda ichidagi \`this\` to'g'ridan-to'g'ri \`window\` (global obyekt) ga ishora qilardi. Strict rejimda u global o'zgaruvchilarni tasodifan buzib qo'ymaslik uchun \`undefined\` ga o'zgaradi.
+## 5. 🎯 Intervyu Savollari
+### Junior (1-4)
+1. **"use strict" nima va u qanday yoqiladi?**
+   Javob: JS kodini xatosiz va xavfsiz yozish rejimi. Fayl boshiga yoki funksiya ichiga \`"use strict";\` yozib yoqiladi.
+2. **Strict Mode-da e'lon qilinmagan o'zgaruvchiga qiymat bersa nima bo'ladi?**
+   Javob: \`ReferenceError\` qaytaradi.
+3. **\`this\` Strict Mode-da funksiya ichida nima qaytaradi?**
+   Javob: Agar funksiya qandaydir obyektning metodi sifatida chaqirilmasa, \`undefined\` bo'ladi.
+4. **Funksiya parametrlarida bir xil nom bo'lishiga ruxsat bormi?**
+   Javob: Yo'q, qat'iy rejimda parametr nomlari takrorlansa Sintaksis xatosi (\`SyntaxError\`) beradi.
 
-\`\`\`javascript
-"use strict";
+### Middle (5-8)
+5. **ES6 modullar (import/export) ichida "use strict" yozish shartmi?**
+   Javob: Yo'q, ES6 modullari avtomatik tarzda doim Strict Mode-da ishlaydi.
+6. **Class-lar ichida qat'iy rejim qanday ishlaydi?**
+   Javob: Class-larning ichki qismi (metodlari va xususiyatlari) doim avtomatik qat'iy rejimda ishlaydi.
+7. **Strict Mode \`eval()\` ga qanday ta'sir qiladi?**
+   Javob: \`eval()\` ichida e'lon qilingan o'zgaruvchilar tashqi muhitga chiqmaydi (alohida scope bo'ladi).
+8. **Qat'iy rejim \`arguments\` obyektiga ta'sir qiladimi?**
+   Javob: Ha. Oddiy rejimda \`arguments\` va parametrlar bir-biriga bog'langan bo'ladi, qat'iy rejimda esa bog'lanmagan bo'ladi va \`arguments.callee\` ishlashiga ruxsat yo'q.
 
-function showThis() {
-  console.log(this);
-}
-showThis(); // undefined
+### Senior (9-12)
+9. **\`delete\` operatori qat'iy rejimda qanday xato berishi mumkin?**
+   Javob: O'chirish mumkin bo'lmagan xususiyatni (masalan, o'zgaruvchini yoki non-configurable property) o'chirmoqchi bo'lsangiz xato beradi.
+10. **Zaxiralangan so'zlar (Reserved words) ro'yxati o'zgaradimi?**
+    Javob: Ha, \`implements\`, \`interface\`, \`let\`, \`package\`, \`private\`, \`protected\`, \`public\`, \`static\`, \`yield\` kabi so'zlar Strict Mode-da o'zgaruvchi nomi bo'lolmaydi.
+11. **Nega yirik eski loyihalarga birdaniga global "use strict" qo'shish xavfli?**
+    Javob: Chunki u oldin jimgina ishlab turgan yomon xatolarni Error-ga aylantiradi va butun dastur qulab tushishi mumkin.
+12. **Read-only xususiyatlarga qiymat bermoqchi bo'lsa nima sodir bo'ladi?**
+    Javob: Oddiy rejimda jimgina e'tiborsiz qoldiriladi, qat'iy rejimda esa \`TypeError\` otadi.
+
+## 6. Mermaid Diagramma
+\`\`\`mermaid
+graph TD
+    A[JavaScript Kod] --> B{Strict Mode bormi?}
+    B -- Yo'q --> C[Oddiy Rejim: Xatolar yashiriladi, xavfsizlik past]
+    B -- Ha --> D[Qat'iy Rejim: Xatolar ko'rsatiladi, xavfsizlik baland]
+    D --> E[this == undefined]
+    D --> F[ReferenceError: E'lon qilinmagan]
+    D --> G[Parametr nomlari takrorlanmas]
 \`\`\`
-
-### Xulosa
-"Strict Mode" zamonaviy dasturlashda doimo faol turishi kerak bo'lgan "xavfsizlik kamari"dir. U sizning xatolaringizni kod ishga tushishidanoq (ko'zdan qochmasidan oldin) aniqlashga yordam beradi.
-  `,
+`,
   exercises: [
     {
-      id: "strict-1",
-      title: "Strict mode va o'zgaruvchilar",
-      description: `'use strict' yoqilgan kodda let/const ishlatmasdan o'zgaruvchi yaratilsa xato tashlanadi. Quyidagi funksiyani shunday o'zgartiring-ki, u to'g'ri ishlasin (xato tashlamasin).`,
-      initialCode: `function createName() {
-  "use strict";
-  name = "JS Dasturchi";
-  return name;
-}`,
-      solution: `function createName() {
-  "use strict";
-  const name = "JS Dasturchi";
-  return name;
-}`,
-      tests: [
-        {
-          test: `
-          const res = createName();
-          return res === "JS Dasturchi";`,
-          description: "O'zgaruvchi e'lon qilinib (let yoki const) to'g'ri qiymat qaytishi kerak"
-        }
-      ]
+      id: "strict_ex_1",
+      title: "Strict mode yoqish",
+      instruction: "Qat'iy rejimni yoqing va `x` o'zgaruvchisini to'g'ri e'lon qilib (const), unga 50 qiymatini bering.",
+      startingCode: `// Bu yerda strict mode yoqing\nx = 50;\n`,
+      hint: "Fayl boshiga 'use strict'; yozing va x oldidan const/let qo'ying.",
+      test: `
+        const codeString = code.trim();
+        expect(codeString.startsWith('"use strict";') || codeString.startsWith("'use strict';")).toBe(true);
+        expect(codeString.includes('const x') || codeString.includes('let x')).toBe(true);
+      `
+    },
+    {
+      id: "strict_ex_2",
+      title: "Undeclared Variables",
+      instruction: "Qat'iy rejimda e'lon qilinmagan o'zgaruvchidan foydalanish xato berishidan qochish uchun funksiya ichidagi `message` ni to'g'ri e'lon qiling.",
+      startingCode: `function greet() {\n  "use strict";\n  message = "Hello World";\n  return message;\n}`,
+      hint: "message dan oldin let yoki const qo'yish kerak.",
+      test: `
+        const result = greet();
+        expect(result).toBe("Hello World");
+        expect(code.includes('const message') || code.includes('let message')).toBe(true);
+      `
+    },
+    {
+      id: "strict_ex_3",
+      title: "this qiymatini tushunish",
+      instruction: "`getThis` funksiyasi Strict Mode'da `this` ni qaytaradi. U global kontekstda nimani qaytarishini kutilgan javobga (expectedValue) yozing.",
+      startingCode: `"use strict";\nfunction getThis() {\n  return this;\n}\n\nconst expectedValue = null; // o'zgartiring`,
+      hint: "Strict Mode'da this global ob'yektga (window) emas, undefined ga teng bo'ladi.",
+      test: `
+        expect(expectedValue).toBeUndefined();
+      `
+    },
+    {
+      id: "strict_ex_4",
+      title: "Takrorlanuvchi parametrlar",
+      instruction: "Quyidagi funksiyadagi parametrlarni shunday to'g'rilangki, Strict Mode xato bermasin. Parametrlar `a` va `b` bo'lsin.",
+      startingCode: `"use strict";\nfunction sum(a, a) {\n  return a + a;\n}`,
+      hint: "Ikkinchi 'a' parametrini 'b' ga o'zgartiring va 'a + b' qaytaring.",
+      test: `
+        expect(sum(5, 10)).toBe(15);
+        expect(code.includes('a, b') || code.includes('a,b')).toBe(true);
+      `
+    },
+    {
+      id: "strict_ex_5",
+      title: "Octal Literals (Sakkizlik sanoq)",
+      instruction: "Strict Mode'da `010` (octal) yozish xato beradi. Uni ES6 dagi to'g'ri sakkizlik yozish uslubi (`0o10`) bilan yoki oddiy o'nlik (8) soniga almashtiring.",
+      startingCode: `"use strict";\nconst num = 010; // bu xato`,
+      hint: "ES6 da octal sonlar 0o bilan boshlanadi: 0o10. Yoki oddiygina 8 deb yozishingiz mumkin.",
+      test: `
+        expect(num).toBe(8);
+        expect(!code.includes('010')).toBe(true);
+      `
+    },
+    {
+      id: "strict_ex_6",
+      title: "Read-only property",
+      instruction: "Quyidagi ob'yektning yozish taqiqlangan (`writable: false`) xususiyatini o'zgartirishga urinish Strict Mode'da xato beradi. O'zgartirish qatorini o'chirib tashlang.",
+      startingCode: `"use strict";\nconst obj = {};\nObject.defineProperty(obj, "prop", { value: 1, writable: false });\nobj.prop = 2; // bu qatorni o'chiring\n`,
+      hint: "Read-only bo'lgan 'obj.prop = 2' qatorini butunlay olib tashlang.",
+      test: `
+        expect(obj.prop).toBe(1);
+        expect(!code.includes('obj.prop = 2')).toBe(true);
+      `
+    },
+    {
+      id: "strict_ex_7",
+      title: "O'chirish (delete) cheklovi",
+      instruction: "Strict Mode'da o'zgaruvchilarni `delete` bilan o'chirib bo'lmaydi. Xato qatorini olib tashlang.",
+      startingCode: `"use strict";\nlet myVar = 10;\ndelete myVar; // bu xato`,
+      hint: "'delete myVar' qatorini o'chiring.",
+      test: `
+        expect(myVar).toBe(10);
+        expect(!code.includes('delete myVar')).toBe(true);
+      `
+    },
+    {
+      id: "strict_ex_8",
+      title: "Reserved words (Zaxiralangan so'zlar)",
+      instruction: "Strict Mode'da `public` kabi zaxiralangan so'zlardan o'zgaruvchi nomi sifatida foydalanib bo'lmaydi. O'zgaruvchi nomini `isPublic` ga o'zgartiring.",
+      startingCode: `"use strict";\nconst public = true; // xato`,
+      hint: "'public' o'rniga 'isPublic' nomidan foydalaning.",
+      test: `
+        expect(isPublic).toBe(true);
+        expect(!code.includes('const public')).toBe(true);
+      `
+    },
+    {
+      id: "strict_ex_9",
+      title: "eval() o'ziga xosligi",
+      instruction: "Strict Mode'da `eval` ichidagi o'zgaruvchilar tashqariga chiqmaydi. `evalResult` ga eval ishlaganda try/catch orqali nima xato qaytishi yoki qanday baholanishini tushunish uchun kodni yozing.",
+      startingCode: `"use strict";\nlet evalResult;\ntry {\n  eval("var x = 10;");\n  evalResult = x;\n} catch (e) {\n  evalResult = "Error";\n}`,
+      hint: "Strict Mode'da x ko'rinmasligi uchun catch ishlaydi va evalResult 'Error' bo'ladi.",
+      test: `
+        expect(evalResult).toBe("Error");
+      `
+    },
+    {
+      id: "strict_ex_10",
+      title: "with statement taqiqi",
+      instruction: "Strict Mode'da `with` taqiqlangan. Kodni `with` ishlatmasdan obyekt xususiyatiga to'g'ridan-to'g'ri murojaat qiladigan qilib yozing.",
+      startingCode: `"use strict";\nconst math = { pi: 3.14 };\nlet radius = 2;\nlet area;\nwith(math) {\n  area = pi * radius * radius;\n}`,
+      hint: "with bloğini o'chirib, area = math.pi * radius * radius; deb yozing.",
+      test: `
+        expect(area).toBe(12.56);
+        expect(!code.includes('with')).toBe(true);
+      `
+    }
+  ],
+  quizzes: [
+    {
+      id: "strict_q_1",
+      question: "JavaScript-da Strict Mode qanday yoqiladi?",
+      options: [
+        "use strict();",
+        "\"use strict\";",
+        "strict-mode: on;",
+        "enable strict;"
+      ],
+      correctAnswer: "\"use strict\";",
+      explanation: "Fayl boshiga yoki funksiya boshiga string shaklida 'use strict'; yoki \"use strict\"; yoziladi."
+    },
+    {
+      id: "strict_q_2",
+      question: "Strict mode qanday xatoning oldini oladi?",
+      options: [
+        "Sintaksis xatolarni butunlay yo'q qiladi",
+        "E'lon qilinmagan o'zgaruvchilarga qiymat berishni cheklaydi",
+        "Kodning bajarilishini 10 marta tezlashtiradi",
+        "Faillarni avtomatik saqlaydi"
+      ],
+      correctAnswer: "E'lon qilinmagan o'zgaruvchilarga qiymat berishni cheklaydi",
+      explanation: "Oddiy rejimda e'lon qilinmagan o'zgaruvchi (x = 10) global ob'yektga yozilib ketsa, qat'iy rejimda xato (ReferenceError) beradi."
+    },
+    {
+      id: "strict_q_3",
+      question: "Strict Mode'da global 'this' funksiya ichida qanday qiymatga ega?",
+      options: [
+        "window obyekti",
+        "null",
+        "undefined",
+        "String"
+      ],
+      correctAnswer: "undefined",
+      explanation: "Oddiy rejimda this window (yoki global) obyektni ko'rsatadi, qat'iy rejimda u undefined bo'ladi (agar metod bo'lmasa)."
+    },
+    {
+      id: "strict_q_4",
+      question: "ES6 Modullar (import/export) ichida Strict Mode-ni qo'lda yoqish shartmi?",
+      options: [
+        "Ha, har doim",
+        "Yo'q, faqat eski browserlar uchun",
+        "Yo'q, ES6 modullari doim avtomatik qat'iy rejimda ishlaydi",
+        "Ha, faqat React loyihalarda"
+      ],
+      correctAnswer: "Yo'q, ES6 modullari doim avtomatik qat'iy rejimda ishlaydi",
+      explanation: "Agar kodingiz type=\"module\" bo'lsa yoki ES6 modullarida ishlasa, 'use strict' avtomatik yoqiladi."
+    },
+    {
+      id: "strict_q_5",
+      question: "Quyidagi parametrlar bilan funksiya qat'iy rejimda ishlaydimi? function(a, a) { }",
+      options: [
+        "Ha, a ning so'nggi qiymati olinadi",
+        "Yo'q, SyntaxError beradi",
+        "Ha, lekin a undefined bo'ladi",
+        "Yo'q, ReferenceError beradi"
+      ],
+      correctAnswer: "Yo'q, SyntaxError beradi",
+      explanation: "Strict Mode-da funksiya parametrlari nomlari takrorlanishi mumkin emas."
+    },
+    {
+      id: "strict_q_6",
+      question: "Qaysi amaliyot qat'iy rejimda taqiqlanadi?",
+      options: [
+        "O'zgaruvchini var bilan e'lon qilish",
+        "delete operatori bilan obyektni (o'zgaruvchini) o'chirish",
+        "Funksiyalar ichida funksiya yaratish",
+        "console.log ishlatish"
+      ],
+      correctAnswer: "delete operatori bilan obyektni (o'zgaruvchini) o'chirish",
+      explanation: "delete variableName yoki delete functionName kabi amallar qat'iy rejimda xato beradi."
+    },
+    {
+      id: "strict_q_7",
+      question: "Class'lar ichida qat'iy rejim qanday holatda bo'ladi?",
+      options: [
+        "Faqat qo'lda yoqilsa ishlaydi",
+        "Constructor ichidagina ishlaydi",
+        "Class'larning barcha qismlari avtomatik qat'iy rejimda bo'ladi",
+        "Class'larda qat'iy rejimni o'chirib qo'yish mumkin"
+      ],
+      correctAnswer: "Class'larning barcha qismlari avtomatik qat'iy rejimda bo'ladi",
+      explanation: "Class tana qismi har doim (avtomatik ravishda) Strict Mode'da bo'ladi."
+    },
+    {
+      id: "strict_q_8",
+      question: "Qat'iy rejimda zaxiralangan so'zlardan o'zgaruvchi sifatida foydalanish...",
+      options: [
+        "Mumkin emas",
+        "Faqat var bilan mumkin",
+        "Mumkin",
+        "Faqat let bilan mumkin"
+      ],
+      correctAnswer: "Mumkin emas",
+      explanation: "public, private, interface kabi zaxiralangan so'zlar qat'iy rejimda taqiqlanadi."
+    },
+    {
+      id: "strict_q_9",
+      question: "Read-only (yozish ruxsat etilmagan) xususiyatga qiymat bersak Strict mode'da nima bo'ladi?",
+      options: [
+        "Qiymat jimgina o'zgarmay qoladi",
+        "TypeError otiladi",
+        "SyntaxError otiladi",
+        "Qiymat baribir o'zgaradi"
+      ],
+      correctAnswer: "TypeError otiladi",
+      explanation: "Oddiy rejimda e'tiborsiz qoldiriladigan bu holat Strict Mode'da Type Error chiqaradi."
+    },
+    {
+      id: "strict_q_10",
+      question: "Qat'iy rejimni butun loyiha o'rniga faqat bitta funksiyada yoqish mumkinmi?",
+      options: [
+        "Yo'q, faqat eng tepada yozilishi shart",
+        "Ha, funksiyaning birinchi qatoriga 'use strict' yozib",
+        "Ha, lekin faqat arrow funksiyalarda",
+        "Yo'q, qat'iy rejim global bo'lishi kerak"
+      ],
+      correctAnswer: "Ha, funksiyaning birinchi qatoriga 'use strict' yozib",
+      explanation: "Siz ma'lum bir funksiyani ichiga 'use strict' yozib, qat'iy rejimni faqat shu funksiya muhitida (scope) yoqishingiz mumkin."
+    },
+    {
+      id: "strict_q_11",
+      question: "Octal (sakkizlik) literal yozuvi `010` qat'iy rejimda ruxsat etiladimi?",
+      options: [
+        "Ha, u 8 degan sonni anglatadi",
+        "Yo'q, SyntaxError beradi",
+        "Ha, qat'iy rejim bunga e'tibor bermaydi",
+        "Yo'q, u avtomatik o'nlikka aylanadi"
+      ],
+      correctAnswer: "Yo'q, SyntaxError beradi",
+      explanation: "Köhnə uslubdagi octal literal (0 bilan boshlanadigan, masalan 010) qat'iy rejimda ruxsat etilmaydi. Buning o'rniga ES6 da 0o10 (nol va 'o') ishlatiladi."
+    },
+    {
+      id: "strict_q_12",
+      question: "'with' ifodasini qat'iy rejimda ishlata olamizmi?",
+      options: [
+        "Ha, tezroq ishlash uchun",
+        "Yo'q, u xato (SyntaxError) beradi",
+        "Ha, faqat ob'yektlar bilan",
+        "Yo'q, chunki u eskirgan (lekin xato bermaydi)"
+      ],
+      correctAnswer: "Yo'q, u xato (SyntaxError) beradi",
+      explanation: "Qat'iy rejimda kodni tahlil qilishni qiyinlashtirgani va scope chalkashligini keltirib chiqargani uchun 'with' butunlay taqiqlangan."
     }
   ]
 };

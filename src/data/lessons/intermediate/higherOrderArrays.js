@@ -330,7 +330,7 @@ Massivlar ustida yuqori tartibli metodlarni qo'llashda quyidagi qoidalarga rioya
   {
     "id": 1,
     "title": "Foydalanuvchilarni Filtrlash va Ismlarini Olish",
-    "instruction": "Sizga foydalanuvchilar obyekti massivi beriladi. Har bir foydalanuvchi `name` (ism), `age` (yosh) va `isActive` (faol) xususiyatlariga ega. Siz faol bo'lgan (`isActive: true`) va yoshi 18 dan katta yoki teng bo'lgan foydalanuvchilarning faqat ismlarini massiv ko'rinishida qaytaruvchi `getActiveAdultNames(users)` funksiyasini yozishingiz kerak. Buni `.filter()` va `.map()` metodlaridan foydalanib bajaring.",
+    "instruction": "Sizga foydalanuvchilar obyekti massivi beriladi. Har bir foydalanuvchi \`name\` (ism), \`age\` (yosh) va \`isActive\` (faol) xususiyatlariga ega. Siz faol bo'lgan (\`isActive: true\`) va yoshi 18 dan katta yoki teng bo'lgan foydalanuvchilarning faqat ismlarini massiv ko'rinishida qaytaruvchi \`getActiveAdultNames(users)\` funksiyasini yozishingiz kerak. Buni \`.filter()\` va \`.map()\` metodlaridan foydalanib bajaring.",
     "startingCode": "function getActiveAdultNames(users) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "users.filter(user => user.isActive && user.age >= 18).map(user => user.name) orqali yechishingiz mumkin.",
     "test": "const sandbox = new Function(code + '; return getActiveAdultNames;');\nconst fn = sandbox();\nconst testUsers = [\n  { name: 'Ali', age: 20, isActive: true },\n  { name: 'Vali', age: 16, isActive: true },\n  { name: 'Sardor', age: 25, isActive: false },\n  { name: 'Olim', age: 18, isActive: true }\n];\nconst result = fn(testUsers);\nif (!Array.isArray(result)) return 'Natija massiv bo\\'lishi kerak';\nif (result.length !== 2) return 'Natijadagi elementlar soni noto\\'g\\'ri';\nif (result[0] !== 'Ali' || result[1] !== 'Olim') return 'Natijadagi ismlar noto\\'g\\'ri. Kutilgan: [\"Ali\", \"Olim\"], Olingan: ' + JSON.stringify(result);\nreturn null;"
@@ -338,7 +338,7 @@ Massivlar ustida yuqori tartibli metodlarni qo'llashda quyidagi qoidalarga rioya
   {
     "id": 2,
     "title": "Kategoriyalar Bo'yicha Mahsulotlar Narxini Jamlash",
-    "instruction": "Sizga mahsulotlar ro'yxati (massiv) beriladi. Har bir mahsulot `name`, `category` (kategoriya) va `price` (narx) xususiyatlariga ega. Berilgan kategoriya bo'yicha barcha mahsulotlar narxining umumiy yig'indisini hisoblaydigan `getTotalPriceByCategory(products, category)` funksiyasini yozing. Buning uchun `.filter()` va `.reduce()` yoki faqat `.reduce()` metodidan foydalaning. Agar mahsulotlar topilmasa, `0` qaytarsin.",
+    "instruction": "Sizga mahsulotlar ro'yxati (massiv) beriladi. Har bir mahsulot \`name\`, \`category\` (kategoriya) va \`price\` (narx) xususiyatlariga ega. Berilgan kategoriya bo'yicha barcha mahsulotlar narxining umumiy yig'indisini hisoblaydigan \`getTotalPriceByCategory(products, category)\` funksiyasini yozing. Buning uchun \`.filter()\` va \`.reduce()\` yoki faqat \`.reduce()\` metodidan foydalaning. Agar mahsulotlar topilmasa, \`0\` qaytarsin.",
     "startingCode": "function getTotalPriceByCategory(products, category) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "Avval berilgan kategoriya bo'yicha filter qiling, so'ngra reduce yordamida price larni jamlang. reduce boshlang'ich qiymatini 0 qilib belgilashni unutmang.",
     "test": "const sandbox = new Function(code + '; return getTotalPriceByCategory;');\nconst fn = sandbox();\nconst products = [\n  { name: 'Telefon', category: 'electronics', price: 500 },\n  { name: 'Kitob', category: 'books', price: 15 },\n  { name: 'Noutbuk', category: 'electronics', price: 1200 },\n  { name: 'Ruchka', category: 'books', price: 2 }\n];\nconst sumElec = fn(products, 'electronics');\nconst sumBooks = fn(products, 'books');\nconst sumEmpty = fn(products, 'clothing');\nif (sumElec !== 1700) return 'Electronics kategoriyasi bo\\'yicha yig\\'indi xato. Kutilgan: 1700, Olingan: ' + sumElec;\nif (sumBooks !== 17) return 'Books kategoriyasi bo\\'yicha yig\\'indi xato. Kutilgan: 17, Olingan: ' + sumBooks;\nif (sumEmpty !== 0) return 'Mavjud bo\\'lmagan kategoriya uchun 0 qaytishi kerak';\nreturn null;"
@@ -346,10 +346,66 @@ Massivlar ustida yuqori tartibli metodlarni qo'llashda quyidagi qoidalarga rioya
   {
     "id": 3,
     "title": "Talabalarni Guruhlash",
-    "instruction": "Sizga talabalar massivi beriladi. Har bir talaba `name` (ism) va `grade` (baho: 'A', 'B', 'C' va h.k.) xususiyatlariga ega. Talabalarni baholari bo'yicha guruhlaydigan `groupStudentsByGrade(students)` funksiyasini yozing. Funksiya qaytaradigan obyekt kalitlari baholar bo'lishi va qiymatlari o'sha bahoni olgan talabalarning ismlari massividan iborat bo'lishi kerak. Buning uchun `.reduce()` metodidan foydalaning.",
+    "instruction": "Sizga talabalar massivi beriladi. Har bir talaba \`name\` (ism) va \`grade\` (baho: 'A', 'B', 'C' va h.k.) xususiyatlariga ega. Talabalarni baholari bo'yicha guruhlaydigan \`groupStudentsByGrade(students)\` funksiyasini yozing. Funksiya qaytaradigan obyekt kalitlari baholar bo'lishi va qiymatlari o'sha bahoni olgan talabalarning ismlari massividan iborat bo'lishi kerak. Buning uchun \`.reduce()\` metodidan foydalaning.",
     "startingCode": "function groupStudentsByGrade(students) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "reduce metodining boshlang'ich qiymatini bo'sh obyekt `{}` qilib oling. reduce ichida, agar `acc[student.grade]` mavjud bo'lmasa, uni bo'sh massiv `[]` sifatida e'lon qiling, keyin talabaning ismini unga push qiling.",
-    "test": "const sandbox = new Function(code + '; return groupStudentsByGrade;');\nconst fn = sandbox();\nconst students = [\n  { name: 'Ali', grade: 'A' },\n  { name: 'Vali', grade: 'B' },\n  { name: 'Sardor', grade: 'A' },\n  { name: 'Olim', grade: 'C' },\n  { name: 'Eldor', grade: 'B' }\n];\nconst result = fn(students);\nif (typeof result !== 'object' || result === null) return 'Natija obyekt bo\\'ish kerak';\nif (!result.A || !result.B || !result.C) return 'Natija obyektida barcha baholar kalit sifatida mavjud emas';\nif (result.A.length !== 2 || !result.A.includes('Ali') || !result.A.includes('Sardor')) return 'A baho guruhi xato';\nif (result.B.length !== 2 || !result.B.includes('Vali') || !result.B.includes('Eldor')) return 'B baho guruhi xato';\nif (result.C.length !== 1 || result.C[0] !== 'Olim') return 'C baho guruhi xato';\nreturn null;"
+    "hint": "reduce metodining boshlang'ich qiymatini bo'sh obyekt \`{}\` qilib oling. reduce ichida, agar \`acc[student.grade]\` mavjud bo'lmasa, uni bo'sh massiv \`[]\` sifatida e'lon qiling, keyin talabaning ismini unga push qiling.",
+    "test": "const sandbox = new Function(code + '; return groupStudentsByGrade;');\nconst fn = sandbox();\nconst students = [\n  { name: 'Ali', grade: 'A' },\n  { name: 'Vali', grade: 'B' },\n  { name: 'Sardor', grade: 'A' },\n  { name: 'Olim', grade: 'C' },\n  { name: 'Eldor', grade: 'B' }\n];\nconst result = fn(students);\nif (typeof result !== 'object' || result === null) return 'Natija obyekt bo\\'lishi kerak';\nif (!result.A || !result.B || !result.C) return 'Natija obyektida barcha baholar kalit sifatida mavjud emas';\nif (result.A.length !== 2 || !result.A.includes('Ali') || !result.A.includes('Sardor')) return 'A baho guruhi xato';\nif (result.B.length !== 2 || !result.B.includes('Vali') || !result.B.includes('Eldor')) return 'B baho guruhi xato';\nif (result.C.length !== 1 || result.C[0] !== 'Olim') return 'C baho guruhi xato';\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "forEach bilan Massiv Elementlarini O'zgartirish",
+    "instruction": "Sizga sonlar massivi beriladi. \`doubleInPlace(arr)\` funksiyasini yozing. Bu funksiya \`.forEach()\` metodi yordamida massivning har bir elementini 2 ga ko'paytirsin va shu massivni qaytarsin (yangi massiv yaratmasdan, asl massivni o'zgartiring).",
+    "startingCode": "function doubleInPlace(arr) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "arr.forEach((val, index) => { arr[index] = val * 2; }) yordamida har bir elementni indeks orqali 2 ga ko'paytiring va oxirida arr ni qaytaring.",
+    "test": "const sandbox = new Function(code + '; return doubleInPlace;');\nconst fn = sandbox();\nconst testArr = [1, 2, 3, 4];\nconst result = fn(testArr);\nif (!Array.isArray(result)) return 'Natija massiv bo\\'lishi kerak';\nif (result !== testArr) return 'Asl massivni qaytarish kerak, yangi massiv emas';\nif (result[0] !== 2 || result[1] !== 4 || result[2] !== 6 || result[3] !== 8) return 'Elementlar 2 ga ko\\'paytirilmadi. Kutilgan: [2,4,6,8], Olingan: ' + JSON.stringify(result);\nreturn null;"
+  },
+  {
+    "id": 5,
+    "title": "find va findIndex bilan Qidirish",
+    "instruction": "Sizga mahsulotlar massivi beriladi. Har bir mahsulot \`id\`, \`name\` va \`price\` xususiyatlariga ega. Berilgan \`id\` bo'yicha mahsulotni topib, uning massivdagi indeksini qaytaruvchi \`getProductIndex(products, id)\` funksiyasini yozing. \`.findIndex()\` metodidan foydalaning. Agar topilmasa \`-1\` qaytarsin.",
+    "startingCode": "function getProductIndex(products, id) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return products.findIndex(product => product.id === id);",
+    "test": "const sandbox = new Function(code + '; return getProductIndex;');\nconst fn = sandbox();\nconst products = [\n  { id: 10, name: 'Telefon', price: 500 },\n  { id: 20, name: 'Noutbuk', price: 1200 },\n  { id: 30, name: 'Planshet', price: 300 }\n];\nif (fn(products, 20) !== 1) return 'id=20 uchun indeks 1 bo\\'lishi kerak, olingan: ' + fn(products, 20);\nif (fn(products, 10) !== 0) return 'id=10 uchun indeks 0 bo\\'lishi kerak';\nif (fn(products, 99) !== -1) return 'Mavjud bo\\'lmagan id uchun -1 qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 6,
+    "title": "some va every bilan Tekshirish",
+    "instruction": "Sizga talabalar massivi beriladi. Har bir talaba \`name\` va \`passed\` (boolean) xususiyatlariga ega. Ikkita funksiya yozing:\n1) \`didAllPass(students)\` — barcha talabalar imtihondan o'tganligini tekshirsin (\`.every()\` ishlatilsin).\n2) \`didAnyPass(students)\` — kamida bitta talaba o'tganligini tekshirsin (\`.some()\` ishlatilsin).\nIkkala funksiya ham \`true\` yoki \`false\` qaytarsin.",
+    "startingCode": "function didAllPass(students) {\n  // Kodni shu yerda yozing\n}\n\nfunction didAnyPass(students) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": ".every() barcha elementlar uchun shart to'g'ri bo'lsa true qaytaradi, .some() esa kamida bittasi uchun to'g'ri bo'lsa true qaytaradi.",
+    "test": "const sandbox = new Function(code + '; return { didAllPass, didAnyPass };');\nconst fns = sandbox();\nconst allPassed = [{ name: 'Ali', passed: true }, { name: 'Vali', passed: true }];\nconst somePassed = [{ name: 'Ali', passed: true }, { name: 'Vali', passed: false }];\nconst nonePassed = [{ name: 'Ali', passed: false }, { name: 'Vali', passed: false }];\nif (fns.didAllPass(allPassed) !== true) return 'Barchasi o\\'tganda didAllPass true qaytarishi kerak';\nif (fns.didAllPass(somePassed) !== false) return 'Hammasi o\\'tmagan bo\\'lsa didAllPass false qaytarishi kerak';\nif (fns.didAnyPass(somePassed) !== true) return 'Kamida bittasi o\\'tganda didAnyPass true qaytarishi kerak';\nif (fns.didAnyPass(nonePassed) !== false) return 'Hech biri o\\'tmagan bo\\'lsa didAnyPass false qaytarishi kerak';\nreturn null;"
+  },
+  {
+    "id": 7,
+    "title": "map bilan Obyektlarni Transformatsiya qilish",
+    "instruction": "Sizga foydalanuvchilar massivi beriladi. Har bir foydalanuvchi \`firstName\` va \`lastName\` xususiyatlariga ega. Har bir foydalanuvchini \`{ fullName: 'Ism Familiya' }\` ko'rinishidagi yangi obyektga aylantiruvchi \`getFullNames(users)\` funksiyasini yozing. \`.map()\` metodidan foydalaning.",
+    "startingCode": "function getFullNames(users) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return users.map(user => ({ fullName: user.firstName + ' ' + user.lastName }));",
+    "test": "const sandbox = new Function(code + '; return getFullNames;');\nconst fn = sandbox();\nconst users = [\n  { firstName: 'Ali', lastName: 'Valiyev' },\n  { firstName: 'Sardor', lastName: 'Karimov' }\n];\nconst result = fn(users);\nif (!Array.isArray(result)) return 'Natija massiv bo\\'lishi kerak';\nif (result.length !== 2) return 'Natijada 2 ta element bo\\'lishi kerak';\nif (!result[0].fullName || result[0].fullName !== 'Ali Valiyev') return 'Birinchi element fullName xato. Kutilgan: Ali Valiyev';\nif (!result[1].fullName || result[1].fullName !== 'Sardor Karimov') return 'Ikkinchi element fullName xato. Kutilgan: Sardor Karimov';\nreturn null;"
+  },
+  {
+    "id": 8,
+    "title": "reduce bilan Eng Katta Qiymatni Topish",
+    "instruction": "Sizga sonlar massivi beriladi. \`.reduce()\` metodidan foydalanib, massivdagi eng katta sonni topadigan \`findMax(numbers)\` funksiyasini yozing. \`Math.max\` ishlatmang — faqat \`reduce\` ichidagi solishtirish orqali bajaring.",
+    "startingCode": "function findMax(numbers) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return numbers.reduce((max, current) => current > max ? current : max, numbers[0]);",
+    "test": "const sandbox = new Function(code + '; return findMax;');\nconst fn = sandbox();\nif (fn([3, 7, 2, 9, 4]) !== 9) return 'Kutilgan: 9, Olingan: ' + fn([3, 7, 2, 9, 4]);\nif (fn([-5, -1, -10]) !== -1) return 'Manfiy sonlarda kutilgan: -1, Olingan: ' + fn([-5, -1, -10]);\nif (fn([42]) !== 42) return 'Bitta elementli massivda kutilgan: 42';\nif (code.includes('Math.max')) return 'Math.max ishlatmasdan, faqat reduce orqali bajaring';\nreturn null;"
+  },
+  {
+    "id": 9,
+    "title": "Zanjirlash (Chaining) Pipeline",
+    "instruction": "Sizga buyurtmalar massivi beriladi. Har bir buyurtma \`status\` ('completed' yoki 'pending'), \`amount\` (summa) va \`discount\` (chegirma foizi, 0 dan 100 gacha) xususiyatlariga ega. Faqat \`completed\` bo'lgan buyurtmalarning chegirmadan keyingi (\`amount * (1 - discount / 100)\`) summalarini hisoblaydigan \`getTotalRevenue(orders)\` funksiyasini yozing. \`.filter()\`, \`.map()\` va \`.reduce()\` metodlarini zanjir shaklida ulang.",
+    "startingCode": "function getTotalRevenue(orders) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "orders.filter(o => o.status === 'completed').map(o => o.amount * (1 - o.discount / 100)).reduce((sum, val) => sum + val, 0)",
+    "test": "const sandbox = new Function(code + '; return getTotalRevenue;');\nconst fn = sandbox();\nconst orders = [\n  { status: 'completed', amount: 1000, discount: 10 },\n  { status: 'pending', amount: 500, discount: 0 },\n  { status: 'completed', amount: 200, discount: 50 }\n];\nconst result = fn(orders);\nif (result !== 1000) return 'Kutilgan: 1000 (900 + 100), Olingan: ' + result;\nif (fn([]) !== 0) return 'Bo\\'sh massiv uchun 0 qaytishi kerak';\nreturn null;"
+  },
+  {
+    "id": 10,
+    "title": "flatMap bilan Ichki Massivlarni Yoyish",
+    "instruction": "Sizga bo'limlar massivi beriladi. Har bir bo'lim \`department\` (nomi) va \`employees\` (xodimlar ismlari massivi) xususiyatlariga ega. Barcha bo'limlardagi barcha xodimlar ismlarini bitta tekis massivda qaytaruvchi \`getAllEmployees(departments)\` funksiyasini yozing. \`.flatMap()\` metodidan foydalaning.",
+    "startingCode": "function getAllEmployees(departments) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "return departments.flatMap(dept => dept.employees);",
+    "test": "const sandbox = new Function(code + '; return getAllEmployees;');\nconst fn = sandbox();\nconst departments = [\n  { department: 'IT', employees: ['Ali', 'Vali'] },\n  { department: 'HR', employees: ['Sardor'] },\n  { department: 'Sales', employees: ['Olim', 'Eldor', 'Aziz'] }\n];\nconst result = fn(departments);\nif (!Array.isArray(result)) return 'Natija massiv bo\\'lishi kerak';\nif (result.length !== 6) return 'Jami 6 ta xodim bo\\'lishi kerak, olingan: ' + result.length;\nif (result[0] !== 'Ali' || result[2] !== 'Sardor' || result[5] !== 'Aziz') return 'Xodimlar tartibi xato. Olingan: ' + JSON.stringify(result);\nreturn null;"
   }
 ]
 ,

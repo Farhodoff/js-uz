@@ -409,6 +409,62 @@ progressContainer.addEventListener("click", (e) => {
     "startingCode": "function formatTime(seconds) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "Sonni tekshirish uchun `isNaN(seconds)` yoki `typeof seconds !== 'number'` ishlating. Daqiqalarni topish uchun `Math.floor(seconds / 60)` ni, sekundlarni topish uchun esa `Math.floor(seconds % 60)` ni chaqiring va `String(...).padStart(2, '0')` orqali 2 xonali ko'rinishga keltiring.",
     "test": "try {\n  const sandbox = new Function(code + '; return formatTime;');\n  const fn = sandbox();\n  \n  if (fn(125) !== '02:05') return '125 soniya uchun \"02:05\" qaytishi kerak, lekin ' + fn(125) + ' qaytdi';\n  if (fn(9) !== '00:09') return '9 soniya uchun \"00:09\" qaytishi kerak';\n  if (fn(-5) !== '00:00') return 'Manfiy son uchun \"00:00\" qaytishi kerak';\n  if (fn(NaN) !== '00:00') return 'NaN uchun \"00:00\" qaytishi kerak';\n  if (fn(3600) !== '60:00') return '3600 soniya uchun \"60:00\" qaytishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 4,
+    "title": "Ovoz darajasini slider bilan boshqarish",
+    "instruction": "Media element va 0 dan 100 gacha bo'lgan butun son (`percent`) qabul qilib, ovoz darajasini foiz asosida o'rnatadigan `setVolumeByPercent(mediaElement, percent)` funksiyasini yozing. Funksiya `percent` qiymatini 0.0-1.0 oralig'iga o'tkazib `volume` ga o'rnatishi kerak. Agar `percent` 0 dan kichik bo'lsa 0 ga, 100 dan katta bo'lsa 100 ga chegaralang (clamp). Agar `muted` yoqilgan bo'lsa, uni `false` ga o'tkazing.",
+    "startingCode": "function setVolumeByPercent(mediaElement, percent) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Math.max(0, Math.min(100, percent)) orqali chegaralang, keyin 100 ga bo'ling. mediaElement.volume = clampedPercent / 100; va mediaElement.muted = false;",
+    "test": "try {\n  const mockMedia = { volume: 0.5, muted: true };\n  const sandbox = new Function(code + '; return setVolumeByPercent;');\n  const fn = sandbox();\n  fn(mockMedia, 75);\n  if (Math.abs(mockMedia.volume - 0.75) > 0.001) return 'percent=75 uchun volume 0.75 bo\\'lishi kerak, lekin ' + mockMedia.volume + ' qaytdi';\n  if (mockMedia.muted !== false) return 'muted false ga o\\'tkazilishi kerak';\n  fn(mockMedia, -10);\n  if (mockMedia.volume !== 0) return 'percent=-10 uchun volume 0 bo\\'lishi kerak (clamp)';\n  fn(mockMedia, 200);\n  if (mockMedia.volume !== 1) return 'percent=200 uchun volume 1 bo\\'lishi kerak (clamp)';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 5,
+    "title": "Media tugashi hodisasini boshqarish (ended)",
+    "instruction": "Media element va callback funksiya qabul qilib, media ijrosi tugaganda (`ended` hodisasi) callback funksiyani chaqiradigan `onMediaEnd(mediaElement, callback)` funksiyasini yozing. Shuningdek, funksiya `ended` hodisasi uchun biriktirilgan listenerni olib tashlash imkonini beruvchi `removeListener` funksiyasini qaytarsin.",
+    "startingCode": "function onMediaEnd(mediaElement, callback) {\n  // Kodni shu yerda yozing\n  // removeListener funksiyasini qaytaring\n}\n",
+    "hint": "mediaElement.addEventListener('ended', callback) orqali hodisani biriktiring. return function removeListener() { mediaElement.removeEventListener('ended', callback); }; orqali tozalash funksiyasini qaytaring.",
+    "test": "try {\n  let listeners = {};\n  const mockMedia = {\n    addEventListener(event, fn) { listeners[event] = fn; },\n    removeEventListener(event, fn) { if (listeners[event] === fn) delete listeners[event]; }\n  };\n  let called = false;\n  const cb = () => { called = true; };\n  const sandbox = new Function(code + '; return onMediaEnd;');\n  const fn = sandbox();\n  const remove = fn(mockMedia, cb);\n  if (!listeners['ended']) return 'ended hodisasiga listener biriktirilmadi';\n  listeners['ended']();\n  if (!called) return 'callback funksiya chaqirilmadi';\n  if (typeof remove !== 'function') return 'Funksiya removeListener qaytarishi kerak';\n  remove();\n  if (listeners['ended']) return 'removeListener chaqirilgandan keyin listener olib tashlanishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 6,
+    "title": "Loop rejimini almashtirish (toggle)",
+    "instruction": "Media elementni qabul qilib, uning `loop` xossasini teskarisiga o'zgartiradigan (toggle) va yangi holatni `{ loop: true/false }` ko'rinishida qaytaradigan `toggleLoop(mediaElement)` funksiyasini yozing.",
+    "startingCode": "function toggleLoop(mediaElement) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "mediaElement.loop = !mediaElement.loop; orqali almashtirib, return { loop: mediaElement.loop }; qaytaring.",
+    "test": "try {\n  const mockMedia = { loop: false };\n  const sandbox = new Function(code + '; return toggleLoop;');\n  const fn = sandbox();\n  const result1 = fn(mockMedia);\n  if (mockMedia.loop !== true) return 'Birinchi chaqiruvda loop true bo\\'lishi kerak';\n  if (!result1 || result1.loop !== true) return 'Qaytarilgan obyektda loop true bo\\'lishi kerak';\n  const result2 = fn(mockMedia);\n  if (mockMedia.loop !== false) return 'Ikkinchi chaqiruvda loop false bo\\'lishi kerak';\n  if (!result2 || result2.loop !== false) return 'Qaytarilgan obyektda loop false bo\\'lishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 7,
+    "title": "Mediada vaqtni o'tkazish (seek)",
+    "instruction": "Media element va `targetSeconds` (maqsad soniya) qabul qilib, media ijrosini o'sha soniyaga o'tkazadigan `seekTo(mediaElement, targetSeconds)` funksiyasini yozing. Agar `targetSeconds` manfiy bo'lsa — 0 ga o'rnating. Agar `duration` mavjud va `targetSeconds` undan katta bo'lsa — `duration` ga o'rnating. Funksiya o'rnatilgan yangi `currentTime` qiymatini qaytarsin.",
+    "startingCode": "function seekTo(mediaElement, targetSeconds) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "Avval targetSeconds = Math.max(0, targetSeconds) orqali manfiy qiymatni tekshiring. Keyin if (mediaElement.duration && targetSeconds > mediaElement.duration) targetSeconds = mediaElement.duration; orqali chegaralang. mediaElement.currentTime = targetSeconds; va return mediaElement.currentTime;",
+    "test": "try {\n  const mockMedia = { currentTime: 0, duration: 120 };\n  const sandbox = new Function(code + '; return seekTo;');\n  const fn = sandbox();\n  let result = fn(mockMedia, 60);\n  if (mockMedia.currentTime !== 60) return 'currentTime 60 ga o\\'rnatilishi kerak';\n  if (result !== 60) return 'Funksiya 60 qaytarishi kerak';\n  result = fn(mockMedia, -10);\n  if (mockMedia.currentTime !== 0) return 'Manfiy qiymat uchun currentTime 0 bo\\'lishi kerak';\n  result = fn(mockMedia, 200);\n  if (mockMedia.currentTime !== 120) return 'duration dan katta qiymat uchun currentTime duration ga teng bo\\'lishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 8,
+    "title": "Progress foizini hisoblash (timeupdate uchun)",
+    "instruction": "Media elementni qabul qilib, joriy ijro foizini 0 dan 100 gacha bo'lgan son sifatida qaytaradigan `getProgressPercent(mediaElement)` funksiyasini yozing. Foiz `(currentTime / duration) * 100` formulasi bo'yicha hisoblanadi. Agar `duration` nolga teng bo'lsa, `NaN` bo'lsa yoki mavjud bo'lmasa — `0` qaytaring. Natijani `Math.round` bilan yaxlitlang.",
+    "startingCode": "function getProgressPercent(mediaElement) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "if (!mediaElement.duration || isNaN(mediaElement.duration)) return 0; va return Math.round((mediaElement.currentTime / mediaElement.duration) * 100);",
+    "test": "try {\n  const sandbox = new Function(code + '; return getProgressPercent;');\n  const fn = sandbox();\n  if (fn({ currentTime: 30, duration: 120 }) !== 25) return '30/120 uchun 25 qaytishi kerak';\n  if (fn({ currentTime: 60, duration: 120 }) !== 50) return '60/120 uchun 50 qaytishi kerak';\n  if (fn({ currentTime: 120, duration: 120 }) !== 100) return '120/120 uchun 100 qaytishi kerak';\n  if (fn({ currentTime: 0, duration: 0 }) !== 0) return 'duration=0 uchun 0 qaytishi kerak';\n  if (fn({ currentTime: 5, duration: NaN }) !== 0) return 'duration=NaN uchun 0 qaytishi kerak';\n  if (fn({ currentTime: 10 }) !== 0) return 'duration mavjud bo\\'lmaganda 0 qaytishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 9,
+    "title": "Ijro tezligini bosqichma-bosqich aylantirish",
+    "instruction": "Media elementni qabul qilib, ijro tezligini (`playbackRate`) ketma-ket aylantiradigan `cyclePlaybackRate(mediaElement)` funksiyasini yozing. Tezliklar tartibi: `[0.5, 1.0, 1.25, 1.5, 2.0]`. Funksiya har chaqirilganda `playbackRate`ni keyingi bosqichga o'tkazsin. Agar joriy tezlik ro'yxatda bo'lmasa yoki oxirgi element (2.0) bo'lsa — birinchi elementga (0.5) qaytsin. Funksiya yangi tezlikni qaytarsin.",
+    "startingCode": "function cyclePlaybackRate(mediaElement) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "const rates = [0.5, 1.0, 1.25, 1.5, 2.0]; massivini yarating. indexOf orqali joriy tezlik indeksini toping. Keyingi indeksni (currentIndex + 1) % rates.length bilan hisoblang.",
+    "test": "try {\n  const mockMedia = { playbackRate: 1.0 };\n  const sandbox = new Function(code + '; return cyclePlaybackRate;');\n  const fn = sandbox();\n  let r = fn(mockMedia);\n  if (mockMedia.playbackRate !== 1.25) return '1.0 dan keyin 1.25 bo\\'lishi kerak, lekin ' + mockMedia.playbackRate + ' qaytdi';\n  fn(mockMedia);\n  if (mockMedia.playbackRate !== 1.5) return '1.25 dan keyin 1.5 bo\\'lishi kerak';\n  fn(mockMedia);\n  if (mockMedia.playbackRate !== 2.0) return '1.5 dan keyin 2.0 bo\\'lishi kerak';\n  fn(mockMedia);\n  if (mockMedia.playbackRate !== 0.5) return '2.0 dan keyin 0.5 ga qaytishi kerak';\n  fn(mockMedia);\n  if (mockMedia.playbackRate !== 1.0) return '0.5 dan keyin 1.0 bo\\'lishi kerak';\n  mockMedia.playbackRate = 3.0;\n  fn(mockMedia);\n  if (mockMedia.playbackRate !== 0.5) return 'Ro\\'yxatda bo\\'lmagan tezlik uchun 0.5 ga qaytishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
+  },
+  {
+    "id": 10,
+    "title": "Buferlangan vaqt oraliqlarini olish",
+    "instruction": "Media elementni qabul qilib, uning `buffered` xossasidagi barcha vaqt oraliqlarini `[{ start: soniya, end: soniya }, ...]` ko'rinishidagi massiv sifatida qaytaradigan `getBufferedRanges(mediaElement)` funksiyasini yozing. `buffered` — bu `TimeRanges` obyekti bo'lib, `length` xossasi va `start(i)`, `end(i)` metodlariga ega. Agar `buffered` mavjud bo'lmasa yoki `length` 0 bo'lsa, bo'sh massiv qaytaring.",
+    "startingCode": "function getBufferedRanges(mediaElement) {\n  // Kodni shu yerda yozing\n}\n",
+    "hint": "const ranges = []; for (let i = 0; i < mediaElement.buffered.length; i++) { ranges.push({ start: mediaElement.buffered.start(i), end: mediaElement.buffered.end(i) }); } return ranges;",
+    "test": "try {\n  const sandbox = new Function(code + '; return getBufferedRanges;');\n  const fn = sandbox();\n  const mockMedia1 = {\n    buffered: {\n      length: 2,\n      start(i) { return [0, 60][i]; },\n      end(i) { return [30, 120][i]; }\n    }\n  };\n  const result1 = fn(mockMedia1);\n  if (!Array.isArray(result1)) return 'Natija massiv bo\\'lishi kerak';\n  if (result1.length !== 2) return '2 ta oraliq qaytishi kerak, lekin ' + result1.length + ' ta qaytdi';\n  if (result1[0].start !== 0 || result1[0].end !== 30) return 'Birinchi oraliq {start:0, end:30} bo\\'lishi kerak';\n  if (result1[1].start !== 60 || result1[1].end !== 120) return 'Ikkinchi oraliq {start:60, end:120} bo\\'lishi kerak';\n  const mockMedia2 = { buffered: { length: 0, start() {}, end() {} } };\n  const result2 = fn(mockMedia2);\n  if (!Array.isArray(result2) || result2.length !== 0) return 'Buferlash bo\\'lmaganda bo\\'sh massiv qaytishi kerak';\n} catch(e) {\n  return 'Xato: ' + e.message;\n}\nreturn null;"
   }
 ]
 ,

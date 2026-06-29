@@ -293,6 +293,62 @@ cartContainer.addEventListener('click', (event) => {
     "startingCode": "function delegateClick(parent, callback) {\n  // Kodni yozing\n}",
     "hint": "parent.addEventListener('click', (e) => { if (e.target.classList.contains('item')) callback(e.target); });",
     "test": "try { let calledWith = null; let listener = null; const mockParent = { addEventListener: (t, cb) => { listener = cb; } }; delegateClick(mockParent, (el) => calledWith = el); const mockTarget = { classList: { contains: (c) => c === 'item' } }; listener({ target: mockTarget }); if (calledWith !== mockTarget) return 'Delegatsiya ishlamadi yoki callback to\\'g\\'ri element bilan chaqirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 4,
+    "title": "stopPropagation bilan Bubbling ni To'xtatish",
+    "instruction": "`stopBubbling(event)` funksiyasini yozing. Bu funksiya hodisaning ota elementlarga ko'tarilib ketishini (bubbling) to'xtatishi kerak. Funksiya `event.stopPropagation()` metodini chaqirsin.",
+    "startingCode": "function stopBubbling(event) {\n  // Kodni yozing\n}",
+    "hint": "event.stopPropagation();",
+    "test": "try { let stopped = false; const mockEvent = { stopPropagation: () => stopped = true }; stopBubbling(mockEvent); if (!stopped) return 'stopPropagation() chaqirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 5,
+    "title": "removeEventListener bilan Tinglashni O'chirish",
+    "instruction": "`addAndRemove(button, callback)` funksiyasini yozing. Funksiya avval 'click' hodisasini ulaydi, keyin darhol `removeEventListener` yordamida o'chiradi. Natijada callback chaqirilmasligi kerak.",
+    "startingCode": "function addAndRemove(button, callback) {\n  // Kodni yozing\n}",
+    "hint": "button.addEventListener('click', callback); button.removeEventListener('click', callback);",
+    "test": "try { let addCalled = false; let removeCalled = false; let addedRef = null; let removedRef = null; const mockBtn = { addEventListener: (t, cb) => { addCalled = true; addedRef = cb; }, removeEventListener: (t, cb) => { removeCalled = true; removedRef = cb; } }; const fn = () => {}; addAndRemove(mockBtn, fn); if (!addCalled) return 'addEventListener chaqirilmadi'; if (!removeCalled) return 'removeEventListener chaqirilmadi'; if (addedRef !== removedRef) return 'add va remove da bir xil funksiya havolasi ishlatilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 6,
+    "title": "once: true bilan Bir Martalik Hodisa",
+    "instruction": "`setupOnce(button, callback)` funksiyasini yozing. Funksiya 'click' hodisasini faqat bir marta ishlashi uchun `{ once: true }` option bilan ulashi kerak.",
+    "startingCode": "function setupOnce(button, callback) {\n  // Kodni yozing\n}",
+    "hint": "button.addEventListener('click', callback, { once: true });",
+    "test": "try { let options = null; const mockBtn = { addEventListener: (t, cb, opts) => { options = opts; } }; setupOnce(mockBtn, () => {}); if (!options || options.once !== true) return '{ once: true } option berilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 7,
+    "title": "Klaviatura Hodisasi (keydown) va event.key",
+    "instruction": "`onEnterPress(input, callback)` funksiyasini yozing. Funksiya berilgan `input` elementiga 'keydown' hodisasini ulaydi va faqat 'Enter' tugmasi bosilgandagina `callback` ni chaqiradi. `event.key` xossasidan foydalaning.",
+    "startingCode": "function onEnterPress(input, callback) {\n  // Kodni yozing\n}",
+    "hint": "input.addEventListener('keydown', (e) => { if (e.key === 'Enter') callback(); });",
+    "test": "try { let listener = null; let called = false; const mockInput = { addEventListener: (t, cb) => { if (t === 'keydown') listener = cb; } }; onEnterPress(mockInput, () => called = true); if (!listener) return 'keydown hodisasi ulanmadi'; listener({ key: 'Enter' }); if (!called) return 'Enter bosilganda callback chaqirilmadi'; called = false; listener({ key: 'Escape' }); if (called) return 'Faqat Enter uchun ishlashi kerak edi, boshqa tugma ham ishladi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 8,
+    "title": "Input Hodisasi va Real-Time Qidirish",
+    "instruction": "`setupSearch(inputEl, callback)` funksiyasini yozing. Funksiya inputga 'input' hodisasini ulaydi va har bir harf kiritilganda `callback` ni `event.target.value` qiymati bilan chaqiradi.",
+    "startingCode": "function setupSearch(inputEl, callback) {\n  // Kodni yozing\n}",
+    "hint": "inputEl.addEventListener('input', (e) => callback(e.target.value));",
+    "test": "try { let listener = null; let receivedValue = null; const mockInput = { addEventListener: (t, cb) => { if (t === 'input') listener = cb; } }; setupSearch(mockInput, (val) => receivedValue = val); if (!listener) return 'input hodisasi ulanmadi'; listener({ target: { value: 'Salom' } }); if (receivedValue !== 'Salom') return 'callback ga event.target.value uzatilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 9,
+    "title": "CustomEvent Yaratish va Trigger Qilish",
+    "instruction": "`emitCustomEvent(element, eventName, data)` funksiyasini yozing. Funksiya yangi `CustomEvent` yaratib, `detail` maydonida `data` ni saqlagan holda `element.dispatchEvent()` orqali hodisani trigger qilsin.",
+    "startingCode": "function emitCustomEvent(element, eventName, data) {\n  // Kodni yozing\n}",
+    "hint": "const event = new CustomEvent(eventName, { detail: data }); element.dispatchEvent(event);",
+    "test": "try { let dispatched = null; const mockEl = { dispatchEvent: (e) => { dispatched = e; } }; emitCustomEvent(mockEl, 'user-login', { userId: 42 }); if (!dispatched) return 'dispatchEvent chaqirilmadi'; if (dispatched.type !== 'user-login') return 'Event nomi noto\\'g\\'ri'; if (!dispatched.detail || dispatched.detail.userId !== 42) return 'detail maydoni noto\\'g\\'ri'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 10,
+    "title": "Oddiy Debounce Funksiyasi",
+    "instruction": "`debounce(fn, delay)` funksiyasini yozing. U yangi funksiya qaytarsin. Qaytarilgan funksiya chaqirilganda, agar oldingi timer mavjud bo'lsa uni tozalab (clearTimeout), yangi `setTimeout` bilan `fn` ni `delay` ms dan keyin chaqirsin.",
+    "startingCode": "function debounce(fn, delay) {\n  // Kodni yozing\n}",
+    "hint": "let timer; return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); };",
+    "test": "try { const debounced = debounce(() => {}, 100); if (typeof debounced !== 'function') return 'debounce funksiya qaytarishi kerak'; let callCount = 0; const debouncedFn = debounce(() => callCount++, 50); debouncedFn(); debouncedFn(); debouncedFn(); if (callCount !== 0) return 'debounce darhol chaqirmasligi kerak, delay dan keyin chaqirishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
   }
 ]
 ,

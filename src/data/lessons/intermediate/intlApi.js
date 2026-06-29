@@ -143,31 +143,87 @@ U formatlangan natijani shunchaki string emas, balki bo'laklarga bo'lingan obyek
 Quyidagi amaliy mashqlar va testlar yordamida lokalizatsiya API-si bilan ishlash ko'nikmalaringizni sinab ko'ring.
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Valyutani Formatlash (NumberFormat)",
-    "instruction": "Taqdim etilgan sonni ('amount') 'uz-UZ' lokali va 'UZS' valyuta kodi yordamida formatlovchi 'formatUZS(amount)' funksiyasini yozing.",
-    "startingCode": "function formatUZS(amount) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "return new Intl.NumberFormat('uz-UZ', { style: 'currency', currency: 'UZS' }).format(amount);",
-    "test": "if (!code.includes('NumberFormat')) return 'NumberFormat ishlatilmadi';\nconst sandbox = new Function(code + '; return formatUZS;');\nconst fn = sandbox();\nconst res = fn(1000);\nif (typeof res === 'string' && (res.includes('UZS') || res.includes('so\\'m'))) return null;\nreturn 'UZS formatlash noto\\'g\\'ri';"
-  },
-  {
-    "id": 2,
-    "title": "Nisbiy Vaqt (RelativeTimeFormat)",
-    "instruction": "Berilgan minutlar sonini ('minutes') 'uz-UZ' lokalida 'auto' numeric ko'rinishida formatlovchi 'formatMinutesAgo(minutes)' funksiyasini yozing. U manfiy qiymat bilan format qilishi kerak (ya'ni -minutes soniya/daqiqa oldin).",
-    "startingCode": "function formatMinutesAgo(minutes) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "const rtf = new Intl.RelativeTimeFormat('uz-UZ', { numeric: 'auto' }); return rtf.format(-minutes, 'minute');",
-    "test": "if (!code.includes('RelativeTimeFormat')) return 'RelativeTimeFormat ishlatilmadi';\nconst sandbox = new Function(code + '; return formatMinutesAgo;');\nconst fn = sandbox();\nconst res = fn(5);\nif (typeof res === 'string' && res.includes('daqiqa')) return null;\nreturn 'Nisbiy vaqt noto\\'g\\'ri formatlandi';"
-  },
-  {
-    "id": 3,
-    "title": "Sana Formatlash (DateTimeFormat)",
-    "instruction": "Berilgan Date obyektini ('date') 'uz-UZ' lokalida 'long' dateStyle bo'yicha formatlovchi 'formatToUzbekDate(date)' funksiyasini yozing.",
-    "startingCode": "function formatToUzbekDate(date) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "return new Intl.DateTimeFormat('uz-UZ', { dateStyle: 'long' }).format(date);",
-    "test": "if (!code.includes('DateTimeFormat')) return 'DateTimeFormat ishlatilmadi';\nconst sandbox = new Function(code + '; return formatToUzbekDate;');\nconst fn = sandbox();\nconst res = fn(new Date('2026-06-10'));\nif (typeof res === 'string' && res.includes('2026') && res.includes('iyun')) return null;\nreturn 'Sana formatlash xato';"
-  }
-]
+    {
+      "id": 1,
+      "title": "Valyutani Formatlash (NumberFormat)",
+      "instruction": "Taqdim etilgan sonni ('amount') 'uz-UZ' lokali va 'UZS' valyuta kodi yordamida formatlovchi 'formatUZS(amount)' funksiyasini yozing.",
+      "startingCode": "function formatUZS(amount) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "return new Intl.NumberFormat('uz-UZ', { style: 'currency', currency: 'UZS' }).format(amount);",
+      "test": "if (!code.includes('NumberFormat')) return 'NumberFormat ishlatilmadi'; const sandbox = new Function(code + '; return formatUZS;'); const fn = sandbox(); const res = fn(1000); if (typeof res === 'string' && (res.includes('UZS') || res.includes('so\\'m'))) return null; return 'UZS formatlash noto\\'g\\'ri';"
+    },
+    {
+      "id": 2,
+      "title": "Nisbiy Vaqt (RelativeTimeFormat)",
+      "instruction": "Berilgan minutlar sonini ('minutes') 'uz-UZ' lokalida 'auto' numeric ko'rinishida formatlovchi 'formatMinutesAgo(minutes)' funksiyasini yozing. U manfiy qiymat bilan format qilishi kerak (ya'ni -minutes soniya/daqiqa oldin).",
+      "startingCode": "function formatMinutesAgo(minutes) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "const rtf = new Intl.RelativeTimeFormat('uz-UZ', { numeric: 'auto' }); return rtf.format(-minutes, 'minute');",
+      "test": "if (!code.includes('RelativeTimeFormat')) return 'RelativeTimeFormat ishlatilmadi'; const sandbox = new Function(code + '; return formatMinutesAgo;'); const fn = sandbox(); const res = fn(5); if (typeof res === 'string' && res.includes('daqiqa')) return null; return 'Nisbiy vaqt noto\\'g\\'ri formatlandi';"
+    },
+    {
+      "id": 3,
+      "title": "Sana Formatlash (DateTimeFormat)",
+      "instruction": "Berilgan Date obyektini ('date') 'uz-UZ' lokalida 'long' dateStyle bo'yicha formatlovchi 'formatToUzbekDate(date)' funksiyasini yozing.",
+      "startingCode": "function formatToUzbekDate(date) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "return new Intl.DateTimeFormat('uz-UZ', { dateStyle: 'long' }).format(date);",
+      "test": "if (!code.includes('DateTimeFormat')) return 'DateTimeFormat ishlatilmadi'; const sandbox = new Function(code + '; return formatToUzbekDate;'); const fn = sandbox(); const res = fn(new Date('2026-06-10')); if (typeof res === 'string' && res.includes('2026') && res.includes('iyun')) return null; return 'Sana formatlash xato';"
+    },
+    {
+      "id": 4,
+      "title": "Vaqtni ko'rsatish (TimeStyle)",
+      "instruction": "Berilgan Date obyektini ('date') 'uz-UZ' lokalida qisqa (short) vaqt formatida (faqat soat va minut) qaytaradigan `formatShortTime(date)` funksiyasini yozing.",
+      "startingCode": "function formatShortTime(date) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "new Intl.DateTimeFormat('uz-UZ', { timeStyle: 'short' }).format(date); dan foydalaning.",
+      "test": "if (!code.includes('timeStyle')) return 'timeStyle ishlatilmadi'; const fn = new Function(code + '; return formatShortTime;')(); const res = fn(new Date('2026-01-01T14:30:00')); if (res.includes('14:30')) return null; return 'Vaqt xato formatlandi';"
+    },
+    {
+      "id": 5,
+      "title": "Mingliklarni ajratish (Decimal)",
+      "instruction": "Berilgan sonni ('amount') 'en-US' lokalida valyuta belgisiz, oddiygina o'nlik/minglik ajratuvchilar bilan formatlovchi `formatDecimalUS(amount)` funksiyasini yozing. Maksimal kasr qismi 2 ta bo'lishi kerak.",
+      "startingCode": "function formatDecimalUS(amount) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "style: 'decimal', maximumFractionDigits: 2",
+      "test": "const fn = new Function(code + '; return formatDecimalUS;')(); const res = fn(1234.567); if (res === '1,234.57') return null; return 'O\\'nlik format xato';"
+    },
+    {
+      "id": 6,
+      "title": "Foizlarni formatlash (Percent)",
+      "instruction": "Berilgan kasr sonni (masalan 0.45) 'uz-UZ' lokalida foiz ko'rinishida ('45%') formatlovchi `formatPercent(fraction)` funksiyasini yozing.",
+      "startingCode": "function formatPercent(fraction) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "style: 'percent' yordamida Intl.NumberFormat ishlating.",
+      "test": "const fn = new Function(code + '; return formatPercent;')(); const res = fn(0.85); if (res.includes('85') && res.includes('%')) return null; return 'Foiz xato formatlandi';"
+    },
+    {
+      "id": 7,
+      "title": "Ro'yxat formatlash (ListFormat)",
+      "instruction": "Berilgan ismlar massivini 'uz-UZ' lokalida bog'lovchilar ('va') bilan string ga aylantiruvchi `formatList(items)` funksiyasini yozing (type: 'conjunction').",
+      "startingCode": "function formatList(items) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "new Intl.ListFormat('uz-UZ', { style: 'long', type: 'conjunction' }).format(items);",
+      "test": "if(!code.includes('ListFormat')) return 'ListFormat ishlatilmadi'; const fn = new Function(code + '; return formatList;')(); const res = fn(['Ali', 'Vali', 'Gani']); if (res.includes('Ali') && (res.includes('va') || res.includes('bilan'))) return null; return 'ListFormat xato ishladi';"
+    },
+    {
+      "id": 8,
+      "title": "Valyuta qismlari (formatToParts)",
+      "instruction": "Berilgan summani 'en-US' lokalida 'USD' valyutasida qismlarga (parts) bo'luvchi `getCurrencyParts(amount)` funksiyasini yozing.",
+      "startingCode": "function getCurrencyParts(amount) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "formatToParts() chaqiring, u array qaytaradi.",
+      "test": "if(!code.includes('formatToParts')) return 'formatToParts ishlatilmadi'; const fn = new Function(code + '; return getCurrencyParts;')(); const res = fn(100); if(Array.isArray(res) && res.some(p => p.type === 'currency' && p.value === '$')) return null; return 'formatToParts xato ishladi';"
+    },
+    {
+      "id": 9,
+      "title": "Hafta kuni",
+      "instruction": "Berilgan Date obyektidan faqat hafta kunining to'liq nomini 'uz-UZ' lokalida qaytaruvchi `getWeekdayName(date)` funksiyasini yozing.",
+      "startingCode": "function getWeekdayName(date) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "options sifatida { weekday: 'long' } bering.",
+      "test": "const fn = new Function(code + '; return getWeekdayName;')(); const d = new Date('2023-01-01'); const res = fn(d).toLowerCase(); if(res.includes('yakshanba')) return null; return 'Hafta kuni xato qaytdi';"
+    },
+    {
+      "id": 10,
+      "title": "O'lchov birliklari (Unit)",
+      "instruction": "Berilgan masofani (kilometr) 'uz-UZ' lokalida 'kilometer' birligi sifatida chiroyli ko'rsatuvchi `formatKilometers(distance)` funksiyasini yozing.",
+      "startingCode": "function formatKilometers(distance) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "style: 'unit', unit: 'kilometer' o'rnating.",
+      "test": "const fn = new Function(code + '; return formatKilometers;')(); const res = fn(15); if(res.includes('15') && res.toLowerCase().includes('km')) return null; return 'Birlik formatlash xato';"
+    }
+  ]
 ,
   quizzes: [
   {

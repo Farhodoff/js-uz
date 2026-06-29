@@ -293,31 +293,87 @@ console.log(fastMultiply(2, 3));  // [Yangi hisob-kitob]... -> 6
 | **Function Composition** | Funksiyalarni ketma-ketlik konveyeriga ulash | \`const pipe = (f, g) => x => g(f(x));\` |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Funksiya Qabul Qiluvchi HOF",
-    "instruction": "Argument sifatida funksiya ('callback') qabul qilib, uni ikki marta ketma-ket chaqiruvchi 'runTwice(callback)' nomli oliy tartibli funksiyani yozing.",
-    "startingCode": "function runTwice(callback) {\n  // Kodni shu yerda yozing\n}\n",
-    "hint": "callback(); callback();",
-    "test": "const sandbox = new Function(code + '; return runTwice;');\nconst fn = sandbox();\nlet count = 0;\nfn(() => count++);\nif (count === 2) return null;\nreturn 'callback funksiyasi 2 marta chaqirilmadi';"
-  },
-  {
-    "id": 2,
-    "title": "Currying yordamida Ko'paytirish",
-    "instruction": "Karring (Currying) uslubida ikkita sonni ko'paytiradigan 'multiply(a)(b)' funksiyasini yozing (arrow funksiya orqali yozishingiz mumkin).",
-    "startingCode": "// Kodni shu yerda yozing\n",
-    "hint": "const multiply = a => b => a * b;",
-    "test": "if (!code.includes('=>')) return 'Arrow funksiya ko\\'rinishida karring ishlatilmadi';\nconst sandbox = new Function(code + '; return multiply;');\nconst fn = sandbox();\nif (typeof fn === 'function' && fn(3)(4) === 12) return null;\nreturn 'Karring funksiyasi noto\\'g\\'ri ko\\'paytirmoqda';"
-  },
-  {
-    "id": 3,
-    "title": "Partial Application (Qisman Qo'llash)",
-    "instruction": "Avval yozilgan karring funksiyadan ('multiply') foydalanib, berilgan sonni 10 ga ko'paytiradigan 'multiplyByTen' nomli yangi partial funksiyani hosil qiling.",
-    "startingCode": "const multiply = a => b => a * b;\n\n// Kodni shu yerda yozing\n",
-    "hint": "const multiplyByTen = multiply(10);",
-    "test": "if (!code.includes('multiply(10)')) return 'multiply(10) orqali partial application hosil qilinmadi';\nconst sandbox = new Function(code + '; return multiplyByTen;');\nconst fn = sandbox();\nif (typeof fn === 'function' && fn(5) === 50) return null;\nreturn 'multiplyByTen to\\'g\\'ri ishlamadi';"
-  }
-]
+    {
+      "id": 1,
+      "title": "Funksiya Qabul Qiluvchi HOF",
+      "instruction": "Argument sifatida funksiya ('callback') qabul qilib, uni ikki marta ketma-ket chaqiruvchi 'runTwice(callback)' nomli oliy tartibli funksiyani yozing.",
+      "startingCode": "function runTwice(callback) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "callback(); callback();",
+      "test": "const sandbox = new Function(code + '; return runTwice;'); const fn = sandbox(); let count = 0; fn(() => count++); if (count === 2) return null; return 'callback funksiyasi 2 marta chaqirilmadi';"
+    },
+    {
+      "id": 2,
+      "title": "Currying yordamida Ko'paytirish",
+      "instruction": "Karring (Currying) uslubida ikkita sonni ko'paytiradigan 'multiply(a)(b)' funksiyasini yozing (arrow funksiya orqali yozishingiz mumkin).",
+      "startingCode": "// Kodni shu yerda yozing\nconst multiply = a => undefined; // o'zgartiring",
+      "hint": "const multiply = a => b => a * b;",
+      "test": "if (!code.includes('=>')) return 'Arrow funksiya ko\\'rinishida karring ishlatilmadi'; const sandbox = new Function(code + '; return multiply;'); const fn = sandbox(); if (typeof fn === 'function' && fn(3)(4) === 12) return null; return 'Karring funksiyasi noto\\'g\\'ri ko\\'paytirmoqda';"
+    },
+    {
+      "id": 3,
+      "title": "Partial Application (Qisman Qo'llash)",
+      "instruction": "Avval yozilgan karring funksiyadan ('multiply') foydalanib, berilgan sonni 10 ga ko'paytiradigan 'multiplyByTen' nomli yangi partial funksiyani hosil qiling.",
+      "startingCode": "const multiply = a => b => a * b;\n\n// Kodni shu yerda yozing\nconst multiplyByTen = null;",
+      "hint": "const multiplyByTen = multiply(10);",
+      "test": "if (!code.includes('multiply(10)')) return 'multiply(10) orqali partial application hosil qilinmadi'; const sandbox = new Function(code + '; return multiplyByTen;'); const fn = sandbox(); if (typeof fn === 'function' && fn(5) === 50) return null; return 'multiplyByTen to\\'g\\'ri ishlamadi';"
+    },
+    {
+      "id": 4,
+      "title": "Custom Map Funksiyasi",
+      "instruction": "Massiv va callback qabul qilib, massivning har bir elementi uchun callback chaqiruvchi va natijalarni yangi massiv qilib qaytaruvchi `customMap(arr, callback)` funksiyasini yozing. O'rnatilgan `.map()` metodidan foydalanmang.",
+      "startingCode": "function customMap(arr, callback) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "Bo'sh massiv yarating. For tsikli yordamida arr aylanib chiqib, `result.push(callback(arr[i], i))` qiling.",
+      "test": "if (code.includes('.map(')) return '.map() ishlatish taqiqlanadi'; const fn = new Function(code + '; return customMap;')(); const res = fn([1, 2, 3], x => x * 2); if (JSON.stringify(res) !== JSON.stringify([2, 4, 6])) return 'customMap noto\\'g\\'ri ishlamoqda'; return null;"
+    },
+    {
+      "id": 5,
+      "title": "Custom Filter Funksiyasi",
+      "instruction": "Massiv va shartli (predicate) callback qabul qilib, faqat callback `true` qaytargan elementlardan iborat yangi massiv qaytaruvchi `customFilter(arr, callback)` funksiyasini yozing. O'rnatilgan `.filter()` metodidan foydalanmang.",
+      "startingCode": "function customFilter(arr, callback) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "Bo'sh massiv yarating. For tsikli ichida agar `callback(arr[i])` ro'st (true) bo'lsa, uni push qiling.",
+      "test": "if (code.includes('.filter(')) return '.filter() ishlatish taqiqlanadi'; const fn = new Function(code + '; return customFilter;')(); const res = fn([1, 2, 3, 4], x => x % 2 === 0); if (JSON.stringify(res) !== JSON.stringify([2, 4])) return 'customFilter noto\\'g\\'ri ishlamoqda'; return null;"
+    },
+    {
+      "id": 6,
+      "title": "Funksiya Qaytaruvchi Funksiya",
+      "instruction": "Salomlashish so'zini qabul qilib, o'zidan ismni qabul qilib salomlashish matnini qaytaruvchi funksiyani qaytaradigan `createGreeter(greeting)` funksiyasini yozing.",
+      "startingCode": "function createGreeter(greeting) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "return function(name) { return greeting + ' ' + name; } ko'rinishida yozing.",
+      "test": "const fn = new Function(code + '; return createGreeter;')(); const sayHello = fn('Hello'); if (sayHello('Ali') !== 'Hello Ali') return 'Funksiya noto\\'g\\'ri qaytarildi yoki yopilish xato'; return null;"
+    },
+    {
+      "id": 7,
+      "title": "Predicate Invertori (Negate)",
+      "instruction": "Shartli tekshiruvchi (predicate) funksiyani qabul qilib, uning natijasining teskarisini (`!`) qaytaradigan yangi funksiya hosil qiluvchi `negate(fn)` HOF ini yozing.",
+      "startingCode": "function negate(fn) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "return function(...args) { return !fn(...args); } dan foydalaning.",
+      "test": "const fn = new Function(code + '; return negate;')(); const isEven = x => x % 2 === 0; const isOdd = fn(isEven); if (isOdd(2) !== false || isOdd(3) !== true) return 'negate funksiyasi xato ishlayapti'; return null;"
+    },
+    {
+      "id": 8,
+      "title": "Oddiy Compose",
+      "instruction": "Ikkita funksiya (f va g) qabul qilib, ularni zanjirli ravishda o'ngdan chapga (avval g, keyin f) bajaradigan `compose(f, g)` HOF ini yozing. Qaytarilgan funksiya bitta `x` parametr qabul qilsin va `f(g(x))` ni qaytarsin.",
+      "startingCode": "function compose(f, g) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "return function(x) { return f(g(x)); } qiling.",
+      "test": "const fn = new Function(code + '; return compose;')(); const add1 = x => x + 1; const double = x => x * 2; const addThenDouble = fn(double, add1); if (addThenDouble(5) !== 12) return 'compose noto\\'g\\'ri. 5 ga 1 qo\\'shilib keyin 2 ga ko\\'paytirilsa 12 bo\\'lishi kerak.'; return null;"
+    },
+    {
+      "id": 9,
+      "title": "Bir marta ishlovchi funksiya (Once)",
+      "instruction": "Istalgan funksiyani faqat bir marta ishlashini ta'minlaydigan `once(fn)` HOF ini yozing. Keyingi chaqiriqlarda u `undefined` qaytarishi kerak.",
+      "startingCode": "function once(fn) {\n  // Kodni shu yerda yozing\n}\n",
+      "hint": "Yopilish (closure) da `let called = false;` yarating. Chaqirilganda buni true qilib qo'ying.",
+      "test": "const fn = new Function(code + '; return once;')(); let c = 0; const increment = fn(() => ++c); increment(); increment(); if (c !== 1) return 'once funksiyasi bir necha marta chaqirilishiga ruxsat berdi'; return null;"
+    },
+    {
+      "id": 10,
+      "title": "Massiv elementlariga karring qilingan mapper",
+      "instruction": "Karring usulidan foydalanib `mapWith(callback)(array)` funksiyasini yozing. Birinchi chaqiriqda u callback qabul qilsin, qaytgan funksiya esa massiv qabul qilib, unga shu callback ni map orqali qo'llab natijani qaytarsin.",
+      "startingCode": "const mapWith = callback => array => {\n  // Kodni shu yerda yozing\n};\n",
+      "hint": "return array.map(callback); dan foydalaning.",
+      "test": "const fn = new Function(code + '; return mapWith;')(); const doubleMap = fn(x => x * 2); if (JSON.stringify(doubleMap([1,2,3])) !== JSON.stringify([2,4,6])) return 'Karring qilingan mapWith xato ishladi'; return null;"
+    }
+  ]
 ,
   quizzes: [
   {

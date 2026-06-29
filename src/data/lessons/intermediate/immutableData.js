@@ -189,9 +189,64 @@ Quyidagi amaliy topshiriqlarni bajarib, immutability va nusxalash bo'yicha ko'ni
     "startingCode": "const nestedData = { id: 1, meta: { tags: ['js'] } };\n\n// Kodni shu yerda yozing\n",
     "hint": "const deepCopy = structuredClone(nestedData);",
     "test": "if (!code.includes('structuredClone')) return 'structuredClone ishlatilmadi';\nconst sandbox = new Function('nestedData', code + '; return deepCopy;');\nconst orig = { id: 1, meta: { tags: ['js'] } };\nconst res = sandbox(orig);\nif (res !== orig && res.meta !== orig.meta && res.meta.tags[0] === 'js') return null;\nreturn 'Chuqur nusxa noto\\'g\\'ri';"
+  },
+  {
+    "id": 4,
+    "title": "Obyektdan Immutable Nusxa Olish",
+    "instruction": "'person' obyektidan spread operatori yordamida nusxa oling va 'age' maydonini 30 ga o'zgartiring. Yangi obyekt 'updatedPerson' deb nomlansin. Asl 'person' obyekti o'zgarmasligi kerak.",
+    "startingCode": "const person = { name: 'Ali', age: 25, city: 'Tashkent' };\n\n// Kodni shu yerda yozing\n",
+    "hint": "const updatedPerson = { ...person, age: 30 };",
+    "test": "if (!code.includes('...')) return 'Spread operatoridan foydalanilmadi';\nconst sandbox = new Function(code + '; return { person, updatedPerson };');\nconst res = sandbox();\nif (res.person.age !== 25) return 'Asl person obyekti o\\'zgarib ketdi';\nif (res.updatedPerson.age !== 30) return 'updatedPerson.age 30 bo\\'lishi kerak';\nif (res.updatedPerson.name !== 'Ali') return 'updatedPerson.name saqlanishi kerak';\nif (res.person === res.updatedPerson) return 'updatedPerson yangi obyekt bo\\'lishi kerak';\nreturn null;"
+  },
+  {
+    "id": 5,
+    "title": "Massivdan Element O'chirish (filter bilan)",
+    "instruction": "'fruits' massividan 'olma' elementini filter metodi yordamida o'chirib, natijani 'withoutApple' o'zgaruvchisiga saqlang. Asl massiv o'zgarmasligi kerak.",
+    "startingCode": "const fruits = ['olma', 'banan', 'uzum', 'olma'];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const withoutApple = fruits.filter(fruit => fruit !== 'olma');",
+    "test": "if (!code.includes('filter')) return 'filter metodidan foydalanilmadi';\nconst sandbox = new Function(code + '; return { fruits, withoutApple };');\nconst res = sandbox();\nif (res.fruits.length !== 4) return 'Asl fruits massivi o\\'zgarib ketdi';\nif (res.withoutApple.includes('olma')) return 'withoutApple ichida olma bo\\'lmasligi kerak';\nif (res.withoutApple.length !== 2) return 'withoutApple massivida 2 ta element bo\\'lishi kerak';\nreturn null;"
+  },
+  {
+    "id": 6,
+    "title": "Massiv Elementini Yangilash (map bilan)",
+    "instruction": "'scores' massividagi 70 qiymatini 95 ga o'zgarmas tarzda yangilang va natijani 'updatedScores' ga saqlang. map metodidan foydalaning.",
+    "startingCode": "const scores = [85, 70, 92, 60];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const updatedScores = scores.map(s => s === 70 ? 95 : s);",
+    "test": "if (!code.includes('map')) return 'map metodidan foydalanilmadi';\nconst sandbox = new Function(code + '; return { scores, updatedScores };');\nconst res = sandbox();\nif (res.scores[1] !== 70) return 'Asl scores massivi o\\'zgarib ketdi';\nif (res.updatedScores[1] !== 95) return 'updatedScores[1] 95 bo\\'lishi kerak';\nif (res.updatedScores[0] !== 85 || res.updatedScores[2] !== 92) return 'Boshqa elementlar o\\'zgarmasligi kerak';\nif (res.scores === res.updatedScores) return 'updatedScores yangi massiv bo\\'lishi kerak';\nreturn null;"
+  },
+  {
+    "id": 7,
+    "title": "Object.freeze bilan Muzlatish",
+    "instruction": "'config' obyektini Object.freeze() yordamida muzlating va 'frozenConfig' o'zgaruvchisiga saqlang. Keyin frozenConfig.theme ni o'zgartirishga harakat qiling (xatolik bermaydi, lekin qiymat o'zgarmaydi).",
+    "startingCode": "const config = { theme: 'dark', lang: 'uz' };\n\n// Kodni shu yerda yozing\n",
+    "hint": "const frozenConfig = Object.freeze(config); frozenConfig.theme = 'light'; // o'zgarmaydi",
+    "test": "if (!code.includes('Object.freeze')) return 'Object.freeze ishlatilmadi';\nconst sandbox = new Function(code + '; return frozenConfig;');\nconst res = sandbox();\nif (res.theme !== 'dark') return 'frozenConfig.theme hali ham dark bo\\'lishi kerak';\nif (res.lang !== 'uz') return 'frozenConfig.lang saqlanishi kerak';\nif (!Object.isFrozen(res)) return 'Obyekt muzlatilmagan';\nreturn null;"
+  },
+  {
+    "id": 8,
+    "title": "Ichma-ich Obyektni Immutable Yangilash",
+    "instruction": "'state' obyektining ichidagi 'user.profile.score' qiymatini 100 ga o'zgarmas tarzda yangilang. Natijani 'newState' ga saqlang. Har bir darajada spread operatoridan foydalaning.",
+    "startingCode": "const state = {\n  theme: 'dark',\n  user: {\n    name: 'Farhod',\n    profile: {\n      score: 50\n    }\n  }\n};\n\n// Kodni shu yerda yozing\n",
+    "hint": "const newState = { ...state, user: { ...state.user, profile: { ...state.user.profile, score: 100 } } };",
+    "test": "const sandbox = new Function(code + '; return { state, newState };');\nconst res = sandbox();\nif (res.state.user.profile.score !== 50) return 'Asl state o\\'zgarib ketdi';\nif (res.newState.user.profile.score !== 100) return 'newState.user.profile.score 100 bo\\'lishi kerak';\nif (res.newState.theme !== 'dark') return 'theme saqlanishi kerak';\nif (res.newState.user.name !== 'Farhod') return 'user.name saqlanishi kerak';\nif (res.state === res.newState) return 'newState yangi obyekt bo\\'lishi kerak';\nif (res.state.user === res.newState.user) return 'user ham yangi obyekt bo\\'lishi kerak';\nreturn null;"
+  },
+  {
+    "id": 9,
+    "title": "Massivni Immutable Tarzda Saralash",
+    "instruction": "'numbers' massivini o'sish tartibida saralang, lekin asl massivni o'zgartirmang. Natijani 'sorted' o'zgaruvchisiga saqlang. Avval nusxa olib, keyin sort qiling.",
+    "startingCode": "const numbers = [5, 3, 8, 1, 4];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const sorted = [...numbers].sort((a, b) => a - b);",
+    "test": "if (!code.includes('sort')) return 'sort metodidan foydalanilmadi';\nconst sandbox = new Function(code + '; return { numbers, sorted };');\nconst res = sandbox();\nif (res.numbers[0] !== 5 || res.numbers[1] !== 3) return 'Asl numbers massivi o\\'zgarib ketdi';\nif (res.sorted[0] !== 1 || res.sorted[1] !== 3 || res.sorted[4] !== 8) return 'sorted massiv to\\'g\\'ri saralanmagan';\nif (res.numbers === res.sorted) return 'sorted yangi massiv bo\\'lishi kerak';\nreturn null;"
+  },
+  {
+    "id": 10,
+    "title": "Amaliy Combo: Massivga Qo'shish, Yangilash va O'chirish",
+    "instruction": "'tasks' massivida 3 ta immutable operatsiya bajaring:\\n1) 'added' - massiv oxiriga { id: 4, text: 'Test', done: false } qo'shing\\n2) 'updated' - 'added' massivdagi id=2 bo'lgan elementning 'done' maydonini true ga o'zgartiring\\n3) 'final' - 'updated' massivdan id=1 bo'lgan elementni o'chirib tashlang",
+    "startingCode": "const tasks = [\n  { id: 1, text: 'HTML', done: true },\n  { id: 2, text: 'CSS', done: false },\n  { id: 3, text: 'JS', done: false }\n];\n\n// 1. Qo'shish\n\n// 2. Yangilash\n\n// 3. O'chirish\n",
+    "hint": "const added = [...tasks, { id: 4, text: 'Test', done: false }];\nconst updated = added.map(t => t.id === 2 ? { ...t, done: true } : t);\nconst final = updated.filter(t => t.id !== 1);",
+    "test": "const sandbox = new Function(code + '; return { tasks, added, updated, final: typeof final !== \"undefined\" ? final : [] };');\nconst res = sandbox();\nif (res.tasks.length !== 3) return 'Asl tasks massivi o\\'zgarib ketdi';\nif (res.added.length !== 4) return 'added massivida 4 ta element bo\\'lishi kerak';\nif (res.added[3].id !== 4) return 'added massiviga id:4 element qo\\'shilishi kerak';\nif (!res.updated.find(t => t.id === 2 && t.done === true)) return 'updated massivda id=2 ning done maydoni true bo\\'lishi kerak';\nif (res.final.find(t => t.id === 1)) return 'final massivdan id=1 element o\\'chirilishi kerak';\nif (res.final.length !== 3) return 'final massivda 3 ta element bo\\'lishi kerak';\nreturn null;"
   }
-]
-,
+],
   quizzes: [
   {
     "id": 1,

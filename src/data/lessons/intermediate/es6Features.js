@@ -293,8 +293,8 @@ console.log(cleanUsers);
     "title": "Object Property Shorthand va Template Literals",
     "instruction": "Taqdim etilgan 'name' va 'age' o'zgaruvchilaridan foydalanib, Object Property Shorthand orqali 'user' obyektini yarating. So'ngra template literals yordamida 'Ism: [name], Yosh: [age]' matnini 'info' o'zgaruvchisiga saqlang.",
     "startingCode": "const name = 'Ali';\nconst age = 25;\n\n// Kodni shu yerda yozing\n",
-    "hint": "const user = { name, age }; const info = `Ism: ${name}, Yosh: ${age}`;",
-    "test": "if (code.includes('name: name')) return 'Object property shorthand ishlatilmadi';\nif (!code.includes('`')) return 'Template literal (backtick) ishlatilmadi';\nconst sandbox = new Function(code + '; return {user, info};');\nconst res = sandbox();\nif (res && res.user && res.user.name === 'Ali' && res.info === 'Ism: Ali, Yosh: 25') return null;\nreturn 'Natija noto\\'g\\'ri';"
+    "hint": "const user = { name, age }; const info = \`Ism: ${name}, Yosh: ${age}\`;",
+    "test": "if (code.includes('name: name')) return 'Object property shorthand ishlatilmadi';\nif (!code.includes('\`')) return 'Template literal (backtick) ishlatilmadi';\nconst sandbox = new Function(code + '; return {user, info};');\nconst res = sandbox();\nif (res && res.user && res.user.name === 'Ali' && res.info === 'Ism: Ali, Yosh: 25') return null;\nreturn 'Natija noto\\'g\\'ri';"
   },
   {
     "id": 2,
@@ -311,6 +311,62 @@ console.log(cleanUsers);
     "startingCode": "const entries = [['username', 'ali12'], ['role', 'user']];\n\n// Kodni shu yerda yozing\n",
     "hint": "const userObj = Object.fromEntries(entries);",
     "test": "if (!code.includes('Object.fromEntries')) return 'Object.fromEntries ishlatilmadi';\nconst sandbox = new Function(code + '; return userObj;');\nconst res = sandbox();\nif (res && res.username === 'ali12' && res.role === 'user') return null;\nreturn 'userObj obyekti noto\\'g\\'ri yaratildi';"
+  },
+  {
+    "id": 4,
+    "title": "Arrow Function yordamida massiv filtrlash",
+    "instruction": "Arrow function yordamida 'numbers' massividan faqat juft sonlarni ajratib oladigan 'evenNumbers' o'zgaruvchisini yarating. filter() metodidan foydalaning.",
+    "startingCode": "const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const evenNumbers = numbers.filter(n => n % 2 === 0);",
+    "test": "if (!code.includes('=>')) return 'Arrow function ishlatilmadi';\nif (!code.includes('filter')) return 'filter() metodi ishlatilmadi';\nconst sandbox = new Function(code + '; return evenNumbers;');\nconst res = sandbox();\nif (res && JSON.stringify(res) === '[2,4,6,8,10]') return null;\nreturn 'evenNumbers massivi noto\\'g\\'ri';"
+  },
+  {
+    "id": 5,
+    "title": "Obyekt Destructuring va Default Qiymat",
+    "instruction": "Berilgan 'product' obyektidan destructuring yordamida 'name', 'price' va 'currency' o'zgaruvchilarini ajrating. Agar 'currency' mavjud bo'lmasa, unga 'UZS' default qiymatini bering.",
+    "startingCode": "const product = { name: 'Telefon', price: 5000000 };\n\n// Kodni shu yerda yozing\n",
+    "hint": "const { name, price, currency = 'UZS' } = product;",
+    "test": "if (!code.includes('{') || !code.includes('}')) return 'Destructuring ishlatilmadi';\nconst sandbox = new Function(code + '; return { name, price, currency };');\nconst res = sandbox();\nif (res && res.name === 'Telefon' && res.price === 5000000 && res.currency === 'UZS') return null;\nreturn 'Destructuring noto\\'g\\'ri bajarildi';"
+  },
+  {
+    "id": 6,
+    "title": "Rest Operatori bilan Funksiya Yaratish",
+    "instruction": "Rest operatori (...) yordamida istalgan sondagi argumentlarni qabul qilib, ularning o'rtacha qiymatini (average) qaytaradigan 'average' funksiyasini yozing.",
+    "startingCode": "// Kodni shu yerda yozing\n// Masalan: average(10, 20, 30) => 20\n",
+    "hint": "const average = (...nums) => nums.reduce((a, b) => a + b, 0) / nums.length;",
+    "test": "if (!code.includes('...')) return 'Rest operatori (...) ishlatilmadi';\nconst sandbox = new Function(code + '; return [average(10, 20, 30), average(4, 8), average(100)];');\nconst res = sandbox();\nif (res && res[0] === 20 && res[1] === 6 && res[2] === 100) return null;\nreturn 'average funksiyasi noto\\'g\\'ri ishlayapti';"
+  },
+  {
+    "id": 7,
+    "title": "Spread Operatori bilan Massivlarni Birlashtirish",
+    "instruction": "Spread operatori yordamida 'fruits' va 'vegetables' massivlarini birlashtirib, yangi 'allProducts' massivini yarating. Massiv boshiga 'Non' va oxiriga 'Suv' elementlarini ham qo'shing.",
+    "startingCode": "const fruits = ['Olma', 'Nok'];\nconst vegetables = ['Sabzi', 'Kartoshka'];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const allProducts = ['Non', ...fruits, ...vegetables, 'Suv'];",
+    "test": "if (!code.includes('...')) return 'Spread operatori (...) ishlatilmadi';\nconst sandbox = new Function(code + '; return allProducts;');\nconst res = sandbox();\nif (res && res[0] === 'Non' && res[1] === 'Olma' && res[2] === 'Nok' && res[3] === 'Sabzi' && res[4] === 'Kartoshka' && res[5] === 'Suv' && res.length === 6) return null;\nreturn 'allProducts massivi noto\\'g\\'ri tuzildi';"
+  },
+  {
+    "id": 8,
+    "title": "Array.findLast() yordamida Oxirgi Elementni Topish",
+    "instruction": "'students' massividan 'findLast' metodi yordamida bahosi 90 dan yuqori bo'lgan oxirgi talabani toping va natijani 'topStudent' o'zgaruvchisiga saqlang.",
+    "startingCode": "const students = [\n  { name: 'Ali', score: 95 },\n  { name: 'Vali', score: 78 },\n  { name: 'Hasan', score: 92 },\n  { name: 'Husan', score: 88 }\n];\n\n// Kodni shu yerda yozing\n",
+    "hint": "const topStudent = students.findLast(s => s.score > 90);",
+    "test": "if (!code.includes('findLast')) return 'findLast() metodi ishlatilmadi';\nconst sandbox = new Function(code + '; return topStudent;');\nconst res = sandbox();\nif (res && res.name === 'Hasan' && res.score === 92) return null;\nreturn 'topStudent noto\\'g\\'ri topildi';"
+  },
+  {
+    "id": 9,
+    "title": "Ko'p Qatorli Template Literals va Hisoblash",
+    "instruction": "Template literal yordamida ko'p qatorli 'receipt' (chek) matni yarating. Matnda mahsulot nomi, narxi va miqdori ko'rsatilsin, hamda jami summa hisoblansin. Format: 'Mahsulot: [name]\\nNarx: [price] so\\'m\\nMiqdor: [qty] ta\\nJami: [price*qty] so\\'m'",
+    "startingCode": "const itemName = 'Kitob';\nconst price = 45000;\nconst qty = 3;\n\n// Kodni shu yerda yozing\n",
+    "hint": "const receipt = \`Mahsulot: ${itemName}\\nNarx: ${price} so'm\\nMiqdor: ${qty} ta\\nJami: ${price * qty} so'm\`;",
+    "test": "if (!code.includes('\`')) return 'Template literal (backtick) ishlatilmadi';\nif (!code.includes('${')) return 'Template literal interpolatsiya (${}) ishlatilmadi';\nconst sandbox = new Function(code + '; return receipt;');\nconst res = sandbox();\nif (res && res.includes('Kitob') && res.includes('45000') && res.includes('135000')) return null;\nreturn 'receipt matni noto\\'g\\'ri tuzildi';"
+  },
+  {
+    "id": 10,
+    "title": "ES6 Class va Extends (Merosxo'rlik)",
+    "instruction": "'Animal' klassini yarating: constructor 'name' va 'sound' qabul qilsin, 'speak()' metodi '[name] [sound] deydi' matnini qaytarsin. Keyin 'Dog' klassini 'Animal' dan meros oling va uning constructorida 'name' qabul qilib, 'sound' ni 'Vov-vov' qilib superlarga uzating.",
+    "startingCode": "// Kodni shu yerda yozing\n// Masalan: const dog = new Dog('Toshboy');\n// dog.speak() => 'Toshboy Vov-vov deydi'\n",
+    "hint": "class Animal { constructor(name, sound) { this.name = name; this.sound = sound; } speak() { return \`${this.name} ${this.sound} deydi\`; } } class Dog extends Animal { constructor(name) { super(name, 'Vov-vov'); } }",
+    "test": "if (!code.includes('class')) return 'class kalit so\\'zi ishlatilmadi';\nif (!code.includes('extends')) return 'extends (merosxo\\'rlik) ishlatilmadi';\nif (!code.includes('super')) return 'super() chaqiruvi ishlatilmadi';\nconst sandbox = new Function(code + '; const d = new Dog(\"Toshboy\"); return d.speak();');\nconst res = sandbox();\nif (res === 'Toshboy Vov-vov deydi') return null;\nreturn 'speak() metodi noto\\'g\\'ri natija qaytardi: ' + res;"
   }
 ]
 ,

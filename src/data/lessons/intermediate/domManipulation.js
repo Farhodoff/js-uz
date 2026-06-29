@@ -295,8 +295,8 @@ class KanbanBoard {
   exercises: [
   {
     "id": 1,
-    "title": "Yanggi Element Yaratish va Joylashtirish",
-    "instruction": "`document.createElement` yordamida 'div' elementi yarating, uning klassiga 'box' qo'shing va uni `document.body` oxiriga appendChild yordamida ulovchi `createBox()` funksiyasini yozing.",
+    "title": "Yangi Element Yaratish va Joylashtirish",
+    "instruction": "\`document.createElement\` yordamida 'div' elementi yarating, uning klassiga 'box' qo'shing va uni \`document.body\` oxiriga appendChild yordamida ulovchi \`createBox()\` funksiyasini yozing.",
     "startingCode": "function createBox() {\n  // Kodni yozing\n}",
     "hint": "const div = document.createElement('div'); div.classList.add('box'); document.body.appendChild(div);",
     "test": "try { createBox(); const boxes = document.body.querySelectorAll('.box'); if (boxes.length === 0) return 'Box klassli element qo\\'shilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
@@ -304,7 +304,7 @@ class KanbanBoard {
   {
     "id": 2,
     "title": "Boshiga Qo'shish (Prepend)",
-    "instruction": "Berilgan `newElement` obyektini `container` elementining eng boshiga birinchi bola element sifatida joylashtiruvchi `addToStart(container, newElement)` funksiyasini yozing.",
+    "instruction": "Berilgan \`newElement\` obyektini \`container\` elementining eng boshiga birinchi bola element sifatida joylashtiruvchi \`addToStart(container, newElement)\` funksiyasini yozing.",
     "startingCode": "function addToStart(container, newElement) {\n  // Kodni yozing\n}",
     "hint": "container.prepend(newElement);",
     "test": "try { let added = null; const mockContainer = { prepend: (el) => added = el }; const testEl = { id: 'test' }; addToStart(mockContainer, testEl); if (added !== testEl) return 'newElement boshiga joylashtirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
@@ -312,10 +312,66 @@ class KanbanBoard {
   {
     "id": 3,
     "title": "Element Klonlash va ID o'zgartirish",
-    "instruction": "Berilgan `original` elementini uning bolalari bilan birga to'liq klonlovchi, klonlangan nusxaning ID sini 'cloned-item' ga o'zgartiruvchi va o'sha klonlangan elementni qaytaruvchi `cloneElement(original)` funksiyasini yozing.",
+    "instruction": "Berilgan \`original\` elementini uning bolalari bilan birga to'liq klonlovchi, klonlangan nusxaning ID sini 'cloned-item' ga o'zgartiruvchi va o'sha klonlangan elementni qaytaruvchi \`cloneElement(original)\` funksiyasini yozing.",
     "startingCode": "function cloneElement(original) {\n  // Kodni yozing\n}",
     "hint": "const cloned = original.cloneNode(true); cloned.id = 'cloned-item'; return cloned;",
     "test": "try { const orig = document.createElement('div'); orig.id = 'original-id'; const res = cloneElement(orig); if (!res || res.id !== 'cloned-item') return 'Klonlangan element IDsi cloned-item bo\\'lmadi'; if (res === orig) return 'Klonlanmagan, asl element qaytarilgan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 4,
+    "title": "Elementni DOM-dan o'chirish (remove)",
+    "instruction": "Berilgan \`element\` ni DOM-dan xavfsiz o'chiruvchi \`safeRemove(element)\` funksiyasini yozing. Avval element mavjudligini tekshiring, keyin \`remove()\` metodini chaqiring.",
+    "startingCode": "function safeRemove(element) {\n  // Kodni yozing\n}",
+    "hint": "if (element) { element.remove(); }",
+    "test": "try { let removed = false; const mockEl = { remove: () => removed = true }; safeRemove(mockEl); if (!removed) return 'element.remove() chaqirilmadi'; safeRemove(null); } catch(e) { return 'Xato: null element uchun xavfsiz tekshiruv yo\\'q — ' + e.message; } return null;"
+  },
+  {
+    "id": 5,
+    "title": "insertAdjacentHTML yordamida element qo'shish",
+    "instruction": "Berilgan \`container\` elementining oxiriga (beforeend) \`<p class=\"info\">Yangi ma'lumot</p>\` HTML-ni \`insertAdjacentHTML\` yordamida qo'shuvchi \`addInfo(container)\` funksiyasini yozing.",
+    "startingCode": "function addInfo(container) {\n  // Kodni yozing\n}",
+    "hint": "container.insertAdjacentHTML('beforeend', '<p class=\"info\">Yangi ma\\'lumot</p>');",
+    "test": "try { let insertedPos = null; let insertedHtml = null; const mockEl = { insertAdjacentHTML: (pos, html) => { insertedPos = pos; insertedHtml = html; } }; addInfo(mockEl); if (insertedPos !== 'beforeend') return 'Pozitsiya beforeend bo\\'lishi kerak'; if (!insertedHtml || !insertedHtml.includes('info')) return 'HTML ichida info klassi bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 6,
+    "title": "replaceWith yordamida elementni almashtirish",
+    "instruction": "Berilgan \`oldElement\` ni yangi \`span\` element bilan almashtiruvchi \`replaceElement(oldElement, newText)\` funksiyasini yozing. Yangi \`span\` ning textContent-i \`newText\` parametri bo'lsin.",
+    "startingCode": "function replaceElement(oldElement, newText) {\n  // Kodni yozing\n}",
+    "hint": "const span = document.createElement('span'); span.textContent = newText; oldElement.replaceWith(span);",
+    "test": "try { let replacedWith = null; const mockOld = { replaceWith: (el) => replacedWith = el }; replaceElement(mockOld, 'Salom'); if (!replacedWith) return 'replaceWith metodi chaqirilmadi'; if (replacedWith.textContent !== 'Salom') return 'Yangi element textContent-i Salom bo\\'lishi kerak'; if (replacedWith.tagName !== 'SPAN') return 'Yangi element span bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 7,
+    "title": "before va after metodlari",
+    "instruction": "Berilgan \`target\` elementidan oldin yangi \`hr\` element qo'shuvchi va keyin yangi \`p\` element (textContent = 'Izoh') qo'shuvchi \`addSurrounding(target)\` funksiyasini yozing.",
+    "startingCode": "function addSurrounding(target) {\n  // Kodni yozing\n}",
+    "hint": "const hr = document.createElement('hr'); const p = document.createElement('p'); p.textContent = 'Izoh'; target.before(hr); target.after(p);",
+    "test": "try { let beforeEl = null; let afterEl = null; const mockTarget = { before: (el) => beforeEl = el, after: (el) => afterEl = el }; addSurrounding(mockTarget); if (!beforeEl || beforeEl.tagName !== 'HR') return 'before() orqali hr elementi qo\\'shilishi kerak'; if (!afterEl || afterEl.tagName !== 'P') return 'after() orqali p elementi qo\\'shilishi kerak'; if (afterEl.textContent !== 'Izoh') return 'p elementi textContent-i Izoh bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 8,
+    "title": "DocumentFragment yordamida ro'yxat yaratish",
+    "instruction": "Berilgan \`items\` massivi (string lar) asosida \`li\` elementlar yaratib, ularni \`DocumentFragment\` ga qo'shib, so'ngra fragmentni qaytaruvchi \`buildList(items)\` funksiyasini yozing.",
+    "startingCode": "function buildList(items) {\n  // Kodni yozing\n}",
+    "hint": "const fragment = document.createDocumentFragment(); items.forEach(text => { const li = document.createElement('li'); li.textContent = text; fragment.appendChild(li); }); return fragment;",
+    "test": "try { const result = buildList(['Olma', 'Nok', 'Uzum']); if (!result || !result.querySelectorAll) return 'DocumentFragment qaytarilishi kerak'; const lis = result.querySelectorAll('li'); if (lis.length !== 3) return '3 ta li elementi bo\\'lishi kerak, hozir: ' + lis.length; if (lis[0].textContent !== 'Olma') return 'Birinchi li matni Olma bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 9,
+    "title": "closest() metodi bilan ota elementni topish",
+    "instruction": "Berilgan \`button\` elementidan \`closest\` metodi yordamida eng yaqin \`.card\` klassli ota elementni topib qaytaruvchi \`findCard(button)\` funksiyasini yozing.",
+    "startingCode": "function findCard(button) {\n  // Kodni yozing\n}",
+    "hint": "return button.closest('.card');",
+    "test": "try { const mockCard = { className: 'card' }; const mockBtn = { closest: (sel) => sel === '.card' ? mockCard : null }; const result = findCard(mockBtn); if (result !== mockCard) return 'closest yordamida .card elementi qaytarilishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
+  },
+  {
+    "id": 10,
+    "title": "Dynamic element yaratish va event listener ulash",
+    "instruction": "Yangi \`button\` element yaratib, uning textContent-ini 'Bosing' ga, className-ini 'btn' ga sozlang. Tugma bosilganda \`alert('Bosildi!')\` chaqiruvchi event listener ulang va tugmani qaytaruvchi \`createButton()\` funksiyasini yozing.",
+    "startingCode": "function createButton() {\n  // Kodni yozing\n}",
+    "hint": "const btn = document.createElement('button'); btn.textContent = 'Bosing'; btn.className = 'btn'; btn.addEventListener('click', () => alert('Bosildi!')); return btn;",
+    "test": "try { const btn = createButton(); if (!btn || btn.tagName !== 'BUTTON') return 'button elementi qaytarilishi kerak'; if (btn.textContent !== 'Bosing') return 'textContent Bosing bo\\'lishi kerak'; if (btn.className !== 'btn') return 'className btn bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
   }
 ]
 ,
