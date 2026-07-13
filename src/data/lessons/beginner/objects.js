@@ -2,20 +2,22 @@ export const objects = {
   id: "objects",
   title: "Obyektlar (Objects)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-JavaScript-da **Obyekt (Object)** xuddi hayotdagi haqiqiy buyumga o'xshaydi. Masalan, mashina: uning rangi, markasi (xususiyatlari) va yurishi, to'xtashi (harakatlari - metodlar) bor. Obyektlar o'zaro bog'liq ma'lumotlar va funksiyalarni bitta joyda guruhlash uchun ishlatiladi. Ular "kalit-qiymat" (key-value) juftliklaridan iborat bo'ladi.
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+Tasavvur qiling, **Obyekt (Object)** xuddi hayotdagi haqiqiy narsaga, masalan mashinaga o'xshaydi.
+Oddiy o'zgaruvchilar (masalan \\\`let color = "red"\\\`) bitta ma'lumotni saqlasa, obyektlar bitta narsaga tegishli bo'lgan **ko'plab ma'lumotlarni va harakatlarni** bitta joyda guruhlab saqlaydi.
+Mashinaning **xususiyatlari** bor (rangi, yili, modeli) va uning **harakatlari** bor (haydash, to'xtash).
+Dasturlashda bu xususiyatlar **properties** (kalit-qiymat), harakatlar esa **methods** deb ataladi.
 
-❌ **YOMON:** Bitta narsaga tegishli ma'lumotlarni alohida o'zgaruvchilarda saqlash (Tarqoqlik).
-\`\`\`javascript
+❌ **YOMON (Tarqoq ma'lumotlar):**
+\\\`\\\`\\\`javascript
 const carBrand = "Toyota";
 const carColor = "Oq";
 const carYear = 2022;
-\`\`\`
+\\\`\\\`\\\`
 
-✅ **YAXSHI:** Barcha tegishli xususiyatlarni bitta obyekt ichida jamlash.
-\`\`\`javascript
+✅ **YAXSHI (Guruhlangan obyekt):**
+\\\`\\\`\\\`javascript
 const car = {
   brand: "Toyota",
   color: "Oq",
@@ -24,26 +26,84 @@ const car = {
     console.log("Vroom!");
   }
 };
-\`\`\`
+console.log(car.brand); // "Toyota"
+car.drive(); // "Vroom!"
+\\\`\\\`\\\`
 
-## 🎤 Intervyu Savollari
-1. **Obyekt xususiyatiga (property) qanday murojaat qilinadi?**
-   - Nuqta orqali (masalan, \`obj.name\`) yoki to'rtburchak qavslar orqali (masalan, \`obj['name']\`). Qavs usuli kalit o'zgaruvchi bo'lganda qulay.
-2. **Obyekt obyektini (nested objects) qanday tushunasiz?**
-   - Obyekt ichidagi xususiyat qiymati ham boshqa bir obyekt bo'lishi mumkin. Bu murakkab ma'lumotlarni daraxtsimon shaklda saqlashga imkon beradi.
-3. **\`this\` kalit so'zi obyekt metodida nimani anglatadi?**
-   - Metod chaqirilganda \`this\` shu metodni o'z ichiga olgan obyektga ishora qiladi. Shuning uchun obyektning boshqa xususiyatlariga metod ichidan murojaat qilish mumkin.
+Obyekt yaratishni biz ko'pincha **Object Literal** (\\\`{}\\\`) orqali amalga oshiramiz.
 
-## 🛠️ Amaliy Topshiriqlar
+---
 
-\`\`\`mermaid
+## 2. 🚀 Chuqur O'rganish (Deep Dive: Under the Hood)
+
+### Xotirada Qanday Saqlanadi? (Heap vs Stack)
+Obyektlar Javascriptda **Reference (Havola)** tipidagi ma'lumotlardir.
+Primitiv qiymatlar (string, number, boolean) kompyuter xotirasining **Stack** (tezkor va kichik) qismida saqlanadi. Ammo Obyektlar kabi kattaroq ma'lumotlar **Heap** (kattaroq va moslashuvchan) qismida saqlanadi. Stack'da esa faqat Heap'dagi o'sha obyekt qayerda joylashganligini ko'rsatuvchi **manzil (reference)** saqlanadi.
+
+Shuning uchun ikkita obyektni to'g'ridan-to'g'ri tenglashtirganimizda:
+\\\`\\\`\\\`javascript
+const obj1 = { name: "Ali" };
+const obj2 = obj1;
+obj2.name = "Vali";
+console.log(obj1.name); // "Vali" - chunki ikkalasi ham bitta xotira manziliga qarab turibdi!
+\\\`\\\`\\\`
+
+### V8 Dvigateli (Engine) va Hidden Classes
+Google Chrome va Node.js dagi **V8 JavaScript dvigateli** obyektlarni qanday o'qiydi?
+Aslida JavaScript obyektlari xuddi "Hash Table" (lug'at) kabi ishlaydi, ya'ni kalit orqali qiymat izlash bilan. Ammo V8 uni tezlashtirish uchun **Hidden Classes (Yashirin Sinf)** tushunchasidan foydalanadi.
+
+Agar siz bir xil tuzilishga ega (bir xil ketma-ketlikdagi kalitlari bor) obyektlar yaratsangiz, V8 xuddi C++ yoki Java-dagi kabi qat'iy tuzilgan klasslardan orqada foydalanadi va bu kod ishlashini ancha tezlashtiradi (Optimization).
+Buning uchun obyektga keyinchalik tinimsiz ravishda xossalar qo'shish va o'chirish (\\\`delete obj.key\\\`) unumdorlikni biroz pasaytiradi, chunki bu Hidden Class'larni buzib yuboradi.
+
+---
+
+## 3. ⚠️ Chekka Holatlar va Senior Intervyu Savollari (Edge Cases & Interview Questions)
+
+1. **Object keys har doim String (yoki Symbol) ga o'girilishi haqida bilasizmi?**
+   \\\`\\\`\\\`javascript
+   const obj = {};
+   obj[1] = "bir";
+   obj[{}] = "obyekt";
+   console.log(obj["1"]); // "bir"
+   console.log(obj["[object Object]"]); // "obyekt"
+   \\\`\\\`\\\`
+   Obyekt kalitlariga Array, Obyekt yoki raqam bersangiz, JavaScript uni bilintirmasdan satrga (String'ga) o'giradi.
+
+2. **Obyektni "chuqur nusxalash" (Deep Clone) bilan yuzaki nusxalash (Shallow Clone) o'rtasidagi farq nima?**
+   \\\`{ ...obj }\\\` yoki \\\`Object.assign({}, obj)\\\` bu faqat **yuzaki nusxa (Shallow)** qiladi. Ichida yana obyekt bo'lsa, uni havolaligicha olib o'tadi.
+   **Chuqur nusxalash (Deep)** uchun avval \\\`JSON.parse(JSON.stringify(obj))\\\` ishlatilgan bo'lsa, hozirgi zamonaviy JS da \\\`structuredClone(obj)\\\` funksiyasi mavjud!
+
+3. **Maxsus (Computed) Properties nima?**
+   Kalit nomini oldindan bilmasangiz, kvadrat qavsdan foydalanamiz:
+   \\\`\\\`\\\`javascript
+   const keyName = "status";
+   const obj = {
+     [keyName]: "active"
+   };
+   \\\`\\\`\\\`
+
+4. **\\\`Object.freeze()\\\` va \\\`Object.seal()\\\` farqi?**
+   - \\\`freeze(obj)\\\`: Umuman hech narsani o'zgartirib ham, qo'shib ham, o'chirib ham bo'lmaydi.
+   - \\\`seal(obj)\\\`: Yangi xossa qo'shib bo'lmaydi, borini o'chirib bo'lmaydi, lekin mavjud xossalarni qiymatini o'zgartirish MUMKIN.
+
+---
+
+## 📊 Diagramma
+
+\\\`\\\`\\\`mermaid
 flowchart TD
-    A[Obyekt / Object] --> B[Xususiyatlar / Properties]
-    A --> C[Metodlar / Methods]
-    B --> D[Kalit: name, Qiymat: 'Ali']
-    B --> E[Kalit: age, Qiymat: 25]
-    C --> F[sayHello: function]
-\`\`\`
+    A[Obyekt yaratish] --> B(Object Literal)
+    B --> C{{obj = { key: value }}}
+    A --> D(New Keyword)
+    D --> E{{obj = new Object}}
+    
+    C --> F[Memory Heap]
+    F --> G[Reference saqlanadi]
+    
+    G --> H{Xossaga murojaat}
+    H --> |Dot Notation| I(obj.key)
+    H --> |Bracket Notation| J(obj[keyVar])
+\\\`\\\`\\\`
 `,
   exercises: [
     {
@@ -72,7 +132,7 @@ flowchart TD
     },
     {
       id: 4,
-      title: "Obyekt Qismi",
+      title: "Obyekt Qismi (Shorthand)",
       instruction: "Kiritilgan kalit va qiymatdan iborat yangi obyekt qaytaruvchi `makeObject(key, value)` yozing.",
       startingCode: "function makeObject(key, value) {\n  // Kodni yozing\n}",
       hint: "ES6 dagi qisqa yozish yoki Computed Property Names `{[key]: value}` ishlating.",
@@ -107,7 +167,7 @@ flowchart TD
       title: "Ikki Obyektni Birlashtirish",
       instruction: "Ikkita obyekt qabul qilib ularning xossalarini bitta yangi obyektga yig'ib qaytaradigan `mergeObjects(obj1, obj2)` yozing.",
       startingCode: "function mergeObjects(obj1, obj2) {\n  // Kodni yozing\n}",
-      hint: "Spread operatori `{...obj1, ...obj2}` yoki Object.assign ishlating.",
+      hint: "Spread operatori `{...obj1, ...obj2}` yoki Object.assign({}, obj1, obj2) ishlating.",
       test: "const fn = new Function(code + '; return mergeObjects;')(); const r = fn({a:1}, {b:2}); if(r.a !== 1 || r.b !== 2) return 'Xato'; return null;"
     },
     {
@@ -222,7 +282,7 @@ flowchart TD
         "U har doim null bo'ladi"
       ],
       correctAnswer: 1,
-      explanation: "Arrow funksiyalarda \`this\` kontekti yo'q."
+      explanation: "Arrow funksiyalarda `this` kontekti yo'q, uni u yashab turgan eng yaqin funksiya scopesi qamrab oladi."
     },
     {
       id: 9,
@@ -238,7 +298,7 @@ flowchart TD
     },
     {
       id: 10,
-      question: "Obyektni yuzaki nusxalash (shallow copy) usuli:",
+      question: "Obyektni yuzaki nusxalash (shallow copy) usuli qaysi?",
       options: [
         "JSON.parse(JSON.stringify(obj))",
         "{ ...obj }",
@@ -250,27 +310,27 @@ flowchart TD
     },
     {
       id: 11,
-      question: "Object.assign(target, source) metodining natijasi qanday bo'ladi?",
+      question: "Object.assign(target, source) metodining vazifasi nima?",
       options: [
         "source obyektini target obyektiga ko'chiradi",
         "Ikkala obyektni o'chiradi",
-        "undefined qaytaradi",
-        "Massivga o'zgartiradi"
+        "Obyektni massivga aylantiradi",
+        "Obyektga yangi xossa qo'shishni taqiqlaydi"
       ],
       correctAnswer: 0,
-      explanation: "`Object.assign` manba obyektining xossalarini nishon obyektga nusxalaydi."
+      explanation: "`Object.assign` manba obyektining barcha sanaladigan xossalarini nishon (target) obyektga nusxalaydi."
     },
     {
       id: 12,
-      question: "`Object.freeze(obj)` metodi nima vazifa bajaradi?",
+      question: "Obyektni chuqur nusxalash (deep clone) uchun qaysi zamonaviy funksiya kiritilgan?",
       options: [
-        "Faqat o'chirishga ruxsat beradi",
-        "O'zgartirish, qo'shish va o'chirishni taqiqlaydi (muzlatadi)",
-        "Sikl uchun cheklaydi",
-        "Massivga aylantiradi"
+        "Object.cloneNode(obj)",
+        "Object.deepAssign({}, obj)",
+        "structuredClone(obj)",
+        "obj.clone({deep: true})"
       ],
-      correctAnswer: 1,
-      explanation: "`Object.freeze()` obyektdagi har qanday o'zgartirishlarni to'xtatadi."
+      correctAnswer: 2,
+      explanation: "`structuredClone()` — bu JavaScript-ga chuqur nusxalash uchun qo'shilgan mahalliy va xavfsiz global funksiya."
     }
   ]
 };
