@@ -7,9 +7,16 @@ export const typeCasting = {
 Imagine you have a piece of paper with the number "5" written on it. To a computer, that's just a drawing of a number (a String). If you want to do math with it, you have to read the paper and hold the idea of the number 5 in your head (a Number). This process of converting data from one form (String) to another (Number) is called **Type Casting** (or Type Conversion). In JavaScript, this happens all the time, either manually (you explicitly tell JavaScript to do it) or automatically (JavaScript tries to be helpful and guesses what you want).
 
 # Part 2: Deep Dive
-Under the hood, JavaScript engines like V8 try to optimize type conversions. When you perform operations with mismatched types, the engine does "Implicit Type Coercion." This means it automatically converts types during execution, which can be slow and lead to unexpected bugs.
+Under the hood, JavaScript engines like V8 use abstract operations defined in the ECMAScript specification to perform type conversions. When you perform operations with mismatched types, the engine does "Implicit Type Coercion" using operations like \\\`ToPrimitive\\\`, \\\`ToNumber\\\`, \\\`ToString\\\`, and \\\`ToBoolean\\\`. 
 
-For example, when you do \\\`"5" - 2\\\`, V8 converts the string "5" to a number. But when you do \\\`"5" + 2\\\`, it converts the number 2 to a string and concatenates them to "52". To avoid performance hits and bugs, it is best practice to use "Explicit Type Casting" using functions like \\\`Number()\\\`, \\\`String()\\\`, and \\\`Boolean()\\\`.
+For example, when evaluating \\\`"5" - 2\\\`, JavaScript calls \\\`ToNumber("5")\\\`, which returns the numeric value 5, resulting in 3. But when evaluating \\\`"5" + 2\\\`, because one operand is a string, it calls \\\`ToString(2)\\\` and concatenates them to "52". 
+
+Explicit conversions are done via the built-in functions:
+- \\\`Number(val)\\\` calls \\\`ToNumber(val)\\\` internally.
+- \\\`String(val)\\\` calls \\\`ToString(val)\\\` internally.
+- \\\`Boolean(val)\\\` calls \\\`ToBoolean(val)\\\` internally.
+
+Using explicit type casting avoids unexpected implicit coercion bugs and improves code readability.
 
 # Part 3: Edge Cases and Senior Interview Questions
 Interviewers love asking about JavaScript's quirky coercion rules.
@@ -17,15 +24,19 @@ Interviewers love asking about JavaScript's quirky coercion rules.
 Here are common edge cases:
 - \\\`Number(null)\\\` is \\\`0\\\`, but \\\`Number(undefined)\\\` is \\\`NaN\\\`.
 - \\\`Boolean("false")\\\` is \\\`true\\\` (because it's a non-empty string).
-- \\\`[] == ![]\\\` evaluates to \\\`true\\\` because of complex coercion rules.
-- \\\`"b" + "a" + + "a" + "a"\\\` evaluates to \\\`"baNaNa"\\\`.
+- \\\`[] == ![]\\\` evaluates to \\\`true\\\` because:
+  1. \\\`![]\\\` evaluates to \\\`false\\\` (arrays are truthy, negating makes it false).
+  2. \\\`[] == false\\\` coerces both sides to numbers. \\\`false\\\` becomes \\\`0\\\`.
+  3. \\\`[]\\\` becomes \\\`""\\\` via \\\`ToPrimitive\\\`, then \\\`0\\\` via \\\`ToNumber\\\`.
+  4. \\\`0 == 0\\\` is \\\`true\\\`.
+- \\\`"b" + "a" + + "a" + "a"\\\` evaluates to \\\`"baNaNa"\\\` because \\\`+"a"\\\` is evaluated as \\\`NaN\\\` (explicit unary plus coercion fails to parse a number), which is then concatenated.
 
 **Mermaid Diagram:**
 \\\`\\\`\\\`mermaid
 graph TD;
   A[Original Value] --> B{Operation type};
-  B -->|Math operations - * /| C[Convert to Number];
-  B -->|Addition + with string| D[Convert to String];
+  B -->|Math operations minus, star, slash| C[Convert to Number];
+  B -->|Addition with string| D[Convert to String];
   C --> E[Execution];
   D --> E;
 \\\`\\\`\\\`

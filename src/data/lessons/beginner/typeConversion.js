@@ -6,18 +6,18 @@ export const typeConversionLesson = {
 ## Part 1: Beginner Analogy
 Imagine you speak English and your friend speaks Spanish. If you try to communicate directly, there might be confusion. You need a translator to bridge the gap. In JavaScript, data types are like different languages. When you try to combine different types, like a Number and a String (for example adding \\\`5\\\` and \\\`" apples"\\\`), JavaScript acts as an automatic translator to make them understand each other. This automatic translation by JavaScript is called **Implicit Type Conversion** (or Type Coercion). If you manually translate the values yourself using tools like \\\`Number()\\\`, \\\`String()\\\`, or \\\`Boolean()\\\`, it is called **Explicit Type Conversion**. Explicit conversion is like hiring a professional translator to ensure there are no misunderstandings.
 
-## Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## Part 2: Deep Dive (Under the hood, Boxing and Unboxing, primitives vs objects wrapping in V8)
 Under the hood, JavaScript engines like V8 handle type conversion using abstract operations defined in the ECMAScript specification, such as \\\`ToPrimitive\\\`, \\\`ToString\\\`, and \\\`ToNumber\\\`. 
 
 When an object needs to be converted to a primitive value, JavaScript calls the internal \\\`[[DefaultValue]]\\\` method. It attempts to invoke the \\\`valueOf()\\\` and \\\`toString()\\\` methods on the object depending on the preferred type hint (Number or String).
 
-From a memory perspective, creating new primitive values during coercion takes a minimal toll, but in performance-critical loops, implicit coercion can be detrimental. Implicit coercion defeats engine optimizations (like inline caches in V8) because the engine has to handle polymorphic operations (multiple types) instead of monomorphic ones (a single consistent type). This forces the engine to de-optimize the code. Therefore, explicit coercion is always safer, more predictable, and generally better for performance in hot code paths.
+A crucial concept is **Boxing and Unboxing**. When you call a method on a primitive (like \\\`"hello".toUpperCase()\\\`), V8 temporarily wraps (boxes) the primitive string in a String object, executes the method, and then immediately unwraps (unboxes) it or discards the object. Creating new primitive values during coercion or boxing takes a minimal toll, but in performance-critical loops, implicit coercion can be detrimental. Implicit coercion defeats engine optimizations (like inline caches in V8) because the engine has to handle polymorphic operations instead of monomorphic ones. Therefore, explicit coercion is always safer, more predictable, and generally better for performance in hot code paths.
 
 ## Part 3: Edge Cases and Senior Interview Questions
 Type coercion produces some of the most famous edge cases in JavaScript, which are common in senior developer interviews:
 - \\\`[] + []\\\` evaluates to \\\`""\\\` (empty string) because both arrays are coerced to empty strings.
 - \\\`[] + {}\\\` evaluates to \\\`"[object Object]"\\\` because the empty array becomes \\\`""\\\` and the object becomes \\\`"[object Object]"\\\`.
-- \\\`true + true\\\` evaluates to \\\`2\\\` because booleans are coerced to \\\`1\\\` and \\\`0\\\`.
+- \\\`true + true\\\` evaluates to \\\`2\\\` because booleans are coerced to \\\`1\\\` and \\\`1\\\`.
 - \\\`"5" - 1\\\` evaluates to \\\`4\\\` (string coerced to number for subtraction), but \\\`"5" + 1\\\` evaluates to \\\`"51"\\\` (number coerced to string for concatenation).
 - \\\`!!""\\\` evaluates to \\\`false\\\` because an empty string is a falsy value.
 
@@ -33,6 +33,7 @@ graph TD;
     E --> G[ToNumber];
     E --> H[ToString];
     F --> I[Calls valueOf and toString];
+    I --> J[Returns Primitive Value];
 \\\`\\\`\\\`
 `,
   exercises: [

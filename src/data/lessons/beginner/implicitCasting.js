@@ -7,7 +7,7 @@ Imagine you are at a coffee shop and you hand the cashier a dollar bill (a Numbe
 
 In JavaScript, when you perform operations on different data types (like adding a string and a number), the language tries to be helpful and automatically converts (or "coerces") one type into another so the operation can be completed. This automatic conversion is called **Implicit Casting** or **Type Coercion**.
 
-## Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## Part 2: Deep Dive (Under the hood, Type Coercion, loose equality ==, operator overloads, internal abstract operations)
 When JavaScript encounters an operation with mismatched types, it doesn't just guess; the V8 engine strictly follows the ECMAScript specification for type conversion. 
 
 Under the hood, the engine calls abstract operations like \\\`ToPrimitive\\\`, \\\`ToString\\\`, or \\\`ToNumber\\\`. For example, when evaluating \\\`"5" + 1\\\`:
@@ -49,17 +49,18 @@ JavaScript's coercion rules can lead to infamous edge cases. Understanding these
    [] + []; // ""
    [] + {}; // "[object Object]"
    {} + []; // 0 (in some REPLs, treated as an empty block + empty array)
+   [] == ![]; // true
    \\\`\\\`\\\`
 
 ## Mermaid Diagram
 \\\`\\\`\\\`mermaid
 graph TD
-    A[Expression: "5" + 1] --> B{Is either operand a string?}
+    A[Expression: '5' + 1] --> B{Is either operand a string?}
     B -- Yes --> C[Call ToString on 1]
-    C --> D[Result: "51" String]
+    C --> D[Result: '51' String]
     
-    E[Expression: "5" - 1] --> F{Does operator require numbers?}
-    F -- Yes --> G[Call ToNumber on "5"]
+    E[Expression: '5' - 1] --> F{Does operator require numbers?}
+    F -- Yes --> G[Call ToNumber on '5']
     G --> H[Result: 4 Number]
 \\\`\\\`\\\`
   `,

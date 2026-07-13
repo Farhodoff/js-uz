@@ -19,10 +19,10 @@ if (train === "express") {
 }
 \\\`\\\`\\\`
 
-## Part 2: Deep Dive (Under the Hood, Memory, V8 Engine, Performance)
+## Part 2: Deep Dive (Under the hood, CPU Branch Prediction, pipeline stalls, optimization in V8)
 Under the hood, the V8 engine (the JavaScript engine in Chrome and Node.js) treats conditional statements as branch instructions. During execution, the JIT (Just-In-Time) compiler uses a technique called **branch prediction**. 
 
-When a loop contains an \\\`if/else\\\` statement, the CPU attempts to predict which branch will be taken to pre-load instructions. If the prediction is correct, execution is blazingly fast. If it's wrong (a branch misprediction), the CPU has to flush its pipeline, causing a slight performance hit. For performance-critical code, predictable conditions (like always true or always false) execute faster than random ones.
+When a loop contains an \\\`if/else\\\` statement, the CPU attempts to predict which branch will be taken to pre-load instructions. If the prediction is correct, execution is blazingly fast. If it's wrong (a branch misprediction), the CPU has to flush its pipeline, causing **pipeline stalls** and a slight performance hit. For performance-critical code, predictable conditions (like always true or always false) execute much faster than random ones. This is a key **optimization in V8**.
 
 Memory-wise, \\\`if/else\\\` statements themselves don't consume heap memory; they are evaluated down to bytecode operations like \\\`JumpIfFalse\\\` and \\\`Jump\\\`.
 
