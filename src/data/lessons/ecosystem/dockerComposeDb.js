@@ -2,50 +2,52 @@ export const dockerComposeDb = {
   id: "docker-compose-db",
   title: "Docker Compose va Ma'lumotlar Bazalari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-Docker Compose — bu bir nechta Docker konteynerlarini bitta fayl orqali boshqarish imkonini beruvchi vositadir. Ayniqsa, ilovangiz ma'lumotlar bazasi (masalan, PostgreSQL, MongoDB yoki Redis) bilan ishlaganda, har ikkisini bitta buyruq bilan ishga tushirish uchun juda qulay. Tasavvur qiling, orkestr (ilovangiz) va uning sozandalari (DB, kesh, va h.k.) bitta dirijyor (Docker Compose) tomonidan boshqariladi.
+  theory: `## 1. 💡 Beginner Analogy (Sodda Tushuntirish)
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+Tasavvur qiling, siz katta bir restoran ochyapsiz. Restoranda oshpaz (Backend ilova), ofitsiant (Frontend) va omborxona mudiri (Ma'lumotlar bazasi - DB) bor. 
+Agar siz har bir xodimni alohida-alohida ishga chaqirib, ularga nima qilish kerakligini birma-bir tushuntirsangiz (bu \\\`docker run\\\` buyrug'iga o'xshaydi), juda ko'p vaqt va asab yo'qotasiz.
 
-❌ **YOMON (Har birini alohida ishga tushirish)**:
-\`\`\`bash
-docker run -d --name my-db -e POSTGRES_PASSWORD=secret postgres
-docker run -d --name my-app --link my-db:db my-app-image
-\`\`\`
-Bu yondashuvda buyruqlar ko'payib ketadi va qaramliklarni boshqarish qiyinlashadi.
+**Docker Compose** — bu restoran boshqaruvchisining yozma "Ish rejasi" (ya'ni \\\`docker-compose.yml\\\` fayli). Siz shunchaki bitta buyruq (\\\`docker-compose up\\\`) berasiz va restoran boshqaruvchisi oshpazni, ofitsiantni va omborxona mudirini birdaniga ishga tushiradi. Ular qachon kelishini, kim kimga qaram ekanligini (masalan, oshpaz omborxona mudirisiz ovqat pishirolmasligini) bitta faylda ko'rsatib qo'yasiz. Shunday qilib, butun tizim (ilovangiz va uning DB si) bitta jamoa bo'lib ishlaydi.
 
-✅ **YAXSHI (Docker Compose ishlatish)**:
-\`\`\`yaml
-version: '3.8'
-services:
-  db:
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: secret
-  app:
-    image: my-app-image
-    depends_on:
-      - db
-\`\`\`
-Hammasi bitta faylda va bitta buyruq (\`docker-compose up\`) orqali boshqariladi.
+## 2. 🧠 Deep Dive (Chuqurlashtirilgan o'rganish)
 
-## 🎤 Intervyu Savollari
-1. **Docker Compose nima va u qachon kerak bo'ladi?**
-   - Javob: U ko'p konteynerli ilovalarni bitta \`docker-compose.yml\` fayli orqali sozlash va ishga tushirish vositasi. Asosan, ilova va uning qaramliklari (DB, Redis) ni birga ko'tarishda ishlatiladi.
-2. **\`depends_on\` nima qiladi?**
-   - Javob: Bir xizmatning boshqasidan oldin ishga tushishini ta'minlaydi. Ammo u konteyner ichidagi xizmat to'liq tayyor bo'lishini kutmaydi, faqat konteyner start bo'lishini kutadi.
-3. **Docker Compose da ma'lumotlarni qanday qilib saqlab qolish mumkin?**
-   - Javob: Volume-lar yordamida. \`volumes\` bo'limida DB fayllari saqlanadigan joyni xost tizimiga ulash mumkin.
+Docker Compose qanday qilib bir nechta konteynerlarni bog'laydi?
 
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
+- **Under the hood (Ichki ishlash mexanizmi)**: Docker Compose aslida Docker API ustiga qurilgan abstraksiya qatlami hisoblanadi. U siz yozgan YAML faylini o'qiydi, ketma-ketlikni (\\\`depends_on\\\`) tahlil qiladi va har bir xizmat uchun ketma-ket \\\`docker run\\\` buyruqlarini generatsiya qilib ijro etadi.
+- **Networking Bridge (Tarmoq ko'prigi)**: Compose avtomatik ravishda barcha xizmatlar uchun bitta izolyatsiya qilingan (default) tarmoq yaratadi. Shuning uchun ilovangiz DB bilan bog'lanish uchun IP manzil emas, balki to'g'ridan-to'g'ri xizmat nomini (masalan, \\\`db\\\` yoki \\\`postgres\\\`) ishlatishi mumkin. Dockerning ichki DNS serveri bu nomni tegishli konteynerning IP manziliga o'zgartirib beradi.
+- **Memory va Resurslarni boshqarish**: YAML fayl orqali har bir konteyner qancha RAM yoki CPU ishlatishini aniq belgilab berishingiz mumkin (\\\`deploy.resources.limits\\\` orqali). Bu bitta xizmat (masalan, DB) butun server xotirasini band qilib qo'ymasligini ta'minlaydi.
+- **Volumes va DB Persistence (Ma'lumotlarni saqlab qolish)**: Konteynerlar o'tkinchi (ephemeral). Agar PostgreSQL konteynerini o'chirsangiz, barcha ma'lumotlar o'chib ketadi. Bunga yo'l qo'ymaslik uchun **Volumes** (hajmlar) ishlatiladi. Volume xost mashinasidagi qattiq diskning ma'lum bir qismini konteyner ichidagi ma'lumotlar saqlanadigan papkaga (\\\`/var/lib/postgresql/data\\\`) bog'laydi. Natijada, konteyner o'chirilsa ham, ma'lumotlar kompyuteringizda xavfsiz saqlanib qoladi.
+
+## 3. ⚠️ Edge Cases va Senior Interview Questions (Murakkab holatlar)
+
+**Edge Case 1: "Konteyner ishga tushdi, lekin DB tayyor emas"**
+\\\`depends_on\\\` faqat konteyner ishga tushganligini tekshiradi, lekin DB o'zining ichki jarayonlarini tugatib, ulanishlarni qabul qilishga tayyor ekanligini kutmaydi. Natijada, ilovangiz DB ga ulana olmay "Connection Refused" xatosini berishi mumkin.
+*Yechim:* \\\`depends_on.condition: service_healthy\\\` dan foydalanish va DB uchun \\\`healthcheck\\\` yozish kerak. Yoki dastur ichida kutish mantiqini (retry logic) qo'shish kerak.
+
+**Edge Case 2: Ma'lumotlar bazasi parolini xavfsiz saqlash**
+YAML fayl ichida \\\`POSTGRES_PASSWORD: mysecret\\\` deb ochiq yozish xavfsizlikka ziddir, ayniqsa kod Githubda tursa.
+*Yechim:* \\\`.env\\\` fayl ishlatish va YAML ichida \\\`POSTGRES_PASSWORD: \${DB_PASSWORD}\\\` shaklida o'zgaruvchilarni chaqirish kerak.
+
+**Senior Interview Savollari:**
+1. **Savol:** \\\`docker-compose up\\\` va \\\`docker-compose start\\\` ning farqi nima?
+   **Javob:** \\\`up\\\` konteynerlarni noldan yaratadi (agar yo'q bo'lsa), tarmoqlarni ulaydi va ishga tushiradi. \\\`start\\\` esa faqatgina oldin yaratilgan va to'xtab turgan konteynerlarni qayta ishga tushiradi, u yangi konfiguratsiyani o'qimaydi.
+2. **Savol:** Bitta serverda ikkita bir xil loyihani Docker Compose orqali qanday qilib nomlar to'qnashuvisiz (name collision) ishga tushirish mumkin?
+   **Javob:** \\\`-p\\\` (\\\`--project-name\\\`) flagi orqali loyihaga alohida nom berish yoki \\\`COMPOSE_PROJECT_NAME\\\` environment o'zgaruvchisini o'rnatish orqali. Aks holda Compose default papka nomidan foydalanib nom to'qnashuviga olib keladi.
+
+## 📊 4. Arxitektura Diagrammasi
+
+\\\`\\\`\\\`mermaid
 graph TD;
-    A[docker-compose.yml] --> B[App Container];
-    A --> C[Postgres Container];
-    A --> D[Redis Container];
-    B -. requests .-> C;
-    B -. cache .-> D;
-\`\`\`
+    User[Foydalanuvchi] -->|HTTP Request| API[Node.js App];
+    
+    subgraph Docker_Compose_Network [Docker Compose Default Network]
+        API -->|DNS: db:5432| DB[(PostgreSQL)];
+        API -->|DNS: redis:6379| Cache[(Redis Cache)];
+    end
+    
+    DB -.->|Volume Mount| HostDisk[Xost Mashina Diski];
+    Cache -.->|In Memory| RAM[RAM Xotira];
+\\\`\\\`\\\`
 `,
   exercises: [
     {

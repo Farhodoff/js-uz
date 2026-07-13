@@ -2,57 +2,98 @@ export const k8sBasics = {
   id: "k8s-basics",
   title: "Kubernetes (K8s) Asoslari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-Kubernetes (K8s) — bu konteynerlashtirilgan ilovalarni avtomatlashtirilgan tarzda joylashtirish (deploy), masshtablash (scaling) va boshqarish tizimidir. Tasavvur qiling, sizda yuzlab konteynerlar bor va ularning qaysi biri ishlayotgani, qaysi biri o'chib qolganini qo'lda kuzatish imkonsiz. Kubernetes ularni kuzatadi, o'chib qolsa qayta yoqadi va ko'p foydalanuvchi kirganda avtomatik ravishda yangi nusxalarini yaratadi.
+  theory: `## Part 1: Beginner Analogy. Tasavvur qiling, orkestr va dirijyor
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+Tasavvur qiling, siz orkestr dirijyorisiz. Orkestrda turli xil musiqachilar (konteynerlar) bor: skripkachilar, puflama cholg'ular va barabanchilar. Agar bitta musiqachi kasal bo'lib qolsa yoki charchasa, kuy buzilmasligi uchun darhol uning o'rniga boshqa musiqachi kelishi kerak. Katta konsertlarda qaysi musiqachi qayerda o'tirishi, qachon chalishni boshlashi va agar ulardan biri xato qilsa nima bo'lishini qo'lda kuzatib turish imkonsiz.
 
-❌ **YOMON (Qo'lda boshqarish)**:
-- Har bir serverga kirib \`docker run\` qilish.
-- Server o'chib qolsa, kechasi bilan turib uni qayta ishga tushirish.
-- Yangi versiyani yuklashda saytni bir muddat o'chirib turish.
+**Kubernetes (K8s)** — xuddi shu mukammal dirijyorga o'xshaydi. U dastur (konteyner)larning qayerda ishlashi kerakligini, ularga qancha resurs (CPU/RAM) kerakligini va agar biror qism ishdan chiqsa, uni avtomatik tarzda qayta ishga tushirishni nazorat qiladi. 
 
-✅ **YAXSHI (Kubernetes bilan)**:
-\`\`\`yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: my-app
-spec:
-  replicas: 3
-  template:
-    spec:
-      containers:
-      - name: app
-        image: my-app:v2
-\`\`\`
-- Replicas orqali doim 3 ta nusxa ishlashini kafolatlaysiz.
-- K8s o'z-o'zini davolaydi (self-healing), ya'ni pod qulasa yangisini yaratadi.
-- Yangilanishlar (Rolling Updates) saytni uzib qo'ymasdan amalga oshiriladi.
+- **Orkestr musiqachilari** = Konteynerlar (Docker)
+- **Dirijyor** = Kubernetes
+- **Sahnadagi stullar to'plami** = Podlar
 
-## 🎤 Intervyu Savollari
-1. **Pod nima?**
-   - Javob: Pod - Kubernetes'dagi eng kichik joylashtirish (deploy) birligi. U bitta yoki bir nechta chambarchas bog'liq konteynerlarni o'z ichiga oladi.
-2. **Deployment va Pod farqi nima?**
-   - Javob: Pod o'tkinchi (ephemeral) bo'lib, o'lsa qayta tirilmaydi. Deployment esa Pod'larni boshqaradi, kerakli miqdorda ishlab turishini ta'minlaydi.
-3. **Service nima uchun kerak?**
-   - Javob: Pod'larning IP manzillari doim o'zgarib turadi. Service esa ularga bitta o'zgarmas IP va DNS nom beradi, bu orqali tarmoq trafigi to'g'ri yo'naltiriladi.
+---
 
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
+## Part 2: Deep Dive (Under the hood, Control Plane, etcd, Kubelet, Pods, Services)
+
+Kubernetes asosan ikki yirik qismdan iborat: **Control Plane** (Boshqaruv markazi) va **Worker Nodes** (Ishchi tugunlar).
+
+### 1. Control Plane (Miya)
+Bu qism klaster holatini va barcha jarayonlarni nazorat qiladi.
+- **API Server:** Kubernetes bilan muloqot qilish (masalan, \\\`kubectl\\\` orqali) uchun markaziy darvoza.
+- **etcd:** Klasterning barcha ma'lumotlarini (qaysi pod qayerda ishlayapti, qanday konfiguratsiyalar bor) saqlaydigan yuqori ishonchli kalit-qiymat (key-value) bazasi.
+- **Scheduler:** Yangi Pod yaratilganda, uni bo'sh resursi bor eng maqbul Worker Node'ga joylashtiradi.
+- **Controller Manager:** Klasterning kerakli holatda (desired state) ishlashini ta'minlaydi. Masalan, agar sizga 3 ta pod kerak bo'lsa va biri o'lib qolsa, Controller darhol yangisini yaratadi.
+
+### 2. Worker Nodes (Mushaklar)
+Haqiqiy ilovalar (konteynerlar) ishlaydigan joy.
+- **Kubelet:** Har bir node'da ishlaydigan agent. U Control Plane'dan kelgan buyruqlarni bajaradi va konteynerlarning to'g'ri ishlashini nazorat qiladi.
+- **Kube-Proxy:** Tarmoq qoidalari va xizmatlarni (Service) boshqaradi.
+- **Container Runtime:** Konteynerlarni ishga tushiruvchi dastur (masalan, containerd, Docker).
+
+### 3. Asosiy Obyektlar
+- **Pod:** Kubernetes'dagi eng kichik birlik. Odatda 1 ta Pod ichida 1 ta konteyner ishlaydi. Podlar doimiy emas (ephemeral), agar node o'chib qolsa, pod ham o'ladi.
+- **Deployment:** Podlarning qanday ishlashi va qancha nusxada (replicas) bo'lishini belgilaydi. Agar pod qulasa, Deployment uni qayta tiklaydi.
+- **Service:** Podlarning IP manzillari doim o'zgarib turadi. Service esa ularga bitta o'zgarmas IP va DNS nom beradi, bu orqali tarmoq trafigi to'g'ri yo'naltiriladi.
+
+---
+
+## Part 3: Edge Cases va Senior Interview Questions
+
+Katta tizimlarda Kubernetes o'zining murakkabliklariga ega. Quyida Senior darajadagi bilim talab qiluvchi savollar va kutilmagan holatlar (edge cases).
+
+**1. OOMKilled holati (Out of Memory) nima va qanday hal qilinadi?**
+Pod o'ziga ajratilgan xotiradan (Memory Limit) ko'p resurs talab qilsa, K8s uni o'ldiradi (OOMKilled).
+*Yechim:* Pod'ning YAML faylida \\\`resources.requests\\\` va \\\`resources.limits\\\` qiymatlarini to'g'ri belgilash, xotiradan to'g'ri foydalanayotganini tekshirish uchun profiler ishlatish.
+
+**2. Nima uchun Pod holati "CrashLoopBackOff" ga aylanadi?**
+Pod ichidagi dastur xato bilan yopilmoqda (masalan xato port, ulanish xatosi, yoki kodda exception). K8s uni tinimsiz qayta ishga tushirishga urinadi va har safar kutish vaqtini oshiradi.
+*Yechim:* \\\`kubectl logs <pod-name>\\\` orqali xatolikni o'qish va kod/konfiguratsiyani to'g'rilash.
+
+**3. Liveness va Readiness probalarining farqi nimada?**
+- **Liveness Probe:** "Bu dastur tirikmi?" deb tekshiradi. Agar proba o'tmasa, K8s pod'ni o'ldirib, qayta yaratadi. (Masalan, dastur deadlock'ga tushib qolsa)
+- **Readiness Probe:** "Bu dastur foydalanuvchi trafigini qabul qilishga tayyormi?" deb tekshiradi. Agar o'tmasa, Service orqali unga trafik yuborishni to'xtatadi, lekin pod'ni o'ldirmaydi. (Masalan, DB bilan ulanishni kutayotgan bo'lsa)
+
+**4. Tarmoqdagi Split-Brain muammosi qanday hal qilinadi?**
+etcd o'z-o'zini barqaror saqlashi uchun har doim toq sonli (masalan, 3, 5, 7) node'larda ishlashi tavsiya etiladi (Raft consensus algoritmi). Agar split-brain bo'lsa, etcd klaster faoliyatini to'xtatib qo'yishi mumkin.
+
+---
+
+## 🏗️ K8s Arxitekturasi (Mermaid Diagram)
+
+\\\`\\\`\\\`mermaid
 graph TD;
-    U[Foydalanuvchi] --> I[Ingress];
-    I --> S[Service];
-    S --> P1[Pod 1];
-    S --> P2[Pod 2];
-    S --> P3[Pod 3];
-\`\`\`
+    subgraph Control_Plane[Control Plane]
+        API[API Server]
+        ETCD[etcd Database]
+        SCHED[Scheduler]
+        CM[Controller Manager]
+        
+        API --- ETCD
+        API --- SCHED
+        API --- CM
+    end
+
+    subgraph Worker_Node_1[Worker Node 1]
+        K1[Kubelet]
+        P1[Pod 1]
+        P2[Pod 2]
+    end
+
+    subgraph Worker_Node_2[Worker Node 2]
+        K2[Kubelet]
+        P3[Pod 3]
+    end
+
+    API <-->|Buyruqlar| K1
+    API <-->|Buyruqlar| K2
+\\\`\\\`\\\`
 `,
   exercises: [
     {
       id: 1,
       title: "Replicas hisoblash",
-      instruction: "`getTotalReplicas` funksiyasi deploymentlar obyektlari massivini qabul qiladi. Jami replicas sonini qaytaring.",
+      instruction: "\`getTotalReplicas\` funksiyasi deploymentlar obyektlari massivini qabul qiladi. Jami replicas sonini qaytaring.",
       startingCode: "function getTotalReplicas(deployments) {\n  // your code here\n}",
       hint: "reduce yoki loop ishlating, d.spec.replicas ni qo'shing",
       solution: "function getTotalReplicas(deployments) {\n  return deployments.reduce((sum, d) => sum + d.spec.replicas, 0);\n}",
@@ -61,7 +102,7 @@ graph TD;
     {
       id: 2,
       title: "Pod yaratuvchi funksiya",
-      instruction: "`createPod` funksiyasi nom va image qabul qilib K8s pod obyekti strukturasini qaytarsin.",
+      instruction: "\`createPod\` funksiyasi nom va image qabul qilib K8s pod obyekti strukturasini qaytarsin.",
       startingCode: "function createPod(name, image) {\n  return {\n    kind: 'Pod',\n    metadata: { name: name },\n    // spec va containers ni to'ldiring\n  };\n}",
       hint: "spec: { containers: [{ name, image }] }",
       solution: "function createPod(name, image) {\n  return { kind: 'Pod', metadata: { name }, spec: { containers: [{ name, image }] } };\n}",
@@ -70,7 +111,7 @@ graph TD;
     {
       id: 3,
       title: "Label qo'shish",
-      instruction: "`addLabel` funksiyasi K8s manifest (obyekt) va label obyektini (masalan { env: 'prod' }) qabul qilib, uni `metadata.labels` ichiga qo'shib qaytarsin.",
+      instruction: "\`addLabel\` funksiyasi K8s manifest (obyekt) va label obyektini (masalan { env: 'prod' }) qabul qilib, uni \`metadata.labels\` ichiga qo'shib qaytarsin.",
       startingCode: "function addLabel(manifest, label) {\n  // your code here\n}",
       hint: "manifest.metadata.labels = { ...manifest.metadata.labels, ...label }",
       solution: "function addLabel(manifest, label) {\n  if(!manifest.metadata.labels) manifest.metadata.labels = {};\n  manifest.metadata.labels = { ...manifest.metadata.labels, ...label };\n  return manifest;\n}",
@@ -79,7 +120,7 @@ graph TD;
     {
       id: 4,
       title: "Deployment Scale",
-      instruction: "`scaleDeployment` funksiyasi deployment obyektini va yangi replica sonini qabul qilib, `spec.replicas` qiymatini o'zgartirsin va obyektni qaytarsin.",
+      instruction: "\`scaleDeployment\` funksiyasi deployment obyektini va yangi replica sonini qabul qilib, \`spec.replicas\` qiymatini o'zgartirsin va obyektni qaytarsin.",
       startingCode: "function scaleDeployment(deployment, replicas) {\n  // your code here\n}",
       hint: "deployment.spec.replicas = replicas;",
       solution: "function scaleDeployment(deployment, replicas) {\n  deployment.spec.replicas = replicas;\n  return deployment;\n}",
@@ -88,7 +129,7 @@ graph TD;
     {
       id: 5,
       title: "Service obyekti",
-      instruction: "`createService` app nomi va port qabul qilib, K8s Service obyektini qaytarsin.",
+      instruction: "\`createService\` app nomi va port qabul qilib, K8s Service obyektini qaytarsin.",
       startingCode: "function createService(app, port) {\n  // return { kind: 'Service', spec: { selector: { app }, ports: [{ port }] } }\n}",
       hint: "Izohdagi strukturani qaytaring",
       solution: "function createService(app, port) {\n  return { kind: 'Service', spec: { selector: { app }, ports: [{ port }] } };\n}",
@@ -97,7 +138,7 @@ graph TD;
     {
       id: 6,
       title: "Pod statusini tekshirish",
-      instruction: "`isPodRunning` funksiyasi pod obyekti (pod.status.phase) 'Running' bo'lsa true, aks holda false qaytarsin.",
+      instruction: "\`isPodRunning\` funksiyasi pod obyekti (pod.status.phase) 'Running' bo'lsa true, aks holda false qaytarsin.",
       startingCode: "function isPodRunning(pod) {\n  // your code here\n}",
       hint: "return pod.status.phase === 'Running'",
       solution: "function isPodRunning(pod) {\n  return pod.status?.phase === 'Running';\n}",
@@ -106,7 +147,7 @@ graph TD;
     {
       id: 7,
       title: "Image yangilash (Update)",
-      instruction: "`updateImage` deployment obyekti va yangi image nomini olib, birinchi konteynerning imageni yangilasin.",
+      instruction: "\`updateImage\` deployment obyekti va yangi image nomini olib, birinchi konteynerning imageni yangilasin.",
       startingCode: "function updateImage(deployment, newImage) {\n  // deployment.spec.template.spec.containers[0].image = newImage;\n}",
       hint: "Ichki obyekt yo'liga e'tibor bering.",
       solution: "function updateImage(deployment, newImage) {\n  deployment.spec.template.spec.containers[0].image = newImage;\n  return deployment;\n}",
@@ -115,7 +156,7 @@ graph TD;
     {
       id: 8,
       title: "Namespace ajratish",
-      instruction: "`getNamespace` funksiyasi obyektni olib `metadata.namespace` ni qaytarsin. Agar yo'q bo'lsa 'default' qaytarsin.",
+      instruction: "\`getNamespace\` funksiyasi obyektni olib \`metadata.namespace\` ni qaytarsin. Agar yo'q bo'lsa 'default' qaytarsin.",
       startingCode: "function getNamespace(manifest) {\n  // your code here\n}",
       hint: "manifest.metadata.namespace || 'default'",
       solution: "function getNamespace(manifest) {\n  return manifest.metadata?.namespace || 'default';\n}",
@@ -124,7 +165,7 @@ graph TD;
     {
       id: 9,
       title: "ConfigMap Obyekti",
-      instruction: "`createConfigMap` name va data obyektini qabul qilib, K8s ConfigMap qaytarsin.",
+      instruction: "\`createConfigMap\` name va data obyektini qabul qilib, K8s ConfigMap qaytarsin.",
       startingCode: "function createConfigMap(name, data) {\n  // return { kind: 'ConfigMap', metadata: { name }, data }\n}",
       hint: "Faqat obyekt qaytarasiz.",
       solution: "function createConfigMap(name, data) {\n  return { kind: 'ConfigMap', metadata: { name }, data };\n}",
@@ -133,7 +174,7 @@ graph TD;
     {
       id: 10,
       title: "Resource limits",
-      instruction: "`setMemoryLimit` pod.spec.containers[0] ichida resources.limits.memory ni belgilab qaytarsin.",
+      instruction: "\`setMemoryLimit\` pod.spec.containers[0] ichida resources.limits.memory ni belgilab qaytarsin.",
       startingCode: "function setMemoryLimit(pod, memory) {\n  // pod.spec.containers[0].resources = { limits: { memory } }\n}",
       hint: "Ko'rsatilgan yo'ldagi resources obyektini hosil qiling.",
       solution: "function setMemoryLimit(pod, memory) {\n  if(!pod.spec) pod.spec = {};\n  if(!pod.spec.containers) pod.spec.containers = [{}];\n  pod.spec.containers[0].resources = { limits: { memory } };\n  return pod;\n}",
@@ -220,10 +261,10 @@ graph TD;
     },
     {
       id: 12,
-      question: "Kubernetes YAML faylidagi `kind` maydoni nima bildiradi?",
+      question: "Kubernetes YAML faylidagi \`kind\` maydoni nima bildiradi?",
       options: ["Konteyner rasmi nomini", "Fayl yaratilgan sanani", "K8s resursi turini (masalan, Pod, Service, Deployment)", "Parolni"],
       correctAnswer: 2,
-      explanation: "`kind` K8s ga biz qanday turdagi obyekt yaratmoqchi ekanimizni aytadi."
+      explanation: "\`kind\` K8s ga biz qanday turdagi obyekt yaratmoqchi ekanimizni aytadi."
     }
   ]
 };

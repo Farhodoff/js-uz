@@ -3,42 +3,61 @@ export const advancedCiCd = {
   title: "Murakkab CI/CD jarayonlari",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish
-CI/CD (Continuous Integration / Continuous Deployment) — bu dasturni yozishdan tortib uni serverga (prodga) yetkazib berishgacha bo'lgan jarayonlarni avtomatlashtirishdir.
-- **CI (Continuous Integration)**: Dasturchi kodni Git ga push qilganida u avtomat test qilinadi va build qilinadi.
-- **CD (Continuous Deployment/Delivery)**: Muvaffaqiyatli build dan so'ng u avtomat ravishda serverlarga yoki foydalanuvchilarga yetkaziladi.
+Tasavvur qiling, siz pitsaxona ochdingiz. Boshida bitta pitsa tayyorlash, uni tekshirish va mijozga yetkazib berish oson edi. Lekin mijozlar ko'paygach, bu ishni qo'lda qilish qiyinlashdi. CI/CD huddi mana shu pitsa tayyorlash konveyeriga o'xshaydi. 
+- **CI (Continuous Integration - Uzluksiz Integratsiya)**: Oshpazlar har bir qo'shgan masallig'ini avtomat ravishda to'g'ri ekanligini tekshirishadi (Avtomatik Test).
+- **CD (Continuous Deployment - Uzluksiz Yetkazib berish)**: Tayyor va tekshirilgan pitsa to'g'ridan-to'g'ri mijozning stoliga avtomat tarzda yetkaziladi.
 
-Murakkab CI/CD pipeline'larida Matrix build'lar (bir vaqtda turli OS larda test qilish), xavfsizlik (security scan), va canary deployment'lar (yangi versiyani faqat 10% foydalanuvchiga ko'rsatish) ishlatiladi.
+Dasturlashda bu qanday ishlaydi? Siz kodni yozib GitHub ga joylaysiz. Tizim avtomatik tarzda uni test qiladi, build qiladi (masalan, Docker yordamida) va serverga joylaydi.
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+## 2. 🚀 Deep Dive (Chuqur tahlil va murakkab jarayonlar)
+Haqiqiy yirik loyihalarda CI/CD faqatgina test va deploy dan iborat emas. Undan tashqari ko'plab xavfsizlik va optimizatsiya bosqichlari mavjud.
 
-❌ **YOMON (Qo'lda qilish)**:
-1. Dasturchi kodni yozib zip ga joylaydi.
-2. Serverga FTP orqali yuklaydi.
-3. Eskisini o'chirib yangisini ishga tushiradi. Sayt buzilsa nima bo'lganini bilmaydi.
+### a) Blue-Green Deployments (Ko'k-Yashil reliz)
+Eski va yangi versiyalar uchun alohida serverlar (yoki containerlar) bo'ladi.
+- **Blue**: Hozir ishlayotgan jonli (production) muhit.
+- **Green**: Yangi versiya yozilgan muhit. Barcha testlar shu yerda o'tkaziladi.
+Testlar tugagach, routerning yo'nalishi (trafik) birdaniga Green muhitga buriladi. Agar xato chiqsa, tezda ortga (Blue ga) qaytarish mumkin (Zero-downtime).
 
-✅ **YAXSHI (CI/CD Pipeline bilan)**:
-1. Kod GitHub/GitLab ga push qilinadi.
-2. Pipeline avtomat ishga tushadi: Linter -> Unit Test -> SonarQube (sifat) -> Docker Build -> Serverga deploy.
-3. Agar bitta qadam xato bo'lsa, jarayon to'xtaydi va dasturchiga Slack ga xabar keladi.
+### b) Canary Release (Kanareyka relizi)
+Yangi versiya barcha foydalanuvchilarga emas, balki faqat kichik guruhga (masalan, 5-10% mijozlarga) ko'rsatiladi. Agar ularda xato kuzatilmasa, asta-sekin 100% ga yetkaziladi. Bu xatolarning keng tarqalishini oldini oladi.
 
-## 🎤 Intervyu Savollari
-1. **CI va CD o'rtasidagi farq nima?**
-   - Javob: CI asosan kodni birlashtirish, build va test qilishga qaratilgan. CD esa ushbu tayyor kodni avtomatik tarzda muhitlarga (Dev, Staging, Prod) chiqarishga qaratilgan.
-2. **GitHub Actions yoki GitLab CI da "Matrix" tushunchasi nima?**
-   - Javob: Bitta testni bir nechta o'zgaruvchilar bilan parallel ishlatish. Masalan, Node.js ning 14, 16, 18 versiyalarida bir vaqtda test qilish.
-3. **Blue/Green Deployment nima?**
-   - Javob: Ikkita bir xil muhit bo'ladi. Yangi versiya Blue ga deploy qilinadi, to'liq test qilingach, trafik birdaniga Green dan Blue ga o'tkaziladi. Bu "zero-downtime" beradi.
+### c) Infrastructure as Code (IaC)
+Serverlar va tarmoq sozlamalarini qo'lda kiritish o'rniga kod sifatida yozish (masalan, Terraform yoki Ansible orqali). Bu sizning CI/CD quvuringizga serverlarni noldan boshlab avtomat yaratish imkonini beradi.
 
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
-graph LR;
-    A[Git Push] --> B[Lint & Test];
-    B --> C[Security Scan];
-    C --> D[Docker Build];
-    D --> E[Deploy to Staging];
-    E --> F[Approve];
-    F --> G[Deploy to Prod];
-\`\`\`
+### d) Matrix Builds
+Sizning kodingiz bitta muhitda emas, balki parallel ravishda bir nechta OS yoki Node.js versiyalarida test qilinadi.
+\\\`javascript
+// GitHub Actions misoli
+strategy:
+  matrix:
+    node-version: [14.x, 16.x, 18.x]
+    os: [ubuntu-latest, windows-latest]
+\\\`
+
+## 3. ⚠️ Edge Cases va Senior Intervyu Savollari
+
+**Savol: CI/CD quvurida maxfiy kalitlar (API keys) qanday saqlanadi?**
+**Javob:** Hech qachon kod ichida yoki oddiy o'zgaruvchilarda emas. Ular CI/CD platformasining o'zidagi xavfsiz "Secrets" bo'limiga saqlanadi (masalan, GitHub Secrets, AWS Secrets Manager) va qat'iy shifrlanadi.
+
+**Savol: Nima uchun testlar qisqa va tez ishlashi kerak?**
+**Javob:** CI/CD konveyeri sekinlashsa, dasturchilar kodni birlashtirishdan qocha boshlaydilar. Katta loyihalarda minglab testlar soatlab vaqt olishi mumkin, shuning uchun "parallel test run" va kodni "caching" (keshlash) texnikalarini qo'llash shart.
+
+**Savol: CI/CD jarayonida Docker ning o'rni qanday?**
+**Javob:** Docker kodni unga kerakli barcha paketlar (dependencies) bilan birga izolyatsiyalangan konteynerga o'raydi. Bu "Mening kompyuterimda ishlayotgandi" muammosini yo'q qiladi, sababi serverdagi muhit va local muhit mutlaqo bir xil bo'ladi.
+
+## 4. 📊 Mermaid Diagrammasi
+CI/CD quvurining qadam-baqadam ko'rinishi:
+\\\`mermaid
+graph TD;
+    A[Dasturchi Code Push qiladi] --> B[Linting va Code Style];
+    B --> C{Testlar Muvaffaqiyatlimi?};
+    C -- Ha --> D[Security Scanning];
+    C -- Yoq --> E[Slackga xabar jonatish];
+    D --> F[Docker Image yaratish];
+    F --> G[Staging serveriga Deploy];
+    G --> H[End-to-End Testlar];
+    H --> I[Productionga Deploy - Blue Green];
+\\\`
 `,
   exercises: [
     {
@@ -65,7 +84,7 @@ graph LR;
       instruction: "`parseSemVer` funksiyasi 'v1.2.3' formatidagi stringni qabul qilib, { major: 1, minor: 2, patch: 3 } obyektini qaytarsin.",
       startingCode: "function parseSemVer(versionStr) {\n  // your code here\n}",
       hint: "replace('v', '') va split('.') ishlating, keyin parseInt",
-      solution: "function parseSemVer(versionStr) {\n  const parts = versionStr.replace('v', '').split('.');\n  return { major: parseInt(parts[0]), minor: parseInt(parts[1]), patch: parseInt(parts[2]) };\n}",
+      solution: "function parseSemVer(versionStr) {\n  const parts = versionStr.replace('v', '').split('.');\n  return { major: parseInt(parts[0], 10), minor: parseInt(parts[1], 10), patch: parseInt(parts[2], 10) };\n}",
       test: "const fn = new Function(code + '; return parseSemVer;')(); const r = fn('v2.5.1'); if(r.major !== 2 || r.patch !== 1) throw new Error('SemVer xato parse qilindi');"
     },
     {
@@ -152,7 +171,7 @@ graph LR;
       question: "Pipeline nima?",
       options: ["Dasturlash tili", "Kodni build qilish, testlash va deploy qilish qadamlarining avtomatlashtirilgan ketma-ketligi", "Tarmoq protokoli", "Server turi"],
       correctAnswer: 1,
-      explanation: "Pipeline (quvur) kodning git'dan servergacha bosib o'tadigan avtomatlashgan bosqichlaridir."
+      explanation: "Pipeline (quvur) kodning git dan servergacha bosib o'tadigan avtomatlashgan bosqichlaridir."
     },
     {
       id: 4,
@@ -166,7 +185,7 @@ graph LR;
       question: "Matrix Build nima uchun kerak?",
       options: ["Xakerlikdan himoyalash uchun", "Bitta kodni turli muhitlarda (masalan turli OS va Node versiyalarida) parallel test qilish uchun", "Parollarni saqlash uchun", "UI dizayn uchun"],
       correctAnswer: 1,
-      explanation: "Matrix imkoniyati yordamida bir xil pipeline'ni turli xil parametrlar o'zgaruvchilari bilan parallel ishga tushirish mumkin."
+      explanation: "Matrix imkoniyati yordamida bir xil pipeline ni turli xil parametrlar o'zgaruvchilari bilan parallel ishga tushirish mumkin."
     },
     {
       id: 6,
@@ -198,17 +217,17 @@ graph LR;
     },
     {
       id: 10,
-      question: "Linter (masalan, ESLint) CI pipeline'da nima ish qiladi?",
+      question: "Linter (masalan, ESLint) CI pipeline da nima ish qiladi?",
       options: ["Kodni tezlashtiradi", "Kod kodlash standartlariga (style, sintaksis xatolar) mosligini tekshiradi", "Test yozadi", "Kodni serverga yuklaydi"],
       correctAnswer: 1,
-      explanation: "U kod sifatini nazorat qilib, standart buzilgan bo'lsa build'ni to'xtatadi."
+      explanation: "U kod sifatini nazorat qilib, standart buzilgan bo'lsa build ni to'xtatadi."
     },
     {
       id: 11,
       question: "Webhook nima?",
       options: ["Tarmog'ni bloklovchi", "Biror hodisa sodir bo'lganda bir tizim boshqa tizimga HTTP POST so'rovi yuborish mexanizmi", "Ma'lumotlar bazasi turi", "CLI komandasi"],
       correctAnswer: 1,
-      explanation: "Masalan, GitHub'ga kod push qilinganda Jenkins'ga webhook orqali xabar borib, pipeline boshlanadi."
+      explanation: "Masalan, GitHub ga kod push qilinganda Jenkins ga webhook orqali xabar borib, pipeline boshlanadi."
     },
     {
       id: 12,
