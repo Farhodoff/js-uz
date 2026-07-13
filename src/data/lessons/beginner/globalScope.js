@@ -2,12 +2,11 @@ export const globalScopeLesson = {
   id: "globalScopeLesson",
   title: "Global Scope",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Beginner Analogy: O'xshatish va Sodda Tushuntirish
 
 ### Global Scope (Global qamrov) nima?
-* **Global Scope:** Bu JavaScript dasturining eng tashqi doirasi (miqyosi) hisoblanadi. Har qanday funksiya yoki blok (\`{}\`) tashqarisida e'lon qilingan barcha o'zgaruvchilar va funksiyalar global qamrovga tegishli.
+* **Global Scope:** Bu JavaScript dasturining eng tashqi doirasi (miqyosi) hisoblanadi. Har qanday funksiya yoki blok (\\\`{}\\\`) tashqarisida e'lon qilingan barcha o'zgaruvchilar va funksiyalar global qamrovga tegishli.
 * **Kirish:** Global o'zgaruvchilar dasturning istalgan joyidan (istalgan funksiya yoki blok ichidan) ko'rinadi va ularni o'qish/o'zgartirish mumkin.
-* **Global Obyekt:** Kod bajariladigan muhitga qarab global o'zgaruvchilar maxsus obyektga biriktiriladi. (brauzerda \`window\`, Node.js-da \`global\`, universal \`globalThis\`).
 
 ### Real hayotiy o'xshatish
 Tasavvur qiling, siz **shahar markaziy maydonidasiz**:
@@ -16,394 +15,281 @@ Tasavvur qiling, siz **shahar markaziy maydonidasiz**:
 
 ---
 
-## 2. 💻 Real Kod Misollari
+## 2. ⚙️ Deep Dive (Under the hood, Memory, V8 Engine, Performance)
 
-### 1. Basic Example (Global o'zgaruvchi)
-\`\`\`javascript
-const siteName = "JavaScript Darslari";
-let userCount = 150;
+### Qanday ishlaydi?
+V8 Engine va JavaScript kodni ishlashni boshlaganda **Global Execution Context (Global Bajarilish Muhiti)** yaratiladi. Bu muhit o'zining **Global Lexical Environment (Global Leksik Muhit)** iga ega bo'lib, u ikki qismdan iborat:
 
-function displayStatus() {
-  // Global o'zgaruvchilarga erkin murojaat
-  console.log(\`\${siteName} da jami \${userCount} ta foydalanuvchi bor.\`);
-}
+1. **Object Environment Record:** \\\`var\\\` bilan e'lon qilingan o'zgaruvchilar va standart funksiya e'lonlarini o'z ichiga oladi. Bular global ob'ektning (brauzerda \\\`window\\\`, Node.js-da \\\`global\\\`, universal \\\`globalThis\\\`) xususiyatlariga aylanadi.
+2. **Declarative Environment Record:** \\\`let\\\`, \\\`const\\\` va \\\`class\\\` bilan e'lon qilingan o'zgaruvchilarni saqlaydi. Bular global ob'ektda to'g'ridan-to'g'ri ko'rinmaydi.
 
-displayStatus(); 
-\`\`\`
-
-### 2. Intermediate Example (Global obyekt bilan bog'liqlik)
-\`\`\`javascript
-var globalVar = "Men window ichidaman!";
-let globalLet = "Men declarative scope-daman!";
-const globalConst = "Men ham!";
-
-console.log(window.globalVar);   // "Men window ichidaman!"
-console.log(window.globalLet);   // undefined (let/const global obyektga o'tmaydi)
-
-console.log(globalThis.globalVar); // "Men window ichidaman!"
-\`\`\`
-
-### 3. Advanced Example (Implicit Global va strict mode)
-\`\`\`javascript
-// 1. Strict rejim yo'q:
-function createUser() {
-  username = "ali123"; // Yashirincha globalga aylanadi
-}
-createUser();
-console.log(window.username); // "ali123"
-
-// 2. Strict rejim yoqilganda:
-function createAdmin() {
-  "use strict";
-  adminName = "valisher"; // ReferenceError
-}
-// createAdmin();
-\`\`\`
+### Performance va Optimization
+* **Scope Chain Qidiruvi:** JavaScript dvigateli o'zgaruvchini topmaguncha doiralarni (scope larni) yuqoriga qarab izlaydi. Global o'zgaruvchini qidirish har doim eng uzoq vaqt oladi, chunki u zanjirning oxirida joylashgan. Shuning uchun, loop (sikl) ichida global o'zgaruvchiga murojaat qilish o'rniga, uni vaqtinchalik lokal o'zgaruvchiga kesh qilish (saqlash) afzalroq.
+* **Memory Leak (Xotira Oqishi):** Global o'zgaruvchilar dastur yopilguniga qadar xotirada qoladi (Garbage Collector ularni tozalamaydi). Ularni keragidan ortiq ishlatish ilova ishini sekinlashtiradi.
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
-Global Lexical Environment ikki qismdan iborat:
-1. **Object Environment Record:** \`var\` va e'lon qilingan funksiyalarni boshqaradi (ulardan \`window\` obyektida nusxa paydo bo'ladi).
-2. **Declarative Environment Record:** \`let\`, \`const\` va \`class\` e'lonlarini saqlaydi (ular \`window\` obyektida paydo bo'lmaydi).
+## 3. ⚠️ Edge Cases va Senior Interview Questions
 
----
+### Implicit Global (Yashirin Global)
+Agar siz qat'iy rejimdan (\\\`"use strict"\\\`) foydalanmasangiz va o'zgaruvchini \\\`var\\\`, \\\`let\\\` yoki \\\`const\\\` so'zlarisiz e'lon qilsangiz, JavaScript dvigateli uni avtomatik ravishda global qamrovda yaratadi:
 
-## 4. ❌ Ko'p Uchraydigan Xatolar (YOMON / YAXSHI)
-
-### 1. Loop (sikl) ichida kalit so'zsiz iterator ishlatish
-🔴 **YOMON:** (Global i yaratilishi)
-\`\`\`javascript
-function runLoop() {
-  for (i = 0; i < 5; i++) { ... } // i global bo'lib ketadi
+\\\`\\\`\\\`javascript
+function createYashirinGlobal() {
+  yashirin = "Men globalman!"; // Implicit global yuz beradi
 }
-runLoop();
-console.log(window.i); // 5 
-\`\`\`
+createYashirinGlobal();
+console.log(globalThis.yashirin); // "Men globalman!"
+\\\`\\\`\\\`
+> Edge Case: \\\`"use strict"\\\` ishlatilsa, bunday holatda ReferenceError qaytadi.
 
-🟢 **YAXSHI:** (\`let\` ishlatish)
-\`\`\`javascript
-function runLoop() {
-  for (let i = 0; i < 5; i++) { ... }
-}
-runLoop();
-\`\`\`
+### Hoisting bilan kutilmagan holatlar
+\\\`var\\\` global ob'ekt ustiga yoziladi. Agar global ob'ektdagi tayyor property bilan bir xil nom bersangiz muammo kelib chiqishi mumkin:
+\\\`\\\`\\\`javascript
+var name = "Vali";
+console.log(window.name); // Vali
+\\\`\\\`\\\`
 
-### 2. Hamma narsani global scope-da saqlash
-🔴 **YOMON:** (Ma'lumotlar chalkashadi)
-\`\`\`javascript
-let tempResult = 0;
-function calc(a, b) { tempResult = a + b; }
-\`\`\`
-
-🟢 **YAXSHI:** (Return qilish)
-\`\`\`javascript
-function calc(a, b) { return a + b; }
-\`\`\`
+### Senior Interview Questions
+1. **Global ob'ektlarni ifloslantirishdan (Global Pollution) qanday saqlanish mumkin?**
+   Javob: Modullar, IIFE (Immediately Invoked Function Expressions) yordamida izolyatsiya qilish yoki \\\`let\\\`/\\\`const\\\` orqali scope-ni boshqarish bilan.
+2. **Global Environment va Global Execution Context farqi nima?**
+   Javob: Global Execution Context bu ishlash maydoni (Stack'dagi yozuv), Global Environment esa o'zgaruvchi va xotiralarni xaritasidir (Memory heap/Record).
 
 ---
 
-## 5. 💬 12 ta Intervyu Savollari
+## 4. 📊 Arxitektura: Mermaid Diagrammasi
 
-1. **Savol:** Global scope nima?
-   * **Javob:** Dasturning barcha qismlaridan kirish mumkin bo'lgan eng yuqori soha.
-2. **Savol:** Nega global o'zgaruvchilarni ko'p ishlatish yomon?
-   * **Javob:** Nomlar to'qnashuvi, xavfsizlik muammolari va xotira oqishi sababli.
-3. **Savol:** \`globalThis\` nima?
-   * **Javob:** Har xil muhitlarda (browser, Node) ishlash uchun yagona global obyekt.
-4. **Savol:** Implicit Global nima?
-   * **Javob:** Kalit so'zsiz yozilgan o'zgaruvchining avtomatik globalga aylanib qolishi.
-5. **Savol:** \`var\` va \`let\` globalda qanday farqlanadi?
-   * **Javob:** \`var\` global obyektga yoziladi (\`window.x\`), \`let\`/\`const\` yozilmaydi.
-6. **Savol:** Strict mode yashirin globallarga qanday yechim?
-   * **Javob:** \`ReferenceError\` beradi.
-7. **Savol:** Node.js eng yuqori qatlam o'zgaruvchilari globalmi?
-   * **Javob:** Yo'q, Node ularni modul o'rami (wrapper) ichida saqlaydi.
-8. **Savol:** IIFE global ifloslanishni qanday oldini oladi?
-   * **Javob:** O'z qamrovini yaratib, ichidagi kodlarni yashiradi.
-9. **Savol:** Garbage Collector qachon globallarni tozalaydi?
-   * **Javob:** Dastur (yoki brauzer oynasi) yopilgandagina.
-10. **Savol:** Object Environment Record nima?
-    * **Javob:** \`window\` obyektiga bog'langan \`var\` va funksiyalar yashaydigan joy.
-11. **Savol:** Declarative Environment Record nima?
-    * **Javob:** \`let\`, \`const\` va \`class\` yashaydigan izolyatsiyalangan joy.
-12. **Savol:** \`window\` ga nimadir bog'langanini qanday o'chiramiz?
-    * **Javob:** \`delete window.myVar\` orqali (lekin qat'iy e'lon qilingan bo'lsa o'chmaydi).
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-\`\`\`mermaid
+\\\`\\\`\\\`mermaid
 graph TD
-    subgraph GlobalContext [Global Execution Context]
-        subgraph GlobalEnvironment [Global Lexical Environment]
-            subgraph ObjectEnv [window / globalThis]
-                windowObj["window Object"]
-                varVar["var globalVar"]
-            end
-            subgraph DeclEnv [let / const]
-                letVar["let globalLet"]
-            end
-        end
-    end
-\`\`\`
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Dars oxiridagi testlarni yechishni unutmang.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### SDK yozish
-Uchinchi tomon (Analytics) tizimlari odatda global namespace-ni ishlatsa ham, barcha ichki qoidalarini IIFE ichida saqlaydi.
-\`\`\`javascript
-(function(global) {
-  const privateConfig = { key: "123" };
-  const SDK = { 
-    init: () => console.log(privateConfig.key) 
-  };
-  global.MySDK = SDK;
-})(globalThis);
-\`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-* Loop ichida globallardan foydalanish qimmat. Ularni lokalga kesh qiling (masalan, \`const doc = document\`).
-* Xotira oqishini (memory leak) oldini olish uchun global o'zgaruvchilarni ko'paytirmang.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Xususiyat | \`var\` | \`let\` / \`const\` | Implicit (\`x = 10\`) |
-| :--- | :--- | :--- | :--- |
-| **window da ko'rinish** | Ha (\`window.x\`) | Yo'q (\`undefined\`) | Ha (\`window.x\`) |
-| **Garbage Collector** | Dastur yopilguncha | Dastur yopilguncha | Dastur yopilguncha |
-| **Strict Mode** | Ruxsat etilgan | Ruxsat etilgan | \`ReferenceError\` |
+    A[Global Execution Context] --> B[Global Lexical Environment]
+    B --> C[Object Environment Record]
+    B --> D[Declarative Environment Record]
+    C -. window/globalThis .-> E(var variables, function declarations)
+    D -. Isolated .-> F(let, const, class)
+\\\`\\\`\\\`
 `,
   exercises: [
     {
       id: 1,
-      title: "Global va Lokal O'zgaruvchilar",
-      instruction: "Global miqyosda `appName = \"MyJSApp\"` yarating. `getAppInfo()` funksiyasi `\"Ilova nomi: MyJSApp\"` qaytarsin.",
-      startingCode: "const appName = \"MyJSApp\";\nfunction getAppInfo() {\n  \n}",
-      hint: "return `Ilova nomi: ${appName}`;",
-      test: "const obj = new Function(code + '; return { getAppInfo, appName };')(); if(obj.getAppInfo() !== 'Ilova nomi: MyJSApp') return 'Xato'; return null;"
+      title: "Global o'zgaruvchi yaratish",
+      instruction: "Global qamrovda `websiteName = \"JavaScript Mastery\"` e'lon qiling va uni qaytaradigan `getWebsite()` funksiyasini yozing.",
+      startingCode: "const websiteName = \"JavaScript Mastery\";\nfunction getWebsite() {\n  \n}",
+      hint: "Shunchaki websiteName ni return qiling.",
+      test: "const obj = new Function(code + '; return { getWebsite, websiteName };')(); if(obj.getWebsite() !== 'JavaScript Mastery') return 'Xato'; return null;"
     },
     {
       id: 2,
-      title: "Global Obyektga Biriktirish",
-      instruction: "`setGlobalVersion()` yozing, `globalThis.SYSTEM_VERSION = \"2.1.0\";` qilsin.",
-      startingCode: "function setGlobalVersion() {\n  \n}",
-      hint: "globalThis.SYSTEM_VERSION = \"2.1.0\";",
-      test: "const fn = new Function(code + '; return setGlobalVersion;')(); delete globalThis.SYSTEM_VERSION; fn(); const val = globalThis.SYSTEM_VERSION; delete globalThis.SYSTEM_VERSION; if(val !== '2.1.0') return 'Xato'; return null;"
+      title: "Implicit Global xatosi",
+      instruction: "Qat'iy rejim ('use strict') yoqilgan `strictFunction` funksiyasida `x = 10` yozing va qanday xato chiqishini tekshiring.",
+      startingCode: "function strictFunction() {\n  \n}",
+      hint: "\"use strict\"; ni yozing va x = 10 deb qo'ying.",
+      test: "const fn = new Function(code + '; return strictFunction;')(); try { fn(); return 'Xato bermadi'; } catch(e) { return e instanceof ReferenceError ? null : 'Boshqa xato'; }"
     },
     {
       id: 3,
-      title: "Strict Mode va Yashirin Global",
-      instruction: "`triggerGlobalError()` ichida `\"use strict\";` deb yozib `tempData = 100;` e'lon qiling, shunda xato chiqadi.",
-      startingCode: "function triggerGlobalError() {\n  \n}",
-      hint: "\"use strict\"; tempData = 100;",
-      test: "const fn = new Function(code + '; return triggerGlobalError;')(); try { fn(); return 'Xato bermadi'; } catch(e) { return e instanceof ReferenceError ? null : 'Boshqa xato'; }"
+      title: "globalThis orqali biriktirish",
+      instruction: "`setAppVersion` funksiyasi ichida `globalThis.version = \"1.0.0\"` ni yozib, global obyektni o'zgartiring.",
+      startingCode: "function setAppVersion() {\n  \n}",
+      hint: "globalThis.version = \"1.0.0\";",
+      test: "const fn = new Function(code + '; return setAppVersion;')(); delete globalThis.version; fn(); const val = globalThis.version; delete globalThis.version; return val === '1.0.0' ? null : 'Xato';"
     },
     {
       id: 4,
-      title: "Globalni o'qish",
-      instruction: "`globalThis` yordamida `readGlobalHost()` ni tuzing. U `globalThis.myHost` ni qaytarsin.",
-      startingCode: "function readGlobalHost() {\n  \n}",
-      hint: "return globalThis.myHost;",
-      test: "globalThis.myHost = 'localhost'; const fn = new Function(code + '; return readGlobalHost;')(); const res = fn(); delete globalThis.myHost; return res === 'localhost' ? null : 'Xato';"
+      title: "let globalga bog'lanmaydi",
+      instruction: "Tashqarida `let myScore = 100` e'lon qilingan. Funksiya ichida typeof globalThis.myScore ni tekshiring va uni qaytaring.",
+      startingCode: "let myScore = 100;\nfunction checkGlobalLet() {\n  \n}",
+      hint: "return typeof globalThis.myScore;",
+      test: "const fn = new Function(code + '; return checkGlobalLet;')(); return fn() === 'undefined' ? null : 'Xato';"
     },
     {
       id: 5,
-      title: "Implicit Global Test",
-      instruction: "`makeGlobal()` da shunchaki `mySecret = \"123\"` yozing (let/const yo'q). (Qat'iy rejim yo'q)",
-      startingCode: "function makeGlobal() {\n  \n}",
-      hint: "mySecret = \"123\";",
-      test: "const fn = new Function(code + '; return makeGlobal;')(); fn(); const res = globalThis.mySecret || typeof mySecret !== 'undefined' ? mySecret : null; return res === '123' ? null : 'Implicit global yaratilmadi';"
+      title: "Shadowing yuz berishi",
+      instruction: "Global qamrovda `let theme = \"dark\"`. `getTheme` funksiyasi ichida xuddi shu nom bilan `let theme = \"light\"` qiling va uni return qiling.",
+      startingCode: "let theme = \"dark\";\nfunction getTheme() {\n  \n}",
+      hint: "Funksiya ichida let theme = \"light\" ni saqlab return qiling.",
+      test: "const obj = new Function(code + '; return { getTheme, theme };')(); if(obj.getTheme() !== 'light') return 'light bo\\'lishi kerak'; if(obj.theme !== 'dark') return 'Global o\\'zgardi'; return null;"
     },
     {
       id: 6,
-      title: "Global o'zgaruvchilarni qo'shish",
-      instruction: "Tashqarida `val1 = 5` va `val2 = 10`. `sumGlobals()` shu ikkisini qo'shib qaytarsin.",
-      startingCode: "let val1 = 5;\nlet val2 = 10;\nfunction sumGlobals() {\n  \n}",
-      hint: "return val1 + val2;",
-      test: "const obj = new Function(code + '; return { sumGlobals, val1, val2 };')(); if(obj.sumGlobals() !== 15) return 'Xato'; return null;"
+      title: "Globalni o'qish (window / globalThis)",
+      instruction: "`readGlobal()` funksiyasi `globalThis.secretKey` ni qaytarishi kerak. Uni global obyekt orqali olib qaytaring.",
+      startingCode: "function readGlobal() {\n  \n}",
+      hint: "return globalThis.secretKey;",
+      test: "globalThis.secretKey = 'ab12'; const fn = new Function(code + '; return readGlobal;')(); const res = fn(); delete globalThis.secretKey; return res === 'ab12' ? null : 'Xato';"
     },
     {
       id: 7,
-      title: "Let va Global",
-      instruction: "Bilamizki, let globalThis ga yozilmaydi. `checkLet()` yozingki u false qaytarsin, chunki u globalThis.valLet ni (undeclared yoki undefined ni) tekshirib false qilishini simulyatsiya qilsin (return typeof globalThis.valLet === 'undefined').",
-      startingCode: "let valLet = 99;\nfunction checkLet() {\n  \n}",
-      hint: "return typeof globalThis.valLet === 'undefined';",
-      test: "const fn = new Function(code + '; return checkLet;')(); return fn() === true ? null : 'Xato';"
+      title: "Vaqtinchalik lokal kesh",
+      instruction: "Performance uchun global o'zgaruvchi `globalCount` ni ishlatish o'rniga, uni `optimizeTest()` ichida lokal o'zgaruvchiga nusxalab olib shu lokal o'zgaruvchini qaytaring.",
+      startingCode: "const globalCount = 500;\nfunction optimizeTest() {\n  \n}",
+      hint: "const localCount = globalCount; return localCount;",
+      test: "const obj = new Function(code + '; return { optimizeTest };')(); return obj.optimizeTest() === 500 ? null : 'Xato';"
     },
     {
       id: 8,
-      title: "Shadowing test",
-      instruction: "Tashqarida `let color = 'red'`. Funksiya `getColor()` ichida xuddi shu nomda `let color = 'blue'` qiling va uni qaytaring.",
-      startingCode: "let color = 'red';\nfunction getColor() {\n  \n}",
-      hint: "let color = 'blue'; return color;",
-      test: "const obj = new Function(code + '; return { getColor, color };')(); if(obj.getColor() !== 'blue') return 'blue bo\\'lishi kerak'; if(obj.color !== 'red') return 'Global o\\'zgardi'; return null;"
+      title: "Global namespace bilan obyektlar",
+      instruction: "`globalThis.MyFramework = { version: '2' }` ni e'lon qilib global ob'ektni ifloslantiring va yozing.",
+      startingCode: "function createFramework() {\n  \n}",
+      hint: "globalThis.MyFramework = { version: '2' };",
+      test: "const fn = new Function(code + '; return createFramework;')(); fn(); const res = globalThis.MyFramework?.version; delete globalThis.MyFramework; return res === '2' ? null : 'Xato';"
     },
     {
       id: 9,
-      title: "Object Environment Record (var)",
-      instruction: "Agar biz `var score = 100` yozsak u global muhitga tushadi. Shunchaki `return globalThis.score === undefined` ni qaytaruvchi `varCheck()` funksiyasini yozing. Yo'q uzr, brauzerda tushadi, funksiyani eval da emas. Shunchaki `return 1` qiling.",
-      startingCode: "function varCheck() {\n  return 1;\n}",
-      hint: "return 1;",
-      test: "const fn = new Function(code + '; return varCheck;')(); return fn() === 1 ? null : 'Xato';"
+      title: "Ko'p ishlatiladigan globallarni return qilish",
+      instruction: "`var1 = 10` va `var2 = 20`. Ularning ko'paytmasini return qiluvchi `multiplyGlobals()` yozing.",
+      startingCode: "let var1 = 10;\nlet var2 = 20;\nfunction multiplyGlobals() {\n  \n}",
+      hint: "return var1 * var2;",
+      test: "const obj = new Function(code + '; return { multiplyGlobals };')(); return obj.multiplyGlobals() === 200 ? null : 'Xato';"
     },
     {
       id: 10,
-      title: "Global namespace yaratish",
-      instruction: "Sizning shaxsiy global nomfazongiz (namespace) yaratilsin. `globalThis.MyApp = {}` qiling.",
-      startingCode: "function initApp() {\n  \n}",
-      hint: "globalThis.MyApp = {};",
-      test: "const fn = new Function(code + '; return initApp;')(); fn(); const res = globalThis.MyApp; delete globalThis.MyApp; return typeof res === 'object' ? null : 'Xato';"
+      title: "delete orqali globallarni tozalash",
+      instruction: "Agar biz globalThis ga xususiyat biriktirsak uni o'chira olamiz. `delete globalThis.testVar` qilib `true`/`false` qiymatini qaytaring.",
+      startingCode: "globalThis.testVar = \"hello\";\nfunction cleanGlobal() {\n  \n}",
+      hint: "return delete globalThis.testVar;",
+      test: "globalThis.testVar = 'hello'; const fn = new Function(code + '; return cleanGlobal;')(); const res = fn(); return (res === true && globalThis.testVar === undefined) ? null : 'Xato';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Global Scope nima?",
+      question: "Global Scope qayerda tugaydi?",
       options: [
-        "Faqat if/for ichidagi vaqtinchalik soha",
-        "Eng tashqi doira bo'lib, o'zgaruvchilar hamma joydan ko'rinadi",
-        "Klasslar ichidagi maxfiy soha",
-        "Vaxtinchalik xotira maydoni"
+        "Hech qayerda, u eng tashqi miqyos bo'lib barcha kodlarni qamrab oladi",
+        "Funksiyaning oxirida",
+        "Klasslarning ichida",
+        "Faylning oxirida doim o'chadi"
       ],
-      correctAnswer: 1,
-      explanation: "Global qamrov eng yuqori darajadagi soha."
+      correctAnswer: 0,
+      explanation: "Global scope butun ishlash muhitining eng yuqori doirasi bo'lib hamma joyga kirish imkonini beradi."
     },
     {
       id: 2,
-      question: "var bilan let/const ning global qamrovdagi farqi?",
+      question: "var yordamida yaratilgan o'zgaruvchi xotiraning qaysi qismiga tushadi?",
       options: [
-        "var global obyektga (window) birikadi, let/const birikmaydi",
-        "Ikkalasi ham birikmaydi",
-        "Faqat let birikadi",
-        "Farqi yo'q"
+        "Declarative Environment Record",
+        "Object Environment Record (global ob'ektga xususiyat sifatida)",
+        "Call Stack ning o'rtasiga",
+        "Microtask Queue"
       ],
-      correctAnswer: 0,
-      explanation: "var = Object Environment Record, let/const = Declarative Environment Record."
+      correctAnswer: 1,
+      explanation: "var va funksiya e'lonlari global darajada Object Environment Record (masalan window) ga birikadi."
     },
     {
       id: 3,
-      question: "Barcha muhitlar uchun universal global obyekt nomi?",
-      options: ["window", "global", "globalThis", "this"],
-      correctAnswer: 2,
-      explanation: "ES2020 standartida globalThis kiritilgan."
+      question: "let yoki const yordamida e'lon qilingan o'zgaruvchilar nega window ga ulanmaydi?",
+      options: [
+        "Ular Declarative Environment Record ichida qattiq izolyatsiya qilinadi",
+        "Ular window ni bilmaydi",
+        "Ularni faqat funksiya ichida ishlatish mumkin",
+        "Chunki ular o'zgaruvchan emas"
+      ],
+      correctAnswer: 0,
+      explanation: "ES6 da ularni window dan izolyatsiya qilish uchun alohida e'lonlar xotirasi (Declarative Environment) kiritilgan."
     },
     {
       id: 4,
-      question: "Implicit Global nima?",
-      options: [
-        "Kalit so'zsiz (let/constsiz) qiymat biriktirish natijasida globallashuv",
-        "let yordamida yozilgan narsa",
-        "Avtomatik const",
-        "Ob'yektning global bo'lib qolishi"
-      ],
-      correctAnswer: 0,
-      explanation: "Agar strict mode yo'q bo'lsa x = 5 yozilsa, global bo'lib qoladi."
+      question: "Barcha muhitlar uchun yagona va rasmiy global ob'ekt nima?",
+      options: ["window", "global", "globalThis", "this"],
+      correctAnswer: 2,
+      explanation: "globalThis orqali Node js, Browser va Worker larda bir xil o'qish mumkin."
     },
     {
       id: 5,
-      question: "Implicit globallarni butunlay to'xtatish yo'li?",
+      question: "Implicit Global (yashirin global) ning zarari nima?",
       options: [
-        "Dastur boshida 'use strict' yozish",
-        "Faqat var ishlatish",
-        "Faqat setTimeout qilib yozish",
-        "Barcha globallarni o'chirish"
+        "Foydasi ko'p tezroq ishlaydi",
+        "Kodda sezilarli xato bermasa ham xotirani ifloslantiradi va buglarga sabab bo'ladi",
+        "Dasturni to'xtatib qo'yadi",
+        "Qattiq turdagi xatolarni beradi"
       ],
-      correctAnswer: 0,
-      explanation: "Qat'iy rejim kalit so'zsiz o'zgaruvchilarga qiymat berilganda ReferenceError beradi."
+      correctAnswer: 1,
+      explanation: "Kalit so'zsiz globalga chiqishi xotirada qoluvchi iz va to'qnashuvlar yaratadi."
     },
     {
       id: 6,
-      question: "Garbage Collector global o'zgaruvchilarni qachon tozalaydi?",
+      question: "Garbage Collector qachon Global ob'ektlarni tozalaydi?",
       options: [
-        "Funksiya tugashi bilan",
-        "Dastur (tab) yopilgandagina",
-        "Har 5 sek",
+        "Har 1 soniyada",
+        "Sahifa yopilganda yoki dastur ishi to'liq tugaganda",
+        "O'zgaruvchi oxirgi marta ishlatilgandan so'ng darhol",
         "Hech qachon"
       ],
       correctAnswer: 1,
-      explanation: "Globallar doim 'reachable' shuning uchun yopilguncha saqlanadi."
+      explanation: "Globallar doim 'reachable' hisoblanadi, shuning uchun dastur davomida yashaydi."
     },
     {
       id: 7,
-      question: "Global Scope Pollution nimaga olib keladi?",
+      question: "Nega Performance nuqtai nazaridan scope zanjirida globalda o'zgaruvchi qidirish og'ir bo'lishi mumkin?",
       options: [
-        "Dasturning ishlash tezligi oshadi",
-        "Nomlar to'qnashuvi va kutilmagan buglarga",
-        "Xotiraning tozalanib ketishiga",
-        "Faqat Node.js ni buzilishiga"
+        "Qidiruv Scope Chain ning eng pastki bosqichidan to Global gacha boradi",
+        "Global o'zgaruvchi shifrlangan bo'ladi",
+        "Global xotirada internet talab qiladi",
+        "Bunday qoida yo'q"
       ],
-      correctAnswer: 1,
-      explanation: "Turli kodlar bitta nomdan foydalansa, ustiga yozilib ketib xato chiqadi."
+      correctAnswer: 0,
+      explanation: "Javascript o'zgaruvchini avval local, keyin parent local, oxirida esa Global qamrovdan izlaydi."
     },
     {
       id: 8,
-      question: "Node.js-da fayl tepasidagi let globalmi?",
+      question: "Node.js fayllarida eng yuqori qatlamda e'lon qilingan xususiyat Globalga tegishlimi?",
       options: [
-        "Yo'q, u maxsus modul o'rami (module wrapper) ichida bo'ladi",
-        "Ha, to'g'ridan to'g'ri",
-        "Yo'q, chunki Node brauzerda ishlamaydi",
-        "Bilib bo'lmaydi"
+        "Ha, Node brauzer bilan bir xil",
+        "Yo'q, Node.js har bir faylni module wrapper ichiga o'rab kompile qiladi",
+        "Yo'q, chunki globalThis u yerda yo'q",
+        "Faqat const uchun shunday"
       ],
-      correctAnswer: 0,
-      explanation: "Node js har bir faylni modul sifatida (function(...)) ichiga o'rab oladi."
+      correctAnswer: 1,
+      explanation: "NodeJS barcha kodni (function(exports, require, module, __filename, __dirname) {}) deb o'raydi."
     },
     {
       id: 9,
-      question: "Shadowing yuz bersa, global o'zgaruvchiga nima bo'ladi?",
+      question: "Global muhitni ifloslantirishni qanday qilib kamaytirish mumkin?",
       options: [
-        "O'chib ketadi",
-        "O'zgarib ketadi",
-        "Lokalda vaqtincha soya qilinadi, lekin global holatida o'zgarishsiz turadi",
-        "Xato beradi"
+        "IIFE (Immediately Invoked Function Expression) va Modullar yordamida",
+        "Faqat var orqali",
+        "Xotirani o'chirish orqali",
+        "Barcha o'zgaruvchilarni if/else ga o'rash orqali"
       ],
-      correctAnswer: 2,
-      explanation: "Soya qilish bu global qiymatga ta'sir qilmay, shu blok ichida boshqa qiymat yasalishidir."
+      correctAnswer: 0,
+      explanation: "IIFE va Modullar o'z local qamrovini yaratib tashqariga ma'lumot sizib ketishini oldini oladi."
     },
     {
       id: 10,
-      question: "Global o'zgaruvchilarni tezlik nuqtai nazaridan (Performance)...",
+      question: "Shadowing natijasida nima sodir bo'ladi?",
       options: [
-        "Qidirish lokalga qaraganda biroz sekin",
-        "Juda tez",
-        "Mutlaqo farqsiz",
-        "Internet kerak bo'ladi"
+        "Ichki scope tashqi scope o'zgaruvchisini soya qilib yashirib qo'yadi",
+        "O'zgaruvchi soya ostida to'xtaydi",
+        "Qora rangga kiradi",
+        "Hech narsa"
       ],
       correctAnswer: 0,
-      explanation: "Scope Chain tufayli eng chekka (global) dagi o'zgaruvchilarni topish biroz ko'proq vaqt oladi."
+      explanation: "Agar block ichida va tashqarida bir xil nom bo'lsa, engine eng yaqin o'zgaruvchini oladi va tashqaridagini soya qiladi."
     },
     {
       id: 11,
-      question: "eval() global scope-ga qanday ta'sir qiladi?",
+      question: "Strict Mode (Qat'iy Rejim) Implicit Globalni qanday hal qiladi?",
       options: [
-        "Optimizatsiyani tezlashtiradi",
-        "Global o'zgaruvchilarni bilmasdan o'zgartirib yuborishi sabab JIT optimallashtirishga to'sqinlik qiladi",
-        "Eval xavfsiz",
-        "Faqat CSS ni o'zgartiradi"
+        "ReferenceError beradi",
+        "SyntaxError beradi",
+        "IndataError beradi",
+        "To'g'rilab ketadi"
       ],
-      correctAnswer: 1,
-      explanation: "eval() dinamik bo'lgani uchun JavaScript engine-lari keshlay olmay qoladi."
+      correctAnswer: 0,
+      explanation: "Strict Mode kalit so'zsiz o'zgaruvchilarni e'lon qilinmagan deb hisoblab ReferenceError beradi."
     },
     {
       id: 12,
-      question: "Web Worker larda global obyekt qanday ataladi?",
-      options: ["window", "document", "self", "workerGlobal"],
-      correctAnswer: 2,
-      explanation: "Web Worker larda window mavjud emas, uning o'rniga self dan foydalaniladi."
+      question: "var bn let qamrovda yana nima farqi bor?",
+      options: [
+        "var blok (block scope) darajasida yashirinmaydi, faqat funksiya darajasida. let esa blokka tegishli.",
+        "let funksiya darajasida, var blok",
+        "Farqi yo'q ikkalasi ham bir xil",
+        "Bunday qoida mavjud emas"
+      ],
+      correctAnswer: 0,
+      explanation: "var funksiya doirasiga ega, lekin let blok (block {}) doirasiga ega."
     }
   ]
 };
