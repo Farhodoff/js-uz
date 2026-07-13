@@ -36,14 +36,14 @@ Lekin Node.js ofitsianti aqlli! U buyurtmani oshxonaga beradi-da, boshqa stollar
 \`\`\`mermaid
 sequenceDiagram
     participant Client
-    participant Node.js (Thread)
-    participant Worker Pool (OS)
+    participant Node as Node.js (Thread)
+    participant Worker as Worker Pool (OS)
 
-    Client->>Node.js (Thread): Faylni o'qish (Non-blocking)
-    Node.js (Thread)->>Worker Pool (OS): Bu faylni o'qigin! Men kuta olmayman.
-    Node.js (Thread)->>Client: Boshqa ishlarni qilaveramiz...
-    Worker Pool (OS)->>Node.js (Thread): Fayl o'qildi! Mana natija (Callback/Promise)
-    Node.js (Thread)->>Client: Mana fayl ichidagi ma'lumot!
+    Client->>Node: Faylni o'qish (Non-blocking)
+    Node->>Worker: Bu faylni o'qigin! Men kuta olmayman.
+    Node->>Client: Boshqa ishlarni qilaveramiz...
+    Worker->>Node: Fayl o'qildi! Mana natija (Callback/Promise)
+    Node->>Client: Mana fayl ichidagi ma'lumot!
 \`\`\`
 
 ### REPL nima? 💻

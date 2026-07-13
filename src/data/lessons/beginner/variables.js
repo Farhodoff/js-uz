@@ -1,262 +1,411 @@
 export const variables = {
   id: "variables",
-  title: "O'zgaruvchilar: var, let, const",
+  title: "O'zgaruvchilar: Qutilar va Ularning Turlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `# O'zgaruvchilar (Variables)
 
-### O'zgaruvchilar nima va var, let, const farqlari qanday?
-JavaScript-da o'zgaruvchilar ma'lumotlarni saqlash uchun qutilardir. Ammo bu qutilar o'zining doirasi (scope) bo'yicha farq qiladi:
-* **\`var\` (Eski):** ES6 gacha ishlatilgan eski usul. U blok doirasini (\`if\` yoki \`for\` qavslarini) tan olmaydi va funksiya bo'ylab o'z bilganicha ishlayveradi. Bir xil nom bilan ko'p marta e'lon qilinsa ham e'tiroz bildirmaydi.
-* **\`let\` (Zamonaviy):** Faqat o'zi e'lon qilingan qavslar \`{}\` (blok) ichida amal qiladi. U xonadan tashqariga chiqib ketmaydi. Bitta blok ichida bir xil nomda qayta e'lon qilish mumkin emas. Qiymatini o'zgartirish (reassign) mumkin.
-* **\`const\` (O'zgarmas):** \`let\` kabi blok doirasida ishlaydi, lekin unga bir marta qiymat berilgach, uni butunlay yangi qiymatga qayta tayinlab bo'lmaydi. 
+Aksariyat hollarda JavaScript ilovalari qandaydir ma'lumotlar bilan ishlashiga to'g'ri keladi. Bunga ikkita oddiy misol keltiramiz:
+1. Onlayn do'kon – ma'lumotlar sotilayotgan tovarlar va xaridlar savatchasini (shopping cart) o'z ichiga olishi mumkin.
+2. Chat ilovasi – ma'lumotlar foydalanuvchilar, xabarlar va boshqalarni o'z ichiga oladi.
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz ofisdasiz:
-* **\`var\` (Doskadagi bo'r yozuvi):** Umumiy zalidagi doskaga yozilgan yozuv. Hamma o'chirib yoza oladi, tartib-qoida yo'q.
-* **\`let\` (Daftar):** Xodimning o'z qalam bilan yozilgan daftari. O'chirib, o'zgartirishi mumkin, lekin faqat o'z xonasi (bloki) ichida ishlaydi.
-* **\`const\` (Metall lavha):** Eshikdagi metall lavha, ismini umuman almashtirib bo'lmaydi, lekin ustiga stiker (mutatsiya) yopishtirish mumkin.
+Aynan shu ma'lumotlarni saqlab turish uchun **o'zgaruvchilar** ishlatiladi.
 
----
+## 📦 O'zgaruvchi nima o'zi?
 
-## 2. 💻 Real Kod Misollari
+O'zgaruvchi bu — ma'lumot saqlanadigan "nomlangan quti" (named storage). Biz bu qutidan tovarlar, tashrif buyuruvchilar va boshqa ma'lumotlarni saqlash uchun foydalanamiz.
 
-### 1. Basic Example (Blok doirasi)
+JavaScript-da o'zgaruvchi yaratish uchun \`let\` kalit so'zidan foydalanamiz.
+
+Quyidagi qator "message" nomli o'zgaruvchi yaratadi (boshqacha aytganda e'lon qiladi - declares):
+
 \`\`\`javascript
-if (true) {
-  var leakedVar = "Blokdan tashqariga chiqdim!";
-  let blockLet = "Blok ichida qoldim!";
-}
-console.log(leakedVar); // "Blokdan tashqariga chiqdim!"
-// console.log(blockLet);  // ReferenceError: blockLet is not defined
+let message;
 \`\`\`
 
-### 2. Intermediate Example (const va Obyektlar)
+Endi uning ichiga o'zlashtirish operatori (\`=\`) yordamida qandaydir ma'lumot solishimiz mumkin:
+
 \`\`\`javascript
-const user = { name: "Jasur", age: 25 };
-
-// Obyekt ichini o'zgartirish MUMKIN (mutatsiya)
-user.age = 26; 
-console.log(user.age); // 26
-
-// Yangi obyektga qayta bog'lash XATO
-// user = { name: "Olim" }; // TypeError: Assignment to constant variable.
+let message;
+message = 'Salom'; // 'Salom' qatorini message nomli o'zgaruvchida saqlaymiz
 \`\`\`
 
----
+Endi bu satr o'zgaruvchi bilan bog'langan xotira qismida saqlanmoqda. Biz o'zgaruvchining nomidan foydalanib uni o'qishimiz mumkin:
 
-## 3. ❌ YOMON va ✅ YAXSHI Misollar
-
-❌ YOMON:
 \`\`\`javascript
-var counter = 0; // Eski va globalni ifloslantiradi
-const PI; // Xato: const ga boshlang'ich qiymat berilmagan
-PI = 3.14; 
-
-console.log(name);
-var name = "Ali"; // undefined bo'lib chop etiladi
+let message = 'Salom!';
+alert(message); // o'zgaruvchi ichidagi ma'lumotni ekranga chiqaradi
 \`\`\`
 
-✅ YAXSHI:
-\`\`\`javascript
-let counter = 0; // O'zgaruvchi blok darajasida
-const PI = 3.14; // Bir vaqtning o'zida e'lon qilinib qiymat berilgan
+Qisqa bo'lishi uchun o'zgaruvchini yaratish (e'lon qilish) va unga qiymat berishni bitta qatorda yozsak ham bo'ladi:
 
-let name = "Ali";
-console.log(name); // To'g'ri ketma-ketlik, TDZ oldi olinadi
+\`\`\`javascript
+let message = 'Salom!'; // o'zgaruvchi yaratish va qiymat berish
+alert(message); // Salom!
+\`\`\`
+
+Shuningdek, bitta qatorda bir nechta o'zgaruvchilarni e'lon qilishimiz ham mumkin:
+
+\`\`\`javascript
+let user = 'John', age = 25, message = 'Hello';
+\`\`\`
+
+Bu qisqaroq ko'rinishi mumkin, lekin biz buni **tavsiya qilmaymiz**. O'qishga qulay bo'lishi uchun, iltimos, har bir o'zgaruvchi uchun alohida qator ishlating:
+
+✅ **YAXSHI YONDASHUV**
+\`\`\`javascript
+let user = 'John';
+let age = 25;
+let message = 'Hello';
 \`\`\`
 
 ---
 
-## 4. ⚙️ Mermaid Diagrammasi
+## 🎩 Hayotiy O'xshatish (Analogy)
+
+O'zgaruvchini **"ma'lumot solingan va ustiga noyob yorliq (stiker) yopishtirilgan quti"** deb tasavvur qilsangiz, uni tushunish juda oson kechadi.
+
+Masalan, \`message\` o'zgaruvchisini ustiga "message" deb yozilgan va ichida "Salom!" qiymati bor quti sifatida ko'rish mumkin. Biz qutiga xohlagan qiymatimizni solishimiz va uni xohlagancha o'zgartirishimiz mumkin:
+
+\`\`\`javascript
+let message;
+
+message = 'Salom!';
+message = 'Dunyo!'; // qiymat o'zgartirildi
+
+alert(message); // Dunyo!
+\`\`\`
+Qiymat o'zgarganda, qutidagi oldingi ma'lumot o'chib ketadi.
+
+### ❌ YOMON: Ikki marta e'lon qilish
+O'zgaruvchi faqat bir marta \`let\` bilan e'lon qilinishi kerak. Bitta nomli o'zgaruvchini qayta \`let\` bilan e'lon qilish xatolikka olib keladi:
+
+\`\`\`javascript
+let message = "Bu";
+// takroriy 'let' xatolik chaqiradi
+let message = "Anavu"; // SyntaxError: 'message' has already been declared
+\`\`\`
+Shunday ekan, o'zgaruvchini bir marta e'lon qilib, keyin unga faqat \`let\` so'zisiz murojaat qilishimiz kerak.
+
+---
+
+## 📜 To'g'ri Nomlash (Naming)
+
+O'zgaruvchilarga nom berishda ikkita qoida bor:
+1. Nom faqat harflar, raqamlar, yoki \`$\` va \`_\` belgilaridan iborat bo'lishi mumkin.
+2. Nomning birinchi belgisi **raqam bo'lishi mumkin emas**.
+
+Agar nom bir nechta so'zdan iborat bo'lsa, odatda **camelCase** (tuya-yozuv) ishlatiladi: masalan, \`myVeryLongName\`.
+
+❌ **YOMON NOMLAR**
+\`\`\`javascript
+let 1a; // raqam bilan boshlanishi mumkin emas
+let my-name; // tire '-' ishlatish mumkin emas
+\`\`\`
+
+### Katta-Kichik harflar farq qiladi
+\`apple\` va \`APPLE\` nomli o'zgaruvchilar — ikkita mutlaqo boshqa-boshqa o'zgaruvchilardir.
+
+### Zaxiralangan so'zlar (Reserved words)
+Ba'zi so'zlar dasturlash tilining o'zi tomonidan ishlatilgani uchun ularni o'zgaruvchi nomi qilib ololmaysiz. Masalan: \`let\`, \`class\`, \`return\`, \`function\`.
+
+---
+
+## 🧱 O'zgarmaslar (Constants)
+
+Agar qutidagi narsa hech qachon o'zgarmasligiga ishonchingiz komil bo'lsa, \`let\` o'rniga **\`const\`** ishlating:
+
+\`\`\`javascript
+const myBirthday = '18.04.1982';
+\`\`\`
+
+\`const\` yordamida e'lon qilingan o'zgaruvchilar "konstantalar" (o'zgarmaslar) deyiladi. Ularning qiymatini qayta o'zgartirib bo'lmaydi:
+
+\`\`\`javascript
+myBirthday = '01.01.2001'; // XATO! Konstantani o'zgartirib bo'lmaydi!
+\`\`\`
+
+**Katta harfli konstantalar (Uppercase Constants)**
+Dastur ishlashidan oldin oldindan ma'lum bo'lgan qiyin eslab qolinadigan qiymatlarni saqlash uchun doim katta harf ishlatish qabul qilingan:
+
+\`\`\`javascript
+const COLOR_RED = "#F00";
+const COLOR_GREEN = "#0F0";
+const COLOR_BLUE = "#00F";
+const COLOR_ORANGE = "#FF7F00";
+
+let color = COLOR_ORANGE;
+\`\`\`
+\`#FF7F00\` ni yodlashdan ko'ra \`COLOR_ORANGE\` deb chaqirish ming marta oson.
+
+---
+
+## 🎨 Narsalarni to'g'ri nomlang! (Name things right)
+
+O'zgaruvchi nomi juda tushunarli bo'lishi va ichida nima borligini aytib turishi kerak. O'zgaruvchiga to'g'ri nom topish dasturlashdagi eng qiyin va muhim malakalardan biridir.
+
+✅ \`userName\` yoki \`shoppingCart\` kabi o'qilishi oson nomlar bering.
+❌ \`a\`, \`b\`, \`c\` kabi qisqartmalardan qoching.
+❌ \`data\` yoki \`value\` kabi mavhum nomlarni ishlatmang. Axir qutining ustiga "narsa" deb yozib qo'ymaysiz-ku? Unda nima narsaligi aniq yozilishi kerak!
+
+Va oxirgi maslahat: **O'zgaruvchilarni qayta ishlatavermang!** Yalqov bo'lmang, yangi quti kerak bo'lsa yangi \`let\` yarating. Bitta qutiga avval olma, keyin olma o'rniga paypoq tiqib qo'ymang. Bu keyinchalik xatolarni qidirishda miyangizni portlatishi aniq!
+
+---
+
+## Mermaid Diagramma (Qutidagi holatlar)
+
+O'zgaruvchi o'zgarishi va konstanta farqi:
 
 \`\`\`mermaid
-graph LR
-    subgraph ScopeBoundaries ["Scope Chegaralari"]
-        direction TB
-        subgraph GlobalScope ["Global Scope (window)"]
-            GVar["var global (windowga birikadi)"]
-            GLet["let/const (windowda yo'q)"]
-            
-            subgraph FuncScope ["Function Scope - function() {}"]
-                FVar["var funcVar (Funksiyada qoladi)"]
-                
-                subgraph BlockScope ["Block Scope - if() {}"]
-                    BVar["var insideBlock (Blokdan tashqariga sizadi)"]
-                    BLet["let/const blockLet (Blokdan chiqolmaydi)"]
-                end
-            end
-        end
-    end
+sequenceDiagram
+    participant Code as Dasturchi
+    participant Box1 as let message
+    participant Box2 as const PI
 
-    BVar -->|Sizib chiqadi| FuncScope
-    BLet -.->|Taqiqlangan| FuncScope
+    Code->>Box1: let message = 'Salom' (Ichiga 'Salom' soldik)
+    Code->>Box1: message = 'Xayr' (Eskisi axlatga, ichiga 'Xayr' tushdi)
+    Code->>Box2: const PI = 3.14 (Zavoddan muhrlandi)
+    Note over Box2: PI qiymati endi toshga yozildi!
+    Code--xBox2: PI = 3 (XATOLIK! O'zgartirib bo'lmaydi)
 \`\`\`
 
 ---
 
-## 5. 💬 Intervyu Savollari
+## 🎙 Intervyu savollari
 
-1. **Savol:** \`var\`, \`let\` va \`const\` farqi nima?
-   * **Javob:** \`var\` function scope, qayta e'lon qilinishi mumkin, hoistingda undefined oladi. \`let\` va \`const\` block scope, qayta e'lon qilib bo'lmaydi, TDZga ega. \`const\` qiymati qayta tayinlanmaydi.
-2. **Savol:** Temporal Dead Zone (TDZ) nima?
-   * **Javob:** O'zgaruvchi xotirada ro'yxatdan o'tib to u amalda e'lon qilingan qatorgacha bo'lgan vaqt oraliqqa TDZ deyiladi, unga murojaat qilish ReferenceError beradi.
-3. **Savol:** \`const\` massiv yoki obyekt ichini nega o'zgartirish mumkin?
-   * **Javob:** \`const\` faqat havolani (reference) o'zgarmas qiladi. Obyektning ichidagi elementlarni (property) mutate qilish havolani o'zgartirmaydi, shuning uchun bunga ruxsat berilgan. To'liq muzlatish uchun \`Object.freeze()\` kerak.
-`,
+**1. \`let\` va \`const\` o'rtasidagi asosiy farq nima?**
+**Javob:** \`let\` bilan yaratilgan o'zgaruvchining qiymatini xohlagancha o'zgartirish (reassign) mumkin. Lekin \`const\` o'zgaruvchining qiymatini dastur davomida umuman o'zgartirib bo'lmaydi. U o'zgaruvchan emas, konstanta (o'zgarmas).
+
+**2. O'zgaruvchi nomlari raqam bilan boshlanishi mumkinmi?**
+**Javob:** Yo'q, JavaScript-da o'zgaruvchi nomlari raqam bilan boshlanishi mumkin emas. Ularning birinchi belgisi harf, \`$\` yoki \`_\` bo'lishi shart.
+
+**3. "use strict" yo'q holatda o'zgaruvchini \`let\` yoki \`var\` siz qanday e'lon qilish mumkin va nega bu yomon?**
+**Javob:** Qadimgi skriptlarda \`num = 5;\` deb to'g'ridan-to'g'ri qiymat berish o'zgaruvchi yaratib yuborar edi. Lekin bu juda yomon amaliyot (Bad Practice), chunki xatoliklarni kuzatish qiyinlashadi. Agar skript boshida \`"use strict"\` yozilsa, bunday xatoliklar qat'iy tekshiriladi va xato (ReferenceError) qaytariladi. Shuning uchun har doim e'lon qilish kalit so'zlaridan foydalanish shart.`,
   exercises: [
     {
       id: 1,
-      title: "O'zgaruvchini yaratish",
-      instruction: "Ismingizni `name` degan o'zgaruvchida `const` yordamida e'lon qiling va unga string qiymat bering.",
-      startingCode: "// const ishlatib name yarating\n",
-      hint: "const name = 'Sizning_Ismingiz';",
-      test: "const fn = new Function(code + '; return name;')(); return typeof fn === 'string' && code.includes('const name');"
+      title: "admin va name",
+      instruction: "Ikkita o'zgaruvchi e'lon qiling: 'admin' va 'name'. 'name' ga \"John\" degan qiymat bering. Keyin 'name' dagi qiymatni 'admin' ga nusxalang (tenglang). Natijada 'admin' ning qiymati ham \"John\" bo'lishi kerak.",
+      startingCode: "let admin;\nlet name;\n// Qolganini o'zingiz yozing",
+      hint: "Avval name = 'John' deb yozing, keyin admin = name;",
+      test: "let admin, name; name = 'John'; admin = name; if(admin !== 'John') throw new Error('admin qiymati John emas');"
     },
     {
       id: 2,
-      title: "O'zgaradigan qiymat",
-      instruction: "Yoshingizni bildiruvchi `age` o'zgaruvchisini `let` yordamida e'lon qiling va unga 20 qiymatini bering. So'ng qiymatni 21 ga o'zgartiring.",
-      startingCode: "// age ni let yordamida yarating\n",
-      hint: "let age = 20; age = 21;",
-      test: "const fn = new Function(code + '; return age;')(); return fn === 21 && code.includes('let age');"
+      title: "Sayyoramiz nomi",
+      instruction: "Bizning sayyoramiz nomini saqlaydigan o'zgaruvchi yarating. O'zgaruvchiga iloji boricha tushunarli va to'g'ri nom bering. Masalan: 'ourPlanetName' va qiymatiga \"Yer\" deb yozing.",
+      startingCode: "// Sayyoramiz nomi uchun o'zgaruvchi yarating\n",
+      hint: "let ourPlanetName = 'Yer'; deb ishlatsangiz bo'ladi.",
+      test: "let ourPlanetName = 'Yer'; if(typeof ourPlanetName === 'undefined') throw new Error('ourPlanetName e\'lon qilinmagan');"
     },
     {
       id: 3,
-      title: "Var ni Let ga o'zgartirish",
-      instruction: "Quyidagi kodda `var counter = 5;` yozilgan. Uni zamonaviy ES6 usuliga (`let`) o'tkazing.",
-      startingCode: "var counter = 5;\n",
-      hint: "var so'zini let bilan almashtiring.",
-      test: "const fn = new Function(code + '; return counter;')(); return fn === 5 && code.includes('let counter');"
+      title: "Joriy mehmon",
+      instruction: "Vebsaytga hozirgina kirgan foydalanuvchining (mehmonning) ismini saqlaydigan o'zgaruvchi yarating. Masalan: 'currentUserName' va uni \"Ali\" ga tenglang.",
+      startingCode: "// Joriy foydalanuvchi nomini saqlang\n",
+      hint: "let currentUserName = 'Ali';",
+      test: "let currentUserName = 'Ali'; if(typeof currentUserName === 'undefined') throw new Error('currentUserName e\'lon qilinmagan');"
     },
     {
       id: 4,
-      title: "Blok ichidagi let",
-      instruction: "Yangi blok `{\n}` ichida `secret` o'zgaruvchisini let bilan '123' qiymatida e'lon qiling. U yashirin bo'lib qoladi.",
-      startingCode: "{\n  // secret\n}",
-      hint: "{ let secret = '123'; }",
-      test: "try { new Function(code + '; return secret;')(); return false; } catch(e) { return code.includes('let secret'); }"
+      title: "Konstantani tekshirish",
+      instruction: "O'z tug'ilgan yilingizni (yoki ixtiyoriy yilni) o'zgartirib bo'lmaydigan qilib 'const' yordamida 'BIRTH_YEAR' o'zgaruvchisiga saqlang. (Masalan: 1990)",
+      startingCode: "// const yordamida BIRTH_YEAR e'lon qiling\n",
+      hint: "const BIRTH_YEAR = 1990; (raqam ko'rinishida)",
+      test: "const BIRTH_YEAR = 1990; if(BIRTH_YEAR !== 1990) throw new Error('BIRTH_YEAR to\'g\'ri emas');"
     },
     {
       id: 5,
-      title: "Ikkita o'zgaruvchi",
-      instruction: "`a = 10` va `b = 20` ni let yordamida e'lon qiling, so'ng `sum = a + b` qilib yig'indini hisoblang.",
-      startingCode: "// a, b va sum",
-      hint: "let a = 10; let b = 20; let sum = a + b;",
-      test: "const fn = new Function(code + '; return sum;')(); return fn === 30;"
+      title: "Bir xil qatorda bir nechta o'zgaruvchi",
+      instruction: "Lekin biz bunga tavsiya qilmagan bo'lsak ham, sintaksisni sinash uchun 'x', 'y', 'z' larni bitta 'let' kalit so'zi yordamida vergul bilan e'lon qilib chiqing. Qiymatlari mos ravishda 10, 20, 30 bo'lsin.",
+      startingCode: "// bitta let ishlating\n",
+      hint: "let x = 10, y = 20, z = 30;",
+      test: "let x = 10, y = 20, z = 30; if(x+y+z !== 60) throw new Error('Qiymatlar xato yig\'ildi');"
     },
     {
       id: 6,
-      title: "Const va Object mutatsiyasi",
-      instruction: "Sizga `const user = { age: 10 };` berilgan. Uning `age` qiymatini 11 ga o'zgartiring (mutatsiya).",
-      startingCode: "const user = { age: 10 };\n// user yoshini oshiring\n",
-      hint: "user.age = 11;",
-      test: "const fn = new Function(code + '; return user.age;')(); return fn === 11;"
+      title: "Qiymatni qayta tayinlash",
+      instruction: "'color' degan o'zgaruvchi yarating ('let' bilan) va unga \"Qizil\" qiymatini bering. Keyingi qatorda o'sha o'zgaruvchining qiymatini \"Yashil\" deb o'zgartiring.",
+      startingCode: "// color o'zgaruvchisini yarating va o'zgartiring\n",
+      hint: "let color = 'Qizil'; color = 'Yashil';",
+      test: "let color = 'Qizil'; color = 'Yashil'; if(color !== 'Yashil') throw new Error('Qiymat o\'zgarmadi');"
     },
     {
       id: 7,
-      title: "Array mutatsiyasi",
-      instruction: "Sizga `const list = [1, 2];` berilgan. Unga 3 raqamini qo'shing (push yordamida).",
-      startingCode: "const list = [1, 2];\n// listga 3 ni qo'shing\n",
-      hint: "list.push(3);",
-      test: "const fn = new Function(code + '; return list;')(); return fn.length === 3 && fn[2] === 3;"
+      title: "Qattiq konstanta",
+      instruction: "O'zgaruvchi ranglar palitrasida 'COLOR_BLUE' ni '\"#00F\"' ga tenglab o'zgarmas holatda e'lon qiling.",
+      startingCode: "// COLOR_BLUE e'lon qiling\n",
+      hint: "const COLOR_BLUE = '#00F';",
+      test: "const COLOR_BLUE = '#00F'; if(COLOR_BLUE !== '#00F') throw new Error('COLOR_BLUE xato');"
     },
     {
       id: 8,
-      title: "Hoistingni to'g'irlash",
-      instruction: "Kodda e'lon qilishdan oldin o'zgaruvchi ishlatilmoqda: `console.log(x); let x = 5;`. Uni o'zgartirib to'g'rilang.",
-      startingCode: "console.log(x);\nlet x = 5;\n",
-      hint: "Avval let x = 5; keyin console.log(x); yozing.",
-      test: "const idxX = code.indexOf('let x'); const idxC = code.indexOf('console.log'); return idxX < idxC;"
+      title: "Matematik o'zgaruvchi",
+      instruction: "Ikkita o'zgaruvchi 'a' va 'b' yarating (qiymatlari mos ravishda 5 va 7). Uchinchi 'sum' o'zgaruvchisini yarating va uni 'a' va 'b' ning yig'indisiga tenglang.",
+      startingCode: "let a = 5;\nlet b = 7;\n// sum yaratamiz",
+      hint: "let sum = a + b;",
+      test: "let a = 5; let b = 7; let sum = a + b; if(sum !== 12) throw new Error('Yig\'indi xato');"
     },
     {
       id: 9,
-      title: "String saqlash",
-      instruction: "`city` nomli o'zgaruvchini const bilan yarating va unga 'Tashkent' qiymatini bering.",
-      startingCode: "// city yarating\n",
-      hint: "const city = 'Tashkent';",
-      test: "const fn = new Function(code + '; return city;')(); return fn === 'Tashkent';"
+      title: "Ruxsat etilgan belgilar",
+      instruction: "'$' va '_' belgilaridan iborat nomli o'zgaruvchilar yarating: 'let $ = 10;' va 'let _ = 20;'. Va keyin ularni yig'indisini 'result' o'zgaruvchisiga saqlang.",
+      startingCode: "// $, _, va result",
+      hint: "let $ = 10; let _ = 20; let result = $ + _;",
+      test: "let $ = 10; let _ = 20; let result = $ + _; if(result !== 30) throw new Error('Xato hisob kitob');"
     },
     {
       id: 10,
-      title: "Boolean flag",
-      instruction: "`isActive` degan o'zgaruvchini `let` bilan e'lon qilib, `true` deng. Keyingi qatorda uni `false` ga o'zgartiring.",
-      startingCode: "// isActive yarating va o'zgartiring\n",
-      hint: "let isActive = true; isActive = false;",
-      test: "const fn = new Function(code + '; return isActive;')(); return fn === false && code.includes('let isActive');"
+      title: "Boshlang'ich holatni tekshirish",
+      instruction: "'emptyBox' nomli o'zgaruvchini 'let' orqali yarating lekin hecham qiymat O'ZLASHTIRMANG. Ya'ni '=' ni ishlatmang. Bunda u 'undefined' qiymatini oladi.",
+      startingCode: "// emptyBox",
+      hint: "Faqatgina: let emptyBox;",
+      test: "let emptyBox; if(typeof emptyBox !== 'undefined') throw new Error('Qiymat berish kerak emas edi');"
     }
   ],
   quizzes: [
     {
-      question: "Qaysi kalit so'z blok doirasiga ega (block scoped)?",
-      options: ["var va let", "Faqat var", "let va const", "Barchasi"],
-      correctAnswer: 2,
-      explanation: "let va const blok ichida ishlaydi, var esa butun funksiya doirasida."
-    },
-    {
-      question: "O'zgaruvchini qiymati hech qachon o'zgarmasligi uchun qaysi kalit so'z ishlatiladi?",
-      options: ["var", "let", "const", "static"],
-      correctAnswer: 2,
-      explanation: "const o'zgarmas (constant) qiymatlar uchun."
-    },
-    {
-      question: "Temporal Dead Zone (TDZ) nima?",
-      options: ["Funksiya tugagandagi holat", "O'zgaruvchi o'lik bo'lgan xotira", "O'zgaruvchi amalda e'lon qilinishidan oldingi unga murojaat taqiqlangan vaqt", "Hech biri"],
-      correctAnswer: 2,
-      explanation: "let va const e'lon qilinishigacha bo'lgan vaqt oraliq TDZ deyiladi."
-    },
-    {
-      question: "var hoisting bo'lganda uning qiymati nima bo'ladi?",
-      options: ["ReferenceError", "null", "undefined", "NaN"],
-      correctAnswer: 2,
-      explanation: "var e'lon qilinishidan oldin murojaat qilinsa undefined bo'ladi."
-    },
-    {
-      question: "Bir xil nomli o'zgaruvchini bitta doirada qayta e'lon (redeclare) qilish mumkinmi?",
-      options: ["Ha, doim", "Faqat var bilan mumkin, let bilan xato beradi", "Faqat let bilan", "Mutlaqo mumkin emas"],
+      id: 1,
+      question: "JavaScript-da quti nima (analogiya bo'yicha)?",
+      options: [
+        "Faqat raqamlar saqlovchi joy",
+        "Ma'lumot solinadigan o'zgaruvchi",
+        "Ekranga matn chiqaruvchi funksiya",
+        "HTML elementi"
+      ],
       correctAnswer: 1,
-      explanation: "let bilan Identifier has already been declared xatosi chiqadi, var bilan esa mumkin."
+      explanation: "O'zgaruvchilar ma'lumotlarni saqlab turuvchi nomlangan qutilardir."
     },
     {
-      question: "const bilan e'lon qilingan massivga (array) push qilish mumkinmi?",
-      options: ["Yo'q, bu xato", "Ha, massiv xususiyatlarini mutatsiya qilish mumkin", "Faqat raqamlarni mumkin", "Faqat var bo'lsa mumkin"],
+      id: 2,
+      question: "Qaysi kalit so'z qiymati qayta o'zgarmaydigan quti (konstanta) yaratadi?",
+      options: [
+        "let",
+        "var",
+        "const",
+        "static"
+      ],
+      correctAnswer: 2,
+      explanation: "const bilan e'lon qilingan o'zgaruvchini qayta tayinlash mumkin emas."
+    },
+    {
+      id: 3,
+      question: "Quyidagilardan qaysi biri o'zgaruvchiga TO'G'RI nom berilgan?",
+      options: [
+        "1stUser",
+        "user-name",
+        "let",
+        "userName"
+      ],
+      correctAnswer: 3,
+      explanation: "O'zgaruvchi raqam bilan boshlanmaydi, defis mumkin emas, 'let' kabi so'zlar esa zaxiralangan."
+    },
+    {
+      id: 4,
+      question: "Bir marta let bilan e'lon qilingan o'zgaruvchini yana qaytadan xuddi shu nomda let bilan e'lon qilsa nima bo'ladi?",
+      options: [
+        "Eski qiymat o'chiriladi",
+        "Yangi quti paydo bo'ladi",
+        "Hech narsa bo'lmaydi",
+        "Xatolik (SyntaxError) kelib chiqadi"
+      ],
+      correctAnswer: 3,
+      explanation: "Aynan bir xil nom bilan let yordamida ikki marta e'lon qilish mumkin emas."
+    },
+    {
+      id: 5,
+      question: "Oldindan ma'lum, yodlash qiyin bo'lgan doimiy o'zgaruvchilarga qanday nom berish tavsiya qilinadi?",
+      options: [
+        "kichik harflar va sonlar",
+        "KATTA_HARFLAR_BILAN (Underscore bilan)",
+        "camelCase usulida",
+        "Xohlagan tilning alfavitida"
+      ],
       correctAnswer: 1,
-      explanation: "const havolani (reference) o'zgarmas qiladi, massiv yoki obyekt tarkibini emas."
+      explanation: "Odatda COLOR_RED kabi hard-coded konstantalar katta harfda nomlanadi."
     },
     {
-      question: "Quyidagi qaysi biri global window obyektiga birikadi?",
-      options: ["Global var", "Global let", "Global const", "Barchasi"],
+      id: 6,
+      question: "O'zgaruvchilar o'rni qachon bo'shaydi (qiymat o'zgartirilganda)?",
+      options: [
+        "Yangi qiymat solinganda eskisi butunlay o'chib ketadi",
+        "Ikkala qiymat birga saqlanadi",
+        "Faqat typeof ishlatganda o'chadi",
+        "JavaScript o'zi yashirincha faylga saqlab qo'yadi"
+      ],
       correctAnswer: 0,
-      explanation: "Global var window obyektiga birikadi (masalan, window.a = 5), let/const birikmaydi."
+      explanation: "O'zlashtirish (=) yangi qiymatni saqlaydi va qutidagi eski narsani axlatga tashlaydi."
     },
     {
-      question: "Agar o'zgaruvchini kalit so'zsiz (\`a = 5\`) e'lon qilsa nima bo'ladi?",
-      options: ["Error beradi (strict mode'siz)", "Global obyektga yozilib ketadi (strict mode'siz)", "Block scope bo'ladi", "Function scope bo'ladi"],
-      correctAnswer: 1,
-      explanation: "Agar let/const/var ishlatilmasa (strict mode yo'q bo'lsa), o'z-o'zidan global oynani ifloslantiradi."
-    },
-    {
-      question: "let o'zgaruvchisiga boshlang'ich qiymat bermay e'lon qilsa bo'ladimi?",
-      options: ["Ha, qiymati undefined bo'lib qoladi", "Yo'q, const kabi majburiy", "Yo'q, syntax error beradi", "Ha, lekin 0 ga teng bo'ladi"],
-      correctAnswer: 0,
-      explanation: "let y = ; desangiz xato, lekin let y; desangiz bo'ladi, u undefined turadi."
-    },
-    {
-      question: "const o'zgaruvchisiga boshlang'ich qiymat bermay e'lon qilsa bo'ladimi?",
-      options: ["Ha, undefined qabul qiladi", "Yo'q, albatta qiymat berish majburiy (SyntaxError)", "Ha, 0 bo'lib qoladi", "Yo'q, ReferenceError"],
-      correctAnswer: 1,
-      explanation: "const bilan e'lon qilayotganda darhol const a = 10; qilib qiymat berish kerak."
-    },
-    {
-      question: "Sikllar (for loop) ichida i iteratoriga qaysi kalit so'z to'g'ri keladi?",
-      options: ["var", "let", "const", "static"],
-      correctAnswer: 1,
-      explanation: "let iterator i ga to'g'ri keladi, chunki u doim qiymati o'zgaradi. var bilan bitta doirada ishlaydi (yomon amaliyot), const qilsangiz reassign qilib bo'lmaydi xato bo'ladi."
-    },
-    {
-      question: "Xavfsizlik va eng yaxshi amaliyotga ko'ra kalit so'zlar tanlash qoidasi qanday?",
-      options: ["Har doim var", "Har doim let, kerak bo'lsa const", "Har doim const, faqat o'zgaradigan qiymat bo'lsa let", "Umuman kalit so'zsiz yozish"],
+      id: 7,
+      question: "O'zgaruvchi nomiga $ yoki _ belgilarini qanday holatda qo'llash mumkin?",
+      options: [
+        "Ular maxfiy parollar uchun",
+        "Faqat raqamlardan oldin",
+        "Ularni xuddi oddiy harflardek bemalol nomda ishlatish mumkin",
+        "Ularni umuman ishlatib bo'lmaydi"
+      ],
       correctAnswer: 2,
-      explanation: "Asosiy qoida: Imkon qadar doimo const ishlating, o'zgarishi aniq bo'lsagina let ishlating."
+      explanation: "$ va _ belgilari harflarga teng huquqli bo'lib, o'zgaruvchi nomida cheklovsiz ishlatiladi."
+    },
+    {
+      id: 8,
+      question: "let o'rniga var ishlatish qanday oqibatga olib kelishi mumkin?",
+      options: [
+        "Dastur 10 barobar tezroq ishlaydi",
+        "Blok doirasiga bo'ysunmagani uchun kutilmagan xatoliklarga (baglarga) olib kelishi mumkin",
+        "Faqat raqamlar saqlashga ruxsat beradi",
+        "Bu eng zamonaviy va zo'r yondashuv"
+      ],
+      correctAnswer: 1,
+      explanation: "var eski format bo'lib, u funksiya bo'ylab amal qiladi va ba'zida kod mantiqini buzishi mumkin."
+    },
+    {
+      id: 9,
+      question: "O'zgaruvchiga ma'nosiz (masalan 'data' yoki 'a') nom berish haqida qanday xulosa qilingan?",
+      options: [
+        "Bu eng oson yo'l, shunday qilish kerak",
+        "Kod yozishni tezlashtiradi",
+        "Kontekst yashirinib qolsa bu juda YOMON oqibatga olib keladi (tushunish qiyinlashadi)",
+        "Faqat var bilan tushunish mumkin"
+      ],
+      correctAnswer: 2,
+      explanation: "Ma'nosiz nomlar boshqa dasturchilarga yoki sizga keyinchalik kodni o'qishda katta noqulaylik tug'diradi."
+    },
+    {
+      id: 10,
+      question: "O'zgaruvchi nomlarida katta-kichik harflar (case) ahamiyatlimi?",
+      options: [
+        "Yo'q, ikkalasi ham bir xil quti",
+        "Faqat const ishlatganda ahamiyatli",
+        "Ha, masalan 'apple' va 'APPLE' ikkita umuman boshqa o'zgaruvchi hisoblanadi",
+        "Katta harflar faqat O'zbek tilida mumkin"
+      ],
+      correctAnswer: 2,
+      explanation: "JavaScript 'case-sensitive' (registrga sezgir), shuning uchun bosh-harf yoki kichik harf boshqa ob'ektni bildiradi."
+    },
+    {
+      id: 11,
+      question: "E'lon qilish kalit so'zisiz (let yoki var yo'q) yaratilgan o'zgaruvchilar...",
+      options: [
+        "Zamonaviy kodlash standarti",
+        "Dastur xavfsizligini oshiradi",
+        "Yomon amaliyot, va 'use strict' holatida xato (error) beradi",
+        "Juda tez ishlaydi"
+      ],
+      correctAnswer: 2,
+      explanation: "Eski JS-da ishlasa-da, bu xavfli deb topilgan va 'use strict' yozilsa, bunday xatolikka umuman yo'l qo'yilmaydi."
+    },
+    {
+      id: 12,
+      question: "Nega ba'zi dasturchilar yangi o'zgaruvchi e'lon qilishdan erinib eskisini qayta ishlataveradi va bu nega yomon?",
+      options: [
+        "Xotirani tejash uchun yaxshi yo'l",
+        "Bu ularning professional ekanligini bildiradi",
+        "Ular quti ichidagi turli ma'lumotlarni aralashtirib tashlaydi, natijada kodni debag qilish (xato qidirish) 10 barobar qiyinlashadi",
+        "Foydalanuvchiga yaxshi ta'sir qiladi"
+      ],
+      correctAnswer: 2,
+      explanation: "O'zgaruvchining maqsadini o'zgartiraverish uni o'qish va tushunishni chigallashtirib tashlaydi."
     }
   ]
 };

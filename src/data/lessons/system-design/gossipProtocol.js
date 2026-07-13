@@ -108,20 +108,20 @@ SWIM — bu tarmoq xizmatlarida a'zolikni (membership) saqlash va nosozliklarni 
 
 \`\`\`mermaid
 sequenceDiagram
-    participant Node A
-    participant Node B (Target)
-    participant Node C (Helper)
+    participant A as Node A
+    participant B as Node B (Target)
+    participant C as Node C (Helper)
     
-    Note over Node A, Node B: 1. To'g'ridan-to'g'ri Ping
-    Node A->>Node B: Ping
-    Note right of Node B: Javob bermadi (Packet loss yoki band)
+    Note over A, B: 1. To'g'ridan-to'g'ri Ping
+    A->>B: Ping
+    Note right of B: Javob bermadi (Packet loss yoki band)
     
-    Note over Node A, Node C: 2. Indirect Ping (Ping-Req)
-    Node A->>Node C: Ping-Req(B)
-    Node C->>Node B: Ping
-    Node B-->>Node C: Ack
-    Node C-->>Node A: Ack(B orqali)
-    Note over Node A: Node A B-ni tirik deb biladi!
+    Note over A, C: 2. Indirect Ping (Ping-Req)
+    A->>C: Ping-Req(B)
+    C->>B: Ping
+    B-->>C: Ack
+    C-->>A: Ack(B orqali)
+    Note over A: Node A B-ni tirik deb biladi!
 \`\`\`
 
 ### Vector Clocks / Lamport Timestamps

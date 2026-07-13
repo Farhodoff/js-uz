@@ -156,18 +156,18 @@ Kubernetes o'zining barcha holatlari, konfiguratsiyalari va metadata ma'lumotlar
 
 \`\`\`mermaid
 sequenceDiagram
-    participant Follower A
-    participant Candidate C
-    participant Follower B
-    Note over Candidate C: Election Timeout! State -> Candidate
-    Candidate C->>Follower A: RequestVote(term=1)
-    Candidate C->>Follower B: RequestVote(term=1)
-    Follower A-->>Candidate C: VoteGranted
-    Follower B-->>Candidate C: VoteGranted
-    Note over Candidate C: Quorum reached (3/3 votes)
-    Note over Candidate C: State -> Leader
-    Candidate C->>Follower A: AppendEntries (Heartbeat, term=1)
-    Candidate C->>Follower B: AppendEntries (Heartbeat, term=1)
+    participant A as Follower A
+    participant C as Candidate C
+    participant B as Follower B
+    Note over C: Election Timeout! State -> Candidate
+    C->>A: RequestVote(term=1)
+    C->>B: RequestVote(term=1)
+    A-->>C: VoteGranted
+    B-->>C: VoteGranted
+    Note over C: Quorum reached (3/3 votes)
+    Note over C: State -> Leader
+    C->>A: AppendEntries (Heartbeat, term=1)
+    C->>B: AppendEntries (Heartbeat, term=1)
 \`\`\`
 
 ---
