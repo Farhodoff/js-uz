@@ -2,47 +2,58 @@ export const scopeLesson = {
   id: "scopeLesson",
   title: "Scope (Ko'rinish Sohalari)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-JavaScript-da **Scope (Ko'rinish sohasi)** — bu o'zgaruvchilar, funksiyalar va obyektlarning kodimizning qaysi qismlarida "ko'rinishi" (ya'ni ularga murojaat qilish imkoniyati) va yashash muddatini belgilaydigan qoidalar to'plami.
+  theory: `## 1. 💡 Sodda Tushuntirish: Yangi Boshlovchilar Uchun O'xshatish
 
-O'xshatish (Ofis binosi):
-* **Global Scope (Umumiy hovli):** Hamma xodimlar ko'ra oladigan o'zgaruvchilar.
-* **Function Scope (Alohida bo'lim xonasi):** Faqat shu funksiya (xona) ichida ishlaydigan o'zgaruvchilar. Tashqaridagilar ularni ko'rmaydi.
-* **Block Scope (Xona ichidagi qulflangan seyf):** Faqat \`{}\` blok (masalan, if yoki for) ichida ishlaydigan o'zgaruvchilar (faqat \`let\` va \`const\` uchun).
+Tasavvur qiling, siz katta bir ofis binosidasiz. Bu bino sizning JavaScript dasturingizdir. Ushbu binoda turli xil ruxsat darajalari mavjud:
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+1. **Global Scope (Umumiy Qabulxona)**: Binodagi har bir xodim va mehmon kira oladigan joy. Agar siz e'lonni (o'zgaruvchini) shu yerga osib qo'ysangiz, hamma uni o'qiydi. Lekin bu xavfli bo'lishi mumkin, chunki kimdir kelib, bexosdan boshqa qog'ozga almashtirib qo'yishi mumkin.
 
-❌ **YOMON:** Global qamrovni (Global Scope) ifloslantirish va keraksiz global o'zgaruvchilar yaratish.
-\`\`\`javascript
-function calculate() {
-  total = 100; // let/const yozilmagan! Avtomatik global bo'lib ketadi
-}
-\`\`\`
+2. **Function yoki Local Scope (Alohida Ofis Xonasi)**: Bu yerga faqat o'sha xonaga kaliti bor odamlargina (funksiya ichidagilar) kira oladi. Xonadagi hujjatlarni (o'zgaruvchilarni) tashqaridagi odamlar ko'ra olmaydi. 
 
-✅ **YAXSHI:** O'zgaruvchilarni iloji boricha kichik doirada (Lokal scope) va \`const\` yoki \`let\` yordamida e'lon qilish.
-\`\`\`javascript
-function calculate() {
-  const total = 100; // Faqat shu funksiya ichida mavjud
-}
-\`\`\`
+3. **Block Scope (Xonadagi Qulflangan Seyf)**: Bu seyf faqatgina if, for yoki while kabi "{}" (gullar qavs) bloklarida saqlanadi va uning ichiga faqat \\\`let\\\` yoki \\\`const\\\` turidagi ma'lumotlarni solamiz. Qadimgi \\\`var\\\` o'zgaruvchisi esa xavfsizlikni mensimaydi va seyfdan doimo chiqib ketadi!
 
-## 🎤 Intervyu Savollari
-1. **Scope zanjiri (Scope Chain) nima?**
-   - Agar o'zgaruvchi lokal scope'da topilmasa, JavaScript uni tashqi qamrovlardan, to global qamrovga qadar qidiradi. Ushbu iyerarxik qidiruv tizimi scope zanjiri deyiladi.
-2. **Variable Shadowing (Soyalash) nima?**
-   - Ichki scope'da tashqi scope'dagi o'zgaruvchi bilan bir xil nomda yangi o'zgaruvchi e'lon qilinsa, u tashqi o'zgaruvchini ma'lum vaqt "to'sib qo'yadi". Bu shadowing deyiladi.
-3. **Leksik (Lexical) Scope nima?**
-   - JavaScript'da o'zgaruvchining qamrovi funksiya qayerda chaqirilganiga qarab emas, balki koddagi qayerda yozilganiga (e'lon qilinganiga) qarab statik ravishda aniqlanadi.
+## 2. 🚀 Chuqurlashtirilgan O'rganish: Dvigatel Ostida (Under the Hood)
 
-## 🛠️ Amaliy Topshiriqlar
+JavaScript motori (masalan, V8 Engine) o'zgaruvchilarni "Lexical Environment" deb nomlanuvchi maxsus obyektdagi xotirada saqlaydi. Dastur ishlash vaqtida qamrov quyidagicha ishlaydi:
 
-\`\`\`mermaid
+* **Execution Context (Bajarilish Konteksti):** Har safar funksiya chaqirilganda yangi kontekst yaratiladi va unga o'zining "Lexical Environment"i ulanadi.
+* **Scope Chain (Qamrov Zanjiri):** Agar V8 Engine o'zgaruvchini joriy muhitdan topolmasa, u darhol "Outer Lexical Environment"ga (tashqi muhitga) yuzlanadi. Bu zanjir toki Global muhitgacha boradi. Agar u yerda ham topilmasa, \\\`ReferenceError\\\` qaytaradi.
+* **Garbage Collection va Xotira:** Agar funksiya ichidagi o'zgaruvchilarga qayta murojaat qilinmasa, V8 ning "Garbage Collector"i ularni xotiradan o'chiradi. Lekin funksiya ichidan boshqa funksiya qaytarilsa va u o'zgaruvchidan foydalansa (Closure), u xotirada uzoqroq yashaydi. Bu xotira sizib chiqishi (Memory Leak) kabi muammolarni ham keltirib chiqarishi mumkin.
+
+## 3. ⚠️ Chekka Holatlar (Edge Cases) va Senior Intervyu Savollari
+
+1. **Temporal Dead Zone (TDZ) nima va u qanday ishlaydi?**
+   - Javob: \\\`let\\\` va \\\`const\\\` qatorlari hoist bo'ladi, lekin e'lon qilingan qatorgacha ularni o'qib bo'lmaydi. Bu hudud TDZ deyiladi. 
+   - \\\`\\\`\\\`javascript
+   console.log(a); // ReferenceError
+   let a = 10;
+   \\\`\\\`\\\`
+
+2. **Variable Shadowing qachon muammo tug'dirishi mumkin?**
+   - Javob: Agar tashqi o'zgaruvchi bilan aynan bir xil nomda ichki o'zgaruvchi e'lon qilsangiz, tashqi o'zgaruvchi e'tibordan chetda qoladi.
+   - \\\`\\\`\\\`javascript
+   let count = 0;
+   function increase() {
+     let count = 1; // Tashqi count "soya" ostida qoldi!
+     return count;
+   }
+   \\\`\\\`\\\`
+
+3. **Closure va Scope aloqasini qanday tushuntirasiz?**
+   - Javob: Closure bu funksiya o'zi yozilgan leksik qamrovni eslab qolishidir. U Garbage Collector-dan eski scope'ni himoya qilib ushlab qoladi.
+
+## 📊 Qamrov Zanjiri (Scope Chain) Diagrammasi
+
+\\\`\\\`\\\`mermaid
 flowchart TD
-    A[O'zgaruvchini Qidirish Zanjiri] --> B[Lokal Scope]
-    B -->|Topilmasa| C[Tashqi Scope]
-    C -->|Topilmasa| D[Global Scope]
-    D -->|Topilmasa| E[ReferenceError]
-\`\`\`
+    A[Izlash Boshlandi] --> B[Joriy Block Scope]
+    B -->|Topilmadi| C[Tashqi Muhit]
+    C -->|Topilmadi| D[Global Scope]
+    D -->|Topilmadi| F[ReferenceError]
+    C -->|Topildi| E[Qiymat Qaytariladi]
+    B -->|Topildi| E
+    D -->|Topildi| E
+\\\`\\\`\\\`
 `,
   exercises: [
     {
