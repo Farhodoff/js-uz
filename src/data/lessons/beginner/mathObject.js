@@ -2,232 +2,96 @@ export const mathObject = {
   id: "mathObject",
   title: "Math Obyekti va Matematik Metodlar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish (Beginner Analogy)
 
 ### Math obyekti nima?
-JavaScript-da **\`Math\`** obyekti matematik amallar va konstantalarni (masalan, $\\pi$ soni) bajarish uchun mo'ljallangan maxsus **ichki (built-in)** obyektdir. 
-
-Boshqa ko'plab JavaScript obyektlaridan farqli o'laroq, \`Math\` konstruktor emas. Ya'ni, siz \`new Math()\` deb yozib, undan yangi nusxa ololmaysiz. Uning barcha metod va xususiyatlari **statikdir** — ularni to'g'ridan-to'g'ri \`Math.metodName()\` ko'rinishida chaqirib ishlataverasiz.
+JavaScript-da **\\\`Math\\\`** obyekti matematik amallar va konstantalarni (masalan, $\\pi$ soni) bajarish uchun mo'ljallangan maxsus **ichki (built-in)** obyektdir. Bu obyekt global hisoblanadi va uning barcha metodlari hamda xususiyatlari statikdir, shuning uchun hech qachon \\\`new Math()\\\` deb chaqirib bo'lmaydi.
 
 ### Real hayotiy o'xshatish
-Tasavvur qiling, siz yangi uy qurayapsiz va sizga har xil o'lchov asboblari kerak:
-* **Siz yangi chizg'ich yoki kalkulyator sotib olmaysiz (\`new Math()\` yo'q):** Devor chetida tayyor o'rnatilgan universal va bepul **ilmiy kalkulyator panelini** ko'rasiz.
-* **Math.floor(x):** Doskani kesayotganingizda uzunlikni faqat **kichik butun tomonga qarab** kesib tashlash (masalan, 3.8 metrli taxtadan faqat 3 metrini ishlatish).
-* **Math.ceil(x):** Xonani plitka bilan qoplashda plitkalar sonini **yuqori tomonga qarab** butunlash. Agar sizga 10.2 ta plitka kerak bo'lsa, siz do'kondan baribir 11 ta butun plitka sotib olasiz.
-* **Math.round(x):** Eng adolatli va matematik qoida bo'yicha yaqin butun songa yaxlitlash.
-* **Math.random():** Qaysi usta bugun tushlikka borishini aniqlash uchun **tangani havoga otish** yoki tasodifiy raqam tanlash.
+Tasavvur qiling, sizga matematik asboblar kerak. 
+* **Yangi asbob yasash shart emas (\\\`new Math()\\\` yo'q):** Devor chetida tayyor o'rnatilgan universal va bepul ilmiy kalkulyator paneli bor. 
+* **Math.floor(x):** Taxtani kesishda har doim **pastga** butunlash (agar sizda 3.8 metr bo'lsa ham faqat 3 metr ishlatasiz).
+* **Math.ceil(x):** Kafel yotqizishda har doim **yuqoriga** butunlash (hatto 10.1 ta kafel ketsa ham, do'kondan 11 ta olishingiz kerak).
+* **Math.round(x):** Eng adolatli yaqin songa yaxlitlash (3.5 va undan tepasi yuqoriga, undan pasti pastga).
+* **Math.random():** Tanlov qilish uchun tasodifiy raqam yoki qur'a tashlash.
 
 ---
 
-## 2. 💻 Real Kod Misollari
+## 2. 🧠 Deep Dive (Under the hood, memory, V8 engine, performance)
 
-### 1. Basic Example (Sonlarni yaxlitlash metodlari)
-Kundalik ishlarda ko'p qo'llaniladigan yaxlitlash metodlarining farqi:
+### 1. V8 Engine va Xotira Boshqaruvi (Memory)
+JavaScript-da barcha sonlar IEEE 754 standartiga muvofiq **64-bit float (Double Precision)** formatida saqlanadi. Biroq V8 dvigateli raqamlarni yanada samaraliroq boshqarish uchun turli xil ichki tiplardan (masalan, **Smi** - Small Integer, va **HeapNumber**) foydalanadi. 
 
-\`\`\`javascript
-// 1. Math.floor() - Doimo pastga (kichik butun songa) yaxlitlaydi
-console.log(Math.floor(4.7));  // 4
-console.log(Math.floor(-4.2)); // -5 (chunki -5 soni -4.2 dan kichik)
+**\\\`Math\\\`** obyektidagi metodlar odatda C++ da yuqori tezlikda ishlash uchun optimizatsiya qilingan:
+* **Inline qilinadigan metodlar:** V8 engine \\\`Math.abs()\\\`, \\\`Math.round()\\\`, va \\\`Math.floor()\\\` kabi qisqa matematik operatsiyalarni to'g'ridan-to'g'ri CPU instruksiyalariga aylantiradi, shuning uchun ular juda tez.
+* **Math.random() arxitekturasi:** V8 engine \\\`xorshift128+\\\` psevdo-tasodifiy raqamlar generatori (PRNG) algoritmidan foydalanadi. U yuqori tezlikka ega va oddiy tasodifiylik (o'yinlar, animatsiyalar) uchun juda zo'r ishlaydi, biroq xavfsizlik va kriptografiya uchun **ishonchli emas**. 
 
-// 2. Math.ceil() - Doimo yuqoriga (katta butun songa) yaxlitlaydi
-console.log(Math.ceil(4.1));   // 5
-console.log(Math.ceil(-4.8));  // -4
-
-// 3. Math.round() - Matematik qoida bo'yicha eng yaqin butun songa yaxlitlaydi
-console.log(Math.round(4.4));  // 4
-console.log(Math.round(4.5));  // 5 
-console.log(Math.round(-4.5)); // -4 (manfiy sonlarda -4 soni musbat cheksizlikka yaqinroq)
-
-// 4. Math.trunc() - Kasr qismini shunchaki kesib tashlaydi
-console.log(Math.trunc(4.9));  // 4
-console.log(Math.trunc(-4.9)); // -4
-
-// 5. Math.abs() - Sonning absolyut qiymatini (modulini) qaytaradi
-console.log(Math.abs(-15));    // 15
-\`\`\`
-
-### 2. Intermediate Example (Min/Max va Darajalar bilan ishlash)
-Elementlarning eng kattasi/kichigini aniqlash va matematik hisob-kitoblar:
-
-\`\`\`javascript
-// 1. Math.max va Math.min
-console.log(Math.max(12, 5, 8, 30, 2)); // 30
-console.log(Math.min(12, 5, 8, 30, 2)); // 2
-
-// Massivlar bilan spread (...) operatori orqali ishlatish:
-const scores = [85, 92, 78, 99, 64];
-const highest = Math.max(...scores);
-console.log(\`Eng yuqori ball: \${highest}\`); // 99
-
-// 2. Math.pow va Math.sqrt
-console.log(Math.pow(2, 3)); // 8 (2 ning 3-darajasi)
-console.log(2 ** 3);         // 8 (ES6 muqobil)
-
-console.log(Math.sqrt(25));  // 5 (Kvadrat ildiz)
-console.log(Math.sqrt(-25)); // NaN
-\`\`\`
-
-### 3. Advanced Example (Tasodifiy son va moliyaviy yaxlitlash)
-
-\`\`\`javascript
-// 1. Chegaralangan oraliqda tasodifiy son [min, max]
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-console.log(getRandomNumber(10, 20));
-
-// 2. Float sonlarni aniq kasr xonasigacha yaxlitlash (0.1 + 0.2 muammosi)
-function financialRound(value, decimals) {
-  const multiplier = Math.pow(10, decimals);
-  return Math.round(value * multiplier) / multiplier;
-}
-console.log(0.1 + 0.2); // 0.30000000000000004
-console.log(financialRound(0.1 + 0.2, 2)); // 0.3
-
-// 3. Doira yuzini hisoblash (Math.PI)
-function calculateCircleArea(radius) {
-  return Math.PI * Math.pow(radius, 2);
-}
-console.log(calculateCircleArea(5).toFixed(2)); // "78.54"
-\`\`\`
+### 2. Performance (Tezlik) Optimizatsiyasi
+Oddiy funksiya chaqiruvlari emas, balki "Bitwise" operatorlar ham butun sonli o'zgarishlar uchun (float'ni kasridan qutulish) tez-tez qo'llanadi:
+\\\`\\\`\\\`javascript
+// Bitwise Not operatori bilan kasrni qirqish
+const a = ~~4.9; // 4 qaytaradi. Bu Math.trunc(4.9) dan biroz tezroq!
+const b = 4.9 | 0; // 4 qaytaradi.
+\\\`\\\`\\\`
+*Diqqat:* Bitwise operatorlar sonlarni 32-bit butun soniga aylantirganligi sababli, 2 milliarddan ortiq bo'lgan sonlarda (masalan 3000000000) noto'g'ri ishlay boshlaydi!
 
 ---
 
-## 3. ⚠️ Muammo va Nima uchun Muhimligi
+## 3. ⚠️ Edge Cases va Senior Interview Questions
 
-1. **Kompyuter xotirasidagi sonlar xatoligi:** JavaScript barcha sonlarni 64-bitli float formatda saqlaydi. Bu esa \`0.1 + 0.2\` xatoligini beradi. Math metodlari bilan ularni aniq yaxlitlaymiz.
-2. **Tasodifiylik:** O'yinlar, lotereyalar yoki shuffling uchun \`Math.random()\` asqotadi.
-3. **Massivdan Min/Max ni tez topish:** Siklsiz, to'g'ridan-to'g'ri bir qator kod bilan topish mumkin.
+### Edge Cases (G'ayrioddiy holatlar)
+* **\\\`Math.max()\\\` va \\\`Math.min()\\\` argumentsiz:**
+\\\`\\\`\\\`javascript
+console.log(Math.max()); // -Infinity
+console.log(Math.min()); // Infinity
+\\\`\\\`\\\`
+* **\\\`Math.floor()\\\` va \\\`Math.trunc()\\\` ning manfiy sonlardagi farqi:**
+\\\`\\\`\\\`javascript
+console.log(Math.floor(-3.1)); // -4 (pastga, ya'ni kichik songa siljiydi)
+console.log(Math.trunc(-3.1)); // -3 (faqat kasr qismini kesib tashlaydi)
+\\\`\\\`\\\`
 
----
+### Senior Interview Questions
 
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+1. **Savol:** Nima uchun katta massivlarni \\\`Math.max(...array)\\\` bilan ishlatish xavfli?
+   **Javob:** Argumentlarni "spread" qilish JavaScript-da maksimal call stack (chaqiruv steki) hajmiga bog'liq (bu ko'pincha 65536 atrofida bo'ladi). Agar massiv hajmi millionta elementdan iborat bo'lsa, \\\`RangeError: Maximum call stack size exceeded\\\` xatosi yuzaga keladi. Bunday holatlarda \\\`reduce()\\\` orqali massivni aylanish xavfsizroq.
 
-### 1. \`new Math()\` orqali yangi obyekt yaratishga urinish
-🔴 **YOMON:**
-\`\`\`javascript
-const myMath = new Math(); // TypeError: Math is not a constructor
-\`\`\`
+2. **Savol:** Nima uchun \\\`Math.random()\\\` ni kriptografiyada ishlatib bo'lmaydi?
+   **Javob:** \\\`Math.random()\\\` V8 da "xorshift128+" degan algoritmni ishlatadi va bu algoritm deterministikdir, ya'ni uning ketma-ketlik qiymatlarini matematik tahlil orqali topib olish (bashorat qilish) mumkin. Parollar va tokenlar yaratish uchun doimo **Web Crypto API** (\\\`window.crypto.getRandomValues()\\\` yoki Node.js da \\\`crypto.randomBytes()\\\`) ishlatilishi shart.
 
-🟢 **YAXSHI:**
-\`\`\`javascript
-const value = Math.sqrt(9); // 3
-\`\`\`
+3. **Savol:** \\\`0.1 + 0.2 === 0.3\\\` nega "false" qaytaradi va uni qanday qilib yaxlitlash mumkin?
+   **Javob:** Barcha raqamlar IEEE 754 standarti bo'yicha float ko'rinishida saqlangani uchun kasr sonlarni ikkilik sanoq sistemasida ifodalashda cheksiz davriyliklar paydo bo'ladi (xuddi 1/3 kabi). Bu oxirgi aniqlik bitlarida "0.30000000000000004" degan xatolikka sabab bo'ladi. Muammoni \\\`Number((0.1 + 0.2).toFixed(2))\\\` yoki \\\`Math.round((0.1 + 0.2) * 10) / 10\\\` yordamida yechamiz.
 
-### 2. Manfiy sonlarda \`Math.floor\` va \`Math.trunc\` farqini unutish
-🔴 **YOMON:**
-\`\`\`javascript
-console.log(Math.floor(-5.5)); // -6 qaytadi
-\`\`\`
-
-🟢 **YAXSHI:**
-Agar faqat kasr qismini olmoqchi bo'lsangiz:
-\`\`\`javascript
-console.log(Math.trunc(-5.5)); // -5
-\`\`\`
-
-### 3. Massivni spread operatorisiz \`Math.max\`ga to'g'ridan-to'g'ri uzatish
-🔴 **YOMON:**
-\`\`\`javascript
-const numbers = [1, 5, 3];
-console.log(Math.max(numbers)); // NaN
-\`\`\`
-
-🟢 **YAXSHI:**
-\`\`\`javascript
-console.log(Math.max(...numbers)); // 5
-\`\`\`
+4. **Savol:** \\\`Math.round(-3.5)\\\` nima uchun -3 qaytaradi?
+   **Javob:** JavaScript-da \\\`Math.round()\\\` qoidasiga asosan n.5 holatida doimo +Infinity (musbat cheksizlik) tomonidagi eng yaqin butun songa siljiydi. Shuning uchun -3.5 dan ko'ra kattaroq va eng yaqin butun son -3 ga o'tadi.
 
 ---
 
-## 5. 💬 12 ta Intervyu Savollari
+## 4. 📊 Mermaid Diagram
 
-### Junior (1–4)
-1. **Savol:** Nima uchun \`new Math()\` yozib bo'lmaydi?
-   * **Javob:** Chunki \`Math\` konstruktor emas, u shunchaki global statik obyekt bo'lib metodlari chaqirish uchun qilingan.
-2. **Savol:** \`Math.floor(4.9)\` va \`Math.ceil(4.1)\` metodlarining farqi nimada?
-   * **Javob:** \`Math.floor()\` pastga yaxlitlaydi (4.9 -> 4). \`Math.ceil()\` yuqoriga yaxlitlaydi (4.1 -> 5).
-3. **Savol:** \`Math.random()\` 1 qiymatini qaytarishi mumkinmi?
-   * **Javob:** Yo'q, u \`[0, 1)\` oraliqda bo'ladi.
-4. **Savol:** \`Math.round(-3.5)\` natijasi nima?
-   * **Javob:** \`-3\` qaytaradi, chunki musbat cheksizlik tomonga qarab yaxlitlaydi.
-
-### Middle (5–8)
-5. **Savol:** Bo'sh massiv bilan \`Math.max(...[])\` necha qaytaradi?
-   * **Javob:** \`-Infinity\`. \`Math.min\` esa \`Infinity\` qaytaradi.
-6. **Savol:** Nima uchun manfiy sonlarda \`Math.floor()\` va \`Math.trunc()\` farq qiladi?
-   * **Javob:** \`Math.trunc()\` faqat kasrni kesadi (-3.9 -> -3). \`Math.floor()\` pastga tortadi (-3.9 -> -4).
-7. **Savol:** \`Math.pow(x, y)\` muqobili nima?
-   * **Javob:** ES6 daraja operatori: \`x ** y\`.
-8. **Savol:** \`Math.sqrt(-9)\` natijasi?
-   * **Javob:** \`NaN\`. Haqiqiy manfiy son ildizi yo'q.
-
-### Senior (9–12)
-9. **Savol:** \`Math.random()\` qanday algoritmga asoslangan va nega kriptografiyaga yaramaydi?
-   * **Javob:** xorshift128+ PRNG algoritmidir. U bashorat qilinishi oson. O'rniga Web Crypto API (\`crypto.getRandomValues()\`) ishlatiladi.
-10. **Savol:** Bitwise operatorlar (\`~~x\`) nega \`Math.floor\` dan ko'ra tez ishlaydi va uning qanday xavfi bor?
-    * **Javob:** Bitwise 32-bit butun songa o'girib protsessor darajasida ishlaydi (tezroq). Ammo 2,147,483,647 dan katta sonlarda noto'g'ri qiymat beradi.
-11. **Savol:** \`Math.max(...veryLargeArray)\` ishlatganda qanday xavf bor?
-    * **Javob:** JS engine-da call stack limiti tufayli array hajmi o'ta katta bo'lsa \`Maximum call stack size exceeded\` xatosi beradi.
-12. **Savol:** \`Math.atan2(y, x)\` nima uchun kerak?
-    * **Javob:** X va Y koordinatalari bo'yicha nuqtaning qutb burchagini $(-\\pi, \\pi)$ aniq choraklarda (quadrant) qaytaradi.
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Yaxlitlash va Tasodifiylik Vizual Modeli:
-
-\`\`\`mermaid
+\\\`\\\`\\\`mermaid
 graph TD
-    A["Math Metodlari"] --> B["Rounding (Yaxlitlash)"]
-    A --> C["Random Numbers"]
-
-    B --> B1["Math.floor(x)"]
-    B --> B2["Math.ceil(x)"]
-    B --> B3["Math.round(x)"]
-    B --> B4["Math.trunc(x)"]
-
-    B1 --> F1["Pastga <br> 3.7 -> 3 <br> -3.2 -> -4"]
-    B2 --> F2["Yuqoriga <br> 3.1 -> 4 <br> -3.7 -> -3"]
-    B3 --> F3["Yaqin songa <br> 3.5 -> 4 <br> -3.5 -> -3"]
-    B4 --> F4["Kasrni kesadi <br> 3.9 -> 3 <br> -3.9 -> -3"]
-
-    C --> C1["Math.random()"]
-    C1 --> C2["[0, 1) oraliq"]
-    C1 --> C3["[min, max] oraliq: <br> floor(random() * (max-min+1)) + min"]
-\`\`\`
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Dars yuzasidan barcha interaktiv testlarni o'zlashtirish orqali bilimlaringizni sinab ko'ring.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### E-Commerce Financial & Transaction Utility
-Klass valyutalarni hisoblash, chegirmalarni soliq bilan birga to'g'ri yaxlitlash uchun xizmat qiladi:
-
-\`\`\`javascript
-class FinanceUtility {
-  static roundPrice(amount, currency = 'USD') {
-    const dec = currency === 'JPY' ? 0 : 2;
-    const factor = Math.pow(10, dec);
-    return Math.round(amount * factor) / factor;
-  }
-}
-console.log(FinanceUtility.roundPrice(19.9923)); // 19.99
-\`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-1. **Bitwise Operatorlar (\`~~\`):** Kichik butun sonlar uchun tezroq ishlaydi, ammo son kattalashsa (-2^31 dan oshganda) buziladi.
-2. **Katta massivlarda Spread'dan qochish:** \`Math.max(...arr)\` juda katta massivda call stack-ni to'ldiradi. Sikl orqali eng kattasini topish xavfsizroq.
+    A[Math Obyekti] --> B[Yaxlitlash]
+    A --> C[Tasodifiy Son]
+    A --> D[Arifmetik Metodlar]
+    
+    B --> B1[Math.floor]
+    B --> B2[Math.ceil]
+    B --> B3[Math.round]
+    B --> B4[Math.trunc]
+    
+    B1 --> F1[Doimo kichik tomonga]
+    B2 --> F2[Doimo katta tomonga]
+    B3 --> F3[Eng yaqin butun songa]
+    B4 --> F4[Faqat butun qismni oladi]
+    
+    C --> C1[Math.random]
+    C1 --> C2[0 dan 1 gacha son]
+    
+    D --> D1[Math.max / Math.min]
+    D --> D2[Math.pow]
+    D --> D3[Math.abs]
+\\\`\\\`\\\`
 `,
   exercises: [
     {
@@ -376,7 +240,7 @@ console.log(FinanceUtility.roundPrice(19.9923)); // 19.99
       id: 6,
       question: "`Math.random()` funksiyasi qanday diapazondagi sonlarni qaytaradi?",
       options: [
-        "\`[0, 1)\` ya'ni 0 dan 1 gacha (0 kiradi, 1 kirmaydi)",
+        "\"[0, 1)\" ya'ni 0 dan 1 gacha (0 kiradi, 1 kirmaydi)",
         "`(0, 1)`",
         "`[0, 1]`",
         "`[1, 100]`"
