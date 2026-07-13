@@ -2,61 +2,61 @@ export const sqlTransactions = {
   id: "sql_transactions",
   title: "SQL Transactions va ACID",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
 
-**Transaction (Tranzaksiya)** – bu ma'lumotlar bazasida bajariladigan bir nechta mantiqiy bog'liq operatsiyalarning yagona, bo'linmas (atomic) guruhidir. Agar guruhdagi barcha operatsiyalar muvaffaqiyatli yakunlansa, o'zgarishlar tasdiqlanadi (COMMIT). Agar bitta operatsiya bo'lsa ham xato qilsa, barcha o'zgarishlar bekor qilinib, oldingi holatiga qaytariladi (ROLLBACK).
+**Transaction (Tranzaksiya)** – bu bir nechta SQL buyruqlarni bitta bo'linmas (atomic) operatsiya sifatida guruhlash. Agar barcha buyruqlar muvaffaqiyatli yakunlansa, o'zgarishlar tasdiqlanadi (COMMIT). Agar bitta operatsiya xato qilsa ham, barcha o'zgarishlar bekor qilinib, baza dastlabki holatiga qaytadi (ROLLBACK).
 
-Eng oddiy misol: Pul o'tkazmasi. 
-Sizning hisobingizdan $100 yechiladi va do'stingiz hisobiga $100 qo'shiladi. Agar birinchi amal bajarilsa-yu, ikkinchisida xatolik chiqsa, siz $100 yo'qotasiz. Tranzaksiya shu kabi vaziyatlarning oldini olib, ikkala amalni yo birdaniga bajaradi, yoki umuman bajarmaydi.
+**Analogi:** Do'kondan xarid qilish. 
+Siz tovar uchun pul to'laysiz (sizning hisobingizdan pul yechiladi), do'kon egasi esa tovarni sizga beradi. Agar pul o'tsa-yu, tovar berilmasa (yoki aksincha), bu adolatsizlik bo'ladi. Tranzaksiya aynan shuni oldini oladi: yo ikkala amal ham to'liq bajariladi, yoki umuman hech qanday amal bajarilmaydi.
 
-**ACID tamoyillari:**
-1. **A - Atomicity (Bo'linmaslik):** "Hammasi yoki hech narsa". Tranzaksiya qisman bajarilishi mumkin emas.
-2. **C - Consistency (Muvofiqlik):** Tranzaksiyadan oldin va keyin MBdagi qoidalar va cheklovlar to'g'ri ishlashi shart.
-3. **I - Isolation (Izolyatsiya):** Bir vaqtda bajarilayotgan tranzaksiyalar bir-biriga ta'sir qilmasligi kerak.
-4. **D - Durability (Chidamlilik):** COMMIT bo'lgan o'zgarishlar hatto tizim o'chib qolsa ham saqlanib qoladi.
+## 2. 🧠 Chuqur sho'ng'ish (Deep Dive)
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+### ACID Tamoyillari
+1. **A - Atomicity (Bo'linmaslik):** "Hammasi yoki hech narsa". Tranzaksiya yarim-yorti bajarilmaydi. 
+2. **C - Consistency (Muvofiqlik):** Tranzaksiyadan so'ng barcha cheklovlar (constraints) qoidalari bajarilishi kerak (masalan, balans manfiy bo'lib qolmasligi).
+3. **I - Isolation (Izolyatsiya):** Bir vaqtda parallel ketayotgan tranzaksiyalar bir-biriga xalaqit bermaydi.
+4. **D - Durability (Chidamlilik):** COMMIT bo'lgan o'zgarishlar tizim qulasa ham yo'qolmaydi (diskka mustahkam yoziladi).
 
-**❌ YOMON (Tranzaksiyalarni ishlatmaslik):**
-\`\`\`sql
--- Bir-biriga bog'liq operatsiyalarni shunday tashlab ketish xavfli
-UPDATE accounts SET balance = balance - 100 WHERE id = 1;
--- Agar shu yerda xato bo'lsa, 1-foydalanuvchi pulini yo'qotadi!
-UPDATE accounts SET balance = balance + 100 WHERE id = 2;
-\`\`\`
+### MVCC (Multi-Version Concurrency Control) PostgreSQL'da
+PostgreSQL tranzaksiyalarni boshqarish uchun **MVCC** arxitekturasidan foydalanadi. Bu shuni anglatadiki, o'qish (SELECT) operatsiyalari yozish (UPDATE/DELETE) operatsiyalarini bloklamaydi va aksincha. Har bir tranzaksiya ma'lumotlarning o'ziga xos "snepshotini" (snapshot) ko'radi. UPDATE operatsiyasi eski qatorni o'chirmaydi, balki yangi versiyasini yaratadi (eski versiya VACUUM orqali tozalanmaguncha turadi).
 
-**✅ YAXSHI (Tranzaksiya bilan ishlash):**
-\`\`\`sql
-BEGIN; -- Yoki BEGIN TRANSACTION;
-UPDATE accounts SET balance = balance - 100 WHERE id = 1;
-UPDATE accounts SET balance = balance + 100 WHERE id = 2;
-COMMIT; -- Hammasi joyida bo'lsa
--- Agar xatolik bo'lsa ROLLBACK; ishlatiladi.
-\`\`\`
+### Isolation Levels (Izolyatsiya darajalari)
+SQL standarti 4 xil izolyatsiya darajasini belgilaydi:
+1. **Read Uncommitted:** Boshqa tranzaksiyadagi hali COMMIT qilinmagan o'zgarishlarni o'qish mumkin (Dirty Read).
+2. **Read Committed:** Faqat COMMIT qilingan o'zgarishlarni o'qish mumkin. PostgreSQL da bu standart daraja (default).
+3. **Repeatable Read:** Bitta tranzaksiya ichida bir xil qatorni qayta-qayta o'qish doim bir xil natija beradi (Non-repeatable read oldi olinadi).
+4. **Serializable:** Eng qat'iy daraja. Tranzaksiyalar go'yo ketma-ket bajarilayotgandek ishlaydi. Phantom read'ni ham oldini oladi.
 
-## 🎤 Intervyu Savollari
+### Qulflar (Locks)
+Tranzaksiyalar davomida qulflar avtomatik yoki qo'lda boshqarilishi mumkin.
+- **Row-level locks:** Masalan, \\\`SELECT * FROM accounts FOR UPDATE;\\\` bir qatorni boshqa tranzaksiyalar o'zgartirmasligi uchun qulflaydi.
+- **Deadlock:** Ikkita tranzaksiya bir-birini cheksiz kutib qoladigan holat. Buni oldini olish uchun resurslarni doim bir xil ketma-ketlikda qulflash tavsiya etiladi.
 
-1. **ACID nima va u nima uchun kerak?**
-   - *Javob*: Atomicity, Consistency, Isolation, Durability. MB da ishonchli va aniq ma'lumotlar saqlanishini ta'minlaydi, ayniqsa muhim operatsiyalarda (moliyaviy jarayonlar).
-2. **COMMIT va ROLLBACK ning farqi nimada?**
-   - *Javob*: COMMIT barcha o'zgarishlarni doimiy saqlaydi. ROLLBACK esa barcha o'zgarishlarni bekor qilib, bazani tranzaksiya boshlanmasdan oldingi holatiga qaytaradi.
-3. **Dirty Read (Iflos o'qish) nima?**
-   - *Javob*: Bitta tranzaksiya hali COMMIT qilinmagan o'zgarishlarni boshqa tranzaksiya tomonidan o'qilishi.
-4. **Transaction Isolation Level lar qaysilar?**
-   - *Javob*: Read Uncommitted, Read Committed, Repeatable Read, Serializable.
+## 3. ⚠️ Edge Caselar va Senior Intervyu Savollari
 
-## 🛠️ Amaliy Topshiriqlar
+1. **Deadlock nima va uni qanday hal qilish mumkin?**
+   - *Javob:* Ikkita tranzaksiya o'zaro bir-birini bloklab qo'yishi. Hal qilish: Retry mantiqi (xatolik bo'lsa qaytadan urinish) yoki doim jadvallarga bir xil tartibda murojaat qilish. PostgreSQL avtomatik deadlocklarni aniqlab, bitta tranzaksiyani bekor qiladi.
 
-\`\`\`mermaid
+2. **MVCC da "bloat" nima?**
+   - *Javob:* Ko'plab UPDATE/DELETE lar oqibatida o'lik qatorlar (dead tuples) ko'payib ketishi. Buni oldini olish uchun Autovacuum ishlaydi.
+
+3. **Dirty Read, Non-repeatable Read va Phantom Read farqlari?**
+   - *Dirty Read:* Hali commit bo'lmagan datani o'qish.
+   - *Non-repeatable Read:* Bitta tranzaksiya ichida 2 marta SELECT qilganda turli xil natija (commit bo'lgan update sababli).
+   - *Phantom Read:* Bitta tranzaksiya ichida 2 marta SELECT qilganda yangi qator qo'shilganini (commit bo'lgan insert sababli) ko'rish.
+
+## 📊 Jarayon (Mermaid Diagram)
+
+\\\`\\\`\\\`mermaid
 graph TD
-    A[BEGIN / START TRANSACTION] --> B[Operation 1]
-    B --> C[Operation 2]
+    A[BEGIN TRANSACTION] --> B[Operation 1 - UPDATE]
+    B --> C[Operation 2 - INSERT]
     C --> D{Xatolik bormi?}
-    D -- Yo'q --> E[COMMIT]
+    D -- Yoq --> E[COMMIT]
     D -- Ha --> F[ROLLBACK]
     E --> G((Tugadi))
-    F --> G
-\`\`\`
+    F --> G((Tugadi - O'zgarishlarsiz))
+\\\`\\\`\\\`
 `,
   exercises: [
     {
@@ -64,16 +64,16 @@ graph TD
       title: "Tranzaksiya boshlash",
       instruction: "Yangi tranzaksiya boshlash so'rovini qaytaruvchi `beginTransaction` funksiyasini yozing.",
       startingCode: "function beginTransaction() {\n  \n}",
-      hint: "Odatda BEGIN; yoki START TRANSACTION; yoziladi. BEGIN; ni qaytaring.",
+      hint: "BEGIN; dan foydalaning.",
       solution: "function beginTransaction() {\n  return 'BEGIN;';\n}",
       test: "const fn = new Function(code + '; return beginTransaction;')();\nif (fn().trim().toUpperCase() !== 'BEGIN;') throw new Error('BEGIN; qaytarilmadi');"
     },
     {
       id: 2,
       title: "Tranzaksiyani tasdiqlash",
-      instruction: "Tranzaksiyani muvaffaqiyatli yakunlovchi va o'zgarishlarni saqlovchi sql buyruqni qaytaruvchi `commitTransaction` funksiyasini yozing.",
+      instruction: "Tranzaksiyani muvaffaqiyatli yakunlovchi so'rovni qaytaruvchi `commitTransaction` funksiyasini yozing.",
       startingCode: "function commitTransaction() {\n  \n}",
-      hint: "COMMIT; buyrug'i.",
+      hint: "COMMIT; buyrug'i kerak.",
       solution: "function commitTransaction() {\n  return 'COMMIT;';\n}",
       test: "const fn = new Function(code + '; return commitTransaction;')();\nif (fn().trim().toUpperCase() !== 'COMMIT;') throw new Error('COMMIT; qaytarilmadi');"
     },
@@ -82,14 +82,14 @@ graph TD
       title: "Tranzaksiyani bekor qilish",
       instruction: "Xatolik yuz berganda barcha amallarni ortga qaytaruvchi buyruqni qaytaruvchi `rollbackTransaction` funksiyasini yozing.",
       startingCode: "function rollbackTransaction() {\n  \n}",
-      hint: "ROLLBACK; buyrug'i kerak.",
+      hint: "ROLLBACK; buyrug'idan foydalaning.",
       solution: "function rollbackTransaction() {\n  return 'ROLLBACK;';\n}",
       test: "const fn = new Function(code + '; return rollbackTransaction;')();\nif (fn().trim().toUpperCase() !== 'ROLLBACK;') throw new Error('ROLLBACK; qaytarilmadi');"
     },
     {
       id: 4,
-      title: "Pul o'tkazmasi 1-qadam",
-      instruction: "`withdrawMoney` funksiyasini yozing. U `accountId` va `amount` qabul qiladi. `accounts` jadvalida shu id dagi hisob balansidan (balance) berilgan miqdorni ayirib yozuvchi (UPDATE) so'rovni qaytarsin.",
+      title: "Pul yechish (UPDATE)",
+      instruction: "`withdrawMoney` funksiyasini yozing. U `accountId` va `amount` qabul qiladi. `accounts` jadvalidan (balance) berilgan miqdorni ayirib yozuvchi (UPDATE) so'rovni qaytarsin.",
       startingCode: "function withdrawMoney(accountId, amount) {\n  \n}",
       hint: "UPDATE accounts SET balance = balance - amount WHERE id = accountId;",
       solution: "function withdrawMoney(accountId, amount) {\n  return `UPDATE accounts SET balance = balance - ${amount} WHERE id = ${accountId};`;\n}",
@@ -97,57 +97,57 @@ graph TD
     },
     {
       id: 5,
-      title: "Pul o'tkazmasi 2-qadam",
-      instruction: "`depositMoney` funksiyasini yozing. U `accountId` va `amount` qabul qiladi. Hisob raqamiga (balance) pul qoshuvchi UPDATE so'rovni qaytarsin.",
+      title: "Pul tushirish (UPDATE)",
+      instruction: "`depositMoney` funksiyasini yozing. U `accountId` va `amount` qabul qiladi. Hisobga (balance) pul qoshuvchi UPDATE so'rovni qaytarsin.",
       startingCode: "function depositMoney(accountId, amount) {\n  \n}",
       hint: "UPDATE accounts SET balance = balance + amount WHERE id = accountId;",
       solution: "function depositMoney(accountId, amount) {\n  return `UPDATE accounts SET balance = balance + ${amount} WHERE id = ${accountId};`;\n}",
-      test: "const fn = new Function(code + '; return depositMoney;')();\nif (!fn(2, 50).toUpperCase().includes('BALANCE + 50')) throw new Error('Balansga qo\\'shish xato');"
+      test: "const fn = new Function(code + '; return depositMoney;')();\nif (!fn(2, 50).toUpperCase().includes('BALANCE + 50')) throw new Error('Balansga qoshish xato');"
     },
     {
       id: 6,
-      title: "To'liq tranzaksiya bloki",
-      instruction: "`transferMoneyBlock` funksiyasini yozing (faqat sintaktik simulyatsiya). U BEGIN, ikkita UPDATE (1 id dan 100 ayirish, 2 id ga 100 qo'shish) va COMMIT so'rovlarini qatorma-qator qilib bitta stringda qaytarsin.",
-      startingCode: "function transferMoneyBlock() {\n  // har bir buyruq orasida \\n ishlating\n}",
-      hint: "BEGIN;\\nUPDATE...\\nUPDATE...\\nCOMMIT; formatida",
-      solution: "function transferMoneyBlock() {\n  return `BEGIN;\\nUPDATE accounts SET balance = balance - 100 WHERE id = 1;\\nUPDATE accounts SET balance = balance + 100 WHERE id = 2;\\nCOMMIT;`;\n}",
-      test: "const fn = new Function(code + '; return transferMoneyBlock;')();\nconst res = fn().toUpperCase();\nif (!res.startsWith('BEGIN;') || !res.endsWith('COMMIT;')) throw new Error('BEGIN va COMMIT formatiga e\\'tibor bering');"
-    },
-    {
-      id: 7,
       title: "Savepoint yaratish",
-      instruction: "Tranzaksiya davomida qaytish nuqtasini belgilash uchun SAVEPOINT ishlatiladi. Argument sifatida savepoint nomini qabul qilib, `SAVEPOINT name;` qaytaruvchi `createSavepoint` funksiyasini yozing.",
-      startingCode: "function createSavepoint(pointName) {\n  \n}",
-      hint: "SAVEPOINT pointName;",
-      solution: "function createSavepoint(pointName) {\n  return `SAVEPOINT ${pointName};`;\n}",
+      instruction: "Tranzaksiya davomida qaytish nuqtasini belgilash uchun `createSavepoint` funksiyasini yozing. U parametr sifatida `name` qabul qiladi.",
+      startingCode: "function createSavepoint(name) {\n  \n}",
+      hint: "SAVEPOINT name;",
+      solution: "function createSavepoint(name) {\n  return `SAVEPOINT ${name};`;\n}",
       test: "const fn = new Function(code + '; return createSavepoint;')();\nif (fn('sp1').toUpperCase() !== 'SAVEPOINT SP1;') throw new Error('SAVEPOINT xato');"
     },
     {
-      id: 8,
+      id: 7,
       title: "Savepointga qaytish",
-      instruction: "Muayyan savepointga qaytish buyrug'ini (ROLLBACK TO) qaytaruvchi `rollbackTo` funksiyasini yozing. U `pointName` argumentini oladi.",
-      startingCode: "function rollbackTo(pointName) {\n  \n}",
-      hint: "ROLLBACK TO pointName;",
-      solution: "function rollbackTo(pointName) {\n  return `ROLLBACK TO ${pointName};`;\n}",
+      instruction: "Muayyan savepointga qaytish buyrug'ini qaytaruvchi `rollbackTo` funksiyasini yozing. U `name` argumentini oladi.",
+      startingCode: "function rollbackTo(name) {\n  \n}",
+      hint: "ROLLBACK TO name;",
+      solution: "function rollbackTo(name) {\n  return `ROLLBACK TO ${name};`;\n}",
       test: "const fn = new Function(code + '; return rollbackTo;')();\nif (fn('sp1').toUpperCase() !== 'ROLLBACK TO SP1;') throw new Error('ROLLBACK TO xato');"
     },
     {
-      id: 9,
-      title: "Isolation Level - Read Committed",
-      instruction: "Tranzaksiya izolyatsiya darajasini 'READ COMMITTED' qilib o'zgartiruvchi `setReadCommitted` funksiyasini yozing. (PostgreSQL standarti bo'yicha: `SET TRANSACTION ISOLATION LEVEL READ COMMITTED;`)",
+      id: 8,
+      title: "Read Committed darajasi",
+      instruction: "Tranzaksiya izolyatsiya darajasini 'READ COMMITTED' qilib o'zgartiruvchi `setReadCommitted` funksiyasini yozing.",
       startingCode: "function setReadCommitted() {\n  \n}",
       hint: "SET TRANSACTION ISOLATION LEVEL READ COMMITTED;",
       solution: "function setReadCommitted() {\n  return 'SET TRANSACTION ISOLATION LEVEL READ COMMITTED;';\n}",
       test: "const fn = new Function(code + '; return setReadCommitted;')();\nif (!fn().toUpperCase().includes('READ COMMITTED')) throw new Error('Xato isolation level');"
     },
     {
-      id: 10,
-      title: "Isolation Level - Serializable",
-      instruction: "Eng qat'iy izolyatsiya darajasiga sozlash so'rovini qaytaruvchi `setSerializable` funksiyasini yozing. `SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;`",
+      id: 9,
+      title: "Serializable darajasi",
+      instruction: "Eng qat'iy izolyatsiya darajasiga sozlash so'rovini qaytaruvchi `setSerializable` funksiyasini yozing.",
       startingCode: "function setSerializable() {\n  \n}",
-      hint: "SERIALIZABLE qilib sozlang.",
+      hint: "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;",
       solution: "function setSerializable() {\n  return 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;';\n}",
       test: "const fn = new Function(code + '; return setSerializable;')();\nif (!fn().toUpperCase().includes('SERIALIZABLE')) throw new Error('Xato so\\'rov');"
+    },
+    {
+      id: 10,
+      title: "Qatorni qulflash (Row-level lock)",
+      instruction: "`lockAccount` funksiyasini yozing. U `accountId` oladi va `SELECT * FROM accounts WHERE id = accountId FOR UPDATE;` qaytaradi.",
+      startingCode: "function lockAccount(accountId) {\n  \n}",
+      hint: "FOR UPDATE operatoridan foydalaning.",
+      solution: "function lockAccount(accountId) {\n  return `SELECT * FROM accounts WHERE id = ${accountId} FOR UPDATE;`;\n}",
+      test: "const fn = new Function(code + '; return lockAccount;')();\nif (!fn(5).toUpperCase().includes('FOR UPDATE')) throw new Error('FOR UPDATE yetishmayapti');"
     }
   ],
   quizzes: [

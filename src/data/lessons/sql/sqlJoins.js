@@ -3,46 +3,63 @@ export const sqlJoins = {
   title: "SQL Joins (Jadvallarni Birlashtirish)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish
-**JOIN** — bu ikki yoki undan ortiq jadvallarni (table) ulardagi umumiy ustun (odatda ID) orqali birlashtirish amali.
-Odatda quyidagi turlari mavjud:
-1. **INNER JOIN**: Faqat ikkala jadvalda ham bor (mos keladigan) ma'lumotlarni oladi.
-2. **LEFT (OUTER) JOIN**: Chap jadvaldagi barcha ma'lumotlarni va o'ng jadvaldagi mos keladiganlarini oladi.
-3. **RIGHT (OUTER) JOIN**: O'ng jadvaldagi barchasini, chapdagi mos keladiganini oladi.
-4. **FULL (OUTER) JOIN**: Ikkala jadvaldagi barcha ma'lumotlarni birlashtirib oladi.
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+**JOIN** - bu ma'lumotlar bazasidagi ikki yoki undan ortiq jadvallarni bir-biriga bog'lash usuli. 
+Tasavvur qiling, sizda ikkita ro'yxat bor:
+1. **O'quvchilar ro'yxati** (Ismi, ID si)
+2. **Kutubxonadan olingan kitoblar ro'yxati** (Kitob nomi, O'quvchi ID si)
 
-❌ **YOMON**: Eski usul (Implicit Join) va xotirani to'ldirish (N+1 muammosi)
-\`\`\`javascript
-// 1. Eski usul bilan qo'shish (Xatoga moyil)
-const badQuery = "SELECT * FROM users, orders WHERE users.id = orders.user_id";
+Siz qaysi o'quvchi qanday kitob olganini bilmoqchisiz. Buning uchun siz ikkala ro'yxatni **O'quvchi ID** si orqali yonma-yon qilib tikib chiqasiz. SQL dagi JOIN xuddi shu "tikish" amaliyotidir!
 
-// 2. N+1 muammosi (Dasturlash tilida tsikl ichida SQL so'rov berish)
-const users = await db.query("SELECT * FROM users");
+Turlari:
+- **INNER JOIN**: Faqat ikkala ro'yxatda ham borlarni (ham o'quvchisi bor, ham kitobi borlarni) olib beradi.
+- **LEFT JOIN**: Chapdagi ro'yxatdan hamma o'quvchini oladi, kitob olgan bo'lsa kitobini yozadi, olmagan bo'lsa kitob o'rniga bo'sh (NULL) qoldiradi.
+- **RIGHT JOIN**: O'ngdagi ro'yxatdan hamma kitoblarni oladi, o'quvchisi topilsa yozadi, topilmasa NULL.
+- **FULL JOIN**: Ikkala ro'yxatdagi hamma narsani birlashtirib ko'rsatadi.
+
+## 2. 🧠 Deep Dive (Under the hood)
+
+Keling, JOIN qanday ishlashini ma'lumotlar bazasi dvigateli (Database Engine) darajasida ko'rib chiqamiz. Jadvallarni birlashtirish xotirada qanday amalga oshadi?
+Asosan 3 xil algoritm mavjud:
+
+1. **Nested Loop Join**
+Eng sodda algoritm. Dvigatel birinchi jadvalning har bir qatori uchun ikkinchi jadvalni to'liq aylanib chiqib mosini qidiradi.
+Xuddi ikkita \\\`for\\\` tsikli ichma-ich ishlaganidek:
+\\\`\\\`\\\`javascript
 for (let user of users) {
-  const orders = await db.query("SELECT * FROM orders WHERE user_id = " + user.id); // 100 ta user = 101 ta so'rov
+  for (let order of orders) {
+    if (user.id === order.user_id) result.push({user, order});
+  }
 }
-\`\`\`
+\\\`\\\`\\\`
+Agar jadvallar kichik bo'lsa, bu tez ishlaydi. Ammo katta jadvallarda (O(N*M) vaqt ketadi) juda sekinlashib ketadi.
 
-✅ **YAXSHI**: Aniq ochiq (Explicit) JOIN ishlatish:
-\`\`\`javascript
-// Bitta so'rov orqali hamma kerakli ma'lumotni olish (Juda tez)
-const goodQuery = "SELECT u.name, o.amount FROM users u INNER JOIN orders o ON u.id = o.user_id";
-\`\`\`
+2. **Hash Join**
+Agar birlashtirish sharti tenglik ( \\\`=\\\` ) bo'lsa, dvigatel **Hash Join** ishlatadi. Kichikroq jadvalni olib, xotirada (RAM) Hash Table (Obyekt yoki Map kabi) yaratadi. Keyin katta jadvalni bir marta aylanib, xotiradagi Hash Table dan O(1) vaqtda qidiradi. Bu juda tez ishlaydi! Lekin katta xotira talab qiladi.
 
-## 🎤 Intervyu Savollari
-1. **\`INNER JOIN\` va \`LEFT JOIN\` farqi nimada?**
-   - \`INNER JOIN\` faqat ikkala jadvalda mos tushgan qatorlarni qaytaradi. \`LEFT JOIN\` asosiy (chap) jadvaldagi hamma qatorlarni qaytaradi, o'ng jadvalda topilmasa, o'rniga \`NULL\` beradi.
-2. **Cartesian Product (CROSS JOIN) nima?**
-   - Agar jadvallarni birlashtirish sharti (ON) berilmasa, 1-jadvaldagi har bir qator 2-jadvaldagi har bir qatorga ko'paytirilib ketadi (masalan, 10 x 10 = 100 qator).
+3. **Merge Join (Sort-Merge Join)**
+Agar ikkala jadval ham JOIN qilinayotgan ustun bo'yicha oldindan tartiblangan (Indexed/Sorted) bo'lsa, Merge Join ishga tushadi. Dvigatel ikkala jadval ustidan bir vaqtda qadam tashlab (two pointers usuli) moslarni topib ketadi. Xotira ko'p yemaydi va juda tez (O(N+M) vaqtda) ishlaydi.
 
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
-graph LR;
-    Users[Users jadvali] -- "users.id = orders.user_id" --> Orders[Orders jadvali];
-    style Users fill:#f9f,stroke:#333,stroke-width:2px
-    style Orders fill:#bbf,stroke:#333,stroke-width:2px
-\`\`\`
+## 3. ⚠️ Edge Cases va Senior Interview Savollari
+
+**Savol 1: N+1 problemi nima va uni JOIN yordamida qanday hal qilish mumkin?**
+*Javob*: Dasturlash tilida (masalan, ORM orqali) 1 ta so'rov bilan 100 ta foydalanuvchini olib kelib, keyin ularning har biri uchun alohida so'rov jo'natib (yana 100 ta so'rov) buyurtmalarni olish N+1 xatosi deyiladi. Buni JOIN orqali bitta SQL so'rovda hal qilish (Eager Loading) ma'lumotlar bazasiga tushadigan yukni keskin kamaytiradi.
+
+**Savol 2: Ikki jadvalda ham bir xil nomli ustunlar bo'lsa, qanday yo'l tutiladi?**
+*Javob*: Bunday holatda noaniqlik (Ambiguous column name) xatosi yuz beradi. Buni oldini olish uchun jadvallarga Alias (taxallus) berish va ustunlarni \\\`table_alias.column_name\\\` shaklida aniq ko'rsatish shart.
+
+**Savol 3: CROSS JOIN nima va qachon ishlatiladi?**
+*Javob*: CROSS JOIN - bu jadvallarning Dekart ko'paytmasi. 1-jadvaldagi har bir qator 2-jadvaldagi har bir qator bilan birlashadi. Agar ON sharti berilmasa shunday yuz beradi. Masalan, 3 xil o'lcham va 4 xil rang jadvallarini CROSS JOIN qilsak, barcha 12 xil kombinatsiyani hosil qilib beradi.
+
+## 📊 Vizual Tuzilma
+\\\`\\\`\\\`mermaid
+graph LR
+    A[Users Jadvali] -->|ON users.id = orders.user_id| B[Orders Jadvali]
+    C[Hash Table in RAM] -.->|Tez qidiruv| B
+    style A fill:#4caf50,stroke:#388e3c,stroke-width:2px,color:#fff
+    style B fill:#2196f3,stroke:#1976d2,stroke-width:2px,color:#fff
+    style C fill:#ff9800,stroke:#f57c00,stroke-width:2px,color:#fff
+\\\`\\\`\\\`
 `,
   exercises: [
     {

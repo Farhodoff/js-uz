@@ -2,60 +2,68 @@ export const sqlIndexes = {
   id: "sql_indexes",
   title: "SQL Indexes (Indekslar)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
 
-**Index (Indeks)** – ma'lumotlar bazasida (MB) qidiruvni tezlashtirish uchun foydalaniladigan maxsus ma'lumotlar tuzilmasi. Buni xuddi kitobning mundarijasi yoki indeks varag'iga o'xshatish mumkin. Agar kitobda indeks bo'lmasa, kerakli ma'lumotni topish uchun har bir sahifani (Table Scan) o'qib chiqishga to'g'ri keladi. Indeks yordamida esa kerakli sahifani to'g'ridan-to'g'ri (Index Seek) ochishingiz mumkin.
+Tasavvur qiling, siz 10,000 betlik ulkan ensiklopediyadan "Dasturlash" so'zini qidiryapsiz. Agar kitobda mundarija yoki indeks (ko'rsatkich) bo'lmasa, siz 1-betdan boshlab to 10,000-betgacha har bir sahifani birma-bir o'qib chiqishga majbur bo'lasiz. Bu ma'lumotlar bazasida **Full Table Scan** (Jadvalni to'liq skanerlash) deb ataladi va u sekin ishlaydi.
 
-Indekslarning turlari:
-1. **Clustered Index**: Jadvaldagi ma'lumotlarni jismonan tartiblaydi. Har bir jadvalda faqat bitta Clustered Index bo'lishi mumkin (odatda Primary Key avtomatik Clustered Index bo'ladi).
-2. **Non-Clustered Index**: Ma'lumotlarni jismonan o'zgartirmaydi, balki ko'rsatkichlar (pointers) ro'yxatini yaratadi. Bitta jadvalda bir nechta Non-Clustered Index bo'lishi mumkin.
-3. **Unique Index**: Ustundagi qiymatlarning takrorlanmasligini ta'minlaydi.
-4. **Composite Index**: Bir nechta ustunlarni birlashtirgan holda yaratiladigan indeks.
+Agar kitobning oxirida indeks bo'lsa (Masalan: D harfi -> Dasturlash -> 542-bet), siz to'g'ridan-to'g'ri 542-betni ochasiz va kerakli ma'lumotni darhol topasiz. Ma'lumotlar bazasidagi **Index** xuddi shunday ishlaydi — u qidiruvni keskin tezlashtiruvchi maxsus ma'lumotlar tuzilmasidir (**Index Scan / Index Seek**).
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+## 2. 🔬 Deep Dive (Under the hood, Turlari)
 
-**❌ YOMON (Juda ko'p indeks yaratish):**
-\`\`\`sql
--- Har bir ustunga alohida indeks yaratish yomon amaliyot.
-CREATE INDEX idx_first_name ON users(first_name);
-CREATE INDEX idx_last_name ON users(last_name);
-CREATE INDEX idx_age ON users(age);
-CREATE INDEX idx_status ON users(status);
--- Bu ma'lumot yozish (INSERT/UPDATE/DELETE) jarayonini juda sekinlashtiradi.
-\`\`\`
+Indekslar qanday ishlaydi va ularning qanday turlari mavjud?
 
-**✅ YAXSHI (Faqat kerakli va ko'p qidiriladigan ustunlarga indeks berish):**
-\`\`\`sql
--- Qidiruv ko'p ishlatiladigan email ustuniga indeks yaratish
-CREATE UNIQUE INDEX idx_users_email ON users(email);
+### B-Tree (Balanced Tree)
+Bu eng keng tarqalgan indeks turi hisoblanadi. Odatda \\\`CREATE INDEX\\\` buyrug'i berilganda sukut bo'yicha B-Tree yaratiladi. B-Tree ma'lumotlarni daraxtsimon ierarxiyada, muvozanatlashgan holatda saqlaydi. 
+- **Qanday ishlaydi:** Qidiruv vaqti $O(\\log N)$ ga teng. Tenglik (\\\`=\\\`) va oraliq (\\\`<\\\`, \\\`>\\\`, \\\`BETWEEN\\\`) qidiruvlari uchun juda samarali.
 
--- Composite Index (Birgalikda qidiriladigan ustunlar uchun)
-CREATE INDEX idx_users_name ON users(last_name, first_name);
-\`\`\`
+### Hash Index
+Hash indekslar faqat tenglik (\\\`=\\\`) sharti bilan qidirilganda ishlaydi. 
+- **Qachon ishlatish kerak:** Oraliq qidiruvlari kerak bo'lmaganda va ma'lumotlar ustuni faqat aniq tenglikka tekshirilganda. 
+- PostgreSQL misoli:
+\\\`\\\`\\\`sql
+CREATE INDEX idx_name ON table USING hash (column);
+\\\`\\\`\\\`
 
-## 🎤 Intervyu Savollari
+### BRIN (Block Range INdex)
+Ayniqsa juda katta (Terabaytlab) jadvallar uchun mos. U har bir ma'lumotlar blokining minimum va maksimum qiymatlarini o'zida saqlaydi.
+- **Qachon ishlatish kerak:** Katta hajmdagi va vaqt o'tishi bilan o'sib boruvchi (masalan, logs, sensor data) jadvallarda xotirani tejash maqsadida.
 
-1. **Clustered va Non-Clustered Index farqi nimada?**
-   - *Javob*: Clustered Index ma'lumotlarni diskda jismoniy tartiblaydi (shuning uchun faqat 1 ta bo'ladi), Non-Clustered Index esa xotirada mantiqiy ko'rsatkichlarni (pointer) yaratadi.
-2. **Indekslar qachon yomon ishlashi yoki zarar keltirishi mumkin?**
-   - *Javob*: Tez-tez yangilanib turuvchi (INSERT, UPDATE, DELETE) jadvallarda indekslar yozish tezligini tushirib yuboradi. Shuningdek, kichik jadvallarda (masalan 10-50 qator) indeks ishlatish ortiqcha resurs sarfidir.
-3. **B-Tree (Balanced Tree) indeksi qanday ishlaydi?**
-   - *Javob*: Ma'lumotlar tartiblangan ierarxik daraxt ko'rinishida saqlanadi, bu qidiruv vaqtini $O(N)$ dan $O(\\log N)$ ga tushiradi.
-4. **Composite Index nima va \`Leftmost Prefix Rule\` nimani anglatadi?**
-   - *Javob*: Bir nechta ustunlardan iborat indeks. \`Leftmost Prefix\` qoidasiga ko'ra, qidiruv Composite Indeksning faqat chapdagi (birinchi) ustunlaridan boshlab ishlatilgandagina to'liq kuch bilan ishlaydi.
+### Index Scan vs Bitmap Heap Scan
+- **Index Scan:** DB to'g'ridan-to'g'ri indeksni o'qiydi va u yerdagi ko'rsatkichlar yordamida diskdan faqat kerakli qatorlarni oladi. Agar indeks kerakli barcha ustunlarni o'zida saqlasa (**Covering Index**), faqat indeksning o'zi o'qiladi (**Index Only Scan**).
+- **Bitmap Heap Scan:** Agar so'rov natijasi ko'p qatorlarni qaytarishi kerak bo'lsa, avval indeksdan barcha mos keluvchi qatorlarning manzillari yig'iladi (Bitmap Index Scan) va keyin ular orqali xotira bloklari birgalikda optimal tartibda diskdan o'qiladi. Bu I/O samaradorligini oshiradi.
 
-## 🛠️ Amaliy Topshiriqlar
+## 3. ⚠️ Edge Cases va Senior Interview Savollari
 
-Amaliy topshiriqlarda SQL so'rovini qaytaruvchi funksiyalarni yozishingiz talab etiladi.
+**Indeks qachon ishlamaydi? (Edge Cases)**
+1. **Funksiyalar ishlatilganda:** Agar siz \\\`WHERE UPPER(email) = 'A@B.COM'\\\` deb yozsangiz, oddiy indeks ishlamaydi. Buning uchun **Expression Index** kerak:
+\\\`\\\`\\\`sql
+CREATE INDEX idx_email_upper ON users(UPPER(email));
+\\\`\\\`\\\`
+2. **LIKE '%word%'**: Agar izlash sharti \\\`%\\\` bilan boshlansa, B-Tree indeksi ishlamaydi va DB Full Table Scan qiladi. Lekin \\\`LIKE 'word%'\\\` indeksdan foydalanadi.
+3. **Data Type Mismatch:** Ustun tipi string bo'lsa-yu, siz unga son (\\\`123\\\`) bilan murojaat qilsangiz, indeks e'tiborsiz qoldirilishi mumkin.
+4. **Jadval juda kichik bo'lsa:** DB rejalashtiruvchisi kichik jadvallar uchun indeks o'rniga Full Table Scan ishlatishni afzal ko'radi.
 
-\`\`\`mermaid
+**Senior Interview Savollari:**
+1. **Index qachon salbiy ta'sir ko'rsatadi?**
+   - *Javob:* Har bir \\\`INSERT\\\`, \\\`UPDATE\\\`, va \\\`DELETE\\\` amali vaqtida indekslar ham yangilanishi kerak. Juda ko'p indekslar yozish jarayonini sekinlashtiradi va diskda ortiqcha joy egallaydi.
+2. **Clustered va Non-Clustered Index farqi nimada?**
+   - *Javob:* Clustered Index jadvaldagi yozuvlarni jismonan tartiblaydi (faqat bitta bo'ladi). Non-Clustered Index esa mantiqiy ko'rsatkichlarni alohida tuzilmada saqlaydi.
+3. **Composite Index'dagi "Leftmost Prefix Rule" nima?**
+   - *Javob:* Agar \\\`(A, B, C)\\\` ustunlariga Composite Index yaratilgan bo'lsa, u faqat \\\`A\\\`, \\\`A, B\\\`, yoki \\\`A, B, C\\\` ustunlari bilan izlaganda to'liq ishlaydi. Faqat \\\`B\\\` yoki \\\`C\\\` bo'yicha qidirilsa, indeks umuman ishlamaydi.
+
+## 4. 📊 Arxitektura va Ishlash Sxemasi
+
+\\\`\\\`\\\`mermaid
 graph TD
-    A[Foydalanuvchi So'rovi] --> B{Indeks bormi?}
-    B -- Yo'q --> C[Full Table Scan <br/> Sekin qidiruv]
-    B -- Ha --> D[Index Seek <br/> Tezkor qidiruv]
-    D --> E[Ma'lumotlar qaytariladi]
-    C --> E
-\`\`\`
+    A[Foydalanuvchi Sorovi] --> B{Indeks bormi?}
+    B -- Yoq --> C[Full Table Scan]
+    B -- Ha --> D{Qidiruv sharti mosmi?}
+    D -- Yoq --> C
+    D -- Ha --> E[Index Scan / Bitmap Scan]
+    E --> F[Diskdan qatorlarni olish]
+    C --> G[Natijani qaytarish]
+    F --> G
+\\\`\\\`\\\`
 `,
   exercises: [
     {
