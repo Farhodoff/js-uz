@@ -1,228 +1,179 @@
-export default {
+export const movieSearchApi = {
   id: "movie-search-api",
   title: "API orqali Kinolarni Qidirish Loyihasi",
   theory: `
-API (Application Programming Interface) — bu dasturlarning o'zaro ma'lumot almashishini va hamkorlik qilishini ta'minlovchi interfeysdir. Zamonaviy veb-dasturlashda API asosan frontend (mijoz) va backend (server) o'rtasida ko'prik vazifasini bajaradi.
+API (Application Programming Interface) — bu xuddi restorandagi ofitsiantga o'xshaydi.
 
-### Frontend va Backend aloqasi (Mijoz-Server tsikli)
-Veb-ilovalar asosan Mijoz-Server modelida ishlaydi:
-1. **Mijoz (Client / Brauzer)**: Foydalanuvchi ma'lumot kiritadi va tugmani bosganda serverga so'rov yuboradi.
-2. **Server**: So'rovni qabul qiladi, ma'lumotlar bazasidan kerakli ma'lumotni oladi va mijozga qaytaradi.
+### Part 1: Beginner Analogy
+Tasavvur qiling, siz restorandasiz (Mijoz / Brauzer). Siz taomnoma asosida ovqat buyurtma qilasiz (So'rov / Request). Oshxonada oshpazlar (Server va Ma'lumotlar bazasi) ovqatni tayyorlashadi. Lekin siz o'zingiz oshxonaga kirib ovqat pishirolmaysiz. Sizga ofitsiant (API) yordam beradi. Siz ofitsiantga buyurtmani aytasiz, u oshxonaga olib boradi, tayyor ovqatni (Javob / Response) sizga keltirib beradi. Film qidirish APIsi ham xuddi shunday: siz film nomini berasiz, API uni serverdan qidirib, topilgan ma'lumotlarni sizning brauzeringizga olib keladi.
 
-Quyidagi ketma-ketlik diagrammasida mijoz va server o'rtasidagi so'rov va javob aylanishi tasvirlangan:
+### Part 2: Deep Dive (Under the Hood)
+Katta hajmdagi ma'lumotlar bazasida (masalan, IMDB) qidiruv jarayoni qanday kechadi?
+- **Inverted Index**: Qidiruv tez bo'lishi uchun, server har bir so'z qaysi filmlarda uchrashini ko'rsatadigan "Inverted Index" (Teskari indeks) tuzib chiqadi. Bu xuddi kitob oxiridagi indeksga o'xshaydi. "Matrix" so'zi so'ralsa, butun bazani qidirish o'rniga, indeksdan to'g'ridan-to'g'ri o'sha kinolar ro'yxati olinadi.
+- **Search Algorithms**: Kiritilgan so'zda xatolar bo'lsa (masalan, "matirx"), Levenshtein distance kabi algoritmlar "Fuzzy Search" orqali eng yaqin to'g'ri so'zni topadi.
+- **Redis Caching**: Tez-tez so'raladigan filmlar (masalan, "Avatar") har safar bazadan qidirilmasligi uchun xotirada (Redis) vaqtinchalik saqlanadi. Bu javob vaqtini millisoniyalargacha qisqartiradi.
+- **Pagination strategies**: Agar so'rov natijasida 1000 ta film topilsa, ularning barchasi bir vaqtda qaytarilmaydi. Tarmoqni ortiqcha yuklamaslik uchun limit (offset/limit yoki cursor-based pagination) qo'llaniladi.
 
+### Part 3: Edge Cases and Senior Interview Questions
+- **Measuring API latency**: API qanchalik tez ishlashini o'lchash kerak. Buni "Time to First Byte" (TTFB) kabi metrikalar orqali o'lchaymiz.
+- **Optimizing search queries**: Foydalanuvchi har bir harfni kiritganda API ga so'rov yuborilmasligi uchun "Debouncing" va "Throttling" usullaridan foydalaniladi (masalan, so'nggi harf kiritilgandan 300ms o'tgach so'rov ketadi).
+- **Rate Limiting (429 Too Many Requests)**: Bitta IP manzildan qisqa vaqt ichida juda ko'p so'rov yuborilsa, API server himoya tizimini ishga tushirib, 429 status kodini qaytaradi.
+
+### Tizim Arxitekturasi
 \`\`\`mermaid
 sequenceDiagram
-    Mijoz->>Server: HTTP request (API so'rov: GET /movie?title=Inception)
-    Note right of Server: Server ma'lumotlar bazasini qidiradi
-    Server-->>Mijoz: HTTP response (API javob: 200 OK + JSON film ma'lumoti)
-\`\`\`
-
-### HTTP So'rovlari va Javoblari (HTTP Requests & Responses)
-HTTP protokoli orqali mijoz va server muloqot qiladi:
-- **HTTP request (So'rov)**: O'z ichiga so'rov metodi (GET, POST va boshqalar), URL manzili, HTTP Headers (sarlavhalar) va so'rov tanasini (Body) oladi.
-- **HTTP response (Javob)**: O'z ichiga javob status kodi (Status Code), sarlavhalar va javob tanasini (Body, odatda JSON formatida) oladi.
-
-### HTTP Sarlavhalari (HTTP Headers)
-Sarlavhalar so'rov yoki javob haqida qo'shimcha ma'lumot beradi. Masalan:
-- \`Content-Type: application/json\` - yuborilayotgan ma'lumot formati JSON ekanligini bildiradi.
-- \`Authorization: Bearer <token>\` - foydalanuvchining shaxsini tasdiqlash uchun xizmat qiladi.
-
-### HTTP Status kodlari (HTTP Status Codes)
-Serverdan qaytadigan javob holatini bildiradi:
-- \`200 OK\` — so'rov muvaffaqiyatli bajarildi.
-- \`201 Created\` — yangi resurs muvaffaqiyatli yaratildi.
-- \`400 Bad Request\` — mijoz tomonidan noto'g'ri so'rov yuborildi.
-- \`401 Unauthorized\` — foydalanuvchi tizimga kirmagan yoki ruxsatsiz.
-- \`404 Not Found\` — so'ralgan ma'lumot topilmadi.
-- \`500 Internal Server Error\` — serverda ichki kutilmagan xato yuz berdi.
-
-### Fetch API
-Brauzerda asinxron HTTP so'rovlarini yuborish uchun standart \`fetch()\` funksiyasidan foydalaniladi. U Promise qaytaradi.
-Misol:
-\`\`\`javascript
-fetch("https://api.example.com/movies?title=Inception")
-  .then(response => {
-    if (!response.ok) {
-      throw new Error("Tarmoq xatosi: " + response.status);
-    }
-    return response.json();
-  })
-  .then(data => console.log(data))
-  .catch(error => console.error("Xatolik:", error));
-\`\`\`
-
-### async/await va try/catch
-Asinxron so'rovlarni yanada tushunarli va sinxron kod kabi yozish uchun \`async\` va \`await\` kalit so'zlaridan foydalanamiz. Xatoliklarni qayta ishlash uchun esa \`try/catch\` ishlatiladi.
-Misol:
-\`\`\`javascript
-async function getMovie(title) {
-  try {
-    const response = await fetch(\`https://api.example.com/movies?title=\${encodeURIComponent(title)}\`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    if (!response.ok) {
-      throw new Error(\`Xatolik yuz berdi, status kodi: \${response.status}\`);
-    }
-    const movie = await response.json();
-    return movie;
-  } catch (error) {
-    console.error("Film topishda xatolik:", error.message);
-    throw error;
-  }
-}
+    participant C as Brauzer (Mijoz)
+    participant A as API Gateway
+    participant R as Redis Cache
+    participant DB as Database
+    
+    C->>A: GET /search?q=Matrix
+    A->>R: Keshda bormi?
+    alt Keshda bor
+        R-->>A: Film ma'lumotlari
+    else Keshda yo'q
+        R-->>A: Yo'q
+        A->>DB: Inverted Index bo'yicha qidirish
+        DB-->>A: Film ma'lumotlari
+        A->>R: Keshga saqlash
+    end
+    A-->>C: 200 OK (JSON)
 \`\`\`
 `,
   exercises: `
-// Film ma'lumotlar bazasi (mock database)
-const movieDatabase = {
-  "inception": {
-    "Title": "Inception",
-    "Year": "2010",
-    "Director": "Christopher Nolan",
-    "imdbRating": "8.8",
-    "Plot": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.O.",
-    "Response": "True"
-  },
-  "avatar": {
-    "Title": "Avatar",
-    "Year": "2009",
-    "Director": "James Cameron",
-    "imdbRating": "7.9",
-    "Plot": "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
-    "Response": "True"
-  },
-  "interstellar": {
-    "Title": "Interstellar",
-    "Year": "2014",
-    "Director": "Christopher Nolan",
-    "imdbRating": "8.7",
-    "Plot": "When Earth becomes uninhabitable, a team of explorers travels through a wormhole in space in an attempt to ensure humanity's survival.",
-    "Response": "True"
-  },
-  "the matrix": {
-    "Title": "The Matrix",
-    "Year": "1999",
-    "Director": "Lana Wachowski, Lilly Wachowski",
-    "imdbRating": "8.7",
-    "Plot": "When a beautiful stranger leads computer hacker Neo to a forbidding underworld, he discovers the shocking truth--the life he knows is the elaborate deception of an evil cyber-intelligence.",
-    "Response": "True"
-  }
-};
-
-/**
- * mockFetchMovie - Serverga so'rov yuborishni simulyatsiya qiluvchi asinxron funksiya.
- * Latency (kechikish) vaqtini setTimeout yordamida simulyatsiya qiladi.
- * @param {string} title - Qidirilayotgan film nomi
- * @returns {Promise<Object>} Film ma'lumotlari
- */
+// Exercise 1: Asosiy mockFetchMovie funksiyasi
 function mockFetchMovie(title) {
   return new Promise((resolve, reject) => {
-    // 1. Film nomi kiritilgani va string ekanligini tekshiramiz
-    if (typeof title !== 'string') {
-      return reject(new Error("Film nomi kiritilmadi yoki noto'g'ri."));
-    }
-
-    // 2. Bo'shliqlarni olib tashlaymiz
-    const cleanedTitle = title.trim().toLowerCase();
-
-    if (!cleanedTitle) {
-      return reject(new Error("Film nomi bo'sh bo'lishi mumkin emas."));
-    }
-
-    // 3. 200ms dan 3000ms gacha bo'lgan tasodifiy kechikish vaqti
-    const delay = Math.floor(Math.random() * (3000 - 200 + 1)) + 200;
-
-    // 4. Server kechikishini simulyatsiya qilamiz
-    setTimeout(() => {
-      const movie = movieDatabase[cleanedTitle];
-      if (movie) {
-        // Film topilsa, Promise'ni resolve (muvaffaqiyatli) qilamiz
-        resolve(movie);
-      } else {
-        // Topilmasa, xatolik bilan reject (rad) qilamiz
-        reject(new Error("Film topilmadi: " + title));
-      }
-    }, delay);
+    setTimeout(() => resolve({ title, year: 2020 }), 500);
   });
 }
 
-// ==========================================
-// MOCK FETCH MOVIE FUNKSIYASINI async/await ORQALI CHAQIRISH TUSHUNTIRILISHI:
-//
-// mockFetchMovie asinxron funksiya (Promise qaytaradi) bo'lganligi sababli, biz uni
-// async/await yordamida quyidagicha chaqirishimiz mumkin:
-//
-// async function searchMovieDemo(title) {
-//   try {
-//     console.log("Qidirilmoqda...");
-//     // mockFetchMovie funksiyasining yakunlanishini kutamiz (await)
-//     const movie = await mockFetchMovie(title);
-//     console.log("Film muvaffaqiyatli topildi!");
-//     console.log("Nomi:", movie.Title);
-//     console.log("Rejissori:", movie.Director);
-//     console.log("Reytingi:", movie.imdbRating);
-//     return movie;
-//   } catch (error) {
-//     // Agar film topilmasa yoki boshqa xato bo'lsa, catch bloki ishga tushadi
-//     console.error("Xatolik yuz berdi:", error.message);
-//   }
-// }
-// ==========================================
+// Exercise 2: Debounce funksiyasini yozing
+function debounce(fn, delay) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
+// Exercise 3: API so'rovini async/await bilan yozing
+async function getMovieInfo(title) {
+  try {
+    const data = await mockFetchMovie(title);
+    return data;
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+// Exercise 4: Promise.all orqali bir nechta filmni qidiring
+async function getMultipleMovies(titles) {
+  const promises = titles.map(mockFetchMovie);
+  return Promise.all(promises);
+}
+
+// Exercise 5: Kechikishni hisoblash (Latency)
+async function measureLatency(title) {
+  const start = performance.now();
+  await mockFetchMovie(title);
+  const end = performance.now();
+  return end - start;
+}
+
+// Exercise 6: Xatolikni maxsus class orqali boshqarish
+class APIError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.status = status;
+  }
+}
+
+// Exercise 7: Cache tizimi (Memoization)
+const cache = {};
+async function fetchWithCache(title) {
+  if (cache[title]) return cache[title];
+  const res = await mockFetchMovie(title);
+  cache[title] = res;
+  return res;
+}
+
+// Exercise 8: Qidiruv tarixini saqlash
+const searchHistory = new Set();
+function addToHistory(title) {
+  searchHistory.add(title);
+}
+
+// Exercise 9: Pagination simulyatsiyasi (offset, limit)
+function paginate(array, limit, offset) {
+  return array.slice(offset, offset + limit);
+}
+
+// Exercise 10: Xavfsiz qidiruv (Sanitize input)
+function sanitizeInput(input) {
+  return input.replace(/[^a-zA-Z0-9 ]/g, "");
+}
 `,
   quizzes: [
     {
-      question: "API nima va u qanday vazifani bajaradi?",
-      options: [
-        "Dasturlar va tizimlar o'rtasida ma'lumot almashishni ta'minlovchi interfeys.",
-        "Ma'lumotlar bazasini xavfsiz saqlash uchun maxsus server.",
-        "Faqat foydalanuvchi interfeysini loyihalash uchun ishlatiladigan dastur.",
-        "Kompyuterning operatsion tizimi va uning drayverlari."
-      ],
+      question: "API nima?",
+      options: ["Application Programming Interface", "Advanced Program Interface", "Application Process Integration", "Automated Program Internet"],
       answerIndex: 0
     },
     {
-      question: "Mijoz (Client) va Server o'rtasidagi muloqotda so'rov turini (masalan, ma'lumot olish yoki yuborishni) nima belgilaydi?",
-      options: [
-        "HTTP Headers (Sarlavhalar)",
-        "HTTP Method (GET, POST va h.k.)",
-        "HTTP Status Code",
-        "HTTP Response Body"
-      ],
+      question: "Inverted Index qanday maqsadlarda ishlatiladi?",
+      options: ["Ma'lumotlar bazasida qidiruvni tezlashtirish uchun", "Fayllarni siqish uchun", "Parollarni shifrlash uchun", "CSS stillarini optimallashtirish uchun"],
+      answerIndex: 0
+    },
+    {
+      question: "Redis Caching nima uchun kerak?",
+      options: ["Ma'lumotlar bazasiga ulanish uchun", "Javob vaqtini qisqartirish uchun ma'lumotlarni xotirada saqlash", "Xavfsizlikni kuchaytirish uchun", "Foydalanuvchi parolini tekshirish uchun"],
       answerIndex: 1
     },
     {
-      question: "Tarmoq so'rovi yuborilganda '404 Not Found' status kodi nimani anglatadi?",
-      options: [
-        "So'rov muvaffaqiyatli bajarildi va ma'lumot qaytarildi.",
-        "Serverda kutilmagan ichki xato yuz berdi.",
-        "So'ralgan resurs yoki sahifa serverdan topilmadi.",
-        "Mijozda ruxsat yo'q (tizimga kirmagan)."
-      ],
-      answerIndex: 2
-    },
-    {
-      question: "HTTP so'rovida yuborilayotgan ma'lumot turini (masalan, JSON ekanligini) ko'rsatish uchun qaysi sarlavha (header) ishlatiladi?",
-      options: [
-        "Authorization",
-        "Accept-Language",
-        "Content-Type: application/json",
-        "User-Agent"
-      ],
-      answerIndex: 2
-    },
-    {
-      question: "JavaScript'da fetch() funksiyasi qaytaradigan Promise natijasini asinxron kutish va sinxron kod ko'rinishida yozish uchun qaysi konstruktsiyadan foydalaniladi?",
-      options: [
-        "setTimeout va setInterval",
-        "async/await va try/catch",
-        "then() va catch() zanjiri",
-        "resolve() va reject() funksiyalari"
-      ],
+      question: "Debouncing nima?",
+      options: ["Qidiruv tugmasini bezash", "So'nggi harakatdan keyin ma'lum vaqt o'tgachgina funksiyani bajarish", "Tarmoq tezligini oshirish", "Xatoliklarni yashirish"],
       answerIndex: 1
+    },
+    {
+      question: "429 Too Many Requests status kodi nimani anglatadi?",
+      options: ["Sahifa topilmadi", "Server xatosi", "Ruxsat yo'q", "Mijoz juda ko'p so'rov yuborganini"],
+      answerIndex: 3
+    },
+    {
+      question: "Time to First Byte (TTFB) nima?",
+      options: ["So'rov va serverning birinchi bayt javobi orasidagi vaqt", "HTML faylning to'liq yuklanishi", "Barcha rasmlar ochilishi uchun ketadigan vaqt", "JavaScript bajarilish vaqti"],
+      answerIndex: 0
+    },
+    {
+      question: "Pagination nima maqsadda ishlatiladi?",
+      options: ["Matnni rangli qilish uchun", "Katta ma'lumotlarni qismlarga bo'lib, sahifalab yuklash uchun", "Rasm o'lchamini kichraytirish uchun", "Keshni tozalash uchun"],
+      answerIndex: 1
+    },
+    {
+      question: "Fuzzy Search qaysi algoritm asosida ishlashi mumkin?",
+      options: ["Levenshtein distance", "Dijkstra algorithm", "Bubble sort", "Binary search"],
+      answerIndex: 0
+    },
+    {
+      question: "Promise qanday uch holatda bo'lishi mumkin?",
+      options: ["Start, Running, End", "Pending, Fulfilled, Rejected", "Loading, Success, Error", "Wait, Resolve, Catch"],
+      answerIndex: 1
+    },
+    {
+      question: "async/await qaysi maqsadda ishlatiladi?",
+      options: ["HTML render qilish", "Asinxron kodni sinxron kabi o'qishli yozish", "Kod hajmini oshirish", "Tarmoq uzilishini oldini olish"],
+      answerIndex: 1
+    },
+    {
+      question: "fetch() funksiyasi qanday turdagi qiymat qaytaradi?",
+      options: ["Number", "String", "Promise", "Boolean"],
+      answerIndex: 2
+    },
+    {
+      question: "Agar tarmoq xatosi bo'lmasa, lekin sahifa topilmasa (404), fetch() dagi promise qanday holatda bo'ladi?",
+      options: ["Rejected", "Pending", "Fulfilled (Resolved)", "To'xtab qoladi"],
+      answerIndex: 2
     }
   ]
 };
