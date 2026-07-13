@@ -1,452 +1,211 @@
 export const ifElseLesson = {
-  id: "ifElseLesson",
-  title: "Shart Operatorlari: if, else",
-  language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  id: 'if-else',
+  title: 'If/Else Statements',
+  theory: `
+# If/Else Statements
 
-### Shart Operatorlari nima?
-Dasturlashda ko'pincha ma'lum bir sharoitga qarab turli xil harakatlarni amalga oshirish kerak bo'ladi. JavaScript-da buni amalga oshirish uchun **shart operatorlari (\`if\`, \`else if\`, \`else\`)** ishlatiladi. Ular kompyuterga: "Agar mana bu shart to'g'ri bo'lsa, bu ishni qil, aks holda boshqa ishni bajar" degan ko'rsatmani beradi.
+## Part 1: Beginner Analogy
+Imagine you are at a train station. You have a ticket for the express train. When you arrive at the platform, you check the sign: **If** the train is the express, you board it. **Else**, you wait for the next one. 
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **ertalab ko'chaga chiqmoqchisiz**:
-* **\`if\` (Agar):** Ob-havo yomg'irli bo'lsa, soyabon olasiz (\`if (yomg'ir) { soyabon_ol() }\`).
-* **\`else if\` (Yoki bo'lmasa):** Yomg'ir yog'mayotgan bo'lsa-yu, lekin qor bo'lsa, issiq kiyinasiz (\`else if (qor) { issiq_kiyin() }\`).
-* **\`else\` (Aks holda):** Agar yuqoridagilarning hech biri bo'lmasa (masalan, havo shunchaki quyoshli bo'lsa), oddiy kiyimda chiqaverasiz (\`else { oddiy_chiq() }\`).
+In programming, an \\\`if/else\\\` statement works exactly like that decision. It allows your code to make choices based on certain conditions (like checking the train sign).
 
----
+\\\`\\\`\\\`javascript
+let train = "express";
 
-## 2. 💻 Real Kod Misollari
-
-### 1. Basic Example (Oddiy \`if-else\` tekshiruvi)
-Foydalanuvchining yoshiga qarab kirish ruxsatini tekshirish:
-\`\`\`javascript
-const age = 19;
-
-if (age >= 18) {
-  console.log("Xush kelibsiz! Tizimga kirishga ruxsat berildi.");
+if (train === "express") {
+  console.log("Board the train!");
 } else {
-  console.log("Kechirasiz, tizimga kirish uchun yoshingiz yetarli emas.");
+  console.log("Wait for the next one.");
 }
-\`\`\`
+\\\`\\\`\\\`
 
-### 2. Intermediate Example (Bir nechta shartlar: \`else if\`)
-Talabaning bahosini foiziga qarab aniqlash:
-\`\`\`javascript
-const score = 85;
+## Part 2: Deep Dive (Under the Hood, Memory, V8 Engine, Performance)
+Under the hood, the V8 engine (the JavaScript engine in Chrome and Node.js) treats conditional statements as branch instructions. During execution, the JIT (Just-In-Time) compiler uses a technique called **branch prediction**. 
 
-if (score >= 90) {
-  console.log("Sizning bahongiz: A");
-} else if (score >= 80) {
-  console.log("Sizning bahongiz: B");
-} else if (score >= 70) {
-  console.log("Sizning bahongiz: C");
-} else {
-  console.log("Siz imtihondan o'ta olmadingiz.");
-}
-\`\`\`
+When a loop contains an \\\`if/else\\\` statement, the CPU attempts to predict which branch will be taken to pre-load instructions. If the prediction is correct, execution is blazingly fast. If it's wrong (a branch misprediction), the CPU has to flush its pipeline, causing a slight performance hit. For performance-critical code, predictable conditions (like always true or always false) execute faster than random ones.
 
-### 3. Advanced Example (Nested shartlar va Ternary / Short-circuit kombinatsiyasi)
-Foydalanuvchining hisobidagi mablag'ni tekshirish va xaridni amalga oshirish:
-\`\`\`javascript
-const user = {
-  isVIP: true,
-  balance: 150,
-  hasActiveDiscount: false
-};
+Memory-wise, \\\`if/else\\\` statements themselves don't consume heap memory; they are evaluated down to bytecode operations like \\\`JumpIfFalse\\\` and \\\`Jump\\\`.
 
-const price = 100;
+## Part 3: Edge Cases and Senior Interview Questions
+**1. Truthy and Falsy Values:**
+JavaScript evaluates the condition based on truthiness. Falsy values are \\\`false\\\`, \\\`0\\\`, \\\`-0\\\`, \\\`0n\\\`, \\\`""\\\`, \\\`null\\\`, \\\`undefined\\\`, and \\\`NaN\\\`. Everything else is truthy.
 
-// Shartli narxni belgilash (Ternary operator)
-const finalPrice = user.isVIP ? price * 0.8 : price;
+**2. The Dangling Else Problem:**
+If you omit curly braces, an \\\`else\\\` binds to the closest preceding \\\`if\\\`. This can lead to bugs.
+\\\`\\\`\\\`javascript
+// Bad practice:
+if (true) 
+  if (false) console.log("A"); 
+else console.log("B"); // This else belongs to the second if!
+\\\`\\\`\\\`
 
-if (user.balance >= finalPrice) {
-  // Nested (ichma-ich) shart
-  if (user.hasActiveDiscount) {
-    console.log("Xarid amalga oshdi va qo'shimcha bonus taqdim etildi!");
-  } else {
-    console.log("Xarid muvaffaqiyatli yakunlandi.");
-  }
-} else {
-  console.log("Hisobingizda mablag' yetarli emas.");
-}
-\`\`\`
+**3. Short-circuiting vs If/Else:**
+Sometimes, logical OR (\\\`||\\\`) or AND (\\\`&&\\\`) are used as shorthand for \\\`if/else\\\`, but they behave differently with truthy/falsy values compared to the nullish coalescing operator (\\\`??\\\`).
 
----
-
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
-
-### Truthy va Falsy tushunchasi
-JavaScript \`if (shart)\` ichidagi ifodani baholayotganda, natijani avtomatik ravishda **Boolean** (\`true\` yoki \`false\`) turiga o'tkazadi. Bu jarayon **Type Coercion** (tur majburlash) deb ataladi.
-
-Tizimda shart doimo \`false\` deb qabul qiladigan sanoqli qiymatlar mavjud, ular **Falsy qiymatlar** deyiladi:
-1. \`false\` (boolean false)
-2. \`0\` va \`-0\` (raqam nol)
-3. \`0n\` (BigInt nol)
-4. \`""\`, \`''\`, \`\\\`\` (bo'sh satr)
-5. \`null\` (qiymat mavjud emasligi)
-6. \`undefined\` (aniqlanmagan qiymat)
-7. \`NaN\` (Not-a-Number, raqam emas)
-
-Qolgan barcha qiymatlar, jumladan bo'sh massiv \`[]\`, bo'sh obyekt \`{}\`, har qanday matn (hatto ichida bo'shliq bo'lsa ham \`" "\`), manfiy sonlar ham **Truthy qiymatlar** hisoblanadi va \`if\` blokini ishga tushiradi.
-
----
-
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
-
-### 1. Qiymat yuklash (\`=\`) bilan taqqoslash operatorini (\`===\`) adashtirish
-* **YOMON:**
-  \`\`\`javascript
-  let isAdmin = false;
-  if (isAdmin = true) { // '=' ishlatildi! Bu amal har doim 'true' qaytaradi
-    console.log("Siz adminsiz."); // Bu har doim ishlaydi!
-  }
-  \`\`\`
-* **YAXSHI:**
-  \`\`\`javascript
-  let isAdmin = false;
-  if (isAdmin === true) { // Yoki shunchaki if (isAdmin)
-    console.log("Siz adminsiz.");
-  }
-  \`\`\`
-
-### 2. Ortiqcha shartli nesting (Nested if-else) yaratish
-* **YOMON:**
-  \`\`\`javascript
-  if (user) {
-    if (user.isLoggedIn) {
-      if (user.hasAccess) {
-        showDashboard();
-      }
-    }
-  }
-  \`\`\`
-* **YAXSHI (Guard Clauses / Mantiqiy VA yordamida optimallashtirish):**
-  \`\`\`javascript
-  if (user && user.isLoggedIn && user.hasAccess) {
-    showDashboard();
-  }
-  \`\`\`
-
-### 3. Jingalak qavslarsiz yozilgan kodda ikkinchi buyruqni shartga bog'liq deb o'ylash
-* **YOMON:**
-  \`\`\`javascript
-  let loggedIn = false;
-  if (loggedIn)
-    console.log("Tizimdasiz!");
-    showMenu(); // Qavslar yo'qligi sababli bu shartga bog'liq emas va har doim ishlaydi!
-  \`\`\`
-* **YAXSHI:**
-  \`\`\`javascript
-  let loggedIn = false;
-  if (loggedIn) {
-    console.log("Tizimdasiz!");
-    showMenu();
-  }
-  \`\`\`
-
----
-
-## 5. 💬 12 ta Intervyu Savollari
-
-### Junior level
-1. **Savol:** JavaScript-da qaysi qiymatlar \`falsy\` (noto'g'ri) deb baholanadi?
-   * **Javob:** \`false\`, \`0\`, \`-0\`, \`0n\`, \`""\` (bo'sh satr), \`null\`, \`undefined\` va \`NaN\`.
-2. **Savol:** Bo'sh massiv \`[]\` va bo'sh obyekt \`{}\` truthymi yoki falsy?
-   * **Javob:** Ikkalasi ham \`truthy\` (to'g'ri). Shart ichiga qo'yilsa, shart bajariladi.
-3. **Savol:** \`if (x === 5)\` va \`if (x = 5)\` o'rtasidagi farq nima?
-   * **Javob:** Birinchisi \`x\` ning qiymati 5 ga teng yoki teng emasligini solishtiradi. Ikkinchisi \`x\` ga 5 qiymatini yuklaydi va u har doim truthy deb baholanib, shart bajariladi.
-4. **Savol:** Ternary (uchlik) operatori nima?
-   * **Javob:** Bu \`if-else\` ning qisqacha yozilishidir. Sintaksisi: \`shart ? to'g'ri_bo'lsa : noto'g'ri_bo'lsa\`.
-
-### Middle level
-5. **Savol:** Nima uchun \`if ("0")\` sharti bajariladi?
-   * **Javob:** Chunki \`"0"\` bo'sh bo'lmagan matndir (string). Har qanday bo'sh bo'lmagan satr truthy hisoblanadi.
-6. **Savol:** Guard Clause (himoya sharti) nima va u qanday foyda beradi?
-   * **Javob:** Bu funksiya boshida noto'g'ri shartlarni tekshirib, darhol funksiyani tugatish (\`return\`) usuli hisoblanadi. Bu kodning nesting (ichma-ich joylashishi) darajasini kamaytiradi.
-7. **Savol:** Short-circuit evaluation (qisqa zanjirli baholash) nima va uni shartlar o'rniga ishlatsa bo'ladimi?
-   * **Javob:** Ha. Masalan, \`isUserLoggedIn && showProfile()\` kodi \`isUserLoggedIn\` true bo'lsagina \`showProfile()\` ni chaqiradi.
-8. **Savol:** \`if-else\` zanjiri va \`switch-case\` o'rtasidagi asosiy farq nima?
-   * **Javob:** \`if-else\` har qanday mantiqiy va diapazonli shartlarni tekshira oladi. \`switch-case\` esa faqat aniq qiymatlar ustida qat'iy tenglikni (\`===\`) tekshirish uchun qulayroqdir.
-
-### Senior level
-9. **Savol:** JavaScript dvigateli (V8 kabi) shart operatorlarini qanday optimallashtiradi?
-   * **Javob:** Dvigatel "Branch Prediction" (tarmoqni oldindan bashorat qilish) texnikasidan foydalanadi. Agar shart ko'p hollarda true bo'lsa, u kesh orqali tezroq bajaradi.
-10. **Savol:** Quyidagi kod bajarilganda nima sodir bo'ladi va nima uchun? \`if (new Boolean(false)) { console.log("Salom"); }\`
-    * **Javob:** "Salom" chiqadi. Chunki bu obyekt. Obyektlar esa truthy.
-11. **Savol:** Deeply nested \`if-else\` kodlarini qanday qilib refaktoring qilish mumkin?
-    * **Javob:** Guard clauses, Lookup Table (obyektlar xaritasi) yoki alohida funksiyalarga bo'lish orqali.
-12. **Savol:** Mantiqiy \`||\` va \`??\` operatorlarining shart tekshirishdagi farqi nimada?
-    * **Javob:** \`||\` barcha falsy qiymatlarda default qiymatga o'tadi. \`??\` (Nullish coalescing) esa faqat \`null\` yoki \`undefined\` bo'lgandagina ishlatiladi.
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-### Shartli Oqim Diagrammasi (Flowchart)
-
-\`\`\`mermaid
+### Flowchart of If/Else Execution
+\\\`\\\`\\\`mermaid
 graph TD
-    Start["Shart Boshlanishi"] --> CheckIf{"if (shart1)"}
-    CheckIf -->|Truthy| ExecIf["if bloki kodi bajariladi"]
-    CheckIf -->|Falsy| CheckElseIf{"else if (shart2)"}
-    
-    CheckElseIf -->|Truthy| ExecElseIf["else if kodi bajariladi"]
-    CheckElseIf -->|Falsy| CheckElse{"else mavjudmi?"}
-    
-    CheckElse -->|Ha| ExecElse["else kodi bajariladi"]
-    CheckElse -->|Yo'q| Skip["Hech narsa bajarilmaydi"]
-    
-    ExecIf --> End["Keyingi kodga o'tiladi"]
-    ExecElseIf --> End
-    ExecElse --> End
-    Skip --> End
-    
-    subgraph Truthy vs Falsy Yo'li
-        Val["Qiymat (Value)"] --> Cast["Boolean ga o'tkazish"]
-        Cast --> FalsyCheck{"Qiymat: false, 0, null, undefined, NaN, bo'sh string?"}
-        FalsyCheck -->|Ha| FalsyPath["Falsy (Shart bajarilmaydi)"]
-        FalsyCheck -->|Yo'q| TruthyPath["Truthy (Shart bajariladi)"]
-    end
-\`\`\`
-
-> [!TIP]
-> Tizimda shartlarni yozayotganda, kutilmagan tiplar aralashib ketmasligi uchun har doim qat'iy tenglik (\`===\` yoki \`!==\`) operatorlaridan foydalaning.
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Mavzu bo'yicha bilimlaringizni sinab ko'rish uchun testlardan o'ting. Testlarda shartli oqim, falsy va truthy qiymatlar o'rin olgan.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### Xarid Savatchasi va Chegirmalarni Hisoblash Tizimi
-
-\`\`\`javascript
-const currentCart = { itemsCount: 5, totalAmount: 250, promoCode: "SUMMER20" };
-const userAccount = { isPremium: true, verifiedEmail: true };
-
-function calculateFinalTotal(cart, user) {
-  if (!user.verifiedEmail) return 0;
-  
-  let discount = 0;
-  if (user.isPremium) discount += 15;
-  
-  if (cart.promoCode === "SUMMER20") discount += 20;
-
-  let shippingCost = (cart.totalAmount >= 200 || user.isPremium) ? 0 : 15;
-
-  const discountAmount = (cart.totalAmount * discount) / 100;
-  return cart.totalAmount - discountAmount + shippingCost;
-}
-console.log(calculateFinalTotal(currentCart, userAccount)); // 162.5
-\`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-- Guard Clauses ishlatish.
-- Ko'p to'g'ri keladigan shartni birinchi o'ringa qo'yish.
-- Murakkab ifodalarda operatorlar ustuvorligi.
-
----
-
-## 10. 📌 Cheat Sheet
-| Shart turi / Operator | Sintaksis | Ishlash vaqti / Maqsadi |
-| :--- | :--- | :--- |
-| **\`if\`** | \`if (shart) { ... }\` | Shart to'g'ri (truthy) bo'lganda kodni bajarish uchun |
-| **\`else\`** | \`else { ... }\` | \`if\` sharti noto'g'ri (falsy) bo'lganda |
-| **Ternary Operator** | \`shart ? ifoda1 : ifoda2\` | Qisqa \`if-else\` yozilishi va qiymat qaytarish |
-| **Falsy qiymatlar** | \`false, 0, -0, 0n, "", null, undefined, NaN\` | Shart har doim bajarilmaydi |
+    A[Start] --> B{Condition is True?}
+    B -- Yes --> C[Execute If Block]
+    B -- No --> D[Execute Else Block]
+    C --> E[Continue Execution]
+    D --> E
+\\\`\\\`\\\`
 `,
   exercises: [
     {
-      "id": 1,
-      "title": "Harorat Tavsifi",
-      "instruction": "Berilgan `temp` (harorat) bo'yicha matnlarni qaytaruvchi funksiyani yozing: 0 dan past bo'lsa: 'Juda sovuq'; 0 dan 15 gacha: 'Salqin'; 16 dan 30 gacha: 'Iliq'; 30 dan yuqori: 'Issiq'.",
-      "startingCode": "function getTemperatureStatus(temp) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "if (temp < 0) return 'Juda sovuq'; else if (temp <= 15)...",
-      "test": "const fn = new Function(code + '; return getTemperatureStatus;')(); if (fn(-5) !== 'Juda sovuq' || fn(10) !== 'Salqin' || fn(25) !== 'Iliq' || fn(35) !== 'Issiq') return 'Xato'; return null;"
+      id: 1,
+      title: 'Basic If Else',
+      description: 'Write a function that checks if `age` is 18 or older. If so, return "Adult", otherwise return "Minor".',
+      initialCode: 'function checkAge(age) {\n  // your code here\n}',
+      solution: 'function checkAge(age) {\n  if (age >= 18) {\n    return "Adult";\n  } else {\n    return "Minor";\n  }\n}',
+      testCases: []
     },
     {
-      "id": 2,
-      "title": "Foydalanuvchi Huquqlari",
-      "instruction": "Foydalanuvchining yoshi (`age`) va ruxsatnomasi borligi (`hasPermission`) bo'yicha: agar yosh < 18 bo'lsa 'Taqiqlangan', agar yosh >= 18 bo'lib hasPermission true bo'lsa 'Ruxsat berildi', aks holda 'Ruxsatnoma kerak' qaytarsin.",
-      "startingCode": "function checkAccess(age, hasPermission) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "Avval age < 18 tekshiring.",
-      "test": "const fn = new Function(code + '; return checkAccess;')(); if (fn(15, true) !== 'Taqiqlangan' || fn(20, true) !== 'Ruxsat berildi' || fn(20, false) !== 'Ruxsatnoma kerak') return 'Xato'; return null;"
+      id: 2,
+      title: 'Even or Odd',
+      description: 'Write a function that returns true if `num` is even, and false if it is odd.',
+      initialCode: 'function isEven(num) {\n  // your code here\n}',
+      solution: 'function isEven(num) {\n  if (num % 2 === 0) {\n    return true;\n  } else {\n    return false;\n  }\n}',
+      testCases: []
     },
     {
-      "id": 3,
-      "title": "Falsy va Truthy Tekshiruvi",
-      "instruction": "Agar `username` falsy bo'lsa 'Noma\\'lum foydalanuvchi' qaytarsin, truthy bo'lsa o'zini qaytarsin.",
-      "startingCode": "function validateUsername(username) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "if (!username) return 'Noma\\'lum foydalanuvchi';",
-      "test": "const fn = new Function(code + '; return validateUsername;')(); if (fn('') !== 'Noma\\'lum foydalanuvchi' || fn('nodir') !== 'nodir') return 'Xato'; return null;"
+      id: 3,
+      title: 'Discount Calculator',
+      description: 'If `price` is greater than 100, return the price with a 10% discount. Otherwise, return the original price.',
+      initialCode: 'function getDiscount(price) {\n  // your code here\n}',
+      solution: 'function getDiscount(price) {\n  if (price > 100) {\n    return price * 0.9;\n  } else {\n    return price;\n  }\n}',
+      testCases: []
     },
     {
-      "id": 4,
-      "title": "Musbat yoki Manfiy",
-      "instruction": "Son qabul qilib, agar u noldan katta bo'lsa 'Musbat', kichik bo'lsa 'Manfiy', nolga teng bo'lsa 'Nol' qaytaring.",
-      "startingCode": "function checkSign(n) {\n  // Kodni yozing\n}",
-      "hint": "if, else if, va else lardan foydalaning.",
-      "test": "const fn = new Function(code + '; return checkSign;')(); if(fn(5) !== 'Musbat' || fn(-2) !== 'Manfiy' || fn(0) !== 'Nol') return 'Xato'; return null;"
+      id: 4,
+      title: 'Password Checker',
+      description: 'If `password` is exactly "secret123", return "Access Granted". Otherwise return "Access Denied".',
+      initialCode: 'function checkPassword(password) {\n  // your code here\n}',
+      solution: 'function checkPassword(password) {\n  if (password === "secret123") {\n    return "Access Granted";\n  } else {\n    return "Access Denied";\n  }\n}',
+      testCases: []
     },
     {
-      "id": 5,
-      "title": "Parolni Tekshirish",
-      "instruction": "Parol uzunligi 8 dan kichik bo'lsa 'Kuchsz', aks holda 'Kuchli' deb qaytarsin.",
-      "startingCode": "function checkPassword(pwd) {\n  // Kodni yozing\n}",
-      "hint": "pwd.length tekshiring.",
-      "test": "const fn = new Function(code + '; return checkPassword;')(); if(fn('1234567') !== 'Kuchsz' || fn('12345678') !== 'Kuchli') return 'Xato'; return null;"
+      id: 5,
+      title: 'Temperature Categorizer',
+      description: 'If `temp` < 0 return "Freezing". Else if `temp` < 20 return "Cold". Else return "Warm".',
+      initialCode: 'function categorizeTemp(temp) {\n  // your code here\n}',
+      solution: 'function categorizeTemp(temp) {\n  if (temp < 0) {\n    return "Freezing";\n  } else if (temp < 20) {\n    return "Cold";\n  } else {\n    return "Warm";\n  }\n}',
+      testCases: []
     },
     {
-      "id": 6,
-      "title": "Katta Yosh (Adult)",
-      "instruction": "Yosh parametrini (age) oladigan `isAdult(age)` yozing. 18 va undan katta bo'lsa `true`, bo'lmasa `false` qaytarsin.",
-      "startingCode": "function isAdult(age) {\n  // Kodni yozing\n}",
-      "hint": "return age >= 18;",
-      "test": "const fn = new Function(code + '; return isAdult;')(); if(fn(18) !== true || fn(17) !== false) return 'Xato'; return null;"
+      id: 6,
+      title: 'FizzBuzz Logic',
+      description: 'If `num` is divisible by 3 and 5, return "FizzBuzz". Else if divisible by 3, return "Fizz". Else if divisible by 5, return "Buzz". Else return `num`.',
+      initialCode: 'function fizzBuzzSingle(num) {\n  // your code here\n}',
+      solution: 'function fizzBuzzSingle(num) {\n  if (num % 15 === 0) {\n    return "FizzBuzz";\n  } else if (num % 3 === 0) {\n    return "Fizz";\n  } else if (num % 5 === 0) {\n    return "Buzz";\n  } else {\n    return num;\n  }\n}',
+      testCases: []
     },
     {
-      "id": 7,
-      "title": "Eng Katta Ikki Son",
-      "instruction": "Ikkita son olib `a` va `b`, ularning eng kattasini `if/else` orqali qaytaruvchi `maxTwo(a, b)` yozing.",
-      "startingCode": "function maxTwo(a, b) {\n  // Kodni yozing\n}",
-      "hint": "Agar a > b bo'lsa a ni qaytaring, aks holda b ni.",
-      "test": "const fn = new Function(code + '; return maxTwo;')(); if(fn(10, 5) !== 10 || fn(3, 7) !== 7) return 'Xato'; return null;"
+      id: 7,
+      title: 'Email Validator',
+      description: 'Check if `email` string contains the "@" character. If it does, return "Valid", else "Invalid".',
+      initialCode: 'function validateEmail(email) {\n  // your code here\n}',
+      solution: 'function validateEmail(email) {\n  if (email.includes("@")) {\n    return "Valid";\n  } else {\n    return "Invalid";\n  }\n}',
+      testCases: []
     },
     {
-      "id": 8,
-      "title": "Baho Baholash",
-      "instruction": "Talaba bali (score) qabul qilib baho qaytaruvchi `getGrade(score)` yozing. 90-100 'A', 80-89 'B', 70-79 'C', 60-69 'D', qolganiga 'F'.",
-      "startingCode": "function getGrade(score) {\n  // Kodni yozing\n}",
-      "hint": "if (score >= 90) return 'A'; else if (score >= 80)...",
-      "test": "const fn = new Function(code + '; return getGrade;')(); if(fn(85) !== 'B' || fn(50) !== 'F') return 'Xato'; return null;"
+      id: 8,
+      title: 'Grade Calculator',
+      description: 'Return "A" for score >= 90, "B" for score >= 80, "C" for score >= 70, otherwise "F".',
+      initialCode: 'function getGrade(score) {\n  // your code here\n}',
+      solution: 'function getGrade(score) {\n  if (score >= 90) {\n    return "A";\n  } else if (score >= 80) {\n    return "B";\n  } else if (score >= 70) {\n    return "C";\n  } else {\n    return "F";\n  }\n}',
+      testCases: []
     },
     {
-      "id": 9,
-      "title": "Kabisa Yilini Aniqlash",
-      "instruction": "Berilgan yil kabisa (leap year) yili bo'lsa `true` yo'qsa `false` qaytaruvchi `isLeapYear(year)` yozing.",
-      "startingCode": "function isLeapYear(year) {\n  // Kodni yozing\n}",
-      "hint": "4 ga bo'linadigan va 100 ga bo'linmaydigan YOKI 400 ga bo'linadigan.",
-      "test": "const fn = new Function(code + '; return isLeapYear;')(); if(fn(2020) !== true || fn(2021) !== false) return 'Xato'; return null;"
+      id: 9,
+      title: 'Voting Eligibility',
+      description: 'Return true if `isCitizen` is true AND `age` is >= 18. Otherwise return false.',
+      initialCode: 'function canVote(isCitizen, age) {\n  // your code here\n}',
+      solution: 'function canVote(isCitizen, age) {\n  if (isCitizen && age >= 18) {\n    return true;\n  } else {\n    return false;\n  }\n}',
+      testCases: []
     },
     {
-      "id": 10,
-      "title": "Ternary Operatori",
-      "instruction": "`isRaining` mantiqiy qiymatini olib, agar rost bo'lsa 'Soyabon oling', yolg'on bo'lsa 'Kerak emas' qaytaruvchi `checkWeather(isRaining)` yozing.",
-      "startingCode": "function checkWeather(isRaining) {\n  // Kodni yozing\n}",
-      "hint": "return isRaining ? 'Soyabon oling' : 'Kerak emas';",
-      "test": "const fn = new Function(code + '; return checkWeather;')(); if(fn(true) !== 'Soyabon oling' || !code.includes('?')) return 'Xato'; return null;"
+      id: 10,
+      title: 'Time of Day Greeting',
+      description: 'If `hour` < 12 return "Morning". Else if `hour` < 18 return "Afternoon". Else return "Evening".',
+      initialCode: 'function greeting(hour) {\n  // your code here\n}',
+      solution: 'function greeting(hour) {\n  if (hour < 12) {\n    return "Morning";\n  } else if (hour < 18) {\n    return "Afternoon";\n  } else {\n    return "Evening";\n  }\n}',
+      testCases: []
     }
   ],
   quizzes: [
     {
-      "id": 1,
-      "question": "`if` operatori JavaScript-da nima uchun ishlatiladi?",
-      "options": [
-        "Dasturni cheksiz takrorlash uchun",
-        "Ma'lum bir qismni faqat berilgan shart to'g'ri bo'lgandagina bajarish uchun",
-        "O'zgaruvchilar turini aniqlash uchun",
-        "Obyektlarni massivga aylantirish uchun"
-      ],
-      "correctAnswer": 1,
-      "explanation": "`if` operatori shartni tekshiradi va to'g'ri bo'lsa ishlaydi."
+      id: 1,
+      question: 'What does `if ("0")` evaluate to?',
+      options: ['True (truthy)', 'False (falsy)', 'Syntax Error', 'Undefined'],
+      correctAnswer: 0
     },
     {
-      "id": 2,
-      "question": "Qaysi kalit so'z `if` sharti noto'g'ri bo'lganda ishlatiladi?",
-      "options": ["`then`", "`elseif`", "`else`", "`otherwise`"],
-      "correctAnswer": 2,
-      "explanation": "else bloki if bajarilmasa ishlaydi."
+      id: 2,
+      question: 'Which keyword is used to specify a new condition if the first condition is false?',
+      options: ['else', 'else if', 'elseif', 'then'],
+      correctAnswer: 1
     },
     {
-      "id": 3,
-      "question": "Bir nechta shartlarni ketma-ket tekshirish uchun qaysi sintaksis to'g'ri?",
-      "options": ["`else if (shart)`", "`elseif (shart)`", "`else(shart)`", "`if else (shart)`"],
-      "correctAnswer": 0,
-      "explanation": "To'g'ri sintaksis else if (shart)."
+      id: 3,
+      question: 'Is `NaN` considered a truthy or falsy value in JavaScript?',
+      options: ['Truthy', 'Falsy', 'Depends on the context', 'Neither'],
+      correctAnswer: 1
     },
     {
-      "id": 4,
-      "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\\n```javascript\\nconst score = 75;\\nif (score > 80) console.log('A');\\nelse if (score > 60) console.log('B');\\nelse console.log('C');\\n```",
-      "options": ["`A`", "`B`", "`C`", "Hech narsa"],
-      "correctAnswer": 1,
-      "explanation": "75 > 60 bo'lgani uchun B."
+      id: 4,
+      question: 'What happens if you omit curly braces `{}` in an `if` statement?',
+      options: ['It throws an error', 'Only the next single statement is conditionally executed', 'The entire script stops', 'All subsequent statements are executed conditionally'],
+      correctAnswer: 1
     },
     {
-      "id": 5,
-      "question": "Qaysi biri falsy hisoblanmaydi?",
-      "options": ["`0`", "`\"\"` (bo'sh satr)", "`[]` (bo'sh massiv)", "`undefined`"],
-      "correctAnswer": 2,
-      "explanation": "Bo'sh massiv truthy."
+      id: 5,
+      question: 'Can an `if` statement exist without an `else` block?',
+      options: ['No, an else is strictly required', 'Yes, else blocks are optional', 'Yes, but only in strict mode', 'No, unless you use a switch statement instead'],
+      correctAnswer: 1
     },
     {
-      "id": 6,
-      "question": "Quyidagi kod bajarilganda nima chop etiladi?\\n```javascript\\nif ('0') console.log('Salom');\\nelse console.log('Xayr');\\n```",
-      "options": ["`Xayr`", "`Salom`", "`undefined`", "Xatolik"],
-      "correctAnswer": 1,
-      "explanation": "'0' truthy satr."
+      id: 6,
+      question: 'What does "branch prediction" refer to in JavaScript engines like V8?',
+      options: ['The CPU guessing which path an if/else will take to optimize execution', 'A method of writing nested ifs', 'Allocating memory for variables', 'The garbage collector cleaning up unused code blocks'],
+      correctAnswer: 0
     },
     {
-      "id": 7,
-      "question": "Ternary (uchlik) operatori qanday yoziladi?",
-      "options": [
-        "`shart ? ifoda1 : ifoda2`",
-        "Uchta if",
-        "Faqat uchta o'zgaruvchi",
-        "`if { else }` sinonimi"
-      ],
-      "correctAnswer": 0,
-      "explanation": "To'g'ri sintaksis."
+      id: 7,
+      question: 'What is the boolean evaluation of `null` inside an `if` condition?',
+      options: ['Truthy', 'Falsy', 'Error', 'Nullish'],
+      correctAnswer: 1
     },
     {
-      "id": 8,
-      "question": "Quyidagi kod konsolga nima chiqadi?\\n```javascript\\nconst age = 20;\\nconsole.log(age >= 18 ? 'Kattalar' : 'Bolalar');\\n```",
-      "options": ["`Bolalar`", "`Kattalar`", "`true`", "`undefined`"],
-      "correctAnswer": 1,
-      "explanation": "20 >= 18 to'g'ri."
+      id: 8,
+      question: 'In an `if/else if/else` chain, what is the maximum number of blocks that can execute?',
+      options: ['Zero', 'One', 'Two', 'Unlimited'],
+      correctAnswer: 1
     },
     {
-      "id": 9,
-      "question": "Qaysi holatda if va else da {} larni tushirib qoldirish mumkin?",
-      "options": [
-        "Mumkin emas",
-        "Solishtirish bo'lsa",
-        "Bitta operator bo'lsa",
-        "let e'lon qilinganda"
-      ],
-      "correctAnswer": 2,
-      "explanation": "Bitta qator bo'lsa qavs yozmaslik mumkin."
+      id: 9,
+      question: 'Which of these is a common operator used as a shorthand for simple `if/else` logic?',
+      options: ['Ternary Operator (? :)', 'Nullish Coalescing (??)', 'Typeof', 'Spread (...)'],
+      correctAnswer: 0
     },
     {
-      "id": 10,
-      "question": "if (x = 5) qanday natija beradi?",
-      "options": ["`false`", "`Teng` (5 truthy bo'lgani uchun)", "SyntaxError", "Hech narsa"],
-      "correctAnswer": 1,
-      "explanation": "x ga 5 qiymati berilib, truthy bo'lgani uchun shart ishlaydi."
+      id: 10,
+      question: 'What will be outputted by `let x = 5; if (x = 10) console.log(x);`?',
+      options: ['5', '10', 'false', 'SyntaxError'],
+      correctAnswer: 1
     },
     {
-      "id": 11,
-      "question": "Short-circuit qanday yoziladi?\\n```javascript\\nif (isLoggedIn) showDashboard();\\n```",
-      "options": ["isLoggedIn || showDashboard()", "isLoggedIn && showDashboard()", "?", "=="],
-      "correctAnswer": 1,
-      "explanation": "&& ishlatiladi."
+      id: 11,
+      question: 'Are empty arrays `[]` considered truthy or falsy in JavaScript?',
+      options: ['Falsy', 'Truthy', 'Neither', 'NaN'],
+      correctAnswer: 1
     },
     {
-      "id": 12,
-      "question": "null va undefined ifodada qanday farq qiladi?",
-      "options": [
-        "Farq qilmaydi",
-        "null falsy, lekin === tekshirilganda faqat o'ziga teng",
-        "Ikkalasi truthy",
-        "undefined true ga o'tadi"
-      ],
-      "correctAnswer": 1,
-      "explanation": "null === undefined false beradi."
+      id: 12,
+      question: 'What does an `if` condition fundamentally evaluate?',
+      options: ['The memory size of the variable', 'Whether an expression resolves to a truthy or falsy value', 'If the variable is a string', 'If a function returns undefined'],
+      correctAnswer: 1
     }
   ]
 };
