@@ -1,406 +1,356 @@
 export const thisKeyword = {
   id: "thisKeyword",
-  title: "This Keyword va Context Binding",
+  title: "This Kalit So'zi: JavaScriptdagi 'Men'",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `# This Kalit So'zi (Context)
 
-### This kalit so'zi nima?
-**\`this\` (kontekst)** — bu JavaScript dasturlash tilidagi o'ziga xos kalit so'z bo'lib, u joriy vaqtda funksiya yoki metod kim yoki nima tomonidan bajarilayotganini ko'rsatuvchi ma'lumotnomadir. U funksiyaning yozilish joyiga emas, balki runtime-da (ishlash jarayonida) qanday chaqirilganiga qarab o'zgaradi.
+JavaScript tilida eng ko'p asabga tegadigan, tushunishga qiyin va suhbatlarda eng ko'p so'raladigan mavzulardan biri — bu **\`this\`** kalit so'zidir. Ammo havotir olmang, biz buni noldan boshlab o'rganamiz!
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz do'stlaringiz bilan suhbatlashyapsiz:
-* Siz: "**Mening** ismim Ali" deysiz. Bu yerda "**Mening**" = Ali.
-* Do'stingiz Zara: "**Mening** ismim Zara" deydi. Bu yerda "**Mening**" = Zara.
-* Suhbatda "**Mening**" so'zi bir xil bo'lsa-da, u gapirayotgan odamga qarab o'zgaradi.
-JavaScript-da \`this\` — bu gapirayotgan (ya'ni funksiyani chaqirayotgan) obyekt yoki kontekstdir.
+## 🎩 Hayotiy O'xshatish (Analogy)
+
+\`this\` so'zini inson tilidagi **"Men"** (yoki "Mening") so'ziga o'xshatish mumkin.
+
+Tasavvur qiling, ikki do'st suhbatlashyapti:
+- **Ali** deydi: "Men och qoldim." (Bu yerda "Men" = Ali)
+- **Vali** deydi: "Men ham och qoldim." (Bu yerda "Men" = Vali)
+
+E'tibor berdingizmi? Ikkalasi ham aynan bitta "Men" so'zini ishlatyapti, lekin uning ma'nosi (konteksti) gapirayotgan odamga qarab o'zgaradi. 
+
+JavaScriptda ham xuddi shunday: **\`this\` — funksiya yozilgan joyiga emas, u qanday chaqirilayotganiga qarab kimni nazarda tutayotgani o'zgaradi.** Odatda \`this\` — funksiyani kim chaqirgan bo'lsa o'sha obyektga aylanadi.
 
 ---
 
-## 2. 💻 Real Kod Misollari
+## 🏗 This Qanday Ishlaydi? (Noldan boshlaymiz)
 
-### 1. Basic Example (Method Binding va Default Binding)
+JavaScriptda \`this\` qiymati qanday holatda chaqirilganiga ko'ra turlicha bo'ladi.
+
+### 1. Obyekt ichidagi Metodda (Method Context)
+Eng ko'p ishlatiladigan holat: Agar funksiya obyektning ichida yozilgan bo'lsa va u orqali chaqirilsa, \`this\` o'sha obyektning o'ziga teng bo'ladi. Ya'ni nuqtadan oldingi narsaga!
+
 \`\`\`javascript
-const person = {
+let user = {
   name: "Ali",
-  sayHello() {
-    console.log(\`Salom, men \${this.name}\`); // this = person
+  sayHi: function() {
+    alert("Salom, mening ismim " + this.name);
   }
 };
 
-person.sayHello(); // "Salom, men Ali"
+user.sayHi(); // "Salom, mening ismim Ali"
+\`\`\`
+Bu yerda \`user.sayHi()\` deb chaqirdik. Nuqtadan oldin \`user\` turibdi. Demak, \`this = user\`.
 
-// Oddiy funksiya chaqirilganda default binding (window yoki strict rejimda undefined) ishlaydi:
-function whoAmI() {
+### ❌ YOMON: This yo'qolishi (Losing this)
+Agar biz funksiyani obyektdan uzib olib, oddiy o'zgaruvchiga tenglasak, \`this\` yo'qoladi!
+
+\`\`\`javascript
+let user = {
+  name: "Vali",
+  sayHi: function() {
+    console.log("Salom, " + this.name);
+  }
+};
+
+let myFunction = user.sayHi; // Funksiyani uzib oldik
+myFunction(); // undefined! Chunki nuqtasi yo'q, this = window/undefined.
+\`\`\`
+
+✅ **YAXSHI: Call, Apply yoki Bind ishlating**
+Yo'qolgan \`this\` ni qaytarish uchun \`.bind()\` orqali uni kuch bilan bog'lashimiz mumkin:
+\`\`\`javascript
+let boundFunction = user.sayHi.bind(user);
+boundFunction(); // Salom, Vali!
+\`\`\`
+
+### 2. Oddiy Funksiyada (Regular Function)
+Agar funksiya obyektga tegishli bo'lmasa, uni oddiygina \`sayHi()\` deb chaqirsak, \`this\` qanday bo'ladi?
+- Qat'iy bo'lmagan (non-strict) rejimda: \`this\` global obyektga (brauzerda \`window\`) teng bo'ladi.
+- Qat'iy (\`"use strict"\`) rejimda: \`this\` **undefined** bo'ladi. Bu JS xatolarining oldini olish uchun ataylab shunday qilingan.
+
+\`\`\`javascript
+"use strict";
+function showThis() {
   console.log(this);
 }
-whoAmI(); // window (yoki strict mode-da undefined)
+showThis(); // undefined
 \`\`\`
 
-### 2. Intermediate Example (Context binding: call, apply va bind)
+### 3. Arrow Function'da (Yo'naltiruvchi Funksiya)
+Eng zo'r qismi: **Arrow function (=>) larning o'zining \`this\` i yo'q!** 
+Ular "Men" degan tushunchani bilishmaydi. Agar ularning ichida \`this\` ishlatsangiz, u tashqaridagi odamning "Men"ini (ya'ni o'zidan tashqaridagi \`this\` ni) olib ishlatadi. Bu Lexical Scoping deyiladi.
+
 \`\`\`javascript
-function greet(location, emoji) {
-  console.log(\`\${emoji} Salom \${this.name}, \${location}ga xush kelibsiz!\`);
-}
-
-const user = { name: "Farhod" };
-
-// 1. call — darhol chaqiradi, parametrlarni ketma-ket oladi
-greet.call(user, "Tashkent", "👋");
-
-// 2. apply — darhol chaqiradi, parametrlarni massivda oladi
-greet.apply(user, ["Tashkent", "👋"]);
-
-// 3. bind — yangi funksiya qaytaradi (this qulflangan holatda)
-const greetFarhod = greet.bind(user);
-greetFarhod("Samarkand", "🙋");
-\`\`\`
-
-### 3. Advanced Example (Class Constructor va Event Listeners)
-ES6 klasslarida va DOM hodisalarini eshitishda \`this\`dan foydalanish:
-\`\`\`javascript
-class UI {
-  constructor(buttonId) {
-    this.button = document.getElementById(buttonId);
-    // click hodisasida 'this' yo'qolmasligi uchun metodni bind qilamiz:
-    if (this.button) {
-      this.button.addEventListener("click", this.handleClick.bind(this));
-    }
-  }
-
-  handleClick() {
-    console.log("Bosilgan UI elementi:", this.button); // this = UI obyekti
-  }
-}
-\`\`\`
-
----
-
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
-
-### Bindingning 4 Asosiy Qoidasi (Ustuvorlik tartibida)
-JavaScript \`this\` qiymatini aniqlash uchun quyidagi 4 qoidani ketma-ket tekshiradi:
-
-1. **New Binding:** Agar funksiya \`new\` orqali chaqirilgan bo'lsa (konstruktor), \`this\` — yangi yaratilgan obyekt.
-2. **Explicit Binding (Aniq bog'lash):** Agar funksiya \`.call()\`, \`.apply()\` yoki \`.bind()\` orqali chaqirilgan bo'lsa, \`this\` — ko'rsatilgan obyekt.
-3. **Implicit Binding (Metod sifatida):** Agar funksiya obyekt metodi sifatida chaqirilgan bo'lsa (\`obj.func()\`), \`this\` — \`obj\` obyekti.
-4. **Default Binding (Tashqi chaqiriq):** Agar funksiya mustaqil chaqirilgan bo'lsa (\`func()\`), \`this\` — global obyekt (\`window\`) yoki strict rejimda \`undefined\`.
-
----
-
-## 4. 🧪 Bosqichma-bosqich Amaliy Mashq
-
-### Context (this) Yo'qolishi va Uni Tuzatish
-Ko'pincha funksiya boshqa joyga callback sifatida uzatilganda \`this\` yo'qolib ketadi (Context Loss).
-
-#### Muammo:
-\`\`\`javascript
-const timer = {
-  seconds: 0,
-  start() {
-    setInterval(function() {
-      // XATO: setTimeout/setInterval callbacki global contextda ishlaydi
-      this.seconds++; // this = window
-      console.log(this.seconds); // NaN (chunki window.seconds yo'q)
-    }, 1000);
+let group = {
+  title: "Guruh 1",
+  students: ["Ali", "Vali"],
+  showList() {
+    this.students.forEach(student => {
+      // Arrow function o'zining this'ini yaratmaydi,
+      // shuning uchun u showList'ning this'ini (group'ni) ishlatadi.
+      console.log(this.title + ": " + student);
+    });
   }
 };
+
+group.showList();
+// Guruh 1: Ali
+// Guruh 1: Vali
+\`\`\`
+Agar \`forEach\` ichida oddiy funksiya (\`function() {}\`) yozganimizda edi, uning \`this\` i \`undefined\` bo'lib qolar va xatolik berar edi! Shuning uchun array metodlarida doim Arrow Function ishlating.
+
+---
+
+## Mermaid Diagramma (This yo'nalishlari)
+
+\`\`\`mermaid
+flowchart TD
+    Start((This Kalit So'zi))
+    
+    Start --> A[Nuqtadan oldin chaqirildimi?]
+    A -- Ha (user.sayHi) --> B{This = Nuqtadan oldingi obyekt}
+    
+    A -- Yo'q (sayHi) --> C[Arrow Functionmi?]
+    C -- Ha --> D{This = Tashqaridagi this ni oladi}
+    C -- Yo'q --> E{This = window yoxud undefined}
 \`\`\`
 
-#### Yechim (Arrow funksiya yordamida - u thisni tashqi start metodidan meros oladi):
-\`\`\`javascript
-const timer = {
-  seconds: 0,
-  start() {
-    setInterval(() => {
-      this.seconds++; // this = timer obyekti
-      console.log(this.seconds); // 1, 2, 3...
-    }, 1000);
-  }
-};
-\`\`\`
-
 ---
 
-## 5. ⚠️ Ko'p Uchraydigan Xatolar va Ularni Tuzatish
+## 🎙 Intervyu savollari
 
-### 1. Arrow funksiyani metod sifatida ishlatish
-Arrow funksiyalarda \`this\` bo'lmagani uchun u har doim o'zi yozilgan doiradan lexical o'qiydi.
-* **Noto'g'ri:**
-  \`\`\`javascript
-  const user = {
-    name: "Ali",
-    showName: () => console.log(this.name) // 'this' global windowga teng bo'ladi
-  };
-  user.showName(); // undefined
-  \`\`\`
-* **To'g'ri:**
-  \`\`\`javascript
-  const user = {
-    name: "Ali",
-    showName() { console.log(this.name) } // Shaxsiy metod sintaksisi
-  };
-  user.showName(); // "Ali"
-  \`\`\`
+**1. \`this\` ning qiymati JavaScriptda qachon hal bo'ladi?**
+**Javob:** \`this\` ning qiymati funksiya e'lon qilingan vaqtda emas, balki funksiya chaqirilgan vaqtda (runtime) hal qilinadi. U funksiyani kim chaqirganiga qarab o'zgarib turadi. Faqatgina Arrow Functionlar bundan mustasno (ular yozilgan joyiga, ya'ni leksik muhitga bog'lanadi).
 
----
+**2. Obyekt metodini oddiy o'zgaruvchiga olib chaqirganda nima uchun \`this\` yo'qoladi va qanday tuzatamiz?**
+**Javob:** Chunki oddiy o'zgaruvchidan chaqirilganda funksiya oldida nuqta bo'lmaydi va obyektsiz oddiy funksiya sifatida chaqiriladi. Oqibatda \`this\` global obyektga (window) yoki \`undefined\` ga tushib qoladi. Buni tuzatish uchun \`.bind(obyekt)\` ishlatib funksiyaga kerakli kontekstni bog'lashimiz (hard-binding) mumkin yoki arrow function ishlatish kerak.
 
-## 6. 📝 Qisqacha Xulosa (Cheat Sheet)
-
-| Chaqiriq turi | \`this\` nimaga teng bo'ladi? | Misol |
-| :--- | :--- | :--- |
-| Global doira | \`window\` (yoki strict rejimda \`undefined\`) | \`myFunc()\` |
-| Obyekt metodi | O'sha obyektning o'ziga | \`user.greet()\` |
-| \`call\` / \`apply\` / \`bind\` | Ko'rsatilgan birinchi argumentga | \`greet.call(user)\` |
-| \`new\` konstruktor | Yangi yaratilgan obyektga | \`new User()\` |
-| Arrow function | Tashqi (lexical) muhitning \`this\`iga | \`() => this.x\` |
-
----
-
-## 7. ❓ Savollar va Javoblar
-
-### 1. Zanjirli (Chaining) metodlarda \`this\` qanday ishlaydi?
-Zanjirli chaqiruvlarni (masalan, \`calc.add(2).mul(3)\`) qo'llab-quvvatlash uchun har bir metod oxirida \`return this;\` (obyektning o'zini) qaytarishi kerak.
-
-### 2. Strict mode (qat'iy rejim) \`this\`ga qanday ta'sir qiladi?
-Strict mode yoqilganda global funksiya chaqiruvlarida \`this\` global \`window\` o'rniga \`undefined\`ga teng bo'ladi. Bu xavfsizlik va xatolarni oldini olish uchun joriy qilingan.
-
----
-
-## 8. 🧠 O'z-o'zini Tekshirish
-
-1. \`bind\` metodini bir nechta marta ketma-ket ishlatsa bo'ladimi?
-2. Event listener regular funksiya bo'lsa, \`this\` nimaga teng?
-3. Nima uchun arrow funksiyani \`new\` kalit so'zi bilan chaqirib bo'lmaydi?
-
----
-
-## 9. 🚀 Amaliy Topsiriq
-
-Quyidagi testlar va mashqlar yordamida \`this\` bo'yicha ko'nikmalaringizni sinab ko'ring.
-`,
+**3. Arrow Function nima uchun event listener yoki metod sifatida ishlatilganda xatolikka olib kelishi mumkin?**
+**Javob:** Chunki Arrow Function o'zining \`this\` iga ega emas. Agar obyekt ob'ekti metodini arrow function qilib yozsak, u holda obyektning ichiga emas, balki global muhitga (window ga) bog'lanib qoladi va natijada ob'ekt property larini taniy olmay \`undefined\` qaytaradi.`,
   exercises: [
     {
       id: 1,
-      title: "1️⃣ Oddiy Metod (Boshlang'ich)",
-      instruction: "Objektda this.ism qaytaradigan metod yozing.",
-      startingCode: "const user = {\n  ism: 'Ali',\n  getName() {\n    // Kodni shu yerda yozing\n  }\n};\n\nconsole.log(user.getName());",
-      hint: "return this.ism;",
-      test: "if (user.getName() === 'Ali') return null; return 'this.ism ishlatilmadi!';"
+      title: "Obyekt va This",
+      instruction: "Bir 'car' nomli obyekt yarating. Uning 'brand' (masalan: 'BMW') degan kaliti va 'getBrand' nomli metodi bo'lsin. Metod 'this.brand' orqali brendni qaytarsin.",
+      startingCode: "let car = {\n  brand: 'BMW',\n  // getBrand metodini yozing\n};",
+      hint: "getBrand: function() { return this.brand; } yoki getBrand() { return this.brand; } yozing.",
+      test: "if(!car || typeof car.getBrand !== 'function' || car.getBrand() !== 'BMW') throw new Error('Metod xato yozilgan yoki this dan foydalanilmagan');"
     },
     {
       id: 2,
-      title: "2️⃣ Global This (Boshlang'ich)",
-      instruction: "Global this qanday ekanligi ko'rsating.",
-      startingCode: "function checkThis() {\n  // Kodni shu yerda yozing\n  return this;\n}\n\nconst result = checkThis();\nconsole.log(result === window); // true yoki false?",
-      hint: "return this;",
-      test: "if (typeof checkThis() === 'object' || checkThis() === undefined) return null; return 'This type xato!';"
+      title: "This ning yo'qolishi",
+      instruction: "'user' obyektida 'name: Olim' va 'getName' metodi bor. Bu metodni uzib olib, unga 'call' metodi orqali 'user' kontekstini bering va chaqirib 'res' ga tenglang.",
+      startingCode: "let user = { name: 'Olim', getName() { return this.name; } };\nlet func = user.getName;\n// func ni chaqirib 'res' ga tenglang (call ishlating)\n",
+      hint: "let res = func.call(user);",
+      test: "if(typeof res === 'undefined' || res !== 'Olim') throw new Error('res ga call qilinmagan');"
     },
     {
       id: 3,
-      title: "3️⃣ Lost Context (O'rta)",
-      instruction: "Method'ni o'zgaruvchiga saqlasa, this yo'qolishini ko'rsating.",
-      startingCode: "const user = {\n  ism: 'Ali',\n  greet: function() {\n    return this.ism;\n  }\n};\n\nconst greetFunc = user.greet;\nconsole.log(greetFunc()); // nima qaytadi?",
-      hint: "Javob: undefined (this yo'qoladi)",
-      test: "if (greetFunc() === undefined) return null; return 'Context lost o\\'rtildi!';"
+      title: "This va Arrow Function",
+      instruction: "Sizga 'robot' obyekti berilgan. Unda 'name' bor. Ammo 'greet' metodi ichidagi setTimeout da oddiy funksiya ishlatilgani uchun xato. Uni Arrow Function (=>) ga aylantirib to'g'irlang, to 'result' ga robot nomi tushsin.",
+      startingCode: "let result = '';\nlet robot = {\n  name: 'Robo',\n  greet() {\n    setTimeout(function() {\n      result = this.name;\n    }, 10);\n  }\n};\nrobot.greet();",
+      hint: "function() ni () => qilib o'zgartiring.",
+      test: "const ast = arguments[0]; if(!ast.includes('() =>') && !ast.includes('=>')) throw new Error('Arrow function ishlatilmagan');"
     },
     {
       id: 4,
-      title: "4️⃣ Call Metodi (O'rta)",
-      instruction: "call() yordamida boshqa object'ning metodini chaqiring.",
-      startingCode: "const user1 = { ism: 'Ali' };\nconst user2 = { ism: 'Zara' };\n\nfunction greet() {\n  return 'Salom, ' + this.ism;\n}\n\n// Kodni shu yerda yozing\nconst result = greet.call(user2);",
-      hint: "greet.call(user2)",
-      test: "if (result === 'Salom, Zara') return null; return 'call() ishlatilmadi!';"
+      title: "Bind ishlating",
+      instruction: "'dog' obyekti (name: 'Rex') berilgan. Bizda global 'bark' funksiyasi bor (this.name + ' barks' qaytaradi). 'bark' ni 'dog' ga bind qilib, natijani 'boundBark' o'zgaruvchisiga oling va uni ishga tushirib 'res' ga saqlang.",
+      startingCode: "let dog = { name: 'Rex' };\nfunction bark() { return this.name + ' barks'; }\n// boundBark ni yarating va chaqirib res ga tenglang",
+      hint: "let boundBark = bark.bind(dog); let res = boundBark();",
+      test: "if(typeof res === 'undefined' || res !== 'Rex barks') throw new Error('bind xato ishlangan');"
     },
     {
       id: 5,
-      title: "5️⃣ Apply Metodi (O'rta)",
-      instruction: "apply() yordamida parametrlarni array bilan o'tkazing.",
-      startingCode: "function introduce(greeting, emoji) {\n  return emoji + ' ' + greeting + ', ' + this.ism;\n}\n\nconst user = { ism: 'Ali' };\n\n// Kodni shu yerda yozing\nconst result = introduce.apply(user, ['Salom', '👋']);",
-      hint: "introduce.apply(user, ['Salom', '👋'])",
-      test: "if (result.includes('Salom') && result.includes('Ali')) return null; return 'apply() xato!';"
+      title: "Apply yordamida ishlash",
+      instruction: "Math.max ga massiv ichidan eng kattasini topishni o'rgating. apply ishlating: Math.max.apply(null, arr). Natijani 'max' ga saqlang.",
+      startingCode: "let arr = [1, 5, 2];\n// max ni e'lon qiling",
+      hint: "let max = Math.max.apply(null, arr);",
+      test: "if(typeof max === 'undefined' || max !== 5) throw new Error('apply ishlashida xatolik');"
     },
     {
       id: 6,
-      title: "6️⃣ Bind Metodi (O'rta)",
-      instruction: "bind() yordamida this fixed qilgan yangi funksiya yarating.",
-      startingCode: "const user = { ism: 'Ali' };\n\nfunction getName() {\n  return this.ism;\n}\n\n// Kodni shu yerda yozing\nconst getAliName = getName.bind(user);\nconsole.log(getAliName());",
-      hint: "const getAliName = getName.bind(user);",
-      test: "if (getAliName() === 'Ali') return null; return 'bind() ishlatilmadi!';"
+      title: "Nuqtadan oldingi obyekt",
+      instruction: "'player.score' = 10, 'player.addScore()' deb metod yozing, u o'zining score sini 1 ga oshirsin. Funksiyani oxirida 'player.addScore()' deb chaqiring.",
+      startingCode: "let player = {\n  score: 10,\n  // addScore metodini yozing\n};\n",
+      hint: "addScore() { this.score++; }",
+      test: "if(!player || player.score !== 11) throw new Error('score oshirilmadi yoki this ishlashida xato');"
     },
     {
       id: 7,
-      title: "7️⃣ Arrow vs Regular (O'rta)",
-      instruction: "Arrow funksiyada this parent context'dan olinishini ko'rsating.",
-      startingCode: "const calculator = {\n  num: 10,\n  // XATO - Arrow\n  getArrow: () => {\n    return this.num;\n  },\n  // TO'G'RI - Regular\n  getRegular: function() {\n    return this.num;\n  }\n};\n\nconsole.log('Arrow:', calculator.getArrow()); // undefined\nconsole.log('Regular:', calculator.getRegular()); // 10",
-      hint: "Arrow: undefined, Regular: 10",
-      test: "if (calculator.getRegular() === 10 && calculator.getArrow() === undefined) return null; return 'Arrow vs Regular xato!';"
+      title: "Bir xil metod boshqa obyektda",
+      instruction: "'sayHello' funksiyasi e'lon qilingan. Ikkita obyekt: 'obj1' (name:'A') va 'obj2' (name:'B'). 'sayHello' ni ikkala obyekt ichiga kalit qilib (speak) qo'ying va 'res1 = obj1.speak()', 'res2 = obj2.speak()' qiling.",
+      startingCode: "function sayHello() { return this.name; }\nlet obj1 = { name: 'A', speak: sayHello };\nlet obj2 = { name: 'B', speak: sayHello };\n// res1 va res2 yarating",
+      hint: "let res1 = obj1.speak(); let res2 = obj2.speak();",
+      test: "if(typeof res1 === 'undefined' || typeof res2 === 'undefined' || res1 !== 'A' || res2 !== 'B') throw new Error('Obyekt thislari adashib ketdi');"
     },
     {
       id: 8,
-      title: "8️⃣ Constructor va New (O'rta)",
-      instruction: "new yordamida objekt yaratish, this = yangi obje.",
-      startingCode: "function Robot(ism) {\n  // Kodni shu yerda yozing: this.ism = ism\n}\n\nconst robot = new Robot('R2D2');\nconsole.log(robot.ism); // 'R2D2'",
-      hint: "this.ism = ism;",
-      test: "if (robot.ism === 'R2D2') return null; return 'Constructor xato!';"
+      title: "Arrow metod xatosi",
+      instruction: "Quyidagi obyekt metodini arrow funksiya qilib yozilgan. U 'undefined' qaytaradi. Buni tuzatib, oddiy funksiya holatiga o'tkazing.",
+      startingCode: "let box = {\n  color: 'blue',\n  getColor: () => { return this.color; }\n};\n// getColor ni to'g'irlang",
+      hint: "getColor() { return this.color; } qilib yozing.",
+      test: "if(box.getColor() !== 'blue') throw new Error('Arrow function bilan this ishlamaydi, uni oddiy funksiyaga o\'tkazing');"
     },
     {
       id: 9,
-      title: "9️⃣ Callback Arrow (O'rta)",
-      instruction: "forEach callback'iga arrow funksiya bersan, this preserved.",
-      startingCode: "const user = {\\n  ism: 'Ali',\\n  hobbies: ['Kitob', 'Futbol', 'Dasturlash'],\\n  printHobbies() {\\n    // Arrow funksiya kerak\\n    this.hobbies.forEach((hobby) => {\\n      console.log(this.ism + ': ' + hobby);\\n    });\\n  }\\n};\\nuser.printHobbies();",
-      hint: "this.hobbies.forEach((hobby) => { ... });",
-      test: "if (code.includes('=>')) return null; return 'Arrow callback ishlatilmadi!';"
+      title: "Metod zanjirlari (Chaining)",
+      instruction: "Ladder (narvon) obyektida 'up()' va 'down()' va 'showStep()' metodlari bor. Ular zanjirli tarzda 'ladder.up().up().showStep()' ishlashi uchun har bir metod oxirida 'this' ni qaytarish (return this;) kerak.",
+      startingCode: "let ladder = {\n  step: 0,\n  up() { this.step++; /* nimanidir qaytarish kerak */ },\n  down() { this.step--; /* nimanidir qaytarish kerak */ },\n  showStep() { return this.step; }\n};",
+      hint: "up va down metodlari ichida oxirida 'return this;' yozing.",
+      test: "if(ladder.up().up().down().showStep() !== 1) throw new Error('return this yozilmagan');"
     },
     {
       id: 10,
-      title: "🔟 Event Listener (O'rta)",
-      instruction: "Event listener'da this = event target.",
-      startingCode: "// HTML: <button id='btn'>Click</button>\n\nconst btn = document.getElementById('btn');\n\n// YAXSHI - Regular: this = button\nbtn.addEventListener('click', function() {\n  console.log(this); // button element\n  console.log(this.id); // 'btn'\n});\n\n// XATO - Arrow: this = window\n// btn.addEventListener('click', () => {\n//   console.log(this); // window (xato!)\n// });",
-      hint: "Regular funksiyada this = button",
-      test: "if (code.includes('function()')) return null; return 'Event listener xato!';"
-    },
-    {
-      id: 11,
-      title: "1️⃣1️⃣ Method Chaining (Qiyin)",
-      instruction: "return this; orqali chaining qilgan metodlar yarating.",
-      startingCode: "const calculator = {\n  value: 0,\n  \n  add(n) {\n    this.value += n;\n    return this; // Chaining uchun\n  },\n  \n  multiply(n) {\n    this.value *= n;\n    return this; // Chaining uchun\n  },\n  \n  getValue() {\n    return this.value;\n  }\n};\n\n// Kodni shu yerda yozing: Chaining\nconst result = calculator.add(5).multiply(2).getValue();\nconsole.log(result); // (0 + 5) * 2 = 10",
-      hint: "calculator.add(5).multiply(2).getValue()",
-      test: "if (result === 10) return null; return 'Chaining xato!';"
-    },
-    {
-      id: 12,
-      title: "1️⃣2️⃣ Combine: Class + This + Binding (Eng Qiyin)",
-      instruction: "Class'da metodni event listener'ga bind qiling.",
-      startingCode: "class Counter {\n  constructor() {\n    this.count = 0;\n    // Kodni shu yerda yozing: bind\n    // this.button.addEventListener('click', this.increment.bind(this));\n  }\n  \n  increment() {\n    this.count++;\n    console.log('Count: ' + this.count);\n  }\n}\n\nconst counter = new Counter();",
-      hint: "this.increment.bind(this) - this fixed qilish",
-      test: "if (code.includes('bind')) return null; return 'Binding xato!';"
+      title: "This va Class konstruktorlari",
+      instruction: "Person nomli Class bor. Constructor ichida ismni qabul qilib, uni 'this.name' ga tenglashtiring. Keyin 'let p = new Person(\\'Aziz\\');' yarating.",
+      startingCode: "class Person {\n  constructor(name) {\n    // ismni this.name ga bering\n  }\n}\n// p obyekti yarating",
+      hint: "this.name = name; yozing, va let p = new Person('Aziz');",
+      test: "if(typeof p === 'undefined' || p.name !== 'Aziz') throw new Error('Class constructor da this ishlatishda xato');"
     }
   ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "Quyidagi kodda obyekt metodi ichida oddiy funksiya chaqirilganda `this` nima natija beradi?\n```javascript\nconst obj = { \n  name: \"Ali\",\n  greet() {\n    function inner() {\n      console.log(this.name);\n    }\n    inner();\n  }\n};\nobj.greet();\n```",
-    "options": ["\"Ali\"", "undefined yoki window.name", "ReferenceError", "TypeError"],
-    "correctAnswer": 1,
-    "explanation": "Metod ichida regular (oddiy) funksiya `inner()` chaqirilganda, u hech qanday obyektsiz chaqirilgan hisoblanadi. JavaScript qoidasiga ko'ra, bi-argumentsiz chaqirilgan oddiy funksiyalarning `this`i global obyektga (window) yoki strict rejimda `undefined`ga ishora qiladi."
-  },
-  {
-    "id": 2,
-    "question": "Nested method ichida arrow funksiya ishlatilsa nima chiqadi?\n```javascript\nconst obj = { \n  name: \"Ali\",\n  greet() {\n    const inner = () => {\n      console.log(this.name);\n    };\n    inner();\n  }\n};\nobj.greet();\n```",
-    "options": ["\"Ali\"", "undefined yoki window.name", "ReferenceError", "TypeError"],
-    "correctAnswer": 0,
-    "explanation": "Arrow funksiyalarda o'ziga xos `this` bo'lmaydi. U o'zi aniqlangan joydagi tashqi funksiyaning (ya'ni `greet` metodining) `this` kontekstini meros qilib oladi. `greet` metodi `obj` orqali chaqirilgani uchun `this` -> `obj` bo'ladi va `this.name` \"Ali\" ni qaytaradi."
-  },
-  {
-    "id": 3,
-    "question": "`call` va `apply` metodlarining asosiy farqi nimada?\n```javascript\nfunction greet(msg, emoji) { ... }\n```",
-    "options": [
-      "`call` yangi funksiya qaytaradi, `apply` esa darhol chaqiradi",
-      "`call` argumentlarni ketma-ket qabul qiladi, `apply` esa massiv (array) ko'rinishida qabul qiladi",
-      "`call` faqat obyektlarda, `apply` faqat massivlarda ishlaydi",
-      "Hech qanday farqi yo't"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Ikkala metod ham funksiyadagi `this` kontekstini qo'lda sozlab darhol chaqirishga xizmat qiladi. Ularning yagona farqi: `call` qo'shimcha argumentlarni vergul bilan ketma-ket qabul qilsa (arg1, arg2), `apply` ularni yagona massiv ichida qabul qiladi ([arg1, arg2])."
-  },
-  {
-    "id": 4,
-    "question": "Ketma-ket bog'langan `bind` metodlari natijasi nima chiqadi?\n```javascript\nfunction f() {\n  console.log(this.x);\n}\nconst bound = f.bind({x: 1}).bind({x: 2});\nbound();\n```",
-    "options": ["1", "2", "undefined", "TypeError"],
-    "correctAnswer": 0,
-    "explanation": "JavaScriptda `bind` yordamida yaratilgan yangi funksiya o'zining kontekstini butunlay bog'lab oladi. Uni keyinchalik boshqa bind yordamida ikkinchi marta qayta bog'lab (re-bind) bo'lmaydi, kontekst har doim birinchi bind bo'lgan obyektga ishora qiladi."
-  },
-  {
-    "id": 5,
-    "question": "Arrow funksiyaning kontekstini `call` orqali o'zgartirsa nima bo'ladi?\n```javascript\nconst f = () => console.log(this.x);\nf.call({x: 10});\n```",
-    "options": ["10", "undefined yoki window.x", "ReferenceError", "TypeError"],
-    "correctAnswer": 1,
-    "explanation": "Arrow funksiyalarda dynamic `this` mavjud emas va ularning lexical `this`ini `call()`, `apply()` yoki `bind()` yordamida qayta bog'lab yoki o'zgartirib bo'lmaydi. Ular chaqirilganda har doim o'zining original lexical contextini (bu yerda global context) ishlataveradi."
-  },
-  {
-    "id": 6,
-    "question": "`strict mode` (qat'iy rejim) yoqilganda, global funksiya chaqirilganda funksiya ichidagi `this` nimaga teng bo'ladi?",
-    "options": [
-      "window (brauzerda) yoki global (Node.js'da)",
-      "undefined",
-      "Bo'sh obyekt {}",
-      "Xatolik yuz berib dastur to'xtaydi (TypeError)"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Strict mode (qat'iy rejim) yoqilganda, global kontekstda yoki shunchaki chaqirilgan funksiyalar ichidagi default `this` qiymati `window` emas, balki `undefined` bo'ladi. Bu tasodifiy xatoliklarning oldini oladi."
-  },
-  {
-    "id": 7,
-    "question": "Quyidagi kod vaqtinchalik ishga tushganda konsolda nima chiqadi?\n```javascript\nconst user = {\n  name: \"Bobur\",\n  greet() {\n    setTimeout(function() {\n      console.log(this.name);\n    }, 100);\n  }\n};\nuser.greet();\n```",
-    "options": [
-      "\"Bobur\"",
-      "undefined (yoki window.name)",
-      "ReferenceError",
-      "TypeError"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`setTimeout` ichidagi oddiy funksiya (regular function) asinxron chaqirilganda, u global obyekt (`window`) kontekstida ishlaydi. Shuning uchun `this.name` `undefined` bo'ladi."
-  },
-  {
-    "id": 8,
-    "question": "JavaScript-da `this` kalit so'zining qiymati qachon aniqlanadi?",
-    "options": [
-      "Kod yozilayotganda (lexical analysis bosqichida)",
-      "Kod runtime-da ishga tushib, funksiya bevosita chaqirilayotgan paytda (runtime execution)",
-      "Sahifa to'liq yuklangandan keyin (DOM load)",
-      "Faqat serverda ishlayotganda"
-    ],
-    "correctAnswer": 1,
-    "explanation": "JavaScript-da `this` - dynamic binding bo'lib, uning qiymati funksiyaning qayerda yozilganiga qarab emas, balki runtime-da qanday chaqirilganiga qarab aniqlanadi."
-  },
-  {
-    "id": 9,
-    "question": "Quyidagi chain (zanjir) chaqiruvda `this` qiymati qanday o'zgaradi?\n```javascript\nconst obj = {\n  val: 5,\n  add(x) { this.val += x; return this; },\n  mul(y) { this.val *= y; return this; }\n};\nconsole.log(obj.add(2).mul(3).val);\n```",
-    "options": [
-      "Xatolik yuz beradi, chunki add() natijasi son bo'ladi",
-      "21 chiqadi, chunki return this tufayli zanjirli chaqirishda this doim objga teng bo'ladi",
-      "15 chiqadi, chunki mul() original obyektni o'zgartirmaydi",
-      "undefined chiqadi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Metodlar `return this;` qaytargani uchun har bir chaqiruvdan keyin `this` (ya'ni `obj`) qaytadi va zanjir (method chaining) davom etib boradi. Natija: (5 + 2) * 3 = 21."
-  },
-  {
-    "id": 10,
-    "question": "Event listener funksiyasida `this` muammosini hal etish uchun `handleClick.bind(this)` ishlatilganda, `bind` yangi funksiya yaratadimi?",
-    "options": [
-      "Yo'q, u shunchaki original funksiyaning o'zini o'zgartiradi",
-      "Ha, u original funksiyaning nusxasini olib, unga this konteksti abadiy bog'langan yangi funksiya qaytaradi",
-      "Ha, lekin u faqat strict mode-da ishlaydi",
-      "Yo'q, u funksiyani asinxron funksiyaga aylantiradi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`bind()` metodi original funksiyani o'zgartirmaydi, balki uning nusxasini yaratib, ko'rsatilgan `this` konteksti bog'langan mutlaqo yangi funksiyani qaytaradi."
-  },
-  {
-    "id": 11,
-    "question": "JavaScript-da constructor funksiyalarda `this` qachon avtomatik ravishda `undefined` bo'lishi mumkin?",
-    "options": [
-      "Agar constructor funksiya `new` kalit so'zisiz chaqirilsa",
-      "Agar funksiya nomi kichik harf bilan boshlansa",
-      "Agar funksiya parametr qabul qilmasa",
-      "Agar strict mode o'chirilgan bo'lsa"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Agar constructor funksiya `new` kalit so'zisiz chaqirilsa, u oddiy funksiya kabi default binding bo'yicha ishlaydi va strict mode bo'lsa `this` `undefined` bo'ladi."
-  },
-  {
-    "id": 12,
-    "question": "Quyidagi kodda `this` qanday qiymat qaytaradi?\n```javascript\nclass Light {\n  turnOn() {\n    console.log(this);\n  }\n}\nconst deskLamp = new Light();\nconst turn = deskLamp.turnOn;\nturn();\n```",
-    "options": [
-      "deskLamp obyekti",
-      "window yoki global obyekt",
-      "undefined",
-      "Light klassining o'zi"
-    ],
-    "correctAnswer": 2,
-    "explanation": "ES6 klasslari ichidagi barcha kodlar avtomatik ravishda strict mode-da ishlaydi. Shuning uchun, deskLamp'dan ajratib olingan `turn()` funksiyasi obyektsiz chaqirilganda uning ichidagi `this` qiymati `undefined` bo'ladi."
-  }
-]
-
+    {
+      id: 1,
+      question: "JavaScriptda 'this' kalit so'zi umuman olganda nimani bildiradi?",
+      options: [
+        "Joriy HTML faylini",
+        "Eng yaqin if/else blokini",
+        "Dastur ishlayotgan qattiq disk joylashuvini",
+        "Joriy funksiya qaysi kontekst (obyekt) tomonidan chaqirilganligini"
+      ],
+      correctAnswer: 3,
+      explanation: "This so'zi funksiya kim tomonidan chaqirilayotgan bo'lsa (kontekst) shunga teng bo'ladi."
+    },
+    {
+      id: 2,
+      question: "user.sayHi() deb chaqirilganda, sayHi funksiyasi ichida 'this' nimaga teng bo'ladi?",
+      options: [
+        "window obyekti",
+        "user obyekti",
+        "sayHi funksiyasiga",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Nuqtadan oldin user bo'lgani uchun this=user hisoblanadi."
+    },
+    {
+      id: 3,
+      question: "Agar sayHi funksiyasini hech qanday obyektsiz oddiy 'sayHi()' deb chaqirsak ('use strict' yozilmagan), 'this' nima bo'ladi?",
+      options: [
+        "null",
+        "undefined",
+        "Global obyekt (window)",
+        "Xatolik (Error) kelib chiqadi"
+      ],
+      correctAnswer: 2,
+      explanation: "Strict mode yo'q holatda brauzer global window ob'ektini this qilib beradi."
+    },
+    {
+      id: 4,
+      question: "Qat'iy ('use strict') rejimda oddiy funksiya ichida 'this' nimaga teng bo'ladi?",
+      options: [
+        "window",
+        "undefined",
+        "Error",
+        "null"
+      ],
+      correctAnswer: 1,
+      explanation: "Qat'iy rejimda tasodifan window xossalarini o'zgartirib yubormaslik uchun this undefined ga aylanadi."
+    },
+    {
+      id: 5,
+      question: "Arrow function (yo'naltiruvchi funksiya) ichida 'this' nimaga teng bo'ladi?",
+      options: [
+        "Doim window",
+        "O'zini o'rab turgan eng yaqin oddiy funksiya yoki muhitning 'this' iga",
+        "O'zining qattiq this obyektiga",
+        "Doim undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Arrow function larning o'zining thisi yo'q. Ular this ni tashqi scope dan olishadi (Lexical scoping)."
+    },
+    {
+      id: 6,
+      question: "Obyekt ichida metodni qanday funksiya sifatida e'lon qilish asosan *yomonroq* (xato) hisoblanadi (this jihatidan)?",
+      options: [
+        "Oddiy function(){} yordamida",
+        "Qisqacha method() {} yordamida",
+        "Arrow function () => {} yordamida",
+        "Hech qaysi, hammasi to'g'ri ishlaydi"
+      ],
+      correctAnswer: 2,
+      explanation: "Arrow function obyektdagi metod uchun yozilsa, uning thisi global bo'lib qoladi va this propertylarni topa olmaydi."
+    },
+    {
+      id: 7,
+      question: "Qaysi metod yordamida funksiyaga o'zimiz majburan 'this' ni bog'lab (hard-bind) qo'ya olamiz?",
+      options: [
+        "link()",
+        "bind()",
+        "join()",
+        "attach()"
+      ],
+      correctAnswer: 1,
+      explanation: "bind(obj) orqali biz yangi funksiya qaytaramiz va uning bu holatdagi this si majburan obj ga tushadi."
+    },
+    {
+      id: 8,
+      question: "call() va apply() ning bind() dan asosiy farqi nimada?",
+      options: [
+        "call/apply funksiyani o'sha zahoti chaqiradi, bind esa yangi funksiya yaratadi va kutadi",
+        "Hamma hollarda uchalasi ham aynan bir xil ishlaydi",
+        "bind brauzerni qotirib qo'yadi",
+        "call faqat Node.js uchun"
+      ],
+      correctAnswer: 0,
+      explanation: "bind faqat funksiyani bog'lab saqlab qoladi. call va apply esa bog'lash bilan birga uni zudlik bilan bajarib yuboradi."
+    },
+    {
+      id: 9,
+      question: "call() bilan apply() ning o'zaro farqi nimada?",
+      options: [
+        "Farqi yo'q, shunchaki sinonimlar",
+        "call parametrlarini ketma-ket qabul qiladi (func.call(this, a, b)), apply esa massiv qabul qiladi (func.apply(this, [a, b]))",
+        "apply tezroq ishlaydi",
+        "call ob'ekt qaytaradi, apply array"
+      ],
+      correctAnswer: 1,
+      explanation: "a - array, c - comma. Apply massiv oladi, Call ketma-ketlik."
+    },
+    {
+      id: 10,
+      question: "Metodlarni zanjir qilib ulab ishlash uchun (masalan obj.up().down().show()) metod nima qaytarishi kerak?",
+      options: [
+        "return true;",
+        "return null;",
+        "Hech narsa qaytarmasligi kerak",
+        "return this;"
+      ],
+      correctAnswer: 3,
+      explanation: "Agar obyekt o'zining reference'ini (this) qaytarsa, davomidan yana o'sha obyektning boshqa metodini yozish imkoni bo'ladi."
+    },
+    {
+      id: 11,
+      question: "Nega 'setTimeout' ichida oddiy funksiya ishlatsak obyekt metodlarida 'this' undefined yoki window bo'lib qoladi?",
+      options: [
+        "Chunki setTimeout uni Global scope da oddiy funksiya sifatida obyektdan uzib chaqiradi",
+        "Chunki setTimeout eskirgan funksiya",
+        "Brauzer virusdan himoya qiladi",
+        "Chunki setTimeout 1000ms dan koproq kuttiradi"
+      ],
+      correctAnswer: 0,
+      explanation: "setTimeout funksiyani xuddi func() ko'rinishida argument sifatida olib boshqa joydan chaqiradi, shuning uchun nuqtadan oldingi obyekt yo'qoladi."
+    },
+    {
+      id: 12,
+      question: "'this' ning qaysi til qoidasiga ko'ra hal bo'lishi asosan qanday ataladi?",
+      options: [
+        "Static scoping",
+        "Dynamic scoping (Runtime context)",
+        "Lexical error",
+        "Compiler bind"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScriptda this dinamik ravishda (runtime da) kim chaqirganiga qarab bog'lanadi."
+    }
+  ]
 };
