@@ -1,385 +1,362 @@
 export const functions = {
   id: "functions",
-  title: "Funksiyalar va Scope",
+  title: "Funksiya Turlari: Declaration, Expression, Arrow",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `# Funksiyalar (Functions)
 
-### Funksiya va Scope nima?
-* **Funksiya (Function):** Bu dasturning biror-bir muayyan vazifani bajarishga mo'ljallangan, qayta-qayta ishlatilishi mumkin bo'lgan kod blokidir.
-* **Scope (Qamrov doirasi):** Bu o'zgaruvchilar va funksiyalarning koddagi "ko'rinish" yoki ularga kirish huquqining doirasidir.
+JavaScriptda funksiyalar kodning eng asosiy "ishchi kuchi" hisoblanadi. 
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, sizda **oshxona va taom tayyorlash mashinasi** bor:
-* **Funksiya:** Bu mikser. Siz unga masalliqlarni solasiz (parametrlar), u ularni aralashtiradi (kod bajarilishi) va sizga tayyor mahsulotni qaytaradi (return).
-* **Scope (Global va Local):** 
-  * **Global Scope:** Sizning butun uyingiz. 
-  * **Local Scope (Mikser ichi):** Mikserning ichidagi pichoqlar faqat o'sha mikser ichida mavjud.
+Tasavvur qiling, funksiya — bu **Retsept bo'yicha ishlaydigan Oshpaz Robot**. 
+Siz unga masalliqlarni berasiz (parametrlar), u ichkarida nimanidir pishiradi (kod bajarilishi) va sizga tayyor ovqatni qaytaradi (return). 
+
+Eng qizig'i, siz bu robotni turli yo'llar bilan sotib olishingiz yoki yasashingiz mumkin. Keling, JavaScriptdagi 3 xil "robot yasash" (funksiya yaratish) turlarini ko'rib chiqamiz.
 
 ---
 
-## 2. 💻 Real Kod Misollari
+## 1. Function Declaration (E'lon qilish)
 
-### 1. Basic Example (Oddiy Funksiya e'loni)
+Bu eng an'anaviy va klassik usuldir. Xuddi davlat ro'yxatidan o'tgan zavod kabi.
+
 \`\`\`javascript
-function calculateArea(width, height) {
-  const area = width * height;
-  return area; 
+function pishir(ovqat) {
+  return ovqat + " tayyor!";
 }
-console.log(calculateArea(5, 4)); // 20
+
+console.log( pishir("Palov") ); // Palov tayyor!
 \`\`\`
 
-### 2. Intermediate Example (Scope farqi)
-\`\`\`javascript
-const globalName = "Sardor"; 
+### Qoidasi: Hoisting (Yuqoriga ko'tarilish)
+Bu funksiya turining o'ziga xosligi shundaki, uni koddagi **istalgan joydan** chaqirishingiz mumkin. Hatto uni yaratishdan oldin ham! JavaScript faylni o'qishni boshlaganda hamma "Function Declaration" larni yig'ib faylning eng tepasiga ko'tarib (hoist qilib) qo'yadi.
 
-const introduce = function() {
-  const localRole = "Dasturchi"; 
-  console.log(\`Mening ismim \${globalName}. Men \${localRole}man.\`);
+✅ **YAXSHI:**
+\`\`\`javascript
+sayHello(); // Dastur xato bermaydi, "Salom" chiqadi.
+
+function sayHello() {
+  console.log("Salom");
+}
+\`\`\`
+
+---
+
+## 2. Function Expression (Ifodali funksiya)
+
+Bu usulda biz robotga nom bermaymiz, aksincha uni shunchaki bitta "qutiga" (o'zgaruvchiga) solib qo'yamiz. Bu oddiy qiymat kabi ishlaydi.
+
+\`\`\`javascript
+let pishir = function(ovqat) {
+  return ovqat + " tayyor!";
+}; // Oxirida nuqtali vergul (;) qo'yish tavsiya qilinadi
+\`\`\`
+
+### Qoidasi: Yo'q Hoisting!
+Chunki bu o'zgaruvchi! Dastur o'zgaruvchilarning nomini bilishi mumkin, lekin kod o'sha qatorga kelmaguncha ichidagi funksiya yaratilmaydi.
+
+❌ **YOMON:**
+\`\`\`javascript
+sayHi(); // ERROR! Cannot access 'sayHi' before initialization
+
+let sayHi = function() {
+  console.log("Salom");
 };
-
-introduce(); // "Mening ismim Sardor. Men Dasturchiman."
-// console.log(localRole); // ReferenceError
 \`\`\`
 
-### 3. Advanced Example (Arrow Function, Rest Parameter)
+**Qachon ishlatamiz?** Agar funksiyani boshqa bir funksiyaga argument sifatida (callback) berish kerak bo'lsa yoki shartga qarab har xil funksiya yaratish kerak bo'lsa.
+
+---
+
+## 3. Arrow Function (Yo'naltiruvchi funksiya)
+
+Bu ES6 (2015-yil) da chiqqan eng zamonaviy, eng qisqa va qulay usul. \`function\` degan uzun so'zni yozib o'tirmaymiz. O'rniga \`=>\` (o'q) belgisidan foydalanamiz.
+
 \`\`\`javascript
-const greet = (name = "Mehmon") => \`Salom, \${name}!\`;
-console.log(greet("Lobar")); // "Salom, Lobar!"
-
-const sumAll = (...numbers) => numbers.reduce((a, b) => a + b, 0);
-console.log(sumAll(10, 20, 30)); // 60
+const pishir = (ovqat) => {
+  return ovqat + " tayyor!";
+};
 \`\`\`
 
----
+**Super qisqarish qoidalari:**
+1. Agar faqat 1 ta parametr bo'lsa, qavslarni \`()\` olib tashlash mumkin: \`ovqat => ...\`
+2. Agar ichida faqat 1 qator kod (return) bo'lsa, jingalak qavs \`{}\` va \`return\` so'zini olib tashlash mumkin!
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
-
-### Execution Context va Call Stack
-1. **Creation Phase:** Funksiya chaqirilganda, yangi Execution Context yaratiladi. O'zgaruvchilar xotiradan joy oladi (Hoisting).
-2. **Execution Phase:** Kod satrma-satr bajariladi.
-Funksiya chaqirilganda u **Call Stack** ga yuklanadi va tugagach, undan olib tashlanadi (pop).
-
----
-
-## 4. ❌ Ko'p Uchraydigan Xatolar (YOMON / YAXSHI)
-
-### 1. \`return\` yozishni unutish
-🔴 **YOMON:** 
+✅ **ENGI ZO'R (Eng qisqa) USUL:**
 \`\`\`javascript
-function double(num) {
-  const result = num * 2;
-  // return yo'q
-}
-console.log(double(5)); // undefined
-\`\`\`
-🟢 **YAXSHI:**
-\`\`\`javascript
-function double(num) {
-  return num * 2;
-}
-console.log(double(5)); // 10
+const qisqaPishir = ovqat => ovqat + " tayyor!";
+
+console.log( qisqaPishir("Shashlik") ); // Shashlik tayyor!
 \`\`\`
 
-### 2. Parametr va Argumentlarni chalkashtirish
-🔴 **YOMON:** (Tushunchani chalkashtirish)
-Odamlar ko'pincha "argument" deb funksiya e'lonidagi o'zgaruvchilarni aytishadi.
-🟢 **YAXSHI:**
-* **Parametr:** Funksiya e'lonidagi o'zgaruvchilar \`function add(a, b)\`.
-* **Argument:** Funksiyani chaqirishda berilgan aniq qiymatlar \`add(5, 10)\`.
+### Muhim farqi: This yo'q!
+Arrow funksiyaning eng yirik texnik farqi shundaki, o'zining mutlaqo **\`this\`** (kontekst) so'zi yo'q. U obyekt ichida "mening xususiyatlarim" deb ishlay olmaydi. Shu sababli massiv metodlarida (\`map\`, \`filter\`) va \`setTimeout\` larda ishlatish uchun ideal!
 
 ---
 
-## 5. 💬 12 ta Intervyu Savollari
+## Qaysi birini qachon ishlatish kerak?
 
-1. **Savol:** Function Declaration va Function Expression farqi?
-   * **Javob:** Declaration hoisting bo'ladi, Expression esa o'zgaruvchiga yuklanadi va hoisting bo'lmaydi.
-2. **Savol:** Default parametr nima?
-   * **Javob:** Argument berilmaganda ishlatiladigan standart qiymat.
-3. **Savol:** \`return\` dan keyingi kod ishlaydimi?
-   * **Javob:** Yo'q, u funksiyani darhol to'xtatadi.
-4. **Savol:** Global va Local scope nima?
-   * **Javob:** Global barchaga ko'rinadi, Local faqat funksiya yoki blok ichida.
-5. **Savol:** Rest parametr (\`...args\`) va \`arguments\` farqi?
-   * **Javob:** Rest - haqiqiy massiv, \`arguments\` esa massivsimon obyekt (arrow funksiyalarda yo'q).
-6. **Savol:** Shadowing nima?
-   * **Javob:** Lokal o'zgaruvchi global o'zgaruvchi bilan bir xil nomda bo'lib uni to'sib qo'yishi.
-7. **Savol:** Arrow funksiyaning xususiyatlari?
-   * **Javob:** O'zining \`this\` va \`arguments\`iga ega emas.
-8. **Savol:** Block Scope va Function Scope farqi?
-   * **Javob:** \`let\`/\`const\` blok ichida yashaydi, \`var\` funksiya ichida.
-9. **Savol:** IIFE nima?
-   * **Javob:** Darhol ishga tushuvchi funksiya bo'lib, lokal scope yaratish uchun xizmat qiladi.
-10. **Savol:** Callback funksiya nima?
-    * **Javob:** Boshqa funksiyaga argument sifatida beriladigan funksiya.
-11. **Savol:** Pure Function nima?
-    * **Javob:** Bir xil argumentga doim bir xil natija qaytaradigan va nojo'ya ta'siri yo'q funksiya.
-12. **Savol:** Stack Overflow nima?
-    * **Javob:** Call stack to'lib ketishi, ko'pincha to'xtovsiz rekursiya sababli.
+* **Arrow Function (=>):** Har doim birinchi tanlovingiz bo'lsin! U qisqa, tushunarli va kontekst (this) bilan bog'liq boshog'riqlarsiz. Ko'pchilik zamonaviy loyihalar (React, Node.js) to'liq Arrow function larda yoziladi.
+* **Function Declaration:** Agar siz kodning tuzilishi (arxitektura) nuqtai nazaridan yordamchi funksiyalarni faylning eng pastida saqlab, ularni yuqorida erkin ishlatmoqchi bo'lsangiz (Hoisting uchun) ishlating.
+* **Function Expression:** Hozirgi kunda kamdan-kam alohida ishlatiladi (o'rnini Arrow egallagan), faqat ba'zi eskirgan kodlarda (legacy) ko'rishingiz mumkin.
 
 ---
 
-## 6. 🛠️ Amaliy Topshiriqlar
+## Mermaid Diagramma (Farqlari)
+
+Quyida 3 xil funksiya o'rtasidagi asosiy farqlarni ko'ramiz:
 
 \`\`\`mermaid
-graph TD
-    Caller["Chaqiruvchi Kontekst"] -->|C = 20| FEC["Funksiya Execution Context"]
-    subgraph FEC ["Funksiya Execution Context"]
-        Params["celsius = 20"]
-        LocalVars["fahrenheit = celsius * 9/5 + 32"]
-        ReturnStmt["return fahrenheit"]
-        Params --> LocalVars
-        LocalVars --> ReturnStmt
-    end
-    ReturnStmt -->|68| Caller
+flowchart TD
+    A[Funksiya Yaratish] --> B[Function Declaration]
+    A --> C[Function Expression]
+    A --> D[Arrow Function]
+    
+    B -->|function myFunc()| B1{Hoisting ishlaydimi?}
+    B1 -- Ha --> B2[Koddagi istalgan joydan chaqirish mumkin]
+    
+    C -->|let func = function()| C1{Hoisting ishlaydimi?}
+    C1 -- Yo'q --> C2[Faqat e'lon qilingandan keyin ishlaydi]
+    
+    D -->|const func = () =>| D1{This ga egami?}
+    D1 -- Yo'q --> D2[Tashqaridagi this ni ishlatadi, Hoisting ishlamaydi]
 \`\`\`
 
 ---
 
-## 7. 📝 12 ta Mini Test
+## 🎙 Intervyu savollari
 
-Dars oxiridagi testlarni yechishni unutmang.
+**1. Function Declaration va Expression orasidagi farq nima?**
+**Javob:** Eng katta farqi — bu **Hoisting**. Declaration dastur ishga tushishidan oldin to'liq yuqoriga ko'tariladi va uni istalgan joydan chaqirish mumkin. Expression esa oddiy o'zgaruvchi kabi ishlaydi, u o'qilmaguncha chaqirib bo'lmaydi.
 
----
+**2. Arrow Function larni qanday yutuqlari va kamchiliklari bor?**
+**Javob:** Yutug'i: Sintaksisi juda qisqa va o'zining \`this\` iga ega bo'lmagani uchun ichki funksiyalarda (masalan callbacks) kontekst yo'qolishining oldini oladi. Kamchiligi: O'zining \`this\` iga ega emasligi uchun obyektlarning ichidagi oddiy metod (masalan \`user.sayHi()\`) sifatida ishlatib bo'lmaydi va \`new\` kalit so'zi orqali Constructor sifatida ham ishlatib bo'lmaydi.
 
-## 8. 🎯 Real Project Case Study
-
-### Savdo Savatchasi
-\`\`\`javascript
-const calculateItem = (price, qty = 1) => price * qty;
-
-function getCartTotal(items) {
-  let total = 0;
-  for (const item of items) {
-    total += calculateItem(item.price, item.qty);
-  }
-  return total;
-}
-\`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-* Funksiyalarni sikl ichida yaratmang.
-* Sof (pure) funksiyalar yarating.
-* Yagona mas'uliyat tamoyiliga (SRP) qat'iy amal qiling.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Turi | Sintaksis | Hoisting | \`this\` |
-| :--- | :--- | :--- | :--- |
-| **Declaration** | \`function foo(){}\` | Ha | Dinamik |
-| **Expression** | \`const foo = function(){}\` | Yo'q | Dinamik |
-| **Arrow** | \`const foo = () => {}\` | Yo'q | Leksik |
-`,
+**3. "First-class citizens" (Birinchi darajali fuqarolar) deganda JS-da nima tushuniladi?**
+**Javob:** JavaScriptda funksiyalar qiymat hisoblanadi! Boshqa raqamlar yoki stringlar kabi. Funksiyani o'zgaruvchiga tenglash, boshqa funksiyaga argument sifatida berish (callback) yoki return qilib yuborish mumkinligi ularni First-class objects qilib belgilaydi.`,
   exercises: [
     {
       id: 1,
-      title: "Selsiyni Farengeytga O'tkazish",
-      instruction: "`celsiusToFahrenheit(celsius)` funksiyasini yozing. Formula: `F = C * 9/5 + 32`.",
-      startingCode: "function celsiusToFahrenheit(celsius) {\n  \n}",
-      hint: "return celsius * 9/5 + 32;",
-      test: "const fn = new Function(code + '; return celsiusToFahrenheit;')(); if(fn(0)!==32) return 'Xato'; return null;"
+      title: "Function Declaration",
+      instruction: "'multiply' nomli funksiyani Declaration usulida yarating (function ...). U ikkita argument (a va b) qabul qilib, ularning ko'paytmasini qaytarsin (return).",
+      startingCode: "// multiply funksiyasini yozing",
+      hint: "function multiply(a, b) { return a * b; }",
+      test: "if (typeof multiply !== 'function' || multiply(2, 3) !== 6) throw new Error('Declaration usulida yaratilmadi yoki xato ishladi');"
     },
     {
       id: 2,
-      title: "O'rtacha Qiymat",
-      instruction: "`calculateAverage(...numbers)` yarating, sonlarning o'rtachasini qaytarsin. Agar bomb'sh bo'lsa 0 qaytsin.",
-      startingCode: "function calculateAverage(...numbers) {\n  \n}",
-      hint: "if(!numbers.length) return 0; return numbers.reduce((a,b)=>a+b)/numbers.length;",
-      test: "const fn = new Function(code + '; return calculateAverage;')(); if(fn(10,20)!==15) return 'Xato'; if(fn()!==0) return '0 qaytishi kerak'; return null;"
+      title: "Hoisting Testi",
+      instruction: "'greet' funksiyasi yaratilishidan oldin 'let res = greet(\\'Ali\\');' deb yozing. Keyin pastda 'greet' funksiyasini Declaration orqali yarating, u 'Salom ' + ism qaytarsin.",
+      startingCode: "// shu yerda res ga tenglashtiring\n\n// pastda funksiyani yozing",
+      hint: "let res = greet('Ali'); function greet(ism) { return 'Salom ' + ism; }",
+      test: "if (typeof res === 'undefined' || res !== 'Salom Ali') throw new Error('Hoisting xato ishladi');"
     },
     {
       id: 3,
-      title: "Unli Tovushlar Soni",
-      instruction: "`countVowels(str)` yozing, faqat `a,e,i,o,u` sonini qaytarsin.",
-      startingCode: "function countVowels(str) {\n  \n}",
-      hint: "str.match(/[aeiou]/gi)?.length || 0 ishlatishingiz mumkin.",
-      test: "const fn = new Function(code + '; return countVowels;')(); if(fn('hello')!==2) return 'Xato'; return null;"
+      title: "Function Expression",
+      instruction: "'subtract' nomli o'zgaruvchiga Function Expression orqali ikkita sonning ayirmasini (a - b) hisoblovchi anonim funksiyani tenglashtiring.",
+      startingCode: "let subtract = // funksiyani yozing",
+      hint: "function(a, b) { return a - b; }",
+      test: "if (typeof subtract !== 'function' || subtract(5, 2) !== 3) throw new Error('Expression xato yozildi');"
     },
     {
       id: 4,
-      title: "Sonning Kvadrati",
-      instruction: "`square(n)` n*n ni qaytarsin.",
-      startingCode: "function square(n) {\n  \n}",
-      hint: "return n*n;",
-      test: "const fn = new Function(code + '; return square;')(); if(fn(5)!==25) return 'Xato'; return null;"
+      title: "Expression va Hoisting",
+      instruction: "'calc' degan funksiyani Expression (let calc = function...) orqali yozing. Lekin undan tepada chaqirishga urinib ko'ring (try catch ichida berilgan). Buni shunchaki ishga tushiring.",
+      startingCode: "let errorMsg = '';\ntry {\n  calc(5);\n} catch(e) {\n  errorMsg = e.name;\n}\nlet calc = function(x) { return x * 2; };",
+      hint: "Shunchaki koddagi calc = function qismini to'g'ri yozilganiga ishonch hosil qilib yuboring.",
+      test: "if(errorMsg !== 'ReferenceError') throw new Error('Expression hoisting qilinmasligi kerak edi');"
     },
     {
       id: 5,
-      title: "Salomlashish Funksiyasi",
-      instruction: "`greet(name)` 'Salom, [name]!' qaytarsin.",
-      startingCode: "function greet(name) {\n  \n}",
-      hint: "return `Salom, ${name}!`;",
-      test: "const fn = new Function(code + '; return greet;')(); if(fn('Ali')!=='Salom, Ali!') return 'Xato'; return null;"
+      title: "Arrow Function (Oddiy)",
+      instruction: "'divide' o'zgaruvchisiga Arrow Function (=>) orqali a va b ning bo'linmasini (a / b) hisoblaydigan funksiya yozing.",
+      startingCode: "const divide = // arrow function yozing",
+      hint: "const divide = (a, b) => { return a / b; };",
+      test: "if (typeof divide !== 'function' || divide(10, 2) !== 5) throw new Error('Arrow function xato yozildi');"
     },
     {
       id: 6,
-      title: "Eng Katta Sonni Topish",
-      instruction: "`getMax(a, b)` kattasini qaytarsin.",
-      startingCode: "function getMax(a, b) {\n  \n}",
-      hint: "return Math.max(a, b);",
-      test: "const fn = new Function(code + '; return getMax;')(); if(fn(10,5)!==10) return 'Xato'; return null;"
+      title: "Arrow Function (Qisqa sintaksis)",
+      instruction: "'square' o'zgaruvchisiga faqat 1 ta x ni qabul qilib uning kvadratini (x*x) qaytaradigan Arrow Function ni eng qisqa usulda (qavslar va return so'zlarisiz) yozing.",
+      startingCode: "const square = // eng qisqa arrow",
+      hint: "x => x * x",
+      test: "const ast = arguments[0]; if(ast.includes('return') || ast.includes('{')) throw new Error('Eng qisqa sintaksis ishlatilmadi'); if(square(4)!==16) throw new Error('Xato xisobladi');"
     },
     {
       id: 7,
-      title: "Juft yoki Toq",
-      instruction: "`isEven(n)` juft bo'lsa true, toq bo'lsa false.",
-      startingCode: "function isEven(n) {\n  \n}",
-      hint: "return n % 2 === 0;",
-      test: "const fn = new Function(code + '; return isEven;')(); if(fn(4)!==true) return 'Xato'; return null;"
+      title: "Array bilan qisqa Arrow",
+      instruction: "Sizga arr = [1, 2, 3] massivi berilgan. 'arr.map()' ichida arrow funksiya yordamida har bir elementni 10 ga ko'paytirib, natijani 'resArr' ga tenglang.",
+      startingCode: "let arr = [1, 2, 3];\nlet resArr = arr.map( /* shu yerga yozing */ );",
+      hint: "num => num * 10",
+      test: "if (!resArr || resArr.join() !== '10,20,30') throw new Error('Map ichida xato arrow function');"
     },
     {
       id: 8,
-      title: "To'rtburchak Yuzi",
-      instruction: "`getArea(w, h)` ni hisoblang.",
-      startingCode: "function getArea(w, h) {\n  \n}",
-      hint: "return w * h;",
-      test: "const fn = new Function(code + '; return getArea;')(); if(fn(5,2)!==10) return 'Xato'; return null;"
+      title: "Qavssiz lekin qavsli param (Object qaytarish)",
+      instruction: "Arrow funksiyada faqat bitta obyekti return qilsak, jingalak qavsni function bloki deb o'ylamasligi uchun uni ( { } ) qavsga olamiz. 'getUser(ism)' => ({ name: ism }) ko'rinishida eng qisqa funksiyani yozing.",
+      startingCode: "const getUser = // ...",
+      hint: "ism => ({ name: ism });",
+      test: "if(typeof getUser !== 'function' || getUser('Ali').name !== 'Ali') throw new Error('Obyekt qaytarishda qavs (parentheses) unutilgan');"
     },
     {
       id: 9,
-      title: "Yoshni Tekshirish",
-      instruction: "`isAdult(age)` 18+ bo'lsa true qaytarsin.",
-      startingCode: "function isAdult(age) {\n  \n}",
-      hint: "return age >= 18;",
-      test: "const fn = new Function(code + '; return isAdult;')(); if(fn(19)!==true) return 'Xato'; return null;"
+      title: "Funksiya ichida Funksiya (Callback)",
+      instruction: "'doMath(a, b, callback)' nomli funksiya yozilgan. Uni chaqirganda 5, 3 va yig'indini (x+y) topuvchi Arrow Function'ni uchinchi parametr qilib jo'nating.",
+      startingCode: "function doMath(a, b, fn) { return fn(a, b); }\nlet res = doMath( /* shu yerga argumentlarni yozing */ );",
+      hint: "5, 3, (x, y) => x + y",
+      test: "if(res !== 8) throw new Error('Callback argument noto\'g\'ri yozilgan');"
     },
     {
       id: 10,
-      title: "Kalkulyator",
-      instruction: "`calc(a, b, op)` agar '+' bo'lsa a+b ni qaytarsin. '-' da ayirsin, '*' va '/'.",
-      startingCode: "function calc(a, b, op) {\n  \n}",
-      hint: "switch(op) ishlatish",
-      test: "const fn = new Function(code + '; return calc;')(); if(fn(5,3,'+')!==8) return 'Xato'; if(fn(10,2,'/')!==5) return 'Xato'; return null;"
+      title: "This va Arrow (Farqni ko'rish)",
+      instruction: "Obyekt ichida oddiy va arrow metod yozilgan. Ikkalasini ham chaqirib natijani (res1 va res2) ga saqlang. 'getNormalThis' ismini topadi, 'getArrowThis' esa undefined qaytarishini ko'rasiz.",
+      startingCode: "let obj = {\n  name: 'Bob',\n  getNormalThis() { return this.name; },\n  getArrowThis: () => this.name\n};\nlet res1 = // getNormalThis;\nlet res2 = // getArrowThis;",
+      hint: "obj.getNormalThis(), obj.getArrowThis()",
+      test: "if(res1 !== 'Bob' || res2 !== undefined) throw new Error('This bo\'yicha farq xato tushunildi');"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "JavaScript-da Function Declaration sintaksisi?",
+      question: "JavaScriptda funksiya nima?",
       options: [
-        "function myFunction() {}",
-        "let myFunction = () => {}",
-        "myFunction function() {}",
-        "new Function(myFunction) {}"
+        "Faqat raqamlarni hisoblovchi matematik tushuncha",
+        "HTML teglarini yaratish vositasi",
+        "Muayyan vazifani qayta-qayta bajaradigan (o'zini ichiga olgan) kod bloki",
+        "Faqat server bilan ishlash uchun kutubxona"
       ],
-      correctAnswer: 0,
-      explanation: "`function myFunction() {}` bu klassik Function Declaration."
+      correctAnswer: 2,
+      explanation: "Funksiyalar kodni qayta ishlatish (reusability) va tartibga solish uchun ishlatiladigan bloklardir."
     },
     {
       id: 2,
-      question: "return yozilmagan funksiya nima qaytaradi?",
-      options: ["null", "undefined", "\"\"", "ReferenceError"],
+      question: "Function Declaration (function sayHello() {}) ning eng katta texnik ustunligi nimada?",
+      options: [
+        "U tezroq ishlaydi",
+        "U Hoisting qilinadi, ya'ni koddagi e'lon qilingan qatordan yuqorida turib ham chaqirish mumkin",
+        "U qisqaroq yoziladi",
+        "Unda this yo'q"
+      ],
       correctAnswer: 1,
-      explanation: "Funksiya har doim undefined qaytaradi agar return qilinmasa."
+      explanation: "Declaration dastur boshlanmasidan oldin xotiraga yuklanadi (Hoisting), shuning uchun faylning boshida chaqirilsa ham ishlayveradi."
     },
     {
       id: 3,
-      question: "Default parametr qanday ishlaydi?",
+      question: "Function Expression (let fn = function() {}) ga nisbatan Hoisting ishlaydimi?",
       options: [
-        "Faqat argument null bo'lsa ishlaydi",
-        "Argument undefined yoki uzatilmasa ishlaydi",
-        "Har doim ishlaydi",
-        "Faqat stringlarda ishlaydi"
+        "Ha, xuddi declaration kabi to'liq ko'tariladi",
+        "Faqat var bilan e'lon qilingan bo'lsa qisman ko'tariladi (lekin undefined bo'lib), let/const da esa mutlaqo ishlamaydi va ERROR beradi",
+        "Ha, lekin faqat strict rejimida",
+        "Hoisting faqat raqamlarga ishlaydi"
       ],
       correctAnswer: 1,
-      explanation: "Default qiymatlar argument undefined bo'lsa o'rnini to'ldiradi."
+      explanation: "Expression o'zgaruvchining qiymati sifatida beriladi, shuning uchun kod u yerga yetib kelmaguncha funksiya mavjud bo'lmaydi."
     },
     {
       id: 4,
-      question: "Declaration va Expression asosiy farqi?",
+      question: "Arrow Function ning to'g'ri sintaksisini belgilang:",
       options: [
-        "Declaration hoisting bo'ladi, Expression esa yo'q",
-        "Declaration parametr qabul qilmaydi",
-        "Expression asinxron ishlaydi",
-        "Farqi yo'q"
+        "function => () {}",
+        "let fn = () -> {}",
+        "const fn = () => {}",
+        "arrow function() {}"
       ],
-      correctAnswer: 0,
-      explanation: "Declaration larni fayl boshida ishlatish mumkin."
+      correctAnswer: 2,
+      explanation: "Arrow Function parametr qavslaridan keyin => belgisini va jingalak qavsni talab qiladi (yoki 1 qatorlik returnda qavssiz ham bo'ladi)."
     },
     {
       id: 5,
-      question: "Block scope nima?",
+      question: "Arrow funksiyada agar faqat Bitta parametr bo'lsa, nimani olib tashlash mumkin?",
       options: [
-        "Faqat funksiya ichida ishlaydi",
-        "Global o'zgaruvchilar",
-        "{} qavslar ichida let va const bilan yopiq muhit",
-        "Maxsus blok"
+        "return so'zini",
+        "jingalak qavslarni {}",
+        "=> belgisini",
+        "Parametr atrofidagi dumaloq qavslarni ()"
       ],
-      correctAnswer: 2,
-      explanation: "let/const jingalak qavslardan tashqariga chiqmaydi."
+      correctAnswer: 3,
+      explanation: "Agar yagona parametr (masalan 'x') bo'lsa, 'x => x * 2' ko'rinishida dumaloq qavslarni ham olib tashlash JS da ruxsat etilgan qoidadir."
     },
     {
       id: 6,
-      question: "Funksiya lokal qamrovidagi o'zgaruvchini tashqaridan o'qish mumkinmi?",
-      options: ["Ha", "Yo'q (ReferenceError beradi)", "Yo'q (undefined qaytaradi)", "Ha (ammo null bo'lib)"],
+      question: "Arrow funksiyada 'jingalak qavslar' {} yozilmasa u qanday ishlaydi?",
+      options: [
+        "Kod xato beradi",
+        "Koddagi ifodani hisoblaydi, va 'return' so'zisiz o'zi natijani qaytaradi (Implicit return)",
+        "Obyekt yaratadi",
+        "Hech qanday farqi yo'q, default void qaytaradi"
+      ],
       correctAnswer: 1,
-      explanation: "Lokal o'zgaruvchilar tashqi scope uchun yo'q (ReferenceError)."
+      explanation: "Masalan 'a => a + 1' degani shundoq ham 'return a + 1' bilan barobar."
     },
     {
       id: 7,
-      question: "Arrow funksiyalarning an'anaviydan farqi?",
+      question: "Nega Arrow function ni Obyekt obyekti Metodi sifatida ishlatish yomon (masalan const user = { sayHi: () => this.name }) ?",
       options: [
-        "O'zining this obyekti mavjud emas",
-        "Ko'p qatordan iborat bo'la olmaydi",
-        "Constructor bo'la oladi",
-        "Faqat default parametr oladi"
+        "Chunki arrow function sekin",
+        "Chunki Arrow function da o'zining 'this' i yo'q, u obyektni tanimay global 'window' ga ulanib ketadi",
+        "Bunday qilib yozib bo'lmaydi, Syntax error beradi",
+        "Aslida eng yaxshi usul shu"
       ],
-      correctAnswer: 0,
-      explanation: "Arrow funksiyalar this va arguments ga ega emas."
+      correctAnswer: 1,
+      explanation: "Metodlar uchun har doim odatiy function() yoki qisqartirilgan 'sayHi() {}' metod sintaksisi ishlatilishi shart."
     },
     {
       id: 8,
-      question: "Rest parameter (...args) vazifasi?",
+      question: "JavaScriptda funksiyalar 'First-class objects' (qiymat) deyilishining ma'nosi nima?",
       options: [
-        "Massivni yoyish",
-        "Qolgan argumentlarni massiv ko'rinishida bitta o'zgaruvchiga to'plash",
-        "Funksiyani to'xtatish",
-        "Hech qanday argument olmaslik"
+        "Barcha obyektlar funksiya ekanligini bildiradi",
+        "Funksiyalarni boshqa funksiyalarga parametr sifatida berish, ularni return orqali qaytarish va oddiy o'zgaruvchiga tenglash mumkinligini",
+        "Funksiyalar RAM dagi eng katta xotirani oladi degani",
+        "Classdan ko'ra sekin ishlashini"
       ],
       correctAnswer: 1,
-      explanation: "Rest - qolgan hamma argumentlarni haqiqiy arrayga yig'adi."
+      explanation: "Funksiya oddiy ma'lumot (string yoki raqam) bilan aynan bir xil huquqqa ega bo'lib, ular ustida har qanday amaliyot o'tkazish imkoni mavjud."
     },
     {
       id: 9,
-      question: "Arrow funksiya `{}` ichida return yozilmasa nima bo'ladi?",
-      options: ["10", "undefined", "ReferenceError", "null"],
+      question: "Kodni ko'ring: 'const getObj = () => { key: \\'value\\' }'. Bu nega 'undefined' qaytaradi?",
+      options: [
+        "Chunki arrow funksiyalarda obyekt qaytarib bo'lmaydi",
+        "Chunki JavaScript {} qavsni obyekt emas, balki oddiy funksiya tanasi (block) deb o'ylaydi va ichida return yozilmagani uchun hech narsa qaytmaydi",
+        "Syntax error bo'lgani uchun",
+        "Value string bo'lgani uchun"
+      ],
       correctAnswer: 1,
-      explanation: "Jingalak qavslar qo'yilsa, avtomatik return bekor qilinadi va explicit return kutadi."
+      explanation: "Obyektni bitta qatorda arrow orqali return qilish uchun uni dumaloq qavsga olish shart: () => ({ key: 'value' })"
     },
     {
       id: 10,
-      question: "Shadowing yuz bersa nima bo'ladi?",
+      question: "Quyidagilardan qaysi biri Callback funksiya yozish uchun eng qulay format hisoblanadi (masalan array.map ichida)?",
       options: [
-        "Ichki o'zgaruvchi globalni vaqtincha to'sib qo'yadi",
-        "Xato beradi",
-        "Global o'chib ketadi",
-        "Tashqi ustun bo'ladi"
+        "Function Declaration",
+        "Klassik if statements",
+        "Arrow Function",
+        "Constructor Function"
       ],
-      correctAnswer: 0,
-      explanation: "Shadowing - bu aynan ota scope dagi nomni soya qilishdir."
+      correctAnswer: 2,
+      explanation: "Sintaksisi kichik va bir qatorga bemalol yozilishi hamda 'this' kontekstni o'zgartirmasligi uchun array metodlarida doim Arrow Functions ishlatiladi."
     },
     {
       id: 11,
-      question: "Call Stack qanday tartibda ishlaydi?",
-      options: ["FIFO", "LIFO", "Tartibsiz", "Kattaligiga qarab"],
+      question: "Anonymous (Anonim) funksiyalar deb nimaga aytiladi?",
+      options: [
+        "Faqat tunda ishlaydigan xakerlik funksiyalari",
+        "Nomi yo'q (ismi e'lon qilinmagan) funksiyalarga, masalan: function() {...} yoki () => {...}",
+        "Global window dagi funksiyalarga",
+        "Xatolik chiqaradigan metodlar"
+      ],
       correctAnswer: 1,
-      explanation: "LIFO (Oxirgi kirgan, birinchi chiqadi) tamoyili asosida ishlaydi."
+      explanation: "Agar function kalit so'zidan keyin uning nomi ko'rsatilmagan bo'lsa, bu anonim funksiya deyiladi."
     },
     {
       id: 12,
-      question: "Pure Function xususiyati?",
+      question: "Zamonaviy loyihalarda eng ko'p ishlatiladigan tavsiya bo'yicha...",
       options: [
-        "Bir xil kiruvchiga har doim har xil chiquvchi",
-        "Bir xil argumentga bir xil natija + side effects yo'qligi",
-        "Internetdan tez ishlaydi",
-        "Xatosiz funksiya"
+        "Hech qachon Arrow function ishlatmang",
+        "Mumkin qadar doim Arrow Function dan foydalaning, agar chindan ham Hoisting yoki Object Methods (this kerak bo'lgan vaziyatlar) kerak bo'lib qolmasa",
+        "Doim qoida tariqasida Function Declaration ishlating",
+        "Faqat Function Expression ishlating"
       ],
       correctAnswer: 1,
-      explanation: "Sof funksiyalar kutilgan va mutlaq aniq natijalar beradi."
+      explanation: "Zamonaviy JS (ayniqsa React, Vue) dagi asosiy uslub deyarli 95% holatda Arrow function larni yozish hisoblanadi."
     }
   ]
 };
