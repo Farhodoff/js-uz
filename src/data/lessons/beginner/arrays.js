@@ -239,7 +239,7 @@ graph TD
         '"undefined"'
       ],
       correctAnswer: 1,
-      explanation: "Massivlar JavaScript'da Obyektlarning maxsus ko'rinishi hisoblanadi, shuning uchun typeof ularga \\"object\\" qaytaradi."
+      explanation: "Massivlar JavaScript'da Obyektlarning maxsus ko'rinishi hisoblanadi, shuning uchun typeof ularga 'object' qaytaradi."
     },
     {
       id: 10,
