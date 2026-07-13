@@ -2,45 +2,57 @@ export const nodeArchitecture = {
   id: "node-architecture",
   title: "Node.js Architecture",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-Node.js bitta thread'da ishlaydigan (Single-threaded), asinxron va Non-blocking I/O modeliga asoslangan arxitekturaga ega. Uning yuragi **Event Loop** bo'lib, u orqali minglab parallel so'rovlarni juda kam operativ xotira (RAM) sarflagan holda boshqarish mumkin. Lekin video render qilish kabi CPU'ni ko'p talab qiluvchi vazifalar uchun Node.js yakkaxon (single) thread'ni band qilib qo'yishi mumkin.
+  theory: `## Part 1: Beginner Analogy
+Tasavvur qiling, Node.js bu gavjum restorandagi yagona, ammo juda chaqqon ofitsiant (Single Thread). Agar ofitsiant har bir mijozning ovqati pishishini oshxona eshigi oldida kutib tursa (Blocking I/O), boshqa mijozlar och qoladi va janjal ko'tariladi.
+Buning o'rniga, bizning ofitsiant buyurtmani olib oshxonaga (Thread Pool) beradi va o'sha zahoti keyingi mijozga xizmat ko'rsatishga o'tadi (Non-blocking I/O). Taom tayyor bo'lgach, oshxona ofitsiantga signal beradi (Callback / Event) va u tayyor taomni egasiga eltib beradi. Shu tariqa atigi 1 ta ofitsiant minglab mijozlarga hech qanday kuttirishlarsiz xizmat ko'rsata oladi!
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+## Part 2: Deep Dive
+Node.js asosan ikkita kuchli dvigatel ustiga qurilgan: **V8 Engine** va **Libuv**.
 
-❌ **YOMON:** Event Loop'ni to'sib qo'yuvchi sinxron amallar (Blocking I/O).
+1. **V8 Engine:** Google tomonidan C++ tilida yozilgan dvigatel. U JavaScript kodimizni kompyuter tushunadigan mashina tiliga (machine code) o'ta tez o'girib beradi.
+2. **Libuv:** Node.js'ning asinxron yuragi! Bu C++ kutubxonasi Event Loop va asinxron I/O operatsiyalarini boshqaradi. Uning yashirin qahramonlaridan biri bu **Thread Pool** (sukut bo'yicha 4 ta thread'dan iborat) bo'lib, og'ir vazifalarni (fayl o'qish, kriptografiya) aynan shu hovuz bajaradi.
+
+### Microtask vs Macrotask Queue
+Event Loop har bir tsiklda (tick) turli navbatlarni (queues) ma'lum tartibda tekshiradi. Bular orasida eng ko'p chalg'itadiganlari Microtask va Macrotask navbatlaridir:
+- **Microtask Queue:** Bunga \`Promise.then()\`, \`process.nextTick()\` kabi amallar kiradi. Microtask'lar doim eng yuqori ustuvorlikka ega va Macrotask'lardan oldin bajariladi!
+- **Macrotask Queue:** Bunga \`setTimeout()\`, \`setInterval()\`, \`setImmediate()\` kiradi.
+
 \`\`\`javascript
-const fs = require('fs');
-// Katta faylni sinxron o'qish serverdagi boshqa barcha so'rovlarni kutishga majbur qiladi
-const data = fs.readFileSync('/katta-fayl.txt'); 
+console.log('1. Sinxron ish');
+
+setTimeout(() => {
+  console.log('4. Macrotask (setTimeout)');
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('3. Microtask (Promise)');
+});
+
+console.log('2. Sinxron ish');
 \`\`\`
+Yuqoridagi kod natijasi ketma-ketligi: 1, 2, 3, 4 bo'ladi. Sababi, sinxron kod tugagach, Event Loop darhol Microtask navbatini tekshiradi va u yerdagi hamma vazifalarni bajarib bo'lgachgina Macrotask'larga o'tadi.
 
-✅ **YAXSHI:** Asinxron amallar va Streamlardan foydalanish.
-\`\`\`javascript
-const fs = require('fs');
-// Asinxron o'qish orqali boshqa mijozlarning so'rovlari bloklanmaydi
-const stream = fs.createReadStream('/katta-fayl.txt');
-stream.pipe(response);
-\`\`\`
+## Part 3: Edge Cases va Senior Interview Questions
 
-## 🎤 Intervyu Savollari
-1. **Event Loop nima?**
-   Javob: Event Loop Node.js dagi tsikl bo'lib, barcha asinxron operatsiyalarni (callbacklar, taymerlar, I/O) navbat bilan bajaradi va single-thread bo'lishiga qaramay tizim parallel ishlash imkoniyatini beradi.
-2. **Cluster moduli nima uchun kerak?**
-   Javob: Node.js faqat bitta CPU yadrosini ishlatadi. Ko'p yadroli serverlarda barcha yadrolardan foydalanish uchun Cluster yordamida bir nechta Node.js jarayonlarini (workers) yaratamiz.
-3. **Microservices arxitekturasi Monolith'dan nimasi bilan farq qiladi?**
-   Javob: Monolith'da hamma vazifalar bitta dastur ichida jamlangan bo'ladi. Microservices'da esa dastur kichik, mustaqil va alohida ishlaydigan xizmatlarga bo'linadi. Bu ularni alohida masshtablash imkonini beradi.
+- **CPU-Intensive vazifalar:** Node.js asosan I/O vazifalari (fayl, tarmoq) uchun zo'r. Ammo 1 GB lik videoni formatlash yoki murakkab matematik hisob-kitoblarni (CPU-bound) qilsangiz, Event Loop bloklanadi va butun server qotib qoladi! Yechim: **Worker Threads** ishlatish yoki og'ir vazifani alohida mikroxizmatga o'tkazish.
+- **Memory Leaks:** Katta hajmli obyektlarni global o'zgaruvchilarda doimiy saqlash Garbage Collector ularni tozalashiga to'sqinlik qiladi. Natijada xotira to'lib (Out of Memory), server "crash" bo'ladi.
 
-## 🛠️ Amaliy Topshiriqlar
-Quyidagi diagrammada Node.js so'rovlarni qanday qayta ishlashi ko'rsatilgan:
+### 🎯 Senior Interview Questions
+1. **Event Loop nima va u qanday fazalardan iborat?**
+   Javob: Libuv taqdim etuvchi mexanizm. U asosan 6 fazadan iborat: Timers, Pending Callbacks, Idle/Prepare, Poll (eng muhimi - I/O shu yerda), Check (\`setImmediate\`), va Close Callbacks.
+2. **\`setImmediate\` va \`setTimeout(fn, 0)\` o'rtasidagi farq nima?**
+   Javob: Oddiy holatda qaysi biri birinchi ishlashi kafolatlanmagan (sistemaga bog'liq). Ammo ular I/O tsikli (masalan, fayl o'qish callback'i) ichida chaqirilsa, **\`setImmediate\` doim birinchi ishlaydi**, chunki u darhol Check fazasida ushlanadi.
+3. **Cluster nima va u qachon kerak?**
+   Javob: Node.js faqat bitta CPU yadrosini ishlatadi. Ko'p yadroli serverda to'liq quvvatdan foydalanish uchun Cluster moduli orqali bir nechta Node.js jarayonlarini (workers) yaratish mumkin.
 
 \`\`\`mermaid
 graph TD
-    A[Klient So'rovi] --> B{Event Loop}
-    B -->|Tezkor/Sinxron| C[Natija Qaytarish]
-    B -->|Asinxron I/O| D[Worker Threads / Thread Pool]
-    D --> E[Fayl / Database]
+    A[Incoming Request] --> B{Event Loop}
+    B -->|Fast / Sync Ops| C[Return Response]
+    B -->|Async I/O / DB / Crypto| D[Libuv Thread Pool]
+    D --> E[OS Kernel / File System]
     E --> D
-    D -->|Callback orqali| B
+    D -->|Callback placed in Queue| B
 \`\`\`
 `,
   exercises: [
