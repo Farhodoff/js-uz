@@ -2,41 +2,55 @@ export const sqlFunctions = {
   id: "sql_functions_1",
   title: "SQL Functions (Funksiyalar)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-SQL funksiyalari xuddi JavaScript'dagi funksiyalarga o'xshaydi, lekin ular to'g'ridan-to'g'ri ma'lumotlar bazasida ishlaydi. Ular ma'lumotni o'zgartirish, hisoblash yoki guruhlash uchun ishlatiladi.
-Asosan 2 turga bo'linadi:
-1. **Scalar (Skalyar) funksiyalar**: Har bir qator uchun alohida qiymat qaytaradi (masalan, \`UPPER(name)\`, \`ROUND(price, 2)\`).
-2. **Aggregate (Agregat) funksiyalar**: Bir necha qatorlarni birlashtirib, bitta umumiy natija qaytaradi (masalan, \`SUM(price)\`, \`COUNT(id)\`).
+  theory: `## 1. 💡 Beginner Analogy: Oshxona Asboblari
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+Tasavvur qiling, sizning oshxonangizda turli xil asboblar bor.
+**Scalar (Skalyar) funksiyalar** - bu pichoq. U har bir olma yoki sabzini alohida kesadi. Ya'ni, har bir qator (row) uchun alohida bitta natija qaytaradi.
+Masalan: \\\`UPPER(name)\\\` har bir ismni katta harflarga o'tkazadi.
 
-❌ **YOMON**: Barcha ma'lumotlarni JS ga tortib kelib, keyin hisoblash:
-\`\`\`javascript
-// 10,000 ta qatorni bazadan xotiraga olib kelish (Yomon performance)
-const users = await db.query("SELECT * FROM users"); 
-const totalAge = users.reduce((sum, u) => sum + u.age, 0);
-\`\`\`
+**Aggregate (Agregat) funksiyalar** - bu blender. Siz unga ko'plab mevalarni solasiz, u ularni aralashtirib, bitta sharbat (bitta umumiy natija) qilib beradi.
+Masalan: \\\`SUM(price)\\\` barcha narxlarni qo'shib, bitta jami summani qaytaradi.
 
-✅ **YAXSHI**: Hisoblashni SQL o'zida bajarish:
-\`\`\`javascript
-// Baza o'zi hisoblab, bitta qator qaytaradi (Juda tez)
-const result = await db.query("SELECT SUM(age) as total_age FROM users");
-\`\`\`
+## 2. 🚀 Deep Dive: Under the Hood (Qanday Ishlaydi?)
 
-## 🎤 Intervyu Savollari
-1. **\`COUNT(*)\` va \`COUNT(column_name)\` o'rtasidagi farq nima?**
-   - \`COUNT(*)\` jami qatorlar sonini sanaydi (hatto \`NULL\` bo'lsa ham). \`COUNT(column_name)\` esa faqat \`NULL\` bo'lmagan qiymatlarni sanaydi.
-2. **Agregat funksiyalarni \`WHERE\` bilan ishlatsa bo'ladimi?**
-   - Yo'q, agregat funksiyalar bo'yicha filtrlash uchun \`HAVING\` ishlatiladi.
+SQL bazasi (Masalan PostgreSQL, MySQL) agregat funksiyalarni (\\\`SUM\\\`, \\\`AVG\\\`) bajarayotganda asosan 2 xil **Aggregation Pipeline** (guruhlash usuli) dan foydalanadi:
 
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
+1. **HashAggregate**: 
+Xotirada (RAM) maxsus Hash-table yaratadi. Guruhning har bir kaliti (key) uchun qiymatlarni (masalan summa yoki sanoq) xotirada yangilab boradi. Agar ma'lumot xotiraga sig'masa, qolganini diskka yozishga majbur bo'ladi (Spilling to disk). Odatda HashAggregate juda tez ishlaydi, chunki ma'lumotlarni tartiblash (sorting) talab qilinmaydi.
+
+2. **GroupAggregate (SortAggregate)**: 
+Avval barcha ma'lumotlarni guruhlanadigan ustun bo'yicha tartiblaydi (Sort), so'ngra qatorma-qator o'tib, guruhlarni hisoblaydi. Sorting (tartiblash) jarayoni CPU uchun og'ir va qimmat turadi. Shuning uchun ma'lumotlar bazasi asosan indekslangan ustunlar uchun yoki xotira (RAM) Hash-table uchun yetishmaganda GroupAggregate dan foydalanadi.
+
+**Performance (Tezlik) bo'yicha maslahat**:
+Barcha ma'lumotni JavaScript-ga \\\`SELECT *\\\` bilan tortib olib, Node.js da \\\`Array.reduce()\\\` orqali hisoblash qat'iyan man etiladi! DB-ning o'zi buni maxsus C/C++ tillarida yozilgan motor (engine) orqali va SIMD (Single Instruction, Multiple Data) ko'rsatmalaridan foydalanib, ancha tezroq bajaradi. Natijani tayyor holda (masalan \\\`SELECT SUM(price)\\\`) olish eng optimal yondashuvdir.
+
+## 3. ⚠️ Edge Cases & Senior Interview Questions
+
+1. **\\\`COUNT(*)\\\` va \\\`COUNT(column_name)\\\` o'rtasidagi farq nimada?**
+   - \\\`COUNT(*)\\\` barcha qatorlarni, hatto qatordagi barcha ustunlar \\\`NULL\\\` bo'lsa ham sanaydi.
+   - \\\`COUNT(column_name)\\\` esa faqat ko'rsatilgan ustunda \\\`NULL\\\` bo'lmagan qatorlarni sanaydi. \\\`NULL\\\` qiymatlar hisobga olinmaydi.
+
+2. **Window Function va Aggregate Function ning farqi nimada?**
+   - Agregat funksiya ko'plab qatorlarni birlashtirib (guruhlab), guruh uchun bitta natija qaytaradi, ya'ni yakuniy qatorlar soni qisqaradi.
+   - Window function (masalan \\\`SUM(salary) OVER()\\\`) guruhlashni qatorlarni qisqartirmasdan amalga oshiradi. U har bir asl qatorni saqlab qoladi, lekin har bir qator yoniga umumiy natijani (masalan jami summani) yozib beradi.
+
+3. **Agregat funksiyalar bilan \\\`WHERE\\\` ishlatish mumkinmi?**
+   - Yo'q. \\\`WHERE\\\` guruhlash jarayonidan oldin ishlaydi va faqat oddiy qatorlarni filtrlaydi.
+   - Agregat funksiyalar asosida filtrlash uchun (masalan jami summasi 100 dan katta bo'lgan guruhlar) \\\`HAVING\\\` ishlatiladi. \\\`HAVING\\\` doim guruhlash va hisoblash tugagandan so'ng ishga tushadi.
+
+## 📊 Ma'lumotlarni Qayta ishlash Arxitekturasi
+
+\\\`\\\`\\\`mermaid
 graph TD;
-    A[Ma'lumotlar Bazasi] --> B(SQL Funksiyasi);
-    B -->|Skalyar| C[Har bir qator o'zgaradi];
-    B -->|Agregat| D[Bitta umumiy natija];
-\`\`\`
-`,
+    A[SQL So'rovi] --> B{Funksiya Turi};
+    B -->|Skalyar| C[Har bir qatorga qo'llanadi];
+    B -->|Agregat| D[Guruhlash / Aggregation Pipeline];
+    D --> E{Execution Plan};
+    E -->|Xotira yetarli| F[HashAggregate];
+    E -->|Xotira kam / Index bor| G[GroupAggregate / Sort];
+    F --> H[Umumiy Bitta Natija];
+    G --> H;
+\\\`\\\`\\\``,
   exercises: [
     {
       id: 1,
@@ -132,15 +146,15 @@ graph TD;
   quizzes: [
     {
       id: 1,
-      question: "SQL agregat funksiyalari nima vazifani bajaradi?",
+      question: "SQL agregat funksiyalari qanday vazifani bajaradi?",
       options: [
         "Jadvaldagi barcha qatorlarni o'chiradi",
-        "Bir nechta qatorlardan yagona xulosa/natija hisoblaydi",
-        "Ma'lumotlar bazasini zaxiralaydi (backup)",
+        "Bir nechta qatorlardan bitta umumiy natija/xulosa hisoblaydi",
+        "Har bir qatorga alohida hisob-kitob qo'llaydi",
         "Yangi ustun qo'shadi"
       ],
       correctAnswer: 1,
-      explanation: "Agregat funksiyalar ko'plab qatorlar ustida amal bajarib, bitta qiymat (masalan, SUM, COUNT) qaytaradi."
+      explanation: "Agregat funksiyalar (masalan SUM, AVG) ko'plab qatorlarni birlashtirib bitta qiymat beradi."
     },
     {
       id: 2,
@@ -149,26 +163,26 @@ graph TD;
         "COUNT(*)",
         "COUNT(1)",
         "COUNT(column_name)",
-        "Barchasi sanaydi"
+        "Yuqoridagilarning barchasi sanaydi"
       ],
       correctAnswer: 2,
-      explanation: "COUNT(column_name) faqat shu ustundagi NULL bo'lmagan qiymatlarni sanaydi. COUNT(*) esa hamma qatorni sanaydi."
+      explanation: "COUNT(column_name) ko'rsatilgan ustundagi faqat NULL bo'lmagan (mavjud) qiymatlarni sanaydi. COUNT(*) barchasini sanaydi."
     },
     {
       id: 3,
-      question: "Ma'lumotlarni guruhlaganda (GROUP BY), ustunni filtrlash uchun qaysi kalit so'z ishlatiladi?",
+      question: "Ma'lumotlarni guruhlaganda (GROUP BY), agregat funksiyalar natijasi bo'yicha filtrlash uchun nima ishlatiladi?",
       options: [
         "WHERE",
-        "FILTER",
         "HAVING",
+        "FILTER",
         "ORDER BY"
       ],
-      correctAnswer: 2,
-      explanation: "Agregat funksiyalar yordamida filtrlash WHERE bilan emas, HAVING orqali qilinadi."
+      correctAnswer: 1,
+      explanation: "Agregat funksiyalar natijasi bo'yicha filtrlash faqat HAVING orqali qilinadi. WHERE esa oddiy qatorlarni guruhlashdan oldin filtrlaydi."
     },
     {
       id: 4,
-      question: "Matnni faqat kichik harflarga o'tkazuvchi SQL funksiyasi qaysi?",
+      question: "Matnni faqat kichik harflarga o'tkazuvchi skalyar SQL funksiyasi qaysi?",
       options: [
         "SMALLTEXT()",
         "LOWER()",
@@ -176,11 +190,11 @@ graph TD;
         "MIN()"
       ],
       correctAnswer: 1,
-      explanation: "LOWER() funksiyasi matndagi barcha harflarni kichik registrga o'tkazadi."
+      explanation: "LOWER() funksiyasi berilgan matndagi barcha harflarni kichik registrga o'tkazadi."
     },
     {
       id: 5,
-      question: "Narxlarni o'rtacha qiymatini qanday topish mumkin?",
+      question: "Qatorlar narxining o'rtacha qiymatini qanday topish mumkin?",
       options: [
         "SELECT MIDDLE(price)",
         "SELECT AVG(price)",
@@ -188,11 +202,11 @@ graph TD;
         "SELECT CENTER(price)"
       ],
       correctAnswer: 1,
-      explanation: "SQL da o'rtacha qiymat topish uchun AVG() (Average) ishlatiladi."
+      explanation: "SQL da o'rtacha qiymat topish uchun AVG() (Average) agregat funksiyasi ishlatiladi."
     },
     {
       id: 6,
-      question: "NULL qiymat o'rniga default qiymat qaytaruvchi qaysi funksiya standart hisoblanadi?",
+      question: "Agar qatorda NULL qiymat bo'lsa, o'rniga default qiymat qaytarish uchun qaysi funksiya ishlatiladi?",
       options: [
         "ISNULL()",
         "NVL()",
@@ -200,7 +214,7 @@ graph TD;
         "IFNULL()"
       ],
       correctAnswer: 2,
-      explanation: "COALESCE() standart SQL funksiyasi bo'lib, ro'yxatdagi birinchi NULL bo'lmagan qiymatni qaytaradi."
+      explanation: "COALESCE() standart SQL funksiyasi bo'lib, o'z ro'yxatidagi birinchi NULL bo'lmagan qiymatni qaytaradi."
     },
     {
       id: 7,
@@ -212,11 +226,11 @@ graph TD;
         "45.92"
       ],
       correctAnswer: 2,
-      explanation: "ROUND funksiyasi 2-xona aniqlikgacha yaxlitlaydi, .926 = .93 bo'ladi."
+      explanation: "ROUND funksiyasi 2-xona aniqlikkacha yaxlitlaydi, 0.006 > 0.005 bo'lgani uchun natija 45.93 ga aylanadi."
     },
     {
       id: 8,
-      question: "Qatorlarni birlashtirish (string concatenation) uchun qaysi funksiyadan foydalaniladi?",
+      question: "Qatorlardagi matnlarni bir-biriga yopishtirish (birlashtirish) uchun qaysi funksiyadan foydalaniladi?",
       options: [
         "JOIN()",
         "MERGE()",
@@ -224,55 +238,55 @@ graph TD;
         "ADD()"
       ],
       correctAnswer: 2,
-      explanation: "CONCAT() funksiyasi berilgan matnlarni bir-biriga yopishtirib beradi."
+      explanation: "CONCAT() funksiyasi 2 yoki undan ortiq matnlarni bir-biriga ulash/birlashtirish uchun ishlatiladi."
     },
     {
       id: 9,
-      question: "SELECT MAX(name) FROM users nimani qaytaradi?",
+      question: "HashAggregate ning GroupAggregate (SortAggregate) dan asosiy ustunligi nimada?",
       options: [
-        "Eng ko'p harfdan iborat ismni",
-        "Alifbo bo'yicha eng oxirgi ismni",
-        "Xato yuz beradi, MAX faqat sonlarda ishlaydi",
-        "Eng mashhur ismni"
+        "Index kerak emas va xotira(RAM) yetarli bo'lsa ma'lumotlarni tartiblamaydi (sorting qilinmaydi) shu sabab tezroq",
+        "Har doim disk(xotira) dan foydalanadi va xavfsizroq",
+        "Faqat kichik jadvallar bilan ishlaydi",
+        "HashAggregate umuman mavjud emas"
       ],
-      correctAnswer: 1,
-      explanation: "Matnlar (string) bilan MAX ishlatsangiz, u leksikografik (alifbo) bo'yicha eng oxirgi qiymatni qaytaradi (masalan 'Z' harfidan boshlanadigan)."
+      correctAnswer: 0,
+      explanation: "HashAggregate ma'lumotlarni tartiblash(sorting)ga vaqt sarflamaydi va xotirada tezkor hash-table yaratish orqali natija beradi."
     },
     {
       id: 10,
-      question: "Asosiy farqi: SUM va COUNT o'rtasida nima?",
+      question: "SUM va COUNT funksiyalarining maqsadi qanday farqlanadi?",
       options: [
         "SUM qatorlarni sanaydi, COUNT qo'shadi",
-        "SUM qiymatlarni qo'shadi, COUNT nechta qator borligini sanaydi",
-        "Ikkalasi ham bir xil ish qiladi",
+        "SUM sonlarni bir-biriga qo'shib jami miqdorni hisoblaydi, COUNT esa qatorlar sonini sanaydi",
+        "Ikkalasi ham har qanday ma'lumotni hisoblaydi va bir xil ish qiladi",
         "COUNT faqat sonlarda, SUM esa matnlarda ishlaydi"
       ],
       correctAnswer: 1,
-      explanation: "SUM sonlarni matematik jihatdan bir-biriga qo'shib yig'indini beradi. COUNT esa ularning sonini sanaydi."
+      explanation: "SUM matematik qo'shish jarayoni, COUNT esa ob'ekt(qator)lar sanog'ini chiqarish jarayoni hisoblanadi."
     },
     {
       id: 11,
-      question: "Skalyar (Scalar) funksiyaning xususiyati nimada?",
+      question: "Window function agregat funksiyadan nima bilan farq qiladi?",
       options: [
-        "Natijani butun jadval bo'ylab guruhlaydi",
-        "Ma'lumotlar bazasiga o'zgarish (INSERT) kiritadi",
-        "Har bir qatordagi qiymat uchun alohida yakka natija qaytaradi",
-        "U faqat jadvallarni bog'lashda kerak"
+        "O'rtasida hech qanday farq yo'q",
+        "Window function asl qatorlarni qisqartirib tashlaydi",
+        "Window function qatorlarni qisqartirmasdan har bir qator yoniga umumiy natija beradi",
+        "Window function faqat Windows operatsion tizimi serverlarida ishlaydi"
       ],
       correctAnswer: 2,
-      explanation: "Skalyar funksiya har bir qator uchun ishlab, shu qatorning o'zgarishini qaytaradi (masalan, UPPER(name))."
+      explanation: "Window function guruhlashda original qatorlar sonini o'zgartirmay, har bir qator ma'lumotini saqlab qoladi."
     },
     {
       id: 12,
-      question: "Qaysi holatda SQL funksiyalaridan foydalanish YAXSHI yondashuv?",
+      question: "Hisoblashlarni SQL o'zida amalga oshirish nima uchun frontend/backend da hisoblashdan (masalan Array.reduce) afzal?",
       options: [
-        "Ma'lumotni front-end'da hisoblash imkoni yo'q bo'lsa",
-        "Barcha ma'lumotni klientga yuborish o'rniga, serverning (DB) o'zida hisob-kitob qilish orqali tarmoq tezligini tejashda",
-        "Faqat kichik jadvallarda ishlaganda",
-        "Hech qachon, chunki DB juda sekin"
+        "C++ da yozilgan DB engine va SIMD imkoniyatlari sababli ishlash tezligi yuqori bo'ladi va tarmoq orqali ortiqcha data o'tmaydi",
+        "JavaScript hisoblashlarda xato qiladi",
+        "Ma'lumotlar bazasi ko'proq xotira egallaydi",
+        "Hech qachon afzal emas, doim Array.reduce ishlatish kerak"
       ],
-      correctAnswer: 1,
-      explanation: "DB tez hisoblaydi va tarmoq orqali katta massiv jo'natishning oldini oladi (qisqa qilib aytganda - optimallash)."
+      correctAnswer: 0,
+      explanation: "Katta hajmdagi ma'lumotni tarmoq orqali o'tkazmay, uni SQL orqali motorning o'zida hisoblash ancha samarali va tez."
     }
   ]
 };

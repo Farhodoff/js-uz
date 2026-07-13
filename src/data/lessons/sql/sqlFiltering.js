@@ -2,8 +2,8 @@ export const sqlFiltering = {
   id: "sql_filtering",
   title: "SQL Ma'lumotlarni Filtrlash",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-SQL da bizga kerakli aniq ma'lumotni izlab topish uchun filtrlardan foydalanamiz. Bu xuddi onlayn do'konda "narxi 100$ gacha", "rangi qora" va "brandi Apple" bo'lgan telefonlarni qidirishga o'xshaydi.
+  theory: `## 1. 💡 Beginner Analogy (Sodda Tushuntirish)
+SQL da filtrlash (Filtering) xuddi onlayn do'konda qidiruv filtrlarini o'rnatishga o'xshaydi. Tasavvur qiling, sizga "Faqat qora rangli", "Narxi $1000 dan arzon", va "Apple yoki Samsung brendi" bo'lgan telefonlar kerak. Siz barcha millionlab telefonlarni bittalab qidirmaysiz, shunchaki filtrlarni belgilaysiz va tizim sizga faqat shartlarga mos keladiganlarni ko'rsatadi. SQL dagi \\\`WHERE\\\` operatori ham xuddi shunday ishlaydi - bazadagi millionlab qatorlardan faqat bizning shartlarimizga mos keladiganlarini filtrlab beradi.
 
 Eng ko'p ishlatiladigan filter operatorlari:
 - **AND, OR, NOT:** Mantiqiy bog'lovchilar.
@@ -28,38 +28,42 @@ SELECT * FROM users WHERE age BETWEEN 18 AND 30;
 SELECT * FROM users WHERE name LIKE 'A%';
 \\\`\\\`\\\`
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+## 2. 🧠 Deep Dive (Chuqurlashtirilgan o'rganish)
+**Under the hood (Ichki ishlash mexanizmi):**
+SQL dvigateli (Engine) \\\`WHERE\\\` shartini ko'rganda nima qiladi? Agar filtrlayotgan ustunimizda **Index** (B-Tree indeksi) bo'lmasa, ma'lumotlar bazasi **Full Table Scan (To'liq jadval skanerlashi)** ni amalga oshiradi. Bu degani jadvaldagi millionlab qatorlarni bittalab tekshirib chiqadi. Bu xotira (RAM) va vaqt jihatidan juda qimmat jarayon.
 
-**❌ YOMON:** Bir nechta \`OR\` larni qatorasiga yozaverish.
-\`\`\`sql
-SELECT * FROM products WHERE color = 'Red' OR color = 'Blue' OR color = 'Green';
-\`\`\`
+Agar biz \\\`age\\\` yoki \\\`city\\\` ustuniga **B-Tree Index** o'rnatgan bo'lsak, ma'lumotlar bazasi indeks orqali barcha qatorlarni emas, faqat kerakli qatorlarni to'g'ridan-to'g'ri (Logarithmic vaqtda - O(log n)) topib oladi.
 
-**✅ YAXSHI:** \`OR\` lar o'rniga \`IN\` dan foydalanish. Bu ancha tushunarli va tezroq ishlashi mumkin.
-\`\`\`sql
-SELECT * FROM products WHERE color IN ('Red', 'Blue', 'Green');
-\`\`\`
+**Performance (Tezlik):**
+1. **IN vs OR:** Ko'p hollarda \\\`column IN (val1, val2)\\\` yozish \\\`column = val1 OR column = val2\\\` dan ko'ra tezroq ishlaydi, chunki SQL optimizatori \\\`IN\\\` dagi qiymatlarni binar qidiruv orqali tekshirish uchun tartiblashi mumkin.
+2. **LIKE '%text%':** LIKE operatorida qidiruvni \\\`%\\\` bilan boshlash (masalan, \\\`'%son'\\\`) Index ishlatilishini butunlay cheklaydi (Index Scan o'rniga Full Table Scan bo'ladi). Bunga sabab, B-Tree indekslari so'zlarning bosh harflariga qarab daraxt tuzadi. Faqat so'z boshi ma'lum bo'lsa (masalan \\\`'son%'\\\`) indeks ishlaydi.
 
-## 🎤 Intervyu Savollari
-1. **\`LIKE '%a%'\` va \`LIKE 'a%'\` farqi nima?**
-   - \`'a%'\` matn aynan "a" harfi bilan boshlanishini, \`'%a%'\` esa matnning istalgan joyida "a" qatnashganini bildiradi.
-2. **\`BETWEEN\` oraliq chegaralarini (18 va 30 ni) ham hisobga oladimi (inclusive)?**
-   - Ha, aksariyat SQL bazalarida \`BETWEEN 18 AND 30\` deganda 18 ham, 30 ham natijaga kiradi (>= 18 AND <= 30).
-3. **\`AND\` va \`OR\` ni birga ishlatganda nimalarga e'tibor berish kerak?**
-   - Ularning ustuvorligi turlicha. \`AND\` birinchi bajariladi. Xatolikni oldini olish uchun qavslardan \`()\` foydalanish shart. Masalan: \`WHERE (age > 18 OR role = 'admin') AND active = true\`.
+## 3. ⚠️ Edge Cases va Senior Interview Questions
 
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
+1. **\\\`NULL\\\` bilan solishtirish muammosi:**
+   \\\`WHERE age != 25\\\` sharti \\\`age\\\` ustuni \\\`NULL\\\` bo'lgan qatorlarni qaytarmaydi! SQL da \\\`NULL\\\` noma'lum degani. Shuning uchun noma'lum narsa 25 ga teng yoki teng emasligini bilib bo'lmaydi. \\\`NULL\\\` ni tekshirish uchun har doim \\\`IS NULL\\\` yoki \\\`IS NOT NULL\\\` dan foydalanish kerak.
+
+2. **\\\`AND\\\` va \\\`OR\\\` Prioriteti (Ustuvorligi):**
+   Mantiqiy ifodalarda \\\`AND\\\` har doim \\\`OR\\\` dan oldin bajariladi.
+   \\\`WHERE age > 18 OR role = 'admin' AND active = true\\\` bu shart aslida bunday ishlaydi:
+   \\\`WHERE age > 18 OR (role = 'admin' AND active = true)\\\`. Xatolarni oldini olish uchun doim qavslardan foydalaning!
+
+3. **\\\`BETWEEN\\\` va Sanalar (Dates):**
+   \\\`WHERE created_at BETWEEN '2023-01-01' AND '2023-01-31'\\\` so'rovi ba'zan '2023-01-31 15:00:00' dagi ma'lumotlarni olmay qoladi, chunki vaqt ko'rsatilmasa, u \\\`'2023-01-31 00:00:00'\\\` deb olinadi. Buning o'rniga \\\`>= '2023-01-01' AND < '2023-02-01'\\\` yozish to'g'riroq.
+
+## 🛠️ Amaliy Topshiriqlar uchun Vizualizatsiya
+\\\`\\\`\\\`mermaid
 flowchart TD
-    A[WHERE Sharti] --> B(Mantiqiy)
+    A[WHERE Operatorlari] --> B(Mantiqiy)
     A --> C(Kengaytirilgan)
-    B --> D(AND)
-    B --> E(OR)
-    B --> F(NOT)
-    C --> G(IN)
-    C --> H(BETWEEN)
-    C --> I(LIKE)
-\`\`\`
+    B --> D[AND]
+    B --> E[OR]
+    B --> F[NOT]
+    C --> G[IN]
+    C --> H[BETWEEN]
+    C --> I[LIKE]
+    C --> J[IS NULL]
+\\\`\\\`\\\`
 `,
   exercises: [
     {

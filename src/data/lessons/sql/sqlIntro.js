@@ -2,44 +2,47 @@ export const sqlIntro = {
   id: "sql_intro",
   title: "SQL Kirish (Introduction)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-**SQL** (Structured Query Language) - bu ma'lumotlar bazasi (Database) bilan gaplashish uchun maxsus til. Tasavvur qiling, ma'lumotlar bazasi bu juda katta kutubxona, SQL esa shu kutubxonachiga qaysi kitobni olib kelish, qayerga yangi kitob qo'yish yoki qaysi kitobni olib tashlashni aytadigan tildir.
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+Tasavvur qiling, ma'lumotlar bazasi (Database) - bu ulkan va juda tartibli kutubxona. SQL (Structured Query Language) - bu kutubxonachiga nima qilish kerakligini aytadigan maxsus tildir.
 
-SQL orqali biz **CRUD** amallarini bajaramiz:
+Siz kutubxonachiga: "Menga 2020-yilda yozilgan va O'zbekiston haqidagi barcha kitoblarni olib kel", desangiz u sizga aynan shularni olib keladi. Agar siz SQL o'rniga JavaScript-da (yomon yondashuv bilan) ishlasangiz, siz kutubxonachiga: "Kutubxonadagi 10 millionta kitobni hammasini uyimga olib kel", deysiz va uyda o'zingiz ularni bitta-bitta qarab, keraklisini ajratasiz. Bu naqadar absurd bo'lsa, ma'lumotlar bazasidan hamma narsani yuklab olib keyin JavaScript-da \`filter\` qilish ham shunday absurd va xotira (RAM) uchun halokatlidir.
+
+SQL orqali biz asosan **CRUD** amallarini bajaramiz:
 - **C**reate - Yangi ma'lumot qo'shish (INSERT)
 - **R**ead - Ma'lumotni o'qish/olish (SELECT)
 - **U**pdate - Ma'lumotni yangilash (UPDATE)
 - **D**elete - Ma'lumotni o'chirish (DELETE)
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+## 2. 🧠 Chuqur O'rganish (Deep Dive)
+### RDBMS Arxitekturasi va PostgreSQL Inernals
+RDBMS (Relational Database Management System) ma'lumotlarni qat'iy sxema asosida (jadvallar ko'rinishida) saqlaydi. Lekin bu jadvallar diskda qanday saqlanadi?
 
-**❌ YOMON:** Ma'lumotlar bazasi haqida o'ylamasdan, barcha ma'lumotlarni tortib olib, JavaScript'da filtrlash.
-\`\`\`javascript
-// 10 million qator ma'lumotni olib kelib, xotirani to'ldirib yuborish
-const allUsers = await db.query("SELECT * FROM users");
-const activeUsers = allUsers.filter(u => u.isActive);
-\`\`\`
+**Memory va Storage:**
+PostgreSQL kabi tizimlar ma'lumotlarni *Page* (sahifa) deb ataluvchi bloklarda (odatda 8KB) saqlaydi. So'rov berilganda, PostgreSQL kerakli *Page* ni diskdan xotiraga (Shared Buffers) yuklaydi. Disk I/O (kiritish/chiqarish) juda sekin jarayon bo'lgani uchun, bazani to'g'ri loyihalash (indekslar yaratish) orqali biz qaysi *Page* ni diskdan o'qishni oldindan aniqlab, qolgan keraksiz millionlab *Page* larni o'qishdan saqlanamiz.
 
-**✅ YAXSHI:** SQL'ning o'zida filtrlash (faqat kerakli ma'lumotni olish).
-\`\`\`javascript
-// Ma'lumotlar bazasining o'zidan faqat aktiv foydalanuvchilarni olish
-const activeUsers = await db.query("SELECT * FROM users WHERE is_active = true");
-\`\`\`
+**Query Execution (So'rov qanday ishlaydi):**
+1. **Parser:** Siz yozgan SQL so'rovni tahlil qilib, Syntax Tree yasaydi.
+2. **Analyzer:** Jadval nomi to'g'rimi, ustunlar bormi tekshiradi.
+3. **Planner/Optimizer:** Ma'lumotni qanday qilib eng tez olishni (qaysi indeksni ishlatishni) hisoblab chiqib, *Execution Plan* tuzadi. (Bunda Cost-based optimization qo'llaniladi).
+4. **Executor:** Planni ishga tushirib, natijani qaytaradi.
 
-## 🎤 Intervyu Savollari
-1. **SQL nima va u qanday ishlaydi?**
-   - RDBMs (Relational Database Management System) bilan ishlash uchun so'rov tili. Ma'lumotlarni jadvallar (tables) ko'rinishida saqlaydi va ular orasida munosabatlar (relations) o'rnatadi.
-2. **RDBMS (Relatsion Ma'lumotlar Bazasi) nima?**
-   - Ma'lumotlar jadvallarda (qatorlar va ustunlar ko'rinishida) saqlanadigan baza turi (MySQL, PostgreSQL, SQLite).
-3. **NoSQL va SQL farqi nima?**
-   - SQL qat'iy sxemaga ega, munosabatlarga asoslangan (Jadvallar). NoSQL (masalan, MongoDB) esa hujjatlarga asoslangan (JSON) va sxemasizroq ishlaydi.
+## 3. ⚠️ Edge Cases va Senior Intervyu Savollari
 
-## 🛠️ Amaliy Topshiriqlar
+**Senior Intervyu Savoli 1:** "NoSQL (masalan, MongoDB) SQL (PostgreSQL) dan ko'ra tezroq degan fikrga qo'shilasizmi?"
+**Javob:** Yo'q, bu noto'g'ri tushuncha. Ikkisi turli xil muammolarni hal qilish uchun yaratilgan. Agar ma'lumotlar aniq sxemaga ega bo'lsa va ko'p 'JOIN' amallari kerak bo'lsa, yaxshi optimizatsiya qilingan PostgreSQL, MongoDB-dan ko'ra tezroq ishlaydi. NoSQL ko'proq sxemasiz, tez o'zgaruvchan yoki ierarxik tuzilmadagi ma'lumotlar (JSON) uchun qulay.
+
+**Senior Intervyu Savoli 2:** "Nima uchun \`SELECT *\` ishlatish ishlab chiqarish (production) muhitida yomon amaliyot hisoblanadi?"
+**Javob:** Ikkita sababi bor. 1) Xotira va Tarmoq: Bizga kerak bo'lmagan ustunlarni ham diskdan xotiraga, undan esa tarmoq orqali dasturimizga olib kelish ortiqcha resurs talab qiladi. 2) Index-only scan ishlamasligi: Agar so'rov aniq ustunlarni so'rasa, baza faqat indeksning o'zini o'qib javob qaytarishi mumkin (juda tez), \`SELECT *\` holatida esa doim jadvalga murojaat qilinadi.
+
+## 🛠️ Ma'lumotlar Bazasi va Dastur Munosabati
+
 \`\`\`mermaid
 graph TD
-    A[Sizning Dasturingiz] -->|SQL So'rov| B(Ma'lumotlar Bazasi)
-    B -->|Javob: Jadvallar| A
-    B --> C[(Saqlangan Ma'lumotlar)]
+    A[Node.js / Express Dastur] -->|1. SQL So'rov| B(PostgreSQL - Parser & Optimizer)
+    B -->|2. Execution Plan| C{Shared Buffers / RAM}
+    C -->|3. Cache Miss holatida| D[(Disk / SSD)]
+    D -->|4. Page larni yuklash| C
+    C -->|5. Tayyor Natija| A
 \`\`\`
 `,
   exercises: [
@@ -117,21 +120,21 @@ graph TD
     },
     {
       id: 9,
-      title: "9-Topshiriq: Ma'lumotlar bazasi turlari",
-      instruction: "Agar baza 'Tables' ishlatmasa, uni odatda qanday ataymiz? 'NoSQL' so'zini qaytaring.",
-      startingCode: "function getNonRelational() {\n  return '';\n}",
-      hint: "'NoSQL' so'zini qaytaring.",
-      solution: "function getNonRelational() {\n  return 'NoSQL';\n}",
-      test: "const fn = new Function(code + '; return getNonRelational;')();\nif (fn().toLowerCase() !== 'nosql') throw new Error(\"NoSQL deb qaytarilishi kerak\");"
+      title: "9-Topshiriq: Ma'lumotlar bazasi sahifalari",
+      instruction: "PostgreSQL ma'lumotlarni diskda qanday ataluvchi bloklarda saqlaydi? 'Page' so'zini qaytaring.",
+      startingCode: "function getDbBlockName() {\n  return '';\n}",
+      hint: "'Page' so'zini qaytaring.",
+      solution: "function getDbBlockName() {\n  return 'Page';\n}",
+      test: "const fn = new Function(code + '; return getDbBlockName;')();\nif (fn().toLowerCase() !== 'page') throw new Error(\"Page deb qaytarilishi kerak\");"
     },
     {
       id: 10,
-      title: "10-Topshiriq: Eng mashhur bazalardan biri",
-      instruction: "Eng mashhur ochiq kodli SQL bazalaridan birining nomini qaytaring (masalan 'PostgreSQL' yoki 'MySQL').",
-      startingCode: "function getDBName() {\n  return '';\n}",
-      hint: "'PostgreSQL' yoki 'MySQL' deb qaytaring.",
-      solution: "function getDBName() {\n  return 'PostgreSQL';\n}",
-      test: "const fn = new Function(code + '; return getDBName;')();\nconst res = fn().toLowerCase();\nif (!['postgresql', 'mysql'].includes(res)) throw new Error(\"MySQL yoki PostgreSQL kutilgandi\");"
+      title: "10-Topshiriq: Yomon amaliyot",
+      instruction: "Barcha ustunlarni tanlash uchun ishlatiladigan va production-da yomon amaliyot hisoblangan buyruqni qaytaring. ('SELECT *')",
+      startingCode: "function getBadPracticeCommand() {\n  return '';\n}",
+      hint: "'SELECT *' deb qaytaring.",
+      solution: "function getBadPracticeCommand() {\n  return 'SELECT *';\n}",
+      test: "const fn = new Function(code + '; return getBadPracticeCommand;')();\nif (fn() !== 'SELECT *') throw new Error(\"SELECT * kutilgandi\");"
     }
   ],
   quizzes: [
@@ -179,45 +182,45 @@ graph TD
     },
     {
       id: 7,
-      question: "SQL bazalari ma'lumotni asosan qanday formatda saqlaydi?",
-      options: ["JSON fayllarda", "Jadvallar (Tables) ko'rinishida", "Graf shaklida", "Faqat rasm ko'rinishida"],
+      question: "PostgreSQL ma'lumotlarni diskda asosan qanday o'lchamli bloklarda saqlaydi?",
+      options: ["1 MB fayllar", "8 KB Page'lar", "Bitta katta fayl", "Faqat RAM'da"],
       correctAnswer: 1,
-      explanation: "SQL bazalari ma'lumotlarni qator va ustunlardan iborat jadvallarda saqlaydi."
+      explanation: "PostgreSQL ma'lumotlarni 8KB o'lchamdagi Page larda diskda saqlaydi."
     },
     {
       id: 8,
-      question: "Qaysi amal ma'lumotni o'chirish uchun ishlatiladi?",
-      options: ["DELETE", "DROP", "REMOVE", "ERASE"],
-      correctAnswer: 0,
-      explanation: "Ma'lumotlar qatorini o'chirish uchun DELETE ishlatiladi."
+      question: "Query Execution Plan nima?",
+      options: ["Dasturlash tili turi", "So'rovni eng optimal tarzda qanday bajarish strategiyasi", "Baza paroli", "Tarmoq xatosi"],
+      correctAnswer: 1,
+      explanation: "Optimizer SQL so'rovni tahlil qilib, uni eng kam xarajat bilan (tez) bajarish uchun Execution Plan tuzadi."
     },
     {
       id: 9,
-      question: "Qaysi amal ma'lumotni yangilash uchun ishlatiladi?",
-      options: ["CHANGE", "MODIFY", "UPDATE", "SET"],
+      question: "Nega 'SELECT *' production muhitida yomon amaliyot hisoblanadi?",
+      options: ["Sintaksis xato", "U hech qachon ishlamaydi", "Keraksiz ma'lumotlarni ham olib kelib xotira va tarmoqni band qiladi", "U SQL standartiga kirmaydi"],
       correctAnswer: 2,
-      explanation: "Mavjud ma'lumotni o'zgartirish uchun UPDATE buyrug'i ishlatiladi."
+      explanation: "Ortiqcha ustunlarni so'rash tarmoq, xotira va Disk I/O resurslarini behuda isrof qiladi."
     },
     {
       id: 10,
-      question: "Ma'lumotlar bazasida sxema (schema) nima?",
-      options: ["Ma'lumotlar strukturasi va qoidalari", "Baza paroli", "Dasturchi ismi", "Faqat jadvalning rangi"],
+      question: "SQL so'rovi qayta ishlashning birinchi bosqichida qaysi qism ishlaydi?",
+      options: ["Parser", "Executor", "Cache", "SSD"],
       correctAnswer: 0,
-      explanation: "Sxema - bu ma'lumotlar bazasining qanday tuzilganligi, jadvallar va ulardagi ustunlar qoidalari majmuasi."
+      explanation: "Birinchi bo'lib Parser SQL so'rovini o'qib, uni kompyuter tushunadigan Syntax Tree'ga o'giradi."
     },
     {
       id: 11,
       question: "SQL dasturlash tilimi?",
-      options: ["Ha, u to'laqonli dasturlash tili", "Yo'q, u faqat so'rovlar (query) tili", "U brauzer tili", "U faqat matematik tili"],
+      options: ["Ha, u to'laqonli dasturlash tili", "Yo'q, u maxsus so'rov (query) tili", "U brauzer tili", "U faqat matematik tili"],
       correctAnswer: 1,
-      explanation: "SQL asosan Query Language (so'rov tili), u to'laqonli (Turing complete) an'anaviy dasturlash tili emas (garchi uning ba'zi kengaytmalarida shartlar bo'lsa ham)."
+      explanation: "SQL an'anaviy ma'noda (Turing complete) dasturlash tili emas, balki ma'lumotlar bilan ishlashga ixtisoslashgan so'rov tilidir."
     },
     {
       id: 12,
-      question: "Nima uchun JavaScriptda to'g'ridan to'g'ri bazani filter qilish yomon amaliyot?",
-      options: ["Chunki JS juda sekin", "Barcha ma'lumotlarni xotiraga tortish serverni qotirib qo'yadi", "SQL arzonroq", "Mumkin emas, JS buni qila olmaydi"],
-      correctAnswer: 1,
-      explanation: "Barcha millionlab qatorlarni JSga yuklab, keyin filter qilish Memory (xotira) to'lishiga olib keladi. Filter SQLning o'zida bajarilishi kerak."
+      question: "Nima uchun ma'lumotlarni JavaScript-da emas, SQL-ning o'zida (WHERE orqali) filtrlash kerak?",
+      options: ["JS buni uddalay olmaydi", "JS juda sekin tillar qatoriga kiradi", "Barcha ma'lumotlarni RAM'ga tortish halokatli bo'lishi mumkin", "SQL qisqaroq yoziladi"],
+      correctAnswer: 2,
+      explanation: "Katta bazadan hamma ma'lumotni dasturga olib kelish xotira (RAM) ni to'ldirib, dasturni qulatishi mumkin. Shuning uchun filtrlash doim bazaning o'zida bo'lishi kerak."
     }
   ]
 };

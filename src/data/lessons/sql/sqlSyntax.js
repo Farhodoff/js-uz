@@ -2,47 +2,56 @@ export const sqlSyntax = {
   id: "sql_syntax",
   title: "SQL Sintaksis (Syntax)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-SQL tili huddi ingliz tiliga o'xshaydi. Unda gaplar (statements) yozamiz. Har bir gap qaysidir ishni bajarishni buyuradi.
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+SQL (Structured Query Language) tillar oilasiga kiradi, ammo u oddiy tillar (masalan ingliz tili) kabi ishlaydi. Unda biz buyruqlarni "gaplar" (statements) tarzida beramiz. 
+Tasavvur qiling, siz restoranda ofitsiantsiz va mijoz sizga buyurtma bermoqda: "Menga taomnoma ichidan 2 ta shirinlikni olib keling, narxi 10 dollardan arzon bo'lsin".
+SQL ham xuddi shunday ishlaydi: siz ma'lumotlar bazasiga qaysi ustunlar (SELECT), qaysi jadvaldan (FROM) va qanday shart asosida (WHERE) kerakligini aytasiz.
 
-Eng asosiy sintaksis - bu ma'lumotlarni o'qish (SELECT):
 \\\`\\\`\\\`sql
-SELECT ustun1, ustun2 
-FROM jadval_nomi 
-WHERE shart;
+SELECT ism, familiya 
+FROM foydalanuvchilar 
+WHERE yosh > 18;
 \\\`\\\`\\\`
-Bu huddi: *"Falon jadvaldan, falon shartga mos keladigan qatorlarning falon ustunlarini tanlab ber"* degani.
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+Bu yerda:
+- **SELECT** - Nima kerak? (ism, familiya)
+- **FROM** - Qayerdan olinadi? (foydalanuvchilar jadvali)
+- **WHERE** - Qanday shartga ko'ra? (18 yoshdan kattalar)
 
-**❌ YOMON:** Hamma ustunlarni (SELECT *) kerak bo'lmasa ham chaqirib olish. Bu bazani va tarmoqni ortiqcha zo'riqtiradi.
-\`\`\`sql
--- Faqat foydalanuvchining ismi kerak bo'lsa ham:
-SELECT * FROM users;
-\`\`\`
+## 2. 🔬 Chuqurroq Tahlil (Deep Dive)
+SQL ostida aslida nimalar sodir bo'ladi? Dastur so'rovni ko'rganda uni to'g'ridan-to'g'ri ishga tushirmaydi. Quyidagi bosqichlardan o'tadi:
+1. **Parsing (Tahlil qilinishi):** SQL dvigateli yozilgan kodni tekshiradi, sintaksis to'g'riligini aniqlaydi.
+2. **Planner (Rejalashtiruvchi):** Qanday qilib ma'lumotni tezroq va samaraliroq topish yo'lini tuzadi. Index'lardan foydalanish yoki to'liq qidirish kerakligini aniqlaydi.
+3. **Execution (Bajarish):** Reja bo'yicha bazaga borib, kerakli natijalarni qaytaradi.
 
-**✅ YAXSHI:** Faqat sizga aynan kerak bo'lgan ustunlarni sanab o'tish.
-\`\`\`sql
-SELECT first_name, last_name FROM users;
-\`\`\`
+**Nima uchun \\\`SELECT *\\\` dan qochish kerak?**
+Ko'p dasturchilar oson yo'lni tanlab, barcha ustunlarni tanlash uchun yulduzchadan (\\\`*\\\`) foydalanadilar.
+\\\`\\\`\\\`sql
+-- YOMON YONDASHUV
+SELECT * FROM xodimlar;
+\\\`\\\`\\\`
+Bu unumdorlik (performance) uchun zararlidir. Tarmoq orqali katta hajmdagi keraksiz ma'lumotlar (masalan, parollar, uzun matnlar) uzatiladi. Doimo faqat o'zingizga kerakli ustunlarni aniq yozing.
 
-## 🎤 Intervyu Savollari
-1. **\`SELECT *\` nima uchun yomon amaliyot hisoblanadi (production'da)?**
-   - Tarmoq trafigi oshadi, xotira ko'p sarflanadi. Keraksiz ma'lumotlarni (masalan, parollar heshlari) tortib olish xavfsizlikka ham ziddir.
-2. **SQL so'rovlari case-sensitive (harf kattaligiga sezgir) mi?**
-   - SQL buyruqlarining o'zi (SELECT, FROM, WHERE) case-insensitive (farqi yo'q). Ammo jadval ichidagi matnli ma'lumotlar (masalan 'Toshkent' vs 'toshkent') ko'pincha sezgir bo'lishi mumkin (bazaning sozlamasiga qarab).
-3. **\`WHERE\` qatorlarni qachon filtrlaydi?**
-   - \`WHERE\` qatorlar guruhlanishidan (GROUP BY) oldin filtrlaydi.
+## 3. 🚧 Chekka Holatlar va Senior Intervyu Savollari (Edge Cases & Senior Interview Questions)
+1. **SQL case-sensitive'mi (katta-kichik harfga sezgirmi)?**
+   SQL ning o'zi (kalit so'zlar kabi SELECT, FROM) sezgir emas. Ammo jadval ichidagi ma'lumotlar sezgir bo'lishi mumkin. Bu ma'lumotlar bazasining Collation (sozlamalari) turiga bog'liq.
+2. **Buyruqlar bajarilish ketma-ketligi qanday?**
+   Biz so'rovni \\\`SELECT\\\` dan boshlab yozamiz, lekin SQL dvigateli uni quyidagi ketma-ketlikda o'qiydi:
+   \\\`FROM\\\` ➡️ \\\`WHERE\\\` ➡️ \\\`GROUP BY\\\` ➡️ \\\`HAVING\\\` ➡️ \\\`SELECT\\\` ➡️ \\\`ORDER BY\\\` ➡️ \\\`LIMIT\\\`.
+   Bu degani \\\`SELECT\\\` da bergan yangi "alias" nomini \\\`WHERE\\\` shartida ishlata olmaysiz.
+3. **Nima uchun nuqtali vergul (;) muhim?**
+   Standart bo'yicha har bir SQL ifodasi (statement) nuqtali vergul bilan yakunlanadi. Bitta faylda bir nechta so'rovlarni alohida ishga tushirish uchun bu yagona ajratuvchidir.
 
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
+## 📊 SQL So'rovi Qanday Tuziladi?
+\\\`\\\`\\\`mermaid
 flowchart LR
-    A[SELECT] -->|Nimani olish?| B(ustunlar, ...)
+    A[SELECT] -->|Qaysi ustunlar?| B(ustun_nomlari)
     B --> C[FROM]
-    C -->|Qayerdan?| D(jadval_nomi)
+    C -->|Qaysi jadval?| D(jadval_nomi)
     D --> E[WHERE]
-    E -->|Qaysi shart?| F(shartlar)
-\`\`\`
+    E -->|Qanday shart?| F(shartlar)
+    F --> G[;]
+\\\`\\\`\\\`
 `,
   exercises: [
     {
