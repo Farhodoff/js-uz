@@ -1,281 +1,229 @@
 export const operators = {
-  id: "operators",
-  title: "Operatorlar",
-  language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-JavaScript-da **operatorlar** — bu qiymatlar (operandlar) ustida matematik, solishtirish yoki mantiqiy amallarni bajarishga ko'rsatma beruvchi maxsus belgilar. Masalan, \`+\` operatori ikkita sonni qo'shadi, \`===\` esa ularning tengligini tekshiradi.
+  id: 'operators',
+  title: 'JavaScript Operators',
+  theory: `
+# JavaScript Operators: From Beginner to Expert
 
-Oshxonaga o'xshatadigan bo'lsak:
-* **O'zgaruvchilar:** Idishlar va mahsulotlar (go'sht, piyoz).
-* **Operatorlar:** Oshxona asboblari! 
-  * Matematik (\`+\`, \`-\`): Pichoq va qirg'ich.
-  * Solishtirish (\`===\`, \`>\`): Tarozilar.
-  * Mantiqiy (\`&&\`, \`||\`): Retsept qoidalari ("Agar kartoshka VA sabzi bo'lsa, sho'rva qilamiz").
+## Part 1: Beginner Analogy
+Imagine you're cooking in a kitchen. You have ingredients (values) and you need to process them. 
+Operators are like your kitchen tools—knives, blenders, and stoves—that help you transform or combine ingredients.
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+- **Arithmetic Operators** (+, -, *, /) are like basic cooking actions: adding sugar, slicing an apple into pieces.
+- **Assignment Operators** (=, +=, -=) are like putting food into a specific container.
+- **Comparison Operators** (==, ===, !=, >, <) are like checking if your food is cooked enough (is temperature > 100?).
+- **Logical Operators** (&&, ||, !) are like following recipes conditionally (if we have eggs AND flour, we can bake).
 
-❌ **YOMON:** Kuchsiz solishtirish (\`==\`) operatoridan foydalanish (kutilmagan natijalarga olib kelishi mumkin).
-\`\`\`javascript
-const input = "";
-if (input == 0) {
-  // Bo'sh satr 0 deb o'qiladi, bu xavfli!
-}
-\`\`\`
+Here is a simple example:
+\\\`javascript
+let apples = 5;
+let oranges = 3;
+let totalFruits = apples + oranges; // Using the '+' operator
+\\\`
 
-✅ **YAXSHI:** Qat'iy solishtirish (\`===\`) operatoridan foydalanish (turlarni ham tekshiradi).
-\`\`\`javascript
-const input = "";
-if (input === 0) {
-  // false beradi, mutlaqo xavfsiz.
-}
-\`\`\`
+## Part 2: Deep Dive (Under the Hood, Memory, V8 Engine, Performance)
 
-## 🎤 Intervyu Savollari
-1. **\`==\` va \`===\` farqi nimada?**
-   - \`==\` faqat qiymatni tekshiradi va solishtirishdan oldin turlarni avtomatik o'zgartiradi (type coercion). \`===\` esa qiymatni ham, ma'lumot turini ham qat'iy tekshiradi.
-2. **Short-circuit (qisqa tutashuv) baholash nima?**
-   - Mantiqiy \`&&\` operatori chap tomonda falsy qiymat ko'rsa o'ng tomonni hisoblamaydi, \`||\` esa chap tomonda truthy ko'rsa o'ng tomonni tekshirmasdan to'xtaydi.
-3. **Nullish coalescing (\`??\`) operatori qanday ishlaydi?**
-   - \`??\` operatori faqatgina chap tomon \`null\` yoki \`undefined\` bo'lsagina o'ng tomondagi qiymatga o'tadi. \`0\` yoki \`""\` kabi falsy qiymatlar bo'lsa, ularning o'zini qoldiradi.
+### How Operators Work in Memory and V8
+When V8 executes an operation like \\\`a + b\\\`, it doesn't just blindly add them. V8 heavily optimizes operations using Inline Caches (ICs).
+If you consistently use the \\\`+\\\` operator on two integers (Smi - Small Integer in V8), V8 compiles a highly optimized machine code path.
 
-## 🛠️ Amaliy Topshiriqlar
+However, if you suddenly use \\\`+\\\` on strings or mixed types, V8 has to "deoptimize" (bailout), falling back to slower, generic addition functions. This is because JavaScript allows dynamic typing, and the \\\`+\\\` operator is overloaded for both numeric addition and string concatenation.
 
-\`\`\`mermaid
-flowchart TD
-    A[Operatorlar] --> B[Matematik]
-    A --> C[Solishtirish]
-    A --> D[Mantiqiy]
-    B --> E[+, -, *, /, %, **]
-    C --> F[===, !==, >, <, >=, <=]
-    D --> G[&&, ||, !, ??]
-\`\`\`
+### Type Coercion (The ECMAScript Spec)
+When evaluating an expression with mixed types, JS performs abstract operations like \\\`ToPrimitive\\\`, \\\`ToNumber\\\`, or \\\`ToString\\\`.
+- \\\`"5" + 3\\\` -> String concatenation triggers. \\\`3\\\` becomes \\\`"3"\\\`. Result: \\\`"53"\\\`.
+- \\\`"5" - 3\\\` -> The minus operator only works for numbers. \\\`"5"\\\` becomes \\\`5\\\`. Result: \\\`2\\\`.
+
+## Part 3: Edge Cases and Senior Interview Questions
+
+### Interview Questions
+**1. What is the difference between \\\`==\\\` and \\\`===\\\` under the hood?**
+- \\\`===\\\` (Strict Equality) checks type first. If types differ, it returns false. If types are the same, it compares values.
+- \\\`==\\\` (Loose Equality) triggers the \\\`Abstract Equality Comparison\\\` algorithm. If types differ, it attempts type coercion before comparing values.
+
+**2. Why does \\\`0.1 + 0.2 === 0.3\\\` evaluate to false?**
+JavaScript numbers are represented as IEEE 754 double-precision 64-bit floating-point format. Some decimals cannot be represented exactly in binary, leading to precision loss.
+
+**3. What is the output of \\\`NaN === NaN\\\`?**
+\\\`false\\\`. By IEEE 754 specification, NaN is not equal to anything, including itself. Use \\\`Number.isNaN()\\\` to check for NaN.
+
+**4. What does the expression \\\`[] + {}\\\` and \\\`{} + []\\\` evaluate to?**
+- \\\`[] + {}\\\` results in \\\`"[object Object]"\\\` (empty array coerces to "", empty object coerces to "[object Object]").
+- \\\`{} + []\\\` can sometimes be interpreted as an empty code block followed by \\\`+[]\\\`, which evaluates to \\\`0\\\` in some older consoles, but generally in modern environments it evaluates to \\\`"[object Object]"\\\`.
+
+### Mermaid Diagram: V8 Engine Operator Optimization
+
+\\\`mermaid
+graph TD
+    A[Expression: a + b] --> B{Are both types Smi?}
+    B -- Yes --> C[Optimized Machine Code]
+    C --> D[Fast Execution]
+    B -- No --> E{Are they strings?}
+    E -- Yes --> F[String Concatenation Path]
+    E -- No --> G[Generic Path / Coercion]
+    G --> H[Deoptimization / Slower Execution]
+\\\`
 `,
   exercises: [
     {
       id: 1,
-      title: "Matematik amal",
-      instruction: "Ikkita son qabul qilib, ularning yig'indisini shu sonlarning ayirmasiga ko'paytirib qaytaradigan \`calculateMath(a, b)\` funksiyasini yozing. Ya'ni (a + b) * (a - b).",
-      startingCode: "function calculateMath(a, b) {\n  // Kodni yozing\n}",
-      hint: "Qavslardan foydalanib ustuvorlikni aniqlang: (a + b) * (a - b).",
-      test: "const fn = new Function(code + '; return calculateMath;')(); if(fn(5, 3) !== 16) throw new Error('Xato');"
+      title: "Basic Arithmetic",
+      description: "Create a variable `total` that adds 15 and 25.",
+      starterCode: "let total = ;",
+      solution: "let total = 15 + 25;"
     },
     {
       id: 2,
-      title: "Qoldiqni topish",
-      instruction: "Berilgan a sonini b soniga bo'lgandagi qoldiqni qaytaradigan \`getRemainder(a, b)\` funksiyasini yozing.",
-      startingCode: "function getRemainder(a, b) {\n  // Kodni yozing\n}",
-      hint: "% operatoridan foydalaning.",
-      test: "const fn = new Function(code + '; return getRemainder;')(); if(fn(10, 3) !== 1) throw new Error('Qoldiq noto\\'g\\'ri');"
+      title: "String Concatenation",
+      description: "Concatenate 'Hello' and 'World' with a space in between and assign it to `greeting`.",
+      starterCode: "let greeting = ;",
+      solution: "let greeting = 'Hello' + ' ' + 'World';"
     },
     {
       id: 3,
-      title: "Qat'iy tenglik",
-      instruction: "Ikkita parametr qabul qilib, ular qat'iy teng (===) bo'lsagina true qaytaruvchi \`isStrictEqual(x, y)\` yozing.",
-      startingCode: "function isStrictEqual(x, y) {\n  // Kodni yozing\n}",
-      hint: "x === y dan foydalaning.",
-      test: "const fn = new Function(code + '; return isStrictEqual;')(); if(fn(1, '1') !== false || fn(2, 2) !== true) throw new Error('Xato');"
+      title: "Modulo Operator",
+      description: "Find the remainder of 10 divided by 3 and assign it to `remainder`.",
+      starterCode: "let remainder = ;",
+      solution: "let remainder = 10 % 3;"
     },
     {
       id: 4,
-      title: "Yoshi yetadimi?",
-      instruction: "Foydalanuvchi yoshi (age) 18 dan katta yoki unga teng bo'lsa true, aks holda false qaytaruvchi \`canVote(age)\` yozing.",
-      startingCode: "function canVote(age) {\n  // Kodni yozing\n}",
-      hint: "age >= 18 mantiqiy amali to'g'ridan to'g'ri true yoki false qaytaradi.",
-      test: "const fn = new Function(code + '; return canVote;')(); if(fn(17) !== false || fn(18) !== true) throw new Error('Xato');"
+      title: "Exponentiation",
+      description: "Calculate 2 to the power of 5 using the exponentiation operator and assign to `power`.",
+      starterCode: "let power = ;",
+      solution: "let power = 2 ** 5;"
     },
     {
       id: 5,
-      title: "Mantiqiy Inkor",
-      instruction: "Berilgan qiymatning mantiqiy inkorini (boolean qiymatining teskarisini) qaytaruvchi \`negateValue(val)\` funksiyasini yozing.",
-      startingCode: "function negateValue(val) {\n  // Kodni yozing\n}",
-      hint: "Bitta ! belgisidan foydalaning: !val.",
-      test: "const fn = new Function(code + '; return negateValue;')(); if(fn(true) !== false || fn('') !== true) throw new Error('Xato');"
+      title: "Increment Operator",
+      description: "Increment the variable `counter` by 1 using the increment operator.",
+      starterCode: "let counter = 5;\n// Your code here",
+      solution: "let counter = 5;\ncounter++;"
     },
     {
       id: 6,
-      title: "Nullish Coalescing (??)",
-      instruction: "O'zgaruvchi x va y qabul qiladigan \`getDefault(x, y)\` funksiyasini yozing. U x ning qiymati null yoki undefined bo'lsa y ni qaytarsin, aks holda x ning o'zini qaytarsin.",
-      startingCode: "function getDefault(x, y) {\n  // Kodni yozing\n}",
-      hint: "x ?? y amali yordam beradi.",
-      test: "const fn = new Function(code + '; return getDefault;')(); if(fn(null, 'default') !== 'default' || fn(0, 1) !== 0) throw new Error('Xato');"
+      title: "Compound Assignment",
+      description: "Add 10 to `score` using the `+=` operator.",
+      starterCode: "let score = 50;\n// Your code here",
+      solution: "let score = 50;\nscore += 10;"
     },
     {
       id: 7,
-      title: "Mantiqiy AND (&&)",
-      instruction: "Ikkita parametr x va y truthy (rost) bo'lsagina y ni qaytaradigan, aks holda birinchi falsy qiymatni qaytaradigan \`logicalAnd(x, y)\` yozing.",
-      startingCode: "function logicalAnd(x, y) {\n  // Kodni yozing\n}",
-      hint: "x && y amali xuddi shunday ishlaydi.",
-      test: "const fn = new Function(code + '; return logicalAnd;')(); if(fn(true, 'salom') !== 'salom' || fn(0, 1) !== 0) throw new Error('Xato');"
+      title: "Strict Equality",
+      description: "Check if `a` and `b` are strictly equal and assign the result to `isEqual`.",
+      starterCode: "let a = 10;\nlet b = '10';\nlet isEqual = ;",
+      solution: "let a = 10;\nlet b = '10';\nlet isEqual = a === b;"
     },
     {
       id: 8,
-      title: "Tana vazni indeksini (BMI) hisoblash",
-      instruction: "Vazn (kg) va bo'y (m) qabul qilib, BMI hisoblaydigan va son qaytaradigan \`calculateBMI(weight, height)\` yozing. BMI = weight / (height ** 2). Natijani butun songa yaxlitlang (Math.round).",
-      startingCode: "function calculateBMI(weight, height) {\n  // Kodni yozing\n}",
-      hint: "Math.round(weight / (height ** 2))",
-      test: "const fn = new Function(code + '; return calculateBMI;')(); if(fn(70, 1.75) !== 23) throw new Error('Xato');"
+      title: "Logical AND",
+      description: "Assign `true` to `canDrive` if `age` is greater than or equal to 18 AND `hasLicense` is true.",
+      starterCode: "let age = 20;\nlet hasLicense = true;\nlet canDrive = ;",
+      solution: "let age = 20;\nlet hasLicense = true;\nlet canDrive = age >= 18 && hasLicense;"
     },
     {
       id: 9,
-      title: "Ternary operatori",
-      instruction: "Raqam qabul qilib, juft bo'lsa 'juft', toq bo'lsa 'toq' qaytaruvchi \`checkEvenOdd(num)\` yozing. Ternary (? :) operatoridan foydalaning.",
-      startingCode: "function checkEvenOdd(num) {\n  // Kodni yozing\n}",
-      hint: "return num % 2 === 0 ? 'juft' : 'toq';",
-      test: "const fn = new Function(code + '; return checkEvenOdd;')(); if(fn(4) !== 'juft' || fn(7) !== 'toq') throw new Error('Xato');"
+      title: "Ternary Operator",
+      description: "Use the ternary operator to assign 'Adult' to `status` if `age >= 18`, otherwise assign 'Minor'.",
+      starterCode: "let age = 16;\nlet status = ;",
+      solution: "let age = 16;\nlet status = age >= 18 ? 'Adult' : 'Minor';"
     },
     {
       id: 10,
-      title: "Foydalanuvchi ismini tanlash",
-      instruction: "nickname va fullName qabul qiluvchi \`getDisplayName(nickname, fullName)\` yozing. nickname bo'sh bo'lmasa uni, aks holda fullName ni, ikkalasi ham falsy bo'lsa 'Mehmon' qaytarsin.",
-      startingCode: "function getDisplayName(nickname, fullName) {\n  // Kodni yozing\n}",
-      hint: "return nickname || fullName || 'Mehmon';",
-      test: "const fn = new Function(code + '; return getDisplayName;')(); if(fn('', 'Vali') !== 'Vali' || fn('', '') !== 'Mehmon') throw new Error('Xato');"
+      title: "Nullish Coalescing",
+      description: "Assign `user.name` to `displayName`. If `user.name` is null or undefined, use 'Anonymous'. Use `??` operator.",
+      starterCode: "let user = { name: null };\nlet displayName = ;",
+      solution: "let user = { name: null };\nlet displayName = user.name ?? 'Anonymous';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "JavaScript-da `==` (loose equality) va `===` (strict equality) operatorlari o'rtasidagi asosiy farq nimada?",
-      options: [
-        "`==` faqat qiymatlarni solishtiradi, `===` esa qiymatni va turni ham (type) tekshiradi",
-        "`===` faqat obyektlarni solishtirish uchun ishlatiladi",
-        "`==` operatori tezroq ishlaydi",
-        "Ular orasida farq yo'q"
-      ],
-      correctAnswer: 0,
-      explanation: "`==` turlarni moslashtiradi (type coercion). `===` esa qat'iy tekshiradi."
+      question: "What is the result of `5 + '5'` in JavaScript?",
+      options: ["10", "'55'", "NaN", "Error"],
+      correctAnswer: "'55'",
+      explanation: "When using the `+` operator with a string, JavaScript coerces the number into a string and concatenates them."
     },
     {
       id: 2,
-      question: "Quyidagi ifodalarning natijasi nima: `'5' + 3` va `'5' - 3`?",
-      options: [
-        "`'53'` (string) va `2` (number)",
-        "`8` (number) va `2` (number)",
-        "`'53'` (string) va `NaN`",
-        "`NaN` va `2` (number)"
-      ],
-      correctAnswer: 0,
-      explanation: "`+` operatori string qo'shadi. `-` esa majburiy songa aylantiradi."
+      question: "What is the result of `'5' - 3`?",
+      options: ["2", "'53'", "'2'", "NaN"],
+      correctAnswer: "2",
+      explanation: "The `-` operator only works for numbers, so JavaScript converts the string '5' to a number before subtracting."
     },
     {
       id: 3,
-      question: "Nullish coalescing (`??`) operatori o'ng tomonga qachon o'tadi?",
-      options: [
-        "Faqat `null` yoki `undefined` bo'lganda",
-        "Har qanday falsy (0, '', false) bo'lganda",
-        "Faqat false bo'lganda",
-        "Doim"
-      ],
-      correctAnswer: 0,
-      explanation: "`??` operatori faqatgina chap taraf null yoki undefined bo'lganda ishlaydi."
+      question: "Which operator checks for both value and type equality?",
+      options: ["==", "===", "=", "!=="],
+      correctAnswer: "===",
+      explanation: "The strict equality operator `===` checks both the value and the type of the operands."
     },
     {
       id: 4,
-      question: "`console.log(true || false && false);` kodi natijasi qanday bo'ladi?",
-      options: [
-        "true",
-        "false",
-        "undefined",
-        "TypeError"
-      ],
-      correctAnswer: 0,
-      explanation: "`&&` prioriteti yuqoriroq bo'lgani uchun avval `false && false` (false) bo'ladi. Keyin `true || false` bu `true` chiqadi."
+      question: "What does `typeof NaN` return?",
+      options: ["'number'", "'NaN'", "'undefined'", "'object'"],
+      correctAnswer: "'number'",
+      explanation: "In JavaScript, NaN (Not-a-Number) is classified as a numeric type."
     },
     {
       id: 5,
-      question: "`let x = 5; let y = x++;` da y ning qiymati nima bo'ladi?",
-      options: [
-        "y = 5",
-        "y = 6",
-        "y = 4",
-        "undefined"
-      ],
-      correctAnswer: 0,
-      explanation: "Postfix inkrement (`x++`) da avval qiymat yuklanadi (5), keyin o'zgaruvchi oshadi (6)."
+      question: "What is the result of `0.1 + 0.2 === 0.3`?",
+      options: ["true", "false", "undefined", "TypeError"],
+      correctAnswer: "false",
+      explanation: "Due to floating-point precision issues in IEEE 754, `0.1 + 0.2` evaluates to `0.30000000000000004`."
     },
     {
       id: 6,
-      question: "Quyidagilardan qaysi biri to'g'ri: `[] == false`?",
-      options: [
-        "Natija true",
-        "Natija false",
-        "Natija TypeError",
-        "Natija undefined"
-      ],
-      correctAnswer: 0,
-      explanation: "`==` orqali bo'sh massiv avval bo'sh satrga keyin 0 ga aylanadi, false ham 0 ga aylanadi."
+      question: "What does the nullish coalescing operator `??` check for?",
+      options: ["Only null", "null or undefined", "Any falsy value", "Only undefined"],
+      correctAnswer: "null or undefined",
+      explanation: "The `??` operator returns its right-hand operand when its left-hand operand is null or undefined."
     },
     {
       id: 7,
-      question: "`console.log(5 && 'hello' && 0 && true);` nima chiqaradi?",
-      options: [
-        "0",
-        "'hello'",
-        "false",
-        "true"
-      ],
-      correctAnswer: 0,
-      explanation: "Mantiqiy `&&` birinchi topgan falsy qiymatini qaytaradi (bu holda 0)."
+      question: "What is the result of `false || 'hello'`?",
+      options: ["false", "true", "'hello'", "undefined"],
+      correctAnswer: "'hello'",
+      explanation: "The `||` operator returns the first truthy value. Since false is falsy, it returns 'hello'."
     },
     {
       id: 8,
-      question: "Quyidagi operator nima qaytaradi: `typeof null`?",
+      question: "What does `++x` do compared to `x++`?",
       options: [
-        "'object'",
-        "'null'",
-        "'undefined'",
-        "'value'"
+        "No difference",
+        "`++x` increments before returning the value, `x++` increments after.",
+        "`x++` increments before returning the value, `++x` increments after.",
+        "`++x` adds 2 to the value."
       ],
-      correctAnswer: 0,
-      explanation: "Bu JavaScriptdagi tarixiy xato bo'lib, `typeof null` natijasi 'object' bo'ladi."
+      correctAnswer: "`++x` increments before returning the value, `x++` increments after.",
+      explanation: "`++x` is pre-increment, `x++` is post-increment."
     },
     {
       id: 9,
-      question: "Darajaga ko'tarish: `2 ** 3 ** 2` nechi bo'ladi?",
-      options: [
-        "512",
-        "64",
-        "18",
-        "81"
-      ],
-      correctAnswer: 0,
-      explanation: "`**` operatori o'ngdan chapga ishlaydi: avval 3 ** 2 (9), keyin 2 ** 9 (512)."
+      question: "What does `[] == ![]` evaluate to?",
+      options: ["true", "false", "TypeError", "NaN"],
+      correctAnswer: "true",
+      explanation: "`![]` evaluates to `false`. Then `[] == false` converts both sides to numbers (`0 == 0`), which is `true`."
     },
     {
       id: 10,
-      question: "Qaysi operatorning ustuvorligi (prioriteti) barchasidan baland?",
-      options: [
-        "Guruhlash ()",
-        "Ko'paytirish *",
-        "Qo'shish +",
-        "Tenglik ==="
-      ],
-      correctAnswer: 0,
-      explanation: "Qavslar () ifodani eng birinchi bajarishga majbur qiladi."
+      question: "What does the `**` operator do?",
+      options: ["Multiplication", "Exponentiation", "Bitwise XOR", "Logical AND"],
+      correctAnswer: "Exponentiation",
+      explanation: "The `**` operator raises the first operand to the power of the second operand (e.g., `2 ** 3 = 8`)."
     },
     {
       id: 11,
-      question: "`let x = 10; x += 5 * 2;` natijada x nechi bo'ladi?",
-      options: [
-        "20",
-        "30",
-        "15",
-        "10"
-      ],
-      correctAnswer: 0,
-      explanation: "Ko'paytirish `*` ning prioriteti yukori. Avval 5*2=10. Keyin x+=10 bo'ladi (20)."
+      question: "Which of the following has the highest operator precedence?",
+      options: ["Addition (+)", "Multiplication (*)", "Assignment (=)", "Grouping ()"],
+      correctAnswer: "Grouping ()",
+      explanation: "Parentheses `()` always have the highest precedence in JavaScript, forcing whatever is inside to evaluate first."
     },
     {
       id: 12,
-      question: "`console.log(!'hello');` nimani chiqaradi?",
-      options: [
-        "false",
-        "true",
-        "'hello'",
-        "undefined"
-      ],
-      correctAnswer: 0,
-      explanation: "Bo'sh bo'lmagan satr truthy qiymatdir. NOT (!) uni inkor qiladi va false bo'ladi."
+      question: "What will `typeof null` return?",
+      options: ["'null'", "'object'", "'undefined'", "'boolean'"],
+      correctAnswer: "'object'",
+      explanation: "This is a well-known bug in JavaScript from its early days, where `typeof null` returns 'object'."
     }
   ]
 };
