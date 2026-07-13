@@ -2,69 +2,48 @@ export const spreadRest = {
   id: "spread-rest",
   title: "Spread va Rest (...) - Yoyish va Yig'ish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+
+Deylik, sizda qutida (massivda) olmalar bor. Agar siz ularni boshqa kattaroq qutiga solmoqchi bo'lsangiz, qutining o'zini butunlay solmaysiz. Siz qutini ag'darib (yoyib - **Spread**), olmalarni bittalab tushirasiz.
+**Rest** (yig'ish) esa teskarisi - sochilib yotgan olmalarni bitta qutiga yig'ish!
 
 JavaScriptda uchta nuqta (\`...\`) sintaksisi ishlatiladigan joyiga qarab ikki xil vazifani bajaradi:
 - **Spread (Yoyish):** Massiv yoki obyekt ichidagi elementlarni "yoyib", alohida-alohida qiymatlar ko'rinishida ochib beradi.
 - **Rest (Yig'ish):** Alohida qiymatlar yoki funksiya argumentlarini bitta butun massivga "yig'ib" beradi.
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+## 2. 🧠 Chuqur Sho'ng'ish (Deep Dive)
 
-**YOMON:** Massivlarni birlashtirish yoki nusxalash uchun eski \`concat\` yoki sikllarni ishlatish.
-\`\`\`javascript
-const arr1 = [1, 2];
-const arr2 = [3, 4];
-const copy = arr1.slice();
-const merged = arr1.concat(arr2);
-\`\`\`
+**V8 Dvigateli va Xotira:**
+Spread operatori massiv va string kabi iteratorga ega (iterable) obyektlar uchun \`Symbol.iterator\` yordamida har bir elementni oladi. Obyektlar uchun esa enumerable (sanab bo'ladigan) xususiyatlardan nusxa ko'chiradi. Bu operatsiya har doim **Shallow Copy (Sayoz nusxa)** yaratadi. Ya'ni, massiv ichidagi primitivlar to'liq nusxalanadi, lekin massiv ichidagi boshqa massiv yoki obyektlarning faqatgina xotira manzili (reference) ko'chiriladi.
 
-**YAXSHI:** \`Spread\` yordamida qisqa va tushunarli yozish.
-\`\`\`javascript
-const arr1 = [1, 2];
-const arr2 = [3, 4];
-const copy = [...arr1];
-const merged = [...arr1, ...arr2];
-\`\`\`
+**Samaradorlik (Performance):**
+Kichik va o'rta hajmdagi ma'lumotlarda \`...\` ishlashi juda samarali. Ammo agar millionta elementga ega massivni funksiyaga spread orqali argument sifatida bersangiz, V8 engine call stack to'lib qolib \`Maximum call stack size exceeded\` xatosini berishi mumkin.
 
-**YOMON:** Funksiyada noma'lum miqdordagi argumentlarni qabul qilish uchun eski \`arguments\` obyektidan foydalanish (unda array metodlari yo'q).
-\`\`\`javascript
-function sumAll() {
-  let sum = 0;
-  for (let i = 0; i < arguments.length; i++) {
-    sum += arguments[i];
-  }
-  return sum;
-}
-\`\`\`
+## 3. ⚠️ Edge Cases va Senior Interview Savollari
 
-**YAXSHI:** \`Rest\` parametri yordamida barcha argumentlarni massivga yig'ib olish (Array metodlari ishlashi uchun).
-\`\`\`javascript
-function sumAll(...numbers) {
-  return numbers.reduce((acc, num) => acc + num, 0);
-}
-\`\`\`
+1. **Rest parametrlar nima uchun har doim oxirida bo'lishi shart?**
+   - Compiler qaysi parametr qayerda tugashini bilishi kerak. \`function foo(a, ...rest, b)\` deb yozsangiz SyntaxError olasiz, sababi "rest" ga qancha qiymat olinishi noaniq bo'ladi.
+   
+2. **Obyektlarni Spread qilganda qaysi xususiyat saqlanib qoladi?**
+   - Agar kalitlar takrorlansa, **eng oxirgi** yozilgani saqlanib qoladi. Masalan: \`{ a: 1, ...{ a: 2, b: 3 } }\` natijasi \`{ a: 2, b: 3 }\`. Lekin \`{ ...{ a: 2, b: 3 }, a: 1 }\` natijasi \`{ a: 1, b: 3 }\`.
+   
+3. **\`null\` yoki \`undefined\` ni Spread qilsa nima bo'ladi?**
+   - Massivda xato! \`[...null]\` TypeError beradi, chunki iteratsiya qilib bo'lmaydi.
+   - Obyektda xavfsiz! \`{...null}\` esa xato bermaydi va bo'sh obyekt qaytaradi: \`{}\`. Bu xususiyat API dan kelgan bo'sh qiymatlardan himoyalanish uchun juda asqotadi.
 
-## 🎤 Intervyu Savollari
+## 📊 Vizual Diagramma
 
-1. **Spread operatori orqali nusxa olinganda (\`const copy = { ...obj }\`), deep copy (chuqur nusxa) bo'ladimi yoki shallow copy (sayoz nusxa)?**
-   - Bu "Shallow copy". Agar obyektning ichida yana boshqa obyekt yoki massivlar bo'lsa, ularning faqat xotiradagi manzillari nusxalanadi (reference tushadi).
-2. **Rest parametri funksiya argumentlarining qayerida kelishi kerak?**
-   - Har doim eng oxirida kelishi shart. Aks holda \`SyntaxError\` beradi. (masalan, \`function foo(a, ...rest, c)\` xato).
-3. **Obyektlarni Spread qilganda bir xil kalit kelib qolsa nima bo'ladi?**
-   - Oxirgi qo'shilgan kalit oldingisini qiymatini qayta yozadi (override). \`{ a: 1, ...{ a: 2 } }\` -> \`{ a: 2 }\`.
-
-## 🛠️ Amaliy Topshiriqlar
 \`\`\`mermaid
 graph TD
     A["[1, 2, 3]"]
     B["...Spread"]
     C["1, 2, 3 (alohida)"]
-    A --> B --> C
+    A -->|"Yoyadi"| B --> C
     
     D["1, 2, 3 (alohida argumentlar)"]
     E["...Rest"]
     F["[1, 2, 3]"]
-    D --> E --> F
+    D -->|"Yig'adi"| E --> F
 \`\`\`
 `,
   exercises: [
