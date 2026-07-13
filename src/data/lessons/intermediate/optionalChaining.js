@@ -2,62 +2,69 @@ export const optionalChaining = {
   id: "optional-chaining",
   title: "Optional Chaining & Nullish Coalescing",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
 
-- **Optional Chaining (\`?.\`)**: Obyekt ichidagi chuqur joylashgan xususiyatlarga yoki metodlarga xavfsiz tarzda murojaat qilish imkonini beruvchi operator. Agar zanjirning biror qismi \`null\` yoki \`undefined\` bo'lsa, xatolik bermasdan murojaatni to'xtatadi va \`undefined\` qaytaradi.
-- **Nullish Coalescing (\`??\`)**: Faqatgina qiymat \`null\` yoki \`undefined\` bo'lgan holda zaxira (default) qiymatni o'rnatish imkonini beruvchi mantiqiy operator.
+Tasavvur qiling, siz ko'p qavatli ofis binosidasiz. Sizga "HR bo'limining boshlig'ini xonasi" kerak. Lekin siz HR bo'limi umuman bor yoki yo'qligini, yoki boshliq ishga kelgan-kelmaganini bilmaysiz. 
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+Oddiy holatda siz har bir eshikni ochib tekshirishingiz kerak bo'lardi. Agar HR bo'limi yo'q bo'lsa va siz to'g'ridan-to'g'ri uning ichidagi boshliq xonasini qidirsangiz, siz "devorga urilasiz" (dasturlashda bu qizil ekran, ya'ni \\\`TypeError\\\` xatosi). 
 
-**YOMON:** Obyektning ichkarisidagi ma'lumotni olish uchun uzun \`&&\` (AND) zanjirlarini yozish.
-\`\`\`javascript
-const user = { name: "Ali", address: { city: "Toshkent" } };
-const city = user && user.address && user.address.city;
-\`\`\`
+**Optional Chaining (\\\`?.\\\`)** - bu xudbin bo'lmagan xavfsizlik xizmati. Siz undan: "Iltimos, agar bino ichida HR bo'limi bo'lsa va u yerda boshliq bo'lsa, xonasini ko'rsat" deysiz. Agar zanjirning biron bir qismi yo'q bo'lsa (\\\`null\\\` yoki \\\`undefined\\\`), u sizga xato bermaydi, shunchaki xotirjamlik bilan: "Afsuski, u yo'q ekan (\\\`undefined\\\`)" deb javob qaytaradi.
 
-**YAXSHI:** Optional Chaining yordamida buni qisqartirish.
-\`\`\`javascript
-const user = { name: "Ali", address: { city: "Toshkent" } };
-const city = user?.address?.city;
-\`\`\`
+**Nullish Coalescing (\\\`??\\\`)** esa - zaxira rejangiz. "Agar HR boshlig'i yo'q bo'lsa, oddiy menejer bilan gaplashaman". Bu faqat qiymat \\\`null\\\` yoki \\\`undefined\\\` bo'lgan holatdagina ishlaydigan xavfsizlik yostig'idir.
 
-**YOMON:** Default qiymat o'rnatish uchun \`||\` (OR) operatoridan foydalanish (bu 0, "", false kabi qonuniy falsy qiymatlarni ham e'tiborsiz qoldiradi).
-\`\`\`javascript
-const options = { timeout: 0 };
-// XATO: 0 o'rniga 1000 olib qo'yadi
-const timeout = options.timeout || 1000; 
-\`\`\`
+## 2. 🔬 Chuqur O'rganish (Under the hood, memory, V8 engine, performance)
 
-**YAXSHI:** Nullish Coalescing (\`??\`) dan foydalanish.
-\`\`\`javascript
-const options = { timeout: 0 };
-// TO'G'RI: Faqat null/undefined bo'lsagina 1000 ni oladi, aks holda 0
-const timeout = options.timeout ?? 1000;
-\`\`\`
+### ⚙️ V8 Dvigateli (Under the hood)
+JavaScript dvigateli (masalan, Google Chrome'dagi V8) Optional Chaining ni qanday tushunadi? 
+Kodni oddiy \\\`&&\\\` zanjirlari orqali yozganimizda, dvigatel har bir qadamda qiymatni to'liq "truthy" yoki "falsy" ekanligiga tekshiradi. Bu ko'p operatsiyalarni talab qiladi.
+Optional chaining (\\\`?.\\\`) ishlatilganda esa, kod AST (Abstract Syntax Tree) da qisqaroq ko'rinishda kompilyatsiya qilinadi. V8 uning to'g'ridan-to'g'ri "Nullish" (\\\`null\\\` yoki \\\`undefined\\\`) bo'lish-bo'lmasligini tekshiradigan yagona operatsiyani amalga oshiradi (Strict Equality: \\\`val === null || val === undefined\\\`).
 
-## 🎤 Intervyu Savollari
+### ⚡ Performans va Xotira (Performance & Memory)
+Ko'pgina dasturchilar Optional Chaining sekinroq deb o'ylashadi, lekin aslida zamonaviy JIT (Just-In-Time) kompilyatorlar uni shu qadar optimallashtirganki, tezlik borasida farq deyarli nolga teng. Xotira nuqtai nazaridan, bu zanjir bitta vaqtinchalik xotira pointeri bilan ishlaydi. Qachonki qiymat \\\`undefined\\\` bo'lsa, zanjir "qisqa tutashuv" (short-circuiting) yuzaga keltirib, qolgan kodni umuman bajarmaydi, bu esa CPU sikllarini tejaydi.
 
-1. **\`??\` va \`||\` ning farqi nimada?**
-   - \`||\` barcha "falsy" qiymatlarni (\`0\`, \`""\`, \`false\`, \`NaN\`, \`null\`, \`undefined\`) inobatga oladi va o'ng tarafdagi qiymatni oladi.
-   - \`??\` faqat "nullish" (\`null\` yoki \`undefined\`) qiymatlarnigina inobatga oladi.
-2. **Optional chainingni qayerlarda ishlatish mumkin?**
-   - Obyekt xususiyatlarini o'qishda: \`obj?.prop\`
-   - Massiv elementlariga murojaat qilishda: \`arr?.[index]\`
-   - Funksiya yoki metodlarni chaqirishda: \`func?.()\`
-3. **\`user?.name = "Ali"\` yozsak nima bo'ladi?**
-   - \`SyntaxError\` yuz beradi. Optional chaining faqat o'qish (read) uchun mo'ljallangan, qiymat tayinlash (assignment) uchun ishlatilmaydi.
+### 🧩 Lexical Environment va Short-Circuiting
+Optional Chaining orqali metodlarni chaqirishda ham qiziq holat bor: \\\`user.getDetails?.()\\\`. Agar \\\`user.getDetails\\\` mavjud bo'lmasa, dvigatel argumentlarni baholashni ham to'xtatadi. Masalan: \\\`obj.func?.(hechQachonIshlamaydiganFunksiya())\\\`. Bu yerda \\\`func\\\` yo'q bo'lsa, qavs ichidagi og'ir funksiya umuman ishga tushmaydi!
 
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
+## 3. ⚠️ Chekka Holatlar va Senior Intervyu Savollari (Edge Cases)
+
+**1. Dinamik xususiyatlarga murojaat qilish**
+Siz array yoki dinamik obyekt kalitlari bilan ham optional chaining ishlatishingiz mumkin:
+\\\`\\\`\\\`javascript
+const key = "name";
+const val = user?.[key]; // Bracket notation bilan to'g'ri
+const firstUser = users?.[0]; // Massivlarda
+\\\`\\\`\\\`
+
+**2. \\\`document.all\\\` anomal holati**
+Qadimgi meros qolgan xususiyatlardan biri bo'lgan \\\`document.all\\\` aslida obyekt, ammo \\\`typeof document.all === 'undefined'\\\` qaytaradi. Optional chaining uni \\\`nullish\\\` deb hisoblaydimi? Yo'q, sababi garchi qoida bo'yicha \\\`undefined\\\` ga o'xshasa ham, V8 uni maxsus holat sifatida "truthy" emas, lekin qiymati bor deb taniydi, shuning uchun \\\`document.all?.length\\\` qiymat qaytaradi!
+
+**3. Qiymat biriktirish mumkin emas! (Syntax Error)**
+Optional Chaining faqat ma'lumotni o'qish (read-only) uchun ishlatiladi. Unga qandaydir qiymat biriktirish ilojsiz:
+\\\`\\\`\\\`javascript
+user?.name = "Ali"; // ❌ SYNTAX ERROR! Invalid left-hand side in assignment
+\\\`\\\`\\\`
+
+**4. O'zgaruvchining o'zi yo'q bo'lsa nima bo'ladi?**
+Optional Chaining obyekt ichidagi xususiyatlar uchun xavfsiz. Ammo o'zgaruvchi umuman e'lon qilinmagan bo'lsa xato beradi:
+\\\`\\\`\\\`javascript
+// "user" e'lon qilinmagan (let, const yoki var orqali)
+user?.name; // ❌ ReferenceError: user is not defined
+\\\`\\\`\\\`
+
+## 📊 Arxitektura va Mantiq Diagrammasi
+\\\`\\\`\\\`mermaid
 graph TD
-    A[Nullish Coalescing ??] --> B{Value is null or undefined?}
-    B -- Yes --> C[Return Right Side]
-    B -- No --> D[Return Left Side]
+    Start[Object Property Access] --> Check{Is left part nullish?}
+    Check -- Yes --> ReturnUndefined[Return undefined immediately]
+    Check -- No --> CheckMethod{Is it a function call?}
+    CheckMethod -- Yes --> Exec[Execute Function & Return]
+    CheckMethod -- No --> NextProperty[Go deeper into object]
+    NextProperty --> Start
     
-    E[Optional Chaining ?.] --> F{Value is null or undefined?}
-    F -- Yes --> G[Stop and return undefined]
-    F -- No --> H[Continue chain]
-\`\`\`
+    ReturnUndefined --> Coalescing{Use ?? Operator?}
+    Coalescing -- Yes --> Fallback[Return Right Side Fallback Value]
+    Coalescing -- No --> FinalUndefined[Final result: undefined]
+\\\`\\\`\\\`
 `,
   exercises: [
     {

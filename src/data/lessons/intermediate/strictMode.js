@@ -3,96 +3,40 @@ export const strictMode = {
   title: "Strict Mode (Qat'iy Rejim)",
   language: "javascript",
   theory: `
-## 1. 💡 Sodda Tushuntirish
-**Strict Mode** (\`"use strict";\`) — bu JavaScript-da xatolarni kamaytirish, xavfsizlikni oshirish va eski, noto'g'ri odatlarni cheklash uchun mo'ljallangan maxsus rejim. U JavaScript kodini yanada e'tiborli va qat'iy tekshiradi.
+## 1. 💡 Beginner Analogy
+Tasavvur qiling, siz avtomobil boshqaryapsiz. Oddiy rejimda siz xavfsizlik kamarini taqmasdan yoki tezlikni sal oshirib haydasangiz, yo'l politsiyasi sizni darhol to'xtatmaydi, ba'zan kechiradi. Ammo bu xavfli! Strict Mode (\\\`"use strict";\\\`) esa xuddi qattiqqo'l politsiyachi yoki haydovchi imtihoni kabi ishlaydi — eng kichik xatoda ham chipta yozadi (Error tashlaydi) va sizni to'xtatadi. Bu sizning kodingiz xavfsizroq va ishonchliroq bo'lishini ta'minlaydi.
 
-Oddiy rejimda JavaScript ko'plab xatolarni jimgina o'tkazib yuboradi. Strict Mode-da esa bu xatolar ko'rsatiladi (Exception tashlanadi).
+## 2. 🚀 Deep Dive (Under the hood, memory, V8 engine, performance)
+Strict mode V8 dvigateli va JavaScript compiler'i uchun qanday ahamiyatga ega?
+1. **Optimizatsiya (Performance):** Oddiy rejimda (Sloppy mode) JS dvigateli ko'plab "taxminlar" qilishiga to'g'ri keladi. Masalan, \\\`this\\\` konteksti o'zgarishi yoki \\\`arguments\\\` obyekti o'zgaruvchilar bilan bog'langanligi optimizatsiyani qiyinlashtiradi. Strict Mode JIT (Just-In-Time) compiler uchun kodni tezroq optimizatsiya qilishga yordam beradi, chunki unda xavfsizroq va qat'iy qoidalar mavjud.
+2. **Xotira va Scope (Memory):** E'lon qilinmagan o'zgaruvchilarga qiymat berilganda, oddiy rejim avtomatik ravishda Global obyektga (window yoki global) yozadi. Bu **memory leak** (xotiradan sizib chiqish) ga olib keladi. Strict mode buni butunlay bloklaydi (\\\`ReferenceError\\\`).
+3. **Zaxiralangan so'zlar (Keywords):** Strict mode \\\`implements\\\`, \\\`interface\\\`, \\\`let\\\`, \\\`package\\\`, \\\`private\\\`, \\\`protected\\\`, \\\`public\\\`, \\\`static\\\`, \\\`yield\\\` kabi so'zlarni band qiladi, bu esa kelajakdagi JS versiyalariga moslashishni osonlashtiradi.
+4. **\\\`arguments\\\` obyekti optimizatsiyasi:** Strict mode'da \\\`arguments\\\` o'zgaruvchilarga referens sifatida bog'lanmaydi va \\\`arguments.callee\\\` o'chirilgan, bu esa xotirani tejaydi va dvigatelni chalg'itmaydi.
 
-## 2. 💻 Real Kod Misollari
-**Strict mode-ni yoqish:**
-\`\`\`javascript
-"use strict";
+## 3. ⚠️ Edge Cases and Senior Interview Questions
+**Senior Intervyu Savollari:**
 
-x = 10; // ReferenceError: x is not defined (chunki var/let/const yozilmagan)
-\`\`\`
+1. **Savol:** \\\`eval()\\\` ichida yaratilgan o'zgaruvchi strict mode'da qanday ishlaydi?
+   **Javob:** Strict mode \\\`eval()\\\` uchun alohida lexical scope yaratadi. Oddiy rejimda \\\`eval("var x = 10")\\\` tashqi scope'ni o'zgartiradi. Strict mode'da esa \\\`x\\\` faqat \\\`eval\\\` ichida qoladi.
+2. **Savol:** \\\`delete\\\` operatori strict mode'da qanday ishlaydi?
+   **Javob:** Agar non-configurable (o'chirish mumkin bo'lmagan) obyekt xususiyatini yoki oddiy o'zgaruvchini o'chirmoqchi bo'lsangiz, \\\`TypeError\\\` yoki \\\`SyntaxError\\\` qaytaradi.
+3. **Savol:** \\\`this\\\` ning qiymati oddiy funksiyada nima bo'ladi?
+   **Javob:** Oddiy rejimda \\\`window\\\` (browser) yoki \\\`global\\\` (Node.js). Strict mode'da esa aniq \\\`undefined\\\` bo'ladi. Agar \\\`apply\\\`/\\\`call\\\` orqali \\\`null\\\` yoki \\\`undefined\\\` berilsa, u avtomatik global obyektga o'girilmaydi.
+4. **Savol:** Read-only xususiyatlarga qiymat yozish qanday ta'sir qiladi?
+   **Javob:** Oddiy rejimda jimgina e'tiborsiz qoldiriladi. Strict mode'da esa \\\`TypeError\\\` otadi (masalan, \\\`Object.freeze()\\\` qilingan obyektga yozish).
 
-**Funksiya ichida yoqish:**
-\`\`\`javascript
-function qatiyFunksiya() {
-  "use strict";
-  y = 20; // ReferenceError
-}
-\`\`\`
-
-## 3. ⚙️ Qanday Ishlaydi
-Strict mode quyidagi holatlarni cheklaydi:
-1. **E'lon qilinmagan o'zgaruvchilardan foydalanish:** \`x = 10;\` xato beradi.
-2. **O'chirish mumkin bo'lmagan narsalarni o'chirish:** \`delete Object.prototype;\` xato beradi.
-3. **Parametr nomlarining takrorlanishi:** \`function func(p1, p1) {}\` xato beradi.
-4. **Sakkizlik sanoq sistemasi (Octal):** \`010\` xato beradi.
-5. **\`this\` ning qiymati:** Global kontekstda \`this\` qat'iy rejimda \`undefined\` bo'ladi (oddiy rejimda \`window\`).
-
-## 4. 🔥 ROAST (Juniorlarning Sharmandali Xatolari)
-### YOMON:
-\`\`\`javascript
-function hisobla(narx) {
-  soliq = 0.12; // var/let/const yo'q, global obyektni ifloslayapti
-  return narx + (narx * soliq);
-}
-\`\`\`
-Juniorlar ko'pincha \`use strict\` ishlatmaydilar va jimgina paydo bo'ladigan global o'zgaruvchilar ("leak") tufayli soatlab xato qidiradilar.
-
-### YAXSHI:
-\`\`\`javascript
-"use strict";
-
-function hisobla(narx) {
-  const soliq = 0.12;
-  return narx + (narx * soliq);
-}
-\`\`\`
-
-## 5. 🎯 Intervyu Savollari
-### Junior (1-4)
-1. **"use strict" nima va u qanday yoqiladi?**
-   Javob: JS kodini xatosiz va xavfsiz yozish rejimi. Fayl boshiga yoki funksiya ichiga \`"use strict";\` yozib yoqiladi.
-2. **Strict Mode-da e'lon qilinmagan o'zgaruvchiga qiymat bersa nima bo'ladi?**
-   Javob: \`ReferenceError\` qaytaradi.
-3. **\`this\` Strict Mode-da funksiya ichida nima qaytaradi?**
-   Javob: Agar funksiya qandaydir obyektning metodi sifatida chaqirilmasa, \`undefined\` bo'ladi.
-4. **Funksiya parametrlarida bir xil nom bo'lishiga ruxsat bormi?**
-   Javob: Yo'q, qat'iy rejimda parametr nomlari takrorlansa Sintaksis xatosi (\`SyntaxError\`) beradi.
-
-### Middle (5-8)
-5. **ES6 modullar (import/export) ichida "use strict" yozish shartmi?**
-   Javob: Yo'q, ES6 modullari avtomatik tarzda doim Strict Mode-da ishlaydi.
-6. **Class-lar ichida qat'iy rejim qanday ishlaydi?**
-   Javob: Class-larning ichki qismi (metodlari va xususiyatlari) doim avtomatik qat'iy rejimda ishlaydi.
-7. **Strict Mode \`eval()\` ga qanday ta'sir qiladi?**
-   Javob: \`eval()\` ichida e'lon qilingan o'zgaruvchilar tashqi muhitga chiqmaydi (alohida scope bo'ladi).
-8. **Qat'iy rejim \`arguments\` obyektiga ta'sir qiladimi?**
-   Javob: Ha. Oddiy rejimda \`arguments\` va parametrlar bir-biriga bog'langan bo'ladi, qat'iy rejimda esa bog'lanmagan bo'ladi va \`arguments.callee\` ishlashiga ruxsat yo'q.
-
-### Senior (9-12)
-9. **\`delete\` operatori qat'iy rejimda qanday xato berishi mumkin?**
-   Javob: O'chirish mumkin bo'lmagan xususiyatni (masalan, o'zgaruvchini yoki non-configurable property) o'chirmoqchi bo'lsangiz xato beradi.
-10. **Zaxiralangan so'zlar (Reserved words) ro'yxati o'zgaradimi?**
-    Javob: Ha, \`implements\`, \`interface\`, \`let\`, \`package\`, \`private\`, \`protected\`, \`public\`, \`static\`, \`yield\` kabi so'zlar Strict Mode-da o'zgaruvchi nomi bo'lolmaydi.
-11. **Nega yirik eski loyihalarga birdaniga global "use strict" qo'shish xavfli?**
-    Javob: Chunki u oldin jimgina ishlab turgan yomon xatolarni Error-ga aylantiradi va butun dastur qulab tushishi mumkin.
-12. **Read-only xususiyatlarga qiymat bermoqchi bo'lsa nima sodir bo'ladi?**
-    Javob: Oddiy rejimda jimgina e'tiborsiz qoldiriladi, qat'iy rejimda esa \`TypeError\` otadi.
-
-## 6. Mermaid Diagramma
-\`\`\`mermaid
+## 4. 📊 Mermaid Diagram
+\\\`\\\`\\\`mermaid
 graph TD
-    A[JavaScript Kod] --> B{Strict Mode bormi?}
-    B -- Yo'q --> C[Oddiy Rejim: Xatolar yashiriladi, xavfsizlik past]
-    B -- Ha --> D[Qat'iy Rejim: Xatolar ko'rsatiladi, xavfsizlik baland]
-    D --> E[this == undefined]
-    D --> F[ReferenceError: E'lon qilinmagan]
-    D --> G[Parametr nomlari takrorlanmas]
-\`\`\`
+    A[JS Engine Parsing] --> B{Is use strict declared?}
+    B -- Yes --> C[Strict Mode Engine]
+    B -- No --> D[Sloppy Mode Engine]
+    C --> E[Blocks Global Variables]
+    C --> F[this defaults to undefined]
+    C --> G[Throws TypeError on read-only assignment]
+    D --> H[Allows silent failures]
+    D --> I[this defaults to Global Object]
+\\\`\\\`\\\`
 `,
   exercises: [
     {
