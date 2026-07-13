@@ -2,177 +2,86 @@ export const closures = {
   id: "closures",
   title: "Scope va Closure: Ryukzak qoidasi",
   language: "javascript",
-  theory: `# Scope (Qamrov) va Closure (Yopilish)
+  theory: `
+# Scope (Qamrov) va Closure (Yopilish)
 
-Tasavvur qiling, JavaScript sizdan ikkita muhim narsani bilishingizni talab qiladi:
-1. **Scope:** Kim nimani ko'ra oladi? (Matryoshka qoidasi)
-2. **Closure:** Funksiya uzoqqa ketganda nimalarni o'zi bilan olib ketadi? (Ryukzak qoidasi)
-
----
-
-## 1. Scope (Leksik Qamrov / Matryoshka)
-
-**Scope** — bu kodning ma'lum bir qismida qaysi o'zgaruvchilarga ruxsat borligini belgilaydigan hudud.
-
-JavaScript-da hududlar **Matryoshka qo'g'irchoqlari** kabi ishlaydi. 
-Eng kichik qo'g'irchoq (ichki funksiya) o'zidan kattaroq bo'lgan barcha qo'g'irchoqlarni (tashqi funksiyalar va global hududni) "ko'ra oladi". Lekin tashqi qo'g'irchoqlar o'zidan kichkina qo'g'irchoq ichidagi narsani ko'ra olmaydi!
-
-\`\`\`javascript
-let globalName = "Yer yuzi"; // Eng katta matryoshka (Global)
-
-function outherFunction() {
-  let outerName = "O'zbekiston"; // O'rtacha matryoshka
-
-  function innerFunction() {
-    let innerName = "Toshkent"; // Eng kichik matryoshka
-    
-    // Eng kichik quti hammaga yetib bora oladi:
-    console.log(innerName + ", " + outerName + ", " + globalName);
-  }
-  
-  innerFunction();
-  // console.log(innerName); // XATO! Katta quti kichkinasini ko'rolmaydi.
-}
-
-outherFunction();
-\`\`\`
-
-### Leksik Qamrov (Lexical Scope)
-JavaScriptda "Leksik" so'zi funksiyaning **qayerda yozilganligini** bildiradi. Funksiya kodda qayerda e'lon qilingan bo'lsa, o'z atrofiga shu joydagi o'zgaruvchilarni qamrab oladi. Uni qayerdan chaqirishingiz muhim emas, u tug'ilgan joyini eslab qoladi.
-
----
-
-## 2. Closure (Ryukzak qoidasi)
-
-Endi asosiy qismga keldik. **Closure nima o'zi?**
-
+## Part 1: Beginner Analogy
+JavaScript-da **Scope** (Qamrov) va **Closure** (Yopilish) muhim tushunchalardir.
 Tasavvur qiling, siz tog'ga sayohatga chiqyapsiz. Uydan chiqishdan oldin kerakli barcha narsalarni ryukzagingizga (sumkaga) solib oldingiz. Endi tog'ga chiqsangiz ham, uyda qolgan narsalaringiz doim orqangizdagi sumkada siz bilan yuradi.
+Dasturlashda ham funksiya boshqa joyda chaqirilish uchun o'zining asl tug'ilgan joyidan chiqib ketganida, u tug'ilgan vaqtdagi barcha ko'ra olgan o'zgaruvchilarini "ryukzak"ka solib o'zi bilan olib ketadi! Ana shu ryukzak — **Closure** deb ataladi.
 
-Dasturlashda ham funksiya boshqa joyda (masalan, global qamrovda) chaqirilish uchun o'zining asl tug'ilgan joyidan chiqib ketganida, **u tug'ilgan vaqtdagi barcha ko'ra olgan o'zgaruvchilarini ryukzakka solib o'zi bilan olib ketadi!** Ana shu ryukzak — **Closure** deb ataladi.
-
-\`\`\`javascript
+\\\`\\\`\\\`javascript
 function uy() {
-  let ovqat = "Osh"; // Uyda pishirilgan ovqat
-
-  function tog() {
-    console.log("Tog'da yeyapmiz: " + ovqat); // Ovqatni sumkadan olyapti
-  }
-
-  return tog; // Tog funksiyasini qaytarib yubordik (uydan ketdi!)
-}
-
-// sayohat = tog funksiyasining o'zi
-let sayohat = uy(); 
-
-// Uy funksiyasi allaqachon ishlab bo'lgan, xotiradan tozalangan.
-// Ammo 'sayohat' funksiyasi chaqirilganda 'ovqat' ni topa oladi:
-sayohat(); // "Tog'da yeyapmiz: Osh"
-\`\`\`
-
-Nima bo'ldi? \`uy()\` funksiyasi o'z ishini tugatdi. Odatda funksiya tugagach, uning ichidagi o'zgaruvchilar o'lib ketishi kerak. Lekin \`tog\` funksiyasi \`ovqat\`ni o'zining "closure" (ryukzak)sida saqlab qolgani uchun ovqat axlatga tashlanmadi!
-
----
-
-## 3. Nima uchun Closure kerak? (Amaliy misol)
-
-Closure ning eng katta foydasi — o'zgaruvchilarni himoya qilish (Encapsulation). Birov tegishini xohlamagan o'zgaruvchilarni "yashirish" uchun ishlatiladi.
-
-### ❌ YOMON: Global o'zgaruvchi (Xavfli)
-Masalan, biz saytdagi tugma necha marta bosilganini sanamoqchimiz:
-\`\`\`javascript
-let count = 0; // Hammaga ochiq! Kimdir console dan count = 1000 deb o'zgartirishi mumkin
-
-function increment() {
-  count++;
-  console.log(count);
-}
-increment(); // 1
-increment(); // 2
-\`\`\`
-
-### ✅ YAXSHI: Closure orqali yashirish
-Endi \`count\` ni yashiramiz. Hech kim uni tashqaridan o'zgartira olmaydi.
-\`\`\`javascript
-function createCounter() {
-  let count = 0; // Maxfiy o'zgaruvchi (yopiq)
+  let ovqat = "Osh";
   
-  return function() {
-    count++; // Closure yordamida ryukzakdagi count'ni o'zgartiryapti
-    console.log(count);
+  return function tog() {
+    console.log("Tog'da yeyapmiz: " + ovqat);
   }
 }
 
-const counter = createCounter();
-counter(); // 1
-counter(); // 2
-console.log(count); // ERROR! Tashqaridan kirib bo'lmaydi.
-\`\`\`
-Mana buni "Private variables" (Maxfiy o'zgaruvchilar) deyiladi!
+const sayohat = uy();
+sayohat(); // "Tog'da yeyapmiz: Osh"
+\\\`\\\`\\\`
 
----
+## Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+Closure qanday ishlaydi? V8 dvigateli har bir ishga tushgan funksiya uchun **Execution Context** yaratadi. Uning ichida **Lexical Environment** mavjud bo'lib, u o'zgaruvchilarni saqlaydi.
+Agar ichki funksiya tashqi o'zgaruvchilarni ishlatsa, V8 bu o'zgaruvchilarni oddiy *Stack* o'rniga *Heap* xotirasida saqlaydi. Bu **Escape Analysis** deyiladi.
+Shunday qilib, tashqi funksiya tugaganidan keyin ham, ichki funksiya bu o'zgaruvchilarga Heap orqali murojaat qila oladi va ular Garbage Collector tomonidan o'chirib yuborilmaydi.
 
-## Mermaid Diagramma (Ryukzak xaritasi)
+**Performance (Ishlash tezligi):**
+Closure-lar xotiradan (Memory) joy oladi. Agar siz juda ko'p closure-lar yaratsangiz va ularni tozalamasangiz, **Memory Leak** (Xotira sizib chiqishi) muammosiga duch kelasiz. Shuning uchun kerak bo'lmagan closure-larni oxirida null qilib axlat yig'ishtiruvchiga yordam berish maqsadga muvofiq.
 
-Closure qanday saqlanishi vizual ko'rinishda:
+\\\`\\\`\\\`javascript
+function createCounter() {
+  let count = 0; // Heap xotirada qoladi
+  return function() {
+    count++;
+    return count;
+  }
+}
+\\\`\\\`\\\`
 
-\`\`\`mermaid
-flowchart TD
-    A[createCounter tug'ildi] --> B[count = 0 yaratildi]
-    B --> C[Ichki funksiya qaytarildi]
-    C --> D[Ichki funksiyada 'Ryukzak' paydo bo'ldi]
-    D -.-> |Ryukzak ichida| E[count = 0]
-    D --> F[const counter = ichki_funksiya]
-    F --> G[counter() chaqirildi]
-    G --> H[Ryukzakdagi count = 1 ga o'zgardi]
-\`\`\`
+## Part 3: Edge Cases and Senior Interview Questions
+Senior intervyularida ko'p so'raladigan klassik muammo — bu Loop ichida Closure ishlatishdir.
 
----
-
-## 4. Eng ko'p uchraydigan Xato (Loop tuzog'i)
-
-Junior dasturchilar ko'pincha \`for\` sikli va \`var\` bilan xatoga yo'l qo'yishadi:
-
-\`\`\`javascript
+\\\`\\\`\\\`javascript
+// Xato ('var' bilan)
 for (var i = 1; i <= 3; i++) {
   setTimeout(function() {
-    console.log(i); // Loop bitgandan keyin ishlaydi
+    console.log(i); // Natija: 4, 4, 4
   }, 1000);
 }
-// Natija: 4, 4, 4
-\`\`\`
-**Nega 4, 4, 4?** Chunki \`var\` ning block scope-i yo'q. Hammasi bitta \`i\` qutisini ulashadi (share qiladi). 1 soniya kutguncha \`i\` allaqachon 4 bo'lib bo'lgan edi! Barcha 3 ta ryukzakka ham oxirgi quti tiqilib qolgan.
+\\\`\\\`\\\`
+**Nima uchun?** 'var' ning block-scope-i yo'q. Barcha funksiyalar bitta umumiy 'i' ni ulashadi. Sikl 1 soniya o'tguncha 4 bo'lib bo'lgan bo'ladi.
 
-**Yechim:** Qutini har bir qadamda yangitdan yasash uchun **\`let\`** ishlatish kerak!
-\`\`\`javascript
+\\\`\\\`\\\`javascript
+// To'g'ri ('let' bilan)
 for (let i = 1; i <= 3; i++) {
   setTimeout(function() {
-    console.log(i);
+    console.log(i); // Natija: 1, 2, 3
   }, 1000);
 }
-// Natija: 1, 2, 3
-\`\`\`
-\`let\` har bir aylanishda yangi quti yasaydi va o'sha qutini aniq o'zining alohida ryukzagiga solib oladi!
+\\\`\\\`\\\`
+**Yechim:** 'let' har bir loop qadami uchun o'zining mustaqil Leksik Muhitini yaratadi.
 
----
+## Mermaid Diagram
 
-## 🎙 Intervyu savollari
-
-**1. Closure nima o'zi? (Bir jumlada tushuntiring)**
-**Javob:** Closure — bu funksiyaning o'zi yozilgan leksik muhitni eslab qolishi va undan chiqib ketganidan keyin ham shu hududdagi o'zgaruvchilarga kira olish xususiyatidir (ya'ni ryukzakdagi o'zgaruvchilar).
-
-**2. Lexical Scope va Dynamic Scope ning farqi nima?**
-**Javob:** JS-da Lexical Scope ishlatiladi. Bu funksiyaning tashqi o'zgaruvchilarga qayerda **chaqirilganiga** qarab emas, balki qayerda **yozilganiga** (tug'ilgan joyiga) qarab ulanishini anglatadi.
-
-**3. JS-da private (maxfiy) o'zgaruvchilarni class-siz qanday qilsa bo'ladi?**
-**Javob:** Aynan Closure yordamida! O'zgaruvchini funksiya ichiga qamrab, tashqariga faqatgina u bilan ishlaydigan ichki funksiyani qaytarsak, asosiy o'zgaruvchiga to'g'ridan-to'g'ri kirish imkonsiz bo'lib qoladi. Bu "Module Pattern" deb ham ataladi.
-
-**4. Closure larning salbiy tomoni bormi? (Kamchiligi)**
-**Javob:** Ha, chunki Closure o'zgaruvchilarni xotirada ushlab turadi (ryukzakni hech qachon axlatga tashlamaydi). Agar juda ko'p closure lar yaratilsa, bu xotiraning to'lishiga (Memory Leak) sabab bo'lishi mumkin.`,
+\\\`\\\`\\\`mermaid
+flowchart TD
+    A[createCounter Yaratildi] --> B[count = 0 Heap Xotirada]
+    B --> C[Ichki funksiya qaytarildi]
+    C --> D[Closure Ryukzagi shakllandi]
+    D -. Ryukzak Ichida .-> E[count = 0]
+    D --> F[const counter = ichki_funksiya]
+    F --> G[counter chaqirildi]
+    G --> H[Ryukzakdagi count 1 ga oshdi]
+\\\`\\\`\\\`
+`,
   exercises: [
     {
       id: 1,
       title: "Scope qoidasi: Ichki ko'rish",
-      instruction: "Tashqarida 'message = 'Salom'' bor. 'sayHi' funksiyasini yozing, u o'sha xabarni qaytarsin (return). Funksiyani chaqirib 'res' ga tenglang.",
+      instruction: "Tashqarida 'message = \"Salom\"' bor. 'sayHi' funksiyasini yozing, u o'sha xabarni qaytarsin (return). Funksiyani chaqirib 'res' ga tenglang.",
       startingCode: "let message = 'Salom';\n// sayHi funksiyasini yozing\n\n// chaqirib res ga bering",
       hint: "function sayHi() { return message; } let res = sayHi();",
       test: "if(typeof res === 'undefined' || res !== 'Salom') throw new Error('sayHi message ni qaytarmadi');"
@@ -180,18 +89,18 @@ for (let i = 1; i <= 3; i++) {
     {
       id: 2,
       title: "Block Scope: Kichik quti",
-      instruction: "if bloki ichida 'let a = 5' yozilgan. Uni tashqarida console.log qilmoqchimiz. Kod xato bo'ladi. Xatoni to'g'irlash uchun 'a' ni 'let' o'rniga nima bilan e'lon qilish mumkin (yoki let ni tashqariga chiqarish)? Bu testda shunchaki 'a' ni tashqariga olib chiqing va 5 ga tenglang.",
+      instruction: "if bloki ichida 'let a = 5' yozilgan. Uni tashqarida console.log qilmoqchimiz. Xatoni to'g'irlash uchun 'a' ni tashqariga olib chiqing va 5 ga tenglang.",
       startingCode: "let res;\nif (true) {\n  let a = 5;\n}\n// res = a; yozsak xato bo'ladi, kodni to'g'irlang",
       hint: "let a; if(true){ a=5; } res=a;",
-      test: "const ast=arguments[0]; if(!ast.includes('res') || typeof res === 'undefined' || res !== 5) throw new Error('Block scope muammosi yechilmadi');"
+      test: "if(typeof res === 'undefined' || res !== 5) throw new Error('Block scope muammosi yechilmadi');"
     },
     {
       id: 3,
       title: "Oddiy Closure: Salomlashuv",
-      instruction: "'greeting(salomlashuv)' funksiyasini yarating, u ichki funksiyani qaytarsin: 'return function(ism) { return salomlashuv + \\' \\' + ism; }'. Uni chaqirib sinab ko'ring.",
-      startingCode: "function greeting(salomlashuv) {\\n  // ichki funksiyani qaytaring\\n}\\nlet sayHello = greeting('Salom');\\nlet res = sayHello('Ali');",
+      instruction: "'greeting(salomlashuv)' funksiyasini yarating, u ichki funksiyani qaytarsin: 'return function(ism) { return salomlashuv + \" \" + ism; }'. Uni chaqirib sinab ko'ring.",
+      startingCode: "function greeting(salomlashuv) {\n  // ichki funksiyani qaytaring\n}\nlet sayHello = greeting('Salom');\nlet res = sayHello('Ali');",
       hint: "return function(ism) { return salomlashuv + ' ' + ism; }",
-      test: "if(typeof res === 'undefined' || res !== 'Salom Ali') throw new Error('Closure to\'g\'ri yozilmadi');"
+      test: "if(typeof res === 'undefined' || res !== 'Salom Ali') throw new Error('Closure xato yozilmadi');"
     },
     {
       id: 4,
@@ -199,7 +108,7 @@ for (let i = 1; i <= 3; i++) {
       instruction: "'createCounter' funksiyasini yozing, 'count=0' ni yashirib, har safar chaqirilganda 'count' ni 1 ga oshirib qaytaruvchi funksiyani (closure) return qilsin.",
       startingCode: "function createCounter() {\n  let count = 0;\n  // shunday funksiya qaytaringki, count oshaversin\n}\nlet counter = createCounter();\nlet first = counter();\nlet second = counter();",
       hint: "return function() { count++; return count; }",
-      test: "if(first !== 1 || second !== 2) throw new Error('Counter to\'g\'ri oshmadi');"
+      test: "if(first !== 1 || second !== 2) throw new Error('Counter xato oshmadi');"
     },
     {
       id: 5,
@@ -207,19 +116,19 @@ for (let i = 1; i <= 3; i++) {
       instruction: "Bank funksiyasini yozing. Uning 'balance = 100' yashirin o'zgaruvchisi bor. U obyekt qaytarsin: '{ deposit: function(amount){}, getBalance: function(){} }'. 'deposit' pul qoshib, 'getBalance' pulni ko'rsatsin.",
       startingCode: "function Bank() {\n  let balance = 100;\n  // return obyekt qiling\n}\nlet myBank = Bank();\nmyBank.deposit(50);\nlet current = myBank.getBalance();",
       hint: "return { deposit: function(v){ balance+=v; }, getBalance: function(){ return balance; } }",
-      test: "if(typeof current === 'undefined' || current !== 150) throw new Error('Bank obyekti noto\'g\'ri yozilgan');"
+      test: "if(typeof current === 'undefined' || current !== 150) throw new Error('Bank obyekti xato yozilgan');"
     },
     {
       id: 6,
-      title: "Lexical Scope Shadowing (Soya qilish)",
-      instruction: "Global 'let color = \'qizil\' '. Funksiya ichida ham aynan shu nomda 'let color = \'yashil\' ' yozing va uni qaytaring. Soya qoidasiga ko'ra ichki rang qaytishi kerak.",
+      title: "Lexical Scope Shadowing",
+      instruction: "Global 'let color = \"qizil\" '. Funksiya ichida ham aynan shu nomda 'let color = \"yashil\" ' yozing va uni qaytaring. Soya qoidasiga ko'ra ichki rang qaytishi kerak.",
       startingCode: "let color = 'qizil';\nfunction getColor() {\n  // shu yerda yashil color yarating va return qiling\n}\nlet res = getColor();",
       hint: "let color = 'yashil'; return color;",
       test: "if(typeof res === 'undefined' || res !== 'yashil') throw new Error('Shadowing ishlamadi');"
     },
     {
       id: 7,
-      title: "Funksiya ichida Funksiya zavodi",
+      title: "Funksiya ichida Funksiya",
       instruction: "'multiplyBy(x)' funksiyasi yarating u '(y) ni x*y qaytaradigan' funksiya qaytarsin. 'double = multiplyBy(2)' yarating.",
       startingCode: "function multiplyBy(x) {\n  // return funksiya(y)\n}\nlet double = multiplyBy(2);\nlet res = double(5);",
       hint: "return function(y) { return x * y; }",
@@ -227,27 +136,27 @@ for (let i = 1; i <= 3; i++) {
     },
     {
       id: 8,
-      title: "Bitta Ryukzak (Shared Closure)",
+      title: "Mustaqil Closure",
       instruction: "Agar ikkita counter obyekti bir xil createCounter dan olingan bo'lsa: 'let c1 = createCounter(); let c2 = createCounter();'. c1.count() va c2.count() bir-biriga bog'liqmi yo'qmi tekshiring.",
-      startingCode: "function createCounter() { let c = 0; return function(){ return ++c; } }\nlet c1 = createCounter();\nlet c2 = createCounter();\nlet v1 = c1();\nlet v2 = c2(); // qanday bo'ladi?",
+      startingCode: "function createCounter() { let c = 0; return function(){ return ++c; } }\nlet c1 = createCounter();\nlet c2 = createCounter();\nlet v1 = c1();\nlet v2 = c2();",
       hint: "Ikkalasi mustaqil xotira oladi. v1=1, v2=1;",
-      test: "if(v1 !== 1 || v2 !== 1) throw new Error('Ikkita closure mustaqil bo\'lishi kerak edi');"
+      test: "if(v1 !== 1 || v2 !== 1) throw new Error('Ikkita closure mustaqil bolishi kerak edi');"
     },
     {
       id: 9,
       title: "Loop tuzog'ini to'g'irlash",
-      instruction: "Quyidagi for siklida 'var' o'rniga shunday kalit so'z yozingki, funksiyalar chaqirilganda 1, 2, 3 chiqsin (0,1,2 massiv indekslariga qarab).",
+      instruction: "Quyidagi for siklida 'var' o'rniga shunday kalit so'z yozingki, funksiyalar chaqirilganda 0, 1, 2 chiqsin.",
       startingCode: "let arr = [];\nfor (/* var ni to'g'irlang */ i = 0; i < 3; i++) {\n  arr.push(function() { return i; });\n}\nlet res0 = arr[0]();\nlet res2 = arr[2]();",
       hint: "var ni let ga almashtiring.",
-      test: "if(res0 !== 0 || res2 !== 2) throw new Error('var o\'rniga let yozilmadi');"
+      test: "if(res0 !== 0 || res2 !== 2) throw new Error('var orniga let yozilmadi');"
     },
     {
       id: 10,
       title: "Yashirin parol",
-      instruction: "Parolni tekshiruvchi funksiya yozing: 'secretKeeper(secret)'. U qabul qilgan parolni ryukzakda yashiradi va faqat funksiya qaytaradi: agar argument sirga teng bo'lsa true, yo'qsa false.",
+      instruction: "Parolni tekshiruvchi funksiya yozing: 'secretKeeper(secret)'. U qabul qilgan parolni ryukzakda yashiradi va funksiya qaytaradi: agar argument sirga teng bo'lsa true, yo'qsa false.",
       startingCode: "function secretKeeper(secret) {\n  // shunday funksiya qaytaring u (guess) qabul qilib secret bilan tenglashtirsin\n}\nlet check = secretKeeper('1234');\nlet res = check('0000');\nlet res2 = check('1234');",
       hint: "return function(guess) { return guess === secret; }",
-      test: "if(res !== false || res2 !== true) throw new Error('Closure to\'g\'ri tekshirmadi');"
+      test: "if(res !== false || res2 !== true) throw new Error('Closure xato tekshirdi');"
     }
   ],
   quizzes: [
@@ -256,7 +165,7 @@ for (let i = 1; i <= 3; i++) {
       question: "Lexical Scope (Leksik Qamrov) nima degani?",
       options: [
         "Funksiyalar faqat brauzerda ishlashi mumkin",
-        "O'zgaruvchilar o'sha koddagi yozilgan joyiga (matniga) qarab qamrab olinadi",
+        "O'zgaruvchilar o'sha koddagi yozilgan joyiga qarab qamrab olinadi",
         "Funksiyalar faqat raqam qabul qilishi mumkin",
         "Eng tezkor scope turi"
       ],
@@ -268,7 +177,7 @@ for (let i = 1; i <= 3; i++) {
       question: "JavaScriptda ichki funksiya tashqi o'zgaruvchilarni ko'ra oladimi?",
       options: [
         "Yo'q, faqat o'zining ichidagilarini ko'radi",
-        "Ha, chunki matryoshka qoidasi bo'yicha kichik quti tashqaridagini bemalol o'qiy oladi",
+        "Ha, kichik quti tashqaridagini bemalol o'qiy oladi",
         "Faqat 'use strict' yozilmaganda ko'radi",
         "Ha, lekin o'zgartira olmaydi"
       ],
@@ -293,7 +202,7 @@ for (let i = 1; i <= 3; i++) {
       options: [
         "Faqat for sikli yozilganda",
         "Faqat class larda",
-        "Funksiya o'zining leksik muhitidan tashqariga (boshqa scope-ga) yetkazilganda",
+        "Funksiya o'zining leksik muhitidan tashqariga yetkazilganda",
         "Obyekt e'lon qilinganda"
       ],
       correctAnswer: 2,
@@ -304,12 +213,12 @@ for (let i = 1; i <= 3; i++) {
       question: "Closure qanday amaliy muammoni hal qiladi?",
       options: [
         "HTML taglarini chiroyli qiladi",
-        "O'zgaruvchilarni maxfiylashtirish (Data Privacy / Encapsulation) ga imkon beradi",
+        "O'zgaruvchilarni maxfiylashtirish (Encapsulation) ga imkon beradi",
         "Fayl hajmini qisqartiradi",
         "Xotirani tejaydi"
       ],
       correctAnswer: 1,
-      explanation: "Qamrab olingan o'zgaruvchiga to'g'ridan-to'g'ri (nuqta qo'yib) yetib bo'lmaydi, faqat closure orqali muloqot qilinadi."
+      explanation: "Qamrab olingan o'zgaruvchiga to'g'ridan-to'g'ri yetib bo'lmaydi, faqat closure orqali muloqot qilinadi."
     },
     {
       id: 6,
@@ -339,7 +248,7 @@ for (let i = 1; i <= 3; i++) {
       id: 8,
       question: "Oldingi muammoni qanday qilib oson yechish mumkin?",
       options: [
-        "var ni let ga o'zgartirish orqali, u har siklda yangi xotira bloki (yangi i) yaratadi",
+        "var ni let ga o'zgartirish orqali, u har siklda yangi xotira bloki yaratadi",
         "setTimeout ni o'chirib tashlash",
         "var i ni const ga o'zgartirish",
         "Loop o'rniga if ishlatish"
@@ -353,7 +262,7 @@ for (let i = 1; i <= 3; i++) {
       options: [
         "Globaldan izlab ichkariga kirib keladi",
         "Birinchi bo'lib Globalni qaraydi",
-        "Avval o'zining ichini izlaydi, topolmasa tashqi matryoshkaga qaraydi, toki Globalga yetguncha zanjir orqali ketadi",
+        "Avval o'zining ichini izlaydi, topolmasa tashqi qutiga qaraydi, toki Globalga yetguncha",
         "Faqat o'zinikini izlaydi, topolmasa xato beradi"
       ],
       correctAnswer: 2,
@@ -364,31 +273,31 @@ for (let i = 1; i <= 3; i++) {
       question: "Closure larning potensial xavfi nimada?",
       options: [
         "Ular API-ni buzib tashlaydi",
-        "Keraksiz closure lar tashqi muhitni ushlab qolib Xotira To'lishiga (Memory leak) sabab bo'lishi mumkin",
-        "Foydalanuvchilar maxfiy ma'lumotlarni bemalol o'qishi mumkin bo'lib qoladi",
+        "Keraksiz closure lar xotirani to'ldirishi (Memory leak) mumkin",
+        "Foydalanuvchilar maxfiy ma'lumotlarni o'qishi mumkin bo'ladi",
         "Haddan tashqari ko'p rang talab qiladi"
       ],
       correctAnswer: 1,
-      explanation: "Agar closure keraksiz ob'ektlarni yopib qo'ysa va xotiradan tozalanmasa, Garbage Collector ularni o'chira olmaydi."
+      explanation: "Agar closure keraksiz ob'ektlarni yopib qo'ysa, Garbage Collector ularni o'chira olmaydi."
     },
     {
       id: 11,
-      question: "JavaScriptda qachon closure paydo bo'lishini to'g'ri ta'riflang?",
+      question: "V8 Engine Closure-ni xotirada qanday boshqaradi?",
       options: [
-        "Har qanday oddiy 'var x = 5' e'lonida",
-        "Faqat React frameworkida",
-        "Bir funksiya ichida boshqa bir funksiya yozilsa va u tashqi o'zgaruvchini ishlatsa avtomatik ravishda closure paydo bo'ladi",
-        "Buni dasturchi o'zi alohida 'new Closure()' kodini yozib hosil qiladi"
+        "O'zgaruvchilarni Stack-da qoldiradi",
+        "Escape Analysis yordamida o'zgaruvchilarni Heap xotiraga o'tkazadi",
+        "Hard Drive-ga saqlaydi",
+        "Xotiradan darhol o'chiradi"
       ],
-      correctAnswer: 2,
-      explanation: "JavaScriptda biz maxsus kod yozmaymiz, ichki funksiya atrof muhitdan narsa olgan zahoti tabiiy ravishda closure ga aylanadi."
+      correctAnswer: 1,
+      explanation: "V8 dvigateli yashirin havola qilingan o'zgaruvchilarni Stack o'rniga Heap-ga o'tkazadi, toki ular uzoq yashay bilsin."
     },
     {
       id: 12,
       question: "Global Scope dagi o'zgaruvchi bilan Closure da yashiringan o'zgaruvchini nima farqi bor?",
       options: [
         "Farqi yo'q",
-        "Global o'zgaruvchini har kim kodi istalgan joyidan o'zgartirishi mumkin, Closure dagi esa 'himoyalangan' qutida",
+        "Global o'zgaruvchini har kim o'zgartirishi mumkin, Closure dagi esa 'himoyalangan'",
         "Global o'zgaruvchi faqat 1 marta yaratiladi, closure umuman yaratilmaydi",
         "Closure tezroq yoziladi"
       ],
