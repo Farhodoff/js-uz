@@ -2,53 +2,41 @@ export const typeNarrowing = {
   id: "type-narrowing",
   title: "TypeScript Type Narrowing (Toifani Toraytirish)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-Type Narrowing (Toifani Toraytirish) - bu TypeScript-ning keng toifani (masalan \`string | number\`) kodning ishlash mantiqiga qarab aniq bir toifaga (masalan faqat \`string\`) tushurish qobiliyati. Ya'ni dastur ichidagi oddiy if-else, typeof, switch va boshqa JavaScript tekshiruvlarini TypeScript xuddi "detektiv" kabi kuzatib boradi va o'zgaruvchi shu joyda aynan qaysi tipda bo'lishini avtomatik aniqlaydi.
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
 
-- **typeof:** \`if (typeof x === "string")\`
-- **Truthiness:** \`if (x)\` null yoki undefined emasligini aniqlaydi.
-- **Equality:** \`if (x === y)\` tiplarini bir-biriga moslaydi.
-- **in:** ob'ektda kalit borligiga qarab aniqlaydi.
-- **instanceof:** klass yoki Date kabi ob'ektlarni farqlaydi.
-- **Type Predicates:** O'zimiz yasagan narroving funksiyalari (\`arg is Type\`).
+Tasavvur qiling, tungi klub oldida qorovul (bouncer) turibdi. Klubga faqat 18 yoshdan kattalar (masalan, \`number\` tipi) yoki maxsus VIP kartasi borlar (\`string\` tipi) kirishi mumkin. Odamlar kelganda qorovul ularning pasporti yoki kartasini tekshiradi (bu JS-dagi \`typeof\` yoki mantiqiy tekshiruv). Agar tekshiruvdan o'tsa, qorovul bu odam aynan kim ekanligini aniq biladi va unga to'g'ri xizmat ko'rsatadi.
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+TypeScript-dagi **Type Narrowing** (Toifani toraytirish) ham xuddi shu qorovul kabi ishlaydi. U kodingizdagi \`if-else\`, \`switch\` va \`typeof\` kabi oddiy JavaScript tekshiruvlarini qadamma-qadam kuzatadi (buni "Control Flow Analysis" deyiladi). Natijada, keng toifani (masalan, \`string | number\`) aniq bir toifaga (masalan, faqat \`string\`) toraytirib, xato qilish ehtimolini oldini oladi.
 
-**❌ YOMON: Tekshirmasdan methodlarni chaqirish**
-\`\`\`typescript
-function padLeft(padding: number | string, input: string) {
-  // xato: number da 'repeat' metodi yo'q, stringda bor. TS buni biladi.
-  return padding.repeat(2) + input; 
-}
-\`\`\`
+## 2. 🧠 Deep Dive (Chuqur tahlil)
 
-**✅ YAXSHI: typeof yordamida Narrowing qilish**
-\`\`\`typescript
-function padLeft(padding: number | string, input: string) {
-  if (typeof padding === "number") {
-    // Bu blokda TS "padding" aniq number ekanligini biladi
-    return " ".repeat(padding) + input;
-  }
-  // Bu qatorga kelganda TS "padding" aniq string ekanligini tushunib yetadi
-  return padding + input;
-}
-\`\`\`
+**Under the hood (Qanday ishlaydi):**
+TypeScript "Control Flow Analysis" (Boshqaruv oqimi tahlili) mexanizmidan foydalanadi. Kompilyator kodingizni o'qiyotganda, har bir \`if\`, \`else\`, \`return\` va \`switch\` orqali ehtimoliy tarmoqlarni tahlil qiladi va shu ma'lumot asosida o'zgaruvchining toifasini moslashtirib (toraytirib) boradi. 
 
-## 🎤 Intervyu Savollari
-1. **Type Narrowing o'zi nima?**
-   *Javob:* Union (bir nechta toifalar yig'indisi) tipidagi o'zgaruvchini kod nazorati orqali (control flow analysis) ma'lum bitta tor toifagacha tushirish jarayoni.
-2. **"Type Predicate" funksiyasi qanday yoziladi va nega kerak?**
-   *Javob:* \`function isFish(pet: Fish | Bird): pet is Fish\` kabi yoziladi. Bunday funksiya faqat true/false qaytaribgina qolmaydi, TypeScript ga argument qanday tipdaligini aniq o'rgatadi.
-3. **Exhaustiveness checking (\`never\` orqali) nima?**
-   *Javob:* Switch/case blokida barcha ehtimoliy variantlarni qamrab olgandan so'ng, \`default\` blokida o'zgaruvchini \`never\` tipiga tenglashtirish orqali, kelajakda yangi tip qo'shilsa kodni darhol xato berishga majburlash usuli.
+**TS Compiler (tsc) va Type Erasure:**
+Narrowing amallari faqatgina TypeScript kompilyatsiya jarayonida (compile-time) mavjud. Kod JavaScript-ga o'girilganda (bu jarayon "Type Erasure" deb ataladi), TypeScript-ga tegishli barcha tiplar va interfeyslar o'chib ketadi. Shuning uchun, narrowing qilish uchun faqatgina sof JavaScript-da ishlaydigan operatorlardan (\`typeof\`, \`instanceof\`, \`in\`) foydalanish majburiydir.
 
-## 🛠️ Amaliy Topshiriqlar
+**Memory va Performance:**
+TypeScript tiplari va narrowing tahlillari dasturning ishlab turgan paytidagi (runtime) xotirasi va tezligiga (performance) umuman ta'sir qilmaydi, chunki tiplar JavaScript-ga o'tmaydi. Biroq, \`typeof\` kabi JS tekshiruvlari runtime-da bajarilgani sababli mikroskopik darajada resurs talab qiladi, ammo bu amalda dastur tezligiga salbiy ta'sir ko'rsatmaydi.
+
+## 3. ⚠️ Edge Cases va Senior Interview Questions
+
+**🎤 1. Type Predicate (\`arg is Type\`) qachon xavfli bo'lishi mumkin?**
+*Javob:* Type predicate-lar (masalan, \`function isString(val: any): val is string\`) TypeScript-ga o'zgaruvchining aniq turini kafolatlaydi. Ammo u xavfli bo'lishi mumkin! Agar siz funksiya ichida mantiqiy xato qilib noto'g'ri natija qaytarsangiz ham, TypeScript sizga ishonadi. Bu compile-time xatolar yashirinib qolib, runtime bug-larga olib kelishi mumkin.
+
+**🎤 2. Nega \`typeof null\` Narrowing-da muammo tug'diradi?**
+*Javob:* JavaScript-dagi qadimiy xato tufayli, \`typeof null\` natijasi \`"object"\` qaytaradi. Agar siz ob'ektni ajratib olish uchun \`if (typeof val === "object")\` deb yozsangiz, u \`null\` qiymatni ham ob'ekt deb hisoblab yuboradi. Buni oldini olish uchun \`if (val !== null && typeof val === "object")\` kabi tekshiruvlardan foydalanish kerak.
+
+**🎤 3. "Exhaustiveness checking" nima va \`never\` tipi unda qanday ishlaydi?**
+*Javob:* Union tiplar bilan \`switch/case\` ishlatganingizda, barcha ehtimoliy qiymatlarni qamrab olish juda muhim. Buni majburlash uchun \`default\` blokida o'zgaruvchini \`never\` tipidagi o'zgaruvchiga tenglashtirasiz. Agar kelajakda kimgadir Union-ga yangi tip qo'shish kerak bo'lsa va \`case\` yozishni unuta, TypeScript darhol \`never\` qoidasi orqali kompilatsiya xatosini beradi.
+
+## 📊 Type Narrowing Flow Diagram
 
 \`\`\`mermaid
 graph TD
-    A[Value: string | number] --> B{typeof === 'string'?}
-    B -->|Yes| C[TS: Value = string]
-    B -->|No| D[TS: Value = number]
+    A[Value: string | number] --> B{typeof value === 'string'}
+    B -->|Yes| C[TypeScript: Value is string]
+    B -->|No| D[TypeScript: Value is number]
 \`\`\`
 `,
   exercises: [

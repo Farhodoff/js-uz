@@ -2,59 +2,60 @@ export const reactTypeScript = {
   id: "react-typescript",
   title: "React va TypeScript (Asoslar)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-React va TypeScript birga ishlatilganda dasturiy xatoliklarni oldini olish va dasturchilar uchun "avtokomplit" (autocompletion) ni kuchaytirish juda osonlashadi.
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
 
-- **Props tiplari**: Komponent qanday ma'lumot qabul qilishini \`interface\` orqali qat'iy belgilaymiz.
-- **Hooks tiplari**: \`useState<number>(0)\` yoki \`useRef<HTMLInputElement>(null)\` kabi.
-- **Event tiplari**: Input o'zgarishi \`React.ChangeEvent<HTMLInputElement>\`, tugma bosilishi \`React.MouseEvent<HTMLButtonElement>\`.
-- **Children**: React ichida bolalar komponenti \`React.ReactNode\` tipida qabul qilinadi.
+React va TypeScript birga ishlatilishi — bu xuddi restorandagi **buyurtma berish tizimi** (TypeScript) va **oshxona** (React) kabi. Oshxonaga (komponentga) faqat menyudagi aniq taomlarni, aniq masalliqlar (Props) bilan buyurtma berish mumkin. Agar ofitsiant (dasturchi) menyuda yo'q narsani yozsa, tizim (TS) darhol xato beradi va buyurtmani oshxonaga yubormaydi. Bu sizni mijoz oldida uyatli vaziyatdan (production'dagi xatolikdan) asraydi.
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+- **Props tiplari**: Komponent qanday ma'lumot qabul qilishini aniq belgilaydi.
+- **Hooks tiplari**: Masalan, state faqat raqam yoki matn bo'lishi mumkinligini ta'minlaydi.
+- **Event tiplari**: Bosilgan tugma yoki yozilgan inputni aniq taniydi.
 
-**❌ YOMON: React-da TypeScript imkoniyatlaridan foydalanmaslik**
-\`\`\`tsx
-const Button = (props: any) => {
-  return <button onClick={props.onClick}>{props.title}</button>;
-};
-\`\`\`
+## 2. 🧠 Chuqur Sho'ng'ish (Deep Dive: Under the Hood)
 
-**✅ YAXSHI: Interface orqali Prop-larni aniqlash**
-\`\`\`tsx
-interface ButtonProps {
-  title: string;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  disabled?: boolean;
-}
+TypeScript React bilan ishlaganda quyidagi muhim jarayonlar yuz beradi:
 
-const Button = ({ title, onClick, disabled }: ButtonProps) => {
-  return <button onClick={onClick} disabled={disabled}>{title}</button>;
-};
-\`\`\`
+**Type Erasure (Tiplarning o'chirilishi):**
+Brauzer TypeScript'ni tushunmaydi. Shuning uchun \\\`tsc\\\` (TypeScript Compiler) yoki \\\`Babel\\\`, \\\`esbuild\\\` (Vite da) kabi vositalar TypeScript kodini oddiy JavaScript kodiga o'giradi. Bu jarayonda barcha \\\`interface\\\`, \\\`type\\\`, \\\`<T>\\\` (Generic) va boshqa TS xususiyatlari **butunlay o'chirib tashlanadi** (Type Erasure). Ya'ni tiplar faqat yozish (compile-time) vaqtida ishlaydi, dastur ishlashi (run-time) vaqtida qo'shimcha xotira va joy egallamaydi. Shuning uchun u **performance'ga (tezlikka) salbiy ta'sir qilmaydi**.
 
-## 🎤 Intervyu Savollari
-1. **React.FC (FunctionComponent) ishlatish kerakmi?**
-   *Javob:* Hozirgi kunda \`React.FC\` ishlatish shart emas va hatto tavsiya qilinmaydi (ayniqsa children ni avtomatik qabul qilgani sababli). Oddiy funksiya qaytarish toifasi sifatida yozish maqsadga muvofiqroq.
-2. **useState hookida qachon tipni aniq ko'rsatishimiz (<T>) kerak?**
-   *Javob:* Agar boshlang'ich qiymat aniq bir tipni bera olsa (\`useState(0)\`) shart emas. Lekin u \`null\` dan boshlanib keyin obyekt bo'lsa (\`useState<User | null>(null)\`) albatta ko'rsatish shart.
-3. **\`React.ReactNode\` va \`React.ReactElement\` farqi nimada?**
-   *Javob:* \`ReactNode\` bu React ichida render qilinishi mumkin bo'lgan hamma narsa (string, number, null, element). \`ReactElement\` esa faqat JSX obyekti (\`<div/>\`).
+**Memory va Re-renders:**
+React TS bilan ishlatilganda, obyekt va funksiyalarning tiplari qat'iy tekshiriladi, bu keraksiz renderlar yoki noto'g'ri dependencylar (masalan, \\\`useEffect\\\` ichida) yuzaga kelishini oldini olishda qulay.
 
-## 🛠️ Amaliy Topshiriqlar
+**JSX transformatsiyasi:**
+TS da \\\`.tsx\\\` formati React kompilatsiyasi va TypeScript tekshiruvini birga amalga oshiradi. TS compiler JSX teglarini (masalan, \\\`<div />\\\`) ko'rganda, uning xususiyatlarini (props, children) maxsus \\\`JSX.IntrinsicElements\\\` orqali tekshiradi.
 
-\`\`\`mermaid
+## 3. ⚠️ Edge Cases va Senior Intervyu Savollari
+
+**Edge Cases (Noodatiy holatlar):**
+1. **Children tipi:** Agar siz komponentingiz child qabul qilishini istasangiz, uni ochiqchasiga yozishingiz kerak (\\\`children?: React.ReactNode\\\`). Eskiroq React + TS versiyalarida (\\\`React.FC\\\`) bu avtomat edi.
+2. **Event tipidagi xatoliklar:** \\\`onChange\\\` da \\\`Event\\\` tipini topa olmasangiz, eventni inline qilib yozing, TS uni o'zi to'g'ri chiqarib (infer) beradi: \\\`onChange={(e) => console.log(e)}\\\`. Keyin o'sha tipni hover qilib ko'rib, tashqariga ko'chirib olishingiz mumkin.
+3. **null Ref'lar:** \\\`useRef<HTMLDivElement>(null)\\\` deb yaratilgan ref doim DOM yuklanishidan oldin \\\`null\\\` bo'ladi. Uni ishlatishdan oldin doim \\\`if (ref.current)\\\` qilib tekshirish shart.
+
+**Senior Intervyu Savollari:**
+
+1. **\\\`React.FC\\\` nimaga endi tavsiya qilinmaydi va nima sababdan loyihalardan olib tashlanmoqda?**
+   *Javob:* \\\`React.FC\\\` ilgari avtomatik ravishda \\\`children\\\` propini qo'shib qo'yardi, bu esa ba'zi komponentlar aslida child qabul qilmasa ham xato bermasligiga olib kelardi. Shuningdek, Generic komponentlarni \\\`React.FC\\\` orqali yozish imkonsiz. Shu sababli oddiy tiplangan oddiy funksiyalar (masalan, \\\`const MyComp = (props: MyProps) => ...\\\`) ishlatish standartga aylandi.
+
+2. **\\\`useCallback\\\` va \\\`useMemo\\\` hooklarini TypeScript'da qanday qilib generic (\\\`<T>\\\`) bilan aniq yozish mumkin? Qachon tip berish majburiy?**
+   *Javob:* Odatda ularning ichki funksiyasi qaytarayotgan qiymatidan TS o'zi tipni bilib oladi (inferrence). Lekin ba'zida tiplar juda murakkab bo'lsa yoki aniqroq qilib cheklamoqchi bo'lsak, masalan \\\`const memoizedValue = useMemo<MyComplexType>(() => compute(), [deps])\\\` ko'rinishida yozish xatolarning oldini oladi.
+
+3. **\\\`interface\\\` va \\\`type\\\` ning React Props uchun farqi nimada va qaysi birini ishlatish tavsiya etiladi?**
+   *Javob:* Ikkalasi ham ko'p vaziyatda bir xil ishlaydi. Biroq, \\\`interface\\\` kengaytirish (extend qilinish) bo'yicha sal qulayroq va error messagelar qisqaroq bo'ladi. \\\`type\\\` orqali esa murakkab tiplarni (Union, Intersection, Mapped types) yozish oson. Odatda Props uchun \\\`interface\\\` dan foydalanish eng yaxshi amaliyot (best practice) sanaladi.
+
+## 📊 TypeScript va React Arxitekturasi
+
+\\\`\\\`\\\`mermaid
 graph TD
-    A[Component: ButtonProps] --> B(title: string)
-    A --> C(onClick: Function)
-    A --> D(children: ReactNode)
-    B --> E[<button>]
-\`\`\`
+    A[TypeScript Compiler] -->|Type Checking| B{Props va State tiplari}
+    B -->|Tog'ri bo'lsa| C[JSX kod JS ga o'giriladi]
+    B -->|Xato bo'lsa| D[IDE da Qizil Xato]
+    C -->|Type Erasure| E[Brauzerda toza JavaScript ishlaydi]
+\\\`\\\`\\\`
 `,
   exercises: [
     {
       id: 1,
       title: "1. Props yozish",
-      instruction: "Faqat \`name\` (string) va \`age\` (number) qabul qiluvchi interfeys hamda uning asosida \`Greeting\` nomli (sof JS da TSdek qilib yozadigan) funksiya yozing.",
+      instruction: "Faqat `name` (string) va `age` (number) qabul qiluvchi interfeys hamda uning asosida `Greeting` nomli (sof JS da TSdek qilib yozadigan) funksiya yozing.",
       startingCode: "interface Props {\n  // kodingizni yozing\n}\n\nfunction Greeting(props: Props) {\n  // return 'Salom, ism: ' + ism + ', yosh: ' + yosh;\n}",
       hint: "return `Salom, ism: ${props.name}, yosh: ${props.age}`",
       solution: "interface Props {\n  name: string;\n  age: number;\n}\n\nfunction Greeting(props: Props) {\n  return `Salom, ism: ${props.name}, yosh: ${props.age}`;\n}",
@@ -63,7 +64,7 @@ graph TD
     {
       id: 2,
       title: "2. Optional Prop (Ixtiyoriy parametr)",
-      instruction: "\`Greeting\` propsida \`greetingWord\` degan string ixtiyoriy (optional) prop qo'shing. U yo'q bo'lsa 'Hello' qaytsin.",
+      instruction: "`Greeting` propsida `greetingWord` degan string ixtiyoriy (optional) prop qo'shing. U yo'q bo'lsa 'Hello' qaytsin.",
       startingCode: "interface Props {\n  name: string;\n  greetingWord?: string;\n}\n\nfunction Greeting2(props: Props) {\n  // kodingizni yozing\n}",
       hint: "props.greetingWord ?? 'Hello'",
       solution: "interface Props {\n  name: string;\n  greetingWord?: string;\n}\n\nfunction Greeting2(props: Props) {\n  return `${props.greetingWord ?? 'Hello'}, ${props.name}!`;\n}",
@@ -81,7 +82,7 @@ graph TD
     {
       id: 4,
       title: "4. useState <Generic> bilan",
-      instruction: "Dasturda array saqlovchi state bor. \`useState<number[]>([])\` kabi o'ylab, bo'sh massiv qaytaruvchi va unga qiymat qo'shuvchi sof funksional logikani yozing. (`addNumber(arr, num)`).",
+      instruction: "Dasturda array saqlovchi state bor. `useState<number[]>([])` kabi o'ylab, bo'sh massiv qaytaruvchi va unga qiymat qo'shuvchi sof funksional logikani yozing. (`addNumber(arr, num)`).",
       startingCode: "function addNumber(arr: number[], num: number): number[] {\n  // arr ga num ni qo'shib yangi massiv qaytaring\n}",
       hint: "return [...arr, num]",
       solution: "function addNumber(arr: number[], num: number): number[] {\n  return [...arr, num];\n}",
