@@ -2,524 +2,285 @@ export const domManipulation = {
   id: "domManipulation",
   title: "DOM Manipulyatsiyasi: Elementlar Yaratish va Boshqarish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish (Beginner Analogy)
 
-### DOM Manipulyatsiyasi nima?
-**DOM Manipulyatsiyasi (DOM Manipulation)** — bu JavaScript yordamida veb-sahifadagi HTML elementlarini dynamic (dasturiy) ravishda yaratish, ularni joylashtirish, o'zgartirish, klonlash yoki butunlay o'chirib tashlash jarayonidir. Bu orqali sahifa foydalanuvchining harakatlariga mos ravishda dynamic o'zgaradi.
+**DOM Manipulyatsiyasi** bu web-sahifadagi HTML elementlarini JavaScript yordamida dasturiy (dynamic) ravishda yaratish, joylashtirish, o'zgartirish yoki o'chirish jarayonidir. 
 
-### Real hayotiy o'xshatish
-Buni **Lego konstruktori** deb tasavvur qiling:
-* **Yaratish (Create):** Siz qutidan yangi g'ishtcha olasiz (\`document.createElement\`).
-* **Joylashtirish (Insert):** G'ishtchani konstruktor poydevoriga yopishtirasiz (\`appendChild\` yoki \`prepend\`).
-* **O'zgartirish (Modify):** G'ishtchaga sticker yopishtirasiz yoki rangini bo'yaysiz (\`classList.add\`, \`style.color\`).
-* **O'chirish (Remove):** Keraksiz bo'lakni sug'urib olib tashlaysiz (\`remove()\`).
-* **Klonlash (Clone):** Bir xil shakldagi g'ishtchadan yana bitta nusxa olasiz (\`cloneNode\`).
-
----
-
-## 2. 💻 Real Kod Misollari
-
-### 1. Basic Example (Element Yaratish va Qo'shish)
-Yang element yaratib, unga matn berish va DOM-ga ulash:
-\`\`\`javascript
-const newParagraph = document.createElement('p');
-newParagraph.textContent = 'Bu dynamic ravishda yaratilgan paragraf.';
-newParagraph.className = 'info-text';
-
-// body oxiriga qo'shish
-document.body.appendChild(newParagraph);
-\`\`\`
-
-### 2. Intermediate Example (Aniq joyga element qo'shish)
-\`prepend\`, \`before\`, \`after\` va \`insertAdjacentHTML\` yordamida elementlarni joylashtirish:
-\`\`\`javascript
-const list = document.querySelector('.todo-list');
-const firstLi = list.querySelector('li');
-
-const urgentTask = document.createElement('li');
-urgentTask.textContent = 'Shoshilinch vazifa';
-
-// 1. Ro'yxatning eng boshiga qo'shish
-list.prepend(urgentTask);
-
-// 2. Birinchi elementdan oldin yoki keyin qo'shish
-const semiUrgent = document.createElement('li');
-semiUrgent.textContent = 'Yarim shoshilinch';
-firstLi.before(semiUrgent); // oldidan qo'shish
-
-// 3. Tayyor HTML matnini tezkor joylashtirish
-list.insertAdjacentHTML('beforeend', '<li class="completed">Tugallangan vazifa</li>');
-\`\`\`
-
-### 3. Advanced Example (Elementni Klonlash)
-\`cloneNode\` yordamida element va uning bolalarini to'liq nusxalash (deep clone):
-\`\`\`javascript
-const templateCard = document.querySelector('.product-card');
-
-// cloneNode(true) bolalari va ichidagi matnlar bilan to'liq nusxalaydi
-// cloneNode(false) esa faqat element g'ovini (matnsiz) nusxalaydi
-const newCard = templateCard.cloneNode(true);
-
-newCard.querySelector('.product-title').textContent = 'Yangi Telefon';
-newCard.querySelector('.product-price').textContent = '3 000 000 UZS';
-
-document.querySelector('.catalog-grid').appendChild(newCard);
-\`\`\`
-
-### 4. Production Example (Dynamic Row va Event handler ulash)
-Dynamic tarzda o'chirish tugmasiga ega jadval qatorlarini yaratish:
-\`\`\`javascript
-function addUserRow(id, name, email) {
-  const tbody = document.querySelector('#users-table tbody');
-  
-  const tr = document.createElement('tr');
-  tr.id = \`user-\${id}\`;
-  
-  tr.innerHTML = \`
-    <td>\${id}</td>
-    <td>\${name}</td>
-    <td>\${email}</td>
-    <td><button class="btn-delete">O'chirish</button></td>
-  \`;
-  
-  // O'chirish tugmasiga event listener ulaymiz
-  tr.querySelector('.btn-delete').addEventListener('click', () => {
-    // tr o'zini o'zi o'chirib yuboradi (memory safe)
-    tr.remove();
-  });
-  
-  tbody.appendChild(tr);
-}
-\`\`\`
-
-### 5. Enterprise Example (Event Delegation va closest() metodi)
-Katta hajmli ro'yxatlarda har bir tugmaga alohida listener ulamay, ota element orqali dynamic kliklarni boshqarish:
-\`\`\`javascript
-const listContainer = document.querySelector('.shopping-list');
-
-// Ota elementga 1 marta listener ulanadi (Event Delegation)
-listContainer.addEventListener('click', (event) => {
-  // closest() elementi yuqoriga qarab eng yaqin mos keluvchi elementni topadi
-  const deleteBtn = event.target.closest('.delete-item-btn');
-  
-  if (deleteBtn) {
-    const itemRow = deleteBtn.closest('.list-item');
-    if (itemRow) {
-      itemRow.remove(); // elementni dynamic o'chirish
-    }
-  }
-});
-\`\`\`
+### O'xshatish: Lego Konstruktori
+Buni Lego konstruktorlarini yig'ishga o'xshatish mumkin:
+1. **Yaratish (Create):** Siz qutidan yangi g'ishtcha olasiz (\\\`document.createElement\\\`).
+2. **Joylashtirish (Insert):** Uni asosiy poydevorga yoki boshqa g'ishtchalar orasiga ulab qo'yasiz (\\\`appendChild\\\` yoki \\\`prepend\\\`).
+3. **O'zgartirish (Modify):** G'ishtchaga yozuv yoki maxsus sticker yopishtirasiz (\\\`textContent\\\`, \\\`classList.add\\\`).
+4. **O'chirish (Remove):** Noto'g'ri qo'yilgan bo'lakni olib tashlaysiz (\\\`remove()\\\`).
+5. **Klonlash (Clone):** Bir xil shaklli derazadan yana bitta kerak bo'lsa, xuddi shundan nusxa olasiz (\\\`cloneNode()\\\`).
 
 ---
 
-## 3. ⚠️ Muammo va Nima uchun Muhimligi
+## 2. 🔬 Deep Dive: Under the Hood, Memory, V8 Engine & Performance
 
-### Qaysi muammoni hal qiladi?
-* **Dynamic ma'lumotlar oqimi:** Foydalanuvchi tugmani bosganda, chat xabari kelganda yoki API'dan ma'lumot yuklanganda sahifani qayta yuklamasdan dynamic DOM-ni o'zgartirish imkonini beradi.
-* **Xotira boshqaruvi va oqishlar (Memory Leaks):** Elementlar DOM-dan o'chirilganda ulardagi event handler-larni va references-larni to'g'ri o'chirmaslik xotira oqishiga olib keladi. To'g'ri manipulyatsiya qilish xavfsizlik va barqarorlik kafolatidir.
+DOM (Document Object Model) — bu C++ da yozilgan brauzer API'si. JavaScript (V8 Engine) va DOM alohida olamlardir. Ularning o'rtasida ma'lumot almashish va birgalikda ishlash qimmat turadi. 
 
----
+* **Binding / Bridge:** JS V8 dvigateli orqali ishlaganda, u DOM tugunlariga \\\`bridge\\\` orqali murojaat qiladi. Har safar DOM ga teginganda, bu \\\`bridge\\\` o'tiladi, va bu sekinlashishga (performance hit) olib kelishi mumkin.
+* **Reflow va Repaint:** Agar DOM o'zgarganda sahifa maketi (layout) o'zgarsa, brauzer **Reflow** (qayta hisoblash) qiladi. Agar faqat rang yoki font o'zgarsa, **Repaint** (qayta chizish) qiladi. Ikkalasi ham qimmat jarayon, ammo Reflow eng qimmati hisoblanadi.
+* **DocumentFragment:** Ko'p sonli tugunlarni bitta-bitta qo'shish har safar Reflow keltirib chiqarishi mumkin. Buni oldini olish uchun virtual idish - \\\`DocumentFragment\\\` yaratib, barcha tugunlarni unga yig'ib, so'ngra bir marta DOM'ga qo'shish kerak.
+* **Garbage Collection (GC):** Elementlarni DOM dan uzib (\\\`remove()\\\`), lekin JS o'zgaruvchisida saqlab qolish \\\`Detached DOM Elements\\\` deb ataladi. Ular xotirada qolaveradi va Garbage Collector ularni tozalay olmaydi, natijada **Memory Leak** (xotira oqishi) yuz beradi.
 
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
-
-### 1. \`createElement\` qilingan elementni DOM-ga ulamaslik
-#### Xato:
-\`const el = document.createElement("div"); el.textContent = "Salom";\` // Ekranda ko'rinmaydi!
-#### To'g'ri usul:
-\`document.body.appendChild(el);\` kabi metodlar bilan DOM-ga ulash.
-
-### 2. Loop ichida \`innerHTML += ...\` operatorini ishlatish
-#### Xato:
-\`for(let i=0; i<100; i++) list.innerHTML += '<li>Item</li>';\`
-#### Nima uchun:
-Bu har safar butun HTML-ni qayta chizib (Reflow), sahifani keskin sekinlashtiradi.
-#### To'g'ri usul:
-\`DocumentFragment\` yoki \`insertAdjacentHTML\` ishlatish.
-
-### 3. \`appendChild\` metodiga to'g'ridan-to'g'ri matn (string) berish
-#### Xato:
-\`element.appendChild("Mening matnim");\` // TypeError
-#### To'g'ri usul:
-\`element.append("Mening matnim");\` yoki \`element.textContent = "Mening matnim";\`
-
-### 4. Yo'q elementni DOM-dan o'chirishga urinish
-#### Xato:
-\`document.querySelector(".non-existent").remove();\` // Cannot read properties of null
-#### To'g'ri usul:
-Avval element borligini tekshirish:
-\`const el = document.querySelector(".non-existent"); if(el) el.remove();\`
-
-### 5. \`cloneNode()\` metodida parametr bermaslik (yoki false berish)
-#### Muammo:
-Faqat tag-ning o'zi nusxalanadi, ichidagi barcha bolalari va matnlari yo'qolib ketadi.
-#### To'g'ri usul:
-To'liq nusxa uchun \`cloneNode(true)\` deb yozish.
-
-### 6. Dynamic qo'shilgan elementlarga event listener ulay olmaslik
-#### Muammo:
-Sahifa yuklanganda dynamic yaratilmagan elementlar ustida querySelector qilib, keyin yaratilgan elementga listener ulay olmaslik.
-#### To'g'ri yechim:
-Event Delegation (ota elementga listener ulash) ishlatish.
-
-### 7. DOM-dan elementni o'chirgach, JS-dagi references-ni null qilmaslik (Detached DOM)
-#### Muammo:
-\`element.remove()\` qilingan bo'lsa ham, JS-dagi o'zgaruvchi xotirada uni ushlab qolaveradi.
-#### To'g'ri yechim:
-\`myVar = null;\` qilib havolani uzish.
-
-### 8. \`removeEventListener\` ishlatishda arrow funksiyalar yozish
-#### Xato:
-\`el.removeEventListener('click', () => myHandler());\` (o'chmaydi, chunki har safar yangi funksiya yaratiladi).
-#### To'g'ri:
-Nomli funksiya havolasini (reference) uzatish.
-
-### 9. \`after\` va \`before\` metodlarini eski brauzerlarda to'g'ridan-to'g'ri ishlatish (Polyfill-siz)
-#### Muammo:
-Eski brauzerlarda (masalan Internet Explorer) bu metodlar mavjud emas. Modern loyihalarda transpile qilinishi shart.
-
-### 10. \`element.innerHTML = ""\` orqali tozalashda event handlerlarni xotirada qoldirish
-#### Muammo:
-Xotira oqishiga sabab bo'lishi mumkin. Katta loyihalarda elementlarni o'chirishdan oldin listenerlarni tozalash tavsiya etiladi.
+### Mermaid Diagram: DOM Operation Flow
+\\\`\\\`\\\`mermaid
+graph TD;
+    A[JS: document.createElement] --> B[JS Xotirasida Obyekt];
+    B --> C{DOMga biriktirish?};
+    C -- Ha --> D[appendChild/prepend];
+    D --> E[Brauzer Reflow & Repaint];
+    E --> F[Ekranda Ko'rinadi];
+    C -- Yo'q --> G[Faqat JS Xotirasida qoladi];
+\\\`\\\`\\\`
 
 ---
 
-## 5. 💬 12 ta Intervyu Savollari
+## 3. ⚠️ Edge Cases va Senior Interview Questions
 
-### Junior (1–4)
-1. **Savol:** JavaScript-da yangi element qanday yaratiladi?
-   * **Javob:** \`document.createElement(tagName)\` metodi orqali xotirada yangi element obyekti yaratiladi.
+### Edge Cases (Noaniq vaziyatlar)
+1. **\\\`cloneNode(true)\\\` va Event Listeners:** \\\`cloneNode\\\` tugunning xususiyatlari va atributlarini nusxalaydi, biroq \\\`addEventListener\\\` yordamida biriktirilgan JavaScript hodisalarini (event listeners) nusxalamaydi. Inline (HTML dagi) atribut hodisalarigina (masalan, \\\`onclick\\\`) nusxalanadi.
+2. **innerHTML vs textContent:** Xavfsizlik jihatidan foydalanuvchi ma'lumotini kiritishda doimo \\\`textContent\\\` ishlating. \\\`innerHTML\\\` bilan ishlash \\\`XSS\\\` (Cross-Site Scripting) hujumlariga ochiq bo'ladi.
+3. **Live vs Static Collections:** \\\`getElementsByClassName\\\` \\\`Live\\\` (jonli) to'plam qaytaradi (DOM o'zgarsa darhol yangilanadi), \\\`querySelectorAll\\\` esa \\\`Static\\\` to'plam qaytaradi (o'zgarishlar tasir qilmaydi).
 
-2. **Savol:** \`appendChild()\` va \`prepend()\` metodlarining farqi nimada?
-   * **Javob:** \`appendChild\` elementni ota blokning eng oxiriga bolasi qilib qo'shadi, \`prepend\` esa eng boshiga ulaydi.
+### Senior Interview Questions
+1. **Savol:** \\\`Virtual DOM\\\` qanday ishlaydi va nima uchun React kabi frameworklar to'g'ridan-to'g'ri DOM manipulyatsiyasi o'rniga undan foydalanadi?
+   * **Javob:** To'g'ridan-to'g'ri DOM update'lari juda sekin va qimmat. Virtual DOM bu - JS xotirasidagi obyektlar daraxotidir. React state o'zgarganda yangi Virtual DOM yaratadi, eskilari bilan \\\`diffing\\\` (taqqoslash) algoritmini bajaradi va faqatgina o'zgargan qismlarnigina haqiqiy DOM ga batched (guruhlangan) holda yozadi. Bu esa o'z-o'zidan ortiqcha Reflow va Repaint'larning oldini oladi.
 
-3. **Savol:** Elementni DOM-dan qanday o'chirib tashlaymiz?
-   * **Javob:** Elementning o'zida \`element.remove()\` metodini chaqirish orqali (modern brauzerlarda) yoki ota element orqali \`parent.removeChild(child)\` yordamida.
+2. **Savol:** Detached DOM tugunlarini qanday aniqlaymiz va oldini olamiz?
+   * **Javob:** Chrome DevTools Memory tab'ida \\\`Heap Snapshot\\\` olib, "Detached HTMLElement"larni qidiramiz. Oldini olish uchun esa elementni o'chirganimizdan so'ng uni ushlab turgan o'zgaruvchilarni yoki event listener'larni (masalan global document'ga biriktirilganlarini) ham null ga tenglash/o'chirish kerak.
 
-4. **Savol:** \`element.cloneNode(true)\` dagi \`true\` parametri nimani anglatadi?
-   * **Javob:** Deep Clone (chuqur nusxa olish) — ya'ni elementni uning ichidagi barcha farzandlari, matnlari va atributlari bilan birgalikda to'liq nusxalashni anglatadi.
-
-### Middle (5–8)
-5. **Savol:** Event Delegation (hodisalar delegatsiyasi) nima va u qanday muammoni hal qiladi?
-   * **Javob:** Har bir elementga alohida listener ulamasdan, ularning umumiy ota elementiga bitta listener ulash va event.target orqali bosilgan elementni aniqlash. Bu xotirani tejaydi va dynamic qo'shilgan elementlarni ham avtomat tinglash imkonini beradi.
-
-6. **Savol:** \`insertAdjacentHTML()\` metodi qanday ishlaydi va uning afzalligi nimada?
-   * **Javob:** Tayyor HTML stringini berilgan aniq pozitsiyaga (\`beforebegin\`, \`afterbegin\`, \`beforeend\`, \`afterend\`) tezkor joylashtiradi. \`innerHTML +=\`ga qaraganda tezroq ishlaydi va mavjud elementlarni qayta render qilmaydi.
-
-7. **Savol:** Elementning \`closest()\` metodi nima maqsadda ishlatiladi?
-   * **Javob:** Elementdan boshlab DOM daraxti bo'ylab tepaga qarab, berilgan selektorga mos keladigan eng birinchi ota (bobo/ajdod) elementni topadi.
-
-8. **Savol:** Detached DOM elements nima va u xotira boshqaruviga qanday ta'sir qiladi?
-   * **Javob:** DOM daraxtidan o'chirilgan, lekin JavaScript kodi ichidagi o'zgaruvchilarda hali ham havolasi (reference) saqlanib qolgan elementlar. Ular xotiradan o'chmaydi va xotira oqishiga (Memory Leak) sabab bo'ladi.
-
-### Senior (9–12)
-9. **Savol:** Klonlangan elementda (\`cloneNode\`) uning event listener-lari ham nusxalanadimi?
-   * **Javob:** Yo'q, \`cloneNode\` elementning inline handler-laridan tashqari, \`addEventListener\` orqali ulangan dinamik event listener-larni nusxalamaydi. Ularni klonlangan elementga qaytadan ulash talab etiladi.
-
-10. **Savol:** \`element.innerHTML = ""\` qilinganda xotira tozalanishi (GC) qanday kechadi va dynamic event listener-lar xotirada qolishi mumkinmi?
-    * **Javob:** Zamonaviy brauzer dvigatellari (V8) ichki elementlar o'chganda ularga bog'liq listener-larni ham axlat yig'uvchiga (GC) topshiradi. Biroq, agar o'sha ichki elementlarga tashqaridagi uzoq yashovchi closures yoki global obyektlarda references qolgan bo'lsa, ular xotiradan o'chmaydi.
-
-11. **Savol:** Micro-Frontend arxitekturasida turli dynamic component-larning DOM-ga ta'siri (conflict) qanday hal qilinadi?
-    * **Javob:** Shadow DOM orqali elementlarni va stillarni izolyatsiya qilish (Web Components), yoki har bir component uchun alohida root div-lar yaratib, global selektorlar to'qnashuvini oldini olish uchun nomlash standartlariga (CSS Modules) rioya qilish.
-
-12. **Savol:** DOM manipulyatsiyasini tezlashtirishda Batching va FastDOM kutubxonasi qanday ishlaydi?
-    * **Javob:** Ular o'qish (read: offsetHeight) va yozish (write: style o'zgartirish) amallarini alohida navbatlarga (queues) ajratib, bir vaqtning o'zida bir xil turdagi amallarni guruhlab bajaradi. Bu reflow-lar sonini minimal darajada saqlaydi.
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Mashqlar interaktiv kod runner orqali bajariladi.
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Dars yakunidagi testlar.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### Dynamic KanBan Board Card Manipulator
-Loyiha KanBan taxtasi bo'lib, foydalanuvchilar dynamic kartalar qo'shadi, ularni tahrirlaydi yoki o'chiradi. Hamma amallar dynamic tarzda DOM-da aks etishi shart.
-
-\`\`\`javascript
-class KanbanBoard {
-  constructor(containerId) {
-    this.container = document.getElementById(containerId);
-  }
-
-  addCard(id, text) {
-    const card = document.createElement('div');
-    card.className = 'kanban-card';
-    card.dataset.cardId = id;
-    
-    card.innerHTML = \`
-      <p class="card-text">\${text}</p>
-      <button class="delete-card-btn">x</button>
-    \`;
-    
-    // O'chirish tugmasiga klik eshitish
-    card.querySelector('.delete-card-btn').addEventListener('click', () => {
-      card.remove(); // kartani o'chirish
-    });
-    
-    this.container.appendChild(card);
-  }
-}
-\`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-* **Shallow Cloning vs Deep Cloning:** Agar elementning faqat o'zi kerak bo'lsa va bolalarini nusxalash shart bo'lmasa, \`cloneNode(false)\` ishlatish xotirani tejaydi.
-* **Batch DOM updates:** Ko'plab elementlarni yaratishda fragment yordamida ishlash sahifani tezkor qiladi.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Metod / Xususiyat | Sintaksis | Vazifasi | Eslatma |
-| :--- | :--- | :--- | :--- |
-| **createElement()** | \`document.createElement('div')\` | Element yaratadi | Xotirada yaratadi |
-| **appendChild()** | \`parent.appendChild(el)\` | Oxiriga farzand qiladi | DOM-ga ulaydi |
-| **prepend()** | \`parent.prepend(el)\` | Boshiga farzand qiladi | DOM-ga ulaydi |
-| **before()** | \`el.before(newEl)\` | Elementdan oldin qo'shadi | Qo'shni element qiladi |
-| **after()** | \`el.after(newEl)\` | Elementdan keyin qo'shadi | Qo'shni element qiladi |
-| **remove()** | \`el.remove()\` | Elementni o'chiradi | Modern usul |
-| **cloneNode()** | \`el.cloneNode(true)\` | Elementni nusxalaydi | true = deep, false = shallow |
-| **closest()** | \`el.closest('.wrapper')\` | Eng yaqin ota selektorni topadi| Tepaga qarab qidiradi |
+3. **Savol:** \\\`DocumentFragment\\\` va oddiy \\\`div\\\` wrapper o'rtasida qanday farq bor, qaysi biri samaraliroq?
+   * **Javob:** \\\`DocumentFragment\\\` xuddi bo'sh idishga o'xshaydi, DOM ga biriktirilganda uning o'zi emas, balki ichidagi tugunlarigina (children) ko'chib o'tadi. \\\`div\\\` ni qo'shganda div ning o'zi ham qo'shiladi va maketga (layout) ortiqcha qatlam qo'shiladi. \\\`DocumentFragment\\\` qo'shimcha wrapper yaratmasligi va o'zi DOM daraxtida ko'rinmasligi bilan samaraliroq.
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "Yangi Element Yaratish va Joylashtirish",
-    "instruction": "\`document.createElement\` yordamida 'div' elementi yarating, uning klassiga 'box' qo'shing va uni \`document.body\` oxiriga appendChild yordamida ulovchi \`createBox()\` funksiyasini yozing.",
-    "startingCode": "function createBox() {\n  // Kodni yozing\n}",
-    "hint": "const div = document.createElement('div'); div.classList.add('box'); document.body.appendChild(div);",
-    "test": "try { createBox(); const boxes = document.body.querySelectorAll('.box'); if (boxes.length === 0) return 'Box klassli element qo\\'shilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 2,
-    "title": "Boshiga Qo'shish (Prepend)",
-    "instruction": "Berilgan \`newElement\` obyektini \`container\` elementining eng boshiga birinchi bola element sifatida joylashtiruvchi \`addToStart(container, newElement)\` funksiyasini yozing.",
-    "startingCode": "function addToStart(container, newElement) {\n  // Kodni yozing\n}",
-    "hint": "container.prepend(newElement);",
-    "test": "try { let added = null; const mockContainer = { prepend: (el) => added = el }; const testEl = { id: 'test' }; addToStart(mockContainer, testEl); if (added !== testEl) return 'newElement boshiga joylashtirilmadi'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 3,
-    "title": "Element Klonlash va ID o'zgartirish",
-    "instruction": "Berilgan \`original\` elementini uning bolalari bilan birga to'liq klonlovchi, klonlangan nusxaning ID sini 'cloned-item' ga o'zgartiruvchi va o'sha klonlangan elementni qaytaruvchi \`cloneElement(original)\` funksiyasini yozing.",
-    "startingCode": "function cloneElement(original) {\n  // Kodni yozing\n}",
-    "hint": "const cloned = original.cloneNode(true); cloned.id = 'cloned-item'; return cloned;",
-    "test": "try { const orig = document.createElement('div'); orig.id = 'original-id'; const res = cloneElement(orig); if (!res || res.id !== 'cloned-item') return 'Klonlangan element IDsi cloned-item bo\\'lmadi'; if (res === orig) return 'Klonlanmagan, asl element qaytarilgan'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 4,
-    "title": "Elementni DOM-dan o'chirish (remove)",
-    "instruction": "Berilgan \`element\` ni DOM-dan xavfsiz o'chiruvchi \`safeRemove(element)\` funksiyasini yozing. Avval element mavjudligini tekshiring, keyin \`remove()\` metodini chaqiring.",
-    "startingCode": "function safeRemove(element) {\n  // Kodni yozing\n}",
-    "hint": "if (element) { element.remove(); }",
-    "test": "try { let removed = false; const mockEl = { remove: () => removed = true }; safeRemove(mockEl); if (!removed) return 'element.remove() chaqirilmadi'; safeRemove(null); } catch(e) { return 'Xato: null element uchun xavfsiz tekshiruv yo\\'q — ' + e.message; } return null;"
-  },
-  {
-    "id": 5,
-    "title": "insertAdjacentHTML yordamida element qo'shish",
-    "instruction": "Berilgan \`container\` elementining oxiriga (beforeend) \`<p class=\"info\">Yangi ma'lumot</p>\` HTML-ni \`insertAdjacentHTML\` yordamida qo'shuvchi \`addInfo(container)\` funksiyasini yozing.",
-    "startingCode": "function addInfo(container) {\n  // Kodni yozing\n}",
-    "hint": "container.insertAdjacentHTML('beforeend', '<p class=\"info\">Yangi ma\\'lumot</p>');",
-    "test": "try { let insertedPos = null; let insertedHtml = null; const mockEl = { insertAdjacentHTML: (pos, html) => { insertedPos = pos; insertedHtml = html; } }; addInfo(mockEl); if (insertedPos !== 'beforeend') return 'Pozitsiya beforeend bo\\'lishi kerak'; if (!insertedHtml || !insertedHtml.includes('info')) return 'HTML ichida info klassi bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 6,
-    "title": "replaceWith yordamida elementni almashtirish",
-    "instruction": "Berilgan \`oldElement\` ni yangi \`span\` element bilan almashtiruvchi \`replaceElement(oldElement, newText)\` funksiyasini yozing. Yangi \`span\` ning textContent-i \`newText\` parametri bo'lsin.",
-    "startingCode": "function replaceElement(oldElement, newText) {\n  // Kodni yozing\n}",
-    "hint": "const span = document.createElement('span'); span.textContent = newText; oldElement.replaceWith(span);",
-    "test": "try { let replacedWith = null; const mockOld = { replaceWith: (el) => replacedWith = el }; replaceElement(mockOld, 'Salom'); if (!replacedWith) return 'replaceWith metodi chaqirilmadi'; if (replacedWith.textContent !== 'Salom') return 'Yangi element textContent-i Salom bo\\'lishi kerak'; if (replacedWith.tagName !== 'SPAN') return 'Yangi element span bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 7,
-    "title": "before va after metodlari",
-    "instruction": "Berilgan \`target\` elementidan oldin yangi \`hr\` element qo'shuvchi va keyin yangi \`p\` element (textContent = 'Izoh') qo'shuvchi \`addSurrounding(target)\` funksiyasini yozing.",
-    "startingCode": "function addSurrounding(target) {\n  // Kodni yozing\n}",
-    "hint": "const hr = document.createElement('hr'); const p = document.createElement('p'); p.textContent = 'Izoh'; target.before(hr); target.after(p);",
-    "test": "try { let beforeEl = null; let afterEl = null; const mockTarget = { before: (el) => beforeEl = el, after: (el) => afterEl = el }; addSurrounding(mockTarget); if (!beforeEl || beforeEl.tagName !== 'HR') return 'before() orqali hr elementi qo\\'shilishi kerak'; if (!afterEl || afterEl.tagName !== 'P') return 'after() orqali p elementi qo\\'shilishi kerak'; if (afterEl.textContent !== 'Izoh') return 'p elementi textContent-i Izoh bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 8,
-    "title": "DocumentFragment yordamida ro'yxat yaratish",
-    "instruction": "Berilgan \`items\` massivi (string lar) asosida \`li\` elementlar yaratib, ularni \`DocumentFragment\` ga qo'shib, so'ngra fragmentni qaytaruvchi \`buildList(items)\` funksiyasini yozing.",
-    "startingCode": "function buildList(items) {\n  // Kodni yozing\n}",
-    "hint": "const fragment = document.createDocumentFragment(); items.forEach(text => { const li = document.createElement('li'); li.textContent = text; fragment.appendChild(li); }); return fragment;",
-    "test": "try { const result = buildList(['Olma', 'Nok', 'Uzum']); if (!result || !result.querySelectorAll) return 'DocumentFragment qaytarilishi kerak'; const lis = result.querySelectorAll('li'); if (lis.length !== 3) return '3 ta li elementi bo\\'lishi kerak, hozir: ' + lis.length; if (lis[0].textContent !== 'Olma') return 'Birinchi li matni Olma bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 9,
-    "title": "closest() metodi bilan ota elementni topish",
-    "instruction": "Berilgan \`button\` elementidan \`closest\` metodi yordamida eng yaqin \`.card\` klassli ota elementni topib qaytaruvchi \`findCard(button)\` funksiyasini yozing.",
-    "startingCode": "function findCard(button) {\n  // Kodni yozing\n}",
-    "hint": "return button.closest('.card');",
-    "test": "try { const mockCard = { className: 'card' }; const mockBtn = { closest: (sel) => sel === '.card' ? mockCard : null }; const result = findCard(mockBtn); if (result !== mockCard) return 'closest yordamida .card elementi qaytarilishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  },
-  {
-    "id": 10,
-    "title": "Dynamic element yaratish va event listener ulash",
-    "instruction": "Yangi \`button\` element yaratib, uning textContent-ini 'Bosing' ga, className-ini 'btn' ga sozlang. Tugma bosilganda \`alert('Bosildi!')\` chaqiruvchi event listener ulang va tugmani qaytaruvchi \`createButton()\` funksiyasini yozing.",
-    "startingCode": "function createButton() {\n  // Kodni yozing\n}",
-    "hint": "const btn = document.createElement('button'); btn.textContent = 'Bosing'; btn.className = 'btn'; btn.addEventListener('click', () => alert('Bosildi!')); return btn;",
-    "test": "try { const btn = createButton(); if (!btn || btn.tagName !== 'BUTTON') return 'button elementi qaytarilishi kerak'; if (btn.textContent !== 'Bosing') return 'textContent Bosing bo\\'lishi kerak'; if (btn.className !== 'btn') return 'className btn bo\\'lishi kerak'; } catch(e) { return 'Xato: ' + e.message; } return null;"
-  }
-]
-,
+    {
+      id: 1,
+      title: "createElement bilan ishlash",
+      instruction: "Yangi 'p' (paragraf) elementi yarating, unga 'Salom Dunyo' matnini yozing va uni `document.body` ga qo'shing. Buning uchun `addGreeting()` funksiyasini yozing.",
+      startingCode: "function addGreeting() {\n  // Code here\n}",
+      hint: "document.createElement('p') va appendChild ishlating",
+      test: "try { addGreeting(); const p = document.body.lastElementChild; if (!p || p.tagName !== 'P' || p.textContent !== 'Salom Dunyo') return 'Error: p elementi yoki text xato'; return null; } catch (e) { return e.message; }"
+    },
+    {
+      id: 2,
+      title: "Prepend qanday ishlaydi",
+      instruction: "Biror div ichiga elementni boshidan qo'shuvchi `prependElement(container, text)` funksiyasini yozing. Yangi 'div' yarating, unga matnni qo'shing va `container` ning eng boshiga joylang.",
+      startingCode: "function prependElement(container, text) {\n  // Code here\n}",
+      hint: "yangi element yaratib uni container.prepend(newElement) qiling",
+      test: "try { const c = document.createElement('div'); c.innerHTML='<span>Old</span>'; prependElement(c, 'Yangi'); if(c.firstElementChild.textContent !== 'Yangi') return 'Error: boshiga qo\\'shilmadi'; return null; } catch(e) { return e.message; }"
+    },
+    {
+      id: 3,
+      title: "Elementni O'chirish",
+      instruction: "`removeButton()` funksiyasini yozing, bu sahifadagi eng birinchi `button` elementini topsin va agar mavjud bo'lsa uni `remove()` qilib o'chirsin.",
+      startingCode: "function removeButton() {\n  // Code here\n}",
+      hint: "document.querySelector('button') yordamida qidiring va .remove() qiling.",
+      test: "try { const btn = document.createElement('button'); document.body.appendChild(btn); removeButton(); const b = document.body.querySelector('button'); if(b && b===btn) return 'Error: O\\'chmadi'; return null; } catch(e) { return e.message; }"
+    },
+    {
+      id: 4,
+      title: "Klonlash - cloneNode",
+      instruction: "Berilgan `el` ni uning ichidagi barcha avlodlari bilan birga klonlang, ID sini 'clone' deb o'zgartiring va uni qaytaring. Buning uchun `cloneDeep(el)` yozing.",
+      startingCode: "function cloneDeep(el) {\n  // Code here\n}",
+      hint: "cloneNode(true) ni ishlating, keyin xususiyatini o'zgartiring.",
+      test: "try { const d = document.createElement('div'); d.innerHTML='<p>Test</p>'; const r = cloneDeep(d); if(r === d || r.id !== 'clone' || !r.querySelector('p')) return 'Error'; return null; } catch(e) { return e.message; }"
+    },
+    {
+      id: 5,
+      title: "DocumentFragment bilan ishlash",
+      instruction: "`createList(items)` funksiyasini yozing. `items` bu stringlar massivi. Bitta `DocumentFragment` yarating va har bir item uchun `li` yaratib, fragmentga qo'shing. Yakunda fragmentni qaytaring.",
+      startingCode: "function createList(items) {\n  // Code here\n}",
+      hint: "document.createDocumentFragment()",
+      test: "try { const f = createList(['A','B']); if(!f || f.childNodes.length !== 2) return 'Error'; return null; } catch(e) { return e.message; }"
+    },
+    {
+      id: 6,
+      title: "before va after",
+      instruction: "Sizga bitta element `target` berilgan. Uning yoniga: oldin `<h1>` ('Sarlavha') va keyin `<footer>` ('Tagso\\'z') qoshuvchi `addSiblings(target)` yozing.",
+      startingCode: "function addSiblings(target) {\n  // Code here\n}",
+      hint: "target.before(...) va target.after(...) ishlating",
+      test: "try { const p = document.createElement('div'); const t = document.createElement('div'); p.appendChild(t); addSiblings(t); if(t.previousElementSibling.tagName!=='H1' || t.nextElementSibling.tagName!=='FOOTER') return 'Error'; return null; } catch(e) { return e.message; }"
+    },
+    {
+      id: 7,
+      title: "insertAdjacentHTML",
+      instruction: "Berilgan `container` div-ining aynan o'zi tugagandan keyin darhol uning orqasiga `<span>Info</span>` matnini `insertAdjacentHTML` orqali joylovchi `addInfo(container)` yozing.",
+      startingCode: "function addInfo(container) {\n  // Code here\n}",
+      hint: "'afterend' pozitsiyasidan foydalaning.",
+      test: "try { const p = document.createElement('div'); const c = document.createElement('div'); p.appendChild(c); addInfo(c); if(c.nextElementSibling.tagName!=='SPAN') return 'Error'; return null; } catch(e) { return e.message; }"
+    },
+    {
+      id: 8,
+      title: "closest bilan tepaga yurish",
+      instruction: "Sizga `child` element beriladi. Eng yaqin ota `.container` klasiga ega bo'lgan elementni qidiruvchi va qaytaruvchi `findContainer(child)` yozing.",
+      startingCode: "function findContainer(child) {\n  // Code here\n}",
+      hint: "child.closest('.container') ni qaytaring",
+      test: "try { const c = document.createElement('div'); c.className='container'; const ch = document.createElement('div'); c.appendChild(ch); if(findContainer(ch)!==c) return 'Error'; return null; } catch(e) { return e.message; }"
+    },
+    {
+      id: 9,
+      title: "replaceWith orqali almashtirish",
+      instruction: "Berilgan `oldEl` tugunini yangi `strong` elementi bilan almashtiruvchi `makeStrong(oldEl)` funksiyasini yozing. Eski elementning textContent'i yangisiga o'tishi kerak.",
+      startingCode: "function makeStrong(oldEl) {\n  // Code here\n}",
+      hint: "Yangi strong yarating, oldEl.textContent ni ko'chiring, so'ng oldEl.replaceWith(newEl).",
+      test: "try { const p = document.createElement('div'); const c = document.createElement('span'); c.textContent='ok'; p.appendChild(c); makeStrong(c); if(p.firstElementChild.tagName!=='STRONG' || p.firstElementChild.textContent!=='ok') return 'Error'; return null; } catch(e) { return e.message; }"
+    },
+    {
+      id: 10,
+      title: "Barchasini tozalash va to'ldirish",
+      instruction: "Berilgan `container` ichidagi hamma narsani tozalab, o'rniga bitta yagona `div` (class='placeholder') qo'shuvchi `resetContainer(container)` yozing.",
+      startingCode: "function resetContainer(container) {\n  // Code here\n}",
+      hint: "container.innerHTML = '' qilib keyin append ishlating",
+      test: "try { const c = document.createElement('div'); c.innerHTML='<span>1</span>'; resetContainer(c); if(c.children.length!==1 || c.firstElementChild.className!=='placeholder') return 'Error'; return null; } catch(e) { return e.message; }"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "JavaScript-da `document.createElement('div')` metodi chaqirilganda brauzerda nima sodir bo'ladi?",
-    "options": [
-      "Yangi `div` elementi yaratiladi va u avtomatik ravishda sahifaning oxiriga qo'shiladi",
-      "Faqat tezkor xotirada (memory) yangi element obyekti yaratiladi, lekin u DOM daraxtiga qo'shilmaguncha sahifada ko'rinmaydi",
-      "Mavjud barcha `div` elementlari o'chirib yuboriladi",
-      "Brauzer konsolida faqat matnli xabar chiqadi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`createElement` metodi elementni faqat xotirada yaratadi. U sahifada ko'rinishi uchun albatta `appendChild()`, `prepend()`, `before()`, yoki `after()` kabi metodlar yordamida DOM daraxtiga ulanishi kerak."
-  },
-  {
-    "id": 2,
-    "question": "Elementni ota elementning eng boshiga (birinchi farzand sifatida) qo'shish uchun qaysi metoddan foydalaniladi?",
-    "options": [
-      "parent.appendChild(child)",
-      "parent.prepend(child)",
-      "parent.insertAtFirst(child)",
-      "parent.before(child)"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`parent.prepend(child)` metodi elementni ko'rsatilgan ota elementning eng boshiga qo'shadi. `appendChild` esa eng oxiriga qo'shadi."
-  },
-  {
-    "id": 3,
-    "question": "`textContent` va `innerHTML` xususiyatlari (properties) o'rtasidagi asosiy farq nima?",
-    "options": [
-      "Hech qanday farqi yo'q, ikkalasi ham bir xil natija beradi",
-      "`textContent` matn ichidagi har qanday HTML teglarni oddiy matn sifatida xavfsiz yozadi; `innerHTML` esa berilgan matnni HTML kodi sifatida parse qilib, element ko'rinishida render qiladi (bu XSS xavfini keltirib chiqarishi mumkin)",
-      "`innerHTML` faqat sonlarni, `textContent` esa faqat harflarni qabul qiladi",
-      "`textContent` uslub stillarini (styles) ham o'zgartiradi, `innerHTML` esa yo'q"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`textContent` matnni xavfsiz saqlaydi va HTML teglarni oddiy matn ko'rinishida ekranga chiqaradi. `innerHTML` esa berilgan stringni HTML sifatida o'qiydi (XSS hujumlariga qarshi zaiflik tug'dirishi mumkin)."
-  },
-  {
-    "id": 4,
-    "question": "DOM elementini sahifadan butunlay o'chirish uchun qaysi usul eng sodda va zamonaviy (ES6+) hisoblanadi?",
-    "options": [
-      "element.delete()",
-      "element.remove()",
-      "document.removeChild(element)",
-      "element.clear()"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Modern JavaScript-da elementning o'zida `.remove()` metodini chaqirish orqali uni sahifadan juda oson va to'g'ridan-to'g'ri o'chirib tashlash mumkin."
-  },
-  {
-    "id": 5,
-    "question": "Katta miqdordagi elementlarni (masalan, 1000 ta qator) DOM-ga qo'shishda brauzer reflow va repaint (ekranda qayta chizish) yuklamasini kamaytirish hamda ishlash unumdorligini (performance) oshirish uchun nima ishlatiladi?",
-    "options": [
-      "innerHTML += ... loop ichida ishlatiladi",
-      "DocumentFragment (hujjat parchasi) yaratib, barcha elementlarni unga yig'ib, so'ngra bir marta DOM-ga qo'shish",
-      "Har bir elementni alohida document.body.appendChild() qilish",
-      "setTimeout yordamida har bir elementni 1 millisekund kechiktirib qo'shish"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`DocumentFragment` - bu virtual DOM bo'lagi bo'lib, xotirada yaratiladi. Unga bir nechta elementlarni qo'shib, keyin bitta operatsiya orqali DOM-ga ulaganda sahifani qayta chizish (repaint) soni kamayadi va tezlik sezilarli darajada oshadi."
-  },
-  {
-    "id": 6,
-    "question": "`element.cloneNode(true)` va `element.cloneNode(false)` o'rtasidagi farq nima?",
-    "options": [
-      "true faqat elementning o'zini, false esa ichidagi bolalari bilan nusxalaydi",
-      "true elementni va uning barcha ichki bolalarini (deep copy) klonlaydi, false esa faqat elementning o'zini (shallow copy) nusxalaydi",
-      "true elementni o'chiradi, false esa saqlab qoladi",
-      "true inline stillarni nusxalaydi, false esa klasslarni nusxalaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`cloneNode(true)` chuqur nusxa olishni bildiradi, ya'ni element ichidagi barcha matn va boshqa elementlar bilan birga klonlanadi. `cloneNode(false)` esa elementning o'zini, lekin uning ichidagi tarkibni nusxalamaydi."
-  },
-  {
-    "id": 7,
-    "question": "Elementning atributini butunlay o'chirib tashlash uchun qaysi metoddan foydalaniladi?",
-    "options": [
-      "element.setAttribute('attr', null)",
-      "element.removeAttribute('attr')",
-      "element.deleteAttribute('attr')",
-      "element.clearAttribute('attr')"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`removeAttribute('attr')` ko'rsatilgan atributni elementdan butunlay olib tashlaydi."
-  },
-  {
-    "id": 8,
-    "question": "`element.insertAdjacentHTML('beforeend', html)` metodi qayerga yangi element qo'shadi?",
-    "options": [
-      "Elementning bevosita oldidan (tashqarida)",
-      "Elementning bevosita keyin (tashqarida)",
-      "Element ichidagi barcha bolalarning boshiga (birinchi farzand sifatida)",
-      "Element ichidagi barcha bolalarning oxiriga (oxirgi farzand sifatida)"
-    ],
-    "correctAnswer": 3,
-    "explanation": "`beforeend` qiymati yangi tarkibni maqsad qilingan elementning eng oxirgi bolasi (farzandi) sifatida, yopilish tegi oldidan joylashtiradi."
-  },
-  {
-    "id": 9,
-    "question": "`element.classList.toggle('active')` metodi qanday ishlaydi?",
-    "options": [
-      "Elementga har doim 'active' klassini qo'shadi",
-      "Elementdan 'active' klassini har doim o'chiradi",
-      "Agar elementda 'active' klassi bo'lsa uni o'chiradi, agar yo'q bo'lsa uni qo'shadi",
-      "Elementning barcha klasslarini 'active'ga almashtiradi"
-    ],
-    "correctAnswer": 2,
-    "explanation": "`classList.toggle()` metodi berilgan klass elementda mavjud bo'lsa uni o'chiradi (va false qaytaradi), mavjud bo'lmasa qo'shadi (va true qaytaradi)."
-  },
-  {
-    "id": 10,
-    "question": "`removeChild()` va `remove()` metodlarining farqi nima?",
-    "options": [
-      "remove() ota elementdan bolani o'chirish uchun ota elementda chaqiriladi, removeChild() esa elementning o'zini o'chirish uchun unda to'g'ridan-to'g'ri chaqiriladi",
-      "removeChild() ota elementda chaqirilib, o'chirib tashlangan element obyekti ma'lumotini qaytaradi; remove() esa elementning o'zida chaqiriladi va sahifadan o'chirilgach hech narsa qaytarmaydi",
-      "Ikkalasi ham mutlaqo bir xil va faqat ota elementda ishlaydi",
-      "remove() faqat rasmlarni o'chirishga mos keladi, removeChild() esa div'larni"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`parent.removeChild(child)` eski uslub bo'lib, ota elementda chaqiriladi va o'chirilgan bolani qaytaradi. Modern `child.remove()` esa elementning o'zida chaqiriladi va sahifadan o'chirib tashlaydi."
-  },
-  {
-    "id": 11,
-    "question": "Quyidagilardan qaysi biri elementning bevosita ota-elementini (parent node) olish uchun ishlatiladi?",
-    "options": [
-      "element.parentElement",
-      "element.children",
-      "element.nextElementSibling",
-      "element.closest"
-    ],
-    "correctAnswer": 0,
-    "explanation": "`parentElement` xususiyati elementning bevosita ota elementini (parent node, agar u HTML element bo'lsa) qaytaradi."
-  },
-  {
-    "id": 12,
-    "question": "`element.closest('.wrapper')` metodi nima qiladi?",
-    "options": [
-      "Maqsadli elementning eng birinchi farzandini wrapper klassi bo'yicha qidiradi",
-      "Maqsadli elementdan boshlab ota-bobolari (ancestors) bo'ylab yuqoriga qarab birinchi mos keluvchi '.wrapper' selectorli elementni qidiradi va qaytaradi",
-      "Elementga eng yaqin joylashgan qo'shni (sibling) wrapper elementini qaytaradi",
-      "Sahifadagi barcha '.wrapper' klassiga ega elementlarni topadi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`closest()` metodi elementning o'zidan boshlab, DOM daraxti bo'ylab yuqoriga (ota, bobo va h.k.) qarab, berilgan selectorga mos keladigan eng birinchi elementni qaytaradi. Agar topilmasa, `null` qaytaradi."
-  }
-]
-
+    {
+      id: 1,
+      question: "document.createElement metodi qayerda ishlaydi va qachon sahifada paydo bo'ladi?",
+      options: [
+        "Faqat xotirada yaratadi va DOMga ulangan zahoti sahifada paydo bo'ladi",
+        "Darhol sahifaning oxiriga qo'shiladi",
+        "Bu metod eski brauzerlar uchun ishlamaydi",
+        "HTML da avtomatik atribut yaratadi"
+      ],
+      correctAnswer: 0,
+      explanation: "U asosan JS xotirasida element yaratadi, to DOM ga ulash (appendChild, prepend) amalga oshirilmagunicha ekranda ko'rinmaydi."
+    },
+    {
+      id: 2,
+      question: "appendChild() va prepend() ning asosiy farqi nimada?",
+      options: [
+        "appendChild() mavjud hamma farzandlarni o'chirib oxiriga qo'shadi",
+        "prepend() boshiga (birinchi farzand qilib), appendChild() esa eng oxiriga qo'shadi",
+        "Ikkalasi ham string matnlarni parse qiladi",
+        "Farqi yo'q, nomlari o'zgartirilgan xolos"
+      ],
+      correctAnswer: 1,
+      explanation: "prepend elementni eng birinchi node sifatida, appendChild esa eng so'nggi qilib biriktiradi."
+    },
+    {
+      id: 3,
+      question: "innerHTML ning xavfsizlik borasida eng katta zaifligi nimada?",
+      options: [
+        "Reflow larni haddan tashqari ko'p yaratadi",
+        "Foydalanuvchi ma'lumotlarini bevosita o'qib bo'lmaydi",
+        "XSS (Cross-Site Scripting) hujumlariga yo'l ochadi, chunki ixtiyoriy script kodlarni ham bajarib yuborishi mumkin",
+        "CSS klasslarni yo'q qilib yuboradi"
+      ],
+      correctAnswer: 2,
+      explanation: "Agar foydalanuvchidan kelgan noma'lum matnni innerHTML ga tiqsangiz, ichidagi script va tadbirlarni (event) brauzer ishga tushirib yuborishi mumkin (XSS)."
+    },
+    {
+      id: 4,
+      question: "Bir yo'la 500 ta element yaratib DOM ga yozish kerak. Eng samarali usul qaysi?",
+      options: [
+        "Barchasini bittadan appendChild() qilish",
+        "For loop ichida har biri uchun innerHTML += qilish",
+        "Elementlarni DocumentFragment ga yig'ib, oxirida bir marta fragmentni DOM ga appendChild qilish",
+        "Elementlarni massivda saqlab, window.document ni yangilash"
+      ],
+      correctAnswer: 2,
+      explanation: "DocumentFragment xotiradagi 'guruhlovchi konteyner' hisoblanadi va faqatgina 1 ta reflow orqali barcha qismlarni render qiladi."
+    },
+    {
+      id: 5,
+      question: "Memory Leak (xotira oqishi) ni oldini olish uchun qanday qoida bor?",
+      options: [
+        "Elementlarni remove() qilingandan so'ng JS o'zgaruvchidagi ularga bo'lgan havolani (reference) ham o'chirib/null qilish",
+        "Barcha HTML fayllarda faqat inline-style ishlatish",
+        "Barcha elementlarga faqat bitta id berish",
+        "Hamma variablelarni let bilan e'lon qilish"
+      ],
+      correctAnswer: 0,
+      explanation: "Detached DOM (ajralib qolgan) xotira muammosi shundaki, DOMdan olib tashlangan tugunga havola (reference) bo'lsa, Garbage Collector uni o'chirmaydi."
+    },
+    {
+      id: 6,
+      question: "closest() qaysi tomonga qidiruv olib boradi?",
+      options: [
+        "Faqat farzandlar ichidan (tepadan pastga)",
+        "O'zidan boshlab ota-bobolari orqali DOM daraxtining eng tepasiga qarab (pastdan tepaga)",
+        "Yonidagi aka-ukalari orasidan (siblings)",
+        "Hamma joydan"
+      ],
+      correctAnswer: 1,
+      explanation: "closest metodi o'zidan boshlaydi, va bitta yuqoriga (ota elementga) ko'tarilib birinchi mos keluvchi selctorni topgunicha yuradi."
+    },
+    {
+      id: 7,
+      question: "remove() metodi nima vazifa bajaradi?",
+      options: [
+        "Faqat CSS stylelarini o'chiradi",
+        "Ma'lum bir JS hodisalarini o'chiradi",
+        "Tugunning o'zini DOM daraxtidan to'liq uzib oladi",
+        "Xotiradan obyektni tozalaydi"
+      ],
+      correctAnswer: 2,
+      explanation: "remove() elementni va uning farzandlarini vizual va obyekt daraxtidan uzib oladi, lekin uning xotiradan (memory) to'liq tozalanishi JS-da reference (havola) qolmaganiga bog'liq."
+    },
+    {
+      id: 8,
+      question: "cloneNode(false) ning vazifasi nima?",
+      options: [
+        "Chuqur nusxa olish, hamma bolalari bilan",
+        "Nusxa olmaydi, o'zini o'zi qaytaradi",
+        "Sayoz nusxa olish (shallow clone), faqat tashqi tegning o'zi va xususiyatlar nusxalanadi, matn va bolalarsiz",
+        "Barcha JavaScript eventlarini ham nusxalaydi"
+      ],
+      correctAnswer: 2,
+      explanation: "cloneNode(false) berilganda faqtgina element qobiqi nusxalanadi. Agar true bo'lsa chuqur nusxalaydi."
+    },
+    {
+      id: 9,
+      question: "insertAdjacentHTML() usulida parametr qanday bo'lishi mumkin?",
+      options: [
+        "'beforebegin', 'afterbegin', 'beforeend', 'afterend'",
+        "'top', 'bottom', 'left', 'right'",
+        "'start', 'end', 'center', 'middle'",
+        "'before', 'after', 'append', 'prepend'"
+      ],
+      correctAnswer: 0,
+      explanation: "insertAdjacentHTML ning 4 ta asosiy o'rni mavjud bo'lib, ular tegning oldidan, o'zining ichki boshlanishidan, ichki tugashidan va teg tugagandan so'ng joylashishdir."
+    },
+    {
+      id: 10,
+      question: "Reflow nima?",
+      options: [
+        "Rang va stillar yangilanishi jarayoni",
+        "Sichqonchaning bosilishi (Click) jarayoni",
+        "Brauzer tomonidan DOM dagi geometrik o'zgarishlar (o'lcham, joylashuv) natijasida barcha elementlarning joylashuvini qayta hisoblash",
+        "HTTP requestni qayta jo'natish"
+      ],
+      correctAnswer: 2,
+      explanation: "Reflow - bu layout ning har safar qayta hisoblanishi bo'lib, unumdorlik nuqtai nazaridan eng qimmat operatsiyalardan biridir."
+    },
+    {
+      id: 11,
+      question: "V8 Engine va DOM qanday muloqot qiladi?",
+      options: [
+        "To'g'ridan-to'g'ri bir joyda ishlaydi",
+        "Ular maxsus C++ API Bridge (ko'prik) orqali muloqot qilishadi, va bu ularning orasidagi jarayonlarni qimmatroq (sekinroq) qiladi",
+        "Har doim fayl tizimidan o'qish orqali",
+        "Maxsus server arxitekturasi yordamida"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript va DOM xotirada 2 ta alohida orol. Ular C++ binding'lari orqali bir-birini tushunishadi."
+    },
+    {
+      id: 12,
+      question: "replaceWith() metodi qanday ishlaydi?",
+      options: [
+        "Faqat text stringni HTMLga almashtiradi",
+        "Berilgan eski tugunni yangisi bilan almashtiradi (eski tugun uzilib o'rniga yangisi tushadi)",
+        "Ota-ona tugunlarni joyini almashtiradi",
+        "Event listener larni yangilaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Node.replaceWith() node'ning o'rniga boshqa bir node (yoki text) qo'yib, o'zini DOMdan olib tashlaydi."
+    }
+  ]
 };
