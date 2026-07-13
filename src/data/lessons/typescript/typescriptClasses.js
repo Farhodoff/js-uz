@@ -2,154 +2,154 @@ export const typescriptClasses = {
   id: "typescript-classes",
   title: "TypeScript Classes",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-JavaScript ES6 bilan sinflar (classes) tushunchasi keldi. TypeScript esa bunga Qo'shimcha Ruxsat (Access Modifiers) larni qo'shdi: **public**, **private** va **protected**. 
-Bu xususiyatlar obyekt ichidagi qaysi ma'lumotlarni tashqaridan o'qish mumkinligi va qaysilarini o'zgartirish yoki yashirishni aniq belgilab beradi.
+  theory: `## Part 1: Beginner Analogy (Sodda Tushuntirish)
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+Tasavvur qiling, **Class (Sinf)** - bu avtomobil ishlab chiqaradigan **zavod chizmasi** (blueprint). Bu chizmada mashinaning rangi qanday bo'lishi, motor quvvati, eshiklar soni oldindan belgilab qo'yiladi. Biz shu chizma asosida yuzlab, minglab haqiqiy mashinalarni (ya'ni **obyektlarni**) ishlab chiqarishimiz mumkin. 
 
-**❌ YOMON: Maxfiy ma'lumotlarni ochiq qoldirish**
-\`\`\`typescript
-class BankAccount {
-  balance: number; // hamma o'zgartirishi mumkin
-  constructor(b: number) {
-    this.balance = b;
-  }
-}
-const acc = new BankAccount(100);
-acc.balance = 50000; // Ixtiyoriy raqamga o'zgartirib yuborish mumkin
-\`\`\`
+Lekin TypeScript-da JavaScript-dan farqli ravishda qo'shimcha xavfsizlik kamarlari bor. Masalan, zavod chizmasida dvigatelga to'g'ridan-to'g'ri tashqaridan aralashish mumkin emas deb belgilab qo'ysak (\`private\` kalit so'zi bilan), hech kim mashinaning ichiga kirib motor sozlamalarini buzolmaydi. JavaScript-da esa hamma narsa ochiq (\`public\`) va xavfli edi.
 
-**✅ YAXSHI: \`private\` yoki \`protected\` ishlatish**
-\`\`\`typescript
-class BankAccount {
-  private balance: number;
-  constructor(b: number) {
-    this.balance = b;
-  }
-  public getBalance(): number {
-    return this.balance;
-  }
-}
-const acc = new BankAccount(100);
-// acc.balance = 50000; // TypeScript XATO beradi, xavfsizlik ta'minlanadi
-\`\`\`
+## Part 2: Deep Dive (Under the hood, TS Compiler, Type Erasure, Performance)
 
-## 🎤 Intervyu Savollari
-**Savol: \`public\`, \`private\` va \`protected\` farqi nima?**
-Javob: 
-- \`public\` (standart): Barcha joydan, class ichi, meros olganlar va tashqaridan bemalol ochiq.
-- \`private\`: Faqatgina aynan ushbu class-ning ichidagina ruxsat bor. Undan meros olgan child class-lar ham kirishga ruxsat etilmaydi.
-- \`protected\`: Class ichida va undan meros olgan (extends qilingan) class-larda ruxsat bor, lekin butunlay tashqaridan o'zgartirib bo'lmaydi.
+TypeScript class-lari aslida nima va u qanday ishlaydi? Keling, chuqurroq tahlil qilamiz:
 
-**Savol: TypeScript-da Abstract class nima qilib beradi?**
-Javob: Abstract class - bu faqat boshqa class-lar undan meros olishi uchun yaratiladigan 'shablon' (template) class. Undan to'g'ridan-to'g'ri obyekt (\`new AbstClass()\`) yaratib bo'lmaydi.
+1. **TypeScript Compiler (tsc) va Type Erasure (Tiplarni o'chib ketishi):**
+   TypeScript-dagi class tiplari va access modifier-lar (\`private\`, \`public\`, \`protected\`, \`readonly\`) faqatgina **Compile-time** (dastur yozish) jarayonida xatolarni ushlash uchun ishlaydi. 
+   \`tsc\` kodni kompile qilganida (JavaScript-ga o'girganida), barcha TypeScript-ga xos tiplar va modifier-lar o'chib ketadi (**Type Erasure**). Ya'ni \`private\` bo'lgan xususiyatlar JS da yana oddiy xususiyatga aylanib qoladi (agar ES2022 dagi \`#\` - hard private ishlatilmasa).
 
-## 🛠️ Amaliy Topshiriqlar
+2. **Xotira va Performance (Prototypal Inheritance):**
+   TypeScript dagi class-lar JavaScript-ning **Prototypal Inheritance** mexanizmi ustida qurilgan "Syntactic Sugar" (chiroyli yozilishi) xolos. 
+   Class ichidagi metodlar (masalan, \`startEngine()\`) har bir yangi obyekt uchun alohida nusxalanmaydi. Ular xotiradan joy tejash uchun Class-ning **Prototype** iga biriktiriladi. Barcha yaratilgan obyektlar esa shu yagona prototype ga ko'rsatkich (reference) orqali murojaat qiladi.
+
+3. **ES2022 Hard Private ( \`#\` ) vs TypeScript \`private\`:**
+   TypeScript-ning an'anaviy \`private\` kalit so'zi faqat xato tekshirishda ishlaydi (JS da ochiq qoladi). Agar siz xotirada (Run-time da) rostdan ham yashirin bo'lishini xohlasangiz ES2022 dagi \`#\` belgisini ishlating: \`#salary: number = 5000;\`.
+
+## Part 3: Edge Cases and Senior Interview Questions
+
+Senior darajasidagi suhbatlarda class-lar haqida ko'plab qiziqarli savollar tushadi.
+
+**1. Savol:** Constructor parametrlari (Shorthand initialization) qanday ishlaydi va uning qanday kamchiligi bo'lishi mumkin?
+**Javob:** TypeScript-da \`constructor(private name: string)\` deb yozsak, alohida maydon e'lon qilib, unga qiymat berishdan qutulamiz. Biroq, bu kodni o'qiyotgan boshqa dasturchilarga barcha field-larni birdaniga ko'rish imkoniyatini cheklaydi (class tepasida ro'yxat yo'q bo'ladi).
+
+**2. Savol:** \`abstract\` class larning interface-lardan asosiy farqi nima?
+**Javob:** Interface faqat shaklni belgilaydi va compile vaqtida butunlay yo'q qilinadi. Abstract class esa oddiy class kabi JS-da qoladi. Eng asosiysi, abstract class ichida metodlarning **tayyor implementatsiyasini** (logic-ni) ham yozish mumkin. Interfaceda esa faqat nomlari bo'ladi.
+
+**3. Savol:** \`protected\` modifier-i qachon eng ko'p asqotadi?
+**Javob:** Boshqa fayldan turib to'g'ridan-to'g'ri o'zgartira olmaslik uchun, lekin o'zimiz yaratgan voris (child) class-lar ota class xususiyatlariga bemalol kira olishi kerak bo'lgan Pattern'larda (masalan Factory yoki Template Method) juda muhim.
+
+## 📊 Class arxitekturasi va Vorislik
+
 \`\`\`mermaid
 classDiagram
-    class Animal {
-      +string name
-      #int age
-      +makeSound()
+    class Vehicle {
+      <<abstract>>
+      +string brand
+      -string vinNumber
+      #number speed
+      +start()
+      +stop()
     }
-    class Dog {
-      -string breed
-      +bark()
+    class Car {
+      +int doors
+      +honk()
     }
-    Animal <|-- Dog : Extends (Meros olish)
+    class ElectricCar {
+      -int batteryLevel
+      +charge()
+    }
+    Vehicle <|-- Car : Voris oladi (extends)
+    Car <|-- ElectricCar : Voris oladi (extends)
 \`\`\`
 `,
   exercises: [
     {
       id: 1,
-      title: "Class yaratish va tiplarni belgilash",
-      instruction: "`Person` nomli class yarating. Unda `name` (string) fieldi bo'lsin, va uni constructor orqali o'zlashtiring.",
-      startingCode: "// Person class ini yarating\n",
-      hint: "class Person { name: string; constructor(n: string) { this.name = n; } }",
-      solution: "class Person {\n  name: string;\n  constructor(name: string) {\n    this.name = name;\n  }\n}",
-      test: "return code.includes('class Person') && code.includes('constructor');"
+      title: "Class e'lon qilish",
+      instruction: "`Book` nomli class yarating. Unda `title` (string) maydoni bo'lsin. Konstruktorda shu maydonga qiymat bering.",
+      startingCode: "// Book class ini yarating\n",
+      hint: "class Book { title: string; constructor(title: string) { this.title = title; } }",
+      solution: "class Book {\n  title: string;\n  constructor(title: string) {\n    this.title = title;\n  }\n}",
+      test: "return code.includes('class Book') && code.includes('constructor');"
     },
     {
       id: 2,
-      title: "Private modifier",
-      instruction: "`Wallet` nomli class yarating, unda `amount` (number) xususiyati bo'lsin. Lekin u `private` bo'lishi shart. Constructor orqali bering.",
-      startingCode: "// Wallet class ini yarating\n",
-      hint: "private amount: number;",
-      solution: "class Wallet {\n  private amount: number;\n  constructor(amount: number) {\n    this.amount = amount;\n  }\n}",
-      test: "return code.includes('private amount: number') && code.includes('class Wallet');"
+      title: "Private maydonlar",
+      instruction: "`Account` nomli class yarating. Uning ichida `private balance: number;` bo'lsin va uni constructor orqali bering.",
+      startingCode: "// Account class ini yarating\n",
+      hint: "private balance: number;",
+      solution: "class Account {\n  private balance: number;\n  constructor(balance: number) {\n    this.balance = balance;\n  }\n}",
+      test: "return code.includes('private balance: number');"
     },
     {
       id: 3,
-      title: "Public modifier",
-      instruction: "Xususiyat oldiga `public` so'zini aniq qo'yib `Car` nomli class va uni ichida `speed` (number) nomli xususiyat yarating.",
-      startingCode: "// Car class ini yarating\n",
-      hint: "public speed: number;",
-      solution: "class Car {\n  public speed: number;\n  constructor(speed: number) {\n    this.speed = speed;\n  }\n}",
-      test: "return code.includes('public speed: number') && code.includes('class Car');"
+      title: "Public va Shorthand",
+      instruction: "Shorthand orqali `User` class ini yarating. Konstruktorda birdaniga `public username: string` qilib e'lon qiling va qiymat oling.",
+      startingCode: "// User class ini yarating\n",
+      hint: "constructor(public username: string) {}",
+      solution: "class User {\n  constructor(public username: string) {}\n}",
+      test: "return code.includes('constructor(public username: string)');"
     },
     {
       id: 4,
-      title: "Protected modifier va merosxo'rlik",
-      instruction: "`Employee` class-ini yarating, unda `protected salary: number` fieldi bo'lsin. `Manager` class u yerdan `extends` qilib, `getSalary()` metodida `this.salary` ni qaytarsin.",
-      startingCode: "// Employee va Manager class larini yarating\n",
-      hint: "class Employee { protected salary: number; ... } class Manager extends Employee { ... }",
-      solution: "class Employee {\n  protected salary: number;\n  constructor(s: number) {\n    this.salary = s;\n  }\n}\n\nclass Manager extends Employee {\n  getSalary(): number {\n    return this.salary;\n  }\n}",
-      test: "return code.includes('protected salary: number') && code.includes('Manager extends Employee');"
+      title: "Protected va Extends",
+      instruction: "`Device` class yarating (ichida `protected power: number`). Undan voris bo'lgan `Phone` class yarating va `getPower` metodida `this.power` ni qaytaring.",
+      startingCode: "// Device va Phone yarating\n",
+      hint: "class Device { ... } class Phone extends Device { ... }",
+      solution: "class Device {\n  protected power: number;\n  constructor(p: number) {\n    this.power = p;\n  }\n}\n\nclass Phone extends Device {\n  getPower(): number {\n    return this.power;\n  }\n}",
+      test: "return code.includes('protected power: number') && code.includes('Phone extends Device');"
     },
     {
       id: 5,
-      title: "Readonly xususiyatlar",
-      instruction: "`Config` class-i yarating, uning ichida `readonly db: string` bo'lsin. Unga faqat constructor-da qiymat bering.",
-      startingCode: "// Config class ini yarating\n",
-      hint: "readonly db: string;",
-      solution: "class Config {\n  readonly db: string;\n  constructor(db: string) {\n    this.db = db;\n  }\n}",
-      test: "return code.includes('readonly db: string');"
+      title: "Readonly xususiyati",
+      instruction: "`Server` class yarating, unda `readonly ip: string` bo'lsin. Unga faqat constructorda qiymat biriktiring.",
+      startingCode: "// Server class ini yarating\n",
+      hint: "readonly ip: string;",
+      solution: "class Server {\n  readonly ip: string;\n  constructor(ip: string) {\n    this.ip = ip;\n  }\n}",
+      test: "return code.includes('readonly ip: string');"
     },
     {
       id: 6,
-      title: "Shorthand Initialization",
-      instruction: "`User` class-ida constructor parametrlarining o'zida `public name: string` va `private id: number` orqali tezkor (shorthand) xususiyat e'lon qiling.",
-      startingCode: "// User class ini yozing\n",
-      hint: "class User { constructor(public name: string, private id: number) {} }",
-      solution: "class User {\n  constructor(public name: string, private id: number) {}\n}",
-      test: "return code.includes('constructor(public name: string') || code.includes('constructor(public name');"
+      title: "Getter yozish",
+      instruction: "`Circle` class yarating (private _radius: number = 5). `get radius(): number` getterini yozing, u shu maydonni qaytarsin.",
+      startingCode: "// Circle class ini yarating\n",
+      hint: "get radius(): number { return this._radius; }",
+      solution: "class Circle {\n  private _radius: number = 5;\n  get radius(): number {\n    return this._radius;\n  }\n}",
+      test: "return code.includes('get radius(): number') && code.includes('this._radius');"
     },
     {
       id: 7,
-      title: "Getter yaratish",
-      instruction: "`Rectangle` class-i yarating. `private _width: number = 10;`. Endi tashqaridan faqat shu valyutaga kirishni ta'minlovchi `get width(): number` getter metodini yozing.",
-      startingCode: "// Rectangle class ini yarating\n",
-      hint: "get width(): number { return this._width; }",
-      solution: "class Rectangle {\n  private _width: number = 10;\n  get width(): number {\n    return this._width;\n  }\n}",
-      test: "return code.includes('get width(): number') && code.includes('return this._width');"
+      title: "Setter yozish va himoya",
+      instruction: "`Circle` da `set radius(r: number)` setter yozing. Agar `r > 0` bo'lsa, uni `_radius` ga o'zlashtiring.",
+      startingCode: "class Circle {\n  private _radius: number = 5;\n  // shu yerga setter yozing\n}\n",
+      hint: "set radius(r: number) { if(r > 0) this._radius = r; }",
+      solution: "class Circle {\n  private _radius: number = 5;\n  set radius(r: number) {\n    if (r > 0) {\n      this._radius = r;\n    }\n  }\n}",
+      test: "return code.includes('set radius(r: number)') && code.includes('r > 0');"
     },
     {
       id: 8,
-      title: "Setter yaratish",
-      instruction: "`Rectangle` dagi width uchun setter yarating: `set width(val: number)`. Agar `val <= 0` bo'lsa, o'zgartirmang, aks holda `_width` ni yangilang.",
-      startingCode: "class Rectangle {\n  private _width: number = 10;\n  // shu yerga setter yozing\n}\n",
-      hint: "set width(val: number) { if (val > 0) this._width = val; }",
-      solution: "class Rectangle {\n  private _width: number = 10;\n  set width(val: number) {\n    if (val > 0) {\n      this._width = val;\n    }\n  }\n}",
-      test: "return code.includes('set width') && code.includes('val > 0');"
+      title: "Static maydon",
+      instruction: "`MathHelper` class da `static version: string = '1.0';` e'lon qiling.",
+      startingCode: "// MathHelper yarating\n",
+      hint: "static version: string = '1.0';",
+      solution: "class MathHelper {\n  static version: string = '1.0';\n}",
+      test: "return code.includes('static version: string');"
     },
     {
       id: 9,
-      title: "Static metodlar",
-      instruction: "`MathUtil` class-ini yarating, ichida `static PI: number = 3.14;` va `static calculateCircleArea(r: number): number` (bu `this.PI * r * r` qaytaradi) statik metod yozing.",
-      startingCode: "// MathUtil class ini yarating\n",
-      hint: "static PI: number = 3.14; ...",
-      solution: "class MathUtil {\n  static PI: number = 3.14;\n  static calculateCircleArea(r: number): number {\n    return this.PI * r * r;\n  }\n}",
-      test: "return code.includes('static PI') && code.includes('static calculateCircleArea');"
+      title: "Static metod",
+      instruction: "`MathHelper` class da `static add(a: number, b: number): number` metoddini yozing. U yig'indini qaytarsin.",
+      startingCode: "class MathHelper {\n  // static metod yozing\n}\n",
+      hint: "static add(a: number, b: number): number { return a + b; }",
+      solution: "class MathHelper {\n  static add(a: number, b: number): number {\n    return a + b;\n  }\n}",
+      test: "return code.includes('static add(a: number, b: number)');"
     },
     {
       id: 10,
-      title: "Abstract Class",
-      instruction: "`Shape` nomli abstract class yarating, unda `abstract getArea(): number;` bo'lsin. Va `Circle` class-ini shundan voris olib yozing.",
-      startingCode: "// Shape va Circle larni yozing\n",
-      hint: "abstract class Shape { abstract getArea(): number; } ...",
-      solution: "abstract class Shape {\n  abstract getArea(): number;\n}\n\nclass Circle extends Shape {\n  getArea(): number {\n    return 0;\n  }\n}",
-      test: "return code.includes('abstract class Shape') && code.includes('abstract getArea()');"
+      title: "Abstract Class va Metod",
+      instruction: "`Animal` abstract class yarating. Unda `abstract makeSound(): void;` bo'lsin. Va `Dog` class ini extends qilib `makeSound` ni implement qiling.",
+      startingCode: "// Animal va Dog yarating\n",
+      hint: "abstract class Animal { abstract makeSound(): void; }",
+      solution: "abstract class Animal {\n  abstract makeSound(): void;\n}\n\nclass Dog extends Animal {\n  makeSound(): void {\n    console.log('Woof');\n  }\n}",
+      test: "return code.includes('abstract class Animal') && code.includes('abstract makeSound(): void');"
     }
   ],
   quizzes: [
@@ -157,12 +157,12 @@ classDiagram
       id: 1,
       question: "Access modifiers (public, private, protected) ning asosiy maqsadi nima?",
       options: [
-        "JavaScript kodini tezroq ishlatish.",
         "Sinf a'zolariga kirish huquqini boshqarish va xavfsizlikni oshirish.",
+        "JavaScript kodini tezroq ishlatish.",
         "Faqat CSS ulanishlarini tekshirish.",
         "Obyektlarni nusxalash."
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "Ushbu modifierlar yordamida qaysi maydonni kim ishlata olishini nazorat qilish mumkin."
     },
     {
@@ -175,11 +175,11 @@ classDiagram
         "readonly"
       ],
       correctAnswer: 2,
-      explanation: "Agar hech narsa yozilmagan bo'lsa, barcha a'zolar sukut bo'yicha \`public\` hisoblanadi."
+      explanation: "Agar hech narsa yozilmagan bo'lsa, barcha a'zolar sukut bo'yicha `public` hisoblanadi."
     },
     {
       id: 3,
-      question: "\`private\` xususiyatga qayerdan murojaat qilish mumkin?",
+      question: "`private` xususiyatga qayerdan murojaat qilish mumkin?",
       options: [
         "Istalgan class yoki funksiyadan.",
         "Faqat ushbu xususiyat joylashgan class ning o'zida.",
@@ -187,19 +187,19 @@ classDiagram
         "Barcha HTML fayllardan."
       ],
       correctAnswer: 1,
-      explanation: "\`private\` yopiq degani bo'lib, o'sha class ichidan boshqa joyda o'qish mumkin emas."
+      explanation: "`private` yopiq degani bo'lib, o'sha class ichidan boshqa joyda o'qish mumkin emas."
     },
     {
       id: 4,
-      question: "\`protected\` xususiyatining \`private\` dan asosiy farqi nimada?",
+      question: "`protected` xususiyatining `private` dan asosiy farqi nimada?",
       options: [
         "Hech qanday farqi yo'q.",
-        "\`protected\` faqat sonlar uchun ishlaydi.",
-        "\`protected\` a'zolarga meros oluvchi (child) class-larda ruxsat bor, \`private\` da ruxsat yo'q.",
-        "\`protected\` public bilan bir xil ishlaydi."
+        "`protected` a'zolarga meros oluvchi (child) class-larda ruxsat bor, `private` da ruxsat yo'q.",
+        "`protected` faqat sonlar uchun ishlaydi.",
+        "`protected` public bilan bir xil ishlaydi."
       ],
-      correctAnswer: 2,
-      explanation: "\`protected\` ko'rinuvchanligi uning o'zini va farzand (voris) class larni o'z ichiga oladi."
+      correctAnswer: 1,
+      explanation: "`protected` ko'rinuvchanligi uning o'zini va farzand (voris) class larni o'z ichiga oladi."
     },
     {
       id: 5,
@@ -211,91 +211,91 @@ classDiagram
         "Faqat interfeyslardan voris oladigan class."
       ],
       correctAnswer: 0,
-      explanation: "Abstract class yordamida obyekt yaratib bo'lmaydi, faqat \`extends\` qilib keyin obyekt olish mumkin."
+      explanation: "Abstract class yordamida obyekt yaratib bo'lmaydi, faqat `extends` qilib keyin obyekt olish mumkin."
     },
     {
       id: 6,
-      question: "Constructor shorthand nima?",
+      question: "TypeScript-da class xususiyatlari va modifier-lari Run-time da (dastur ishlagan paytida) nima bo'ladi?",
       options: [
-        "Avtomatik constructor yaratadigan kutubxona.",
-        "Constructor parametrlari oldida public/private kabi modifierlarni qo'yish orqali qo'lda \`this.prop = prop\` deb yozishdan qutulish.",
-        "Kodni xato deb belgilash vositasi.",
-        "JS-da paydo bo'lgan o'zgaruvchi yaratish usuli."
+        "Type Erasure orqali olib tashlanadi va toza JS bo'lib qoladi.",
+        "Xuddi yozilgandek qoladi, Node.js uni tushunadi.",
+        "Ular CSS faylga aylanadi.",
+        "Runtime da xato beradi."
       ],
-      correctAnswer: 1,
-      explanation: "Agar parametr ichida modifier bo'lsa, TypeScript avtomatik ravishda maydonni klassga biriktirib beradi."
+      correctAnswer: 0,
+      explanation: "TypeScript faqat compile vaqtida ishlaydi, JS-ga o'tkazilganda TS dagi modifier va tiplar o'chib ketadi."
     },
     {
       id: 7,
-      question: "Class ichidagi \`readonly\` xususiyat qachon o'zgartirilishi mumkin?",
+      question: "ES2022 Hard Private (masalan `#balance`) bilan TypeScript ning `private` modifieri farqi nimada?",
       options: [
-        "Istalgan joyda, istalgan vaqtda.",
-        "Faqat o'sha xususiyatni yaratish (declare) yoki constructor ichidagina.",
-        "Child class ichida har doim.",
-        "Uni umuman yozish mumkin emas."
+        "Farqi yo'q, ikkalasi bir narsa.",
+        "Hard private runtime da ham, class dan tashqarida umuman ko'rinmaydi. `private` esa TS da error beradi, lekin JS da ochiq qoladi.",
+        "Hard private faqat numberlar uchun ishlaydi.",
+        "`private` TypeScript da ishlamaydi, faqat ES da ishlaydi."
       ],
       correctAnswer: 1,
-      explanation: "\`readonly\` belgilangan maydonga tashqarida ham, hattoki class metodlarida ham qayta qiymat berib bo'lmaydi."
+      explanation: "Hard private (`#`) rostdan ham JavaScript virtual mashinasida himoyalangan, `private` kalit so'zi esa shunchaki Type Check jarayonidagi yordamchidir."
     },
     {
       id: 8,
-      question: "Class dagi getter/setter nima maqsadda yoziladi?",
+      question: "Class dagi `readonly` xususiyatni qachon o'zgartirish mumkin?",
       options: [
-        "Tashqi kodlardan \`private\` o'zgaruvchilarni nazorat qilib (masalan tekshirib) olish va o'zgartirish (Encapsulation) uchun.",
-        "Serverga ma'lumot jo'natish uchun.",
-        "HTML formalari ulanishini oson qilish uchun.",
-        "Faqatgina obyekt nomlarini chiroyli qilish uchun."
+        "Faqat e'lon qilinayotganda (declare) va constructor ichida.",
+        "Istalgan class metodida.",
+        "Static metod orqali.",
+        "Voris class ichida har doim."
       ],
       correctAnswer: 0,
-      explanation: "Getter/Setter yordamida o'zgaruvchini himoyalaymiz va o'qish/yozish operatsiyasi oldidan mantiq (shart) ishga tushirish imkonini topamiz."
+      explanation: "`readonly` xususiyatga faqat boshlang'ich qiymat sifatida va constructor da qiymat berish ruxsat etiladi."
     },
     {
       id: 9,
-      question: "\`static\` metod yoki xususiyatni ishlatish qoidasi qanday?",
+      question: "Constructor shorthand initialization nima?",
       options: [
-        "Unga erishish uchun class-dan avval \`new\` yordamida obyekt olish kerak.",
-        "Unga class nomining o'zi orqali, obyekt yasamay turib murojaat qilinadi (masalan, Math.PI).",
-        "Uni faqat HTML-da chiqarish mumkin.",
-        "Static funksiyalar yozib bo'lmaydi."
+        "Constructor nomini yozmaslik.",
+        "Constructor parametri oldidan `public`, `private` yoki `protected` yozib, class maydonini e'lon qilish va unga ro'yxatdan o'tmasdan qiymat berish.",
+        "Alohida class yasamasdan obyekt yasash.",
+        "Barcha o'zgaruvchilarni readonly qilish."
       ],
       correctAnswer: 1,
-      explanation: "Static a'zolar obyektlarga emas, balki bevosita class ning o'ziga tegishli bo'ladi."
+      explanation: "Bu usul yozishni qisqartiradi, alohida field e'lon qilish va construtor ichida `this.x = x` deyish o'rnini bosadi."
     },
     {
       id: 10,
-      question: "Agar class ichida \`implements SomeInterface\` yozilsa u nimaga majbur bo'ladi?",
+      question: "Getter va Setter nima maqsadda ishlatiladi?",
       options: [
-        "Hech nimaga majbur bo'lmaydi.",
-        "O'sha Interface da berilgan barcha xususiyat va metodlarni o'z ichiga olishiga.",
-        "O'zgaruvchilarini yo'qotib qo'yadi.",
-        "Boshqa classlardan ajratib qo'yiladi."
+        "To'g'ridan to'g'ri o'zgaruvchini o'qish uchun.",
+        "Faqat interfeyslarda ishlatish uchun.",
+        "Encapsulation (Maxfiylikni) saqlagan holda, xususiyatni o'qish yoki unga qiymat berish jarayoniga qo'shimcha mantiq qo'shish uchun.",
+        "Class ichidagi static metodlarni chaqirish uchun."
       ],
-      correctAnswer: 1,
-      explanation: "\`implements\` orqali class ma'lum bir Interface strukturasiga to'liq bo'ysunishini kafolatlaydi."
+      correctAnswer: 2,
+      explanation: "Setter orqali kelayotgan qiymat to'g'riligini tekshirishimiz (masalan faqat manfiy bo'lmasin) va Getter orqali o'qishga ruxsat berishimiz mumkin."
     },
     {
       id: 11,
-      question: "TypeScript da classlarni nechtasidan bir vaqtda (multiple inheritance) \`extends\` qilish mumkin?",
+      question: "TypeScript (va JavaScript) class lari Multiple Inheritance (ko'p martalik vorislik) ni qo'llab-quvvatlaydimi?",
       options: [
-        "Faqat 1 ta.",
-        "2 ta.",
-        "Cheksiz.",
-        "Bitta ham mumkin emas."
+        "Ha, bitta class istalgancha class-dan meros ola biladi.",
+        "Yo'q, bitta class faqat bitta class-dan extends ola oladi.",
+        "Ha, lekin faqat private class-lardan.",
+        "Ha, faqat static class-lardan."
       ],
-      correctAnswer: 0,
-      explanation: "JavaScript va TypeScript da ko'p marotaba to'g'ridan-to'g'ri vorislik (extends) qilish mumkin emas. Bitta class faqat bitta class-dan extends ola biladi. Lekin u bir nechta interfeyslarni \`implements\` qilishi mumkin."
+      correctAnswer: 1,
+      explanation: "Ko'p martalik to'g'ridan-to'g'ri extends qilib bo'lmaydi. Uni o'rniga bir nechta interface-larni `implements` qilish mumkin xolos."
     },
     {
       id: 12,
-      question: "Overriding (ustidan yozish) nimani anglatadi?",
+      question: "Class `static` metodi va obyekt metodining farqi nimada?",
       options: [
-        "Xatolarni o'chirish.",
-        "Voris class (child) o'z ota class-idagi metodni xuddi shu nom bilan o'zgartirib yozishi va yangi mantiq kiritishi.",
-        "Static klasslarga xos bir narsa.",
-        "Ixtiyoriy o'zgaruvchilarni qisqartirish."
+        "Static metod obyekt yasamay (new orqali emas), to'g'ridan to'g'ri Class nomi orqali chaqiriladi.",
+        "Static metod faqat private o'zgaruvchilar ustida ishlaydi.",
+        "Obyekt metodi tezroq ishlaydi.",
+        "Farqi yo'q."
       ],
-      correctAnswer: 1,
-      explanation: "Agar ota klassda mavjud metod bola klassda xuddi o'sha nom bilan yana qaytadan yozilsa va boshqacha amal bajarsa, bu Method Overriding bo'ladi."
+      correctAnswer: 0,
+      explanation: "Static metodlar u yoki bu class ning instansiyasiga (obyektiga) emas, class ning o'ziga bog'langan bo'ladi."
     }
   ]
 };

@@ -2,43 +2,42 @@ export const typescriptBasics = {
   id: "typescript-basics",
   title: "TypeScript Asoslari",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-TypeScript bu JavaScript-ning kengaytirilgan (superset) versiyasi bo'lib, unga statik tiplarni qo'shadi. JavaScript-da o'zgaruvchining qanday ma'lumot turiga ega ekanligini faqat dastur ishlaganda bilamiz (dynamic typing). TypeScript esa buni dastur ishlashidan oldin, kod yozish jarayonida tekshiradi (static typing). Bu orqali ko'plab kutilmagan xatoliklarning oldi olinadi.
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+Tasavvur qiling, JavaScript bu qoidalarsiz yo'l harakati. Mashinalar qayerga xohlasa shunday yuradi, xatoni (avariya) faqatgina dastur ishga tushganda ko'rasiz.
+TypeScript esa svetafor, yo'l belgilari va yo'l nazoratchisi (tsc) bor tizim. U sizga yo'lga chiqishdan oldin (yozish bosqichida) qoidalarni tushuntiradi. Natijada siz kutilmagan xatoliklarning oldini olasiz.
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+## 2. 🚀 Deep Dive (Chuqurroq Sho'ng'ish)
+**TypeScript Kompilyatori (tsc) va Type Erasure**
+TypeScript to'g'ridan-to'g'ri brauzerda ishlamaydi. U JavaScript'ga o'giriladi (kompilyatsiya qilinadi).
+Bu jarayonda "Type Erasure" (Tiplarni o'chirish) yuz beradi. Ya'ni kompilyatsiyadan so'ng barcha TypeScript tiplari koddan uchib ketadi va faqat toza JavaScript qoladi.
+Natijada, TypeScript production'da (ishlayotgan dasturda) dastur tezligiga hech qanday salbiy ta'sir ko'rsatmaydi (nol run-time overhead). Xotira va performans JS bilan bir xil bo'ladi.
 
-**❌ YOMON: Tiplarni aniqlamasdan (Any) foydalanish**
-\`\`\`typescript
-let userId: any = 123;
-userId = "bir ikki uch"; // Xato bermaydi, lekin mantiqan noto'g'ri bo'lishi mumkin
-\`\`\`
+## 3. 🚨 Edge Cases & Senior Interview Questions
+**Savol: TypeScript xatosi topsa, JavaScript fayli yaratilmaydimi?**
+Javob: Odatiy holatda, agar xato bo'lsa ham TypeScript JavaScript faylni yarataveradi. Buni to'xtatish uchun tsconfig faylida noEmitOnError: true qilish kerak.
 
-**✅ YAXSHI: Tiplarni aniq ko'rsatish**
-\`\`\`typescript
-let userId: number = 123;
-// userId = "yuz"; // Type 'string' is not assignable to type 'number'. (TypeScript xato beradi)
-\`\`\`
+**Savol: 'any' va 'unknown' farqi nimada?**
+Javob: 'any' barcha tip tekshiruvlarini o'chiradi va xavfli. 'unknown' esa xavfsizroq, chunki o'zgaruvchini ishlatishdan oldin uni qanday tipda ekanini tekshirishga (Type narrowing) majbur qiladi.
 
-## 🎤 Intervyu Savollari
-**Savol: TypeScript va JavaScript farqi nimada?**
-Javob: TypeScript kuchli tiplashgan (strongly typed) til bo'lib, xatolarni kompilatsiya (yoki yozish) bosqichida ushlaydi. JavaScript esa dinamik tiplashgan til bo'lib, xatolar faqat run-time (ishlash) vaqtida chiqadi. TypeScript yakunda JavaScript-ga o'giriladi (compiled).
-
-**Savol: \`any\` tipi nima va nega undan qochish kerak?**
-Javob: \`any\` tipi o'zgaruvchiga har qanday turdagi qiymatni qabul qilish imkonini beradi va TypeScript-ning barcha tip tekshiruvlarini o'chirib qo'yadi. Bu TypeScript foydalanishning butun ma'nosini yo'qotadi, chunki yashirin xatolar kelib chiqishiga sabab bo'ladi. Uning o'rniga \`unknown\` yoki aniq tiplar ishlatilishi kerak.
-
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
+**Mermaid Diagrammasi:**
+\\\`\\\`\\\`mermaid
 flowchart TD
-    A[TypeScript Kodu] --> B[Kompilyator tsc]
-    B -->|Xatolar bo'lmasa| C[JavaScript Kodu]
-    B -->|Xatolik| D[Xatolarni to'g'rilash]
-\`\`\`
+    A[TypeScript Kodu .ts] --> B[Kompilyator tsc]
+    B -->|Type Erasure| C[JavaScript Kodu .js]
+    B -->|Xatolik| D[IDE da qizarib ko'rinadi]
+\\\`\\\`\\\`
+
+**Kodli Misol:**
+\\\`\\\`\\\`typescript
+let price: number = 100;
+// price = "yuz"; // IDE xato beradi
+\\\`\\\`\\\`
 `,
   exercises: [
     {
       id: 1,
       title: "Raqam turini e'lon qilish",
-      instruction: "Yoshingizni saqlaydigan `age` nomli o'zgaruvchini yarating va uning tipini `number` qilib belgilang, unga 25 qiymatini bering.",
+      instruction: "Yoshingizni saqlaydigan 'age' nomli o'zgaruvchini yarating va uning tipini 'number' qilib belgilang, unga 25 qiymatini bering.",
       startingCode: "let age;\n// ...",
       hint: "let age: number = ...",
       solution: "let age: number = 25;",
@@ -47,7 +46,7 @@ flowchart TD
     {
       id: 2,
       title: "Matn turini e'lon qilish",
-      instruction: "`username` nomli o'zgaruvchi e'lon qiling, tipini `string` qilib belgilang va 'Ali' qiymatini bering.",
+      instruction: "'username' nomli o'zgaruvchi e'lon qiling, tipini 'string' qilib belgilang va 'Ali' qiymatini bering.",
       startingCode: "let username;\n// ...",
       hint: "let username: string = ...",
       solution: "let username: string = 'Ali';",
@@ -56,7 +55,7 @@ flowchart TD
     {
       id: 3,
       title: "Boolean turini e'lon qilish",
-      instruction: "`isStudent` nomli o'zgaruvchi e'lon qiling, tipini `boolean` qilib belgilang va unga `true` qiymatini o'zlashtiring.",
+      instruction: "'isStudent' nomli o'zgaruvchi e'lon qiling, tipini 'boolean' qilib belgilang va unga 'true' qiymatini o'zlashtiring.",
       startingCode: "let isStudent;\n// ...",
       hint: "let isStudent: boolean = ...",
       solution: "let isStudent: boolean = true;",
@@ -65,7 +64,7 @@ flowchart TD
     {
       id: 4,
       title: "Massivlarni e'lon qilish",
-      instruction: "`numbers` nomli faqat raqamlardan iborat massiv e'lon qiling va unga [1, 2, 3] qiymatlarini bering.",
+      instruction: "'numbers' nomli faqat raqamlardan iborat massiv e'lon qiling va unga [1, 2, 3] qiymatlarini bering.",
       startingCode: "let numbers;\n// ...",
       hint: "let numbers: number[] = [1, 2, 3];",
       solution: "let numbers: number[] = [1, 2, 3];",
@@ -74,7 +73,7 @@ flowchart TD
     {
       id: 5,
       title: "Matnli Massivlar",
-      instruction: "`names` nomli matnli massiv e'lon qiling va unga ['Ali', 'Vali'] qiymatlarini o'zlashtiring.",
+      instruction: "'names' nomli matnli massiv e'lon qiling va unga ['Ali', 'Vali'] qiymatlarini o'zlashtiring.",
       startingCode: "let names;\n// ...",
       hint: "let names: string[] = ...",
       solution: "let names: string[] = ['Ali', 'Vali'];",
@@ -83,7 +82,7 @@ flowchart TD
     {
       id: 6,
       title: "Tuple e'lon qilish",
-      instruction: "`personInfo` nomli tuple yarating. Uning birinchi elementi `string` va ikkinchi elementi `number` bo'lishi kerak. Unga ['Aziz', 30] qiymatlarini bering.",
+      instruction: "'personInfo' nomli tuple yarating. Uning birinchi elementi 'string' va ikkinchi elementi 'number' bo'lishi kerak. Unga ['Aziz', 30] qiymatlarini bering.",
       startingCode: "let personInfo;\n// ...",
       hint: "let personInfo: [string, number] = ...",
       solution: "let personInfo: [string, number] = ['Aziz', 30];",
@@ -92,7 +91,7 @@ flowchart TD
     {
       id: 7,
       title: "Any tipi",
-      instruction: "`flexible` nomli `any` tipidagi o'zgaruvchi e'lon qiling va unga 'hello' matnini o'zlashtiring.",
+      instruction: "'flexible' nomli 'any' tipidagi o'zgaruvchi e'lon qiling va unga 'hello' matnini o'zlashtiring.",
       startingCode: "let flexible;\n// ...",
       hint: "let flexible: any = 'hello';",
       solution: "let flexible: any = 'hello';",
@@ -101,7 +100,7 @@ flowchart TD
     {
       id: 8,
       title: "Obyekt tipi",
-      instruction: "`user` obyekti uchun tip e'lon qiling: u `name` (string) va `age` (number) qismlariga ega bo'lishi kerak, hamda {name: 'Olim', age: 20} qiymatini bering.",
+      instruction: "'user' obyekti uchun tip e'lon qiling: u 'name' (string) va 'age' (number) qismlariga ega bo'lishi kerak, hamda {name: 'Olim', age: 20} qiymatini bering.",
       startingCode: "let user;\n// ...",
       hint: "let user: { name: string; age: number } = ...",
       solution: "let user: { name: string; age: number } = { name: 'Olim', age: 20 };",
@@ -110,7 +109,7 @@ flowchart TD
     {
       id: 9,
       title: "Enum yaratish",
-      instruction: "`Role` nomli Enum e'lon qiling, ichida `ADMIN` va `USER` qiymatlari bo'lsin.",
+      instruction: "'Role' nomli Enum e'lon qiling, ichida 'ADMIN' va 'USER' qiymatlari bo'lsin.",
       startingCode: "// Role enumi",
       hint: "enum Role { ADMIN, USER }",
       solution: "enum Role {\n  ADMIN,\n  USER\n}",
@@ -119,7 +118,7 @@ flowchart TD
     {
       id: 10,
       title: "Union turlar",
-      instruction: "`status` nomli o'zgaruvchi e'lon qiling. U `string` yoki `number` turida bo'lishi mumkin va unga 200 qiymatini bering.",
+      instruction: "'status' nomli o'zgaruvchi e'lon qiling. U 'string' yoki 'number' turida bo'lishi mumkin va unga 200 qiymatini bering.",
       startingCode: "let status;\n// ...",
       hint: "let status: string | number = 200;",
       solution: "let status: string | number = 200;",
@@ -153,7 +152,7 @@ flowchart TD
     },
     {
       id: 3,
-      question: "`any` tipi nima qiladi?",
+      question: "'any' tipi nima qiladi?",
       options: [
         "Faqat raqamlarni saqlash imkonini beradi.",
         "Barcha turdagi qiymatlarni qabul qilish orqali tiplarni tekshirishni o'chirib qo'yadi.",
@@ -161,7 +160,7 @@ flowchart TD
         "Kodni xavfsizroq qiladi."
       ],
       correctAnswer: 1,
-      explanation: "`any` tipi har qanday qiymat turini oladi va type-checkingni butunlay chetlab o'tadi."
+      explanation: "'any' tipi har qanday qiymat turini oladi va type-checkingni butunlay chetlab o'tadi."
     },
     {
       id: 4,
@@ -173,7 +172,7 @@ flowchart TD
         "{string}"
       ],
       correctAnswer: 1,
-      explanation: "Matnli massiv `string[]` yoki `Array<string>` deb yoziladi."
+      explanation: "Matnli massiv 'string[]' yoki 'Array<string>' deb yoziladi."
     },
     {
       id: 5,
@@ -197,7 +196,7 @@ flowchart TD
         "Object"
       ],
       correctAnswer: 1,
-      explanation: "Bir nechta tiplarga ruxsat berish uchun Union (birlashma) `|` belgisidan foydalaniladi."
+      explanation: "Bir nechta tiplarga ruxsat berish uchun Union (birlashma) '|' belgisidan foydalaniladi."
     },
     {
       id: 7,
@@ -216,7 +215,7 @@ flowchart TD
       question: "Enum qanday holatda kerak bo'ladi?",
       options: [
         "Matnlarni birlashtirish uchun.",
-        "Oldindan ma'lum, aniq o'zgarmaslar (masalan: haftaning kunlari) ro'yxatini yaratish uchun.",
+        "Oldindan ma'lum, aniq o'zgarmaslar ro'yxatini yaratish uchun.",
         "Foydalanuvchilar obyekti yasash uchun.",
         "Raqamlarni bo'lish uchun."
       ],
@@ -225,7 +224,7 @@ flowchart TD
     },
     {
       id: 9,
-      question: "`unknown` tipining `any` tipidan asosiy afzalligi nima?",
+      question: "'unknown' tipining 'any' tipidan asosiy afzalligi nima?",
       options: [
         "Tezroq ishlaydi.",
         "Ikkisi umuman farq qilmaydi.",
@@ -233,7 +232,7 @@ flowchart TD
         "Faqat obyektlar uchun ishlatiladi."
       ],
       correctAnswer: 2,
-      explanation: "`unknown` tipi bilan ishlayotganda, TypeScript xavfsizlik nuqtai nazaridan avval type-check qilinishini so'raydi."
+      explanation: "'unknown' tipi bilan ishlayotganda, TypeScript xavfsizlik nuqtai nazaridan avval type-check qilinishini so'raydi."
     },
     {
       id: 10,
@@ -257,7 +256,7 @@ flowchart TD
         "Any type"
       ],
       correctAnswer: 1,
-      explanation: "Union (birlashma) tip orqali bir o'zgaruvchi yagona yoki turli (null, string va boshqa) bo'lishi mumkinligini bildiradi."
+      explanation: "Union (birlashma) tip orqali bir o'zgaruvchi yagona yoki turli bo'lishi mumkinligini bildiradi."
     },
     {
       id: 12,

@@ -2,43 +2,45 @@ export const typescriptFunctions = {
   id: "typescript-functions",
   title: "TypeScript Functions",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-TypeScript-da funksiyalar JavaScript-dagiga o'xshaydi, lekin ularga parametr (argumentlar) va qaytaradigan qiymati uchun tiplar qo'shiladi. Bu shuni kafolatlaydiki, funksiyaga faqat biz kutgan turdagi ma'lumotlar uzatiladi va funksiya doimo biz kutgan turdagi natijani qaytaradi.
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+Tasavvur qiling, siz restoranga kirdingiz va ofitsiantga buyurtma beryapsiz. Ofitsiant (funksiya) sizdan ma'lumotlarni qabul qiladi. Agar siz "Bitta burger va kola" desangiz, ofitsiant nima kutyotganini biladi. Lekin siz "Bitta moshina va g'isht" desangiz, ofitsiant (TypeScript) xatoni sezadi va buyurtmani qabul qilmaydi.
+JavaScript-da ofitsiant hamma narsani olaveradi va oxirida tushunarsiz ovqat olib keladi. TypeScript-da esa funksiya nima qabul qilishini (parametr tiplari) va nima qaytarishini (return type) oldindan qat'iy belgilab olamiz. Bu esa kutilmagan xatolar va "portlashlar" oldini oladi.
 
-**❌ YOMON: Tiplarni ko'rsatmaslik**
-\`\`\`typescript
-function add(a, b) {
-  return a + b;
-}
-add(5, "10"); // xato bo'lsa ham ishlayveradi (510 chiqadi)
-\`\`\`
+## 2. 🧠 Chuqur Sho'ng'ish (Deep Dive)
 
-**✅ YAXSHI: Parametr va natija tiplarini aniqlash**
-\`\`\`typescript
-function add(a: number, b: number): number {
-  return a + b;
-}
-// add(5, "10"); // TypeScript bunga yo'l qo'ymaydi (Error)
-\`\`\`
+**TypeScript Kompilyatori (tsc) va Type Erasure (Tiplarning O'chirilishi)**
 
-## 🎤 Intervyu Savollari
-**Savol: Funksiyada \`void\` qaytarish nima degani?**
-Javob: Agar funksiya hech qanday qiymat qaytarmasa (masalan, faqat ekranga narsalarni chiqarsa, yoki o'zgaruvchilarni yangilasa), uning natija tipi \`void\` deb ko'rsatiladi. 
+TypeScript-da yozilgan tiplar faqat **kompilyatsiya (build)** vaqtida (compile-time) mavjud bo'ladi. Siz yozgan barcha \\\`:\\\` dan keyingi tiplar (masalan: \\\`: string\\\`, \\\`: number\\\`, \\\`: void\\\`) JavaScript-ga o'girilayotganda butunlay o'chirib tashlanadi. Bunga **Type Erasure** (tiplarning o'chirilishi) deyiladi. 
 
-**Savol: TypeScript-da optional (majburiy bo'lmagan) parametrlar qanday yoziladi?**
-Javob: Parametr nomidan so'ng \`?\` belgisi qo'yiladi. Optional parametrlar har doim majburiy parametrlardan keyin kelishi kerak.
+Xotira (Memory) va Ishlash Tezligi (Performance) nuqtai nazaridan TypeScript funksiyalari JavaScript funksiyalaridan hech qanday farq qilmaydi. Chunki brauzer yoki Node.js faqat toza JavaScript-ni ishga tushiradi. TypeScript sizga kod yozish vaqtida (IDE-da) xatolarni ko'rsatish orqali yordam beradi xolos.
 
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
+**Qaytaruvchi tiplarni o'qish (\\\`void\\\` vs \\\`never\\\`)**
+- \\\`void\\\`: Funksiya oxiriga yetib boradi, lekin hech qanday aniq qiymat qaytarmaydi (ichki holda \\\`undefined\\\` qaytaradi). Masalan, console.log chiqaruvchi funksiya.
+- \\\`never\\\`: Funksiya hech qachon oxiriga yetib bormaydi (masalan, Error tashlaydi yoki cheksiz tsiklga kiradi).
+
+## 3. ⚠️ Chekka Holatlar (Edge Cases) va Senior Intervyu Savollari
+
+**Savol: Optional (\\\`?\\\`) va Default (\\\`=\\\`) parametrlarning qanday farqi bor va ularni qanday tartibda yozish kerak?**
+**Javob:** Optional parametr (\\\`?\\\`) qiymat berilmasa \\\`undefined\\\` bo'ladi. Default parametr (\\\`=\\\`) berilmasa o'rniga yozilgan qiymat tushadi. Optional parametrlar har doim barcha majburiy parametrlardan keyin (oxirida) kelishi shart, yo'qsa xato bo'ladi.
+
+**Savol: Funksiya uchun 'Overloading' nima va u qanday ishlaydi?**
+**Javob:** Overloading - bitta funksiya nomi bilan bir nechta turli parametr konfiguratsiyalarini e'lon qilish. Type e'lonlari ustma-ust yoziladi, lekin oxirida bitta asosiy (implementation) funksiya yoziladi va u barcha holatlarni o'zida birlashtiradi.
+
+**Savol: Nima uchun Arrow funksiyalarda ba'zan tiplar \\\`(\\\` \\\`)\\\` qavslarisiz ishlamaydi?**
+**Javob:** JSX/TSX fayllarda \\\`<T>\\\` (generic) yozganda React uni HTML tegi deb o'ylashi mumkin. Shuning uchun ko'pincha \\\`<T extends unknown>\\\` ko'rinishida qo'shimcha yozib ketiladi.
+
+## 📊 TypeScript Funksiya Arxitekturasi
+\\\`\\\`\\\`mermaid
 flowchart TD
-    A[Funksiya] -->|Parametr Tiplari| B{Tekshiruv}
-    B -->|Xato| C[Kompilyatsiya to'xtaydi]
-    B -->|To'g'ri| D[Natija Tipi Tekshiriladi]
-    D -->|void| E[Hech narsa qaytarmaydi]
-    D -->|number, string...| F[Qiymat qaytaradi]
-\`\`\`
+    A[Funksiya Chaqiruvi] --> B{Parametrlar mosmi?}
+    B -->|Yo'q| C[TSError: Argument of type...]
+    B -->|Ha| D{Return Tipi Mosmi?}
+    D -->|Yo'q| E[TSError: Type X is not assignable to type Y]
+    D -->|Ha| F[Kompilyatsiya Muvaffaqiyatli]
+    F --> G[Type Erasure -> JS ga o'girish]
+    G --> H[Run: Faqat JS kod ishlaydi]
+\\\`\\\`\\\`
 `,
   exercises: [
     {
@@ -143,11 +145,11 @@ flowchart TD
         "Buni belgilash shart emas."
       ],
       correctAnswer: 1,
-      explanation: "Qaytaruvchi tip odatda parametrlar ruyxati tugagach yoziladi. Masalan: () : string"
+      explanation: "Qaytaruvchi tip odatda parametrlar ro'yxati tugagach yoziladi. Masalan: () : string"
     },
     {
       id: 2,
-      question: "\`void\` qanday hollarda ishlatiladi?",
+      question: "`void` qanday hollarda ishlatiladi?",
       options: [
         "Funksiya ixtiyoriy narsa qaytarishi mumkin bo'lganda.",
         "Funksiya faqat raqam qaytarishini ko'rsatish uchun.",
@@ -171,15 +173,15 @@ flowchart TD
     },
     {
       id: 4,
-      question: "\`never\` bilan \`void\` ning farqi nima?",
+      question: "`never` bilan `void` ning farqi nima?",
       options: [
         "Farqi yo'q, ikkisi bir xil ishlaydi.",
-        "\`void\` hech narsa qaytarmaydigan funksiya uchundir (aslida undefined qaytishi mumkin). \`never\` esa funksiya umuman oxiriga yetib bormasligini anglatadi (masalan, cheksiz tsikl yoki error).",
-        "\`never\` faqat massivlarga xos.",
-        "\`void\` tipi xatoliklarda ishlatiladi."
+        "`void` hech narsa qaytarmaydigan funksiya uchundir (aslida undefined qaytishi mumkin). `never` esa funksiya umuman oxiriga yetib bormasligini anglatadi (masalan, cheksiz tsikl yoki error).",
+        "`never` faqat massivlarga xos.",
+        "`void` tipi xatoliklarda ishlatiladi."
       ],
       correctAnswer: 1,
-      explanation: "\`void\` dastur tugashi mumkinligini bildiradi. \`never\` da funksiya oxirigacha ishlamaydi, asosan Error otadi yoki to'xtovsiz sikl yaratadi."
+      explanation: "`void` dastur tugashi mumkinligini bildiradi. `never` da funksiya oxirigacha ishlamaydi, asosan Error otadi yoki to'xtovsiz sikl yaratadi."
     },
     {
       id: 5,
@@ -219,7 +221,7 @@ flowchart TD
     },
     {
       id: 8,
-      question: "Generics \`<T>\` funksiyalarda nima uchun kerak?",
+      question: "Generics `<T>` funksiyalarda nima uchun kerak?",
       options: [
         "HTML-ning tagini belgilash uchun.",
         "Funksiyaga har xil tiplarni bir vaqtning o'zida qayta ishlatish, uning qanday tur berilganligini 'eslab qolishi' uchun.",
@@ -227,7 +229,7 @@ flowchart TD
         "Kodning ishlash tezligini oshirish uchun."
       ],
       correctAnswer: 1,
-      explanation: "Generics (\`<T>\`) orqali biz har doim bir xil tipli o'zgaruvchi bilan amallar bajarishimiz mumkin, masalan \`identity<string>('salom')\`."
+      explanation: "Generics (`<T>`) orqali biz har doim bir xil tipli o'zgaruvchi bilan amallar bajarishimiz mumkin, masalan `identity<string>('salom')`."
     },
     {
       id: 9,
@@ -255,27 +257,27 @@ flowchart TD
     },
     {
       id: 11,
-      question: "Funksiyada \`arguments\` obyekti o'rniga zamonaviy TS/JS da nima tavsiya etiladi?",
+      question: "Funksiyada `arguments` obyekti o'rniga zamonaviy TS/JS da nima tavsiya etiladi?",
       options: [
         "array obyekti",
         "Rest parametrlar (...args)",
-        "Faqat \`any\` ishlatish",
+        "Faqat `any` ishlatish",
         "Tashqi o'zgaruvchilar"
       ],
       correctAnswer: 1,
-      explanation: "Zamonaviy yondashuvda \`arguments\` obyekti o'rniga kuchli tiplashgan (strongly-typed) rest parametrlaridan foydalaniladi."
+      explanation: "Zamonaviy yondashuvda `arguments` obyekti o'rniga kuchli tiplashgan (strongly-typed) rest parametrlaridan foydalaniladi."
     },
     {
       id: 12,
-      question: "Quyidagi tipni qanday tushunasiz: type Cb = (err: Error | null, res?: any) => void",
+      question: "Type Erasure (Tiplarning o'chirilishi) qachon sodir bo'ladi?",
       options: [
-        "Bu funksiya asenkron ekanligini ko'rsatadi.",
-        "Bu callback tipi bo'lib, xatolik obyekti va ixtiyoriy natija olib, hech narsa qaytarmasligini bildiradi.",
-        "Bu oddiy obyektning strukturasini bildiradi.",
-        "Hech biri to'g'ri emas."
+        "Dastur brauzerda ishlayotganda (Runtime)",
+        "Kompilyatsiya vaqtida (Compile-time) TS dan JS ga o'girilganda",
+        "Dastur xatoga uchraganda",
+        "Node.js server ishga tushganda"
       ],
       correctAnswer: 1,
-      explanation: "Bu callback funksiyasi uchun tip (alias) yaratish bo'lib, unda birinchi argument error obyekti va keyingisi esa optional qiymat."
+      explanation: "TypeScript kompilyatori (tsc) kodni ishga tushirishdan oldin barcha tiplarni o'chirib, toza JavaScript hosil qiladi."
     }
   ]
 };
