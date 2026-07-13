@@ -2,204 +2,85 @@ export const functionScopeLesson = {
   id: "functionScopeLesson",
   title: "Function Scope",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Beginner Analogy (Sodda Tushuntirish va O'xshatish)
 
 ### Funksiya Qamrovi (Function Scope) nima?
-JavaScript-da har safar yangi funksiya yaratganingizda, u o'ziga xos **yopiq hudud** (qamrov yoki scope) yaratadi. 
-* Funksiya ichida e'lon qilingan o'zgaruvchilar (xoh \`var\`, xoh \`let\` yoki \`const\` bo'lsin) va funksiyaga uzatilgan argumentlar faqat shu funksiyaning **ichida** ishlaydi.
-* Tashqi dunyo (ya'ni funksiya tashqarisidagi kodlar) bu o'zgaruvchilarni ko'ra olmaydi va ularga to'g'ridan-to'g'ri murojaat qila olmaydi.
+Tasavvur qiling, sizning uyingiz — bu funksiya. Uyingiz ichida nimalar borligini (divan, televizor) ko'chadan o'tayotgan odamlar ko'ra olmaydi. Uyingiz ichidagi narsalar faqat siz (va oilangiz) uchun mavjud.
+JavaScript-da ham xuddi shunday: funksiya ichida e'lon qilingan o'zgaruvchilar (xoh \`var\`, xoh \`let\` yoki \`const\` bo'lsin) faqat o'sha funksiyaning ichida "yashaydi". Tashqi dunyo (boshqa funksiyalar yoki global qamrov) ularni ko'ra olmaydi.
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **shaxsiy xonadonsiz**:
-* **Global Scope (Ko'cha):** Hamma uchun ochiq joy.
-* **Function Scope (Xonadon):** Sizning uyingiz. Uyingiz ichidagi jihozlar faqat uydagilarga ko'rinadi. Ko'chadan turib hech kim sizning uyingiz ichidagi narsalarni ko'ra olmaydi.
-* **Argument Isolation (Eshikdagi pochta qutisi):** Har bir xonadonning o'z pochta qutisi bor. Unga kelgan xatlar faqat shu xonadon a'zolari uchundir.
-
----
-
-## 2. 💻 Real Kod Misollari
-
-### 1. Basic Example (Sodda Lokal O'zgaruvchi)
-Funksiya ichida e'lon qilingan o'zgaruvchining tashqaridan yopiqligi:
+### Misol:
 \`\`\`javascript
-function showLocalSecret() {
-  const secretCode = "JS-SCOPE-2026"; // Lokal o'zgaruvchi
-  console.log("Funksiya ichida:", secretCode); // Ishlaydi
+function uydagiSir() {
+  const sir = "Men bugun kechqurun shokolad yedim";
+  console.log(sir); // Ichkarida ishlaydi
 }
 
-showLocalSecret();
-// console.log(secretCode); // ReferenceError: secretCode is not defined
+uydagiSir();
+// console.log(sir); // XATO! Tashqaridan ko'rinmaydi. ReferenceError: sir is not defined
 \`\`\`
 
-### 2. Intermediate Example (Ichma-ich Funksiyalar va Scope Chain)
-Ichki funksiyalar tashqi funksiya qamrovidagi o'zgaruvchilarga kira oladi:
+## 2. 🔬 Deep Dive (Under the Hood, Memory, V8 Engine, Performance)
+
+### Execution Context (Bajarilish Muhiti)
+V8 engine qanday ishlaydi? Qachonki siz funksiyani chaqirsangiz (invoke qilsangiz), V8 engine darhol **Execution Context** yaratadi. Bu context Call Stack-ga yuklanadi.
+Ushbu Execution Context o'zining **Lexical Environment**-iga ega bo'lib, uning ichida ikkita muhim narsa bor:
+1. **Environment Record:** Funksiya ichida e'lon qilingan barcha lokal o'zgaruvchilar va argumentlar saqlanadigan joy.
+2. **Outer Lexical Environment Reference:** Tashqi qamrovga yo'llanma.
+
+### Xotira va Garbage Collection
+Funksiya ishlab bo'lgach (ya'ni uning ishi tugab, Call Stack-dan o'chirilgach), uning barcha lokal o'zgaruvchilari **Garbage Collector (Axlat yig'uvchi)** tomonidan xotiradan tozalanadi. Bu degani siz funksiya ichida yuzlab o'zgaruvchilar yaratsangiz ham, funksiya o'z ishini tugatgach ular tizim xotirasini band qilib turmaydi (agar ular closure tomonidan ushlab turilmasa).
+
+### Performance Optimization
+* Funksiya ichida juda katta massivlar yoki obyektlar yaratsangiz, bilingki, funksiya tugagach ular tezda xotiradan tozalanadi.
+* **Tavsiya:** Doimo global o'zgaruvchilardan ko'ra, funksiya ichidagi lokal o'zgaruvchilarni afzal ko'ring. Sababi, lokal o'zgaruvchilarga murojaat qilish ancha tezroq bo'ladi (chunki V8 ularni to'g'ridan-to'g'ri CPU registrlarida yoki stekda saqlashga harakat qiladi).
+
+## 3. ⚠️ Edge Cases va Senior Interview Questions
+
+### Edge Case 1: Parametr va o'zgaruvchi to'qnashuvi (Variable Shadowing)
+Agar funksiya parametri bilan bir xil nomdagi lokal o'zgaruvchini \`var\` bilan e'lon qilsangiz nima bo'ladi?
 \`\`\`javascript
-function parentFunction() {
-  let parentVar = "Men otaman";
-
-  function childFunction() {
-    let childVar = "Men bolaman";
-    console.log("Child ichida parentVar:", parentVar); 
-  }
-
-  childFunction();
-  // console.log(childVar); // ReferenceError: childVar is not defined
+function test(a) {
+  var a = 20; // Parametrni ustidan yozib yuboradi
+  console.log(a); // 20
 }
-
-parentFunction();
+test(10);
 \`\`\`
-
-### 3. Advanced Example (Variable Shadowing)
-Agar bir xil nomli o'zgaruvchi globalda va lokalda bo'lsa, lokal o'zgaruvchi globalni yopib qo'yadi (Shadowing):
+Lekin \`let\` yoki \`const\` bilan qilsangiz, SyntaxError olasiz!
 \`\`\`javascript
-let username = "GlobalJasur"; 
-
-function greet(username) {
-  // Parametrdagi username globalni shadow (soya) qiladi
-  console.log("Salom, " + username); 
-}
-
-greet("Lola"); // "Salom, Lola" (Lokal ustun)
-console.log(username); // "GlobalJasur" (Global o'zgarmadi)
-\`\`\`
-
----
-
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
-
-### Execution Context va Call Stack
-1. Funksiya chaqirilganda, uning bajarilish muhiti (Execution Context) **Call Stack**-ga yuklanadi.
-2. Bu muhit o'zining **Lexical Environment (Leksik Muhit)** obyektiga ega bo'ladi.
-3. U o'zining **Outer Reference** (tashqi muhit ko'rsatkichi) orqali o'zidan tepada turgan ota qamrovga bog'lanadi (Scope Chain).
-4. Funksiya bajarilib bo'lingach, uning context-i Call Stack-dan o'chiriladi.
-
----
-
-## 4. ❌ Ko'p Uchraydigan Xatolar (YOMON / YAXSHI)
-
-### 1. Lokal o'zgaruvchini global deb o'ylash
-🔴 **YOMON:** (Lokal o'zgaruvchiga tashqaridan murojaat qilish)
-\`\`\`javascript
-function calculateSum(a, b) {
-  let result = a + b;
-}
-calculateSum(5, 10);
-console.log(result); // ReferenceError: result is not defined
-\`\`\`
-
-🟢 **YAXSHI:** (Qiymatni qaytarish)
-\`\`\`javascript
-function calculateSum(a, b) {
-  return a + b;
-}
-let result = calculateSum(5, 10);
-console.log(result); // 15
-\`\`\`
-
-### 2. Kalit so'zsiz e'lon orqali Global ifloslanish
-🔴 **YOMON:** (Global ifloslanish)
-\`\`\`javascript
-function initializeScore() {
-  score = 100; // var, let yoki const yo'q!
-}
-initializeScore();
-console.log(window.score); // 100 
-\`\`\`
-
-🟢 **YAXSHI:** (Xavfsiz yondashuv)
-\`\`\`javascript
-"use strict";
-function initializeScore() {
-  let score = 100; // Xavfsiz lokal o'zgaruvchi
+function test(a) {
+  let a = 20; // SyntaxError: Identifier 'a' has already been declared
 }
 \`\`\`
 
----
-
-## 5. 💬 12 ta Intervyu Savollari
-
+### Senior Interview Savollari
 1. **Savol:** Function scope nima?
-   * **Javob:** Funksiya ichida e'lon qilingan o'zgaruvchilar va parametrlarning faqat shu funksiya ichida ishlatilishi va tashqaridan yopiq bo'lishi.
-2. **Savol:** Funksiya parametrlari qayerda saqlanadi?
-   * **Javob:** Ular funksiyaning lokal qamrovida saqlanadi.
-3. **Savol:** Variable Shadowing nima?
-   * **Javob:** Ichki scope-da tashqi scope-dagi o'zgaruvchi bilan bir xil nomli o'zgaruvchi yaratilganda, ichki o'zgaruvchi tashqi o'zgaruvchini to'sib qo'yishi.
-4. **Savol:** Qamrov zanjiri (Scope Chain) qanday ishlaydi?
-   * **Javob:** Dvigatel o'zgaruvchini joriy qamrovdan izlaydi, topmasa tashqi qamrovlarga chiqib ketadi va globalgacha boradi.
-5. **Savol:** \`let\`/\`const\` va \`var\` o'rtasidagi qamrov farqi?
-   * **Javob:** \`var\` function-scoped, \`let\`/\`const\` block-scoped.
-6. **Savol:** Funksiya bajarilib bo'lingach, uning lokal o'zgaruvchilari nima bo'ladi?
-   * **Javob:** Ular Garbage Collector tomonidan tozalanadi (agar closure bo'lmasa).
-7. **Savol:** \`use strict\` scope bo'yicha qanday yordam beradi?
-   * **Javob:** U e'lon qilinmagan o'zgaruvchini implicit global qilishni oldini oladi va xato beradi.
-8. **Savol:** Lexical Environment obyektining qismlari?
-   * **Javob:** Environment Record va Outer Lexical Environment Reference.
-9. **Savol:** \`new Function()\` qamrovi qanday?
-   * **Javob:** Ular har doim global qamrovga outer reference bog'laydi.
-10. **Savol:** Dynamic Scope va Lexical Scope farqi?
-    * **Javob:** Lexical kod yozilgan joyga, Dynamic esa chaqirilgan joyga asoslanadi. JS lexical scope ishlatadi.
-11. **Savol:** Argument izolyatsiyasi nima?
-    * **Javob:** Har bir chaqiruv o'z argumentlar to'plamiga ega bo'lib, ular boshqa chaqiruvlarga ta'sir qilmaydi.
-12. **Savol:** \`var\` nega globalni ifloslantirishi osonroq?
-    * **Javob:** Chunki \`var\` if/for bloklarida chegaralanmaydi va darhol tashqi qamrovga o'tib ketadi.
+   **Javob:** Funksiya yaratilganda hosil bo'ladigan izolyatsiya qilingan hudud bo'lib, o'zgaruvchilar faqat funksiya ichida ko'rinadi.
+2. **Savol:** \`var\` ning block scope-ni teshish xususiyati nima?
+   **Javob:** \`var\` faqat function scope ni taniydi. \`if\` yoki \`for\` kabi bloklarni e'tiborga olmaydi. Shuning uchun blok ichida \`var\` orqali ochilgan o'zgaruvchi blokdan tashqariga chiqib ketadi (agar ular funksiya ichida bo'lmasa, globalga aylanadi).
+3. **Savol:** Scope Chain qanday ishlaydi?
+   **Javob:** O'zgaruvchi ishlatilganda, Engine avval uni lokal Environment Record-dan izlaydi. Agar topmasa, Outer Reference orqali ota funksiyaga o'tadi va to global muhitgacha shunday davom etadi.
+4. **Savol:** Garbage Collector funksiya o'zgaruvchilarini qachon tozalaydi?
+   **Javob:** Funksiyaning Execution Context-i Call Stack-dan pop bo'lgandan so'ng, agar hech qanday Closure bu o'zgaruvchilarga havola (reference) ushlab turmasa.
+5. **Savol:** Kalit so'zsiz o'zgaruvchi e'lon qilish (Implicit Global) nimaga olib keladi?
+   **Javob:** "Strict Mode" ishlatilmasa, u to'g'ridan-to'g'ri global obyektga (masalan, \`window\` ga) biriktiriladi. "Strict mode"da esa ReferenceError beradi.
 
----
+## 4. 📊 Mermaid Diagram: Scope Chain and Execution Context
 
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Quyida nested funksiya e'lonlari tasvirlovchi diagramma:
 \`\`\`mermaid
 graph TD
-    subgraph GlobalScope["Global Scope (Ko'cha)"]
-        globalVar["let globalVar = 'Global'"]
-        subgraph OuterScope["outerFunction Scope (Uy)"]
-            outerVar["let outerVar = 'Outer'"]
-            subgraph InnerScope["innerFunction Scope (Xona)"]
-                innerVar["let innerVar = 'Inner'"]
-            end
-        end
-    end
-    InnerScope -->|1. Lokal| OuterScope
-    OuterScope -->|2. Outer| GlobalScope
+    A[Global Execution Context] -->|Outer Reference| Null
+    A -->|Contains| GV[Global Variables: let a = 10]
+    
+    B[Parent Function Context] -->|Outer Reference| A
+    B -->|Contains| PV[Local Variables: let b = 20]
+    
+    C[Child Function Context] -->|Outer Reference| B
+    C -->|Contains| CV[Local Variables: let c = 30]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
 \`\`\`
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Dars oxiridagi testlarni yechishni unutmang.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### Widget izolyatsiyasi
-Eski loyihalarda IIFE orqali izolyatsiya qilingan:
-\`\`\`javascript
-(function() {
-  let requestCounter = 0;
-  window.myAnalytics = {
-    track: () => { requestCounter++; }
-  };
-})();
-\`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-* Loop ichida funksiya e'lon qilmang, u qayta-qayta yangi qamrov yaratib xotirani yeydi.
-* Sof funksiyalar (Pure functions) va lokal o'zgaruvchilarni afzal ko'ring.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Qamrov turi | E'lon qilingan joyi | Tashqaridan kirish | Ta'rifi |
-| :--- | :--- | :--- | :--- |
-| **Function Scope** | \`{}\` ichida | Yo'q | Faqat funksiya ichidagilar kira oladi |
-| **Argument Isolation** | Parametrlar | Yo'q | Mustaqil argumentlar |
-| **Shadowing** | Ichki qamrovda e'lon | Yo'q | Ota qamrovdagini to'sib qo'yish |
 `,
   exercises: [
     {
@@ -245,7 +126,7 @@ Eski loyihalarda IIFE orqali izolyatsiya qilingan:
     {
       id: 6,
       title: "Closure va Scope",
-      instruction: "`createCounter()` yozing, u o'zining ichida `count = 0` saqlasin va uni 1 ga oshiruvchi hamda qaytaruvchi anonim funksiya qaytarsin (closure).",
+      instruction: "`createCounter()` yozing, u o'zining ichida `count = 0` saqlasin va uni 1 ga oshiruvchi hamda qaytuvchi anonim funksiya qaytarsin (closure).",
       startingCode: "function createCounter() {\n  \n}",
       hint: "let count = 0; return function() { return ++count; }",
       test: "const fn = new Function(code + '; return createCounter;')()(); if(fn() !== 1 || fn() !== 2) return 'Counter ishlamadi'; return null;"
@@ -277,7 +158,7 @@ Eski loyihalarda IIFE orqali izolyatsiya qilingan:
     {
       id: 10,
       title: "Ko'p funksiya chaqiruvlari izolyatsiyasi",
-      instruction: "`addToList(val)` funksiyasi lokal massiv emas, balki qanday saqlaydi? Yo'q, `getArray()` yozing, u ichida `const arr = []` e'lon qilib, ichiga 1 solib qaytarsin. Uni necha marta chaqirsak ham faqat `[1]` bo'ladi.",
+      instruction: "`getArray()` yozing, u ichida `const arr = []` e'lon qilib, ichiga 1 solib qaytarsin. Uni necha marta chaqirsak ham faqat `[1]` bo'ladi.",
       startingCode: "function getArray() {\n  \n}",
       hint: "const arr = []; arr.push(1); return arr;",
       test: "const fn = new Function(code + '; return getArray;')(); if(fn().length !== 1 || fn().length !== 1) return 'Xato'; return null;"
