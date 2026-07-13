@@ -2,490 +2,329 @@ export const breakContinue = {
   id: "breakContinue",
   title: "Sikllarni Boshqarish: break, continue",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish (Beginner Analogy)
 
-### break va continue nima?
-* **break:** Siklni (loop) darhol va butunlay to'xtatib, undan chiqib ketish buyrug'i. Siklning qolgan barcha iteratsiyalari bekor qilinadi.
-* **continue:** Siklning joriy (hozirgi) iteratsiyasini to'xtatib, qolgan kodlarini bajarmasdan, keyingi iteratsiyaga (siklning navbatdagi aylanishiga) o'tish buyrug'i.
+Tasavvur qiling, siz do'stlaringizga xat tarqatyapsiz. Jami 10 ta xat bor. Sizning ishingiz 1-uydan to 10-uygacha borib xatlarni tashlab chiqish.
+Bu yerdagi uylarga borish jarayoni **sikl (loop)** dir.
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **zinadan 10-qavatga ko'tarilyapsiz**:
-* **break (To'xtash/Chiqish):** 5-qavatga yetganingizda lift ishga tushib qoldi yoki charchadingiz va zinadan yurishni butunlay to'xtatib, zinapoyani tark etdingiz (sikl tugadi).
-* **continue (O'tkazib yuborish):** Siz har bir qavatdagi do'stingizning eshigini taqillatib ketyapsiz. Ammo 4-qavatdagi do'stingiz safarga ketganini bilasiz. Shuning uchun 4-qavat eshigi oldiga kelganda uni taqillatib o'tirmay, uni **tashlab o'tib (continue)** to'g'ri 5-qavatga chiqib ketasiz.
+* **\`break\` (To'xtatish va chiqish):** Siz 4-uyga kelganingizda it hurib, sizni tishlab oldi. Siz qo'rqib ketdingiz va qolgan xatlarni tarqatishni butunlay bekor qilib, uyga qaytib ketdingiz. Sikl to'liq tugatildi.
+* **\`continue\` (O'tkazib yuborish):** Siz 4-uyga xat tashlash uchun keldingiz, lekin u yerda "Hech kim yo'q, boshqa davlatga ko'chib ketishgan" degan yozuv bor. Siz bu uyga xat tashlamaysiz, lekin qolgan xatlarni tarqatish uchun 5-uyga qarab yurishda davom etasiz. Siklning faqat o'sha iteratsiyasi (aylanishi) to'xtatildi va keyingisidan davom etdi.
+
+\`\`\`javascript
+// break misoli
+for (let uy = 1; uy <= 10; uy++) {
+  if (uy === 4) {
+    console.log("4-uyda it bor ekan, men qochdim!");
+    break; // Sikl butunlay to'xtaydi
+  }
+  console.log(\`\${uy}-uyga xat berildi\`);
+}
+
+// continue misoli
+for (let uy = 1; uy <= 10; uy++) {
+  if (uy === 4) {
+    console.log("4-uyda hech kim yo'q, xatni tashlab ketaman");
+    continue; // Qolgan kod o'tkazilmaydi, lekin sikl keyingi qadamiga o'tadi
+  }
+  console.log(\`\${uy}-uyga xat berildi\`);
+}
+\`\`\`
 
 ---
 
-## 2. 💻 Real Kod Misollari
+## 2. ⚙️ Qanday Ishlaydi (Deep Dive)
 
-### 1. Basic Example (Sikllarni to'xtatish va o'tkazib yuborish)
-\`break\` yordamida siklni 5-elementda to'xtatish:
+JavaScript dvigateli (masalan, V8 Engine) sikllarni bajarayotganda qanday ishlaydi?
+
+V8 dvigateli kodni kompilatsiya qilayotganda, siklning boshi va oxiri haqida ma'lumotni (Control Flow Graph) saqlaydi. 
+
+1. **\`break\` qanday ishlaydi?** Dvigatel \`break\` so'ziga kelganda, joriy blokni to'liq tark etish bo'yicha CPU "jump" (sakrash) komandasini yaratadi. V8 sikl holatini xotiradan tozalaydi va kod ijrosi sikldan keyingi birinchi qatorga o'tadi. Bu performance (samaradorlik) uchun juda yaxshi, chunki kerakli natija topilsa, ortiqcha iteratsiyalar resurs (CPU/RAM) sarflamaydi.
+
+2. **\`continue\` qanday ishlaydi?** V8 dvigateli \`continue\` ni ko'rganda, u xuddi joriy iteratsiya oxiriga sakragandek yo'l tutadi va to'g'ridan-to'g'ri yangilanish qismiga (masalan \`i++\`) o'tadi. \`while\` siklida bo'lsa shartni tekshirish qismiga o'tadi.
+   
+**Xotira (Memory) Nuqtai Nazaridan:** 
+Ikkala operator ham Local Context (Block Scope) ni har iteratsiyada yangilash bilan ishlaydi. Ular xotira oqishini (memory leak) to'xtatish uchun katta arraylar bilan ishlaganda resursni juda tejashi mumkin.
+
+**Massiv Metodlari:** 
+Esda tuting, Array \`forEach\`, \`map\`, \`filter\` kabi metodlarida bu operatorlarni ISHLATIB BO'LMAYDI (SyntaxError). Ular oddiy loop emas, callback qabul qiluvchi funksiyalardir!
+
+---
+
+## 3. ⚠️ Edge Cases va Senior Interview Questions
+
+**Edge Case 1: Label bilan ishlatish**
+Agar ichma-ich (nested) sikl bo'lsa, \`break\` faqat eng ichki siklni to'xtatadi. Agar ikkala siklni birdan to'xtatish kerak bo'lsa, **Label Statement** ishlatiladi.
 \`\`\`javascript
-for (let i = 1; i <= 10; i++) {
-  if (i === 5) {
-    break; // i 5 ga teng bo'lganda sikl butunlay to'xtaydi
-  }
-  console.log(i); // Natija: 1, 2, 3, 4
-}
-\`\`\`
-
-\`continue\` yordamida toq sonlarni chop etish (juftlarini o'tkazib yuborish):
-\`\`\`javascript
-for (let i = 1; i <= 10; i++) {
-  if (i % 2 === 0) {
-    continue; // Juft son bo'lsa, keyingi kodlar o'tkazib yuboriladi
-  }
-  console.log(i); // Natija: 1, 3, 5, 7, 9
-}
-\`\`\`
-
-### 2. Intermediate Example (Qidiruv tizimi va Noto'g'ri ma'lumotlarni tozalash)
-Ro'yxatdan birinchi mos kelgan elementni qidirish va qidiruvni to'xtatish (\`break\`):
-\`\`\`javascript
-const products = [
-  { name: "Telefon", price: 500, inStock: true },
-  { name: "Noutbuk", price: 1000, inStock: false },
-  { name: "Quloqchin", price: 50, inStock: true },
-  { name: "Klaviatura", price: 80, inStock: true }
-];
-
-let foundProduct = null;
-for (let i = 0; i < products.length; i++) {
-  if (products[i].inStock && products[i].price > 100) {
-    foundProduct = products[i];
-    break; // Kerakli mahsulot topilgach, qolganlarini tekshirish shart emas (vaqt tejaladi)
-  }
-}
-console.log("Topilgan mahsulot:", foundProduct); // { name: "Telefon", price: 500, ... }
-\`\`\`
-
-\`continue\` yordamida noto'g'ri/bo'sh ma'lumotlarni hisobga olmay o'tib ketish:
-\`\`\`javascript
-const transactions = [120, null, 450, undefined, 300, NaN, 150];
-let totalSum = 0;
-
-for (let price of transactions) {
-  if (!price || isNaN(price)) {
-    continue; // Noto'g'ri qiymatlar bo'lsa, ularni qo'shmasdan keyingi elementga o'tamiz
-  }
-  totalSum += price;
-}
-console.log("Jami to'g'ri summa:", totalSum); // 1020
-\`\`\`
-
-### 3. Advanced Example (Nested Loops with Labels)
-Ichma-ich sikllarda \`label\` (belgi) yordamida tashqi siklni boshqarish:
-\`\`\`javascript
-const matrix = [
-  [1, 2, 3],
-  [4, -5, 6],
-  [7, 8, 9]
-];
-
-// Tashqi sikl uchun 'outer' deb nomlangan label yaratamiz
-outer: for (let i = 0; i < matrix.length; i++) {
-  for (let j = 0; j < matrix[i].length; j++) {
-    if (matrix[i][j] < 0) {
-      console.log(\`Manfiy son topildi: \${matrix[i][j]}. Sikl to'xtatiladi.\`);
-      break outer; // Faqat ichki emas, tashqi 'outer' siklini ham butunlay to'xtatadi
+tashqiSikl: for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 3; j++) {
+    if (i === 1 && j === 1) {
+      break tashqiSikl; // Butunlay barcha sikllardan chiqadi
     }
-    console.log(\`Tekshirilmoqda: \${matrix[i][j]}\`);
   }
 }
-// Natija:
-// Tekshirilmoqda: 1
-// Tekshirilmoqda: 2
-// Tekshirilmoqda: 3
-// Tekshirilmoqda: 4
-// Manfiy son topildi: -5. Sikl to'xtatiladi.
 \`\`\`
 
----
+**Edge Case 2: while siklida cheksiz aylanish**
+\`continue\` ni \`while\` bilan ishlatganda, ko'pincha update (\`i++\`) qismi qolib ketadi va cheksiz sikl paydo bo'ladi. Update doimo \`continue\` dan yuqorida bo'lishi shart!
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+**Senior Interview Savollari:**
 
-### Dvigatel darajasida boshqaruv oqimi (Execution Flow)
-JavaScript dvigateli (masalan, V8) siklni bajarayotganda maxsus instruction pointer (ko'rsatkich) va blok ko'lamidan (block scope) foydalanadi:
-1. **\`break\` chaqirilganda:**
-   * Dvigatel joriy sikl blokini bajarishni darhol to'xtatadi.
-   * Sikl o'zgaruvchilari va iteratsiya xotirasi (scope context) tozalanishi boshlanadi.
-   * Buyruqlar ko'rsatkichi sikl yopilish qavsidan keyingi birinchi qatorga sakrab o'tadi.
-2. **\`continue\` chaqirilganda:**
-   * Joriy iteratsiya blokining qolgan qismi o'tkazib yuboriladi.
-   * Dvigatel to'g'ridan-to'g'ri siklning yangilanish (update/increment) qismiga (masalan, \`for\` siklidagi \`i++\` ga) yoki shartni tekshirish (condition check) qismiga (\`while\` va \`do...while\` da) yo'naltiriladi.
+1. **"forEach ichida qanday qilib break qilish mumkin?"**
+   Javob: \`forEach\` da \`break\` ishlab bo'lmaydi. Xato otish (\`throw Exception\`) bilan, yoki \`for...of\`, \`.some()\` yoki \`.every()\` metodlari bilan almashtirish kerak. \`.some()\` da \`return true\` qilsa break bo'ladi.
+   
+2. **"Switch ichida continue ishlatish mumkinmi?"**
+   Javob: Yo'q. \`switch\` sikl emas. Faqat agar \`switch\` tsikl ichida joylashgan bo'lsa, label yordamida yoki o'z-o'zidan siklni tashlab ketish maqsadida \`continue\` ni ishlatsa bo'ladi. Lekin \`switch\` blokining o'zini continue qilib bo'lmaydi.
 
-### Massiv callback metodlarida ishlamasligi
-\`forEach\`, \`map\`, \`filter\` kabi array metodlarida \`break\` yoki \`continue\` ishlatib bo'lmaydi, chunki ular haqiqiy sikl emas, balki har bir element uchun alohida callback funksiyasini chaqiradigan metodlardir. Ularda \`break\` yoki \`continue\` ishlatish \`SyntaxError: Illegal break statement\` xatoligini keltirib chiqaradi.
+3. **"V8 Dvigateli break ishlatilganda loop optimizatsiyasini qanday amalga oshiradi?"**
+   Javob: V8 odatda For-Loop'larni (masalan TurboFan yordamida) "Loop Peeling" yoki "Loop Unrolling" kabi usullar bilan optimizatsiya qiladi. Erta chiqish (\`break\`) bu optimizatsiyalarni buzmaydi, aksincha bajarilish vaqtini qisqartiradi, chunki u aniq control flow grafigiga mos tushadi. Lekin \`Label\` li sakrashlar dvigatelga optimizatsiyani qiyinlashtirishi (bailout) mumkin.
 
 ---
 
-## 4. ❌ Ko'p Uchraydigan Xatolar (Junior Mistakes)
+## 4. 📊 Vizual Diagramma (Mermaid)
 
-### 1. \`while\` siklida \`continue\` ishlatib cheksiz sikl hosil qilish
-Juda ko'p Junior dasturchilar \`continue\` operatoridan oldin sanog'ichni oshirishni unutib qo'yishadi.
-* **Xato:**
-  \`\`\`javascript
-  let i = 0;
-  while (i < 5) {
-    if (i === 3) {
-      continue; // i++ bajarilmay qoladi va i har doim 3 bo'lib, cheksiz aylanadi!
-    }
-    console.log(i);
-    i++;
-  }
-  \`\`\`
-* **Tuzatish:**
-  \`\`\`javascript
-  let i = 0;
-  while (i < 5) {
-    if (i === 3) {
-      i++; // continue dan oldin sanog'ichni oshiramiz
-      continue;
-    }
-    console.log(i);
-    i++;
-  }
-  \`\`\`
-
-### 2. \`break\` yoki \`continue\`ni sikldan tashqarida ishlatish
-Ushbu operatorlarni sikldan tashqaridagi oddiy \`if\` ichida yoki array callbacklari ichida yozish xatolikka olib keladi.
-* **Xato:**
-  \`\`\`javascript
-  const arr = [1, 2, 3];
-  arr.forEach(num => {
-    if (num === 2) break; // SyntaxError: Illegal break statement
-  });
-  \`\`\`
-* **Tuzatish:**
-  \`\`\`javascript
-  for (let num of arr) {
-    if (num === 2) break; // To'g'ri ishlaydi
-  }
-  \`\`\`
-
-### 3. \`break\` va \`return\` operatorlarini adashtirish
-* \`break\` faqat siklni to'xtatadi, lekin u joylashgan funksiya ishlashda davom etadi.
-* \`return\` esa joriy funksiyani butunlay tugatadi va qiymat qaytaradi (sikl ham avtomatik to'xtaydi).
-
----
-
-## 5. 💬 12 ta Intervyu Savollari
-
-### Junior Level
-1. **Savol:** \`break\` va \`continue\` operatorlarining asosiy farqi nimada?
-   * **Javob:** \`break\` siklni butunlay to'xtatib undan chiqadi. \`continue\` esa faqat joriy iteratsiyani tashlab ketib, keyingi iteratsiyani davom ettiradi.
-2. **Savol:** \`break\` operatorini sikllardan tashqari yana qayerda ishlatsa bo'ladi?
-   * **Javob:** \`switch\` tanlash konstruksiyasi ichida case-larni to'xtatish va keyingisiga o'tmaslik uchun ishlatiladi.
-3. **Savol:** \`continue\` operatorini \`switch\` ichida ishlatish mumkinmi?
-   * **Javob:** Yo'q, \`continue\` faqat sikllar ichida ishlaydi, \`switch\` ichida u sintaktik xato (\`SyntaxError\`) beradi.
-4. **Savol:** Nima uchun \`forEach\` yoki \`map\` metodlari ichida \`break\` ishlata olmaymiz?
-   * **Javob:** Chunki ular haqiqiy sikl emas, balki funksiyalar (callbacks). Funksiya ichida faqat \`return\` ishlatish mumkin, \`break\` esa faqat sikl bloklariga taalluqlidir.
-
-### Middle Level
-5. **Savol:** \`while\` siklida \`continue\` ishlatganda cheksiz sikl yuzaga kelishining sababi nima?
-   * **Javob:** Chunki \`continue\` bilan joriy qadam o'tkazib yuborilganda, sikl yangilanish qismi (\`i++\`) odatda pastda joylashgani uchun u bajarilmay qoladi va shart o'zgarmasdan cheksiz takrorlanadi.
-6. **Savol:** JavaScript-da \`label\` (belgi) nima va u qachon kerak bo'ladi?
-   * **Javob:** Label — bu sikl yoki blok oldidan qo'yiladigan nom (masalan \`myLabel:\`). U ichma-ich sikllarda ichki sikl ichidan turib tashqi siklni \`break\` yoki \`continue\` qilish uchun kerak bo'ladi.
-7. **Savol:** Ichma-ich \`for\` sikllarida ichki sikldagi oddiy \`break\` qaysi siklni to'xtatadi?
-   * **Javob:** Faqat eng yaqin ichki siklni to'xtatadi, tashqi sikl esa o'z faoliyatini davom ettiradi.
-8. **Savol:** \`do...while\` siklida \`continue\` chaqirilganda boshqaruv qayerga o'tadi?
-   * **Javob:** Sikl tanasi tugagach, pastdagi \`while (condition)\` shartini tekshirish qismiga o'tadi va shart \`true\` bo'lsa, sikl boshidan yana boshlanadi.
-
-### Senior Level
-9. **Savol:** JavaScript dvigateli (V8) \`break\` va \`continue\` ishlatilganda loop optimization jarayonini qanday bajaradi?
-   * **Javob:** V8 oddiy sikllarni optimallashtiradi. Biroq, \`label\` va chuqur sakrashlar (jump) ko'p bo'lgan kodlarni optimallashtirish (JIT compiler optimization) qiyinlashadi, chunki bu control flow graph-ni murakkablashtiradi va V8 de-optimization sodir qilishi mumkin.
-10. **Savol:** Callback massiv metodlaridan (\`forEach\`, \`some\`, \`every\`) \`break\` effekti yaratish uchun qaysilaridan foydalanish afzalroq?
-    * **Javob:** \`.some()\` metodida \`return true\` qilinsa yoki \`.every()\` metodida \`return false\` qilinsa, metod massiv aylanishini zudlik bilan to'xtatadi. Bu \`break\` kabi ishlaydi.
-11. **Savol:** \`break\` yoki \`continue\` yozilgan \`try\` bloki ostida \`finally\` bo'lsa, qaysi biri birinchi bajariladi?
-    * **Javob:** \`finally\` bloki baribir birinchi bajariladi, shundan so'ng \`break\` yoki \`continue\` amalga oshib sikl boshqariladi.
-12. **Savol:** Label-lardan foydalanish bo'yicha eng yaxshi amaliyotlar (best practices) qanday?
-    * **Javob:** Label-lar kod o'qilishini qiyinlashtirishi sababli, ulardan iloji boricha qochish kerak. Buning o'rniga ichki siklni alohida yordamchi funksiyaga ajratib, \`return\` orqali erta chiqishni amalga oshirish tavsiya etiladi.
-
----
-
-## 6. 🛠️ Amaliy Topshiriqlar
-
-Bu bo'limda \`break\` va \`continue\` operatorlari duch kelganda bajarilish oqimining qanday o'zgarishini vizual diagramma orqali tahlil qilamiz.
-
-### Bajarilish Oqimi Diagrammasi (Control Flow)
+Quyida \`break\` va \`continue\` oqim boshqaruvi (Control Flow) qanday ishlashi ko'rsatilgan:
 
 \`\`\`mermaid
 graph TD
-    Start([Sikl boshlanishi]) --> Check{Shartni tekshirish}
-    Check -- True --> LoopBody[Sikl tanasidagi kodlarni bajarish]
-    Check -- False --> End([Sikl tugashi])
-    
-    LoopBody --> Decision{Break yoki Continue?}
-    
-    Decision -- break --> Terminate[Sikl to'liq to'xtatiladi]
-    Terminate --> End
-    
-    Decision -- continue --> Skip[Joriy iteratsiya qolgan qismi o'tkazib yuboriladi]
-    Skip --> Update[Sikl yangilanishi / i++]
-    Update --> Check
-    
-    Decision -- Hech biri --> Normal[Iteratsiyani odatdagidek tugatish]
-    Normal --> Update
+    A[Sikl boshlanishi] --> B{Shart bajariladimi?}
+    B -- Yo'q --> C[Sikl tugaydi]
+    B -- Ha --> D[Iteratsiya boshlanadi]
+    D --> E{break bormi?}
+    E -- Ha --> C
+    E -- Yo'q --> F{continue bormi?}
+    F -- Ha --> G[Qolgan kod tashlab o'tiladi]
+    G --> H[Update: i++]
+    F -- Yo'q --> I[Qolgan kod bajariladi]
+    I --> H
+    H --> B
 \`\`\`
-
-> [!TIP]
-> Murakkab shartlar bilan ishlashda kodingiz tushunarli bo'lishi uchun ko'p ichma-ich \`if\` bloklaridan qoching. Buning o'rniga \`continue\` yordamida noto'g'ri qiymatlarni sikl boshidayoq filtrlab tashlang (**Guard Clauses** pattern).
-
----
-
-## 7. 📝 12 ta Mini Test
-
-Ushbu mavzu bo'yicha olgan bilimlaringizni sinab ko'rish uchun mo'ljallangan testlar. Test savollari yordamida mantiqiy amallar, \`break\` va \`continue\` operatorlarining cheklovlari va nozik jihatlarini qayta ko'rib chiqing va mustahkamlang.
-
----
-
-## 8. 🎯 Real Project Case Study
-
-### Tranzaksiyalarni Tasdiqlash va Budjet Limitini Tekshirish Tizimi
-Tasavvur qiling, biz to'lov loglarini qayta ishlovchi tizim yaratyapmiz:
-1. Agar tranzaksiya holati "FAILED" bo'lsa yoki summa 0 dan kichik bo'lsa, uni hisoblamasdan keyingisiga o'tib ketish kerak (\`continue\`).
-2. Agar jami muvaffaqiyatli summa belgilangan budjet limitidan oshib ketadigan bo'lsa, qayta ishlashni darhol to'xtatish kerak (\`break\`).
-
-\`\`\`javascript
-const transactions = [
-  { id: 1, amount: 200, status: "SUCCESS" },
-  { id: 2, amount: -50, status: "SUCCESS" },  // Xato summa, o'tkazib yuboriladi
-  { id: 3, amount: 400, status: "FAILED" },   // FAILED status, o'tkazib yuboriladi
-  { id: 4, amount: 500, status: "SUCCESS" },
-  { id: 5, amount: 150, status: "SUCCESS" }   // Limitdan oshsa qo'shilmaydi
-];
-
-const BUDGET_LIMIT = 800;
-
-function processTransactions(list, limit) {
-  let processedSum = 0;
-  const approvedList = [];
-  
-  for (let i = 0; i < list.length; i++) {
-    const tx = list[i];
-    
-    // 1. Guard Clause: Noto'g'ri yoki muvaffaqiyatsiz tranzaksiyalarni o'tkazib yuborish
-    if (tx.status === "FAILED" || tx.amount <= 0) {
-      console.log(\`Tranzaksiya #\${tx.id} o'tkazib yuborildi (Muammo bor)\`);
-      continue; 
-    }
-    
-    // 2. Limitni oldindan tekshirish (Early Exit)
-    if (processedSum + tx.amount > limit) {
-      console.log(\`Budjet limiti (\${limit}$) oshib ketdi. Qayta ishlash to'xtatildi.\`);
-      break; 
-    }
-    
-    // Muvaffaqiyatli qayta ishlangan tranzaksiya
-    processedSum += tx.amount;
-    approvedList.push(tx);
-  }
-  
-  return { approvedList, processedSum };
-}
-
-const result = processTransactions(transactions, BUDGET_LIMIT);
-console.log("Muvaffaqiyatli tranzaksiyalar:", result.approvedList);
-console.log("Jami summa:", result.processedSum); // 200 + 500 = 700
-\`\`\`
-
----
-
-## 9. 🚀 Performance va Optimization
-
-### Erta Chiqish (Early Exit) afzalliklari
-Katta hajmdagi massivlarda (masalan, 100,000 element) qidiruv yoki hisob-kitob bajarayotganda \`break\` operatorini ishlatish juda muhimdir. Agar biz qidirayotgan element massivning boshida (masalan, 5-indeksda) joylashgan bo'lsa, \`break\` orqali qolgan 99,995 ta elementni tekshirishdan qutulib qolamiz. Bu CPU resurslarini sezilarli darajada tejaydi.
-
-### Guard Clauses pattern unumdorligi
-Sikl ichida \`continue\` yordamida keraksiz kodlarni chetlab o'tish dasturning xotira yuklamasini kamaytiradi. Chunki keraksiz obyektlar yaratilishi yoki og'ir ichki funksiyalar chaqirilishi oldi olinadi.
-
-### Sikl tanlash qoidasi
-Agar sizga faqat massiv elementlaridan chiqib ketish emas, balki massivni mutatsiyaga uchratish yoki yangi massiv hosil qilish kerak bo'lsa va \`break\`/\`continue\` kerak bo'lmasa, optimal asbob sifatida \`.map()\`, \`.filter()\` kabi funksional metodlarni tanlang. Ammo siklni istalgan nuqtada to'xtatish talab qilinsa, an'anaviy \`for...of\` yoki \`for\` sikllari eng tez va to'g'ri yo'ldir.
-
----
-
-## 10. 📌 Cheat Sheet
-
-| Loop turi | \`break\` qo'llab-quvvatlanishi | \`continue\` qo'llab-quvvatlanishi | Natija / Xususiyati |
-| :--- | :--- | :--- | :--- |
-| **\`for\`** | Ha | Ha | Eng ko'p ishlatiladigan an'anaviy sikl |
-| **\`while\`** | Ha | Ha | Diqqat qiling: \`continue\`dan oldin counter oshirilishi shart |
-| **\`do...while\`** | Ha | Ha | \`continue\` ishlatilganda pastdagi shartga o'tadi |
-| **\`for...in\` / \`for...of\`**| Ha | Ha | Obyektlar va massivlarni o'qishda juda qulay |
-| **\`forEach\` / \`map\`** | Yo'q | Yo'q | \`SyntaxError: Illegal break statement\` beradi |
-| **\`switch\`** | Ha | Yo'q | Faqat \`break\` case-ni yakunlash uchun ishlatiladi |
 `,
   exercises: [
-  {
-    "id": 1,
-    "title": "To'lovlarni Filtrlash",
-    "instruction": "Berilgan massiv ichidagi barcha musbat sonlarni qo'shib jami summani hisoblovchi `sumValidTransactions(transactions)` funksiyasini yozing. Agar tranzaksiya manfiy yoki nol bo'lsa, `continue` yordamida uni o'tkazib yuboring.",
-    "startingCode": "function sumValidTransactions(transactions) {\n  let total = 0;\n  for (let i = 0; i < transactions.length; i++) {\n    // Kodni shu yerda yozing\n  }\n  return total;\n}\n",
-    "hint": "if (transactions[i] <= 0) continue; orqali manfiy yoki nol qiymatlarni o'tkazib yuboring.",
-    "test": "const sandbox = new Function(code + '; return sumValidTransactions;');\nconst fn = sandbox();\nconst res = fn([100, -50, 200, 0, 300]);\nif (res === 600) return null;\nreturn 'Musbat tranzaksiyalar yig\\'gindisi noto\\'g\\'ri hisoblandi. Kutilgan: 600, olingan: ' + res;"
-  },
-  {
-    "id": 2,
-    "title": "Birinchi Juft Sonni Topish",
-    "instruction": "Sonlar massivi `numbers` berilgan. Massiv ichidagi birinchi juft sonni topib qaytaradigan `findFirstEven(numbers)` funksiyasini yozing. Juft son topilishi bilan sikl `break` yordamida to'xtatilishi kerak. Agar juft son topilmasa, `null` qaytarsin.",
-    "startingCode": "function findFirstEven(numbers) {\n  let firstEven = null;\n  for (let i = 0; i < numbers.length; i++) {\n    // Kodni shu yerda yozing\n  }\n  return firstEven;\n}\n",
-    "hint": "if (numbers[i] % 2 === 0) { firstEven = numbers[i]; break; } shartidan foydalaning.",
-    "test": "if (!code.includes('break')) return 'Sikldan chiqish uchun break operatoridan foydalanilmadi';\nconst sandbox = new Function(code + '; return findFirstEven;');\nconst fn = sandbox();\nconst res1 = fn([1, 3, 5, 8, 9, 10]);\nconst res2 = fn([1, 3, 5, 7]);\nif (res1 === 8 && res2 === null) return null;\nreturn 'findFirstEven funksiyasi birinchi juft sonni to\\'g\\'ri topmadi yoki topilmaganda null qaytarmadi';"
-  },
-  {
-    "id": 3,
-    "title": "Limitgacha Qo'shish",
-    "instruction": "Sizga butun sonlar massivi `numbers` va maksimal limit qiymati `limit` berilgan. Massiv elementlarini ketma-ket qo'shib boring. Agar joriy elementni qo'shganda jami yig'indi `limit` dan oshib ketadigan bo'lsa (oshgan holatda), siklni `break` yordamida to'xtating va o'sha paytdagi yig'indini qaytaring. Limitdan oshib ketgan oxirgi element yig'indiga qo'shilmasligi kerak.",
-    "startingCode": "function sumUntilLimit(numbers, limit) {\n  let total = 0;\n  for (let i = 0; i < numbers.length; i++) {\n    // Kodni shu yerda yozing\n  }\n  return total;\n}\n",
-    "hint": "if (total + numbers[i] > limit) break; sharti yordamida limitdan oshishini oldindan tekshiring.",
-    "test": "const sandbox = new Function(code + '; return sumUntilLimit;');\nconst fn = sandbox();\nconst res1 = fn([10, 20, 30, 40], 50);\nconst res2 = fn([5, 15, 25], 100);\nif (res1 === 30 && res2 === 45) return null;\nreturn 'sumUntilLimit funksiyasi limitga yetganda to\\'g\\'ri to\\'xtamadi yoki noto\\'g\\'ri qiymat qaytardi';"
-  }
-]
-,
+    {
+      id: 1,
+      title: "Birinchi manfiy sonni topish",
+      instruction: "Sizga sonlar ro'yxati (massiv) berilgan. Dastlabki manfiy sonni topishingiz va o'sha manfiy sonni qaytarishingiz kerak. U topilgandan so'ng tsiklni darhol to'xtating (break). Agar massivda manfiy son bo'lmasa, `null` qaytaring.",
+      startingCode: "function firstNegative(arr) {\n  let result = null;\n  for(let i=0; i<arr.length; i++) {\n    // kodingizni shu yozing\n  }\n  return result;\n}",
+      hint: "if (arr[i] < 0) qilib tekshiring va result = arr[i]; qilib break qiling.",
+      test: "const sandbox = new Function(code + '; return firstNegative;'); const fn = sandbox(); const r1 = fn([1, 2, -3, 4, -5]); if (r1 !== -3) return 'Xato: kutilgan javob -3, olingan javob: ' + r1; const r2 = fn([1, 2]); if (r2 !== null) return 'Xato: kutilgan javob null, olingan javob: ' + r2; return null;"
+    },
+    {
+      id: 2,
+      title: "Nolarni o'tkazib yuborish",
+      instruction: "Sonlardan iborat massivdan barcha nollarni o'tkazib yuborib (continue), faqat noldan farqli sonlar ko'paytmasini toping. Bo'sh massiv yoki faqat nol bo'lsa 1 qaytsin.",
+      startingCode: "function multiplyNonZeros(arr) {\n  let product = 1;\n  for (let num of arr) {\n    // kodingizni bu yerga yozing\n  }\n  return product;\n}",
+      hint: "if (num === 0) continue; dan foydalaning.",
+      test: "const sandbox = new Function(code + '; return multiplyNonZeros;'); const fn = sandbox(); const r1 = fn([1, 0, 2, 0, 3]); if(r1 !== 6) return 'Xato: [1,0,2,0,3] uchun javob 6 bo\\'lishi kerak.'; const r2 = fn([0, 0]); if(r2 !== 1) return 'Xato: [0,0] uchun 1 qaytishi kerak.'; return null;"
+    },
+    {
+      id: 3,
+      title: "Matndan to'xtash so'zini qidirish",
+      instruction: "So'zlardan iborat massiv berilgan. Barcha so'zlarni xuddi o'sha ketma-ketlikda yangi massivga qo'shib boring, toki 'STOP' so'zi chiqquncha. 'STOP' so'ziga duch kelganda siklni to'xtating. 'STOP' va undan keyingi so'zlar yangi massivga kirmasligi kerak.",
+      startingCode: "function processWords(words) {\n  let result = [];\n  for(let i=0; i<words.length; i++) {\n    // kodingizni bu yerga yozing\n  }\n  return result;\n}",
+      hint: "if(words[i] === 'STOP') break; dan foydalaning.",
+      test: "const sandbox = new Function(code + '; return processWords;'); const fn = sandbox(); const r1 = fn(['salom', 'dunyo', 'STOP', 'bugun', 'zo\\'r']); if(r1.length !== 2 || r1[0] !== 'salom') return 'Xato ishladi, kutilgan: [\"salom\", \"dunyo\"]'; return null;"
+    },
+    {
+      id: 4,
+      title: "Toq sonlarni yig'ish",
+      instruction: "Sizga sonlar massivi berilgan. Faqat toq sonlarni qo'shib boruvchi yig'indini qaytaring. Juft sonlarni `continue` yordamida o'tkazib yuboring.",
+      startingCode: "function sumOdds(arr) {\n  let sum = 0;\n  for (let num of arr) {\n    // kodingizni bu yerga yozing\n  }\n  return sum;\n}",
+      hint: "if (num % 2 === 0) continue; dan foydalaning.",
+      test: "const sandbox = new Function(code + '; return sumOdds;'); const fn = sandbox(); if (fn([1, 2, 3, 4, 5]) !== 9) return 'Xato ishladi'; return null;"
+    },
+    {
+      id: 5,
+      title: "Limitgacha bo'lgan harflar",
+      instruction: "Satr (string) berilgan. Uning belgilarini (harflarini) bittadan o'qib, 'x' harfi uchraguncha qancha harf o'qilganini qaytaring. 'x' ko'rilishi bilan qolganini o'qishni bekor qiling.",
+      startingCode: "function countBeforeX(str) {\n  let count = 0;\n  for(let i=0; i<str.length; i++) {\n    // kodingizni bu yerga yozing\n  }\n  return count;\n}",
+      hint: "if (str[i] === 'x') break; ni ishlatib tsiklni to'xtating va countni qaytaring.",
+      test: "const sandbox = new Function(code + '; return countBeforeX;'); const fn = sandbox(); if (fn('helloxworld') !== 5) return 'Xato'; return null;"
+    },
+    {
+      id: 6,
+      title: "Null va Undefined'ni chetlab o'tish",
+      instruction: "Aralash ma'lumotli massiv berilgan. Massivdagi qiymatlar ichida null va undefined lar bo'lsa ularni continue yordamida tashlab o'tib, qolgan elementlarni sonini (length emas, faqat mavjud qiymatlar) hisoblang.",
+      startingCode: "function countValid(arr) {\n  let validCount = 0;\n  for(let i=0; i<arr.length; i++) {\n    // kodingiz\n  }\n  return validCount;\n}",
+      hint: "if (arr[i] === null || arr[i] === undefined) continue; orqali tashlab o'ting.",
+      test: "const sandbox = new Function(code + '; return countValid;'); const fn = sandbox(); if (fn([1, null, 2, undefined, 3]) !== 3) return 'Xato ishladi'; return null;"
+    },
+    {
+      id: 7,
+      title: "Sirli Raqam Qidiruvi",
+      instruction: "0 dan 100 gacha bo'lgan raqamlar massividan, aniq bitta '77' sonini topishingiz kerak. Dastur uni topgach, \"Topdim\" degan so'zni qaytarsin va darhol siklni yopsin (break). Agar massiv oxirigacha topolmasa \"Topilamadi\" qaytarsin.",
+      startingCode: "function find77(arr) {\n  let msg = 'Topilamadi';\n  for(let i=0; i<arr.length; i++) {\n    // kodingiz\n  }\n  return msg;\n}",
+      hint: "arr[i] === 77 shartga tushsa msg = 'Topdim'; va break;. Sikl tashqarisida msg ni qaytaring.",
+      test: "const sandbox = new Function(code + '; return find77;'); const fn = sandbox(); if (fn([1, 2, 77, 8]) !== 'Topdim') return 'Xato 77 bo\\'lganda Topdim chiqishi kerak'; if (fn([1,2,3]) !== 'Topilamadi') return 'Xato'; return null;"
+    },
+    {
+      id: 8,
+      title: "Faqat stringlarni birlashtirish",
+      instruction: "Massivda turli tiplar bor (string, number, boolean). Sikl yordamida faqat string tiplarini bitta matnga qo'shib boring (masalan \"abc\"). Boshqa tiplarni continue bilan tashlab o'ting.",
+      startingCode: "function joinStrings(arr) {\n  let result = '';\n  for(let i=0; i<arr.length; i++) {\n    // kodingiz\n  }\n  return result;\n}",
+      hint: "typeof arr[i] !== 'string' bo'lsa continue; aks holda result += arr[i];",
+      test: "const sandbox = new Function(code + '; return joinStrings;'); const fn = sandbox(); if (fn([1, 'a', true, 'b', null, 'c']) !== 'abc') return 'Xato: kutilgan javob \"abc\"'; return null;"
+    },
+    {
+      id: 9,
+      title: "Nested Loops Break (Label ishlatilmaydi)",
+      instruction: "2D massiv (matritsa) berilgan. Matritsa ichidagi massivlarni tekshirganda agar massiv ichida 'BOMB' so'zi bo'lsa, O'SHA ICHKI siklni to'xtating va keyingi qatorga (massivga) o'ting. Qolgan elementlarni summasini hisoblab boring (faqat sonlar bo'lsa).",
+      startingCode: "function calculateSafeMatrix(matrix) {\n  let sum = 0;\n  for(let i=0; i<matrix.length; i++) {\n    for(let j=0; j<matrix[i].length; j++) {\n      if (matrix[i][j] === 'BOMB') {\n        // kodingiz\n      }\n      if (typeof matrix[i][j] === 'number') sum += matrix[i][j];\n    }\n  }\n  return sum;\n}",
+      hint: "if shartini ichiga shunchaki break yozsangiz ichki sikl tugaydi va tashqi sikl davom etadi.",
+      test: "const sandbox = new Function(code + '; return calculateSafeMatrix;'); const fn = sandbox(); const mat = [[1, 2], [1, 'BOMB', 5], [2, 3]]; if (fn(mat) !== 9) return 'Xato ishladi, BOMB dan keyingi elementlar sanalmasligi kerak'; return null;"
+    },
+    {
+      id: 10,
+      title: "Cheksiz while siklini xavfsiz qilish",
+      instruction: "Cheksiz `while(true)` sikli berilgan. Uni xavfsiz tarzda 5 marta aylangandan keyin to'xtating (break yordamida). Sikl ichida count o'zgaruvchisini oshirib boriladi.",
+      startingCode: "function safeWhile() {\n  let count = 0;\n  while(true) {\n    // count ni oshiring, va agar 5 ga yetsa break qiling\n  }\n  return count;\n}",
+      hint: "count++; qiling va if(count === 5) break; ishlating.",
+      test: "const sandbox = new Function(code + '; return safeWhile;'); const fn = sandbox(); if (fn() !== 5) return 'Xato: count 5 ga teng bo\\'lishi kerak'; return null;"
+    }
+  ],
   quizzes: [
-  {
-    "id": 1,
-    "question": "`break` operatorining asosiy vazifasi nima?",
-    "options": [
-      "Siklning faqat joriy iteratsiyasini tashlab ketish",
-      "Siklni darhol va butunlay to'xtatib, undan chiqib ketish",
-      "Funksiyani tugatib, undan qiymat qaytarish",
-      "Dasturdagi barcha xatolarni avtomatik tuzatish"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`break` operatori o'zi joylashgan siklni (yoki switch blokini) darhol to'xtatadi va undan keyingi birinchi kod satriga o'tadi."
-  },
-  {
-    "id": 2,
-    "question": "`continue` operatori nima qiladi?",
-    "options": [
-      "Siklni butunlay to'xtatib yuboradi",
-      "Siklning joriy aylanishini (iteratsiyasini) to'xtatib, navbatdagi aylanishga (iteratsiyaga) o'tadi",
-      "Funksiyadan chiqib ketishni ta'minlaydi",
-      "Sikl tezligini oshirish uchun uni parallel oqimga o'tkazadi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`continue` joriy iteratsiyaning qolgan qismidagi kodlarni bajarishni tashlab o'tadi va siklning keyingi qadamiga (update/condition) o'tadi."
-  },
-  {
-    "id": 3,
-    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nfor (let i = 0; i < 5; i++) {\n  if (i === 2) continue;\n  console.log(i);\n}\n```",
-    "options": [
-      "`0, 1`",
-      "`0, 1, 2, 3, 4`",
-      "`0, 1, 3, 4`",
-      "`3, 4`"
-    ],
-    "correctAnswer": 2,
-    "explanation": "`i` qiymati 2 bo'lganda `continue` ishga tushadi va konsolga chiqarish qismini o'tkazib yuboradi. Natijada 2 dan tashqari hamma raqamlar chiqadi: 0, 1, 3, 4."
-  },
-  {
-    "id": 4,
-    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nfor (let i = 0; i < 5; i++) {\n  if (i === 2) break;\n  console.log(i);\n}\n```",
-    "options": [
-      "`0, 1`",
-      "`0, 1, 3, 4`",
-      "`0, 1, 2`",
-      "`2, 3, 4`"
-    ],
-    "correctAnswer": 0,
-    "explanation": "`i` qiymati 2 bo'lganda `break` ishga tushib, siklni butunlay tugatadi. Shuning uchun faqat 0 va 1 chop etiladi."
-  },
-  {
-    "id": 5,
-    "question": "Quyidagi `while` siklida qanday muammo yuz beradi?\n```javascript\nlet i = 0;\nwhile (i < 5) {\n  if (i === 3) continue;\n  console.log(i);\n  i++;\n}\n```",
-    "options": [
-      "Sintaktik xato (SyntaxError) beradi",
-      "Konsolga `0, 1, 2` chiqadi va dastur tugaydi",
-      "Sikl cheksiz aylanib qoladi (Infinite Loop)",
-      "Konsolga faqat `3` chiqadi"
-    ],
-    "correctAnswer": 2,
-    "explanation": "`i === 3` bo'lganda `continue` bajariladi. Natijada pastdagi `i++` kodi bajarilmay qoladi va `i` o'zgarmasdan har doim 3 bo'lib qoladi, bu esa cheksiz siklga olib keladi."
-  },
-  {
-    "id": 6,
-    "question": "JavaScript-da `break` yoki `continue`ni qayerda ishlatish mumkin emas?",
-    "options": [
-      "`for` sikli ichida",
-      "`while` sikli ichida",
-      "Oddiy `if` sharti ichida (siklga aloqador bo'lmagan holda)",
-      "`do...while` sikli ichida"
-    ],
-    "correctAnswer": 2,
-    "explanation": "`break` va `continue` operatorlari faqat sikllar ichida ishlatilishi mumkin (shuningdek `break`ni `switch` ichida ishlatish mumkin). Ularni sikl bo'lmagan joydagi oddiy `if` ichida ishlatish `SyntaxError` keltirib chiqaradi."
-  },
-  {
-    "id": 7,
-    "question": "Quyidagi massiv metodlarining qaysi biri ichida `break` kalit so'zini ishlatsak `SyntaxError` beradi?",
-    "options": [
-      "Hech birida xato bermaydi",
-      "Faqat `.map()` metodida",
-      "`.forEach()` metodi ichida",
-      "Barcha callback qabul qiluvchi massiv metodlarida (`forEach`, `map`, `filter` va h.k.)"
-    ],
-    "correctAnswer": 3,
-    "explanation": "`forEach`, `map`, `filter` kabi metodlar sikl emas, balki oddiy funksiyalardir. Ularning callback funksiyalari ichida `break` yoki `continue` ishlatilsa, `SyntaxError: Illegal break statement` xatosi chiqadi."
-  },
-  {
-    "id": 8,
-    "question": "`break labelName;` sintaksisi nima uchun ishlatiladi?",
-    "options": [
-      "Faqat birinchi iteratsiyani nomlash uchun",
-      "Ichma-ich joylashgan sikllarda ichki sikldan turib belgilangan tashqi siklni butunlay to'xtatish uchun",
-      "Sikl bajarilish tezligini oshirish uchun",
-      "O'zgaruvchilarga avtomatik qiymat yuklash uchun"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Label (belgi) yordamida tashqi siklni nomlash va ichki sikl ichidan `break labelName;` orqali o'sha belgilangan tashqi siklni butunlay to'xtatish (yoki `continue` orqali keyingi qadamga o'tish) mumkin."
-  },
-  {
-    "id": 9,
-    "question": "`return` va `break` o'rtasidagi asosiy farq nima?",
-    "options": [
-      "`return` faqat siklni to'xtatadi, `break` esa butun funksiyani tugatadi",
-      "`return` butun funksiya bajarilishini tugatib qiymat qaytaradi, `break` esa faqat o'zi joylashgan siklni tugatadi",
-      "Ular mutlaqo bir xil vazifani bajaradi",
-      "`break` faqat `while` siklida, `return` esa faqat `for` siklida ishlatiladi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "`return` joriy funksiyani butunlay tugatadi. `break` esa faqat joriy siklni tugatadi va funksiyaning sikldan keyingi qolgan qismi ishlashda davom etadi."
-  },
-  {
-    "id": 10,
-    "question": "Quyidagi kod bajarilganda konsolga nima chiqadi?\n```javascript\nouter: for (let i = 0; i < 3; i++) {\n  for (let j = 0; j < 3; j++) {\n    if (i === 1 && j === 1) {\n      break outer;\n    }\n    console.log(`i:${i},j:${j}`);\n  }\n}\n```",
-    "options": [
-      "`i:0,j:0` keyin `i:0,j:1` keyin `i:0,j:2` keyin `i:1,j:0`",
-      "`i:0,j:0` keyin `i:0,j:1` keyin `i:0,j:2` keyin `i:1,j:0` keyin `i:1,j:2`",
-      "`i:0,j:0` keyin `i:0,j:1` keyin `i:1,j:0`",
-      "Hech narsa chiqmaydi"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Sikl `i=0` bo'lganda to'liq ishlaydi (`j:0,1,2` chiqadi). Keyin `i=1` bo'lib, `j=0` bo'lganda `i:1,j:0` chiqadi. Ammo `i=1, j=1` bo'lganda `break outer` tashqi siklni tugatadi va kod butunlay to'xtaydi."
-  },
-  {
-    "id": 11,
-    "question": "`do...while` siklida `continue` ishlatilganda nima sodir bo'ladi?",
-    "options": [
-      "Sikl shartini tekshirishga (`while` qismiga) o'tiladi",
-      "Sikl boshidagi birinchi qatorga shartsiz qaytiladi",
-      "Sintaktik xato beradi",
-      "Sikl darhol to'xtaydi"
-    ],
-    "correctAnswer": 0,
-    "explanation": "`do...while` siklida `continue` bajarilganda, joriy iteratsiyaning qolgan qismi o'tkazib yuboriladi va dvigatel pastdagi `while (condition)` shartini tekshirishga o'tadi."
-  },
-  {
-    "id": 12,
-    "question": "Quyidagi massiv metodlaridan qaysi biri ichida `return true` yoki `return false` qilish orqali `break` yoki `continue` kabi erta chiqish effektini hosil qilish mumkin?",
-    "options": [
-      "`.forEach()`",
-      "`.map()`",
-      "`.some()` yoki `.every()`",
-      "Hech qaysi metodda bunday qilib bo'lmaydi"
-    ],
-    "correctAnswer": 2,
-    "explanation": "`.some()` metodi callback `true` qaytargan zaxoti massiv aylanishini to'xtatadi (`break` kabi). `.every()` esa callback `false` qaytargan zaxoti aylanishni to'xtatadi."
-  }
-]
-
+    {
+      id: 1,
+      question: "`break` kalit so'zi siklda qanday vazifani bajaradi?",
+      options: [
+        "Joriy iteratsiyani tashlab o'tadi va keyingisiga o'tadi",
+        "Siklni darhol va butunlay to'xtatib, sikldan chiqadi",
+        "Dasturni butunlay to'xtatadi",
+        "Siklni boshidan boshlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`break` joriy ishlayotgan siklni butunlay yakunlaydi va dastur ishlashi sikldan keyingi qatordan davom etadi."
+    },
+    {
+      id: 2,
+      question: "`continue` kalit so'zi siklda qanday vazifani bajaradi?",
+      options: [
+        "Siklni butunlay to'xtatadi",
+        "Dasturni xatolikka olib keladi",
+        "Joriy iteratsiyani qolgan qismini tashlab o'tib, navbatdagi iteratsiyaga sakraydi",
+        "Sikl ichidagi if shartlarini bekor qiladi"
+      ],
+      correctAnswer: 2,
+      explanation: "`continue` joriy iteratsiyaning (aylanishning) qolgan qismini bajarmay, siklni yangilash (update) va keyingi aylanishga o'tishni ta'minlaydi."
+    },
+    {
+      id: 3,
+      question: "Quyidagi koddan qanday xatolik kelib chiqadi?\n```javascript\n[1, 2, 3].forEach(num => {\n  if (num === 2) break;\n});\n```",
+      options: [
+        "Hech qanday xatolik bo'lmaydi, kod to'g'ri ishlaydi",
+        "TypeError",
+        "SyntaxError: Illegal break statement",
+        "ReferenceError"
+      ],
+      correctAnswer: 2,
+      explanation: "`forEach`, `map`, `filter` kabi array metodlari callback funksiyalar qabul qiladi. Funksiya ichida siklga tegishli bo'lgan `break` yoki `continue` ishlatilsa `SyntaxError` (Sintaktik xato) kelib chiqadi."
+    },
+    {
+      id: 4,
+      question: "`break` va `continue` qaysi tsikllarda ishlashi mumkin?",
+      options: [
+        "Faqat `for` siklida",
+        "Faqat `while` siklida",
+        "`for`, `while`, `do...while`, `for...in`, `for...of`",
+        "Hech qaysi birida ishlata olmaymiz"
+      ],
+      correctAnswer: 2,
+      explanation: "Ushbu ikkala kalit so'zni JavaScript'dagi barcha haqiqiy sikl (loop) bloklari ichida ishlatish mumkin."
+    },
+    {
+      id: 5,
+      question: "Ichma-ich siklda `break` ishlatilsa nima sodir bo'ladi?",
+      options: [
+        "Barcha sikllarni birdaniga to'xtatadi",
+        "Faqat o'zi joylashgan (eng ichki) siklni to'xtatadi",
+        "Faqat tashqi siklni to'xtatadi",
+        "Dastur crash bo'ladi"
+      ],
+      correctAnswer: 1,
+      explanation: "Odatda `break` faqat o'zi tegishli bo'lgan eng yaqin (eng ichki) blokdagi siklni to'xtatadi. Agar tashqi siklni ham to'xtatish kerak bo'lsa Label ishlatish kerak."
+    },
+    {
+      id: 6,
+      question: "Label statement nima?",
+      options: [
+        "O'zgaruvchini saqlash uchun kalit so'z",
+        "HTML teglarini yaratish usuli",
+        "Siklga nom berish mexanizmi (masalan `myLoop: for...`), ichma-ich sikllarni boshqarish uchun ishlatiladi",
+        "CSS dagi z-index analogi"
+      ],
+      correctAnswer: 2,
+      explanation: "Label sikllarni belgilash (nomlash) orqali, ichki sikldan turib to'g'ridan-to'g'ri tashqi siklni `break` yoki `continue` qilish uchun ishlatiladi."
+    },
+    {
+      id: 7,
+      question: "`continue` ni `switch` blokida ishlatsa bo'ladimi?",
+      options: [
+        "Ha, case'larni sakrab o'tish uchun ishlatsa bo'ladi",
+        "Yo'q, `switch` sikl emas va unda `continue` ishlatsa SyntaxError bo'ladi",
+        "Faqat default qismida ishlatish mumkin",
+        "Faqat Node.js da ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "`continue` faqat tsikl bloklari uchun ruxsat etilgan. Switch blokida faqat `break` ishlatiladi."
+    },
+    {
+      id: 8,
+      question: "Nega V8 dvigatelida `break` resursni tejaydi?",
+      options: [
+        "Chunki `break` xotirani birdan format qiladi",
+        "Chunki u qolgan ortiqcha iteratsiyalarni bajarmay, CPU ishini to'xtatadi va boshqa kodga o'tadi",
+        "Chunki u yangi variable yaratadi",
+        "V8 dvigatelida umuman `break` optimizatsiya qilinmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Kerakli natija topilgandan keyin tsiklni davom ettirish CPU resursini bekorga isrof qilishdir. `break` bilan sakrash orqali ortiqcha qadamlardan qutulamiz."
+    },
+    {
+      id: 9,
+      question: "while siklida qanday qilib continue ishlatsak cheksiz tsikl (Infinite Loop) ga aylanib qolish xavfi bor?",
+      options: [
+        "Update qismini (masalan, `i++`) `continue` dan pastga yozganda",
+        "Sikl shartini `true` qilib qo'yganda",
+        "O'zgaruvchini sikldan tashqarida e'lon qilganda",
+        "`continue` ga argument berib yuborganda"
+      ],
+      correctAnswer: 0,
+      explanation: "Agar update jarayoni (`i++`) `continue`dan keyin kelsa, kod o'sha qismga yetib bormay tsikl boshiga qaytadi va shart o'zgarmay doimo to'g'ri qolaveradi."
+    },
+    {
+      id: 10,
+      question: "V8 performance nuqtai nazaridan, nested looplarda Label ishlatishning kamchiligi nimada?",
+      options: [
+        "Memory Leak ga olib keladi",
+        "JavaScript kod ishlamay qoladi",
+        "JIT kompilyatori (TurboFan) uchun control flow ni optimizatsiya qilishni qiyinlashtiradi (bailout xavfi mavjud)",
+        "CSS selectorlariga zarar yetkazadi"
+      ],
+      correctAnswer: 2,
+      explanation: "Label li sakrashlar kodning chiziqli oqimini (control flow) murakkablashtiradi va V8 engine uchun uni optimize qilish qiyinlashadi, natijada de-optimization (bailout) sodir bo'lishi mumkin."
+    },
+    {
+      id: 11,
+      question: "Quyidagi kod natijasi nima bo'ladi?\n```javascript\nfor (let i = 0; i < 3; i++) {\n  if (i === 1) continue;\n  console.log(i);\n}\n```",
+      options: [
+        "0, 1, 2",
+        "0, 2",
+        "1",
+        "1, 2"
+      ],
+      correctAnswer: 1,
+      explanation: "`i` qiymati 1 bo'lganda tsikl keyingi qadamga o'tib ketadi. Shuning uchun logda faqat 0 va 2 paydo bo'ladi."
+    },
+    {
+      id: 12,
+      question: "`break` o'rniga iteratsiyani to'xtatish uchun array metodi sifatida nima ishlatish tavsiya qilinadi?",
+      options: [
+        "Array.prototype.forEach()",
+        "Array.prototype.some() yoki Array.prototype.every()",
+        "Array.prototype.map()",
+        "Array.prototype.filter()"
+      ],
+      correctAnswer: 1,
+      explanation: "`.some()` iteratsiyani to'xtatish uchun callback'dan `true` qaytarsa bo'ladi, bu xuddi `break` kabi butunlay tsikl ishlashini to'xtatadi. Shuning uchun ES6+ da bu usul tavsiya etiladi."
+    }
+  ]
 };
