@@ -1,368 +1,391 @@
 export const callApplyBind = {
   id: "callApplyBind",
-  title: "Call, Apply va Bind Metodlari",
+  title: "Call, Apply va Bind (Deep Dive, Polyfills va Memory)",
   language: "javascript",
   theory: `# Call, Apply va Bind nima?
 
-JavaScriptda ba'zida bir obyektning funksiyasini (metodini) o'g'irlab, uni mutlaqo boshqa obyekt uchun ishlatish kerak bo'lib qoladi. Ya'ni, kimningdir "this" ini boshqa "this" bilan vaqtincha yoki butunlay almashtirish zarurati tug'iladi.
+Dasturlashda ko'pincha bitta obyekt uchun yozilgan metodni boshqa obyekt uchun ishlatish ("Method Borrowing" - metod o'g'irlash) zarurati tug'iladi. Buning uchun JavaScriptda 3 ta tayanch metod mavjud: **call()**, **apply()** va **bind()**.
 
-Aynan shu ishni bajarish uchun JS bizga 3 ta "Sehrli Metod" ni beradi: **call()**, **apply()** va **bind()**.
+Avvalgi tushuncha:
+* **.call(context, arg1, arg2)** — Funksiyani darhol chaqiradi va argumentlarni ketma-ket qabul qiladi.
+* **.apply(context, [arg1, arg2])** — Funksiyani darhol chaqiradi va argumentlarni massivda qabul qiladi.
+* **.bind(context, arg1)** — Funksiyani darhol chaqirmaydi, balki kelajakda ishlatish uchun context va argumentlar qulflangan **yangi funksiya nusxasini** qaytaradi.
 
-### Hayotiy o'xshatish: Ijaraga olingan avtomobil (Rent a Car)
-
-Tasavvur qiling, **Ali** degan haydovchining zo'r funksiyasi (haydash qobiliyati) bor. Ammo uning mashinasi yo'q. **Vali**ning esa zo'r mashinasi (obyekti / "this") bor, lekin haydashni bilmaydi. Alini Valining mashinasiga qanday qilib o'tqazamiz?
-
-* **.call()** — "Mashinangni hoziroq ber, men bitta-bitta odam (parametr) mindirib haydayman."
-* **.apply()** — "Mashinangni hoziroq ber, lekin men odamlarni bitta katta avtobusga (Massivga / Arrayga) solib mindiraman."
-* **.bind()** — "Mashinangning kalitidan nusxa yasab ber, uni o'zim bilan olib ketib, xohlagan paytim minaman."
+Bu boshlang'ich daraja edi. Keling, endi haqiqiy muhandis (Engineer) kabi Engine darajasiga sho'ng'iymiz!
 
 ---
 
-## 1. call() metodi (Darhol chaqirish)
+## 🔬 Deep Dive 1: O'zimizning Polyfill'ni yaratamiz (Under the hood)
 
-\`call()\` funksiyani **darhol ishga tushiradi** va uning ichidagi \`this\` ni birinchi argument qilib ko'rsatilgan obyektga tenglashtiradi. Qolgan argumentlar ketma-ket (vergul bilan) beriladi.
+JavaScript dvigateli (V8) ichida bu metodlar qanday yozilgan? Nega biz funksiyaga boshqa obyektni majburlab tiqa olamiz? Buni tushunishning eng yaxshi yo'li - noldan o'zimizning \`myCall\`, \`myApply\` va \`myBind\` metodlarimizni yaratishdir!
 
-\`\`\`javascript
-const person1 = { name: "Ali" };
-const person2 = { name: "Vali" };
+### 1.1 Array.prototype.myCall ni yaratish
 
-function introduce(age, job) {
-  console.log(\`Men \${this.name}, yoshim \${age} da va men \${job}man.\`);
-}
-
-// introduce() ni to'g'ridan to'g'ri chaqirsak xato beradi (this = undefined/window).
-// Lekin call bilan qilsak:
-
-introduce.call(person1, 20, "Dasturchi"); 
-// Natija: "Men Ali, yoshim 20 da va men Dasturchiman."
-
-introduce.call(person2, 25, "Dizayner");
-// Natija: "Men Vali, yoshim 25 da va men Dizaynerman."
-\`\`\`
-**Qoidasi:** \`fn.call(Obyekt_This, arg1, arg2, arg3)\`
-
----
-
-## 2. apply() metodi (Darhol, lekin Array bilan)
-
-\`apply()\` xuddi \`call()\` bilan bir xil ishlaydi, ya'ni darhol ishga tushadi. Yagona farqi shundaki, argumentlarni ketma-ket yozish o'rniga ularni bitta **Massivga (Array)** o'rab berishingiz kerak. (A - apply = A - Array).
+Bizga ma'lumki, obyekt ichidagi metod chaqirilganda, \`this\` o'sha obyektning o'zini bildiradi (nuqtadan oldingi narsani). Demak, funksiyani uzatilgan obyekt ichiga "vaqtincha metod" qilib qo'shsak, va uni chaqirib keyin o'chirib tashlasak — maqsadga erishamiz!
 
 \`\`\`javascript
-const person3 = { name: "Hasan" };
+Function.prototype.myCall = function(context, ...args) {
+  // 1. Agar context null yoki undefined bo'lsa, global obyekt (window/global) ni olamiz
+  context = context || globalThis; 
 
-function introduce(age, job) {
-  console.log(\`Men \${this.name}, \${age} yoshdaman, \${job}man.\`);
-}
+  // 2. Obyekt ichidagi boshqa propertylar bilan to'qnashib ketmasligi uchun 
+  // takrorlanmas noyob kalit (Symbol) yaratamiz
+  const uniqueId = Symbol();
 
-// call() dagi kabi vergul bilan emas, [] massiv bilan jo'natamiz:
-introduce.apply(person3, [30, "Buxgalter"]); 
-// Natija: "Men Hasan, 30 yoshdaman, Buxgalterman."
-\`\`\`
+  // 3. Funksiyaning O'ZINI (this) shu vaqtinchalik kalitga tenglaymiz
+  context[uniqueId] = this;
 
-✅ **YAXSHI Tomoni:** Agar sizda allaqachon argumentlar massiv ro'yxatida bo'lsa (masalan API dan kelgan), uni \`apply\` ga tiqib yuborish juda oson.
-Masalan: \`Math.max.apply(null, [1, 5, 2, 9])\` qilib massivdagi eng kattasini topsangiz bo'ladi (Garchi hozirgi kunda Spread \`...\` osonroq bo'lsa ham).
+  // 4. Funksiyani shu obyekt orqali ishga tushiramiz (context endi shu obyektga qulflanadi!)
+  const result = context[uniqueId](...args);
 
----
+  // 5. Izni yo'qotamiz (axlatni tozalaymiz)
+  delete context[uniqueId];
 
-## 3. bind() metodi (Kechiktirib chaqirish)
-
-\`bind()\` yuqoridagilarga o'xshamaydi! U funksiyani **darhol ishga tushirmaydi**. Buning o'rniga u o'sha siz bergan obyektga qulflangan **yangi funksiya (nusxa)** qaytaradi. Buni xohlagan paytingizda (masalan tugma bosilganda) ishlata olasiz.
-
-\`\`\`javascript
-const person4 = { name: "Zuhra" };
-
-function sayHi() {
-  console.log("Salom, " + this.name);
-}
-
-// bind darhol ishlamaydi, u faqat YANGI funksiya yasab beradi:
-const sayHiToZuhra = sayHi.bind(person4);
-
-// xohlagan paytda ishlating:
-sayHiToZuhra(); // "Salom, Zuhra"
-\`\`\`
-
-❌ **YOMON (Context yo'qotish):**
-\`\`\`javascript
-const buttonClick = {
-  clickName: "Tugma",
-  click() {
-    console.log(this.clickName + " bosildi!");
-  }
+  return result;
 };
-// Agar setTimeout ga to'g'ridan to'g'ri bersak:
-setTimeout(buttonClick.click, 1000); // "undefined bosildi!" (this yo'qoldi)
-\`\`\`
 
-✅ **YAXSHI (bind orqali qutqarish):**
+// TEST QILAMIZ:
+const obj = { a: 100 };
+function getA(b) { return this.a + b; }
+
+console.log(getA.myCall(obj, 50)); // Natija: 150
+\`\`\`
+Mana, siz hozirgina JavaScriptning eng markaziy API laridan birini noldan kodladingiz! Bu haqiqiy "Method Borrowing" mexanizmi qanday ishlashini to'liq tushuntiradi.
+
+### 1.2 Function.prototype.myBind ni yaratish (Eng ko'p so'raladigan Intervyu savoli)
+
+Bind darhol ishlamaydi, u funksiya qaytarishi kerak. Shuningdek, u oldindan berilgan argumentlarni ham (Currying) yig'ib borishi kerak.
+
 \`\`\`javascript
-// Endi this ni buttonClick obyektiga butunlay qulflab beramiz
-setTimeout(buttonClick.click.bind(buttonClick), 1000); // "Tugma bosildi!"
+Function.prototype.myBind = function(context, ...boundArgs) {
+  const originalFunc = this;
+  
+  return function(...callArgs) {
+    // Ikkala argumentlarni birlashtirib chaqiramiz
+    return originalFunc.apply(context, [...boundArgs, ...callArgs]);
+  };
+};
 \`\`\`
 
 ---
 
-## Mermaid Diagramma (Farqlari)
+## 🧠 Deep Dive 2: V8 Engine, Xotira va Performance (Memory Leaks)
 
-Quyidagi chizmada uchtasining bir-biridan qanday farq qilishi oson tushuntirilgan:
+Ajam dasturchilar \`bind()\` ni hamma joyda, ayniqsa React renderlari yoki tsikllar ichida juda ko'p ishlatishadi. Bu xotiraga qanday ta'sir qiladi?
+
+\`bind()\` chaqirilganda V8 dvigateli har doim **Heap (Xotira)** dan yangi joy ajratadi va yangi **Function Object** yaratadi. U asl funksiyaga pointer (yo'llanma) ni va contextni **Closure** sifatida saqlab qoladi.
+
+❌ **YOMON (Memory Leak xavfi):**
+\`\`\`javascript
+function UserList() {
+  for(let i=0; i<10000; i++) {
+    // Har bir aylanishda XOTIRADAN YANGI FUNKSIYA UCHUN JOY OLINADI!
+    document.getElementById(\`btn-\${i}\`).addEventListener('click', this.handleClick.bind(this));
+  }
+}
+\`\`\`
+Agar bu jarayon ko'p marta takrorlansa, Garbage Collector (xotira tozalagich) qiynalib qoladi va sahifa qota boshlaydi. 
+
+✅ **YAXSHI (Reference saqlash):**
+\`\`\`javascript
+class UserList {
+  constructor() {
+    // Faqat 1 marta yaratiladi va xotirada joy tejaydi
+    this.handleClick = this.handleClick.bind(this); 
+  }
+  
+  render() {
+    for(let i=0; i<10000; i++) {
+      // Yangi funksiya yaratilmaydi, xuddi o'sha joyga pointer beriladi
+      document.getElementById(\`btn-\${i}\`).addEventListener('click', this.handleClick);
+    }
+  }
+}
+\`\`\`
+> **Muhim:** Arrow functionlar ham xuddi shunday. Render ichida yozilgan \`() => this.handleClick()\` ham xuddi \`bind()\` kabi har safar yangi nusxa (instance) yaratadi. 
+
+---
+
+## 🚨 Deep Dive 3: Qiyin holatlar (Edge Cases)
+
+### Holat: bind() qilingan funksiyaga \\\`new\\\` qo\\'shilsa nima bo\\'ladi?
+JavaScriptning qattiq bir qoidasi bor: **\\\`new\\\` operatori \\\`bind\\\` dan kuchliroq!**
+
+\`\`\`javascript
+function Animal(name) {
+  this.name = name;
+}
+
+const fakeContext = { name: "Soxta Jonivor" };
+const BoundAnimal = Animal.bind(fakeContext);
+
+// 1. Oddiy chaqirsak, bind ishlaydi (fakeContext ga ta'sir qiladi)
+BoundAnimal("Kuchuk"); 
+console.log(fakeContext.name); // "Kuchuk"
+
+// 2. Lekin \`new\` bilan chaqirsak, bind O'Z KUCHINI YO'QOTADI!
+const cat = new BoundAnimal("Mushuk");
+console.log(cat.name); // "Mushuk" (Yangi obyekt yaratildi, fakeContext ignor qilindi)
+\`\`\`
+**Sababi:** \`new\` arxitekturada har doim noldan bo'sh obyekt \`{}\` yaratishga va unga funksiyaning \`this\` ini burishga dasturlashtirilgan. Shuning uchun u vaqtincha biriktirilgan \`bind\` ni e'tiborsiz qoldiradi. Bu ayniqsa Class lar bilan ishlashda katta ahamiyatga ega.
+
+---
+
+## Mermaid Diagramma (Polyfill va Xotira Tahlili)
+
+Quyida V8 dvigatelida \`.bind()\` ishlaganda xotirada qanday holat yuz berishi tasvirlangan:
 
 \`\`\`mermaid
 flowchart TD
-    A[Obyekt contextini almashtirish usullari]
+    A[Asl Funksiya (Xotirada 1 ta joy)] --> B(bind chaqirildi)
     
-    A --> B(call)
-    A --> C(apply)
-    A --> D(bind)
+    B --> C{Memory Heap}
+    C -->|Loop ichida chaqirilsa| D[10000 ta Yangi Funksiya Obyektlari yaratiladi ⚠️]
+    C -->|Constructor da 1 marta| E[1 ta Yangi Funksiya Obyekti yaratiladi ✅]
     
-    B --> B1[Darhol ishga tushadi]
-    B1 --> B2[Argumentlar: arg1, arg2, arg3...]
-    
-    C --> C1[Darhol ishga tushadi]
-    C1 --> C2[Argumentlar massivda:  arg1, arg2 ]
-    
-    D --> D1[Darhol ishlamaydi!]
-    D1 --> D2[Yangi bog'langan funksiya qaytaradi]
-    D2 --> D3[Keyinchalik ishlatiladi]
+    D --> F[Garbage Collector qiyinchilikka uchraydi (Performance drop)]
+    E --> G[Optimization va barqarorlik]
 \`\`\`
 
 ---
 
-## 🎙 Intervyu savollari
+## 🎙 Murakkab Intervyu Savollari (Senior daraja)
 
-**1. Call, Apply va Bind o'rtasidagi asosiy farq nima?**
-**Javob:** \`call\` va \`apply\` funksiyani darhol chaqiradi va bajaradi. Farqi \`call\` parametrlarini vergul bilan, \`apply\` esa massiv qilib kutadi. \`bind\` esa funksiyani bajarmaydi, u kelajakda ishlatish uchun context (this) ga qulflangan yangi funksiya nusxasini qaytaradi.
+**1. apply va call qaysi holatlarda bir-biridan sekinroq yoki tezroq ishlaydi?**
+**Javob:** Tarixan \`apply\` ga qaraganda \`call\` biroz tezroq (micro-optimizations) ishlagan, chunki dvigatel massivni iteratsiya qilib ochishga vaqt sarflamas edi. Ammo hozirgi zamonaviy V8 dvigatellari (TurboFan va hokazo) ularning ikkalasini ham inline darajasida optimallashtiradi, shuning uchun tezlikdagi farq sezilarli emas. Asosiy e'tiborni qulaylikka (Spread operator yoki Massiv kerakligiga) qaratish lozim.
 
-**2. Obyektning metodini setTimeout ichiga berganda nega undefined chiqadi va yechim nima?**
-**Javob:** Callback funksiya sifatida metod uzatilganda uning "this" qismi yo'qoladi va window ga qulflanadi. Yechimi: \`setTimeout(obj.method.bind(obj), 1000)\` orqali context ni bog'lab (qulflab) qaytarish.
+**2. Ikkita .bind() ni ketma-ket yozsak qaysi biri ishlaydi? ( Masalan: fn.bind(A).bind(B) )**
+**Javob:** Faqatgina BIRINCHI \`bind\` ishlaydi! JS da birinchi marta \`bind\` chaqirilganda u o'sha contextga qulflangan yopiq closure funksiyasini qaytaradi. Keyingi chaqirilgan \`bind\`lar bu qulfni ocha olmaydi, ular shunchaki avvalgi bind qilingan funksiyani boshqa context bilan ishga tushirishga urinadi, lekin asl kontekst o'zgarmay qoladi.
 
-**3. Arrow function larda call, apply yoki bind ishlata olamizmi?**
-**Javob:** Yo'q! Arrow funksiyalarning o'zining mutlaqo "this" i yo'q bo'lganligi sababli, siz ularni call/apply/bind yordamida ham zo'rlab almashtira olmaysiz. Ular doim e'lon qilingan paytdagi tashqi this ni ishlatishadi.`,
+**3. Arrow funksiyani call orqali o'zgartira olasizmi? Unda myCall qanday reaksiya qiladi?**
+**Javob:** Yo'q, o'zgartirib bo'lmaydi. Arrow funksiyalarning \`this\` pointeri yo'q, u leksikal jihatdan yuqoridagi contextni oladi. Agar \`myCall\` polyfill ni ishlatib qarasak, arrow funksiya chaqirilganda, garchi biz uni o'z obyektimizga biriktirib chaqirsak ham, arrow funksiya baribir tashqi (lexical) \`this\` ni qaytaraveradi. 
+`,
   exercises: [
     {
       id: 1,
-      title: "Call metodidan foydalanish",
-      instruction: "'person' obyekti bor ({name: 'Vali'}). 'sayName' funksiyasi ichidagi this.name ni 'person' obyekti orqali call qilib chaqiring va res ga o'zlashtiring.",
-      startingCode: "const person = { name: 'Vali' };\nfunction sayName() { return this.name; }\nlet res = // shu yerda call() ishlating",
-      hint: "sayName.call(person);",
-      test: "if (typeof res === 'undefined' || res !== 'Vali') throw new Error('Call metodi noto\'g\'ri ishlatildi');"
+      title: "myCall yaratilishi tushunchasi",
+      instruction: "Aytaylik, obj.myMethod() ni ishga tushirish orqali this = obj bo'ladi. myCall mexanizmini to'g'ri ishlashi uchun getAge funksiyasini user obyektiga qo'shish va uni ishga tushirish kerak. Resutl (res) o'zgaruvchisiga natijani tenglang.",
+      startingCode: "const user = { age: 30 };\nfunction getAge() { return this.age; }\n// QADAM 1: getAge ni user ga vaqtinchalik xususiyat (fn) qilib qo'shing.\n// QADAM 2: user.fn() ni chaqirib res ga saqlang.",
+      hint: "user.fn = getAge; let res = user.fn();",
+      test: "if(typeof res === 'undefined' || res !== 30) throw new Error('Polyfill asosini noto\'g\'ri tushundingiz');"
     },
     {
       id: 2,
-      title: "Call va Argumentlar",
-      instruction: "Endi funksiya ismdan tashqari yosh (age) ni ham qabul qiladi. 'Vali' (person obyekti) va '25' (age) ni call orqali yuboring.",
-      startingCode: "const person = { name: 'Vali' };\nfunction introduce(age) { return this.name + ' ' + age; }\nlet res = // call() ni 25 argumenti bilan ishlating",
-      hint: "introduce.call(person, 25);",
-      test: "if (typeof res === 'undefined' || res !== 'Vali 25') throw new Error('Argumentlar call da noto\'g\'ri uzatildi');"
+      title: "myApply polyfill simulyatsiyasi",
+      instruction: "Function.prototype ga myApply metodini yozamiz. U array kutadi. Kodni o'zgartiring va args orqali kelgan massivni yoyib (...) chaqiring.",
+      startingCode: "Function.prototype.myApply = function(ctx, argsArray = []) {\n  ctx.fn = this;\n  // ctx.fn ni argsArray bilan qanday chaqirasiz? Natijani qaytaring (return)\n  \n};\nlet r = function(a, b) { return a + b + this.v; }.myApply({v: 10}, [5, 5]);",
+      hint: "return ctx.fn(...argsArray);",
+      test: "if(r !== 20) throw new Error('Spread operatoridan noto\'g\'ri foydalandingiz');"
     },
     {
       id: 3,
-      title: "Apply metodidan foydalanish (Massiv bilan)",
-      instruction: "Xuddi shu introduce funksiyasi, lekin endi apply ishlatishingiz kerak. person ni uzating, 25 yoshni esa massiv ichida yozing [25].",
-      startingCode: "const person = { name: 'Vali' };\nfunction introduce(age) { return this.name + ' ' + age; }\nlet res = // apply() ishlating",
-      hint: "introduce.apply(person, [25]);",
-      test: "if (typeof res === 'undefined' || res !== 'Vali 25') throw new Error('Apply metodi yoki massiv noto\'g\'ri yozildi');"
+      title: "Ikki marta bind qulflanishi",
+      instruction: "Savollarda ko'rganimizdek, fn.bind(A).bind(B) holatida this faqat A ga qulflanadi. Buni test qilamiz. Natijani getName() dan kelayotgan res o'zgaruvchisiga tekshiring.",
+      startingCode: "const A = { name: 'A' };\nconst B = { name: 'B' };\nfunction fn() { return this.name; }\nconst bound = fn.bind(A).bind(B);\nlet res = // bound ni chaqiring",
+      hint: "bound()",
+      test: "if(res !== 'A') throw new Error('Ikkinchi bind e\'tiborsiz qolishini tushunmadingiz');"
     },
     {
       id: 4,
-      title: "Math.max va Apply hiylasi",
-      instruction: "Bizda oddiy massiv arr = [5, 2, 9, 1] bor. Math.max ga apply orqali shu massivni jo'nating. Math.max ning 'this' qismiga null yozishingiz mumkin (chunki unga this kerak emas).",
-      startingCode: "let arr = [5, 2, 9, 1];\nlet maxNum = // Math.max.apply(null, arr) kabi ishlating",
-      hint: "Math.max.apply(null, arr)",
-      test: "if (typeof maxNum === 'undefined' || maxNum !== 9) throw new Error('Math.max.apply ishlamadi');"
+      title: "new operatori va Bind to'qnashuvi",
+      instruction: "Bu juda og'ir edge case! Bind qilingan funksiyani new bilan chaqirganda context o'lishini o'rgandik. Kod ishlashi uchun newBound ga new kalit so'zi bilan murojaat qiling va uning color xususiyatini oling.",
+      startingCode: "function Car(color) { this.color = color; }\nconst ctx = { color: 'Red' };\nconst boundCar = Car.bind(ctx);\nlet res = // boundCar orqali Blue mashina yasang va uning color ini oling (new operatorini unutmang)",
+      hint: "new boundCar('Blue').color",
+      test: "if(res !== 'Blue') throw new Error('new operatori qanday qilib bind ni yo\'q qilishini tushunmadingiz');"
     },
     {
       id: 5,
-      title: "Bind - Kalitdan nusxa olish",
-      instruction: "'sayMyName' funksiyasiga 'person' obyektini bind orqali qulflab, qaytgan YANGI funksiyani 'boundFunc' degan o'zgaruvchiga saqlang. (Uni chaqirmang!)",
-      startingCode: "const person = { name: 'Jamshid' };\nfunction sayMyName() { return this.name; }\nlet boundFunc = // bind ishlating",
-      hint: "sayMyName.bind(person);",
-      test: "if (typeof boundFunc !== 'function' || boundFunc() !== 'Jamshid') throw new Error('Bind yangi funksiya qaytarishi kerak edi');"
+      title: "Hard-Binding Pattern (Qattiq biriktirish)",
+      instruction: "Bind metodisiz, closure yordamida funksiyani ma'lum bir contextga qattiq biriktiradigan 'hardBind' funksiyasini yozing. U qabul qilgan fn va ctx ni closure ichida call bilan chaqirishi kerak.",
+      startingCode: "function hardBind(fn, ctx) {\n  return function(...args) {\n    // fn ni ctx da call/apply orqali ishga tushiring va qaytaring\n    \n  }\n}\nconst res = hardBind(function(a) { return this.x + a; }, {x: 10})(5);",
+      hint: "return fn.apply(ctx, args);",
+      test: "if(res !== 15) throw new Error('Hard binding mexanizmini to\'g\'ri amalga oshirmadingiz');"
     },
     {
       id: 6,
-      title: "Bind orqali yashiringan argumentlar (Currying)",
-      instruction: "Bind nafaqat this ni, balki argumentlarni ham qulflashi mumkin! multiply funksiyasiga null (this uchun) va 2 raqamini bind qiling. Endi u doim 2 ga ko'paytiradigan double funksiyasiga aylanadi.",
-      startingCode: "function multiply(a, b) { return a * b; }\nlet double = multiply.bind(null, 2);\nlet res = // double ni 5 bilan chaqiring",
-      hint: "double(5)",
-      test: "if (res !== 10) throw new Error('Bind orqali currying noto\'g\'ri ishlatildi');"
+      title: "Memory leak oldini olish",
+      instruction: "Har safar render chaqirilganda .bind(this) yozish yomon dedik. Class ichida render ishlatganda handleClick metodiga bind funksiyasi konstruktorda BIR marta qulflanishini yozing.",
+      startingCode: "class UI {\n  constructor() {\n    // shu yerda this.click ni qulflang\n    \n  }\n  click() { return this.id; }\n}\nlet obj = new UI();",
+      hint: "this.click = this.click.bind(this);",
+      test: "const ast = arguments[0]; if(!ast.includes('this.click = this.click.bind(this)')) throw new Error('Konstruktorda bind yozish amaliyoti tushirib qoldirildi');"
     },
     {
       id: 7,
-      title: "O'zining kontekstini asrash",
-      instruction: "setTimeout ichida obyekt metodini ishlatish qiyin bo'lishini ko'rdik. 'obj.greet' metodini setTimeout ga uzatayotib uning oxirida .bind(obj) ni tirkab keting (setTimeout 100ms bo'lsin).",
-      startingCode: "let success = false;\nconst obj = { name: 'A', greet() { if(this.name === 'A') success = true; } };\n// setTimeout ga obj.greet ni qulflab yuboring\nsetTimeout(/* yozing */, 100);",
-      hint: "setTimeout(obj.greet.bind(obj), 100)",
-      test: "const ast = arguments[0]; if(!ast.includes('.bind(')) throw new Error('bind ishlatilmadi');"
+      title: "Currying myBind ichida",
+      instruction: "bind nafaqat this ni saqlaydi, balki args larni ham biriktiradi (Currying). myBind da args qanday birlashishini tekshiring. a massiv va b massivni yig'indi qilib qaytaring.",
+      startingCode: "function sum(a, b) { return a + b; }\n// Faraz qilaylik, myBind ichidamiz\nlet boundArgs = [10]; // birinchi o'tilgan parametr\nlet callArgs = [20];  // keyin chaqirilgan parametr\nlet finalArgs = // ikkala massivni Spread bilan bitta massivga birlashtiring",
+      hint: "[...boundArgs, ...callArgs]",
+      test: "if(finalArgs.length !== 2 || finalArgs[0]!==10 || finalArgs[1]!==20) throw new Error('Massivlarni birlashtirishda xato (Spread operatori kerak)');"
     },
     {
       id: 8,
-      title: "Boshqa obyekt usulini \\'o\\'g\\'irlash\\'",
-      instruction: "Davlating yordamchi metodini boshqa davlat uchun call qiling. 'uzb.say()' ni 'eng' obyekti bilan chaqiring.",
-      startingCode: "const uzb = { lang: 'UZ', say() { return this.lang; } };\nconst eng = { lang: 'EN' };\nlet res = // call orqali eng obyektiga moslashtiring",
-      hint: "uzb.say.call(eng);",
-      test: "if (typeof res === 'undefined' || res !== 'EN') throw new Error('Method borrowing (o\'g\'irlash) ishlamadi');"
+      title: "Method Borrowing Arrays",
+      instruction: "NodeList yoki Arguments kabi objectlardan oddiy Array ga tegishli .slice() ni qanday ishlatamiz? [].slice.call() usulini sinab ko'ramiz. obj array-like, unga slice qo'llang.",
+      startingCode: "const obj = { 0: 'A', 1: 'B', length: 2 };\nlet res = // [].slice ni call bilan obj ga yuboring",
+      hint: "[].slice.call(obj);",
+      test: "if(!Array.isArray(res) || res[0] !== 'A') throw new Error('Method borrowing arraylarda xato qilingan');"
     },
     {
       id: 9,
-      title: "Arrow function va Call (Xato kutish)",
-      instruction: "Arrow function larda call() ishlata olamizmi? Kodda sinab ko'ramiz. 'arrowFunc.call(person)' orqali chaqiring va natijani res ga tenglang. Natija 'Bob' emas, 'undefined' chiqadi.",
-      startingCode: "const person = { name: 'Bob' };\nconst arrowFunc = () => { return this.name; };\nlet res = // arrowFunc ni call orqali chaqiring",
-      hint: "arrowFunc.call(person);",
-      test: "if (res === 'Bob') throw new Error('Arrow function this ni olmaydi!'); if (res !== undefined) throw new Error('call ishlating');"
+      title: "setTimeout va This qutqaruv operatsiyasi",
+      instruction: "setTimeout API o'ziga berilgan callbackni darhol ishga tushirmasdan, global muhitda yurgizadi. Qanday qilib uni asrab qolasiz?",
+      startingCode: "let ok = false;\nconst timer = { val: true, run() { ok = this.val; } };\n// setTimeout ga run metodini asralgan(bind) holatda bering\nsetTimeout(/* yozing */, 10);",
+      hint: "setTimeout(timer.run.bind(timer), 10)",
+      test: "const ast = arguments[0]; if(!ast.includes('bind(')) throw new Error('bind yozish esdan chiqdi');"
     },
     {
       id: 10,
-      title: "Ko'p argumentlar va Apply",
-      instruction: "'concatWords' uchta argument kutadi. 'apply' yordamida 'words' massivini uchinchi parametr emas, balki to'g'ridan to'g'ri to'kib (apply xususiyati orqali) jo'nating. Context qismiga null yozing.",
-      startingCode: "function concatWords(a, b, c) { return a + b + c; }\nconst words = ['A', 'B', 'C'];\nlet res = // apply() dan foydalaning",
-      hint: "concatWords.apply(null, words);",
-      test: "if (res !== 'ABC') throw new Error('apply argumentlarni yoymadi');"
+      title: "Context null bo'lganda (Edge Case)",
+      instruction: "Agar call() dagi birinchi argument null bo'lsa qat'iy (strict mode) bo'lmagan holatda kimning obyekti this ga aylanadi? Javob: globalThis/window. return globalThis === this; ni qaytaradigan funksiyani null bilan call qiling.",
+      startingCode: "function checkGlobal() { return this === globalThis; }\nlet res = // checkGlobal ni null context bilan call qiling",
+      hint: "checkGlobal.call(null);",
+      test: "if(res !== true) throw new Error('Null berilganda Global window obyekt bo\'lishi kerak');"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Call va Apply o'rtasidagi asosiy farq nima?",
+      question: "Method Borrowing (Metod o'g'irlash) deganda dvigatel (Engine) darajasida aslida nima sodir bo'ladi?",
       options: [
-        "Call tezroq ishlaydi",
-        "Call argumentlarni ketma-ket qabul qiladi (arg1, arg2), Apply esa massiv qabul qiladi ([arg1, arg2])",
-        "Apply faqat Arrow funksiyalar bilan ishlaydi",
-        "Farqi yo'q"
+        "Metod jismonan boshqa obyektga ko'chirib yoziladi",
+        "Funksiya ishga tushirilayotgan paytda faqatgina uning Execution Context idagi 'this' ko'rsatkichi (pointer) boshqa obyekt manziliga burib qo'yiladi xolos",
+        "Bu xavfli xakerlik hujumi (XSS) turiga kiradi",
+        "Yangi Class yaratiladi"
       ],
       correctAnswer: 1,
-      explanation: "A harfi bilan eslab qoling: Apply = Array. Qolgan hamma narsasi bir xil, ikkalasi ham darhol ishlaydi."
+      explanation: "Funksiyaning xotiradagi o'zgarishi yo'q. Shunchaki call/apply Engine ga 'Hozir shu funksiyani bajarayotganda this so'zini ko'rib qolsang, falon obyektga qara' deb ko'rsatma beradi xolos."
     },
     {
       id: 2,
-      question: "Bind() qanday ishlaydi?",
+      question: "Nega Loop (sikl) yoki React Render ichida inline .bind() ni ko'p yozish yomon amaliyot (Anti-pattern) deyiladi?",
       options: [
-        "Funksiyani o'chirib yuboradi",
-        "Funksiyani darhol ishga tushiradi",
-        "Funksiyani bajarmasdan, unga this ni qulflab YANGI funksiya nusxasini qaytaradi",
-        "Faqat obyektlarni nusxalaydi"
+        "Sintaksis xato bergani uchun",
+        "Chunki u ishlamaydi",
+        "Chunki .bind() har bir aylanishda V8 dvigateliga YANGI funksiya obyektini Xotiradan (Heap) ajratishga majbur qiladi, bu esa xotirani keraksiz narsalarga to'ldiradi",
+        "Sikl (loop) tezligi oshib ketib CPU ni kuydiradi"
       ],
       correctAnswer: 2,
-      explanation: "Bind ni xuddi mashinaning zaxira kalitini yasashdek eslab qolamiz. Sizga kalitni beradi, lekin siz uni o'zingiz xohlagan payt ishlatasiz."
+      explanation: "Har qanday .bind() yoki ()=>{} ishlatish sizga toza va yangi funksiya yasab beradi. Render qilingan har bir tugma uchun millionta yangi funksiya yasalishi Performance ni o'ldiradi. Shuning uchun ular bitta qulflangan nusxaga qarashi lozim."
     },
     {
       id: 3,
-      question: "Quyidagilardan qaysi biri 'this' ni muvaffaqiyatli almashtiradi?",
+      question: "O'zimiz yasagan 'myCall' polyfilli ichida context[Symbol()] = this; nega aynan Symbol ishlatiladi?",
       options: [
-        "Arrow funksiya .bind() orqali",
-        "Obyekt nomini .call() birinchi parametriga berish orqali",
-        "if blokida yozish orqali",
-        "Arrow funksiyada .apply() orqali"
+        "Javascriptda faqat Symbol yordamida funksiya chaqiriladi",
+        "Chunki Symbol xavfsiz va obyektdagi allaqachon bor bo'lgan ismlar (kalitlar) bilan tasodifan to'qnashib, ularni ustidan yozib yubormaslikni (Overriding) ta'minlaydi",
+        "Shunchaki ko'zga chiroyli ko'rinish uchun",
+        "Symbol faqat arraylar uchun"
       ],
       correctAnswer: 1,
-      explanation: "Arrow funksiyalarni aslo o'zgartirib bo'lmaydi. Faqat oddiy (regular) funksiyalar call, apply, bind ga quloq soladi."
+      explanation: "Agar context['fn'] qilsak, mabodo obyektda avvaldan 'fn' degan kalit bo'lsa u o'chib ketardi. Symbol esa mutlaqo noyobligi uchun xavfsiz."
     },
     {
       id: 4,
-      question: "Qachon apply() ishlatish qulay bo'ladi?",
+      question: "Agar fn.bind(A).bind(B) deb ikki marta chaqirilsa nima bo'ladi?",
       options: [
-        "Qachonki bizda argumentlar allaqachon bitta massiv shaklida bo'lsa va funksiya esa alohida argumentlar kutayotgan bo'lsa",
-        "Faqat bitta argument bo'lsa",
-        "Tugmani bosganda ishlaydigan eventListener yozayotganda",
-        "Xatolar oldini olish uchun"
+        "this A ga emas, eng oxirgi B ga teng bo'ladi",
+        "this birinchi berilgan A ga qulflanadi va keyingi bind'lar uni o'zgartira olmaydi",
+        "Ikki obyekt birlashib (A+B) ketadi",
+        "TypeError berib dastur to'xtaydi"
       ],
-      correctAnswer: 0,
-      explanation: "Masalan Math.max() ga array yuborib bo'lmaydi, lekin uni apply orqali Math.max.apply(null, massiv) qilib jo'natsa, apply uni o'zi to'kib beradi."
+      correctAnswer: 1,
+      explanation: "Bind bu closure. U o'zining argumentlarini yopib, qulflab qo'yadi. Bir marta qulflangan qulfni boshqa context orqali o'zgartirib bo'lmaydi."
     },
     {
       id: 5,
-      question: "Event listener yoki setTimeout larda callback yo'qolib qolmasligi uchun nima ishlatiladi?",
+      question: "Javascriptda qaysi birining kuchi eng ustun?",
       options: [
-        ".call()",
-        ".apply()",
-        ".bind()",
-        "Hammasi mos keladi"
+        "call()",
+        "apply()",
+        "bind()",
+        "new operatori"
       ],
-      correctAnswer: 2,
-      explanation: "Chunki setTimeout ga funksiya natijasi emas, funksiyaning O'ZI (nusxasi) berilishi kerak. Shuning uchun call emas, aynan bind ishlashi shart."
+      correctAnswer: 3,
+      explanation: "Agar siz funksiyani new so'zi bilan chaqirsangiz, u hatto .bind() qilingan kontekstni ham buzib tashlab, avtomatik ravishda mutlaqo yangi {} obyektga ulanib ketadi."
     },
     {
       id: 6,
-      question: "fn.bind(null, 1, 2) deb yozishning ma'nosi nima?",
+      question: "MyBind polyfill ida return qilingan funksiya ichida nega .apply ishlatiladi?",
       options: [
-        "Xatolik berish uchun qilingan atayin ish",
-        "Bu 'Currying' (qisman qo'llash) deb ataladi - ya'ni this ahamiyatsiz, lekin 1 va 2 argumentlarini doimiy qilib funksiyaga qulflab qo'yish",
-        "Funksiyani 1 marta ishlashga dasturlash",
-        "Hech qanday ma'no bildirmaydi"
+        "apply yozilishi shart emas",
+        "Chunki qaytarilgan funksiyaga o'zidan keyin ham cheksiz argumentlar (massiv ko'rinishida) kelib qolishi mumkin, bu argumentlarni saqlab qolingan context ga chiroyli yoyib uzatish uchun",
+        "Boshqa ishlash yo'li yo'q",
+        "Bu ES6 ning talabi"
       ],
       correctAnswer: 1,
-      explanation: "Bind orqali nafaqat 'this' ni, balki doimiy bo'lishi kerak bo'lgan argumentlarni ham biriktirib, shablon funksiyalar yozish mumkin."
+      explanation: "myBind qaytargan funksiyani kim, qachon, qanday argumentlar bilan chaqirishi noma'lum. Shuning uchun ...args massivini eng oson apply qabul qilib oladi."
     },
     {
       id: 7,
-      question: "Agar .call(null) deyilgan bo'lsa nima bo'ladi (non-strict modeda)?",
+      question: "Currying tushunchasi bind bilan qanday aloqador?",
       options: [
-        "Funksiya ishlamay qoladi",
-        "Bu funksiya 'this' sifatida global obyektni (window) ishlatishni boshlaydi",
-        "Bu undefined error beradi",
-        "Array kabi ishlay boshlaydi"
+        "Hech qanday aloqasi yo'q",
+        "Bind orqali funksiyaning argumentlarini avvaldan biriktirib qulflab qoldirish va faqat yetishmayotgan qolgan argumentlarni keyinchalik berish aynan Currying amaliyotidir",
+        "Currying faqat async funksiyalar uchun",
+        "React dagi component turi"
       ],
       correctAnswer: 1,
-      explanation: "Agar context o'rniga null yoki undefined berilsa (qattiq rejim - strict modedan tashqarida), dvigatel avtomatik ravishda Global Obyekt (Window) ga qaytadi."
+      explanation: "Kattaroq arxitekturalarda bind(null, 10) orqali funksiyani har doim birinchi parametrga 10 kiritilgan qisqaroq versiyaga aylantirish (partial application/currying) juda keng qo'llaniladi."
     },
     {
       id: 8,
-      question: "Metod o'g'irlash (Method borrowing) nima degani?",
+      question: "Arrow function larda nega myCall ishlatsangiz ham this almashmaydi?",
       options: [
-        "Bir kutubxonani qaroqchilik yo'li bilan yuklab olish",
-        "Boshqa bir obyektdagi metodni call, apply orqali mutlaqo boshqa obyekt foydasi uchun vaqtincha ishlatib turish",
-        "Obyektni Delete qilib boshqa joyga yozish",
-        "Internetdan tayyor kod copy-paste qilish"
+        "Bu Chrome browserning bug'i",
+        "Arrow function execution context (bajarilish muhiti) da umuman this, arguments degan yozuvlarga ega emas. U call ni qabul qilsa ham ignor qilib lexical scope'dan topadi",
+        "myCall da xatolik bor",
+        "Unda class ishlatish kerak"
       ],
       correctAnswer: 1,
-      explanation: "Masalan: arrayga xos metodlarni qanaqadir arguments kabi array-like (massivga o'xshash) obyektdan call orqali chaqirib olish xuddi o'g'irlab ishlatganga o'xshaydi."
+      explanation: "Arrow function this ga pointer yaratmaslik orqali memory (xotira) tejaydi, shuning uchun uni context binding metodlari umuman qiziqtirmaydi."
     },
     {
       id: 9,
-      question: "Nega Arrow functionda bind ishlab ketmaydi?",
+      question: "Method Borrowing ni Array larda qanday qo'llaymiz?",
       options: [
-        "Chunki arrow functionda function so'zi yozilmagan",
-        "Arrow functionlarning qat'iy qoidasi bor: ularning o'zining this tushunchasi mavjud emas, har doim Lexical scope (qayerda yozilgan bo'lsa o'sha yerdagi) this ni ishlatadi",
-        "Chunki arrow funksiyalar tezroq",
-        "Faqat IE browserida ishlamaydi xolos"
+        "[].concat.call()",
+        "[].slice.call(arguments) kabi usul orqali massivlarga tegishli mukammal metodlarni massivga o'xshash (length xususiyati bor) obyektlar ustida yuritish uchun ishlatamiz",
+        "Faqat String obyekti bilan ishlaganda",
+        "Borrowing ishlamaydi"
       ],
       correctAnswer: 1,
-      explanation: "Bu ularning eng asosiy dizayn qarori - this ga egalik qilinmaydi va uni o'zgartirishni iloji yo'q."
+      explanation: "DOM dan qaytgan NodeList yoxud arguments obyekti huddi massivga o'xshaydi lekin unda filter, map lar yo'q. Aynan call/apply orqali Array prototype dan ularga metod o'g'irlab beramiz."
     },
     {
       id: 10,
-      question: "Quyidagilardan qaysi biri ES6+ (Spread syntax) kelgandan keyin apply() o'rnini ko'proq bosa boshladi?",
+      question: "Strict Mode (Qat'iy rejim) da .call(null) deyilsa context nima bo'ladi?",
       options: [
-        "Function Declaration",
-        "Array Spread operator (...) ya'ni Math.max(...arr) kabi ishlatish",
-        "let keyword",
-        "For Loop"
+        "Global window ga aylanadi",
+        "Aynan null bo'lib qoladi, uni avtomatik ravishda Global obyektga (window) o'g'irlamaydi",
+        "Reference Error beradi",
+        "Undefined qaytadi"
       ],
       correctAnswer: 1,
-      explanation: "Oldin massivdagi narsalarni argumentga parchalash (to'kish) uchun doim apply ishlatilardi. Hozir uchta nuqta (...) buni chiroyliroq bajaradi."
+      explanation: "Eskicha javascriptda this bo'sh (null/undefined) bo'lsa uni window ga almashtirib qo'yish kabi xavfli yondashuv bor edi. 'use strict' bu ishni bloklaydi."
     },
     {
       id: 11,
-      question: "Function prototype-iga ulangan ushbu metodlar qaysilar?",
+      question: "setTimeout ichidagi yo'qolgan context (Losing this) sababi nimada?",
       options: [
-        ".map(), .filter(), .reduce()",
-        ".forEach(), .every()",
-        ".call(), .apply(), .bind()",
-        ".hasOwnProperty(), .toString()"
+        "Sababi setTimeout qabul qilib olgan funksiyani chaqirayotganda oldida hech qanday obyekt nuqtasi bo'lmaydi (oddiy cb() qilib chaqiradi), bu qoida this ni globalga tortib ketishidir",
+        "Vaqt hisoblagichi this ni tozalaydi",
+        "Bu Javascriptda doimiy error",
+        "Obyekt setTimeout dan oldin o'lib ketadi"
       ],
-      correctAnswer: 2,
-      explanation: "Bu uchtasi JavaScript-dagi barcha funksiyalarning prototipida, ya'ni Function.prototype xotirasida saqlanadigan standart maxsus metodlardir."
+      correctAnswer: 0,
+      explanation: "Qoida aniq: metod funksiya() qilib ochiq chaqirilsa window, obyekt.metod() qilib chaqirilsa this obyekt bo'ladi. setTimeout qabul qilgan funksiyani birinchi yo'l bilan yashirincha chaqiradi."
     },
     {
       id: 12,
-      question: "Call() ni zanjir qilib chaqirsa nima bo'ladi (fn.call.call.call)?",
+      question: "Dasturchi muhandis (Engineer) sifatida darslar sayoz yoki chuqur ekanligini qayerdan bilamiz?",
       options: [
-        "Komp'yuter qotib qoladi",
-        "Birinchi obyektdan keyingilariga aylanib yuradi",
-        "JavaScript sintaksis xatosi beradi",
-        "Oxir-oqibat eng so'nggi uzatilgan obyekt asosida qaysidir funksiyaning o'zi call qilinadi (Juda murakkablashadi lekin ruxsat bor)"
+        "Kodning yuzaki yozilishi yoki o'xshatishlar ko'pligiga qarab",
+        "Bitta metod qachon va qanday ishlashini (API usage) bilishdan tashqari, uning xotirada qancha joy olishi, polyfill asoslari, garbage collection ta'siri va Engine (V8) dagi harakatlarini ongli tushunish farqi orqali",
+        "Faqat katta so'zlar bilan tushuntirilishidan",
+        "Inglizcha dokumintatsiyasi uzunligidan"
       ],
-      correctAnswer: 3,
-      explanation: "Bunday amaliyot tavsiya qilinmaydi lekin ishlashi jihatidan JS bu zanjirlarni Function.prototype.call ustida bajarib ketaveradi."
+      correctAnswer: 1,
+      explanation: "Siz chuqur (Deep dive) darajani tanladingiz. Bu daraja o'z navbatida Javascript ning har qanday Senior darajadagi intervyusiga bemalol kirib borishga poydevor hisoblanadi."
     }
   ]
 };
