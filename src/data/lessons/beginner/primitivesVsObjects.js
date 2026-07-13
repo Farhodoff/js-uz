@@ -2,49 +2,82 @@ export const primitivesVsObjects = {
   id: "primitivesVsObjects",
   title: "Primitivlar va Obyektlar (Memory)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-JavaScript-da o'zgaruvchilar va ma'lumotlar bilan ishlashda ularning xotirada qanday saqlanishi muhim:
-1. **Primitiv turlar:** (Number, String, Boolean, Null, Undefined, Symbol). Ular xotiraning **Stack** deb nomlangan qismida bevosita saqlanadi. Ular o'zgarmas (immutable) va nusxalanganda mustaqil qiymat bo'ladi.
-2. **Obyektlar:** (Object, Array, Function). Ular xotiraning **Heap** deb nomlangan qismida saqlanadi, Stack-da esa faqat ularning Heap-dagi manziliga ko'rsatuvchi havola (pointer) saqlanadi. Ular o'zgaruvchan (mutable).
+  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
 
-O'xshatish: Primitiv - qog'ozga yozilgan son (nusxa olinganda mutlaqo mustaqil qog'ozlar bo'ladi). Obyekt - Google Docs havolasi (link nusxalangan bilan u bitta original hujjatga ko'rsatadi, agar biri o'zgartirsa, hamma o'sha o'zgarishni ko'radi).
+JavaScript-da o'zgaruvchilar xotirada qanday saqlanishini tushunish juda muhim. Tasavvur qiling: sizda ma'lumotlarni saqlash uchun ikkita usul bor.
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+**Primitiv turlar (Number, String, Boolean, Null, Undefined, Symbol, BigInt):**
+Bular xuddi qog'ozga yozilgan raqamlar yoki matnlarga o'xshaydi. Agar siz do'stingizga varaqdagi raqamdan nusxa ko'chirib bersangiz, unda mutlaqo mustaqil yangi varaq bo'ladi. U o'z varag'idagi raqamni o'zgartirsa, sizning varag'ingizdagi raqam o'zgarmaydi. Ular xotiraning **Stack** (qattiq tartibga ega, tezkor) qismida bevosita o'z qiymati bilan saqlanadi.
 
-❌ **YOMON:** Obyektlarni \`=\` orqali nusxalash, keyin original obyektni beixtiyor o'zgartirib qo'yish (Mutatsiya xatosi).
-\`\`\`javascript
-const user = { name: "Anvar" };
-const copy = user;
-copy.name = "Doston";
-console.log(user.name); // Doston (original ham o'zgardi!)
-\`\`\`
+**Obyektlar (Object, Array, Function):**
+Bular Google Docs hujjatlariga o'xshaydi. Agar siz do'stingizga havolani (linkni) yuborsangiz va u hujjatni o'zgartirsa, siz ochganingizda ham o'sha o'zgargan hujjatni ko'rasiz, chunki sizlarda bitta hujjatga ikkita havola bor xolos. Obyektlarning o'zi xotiraning **Heap** (dinamik, katta hajmga mo'ljallangan) qismida saqlanadi, **Stack**-da esa faqat ularning Heap-dagi manziliga ko'rsatuvchi pointer (havola) turadi.
 
-✅ **YAXSHI:** Spread operatori yoki \`structuredClone\` yordamida xavfsiz nusxa olish.
-\`\`\`javascript
-const user = { name: "Anvar" };
-const copy = { ...user };
-copy.name = "Doston";
-console.log(user.name); // Anvar (original xavfsiz)
-\`\`\`
+## 2. 🚀 Deep Dive (Under the Hood, V8 Engine & Performance)
 
-## 🎤 Intervyu Savollari
-1. **Primitivlar va obyektlarning nusxalanishidagi farq nima?**
-   - Primitivlar qiymat bo'yicha (by value) nusxalanadi, obyektlar havola (by reference) bo'yicha.
-2. **Nima uchun \`{} === {}\` false qaytaradi?**
-   - Obyektlar solishtirilganda ularning tarkibi emas, xotiradagi manzillari (pointers) tekshiriladi. Ikkita bo'sh obyekt xotirada turli manzillarga ega bo'ladi.
-3. **Sayoz (Shallow) va Chuqur (Deep) nusxalash farqi nima?**
-   - Sayoz nusxa (\`{...obj}\`) obyektning faqat eng yuqori darajadagi xususiyatlarini yangilaydi, ichki obyektlarni havola bo'yicha qoldiradi. Chuqur nusxa (\`structuredClone(obj)\`) ichki obyektlarning ham mutlaqo yangi xotira nusxasini yaratadi.
+V8 dvigateli primitivlar va obyektlarni boshqarishda yuqori samaradorlik uchun turlicha yondashuvlardan foydalanadi:
 
-## 🛠️ Amaliy Topshiriqlar
+- **Stack xotira:** O'lchami oldindan ma'lum, tez ajratiladi va funksiya ishi tugashi bilan avtomatik tozalanadi (LIFO prinsipi). Primitivlar doim Stack-da turadi. Ularni nusxalash juda tez ishlaydi, chunki faqat baytlar nusxalanadi.
+- **Heap xotira:** O'lchami dinamik o'zgarishi mumkin bo'lgan ma'lumotlar uchun ishlatiladi. Obyekt yaratilganda V8 Heap-dan joy ajratadi va Stack-dagi o'zgaruvchiga o'sha joyning manzili (pointer) yoziladi.
+- **Garbage Collection (GC):** Heap xotirani tozalash uchun V8 dvigatelida *Mark-and-Sweep* algoritmi ishlaydi. Agar obyektga hech qanday havola (pointer) qolmasa (masalan, funksiya tugab, Stack-dagi havola o'chib ketsa), GC uni xotiradan o'chiradi.
 
-\`\`\`mermaid
+**Performance (Samaradorlik) qoidalari:**
+- Yirik obyektlarni mutatsiya qilmasdan doim chuqur nusxalash (Deep Copy) xotira (Heap) hajmini oshirib, Garbage Collector ishlashiga (va dastur qotishiga - *jank*) olib kelishi mumkin.
+- Shuning uchun ko'pincha *Shallow Copy* (yuzaki nusxa) ishlatiladi, biroq ichki obyektlar hamon pointer bo'lib qolishidan ehtiyot bo'lish kerak.
+
+## 3. ⚠️ Edge Cases & Senior Interview Questions
+
+**Edge Case 1: \\\`typeof null\\\`**
+\\\`\\\`\\\`javascript
+console.log(typeof null); // "object"
+\\\`\\\`\\\`
+Bu JavaScript-dagi tarixiy xato (bug). \\\`null\\\` aslida primitiv tipdir.
+
+**Edge Case 2: Obyektlarni taqqoslash**
+\\\`\\\`\\\`javascript
+console.log({} === {}); // false
+console.log([] === []); // false
+\\\`\\\`\\\`
+Ikkita o'xshash obyekt xotirada ikki xil manzilda yotadi. \\\`===\\\` ularning manzilini tekshiradi, tarkibini emas.
+
+**Edge Case 3: Obyekt primitivga aylanishi (Type Coercion)**
+\\\`\\\`\\\`javascript
+const obj = {
+  valueOf() { return 10; },
+  toString() { return "hello"; }
+};
+console.log(obj + 5); // 15 (valueOf ishladi)
+console.log(String(obj)); // "hello" (toString ishladi)
+\\\`\\\`\\\`
+
+**Senior Interview Savollari:**
+1. **Pass-by-value va Pass-by-reference orasida qanday farq bor, JS qaysi birini ishlatadi?**
+   - Javob: JS har doim *Pass-by-value* ishlatadi. Lekin obyekt uzatilganda, o'sha "value" (qiymat) obyektning Heap-dagi pointerni o'zi bo'ladi (Buni ko'pincha *Call-by-sharing* deyishadi). Pointer orqali ichki qismlarni o'zgartirish mumkin, lekin butunlay boshqa obyektga o'zgartirib bo'lmaydi (reassignment originalga ta'sir qilmaydi).
+2. **Qanday qilib mukammal Deep Copy qilish mumkin?**
+   - Javob: Eski usul \\\`JSON.parse(JSON.stringify(obj))\\\` (bunda Date, Function, undefined kabi tiplar yo'qoladi). Yangi va standart usul: \\\`structuredClone(obj)\\\`.
+3. **\\\`Object.freeze()\\\` ning kamchiligi nima?**
+   - Javob: U faqat yuzaki (Shallow) muzlatadi. Agar obyekt ichida yana obyekt bo'lsa, u ichki obyekt o'zgarishi mumkin. Buni oldini olish uchun "Deep Freeze" funksiyasi yozilishi kerak.
+
+## 4. 📊 Xotira Arxitekturasi Diagrammasi
+
+\\\`\\\`\\\`mermaid
 flowchart TD
-    A[Xotira] --> B[Stack Xotira]
-    A --> C[Heap Xotira]
-    B --> D[Primitivlar (x = 10)]
-    B --> E[Obyekt Havolalari (obj = #101)]
-    C --> F[#101: { name: 'Ali' }]
-\`\`\`
+    A[JavaScript Memory] --> B[Stack Memory]
+    A --> C[Heap Memory]
+    
+    B --> D[let x = 10]
+    B --> E[let y = x]
+    B --> F[const user = pointer_A102]
+    B --> G[const clone = pointer_A102]
+    
+    C --> H[#A102 Object name: Ali]
+    
+    F -.-> H
+    G -.-> H
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+\\\`\\\`\\\`
 `,
   exercises: [
     {
@@ -57,8 +90,8 @@ flowchart TD
     },
     {
       id: 2,
-      title: "Chuqur nusxalash",
-      instruction: "Ichma-ich tuzilishga ega `user` obyektini xavfsiz chuqur nusxalab (deep clone) qaytaruvchi `deepCloneUser(user)` yozing.",
+      title: "Chuqur nusxalash (Deep Clone)",
+      instruction: "Ichma-ich tuzilishga ega `user` obyektini xavfsiz chuqur nusxalab qaytaruvchi `deepCloneUser(user)` yozing.",
       startingCode: "function deepCloneUser(user) {\n  // Kodni yozing\n}",
       hint: "`structuredClone(user)` yoki `JSON.parse(JSON.stringify(user))` ishlating.",
       test: "const fn = new Function(code + '; return deepCloneUser;')(); const original = { a: { b: 1 } }; const cloned = fn(original); cloned.a.b = 2; if (original.a.b !== 1 || cloned === original) throw new Error('Xato');"
@@ -122,7 +155,7 @@ flowchart TD
     {
       id: 10,
       title: "Massivda Object mutatsiyasi",
-      instruction: "Ichida obyektlar bor massivdan yuzaki nusxa olinganda (masalan `newArr = [...arr]`), obyekt o'zgarishi (newArr[0].x = 5) originalga ham ta'sir qiladimi? Shuni isbotlash uchun faqat true qaytaruvchi `doesShallowCopyMutateInnerObjects()` yozing.",
+      instruction: "Ichida obyektlar bor massivdan yuzaki nusxa olinganda (masalan `newArr = [...arr]`), obyekt o'zgarishi (newArr[0].x = 5) originalga ham ta'sir qiladimi? Shuni isbotlash uchun doim true qaytaruvchi `doesShallowCopyMutateInnerObjects()` yozing.",
       startingCode: "function doesShallowCopyMutateInnerObjects() {\n  // Kodni yozing\n}",
       hint: "Ha ta'sir qiladi, shunchaki return true; yozing.",
       test: "const fn = new Function(code + '; return doesShallowCopyMutateInnerObjects;')(); if(fn() !== true) throw new Error('Xato');"
@@ -211,11 +244,11 @@ flowchart TD
         "Xususiyatni o'chirish"
       ],
       correctAnswer: 2,
-      explanation: "const obyekti o'zgaruvchisi o'z manzilini o'zgartira olmaydi."
+      explanation: "const o'zgaruvchisi o'z manzilini o'zgartira olmaydi, shuning uchun unga boshqa obyektni ta'minlab bo'lmaydi."
     },
     {
       id: 8,
-      question: "Obyektning birinchi darajali xossalarini nusxalash nima deyiladi?",
+      question: "Obyektning faqat birinchi darajali xossalarini yangi manzilga nusxalash nima deyiladi?",
       options: [
         "Deep Copy",
         "Shallow Copy (Yuzaki nusxa)",
@@ -227,7 +260,7 @@ flowchart TD
     },
     {
       id: 9,
-      question: "Obyektni chuqur nusxalash (Deep Copy) uchun o'rnatilgan funksiya qaysi?",
+      question: "Obyektni chuqur nusxalash (Deep Copy) uchun JavaScript-ning zamonaviy o'rnatilgan funksiyasi qaysi?",
       options: [
         "Object.assign()",
         "Spread operator (...)",
@@ -235,11 +268,11 @@ flowchart TD
         "Object.create()"
       ],
       correctAnswer: 2,
-      explanation: "structuredClone() chuqur nusxalashni xavfsiz bajaradi."
+      explanation: "structuredClone() obyektlarni chuqur nusxalashni xavfsiz va samarali bajaradi."
     },
     {
       id: 10,
-      question: "Parametr sifatida obyekt uzatilganda va ichki xususiyat o'zgartirilganda originalga ta'sir qiladimi?",
+      question: "Parametr sifatida obyekt uzatilganda va uning ichki xususiyati funksiya ichida o'zgartirilganda originalga ta'sir qiladimi?",
       options: [
         "Yo'q",
         "Ha, ta'sir qiladi",
@@ -247,11 +280,11 @@ flowchart TD
         "Faqat strict mode da"
       ],
       correctAnswer: 1,
-      explanation: "Obyekt havola (pointer) sifatida uzatilgani uchun ichki mutatsiyalar original obyektga ham tegishli bo'ladi."
+      explanation: "JavaScript-da obyekt uzatilganda uning Heap-dagi manziliga havola beriladi. Ichki mutatsiyalar original obyektda ham namoyon bo'ladi."
     },
     {
       id: 11,
-      question: "Obyektni mutatsiyadan to'liq saqlash uchun nima ishlatiladi?",
+      question: "Obyektni mutatsiyadan to'liq saqlash (shallow) uchun nima ishlatiladi?",
       options: [
         "Object.freeze()",
         "Object.seal()",
@@ -259,19 +292,19 @@ flowchart TD
         "Object.lock()"
       ],
       correctAnswer: 0,
-      explanation: "Object.freeze() obyektga har qanday mutatsiyani man etadi."
+      explanation: "Object.freeze() obyektga har qanday yangi xususiyat qo'shish, o'chirish yoki o'zgartirishni man etadi (Shallow darajada)."
     },
     {
       id: 12,
-      question: "Heap xotiradagi axlat qanday tozalanadi?",
+      question: "Heap xotiradagi keraksiz obyektlar (hech kim foydalanmayotgan) qanday tozalanadi?",
       options: [
-        "Stack to'lishi bilan",
+        "Stack to'lishi bilan avtomatik",
         "Garbage Collector (Axlat yig'uvchi) tomonidan",
-        "free() funksiyasi bilan",
-        "Brauzer yopilguncha saqlanadi"
+        "free() funksiyasi chaqirilganda",
+        "Brauzer yopilguncha xotirada qolaveradi"
       ],
       correctAnswer: 1,
-      explanation: "JavaScript-da Garbage Collector avtomatik ishlaydi va aloqasi uzilgan obyektlarni xotiradan tozalaydi."
+      explanation: "JavaScript-da Garbage Collector avtomatik tarzda ishlaydi va aloqasi uzilgan (unreachable) obyektlarni xotiradan tozalaydi."
     }
   ]
 };
