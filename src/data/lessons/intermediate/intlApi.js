@@ -2,374 +2,298 @@ export const intlApi = {
   id: "intlApi",
   title: "Internationalization (Intl) API",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## Part 1: Beginner Analogy
 
-### Intl API nima?
-**Intl (Internationalization) API** — bu JavaScript-ga o'rnatilgan va veb-ilovani turli davlatlar (lokallar) madaniy formatlariga avtomatik tarzda moslashtiruvchi maxsus obyektdir. U raqamlar, valyutalar, sanalar, nisbiy vaqtlar va ro'yxatlarni hech qanday tashqi kutubxonalarsiz (masalan, og'ir \`moment.js\`iz) formatlab beradi.
+**Intl (Internationalization) API** is a built-in object in JavaScript that provides language sensitive string comparison, number formatting, and date and time formatting.
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **xalqaro tarjimonisiz**:
-* **Kutubxonalardan foydalanish (Eski/Og'ir usul):** Har bir davlatdan (AQSH, Germaniya, Yaponiya) kelgan sayyoh bilan gaplashish uchun uyingizdan qalin tarjima lug'atlarini (70KB lik og'ir JS paketlarini) yuklab ko'tarib yurasiz.
-* **Intl API (Modern/Optimal usul):** Sizning miyangizda barcha tillar va ularning madaniy qoidalari (sanalar, raqamlar yozilishi) oldindan o'rnatilgan. Sayyoh kelib pasportidagi kodini (masalan, \`uz-UZ\` yoki \`en-US\`) ko'rsatishi bilan u tushunadigan tilda va pul birligida gapirasiz.
+### Real-world Analogy
+Imagine you are an international tour guide. 
+Old way (using libraries like moment.js): You carry a huge, heavy dictionary for every language in the world in your backpack. It's slow and exhausting.
+New way (Intl API): You have an earpiece connected to an instant translator that already knows all the languages and rules without carrying extra weight. The browser already has all the cultural rules (CLDR) built-in, so you just tell it what language you want to speak.
 
----
+\\\`\\\`\\\`javascript
+// Old way: importing a heavy library
+// import moment from 'moment';
 
-## 2. 💻 Real Kod Misollari
+// New way: Built-in Intl API
+const formatter = new Intl.NumberFormat('uz-UZ', { style: 'currency', currency: 'UZS' });
+console.log(formatter.format(1200000)); // "1 200 000,00 UZS"
+\\\`\\\`\\\`
 
-### 1. Basic Example (Sonlarni mingliklarga bo'lish - NumberFormat)
-\`\`\`javascript
-const number = 1250500.75;
+## Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
 
-// O'zbekiston formati (bo'shliq va vergul bilan)
-const uzFormatter = new Intl.NumberFormat("uz-UZ");
-console.log(uzFormatter.format(number)); // "1 250 500,75"
+### Under the Hood
+The Intl API relies on the **CLDR** (Common Locale Data Repository). This data is integrated directly into the browser (or Node.js environment), meaning you don't need to ship large localization files over the network.
 
-// AQSH formati (vergul va nuqta bilan)
-const usFormatter = new Intl.NumberFormat("en-US");
-console.log(usFormatter.format(number)); // "1,250,500.75"
-\`\`\`
+### V8 Engine & Performance
+When you call \\\`new Intl.NumberFormat()\\\`, V8 has to parse the locale string, fetch the locale data from ICU (International Components for Unicode), and set up the formatting rules. This initialization is an expensive operation.
 
-### 2. Intermediate Example (Valyutalarni formatlash - Currency)
-Narxlarni davlat valyutasiga mos formatlash:
-\`\`\`javascript
-const price = 450000;
+**Performance Tip:** Always cache (memoize) your Intl formatter instances instead of creating them inside a loop.
 
-// O'zbek so'mida formatlash
-const sumFormatter = new Intl.NumberFormat("uz-UZ", {
-  style: "currency",
-  currency: "UZS"
-});
-console.log(sumFormatter.format(price)); // "450 000,00 UZS"
-
-// AQSH dollarida formatlash
-const usdFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD"
-});
-console.log(usdFormatter.format(120.50)); // "$120.50"
-\`\`\`
-
-### 3. Advanced Example (DateTimeFormat va RelativeTimeFormat)
-\`\`\`javascript
-// 1. Sana formatlash
-const today = new Date("2026-06-10");
-const uzDate = new Intl.DateTimeFormat("uz-UZ", { dateStyle: "full" });
-console.log(uzDate.format(today)); // "chorshanba, 2026-yil 10-iyun"
-
-// 2. Nisbiy vaqt formatlash ("2 daqiqa oldin")
-const rtf = new Intl.RelativeTimeFormat("uz-UZ", { numeric: "auto" });
-console.log(rtf.format(-5, "minute")); // "5 daqiqa oldin"
-console.log(rtf.format(-1, "day"));    // "kecha"
-\`\`\`
-
----
-
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
-
-### CLDR (Common Locale Data Repository)
-Intl API brauzerning o'ziga o'rnatilgan **CLDR** (Unicode Common Locale Data Repository) ma'lumotlar bazasidan foydalanadi. Ushbu baza dunyodagi deyarli barcha tillar, sanalar va valyuta qoidalarini o'z ichiga oladi. Dasturchi kod yozganida, JS dvigateli ushbu lokal ma'lumotlarini to'g'ridan-to'g'ri tizim xotirasidan o'qiydi.
-
-> [!IMPORTANT]
-> \`new Intl.NumberFormat\` yoki \`new Intl.DateTimeFormat\` obyektlarini yaratish CPU resursi uchun ancha og'ir jarayondir. Shuning uchun, ularni loop (tsikl) ichida qayta-qayta yaratmasdan, loop-dan tashqarida bir marta yaratib keshlab qo'yish (Memoization) shart.
-
----
-
-## 4. 🧪 Bosqichma-bosqich Amaliy Mashq
-
-### Foydalanuvchi brauzeri tilini aniqlash va formatlash
-Foydalanuvchining shaxsiy tilidan kelib chiqib dynamic valyuta formatlovchi yozamiz.
-
-\`\`\`javascript
-// 1. Foydalanuvchi brauzer tilini aniqlaymiz (default: uz-UZ)
-const userLocale = navigator.language || "uz-UZ";
-
-// 2. Formatterni keshlaymiz
-const currencyFormatter = new Intl.NumberFormat(userLocale, {
-  style: "currency",
-  currency: "USD"
+\\\`\\\`\\\`javascript
+// ❌ BAD: Creating instance inside a loop
+const prices = [100, 200, 300];
+prices.forEach(price => {
+  console.log(new Intl.NumberFormat('en-US').format(price));
 });
 
-console.log(currencyFormatter.format(100)); // Masalan: "$100.00" (en-US bo'lsa)
-\`\`\`
+// ✅ GOOD: Caching the instance
+const formatter = new Intl.NumberFormat('en-US');
+prices.forEach(price => {
+  console.log(formatter.format(price));
+});
+\\\`\\\`\\\`
 
----
+## Part 3: Edge Cases and Senior Interview Questions
 
-## 5. ⚠️ Ko'p Uchraydigan Xatolar va Ularni Tuzatish
+### Edge Cases
+1. **Invalid Locales:** If you provide an invalid locale, it falls back to the default locale unless it's a completely malformed string, which throws a \\\`RangeError\\\`.
+2. **Missing Currency Code:** If you set \\\`style: 'currency'\\\`, you MUST provide a \\\`currency\\\` option, otherwise a \\\`TypeError\\\` is thrown.
 
-### 1. Valyuta belgilashda ISO kodlaridan foydalanmaslik
-* **Noto'g'ri:**
-  \`\`\`javascript
-  const formatter = new Intl.NumberFormat("uz-UZ", { style: "currency", currency: "som" }); // RangeError!
-  \`\`\`
-* **To'g'ri (ISO 4217 standarti bo'yicha 3 harfli kodlar):**
-  \`\`\`javascript
-  const formatter = new Intl.NumberFormat("uz-UZ", { style: "currency", currency: "UZS" });
-  \`\`\`
+### Senior Interview Questions
+**Q: How does Intl API handle Server-Side Rendering (SSR) hydration mismatches?**
+A: A hydration mismatch occurs when the server uses one locale (e.g., UTC server time or en-US) to format dates/numbers, and the client browser uses another (e.g., uz-UZ). To fix this, always format based on a fixed locale on the server and update it on the client after the first render, or only format on the client side.
 
----
+**Q: What is the purpose of \\\`formatToParts()\\\`?**
+A: It returns an array of objects representing the formatted string in parts. This is highly useful for applying custom styling to different parts of the formatted value (e.g., making the currency symbol bold while keeping the number normal).
 
-## 6. 📝 Qisqacha Xulosa (Cheat Sheet)
+## Mermaid Diagram
 
-| Konstruktor | Options xossasi | Asosiy Vazifasi |
-| :--- | :--- | :--- |
-| \`Intl.NumberFormat\` | \`style: 'currency'\`, \`currency: 'UZS'\` | Sonlar va valyutalarni formatlash |
-| \`Intl.DateTimeFormat\` | \`dateStyle: 'full'\`, \`timeStyle: 'short'\` | Sanalarni formatlash |
-| \`Intl.RelativeTimeFormat\` | \`numeric: 'auto'\` | Nisbiy vaqtlar ("kecha", "5 daqiqa oldin") |
-| \`Intl.ListFormat\` | \`type: 'conjunction'\` | Massivni matnga aylantirish ("va" bilan) |
-| \`Intl.Collator\` | - | Tillarga xos to'g'ri saralash |
-
----
-
-## 7. ❓ Savollar va Javoblar
-
-### 1. SSR (Server-Side Rendering) tizimlarida Intl API ishlatganda qanday xato yuz berishi mumkin?
-Server va mijoz (client) brauzeri tillari har xil bo'lsa, "Hydration Mismatch" xatosi kelib chiqadi. Buni oldini olish uchun tilni Next.js/React render bo'lgandan keyin (client-side) aniqlash kerak.
-
-### 2. \`formatToParts()\` metodi nima uchun kerak?
-U formatlangan natijani shunchaki string emas, balki bo'laklarga bo'lingan obyektlar massivi ko'rinishida qaytaradi (masalan, valyuta belgisi alohida, butun qism alohida). Bu dizaynda valyuta belgisini boshqa rang yoki shriftda ko'rsatishda juda qulaydir.
-
----
-
-## 8. 🧠 O'z-o'zini Tekshirish
-
-1. Qaysi xossa orqali foydalanuvchining brauzer tilini aniqlaymiz?
-2. \`Intl.ListFormat\` massivdagi oxirgi elementdan oldin qaysi so'zni avtomatik qo'shib beradi? (Lokalga qarab: 'va', 'and', 'or').
-3. Nima uchun \`new Intl\` obyektlarini loop ichida yaratish tavsiya etilmaydi?
-
----
-
-## 9. 🚀 Amaliy Topsiriq
-
-Quyidagi amaliy mashqlar va testlar yordamida lokalizatsiya API-si bilan ishlash ko'nikmalaringizni sinab ko'ring.
+\\\`\\\`\\\`mermaid
+graph TD;
+    A[JavaScript Code] -->|new Intl.DateTimeFormat| B(V8 Engine / ICU);
+    B -->|Fetches locale rules| C[(CLDR Database)];
+    C --> B;
+    B -->|Returns formatted string| D[User Interface];
+    D -->|Hydration Mismatch Risk| E[Server vs Client Locale];
+\\\`\\\`\\\`
 `,
   exercises: [
     {
-      "id": 1,
-      "title": "Valyutani Formatlash (NumberFormat)",
-      "instruction": "Taqdim etilgan sonni ('amount') 'uz-UZ' lokali va 'UZS' valyuta kodi yordamida formatlovchi 'formatUZS(amount)' funksiyasini yozing.",
-      "startingCode": "function formatUZS(amount) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "return new Intl.NumberFormat('uz-UZ', { style: 'currency', currency: 'UZS' }).format(amount);",
-      "test": "if (!code.includes('NumberFormat')) return 'NumberFormat ishlatilmadi'; const sandbox = new Function(code + '; return formatUZS;'); const fn = sandbox(); const res = fn(1000); if (typeof res === 'string' && (res.includes('UZS') || res.includes('so\\'m'))) return null; return 'UZS formatlash noto\\'g\\'ri';"
+      id: 1,
+      title: "Basic Number Formatting",
+      instruction: "Write a function 'formatNumber(num)' that formats a given number using 'uz-UZ' locale.",
+      startingCode: "function formatNumber(num) {\n  \n}",
+      hint: "Use new Intl.NumberFormat('uz-UZ').format(num);",
+      test: "const fn = new Function(code + '; return formatNumber;')(); if (fn(1000).replace(/\\s/g, '') === '1000') return null; return 'Incorrect formatting';"
     },
     {
-      "id": 2,
-      "title": "Nisbiy Vaqt (RelativeTimeFormat)",
-      "instruction": "Berilgan minutlar sonini ('minutes') 'uz-UZ' lokalida 'auto' numeric ko'rinishida formatlovchi 'formatMinutesAgo(minutes)' funksiyasini yozing. U manfiy qiymat bilan format qilishi kerak (ya'ni -minutes soniya/daqiqa oldin).",
-      "startingCode": "function formatMinutesAgo(minutes) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "const rtf = new Intl.RelativeTimeFormat('uz-UZ', { numeric: 'auto' }); return rtf.format(-minutes, 'minute');",
-      "test": "if (!code.includes('RelativeTimeFormat')) return 'RelativeTimeFormat ishlatilmadi'; const sandbox = new Function(code + '; return formatMinutesAgo;'); const fn = sandbox(); const res = fn(5); if (typeof res === 'string' && res.includes('daqiqa')) return null; return 'Nisbiy vaqt noto\\'g\\'ri formatlandi';"
+      id: 2,
+      title: "Currency Formatting",
+      instruction: "Write a function 'formatCurrency(amount)' that formats a number as US Dollars ('USD') in the 'en-US' locale.",
+      startingCode: "function formatCurrency(amount) {\n  \n}",
+      hint: "Use { style: 'currency', currency: 'USD' } as options.",
+      test: "const fn = new Function(code + '; return formatCurrency;')(); if (fn(100) === '$100.00') return null; return 'Incorrect currency format';"
     },
     {
-      "id": 3,
-      "title": "Sana Formatlash (DateTimeFormat)",
-      "instruction": "Berilgan Date obyektini ('date') 'uz-UZ' lokalida 'long' dateStyle bo'yicha formatlovchi 'formatToUzbekDate(date)' funksiyasini yozing.",
-      "startingCode": "function formatToUzbekDate(date) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "return new Intl.DateTimeFormat('uz-UZ', { dateStyle: 'long' }).format(date);",
-      "test": "if (!code.includes('DateTimeFormat')) return 'DateTimeFormat ishlatilmadi'; const sandbox = new Function(code + '; return formatToUzbekDate;'); const fn = sandbox(); const res = fn(new Date('2026-06-10')); if (typeof res === 'string' && res.includes('2026') && res.includes('iyun')) return null; return 'Sana formatlash xato';"
+      id: 3,
+      title: "Date Formatting",
+      instruction: "Write a function 'formatDate(date)' that formats a Date object to 'en-GB' locale with 'short' dateStyle.",
+      startingCode: "function formatDate(date) {\n  \n}",
+      hint: "Use new Intl.DateTimeFormat('en-GB', { dateStyle: 'short' }).",
+      test: "const fn = new Function(code + '; return formatDate;')(); if (fn(new Date('2023-01-01')).includes('/')) return null; return 'Incorrect date format';"
     },
     {
-      "id": 4,
-      "title": "Vaqtni ko'rsatish (TimeStyle)",
-      "instruction": "Berilgan Date obyektini ('date') 'uz-UZ' lokalida qisqa (short) vaqt formatida (faqat soat va minut) qaytaradigan `formatShortTime(date)` funksiyasini yozing.",
-      "startingCode": "function formatShortTime(date) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "new Intl.DateTimeFormat('uz-UZ', { timeStyle: 'short' }).format(date); dan foydalaning.",
-      "test": "if (!code.includes('timeStyle')) return 'timeStyle ishlatilmadi'; const fn = new Function(code + '; return formatShortTime;')(); const res = fn(new Date('2026-01-01T14:30:00')); if (res.includes('14:30')) return null; return 'Vaqt xato formatlandi';"
+      id: 4,
+      title: "Relative Time Format",
+      instruction: "Write a function 'formatRelative(days)' that takes a number of days (negative for past) and formats it using 'uz-UZ' locale with 'auto' numeric option.",
+      startingCode: "function formatRelative(days) {\n  \n}",
+      hint: "Use new Intl.RelativeTimeFormat('uz-UZ', { numeric: 'auto' }).format(days, 'day');",
+      test: "const fn = new Function(code + '; return formatRelative;')(); if (fn(-1) === 'kecha') return null; return 'Incorrect relative time';"
     },
     {
-      "id": 5,
-      "title": "Mingliklarni ajratish (Decimal)",
-      "instruction": "Berilgan sonni ('amount') 'en-US' lokalida valyuta belgisiz, oddiygina o'nlik/minglik ajratuvchilar bilan formatlovchi `formatDecimalUS(amount)` funksiyasini yozing. Maksimal kasr qismi 2 ta bo'lishi kerak.",
-      "startingCode": "function formatDecimalUS(amount) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "style: 'decimal', maximumFractionDigits: 2",
-      "test": "const fn = new Function(code + '; return formatDecimalUS;')(); const res = fn(1234.567); if (res === '1,234.57') return null; return 'O\\'nlik format xato';"
+      id: 5,
+      title: "List Formatting",
+      instruction: "Write a function 'formatList(list)' that takes an array of strings and formats it using 'en-US' locale with 'conjunction' type.",
+      startingCode: "function formatList(list) {\n  \n}",
+      hint: "Use new Intl.ListFormat('en-US', { type: 'conjunction' }).format(list);",
+      test: "const fn = new Function(code + '; return formatList;')(); if (fn(['A', 'B', 'C']).includes('and')) return null; return 'Incorrect list formatting';"
     },
     {
-      "id": 6,
-      "title": "Foizlarni formatlash (Percent)",
-      "instruction": "Berilgan kasr sonni (masalan 0.45) 'uz-UZ' lokalida foiz ko'rinishida ('45%') formatlovchi `formatPercent(fraction)` funksiyasini yozing.",
-      "startingCode": "function formatPercent(fraction) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "style: 'percent' yordamida Intl.NumberFormat ishlating.",
-      "test": "const fn = new Function(code + '; return formatPercent;')(); const res = fn(0.85); if (res.includes('85') && res.includes('%')) return null; return 'Foiz xato formatlandi';"
+      id: 6,
+      title: "Percentage Formatting",
+      instruction: "Write a function 'formatPercent(num)' that formats a decimal (e.g. 0.5) to a percentage (e.g. 50%) using 'uz-UZ' locale.",
+      startingCode: "function formatPercent(num) {\n  \n}",
+      hint: "Use { style: 'percent' } in Intl.NumberFormat.",
+      test: "const fn = new Function(code + '; return formatPercent;')(); if (fn(0.5).includes('50%')) return null; return 'Incorrect percent format';"
     },
     {
-      "id": 7,
-      "title": "Ro'yxat formatlash (ListFormat)",
-      "instruction": "Berilgan ismlar massivini 'uz-UZ' lokalida bog'lovchilar ('va') bilan string ga aylantiruvchi `formatList(items)` funksiyasini yozing (type: 'conjunction').",
-      "startingCode": "function formatList(items) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "new Intl.ListFormat('uz-UZ', { style: 'long', type: 'conjunction' }).format(items);",
-      "test": "if(!code.includes('ListFormat')) return 'ListFormat ishlatilmadi'; const fn = new Function(code + '; return formatList;')(); const res = fn(['Ali', 'Vali', 'Gani']); if (res.includes('Ali') && (res.includes('va') || res.includes('bilan'))) return null; return 'ListFormat xato ishladi';"
+      id: 7,
+      title: "Unit Formatting",
+      instruction: "Write a function 'formatUnit(val)' that formats a number as 'kilometer' using 'en-US' locale.",
+      startingCode: "function formatUnit(val) {\n  \n}",
+      hint: "Use { style: 'unit', unit: 'kilometer' }.",
+      test: "const fn = new Function(code + '; return formatUnit;')(); if (fn(5).includes('km')) return null; return 'Incorrect unit formatting';"
     },
     {
-      "id": 8,
-      "title": "Valyuta qismlari (formatToParts)",
-      "instruction": "Berilgan summani 'en-US' lokalida 'USD' valyutasida qismlarga (parts) bo'luvchi `getCurrencyParts(amount)` funksiyasini yozing.",
-      "startingCode": "function getCurrencyParts(amount) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "formatToParts() chaqiring, u array qaytaradi.",
-      "test": "if(!code.includes('formatToParts')) return 'formatToParts ishlatilmadi'; const fn = new Function(code + '; return getCurrencyParts;')(); const res = fn(100); if(Array.isArray(res) && res.some(p => p.type === 'currency' && p.value === '$')) return null; return 'formatToParts xato ishladi';"
+      id: 8,
+      title: "Format to Parts",
+      instruction: "Write a function 'getParts(amount)' that returns the formatted parts of amount in 'USD' currency ('en-US' locale).",
+      startingCode: "function getParts(amount) {\n  \n}",
+      hint: "Use new Intl.NumberFormat(...).formatToParts(amount);",
+      test: "const fn = new Function(code + '; return getParts;')(); const res = fn(100); if (Array.isArray(res) && res[0].type === 'currency') return null; return 'Did not return parts array';"
     },
     {
-      "id": 9,
-      "title": "Hafta kuni",
-      "instruction": "Berilgan Date obyektidan faqat hafta kunining to'liq nomini 'uz-UZ' lokalida qaytaruvchi `getWeekdayName(date)` funksiyasini yozing.",
-      "startingCode": "function getWeekdayName(date) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "options sifatida { weekday: 'long' } bering.",
-      "test": "const fn = new Function(code + '; return getWeekdayName;')(); const d = new Date('2023-01-01'); const res = fn(d).toLowerCase(); if(res.includes('yakshanba')) return null; return 'Hafta kuni xato qaytdi';"
+      id: 9,
+      title: "Weekday Name",
+      instruction: "Write a function 'getWeekday(date)' that returns the 'long' weekday name for a Date in 'uz-UZ' locale.",
+      startingCode: "function getWeekday(date) {\n  \n}",
+      hint: "Use { weekday: 'long' } in Intl.DateTimeFormat.",
+      test: "const fn = new Function(code + '; return getWeekday;')(); if (typeof fn(new Date()) === 'string') return null; return 'Incorrect weekday format';"
     },
     {
-      "id": 10,
-      "title": "O'lchov birliklari (Unit)",
-      "instruction": "Berilgan masofani (kilometr) 'uz-UZ' lokalida 'kilometer' birligi sifatida chiroyli ko'rsatuvchi `formatKilometers(distance)` funksiyasini yozing.",
-      "startingCode": "function formatKilometers(distance) {\n  // Kodni shu yerda yozing\n}\n",
-      "hint": "style: 'unit', unit: 'kilometer' o'rnating.",
-      "test": "const fn = new Function(code + '; return formatKilometers;')(); const res = fn(15); if(res.includes('15') && res.toLowerCase().includes('km')) return null; return 'Birlik formatlash xato';"
+      id: 10,
+      title: "Collator String Comparison",
+      instruction: "Write a function 'compareStrings(a, b)' that compares two strings using 'uz-UZ' locale collator.",
+      startingCode: "function compareStrings(a, b) {\n  \n}",
+      hint: "Use new Intl.Collator('uz-UZ').compare(a, b);",
+      test: "const fn = new Function(code + '; return compareStrings;')(); if (typeof fn('a', 'b') === 'number') return null; return 'Incorrect collator comparison';"
+    }
+  ],
+  quizzes: [
+    {
+      id: 1,
+      question: "What does Intl API stand for?",
+      options: [
+        "Internalization API",
+        "Internationalization API",
+        "Interlink API",
+        "Interpolation API"
+      ],
+      correctAnswer: 1,
+      explanation: "Intl stands for Internationalization."
+    },
+    {
+      id: 2,
+      question: "Which database does the Intl API use under the hood?",
+      options: [
+        "SQL",
+        "MongoDB",
+        "CLDR",
+        "JSON"
+      ],
+      correctAnswer: 2,
+      explanation: "It uses the Common Locale Data Repository (CLDR)."
+    },
+    {
+      id: 3,
+      question: "Why should you cache an Intl formatter instance?",
+      options: [
+        "To save memory space",
+        "Because creating it is a CPU-intensive operation",
+        "To avoid network latency",
+        "Because it is required by syntax"
+      ],
+      correctAnswer: 1,
+      explanation: "Creating a new Intl formatter parses locale rules and is an expensive operation."
+    },
+    {
+      id: 4,
+      question: "Which object formats relative time (e.g., '2 days ago')?",
+      options: [
+        "Intl.DateTimeFormat",
+        "Intl.RelativeTimeFormat",
+        "Intl.TimeFormat",
+        "Intl.Duration"
+      ],
+      correctAnswer: 1,
+      explanation: "Intl.RelativeTimeFormat formats relative times."
+    },
+    {
+      id: 5,
+      question: "What happens if you provide an invalid currency code to Intl.NumberFormat?",
+      options: [
+        "It throws a RangeError",
+        "It defaults to USD",
+        "It ignores the currency style",
+        "It returns null"
+      ],
+      correctAnswer: 0,
+      explanation: "An invalid currency code throws a RangeError."
+    },
+    {
+      id: 6,
+      question: "What method allows you to get an array of formatted string parts?",
+      options: [
+        "format()",
+        "formatToParts()",
+        "split()",
+        "parse()"
+      ],
+      correctAnswer: 1,
+      explanation: "formatToParts() returns an array of objects representing the formatted string in parts."
+    },
+    {
+      id: 7,
+      question: "Which object is used for language-sensitive string comparison?",
+      options: [
+        "Intl.StringFormat",
+        "Intl.Compare",
+        "Intl.Collator",
+        "String.prototype.localeCompare"
+      ],
+      correctAnswer: 2,
+      explanation: "Intl.Collator enables language-sensitive string comparison."
+    },
+    {
+      id: 8,
+      question: "What does Intl.ListFormat do?",
+      options: [
+        "Sorts an array of strings",
+        "Formats an array of strings with conjunctions/disjunctions",
+        "Formats lists in HTML",
+        "Filters unique list items"
+      ],
+      correctAnswer: 1,
+      explanation: "It formats arrays into strings with locale-aware conjunctions like 'and' or 'or'."
+    },
+    {
+      id: 9,
+      question: "How do you detect the user's preferred locale?",
+      options: [
+        "window.locale",
+        "navigator.language",
+        "document.lang",
+        "Intl.locale()"
+      ],
+      correctAnswer: 1,
+      explanation: "navigator.language returns the user's preferred browser language."
+    },
+    {
+      id: 10,
+      question: "What issue arises when server and client locales differ in SSR?",
+      options: [
+        "SyntaxError",
+        "Network Timeout",
+        "Hydration Mismatch",
+        "Memory Leak"
+      ],
+      correctAnswer: 2,
+      explanation: "A Hydration Mismatch occurs when the HTML generated by the server differs from the client due to different locales."
+    },
+    {
+      id: 11,
+      question: "Which option is required when style is set to 'currency' in NumberFormat?",
+      options: [
+        "locale",
+        "currency",
+        "currencyDisplay",
+        "maximumFractionDigits"
+      ],
+      correctAnswer: 1,
+      explanation: "The 'currency' option must be provided when style is 'currency'."
+    },
+    {
+      id: 12,
+      question: "Which constructor formats dates and times?",
+      options: [
+        "Intl.DateTimeFormat",
+        "Intl.DateFormat",
+        "Intl.TimeFormat",
+        "Intl.Calendar"
+      ],
+      correctAnswer: 0,
+      explanation: "Intl.DateTimeFormat is used for formatting dates and times."
     }
   ]
-,
-  quizzes: [
-  {
-    "id": 1,
-    "question": "JavaScript-da Intl API nima maqsadda ishlatiladi?",
-    "options": [
-      "Veb-ilovada internet tezligini oshirish uchun",
-      "Sana, raqam va valyutalarni foydalanuvchi tiliga mos ravishda formatlash (lokalizatsiya) uchun",
-      "Kutubxonalarning hajmini siqish uchun",
-      "Matnlar ustida regex qidiruvini tezlashtirish uchun"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Intl API xalqaro standartlarga (CLDR) asoslanib, ilovani turli davlatlar (lokallar) madaniy qoidalariga mos formatlashga xizmat qiladi."
-  },
-  {
-    "id": 2,
-    "question": "Sanalarni formatlashda moment.js o'rniga Intl API ishlatishning asosiy afzalligi nimada?",
-    "options": [
-      "Moment.js o'zbek tilini tushunmaydi",
-      "Intl API brauzerga o'rnatilgan bo'lib, loyiha hajmini (bundle size) tejaydi",
-      "Intl API sinxron emas, asinxron ishlaydi",
-      "Intl API xotirani avtomatik tozalaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Intl API brauzer ichida vaqtinchalik tayyor turgani sababli tashqi yirik kutubxonalarga ehtiyoj qolmaydi va bundle hajmini 0 KB ga kamaytiradi."
-  },
-  {
-    "id": 3,
-    "question": "Qaysi Intl sinfi katta sonlarni minglik guruhlarga bo'lish uchun ishlatiladi?",
-    "options": [
-      "Intl.DateTimeFormat",
-      "Intl.NumberFormat",
-      "Intl.ListFormat",
-      "Intl.RelativeTimeFormat"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Intl.NumberFormat sonlar va pul birliklarini berilgan lokal bo'yicha chiroyli formatlash uchun qo'llaniladi."
-  },
-  {
-    "id": 4,
-    "question": "'5 daqiqa oldin' kabi nisbiy vaqtlarni formatlovchi Intl obyekti qaysi?",
-    "options": [
-      "Intl.TimeSpan",
-      "Intl.RelativeTimeFormat",
-      "Intl.DurationFormat",
-      "Intl.DateTimeFormat"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Intl.RelativeTimeFormat berilgan son va o'lchov birligidan (masalan, -5 va 'minute') kelib chiqib dynamic nisbiy vaqt matnini yasaydi."
-  },
-  {
-    "id": 5,
-    "question": "Intl.NumberFormat-da valyutani ko'rsatish (style: 'currency') uchun yana qaysi parametr majburiy hisoblanadi?",
-    "options": [
-      "currency (masalan, 'USD')",
-      "currencySymbol (masalan, '$')",
-      "localeSymbol",
-      "formatType"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Valyuta uslubi tanlansa, albatta ISO 4217 standarti bo'yicha 3 harfli valyuta kodi (currency) ko'rsatilishi shart (masalan: UZS, USD, EUR)."
-  },
-  {
-    "id": 6,
-    "question": "Foydalanuvchi brauzerining asosiy tilini dynamic aniqlash uchun qaysi brauzer API-sidan foydalaniladi?",
-    "options": [
-      "window.locale",
-      "navigator.language",
-      "document.language",
-      "navigator.userAgent"
-    ],
-    "correctAnswer": 1,
-    "explanation": "navigator.language foydalanuvchi brauzerining asosiy interfeys tilini (masalan, 'uz-UZ' yoki 'en-US') qaytaradi."
-  },
-  {
-    "id": 7,
-    "question": "Massiv elementlarini grammatik jihatdan to'g'ri (masalan, 'Olma, Banan va Uzum') birlashtiruvchi Intl obyekti qaysi?",
-    "options": [
-      "Intl.ArrayFormat",
-      "Intl.ListFormat",
-      "Intl.StringJoiner",
-      "Intl.Collator"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Intl.ListFormat berilgan lokal qoidalariga mos keladigan bog'lovchilar ('va', 'and', 'or') bilan massivlarni birlashtirib beradi."
-  },
-  {
-    "id": 8,
-    "question": "Matnlarni yoki alifbo harflarini (masalan, o'zbekcha 'o'g' yoki 'o'') tillarga xos tartibda to'g'ri saralash (sorting) uchun nima ishlatiladi?",
-    "options": [
-      "Array.prototype.sort()",
-      "Intl.Collator",
-      "Intl.StringFormatter",
-      "Intl.DateTimeFormat"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Intl.Collator har bir tilning o'ziga xos alifbo qoidalarini (masalan, umlautlar, tutuq belgilari) hisobga olgan holda matnlarni to'g'ri solishtiradi."
-  },
-  {
-    "id": 9,
-    "question": "Jadvaldagi 10 000 ta qatorni render qilishda Intl.NumberFormat ishlatishda eng to'g'ri optimallashtirish usuli qaysi?",
-    "options": [
-      "Har bir qatorda 'new Intl.NumberFormat()' chaqirish",
-      "Loop-dan tashqarida bitta formatlovchi obyekt yaratib, uni loop ichida qayta-qayta ishlatish (Keshlash)",
-      "Loop o'rniga setTimeout ishlatish",
-      "Intl API dan butunlay voz kechish va string operatsiyalardan foydalanish"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Intl formatlovchi obyektlarini yaratish CPU uchun og'ir bo'lgani sababli, uni bir marta yaratib keshlab qo'yish (Memoization) unumdorlikni sezilarli oshiradi."
-  },
-  {
-    "id": 10,
-    "question": "Intl.NumberFormat.prototype.formatToParts() metodi oddiy format() metodidan nima bilan farq qiladi?",
-    "options": [
-      "U faqat sonlarni JSON formatida qaytaradi",
-      "U formatlangan matnni alohida bo'laklarga ajratilgan obyektlar massivi shaklida qaytaradi (masalan, butun qism, valyuta belgisi, minglik ajratuvchi)",
-      "U faqat asinxron ishlaydi",
-      "U hech qanday farq qilmaydi"
-    ],
-    "correctAnswer": 1,
-    "explanation": "formatToParts() yordamida har bir bo'lakka (valyuta belgisi, son, ajratuvchi) alohida CSS stillari berish yoki UI elementlarni moslashuvchan boshqarish mumkin."
-  },
-  {
-    "id": 11,
-    "question": "Hafta kunini matn ko'rinishida chiqarish uchun Intl.DateTimeFormat options qismida qaysi xususiyat beriladi?",
-    "options": [
-      "day: 'string'",
-      "weekday: 'long' yoki 'short'",
-      "week: 'text'",
-      "dayOfWeek: 'full'"
-    ],
-    "correctAnswer": 1,
-    "explanation": "weekday xossasiga 'long' (chorshanba) yoki 'short' (chor.) qiymati berilib, hafta kunini olish mumkin."
-  },
-  {
-    "id": 12,
-    "question": "SSR (Server-Side Rendering) ilovalarda Intl ishlaganda nima uchun 'Hydration Mismatch' xatosi yuzaga keladi?",
-    "options": [
-      "Server va brauzer vaqt zonalari yoki lokallari bir-biridan farq qilganligi uchun",
-      "Serverda JavaScript ishlamasligi sababli",
-      "Brauzer dynamic animatsiyalarni qo'llab-quvvatlamagani uchun",
-      "Serverda Intl API mavjud emasligi sababli"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Agar serverda HTML boshqa lokalda (masalan, 'en-US' / UTC) chizilsa va foydalanuvchida boshqa lokalda ('uz-UZ') hydration bo'lsa, struktura mos kelmay mismatch yuz beradi."
-  }
-]
-
 };

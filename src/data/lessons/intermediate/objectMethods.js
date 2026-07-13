@@ -2,68 +2,68 @@ export const objectMethods = {
   id: "object-methods",
   title: "Object Metodlari: keys, values va entries",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-JavaScriptda Obyektlarni (Objects) aylanib chiqish va ulardagi ma'lumotlarni massiv (Array) ko'rinishiga o'tkazish uchun bir nechta kuchli statik metodlar mavjud. Bu metodlar yordamida backenddan kelgan ma'lumotlarni Array metodlari (\`map\`, \`filter\`, \`reduce\`) bilan oson ishlay olamiz.
+  theory: `## 1. 💡 Beginner Analogy: Shkaf va Qutilar
 
-- **Object.keys(obj)**: Obyektning faqat **kalitlarini (keys)** o'ziga yig'ib, massiv qilib qaytaradi.
-- **Object.values(obj)**: Obyektning faqat **qiymatlarini (values)** o'ziga yig'ib, massiv qilib qaytaradi.
-- **Object.entries(obj)**: Obyektning har bir kalit-qiymat juftligini alohida massiv \`[key, value]\` qilib, barchasini bitta katta massiv ichida qaytaradi.
-- **Object.fromEntries(iterable)**: \`[key, value]\` ko'rinishidagi massivni yana qaytadan to'laqonli Obyektga aylantiradi. Bu \`Object.entries()\` ning to'liq teskarisi.
+Tasavvur qiling, sizda bitta katta shkaf bor (Object) va uning ichida bir nechta tortmalar mavjud. Har bir tortmaning ustida yozuv qog'ozi (Key - kalit) bor va ichida buyum (Value - qiymat) yotibdi.
 
-## ❌ YOMON va ✅ YAXSHI Yondashuvlar
+- **Object.keys()** - Bu faqatgina tortmalar ustidagi barcha yozuv qog'ozlarini yig'ib olishga o'xshaydi. Sizda qanday tortmalar borligini bilasiz, lekin ichida nima borligini ko'rmaysiz.
+- **Object.values()** - Bu faqat tortmalar ichidagi buyumlarni olib chiqib, yig'ishga o'xshaydi. Nimaga tegishli ekanligini bilmaysiz, faqat buyumlarni o'zi.
+- **Object.entries()** - Har bir tortmani yozuvi va ichidagi buyumini bitta qilib (juftlik qilib) yig'ib olishdir.
+- **Object.fromEntries()** - Agar sizda shu yozuv va buyum juftliklari bo'lsa, ularni qaytadan bitta shkafga joylashtirib chiqishdir.
 
-**YOMON:** Obyektning nechta xususiyati (kaliti) borligini aniqlash uchun \`for...in\` tsiklining ichida hisoblagich ishlatish.
-\`\`\`javascript
-const user = { name: "Ali", age: 25 };
-let count = 0;
-for (let key in user) {
-  if (user.hasOwnProperty(key)) {
-    count++;
-  }
-}
-console.log(count);
-\`\`\`
+## 2. 🧠 Deep Dive: Under the Hood (V8 Engine va Performance)
 
-**YAXSHI:** \`Object.keys()\` va \`.length\` xususiyatidan foydalanish (qisqa va xavfsiz).
-\`\`\`javascript
-const user = { name: "Ali", age: 25 };
-const count = Object.keys(user).length;
-console.log(count);
-\`\`\`
+JavaScript (ayniqsa V8 dvigateli) obyektlarni xotirada qanday saqlashini tushunish, bu metodlarning ishlash tezligini (performance) baholashda juda muhim.
 
-**YOMON:** Obyekt qiymatlari bo'yicha hisob-kitob qilish (masalan barcha oyliklarni qo'shish) uchun \`for...in\` ni qo'lda yozish.
-\`\`\`javascript
-const salaries = { john: 1000, pete: 1600 };
-let sum = 0;
-for (let key in salaries) {
-  sum += salaries[key];
-}
-\`\`\`
+V8 obyekt xususiyatlarini saqlash uchun ikki xil yondashuvdan foydalanadi:
+1. **Named properties (Lug'at yoki Hidden Classes - Shapes):** Odatdagi string kalitlar uchun V8 **Hidden Classes** yaratadi. Bu obyekt xususiyatlariga tezkor kirishni ta'minlaydi.
+2. **Elements (Massiv indekslari):** Raqamli kalitlar (masalan: \\\`{ 1: "a", 2: "b" }\\\`) massiv kabi xotirada ketma-ket joylashadi.
 
-**YAXSHI:** \`Object.values()\` va massivning \`reduce\` metodidan foydalanish.
-\`\`\`javascript
-const salaries = { john: 1000, pete: 1600 };
-const sum = Object.values(salaries).reduce((acc, val) => acc + val, 0);
-\`\`\`
+\\\`Object.keys()\\\`, \\\`Object.values()\\\`, va \\\`Object.entries()\\\` metodlarini ishga tushirganingizda, dvigatel obyektning ichki "Enumerable" (aylanish mumkin bo'lgan) xususiyatlarini qidirib chiqadi. Bu esa **O(N)** vaqtni oladi (N - xususiyatlar soni).
 
-## 🎤 Intervyu Savollari
+Xotira nuqtai nazaridan:
+- \\\`Object.keys()\\\` yangi massiv yaratadi, lekin faqat string (yoki stringga aylantirilgan raqamlar) kalitlarni o'z ichiga oladi.
+- \\\`Object.entries()\\\` eng ko'p xotira sarflaydi, chunki u nafaqat asosiy massivni, balki har bir kalit-qiymat uchun kichik ikki elementli massivlarni ham xotirada yaratishi kerak.
 
-1. **Object.keys() bilan for...in tsiklining farqi nimada?**
-   - \`Object.keys()\` faqat obyektning o'ziga tegishli bo'lgan (own) xususiyatlarni massiv qilib qaytaradi. \`for...in\` tsikli esa obyekt prototipidan (prototype chain) meros olingan xususiyatlarni ham aylanib chiqadi.
-2. **Object.fromEntries() nima uchun ishlatiladi?**
-   - Ikki o'lchamli massivni (masalan: \`[['a', 1], ['b', 2]]\`) haqiqiy obyektga (\`{a: 1, b: 2}\`) aylantirish uchun. Ayniqsa, \`URLSearchParams\` ni obyektga aylantirishda juda qulay.
-3. **Obyektni qanday qilib filtrlash (\`filter\`) mumkin?**
-   - Obyektda \`.filter()\` metodi yo'q. Avval \`Object.entries()\` yordamida massivga o'tkazib, \`.filter()\` ni ishlatamiz, songra \`Object.fromEntries()\` bilan qayta obyektga o'giramiz.
+## 3. ⚠️ Edge Cases va Senior Interview Questions
 
-## 🛠️ Amaliy Topshiriqlar
-\`\`\`mermaid
-graph LR
-    O({a: 1, b: 2})
-    O -->|Object.keys| K(["a", "b"])
-    O -->|Object.values| V([1, 2])
-    O -->|Object.entries| E([["a", 1], ["b", 2]])
-    E -->|Object.fromEntries| O2({a: 1, b: 2})
-\`\`\`
+**Edge Case 1: Raqamli kalitlar tartibi (Property Order)**
+JavaScriptda obyekt kalitlari har doim ham yaratilgan tartibda chiqmaydi! Agar kalitlar butun raqamlar (integer) bo'lsa, ular o'sish tartibida saralanadi.
+\\\`\\\`\\\`javascript
+const obj = { "3": "c", "1": "a", "2": "b" };
+console.log(Object.keys(obj)); // Natija: ["1", "2", "3"]
+\\\`\\\`\\\`
+
+**Edge Case 2: Symbol kalitlar va Enumerable bo'lmagan xususiyatlar**
+\\\`Object.keys()\\\` va boshqa statik metodlar **Symbol** kalitlarni va enumerable bo'lmagan xususiyatlarni ko'rmaydi.
+\\\`\\\`\\\`javascript
+const id = Symbol("id");
+const user = { name: "Ali", [id]: 123 };
+Object.defineProperty(user, "age", { value: 25, enumerable: false });
+
+console.log(Object.keys(user)); // Natija: ["name"]
+\\\`\\\`\\\`
+
+**Senior Interview Question:**
+*Savol:* Nega katta hajmdagi ma'lumotlarni ishlashda \\\`Object.entries()\\\` o'rniga oddiy \\\`for...in\\\` samaraliroq bo'lishi mumkin?
+*Javob:* Chunki \\\`Object.entries()\\\` har bir kalit-qiymat juftligi uchun xotirada yangi massiv ajratadi. Katta obyektlarda bu Garbage Collector ga og'irlik tushiradi va Memory Spike ni keltirib chiqaradi. Bunday holatda \\\`for...in\\\` tsikli (yoki \\\`for...of\\\` \\\`Object.keys\\\` bilan) orqali mutatsiya qilish xotira tejamkorroqdir. Ammo \\\`for...in\\\` prototip zanjirini ham tekshirganligi sababli, \\\`Object.hasOwn()\\\` bilan birga ishlatilishi shart.
+
+## 📊 Obyekt Metodlari Sxemasi
+
+\\\`\\\`\\\`mermaid
+graph TD
+    Start[Boshlangich Obyekt]
+    Start --> Keys[Object.keys]
+    Start --> Values[Object.values]
+    Start --> Entries[Object.entries]
+    
+    Keys --> KeysResult([Kalitlar massivi])
+    Values --> ValuesResult([Qiymatlar massivi])
+    Entries --> EntriesResult([Juftliklar massivi])
+    
+    EntriesResult --> FromEntries[Object.fromEntries]
+    FromEntries --> FinalResult[{Boshlangich Obyekt}]
+\\\`\\\`\\\`
 `,
   exercises: [
     {
