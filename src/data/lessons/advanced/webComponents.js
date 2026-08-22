@@ -198,13 +198,13 @@ class UserCard extends HTMLElement {
 
 ## 6. 🛠️ Amaliy Topshiriqlar
 
-Mashqlar \`/Users/farhod/Desktop/github/js-uz/scratch/webComponents_exercises.json\` faylida berilgan. Ularni bajarib, Shadow DOM va Custom Elementlar yozishni mashq qiling.
+Quyidagi mashqlarni bajarib, Shadow DOM va Custom Elementlar yozishni mashq qiling (mashqlar "Amaliyot" bo'limida).
 
 ---
 
 ## 7. 📝 12 ta Mini Test
 
-Test savollari \`/Users/farhod/Desktop/github/js-uz/scratch/webComponents_quizzes.json\` faylida berilgan. Bilimingizni sinash uchun ularga javob bering.
+Bilimingizni sinash uchun "Test" bo'limidagi savollarga javob bering.
 
 ---
 

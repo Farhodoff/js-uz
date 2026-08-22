@@ -186,13 +186,13 @@ btn = null; // Havolani uzib yuboramiz, GC endi buni tozalay oladi
 
 ## 6. 🛠️ Amaliy Topshiriqlar
 
-Mashqlar \`/Users/farhod/Desktop/github/js-uz/scratch/performanceOptimization_exercises.json\` faylida berilgan. Ularni bajarib, bilimingizni sinab ko'ring.
+Mashqlar "Amaliyot" bo'limida berilgan. Ularni bajarib, bilimingizni sinab ko'ring.
 
 ---
 
 ## 7. 📝 12 ta Mini Test
 
-Test savollari \`/Users/farhod/Desktop/github/js-uz/scratch/performanceOptimization_quizzes.json\` faylida joylashgan. Unda 12 ta variantli test mavjud.
+Test savollari "Test" bo'limida joylashgan. Unda 12 ta variantli test mavjud.
 
 ---
 

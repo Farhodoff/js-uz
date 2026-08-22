@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { curriculum, SECTIONS } from '../data/curriculum';
-import { PATHS, PATH_KEYS } from '../data/paths';
 import LayoutIcon from './icons/LayoutIcon';
 import { useAppStore } from '../store/useAppStore';
 import { reactCurriculum, REACT_SECTIONS } from '../data/reactCurriculum';
@@ -54,8 +53,8 @@ export default function Sidebar({
         <button 
           onClick={() => {
             setActiveTrack('react');
-            setActiveSection('reactBeginner');
-            navigate('/reactBeginner');
+            setActiveSection('reactBasics');
+            navigate('/reactBasics');
           }}
           style={{ flex: 1, padding: '10px', background: activeTrack === 'react' ? '#1e293b' : 'transparent', color: activeTrack === 'react' ? '#61dafb' : '#64748b', border: 'none', borderBottom: activeTrack === 'react' ? '2px solid #61dafb' : '2px solid transparent', cursor: 'pointer', fontWeight: 'bold' }}
         >

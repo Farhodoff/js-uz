@@ -1,4 +1,5 @@
 export const step7_hooks = {
+  id: "step7_hooks",
   title: "7-DARS: React Hooks (Asosiy)",
   content: `
 # 7-qadam: React Hooklari va useEffect'ga Chuqur Sho'ng'ish

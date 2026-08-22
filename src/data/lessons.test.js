@@ -32,22 +32,21 @@ describe("All Lesson Files Validation", () => {
       expect(lesson).toBeDefined();
       expect(lesson.id).toBeTypeOf("string");
       expect(lesson.title).toBeTypeOf("string");
-      expect(lesson.theory).toBeTypeOf("string");
+      expect(lesson.theory ?? lesson.content).toBeTypeOf("string");
     });
   });
 });
 
 describe("Loop Guard & Code Runner Safety", () => {
   it("should inject loop guards into for/while loops", async () => {
-    const { injectLoopGuard } = await import("../hooks/useCodeRunner.js");
+    const { injectLoopGuard } = await import("../utils/loopGuard.js");
     const code = "while(true) { console.log(1); }";
     const guarded = injectLoopGuard(code);
     expect(guarded).toContain("__loop_guards");
-    expect(guarded).toContain("Cheksiz sikl aniqlandi");
   });
 
   it("should prevent infinite loops from running indefinitely", async () => {
-    const { injectLoopGuard } = await import("../hooks/useCodeRunner.js");
+    const { injectLoopGuard, LOOP_GUARD_ERROR } = await import("../utils/loopGuard.js");
     const infiniteLoopCode = `
       let x = 0;
       while(x < 10) {
@@ -56,7 +55,7 @@ describe("Loop Guard & Code Runner Safety", () => {
     `;
     const testCode = "return null;";
     const guardedCode = injectLoopGuard(infiniteLoopCode);
-    
+
     const combinedCode = `
       "use strict";
       const __loop_guards = new Proxy({}, {
@@ -74,7 +73,6 @@ describe("Loop Guard & Code Runner Safety", () => {
 
     const runner = new Function(combinedCode);
     const result = runner();
-    expect(result).toBe("Runtime Error: Cheksiz sikl aniqlandi!");
+    expect(result).toBe(`Runtime Error: ${LOOP_GUARD_ERROR}`);
   });
 });
-

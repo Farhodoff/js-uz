@@ -1,5 +1,5 @@
 export const step5_express_basics = {
-  id: 5,
+  id: "step5_express_basics",
   title: "Express.js asoslari va Routing",
   theory: `
 # Express.js Asoslari: Yoki qanday qilib Node.js dagi "qiynoq"dan qutulish mumkin?

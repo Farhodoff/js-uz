@@ -1,4 +1,5 @@
 export const arrayChallenges = {
+  id: "arrayChallenges",
   title: "Array (Massiv) Masalalari",
   content: `
 Ushbu darsda faqat amaliy masalalar yig'ilgan. 

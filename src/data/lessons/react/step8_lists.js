@@ -1,4 +1,5 @@
 export const step8_lists = {
+  id: "step8_lists",
   title: "8-DARS: Ro'yxatlar va Shartli Render",
   content: `
 # React'da Ro'yxatlar (Lists) va Shartli Renderlash (Conditional Rendering)

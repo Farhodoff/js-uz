@@ -182,13 +182,13 @@ req.onsuccess = function(event) {
 
 ## 6. 🛠️ Amaliy Topshiriqlar
 
-Mashqlar \`/Users/farhod/Desktop/github/js-uz/scratch/advancedWebStorage_exercises.json\` faylida berilgan. Ularni ishlab ko'rib, Cookie va IndexedDB bilan amaliy ishlash malakangizni oshiring.
+Mashqlar "Amaliyot" bo'limida berilgan. Ularni ishlab ko'rib, Cookie va IndexedDB bilan amaliy ishlash malakangizni oshiring.
 
 ---
 
 ## 7. 📝 12 ta Mini Test
 
-Test savollari \`/Users/farhod/Desktop/github/js-uz/scratch/advancedWebStorage_quizzes.json\` faylida joylashgan. 12 ta savoldan iborat testni yechib, darsni qay darajada o'zlashtirganingizni tekshiring.
+Test savollari "Test" bo'limida joylashgan. 12 ta savoldan iborat testni yechib, darsni qay darajada o'zlashtirganingizni tekshiring.
 
 ---
 

@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { curriculum, SECTIONS } from '../data/curriculum';
 import { reactCurriculum, REACT_SECTIONS } from '../data/reactCurriculum';
-import { PATHS, PATH_KEYS } from '../data/paths';
 import { useAppStore } from '../store/useAppStore';
 
 export function useLesson() {
@@ -14,7 +13,7 @@ export function useLesson() {
   const currentSections = activeTrack === 'react' ? REACT_SECTIONS : SECTIONS;
 
   const [activeSection, setActiveSectionState] = useState(() => {
-    return (currentSections.includes(urlSection) || PATH_KEYS.includes(urlSection)) ? urlSection : currentSections[0];
+    return currentSections.includes(urlSection) ? urlSection : currentSections[0];
   });
   const [activeLesson, setActiveLesson] = useState(null);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -25,7 +24,7 @@ export function useLesson() {
     let isCancelled = false;
 
     const loadLesson = async () => {
-      const secKey = (currentSections.includes(urlSection) || PATH_KEYS.includes(urlSection)) ? urlSection : currentSections[0];
+      const secKey = currentSections.includes(urlSection) ? urlSection : currentSections[0];
       setActiveSectionState(secKey);
 
       if (secKey === 'challenges') {
@@ -33,7 +32,7 @@ export function useLesson() {
         return;
       }
 
-      const sectionData = PATH_KEYS.includes(secKey) ? PATHS[secKey] : currentCurriculum[secKey];
+      const sectionData = currentCurriculum[secKey];
       if (!sectionData || !sectionData.lessons || sectionData.lessons.length === 0) return;
 
       let targetLessonRef = urlLessonId 
@@ -70,7 +69,7 @@ export function useLesson() {
   }, [urlSection, urlLessonId, navigate, currentCurriculum, currentSections]);
 
   const setActiveSection = useCallback((key) => {
-    const sec = PATH_KEYS.includes(key) ? PATHS[key] : currentCurriculum[key];
+    const sec = currentCurriculum[key];
     if (key === 'challenges') {
       navigate('/challenges');
     } else if (sec && sec.lessons.length > 0) {
@@ -92,7 +91,7 @@ export function useLesson() {
     }
   }, [activeLesson]);
 
-  let sec = PATH_KEYS.includes(activeSection) ? PATHS[activeSection] : currentCurriculum[activeSection];
+  let sec = currentCurriculum[activeSection];
   if (!sec) {
     sec = currentCurriculum[currentSections[0]];
   }

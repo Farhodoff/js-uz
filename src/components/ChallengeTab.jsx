@@ -139,7 +139,6 @@ export default function ChallengeTab() {
   };
 
   // Score stats
-  const totalSolvedInFilter = filteredChallenges.filter(c => attempts[c.id] !== undefined).length;
   const correctCountInFilter = filteredChallenges.filter(c => attempts[c.id]?.isCorrect).length;
   const isQuizFinished = currentIndex >= filteredChallenges.length;
 
@@ -301,7 +300,6 @@ export default function ChallengeTab() {
               {isSubmitted && (
                 <ExplanationBox
                   challenge={currentChallenge}
-                  selectedOption={selectedOption}
                   isCorrect={selectedOption === currentChallenge.correctAnswer}
                 />
               )}

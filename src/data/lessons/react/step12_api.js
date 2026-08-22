@@ -1,4 +1,5 @@
 export const step12_api = {
+  id: "step12_api",
   title: "12-DARS: API bilan ishlash (HTTP So'rovlar)",
   content: `
 # 12-Qadam: React-da API bilan ishlash va Asinxron Dasturlash

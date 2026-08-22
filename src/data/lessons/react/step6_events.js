@@ -1,4 +1,5 @@
 export const step6_events = {
+  id: "step6_events",
   title: "6-DARS: Hodisalar (Events)",
   content: `
 # 6-Dars: React-da Hodisalar (Events) bilan Ishlash (Event Handling)

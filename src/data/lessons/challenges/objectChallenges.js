@@ -1,4 +1,5 @@
 export const objectChallenges = {
+  id: "objectChallenges",
   title: "Object (Obyekt) Masalalari",
   content: `
 Obyektlar — JavaScript dagi eng muhim tuzilmalardandir. Ushbu masalalar orqali siz obyekt ichidan ma'lumot izlash, kalitlar va qiymatlar ustida amallar bajarish va ma'lumotlarni guruhlash kabi operatsiyalarni mashq qilasiz.

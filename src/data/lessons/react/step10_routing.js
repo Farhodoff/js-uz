@@ -1,4 +1,5 @@
 export const step10_routing = {
+  id: "step10_routing",
   title: "10-DARS: Marshrutlash (Routing)",
   content: `
 # React Routing (Marshrutizatsiya) asoslari va React Router DOM

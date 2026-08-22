@@ -1,227 +1,12 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { callbacks as callbacksLesson } from "./lessons/advanced/callbacks";
-
-
 import { fetch as fetchApi } from "./lessons/advanced/fetch";
 import { localStorage as localStorageLesson } from "./lessons/advanced/localStorage";
-
 import { modules as modulesLesson } from "./lessons/advanced/modules";
-
 import { closures as closuresLesson } from "./lessons/advanced/closures";
 import { eventLoop as eventLoopLesson } from "./lessons/advanced/eventLoop";
-
-
-
-
-
-
 import { prototypes as prototypesLesson } from "./lessons/advanced/prototypes";
-
-
 import { security as securityLesson } from "./lessons/advanced/security";
-
-
 import { regex as regexLesson } from "./lessons/advanced/regex";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const curriculum = {
   beginner: {
     label: "Boshlang'ich",
@@ -250,7 +35,8 @@ export const curriculum = {
       { id: "step2_modules_fs", title: "Modullar (CommonJS, ESM) va File System (FS)", load: () => import("./lessons/nodejs/step2_modules_fs.js").then(m => m.step2_modules_fs) },
       { id: "step3_events_streams", title: "Events (Hodisalar), Streams va Buffers", load: () => import("./lessons/nodejs/step3_events_streams.js").then(m => m.step3_events_streams) },
       { id: "step4_http_server", title: "HTTP Moduli va Node.js da Server Yaratish", load: () => import("./lessons/nodejs/step4_http_server.js").then(m => m.step4_http_server) },
-      { id: "step5_express_basics", title: "Express.js Asoslari va Routing", load: () => import("./lessons/nodejs/step5_express_basics.js").then(m => m.step5_express_basics) }
+      { id: "step5_express_basics", title: "Express.js Asoslari va Routing", load: () => import("./lessons/nodejs/step5_express_basics.js").then(m => m.step5_express_basics) },
+      { id: "middlewareBasics", title: "Express Middleware: Tarmoq orasidagi qatlam", load: () => import("./lessons/nodejs/middlewareBasics.js").then(m => m.middlewareBasics) }
     ]
   },
   algorithms: {
@@ -270,6 +56,9 @@ export const curriculum = {
     color: "#6ac98e",
     icon: "⚙️",
     lessons: [
+      { id: "npmBasics", title: "NPM Asoslari: Paketlar bilan ishlash", load: () => import("./lessons/ecosystem/npmBasics.js").then(m => m.npmBasics) },
+      { id: "packageJson", title: "package.json: Loyiha Konfiguratsiyasi", load: () => import("./lessons/ecosystem/packageJson.js").then(m => m.packageJson) },
+      { id: "webpackBabel", title: "Webpack va Babel: Build Instrumentlari", load: () => import("./lessons/ecosystem/webpackBabel.js").then(m => m.webpackBabel) },
       { id: "reactBasics", title: "React.js Asoslari: Komponentlar va Hooklar", load: () => import("./lessons/ecosystem/reactBasics.js").then(m => m.reactBasics) },
       { id: "nodeExpressBasics", title: "Node.js & Express Asoslari va MongoDB Integratsiyasi", load: () => import("./lessons/ecosystem/nodeExpressBasics.js").then(m => m.nodeExpressBasics) },
       { id: "reactArchitecture", title: "React Arxitekturasi (Fiber, Reconciler, Virtual DOM)", load: () => import("./lessons/ecosystem/reactArchitecture.js").then(m => m.reactArchitecture) },
@@ -345,6 +134,4 @@ export const curriculum = {
     ]
   }
 };
-
 export const SECTIONS = ["beginner", "intermediate", "advanced", "nodejs", "typescript", "algorithms", "sql", "systemDesign", "ecosystem", "softSkills", "projects", "challenges"];
-

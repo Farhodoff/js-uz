@@ -1,4 +1,5 @@
 export const leetcodeHashMaps = {
+  id: "leetcodeHashMaps",
   title: "LeetCode: HashMap va Set Algoritmlari",
   content: `
 Obyektlar (HashMaps) va Set (To'plam) lar dasturlashda eng ko'p ishlatiladigan va qidiruvni O(1) vaqtga tushiradigan muhim ma'lumotlar tuzilmasidir. Ushbu darsda ular orqali optimallashtirish sirlarini o'rganasiz.

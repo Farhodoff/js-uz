@@ -1,4 +1,5 @@
 export const mathLogicChallenges = {
+  id: "mathLogicChallenges",
   title: "Matematika va Mantiq Masalalari",
   content: `
 Dasturlashning asosi — mantiq. Ushbu darsda siz sonlar, toq-juftlik, tub sonlar, faktorial kabi turli xil matematik va mantiqiy algoritmlarni ishlashni o'rganasiz.

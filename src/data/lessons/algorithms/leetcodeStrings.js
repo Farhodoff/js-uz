@@ -1,4 +1,5 @@
 export const leetcodeStrings = {
+  id: "leetcodeStrings",
   title: "LeetCode: String (Satr) Algoritmlari",
   content: `
 Ushbu bo'limda siz eng mashhur intervyu platformasi bo'lgan LeetCode'dagi "String" (Satr) mavzusiga oid algoritmlarni ishlaysiz. Ular yirik kompaniyalarning texnik suhbatlarida tez-tez so'raladi. O'z yechimingizni optimal (tez) ishlashiga ham ahamiyat qarating!

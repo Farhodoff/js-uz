@@ -1,4 +1,5 @@
 export const selectionRange = {
+  id: "selectionRange",
   title: "Selection va Range API",
   theory: `
 ### 1. Dastlabki tushuncha (Beginner Analogy)

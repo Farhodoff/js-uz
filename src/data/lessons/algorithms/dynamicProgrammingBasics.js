@@ -1,4 +1,5 @@
 export const dynamicProgrammingBasics = {
+  id: "dynamicProgrammingBasics",
   title: "LeetCode: Dynamic Programming (Dinamik Dasturlash)",
   content: `
 Dinamik Dasturlash (DP) murakkab masalalarni kichik qismlarga bo'lib yechish va oraliq natijalarni saqlab qolishga asoslangan texnikadir. Ushbu bo'limdagi masalalar intervyulardagi eng qiyin hisoblanuvchi qismlarga tayyorlaydi.

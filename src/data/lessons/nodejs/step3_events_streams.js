@@ -1,4 +1,6 @@
 export const step3_events_streams = {
+  id: "step3_events_streams",
+  title: "Events (Hodisalar), Streams va Buffers",
   theory: `
 # Node.js: Events, Streams va Buffers (Yoki nega 1GB faylni RAMga yuklamaslik kerak?)
 

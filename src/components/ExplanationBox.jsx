@@ -36,7 +36,7 @@ function parseExplanationMarkdown(md) {
   return processedLines.join("");
 }
 
-export default function ExplanationBox({ challenge, selectedOption, isCorrect }) {
+export default function ExplanationBox({ challenge, isCorrect }) {
   return (
     <div className="explanation-card">
       <div className={`explanation-banner ${isCorrect ? "correct" : "incorrect"}`}>

@@ -1,4 +1,5 @@
 export const leetcodeArrays = {
+  id: "leetcodeArrays",
   title: "LeetCode: Array (Massiv) Algoritmlari",
   content: `
 Ushbu bo'limda Massivlarga oid LeetCode dagi eng ko'p so'raladigan algoritmlarni yechasiz. Ikki ko'rsatkich (Two Pointers), oyna siljitish (Sliding Window) kabi optimal usullardan foydalanish tavsiya etiladi.

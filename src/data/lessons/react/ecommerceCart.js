@@ -129,7 +129,7 @@ function Product({ data }) {
   const { addToCart } = useCart();
   return (
     <div>
-      <h4>{data.name} - ${data.price}</h4>
+      <h4>{data.name} - \${data.price}</h4>
       <button onClick={() => addToCart(data)}>Savatga Qo'shish</button>
     </div>
   );
@@ -215,7 +215,7 @@ const ProductList = () => {
       {products.map(p => (
         <div key={p.id} style={{ display: "flex", justifyContent: "space-between", padding: "15px", background: "white", borderRadius: "5px", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
           <div>
-            <strong>{p.name}</strong> <br/> <span style={{ color: "green" }}>${p.price}</span>
+            <strong>{p.name}</strong> <br/> <span style={{ color: "green" }}>\${p.price}</span>
           </div>
           <button 
             onClick={() => dispatch({ type: 'ADD', payload: p })}
@@ -241,7 +241,7 @@ const CartDetails = () => {
         <div key={item.id} style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #b2bec3", padding: "10px 0" }}>
           <span>{item.name} <strong>x{item.qty}</strong></span>
           <div style={{ display: "flex", gap: "15px" }}>
-            <span>${item.price * item.qty}</span>
+            <span>\${item.price * item.qty}</span>
             <button 
               onClick={() => dispatch({ type: 'REMOVE', payload: item.id })}
               style={{ background: "#d63031", color: "white", border: "none", cursor: "pointer", borderRadius: "3px" }}
@@ -251,7 +251,7 @@ const CartDetails = () => {
           </div>
         </div>
       ))}
-      <h3 style={{ textAlign: "right", marginTop: "20px", color: "#2d3436" }}>Jami: ${state.total}</h3>
+      <h3 style={{ textAlign: "right", marginTop: "20px", color: "#2d3436" }}>Jami: \${state.total}</h3>
     </div>
   );
 };

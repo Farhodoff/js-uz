@@ -1,4 +1,5 @@
 export const reactInterviewQuestions = {
+  id: "reactInterviewQuestions",
   title: "Top 20+ React Intervyu Savollari va Javoblar",
   content: `
 # 🎤 React Intervyu Savollari

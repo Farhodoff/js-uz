@@ -1,4 +1,6 @@
 export const step1_nodejs_intro = {
+  id: "step1_nodejs_intro",
+  title: "Node.js Asoslari: REPL va Global Obyekt",
   theory: `# Node.js: Brauzerdan tashqaridagi hayot! 🚀
 
 Salom, JS dasturchi! Hozirgi kungacha sen faqat brauzerda (Chrome, Safari va h.k.) yashading. HTML elementlarini \`document.querySelector\` bilan ushlading, \`console.log()\` qilding va hamma narsa oynada paydo bo'ldi. Lekin bilasanmi? **Node.js** bilan JavaScript o'z qafasidan (brauzerdan) qochib, to'g'ridan-to'g'ri operatsion tizimda ishlay boshlaydi!

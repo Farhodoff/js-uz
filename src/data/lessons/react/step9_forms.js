@@ -1,4 +1,5 @@
 export const step9_forms = {
+  id: "step9_forms",
   title: "9-DARS: Formalar bilan ishlash",
   content: `
 # React'da Formalar (Forms): Boshqariladigan va Boshqarilmaydigan Komponentlar

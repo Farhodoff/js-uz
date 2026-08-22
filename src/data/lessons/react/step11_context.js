@@ -1,4 +1,5 @@
 export const step11_context = {
+  id: "step11_context",
   title: "11-DARS: Holatni boshqarish (Context API)",
   content: `
 # 11-Qadam: Context API va "Prop Drilling" Muammosi

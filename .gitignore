@@ -68,3 +68,6 @@ typings/
 # Vite
 dist
 .vercel
+
+# macOS
+.DS_Store

@@ -1,4 +1,5 @@
 export const stringChallenges = {
+  id: "stringChallenges",
   title: "String (Satr) Masalalari",
   content: `
 Ushbu darsda satrlar ustida amallar bajarish ko'nikmalarini mustahkamlaysiz. Qidirish, kesish, o'zgartirish va satrlarni formatlash bo'yicha eng ko'p so'raladigan intervyu masalalarini ishlaysiz.

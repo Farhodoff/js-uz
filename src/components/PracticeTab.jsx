@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Editor from '@monaco-editor/react';
 import { registerUzbekMonacoHover } from '../utils/editorExtensions';
 
@@ -27,7 +27,7 @@ export default function PracticeTab({
     }
   };
 
-  const showInlineOutput = (editor, monaco, outputText, hasError) => {
+  const showInlineOutput = useCallback((editor, monaco, outputText, hasError) => {
     removeInlineOutput(editor);
 
     const lineCount = editor.getModel().getLineCount();
@@ -97,7 +97,7 @@ export default function PracticeTab({
         domNode: domNode
       });
     });
-  };
+  }, []);
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
@@ -132,7 +132,7 @@ export default function PracticeTab({
     } else if (editorRef.current && !output) {
       removeInlineOutput(editorRef.current);
     }
-  }, [output]);
+  }, [output, showInlineOutput]);
 
   useEffect(() => {
     return () => {

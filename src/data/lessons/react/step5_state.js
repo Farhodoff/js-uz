@@ -1,4 +1,5 @@
 export const step5_state = {
+  id: "step5_state",
   title: "5-DARS: State (Holat)",
   content: `
 # 5-Qadam: React State (Holat) – Komponentning Xotirasi
