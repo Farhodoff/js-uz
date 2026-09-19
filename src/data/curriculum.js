@@ -92,14 +92,24 @@ export const curriculum = {
     color: "#e5b84f",
     icon: "🟡",
     lessons: [
-      { id: "prototypes", number: "4.1", title: "Prototiplar va Prototip Zanjiri (Prototype Chain)", load: () => import("./lessons/js/04-oop-modern/prototypes.js").then(m => m.prototypes) },
-      { id: "classes", number: "4.2", title: "Classes (Klasslar) va OOP", load: () => import("./lessons/js/04-oop-modern/classes.js").then(m => m.classes) },
-      { id: "destructuring", number: "4.3", title: "Destructuring (Ma'lumotlarni ochish)", load: () => import("./lessons/js/04-oop-modern/destructuring.js").then(m => m.destructuring) },
-      { id: "spreadRest", number: "4.4", title: "Spread va Rest (...) — Yoyish va Yig'ish", load: () => import("./lessons/js/04-oop-modern/spreadRest.js").then(m => m.spreadRest) },
-      { id: "optionalChaining", number: "4.5", title: "Optional Chaining & Nullish Coalescing", load: () => import("./lessons/js/04-oop-modern/optionalChaining.js").then(m => m.optionalChaining) },
-      { id: "es6Features", number: "4.6", title: "ES6+ Yangi Imkoniyatlari", load: () => import("./lessons/js/04-oop-modern/es6Features.js").then(m => m.es6Features) },
-      { id: "modules", number: "4.7", title: "Modullar: import va export (ESM, CommonJS)", load: () => import("./lessons/js/04-oop-modern/modules.js").then(m => m.modules) },
-      { id: "object-protection", number: "4.8", title: "Obyektlarni Himoyalash: Freeze va Seal", load: () => import("./lessons/js/04-oop-modern/objectProtection.js").then(m => m.objectProtection) }
+      { id: "objectLiteralsMethods", number: "4.1", title: "OOP Asoslari: Obyekt Literal, Property va Method", load: () => import("./lessons/js/04-oop-modern/objectLiteralsMethods.js").then(m => m.objectLiteralsMethods) },
+      { id: "constructorFunctions", number: "4.2", title: "Konstruktor Funksiyalar va new Operatori", load: () => import("./lessons/js/04-oop-modern/constructorFunctions.js").then(m => m.constructorFunctions) },
+      { id: "classSyntax", number: "4.3", title: "ES6 Klasslar: class, constructor va static", load: () => import("./lessons/js/04-oop-modern/classSyntax.js").then(m => m.classSyntax) },
+      { id: "encapsulation", number: "4.4", title: "Inkapsulyatsiya: Private Maydonlar (#), Getter va Setter", load: () => import("./lessons/js/04-oop-modern/encapsulation.js").then(m => m.encapsulation) },
+      { id: "oopInheritance", number: "4.5", title: "Meros Olish: extends, super va Polimorfizm", load: () => import("./lessons/js/04-oop-modern/oopInheritance.js").then(m => m.oopInheritance) },
+      { id: "prototypeChainDeep", number: "4.6", title: "Prototip Zanjiri Chuqur: Object.create va Meros Mexanizmi", load: () => import("./lessons/js/04-oop-modern/prototypeChainDeep.js").then(m => m.prototypeChainDeep) },
+      { id: "oopPrinciples", number: "4.7", title: "OOP'ning 4 Asosiy Prinsipi (SOLID yo'lida)", load: () => import("./lessons/js/04-oop-modern/oopPrinciples.js").then(m => m.oopPrinciples) },
+      { id: "oopPatterns", number: "4.8", title: "OOP Design Patterns: Singleton, Observer, Factory, Module", load: () => import("./lessons/js/04-oop-modern/oopPatterns.js").then(m => m.oopPatterns) },
+      { id: "oopCommonMistakes", number: "4.9", title: "OOP Xatolarini Tushunish va Debugging", load: () => import("./lessons/js/04-oop-modern/oopCommonMistakes.js").then(m => m.oopCommonMistakes) },
+      { id: "oopMiniProject", number: "4.10", title: "🏆 Mini-Loyiha: Kutubxona Boshqaruv Tizimi (OOP)", load: () => import("./lessons/js/04-oop-modern/oopMiniProject.js").then(m => m.oopMiniProject) },
+      { id: "prototypes", number: "4.11", title: "Prototiplar va Prototip Zanjiri (Prototype Chain)", load: () => import("./lessons/js/04-oop-modern/prototypes.js").then(m => m.prototypes) },
+      { id: "classes", number: "4.12", title: "Classes (Klasslar) va OOP", load: () => import("./lessons/js/04-oop-modern/classes.js").then(m => m.classes) },
+      { id: "destructuring", number: "4.13", title: "Destructuring (Ma'lumotlarni ochish)", load: () => import("./lessons/js/04-oop-modern/destructuring.js").then(m => m.destructuring) },
+      { id: "spreadRest", number: "4.14", title: "Spread va Rest (...) — Yoyish va Yig'ish", load: () => import("./lessons/js/04-oop-modern/spreadRest.js").then(m => m.spreadRest) },
+      { id: "optionalChaining", number: "4.15", title: "Optional Chaining & Nullish Coalescing", load: () => import("./lessons/js/04-oop-modern/optionalChaining.js").then(m => m.optionalChaining) },
+      { id: "es6Features", number: "4.16", title: "ES6+ Yangi Imkoniyatlari", load: () => import("./lessons/js/04-oop-modern/es6Features.js").then(m => m.es6Features) },
+      { id: "modules", number: "4.17", title: "Modullar: import va export (ESM, CommonJS)", load: () => import("./lessons/js/04-oop-modern/modules.js").then(m => m.modules) },
+      { id: "object-protection", number: "4.18", title: "Obyektlarni Himoyalash: Freeze va Seal", load: () => import("./lessons/js/04-oop-modern/objectProtection.js").then(m => m.objectProtection) }
     ]
   },
 
