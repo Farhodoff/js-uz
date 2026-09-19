@@ -26,7 +26,7 @@ describe("All Lesson Files Validation", () => {
   files.forEach((file) => {
     const relativePath = path.relative(__dirname, file);
     it(`should load ${relativePath} successfully and have correct structure`, async () => {
-      const module = await import(`./${relativePath}`);
+      const module = await import(/* @vite-ignore */ `./${relativePath}`);
       const exportKey = Object.keys(module)[0];
       const lesson = module[exportKey];
       expect(lesson).toBeDefined();
