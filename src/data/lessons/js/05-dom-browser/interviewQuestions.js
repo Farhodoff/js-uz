@@ -97,7 +97,7 @@ console.log(result);
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 O'rta darajadagi JavaScript suhbatlarida asosan quyidagi mavzularda savollar beriladi:
 - **Kontekst va this:** Arrow funksiyalar va oddiy funksiyalar farqlari, binding usullari (\`call\`, \`apply\`, \`bind\`).
@@ -151,9 +151,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Memory Leak with Event Listeners & Closures
+### Amaliy tahlil: Event listenerlar va closure’lar sababli xotira sizishi
 Suhbatlarda ko'p so'raladigan real holat:
 \`\`\`javascript
 function attachEventHandlers() {

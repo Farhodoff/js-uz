@@ -39,7 +39,7 @@ console.log(calculateAvailability(8.76));
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 System Design intervyularida intervyuerlar savolni ataylab juda noaniq va qisqa berishadi (Masalan: "Design YouTube"). Siz darhol chizmasdan, talablarni guruhlashingiz shart:
 
@@ -118,9 +118,9 @@ Dars yakunidagi testlar orqali darajangizni tekshiring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: E-commerce Product Inventory Consistency vs Availability
+### Amaliy tahlil: E-commerce inventar — konsistentlik vs foydalanuvchanlik
 Katta onlayn do'konda (masalan, Amazon):
 - **Funksional talab:** Mijoz mahsulotni savatchaga qo'shishi va sotib olishi kerak.
 - **Nofunksional talab:** Savatchadagi tovarlar soni real vaqtda bazadan tekshirilishi kerak. Mahsulot zaxirasini (Inventory) boshqarishda **Consistency** muhimroq (chunki bitta tovarni ikki kishi bir vaqtda sotib olib qo'ymasligi kerak). Shuning uchun bu yerda tranzaksiyaviy relyatsion bazalar ishlatiladi. Lekin mahsulot rasmlari va tavsiflarini o'qishda **Availability** ustuvor, shuning uchun statik kontent CDN va keshlarda saqlanadi.

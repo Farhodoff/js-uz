@@ -19,7 +19,7 @@ Siz har kuni ertalab dars tayyorlash uchun **kutubxonaga borib, qalin ensikloped
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Keshlash va kengaytirishning asosiy darajalari:
 
@@ -87,9 +87,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Redis Caching for User Profiles
+### Amaliy tahlil: Foydalanuvchi profillari uchun Redis kesh
 Katta yuklama ostidagi foydalanuvchi profillarini Redis kesh yordamida tezlashtirish:
 \`\`\`javascript
 async function getUserProfile(userId) {

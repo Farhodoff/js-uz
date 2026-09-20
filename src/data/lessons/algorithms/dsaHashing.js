@@ -56,7 +56,7 @@ class SimpleHashTable {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Kolliziyalarni hal qilish usullari (Collision Resolution):
 Kolliziyalar mutlaqo qochib bo'lmaydigan holatdir (chunki xesh-jadval o'lchami cheklangan, kiruvchi kalitlar soni esa cheksiz). Ikki asosiy yechim mavjud:

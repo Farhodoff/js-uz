@@ -40,7 +40,7 @@ function hasEulerPathOrCycle(V, adjList) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Tarjan SCC Algoritmi:
 1. DFS o'tish yondashuviga asoslanadi. Har bir tugunga uning ziyorat qilinish tartibi raqami (\`discovery time\`) va u ulanishi mumkin bo'lgan eng yuqoridagi tugun tartib raqami (\`low link\`) beriladi.

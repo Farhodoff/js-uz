@@ -11,7 +11,7 @@ Tasavvur qiling, sizda bir quti (obyekt) va uning ichida hujjatlar (xususiyatlar
 - **seal (muhrlash)**: Quti muhrlangan. Unga na yangi hujjat solish mumkin, na ichidagilarni olib tashlash. Lekin ichidagi hujjatlarning ustiga yozish (o'zgartirish) ruxsat etiladi.
 - **freeze (muzlatish)**: Quti muzlatilgan. Unga hech narsa qo'shib bo'lmaydi, olib tashlab bo'lmaydi va o'zgartirib bo'lmaydi. Bu qutini faqat o'qish mumkin.
 
-### 2-qism: Chuqurlashtirilgan o'rganish (Deep Dive)
+### 2-qism: Chuqurlashtirilgan o'rganish
 
 JavaScriptda obyektlarning himoya darajasini boshqaradigan maxsus metodlar mavjud:
 1. **Object.preventExtensions(obj)**: Obyektga yangi xususiyat qo'shishni to'xtatadi. Uni \\\`Object.isExtensible(obj)\\\` orqali tekshirish mumkin.
@@ -35,7 +35,7 @@ function deepFreeze(obj) {
 }
 \\\`\\\`\\\`
 
-### 3-qism: Chekka holatlar va Senior darajasidagi intervyu savollari (Edge Cases)
+### 3-qism: Chekka holatlar va Senior darajasidagi intervyu savollari
 
 **Savol 1:** \\\`Object.freeze()\\\` va \\\`const\\\` ning farqi nima?
 **Javob:** \\\`const\\\` o'zgaruvchining manzilini (reference) o'zgartirishni taqiqlaydi, lekin obyekt ichidagi qiymatlarni o'zgartirishga to'sqinlik qilmaydi. \\\`Object.freeze\\\` esa obyektning o'zini o'zgartirishni to'xtatadi, lekin referens o'zgarishiga aralashmaydi (agar u \\\`let\\\` bo'lsa).

@@ -197,7 +197,7 @@ Dars oxiridagi test topshiriqlari.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Xavfsiz JWT (JSON Web Token) Auth Tizimi
 Ko'plab loyihalarda JWT tokenlari noto'g'ri saqlanishi tufayli foydalanuvchilar akkauntlari o'g'irlanadi. Quyida tokenlarni xavfsiz saqlash arxitekturasi ko'rsatilgan.

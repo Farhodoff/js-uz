@@ -2,7 +2,7 @@ export const clipboardApi = {
   id: "clipboardApi",
   title: "Clipboard API: Nusxalash va Joylash",
   theory: `
-### Part 1: Beginner Analogy
+### 1-Qism: Sodda Tushuntirish
 
 Tasavvur qiling, sizning bir "Sehrli Xalta"ngiz (Clipboard) bor. 
 Siz biror matn yoki rasmni ko'rganingizda, uni shu xaltaga solib qo'yishingiz mumkin (Nusxalash - Copy).
@@ -11,7 +11,7 @@ Keyinroq, boshqa bir joyga borib, xaltadagi narsani chiqarib, o'sha joyga qoldir
 Eski zamonlarda bu xaltaga narsa solish va olish biroz noqulay va xavfli edi (buni \\\`document.execCommand\\\` deb atashardi). Saytlar sizning ruxsatingizsiz ham xaltangizga qo'l tiqishi mumkin edi.
 Hozirgi zamonda esa, "Zamonaviy Sehrli Xalta" (Async Clipboard API) mavjud. U faqat xavfsiz joylarda (HTTPS) ishlaydi va ba'zida narsa olishdan oldin sizdan ruxsat so'raydi (Permissions).
 
-### Part 2: Deep Dive (Under the hood)
+### 2-Qism: Chuqur Tahlil
 
 #### Eski yondashuv: \\\`document.execCommand('copy')\\\`
 Ilgari nusxalash va joylash amallari \\\`document.execCommand('copy')\\\` va \\\`document.execCommand('paste')\\\` orqali amalga oshirilardi. 
@@ -44,14 +44,14 @@ Clipboard API juda kuchli, chunki u foydalanuvchining shaxsiy ma'lumotlariga (pa
 - \\\`readText()\\\` va \\\`read()\\\` chaqirilganda, brauzer odatda foydalanuvchiga ruxsat so'rovini (Permission Prompt) ko'rsatadi.
 - \\\`writeText()\\\` va \\\`write()\\\` odatda foydalanuvchining harakati (masalan, tugmani bosish - click hodisasi) bilan boshlangan taqdirdagina ishlaydi.
 
-### Part 3: Edge Cases and Senior Interview Questions
+### 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
-**Edge Cases:**
+**Chekka holatlar:**
 1. **Fokus yo'qolishi:** Agar sahifa fokusni yo'qotsa (masalan, boshqa tabga o'tib ketsangiz), Clipboard API xato (DOMException) qaytarishi mumkin.
 2. **Katta hajmdagi ma'lumotlar:** Katta rasmlarni \\\`write()\\\` yordamida clipboardga yozish jarayoni biroz vaqt olishi va xotiraga yuk berishi mumkin.
 3. **Brauzerlar mosligi:** Barcha brauzerlar ham Clipboard API ning barcha funksiyalarini to'liq qo'llab-quvvatlamaydi (ayniqsa \\\`read()\\\` va \\\`write()\\\` metodlarini).
 
-**Senior Interview Questions:**
+**Senior Intervyu Savollari:**
 - *Savol:* Nega \\\`document.execCommand('copy')\\\` eskirgan deb e'lon qilingan?
   *Javob:* Chunki u sinxron ishlaydi, asosiy oqimni (main thread) band qiladi, faqat DOM orqali tanlangan (selected) matnlar bilangina cheklangan, va uning xavfsizlik modeli zamonaviy talablarga javob bermaydi.
 - *Savol:* \\\`navigator.clipboard.readText()\\\` qachon \\\`NotAllowedError\\\` qaytaradi?

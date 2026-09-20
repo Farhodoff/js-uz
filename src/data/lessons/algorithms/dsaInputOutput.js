@@ -38,7 +38,7 @@ process.stdin.on("data", (chunk) => {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Tizim Chaqiriqlari (System Calls):
 Har safar \`console.log\` yoki \`process.stdout.write\` chaqirilganda, dastur operatsion tizim darajasida **System Call** (tizim chaqiruvi) amalga oshiradi. 

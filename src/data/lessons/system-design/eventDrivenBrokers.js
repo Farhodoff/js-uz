@@ -98,7 +98,7 @@ console.log(\`Joriy balans: \${myAccount.getCurrentBalance()} USD\`); // Joriy b
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Message Queue (RabbitMQ) vs Event Streaming (Kafka)
 - **RabbitMQ (Smart Broker, Dumb Consumer):**
@@ -182,7 +182,7 @@ Mavzuni o'zlashtirish darajangizni mini testlar orqali tekshiring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Uber Real-time Sayohatlar Oqimi
 Uber yo'lovchi va haydovchining harakatlanish nuqtalarini real vaqtda kuzatish va marshrutni hisoblash uchun Apache Kafka-dan foydalanadi.

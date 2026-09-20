@@ -2,7 +2,7 @@ export const k8sBasics = {
   id: "k8s-basics",
   title: "Kubernetes (K8s) Asoslari",
   language: "javascript",
-  theory: `## Part 1: Beginner Analogy. Tasavvur qiling, orkestr va dirijyor
+  theory: `## 1-Qism: Sodda Tushuntirish. Tasavvur qiling, orkestr va dirijyor
 
 Tasavvur qiling, siz orkestr dirijyorisiz. Orkestrda turli xil musiqachilar (konteynerlar) bor: skripkachilar, puflama cholg'ular va barabanchilar. Agar bitta musiqachi kasal bo'lib qolsa yoki charchasa, kuy buzilmasligi uchun darhol uning o'rniga boshqa musiqachi kelishi kerak. Katta konsertlarda qaysi musiqachi qayerda o'tirishi, qachon chalishni boshlashi va agar ulardan biri xato qilsa nima bo'lishini qo'lda kuzatib turish imkonsiz.
 
@@ -14,7 +14,7 @@ Tasavvur qiling, siz orkestr dirijyorisiz. Orkestrda turli xil musiqachilar (kon
 
 ---
 
-## Part 2: Deep Dive (Under the hood, Control Plane, etcd, Kubelet, Pods, Services)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, Control Plane, etcd, Kubelet, Pods, Services)
 
 Kubernetes asosan ikki yirik qismdan iborat: **Control Plane** (Boshqaruv markazi) va **Worker Nodes** (Ishchi tugunlar).
 
@@ -38,9 +38,9 @@ Haqiqiy ilovalar (konteynerlar) ishlaydigan joy.
 
 ---
 
-## Part 3: Edge Cases va Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
-Katta tizimlarda Kubernetes o'zining murakkabliklariga ega. Quyida Senior darajadagi bilim talab qiluvchi savollar va kutilmagan holatlar (edge cases).
+Katta tizimlarda Kubernetes o'zining murakkabliklariga ega. Quyida Senior darajadagi bilim talab qiluvchi savollar va kutilmagan holatlar.
 
 **1. OOMKilled holati (Out of Memory) nima va qanday hal qilinadi?**
 Pod o'ziga ajratilgan xotiradan (Memory Limit) ko'p resurs talab qilsa, K8s uni o'ldiradi (OOMKilled).

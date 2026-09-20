@@ -1,6 +1,6 @@
 export const callApplyBind = {
   id: "callApplyBind",
-  title: "Call, Apply va Bind (Deep Dive, Polyfills va Memory)",
+  title: "Call, Apply va Bind (Chuqur Tahlil, Polyfill’lar va Xotira)",
   language: "javascript",
   theory: `# Call, Apply va Bind nima?
 
@@ -15,7 +15,7 @@ Bu boshlang'ich daraja edi. Keling, endi haqiqiy muhandis (Engineer) kabi Engine
 
 ---
 
-## 🔬 Deep Dive 1: O'zimizning Polyfill'ni yaratamiz (Under the hood)
+## 🔬 Chuqur Tahlil 1: O'zimizning Polyfill'ni yaratamiz
 
 JavaScript dvigateli (V8) ichida bu metodlar qanday yozilgan? Nega biz funksiyaga boshqa obyektni majburlab tiqa olamiz? Buni tushunishning eng yaxshi yo'li - noldan o'zimizning \`myCall\`, \`myApply\` va \`myBind\` metodlarimizni yaratishdir!
 
@@ -69,7 +69,7 @@ Function.prototype.myBind = function(context, ...boundArgs) {
 
 ---
 
-## 🧠 Deep Dive 2: V8 Engine, Xotira va Performance (Memory Leaks)
+## 🧠 Chuqur Tahlil 2: V8 dvigateli, Xotira va Unumdorlik (Xotira sizishi)
 
 Ajam dasturchilar \`bind()\` ni hamma joyda, ayniqsa React renderlari yoki tsikllar ichida juda ko'p ishlatishadi. Bu xotiraga qanday ta'sir qiladi?
 
@@ -106,7 +106,7 @@ class UserList {
 
 ---
 
-## 🚨 Deep Dive 3: Qiyin holatlar (Edge Cases)
+## 🚨 Chuqur Tahlil 3: Qiyin holatlar
 
 ### Holat: bind() qilingan funksiyaga \\\`new\\\` qo\\'shilsa nima bo\\'ladi?
 JavaScriptning qattiq bir qoidasi bor: **\\\`new\\\` operatori \\\`bind\\\` dan kuchliroq!**
@@ -385,7 +385,7 @@ flowchart TD
         "Inglizcha dokumintatsiyasi uzunligidan"
       ],
       correctAnswer: 1,
-      explanation: "Siz chuqur (Deep dive) darajani tanladingiz. Bu daraja o'z navbatida Javascript ning har qanday Senior darajadagi intervyusiga bemalol kirib borishga poydevor hisoblanadi."
+      explanation: "Siz chuqur (Chuqur Tahlil) darajani tanladingiz. Bu daraja o'z navbatida Javascript ning har qanday Senior darajadagi intervyusiga bemalol kirib borishga poydevor hisoblanadi."
     }
   ]
 };

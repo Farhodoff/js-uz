@@ -82,7 +82,7 @@ class VectorClock {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Mantiqiy Qiyoslash Matritsasi
 Vector clock-lar yordamida ikkita holat solishtirilganda quyidagi mantiqiy qoidalar ishlaydi:

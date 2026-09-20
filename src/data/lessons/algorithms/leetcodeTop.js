@@ -244,7 +244,7 @@ Ushbu bo'limdagi interaktiv muharrir yordamida Two Sum, Valid Parentheses va Bes
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Ilova loglari yoki qavslar sintaksisini tekshiruvchi validator
 Matn muharrirlarida (masalan, VS Code yoki brauzer konsolida) foydalanuvchi kod yozayotganda qavslarning to'g'ri ochilib yopilganligini real vaqtda tekshirish tizimi Stack va Map algoritmlari yordamida ishlaydi.

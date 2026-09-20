@@ -96,7 +96,7 @@ class Queue {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Chaqiriqlar steki vs Xotira hovuzi (Call Stack vs Memory Heap)
 Operatsion tizim darajasida va JavaScript Engine (masalan V8) ichida Stack va Queue quyidagicha ishlaydi:
@@ -212,7 +212,7 @@ Dars oxirida o'zlashtirgan bilimlaringizni tekshirish uchun 12 ta test savollari
 
 ---
 
-## 9. 🎯 Real Project Case Study
+## 9. 🎯 Real Loyiha Tahlili
 
 ### Matn Muharriridagi Undo / Redo Tizimi (Orqaga va Oldinga Qaytarish)
 Katta matn muharrirlarida foydalanuvchining har bir yozgan amali xotirada saqlanishi va orqaga qaytarilishi kerak.

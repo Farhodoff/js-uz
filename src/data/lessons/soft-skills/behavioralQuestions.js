@@ -19,7 +19,7 @@ Behavioral suhbat — bu sizning o'yin paytida o'zingizni qanday tutishingizni v
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Eng ko'p so'raladigan 4 ta asosiy behavioral yo'nalish:
 1. **Konfliktlar (Conflict Resolution):** Jamoadosh yoki boshliq bilan fikringiz to'g'ri kelmaganda muammoni qanday hal qilgansiz.
@@ -91,9 +91,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Handling a Conflict inside a Dev Team
+### Amaliy tahlil: Dasturchilar jamoasidagi nizoni hal qilish
 Guruhdagi konfliktlarni hal etish haqidagi savolga to'g'ri javob tuzish:
 * **Mavzu:** Jamoa a'zosi bilan loyiha dizayni ustida tortishuv bo'ldi.
 * **Harakat:** Shaxsiylikka o'tmasdan, ikkala yondashuvning plyus va minuslarini (trade-offs) jadval shaklida taqqoslab, jamoaviy muhokama qildik.

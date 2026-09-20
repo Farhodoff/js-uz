@@ -54,7 +54,7 @@ console.log(evaluateSystemHealth({
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Yakuniy imtihon va quiz quyidagi fundamental mavzularni tekshiradi:
 
@@ -125,9 +125,9 @@ Dars yakunidagi testlar orqali birinchi bosqichni rasman yakunlang.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: High Load System Evaluation
+### Amaliy tahlil: Yuqori yuklamali tizimni baholash
 - **Kutilyotgan QPS:** 50,000 requests/sec.
 - **Tahlil:** 50,000 QPS juda yuqori yuklama. Bitta server buni ko'tara olmaydi.
 - **Yechim arxitekturasi:** 

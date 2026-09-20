@@ -179,7 +179,7 @@ Dars oxirida bilimingizni sinash uchun test topshiriqlari taqdim etiladi.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Haqiqiy vaqtdagi Chat Ilovasi uchun WebSocket xabarlarini boshqarish
 Chat ilovasida yangi xabarlarni yuborish va kelgan xabarlarni ekran interfeysiga qo'shish jarayoni:

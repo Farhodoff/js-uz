@@ -2,12 +2,12 @@ export const bomAndWindow = {
   id: "bomAndWindow",
   title: "BOM (Browser Object Model) va Window API",
   theory: `
-## Part 1: Beginner Analogy
+## 1-Qism: Sodda Tushuntirish
 Tasavvur qiling, veb-sahifa (DOM) - bu televizor ekranidagi ko'rsatuv. Televizorning o'zi, uning sozlamalari, ovoz balandligi, kanallarni o'zgartirish pulti (orqaga, oldinga) va qurilma haqidagi ma'lumotlar - bu BOM (Browser Object Model). Window esa butun televizor obyekti.
 
 Siz televizor ekranidagi aktyorlarni (DOM elementlarini) boshqarishingiz mumkin, lekin pult (BOM) orqali kanalni almashtirishingiz (boshqa URL ga o'tish), ovozni baland qilish (ekran o'lchamlarini o'zgartirish) yoki televizor modelini (navigator) ko'rishingiz ham mumkin.
 
-## Part 2: Deep Dive
+## 2-Qism: Chuqur Tahlil
 
 ### 1. BOM Ierarxiyasi
 BOM (Browser Object Model) dagi barcha obyektlar \\\`window\\\` obyektiga bog'langan.
@@ -47,7 +47,7 @@ window.addEventListener("message", (event) => {
 });
 \\\`\\\`\\\`
 
-## Part 3: Edge Cases va Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 **Savol: \\\`window\\\` va \\\`globalThis\\\` o'rtasidagi farq nima?**
 **Javob:** \\\`window\\\` faqat brauzer muhitida mavjud bo'lgan global obyektdir. Agar xuddi shu kod Node.js da ishlatilsa, \\\`window\\\` xatolik beradi (chunki u yerda \\\`global\\\` ishlatiladi). \\\`globalThis\\\` esa muhitdan qat'iy nazar (brauzer, Node.js, Web Worker) global obyektni to'g'ri aniqlaydigan universal standartdir.

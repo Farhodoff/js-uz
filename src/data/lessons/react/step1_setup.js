@@ -121,7 +121,7 @@ npm create vite@latest my-react-app -- --template react
 
 ---
 
-## 5. Loyiha Papkalar Strukturasi (Deep Dive into Folder Structure)
+## 5. Loyiha Papkalar Strukturasi (Papka Tuzilmasiga Chuqur Nazar)
 
 Vite orqali loyiha yaratib, uni VS Code kabi muharrirda ochsangiz quyidagi papka va fayllarni ko'rasiz. Keling, har birining vazifasini chuqur tushunib olamiz:
 

@@ -131,7 +131,7 @@ console.log("Joriy balans:", projector.getBalance(accountId)); // Natija: 120
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Write vs Read Models
 * **Write (Command) Model:** Faqat ma'lumotlarni o'zgartiradigan buyruqlarni qabul qiladi. Biznes mantiq (validation, invariant) shu yerda tekshiriladi. U o'zining joriy holatini faqat yangi voqealarni yozish uchun tekshiradi.
@@ -215,7 +215,7 @@ Darsni qanchalik yaxshi tushunganingizni tekshirish uchun testlarni yeching.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### E-Commerce buyurtma berish va inventarizatsiya tizimi
 Yirik internet do'konda foydalanuvchi buyurtma berganida:

@@ -2,7 +2,7 @@ export const sqlSubqueries = {
   id: "sql_subqueries_1",
   title: "SQL Subqueries (Ichki So'rovlar)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 **Subquery** (ichki yoki qism so'rov) - bu boshqa bir SQL so'rovining ichiga joylashtirilgan so'rov. Buni xuddi "Matryoshka" o'yinchog'iga o'xshatish mumkin: bitta katta so'rov o'z ichida kichikroq so'rovni tashiydi. 
 Asosiy so'rov ishlashi uchun avval ichki so'rov ma'lumot qidirib topib beradi.
 
@@ -10,7 +10,7 @@ Masalan, do'kondan "Eng qimmat kompyuter"ni topmoqchisiz:
 1. Ichki so'rov (Subquery): Kompyuterlar ichidan eng maksimal narxni topadi (masalan $2000).
 2. Tashqi so'rov (Main query): Narxi $2000 bo'lgan barcha kompyuterlarni chiqarib beradi.
 
-## 2. 🧠 Deep Dive (Under the hood, memory, Correlated vs CTE, performance)
+## 2. 🧠 Chuqur Tahlil (Ichki ishlash, xotira, Correlated vs CTE, unumdorlik)
 Subquery'lar asosan \`WHERE\`, \`FROM\` va \`SELECT\` qismlarida ishlatiladi. Ishlash mexanizmiga ko'ra ular ikkiga bo'linadi:
 
 1. **Uncorrelated (Mustaqil) Subquery**: Ichki so'rov tashqi so'rovga umuman bog'lanmagan. U avval bir marta ishga tushadi, o'z natijasini xotiraga oladi va tashqi so'rov undan tayyor foydalanadi.
@@ -20,7 +20,7 @@ Subquery'lar asosan \`WHERE\`, \`FROM\` va \`SELECT\` qismlarida ishlatiladi. Is
 Correlated Subquery'lar juda og'ir va resurs talab qiluvchi bo'lishi mumkin. Katta ma'lumotlar bilan ishlaganda ularning o'rniga **JOIN** yoki **CTE** (\`WITH\` clause - vaqtinchalik xotira jadvallari) ishlatish samaraliroq. CTE yordamida natija xotiraga o'qiladi va qayta-qayta ishlatiladi.
 Lekin \`EXISTS\` ishlatiladigan holatlarda Correlated Subquery juda zo'r ishlaydi, chunki u "Short-circuit" baholash (birinchi mos kelgan ma'lumotni topishi bilanoq ishlashdan to'xtash) mexanizmiga ega.
 
-## 3. ⚠️ Edge Cases and Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 **Savol: \`IN\` va \`EXISTS\` ning farqi nimada va qaysi biri tezroq?**
 **Javob:** \`IN\` ichki so'rovdagi barcha ma'lumotlarni to'liq xotiraga yuklab olib ro'yxat yaratadi va qidiradi. Kichik ma'lumotlarda \`IN\` qulay. \`EXISTS\` esa natijani ko'rishi bilanoq qidiruvni to'xtatadi. Agar subquery millionlab qator qaytarsa, \`EXISTS\` keskin darajada tezroq ishlaydi!

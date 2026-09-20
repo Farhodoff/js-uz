@@ -2,9 +2,9 @@ export const oopPrinciples = {
   id: "oopPrinciples",
   title: "OOP'ning 4 Asosiy Prinsipi (SOLID yo'lida)",
   language: "javascript",
-  theory: `## 1. 💡 Part 1: Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
-OOP'ning to'rt ustuni bor. Ularni **restoran** misolida ko'ramiz:
+OOP'ning to'rt ustuni bor. Ularni **restoran** misolida ko'ramiz. Avval umumiy manzara — so'ng har bir prinsipni alohida bo'limda chuqur tahlil qilamiz.
 
 ### 1. Inkapsulyatsiya (Encapsulation) — "Oshxona yopiq"
 Mijoz taomni buyurtma qiladi, oshxona ichida nima bo'layotganini ko'rmaydi. Ichki holat \`#\` private maydonlarda yashirin, faqat metodlar orqali kiriladi.
@@ -54,7 +54,167 @@ function checkout(payment, amount) {
 
 ---
 
-## 2. ⚙️ Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 1.1 🔒 Inkapsulyatsiya (Encapsulation) — chuqur
+
+**Ta'rif:** Obyektning ichki holati (data) va xatti-harakatini (metodlar) bitta birlikka jamlash hamda ichki detallarni tashqi dunyodan yashirish.
+
+**Analogiya:** Telefon — siz faqat tugmalar (public interfeys) bilan ishlaysiz, ichki plata (yashirin holat) bilan emas.
+
+**Prinsipsiz nima bo'ladi?**
+
+\`\`\`javascript
+// ❌ Ochiq obyekt — istalgan joydan buzilishi mumkin
+const account = { owner: "Ali", balance: 1000 };
+account.balance = -99999; // hech kim to'sqinlik qilmadi!
+account.owner = 42;       // tip buzildi — hech kim tekshirmadi
+\`\`\`
+
+**Prinsip bilan:**
+
+\`\`\`javascript
+class BankAccount {
+  #balance = 0;
+  #owner;
+
+  constructor(owner) {
+    this.#owner = owner;
+  }
+
+  deposit(amount) {
+    if (typeof amount !== "number" || amount <= 0) {
+      throw new Error("Noto'g'ri summa");
+    }
+    this.#balance += amount;
+    return this.#balance;
+  }
+
+  get balance() { return this.#balance; } // faqat o'qish
+}
+
+const acc = new BankAccount("Ali");
+acc.deposit(500);
+// acc.#balance = -99999; // ❌ SyntaxError — til darajasida himoya
+\`\`\`
+
+**Asosiy foyda:** validatsiya bitta joyda. Qoidani o'zgartirsangiz, faqat shu klassni tuzatasiz — loyiha bo'ylab 100 ta foydalanuvchi joyini emas.
+
+---
+
+## 1.2 🧬 Meros olish (Inheritance) — chuqur
+
+**Ta'rif:** Bir klass boshqa klassning property va metodlarini oladi ("is-a" — "bu ... dir" munosabati).
+
+**Analogiya:** Franchayzing — markaziy retseptlarni olasiz, mahalliy taom qo'shasiz. Narsalarni qaytadan yozmaysiz.
+
+**Prinsipsiz nima bo'ladi?** — copy-paste gellosi: 3 klassda bir xil \`validate()\` metodi 3 marta yoziladi; xato topsangiz 3 joyda tuzatishga to'g'ri keladi va bir joyini unutasiz.
+
+\`\`\`javascript
+class Animal {
+  constructor(name) { this.name = name; }
+  eat() { return this.name + " yeyapti"; }
+}
+
+class Dog extends Animal {
+  bark() { return this.name + ": vov-vov"; }
+}
+
+const dog = new Dog("Rex");
+dog.eat();  // ota klassdan meros olindi
+dog.bark(); // o'z metodi
+\`\`\`
+
+**super bilan kengaytirish:**
+
+\`\`\`javascript
+class Cat extends Animal {
+  constructor(name, indoor) {
+    super(name);        // 1) ota klassni ishga tushirish (majburiy!)
+    this.indoor = indoor;
+  }
+
+  eat() { return super.eat() + " (uyda)"; } // override + kengaytirish
+}
+\`\`\`
+
+**Qachon ISHLATMANG:** "has-a" munosabat bo'lsa (Car **has** Engine) — kompozitsiya ishlating. Meros — eng kuchli (mo'rt) bog'lanish, faqat haqiqiy "is-a" bo'lsa oching.
+
+---
+
+## 1.3 🎭 Polimorfizm (Polymorphism) — chuqur
+
+**Ta'rif:** Bir xil interfeys — turli obyektlar uni o'zicha bajaradi. Chaqiruvchi **turega bog'lanmaydi**, faqat shartnomaga tayanadi.
+
+**Analogiya:** USB port — istalgan qurilma (flash, sichqoncha, klaviatura) bir xil portga ulanadi, har biri o'z ishini qiladi.
+
+**Prinsipsiz nima bo'ladi?**
+
+\`\`\`javascript
+// ❌ Har yangi tur — switch'ga yangi case
+function makeSound(animal) {
+  switch (animal.type) {
+    case "dog": return "vov";
+    case "cat": return "miyov";
+    // yangi hayvon qo'shsangiz — BU funksiyani o'zgartirasiz
+  }
+}
+\`\`\`
+
+**Prinsip bilan:**
+
+\`\`\`javascript
+class Dog { speak() { return "vov"; } }
+class Cat { speak() { return "miyov"; } }
+class Cow { speak() { return "moo"; } } // yangi tur — ESKI KODGA TEGMADIK
+
+function makeSound(animal) {
+  return animal.speak(); // hammasi bir xil shartnomaga ega
+}
+
+const animals = [new Dog(), new Cat(), new Cow()];
+animals.map(makeSound); // ["vov", "miyov", "moo"]
+\`\`\`
+
+**Klassik ta'rif:** "Bir interfeys, ko'p implementatsiya". Bu Open/Closed prinsipining amaliy ko'rinishi — \`switch\` yozish o'rniga yangi klass yozasiz.
+
+---
+
+## 1.4 🎛️ Abstraktsiya (Abstraction) — chuqur
+
+**Ta'rif:** Faqat muhim xususiyatlarni ko'rsatish, murakkab detallarni yashirish. Interfeys sodda, ichki mexanizm yashirin.
+
+**Analogiya:** Mashinaning gas pedali — siz bosasiz, dvigatelning 12 bosqichli ishi yashirin qoladi.
+
+**Abstraktsiya vs Inkapsulyatsiya — farqi (intervyuda so'raladi!):**
+- **Inkapsulyatsiya** — DATA'ni yashirash (private maydonlar, getter/setter).
+- **Abstraktsiya** — MURAKKABLIKni yashirash (sodda interfeys).
+- Inkapsulyatsiya — abstraktsiyaga erishish **vositasi**.
+
+**Prinsip bilan:**
+
+\`\`\`javascript
+class ImageUploader {
+  // public — sodda interfeys (faqat 1 ta metod)
+  async upload(file) {
+    const validated = this.#validate(file);
+    const compressed = await this.#compress(validated);
+    return await this.#sendToServer(compressed);
+  }
+
+  // private — murakkablik butunlay yashirin
+  #validate(file) { /* 30 qator tekshiruv */ return file; }
+  async #compress(file) { /* worker'da siqish */ return file; }
+  async #sendToServer(f) { return "https://cdn.example/img/1"; }
+}
+
+// Foydalanuvchi uchun — BIR QATOR:
+// const url = await uploader.upload(file);
+\`\`\`
+
+**Amaliy qoida:** klassning public API'sidagi metodlar soni qancha kam bo'lsa, abstraktsiya shunchalik kuchli bo'ladi.
+
+---
+
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### Prinsiplarning "nima uchun"i — arxitektura nuqtai nazaridan
 
@@ -106,7 +266,7 @@ class AbstractRepo {
 
 ---
 
-## 3. ⚠️ Part 3: Murakkab Holatlar va Senior Intervyu Savollari (Edge Cases)
+## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari
 
 ### 1. SOLID — OOP prinsiplarining professional davomi
 | Harf | Nomlanish | Ma'nosi |
@@ -142,7 +302,17 @@ r.width = 4; r.height = 5; // r.area = 20 kutilgan, lekin 25!
 - **Inheritance:** haqiqiy "is-a" bo'lsa (Dog **is** Animal), ota klassning ichki tafsilotlarini bilish tabiiy bo'lsa.
 - **Composition:** "has-a" bo'lsa (Car **has** Engine), xatti-harakat almashtirilishi kerak bo'lsa, ko'p o'lchovli kombinatsiyalar bo'lsa.
 
-### 4. Duck typing — JS'ning "nominal emas, strukturali" polimorfizmi
+### 4. "4 prinsipni bir jumlada" — intervyu xulosasi
+
+| Prinsip | Bir jumlada | JS vositasi |
+|---------|-------------|-------------|
+| Inkapsulyatsiya | Data'ni yashir, faqat metod orqali kirit | \`#private\`, getter/setter |
+| Meros | "is-a" bo'lsa, qayta ishlatish uchun | \`extends\`, \`super\` |
+| Polimorfizm | Bir interfeys, ko'p xatti-harakat | override, duck typing |
+| Abstraktsiya | Murakkablikni yashir, sodda interfeys | abstrakt klass, interfeys shartnomasi |
+
+### 5. Duck typing — JS'ning "nominal emas, strukturali" polimorfizmi
+
 JS'da klasslar orasidagi bog'liqlik emas, **shakl** muhim:
 \`\`\`javascript
 function checkout(p) { return p.pay(100); }
@@ -150,6 +320,40 @@ function checkout(p) { return p.pay(100); }
 checkout({ pay: (a) => \`To\`landi \\\${a}\` }); // ✅
 \`\`\`
 Bu "Agar u o'rdakdek yursa — o'rdak" tamoyili. TypeScript'ni \`structuraltip\` ham shundan keladi.
+
+### 6. 4 prinsip birgalikda — to'liq misol
+
+Bitta to'lov tizimida 4 prinsip ham birga ishlaydi:
+
+\`\`\`javascript
+class Payment {                       // 4) ABSTRAKTSIYA: sodda shartnoma
+  #amount = 0;                        // 1) INKAPSULYATSIYA: yashirin holat
+  constructor(amount) {
+    if (amount <= 0) throw new Error("Summa > 0 bo'lishi kerak");
+    this.#amount = amount;
+  }
+  get amount() { return this.#amount; }          // 1) nazorat qilingan o'qish
+  pay() { throw new Error("Voris pay() yozishi shart"); } // 4) shartnoma
+}
+
+class CardPayment extends Payment {   // 2) MEROS: shartnomadan meros oladi
+  pay() { return "Karta: " + this.amount + " so'm"; }     // 3) POLIMORFIZM
+}
+
+class CashPayment extends Payment {
+  pay() { return "Naqd: " + this.amount + " so'm"; }
+}
+
+// Chaqiruvchi — turlardan mustaqil (polimorfizm + abstraktsiya):
+function checkout(p) { return p.pay(); }
+checkout(new CardPayment(50000)); // "Karta: 50000 so'm"
+checkout(new CashPayment(20000)); // "Naqd: 20000 so'm"
+\`\`\`
+
+- **Payment** — murakkablikni yashiradi, faqat \`pay()\` va \`amount\` beradi (abstraktsiya).
+- **#amount** — tashqaridan buzmab bo'lmaydi (inkapsulyatsiya).
+- **extends** — umumiy qismlarni qayta yozmaymiz (meros).
+- **pay()** — har voris o'zicha bajaradi (polimorfizm).
 
 ---
 

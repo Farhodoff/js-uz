@@ -20,9 +20,9 @@ Asosiy turlari:
 
 ---
 
-## 2. 🔬 Chuqur Tahlil (Deep Dive)
+## 2. 🔬 Chuqur Tahlil
 
-### Under the Hood: Qanday ishlaydi?
+### Ichki ishlash: Qanday ishlaydi?
 Bajarilish konteksti ikki bosqichda yaratiladi va ishlaydi:
 1. **Creation Phase (Yaratish bosqichi):**
    - **Lexical Environment** va **Variable Environment** yaratiladi.
@@ -42,15 +42,15 @@ Call Stack hajmi chegaralangan (odatda 10,000 atrofida chaqiruv). Agar rekursiv 
 
 ---
 
-## 3. ⚠️ Edge Cases (Noodatiy holatlar) va Senior Darajasidagi Savollar
+## 3. ⚠️ Chekka (noodatiy) holatlar va Senior Darajasidagi Savollar
 
-### Edge Cases
+### Chekka holatlar
 1. **Temporal Dead Zone (TDZ) va Hoisting:**
    \\\`let\\\` va \\\`const\\\` hoisting qilinadi, lekin o'qishga urinilganda TDZ tufayli \\\`ReferenceError\\\` beradi. Bu xatolarning oldini olish uchun ularni faqat e'lon qilingandan so'ng ishlatish shart.
 2. **Closure Memory Leak:**
    Yopilma (closure) lar eski kontekstning Leksik muhitini saqlab qoladi. Agar yirik obyektlar closure ichida qolib ketsa, Garbage Collector ularni tozalay olmaydi va Memory Leak (xotira sizib chiqishi) sodir bo'ladi.
 
-### Senior Interview Savollari
+### Senior Intervyu Savollari
 1. **Q:** Nima uchun \\\`var\\\` ishlatsak \\\`undefined\\\` qaytadi, lekin \\\`let\\\` xato beradi?
    **A:** Creation phase da \\\`var\\\` xotiradan joy oladi va qiymati \\\`undefined\\\` bo'ladi. \\\`let\\\` va \\\`const\\\` ham joy oladi, lekin uninitialized (ishga tushmagan) holatda TDZ (Temporal Dead Zone) deb nomlangan himoyalangan zonada turadi.
 2. **Q:** Asinxron kodlar Call Stack da qanday boshqariladi?

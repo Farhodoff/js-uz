@@ -97,7 +97,7 @@ Har amal \`#log\` ga yoziladi — tizim nima bo'lganini "eslab qoladi". Haqiqiy 
 
 ---
 
-## 3. ⚙️ Deep Dive: Loyihadagi professional qarorlar
+## 3. ⚙️ Chuqur Tahlil: Loyihadagi professional qarorlar
 
 **Nima uchun \`#books\` ni to'g'ridan-to'g'ri qaytarmaymiz?**
 \`get books() { return this.#books; }\` — tashqarida biror kod \`lib.books.push(...)\` bilan ichki ro'yxatni buzishi mumkin edi. Shuning uchun:

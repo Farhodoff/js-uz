@@ -63,7 +63,7 @@ function rabinKarpSearch(text, pattern) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### KMP va LPS massivi:
 1. KMP andozaning **LPS (Longest Proper Prefix which is also Suffix)** massivini quradi.

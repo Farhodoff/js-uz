@@ -49,7 +49,7 @@ udpServer.bind(41234, () => {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 3-Way Handshake (TCP ulanish):
 TCP-da ulanish o'rnatish uchun server va mijoz 3 bosqichli salomlashishni amalga oshiradi:
@@ -128,7 +128,7 @@ Test savollariga javob bering va o'zingizni tekshiring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Nginx orqali API Load Balancing va SSL Termination
 Katta loyihalarda tashqi HTTPS so'rovlari birinchi bo'lib Nginx (Reverse Proxy) ga keladi. Nginx SSL shifrlashni echadi (SSL termination) va so'rovlarni ichki tarmoqdagi HTTP orqali ishlaydigan tezkor backend serverlariga (Node.js/Go) yo'naltiradi. Bu backend serverlaridan shifrlash yukini olib tashlaydi.

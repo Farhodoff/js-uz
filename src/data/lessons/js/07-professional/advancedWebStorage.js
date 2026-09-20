@@ -98,7 +98,7 @@ function addProduct(db, product) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Cookie Atributlari va Xavfsizlik Qalqoni
 Cookie yozilganda brauzer quyidagi sarlavhalarga (headers) e'tibor qaratadi:
@@ -192,7 +192,7 @@ Test savollari "Test" bo'limida joylashgan. 12 ta savoldan iborat testni yechib,
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Oflayn rejimda ishlovchi savatcha (Offline Shopping Cart)
 

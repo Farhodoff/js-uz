@@ -6,7 +6,7 @@ export const packageJson = {
 
 Har bir Node.js loyihasida \\\`package.json\\\` fayli bo'ladi. Uni loyihaning "pasporti" va "retsepti" deb tasavvur qiling. Siz biror taom tayyorlamoqchi bo'lsangiz, sizga kerakli masalliqlar ro'yxati (dependencies) va pishirish ketma-ketligi (scripts) kerak bo'ladi. Node.js dunyosida dastur ishlashi uchun zarur kutubxonalar va ularni ishga tushirish komandalari aynan shu faylda saqlanadi. 
 
-## 2. 🚀 Deep Dive (Chuqur tahlil)
+## 2. 🚀 Chuqur Tahlil
 
 **Kutubxonalar (Dependencies) turlari:**
 Loyihadagi paketlar vazifasiga qarab guruhlarga bo'linadi:
@@ -39,7 +39,7 @@ Zamonaviy Node.js muhitida loyiha tuzilishini boshqarish uchun \\\`"main"\\\` o'
 }
 \\\`\\\`\\\`
 
-## 3. ⚠️ Edge Cases va Senior Interview Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 1. **\\\`package-lock.json\\\` nega kerak?**
    Javob: \\\`package.json\\\` dagi \\\`^\\\` va \\\`~\\\` belgilari tufayli jamoadagi turli dasturchilarda bitta paketning har xil versiyasi o'rnatilib qolishi mumkin. \\\`package-lock.json\\\` barcha qaramliklarning aynan qaysi versiyasi o'rnatilganini qotirib qo'yadi va "mening kompyuterimda ishlagandi" degan muammoni oldini oladi.

@@ -64,7 +64,7 @@ console.log(originalObj.name); // "Vali" (asl obyekt o'zgardi)
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Execution Context (Bajarilish Muhiti)
 JavaScript-da kod har doim **Execution Context** (Bajarilish Muhiti) ichida ishga tushadi. U ikki bosqichda ishlaydi:
@@ -161,7 +161,7 @@ Testlar dars yakunida taqdim etilgan.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 \`\`\`javascript
 function createShoppingSession(user) {

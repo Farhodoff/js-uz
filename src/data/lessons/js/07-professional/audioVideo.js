@@ -18,9 +18,9 @@ Tasavvur qiling, televizor va uning **masofaviy boshqaruv pulti** (pul't):
 
 ---
 
-## 2. ⚙️ Qanday Ishlaydi (Deep Dive)
+## 2. ⚙️ Qanday Ishlaydi
 
-### Under the hood (Ichki ishlash mexanizmi)
+### Ichki ishlash mexanizmi
 Brauzerda \\\`<audio>\\\` va \\\`<video>\\\` elementlarining barchasi \\\`HTMLMediaElement\\\` nomli bazaviy interfeysdan meros oladi. Bu interfeys C++ da yozilgan brauzer dvigateli bilan to'g'ridan-to'g'ri aloqa qiladi. Siz JS da \\\`video.play()\\\` ni chaqirganingizda, V8 (yoki boshqa JS engine) C++ dagi oqim (streaming) API-lariga signal yuboradi va dekoder faylni o'qishni boshlaydi.
 
 ### Xotira, V8 Engine va Unumdorlik
@@ -30,13 +30,13 @@ Brauzerda \\\`<audio>\\\` va \\\`<video>\\\` elementlarining barchasi \\\`HTMLMe
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases
+### Chekka holatlar
 1. **Autoplay Policy:** Zamonaviy brauzerlar ovozli videoni foydalanuvchi ta'sirigacha (klik yoki klaviatura) avtomatik ishga tushishini bloklaydi. \\\`play()\\\` metodi Promise qaytaradi va agar bloklansa, Promise \\\`NotAllowedError\\\` bilan rejected bo'ladi. Har doim \\\`.catch()\\\` bilan bloklanganini tutib olish kerak.
 2. **NaN Duration:** \\\`duration\\\` xususiyati darhol o'qilsa \\\`NaN\\\` qaytaradi. To'g'ri ishlash uchun \\\`loadedmetadata\\\` hodisasini kutish kerak.
 
-### Senior Interview Savollari
+### Senior Intervyu Savollari
 1. **Savol:** Nima uchun \\\`video.play()\\\` ba'zida konsolda xato beradi va bu muammoni qanday hal qilasiz?
    * **Javob:** Brauzerning Autoplay Policy tufayli. Buni oldini olish uchun \\\`video.play().catch(error => { /* fallback logic */ })\\\` yozamiz. Odatda fallback sifatida pleyerga katta "Play" tugmasini chiqaramiz. Yana bir yechim: videoni ovozsiz (\\\`muted = true\\\`) qilib avtomatik ishga tushirish mumkin.
 2. **Savol:** \\\`loadedmetadata\\\` va \\\`loadeddata\\\` hodisalarining farqi nimada?

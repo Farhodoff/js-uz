@@ -53,7 +53,7 @@ class CustomPromise {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Microtasks vs Macrotasks:
 Event Loop-da asinxron topshiriqlar navbati ikki turga bo'linadi:
@@ -75,7 +75,7 @@ SAVOLLAR quyidagi quizzes bo'limida to'liq test ko'rinishida berilgan.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### API parallel yuklanishlarni tezlashtirish
 Agarda sahifada 5 ta alohida blok uchun ma'lumotlar API orqali tortilishi kerak bo'lsa, ularni ketma-ket \`await\` orqali kutish sayt yuklanishini sekinlashtiradi. Loyihada \`Promise.all()\` yordamida barcha 5 ta so'rov parallel jo'natiladi, bu umumiy kutish vaqtini eng uzoq davom etadigan bitta so'rov vaqtigacha qisqartiradi.

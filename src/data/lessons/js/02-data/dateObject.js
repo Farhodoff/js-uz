@@ -2,7 +2,7 @@ export const dateObject = {
   id: "dateObjectLesson",
   title: "Date Obyekti va Vaqt Bilan Ishlash",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Date Obyekti nima?
 JavaScript-da vaqt va sanalar bilan ishlash uchun \\\`Date\\\` nomli maxsus obyektdan foydalaniladi. Date obyekti 1970-yil 1-yanvar yarim tundan boshlab hisoblangan millisekundlar asosida ishlaydi (bunga Unix Timestamp deyiladi).
@@ -17,7 +17,7 @@ Tasavvur qiling, siz poyezdlar jadvalini tuzmoqchisiz:
 
 ---
 
-## 2. 🔬 Deep Dive: Under the Hood (V8 Engine va Memory)
+## 2. 🔬 Chuqur Tahlil: Ichki ishlash (V8 dvigateli va xotira)
 
 ### V8 da Date obyekti qanday saqlanadi?
 V8 dvigateli Date obyektlarini odatda to'g'ridan-to'g'ri bitta raqam – 64-bitlik o'zgaruvchan nuqtali (float) raqam sifatida xotirada saqlaydi. Bu raqam 1970-yil 1-yanvardan beri o'tgan millisekundlarni anglatadi.
@@ -38,14 +38,14 @@ const startBad = new Date().getTime();
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases (Qiziq va Kutilmagan holatlar)
+### Chekka holatlar (Qiziq va Kutilmagan holatlar)
 1. **Oylarning 0 dan boshlanishi:** JavaScriptda oylar 0 (Yanvar) dan boshlab 11 (Dekabr) gacha bo'ladi. \\\`new Date(2024, 0, 1)\\\` bu 2024-yil 1-Yanvar.
 2. **"Overflow" (Ortib ketish):** Agar siz 32-Yanvarni so'rasangiz, xato bermaydi! Avtomatik ravishda 1-Fevralga aylanadi.
 3. **YYYY-MM-DD formati xavfi:** \\\`new Date('2024-10-15')\\\` ba'zi brauzerlarda UTC sifatida, \\\`new Date('2024/10/15')\\\` esa local time sifatida qabul qilinadi.
 
-### Senior Interview Savollari
+### Senior Intervyu Savollari
 1. **Savol:** \\\`new Date('2024-01-01')\\\` va \\\`new Date(2024, 0, 1)\\\` o'rtasida TimeZone bo'yicha qanday farq bo'lishi mumkin?
    **Javob:** String orqali berilganda (ISO formatda \\\`YYYY-MM-DD\\\`), agar \\\`Z\\\` qo'shilmasa ham, ba'zi xalqaro standartlarga ko'ra u UTC deb tushunilishi mumkin. Raqamlar argumenti bilan (\\\`new Date(2024, 0, 1)\\\`) yaratganda, u qat'iy ravishda foydalanuvchining Local Time (mahalliy vaqt) iga qarab yaratiladi.
    

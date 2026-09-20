@@ -2,7 +2,7 @@ export const propertyDescriptors = {
   id: "property-descriptors",
   title: "Property Descriptors (Xususiyatlarni sozlash)",
   theory: `
-### 1. Beginner Analogy: Uyning kalitlari va xonalar
+### 1. Sodda Tushuntirish: Uyning kalitlari va xonalar
 
 Tasavvur qiling, sizda katta uy bor (bu obyekt). Uyning ichida turli xonalar bor (bular xususiyatlar, ya'ni property-lar). Odatda, uyingizga kelgan mehmon har qanday xonaga kirishi, narsalarni o'zgartirishi yoki hatto xonani buzib tashlashi mumkin (oddiy obyekt xususiyati).
 
@@ -15,7 +15,7 @@ JavaScript-da Object Property Descriptors xuddi shu "xona qoidalari" rolini baja
 
 ---
 
-### 2. Deep Dive: Under the Hood
+### 2. Chuqur Tahlil: Ichki ishlash
 
 JavaScript-da obyektdagi har bir kalit-qiymat (key-value) faqat oddiy o'zgaruvchi emas. Uning ortida "Property Descriptor" deb ataluvchi yashirin sozlamalar (metadata) yotadi. 
 
@@ -59,9 +59,9 @@ console.log(car.brand); // "Tesla"
 
 ---
 
-### 3. Edge Cases va Senior Interview Savollari
+### 3. Chekka holatlar va Senior Intervyu Savollari
 
-Property Descriptors bo'yicha senior suhbatlarda ko'p uchraydigan holatlar (edge cases):
+Property Descriptors bo'yicha senior suhbatlarda ko'p uchraydigan holatlar:
 
 **1-savol: \`configurable: false\` bo'lganda nimalarni o'zgartirish mumkin?**
 - Agar \`configurable: false\` bo'lsa, siz xususiyatni o'chira olmaysiz (\`delete obj.prop\`).

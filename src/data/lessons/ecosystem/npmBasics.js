@@ -2,30 +2,30 @@ export const npmBasics = {
   id: "npm-basics",
   title: "NPM Basics",
   theory: `
-## Part 1: Beginner Analogy
+## 1-Qism: Sodda Tushuntirish
 Tasavvur qiling, siz o'zingizning orzuingizdagi uyni quryapsiz. Har bir detalni: g'ishtlarni, eshik va derazalarni o'zingiz noldan boshlab yasashingiz mumkin. Ammo bu juda uzoq vaqt va mashaqqat talab qiladi. Buning o'rniga, qurilish materiallari do'koniga borib, tayyor va sinalgan mahsulotlarni sotib olishingiz mumkin.
 
 JavaScript olamida ham xuddi shunday! O'zingiz noldan barcha murakkab funksiyalarni yozib chiqishingiz shart emas. Boshqa dasturchilar tomonidan yozilgan tayyor "qurilish materiallari" (kutubxonalar yoki paketlar) mavjud. **NPM (Node Package Manager)** - bu xuddi ana shu ulkan qurilish materiallari do'koni hisoblanadi.
 
 Loyiha yaratishni boshlash uchun terminalda \\\`npm init\\\` buyrug'ini yozasiz. Natijada \\\`package.json\\\` nomli maxsus fayl paydo bo'ladi. Bu fayl loyihangizning "pasporti" bo'lib, uning nomi, versiyasi va loyihada ishlatilgan barcha do'kondan olingan materiallar ro'yxatini saqlaydi.
 
-## Part 2: Deep Dive (Under the hood, memory, dependency resolution, lockfiles, npm vs yarn vs pnpm)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, xotira, paketlarni aniqlash (dependency resolution), lockfile’lar, npm vs yarn vs pnpm)
 
 NPM asosan 3 xil komponentdan tashkil topgan:
 1. **Website (Vebsayt):** Paketlarni qidirish va ularning hujjatlarini (documentation) o'qish uchun foydalaniladi.
 2. **Registry (Reyestr):** Barcha ochiq manbali (open-source) paketlar joylashgan va saqlanadigan juda ulkan ma'lumotlar bazasi.
 3. **CLI (Command Line Interface):** Dasturchilar o'z terminali orqali paketlarni o'rnatish, yangilash yoki o'chirish uchun ishlatadigan vosita.
 
-### Dependency Resolution va Lockfiles
+### Paketlarni aniqlash (Dependency Resolution) va lockfile’lar
 Siz terminalda \\\`npm install express\\\` buyrug'ini bersangiz, NPM nafaqat Express'ning o'zini, balki Express ishlashi uchun kerak bo'lgan boshqa barcha paketlarni ham o'rnatib beradi. Bunga **dependency tree (qaramliklar daraxti)** deyiladi.
 Biroq, bu paketlar vaqt o'tishi bilan yangilanadi va o'zgaradi. Biror jamoa a'zosi loyihani kompyuteriga ko'chirib olganida eski versiyadagi kodlar bilan ziddiyat kelib chiqmasligi uchun, \\\`package-lock.json\\\` (lockfile) fayli paketlarning har birining aynan qaysi versiyasi o'rnatilganligini "qulflab" qo'yadi. Shu orqali barcha muhitlarda kod bir xilda ishlashi kafolatlanadi.
 
-### Memory, npm vs yarn vs pnpm
+### Xotira, npm vs yarn vs pnpm
 O'rnatilgan barcha paketlar loyihangizdagi \\\`node_modules\\\` papkasiga saqlanadi. Agar kompyuteringizda 10 ta xil loyiha bo'lsa va ularning har birida "lodash" paketi o'rnatilgan bo'lsa nima bo'ladi?
 - **npm va yarn:** Ikkalasida ham lodash 10 marta alohida diskka yuklab olinadi va kompyuter xotirasidan 10 karra ortiqcha joy oladi.
 - **pnpm:** Bu yondashuvni tubdan o'zgartiradi! U barcha paketlarni tizimda bitta global "do'kon" ga yuklab oladi. Har bir loyiha esa o'sha bitta joyga faqat **symlink (havola)** orqali ulanadi. Bu disk xotirasini deyarli 10 barobarga tejaydi va paketlar o'rnatilishini aql bovar qilmaydigan darajada tezlashtiradi.
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 - **Savol 1:** \\\`dependencies\\\`, \\\`devDependencies\\\` va \\\`peerDependencies\\\` o'rtasida qanday farq bor?
   - **Javob:** 

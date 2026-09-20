@@ -164,7 +164,7 @@ Dars oxiridagi test topshiriqlari.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Web Workers va SharedArrayBuffer yordamida parallel Matrix Multiplication
 Katta hajmli matritsalarni ko'paytirish hisob-kitobini 4 ta Web Workerga bo'lib berish va natijani bitta SharedArrayBufferda jamlash.

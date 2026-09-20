@@ -14,7 +14,7 @@ Tasavvur qiling, siz **Aqlli Uy (Smart Home)** tizimini boshqaryapsiz:
 
 ---
 
-## 2. 🧠 Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. 🧠 Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### Brauzer qanday qilib DOM ni yaratadi?
 Brauzer HTML ni qabul qilganda, u oddiy matn (string) shaklida bo'ladi. Brauzer dvigateli (masalan, Blink yoki WebKit) bu matnni birma-bir o'qiydi (parsing) va tokenlarga ajratadi. Keyin bu tokenlardan DOM daraxti tugunlarini (nodes) yaratadi. 
@@ -57,7 +57,7 @@ graph TD
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 ### Edge Case: Live HTMLCollection vs Static NodeList
 DOM dan obyektlarni olayotganda \\\`getElementsByClassName\\\` (HTMLCollection - live) va \\\`querySelectorAll\\\` (NodeList - static) farqini bilish juda muhim.
@@ -79,7 +79,7 @@ document.querySelector('ul').appendChild(newItem);
 console.log(liveList.length, staticList.length); // 4, 3
 \\\`\\\`\\\`
 
-### Senior Interview Savollari
+### Senior Intervyu Savollari
 
 1. **Savol:** Layout Thrashing (Layout qotishi) nima va u qanday kod yozish natijasida yuzaga keladi?
    * **Javob:** Bir kadrda DOM element o'lchamlarini o'qish (\\\`offsetWidth\\\`, \\\`clientHeight\\\`) va unga yozish (\\\`style\\\` o'zgartirish) amallarini ketma-ket, takroriy bajarish. Bu brauzerni har safar layoutni hisoblashga majbur qiladi va FPSni keskin tushiradi. Yechim: o'qishlarni guruhlash, so'ngra yozishlarni guruhlash (FastDOM pattern).

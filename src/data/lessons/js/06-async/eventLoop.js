@@ -304,7 +304,7 @@ Har bir callback — alohida stack. \`setTimeout\` ichidagi xato faqat \`window.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Infinite Scroll: Renderga to'sqinlik qilmasdan yuklash
 Muammo: foydalanuvchi pastga skroll qilganda 500 ta postni render qilish — sahifa muzlaydi.

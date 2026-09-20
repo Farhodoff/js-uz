@@ -103,7 +103,7 @@ function processPaymentIdempotent(idempotencyKey, amount, accountId) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. ACID vs BASE
 An'anaviy monolit bazalar **ACID** modeliga amal qiladi. Taqsimlangan tizimlar esa ko'pincha **BASE** modelini tanlashadi:

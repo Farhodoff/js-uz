@@ -56,7 +56,7 @@ function dijkstra(graph, start) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Dijkstra Algoritmi:
 1. Greedy (ochko'z) yondashuvga asoslanadi. Har doim hali ziyorat qilinmagan eng kichik masofali tugunni tanlaydi.

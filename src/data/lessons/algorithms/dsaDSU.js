@@ -63,7 +63,7 @@ class DisjointSet {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Ikki Asosiy Optimallash (Optimizations):
 1. **Path Compression (Yo'lni qisqartirish):**

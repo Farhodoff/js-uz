@@ -2,7 +2,7 @@ export const arrays = {
   id: "arrays",
   title: "Massivlar (Arrays) va Ularning Metodlari",
   language: "javascript",
-  theory: `## Part 1: Beginner Analogy
+  theory: `## 1-Qism: Sodda Tushuntirish
 
 Massiv (Array) - bu bitta nom ostida ko'plab qiymatlarni saqlovchi maxsus ro'yxat. Oddiy o'zgaruvchi faqat bitta qiymatni saqlay olsa, massiv o'zida yuzlab qiymatlarni saqlashi mumkin.
 
@@ -16,7 +16,7 @@ console.log(poyezd[0]); // "vagon-0"
 console.log(poyezd.length); // 3
 \\\`\\\`\\\`
 
-## Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 C yoki Java kabi tillarda massivlar qat'iy o'lchamga ega va xotirada faqat bir xil turdagi ma'lumotlarni saqlaydi. Lekin JavaScript'da massivlar **Obyektlar** hisoblanadi. Ularning kalitlari (keys) raqamlardan iborat.
 
@@ -29,7 +29,7 @@ JavaScript dvigateli (masalan, V8) massivlarni optimallashtirish uchun ikki usul
 * **\\\`push\\\` / \\\`pop\\\`**: Oxiriga qo'shish yoki olib tashlash juda tez, chunki boshqa elementlar joyi o'zgarmaydi. Bu **O(1)** vaqt oladi.
 * **\\\`unshift\\\` / \\\`shift\\\`**: Boshidan qo'shish yoki olish sekin, chunki qolgan BARCHA elementlarning indeksi bittaga siljishi kerak. Bu **O(N)** vaqt oladi.
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 * **Savol:** \\\`arr.length = 0\\\` qilsak nima sodir bo'ladi?
   **Javob:** Bu massivni tozalashning (empty an array) eng tezkor usuli. Massivdagi barcha elementlar o'chadi.

@@ -203,7 +203,7 @@ Dars oxiridagi test topshiriqlari.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Infinite Scroll (Cheksiz Scroll) optimallashtirish
 Foydalanuvchi sahifa oxiriga yaqinlashganda yangi postlarni yuklashimiz kerak. Agar oddiy scroll ishlatilsa, u har 1-2 pikselda serverga so'rov jo'natishi mumkin.

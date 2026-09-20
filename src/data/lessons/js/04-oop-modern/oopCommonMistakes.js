@@ -2,7 +2,7 @@ export const oopCommonMistakes = {
   id: "oopCommonMistakes",
   title: "OOP Xatolarini Tushunish va Debugging",
   language: "javascript",
-  theory: `## 1. 💡 Part 1: Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 OOP'da eng ko'p uchraydigan xatolar **\`this\` yo'qolishi** va **prototip zanjiri noto'g'ri o'rnatilishi** atrofida aylanadi.
 
@@ -50,7 +50,7 @@ Dog.prototype.constructor = Dog; // qayta o'rnatish
 
 ---
 
-## 2. ⚙️ Part 2: Debugging vositalari va usullari
+## 2. ⚙️ Debugging vositalari va usullari
 
 ### \`this\` ni tekshirish
 \`\`\`javascript
@@ -100,7 +100,7 @@ console.log(user.sayName === bound); // false — yangi funksiya!
 
 ---
 
-## 3. ⚠️ Part 3: Murakkab Holatlar va Senior Intervyu Savollari (Edge Cases)
+## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari
 
 ### 1. Metod sharerlarining 4 ta qoidasi (intervyu standarti)
 1. \`obj.method()\` — \`this\` = \`obj\` (nuqtadan oldingi).

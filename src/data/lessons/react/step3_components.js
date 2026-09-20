@@ -13,7 +13,7 @@ Tasavvur qiling, sizga juda katta va murakkab kosmik kema qurish vazifasi berild
 **React komponentlari - bu dasturlash olamidagi Lego bloklaridir.**
 Biz butun bir veb-saytni bitta ulkan kod qismi sifatida yozmaymiz. Buning o'rniga, har bir tugma (button), har bir forma (form), har bir rasm (image) uchun alohida kichik "Lego bloklarini" yaratamiz.
 
-### Nega bu kerak? (Why do we need this?)
+### Nega bu kerak? 
 1. **Qayta foydalanish (Reusability):** Siz bitta chiroyli tugma (button) yaratasiz va uni saytning 10 xil joyida hech qanday kodni nusxalamasdan ishlata olasiz.
 2. **Qulay xato izlash (Easier Debugging):** Agar "Savatga qo'shish" tugmasi ishlamasa, siz butun sayt kodini emas, faqat \`AddToCartButton\` komponentini tekshirasiz.
 3. **Jamoada ishlash (Teamwork):** Bitta dasturchi \`Header\` (yuqori qism) ustida ishlasa, boshqasi \`Footer\` (pastki qism) ustida bemalol, bir-biriga xalaqit bermasdan ishlashi mumkin.

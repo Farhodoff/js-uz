@@ -68,7 +68,7 @@ console.log(hr.getNode("user_session_123")); // Serverlardan biriga barqaror yo'
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Hashing Ring (Halqa):
 Ushbu algoritmda sonlar o'qi aylana (doira) ko'rinishida tasavvur qilinadi. Misol uchun, $0$ dan $2^{32}-1$ gacha bo'lgan sonlar aylanada joylashadi. Serverlar va kalitlar (keys) bir xil hash funksiya yordamida shu halqaga joylashtiriladi.
@@ -137,7 +137,7 @@ Testlar orqali bilimingizni tekshiring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Amazon DynamoDB va Cassandra Arxitekturasi
 Ushbu NoSQL ma'lumotlar bazalarida ma'lumotlarni klasterdagi serverlar bo'ylab taqsimlash va saqlash to'liq Consistent Hashing halqasiga asoslangan. Bu klasterga dinamik ravishda yangi serverlar qo'shish imkonini beradi.

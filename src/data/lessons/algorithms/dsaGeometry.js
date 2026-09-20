@@ -29,7 +29,7 @@ function getOrientation(p1, p2, p3) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Nuqtalar yo'nalishi (Orientation):
 Geometrik hisoblashlarda ikki chiziq kesishishi yoki qobiq qurishda vektor ko'paytmasi (cross product) ishlatiladi:

@@ -71,7 +71,7 @@ add("hello", "world"); // BOOM! TurboFan optimallashtirilgan kodni tashlab yubor
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### V8 Source-to-Optimized-Code Pipeline
 

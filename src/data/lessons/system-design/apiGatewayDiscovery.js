@@ -119,7 +119,7 @@ registerService();
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### API Gateway Vazifalari (Duties):
 1. **Reverse Proxying & Routing:** So'rovlarni ularga tegishli backend servislariga yo'naltirish.
@@ -201,7 +201,7 @@ Bilimingizni sinash uchun 12 ta interaktiv testga javob bering.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Katta yuklamali logistika tizimida API Gateway va Consul
 Logistika tizimida (masalan, kurerlik xizmati) kurerlarning mobil ilovalari soniyasiga minglab GPS koordinatalarini yuboradi. Agar har bir mobil ilova bevosita kurer xizmatiga murojaat qilsa, IP manzillarini boshqarish qiyin bo'ladi.

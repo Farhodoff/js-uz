@@ -283,7 +283,7 @@ Bu bo'limda siz interaktiv kod muharriri orqali BST yaratish, element qo'shish v
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Avtomatik To'ldirish (Autocomplete) tizimi uchun lug'at daraxti
 Katta hajmdagi matnlar ichidan so'zlarni tezkor qidirish uchun BST yoki uning modifikatsiyasi bo'lgan Trie (lug'at daraxti) tuzilmasi ishlatiladi.

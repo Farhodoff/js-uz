@@ -2,7 +2,7 @@ export const primitivesVsObjects = {
   id: "primitivesVsObjects",
   title: "Primitivlar va Obyektlar (Memory)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 JavaScript-da o'zgaruvchilar xotirada qanday saqlanishini tushunish juda muhim. Tasavvur qiling: sizda ma'lumotlarni saqlash uchun ikkita usul bor.
 
@@ -12,7 +12,7 @@ Bular xuddi qog'ozga yozilgan raqamlar yoki matnlarga o'xshaydi. Agar siz do'sti
 **Obyektlar (Object, Array, Function):**
 Bular Google Docs hujjatlariga o'xshaydi. Agar siz do'stingizga havolani (linkni) yuborsangiz va u hujjatni o'zgartirsa, siz ochganingizda ham o'sha o'zgargan hujjatni ko'rasiz, chunki sizlarda bitta hujjatga ikkita havola bor xolos. Obyektlarning o'zi xotiraning **Heap** (dinamik, katta hajmga mo'ljallangan) qismida saqlanadi, **Stack**-da esa faqat ularning Heap-dagi manziliga ko'rsatuvchi pointer (havola) turadi.
 
-## 2. 🚀 Deep Dive (Under the Hood, V8 Engine & Performance)
+## 2. 🚀 Chuqur Tahlil (Ichki ishlash, V8 Engine & Performance)
 
 V8 dvigateli primitivlar va obyektlarni boshqarishda yuqori samaradorlik uchun turlicha yondashuvlardan foydalanadi:
 
@@ -24,7 +24,7 @@ V8 dvigateli primitivlar va obyektlarni boshqarishda yuqori samaradorlik uchun t
 - Yirik obyektlarni mutatsiya qilmasdan doim chuqur nusxalash (Deep Copy) xotira (Heap) hajmini oshirib, Garbage Collector ishlashiga (va dastur qotishiga - *jank*) olib kelishi mumkin.
 - Shuning uchun ko'pincha *Shallow Copy* (yuzaki nusxa) ishlatiladi, biroq ichki obyektlar hamon pointer bo'lib qolishidan ehtiyot bo'lish kerak.
 
-## 3. ⚠️ Edge Cases & Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 **Edge Case 1: \\\`typeof null\\\`**
 \\\`\\\`\\\`javascript
@@ -49,7 +49,7 @@ console.log(obj + 5); // 15 (valueOf ishladi)
 console.log(String(obj)); // "hello" (toString ishladi)
 \\\`\\\`\\\`
 
-**Senior Interview Savollari:**
+**Senior Intervyu Savollari:**
 1. **Pass-by-value va Pass-by-reference orasida qanday farq bor, JS qaysi birini ishlatadi?**
    - Javob: JS har doim *Pass-by-value* ishlatadi. Lekin obyekt uzatilganda, o'sha "value" (qiymat) obyektning Heap-dagi pointerni o'zi bo'ladi (Buni ko'pincha *Call-by-sharing* deyishadi). Pointer orqali ichki qismlarni o'zgartirish mumkin, lekin butunlay boshqa obyektga o'zgartirib bo'lmaydi (reassignment originalga ta'sir qilmaydi).
 2. **Qanday qilib mukammal Deep Copy qilish mumkin?**

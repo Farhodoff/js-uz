@@ -36,7 +36,7 @@ const searchAPI = debounce((query) => {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### LRU Cache (Least Recently Used):
 Keshda elementlarni saqlash tezligi $O(1)$ bo'lishi kerak. Buning uchun JS \`Map\` obyektidan foydalanish eng yaxshi yo'l. Map elementlarni qo'shilgan tartibda saqlaydi. Agar element o'qilsa yoki o'zgartirilsa, u xotiradan o'chirilib, boshiga qayta qo'shiladi. Kesh sig'imi to'lganda esa Map-ning birinchi (eng eski) elementi o'chiriladi.
@@ -56,7 +56,7 @@ Testlar yordamida intervyu savollariga tayyorgarlik ko'rasiz.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Google Search Autocomplete
 Google qidiruv maydonida har bir harfni yozganingizda serverga so'rov ketmaydi. Buning o'rniga yozishdan to'xtaganingizdan so'ng (masalan, 300ms kutib - Debounce) tavsiyalar ro'yxatini olish uchun bitta so'rov jo'natiladi. Bu server yuklamasini 90% gacha kamaytiradi.

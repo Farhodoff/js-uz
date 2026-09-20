@@ -5,7 +5,7 @@ export const closures = {
   theory: `
 # Scope (Qamrov) va Closure (Yopilish)
 
-## Part 1: Beginner Analogy
+## 1-Qism: Sodda Tushuntirish
 JavaScript-da **Scope** (Qamrov) va **Closure** (Yopilish) muhim tushunchalardir.
 Tasavvur qiling, siz tog'ga sayohatga chiqyapsiz. Uydan chiqishdan oldin kerakli barcha narsalarni ryukzagingizga (sumkaga) solib oldingiz. Endi tog'ga chiqsangiz ham, uyda qolgan narsalaringiz doim orqangizdagi sumkada siz bilan yuradi.
 Dasturlashda ham funksiya boshqa joyda chaqirilish uchun o'zining asl tug'ilgan joyidan chiqib ketganida, u tug'ilgan vaqtdagi barcha ko'ra olgan o'zgaruvchilarini "ryukzak"ka solib o'zi bilan olib ketadi! Ana shu ryukzak — **Closure** deb ataladi.
@@ -23,7 +23,7 @@ const sayohat = uy();
 sayohat(); // "Tog'da yeyapmiz: Osh"
 \\\`\\\`\\\`
 
-## Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 Closure qanday ishlaydi? V8 dvigateli har bir ishga tushgan funksiya uchun **Execution Context** yaratadi. Uning ichida **Lexical Environment** mavjud bo'lib, u o'zgaruvchilarni saqlaydi.
 Agar ichki funksiya tashqi o'zgaruvchilarni ishlatsa, V8 bu o'zgaruvchilarni oddiy *Stack* o'rniga *Heap* xotirasida saqlaydi. Bu **Escape Analysis** deyiladi.
 Shunday qilib, tashqi funksiya tugaganidan keyin ham, ichki funksiya bu o'zgaruvchilarga Heap orqali murojaat qila oladi va ular Garbage Collector tomonidan o'chirib yuborilmaydi.
@@ -41,7 +41,7 @@ function createCounter() {
 }
 \\\`\\\`\\\`
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 Senior intervyularida ko'p so'raladigan klassik muammo — bu Loop ichida Closure ishlatishdir.
 
 \\\`\\\`\\\`javascript

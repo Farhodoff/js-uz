@@ -45,7 +45,7 @@ function permute(nums) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### State Space Tree (Holatlar daraxti):
 Backtracking algoritmi orqa fonda rekursiya yordamida barcha holatlar daraxtini (State Space Tree) aylanib chiqadi.

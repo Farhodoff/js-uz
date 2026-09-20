@@ -37,7 +37,7 @@ console.log(estimateDailyStorageGB(10000, 500));
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Hisob-kitoblarni amalga oshirishda quyidagi 4 ta asosiy usul qo'llaniladi:
 
@@ -108,9 +108,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni sinab ko'ring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: WhatsApp-like Messenger Storage Planning
+### Amaliy tahlil: WhatsApp-like Messenger Storage Planning
 - **FR:** Matnli xabarlar yuborish.
 - **NFR/Scale:** 1 milliard foydalanuvchi, kuniga 50 ta xabar yuboradi. Bitta xabar o'rtacha 100 bayt.
 - **Hisoblash:**

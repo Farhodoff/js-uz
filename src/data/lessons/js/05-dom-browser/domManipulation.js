@@ -2,7 +2,7 @@ export const domManipulation = {
   id: "domManipulation",
   title: "DOM Manipulyatsiyasi: Elementlar Yaratish va Boshqarish",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 **DOM Manipulyatsiyasi** bu web-sahifadagi HTML elementlarini JavaScript yordamida dasturiy (dynamic) ravishda yaratish, joylashtirish, o'zgartirish yoki o'chirish jarayonidir. 
 
@@ -16,7 +16,7 @@ Buni Lego konstruktorlarini yig'ishga o'xshatish mumkin:
 
 ---
 
-## 2. 🔬 Deep Dive: Under the Hood, Memory, V8 Engine & Performance
+## 2. 🔬 Chuqur Tahlil: Ichki ishlash, Xotira, V8 dvigateli va Unumdorlik
 
 DOM (Document Object Model) — bu C++ da yozilgan brauzer API'si. JavaScript (V8 Engine) va DOM alohida olamlardir. Ularning o'rtasida ma'lumot almashish va birgalikda ishlash qimmat turadi. 
 
@@ -38,14 +38,14 @@ graph TD;
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases (Noaniq vaziyatlar)
+### Chekka holatlar (Noaniq vaziyatlar)
 1. **\\\`cloneNode(true)\\\` va Event Listeners:** \\\`cloneNode\\\` tugunning xususiyatlari va atributlarini nusxalaydi, biroq \\\`addEventListener\\\` yordamida biriktirilgan JavaScript hodisalarini (event listeners) nusxalamaydi. Inline (HTML dagi) atribut hodisalarigina (masalan, \\\`onclick\\\`) nusxalanadi.
 2. **innerHTML vs textContent:** Xavfsizlik jihatidan foydalanuvchi ma'lumotini kiritishda doimo \\\`textContent\\\` ishlating. \\\`innerHTML\\\` bilan ishlash \\\`XSS\\\` (Cross-Site Scripting) hujumlariga ochiq bo'ladi.
 3. **Live vs Static Collections:** \\\`getElementsByClassName\\\` \\\`Live\\\` (jonli) to'plam qaytaradi (DOM o'zgarsa darhol yangilanadi), \\\`querySelectorAll\\\` esa \\\`Static\\\` to'plam qaytaradi (o'zgarishlar tasir qilmaydi).
 
-### Senior Interview Questions
+### Senior Intervyu Savollari
 1. **Savol:** \\\`Virtual DOM\\\` qanday ishlaydi va nima uchun React kabi frameworklar to'g'ridan-to'g'ri DOM manipulyatsiyasi o'rniga undan foydalanadi?
    * **Javob:** To'g'ridan-to'g'ri DOM update'lari juda sekin va qimmat. Virtual DOM bu - JS xotirasidagi obyektlar daraxotidir. React state o'zgarganda yangi Virtual DOM yaratadi, eskilari bilan \\\`diffing\\\` (taqqoslash) algoritmini bajaradi va faqatgina o'zgargan qismlarnigina haqiqiy DOM ga batched (guruhlangan) holda yozadi. Bu esa o'z-o'zidan ortiqcha Reflow va Repaint'larning oldini oladi.
 

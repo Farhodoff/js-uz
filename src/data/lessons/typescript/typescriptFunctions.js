@@ -2,12 +2,12 @@ export const typescriptFunctions = {
   id: "typescript-functions",
   title: "TypeScript Functions",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, siz restoranga kirdingiz va ofitsiantga buyurtma beryapsiz. Ofitsiant (funksiya) sizdan ma'lumotlarni qabul qiladi. Agar siz "Bitta burger va kola" desangiz, ofitsiant nima kutyotganini biladi. Lekin siz "Bitta moshina va g'isht" desangiz, ofitsiant (TypeScript) xatoni sezadi va buyurtmani qabul qilmaydi.
 JavaScript-da ofitsiant hamma narsani olaveradi va oxirida tushunarsiz ovqat olib keladi. TypeScript-da esa funksiya nima qabul qilishini (parametr tiplari) va nima qaytarishini (return type) oldindan qat'iy belgilab olamiz. Bu esa kutilmagan xatolar va "portlashlar" oldini oladi.
 
-## 2. 🧠 Chuqur Sho'ng'ish (Deep Dive)
+## 2. 🧠 Chuqur Sho'ng'ish
 
 **TypeScript Kompilyatori (tsc) va Type Erasure (Tiplarning O'chirilishi)**
 
@@ -19,7 +19,7 @@ Xotira (Memory) va Ishlash Tezligi (Performance) nuqtai nazaridan TypeScript fun
 - \\\`void\\\`: Funksiya oxiriga yetib boradi, lekin hech qanday aniq qiymat qaytarmaydi (ichki holda \\\`undefined\\\` qaytaradi). Masalan, console.log chiqaruvchi funksiya.
 - \\\`never\\\`: Funksiya hech qachon oxiriga yetib bormaydi (masalan, Error tashlaydi yoki cheksiz tsiklga kiradi).
 
-## 3. ⚠️ Chekka Holatlar (Edge Cases) va Senior Intervyu Savollari
+## 3. ⚠️ Chekka Holatlar va Senior Intervyu Savollari
 
 **Savol: Optional (\\\`?\\\`) va Default (\\\`=\\\`) parametrlarning qanday farqi bor va ularni qanday tartibda yozish kerak?**
 **Javob:** Optional parametr (\\\`?\\\`) qiymat berilmasa \\\`undefined\\\` bo'ladi. Default parametr (\\\`=\\\`) berilmasa o'rniga yozilgan qiymat tushadi. Optional parametrlar har doim barcha majburiy parametrlardan keyin (oxirida) kelishi shart, yo'qsa xato bo'ladi.

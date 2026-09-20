@@ -70,7 +70,7 @@ class RaftNode {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Paxos vs Raft:
 - **Paxos:** Birinchi keng tarqalgan konsensus algoritmi. Matematik jihatdan mukammal bo'lsa-da, uni tushunish va amalda qo'llash o'ta murakkab.
@@ -145,7 +145,7 @@ Testlar orqali bilimingizni tekshiring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### etcd va Kubernetes Arxitekturasi
 Kubernetes o'zining barcha holatlari, konfiguratsiyalari va metadata ma'lumotlarini saqlash uchun **etcd** key-value omboridan foydalanadi. etcd esa klaster barqarorligini ta'minlash uchun **Raft** konsensus algoritmidan foydalanadi. Agar etcd kvorumni yo'qotsa (masalan, 3 tadan 2 ta node o'chsa), Kubernetes yangi resurslar yaratish yoki holatni o'zgartirish so'rovlarini qabul qila olmay qoladi. Bu real loyihalarda konsensusning qanchalik muhimligini ko'rsatadi.

@@ -2,7 +2,7 @@ export const dragAndDrop = {
   id: "dragAndDrop",
   title: "HTML5 Drag and Drop API",
   theory: `
-### Part 1: Beginner Analogy
+### 1-Qism: Sodda Tushuntirish
 Tasavvur qiling, siz stoldagi kitobni (Drag) olib, kitob javoniga (Drop) qo'ymoqchisiz. 
 Buning uchun:
 1. Kitobni ushlaysiz (dragstart)
@@ -12,7 +12,7 @@ Buning uchun:
 
 HTML5 Drag and Drop API ham xuddi shunday ishlaydi. U bizga veb-sahifadagi elementlarni sichqoncha yordamida ushlab, boshqa joyga ko'chirish imkonini beradi.
 
-### Part 2: Deep Dive
+### 2-Qism: Chuqur Tahlil
 HTML5 DnD API brauzerning ichki tizimi bo'lib, nafaqat DOM elementlarini, balki operatsion tizimdan fayllarni ham tortib olib kelish imkonini beradi.
 
 #### Asosiy hodisalar (Events)
@@ -39,7 +39,7 @@ item.addEventListener("dragstart", (e) => {
 });
 \\\`\\\`\\\`
 
-### Part 3: Edge Cases and Senior Interview Questions
+### 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 **Savol:** Nega \\\`dragover\\\` hodisasida \\\`e.preventDefault()\\\` chaqirishimiz shart?
 **Javob:** Brauzerlar odatda elementlarni biron joyga tashlashni (drop) taqiqlaydi. Drop jarayoniga ruxsat berish uchun biz ushbu standart xatti-harakatni to'xtatishimiz kerak.
 

@@ -115,7 +115,7 @@ function yieldToMain() {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### JavaScript Event Loop arxitekturasi
 JavaScript Event Loop dvigatel (V8) va brauzer muhiti (Web APIs) o'rtasidagi bog'lovchi hisoblanadi. Bir iteratsiya (aylanish) davomida u quyidagi navbatlarni ma'lum tartibda boshqaradi:

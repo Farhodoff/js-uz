@@ -35,7 +35,7 @@ console.log(getService('/users/123')); // 'UserService'
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Ushbu bo'limda siz pastdagi 3 ta amaliy JS algoritmini va 12 ta testni yechishingiz kerak. Ular orqali tarmoq darajasidagi operatsiyalarning kod darajasidagi analogini yaxshiroq his qilasiz.
 
@@ -100,9 +100,9 @@ Testlarni yechib, Phase 2 ni yakunlang. Testlar pastdagi quizzes bo'limida kelti
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: API Gateway orqali xavfsiz marshrutlash va Auth markazlashtirish
+### Amaliy tahlil: API Gateway orqali xavfsiz marshrutlash va Auth markazlashtirish
 Katta loyihalarda har bir mikroxizmat (UserService, PaymentService) alohida avtorizatsiya va token tekshirish bilan shug'ullansa, kod takrorlanishi ko'payadi va tarmoq yuklamasi oshadi.
 API Gateway loyihasini o'rnatish orqali barcha kiruvchi so'rovlar dastlab shu yerda to'xtatiladi. Gateway token mavjudligi va yaroqliligini tekshiradi, so'ngra so'rov sarlavhasiga (\`headers\`) decodlangan \`X-User-Id\` ma'lumotini yozib, ichki xizmatlarga marshrutlaydi. Bu orqali ichki xizmatlar token tekshirish yukidan butunlay xalos bo'ladi.
 

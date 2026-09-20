@@ -97,7 +97,7 @@ app.use(cors({
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Rate Limiting Algoritmlari
 
@@ -194,7 +194,7 @@ Dars yakunidagi testlar orqali bilimingizni sinab ko'ring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Redis va Lua Script yordamida Atomar Rate Limiting
 Redis-da distributed tizimlar uchun race condition (poyga holati) yuzaga kelmasligi uchun Lua skriptlaridan foydalaniladi. Skript Redis serveri ichida bitta atomar amal sifatida bajariladi:

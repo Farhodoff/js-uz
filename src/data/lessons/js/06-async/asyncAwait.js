@@ -7,7 +7,7 @@ export const asyncAwait = {
 ### Async/Await nima?
 **Async/Await** — bu JavaScript-da asinxron kodni (Promises) xuddi sinxron (ketma-ket yozilgan) kod kabi oson, chiziqli va chiroyli yozish imkonini beruvchi zamonaviy sintaksisdir. U yangi asinxron mexanizm yaratmaydi, balki mavjud va'dalar (Promises) ustiga qurilgan qulay qobiq ("syntactic sugar") hisoblanadi.
 
-### Real hayotiy o'xshatish (Beginner Analogy)
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz **restoranda ovqat buyurtma qilyapsiz**:
 * **Callbacks (Eski usul):** Siz buyurtma berasiz va ofitsiantga telefon raqamingizni qoldirasiz. Ovqat tayyor bo'lgach sizga telefon qilishadi (callback). Telefon qilishganidan keyin keyingi buyurtmani tushuntirishingiz kerak. Agar zanjir uzun bo'lsa, bu "Callback Hell" ga aylanadi.
 * **Promises (O'rta usul):** Buyurtma berishingiz bilan sizga elektron kvitansiya (Promise) berishadi. Siz kvitansiyani qo'lda ushlab, \`.then()\` (agar pishsa) va \`.catch()\` (agar kuyib ketgan bo'lsa) qoidalarini yozib kutasiz.
@@ -15,7 +15,7 @@ Tasavvur qiling, siz **restoranda ovqat buyurtma qilyapsiz**:
 
 ---
 
-## 2. 🧠 Deep Dive (Under the hood, memory, V8 engine)
+## 2. 🧠 Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli)
 
 V8 dvigateli (engine) \`async/await\` ni qanday tushunadi?
 Aslida JavaScript single-threaded (yagona oqim) va u asinxronlikni bevosita o'zi bajarmaydi, balki Web API (yoki Node.js da C++ API) larga topshiradi. 
@@ -51,9 +51,9 @@ const [users, posts] = await Promise.all([fetchUsers(), fetchPosts()]);
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases (Noodatiy holatlar)
+### Chekka (noodatiy) holatlar
 1. **Loop ichida await:**
 \`forEach\` ichida \`await\` ishlamaydi, chunki \`forEach\` callback larni kutmaydi (barchasini bir vaqtda ishga tushirib yuboradi). Ketma-ket kutish uchun \`for...of\` yoki oddiy \`for\` tsiklini ishlating.
 2. **Top-level await:** 
@@ -61,7 +61,7 @@ Faqat ES Modules (\`type="module"\`) da ishlaydi. U modullarda eng yuqori daraja
 3. **Promise.all vs Promise.allSettled:**
 \`Promise.all\` bittasi reject bo'lsa ham butunlay to'xtaydi va catch ga o'tadi. \`Promise.allSettled\` esa hammasining natijasini (fulfilled yoki rejected) yig'ib beradi.
 
-### Senior Interview Questions
+### Senior Intervyu Savollari
 1. **Savol:** Nima uchun class constructor-i (konstruktor) \`async\` bo'la olmaydi?
    * **Javob:** Konstruktor har doim yaratilgan obyekt instance'ini qaytarishi kerak. Agar u async bo'lsa, u Promise qaytargan bo'lardi, bu esa JS obyekti instansiyasi mantiqiga zid.
 2. **Savol:** \`await\` so'zini promise bo'lmagan oddiy qiymat oldidan ishlatsak nima bo'ladi?

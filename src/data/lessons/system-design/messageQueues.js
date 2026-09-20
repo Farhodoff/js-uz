@@ -53,7 +53,7 @@ broker.publish("email_service", { name: "Anvar" });
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Asosiy Komponentlar:
 - **Producer (Publisher):** Xabar yaratuvchi va navbatga yuboruvchi dastur.
@@ -126,7 +126,7 @@ Bilimingizni testlar orqali sinab ko'ring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### E-Commerce buyurtma yaratish zanjiri
 Mijoz buyurtma qilganda, \`Order Service\` buyurtmani bazaga yozadi va \`order_created\` eventini brokerga (masalan, RabbitMQ) nashr qiladi.

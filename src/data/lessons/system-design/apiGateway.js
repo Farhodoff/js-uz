@@ -51,7 +51,7 @@ app.listen(8000, () => console.log('API Gateway 8000-portda ishga tushdi'));
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### API Gateway Vazifalari:
 1. **Routing:** Kelgan so'rovni yo'liga mos ravishda backend mikroxizmatiga (microservice) jo'natish.
@@ -129,7 +129,7 @@ Testlarni yechib, darsni o'zlashtirganingizni tekshiring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### E-Commerce saytida API Gateway va Mikroxizmatlar
 Foydalanuvchi buyurtma bermoqchi bo'lganida, so'rov API Gateway-ga keladi. Gateway birinchi navbatda foydalanuvchining loginini tekshiradi (Auth Service-ga bormasdan keshdan). Keyin so'rovni \`Order Service\`ga yuboradi. Shu bilan birga, tavsiyalar ro'yxatini olish uchun so'rov parallel ravishda \`Recommendation Service\`ga yuborilib, natijalar birlashtiriladi.

@@ -3,7 +3,7 @@ export const symbolType = {
   title: "Symbol Turi",
   language: "javascript",
   theory: `
-## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+## 1. 💡 Sodda Tushuntirish
 Tasavvur qiling, siz katta bir ofisda ishlaysiz. U yerda xodimlar shkafchalari bor. Agar siz o'z shkafchangizga oddiy "kalit" (String) bilan qulf solsangiz, kimdir xuddi shunday kalit yasab olsa, uni ochib qo'yishi mumkin. Ammo **Symbol** — bu sizning barmoq izingiz bilan ishlaydigan qulf! Uni hatto sizning o'zingiz ham ikki marta aynan bir xil qilib yarata olmaysiz. 
 
 JavaScript-da **Symbol** butunlay noyob (unique) va o'zgarmas (immutable) bo'lgan maxsus ibtidoiy (primitive) ma'lumot turidir. U odatda obyektlarga nomlari takrorlanib qolmaydigan (name collision bo'lmaydigan) yashirin xususiyatlar (properties) qo'shish uchun ishlatiladi.
@@ -15,8 +15,8 @@ const fingerPrint2 = Symbol('myFingerPrint');
 console.log(fingerPrint1 === fingerPrint2); // false - har biri unikal!
 \\\`\\\`\\\`
 
-## 2. 🔬 Deep Dive (V8 Dvigateli, Xotira va Ishlash)
-### Under the Hood (Qanday ishlaydi?)
+## 2. 🔬 Chuqur Tahlil (V8 Dvigateli, Xotira va Ishlash)
+### Ichki ishlash (Qanday ishlaydi?)
 Symbol oddiy obyekt emas, u primitive data type. V8 dvigateli Symbol'ni yaratganida xotirada unikal manzilli qiymat hosil qiladi va uni o'zgartirib bo'lmaydi (immutable). String'lardan farqli o'laroq, Symbol'lar **Garbage Collection** (axlat yig'uvchi) uchun ham maxsus ishlaydi. Oddiy \`Symbol()\` orqali yaratilgan Symbol'larga reference qolmaganda ular xotiradan tozalanadi. Ammo \`Symbol.for()\` (Global Symbol Registry) orqali yaratilsa, ular dastur ishlashi tugaguncha xotirada qoladi (memory leak xavfi bor, ehtiyot bo'lish kerak!).
 
 ### Yashirinlik (Hidden in plain sight)
@@ -40,7 +40,7 @@ Masalan:
 - \`Symbol.iterator\` - obyektlarni iteratsiya qilinadigan (masalan \`for...of\` da ishlaydigan) qilish uchun.
 - \`Symbol.toPrimitive\` - obyekt qanday qilib primitive qiymatga (string/number) aylanishini boshqarish uchun.
 
-## 3. ⚠️ Edge Cases va Senior Intervyu Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 **1. Symbol ni implicit (avtomatik) string'ga o'zgartirib bo'lmaydi:**
 Oddiy Number yoki Boolean string'ga osongina qo'shilib ketaveradi. Lekin Symbol bilan string'ni biriktirmoqchi bo'lsangiz \`TypeError\` beradi.

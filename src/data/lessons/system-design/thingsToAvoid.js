@@ -45,7 +45,7 @@ console.log(checkCandidateBehavior(true, true, true));
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 System Design intervyusida quyidagi 6 ta asosiy xato nomzodni muvaffaqiyatsizlikka olib keladi:
 
@@ -96,7 +96,7 @@ Foydali fikr-mulohazalarni rad etishga va tizimning zaif nuqtalarini (failure mo
 Har doim intervyuerga qarab gapirish, har bir chizilgan qutining vazifasini ovoz chiqarib tushuntirish.
 
 **10. "Under-specification" muammosi nima?**
-Muammoni keragidan ortiq soddalashtirib yuborish va uning ichidagi murakkab chekka holatlarni (edge cases) ko'rmaslik.
+Muammoni keragidan ortiq soddalashtirib yuborish va uning ichidagi murakkab chekka holatlarni ko'rmaslik.
 
 **11. Nima uchun intervyuda "kumush o'q" (silver bullet) yo'q?**
 Chunki hamma muammoga birdek tushadigan mukammal dastur yoki baza yo'q. Tanlov doimo talabga qarab belgilanadi.
@@ -118,9 +118,9 @@ Dars yakunidagi testlar orqali xatolarni aniqlash darajangizni sinab ko'ring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Re-designing based on interviewer's feedback
+### Amaliy tahlil: Suhbatdosh fikriga ko’ra dizaynni qayta ishlash
 - **Dastlabki holat:** Nomzod barcha tranzaksiyalarni keshda saqlashni taklif qildi.
 - **Intervyuer ishorasi:** "Kesh xotirasi to'lib qolsa yoki server o'chsa, pullar yo'qolmaydimi?"
 - **Yomon reaksiya:** "Yo'q, kesh hech qachon o'chmaydi, men bunga ishonaman." (Inflexible)

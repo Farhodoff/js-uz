@@ -41,7 +41,7 @@ console.log(factorial(5)); // Yangi hisoblandi... -> 120
 console.log(factorial(5)); // Keshdan olindi: -> 120
 \`\`\`
 
-### 2. Intermediate Example (Detached DOM Element Memory Leak)
+### 2. O’rta daraja misol (DOM’dan uzilgan element xotira sizishi)
 DOM elementi o'chirilgan bo'lsa ham xotirada qolib ketishi muammosi:
 \`\`\`javascript
 function setupLeak() {
@@ -83,7 +83,7 @@ setInterval(replaceThing, 1000);
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Heap vs Stack
 JavaScript-da oddiy, qisqa muddatli o'zgaruvchilar **Stack** xotirasida saqlanadi. Biroq closures ishtirok etganda, o'zgaruvchilar va ularga tegishli Leksik Muhit (Lexical Environment) **Heap** xotirasiga ko'chiriladi. Chunki JS dvigateli bu o'zgaruvchilarning qancha muddat yashashini oldindan bilolmaydi.
@@ -155,7 +155,7 @@ Dars oxiridagi xotira boshqaruvi va advanced closures bo'yicha testlar.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Xavfsiz Kesh tizimi (Memory Safe Cache Manager)
 Katta hajmdagi ma'lumotlarni vaqtincha keshlovchi, lekin xotira to'lib ketmasligi uchun \`WeakMap\` va closures yordamida avtomatik tozalanadigan tizim tuzamiz.

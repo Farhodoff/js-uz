@@ -2,7 +2,7 @@ export const classes = {
   id: "classes",
   title: "Classes (Klasslar) - OOP",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Klasslar nima?
 Tasavvur qiling, siz bino qurmoqchisiz. Sizga bino qurish uchun **chizma (blueprint)** kerak bo'ladi. Klass (Class) – bu dasturlashda ana shunday chizma hisoblanadi. U o'zida obyektlarning qanday xususiyatlarga (property) va harakatlarga (method) ega bo'lishini belgilaydi.
@@ -31,7 +31,7 @@ const yourCar = new Car("Spark", "Oq");
 
 ---
 
-## 2. ⚙️ Chuqur Tahlil (Deep Dive - Under the Hood)
+## 2. ⚙️ Chuqur Tahlil (Chuqur Tahlil - Ichki ishlash)
 
 ### JavaScript'da Klasslar aslida qanday ishlaydi?
 JavaScript boshqa OOP tillari (masalan, Java yoki C++) kabi sof klasslarga asoslangan til emas. U **Prototipga asoslangan (Prototype-based)** til hisoblanadi. ES6 (ECMAScript 2015) da kiritilgan \\\`class\\\` sintaksisi aslida **sintaktik shakar (Syntactic Sugar)** hisoblanadi. Ya'ni u tag-tagida baribir funksiyalar va prototiplar yordamida ishlaydi.
@@ -55,7 +55,7 @@ Klass metodlari obyektning o'zida emas, uning \\\`.prototype\\\` obyektida saqla
 
 ---
 
-## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari (Edge Cases)
+## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari
 
 ### 1. Klasslar va Hoisting
 Intervyuda tez-tez so'raladigan savol: *"Klasslar Hoisting bo'ladimi?"*

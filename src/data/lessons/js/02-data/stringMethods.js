@@ -10,7 +10,7 @@ JavaScript-da string (matn)lar ham xuddi shunday. Ular **immutable** (o'zgarmas)
 
 ---
 
-## 2. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 2. ⚙️ Qanday Ishlaydi
 
 ### Primitive Wrapper Objects (Boxing)
 JavaScript-da stringlar **primitiv** ma'lumot turidir, ya'ni ularda obyektlardek metodlar bo'lmasligi kerak.
@@ -22,9 +22,9 @@ Xotirani tejash uchun JavaScript dvigatellari **String Interning** usulidan foyd
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases (Chekka holatlar)
+### Chekka holatlar
 1. **replace() faqat birinchisini o'zgartiradi:**
    \\\`/regex/g\\\` ishlatmasangiz yoki \\\`replaceAll()\\\` ishlatmasangiz, faqat matndagi birinchi moslik o'zgaradi.
 2. **Manfiy indekslar:**
@@ -32,7 +32,7 @@ Xotirani tejash uchun JavaScript dvigatellari **String Interning** usulidan foyd
 3. **charAt vs [] bracket notation:**
    Agar indeks matn uzunligidan katta bo'lsa, \\\`charAt()\\\` bo'sh string \\\`""\\\` qaytaradi. Lekin \\\`str[index]\\\` \\\`undefined\\\` qaytaradi.
 
-### Senior Interview Questions
+### Senior Intervyu Savollari
 1. **String o'zgarmasligining (immutability) foydasi nimada?**
    **Javob:** Immutability sababli "String Interning" imkoniyati tug'iladi (xotira tejaladi) va ko'p ipli yoki parallellikka asoslangan tizimlarda (masalan, Web Workers) stringlarni sinxronizatsiyasiz ishonchli ishlatish mumkin.
 2. **Katta hajmdagi matnlarni qo'shishda \\\`+\\\` operatori tezmi yoki \\\`Array.join()\\\`?**

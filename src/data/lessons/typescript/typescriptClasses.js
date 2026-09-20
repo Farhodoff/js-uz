@@ -2,13 +2,13 @@ export const typescriptClasses = {
   id: "typescript-classes",
   title: "TypeScript Classes",
   language: "typescript",
-  theory: `## Part 1: Beginner Analogy (Sodda Tushuntirish)
+  theory: `## 1-Qism: Sodda Tushuntirish
 
 Tasavvur qiling, **Class (Sinf)** - bu avtomobil ishlab chiqaradigan **zavod chizmasi** (blueprint). Bu chizmada mashinaning rangi qanday bo'lishi, motor quvvati, eshiklar soni oldindan belgilab qo'yiladi. Biz shu chizma asosida yuzlab, minglab haqiqiy mashinalarni (ya'ni **obyektlarni**) ishlab chiqarishimiz mumkin. 
 
 Lekin TypeScript-da JavaScript-dan farqli ravishda qo'shimcha xavfsizlik kamarlari bor. Masalan, zavod chizmasida dvigatelga to'g'ridan-to'g'ri tashqaridan aralashish mumkin emas deb belgilab qo'ysak (\`private\` kalit so'zi bilan), hech kim mashinaning ichiga kirib motor sozlamalarini buzolmaydi. JavaScript-da esa hamma narsa ochiq (\`public\`) va xavfli edi.
 
-## Part 2: Deep Dive (Under the hood, TS Compiler, Type Erasure, Performance)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, TS kompilyatori, tiplarning o’chirilishi, unumdorlik)
 
 TypeScript class-lari aslida nima va u qanday ishlaydi? Keling, chuqurroq tahlil qilamiz:
 
@@ -23,7 +23,7 @@ TypeScript class-lari aslida nima va u qanday ishlaydi? Keling, chuqurroq tahlil
 3. **ES2022 Hard Private ( \`#\` ) vs TypeScript \`private\`:**
    TypeScript-ning an'anaviy \`private\` kalit so'zi faqat xato tekshirishda ishlaydi (JS da ochiq qoladi). Agar siz xotirada (Run-time da) rostdan ham yashirin bo'lishini xohlasangiz ES2022 dagi \`#\` belgisini ishlating: \`#salary: number = 5000;\`.
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 Senior darajasidagi suhbatlarda class-lar haqida ko'plab qiziqarli savollar tushadi.
 

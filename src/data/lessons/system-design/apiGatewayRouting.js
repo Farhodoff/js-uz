@@ -79,7 +79,7 @@ app.listen(8080, () => {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### API Gateway mas'uliyatlari:
 1. **SSL Termination (SSL shifrlashni tugatish):** Mijoz va API Gateway o'rtasidagi trafik shifrlangan (HTTPS/TLS) bo'ladi. API Gateway bu shifrlangan ulanishni yechadi (tugatadi) va ichki tarmoqdagi mikroxizmatlarga shifrlanmagan (HTTP) oddiy va tezkor so'rov yuboradi. Bu backend serverlardagi protsessor (CPU) yuklamasini kamaytiradi.
@@ -157,7 +157,7 @@ Bilimingizni tekshirish uchun testlarni yeching.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Netflix API Gateway (Zuul / Spring Cloud Gateway)
 Netflix-ga soniyasiga millionlab so'rovlar kelib tushadi. Ularning arxitekturasida API Gateway markaziy rol o'ynaydi. Tizim foydalanuvchi qurilmasiga qarab (Smart TV, Telefon, Brauzer) so'rovlarni optimallashtiradi. Agar foydalanuvchi mobil ilovadan kirsa, Gateway dynamic payload compression va image resizing-ni amalga oshirishi yoki so'rovlarni bitta paketga yig'ishi (Request Aggregation) mumkin. Bu esa mobil tarmoqdagi kechikishlarni kamaytiradi.

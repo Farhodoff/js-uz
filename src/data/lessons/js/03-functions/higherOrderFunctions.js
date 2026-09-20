@@ -79,7 +79,7 @@ console.log(formatStatus("   active   ")); // "*** ACTIVE ***"
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### First-Class Functions xotirada
 JavaScript dvigateli funksiyalarni oddiy obyektlar kabi boshqaradi. Funksiyalar xotiraning **Heap** (dasta) qismida saqlanadi. Biz funksiyani boshqasiga parametr qiblyuborganda, funksiyaning butun tanasi emas, balki uning xotiradagi havolasi (**reference**) uzatiladi.
@@ -219,7 +219,7 @@ Dars bo'yicha o'zlashtirgan bilimlaringizni tekshirish uchun mo'ljallangan test 
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Keshlovchi (Memoization) Decorator HOF
 Katta loyihalarda og'ir hisob-kitoblar yoki API so'rovlarining natijalarini keshda saqlash muhim ahamiyatga ega. Biz oliy tartibli funksiya (HOF) yordamida har qanday funksiyani keshlaydigan decorator yozamiz:

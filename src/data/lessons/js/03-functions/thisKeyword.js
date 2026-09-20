@@ -6,7 +6,7 @@ export const thisKeyword = {
 
 JavaScript tilida eng ko'p asabga tegadigan, tushunishga qiyin va suhbatlarda eng ko'p so'raladigan mavzulardan biri — bu **\`this\`** kalit so'zidir. Ammo havotir olmang, biz buni chuqur o'rganamiz!
 
-## Part 1: Beginner Analogy
+## 1-Qism: Sodda Tushuntirish
 
 Tasavvur qiling, "this" - bu JavaScript olamidagi xameleon. U qayerda ekanligiga qarab emas, qanday chaqirilganiga qarab o'zgaradi. Yana bir oddiy hayotiy misol: tasavvur qiling, siz do'stingiz bilan suhbatlashyapsiz. Agar siz "Men och qoldim" desangiz, "Men" o'zgaruvchisi sizga (ya'ni gapirayotgan odamga) ishora qiladi. Agar do'stingiz xuddi shu gapni "Men och qoldim" deb takrorlasa, endi "Men" so'zi do'stingizni bildiradi.
 
@@ -34,7 +34,7 @@ person2.sayHi(); // "Salom, men Vali"
 
 Ko'rib turganingizdek, \`sayHi\` funksiyasi bitta bo'lsa ham, nuqtadan oldin kim tursa, \`this\` shunga teng bo'ldi.
 
-## Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 Keling, kapot ostiga qaraymiz. V8 dvigateli \`this\` ni qanday ishlaydi?
 JavaScript-da har qanday funksiya bajarilayotganda o'zining "Execution Context" (Bajarilish Konteksti) ni yaratadi. Bu kontekst 3 ta muhim qismdan iborat:
@@ -58,7 +58,7 @@ const u1 = new User("A");
 const u2 = new User("B");
 \`\`\`
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 Senior darajasidagi suhbatlarda eng ko'p qo'yiladigan "tuzoq" savollar asosan \`this\` ning yo'qolishiga qaratiladi.
 

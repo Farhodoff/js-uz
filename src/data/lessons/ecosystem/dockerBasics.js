@@ -2,17 +2,17 @@ export const dockerBasics = {
   id: "docker-basics",
   title: "Docker Basics",
   language: "javascript",
-  theory: `## Part 1: Beginner Analogy
+  theory: `## 1-Qism: Sodda Tushuntirish
 
 Tasavvur qiling, siz ko'chib o'tyapsiz. Eski uyingizda hamma narsa o'z joyida va yaxshi ishlayapti. Ammo yangi uyda rozetkalar boshqacha, xonalar o'lchami to'g'ri kelmaydi. Dasturlashda ham xuddi shunday: sizning kompyuteringizda ishlayotgan dastur boshqa serverda ishlashi qiyin bo'lishi mumkin. 
 
 Docker - bu "Sehrli Quti" (Konteyner). Siz dasturni, unga kerakli barcha kutubxonalar va sozlamalarni shu qutiga solasiz. Endi bu qutini istalgan joyga olib borsangiz ham, u ichidagi narsalar bilan birga aynan oldingidek ishlaydi. U "Mening kompyuterimda ishlayapti, nega serverda buzildi?" degan klassik muammoni to'liq hal qiladi.
 
-## Part 2: Deep Dive
+## 2-Qism: Chuqur Tahlil
 
 Docker Virtual Mashina (VM) emas. VM o'zining to'liq operatsion tizimiga ega bo'lsa, Docker Konteynerlar "Host OS" ning yadrosini (Kernel) ulashgan holda ishlatadi, bu esa ularni juda tez va yengil qiladi.
 
-**Under the hood (Asosiy mexanizmlar):**
+**Ichki ishlash (Asosiy mexanizmlar):**
 1. **Namespaces:** Konteynerlar bir-biridan ajratilganligini (izolyatsiya) ta'minlaydi. Har bir konteyner o'zining xususiy PID (jarayonlar), NET (tarmoq), MNT (fayl tizimi) muhitiga ega bo'ladi.
 2. **Control Groups (cgroups):** Resurslarni boshqaradi. Konteyner qancha RAM va CPU ishlata olishini belgilaydi va chegaralaydi.
 3. **Union File Systems (UnionFS) va Image Layering:** Docker Image lar qavatma-qavat (layers) quriladi. Har bir qavat (layer) faqatgina o'zgarishlarni saqlaydi. Bu orqali xotira tejaladi va yangi image larni yuklab olish tezlashadi. O'qish-uchun-yopiq (read-only) qavatlar ustiga, konteyner ishga tushganda, bitta yozish uchun ruxsat etilgan (read-write) qavat qo'shiladi.
@@ -26,7 +26,7 @@ RUN npm install     # 4-qavat: Paketlarni o'rnatish
 COPY . .            # 5-qavat: Qolgan kodni nusxalash
 \\\`\\\`\\\`
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 1. **Docker Container ichida ma'lumotlar saqlanadimi?**
    Javob: Konteyner o'chirilganda uning ichidagi read-write qavat ham yo'q qilinadi, demak fayllar yo'qoladi. Ma'lumotlarni doimiy saqlash uchun **Docker Volumes** yoki **Bind Mounts** ishlatish shart.

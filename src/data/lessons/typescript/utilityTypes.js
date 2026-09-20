@@ -2,20 +2,20 @@ export const utilityTypes = {
   id: "ts-utility-types",
   title: "Utility Types",
   language: "typescript",
-  theory: `## 1. 💡 Beginner Analogy: The Swiss Army Knife of Types
+  theory: `## 1. 💡 Sodda Tushuntirish: Tiplarning shveytsariya pichog’i
 
 Tasavvur qiling, sizda oddiy bir cho'ntak pichog'i bor. Ammo kutilmaganda sizga qaychi, otvyortka yoki arrali asbob kerak bo'lib qoldi. Siz har safar yangi asbob sotib olish o'rniga, barcha kerakli narsalarni o'z ichiga olgan **Swiss Army Knife** (Shveytsariya armiyasi pichog'i) ishlatsangiz ancha qulay.
 
 TypeScript'dagi **Utility Types** xuddi shu ko'p funksiyali asbobga o'xshaydi. Sizda tayyor \\\`User\\\` yoki \\\`Product\\\` kabi turlar (types) bo'lsa va ularning ba'zi xususiyatlarini o'zgartirish kerak bo'lsa (masalan, barcha qismlarini ixtiyoriy qilish yoki ba'zi qismlarini yashirish), ularni noldan qayta yozmaysiz. Buning o'rniga siz TypeScript taqdim etgan Utility Types'dan foydalanasiz! Bu kodning takrorlanishini (DRY - Don't Repeat Yourself) oldini oladi.
 
-## 2. 🧠 Deep Dive: Under the Hood (Chuqurroq Sho'ng'iymiz)
+## 2. 🧠 Chuqur Tahlil: Ichki ishlash (Chuqurroq Sho'ng'iymiz)
 
 Keling, Utility Types aslida qanday ishlashini va TypeScript Compiler (tsc) ularni qanday tushunishini ko'rib chiqamiz.
 
 ### TS Compiler (tsc) va Type Erasure
 TypeScript'da yozilgan barcha \\\`Utility Types\\\` (va umuman tiplar) faqatgina kompilyatsiya vaqtida (compile-time) tekshiriladi. Dastur ishga tushganda (runtime - JavaScript'ga o'girilganda) bu turlar umuman mavjud bo'lmaydi. Bu jarayon **Type Erasure** deb ataladi. Ya'ni, \\\`Partial<User>\\\` yoki \\\`Omit<Product, 'price'>\\\` kabi yozuvlar sizning JavaScript kodingiz hajmini kattalashtirmaydi va xotiraga qo'shimcha og'irlik tushirmaydi. Xotirada va ishlash tezligida (performance) hech qanday pasayish bo'lmaydi.
 
-### Under the Hood: Mapped Types
+### Ichki ishlash: Mapped Types
 Ko'pgina Utility Types aslida **Mapped Types** orqali yaratilgan. Masalan, \\\`Partial<T>\\\` aslida qanday yozilgan?
 \\\`\\\`\\\`typescript
 type MyPartial<T> = {
@@ -30,9 +30,9 @@ type MyOmit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 \\\`\\\`\\\`
 Ko'rib turganingizdek, \\\`Omit\\\` boshqa ikkita utility tipning (\\\`Pick\\\` va \\\`Exclude\\\`) kombinatsiyasidir!
 
-## 3. ⚠️ Edge Cases va Senior Interview Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-Utility Types ishlatishda bazi nozik holatlar (edge cases) mavjud:
+Utility Types ishlatishda bazi nozik holatlar mavjud:
 
 - **\\\`Readonly\\\` va Nested Objects (Ichma-ich obyektlar):**
   \\\`Readonly<T>\\\` faqat birinchi darajadagi (shallow) maydonlarni o'zgartirib bo'lmaydigan qiladi. Agar obyektingiz ichida yana obyekt bo'lsa, u chuqur darajada (deep) o'zgartirib bo'lmaydigan holatga o'tmaydi.
@@ -45,7 +45,7 @@ Utility Types ishlatishda bazi nozik holatlar (edge cases) mavjud:
 - **\\\`Record\\\` va aniq kalitlar (Literal Types):**
   \\\`Record<string, number>\\\` yozganda kalitlar istalgan string bo'lishi mumkin. Lekin ko'pincha \\\`Record<'A' | 'B', number>\\\` kabi aniq kalitlardan foydalanish xavfsizroq yondashuv hisoblanadi.
 
-### 🎤 Senior Interview Savollari
+### 🎤 Senior Intervyu Savollari
 
 1. **Savol:** \\\`Omit\\\` qanday ishlaydi va uning o'rniga nima uchun \\\`Pick\\\` ishlatsa ham bo'ladi deb o'ylaysiz?
    **Javob:** \\\`Omit\\\` asli \\\`Pick<T, Exclude<keyof T, K>>\\\` dan iborat. \\\`Pick\\\` faqat ko'rsatilganlarni oladi, \\\`Omit\\\` esa olib tashlangandan qolganlarini oladi. Ikkisi ham bir-birining inkoridir. Agar yashiriladigan maydonlar ko'p bo'lsa \\\`Pick\\\`, tanlanadiganlari ko'p bo'lsa \\\`Omit\\\` ishlatgan ma'qul.

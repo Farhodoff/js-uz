@@ -57,7 +57,7 @@ exports.handler = async (event) => {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Monolit, Mikroxizmatlar va Serverless
 * **Monolit:** Yagona ma'lumotlar bazasi va yagona kod bazasi. Katta tizimlarda kod murakkablashib ketadi. Masshtablash faqat butun tizimni ko'paytirish orqali amalga oshadi.
@@ -137,7 +137,7 @@ Testlar bo'limida serverless, mikroxizmatlar va monolit tizimlar bo'yicha biliml
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Netflix-ning Mikroxizmatlarga O'tishi
 2008-yilda Netflix o'zining monolitik ma'lumotlar bazasida jiddiy muammoga duch keldi va bir necha kun davomida foydalanuvchilarga xizmat ko'rsata olmadi. Shundan so'ng ular tizimni yuzlab alohida mikroxizmatlarga bo'lishga qaror qilishdi:

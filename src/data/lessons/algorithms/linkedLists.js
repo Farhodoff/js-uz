@@ -69,7 +69,7 @@ function hasCycle(head) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Xotira taqsimoti va Tugunlar sxemasi (Memory Allocation & Node Layouts)
 Massivlardan farqli o'laroq, Linked List elementlari xotiradan ketma-ket joy talab qilmaydi.
@@ -210,7 +210,7 @@ Dars bo'yicha bilimingizni sinash uchun 12 ta test savollari tayyorlangan bo'lib
 
 ---
 
-## 9. 🎯 Real Project Case Study
+## 9. 🎯 Real Loyiha Tahlili
 
 ### Browser History (Orqaga-Oldinga o'tish tizimi)
 Brauzerlarda "Orqaga" (Back) va "Oldinga" (Forward) tugmalari qanday ishlaydi?

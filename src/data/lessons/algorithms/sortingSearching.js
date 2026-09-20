@@ -244,7 +244,7 @@ Interaktiv muharrir yordamida Bubble Sort, Insertion Sort va Binary Search kabi 
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Katta ma'lumotlar omborida tezkor qidiruv indeksi yaratish
 Ma'lumotlar bazasi tez-tez qidiriladigan ustunlar bo'yicha indekslar yaratadi. Bu indekslar aslida saralangan ro'yxat bo'lib, Binary Search yoki shunga o'xshash B-Tree algoritmlari yordamida qidiruvni soniyaning ulushlarida amalga oshirishga yordam beradi.

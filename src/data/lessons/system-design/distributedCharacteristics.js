@@ -51,7 +51,7 @@ async function fetchWithRetry(url, retries = 3, delay = 1000) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Availability (Mavjudlik) va SLA:
 Availability foizlar bilan o'lchanadi (odatda to'qqizlar bilan):
@@ -127,7 +127,7 @@ Testlarni yechib bilimingizni mustahkamlang.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Chaos Engineering (Netflix Chaos Monkey)
 Netflix o'z tizimlarining xatoga chidamliligini sinash uchun real ishchi (production) muhitda serverlarni tasodifiy o'chirib qo'yadigan maxsus "Chaos Monkey" dasturini yaratgan. Bu dasturchilarni har doim har qanday server qulashiga tayyor holda kod yozishga majbur qiladi.

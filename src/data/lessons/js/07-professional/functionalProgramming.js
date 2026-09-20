@@ -18,7 +18,7 @@ Mavzuga oid amaliy kod misollari.
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### A. Pure Functions (Sof funksiyalar) va Side Effects
 Sof funksiyaning ikki muhim sharti bor:
@@ -119,9 +119,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Data Processing Pipeline
+### Amaliy tahlil: Ma’lumotlarni qayta ishlash konveyeri
 Loyihadagi foydalanuvchi ma'lumotlarini toza funksiyalar yordamida tozalash va saralash:
 \`\`\`javascript
 const trimName = user => ({ ...user, name: user.name.trim() });

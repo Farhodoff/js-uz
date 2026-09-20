@@ -14,7 +14,7 @@ Tasavvur qiling, siz **rassomlik ustaxonasi**dasiz:
 
 ---
 
-## 2. ⚙️ Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### Rastrli Grafikalar va Piksellar
 Canvas SVG dan farqli o'laroq rastrli (pixel-based) texnologiyadir. Siz shaklni chizganingizdan keyin, brauzer uni DOM obyekti sifatida eslab qolmaydi, balki shunchaki matodagi qotib qolgan bo'yoq (piksellar to'plami) deb biladi. 
@@ -28,14 +28,14 @@ Zamonaviy brauzerlarda Canvas asosan GPU orqali tezlashtiriladi (Hardware Accele
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 ### Edge Case: Retina Displeylardagi Xiralashish
 **Muammo:** Yuqori pikselli (Retina) ekranlarda canvas chizmalari xiralashgan holda ko'rinadi. 
 **Sabab:** CSS piksellari va qurilma fizik piksellari bir xil emas. \\\`window.devicePixelRatio\\\` odatda Retina ekranlarda 2 yoki 3 ga teng.
 **Yechim:** Canvasning HTML \\\`width\\\` va \\\`height\\\` atributlarini \\\`devicePixelRatio\\\` ga ko'paytirish, CSS o'lchamini esa o'z holida qoldirish kerak. Keyin esa chizish miqyosini \\\`ctx.scale(ratio, ratio)\\\` orqali kattalashtirish kerak.
 
-### Senior Interview Savollari
+### Senior Intervyu Savollari
 1. **Savol:** Canvas va SVG ning xotira boshqaruvi (memory footprint) borasida qanday farqi bor?
 **Javob:** SVG DOM-ga bog'langan bo'lib, har bir tugun obyekt sifatida xotirada qoladi. Minglab obyektlar DOM ni to'ldirib yuborishi mumkin. Canvas esa faqat piksellar massividan iborat. Qancha ko'p obyekt chizilmasin, u o'zining piksel buferidan ortiq joy egallamaydi, shuning uchun katta miqdordagi obyektlarni chizishda Canvas samaraliroq. Ammo, hodisalarni (events) ushlab qolish Canvasda qiyinroq (Hit detection kerak bo'ladi).
 

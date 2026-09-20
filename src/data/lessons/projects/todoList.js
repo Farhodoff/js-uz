@@ -1,14 +1,14 @@
 export const todoList = {
   id: "p1",
   title: "Loyiha: Todo List (Vazifalar boshqaruvchisi)",
-  theory: `## Part 1: Beginner Analogy
+  theory: `## 1-Qism: Sodda Tushuntirish
 Tasavvur qiling, Todo List bu sizning xaridlar ro'yxatingiz (shopping list). Siz do'konga borishdan oldin qog'ozga nimalar olish kerakligini yozasiz. Har bir narsani savatga solgach, ustidan chizib qo'yasiz. Agar biror narsa kerak bo'lmasa, uni o'chirib tashlaysiz. Xaridlar ro'yxati sizning **State** (ma'lumotlaringiz), qalam bilan yozish **Add** (qo'shish), ustidan chizish **Update/Complete** (bajarildi deb belgilash) va o'chirish o'chirg'ich bilan **Delete** (o'chirish) amallarini bildiradi. LocalStorage esa xaridlar ro'yxatini cho'ntagingizda saqlashga o'xshaydi, keyingi safar ham ko'rish uchun!
 
 ---
 
-## Part 2: Deep Dive
+## 2-Qism: Chuqur Tahlil
 
-### Under the Hood: State Management & DOM Update Cycles
+### Ichki ishlash: State Management & DOM Update Cycles
 Vanilla JS da state (holat) va DOM (sahifa ko'rinishi) alohida ishlaydi. Qachonki State o'zgarsa (massivga yangi element qo'shilsa), DOM avtomatik yangilanmaydi. Shuning uchun bizda \\\`render()\\\` funksiyasi bo'lishi kerak. Bu funksiya State ni oladi va uni DOM ga chizadi.
 
 \\\`\\\`\\\`javascript
@@ -38,7 +38,7 @@ React kabi kutubxonalar Virtual DOM ishlatadi. Ular eski va yangi State ni solis
 
 ---
 
-## Part 3: Edge Cases & Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 ### 1. Cross-Site Scripting (XSS) Attacks
 Agar foydalanuvchi inputga \\\`<script>alert('Hacked')</script>\\\` deb yozsa va biz uni \\\`innerHTML\\\` bilan DOM ga qo'shsak, brauzer kodni ishga tushirib yuborishi mumkin. Bunga **XSS hujumi** deyiladi.

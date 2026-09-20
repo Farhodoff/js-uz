@@ -2,7 +2,7 @@ export const higherOrderArrays = {
   id: "higherOrderArrays",
   title: "Massivlar uchun Higher Order Metodlar",
   language: "javascript",
-  theory: `## 1. 💡 Beginner Analogy (Sodda Tushuntirish)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Higher-Order Array Methods (Yuqori Tartibli Metodlar) nima?
 Higher-order array metodlari — bu massiv elementlarini aylanish jarayonini avtomatlashtiradigan va parametr sifatida boshqa funksiyani (callback) qabul qiladigan metodlardir. Oldin biz massiv elementlarini aylanish uchun \\\`for\\\` yoki \\\`while\\\` tsikllaridan foydalangan bo'lsak, endi maxsus tayyor metodlar orqali kodni qisqaroq, o'qilishi osonroq va xatolardan xoli qilamiz.
@@ -16,7 +16,7 @@ Tasavvur qiling, siz olma zavodining menejerisiz. Sizga bog'dan bir quti olmalar
 
 ---
 
-## 2. ⚙️ Deep Dive (Under the hood, Memory, V8 Engine, Performance)
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### V8 Engine qanday ishlaydi?
 Yuqori tartibli metodlar JavaScript-ning asosiy dvigateli bo'lgan V8 da maxsus optimizatsiyalarga ega. C++ da yozilgan ichki makon (built-in) kod sifatida ular juda tez bajariladi. Biroq, har bir element uchun \\\`callback\\\` funksiyasi chaqirilganligi sababli, call stack'ga har bir iteratsiya uchun yangi frame qo'shiladi. Katta massivlarda bu *overhead* (qo'shimcha yuklanish) yaratishi mumkin.
@@ -38,16 +38,16 @@ Array.prototype.myMap = function(callback) {
 ### Memory (Xotira) qoidalari
 - **\\\`map\\\` va \\\`filter\\\`** har doim xotirada **yangi massiv** yaratadi.
 - Agar siz \\\`[1, 2, 3].map(x => x).filter(x => x).reduce(...)\\\` kabi zanjirlar (chaining) dan foydalansangiz, oraliqda bir nechta vaqtinchalik massivlar yaratiladi va Garbage Collector (Axlat yig'uvchi) uchun qo'shimcha ish paydo bo'ladi.
-- **Xotira oqishlari (Memory Leaks):** Agar siz \\\`callback\\\` ichida tashqi doiradagi (closure) katta obyektlarga havola (reference) saqlab qolsangiz va ular tozalanmasa, bu xotira oqishlariga olib kelishi mumkin.
+- **Xotira oqishlari (Xotira sizishi):** Agar siz \\\`callback\\\` ichida tashqi doiradagi (closure) katta obyektlarga havola (reference) saqlab qolsangiz va ular tozalanmasa, bu xotira oqishlariga olib kelishi mumkin.
 
 ### Performance (Samaradorlik)
 Micro-benchmarklarda \\\`for\\\` tsikli \\\`map\\\` yoki \\\`forEach\\\` dan ancha tezroq. Chunki oddiy \\\`for\\\` da funksiya chaqirilishi (function context creation, arguments passing) yo'q. Agar siz 1 milliondan ortiq ma'lumot (Big Data) bilan client-side da ishlayotgan bo'lsangiz, \\\`for\\\` loop ishlatgan ma'qul.
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases (Noodatiy holatlar)
+### Chekka (noodatiy) holatlar
 1. **Sparse Arrays (Teshik massivlar):**
    Agar massivda bo'sh joylar bo'lsa (\\\`[1, , 3]\\\`), metodlar bo'sh elementlarni tashlab o'tadi (skip qiladi).
    \\\`\\\`\\\`javascript
@@ -60,7 +60,7 @@ Micro-benchmarklarda \\\`for\\\` tsikli \\\`map\\\` yoki \\\`forEach\\\` dan anc
 3. **Async Callbacks (Asinxron Callbacks):**
    \\\`forEach\\\` asinxron kodni (async/await) kutmaydi! Agar promislar bilan ishlasangiz \\\`Promise.all(arr.map(async () => ...))\\\` ishlatishingiz yoki \\\`for...of\\\` dan foydalanishingiz kerak.
 
-### Senior Interview Questions
+### Senior Intervyu Savollari
 **1. \\\`thisArg\\\` parametri nima va uni qachon ishlatish kerak?**
 Ko'pgina metodlar ikkinchi parametr sifatida \\\`thisArg\\\` ni oladi (\\\`arr.map(callback, thisArg)\\\`). Lekin agar callback sifatida arrow function yozsangiz, u o'zining leksik \\\`this\\\` contextiga ega bo'lgani uchun \\\`thisArg\\\` butunlay e'tiborsiz qoldiriladi. Buni tushuntirib bera olishingiz senior darajadagi bilimlarni anglatadi.
 

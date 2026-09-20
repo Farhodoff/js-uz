@@ -2,7 +2,7 @@ export const oopPatterns = {
   id: "oopPatterns",
   title: "OOP Design Patterns: Singleton, Observer, Factory, Module",
   language: "javascript",
-  theory: `## 1. 💡 Part 1: Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 **Design pattern** — takrorlanadigan muammolarga yechim topilgan "ishonchli retseptlar". Ular kodni yozish emas, **arxitekturani** tashkil qiladi.
 
@@ -70,7 +70,7 @@ const UserModule = (() => {
 
 ---
 
-## 2. ⚙️ Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### Singleton — qachon va qanday xavfsizroq?
 Klassik Singleton testlarni murakkablashtiradi (global holat) va ko'p oqimli muhitda (Worker'lar) har biri o'z nusxasini yaratadi. Zamonaviy JS'da **modul o'zi singleton** — ESM moduli bir marta baholanadi:
@@ -111,7 +111,7 @@ ES6 modullaridan oldin IIFE + closure — yagona yechim edi. Hozir \`Revealing M
 
 ---
 
-## 3. ⚠️ Part 3: Murakkab Holatlar va Senior Intervyu Savollari (Edge Cases)
+## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari
 
 ### 1. Singleton vs Static class farqi
 \`\`\`javascript

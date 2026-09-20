@@ -2,7 +2,7 @@ export const constructorFunctions = {
   id: "constructorFunctions",
   title: "Konstruktor Funksiyalar va new Operatori",
   language: "javascript",
-  theory: `## 1. 💡 Part 1: Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Bir xil turdagi ko'p obyektlar kerak bo'lsa, har birini qo'lda yozish g'arazlik. Shu yerda **konstruktor funksiyalar** yordamga keladi — ular "obyekt zavodi" kabi ishlaydi.
 
@@ -42,7 +42,7 @@ console.log(bad); // undefined — obyekt qaytmadi!
 
 ---
 
-## 2. ⚙️ Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### new.target — "meni new bilan chaqirdingizmi?"
 \`new.target\` — funksiya ichida uni \`new\` bilan chaqirilganini aniqlash imkonini beradi. Bu "new siz chaqirilsa ham xatolik bermaslik" himoyasi:
@@ -97,7 +97,7 @@ V8 konstruktor ichida yozilgan property'lar tartibiga qarab "Hidden Class" (Maps
 
 ---
 
-## 3. ⚠️ Part 3: Murakkab Holatlar va Senior Intervyu Savollari (Edge Cases)
+## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari
 
 ### 1. Konstruktordan obyekt qaytarish — xatolik yoki g'arazlik?
 Agar konstruktor ichida \`return\` bilan obyekt qaytarsangiz — \`this\` **ishlatilmaydi**, obyektning o'zi qaytadi:

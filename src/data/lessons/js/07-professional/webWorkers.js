@@ -172,7 +172,7 @@ Dars oxiridagi test topshiriqlari.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Rasm filtrlarini qo'llash (Image Processing Pipeline)
 Foydalanuvchi katta rasmni yuklaganda unga kulrang (grayscale) yoki blur filtrini qo'shish og'ir hisob-kitob talab qiladi.

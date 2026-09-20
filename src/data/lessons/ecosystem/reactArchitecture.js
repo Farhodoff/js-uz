@@ -2,7 +2,7 @@ export const reactArchitecture = {
   id: "reactArchitecture",
   title: "React Arxitekturasi (Fiber, Reconciler, Virtual DOM)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, siz katta bir restoranning boshqaruvchisisiz. Restoranda (bu sizning web sahifangiz) ko'plab mijozlar stollarda o'tiribdi (DOM elementlari). 
 
@@ -12,7 +12,7 @@ Tasavvur qiling, siz katta bir restoranning boshqaruvchisisiz. Restoranda (bu si
 
 ---
 
-## 2. 🚀 Deep Dive (Under the hood)
+## 2. 🚀 Chuqur Tahlil
 
 React qanday qilib o'zining "sehrini" namoyish etishini chuqurroq tushunib olaylik.
 
@@ -34,13 +34,13 @@ Fiber qanday afzalliklar beradi:
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases
+### Chekka holatlar
 * 'key' sifatida massiv indeksini ishlatish. Agar ro'yxat tartibi o'zgarsa, itemlar o'chirilsa yoki qo'shilsa, React xato joyga re-render qilishi mumkin yoki ba'zi komponentlarning state holatlari kutilmagan tarzda almashib qoladi. Har doim unikal 'id' ishlating.
 * Og'ir hisob-kitoblarni to'g'ridan-to'g'ri renderda ishlatish. Bu Fiber qanchalik kuchli bo'lmasin, main threadni band qilib qo'yadi. 'useMemo' yoki Web Workerlardan foydalanish kerak.
 
-### Senior Interview Questions
+### Senior Intervyu Savollari
 1. **Reactda diffing algoritmi qanday ishlaydi va nima uchun 'key' muhim?**
    *Javob:* O(n) komplekslikda ishlash qoidasi: turli xil elementlar turlari butun sub-tree'ni qayta chizadi. 'key' orqali React elementlarni bir xil yoki o'zgarganini tez va aniq aniqlaydi.
 2. **Fiber qanday qilib Concurrency ga erishadi?**

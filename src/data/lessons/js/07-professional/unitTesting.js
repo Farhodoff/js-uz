@@ -201,7 +201,7 @@ Dars oxiridagi test topshiriqlari.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Savatcha (Shopping Cart) logikasini test qilish
 Elektron tijorat loyihasida savatga mahsulot qo'shish, o'chirish va yakuniy narxni hisoblash qismlarini TDD orqali yozamiz.

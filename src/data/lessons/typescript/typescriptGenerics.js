@@ -2,13 +2,13 @@ export const typescriptGenerics = {
   id: "typescript-generics",
   title: "TypeScript Generics (Umumlashgan Toifalar)",
   language: "typescript",
-  theory: `## Part 1: Beginner Analogy
+  theory: `## 1-Qism: Sodda Tushuntirish
 
 Tasavvur qiling, sizda sehrli quti (box) bor. Bu qutiga nima solsangiz, quti xuddi shu narsaning shaklini oladi. Agar olma solsangiz, quti "Olma qutisi"ga aylanadi va unga boshqa hech narsa (masalan, nok yoki banan) solib bo'lmaydi. Agar ichiga kitob solsangiz, u "Kitob qutisi" bo'lib qoladi. 
 
 TypeScript-dagi **Generics (Umumlashgan Toifalar)** xuddi shu sehrli qutiga o'xshaydi. Biz funksiya, sinf (class) yoki interfeys yaratayotganimizda, ular qanday toifadagi (type) ma'lumot bilan ishlashini oldindan aytmaymiz. O'rniga bitta "placeholder" (odatda \`T\`) qoldiramiz. Dastur ishlagan paytda unga qanday toifa bersak, u aynan shu toifa bilan ishlaydigan qat'iy va xavfsiz (type-safe) kodga aylanadi. Bu bizga bitta kodni qayta-qayta har xil toifalar uchun yozish o'rniga, bitta "sehrli" va moslashuvchan kod yozish imkonini beradi.
 
-## Part 2: Deep Dive (Under the hood, memory, TS Compiler (tsc), type erasure, performance)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, xotira, TS kompilyatori (tsc), tiplarning o’chirilishi, unumdorlik)
 
 **Type Erasure (Toifalarning o'chirilishi):**
 Generics — bu faqat TypeScript kompilatori (tsc) uchun kerak bo'lgan konsept. Kod JavaScript-ga o'girilganda (compile bo'lganda), barcha generic parametrlar (masalan, \`<T>\`) to'liq o'chirib tashlanadi (Type Erasure). Bu shuni anglatadiki, runtime (ishlash vaqti) da hech qanday generic yoki type tekshiruvi bo'lmaydi. JS dvigateli faqat oddiy JavaScript kodini ko'radi.
@@ -19,12 +19,12 @@ Kompilatsiya jarayonida TypeScript kompilatori barcha tip tekshiruvlarini xotira
 **\`any\` bilan farqi:**
 Ko'pincha yangi o'rganuvchilar \`any\` ishlatib toifa xatolaridan qochishga urinishadi. \`any\` kompilatorga "Bu o'zgaruvchini tekshirma, u har qanday narsa bo'lishi mumkin" deb aytadi. Natijada siz avtokomplit (intellisense) va toifa xavfsizligidan mahrum bo'lasiz. Generics esa kompilatorga "Men bu yerga qandaydir toifa beraman va shu toifa butun funksiya bo'ylab bir xil bo'lib qoladi" deb aytadi.
 
-## Part 3: Edge Cases va Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
-**Edge Cases:**
+**Chekka holatlar:**
 Ba'zan Generics shunchalik moslashuvchan bo'lib ketadiki, ular har qanday narsani qabul qila oladigan darajaga kelib qoladi. Buning oldini olish uchun **Generic Constraints (Cheklovlar)** ishlatiladi: \`T extends SomeInterface\`. Yoki bo'lmasa, Conditional Types (Shartli toifalar) orqali toifalarni dinamik ravishda o'zgartirish mumkin.
 
-**Senior Interview Questions:**
+**Senior Intervyu Savollari:**
 1. **Savol:** \`any\` va \`unknown\` o'rtasida farq nima va ularni Generics bilan qanday taqqoslaysiz?
    **Javob:** \`any\` har qanday amalni bajarishga ruxsat beradi (type checking o'chadi). \`unknown\` esa \`any\` ga o'xshaydi, lekin biror amal bajarishdan oldin uning turini aniqlashni (type narrowing) talab qiladi. Generics esa biz aniq turini biladigan va turini dinamik ravishda belgilaydigan holatlarda ishlatiladi, u toifa xavfsizligini 100% ta'minlaydi.
 2. **Savol:** Generic constraint (\`extends\`) qachon va nega kerak bo'ladi?

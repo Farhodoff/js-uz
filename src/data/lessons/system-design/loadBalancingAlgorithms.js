@@ -43,7 +43,7 @@ console.log(getIPHash("192.168.1.15")); // Doim bir xil server qaytadi
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Eng mashhur yuk taqsimlash algoritmlari quyidagilardir:
 
@@ -160,9 +160,9 @@ Dars yakunidagi testlar orqali algoritmlarni qanchalik tushunganingizni tekshiri
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Live Chat Session Persistence
+### Amaliy tahlil: Jonli chat sessiyasini barqaror saqlash
 - **Muammo:** Chat ilovasida mijozlar WebSocket ulanishi orqali server bilan doimiy bog'langan bo'ladi. Oddiy Round Robin ishlatilsa, foydalanuvchi har safar sahifani yangilaganida boshqa serverga ulanadi va chat tarixi qayta yuklanishi kerak bo'ladi.
 - **Yechim:** Load Balancer darajasida **IP Hash** yoki cookie-ga asoslangan **Session Affinity (Sticky Sessions)** sozlanadi. Natijada brauzer har doim aynan o'sha WebSocket serveriga ulanadi va tarmoq trafigi tejaladi.
 

@@ -12,7 +12,7 @@ Tasavvur qiling, siz katta bir ofis binosidasiz. Bu bino sizning JavaScript dast
 
 3. **Block Scope (Xonadagi Qulflangan Seyf)**: Bu seyf faqatgina if, for yoki while kabi "{}" (gullar qavs) bloklarida saqlanadi va uning ichiga faqat \\\`let\\\` yoki \\\`const\\\` turidagi ma'lumotlarni solamiz. Qadimgi \\\`var\\\` o'zgaruvchisi esa xavfsizlikni mensimaydi va seyfdan doimo chiqib ketadi!
 
-## 2. 🚀 Chuqurlashtirilgan O'rganish: Dvigatel Ostida (Under the Hood)
+## 2. 🚀 Chuqurlashtirilgan O'rganish: Dvigatel Ostida
 
 JavaScript motori (masalan, V8 Engine) o'zgaruvchilarni "Lexical Environment" deb nomlanuvchi maxsus obyektdagi xotirada saqlaydi. Dastur ishlash vaqtida qamrov quyidagicha ishlaydi:
 
@@ -20,7 +20,7 @@ JavaScript motori (masalan, V8 Engine) o'zgaruvchilarni "Lexical Environment" de
 * **Scope Chain (Qamrov Zanjiri):** Agar V8 Engine o'zgaruvchini joriy muhitdan topolmasa, u darhol "Outer Lexical Environment"ga (tashqi muhitga) yuzlanadi. Bu zanjir toki Global muhitgacha boradi. Agar u yerda ham topilmasa, \\\`ReferenceError\\\` qaytaradi.
 * **Garbage Collection va Xotira:** Agar funksiya ichidagi o'zgaruvchilarga qayta murojaat qilinmasa, V8 ning "Garbage Collector"i ularni xotiradan o'chiradi. Lekin funksiya ichidan boshqa funksiya qaytarilsa va u o'zgaruvchidan foydalansa (Closure), u xotirada uzoqroq yashaydi. Bu xotira sizib chiqishi (Memory Leak) kabi muammolarni ham keltirib chiqarishi mumkin.
 
-## 3. ⚠️ Chekka Holatlar (Edge Cases) va Senior Intervyu Savollari
+## 3. ⚠️ Chekka Holatlar va Senior Intervyu Savollari
 
 1. **Temporal Dead Zone (TDZ) nima va u qanday ishlaydi?**
    - Javob: \\\`let\\\` va \\\`const\\\` qatorlari hoist bo'ladi, lekin e'lon qilingan qatorgacha ularni o'qib bo'lmaydi. Bu hudud TDZ deyiladi. 

@@ -82,7 +82,7 @@ const addressRefs = [
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### SQL vs NoSQL Ma\\'lumotlar tuzilishi
 Quyidagi diagrammada bitta foydalanuvchi va uning do\\'stlari turli xil ma\\'lumotlar bazalarida qanday saqlanishi ko\\'rsatilgan:

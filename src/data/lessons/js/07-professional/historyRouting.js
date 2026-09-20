@@ -226,7 +226,7 @@ Tarixga ma'lumot saqlashda state parametriga \`null\` yozib ketish va keyin orqa
 #### To'g'ri usul:
 \`history.pushState({ pageId: 12 }, '', '/page/12')\` ko'rinishida state-ni to'ldirib borish.
 
-### 5. Xotira sizib chiqishi (Memory Leaks)
+### 5. Xotira sizib chiqishi (Xotira sizishi)
 #### Muammo:
 Component o'chirilganda undagi global router event listenerlari tozalab yuborilmaydi va qayta-qayta yangi listenerlar qo'shilib ketadi.
 #### To'g'ri yechim:
@@ -289,7 +289,7 @@ Dars yakunidagi testlar.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Elektron do'kon (E-commerce) uchun mobil moslashuvchan SPA router
 Ushbu loyihada foydalanuvchilar mahsulotlarni tanlaydi, savatchani tekshiradi. Har bir bosqich URL-da aks etishi kerak, lekin foydalanuvchi tanlagan mahsulotlar savatchasi sahifa yangilanganda ham saqlanib qolishi lozim.

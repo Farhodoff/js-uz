@@ -2,7 +2,7 @@ export const prototypeChainDeep = {
   id: "prototypeChainDeep",
   title: "Prototip Zanjiri Chuqur: Object.create va Meros Mexanizmi",
   language: "javascript",
-  theory: `## 1. 💡 Part 1: Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 JavaScript — **prototipga asoslangan (prototype-based)** til. Klasslar faqat "yopiqroq" — hammasi baribir prototip orqali ishlaydi.
 
@@ -40,7 +40,7 @@ Dog.prototype === Object.getPrototypeOf(rex); // true!
 
 ---
 
-## 2. ⚙️ Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### Property qidiruv algoritmi (prop o'qilganda)
 1. Obyektning **o'zida** qidiradi (own properties).
@@ -85,7 +85,7 @@ Bu \`new\` ning "qora qutisi"ni ochish — intervyuda yuqori baholanadi.
 
 ---
 
-## 3. ⚠️ Part 3: Murakkab Holatlar va Senior Intervyu Savollari (Edge Cases)
+## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari
 
 ### 1. Shadowing (soyalash)
 Zanjirdagi prop, obyektning o'zidagi bir xil nomli prop bilan "soyalanadi":

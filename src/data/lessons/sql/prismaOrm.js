@@ -2,7 +2,7 @@ export const prismaOrm = {
   id: "prisma_orm",
   title: "Prisma ORM bilan Ishlash",
   language: "javascript",
-  theory: `## Part 1: Beginner Analogy
+  theory: `## 1-Qism: Sodda Tushuntirish
 
 Tasavvur qiling, siz restoranda ovqat buyurtma qilyapsiz.
 - Siz (Dasturchi) ingliz tilida (JavaScript/TypeScript) gapirasiz.
@@ -11,7 +11,7 @@ Tasavvur qiling, siz restoranda ovqat buyurtma qilyapsiz.
 Agar siz to'g'ridan-to'g'ri Oshpaz bilan gaplashmoqchi bo'lsangiz, fransuz tilini o'rganishingiz va buyurtmani tarjima qilishingiz kerak bo'ladi. Agar bitta harfni xato qilsangiz, umuman boshqa ovqat kelishi mumkin (Syntax error).
 **Prisma** - bu sizning mukammal ikki tilli Ofitsiantingiz. Siz Ofitsiantga ingliz tilida nima xohlashingizni aytasiz (masalan, \\\`prisma.user.findMany()\\\`), u esa Oshpazga tushunarli bo'lgan mukammal fransuz tiliga (SQL) o'giradi. Tayyor bo'lgach, taomni chiroyli idishda (avtotoldirish va type-safety ga ega JS obyektlari) oldingizga olib keladi.
 
-## Part 2: Deep Dive (Under the hood, Rust Engine, Query translation, Prisma Client performance)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, Rust dvigateli, so’rov tarjimasi, Prisma Client unumdorligi)
 
 Prisma shunchaki oddiy so'rov yasovchi emas. Uning tagida juda kuchli **Rust Engine** ishlaydi.
 
@@ -22,7 +22,7 @@ Prisma shunchaki oddiy so'rov yasovchi emas. Uning tagida juda kuchli **Rust Eng
 **Query Translation va Performance (N+1 muammosi):**
 Rust Engine N+1 so'rov xatolarini DataLoader naqshidan (pattern) foydalanib avtomatik optimallashtiradi. Masalan, agar siz foydalanuvchilar va ularning postlarini birga olmoqchi bo'lsangiz (\\\`include: { posts: true }\\\`), Rust Engine buni har bir user uchun alohida so'rov yubormasdan, juda samarali JOIN yoki minimal miqdordagi SQL so'rovlarga aylantiradi.
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 **Edge Case 1: Katta hajmdagi tranzaksiyalar (Massive Transactions)**
 Katta hajmdagi ma'lumotlarni bazaga yozishda \\\`createMany\\\` dan foydalanish mumkin, lekin Prisma'da so'rovning hajmi bo'yicha cheklovlar bo'lishi mumkin. Juda katta operatsiyalarda ma'lumotlarni bo'laklab (chunk) yuborish yoki raw SQL (\\\`$executeRaw\\\`) ishlatish kerak bo'ladi.
@@ -30,7 +30,7 @@ Katta hajmdagi ma'lumotlarni bazaga yozishda \\\`createMany\\\` dan foydalanish 
 **Edge Case 2: Murakkab Analitik So'rovlar**
 Prisma \\\`groupBy\\\` va oddiy hisoblashlarni qo'llab-quvvatlasa-da, juda murakkab analitik so'rovlar, masalan oyna funksiyalari (window functions) to'liq qo'llab-quvvatlanmaydi. Bunday holatlarda to'g'ridan-to'g'ri SQL (\\\`$queryRaw\\\`) yozish eng to'g'ri yo'l.
 
-**Senior Interview Savollari:**
+**Senior Intervyu Savollari:**
 
 - **Savol:** *Prisma qanday qilib connection pooling ni boshqaradi va serverless arxitekturada (AWS Lambda) nima uchun Prisma Accelerate kerak bo'lishi mumkin?*
   **Javob:** Serverless muhitda har bir funksiya chaqiruvi bazaga yangi ulanish (connection) yaratishi mumkin va bu qisqa vaqt ichida bazaning ulanish limitini to'ldirib qo'yadi. Prisma o'zining Rust Engine-ida ulanishlarni boshqaradi, lekin ko'plab lambda funksiyalari o'rtasida ulanishlarni optimal taqsimlash uchun PgBouncer yoki Prisma Accelerate kabi tashqi pooler kerak bo'ladi.

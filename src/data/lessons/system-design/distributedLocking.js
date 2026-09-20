@@ -74,7 +74,7 @@ async function writeToDatabase(dbClient, resourceId, fencingToken, value) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Taqsimlangan bloklash turlari
 

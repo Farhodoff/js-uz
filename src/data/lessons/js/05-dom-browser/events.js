@@ -2,7 +2,7 @@ export const events = {
   id: "events",
   title: "Brauzer Hodisalari va Event Handling (Events)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Hodisa (Event) nima?
 **Hodisa (Event)** — bu foydalanuvchining brauzer ichida amalga oshiradigan harakatlari (klik qilish, klaviaturadan matn yozish, sahifani aylantirish, shakllarni yuborish) yoki tizim tomonidan yuz beradigan o'zgarishlardir. JavaScript bu hodisalarni "eshitib" tinglay oladi va ularga nisbatan dasturiy reaksiya (javob) qaytaradi.
@@ -15,12 +15,12 @@ Tasavvur qiling, siz **xizmat ko'rsatuvchi restorandasiz**:
 
 ---
 
-## 2. 🧠 Chuqur O'rganish (Deep Dive: Under the Hood, Memory, V8, Performance)
+## 2. 🧠 Chuqur O'rganish (Chuqur Tahlil: Ichki ishlash, Xotira, V8 dvigateli va Unumdorlik)
 
 ### Brauzer va V8 Engine darajasida Eventlar qanday ishlaydi?
 Event Listener qo'shganimizda, V8 (yoki boshqa JS dvigateli) DOM tugunini to'g'ridan-to'g'ri bog'lamaydi, balki Web API ga topshiradi. Web API C++ yordamida brauzer jarayonlari bilan integratsiya qilinadi. Hodisa yuz berganda, Web API uni Callback Queue (yoki Task Queue) ga yuboradi. Event Loop asinxron ishlarni kuzatib turadi, Call Stack bo'shaganida callbackni bajarish uchun yuboradi.
 
-### Xotira Boshqaruvi va Memory Leaks
+### Xotira Boshqaruvi va Xotira Sizishi
 Xotira qochishi (Memory Leak) eng ko'p uchrashi mumkin bo'lgan joylardan biri event listener'lardir. Agar DOM dagi element o'chirilsa-yu, unga ulangan event listener olib tashlanmasa (xususan SPA freymvorklarida), bu element Garbarge Collector tomonidan tozalanmaydi. 
 * Event Delegation (hodisani delegatsiya qilish) — har bir kichik elementga emas, ularning ota elementiga \\\`addEventListener\\\` biriktirish orqali xotira sarfini kamaytirish mumkin.
 
@@ -33,9 +33,9 @@ Odatda barcha listener'lar bubbling bosqichida ishlaydi (default). Agar \\\`{ ca
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Intervyu Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases
+### Chekka holatlar
 * \\\`event.stopPropagation()\\\` va \\\`event.stopImmediatePropagation()\\\` farqi nimada? Birinchisi faqat bubbling'ni to'xtatadi. Ikkinchisi esa bitta elementga biriktirilgan bir xil hodisaga ulangan boshqa listener'larning ham ishlashini darhol to'xtatadi.
 * **Passive Listeners:** \\\`scroll\\\`, \\\`wheel\\\`, \\\`touchstart\\\` kabi hodisalar brauzerning render qilish jarayoniga bevosita ta'sir ko'rsatib qotishlarga (jank) olib keladi. Bunga sabab, brauzer event ichida \\\`e.preventDefault()\\\` yozilgan bo'lishi mumkinligini kutadi. Buni bartaraf qilish uchun uchinchi parametrga \\\`{ passive: true }\\\` beriladi. Brauzerga \\\`preventDefault\\\` chaqirilmasligi kafolatlanadi.
 * **Double Submit:** \\\`{ once: true }\\\` optsiyasi tugma aynan faqat bir marta bosilishiga ruxsat beradi va listener avtomat tarzda remove bo'ladi (GC xotiradan tozalaydi).

@@ -2,7 +2,7 @@ export const promises = {
   id: "promises",
   title: "Promises (Va'dalar) va Zanjirli asinxronlik",
   language: "javascript",
-  theory: `## 1. 💡 Part 1: Beginner Analogy
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Promise nima?
 **Promise (Va'da)** — asinxron operatsiyaning kelajakda olinadigan natijasini (muvaffaqiyatli yoki xato bilan tugashini) ifodalovchi maxsus JavaScript obyektidir. U callback funksiyalar yordamida yoziladigan murakkab asinxron kodlarni ancha soddaroq va o'qishli zanjir ko'rinishida yozish imkonini beradi.
@@ -15,7 +15,7 @@ Tasavvur qiling, siz do'kondan **onlayn buyurtma (masalan, telefon)** qildingiz:
 
 ---
 
-## 2. ⚙️ Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### Microtask Queue (Mikrovazifalar navbati)
 JavaScript V8 enginedagi Event Loop yordamida asinxronlikni boshqaradi.
@@ -47,9 +47,9 @@ console.log("End");
 
 ---
 
-## 3. ⚠️ Part 3: Edge Cases and Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases
+### Chekka holatlar
 1. **Zanjirda return qilishni unutish:**
 Agar \`.then()\` ichida return yozilmasa, keyingi \`.then()\` ga qiymat o'tmaydi (\`undefined\` bo'ladi).
 \`\`\`javascript
@@ -68,7 +68,7 @@ const p = new Promise((resolve, reject) => {
 p.then(console.log); // Faqat 1 chiqadi
 \`\`\`
 
-### Senior Interview Questions
+### Senior Intervyu Savollari
 * **Savol:** \`Promise.all\` va \`Promise.allSettled\` o'rtasidagi asosiy farq nima va qachon qaysi birini ishlatish kerak?
 * **Javob:** \`Promise.all\` barcha promislar muvaffaqiyatli tugashini kutadi. Bittasi xato bo'lsa, butun zanjir rad etiladi (fail-fast). \`Promise.allSettled\` esa xatolarga qaramay barchasi tugashini kutadi va har birining holatini qaytaradi.
 * **Savol:** Nega Event Loop da setTimeout Promisdan keyin ishlaydi, garchi kodda setTimeout oldin yozilgan bo'lsa ham?

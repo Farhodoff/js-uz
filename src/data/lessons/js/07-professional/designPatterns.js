@@ -14,7 +14,7 @@ Mavzuga oid amaliy kod misollari.
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Loyihalash andozalari uchta asosiy guruhga bo'linadi:
 1. **Creational (Yaratuvchi):** Obyektlarni xavfsiz va tizimli yaratish mexanizmlari (Singleton, Factory, Builder).
@@ -56,9 +56,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Dynamic Payment Strategy Integration
+### Amaliy tahlil: To’lov strategiyasini dinamik integratsiyalash
 Strategiya (Strategy) andozasidan foydalanib dasturning to'lov tizimini qayta yozish:
 \`\`\`javascript
 const paymentProcessor = {

@@ -2,7 +2,7 @@ export const es6Features = {
   id: "es6Features",
   title: "ES6+ Yangi Imkoniyatlari",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 Tasavvur qiling, siz **eski mexanik yozuv mashinkasidan** (eski JS - ES5) zamonaviy **smartfon yoki noutbukka** (ES6+) o'tdingiz. Eski yozuv mashinkasida biror xato qilsangiz yoki matnni nusxalamoqchi bo'lsangiz, hammasini boshidan yozishga majbur edingiz (ortiqcha kodlar, uzun sintaksislar, \\\`var\\\` dagi muammolar).
 
@@ -10,7 +10,7 @@ Smartfonda esa avtomatik to'ldirish (Arrow funksiyalar), nusxalash/joylash tugma
 
 ---
 
-## 2. 🧠 Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. 🧠 Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### 2.1 Leksik muhit va \\\`let\\\` / \\\`const\\\`
 ES6+ gacha faqat \\\`var\\\` mavjud edi. \\\`var\\\` funksiya darajasidagi ko'lamga (Function Scope) ega va \\\`Hoisting\\\` tufayli kutilmagan xatoliklarga olib kelar edi. V8 engine \\\`let\\\` va \\\`const\\\` ni blok darajasida (Block Scope) saqlaydi. 
@@ -46,12 +46,12 @@ const obj = {
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 ### 3.1 Edge Case: \\\`const\\\` bilan e'lon qilingan obyektlar
 \\\`const\\\` o'zgaruvchi qayta o'zlashtirilishi mumkin emas, biroq uni obyekt yoki massivning xususiyatlarini o'zgartirish taqiqlanmagan, chunki \\\`const\\\` faqat "reference"ni (havolani) o'zgarmas qiladi, uning ichidagi ma'lumotlarni emas.
 
-### 3.2 Senior Interview Questions
+### 3.2 Senior Intervyu Savollari
 1. **TDZ (Temporal Dead Zone) mexanizmini V8 qanday bajaradi?**
    V8 parsing bosqichida blok ichidagi barcha \\\`let\\\` va \\\`const\\\` larni ro'yxatga oladi. Ammo "initialization" bosqichiga qadar (ya'ni qator bajarilmaguncha) bu o'zgaruvchilarni flag orqali (masalan, \\\`uninitialized\\\`) belgilaydi. TDZ ga kirish ReferenceError otadi.
 2. **Arrow funksiyani \\\`bind\\\`, \\\`call\\\` yoki \\\`apply\\\` yordamida kontekstini o'zgartirsa bo'ladimi?**

@@ -2,17 +2,17 @@ export const typescriptBasics = {
   id: "typescript-basics",
   title: "TypeScript Asoslari",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 Tasavvur qiling, JavaScript bu qoidalarsiz yo'l harakati. Mashinalar qayerga xohlasa shunday yuradi, xatoni (avariya) faqatgina dastur ishga tushganda ko'rasiz.
 TypeScript esa svetafor, yo'l belgilari va yo'l nazoratchisi (tsc) bor tizim. U sizga yo'lga chiqishdan oldin (yozish bosqichida) qoidalarni tushuntiradi. Natijada siz kutilmagan xatoliklarning oldini olasiz.
 
-## 2. 🚀 Deep Dive (Chuqurroq Sho'ng'ish)
+## 2. 🚀 Chuqur Tahlil (Chuqurroq Sho'ng'ish)
 **TypeScript Kompilyatori (tsc) va Type Erasure**
 TypeScript to'g'ridan-to'g'ri brauzerda ishlamaydi. U JavaScript'ga o'giriladi (kompilyatsiya qilinadi).
 Bu jarayonda "Type Erasure" (Tiplarni o'chirish) yuz beradi. Ya'ni kompilyatsiyadan so'ng barcha TypeScript tiplari koddan uchib ketadi va faqat toza JavaScript qoladi.
 Natijada, TypeScript production'da (ishlayotgan dasturda) dastur tezligiga hech qanday salbiy ta'sir ko'rsatmaydi (nol run-time overhead). Xotira va performans JS bilan bir xil bo'ladi.
 
-## 3. 🚨 Edge Cases & Senior Interview Questions
+## 3. 🚨 Chekka holatlar va Senior Intervyu Savollari
 **Savol: TypeScript xatosi topsa, JavaScript fayli yaratilmaydimi?**
 Javob: Odatiy holatda, agar xato bo'lsa ham TypeScript JavaScript faylni yarataveradi. Buni to'xtatish uchun tsconfig faylida noEmitOnError: true qilish kerak.
 

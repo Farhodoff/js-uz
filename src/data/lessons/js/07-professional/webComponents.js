@@ -115,7 +115,7 @@ customElements.define("custom-alert", CustomAlert);
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Custom Elements Registry
 Brauzer \`customElements.define('teg-nom', Class)\` chaqirilganda, ko'rsatilgan klassni ichki jadvalga yozib qo'yadi. Sahifa yuklanayotganda yoki JS orqali element yaratilganda brauzer ushbu jadvaldan elementni izlaydi va uning hayotiy sikl metodlarini chaqiradi.
@@ -208,7 +208,7 @@ Bilimingizni sinash uchun "Test" bo'limidagi savollarga javob bering.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Custom Tooltip (Maslahat oynasi) Komponenti
 

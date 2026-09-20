@@ -53,7 +53,7 @@ function tsp(dist) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Bitmask DP amallari:
 1. **Holat (State) ifodasi:** Ko'pincha $O(2^N \\times N)$ yoki $O(2^N)$ holatlarni saqlaydi.

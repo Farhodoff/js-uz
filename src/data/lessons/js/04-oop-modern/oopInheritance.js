@@ -2,7 +2,7 @@ export const oopInheritance = {
   id: "oopInheritance",
   title: "Meros Olish: extends, super va Polimorfizm",
   language: "javascript",
-  theory: `## 1. 💡 Part 1: Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 **Meros olish (Inheritance)** — bir klass boshqa klassning xususiyatlarini "voris" sifatida oladi. Bu **DRY** (Don't Repeat Yourself) prinsipining OOP ko'rinishi.
 
@@ -58,7 +58,7 @@ class ColorPrinter extends Printer {
 
 ---
 
-## 2. ⚙️ Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### Meros qanday amalga oshadi?
 \`class Dog extends Animal\` yozilganda ikki bog'lanish o'rnatiladi:
@@ -104,7 +104,7 @@ rex instanceof Object; // true
 
 ---
 
-## 3. ⚠️ Part 3: Murakkab Holatlar va Senior Intervyu Savollari (Edge Cases)
+## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari
 
 ### 1. \`super()\` qoidalarining tuzoqlari
 \`\`\`javascript

@@ -80,7 +80,7 @@ class ReplicationManager {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Replikatsiya mexanizmlari (Mechanics)
 1. **Synchronous Replication (Sinxron):** Leader foydalanuvchidan yozish so'rovini olgach, uni barcha replikalarga yuboradi va ularning barchasidan "muvaffaqiyatli yozildi" degan tasdiq (ACK) kelmaguncha foydalanuvchiga javob qaytarmaydi.
@@ -137,7 +137,7 @@ Bilimingizni testlar yordamida tekshiring.
 
 ---
 
-## 8. 🎯 Real Project Case Study: GitHub-ning MySQL replikatsiya lag boshqaruvi
+## 8. 🎯 Real Loyiha Tahlili: GitHub-ning MySQL replikatsiya lag boshqaruvi
 
 GitHub juda katta miqdorda o'qish yuklamasiga ega. Ular asinxron MySQL replikalaridan foydalanishadi. Agar replikatsiya lagi (lag) 1 soniyadan oshib ketsa, GitHub tizimi foydalanuvchilar uchun yozish-o'qish yo'llarini dinamik o'zgartiradi va ma'lumotlarni faqat Leader-dan o'qishga majburlaydi. Bu orqali foydalanuvchilarga eskirgan ma'lumot ko'rsatilishining oldi olinadi.
 

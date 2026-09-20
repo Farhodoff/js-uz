@@ -225,7 +225,7 @@ Dars bo'yicha test savollari.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Foydalanuvchini ro'yxatdan o'tkazish va tasdiqlash oqimi
 Real loyihalarda integratsion testlar butun foydalanuvchi ro'yxatdan o'tish zanjirini tekshiradi:

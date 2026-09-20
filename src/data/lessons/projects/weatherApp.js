@@ -12,8 +12,8 @@ Tasavvur qiling, ob-havo haqida ma'lumot olish pitssa buyurtma qilishga o'xshayd
 - **Pitsseriya (API serveri)** buyurtmani qabul qiladi, pishiradi va qutiga joylab sizga jo'natadi (JSON formatidagi javob).
 - Siz qutini ochasiz va pitssani yeysiz (JSON ni \\\`res.json()\\\` bilan ochib, ma'lumotlarni ekranda ko'rsatasiz).
 
-### Qism 2: Chuqur tahlil (Deep Dive)
-Dastur orqasida (Under the hood) ma'lumot olish (Fetch) qanday amalga oshadi?
+### Qism 2: Chuqur tahlil
+Dastur orqasida ma'lumot olish (Fetch) qanday amalga oshadi?
 
 1. **DNS Resolution**: \\\`fetch('https://api.openweathermap.org/...')\\\` ishlaganda, brauzer avval DNS serveriga murojaat qilib, ushbu domen nomini IP manzilga o'giradi.
 2. **TCP Handshake (Uch tomonlama kelishuv)**: Mijoz va server o'rtasida ma'lumot almashish uchun ishonchli aloqa o'rnatiladi (SYN, SYN-ACK, ACK).
@@ -21,7 +21,7 @@ Dastur orqasida (Under the hood) ma'lumot olish (Fetch) qanday amalga oshadi?
 4. **CORS (Cross-Origin Resource Sharing)**: Brauzerlar xavfsizlik nuqtai nazaridan boshqa domenlarga so'rov yuborishni cheklaydi. API server bunga ruxsat berish uchun \\\`Access-Control-Allow-Origin: *\\\` sarlavhasini qaytarishi shart.
 5. **HTTP Caching**: Ba'zan brauzer ob-havo so'rovini keshlashi (saqlab qolishi) mumkin, buni nazorat qilish uchun biz URL ga tasodifiy son qo'shishimiz yoki server \\\`Cache-Control\\\` sozlamalarini berishi mumkin.
 
-### Qism 3: Chekka holatlar (Edge Cases) va Senior Intervyu savollari
+### Qism 3: Chekka holatlar va Senior Intervyu savollari
 
 Senior dasturchilar Fetch bilan ishlashda qanday narsalarga e'tibor berishadi?
 

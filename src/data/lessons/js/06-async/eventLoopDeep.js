@@ -294,7 +294,7 @@ Dars oxiridagi bilimni sinovchi 12 ta test savollari.
 
 ---
 
-## 9. 🎯 Real Project Case Study
+## 9. 🎯 Real Loyiha Tahlili
 
 ### Infinite Scroll: Renderga to'sqinlik qilmasdan yuklash
 Muammo: foydalanuvchi pastga skroll qilganda 500 ta postni bitta tickda render qilish — sahifa muzlaydi.

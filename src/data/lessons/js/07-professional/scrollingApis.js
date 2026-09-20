@@ -2,7 +2,7 @@ export const scrollingApis = {
   id: "scrolling-apis",
   title: "Scrolling API: Silliq Harakat va Skroll o'lchovlari",
   theory: `
-### Part 1: Beginner Analogy
+### 1-Qism: Sodda Tushuntirish
 
 Tasavvur qiling, siz katta kutubxonadasiz va uzun javondagi kitoblarni qidiryapsiz. Javon butunlay devorni egallagan, shuning uchun siz faqat o'z oldingizdagi qismini ko'ra olasiz. 
 - **Oyna (Window)** — bu sizning ko'rish maydoningiz (Viewport).
@@ -11,7 +11,7 @@ Tasavvur qiling, siz katta kutubxonadasiz va uzun javondagi kitoblarni qidiryaps
 - **\\\`scrollBy\\\`** — "Yana 2 qadam o'ngga yur" (hozirgi joydan biroz siljish).
 - **\\\`scrollIntoView\\\`** — do'stingiz sizga "Qara, mana bu Garri Potter kitobi!" deb o'zining yoniga chaqirishi. Siz darhol u ko'rsatgan kitob oldiga kelasiz.
 
-### Part 2: Deep Dive
+### 2-Qism: Chuqur Tahlil
 
 DOM skroll xususiyatlari brauzerni boshqarish va sahifadagi elementlarning kadrga qanchalik yaqinlashganini bilish uchun juda muhimdir. Bular oddiy interfeysni interaktiv tajribaga aylantiradi.
 
@@ -103,7 +103,7 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(document.querySelector('.lazy-image'));
 \\\`\\\`\\\`
 
-### Part 3: Edge Cases and Senior Interview Questions
+### 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 1. **"ScrollIntoView ishlatganda nima edge caselar chiqishi mumkin?"**
    Agar element scroll qilinadigan "modal" ichida bo'lsa va birdaniga window o'zi ham scroll bo'ladigan bo'lsa, \\\`scrollIntoView\\\` butun oynani o'sha modal elementiga moslab siljitib yuborishi mumkin. Bu sahifa dizaynini buzib ko'rsatadi.

@@ -2,13 +2,13 @@ export const domPerformance = {
   id: "dom-performance",
   title: "DOM Performance: Reflow va Repaint",
   theory: `
-### 1. Beginner Analogy (Boshlang'ich tushuncha)
+### 1. Sodda Tushuntirish (Boshlang'ich tushuncha)
 Tasavvur qiling, siz uy quryapsiz va uning rejasini (chizmasini) tuzgansiz. 
 Agar siz xonadagi birorta mebelning rangini o'zgartirsangiz (bu Repaint - bo'yash), bu juda oson va kam vaqt oladi. 
 Lekin, agar siz devorni buzib, xonaning hajmini o'zgartirsangiz (bu Reflow - qayta qurish), siz nafaqat shu xonani, balki unga tutash boshqa xonalarni va butun uyning rejasini qayta hisoblab chiqishingiz kerak bo'ladi.
 DOM (Document Object Model) da ham xuddi shunday. Elementlarning rangini o'zgartirish (Repaint) nisbatan "arzon" operatsiya, lekin ularning o'lchami yoki joylashuvini o'zgartirish (Reflow) brauzer uchun "qimmat" va og'ir jarayondir.
 
-### 2. Deep Dive (Chuqurlashtirilgan tahlil)
+### 2. Chuqur Tahlil
 Brauzer ekranda nimadir ko'rsatishi uchun Critical Rendering Path (Kritik Renderlash Yo'li) orqali o'tadi:
 1. **DOM Tree**: HTML kod parse qilinib, DOM daraxti yasaladi.
 2. **CSSOM Tree**: CSS kod parse qilinib, CSSOM daraxti yasaladi.
@@ -26,7 +26,7 @@ Brauzer ekranda nimadir ko'rsatishi uchun Critical Rendering Path (Kritik Render
 **Repaint nimalarni chaqiradi?**
 - \\\`color\\\`, \\\`background-color\\\`, \\\`box-shadow\\\`, \\\`visibility\\\` kabi faqat ko'rinishga ta'sir qiluvchi xususiyatlar.
 
-### 3. Edge Cases and Senior Interview Questions
+### 3. Chekka holatlar va Senior Intervyu Savollari
 **Layout Thrashing (Layout Isrofgarchiligi)**
 Dasturchilar ko'pincha DOM ni o'qish (read) va yozish (write) amallarini ketma-ket, sikl ichida bajarishadi. Bu Layout Thrashing deb ataladi. 
 Siz biror elementning geometriyasini o'zgartirganingizda, brauzer navbatdagi o'qish jarayoni aniq bo'lishi uchun zudlik bilan Reflow ni amalga oshirishi kerak bo'ladi.

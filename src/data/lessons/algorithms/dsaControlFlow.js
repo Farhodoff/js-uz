@@ -53,7 +53,7 @@ function hasCommonElement(arr1, arr2) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Branch Predictor (Shartlarni Oldindan Taxmin Qilish):
 Zamonaviy protsessorlar darajasida shartli o'tishlar (\`if-else\`) bajarilayotganda, protsessor qaysi shart bajarilishini oldindan taxmin qilishga harakat qiladi (**Branch Prediction**). Agar taxmin to'g'ri chiqsa, kod juda tez bajariladi. Agar xato bo'lsa, tayyorlab qo'yilgan pipeline tozalanadi va vaqt yo'qotiladi.

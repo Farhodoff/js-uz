@@ -43,7 +43,7 @@ function fibTab(n) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Dinamik Dasturlash qo'llanilishi shartlari:
 DP quyidagi ikki xususiyatga ega bo'lgan masalalarda ishlaydi:

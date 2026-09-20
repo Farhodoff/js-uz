@@ -260,9 +260,9 @@ Dars yakunidagi testlar.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Single Page Application (SPA) sahifalar almashuvida Memory Leak-ni tuzatish
+### Single Page Application (SPA) sahifalar almashuvida xotira sizishini tuzatish
 Loyiha React yoki Vue ishlatmasdan, toza JS-da yozilgan SPA. Foydalanuvchi \`/dashboard\` sahifasiga kirganda jadvallar va chartlar chiziladi hamda window resize hodisasi tinglanadi. Sahifadan chiqib ketganda xotira bo'shamayapti.
 
 #### Yechim (EventListener-larni tozalash tizimi):

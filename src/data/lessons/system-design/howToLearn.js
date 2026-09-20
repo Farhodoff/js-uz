@@ -1,6 +1,6 @@
 export const howToLearn = {
   id: "howToLearn",
-  title: "System Design-ni qanday o'rganish kerak? (How to Learn System Design?)",
+  title: "System Design-ni qanday o'rganish kerak? ",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish
 
@@ -41,7 +41,7 @@ console.log(evaluateSystemScale(1500));
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 System Design intervyusi sizdan 10 xil mukammal arxitekturani yodlab olishingizni talab qilmaydi. U asosan quyidagi 4 ta asosiy qadam orqali ishlaydi:
 
@@ -112,9 +112,9 @@ Dars yakunidagi testlar orqali darajangizni sinab ko'ring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Time-boxing and Scoping a Design under 45 mins
+### Amaliy tahlil: 45 daqiqada dizaynni rejalashtirish (time-boxing)
 Haqiqiy intervyuda vaqtni boshqarish:
 - **0-5 daqiqa:** Functional va Non-functional talablarni aniqlash.
 - **5-15 daqiqa:** High-level diagramma chizish.

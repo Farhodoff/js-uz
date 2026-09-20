@@ -21,7 +21,7 @@ Sizning veb-saytingiz — bu **bank binosi**.
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Eng asosiy veb-tahdidlar va ulardan himoyalanish:
 
@@ -89,9 +89,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Secure Token Storage Against XSS
+### Amaliy tahlil: XSS’dan himoyalanib tokenlarni saqlash
 JWT tokenlarni XSS hujumlaridan himoya qilish uchun \`HttpOnly\` cookielarda saqlash:
 \`\`\`javascript
 // Server-side response header:

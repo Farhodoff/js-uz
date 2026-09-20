@@ -105,7 +105,7 @@ export const store = configureStore({
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Unidirectional Data Flow (Yagona yo'nalishli oqim)
 React arxitekturasida ma'lumotlar oqimi doimo quyidagicha aylanadi:
@@ -215,7 +215,7 @@ Dars bo'yicha olgan bilimlaringizni yakuniy quizzes orqali sinab oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Savat (Shopping Cart) Tizimini Zustand yordamida yaratish
 Haqiqiy internet-do'konlarda savatchani boshqarish, unga mahsulot qo'shish, o'chirish va narxlarni real vaqtda hisoblash, shuningdek foydalanuvchi sahifani yangilaganda ham saqlanib qolishini ta'minlash uchun Zustand-ning \`persist\` middleware-dan foydalanamiz.

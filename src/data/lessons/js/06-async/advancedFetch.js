@@ -190,7 +190,7 @@ Dars oxiridagi test topshiriqlari.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Qidiruv tizimida (Typeahead / Autocomplete) yuklamani kamaytirish
 Foydalanuvchi inputga tez yozganda serverga ketma-ket so'rov ketadi. Biz faqat eng so'nggi so'rov javobini kutamiz, eskilarini esa bekor qilamiz.

@@ -14,7 +14,7 @@ Tasavvur qiling, siz **shartnoma yozyapsiz**:
 
 ---
 
-## 2. ⚙️ Deep Dive: Under the Hood
+## 2. ⚙️ Chuqur Tahlil: Ichki ishlash
 
 ### Xotira, Reference va Value
 JavaScript-da primitiv turlar (Number, String, Boolean) xotirada qiymat (Value) bo'yicha saqlanadi. Obyektlar va massivlar esa xotiradagi manzili (**Reference**) bo'yicha saqlanadi va nusxalanadi.
@@ -35,7 +35,7 @@ graph TD
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 ### Edge Case 1: \`structuredClone\` dagi muammolar
 Zamonaviy JS da chuqur nusxa olish uchun \`structuredClone()\` ajoyib yechim. Lekin uning o'z cheklovlari bor:
@@ -43,10 +43,10 @@ Zamonaviy JS da chuqur nusxa olish uchun \`structuredClone()\` ajoyib yechim. Le
 2. **DOM Elementlari:** DOM tugunlarini klonlay olmaydi.
 3. **Symbol kalitlari:** Symbol orqali yozilgan xususiyatlar e'tiborga olinmaydi.
 
-### Senior Interview Question: "Nega Object.freeze() to'liq himoya qilmaydi?"
+### Senior Intervyu Question: "Nega Object.freeze() to'liq himoya qilmaydi?"
 **Javob:** \`Object.freeze()\` faqat sayoz (shallow) muzlatishni amalga oshirib, obyektning eng yuqori darajasidagi xususiyatlarini o'zgartirib bo'lmaydigan qilib qo'yadi. Agar ob'ekt ichida boshqa obyekt yoki massiv bo'lsa, ularning ichidagi ma'lumotlarni bemalol o'zgartirish (mutatsiya qilish) mumkin. Uni to'liq himoyalash uchun rekursiv "Deep Freeze" yozish kerak.
 
-### Senior Interview Question: "Qachon Immutable yondashuv performance'ga salbiy ta'sir ko'rsatadi?"
+### Senior Intervyu Question: "Qachon Immutable yondashuv performance'ga salbiy ta'sir ko'rsatadi?"
 **Javob:** Juda katta massivlar yoki obyektlarda (masalan, 100,000 ta elementli massiv) har safar bitta elementni yangilash uchun butun massivni spread operator (\`[...arr]\`) yordamida nusxalash CPU va xotira (Garbage Collection) uchun katta yuk bo'ladi. Bunday holatlarda Immer.js kabi kutubxonalar strukturali almashinish (structural sharing) texnikasini ishlatadi, yoki mutatsiya ehtiyotkorlik bilan ishlatilishi maqsadga muvofiq bo'ladi.
 `,
   exercises: [

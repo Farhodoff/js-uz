@@ -299,7 +299,7 @@ Dars yakunidagi testlar.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Infinite Scroll va Paginated API Streamer
 Ushbu tizim foydalanuvchi sahifani pastga skroll qilganda yangi ma'lumotlarni dynamic yuklab oladi. Bizga har safar dynamic ma'lumot yuklab beruvchi asinxron generator kerak.

@@ -2,14 +2,14 @@ export const interfacesTypes = {
   id: "typescript-interfaces",
   title: "Interfaces va Types",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 TypeScript-da \\\`interface\\\` va \\\`type\\\` xuddi uy qurishdagi chizmalar (blueprint) ga o'xshaydi. Obyekt qanday xususiyatlarga ega bo'lishi kerakligini belgilab beradi. Agar siz "Uy" nomli chizma yaratsangiz, unda albatta "eshik" va "oyna" bo'lishi kerakligini ko'rsatasiz. Agar quruvchi faqat "eshik" qilib "oyna"ni unutib qo'ysa, chizma (TypeScript) xato beradi!
 
 \\\`interface\\\` – bu odatda obyektlar uchun maxsus shartnoma.
 \\\`type\\\` (Type Alias) – bu nafaqat obyektlar, balki oddiy tiplar (masalan, string, number) va aralash (union) tiplar uchun "laqab" yoki "taxallus"dir.
 
-## 2. 🚀 Chuqur O'rganish (Deep Dive: Under the Hood)
+## 2. 🚀 Chuqur O'rganish 
 
 **Type Erasure (Tiplarning o'chirilishi) va Memory (Xotira)**
 TypeScript faqatgina yozish vaqtida (compile time) ishlaydi. \\\`tsc\\\` (TypeScript Compiler) kodingizni JavaScript-ga o'girganida, hamma \\\`interface\\\` va \\\`type\\\` lar butunlay o'chib ketadi (Type Erasure). Ular JavaScript-ning ish vaqtiga (runtime) hech qanday ta'sir o'tkazmaydi va brauzer xotirasidan (memory) qo'shimcha joy egallamaydi. Ular faqatgina "kompilyatsiya qorovullari" (compile-time guards) hisoblanadi.
@@ -30,7 +30,7 @@ Agar buni \\\`type\\\` bilan qilsangiz, "Duplicate identifier" xatosi kelib chiq
 **Edge Case 2: Mapped Types**
 Agar siz dinamik tiplar (Mapped types, masalan \\\`Pick\\\`, \\\`Omit\\\`, \\\`Record\\\`) ishlatmoqchi bo'lsangiz, \\\`type\\\` ancha kuchliroq va qulayroq hisoblanadi.
 
-**Senior Interview Question:**
+**Senior Intervyu Question:**
 *Savol:* Qachon \\\`interface\\\`, qachon \\\`type\\\` ishlatgan ma'qul?
 *Javob:* Odatda loyihaning asosiy ma'lumot tuzilmalari va ochiq kutubxonalar (public API, SDK) uchun \\\`interface\\\` ishlatiladi, chunki uni kengaytirish oson. Lekin, union tiplar (\\\`string | number\\\`), tupleni ifodalash, va murakkab utility tiplar bilan ishlashda \\\`type\\\` dan foydalangan ma'qul.
 

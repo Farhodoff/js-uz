@@ -21,7 +21,7 @@ Siz restoranda taom buyurtma qilmoqchisiz:
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Render qilish turlari va ularning farqi:
 
@@ -89,9 +89,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Dynamic Hydration on Server-Side Rendered Pages
+### Amaliy tahlil: SSR sahifalarida dinamik gidratsiya
 Serverda render qilingan HTML sahifadagi dinamik tugmalarni JavaScript yuklangandan so'ng faollashtirish (hydration):
 \`\`\`javascript
 // Serverda (renderToString):

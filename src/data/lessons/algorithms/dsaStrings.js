@@ -31,7 +31,7 @@ function isAnagram(s, t) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Belgilar kodlanishi (Character Encoding):
 Kompyuter faqat sonlar bilan ishlaydi. Shuning uchun har bir belgi xotirada ma'lum bir son sifatida saqlanadi:

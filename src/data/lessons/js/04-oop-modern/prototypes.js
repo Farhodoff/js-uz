@@ -2,7 +2,7 @@ export const prototypes = {
   id: "prototypes",
   title: "Prototypes va Vorislik (Inheritance)",
   language: "javascript",
-  theory: `## Part 1: Beginner Analogy
+  theory: `## 1-Qism: Sodda Tushuntirish
 
 Prototiplar tushunchasi ko'pchilik dasturchilar uchun murakkab tuyulishi mumkin. Keling, buni real hayotdagi oddiy analogiya yordamida tushunib olamiz.
 
@@ -13,7 +13,7 @@ Tasavvur qiling, siz bir xil turdagi minglab robotlar ishlab chiqarayapsiz. Har 
 
 Shunday qilib, robot yurmoqchi bo'lganda avval o'zidan qidiradi, topolmagach aloqa orqali Boshqaruv Markazidan foydalanadi. Bu orqali xotira keskin tejaladi va markazdagi ko'rsatmani o'zgartirsangiz, barcha robotlar bir vaqtda yangilanadi.
 
-## Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 JavaScript dvigatellari (masalan, V8) prototiplarni xotira tejamkorligi va ijro tezligi nuqtai nazaridan juda chuqur optimizatsiya qilgan. 
 
@@ -28,7 +28,7 @@ Shuning uchun, **Obyekt yaratilgandan keyin uning prototipini umuman o'zgartirma
 ### Memory Management (Xotirani Boshqarish)
 Prototip orqali meros olish RAM ni tejashning eng asosiy usulidir. Obyektlar yaratilganda faqatgina o'zining shaxsiy xossalarini saqlaydi (masalan: ism, yosh). Funksiyalar (metodlar) esa faqat bitta marta prototip xotirasida turadi. Barcha nusxalar unga shunchaki "ko'rsatkich" (pointer) orqali yuzlanadi.
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 Senior darajadagi intervyularda prototiplar bo'yicha ko'plab makkor savollar so'ralishi mumkin. Keling, ba'zilarini ko'rib chiqamiz:
 

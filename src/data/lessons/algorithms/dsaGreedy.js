@@ -44,7 +44,7 @@ function minCoinsGreedy(coins, amount) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Ochko'zlik shartlari (Greedy Choice Property):
 Ochko'z algoritm global optimal yechimni kafolatlashi uchun masala quyidagi ikki xususiyatga ega bo'lishi kerak:

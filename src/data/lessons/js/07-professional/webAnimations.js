@@ -276,7 +276,7 @@ Dars yakunidagi testlar.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Premium taqdimot sayti uchun Scroll-Linked 3D silliq animatsiya
 Apple saytlaridagi kabi, foydalanuvchi pastga scroll qilganda rasm silliq aylanib kattalashishi kerak.

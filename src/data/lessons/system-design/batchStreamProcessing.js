@@ -59,7 +59,7 @@ console.log(reduced); // { hello: 2, world: 1, node: 1 }
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. MapReduce Paradigm
 *   **Map:** Ma'lumotlarni filtrlash va transformatsiya qilish (parallel bajariladi).
@@ -145,7 +145,7 @@ Bilimingizni tekshirish uchun dars oxiridagi 12 ta mini testni bajaring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Netflix Real-Time Recommendation System
 Netflix foydalanuvchilar qaysi videoni tomosha qilayotganini real vaqtda kuzatish uchun **Apache Flink** va **Apache Kafka** dan foydalanadi.

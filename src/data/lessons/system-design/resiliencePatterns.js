@@ -69,14 +69,14 @@ class SimpleCircuitBreaker {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### A. Circuit Breaker Uchta Holati (States):
 1. **CLOSED (Yopiq):** Barcha so'rovlar normal rejimda maqsadli servisga o'tkaziladi. Agar xatolar soni belgilangan **Failure Threshold** (Xatolar chegarasi)dan oshsa, zanjir **OPEN** holatiga o'tadi.
 2. **OPEN (Ochiq):** So'rovlar maqsadli servisga yuborilmaydi, darhol xatolik yoki **Fallback** (zaxira javobi) qaytariladi. Bu maqsadli servisga o'zini tiklab olish uchun vaqt beradi.
 3. **HALF_OPEN (Yarim Ochiq):** Cooldown (sovush) davri tugagach, tizim sinov so'rovini yuboradi. Agar u muvaffaqiyatli bo'lsa, holat **CLOSED** ga qaytadi. Agar xato bersa, zanjir yana **OPEN** holatiga qaytadi.
 
-### B. Retry Storm va Exponential Backoff with Jitter:
+### B. Retry Storm va jitter bilan Exponential Backoff:
 * **Retry Storm (Qayta urinishlar bo'roni):** Agar servisda muammo yuzaga kelsa va yuzlab mijozlar bir vaqtda doimiy sekundlarda (masalan, har 1 soniyada) qayta so'rov yuborsa, bu servisning qayta uyg'onishiga mutlaqo yo'l qo'ymaydi (**Thundering Herd** muammosi).
 * **Exponential Backoff:** Har bir urinish oralig'ini eksponentsial ravishda oshirish (1s, 2s, 4s, 8s, 16s...).
 * **Jitter (Tasodifiylik):** Eksponentsial kechikishga tasodifiy millisekundlar qo'shish. Bu so'rovlarni vaqt bo'yicha tarqatib yuboradi va yuklamani tekislaydi.
@@ -150,7 +150,7 @@ Dars oxiridagi quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Netflix API Gateway va Hystrix integratsiyasi
 Netflix o'zining mikroxizmatlar arxitekturasida har bir foydalanuvchi sahifasini shakllantirish uchun o'nlab quyi servislarga (User, Movie Details, Subtitles, Recommendations) murojaat qiladi. Recommendations xizmati ishlamay qolganda, tizim butun sahifani buzib ko'rsatmasdan, Hystrix orqali Recommendations bloki uchun zaxira (Fallback) sifatida umumiy "Top 10 mashhur kinolar" ro'yxatini qaytaradi. Bu foydalanuvchiga sezilarsiz nosozlik (graceful degradation) taqdim etadi.

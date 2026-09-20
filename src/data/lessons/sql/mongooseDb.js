@@ -2,14 +2,14 @@ export const mongooseDb = {
   id: "mongoose_db",
   title: "Mongoose bilan Ishlash (ODM)",
   language: "javascript",
-  theory: `## 1. 💡 Mongoose: Beginner Analogy (Sodda Tushuntirish)
+  theory: `## 1. 💡 Mongoose: Sodda Tushuntirish
 
 Tasavvur qiling, sizning bir omboringiz (MongoDB) bor. Bu ombor juda katta va unga xohlagan narsangizni xohlagan qutiga solib qo'yishingiz mumkin (schema-less). Siz "Ismlar" qutisiga raqam, "Yosh" qutisiga esa harf solib qo'ysangiz ham, omborchi indamaydi. 
 Lekin, vaqt o'tishi bilan omborda tartibsizlik yuzaga keladi. Sizga qattiqqo'l nazoratchi (Mongoose) kerak! Mongoose sizga har bir qutining o'z qoidasini (Schema) o'rnatishga yordam beradi: "Bu yerga faqat yoshi 18 dan kattalar ro'yxati yoziladi", "Bu yerga faqat elektron pochta yoziladi", deb qoidalarni kiritasiz. Endi xato ma'lumot kiritilsa, Mongoose uni omborga kiritmay, qaytarib yuboradi.
 
-## 2. 🚀 Deep Dive (Chuqur O'rganish)
+## 2. 🚀 Chuqur Tahlil (Chuqur O'rganish)
 
-### 2.1 Under the Hood (Mongoose qanday ishlaydi?)
+### 2.1 Ichki ishlash (Mongoose qanday ishlaydi?)
 Mongoose bu Node.js uchun MongoDB bilan ishlashni osonlashtiruvchi Object Data Modeling (ODM) kutubxonasi hisoblanadi. U to'g'ridan-to'g'ri MongoDB driver'i ustiga qurilgan bo'lib, uning vazifasi – ma'lumotlar ustida qat'iy tekshiruv (validation), xususiyatlar bog'lanishi (populate) va turli avtomatlashtirilgan jarayonlarni (middlewares) ta'minlashdir.
 
 ### 2.2 Schema Validation (Qat'iy qoidalar)
@@ -52,7 +52,7 @@ userSchema.pre('save', async function(next) {
 ### 2.4 Connection Pooling (Ulanishlarni boshqarish)
 MongoDB da bitta so'rov uchun har safar yangi ulanish (connection) ochilmaydi. Mongoose "Connection Pool" orqali ma'lum miqdordagi ulanishlarni ochiq saqlaydi va tez ishlashini ta'minlaydi. Odatda Mongoose uchun bu ko'rsatkich 100 atrofida (v6+ da default poolSize). 
 
-## 3. ⚠️ Edge Cases va Senior Interview Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 1. **MongoDB da Transaction'lar bormi va Mongoose uni qanday qabul qiladi?**
    *Javob:* Ha, Replica Set o'rnatilgan bo'lsa (yoki MongoDB Atlas), MongoDB 4.0 dan boshlab ACID tranzaksiyalarni qo'llab-quvvatlaydi. Mongoose da \\\`session.withTransaction()\\\` orqali ishlatsa bo'ladi. Bu orqali 2 ta hujjat bir vaqtda yangilanayotganda bittasida xato bo'lsa, ikkinchisi ham bekor bo'ladi (Rollback).

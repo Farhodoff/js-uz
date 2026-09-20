@@ -71,7 +71,7 @@ console.log(getShardServer("user_4410", 3)); // Masalan: db-shard-0
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Vertikal vs Gorizontal Masshtablash
 - **Vertical Scaling (Scale Up):** CPU, RAM yoki SSD hajmini oshirish. Oson, lekin qimmat va fizik chegaralari bor (yagona server ma'lum bir nuqtadan keyin kattalasholmaydi).
@@ -158,7 +158,7 @@ Mavzuni o'zlashtirish darajangizni mini testlar orqali tekshiring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Uber-ning Ma'lumotlar Bazasi (Schemaless)
 Uber sayohatlar va haydovchilar ma'lumotlarini saqlash uchun MySQL-dan foydalangan, biroq tizim kattalashgach, u gorizontal kengaya olmagan. Ular o'zlarining shaxsiy **Schemaless** deb nomlangan sharded bazasini yaratdilar.

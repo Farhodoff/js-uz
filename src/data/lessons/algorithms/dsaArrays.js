@@ -47,7 +47,7 @@ class SimpleDynamicArray {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Xotirada Ketma-ketlik (Contiguous Memory):
 Statik massiv yaratilganda xotiradan (RAM) ketma-ket joylashgan block ajratiladi.

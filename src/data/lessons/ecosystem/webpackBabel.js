@@ -4,12 +4,12 @@ export const webpackBabel = {
   theory: `
 # Webpack va Babel
 
-## 1-qism: Boshlang'ich O'xshatish (Beginner Analogy)
+## 1-qism: Boshlang'ich O'xshatish
 Tasavvur qiling, siz katta restoranda bosh oshpazsiz. Sizda turli xil masalliqlar (pomidor, go'sht, ziravorlar) bor. Lekin mijozga ularni pishirib, chiroyli idishda, bitta tayyor taom sifatida taqdim etishingiz kerak. 
 - **Webpack** bu - sizning oshxonangizdagi yordamchilaringiz. Ular hamma turli xil masalliqlarni (JS fayllar, CSS, rasmlar) yig'ib, bitta tayyor taom (bundle.js) holatiga keltiradi.
 - **Babel** esa - tarjimon. Tasavvur qiling, ba'zi mijozlar faqat eski tilda gaplashadi (eski brauzerlar). Sizning yangi retseptlaringiz (ES6+ kod) ular uchun tushunarsiz. Babel sizning zamonaviy retseptingizni o'sha eski mijozlar tushunadigan tilga o'girib beradi.
 
-## 2-qism: Chuqur O'rganish (Deep Dive)
+## 2-qism: Chuqur O'rganish
 
 ### Webpack qanday ishlaydi?
 Webpack modullarni yig'ishda quyidagi bosqichlardan o'tadi:
@@ -29,7 +29,7 @@ Bu jarayon 3 bosqichda amalga oshadi:
 ### Tree-shaking
 Tree-shaking - bu Webpack'ning ishlatilmagan kodlarni (dead code) "bundle" dan olib tashlash qobiliyati. Bu orqali dastur hajmi sezilarli darajada qisqaradi. ES6 modullarining (\\\`import/export\\\`) statik tahlil qilinishi tree-shaking ishlashiga imkon beradi.
 
-## 3-qism: Edge Cases va Senior Interview Savollari
+## 3-qism: Chekka holatlar va Senior Intervyu Savollari
 
 **Savol 1: Webpack'da Hot Module Replacement (HMR) qanday ishlaydi?**
 **Javob:** HMR ilovani to'liq qayta yuklamasdan (reload) faqat o'zgargan modullarni brauzerda yangilash imkonini beradi. U Webpack Dev Server bilan birgalikda WebSockets orqali ishlaydi. Fayl o'zgarganda, dev-server yangi modul kodini brauzerga jo'natadi va brauzerdagi HMR runtime eski modulni yangisiga almashtiradi.

@@ -161,7 +161,7 @@ Dars oxirida testlar taqdim etiladi.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Moliyaviy tizimlarda tranzaksiyalarni hisoblash xavfsizligi
 Moliyaviy ilovalarda suzuvchi nuqta tuzog'iga tushmaslik uchun barcha hisob-kitoblarni tiyinlarda (butun sonlarda) bajarib, faqat ko'rsatish paytida so'm/dollarga o'tkazish eng xavfsiz yechim hisoblanadi.

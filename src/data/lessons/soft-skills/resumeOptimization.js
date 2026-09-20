@@ -19,7 +19,7 @@ Sizning rezyumeingiz va GitHub profilingiz — bu sizning professional dasturchi
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Muvaffaqiyatli dasturchi portfoliosi tarkibi:
 
@@ -87,9 +87,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Action Verbs & Keywords Integration
+### Amaliy tahlil: Harakat fe’llari va kalit so’zlarni integratsiyalash
 ATS (Applicant Tracking System) tizimidan o'tish uchun kalit so'zlarni rezyumega to'g'ri joylashtirish:
 \`\`\`text
 // NOTO'G'RI:

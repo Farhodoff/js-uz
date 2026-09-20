@@ -171,7 +171,7 @@ Dars oxirida bilimingizni sinash uchun test topshiriqlari taqdim etiladi.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Dark Mode / Light Mode sozlamasini brauzerda saqlash
 Foydalanuvchi o'ziga ma'qul bo'lgan tema (qorong'u yoki yorug' rejim)ni tanlaganda, sahifa yangilansa ham tema saqlanib qolishi kerak.

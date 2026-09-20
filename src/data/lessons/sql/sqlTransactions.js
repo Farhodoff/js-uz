@@ -2,14 +2,14 @@ export const sqlTransactions = {
   id: "sql_transactions",
   title: "SQL Transactions va ACID",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 **Transaction (Tranzaksiya)** – bu bir nechta SQL buyruqlarni bitta bo'linmas (atomic) operatsiya sifatida guruhlash. Agar barcha buyruqlar muvaffaqiyatli yakunlansa, o'zgarishlar tasdiqlanadi (COMMIT). Agar bitta operatsiya xato qilsa ham, barcha o'zgarishlar bekor qilinib, baza dastlabki holatiga qaytadi (ROLLBACK).
 
 **Analogi:** Do'kondan xarid qilish. 
 Siz tovar uchun pul to'laysiz (sizning hisobingizdan pul yechiladi), do'kon egasi esa tovarni sizga beradi. Agar pul o'tsa-yu, tovar berilmasa (yoki aksincha), bu adolatsizlik bo'ladi. Tranzaksiya aynan shuni oldini oladi: yo ikkala amal ham to'liq bajariladi, yoki umuman hech qanday amal bajarilmaydi.
 
-## 2. 🧠 Chuqur sho'ng'ish (Deep Dive)
+## 2. 🧠 Chuqur sho'ng'ish
 
 ### ACID Tamoyillari
 1. **A - Atomicity (Bo'linmaslik):** "Hammasi yoki hech narsa". Tranzaksiya yarim-yorti bajarilmaydi. 

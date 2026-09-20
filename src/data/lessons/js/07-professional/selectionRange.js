@@ -2,7 +2,7 @@ export const selectionRange = {
   id: "selectionRange",
   title: "Selection va Range API",
   theory: `
-### 1. Dastlabki tushuncha (Beginner Analogy)
+### 1. Dastlabki tushuncha
 
 Tasavvur qiling, siz kitob o'qiyapsiz. Kitobdagi eng muhim qatorlarni topish uchun sizga marker kerak. Siz markerni bitta so'zning boshidan qo'yib, boshqa so'zning oxirigacha tortasiz. Natijada ma'lum bir matn qismi "belgilanadi". 
 
@@ -12,9 +12,9 @@ Veb-brauzerda ham huddi shunday mexanizm mavjud.
 
 Brauzer API orqali biz xuddi shu jarayonni JavaScript yordamida avtomatlashtirishimiz va kuzatishimiz mumkin.
 
-### 2. Chuqur sho'ng'ish (Deep Dive)
+### 2. Chuqur sho'ng'ish
 
-**Under the hood: Range va Selection qanday ishlaydi?**
+**Ichki ishlash: Range va Selection qanday ishlaydi?**
 
 DOM'da har qanday belgilash kursor (Caret) va kursorning yo'nalishidan iborat. Kursor bir joydan ikkinchi joyga harakatlanganda, brauzer oraliq yaratadi. Buni tushunish uchun quyidagi obyektlarni bilish muhim:
 
@@ -49,11 +49,11 @@ Range ichidagi barcha elementlarni bitta **DocumentFragment** ga ajratib olish i
 - \\\`range.extractContents()\\\` - Range ichidagi barcha nodelarni DOM'dan kesib (qirqib) oladi va DocumentFragment qaytaradi.
 - \\\`range.cloneContents()\\\` - Kesmasdan, shunchaki nusxasini oladi.
 
-### 3. Edge Cases va Senior Interview Questions
+### 3. Chekka holatlar va Senior Intervyu Savollari
 
 **Rich Text Editor (Masalan: Quill, Draft.js, CKEditor) Arxitekturasi qanday ishlaydi?**
 
-*Senior Interview Savoli*: "Agar foydalanuvchi matnni belgilab, 'Bold' tugmasini bosa, DOM da nima o'zgaradi va Range qanday muammolarga duch keladi?"
+*Senior Intervyu Savoli*: "Agar foydalanuvchi matnni belgilab, 'Bold' tugmasini bosa, DOM da nima o'zgaradi va Range qanday muammolarga duch keladi?"
 
 *Javob*: Rich Text Editor (RTE) lar odatda bevosita DOM Selection va Range API'ni ishlatadi yoki ularni mavhumlashtirib virtual model yaratadi.
 Agar oddiy \\\`document.execCommand('bold')\\\` ishlatsak, u eskirgan (deprecated) bo'lib, brauzerlar turli xil HTML teglar (\\\`<b>\\\` yoki \\\`<strong>\\\` yoki \\\`<span style="font-weight:bold">\\\`) generatsiya qiladi. 

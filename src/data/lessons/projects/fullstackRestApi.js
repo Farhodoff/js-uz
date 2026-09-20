@@ -1,7 +1,7 @@
 export const fullstackRestApi = {
   id: "p3",
   title: "Loyiha: Express.js va React REST API (Full-stack)",
-  theory: `## 1. REST API nima? (Beginner Analogy)
+  theory: `## 1. REST API nima?
 
 Tasavvur qiling, siz restorandasiz. Siz (Client - React Frontend) ovqat buyurtma qilmoqchisiz, lekin oshxonaga (Database) to'g'ridan-to'g'ri kirolmaysiz. Sizga ofitsiant kerak! Ofitsiant (Server - Express.js REST API) sizning buyurtmangizni (HTTP Request) qabul qiladi, oshxonaga yetkazadi va tayyor ovqatni (JSON Response) sizga olib keladi.
 
@@ -9,7 +9,7 @@ REST (Representational State Transfer) bu - ofitsiant va mijoz o'rtasidagi kelis
 
 ---
 
-## 2. Deep Dive (Under the hood)
+## 2. Chuqur Tahlil
 
 REST arxitekturasining asosiy xususiyatlari:
 
@@ -20,7 +20,7 @@ REST arxitekturasining asosiy xususiyatlari:
 
 ---
 
-## 3. Edge Cases and Senior Interview Questions
+## 3. Chekka holatlar va Senior Intervyu Savollari
 
 Senior dasturchilarga REST API bo'yicha beriladigan qiyin savollar:
 

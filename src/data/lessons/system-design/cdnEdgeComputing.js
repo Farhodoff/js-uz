@@ -78,7 +78,7 @@ console.log(key1 === key2); // true -> Ikkala so'rov ham bitta keshga tushadi!
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Anycast va GeoDNS Routing
 
@@ -216,7 +216,7 @@ AWS Lambda odatda an'anaviy konteyner yoki VM-larda ishlaydi va cold start vaqti
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Global E-Commerce loyihasini Edge Computing yordamida tezlashtirish
 

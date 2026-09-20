@@ -2,11 +2,11 @@ export const typedArrays = {
   id: "typedArrays",
   title: "Typed Arrays va DataView (Binary Data bilan ishlash)",
   theory: `
-### Part 1: Beginner Analogy
+### 1-Qism: Sodda Tushuntirish
 Tasavvur qiling, oddiy JavaScript massivi (Array) – bu ichiga nima xohlasangiz solishingiz mumkin bo'lgan sehrli qop. Unga ruchka, kitob, televizor yoki hattoki boshqa qopni ham tiqib qo'yish mumkin. U juda qulay, lekin bunday erkinlik qimmatga tushadi: u ko'p xotira talab qiladi va ichidan kerakli narsani topish sekinlashadi.
 Typed Arrays (Tiplangan Massivlar) esa – bu pochtadagi qat'iy o'lchamdagi qutilarga o'xshaydi. Har bir quti faqat aniq o'lchamdagi va turdagi narsani (masalan, faqat tangalar) saqlashi mumkin. Buning afzalligi shundaki, kompyuter ularning xotirada aynan qayerda va qancha joy egallayotganini aniq biladi. Natijada 3D grafika (WebGL), audio/video ishlash, va xom ma'lumotlarni (binary data) yuborishda ular nihoyatda tez ishlaydi.
 
-### Part 2: Deep Dive (Under the hood)
+### 2-Qism: Chuqur Tahlil
 JavaScript xotirasi bilan bevosita ishlash uchun 2 ta asosiy mexanizm ishlatiladi: **ArrayBuffer** va **Views** (Ko'rinishlar).
 
 **ArrayBuffer**
@@ -27,7 +27,7 @@ int32View[0] = 42;
 Ba'zida tarmoqdan kelgan xotira blokida ham 1 baytlik, ham 4 baytlik turli xil ma'lumotlar aralash bo'ladi. Bunday holatda \\\`DataView\\\` dan foydalanamiz, u xotiraning istalgan baytiga borib, xohlagan turni o'qish/yozish imkonini beradi.
 Shuningdek, kompyuter arxitekturasida **Little-endian** va **Big-endian** degan tushuncha bor. U xotirada baytlarning o'ngdan-chapga yoki chapdan-o'ngga yozilishini bildiradi. DataView buni nazorat qilishga imkon beradi (masalan, \\\`dataView.getInt32(0, true)\\\` – bu true parametri little-endian formati ekanini bildiradi).
 
-### Part 3: Edge Cases va Senior Interview Questions
+### 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 **Savol 1:** TypedArray da \\\`push()\\\` yoki \\\`pop()\\\` metodlari ishlaydimi?
 **Javob:** Yo'q. ArrayBuffer o'lchami yaratilganda qat'iy belgilanadi. Uzunlikni o'zgartirib bo'lmaydi. Agar xotira yetmay qolsa, yangi kattaroq ArrayBuffer yaratib, eskilarini unga nusxalash (\\\`set()\\\` yordamida) kerak.

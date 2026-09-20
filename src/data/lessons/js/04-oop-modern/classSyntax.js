@@ -2,7 +2,7 @@ export const classSyntax = {
   id: "classSyntax",
   title: "ES6 Klasslar: class, constructor va static",
   language: "javascript",
-  theory: `## 1. 💡 Part 1: Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ES6 (2015) bilan JavaScript'ga \`class\` sintaksisi kirdi. U **yangi mexanizm emas** — eski prototip tizimining zamonaviy, o'qishli "po'stlog'i" (syntactic sugar).
 
@@ -47,7 +47,7 @@ console.log(car1.compare);         // undefined — nusxada statik yo'q!
 
 ---
 
-## 2. ⚙️ Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### Klass = konstruktorni funksiya ekanligini ko'rsatish
 Klass aslida **maxsus funksiya** (function). \`typeof Car\` — \`"function"\`. Uning ichki ko'rinishi:
@@ -103,7 +103,7 @@ const Cat = makeClass("Cat");
 
 ---
 
-## 3. ⚠️ Part 3: Murakkab Holatlar va Senior Intervyu Savollari (Edge Cases)
+## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari
 
 ### 1. Klasslar strict mode'da
 Klass tanasi **avtomatik ravishda strict mode** da ishlaydi. \`this = window\` muammosi yo'q — \`this\` yo'qolgan joylarda \`undefined\`.

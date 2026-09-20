@@ -2,7 +2,7 @@ export const sqlIntro = {
   id: "sql_intro",
   title: "SQL Kirish (Introduction)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 Tasavvur qiling, ma'lumotlar bazasi (Database) - bu ulkan va juda tartibli kutubxona. SQL (Structured Query Language) - bu kutubxonachiga nima qilish kerakligini aytadigan maxsus tildir.
 
 Siz kutubxonachiga: "Menga 2020-yilda yozilgan va O'zbekiston haqidagi barcha kitoblarni olib kel", desangiz u sizga aynan shularni olib keladi. Agar siz SQL o'rniga JavaScript-da (yomon yondashuv bilan) ishlasangiz, siz kutubxonachiga: "Kutubxonadagi 10 millionta kitobni hammasini uyimga olib kel", deysiz va uyda o'zingiz ularni bitta-bitta qarab, keraklisini ajratasiz. Bu naqadar absurd bo'lsa, ma'lumotlar bazasidan hamma narsani yuklab olib keyin JavaScript-da \`filter\` qilish ham shunday absurd va xotira (RAM) uchun halokatlidir.
@@ -13,7 +13,7 @@ SQL orqali biz asosan **CRUD** amallarini bajaramiz:
 - **U**pdate - Ma'lumotni yangilash (UPDATE)
 - **D**elete - Ma'lumotni o'chirish (DELETE)
 
-## 2. 🧠 Chuqur O'rganish (Deep Dive)
+## 2. 🧠 Chuqur O'rganish
 ### RDBMS Arxitekturasi va PostgreSQL Inernals
 RDBMS (Relational Database Management System) ma'lumotlarni qat'iy sxema asosida (jadvallar ko'rinishida) saqlaydi. Lekin bu jadvallar diskda qanday saqlanadi?
 
@@ -26,7 +26,7 @@ PostgreSQL kabi tizimlar ma'lumotlarni *Page* (sahifa) deb ataluvchi bloklarda (
 3. **Planner/Optimizer:** Ma'lumotni qanday qilib eng tez olishni (qaysi indeksni ishlatishni) hisoblab chiqib, *Execution Plan* tuzadi. (Bunda Cost-based optimization qo'llaniladi).
 4. **Executor:** Planni ishga tushirib, natijani qaytaradi.
 
-## 3. ⚠️ Edge Cases va Senior Intervyu Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 **Senior Intervyu Savoli 1:** "NoSQL (masalan, MongoDB) SQL (PostgreSQL) dan ko'ra tezroq degan fikrga qo'shilasizmi?"
 **Javob:** Yo'q, bu noto'g'ri tushuncha. Ikkisi turli xil muammolarni hal qilish uchun yaratilgan. Agar ma'lumotlar aniq sxemaga ega bo'lsa va ko'p 'JOIN' amallari kerak bo'lsa, yaxshi optimizatsiya qilingan PostgreSQL, MongoDB-dan ko'ra tezroq ishlaydi. NoSQL ko'proq sxemasiz, tez o'zgaruvchan yoki ierarxik tuzilmadagi ma'lumotlar (JSON) uchun qulay.

@@ -2,7 +2,7 @@ export const sqlSyntax = {
   id: "sql_syntax",
   title: "SQL Sintaksis (Syntax)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 SQL (Structured Query Language) tillar oilasiga kiradi, ammo u oddiy tillar (masalan ingliz tili) kabi ishlaydi. Unda biz buyruqlarni "gaplar" (statements) tarzida beramiz. 
 Tasavvur qiling, siz restoranda ofitsiantsiz va mijoz sizga buyurtma bermoqda: "Menga taomnoma ichidan 2 ta shirinlikni olib keling, narxi 10 dollardan arzon bo'lsin".
 SQL ham xuddi shunday ishlaydi: siz ma'lumotlar bazasiga qaysi ustunlar (SELECT), qaysi jadvaldan (FROM) va qanday shart asosida (WHERE) kerakligini aytasiz.
@@ -18,7 +18,7 @@ Bu yerda:
 - **FROM** - Qayerdan olinadi? (foydalanuvchilar jadvali)
 - **WHERE** - Qanday shartga ko'ra? (18 yoshdan kattalar)
 
-## 2. 🔬 Chuqurroq Tahlil (Deep Dive)
+## 2. 🔬 Chuqurroq Tahlil
 SQL ostida aslida nimalar sodir bo'ladi? Dastur so'rovni ko'rganda uni to'g'ridan-to'g'ri ishga tushirmaydi. Quyidagi bosqichlardan o'tadi:
 1. **Parsing (Tahlil qilinishi):** SQL dvigateli yozilgan kodni tekshiradi, sintaksis to'g'riligini aniqlaydi.
 2. **Planner (Rejalashtiruvchi):** Qanday qilib ma'lumotni tezroq va samaraliroq topish yo'lini tuzadi. Index'lardan foydalanish yoki to'liq qidirish kerakligini aniqlaydi.
@@ -32,7 +32,7 @@ SELECT * FROM xodimlar;
 \\\`\\\`\\\`
 Bu unumdorlik (performance) uchun zararlidir. Tarmoq orqali katta hajmdagi keraksiz ma'lumotlar (masalan, parollar, uzun matnlar) uzatiladi. Doimo faqat o'zingizga kerakli ustunlarni aniq yozing.
 
-## 3. 🚧 Chekka Holatlar va Senior Intervyu Savollari (Edge Cases & Senior Interview Questions)
+## 3. 🚧 Chekka Holatlar va Senior Intervyu Savollari 
 1. **SQL case-sensitive'mi (katta-kichik harfga sezgirmi)?**
    SQL ning o'zi (kalit so'zlar kabi SELECT, FROM) sezgir emas. Ammo jadval ichidagi ma'lumotlar sezgir bo'lishi mumkin. Bu ma'lumotlar bazasining Collation (sozlamalari) turiga bog'liq.
 2. **Buyruqlar bajarilish ketma-ketligi qanday?**

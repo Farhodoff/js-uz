@@ -17,7 +17,7 @@ Turlari:
 - **RIGHT JOIN**: O'ngdagi ro'yxatdan hamma kitoblarni oladi, o'quvchisi topilsa yozadi, topilmasa NULL.
 - **FULL JOIN**: Ikkala ro'yxatdagi hamma narsani birlashtirib ko'rsatadi.
 
-## 2. 🧠 Deep Dive (Under the hood)
+## 2. 🧠 Chuqur Tahlil
 
 Keling, JOIN qanday ishlashini ma'lumotlar bazasi dvigateli (Database Engine) darajasida ko'rib chiqamiz. Jadvallarni birlashtirish xotirada qanday amalga oshadi?
 Asosan 3 xil algoritm mavjud:
@@ -40,7 +40,7 @@ Agar birlashtirish sharti tenglik ( \\\`=\\\` ) bo'lsa, dvigatel **Hash Join** i
 3. **Merge Join (Sort-Merge Join)**
 Agar ikkala jadval ham JOIN qilinayotgan ustun bo'yicha oldindan tartiblangan (Indexed/Sorted) bo'lsa, Merge Join ishga tushadi. Dvigatel ikkala jadval ustidan bir vaqtda qadam tashlab (two pointers usuli) moslarni topib ketadi. Xotira ko'p yemaydi va juda tez (O(N+M) vaqtda) ishlaydi.
 
-## 3. ⚠️ Edge Cases va Senior Interview Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 **Savol 1: N+1 problemi nima va uni JOIN yordamida qanday hal qilish mumkin?**
 *Javob*: Dasturlash tilida (masalan, ORM orqali) 1 ta so'rov bilan 100 ta foydalanuvchini olib kelib, keyin ularning har biri uchun alohida so'rov jo'natib (yana 100 ta so'rov) buyurtmalarni olish N+1 xatosi deyiladi. Buni JOIN orqali bitta SQL so'rovda hal qilish (Eager Loading) ma'lumotlar bazasiga tushadigan yukni keskin kamaytiradi.

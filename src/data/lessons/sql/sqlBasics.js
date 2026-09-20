@@ -2,7 +2,7 @@ export const sqlBasics = {
   id: "sql_basics",
   title: "SQL Asoslari (CREATE, INSERT, UPDATE, DELETE)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, ma'lumotlar bazasi (database) bu ulkan bir kutubxona. Jadvallar (tables) esa kutubxonadagi kitob javonlari.
 Bizga bu javonlarni boshqarish uchun SQL (Structured Query Language) kerak bo'ladi.
@@ -14,7 +14,7 @@ Asosiy 4 ta amal CRUD deb ataladi:
 
 SQL tilidagi DML (Data Manipulation Language) buyruqlari yordamida biz jadvaldagi yozuvlar bilan ishlaymiz.
 
-## 2. 🚀 Chuqurlashtirilgan O'rganish (Deep Dive)
+## 2. 🚀 Chuqurlashtirilgan O'rganish
 
 Baza qanday qilib yozuvlarni topadi va o'zgartiradi?
 
@@ -23,7 +23,7 @@ Baza qanday qilib yozuvlarni topadi va o'zgartiradi?
 - **Planner/Optimizer:** Har qanday so'rovdan oldin, bazaning rejalashtiruvchisi (Query Planner) eng tez bajarilish yo'lini tanlaydi. Masalan, qaysi indeksni ishlatish yoki jadval kichik bo'lsa indeskni chetlab o'tishni o'zi hal qiladi.
 - **Performance (Ishlash tezligi):** \\\`UPDATE\\\` va \\\`DELETE\\\` buyruqlari bazada eski yozuvni saqlab qolib, yangisini yozadi (PostgreSQL'da MVCC sababli). Shuning uchun tez-tez \\\`UPDATE\\\` bo'ladigan jadvallarda "Dead Tuples" (o'lik qatorlar) ko'payib ketadi va ularni \\\`VACUUM\\\` orqali tozalash kerak.
 
-## 3. ⚠️ Chekka Holatlar va Senior Intervyu Savollari (Edge Cases & Interview Questions)
+## 3. ⚠️ Chekka Holatlar va Senior Intervyu Savollari 
 
 1. **WHERE shartini esdan chiqarish:**
    Eng keng tarqalgan xato! Agar siz \\\`UPDATE users SET status = 'active'\\\` deb yozsangiz, barcha foydalanuvchilar active bo'lib qoladi. Har doim tranzaksiyadan foydalaning (\\\`BEGIN; ... COMMIT;\\\`) va shartni tekshiring.

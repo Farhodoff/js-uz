@@ -108,7 +108,7 @@ app.use(session({
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Kesh Strategiyalari (Caching Strategies)
 1. **Cache-Aside (Lazy Loading):** Ilova birinchi navbatda keshni o'qiydi. Agar ma'lumot bo'lsa (Hit) qaytaradi. Bo'lmasa (Miss), bazadan o'qib keshga yozadi. Eng ko'p ishlatiladigan usul.
@@ -200,7 +200,7 @@ Dars yakunidagi quizzes bo'limida 12 ta test orqali bilimlaringizni sinab ko'rin
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Katta yuklamali internet do'kon uchun Cache-Aside yechimi
 Agar saytingizga soniyasiga 5000 so'rov kelsa va har bir so'rov ma'lumotlar bazasiga SQL \`JOIN\` so'rovi yuborsa, baza tezda qulaydi. Quyidagi wrapper yordamida har qanday asinxron ma'lumot olish funksiyasini avtomatik keshlovchi wrapper yaratish mumkin:

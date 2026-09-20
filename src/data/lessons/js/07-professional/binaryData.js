@@ -264,7 +264,7 @@ Dars yakunidagi testlar.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### E-commerce saytida foydalanuvchilar hisobotini Excel/CSV faylga yuklash
 Admin paneldagi "Barcha sotuvlar" jadvalini CSV formatida eksport qilish tugmasini yaratishimiz kerak.

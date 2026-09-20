@@ -95,7 +95,7 @@ listContainer.appendChild(fragment);
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Reflow va Repaint
 Brauzer sahifani render qilganda ikki bosqichni bajaradi:
@@ -196,7 +196,7 @@ Test savollari "Test" bo'limida joylashgan. Unda 12 ta variantli test mavjud.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Cheksiz Skrol (Infinite Scroll) va Rasm yuklash (Lazy Loading) tizimi
 

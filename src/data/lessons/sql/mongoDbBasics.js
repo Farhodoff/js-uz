@@ -2,7 +2,7 @@ export const mongoDbBasics = {
   id: "mongodb_basics",
   title: "MongoDB Asoslari (NoSQL)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, siz katta bir kutubxonadasiz. SQL (relyatsion) ma'lumotlar bazasida har bir kitob haqidagi ma'lumot qat'iy jadvallarga bo'lingan bo'ladi: bitta jadvalda avtorlar, ikkinchisida kitob nomlari, uchinchisida nashriyotlar. Barchasini birlashtirish uchun qiyin va uzoq qidiruvlar (JOIN) qilish kerak.
 
@@ -14,7 +14,7 @@ Tasavvur qiling, siz katta bir kutubxonadasiz. SQL (relyatsion) ma'lumotlar baza
 
 ---
 
-## 2. 🧠 Chuqur Sho'ng'ish (Deep Dive)
+## 2. 🧠 Chuqur Sho'ng'ish
 
 ### BSON vs JSON
 MongoDB ma'lumotlarni saqlash va tarmoq orqali uzatish uchun **BSON** (Binary JSON) dan foydalanadi. Nega oddiy JSON emas?
@@ -30,7 +30,7 @@ Uning asosiy afzalliklari:
 
 ---
 
-## 3. ⚠️ Chekka Holatlar (Edge Cases) va Senior Intervyu Savollari
+## 3. ⚠️ Chekka Holatlar va Senior Intervyu Savollari
 
 ### Chekka Holatlar:
 - **Maximum Document Size**: Bitta BSON hujjatining maksimal hajmi **16 MB**. Agar ma'lumot bundan oshib ketsa, \\\`GridFS\\\` dan foydalanish kerak yoki sxemani o'zgartirish (masalan, reference qilish) lozim.

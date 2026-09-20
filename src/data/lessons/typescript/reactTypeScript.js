@@ -2,7 +2,7 @@ export const reactTypeScript = {
   id: "react-typescript",
   title: "React va TypeScript (Asoslar)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 React va TypeScript birga ishlatilishi — bu xuddi restorandagi **buyurtma berish tizimi** (TypeScript) va **oshxona** (React) kabi. Oshxonaga (komponentga) faqat menyudagi aniq taomlarni, aniq masalliqlar (Props) bilan buyurtma berish mumkin. Agar ofitsiant (dasturchi) menyuda yo'q narsani yozsa, tizim (TS) darhol xato beradi va buyurtmani oshxonaga yubormaydi. Bu sizni mijoz oldida uyatli vaziyatdan (production'dagi xatolikdan) asraydi.
 
@@ -10,7 +10,7 @@ React va TypeScript birga ishlatilishi — bu xuddi restorandagi **buyurtma beri
 - **Hooks tiplari**: Masalan, state faqat raqam yoki matn bo'lishi mumkinligini ta'minlaydi.
 - **Event tiplari**: Bosilgan tugma yoki yozilgan inputni aniq taniydi.
 
-## 2. 🧠 Chuqur Sho'ng'ish (Deep Dive: Under the Hood)
+## 2. 🧠 Chuqur Sho'ng'ish 
 
 TypeScript React bilan ishlaganda quyidagi muhim jarayonlar yuz beradi:
 
@@ -23,9 +23,9 @@ React TS bilan ishlatilganda, obyekt va funksiyalarning tiplari qat'iy tekshiril
 **JSX transformatsiyasi:**
 TS da \\\`.tsx\\\` formati React kompilatsiyasi va TypeScript tekshiruvini birga amalga oshiradi. TS compiler JSX teglarini (masalan, \\\`<div />\\\`) ko'rganda, uning xususiyatlarini (props, children) maxsus \\\`JSX.IntrinsicElements\\\` orqali tekshiradi.
 
-## 3. ⚠️ Edge Cases va Senior Intervyu Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-**Edge Cases (Noodatiy holatlar):**
+**Chekka (noodatiy) holatlar:**
 1. **Children tipi:** Agar siz komponentingiz child qabul qilishini istasangiz, uni ochiqchasiga yozishingiz kerak (\\\`children?: React.ReactNode\\\`). Eskiroq React + TS versiyalarida (\\\`React.FC\\\`) bu avtomat edi.
 2. **Event tipidagi xatoliklar:** \\\`onChange\\\` da \\\`Event\\\` tipini topa olmasangiz, eventni inline qilib yozing, TS uni o'zi to'g'ri chiqarib (infer) beradi: \\\`onChange={(e) => console.log(e)}\\\`. Keyin o'sha tipni hover qilib ko'rib, tashqariga ko'chirib olishingiz mumkin.
 3. **null Ref'lar:** \\\`useRef<HTMLDivElement>(null)\\\` deb yaratilgan ref doim DOM yuklanishidan oldin \\\`null\\\` bo'ladi. Uni ishlatishdan oldin doim \\\`if (ref.current)\\\` qilib tekshirish shart.

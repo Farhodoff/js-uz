@@ -2,13 +2,13 @@ export const sqlIndexes = {
   id: "sql_indexes",
   title: "SQL Indexes (Indekslar)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, siz 10,000 betlik ulkan ensiklopediyadan "Dasturlash" so'zini qidiryapsiz. Agar kitobda mundarija yoki indeks (ko'rsatkich) bo'lmasa, siz 1-betdan boshlab to 10,000-betgacha har bir sahifani birma-bir o'qib chiqishga majbur bo'lasiz. Bu ma'lumotlar bazasida **Full Table Scan** (Jadvalni to'liq skanerlash) deb ataladi va u sekin ishlaydi.
 
 Agar kitobning oxirida indeks bo'lsa (Masalan: D harfi -> Dasturlash -> 542-bet), siz to'g'ridan-to'g'ri 542-betni ochasiz va kerakli ma'lumotni darhol topasiz. Ma'lumotlar bazasidagi **Index** xuddi shunday ishlaydi — u qidiruvni keskin tezlashtiruvchi maxsus ma'lumotlar tuzilmasidir (**Index Scan / Index Seek**).
 
-## 2. 🔬 Deep Dive (Under the hood, Turlari)
+## 2. 🔬 Chuqur Tahlil (Ichki ishlash, Turlari)
 
 Indekslar qanday ishlaydi va ularning qanday turlari mavjud?
 
@@ -32,9 +32,9 @@ Ayniqsa juda katta (Terabaytlab) jadvallar uchun mos. U har bir ma'lumotlar blok
 - **Index Scan:** DB to'g'ridan-to'g'ri indeksni o'qiydi va u yerdagi ko'rsatkichlar yordamida diskdan faqat kerakli qatorlarni oladi. Agar indeks kerakli barcha ustunlarni o'zida saqlasa (**Covering Index**), faqat indeksning o'zi o'qiladi (**Index Only Scan**).
 - **Bitmap Heap Scan:** Agar so'rov natijasi ko'p qatorlarni qaytarishi kerak bo'lsa, avval indeksdan barcha mos keluvchi qatorlarning manzillari yig'iladi (Bitmap Index Scan) va keyin ular orqali xotira bloklari birgalikda optimal tartibda diskdan o'qiladi. Bu I/O samaradorligini oshiradi.
 
-## 3. ⚠️ Edge Cases va Senior Interview Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-**Indeks qachon ishlamaydi? (Edge Cases)**
+**Indeks qachon ishlamaydi?**
 1. **Funksiyalar ishlatilganda:** Agar siz \\\`WHERE UPPER(email) = 'A@B.COM'\\\` deb yozsangiz, oddiy indeks ishlamaydi. Buning uchun **Expression Index** kerak:
 \\\`\\\`\\\`sql
 CREATE INDEX idx_email_upper ON users(UPPER(email));
@@ -43,7 +43,7 @@ CREATE INDEX idx_email_upper ON users(UPPER(email));
 3. **Data Type Mismatch:** Ustun tipi string bo'lsa-yu, siz unga son (\\\`123\\\`) bilan murojaat qilsangiz, indeks e'tiborsiz qoldirilishi mumkin.
 4. **Jadval juda kichik bo'lsa:** DB rejalashtiruvchisi kichik jadvallar uchun indeks o'rniga Full Table Scan ishlatishni afzal ko'radi.
 
-**Senior Interview Savollari:**
+**Senior Intervyu Savollari:**
 1. **Index qachon salbiy ta'sir ko'rsatadi?**
    - *Javob:* Har bir \\\`INSERT\\\`, \\\`UPDATE\\\`, va \\\`DELETE\\\` amali vaqtida indekslar ham yangilanishi kerak. Juda ko'p indekslar yozish jarayonini sekinlashtiradi va diskda ortiqcha joy egallaydi.
 2. **Clustered va Non-Clustered Index farqi nimada?**

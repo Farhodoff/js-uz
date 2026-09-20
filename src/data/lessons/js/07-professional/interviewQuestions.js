@@ -97,7 +97,7 @@ console.log(result);
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 O'rta darajadagi JavaScript suhbatlarida asosan quyidagi mavzularda savollar beriladi:
 - **Kontekst va this:** Arrow funksiyalar va oddiy funksiyalar farqlari, binding usullari (\`call\`, \`apply\`, \`bind\`).
@@ -151,9 +151,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Custom Promise.all Implementation
+### Amaliy tahlil: Promise.all’ni qo’lda yozish
 Suhbatlarda eng ko'p so'raladigan asinxron polifil yozish masalasi:
 \`\`\`javascript
 function customPromiseAll(promises) {

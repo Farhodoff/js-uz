@@ -2,23 +2,23 @@ export const dockerComposeDb = {
   id: "docker-compose-db",
   title: "Docker Compose va Ma'lumotlar Bazalari",
   language: "javascript",
-  theory: `## 1. 💡 Beginner Analogy (Sodda Tushuntirish)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, siz katta bir restoran ochyapsiz. Restoranda oshpaz (Backend ilova), ofitsiant (Frontend) va omborxona mudiri (Ma'lumotlar bazasi - DB) bor. 
 Agar siz har bir xodimni alohida-alohida ishga chaqirib, ularga nima qilish kerakligini birma-bir tushuntirsangiz (bu \\\`docker run\\\` buyrug'iga o'xshaydi), juda ko'p vaqt va asab yo'qotasiz.
 
 **Docker Compose** — bu restoran boshqaruvchisining yozma "Ish rejasi" (ya'ni \\\`docker-compose.yml\\\` fayli). Siz shunchaki bitta buyruq (\\\`docker-compose up\\\`) berasiz va restoran boshqaruvchisi oshpazni, ofitsiantni va omborxona mudirini birdaniga ishga tushiradi. Ular qachon kelishini, kim kimga qaram ekanligini (masalan, oshpaz omborxona mudirisiz ovqat pishirolmasligini) bitta faylda ko'rsatib qo'yasiz. Shunday qilib, butun tizim (ilovangiz va uning DB si) bitta jamoa bo'lib ishlaydi.
 
-## 2. 🧠 Deep Dive (Chuqurlashtirilgan o'rganish)
+## 2. 🧠 Chuqur Tahlil (Chuqurlashtirilgan o'rganish)
 
 Docker Compose qanday qilib bir nechta konteynerlarni bog'laydi?
 
-- **Under the hood (Ichki ishlash mexanizmi)**: Docker Compose aslida Docker API ustiga qurilgan abstraksiya qatlami hisoblanadi. U siz yozgan YAML faylini o'qiydi, ketma-ketlikni (\\\`depends_on\\\`) tahlil qiladi va har bir xizmat uchun ketma-ket \\\`docker run\\\` buyruqlarini generatsiya qilib ijro etadi.
+- **Ichki ishlash mexanizmi**: Docker Compose aslida Docker API ustiga qurilgan abstraksiya qatlami hisoblanadi. U siz yozgan YAML faylini o'qiydi, ketma-ketlikni (\\\`depends_on\\\`) tahlil qiladi va har bir xizmat uchun ketma-ket \\\`docker run\\\` buyruqlarini generatsiya qilib ijro etadi.
 - **Networking Bridge (Tarmoq ko'prigi)**: Compose avtomatik ravishda barcha xizmatlar uchun bitta izolyatsiya qilingan (default) tarmoq yaratadi. Shuning uchun ilovangiz DB bilan bog'lanish uchun IP manzil emas, balki to'g'ridan-to'g'ri xizmat nomini (masalan, \\\`db\\\` yoki \\\`postgres\\\`) ishlatishi mumkin. Dockerning ichki DNS serveri bu nomni tegishli konteynerning IP manziliga o'zgartirib beradi.
 - **Memory va Resurslarni boshqarish**: YAML fayl orqali har bir konteyner qancha RAM yoki CPU ishlatishini aniq belgilab berishingiz mumkin (\\\`deploy.resources.limits\\\` orqali). Bu bitta xizmat (masalan, DB) butun server xotirasini band qilib qo'ymasligini ta'minlaydi.
 - **Volumes va DB Persistence (Ma'lumotlarni saqlab qolish)**: Konteynerlar o'tkinchi (ephemeral). Agar PostgreSQL konteynerini o'chirsangiz, barcha ma'lumotlar o'chib ketadi. Bunga yo'l qo'ymaslik uchun **Volumes** (hajmlar) ishlatiladi. Volume xost mashinasidagi qattiq diskning ma'lum bir qismini konteyner ichidagi ma'lumotlar saqlanadigan papkaga (\\\`/var/lib/postgresql/data\\\`) bog'laydi. Natijada, konteyner o'chirilsa ham, ma'lumotlar kompyuteringizda xavfsiz saqlanib qoladi.
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions (Murakkab holatlar)
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari (Murakkab holatlar)
 
 **Edge Case 1: "Konteyner ishga tushdi, lekin DB tayyor emas"**
 \\\`depends_on\\\` faqat konteyner ishga tushganligini tekshiradi, lekin DB o'zining ichki jarayonlarini tugatib, ulanishlarni qabul qilishga tayyor ekanligini kutmaydi. Natijada, ilovangiz DB ga ulana olmay "Connection Refused" xatosini berishi mumkin.
@@ -28,7 +28,7 @@ Docker Compose qanday qilib bir nechta konteynerlarni bog'laydi?
 YAML fayl ichida \\\`POSTGRES_PASSWORD: mysecret\\\` deb ochiq yozish xavfsizlikka ziddir, ayniqsa kod Githubda tursa.
 *Yechim:* \\\`.env\\\` fayl ishlatish va YAML ichida \\\`POSTGRES_PASSWORD: \${DB_PASSWORD}\\\` shaklida o'zgaruvchilarni chaqirish kerak.
 
-**Senior Interview Savollari:**
+**Senior Intervyu Savollari:**
 1. **Savol:** \\\`docker-compose up\\\` va \\\`docker-compose start\\\` ning farqi nima?
    **Javob:** \\\`up\\\` konteynerlarni noldan yaratadi (agar yo'q bo'lsa), tarmoqlarni ulaydi va ishga tushiradi. \\\`start\\\` esa faqatgina oldin yaratilgan va to'xtab turgan konteynerlarni qayta ishga tushiradi, u yangi konfiguratsiyani o'qimaydi.
 2. **Savol:** Bitta serverda ikkita bir xil loyihani Docker Compose orqali qanday qilib nomlar to'qnashuvisiz (name collision) ishga tushirish mumkin?

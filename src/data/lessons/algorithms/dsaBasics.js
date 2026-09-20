@@ -32,7 +32,7 @@ console.log(obj1.value); // 200 (obj1 qiymati ham o'zgaradi!)
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Xotira manzillari va Bitlar:
 Kompyuterda har qanday ma'lumot 0 va 1 (bit) ko'rinishida saqlanadi. 8 bit = 1 bayt. Har bir o'zgaruvchi xotirada ma'lum bir baytlar diapazonini egallaydi.

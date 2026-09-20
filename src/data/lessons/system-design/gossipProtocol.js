@@ -85,7 +85,7 @@ console.log("Node_D holati:", nodes.get("Node_D").store["config_v1"]);
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Epidemic Broadcast Models
 Gossip protokoli **Epidemiya (virus tarqalishi)** matematik modellariga asoslanadi. Klasterdagi tugunlar 3 ta holatda bo'lishi mumkin:
@@ -157,7 +157,7 @@ Testlar orqali bilimingizni tekshiring.
 
 ---
 
-## 8. 🎯 Real Project Case Study: Consul va Serf failure detection
+## 8. 🎯 Real Loyiha Tahlili: Consul va Serf xatoliklarni aniqlashi
 
 Consul tizimida har bir server va agent har soniyada tasodifiy tugunlarga UDP paketlari orqali ping yuboradi. Agar javob ololmasa, u 3 ta tasodifiy tugunga \`ping-req\` yuboradi. Bu tarmoqning mahalliy uzilishlari tufayli noto'g'ri ogohlantirishlar (false alarms) berilishini oldini oladi.
 

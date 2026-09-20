@@ -2,7 +2,7 @@ export const timers = {
   id: "timers",
   title: "Vaqt funksiyalari (Timers)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Vaqt funksiyalari (Timers) nima?
 JavaScript-da **Vaqt funksiyalari** kodni hozir emas, birozdan so'ng yoki ma'lum vaqt oralig'ida takroran bajarish uchun ishlatiladi.
@@ -14,9 +14,9 @@ Tasavvur qiling, siz pirog yopyapsiz:
 
 ---
 
-## 2. ⚙️ Chuqurlashtirilgan o'rganish (Deep Dive)
+## 2. ⚙️ Chuqurlashtirilgan o'rganish
 
-### Under the Hood: Event Loop va V8 Engine
+### Ichki ishlash: Event Loop va V8 Engine
 JavaScript o'zining asosi bo'lgan V8 dvigatelida **Single-Threaded** (bir oqimli) til hisoblanadi. Ya'ni, u bir vaqtning o'zida faqat bitta ishni bajara oladi. Unda qanday qilib taymerlar asinxron ishlaydi?
 
 Taymerlar JS dvigatelining o'ziga emas, balki **Web APIs** (brauzerda) yoki **C++ API** (Node.js da) ga tegishli. Siz \\\`setTimeout\\\` chaqirganingizda:
@@ -40,7 +40,7 @@ graph TD;
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions (Intervyu Savollari)
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari 
 
 ### 1-savol: \\\`setTimeout(fn, 0)\\\` qanday ishlaydi?
 Yangi boshlovchilar \\\`setTimeout(fn, 0)\\\` kodni darhol bajaradi deb o'ylashadi. Ammo, asinxron bo'lgani uchun \\\`fn\\\` funksiyasi Web API orqali Macrotask Queue-ga tushadi va **Call Stack'dagi barcha sinxron kodlar bajarilib bo'lingandan keyin** ishga tushadi.

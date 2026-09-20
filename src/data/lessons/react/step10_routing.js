@@ -4,7 +4,7 @@ export const step10_routing = {
   content: `
 # React Routing (Marshrutizatsiya) asoslari va React Router DOM
 
-## Routing nima o'zi? (What is Routing?)
+## Routing nima o'zi? 
 
 Tasavvur qiling, siz katta savdo markazidasiz (Mall). Savdo markazi ko'plab do'konlardan iborat. Qaysi do'konga borishni xohlasangiz, yo'laklar orqali kerakli manzilga kelasiz. Savdo markazidagi yo'l ko'rsatkichlar va xaritalar sizga qaysi qavatda qaysi do'kon borligini ko'rsatadi. 
 

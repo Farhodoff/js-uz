@@ -2,7 +2,7 @@ export const forms = {
   id: "forms",
   title: "Formalar bilan Ishlash, Validatsiya va FormData API (Forms)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 ### Formalar va Validatsiya nima?
 Tasavvur qiling, siz **xalqaro pasport olish uchun elchixonaga ariza topshiryapsiz**:
@@ -15,7 +15,7 @@ Bu jarayon mijoz (client) va xizmat ko'rsatuvchi (server) o'rtasida noto'g'ri ma
 
 ---
 
-## 2. 🧠 Deep Dive: Under the Hood, Memory, V8 Engine va Performance
+## 2. 🧠 Chuqur Tahlil: Ichki ishlash, Xotira, V8 dvigateli va Unumdorlik
 
 Forma ishlashi va validatsiyasi brauzerda qanday ishlaydi?
 
@@ -44,9 +44,9 @@ function debounce(func, timeout = 300) {
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases (Noaniq holatlar)
+### Chekka holatlar (Noaniq holatlar)
 1. **\\\`type="number"\\\` bo'lgan inputlarning matn qaytarishi:**
    Garchi HTML input \\\`type="number"\\\` bo'lsa-da, uning \\\`.value\\\` xususiyati har doim \\\`String\\\` qaytaradi. Uni matematik hisoblashdan oldin \\\`Number(input.value)\\\` ga o'girish shart, aks holda "1" + "1" = "11" bo'lib qoladi.
 2. **Checkbox va Radio tugmalarining qiymatlari:**
@@ -54,7 +54,7 @@ function debounce(func, timeout = 300) {
 3. **Trim qilinmagan matnlar:**
    Foydalanuvchi "   " (bo'shliqlar) kiritganda, oddiy validatsiyadan o'tib ketadi. Har doim \\\`.trim()\\\` ishlatish kerak.
 
-### Senior Interview Questions
+### Senior Intervyu Savollari
 1. **Savol:** Nima uchun FormData obyektini konsolga chiqarish bo'sh obyekt ko'rsatadi va qanday qilib uning ichidagi qiymatlarni ko'rish mumkin?
    **Javob:** FormData obyekti qiymatlarni o'z ichida yashirin iteratorlar sifatida saqlaydi. Uni ko'rish uchun \\\`formData.entries()\\\` yoki \\\`Object.fromEntries(formData.entries())\\\` dan foydalanish kerak.
 2. **Savol:** Client-side validatsiya 100% xavfsiz emas deb aytiladi. Nima uchun va qanday himoyalanish kerak?

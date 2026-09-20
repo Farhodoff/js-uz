@@ -54,7 +54,7 @@ class Graph {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Graflarni xotirada saqlash usullari:
 1. **Adjacency Matrix (Qo'shnichilik matritsasi):** $V \\times V$ o'lchamli 2D matritsa. Agar $i$ va $j$ tugunlar o'rtasida aloqa bo'lsa, \`matrix[i][j] = 1\` bo'ladi.

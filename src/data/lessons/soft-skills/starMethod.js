@@ -22,7 +22,7 @@ Agar siz kinoni ajdarho bilan jangdan boshlab, nega jang qilayotganingizni aytma
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 STAR qisqartmasining to'liq ma'nosi:
 
@@ -90,9 +90,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Senior Backend Engineer Answer using STAR
+### Amaliy tahlil: STAR yordamida Senior Backend muhandisi javobi
 Katta loyiha optimallashtirilishi tajribasini STAR metodi orqali ifodalash:
 * **Situation:** Saytimizning yuklanish tezligi sekinlashdi, foydalanuvchilar yo'qotilayotgan edi.
 * **Task:** Page load tezligini 3 soniyadan 1 soniyaga tushirish topshirig'i qo'yildi.

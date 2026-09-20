@@ -2,15 +2,15 @@ export const typeNarrowing = {
   id: "type-narrowing",
   title: "TypeScript Type Narrowing (Toifani Toraytirish)",
   language: "typescript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, tungi klub oldida qorovul (bouncer) turibdi. Klubga faqat 18 yoshdan kattalar (masalan, \`number\` tipi) yoki maxsus VIP kartasi borlar (\`string\` tipi) kirishi mumkin. Odamlar kelganda qorovul ularning pasporti yoki kartasini tekshiradi (bu JS-dagi \`typeof\` yoki mantiqiy tekshiruv). Agar tekshiruvdan o'tsa, qorovul bu odam aynan kim ekanligini aniq biladi va unga to'g'ri xizmat ko'rsatadi.
 
 TypeScript-dagi **Type Narrowing** (Toifani toraytirish) ham xuddi shu qorovul kabi ishlaydi. U kodingizdagi \`if-else\`, \`switch\` va \`typeof\` kabi oddiy JavaScript tekshiruvlarini qadamma-qadam kuzatadi (buni "Control Flow Analysis" deyiladi). Natijada, keng toifani (masalan, \`string | number\`) aniq bir toifaga (masalan, faqat \`string\`) toraytirib, xato qilish ehtimolini oldini oladi.
 
-## 2. 🧠 Deep Dive (Chuqur tahlil)
+## 2. 🧠 Chuqur Tahlil
 
-**Under the hood (Qanday ishlaydi):**
+**Ichki ishlash (Qanday ishlaydi):**
 TypeScript "Control Flow Analysis" (Boshqaruv oqimi tahlili) mexanizmidan foydalanadi. Kompilyator kodingizni o'qiyotganda, har bir \`if\`, \`else\`, \`return\` va \`switch\` orqali ehtimoliy tarmoqlarni tahlil qiladi va shu ma'lumot asosida o'zgaruvchining toifasini moslashtirib (toraytirib) boradi. 
 
 **TS Compiler (tsc) va Type Erasure:**
@@ -19,7 +19,7 @@ Narrowing amallari faqatgina TypeScript kompilyatsiya jarayonida (compile-time) 
 **Memory va Performance:**
 TypeScript tiplari va narrowing tahlillari dasturning ishlab turgan paytidagi (runtime) xotirasi va tezligiga (performance) umuman ta'sir qilmaydi, chunki tiplar JavaScript-ga o'tmaydi. Biroq, \`typeof\` kabi JS tekshiruvlari runtime-da bajarilgani sababli mikroskopik darajada resurs talab qiladi, ammo bu amalda dastur tezligiga salbiy ta'sir ko'rsatmaydi.
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 **🎤 1. Type Predicate (\`arg is Type\`) qachon xavfli bo'lishi mumkin?**
 *Javob:* Type predicate-lar (masalan, \`function isString(val: any): val is string\`) TypeScript-ga o'zgaruvchining aniq turini kafolatlaydi. Ammo u xavfli bo'lishi mumkin! Agar siz funksiya ichida mantiqiy xato qilib noto'g'ri natija qaytarsangiz ham, TypeScript sizga ishonadi. Bu compile-time xatolar yashirinib qolib, runtime bug-larga olib kelishi mumkin.

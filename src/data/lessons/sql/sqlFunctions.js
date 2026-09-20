@@ -2,7 +2,7 @@ export const sqlFunctions = {
   id: "sql_functions_1",
   title: "SQL Functions (Funksiyalar)",
   language: "javascript",
-  theory: `## 1. 💡 Beginner Analogy: Oshxona Asboblari
+  theory: `## 1. 💡 Sodda Tushuntirish: Oshxona Asboblari
 
 Tasavvur qiling, sizning oshxonangizda turli xil asboblar bor.
 **Scalar (Skalyar) funksiyalar** - bu pichoq. U har bir olma yoki sabzini alohida kesadi. Ya'ni, har bir qator (row) uchun alohida bitta natija qaytaradi.
@@ -11,7 +11,7 @@ Masalan: \\\`UPPER(name)\\\` har bir ismni katta harflarga o'tkazadi.
 **Aggregate (Agregat) funksiyalar** - bu blender. Siz unga ko'plab mevalarni solasiz, u ularni aralashtirib, bitta sharbat (bitta umumiy natija) qilib beradi.
 Masalan: \\\`SUM(price)\\\` barcha narxlarni qo'shib, bitta jami summani qaytaradi.
 
-## 2. 🚀 Deep Dive: Under the Hood (Qanday Ishlaydi?)
+## 2. 🚀 Chuqur Tahlil: Ichki ishlash (Qanday Ishlaydi?)
 
 SQL bazasi (Masalan PostgreSQL, MySQL) agregat funksiyalarni (\\\`SUM\\\`, \\\`AVG\\\`) bajarayotganda asosan 2 xil **Aggregation Pipeline** (guruhlash usuli) dan foydalanadi:
 
@@ -24,7 +24,7 @@ Avval barcha ma'lumotlarni guruhlanadigan ustun bo'yicha tartiblaydi (Sort), so'
 **Performance (Tezlik) bo'yicha maslahat**:
 Barcha ma'lumotni JavaScript-ga \\\`SELECT *\\\` bilan tortib olib, Node.js da \\\`Array.reduce()\\\` orqali hisoblash qat'iyan man etiladi! DB-ning o'zi buni maxsus C/C++ tillarida yozilgan motor (engine) orqali va SIMD (Single Instruction, Multiple Data) ko'rsatmalaridan foydalanib, ancha tezroq bajaradi. Natijani tayyor holda (masalan \\\`SELECT SUM(price)\\\`) olish eng optimal yondashuvdir.
 
-## 3. ⚠️ Edge Cases & Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 1. **\\\`COUNT(*)\\\` va \\\`COUNT(column_name)\\\` o'rtasidagi farq nimada?**
    - \\\`COUNT(*)\\\` barcha qatorlarni, hatto qatordagi barcha ustunlar \\\`NULL\\\` bo'lsa ham sanaydi.

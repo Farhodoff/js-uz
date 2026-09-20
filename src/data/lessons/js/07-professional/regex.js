@@ -139,7 +139,7 @@ Dars oxirida testlar taqdim etiladi.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Parol Kuchini Tekshiruvchi Algoritm (Password Validator)
 Saytlarda ro'yxatdan o'tishda parollarni tekshirish uchun RegEx eng qulay vosita hisoblanadi.

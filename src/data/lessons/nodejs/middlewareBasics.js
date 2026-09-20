@@ -2,7 +2,7 @@ export const middlewareBasics = {
   id: "middleware-basics",
   title: "Middleware Basics",
   theory: `
-## Part 1: Beginner Analogy
+## 1-Qism: Sodda Tushuntirish
 
 Tasavvur qiling, siz restoranga kirdingiz. Siz mijoz (Client) sifatida ofitsiantga (Server) buyurtma berasiz (Request). Lekin ofitsiant to'g'ridan-to'g'ri oshpazga (Route Handler) borishdan oldin, u bir nechta "tekshiruvchilar" yoki "yordamchilar"dan o'tishi kerak:
 
@@ -14,7 +14,7 @@ Bu yordamchilar **Middleware** deb ataladi. Ular Request (so'rov) kelganda va Re
 
 ---
 
-## Part 2: Deep Dive (Under the hood, memory, V8 engine, Libuv, performance)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, Libuv, unumdorlik)
 
 Middleware bu Express.js yoki shunga o'xshash Node.js freymvorklarida request (req) va response (res) obyektlari, hamda \\\`next\\\` deb nomlanuvchi funksiyani qabul qiluvchi oddiy funksiyadir.
 
@@ -34,7 +34,7 @@ Sinxron og'ir vazifalar o'rniga, Libuv orqali ishlaydigan asinxron (I/O) vazifal
 
 ---
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 1. **Agar middleware ichida \\\`next()\\\` chaqirilmasa nima bo'ladi?**
    Javob: So'rov "osilib" qoladi. Mijoz javob ololmaydi va oxir-oqibat timeout xatosi yuz beradi. (Yoki \\\`res.send()\\\` qilib javobni shu joyda tugatish kerak).

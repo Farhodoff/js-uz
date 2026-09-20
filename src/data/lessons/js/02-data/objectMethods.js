@@ -2,7 +2,7 @@ export const objectMethods = {
   id: "object-methods",
   title: "Object Metodlari: keys, values va entries",
   language: "javascript",
-  theory: `## 1. 💡 Beginner Analogy: Shkaf va Qutilar
+  theory: `## 1. 💡 Sodda Tushuntirish: Shkaf va Qutilar
 
 Tasavvur qiling, sizda bitta katta shkaf bor (Object) va uning ichida bir nechta tortmalar mavjud. Har bir tortmaning ustida yozuv qog'ozi (Key - kalit) bor va ichida buyum (Value - qiymat) yotibdi.
 
@@ -11,7 +11,7 @@ Tasavvur qiling, sizda bitta katta shkaf bor (Object) va uning ichida bir nechta
 - **Object.entries()** - Har bir tortmani yozuvi va ichidagi buyumini bitta qilib (juftlik qilib) yig'ib olishdir.
 - **Object.fromEntries()** - Agar sizda shu yozuv va buyum juftliklari bo'lsa, ularni qaytadan bitta shkafga joylashtirib chiqishdir.
 
-## 2. 🧠 Deep Dive: Under the Hood (V8 Engine va Performance)
+## 2. 🧠 Chuqur Tahlil: Ichki ishlash (V8 Engine va Performance)
 
 JavaScript (ayniqsa V8 dvigateli) obyektlarni xotirada qanday saqlashini tushunish, bu metodlarning ishlash tezligini (performance) baholashda juda muhim.
 
@@ -25,7 +25,7 @@ Xotira nuqtai nazaridan:
 - \\\`Object.keys()\\\` yangi massiv yaratadi, lekin faqat string (yoki stringga aylantirilgan raqamlar) kalitlarni o'z ichiga oladi.
 - \\\`Object.entries()\\\` eng ko'p xotira sarflaydi, chunki u nafaqat asosiy massivni, balki har bir kalit-qiymat uchun kichik ikki elementli massivlarni ham xotirada yaratishi kerak.
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 **Edge Case 1: Raqamli kalitlar tartibi (Property Order)**
 JavaScriptda obyekt kalitlari har doim ham yaratilgan tartibda chiqmaydi! Agar kalitlar butun raqamlar (integer) bo'lsa, ular o'sish tartibida saralanadi.
@@ -44,7 +44,7 @@ Object.defineProperty(user, "age", { value: 25, enumerable: false });
 console.log(Object.keys(user)); // Natija: ["name"]
 \\\`\\\`\\\`
 
-**Senior Interview Question:**
+**Senior Intervyu Question:**
 *Savol:* Nega katta hajmdagi ma'lumotlarni ishlashda \\\`Object.entries()\\\` o'rniga oddiy \\\`for...in\\\` samaraliroq bo'lishi mumkin?
 *Javob:* Chunki \\\`Object.entries()\\\` har bir kalit-qiymat juftligi uchun xotirada yangi massiv ajratadi. Katta obyektlarda bu Garbage Collector ga og'irlik tushiradi va Memory Spike ni keltirib chiqaradi. Bunday holatda \\\`for...in\\\` tsikli (yoki \\\`for...of\\\` \\\`Object.keys\\\` bilan) orqali mutatsiya qilish xotira tejamkorroqdir. Ammo \\\`for...in\\\` prototip zanjirini ham tekshirganligi sababli, \\\`Object.hasOwn()\\\` bilan birga ishlatilishi shart.
 

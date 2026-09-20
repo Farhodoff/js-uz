@@ -47,7 +47,7 @@ class Trie {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### O'ta tezkor qidiruv unumdorligi:
 - Agar bizda 1 millionta so'zdan iborat oddiy massiv bo'lsa, bitta so'zni qidirish $O(N)$ yoki saralangan bo'lsa $O(\\log N)$ vaqt oladi.

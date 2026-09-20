@@ -174,7 +174,7 @@ Dars oxiridagi test topshiriqlari.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Oflayn rejimda ishlovchi Chat Ilova (Offline Message Queue)
 Ilovada foydalanuvchi internet bo'lmaganda yozgan xabarlarini yo'qotmaslik uchun fondagi sinxronizatsiyadan foydalanilgan.

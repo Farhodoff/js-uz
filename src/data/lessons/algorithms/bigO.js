@@ -49,7 +49,7 @@ function printPairs(arr) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Xotira taqsimoti: Stack vs Heap
 Dastur bajarilayotganda JavaScript dvigateli (V8 kabi) xotirani ikki qismga bo'ladi:

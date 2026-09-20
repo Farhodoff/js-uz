@@ -49,7 +49,7 @@ class MinHeap {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Massivda saqlash (Array Representation):
 Uyum to'liq ikkilik daraxt (Complete Binary Tree) bo'lgani uchun, uning tugunlarini pointerlarsiz, oddiy bir o'lchamli massivda xotirani tejagan holda saqlash mumkin:

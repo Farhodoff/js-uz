@@ -64,7 +64,7 @@ getUser(1, (user) => {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### JavaScript Event Loop va Web APIs
 JavaScript **Single-Threaded** (bir oqimli) til bo'lib, bir vaqtning o'zida faqat bitta vazifani bajara oladi. Asinxron operatsiyalar quyidagicha boshqariladi:

@@ -2,7 +2,7 @@ export const objects = {
   id: "objects",
   title: "Obyektlar (Objects)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 Tasavvur qiling, **Obyekt (Object)** xuddi hayotdagi haqiqiy narsaga, masalan mashinaga o'xshaydi.
 Oddiy o'zgaruvchilar (masalan \\\`let color = "red"\\\`) bitta ma'lumotni saqlasa, obyektlar bitta narsaga tegishli bo'lgan **ko'plab ma'lumotlarni va harakatlarni** bitta joyda guruhlab saqlaydi.
@@ -34,7 +34,7 @@ Obyekt yaratishni biz ko'pincha **Object Literal** (\\\`{}\\\`) orqali amalga os
 
 ---
 
-## 2. 🚀 Chuqur O'rganish (Deep Dive: Under the Hood)
+## 2. 🚀 Chuqur O'rganish 
 
 ### Xotirada Qanday Saqlanadi? (Heap vs Stack)
 Obyektlar Javascriptda **Reference (Havola)** tipidagi ma'lumotlardir.
@@ -57,7 +57,7 @@ Buning uchun obyektga keyinchalik tinimsiz ravishda xossalar qo'shish va o'chiri
 
 ---
 
-## 3. ⚠️ Chekka Holatlar va Senior Intervyu Savollari (Edge Cases & Interview Questions)
+## 3. ⚠️ Chekka Holatlar va Senior Intervyu Savollari 
 
 1. **Object keys har doim String (yoki Symbol) ga o'girilishi haqida bilasizmi?**
    \\\`\\\`\\\`javascript

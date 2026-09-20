@@ -67,7 +67,7 @@ function startTracking() {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. V8 Heap Spaces (Xotira hududlari)
 V8 dvigateli heap-ni bir nechta mustaqil hududlarga (spaces) bo'ladi:
@@ -184,7 +184,7 @@ Dars so'ngidagi test savollari orqali o'zlashtirish darajangizni tekshiring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Muammo: Katta hajmli SPA ilovasida sahifalar almashganda xotira o'sib borishi
 Foydalanuvchi sahifalar bo'ylab o'tganda (SPA router orqali) xotira hajmi har safar o'sib boradi va ma'lum vaqt o'tganidan keyin brauzer tabining qotib qolishiga yoki yopilishiga sabab bo'ladi.

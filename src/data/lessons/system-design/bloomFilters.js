@@ -73,7 +73,7 @@ console.log(filter.maybeContains("user_456")); // false (yoki kam ehtimol bilan 
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### 1. Bit Array (Bitlar Massivi):
 Bloom Filter faqat 0 va 1 qiymatlardan tashkil topgan bitlar ketma-ketligidir. Dastlab barcha bitlar 0 bo'ladi.
@@ -162,7 +162,7 @@ Dars yakunidagi testlar orqali bilimingizni sinab ko'ring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Cassandra SSTable va PostgreSQL-da Disk Operatsiyalarini Optimallashtirish
 

@@ -70,7 +70,7 @@ class LeaseManager {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Heartbeats vs Leases: Farqlar jadvali
 | Xususiyat | Heartbeats | Leases |
@@ -138,7 +138,7 @@ Test savollariga javob berish orqali olingan bilimlaringizni sinab ko'ring.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Kubernetes Node Leases
 Eski Kubernetes versiyalarida har bir Node o'z holatini \`NodeStatus\` orqali API Serverga yuborar edi. Bu juda katta ob'ekt bo'lib, klasterda minglab Node'lar bo'lganda etcd omborini va tarmoqni haddan tashqari yuklab yuborardi.

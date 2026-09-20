@@ -36,7 +36,7 @@ dns.reverse('8.8.8.8', (err, hostnames) => {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 Siz brauzerga \`https://sub.example.com\` yozganingizda, DNS so'rovi quyidagi ketma-ketlikda (rezolyutsiya jarayoni) amalga oshadi:
 
@@ -114,7 +114,7 @@ Bilimingizni sinash uchun pastdagi testlarni yeching.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### DNS Load Balancing (Geografik Router)
 Katta loyihalarda (masalan, Netflix) foydalanuvchi qayerdan so'rov yuborganiga qarab unga eng yaqin ma'lumot markazi (Data Center) IP-manzilini qaytaruvchi GeoDNS tizimi qo'llaniladi. Bu kechikish (latency) vaqtini sezilarli darajada kamaytiradi.

@@ -7,14 +7,14 @@ export const arrowFunctions = {
 ### Arrow Functions nima?
 **Arrow Functions (Ko'rsatkichli funksiyalar)** — bu ES6 versiyasida JavaScript dasturlash tiliga kiritilgan, funksiyalarni yozishning yanada qisqa, tushunarli va zamonaviy sintaksisidir. U an'anaviy \\\`function\\\` kalit so'zi o'rniga \\\`=>\\\` (semiz ko'rsatkich/strelka) belgisidan foydalanadi.
 
-### Real hayotiy o'xshatish (Beginner Analogy)
+### Real hayotiy o'xshatish
 Tasavvur qiling, siz do'stingizga xat yozayapsiz:
 * **Eski usul (Rasmiy xat):** "Hurmatli do'stim, sizga shuni ma'lum qilamanki, ertaga uchrashamiz. Hurmat bilan, Ali." (Barcha kalit so'zlar va rasmiyatchiliklar joyida, bu eski oddiy funksiyaga o'xshaydi).
 * **Arrow funksiya (SMS tili):** "Ertaga ko'rishamiz. Ali." (Ortiqcha so'zlarsiz, maqsad qisqa va tezkor ifodalangan). Shuning uchun kod yozish tezlashadi.
 
 ---
 
-## 2. ⚙️ Chuqur O'rganish (Deep Dive: Under the hood)
+## 2. ⚙️ Chuqur O'rganish 
 
 ### Lexical \\\`this\\\` va V8 Engine
 Arrow funksiyalarning eng katta kuchi qisqalikda emas, balki **\\\`this\\\`** ning ishlashidadir.
@@ -37,7 +37,7 @@ graph TD
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 ### Interview Question 1
 **Savol:** Arrow funksiyada \\\`arguments\\\` obyektidan foydalanish mumkinmi?

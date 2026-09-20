@@ -20,7 +20,7 @@ Mavzuga oid amaliy kod misollari.
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### A. Massivlar va Obyektlar (Arrays & Objects in Problem Solving)
 Masalalarni yechishda ma'lumotlarni saqlash va ulardan foydalanish tezligi juda muhimdir.
@@ -145,9 +145,9 @@ Dars oxirida quizzes bo'limidagi testlar orqali bilimingizni tekshirib oling.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
-### Case Study: Optimal Substring Search (Sliding Window)
+### Amaliy tahlil: Optimal satr qidiruvi (sliding window)
 Ketma-ket sub-array yig'indisini dynamic hisoblashda Sliding Window texnikasi O(N^2) dan O(N) ga tushiradi:
 \`\`\`javascript
 function maxSubArray(arr, k) {

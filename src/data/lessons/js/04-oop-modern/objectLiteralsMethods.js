@@ -2,7 +2,7 @@ export const objectLiteralsMethods = {
   id: "objectLiteralsMethods",
   title: "OOP Asoslari: Obyekt Literal, Property va Method",
   language: "javascript",
-  theory: `## 1. 💡 Part 1: Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 OOP (Object-Oriented Programming) — dasturni **obyektlar** atrofida qurish uslubidir. Har bir obyekt real hayotdagi narsani modellaydi: foydalanuvchi, mashina, hisob-kitob...
 
@@ -36,7 +36,7 @@ Method ichida \`this\` — aynan shu obyektni bildiradi. \`student.introduce()\`
 
 ---
 
-## 2. ⚙️ Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### Property'lar haqiqatda nima?
 Har bir property oddiy qiymat emas — u **property descriptor** deb ataladigan meta-ma'lumotga ega:
@@ -84,7 +84,7 @@ const user = {
 
 ---
 
-## 3. ⚠️ Part 3: Murakkab Holatlar va Senior Intervyu Savollari (Edge Cases)
+## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari
 
 ### 1. Metodni obyektdan "uzib" olish
 Eng ko'p uchraydigan xato: metodni callback sifatida uzatganda kontekst yo'qoladi:

@@ -39,7 +39,7 @@ function factorialRecursive(n) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Call Stack (Chaqiriqlar Steki):
 Har safar funksiya chaqirilganda, operatsion tizim (yoki JS dvigateli) uning o'zgaruvchilari va qaytish manzilini xotiraning **Call Stack** deb nomlangan qismiga blok (Stack Frame) ko'rinishida qo'shadi (push).

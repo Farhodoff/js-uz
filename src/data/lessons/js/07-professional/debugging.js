@@ -89,7 +89,7 @@ console.log(doubleNumber(5));
 ### Qaysi muammoni hal qiladi?
 * **Ko'r-ko'rona kod yozish:** console.log yozib, sahifani yangilab, yana console.log yozib vaqt yo'qotishni kamaytiradi. Breakpoint-lar yordamida kod ishlayotgan paytning o'zida o'zgaruvchilarni o'zgartirib ko'rish, kodni qadamma-qadam (Step Over, Step Into) bajarish mumkin.
 * **Call Stack-ni ko'ra olish:** Xatolik aynan qaysi funksiya ichidan, u funksiya esa qaysi biri orqali chaqirilganini aniqlash.
-* **Xotira sizib chiqishini (Memory Leaks) topish:** DevTools-dagi "Memory" (Performance) paneli orqali xotirada ortiqcha qolib ketgan obyektlarni aniqlash.
+* **Xotira sizib chiqishini (Xotira sizishi) topish:** DevTools-dagi "Memory" (Performance) paneli orqali xotirada ortiqcha qolib ketgan obyektlarni aniqlash.
 
 ---
 
@@ -153,7 +153,7 @@ Dars oxirida bilimingizni sinash uchun test topshiriqlari taqdim etiladi.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Rekursiv funksiyadagi cheksizlikni Call Stack orqali topish
 Faraz qilaylik, bizda rekursiv faktorial hisoblaydigan funksiya bor, lekin u ba'zida cheksiz siklga tushib, stack to'lib ketmoqda:
@@ -365,7 +365,7 @@ function findFactorial(n) {
   },
   {
     "id": 12,
-    "question": "Chrome DevTools-ning qaysi paneli xotira sizib chiqishi (Memory Leaks) va xotira holatini tahlil qilish uchun mo'ljallangan?",
+    "question": "Chrome DevTools-ning qaysi paneli xotira sizib chiqishi (Xotira sizishi) va xotira holatini tahlil qilish uchun mo'ljallangan?",
     "options": [
       "Console",
       "Network",

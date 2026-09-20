@@ -196,7 +196,7 @@ Dars oxirida bilimingizni sinash uchun test topshiriqlari taqdim etiladi.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### JSON formatidagi API javobini xavfsiz o'qish va validatsiya qilish
 Ko'pincha serverdan keladigan ma'lumot buzilgan yoki kutilmagan formatda bo'lishi mumkin. Biz xavfsiz parsing funksiyasini yozamiz.

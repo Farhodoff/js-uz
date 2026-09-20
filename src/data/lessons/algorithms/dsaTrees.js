@@ -40,7 +40,7 @@ function inOrder(node, result = []) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Daraxt turlari va tuzilishi:
 - **Ikkilik Daraxt (Binary Tree):** Har bir tugun ko'pi bilan 2 ta farzandga (chap va o'ng) ega bo'lishi mumkin bo'lgan daraxt turi.

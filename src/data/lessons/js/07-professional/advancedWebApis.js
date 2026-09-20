@@ -232,7 +232,7 @@ Dars yakunidagi testlar.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### E-commerce saytida ko'rilgan reklamalarni hisoblash tizimi (Ad view tracking)
 Saytdagi homiy mahsulotlar (Sponsor posts) ro'yxatidan foydalanuvchi aynan qaysi tovarlarni jismonan ko'rganini hisoblab, reklama beruvchiga hisobot yuborish kerak.

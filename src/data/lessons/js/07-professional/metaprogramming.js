@@ -183,7 +183,7 @@ Dars oxirida testlar taqdim etiladi.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Reaktiv Obyekt va DOM Integratsiyasi (Mini Vue.js)
 Keling, Proxy yordamida obyekt o'zgarishi bilan HTML sahifadagi matnni avtomatik yangilaydigan sodda reaktiv kutubxona yaratamiz.

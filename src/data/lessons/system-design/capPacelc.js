@@ -86,7 +86,7 @@ console.log(replicaB.read().data); // "Salom Dunyo" (Eski ma'lumot! Consistency 
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### CAP Teoremasi
 2000-yilda Eric Brewer tomonidan taqdim etilgan CAP teoremasi tarqoq tizimlar quyidagi uchta kafolatdan faqat **ikkitasini** bir vaqtning o'zida ta'minlay olishini isbotlaydi:
@@ -166,7 +166,7 @@ Testlar bo'limida CAP va PACELC teomalari bo'yicha bilimlaringizni sinab ko'ring
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### DynamoDB vs MongoDB
 Yirik elektron tijorat platformasida ikki xil komponent mavjud:

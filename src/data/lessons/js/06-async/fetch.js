@@ -164,7 +164,7 @@ Dars yakunidagi testlar.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Dinamik Ob-havo Ma'lumotlarini Yuklash
 API orqali shahar nomini yuborib ob-havo ma'lumotini yuklaymiz. HTTP xatolarini va tarmoq uzilishlarini to'g'ri boshqaramiz.

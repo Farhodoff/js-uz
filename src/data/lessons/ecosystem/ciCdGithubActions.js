@@ -2,11 +2,11 @@ export const ciCdGithubActions = {
   id: "cicd-github-actions",
   title: "CI/CD & GitHub Actions",
   language: "javascript",
-  theory: `## Part 1: Beginner Analogy
+  theory: `## 1-Qism: Sodda Tushuntirish
 
 Tasavvur qiling, siz restoranda oshpazsiz (Dasturchi). Siz ovqatni tayyorlab bo'lgach (kod yozib bo'lgach), uni darhol mijozga (Production) bermaysiz. Avvaliga sifat nazoratchisi (CI) ovqatni tatib ko'radi, tuzi joyidami, pishganmi tekshiradi (Testing). Agar hammasi joyida bo'lsa, ofitsiant (CD) ovqatni mijoz stoliga eltib beradi (Deployment). GitHub Actions ana shu sifat nazoratchisi va ofitsiant vazifasini to'liq avtomatlashtirib beruvchi bepul "ishchilar" jamoasidir.
 
-## Part 2: Deep Dive (Under the hood, runner architecture, yaml parsing, caching strategy)
+## 2-Qism: Chuqur Tahlil (Ichki ishlash, runner arxitekturasi, yaml tahlili, keshlash strategiyasi)
 
 **1. Runner Architecture (Runner Arxitekturasi)**
 GitHub Actions asosida *Runner* deb ataladigan virtual mashinalar yotadi. Siz kodni push qilganingizda, GitHub o'zining bulutli serverlarida (Ubuntu, Windows yoki macOS) bitta vaqtinchalik (ephemeral) konteyner yoki virtual mashina yaratadi. Bu *Hosted Runner* deyiladi. Agar kompaniya xavfsizlikni kuchaytirmoqchi bo'lsa, o'zining shaxsiy serverini *Self-hosted Runner* sifatida ulashi ham mumkin.
@@ -18,7 +18,7 @@ Barcha jarayonlar \\\`.github/workflows\\\` papkasidagi YAML fayllarda yoziladi.
 CI tez ishlashi uchun *caching* juda muhim. Masalan, \\\`node_modules\\\` papkasini har safar boshqatdan yuklab olish o'rniga, \\\`actions/cache\\\` orqali \\\`package-lock.json\\\` ning heshi (hash) asosida keshga olinadi. Keyingi safar xuddi shu hesh topilsa, bog'liqliklar (dependencies) to'g'ridan-to'g'ri bulutdan yuklab olinadi va daqiqalar tejaladi.
 
 \\\`\\\`\\\`yaml
-name: Node.js CI Deep Dive
+name: Node.js CI Chuqur Tahlil
 on:
   push:
     branches: [ "main" ]
@@ -35,13 +35,13 @@ jobs:
     - run: npm test
 \\\`\\\`\\\`
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
-**Edge Cases (Noodatiy holatlar)**
+**Chekka (noodatiy) holatlar**
 - **Secret'larni O'g'irlash (Exfiltration)**: Yomon niyatli dasturchi \\\`console.log\\\` qilib secretlarni ko'rmoqchi bo'lsa, GitHub uni avtomatik \\\`***\\\` bilan yopib qo'yadi. Biroq uni base64 ga o'girib chiqarishga urinsa o'qib olishi mumkin, shu sabab Pull Request larda ehtiyotkor bo'lish va kod review o'tkazish muhim.
 - **Race Conditions**: Ikki xil workflow bir vaqtda deploy qilsa konflikt kelib chiqishi mumkin. Buni oldini olish uchun \\\`concurrency\\\` kalit so'zi bilan bir vaqtda faqat bitta deploy bo'lishini ta'minlash kerak.
 
-**Senior Interview Questions (Katta Dasturchilar uchun Savollar)**
+**Senior Intervyu Savollari (Katta Dasturchilar uchun Savollar)**
 1. **GitHub Actions'da \\\`concurrency\\\` guruhlari qanday ishlaydi va ular nega kerak?**
    Javob: Agar siz qisqa vaqt ichida ketma-ket 5 marta push qilsangiz, eski pushlar uchun deploy ishini bekor qilish (cancel-in-progress: true) va faqat eng so'nggi kodni deploy qilish uchun ishlatiladi. Bu vaqt va resurslarni tejaydi, shuningdek serverda konfliktlarni oldini oladi.
 

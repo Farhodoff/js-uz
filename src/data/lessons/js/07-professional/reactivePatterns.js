@@ -38,7 +38,7 @@ reactiveUser.age = 26; // O'zgardi: age -> oldin: 25, keyin: 26
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Proxy va Reflect:
 JS Proxy obyekti maqsadli obyekt atrofida o'raladi va uning ustida bajariladigan 13 ta asosiy operatsiyani (masalan, \`get\`, \`set\`, \`deleteProperty\`, \`has\`) tutib olish (intercept) imkonini beradi. \`Reflect\` API esa ushbu operatsiyalarni asl holatda xatosiz bajarib beradi.
@@ -58,7 +58,7 @@ Testlar yordamida patternlarni intervyu darajasida o'rganasiz.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Vue 3 Reaktivligi (Reactive System)
 Vue 3 frameworki o'zining reaktivlik tizimini to'liq JavaScript \`Proxy\` obyektlariga o'tkazgan. Obyekt atributi o'zgarganda \`set\` trapi ishga tushadi, u esa o'sha atributga bog'langan barcha UI elementlarini (DOM) aniqlab, ularni avtomatik qayta render qiladi.

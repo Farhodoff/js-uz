@@ -167,7 +167,7 @@ Dars oxiridagi test topshiriqlari.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Jonli bildirishnomalar tizimi (Real-Time Notification Service)
 Katta hajmdagi foydalanuvchiga ega bo'lgan tizimda, yangi xabarlar va ogohlantirishlarni real vaqtda yetkazish uchun SSE ishlatilgan.

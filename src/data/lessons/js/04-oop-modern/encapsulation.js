@@ -2,7 +2,7 @@ export const encapsulation = {
   id: "encapsulation",
   title: "Inkapsulyatsiya: Private Maydonlar (#), Getter va Setter",
   language: "javascript",
-  theory: `## 1. 💡 Part 1: Sodda Tushuntirish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish
 
 **Inkapsulyatsiya (Encapsulation)** — obyektning ichki "oshxonasi"ni tashqaridan yashirish, faqat kerakli "ovqat"ni menyuga chiqarishdir.
 
@@ -47,7 +47,7 @@ console.log(acc.balance); // 100
 
 ---
 
-## 2. ⚙️ Part 2: Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. ⚙️ Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### Private maydonlarning 3 bosqichi (tarixiy rivojlanish)
 
@@ -106,7 +106,7 @@ V8 bunday accessor'larni inline-cache qiladi, shuning uchun oddiy property bilan
 
 ---
 
-## 3. ⚠️ Part 3: Murakkab Holatlar va Senior Intervyu Savollari (Edge Cases)
+## 3. ⚠️ Murakkab Holatlar va Senior Intervyu Savollari
 
 ### 1. \`#\` maydonlariga olishga urinish — "branding" muammosi
 Private maydon \`#\` bilan **klass ichida e'lon qilinmagan bo'lsa**, uni ishlatishga urinish \`TypeError\` (xato "is not declared" emas, "undeclared private field") beradi. Bu qutulmagan brand mexanizmi:

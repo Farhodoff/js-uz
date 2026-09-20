@@ -2,13 +2,13 @@ export const a11yAria = {
   id: "a11y-aria",
   title: "Accessibility (A11y) va ARIA DOM",
   theory: `
-## Part 1: Beginner Analogy
+## 1-Qism: Sodda Tushuntirish
 
 Tasavvur qiling, siz ko'zi ojiz insonlar uchun mo'ljallangan muzeydasiz. Agar muzeyda faqatgina "bu yerda rasm bor" deb yozilgan bo'lsa va uni ushlab his qilish yoki ovozli izoh bo'lmasa, ular hech narsa tushunishmaydi. Veb-saytlarimiz ham xuddi shunday: ko'rishda yoki harakatlanishda muammosi bor insonlar maxsus yordamchi dasturlar (Screen Readers - ekranni o'qib beruvchilar) orqali saytni "ko'radilar". Agar biz oddiy \\\`<div>\\\` yoki \\\`<span>\\\` elementlarini tugma sifatida ishlatsak, u dasturlar buni oddiy matn deb o'ylaydi. 
 
 Biz kod orqali "bu tugma, bosish mumkin" yoki "bu oyna ochiq" deb to'g'ri "etiketkalar" yopishtirishimiz kerak. Bu jarayonni **Accessibility (A11y)**, ishlatiladigan vositalarni esa **ARIA (Accessible Rich Internet Applications)** deb ataymiz.
 
-## Part 2: Deep Dive
+## 2-Qism: Chuqur Tahlil
 
 ### Accessibility Tree (Kirish imkoniyati daraxti)
 Brauzer HTML ni o'qigach, DOM (Document Object Model) daraxtini quradi. Shu bilan birga, yordamchi texnologiyalar uchun **Accessibility Tree** (AOM) ham yaratiladi. Screen Reader'lar to'g'ridan-to'g'ri HTML'ni emas, balki aynan shu Accessibility Tree'ni o'qiydi.
@@ -45,7 +45,7 @@ function openModal() {
 }
 \\\`\\\`\\\`
 
-## Part 3: Edge Cases and Senior Interview Questions
+## 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 
 **Q: \\\`aria-hidden="true"\\\` va CSS \\\`display: none\\\` ning farqi nima?**
 - \\\`display: none\\\` elementni vizual yashiradi va Accessibility Tree'dan ham olib tashlaydi. Screen Reader uni mutlaqo ko'rmaydi.

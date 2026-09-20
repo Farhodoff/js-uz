@@ -4,17 +4,17 @@ export const movieSearchApi = {
   theory: `
 API (Application Programming Interface) — bu xuddi restorandagi ofitsiantga o'xshaydi.
 
-### Part 1: Beginner Analogy
+### 1-Qism: Sodda Tushuntirish
 Tasavvur qiling, siz restorandasiz (Mijoz / Brauzer). Siz taomnoma asosida ovqat buyurtma qilasiz (So'rov / Request). Oshxonada oshpazlar (Server va Ma'lumotlar bazasi) ovqatni tayyorlashadi. Lekin siz o'zingiz oshxonaga kirib ovqat pishirolmaysiz. Sizga ofitsiant (API) yordam beradi. Siz ofitsiantga buyurtmani aytasiz, u oshxonaga olib boradi, tayyor ovqatni (Javob / Response) sizga keltirib beradi. Film qidirish APIsi ham xuddi shunday: siz film nomini berasiz, API uni serverdan qidirib, topilgan ma'lumotlarni sizning brauzeringizga olib keladi.
 
-### Part 2: Deep Dive (Under the Hood)
+### 2-Qism: Chuqur Tahlil
 Katta hajmdagi ma'lumotlar bazasida (masalan, IMDB) qidiruv jarayoni qanday kechadi?
 - **Inverted Index**: Qidiruv tez bo'lishi uchun, server har bir so'z qaysi filmlarda uchrashini ko'rsatadigan "Inverted Index" (Teskari indeks) tuzib chiqadi. Bu xuddi kitob oxiridagi indeksga o'xshaydi. "Matrix" so'zi so'ralsa, butun bazani qidirish o'rniga, indeksdan to'g'ridan-to'g'ri o'sha kinolar ro'yxati olinadi.
 - **Search Algorithms**: Kiritilgan so'zda xatolar bo'lsa (masalan, "matirx"), Levenshtein distance kabi algoritmlar "Fuzzy Search" orqali eng yaqin to'g'ri so'zni topadi.
 - **Redis Caching**: Tez-tez so'raladigan filmlar (masalan, "Avatar") har safar bazadan qidirilmasligi uchun xotirada (Redis) vaqtinchalik saqlanadi. Bu javob vaqtini millisoniyalargacha qisqartiradi.
 - **Pagination strategies**: Agar so'rov natijasida 1000 ta film topilsa, ularning barchasi bir vaqtda qaytarilmaydi. Tarmoqni ortiqcha yuklamaslik uchun limit (offset/limit yoki cursor-based pagination) qo'llaniladi.
 
-### Part 3: Edge Cases and Senior Interview Questions
+### 3-Qism: Chekka holatlar va Senior Intervyu Savollari
 - **Measuring API latency**: API qanchalik tez ishlashini o'lchash kerak. Buni "Time to First Byte" (TTFB) kabi metrikalar orqali o'lchaymiz.
 - **Optimizing search queries**: Foydalanuvchi har bir harfni kiritganda API ga so'rov yuborilmasligi uchun "Debouncing" va "Throttling" usullaridan foydalaniladi (masalan, so'nggi harf kiritilgandan 300ms o'tgach so'rov ketadi).
 - **Rate Limiting (429 Too Many Requests)**: Bitta IP manzildan qisqa vaqt ichida juda ko'p so'rov yuborilsa, API server himoya tizimini ishga tushirib, 429 status kodini qaytaradi.

@@ -266,7 +266,7 @@ Dars yakunidagi testlar.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### Dynamic Theme/Plugin Loader
 Sizda onlayn vizual redaktor bor. Har bir redaktor uskunasi (qalam, o'chirg'ich, matn) alohida og'ir modul hisoblanadi. Bizga faqat foydalanuvchi uskunani tanlagandagina uni yuklaydigan dynamic plagin yuklovchi tizim kerak.

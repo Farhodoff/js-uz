@@ -38,7 +38,7 @@ React-da hodisalarni boshqarish odatiy (Vanilla) JavaScript-ga juda o'xshaydi, l
 
 React-da \`onClick\` yoki \`onChange\` ishlaganingizda, sizga beriladigan \`event\` (yoki \`e\`) obyekti oddiy brauzer hodisasi emas. Bu **SyntheticEvent** deb ataluvchi maxsus React obyektidir.
 
-### Nega kerak? (Why do we need this?)
+### Nega kerak? 
 Turli brauzerlar (Chrome, Safari, Firefox, Eski IE) hodisalarni turlicha ishlashi mumkin. React hamma brauzerlarda bir xil ishlaydigan yagona "ko'ylak" (wrapper) yaratgan. 
 * **Brauzerlararo moslik (Cross-browser compatibility):** Sizning kodingiz barcha brauzerlarda bir xil ishlaydi. React ichki farqlarni o'zi hal qiladi. Siz "Firefox-da boshqacha yozishim kerakmikin" deb o'ylamaysiz.
 * **Ishlash tezligi (Performance):** React hodisa obyektlarini qayta ishlatadi (pooling), bu esa xotirani tejashga yordam beradi. Yangi va yangi obyektlar yuzaga kelib xotirani to'ldirib tashlamaydi.
@@ -188,7 +188,7 @@ function MyForm() {
 }
 \`\`\`
 
-### Nega kerak? (Why do we need this?)
+### Nega kerak? 
 Agar siz \`e.preventDefault()\` dan foydalanmasangiz, React-dagi state'laringiz (holatingiz) formani yuborganda sahifa yangilangani sababli butunlay o'chib ketadi (reset bo'ladi). Dasturiy mantiqni o'zingiz boshqarishingiz va holatni saqlab qolishingiz uchun brauzerning avtomatik qiliqlarini o'chirib qo'yishingiz shart.
 
 ---

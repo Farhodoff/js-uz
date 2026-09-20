@@ -56,7 +56,7 @@ app.listen(PORT, () => {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### A. API Gateway
 Mijozlar (mobil ilovalar, brauzerlar) har bir mikroservisning alohida manzillarini bilishi shart emas. Ular yagona nuqta — **API Gateway**ga murojaat qilishadi. Gateway quyidagi vazifalarni bajaradi:
@@ -135,7 +135,7 @@ Bilimingizni sinash uchun pastdagi testlarni yeching.
 
 ---
 
-## 8. 🎯 Real Project Case Study
+## 8. 🎯 Real Loyiha Tahlili
 
 ### E-Commerce API Gateway va Saga Pattern
 Katta internet do'konida (masalan, Amazon):

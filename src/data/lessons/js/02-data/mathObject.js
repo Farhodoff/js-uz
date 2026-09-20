@@ -2,7 +2,7 @@ export const mathObject = {
   id: "mathObject",
   title: "Math Obyekti va Matematik Metodlar",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish (Beginner Analogy)
+  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
 
 ### Math obyekti nima?
 JavaScript-da **\\\`Math\\\`** obyekti matematik amallar va konstantalarni (masalan, $\\pi$ soni) bajarish uchun mo'ljallangan maxsus **ichki (built-in)** obyektdir. Bu obyekt global hisoblanadi va uning barcha metodlari hamda xususiyatlari statikdir, shuning uchun hech qachon \\\`new Math()\\\` deb chaqirib bo'lmaydi.
@@ -17,7 +17,7 @@ Tasavvur qiling, sizga matematik asboblar kerak.
 
 ---
 
-## 2. 🧠 Deep Dive (Under the hood, memory, V8 engine, performance)
+## 2. 🧠 Chuqur Tahlil (Ichki ishlash, xotira, V8 dvigateli, unumdorlik)
 
 ### 1. V8 Engine va Xotira Boshqaruvi (Memory)
 JavaScript-da barcha sonlar IEEE 754 standartiga muvofiq **64-bit float (Double Precision)** formatida saqlanadi. Biroq V8 dvigateli raqamlarni yanada samaraliroq boshqarish uchun turli xil ichki tiplardan (masalan, **Smi** - Small Integer, va **HeapNumber**) foydalanadi. 
@@ -37,9 +37,9 @@ const b = 4.9 | 0; // 4 qaytaradi.
 
 ---
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
-### Edge Cases (G'ayrioddiy holatlar)
+### Chekka holatlar (G'ayrioddiy holatlar)
 * **\\\`Math.max()\\\` va \\\`Math.min()\\\` argumentsiz:**
 \\\`\\\`\\\`javascript
 console.log(Math.max()); // -Infinity
@@ -51,7 +51,7 @@ console.log(Math.floor(-3.1)); // -4 (pastga, ya'ni kichik songa siljiydi)
 console.log(Math.trunc(-3.1)); // -3 (faqat kasr qismini kesib tashlaydi)
 \\\`\\\`\\\`
 
-### Senior Interview Questions
+### Senior Intervyu Savollari
 
 1. **Savol:** Nima uchun katta massivlarni \\\`Math.max(...array)\\\` bilan ishlatish xavfli?
    **Javob:** Argumentlarni "spread" qilish JavaScript-da maksimal call stack (chaqiruv steki) hajmiga bog'liq (bu ko'pincha 65536 atrofida bo'ladi). Agar massiv hajmi millionta elementdan iborat bo'lsa, \\\`RangeError: Maximum call stack size exceeded\\\` xatosi yuzaga keladi. Bunday holatlarda \\\`reduce()\\\` orqali massivni aylanish xavfsizroq.

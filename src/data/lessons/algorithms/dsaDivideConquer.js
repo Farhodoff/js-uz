@@ -52,7 +52,7 @@ function merge(left, right) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### Uchta Asosiy Qadam (Three Steps):
 1. **Divide (Bo'lish):** Asosiy muammo rekursiya yordamida o'ziga o'xshash bo'lgan va o'zaro bog'lanmagan (disjoint) kichik muammolarga bo'linadi.

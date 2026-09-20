@@ -9,7 +9,7 @@ Tasavvur qiling, siz pitsaxona ochdingiz. Boshida bitta pitsa tayyorlash, uni te
 
 Dasturlashda bu qanday ishlaydi? Siz kodni yozib GitHub ga joylaysiz. Tizim avtomatik tarzda uni test qiladi, build qiladi (masalan, Docker yordamida) va serverga joylaydi.
 
-## 2. 🚀 Deep Dive (Chuqur tahlil va murakkab jarayonlar)
+## 2. 🚀 Chuqur Tahlil (Chuqur tahlil va murakkab jarayonlar)
 Haqiqiy yirik loyihalarda CI/CD faqatgina test va deploy dan iborat emas. Undan tashqari ko'plab xavfsizlik va optimizatsiya bosqichlari mavjud.
 
 ### a) Blue-Green Deployments (Ko'k-Yashil reliz)
@@ -34,7 +34,7 @@ strategy:
     os: [ubuntu-latest, windows-latest]
 \\\`
 
-## 3. ⚠️ Edge Cases va Senior Intervyu Savollari
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 **Savol: CI/CD quvurida maxfiy kalitlar (API keys) qanday saqlanadi?**
 **Javob:** Hech qachon kod ichida yoki oddiy o'zgaruvchilarda emas. Ular CI/CD platformasining o'zidagi xavfsiz "Secrets" bo'limiga saqlanadi (masalan, GitHub Secrets, AWS Secrets Manager) va qat'iy shifrlanadi.

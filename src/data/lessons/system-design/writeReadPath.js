@@ -89,7 +89,7 @@ function mergeTwoSSTables(sst1, sst2) {
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi (Under the Hood)
+## 3. ⚙️ Qanday Ishlaydi
 
 ### B-Tree vs LSM-Tree Solishtirma Tahlili
 

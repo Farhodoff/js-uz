@@ -2,7 +2,7 @@ export const sqlFiltering = {
   id: "sql_filtering",
   title: "SQL Ma'lumotlarni Filtrlash",
   language: "javascript",
-  theory: `## 1. 💡 Beginner Analogy (Sodda Tushuntirish)
+  theory: `## 1. 💡 Sodda Tushuntirish
 SQL da filtrlash (Filtering) xuddi onlayn do'konda qidiruv filtrlarini o'rnatishga o'xshaydi. Tasavvur qiling, sizga "Faqat qora rangli", "Narxi $1000 dan arzon", va "Apple yoki Samsung brendi" bo'lgan telefonlar kerak. Siz barcha millionlab telefonlarni bittalab qidirmaysiz, shunchaki filtrlarni belgilaysiz va tizim sizga faqat shartlarga mos keladiganlarni ko'rsatadi. SQL dagi \\\`WHERE\\\` operatori ham xuddi shunday ishlaydi - bazadagi millionlab qatorlardan faqat bizning shartlarimizga mos keladiganlarini filtrlab beradi.
 
 Eng ko'p ishlatiladigan filter operatorlari:
@@ -28,8 +28,8 @@ SELECT * FROM users WHERE age BETWEEN 18 AND 30;
 SELECT * FROM users WHERE name LIKE 'A%';
 \\\`\\\`\\\`
 
-## 2. 🧠 Deep Dive (Chuqurlashtirilgan o'rganish)
-**Under the hood (Ichki ishlash mexanizmi):**
+## 2. 🧠 Chuqur Tahlil (Chuqurlashtirilgan o'rganish)
+**Ichki ishlash mexanizmi:**
 SQL dvigateli (Engine) \\\`WHERE\\\` shartini ko'rganda nima qiladi? Agar filtrlayotgan ustunimizda **Index** (B-Tree indeksi) bo'lmasa, ma'lumotlar bazasi **Full Table Scan (To'liq jadval skanerlashi)** ni amalga oshiradi. Bu degani jadvaldagi millionlab qatorlarni bittalab tekshirib chiqadi. Bu xotira (RAM) va vaqt jihatidan juda qimmat jarayon.
 
 Agar biz \\\`age\\\` yoki \\\`city\\\` ustuniga **B-Tree Index** o'rnatgan bo'lsak, ma'lumotlar bazasi indeks orqali barcha qatorlarni emas, faqat kerakli qatorlarni to'g'ridan-to'g'ri (Logarithmic vaqtda - O(log n)) topib oladi.
@@ -38,7 +38,7 @@ Agar biz \\\`age\\\` yoki \\\`city\\\` ustuniga **B-Tree Index** o'rnatgan bo'ls
 1. **IN vs OR:** Ko'p hollarda \\\`column IN (val1, val2)\\\` yozish \\\`column = val1 OR column = val2\\\` dan ko'ra tezroq ishlaydi, chunki SQL optimizatori \\\`IN\\\` dagi qiymatlarni binar qidiruv orqali tekshirish uchun tartiblashi mumkin.
 2. **LIKE '%text%':** LIKE operatorida qidiruvni \\\`%\\\` bilan boshlash (masalan, \\\`'%son'\\\`) Index ishlatilishini butunlay cheklaydi (Index Scan o'rniga Full Table Scan bo'ladi). Bunga sabab, B-Tree indekslari so'zlarning bosh harflariga qarab daraxt tuzadi. Faqat so'z boshi ma'lum bo'lsa (masalan \\\`'son%'\\\`) indeks ishlaydi.
 
-## 3. ⚠️ Edge Cases va Senior Interview Questions
+## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
 
 1. **\\\`NULL\\\` bilan solishtirish muammosi:**
    \\\`WHERE age != 25\\\` sharti \\\`age\\\` ustuni \\\`NULL\\\` bo'lgan qatorlarni qaytarmaydi! SQL da \\\`NULL\\\` noma'lum degani. Shuning uchun noma'lum narsa 25 ga teng yoki teng emasligini bilib bo'lmaydi. \\\`NULL\\\` ni tekshirish uchun har doim \\\`IS NULL\\\` yoki \\\`IS NOT NULL\\\` dan foydalanish kerak.
