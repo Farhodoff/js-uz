@@ -1368,7 +1368,7 @@ export default function VisualizerTab({ activeLesson }) {
                 <div className="flex flex-col bg-slate-950 border border-slate-900 rounded-xl overflow-hidden shadow-2xl">
                   <div className="bg-slate-900/80 px-4 py-2 border-b border-slate-900 flex justify-between items-center">
                     <span className="text-blue-400 font-bold">TypeScript (.ts)</span>
-                    <span className="text-[10px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded font-bold">SOURCE</span>
+                    <span className="text-[10px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded font-bold">MANBA</span>
                   </div>
                   <pre className="p-4 overflow-x-auto text-slate-300 leading-relaxed min-h-[220px] whitespace-pre-wrap select-none text-left">
                     <code>
@@ -1381,7 +1381,7 @@ export default function VisualizerTab({ activeLesson }) {
                 <div className="flex flex-col bg-slate-950 border border-slate-900 rounded-xl overflow-hidden shadow-2xl">
                   <div className="bg-slate-900/80 px-4 py-2 border-b border-slate-900 flex justify-between items-center">
                     <span className="text-amber-500 font-bold">JavaScript (.js)</span>
-                    <span className="text-[10px] bg-amber-500/10 text-amber-500 px-1.5 py-0.5 rounded font-bold">OUTPUT</span>
+                    <span className="text-[10px] bg-amber-500/10 text-amber-500 px-1.5 py-0.5 rounded font-bold">NATIJA</span>
                   </div>
                   <div className="p-4 overflow-x-auto min-h-[220px] flex items-center justify-center text-center">
                     {tsStep < 3 ? (
