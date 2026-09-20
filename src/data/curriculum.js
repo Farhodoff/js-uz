@@ -62,7 +62,9 @@ export const curriculum = {
       { id: "mapSetWeak", number: "2.10", title: "Map, Set, WeakMap va WeakSet", load: () => import("./lessons/js/02-data/mapSetWeak.js").then(m => m.mapSetWeak) },
       { id: "symbolType", number: "2.11", title: "Symbol Ma'lumot Turi", load: () => import("./lessons/js/02-data/symbolType.js").then(m => m.symbolType) },
       { id: "json", number: "2.12", title: "JSON: parse, stringify va Amaliy Qo'llanish", load: () => import("./lessons/js/02-data/json.js").then(m => m.json) },
-      { id: "intlApi", number: "2.13", title: "Internationalization (Intl) API", load: () => import("./lessons/js/02-data/intlApi.js").then(m => m.intlApi) }
+      { id: "intlApi", number: "2.13", title: "Internationalization (Intl) API", load: () => import("./lessons/js/02-data/intlApi.js").then(m => m.intlApi) },
+      { id: "globalObjects", number: "2.14", title: "Global Obyektlar: Math, Date, Set, Map, Window va Document", load: () => import("./lessons/js/02-data/globalObjects.js").then(m => m.globalObjects) },
+      { id: "globalObjectsCheatSheet", number: "2.15", title: "⚡ Global Obyektlar Cheat Sheet (Math, Date, Set, Map, Window, Document)", load: () => import("./lessons/js/02-data/globalObjectsCheatSheet.js").then(m => m.globalObjectsCheatSheet) }
     ]
   },
 
