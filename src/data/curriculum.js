@@ -69,6 +69,7 @@ export const curriculum = {
       { id: "mathBasics", number: "1.55", title: "Global Obyektlar: Math", load: () => import("./lessons/js/01-basics/mathBasics.js").then(m => m.mathBasics) },
       { id: "dateBasics", number: "1.56", title: "Global Obyektlar: Date", load: () => import("./lessons/js/01-basics/dateBasics.js").then(m => m.dateBasics) },
       { id: "setBasics", number: "1.57", title: "Global Obyektlar: Set", load: () => import("./lessons/js/01-basics/setBasics.js").then(m => m.setBasics) },
+      { id: "mapCollectionBasics", number: "1.58", title: "Global Obyektlar: Map", load: () => import("./lessons/js/01-basics/mapCollectionBasics.js").then(m => m.mapCollectionBasics) },
       { id: "dataTypesLesson", number: "1.5", title: "Ma'lumot Turlari (Data Types)", load: () => import("./lessons/js/01-basics/dataTypes.js").then(m => m.dataTypesLesson) },
       { id: "moreDataTypesLesson", number: "1.6", title: "Ma'lumot Turlari: Null, Symbol, BigInt", load: () => import("./lessons/js/01-basics/moreDataTypes.js").then(m => m.moreDataTypesLesson) },
       { id: "objectIntroLesson", number: "1.7", title: "Obyektlarga Kirish (Object)", load: () => import("./lessons/js/01-basics/objectIntro.js").then(m => m.objectIntroLesson) },
