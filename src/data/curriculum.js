@@ -66,6 +66,7 @@ export const curriculum = {
       { id: "restBasics", number: "1.52", title: "Rest (...) Operatori: Argumentlarni Yig'ish", load: () => import("./lessons/js/01-basics/restBasics.js").then(m => m.restBasics) },
       { id: "consoleErrorWarn", number: "1.53", title: "Xabar Turlari: console.error va console.warn", load: () => import("./lessons/js/01-basics/consoleErrorWarn.js").then(m => m.consoleErrorWarn) },
       { id: "tryCatchBasics", number: "1.54", title: "Xatoni Ushlash: try...catch", load: () => import("./lessons/js/01-basics/tryCatchBasics.js").then(m => m.tryCatchBasics) },
+      { id: "mathBasics", number: "1.55", title: "Global Obyektlar: Math", load: () => import("./lessons/js/01-basics/mathBasics.js").then(m => m.mathBasics) },
       { id: "dataTypesLesson", number: "1.5", title: "Ma'lumot Turlari (Data Types)", load: () => import("./lessons/js/01-basics/dataTypes.js").then(m => m.dataTypesLesson) },
       { id: "moreDataTypesLesson", number: "1.6", title: "Ma'lumot Turlari: Null, Symbol, BigInt", load: () => import("./lessons/js/01-basics/moreDataTypes.js").then(m => m.moreDataTypesLesson) },
       { id: "objectIntroLesson", number: "1.7", title: "Obyektlarga Kirish (Object)", load: () => import("./lessons/js/01-basics/objectIntro.js").then(m => m.objectIntroLesson) },
