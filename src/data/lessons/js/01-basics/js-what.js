@@ -1,285 +1,195 @@
 export const jsWhat = {
   id: "jsWhat",
-  title: "JavaScriptga Kirish",
+  title: "JavaScript nima va qayerda ishlaydi",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. Bu nima?
 
-### JavaScript nima?
-**JavaScript (JS)** — veb-sahifalarni jonlantiradigan til. Tugmani bossangiz — nimadir bo'ladi. Matn yozsangiz — sahifa javob beradi. Ana shu "jonlilik" ortida JavaScript turadi.
+Tasavvur qiling, siz uy quryapsiz:
+- G'ishtlar va devorlar — bu veb-sahifaning tuzilishi (HTML).
+- Bo'yoq, pardalar va mebel — bu sahifaning tashqi ko'rinishi (CSS).
+- Elektr va suv tizimi — bu JavaScript. Chiroq tugmasini bossangiz chiroq yonadi, jo'mrakni ochsangiz suv oqadi.
 
-> **Bir jumlada:** HTML — skelet, CSS — kiyim, **JavaScript — miya va muskullar**.
+JavaScript — veb-sahifalarga harakat va jon bag'ishlaydigan dasturlash tili (programming language).
 
 ### Qayerda ishlaydi?
-- **Brauzerda** — har bir sayt ichida (Chrome, Firefox, Safari)
-- **Serverda** — Node.js yordamida (backend)
-- **Telefonda** — mobil ilovalarda
-- **Hatto robotlarda** — istalgan joyda!
-
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **uy quryapsiz**:
-- **HTML** — g'ishtlar va devorlar (tuzilish)
-- **CSS** — bo'yoq, pardalar, mebel (ko'rinish)
-- **JavaScript** — elektr va suv tizimi (hamma narsa ISHLAYDI: chiroq yonadi, suv oqadi)
-
-Elektrsiz uy — shunchaki chiroyli quti. JavaScriptsiz sayt — shunchaki chiroyli rasm.
+JavaScript kodi asosan ikki muhitda ishlaydi:
+1. **Brauzerda (Browser):** Chrome, Safari yoki Firefox kabi dasturlar ichida. Saytdagi tugmalar bosilishi, animatsiyalar va foydalanuvchi bilan muloqot brauzerda kechadi.
+2. **Node.js muhitida (Node.js):** Kompyuter yoki serverda (server). JavaScript kodini brauzersiz, to'g'ridan-to'g'ri kompyuter tizimida ishga tushirish uchun xizmat qiladi.
 
 ---
 
-## 2. 💻 Birinchi Kod
+## 2. Nega kerak?
 
-Qo'rqmang — birinchi kodingizni hoziroq yozamiz. Bu ikki qatorni o'ngdagi muharrirga yozing va **"Ishga tushirish"** tugmasini bosing:
+Faqat devor va bo'yoqdan iborat uyda yashab bo'lmaydi — chiroq yoqilmaydi, eshik qulfi ishlamaydi.
+
+Xuddi shunday, JavaScript bo'lmasa, veb-sahifa shunchaki qotib qolgan gazetaga o'xshab qoladi. Tugmani bosganda hech narsa yuz bermaydi, hisob-kitoblar qilinmaydi. JavaScript sahifani tirik tizimga aylantirish uchun kerak.
+
+---
+
+## 3. Birinchi misol
+
+Bu kod ekranga salomlashuv matnini chiqaradi.
 
 \`\`\`javascript
-const ism = "Ali";
-console.log("Salom, " + ism + "!");
+console.log("Salom, dunyo!"); // Matnni konsolga chop etish
 \`\`\`
 
-**Natija:** Konsolda \`Salom, Ali!\` chiqadi. TABRIKLAYMAN!
-
-Tabriklayman — siz hozirgina JavaScript dasturchisisiz!
-
-### Bu kodda nima bo'lyapti?
-1. **const ism = "Ali"** — \`ism\` degan "quti" (o'zgaruvchi) yaratdik, ichiga matn soldik
-2. **console.log(...)** — qavs ichidagini konsolga chop etdik
-3. **"Salom, " + ism** — ikki matnni \`+\` bilan yopishtirdik
-
----
-
-## 3. ⚙️ Qanday Ishlaydi
-
-Brauzer kodingizni bevosita tushunmaydi. Orada **JavaScript dvigateli** (Chrome'da **V8**) ishlaydi:
-
-1. **O'qish:** kod matn sifatida o'qiladi
-2. **Tarjima:** mashina tushunadigan kodga aylantiriladi
-3. **Bajarish:** qator-ma-qator bajariladi, natija ekranga chiqadi
-
-\`\`\`mermaid
-flowchart LR
-    A["Sizning kodingiz"] --> B["Dvigatel: V8"]
-    B --> C["O'qish"]
-    C --> D["Tarjima"]
-    D --> E["Natija ekranda"]
+\`\`\`text
+// Natija: Salom, dunyo!
 \`\`\`
 
-Buni yodlash shart emas — brauzer og'ir ishni o'zi qiladi. Siz faqat to'g'ri buyruq berishni o'rganasiz.
+---
+
+## 4. Qator-baqator tahlil
+
+- \`console.log(...)\` — ma'lumotni ekranga yoki dasturchi konsoliga (console) chiqarish buyrug'i.
+- \`"Salom, dunyo!"\` — chiqarilayotgan matn (har doim qo'shtirnoq ichida bo'ladi).
+- \`;\` — ko'rsatma tugaganini bildiruvchi belgi (nuqta-vergul).
 
 ---
 
-## 4. ⚠️ Keng Tarqalgan Xatolar
+## 5. Yana bitta misol
 
-| ❌ Xato | ✅ To'g'ri | Sabab |
-|---|---|---|
-| \`Console.Log(...)\` | \`console.log(...)\` | Katta-kichik harf farq qiladi |
-| \`console.log(Salom)\` | \`console.log("Salom")\` | Matn qo'shtirnoq ichida bo'lishi shart |
-| \`"Salom\` (yopilmagan) | \`"Salom"\` | Har bir qo'shtirnoq yopilishi shart |
+Bu kod ekranga dastur ishga tushgani haqida boshqa matnni chiqaradi.
 
----
+\`\`\`javascript
+console.log("JavaScript ishga tushdi!"); // Yangi matnni konsolga chop etish
+\`\`\`
 
-## 5. 🔑 Asosiy Atamalar
-
-- **O'zgaruvchi (variable)** — ma'lumot saqlaydigan "quti" (\`const ism = "Ali"\`)
-- **Konsol (console)** — natijalarni ko'rish joyi, dasturchining "qoralama daftari"
-- **Satr (string)** — qo'shtirnoq ichidagi matn (\`"Salom"\`)
-- **Sintaksis (syntax)** — tilning yozilish qoidalari
-- **ECMAScript (ES)** — standartning rasmiy nomi (ES6 = 2015 yangilanishi)
+\`\`\`text
+// Natija: JavaScript ishga tushdi!
+\`\`\`
 
 ---
 
-## 6. 🌍 Real Hayotda Qayerda?
+## 6. Ko'p uchraydigan xatolar
 
-- **Ijtimoiy tarmoqlar** — like tugmasi, lenta yangilanishi
-- **Online do'konlar** — savatchaga qo'shish, narx hisoblash
-- **Xaritalar** — sudrab ko'rish, masshtab o'zgartirish
-- **Chatlar** — xabar kelishi bilanoq ekranda chiqishi
+### 1. Buyruqni katta harf bilan yozish
+❌ Xato kod:
+\`\`\`javascript
+Console.log("Salom, dunyo!");
+\`\`\`
+Nima bo'ladi: \`ReferenceError: Console is not defined\` xatoligi yuz beradi. JavaScript katta va kichik harflarni qat'iy farqlaydi. Buyruq faqat kichik harflar bilan yozilishi shart.
+✅ To'g'ri variant:
+\`\`\`javascript
+console.log("Salom, dunyo!");
+\`\`\`
 
-Keyingi darslarda shularning kichik nusxalarini O'ZINGIZ yozasiz.
+### 2. Matnni qo'shtirnoqsiz yozish
+❌ Xato kod:
+\`\`\`javascript
+console.log(Salom);
+\`\`\`
+Nima bo'ladi: \`ReferenceError: Salom is not defined\` xatoligi yuz beradi. Qo'shtirnoqsiz yozilgan so'zni JavaScript oldindan mavjud nom deb o'ylaydi va topolmay qoladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+console.log("Salom");
+\`\`\`
+
+### 3. Qo'shtirnoqni yopmaslik
+❌ Xato kod:
+\`\`\`javascript
+console.log("Salom);
+\`\`\`
+Nima bo'ladi: \`SyntaxError: Invalid or unexpected token\` xatoligi yuz beradi. Ochilgan qo'shtirnoq oxirida yopilishi shart.
+✅ To'g'ri variant:
+\`\`\`javascript
+console.log("Salom");
+\`\`\`
 
 ---
 
-## 7. 🎙 Intervyu Savollari
+## 7. Tekshiruv
 
-**1. JavaScript nima, HTML/CSS dan farqi nimada?**
-**Javob:** HTML tuzilish, CSS ko'rinish beradi. JavaScript harakat va mantiq qo'shadi — foydalanuvchi harakatlariga javob beradi.
+### 1-mashq (Oson)
+Konsolga \`"Salom!"\` matnini chiqaruvchi 1 qator JavaScript kodini yozing.
 
-**2. Kod qayerda bajariladi?**
-**Javob:** Brauzer ichidagi dvigatelda (masalan V8). Node.js bilan serverda ham ishlaydi.
+### 2-mashq (O'rtacha)
+Konsolga \`"Node.js"\` matnini chiqaruvchi kod yozing.
 
-**3. \`console.log\` nima uchun kerak?**
-**Javob:** Oraliq natijalarni ko'rish uchun — xato topishda birinchi yordamchi.
+### 3-mashq (Xatoni topish)
+Quyidagi xato kodni to'g'rilang:
+\`\`\`javascript
+Console.log("Dasturlash");
+\`\`\`
+
+### Javoblar:
+1. \`console.log("Salom!");\`
+2. \`console.log("Node.js");\`
+3. \`console.log("Dasturlash");\` (\`console\` so'zi kichik harf bilan boshlanadi).
 
 ---
 
-## 8. ✅ Xulosa
+## 8. Xulosa
 
-- **JavaScript** — saytlarga jon bag'ishlaydi (HTML = skelet, CSS = kiyim, JS = miya)
-- **Qayerda:** brauzer, server, telefon — hamma joyda
-- **Qurollar:** o'zgaruvchi (quti), \`console.log\` (chop etish), \`+\` (yopishtirish)
-- **Keyingi qadam:** 1.2-darsda \`console\` imkoniyatlarini o'rganamiz
+1. JavaScript — veb-sahifalarni harakatga keltiradigan va tirik qiladigan dasturlash tili.
+2. U asosan ikki joyda: brauzerda (foydalanuvchi tomonida) va Node.js vositasida serverda ishlaydi.
+3. \`console.log("...")\` — ekranga matn chiqarish uchun ishlatiladigan eng asosiy 1 qatorlik buyruq.
+
+Keyingi darsda: Ekranga matn va sonlarni chiqarish uchun \`console.log\` buyrug'i bilan batafsil tanishamiz.
 `,
   exercises: [
     {
       id: 1,
       title: "Salom, Dunyo!",
-      instruction: "Konsolga `Salom, Dunyo!` matnini chop eting. `console.log` dan foydalaning.",
-      startingCode: "// Konsolga Salom, Dunyo! ni chop eting\n",
+      instruction: "Konsolga `Salom, Dunyo!` matnini chiqaring. `console.log` dan foydalaning.",
+      startingCode: "// Salom, Dunyo! matnini konsolga chiqaring\n",
       hint: "console.log(\"Salom, Dunyo!\");",
-      test: "if (!code.includes('console.log')) return 'console.log ishlatilmadi';"
+      test: "if (!code.includes('console.log')) return 'console.log ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(msg => msg.includes('Salom, Dunyo!'))) return null;\nreturn 'Matn to\\'g\\'ri chiqmadi. \"Salom, Dunyo!\" chiqishi kerak';"
     },
     {
       id: 2,
-      title: "Ismingizni chop eting",
-      instruction: "`ism` nomli o'zgaruvchi yarating (const bilan), unga o'z ismingizni yozing va konsolga chop eting.",
-      startingCode: "// ism o'zgaruvchisini yarating va chop eting\n",
-      hint: "const ism = \"Ali\"; console.log(ism);",
-      test: "const fn = new Function(code + '; return (typeof ism !== \"undefined\" ? ism : null);')();\nif (fn === null) return 'ism nomli o\\'zgaruvchi topilmadi';\nreturn null;"
+      title: "Node.js matnini chiqarish",
+      instruction: "Konsolga `Node.js` matnini chiqaring.",
+      startingCode: "// Node.js matnini konsolga chiqaring\n",
+      hint: "console.log(\"Node.js\");",
+      test: "if (!code.includes('console.log')) return 'console.log ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(msg => msg.includes('Node.js'))) return null;\nreturn 'Matn to\\'g\\'ri chiqmadi. \"Node.js\" chiqishi kerak';"
     },
     {
       id: 3,
-      title: "Salomlashuv yasash",
-      instruction: "`greet(name)` funksiyasini yozing. U ism qabul qilib, `Salom Ali` formatida matn qaytarsin. Masalan: greet('Ali') => 'Salom Ali'.",
-      startingCode: "function greet(name) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return 'Salom ' + name; dan foydalaning.",
-      test: "const fn = new Function(code + '; return greet;')();\nif (fn('Ali') === 'Salom Ali') return null;\nreturn 'Salomlashuv formati xato';"
-    },
-    {
-      id: 4,
-      title: "Yig'indi hisoblash",
-      instruction: "`sum(a, b)` funksiyasini yozing. U ikki son yig'indisini `result` o'zgaruvchisida saqlab, qaytarsin.",
-      startingCode: "function sum(a, b) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "let result = a + b; keyin return result;",
-      test: "if (!code.includes('result')) return 'result nomli o\\'zgaruvchi bo\\'lishi shart';\nconst fn = new Function(code + '; return sum;')();\nif (fn(5, 10) === 15 && fn(-1, 1) === 0) return null;\nreturn 'sum funksiyasi yig\\'indini to\\'g\\'ri qaytarmadi';"
-    },
-    {
-      id: 5,
-      title: "Turini aniqlash",
-      instruction: "`getType(value)` funksiyasini yozing. U qiymat turini `typeof` bilan aniqlab qaytarsin.",
-      startingCode: "function getType(value) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return typeof value;",
-      test: "const fn = new Function(code + '; return getType;')();\nif (fn(42) === 'number' && fn('Salom') === 'string' && fn(true) === 'boolean') return null;\nreturn 'getType noto\\'g\\'ri ishladi';"
-    },
-    {
-      id: 6,
-      title: "O'zgarmas son",
-      instruction: "`getPi()` funksiyasini yozing. Ichida `const PI = 3.14` e'lon qilib, uni qaytaring.",
-      startingCode: "function getPi() {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "const PI = 3.14; qilib return qiling.",
-      test: "if (!code.includes('const PI')) return 'const PI e\\'lon qilinishi kerak';\nconst fn = new Function(code + '; return getPi;')();\nif (fn() === 3.14) return null;\nreturn 'Funksiya 3.14 qaytarishi kerak';"
-    },
-    {
-      id: 7,
-      title: "Voyaga yetganmi?",
-      instruction: "`isAdult(age)` funksiyasi yosh 18+ bo'lsa `true`, aks holda `false` qaytarsin.",
-      startingCode: "function isAdult(age) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return age >= 18;",
-      test: "const fn = new Function(code + '; return isAdult;')();\nif (fn(18) === true && fn(17) === false) return null;\nreturn 'Yosh tekshiruvi xato';"
-    },
-    {
-      id: 8,
-      title: "Qat'iy tenglik",
-      instruction: "`isStrictlyEqual(a, b)` funksiyasi ikki qiymatning qat'iy tengligini (`===`) tekshirsin.",
-      startingCode: "function isStrictlyEqual(a, b) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return a === b;",
-      test: "const fn = new Function(code + '; return isStrictlyEqual;')();\nif (fn(5, '5') === false && fn(5, 5) === true) return null;\nreturn 'Qat\\'iy tenglik xato';"
+      title: "Katta harf xatosini to'g'rilash",
+      instruction: "`Console.log(\"Salom\");` kodidagi katta harf xatosini to'g'rilang.",
+      startingCode: "Console.log(\"Salom\");\n",
+      hint: "console.log(\"Salom\"); (console kichik harflar bilan yoziladi)",
+      test: "if (code.includes('Console.log')) return 'Console katta harf bilan yozilgan, kichik harf qiling';\nif (!code.includes('console.log')) return 'console.log ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(msg => msg.includes('Salom'))) return null;\nreturn 'Matn chiqmadi';"
     }
   ],
-
   quizzes: [
     {
       id: 1,
-      question: "JavaScript nima?",
+      question: "JavaScript'ning asosiy vazifasi nima?",
       options: [
-        "Faqat serverda ishlaydigan ma'lumotlar bazasi tili",
-        "Veb-sahifalarga harakat va interaktivlik qo'shadigan dasturlash tili",
-        "Faqat dizayn uchun ishlatiladigan uslublar to'plami",
-        "Kompyuterning operatsion tizimi"
+        "Sahifaga rang va dizayn berish",
+        "Veb-sahifalarga harakat va interaktivlik qo'shish",
+        "Faqat matnlarni qalin qilish",
+        "Kompyuterni o'chirib yoqish"
       ],
       correctAnswer: 1,
-      explanation: "JavaScript sahifaga harakat va mantiq qo'shadi — tugmalar, hisoblash, yangilanish."
+      explanation: "HTML sahifaning tuzilishi, CSS uning ko'rinishi, JavaScript esa harakat va mantiq qo'shadi."
     },
     {
       id: 2,
-      question: "HTML, CSS va JavaScript o'rtasidagi farq qaysi javobda to'g'ri?",
+      question: "JavaScript qayerlarda ishlaydi?",
       options: [
-        "HTML = miya, CSS = skelet, JS = kiyim",
-        "HTML = skelet, CSS = kiyim, JS = miya va muskullar",
-        "Uchovi ham bir xil ish qiladi",
-        "JavaScript faqat rasm chizish uchun"
+        "Faqat kalkulyatorda",
+        "Brauzerda va Node.js yordamida kompyuter/serverda",
+        "Faqat printerda",
+        "Hech qayerda ishlamaydi"
       ],
       correctAnswer: 1,
-      explanation: "HTML tuzilish, CSS ko'rinish, JS harakat va mantiq beradi."
+      explanation: "JavaScript brauzer ichida foydalanuvchi bilan muloqot qiladi, Node.js orqali esa server va kompyuterda ishlaydi."
     },
     {
       id: 3,
-      question: "JavaScript kodi qayerda bajariladi?",
+      question: "Quyidagilardan qaysi biri konsolga to'g'ri matn chiqaradi?",
       options: [
-        "Faqat qog'ozda",
-        "Brauzer ichidagi dvigatelda (masalan V8), Node.js bilan serverda ham",
-        "Faqat printerda",
-        "Hech qayerda bajarilmaydi"
+        "Console.log(\"Salom\")",
+        "console.log(\"Salom\")",
+        "console.log(Salom)",
+        "print(\"Salom\")"
       ],
       correctAnswer: 1,
-      explanation: "Asosan brauzer dvigatelida, Node.js yordamida serverda ham ishlaydi."
-    },
-    {
-      id: 4,
-      question: "`console.log(\"Salom\")` nima qiladi?",
-      options: [
-        "Kompyuterni o'chiradi",
-        "Matnni konsolga chop etadi",
-        "Internetni uzadi",
-        "Hech narsa qilmaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "console.log — natijani konsolda ko'rish uchun eng asosiy qurol."
-    },
-    {
-      id: 5,
-      question: "Quyidagi kod natijasi nima?\n```javascript\nconst ism = \"Ali\";\nconsole.log(\"Salom, \" + ism + \"!\");\n```",
-      options: [
-        "\"Salom, Ali!\"",
-        "\"Salom ism\"",
-        "Xatolik beradi",
-        "\"Ali Salom\""
-      ],
-      correctAnswer: 0,
-      explanation: "`+` matnlarni yopishtiradi: \"Salom, \" + \"Ali\" + \"!\" = \"Salom, Ali!\"."
-    },
-    {
-      id: 6,
-      question: "Nima uchun `Console.Log` ishlamaydi-yu `console.log` ishlaydi?",
-      options: [
-        "Brauzer buzilgan",
-        "JavaScript katta-kichik harfga sezgir",
-        "Nuqta keraksiz",
-        "console eskirgan"
-      ],
-      correctAnswer: 1,
-      explanation: "JavaScript case-sensitive: `Console` va `console` ikki xil narsa."
-    },
-    {
-      id: 7,
-      question: "`console.log(Salom)` nima uchun xato?",
-      options: [
-        "Salom so'zi qo'shtirnoqsiz — uni o'zgaruvchi deb o'ylaydi",
-        "console noto'g'ri yozilgan",
-        "Nuqta ortiqcha",
-        "Hammasi to'g'ri, xato yo'q"
-      ],
-      correctAnswer: 0,
-      explanation: "Matn har doim qo'shtirnoq ichida: `console.log(\"Salom\")`."
-    },
-    {
-      id: 8,
-      question: "ECMAScript (ES) nima?",
-      options: [
-        "JavaScript'ning raqobatchi tili",
-        "JavaScript standartining rasmiy nomi — barcha brauzerlar unga amal qiladi",
-        "Ma'lumotlar bazasi dasturi",
-        "Faqat animatsiya standarti"
-      ],
-      correctAnswer: 1,
-      explanation: "ECMAScript — qoidalar to'plami, JavaScript shu qoidalarga amal qiladi."
+      explanation: "JavaScript harflar registriga sezgir (console kichik harflar bilan yoziladi) va matn doim qo'shtirnoq ichida bo'lishi shart."
     }
   ]
-
 };
