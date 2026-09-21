@@ -1,227 +1,234 @@
 export const equalityAlgorithms = {
   id: "equalityAlgorithms",
-  title: "Taqqoslash va Tenglik (== vs ===)",
+  title: "== va === (Tenglik va Qat'iy Tenglik)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. Bu nima?
 
-### Ikki xil "tengmi?"
-JavaScript'da solishtirishning ikki usuli bor:
+Tasavvur qiling, siz bank kassiriga 100 dollar uzatyapsiz:
+- Biri haqiqiy qog'oz kupyura (son).
+- Ikkinchisi esa oddiy oq qog'ozga "100 dollar" deb yozilgan matn (string).
+
+Uzoqdan qaragan odam (\`==\`) "ikkalasida ham 100 yozilgan ekan, teng" deb o'ylashi mumkin.
+Lekin sinchkov bank xodimi (\`===\`) tekshirganda, ularning turi har xil ekanini ko'radi: biri haqiqiy pul, ikkinchisi oddiy qog'oz!
+
+JavaScript'da:
+- \`==\` (erkin tenglik) — faqat qiymatni tekshiradi, turlarni e'tiborsiz qoldirib, ularni orqada o'zgartiradi.
+- \`===\` (qat'iy tenglik) — qiymatni HAM, ma'lumot turini HAM tekshiradi.
+
+---
+
+## 2. Nega kerak?
+
+\`==\` operatori turlarni o'zboshimchalik bilan o'zgartirib yuboradi:
+- \`5 == "5"\` → \`true\` (son matnga teng deb topiladi!)
+- \`0 == false\` → \`true\` (son mantiqiy turga teng deb topiladi!)
+- \`"" == false\` → \`true\`
+
+Bunday kutilmagan "yashirin o'zgarishlar" dasturda juda xavfli xatolarni keltirib chiqaradi.
+
+Shuning uchun zamonaviy JavaScript'da doimo \`===\` (qat'iy tenglik) ishlatiladi. U ikkala tomonning turi ham, qiymati ham bir xil bo'lgandagina \`true\` qaytaradi.
+
+---
+
+## 3. Birinchi misol
+
+Bu kod bir xil son va matnni \`==\` hamda \`===\` yordamida solishtiradi.
 
 \`\`\`javascript
-console.log(5 == "5");   // true (yumshoq — ko'r)
-console.log(5 === "5");  // false (qat'iy — ko'ruvchi)
+let numberVal = 5; // Son (number)
+let textVal = "5"; // Matn (string)
+
+console.log(numberVal == textVal); // Faqat qiymat: true
+console.log(numberVal === textVal); // Qiymat va tur: false
 \`\`\`
 
-- **\`==\` (yumshoq):** faqat qiymatga qaraydi, turni e'tiborsiz qoldiradi
-- **\`===\` (qat'iy):** qiymat VA turni tekshiradi
-
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **kino teatr chipta tekshiruvchisisiz**:
-- **Yumshoq (\`==\`):** "raqam to'g'ri bo'lsa bo'ldi — qog'ozmi, telefondami farqi yo'q" → hammani kiritib yuboradi
-- **Qat'iy (\`===\`):** "raqam ham, chipta shakli ham mos bo'lishi shart" → begonalarni kiritmaydi
-
-Qaysi biri xavfsizroq? Albatta qat'iy!
+\`\`\`text
+// Natija: true
+// Natija: false
+\`\`\`
 
 ---
 
-## 2. 💻 Yumshoq Tenglik Tuzoqlari
+## 4. Qator-baqator tahlil
+
+- \`numberVal == textVal\` — \`==\` operatori matn ichidagi \`"5"\` ni avtomatik ravishda songa aylantiradi va \`5 == 5\` deb hisoblab, \`true\` qaytaradi.
+- \`numberVal === textVal\` — \`===\` operatori avval ularning ma'lumot turlarini tekshiradi: biri \`number\`, ikkinchisi esa \`string\`. Turlar bir xil bo'lmagani uchun darhol \`false\` qaytaradi.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod \`0\` soni va \`false\` mantiqiy qiymatini solishtiradi.
 
 \`\`\`javascript
-console.log(5 == "5");       // true (tuzoq!)
-console.log(0 == false);     // true (tuzoq!)
-console.log("" == false);    // true (tuzoq!)
-console.log(null == undefined); // true (tuzoq!)
+let zeroNum = 0; // Son
+let isFalse = false; // Boolean
+
+console.log(zeroNum == isFalse); // Kutilmagan natija: true
+console.log(zeroNum === isFalse); // Kutilgan qat'iy natija: false
 \`\`\`
 
-Bularning barchasi \`==\` ning "ko'r"ligi sababli. Qat'iy tekshiruvda:
+\`\`\`text
+// Natija: true
+// Natija: false
+\`\`\`
 
+Qator-baqator tahlil:
+- \`0 == false\` — \`==\` operatori \`false\` ni \`0\` ga aylantirib yuboradi va natija \`true\` bo'lib qoladi.
+- \`0 === isFalse\` — \`===\` turlarni tekshiradi (biri \`number\`, ikkinchisi \`boolean\`), shuning uchun to'g'ri va xavfsiz \`false\` qaytaradi.
+
+Xulosa: Dasturingiz xatosiz ishlashi uchun har doim \`===\` ishlating.
+
+---
+
+## 6. Ko'p uchraydigan xatolar
+
+### 1. Bitta = bilan === ni adashtirish
+❌ Xato kod:
 \`\`\`javascript
-console.log(5 === "5");      // false (to'g'ri!)
-console.log(0 === false);    // false (to'g'ri!)
-console.log("" === false);   // false (to'g'ri!)
+let score = 10;
+console.log(score = 20);
 \`\`\`
-
-### Qoida
-> **Har doim \`===\` ishlating.** \`==\` ni unuting — professional kodda unga o'rin yo'q.
-
-### \`!==\` — teng emasmi?
+Nima bo'ladi: Bu yerda taqqoslash bo'lmaydi! Aksincha, \`score\` o'zgaruvchisiga yangi \`20\` qiymati yuklanadi va konsolga \`20\` chiqadi. Taqqoslash uchun doim \`===\` yoziladi.
+✅ To'g'ri variant:
 \`\`\`javascript
-console.log(5 !== "5");  // true (turlar har xil — demak teng emas)
-console.log(5 !== 5);    // false (bir xil!)
+let score = 10;
+console.log(score === 20); // false
 \`\`\`
 
-\`\`\`mermaid
-flowchart TD
-    A["Solishtirish kerakmi?"] --> B["==="]
-    B --> C["Qiymat + tur bir xilmi?"]
-    C -->|"Ha"| D["true"]
-    C -->|"Yo'q"| E["false"]
-\`\`\`
-
----
-
-## 3. ⚙️ Qanday Ishlaydi
-
-\`===\` avval **turlarni** solishtiradi: har xil bo'lsa — darhol \`false\`, aylantirish yo'q. Shuning uchun u tezroq ham, xavfsizroq ham.
-
-\`==\` esa avval turlarni birxillashga urinadi (yashirin aylantirish), keyin solishtiradi — shu jarayonda tuzoqlar tug'iladi.
-
-Istisno — \`NaN\`: u hatto o'ziga ham teng emas!
+### 2. == ning null == undefined tuzog'i
+❌ Xato tushuncha:
 \`\`\`javascript
-console.log(NaN === NaN);  // false (!!!)
-console.log(Number.isNaN(NaN));  // true (tekshirish usuli)
+console.log(null == undefined); // true
+\`\`\`
+Nima bo'ladi: \`==\` operatori \`null\` bilan \`undefined\` ni bir-biriga teng deb hisoblaydi. Holbuki ular turli qiymatlar.
+✅ To'g'ri variant:
+\`\`\`javascript
+console.log(null === undefined); // false
+\`\`\`
+
+### 3. To'rtta tenglik (====) yozish
+❌ Xato kod:
+\`\`\`javascript
+let age = 18;
+console.log(age ==== 18);
+\`\`\`
+Nima bo'ladi: \`SyntaxError: Unexpected token '='\` xatoligi yuz beradi. JavaScript'da to'rtta tenglik yo'q, eng qat'iy tenglik bu uchta tenglikdir (\`===\`).
+✅ To'g'ri variant:
+\`\`\`javascript
+console.log(age === 18);
 \`\`\`
 
 ---
 
-## 4. ⚠️ Keng Tarqalgan Xatolar
+## 7. Tekshiruv
 
-| ❌ Xato | ✅ To'g'ri | Sabab |
-|---|---|---|
-| \`if (parol == 1234)\` | \`if (parol === 1234)\` | \`"1234" == 1234\` true — xavfsizlik teshigi! |
-| \`==\` ni odat qilish | Faqat \`===\` va \`!==\` | Yumshoq tenglik — xatolar manbai |
-| \`NaN === NaN\` dan true kutish | \`Number.isNaN()\` ishlatish | NaN o'ziga ham teng emas |
+### 1-mashq (Oson)
+\`codeA\` (\`100\`) va \`codeB\` (\`"100"\`) o'zgaruvchilarini yarating. Ularni \`===\` bilan solishtirib, natijani \`isStrictEqual\` o'zgaruvchisiga saqlang va konsolga chiqaring (\`false\` chiqadi).
+
+### 2-mashq (O'rtacha)
+\`status\` nomli o'zgaruvchi berilgan (\`let status = "active";\`). U \`"active"\` so'ziga qat'iy tengmi (\`===\`) deb tekshiring va natijani konsolga chiqaring (\`true\` chiqadi).
+
+### 3-mashq (Xatoni topish)
+Quyidagi kodda taqqoslash o'rniga bitta \`=\` yozilgan xatoni \`===\` bilan to'g'rilang:
+\`\`\`javascript
+let userAge = 18;
+let isEighteen = userAge = 18;
+console.log(isEighteen);
+\`\`\`
+
+### Javoblar:
+1.
+\`\`\`javascript
+let codeA = 100;
+let codeB = "100";
+let isStrictEqual = codeA === codeB;
+console.log(isStrictEqual);
+\`\`\`
+2.
+\`\`\`javascript
+let status = "active";
+console.log(status === "active");
+\`\`\`
+3.
+\`\`\`javascript
+let userAge = 18;
+let isEighteen = userAge === 18;
+console.log(isEighteen);
+\`\`\`
 
 ---
 
-## 5. 🔑 Asosiy Atamalar
+## 8. Xulosa
 
-- **\`==\`** — yumshoq tenglik (faqat qiymat, tur e'tiborsiz)
-- **\`===\`** — qat'iy tenglik (qiymat + tur)
-- **\`!==\`** — qat'iy teng emaslik
+1. \`==\` (erkin tenglik) faqat qiymatga qaraydi va turlarni avtomatik o'zgartiradi (\`5 == "5"\` bu \`true\`).
+2. \`===\` (qat'iy tenglik) qiymatni HAM, ma'lumot turini HAM tekshiradi (\`5 === "5"\` bu \`false\`).
+3. Dasturda kutilmagan xatolardan qochish uchun doimo \`===\` operatoridan foydalanish kerak.
 
----
-
-## 6. 🌍 Real Hayotda Qayerda?
-
-- **Parol tekshiruvi:** \`kiritilgan === saqlangan\` — turlar ham mos bo'lishi shart
-- **Yosh chegarasi:** \`yosh === 18\` — \`"18"\` (matn) o'tmasligi kerak
-
----
-
-## 7. 🎙 Intervyu Savollari
-
-**1. \`==\` va \`===\` farqi nima?**
-**Javob:** \`==\` faqat qiymatni solishtiradi (turni aylantiradi), \`===\` qiymat va turni birga tekshiradi.
-
-**2. \`0 == false\` nima uchun true?**
-**Javob:** \`==\` false ni 0 ga aylantiradi — yumshoq tenglik tuzog'i.
-
-**3. \`NaN === NaN\` nima uchun false?**
-**Javob:** Standart bo'yicha NaN hech narsaga teng emas, o'ziga ham. \`Number.isNaN()\` bilan tekshiriladi.
-
----
-
-## 8. ✅ Xulosa
-
-- **Faqat \`===\` va \`!==\`** — \`==\` ni lug'atingizdan o'chiring
-- **NaN** o'ziga ham teng emas — \`Number.isNaN()\` ishlating
-- **Keyingi qadam:** 1.12-darsda o'zgaruvchilar "qayerda ko'rinadi" — scope
+Keyingi darsda: Mantiqiy operatorlar: VA (&&), YOKI (||) va EMAS (!) bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Farqni ko'r",
-      instruction: "`check(a, b)` funksiyasi `[a == b, a === b]` qaytarsin. check(5, \"5\") => [true, false] bo'lishi kerak.",
-      startingCode: "function check(a, b) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return [a == b, a === b];",
-      test: "const fn = new Function(code + '; return check;')();\nconst r = fn(5, \"5\");\nif (r[0] === true && r[1] === false) return null;\nreturn '[true, false] kutilgandi';"
+      title: "Qat'iy tenglikni tekshirish (===)",
+      instruction: "`codeA` (`100`) va `codeB` (`\"100\"`) o'zgaruvchilarini yarating. Ularni `===` bilan solishtirib, `isStrictEqual` ga saqlang va `console.log(isStrictEqual);` orqali chiqaring.",
+      startingCode: "let codeA = 100;\nlet codeB = \"100\";\n// isStrictEqual ga codeA === codeB ni saqlang va chiqaring\n",
+      hint: "let isStrictEqual = codeA === codeB;\nconsole.log(isStrictEqual);",
+      test: "if (!code.includes('===')) return '=== operatori ishlatilmadi';\nif (!code.includes('isStrictEqual')) return 'isStrictEqual o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('false'))) return null;\nreturn 'false natijasi konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "Xavfsiz parol",
-      instruction: "`isCorrect(kiritilgan, saqlangan)` funksiyasi QAT'IY tenglik bilan solishtirsin. isCorrect(\"1234\", 1234) => false bo'lishi kerak!",
-      startingCode: "function isCorrect(kiritilgan, saqlangan) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return kiritilgan === saqlangan;",
-      test: "const fn = new Function(code + '; return isCorrect;')();\nif (fn(\"1234\", 1234) === false && fn(1234, 1234) === true) return null;\nreturn '=== ishlating, == emas!';"
+      title: "Matnlarning qat'iy tengligi",
+      instruction: "`status` nomli o'zgaruvchi berilgan (`let status = \"active\";`). Uning `\"active\"` ga qat'iy tengligini (`===`) tekshirib, natijani konsolga chiqaring.",
+      startingCode: "let status = \"active\";\n// status === \"active\" ekanini konsolga chiqaring\n",
+      hint: "console.log(status === \"active\");",
+      test: "if (!code.includes('===')) return '=== operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('true'))) return null;\nreturn 'true natijasi konsolga chiqmadi';"
     },
     {
       id: 3,
-      title: "Turli tuzoqlar",
-      instruction: "`traps()` funksiyasi `[0 == false, \"\" == false, null == undefined]` natijasini qaytarsin (uchtasi ham true).",
-      startingCode: "function traps() {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return [0 == false, \"\" == false, null == undefined];",
-      test: "const fn = new Function(code + '; return traps;')();\nconst r = fn();\nif (r[0] === true && r[1] === true && r[2] === true) return null;\nreturn 'Uchala == ham true';"
-    },
-    {
-      id: 4,
-      title: "Qat'iy javoblar",
-      instruction: "`strict()` funksiyasi `[0 === false, \"\" === false, null === undefined]` natijasini qaytarsin (uchtasi ham false).",
-      startingCode: "function strict() {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return [0 === false, \"\" === false, null === undefined];",
-      test: "const fn = new Function(code + '; return strict;')();\nconst r = fn();\nif (r[0] === false && r[1] === false && r[2] === false) return null;\nreturn 'Uchala === ham false';"
-    },
-    {
-      id: 5,
-      title: "NaN ovchisi",
-      instruction: "`isReallyNaN(x)` funksiyasi `Number.isNaN(x)` bilan tekshirsin.",
-      startingCode: "function isReallyNaN(x) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return Number.isNaN(x);",
-      test: "const fn = new Function(code + '; return isReallyNaN;')();\nif (fn(NaN) === true && fn(5) === false && fn(\"a\") === false) return null;\nreturn 'Number.isNaN ishlating';"
+      title: "Bitta tenglik xatosini to'g'rilash",
+      instruction: "`let isEighteen = userAge = 18;` dagi bitta `=` ni `===` ga o'zgartiring, toki natija Boolean bo'lib konsolga chiqsin.",
+      startingCode: "let userAge = 18;\nlet isEighteen = userAge = 18;\nconsole.log(isEighteen);\n",
+      hint: "let isEighteen = userAge === 18;\nconsole.log(isEighteen);",
+      test: "if (!code.includes('===')) return '=== operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('true'))) return null;\nreturn 'true natijasi konsolga chiqmadi';"
     }
   ],
-
   quizzes: [
     {
       id: 1,
-      question: "`5 == \"5\"` va `5 === \"5\"`?",
+      question: "`console.log(10 == \"10\");` va `console.log(10 === \"10\");` qanday natija beradi?",
       options: [
         "true va true",
+        "false va false",
         "true va false",
-        "false va true",
-        "false va false"
+        "false va true"
       ],
-      correctAnswer: 1,
-      explanation: "== ko'r, === qat'iy."
+      correctAnswer: 2,
+      explanation: "== turlarni avtomatik moslashtirib true beradi, === esa turlar (son va matn) har xilligi sababli false beradi."
     },
     {
       id: 2,
-      question: "Nega professional kodda `==` ishlatilmaydi?",
+      question: "Nega zamonaviy JavaScript'da doimo === operatoridan foydalanish tavsiya qilinadi?",
       options: [
-        "U sekin yoziladi",
-        "U turlarni yashirin aylantirib, kutilmagan true beradi",
-        "U taqiqlangan so'z",
-        "U faqat matnda ishlaydi"
+        "=== tezroq yoziladi",
+        "=== ma'lumot turlarini yashirin o'zgartirmaydi va kutilmagan xatolardan asraydi",
+        "== umuman xatolik beradi",
+        "=== faqat matnlarni solishtiradi"
       ],
       correctAnswer: 1,
-      explanation: "0 == false → true kabi tuzoqlar xavfli."
+      explanation: "=== qat'iy tekshiruv o'tkazadi va yashirin tur o'zgarishi tufayli kelib chiqadigan xatolarning oldini oladi."
     },
     {
       id: 3,
-      question: "`NaN === NaN` natijasi?",
+      question: "`0 === false` ifodasi nega false natija beradi?",
       options: [
-        "true",
-        "false (NaN o'ziga ham teng emas)",
-        "NaN",
-        "Xatolik"
-      ],
-      correctAnswer: 1,
-      explanation: "Number.isNaN() bilan tekshiriladi."
-    },
-    {
-      id: 4,
-      question: "Parol `\"1234\"` va `1234` ni `==` bilan solishtirsak?",
-      options: [
-        "false — xavfsiz",
-        "true — XAVFLI! Turlar har xil bo'lsa ham o'tkazadi",
-        "Xatolik",
-        "NaN"
-      ],
-      correctAnswer: 1,
-      explanation: "Shuning uchun parolda har doim ===."
-    },
-    {
-      id: 5,
-      question: "`null == undefined` va `null === undefined`?",
-      options: [
-        "true va false",
-        "false va true",
-        "true va true",
-        "false va false"
+        "Chunki ularning ma'lumot turlari har xil: 0 son (number), false esa mantiqiy tur (boolean)",
+        "Chunki 0 qiymati false ga teng emas",
+        "Chunki bu ifoda xatolik beradi",
+        "Chunki false har doim 1 ga teng"
       ],
       correctAnswer: 0,
-      explanation: "== ularni teng deydi, === farqlaydi."
+      explanation: "=== operatorida agar ma'lumot turlari har xil bo'lsa, natija har doim false bo'ladi."
     }
   ]
-
 };
