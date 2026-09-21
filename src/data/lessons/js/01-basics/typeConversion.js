@@ -1,253 +1,211 @@
 export const typeConversionLesson = {
   id: "typeConversionLesson",
-  title: "Type Conversion: Explicit va Implicit",
+  title: "Turlarni O'zgartirish (Type Conversion)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. Bu nima?
 
-### Type conversion nima?
-Bir turni boshqasiga aylantirish. Masalan, foydalanuvchi formaga \`25\` yozdi — lekin u **matn** (\`"25"\`) bo'lib keladi. Hisoblash uchun uni **songa** aylantirish kerak.
+Tasavvur qiling, siz chet eldasiz va qo'lingizda dollar bor. Mahalliy do'konda faqat so'm qabul qilinadi. Siz valyuta almashtirish shoxobchasiga borib, dollarni so'mga almashtirasiz.
+Dasturlashda ham ma'lumotlar bir turdan ikkinchi turga o'tkaziladi: matn songa, son matnga yoki qiymatlar true/false ga aylantiriladi.
 
-Aylantirishning ikki usuli bor:
-- **Explicit (oshkora)** — SIZ aytasiz: \`Number("25")\` → \`25\`
-- **Implicit (yashirin)** — JavaScript O'ZI qiladi: \`"25" - 5\` → \`20\`
-
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **valyuta ayirboshlash shoxobchasidasiz**:
-- **Explicit** — siz kassirga "shu dollarni so'mga almashtiring" deysiz (aniq buyruq)
-- **Implicit** — avtomatning o'zi "bu dollar ekan, so'mda qaytaraman" deb taxmin qiladi (ba'zan xato kursda!)
-
-Xulosa: pulingizni har doim O'ZINGIZ almashtiring — avtomatga ishonmang!
+Turlarni o'zgartirish (type conversion) — bir ma'lumot turidagi qiymatni boshqa ma'lumot turiga (masalan, matnni songa) o'tkazishdir.
 
 ---
 
-## 2. 💻 Oshkor Aylantirish (3 ta qurol)
+## 2. Nega kerak?
 
-### Number() — songa
-\`\`\`javascript
-console.log(Number("25"));    // 25
-console.log(Number(""));      // 0
-console.log(Number("Ali"));   // NaN (son emas!)
-console.log(Number(true));    // 1
-console.log(Number(false));   // 0
-\`\`\`
+Foydalanuvchi saytda yoshini yoki pul miqdorini kiritganda, dastur uni odatda matn (String) sifatida qabul qiladi (masalan, \`"25"\`).
+Agar biz matn ustida matematik amallar bajarmoqchi bo'lsak yoki uni solishtirmoqchi bo'lsak, xatolar yuz beradi (masalan, \`"25" + 5\` amali \`30\` emas, \`"255"\` bo'lib qoladi).
 
-### String() — matnga
-\`\`\`javascript
-console.log(String(25));      // "25"
-console.log(String(true));    // "true"
-console.log(String(null));    // "null"
-\`\`\`
-
-### Boolean() — rost/yolg'onga
-\`\`\`javascript
-console.log(Boolean(1));      // true
-console.log(Boolean(0));      // false
-console.log(Boolean("Ali"));  // true
-console.log(Boolean(""));     // false (bo'sh matn yolg'on!)
-console.log(Boolean(null));   // false
-\`\`\`
-
-### Yodlash qoidasi — "5 ta yolg'onchi"
-\`false\` beradiganlar atigi **beshta**: \`0\`, \`""\`, \`null\`, \`undefined\`, \`NaN\`. Qolgan HAMMA narsa \`true\`!
-
-\`\`\`mermaid
-flowchart TD
-    A["Boolean(X)"] --> B{"0, '', null, undefined, NaN mi?"}
-    B -->|"Ha (5 tadan biri)"| C["false"]
-    B -->|"Yo'q (qolgan hammasi)"| D["true"]
-\`\`\`
+Bunday xatolarning oldini olish uchun hisob-kitobdan oldin matnni \`Number()\` yordamida haqiqiy songa aylantirib olishimiz kerak.
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi
+## 3. Birinchi misol
 
-Yashirin aylantirishda \`+\` va qolgan operatorlar HAR XIL ishlaydi:
+Bu kod matn ko'rinishidagi sonni \`Number()\` orqali haqiqiy songa aylantiradi va konsolga chiqaradi.
 
 \`\`\`javascript
-console.log("5" + 3);   // "53" (matn! + yopishtiradi)
-console.log("5" - 3);   // 2 (son! - faqat hisoblaydi)
-console.log("5" * 2);   // 10 (son!)
-console.log("10" / 2);  // 5 (son!)
+let textAge = "25"; // Matn ko'rinishidagi son
+let realAge = Number(textAge); // Songa aylantirish
+console.log(realAge); // Natijani chiqarish
+console.log(typeof realAge); // Turini tekshirish
 \`\`\`
 
-> **Oltin qoida:** \`+\` matnni ko'rsa — yopishtiradi. Qolgan (\`- * /\`) — songa aylantirib hisoblaydi.
-
-Va eng xavflisi — \`==\` (yumshoq tenglik) ham yashirin aylantiradi. Shuning uchun har doim \`===\` ishlating (1.11-darsda batafsil).
-
----
-
-## 4. ⚠️ Keng Tarqalgan Xatolar
-
-| ❌ Xato | ✅ To'g'ri | Sabab |
-|---|---|---|
-| \`"5" + 3 = 8\` deb o'ylash | \`"53"\` ekanini bilish | \`+\` matn bilan yopishtiradi |
-| \`Number("Ali")\` ga ishonish | \`NaN\` chiqishini bilish | Matn songa aylanmaydi |
-| \`Boolean("false")\` → false deb o'ylash | \`true\`! | Bo'sh bo'lmagan har qanday matn rost |
-| Forma ma'lumotini to'g'ridan hisoblash | Avval \`Number()\` qilish | Formadan hamma narsa matn bo'lib keladi! |
+\`\`\`text
+// Natija: 25
+// Natija: number
+\`\`\`
 
 ---
 
-## 5. 🔑 Asosiy Atamalar
+## 4. Qator-baqator tahlil
 
-- **Explicit conversion** — oshkor aylantirish (\`Number()\`, \`String()\`, \`Boolean()\`)
-- **Implicit coercion** — yashirin aylantirish (JS o'zi qiladi)
-- **NaN** — "Not a Number", muvaffaqiyatsiz son aylantirish natijasi
-- **Falsy** — \`false\` beradigan 5 qiymat (0, "", null, undefined, NaN)
-
----
-
-## 6. 🌍 Real Hayotda Qayerda?
-
-- **Forma:** yosh maydonidan \`"25"\` keldi → \`Number()\` qilib 25 ga aylantirish
-- **Tekshiruv:** parol maydoni bo'shmi? → \`Boolean(parol) === false\`
-- **Hisobot:** sonni ekranga chiqarish → \`String(jami)\` (kamdan-kam kerak, avtomatik bo'ladi)
+- \`let textAge = "25";\` — qo'shtirnoq ichida \`"25"\` matni saqlandi.
+- \`let realAge = Number(textAge);\` — \`Number()\` buyrug'i matnni haqiqiy son turiga aylantirib beradi.
+- \`console.log(realAge);\` — konsolga \`25\` soni chiqadi.
+- \`console.log(typeof realAge);\` — konsolga \`number\` chiqadi, ya'ni uning turi haqiqatan ham songa aylangan.
 
 ---
 
-## 7. 🎙 Intervyu Savollari
+## 5. Yana bitta misol
 
-**1. \`"5" + 3\` va \`"5" - 3\` natijalari nima, nima uchun farq qiladi?**
-**Javob:** \`"53"\` va \`2\`. \`+\` matnni ko'rsa yopishtiradi, \`-\` esa songa aylantirib hisoblaydi.
+Bu kod harfiy matnni songa aylantirishga urinadi va natijada \`NaN\` hosil bo'ladi.
 
-**2. Qaysi 5 qiymat \`false\` beradi?**
-**Javob:** \`0\`, \`""\`, \`null\`, \`undefined\`, \`NaN\` — qolgan hammasi \`true\`.
+\`\`\`javascript
+let text = "salom"; // Raqam bo'lmagan matn
+let result = Number(text); // Songa aylantirish
+console.log(result); // Natijani chiqarish
+\`\`\`
 
-**3. \`Boolean("false")\` natijasi nima?**
-**Javob:** \`true\`! Chunki bo'sh bo'lmagan matn — rost.
+\`\`\`text
+// Natija: NaN
+\`\`\`
+
+Qator-baqator tahlil:
+- \`Number("salom")\` — matn ichida raqam bo'lmagani uchun JavaScript uni songa aylantira olmaydi.
+- Natijada maxsus \`NaN\` (Not a Number — "Son emas") qiymati hosil bo'ladi.
+- \`console.log(result);\` — konsolga \`NaN\` chiqadi.
+
+Boshqa turlarga aylantirish:
+- \`String(100)\` → \`"100"\` (sonni matnga aylantirish)
+- \`Boolean(1)\` → \`true\`, \`Boolean(0)\` → \`false\` (mantiqiy turga aylantirish)
 
 ---
 
-## 8. ✅ Xulosa
+## 6. Ko'p uchraydigan xatolar
 
-- **3 qurol:** \`Number()\`, \`String()\`, \`Boolean()\` — har doim oshkor aylantiring
-- **5 yolg'onchi:** \`0, "", null, undefined, NaN\` → false
-- **\`+\` yopishtiradi, \`- * /\` hisoblaydi**
-- **Keyingi qadam:** 1.9-darsda faqat songa aylantirish — explicit casting
+### 1. Number, String, Boolean ni kichik harf bilan yozish
+❌ Xato kod:
+\`\`\`javascript
+let age = number("25");
+\`\`\`
+Nima bo'ladi: \`ReferenceError: number is not defined\` xatoligi yuz beradi. Turlarni o'zgartiruvchi bu buyruqlar har doim KATTA harf bilan boshlanadi: \`Number()\`, \`String()\`, \`Boolean()\`.
+✅ To'g'ri variant:
+\`\`\`javascript
+let age = Number("25");
+\`\`\`
+
+### 2. NaN ni dastur xatosi (error) deb o'ylash
+❌ Xato tushuncha: \`Number("kitob")\` kod yozilganda dastur to'xtab qoladi deb o'ylash.
+Nima bo'ladi: Dastur to'xtamaydi yoki qizil xatolik bermaydi. JavaScript shunchaki \`NaN\` degan maxsus qiymat qaytaradi.
+✅ To'g'ri tushuncha: Agar matndan son yasab bo'lmasa, natija \`NaN\` bo'ladi.
+
+### 3. Boolean("false") ni false deb o'ylash
+❌ Xato tushuncha:
+\`\`\`javascript
+let isAccess = Boolean("false"); // true bo'ladi!
+\`\`\`
+Nima bo'ladi: Qo'shtirnoq ichida biron belgi bo'lsa (hatto u \`"false"\` yoki \`"0"\` bo'lsa ham), \`Boolean()\` uni \`true\` deb hisoblaydi! Faqat mutlaqo bo'sh matn (\`""\`) \`false\` bo'ladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+let isAccess = Boolean(""); // false
+\`\`\`
+
+---
+
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+\`priceText\` nomli o'zgaruvchida \`"150"\` matni berilgan (\`let priceText = "150";\`). Uni \`Number()\` orqali songa aylantiring, \`realPrice\` nomli o'zgaruvchiga saqlang va konsolga chiqaring.
+
+### 2-mashq (O'rtacha)
+\`score\` nomli o'zgaruvchida \`10\` soni berilgan (\`let score = 10;\`). Uni \`String()\` yordamida matnga aylantirib, \`scoreText\` o'zgaruvchisiga saqlang va uning turini \`typeof\` orqali konsolga chiqaring (\`string\` chiqishi kerak).
+
+### 3-mashq (Chegara holat)
+\`word\` o'zgaruvchisida \`"kitob"\` matni berilgan (\`let word = "kitob";\`). Uni \`Number(word)\` orqali songa aylantirib, \`notANumber\` o'zgaruvchisiga saqlang va konsolga chiqaring (\`NaN\` chiqadi).
+
+### Javoblar:
+1.
+\`\`\`javascript
+let priceText = "150";
+let realPrice = Number(priceText);
+console.log(realPrice);
+\`\`\`
+2.
+\`\`\`javascript
+let score = 10;
+let scoreText = String(score);
+console.log(typeof scoreText);
+\`\`\`
+3.
+\`\`\`javascript
+let word = "kitob";
+let notANumber = Number(word);
+console.log(notANumber);
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. \`Number()\`, \`String()\` va \`Boolean()\` — qiymatni mos ravishda son, matn yoki mantiqiy turga aylantiradi. Ular katta harf bilan boshlanadi.
+2. Agar matnda son bo'lmasa, \`Number("salom")\` amali \`NaN\` (Not a Number — "son emas") qiymatini qaytaradi.
+3. \`Boolean()\` da \`0\`, \`""\` (bo'sh matn), \`null\`, \`undefined\` va \`NaN\` qiymatlari \`false\` bo'ladi, qolgan hamma qiymatlar \`true\` bo'ladi.
+
+Keyingi darsda: Arifmetik operatorlar orqali sonlar ustida amallar bajarishni o'rganamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Matndan songa",
-      instruction: "`toNumber(matn)` funksiyasi matnni `Number()` bilan songa aylantirib qaytarsin.",
-      startingCode: "function toNumber(matn) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return Number(matn);",
-      test: "const fn = new Function(code + '; return toNumber;')();\nif (fn(\"25\") === 25 && fn(\"\") === 0) return null;\nreturn 'Number() ishlatilmadi';"
+      title: "Matnni songa aylantirish",
+      instruction: "`priceText` nomli o'zgaruvchi berilgan (`let priceText = \"150\";`). Uni `Number()` orqali songa aylantirib, `realPrice` o'zgaruvchisiga saqlang va `console.log(realPrice);` orqali chiqaring.",
+      startingCode: "let priceText = \"150\";\n// realPrice o'zgaruvchisiga Number(priceText) ni saqlang va chiqaring\n",
+      hint: "let realPrice = Number(priceText);\nconsole.log(realPrice);",
+      test: "if (!code.includes('Number(')) return 'Number() funksiyasi ishlatilmadi';\nif (!code.includes('realPrice')) return 'realPrice o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('150'))) return null;\nreturn '150 soni konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "Songa matnga",
-      instruction: "`toString(son)` funksiyasi sonni `String()` bilan matnga aylantirib qaytarsin.",
-      startingCode: "function toString(son) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return String(son);",
-      test: "const fn = new Function(code + '; return toString;')();\nif (fn(25) === \"25\" && typeof fn(25) === \"string\") return null;\nreturn 'String() ishlatilmadi';"
+      title: "Sonni matnga aylantirish",
+      instruction: "`score` nomli o'zgaruvchi berilgan (`let score = 10;`). Uni `String()` yordamida matnga aylantirib, `scoreText` ga saqlang va `console.log(typeof scoreText);` orqali turini chiqaring.",
+      startingCode: "let score = 10;\n// scoreText ga String(score) ni saqlang va typeof bilan chiqaring\n",
+      hint: "let scoreText = String(score);\nconsole.log(typeof scoreText);",
+      test: "if (!code.includes('String(')) return 'String() funksiyasi ishlatilmadi';\nif (!code.includes('scoreText')) return 'scoreText o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('string'))) return null;\nreturn 'string turi konsolga chiqmadi';"
     },
     {
       id: 3,
-      title: "Forma yoshini hisoblash",
-      instruction: "Formadan yosh `\"20\"` (matn) keldi. `nextYear(yoshMatn)` funksiyasi uni songa aylantirib, 1 qo'shib qaytarsin. Masalan: nextYear(\"20\") => 21.",
-      startingCode: "function nextYear(yoshMatn) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return Number(yoshMatn) + 1;",
-      test: "const fn = new Function(code + '; return nextYear;')();\nif (fn(\"20\") === 21) return null;\nreturn 'Avval Number() qiling, keyin + 1';"
-    },
-    {
-      id: 4,
-      title: "Bo'shmi?",
-      instruction: "`hasValue(qiymat)` funksiyasi qiymat \"to'ldirilgan\" bo'lsa `true` qaytarsin (`Boolean()` dan foydalaning).",
-      startingCode: "function hasValue(qiymat) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return Boolean(qiymat);",
-      test: "const fn = new Function(code + '; return hasValue;')();\nif (fn(\"Ali\") === true && fn(\"\") === false && fn(0) === false) return null;\nreturn 'Boolean() ishlatilmadi';"
-    },
-    {
-      id: 5,
-      title: "Yashirin tuzoq",
-      instruction: "`whatIs(a)` funksiyasi `\"5\" + 3` ifodaning NATIJASINI (\"53\" matnini) qaytarsin — kod ichida yozib ko'ring.",
-      startingCode: "function whatIs(a) {\n  // \"5\" + 3 ni hisoblang\n}\n",
-      hint: "return \"5\" + 3;",
-      test: "const fn = new Function(code + '; return whatIs;')();\nif (fn() === \"53\") return null;\nreturn '\"5\" + 3 = \"53\" (matn)';"
-    },
-    {
-      id: 6,
-      title: "To'g'ri yig'indi",
-      instruction: "`addStrings(a, b)` funksiyasi ikkita matn-sonni (`\"10\"`, `\"20\"`) songa aylantirib qo'shsin. Masalan: addStrings(\"10\", \"20\") => 30 (\"1020\" emas!).",
-      startingCode: "function addStrings(a, b) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return Number(a) + Number(b);",
-      test: "const fn = new Function(code + '; return addStrings;')();\nif (fn(\"10\", \"20\") === 30) return null;\nreturn 'Ikkisini ham Number() qiling';"
+      title: "NaN natijasini olish",
+      instruction: "`word` o'zgaruvchisida `\"kitob\"` matni berilgan (`let word = \"kitob\";`). Uni `Number(word)` orqali songa aylantirib, `notANumber` o'zgaruvchisiga saqlang va konsolga chiqaring.",
+      startingCode: "let word = \"kitob\";\n// notANumber ga Number(word) ni saqlang va chiqaring\n",
+      hint: "let notANumber = Number(word);\nconsole.log(notANumber);",
+      test: "if (!code.includes('Number(')) return 'Number() funksiyasi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('NaN'))) return null;\nreturn 'NaN konsolga chiqmadi';"
     }
   ],
-
   quizzes: [
     {
       id: 1,
-      question: "`Number(\"25\")` natijasi nima?",
+      question: "`Number(\"50\")` ifodasi qanday natija beradi?",
       options: [
-        "\"25\" (matn)",
-        "25 (son)",
+        "\"50\" (matn)",
+        "50 (son)",
         "NaN",
-        "Xatolik"
+        "true"
       ],
       correctAnswer: 1,
-      explanation: "Number matnni songa aylantiradi."
+      explanation: "Number() matn ko'rinishidagi raqamlarni haqiqiy son (number) turiga o'tkazadi."
     },
     {
       id: 2,
-      question: "`\"5\" + 3` va `\"5\" - 3` natijalari?",
+      question: "`Number(\"olma\")` amali bajarilganda nima natija chiqadi?",
       options: [
-        "8 va 2",
-        "\"53\" va 2",
-        "\"53\" va \"53\"",
-        "8 va 8"
+        "Xatolik yuz berib dastur to'xtaydi",
+        "0 chiqadi",
+        "NaN (Not a Number)",
+        "\"olma\" matni"
       ],
-      correctAnswer: 1,
-      explanation: "+ yopishtiradi, - hisoblaydi."
+      correctAnswer: 2,
+      explanation: "Raqam bo'lmagan matnni songa aylantirib bo'lmaydi, shuning uchun JavaScript NaN (Not a Number) qaytaradi."
     },
     {
       id: 3,
-      question: "Qaysi biri `false` bermaydi?",
+      question: "Quyidagilardan qaysi biri `Boolean()` ga berilganda `false` qaytaradi?",
       options: [
-        "Boolean(0)",
-        "Boolean(\"\")",
-        "Boolean(\"false\")",
-        "Boolean(null)"
+        "\"salom\"",
+        "100",
+        "0",
+        "\"0\""
       ],
       correctAnswer: 2,
-      explanation: "\"false\" bo'sh bo'lmagan matn — demak true!"
-    },
-    {
-      id: 4,
-      question: "`Number(\"Ali\")` natijasi?",
-      options: [
-        "0",
-        "NaN",
-        "\"Ali\"",
-        "Xatolik"
-      ],
-      correctAnswer: 1,
-      explanation: "Matn songa aylanmaydi — NaN chiqadi."
-    },
-    {
-      id: 5,
-      question: "Forma maydonidan kelgan \"20\" ga 1 qo'shmoqchimiz. To'g'ri yo'l?",
-      options: [
-        "\"20\" + 1",
-        "Number(\"20\") + 1",
-        "\"20\" - (-1)",
-        "Hech qaysi"
-      ],
-      correctAnswer: 1,
-      explanation: "Avval songa aylantirish kerak, aks holda \"201\" chiqadi."
-    },
-    {
-      id: 6,
-      question: "Explicit va implicit farqi?",
-      options: [
-        "Bir xil narsa",
-        "Explicit — siz aytasiz, implicit — JS o'zi taxmin qiladi",
-        "Implicit — siz aytasiz, explicit — JS o'zi",
-        "Ikkisi ham taqiqlangan"
-      ],
-      correctAnswer: 1,
-      explanation: "O'zingiz aylantiring — avtomatga ishonmang."
+      explanation: "0 soni yolg'on (false) hisoblanadi. \"0\" esa bo'sh bo'lmagan matn bo'lgani uchun true bo'ladi."
     }
   ]
-
 };
