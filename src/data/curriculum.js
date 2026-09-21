@@ -60,6 +60,7 @@ export const curriculum = {
       { id: "objectUpdateBasics", number: "1.46", title: "Obyektni O'zgartirish: Qo'shish, Yangilash, Delete", load: () => import("./lessons/js/01-basics/objectUpdateBasics.js").then(m => m.objectUpdateBasics) },
       { id: "forInBasics", number: "1.47", title: "for...in Sikli", load: () => import("./lessons/js/01-basics/forInBasics.js").then(m => m.forInBasics) },
       { id: "jsonBasics", number: "1.48", title: "JSON Asoslari: stringify va parse", load: () => import("./lessons/js/01-basics/jsonBasics.js").then(m => m.jsonBasics) },
+      { id: "arrayDestructuringBasics", number: "1.49", title: "Massiv Destructuring: Qiymatlarni Ajratish", load: () => import("./lessons/js/01-basics/arrayDestructuringBasics.js").then(m => m.arrayDestructuringBasics) },
       { id: "dataTypesLesson", number: "1.5", title: "Ma'lumot Turlari (Data Types)", load: () => import("./lessons/js/01-basics/dataTypes.js").then(m => m.dataTypesLesson) },
       { id: "moreDataTypesLesson", number: "1.6", title: "Ma'lumot Turlari: Null, Symbol, BigInt", load: () => import("./lessons/js/01-basics/moreDataTypes.js").then(m => m.moreDataTypesLesson) },
       { id: "objectIntroLesson", number: "1.7", title: "Obyektlarga Kirish (Object)", load: () => import("./lessons/js/01-basics/objectIntro.js").then(m => m.objectIntroLesson) },
