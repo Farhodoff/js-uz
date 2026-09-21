@@ -2,211 +2,230 @@ export const templateLiterals = {
   id: "templateLiterals",
   title: "Template Literals (Backticks)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. Bu nima?
 
-### Template literals — matn yopishtirishning zamonaviy usuli
-Matn ichiga o'zgaruvchi qo'shishning ikki usuli:
+Tasavvur qiling, sizda tayyor taklifnoma blankasi bor:
+"Hurmatli [bu yerga ism yoziladi], sizni bayramga taklif qilamiz!"
+Siz qog'ozni qirqib yopishtirmaysiz, balki bo'sh joyga kerakli ismni yozib qo'yasiz.
+
+Template literals (shablonli satrlar) — xuddi shu blankaga o'xshaydi: matn ichiga o'zgaruvchilarni qulay joylashtirish uchun qiya qo'shtirnoq (backtick \\\`\\\`) va \\\`\${}\\\` belgisidan foydalanadigan zamonaviy usuldir.
+
+---
+
+## 2. Nega kerak?
+
+Avvalgi darsda o'rgangan \`+\` belgisi bilan bir nechta o'zgaruvchini ulashda (\`"Salom, " + name + "! Sizning ballingiz: " + score\`) qo'shtirnoqlar ko'payib, bo'sh joylar (probellar) tushib qolishi va kod chalkashib ketishi oson.
+
+Template literals bilan bitta butun matn yoziladi va o'zgaruvchilar kerakli joyga \\\`\${o'zgaruvchi}\\\` shaklida kiritiladi.
+
+---
+
+## 3. Birinchi misol
+
+Bu kod \`name\` o'zgaruvchisini matn ichiga kiritadi va konsolga chiqaradi.
 
 \`\`\`javascript
-let ism = "Ali";
-let yosh = 20;
-
-// Eski usul (+ bilan):
-console.log("Salom, " + ism + "! Yoshingiz " + yosh + " da.");
-
-// Yangi usul (backtick + \${} bilan):
-console.log(\`Salom, \${ism}! Yoshingiz \${yosh} da.\`);
+let name = "Ali";
+let message = \`Salom, \${name}!\`; // Matn ichiga o'zgaruvchini joylashtirish
+console.log(message);
 \`\`\`
 
-Ikkisi ham bir xil natija — lekin ikkinchisi ancha toza!
-
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **taklifnoma yozyapsiz**:
-- **Eski usul** — qog'ozni kesib-yopishtirish: "Hurmatli " + [ISM] + ", sizni " + [SANA] + " ga..."
-- **Yangi usul** — bo'sh joyli blanka: "Hurmatli \${ism}, sizni \${sana} ga..." — bo'sh joyga qalamda yozasiz
-
-Blanka — tezroq, tozaroq, xatosiz!
-
----
-
-## 2. 💻 Imkoniyatlar
-
-### O'zgaruvchi qo'shish (\${})
-\`\`\`javascript
-let ism = "Ali";
-let ball = 95;
-console.log(\`Talaba \${ism} \${ball} ball oldi.\`);
-\`\`\`
-
-### Hisoblash (\${} ichida!)
-\`\`\`javascript
-let a = 5, b = 3;
-console.log(\`Yig'indi: \${a + b}\`);  // Yig'indi: 8
-console.log(\`Keyingi yil: \${2024 + 1}\`);  // Keyingi yil: 2025
-\`\`\`
-
-### Ko'p qatorli matn
-\`\`\`javascript
-let xat = \`Hurmatli mijoz,
-Sizning buyurtmangiz tayyor.
-Rahmat!\`;
-console.log(xat);
-\`\`\`
-
-Eski usulda har qatorga \`\\n\` kerak edi — backtick'da shart emas!
-
-\`\`\`mermaid
-flowchart LR
-    A["Matn kerakmi?"] --> B{"O'zgaruvchi bormi?"}
-    B -->|"Yo'q"| C["Oddiy qo'shtirnoq"]
-    B -->|"Ha"| D["Backtick + \${}"]
+\`\`\`text
+// Natija: Salom, Ali!
 \`\`\`
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi
+## 4. Qator-baqator tahlil
 
-Backtick (\`\` \` \`\`) — klaviaturada Tab tepasidagi tugma. \`\${}\` ichidagi ifoda hisoblanib, matnga aylanadi:
+- \\\`Salom, \${name}!\\\` — butun matn qiya qo'shtirnoq (backtick) ichiga olingan.
+- \`\${name}\` — \`name\` o'zgaruvchisining qiymati (\`"Ali"\`) aynan shu yerga avtomatik qo'yiladi.
+- \`console.log(message);\` — hosil bo'lgan matn ekranga chiqadi.
+
+---
+
+## 5. Qadamma-qadam (trace)
+
+| Qadam | Kod qatori | Natija | Izoh |
+| :--- | :--- | :--- | :--- |
+| 1 | \`let name = "Ali";\` | \`"Ali"\` | Ism saqlandi |
+| 2 | \\\`Salom, \${name}!\\\` | \`"Salom, Ali!"\` | \`\${name}\` o'rniga \`"Ali"\` qo'yildi |
+| 3 | \`console.log(message);\` | \`"Salom, Ali!"\` | Konsolga chiqdi |
+
+---
+
+## 6. Yana bitta misol
+
+Bu kod matn va son o'zgaruvchilarini bitta gapga joylashtiradi.
 
 \`\`\`javascript
-let ism = "Ali";
-console.log(\`Salom \${ism.toUpperCase()}!\`);  // Salom ALI!
+let user = "Vali";
+let score = 95;
+let result = \`Foydalanuvchi: \${user}, Ball: \${score}\`;
+console.log(result);
 \`\`\`
 
-Hatto funksiya ham chaqirish mumkin: \`\${kvadrat(5)}\` → \`25\`.
+\`\`\`text
+// Natija: Foydalanuvchi: Vali, Ball: 95
+\`\`\`
 
 ---
 
-## 4. ⚠️ Keng Tarqalgan Xatolar
+## 7. Ko'p uchraydigan xatolar
 
-| ❌ Xato | ✅ To'g'ri | Sabab |
-|---|---|---|
-| \`"Salom \${ism}"\` (oddiy qo'shtirnoq) | \`\` \`Salom \${ism}\` \`\` (backtick) | \`\${}\` faqat backtick ichida ishlaydi! |
-| \`\` \`Narx: \${narx} \`\` (yopilmagan) | Oxirida \`\` \` \`\` | Backtick juft bo'lishi kerak |
-| \`\${}\` ni unutish (\`$ism\`) | \`\${ism}\` | Qavslarsiz ishlamaydi |
+### 1. Backtick o'rniga oddiy qo'shtirnoq ishlatish
+❌ Xato kod:
+\`\`\`javascript
+let name = "Ali";
+let message = "Salom, \${name}!";
+console.log(message);
+\`\`\`
+Nima bo'ladi: Ekranga \`Salom, \${name}!\` deb so'zma-so'z chiqadi. Chunki \`\${}\` faqat backtick (\\\`\\\`) ichida ishlaydi.
+✅ To'g'ri variant:
+\`\`\`javascript
+let name = "Ali";
+let message = \`Salom, \${name}!\`;
+console.log(message);
+\`\`\`
+
+### 2. Dollar belgisini unutish
+❌ Xato kod:
+\`\`\`javascript
+let name = "Ali";
+let message = \`Salom, {name}!\`;
+console.log(message);
+\`\`\`
+Nima bo'ladi: Ekranga \`Salom, {name}!\` deb chiqadi. O'zgaruvchini joylash uchun albatta \`\$\` belgisi bo'lishi shart.
+✅ To'g'ri variant:
+\`\`\`javascript
+let name = "Ali";
+let message = \`Salom, \${name}!\`;
+console.log(message);
+\`\`\`
+
+### 3. Mavjud bo'lmagan o'zgaruvchini yozish
+❌ Xato kod:
+\`\`\`javascript
+let message = \`Salom, \${age}!\`;
+\`\`\`
+Nima bo'ladi: \`ReferenceError: age is not defined\` xatoligi yuz beradi. \`\${}\` ichida faqat oldindan e'lon qilingan o'zgaruvchilar yozilishi kerak.
+✅ To'g'ri variant:
+\`\`\`javascript
+let age = 20;
+let message = \`Salom, \${age}!\`;
+\`\`\`
 
 ---
 
-## 5. 🔑 Asosiy Atamalar
+## 8. Tekshiruv
 
-- **Template literal** — backtick ichidagi matn
-- **Interpolatsiya** — \`\${}\` bilan qiymat qo'shish
-- **Backtick** — \`\` \` \`\` belgisi (Tab tepasida)
+### 1-mashq (Oson)
+\`city\` o'zgaruvchisi (\`"Buxoro"\`) qiymatini backtick va \`\${city}\` yordamida \\\`Men \${city} shahrida yashayman\\\` matniga joylang va konsolga chiqaring.
+
+### 2-mashq (O'rtacha)
+\`item\` (\`"Kitob"\`) va \`price\` (\`50\`) o'zgaruvchilaridan foydalanib, \\\`Mahsulot: \${item}, Narxi: \${price}\\\` matnini konsolga chiqaring.
+
+### 3-mashq (Xatoni topish)
+Quyidagi koddagi xatoni tuzating (ekranga \`Salom, Olim!\` chiqishi kerak):
+\`\`\`javascript
+let name = "Olim";
+let text = "Salom, \${name}!";
+console.log(text);
+\`\`\`
+
+### Javoblar:
+1.
+\`\`\`javascript
+let city = "Buxoro";
+let text = \`Men \${city} shahrida yashayman\`;
+console.log(text);
+\`\`\`
+2.
+\`\`\`javascript
+let item = "Kitob";
+let price = 50;
+let text = \`Mahsulot: \${item}, Narxi: \${price}\`;
+console.log(text);
+\`\`\`
+3.
+\`\`\`javascript
+let name = "Olim";
+let text = \`Salom, \${name}!\`;
+console.log(text);
+\`\`\`
 
 ---
 
-## 6. 🌍 Real Hayotda Qayerda?
+## 9. Xulosa
 
-- **Xabarnoma:** \`Xurmatli \${mijoz}, buyurtmangiz \${holat}\`
-- **Hisobot:** \`Jami: \${son} ta, summa: \${jami} so'm\`
-- **URL:** \`/users/\${id}/profile\`
+1. Template literals — qiya qo'shtirnoq (backtick \\\`\\\`) yordamida yoziladigan zamonaviy matn ko'rinishi.
+2. Matn ichiga o'zgaruvchini joylash uchun \`\${o'zgaruvchi}\` sintaksisi ishlatiladi.
+3. Bu usul \`+\` belgisi bilan ulashdan ko'ra ancha toza, o'qilishi qulay va xatosizdir.
 
----
-
-## 7. 🎙 Intervyu Savollari
-
-**1. Template literal afzalligi nima?**
-**Javob:** O'qilishi oson, \`\${}\` ichida hisoblash mumkin, ko'p qatorli matn oson.
-
-**2. \`\${}\` oddiy qo'shtirnoqda ishlaydimi?**
-**Javob:** Yo'q — faqat backtick ichida.
-
-**3. \`\${}\` ichida nima yozish mumkin?**
-**Javob:** Har qanday ifoda: o'zgaruvchi, hisob (\`\${a+b}\`), funksiya chaqiruvi.
-
----
-
-## 8. ✅ Xulosa
-
-- **Backtick + \`\${}\`** = zamonaviy matn yopishtirish
-- **\`\${}\` ichida hisoblash** mumkin
-- **Ko'p qator** — avtomatik
-- **Keyingi qadam:** 1.21-darsda qat'iy rejim — strict mode
+Keyingi darsda: JavaScript'da sonlar (Number) va ular ustida asosiy amallar bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Blanka to'ldirish",
-      instruction: "`invite(ism)` funksiyasi backtick bilan `\"Xurmatli Ali, taklif qilamiz!\"` qaytarsin.",
-      startingCode: "function invite(ism) {\n  // backtick yozing\n}\n",
-      hint: "return `Xurmatli ${ism}, taklif qilamiz!`;",
-      test: "if (!code.includes('`')) return 'Backtick ishlatilmadi';\nconst fn = new Function(code + '; return invite;')();\nif (fn(\"Ali\") === 'Xurmatli Ali, taklif qilamiz!') return null;\nreturn 'Format xato';"
+      title: "Shablonli satr yaratish",
+      instruction: "`city` o'zgaruvchisi berilgan (`\"Buxoro\"`). Backtick va `${city}` yordamida `Men ${city} shahrida yashayman` matnini tuzing va konsolga chiqaring.",
+      startingCode: "let city = \"Buxoro\";\n// Backtick va ${city} bilan chiqaring\n",
+      hint: "console.log(`Men ${city} shahrida yashayman`);",
+      test: "if (!code.includes('`') || !code.includes('${')) return 'Backtick va ${} ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Men Buxoro shahrida yashayman'))) return null;\nreturn 'Matn to\\'g\\'ri chiqmadi';"
     },
     {
       id: 2,
-      title: "Hisob ichida",
-      instruction: "`total(a, b)` funksiyasi `\"Yig'indi: 8\"` formatida qaytarsin (a=5, b=3 uchun). Hisob ${} ICHIDA bo'lsin!",
-      startingCode: "function total(a, b) {\n  // ${a + b} ishlating\n}\n",
-      hint: "return `Yig'indi: ${a + b}`;",
-      test: "const fn = new Function(code + '; return total;')();\nif (fn(5, 3) === \"Yig'indi: 8\") return null;\nreturn 'Hisob ${} ichida bo\\'lishi kerak';"
+      title: "Ikkita o'zgaruvchini joylash",
+      instruction: "`item` (`\"Kitob\"`) va `price` (`50`) o'zgaruvchilarini backtick yordamida `Mahsulot: ${item}, Narxi: ${price}` ko'rinishida konsolga chiqaring.",
+      startingCode: "let item = \"Kitob\";\nlet price = 50;\n// Natijani chiqaring\n",
+      hint: "console.log(`Mahsulot: ${item}, Narxi: ${price}`);",
+      test: "if (!code.includes('`') || !code.includes('${')) return 'Backtick va ${} ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Mahsulot: Kitob, Narxi: 50'))) return null;\nreturn 'Kutilgan matn to\\'g\\'ri chiqmadi';"
     },
     {
       id: 3,
-      title: "Profil manzili",
-      instruction: "`profileUrl(id)` funksiyasi `` `/users/42/profile` `` qaytarsin (id=42 uchun).",
-      startingCode: "function profileUrl(id) {\n  // backtick yozing\n}\n",
-      hint: "return `/users/${id}/profile`;",
-      test: "const fn = new Function(code + '; return profileUrl;')();\nif (fn(42) === '/users/42/profile') return null;\nreturn 'URL formati xato';"
-    },
-    {
-      id: 4,
-      title: "Chek chiqarish",
-      instruction: "`chek(mahsulot, narx, soni)` funksiyasi `\"Non x 3 = 9000 so'm\"` qaytarsin (jami ${} ichida hisoblansin).",
-      startingCode: "function chek(mahsulot, narx, soni) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return `${mahsulot} x ${soni} = ${narx * soni} so'm`;",
-      test: "const fn = new Function(code + '; return chek;')();\nif (fn(\"Non\", 3000, 3) === \"Non x 3 = 9000 so'm\") return null;\nreturn 'Format: Non x 3 = 9000 so\\'m';"
+      title: "Oddiy qo'shtirnoq xatosini tuzatish",
+      instruction: "Quyidagi koddagi oddiy qo'shtirnoqni backtick (qiya qo'shtirnoq) ga almashtiring, toki ekranga `Salom, Olim!` chiqsin.",
+      startingCode: "let name = \"Olim\";\nlet text = \"Salom, ${name}!\";\nconsole.log(text);\n",
+      hint: "let name = \"Olim\";\nlet text = `Salom, ${name}!`;\nconsole.log(text);",
+      test: "if (code.includes('\"Salom, ${name}!\"') || code.includes(\"'Salom, ${name}! '\")) return 'Oddiy qo\\'shtirnoq o\\'rniga backtick (`) ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom, Olim!'))) return null;\nreturn 'Salom, Olim! matni chiqmadi';"
     }
   ],
-
   quizzes: [
     {
       id: 1,
-      question: "`${}` qayerda ishlaydi?",
+      question: "Template literals qaysi belgi yordamida yoziladi?",
       options: [
-        "Oddiy qo'shtirnoqda",
-        "Faqat backtick ichida",
-        "Hamma joyda",
-        "Hech qayerda"
+        "Qo'sh qo'shtirnoq (\")",
+        "Qiya qo'shtirnoq (backtick `)",
+        "Bittalik qo'shtirnoq (')",
+        "Kichik-katta belgilari (< >)"
       ],
       correctAnswer: 1,
-      explanation: "\"Salom ${ism}\" — matnligicha chiqadi, backtick kerak!"
+      explanation: "Template literals faqat qiya qo'shtirnoq (backtick `) bilan ochilib, u bilan yopiladi."
     },
     {
       id: 2,
-      question: "Backtick qayerda joylashgan?",
+      question: "Template literal ichiga o'zgaruvchi qanday joylashtiriladi?",
       options: [
-        "Enter yonida",
-        "Tab tepasida (ё harfi)",
-        "Probeldа",
-        "Sichqonchada"
+        "&{o'zgaruvchi}",
+        "${o'zgaruvchi}",
+        "#{o'zgaruvchi}",
+        "[o'zgaruvchi]"
       ],
       correctAnswer: 1,
-      explanation: "Chap yuqori burchak — 1 raqami yonida."
+      explanation: "${o'zgaruvchi} sintaksisi orqali o'zgaruvchining qiymati matn ichiga avtomatik qo'yiladi."
     },
     {
       id: 3,
-      question: "`${}` ichida nima yozish mumkin?",
+      question: "Quyidagi kod natijasida konsolga nima chiqadi?\n```javascript\nlet user = \"Ali\";\nconsole.log(\"Salom, ${user}\");\n```",
       options: [
-        "Faqat o'zgaruvchi nomi",
-        "Har qanday ifoda (hisob, funksiya)",
-        "Faqat matn",
-        "Hech narsa"
+        "Salom, Ali",
+        "Salom, ${user}",
+        "Xatolik beradi",
+        "Salom, user"
       ],
       correctAnswer: 1,
-      explanation: "${a + b}, ${kvadrat(5)} — hammasi ishlaydi."
-    },
-    {
-      id: 4,
-      question: "Ko'p qatorli matnda template literal afzalligi?",
-      options: [
-        "Yo'q",
-        "\\n yozish shart emas — Enter kifoya",
-        "Tezroq ishlaydi",
-        "Rangli chiqadi"
-      ],
-      correctAnswer: 1,
-      explanation: "Backtick ichida qator tashlash avtomatik."
+      explanation: "Oddiy qo'shtirnoq ishlatilgani uchun ${user} o'zgaruvchi deb tanilmaydi va ekranga aynan \"Salom, ${user}\" deb chiqadi."
     }
   ]
-
 };
