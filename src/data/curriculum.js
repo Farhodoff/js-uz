@@ -51,6 +51,7 @@ export const curriculum = {
       { id: "callbackBasics", number: "1.36", title: "Callback Funksiyalar", load: () => import("./lessons/js/01-basics/callbackBasics.js").then(m => m.callbackBasics) },
       { id: "closureBasics", number: "1.37", title: "Closure (Yopilish / Eslab Qolish)", load: () => import("./lessons/js/01-basics/closureBasics.js").then(m => m.closureBasics) },
       { id: "arrayBasics", number: "1.38", title: "Massiv Yaratish va Murojaat", load: () => import("./lessons/js/01-basics/arrayBasics.js").then(m => m.arrayBasics) },
+      { id: "pushPopBasics", number: "1.39", title: "push va pop Metodlari", load: () => import("./lessons/js/01-basics/pushPopBasics.js").then(m => m.pushPopBasics) },
       { id: "dataTypesLesson", number: "1.5", title: "Ma'lumot Turlari (Data Types)", load: () => import("./lessons/js/01-basics/dataTypes.js").then(m => m.dataTypesLesson) },
       { id: "moreDataTypesLesson", number: "1.6", title: "Ma'lumot Turlari: Null, Symbol, BigInt", load: () => import("./lessons/js/01-basics/moreDataTypes.js").then(m => m.moreDataTypesLesson) },
       { id: "objectIntroLesson", number: "1.7", title: "Obyektlarga Kirish (Object)", load: () => import("./lessons/js/01-basics/objectIntro.js").then(m => m.objectIntroLesson) },
