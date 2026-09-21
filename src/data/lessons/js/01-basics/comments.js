@@ -2,252 +2,221 @@ export const commentsLesson = {
   id: "commentsLesson",
   title: "Sharhlar (Comments)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. Bu nima?
 
-### Izoh (comment) nima?
-**Izoh** — kompyuter o'qimaydigan, faqat ODAM o'qiydigan qatorlar. Kodni tushuntirish uchun yoziladi.
+Tasavvur qiling, siz kitob o'qiyapsiz va chetiga o'zingiz uchun qalam bilan eslatma yozib qo'ydingiz.
+Kitobni o'qigan boshqa odam bu eslatmani ko'radi, lekin kitobning asosiy mazmuni o'zgarmaydi.
 
-\`\`\`javascript
-// Bu izoh — JavaScript uni butunlay e'tiborsiz qoldiradi
-let yosh = 25;  // bu ham izoh (qator oxirida)
-\`\`\`
+Dasturlashda sharhlar (comments) — xuddi shu qalam bilan yozilgan eslatmalardir.
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **kitob o'qiyapsiz**:
-- **Asosiy matn** — bu kod (kompyuter o'qiydi va bajaradi)
-- **Chetdagi qalam izohlar** (marginalia) — bu izohlar (faqat odam o'qiydi)
+Sharhlar (comments) — kod ichida faqat odamlar o'qishi uchun yoziladigan va kompyuter tomonidan bajarilmaydigan tushuntirish yozuvlaridir.
 
-Kitobni chop etishda chetdagi yozuvlar matnga aralashmaydi. Xuddi shunday: izoh kodga aralashmaydi, kompyuter uni ko'rmaydi.
+JavaScript'da sharhlarning 2 xil turi mavjud:
+1. **Bir qatorli sharh (\`//\`):** bitta qatorni eslatma qilish uchun ishlatiladi.
+2. **Ko'p qatorli sharh (\`/* ... */\`):** bir nechta qatorni qamrab oluvchi uzunroq tushuntirishlar uchun ishlatiladi.
 
 ---
 
-## 2. 💻 Ikki Xil Izoh
+## 2. Nega kerak?
 
-### 1. Bir qatorli — \`//\`
-Qator boshidan (yoki o'rtasidan) oxirigacha izoh:
+Vaqt o'tishi bilan o'zingiz yozgan kodni ham nima uchun yozganingizni unutib qo'yishingiz mumkin. Boshqa dasturchilar esa kodingiz mantiqini darhol tushunolmasligi mumkin.
+
+Sharhlar kod yoniga tushuntirish qoldirish va kerak bo'lmagan qatorni vaqtincha to'xtatib turish (o'chirib qo'yish) uchun kerak.
+
+---
+
+## 3. Birinchi misol
+
+Bu kodda bir qatorli sharh ishlatilgan va ekranga matn chiqariladi.
 
 \`\`\`javascript
-// Bu qator butunlay izoh
-let narx = 100;  // mahsulot narxi so'mda
-// let narx = 200;  ← bu kod O'CHIRILGAN (izohga aylantirilgan)
+// Bu salomlashuv kodi
+console.log("Salom!"); // Ekranga Salom! chiqadi
 \`\`\`
 
-### 2. Ko'p qatorli — \`/* ... */\`
-Bir nechta qatorni qamrab oladi:
+\`\`\`text
+// Natija: Salom!
+\`\`\`
+
+Kompyuter \`//\` belgisi bilan yozilgan matnlarni butunlay e'tiborsiz qoldiradi va faqat \`console.log("Salom!");\` buyrug'ini bajaradi.
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`// Bu salomlashuv kodi\` — bir qatorli sharh (single-line comment). Kompyuter bu qatorni bajarmaydi.
+- \`console.log("Salom!");\` — ekranga matn chiqaruvchi buyruq.
+- \`// Ekranga Salom! chiqadi\` — buyruqdan keyin yozilgan bir qatorli sharh.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kodda ko'p qatorli sharh ishlatilgan.
 
 \`\`\`javascript
 /*
-  Bu kalkulyator funksiyasi.
-  Muallif: Ali
-  Sana: 2025-01-15
-  Vazifa: ikki sonni qo'shish
+  Ushbu kod foydalanuvchiga
+  salomlashuv xabarini yuboradi
 */
-function qoshish(a, b) {
-  return a + b;
-}
+console.log("Xush kelibsiz!");
 \`\`\`
 
-\`\`\`mermaid
-flowchart LR
-    A["Izoh turi"] --> B["// bir qator"]
-    A --> C["/* ko'p qator */"]
-    B --> D["Kompyuter ko'rmaydi"]
-    C --> D
+\`\`\`text
+// Natija: Xush kelibsiz!
 \`\`\`
+
+Ko'p qatorli sharh \`/*\` bilan boshlanadi va \`*/\` bilan tugaydi. Uning orasidagi barcha qatorlar kompyuter tomonidan tashlab ketiladi.
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi
+## 6. Ko'p uchraydigan xatolar
 
-JavaScript kodi avval **o'qiladi** (parsing). Shu bosqichda izohlar **butunlay olib tashlanadi** — xuddi qoralama qog'ozdan ortiqcha chizmalarni o'chirgandek.
-
-Shuning uchun:
-- Izoh **xotira egallamaydi**
-- Izoh dastur **tezligiga ta'sir qilmaydi**
-- Izoh **xatoga olib kelmaydi** (agar to'g'ri yopilgan bo'lsa)
-
-### Izoh bilan kodni "o'chirish"
-Kodni o'chirmasdan vaqtincha to'xtatish uchun izohga aylantiriladi:
-
+### 1. Ko'p qatorli sharhni yopmaslik
+❌ Xato kod:
 \`\`\`javascript
-let natija = 10 + 5;
-// console.log("Test");     ← vaqtincha o'chirildi
-console.log(natija);
+/* Bu yerda sharh boshlandi
+console.log("Salom!");
 \`\`\`
-
-Bu **debugging** (xato qidirish) da juda qulay.
-
----
-
-## 4. ⚠️ Keng Tarqalgan Xatolar
-
-| ❌ Xato | ✅ To'g'ri | Sabab |
-|---|---|---|
-| \`/* izoh\` (yopilmagan) | \`/* izoh */\` | Yopilmagan izoh — KEYINGI KODNI ham yutib yuboradi! |
-| Izohni kod ichiga "yashirish" | Izohni alohida yoki qator oxirida | Kod o'qilishi qiyinlashadi |
-| Har qatorga izoh yozish | Faqat kerak joyda | Ortiqcha izoh — shovqin |
-| Izohni yangilamaslik (kod o'zgardi, izoh eski) | Izohni kod bilan birga yangilash | Eski izoh — YOLG'ON ma'lumot beradi |
-| \`//\` va \`/*\` ni string ichida chalkashtirish | \`"http://sayt.uz"\` — bu string, izoh emas! | Qo'shtirnoq ichidagisi izoh emas |
-
-### Eng xavfli xato
+Nima bo'ladi: \`SyntaxError: Invalid or unexpected token\` xatoligi yuz beradi. Sharh yopilmagani sababli kompyuter keyingi barcha kodlarni sharh deb o'ylaydi.
+✅ To'g'ri variant:
 \`\`\`javascript
-/* bu izohni yopishni unutdim
-let muhim = 42;
-console.log("bu ishlamaydi!");   // ❌ Hammasi izoh bo'lib qoldi
+/* Bu yerda sharh boshlandi */
+console.log("Salom!");
 \`\`\`
 
----
-
-## 5. 🔑 Asosiy Atamalar
-
-- **Comment (izoh)** — kompyuter o'qimaydigan tushuntirish matni
-- **\`//\`** — bir qatorli izoh
-- **\`/* */\`** — ko'p qatorli izoh
-- **Self-documenting code** — izohsiz ham tushunarli kod (eng yaxshi usul!)
-
----
-
-## 6. 🌍 Real Hayotda Qayerda?
-
-- **Jamoa ishi:** boshqa dasturchi kodni tushunishi uchun
-- **Kelajakdagi o'zingiz:** 6 oydan keyin yozgan kodingizni eslamaysiz!
-- **Debugging:** kodni vaqtincha o'chirish
-- **Hujjatlashtirish:** funksiya nima qilishini yozish
-
-### Qachon izoh YOZILADI?
-✅ **Murakkab mantiq** — "nima uchun" shunday qilinganini tushuntirish
-✅ **Ogohlantirish** — \`// DIQQAT: bu qiymatni o'zgartirmang\`
-✅ **TODO** — \`// TODO: keyin optimallashtirish kerak\`
-
-### Qachon izoh YOZILMAYDI?
-❌ **Aniq kod uchun:**
+### 2. Sharh belgisini teskari yozish
+❌ Xato kod:
 \`\`\`javascript
-// ❌ YOMON — kodning o'zi aytib turibdi
-let yosh = 25;  // yoshni 25 ga tengladik
-
-// ✅ YAXSHI — sabab tushuntirilgan
-let yosh = 25;  // Xizmat shartnomasi bo'yicha minimal yosh
+\\\\ Bu sharh
+console.log("Salom!");
+\`\`\`
+Nima bo'ladi: \`SyntaxError: Invalid or unexpected token\` xatoligi beradi. JavaScript'da sharh faqat oldinga qiya chiziq (\`//\`) bilan yoziladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+// Bu sharh
+console.log("Salom!");
 \`\`\`
 
-> **Oltin qoida:** Yaxshi kod — o'zini o'zi tushuntiradi. Izoh faqat "NIMA" emas, "NIMA UCHUN" ni yozsin.
+### 3. Qo'shtirnoq ichidagi sharh belgisi
+❌ Xato tushuncha:
+\`\`\`javascript
+console.log("// Bu matn");
+\`\`\`
+Nima bo'ladi: Qo'shtirnoq ichidagi belgilar sharh emas, balki oddiy matn deb hisoblanadi. Ekranga \`// Bu matn\` chiqadi.
+✅ To'g'ri tushuncha:
+Sharh yozish uchun uni qo'shtirnoqdan tashqarida yozing:
+\`\`\`javascript
+// Bu sharh
+console.log("Bu matn");
+\`\`\`
 
 ---
 
-## 7. 🎙 Intervyu Savollari
+## 7. Tekshiruv
 
-**1. JavaScript izohlarni qanday ko'radi?**
-**Javob:** Umuman ko'rmaydi — parsing bosqichida olib tashlanadi, tezlikka ta'sir qilmaydi.
+### 1-mashq (Oson)
+\`console.log("Salom");\` kodi tepasiga \`// Salomlashuv\` deb bir qatorli sharh yozing.
 
-**2. Izoh qachon zararli bo'ladi?**
-**Javob:** Kod o'zgarganda izoh yangilanmasa — eski izoh yolg'on ma'lumot beradi.
+### 2-mashq (O'rtacha)
+\`/*\` va \`*/\` belgilaridan foydalanib, 2 qatordan iborat ko'p qatorli sharh yozing.
 
-**3. Yaxshi kodni izohdan ajratib turuvchi nima?**
-**Javob:** Yaxshi kod o'zini o'zi tushuntiradi (ma'noli nomlar, kichik funksiyalar); izoh faqat "nima uchun" ni qo'shadi.
+### 3-mashq (Kodni to'xtatish)
+Quyidagi kodni sharhga aylantirib, ishlamaydigan qilib qo'ying:
+\`\`\`javascript
+console.log("Test");
+\`\`\`
+
+### Javoblar:
+1.
+\`\`\`javascript
+// Salomlashuv
+console.log("Salom");
+\`\`\`
+2.
+\`\`\`javascript
+/*
+  Dasturlash darsi
+  Sharhlar mavzusi
+*/
+\`\`\`
+3.
+\`\`\`javascript
+// console.log("Test");
+\`\`\`
 
 ---
 
-## 8. ✅ Xulosa
+## 8. Xulosa
 
-- **\`//\`** — bir qatorli, **\`/* */\`** — ko'p qatorli izoh
-- Kompyuter izohni **o'qimaydi** — tezlikka ta'siri yo'q
-- **\`/*\` ni yopishni unutmang** — aks holda keyingi kod ham izoh bo'ladi!
-- Izoh **"nima uchun"** ni yozsin, "nima" ni emas
-- **Keyingi qadam:** 1.3-darsda ma'lumot saqlash — console metodlari va DevTools
+1. Sharhlar — kompyuter bajarmaydigan, faqat inson o'qishi uchun yoziladigan eslatmalar.
+2. Bir qatorli sharh \`//\` bilan, ko'p qatorli sharh esa \`/* ... */\` oralig'ida yoziladi.
+3. Sharhlar yordamida kodga izoh qoldirish yoki kerak bo'lmagan kodni vaqtincha to'xtatib turish mumkin.
+
+Keyingi darsda: Ma'lumotlarni xotirada saqlash uchun o'zgaruvchilar (\`let\`) bilan tanishamiz.
 `,
-exercises: [
+  exercises: [
     {
       id: 1,
-      title: "Bir qatorli izoh",
-      instruction: "`let yosh = 25;` qatorining yoniga `// foydalanuvchi yoshi` izohini yozing. Kod ishlamoqda bo'lishi kerak.",
-      startingCode: "let yosh = 25;\n// izoh qo'shing\n",
-      hint: "let yosh = 25; // foydalanuvchi yoshi",
-      test: "if (!code.includes('//')) return '// izoh qo\\'shilmadi';\ntry { const v = new Function(code + '\\nreturn (typeof yosh !== \"undefined\" ? yosh : null);')();\nif (v === 25) return null;\nreturn 'yosh = 25 bo\\'lishi kerak'; } catch (e) { return 'Xato: ' + e.message; }"
+      title: "Bir qatorli sharh",
+      instruction: "`console.log(\"Salom\");` qatori tepasiga `// Salomlashuv` sharhini yozing.",
+      startingCode: "console.log(\"Salom\");\n",
+      hint: "// Salomlashuv\nconsole.log(\"Salom\");",
+      test: "if (!code.includes('//')) return '// bir qatorli sharh yozilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'console.log(\"Salom\") ishlashi kerak';"
     },
     {
       id: 2,
-      title: "Ko'p qatorli izoh",
-      instruction: "Ikki qatorlik izoh yozing: `/*` bilan ochilib, `*/` bilan yopilsin. Ichida o'z ismingizni yozing.",
-      startingCode: "/* \n  Bu mening birinchi izohim\n*/\nlet x = 10;\n",
-      hint: "/* ismim Ali */ ko'rinishida",
-      test: "if (!code.includes('/*') || !code.includes('*/')) return '/* */ ko\\'p qatorli izoh kerak';\nconst v = new Function(code + '; return x;')();\nif (v === 10) return null;\nreturn 'x = 10 bo\\'lishi kerak';"
+      title: "Ko'p qatorli sharh",
+      instruction: "`/*` va `*/` belgilaridan foydalanib ko'p qatorli sharh yozing va pastida `console.log(\"Tayyor\");` qoldiring.",
+      startingCode: "/* \n  Bu yerga izoh yozing\n*/\nconsole.log(\"Tayyor\");\n",
+      hint: "/* Izoh */\nconsole.log(\"Tayyor\");",
+      test: "if (!code.includes('/*') || !code.includes('*/')) return '/* */ ko\\'p qatorli sharh ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Tayyor'))) return null;\nreturn 'console.log(\"Tayyor\") ishlashi kerak';"
     },
     {
       id: 3,
-      title: "Kodni izoh bilan o'chirish",
-      instruction: "`let a = 5;` yozing, keyingi qatorda `console.log(a);` ni IZOH bilan o'chiring (ishlamasligi kerak).",
-      startingCode: "let a = 5;\n// quyidagi qatorni izoh qiling\nconsole.log(a);\n",
-      hint: "// console.log(a); qilib izohga aylantiring",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } finally { console.log = orig; }\nif (out.length === 0) return null;\nreturn 'console.log hali ham ishlayapti — izoh bilan o\\'chiring';"
-    },
-    {
-      id: 4,
-      title: "Sababni tushuntirish",
-      instruction: "`chegirma` o'zgaruvchisini yarating (qiymati 15) va NEGA aynan 15 ekanini izoh bilan yozing.",
-      startingCode: "// Izoh yozing\nlet chegirma = 15;\n",
-      hint: "let chegirma = 15; // do'kon bayram aksiyasi",
-      test: "if (!code.includes('//')) return 'Izoh kerak';\ntry { const v = new Function(code + '\\nreturn (typeof chegirma !== \"undefined\" ? chegirma : null);')();\nif (v === 15) return null;\nreturn 'chegirma = 15 bo\\'lishi kerak'; } catch (e) { return 'Xato: ' + e.message; }"
+      title: "Kodni sharh bilan o'chirish",
+      instruction: "Quyidagi `console.log(100);` qatorini `//` bilan sharhga aylantiring, toki u ishlamasin (ekranga 100 chiqmasin).",
+      startingCode: "console.log(100);\n",
+      hint: "// console.log(100);",
+      test: "if (!code.includes('//') && !code.includes('/*')) return 'Sharh belgisi (//) qo\\'yilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return null;\nreturn 'console.log hali ham ishlayapti — uni // bilan sharhga aylantiring';"
     }
   ],
-quizzes: [
+  quizzes: [
     {
       id: 1,
-      question: "Qaysi belgi bir qatorli izoh?",
+      question: "JavaScript'da bir qatorli sharh qaysi belgi bilan yoziladi?",
       options: [
         "/*",
         "//",
-        "''",
-        "#"
+        "#",
+        "--"
       ],
       correctAnswer: 1,
-      explanation: "// qator oxirigacha izoh qiladi."
+      explanation: "// belgisi bir qatorli sharhni bildiradi va undan keyingi matn kompyuter tomonidan bajarilmaydi."
     },
     {
       id: 2,
-      question: "Ko'p qatorli izoh qanday yoziladi?",
+      question: "Ko'p qatorli sharh qanday belgilar orasida yoziladi?",
       options: [
-        "// ... //",
-        "/* ... */",
-        "<!-- ... -->",
-        "# ... #"
+        "<!-- va -->",
+        "/* va */",
+        "// va //",
+        "{ va }"
       ],
       correctAnswer: 1,
-      explanation: "/* bilan ochiladi, */ bilan yopiladi."
+      explanation: "/* bilan boshlanib, */ bilan tugaydigan sharh ko'p qatorli sharh hisoblanadi."
     },
     {
       id: 3,
-      question: "Izoh kompyuterga qanday ta'sir qiladi?",
+      question: "Quyidagi kod ishga tushsa nima sodir bo'ladi?\n```javascript\n// console.log(\"Salom\");\nconsole.log(42);\n```",
       options: [
-        "Dasturni sekinlashtiradi",
-        "Umuman ta'sir qilmaydi — parsingda olib tashlanadi",
-        "Xatolik beradi",
-        "Tezlashtiradi"
-      ],
-      correctAnswer: 1,
-      explanation: "Kompyuter izohni ko'rmaydi."
-    },
-    {
-      id: 4,
-      question: "Yopilmagan `/*` izohi nima qiladi?",
-      options: [
-        "Hech narsa",
-        "Keyingi KODNI ham izohga aylantiradi",
-        "Faqat shu qatorni izohlaydi",
+        "Ekranga faqat \"Salom\" chiqadi",
+        "Ekranga faqat 42 chiqadi",
+        "Ekranga \"Salom\" va 42 chiqadi",
         "Xatolik beradi"
       ],
       correctAnswer: 1,
-      explanation: "*/ topilmaguncha hammasi izoh bo'ladi!"
-    },
-    {
-      id: 5,
-      question: "Yaxshi izoh nimani yozadi?",
-      options: [
-        "Nima bo'lyapti (kodning o'zi aytadi)",
-        "NIMA UCHUN shunday qilinganini (sababni)",
-        "Har qatorni",
-        "Muallif ismini"
-      ],
-      correctAnswer: 1,
-      explanation: "Yaxshi izoh sababni tushuntiradi, kodni emas."
+      explanation: "// bilan yozilgan qator sharh bo'lgani uchun kompyuter uni bajarmaydi, faqat console.log(42) bajariladi."
     }
   ]
 };
