@@ -1,259 +1,226 @@
 export const operators = {
   id: "operators",
-  title: "Operatorlar",
+  title: "Arifmetik Operatorlar (+, -, *, /, %, **)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. Bu nima?
 
-### Operator nima?
-**Operator** — qiymatlar ustida ish bajaradigan belgi: qo'shish, ayirish, solishtirish, ulash.
+Tasavvur qiling, siz qo'lingizda oddiy kalkulyator ushlab turibsiz. Unda sonlarni qo'shish (\`+\`), ayirish (\`-\`), ko'paytirish (\`*\`) va bo'lish (\`/\`) tugmalari bor. 
+Dasturlashda ham hisob-kitoblar xuddi shu kabi maxsus belgilar orqali amalga oshiriladi.
+
+Arifmetik operatorlar — sonlar ustida matematik amallar (qo'shish, ayirish, ko'paytirish, bo'lish, qoldiq olish va darajaga ko'tarish) bajarish uchun ishlatiladigan belgilardir.
+
+---
+
+## 2. Nega kerak?
+
+Dasturlarda deyarli barcha amaliyotlar hisob-kitob bilan bog'liq:
+- Internet do'konda mahsulotlarning umumiy narxini hisoblash (\`+\`).
+- Chegirma miqdorini narxdan ayirib tashlash (\`-\`).
+- Mahsulot narxini uning soniga ko'paytirish (\`*\`).
+- Umumiy summani bo'lib to'lash oylariga bo'lish (\`/\`).
+
+Arifmetik operatorlar kompyuterga bu hisob-kitoblarni tez va xatosiz bajarish imkonini beradi.
+
+---
+
+## 3. Birinchi misol
+
+Bu kod asosiy to'rtta arifmetik amalni bajaradi va natijalarni konsolga chiqaradi.
 
 \`\`\`javascript
-let natija = 10 + 5;  // + operatori: 10 va 5 ni qo'shadi
+let total = 10 + 5; // Qo'shish: 15
+let difference = 10 - 4; // Ayirish: 6
+let product = 6 * 7; // Ko'paytirish: 42
+let quotient = 20 / 4; // Bo'lish: 5
+
+console.log(total);
+console.log(difference);
+console.log(product);
+console.log(quotient);
 \`\`\`
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **oshxonada oshpazsiz**:
-- **+** — ikki masalliqni aralashtirish (un + suv = xamir)
-- **-** — ortiqchasini olib tashlash
-- **\\*** — ko'paytirish (retseptni 2 baravar oshirish)
-- **/** — bo'lish (tortni 8 bo'lakka kesish)
-- **%** — qoldiq (8 ta olmani 3 kishiga bo'lsangiz, 2 tasi ortadi)
-
-Operator — oshpazning pichog'i: to'g'ri ishlatsangiz — taom, noto'g'ri ishlatsangiz — barmoq kesiladi!
-
----
-
-## 2. 💻 Asosiy Operatorlar
-
-### Arifmetik (hisob-kitob)
-\`\`\`javascript
-console.log(10 + 5);   // 15 (qo'shish)
-console.log(10 - 5);   // 5 (ayirish)
-console.log(10 * 5);   // 50 (ko'paytirish)
-console.log(10 / 5);   // 2 (bo'lish)
-console.log(10 % 3);   // 1 (qoldiq: 10 ni 3 ga bo'lsak 1 ortadi)
-console.log(2 ** 3);   // 8 (daraja: 2*2*2)
-\`\`\`
-
-### Qisqa yozuv (o'ziga qo'shish)
-\`\`\`javascript
-let hisob = 10;
-hisob = hisob + 5;  // uzun yo'l
-hisob += 5;         // qisqa yo'l — bir xil natija!
-
-let son = 1;
-son++;  // 1 ga oshirish (son = 2)
-son--;  // 1 ga kamaytirish (son = 1)
-\`\`\`
-
-### Solishtirish (natija har doim true/false)
-\`\`\`javascript
-console.log(10 > 5);    // true (katta)
-console.log(10 < 5);    // false (kichik)
-console.log(10 >= 10);  // true (katta yoki teng)
-console.log(5 <= 3);    // false
-\`\`\`
-
-### Mantiqiy (bir nechta shartni ulash)
-\`\`\`javascript
-console.log(true && false);  // false (VA — ikkisi ham rost bo'lishi kerak)
-console.log(true || false);  // true (YOKI — bittasi rost bo'lsa kifoya)
-console.log(!true);          // false (EMAS — teskarisi)
-\`\`\`
-
-\`\`\`mermaid
-flowchart LR
-    A["Operator"] --> B["Arifmetik: + - * / %"]
-    A --> C["Solishtirish: > < >= <="]
-    A --> D["Mantiqiy: && || !"]
+\`\`\`text
+// Natija: 15
+// Natija: 6
+// Natija: 42
+// Natija: 5
 \`\`\`
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi
+## 4. Qator-baqator tahlil
 
-Operatorlar **ustuvorlik** (priority) bilan ishlaydi — xuddi matematikadagi kabi: avval ko'paytirish, keyin qo'shish:
+- \`10 + 5\` — \`+\` operatori ikkita sonni bir-biriga qo'shadi.
+- \`10 - 4\` — \`-\` operatori ayirish amalini bajaradi.
+- \`6 * 7\` — dasturlashda ko'paytirish belgisi sifatida yulduzcha (\`*\`) ishlatiladi.
+- \`20 / 4\` — bo'lish belgisi sifatida o'ngga yotiq chiziq (slash \`/\`) ishlatiladi.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod qoldiq olish (\`%\`) va darajaga ko'tarish (\`**\`) operatorlarini bajaradi.
 
 \`\`\`javascript
-console.log(2 + 3 * 4);    // 14 (avval 3*4=12, keyin +2)
-console.log((2 + 3) * 4);  // 20 (qavs birinchiligi bor!)
+let remainder = 10 % 3; // Qoldiq: 1
+let power = 2 ** 3; // Daraja: 8 (2 * 2 * 2)
+
+console.log(remainder);
+console.log(power);
+\`\`\`
+
+\`\`\`text
+// Natija: 1
+// Natija: 8
+\`\`\`
+
+Qator-baqator tahlil:
+- \`10 % 3\` — \`%\` belgisi foiz emas, balki qoldiq topish operatoridir (modulus). \`10\` soni ichida uchta \`3\` bor (\`9\`), qoldiq esa \`1\` qoladi.
+- \`2 ** 3\` — \`**\` (ikkita yulduzcha) darajaga ko'tarish operatoridir. \`2 ** 3\` amali \`2 * 2 * 2 = 8\` natijasini beradi.
+
+---
+
+## 6. Ko'p uchraydigan xatolar
+
+### 1. Matn bilan sonni qo'shib yuborish (+ tuzog'i)
+❌ Xato kod:
+\`\`\`javascript
+let total = "10" + 5;
+console.log(total);
+\`\`\`
+Nima bo'ladi: \`15\` emas, \`"105"\` matni chiqadi! Chunki \`+\` operatori agar bitta tomoni matn bo'lsa, ularni qo'shmaydi, balki bir-biriga ulab qo'yadi.
+✅ To'g'ri variant:
+\`\`\`javascript
+let total = Number("10") + 5;
+console.log(total); // 15
+\`\`\`
+
+### 2. Ko'paytirish uchun x harfini ishlatish
+❌ Xato kod:
+\`\`\`javascript
+let area = 5 x 10;
+\`\`\`
+Nima bo'ladi: \`SyntaxError: Unexpected identifier 'x'\` xatoligi yuz beradi. JavaScript'da ko'paytirish faqat yulduzcha \`*\` bilan yoziladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+let area = 5 * 10;
+\`\`\`
+
+### 3. Nolga bo'lish (cheksizlik)
+❌ Xato tushuncha: \`10 / 0\` amali xatolik berib dasturni to'xtatadi deb o'ylash.
+Nima bo'ladi: JavaScript'da nolga bo'linsa dastur to'xtamaydi, balki maxsus \`Infinity\` (cheksizlik) qiymati chiqadi.
+✅ To'g'ri tushuncha:
+\`\`\`javascript
+let result = 10 / 0;
+console.log(result); // Infinity
 \`\`\`
 
 ---
 
-## 4. ⚠️ Keng Tarqalgan Xatolar
+## 7. Tekshiruv
 
-| ❌ Xato | ✅ To'g'ri | Sabab |
-|---|---|---|
-| \`10 / 0\` ga hayron qolish | \`Infinity\` ekanini bilish | Nolga bo'lish xato emas, cheksizlik beradi |
-| \`5 = 5\` yozish | \`5 === 5\` | Bitta \`=\` — saqlash, solishtirish uchun \`===\` |
-| \`%\` ni foiz deb o'ylash | Qoldiq operatori ekanini bilish | \`10 % 3 = 1\` (qoldiq), foiz emas! |
-| \`son++\` va \`++son\` ni bir xil deb o'ylash | Farqni bilish (keyingi darslarda) | Hozircha \`son++\` kifoya |
+### 1-mashq (Oson)
+\`apples\` nomli o'zgaruvchiga \`12\`, \`oranges\` nomli o'zgaruvchiga \`8\` sonini bering. Ularning yig'indisini \`+\` operatori orqali \`totalFruits\` o'zgaruvchisiga saqlang va konsolga chiqaring.
 
----
+### 2-mashq (O'rtacha)
+\`width\` (\`5\`) va \`height\` (\`4\`) nomli o'zgaruvchilar yarating. Ularning ko'paytmasini (\`*\`) hisoblab, \`area\` o'zgaruvchisiga saqlang va konsolga chiqaring.
 
-## 5. 🔑 Asosiy Atamalar
+### 3-mashq (Chegara holat)
+\`17\` sonini \`5\` ga bo'lgandagi qoldiqni (\`%\`) hisoblab, uni \`remainder\` o'zgaruvchisiga saqlang va konsolga chiqaring.
 
-- **Operator** — ish bajaruvchi belgi (\`+\`, \`-\`, \`>\`, \`&&\`)
-- **Operand** — operator ishlaydigan qiymat (\`10 + 5\` da 10 va 5)
-- **Qoldiq (%)** — bo'linishdan ortgan qism
-- **Mantiqiy** — rost/yolg'on qiymatlar bilan ishlash (\`&&\`, \`||\`, \`!\`)
-
----
-
-## 6. 🌍 Real Hayotda Qayerda?
-
-- **Do'kon:** \`jami = narx * soni - chegirma;\`
-- **Yosh tekshiruvi:** \`yosh >= 18 && hujjatBor\`
-- **Juft/toq:** \`son % 2 === 0\` → juft!
-
----
-
-## 7. 🎙 Intervyu Savollari
-
-**1. \`%\` operatori nima qiladi?**
-**Javob:** Bo'linish qoldig'ini qaytaradi: \`10 % 3 = 1\`. Juft/toq tekshirishda ishlatiladi.
-
-**2. \`=\` va \`===\` farqi nima?**
-**Javob:** \`=\` — qiymat saqlash, \`===\` — qat'iy solishtirish (turi bilan).
-
-**3. \`&&\` va \`||\` farqi?**
-**Javob:** \`&&\` — ikkisi ham true bo'lsa true. \`||\` — bittasi true bo'lsa true.
+### Javoblar:
+1.
+\`\`\`javascript
+let apples = 12;
+let oranges = 8;
+let totalFruits = apples + oranges;
+console.log(totalFruits);
+\`\`\`
+2.
+\`\`\`javascript
+let width = 5;
+let height = 4;
+let area = width * height;
+console.log(area);
+\`\`\`
+3.
+\`\`\`javascript
+let remainder = 17 % 5;
+console.log(remainder);
+\`\`\`
 
 ---
 
-## 8. ✅ Xulosa
+## 8. Xulosa
 
-- **Arifmetik:** \`+ - * / % **\` — hisob-kitob
-- **Solishtirish:** \`> < >= <=\` — natija boolean
-- **Mantiqiy:** \`&&\` (VA), \`||\` (YOKI), \`!\` (EMAS)
-- **Qisqa yozuv:** \`+=\`, \`++\`, \`--\`
-- **Keyingi qadam:** 1.8-darsda bir turni boshqasiga aylantirish — type conversion
+1. Asosiy arifmetik operatorlar: \`+\` (qo'shish), \`-\` (ayirish), \`*\` (ko'paytirish) va \`/\` (bo'lish).
+2. \`%\` operatori bo'linmaning qoldig'ini hisoblaydi, \`**\` esa sonni darajaga ko'taradi.
+3. Agar \`+\` operatori matn (string) bilan ishlatilsa, sonlar qo'shilmaydi, balki matnlar ulanib ketadi (\`"10" + 5 = "105"\`).
+
+Keyingi darsda: O'zlashtirish va qisqartirilgan operatorlar (+=, -=, *=, /=) bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Kalkulyator",
-      instruction: "`calc(a, b)` funksiyasi `[a+b, a-b, a*b, a/b]` massivini qaytarsin.",
-      startingCode: "function calc(a, b) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return [a + b, a - b, a * b, a / b];",
-      test: "const fn = new Function(code + '; return calc;')();\nconst r = fn(10, 5);\nif (r[0] === 15 && r[1] === 5 && r[2] === 50 && r[3] === 2) return null;\nreturn 'To\\'rtta amal ham to\\'g\\'ri bo\\'lishi kerak';"
+      title: "Yig'indini hisoblash",
+      instruction: "`apples` (`12`) va `oranges` (`8`) o'zgaruvchilarini yarating. Ularning yig'indisini `totalFruits` o'zgaruvchisiga saqlang va `console.log(totalFruits);` orqali chiqaring.",
+      startingCode: "let apples = 12;\nlet oranges = 8;\n// totalFruits o'zgaruvchisiga yig'indini saqlang va chiqaring\n",
+      hint: "let totalFruits = apples + oranges;\nconsole.log(totalFruits);",
+      test: "if (!code.includes('+')) return '+ operatori ishlatilmadi';\nif (!code.includes('totalFruits')) return 'totalFruits o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('20'))) return null;\nreturn '20 soni konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "Juftmi?",
-      instruction: "`isEven(son)` funksiyasi son juft bo'lsa `true`, toq bo'lsa `false` qaytarsin.",
-      startingCode: "function isEven(son) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return son % 2 === 0;",
-      test: "const fn = new Function(code + '; return isEven;')();\nif (fn(4) === true && fn(7) === false && fn(0) === true) return null;\nreturn '% bilan qoldiq tekshiring';"
+      title: "To'g'ri to'rtburchak yuzasini hisoblash",
+      instruction: "`width` (`5`) va `height` (`4`) o'zgaruvchilarini yarating. Ko'paytirish (`*`) orqali `area` o'zgaruvchisiga yuzani saqlang va konsolga chiqaring.",
+      startingCode: "let width = 5;\nlet height = 4;\n// area ga width * height ni saqlang va chiqaring\n",
+      hint: "let area = width * height;\nconsole.log(area);",
+      test: "if (!code.includes('*')) return '* operatori ishlatilmadi';\nif (!code.includes('area')) return 'area o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('20'))) return null;\nreturn '20 soni konsolga chiqmadi';"
     },
     {
       id: 3,
-      title: "Chegirmali narx",
-      instruction: "`finalPrice(narx, chegirma)` funksiyasi chegirmadan keyingi narxni qaytarsin. Masalan: finalPrice(100, 20) => 80.",
-      startingCode: "function finalPrice(narx, chegirma) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return narx - chegirma; yoki return narx * (100 - 20) / 100;",
-      test: "const fn = new Function(code + '; return finalPrice;')();\nif (fn(100, 20) === 80 && fn(50, 5) === 45) return null;\nreturn 'Ayirish noto\\'g\\'ri';"
-    },
-    {
-      id: 4,
-      title: "Kirish huquqi",
-      instruction: "`canEnter(yosh, biletBor)` funksiyasi yosh 12+ VA bilet bo'lsa `true` qaytarsin.",
-      startingCode: "function canEnter(yosh, biletBor) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return yosh >= 12 && biletBor;",
-      test: "const fn = new Function(code + '; return canEnter;')();\nif (fn(15, true) === true && fn(10, true) === false && fn(15, false) === false) return null;\nreturn '&& bilan ikki shartni ulang';"
-    },
-    {
-      id: 5,
-      title: "Katta sonni top",
-      instruction: "`max(a, b)` funksiyasi ikkisidan kattasini qaytarsin (teng bo'lsa istalganini).",
-      startingCode: "function max(a, b) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "if (a > b) return a; return b;",
-      test: "const fn = new Function(code + '; return max;')();\nif (fn(10, 5) === 10 && fn(3, 9) === 9) return null;\nreturn '> bilan solishtiring';"
-    },
-    {
-      id: 6,
-      title: "Ballarni yig'ish",
-      instruction: "`totalScore` 0 dan boshlansin. Unga avval 10, keyin 25 qo'shing (`+=` bilan). Natija 35 bo'lishi kerak.",
-      startingCode: "let totalScore = 0;\n// Qo'shishni yozing\n",
-      hint: "totalScore += 10; totalScore += 25;",
-      test: "const v = new Function(code + '; return totalScore;')();\nif (v === 35) return null;\nreturn 'totalScore 35 bo\\'lishi kerak';"
+      title: "Qoldiqni topish",
+      instruction: "`17 % 5` ifodasini hisoblab, natijani `remainder` o'zgaruvchisiga saqlang va konsolga chiqaring.",
+      startingCode: "// remainder o'zgaruvchisiga 17 % 5 ni saqlang va chiqaring\n",
+      hint: "let remainder = 17 % 5;\nconsole.log(remainder);",
+      test: "if (!code.includes('%')) return '% operatori ishlatilmadi';\nif (!code.includes('remainder')) return 'remainder o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('2'))) return null;\nreturn '2 qoldig\\'i konsolga chiqmadi';"
     }
   ],
-
   quizzes: [
     {
       id: 1,
-      question: "`10 % 3` natijasi nima?",
+      question: "`console.log(7 * 3);` kodi qanday natija beradi?",
       options: [
-        "3",
-        "1 (qoldiq)",
-        "3.33",
-        "0"
+        "\"7*3\"",
+        "21",
+        "10",
+        "NaN"
       ],
       correctAnswer: 1,
-      explanation: "% qoldiqni beradi: 10 = 3*3 + 1."
+      explanation: "* operatori sonlarni bir-biriga ko'paytiradi: 7 * 3 = 21."
     },
     {
       id: 2,
-      question: "Son juftligini qanday tekshiramiz?",
+      question: "Bo'linmaning qoldig'ini topish uchun qaysi operator ishlatiladi?",
       options: [
-        "son % 2 === 0",
-        "son / 2 === 0",
-        "son + 2 === 0",
-        "son > 2"
+        "/",
+        "//",
+        "%",
+        "mod"
       ],
-      correctAnswer: 0,
-      explanation: "Juft son 2 ga qoldiqsiz bo'linadi."
+      correctAnswer: 2,
+      explanation: "% (modulus) operatori bir sonni ikkinchisiga bo'lgandagi qoldiqni hisoblaydi."
     },
     {
       id: 3,
-      question: "`2 + 3 * 4` natijasi nima?",
+      question: "`console.log(3 ** 2);` ifodasi nimani anglatadi va natijasi nima?",
       options: [
-        "20",
-        "14 (avval ko'paytirish)",
-        "24",
-        "9"
+        "3 ni 2 ga ko'paytiradi, natija 6",
+        "3 ning 2-darajasi (3 * 3), natija 9",
+        "3 dan 2 ni ayiradi, natija 1",
+        "SyntaxError beradi"
       ],
       correctAnswer: 1,
-      explanation: "Ustuvorlik: avval 3*4=12, keyin +2."
-    },
-    {
-      id: 4,
-      question: "`true && false` va `true || false` natijalari?",
-      options: [
-        "true va true",
-        "false va true",
-        "false va false",
-        "true va false"
-      ],
-      correctAnswer: 1,
-      explanation: "&& ikkisi ham rost bo'lishini, || bittasi kifoya bo'lishini talab qiladi."
-    },
-    {
-      id: 5,
-      question: "`=` va `===` farqi?",
-      options: [
-        "Bir xil",
-        "= saqlash, === qat'iy solishtirish",
-        "=== saqlash, = solishtirish",
-        "Ikkisi ham saqlash"
-      ],
-      correctAnswer: 1,
-      explanation: "Bitta = qutiga soladi, uchta === solishtiradi."
-    },
-    {
-      id: 6,
-      question: "`x += 5` nimaga teng?",
-      options: [
-        "x = x + 5",
-        "x = 5",
-        "x = x * 5",
-        "Hech narsaga"
-      ],
-      correctAnswer: 0,
-      explanation: "+= — o'ziga qo'shib qayta saqlashning qisqa yo'li."
+      explanation: "** operatori darajaga ko'tarish operatoridir: 3 ** 2 = 3 * 3 = 9."
     }
   ]
-
 };
