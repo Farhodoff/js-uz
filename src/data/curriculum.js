@@ -56,6 +56,7 @@ export const curriculum = {
       { id: "forEachBasics", number: "1.41", title: "forEach Metodi", load: () => import("./lessons/js/01-basics/forEachBasics.js").then(m => m.forEachBasics) },
       { id: "mapBasics", number: "1.42", title: "map Metodi", load: () => import("./lessons/js/01-basics/mapBasics.js").then(m => m.mapBasics) },
       { id: "filterBasics", number: "1.43", title: "filter Metodi", load: () => import("./lessons/js/01-basics/filterBasics.js").then(m => m.filterBasics) },
+      { id: "objectBasics", number: "1.45", title: "Obyekt Yaratish va Murojaat", load: () => import("./lessons/js/01-basics/objectBasics.js").then(m => m.objectBasics) },
       { id: "dataTypesLesson", number: "1.5", title: "Ma'lumot Turlari (Data Types)", load: () => import("./lessons/js/01-basics/dataTypes.js").then(m => m.dataTypesLesson) },
       { id: "moreDataTypesLesson", number: "1.6", title: "Ma'lumot Turlari: Null, Symbol, BigInt", load: () => import("./lessons/js/01-basics/moreDataTypes.js").then(m => m.moreDataTypesLesson) },
       { id: "objectIntroLesson", number: "1.7", title: "Obyektlarga Kirish (Object)", load: () => import("./lessons/js/01-basics/objectIntro.js").then(m => m.objectIntroLesson) },
