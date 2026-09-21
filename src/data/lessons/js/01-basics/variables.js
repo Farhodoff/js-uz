@@ -1,252 +1,215 @@
 export const variables = {
   id: "variables",
-  title: "O'zgaruvchilar: var, let, const",
+  title: "O'zgaruvchi nima (let)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. Bu nima?
 
-### O'zgaruvchi nima?
-**O'zgaruvchi** — ma'lumot saqlaydigan nomlangan "quti". Do'kon misolida: savatdagi har bir mahsulot alohida qutida, ustida yorliq yozilgan.
+Tasavvur qiling, sizda ustiga yorliq yopishtirilgan bo'sh quti bor:
+- Siz qutiga nom berasiz (masalan, \`age\` deb yozasiz).
+- Quti ichiga biror narsa solib qo'yasiz (masalan, \`25\` sonini).
+- Keyinchalik qutidagi nomni aytib, uning ichidagi narsani olasiz.
+
+O'zgaruvchi (variable) — kompyuter xotirasida ma'lumot saqlash uchun nomlangan maxsus "quti"dir.
+
+JavaScript'da yangi quti yaratish uchun \`let\` kalit so'zidan (keyword) foydalanamiz.
+
+---
+
+## 2. Nega kerak?
+
+Agar o'zgaruvchi bo'lmasa, ma'lumotlarni kompyuter xotirasida eslab qololmaymiz. Har safar bir xil son yoki matnni qaytadan yozishga to'g'ri kelardi.
+
+O'zgaruvchi yaratib, unga bir marta qiymat solib qo'yamiz va dasturning istalgan joyida uning nomini chaqirib ishlatamiz.
+
+---
+
+## 3. Birinchi misol
+
+Bu kod \`age\` nomli o'zgaruvchi yaratadi va uning ichidagi sonni konsolga chiqaradi.
 
 \`\`\`javascript
-let ism = "Ali";
+let age = 25; // age nomli qutiga 25 sonini solish
+console.log(age); // Qutidagi qiymatni ekranga chiqarish
 \`\`\`
 
-Bu qatorda uch narsa bo'lyapti:
-1. **let** — "yangi quti yarataman" degan buyruq
-2. **ism** — qutining nomi (yorliq)
-3. **"Ali"** — quti ichidagi narsa (qiymat)
+\`\`\`text
+// Natija: 25
+\`\`\`
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **omborxona mudirisiz**:
-- Har bir qutida bitta narsa saqlanadi
-- Quti ustida yorliq bor (\`ism\`, \`yosh\`, \`manzil\`)
-- Quti ichidagini istalgan payt almashtirish mumkin — lekin yorliq o'zgarmaydi
+---
+
+## 4. Qator-baqator tahlil
+
+- \`let\` — yangi o'zgaruvchi (quti) yaratish buyrug'i.
+- \`age\` — o'zgaruvchining nomi (yorliq). Qoida bo'yicha nomlar ingliz tilida yoziladi.
+- \`=\` — tayinlash (o'zlashtirish) belgisi. O'ng tomondagi qiymatni chap tomondagi qutiga soladi.
+- \`25\` — quti ichiga solingan qiymat (son).
+- \`;\` — qator tugaganini bildiruvchi belgi (nuqta-vergul).
+- \`console.log(age);\` — \`age\` qutisi ichidagi qiymatni konsolga chiqarish. O'zgaruvchi nomi qo'shtirnoqsiz yoziladi.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod o'zgaruvchiga matn soladi va uni konsolga chiqaradi.
 
 \`\`\`javascript
-let rang = "Qizil";  // qutiga Qizil soldik
-rang = "Yashil";     // eskisini tashlab, Yashil soldik
+let name = "Ali"; // name nomli qutiga matn solish
+console.log(name); // Qutidagi matnni ekranga chiqarish
 \`\`\`
+
+\`\`\`text
+// Natija: Ali
+\`\`\`
+
+Matnli qiymatlar har doim qo'shtirnoq ichida solinadi.
 
 ---
 
-## 2. 💻 let, const — farqi nima?
+## 6. Ko'p uchraydigan xatolar
 
-### let — o'zgaruvchan quti
-Qiymati keyin o'zgarishi mumkin bo'lgan narsalar uchun:
-
+### 1. O'zgaruvchi nomini qo'shtirnoqqa olish
+❌ Xato kod:
 \`\`\`javascript
-let yosh = 20;
-yosh = 21;  // tug'ilgan kun o'tdi, yangiladik
-console.log(yosh);  // 21
+let score = 100;
+console.log("score");
 \`\`\`
-
-### const — muhrlangan quti
-Qiymati HECH QACHON o'zgarmaydigan narsalar uchun:
-
+Nima bo'ladi: Ekranga \`100\` emas, \`"score"\` so'zining o'zi chiqadi. Qo'shtirnoq ichidagi narsa o'zgaruvchi emas, oddiy matn deb qabul qilinadi.
+✅ To'g'ri variant:
 \`\`\`javascript
-const tugilganYil = 2000;
-tugilganYil = 2001;  // XATO! O'zgartirib bo'lmaydi
+let score = 100;
+console.log(score);
 \`\`\`
 
-### Qoidani eslab qoling
-> **Shubhalansangiz — \`const\` ishlating.** O'zgartirish kerak bo'lib qolsa, keyin \`let\` ga almashtirasiz. Bu professional dasturchilarning oltin qoidasi.
-
-\`\`\`mermaid
-flowchart TD
-    A["Qiymat o'zgaradimi?"] -->|"Ha (yosh, hisob)"| B["let"]
-    A -->|"Yo'q (tug'ilgan yil, PI)"| C["const"]
-\`\`\`
-
----
-
-## 3. ⚙️ Qanday Ishlaydi
-
-\`let ism = "Ali"\` yozganingizda kompyuter xotirasidan kichik joy ajratadi va unga \`ism\` deb nom beradi:
-
-1. **E'lon (declare):** \`let ism;\` — bo'sh quti yaratildi (ichida \`undefined\`)
-2. **O'zlashtirish (assign):** \`ism = "Ali";\` — qutiga qiymat solindi
-3. **O'qish (read):** \`console.log(ism);\` — quti ochilib, ichidagisi o'qildi
-
-Buni bir qatorda ham yozish mumkin: \`let ism = "Ali";\`
-
----
-
-## 4. ⚠️ Keng Tarqalgan Xatolar
-
-| ❌ Xato | ✅ To'g'ri | Sabab |
-|---|---|---|
-| \`let ism = "Ali"; let ism = "Vali";\` | \`ism = "Vali";\` (qayta \`let\` siz) | Quti bir marta yaratiladi, keyin faqat ichidagisi almashtiriladi |
-| \`let 1ism = "Ali";\` | \`let ism1 = "Ali";\` | Nom raqam bilan boshlanishi mumkin emas |
-| \`let ism-family = "Ali";\` | \`let ismFamily = "Ali";\` | Nomda \`-\` mumkin emas, camelCase ishlating |
-| \`apple\` va \`APPLE\` ni bir xil deb o'ylash | Bular ikki xil quti! | Katta-kichik harf farq qiladi |
-
-### Nomlash qoidalari
-1. Harf, raqam, \`$\`, \`_\` mumkin — lekin **birinchi belgi raqam bo'lmasin**
-2. Bir nechta so'z bo'lsa **camelCase**: \`ismFamilyasi\`, \`tugilganYil\`
-3. \`let\`, \`const\`, \`function\` kabi **zaxira so'zlarni** nom qilib bo'lmaydi
-4. \`a\`, \`data\`, \`x\` kabi **ma'nosiz nomlardan qoching** — \`foydalanuvchiIsmi\` ancha yaxshi
-
----
-
-## 5. 🔑 Asosiy Atamalar
-
-- **E'lon qilish (declare)** — quti yaratish (\`let ism;\`)
-- **O'zlashtirish (assign)** — qutiga qiymat solish (\`ism = "Ali";\` — \`=\` belgisi bilan)
-- **Qayta tayinlash (reassign)** — ichidagini almashtirish (faqat \`let\` da mumkin)
-- **Konstanta (constant)** — o'zgarmas qiymat (\`const\`)
-- **camelCase** — so'zlarni bosh harf bilan ulash usuli (\`meningIsmim\`)
-
----
-
-## 6. 🌍 Real Hayotda Qayerda?
-
-- **Savatcha:** \`let jamiNarx = 0;\` — har mahsulotda yangilanadi
-- **Foydalanuvchi:** \`const login = "ali_2000";\` — o'zgarmaydi
-- **Sozlamalar:** \`const ASOSIY_RANG = "#FF0000";\` — katta harf bilan yoziladigan doimiy qiymatlar
-
----
-
-
-
-### \`var\` haqida
-
-Eski kodlarda \`var\` ko'rasiz — u ham o'zgaruvchi yaratadi, lekin FARQ qiladi:
-
+### 2. Yaratilmagan o'zgaruvchini ishlatish
+❌ Xato kod:
 \`\`\`javascript
-if (true) {
-  var v = 1;   // blokdan chiqib ketadi!
-  let l = 2;   // blok ichida qoladi
-}
-console.log(v);  // 1
-console.log(l);  // XATO!
+console.log(price);
+\`\`\`
+Nima bo'ladi: \`ReferenceError: price is not defined\` xatoligi yuz beradi. Kompyuterda hali \`price\` nomli quti yo'q. Uni avval \`let\` bilan yaratish shart.
+✅ To'g'ri variant:
+\`\`\`javascript
+let price = 50;
+console.log(price);
 \`\`\`
 
-**Qoida:** zamonaviy kodda faqat \`let\` va \`const\` ishlating. \`var\` — faqat eski kodni o'qish uchun bilinadi.
-` ,
+### 3. O'zgaruvchi nomini raqam bilan boshlash
+❌ Xato kod:
+\`\`\`javascript
+let 1score = 100;
+\`\`\`
+Nima bo'ladi: \`SyntaxError: Invalid or unexpected token\` xatoligi beradi. O'zgaruvchi nomi raqam bilan boshlanishi taqiqlanadi.
+✅ To'g'ri variant:
+\`\`\`javascript
+let score1 = 100;
+\`\`\`
+
+---
+
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+\`score\` nomli o'zgaruvchi yarating, unga \`50\` sonini soling va konsolga chiqaring.
+
+### 2-mashq (O'rtacha)
+\`city\` nomli o'zgaruvchi yarating, unga \`"Toshkent"\` matnini soling va konsolga chiqaring.
+
+### 3-mashq (Xatoni topish)
+Quyidagi koddagi xatoni tuzating (ekranga \`42\` soni chiqishi kerak):
+\`\`\`javascript
+let count = 42;
+console.log("count");
+\`\`\`
+
+### Javoblar:
+1.
+\`\`\`javascript
+let score = 50;
+console.log(score);
+\`\`\`
+2.
+\`\`\`javascript
+let city = "Toshkent";
+console.log(city);
+\`\`\`
+3.
+\`\`\`javascript
+let count = 42;
+console.log(count);
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. O'zgaruvchi — ma'lumotni xotirada saqlash uchun nomlangan "quti".
+2. \`let\` kalit so'zi yangi o'zgaruvchi yaratadi, \`=\` belgisi esa unga qiymat soladi.
+3. O'zgaruvchi ichidagi qiymatni konsolga chiqarishda uning nomi qo'shtirnoqsiz yoziladi: \`console.log(age);\`.
+
+Keyingi darsda: O'zgaruvchidagi qiymatni yangilash (qayta qiymat berish) bilan tanishamiz.
+`,
   exercises: [
     {
       id: 1,
-      title: "Birinchi quti",
-      instruction: "`ism` nomli o'zgaruvchi yarating (`let` bilan) va unga o'z ismingizni yozing.",
-      startingCode: "// ism qutisini yarating\n",
-      hint: "let ism = \"Ali\";",
-      test: "const v = new Function(code + '; return (typeof ism !== \"undefined\" ? ism : null);')();\nif (v === null) return 'ism nomli o\\'zgaruvchi topilmadi';\nreturn null;"
+      title: "Sonli o'zgaruvchi yaratish",
+      instruction: "`score` nomli o'zgaruvchi yarating (`let` bilan), unga `50` qiymatini bering va `console.log(score);` orqali chiqaring.",
+      startingCode: "// score o'zgaruvchisini yarating va chiqaring\n",
+      hint: "let score = 50;\nconsole.log(score);",
+      test: "if (!code.includes('let')) return 'let kalit so\\'zi ishlatilmadi';\nif (!code.includes('score')) return 'score nomli o\\'zgaruvchi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('50'))) return null;\nreturn '50 soni konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "Qiymatni almashtirish",
-      instruction: "`rang` qutisini yarating, ichiga `Qizil` soling. Keyingi qatorda uni `Yashil` ga almashtiring.",
-      startingCode: "// rang ni yarating va almashtiring\n",
-      hint: "let rang = \"Qizil\"; rang = \"Yashil\";",
-      test: "const v = new Function(code + '; return (typeof rang !== \"undefined\" ? rang : null);')();\nif (v !== 'Yashil') return 'rang ning oxirgi qiymati Yashil bo\\'lishi kerak';\nreturn null;"
+      title: "Matnli o'zgaruvchi yaratish",
+      instruction: "`city` nomli o'zgaruvchi yarating (`let` bilan), unga `\"Toshkent\"` matnini soling va konsolga chiqaring.",
+      startingCode: "// city o'zgaruvchisini yarating va chiqaring\n",
+      hint: "let city = \"Toshkent\";\nconsole.log(city);",
+      test: "if (!code.includes('let')) return 'let kalit so\\'zi ishlatilmadi';\nif (!code.includes('city')) return 'city nomli o\\'zgaruvchi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Toshkent'))) return null;\nreturn '\"Toshkent\" matni konsolga chiqmadi';"
     },
     {
       id: 3,
-      title: "Muhrlangan yil",
-      instruction: "`TUGILGAN_YIL` ni `const` bilan e'lon qiling va unga o'z yilingizni yozing (masalan 2000).",
-      startingCode: "// const bilan yilni muhrlang\n",
-      hint: "const TUGILGAN_YIL = 2000;",
-      test: "if (!code.includes('const')) return 'const ishlatilmadi';\nconst v = new Function(code + '; return (typeof TUGILGAN_YIL !== \"undefined\" ? TUGILGAN_YIL : null);')();\nif (typeof v !== 'number') return 'TUGILGAN_YIL songa teng bo\\'lishi kerak';\nreturn null;"
-    },
-    {
-      id: 4,
-      title: "Ikki quti, bitta yig'indi",
-      instruction: "`a = 5` va `b = 7` qutilarini yarating. Uchinchi `sum` qutisiga ularning yig'indisini soling.",
-      startingCode: "let a = 5;\nlet b = 7;\n// sum ni yarating\n",
-      hint: "let sum = a + b;",
-      test: "const v = new Function(code + '; return (typeof sum !== \"undefined\" ? sum : null);')();\nif (v !== 12) return 'sum 12 ga teng bo\\'lishi kerak';\nreturn null;"
-    },
-    {
-      id: 5,
-      title: "Qiymat ko'chirish",
-      instruction: "`name` ga `John` bering, keyin uni `admin` ga ko'chiring. Ikkala quti ham `John` bo'lishi kerak.",
-      startingCode: "let admin;\nlet name;\n// Qolganini yozing\n",
-      hint: "name = \"John\"; admin = name;",
-      test: "const r = new Function(code + '; return [admin, name];')();\nif (r[0] === 'John' && r[1] === 'John') return null;\nreturn 'admin va name ikkisi ham John bo\\'lishi kerak';"
-    },
-    {
-      id: 6,
-      title: "Yaxshi nom tanlash",
-      instruction: "Sayyoramiz nomini saqlaydigan, ma'noli nomli o'zgaruvchi yarating va unga `Yer` yozing.",
-      startingCode: "// Ma'noli nom tanlang\n",
-      hint: "let ourPlanetName = \"Yer\";",
-      test: "const hasGood = /ourPlanet|planetName|sayyora|yerNomi/i.test(code);\nif (!hasGood) return 'Ma\\'noli nom tanlang (masalan ourPlanetName)';\nif (!code.includes('Yer')) return 'Yer qiymati bo\\'lishi kerak';\nreturn null;"
+      title: "Qo'shtirnoq xatosini to'g'rilash",
+      instruction: "`console.log(\"count\");` qatoridagi qo'shtirnoqni olib tashlang, toki o'zgaruvchi nomi emas, uning ichidagi `42` qiymati chiqsin.",
+      startingCode: "let count = 42;\nconsole.log(\"count\");\n",
+      hint: "let count = 42;\nconsole.log(count);",
+      test: "if (code.includes('\"count\"') || code.includes(\"'count'\")) return 'count so\\'zidan qo\\'shtirnoqni olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('42'))) return null;\nreturn '42 soni konsolga chiqmadi';"
     }
   ],
-
   quizzes: [
     {
       id: 1,
-      question: "`let ism = \"Ali\";` qatorida nechta ish bajarilmoqda?",
+      question: "O'zgaruvchi (variable) nima?",
       options: [
-        "Bitta — faqat chop etish",
-        "Ikkita — quti yaratish (e'lon) va ichiga qiymat solish (o'zlashtirish)",
-        "Hech narsa — bu izoh",
-        "Uchta — quti, chop etish, o'chirish"
+        "Kompyuterni o'chiradigan tugma",
+        "Ma'lumotni xotirada saqlash uchun nomlangan maxsus quti",
+        "Faqat matn yozish uchun shrift",
+        "Internet tezligini o'lchovchi vosita"
       ],
       correctAnswer: 1,
-      explanation: "let — quti yaratadi, = — ichiga qiymat soladi."
+      explanation: "O'zgaruvchi — kompyuter xotirasidagi nomlangan joy (quti) bo'lib, o'z ichida ma'lumot saqlaydi."
     },
     {
       id: 2,
-      question: "Qaysi holatda `const` ishlatish kerak?",
+      question: "JavaScript'da yangi o'zgaruvchi yaratish uchun qaysi kalit so'z ishlatiladi?",
       options: [
-        "Qiymat tez-tez o'zgarganda",
-        "Qiymat hech qachon o'zgarmaganda (tug'ilgan yil, PI)",
-        "Har doim — const universal",
-        "Hech qachon — const keraksiz"
+        "make",
+        "let",
+        "create",
+        "box"
       ],
       correctAnswer: 1,
-      explanation: "const o'zgarmas narsalar uchun — muhrlangan quti."
+      explanation: "Yangi o'zgaruvchi e'lon qilish uchun let kalit so'zidan foydalaniladi: let age = 25;"
     },
     {
       id: 3,
-      question: "Quyidagi kodda xatolik qayerda?\n```javascript\nlet ism = \"Ali\";\nlet ism = \"Vali\";\n```",
+      question: "Quyidagi kod natijasi nima bo'ladi?\n```javascript\nlet score = 100;\nconsole.log(\"score\");\n```",
       options: [
-        "Xatolik yo'q",
-        "Bir quti ikki marta let bilan yaratilgan — ikkinchisida let bo'lmasligi kerak",
-        "Qo'shtirnoq xato",
-        "Ali noto'g'ri ism"
+        "100",
+        "score",
+        "Xatolik beradi",
+        "Hech narsa chiqmaydi"
       ],
       correctAnswer: 1,
-      explanation: "Quti bir marta yaratiladi: `ism = \"Vali\";` kifoya."
-    },
-    {
-      id: 4,
-      question: "Qaysi nom YAROQSIZ?",
-      options: [
-        "ismFamilyasi",
-        "_maxfiy",
-        "$narx",
-        "1-raqam"
-      ],
-      correctAnswer: 3,
-      explanation: "Nom raqam bilan boshlanishi va `-` tutishi mumkin emas."
-    },
-    {
-      id: 5,
-      question: "`let rang;` dan keyin `rang` ning qiymati nima?",
-      options: [
-        "null",
-        "undefined (bo'sh quti)",
-        "0",
-        "Xatolik beradi"
-      ],
-      correctAnswer: 1,
-      explanation: "Qiymatsiz quti avtomatik `undefined` bo'ladi."
-    },
-    {
-      id: 6,
-      question: "Nega `foydalanuvchiIsmi` nomi `x` nomidan yaxshi?",
-      options: [
-        "Uzun nomlar tezroq ishlaydi",
-        "Ma'noli nom kodni o'qishni osonlashtiradi",
-        "Farqi yo'q",
-        "x taqiqlangan so'z"
-      ],
-      correctAnswer: 1,
-      explanation: "Yaxshi nom — yaxshi hujjat: quti ichida nima borligi nomidan bilinadi."
+      explanation: "Qo'shtirnoq ichiga yozilgan \"score\" oddiy matn deb qabul qilinadi. O'zgaruvchi ichidagi 100 chiqishi uchun console.log(score) deb qo'shtirnoqsiz yozish kerak."
     }
   ]
-
 };
