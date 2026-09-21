@@ -1,248 +1,217 @@
 export const typeofLesson = {
   id: "typeofLesson",
-  title: "Typeof Operator",
+  title: "typeof: Qiymat Turini Aniqlash",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. Bu nima?
 
-### typeof — "sen kimsan?" degan savol
-Har qanday qiymatdan turini so'rash uchun \`typeof\` ishlatiladi. Natija har doim **matn** (string) bo'ladi:
+Tasavvur qiling, siz supermarket kassasidasiz. Kassir mahsulotga skanerni to'g'irlaydi va ekran mahsulotning turini aytadi: "ichimlik", "meva" yoki "non". 
+Qutining tashqi ko'rinishidan nima ekanini bilolmasangiz ham, skaner uning ichida nima borligini aniq ko'rsatib beradi.
+
+JavaScript'da \`typeof\` — o'zgaruvchi yoki qiymatning qaysi ma'lumot turiga tegishli ekanligini aniqlab beruvchi maxsus operatordir.
+
+---
+
+## 2. Nega kerak?
+
+Dasturlashda ba'zan o'zgaruvchida qanday turdagi ma'lumot turganini aniqlash zarur bo'ladi:
+- Masalan, \`"100"\` (matn) bilan \`100\` (son) ko'rinishidan bir xil raqamga o'xshaydi, lekin dastur uchun ular mutlaqo boshqa-boshqa narsalardir.
+- Agar biz matn ustida matematik amallar bajarmoqchi bo'lsak, xatolik yuz berishi mumkin.
+
+\`typeof\` o'zgaruvchining turini aniq ko'rsatib, bizni bunday chalkashliklardan qutqaradi.
+
+---
+
+## 3. Birinchi misol
+
+Bu kod sonli o'zgaruvchining turini aniqlaydi va konsolga chiqaradi.
 
 \`\`\`javascript
-console.log(typeof 25);        // "number"
-console.log(typeof "Ali");     // "string"
-console.log(typeof true);      // "boolean"
-console.log(typeof undefined); // "undefined"
+let age = 25; // Sonli o'zgaruvchi
+console.log(typeof age); // Turini konsolga chiqarish
 \`\`\`
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **bojxona xodimisiz**: har bir yuk mashinasi oldingizdan o'tayotganda "ichida nima bor?" deb so'raysiz. Haydovchi javob beradi: "meva", "kiyim", "texnika". \`typeof\` ham xuddi shunday — har bir qiymatdan "turing nima?" deb so'raydi.
+\`\`\`text
+// Natija: number
+\`\`\`
 
 ---
 
-## 2. 💻 To'liq Jadval
+## 4. Qator-baqator tahlil
+
+- \`let age = 25;\` — \`age\` nomli o'zgaruvchiga \`25\` soni yuklandi.
+- \`typeof age\` — \`typeof\` operatori \`age\` o'zgaruvchisining ichidagi qiymatni tekshiradi va uning turi son (\`"number"\`) ekanligini qaytaradi.
+- \`console.log(typeof age);\` — topilgan tur nomi (\`number\`) konsolga chiqadi.
+- Eslatma: \`typeof\` natijasi har doim kichik harflar bilan yozilgan matn (string) bo'ladi.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod matnli o'zgaruvchining turini aniqlaydi va konsolga chiqaradi.
 
 \`\`\`javascript
-console.log(typeof 42);         // "number"
-console.log(typeof "matn");     // "string"
-console.log(typeof true);       // "boolean"
-console.log(typeof undefined);  // "undefined"
-console.log(typeof 10n);        // "bigint"
-console.log(typeof Symbol());   // "symbol"
-console.log(typeof null);       // "object" (!!!)
-console.log(typeof {});         // "object"
-console.log(typeof []);         // "object"
-console.log(typeof function(){}); // "function"
+let userName = "Ali"; // Matnli o'zgaruvchi
+console.log(typeof userName); // Turini konsolga chiqarish
 \`\`\`
 
-### Yodlash oson qoida
-> **Hamma narsa o'z nomini aytadi** — \`typeof 42\` → \`"number"\`. Faqat **uchta istisno** bor:
-> 1. \`typeof null\` → \`"object"\` (tarixiy xato)
-> 2. \`typeof []\` → \`"object"\` (massiv ham obyekt!)
-> 3. \`typeof function(){}\` → \`"function"\` (obyekt bo'lsa ham alohida nom)
-
-\`\`\`mermaid
-flowchart TD
-    A["typeof X"] --> B{"null yoki massivmi?"}
-    B -->|"Ha"| C["'object'"]
-    B -->|"Yo'q"| D{"funksiyami?"}
-    D -->|"Ha"| E["'function'"]
-    D -->|"Yo'q"| F["O'z nomi: number, string..."]
+\`\`\`text
+// Natija: string
 \`\`\`
+
+Qator-baqator tahlil:
+- \`let userName = "Ali";\` — \`userName\` nomli o'zgaruvchiga \`"Ali"\` matni yuklandi.
+- \`console.log(typeof userName);\` — \`typeof\` matnli qiymatni tekshirib, konsolga \`string\` deb chiqaradi.
+
+Biz o'rgangan turlarning \`typeof\` natijalari:
+- \`typeof 42\` → \`"number"\`
+- \`typeof "Salom"\` → \`"string"\`
+- \`typeof true\` → \`"boolean"\`
+- \`typeof undefined\` → \`"undefined"\`
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi
+## 6. Ko'p uchraydigan xatolar
 
-\`typeof\` — operator (funksiya emas!). Qavs shart emas:
-
+### 1. typeof ni katta harflar bilan yozish
+❌ Xato kod:
 \`\`\`javascript
-console.log(typeof 42);   // ishlaydi
-console.log(typeof(42));  // ham ishlaydi
-let x = 10;
-console.log(typeof x);    // "number"
+let score = 50;
+console.log(typeOf(score));
 \`\`\`
-
-Amaliy qo'llanish — funksiyaga nima kelganini tekshirish:
-
+Nima bo'ladi: \`ReferenceError: typeOf is not defined\` xatoligi yuz beradi. JavaScript harflar registriga sezgir, shuning uchun faqat kichik harflarda \`typeof\` deb yoziladi.
+✅ To'g'ri variant:
 \`\`\`javascript
-function ikkilantir(son) {
-  if (typeof son !== "number") {
-    return "Iltimos, son kiriting!";
-  }
-  return son * 2;
-}
+let score = 50;
+console.log(typeof score);
+\`\`\`
+
+### 2. typeof ni qo'shtirnoq ichiga olib yozish
+❌ Xato kod:
+\`\`\`javascript
+let score = 50;
+console.log("typeof score");
+\`\`\`
+Nima bo'ladi: Konsolga tur nomi emas, balki shunchaki \`typeof score\` degan oddiy matn chiqadi. \`typeof\` operator bo'lgani uchun qo'shtirnoqsiz yoziladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+console.log(typeof score);
+\`\`\`
+
+### 3. Qo'shtirnoqdagi sonni number deb o'ylash
+❌ Xato tushuncha:
+\`\`\`javascript
+let zipCode = "100000";
+console.log(typeof zipCode); // "string" chiqadi, "number" emas!
+\`\`\`
+Nima bo'ladi: Qo'shtirnoqqa olingan har qanday qiymat (ichida qanday raqamlar bo'lishidan qat'i nazar) har doim \`string\` hisoblanadi.
+✅ To'g'ri tushuncha:
+\`\`\`javascript
+let zipCode = 100000;
+console.log(typeof zipCode); // "number"
 \`\`\`
 
 ---
 
-## 4. ⚠️ Keng Tarqalgan Xatolar
+## 7. Tekshiruv
 
-| ❌ Xato | ✅ To'g'ri | Sabab |
-|---|---|---|
-| \`if (typeof x == number)\` | \`if (typeof x === "number")\` | Natija MATN — qo'shtirnoq shart! |
-| Massivni \`typeof\` bilan tekshirish | \`Array.isArray(arr)\` | \`typeof []\` → \`"object"\`, massivligi bilinmaydi |
-| \`typeof null === "null"\` kutish | \`"object"\` ekanini bilish | Tarixiy xato |
+### 1-mashq (Oson)
+\`price\` nomli o'zgaruvchi yarating (\`let price = 99;\`) va uning turini \`typeof\` yordamida konsolga chiqaring.
 
----
+### 2-mashq (O'rtacha)
+\`isStudent\` nomli o'zgaruvchi yarating (\`let isStudent = true;\`) va uning turini \`typeof\` yordamida konsolga chiqaring.
 
-## 5. 🔑 Asosiy Atamalar
+### 3-mashq (Chegara holat)
+\`pin\` nomli o'zgaruvchiga matn ko'rinishidagi son bering (\`let pin = "1234";\`). Uning turini \`typeof\` bilan konsolga chiqaring va natija \`string\` ekanligini ko'ring.
 
-- **typeof** — tur aniqlovchi operator, natija har doim matn
-- **Istisno** — umumiy qoidaga bo'ysunmaydigan holat (null, massiv)
-
----
-
-## 6. 🌍 Real Hayotda Qayerda?
-
-- **Forma tekshiruvi:** foydalanuvchi songa matn yozsa — \`typeof\` bilan ushlab, ogohlantirish
-- **Kutubxona himoyasi:** funksiyaga noto'g'ri tur kelsa — erta xato qaytarish
-
----
-
-## 7. 🎙 Intervyu Savollari
-
-**1. \`typeof\` natijasi qaysi turda bo'ladi?**
-**Javob:** Har doim string (matn): \`typeof 42\` → \`"number"\` (qo'shtirnoqli).
-
-**2. Massiv ekanini \`typeof\` bilan bilib bo'ladimi?**
-**Javob:** Yo'q — \`typeof []\` → \`"object"\`. \`Array.isArray()\` ishlatiladi.
-
-**3. \`typeof\` ning uchta istisnosini ayting.**
-**Javob:** \`null\` → \`"object"\`, \`[]\` → \`"object"\`, funksiya → \`"function"\`.
+### Javoblar:
+1.
+\`\`\`javascript
+let price = 99;
+console.log(typeof price);
+\`\`\`
+2.
+\`\`\`javascript
+let isStudent = true;
+console.log(typeof isStudent);
+\`\`\`
+3.
+\`\`\`javascript
+let pin = "1234";
+console.log(typeof pin);
+\`\`\`
 
 ---
 
-## 8. ✅ Xulosa
+## 8. Xulosa
 
-- **typeof** har doim matn qaytaradi, qavs shart emas
-- **3 istisno:** \`null\` va \`[]\` → \`"object"\`, funksiya → \`"function"\`
-- **Qo'shtirnoqni unutmang:** \`=== "number"\`, \`=== number\` emas!
-- **Keyingi qadam:** 1.7-darsda sonlar va matnlar ustida amallar — operatorlar
+1. \`typeof\` — qiymat yoki o'zgaruvchining ma'lumot turini aniqlab beruvchi operatordir.
+2. \`typeof\` natijasi har doim kichik harfli matn bo'ladi (\`"number"\`, \`"string"\`, \`"boolean"\`, \`"undefined"\`).
+3. Qo'shtirnoq ichiga yozilgan har qanday qiymat \`string\` turiga kiradi.
+
+Keyingi darsda: Ma'lumot turlarini bir-biriga aylantirish (Type Conversion) mavzusi bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Turlarni chop etish",
-      instruction: "Uchta qiymat turini konsolga chop eting: `42`, `\"Salom\"`, `true` ning `typeof` natijalarini.",
-      startingCode: "// typeof natijalarini chop eting\n",
-      hint: "console.log(typeof 42); console.log(typeof \"Salom\"); console.log(typeof true);",
-      test: "if (!code.includes('typeof')) return 'typeof ishlatilmadi';\n      return null;"
+      title: "Son turini aniqlash",
+      instruction: "`price` nomli o'zgaruvchi yarating (`let price = 99;`) va uning turini `typeof` yordamida `console.log(typeof price);` orqali chiqaring.",
+      startingCode: "let price = 99;\n// price ning turini konsolga chiqaring\n",
+      hint: "console.log(typeof price);",
+      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('number'))) return null;\nreturn 'Konsolga number chiqmadi';"
     },
     {
       id: 2,
-      title: "Tur nomini qaytarish",
-      instruction: "`getTypeName(value)` funksiyasi `typeof value` ni qaytarsin.",
-      startingCode: "function getTypeName(value) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return typeof value;",
-      test: "const fn = new Function(code + '; return getTypeName;')();\nif (fn(10) === 'number' && fn('a') === 'string') return null;\nreturn 'typeof qaytarilmadi';"
+      title: "Boolean turini aniqlash",
+      instruction: "`isStudent` nomli o'zgaruvchi yarating (`let isStudent = true;`) va uning turini `typeof` yordamida konsolga chiqaring.",
+      startingCode: "let isStudent = true;\n// isStudent ning turini konsolga chiqaring\n",
+      hint: "console.log(typeof isStudent);",
+      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('boolean'))) return null;\nreturn 'Konsolga boolean chiqmadi';"
     },
     {
       id: 3,
-      title: "Sonmi?",
-      instruction: "`isNumber(value)` funksiyasi qiymat son bo'lsa `true`, bo'lmasa `false` qaytarsin.",
-      startingCode: "function isNumber(value) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return typeof value === \"number\";",
-      test: "const fn = new Function(code + '; return isNumber;')();\nif (fn(5) === true && fn(\"5\") === false && fn(null) === false) return null;\nreturn 'Faqat number uchun true';"
-    },
-    {
-      id: 4,
-      title: "Matnmi?",
-      instruction: "`isString(value)` funksiyasi qiymat matn bo'lsa `true`, bo'lmasa `false` qaytarsin.",
-      startingCode: "function isString(value) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return typeof value === \"string\";",
-      test: "const fn = new Function(code + '; return isString;')();\nif (fn(\"Ali\") === true && fn(42) === false) return null;\nreturn 'Faqat string uchun true';"
-    },
-    {
-      id: 5,
-      title: "Himoyalangan funksiya",
-      instruction: "`double(x)` funksiyasi: agar `x` son bo'lsa `x * 2` qaytarsin, bo'lmasa `\"Son kiriting!\"` qaytarsin.",
-      startingCode: "function double(x) {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "if (typeof x !== \"number\") return \"Son kiriting!\"; return x * 2;",
-      test: "const fn = new Function(code + '; return double;')();\nif (fn(5) === 10 && fn(\"a\") === 'Son kiriting!') return null;\nreturn 'Himoya ishlamadi';"
-    },
-    {
-      id: 6,
-      title: "Istisnoni top",
-      instruction: "`whatIsNull()` funksiyasi `typeof null` natijasini qaytarsin.",
-      startingCode: "function whatIsNull() {\n  // Kodni shu yerda yozing\n}\n",
-      hint: "return typeof null;",
-      test: "const fn = new Function(code + '; return whatIsNull;')();\nif (fn() === 'object') return null;\nreturn 'typeof null object qaytaradi';"
+      title: "Qo'shtirnoqdagi son turini aniqlash",
+      instruction: "`pin` nomli o'zgaruvchiga `\"1234\"` qiymatini bering va uning turini `typeof` bilan konsolga chiqaring.",
+      startingCode: "let pin = \"1234\";\n// pin ning turini konsolga chiqaring\n",
+      hint: "console.log(typeof pin);",
+      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('string'))) return null;\nreturn 'Konsolga string chiqmadi';"
     }
   ],
-
   quizzes: [
     {
       id: 1,
-      question: "`typeof 42` natijasi qaysi turda?",
+      question: "`typeof` operatori nima uchun ishlatiladi?",
       options: [
-        "number (son)",
-        "\"number\" (matn)",
-        "Natija yo'q",
-        "42"
+        "O'zgaruvchining qiymatini o'chirish uchun",
+        "Qiymat yoki o'zgaruvchining ma'lumot turini aniqlash uchun",
+        "Matn uzunligini hisoblash uchun",
+        "Yangi o'zgaruvchi e'lon qilish uchun"
       ],
       correctAnswer: 1,
-      explanation: "typeof har doim matn qaytaradi."
+      explanation: "typeof operatori har qanday qiymat yoki o'zgaruvchining qaysi ma'lumot turiga tegishli ekanligini qaytaradi."
     },
     {
       id: 2,
-      question: "Qaysi biri `typeof` istisnosi?",
+      question: "`console.log(typeof \"42\");` kodi konsolga nima chiqaradi?",
       options: [
-        "typeof 42 → \"number\"",
-        "typeof \"a\" → \"string\"",
-        "typeof null → \"object\"",
-        "typeof true → \"boolean\""
+        "\"number\"",
+        "\"string\"",
+        "42",
+        "\"undefined\""
       ],
-      correctAnswer: 2,
-      explanation: "null object qaytaradi — tarixiy xato."
+      correctAnswer: 1,
+      explanation: "\"42\" qo'shtirnoq ichida yozilgani uchun uning turi son emas, balki string (matn) bo'ladi."
     },
     {
       id: 3,
-      question: "Massiv ekanini qanday aniq tekshiramiz?",
+      question: "Quyidagilardan qaysi biri `typeof true` natijasi bo'ladi?",
       options: [
-        "typeof arr === \"array\"",
-        "Array.isArray(arr)",
-        "typeof arr === \"object\" (kifoya)",
-        "arr.type"
+        "\"boolean\"",
+        "\"true\"",
+        "\"Number\"",
+        "true"
       ],
-      correctAnswer: 1,
-      explanation: "typeof massivni object deydi, Array.isArray aniq javob beradi."
-    },
-    {
-      id: 4,
-      question: "`typeof function(){}` nima qaytaradi?",
-      options: [
-        "\"object\"",
-        "\"function\"",
-        "\"method\"",
-        "Xatolik"
-      ],
-      correctAnswer: 1,
-      explanation: "Funksiya uchun alohida nom — \"function\"."
-    },
-    {
-      id: 5,
-      question: "`if (typeof x == number)` dagi xato nima?",
-      options: [
-        "== o'rniga === kerak",
-        "number qo'shtirnoqsiz — \"number\" bo'lishi kerak",
-        "if kerak emas",
-        "Xato yo'q"
-      ],
-      correctAnswer: 1,
-      explanation: "typeof matn qaytaradi, matn bilan solishtirish kerak."
-    },
-    {
-      id: 6,
-      question: "`typeof undefined` nima?",
-      options: [
-        "\"empty\"",
-        "\"undefined\"",
-        "\"null\"",
-        "Xatolik"
-      ],
-      correctAnswer: 1,
-      explanation: "undefined o'z nomini aytadi — istisnosiz."
+      correctAnswer: 0,
+      explanation: "true va false qiymatlarining turi har doim \"boolean\" bo'ladi."
     }
   ]
-
 };
