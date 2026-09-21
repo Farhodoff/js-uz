@@ -1,261 +1,271 @@
 export const arrowBasics = {
   id: "arrowBasics",
-  title: "Arrow Functionlar (Kirish)",
+  title: "Arrow Funksiya: () => {}",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. Bu nima?
 
-### Arrow function — funksiya yozishning qisqa usuli
-JavaScript'da funksiya yozishning ikki usuli bor — ikkalasi ham bir xil ishlaydi:
+Xabarlashuvda biz ko'pincha uzun so'zlar o'rniga qisqartma yoki ko'rsatkich belgilaridan foydalanamiz: masalan, yo'nalishni uzun matn bilan tushuntirish o'rniga shunchaki o'q / ko'rsatkich belgisi (\`=>\`) qo'yamiz.
+Arrow funksiya ham xuddi shunday: an'anaviy \`function\` so'zi o'rniga zamonaviy \`=>\` (o'q) belgisidan foydalanib yoziladigan ixcham funksiyadir.
+
+**Arrow funksiya (arrow function / o'qsimon funksiya)** — JavaScript da \`function\` kalit so'zi o'rniga \`=>\` belgisi yordamida yoziladigan zamonaviy va ixcham funksiya sintaksisidir.
+
+*Yangi terminlar:*
+- **Arrow funksiya (arrow function)** — \`() => {}\` ko'rinishida yoziladigan funksiya shakli.
+- **O'q belgisi (\`=>\`)** — tenglik va kattalik belgilaridan (\`=\` va \`>\`) tashkil topgan maxsus ko'rsatkich belgisi ("fat arrow").
+
+---
+
+## 2. Nega kerak?
+
+An'anaviy usulda har safar \`function\` degan uzun so'zni yozish talab qilinardi:
 
 \`\`\`javascript
-// 1. Klassik usul (function declaration)
-function kvadrat(son) {
-  return son * son;
+function multiply(a, b) {
+  return a * b;
+}
+\`\`\`
+
+Dasturimizda o'nlab funksiyalar kerak bo'lganda, \`function\` so'zini qayta-qayta yozish kodni cho'zib yuboradi.
+
+Arrow funksiya orqali kod ancha ixcham, zamonaviy va o'qish uchun toza ko'rinishga keladi:
+
+\`\`\`javascript
+const multiply = (a, b) => {
+  return a * b;
+};
+\`\`\`
+
+---
+
+## 3. Birinchi misol
+
+Bu kod ikkita sonni ko'paytiruvchi arrow funksiyani yaratadi va uni chaqiradi.
+
+\`\`\`javascript
+const multiply = (a, b) => { // arrow funksiyani e'lon qilish
+  return a * b; // natijani qaytarish
+};
+
+let result = multiply(3, 4); // chaqirish
+console.log(result); // natijani chiqarish
+\`\`\`
+
+\`\`\`text
+// Natija:
+12
+\`\`\`
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`const multiply =\` — funksiya \`multiply\` nomli o'zgarmas o'zgaruvchiga yuklanadi (funksiya tasodifan boshqa qiymatga o'zgarib ketmasligi uchun har doim \`const\` ishlatiladi).
+- \`(a, b)\` — funksiya qabul qiladigan parametrlar (xuddi oddiy funksiyadagi kabi qavs ichida yoziladi).
+- \`=>\` — o'q (arrow) belgisi. U parametrlarni funksiya tanasiga bog'lab beradi.
+- \`{ return a * b; };\` — jingalak qavs ichida funksiya tanasi yoziladi.
+- \`let result = multiply(3, 4);\` — arrow funksiyani chaqirish usuli oddiy funksiya bilan mutlaqo bir xil: \`nomi(argumentlar)\`.
+
+---
+
+## 5. Qadamma-qadam (trace)
+
+Oddiy funksiya va Arrow funksiyaning yonma-yon tuzilishi:
+
+\`\`\`javascript
+// 1. An'anaviy funksiya:
+function add(a, b) {
+  return a + b;
 }
 
-// 2. Arrow (strelka) usul
-const kvadrat2 = (son) => {
-  return son * son;
-};
-
-// 3. Arrow + qisqa yozuv (bir qatorda return avtomatik!)
-const kvadrat3 = (son) => son * son;
-
-console.log(kvadrat(5));    // 25
-console.log(kvadrat2(5));   // 25
-console.log(kvadrat3(5));   // 25
-\`\`\`
-
-Uchtasi ham bir xil natija beradi!
-
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **xat yozmoqchisiz**:
-- **Klassik funksiya** — rasmiy xat: "Hurmat bilan, [ISM]" (to'liq shakl)
-- **Arrow + qisqa yozuv** — SMS: "Kelaman 5 daqiqada" (bir Gap, bir ma'no)
-
-Ikkalasi ham bir xil xabar beradi — faqat shakli qisqaroq.
-
----
-
-## 2. 💻 Tuzilishi va Qisqartirish Qadamlari
-
-Arrow funksiyani yozishda 4 ta qadam — har birida qisqaroq:
-
-\`\`\`javascript
-// 1-qadam: to'liq shakl
-const yigindi = (a, b) => {
+// 2. Zamonaviy arrow funksiya:
+const add = (a, b) => {
   return a + b;
 };
-
-// 2-qadam: tana bitta qator bo'lsa — {} va return o'chiriladi
-const yigindi = (a, b) => a + b;
-
-// 3-qadam: bitta parametr bo'lsa — ( ) ham ixtiyoriy
-const kvadrat = son => son * son;
-
-// 4-qadam: parametrsiz bo'lsa — ( ) SHART
-const salom = () => "Salom!";
 \`\`\`
 
-> ⚠️ **Muhim:** 2-qatordagi qisqa shaklda \`return\` YO'Q, lekin qiymat qaytadi — bu **implicit return** deyiladi.
+Bajarilish jarayoni jadvali:
 
-### Ko'p qatorli tana bo'lsa — {} SHART
+| Qadam | Kod | Nima sodir bo'ladi? | result |
+|---|---|---|---|
+| 1 | \`const multiply = (a, b) => { ... };\` | Arrow funksiya yaratildi va \`multiply\` o'zgaruvchisiga saqlandi | hali mavjud emas |
+| 2 | \`multiply(3, 4)\` chaqirildi | \`a = 3, b = 4\` parametrlariga uzatildi | hali mavjud emas |
+| 3 | \`return a * b;\` | 3 * 4 = 12 hisoblandi va tashqariga qaytarildi | 12 |
+| 4 | \`console.log(result);\` | Konsolga 12 chiqarildi | 12 |
+
+---
+
+## 6. Yana bitta misol
+
+1-misoldan farqi: parametrsiz arrow funksiya (qavslar bo'sh \`()\` qoladi).
+
 \`\`\`javascript
-const tekshir = (yosh) => {
-  if (yosh >= 18) {
-    return "Katta";
-  }
-  return "Kichik";
+const sayHello = () => { // parametrsiz arrow funksiya
+  return "Salom, dunyo!";
+};
+
+console.log(sayHello());
+\`\`\`
+
+\`\`\`text
+// Natija:
+Salom, dunyo!
+\`\`\`
+
+---
+
+## 7. Ko'p uchraydigan xatolar
+
+### 1-xato: O'q belgisida oraliq probel qo'yish yoki noto'g'ri belgi yozish
+
+\`\`\`javascript
+const add = (a, b) = > { // XATO: = va > orasida probel bor
+  return a + b;
 };
 \`\`\`
 
-\`\`\`mermaid
-flowchart TD
-    A["Arrow funksiya"] --> B{"Tana bir qatormi?"}
-    B -->|"Ha"| C["(x) => ifoda — return avtomatik"]
-    B -->|"Yo'q"| D["(x) => { ... return ...; }"]
-    A --> E{"Parametr bittami?"}
-    E -->|"Ha"| F["( ) ixtiyoriy: x => x * 2"]
-    E -->|"Yo'q / yo'qmi"| G["( ) shart: (a, b) => ..."]
-\`\`\`
+**Nima bo'ladi:** \`SyntaxError\` xatosi yuz beradi. \`=>\` belgisi bir butun bo'lib, orasida probel bo'lmasligi kerak hamda \`->\` kabi boshqa belgilar bilan almashtirib bo'lmaydi.
+**To'g'ri varianti:** Har doim \`=>\` deb yozing: \`const add = (a, b) => { ... };\`.
 
----
-
-## 3. ⚙️ Qachon Ishlatiladi?
-
-Arrow funksiya — ayniqsa **boshqa funksiyaga argument** bo'lganda qulay (keyingi bosqichlarda ko'rasiz):
+### 2-xato: Arrow funksiyani e'lon qilinishidan oldin chaqirish
 
 \`\`\`javascript
-setTimeout(() => {
-  console.log("3 soniyadan keyin!");
-}, 3000);
+greet(); // XATO: ReferenceError: Cannot access 'greet' before initialization
+const greet = () => {
+  console.log("Salom");
+};
 \`\`\`
 
-Bu yerda butun funksiyani bitta qatorda yozdik — o'qilishi oson.
+**Nima bo'ladi:** Oddiy \`function\` dan farqli o'laroq, arrow funksiya \`const\` o'zgaruvchisiga yuklangani sababli uni e'londan oldin chaqirib bo'lmaydi.
+**To'g'ri varianti:** Arrow funksiyani avval e'lon qilib, keyin pastroqda chaqirish kerak.
 
-### Farqi nimalarda?
-| Xususiyat | \`function\` | Arrow |
-|---|---|---|
-| Yozilishi | uzunroq | qisqaroq |
-| \`this\` | chaqiruvga qarab | tashqi scope'dan oladi (keyinroq o'rganamiz) |
-| Nomlanishi | \`function nom()\` | o'zgaruvchiga saqlanadi: \`const nom = () =>\` |
-| Qayerda | hamma joyda | callback, qisqa operatsiyalar |
+### 3-xato: Parametrsiz holatda qavslarni () tashlab ketish
 
-**Hozirgi bosqichda:** ikkalasini ham tani ng — o'zingizga qulayini ishlating. Keyinchalik (\`this\` mavzusida) farqlar chuqurroq tushuniladi.
+\`\`\`javascript
+const sayHi = => { // XATO: qavslar unutilgan!
+  console.log("Salom");
+};
+\`\`\`
 
----
-
-## 4. ⚠️ Keng Tarqalgan Xatolar
-
-| ❌ Xato | ✅ To'g'ri | Sabab |
-|---|---|---|
-| \`son => { son * 2 }\` ({} bilan, returnsiz) | \`son => son * 2\` yoki \`{ return son * 2 }\` | \`{}\` qo'ysangiz — \`return\` yozish SHART |
-| \`a, b => a + b\` | \`(a, b) => a + b\` | 2+ parametrda qavs SHART |
-| \`() => return "salom"\` | \`() => "salom"\` | Qisqa shaklda \`return\` kalit so'zi yo'q |
-| \`const x = => 5\` (parametrsiz, qavssiz) | \`const x = () => 5\` | Parametrsiz bo'lsa ham \`()\` shart |
+**Nima bo'ladi:** \`SyntaxError\` xatosi chiqadi. Parametr bo'lmaganda ham har doim bo'sh qavslar \`()\` qo'yilishi shart.
+**To'g'ri varianti:** \`const sayHi = () => { ... };\`.
 
 ---
 
-## 5. 🔑 Asosiy Atamalar
+## 8. Tekshiruv
 
-- **Arrow function** — \`=>\` bilan yoziladigan funksiya
-- **Implicit return** — \`{}\` va \`return\`siz qiymat qaytarish (faqat bir qatorli tanada)
-- **Callback** — boshqa funksiyaga uzatiladigan funksiya
-- **Expression vs Declaration** — arrow — ifoda (o'zgaruvchiga saqlanadi), function — e'lon
+### 1-mashq (oson)
+\`double\` nomli arrow funksiya yozing. U bitta \`n\` parametrini qabul qilib, \`n * 2\` qiymatini qaytarsin (\`return n * 2;\`). Funksiyani \`7\` bilan chaqirib, natijani konsolga chiqaring.
 
----
+### 2-mashq (o'rtacha)
+\`getFullName\` nomli arrow funksiya yarating, u \`firstName\` va \`lastName\` parametrlarini qabul qilib, ularni probel bilan birlashtirib qaytarsin (\`return firstName + " " + lastName;\`). Funksiyani \`"Ali"\` va \`"Valiyev"\` bilan chaqirib, natijani ekranga chiqaring.
 
-## 6. 🌍 Real Hayotda Qayerda?
-
-- **Tugma bosilganda:** \`button.onclick = () => { ... }\`
-- **Ro'yxatni qayta ishlash:** \`massiv.map(x => x * 2)\` (keyingi bosqichda)
-- **Vaqt kechikishi:** \`setTimeout(() => { ... }, 1000)\`
-
-Zamonaviy kodning ~80% qisqa funksiyalari arrow usulda yoziladi.
-
----
-
-## 7. 🎙 Intervyu Savollari
-
-**1. Arrow va function farqi nimada?**
-**Javob:** Sintaksis qisqaroq; \`this\` xatti-harakati har xil (arrow tashqi scope'dan oladi); arrow o'zgaruvchiga saqlanadi.
-
-**2. Qisqa shakl \`(x) => x * 2\` qanday ishlaydi?**
-**Javob:** Implicit return — \`{}\` va \`return\` yozilmasa ham ifoda natijasi qaytadi.
-
-**3. Parametrsiz arrow qanday yoziladi?**
-**Javob:** \`() => { ... }\` — bo'sh qavslar shart.
+### 3-mashq (chegara holat)
+Quyidagi an'anaviy funksiyani aynan shunday ishlaydigan arrow funksiyaga aylantiring:
+\`\`\`javascript
+function getStatus() {
+  return "Faol";
+}
+\`\`\`
 
 ---
 
-## 8. ✅ Xulosa
+### Javoblar
 
-- **Ikkala usul:** \`function nom() {}\` va \`const nom = () => {}\`
-- **Qisqa shakl:** bitta qator = implicit return, bitta parametr = qavssiz
-- **Ko'p qator = \`{}\` + \`return\` shart**
-- **Keyingi qadam:** 1.24-darsda matnlar bilan qulay ishlash — template literals`,
-exercises: [
+**1-mashq javobi:**
+\`\`\`javascript
+const double = (n) => {
+  return n * 2;
+};
+console.log(double(7)); // 14
+\`\`\`
+
+**2-mashq javobi:**
+\`\`\`javascript
+const getFullName = (firstName, lastName) => {
+  return firstName + " " + lastName;
+};
+console.log(getFullName("Ali", "Valiyev")); // Ali Valiyev
+\`\`\`
+
+**3-mashq javobi:**
+\`\`\`javascript
+const getStatus = () => {
+  return "Faol";
+};
+\`\`\`
+
+---
+
+## 9. Xulosa
+
+1. Arrow funksiya — \`const nomi = (parametrlar) => { ... };\` ko'rinishida yoziladigan zamonaviy funksiyadir.
+2. Arrow funksiyada \`function\` so'zi o'rniga \`=>\` (o'q) belgisi ishlatiladi.
+3. Arrow funksiya \`const\` o'zgaruvchisiga saqlangani sababli, uni e'lon qilishdan oldin chaqirib bo'lmaydi.
+
+Keyingi darsda: O'zgaruvchilar qayerda ko'rinishi va ishlashini belgilovchi Scope (ko'lam) qoidalari bilan tanishamiz.
+`,
+  exercises: [
     {
       id: 1,
-      title: "Birinchi arrow",
-      instruction: "`kvadrat` nomli arrow funksiya yarating: `(son) => son * son`. Qisqa shaklda (implicit return).",
-      startingCode: "// arrow funksiya yozing\n",
-      hint: "const kvadrat = (son) => son * son;",
-      test: "const fn = new Function(code + '\\nreturn kvadrat;')();\nif (typeof fn === 'function' && fn(5) === 25 && fn(3) === 9) return null;\nreturn 'kvadrat arrow funksiyasi 25/9 qaytarishi kerak';"
+      title: "double arrow funksiyasi",
+      instruction: "\`double\` nomli arrow funksiya yozing. U \`n\` parametrini qabul qilib, \`n * 2\` ni qaytarsin (\`return n * 2;\`). Funksiyani \`7\` bilan chaqirib, konsolga chiqaring.",
+      startingCode: "// double arrow funksiyasini yozing\n",
+      hint: "const double = (n) => {\n  return n * 2;\n};\nconsole.log(double(7));",
+      test: "if (!code.includes('=>')) return '=> (arrow) belgisi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('14'))) return null;\nreturn 'Konsolga 14 chiqmadi';"
     },
     {
       id: 2,
-      title: "Ikkita parametr",
-      instruction: "`yigindi` nomli arrow yozing: `(a, b) => a + b`. Qavslar shart ekanini eslang!",
-      startingCode: "// ikki parametrli arrow\n",
-      hint: "const yigindi = (a, b) => a + b;",
-      test: "const fn = new Function(code + '\\nreturn yigindi;')();\nif (fn(5, 3) === 8 && fn(-1, 1) === 0) return null;\nreturn 'yigindi(5, 3) = 8 bo\\'lishi kerak';"
+      title: "Matnlarni birlashtiruvchi arrow funksiya",
+      instruction: "\`getFullName\` nomli arrow funksiya yozing: \`firstName\` va \`lastName\` qabul qilib, ularni probel bilan birlashtirib qaytarsin (\`return firstName + \" \" + lastName;\`). Uni \`\"Ali\"\` va \`\"Valiyev\"\` bilan chaqirib, konsolga chiqaring.",
+      startingCode: "// getFullName arrow funksiyasini yozing\n",
+      hint: "const getFullName = (firstName, lastName) => {\n  return firstName + \" \" + lastName;\n};\nconsole.log(getFullName(\"Ali\", \"Valiyev\"));",
+      test: "if (!code.includes('=>')) return '=> (arrow) belgisi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali Valiyev'))) return null;\nreturn 'Konsolga \"Ali Valiyev\" chiqmadi';"
     },
     {
       id: 3,
-      title: "Parametrsiz",
-      instruction: "`salom` nomli PARAMETRSIZ arrow yozing: `\"Salom!\"` qaytarsin.",
-      startingCode: "// parametrsiz arrow\n",
-      hint: "const salom = () => \"Salom!\";",
-      test: "const fn = new Function(code + '\\nreturn salom;')();\nif (fn() === 'Salom!') return null;\nreturn 'salom() = Salom! qaytarishi kerak';"
-    },
-    {
-      id: 4,
-      title: "Ko'p qatorli arrow",
-      instruction: "`tekshir(yosh)` arrow funksiyasini `{}` bilan yozing: yosh >= 18 bo'lsa `\"Katta\"`, aks holda `\"Kichik\"` qaytarsin.",
-      startingCode: "// ko'p qatorli arrow ({ } + return)\n",
-      hint: "const tekshir = (yosh) => { if (yosh >= 18) { return \"Katta\"; } return \"Kichik\"; };",
-      test: "const fn = new Function(code + '\\nreturn tekshir;')();\nif (fn(20) === 'Katta' && fn(15) === 'Kichik') return null;\nreturn 'tekshir noto\\'g\\'ri ishladi';"
-    },
-    {
-      id: 5,
-      title: "Callback sifatida",
-      instruction: "`setTimeout` O'RNIGA quyidagi tayyor kodni to'ldiring: `ishgaTushir(funksiya)` — funksiyani chaqirib, natijasini qaytarsin. `funksiya` argumentini arrow bilan uzating.",
-      startingCode: "function ishgaTushir(funksiya) {\n  return funksiya();\n}\n// ishgaTushir ni arrow bilan chaqiring va natijani saqlang\n",
-      hint: "const natija = ishgaTushir(() => \"ishladi\");",
-      test: "const v = new Function(code + '\\nreturn natija;')();\nif (v === 'ishladi') return null;\nreturn 'natija = ishladi bo\\'lishi kerak';"
+      title: "Oddiy funksiyani arrow funksiyaga aylantirish",
+      instruction: "Quyidagi an'anaviy funksiyani arrow funksiyaga aylantiring (\`const getStatus = () => { return \"Faol\"; };\`).",
+      startingCode: "function getStatus() {\n  return \"Faol\";\n}\nconsole.log(getStatus());\n",
+      hint: "const getStatus = () => {\n  return \"Faol\";\n};",
+      test: "if (!code.includes('=>')) return '=> belgisi ishlatilmadi';\nif (code.includes('function getStatus')) return 'function o\\'rniga arrow sintaksis ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Faol'))) return null;\nreturn 'Konsolga \"Faol\" chiqmadi';"
     }
   ],
-quizzes: [
+  quizzes: [
     {
       id: 1,
-      question: "Arrow funksiya qaysi belgi bilan yoziladi?",
+      question: "Arrow funksiyaning asosiy belgisi nima?",
       options: [
-        "->",
-        "=>",
-        "-->",
-        "::"
+        "=> (tenglik va kattalik belgisi)",
+        "-> (chiziqcha va kattalik belgisi)",
+        "== (tenglik)",
+        "function (kalit so'zi)"
       ],
-      correctAnswer: 1,
-      explanation: "Teng belgi + katta belgi: =>"
+      correctAnswer: 0,
+      explanation: "JavaScript da arrow funksiya har doim => belgisi orqali yoziladi."
     },
     {
       id: 2,
-      question: "`const f = x => x * 2;` — f(5) natijasi?",
+      question: "Nima uchun arrow funksiyani e'lon qilinishidan oldin chaqirib bo'lmaydi?",
       options: [
-        "10 (implicit return)",
-        "undefined",
-        "Xatolik",
-        "NaN"
+        "U const yoki let o'zgaruvchisiga yuklanganligi sababli, e'londan oldin mavjud bo'lmaydi",
+        "Arrow funksiyani umuman chaqirib bo'lmaydi",
+        "Faqat bir marta chaqirish mumkin bo'lgani uchun",
+        "Parametrlari bo'lmagani uchun"
       ],
       correctAnswer: 0,
-      explanation: "Bir qatorli tanada return avtomatik."
+      explanation: "const yoki let bilan yaratilgan o'zgaruvchilarga e'lon qilinishidan oldin murojaat qilib bo'lmaydi (temporal dead zone)."
     },
     {
       id: 3,
-      question: "Qachon `{}` va `return` SHART bo'ladi?",
+      question: "Arrow funksiya parametrsiz bo'lsa, qavslar qanday yoziladi?",
       options: [
-        "Har doim",
-        "Funksiya tanasi ko'p qatorli bo'lganda",
-        "Hech qachon",
-        "Faqat parametrsizda"
+        "Bo'sh qavslar qo'yilishi shart: () => { ... }",
+        "Qavslar butunlay tashlab ketiladi: => { ... }",
+        "Kvadrat qavs qo'yiladi: [] => { ... }",
+        "Jingalak qavs qo'yiladi: {} => { ... }"
       ],
-      correctAnswer: 1,
-      explanation: "Ko'p qatorli tanada {} + return kerak."
-    },
-    {
-      id: 4,
-      question: "Parametrsiz arrow qanday yoziladi?",
-      options: [
-        "x => 5",
-        "() => 5",
-        "=> 5",
-        "(()) => 5"
-      ],
-      correctAnswer: 1,
-      explanation: "Bo'sh qavslar shart: () => 5."
-    },
-    {
-      id: 5,
-      question: "`(a, b) => a + b` da qavslarni olib tashlash mumkinmi?",
-      options: [
-        "Ha — a, b => a + b",
-        "Yo'q — 2+ parametrda qavslar shart",
-        "Faqat strict rejimda mumkin",
-        "Har doim mumkin"
-      ],
-      correctAnswer: 1,
-      explanation: "Faqat bitta parametrda qavslar ixtiyoriy."
+      correctAnswer: 0,
+      explanation: "Parametr bo'lmagan holatda ham doimo bo'sh oddiy qavslar () qo'yilishi shart: () => {}."
     }
   ]
 };
