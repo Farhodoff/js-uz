@@ -47,6 +47,7 @@ export const curriculum = {
       { id: "parametersLesson", number: "1.32", title: "Parametr va Argument", load: () => import("./lessons/js/01-basics/parametersLesson.js").then(m => m.parametersLesson) },
       { id: "returnLesson", number: "1.33", title: "return (Qiymat Qaytarish)", load: () => import("./lessons/js/01-basics/returnLesson.js").then(m => m.returnLesson) },
       { id: "arrowBasics", number: "1.34", title: "Arrow Funksiya: () => {}", load: () => import("./lessons/js/01-basics/arrowBasics.js").then(m => m.arrowBasics) },
+      { id: "scopeBasics", number: "1.35", title: "Scope (Ko'lam): Global, Blok va Lokal", load: () => import("./lessons/js/01-basics/scopeLesson.js").then(m => m.scopeBasics) },
       { id: "dataTypesLesson", number: "1.5", title: "Ma'lumot Turlari (Data Types)", load: () => import("./lessons/js/01-basics/dataTypes.js").then(m => m.dataTypesLesson) },
       { id: "moreDataTypesLesson", number: "1.6", title: "Ma'lumot Turlari: Null, Symbol, BigInt", load: () => import("./lessons/js/01-basics/moreDataTypes.js").then(m => m.moreDataTypesLesson) },
       { id: "objectIntroLesson", number: "1.7", title: "Obyektlarga Kirish (Object)", load: () => import("./lessons/js/01-basics/objectIntro.js").then(m => m.objectIntroLesson) },
