@@ -1,224 +1,300 @@
 export const switchLesson = {
   id: "switchLesson",
-  title: "Switch-Case Operatorlari",
+  title: "switch (Ko'p yo'lli tanlov)",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  theory: `## 1. Bu nima?
 
-### switch — ko'p yo'lli tanlov
-\`if/else if\` zanjiri uzun bo'lsa — \`switch\` ixchamroq:
+Tasavvur qiling, siz ko'p qavatli binoda lift ichidasiz. Lift panelida har xil raqamli tugmalar bor: 1, 2, 3...
+Siz qaysi qavat tugmasini bossangiz, lift to'g'ri o'sha qavatga borib to'xtaydi. Agar mavjud bo'lmagan raqamni bossangiz, panelda "Bunday qavat yo'q" degan standart xabar chiqadi (\`default\`).
+
+\`switch\` (almashtirgich / tanlov) — bitta o'zgaruvchining qiymatini oldindan ma'lum bo'lgan aniq variantlar (\`case\`) bilan solishtirib, mos kelgan kod blokini ishga tushiruvchi tanlash operatoridir.
+
+---
+
+## 2. Nega kerak?
+
+Bitta o'zgaruvchini bir nechta aniq qiymatlarga tekshirish kerak bo'lganda:
+\`if (day === 1) ... else if (day === 2) ... else if (day === 3)...\`
+deb yozish juda uzun va chalkash bo'lib ketadi.
+
+Bunday vaziyatda \`switch\` operatori ancha qisqa, tartibli va o'qish uchun juda qulay tuzilma taqdim etadi.
+
+---
+
+## 3. Birinchi misol
+
+Bu kod hafta kuni raqamiga qarab uning nomini konsolga chiqaradi.
 
 \`\`\`javascript
-let kun = 3;
+let dayNumber = 2; // Hafta kuni raqami
 
-switch (kun) {
+switch (dayNumber) {
   case 1:
     console.log("Dushanba");
     break;
-  case 3:
-    console.log("Chorshanba");
+  case 2:
+    console.log("Seshanba"); // dayNumber === 2 bo'lgani uchun shu ishlaydi
     break;
   default:
     console.log("Boshqa kun");
 }
 \`\`\`
 
-### Real hayotiy o'xshatish
-Tasavvur qiling, siz **lift oldidasiz**:
-- Tugmani bossangiz (\`kun = 3\`) — lift 3-qavatga boradi
-- Har bir qavat — \`case\` (to'xtash joyi)
-- \`break\` — "shu yerda to'xta, pastga tushma!"
-- \`default\` — "bunday qavat yo'q" (xato tugma)
-
-\`break\` siz — liftsiz pastga tushib ketasiz (keyingi qavatlarga ham to'xtaysiz)!
-
----
-
-## 2. 💻 Tuzilishi
-
-\`\`\`javascript
-switch (qiymat) {
-  case VARIANT1:
-    // qiymat === VARIANT1 bo'lsa ishlaydi
-    break;
-  case VARIANT2:
-    // qiymat === VARIANT2 bo'lsa ishlaydi
-    break;
-  default:
-    // hech biri mos kelmasa ishlaydi
-}
-\`\`\`
-
-### Muhim: \`===\` bilan solishtiradi!
-\`\`\`javascript
-let x = "5";
-switch (x) {
-  case 5:
-    console.log("son");  // ISHLAMAYDI! "5" !== 5
-    break;
-  case "5":
-    console.log("matn");  // ISHLAYDI!
-    break;
-}
-\`\`\`
-
-\`\`\`mermaid
-flowchart TD
-    A["switch(x)"] --> B{"x === case1?"}
-    B -->|"Ha"| C["case1 + break"]
-    B -->|"Yo'q"| D{"x === case2?"}
-    D -->|"Ha"| E["case2 + break"]
-    D -->|"Yo'q"| F["default"]
+\`\`\`text
+// Natija: Seshanba
 \`\`\`
 
 ---
 
-## 3. ⚙️ Qanday Ishlaydi
+## 4. Qator-baqator tahlil
 
-Mos \`case\` topilishi bilan kod pastga qarab ishlaydi — \`break\` gacha! Shuning uchun \`break\` ni unutish — eng mashhur xato:
+- \`switch (dayNumber)\` — tekshiriladigan o'zgaruvchi \`switch\` qavsiga yoziladi.
+- \`case 2:\` — agar \`dayNumber === 2\` bo'lsa, shu yerdan boshlab kod bajariladi.
+- \`break;\` — to'xtash buyrug'i. U \`switch\` blokidan darhol tashqariga chiqishni bildiradi.
+- \`default:\` — agar birorta ham \`case\` mos kelmasa, zaxira varianti sifatida \`default\` bloki ishlaydi (xuddi \`else\` kabi).
+
+---
+
+## 5. Qadamma-qadam (trace)
+
+Bajarilish ketma-ketligi jadvali:
+
+| Qadam | Kod qatori | Taqqoslash / Holat | Natija |
+|---|---|---|---|
+| 1 | \`let dayNumber = 2;\` | \`dayNumber = 2\` | O'zgaruvchi yuklandi |
+| 2 | \`case 1:\` | \`2 === 1\` → \`false\` | Mos kelmadi, keyingi case'ga o'tildi |
+| 3 | \`case 2:\` | \`2 === 2\` → \`true\` | Mos keldi! Blok ichiga kirildi |
+| 4 | \`console.log("Seshanba");\` | Xabar chiqarildi | Seshanba konsolga chiqdi |
+| 5 | \`break;\` | To'xtash buyrug'i | switch yakunlandi, default tekshirilmaydi |
+
+---
+
+## 6. Yana bitta misol
+
+Bu kodda qiymat birorta ham \`case\` ga mos kelmaydi va \`default\` ishga tushadi.
 
 \`\`\`javascript
-let kun = 1;
-switch (kun) {
+let dayNumber = 9; // Mavjud bo'lmagan kun raqami
+
+switch (dayNumber) {
   case 1:
     console.log("Dushanba");
+    break;
   case 2:
-    console.log("Seshanba");  // ham chiqadi! (break yo'q)
+    console.log("Seshanba");
+    break;
+  default:
+    console.log("Noto'g'ri kun raqami!"); // Hech biri mos kelmagani uchun shu ishlaydi
+}
+\`\`\`
+
+\`\`\`text
+// Natija: Noto'g'ri kun raqami!
+\`\`\`
+
+Qator-baqator tahlil:
+- \`dayNumber\` qiymati \`9\`.
+- \`case 1\` va \`case 2\` tekshiriladi, ikkalasi ham \`false\` bo'ladi.
+- Barcha variantlar rad etilgani uchun avtomatik ravishda \`default\` bloki ishga tushadi.
+- Konsolga \`"Noto'g'ri kun raqami!"\` chiqadi.
+
+---
+
+## 7. Ko'p uchraydigan xatolar
+
+### 1. break ni unutish (pastga oqib ketish)
+❌ Xato kod:
+\`\`\`javascript
+let role = "admin";
+switch (role) {
+  case "admin":
+    console.log("Admin"); // break yo'q!
+  case "user":
+    console.log("Foydalanuvchi");
+    break;
+}
+\`\`\`
+Nima bo'ladi: Konsolga HAM \`"Admin"\`, HAM \`"Foydalanuvchi"\` chiqib ketadi! Chunki \`break\` qo'yilmasa, JavaScript to'xtamay keyingi \`case\` ni ham bajarib yuboradi.
+✅ To'g'ri variant:
+\`\`\`javascript
+switch (role) {
+  case "admin":
+    console.log("Admin");
+    break;
+  case "user":
+    console.log("Foydalanuvchi");
+    break;
+}
+\`\`\`
+
+### 2. switch qat'iy tenglik (===) ishlatishini unutish
+❌ Xato tushuncha:
+\`\`\`javascript
+let code = "1"; // Matn
+switch (code) {
+  case 1: // Son
+    console.log("Bir");
+    break;
+}
+\`\`\`
+Nima bo'ladi: Konsolga hech narsa chiqmaydi! Chunki \`switch\` qat'iy tenglik (\`"1" === 1\`) bilan tekshiradi. Biri matn, biri son bo'lgani sababli ular teng emas.
+✅ To'g'ri variant:
+\`\`\`javascript
+switch (code) {
+  case "1":
+    console.log("Bir");
+    break;
+}
+\`\`\`
+
+### 3. case dan keyin ikki nuqta (:) o'rniga nuqta-vergul (;) qo'yish
+❌ Xato kod:
+\`\`\`javascript
+case 1;
+\`\`\`
+Nima bo'ladi: \`SyntaxError: Unexpected token ';'\` xatoligi yuz beradi. \`case\` va \`default\` dan keyin har doim ikki nuqta (\`:\`) qo'yiladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+case 1:
+\`\`\`
+
+---
+
+## 8. Tekshiruv
+
+### 1-mashq (Oson)
+\`grade = "B";\` berilgan. \`switch\` orqali: \`"A"\` bo'lsa \`"A'lo"\`, \`"B"\` bo'lsa \`"Yaxshi"\`, qolgan hollarda (\`default\`) \`"Boshqa baho"\` deb konsolga chiqaruvchi kod yozing.
+
+### 2-mashq (O'rtacha)
+\`action = "stop";\` berilgan. \`switch\` orqali: \`"start"\` bo'lsa \`"Boshlash"\`, \`"stop"\` bo'lsa \`"To'xtatish"\`, aks holda \`"Noma'lum buyruq"\` deb konsolga chiqaring.
+
+### 3-mashq (Xatoni topish)
+Quyidagi kodda \`break\` qolib ketgani tufayli ikkala rang ham chiqib ketyapti. Unga \`break;\` qo'shib xatoni to'g'rilang:
+\`\`\`javascript
+let color = "red";
+switch (color) {
+  case "red":
+    console.log("Qizil");
+  case "blue":
+    console.log("Ko'k");
+    break;
+}
+\`\`\`
+
+### Javoblar:
+1.
+\`\`\`javascript
+let grade = "B";
+switch (grade) {
+  case "A":
+    console.log("A'lo");
+    break;
+  case "B":
+    console.log("Yaxshi");
+    break;
+  default:
+    console.log("Boshqa baho");
+}
+\`\`\`
+2.
+\`\`\`javascript
+let action = "stop";
+switch (action) {
+  case "start":
+    console.log("Boshlash");
+    break;
+  case "stop":
+    console.log("To'xtatish");
+    break;
+  default:
+    console.log("Noma'lum buyruq");
+}
+\`\`\`
+3.
+\`\`\`javascript
+let color = "red";
+switch (color) {
+  case "red":
+    console.log("Qizil");
+    break; // break qo'shildi
+  case "blue":
+    console.log("Ko'k");
+    break;
 }
 \`\`\`
 
 ---
 
-## 4. ⚠️ Keng Tarqalgan Xatolar
+## 9. Xulosa
 
-| ❌ Xato | ✅ To'g'ri | Sabab |
-|---|---|---|
-| \`break\` ni unutish | Har case'da \`break\` | Pastdagi caselar ham ishlab ketadi ("tushib ketish") |
-| \`case 5\` ga \`"5"\` kelishi | Turlarni moslash | switch \`===\` bilan solishtiradi! |
-| \`default\` ni unutish | Oxirida \`default\` | Kutilmagan qiymatda sukunat — yomon |
+1. \`switch (qiymat)\` bitta o'zgaruvchini aniq variantlar (\`case\`) bilan solishtirish uchun ishlatiladi.
+2. Har bir \`case\` oxiriga \`break;\` qo'yish shart, aks holda keyingi \`case\` ham ishlab ketadi.
+3. Hech bir \`case\` to'g'ri kelmaganda zaxira varianti sifatida \`default\` bloki ishlaydi.
 
----
-
-## 5. 🔑 Asosiy Atamalar
-
-- **case** — tekshiriladigan variant
-- **break** — to'xtash buyrug'i
-- **default** — hech biri mos kelmaganda
-- **Fall-through** — break siz pastga tushib ketish
-
----
-
-## 6. 🌍 Real Hayotda Qayerda?
-
-- **Hafta kuni:** raqam → kun nomi
-- **Menyu:** tanlov → amal
-- **Rol:** "admin"/"user"/"mehmon" → huquqlar
-
----
-
-## 7. 🎙 Intervyu Savollari
-
-**1. \`break\` ni unutsak nima bo'ladi?**
-**Javob:** Keyingi caselar ham ishlab ketadi (fall-through) — ko'pincha xato.
-
-**2. switch qaysi tenglik bilan solishtiradi?**
-**Javob:** Qat'iy (\`===\`) — turlar ham mos bo'lishi kerak.
-
-**3. Qachon switch, qachon if?**
-**Javob:** Bitta qiymatning ko'p varianti bo'lsa — switch; murakkab shartlar bo'lsa — if.
-
----
-
-## 8. ✅ Xulosa
-
-- **switch** = bitta qiymat, ko'p variant
-- **Har case'da \`break\`**, oxirida **\`default\`**
-- **Solishtirish \`===\`** bilan
-- **Keyingi qadam:** 1.17-darsda takrorlash — sikllar
+Keyingi darsda: Sikllar (Loops) — kodni qayta-qayta takrorlash operatorlari bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Hafta kuni",
-      instruction: "`dayName(kun)` funksiyasi: 1 => `\"Dushanba\"`, 2 => `\"Seshanba\"`, 3 => `\"Chorshanba\"`, boshqasi => `\"Boshqa kun\"` qaytarsin (switch bilan).",
-      startingCode: "function dayName(kun) {\n  // switch yozing\n}\n",
-      hint: "switch (kun) { case 1: return \"Dushanba\"; ... default: return \"Boshqa kun\"; }",
-      test: "const fn = new Function(code + '; return dayName;')();\nif (fn(1) === 'Dushanba' && fn(3) === 'Chorshanba' && fn(9) === 'Boshqa kun') return null;\nreturn 'switch + default ishlating';"
+      title: "Bahoni switch orqali tekshirish",
+      instruction: "`let grade = \"B\";` berilgan. `switch` orqali: `\"A\"` bo'lsa `\"A'lo\"`, `\"B\"` bo'lsa `\"Yaxshi\"`, aks holda `\"Boshqa baho\"` deb chiqaring.",
+      startingCode: "let grade = \"B\";\n// switch yozing\n",
+      hint: "switch (grade) {\n  case \"A\":\n    console.log(\"A'lo\");\n    break;\n  case \"B\":\n    console.log(\"Yaxshi\");\n    break;\n  default:\n    console.log(\"Boshqa baho\");\n}",
+      test: "if (!code.includes('switch')) return 'switch ishlatilmadi';\nif (!code.includes('case')) return 'case ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Yaxshi'))) return null;\nreturn 'Kutilgan xabar konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "Bahoga so'z",
-      instruction: "`gradeWord(baho)` funksiyasi: `\"A\"` => `\"A'lo\"`, `\"B\"` => `\"Yaxshi\"`, `\"C\"` => `\"Qoniqarli\"`, boshqasi => `\"Qayta topshiring\"` qaytarsin.",
-      startingCode: "function gradeWord(baho) {\n  // switch yozing\n}\n",
-      hint: "switch (baho) { case \"A\": return \"A'lo\"; ... }",
-      test: "const fn = new Function(code + '; return gradeWord;')();\nif (fn(\"A\") === \"A'lo\" && fn(\"B\") === 'Yaxshi' && fn(\"F\") === 'Qayta topshiring') return null;\nreturn 'Matnli case ham bo\\'ladi';"
+      title: "Buyruqni aniqlash",
+      instruction: "`let action = \"stop\";` berilgan. `switch` orqali: `\"start\"` bo'lsa `\"Boshlash\"`, `\"stop\"` bo'lsa `\"To'xtatish\"`, aks holda `\"Noma'lum buyruq\"` deb chiqaring.",
+      startingCode: "let action = \"stop\";\n// switch yozing\n",
+      hint: "switch (action) {\n  case \"start\":\n    console.log(\"Boshlash\");\n    break;\n  case \"stop\":\n    console.log(\"To'xtatish\");\n    break;\n  default:\n    console.log(\"Noma'lum buyruq\");\n}",
+      test: "if (!code.includes('switch')) return 'switch ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('To\\'xtatish'))) return null;\nreturn 'Kutilgan xabar konsolga chiqmadi';"
     },
     {
       id: 3,
-      title: "Rol huquqi",
-      instruction: "`access(rol)` funksiyasi: `\"admin\"` => `\"Hamma huquq\"`, `\"user\"` => `\"Cheklangan\"`, boshqasi => `\"Mehmon\"` qaytarsin.",
-      startingCode: "function access(rol) {\n  // switch yozing\n}\n",
-      hint: "switch (rol) { case \"admin\": ... }",
-      test: "const fn = new Function(code + '; return access;')();\nif (fn(\"admin\") === 'Hamma huquq' && fn(\"user\") === 'Cheklangan' && fn(\"x\") === 'Mehmon') return null;\nreturn 'Uchala holat ishlashi kerak';"
-    },
-    {
-      id: 4,
-      title: "Tur tuzog'i",
-      instruction: "`checkType(x)` funksiyasi switch bilan: `5` (son) => `\"son\"`, `\"5\"` (matn) => `\"matn\"` qaytarsin. Turlar farqlanishi kerak!",
-      startingCode: "function checkType(x) {\n  // switch yozing\n}\n",
-      hint: "case 5: ... case \"5\": ... (switch === bilan solishtiradi)",
-      test: "const fn = new Function(code + '; return checkType;')();\nif (fn(5) === 'son' && fn(\"5\") === 'matn') return null;\nreturn 'switch === bilan solishtiradi!';"
+      title: "break xatosini to'g'rilash",
+      instruction: "`case \"red\":` dan keyin `break;` qo'shing, toki konsolga faqat `\"Qizil\"` chiqsin.",
+      startingCode: "let color = \"red\";\nswitch (color) {\n  case \"red\":\n    console.log(\"Qizil\");\n  case \"blue\":\n    console.log(\"Ko'k\");\n    break;\n}\n",
+      hint: "case \"red\":\n    console.log(\"Qizil\");\n    break;",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length === 1 && out[0].includes('Qizil')) return null;\nreturn 'Faqat bitta xabar (Qizil) chiqishi kerak, break qo\\'shing';"
     }
   ],
-
   quizzes: [
     {
       id: 1,
-      question: "`break` vazifasi nima?",
+      question: "switch operatorida har bir case blokidan keyin nima uchun break; yoziladi?",
       options: [
-        "Siklni boshlash",
-        "Mos case'dan keyin to'xtash (pastga tushmaslik)",
-        "Dasturni o'chirish",
-        "Hech narsa"
+        "Keyingi case ga o'tib ketmasdan, switch dan darhol chiqish uchun",
+        "Dasturni butunlay to'xtatish uchun",
+        "Yangi o'zgaruvchi yaratish uchun",
+        "Bu ixtiyoriy belgi bo'lib, hech narsaga ta'sir qilmaydi"
       ],
-      correctAnswer: 1,
-      explanation: "break siz — keyingi caselar ham ishlaydi."
+      correctAnswer: 0,
+      explanation: "break buyrug'i case bajarilgandan so'ng switch dan chiqishni ta'minlaydi; aks holda keyingi case ham ishlab ketadi."
     },
     {
       id: 2,
-      question: "switch qaysi tenglik bilan solishtiradi?",
+      question: "switch tekshiruvida birorta ham case mos kelmasa, qaysi blok ishlaydi?",
       options: [
-        "== (yumshoq)",
-        "=== (qat'iy)",
-        "Hech qanday",
-        "> (katta)"
+        "Hech narsa ishlamaydi va xato beradi",
+        "Birinchi case",
+        "default bloki",
+        "Oxirgi case"
       ],
-      correctAnswer: 1,
-      explanation: "case 5 ga \"5\" mos kelmaydi!"
+      correctAnswer: 2,
+      explanation: "Agar hech bir case mos kelmasa, zaxira varianti sifatida default bloki ishga tushadi."
     },
     {
       id: 3,
-      question: "`default` qachon ishlaydi?",
+      question: "switch qiymatlarni solishtirganda qaysi tenglik algoritmidan foydalanadi?",
       options: [
-        "Har doim birinchi",
-        "Hech bir case mos kelmaganda",
-        "Hech qachon",
-        "Faqat xato bo'lganda"
+        "== (erkin tenglik)",
+        "=== (qat'iy tenglik — qiymat va turni birga tekshiradi)",
+        "= (qiymat yuklash)",
+        "!="
       ],
       correctAnswer: 1,
-      explanation: "default — oxirgi chora."
-    },
-    {
-      id: 4,
-      question: "Qachon switch, qachon if?",
-      options: [
-        "Har doim switch",
-        "Bitta qiymatning ko'p varianti — switch; murakkab shartlar — if",
-        "Har doim if",
-        "Farqi yo'q"
-      ],
-      correctAnswer: 1,
-      explanation: "To'g'ri qurolni tanlash — professional belgi."
+      explanation: "switch har doim qat'iy tenglik (===) orqali tekshiradi, turlarni avtomatik o'zgartirmaydi."
     }
   ]
-
 };
