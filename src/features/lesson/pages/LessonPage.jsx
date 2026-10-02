@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import TheoryTab from "../components/TheoryTab";
 import PracticeTab from "../components/PracticeTab";
 import QuizTab from "../components/QuizTab";
 import VisualizerTab from "../components/VisualizerTab";
-import ChallengeTab from "../components/ChallengeTab";
+// challenges.js ~17k qator — faqat Challenges bo'limi ochilganda yuklansin
+const ChallengeTab = lazy(() => import("../components/ChallengeTab"));
 import AppLayout from "../../layout/AppLayout";
 import { useLesson } from "../hooks/useLesson";
 import { useCodeRunner } from "../hooks/useCodeRunner";

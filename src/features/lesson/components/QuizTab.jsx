@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/atom-one-dark.css';
+import { resolveCorrectIndex } from '../../../utils/quizUtils';
 
 export default function QuizTab({ activeLesson, completedQuizzes, onCompleteQuiz }) {
   const quizzes = activeLesson?.quizzes || [];
@@ -26,12 +27,14 @@ export default function QuizTab({ activeLesson, completedQuizzes, onCompleteQuiz
     );
   }
 
+  const correctIndex = currentQuiz ? resolveCorrectIndex(currentQuiz) : -1;
+
   const handleOptionClick = (optionIdx) => {
     if (answered) return; // Prevent double answering
     setSelectedOption(optionIdx);
     setAnswered(true);
 
-    const isCorrect = optionIdx === currentQuiz.correctAnswer;
+    const isCorrect = optionIdx === correctIndex;
     onCompleteQuiz(currentQuizIndex, isCorrect);
   };
 
@@ -78,7 +81,7 @@ export default function QuizTab({ activeLesson, completedQuizzes, onCompleteQuiz
             let optionClass = 'quiz-option-btn';
             
             if (answered) {
-              if (idx === currentQuiz.correctAnswer) {
+              if (idx === correctIndex) {
                 optionClass += ' correct';
               } else if (idx === selectedOption) {
                 optionClass += ' wrong';
@@ -87,7 +90,7 @@ export default function QuizTab({ activeLesson, completedQuizzes, onCompleteQuiz
               }
             } else {
               // Show previously answered state if completed but not answered in this session
-              if (isCompleted && idx === currentQuiz.correctAnswer) {
+              if (isCompleted && idx === correctIndex) {
                 optionClass += ' correct';
               }
             }
@@ -113,8 +116,8 @@ export default function QuizTab({ activeLesson, completedQuizzes, onCompleteQuiz
       {(answered || isCompleted) && (
         <div className="quiz-feedback-section animate-fade-in">
           {answered && (
-            <div className={`quiz-result-msg ${selectedOption === currentQuiz.correctAnswer ? 'success' : 'error'}`}>
-              {selectedOption === currentQuiz.correctAnswer ? (
+            <div className={`quiz-result-msg ${selectedOption === correctIndex ? 'success' : 'error'}`}>
+              {selectedOption === correctIndex ? (
                 <span>🎉 To'g'ri topdingiz! Barakalla!</span>
               ) : (
                 <span>❌ Noto'g'ri javob. Qayta o'qib ko'ring.</span>
