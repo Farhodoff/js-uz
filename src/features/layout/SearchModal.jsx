@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { curriculum, SECTIONS } from "../../data/curriculum";
-import { challenges } from "../../data/challenges";
 
 export default function SearchModal({ isOpen, onClose }) {
   const [query, setQuery] = useState("");
+  // challenges.js katta fayl (~17k qator) — faqat modal ochilganda yuklansin
+  const [challenges, setChallenges] = useState([]);
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 10);
+      import("../../data/challenges").then(m => setChallenges(m.challenges));
     } else {
       setQuery("");
     }
