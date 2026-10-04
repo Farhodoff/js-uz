@@ -259,7 +259,8 @@ export const curriculum = {
       { id: "p1", title: "Loyiha: Todo List (Vazifalar Boshqaruvchisi)", load: () => import("./lessons/projects/todoList.js").then(m => m.todoList) },
       { id: "p2", title: "Loyiha: Ob-havo Ilovasi (Mini-loyiha)", load: () => import("./lessons/projects/weatherApp.js").then(m => m.weatherApp) },
       { id: "movieSearchApi", title: "Loyiha: API va Backend (Kino Izlash)", load: () => import("./lessons/projects/movieSearchApi.js").then(m => m.movieSearchApi) },
-      { id: "p3", title: "Loyiha: Express.js va React REST API (Full-stack)", load: () => import("./lessons/projects/fullstackRestApi.js").then(m => m.fullstackRestApi) }
+      { id: "p3", title: "Loyiha: Express.js va React REST API (Full-stack)", load: () => import("./lessons/projects/fullstackRestApi.js").then(m => m.fullstackRestApi) },
+      { id: "quizApp", title: "Loyiha: Quiz App (Timer bilan)", load: () => import("./lessons/projects/quizApp.js").then(m => m.quizApp) }
     ]
   },
   challenges: {
