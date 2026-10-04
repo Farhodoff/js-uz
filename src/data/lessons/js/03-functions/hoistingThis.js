@@ -137,7 +137,7 @@ flowchart TD
       instruction: "'score' nomli var o'zgaruvchisini yarating va unga 100 qiymatini bering. Ammo uni console.log qilishdan KEYIN yarating.",
       startingCode: "let res = score; // Bu yerda score undefined bo'ladi\n// score ni var bilan yarating va 100 ga tenglang",
       hint: "var score = 100;",
-      test: "if (typeof score === 'undefined' || score !== 100 || res !== undefined) throw new Error('var hoisting qilinmadi yoki noto\'g\'ri yozildi');"
+      test: "if (typeof score === 'undefined' || score !== 100 || res !== undefined) throw new Error(\"var hoisting qilinmadi yoki noto'g'ri yozildi\");"
     },
     {
       id: 3,
@@ -169,7 +169,7 @@ flowchart TD
       instruction: "Tashqarida 'let x = 10;'. If bloki ichida 'let x = 20;'. Agar if bloki ichida x ni tepada log qilsak TDZ ga uchraydimi? Sinab ko'rish uchun koddagi xatoni ushlab xatoni nomini saqlang.",
       startingCode: "let x = 10;\nlet xato = '';\nif (true) {\n  try {\n    let y = x; // Bu TDZ xato beradi, chunki pastda let x=20 turibdi\n  } catch (e) {\n    xato = e.name;\n  }\n  let x = 20;\n}",
       hint: "Kodni faqat yurgizib ko'ring.",
-      test: "if (xato !== 'ReferenceError') throw new Error('Block ichidagi let o\'z TDZ siga tushishi kerak');"
+      test: "if (xato !== 'ReferenceError') throw new Error(\"Block ichidagi let o'z TDZ siga tushishi kerak\");"
     },
     {
       id: 7,
@@ -185,7 +185,7 @@ flowchart TD
       instruction: "Bir xil nomda ham var, ham function e'lon qilingan. Dvigatel qaysi biriga ustunlik beradi? var myName = 'Ali'; function myName(){} ni yozib natijani res ga saqlang.",
       startingCode: "var myName;\nfunction myName() { return 'Function'; }\nmyName = 'Ali';\nlet res = typeof myName; // qanday type qoladi?",
       hint: "Function declaration dastlab ko'tariladi, keyin var o'zgaruvchi uning ustidan 'Ali' qiymatini yozib yuboradi (string). Kodga tegmasdan yurgizing.",
-      test: "if(res !== 'string') throw new Error('var o\'z qiymatini berganidan keyin function ustidan yoziladi');"
+      test: "if(res !== 'string') throw new Error(\"var o'z qiymatini berganidan keyin function ustidan yoziladi\");"
     },
     {
       id: 9,

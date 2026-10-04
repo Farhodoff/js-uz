@@ -93,7 +93,7 @@ sequenceDiagram
       instruction: "'/' yo'liga GET so'rov kelganda mijozga 'Hello Express' so'zini yuboradigan route (yo'l) yarating.",
       startingCode: "const express = require('express');\nconst app = express();\n\n// '/' uchun GET route yarating\n\nmodule.exports = app;",
       hint: "app.get('/', (req, res) => { res.send('...') })",
-      test: "const request = require('supertest');\nconst res = await request(app).get('/');\nexpect(res.text).toBe('Hello Express');"
+      test: "return (async () => {\n  const request = require('supertest');\n  const res = await request(app).get('/');\n  expect(res.text).toBe('Hello Express');\n})();"
     },
     {
       id: 3,
@@ -101,7 +101,7 @@ sequenceDiagram
       instruction: "'/api/info' yo'liga GET so'rov kelganda, { framework: 'Express', version: 4 } JSON obyektini qaytaring.",
       startingCode: "const express = require('express');\nconst app = express();\n\n// '/api/info' uchun GET route\n\nmodule.exports = app;",
       hint: "res.json() metodidan foydalaning.",
-      test: "const request = require('supertest');\nconst res = await request(app).get('/api/info');\nexpect(res.body).toEqual({ framework: 'Express', version: 4 });"
+      test: "return (async () => {\n  const request = require('supertest');\n  const res = await request(app).get('/api/info');\n  expect(res.body).toEqual({ framework: 'Express', version: 4 });\n})();"
     },
     {
       id: 4,
@@ -109,7 +109,7 @@ sequenceDiagram
       instruction: "Express.js dagi app.use(express.json()) ni sozlang va '/users' yo'liga POST so'rovini qabul qilib, unga 'User added' matnini javob qaytaring.",
       startingCode: "const express = require('express');\nconst app = express();\n\n// JSON middleware'ni ulab, '/users' ga POST yarating\n\nmodule.exports = app;",
       hint: "app.use(express.json()) ni qotirish esingizdan chiqmasin va app.post() ni ishlating.",
-      test: "const request = require('supertest');\nconst res = await request(app).post('/users');\nexpect(res.text).toBe('User added');"
+      test: "return (async () => {\n  const request = require('supertest');\n  const res = await request(app).post('/users');\n  expect(res.text).toBe('User added');\n})();"
     },
     {
       id: 5,
@@ -117,7 +117,7 @@ sequenceDiagram
       instruction: "'/users/:id' yo'liga GET so'rovini qo'shing va kelgan 'id' ni 'User ID: {id}' formatida qaytaring.",
       startingCode: "const express = require('express');\nconst app = express();\n\n// '/users/:id' route yarating\n\nmodule.exports = app;",
       hint: "req.params.id orqali id ni olishingiz mumkin va res.send() bilan qaytarasiz.",
-      test: "const request = require('supertest');\nconst res = await request(app).get('/users/42');\nexpect(res.text).toBe('User ID: 42');"
+      test: "return (async () => {\n  const request = require('supertest');\n  const res = await request(app).get('/users/42');\n  expect(res.text).toBe('User ID: 42');\n})();"
     },
     {
       id: 6,
@@ -125,7 +125,7 @@ sequenceDiagram
       instruction: "'/search' yo'liga GET so'rov kelganda, URL dan 'q' degan query parametrni oling va 'Searching for: {q}' deb javob qaytaring. Agar 'q' bo'lmasa 'No query' qaytaring.",
       startingCode: "const express = require('express');\nconst app = express();\n\n// '/search' route yarating\n\nmodule.exports = app;",
       hint: "req.query.q ni tekshiring.",
-      test: "const request = require('supertest');\nlet res = await request(app).get('/search?q=Node');\nexpect(res.text).toBe('Searching for: Node');\nres = await request(app).get('/search');\nexpect(res.text).toBe('No query');"
+      test: "return (async () => {\n  const request = require('supertest');\n  let res = await request(app).get('/search?q=Node');\n  expect(res.text).toBe('Searching for: Node');\n  res = await request(app).get('/search');\n  expect(res.text).toBe('No query');\n})();"
     },
     {
       id: 7,
@@ -133,7 +133,7 @@ sequenceDiagram
       instruction: "Agar foydalanuvchi mavjud bo'lmagan yo'lga (masalan, GET '/not-found') kirsa, 404 status kodi bilan 'Page not found' matnini qaytaruvchi barcha so'rovlar uchun catch-all handler yarating.",
       startingCode: "const express = require('express');\nconst app = express();\n\n// 404 handler yarating (app.use bilan)\n\nmodule.exports = app;",
       hint: "Fayl oxirida app.use((req, res) => { res.status(404).send(...) }) ishlating.",
-      test: "const request = require('supertest');\nconst res = await request(app).get('/random-path');\nexpect(res.status).toBe(404);\nexpect(res.text).toBe('Page not found');"
+      test: "return (async () => {\n  const request = require('supertest');\n  const res = await request(app).get('/random-path');\n  expect(res.status).toBe(404);\n  expect(res.text).toBe('Page not found');\n})();"
     },
     {
       id: 8,
@@ -141,7 +141,7 @@ sequenceDiagram
       instruction: "'/products/:id' yo'liga PUT so'rovi qabul qiladigan route yozing. U JSON orqali { name: 'Meva' } kabi body olishini kuting. Va { updated: id, newName: req.body.name } obyektini qaytaring.",
       startingCode: "const express = require('express');\nconst app = express();\napp.use(express.json());\n\n// PUT '/products/:id' route yarating\n\nmodule.exports = app;",
       hint: "req.params.id va req.body.name dan foydalanib res.json() qaytaring.",
-      test: "const request = require('supertest');\nconst res = await request(app).put('/products/7').send({name: 'Olma'});\nexpect(res.body).toEqual({updated: '7', newName: 'Olma'});"
+      test: "return (async () => {\n  const request = require('supertest');\n  const res = await request(app).put('/products/7').send({name: 'Olma'});\n  expect(res.body).toEqual({updated: '7', newName: 'Olma'});\n})();"
     },
     {
       id: 9,
@@ -149,7 +149,7 @@ sequenceDiagram
       instruction: "'/posts/:id' yo'li uchun DELETE so'rovini qabul qiladigan route yarating. Status 200 qilib { message: 'Deleted', id: id } ni JSON formatda qaytaring.",
       startingCode: "const express = require('express');\nconst app = express();\n\n// DELETE '/posts/:id' route yarating\n\nmodule.exports = app;",
       hint: "app.delete() dan foydalaning.",
-      test: "const request = require('supertest');\nconst res = await request(app).delete('/posts/99');\nexpect(res.status).toBe(200);\nexpect(res.body).toEqual({message: 'Deleted', id: '99'});"
+      test: "return (async () => {\n  const request = require('supertest');\n  const res = await request(app).delete('/posts/99');\n  expect(res.status).toBe(200);\n  expect(res.body).toEqual({message: 'Deleted', id: '99'});\n})();"
     },
     {
       id: 10,
@@ -157,7 +157,7 @@ sequenceDiagram
       instruction: "Express'ning Router() imkoniyatidan foydalanib, yangi 'userRouter' yarating. Unga GET '/' route qilib 'User list' qaytaring. Keyin uni '/api/users' ga app.use() qiling.",
       startingCode: "const express = require('express');\nconst app = express();\n\nconst userRouter = express.Router();\n// userRouter ga route qo'shing\n// app ga ulang\n\nmodule.exports = app;",
       hint: "userRouter.get('/', ...) so'ngra app.use('/api/users', userRouter)",
-      test: "const request = require('supertest');\nconst res = await request(app).get('/api/users');\nexpect(res.text).toBe('User list');"
+      test: "return (async () => {\n  const request = require('supertest');\n  const res = await request(app).get('/api/users');\n  expect(res.text).toBe('User list');\n})();"
     }
   ],
   quizzes: [

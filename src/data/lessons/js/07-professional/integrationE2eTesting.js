@@ -321,7 +321,7 @@ describe('User Registration Integration Flow', () => {
     "instruction": "Testlar o'rtasida ma'lumotlar bazasini toza saqlash uchun tranzaksiyani boshlovchi ('BEGIN'), callback funksiyani bajaruvchi va yakunda tranzaksiyani bekor qiluvchi ('ROLLBACK') `runInTransaction(pool, callback)` asinxron funksiyasini yozing. Har qanday holatda ham ROLLBACK chaqirilishini ta'minlang (try-finally).",
     "startingCode": "async function runInTransaction(pool, callback) {\n  // Kodni shu yerdan yozing\n}",
     "hint": "await pool.query('BEGIN');\ntry {\n  await callback();\n} finally {\n  await pool.query('ROLLBACK');\n}",
-    "test": "if (typeof runInTransaction !== 'function') return 'runInTransaction funksiya emas';\nconst codeStr = code.toString();\nif (!codeStr.includes('BEGIN') || !codeStr.includes('ROLLBACK')) {\n  return 'BEGIN va ROLLBACK SQL so\'rovlaridan foydalaning';\n}\nreturn null;"
+    "test": "if (typeof runInTransaction !== 'function') return 'runInTransaction funksiya emas';\nconst codeStr = code.toString();\nif (!codeStr.includes('BEGIN') || !codeStr.includes('ROLLBACK')) {\n  return \"BEGIN va ROLLBACK SQL so'rovlaridan foydalaning\";\n}\nreturn null;"
   }
 ]
 ,

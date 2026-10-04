@@ -292,7 +292,7 @@ export default App`,
       startingCode: "function Mahsulot({ nomi, narx, soni }) {\n  // Mahsulot ma'lumotlarini ko'rsating\n}\n\nfunction App() {\n  return (\n    <div>\n      {/* 3 ta mahsulot */}\n    </div>\n  )\n}\n\nexport default App",
       hint: "return <div><h3>{nomi}</h3><p>Narxi: {narx} so'm</p><p>Soni: {soni}</p></div>",
       solution: "function Mahsulot({ nomi, narx, soni }) {\n  return (\n    <div>\n      <h3>{nomi}</h3>\n      <p>Narxi: {narx} so'm</p>\n      <p>Soni: {soni}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  return (\n    <div>\n      <Mahsulot nomi='Kitob' narx={25000} soni={5} />\n      <Mahsulot nomi='Daftar' narx={5000} soni={10} />\n      <Mahsulot nomi='Ruchka' narx={2000} soni={20} />\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('narx') || !code.includes('soni')) return 'narx va soni props larini qo\'shing'; return null;"
+      test: "if (!code.includes('narx') || !code.includes('soni')) return \"narx va soni props larini qo'shing\"; return null;"
     },
     {
       id: 3,
@@ -319,7 +319,7 @@ export default App`,
       startingCode: "function Tugma({ onClick, matn }) {\n  return <button onClick={onClick}>{matn}</button>\n}\n\nfunction App() {\n  const handler = () => {\n    // Bu yerda alert yozing\n  }\n  \n  return (\n    <div>\n      <Tugma matn='Bosing' onClick={handler} />\n    </div>\n  )\n}\n\nexport default App",
       hint: "const handler = () => alert('Bosildi!')",
       solution: "function Tugma({ onClick, matn }) {\n  return <button onClick={onClick}>{matn}</button>\n}\n\nfunction App() {\n  const handler = () => {\n    alert('Bosildi!')\n  }\n  \n  return (\n    <div>\n      <Tugma matn='Bosing' onClick={handler} />\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('onClick')) return 'onClick props ni o\'tkazing'; return null;"
+      test: "if (!code.includes('onClick')) return \"onClick props ni o'tkazing\"; return null;"
     },
     {
       id: 6,
@@ -337,7 +337,7 @@ export default App`,
       startingCode: "function Profil({ foydalanuvchi }) {\n  // foydalanuvchi.ism, foydalanuvchi.yosh, foydalanuvchi.shahar\n  return (\n    <div>\n      {/* Ma'lumotlarni ko'rsating */}\n    </div>\n  )\n}\n\nfunction App() {\n  const men = { ism: 'Abdulloh', yosh: 25, shahar: 'Toshkent' }\n  \n  return (\n    <div>\n      <Profil foydalanuvchi={men} />\n    </div>\n  )\n}\n\nexport default App",
       hint: "<p>{foydalanuvchi.ism}</p> <p>{foydalanuvchi.yosh}</p>",
       solution: "function Profil({ foydalanuvchi }) {\n  return (\n    <div>\n      <p>Ism: {foydalanuvchi.ism}</p>\n      <p>Yosh: {foydalanuvchi.yosh}</p>\n      <p>Shahar: {foydalanuvchi.shahar}</p>\n    </div>\n  )\n}\n\nfunction App() {\n  const men = { ism: 'Abdulloh', yosh: 25, shahar: 'Toshkent' }\n  \n  return (\n    <div>\n      <Profil foydalanuvchi={men} />\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('foydalanuvchi.ism')) return 'foydalanuvchi.ism ni ko\'rsating'; return null;"
+      test: "if (!code.includes('foydalanuvchi.ism')) return \"foydalanuvchi.ism ni ko'rsating\"; return null;"
     },
     {
       id: 8,

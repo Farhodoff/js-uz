@@ -118,7 +118,7 @@ graph TD
       startingCode: "function createPartialIndex() {\n  \n}",
       hint: "CREATE INDEX idx_active_users ON users(created_at) WHERE status = 'active';",
       solution: "function createPartialIndex() {\n  return `CREATE INDEX idx_active_users ON users(created_at) WHERE status = 'active';`;\n}",
-      test: "const fn = new Function(code + '; return createPartialIndex;')();\nconst q = fn().toLowerCase();\nif (!q.includes('where status') || !q.includes(\\'\\'active\\'\\')) throw new Error('WHERE sharti noto\\'g\\'ri');"
+      test: "const fn = new Function(code + '; return createPartialIndex;')();\nconst q = fn().toLowerCase();\nif (!q.includes('where status') || !q.includes('active')) throw new Error(\"WHERE sharti noto'g'ri\");"
     },
     {
       id: 7,

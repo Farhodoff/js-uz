@@ -173,7 +173,7 @@ exercises: [
       instruction: "getYozuv(yozuv) funksiyasi: yozuv bo'sh satr bo'lsa ham bo'sh satrni qaytarsin (default emas!), faqat null/undefined bo'lsa 'Haqiqiy' qaytarsin.",
       startingCode: "function getYozuv(yozuv) {\n  // ?? ishlating\n}\n",
       hint: 'return yozuv ?? "Haqiqiy";',
-      test: "const fn = new Function(code + '; return getYozuv;')();\nif (fn('') === '' && fn(null) === 'Haqiqiy' && fn(undefined) === 'Haqiqiy') return null;\nreturn 'bo\'sh satr default bilan almashtirildi';"
+      test: "const fn = new Function(code + '; return getYozuv;')();\nif (fn('') === '' && fn(null) === 'Haqiqiy' && fn(undefined) === 'Haqiqiy') return null;\nreturn \"bo'sh satr default bilan almashtirildi\";"
     }
   ],
 

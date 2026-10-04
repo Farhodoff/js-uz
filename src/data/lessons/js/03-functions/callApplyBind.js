@@ -167,7 +167,7 @@ flowchart TD
       instruction: "Aytaylik, obj.myMethod() ni ishga tushirish orqali this = obj bo'ladi. myCall mexanizmini to'g'ri ishlashi uchun getAge funksiyasini user obyektiga qo'shish va uni ishga tushirish kerak. Resutl (res) o'zgaruvchisiga natijani tenglang.",
       startingCode: "const user = { age: 30 };\nfunction getAge() { return this.age; }\n// QADAM 1: getAge ni user ga vaqtinchalik xususiyat (fn) qilib qo'shing.\n// QADAM 2: user.fn() ni chaqirib res ga saqlang.",
       hint: "user.fn = getAge; let res = user.fn();",
-      test: "if(typeof res === 'undefined' || res !== 30) throw new Error('Polyfill asosini noto\'g\'ri tushundingiz');"
+      test: "if(typeof res === 'undefined' || res !== 30) throw new Error(\"Polyfill asosini noto'g'ri tushundingiz\");"
     },
     {
       id: 2,
@@ -175,7 +175,7 @@ flowchart TD
       instruction: "Function.prototype ga myApply metodini yozamiz. U array kutadi. Kodni o'zgartiring va args orqali kelgan massivni yoyib (...) chaqiring.",
       startingCode: "Function.prototype.myApply = function(ctx, argsArray = []) {\n  ctx.fn = this;\n  // ctx.fn ni argsArray bilan qanday chaqirasiz? Natijani qaytaring (return)\n  \n};\nlet r = function(a, b) { return a + b + this.v; }.myApply({v: 10}, [5, 5]);",
       hint: "return ctx.fn(...argsArray);",
-      test: "if(r !== 20) throw new Error('Spread operatoridan noto\'g\'ri foydalandingiz');"
+      test: "if(r !== 20) throw new Error(\"Spread operatoridan noto'g'ri foydalandingiz\");"
     },
     {
       id: 3,
@@ -183,7 +183,7 @@ flowchart TD
       instruction: "Savollarda ko'rganimizdek, fn.bind(A).bind(B) holatida this faqat A ga qulflanadi. Buni test qilamiz. Natijani getName() dan kelayotgan res o'zgaruvchisiga tekshiring.",
       startingCode: "const A = { name: 'A' };\nconst B = { name: 'B' };\nfunction fn() { return this.name; }\nconst bound = fn.bind(A).bind(B);\nlet res = // bound ni chaqiring",
       hint: "bound()",
-      test: "if(res !== 'A') throw new Error('Ikkinchi bind e\'tiborsiz qolishini tushunmadingiz');"
+      test: "if(res !== 'A') throw new Error(\"Ikkinchi bind e'tiborsiz qolishini tushunmadingiz\");"
     },
     {
       id: 4,
@@ -191,7 +191,7 @@ flowchart TD
       instruction: "Bu juda og'ir edge case! Bind qilingan funksiyani new bilan chaqirganda context o'lishini o'rgandik. Kod ishlashi uchun newBound ga new kalit so'zi bilan murojaat qiling va uning color xususiyatini oling.",
       startingCode: "function Car(color) { this.color = color; }\nconst ctx = { color: 'Red' };\nconst boundCar = Car.bind(ctx);\nlet res = // boundCar orqali Blue mashina yasang va uning color ini oling (new operatorini unutmang)",
       hint: "new boundCar('Blue').color",
-      test: "if(res !== 'Blue') throw new Error('new operatori qanday qilib bind ni yo\'q qilishini tushunmadingiz');"
+      test: "if(res !== 'Blue') throw new Error(\"new operatori qanday qilib bind ni yo'q qilishini tushunmadingiz\");"
     },
     {
       id: 5,
@@ -199,7 +199,7 @@ flowchart TD
       instruction: "Bind metodisiz, closure yordamida funksiyani ma'lum bir contextga qattiq biriktiradigan 'hardBind' funksiyasini yozing. U qabul qilgan fn va ctx ni closure ichida call bilan chaqirishi kerak.",
       startingCode: "function hardBind(fn, ctx) {\n  return function(...args) {\n    // fn ni ctx da call/apply orqali ishga tushiring va qaytaring\n    \n  }\n}\nconst res = hardBind(function(a) { return this.x + a; }, {x: 10})(5);",
       hint: "return fn.apply(ctx, args);",
-      test: "if(res !== 15) throw new Error('Hard binding mexanizmini to\'g\'ri amalga oshirmadingiz');"
+      test: "if(res !== 15) throw new Error(\"Hard binding mexanizmini to'g'ri amalga oshirmadingiz\");"
     },
     {
       id: 6,
@@ -239,7 +239,7 @@ flowchart TD
       instruction: "Agar call() dagi birinchi argument null bo'lsa qat'iy (strict mode) bo'lmagan holatda kimning obyekti this ga aylanadi? Javob: globalThis/window. return globalThis === this; ni qaytaradigan funksiyani null bilan call qiling.",
       startingCode: "function checkGlobal() { return this === globalThis; }\nlet res = // checkGlobal ni null context bilan call qiling",
       hint: "checkGlobal.call(null);",
-      test: "if(res !== true) throw new Error('Null berilganda Global window obyekt bo\'lishi kerak');"
+      test: "if(res !== true) throw new Error(\"Null berilganda Global window obyekt bo'lishi kerak\");"
     }
   ],
   quizzes: [

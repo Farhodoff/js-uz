@@ -194,7 +194,7 @@ export default App`,
       startingCode: "function App() {\n  return (\n    <div>\n      <h1>Salom Dunyo</h1>\n    </div>\n  )\n}\n\nexport default App",
       hint: "return ichida h1 va p teglarini yozing. Barcha teglar bitta ota elementga o'ralgan bo'lishi kerak.",
       solution: "function App() {\n  return (\n    <div>\n      <h1>Salom, men Abdulloh!</h1>\n      <p>Sevimli tilim: JavaScript</p>\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('<h1>') || !code.includes('<p>')) return 'h1 va p teglarini qo\'shing'; return null;"
+      test: "if (!code.includes('<h1>') || !code.includes('<p>')) return \"h1 va p teglarini qo'shing\"; return null;"
     },
     {
       id: 2,
@@ -203,7 +203,7 @@ export default App`,
       startingCode: "function App() {\n  return (\n    <div>\n      {/* Bu yerga kod yozing */}\n    </div>\n  )\n}\n\nexport default App",
       hint: "<ul> ichiga uchta <li> qo'shing",
       solution: "function App() {\n  return (\n    <div>\n      <h2>Sevimli ovqatlarim:</h2>\n      <ul>\n        <li>Osh</li>\n        <li>Manti</li>\n        <li>Somsa</li>\n      </ul>\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('<ul>') || !code.includes('<li>')) return 'ul va li teglarini qo\'shing'; return null;"
+      test: "if (!code.includes('<ul>') || !code.includes('<li>')) return \"ul va li teglarini qo'shing\"; return null;"
     },
     {
       id: 3,
@@ -230,7 +230,7 @@ export default App`,
       startingCode: "function App() {\n  return (\n    <div>\n      {/* img va input bu yerga */}\n    </div>\n  )\n}\n\nexport default App",
       hint: "JSX da <img src='...' alt='...' /> va <input type='text' /> shaklida yozing.",
       solution: "function App() {\n  return (\n    <div>\n      <img src='https://via.placeholder.com/150' alt='Rasm' />\n      <input type='text' placeholder='Matn kiriting' />\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('<img') || !code.includes('<input')) return 'img va input teglarini qo\'shing'; if (!code.includes('/>')) return 'Self-closing formatda yozing: <img /> <input />'; return null;"
+      test: "if (!code.includes('<img') || !code.includes('<input')) return \"img va input teglarini qo'shing\"; if (!code.includes('/>')) return 'Self-closing formatda yozing: <img /> <input />'; return null;"
     },
     {
       id: 6,
@@ -248,7 +248,7 @@ export default App`,
       startingCode: "function App() {\n  // O'zgaruvchilarni bu yerda yarating\n  \n  return (\n    <div>\n      {/* O'zgaruvchilarni bu yerda ko'rsating */}\n    </div>\n  )\n}\n\nexport default App",
       hint: "return dan OLDIN: const ism = 'Kamola'. Keyin JSX da {ism} deb ko'rsating.",
       solution: "function App() {\n  const ism = 'Kamola'\n  const yosh = 25\n\n  return (\n    <div>\n      <p>Ism: {ism}</p>\n      <p>Yosh: {yosh}</p>\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('{ism}') && !code.includes('{ ism }')) return 'ism o\'zgaruvchisini {} ichida ko\'rsating'; return null;"
+      test: "if (!code.includes('{ism}') && !code.includes('{ ism }')) return \"ism o'zgaruvchisini {} ichida ko'rsating\"; return null;"
     },
     {
       id: 8,

@@ -299,7 +299,7 @@ const btnStyle = {
       instruction: "Tugma bosilganda 'count' state'ini 1 taga oshiradigan 'handleClick' funksiyasini yozing va uni 'onClick' orqali tugmaga ulang.",
       startingCode: "import React, { useState } from 'react';\n\nexport default function App() {\n  const [count, setCount] = useState(0);\n\n  // handleClick funksiyasini yarating\n\n  return (\n    <div>\n      <button>Bosish: {count}</button>\n    </div>\n  );\n}",
       hint: "handleClick funksiyasini yarating: const handleClick = () => setCount(count + 1); Tugmaga esa onClick={handleClick} deb yozing.",
-      test: "if (!code.includes('onClick=')) return 'Tugmaga onClick hodisasini qo\'shing.'; if (!code.includes('setCount') || !code.includes('count + 1')) return 'setCount(count + 1) orqali state ni oshirish kerak.'; return null;"
+      test: "if (!code.includes('onClick=')) return \"Tugmaga onClick hodisasini qo'shing.\"; if (!code.includes('setCount') || !code.includes('count + 1')) return 'setCount(count + 1) orqali state ni oshirish kerak.'; return null;"
     },
     {
       id: 2,
@@ -339,7 +339,7 @@ const btnStyle = {
       instruction: "Sichqoncha matn ustiga borganida fonini sariqqa bo'yang (isHovered = true), uzoqlashganda yana oq (isHovered = false) qiling. Matnga ikkita hodisa qo'shing.",
       startingCode: "import React, { useState } from 'react';\n\nexport default function App() {\n  const [isHovered, setIsHovered] = useState(false);\n\n  return (\n    <div \n      style={{ backgroundColor: isHovered ? 'yellow' : 'white', padding: '20px' }}\n      // Shu yerda onMouseEnter va onMouseLeave hodisalarini ulang\n    >\n      Mening ustimga kelsangiz, rangim o'zgaradi!\n    </div>\n  );\n}",
       hint: "div tegiga onMouseEnter={() => setIsHovered(true)} va onMouseLeave={() => setIsHovered(false)} yozish kerak.",
-      test: "if (!code.includes('onMouseEnter=')) return 'onMouseEnter hodisasini qo\'shmadingiz.'; if (!code.includes('onMouseLeave=')) return 'onMouseLeave hodisasini qo\'shmadingiz.'; return null;"
+      test: "if (!code.includes('onMouseEnter=')) return \"onMouseEnter hodisasini qo'shmadingiz.\"; if (!code.includes('onMouseLeave=')) return \"onMouseLeave hodisasini qo'shmadingiz.\"; return null;"
     },
     {
       id: 7,
@@ -355,7 +355,7 @@ const btnStyle = {
       instruction: "Input ustiga bosib kursor tushganda (onFocus) uning border rangi 'qizil' bo'lsin. Kursor chiqqanda (onBlur) rangi oddiy qora bo'lsin. 'isFocused' state'dan foydalaning.",
       startingCode: "import React, { useState } from 'react';\n\nexport default function App() {\n  const [isFocused, setIsFocused] = useState(false);\n\n  return (\n    <input \n      type=\"text\" \n      style={{ border: isFocused ? '2px solid red' : '1px solid black' }}\n      // Shu yerda onFocus va onBlur ulab, state'ni o'zgartiring\n    />\n  );\n}",
       hint: "onFocus={() => setIsFocused(true)} va onBlur={() => setIsFocused(false)} dan foydalaning.",
-      test: "if (!code.includes('onFocus=')) return 'onFocus hodisasini qo\'shmadingiz.'; if (!code.includes('onBlur=')) return 'onBlur hodisasini qo\'shmadingiz.'; return null;"
+      test: "if (!code.includes('onFocus=')) return \"onFocus hodisasini qo'shmadingiz.\"; if (!code.includes('onBlur=')) return \"onBlur hodisasini qo'shmadingiz.\"; return null;"
     },
     {
       id: 9,
@@ -371,7 +371,7 @@ const btnStyle = {
       instruction: "Qutini (div) ustiga ikki marta tez bossangiz (onDoubleClick), uning rangi ko'k (blue) rangga kirsin, yana ikki marta bossangiz qizil (red) ga qaytsin. Buning uchun 'isBlue' state'ini ishlating.",
       startingCode: "import React, { useState } from 'react';\n\nexport default function App() {\n  const [isBlue, setIsBlue] = useState(false);\n\n  return (\n    <div \n      style={{ width: 100, height: 100, backgroundColor: isBlue ? 'blue' : 'red' }}\n      // onDoubleClick ulab, isBlue state ini teskarisiga o'zgartiring\n    >\n    </div>\n  );\n}",
       hint: "div tegiga onDoubleClick={() => setIsBlue(!isBlue)} deb yozing.",
-      test: "if (!code.includes('onDoubleClick=')) return 'onDoubleClick hodisasi qo\'shilmagan.'; if (!code.includes('setIsBlue(!isBlue)')) return 'setIsBlue(!isBlue) yordamida qiymatni almashtiring.'; return null;"
+      test: "if (!code.includes('onDoubleClick=')) return \"onDoubleClick hodisasi qo'shilmagan.\"; if (!code.includes('setIsBlue(!isBlue)')) return 'setIsBlue(!isBlue) yordamida qiymatni almashtiring.'; return null;"
     }
   ],
   quizzes: [
