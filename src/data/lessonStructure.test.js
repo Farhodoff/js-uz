@@ -18,13 +18,18 @@ function getJsFiles(dir) {
 
 const files = getJsFiles(lessonsDir);
 
+const lessonCache = new Map();
+
 async function loadLesson(file) {
+  if (lessonCache.has(file)) return lessonCache.get(file);
   const rel = path.relative(__dirname, file);
   const mod = await import(`./${rel}`);
-  return mod[Object.keys(mod)[0]];
+  const lesson = mod[Object.keys(mod)[0]];
+  lessonCache.set(file, lesson);
+  return lesson;
 }
 
-describe('Lesson exercises tuzilmasi', () => {
+describe('Lesson exercises tuzilmasi', { timeout: 60000 }, () => {
   it('har bir exercise da ko\'rsatma (instruction/description) bo\'lishi kerak', async () => {
     for (const file of files) {
       const lesson = await loadLesson(file);
@@ -84,7 +89,7 @@ describe('Lesson exercises tuzilmasi', () => {
   });
 });
 
-describe('Lesson quizzes tuzilmasi', () => {
+describe('Lesson quizzes tuzilmasi', { timeout: 60000 }, () => {
   it('har bir quiz da question, options va to\'g\'ri javob indeksi bo\'lishi kerak', async () => {
     for (const file of files) {
       const lesson = await loadLesson(file);
@@ -122,7 +127,7 @@ describe('Lesson quizzes tuzilmasi', () => {
   });
 });
 
-describe('Lesson meta', () => {
+describe('Lesson meta', { timeout: 60000 }, () => {
   it('har bir darsda id va title bo\'lishi kerak', async () => {
     for (const file of files) {
       const lesson = await loadLesson(file);

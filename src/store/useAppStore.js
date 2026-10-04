@@ -1,5 +1,42 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
+
+const memoryFallbackStorage = new Map();
+
+const safeStorage = {
+  getItem: (key) => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return window.localStorage.getItem(key);
+      }
+    } catch {
+      // Fallback to in-memory store if localStorage is unavailable
+    }
+    return memoryFallbackStorage.get(key) || null;
+  },
+  setItem: (key, value) => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, value);
+        return;
+      }
+    } catch {
+      // Fallback to in-memory store if localStorage is unavailable
+    }
+    memoryFallbackStorage.set(key, value);
+  },
+  removeItem: (key) => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.removeItem(key);
+        return;
+      }
+    } catch {
+      // Fallback to in-memory store if localStorage is unavailable
+    }
+    memoryFallbackStorage.delete(key);
+  },
+};
 
 export const useAppStore = create(
   persist(
@@ -58,6 +95,7 @@ export const useAppStore = create(
     }),
     {
       name: 'js-academy-progress-store',
+      storage: createJSONStorage(() => safeStorage),
       partialize: (state) => ({ 
         completed: state.completed,
         bookmarks: state.bookmarks,

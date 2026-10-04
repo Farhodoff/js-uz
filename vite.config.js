@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { pwaGlobIgnores, pwaRuntimeCaching } from './src/config/pwaRuntimeCaching.js'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,6 +9,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        chunkFileNames: (chunkInfo) => {
+          if (chunkInfo.facadeModuleId && chunkInfo.facadeModuleId.includes('/src/data/lessons/')) {
+            return 'assets/lessons/[name]-[hash].js';
+          }
+          return 'assets/[name]-[hash].js';
+        },
         manualChunks: {
           'vendor-react': ['react', 'react-dom', 'react-router-dom'],
           'vendor-monaco': ['@monaco-editor/react'],
@@ -24,7 +31,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'maskable-icon.png'],
       workbox: {
-        maximumFileSizeToCacheInBytes: 9000000,
+        maximumFileSizeToCacheInBytes: 5000000,
+        globIgnores: pwaGlobIgnores,
+        runtimeCaching: pwaRuntimeCaching,
       },
       manifest: {
         name: 'JS Academy Mastery',
