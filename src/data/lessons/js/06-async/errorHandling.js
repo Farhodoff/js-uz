@@ -296,7 +296,7 @@ function processApiResponse(rawJson) {
     "instruction": "safeAsync(fn) ASINXRON funksiyasini yozing: await fn() natijasini { ok: true, data } ko'rinishida qaytarsin. Xato otilsa dastur qulamasdan { ok: false, error: xatoXabari } qaytarsin. Bu pattern real loyihalarda try-catch ni har joyda yozmaslik uchun ishlatiladi.",
     "startingCode": "async function safeAsync(fn) {\n  // try-catch ichida await fn(); muvaffaqiyat: { ok: true, data }, xato: { ok: false, error }\n}\n",
     "hint": "try { const data = await fn(); return { ok: true, data }; } catch (e) { return { ok: false, error: e.message }; }",
-    "test": "const sandbox = new Function(code + '; return safeAsync;');\nconst fn = sandbox();\nconst good = await fn(async () => 'natija');\nif (!good || good.ok !== true || good.data !== 'natija') return 'Muvaffaqiyat holati notogri qaytdi';\nconst bad = await fn(async () => { throw new Error('oppo'); });\nif (!bad || bad.ok !== false || bad.error !== 'oppo') return 'Xato holati notogri qaytdi: ' + JSON.stringify(bad);\nreturn null;"
+    "test": "return (async () => {\n  const sandbox = new Function(code + '; return safeAsync;');\n  const fn = sandbox();\n  const good = await fn(async () => 'natija');\n  if (!good || good.ok !== true || good.data !== 'natija') return 'Muvaffaqiyat holati notogri qaytdi';\n  const bad = await fn(async () => { throw new Error('oppo'); });\n  if (!bad || bad.ok !== false || bad.error !== 'oppo') return 'Xato holati notogri qaytdi: ' + JSON.stringify(bad);\n  return null;\n})();"
   }
 ],
 

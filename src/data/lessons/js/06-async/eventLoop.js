@@ -357,82 +357,82 @@ Agar \`await new Promise(r => setTimeout(r, 0))\` qatorini olib tashlasangiz —
     {
       id: 1,
       title: "Sinxron va Asinxron Ketma-ketlik",
-      instruction: "Quyidagi `scheduleLogs(logFn)` funksiyasini yozing. U berilgan `logFn` funksiyasini quyidagi tartibda chaqirsin:\\n1. 'Start' (sinxron)\\n2. 'Middle' (asinxron, setTimeout orqali)\\n3. 'End' (sinxron)",
-      startingCode: "function scheduleLogs(logFn) {\\n  // Kodni shu yerda yozing\\n}\\n",
+      instruction: "Quyidagi `scheduleLogs(logFn)` funksiyasini yozing. U berilgan `logFn` funksiyasini quyidagi tartibda chaqirsin:\n1. 'Start' (sinxron)\n2. 'Middle' (asinxron, setTimeout orqali)\n3. 'End' (sinxron)",
+      startingCode: "function scheduleLogs(logFn) {\n  // Kodni shu yerda yozing\n}\n",
       hint: "logFn('Start') va logFn('End') ni sinxron yozing, o'rtada setTimeout(() => logFn('Middle'), 0) dan foydalaning.",
-      test: "if (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\\nconst sandbox = new Function(code + '; return scheduleLogs;');\\nconst fn = sandbox();\\nconst logs = [];\\nconst logFn = (msg) => logs.push(msg);\\nfn(logFn);\\nif (logs.length === 2 && logs[0] === 'Start' && logs[1] === 'End') {\\n  return new Promise((resolve) => {\\n    setTimeout(() => {\\n      if (logs.length === 3 && logs[2] === 'Middle') resolve(null);\\n      else resolve('Ketma-ketlik xato');\\n    }, 20);\\n  });\\n}\\nreturn 'Sinxron qism to\\\\'g\\\\'ri bajarilmadi';"
+      test: "if (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\nconst sandbox = new Function(code + '; return scheduleLogs;');\nconst fn = sandbox();\nconst testLogs = [];\nconst logFn = (msg) => testLogs.push(msg);\nfn(logFn);\nif (testLogs.length === 2 && testLogs[0] === 'Start' && testLogs[1] === 'End') {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      if (testLogs.length === 3 && testLogs[2] === 'Middle') resolve(null);\n      else resolve('Ketma-ketlik xato');\n    }, 20);\n  });\n}\nreturn \"Sinxron qism to'g'ri bajarilmadi\";"
     },
     {
       id: 2,
       title: "Promise bilan Kechikish (Delay)",
       instruction: "Berilgan `ms` (millisekundlar) dan keyin resolve bo'ladigan Promise qaytaruvchi `delay(ms)` funksiyasini yozing.",
-      startingCode: "function delay(ms) {\\n  // Kodni shu yerda yozing\\n}\\n",
+      startingCode: "function delay(ms) {\n  // Kodni shu yerda yozing\n}\n",
       hint: "Yangi Promise yarating va uning resolve qismini setTimeout ichida ishlating.",
-      test: "if (!code.includes('Promise') || !code.includes('setTimeout')) return 'Promise va setTimeout ikkalasi ham ishlatilishi shart';\\nconst sandbox = new Function(code + '; return delay;');\\nconst fn = sandbox();\\nconst start = Date.now();\\nreturn fn(50).then(() => {\\n  const diff = Date.now() - start;\\n  if (diff >= 40 && diff <= 120) return null;\\n  return 'Kechikish noto\\\\'g\\\\'ri';\\n});"
+      test: "if (!code.includes('Promise') || !code.includes('setTimeout')) return 'Promise va setTimeout ikkalasi ham ishlatilishi shart';\nconst sandbox = new Function(code + '; return delay;');\nconst fn = sandbox();\nconst start = Date.now();\nreturn fn(50).then(() => {\n  const diff = Date.now() - start;\n  if (diff >= 40 && diff <= 120) return null;\n  return \"Kechikish noto'g'ri\";\n});"
     },
     {
       id: 3,
       title: "Funksiyani Asinxron Chaqirish",
       instruction: "Qabul qilingan `fn` funksiyasini asinxron ravishda (Event Loop orqali) chaqiradigan `callAsync(fn)` funksiyasini yozing.",
-      startingCode: "function callAsync(fn) {\\n  // Kodni shu yerda yozing\\n}\\n",
+      startingCode: "function callAsync(fn) {\n  // Kodni shu yerda yozing\n}\n",
       hint: "setTimeout(fn, 0) yordamida uni navbatga qo'ying.",
-      test: "if (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\\nconst sandbox = new Function(code + '; return callAsync;');\\nconst fn = sandbox();\\nlet called = false;\\nfn(() => { called = true; });\\nif (called) return 'Sinxron chaqirildi, asinxron kerak';\\nreturn new Promise(resolve => {\\n  setTimeout(() => resolve(called ? null : 'Chaqirilmadi'), 10);\\n});"
+      test: "if (!code.includes('setTimeout')) return 'setTimeout ishlatilmadi';\nconst sandbox = new Function(code + '; return callAsync;');\nconst fn = sandbox();\nlet called = false;\nfn(() => { called = true; });\nif (called) return 'Sinxron chaqirildi, asinxron kerak';\nreturn new Promise(resolve => {\n  setTimeout(() => resolve(called ? null : 'Chaqirilmadi'), 10);\n});"
     },
     {
       id: 4,
       title: "Microtask va Macrotask Navbati",
       instruction: "`logTasks(logFn)` funksiyasi `logFn` orqali 3 ta qiymatni konsolga chiqarsin: 1 (Sinxron), 2 (Microtask), 3 (Macrotask). Ular aytilgan tartibda ishlashi uchun to'g'ri API larni tanlang.",
-      startingCode: "function logTasks(logFn) {\\n  // 1, 2, 3 ni mos ravishda chaqiring\\n}\\n",
+      startingCode: "function logTasks(logFn) {\n  // 1, 2, 3 ni mos ravishda chaqiring\n}\n",
       hint: "logFn(1) ni sinxron, logFn(2) ni Promise.resolve().then() ichida, logFn(3) ni setTimeout ichida ishlating.",
-      test: "const sandbox = new Function(code + '; return logTasks;');\\nconst fn = sandbox();\\nconst logs = [];\\nfn(msg => logs.push(msg));\\nif (logs[0] !== 1) return 'Birinchi sinxron ishlashi kerak';\\nreturn new Promise(resolve => {\\n  setTimeout(() => {\\n    if (logs[1] === 2 && logs[2] === 3) resolve(null);\\n    else resolve('Microtask va Macrotask navbati buzildi');\\n  }, 10);\\n});"
+      test: "const sandbox = new Function(code + '; return logTasks;');\nconst fn = sandbox();\nconst testLogs = [];\nfn(msg => testLogs.push(msg));\nif (testLogs[0] !== 1) return 'Birinchi sinxron ishlashi kerak';\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (testLogs[1] === 2 && testLogs[2] === 3) resolve(null);\n    else resolve('Microtask va Macrotask navbati buzildi');\n  }, 10);\n});"
     },
     {
       id: 5,
       title: "Taymerni Bekor Qilish",
       instruction: "`createCancelableTask(fn, ms)` funksiyasi vazifani `ms` dan so'ng bajarishni rejalashtirsin va taymerni bekor qila oladigan funksiya qaytarsin.",
-      startingCode: "function createCancelableTask(fn, ms) {\\n  // Taymerni saqlang va cancel qilish uchun funksiya qaytaring\\n  return function cancel() {\\n    \\n  };\\n}\\n",
+      startingCode: "function createCancelableTask(fn, ms) {\n  // Taymerni saqlang va cancel qilish uchun funksiya qaytaring\n  return function cancel() {\n    \n  };\n}\n",
       hint: "setTimeout ID sini o'zgaruvchida saqlang va clearTimeout yordamida to'xtating.",
-      test: "const sandbox = new Function(code + '; return createCancelableTask;');\\nconst fn = sandbox();\\nlet called = false;\\nconst cancel = fn(() => { called = true; }, 50);\\ncancel();\\nreturn new Promise(resolve => setTimeout(() => resolve(called ? 'Bekor qilinmadi' : null), 60));"
+      test: "const sandbox = new Function(code + '; return createCancelableTask;');\nconst fn = sandbox();\nlet called = false;\nconst cancel = fn(() => { called = true; }, 50);\ncancel();\nreturn new Promise(resolve => setTimeout(() => resolve(called ? 'Bekor qilinmadi' : null), 60));"
     },
     {
       id: 6,
       title: "setInterval bilan Takrorlash",
       instruction: "`repeatTask(fn, ms, times)` funksiyasi `fn` ni har `ms` vaqtda jami `times` marta chaqirsin, so'ng to'xtatsin.",
-      startingCode: "function repeatTask(fn, ms, times) {\\n  // Interval yarating va kerakli marta ishlagach clearInterval qiling\\n}\\n",
+      startingCode: "function repeatTask(fn, ms, times) {\n  // Interval yarating va kerakli marta ishlagach clearInterval qiling\n}\n",
       hint: "Sanoqchi (counter) ishlating va u times ga yetganda clearInterval ni chaqiring.",
-      test: "const sandbox = new Function(code + '; return repeatTask;');\\nconst fn = sandbox();\\nlet count = 0;\\nfn(() => { count++; }, 10, 3);\\nreturn new Promise(resolve => setTimeout(() => resolve(count === 3 ? null : 'Takrorlash soni xato'), 60));"
+      test: "const sandbox = new Function(code + '; return repeatTask;');\nconst fn = sandbox();\nlet count = 0;\nfn(() => { count++; }, 10, 3);\nreturn new Promise(resolve => setTimeout(() => resolve(count === 3 ? null : 'Takrorlash soni xato'), 60));"
     },
     {
       id: 7,
       title: "queueMicrotask orqali tezkor vazifa",
       instruction: "`runMicrotask(fn)` funksiyasini yozing, u `queueMicrotask` yordamida funksiyani Microtask sifatida ishga tushirsin.",
-      startingCode: "function runMicrotask(fn) {\\n  // queueMicrotask ishlating\\n}\\n",
+      startingCode: "function runMicrotask(fn) {\n  // queueMicrotask ishlating\n}\n",
       hint: "queueMicrotask global funksiya bo'lib unga to'g'ridan-to'g'ri fn ni berib yuborishingiz mumkin.",
-      test: "if (!code.includes('queueMicrotask')) return 'queueMicrotask ishlatilmadi';\\nconst sandbox = new Function(code + '; return runMicrotask;');\\nconst fn = sandbox();\\nlet called = false;\\nfn(() => { called = true; });\\nif (called) return 'Sinxron ishladi';\\nreturn Promise.resolve().then(() => called ? null : 'Microtask ishlamadi');"
+      test: "if (!code.includes('queueMicrotask')) return 'queueMicrotask ishlatilmadi';\nconst sandbox = new Function(code + '; return runMicrotask;');\nconst fn = sandbox();\nlet called = false;\nfn(() => { called = true; });\nif (called) return 'Sinxron ishladi';\nreturn Promise.resolve().then(() => called ? null : 'Microtask ishlamadi');"
     },
     {
       id: 8,
       title: "Promise Zanjiri (Chaining)",
       instruction: "`chainPromises(val)` funksiyasi `val` ni olsin va quyidagi 3 ta operatsiyani Promise then orqali zanjir qilib bajarsin: 1) val + 1 2) val * 2 3) val - 1. Natijada so'nggi qiymat Promise ichida qaytsin.",
-      startingCode: "function chainPromises(val) {\\n  return Promise.resolve(val)\\n    // .then() larni yozing\\n}\\n",
+      startingCode: "function chainPromises(val) {\n  return Promise.resolve(val)\n    // .then() larni yozing\n}\n",
       hint: "Har bir then() ichida oldingi natijani olib arifmetik amalni bajarib qaytaring.",
-      test: "const sandbox = new Function(code + '; return chainPromises;');\\nconst fn = sandbox();\\nreturn fn(2).then(res => res === 5 ? null : 'Natija noto\\\\'g\\\\'ri');"
+      test: "const sandbox = new Function(code + '; return chainPromises;');\nconst fn = sandbox();\nreturn fn(2).then(res => res === 5 ? null : \"Natija noto'g'ri\");"
     },
     {
       id: 9,
       title: "Parallel Asinxron Kutish (Promise.all)",
       instruction: "Uchta Promise (P1, P2, P3) beriladi. Ular hammasi tugagach, ularning natijalarini jamlab (massiv ko'rinishida) qaytaruvchi `waitAll(p1, p2, p3)` funksiyasini yozing.",
-      startingCode: "function waitAll(p1, p2, p3) {\\n  // Kodni shu yerda yozing\\n}\\n",
+      startingCode: "function waitAll(p1, p2, p3) {\n  // Kodni shu yerda yozing\n}\n",
       hint: "Promise.all([p1, p2, p3]) dan foydalaning.",
-      test: "const sandbox = new Function(code + '; return waitAll;');\\nconst fn = sandbox();\\nreturn fn(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)).then(res => (res[0]===1 && res[1]===2 && res[2]===3) ? null : 'Massiv noto\\\\'g\\\\'ri');"
+      test: "const sandbox = new Function(code + '; return waitAll;');\nconst fn = sandbox();\nreturn fn(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)).then(res => (res[0]===1 && res[1]===2 && res[2]===3) ? null : \"Massiv noto'g'ri\");"
     },
     {
       id: 10,
       title: "Sinxron blokirovkani qismlarga bo'lish (Chunking)",
       instruction: "Juda ko'p tsikl brauzerni qotirib qo'yishi mumkin. 1 dan N gacha sonlarni yig'uvchi, lekin buni asinxron ravishda (o'zini o'zi setTimeout orqali chaqirib) bo'lib-bo'lib (chunk) bajaruvchi funksiya namunasi berilgan, ushbu funksiya to'g'ri ishlashi va Promise ni resolve qilishi uchun uni to'ldiring.",
-      startingCode: "function asyncSum(n) {\\n  return new Promise(resolve => {\\n    let sum = 0;\\n    let i = 1;\\n    function chunk() {\\n      let count = 0;\\n      // Har bir tsiklda faqat 10 martagacha yig'indi qo'shilsin\\n      while(i <= n && count < 10) {\\n        sum += i++;\\n        count++;\\n      }\\n      if (i <= n) {\\n        setTimeout(chunk, 0);\\n      } else {\\n        resolve(sum);\\n      }\\n    }\\n    chunk();\\n  });\\n}\\n",
+      startingCode: "function asyncSum(n) {\n  return new Promise(resolve => {\n    let sum = 0;\n    let i = 1;\n    function chunk() {\n      let count = 0;\n      // Har bir tsiklda faqat 10 martagacha yig'indi qo'shilsin\n      while(i <= n && count < 10) {\n        sum += i++;\n        count++;\n      }\n      if (i <= n) {\n        setTimeout(chunk, 0);\n      } else {\n        resolve(sum);\n      }\n    }\n    chunk();\n  });\n}\n",
       hint: "Faqat code to'g'ri ishlashini tekshirib setTimeout ga chunk callbackini bering.",
-      test: "const sandbox = new Function(code + '; return asyncSum;');\\nconst fn = sandbox();\\nreturn fn(25).then(res => res === 325 ? null : 'Yig\\\\'indi xato');"
+      test: "const sandbox = new Function(code + '; return asyncSum;');\nconst fn = sandbox();\nreturn fn(25).then(res => res === 325 ? null : \"Yig'indi xato\");"
     }
   ],
   quizzes: [

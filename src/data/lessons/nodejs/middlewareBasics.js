@@ -75,7 +75,7 @@ graph TD
       description: "So'rov usuli (method) va URL'ni konsolga chiqaruvchi, so'ngra keyingi middleware'ga o'tuvchi logger middleware funksiyasini yozing.",
       starterCode: "const logger = (req, res, next) => {\n  // kodingizni shu yerga yozing\n};\nexport default logger;",
       solution: "const logger = (req, res, next) => {\n  console.log(`${req.method} ${req.url}`);\n  next();\n};\nexport default logger;",
-      test: "import logger from './logger.js';\nconst req = { method: 'GET', url: '/home' };\nconst res = {};\nlet nextCalled = false;\nconst next = () => { nextCalled = true; };\nconst consoleSpy = jest.spyOn(console, 'log');\nlogger(req, res, next);\nexpect(consoleSpy).toHaveBeenCalledWith('GET /home');\nexpect(nextCalled).toBe(true);"
+      test: "const fn = (typeof logger === 'function') ? logger : (new Function(code.replace(/export\\s+default\\s+\\w+;?/, '') + '; return typeof logger !== \"undefined\" ? logger : null;')());\nif (typeof fn !== 'function') return \"logger funksiyasi aniqlanmagan\";\nlet logged = null;\nconst origLog = console.log;\nconsole.log = (...args) => { logged = args.join(' '); };\nlet nextCalled = false;\ntry {\n  fn({ method: 'GET', url: '/home' }, {}, () => { nextCalled = true; });\n} finally {\n  console.log = origLog;\n}\nif (logged !== 'GET /home') return \"Konsolga to'g'ri 'GET /home' chiqarilmadi\";\nif (!nextCalled) return \"next() chaqirilmadi\";\nreturn null;"
     },
     {
       id: "2",
@@ -83,7 +83,7 @@ graph TD
       description: "Agar req.headers.authorization mavjud bo'lsa, keyingi bosqichga o'tadigan, aks holda res.status(401).send('Unauthorized') qaytaradigan middleware yozing.",
       starterCode: "const auth = (req, res, next) => {\n  // kodingizni shu yerga yozing\n};\nexport default auth;",
       solution: "const auth = (req, res, next) => {\n  if (req.headers && req.headers.authorization) {\n    next();\n  } else {\n    res.status(401).send('Unauthorized');\n  }\n};\nexport default auth;",
-      test: "import auth from './auth.js';\nlet sendCalled = '';\nlet statusCalled = 0;\nconst res = { status: (code) => { statusCalled = code; return { send: (msg) => { sendCalled = msg; } } } };\nlet nextCalled = false;\nconst next = () => { nextCalled = true; };\nauth({ headers: {} }, res, next);\nexpect(statusCalled).toBe(401);\nexpect(sendCalled).toBe('Unauthorized');\nexpect(nextCalled).toBe(false);\nauth({ headers: { authorization: 'token' } }, res, () => { nextCalled = true; });\nexpect(nextCalled).toBe(true);"
+      test: "const fn = (typeof auth === 'function') ? auth : (new Function(code.replace(/export\\s+default\\s+\\w+;?/, '') + '; return typeof auth !== \"undefined\" ? auth : null;')());\nif (typeof fn !== 'function') return \"auth funksiyasi aniqlanmagan\";\nlet statusCalled = 0;\nlet sendCalled = '';\nconst res = { status: (code) => { statusCalled = code; return { send: (msg) => { sendCalled = msg; } }; } };\nlet nextCalled = false;\nfn({ headers: {} }, res, () => { nextCalled = true; });\nif (statusCalled !== 401 || sendCalled !== 'Unauthorized' || nextCalled) return \"Authorization bo'lmaganda 401 Unauthorized qaytarilishi kerak\";\nnextCalled = false;\nfn({ headers: { authorization: 'token' } }, res, () => { nextCalled = true; });\nif (!nextCalled) return \"Authorization mavjud bo'lganda next() chaqirilishi kerak\";\nreturn null;"
     },
     {
       id: "3",
@@ -91,7 +91,7 @@ graph TD
       description: "Xatolik ro'y berganda, 500 status kodi bilan 'Internal Server Error' matnini qaytaradigan error handling middleware funksiyasini yozing.",
       starterCode: "const errorHandler = (err, req, res, next) => {\n  // kodingizni shu yerga yozing\n};\nexport default errorHandler;",
       solution: "const errorHandler = (err, req, res, next) => {\n  res.status(500).send('Internal Server Error');\n};\nexport default errorHandler;",
-      test: "import errorHandler from './errorHandler.js';\nlet status = 0;\nlet message = '';\nconst res = {\n  status: (s) => {\n    status = s;\n    return { send: (m) => message = m };\n  }\n};\nerrorHandler(new Error(), {}, res, () => {});\nexpect(status).toBe(500);\nexpect(message).toBe('Internal Server Error');"
+      test: "const fn = (typeof errorHandler === 'function') ? errorHandler : (new Function(code.replace(/export\\s+default\\s+\\w+;?/, '') + '; return typeof errorHandler !== \"undefined\" ? errorHandler : null;')());\nif (typeof fn !== 'function') return \"errorHandler funksiyasi aniqlanmagan\";\nlet status = 0;\nlet message = '';\nconst res = { status: (s) => { status = s; return { send: (m) => { message = m; } }; } };\nfn(new Error(), {}, res, () => {});\nif (status !== 500 || message !== 'Internal Server Error') return \"Xatolik ro'y berganda 500 'Internal Server Error' qaytishi kerak\";\nreturn null;"
     },
     {
       id: "4",
@@ -99,7 +99,7 @@ graph TD
       description: "Har bir so'rovga req.requestTime nomli xususiyat qo'shadigan va qiymati joriy vaqt (Date.now()) bo'ladigan middleware yozing.",
       starterCode: "const addTime = (req, res, next) => {\n  // kodingizni shu yerga yozing\n};\nexport default addTime;",
       solution: "const addTime = (req, res, next) => {\n  req.requestTime = Date.now();\n  next();\n};\nexport default addTime;",
-      test: "import addTime from './addTime.js';\nconst req = {};\nlet nextCalled = false;\nconst next = () => { nextCalled = true; };\naddTime(req, {}, next);\nexpect(req.requestTime).toBeDefined();\nexpect(typeof req.requestTime).toBe('number');\nexpect(nextCalled).toBe(true);"
+      test: "const fn = (typeof addTime === 'function') ? addTime : (new Function(code.replace(/export\\s+default\\s+\\w+;?/, '') + '; return typeof addTime !== \"undefined\" ? addTime : null;')());\nif (typeof fn !== 'function') return \"addTime funksiyasi aniqlanmagan\";\nconst req = {};\nlet nextCalled = false;\nfn(req, {}, () => { nextCalled = true; });\nif (typeof req.requestTime !== 'number' || !nextCalled) return \"req.requestTime raqam bo'lishi va next() chaqirilishi kerak\";\nreturn null;"
     },
     {
       id: "5",
@@ -107,7 +107,7 @@ graph TD
       description: "Agar req.user.role 'admin' bo'lmasa, 403 status bilan 'Forbidden' qaytaradigan, aks holda keyingisiga o'tkazadigan middleware yozing. (req.user mavjud deb faraz qiling).",
       starterCode: "const checkAdmin = (req, res, next) => {\n  // kodingizni shu yerga yozing\n};\nexport default checkAdmin;",
       solution: "const checkAdmin = (req, res, next) => {\n  if (req.user && req.user.role === 'admin') {\n    next();\n  } else {\n    res.status(403).send('Forbidden');\n  }\n};\nexport default checkAdmin;",
-      test: "import checkAdmin from './checkAdmin.js';\nlet status = 0;\nlet sendCalled = '';\nconst res = { status: (s) => { status = s; return { send: (m) => sendCalled = m; } } };\nlet nextCalled = false;\nconst next = () => { nextCalled = true; };\ncheckAdmin({ user: { role: 'user' } }, res, next);\nexpect(status).toBe(403);\nexpect(sendCalled).toBe('Forbidden');\nexpect(nextCalled).toBe(false);\ncheckAdmin({ user: { role: 'admin' } }, res, () => { nextCalled = true; });\nexpect(nextCalled).toBe(true);"
+      test: "const fn = (typeof checkAdmin === 'function') ? checkAdmin : (new Function(code.replace(/export\\s+default\\s+\\w+;?/, '') + '; return typeof checkAdmin !== \"undefined\" ? checkAdmin : null;')());\nif (typeof fn !== 'function') return \"checkAdmin funksiyasi aniqlanmagan\";\nlet status = 0;\nlet sendCalled = '';\nconst res = { status: (s) => { status = s; return { send: (m) => { sendCalled = m; } }; } };\nlet nextCalled = false;\nfn({ user: { role: 'user' } }, res, () => { nextCalled = true; });\nif (status !== 403 || sendCalled !== 'Forbidden' || nextCalled) return \"Admin bo'lmaganda 403 Forbidden qaytishi kerak\";\nnextCalled = false;\nfn({ user: { role: 'admin' } }, res, () => { nextCalled = true; });\nif (!nextCalled) return \"Admin bo'lganda next() chaqirilishi kerak\";\nreturn null;"
     },
     {
       id: "6",
@@ -115,7 +115,7 @@ graph TD
       description: "So'rov sarlavhasida (headers) 'x-api-key' ni tekshiruvchi middleware yarating. Agar apiKey 'secret123' ga teng bo'lsa next() chaqirilsin, yo'qsa 401 'Invalid API Key' qaytarsin.",
       starterCode: "const apiKeyCheck = (req, res, next) => {\n  // kodingizni shu yerga yozing\n};\nexport default apiKeyCheck;",
       solution: "const apiKeyCheck = (req, res, next) => {\n  if (req.headers['x-api-key'] === 'secret123') {\n    next();\n  } else {\n    res.status(401).send('Invalid API Key');\n  }\n};\nexport default apiKeyCheck;",
-      test: "import apiKeyCheck from './apiKeyCheck.js';\nlet status = 0; let msg = '';\nconst res = { status: (s) => { status = s; return { send: (m) => msg = m; } } };\napiKeyCheck({ headers: { 'x-api-key': 'wrong' } }, res, () => {});\nexpect(status).toBe(401);\nexpect(msg).toBe('Invalid API Key');\nlet nextCalled = false;\napiKeyCheck({ headers: { 'x-api-key': 'secret123' } }, res, () => { nextCalled = true; });\nexpect(nextCalled).toBe(true);"
+      test: "const fn = (typeof apiKeyCheck === 'function') ? apiKeyCheck : (new Function(code.replace(/export\\s+default\\s+\\w+;?/, '') + '; return typeof apiKeyCheck !== \"undefined\" ? apiKeyCheck : null;')());\nif (typeof fn !== 'function') return \"apiKeyCheck funksiyasi aniqlanmagan\";\nlet status = 0;\nlet msg = '';\nconst res = { status: (s) => { status = s; return { send: (m) => { msg = m; } }; } };\nlet nextCalled = false;\nfn({ headers: { 'x-api-key': 'wrong' } }, res, () => { nextCalled = true; });\nif (status !== 401 || msg !== 'Invalid API Key' || nextCalled) return \"Noto'g'ri api key uchun 401 'Invalid API Key' qaytishi kerak\";\nnextCalled = false;\nfn({ headers: { 'x-api-key': 'secret123' } }, res, () => { nextCalled = true; });\nif (!nextCalled) return \"To'g'ri api key bilan next() chaqirilishi kerak\";\nreturn null;"
     },
     {
       id: "7",
@@ -123,7 +123,7 @@ graph TD
       description: "Agar so'rov methodi 'DELETE' bo'lsa, 405 status bilan 'Method Not Allowed' qaytaradigan middleware yozing. Boshqa metodlar uchun o'tkazib yuboring.",
       starterCode: "const blockDelete = (req, res, next) => {\n  // kodingizni shu yerga yozing\n};\nexport default blockDelete;",
       solution: "const blockDelete = (req, res, next) => {\n  if (req.method === 'DELETE') {\n    res.status(405).send('Method Not Allowed');\n  } else {\n    next();\n  }\n};\nexport default blockDelete;",
-      test: "import blockDelete from './blockDelete.js';\nlet status = 0; let msg = '';\nconst res = { status: (s) => { status = s; return { send: (m) => msg = m; } } };\nblockDelete({ method: 'DELETE' }, res, () => {});\nexpect(status).toBe(405);\nexpect(msg).toBe('Method Not Allowed');\nlet nextCalled = false;\nblockDelete({ method: 'GET' }, res, () => { nextCalled = true; });\nexpect(nextCalled).toBe(true);"
+      test: "const fn = (typeof blockDelete === 'function') ? blockDelete : (new Function(code.replace(/export\\s+default\\s+\\w+;?/, '') + '; return typeof blockDelete !== \"undefined\" ? blockDelete : null;')());\nif (typeof fn !== 'function') return \"blockDelete funksiyasi aniqlanmagan\";\nlet status = 0;\nlet msg = '';\nconst res = { status: (s) => { status = s; return { send: (m) => { msg = m; } }; } };\nlet nextCalled = false;\nfn({ method: 'DELETE' }, res, () => { nextCalled = true; });\nif (status !== 405 || msg !== 'Method Not Allowed' || nextCalled) return \"DELETE methodi uchun 405 'Method Not Allowed' qaytishi kerak\";\nnextCalled = false;\nfn({ method: 'GET' }, res, () => { nextCalled = true; });\nif (!nextCalled) return \"Boshqa methodlar uchun next() chaqirilishi kerak\";\nreturn null;"
     },
     {
       id: "8",
@@ -131,7 +131,7 @@ graph TD
       description: "POST so'rovlarida req.body mavjud bo'lmasa, yoki bo'sh obyekt bo'lsa 400 status kodi va 'Bad Request' xatosini qaytaruvchi middleware.",
       starterCode: "const bodyCheck = (req, res, next) => {\n  // kodingizni shu yerga yozing\n};\nexport default bodyCheck;",
       solution: "const bodyCheck = (req, res, next) => {\n  if (req.method === 'POST' && (!req.body || Object.keys(req.body).length === 0)) {\n    res.status(400).send('Bad Request');\n  } else {\n    next();\n  }\n};\nexport default bodyCheck;",
-      test: "import bodyCheck from './bodyCheck.js';\nlet status = 0; let msg = '';\nconst res = { status: (s) => { status = s; return { send: (m) => msg = m; } } };\nbodyCheck({ method: 'POST', body: {} }, res, () => {});\nexpect(status).toBe(400);\nexpect(msg).toBe('Bad Request');\nlet nextCalled = false;\nbodyCheck({ method: 'POST', body: { name: 'Ali' } }, res, () => { nextCalled = true; });\nexpect(nextCalled).toBe(true);"
+      test: "const fn = (typeof bodyCheck === 'function') ? bodyCheck : (new Function(code.replace(/export\\s+default\\s+\\w+;?/, '') + '; return typeof bodyCheck !== \"undefined\" ? bodyCheck : null;')());\nif (typeof fn !== 'function') return \"bodyCheck funksiyasi aniqlanmagan\";\nlet status = 0;\nlet msg = '';\nconst res = { status: (s) => { status = s; return { send: (m) => { msg = m; } }; } };\nlet nextCalled = false;\nfn({ method: 'POST', body: {} }, res, () => { nextCalled = true; });\nif (status !== 400 || msg !== 'Bad Request' || nextCalled) return \"Bo'sh body uchun 400 'Bad Request' qaytishi kerak\";\nnextCalled = false;\nfn({ method: 'POST', body: { name: 'Ali' } }, res, () => { nextCalled = true; });\nif (!nextCalled) return \"To'liq body bo'lganda next() chaqirilishi kerak\";\nreturn null;"
     },
     {
       id: "9",
@@ -139,7 +139,7 @@ graph TD
       description: "So'rov kelganda foydalanuvchi IP manzilini req.ip orqali olib konsolga chiqaring va keyingi middleware'ga o'tkazing.",
       starterCode: "const ipLogger = (req, res, next) => {\n  // kodingizni shu yerga yozing\n};\nexport default ipLogger;",
       solution: "const ipLogger = (req, res, next) => {\n  console.log(req.ip);\n  next();\n};\nexport default ipLogger;",
-      test: "import ipLogger from './ipLogger.js';\nconst consoleSpy = jest.spyOn(console, 'log');\nlet nextCalled = false;\nipLogger({ ip: '127.0.0.1' }, {}, () => { nextCalled = true; });\nexpect(consoleSpy).toHaveBeenCalledWith('127.0.0.1');\nexpect(nextCalled).toBe(true);"
+      test: "const fn = (typeof ipLogger === 'function') ? ipLogger : (new Function(code.replace(/export\\s+default\\s+\\w+;?/, '') + '; return typeof ipLogger !== \"undefined\" ? ipLogger : null;')());\nif (typeof fn !== 'function') return \"ipLogger funksiyasi aniqlanmagan\";\nlet logged = null;\nconst origLog = console.log;\nconsole.log = (...args) => { logged = args.join(' '); };\nlet nextCalled = false;\ntry {\n  fn({ ip: '127.0.0.1' }, {}, () => { nextCalled = true; });\n} finally {\n  console.log = origLog;\n}\nif (logged !== '127.0.0.1') return \"req.ip konsolga chiqarilmadi\";\nif (!nextCalled) return \"next() chaqirilmadi\";\nreturn null;"
     },
     {
       id: "10",
@@ -147,7 +147,7 @@ graph TD
       description: "Agar so'rovda req.query.search mavjud bo'lsa, uni kichik harflarga o'tkazib (lowercase) qo'yadigan middleware yozing.",
       starterCode: "const searchLower = (req, res, next) => {\n  // kodingizni shu yerga yozing\n};\nexport default searchLower;",
       solution: "const searchLower = (req, res, next) => {\n  if (req.query && req.query.search) {\n    req.query.search = req.query.search.toLowerCase();\n  }\n  next();\n};\nexport default searchLower;",
-      test: "import searchLower from './searchLower.js';\nconst req = { query: { search: 'NODEJS' } };\nlet nextCalled = false;\nsearchLower(req, {}, () => { nextCalled = true; });\nexpect(req.query.search).toBe('nodejs');\nexpect(nextCalled).toBe(true);"
+      test: "const fn = (typeof searchLower === 'function') ? searchLower : (new Function(code.replace(/export\\s+default\\s+\\w+;?/, '') + '; return typeof searchLower !== \"undefined\" ? searchLower : null;')());\nif (typeof fn !== 'function') return \"searchLower funksiyasi aniqlanmagan\";\nconst req = { query: { search: 'NODEJS' } };\nlet nextCalled = false;\nfn(req, {}, () => { nextCalled = true; });\nif (req.query.search !== 'nodejs' || !nextCalled) return \"req.query.search kichik harflarga o'tkazilmadi yoki next() chaqirilmadi\";\nreturn null;"
     }
   ],
   quizzes: [

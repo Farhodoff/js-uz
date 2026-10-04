@@ -344,50 +344,50 @@ Agar oxirgi \`await\` qatorini olib tashlasangiz — barcha 500 post bitta tickd
   {
     "id": 1,
     "title": "Microtask va Macrotask Navbati",
-    "instruction": "Quyidagi `scheduleMicroAndMacro(logFn)` funksiyasini yozing. U berilgan `logFn` funksiyasini quyidagi tartibda chaqirishi kerak:\\n1. Sinxron ravishda 'sync' qiymati bilan.\\n2. Macrotask navbatida (setTimeout orqali 0ms) 'macro' qiymati bilan.\\n3. Microtask navbatida (Promise orqali) 'micro' qiymati bilan.",
-    "startingCode": "function scheduleMicroAndMacro(logFn) {\\n  // Kodni shu yerda yozing\\n}\\n",
+    "instruction": "Quyidagi `scheduleMicroAndMacro(logFn)` funksiyasini yozing. U berilgan `logFn` funksiyasini quyidagi tartibda chaqirishi kerak:\n1. Sinxron ravishda 'sync' qiymati bilan.\n2. Macrotask navbatida (setTimeout orqali 0ms) 'macro' qiymati bilan.\n3. Microtask navbatida (Promise orqali) 'micro' qiymati bilan.",
+    "startingCode": "function scheduleMicroAndMacro(logFn) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "logFn('sync') ni sinxron chaqiring. setTimeout yordamida macro-ni rejalashtiring. Promise.resolve().then() yordamida micro-ni rejalashtiring.",
-    "test": "if (!code.includes('Promise') || !code.includes('setTimeout')) return 'Promise va setTimeout ikkalasi ham ishlatilishi shart';\\nconst sandbox = new Function(code + '; return scheduleMicroAndMacro;');\\nconst fn = sandbox();\\nconst logs = [];\\nconst logFn = (msg) => logs.push(msg);\\nfn(logFn);\\nif (logs.length === 1 && logs[0] === 'sync') {\\n  return new Promise((resolve) => {\\n    setTimeout(() => {\\n      if (logs.length === 3 && logs[1] === 'micro' && logs[2] === 'macro') resolve(null);\\n      else resolve('Microtask va Macrotask navbati noto\\\\'g\\\\'ri: ' + logs.join(', '));\\n    }, 50);\\n  });\\n}\\nreturn 'Sinxron qism noto\\\\'g\\\\'ri bajarildi';"
+    "test": "if (!code.includes('Promise') || !code.includes('setTimeout')) return 'Promise va setTimeout ikkalasi ham ishlatilishi shart';\nconst sandbox = new Function(code + '; return scheduleMicroAndMacro;');\nconst fn = sandbox();\nconst testLogs = [];\nconst logFn = (msg) => testLogs.push(msg);\nfn(logFn);\nif (testLogs.length === 1 && testLogs[0] === 'sync') {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      if (testLogs.length === 3 && testLogs[1] === 'micro' && testLogs[2] === 'macro') resolve(null);\n      else resolve(\"Microtask va Macrotask navbati noto'g'ri: \" + testLogs.join(', '));\n    }, 50);\n  });\n}\nreturn \"Sinxron qism noto'g'ri bajarildi\";"
   },
   {
     "id": 2,
     "title": "queueMicrotask yordamida Microtask yaratish",
     "instruction": "JavaScript-ning mahalliy `queueMicrotask(fn)` API-sidan foydalanib, berilgan `fn` funksiyasini microtask navbatiga qo'shuvchi `runMicrotask(fn)` funksiyasini yozing.",
-    "startingCode": "function runMicrotask(fn) {\\n  // Kodni shu yerda yozing\\n}\\n",
+    "startingCode": "function runMicrotask(fn) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "queueMicrotask(fn) ni to'g'ridan-to'g'ri chaqiring.",
-    "test": "if (!code.includes('queueMicrotask')) return 'queueMicrotask API-sidan foydalanilmadi';\\nconst sandbox = new Function(code + '; return runMicrotask;');\\nconst fn = sandbox();\\nlet called = false;\\nfn(() => { called = true; });\\nif (called === true) return 'Funksiya sinxron ishga tushib ketdi, u microtask bo\\\\'lishi kerak';\\nlet order = [];\\nfn(() => order.push('micro'));\\nsetTimeout(() => order.push('macro'), 0);\\nreturn new Promise((resolve) => {\\n  setTimeout(() => {\\n    if (order[0] === 'micro' && order[1] === 'macro') resolve(null);\\n    else resolve('Microtask macrotaskdan oldin ishga tushmadi');\\n  }, 20);\\n});"
+    "test": "if (!code.includes('queueMicrotask')) return 'queueMicrotask API-sidan foydalanilmadi';\nconst sandbox = new Function(code + '; return runMicrotask;');\nconst fn = sandbox();\nlet called = false;\nfn(() => { called = true; });\nif (called === true) return \"Funksiya sinxron ishga tushib ketdi, u microtask bo'lishi kerak\";\nlet order = [];\nfn(() => order.push('micro'));\nsetTimeout(() => order.push('macro'), 0);\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (order[0] === 'micro' && order[1] === 'macro') resolve(null);\n    else resolve('Microtask macrotaskdan oldin ishga tushmadi');\n  }, 20);\n});"
   },
   {
     "id": 3,
     "title": "Aralash Asinxronlikni Boshqarish",
     "instruction": "Ikkita callback qabul qiladigan `executeMixed(cb1, cb2)` funksiyasini yozing. U `cb1` callback-ini microtask navbatida, `cb2` callback-ini esa macrotask navbatida ishga tushirishi kerak. Buni amalga oshirishda Promise va setTimeout lardan foydalaning.",
-    "startingCode": "function executeMixed(cb1, cb2) {\\n  // Kodni shu yerda yozing\\n}\\n",
+    "startingCode": "function executeMixed(cb1, cb2) {\n  // Kodni shu yerda yozing\n}\n",
     "hint": "cb1 ni Promise.resolve().then(cb1) yoki queueMicrotask(cb1) ichida, cb2 ni esa setTimeout(cb2, 0) ichida chaqiring.",
-    "test": "if (!code.includes('setTimeout') || (!code.includes('Promise') && !code.includes('queueMicrotask'))) return 'Kerakli asinxron mexanizmlar (setTimeout va Promise/queueMicrotask) ishlatilmadi';\\nconst sandbox = new Function(code + '; return executeMixed;');\\nconst fn = sandbox();\\nlet order = [];\\nfn(() => order.push('micro'), () => order.push('macro'));\\nreturn new Promise((resolve) => {\\n  setTimeout(() => {\\n    if (order[0] === 'micro' && order[1] === 'macro') resolve(null);\\n    else resolve('Tartib noto\\\\'g\\\\'ri: ' + order.join(', '));\\n  }, 20);\\n});"
+    "test": "if (!code.includes('setTimeout') || (!code.includes('Promise') && !code.includes('queueMicrotask'))) return 'Kerakli asinxron mexanizmlar (setTimeout va Promise/queueMicrotask) ishlatilmadi';\nconst sandbox = new Function(code + '; return executeMixed;');\nconst fn = sandbox();\nlet order = [];\nfn(() => order.push('micro'), () => order.push('macro'));\nreturn new Promise((resolve) => {\n  setTimeout(() => {\n    if (order[0] === 'micro' && order[1] === 'macro') resolve(null);\n    else resolve(\"Tartib noto'g'ri: \" + order.join(', '));\n  }, 20);\n});"
   },
   {
     "id": 4,
     "title": "Microtask Chain Ketma-ketligi",
     "instruction": "`microChain(logFn)` funksiyasini yozing: u Promise.resolve().then() zanjiri orqali logFn ni 'birinchi', 'ikkinchi', 'uchinchi' qiymatlari bilan navbatma-navbat (har biri alohida microtaskda) chaqirsin.",
-    "startingCode": "function microChain(logFn) {\\n  return Promise.resolve()\\n    // .then() zanjirini yozing\\n}\\n",
+    "startingCode": "function microChain(logFn) {\n  return Promise.resolve()\n    // .then() zanjirini yozing\n}\n",
     "hint": "Promise.resolve().then(() => logFn('birinchi')).then(() => logFn('ikkinchi')).then(() => logFn('uchinchi'));",
-    "test": "const sandbox = new Function(code + '; return microChain;');\\nconst fn = sandbox();\\nconst logs = [];\\nconst p = fn(m => logs.push(m));\\nreturn Promise.resolve(p).then(() => {\\n  if (logs.join(',') === 'birinchi,ikkinchi,uchinchi') return null;\\n  return 'Ketma-ketlik xato: ' + logs.join(',');\\n});"
+    "test": "const sandbox = new Function(code + '; return microChain;');\nconst fn = sandbox();\nconst testLogs = [];\nconst p = fn(m => testLogs.push(m));\nreturn Promise.resolve(p).then(() => {\n  if (testLogs.join(',') === 'birinchi,ikkinchi,uchinchi') return null;\n  return 'Ketma-ketlik xato: ' + testLogs.join(',');\n});"
   },
   {
     "id": 5,
     "title": "Kesh bilan Izchillik Kafolati",
     "instruction": "`getCached(key, cache, fetcher, callback)` funksiyasini yozing. Agar `key` keshda (Map) bo'lsa — callback ni `queueMicrotask` orqali chaqiring (keshda bo'lsa ham asinxron kafolat!). Bo'lmasa — `fetcher(key)` chaqirib, natijani keshga yozing va callback ni microtask orqali qiymat bilan chaqiring.",
-    "startingCode": "function getCached(key, cache, fetcher, callback) {\\n  // 1) Keshda bo'lsa: queueMicrotask(() => callback(value))\\n  // 2) Bo'lmasa: fetcher(key).then(data => { ... })\\n}\\n",
+    "startingCode": "function getCached(key, cache, fetcher, callback) {\n  // 1) Keshda bo'lsa: queueMicrotask(() => callback(value))\n  // 2) Bo'lmasa: fetcher(key).then(data => { ... })\n}\n",
     "hint": "if (cache.has(key)) { queueMicrotask(() => callback(cache.get(key))); return; } fetcher(key).then(data => { cache.set(key, data); queueMicrotask(() => callback(data)); });",
-    "test": "if (!code.includes('queueMicrotask')) return 'queueMicrotask ishlatilmadi — asinxronlik kafolati yo\\'q';\\nconst sandbox = new Function(code + '; return getCached;');\\nconst fn = sandbox();\\nconst cache = new Map([['old', 42]]);\\nlet syncCalled = false;\\nlet result1 = null;\\nfn('old', cache, async () => 0, (v) => { syncCalled = true; result1 = v; });\\nif (syncCalled) return 'Keshdan olish ham asinxron bo\\'lishi kerak (queueMicrotask)';\\nreturn new Promise(resolve => {\\n  setTimeout(() => {\\n    if (result1 !== 42) { resolve('Kesh qiymati noto\\\\'g\\\\'ri uzatildi'); return; }\\n    let result2 = null;\\n    fn('new', cache, async (k) => k.length * 10, (v) => { result2 = v; });\\n    setTimeout(() => {\\n      resolve(result2 === 30 ? null : 'Fetcher natijasi noto\\\\'g\\\\'ri keshlandi/uzatildi');\\n    }, 20);\\n  }, 20);\\n});"
+    "test": "if (!code.includes('queueMicrotask')) return \"queueMicrotask ishlatilmadi — asinxronlik kafolati yo'q\";\nconst sandbox = new Function(code + '; return getCached;');\nconst fn = sandbox();\nconst cache = new Map([['old', 42]]);\nlet syncCalled = false;\nlet result1 = null;\nfn('old', cache, async () => 0, (v) => { syncCalled = true; result1 = v; });\nif (syncCalled) return \"Keshdan olish ham asinxron bo'lishi kerak (queueMicrotask)\";\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (result1 !== 42) { resolve(\"Kesh qiymati noto'g'ri uzatildi\"); return; }\n    let result2 = null;\n    fn('new', cache, async (k) => k.length * 10, (v) => { result2 = v; });\n    setTimeout(() => {\n      resolve(result2 === 30 ? null : \"Fetcher natijasi noto'g'ri keshlandi/uzatildi\");\n    }, 20);\n  }, 20);\n});"
   },
   {
     "id": 6,
     "title": "Microtask Starvation'ni oldini olish",
     "instruction": "Cheksiz ishlaydigan lekin sahifani qotirmaydigan `startTicker(logFn)` funksiyasini yozing: u har 50ms da logFn('tick') ni chaqirsin va 500ms dan keyin o'zini to'xtatsin (jami ~10 marta). setInterval emas — setTimeout rekursiyasidan foydalaning.",
-    "startingCode": "function startTicker(logFn) {\\n  // setTimeout rekursiyasi bilan ticker yozing\\n  // 500ms dan keyin to'xtash kerak\\n}\\n",
+    "startingCode": "function startTicker(logFn) {\n  // setTimeout rekursiyasi bilan ticker yozing\n  // 500ms dan keyin to'xtash kerak\n}\n",
     "hint": "let count = 0; function step() { logFn('tick'); if (++count < 10) setTimeout(step, 50); } setTimeout(step, 50); — shaklida yozing.",
-    "test": "const sandbox = new Function(code + '; return startTicker;');\\nconst fn = sandbox();\\nif (code.includes('setInterval')) return 'setInterval emas, setTimeout rekursiyasi ishlating';\\nconst logs = [];\\nfn(() => logs.push(1));\\nreturn new Promise(resolve => {\\n  setTimeout(() => {\\n    if (logs.length >= 8 && logs.length <= 11) resolve(null);\\n    else resolve('Chaqiruvlar soni xato: ' + logs.length + ' (kutilgan ~10)');\\n  }, 700);\\n});"
+    "test": "const sandbox = new Function(code + '; return startTicker;');\nconst fn = sandbox();\nif (code.includes('setInterval')) return 'setInterval emas, setTimeout rekursiyasi ishlating';\nconst testLogs = [];\nfn(() => testLogs.push(1));\nreturn new Promise(resolve => {\n  setTimeout(() => {\n    if (testLogs.length >= 8 && testLogs.length <= 11) resolve(null);\n    else resolve('Chaqiruvlar soni xato: ' + testLogs.length + ' (kutilgan ~10)');\n  }, 700);\n});"
   }
 ]
 ,

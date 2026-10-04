@@ -314,7 +314,7 @@ export default App`,
       startingCode: "function App() {\n  // O'zgaruvchilarni bu yerda yarating\n  \n  return (\n    <div>\n      {/* O'zgaruvchilarni ko'rsating */}\n    </div>\n  )\n}\n\nexport default App",
       hint: "return dan oldin const narx = 150000 va const mahsulot = 'Kitob'. JSX da: {mahsulot}: {narx} so'm",
       solution: "function App() {\n  const narx = 150000\n  const mahsulot = 'Kitob'\n  \n  return (\n    <div>\n      <p>{mahsulot}: {narx} so'm</p>\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('{narx}') && !code.includes('{ narx }')) return 'narx o\'zgaruvchisini {} ichida ko\'rsating'; return null;"
+      test: "if (!code.includes('{narx}') && !code.includes('{ narx }')) return \"narx o'zgaruvchisini {} ichida ko'rsating\"; return null;"
     },
     {
       id: 5,
@@ -341,7 +341,7 @@ export default App`,
       startingCode: "function App() {\n  return (\n    <div>\n      <h1>Sarlavha</h1>\n    </div>\n  )\n}\n\nexport default App",
       hint: "<h1 style={{color: '#e74c3c', fontSize: '28px', textAlign: 'center'}}>",
       solution: "function App() {\n  return (\n    <div>\n      <h1 style={{color: '#e74c3c', fontSize: '28px', textAlign: 'center'}}>Sarlavha</h1>\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('style={{')) return 'style={{...}} formatida yozing (ikki qavsga e\'tibor bering)'; return null;"
+      test: "if (!code.includes('style={{')) return \"style={{...}} formatida yozing (ikki qavsga e'tibor bering)\"; return null;"
     },
     {
       id: 8,
@@ -350,7 +350,7 @@ export default App`,
       startingCode: "function App() {\n  // Stil obyektini bu yerda yarating\n  \n  return (\n    <div>\n      <p>Bu karta</p>\n    </div>\n  )\n}\n\nexport default App",
       hint: "const kartaStili = {...} yarating va <div style={kartaStili}> deng.",
       solution: "function App() {\n  const kartaStili = {\n    backgroundColor: '#f8f9fa',\n    padding: '20px',\n    borderRadius: '8px'\n  }\n  \n  return (\n    <div style={kartaStili}>\n      <p>Bu karta</p>\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('kartaStili') || !code.includes('style={kartaStili}')) return 'Stil obyektini yarating va style={kartaStili} orqali qo\'llang'; return null;"
+      test: "if (!code.includes('kartaStili') || !code.includes('style={kartaStili}')) return \"Stil obyektini yarating va style={kartaStili} orqali qo'llang\"; return null;"
     },
     {
       id: 9,
@@ -368,7 +368,7 @@ export default App`,
       startingCode: "function App() {\n  const raqamlar = [10, 20, 30]\n  \n  return (\n    <div>\n      {/* Massiv uzunligi va birinchi element */}\n    </div>\n  )\n}\n\nexport default App",
       hint: "{raqamlar.length} va {raqamlar[0]}",
       solution: "function App() {\n  const raqamlar = [10, 20, 30]\n  \n  return (\n    <div>\n      <p>Elementlar soni: {raqamlar.length}</p>\n      <p>Birinchi element: {raqamlar[0]}</p>\n    </div>\n  )\n}\n\nexport default App",
-      test: "if (!code.includes('raqamlar.length') && !code.includes('raqamlar[0]')) return 'raqamlar.length va raqamlar[0] ni ko\'rsating'; return null;"
+      test: "if (!code.includes('raqamlar.length') && !code.includes('raqamlar[0]')) return \"raqamlar.length va raqamlar[0] ni ko'rsating\"; return null;"
     }
   ],
   quizzes: [

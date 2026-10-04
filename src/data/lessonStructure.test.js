@@ -52,11 +52,9 @@ describe('Lesson exercises tuzilmasi', { timeout: 60000 }, () => {
     }
   });
 
-  it('exercise test kodi sintaksis jihatdan yaroqli bo\'lishi kerak (backlog guard)', async () => {
-    // 75 ta exercise testida o'zbekcha apostrof (o'g'ri) bitta qo'shtirnoq ichida
-    // qochirilmagan — bu runtime'da sintaksis xato beradi va mashqni o'tib
-    // bo'lmaydi. Bu kontent backlog. Yangi xatolar kirmasligi uchun soni
-    // ko'paymasligini qo'riqlaymiz.
+  it('exercise test kodi sintaksis jihatdan yaroqli bo\'lishi kerak (zero backlog guard)', async () => {
+    // Barcha exercise testlari sintaksis jihatdan to'liq yaroqli bo'lishi shart.
+    // 75 ta mashqdagi sintaksis xatoliklar to'liq bartaraf etildi (Issue #17).
     const invalid = [];
     for (const file of files) {
       const lesson = await loadLesson(file);
@@ -75,8 +73,8 @@ describe('Lesson exercises tuzilmasi', { timeout: 60000 }, () => {
     }
     expect(
       invalid.length,
-      `Yangi sintaksis-xato exercise testlar: ${invalid.slice(75).join(', ')}`
-    ).toBeLessThanOrEqual(75);
+      `Sintaksis-xato exercise testlar: ${invalid.join(', ')}`
+    ).toBe(0);
   });
 
   it('exercise id lari takrorlanmasligi kerak', async () => {
