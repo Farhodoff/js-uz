@@ -200,6 +200,62 @@ Keyingi darsda: Elementni o'zgartirish — \`textContent\` va \`classList\` bila
       startingCode: "// document.getElementById(\"not-found\") ni oling va konsolga chiqaring\n",
       hint: "const item = document.getElementById(\"not-found\");\nconsole.log(item);",
       test: "if (!code.includes('getElementById')) return 'getElementById ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry {\n  const mockDoc = { getElementById: () => null };\n  const doc = typeof document !== 'undefined' ? document : mockDoc;\n  new Function('document', code)(doc);\n} catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('null')) return null;\nreturn 'null konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "querySelector bilan ID tanlash",
+      "instruction": "`document.querySelector(\"#title\")` orqali elementni tanlang va `heading !== null` ekanligini konsolga chiqaring (`true`).",
+      "startingCode": "// querySelector(\"#title\") qiling va heading !== null ni chiqaring\n",
+      "hint": "const heading = document.querySelector(\"#title\");\nconsole.log(heading !== null);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"querySelector\") || !code.includes(\"#title\")) return \"querySelector('#title') ishlatilmadi\";\nif (out.includes(\"true\")) return null;\nreturn \"true konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Teg nomi bo'yicha tanlash",
+      "instruction": "`document.querySelector(\"button\")` orqali sahifadagi `button` tegini tanlang va `btn !== null` ni konsolga chiqaring (`true`).",
+      "startingCode": "// querySelector(\"button\") qiling va btn !== null ni chiqaring\n",
+      "hint": "const btn = document.querySelector(\"button\");\nconsole.log(btn !== null);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"querySelector\") || !code.includes(\"button\")) return \"querySelector('button') ishlatilmadi\";\nif (out.includes(\"true\")) return null;\nreturn \"true konsolga chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "Topilmagan selektor null qaytaradi",
+      "instruction": "Sahifada yo'q bo'lgan `.yoq` klassini `querySelector` bilan qidirib, natijani konsolga chiqaring (`null`).",
+      "startingCode": "// .yoq ni qidirib natijani konsolga chiqaring\n",
+      "hint": "const item = document.querySelector(\".yoq\");\nconsole.log(item);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"querySelector\")) return \"querySelector ishlatilmadi\";\nif (out.some((m) => m.trim() === \"null\")) return null;\nreturn \"null konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "getElementById da panjara bo'lmasligi",
+      "instruction": "`getElementById(\"#title\")` xato yozilish ekan (panjara kerak emas). To'g'ri varianti bilan `title` elementini tanlab, `heading !== null` ni konsolga chiqaring (`true`).",
+      "startingCode": "// panjarasiz getElementById(\"title\") ishlatib, heading !== null ni chiqaring\n",
+      "hint": "const heading = document.getElementById(\"title\");\nconsole.log(heading !== null);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (code.includes(\"getElementById(\\\"#\")) return \"Panjara (#) qo'yilmasligi kerak\";\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nif (out.includes(\"true\")) return null;\nreturn \"true konsolga chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "Tanlash natijasini o'zgaruvchida saqlash",
+      "instruction": "`document.getElementById(\"title\")` natijasini `heading` o'zgaruvchisiga saqlang, so'ng `heading !== null` va `heading === document.getElementById(\"title\")` natijalarini konsolga chiqaring (true, true).",
+      "startingCode": "// heading ga saqlang, keyin ikki marta true chiqaring\n",
+      "hint": "const heading = document.getElementById(\"title\");\nconsole.log(heading !== null);\nconsole.log(heading === document.getElementById(\"title\"));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nif (out.filter((m) => m.trim() === \"true\").length >= 2) return null;\nreturn \"Ikki marta true konsolga chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Chegara: ikki xil yo'l bilan bir element",
+      "instruction": "Sahifadagi tugmani ikki usulda tanlang: `document.querySelector(\".btn\")` va `document.getElementById(\"save\")`. Ularning bir xil elementligini (`===`) konsolga chiqaring (`true`).",
+      "startingCode": "// querySelector(\".btn\") va getElementById(\"save\") ni taqqoslang\n",
+      "hint": "const byClass = document.querySelector(\".btn\");\nconst byId = document.getElementById(\"save\");\nconsole.log(byClass === byId);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"querySelector\") || !code.includes(\"getElementById\")) return \"Ikkala metod ishlatilmadi\";\nif (out.includes(\"true\")) return null;\nreturn \"true konsolga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Chegara: topilmaganda shart bilan javob",
+      "instruction": "`document.getElementById(\"missing\")` natijasini `el` ga saqlang. Agar `el === null` bo'lsa `\"Element topilmadi\"`, aks holda `\"Topildi\"` deb konsolga chiqaring.",
+      "startingCode": "const el = document.getElementById(\"missing\");\n// if bilan el === null ni tekshirib, mos matn chiqaring\n",
+      "hint": "const el = document.getElementById(\"missing\");\n\nif (el === null) {\n  console.log(\"Element topilmadi\");\n} else {\n  console.log(\"Topildi\");\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nif (!code.includes(\"if\")) return \"Shart (if) ishlatilmadi\";\nif (out.some((m) => m.includes(\"Element topilmadi\"))) return null;\nreturn \"\\\"Element topilmadi\\\" konsolga chiqmadi\";"
     }
   ],
   quizzes: [
@@ -238,6 +294,114 @@ Keyingi darsda: Elementni o'zgartirish — \`textContent\` va \`classList\` bila
       ],
       correctAnswer: 0,
       explanation: "Agar element HTML sahifada topilmasa, metod xato bermaydi, balki null qiymatini qaytaradi."
+    },
+    {
+      "id": 4,
+      "question": "`document.getElementById(\"#title\")` deb panjara bilan yozilsa nima bo'ladi?",
+      "options": [
+        "Element topiladi",
+        "null qaytadi, chunki u `#title` nomli ID ni qidiradi",
+        "Xatolik chiqadi",
+        "Sahifa yangilanadi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "getElementById faqat ID ning toza nomini oladi; panjara qo'yilsa mos element topilmaydi."
+    },
+    {
+      "id": 5,
+      "question": "`document.querySelector(\".menu\")` qanday elementni qidiradi?",
+      "options": [
+        "id=\"menu\" bo'lgan elementni",
+        "class=\"menu\" bo'lgan elementni",
+        "<menu> tegini",
+        "Faqat tugmalarni"
+      ],
+      "correctAnswer": 1,
+      "explanation": "querySelector CSS selektorlari bilan ishlaydi: nuqta (.) klass ma'nosini bildiradi."
+    },
+    {
+      "id": 6,
+      "question": "querySelector ga bir nechta element mos kelsa, qaysi biri tanlanadi?",
+      "options": [
+        "Eng birinchi uchragan element",
+        "Eng oxirgi element",
+        "Hammasi massiv bo'lib qaytadi",
+        "Hech biri, null qaytadi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "querySelector hujjat tartibida birinchi mos elementni oladi; hammasi kerak bo'lsa boshqa metod kerak."
+    },
+    {
+      "id": 7,
+      "question": "`getElementById` va `querySelector` orasidagi asosiy farq nima?",
+      "options": [
+        "getElementById faqat ID bo'yicha, querySelector esa har qanday CSS selektor bo'yicha qidiradi",
+        "querySelector faqat ID bo'yicha qidiradi",
+        "Ikkalasi faqat klass bo'yicha qidiradi",
+        "Farqi yo'q"
+      ],
+      "correctAnswer": 0,
+      "explanation": "getElementById faqat ID oladi (panjarasiz), querySelector esa #id, .klass va teg kabi selektorlarni tushunadi."
+    },
+    {
+      "id": 8,
+      "question": "Sahifada mos element bo'lmasa `querySelector` nima qaytaradi?",
+      "options": [
+        "undefined",
+        "false",
+        "null",
+        "Xatolik (Error)"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Elementni tanlash metodlari topilmasa xato bermaydi, null qaytaradi."
+    },
+    {
+      "id": 9,
+      "question": "`document.querySelector(\"h1\")` selektori nimani bildiradi?",
+      "options": [
+        "id=\"h1\" bo'lgan elementni",
+        "class=\"h1\" bo'lgan elementni",
+        "`<h1>` tegini",
+        "h1 nomli o'zgaruvchini"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Hech qanday belgi qo'yilmasa, selektor teg nomi sifatida o'qiladi."
+    },
+    {
+      "id": 10,
+      "question": "Tanlangan elementni o'zgaruvchiga saqlash nega foydali?",
+      "options": [
+        "Elementni bir marta topib, keyin bir necha marta ishlatish uchun",
+        "Faqat chiroyli ko'rinishi uchun",
+        "Elementni sahifadan o'chirish uchun",
+        "Saqlash shart emas, har doim qaytadan yozish kerak"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Bir marta tanlab o'zgaruvchiga olsak, keyingi qatorlarda uni qayta qidirmasdan ishlatamiz."
+    },
+    {
+      "id": 11,
+      "question": "`document.querySelector(\"#save\")` va `document.getElementById(\"save\")` bir xil elementni bersa, ularning taqqoslashi (`===`) qanday natija beradi?",
+      "options": [
+        "true — ikkalasi bir xil elementga havola qiladi",
+        "false — har safar yangi obyekt yaratiladi",
+        "undefined",
+        "Xatolik chiqadi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Ikki metod ham sahifadagi o'sha bir elementni qaytaradi, shuning uchun havolalar teng."
+    },
+    {
+      "id": 12,
+      "question": "Elementni tanlab olmasdan turib uni o'zgartirish mumkinmi?",
+      "options": [
+        "Ha, JavaScript elementni o'zi topadi",
+        "Yo'q, avval elementi tanlab olish kerak",
+        "Faqat CSS orqali mumkin",
+        "Ha, faqat tugmalar uchun mumkin"
+      ],
+      "correctAnswer": 1,
+      "explanation": "HTML va JavaScript o'rtasidagi ko'prik — elementni tanlash; usiz hech narsani boshqarib bo'lmaydi."
     }
   ]
 };

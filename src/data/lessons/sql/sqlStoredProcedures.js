@@ -1,5 +1,5 @@
 export const sqlStoredProcedures = {
-  id: "sql_stored_procedures",
+  id: "sqlStoredProcedures",
   title: "SQL Stored Procedures",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish

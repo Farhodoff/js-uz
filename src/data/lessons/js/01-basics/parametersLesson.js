@@ -4,244 +4,434 @@ export const parametersLesson = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-O'tgan darsda ko'rganimizdek, parametrsiz funksiya — faqat bitta belgilangan ishni qiluvchi oddiy choynak edi: har doim bir xil natija berardi.
-Endi tasavvur qiling, sharbat chiqargich (sokovijimalka): uning yuqorisida meva solinadigan bo'sh teshigi bor.
-- **Parametr** — sharbat chiqargichning meva solinadigan bo'sh idishi (o'rni).
-- **Argument** — siz o'sha idishga tashlagan haqiqiy meva: "olma" yoki "apelsin".
-Olma tashlasangiz — olma sharbati chiqadi, apelsin tashlasangiz — apelsin sharbati chiqadi!
+Tasavvur qiling, oshxonada retsept bor: "Palov". Lekin har safar har xil go'sht solasiz: bugun mol, ertaga tovuq. Retsept bir xil. Faqat kiruvchi mahsulot o'zgaradi.
 
-**Parametr** — funksiya e'lon qilinayotganda tashqaridan keladigan ma'lumotni kutib olish uchun belgilangan o'zgaruvchidir.
-**Argument** — funksiya chaqirilayotganda unga uzatilgan haqiqiy qiymatdir.
+Dasturlashda funksiya ham shunday. Ichidagi kod bir xil. Lekin har chaqiruvda boshqa qiymat beriladi.
 
-*Yangi terminlar:*
-- **Parametr (parameter)** — funksiya e'lonidagi qavs ichiga yoziladigan qabul qiluvchi o'zgaruvchi.
-- **Argument (argument)** — funksiya chaqiruvida qavs ichiga beriladigan aniq qiymat.
+Parametr — e'lon paytida qavs ichiga yoziladigan nom (qabul qiluvchi). Argument — chaqiruv paytida beriladigan haqiqiy qiymat (yuboruvchi).
 
 ---
 
 ## 2. Nega kerak?
 
-Parametrsiz funksiya har doim bir xil natija beradi (masalan, faqat \`"Salom, Ali!"\` deb chiqaradi). Agar 10 xil odamga alohida salom bermoqchi bo'lsak, 10 ta alohida funksiya yozishga to'g'ri kelardi.
+Uch kishiga salom berish kerak: Ali, Vali, Guli. Parametrsiz uchta funksiya yoziladi:
 
-Parametr yordamida bitta umumiy \`greet(name)\` funksiyasi yoziladi. Unga kimning ismini uzatsak (argument sifatida), aynan o'sha odamga mos xabar chiqaradi. Kodimiz moslashuvchan va universal bo'ladi.
+\`\`\`javascript
+function salomAli() {
+  console.log("Salom, Ali!");
+}
+function salomVali() {
+  console.log("Salom, Vali!");
+}
+function salomGuli() {
+  console.log("Salom, Guli!");
+}
+\`\`\`
+
+Uch nusxa. Faqat ism farq qiladi.
+
+Muammo shunda: bir xil ishni har xil qiymat bilan takrorlash kerak. Yechim — parametr. Bitta funksiya. Har safar boshqa argument:
+
+\`\`\`javascript
+function salom(ism) {
+  console.log("Salom!");
+  console.log(ism);
+}
+salom("Ali");
+salom("Vali");
+\`\`\`
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod kiritilgan ismga qarab moslashtirilgan salom xabarini konsolga chiqaradi.
+Bu kod bitta parametrli funksiyani e'lon qiladi va chaqiradi.
 
 \`\`\`javascript
-function greet(name) { // name — parametr (qabul qiluvchi)
-  console.log("Salom, " + name + "!"); // parametr qiymatini ishlatish
+function salom(ism) { // ism — parametr
+  console.log(ism); // Berilgan qiymat chiqadi
 }
-
-greet("Ali"); // "Ali" — argument (haqiqiy qiymat)
+salom("Ali"); // "Ali" — argument
 \`\`\`
 
 \`\`\`text
-// Natija:
-Salom, Ali!
+// Natija: Ali
 \`\`\`
 
 ---
 
 ## 4. Qator-baqator tahlil
 
-- \`function greet(name) {\` — \`greet\` nomli funksiya e'lon qilindi. Qavs ichidagi \`name\` — bu **parametr**. U funksiya ichida xuddi oddiy o'zgaruvchi kabi ishlaydi, lekin o'z qiymatini tashqaridan (chaqiruvdan) oladi.
-- \`console.log("Salom, " + name + "!");\` — \`"Salom, "\` matni va \`name\` parametri qiymati birlashtirilib ekranga chiqariladi.
-- \`}\` — funksiya tanasining yopilishi.
-- \`greet("Ali");\` — funksiya chaqirildi. Qavs ichida berilgan \`"Ali"\` matni — bu **argument**. Dastur \`"Ali"\` qiymatini \`name\` parametriga joylaydi va funksiyani ishga tushiradi.
+- \`function salom(ism) {\` — e'lon. Qavs ichidagi \`ism\` — parametr. Bo'sh o'rin. Hali qiymat yo'q.
+- \`console.log(ism);\` — funksiya ichida parametr oddiy o'zgaruvchidek ishlatiladi.
+- \`salom("Ali");\` — chaqiruv. Qavs ichidagi \`"Ali"\` — argument. Haqiqiy qiymat.
+- Chaqiruvda argument parametr o'rniga o'tiradi. Natijada \`Ali\` chiqadi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-Har xil argumentlar berilganda parametrlar qanday o'zgarishini jadvalda kuzatamiz:
+Qiymat qanday uzatiladi:
 
-| Qadam | Chaqiruv | Argument (berilgan qiymat) | Parametr (\`name\`) | console.log natijasi |
-|---|---|---|---|---|
-| 1 | \`greet("Ali");\` | \`"Ali"\` | \`name = "Ali"\` | \`"Salom, Ali!"\` |
-| 2 | \`greet("Zuhra");\` | \`"Zuhra"\` | \`name = "Zuhra"\` | \`"Salom, Zuhra!"\` |
-
-*Eslab qolish uchun formula:*
-- **Parametr** = e'londagi bo'sh o'rin (retseptdagi masalliq nomi).
-- **Argument** = chaqiruvdagi aniq qiymat (qozonga solingan haqiqiy masalliq).
+| Qadam | Kod qatori | Holat | Natija |
+|---|---|---|---|
+| 1 | \`function salom(ism) {\` ... \`}\` | E'lon | Saqlandi, \`ism\` bo'sh |
+| 2 | \`salom("Ali");\` | Chaqiruv | \`"Ali"\` ismga o'tdi |
+| 3 | \`console.log(ism);\` | — | Ali chiqdi |
 
 ---
 
 ## 6. Yana bitta misol
 
-1-misoldan farqi: funksiyaga bittadan ortiq parametr (ikkita parametr, vergul bilan ajratilgan) beramiz.
+Bu kod ikkita parametrli funksiyani ko'rsatadi.
 
 \`\`\`javascript
-function printSum(a, b) { // ikkita parametr: a va b
-  let total = a + b; // yig'indini hisoblash
-  console.log("Yig'indi: " + total); // natijani chiqarish
+function tanish(ism, yosh) { // Ikkita parametr
+  console.log(ism); // Birinchi qiymat chiqadi
+  console.log(yosh); // Ikkinchi qiymat chiqadi
 }
-
-printSum(5, 3); // ikkita argument: a = 5, b = 3
+tanish("Ali", 20); // Ikkita argument
 \`\`\`
 
 \`\`\`text
 // Natija:
-Yig'indi: 8
+Ali
+20
 \`\`\`
+
+Qator-baqator tahlil:
+- \`(ism, yosh)\` — ikkita parametr. Vergul bilan ajratiladi. Tartib muhim.
+- \`("Ali", 20)\` — ikkita argument. Birinchi birinchi o'ringa, ikkinchi ikkinchi o'ringa o'tadi.
+- Natijada \`Ali\` va \`20\` chiqadi.
 
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1-xato: Argument berishni unutib qoldirish
-
+### 1. Parametrga let yozish
+❌ Xato kod:
 \`\`\`javascript
-function greet(name) {
-  console.log("Salom, " + name);
+function salom(let ism) {
+  console.log(ism);
 }
-greet(); // XATO: argument berilmadi!
 \`\`\`
-
-**Nima bo'ladi:** Konsolga \`"Salom, undefined"\` deb chiqadi. Chunki parametr qiymatsiz chaqirilsa, uning qiymati avtomatik ravishda \`undefined\` bo'lib qoladi.
-**To'g'ri varianti:** Chaqirishda parametrga mos argument uzatish kerak: \`greet("Ali");\`.
-
-### 2-xato: Argumentlar tartibini adashtirish
-
+Nima bo'ladi: \`SyntaxError: Unexpected identifier 'ism'\` xatoligi yuz beradi. Parametr o'zgaruvchi emas. \`let\` yozilmaydi. Faqat nom yoziladi.
+✅ To'g'ri variant:
 \`\`\`javascript
-function printFullName(firstName, lastName) {
-  console.log(firstName + " " + lastName);
-}
-printFullName("Karimov", "Anvar"); // XATO: familiya va ism o'rni almashib ketdi
-\`\`\`
-
-**Nima bo'ladi:** Konsolga \`"Karimov Anvar"\` chiqadi. Chunki JavaScript argumentlarni parametrlar nomi bo'yicha emas, faqat qavs ichidagi yozilish tartibi bo'yicha parametrga yuklaydi.
-**To'g'ri varianti:** Argumentlarni parametrlarning asl tartibiga mos uzating: \`printFullName("Anvar", "Karimov");\`.
-
-### 3-xato: Parametrni funksiya ichida qayta let bilan e'lon qilish
-
-\`\`\`javascript
-function greet(name) {
-  let name = "Ali"; // XATO: name allaqachon parametr sifatida mavjud!
-  console.log(name);
+function salom(ism) {
+  console.log(ism);
 }
 \`\`\`
 
-**Nima bo'ladi:** \`SyntaxError: Identifier 'name' has already been declared\` xatosi chiqadi.
-**To'g'ri varianti:** Parametr o'zi o'zgaruvchi hisoblanadi, uni funksiya ichida qayta \`let\` bilan e'lon qilmang.
+### 2. Argument bermaslik
+❌ Xato kod:
+\`\`\`javascript
+function salom(ism) {
+  console.log(ism);
+}
+salom();
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin \`undefined\` chiqadi. Sababi: parametrga hech narsa kelmadi. Bo'sh o'rin bo'shligicha qoldi.
+✅ To'g'ri variant:
+\`\`\`javascript
+function salom(ism) {
+  console.log(ism);
+}
+salom("Ali"); // Argument beriladi
+\`\`\`
+
+### 3. Tartibni aralashtirish
+❌ Xato kod:
+\`\`\`javascript
+function tanish(ism, yosh) {
+  console.log(ism);
+  console.log(yosh);
+}
+tanish(20, "Ali");
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin \`20\` va \`Ali\` chiqadi. Teskari. Sababi: argumentlar tartib bo'yicha o'tadi. Birinchi — birinchi o'ringa.
+✅ To'g'ri variant:
+\`\`\`javascript
+function tanish(ism, yosh) {
+  console.log(ism);
+  console.log(yosh);
+}
+tanish("Ali", 20); // Tartib to'g'ri
+\`\`\`
 
 ---
 
 ## 8. Tekshiruv
 
-### 1-mashq (oson)
-\`showScore\` nomli bitta \`points\` parametrli funksiya yarating. U konsolga \`"Ball: " + points\` deb chiqarsin. Funksiyani \`100\` argumenti bilan chaqiring.
+### 1-mashq (Oson)
+\`salom(ism)\` funksiyasini e'lon qiling (ichida \`ism\` chiqsin). \`"Ali"\` bilan chaqiring.
 
-### 2-mashq (o'rtacha)
-\`printMultiplication(x, y)\` nomli funksiya e'lon qiling. U \`x * y\` natijasini konsolga chiqarsin. Funksiyani \`4\` va \`5\` argumentlari bilan chaqiring.
+### 2-mashq (O'rtacha)
+\`tanish(ism, yosh)\` funksiyasini e'lon qiling (ikkalsini chiqarsin). \`"Ali"\`, \`20\` bilan chaqiring.
 
-### 3-mashq (chegara holat)
-Quyidagi kod ishlaganda konsolga nima chiqadi?
+### 3-mashq (Chegara holat)
+Argument bermasdan chaqiring: \`salom()\`. \`undefined\` chiqishini tasdiqlang (bu xato emas).
+
+### Javoblar:
+1.
 \`\`\`javascript
-function checkValue(x) {
-  console.log(x);
+function salom(ism) {
+  console.log(ism);
 }
-checkValue();
+salom("Ali");
 \`\`\`
-
----
-
-### Javoblar
-
-**1-mashq javobi:**
+2.
 \`\`\`javascript
-function showScore(points) {
-  console.log("Ball: " + points);
+function tanish(ism, yosh) {
+  console.log(ism);
+  console.log(yosh);
 }
-showScore(100);
+tanish("Ali", 20);
 \`\`\`
-
-**2-mashq javobi:**
+3.
 \`\`\`javascript
-function printMultiplication(x, y) {
-  console.log(x * y);
+function salom(ism) {
+  console.log(ism);
 }
-printMultiplication(4, 5);
+salom(); // undefined chiqadi
 \`\`\`
-
-**3-mashq javobi:**
-\`undefined\` chiqadi. Chunki chaqirishda argument berilmagan, parametr esa avtomatik \`undefined\` bo'ladi.
 
 ---
 
 ## 9. Xulosa
 
-1. Parametr — funksiya e'lonida qavs ichida kutiladigan o'zgaruvchi, argument — chaqiruvda uzatiladigan haqiqiy qiymatdir.
-2. Bir nechta parametrlar va argumentlar vergul (\`,\`) bilan ajratiladi va ketma-ketlik bo'yicha mos keladi.
-3. Argument berilmagan parametr avtomatik ravishda \`undefined\` qiymatini oladi.
+1. Parametr — e'londagi nom. Argument — chaqiruvdagi qiymat.
+2. Argument parametr o'rniga tartib bo'yicha o'tadi.
+3. Argument berilmasa, parametr \`undefined\` bo'lib qoladi.
 
-Keyingi darsda: Funksiya bajargan ish natijasini tashqariga qaytarish uchun \`return\` operatorini o'rganamiz.
+Keyingi darsda: funksiyadan qiymat qaytaradigan \`return\` bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "showScore funksiyasiga parametr berish",
-      instruction: "\`points\` parametrini qabul qiluvchi \`showScore\` nomli funksiya e'lon qiling. U konsolga \`\"Ball: \" + points\` deb chiqarsin. Funksiyani \`100\` argumenti bilan chaqiring.",
-      startingCode: "// showScore funksiyasini yozing va chaqiring\n",
-      hint: "function showScore(points) {\n  console.log(\"Ball: \" + points);\n}\nshowScore(100);",
-      test: "if (!code.includes('function')) return 'function kalit so\\'zi ishlatilmadi';\nif (!code.includes('points')) return 'points parametri ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ball: 100'))) return null;\nreturn 'Konsolga \"Ball: 100\" xabari chiqmadi';"
+      title: "Bitta parametr",
+      instruction: "`salom(ism)` funksiyasini e'lon qiling (ichida `ism` chiqsin). `\"Ali\"` bilan chaqiring.",
+      startingCode: "// salom(ism) ni e'lon qiling va chaqiring\n",
+      hint: "function salom(ism) {\n  console.log(ism);\n}\nsalom(\"Ali\");",
+      test: "if (!code.includes('function salom')) return 'funksiyani elon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi';"
     },
     {
       id: 2,
-      title: "Ikkita parametrli funksiya",
-      instruction: "\`printMultiplication(x, y)\` nomli funksiya yozing, u konsolga \`x * y\` natijasini chiqarsin. Funksiyani \`4\` va \`5\` argumentlari bilan chaqiring.",
-      startingCode: "// printMultiplication funksiyasini yozing va chaqiring\n",
-      hint: "function printMultiplication(x, y) {\n  console.log(x * y);\n}\nprintMultiplication(4, 5);",
-      test: "if (!code.includes('function')) return 'function kalit so\\'zi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('20'))) return null;\nreturn 'Konsolga 20 chiqmadi';"
+      title: "Boshqa argument",
+      instruction: "`salom(ism)` funksiyasini e'lon qiling. `\"Vali\"` bilan chaqiring.",
+      startingCode: "// salom(ism) ni e'lon qiling va Vali bilan chaqiring\n",
+      hint: "function salom(ism) {\n  console.log(ism);\n}\nsalom(\"Vali\");",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Vali'))) return null;\nreturn 'Vali chiqmadi';"
     },
     {
       id: 3,
-      title: "Argument berishdagi xatoni to'g'rilash",
-      instruction: "Quyidagi kodda \`greet\` chaqirilgan, lekin argument berilmagan. Unga \`\"Farhod\"\` argumentini uzating, toki \`\"Salom, Farhod!\"\` chiqsin.",
-      startingCode: "function greet(name) {\n  console.log(\"Salom, \" + name + \"!\");\n}\n// Argument bering:\ngreet();\n",
-      hint: "greet(\"Farhod\");",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom, Farhod!'))) return null;\nreturn 'Konsolga \"Salom, Farhod!\" chiqmadi';"
+      title: "Ikkita parametr",
+      instruction: "`tanish(ism, yosh)` ni e'lon qiling (ikkalsini chiqarsin). `\"Ali\"`, `20` bilan chaqiring.",
+      startingCode: "// tanish(ism, yosh) ni e'lon qiling va chaqiring\n",
+      hint: "function tanish(ism, yosh) {\n  console.log(ism);\n  console.log(yosh);\n}\ntanish(\"Ali\", 20);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Ali,20') return null;\nreturn 'Ali va 20 chiqishi kerak';"
+    },
+    {
+      id: 4,
+      title: "let xatosini tuzatish",
+      instruction: "`function salom(let ism)` dagi `let` ni olib tashlang. `\"Ali\"` bilan chaqiring.",
+      startingCode: "function salom(let ism) {\n  console.log(ism);\n}\nsalom(\"Ali\");\n",
+      hint: "function salom(ism) {",
+      test: "if (code.includes('let ism')) return 'parametrda let yozilmaydi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "Argument qo'shish",
+      instruction: "`salom();` bo'sh chaqirilmoqda. `\"Ali\"` argumentini qo'shing.",
+      startingCode: "function salom(ism) {\n  console.log(ism);\n}\nsalom();\n",
+      hint: "salom(\"Ali\");",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi';"
+    },
+    {
+      id: 6,
+      title: "Tartibni tuzatish (chegara)",
+      instruction: "`tanish(20, \"Ali\")` teskari yozilgan. To'g'rilang: `Ali` va `20` chiqsin.",
+      startingCode: "function tanish(ism, yosh) {\n  console.log(ism);\n  console.log(yosh);\n}\ntanish(20, \"Ali\");\n",
+      hint: "tanish(\"Ali\", 20);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Ali,20') return null;\nreturn 'Ali va 20 (shu tartibda) chiqishi kerak';"
+    },
+    {
+      id: 7,
+      title: "Son argument (chegara)",
+      instruction: "`yosh(qiymat)` funksiyasini e'lon qiling (ichida `qiymat` chiqsin). `25` bilan chaqiring.",
+      startingCode: "// yosh(qiymat) ni e'lon qiling va 25 bilan chaqiring\n",
+      hint: "function yosh(qiymat) {\n  console.log(qiymat);\n}\nyosh(25);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '25')) return null;\nreturn '25 chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Mantiqiy argument (chegara)",
+      instruction: "`holat(qiymat)` ni e'lon qiling. `true` bilan chaqiring.",
+      startingCode: "// holat(qiymat) ni e'lon qiling va true bilan chaqiring\n",
+      hint: "function holat(qiymat) {\n  console.log(qiymat);\n}\nholat(true);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'true')) return null;\nreturn 'true chiqmadi';"
+    },
+    {
+      id: 9,
+      title: "Uchta parametr (chegara)",
+      instruction: "`info(a, b, c)` ni e'lon qiling (uchalasini chiqarsin). `\"X\"`, `\"Y\"`, `\"Z\"` bilan chaqiring.",
+      startingCode: "// info(a, b, c) ni e'lon qiling va chaqiring\n",
+      hint: "function info(a, b, c) {\n  console.log(a);\n  console.log(b);\n  console.log(c);\n}\ninfo(\"X\", \"Y\", \"Z\");",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'X,Y,Z') return null;\nreturn 'X, Y, Z chiqishi kerak';"
+    },
+    {
+      id: 10,
+      title: "Ikki marta turli argument (chegara)",
+      instruction: "`salom(ism)` ni e'lon qiling. Avval `\"Ali\"`, keyin `\"Vali\"` bilan chaqiring (ikkalsi ham chiqsin).",
+      startingCode: "function salom(ism) {\n  console.log(ism);\n}\n// Ikki marta chaqiring\n",
+      hint: "salom(\"Ali\");\nsalom(\"Vali\");",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Ali,Vali') return null;\nreturn 'Ali va Vali chiqishi kerak';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Parametr va argument orasidagi asosiy farq nima?",
+      question: "`function salom(ism) { console.log(ism); } salom(\"Ali\");` nima chiqaradi?",
       options: [
-        "Parametr — e'lon qilinadigan qabul qiluvchi o'zgaruvchi, argument — chaqiruvda beriladigan haqiqiy qiymat",
-        "Parametr chaqirishda beriladi, argument e'londa yoziladi",
-        "Hech qanday farqi yo'q, ikkalasi bir xil narsa",
-        "Parametr faqat son bo'ladi, argument faqat matn bo'ladi"
+        "ism",
+        "Ali",
+        "undefined",
+        "Xatolik"
       ],
-      correctAnswer: 0,
-      explanation: "Funksiya qavsida e'lon qilingan o'rin egasi parametr (parameter) deyiladi, uni chaqirganda uzatilgan aniq qiymat esa argument deyiladi."
+      correctAnswer: 1,
+      explanation: "Argument parametr o'rniga o'tadi: ism Ali bo'ladi."
     },
     {
       id: 2,
-      question: "Agar funksiya parametr kutsa, lekin uni chaqirganda argument berilmasa, parametr qiymati nima bo'ladi?",
+      question: "Parametr bilan argument farqi nima?",
       options: [
-        "undefined",
-        "null",
-        "0",
-        "Dastur darhol xato beradi"
+        "Farqi yo'q",
+        "Parametr e'londagi nom, argument chaqiruvdagi qiymat",
+        "Argument e'londagi nom, parametr chaqiruvdagi qiymat",
+        "Ikkalasi ham qiymat"
       ],
-      correctAnswer: 0,
-      explanation: "JavaScript da argument berilmagan parametrlar avtomatik ravishda undefined qiymatini oladi."
+      correctAnswer: 1,
+      explanation: "Parametr — bo'sh o'rin. Argument — haqiqiy qiymat."
     },
     {
       id: 3,
-      question: "Bir nechta parametr yoki argumentlar bir-biridan qaysi belgi bilan ajratiladi?",
+      question: "`function salom(ism) { console.log(ism); } salom();` nima chiqaradi?",
       options: [
-        ", (vergul)",
-        "; (nuqta-vergul)",
-        ": (ikki nuqta)",
-        "Probel bilan"
+        "Xatolik",
+        "undefined",
+        "Bo'sh qator",
+        "ism"
       ],
-      correctAnswer: 0,
-      explanation: "Qavs ichidagi parametrlar ham, chaqiruvdagi argumentlar ham doimo vergul (,) bilan ajratiladi."
+      correctAnswer: 1,
+      explanation: "Argument kelmagan. Parametr bo'sh qolgan: undefined."
+    },
+    {
+      id: 4,
+      question: "`function salom(let ism) { ... }` qatorida nima bo'ladi?",
+      options: [
+        "Ishlaydi",
+        "SyntaxError beradi",
+        "Ogohlantirish beradi",
+        "Hech narsa bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Parametrda let yozilmaydi. Faqat nom yoziladi."
+    },
+    {
+      id: 5,
+      question: "`function tanish(ism, yosh) { console.log(ism); console.log(yosh); } tanish(\"Ali\", 20);` nima chiqaradi?",
+      options: [
+        "20, Ali",
+        "Ali, 20",
+        "Xatolik",
+        "Hech narsa"
+      ],
+      correctAnswer: 1,
+      explanation: "Tartib bo'yicha o'tadi: birinchi birinchi o'ringa."
+    },
+    {
+      id: 6,
+      question: "`function tanish(ism, yosh) { console.log(ism); console.log(yosh); } tanish(20, \"Ali\");` nima chiqaradi?",
+      options: [
+        "Ali, 20",
+        "20, Ali",
+        "Xatolik",
+        "Hech narsa"
+      ],
+      correctAnswer: 1,
+      explanation: "Tartib teskari berilgan: birinchi 20 chiqadi."
+    },
+    {
+      id: 7,
+      question: "Argument qayerda yoziladi?",
+      options: [
+        "E'londa",
+        "Chaqiruvda",
+        "Ikkalasida ham",
+        "Hech qayerda"
+      ],
+      correctAnswer: 1,
+      explanation: "Haqiqiy qiymat chaqiruv paytida beriladi."
+    },
+    {
+      id: 8,
+      question: "`function yosh(qiymat) { console.log(qiymat); } yosh(25);` nima chiqaradi?",
+      options: [
+        "qiymat",
+        "25",
+        "undefined",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "25 qiymat o'rniga o'tadi."
+    },
+    {
+      id: 9,
+      question: "`function info(a, b, c) { console.log(a); console.log(b); console.log(c); } info(\"X\", \"Y\", \"Z\");` nima chiqaradi?",
+      options: [
+        "X, Y",
+        "X, Y, Z",
+        "Z, Y, X",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Uchala argument o'z o'rniga o'tadi."
+    },
+    {
+      id: 10,
+      question: "`function salom(ism) { console.log(ism); } salom(\"Ali\"); salom(\"Vali\");` nima chiqaradi?",
+      options: [
+        "Faqat Ali",
+        "Ali, Vali",
+        "Faqat Vali",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Har chaqiruvda yangi argument keladi."
+    },
+    {
+      id: 11,
+      question: "Parametr ichida nima turadi (e'lon paytida)?",
+      options: [
+        "Haqiqiy qiymat",
+        "Bo'sh o'rin (nom)",
+        "Natija",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "E'londa faqat nom bo'ladi. Qiymat keyin keladi."
+    },
+    {
+      id: 12,
+      question: "`function holat(qiymat) { console.log(qiymat); } holat(true);` nima chiqaradi?",
+      options: [
+        "qiymat",
+        "true",
+        "undefined",
+        "1"
+      ],
+      correctAnswer: 1,
+      explanation: "true argument sifatida o'tadi."
     }
   ]
 };

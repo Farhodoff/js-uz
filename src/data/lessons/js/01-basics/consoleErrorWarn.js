@@ -199,6 +199,62 @@ Keyingi darsda: Xatolarni ushlash va dastur to'xtab qolishining oldini olish —
       startingCode: "const speed = 130;\n// speed > 120 bo'lsa console.warn, aks holda console.log chiqaring\n",
       hint: "if (speed > 120) {\n  console.warn(\"Tezlik yuqori: \" + speed);\n} else {\n  console.log(\"Tezlik me'yorda\");\n}",
       test: "if (!code.includes('console.warn')) return 'console.warn ishlatilmadi';\nlet out = [];\nconst orig = console.warn;\nconsole.warn = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.warn = orig; }\nif (out.some(m => m.includes('Tezlik yuqori') && m.includes('130'))) return null;\nreturn 'Tezlik yuqori ogohlantirishi chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Xatolik xabarini chiqarish",
+      "instruction": "`console.error` yordamida `\"Ulanish uzildi\"` xato xabarini konsolga chiqaring.",
+      "startingCode": "// console.error yordamida xato xabarini chiqaring\n",
+      "hint": "console.error(\"Ulanish uzildi\");",
+      "test": "if (!code.includes(\"console.error\")) return \"console.error ishlatilmadi\";\nlet out = [];\nconst orig = console.error;\nconsole.error = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.error = orig; }\nif (out.some((m) => m.includes(\"Ulanish uzildi\"))) return null;\nreturn \"Xato xabari konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Shartli ogohlantirish",
+      "instruction": "`const temp = 45;` berilgan. Agar `temp > 40` bo'lsa `console.warn(\"Harorat yuqori\")` chiqaring.",
+      "startingCode": "const temp = 45;\n// temp > 40 bo'lsa console.warn chiqaring\n",
+      "hint": "if (temp > 40) {\n  console.warn(\"Harorat yuqori\");\n}",
+      "test": "if (!code.includes(\"console.warn\")) return \"console.warn ishlatilmadi\";\nlet out = [];\nconst orig = console.warn;\nconsole.warn = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.warn = orig; }\nif (out.some((m) => m.includes(\"Harorat yuqori\"))) return null;\nreturn \"Harorat yuqori ogohlantirishi chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "Yosh bo'yicha tekshiruv",
+      "instruction": "`const age = 15;` berilgan. Agar `age < 18` bo'lsa `console.error(\"Ruxsat yo'q\")`, aks holda `console.log(\"Ruxsat berildi\")` chiqaring.",
+      "startingCode": "const age = 15;\n// age < 18 bo'lsa error, aks holda log chiqaring\n",
+      "hint": "if (age < 18) {\n  console.error(\"Ruxsat yo'q\");\n} else {\n  console.log(\"Ruxsat berildi\");\n}",
+      "test": "if (!code.includes(\"console.error\")) return \"console.error ishlatilmadi\";\nlet out = [];\nconst orig = console.error;\nconsole.error = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.error = orig; }\nif (out.some((m) => m.includes(\"Ruxsat yo'q\"))) return null;\nreturn \"Ruxsat yo'q xabari chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "Log ni error ga o'zgartirish",
+      "instruction": "Quyidagi kodda xato xabari `console.log` bilan chiqarilgan. Uni `console.error` bilan chiqaradigan qilib o'zgartiring (`\"Xatolik yuz berdi\"`).",
+      "startingCode": "console.log(\"Xatolik yuz berdi\");\n",
+      "hint": "console.error(\"Xatolik yuz berdi\");",
+      "test": "if (!code.includes(\"console.error\")) return \"console.error ishlatilmadi\";\nlet out = [];\nconst orig = console.error;\nconsole.error = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.error = orig; }\nif (out.some((m) => m.includes(\"Xatolik yuz berdi\"))) return null;\nreturn \"Xatolik xabari console.error bilan chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "Ogohlantirishda bir nechta qiymat",
+      "instruction": "`console.warn` yordamida bir nechta qiymat bering: matn `\"Zaxira:\"` va son `5` — konsolda `Zaxira: 5` ko'rinishida chiqsin.",
+      "startingCode": "// console.warn bilan \"Zaxira:\" va 5 ni chiqaring\n",
+      "hint": "console.warn(\"Zaxira:\", 5);",
+      "test": "if (!code.includes(\"console.warn\")) return \"console.warn ishlatilmadi\";\nlet out = [];\nconst orig = console.warn;\nconsole.warn = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.warn = orig; }\nif (out.some((m) => m.includes(\"Zaxira:\") && m.includes(\"5\"))) return null;\nreturn \"Zaxira: 5 ogohlantirishi chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Bo'sh ro'yxatni tekshirish",
+      "instruction": "`const items = [];` berilgan. Agar ro'yxat bo'sh bo'lsa (`items.length === 0`) `console.warn(\"Ro'yxat bo'sh\")` chiqaring.",
+      "startingCode": "const items = [];\n// bo'sh bo'lsa console.warn chiqaring\n",
+      "hint": "if (items.length === 0) {\n  console.warn(\"Ro'yxat bo'sh\");\n}",
+      "test": "if (!code.includes(\"console.warn\")) return \"console.warn ishlatilmadi\";\nlet out = [];\nconst orig = console.warn;\nconsole.warn = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.warn = orig; }\nif (out.some((m) => m.includes(\"Ro'yxat bo'sh\"))) return null;\nreturn \"Ro'yxat bo'sh ogohlantirishi chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Funksiya ichida tekshirish (chegara)",
+      "instruction": "`check` nomli funksiya son qabul qilsin: manfiy bo'lsa `console.error(\"Manfiy son\")`, aks holda `console.log(\"To'g'ri son\")` chiqarsin. `check(-5)` chaqiring.",
+      "startingCode": "// check(n) funksiyasini yozing va check(-5) chaqiring\n",
+      "hint": "function check(n) {\n  if (n < 0) {\n    console.error(\"Manfiy son\");\n  } else {\n    console.log(\"To'g'ri son\");\n  }\n}\ncheck(-5);",
+      "test": "if (!code.includes(\"console.error\")) return \"console.error ishlatilmadi\";\nlet out = [];\nconst orig = console.error;\nconsole.error = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.error = orig; }\nif (out.some((m) => m.includes(\"Manfiy son\"))) return null;\nreturn \"Manfiy son xabari chiqmadi\";"
     }
   ],
   quizzes: [
@@ -237,6 +293,114 @@ Keyingi darsda: Xatolarni ushlash va dastur to'xtab qolishining oldini olish —
       ],
       correctAnswer: 0,
       explanation: "Jiddiy xatolik va nosozliklarni yaqqol ko'rsatish uchun console.error() eng to'g'ri tanlovdir."
+    },
+    {
+      "id": 4,
+      "question": "`console.warn()` chiqishi brauzer konsolida qanday ajralib turadi?",
+      "options": [
+        "Sariq rangda va ogohlantirish belgisi bilan",
+        "Qizil rangda",
+        "Yashil rangda",
+        "Oddiy qora matnda"
+      ],
+      "correctAnswer": 0,
+      "explanation": "console.warn ogohlantirishlar sariq rangda ko'rsatiladi."
+    },
+    {
+      "id": 5,
+      "question": "`console.error()` chaqirilganda dastur to'xtab qoladimi?",
+      "options": [
+        "Yo'q, kod ishlashda davom etadi",
+        "Ha, darhol to'xtaydi",
+        "Faqat brauzerda to'xtaydi",
+        "Faqat serverda to'xtaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "console.error faqat xabarni chiqaradi; dastur ishlashda davom etadi."
+    },
+    {
+      "id": 6,
+      "question": "`console.log` va `console.error` o'rtasidagi asosiy farq nima?",
+      "options": [
+        "error xabari xatolik sifatida (qizil) ajralib turadi",
+        "error matn chiqara olmaydi",
+        "log faqat sonlar bilan ishlaydi",
+        "Ularning farqi yo'q"
+      ],
+      "correctAnswer": 0,
+      "explanation": "console.error xabarni xatolik darajasida chiqaradi va konsolda ajralib turadi."
+    },
+    {
+      "id": 7,
+      "question": "Jiddiy nosozlik haqida xabar berish uchun qaysi metod mos?",
+      "options": [
+        "console.error()",
+        "console.log()",
+        "console.warn()",
+        "console.clear()"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Jiddiy xatolar uchun console.error ishlatiladi."
+    },
+    {
+      "id": 8,
+      "question": "`console.log(\"Natija:\", 42)` konsolga nima chiqaradi?",
+      "options": [
+        "Natija: 42",
+        "Natija:42",
+        "\"Natija:\" \"42\"",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "console.log bir nechta argumentni bo'sh joy bilan ajratib chiqaradi."
+    },
+    {
+      "id": 9,
+      "question": "`console.warn` ga obyekt uzatish mumkinmi?",
+      "options": [
+        "Ha, obyekt konsolga chiqariladi",
+        "Yo'q, faqat matn",
+        "Yo'q, faqat sonlar",
+        "Faqat massiv"
+      ],
+      "correctAnswer": 0,
+      "explanation": "console metodlari obyekt, massiv kabi har qanday qiymatni qabul qiladi."
+    },
+    {
+      "id": 10,
+      "question": "`console.error(\"X\")` dan keyingi kod bajariladimi?",
+      "options": [
+        "Ha, keyingi qatorlar bajariladi",
+        "Yo'q, dastur to'xtaydi",
+        "Faqat funksiya ichida to'xtaydi",
+        "Faqat sikl ichida to'xtaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "console.error xatoni tashlamaydi, shuning uchun kod davom etadi."
+    },
+    {
+      "id": 11,
+      "question": "Xatoni ushlash (try...catch) keyingi darsda o'rganiladi, lekin hozircha xato xabarini chiqarish uchun nima ishlatiladi?",
+      "options": [
+        "console.error",
+        "throw",
+        "console.warn",
+        "console.log"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Xato xabarini chiqarish uchun console.error ishlatiladi."
+    },
+    {
+      "id": 12,
+      "question": "Ogohlantirish va xatoni vizual ajratish nima uchun foydali?",
+      "options": [
+        "Muhimlik darajasini tez ko'rish uchun",
+        "Kodni tezlashtirish uchun",
+        "Xotirani tejash uchun",
+        "Faylni kichraytirish uchun"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Rang va belgilar orqali ogohlantirish va xatoni tez ajratish mumkin."
     }
   ]
 };

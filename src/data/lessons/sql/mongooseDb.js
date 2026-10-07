@@ -1,5 +1,5 @@
 export const mongooseDb = {
-  id: "mongoose_db",
+  id: "mongooseDb",
   title: "Mongoose bilan Ishlash (ODM)",
   language: "javascript",
   theory: `## 1. 💡 Mongoose: Sodda Tushuntirish

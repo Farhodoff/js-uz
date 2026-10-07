@@ -4,249 +4,425 @@ export const functionDeclaration = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, uyingizdagi elektr choynak yoki blender: uning maxsus "Qaynatish" yoki "Aralashtirish" degan tugmasi bor. Muhandislar bu qurilmani bir marta yasab qo'ygan, siz esa xohlagan paytingizda tugmasini bosib, uni qayta-qayta ishga tushirasiz. Tugmani bosmaguningizcha u o'z-o'zidan ishlamaydi.
-Dasturlashda ham xuddi shunday: ma'lum bir vazifani bajaradigan kodni oldindan tayyorlab qo'yib, kerak bo'lganda tugmasini bosib (chaqirib) ishlatamiz.
+Tasavvur qiling, oshxonada retsept daftari bor. "Mastava" sahifasini ochasiz. Retsept o'zi ovqat pishirmaydi. Uni o'qib, qadamma-qadam bajarsangiz — ovqat tayyor bo'ladi.
 
-**Funksiya (function)** — ma'lum bir vazifani bajaruvchi, nomi orqali istalgan paytda qayta-qayta chaqirib ishlatish mumkin bo'lgan kod blokidir.
+Dasturlashda funksiya (function) xuddi shu retsept sahifasi. Bir marta yoziladi. Kerak bo'lganda chaqiriladi. Har chaqirilganda ichidagi kod ishlaydi.
 
-*Yangi terminlar:*
-- **E'lon qilish (declare/define)** — funksiyaga nom berib, u qanday vazifani bajarishini yozib qo'yish (retsept yozish).
-- **Chaqirish (call/invoke)** — funksiyani nomidan aytib, uning ichidagi kodni ishga tushirish (retsept bo'yicha taom tayyorlash).
+Funksiya — nom berilgan, qayta chaqirib ishlatiladigan kod blokidir.
 
 ---
 
 ## 2. Nega kerak?
 
-Agar dasturimizda bir xil xabarlar yoki buyruqlar kodning 5 ta har xil joyida kerak bo'lsa, o'sha kodni har safar qaytadan nusxalab yozishga (copy-paste) to'g'ri kelardi:
+Mehmonlarga uch marta salom berish kerak. Funksiyasiz uch marta yoziladi:
 
 \`\`\`javascript
-console.log("Xush kelibsiz!");
-console.log("Tizimga muvaffaqiyatli kirdingiz.");
+console.log("Salom!");
+console.log("Salom!");
+console.log("Salom!");
 \`\`\`
 
-Agar bu matnni o'zgartirish kerak bo'lsa, kodning hamma joyidan bittalab tuzatib chiqishga to'g'ri kelardi.
+Ishlaydi. Lekin har safar takrorlanadi. Matn o'zgarsa, uch joyni tuzatish kerak.
 
-Funksiya orqali bu kodni bir joyda saqlaymiz va kerakli paytda atigi bitta qator orqali — uning nomini yozib chaqiramiz. Kod qisqaradi va uni boshqarish juda osonlashadi.
+Muammo shunda: bir ishni ko'p joyda takrorlash kerak. Yechim — funksiya. Bir marta yoziladi. Uch marta chaqiriladi:
+
+\`\`\`javascript
+function salom() {
+  console.log("Salom!");
+}
+salom();
+salom();
+salom();
+\`\`\`
+
+Matn o'zgarsa, bitta joy tuzatiladi.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod konsolga salom xabarini chiqaruvchi funksiya yaratadi va uni chaqirib ishga tushiradi.
+Bu kod bitta funksiyani e'lon qiladi va bir marta chaqiradi.
 
 \`\`\`javascript
-function sayHello() { // funksiyani e'lon qilish
-  console.log("Salom, dunyo!"); // funksiya bajaradigan vazifa
+function salom() { // Funksiya e'lon qilindi
+  console.log("Salom!"); // Ichidagi ish
 }
-
-sayHello(); // funksiyani chaqirish (ishga tushirish)
+salom(); // Funksiya chaqirildi
 \`\`\`
 
 \`\`\`text
-// Natija:
-Salom, dunyo!
+// Natija: Salom!
 \`\`\`
 
 ---
 
 ## 4. Qator-baqator tahlil
 
-- \`function sayHello() {\` —
-  - \`function\` — yangi funksiya e'lon qilinayotganini bildiruvchi kalit so'z.
-  - \`sayHello\` — funksiyaning nomi (o'zgaruvchilar kabi har doim kichik harf bilan boshlanadi).
-  - \`()\` — qavslar (funksiya e'lonida qavslar bo'lishi shart).
-  - \`{\` — funksiya tanasining (body) ochilishi.
-- \`console.log("Salom, dunyo!");\` — funksiya bajarishi kerak bo'lgan kod. Bu kod funksiya chaqirilgandagina ishlaydi.
-- \`}\` — funksiya tanasining yopilishi.
-- \`sayHello();\` — funksiyani chaqirish. Funksiya nomidan keyin \`()\` qo'yish "shu funksiyadagi kodni hozir ishga tushir!" degan buyruqdir.
+- \`function salom() {\` — e'lon. \`function\` so'zi "yangi retsept ochilmoqda" degani. \`salom\` — retsept nomi. Bo'sh qavs — hozircha qo'shimcha yo'q.
+- \`console.log("Salom!");\` — funksiya ichidagi ish. E'lon paytida ishlamaydi. Faqat saqlanadi.
+- \`}\` — e'lon tugadi.
+- \`salom();\` — chaqiruv. Nomdan keyingi qavs "bajar!" degani. Endi ichidagi kod ishladi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-Bajarilish tartibini qadamma-qadam kuzatamiz:
+Kompyuter qanday harakat qiladi:
 
-| Qadam | Kod qatori | Nima sodir bo'ladi? | Konsol |
+| Qadam | Kod qatori | Holat | Natija |
 |---|---|---|---|
-| 1 | \`function sayHello() { ... }\` | Funksiya xotirada saqlandi, lekin hali ishga tushmadi | (bo'sh) |
-| 2 | \`sayHello();\` | Funksiya chaqirildi, boshqaruv funksiya ichiga o'tdi | (bo'sh) |
-| 3 | \`console.log("Salom, dunyo!");\` | Funksiya tanasidagi buyruq bajarildi | "Salom, dunyo!" |
-| 4 | \`}\` | Funksiya yakunlandi, boshqaruv yana tashqariga qaytdi | "Salom, dunyo!" |
+| 1 | \`function salom() {\` ... \`}\` | E'lon | Saqlandi, ishlamadi |
+| 2 | \`salom();\` | Chaqiruv | Blok ichiga kirildi |
+| 3 | \`console.log("Salom!");\` | — | Salom! chiqdi |
 
-*Muhim qoida:* Funksiya faqat e'lon qilingani bilan o'z-o'zidan ishlamaydi! Uni albatta qavslar bilan chaqirish (\`nomi()\`) shart.
+E'lon — saqlash. Chaqiruv — bajarish. Ikkisi har xil ish.
 
 ---
 
 ## 6. Yana bitta misol
 
-1-misoldan farqi: bir marta yaratilgan funksiyani bir necha marta qayta-qayta chaqiramiz.
+Bu kod bitta funksiyani ikki marta chaqiradi.
 
 \`\`\`javascript
-function ringBell() { // qo'ng'iroq chalish funksiyasi
-  console.log("Jiring!"); // ovoz chiqarish
+function olqish() { // Funksiya e'lon qilindi
+  console.log("Barakalla!"); // Ichidagi ish
 }
-
-ringBell(); // 1-marta chaqirish
-ringBell(); // 2-marta chaqirish
+olqish(); // Birinchi chaqiruv
+olqish(); // Ikkinchi chaqiruv
 \`\`\`
 
 \`\`\`text
 // Natija:
-Jiring!
-Jiring!
+Barakalla!
+Barakalla!
 \`\`\`
+
+Qator-baqator tahlil:
+- Funksiya bir marta e'lon qilindi.
+- Ikki marta chaqirildi. Har chaqiruvda ichidagi kod qayta ishladi.
+- Natija ikki marta chiqdi.
 
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1-xato: Chaqirishda qavslarni () unutib qoldirish
-
+### 1. Qavsni unutish
+❌ Xato kod:
 \`\`\`javascript
-function sayHello() {
+function salom {
   console.log("Salom!");
 }
-sayHello; // XATO: qavslar qo'yilmadi!
 \`\`\`
-
-**Nima bo'ladi:** Konsolga hech narsa chiqmaydi va funksiya ishlamaydi. Chunki qavssiz yozilgan \`sayHello\` funksiyaning o'zini bildiradi xolos. Uni ishga tushirish uchun esa har doim qavslar kerak: \`sayHello()\`.
-**To'g'ri varianti:** Har doim chaqirishda qavslarni qo'ying: \`sayHello();\`.
-
-### 2-xato: E'lon qilinmagan nomni chaqirish
-
+Nima bo'ladi: \`SyntaxError: Unexpected token '{'\` xatoligi yuz beradi. Nomdan keyin har doim qavs bo'ladi: \`salom()\`. Hozircha bo'sh, lekin shart.
+✅ To'g'ri variant:
 \`\`\`javascript
-showInfo(); // XATO: bunday nomli funksiya yaratilmagan!
+function salom() {
+  console.log("Salom!");
+}
 \`\`\`
 
-**Nima bo'ladi:** \`ReferenceError: showInfo is not defined\` xatosi yuzaga keladi.
-**To'g'ri varianti:** Funksiyani chaqirishdan oldin uning to'g'ri e'lon qilinganiga va nomida imlo xatosi yo'qligiga ishonch hosil qiling.
+### 2. E'lon qilmasdan chaqirish
+❌ Xato kod:
+\`\`\`javascript
+salom();
+\`\`\`
+Nima bo'ladi: \`ReferenceError: salom is not defined\` xatoligi yuz beradi. Chaqirishdan oldin e'lon bo'lishi shart.
+✅ To'g'ri variant:
+\`\`\`javascript
+function salom() {
+  console.log("Salom!");
+}
+salom();
+\`\`\`
 
-### 3-xato: Funksiya nomini noto'g'ri belgilash
-Funksiya nomida raqam bilan boshlash (masalan, \`function 1test() {}\`) yoki kalit so'zlarni ishlatish (masalan, \`function let() {}\`) taqiqlanadi va \`SyntaxError\` beradi.
+### 3. Chaqirmasdan qoldirish
+❌ Xato kod:
+\`\`\`javascript
+function salom() {
+  console.log("Salom!");
+}
+\`\`\`
+Nima bo'ladi: xato bermaydi. Lekin hech narsa chiqmaydi! E'lon — faqat saqlash. Chaqiruv bo'lmasa, kod uxlab yotadi.
+✅ To'g'ri variant:
+\`\`\`javascript
+function salom() {
+  console.log("Salom!");
+}
+salom(); // Chaqiruv shart
+\`\`\`
 
 ---
 
 ## 8. Tekshiruv
 
-### 1-mashq (oson)
-\`showSuccess\` nomli funksiya e'lon qiling. U konsolga \`"Amal bajarildi!"\` deb chiqarsin. So'ngra ushbu funksiyani chaqiring.
+### 1-mashq (Oson)
+\`salom\` funksiyasini e'lon qiling. Ichida \`"Salom!"\` chiqsin. Bir marta chaqiring.
 
-### 2-mashq (o'rtacha)
-\`sayHi\` nomli funksiya yarating, u konsolga \`"Salom!"\` deb chiqarsin. Keyin ushbu funksiyani 2 marta ketma-ket chaqiring.
+### 2-mashq (O'rtacha)
+\`olqish\` funksiyasini e'lon qiling. Ichida \`"Barakalla!"\` chiqsin. Ikki marta chaqiring.
 
-### 3-mashq (chegara holat)
-Quyidagi kod ishlaganda konsolga nimalar chiqadi?
+### 3-mashq (Chegara holat)
+Funksiyani e'lon qiling, lekin chaqirmang. Hech narsa chiqmasligini tasdiqlang (bo'sh natija ham to'g'ri javob).
+
+### Javoblar:
+1.
 \`\`\`javascript
-function printMessage() {
-  console.log("Xabar 1");
-}
-console.log("Boshlanish");
-printMessage();
-console.log("Tugash");
-\`\`\`
-
----
-
-### Javoblar
-
-**1-mashq javobi:**
-\`\`\`javascript
-function showSuccess() {
-  console.log("Amal bajarildi!");
-}
-showSuccess();
-\`\`\`
-
-**2-mashq javobi:**
-\`\`\`javascript
-function sayHi() {
+function salom() {
   console.log("Salom!");
 }
-sayHi();
-sayHi();
+salom();
 \`\`\`
-
-**3-mashq javobi:**
-Konsolga ketma-ket:
-\`\`\`text
-Boshlanish
-Xabar 1
-Tugash
+2.
+\`\`\`javascript
+function olqish() {
+  console.log("Barakalla!");
+}
+olqish();
+olqish();
 \`\`\`
-chiqadi (chunki dastur yuqoridan pastga o'qiladi, \`printMessage()\` chaqirilganda esa funksiya ichidagi kod bajariladi).
+3.
+\`\`\`javascript
+function jim() {
+  console.log("Hech narsa!");
+}
+\`\`\`
 
 ---
 
 ## 9. Xulosa
 
-1. Funksiya — \`function nomi() { ... }\` ko'rinishida e'lon qilinadi va ma'lum bir vazifani bajaruvchi kodni saqlaydi.
-2. Funksiyani ishga tushirish uchun nomidan keyin albatta qavslar qo'yib chaqiriladi: \`nomi()\`.
-3. Bitta e'lon qilingan funksiyani dastur davomida istalgancha marta chaqirish mumkin.
+1. Funksiya — nomlangan kod bloki. \`function\` bilan e'lon qilinadi.
+2. E'lon — saqlash. Chaqiruv (\`salom();\`) — bajarish.
+3. Bir marta yoziladi, ko'p marta chaqiriladi.
 
-Keyingi darsda: Funksiyaga tashqaridan ma'lumot uzatish uchun Parametr va Argumentlar bilan tanishamiz.
+Keyingi darsda: funksiyaga tashqaridan qiymat berish (parametrlar) bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "showSuccess funksiyasini e'lon qilish va chaqirish",
-      instruction: "\`showSuccess\` nomli parametrsiz funksiya e'lon qiling. U konsolga \`\"Amal bajarildi!\"\` deb chiqarsin. So'ngra funksiyani chaqiring.",
-      startingCode: "// showSuccess funksiyasini e'lon qiling va chaqiring\n",
-      hint: "function showSuccess() {\n  console.log(\"Amal bajarildi!\");\n}\nshowSuccess();",
-      test: "if (!code.includes('function')) return 'function kalit so\\'zi ishlatilmadi';\nif (!code.includes('showSuccess')) return 'showSuccess funksiya nomi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Amal bajarildi!'))) return null;\nreturn 'Konsolga \"Amal bajarildi!\" xabari chiqmadi';"
+      title: "Birinchi funksiya",
+      instruction: "`salom` funksiyasini e'lon qiling (ichida `\"Salom!\"` chiqsin). Bir marta chaqiring.",
+      startingCode: "// salom funksiyasini e'lon qiling va chaqiring\n",
+      hint: "function salom() {\n  console.log(\"Salom!\");\n}\nsalom();",
+      test: "if (!code.includes('function salom')) return 'function salom deb elon qiling';\nif (!code.includes('salom()')) return 'salom() deb chaqiring';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'Salom xabari chiqmadi';"
     },
     {
       id: 2,
-      title: "Funksiyani 2 marta chaqirish",
-      instruction: "\`sayHi\` nomli funksiya yarating, u \`\"Salom!\"\` deb chiqarsin. Keyin ushbu funksiyani 2 marta chaqiring.",
-      startingCode: "// sayHi funksiyasini yarating va 2 marta chaqiring\n",
-      hint: "function sayHi() {\n  console.log(\"Salom!\");\n}\nsayHi();\nsayHi();",
-      test: "if (!code.includes('function')) return 'function ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length >= 2 && out.every(m => m.includes('Salom!'))) return null;\nreturn 'Funksiya 2 marta chaqirilmadi yoki xabar to\\'g\\'ri chiqmadi';"
+      title: "Ikki marta chaqirish",
+      instruction: "`olqish` funksiyasini e'lon qiling (ichida `\"Barakalla!\"` chiqsin). Ikki marta chaqiring.",
+      startingCode: "// olqish funksiyasini e'lon qiling va ikki marta chaqiring\n",
+      hint: "function olqish() {\n  console.log(\"Barakalla!\");\n}\nolqish();\nolqish();",
+      test: "if (!code.includes('function olqish')) return 'function olqish deb elon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikki marta chiqishi kerak';\nif (out.every(m => m.includes('Barakalla'))) return null;\nreturn 'Barakalla ikki marta chiqmadi';"
     },
     {
       id: 3,
-      title: "Chaqirishdagi xatoni tuzatish",
-      instruction: "Quyidagi kodda funksiya chaqirilgan, lekin qavslar unutilgan. Funksiyani to'g'ri chaqiring (\`playGame()\`).",
-      startingCode: "function playGame() {\n  console.log(\"O'yin boshlandi\");\n}\n// Funksiyani chaqiring:\nplayGame;\n",
-      hint: "playGame();",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes(\"O'yin boshlandi\"))) return null;\nreturn 'Funksiya chaqirilmadi, qavslarni unutmang: playGame();';"
+      title: "Qavs xatosini tuzatish",
+      instruction: "`function salom {` dagi qavs xatosini tuzating. `\"Salom!\"` chiqsin.",
+      startingCode: "function salom {\n  console.log(\"Salom!\");\n}\nsalom();\n",
+      hint: "function salom() {",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'Salom xabari chiqmadi';"
+    },
+    {
+      id: 4,
+      title: "Chaqiruv qo'shish",
+      instruction: "Funksiya e'lon qilingan, lekin chaqirilmagan. `xabar();` qatorini qo'shing.",
+      startingCode: "function xabar() {\n  console.log(\"Eshitdingizmi?\");\n}\n",
+      hint: "xabar();",
+      test: "if (!code.includes('xabar()')) return 'xabar() deb chaqiring';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Eshitdingizmi'))) return null;\nreturn 'Xabar chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "E'lonni to'ldirish",
+      instruction: "`salom();` chaqiruvi bor, lekin e'loni yo'q. `function salom()` e'lonini qo'shing (`\"Salom!\"` chiqsin).",
+      startingCode: "salom();\n",
+      hint: "function salom() {\n  console.log(\"Salom!\");\n}\nsalom();",
+      test: "if (!code.includes('function salom')) return 'function salom deb elon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'Salom xabari chiqmadi';"
+    },
+    {
+      id: 6,
+      title: "Uch marta chaqirish (chegara)",
+      instruction: "`count` funksiyasini e'lon qiling (ichida `\"Bir!\"` chiqsin). Uch marta chaqiring.",
+      startingCode: "// count funksiyasini e'lon qiling va uch marta chaqiring\n",
+      hint: "function count() {\n  console.log(\"Bir!\");\n}\ncount();\ncount();\ncount();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 3) return 'Uch marta chiqishi kerak';\nreturn null;"
+    },
+    {
+      id: 7,
+      title: "Ikkita funksiya (chegara)",
+      instruction: "`erta` (`\"Ertalab!\"`) va `kech` (`\"Kechqurun!\"`) funksiyalarini e'lon qiling. Ikkalasini bittadan chaqiring.",
+      startingCode: "// erta va kech funksiyalarini e'lon qiling va chaqiring\n",
+      hint: "function erta() {\n  console.log(\"Ertalab!\");\n}\nfunction kech() {\n  console.log(\"Kechqurun!\");\n}\nerta();\nkech();",
+      test: "if (!code.includes('function erta') || !code.includes('function kech')) return 'Ikkala funksiyani elon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Ertalab!,Kechqurun!') return null;\nreturn 'Ertalab! va Kechqurun! chiqishi kerak';"
+    },
+    {
+      id: 8,
+      title: "Chaqirilmagan funksiya (chegara)",
+      instruction: "`jim` funksiyasini e'lon qiling, lekin chaqirmang. Hech narsa chiqmasligi kerak.",
+      startingCode: "// jim funksiyasini e'lon qiling (chaqirmang)\n",
+      hint: "function jim() {\n  console.log(\"Hech narsa!\");\n}",
+      test: "if (!code.includes('function jim')) return 'function jim deb elon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return null;\nreturn 'Chaqirilmagan funksiya hech narsa chiqarmasligi kerak';"
+    },
+    {
+      id: 9,
+      title: "Sikl ichida chaqirish (chegara)",
+      instruction: "`salom` funksiyasini e'lon qiling. `for` bilan uch marta chaqiring (`\"Salom!\"` uch marta chiqsin).",
+      startingCode: "function salom() {\n  console.log(\"Salom!\");\n}\n// for bilan uch marta chaqiring\n",
+      hint: "for (let i = 0; i < 3; i++) {\n  salom();\n}",
+      test: "if (!code.includes('for') || !code.includes('salom()')) return 'for va salom() ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 3) return 'Uch marta chiqishi kerak';\nreturn null;"
+    },
+    {
+      id: 10,
+      title: "Shart bilan chaqirish (chegara)",
+      instruction: "`isDay = true` berilgan. Rost bo'lsa `kunduz()` chaqiring (`\"Kunduz!\"` chiqsin).",
+      startingCode: "function kunduz() {\n  console.log(\"Kunduz!\");\n}\nlet isDay = true;\n// if bilan chaqiring\n",
+      hint: "if (isDay) {\n  kunduz();\n}",
+      test: "if (!code.includes('if') || !code.includes('kunduz()')) return 'if va kunduz() ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Kunduz'))) return null;\nreturn 'Kunduz xabari chiqmadi';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Funksiyani ishga tushirish (chaqirish) qanday amalga oshiriladi?",
+      question: "`function salom() { console.log(\"Salom!\"); } salom();` nima chiqaradi?",
       options: [
-        "Funksiya nomidan keyin qavslar qo'yib: nomi()",
-        "Faqat nomini yozib: nomi",
-        "function nomi deb yozib",
-        "let nomi deb yozib"
+        "Hech narsa",
+        "Salom!",
+        "salom",
+        "Xatolik"
       ],
-      correctAnswer: 0,
-      explanation: "Funksiyani chaqirish va uning ichidagi kodni bajarish uchun nomidan keyin albatta qavslar qo'yiladi: nomi()."
+      correctAnswer: 1,
+      explanation: "E'lon saqlaydi, chaqiruv bajaradi. Natija chiqadi."
     },
     {
       id: 2,
-      question: "Agar funksiya faqat e'lon qilinsa, lekin biror marta ham chaqirilmasa nima bo'ladi?",
+      question: "E'lon bilan chaqiruv farqi nima?",
       options: [
-        "Uning ichidagi kod biror marta ham ishlamaydi",
-        "Xato beradi",
-        "Avtomatik 1 marta ishlaydi",
-        "Cheksiz ishlaydi"
+        "Farqi yo'q",
+        "E'lon saqlaydi, chaqiruv bajaradi",
+        "Chaqiruv saqlaydi, e'lon bajaradi",
+        "Ikkalasi ham saqlaydi"
       ],
-      correctAnswer: 0,
-      explanation: "Funksiya faqat e'lon qilinganda xotirada saqlanadi, chaqirilmaguncha uning ichidagi kodlar ishlamaydi."
+      correctAnswer: 1,
+      explanation: "function — retseptni yozish. salom() — retsept bo'yicha pishirish."
     },
     {
       id: 3,
-      question: "E'lon qilinmagan (mavjud bo'lmagan) funksiyani chaqirishga urinish qanday xatolik beradi?",
+      question: "`function salom { console.log(\"Salom!\"); }` qatorida nima bo'ladi?",
       options: [
-        "ReferenceError",
-        "SyntaxError",
-        "TypeError",
-        "Xato bermaydi"
+        "Ishlaydi",
+        "SyntaxError beradi",
+        "Hech narsa chiqmaydi",
+        "Ogohlantirish beradi"
       ],
-      correctAnswer: 0,
-      explanation: "Mavjud bo'lmagan nomga murojaat qilganda JavaScript ReferenceError (havola xatosi) beradi."
+      correctAnswer: 1,
+      explanation: "Nomdan keyin qavs shart: salom()."
+    },
+    {
+      id: 4,
+      question: "`salom();` yolg'iz (e'lonsiz) yozilsa nima bo'ladi?",
+      options: [
+        "Hech narsa chiqmaydi",
+        "ReferenceError beradi",
+        "Bo'sh qator chiqadi",
+        "true qaytaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Chaqirishdan oldin e'lon bo'lishi shart."
+    },
+    {
+      id: 5,
+      question: "Funksiya e'lon qilinib, chaqirilmasa nima bo'ladi?",
+      options: [
+        "Xatolik beradi",
+        "Hech narsa chiqmaydi",
+        "Bir marta ishlaydi",
+        "Ogohlantirish beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "E'lon — faqat saqlash. Chaqiruv bo'lmasa, kod uxlaydi."
+    },
+    {
+      id: 6,
+      question: "`function olqish() { console.log(\"A!\"); } olqish(); olqish();` nima chiqaradi?",
+      options: [
+        "A! (bir marta)",
+        "A! A! (ikki marta)",
+        "Hech narsa",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Har chaqiruvda ichidagi kod qayta ishlaydi."
+    },
+    {
+      id: 7,
+      question: "Chaqiruv belgisi qaysi?",
+      options: [
+        "{}",
+        "()",
+        "[]",
+        ";;"
+      ],
+      correctAnswer: 1,
+      explanation: "Nomdan keyingi qavs 'bajar!' degani."
+    },
+    {
+      id: 8,
+      question: "`function erta() { console.log(\"A\"); } function kech() { console.log(\"B\"); } erta(); kech();` nima chiqaradi?",
+      options: [
+        "A",
+        "B",
+        "A, B",
+        "Hech narsa"
+      ],
+      correctAnswer: 2,
+      explanation: "Har biri o'z navbatida chaqirildi."
+    },
+    {
+      id: 9,
+      question: "`function jim() { console.log(\"X\"); }` (chaqiruvsiz) nima chiqaradi?",
+      options: [
+        "X",
+        "Hech narsa",
+        "jim",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Chaqiruv yo'q — bajarish yo'q."
+    },
+    {
+      id: 10,
+      question: "`function salom() { console.log(\"S\"); } for (let i = 0; i < 3; i++) { salom(); }` nima chiqaradi?",
+      options: [
+        "S (bir marta)",
+        "S, S, S (uch marta)",
+        "Hech narsa",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Sikl uch marta chaqiradi. Har safar ichidagi kod ishlaydi."
+    },
+    {
+      id: 11,
+      question: "Funksiya nima uchun kerak?",
+      options: [
+        "Kod uzayishi uchun",
+        "Bir ishni ko'p joyda takrorlash uchun",
+        "Xatolar uchun",
+        "Hech narsa uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "Bir marta yoziladi, ko'p marta chaqiriladi."
+    },
+    {
+      id: 12,
+      question: "`function kunduz() { console.log(\"K\"); } let isDay = true; if (isDay) { kunduz(); }` nima chiqaradi?",
+      options: [
+        "Hech narsa",
+        "K",
+        "true",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Shart rost, chaqiruv ishladi."
     }
   ]
 };

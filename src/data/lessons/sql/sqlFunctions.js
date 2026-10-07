@@ -1,5 +1,5 @@
 export const sqlFunctions = {
-  id: "sql_functions_1",
+  id: "sqlFunctions",
   title: "SQL Functions (Funksiyalar)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish: Oshxona Asboblari

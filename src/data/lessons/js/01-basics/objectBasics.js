@@ -142,6 +142,7 @@ console.log(book.price); // undefined
 
 ### 3-xato: Obyekt ichida : o'rniga = belgisini qo'yish
 
+❌ Xato kod:
 \`\`\`javascript
 const student = {
   name = "Sami" // XATO: SyntaxError: Unexpected token '='
@@ -233,6 +234,62 @@ Keyingi darsda: Obyektga yangi xususiyat qo'shish, qiymatini yangilash va o'chir
       startingCode: "const laptop = { ram: \"16GB\", cpu: \"Intel\" };\nlet property = \"ram\";\n// property o'zgaruvchisi yordamida laptopdan o'qing va chiqaring\n",
       hint: "console.log(laptop[property]);",
       test: "if (!code.includes('laptop[property]')) return 'laptop[property] shaklida dinamik murojaat qilinmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('16GB'))) return null;\nreturn 'Konsolga 16GB chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Nuqta orqali xususiyat o'qish",
+      "instruction": "`const car = { brand: \"Toyota\", year: 2020 };` obyektining `year` xususiyatini nuqta orqali konsolga chiqaring.",
+      "startingCode": "const car = { brand: \"Toyota\", year: 2020 };\n// year xususiyatini konsolga chiqaring\n",
+      "hint": "console.log(car.year);",
+      "test": "if (!code.includes(\"car\")) return \"car obyekti topilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"2020\"))) return null;\nreturn \"Konsolga 2020 chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Yangi xususiyat qo'shish",
+      "instruction": "`const user = { name: \"Ali\" };` obyektiga `age: 25` xususiyatini qo'shib, `user.age` ni konsolga chiqaring.",
+      "startingCode": "const user = { name: \"Ali\" };\n// age: 25 xususiyatini qo'shing va chiqaring\n",
+      "hint": "user.age = 25;\nconsole.log(user.age);",
+      "test": "if (!code.includes(\"user\")) return \"user obyekti topilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"25\"))) return null;\nreturn \"Konsolga 25 chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "Ichki xususiyatga murojaat",
+      "instruction": "`const person = { name: \"Ali\", address: { city: \"Toshkent\" } };` obyektidan ichki `city` xususiyatini (`person.address.city`) konsolga chiqaring.",
+      "startingCode": "const person = { name: \"Ali\", address: { city: \"Toshkent\" } };\n// person.address.city ni chiqaring\n",
+      "hint": "console.log(person.address.city);",
+      "test": "if (!code.includes(\"person\")) return \"person obyekti topilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"Toshkent\"))) return null;\nreturn \"Konsolga Toshkent chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "Metodni chaqirish",
+      "instruction": "`const dog = { name: \"Rex\", bark() { return \"Vov\"; } };` obyektining `bark()` metodini chaqirib, natijasini konsolga chiqaring.",
+      "startingCode": "const dog = { name: \"Rex\", bark() { return \"Vov\"; } };\n// bark() metodini chaqirib chiqaring\n",
+      "hint": "console.log(dog.bark());",
+      "test": "if (!code.includes(\"bark\")) return \"bark metodi chaqirilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"Vov\"))) return null;\nreturn \"Konsolga Vov chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "= xatosini tuzatish",
+      "instruction": "Quyidagi obyektda xususiyatlar `=` bilan ajratilgan — bu sintaksis xatosi. `=` belgilarini `:` ga o'zgartirib, `point.x` ni konsolga chiqaring.",
+      "startingCode": "const point = {\n  x = 5,\n  y = 10\n};\nconsole.log(point.x);\n",
+      "hint": "x: 5 va y: 10 ko'rinishida yozing.",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Hali xato bor: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"5\")) return null;\nreturn \"Konsolga 5 chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Ikki xususiyatni bitta chiqarish",
+      "instruction": "`const book = { title: \"Kitob\", pages: 200 };` obyektining `title` va `pages` xususiyatlarini AYNAN BIRTA `console.log` bilan chiqaring.",
+      "startingCode": "const book = { title: \"Kitob\", pages: 200 };\n// ikkalasini bitta console.log bilan chiqaring\n",
+      "hint": "console.log(book.title, book.pages);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.length !== 1) return \"Bitta console.log bilan chiqaring\";\nif (out[0].includes(\"Kitob\") && out[0].includes(\"200\")) return null;\nreturn \"Kitob va 200 birga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Hisoblangan kalit (chegara)",
+      "instruction": "`let key = \"name\";` va `let value = \"Ali\";` berilgan. `obj` nomli obyekt yarating: `key` o'zgaruvchisining qiymati kalit, `value` esa qiymat bo'lsin (`{ [key]: value }`). So'ng `obj.name` ni konsolga chiqaring.",
+      "startingCode": "let key = \"name\";\nlet value = \"Ali\";\n// obj yarating va obj.name ni chiqaring\n",
+      "hint": "const obj = { [key]: value };\nconsole.log(obj.name);",
+      "test": "if (!code.includes(\"obj\")) return \"obj obyekti topilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"Ali\"))) return null;\nreturn \"Konsolga Ali chiqmadi\";"
     }
   ],
   quizzes: [
@@ -271,6 +328,114 @@ Keyingi darsda: Obyektga yangi xususiyat qo'shish, qiymatini yangilash va o'chir
       ],
       correctAnswer: 0,
       explanation: "Obyektda yo'q bo'lgan xususiyat chaqirilganda JavaScript xatolik bermaydi, balki undefined qaytaradi."
+    },
+    {
+      "id": 4,
+      "question": "Obyekt xususiyatlari bir-biridan qanday belgi bilan ajratiladi?",
+      "options": [
+        "Vergul bilan",
+        "Nuqta bilan",
+        "Nuqtali vergul bilan",
+        "Qo'shtirnoq bilan"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Obyekt ichidagi xususiyatlar (kalit: qiymat juftliklari) bir-biridan vergul bilan ajratiladi."
+    },
+    {
+      "id": 5,
+      "question": "`const o = { a: 1, b: 2 }; console.log(o.b);` kodi nima chiqaradi?",
+      "options": [
+        "2",
+        "1",
+        "b",
+        "undefined"
+      ],
+      "correctAnswer": 0,
+      "explanation": "o.b — b kalitiga mos qiymat, ya'ni 2 ni qaytaradi."
+    },
+    {
+      "id": 6,
+      "question": "Mavjud obyektga yangi xususiyat qanday qo'shiladi?",
+      "options": [
+        "`o.yangi = qiymat;`",
+        "`o[qo'shish] = qiymat;`",
+        "`o.push(qiymat);`",
+        "Faqat qayta yaratish orqali"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Mavjud obyektga yangi kalit nuqta orqali qiymat berib qo'shiladi: o.yangi = qiymat."
+    },
+    {
+      "id": 7,
+      "question": "Qaysi holatda nuqta o'rniga kvadrat qavs ishlatish shart?",
+      "options": [
+        "Kalit nomida bo'shliq yoki maxsus belgi bo'lsa",
+        "Kalit son bo'lmaganda",
+        "Obyekt bo'sh bo'lsa",
+        "Hech qachon"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Kalit nomida bo'shliq, chiziqcha yoki boshqa maxsus belgi bo'lsa, kvadrat qavs ishlatiladi: o[\"first name\"]."
+    },
+    {
+      "id": 8,
+      "question": "`const o = {}; o.x = 5; console.log(o.x);` nima chiqaradi?",
+      "options": [
+        "5",
+        "undefined",
+        "null",
+        "{}"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Bo'sh obyektga x kaliti qo'shildi va uning qiymati 5 — konsolga 5 chiqadi."
+    },
+    {
+      "id": 9,
+      "question": "`const o = { a: { b: 1 } }; console.log(o.a.b);` nima chiqaradi?",
+      "options": [
+        "1",
+        "undefined",
+        "{ b: 1 }",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Ichki obyektga zanjir bo'yicha murojaat qilinadi: o.a.b — birinchi a, so'ng uning ichidagi b."
+    },
+    {
+      "id": 10,
+      "question": "Metod nima?",
+      "options": [
+        "Obyekt ichida saqlangan funksiya",
+        "Obyektning kaliti",
+        "Obyektning uzunligi",
+        "Massiv elementi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Obyekt ichidagi funksiya metod deb ataladi va u nuqta orqali chaqiriladi: obyekt.metod()."
+    },
+    {
+      "id": 11,
+      "question": "`const o = { name: \"Ali\" }; console.log(o.name);` kodi nima qaytaradi?",
+      "options": [
+        "Ali",
+        "name",
+        "undefined",
+        "null"
+      ],
+      "correctAnswer": 0,
+      "explanation": "o.name — name kalitining qiymati, ya'ni \"Ali\" matni."
+    },
+    {
+      "id": 12,
+      "question": "`const laptop = { ram: \"16GB\" }; let p = \"ram\"; console.log(laptop[p]);` nima chiqaradi?",
+      "options": [
+        "16GB",
+        "ram",
+        "undefined",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Kvadrat qavs ichidagi o'zgaruvchi uning qiymatiga (\"ram\") aylanadi, shuning uchun laptop[\"ram\"] = 16GB olinadi."
     }
   ]
 };

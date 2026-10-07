@@ -1,0 +1,182 @@
+{
+  "exercises": [
+    {
+      "id": 4,
+      "title": "Asosiy amallar",
+      "instruction": "Uchta o'zgaruvchi `a = 10`, `b = 3` berilgan. ularni qo'shish, ayirish, ko'paytirish va bo'lish natijalarini har birini alohida `console.log` bilan chiqaring.",
+      "startingCode": "let a = 10;\nlet b = 3;\n// Amallar natijalarini chiqaring\n",
+      "hint": "console.log(a + b); console.log(a - b); console.log(a * b); console.log(a / b);",
+      "test": "let out = []; const orig = console.log; console.log = (...x) => out.push(x.join(' ')); try { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; } if (out.length !== 4) return '4 ta natija chiqishi kerak'; const [s, m, p, d] = out.map(x => x.trim()); if (s !== '13') return 'qo\\'shish 13 bo\\'lsin'; if (m !== '7') return 'ayirish 7 bo\\'lsin'; if (p !== '30') return 'ko\\'paytirish 30 bo\\'lsin'; if (d !== '3.3333333333333335') return 'bo\\'lish true bo\\'lsin'; return null;"
+    },
+    {
+      "id": 5,
+      "title": "Juft/Yoqmaslik",
+      "instruction": "`n` nomli o'zgaruvchi berilgan. UNVANCA `n % 2` natijasini toping. Natija `0` bo'lsa, `console.log('Juft')`; aks holda `console.log('Bo\\'shlaman')` yozing.",
+      "startingCode": "let n = 7;\n// Juft/yoqmaslik tekshiruvi\n",
+      "hint": "if (n % 2 === 0) console.log('Juft'); else console.log('Bo\\'shlaman');",
+      "test": "let out = []; const orig = console.log; console.log = (...x) => out.push(x.join(' ')); try { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; } const val = out[0] || ''; if (!val.includes('Juft') && !val.includes('Bo\\'shlaman')) return 'Juft/Yoqmaslik matni chiqmadi'; if (n === 7 && !val.includes('Bo\\'shlaman')) return '7 bo\\'lgani uchun Bo\\'shlaman ketishi kerak'; if (n === 10 && !val.includes('Juft')) return '10 bo\\'lgani uchun Juft ketishi kerak'; return null;"
+    },
+    {
+      "id": 6,
+      "title": "Kattasini topish",
+      "instruction": "Ikkita son `a` va `b` berilgan. `a` > `b` bo\\'lsa, ikkalasini console.log orqala chiqaring, lekin `a` ning qiymatini 2 marta ko\\'paytiring. Aks holda, `b` ning 3 marta ko\\'paytirilgan qiymatini chiqaring.",
+      "startingCode": "let a = 8;\nlet b = 5;\n// Ko\\'paytirish natijasini chiqaring\n",
+      "hint": "if (a > b) console.log(a * 2); else console.log(b * 3);",
+      "test": "let out = []; const orig = console.log; console.log = (...x) => out.push(x.join(' ')); try { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; } if (out.length !== 1) return '1 ta natija chiqishi kerak'; const val = out[0] || ''; if (a > b) { if (val !== String(a * 2)) return 'a > b bo\\'lgani uchun a*2 = ' + (a*2) + ' chiqmadi'; } else { if (val !== String(b * 3)) return 'a <= b bo\\'lgani uchun b*3 = ' + (b*3) + ' chiqmadi'; } return null;"
+    },
+    {
+      "id": 7,
+      "title": "Kichik son",
+      "instruction": "Uchta son `x = 5`, `y = 8`, `z = 3` berilgan. Eng kichik sonni topib, `console.log` orqali chiqaring.",
+      "startingCode": "let x = 5;\nlet y = 8;\nlet z = 3;\n// Eng kichik sonni chiqaring\n",
+      "hint": "if (x < y && x < z) console.log(x); else if (y < z) console.log(y); else console.log(z);",
+      "test": "let out = []; const orig = console.log; console.log = (...x) => out.push(x.join(' ')); try { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; } if (out.length !== 1) return '1 ta natija chiqishi kerak'; const val = out[0] || ''; if (val !== '3') return 'eng kichik son 3 bo\\'lgani uchun 3 chiqmadi'; return null;"
+    },
+    {
+      "id": 8,
+      "title": "Berilgan sonning izini hisoplash",
+      "instruction": "`n` berilgan. `n` dan boshlab `1` dan `n` gacha bo\\'lgan sonlar yig\\'indisini toping va konsolga chiqaring. Masalan, `n = 5` bo\\'lsa, `1+2+3+4+5 = 15`.",
+      "startingCode": "let n = 5;\nlet sum = 0;\n// yig\\'indini topish\nconsole.log(sum);\n",
+      "hint": "for (let i = 1; i <= n; i++) sum += i; console.log(sum);",
+      "test": "let out = []; const orig = console.log; console.log = (...x) => out.push(x.join(' ')); try { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; } const val = out[0] || ''; const expected = (n * (n + 1)) / 2; if (val !== String(expected)) return String(expected) + ' ga teng bo\\'lsin'; return null;"
+    },
+    {
+      "id": 9,
+      "title": "Matematik ifoda",
+      "instruction": "`a = 12`, `b = 7` berilgan. Formulasiga qarab natija toping: (a + b) * (a - b). Natijani consolestar.",
+      "startingCode": "let a = 12;\nlet b = 7;\n// Formulasi bajarib chiqaring\n",
+      "hint": "console.log((a + b) * (a - b));",
+      "test": "let out = []; const orig = console.log; console.log = (...x) => out.push(x.join(' ')); try { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; } if (out.length !== 1) return '1 ta natija chiqishi kerak'; const val = out[0] || ''; if (val !== '95') return 'natija 95 bo\\'lsin'; return null;"
+    },
+    {
+      "id": 10,
+      "title": "To\\'g\\'ridan-to\\'g\\'ri raqamlar",
+      "instruction": "`n` berilgan. 1 dan `n` gacha bo\\'lgan butun sonlarni hamkorlik bilan chiqaring. Har bir sonni alohida satrda chiqaring.",
+      "startingCode": "let n = 4;\n// 1 dan n gacha sonlarni chiqaring\n",
+      "hint": "for (let i = 1; i <= n; i++) console.log(i);",
+      "test": "let out = []; const orig = console.log; console.log = (...x) => out.push(x.join(' ')); try { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; } if (out.length !== n) return 'n ta satr chiqishi kerak'; for (let i = 0; i < n; i++) { const val = out[i] || ''; if (parseInt(val) !== i + 1) return 'i+' + (i+1) + ' = ' + val + ' bo\\'lsin'; } return null;"
+    }
+  ],
+  "quizzes": [
+    {
+      "id": 4,
+      "question": "JavaScriptdagi `+` operatori qanday faollashtiriladi?",
+      "options": [
+        "Faqat qo\\'shish uchun",
+        "Matematik qo\\'shish va matn birikishi uchun",
+        "Faqat matn biriktirish uchun",
+        "Faqat saqlash uchun"
+      ],
+      "correctAnswer": 1,
+      "explanation": "JavaScriptda `+` operatori keltirilgan qiymatlar adabiyyatini tushunadi: sonlar uchun qo\\'shish, matnlar uchun birikish."
+    },
+    {
+      "id": 5,
+      "question": "Manfiy sonlarda `%` (mod) operatori qanday ishlaydi?",
+      "options": [
+        "Faqat musbat sonlar uchun ishlaydi",
+        "Manfiy sonlarni ham hisobga oladi, natija hech qanday alohida ko\\'rinishni oladi",
+        "Hamma manfiy son uchun `0` qaytaradi",
+        "Xato beradi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "`%` operatori buyumga qarab ishlaydi: ekranda manfiy sonlar bor, ular `0`-dan qisqa bo\\'lsa, natija manfiy bo\\'ladi."
+    },
+    {
+      "id": 6,
+      "question": "`5 ** 2` ning natija qanday bo\\'ladi?",
+      "options": [
+        "25",
+        "7",
+        "10",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "`**` operatori hisoblanib, `5 ** 2` = 25."
+    },
+    {
+      "id": 7,
+      "question": "Kichik sonni topish uchun mos operator qaysi?",
+      "options": [
+        "Siz `max` ifodasini ko\\'rib chiqasiz, har bir sonni solishtirasiz",
+        "Ikkita yoki undan ko\\'p sonni `<` yoki `>` bilan solishtirgansiz",
+        "Qo\\'shimcha waqt talab etmaydi",
+        "Dan fiqrlash uchun `===` ishlatiladi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "`<` yoki `>` boshqa sonlarni solishtirish uchun ishlatiladi."
+    },
+    {
+      "id": 8,
+      "question": "Quyidagi ifodaning natijasi qanday bo\\'ladi: `10 % 3`?",
+      "options": [
+        "3",
+        "1",
+        "3.33",
+        "0"
+      ],
+      "correctAnswer": 1,
+      "explanation": "`10 % 3` = `1` chunki 10 ni 3 ga bo\\'lsak, qoldiq 1 bo\\'ladi."
+    },
+    {
+      "id": 9,
+      "question": "Hammasida ijobiy manfiy sonlar ma\\'lumot turini qanday belgilaydi?",
+      "options": [
+        "Manfiy sonlar barcha `number` turidagi hisoblashga imkon beradi",
+        "Manfiy sonlar `string` turidagi hisoblashga imkon beradi",
+        "Manfiy sonlar `boolean` turidagi hisoblashga imkon beradi",
+        "Manfiy sonlar `symbol` turidagi hisoblashga imkon beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Manfiy sonlar `number` (Number) turidagi hisoblashga ijod qiladi."
+    },
+    {
+      "id": 10,
+      "question": "Agar `a = -10`, `b = 3` bo\\'lsa, a/b ning natijasi qanday bo\\'ladi?",
+      "options": [
+        "3",
+        "-3.33",
+        "3.33",
+        "0"
+      ],
+      "correctAnswer": 1,
+      "explanation": "-10 / 3 = -3.3333... qaytaradi, ya\\'ni manfiy o\\'nlik son."
+    },
+    {
+      "id": 11,
+      "question": "Sonlarni qo\\'shishda qo\\'shimcha operatorlar arefati qaysiidan kelib chiqadi?",
+      "options": [
+        "Faqat `+`",
+        "Yana `++` (inkrement), `--` (dekrement) ham ishlatiladi",
+        "Faqat `+` va `-`",
+        "Yana `**` ham ishlatiladi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "`++` (inkrement) va `--` (dekrement) sonlarni 1 ga oshirish yoki kamaytirish uchun ishlatiladi."
+    },
+    {
+      "id": 12,
+      "question": "`a = 5` bo\\'lsa, `++a` va `a++` aralashtirilgan ishlatilganda nima qiladi?",
+      "options": [
+          "Bosh qismida eng katta sonni topish",
+          "Boshqacha: ikkala `++` ham a ni 1 ga oshiradi, lekin qaytarilgan qiymat boshqa bo\\'ladi",
+          "Siz har bir operatsiyada ikkala sonni solishtirasiz",
+          "Yana `**` ham ishlatiladi"
+        ],
+      "correctAnswer": 1,
+      "explanation": "`++a` (pre-increment) avval a ni 1 ga oshiradi, keyin qiymatni qaytaradi; `a++` (post-increment) avval qiymatni qaytaradi, keyin 1 ga oshiradi."
+    }
+  ],
+  "answers": {
+    "1": "let a = 10; let b = 3; console.log(a + b); console.log(a - b); console.log(a * b); console.log(a / b);",
+    "2": "let n = 7; if (n % 2 === 0) { console.log('Juft'); } else { console.log('Bo\\'shlaman'); }",
+    "3": "let a = 8; let b = 5; if (a > b) console.log(a * 2); else console.log(b * 3);",
+    "4": "let x = 5; let y = 8; let z = 3; if (x < y && x < z) console.log(x); else if (y < z) console.log(y); else console.log(z);",
+    "5": "let n = 5; let sum = 0; for (let i = 1; i <= n; i++) sum += i; console.log(sum);",
+    "6": "let a = 12; let b = 7; console.log((a + b) * (a - b));",
+    "7": "let n = 4; for (let i = 1; i <= n; i++) console.log(i);",
+    "8": "let n = 5; let sum = 0; for (let i = 1; i <= n; i++) sum += i; console.log(sum);",
+    "9": "let a = 12; let b = 7; console.log((a + b) * (a - b));",
+    "10": "let n = 4; for (let i = 1; i <= n; i++) console.log(i);"
+  }
+}

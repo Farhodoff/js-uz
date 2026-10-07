@@ -4,34 +4,45 @@ export const assignmentOperators = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz basketbol o'yinidagi hisob tablosini boshqaryapsiz. Jamoa har safar to'p kiritganda, siz butun doskani o'chirib boshidan yozmaysiz. Shunchaki mavjud hisobga \`+1\` yoki \`+2\` qo'shib qo'yasiz.
+Tasavvur qiling, siz basketbol o'yinida hisob tablosini yurityapsiz. Jamoa to'p kiritdi. Siz butun doskani o'chirib, hisobni boshidan yozmaysiz. Shunchaki eski hisobga yangisini qo'shib qo'yasiz.
 
-Qiymat berish va oshirish/kamaytirish operatorlari (\`+=\`, \`-=\`, \`++\`, \`--\`) — o'zgaruvchining mavjud qiymatiga son qo'shish, undan ayirish yoki uni 1 taga tezkor o'zgartirish uchun ishlatiladigan qisqa yozuv usullaridir.
+Dasturlashda ham o'zgaruvchining eski qiymati ustiga yangisini qo'shish tez-tez kerak bo'ladi. Buning uchun qisqa yozuv operatorlari bor.
+
+Qiymat berish operatorlari (\`+=\`, \`-=\`, \`++\`, \`--\`) — o'zgaruvchining mavjud qiymatini o'zgartirishning qisqa yozuvidir.
 
 ---
 
 ## 2. Nega kerak?
 
-O'zgaruvchi qiymatini o'zgartirish uchun har doim:
-\`score = score + 5;\` yoki \`count = count + 1;\` deb yozish uzun va noqulay.
+O'zgaruvchini o'zgartirish uchun har safar to'liq yozish uzun:
 
-JavaScript'da bu amallarni qisqartirib yozish mumkin:
-- \`score = score + 5;\` o'rniga \`score += 5;\`
-- \`count = count + 1;\` o'rniga \`count++;\`
+\`\`\`javascript
+let score = 10;
+score = score + 5;
+\`\`\`
 
-Bu kodni qisqaroq, o'qishni esa osonroq qiladi.
+Bu yerda \`score\` ikki marta yozildi. Kod uzaygani sari bunday takrorlar ko'payadi. Xato qilish osonlashadi.
+
+Yechim — qisqa yozuv:
+
+\`\`\`javascript
+let score = 10;
+score += 5; // score = score + 5 bilan bir xil
+\`\`\`
+
+Bir so'z kamaydi. Ma'no o'sha. Kod qisqaroq va o'qilishi osonroq.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod \`+=\` va \`-=\` operatorlari yordamida o'zgaruvchi qiymatini o'zgartiradi va konsolga chiqaradi.
+Bu kod \`+=\` va \`-=\` bilan o'zgaruvchini o'zgartiradi va konsolga chiqaradi.
 
 \`\`\`javascript
 let score = 10; // Boshlang'ich qiymat: 10
-score += 5; // score = score + 5 (natija: 15)
-score -= 3; // score = score - 3 (natija: 12)
-console.log(score);
+score += 5; // 5 qo'shildi, 15 bo'ldi
+score -= 3; // 3 ayirildi, 12 bo'ldi
+console.log(score); // 12 chiqadi
 \`\`\`
 
 \`\`\`text
@@ -42,34 +53,35 @@ console.log(score);
 
 ## 4. Qator-baqator tahlil
 
-- \`let score = 10;\` — \`score\` o'zgaruvchisi \`10\` qiymati bilan yaratildi.
-- \`score += 5;\` — \`score\` ning hozirgi qiymatiga (\`10\`) 5 qo'shildi va natija (\`15\`) yana \`score\` ga yozildi.
-- \`score -= 3;\` — \`score\` ning qiymatidan (\`15\`) 3 ayirildi va natija (\`12\`) yana \`score\` ga yozildi.
-- \`console.log(score);\` — konsolga yakuniy \`12\` soni chiqadi.
+- \`let score = 10;\` — \`score\` \`10\` qiymati bilan yaratildi.
+- \`score += 5;\` — hozirgi qiymatga (\`10\`) \`5\` qo'shildi. Natija (\`15\`) yana \`score\` ga yozildi.
+- \`score -= 3;\` — hozirgi qiymatdan (\`15\`) \`3\` ayirildi. Natija (\`12\`) yana \`score\` ga yozildi.
+- \`console.log(score);\` — yakuniy \`12\` chiqadi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-O'zgaruvchi qiymatining qadam-baqadam o'zgarishi:
+\`score\` qiymati har qatorda qanday o'zgaradi:
 
 | Qadam | Kod qatori | score qiymati | Tushuntirish |
 |---|---|---|---|
 | 1 | \`let score = 10;\` | \`10\` | Boshlang'ich qiymat berildi |
 | 2 | \`score += 5;\` | \`15\` | \`10 + 5\` hisoblandi va saqlandi |
 | 3 | \`score -= 3;\` | \`12\` | \`15 - 3\` hisoblandi va saqlandi |
+| 4 | \`console.log(score);\` | \`12\` | Yakuniy qiymat chiqarildi |
 
 ---
 
 ## 6. Yana bitta misol
 
-Bu kod \`++\` (inkrement) va \`--\` (dekrement) operatorlari yordamida qiymatni 1 taga oshiradi va kamaytiradi.
+Bu kod 1 taga oshirish (\`++\`) va 1 taga kamaytirish (\`--\`) operatorlarini ko'rsatadi.
 
 \`\`\`javascript
-let lives = 3; // 3 ta jon
-lives++; // 1 taga oshirish (lives = lives + 1) -> 4
-lives--; // 1 taga kamaytirish (lives = lives - 1) -> 3
-console.log(lives);
+let lives = 3; // 3 ta jon bor
+lives++; // 1 taga oshdi, 4 bo'ldi
+lives--; // 1 taga kamaydi, 3 bo'ldi
+console.log(lives); // 3 chiqadi
 \`\`\`
 
 \`\`\`text
@@ -77,51 +89,51 @@ console.log(lives);
 \`\`\`
 
 Qator-baqator tahlil:
-- \`lives++\` — inkrement (increment) deb ataladi. O'zgaruvchi qiymatini aynan 1 taga oshiradi (\`lives = lives + 1\` yoki \`lives += 1\` bilan bir xil).
-- \`lives--\` — dekrement (decrement) deb ataladi. O'zgaruvchi qiymatini aynan 1 taga kamaytiradi (\`lives = lives - 1\` yoki \`lives -= 1\` bilan bir xil).
+- \`lives++\` — inkrement (oshirish) deb ataladi. Qiymatni aynan 1 taga oshiradi. \`lives += 1\` bilan bir xil.
+- \`lives--\` — dekrement (kamaytirish) deb ataladi. Qiymatni aynan 1 taga kamaytiradi. \`lives -= 1\` bilan bir xil.
 
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1. const bilan yaratilgan o'zgaruvchida ishlatish
+### 1. const bilan ishlatish
 ❌ Xato kod:
 \`\`\`javascript
 const points = 10;
 points += 5;
 \`\`\`
-Nima bo'ladi: \`TypeError: Assignment to constant variable.\` xatoligi yuz beradi. Chunki \`const\` o'zgarmasdir, \`+=\` esa uning qiymatini o'zgartirishga urinadi. Qiymati o'zgaradigan holatlarda faqat \`let\` ishlatilishi kerak.
+Nima bo'ladi: \`TypeError: Assignment to constant variable.\` xatoligi yuz beradi. \`+=\` qiymatni o'zgartiradi. \`const\` esa o'zgarmaydi. O'zgaradigan joyda faqat \`let\` ishlatiladi.
 ✅ To'g'ri variant:
 \`\`\`javascript
 let points = 10;
-points += 5;
+points += 5; // 15 bo'ladi
 \`\`\`
 
-### 2. += o'rniga =+ yozib qo'yish
+### 2. += o'rniga =+ yozish
 ❌ Xato kod:
 \`\`\`javascript
 let score = 10;
 score =+ 5;
 console.log(score);
 \`\`\`
-Nima bo'ladi: Natija \`15\` emas, \`5\` bo'lib qoladi! Chunki \`=+ 5\` amali qiymatga qo'shish emas, balki shunchaki musbat \`+5\` sonini yuklash bo'lib qoladi (\`score = +5\`).
+Nima bo'ladi: \`15\` emas, \`5\` chiqadi! Chunki \`+=\` bilan \`=+\` ikki xil narsa. \`score =+ 5\` — "qo'shish" emas, "musbat 5 ni yuklash" degani.
 ✅ To'g'ri variant:
 \`\`\`javascript
 let score = 10;
-score += 5; // 15
+score += 5; // 15 bo'ladi
 \`\`\`
 
-### 3. Belgilar orasiga probel qo'yish (+ =)
+### 3. Belgilar orasiga probel qo'yish
 ❌ Xato kod:
 \`\`\`javascript
 let count = 1;
 count + = 1;
 \`\`\`
-Nima bo'ladi: \`SyntaxError: Unexpected token '='\` xatoligi yuz beradi. \`+=\`, \`-=\`, \`++\`, \`--\` bitta yaxlit operator bo'lgani uchun ularning o'rtasida probel bo'lmasligi shart.
+Nima bo'ladi: \`SyntaxError: Unexpected token '='\` xatoligi yuz beradi. \`+=\` bitta yaxlit belgi. O'rtasiga probel tushmaydi.
 ✅ To'g'ri variant:
 \`\`\`javascript
 let count = 1;
-count += 1;
+count += 1; // 2 bo'ladi
 \`\`\`
 
 ---
@@ -129,13 +141,13 @@ count += 1;
 ## 8. Tekshiruv
 
 ### 1-mashq (Oson)
-\`coins\` nomli o'zgaruvchi yarating (\`let coins = 20;\`). Unga \`+=\` operatori yordamida \`15\` sonini qo'shing va konsolga chiqaring.
+\`coins\` ga \`20\` bering. \`+=\` bilan \`15\` qo'shing. Konsolga chiqaring.
 
 ### 2-mashq (O'rtacha)
-\`steps\` nomli o'zgaruvchi yarating (\`let steps = 0;\`). Uni \`++\` operatori yordamida ketma-ket 3 marta 1 taga oshiring va konsolga chiqaring.
+\`steps\` ga \`0\` bering. \`++\` bilan ketma-ket 3 marta oshiring. Konsolga chiqaring.
 
 ### 3-mashq (Xatoni topish)
-Quyidagi koddagi \`TypeError\` xatosini to'g'rilang, toki konsolga \`15\` chiqsin:
+Quyidagi kodda \`TypeError\` bor. Tuzating, toki \`15\` chiqsin:
 \`\`\`javascript
 const balance = 25;
 balance -= 10;
@@ -168,42 +180,98 @@ console.log(balance);
 
 ## 9. Xulosa
 
-1. \`+=\` va \`-=\` operatorlari qiymatga son qo'shish yoki ayirishning qisqa yo'lidir (\`x += 5\` bu \`x = x + 5\`).
-2. \`++\` qiymatni 1 taga oshiradi (inkrement), \`--\` esa 1 taga kamaytiradi (dekrement).
-3. Bu operatorlar o'zgaruvchini o'zgartirgani uchun faqat \`let\` bilan ishlaydi (\`const\` bilan ishlatilsa \`TypeError\` beradi).
+1. \`+=\` va \`-=\` — qiymatga qo'shish va ayirishning qisqa yozuvi.
+2. \`++\` 1 taga oshiradi (inkrement), \`--\` 1 taga kamaytiradi (dekrement).
+3. Bu operatorlar qiymatni o'zgartirgani uchun faqat \`let\` bilan ishlaydi.
 
-Keyingi darsda: Taqqoslash operatorlari (==, ===, !=, !==, >, <) bilan tanishamiz.
+Keyingi darsda: taqqoslash operatorlari (>, <, >=, <=) bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "+= operatori bilan qo'shish",
-      instruction: "`coins` nomli o'zgaruvchi yarating (`let coins = 20;`). Unga `+=` operatori bilan `15` qo'shing va `console.log(coins);` orqali chiqaring.",
+      title: "+= bilan qo'shish",
+      instruction: "`coins` yarating (`let coins = 20;`). `+=` bilan `15` qo'shing va `console.log(coins);` orqali chiqaring.",
       startingCode: "let coins = 20;\n// coins ga += bilan 15 qo'shing va chiqaring\n",
       hint: "coins += 15;\nconsole.log(coins);",
-      test: "if (!code.includes('+=')) return '+= operatori ishlatilmadi';\nif (!code.includes('coins')) return 'coins o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('35'))) return null;\nreturn '35 natijasi konsolga chiqmadi';"
+      test: "if (!code.includes('+=')) return '+= operatori ishlatilmadi';\nif (!code.includes('coins')) return 'coins topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '35')) return null;\nreturn '35 konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "++ bilan 3 marta oshirish",
-      instruction: "`steps` nomli o'zgaruvchi yarating (`let steps = 0;`). Uni `++` operatori bilan ketma-ket 3 marta oshiring va konsolga chiqaring.",
-      startingCode: "let steps = 0;\n// steps ni 3 marta ++ qiling va chiqaring\n",
-      hint: "steps++;\nsteps++;\nsteps++;\nconsole.log(steps);",
-      test: "if (!code.includes('++')) return '++ operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('3'))) return null;\nreturn '3 natijasi konsolga chiqmadi';"
+      title: "-= bilan ayirish",
+      instruction: "`price` yarating (`let price = 50;`). `-=` bilan `20` ayiring va chiqaring (`30` chiqishi kerak).",
+      startingCode: "let price = 50;\n// price dan -= bilan 20 ayiring va chiqaring\n",
+      hint: "price -= 20;\nconsole.log(price);",
+      test: "if (!code.includes('-=')) return '-= operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '30')) return null;\nreturn '30 konsolga chiqmadi';"
     },
     {
       id: 3,
-      title: "TypeError xatosini to'g'rilash",
-      instruction: "`const balance = 25; balance -= 10;` dagi `TypeError` xatosini to'g'rilang (`const` o'rniga `let` ishlating), toki konsolga `15` chiqsin.",
+      title: "++ bilan 3 marta oshirish",
+      instruction: "`steps` yarating (`let steps = 0;`). `++` bilan ketma-ket 3 marta oshiring va chiqaring.",
+      startingCode: "let steps = 0;\n// steps ni 3 marta ++ qiling va chiqaring\n",
+      hint: "steps++;\nsteps++;\nsteps++;\nconsole.log(steps);",
+      test: "if (!code.includes('++')) return '++ operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '3')) return null;\nreturn '3 konsolga chiqmadi';"
+    },
+    {
+      id: 4,
+      title: "-- bilan kamaytirish",
+      instruction: "`lives` yarating (`let lives = 3;`). `--` bilan 1 taga kamaytiring va chiqaring (`2` chiqishi kerak).",
+      startingCode: "let lives = 3;\n// lives ni -- bilan kamaytiring va chiqaring\n",
+      hint: "lives--;\nconsole.log(lives);",
+      test: "if (!code.includes('--')) return '-- operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2')) return null;\nreturn '2 konsolga chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "TypeError ni tuzatish",
+      instruction: "`const balance = 25; balance -= 10;` xato bermoqda. `let` ga tuzating: `15` chiqsin.",
       startingCode: "const balance = 25;\nbalance -= 10;\nconsole.log(balance);\n",
       hint: "let balance = 25;\nbalance -= 10;\nconsole.log(balance);",
-      test: "if (code.includes('const')) return 'const o\\'rniga let ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('15'))) return null;\nreturn '15 natijasi konsolga chiqmadi';"
+      test: "if (code.includes('const')) return 'const orniga let ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '15')) return null;\nreturn '15 konsolga chiqmadi';"
+    },
+    {
+      id: 6,
+      title: "=+ xatosini tuzatish",
+      instruction: "`score =+ 5` o'rniga `+=` yozing (`let score = 10;` berilgan). `15` chiqishi kerak.",
+      startingCode: "let score = 10;\nscore =+ 5;\nconsole.log(score);\n",
+      hint: "score += 5;",
+      test: "if (!code.includes('+=')) return '+= bilan yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '15')) return null;\nreturn '15 konsolga chiqmadi';"
+    },
+    {
+      id: 7,
+      title: "Probel xatosini tuzatish",
+      instruction: "`count + = 1` dagi probelni olib tashlang (`let count = 1;` berilgan). `2` chiqishi kerak.",
+      startingCode: "let count = 1;\ncount + = 1;\nconsole.log(count);\n",
+      hint: "count += 1;",
+      test: "if (!code.includes('+=')) return '+= ni bitta yaxlit yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2')) return null;\nreturn '2 konsolga chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Ketma-ket uch amal",
+      instruction: "`score = 10` berilgan. `+= 5`, `-= 3`, `++` ni ketma-ket bajaring va chiqaring (`13` chiqishi kerak).",
+      startingCode: "let score = 10;\n// += 5, -= 3, ++ ni bajaring va chiqaring\n",
+      hint: "score += 5;\nscore -= 3;\nscore++;\nconsole.log(score);",
+      test: "if (!code.includes('+=') || !code.includes('-=') || !code.includes('++')) return '+=, -= va ++ ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '13')) return null;\nreturn '13 konsolga chiqmadi';"
+    },
+    {
+      id: 9,
+      title: "Har qadamni kuzatish (chegara)",
+      instruction: "`n = 0` berilgan. `++` qiling, chiqaring. Yana `++` qiling, chiqaring. Konsolda `1` va `2` ko'rinsin.",
+      startingCode: "let n = 0;\n// ++ qiling, chiqaring, yana ++ qiling, chiqaring\n",
+      hint: "n++;\nconsole.log(n);\nn++;\nconsole.log(n);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikki marta chiqaring';\nif (out[0].trim() !== '1' || out[1].trim() !== '2') return 'Avval 1, keyin 2 chiqishi kerak';\nreturn null;"
+    },
+    {
+      id: 10,
+      title: "Noldan pastga (chegara)",
+      instruction: "`lives = 1` berilgan. `--` ni ikki marta bajaring va chiqaring (`-1` chiqadi — kamayish noldan ham o'tadi).",
+      startingCode: "let lives = 1;\n// -- ni ikki marta bajaring va chiqaring\n",
+      hint: "lives--;\nlives--;\nconsole.log(lives);",
+      test: "if (!code.includes('--')) return '-- operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '-1')) return null;\nreturn '-1 konsolga chiqmadi';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "`let count = 5; count += 3;` kodi bajarilgandan so'ng `count` ning qiymati nima bo'ladi?",
+      question: "`let count = 5; count += 3;` dan keyin `count` nechaga teng?",
       options: [
         "5",
         "3",
@@ -211,31 +279,139 @@ Keyingi darsda: Taqqoslash operatorlari (==, ===, !=, !==, >, <) bilan tanishami
         "\"53\""
       ],
       correctAnswer: 2,
-      explanation: "count += 3 amali count = count + 3 deganidir, ya'ni 5 + 3 = 8."
+      explanation: "count += 3 bu count = count + 3 degani: 5 + 3 = 8."
     },
     {
       id: 2,
-      question: "`score++` amali nimani anglatadi?",
+      question: "`score++` nima qiladi?",
       options: [
-        "score ga 2 qo'shadi",
-        "score qiymatini 1 taga oshiradi (inkrement)",
-        "score ni 1 taga kamaytiradi",
-        "score ni 0 ga tenglaydi"
+        "2 qo'shadi",
+        "1 taga oshiradi",
+        "1 taga kamaytiradi",
+        "0 ga tenglaydi"
       ],
       correctAnswer: 1,
-      explanation: "++ (inkrement) operatori o'zgaruvchi qiymatini aynan 1 taga oshiradi."
+      explanation: "++ (inkrement) qiymatni aynan 1 taga oshiradi."
     },
     {
       id: 3,
-      question: "Quyidagi kod nega xatolik (TypeError) beradi?\nconst level = 1;\nlevel++;",
+      question: "`const level = 1; level++;` nega xato beradi?",
       options: [
-        "++ operatori noto'g'ri yozilgan",
-        "const bilan yaratilgan o'zgarmas qiymatni o'zgartirib bo'lmaydi",
-        "level o'rniga boshqa nom qo'yish kerak",
-        "Konsolga chiqarilmagani uchun"
+        "++ noto'g'ri yozilgan",
+        "const o'zgarmaydi, let kerak",
+        "Nom noto'g'ri",
+        "Chiqarilmagan"
       ],
       correctAnswer: 1,
-      explanation: "const o'zgarmas bo'lgani uchun uning qiymatini ++ yoki += bilan o'zgartirib bo'lmaydi; bu holatda let ishlatish kerak."
+      explanation: "const qiymatini o'zgartirib bo'lmaydi. O'zgaradigan joyda let ishlatiladi."
+    },
+    {
+      id: 4,
+      question: "`let price = 50; price -= 20;` dan keyin `price` nechaga teng?",
+      options: [
+        "70",
+        "30",
+        "20",
+        "-20"
+      ],
+      correctAnswer: 1,
+      explanation: "price -= 20 bu price = price - 20 degani: 50 - 20 = 30."
+    },
+    {
+      id: 5,
+      question: "`let lives = 3; lives--;` dan keyin `lives` nechaga teng?",
+      options: [
+        "4",
+        "3",
+        "2",
+        "0"
+      ],
+      correctAnswer: 2,
+      explanation: "-- (dekrement) qiymatni 1 taga kamaytiradi: 3 - 1 = 2."
+    },
+    {
+      id: 6,
+      question: "`let score = 10; score =+ 5;` natijasi nima?",
+      options: [
+        "15",
+        "5",
+        "105",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "=+ qo'shish emas. Bu musbat 5 ni yuklash: score 5 bo'lib qoladi."
+    },
+    {
+      id: 7,
+      question: "`let count = 1; count + = 1;` qatorida nima bo'ladi?",
+      options: [
+        "2 chiqadi",
+        "SyntaxError: Unexpected token '='",
+        "1 chiqadi",
+        "Hech narsa bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "+= bitta yaxlit belgi. O'rtasiga probel tushmaydi."
+    },
+    {
+      id: 8,
+      question: "`++` bilan bir xil ma'noni beradigan yozuv qaysi?",
+      options: [
+        "x = x + 2",
+        "x += 1",
+        "x -= 1",
+        "x = 1"
+      ],
+      correctAnswer: 1,
+      explanation: "x++ bu x += 1 ning eng qisqa ko'rinishi."
+    },
+    {
+      id: 9,
+      question: "`let x = 5; x += 3; x--;` dan keyin `x` nechaga teng?",
+      options: [
+        "8",
+        "7",
+        "9",
+        "5"
+      ],
+      correctAnswer: 1,
+      explanation: "5 + 3 = 8, keyin 1 taga kamayadi: 8 - 1 = 7."
+    },
+    {
+      id: 10,
+      question: "Qaysi operator 1 taga kamaytiradi?",
+      options: [
+        "++",
+        "+=",
+        "--",
+        "-"
+      ],
+      correctAnswer: 2,
+      explanation: "-- 1 taga kamaytiradi. - esa ayirish amali (ikki son kerak)."
+    },
+    {
+      id: 11,
+      question: "`let n = 0; n++; n++;` dan keyin `n` nechaga teng?",
+      options: [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      correctAnswer: 2,
+      explanation: "Har ++ bittadan qo'shadi: 0 + 1 + 1 = 2."
+    },
+    {
+      id: 12,
+      question: "`let lives = 1; lives--; lives--;` dan keyin `lives` nechaga teng?",
+      options: [
+        "1",
+        "0",
+        "-1",
+        "Xatolik"
+      ],
+      correctAnswer: 2,
+      explanation: "Kamayish nolda to'xtamaydi: 1 - 1 - 1 = -1."
     }
   ]
 };

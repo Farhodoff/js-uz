@@ -204,6 +204,62 @@ Keyingi darsda: Funksiya parametrlariga kelgan argumentlarni bitta massivga yig'
       startingCode: "const defaults = { theme: \"light\", lang: \"uz\" };\n// spread orqali theme ni \"dark\" ga almashtirib yangi obyekt tuzing va theme ni chiqaring\n",
       hint: "const customSettings = { ...defaults, theme: \"dark\" };\nconsole.log(customSettings.theme);",
       test: "if (!code.includes('...')) return 'Spread (...) operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('dark')) return null;\nreturn 'dark konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Massiv boshiga va oxiriga element qo'shish",
+      "instruction": "`const nums = [2, 3];` massividan spread yordamida `[1, ...nums, 4]` ko'rinishidagi yangi massiv yasab, konsolga chiqaring.",
+      "startingCode": "const nums = [2, 3];\n// [1, ...nums, 4] yasang va chiqaring\n",
+      "hint": "const result = [1, ...nums, 4];\nconsole.log(result);",
+      "test": "if (!code.includes(\"...\")) return \"Spread (...) operatori ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"[1,2,3,4]\") || m.includes(\"1,2,3,4\"))) return null;\nreturn \"[1, 2, 3, 4] konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Massivni nusxalash (copy)",
+      "instruction": "`const original = [1, 2, 3];` massivining spread yordamida `copy` nusxasini yasab, konsolga chiqaring.",
+      "startingCode": "const original = [1, 2, 3];\n// spread bilan copy nusxasini yasang va chiqaring\n",
+      "hint": "const copy = [...original];\nconsole.log(copy);",
+      "test": "if (!code.includes(\"...\")) return \"Spread (...) operatori ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"[1,2,3]\") || m.includes(\"1,2,3\"))) return null;\nreturn \"copy massivi [1, 2, 3] konsolga chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "Obyektni nusxalash (clone)",
+      "instruction": "`const user = { name: \"Ali\", age: 20 };` obyektining spread yordamida `clone` nusxasini yasab, konsolga chiqaring.",
+      "startingCode": "const user = { name: \"Ali\", age: 20 };\n// spread bilan clone yasang va chiqaring\n",
+      "hint": "const clone = { ...user };\nconsole.log(clone);",
+      "test": "if (!code.includes(\"...\")) return \"Spread (...) operatori ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"Ali\") && m.includes(\"20\"))) return null;\nreturn \"clone obyekti to'g'ri konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "Massivni funksiyaga argument sifatida yoyish",
+      "instruction": "`const nums = [3, 9, 4];` massivini spread orqali `Math.max()` ga uzatib, eng katta sonni konsolga chiqaring (`9`).",
+      "startingCode": "const nums = [3, 9, 4];\n// Math.max(...nums) yordamida eng kattasini chiqaring\n",
+      "hint": "console.log(Math.max(...nums));",
+      "test": "if (!code.includes(\"...\")) return \"Spread (...) operatori ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"9\")) return null;\nreturn \"Eng katta son 9 konsolga chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "Argument xatosini tuzatish",
+      "instruction": "`sum` funksiyasiga massiv spread qilinmasdan uzatilgan, shuning uchun natija `NaN`. `sum(...[3, 4])` ko'rinishida tuzatib, natijani konsolga chiqaring (`7`).",
+      "startingCode": "function sum(a, b) {\n  return a + b;\n}\nconsole.log(sum([3, 4]));\n",
+      "hint": "console.log(sum(...[3, 4]));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"7\")) return null;\nreturn \"Natija 7 konsolga chiqmadi (spread ishlatildimi?)\";"
+    },
+    {
+      "id": 9,
+      "title": "Matnni belgilar massiviga yoyish",
+      "instruction": "`\"abc\"` matnini spread orqali harflar massiviga yoyib (`[...\"abc\"]`), natijani konsolga chiqaring.",
+      "startingCode": "// spread bilan matnni harflar massiviga yoyib chiqaring\n",
+      "hint": "console.log([...\"abc\"]);",
+      "test": "if (!code.includes(\"...\")) return \"Spread (...) operatori ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"[\\\"a\\\",\\\"b\\\",\\\"c\\\"]\") || m.includes(\"a,b,c\"))) return null;\nreturn \"Harflar massivi [a, b, c] konsolga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Obyektlarni birlashtirish (chegara)",
+      "instruction": "`const a = { x: 1, y: 2 };` va `const b = { y: 9, z: 3 };` ni spread bilan birlashtirib (`{ ...a, ...b }`), natijani konsolga chiqaring — `y` oxirgi (`9`) qiymat bilan olinishi kerak.",
+      "startingCode": "const a = { x: 1, y: 2 };\nconst b = { y: 9, z: 3 };\n// spread bilan birlashtiring va chiqaring\n",
+      "hint": "const merged = { ...a, ...b };\nconsole.log(merged);",
+      "test": "if (!code.includes(\"...\")) return \"Spread (...) operatori ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"9\") && m.includes(\"z\") && m.includes(\"x\"))) return null;\nreturn \"Birlashgan obyekt (x, y:9, z) konsolga chiqmadi\";"
     }
   ],
   quizzes: [
@@ -242,6 +298,114 @@ Keyingi darsda: Funksiya parametrlariga kelgan argumentlarni bitta massivga yig'
       ],
       correctAnswer: 0,
       explanation: "Obyektlarda bir xil kalitlar ketma-ket kelsa, oxirgi kelgan qiymat oldingi qiymatning ustiga yoziladi."
+    },
+    {
+      "id": 4,
+      "question": "Spread bilan massiv nusxalanganda qanday nusxa hosil bo'ladi?",
+      "options": [
+        "Sayoz (shallow) nusxa",
+        "Chuqur (deep) nusxa",
+        "Reference (manzil) nusxa",
+        "Nusxa umuman yaratilmaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Spread yuqori darajadagi elementlarni ko'chiradi — bu sayoz nusxa; ichma-ich obyektlar umumiy qoladi."
+    },
+    {
+      "id": 5,
+      "question": "`const a = [1, 2]; const b = [3, 4]; const c = [...a, ...b];` natijasida `c` nima bo'ladi?",
+      "options": [
+        "[1, 2, 3, 4]",
+        "[[1, 2], [3, 4]]",
+        "[3, 4, 1, 2]",
+        "[1, 2]"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Ikki massiv elementlari navbat bilan yoyilib, bitta massivga birlashadi."
+    },
+    {
+      "id": 6,
+      "question": "`const clone = { ...obj };` kodida nima sodir bo'ladi?",
+      "options": [
+        "obj ning yangi (sayoz) nusxasi yaratiladi",
+        "obj o'chiriladi",
+        "clone obj ning manzilini oladi",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Obyekt spread bilan nusxalanadi va yangi obyekt hosil bo'ladi; asl obyekt o'zgarmaydi."
+    },
+    {
+      "id": 7,
+      "question": "`Math.max(...[5, 1, 9])` nima qaytaradi?",
+      "options": [
+        "9",
+        "5",
+        "[5, 1, 9]",
+        "NaN"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Spread massiv elementlarini alohida argumentlarga aylantiradi, shuning uchun Math.max 9 ni qaytaradi."
+    },
+    {
+      "id": 8,
+      "question": "`const obj = { ...base, x: 5 };` da `base.x` mavjud bo'lsa, natijada `x` qanday bo'ladi?",
+      "options": [
+        "5 (o'ng tomondagi qiymat ustun)",
+        "base.x dagi eski qiymat",
+        "Xato beradi",
+        "Ikkala qiymat massivga yig'iladi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Spread'dan keyin yozilgan kalit ustidan yozadi, shuning uchun x = 5 bo'ladi."
+    },
+    {
+      "id": 9,
+      "question": "`[...\"ab\"]` natijasi nima?",
+      "options": [
+        "[\"a\", \"b\"]",
+        "[\"ab\"]",
+        "\"ab\"",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Matn iterable bo'lgani uchun spread uning har bir belgisini alohida element qiladi."
+    },
+    {
+      "id": 10,
+      "question": "Spread operatorini funksiya chaqiruvida ishlatish mumkinmi?",
+      "options": [
+        "Ha, `fn(...args)` ko'rinishida",
+        "Yo'q, faqat massivda",
+        "Faqat obyektlarda",
+        "Faqat Math bilan"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Spread funksiya chaqiruvida massiv elementlarini alohida argumentlarga yoyadi: fn(...args)."
+    },
+    {
+      "id": 11,
+      "question": "Spread ichma-ich (nested) obyektlarni ham chuqur nusxalaydimi?",
+      "options": [
+        "Yo'q, faqat yuqori darajani nusxalaydi (sayoz)",
+        "Ha, to'liq chuqur nusxalaydi",
+        "Faqat massivlarni",
+        "Faqat sonlarni"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Spread sayoz nusxa qiladi; ichma-ich obyektlar umumiy reference bo'lib qolaveradi."
+    },
+    {
+      "id": 12,
+      "question": "`const c = { ...a, ...b };` qanday vazifani bajaradi?",
+      "options": [
+        "Ikki obyektni birlashtiradi, to'qnashuvda b ustun",
+        "Ikki massivni birlashtiradi",
+        "a ni b ga o'zgartiradi",
+        "Faqat a ni nusxalaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Obyekt spread ikki obyektni birlashtiradi; bir xil kalit bo'lsa, keyingi (b) ustidan yozadi."
     }
   ]
 };

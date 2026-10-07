@@ -179,6 +179,62 @@ Keyingi darsda: Ma'lumotlarni xotirada saqlash uchun o'zgaruvchilar (\`let\`) bi
       startingCode: "console.log(100);\n",
       hint: "// console.log(100);",
       test: "if (!code.includes('//') && !code.includes('/*')) return 'Sharh belgisi (//) qo\\'yilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return null;\nreturn 'console.log hali ham ishlayapti — uni // bilan sharhga aylantiring';"
+    },
+    {
+      "id": 4,
+      "title": "Qatorli sharh yozish",
+      "instruction": "Kodning boshiga `// Bugun birinchi darsim` deb bitta qatorli sharh yozing.",
+      "startingCode": "// Sharhni shu yerga yozing\nconsole.log(\"Salom\");\n",
+      "hint": "// belgisidan keyin sharh matni keladi.",
+      "test": "const first = code.split('\\n').find(l => l.trim().startsWith('//'));\nif (!first) return 'Qatorli sharh (//) topilmadi';\nif (!first.includes('Bugun birinchi darsim')) return 'Sharih matni \"Bugun birinchi darsim\" bo\\'lishi kerak';\nreturn null;"
+    },
+    {
+      "id": 5,
+      "title": "Ko'p qatorli sharh",
+      "instruction": "Ikki qatordan iborat ko'p qatorli sharh yozing: birinchisida `Birinchi qator`, ikkinchisida `Ikkinchi qator`.",
+      "startingCode": "// Ko'p qatorli sharni shu yerga yozing\n",
+      "hint": "/* bilan ochib, */ bilan yoping.",
+      "test": "if (!/\\/\\*[\\s\\S]*\\*\\//.test(code)) return 'Ko\\'p qatorli sharh (/* ... */) topilmadi';\nif (!code.includes('Birinchi qator') || !code.includes('Ikkinchi qator')) return 'Ikkala qator ham sharhda bo\\'lishi kerak';\nreturn null;"
+    },
+    {
+      "id": 6,
+      "title": "Xatoni sharhga aylantirish",
+      "instruction": "`console.log(test);` qatorida xato bor (qo'shtirnoqsiz matn). Bu qatorni sharhga aylantiring — kod ishlashi kerak.",
+      "startingCode": "console.log(test);\nconsole.log(\"Tayyor\");\n",
+      "hint": "Birinchi qator boshiga // qo'shing.",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Tayyor'))) return null;\nreturn 'Kod ishlashi kerak edi (Tayyor chiqishi kerak)';"
+    },
+    {
+      "id": 7,
+      "title": "Funksiya uchun sharh",
+      "instruction": "`function greet() {}` qatoridan oldin bitta qatorli sharh yozing: `Salomlashuv funksiyasi`.",
+      "startingCode": "// Sharh shu yerga\nfunction greet() {\n  return \"Salom\";\n}\n",
+      "hint": "// Salomlashuv funksiyasi",
+      "test": "const lines = code.split('\\n');\nconst fi = lines.findIndex(l => l.includes('function greet'));\nif (fi === -1) return 'function greet topilmadi';\nconst prev = lines.slice(0, fi).reverse().find(l => l.trim().length > 0);\nif (!prev || !prev.trim().startsWith('//')) return 'function dan oldin qatorli sharh (//) bo\\'lishi kerak';\nif (!prev.includes('Salomlashuv funksiyasi')) return 'Sharh matni \"Salomlashuv funksiyasi\" bo\\'lishi kerak';\nreturn null;"
+    },
+    {
+      "id": 8,
+      "title": "Noma'lum qatorni sharhlab qoldirish",
+      "instruction": "Kod ichidagi `let unused = 5;` qatorini sharhga aylantiring (kodni o'chirmasdan, faqat sharh qiling).",
+      "startingCode": "let used = 10;\nlet unused = 5;\nconsole.log(used);\n",
+      "hint": "let unused = 5; qatorini // bilan boshlang.",
+      "test": "if (!/^\\s*\\/\\/\\s*let unused = 5/m.test(code)) return 'let unused = 5 qatori sharhlangan bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '10')) return null;\nreturn 'console.log(used) 10 chiqishi kerak';"
+    },
+    {
+      "id": 9,
+      "title": "Qaysi biri sharh ekanini topish",
+      "instruction": "Ikki qatorda ham `//` bilan sharh yozing: birinchisida `Birinchi sharh`, ikkinchisida `Ikkinchi sharh`. Ikkalasi ham ishlashi kerak.",
+      "startingCode": "// Ikkala qatorni ham sharh qiling\nlet a = 1;\nlet b = 2;\n",
+      "hint": "let a va let b qatorlarini // bilan boshlang.",
+      "test": "if (!/^\\s*\\/\\/\\s*let a = 1/m.test(code)) return 'let a = 1 sharhlangan bo\\'lishi kerak';\nif (!/^\\s*\\/\\/\\s*let b = 2/m.test(code)) return 'let b = 2 sharhlangan bo\\'lishi kerak';\nif (!code.includes('Birinchi sharh') || !code.includes('Ikkinchi sharh')) return 'Ikkita sharh matni ham yozilishi kerak';\nreturn null;"
+    },
+    {
+      "id": 10,
+      "title": "Sharh ichidagi kod ishlamaydi (chegara)",
+      "instruction": "`console.log(\"Bir\");` qatorini ko'p qatorli sharh ichiga oling. Konsolga hech narsa chiqmasin — barchasi sharh bo'lsin.",
+      "startingCode": "console.log(\"Bir\");\n",
+      "hint": "Qatorni /* va */ orasiga oling.",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length > 0) return 'Hech narsa chiqmasligi kerak — kod sharh ichida';\nreturn null;"
     }
   ],
   quizzes: [
@@ -217,6 +273,114 @@ Keyingi darsda: Ma'lumotlarni xotirada saqlash uchun o'zgaruvchilar (\`let\`) bi
       ],
       correctAnswer: 1,
       explanation: "// bilan yozilgan qator sharh bo'lgani uchun kompyuter uni bajarmaydi, faqat console.log(42) bajariladi."
+    },
+    {
+      "id": 4,
+      "question": "Bitta qatorli sharh qaysi belgi bilan boshlanadi?",
+      "options": [
+        "#",
+        "//",
+        "/*",
+        "--"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Ikki qoshlash (//) dan keyin kelgan matn shu qatorning oxirigacha sharh bo'lib hisoblanadi."
+    },
+    {
+      "id": 5,
+      "question": "Ko'p qatorli sharh qaysi belgilar bilan yopiladi?",
+      "options": [
+        "*/",
+        "//",
+        "**",
+        "]]"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Ko'p qatorli sharh /* bilan ochiladi va */ bilan yopiladi."
+    },
+    {
+      "id": 6,
+      "question": "Brauzer yoki Node.js sharhlarni bajaradimi?",
+      "options": [
+        "Ha, birinchi bajaradi",
+        "Yo'q, ular e'tiborsiz o'tkaziladi",
+        "Faqat xato bo'lsa bajaradi",
+        "Faqat birinchi sharh bajariladi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Sharhlar kod emas, izoh. Interpreter ularni o'qiydi, lekin bajarmaydi — dasturga ta'siri yo'q."
+    },
+    {
+      "id": 7,
+      "question": "Quyidagi kodning natijasi nima?  // console.log(\"Salom\");\nconsole.log(\"Tayyor\");",
+      "options": [
+        "Salom va Tayyor",
+        "Faqat Tayyor",
+        "Faqat Salom",
+        "Hech narsa"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Birinchi qator sharh — bajarilmaydi. Faqat ikkinchi qator, ya'ni Tayyor chiqadi."
+    },
+    {
+      "id": 8,
+      "question": "Sharh yozishning asosiy maqsadi nima?",
+      "options": [
+        "Kodni tezlashtirish",
+        "Kodni o'zimiz va boshqalar uchun tushunarli qilish",
+        "Xatolarni avtomatik tuzatish",
+        "Kodni yashirish"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Sharh kodning nima qilishini tushuntiradi. Keyinroq kodni o'qiganda maqsad aniq bo'ladi."
+    },
+    {
+      "id": 9,
+      "question": "Sharh ichida boshqa sharh yozsa bo'ladimi?",
+      "options": [
+        "Ha, cheksiz darajada",
+        "Yo'q, // ichida /* emas, // qatorning oxirigacha bo'lgan matnning o'zi sharh",
+        "Faqat */ bilan",
+        "Faqat HTML da"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Qatorli sharh ichida qaysi belgi bo'lishidan qat'i nazar, qatorning oxirigacha hammasi sharh bo'lib qoladi."
+    },
+    {
+      "id": 10,
+      "question": "/* ochilgan, lekin */ yozilmagan bo'lsa nima bo'ladi?",
+      "options": [
+        "Hech narsa",
+        "Sharh keyingi */ gacha davom etadi va kod ham sharhga aylanadi — xatolar paydo bo'ladi",
+        "Kod o'chiriladi",
+        "Brauzer qayta yuklanadi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Yopilmagan sharh kodning qolgan qismini ham ichiga oladi, bu esa kutilmagan xatolarga olib keladi."
+    },
+    {
+      "id": 11,
+      "question": "JavaScript da yana qanday sharh turi bor?",
+      "options": [
+        "Faqat qatorli",
+        "Faqat ko'p qatorli",
+        "Qatorli (//) va ko'p qatorli (/* ... */)",
+        "Sharh turi yo'q"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Ikki xil bor: qatorli // va ko'p qatorli /* ... */. Ikkalasi ham bir xil maqsadda ishlatiladi."
+    },
+    {
+      "id": 12,
+      "question": "Kodni vaqtincha o'chirish (lekin o'chirmasdan) uchun eng qulay usul qaysi?",
+      "options": [
+        "Qatorni butunlay o'chirish",
+        "Qatorni // bilan sharhlash",
+        "Faylni o'chirish",
+        "console.log qo'shish"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Sharhlash — qatorni saqlab turib, ishlamay qoldirish. Kerak bo'lganda // ni olib tashlab, qayta yoqish oson."
     }
   ]
 };
