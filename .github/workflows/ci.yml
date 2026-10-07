@@ -38,5 +38,8 @@ jobs:
       - name: Run Vitest unit tests
         run: npm test
 
+      - name: Run Vitest coverage
+        run: npm run test:coverage
+
       - name: Build production bundle
         run: npm run build

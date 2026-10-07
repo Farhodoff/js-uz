@@ -13,6 +13,10 @@ export function useResizable(initialWidth = 50, minWidth = 20, maxWidth = 80, si
     }
   }, [sidebarOffset, minWidth, maxWidth]);
 
+  const nudgeWidth = useCallback((delta) => {
+    setLeftWidth((w) => Math.min(maxWidth, Math.max(minWidth, w + delta)));
+  }, [minWidth, maxWidth]);
+
   const stopResizing = useCallback(() => {
     isResizing.current = false;
     document.removeEventListener("mousemove", handleMouseMove);
@@ -29,5 +33,5 @@ export function useResizable(initialWidth = 50, minWidth = 20, maxWidth = 80, si
     document.body.style.userSelect = "none";
   }, [handleMouseMove, stopResizing]);
 
-  return { leftWidth, startResizing };
+  return { leftWidth, startResizing, nudgeWidth };
 }

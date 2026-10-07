@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { curriculum, SECTIONS } from "../../data/curriculum";
+import { reactCurriculum, REACT_SECTIONS } from "../../data/reactCurriculum";
+import { useAppStore } from "../../store/useAppStore";
 
 export default function SearchModal({ isOpen, onClose }) {
   const [query, setQuery] = useState("");
+  const activeTrack = useAppStore((state) => state.activeTrack || "js");
+  const currentCurriculum = activeTrack === "react" ? reactCurriculum : curriculum;
+  const currentSections = activeTrack === "react" ? REACT_SECTIONS : SECTIONS;
   // challenges.js katta fayl (~17k qator) — faqat modal ochilganda yuklansin
   const [challenges, setChallenges] = useState([]);
   const inputRef = useRef(null);
@@ -35,8 +40,8 @@ export default function SearchModal({ isOpen, onClose }) {
   const lowerQuery = query.toLowerCase();
   
   const lessonResults = [];
-  SECTIONS.forEach(secKey => {
-    const sec = curriculum[secKey];
+  currentSections.forEach(secKey => {
+    const sec = currentCurriculum[secKey];
     if (!sec || !sec.lessons) return;
     sec.lessons.forEach(lesson => {
       if (lesson.title?.toLowerCase().includes(lowerQuery)) {

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Editor from '@monaco-editor/react';
-import { registerUzbekMonacoHover } from '../../../utils/editorExtensions';
+import { useUzbekMonaco } from '../../../hooks/useUzbekMonaco';
 
 export default function PracticeTab({
   code, setCode, runCode, showHint, setShowHint, activeLesson,
@@ -12,11 +12,7 @@ export default function PracticeTab({
 
   const runCodeRef = useRef(runCode);
   runCodeRef.current = runCode;
-
-  const editorRef = useRef(null);
   const zoneIdRef = useRef(null);
-  const monacoRef = useRef(null);
-  const hoverProviderDisposerRef = useRef(null);
 
   const removeInlineOutput = (editor) => {
     if (zoneIdRef.current !== null && editor) {
@@ -99,31 +95,23 @@ export default function PracticeTab({
     });
   }, []);
 
-  const handleEditorDidMount = (editor, monaco) => {
-    editorRef.current = editor;
-    monacoRef.current = monaco;
+  const { editorRef, monacoRef, handleEditorDidMount, refreshMarkers } = useUzbekMonaco({
+    onEditorMount: (editor, monaco) => {
+      // Bind Ctrl+Enter and Cmd+Enter to runCode
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+        if (runCodeRef.current) {
+          runCodeRef.current();
+        }
+      });
 
-    // Clean up previous registration just in case
-    if (hoverProviderDisposerRef.current) {
-      hoverProviderDisposerRef.current();
-    }
-
-    // Register Uzbek hover tooltips
-    hoverProviderDisposerRef.current = registerUzbekMonacoHover(monaco);
-
-    // Bind Ctrl+Enter and Cmd+Enter to runCode
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
-      if (runCodeRef.current) {
-        runCodeRef.current();
+      // If there is existing output, show it inline immediately
+      if (output) {
+        const hasError = output.includes('❌');
+        showInlineOutput(editor, monaco, output, hasError);
       }
-    });
-
-    // If there is existing output, show it inline immediately
-    if (output) {
-      const hasError = output.includes('❌');
-      showInlineOutput(editor, monaco, output, hasError);
-    }
-  };
+    },
+    onUnmount: (editor) => removeInlineOutput(editor)
+  });
 
   useEffect(() => {
     if (editorRef.current && monacoRef.current && output) {
@@ -132,18 +120,11 @@ export default function PracticeTab({
     } else if (editorRef.current && !output) {
       removeInlineOutput(editorRef.current);
     }
-  }, [output, showInlineOutput]);
+  }, [output, showInlineOutput, editorRef, monacoRef]);
 
   useEffect(() => {
-    return () => {
-      if (hoverProviderDisposerRef.current) {
-        hoverProviderDisposerRef.current();
-      }
-      if (editorRef.current) {
-        removeInlineOutput(editorRef.current);
-      }
-    };
-  }, []);
+    refreshMarkers();
+  }, [activeLesson?.language, currentExerciseIndex, refreshMarkers]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -258,14 +239,15 @@ export default function PracticeTab({
         <Editor
           height={`${editorHeight}px`}
           language={
-            activeLesson.language === 'sql'
+            (currentExercise?.language || activeLesson.language) === 'sql'
               ? 'sql'
-              : activeLesson.language === 'typescript'
+              : (currentExercise?.language || activeLesson.language) === 'typescript'
               ? 'typescript'
               : 'javascript'
           }
           value={code}
           theme="vs-dark"
+          loading={<div className="editor-loading">Kod muharriri yuklanmoqda...</div>}
           onChange={(value) => {
             setCode(value || '');
             if (editorRef.current) {

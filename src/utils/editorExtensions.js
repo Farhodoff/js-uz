@@ -1,4 +1,5 @@
-import { syntaxTree } from '@codemirror/language';
+import { parse } from 'acorn';
+import { fullAncestor, simple } from 'acorn-walk';
 
 const GLOBAL_NAMES = new Set([
   'console', 'Math', 'JSON', 'window', 'document', 'setTimeout', 'setInterval',
@@ -8,161 +9,6 @@ const GLOBAL_NAMES = new Set([
   'eval', 'typeof', 'void', 'arguments', 'React', 'useState', 'useEffect', 'useRef',
   'useMemo', 'useCallback', 'useContext'
 ]);
-
-export function uzbekJavaScriptLinter(view) {
-  const diagnostics = [];
-  const tree = syntaxTree(view.state);
-
-  const declaredVariables = new Set();
-  const variableTypes = new Map(); // name -> 'const' | 'let' | 'var' | 'function' | 'class'
-
-  // Pass 1: Collect declarations
-  tree.iterate({
-    enter(node) {
-      if (node.name === 'VariableDefinition') {
-        const name = view.state.sliceDoc(node.from, node.to);
-        if (name) {
-          declaredVariables.add(name);
-
-          // Find if it's declared with const, let, or var
-          let parent = node.node.parent;
-          let foundDeclaration = false;
-          while (parent && parent.name !== 'Script' && parent.name !== 'Block') {
-            if (parent.name === 'VariableDeclaration') {
-              const declText = view.state.sliceDoc(parent.from, parent.to).trim();
-              if (declText.startsWith('const')) {
-                variableTypes.set(name, 'const');
-              } else if (declText.startsWith('let')) {
-                variableTypes.set(name, 'let');
-              } else {
-                variableTypes.set(name, 'var');
-              }
-              foundDeclaration = true;
-              break;
-            }
-            parent = parent.parent;
-          }
-          if (!foundDeclaration) {
-            // Check if it's a function or class declaration name
-            let p = node.node.parent;
-            if (p && p.name === 'FunctionDeclaration') {
-              variableTypes.set(name, 'function');
-            } else if (p && p.name === 'ClassDeclaration') {
-              variableTypes.set(name, 'class');
-            } else {
-              variableTypes.set(name, 'let'); // default to block-scoped variable (e.g. parameter)
-            }
-          }
-        }
-      }
-    }
-  });
-
-  // Pass 2: Analyze errors and warnings
-  tree.iterate({
-    enter(node) {
-      // 1. Syntax Errors
-      if (node.name === '⚠' || node.type.isError) {
-        diagnostics.push({
-          from: node.from,
-          to: node.to,
-          severity: 'error',
-          message: "Sintaktik xatolik (Syntax Error). Qavslar, nuqtali vergul yoki yozilish shaklini tekshiring."
-        });
-        return;
-      }
-
-      // 2. Assignment inside conditions: if (a = b)
-      if (node.name === 'AssignmentExpression') {
-        let parent = node.node.parent;
-        if (parent && parent.name === 'ParenthesizedExpression') {
-          let grandParent = parent.parent;
-          if (grandParent && (grandParent.name === 'IfStatement' || grandParent.name === 'WhileStatement')) {
-            diagnostics.push({
-              from: node.from,
-              to: node.to,
-              severity: 'warning',
-              message: "Ehtiyot bo'ling! Shart operatori (if/while) ichida o'zlashtirish (=) operatori ishlatilgan. Taqqoslash uchun == yoki === operatoridan foydalaning."
-            });
-          }
-        }
-      }
-
-      // 3. Reassigning a const variable
-      if (node.name === 'AssignmentExpression') {
-        const left = node.node.firstChild;
-        if (left && left.name === 'VariableName') {
-          const name = view.state.sliceDoc(left.from, left.to);
-          if (variableTypes.get(name) === 'const') {
-            diagnostics.push({
-              from: left.from,
-              to: left.to,
-              severity: 'error',
-              message: `Taqiqlangan o'zgartirish! const yordamida yaratilgan "${name}" o'zgaruvchisi qiymatini qayta o'zgartirib bo'lmaydi.`
-            });
-          }
-        }
-      }
-
-      // 4. Update expression of a const variable (e.g. x++)
-      if (node.name === 'UpdateExpression') {
-        const varNode = node.node.getChild('VariableName');
-        if (varNode) {
-          const name = view.state.sliceDoc(varNode.from, varNode.to);
-          if (variableTypes.get(name) === 'const') {
-            diagnostics.push({
-              from: varNode.from,
-              to: varNode.to,
-              severity: 'error',
-              message: `Taqiqlangan o'zgartirish! const yordamida yaratilgan "${name}" o'zgaruvchisi qiymatini o'zgartirib bo'lmaydi.`
-            });
-          }
-        }
-      }
-
-      // 5. Comparison with NaN: x === NaN
-      if (node.name === 'BinaryExpression') {
-        const left = node.node.firstChild;
-        const right = node.node.lastChild;
-        const isLeftNaN = left && left.name === 'VariableName' && view.state.sliceDoc(left.from, left.to) === 'NaN';
-        const isRightNaN = right && right.name === 'VariableName' && view.state.sliceDoc(right.from, right.to) === 'NaN';
-        if (isLeftNaN || isRightNaN) {
-          diagnostics.push({
-            from: node.from,
-            to: node.to,
-            severity: 'warning',
-            message: "NaN qiymatini to'g'ridan-to'g'ri taqqoslab bo'lmaydi (har doim false beradi). Buning o'rniga isNaN() funksiyasidan foydalaning."
-          });
-        }
-      }
-
-      // 6. Undefined variable (Reference Error)
-      if (node.name === 'VariableName') {
-        const name = view.state.sliceDoc(node.from, node.to);
-        // Exclude typeof check: typeof x
-        let isTypeOf = false;
-        let parent = node.node.parent;
-        if (parent && parent.name === 'UnaryExpression') {
-          const opText = view.state.sliceDoc(parent.from, parent.to).trim();
-          if (opText.startsWith('typeof')) {
-            isTypeOf = true;
-          }
-        }
-
-        if (!isTypeOf && !declaredVariables.has(name) && !GLOBAL_NAMES.has(name)) {
-          diagnostics.push({
-            from: node.from,
-            to: node.to,
-            severity: 'warning',
-            message: `"${name}" o'zgaruvchisi e'lon qilinmagan. Ishlatishdan oldin let, const yoki var yordamida e'lon qiling.`
-          });
-        }
-      }
-    }
-  });
-
-  return diagnostics;
-}
 
 const KEYWORDS = [
   { label: 'const', info: 'O\'zgarmas o\'zgaruvchi yaratish uchun (qiymatini qayta o\'zgartirib bo\'lmaydi)' },
@@ -249,7 +95,6 @@ const BUILTIN_PROPERTIES = {
 };
 
 const COMMON_METHODS = [
-  // Array methods
   { label: 'push', type: 'function', info: 'Massiv oxiriga yangi element qo\'shadi va uning yangi uzunligini qaytaradi.' },
   { label: 'pop', type: 'function', info: 'Massivning oxirgi elementini o\'chiradi va o\'chirilgan qiymatni qaytaradi.' },
   { label: 'shift', type: 'function', info: 'Massivning birinchi elementini o\'chiradi va o\'chirilgan qiymatni qaytaradi.' },
@@ -266,8 +111,6 @@ const COMMON_METHODS = [
   { label: 'find', type: 'function', info: 'Shartga mos keladigan birinchi element qiymatini qaytaradi.' },
   { label: 'findIndex', type: 'function', info: 'Shartga mos keladigan birinchi element indeksini qaytaradi.' },
   { label: 'length', type: 'property', info: 'Massiv elementlari soni yoki satrdagi belgilar soni.' },
-
-  // String methods
   { label: 'split', type: 'function', info: 'Satrni belgilangan ajratuvchi bo\'yicha bo\'laklab, massiv qaytaradi.' },
   { label: 'replace', type: 'function', info: 'Satr ichidagi birinchi mos kelgan qismni boshqa qiymatga almashtiradi.' },
   { label: 'replaceAll', type: 'function', info: 'Satr ichidagi barcha mos kelgan qismlarni boshqa qiymatga almashtiradi.' },
@@ -276,141 +119,208 @@ const COMMON_METHODS = [
   { label: 'trim', type: 'function', info: 'Satrning boshi va oxiridagi bo\'sh joylarni olib tashlaydi.' },
   { label: 'substring', type: 'function', info: 'Satrning ko\'rsatilgan indekslar oralig\'idagi qismini qaytaradi.' },
   { label: 'charAt', type: 'function', info: 'Ko\'rsatilgan indeksdagi belgini qaytaradi.' },
-
-  // Object methods
   { label: 'keys', type: 'function', info: 'Obyektning barcha kalitlari (xususiyat nomlari) massivini qaytaradi.' },
   { label: 'values', type: 'function', info: 'Obyektning barcha qiymatlari massivini qaytaradi.' },
   { label: 'entries', type: 'function', info: 'Obyektning [kalit, qiymat] juftliklaridan iborat massivini qaytaradi.' }
 ];
 
-export function uzbekJavaScriptAutocomplete(context) {
-  // 1. Detect if we are typing after a dot (property access)
-  const dotMatch = context.matchBefore(/[\w$]+\.\w*/);
-  if (dotMatch) {
-    const text = dotMatch.text;
-    const dotIndex = text.indexOf('.');
-    const baseName = text.slice(0, dotIndex);
-    
-    let options = [];
-    if (BUILTIN_PROPERTIES[baseName]) {
-      options = BUILTIN_PROPERTIES[baseName];
-    } else {
-      // Suggest common methods for generic variables
-      options = COMMON_METHODS;
+function buildDictionary() {
+  const dictionary = {};
+  KEYWORDS.forEach((item) => { dictionary[item.label] = item.info; });
+  BUILTIN_GLOBALS.forEach((item) => { dictionary[item.label] = item.info; });
+  COMMON_METHODS.forEach((item) => {
+    if (!dictionary[item.label]) dictionary[item.label] = item.info;
+  });
+  Object.keys(BUILTIN_PROPERTIES).forEach((objName) => {
+    BUILTIN_PROPERTIES[objName].forEach((item) => {
+      dictionary[`${objName}.${item.label}`] = item.info;
+      if (!dictionary[item.label]) dictionary[item.label] = item.info;
+    });
+  });
+  return dictionary;
+}
+
+const UZBEK_DICTIONARY = buildDictionary();
+
+function toMonacoRange(monaco, loc) {
+  return {
+    startLineNumber: loc.start.line,
+    startColumn: loc.start.column + 1,
+    endLineNumber: loc.end.line,
+    endColumn: loc.end.column + 1
+  };
+}
+
+export function validateUzbekJavaScript(code) {
+  if (!code || !code.trim()) return [];
+  let ast;
+  try {
+    ast = parse(code, { ecmaVersion: 2024, sourceType: 'module', locations: true });
+  } catch (e) {
+    const line = e.loc ? e.loc.line : 1;
+    const column = e.loc ? e.loc.column : 0;
+    return [{
+      ...toMonacoRange({ }, { start: { line, column }, end: { line, column: column + 1 } }),
+      severity: 'error',
+      message: `Sintaktik xatolik: ${e.message}. Qavslar va yozilishni tekshiring.`
+    }];
+  }
+
+  const diagnostics = [];
+  const constNames = new Set();
+  const declared = new Set();
+
+  simple(ast, {
+    VariableDeclaration(node) {
+      for (const decl of node.declarations) {
+        if (decl.id && decl.id.type === 'Identifier') {
+          declared.add(decl.id.name);
+          if (node.kind === 'const') constNames.add(decl.id.name);
+        }
+      }
+    },
+    FunctionDeclaration(node) {
+      if (node.id) declared.add(node.id.name);
+      for (const p of node.params || []) {
+        if (p.type === 'Identifier') declared.add(p.name);
+      }
+    },
+    FunctionExpression(node) {
+      for (const p of node.params || []) {
+        if (p.type === 'Identifier') declared.add(p.name);
+      }
+    },
+    ArrowFunctionExpression(node) {
+      for (const p of node.params || []) {
+        if (p.type === 'Identifier') declared.add(p.name);
+      }
+    },
+    ClassDeclaration(node) {
+      if (node.id) declared.add(node.id.name);
+    },
+    CatchClause(node) {
+      if (node.param && node.param.type === 'Identifier') declared.add(node.param.name);
+    }
+  });
+
+  fullAncestor(ast, (node, ancestors) => {
+    if (node.type === 'AssignmentExpression' && node.left.type === 'Identifier') {
+      if (constNames.has(node.left.name) && node.loc) {
+        diagnostics.push({
+          ...toMonacoRange(null, node.left.loc),
+          severity: 'error',
+          message: `Taqiqlangan o'zgartirish! const bilan yaratilgan "${node.left.name}" ni qayta o'zgartirib bo'lmaydi.`
+        });
+      }
+      const parent = ancestors[ancestors.length - 2];
+      const grand = ancestors[ancestors.length - 3];
+      const inIfWhileTest =
+        (parent && (parent.type === 'IfStatement' || parent.type === 'WhileStatement')) ||
+        (parent && parent.type !== 'ExpressionStatement' && grand &&
+          (grand.type === 'IfStatement' || grand.type === 'WhileStatement'));
+      if (inIfWhileTest) {
+        diagnostics.push({
+          ...toMonacoRange(null, node.loc),
+          severity: 'warning',
+          message: "Ehtiyot bo'ling! if/while sharti ichida = ishlatilgan. Taqqoslash uchun == yoki === ishlating."
+        });
+      }
     }
 
-    return {
-      from: dotMatch.from + dotIndex + 1,
-      options: options.map(opt => ({
-        ...opt,
-        boost: opt.boost || 10
-      }))
-    };
-  }
+    if (node.type === 'UpdateExpression' && node.argument.type === 'Identifier') {
+      if (constNames.has(node.argument.name) && node.argument.loc) {
+        diagnostics.push({
+          ...toMonacoRange(null, node.argument.loc),
+          severity: 'error',
+          message: `Taqiqlangan o'zgartirish! const bilan yaratilgan "${node.argument.name}" ni o'zgartirib bo'lmaydi.`
+        });
+      }
+    }
 
-  // 2. Otherwise, suggest keywords, globals, and local variables
-  const wordMatch = context.matchBefore(/[\w$]*/);
-  if (!wordMatch || (wordMatch.from === wordMatch.to && !context.explicit)) {
-    return null;
-  }
+    if (node.type === 'BinaryExpression' && ['==', '===', '!=', '!=='].includes(node.operator)) {
+      const isNaN = (n) => n.type === 'Identifier' && n.name === 'NaN';
+      if ((isNaN(node.left) || isNaN(node.right)) && node.loc) {
+        diagnostics.push({
+          ...toMonacoRange(null, node.loc),
+          severity: 'warning',
+          message: "NaN ni to'g'ridan-to'g'ri taqqoslab bo'lmaydi (har doim false). isNaN() ishlating."
+        });
+      }
+    }
 
-  // Collect local declared names from AST
-  const localNames = new Set();
-  const tree = syntaxTree(context.state);
-  tree.iterate({
-    enter(node) {
-      if (node.name === 'VariableDefinition') {
-        const name = context.state.sliceDoc(node.from, node.to);
-        if (name && name.length >= 2) {
-          localNames.add(name);
+    if (node.type === 'Identifier') {
+      const parent = ancestors[ancestors.length - 2];
+      if (!parent) return;
+      const isDeclaration =
+        (parent.type === 'VariableDeclarator' && parent.id === node) ||
+        (parent.type === 'FunctionDeclaration' && parent.id === node) ||
+        (parent.type === 'FunctionExpression' && parent.id === node) ||
+        (parent.type === 'ClassDeclaration' && parent.id === node) ||
+        (parent.type === 'CatchClause' && parent.param === node);
+      const isParam = parent.type && parent.type.includes('Function') && parent.params && parent.params.includes(node);
+      const isProperty =
+        (parent.type === 'MemberExpression' && parent.property === node && !parent.computed) ||
+        (parent.type === 'Property' && parent.key === node && !parent.computed) ||
+        (parent.type === 'PropertyDefinition' && parent.key === node);
+      const isTypeof = parent.type === 'UnaryExpression' && parent.operator === 'typeof';
+      if (!isDeclaration && !isParam && !isProperty && !isTypeof) {
+        if (!declared.has(node.name) && !GLOBAL_NAMES.has(node.name) && node.loc && /^[a-zA-Z_$]/.test(node.name)) {
+          if (parent.type === 'MemberExpression' && parent.object === node) return;
+          diagnostics.push({
+            ...toMonacoRange(null, node.loc),
+            severity: 'warning',
+            message: `"${node.name}" e'lon qilinmagan. Ishlatishdan oldin let, const yoki var bilan e'lon qiling.`
+          });
         }
       }
     }
   });
 
-  const options = [];
+  const seen = new Set();
+  return diagnostics.filter((d) => {
+    const key = `${d.startLineNumber}:${d.startColumn}:${d.message}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 50);
+}
 
-  // User-defined variables & functions (highest priority)
-  for (const name of localNames) {
-    options.push({
-      label: name,
-      type: 'variable',
-      info: 'Foydalanuvchi tomonidan yaratilgan o\'zgaruvchi/funksiya',
-      boost: 99
-    });
-  }
+function mapToKind(monaco, type) {
+  const kinds = monaco.languages.CompletionItemKind;
+  if (type === 'function') return kinds.Function;
+  if (type === 'keyword') return kinds.Keyword;
+  if (type === 'constant') return kinds.Constant;
+  if (type === 'property') return kinds.Property;
+  return kinds.Variable;
+}
 
-  // Built-in globals
-  for (const glob of BUILTIN_GLOBALS) {
-    options.push({
-      label: glob.label,
-      type: glob.type || 'variable',
-      info: glob.info,
-      boost: 50
-    });
-  }
-
-  // Keywords
-  for (const kw of KEYWORDS) {
-    options.push({
-      label: kw.label,
-      type: 'keyword',
-      info: kw.info,
-      boost: 10
-    });
-  }
-
-  return {
-    from: wordMatch.from,
-    options: options
-  };
+function toSuggestions(monaco, list, range) {
+  return list.map((item) => ({
+    label: item.label,
+    kind: mapToKind(monaco, item.type || 'variable'),
+    insertText: item.label,
+    range,
+    detail: item.type || 'javascript',
+    documentation: { value: item.info }
+  }));
 }
 
 export function registerUzbekMonacoHover(monaco) {
-  const dictionary = {};
-
-  KEYWORDS.forEach(item => {
-    dictionary[item.label] = item.info;
-  });
-
-  BUILTIN_GLOBALS.forEach(item => {
-    dictionary[item.label] = item.info;
-  });
-
-  COMMON_METHODS.forEach(item => {
-    dictionary[item.label] = item.info;
-  });
-
-  Object.keys(BUILTIN_PROPERTIES).forEach(objName => {
-    BUILTIN_PROPERTIES[objName].forEach(item => {
-      dictionary[`${objName}.${item.label}`] = item.info;
-      if (!dictionary[item.label]) {
-        dictionary[item.label] = item.info;
-      }
-    });
-  });
-
   const hoverProvider = {
     provideHover: (model, position) => {
       const word = model.getWordAtPosition(position);
       if (!word) return null;
-
-      let infoText = dictionary[word.word];
-
+      let infoText = UZBEK_DICTIONARY[word.word];
       const lineContent = model.getLineContent(position.lineNumber);
       const beforeWordIndex = word.startColumn - 2;
       if (beforeWordIndex >= 0 && lineContent[beforeWordIndex] === '.') {
         const lineBeforeDot = lineContent.substring(0, beforeWordIndex);
         const match = lineBeforeDot.match(/[\w$]+$/);
         if (match) {
-          const parentName = match[0];
-          const fullKey = `${parentName}.${word.word}`;
-          if (dictionary[fullKey]) {
-            infoText = dictionary[fullKey];
-          }
+          const fullKey = `${match[0]}.${word.word}`;
+          if (UZBEK_DICTIONARY[fullKey]) infoText = UZBEK_DICTIONARY[fullKey];
         }
       }
-
       if (infoText) {
         return {
           range: new monaco.Range(
@@ -438,3 +348,83 @@ export function registerUzbekMonacoHover(monaco) {
   };
 }
 
+export function registerUzbekMonacoCompletion(monaco) {
+  const provider = {
+    triggerCharacters: ['.'],
+    provideCompletionItems: (model, position) => {
+      const word = model.getWordAtPosition(position);
+      const range = {
+        startLineNumber: position.lineNumber,
+        endLineNumber: position.lineNumber,
+        startColumn: word ? word.startColumn : position.column,
+        endColumn: position.column
+      };
+      const lineContent = model.getLineContent(position.lineNumber).substring(0, position.column - 1);
+      const dotMatch = lineContent.match(/([\w$]+)\.[\w$]*$/);
+      if (dotMatch) {
+        const baseName = dotMatch[1];
+        if (BUILTIN_PROPERTIES[baseName]) {
+          return { suggestions: toSuggestions(monaco, BUILTIN_PROPERTIES[baseName], range) };
+        }
+        return { suggestions: toSuggestions(monaco, COMMON_METHODS, range) };
+      }
+      const suggestions = [
+        ...toSuggestions(monaco, BUILTIN_GLOBALS.map((g) => ({ ...g, type: g.type || 'variable' })), range),
+        ...toSuggestions(monaco, KEYWORDS.map((k) => ({ ...k, type: 'keyword' })), range)
+      ];
+      return { suggestions };
+    }
+  };
+
+  const js = monaco.languages.registerCompletionItemProvider('javascript', provider);
+  const ts = monaco.languages.registerCompletionItemProvider('typescript', provider);
+  return () => { js.dispose(); ts.dispose(); };
+}
+
+export function updateUzbekMonacoMarkers(monaco, model) {
+  if (!model || model.isDisposed()) return;
+  const lang = model.getLanguageId();
+  if (lang !== 'javascript' && lang !== 'typescript') return;
+  const code = model.getValue();
+  const found = validateUzbekJavaScript(code);
+  const markers = found.map((d) => ({
+    startLineNumber: d.startLineNumber,
+    startColumn: d.startColumn,
+    endLineNumber: d.endLineNumber,
+    endColumn: d.endColumn,
+    severity: d.severity === 'error'
+      ? monaco.MarkerSeverity.Error
+      : monaco.MarkerSeverity.Warning,
+    message: d.message,
+    source: 'uzbek-lint'
+  }));
+  monaco.editor.setModelMarkers(model, 'uzbek-lint', markers);
+}
+
+export function registerUzbekMonacoDiagnostics(monaco, editor, debounceMs = 400) {
+  let timer = null;
+  const update = () => {
+    const model = editor.getModel();
+    if (model) updateUzbekMonacoMarkers(monaco, model);
+  };
+  update();
+  const disposable = editor.onDidChangeModelContent(() => {
+    clearTimeout(timer);
+    timer = setTimeout(update, debounceMs);
+  });
+  return () => {
+    clearTimeout(timer);
+    disposable.dispose();
+    const model = editor.getModel();
+    if (model && !model.isDisposed()) monaco.editor.setModelMarkers(model, 'uzbek-lint', []);
+  };
+}
+
+export function registerUzbekMonacoProviders(monaco, editor) {
+  const disposers = [
+    registerUzbekMonacoHover(monaco),
+    registerUzbekMonacoCompletion(monaco)
+  ];
+  if (editor) disposers.push(registerUzbekMonacoDiagnostics(monaco, editor));
+  return () => disposers.forEach((d) => d());
+}
