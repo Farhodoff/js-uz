@@ -1,5 +1,5 @@
 export const sqlJoins = {
-  id: "sql_joins_1",
+  id: "sqlJoins",
   title: "SQL Joins (Jadvallarni Birlashtirish)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish

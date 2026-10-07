@@ -4,282 +4,413 @@ export const scopeBasics = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, shahar markazida hamma ko'rishi mumkin bo'lgan katta e'lonlar doskasi bor — u yerdagi ma'lumotni istalgan odam o'qiy oladi. Lekin uyingiz ichidagi xonangizda shaxsiy daftaringiz bor — uni faqat shu xonaga kirgan odamgina o'qiy oladi, ko'chadagilar esa ko'rmaydi.
-JavaScript da o'zgaruvchilar ham xuddi shunday ishlaydi: ba'zilari butun dasturga ochiq bo'lsa, ba'zilari faqat ma'lum bir xona (blok yoki funksiya) ichida yashirin bo'ladi.
+Tasavvur qiling, maktab binosi bor. E'lonlar taxtasi ikki xil:
+- Kirishdagi katta taxta. Hamma ko'radi: o'quvchi ham, o'qituvchi ham.
+- Sinf ichidagi kichik taxta. Faqat shu sinfdagilar ko'radi. Tashqaridan ko'rinmaydi.
 
-**Scope (ko'lam / ko'rinish sohasi)** — o'zgaruvchining qayerda e'lon qilingani va dasturning qaysi qismlaridan turib unga murojaat qilish mumkinligini belgilovchi chegaradir.
+Dasturlashda ham o'zgaruvchining "ko'rinish joyi" bor. Ba'zisi hamma joyda ko'rinadi. Ba'zisi faqat o'z blokida.
 
-*Yangi terminlar:*
-- **Scope (ko'lam)** — o'zgaruvchi yashaydigan va unga murojaat qilish mumkin bo'lgan hudud.
-- **Global scope (global ko'lam)** — har qanday blok yoki funksiyadan tashqaridagi eng yuqori soha. Bu yerda e'lon qilingan o'zgaruvchi hamma joydan ko'rinadi.
-- **Block scope (blok ko'lami)** — \`{ }\` (jingalak qavslar) ichidagi soha. \`let\` va \`const\` faqat o'zi joylashgan blok ichidagina yashaydi.
-- **Local scope (lokal ko'lam)** — ma'lum bir funksiya yoki blok ichidagi xususiy soha (tashqaridan ko'rinmaydi).
+Scope (ko'lam) — o'zgaruvchi qayerda ko'rinishi va ishlatilishini belgilaydigan qoidadir.
 
 ---
 
 ## 2. Nega kerak?
 
-Agar hamma o'zgaruvchilar bitta umumiy xonada (global) saqlanganida, dastur kattalashgani sari katta chalkashlik kelib chiqardi:
+Ikki sinf bor. Har birida " Sardor" ismli o'quvchi bor. Chalkashlik bo'lmasligi uchun har biri o'z sinfida chaqiriladi.
+
+Dasturda ham bir xil nom ikki joyda kerak bo'ladi:
 
 \`\`\`javascript
-// Muammo: Agar hamma narsa umumiy bo'lsa
-let count = 10;
-// Boshqa bir blok yoki funksiya tasodifan count ni o'zgartirib yuborishi mumkin!
+let ism = "Ali";
+{
+  let ism = "Vali";
+  console.log(ism);
+}
+console.log(ism);
 \`\`\`
 
-Dasturimizda turli joylarda bir xil qulay nomlardan (masalan, \`count\`, \`total\`, \`message\`) foydalanamiz. Scope tufayli har bir blok yoki funksiya o'zining shaxsiy hududiga ega bo'ladi va ichkaridagi o'zgaruvchilar tashqaridagilarga xalaqit bermaydi.
+Natija: \`Vali\` va \`Ali\`. Ikkalasi ham o'z joyida ishladi. Bir-biriga xalaqit bermadi.
+
+Muammo shunda: katta dasturda nomlar to'qnashadi. Yechim — scope. Har bir o'zgaruvchi o'z hududida yashaydi.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod global o'zgaruvchi va blok ichidagi lokal o'zgaruvchining qanday ko'rinishini ko'rsatadi.
+Bu kod blok ichidagi o'zgaruvchi tashqarida ko'rinmasligini ko'rsatadi.
 
 \`\`\`javascript
-let city = "Toshkent"; // global o'zgaruvchi (hamma joydan ko'rinadi)
-
-if (true) {
-  let street = "Navoiy"; // blok scope (faqat shu blok ichida ko'rinadi)
-  console.log(city); // ichkaridan tashqari ko'rinadi
-  console.log(street); // blok ichidagi o'zgaruvchi ko'rinadi
+{
+  let x = 5; // Blok ichida yaratildi
 }
-
-console.log(city); // global o'zgaruvchi tashqarida ham ko'rinadi
+console.log(x); // Xato beradi!
 \`\`\`
 
 \`\`\`text
-// Natija:
-Toshkent
-Navoiy
-Toshkent
+// Natija: ReferenceError: x is not defined
 \`\`\`
 
 ---
 
 ## 4. Qator-baqator tahlil
 
-- \`let city = "Toshkent";\` — har qanday blok yoki funksiyadan tashqarida e'lon qilindi. Bu **global scope**. Uni butun dastur bo'yicha hamma ko'radi.
-- \`if (true) {\` — yangi blok (\`{ }\`) ochildi. Bu yerda yangi **block scope** boshlanadi.
-- \`let street = "Navoiy";\` — blok ichida \`let\` bilan yaratildi. Bu o'zgaruvchi faqat shu jingalak qavslar ichida yashaydi.
-- \`console.log(city);\` — blok ichidan turib tashqaridagi (global) o'zgaruvchini bemalol o'qish mumkin (ichkaridan tashqari ko'rinadi).
-- \`console.log(street);\` — blok ichida o'zining lokal o'zgaruvchisi muammosiz o'qiladi.
-- \`}\` — blok yopildi! Shu onda \`street\` o'zgaruvchisi xotiradan o'chadi va endi mavjud emas.
-- \`console.log(city);\` — global o'zgaruvchi tashqarida ham mavjud bo'lib turibdi.
+- \`{\` — blok boshlandi. Yangi hudud ochildi.
+- \`let x = 5;\` — \`x\` shu blok ichida yaratildi. Faqat shu yerda yashaydi.
+- \`}\` — blok tugadi. Hudud yopildi. \`x\` yo'qoldi.
+- \`console.log(x);\` — tashqaridan murojaat. Bunday nom topilmadi. Shuning uchun xato beradi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-O'zgaruvchilarning ko'rinish hududi jadvali:
+Hudud qanday ochilib yopiladi:
 
-| Qator | Kod | Joylashuv | city ko'rinadimi? | street ko'rinadimi? |
-|---|---|---|---|---|
-| 1 | \`let city = "Toshkent";\` | Tashqarida (Global) | Ha ("Toshkent") | Yo'q (hali e'lon qilinmagan) |
-| 3 | \`if (true) {\` | Blok boshlandi | Ha ("Toshkent") | Yo'q |
-| 4 | \`let street = "Navoiy";\` | Blok ichida | Ha ("Toshkent") | Ha ("Navoiy") |
-| 7 | \`}\` | Blok tugadi | Ha ("Toshkent") | Yo'q (blok bilan birga yo'qoldi) |
-| 9 | \`console.log(city);\` | Tashqarida (Global) | Ha ("Toshkent") | Yo'q (ReferenceError beradi) |
-
-Qoida: **Ichkaridan tashqari ko'rinadi, lekin tashqaridan ichkari ko'rinmaydi!**
+| Qadam | Kod qatori | Holat | Natija |
+|---|---|---|---|
+| 1 | \`{\` | Blok ochildi | Yangi hudud |
+| 2 | \`let x = 5;\` | Yaratildi | x blokda yashaydi |
+| 3 | \`}\` | Blok yopildi | x yo'qoldi |
+| 4 | \`console.log(x);\` | Tashqaridan qidiruv | Topilmadi — xato |
 
 ---
 
 ## 6. Yana bitta misol
 
-1-misoldan farqi: \`var\` kalit so'zi blok ko'lamini (block scope) tan olmaydi va blokdan tashqariga chiqib ketadi!
+Bu kod tashqaridagi o'zgaruvchi ichkarida ko'rinishini ko'rsatadi.
 
 \`\`\`javascript
-if (true) {
-  var score = 100; // var blok chegarasini tan olmaydi!
-  let points = 50; // let faqat blok ichida yashaydi
+let ism = "Ali"; // Tashqarida yaratildi
+{
+  console.log(ism); // Ichkaridan ko'rinadi
 }
-
-console.log(score); // tashqarida ham ko'rinadi!
 \`\`\`
 
 \`\`\`text
-// Natija:
-100
+// Natija: Ali
 \`\`\`
 
-Tahlil:
-- \`points\` o'zgaruvchisi \`let\` bilan yaratilgani uchun u blokdan tashqarida yo'q bo'ladi.
-- \`score\` esa eskirgan \`var\` bilan e'lon qilingani uchun blokdan tashqariga "sizib chiqadi". Aynan shu nojo'ya xatti-harakati sababli zamonaviy JavaScript da \`var\` o'rniga har doim \`let\` va \`const\` ishlatiladi.
+Qator-baqator tahlil:
+- \`let ism = "Ali";\` — tashqi hududda yaratildi. Hamma joydan ko'rinadi.
+- Blok ichidan tashqariga qarash mumkin. Shuning uchun \`Ali\` chiqadi.
+- Qoida bir tomonlama: ichkaridan tashqariga ko'rinadi, tashqaridan ichkariga ko'rinmaydi.
 
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1-xato: Blok ichidagi o'zgaruvchini tashqarida ishlatishga urinish
-
+### 1. Blok ichidagini tashqarida ishlatish
+❌ Xato kod:
 \`\`\`javascript
-if (true) {
-  let user = "Ali";
+{
+  let x = 5;
 }
-
-console.log(user); // XATO: ReferenceError: user is not defined
+console.log(x);
+\`\`\`
+Nima bo'ladi: \`ReferenceError: x is not defined\` xatoligi yuz beradi. Blok yopilishi bilan ichidagi o'zgaruvchilar yo'qoladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+let x = 5;
+console.log(x); // 5 chiqadi
 \`\`\`
 
-**Nima bo'ladi:** \`ReferenceError: user is not defined\` xatosi chiqadi. Chunki \`let\` faqat o'zi yaratilgan \`{ }\` blok ichida yashaydi.
-**To'g'ri varianti:** Agar o'zgaruvchi tashqarida ham kerak bo'lsa, uni blokdan oldin (tashqarida) e'lon qiling:
+### 2. Bir hududda ikki marta e'lon qilish
+❌ Xato kod:
 \`\`\`javascript
-let user = "";
-if (true) {
-  user = "Ali";
-}
-console.log(user); // Ali
+let a = 1;
+let a = 2;
+\`\`\`
+Nima bo'ladi: \`SyntaxError: Identifier 'a' has already been declared\` xatoligi yuz beradi. Bir hududda bir nom faqat bir marta e'lon qilinadi.
+✅ To'g'ri variant:
+\`\`\`javascript
+let a = 1;
+a = 2; // Qayta e'lon emas, qiymat almashtirish
 \`\`\`
 
-### 2-xato: Funksiya ichidagi lokal o'zgaruvchini tashqarida o'qish
-
+### 3. Ichki nom tashqarini o'zgartiradi deb o'ylash
+❌ Xato tushuncha:
 \`\`\`javascript
-function calculate() {
-  let price = 500; // lokal o'zgaruvchi
-  return price;
+let ism = "Ali";
+{
+  let ism = "Vali";
 }
-
-calculate();
-console.log(price); // XATO: ReferenceError: price is not defined
+console.log(ism);
 \`\`\`
-
-**Nima bo'ladi:** \`price\` funksiya tugashi bilan yo'qoladi. Tashqaridan unga to'g'ridan-to'g'ri murojaat qilib bo'lmaydi.
-**To'g'ri varianti:** Funksiya qaytargan (\`return\`) qiymatni tashqaridagi o'zgaruvchiga saqlab oling: \`let result = calculate(); console.log(result);\`.
-
-### 3-xato: var ishlatib tasodifan tashqi o'zgaruvchini buzib qo'yish
-
-\`\`\`javascript
-var total = 10;
-
-if (true) {
-  var total = 20; // XATO: tashqi total ni bexosdan o'zgartirib yubordi!
-}
-
-console.log(total); // 20 (10 emas!)
-\`\`\`
-
-**Nima bo'ladi:** \`var\` blok ko'lamiga ega bo'lmagani uchun ichkaridagi \`total\` tashqaridagi \`total\` ustiga yozib yuboradi.
-**To'g'ri varianti:** Har doim \`let\` yoki \`const\` ishlating. Ular har bir blok uchun alohida hudud yaratadi.
+Nima bo'ladi: xato bermaydi. Lekin \`Ali\` chiqadi! Sababi: blok ichidagi \`ism\` — boshqa, mustaqil o'zgaruvchi. Tashqaridagi \`ism\` ga tegmaydi.
+✅ To'g'ri tushuncha: bir xil nom ikki hududda — ikkita alohida quti. Ichkaridagi tashqarini o'zgartirmaydi.
 
 ---
 
 ## 8. Tekshiruv
 
-### 1-mashq (oson)
-Global sohada \`appName\` nomli o'zgaruvchi yarating va unga \`"JS Academy"\` qiymatini bering. \`showApp\` nomli oddiy funksiya yarating va uning ichida konsolga global \`appName\` ni chiqaring. Funksiyani chaqiring.
+### 1-mashq (Oson)
+Blok ichida \`x = 5\` yarating. Blok ichida chiqaring (\`5\` chiqishi kerak).
 
-### 2-mashq (o'rtacha)
-Tashqarida \`let globalAge = 30;\` o'zgaruvchisini yarating. So'ngra \`if (true)\` bloki ichida \`let localAge = 25;\` o'zgaruvchisini e'lon qiling. Blokdan tashqarida \`console.log(globalAge);\` orqali faqat global o'zgaruvchini konsolga chiqaring.
+### 2-mashq (O'rtacha)
+Tashqarida \`ism = "Ali"\` yarating. Blok ichida chiqaring (\`Ali\` chiqishi kerak).
 
-### 3-mashq (chegara holat)
-\`var\` ning blok ko'lamini mensimasligini amalda tekshiring: \`if (true)\` bloki ichida \`var secret = 777;\` e'lon qiling. Blok tugagach, blokdan tashqarida turib \`console.log(secret);\` ni chaqiring va natijani ko'ring.
+### 3-mashq (Chegara holat)
+Bir xil nomni ikki hududda yarating: tashqarida \`"Ali"\`, blok ichida \`"Vali"\`. Tashqarida chiqaring (\`Ali\` chiqishi kerak — ichkaridagi tegmagan).
 
----
-
-### Javoblar
-
-**1-mashq javobi:**
+### Javoblar:
+1.
 \`\`\`javascript
-let appName = "JS Academy";
-
-function showApp() {
-  console.log(appName);
+{
+  let x = 5;
+  console.log(x);
 }
-
-showApp();
 \`\`\`
-
-**2-mashq javobi:**
+2.
 \`\`\`javascript
-let globalAge = 30;
-
-if (true) {
-  let localAge = 25;
+let ism = "Ali";
+{
+  console.log(ism);
 }
-
-console.log(globalAge); // 30
 \`\`\`
-
-**3-mashq javobi:**
+3.
 \`\`\`javascript
-if (true) {
-  var secret = 777;
+let ism = "Ali";
+{
+  let ism = "Vali";
 }
-
-console.log(secret); // 777
+console.log(ism);
 \`\`\`
 
 ---
 
 ## 9. Xulosa
 
-1. Scope — o'zgaruvchilarning qayerda yashashi va qayerdan ko'rinishini belgilovchi qamrov chegarasidir.
-2. \`let\` va \`const\` blok ko'lamiga ega (block scope): ular faqat o'zlari e'lon qilingan \`{ }\` blok ichida mavjud bo'ladi.
-3. \`var\` blok ko'lamini tan olmaydi va blokdan tashqariga chiqib ketadi (shu sababli undan foydalanmaslik tavsiya etiladi).
+1. Scope — o'zgaruvchining ko'rinish hududi. Blok ichidagi tashqarida ko'rinmaydi.
+2. Tashqaridagi ichkaridan ko'rinadi. Qoida bir tomonlama.
+3. Bir hududda bir nom bir marta e'lon qilinadi.
 
-Keyingi darsda: Funksiyani boshqa funksiyaga argument sifatida uzatish — Callback tushunchasi bilan tanishamiz.
+Keyingi darsda: funksiyani qiymat sifatida uzatish (callback) bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Global o'zgaruvchini funksiya ichida ishlatish",
-      instruction: "Global sohada `appName` nomli o'zgaruvchi yaratib, unga `\"JS Academy\"` qiymatini bering. `showApp` nomli funksiya yozib, uning ichida konsolga `appName` ni chiqaring. Funksiyani chaqiring.",
-      startingCode: "// appName va showApp funksiyasini yozing\n",
-      hint: "let appName = \"JS Academy\";\nfunction showApp() {\n  console.log(appName);\n}\nshowApp();",
-      test: "if (!code.includes('appName')) return 'appName o\\'zgaruvchisi yaratilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('JS Academy'))) return null;\nreturn 'Konsolga \"JS Academy\" chiqmadi';"
+      title: "Blok ichida chiqarish",
+      instruction: "Blok ichida `x = 5` yarating va o'sha yerda chiqaring (`5` chiqishi kerak).",
+      startingCode: "// Blok oching, x yarating va chiqaring\n",
+      hint: "{\n  let x = 5;\n  console.log(x);\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '5')) return null;\nreturn '5 konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "Blok va global o'zgaruvchilar",
-      instruction: "Tashqarida `let globalAge = 30;` yarating. `if (true)` bloki ochib, uning ichida `let localAge = 25;` e'lon qiling. Blokdan tashqarida `console.log(globalAge);` orqali faqat `globalAge` ni konsolga chiqaring.",
-      startingCode: "let globalAge = 30;\n\nif (true) {\n  let localAge = 25;\n}\n\n// globalAge ni konsolga chiqaring\n",
-      hint: "console.log(globalAge);",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('30'))) return null;\nreturn 'Konsolga 30 chiqmadi';"
+      title: "Tashqaridan ko'rinish",
+      instruction: "Tashqarida `ism = \"Ali\"` yarating. Blok ichida chiqaring (`Ali` chiqishi kerak).",
+      startingCode: "let ism = \"Ali\";\n// Blok oching va ichida chiqaring\n",
+      hint: "{\n  console.log(ism);\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi';"
     },
     {
       id: 3,
-      title: "var ning blokdan chiqishi",
-      instruction: "`if (true)` bloki ichida `var secret = 777;` e'lon qiling. Blokdan keyin (tashqarida) `console.log(secret);` orqali uni konsolga chiqaring.",
-      startingCode: "if (true) {\n  // var bilan secret yarating\n}\n\n// secret ni konsolga chiqaring\n",
-      hint: "if (true) {\n  var secret = 777;\n}\nconsole.log(secret);",
-      test: "if (!code.includes('var')) return 'var ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('777'))) return null;\nreturn 'Konsolga 777 chiqmadi';"
+      title: "Tashqaridan murojaat xatosi",
+      instruction: "Quyidagi kod xato beradi. Sababini toping: `x` ni blok TASHQARISIGA chiqaring (`5` chiqsin).",
+      startingCode: "{\n  let x = 5;\n}\nconsole.log(x);\n",
+      hint: "let x = 5; — blokdan oldinga yozing.",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '5')) return null;\nreturn '5 konsolga chiqmadi';"
+    },
+    {
+      id: 4,
+      title: "Qayta e'lon xatosini tuzatish",
+      instruction: "`let a = 1; let a = 2;` xato bermoqda. Ikkinchisini qiymat almashtirishga aylantiring (`2` chiqsin).",
+      startingCode: "let a = 1;\nlet a = 2;\nconsole.log(a);\n",
+      hint: "a = 2; — let siz yozing.",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2')) return null;\nreturn '2 konsolga chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "Ikki mustaqil quti",
+      instruction: "Tashqarida `\"Ali\"`, blok ichida `\"Vali\"` yarating (ikkalsi ham `ism` nomida). Tashqarida chiqaring (`Ali` chiqishi kerak).",
+      startingCode: "let ism = \"Ali\";\n// Blok ichida Vali yarating\nconsole.log(ism);\n",
+      hint: "{\n  let ism = \"Vali\";\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi (tashqaridagi o\\'zgarmagan bo\\'lishi kerak)';"
+    },
+    {
+      id: 6,
+      title: "Blokda hisoblash (chegara)",
+      instruction: "Blok ichida `a = 3`, `b = 4` yarating. Yig'indini o'sha yerda chiqaring (`7` chiqishi kerak).",
+      startingCode: "// Blok ichida hisoblang va chiqaring\n",
+      hint: "{\n  let a = 3;\n  let b = 4;\n  console.log(a + b);\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '7')) return null;\nreturn '7 konsolga chiqmadi';"
+    },
+    {
+      id: 7,
+      title: "Ichkaridan tashqariga (chegara)",
+      instruction: "`n = 10` tashqarida berilgan. Blok ichida `n + 5` ni chiqaring (`15` chiqishi kerak).",
+      startingCode: "let n = 10;\n// Blok ichida n + 5 ni chiqaring\n",
+      hint: "{\n  console.log(n + 5);\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '15')) return null;\nreturn '15 konsolga chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Ikkita alohida blok (chegara)",
+      instruction: "Ikkita blok oching. Birinchida `x = 1`, ikkinchisida `x = 2` yarating. Har birini o'z blokida chiqaring (`1` va `2`).",
+      startingCode: "// Ikkita blok yozing\n",
+      hint: "{\n  let x = 1;\n  console.log(x);\n}\n{\n  let x = 2;\n  console.log(x);\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2') return null;\nreturn '1 va 2 chiqishi kerak';"
+    },
+    {
+      id: 9,
+      title: "Funksiya hududi (chegara)",
+      instruction: "`korsat` funksiyasi ichida `x = 9` yarating va chiqaring. Funksiyani chaqiring (`9` chiqishi kerak).",
+      startingCode: "// Funksiya ichida x yarating, chiqaring va chaqiring\n",
+      hint: "function korsat() {\n  let x = 9;\n  console.log(x);\n}\nkorsat();",
+      test: "if (!code.includes('function')) return 'Funksiya e\\'lon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '9')) return null;\nreturn '9 konsolga chiqmadi';"
+    },
+    {
+      id: 10,
+      title: "Sikl hududi (chegara)",
+      instruction: "`for` ichida `i` bilan `0`, `1`, `2` ni chiqaring. Sikldan keyin `i` yo'qligini bilgan holda faqat ichida ishlang.",
+      startingCode: "// for ichida i ni chiqaring\n",
+      hint: "for (let i = 0; i < 3; i++) {\n  console.log(i);\n}",
+      test: "if (!code.includes('for')) return 'for sikli ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2') return null;\nreturn '0, 1, 2 chiqishi kerak';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Blok scope (blok ko'lami) qaysi belgilar bilan chegaralanadi?",
+      question: "`{ let x = 5; } console.log(x);` nima qiladi?",
       options: [
-        "{ } (jingalak qavslar)",
-        "( ) (oddiy qavslar)",
-        "[ ] (kvadrat qavslar)",
-        "\" \" (qo'shtirnoq)"
+        "5 chiqaradi",
+        "ReferenceError beradi",
+        "undefined chiqaradi",
+        "Hech narsa qilmaydi"
       ],
-      correctAnswer: 0,
-      explanation: "JavaScript da { } (jingalak qavslar) orasidagi soha blok deyiladi va let/const faqat shu blok ichida yashaydi."
+      correctAnswer: 1,
+      explanation: "Blok yopilishi bilan x yo'qoladi. Tashqaridan topilmaydi."
     },
     {
       id: 2,
-      question: "var bilan e'lon qilingan o'zgaruvchi if bloki ichida yaratilsa nima bo'ladi?",
+      question: "Scope nimani belgilaydi?",
       options: [
-        "U blokdan tashqariga ham chiqadi (blok scope ga ega emas)",
-        "U faqat blok ichida ko'rinadi",
-        "SyntaxError xatosi yuz beradi",
-        "Dastur avtomatik to'xtaydi"
+        "Kod tezligini",
+        "O'zgaruvchi qayerda ko'rinishini",
+        "Xatolar sonini",
+        "Fayl hajmini"
       ],
-      correctAnswer: 0,
-      explanation: "var o'zgaruvchisi blok ko'lamiga ega emas. U blok ichida yaratilsa ham blokdan tashqarida ko'rinaveradi."
+      correctAnswer: 1,
+      explanation: "Scope — ko'rinish hududi qoidasi."
     },
     {
       id: 3,
-      question: "Funksiya yoki blok ichida let bilan yaratilgan o'zgaruvchiga tashqaridan murojaat qilinsa nima yuz beradi?",
+      question: "`let ism = \"Ali\"; { console.log(ism); }` nima chiqaradi?",
       options: [
-        "ReferenceError: ... is not defined xatosi chiqadi",
-        "TypeError xatosi chiqadi",
-        "SyntaxError xatosi chiqadi",
-        "Hech qanday xato chiqmaydi, undefined bo'ladi"
+        "Xatolik",
+        "Ali",
+        "undefined",
+        "Hech narsa"
       ],
-      correctAnswer: 0,
-      explanation: "let va const bilan yaratilgan o'zgaruvchilar o'zlari e'lon qilingan blokdan tashqarida mavjud bo'lmaydi va ReferenceError beradi."
+      correctAnswer: 1,
+      explanation: "Tashqaridagi ichkaridan ko'rinadi."
+    },
+    {
+      id: 4,
+      question: "`let a = 1; let a = 2;` qatorida nima bo'ladi?",
+      options: [
+        "a 2 bo'ladi",
+        "SyntaxError beradi",
+        "a 1 bo'lib qoladi",
+        "Ogohlantirish beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Bir hududda bir nom bir marta e'lon qilinadi."
+    },
+    {
+      id: 5,
+      question: "`let ism = \"Ali\"; { let ism = \"Vali\"; } console.log(ism);` nima chiqaradi?",
+      options: [
+        "Vali",
+        "Ali",
+        "Xatolik",
+        "AliVali"
+      ],
+      correctAnswer: 1,
+      explanation: "Ichkaridagi alohida o'zgaruvchi. Tashqaridagi o'zgarmagan."
+    },
+    {
+      id: 6,
+      question: "`{ let x = 5; console.log(x); }` nima chiqaradi?",
+      options: [
+        "Xatolik",
+        "5",
+        "undefined",
+        "Hech narsa"
+      ],
+      correctAnswer: 1,
+      explanation: "O'z hududida ishlatish mumkin."
+    },
+    {
+      id: 7,
+      question: "Qoida qaysi tomonga ishlaydi?",
+      options: [
+        "Ikkala tomonga",
+        "Ichkaridan tashqariga ko'rinadi",
+        "Tashqaridan ichkariga ko'rinadi",
+        "Hech qayerdan ko'rinmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Ichkaridan tashqariga qarash mumkin. Teskarisi mumkin emas."
+    },
+    {
+      id: 8,
+      question: "`{ let a = 3; let b = 4; console.log(a + b); }` nima chiqaradi?",
+      options: [
+        "34",
+        "7",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikkalasi ham o'z hududida. 3 + 4 = 7."
+    },
+    {
+      id: 9,
+      question: "`{ let x = 1; console.log(x); } { let x = 2; console.log(x); }` nima chiqaradi?",
+      options: [
+        "Xatolik (nom takrorlangan)",
+        "1, 2",
+        "Faqat 1",
+        "Faqat 2"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikki alohida hudud. Har birida o'z x si bor."
+    },
+    {
+      id: 10,
+      question: "`function korsat() { let x = 9; console.log(x); } korsat();` nima chiqaradi?",
+      options: [
+        "Xatolik",
+        "9",
+        "undefined",
+        "korsat"
+      ],
+      correctAnswer: 1,
+      explanation: "Funksiya ichi ham hudud. Ichida ishlatish mumkin."
+    },
+    {
+      id: 11,
+      question: "Blok yopilganda ichidagi o'zgaruvchi nima bo'ladi?",
+      options: [
+        "Saqlanib qoladi",
+        "Yo'qoladi",
+        "Tashqariga chiqadi",
+        "Nolga aylanadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Hudud yopilishi bilan ichidagilar yo'qoladi."
+    },
+    {
+      id: 12,
+      question: "`for (let i = 0; i < 3; i++) { console.log(i); }` da `i` qayerda yashaydi?",
+      options: [
+        "Hamma joyda",
+        "Faqat sikl ichida",
+        "Faqat sikldan keyin",
+        "Hech qayerda"
+      ],
+      correctAnswer: 1,
+      explanation: "for dagi i ham blok hududida yashaydi."
     }
   ]
 };

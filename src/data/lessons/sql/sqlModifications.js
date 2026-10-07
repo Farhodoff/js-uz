@@ -1,5 +1,5 @@
 export const sqlModifications = {
-  id: "sql_modifications",
+  id: "sqlModifications",
   title: "SQL Ma'lumotlarni O'zgartirish (INSERT, UPDATE, DELETE)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish

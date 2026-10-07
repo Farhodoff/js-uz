@@ -1,5 +1,5 @@
 export const sqlViews = {
-  id: "sql_views_1",
+  id: "sqlViews",
   title: "SQL Views (Virtual Jadvallar)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish

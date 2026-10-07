@@ -4,36 +4,40 @@ export const logicalOr = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz supermarket kassasida to'lov qilyapsiz. Kassir aytadi: "Naqd pul **YOKI** plastik karta orqali to'lashingiz mumkin".
-- Agar sizda naqd pul bo'lsa — to'lay olasiz (\`true\`).
-- Agar naqd pul bo'lmay, faqat karta bo'lsa — baribir to'lay olasiz (\`true\`).
-- Ikkalasi ham bo'lsa — yanada yaxshi, baribir to'lay olasiz (\`true\`).
-- Faqat va faqat naqd pulingiz HAM, kartangiz HAM bo'lmagandagina to'lov qila olmaysiz (\`false\`).
+Tasavvur qiling, muzeyga kirmoqchisiz. Eshikda shart yozilgan:
+- Talabalik guvohnomasi bo'lsa kiradi.
+- YOKI nafaqa daftarchasi bo'lsa kiradi.
 
-Mantiqiy YOKI (\`||\`) operatori — ikkita shartni birlashtiradi va kamida bitta shart rost (\`true\`) bo'lsa ham \`true\` qaytaradi. Faqat ikkala tomon ham yolg'on (\`false\`) bo'lgandagina \`false\` bo'ladi.
+Bittasi bo'lsa yetadi. Ikkalasi ham bo'lmasa — kirmaydi. "YOKI" degani — bittasi yetadi.
+
+Dasturlashda \`||\` (mantiqiy YOKI) xuddi shu eshik nazoratchisiga o'xshaydi. Tomonlardan bittasi ham \`true\` bo'lsa, natija \`true\` bo'ladi.
 
 ---
 
 ## 2. Nega kerak?
 
-Dasturlarda ko'pincha bir nechta imkoniyatlardan aqalli bittasi to'g'ri kelishi kifoya qiladi:
-- Foydalanuvchi tizimga elektron pochta YOKI telefon raqami orqali kirishi mumkin.
-- Saytda chegirma talabalar YOKI pensionerlar uchun beriladi.
+O'yinda bonus bor. Qoida: ball 100 dan katta YOKI maxsus kalit topilgan bo'lsa, bonus beriladi. Bitta shartning o'zi yetadi.
 
-\`||\` operatori bunday muqobil variantlardan birontasi to'g'ri kelganini tekshirish uchun xizmat qiladi.
+Muammo shunda: ikkita savoldan bittasi to'g'ri bo'lsa ham, javob "ha" bo'lishi kerak. Yechim — \`||\`:
+
+\`\`\`javascript
+let ball = 120;
+let hasKey = false;
+console.log(ball > 100 || hasKey);
+\`\`\`
+
+Birinchi shart \`true\`. Shuning uchun natija \`true\`. Bonus beriladi.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod bitta shart \`true\`, ikkinchisi \`false\` bo'lganda \`||\` operatorining natijasini ko'rsatadi.
+Bu kod bittasi to'g'ri bo'lgan holatni \`||\` bilan birlashtiradi.
 
 \`\`\`javascript
-let hasCash = false; // Naqd pul yo'q
-let hasCard = true; // Karta bor
-
-let canPay = hasCash || hasCard; // Kamida bittasi bo'lsa yetarli: true
-console.log(canPay);
+let hasCard = true; // Guvohnoma bor
+let hasBook = false; // Daftarcha yo'q
+console.log(hasCard || hasBook); // true chiqadi
 \`\`\`
 
 \`\`\`text
@@ -44,22 +48,20 @@ console.log(canPay);
 
 ## 4. Qator-baqator tahlil
 
-- \`hasCash || hasCard\` — \`||\` (ikkita vertikal chiziq) mantiqiy YOKI operatoridir.
-- \`hasCash\` yolg'on (\`false\`) bo'lsa ham, \`hasCard\` rost (\`true\`) bo'lgani uchun umumiy natija \`true\` bo'ladi.
-- \`console.log(canPay);\` — konsolga \`true\` chiqadi.
+- \`let hasCard = true;\` — birinchi shart tayyor: guvohnoma bor.
+- \`let hasBook = false;\` — ikkinchi shart tayyor emas: daftarcha yo'q.
+- \`hasCard || hasBook\` — savol: "bittasi ham to'g'rimi?" Ha, birinchisi to'g'ri. Natija \`true\`.
 
 ---
 
 ## 5. Yana bitta misol
 
-Bu kod ikkala shart ham \`false\` bo'lganda \`||\` natijasi qanday bo'lishini ko'rsatadi.
+Bu kod ikkalasi ham noto'g'ri bo'lgan holatni ko'rsatadi.
 
 \`\`\`javascript
-let isWeekend = false; // Dam olish kuni emas
-let isHoliday = false; // Bayram ham emas
-
-let isFreeDay = isWeekend || isHoliday; // Ikkalasi ham false: false
-console.log(isFreeDay);
+let hasCard = false; // Guvohnoma yo'q
+let hasBook = false; // Daftarcha yo'q
+console.log(hasCard || hasBook); // false chiqadi
 \`\`\`
 
 \`\`\`text
@@ -67,155 +69,332 @@ console.log(isFreeDay);
 \`\`\`
 
 Qator-baqator tahlil:
-- \`isWeekend || isHoliday\` — ikkala tomon ham \`false\` bo'lgan yagona holat.
-- Hech qaysi shart bajarilmagani uchun natija \`false\` bo'ladi.
-- \`console.log(isFreeDay);\` — konsolga \`false\` chiqadi.
+- Birinchi shart \`false\`. Ikkinchi shart \`false\`.
+- \`||\` qoidasi: bittasi ham \`true\` bo'lmasa, natija \`false\`.
+- To'rt holatdan uchtasi \`true\` beradi: \`true || true\`, \`true || false\`, \`false || true\`. Faqat \`false || false\` — \`false\`.
 
-Mantiqiy YOKI (\`||\`) natijalari jadvali:
-- \`true || true\` → \`true\`
-- \`true || false\` → \`true\`
-- \`false || true\` → \`true\`
-- \`false || false\` → \`false\`
+---
+
+## 5.1. Taqqoslash bilan birga
+
+\`||\` ko'pincha taqqoslash natijalarini birlashtiradi:
+
+\`\`\`javascript
+let age = 10;
+console.log(age < 12 || age > 65); // true chiqadi
+\`\`\`
+
+\`\`\`text
+// Natija: true
+\`\`\`
+
+Qator-baqator tahlil:
+- \`age < 12\` — \`true\`. \`age > 65\` — \`false\`.
+- \`true || false\` — bittasi to'g'ri. Natija \`true\`.
 
 ---
 
 ## 6. Ko'p uchraydigan xatolar
 
-### 1. Bitta | yozib qo'yish
+### 1. Bitta | yozish
 ❌ Xato kod:
 \`\`\`javascript
-let canEnter = isWeekend | isHoliday;
+let r = true | false;
+console.log(r);
 \`\`\`
-Nima bo'ladi: Bitta \`|\` mantiqiy YOKI emas, balki "bit operatori" (bitwise) hisoblanadi. Mantiqiy YOKI uchun har doim ikkita vertikal chiziq \`||\` yoziladi.
+Nima bo'ladi: \`true\` emas, \`1\` chiqadi! Bitta \`|\` — mantiqiy operator emas. U boshqa hisob (bitli amal) bajaradi va son qaytaradi.
 ✅ To'g'ri variant:
 \`\`\`javascript
-let canEnter = isWeekend || isHoliday;
+let r = true || false; // true chiqadi
+console.log(r);
 \`\`\`
 
-### 2. Belgini harflar yoki slash bilan adashtirish
+### 2. Oddiy so'z bilan yozish
 ❌ Xato kod:
 \`\`\`javascript
-let canPay = hasCash ll hasCard; // SyntaxError
-let canPay = hasCash // hasCard; // Izoh bo'lib qoladi
+let r = true or false;
 \`\`\`
-Nima bo'ladi: \`||\` belgisi klaviaturadagi Shift + \`\\\` (Enter tugmasi tepasidagi backslash) tugmasi orqali yoziladi. U harf yoki slash emas.
+Nima bo'ladi: \`SyntaxError: Unexpected identifier 'or'\` xatoligi yuz beradi. JavaScript inglizcha so'zlarni tushunmaydi. Faqat \`||\` belgisi ishlaydi.
 ✅ To'g'ri variant:
 \`\`\`javascript
-let canPay = hasCash || hasCard;
+let r = true || false;
+console.log(r); // true chiqadi
 \`\`\`
 
-### 3. && bilan || ni adashtirish
-❌ Xato tushuncha: \`||\` operatori ham ikkala shart bajarilishini talab qiladi deb o'ylash.
-Nima bo'ladi: \`&&\` barcha shartlar bajarilishini talab qiladi (talabchan). \`||\` esa aqalli bittasi to'g'ri bo'lsa ham \`true\` beradi (yumshoq).
-✅ To'g'ri tushuncha: Agar "kamida bittasi to'g'ri bo'lsa yetarli" deyilgan bo'lsa — \`||\` ishlatiladi.
+### 3. Ikkalasi false da true kutish
+❌ Xato tushuncha: \`false || false\` ham \`true\` beradi deb o'ylash.
+Nima bo'ladi: konsolga \`false\` chiqadi. \`||\` da kamida bitta \`true\` bo'lishi shart.
+✅ To'g'ri variant:
+\`\`\`javascript
+console.log(false || false); // false chiqadi
+\`\`\`
 
 ---
 
 ## 7. Tekshiruv
 
 ### 1-mashq (Oson)
-\`hasEmail\` (\`false\`) va \`hasPhone\` (\`true\`) o'zgaruvchilarini yarating. Ro'yxatdan o'tish uchun kamida bittasi yetarli ekanini (\`hasEmail || hasPhone\`) tekshiring, natijani \`canRegister\` ga saqlang va konsolga chiqaring.
+\`hasCard\` (\`true\`) va \`hasBook\` (\`false\`) yarating. \`||\` bilan birlashtirib chiqaring (\`true\` chiqishi kerak).
 
 ### 2-mashq (O'rtacha)
-\`isStudent\` (\`false\`) va \`isPensioner\` (\`false\`) o'zgaruvchilarini yarating. Chegirma olish uchun kamida biri bo'lishini (\`isStudent || isPensioner\`) tekshiring, natijani \`hasDiscount\` ga saqlang va konsolga chiqaring (\`false\` chiqadi).
+\`age\` ga \`10\` bering. \`age < 12 || age > 65\` ni chiqaring (\`true\` chiqishi kerak).
 
 ### 3-mashq (Chegara holat)
-\`userScore\` ga \`85\` sonini bering. U 90 dan kattami yoki 80 ga teng yoki kattaligini (\`(userScore > 90) || (userScore >= 80)\`) tekshirib, natijani \`isGoodScore\` ga saqlang va konsolga chiqaring (\`true\` chiqadi).
+Uchta shartni birlashtiring: \`false || false || true\`. Natija \`true\` bo'lishini tasdiqlang.
 
 ### Javoblar:
 1.
 \`\`\`javascript
-let hasEmail = false;
-let hasPhone = true;
-let canRegister = hasEmail || hasPhone;
-console.log(canRegister);
+let hasCard = true;
+let hasBook = false;
+console.log(hasCard || hasBook);
 \`\`\`
 2.
 \`\`\`javascript
-let isStudent = false;
-let isPensioner = false;
-let hasDiscount = isStudent || isPensioner;
-console.log(hasDiscount);
+let age = 10;
+console.log(age < 12 || age > 65);
 \`\`\`
 3.
 \`\`\`javascript
-let userScore = 85;
-let isGoodScore = (userScore > 90) || (userScore >= 80);
-console.log(isGoodScore);
+console.log(false || false || true);
 \`\`\`
 
 ---
 
 ## 8. Xulosa
 
-1. \`||\` (mantiqiy YOKI) operatori muqobil shartlarni tekshirish uchun ishlatiladi.
-2. Agar shartlardan aqalli bittasi \`true\` bo'lsa ham, umumiy natija \`true\` bo'ladi.
-3. Natija faqat ikkala tomon ham \`false\` bo'lgandagina \`false\` bo'ladi.
+1. \`||\` — mantiqiy YOKI. Bittasi ham \`true\` bo'lsa, natija \`true\`.
+2. Faqat \`false || false\` — \`false\` beradi.
+3. Bitta \`|\` boshqa operator (son qaytaradi). Har doim ikkita \`||\` yoziladi.
 
-Keyingi darsda: Mantiqiy EMAS (!) operatori bilan tanishamiz.
+Keyingi darsda: mantiqiy EMAS (!) operatori bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "|| operatori bilan tekshirish",
-      instruction: "`hasEmail` (`false`) va `hasPhone` (`true`) o'zgaruvchilarini yarating. `hasEmail || hasPhone` natijasini `canRegister` ga saqlab `console.log(canRegister);` orqali chiqaring.",
-      startingCode: "let hasEmail = false;\nlet hasPhone = true;\n// canRegister ga hasEmail || hasPhone ni saqlang va chiqaring\n",
-      hint: "let canRegister = hasEmail || hasPhone;\nconsole.log(canRegister);",
-      test: "if (!code.includes('||')) return '|| operatori ishlatilmadi';\nif (!code.includes('canRegister')) return 'canRegister o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('true'))) return null;\nreturn 'true natijasi konsolga chiqmadi';"
+      title: "Bittasi true",
+      instruction: "`hasCard` (`true`) va `hasBook` (`false`) yarating. `||` bilan chiqaring (`true` chiqishi kerak).",
+      startingCode: "// hasCard va hasBook ni yarating va || bilan chiqaring\n",
+      hint: "let hasCard = true;\nlet hasBook = false;\nconsole.log(hasCard || hasBook);",
+      test: "if (!code.includes('||')) return '|| operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "Ikkala tomon ham false bo'lgan holat",
-      instruction: "`isStudent` (`false`) va `isPensioner` (`false`) o'zgaruvchilarini yarating. Ularning `||` natijasini `hasDiscount` ga saqlab konsolga chiqaring.",
-      startingCode: "let isStudent = false;\nlet isPensioner = false;\n// hasDiscount ga shartni saqlang va chiqaring\n",
-      hint: "let hasDiscount = isStudent || isPensioner;\nconsole.log(hasDiscount);",
-      test: "if (!code.includes('||')) return '|| operatori ishlatilmadi';\nif (!code.includes('hasDiscount')) return 'hasDiscount o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('false'))) return null;\nreturn 'false natijasi konsolga chiqmadi';"
+      title: "Ikkalasi false",
+      instruction: "`a = false`, `b = false` berilgan. `a || b` ni chiqaring (`false` chiqishi kerak).",
+      startingCode: "let a = false;\nlet b = false;\n// a || b ni chiqaring\n",
+      hint: "console.log(a || b);",
+      test: "if (!code.includes('||')) return '|| operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
     },
     {
       id: 3,
-      title: "Taqqoslash bilan || operatori",
-      instruction: "`userScore = 85;` o'zgaruvchisi berilgan. `(userScore > 90) || (userScore >= 80)` ifodasini `isGoodScore` ga saqlang va konsolga chiqaring.",
-      startingCode: "let userScore = 85;\n// isGoodScore ga shartni saqlang va chiqaring\n",
-      hint: "let isGoodScore = (userScore > 90) || (userScore >= 80);\nconsole.log(isGoodScore);",
-      test: "if (!code.includes('||')) return '|| operatori ishlatilmadi';\nif (!code.includes('isGoodScore')) return 'isGoodScore o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('true'))) return null;\nreturn 'true natijasi konsolga chiqmadi';"
+      title: "Taqqoslashlarni birlashtirish",
+      instruction: "`age = 10` berilgan. `age < 12 || age > 65` ni chiqaring (`true` chiqishi kerak).",
+      startingCode: "let age = 10;\n// age < 12 || age > 65 ni chiqaring\n",
+      hint: "console.log(age < 12 || age > 65);",
+      test: "if (!code.includes('||')) return '|| operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
+    },
+    {
+      id: 4,
+      title: "Bitta | xatosini tuzatish",
+      instruction: "`true | false` o'rniga `||` yozing: `true` (mantiqiy) chiqsin, `1` (son) emas.",
+      startingCode: "console.log(true | false);\n",
+      hint: "console.log(true || false);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true (boolean) konsolga chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "or so'zini tuzatish",
+      instruction: "`true or false` xato bermoqda. `||` bilan tuzating.",
+      startingCode: "console.log(true or false);\n",
+      hint: "console.log(true || false);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
+    },
+    {
+      id: 6,
+      title: "Bonus sharti",
+      instruction: "`ball = 120`, `hasKey = false` berilgan. `ball > 100 || hasKey` ni chiqaring (`true` chiqishi kerak).",
+      startingCode: "let ball = 120;\nlet hasKey = false;\n// ball > 100 || hasKey ni chiqaring\n",
+      hint: "console.log(ball > 100 || hasKey);",
+      test: "if (!code.includes('||')) return '|| operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
+    },
+    {
+      id: 7,
+      title: "Ikkalasi ham true",
+      instruction: "`a = true`, `b = true` berilgan. `a || b` ni chiqaring (`true` chiqishi kerak).",
+      startingCode: "let a = true;\nlet b = true;\n// a || b ni chiqaring\n",
+      hint: "console.log(a || b);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Uchta shart",
+      instruction: "`false || false || true` ni chiqaring (`true` chiqishi kerak).",
+      startingCode: "// false || false || true ni chiqaring\n",
+      hint: "console.log(false || false || true);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
+    },
+    {
+      id: 9,
+      title: "To'rt holat jadvali (chegara)",
+      instruction: "To'rttala holatni chiqaring: `true || true`, `true || false`, `false || true`, `false || false` (`true`, `true`, `true`, `false`).",
+      startingCode: "// Tortala holatni chiqaring\n",
+      hint: "console.log(true || true);\nconsole.log(true || false);\nconsole.log(false || true);\nconsole.log(false || false);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 4) return 'Tortala holat chiqishi kerak';\nif (out[0][0] !== true || out[1][0] !== true || out[2][0] !== true || out[3][0] !== false) return 'true, true, true, false chiqishi kerak';\nreturn null;"
+    },
+    {
+      id: 10,
+      title: "Hech biri to'g'ri emas (chegara)",
+      instruction: "`a = false`, `b = false`, `c = false` berilgan. `a || b || c` ni chiqaring (`false` chiqishi kerak).",
+      startingCode: "let a = false;\nlet b = false;\nlet c = false;\n// a || b || c ni chiqaring\n",
+      hint: "console.log(a || b || c);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "`false || true` amali qanday natija beradi?",
+      question: "`console.log(true || false);` nima chiqaradi?",
       options: [
         "false",
         "true",
-        "undefined",
-        "NaN"
+        "1",
+        "Xatolik"
       ],
       correctAnswer: 1,
-      explanation: "|| operatori bitta tomoni true bo'lsa ham true qaytaradi."
+      explanation: "Bittasi true bo'lsa yetadi: natija true."
     },
     {
       id: 2,
-      question: "|| operatori qachon false natija qaytaradi?",
+      question: "`console.log(false || false);` nima chiqaradi?",
       options: [
-        "Tomonlardan biri false bo'lganda",
-        "Faqat ikkala tomoni ham false bo'lgandagina",
-        "Ikkala tomoni ham true bo'lganda",
-        "Har doim true qaytaradi"
+        "true",
+        "false",
+        "0",
+        "Xatolik"
       ],
       correctAnswer: 1,
-      explanation: "Mantiqiy YOKI (||) faqat barcha shartlar yolg'on (false) bo'lgandagina false qaytaradi."
+      explanation: "Hech biri true emas. Natija false."
     },
     {
       id: 3,
-      question: "JavaScript'da mantiqiy YOKI operatori qaysi belgi bilan yoziladi?",
+      question: "`console.log(true | false);` nima chiqaradi?",
       options: [
-        "OR",
-        "||",
-        "//",
-        "&&"
+        "true",
+        "1",
+        "false",
+        "Xatolik"
       ],
       correctAnswer: 1,
-      explanation: "Mantiqiy YOKI operatori ikkita vertikal chiziq (||) bilan yoziladi."
+      explanation: "Bitta | mantiqiy operator emas. U son qaytaradi: 1."
+    },
+    {
+      id: 4,
+      question: "`let r = true or false;` qatorida nima bo'ladi?",
+      options: [
+        "true bo'ladi",
+        "SyntaxError beradi",
+        "false bo'ladi",
+        "Hech narsa bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript inglizcha so'zlarni tushunmaydi. Faqat || ishlaydi."
+    },
+    {
+      id: 5,
+      question: "`let age = 10; console.log(age < 12 || age > 65);` nima chiqaradi?",
+      options: [
+        "false",
+        "true",
+        "10",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Birinchi true, ikkinchi false: true || false = true."
+    },
+    {
+      id: 6,
+      question: "Qachon || false beradi?",
+      options: [
+        "Bittasi true bo'lsa",
+        "Hammasi false bo'lsa",
+        "Bittasi false bo'lsa",
+        "Hech qachon"
+      ],
+      correctAnswer: 1,
+      explanation: "|| faqat hamma tomoni false bo'lganda false beradi."
+    },
+    {
+      id: 7,
+      question: "`console.log(false || true);` nima chiqaradi?",
+      options: [
+        "false",
+        "true",
+        "Xatolik",
+        "1"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikkinchi tomoni true — natija true."
+    },
+    {
+      id: 8,
+      question: "`let ball = 120; let hasKey = false; console.log(ball > 100 || hasKey);` nima chiqaradi?",
+      options: [
+        "false",
+        "true",
+        "120",
+        "false"
+      ],
+      correctAnswer: 1,
+      explanation: "Birinchi true: true || false = true."
+    },
+    {
+      id: 9,
+      question: "`console.log(false || false || true);` nima chiqaradi?",
+      options: [
+        "false",
+        "true",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Oxirgi true butun zanjirni qutqaradi."
+    },
+    {
+      id: 10,
+      question: "`console.log(true || true);` nima chiqaradi?",
+      options: [
+        "false",
+        "true",
+        "2",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikkalasi ham true: natija true."
+    },
+    {
+      id: 11,
+      question: "Mantiqiy YOKI belgisi qaysi?",
+      options: [
+        "|",
+        "||",
+        "or",
+        "++"
+      ],
+      correctAnswer: 1,
+      explanation: "Faqat ikkita || mantiqiy YOKI. Bitta | boshqa operator."
+    },
+    {
+      id: 12,
+      question: "`console.log(false || false || false);` nima chiqaradi?",
+      options: [
+        "true",
+        "false",
+        "0",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Hech biri true emas: natija false."
     }
   ]
 };
