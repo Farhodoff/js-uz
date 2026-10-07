@@ -19,6 +19,10 @@ module.exports = {
       files: ['api/**/*.test.js'],
       env: { node: true },
     },
+    {
+      files: ['scripts/**/*.js'],
+      env: { node: true },
+    },
   ],
   rules: {
     'react/prop-types': 'off',

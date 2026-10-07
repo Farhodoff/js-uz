@@ -59,8 +59,9 @@ export function useCodeRunner(activeLesson, currentExerciseIndex, onSuccess) {
     workerRef.current.postMessage({
       type: 'RUN_CODE',
       code: code,
-      language: activeLesson?.language || 'javascript',
-      testCode: testCode
+      language: currentExercise?.language || activeLesson?.language || 'javascript',
+      testCode: testCode,
+      dbSetup: currentExercise?.dbSetup || activeLesson?.dbSetup || null
     });
 
     const originalOnMessage = workerRef.current.onmessage;

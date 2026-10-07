@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Editor from '@monaco-editor/react';
+import { useUzbekMonaco } from '../../../hooks/useUzbekMonaco';
 
 export default function Playground() {
   const navigate = useNavigate();
+  const { handleEditorDidMount, refreshMarkers, clearMarkers } = useUzbekMonaco();
   const [activeTab, setActiveTab] = useState('html');
   const [htmlCode, setHtmlCode] = useState('<h1>Salom Qumdon!</h1>\n<p>HTML, CSS va JS kodlarini yozing...</p>');
   const [cssCode, setCssCode] = useState('body {\n  font-family: sans-serif;\n  background: #f4f4f5;\n  color: #333;\n  padding: 1rem;\n}\n\nh1 {\n  color: #3b82f6;\n}');
@@ -67,6 +69,14 @@ export default function Playground() {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
+  useEffect(() => {
+    if (activeTab === 'js') {
+      refreshMarkers();
+    } else {
+      clearMarkers();
+    }
+  }, [activeTab, refreshMarkers, clearMarkers]);
+
   return (
     <div className="playground-container">
       {/* Header */}
@@ -102,7 +112,9 @@ export default function Playground() {
               height="100%"
               language={activeTab}
               theme="vs-dark"
+              loading={<div className="editor-loading">Kod muharriri yuklanmoqda...</div>}
               value={activeTab === 'html' ? htmlCode : activeTab === 'css' ? cssCode : jsCode}
+              onMount={handleEditorDidMount}
               onChange={(val) => {
                 const v = val || '';
                 if (activeTab === 'html') setHtmlCode(v);
