@@ -34,6 +34,8 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 5000000,
         globIgnores: pwaGlobIgnores,
         runtimeCaching: pwaRuntimeCaching,
+        // SPA: offline'da navigatsiya so'rovlari index.html'ga tushsin
+        navigateFallback: 'index.html',
       },
       manifest: {
         name: 'JS Academy Mastery',
