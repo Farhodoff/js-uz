@@ -1,6 +1,6 @@
 export const jsWhat = {
   id: "jsWhat",
-  title: "JavaScript nima va qayerda ishlaydi",
+  title: "JavaScript'nima va qayerda ishlaydi",
   language: "javascript",
   theory: `## 1. Bu nima?
 
@@ -152,7 +152,63 @@ Keyingi darsda: Ekranga matn va sonlarni chiqarish uchun \`console.log\` buyrug'
       startingCode: "Console.log(\"Salom\");\n",
       hint: "console.log(\"Salom\"); (console kichik harflar bilan yoziladi)",
       test: "if (code.includes('Console.log')) return 'Console katta harf bilan yozilgan, kichik harf qiling';\nif (!code.includes('console.log')) return 'console.log ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(msg => msg.includes('Salom'))) return null;\nreturn 'Matn chiqmadi';"
-    }
+    },
+    {
+      id: 4,
+      title: "Son chiqarish",
+      instruction: "Konsolga 2026 sonini chiqaring. Matn emas, son yozing (qo'shtirnoqsiz).",
+      startingCode: "// 2026 sonini konsolga chiqaring\n",
+      hint: "console.log(2026);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2026')) return null;\nreturn 'Konsolga 2026 soni chiqishi kerak edi';"
+    },
+    {
+      id: 5,
+      title: "Ikki qator chiqarish",
+      instruction: "Bitta kodda ikkita console.log bilan avval Salom, keyin Dunyo so'zlarini chiqaring (har biri alohida qatorda).",
+      startingCode: "// Avval Salom, keyin Dunyo\n",
+      hint: "Ikkita console.log yozing: birinchisida Salom, ikkinchisida Dunyo.",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst i1 = out.findIndex(m => m.includes('Salom'));\nconst i2 = out.findIndex(m => m.includes('Dunyo'));\nif (i1 === -1 || i2 === -1) return 'Ikki matn ham chiqmadi';\nif (i1 > i2) return 'Avval Salom, keyin Dunyo chiqishi kerak';\nreturn null;"
+    },
+    {
+      id: 6,
+      title: "Katta harf xatosini topish",
+      instruction: "Quyidagi kodda bitta xato bor: console so'zi katta harf bilan boshlangan. Uni to'g'rilang.",
+      startingCode: "Console.log(\"test\");\n",
+      hint: "console.log(\"test\"); — console doim kichik harf bilan.",
+      test: "if (/Console\.log/.test(code)) return 'Console katta harf bilan qolgan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('test'))) return null;\nreturn 'test matni chiqmadi';"
+    },
+    {
+      id: 7,
+      title: "Qo'shtirnoqni yopish",
+      instruction: "Quyidagi kodda ochilgan qo'shtirnoq yopilmagan. Xatoni topib tuzating.",
+      startingCode: "console.log(\"Salom);\n",
+      hint: "Salom so'zining oxiriga ikkinchi qo'shtirnoqni qo'ying.",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'Salom matni chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Matn ichida raqam",
+      instruction: "Konsolga quyidagi matnni aynan shunday chiqaring: Javobim 42 (matn ko'rinishida, bitta qatorda).",
+      startingCode: "// Matnni konsolga chiqaring\n",
+      hint: "console.log(\"Javobim 42\");",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'Javobim 42')) return null;\nreturn 'Aynan \"Javobim 42\" deb chiqishi kerak';"
+    },
+    {
+      id: 9,
+      title: "Chiqish tartibi",
+      instruction: "Konsolga avval Birinchi, keyin Ikkinchi so'zlarini chiqaradigan kod yozing. Tartib muhim!",
+      startingCode: "// Avval Birinchi, keyin Ikkinchi\n",
+      hint: "Ikkita console.log yozing: birinchisida \"Birinchi\", ikkinchisida \"Ikkinchi\".",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst flat = out.join('|');\nconst i1 = flat.indexOf('Birinchi');\nconst i2 = flat.indexOf('Ikkinchi');\nif (i1 === -1 || i2 === -1) return 'Ikki matn ham chiqmadi';\nif (i1 > i2) return 'Avval Birinchi chiqishi kerak';\nreturn null;"
+    },
+    {
+      id: 10,
+      title: "Bo'sh qator chiqarish (chegara)",
+      instruction: "Konsolga bo'sh qator chiqaruvchi kod yozing — console.log ichida hech narsa yozmang.",
+      startingCode: "// Bo'sh qator\n",
+      hint: "console.log(\"\");",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length >= 1) return null;\nreturn 'console.log bir marta chaqirilishi kerak (bosh bolsa ham)';"
+    },
   ],
   quizzes: [
     {
@@ -190,6 +246,69 @@ Keyingi darsda: Ekranga matn va sonlarni chiqarish uchun \`console.log\` buyrug'
       ],
       correctAnswer: 1,
       explanation: "JavaScript harflar registriga sezgir (console kichik harflar bilan yoziladi) va matn doim qo'shtirnoq ichida bo'lishi shart."
-    }
+    },
+    {
+      id: 4,
+      question: "Veb-sahifaning tuzilishiga (skeletga) nima javob beradi?",
+      options: ["CSS", "HTML", "JavaScript", "SQL"],
+      correctAnswer: 1,
+      explanation: "HTML — sahifaning tuzilishi va mazmuni (skelet). CSS — ko'rinishi, JavaScript — harakati."
+    },
+    {
+      id: 5,
+      question: "Veb-sahifaning tashqi ko'rinishi (rang, shrift, joylashuv) nimaga bog'li?",
+      options: ["HTML", "CSS", "Node.js", "console.log"],
+      correctAnswer: 1,
+      explanation: "CSS (Cascading Style Sheets) sahifaning rangini, shriftini va umumiy ko'rinishini beradi."
+    },
+    {
+      id: 6,
+      question: "JavaScript kodini brauzersiz, to g ridan to g ri kompyuterning o zida ishga tushirsa bo'ladimi?",
+      options: ["Yo'q, hech qanday holatda", "Ha, Node.js yordamida", "Faqat telefonda", "Faqat printerda"],
+      correctAnswer: 1,
+      explanation: "Node.js — JavaScript'ni brauzerdan tashqarida, kompyuter va serverda ishga tushiradigan muhit."
+    },
+    {
+      id: 7,
+      question: "JavaScript bo'lmasa veb-sahifa qanday bo lib qoladi?",
+      options: ["Tirik va interaktiv", "Qotib qolgan gazetaga o'xshab qoladi", "Yana tezroq ishlaydi", "O'chib ketadi"],
+      correctAnswer: 1,
+      explanation: "JavaScriptsiz tugmalar bosilmaydi va animatsiyalar ishlamaydi — sahifa statik (jonlanmagan) bo lib qoladi."
+    },
+    {
+      id: 8,
+      question: "console.log buyrug'i nima qiladi?",
+      options: ["Kodni o'chiradi", "Ma'lumotni konsolga chiqaradi", "Sahifani yangilaydi", "Internetga ulanadi"],
+      correctAnswer: 1,
+      explanation: "console.log — dasturchi konsoliga matn yoki qiymat chiqaradigan eng asosiy buyruq."
+    },
+    {
+      id: 9,
+      question: "Quyidagi kodda xato qayerda?  Console.log(\"Salom\");",
+      options: ["Qo'shtirnoq yopilmagan", "Console katta harf bilan yozilgan", "Nokoma vergul qo'yilgan", "Xato yo'q"],
+      correctAnswer: 1,
+      explanation: "console doim kichik harf bilan boshlanadi. JavaScript harflarni qat iy farqlaydi, shuning uchun Console.log xato beradi."
+    },
+    {
+      id: 10,
+      question: "console.log(Salom) kodida nima uchun xato beradi?",
+      options: ["Salom matni uchun qo shtirnoq kerak", "console noto'g'ri buyruq", "Nokoma vergul yetishmayapti", "Salom doim xato"],
+      correctAnswer: 0,
+      explanation: "Qo'shtirnoqsiz yozilgan so'z nom (variable) deb tushuniladi. Matnni har doim qo shtirnoq ichida yozish kerak."
+    },
+    {
+      id: 11,
+      question: "JavaScript qaysi ikki asosiy muhitda ishlaydi?",
+      options: ["Faqat brauzerda", "Faqat serverda", "Brauzerda va Node.js da", "Printerda va brauzerda"],
+      correctAnswer: 2,
+      explanation: "JavaScript asosan brauzerda (Chrome, Firefox) va Node.js orqali server/kompyutarda ishlaydi."
+    },
+    {
+      id: 12,
+      question: "Konsolga ketma-ket ikki qator chiqarish uchun nima qilinadi?",
+      options: ["Bitta console.log ichiga ikki qator yoziladi", "Ikki marta console.log chaqiriladi", "console.log dan foydalanib bo'lmaydi", "Faqat HTML kerak"],
+      correctAnswer: 1,
+      explanation: "Har bir qator uchun alohida console.log yoziladi: chaqiruvlar tartibda bajarilib, natija ham ketma-ket chiqadi."
+    },
   ]
 };

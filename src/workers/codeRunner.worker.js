@@ -27,18 +27,40 @@ self.onmessage = async (e) => {
   try {
     if (language === 'sql') {
       try {
+        // Har bir ishga tushirishda toza baza: avval setup, keyin o'quvchi so'rovi
+        const setup = e.data.dbSetup;
+        if (setup) {
+          const setupStmts = String(setup).split(';').map(s => s.trim()).filter(Boolean);
+          for (const stmt of setupStmts) alasql(stmt);
+        }
         const result = alasql(code);
+
+        // Mashq testi code (so'rov matni) va result (qatorlar) bilan ishlaydi:
+        // null/undefined = o'tdi, string = xato xabari
+        let testError = null;
+        if (testCode && testCode !== 'return null;') {
+          try {
+            const check = new Function('code', 'result', testCode);
+            testError = check(code, Array.isArray(result) ? result : []);
+          } catch (err) {
+            testError = 'Test xatosi: ' + err.message;
+          }
+        }
         
-        let outputText = logs.length ? logs.join('\\n') + '\\n\\n' : '';
+        let outputText = '';
         if (Array.isArray(result) && result.length > 0) {
           outputText += JSON.stringify(result, null, 2);
         } else if (result) {
           outputText += JSON.stringify(result);
         } else {
-          outputText += '✅ So\\\'rov muvaffaqiyatli bajarildi (natjja bo\\\'sh)';
+          outputText += "✅ So'rov muvaffaqiyatli bajarildi (natija bo'sh)";
         }
 
-        self.postMessage({ type: 'SUCCESS', output: outputText, isCorrect: true });
+        if (testError) {
+          self.postMessage({ type: 'ERROR', error: outputText + '\n\n❌ ' + testError, isCorrect: false });
+        } else {
+          self.postMessage({ type: 'SUCCESS', output: outputText + "\n\n✅ So'rov to'g'ri bajarildi", isCorrect: true });
+        }
       } catch (err) {
         self.postMessage({ type: 'ERROR', error: '❌ SQL Xatosi: ' + err.message });
       }

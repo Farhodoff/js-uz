@@ -1,5 +1,5 @@
 export const sqlBasics = {
-  id: "sql_basics",
+  id: "sqlBasics",
   title: "SQL Asoslari (CREATE, INSERT, UPDATE, DELETE)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish

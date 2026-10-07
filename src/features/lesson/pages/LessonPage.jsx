@@ -1,8 +1,9 @@
-import React, { useState, useEffect, lazy } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import TheoryTab from "../components/TheoryTab";
 import PracticeTab from "../components/PracticeTab";
 import QuizTab from "../components/QuizTab";
-import VisualizerTab from "../components/VisualizerTab";
+// VisualizerTab faqat algorithms bo'limida kerak — alohida chunk'da yuklansin
+const VisualizerTab = lazy(() => import("../components/VisualizerTab"));
 // challenges.js ~17k qator — faqat Challenges bo'limi ochilganda yuklansin
 const ChallengeTab = lazy(() => import("../components/ChallengeTab"));
 import AppLayout from "../../layout/AppLayout";
@@ -17,7 +18,7 @@ export default function LessonPage() {
   const sidebarOpen = useAppStore((state) => state.sidebarOpen);
   const markComplete = useAppStore((state) => state.markComplete);
   const isComplete = useAppStore((state) => state.isComplete);
-  const progress = useAppStore((state) => state);
+  const completed = useAppStore((state) => state.completed);
   const setSearchOpen = useAppStore((state) => state.setSearchOpen);
 
   const lesson = useLesson();
@@ -45,7 +46,7 @@ export default function LessonPage() {
 
   const { output, runCode, resetOutput } = useCodeRunner(_lesson, _exIdx, handleExerciseSuccess);
 
-  const { leftWidth, startResizing } = useResizable(50, 20, 80, sidebarOpen ? 270 : 0);
+  const { leftWidth, startResizing, nudgeWidth } = useResizable(50, 20, 80, sidebarOpen ? 270 : 0);
 
   const {
     activeSection, setActiveSection,
@@ -138,26 +139,46 @@ export default function LessonPage() {
             <TheoryTab activeLesson={activeLesson} />
           </div>
 
-          <div className="pane-divider" onMouseDown={startResizing}>
+          <div
+            className="pane-divider"
+            onMouseDown={startResizing}
+            role="separator"
+            aria-orientation="vertical"
+            aria-label="Panellar kengligi"
+            aria-valuenow={Math.round(leftWidth)}
+            aria-valuemin={20}
+            aria-valuemax={80}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowLeft") { e.preventDefault(); nudgeWidth(-2); }
+              if (e.key === "ArrowRight") { e.preventDefault(); nudgeWidth(2); }
+            }}
+          >
             <div className="pane-divider-handle"></div>
           </div>
 
           {/* Right: Practice / Quiz / Visualizer / Theory (Mobile) */}
           <div className="pane pane-right-mobile" style={{ width: `${100 - leftWidth}%` }}>
-            <div className="pane-tabs-header">
+            <div className="pane-tabs-header" role="tablist" aria-label="O'ng panel bo'limlari">
               <button
+                role="tab"
+                aria-selected={activeRightTab === "theory"}
                 className={`pane-tab-btn mobile-theory-tab ${activeRightTab === "theory" ? "active" : ""}`}
                 onClick={() => setActiveRightTab("theory")}
               >
                 📖 Nazariya
               </button>
               <button
+                role="tab"
+                aria-selected={activeRightTab === "practice"}
                 className={`pane-tab-btn ${activeRightTab === "practice" ? "active" : ""}`}
                 onClick={() => setActiveRightTab("practice")}
               >
                 💻 Amaliyot
               </button>
               <button
+                role="tab"
+                aria-selected={activeRightTab === "quiz"}
                 className={`pane-tab-btn ${activeRightTab === "quiz" ? "active" : ""}`}
                 onClick={() => setActiveRightTab("quiz")}
               >
@@ -165,6 +186,8 @@ export default function LessonPage() {
               </button>
               {activeSection === "algorithms" && (
                 <button
+                  role="tab"
+                  aria-selected={activeRightTab === "visualizer"}
                   className={`pane-tab-btn ${activeRightTab === "visualizer" ? "active" : ""}`}
                   onClick={() => setActiveRightTab("visualizer")}
                 >
@@ -190,11 +213,13 @@ export default function LessonPage() {
             ) : activeRightTab === "quiz" ? (
               <QuizTab
                 activeLesson={activeLesson}
-                completedQuizzes={progress.completed}
+                completedQuizzes={completed}
                 onCompleteQuiz={handleCompleteQuiz}
               />
             ) : activeSection === "algorithms" && activeRightTab === "visualizer" ? (
-              <VisualizerTab activeLesson={activeLesson} />
+              <Suspense fallback={<div className="loading-container"><p>Vizualizatsiya yuklanmoqda...</p></div>}>
+                <VisualizerTab activeLesson={activeLesson} />
+              </Suspense>
             ) : (
               <PracticeTab
                 code={code}

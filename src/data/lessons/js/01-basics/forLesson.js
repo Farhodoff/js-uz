@@ -4,44 +4,47 @@ export const forLesson = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-O'tgan darsda ko'rganimizdek, \`while\` sikli — "choy tugaguncha ich" yoki "charchaguncha yugur" kabi shartga asoslangan edi (takrorlanishlar soni oldindan noma'lum bo'lishi mumkin).
-\`for\` sikli esa — takrorlanishlar soni oldindan aniq belgilangan reja: masalan, "Aniq 3 marta o'tirib-turish qil!" yoki "Daftarga 3 marta chiroyli qilib 'Salom' deb yoz!". Qayerdan boshlash, qayerda to'xtash va har safar bittadan sanash oldindan bitta qatorda belgilab qo'yiladi.
+Tasavvur qiling, oshpaz guruch pishirmoqda. Retseptda uchta ma'lumot bitta qatorda yozilgan: "0 dan boshla, 3 gacha davom et, har safar 1 taga oshir."
 
-\`for\` (uchun / davomida) — takrorlanishlar soni oldindan ma'lum bo'lganda, boshlang'ich qiymat, shart va qadamni bitta ixcham qatorda birlashtiruvchi sikl operatoridir.
+Dasturlashda \`for\` (uchun) xuddi shu retsept qatori. Boshlanish, shart va qadam — bitt joyda, qavs ichida yoziladi.
 
-*Yangi termin:* **Hisoblagich (counter)** — sikl necha marta aylanganini sanab boruvchi o'zgaruvchi. Dasturlashda hisoblagich uchun ko'pincha inglizcha *index* so'zining birinchi harfi — \`i\` nomi ishlatiladi.
+for — boshi va oxiri oldindan ma'lum bo'lgan takrorlash uchun ishlatiladigan sikl operatordir.
 
 ---
 
 ## 2. Nega kerak?
 
-\`while\` siklida takrorlash uchun zarur bo'lgan 3 ta asosiy narsa kodning har xil joylariga sochilib ketadi:
-1. Boshlang'ich o'zgaruvchi — sikldan tashqarida, tepada.
-2. Shart — \`while\` qavsida.
-3. Qadam (\`i++\`) — sikl tanasining eng pastida.
+\`while\` bilan ham takrorlash bo'ladi:
 
 \`\`\`javascript
-let i = 1; // 1. Boshlanish (tashqarida)
-while (i <= 3) { // 2. Shart (tepada)
+let i = 1;
+while (i <= 3) {
   console.log(i);
-  i++; // 3. Qadam (pastda!)
+  i++;
 }
 \`\`\`
 
-Katta kodlarda \`i++\` ni yozish yoddan ko'tarilishi yoki boshqa kodlar orasida ko'zdan qochishi oson (natijada cheksiz sikl xatosi yuzaga keladi).
+Ishlaydi. Lekin uchta narsa uch joyda sochilib yotibdi: boshlanish yuqorida, shart o'rtada, qadam pastda. Bittasini unutish oson.
 
-\`for\` sikli bu 3 ta qismni bitta qatorda, bitta qavs ichiga jamlaydi. Kod ancha ixcham, tartibli va xavfsiz bo'ladi.
+Muammo shunda: takrorlash tartibini bir joyda ko'rish kerak. Yechim — \`for\`. Uchala qism bitta qatorda:
+
+\`\`\`javascript
+for (let i = 1; i <= 3; i++) {
+  console.log(i);
+}
+\`\`\`
+
+Boshlanish, shart va qadam — ko'z oldida.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod 1 dan 3 gacha bo'lgan sonlarni \`for\` sikli yordamida konsolga chiqaradi.
+Bu kod 1 dan 3 gacha sonlarni chiqaradi.
 
 \`\`\`javascript
-// 1: boshlanish, 2: shart, 3: qadam
-for (let i = 1; i <= 3; i++) {
-  console.log(i); // Joriy sonni ekranga chiqarish
+for (let i = 1; i <= 3; i++) { // Retsept: 1 dan, 3 gacha, 1 tadan
+  console.log(i); // Hozirgi qiymat chiqadi
 }
 \`\`\`
 
@@ -56,59 +59,34 @@ for (let i = 1; i <= 3; i++) {
 
 ## 4. Qator-baqator tahlil
 
-\`for (let i = 1; i <= 3; i++) {\` qatori 3 qismdan iborat bo'lib, ular bir-biridan nuqta-vergul (\`;\`) bilan ajratiladi:
-
-1. \`let i = 1;\` — **Boshlanish (initialization)**: hisoblagich o'zgaruvchisi yaratiladi. Bu qism faqat bir marta — sikl eng boshida boshlanganda bajariladi.
-2. \`i <= 3;\` — **Shart (condition)**: har bir takrorlanishdan oldin tekshiriladi. Modomiki \`true\` ekan, sikl ishlaydi. \`false\` bo'lishi bilan sikl to'xtaydi.
-3. \`i++\` — **Qadam (increment)**: sikl ichidagi kod bajarilib bo'lgach, har bir qadam oxirida \`i\` qiymatini 1 taga oshiradi (oxirgi qismdan keyin nuqta-vergul qo'yilmaydi).
-
-- \`console.log(i);\` — sikl tanasi. Shart to'g'ri bo'lgan har bir qadamda ishga tushadi.
-- \`}\` — sikl blokining oxiri. Dastur shu yerga kelganda, yuqoridagi 3-qismga (\`i++\`) o'tadi va keyin shartni qayta tekshiradi.
+- \`let i = 1;\` — boshlanish. Bir marta, eng boshida bajariladi.
+- \`i <= 3;\` — shart. Har aylanishdan oldin tekshiriladi.
+- \`i++\` — qadam. Har aylanish oxirida bajariladi.
+- \`console.log(i);\` — blok ichi. Shart rost ekan takrorlanadi.
+- Uch qism nuqta-vergul (\`;\`) bilan ajratiladi. Aynan ikkita nuqta-vergul bo'ladi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-Bajarilish ketma-ketligi jadvali:
+\`i\` ning qiymati qanday o'zgaradi:
 
-| Qadam | Boshlanish (\`let i = 1\`) | Shart (\`i <= 3\`) | console.log(i) | Qadam (\`i++\`) | Natija / Izoh |
-|---|---|---|---|---|---|
-| 1 | \`i = 1\` yaratildi | \`1 <= 3\` -> true | 1 | \`i = 2\` bo'ldi | 1 chiqdi |
-| 2 | — (boshqa ishlamaydi) | \`2 <= 3\` -> true | 2 | \`i = 3\` bo'ldi | 2 chiqdi |
-| 3 | — (boshqa ishlamaydi) | \`3 <= 3\` -> true | 3 | \`i = 4\` bo'ldi | 3 chiqdi |
-| 4 | — (boshqa ishlamaydi) | \`4 <= 3\` -> false | — (ishlamaydi) | — | Shart yolg'on (false)! Sikl tugadi |
-
-### while va for ni yonma-yon solishtirish
-
-Ikkala sikl ham aynan bir xil natija beradi, lekin yozilish tuzilishi farq qiladi:
-
-\`\`\`javascript
-// while bilan:
-let i = 1; // 1. Boshlanish (tashqarida)
-while (i <= 3) { // 2. Shart
-  console.log(i);
-  i++; // 3. Qadam (pastda)
-}
-
-// for bilan (aynan bir xil, lekin 3 qism bitta qatorda):
-// 1. Boshlanish; 2. Shart; 3. Qadam
-for (let i = 1; i <= 3; i++) {
-  console.log(i);
-}
-\`\`\`
+| Qadam | Boshlanish | Shart (i <= 3) | Chiqadi | Qadam (i++) |
+|---|---|---|---|---|
+| 1 | i = 1 | 1 <= 3? Ha | 1 | 2 bo'ladi |
+| 2 | — | 2 <= 3? Ha | 2 | 3 bo'ladi |
+| 3 | — | 3 <= 3? Ha | 3 | 4 bo'ladi |
+| 4 | — | 4 <= 3? Yo'q | — | To'xtaydi |
 
 ---
 
 ## 6. Yana bitta misol
 
-1-misoldan farqi: sonlarni o'sish tartibida emas, balki kamayish tartibida (teskari sanash, \`i--\` yordamida) chiqaramiz.
-
-Bu kod 3 dan 1 gacha teskari sanaydi:
+Bu kod teskari sanaydi: 3 dan 1 gacha.
 
 \`\`\`javascript
-// 3 dan boshlanadi, 0 dan katta bo'lsa ishlaydi, 1 taga kamayadi
-for (let i = 3; i > 0; i--) {
-  console.log(i); // Joriy sonni chiqarish
+for (let n = 3; n > 0; n--) { // 3 dan, 0 gacha, 1 tadan kamayib
+  console.log(n); // Hozirgi qiymat chiqadi
 }
 \`\`\`
 
@@ -119,163 +97,325 @@ for (let i = 3; i > 0; i--) {
 1
 \`\`\`
 
+Qator-baqator tahlil:
+- \`let n = 3;\` — boshlanish 3 dan.
+- \`n > 0;\` — shart. \`n\` 0 ga yetguncha rost.
+- \`n--\` — qadam. Har safar 1 taga kamayadi.
+
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1-xato: Qismlarni nuqta-vergul (;) o'rniga vergul (,) bilan ajratish
-
+### 1. Vergul bilan ajratish
+❌ Xato kod:
 \`\`\`javascript
-for (let i = 1, i <= 3, i++) { // XATO: vergul ishlatilgan
+for (let i = 0, i < 3, i++) {
+  console.log(i);
+}
+\`\`\`
+Nima bo'ladi: \`SyntaxError: Identifier 'i' has already been declared\` xatoligi yuz beradi. Uch qism vergul (\`,\`) bilan emas, nuqta-vergul (\`;\`) bilan ajratiladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+for (let i = 0; i < 3; i++) {
   console.log(i);
 }
 \`\`\`
 
-**Nima bo'ladi:** \`SyntaxError\` xatosi chiqadi.
-**To'g'ri varianti:** \`for\` qavsidagi 3 ta qism har doim ikkita nuqta-vergul (\`;\`) bilan ajratilishi shart: \`for (let i = 1; i <= 3; i++)\`.
-
-### 2-xato: i o'zgaruvchisini sikldan tashqarida ishlatish
-
+### 2. let ni unutish
+❌ Xato kod:
 \`\`\`javascript
-for (let i = 1; i <= 3; i++) {
+for (i = 0; i < 3; i++) {
   console.log(i);
 }
-console.log("Oxirgi i:", i); // XATO: i sikldan tashqarida mavjud emas!
+console.log(i);
 \`\`\`
-
-**Nima bo'ladi:** \`ReferenceError: i is not defined\` xatosi chiqadi. Chunki \`for (let i = ...)\` ichida e'lon qilingan o'zgaruvchi faqat sikl blokining ichida mavjud bo'ladi (blok ko'lami).
-**To'g'ri varianti:** \`i\` o'zgaruvchisini faqat sikl bloki ichida ishlating yoki konsolga chiqarishni sikl ichiga qo'ying.
-
-### 3-xato: for qatorining oxiriga darhol nuqta-vergul qo'yish
-
+Nima bo'ladi: xato bermaydi! Lekin oxirgi qatorda \`3\` chiqadi. Sababi: \`let\` siz \`i\` sikldan keyin ham yashab qoladi. Bu kutilmagan oqibatlarga olib keladi.
+✅ To'g'ri variant:
 \`\`\`javascript
-for (let i = 1; i <= 3; i++); { // XATO: qavsdan keyin ';' qo'yilgan!
+for (let i = 0; i < 3; i++) {
   console.log(i);
 }
 \`\`\`
 
-**Nima bo'ladi:** \`;\` belgisi bo'sh buyruq hisoblanib, sikl bo'shliqni 3 marta aylantirib tugatadi. Keyin pastdagi blok ishlamoqchi bo'lganda, \`ReferenceError: i is not defined\` xatosi beradi.
-**To'g'ri varianti:** \`for\` qavsidan keyin hech qachon nuqta-vergul qo'yilmaydi, to'g'ridan-to'g'ri jingalak qavs \`{\` ochiladi.
+### 3. Boshlanish shartga to'g'ri kelmasligi
+❌ Xato tushuncha:
+\`\`\`javascript
+for (let i = 5; i < 3; i++) {
+  console.log(i);
+}
+\`\`\`
+Nima bo'ladi: xato bermaydi. Lekin hech narsa chiqmaydi! Birinchi tekshiruvdayoq \`5 < 3\` yolg'on. Blok bir marta ham ishlamaydi.
+✅ To'g'ri tushuncha: boshlanish qiymati shartga mos kelishi kerak. Aks holda sikl bo'sh o'tadi.
 
 ---
 
 ## 8. Tekshiruv
 
-### 1-mashq (oson)
-1 dan 5 gacha bo'lgan sonlarni \`for\` sikli yordamida konsolga chiqaring.
+### 1-mashq (Oson)
+\`1\` dan \`3\` gacha chiqaring (\`for\` bilan). Natijalar \`1\`, \`2\`, \`3\` bo'lsin.
 
-### 2-mashq (o'rtacha)
-Quyidagi \`while\` siklini aynan shunday natija beruvchi \`for\` sikliga aylantiring:
+### 2-mashq (O'rtacha)
+\`3\` dan \`1\` gacha chiqaring. Natijalar \`3\`, \`2\`, \`1\` bo'lsin.
+
+### 3-mashq (Chegara holat)
+\`0\` dan \`6\` gacha juft sonlarni chiqaring (\`i += 2\` qadam bilan). Natijalar \`0\`, \`2\`, \`4\`, \`6\` bo'lsin.
+
+### Javoblar:
+1.
 \`\`\`javascript
-let count = 2;
-while (count <= 6) {
-  console.log(count);
-  count += 2;
-}
-\`\`\`
-
-### 3-mashq (chegara holat)
-Quyidagi kod ishlaganda konsolga nimalar chiqadi?
-\`\`\`javascript
-for (let i = 5; i < 5; i++) {
-  console.log(i);
-}
-console.log("Bajarildi");
-\`\`\`
-
----
-
-### Javoblar
-
-**1-mashq javobi:**
-\`\`\`javascript
-for (let i = 1; i <= 5; i++) {
+for (let i = 1; i <= 3; i++) {
   console.log(i);
 }
 \`\`\`
-
-**2-mashq javobi:**
+2.
 \`\`\`javascript
-for (let count = 2; count <= 6; count += 2) {
-  console.log(count);
+for (let n = 3; n > 0; n--) {
+  console.log(n);
 }
 \`\`\`
-
-**3-mashq javobi:**
-Konsolga faqat \`"Bajarildi"\` chiqadi. Chunki \`5 < 5\` birinchi qadamdayoq \`false\` beradi va sikl tanasi biror marta ham ishlamaydi.
+3.
+\`\`\`javascript
+for (let i = 0; i <= 6; i += 2) {
+  console.log(i);
+}
+\`\`\`
 
 ---
 
 ## 9. Xulosa
 
-1. \`for\` sikli — boshlanish, shart va qadamni bitta qatorda ixcham jamlaydigan sikl operatoridir.
-2. \`for\` ning uchta qismi bir-biridan ikkita nuqta-vergul (\`;\`) bilan ajratiladi.
-3. Takrorlanishlar soni oldindan ma'lum bo'lganda \`for\` sikli \`while\` ga qaraganda ancha qisqa va qulaydir.
+1. \`for\` — boshlanish, shart va qadam bitta qatorda yoziladigan sikl.
+2. Uch qism nuqta-vergul bilan ajratiladi. Vergul xato beradi.
+3. Hisoblagich \`let\` bilan e'lon qilinadi. Shart birinchi tekshiruvda yolg'on bo'lsa, blok ishlamaydi.
 
-Keyingi darsda: Kamida bir marta bajarilishi shart bo'lgan holatlar uchun \`do...while\` siklini o'rganamiz.
+Keyingi darsda: kamida bir marta ishlaydigan \`do...while\` sikli bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "1 dan 4 gacha chiqarish",
-      instruction: "`for` siklidan foydalanib, 1 dan 4 gacha bo'lgan sonlarni (1, 2, 3, 4) konsolga ketma-ket chiqaring.",
-      startingCode: "// for siklini yozing\n",
-      hint: "for (let i = 1; i <= 4; i++) {\n  console.log(i);\n}",
-      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3,4') return null;\nreturn 'Konsolga 1, 2, 3, 4 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
+      title: "1 dan 3 gacha",
+      instruction: "`for` bilan `1` dan `3` gacha chiqaring (`1`, `2`, `3` chiqishi kerak).",
+      startingCode: "// for sikli yozing\n",
+      hint: "for (let i = 1; i <= 3; i++) {\n  console.log(i);\n}",
+      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3') return null;\nreturn '1, 2, 3 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
     },
     {
       id: 2,
-      title: "Teskari sanash",
-      instruction: "`for` siklidan foydalanib, 3 dan 1 gacha bo'lgan sonlarni (3, 2, 1) kamayish tartibida konsolga chiqaring (`i--`).",
-      startingCode: "// for sikli orqali 3 dan 1 gacha chiqaring\n",
-      hint: "for (let i = 3; i > 0; i--) {\n  console.log(i);\n}",
-      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '3,2,1') return null;\nreturn 'Konsolga 3, 2, 1 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
+      title: "0 dan 4 gacha",
+      instruction: "`for` bilan `0` dan `4` gacha chiqaring (`0`, `1`, `2`, `3`, `4`).",
+      startingCode: "// for sikli yozing\n",
+      hint: "for (let i = 0; i <= 4; i++) {\n  console.log(i);\n}",
+      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2,3,4') return null;\nreturn '0, 1, 2, 3, 4 chiqishi kerak';"
     },
     {
       id: 3,
-      title: "while ni for ga aylantirish",
-      instruction: "Quyidagi `while` kodini aynan bir xil natija (2, 4) beradigan `for` sikliga aylantiring.",
-      startingCode: "// Ushbu while siklini for ga aylantiring:\n// let num = 2;\n// while (num <= 4) {\n//   console.log(num);\n//   num += 2;\n// }\n",
-      hint: "for (let num = 2; num <= 4; num += 2) {\n  console.log(num);\n}",
-      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '2,4') return null;\nreturn 'Konsolga 2, 4 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
+      title: "Teskari sanash",
+      instruction: "`n` bilan `3` dan `1` gacha chiqaring (`3`, `2`, `1`).",
+      startingCode: "// for sikli yozing\n",
+      hint: "for (let n = 3; n > 0; n--) {\n  console.log(n);\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '3,2,1') return null;\nreturn '3, 2, 1 chiqishi kerak';"
+    },
+    {
+      id: 4,
+      title: "Vergul xatosini tuzatish",
+      instruction: "`for (let i = 0, i < 3, i++)` dagi vergullarni `;` ga tuzating. `0`, `1`, `2` chiqsin.",
+      startingCode: "for (let i = 0, i < 3, i++) {\n  console.log(i);\n}\n",
+      hint: "for (let i = 0; i < 3; i++) {",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2') return null;\nreturn '0, 1, 2 chiqishi kerak';"
+    },
+    {
+      id: 5,
+      title: "let ni qo'shish",
+      instruction: "`for (i = 0; i < 3; i++)` ga `let` qo'shing. `0`, `1`, `2` chiqsin.",
+      startingCode: "for (i = 0; i < 3; i++) {\n  console.log(i);\n}\n",
+      hint: "for (let i = 0; i < 3; i++) {",
+      test: "if (!code.includes('let i')) return 'let qoshing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2') return null;\nreturn '0, 1, 2 chiqishi kerak';"
+    },
+    {
+      id: 6,
+      title: "Juft sonlar (chegara)",
+      instruction: "`0` dan `6` gacha juft sonlarni chiqaring (`i += 2` qadam bilan).",
+      startingCode: "// for sikli yozing\n",
+      hint: "for (let i = 0; i <= 6; i += 2) {\n  console.log(i);\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,2,4,6') return null;\nreturn '0, 2, 4, 6 chiqishi kerak';"
+    },
+    {
+      id: 7,
+      title: "5 dan 1 gacha (chegara)",
+      instruction: "`n` bilan `5` dan `1` gacha chiqaring.",
+      startingCode: "// for sikli yozing\n",
+      hint: "for (let n = 5; n > 0; n--) {\n  console.log(n);\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '5,4,3,2,1') return null;\nreturn '5, 4, 3, 2, 1 chiqishi kerak';"
+    },
+    {
+      id: 8,
+      title: "Yig'indi (chegara)",
+      instruction: "`sum = 0` berilgan. `1` dan `5` gacha `sum` ga qo'shing (`sum += i`). Oxirida chiqaring (`15` chiqishi kerak).",
+      startingCode: "let sum = 0;\n// for sikli yozing\nconsole.log(sum);\n",
+      hint: "for (let i = 1; i <= 5; i++) {\n  sum += i;\n}",
+      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out[out.length - 1] === '15') return null;\nreturn 'Oxirgi natija 15 bolishi kerak';"
+    },
+    {
+      id: 9,
+      title: "Bo'sh sikl (chegara)",
+      instruction: "`i = 5` dan boshlab `i < 3` sharti bilan yozing. Hech narsa chiqmasligi kerak.",
+      startingCode: "// for sikli yozing\n",
+      hint: "for (let i = 5; i < 3; i++) {\n  console.log(i);\n}",
+      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return null;\nreturn 'Hech narsa chiqmasligi kerak';"
+    },
+    {
+      id: 10,
+      title: "10 dan 0 gacha (chegara)",
+      instruction: "`n` bilan `10` dan `0` gacha `2` tadan kamaytirib chiqaring (`10`, `8`, `6`, `4`, `2`, `0`).",
+      startingCode: "// for sikli yozing\n",
+      hint: "for (let n = 10; n >= 0; n -= 2) {\n  console.log(n);\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '10,8,6,4,2,0') return null;\nreturn '10, 8, 6, 4, 2, 0 chiqishi kerak';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "for siklida uchta qism bir-biridan qaysi belgi bilan ajratiladi?",
+      question: "`for (let i = 1; i <= 3; i++) { console.log(i); }` nima chiqaradi?",
       options: [
-        "; (nuqta-vergul)",
-        ", (vergul)",
-        ": (ikki nuqta)",
-        "- (chiziqcha)"
+        "1, 2, 3",
+        "1, 2, 3, 4",
+        "0, 1, 2, 3",
+        "Hech narsa"
       ],
       correctAnswer: 0,
-      explanation: "for siklining 3 ta qismi (boshlanish, shart, qadam) har doim nuqta-vergul (;) bilan ajratiladi."
+      explanation: "i 1, 2, 3 bo'lganda shart rost. 4 bo'lganda to'xtaydi."
     },
     {
       id: 2,
-      question: "for (let i = 0; i < 3; i++) siklida qaysi qism faqat 1 marta — eng boshida bajariladi?",
+      question: "for qavsida nechta qism bo'ladi?",
       options: [
-        "let i = 0 (boshlang'ich qiymat berish)",
-        "i < 3 (shart tekshiruvi)",
-        "i++ (qadam)",
-        "console.log(i)"
+        "Bitta",
+        "Ikkita",
+        "Uchta: boshlanish, shart, qadam",
+        "To'rtta"
       ],
-      correctAnswer: 0,
-      explanation: "Boshlang'ich qism (let i = 0) faqat bir marta — sikl boshlanganda ishlaydi, shart va qadam esa har bir takrorlanishda ishlaydi."
+      correctAnswer: 2,
+      explanation: "Uch qism nuqta-vergul bilan ajratiladi."
     },
     {
       id: 3,
-      question: "for sikli while siklidan asosan nima bilan farq qiladi va qachon ma'qulroq?",
+      question: "`for (let i = 0, i < 3, i++) { ... }` qatorida nima bo'ladi?",
       options: [
-        "Boshlanish, shart va qadam bitta qatorda yoziladi; takrorlanishlar soni oldindan ma'lum bo'lganda juda qulay",
-        "for siklida shart qo'yib bo'lmaydi",
-        "for sikli faqat cheksiz ishlaydi",
-        "Hech qanday farqi yo'q"
+        "Ishlaydi",
+        "SyntaxError beradi",
+        "Bir marta ishlaydi",
+        "Cheksiz ishlaydi"
       ],
-      correctAnswer: 0,
-      explanation: "for siklida barcha 3 ta zaruriy qism bitta qatorda jamlanadi, bu esa takrorlanishlar soni ma'lum bo'lganda kodni ixcham va xatolardan xoli qiladi."
+      correctAnswer: 1,
+      explanation: "Vergul emas, nuqta-vergul kerak."
+    },
+    {
+      id: 4,
+      question: "`for (let n = 3; n > 0; n--) { console.log(n); }` nima chiqaradi?",
+      options: [
+        "1, 2, 3",
+        "3, 2, 1",
+        "3, 2, 1, 0",
+        "Hech narsa"
+      ],
+      correctAnswer: 1,
+      explanation: "n 3, 2, 1 bo'lganda rost. 0 bo'lganda to'xtaydi."
+    },
+    {
+      id: 5,
+      question: "`for (i = 0; i < 3; i++)` da `let` bo'lmasa nima bo'ladi?",
+      options: [
+        "Xatolik beradi",
+        "Ishlaydi, lekin i tashqarida qolib ketadi",
+        "Bir marta ishlaydi",
+        "Hech narsa chiqmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Xato bermaydi. Lekin i sikldan keyin ham yashaydi."
+    },
+    {
+      id: 6,
+      question: "Qadam qachon bajariladi?",
+      options: [
+        "Shartdan oldin",
+        "Har aylanish oxirida",
+        "Faqat boshida",
+        "Hech qachon"
+      ],
+      correctAnswer: 1,
+      explanation: "Blok ishlangach, qadam bajariladi. Keyin shart qayta tekshiriladi."
+    },
+    {
+      id: 7,
+      question: "`for (let i = 0; i <= 6; i += 2) { console.log(i); }` nima chiqaradi?",
+      options: [
+        "0, 1, 2, 3, 4, 5, 6",
+        "0, 2, 4, 6",
+        "0, 2, 4, 6, 8",
+        "Cheksiz davom etadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Har safar 2 taga oshadi: 0, 2, 4, 6."
+    },
+    {
+      id: 8,
+      question: "`for (let i = 5; i < 3; i++) { console.log(i); }` nima chiqaradi?",
+      options: [
+        "5",
+        "Hech narsa",
+        "Xatolik",
+        "5, 6, 7..."
+      ],
+      correctAnswer: 1,
+      explanation: "Birinchi tekshiruvdayoq yolg'on. Blok ishlamaydi."
+    },
+    {
+      id: 9,
+      question: "`let sum = 0; for (let i = 1; i <= 5; i++) { sum += i; } console.log(sum);` nima chiqaradi?",
+      options: [
+        "5",
+        "15",
+        "10",
+        "0"
+      ],
+      correctAnswer: 1,
+      explanation: "sum = 1+2+3+4+5 = 15."
+    },
+    {
+      id: 10,
+      question: "for bilan while ning farqi nima?",
+      options: [
+        "Farqi yo'q",
+        "for da uchala qism bitta qatorda",
+        "while tezroq",
+        "for faqat bir marta ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "for da boshlanish, shart va qadam ko'z oldida turadi."
+    },
+    {
+      id: 11,
+      question: "`for (let n = 10; n >= 0; n -= 2) { console.log(n); }` nima chiqaradi?",
+      options: [
+        "10, 8, 6, 4, 2",
+        "10, 8, 6, 4, 2, 0",
+        "10, 9, 8...",
+        "Cheksiz davom etadi"
+      ],
+      correctAnswer: 1,
+      explanation: "n 0 bo'lganda ham shart rost (>=). Keyin -2 bo'lib to'xtaydi."
+    },
+    {
+      id: 12,
+      question: "Uch qism qanday ajratiladi?",
+      options: [
+        "Vergul bilan",
+        "Nuqta-vergul bilan",
+        "Bo'sh joy bilan",
+        "Qavs bilan"
+      ],
+      correctAnswer: 1,
+      explanation: "Aynan ikkita nuqta-vergul: for (boshlanish; shart; qadam)."
     }
   ]
 };

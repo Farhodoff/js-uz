@@ -31,6 +31,12 @@ export default function TheoryTab({ activeLesson }) {
               </code>
             );
           },
+          // Darsdagi og'ir gif'lar sahifa ochilishini bloklamasligi uchun
+          img({ src, alt, ...props }) {
+            return (
+              <img src={src} alt={alt} loading="lazy" decoding="async" {...props} />
+            );
+          },
         }}
       >
         {activeLesson.theory || activeLesson.content}

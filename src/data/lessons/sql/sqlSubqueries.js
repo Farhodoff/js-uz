@@ -1,5 +1,5 @@
 export const sqlSubqueries = {
-  id: "sql_subqueries_1",
+  id: "sqlSubqueries",
   title: "SQL Subqueries (Ichki So'rovlar)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish

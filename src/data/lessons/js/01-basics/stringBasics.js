@@ -196,6 +196,62 @@ Keyingi darsda: JavaScript'da sonlar (Number) va ular ustida asosiy amallar bila
       startingCode: "let city = \"Toshkent\";\nconsole.log(city.length());\n",
       hint: "console.log(city.length);",
       test: "if (code.includes('.length()')) return '.length dan keyingi qavslarni olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('8'))) return null;\nreturn '8 soni konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Ikki qatlamli qo'shtirnoq",
+      "instruction": "`greeting` o'zgaruvchisiga ikki qatlamli qo'shtirnoq ichida `Men JS o'rganaman` matnini bering va konsolga chiqaring.",
+      "startingCode": "// greeting o'zgaruvchisi\n",
+      "hint": "let greeting = \"Men JS o'rganaman\"; console.log(greeting);",
+      "test": "if (!/=\\s*\"Men JS o'rganaman\"/.test(code)) return 'Matn ikki qatlamli qo\\'shtirnoqda yozilmagan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Men JS o\\'rganaman'))) return null;\nreturn 'Matn chiqmadi';"
+    },
+    {
+      "id": 5,
+      "title": "Matn uzunligini o'lchash",
+      "instruction": "`city = \"Toshkent\"` o'zgaruvchisining uzunligini `.length` yordamida konsolga chiqaring (8 chiqishi kerak).",
+      "startingCode": "let city = \"Toshkent\";\nconsole.log(city.length);\n",
+      "hint": "console.log(city.length); — qavs yo'q!",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '8')) return null;\nreturn 'console.log 8 chiqishi kerak';"
+    },
+    {
+      "id": 6,
+      "title": "Uchta matnni ulash",
+      "instruction": "`\"Salom\"`, `\", \"` va `\"dunyo\"` matnlarini `+` bilan ulab konsolga chiqaring: natija `Salom, dunyo` bo'lsin.",
+      "startingCode": "// Uchta matnni ulang\n",
+      "hint": "console.log(\"Salom\" + \", \" + \"dunyo\");",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'Salom, dunyo')) return null;\nreturn 'Natija \"Salom, dunyo\" bolishi kerak';"
+    },
+    {
+      "id": 7,
+      "title": "Qo'shtirnoq xatosini topish",
+      "instruction": "`let text = \"Salom;` qatorida qo'shtirnoq yopilmagan. Xatoni tuzating va konsolga chiqaring.",
+      "startingCode": "let text = \"Salom;\nconsole.log(text);\n",
+      "hint": "Salom dan keyin ikkinchi qo'shtirnoq qo'ying.",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim().startsWith('Salom'))) return null;\nreturn 'Salom matni chiqishi kerak';"
+    },
+    {
+      "id": 8,
+      "title": "Bo'sh joy bilan ulash",
+      "instruction": "`part1 = \"JS\"` va `part2 = \"Dars\"` matnlarini orasida AYNAN bitta bo'sh joy bilan ulang va chiqaring: natija `JS Dars` bo'lsin.",
+      "startingCode": "let part1 = \"JS\";\nlet part2 = \"Dars\";\n// Ularni bo'sh joy bilan ulang\n",
+      "hint": "console.log(part1 + \" \" + part2);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'JS Dars')) return null;\nreturn 'Natija \"JS Dars\" (bitta bo\\'sh joy bilan) bolishi kerak';"
+    },
+    {
+      "id": 9,
+      "title": "Uzunlikni matn ichida ishlatish",
+      "instruction": "`word = \"JavaScript\"` uchun uzunligini ikkita alohida qatorda chiqaring: birinchisida `word.length` natijasini, ikkinchisida esa `word` matnining o'zini.",
+      "startingCode": "let word = \"JavaScript\";\n// Ikki qator: uzunlik, keyin matn\n",
+      "hint": "console.log(word.length); console.log(word);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst flat = out.map(m => m.trim()).join('|');\nif (!flat.includes('10')) return 'Uzunlik 10 chiqmadi';\nif (!flat.includes('JavaScript')) return 'JavaScript matni chiqmadi';\nconst i1 = out.findIndex(m => m.trim() === '10');\nconst i2 = out.findIndex(m => m.includes('JavaScript'));\nif (i1 > i2) return 'Avval uzunlik, keyin matn chiqishi kerak';\nreturn null;"
+    },
+    {
+      "id": 10,
+      "title": "Aralash holat (chegara)",
+      "instruction": "`fullName` o'zgaruvchisiga ikkita ismni (\"Aziz\" va \"Karimov\") bo'sh joy bilan ulangan holda soling va konsolga chiqaring: `Aziz Karimov` bo'lsin. Bitta console.log bilan.",
+      "startingCode": "// fullName o'zgaruvchisi\n",
+      "hint": "let fullName = \"Aziz\" + \" \" + \"Karimov\"; console.log(fullName);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'Aziz Karimov')) return null;\nreturn 'Natija \"Aziz Karimov\" bolishi kerak';"
     }
   ],
   quizzes: [
@@ -234,6 +290,114 @@ Keyingi darsda: JavaScript'da sonlar (Number) va ular ustida asosiy amallar bila
       ],
       correctAnswer: 1,
       explanation: "length — bu matnning xususiyati (property), funksiya emas. Shuning uchun unga qavslar qo'yilmaydi (TypeError: text.length is not a function)."
+    },
+    {
+      "id": 4,
+      "question": "JavaScript matni qaysi qo'shtirnoq ichida yozilishi mumkin?",
+      "options": [
+        "Faqat double qo'shtirnoqda",
+        "Faqat single qo'shtirnoqda",
+        "Double, single yoki backtick — uchalasi ham",
+        "Hech qaysida"
+      ],
+      "correctAnswer": 2,
+      "explanation": "JavaScript da uch xil qo'shtirnoq bor: \"...\", '...' va `...`. Hammasi bir xil matn beradi."
+    },
+    {
+      "id": 5,
+      "question": "\"Salom\" + \" \" + \"dunyo\" natijasi nima?",
+      "options": [
+        "Salom dunyo",
+        "Salomdunyo",
+        "Salom + dunyo",
+        "Xato"
+      ],
+      "correctAnswer": 0,
+      "explanation": "+ operatori matnlarda ulash (concatenation) qiladi. \" \" — bitta bo'sh joyli matn, shuning uchun natijada bo'sh joy paydo bo'ladi."
+    },
+    {
+      "id": 6,
+      "question": "\"JS\".length qiymati qanday?",
+      "options": [
+        "2",
+        "3",
+        "\"JS\"",
+        "Xato"
+      ],
+      "correctAnswer": 0,
+      "explanation": ".length — matndagi belgilar sonini qaytaradi. JS da ikkita belgi: J va S."
+    },
+    {
+      "id": 7,
+      "question": "5 + 3 ifodasi sonlar uchun va \"5\" + 3 ifoda matn uchun nima qiladi?",
+      "options": [
+        "Ikkalasi ham 8",
+        "Birinchisi 8, ikkinchisi \"53\" — matn ulanadi",
+        "Ikkalasi ham xato",
+        "Ikkinchisi 8"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Bir tomonda matn bo'lsa, + ulash belgisiga aylanadi va natija matn bo'ladi."
+    },
+    {
+      "id": 8,
+      "question": "let city = \"Toshkent\"; city.length nima?",
+      "options": [
+        "Matnning o'zi",
+        "8 — belgilar soni",
+        "undefined",
+        "Xato"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Toshkent — 8 ta belgidan iborat, shuning uchun .length qiymati 8."
+    },
+    {
+      "id": 9,
+      "question": "Matnni qavs bilan yozsak (city.length()) nima bo'ladi?",
+      "options": [
+        "Ishlaydi",
+        "TypeError — length funksiya emas, xususiyat",
+        "undefined",
+        "Bo'sh matn"
+      ],
+      "correctAnswer": 1,
+      "explanation": "length ga qavs qo'yilmaydi — u funksiya emas. Qavs qo'yilsa, JS uni chaqirishga urinadi va xato beradi."
+    },
+    {
+      "id": 10,
+      "question": "let a = \"Salom\"; console.log(a + 1); natijasi?",
+      "options": [
+        "Salom1",
+        "Salom 1",
+        "Xato",
+        "1Salom"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Matn + son = matn. Son qo'shtirnoqsiz yozilganda ham u matnga aylanadi va yopishib ketadi: Salom1."
+    },
+    {
+      "id": 11,
+      "question": "Qaysi biri to'g'ri matn yozuvi?",
+      "options": [
+        "let t = Salom;",
+        "let t = \"Salom\";",
+        "let t = 'Salom;",
+        "let t = (Salom)"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Matn to'liq qo'shtirnoq bilan yopilishi kerak. Uchinchi variantda yopuvchi qo'shtirnoq boshqa turda."
+    },
+    {
+      "id": 12,
+      "question": "Matnni ko'paytirish mumkinmi?",
+      "options": [
+        "Yo'q",
+        "Ha — \"ab\" + \"cd\" = \"abcd\" kabi ulash orqali",
+        "Faqat sonlarda",
+        "Faqat console.log bilan"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Matnlar + orqali ulanadi. Bu ulash — matnni xohlagancha uzaytirishning asosiy usuli."
     }
   ]
 };

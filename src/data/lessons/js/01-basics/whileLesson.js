@@ -4,18 +4,17 @@ export const whileLesson = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz stakandan suv ichyapsiz: "Stakanda suv bor ekan, ho'plab ichishda davom etasiz". Suv tugagach, ichishni to'xtatasiz.
-Yoki yugurish maydonida: "Belgilangan 3 ta aylana tugamaguncha, yugurishda davom etasiz".
+Tasavvur qiling, siz zinadan ko'tarilyapsiz. Qoida oddiy: "Zina tugamaguncha — bir qadam yuqoriga." Har qadamda shart tekshiriladi. Shart yolg'on bo'lishi bilan to'xtaysiz.
 
-\`while\` (modomiki ... ekan) — berilgan shart to'g'ri (\`true\`) bo'lib turgan vaqtda ma'lum bir kod blokini qayta-qayta takrorlovchi sikl (loop) operatoridir.
+Dasturlashda \`while\` (toki, ekan) xuddi shu qoida. Shart rost ekan, blok takrorlanadi.
 
-*Yangi termin:* **Sikl (loop)** — bir xil yoki o'xshash harakatni ma'lum bir shart asosida bir necha marta takrorlash jarayoni. Har bir takrorlanish esa bitta qadam (iteratsiya) deyiladi.
+while — shart rost bo'lib turguncha kod blokini takrorlaydigan sikl operatordir.
 
 ---
 
 ## 2. Nega kerak?
 
-Agar 1 dan 5 gacha sonlarni ekranga chiqarmoqchi bo'lsak, shu paytgacha o'rgangan bilimimiz bilan \`console.log\`ni 5 marta qo'lda yozishimiz kerak bo'lardi:
+Ekranga 1 dan 5 gacha sonlarni chiqarish kerak. \`console.log\` ni besh marta yozish mumkin:
 
 \`\`\`javascript
 console.log(1);
@@ -25,21 +24,29 @@ console.log(4);
 console.log(5);
 \`\`\`
 
-Agar 100 ta yoki 1000 ta sonni chiqarish kerak bo'lsa-chi? Qo'lda mingta qator kod yozish juda qiyin, zerikarli va xatolarga to'la bo'ladi.
+Ishlaydi. Lekin 100 ta son kerak bo'lsa-chi? Yuz qator yozilmaydi.
 
-\`while\` sikli yordamida atigi 4 qator kod bilan bu ishni xohlagancha marta avtomatik bajartirish mumkin. Shart tugashi bilan sikl o'z-o'zidan to'xtaydi.
+Muammo shunda: bir ishni ko'p marta takrorlash kerak. Yechim — \`while\`. Uch qatorda yuz marta takrorlash:
+
+\`\`\`javascript
+let i = 1;
+while (i <= 5) {
+  console.log(i);
+  i++;
+}
+\`\`\`
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod 1 dan 3 gacha bo'lgan sonlarni \`while\` sikli yordamida ketma-ket konsolga chiqaradi.
+Bu kod 1 dan 3 gacha sonlarni chiqaradi.
 
 \`\`\`javascript
-let count = 1; // Boshlang'ich hisoblagich
-while (count <= 3) { // count 3 dan kichik yoki teng bo'lsa ishlaydi
-  console.log(count); // Joriy sonni ekranga chiqarish
-  count++; // Hisoblagichni 1 taga oshirish
+let i = 1; // Boshlanish: 1
+while (i <= 3) { // 3 gacha takrorlanadi
+  console.log(i); // Hozirgi qiymat chiqadi
+  i++; // Keyingi qadamga o'tiladi
 }
 \`\`\`
 
@@ -54,38 +61,37 @@ while (count <= 3) { // count 3 dan kichik yoki teng bo'lsa ishlaydi
 
 ## 4. Qator-baqator tahlil
 
-- \`let count = 1;\` — hisoblagich uchun \`count\` nomli o'zgaruvchi yaratib, unga \`1\` boshlang'ich qiymatini berdik.
-- \`while (count <= 3) {\` — \`while\` kalit so'zi. Qavs ichida shart yoziladi: \`count <= 3\`. Modomiki bu shart \`true\` ekan, jingalak qavs \`{ ... }\` ichidagi kod qayta-qayta ishlayveradi.
-- \`console.log(count);\` — joriy \`count\` qiymatini konsolga chiqaradi.
-- \`count++;\` — hisoblagich qiymatini 1 taga oshiradi. Bu qator juda muhim, u siklni asta-sekin tugash shartiga yaqinlashtiradi.
-- \`}\` — sikl blokining oxiri. Dastur shu yerga yetganda darhol tepaga — 2-qatordagi shart tekshiruviga qaytadi.
+- \`let i = 1;\` — hisoblagich yaratildi. 1 dan boshlanadi.
+- \`while (i <= 3) {\` — savol: "davom etilsinmi?" Javob rost ekan, blok takrorlanadi.
+- \`console.log(i);\` — hozirgi qiymat chiqadi.
+- \`i++;\` — hisoblagich 1 taga oshadi. Shart keyingi safar qayta tekshiriladi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-Keling, \`count\` qiymatining har bir qadamda qanday o'zgarishini jadvalda kuzatamiz:
+\`i\` ning qiymati har aylanishda qanday o'zgaradi:
 
-| Qadam | count (boshida) | Shart: count <= 3 | console.log(count) | count++ (oxirida) | Natija / Izoh |
-|---|---|---|---|---|---|
-| 1 | 1 | 1 <= 3 -> true | 1 | 2 | Shart to'g'ri, 1 chiqdi, count 2 bo'ldi |
-| 2 | 2 | 2 <= 3 -> true | 2 | 3 | Shart to'g'ri, 2 chiqdi, count 3 bo'ldi |
-| 3 | 3 | 3 <= 3 -> true | 3 | 4 | Shart to'g'ri, 3 chiqdi, count 4 bo'ldi |
-| 4 | 4 | 4 <= 3 -> false | — (ishlamaydi) | — | Shart yolg'on (false)! Sikl to'xtaydi |
+| Qadam | Shart (i <= 3) | Chiqadi | Keyin i |
+|---|---|---|---|
+| 1 | 1 <= 3? Ha | 1 | 2 bo'ladi |
+| 2 | 2 <= 3? Ha | 2 | 3 bo'ladi |
+| 3 | 3 <= 3? Ha | 3 | 4 bo'ladi |
+| 4 | 4 <= 3? Yo'q | — | To'xtaydi |
+
+To'rtinchi tekshiruvda javob "Yo'q". Sikl to'xtaydi.
 
 ---
 
 ## 6. Yana bitta misol
 
-1-misoldan farqi: sonlarni o'sish tartibida emas, balki kamayish tartibida (teskari sanash, \`--\` yordamida) chiqaramiz.
-
-Bu kod 3 dan 1 gacha teskari sanaydi:
+Bu kod teskari sanaydi: 3 dan 1 gacha.
 
 \`\`\`javascript
-let timer = 3; // Boshlang'ich vaqt
-while (timer > 0) { // timer 0 dan katta bo'lsa ishlaydi
-  console.log(timer); // Joriy vaqtni ekranga chiqarish
-  timer--; // Vaqtni 1 taga kamaytirish
+let n = 3; // Boshlanish: 3
+while (n > 0) { // 0 dan katta ekan
+  console.log(n); // Hozirgi qiymat chiqadi
+  n--; // Bittaga kamayadi
 }
 \`\`\`
 
@@ -96,171 +102,335 @@ while (timer > 0) { // timer 0 dan katta bo'lsa ishlaydi
 1
 \`\`\`
 
+Qator-baqator tahlil:
+- \`n > 0\` — shart. \`n\` 0 ga yetguncha rost.
+- \`n--\` — har aylanishda 1 taga kamayadi. Shart bir kun yolg'on bo'ladi. Sikl to'xtaydi.
+
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1-xato: Cheksiz sikl (infinite loop)
-Hisoblagichni oshirishni yoki kamaytirishni unutish:
-
+### 1. Qavsni unutish
+❌ Xato kod:
 \`\`\`javascript
-let count = 1;
-while (count <= 3) {
-  console.log(count);
-  // count++ yozilmagan!
+let i = 0;
+while i < 3 {
+  console.log(i);
+  i++;
+}
+\`\`\`
+Nima bo'ladi: \`SyntaxError: Unexpected identifier 'i'\` xatoligi yuz beradi. Shart har doim yumaloq qavs ichida yoziladi: \`while (i < 3)\`.
+✅ To'g'ri variant:
+\`\`\`javascript
+let i = 0;
+while (i < 3) {
+  console.log(i);
+  i++;
 }
 \`\`\`
 
-**Nima bo'ladi:** \`count\` qiymati doimo \`1\` bo'lib qoladi. \`count <= 3\` sharti esa doim \`true\` bo'ladi. Dastur to'xtovsiz \`1\` chiqaraveradi va sahifa yoki butun brauzer qotib qoladi (cheksiz sikl / infinite loop).
-**To'g'ri varianti:** Sikl bloki ichida har doim hisoblagichni o'zgartiruvchi qadam bo'lishi shart (\`count++\`).
-
-### 2-xato: Shartning boshidanoq false bo'lishi
-Boshlang'ich qiymat shartga mos kelmasligi:
-
+### 2. E'lon qilinmagan shart
+❌ Xato kod:
 \`\`\`javascript
-let count = 5;
+while (count < 3) {
+  console.log(count);
+}
+\`\`\`
+Nima bo'ladi: \`ReferenceError: count is not defined\` xatoligi yuz beradi. Shartdagi o'zgaruvchi oldin e'lon qilinishi shart.
+✅ To'g'ri variant:
+\`\`\`javascript
+let count = 0;
 while (count < 3) {
   console.log(count);
   count++;
 }
 \`\`\`
 
-**Nima bo'ladi:** Konsolga hech narsa chiqmaydi. Chunki birinchi qadamdayoq \`5 < 3\` ifodasi \`false\` qaytaradi va JavaScript sikl ichiga kirmasdan o'tib ketadi.
-**To'g'ri varianti:** Boshlang'ich qiymat va tekshirilayotgan shartning o'zaro to'g'ri kelishini tekshiring.
-
-### 3-xato: while qatoridan keyin nuqta-vergul (;) qo'yish
-Shart qavsidan keyin darhol nuqta-vergul qo'yish:
-
+### 3. Birinchi tekshiruvdayoq yolg'on
+❌ Xato tushuncha:
 \`\`\`javascript
-let count = 1;
-while (count <= 3); { // XATO: qavsdan keyin ';' qo'yilgan!
-  console.log(count);
-  count++;
+let i = 10;
+while (i < 3) {
+  console.log(i);
 }
 \`\`\`
-
-**Nima bo'ladi:** \`while (count <= 3);\` qatoridagi \`;\` belgisi bo'sh buyruq hisoblanadi. Sikl tinimsiz bo'sh buyruqni takrorlayveradi, pastdagi \`count++\` ga esa navbat yetib bormaydi. Dastur shu qatorda qotib qoladi.
-**To'g'ri varianti:** \`while (...)\` qatorining oxiriga hech qachon nuqta-vergul qo'yilmaydi, to'g'ridan-to'g'ri jingalak qavs \`{\` ochiladi.
+Nima bo'ladi: xato bermaydi. Lekin hech narsa chiqmaydi! Sababi: shart BIRINCHI tekshiruvdayoq yolg'on. Blok bir marta ham ishlamaydi. \`while\` avval tekshiradi, keyin ishlaydi.
+✅ To'g'ri tushuncha: blok kamida bir marta ishlashi kerak bo'lsa, boshlang'ich qiymat shartga mos kelishi shart.
 
 ---
 
 ## 8. Tekshiruv
 
-### 1-mashq (oson)
-1 dan 4 gacha bo'lgan sonlarni \`while\` sikli yordamida ekranga chiqaruvchi kod yozing.
+### 1-mashq (Oson)
+\`i\` ga \`1\` bering. \`i <= 3\` ekan, chiqaring va oshiring. Natijalar \`1\`, \`2\`, \`3\` bo'lsin.
 
-### 2-mashq (o'rtacha)
-Quyidagi kod ishlaganda konsolga qanday natija chiqadi?
+### 2-mashq (O'rtacha)
+\`n\` ga \`3\` bering. \`n > 0\` ekan, chiqaring va kamaytiring. Natijalar \`3\`, \`2\`, \`1\` bo'lsin.
+
+### 3-mashq (Chegara holat)
+\`i\` ga \`10\` bering. \`i < 3\` sharti bilan sikl yozing. Hech narsa chiqmasligini tasdiqlang (bo'sh natija ham to'g'ri javob).
+
+### Javoblar:
+1.
 \`\`\`javascript
-let number = 2;
-while (number <= 6) {
-  console.log(number);
-  number += 2;
+let i = 1;
+while (i <= 3) {
+  console.log(i);
+  i++;
 }
 \`\`\`
-
-### 3-mashq (chegara holat)
-Quyidagi kod ishlaganda konsolga nimalar chiqadi?
+2.
 \`\`\`javascript
-let count = 10;
-while (count < 5) {
-  console.log("Salom");
-  count++;
-}
-console.log("Tugadi");
-\`\`\`
-
----
-
-### Javoblar
-
-**1-mashq javobi:**
-\`\`\`javascript
-let count = 1;
-while (count <= 4) {
-  console.log(count);
-  count++;
+let n = 3;
+while (n > 0) {
+  console.log(n);
+  n--;
 }
 \`\`\`
-
-**2-mashq javobi:**
-Konsolga \`2\`, \`4\` va \`6\` sonlari chiqadi (chunki \`number\` har qadamda \`+= 2\` bilan 2 taga oshib boradi).
-
-**3-mashq javobi:**
-Konsolga faqat \`"Tugadi"\` chiqadi. Chunki \`10 < 5\` sharti boshidanoq \`false\` bo'lgani uchun, sikl ichidagi \`"Salom"\` biror marta ham ishlamaydi.
+3.
+\`\`\`javascript
+let i = 10;
+while (i < 3) {
+  console.log(i);
+}
+\`\`\`
 
 ---
 
 ## 9. Xulosa
 
-1. \`while\` sikli — qavs ichidagi shart \`true\` bo'lib turgan muddatda o'z kod blokini qayta-qayta takrorlaydi.
-2. Sikl har bir qadam oldidan shartni tekshiradi; shart \`false\` bo'lishi bilan sikl to'xtaydi.
-3. Sikl tanasida hisoblagich qiymatini o'zgartirish (\`count++\`, \`count--\`) shart, aks holda cheksiz sikl (infinite loop) yuzaga keladi.
+1. \`while\` — shart rost ekan, blokni takrorlaydi. Shart har aylanishdan oldin tekshiriladi.
+2. Hisoblagich yangilanishi shart (\`i++\` yoki \`n--\`). Bo'lmasa, shart hech qachon yolg'on bo'lmaydi.
+3. Birinchi tekshiruvdayoq yolg'on bo'lsa, blok bir marta ham ishlamaydi.
 
-Keyingi darsda: Kamida bir marta bajarilishi shart bo'lgan holatlar uchun \`do...while\` siklini o'rganamiz.
+Keyingi darsda: boshi va oxiri aniq sikl — \`for\` bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "1 dan 3 gacha chiqarish",
-      instruction: "`count` o'zgaruvchisi berilgan. `while` siklidan foydalanib, 1, 2 va 3 sonlarini konsolga chiqaring.",
-      startingCode: "let count = 1;\nwhile (count <= 3) {\n  \n}\n",
-      hint: "while (count <= 3) {\n  console.log(count);\n  count++;\n}",
-      test: "if (!code.includes('while')) return 'while sikli ishlatilmadi';\nif (!code.includes('++') && !code.includes('+=') && !code.includes('+ 1')) return 'Hisoblagichni oshirish (count++) unutilgan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3') return null;\nreturn 'Konsolga 1, 2, 3 sonlari chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
+      title: "1 dan 3 gacha",
+      instruction: "`i` ga `1` bering. `i <= 3` ekan chiqaring va oshiring (`1`, `2`, `3` chiqishi kerak).",
+      startingCode: "let i = 1;\n// while sikli yozing\n",
+      hint: "while (i <= 3) {\n  console.log(i);\n  i++;\n}",
+      test: "if (!code.includes('while')) return 'while sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3') return null;\nreturn '1, 2, 3 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
     },
     {
       id: 2,
       title: "Teskari sanash",
-      instruction: "`let timer = 3;` berilgan. `while` siklidan foydalanib, 3, 2, 1 sonlarini kamayish tartibida konsolga chiqaring.",
-      startingCode: "let timer = 3;\nwhile (timer > 0) {\n  \n}\n",
-      hint: "while (timer > 0) {\n  console.log(timer);\n  timer--;\n}",
-      test: "if (!code.includes('while')) return 'while sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '3,2,1') return null;\nreturn 'Konsolga 3, 2, 1 sonlari chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
+      instruction: "`n` ga `3` bering. `n > 0` ekan chiqaring va kamaytiring (`3`, `2`, `1` chiqishi kerak).",
+      startingCode: "let n = 3;\n// while sikli yozing\n",
+      hint: "while (n > 0) {\n  console.log(n);\n  n--;\n}",
+      test: "if (!code.includes('while')) return 'while sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '3,2,1') return null;\nreturn '3, 2, 1 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
     },
     {
       id: 3,
-      title: "Cheksiz siklni to'g'rilash",
-      instruction: "Quyidagi kodda `count` qiymati o'zgarmayotgani uchun cheksiz sikl xavfi bor. Sikl ichiga `count++;` qatorini qo'shib, xatoni tuzating.",
-      startingCode: "let count = 1;\nwhile (count <= 2) {\n  console.log(count);\n  // bu yerga count++ yozing\n}\n",
-      hint: "console.log(count);\ncount++;",
-      test: "if (!code.includes('count++') && !code.includes('count += 1') && !code.includes('count = count + 1')) return 'count++ qo\\'shilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2') return null;\nreturn 'Konsolga 1, 2 sonlari chiqishi kerak';"
+      title: "Qavs xatosini tuzatish",
+      instruction: "`while i < 3` dagi qavs xatosini tuzating (`i = 0` berilgan). `0`, `1`, `2` chiqsin.",
+      startingCode: "let i = 0;\nwhile i < 3 {\n  console.log(i);\n  i++;\n}\n",
+      hint: "while (i < 3) {",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2') return null;\nreturn '0, 1, 2 chiqishi kerak';"
+    },
+    {
+      id: 4,
+      title: "E'lon xatosini tuzatish",
+      instruction: "`count` e'lon qilinmagan. Oldiniga `let count = 0;` qo'shing. `0`, `1`, `2` chiqsin.",
+      startingCode: "while (count < 3) {\n  console.log(count);\n  count++;\n}\n",
+      hint: "let count = 0; — eng boshiga yozing.",
+      test: "if (!code.includes('let count')) return 'let count qatorini qoshing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2') return null;\nreturn '0, 1, 2 chiqishi kerak';"
+    },
+    {
+      id: 5,
+      title: "Bo'sh sikl",
+      instruction: "`i` ga `10` bering. `i < 3` sharti bilan sikl yozing. Hech narsa chiqmasligi kerak.",
+      startingCode: "let i = 10;\n// while sikli yozing\n",
+      hint: "while (i < 3) {\n  console.log(i);\n}",
+      test: "if (!code.includes('while')) return 'while sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return null;\nreturn 'Hech narsa chiqmasligi kerak';"
+    },
+    {
+      id: 6,
+      title: "Juft sonlar (chegara)",
+      instruction: "`i` ga `2` bering. `i <= 6` ekan chiqaring va `2` taga oshiring (`i += 2`). `2`, `4`, `6` chiqsin.",
+      startingCode: "let i = 2;\n// while sikli yozing\n",
+      hint: "while (i <= 6) {\n  console.log(i);\n  i += 2;\n}",
+      test: "if (!code.includes('while')) return 'while sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '2,4,6') return null;\nreturn '2, 4, 6 chiqishi kerak';"
+    },
+    {
+      id: 7,
+      title: "5 dan 1 gacha (chegara)",
+      instruction: "`n` ga `5` bering. `n > 0` ekan chiqaring va kamaytiring (`5`, `4`, `3`, `2`, `1`).",
+      startingCode: "let n = 5;\n// while sikli yozing\n",
+      hint: "while (n > 0) {\n  console.log(n);\n  n--;\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '5,4,3,2,1') return null;\nreturn '5, 4, 3, 2, 1 chiqishi kerak';"
+    },
+    {
+      id: 8,
+      title: "Yig'indi hisoblash (chegara)",
+      instruction: "`sum = 0`, `i = 1` berilgan. `i <= 4` ekan `sum` ga `i` ni qo'shing (`sum += i`). Oxirida `sum` ni chiqaring (`10` chiqishi kerak).",
+      startingCode: "let sum = 0;\nlet i = 1;\n// while sikli yozing\nconsole.log(sum);\n",
+      hint: "while (i <= 4) {\n  sum += i;\n  i++;\n}",
+      test: "if (!code.includes('while')) return 'while sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out[out.length - 1] === '10') return null;\nreturn 'Oxirgi natija 10 bolishi kerak';"
+    },
+    {
+      id: 9,
+      title: "Bitta qadam (chegara)",
+      instruction: "`i` ga `0` bering. `i < 1` ekan chiqaring va oshiring. Faqat `0` chiqishi kerak (bitta aylanish).",
+      startingCode: "let i = 0;\n// while sikli yozing\n",
+      hint: "while (i < 1) {\n  console.log(i);\n  i++;\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0') return null;\nreturn 'Faqat 0 chiqishi kerak';"
+    },
+    {
+      id: 10,
+      title: "Teskari juftlar (chegara)",
+      instruction: "`n` ga `6` bering. `n > 0` ekan chiqaring va `2` taga kamaytiring (`6`, `4`, `2` chiqsin).",
+      startingCode: "let n = 6;\n// while sikli yozing\n",
+      hint: "while (n > 0) {\n  console.log(n);\n  n -= 2;\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '6,4,2') return null;\nreturn '6, 4, 2 chiqishi kerak';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "while sikli qachongacha o'z kod blokini takrorlaydi?",
+      question: "`let i = 1; while (i <= 3) { console.log(i); i++; }` nima chiqaradi?",
       options: [
-        "Qavs ichidagi shart true bo'lib turgan muddatda",
-        "Faqat bir marta",
-        "Shart false bo'lgandagina",
-        "Har doim cheksiz marta"
+        "1, 2, 3",
+        "1, 2, 3, 4",
+        "Cheksiz davom etadi",
+        "Hech narsa"
       ],
       correctAnswer: 0,
-      explanation: "while sikli o'zining sharti rost (true) bo'lib turgan vaqtda blok ichidagi kodni qayta-qayta takrorlayveradi."
+      explanation: "i 1, 2, 3 bo'lganda shart rost. 4 bo'lganda to'xtaydi."
     },
     {
       id: 2,
-      question: "while siklida hisoblagichni (masalan count++) o'zgartirish nima uchun shart?",
+      question: "Sikl qachon to'xtaydi?",
       options: [
-        "Sikl cheksiz aylanib qolmasligi va shart oxir-oqibat false bo'lib to'xtashi uchun",
-        "O'zgaruvchini matnga (string) aylantirish uchun",
-        "Faqat kod chiroyli ko'rinishi uchun",
-        "console.log ishlashi uchun"
+        "Blok tugaganda",
+        "Shart yolg'on bo'lganda",
+        "Hech qachon",
+        "3 marta aylanganda"
       ],
-      correctAnswer: 0,
-      explanation: "Agar hisoblagich o'zgarmasa, shart doim true bo'lib qoladi va natijada dastur cheksiz siklga tushib qotib qoladi."
+      correctAnswer: 1,
+      explanation: "Har aylanishdan oldin shart tekshiriladi. Yolg'on bo'lishi bilan sikl to'xtaydi."
     },
     {
       id: 3,
-      question: "Agar while sharti eng boshidayoq false bo'lsa (masalan while (5 < 3)), nima sodir bo'ladi?",
+      question: "`let i = 10; while (i < 3) { console.log(i); }` nima chiqaradi?",
       options: [
-        "Sikl bloki biror marta ham ishlamasdan tashlab ketiladi",
-        "Sikl kamida bir marta ishlaydi",
-        "Dastur xato beradi",
-        "Cheksiz sikl yuzaga keladi"
+        "10",
+        "Hech narsa",
+        "Xatolik",
+        "Cheksiz davom etadi"
       ],
-      correctAnswer: 0,
-      explanation: "while sikli shartni qadamdan oldin tekshiradi. Shart boshidanoq false bo'lsa, blok ichidagi kod umuman bajarilmaydi."
+      correctAnswer: 1,
+      explanation: "Birinchi tekshiruvdayoq yolg'on. Blok bir marta ham ishlamaydi."
+    },
+    {
+      id: 4,
+      question: "`while i < 3 { ... }` qatorida nima bo'ladi?",
+      options: [
+        "Ishlaydi",
+        "SyntaxError beradi",
+        "Bir marta ishlaydi",
+        "Hech narsa bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Shart qavs ichida bo'lishi shart: while (i < 3)."
+    },
+    {
+      id: 5,
+      question: "Nega `i++` kerak?",
+      options: [
+        "Chiroyli ko'rinishi uchun",
+        "Shart bir kun yolg'on bo'lishi uchun",
+        "Tezroq ishlashi uchun",
+        "Xato bermasligi uchun"
+      ],
+      correctAnswer: 1,
+      explanation: "Hisoblagich yangilanmasa, shart har doim rost qoladi."
+    },
+    {
+      id: 6,
+      question: "`let n = 3; while (n > 0) { console.log(n); n--; }` nima chiqaradi?",
+      options: [
+        "1, 2, 3",
+        "3, 2, 1",
+        "3, 2, 1, 0",
+        "Hech narsa"
+      ],
+      correctAnswer: 1,
+      explanation: "n 3, 2, 1 bo'lganda shart rost. 0 bo'lganda to'xtaydi."
+    },
+    {
+      id: 7,
+      question: "`while (count < 3) { ... }` da `count` e'lon qilinmagan bo'lsa nima bo'ladi?",
+      options: [
+        "0 dan boshlaydi",
+        "ReferenceError beradi",
+        "Cheksiz ishlaydi",
+        "Hech narsa chiqmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Shartdagi o'zgaruvchi oldin e'lon qilinishi shart."
+    },
+    {
+      id: 8,
+      question: "`let i = 2; while (i <= 6) { console.log(i); i += 2; }` nima chiqaradi?",
+      options: [
+        "2, 3, 4, 5, 6",
+        "2, 4, 6",
+        "2, 4, 6, 8",
+        "Cheksiz davom etadi"
+      ],
+      correctAnswer: 1,
+      explanation: "Har safar 2 taga oshadi: 2, 4, 6. Keyin 8 > 6 bo'lib to'xtaydi."
+    },
+    {
+      id: 9,
+      question: "`let sum = 0; let i = 1; while (i <= 4) { sum += i; i++; } console.log(sum);` nima chiqaradi?",
+      options: [
+        "4",
+        "10",
+        "24",
+        "0"
+      ],
+      correctAnswer: 1,
+      explanation: "sum = 0+1+2+3+4 = 10."
+    },
+    {
+      id: 10,
+      question: "`let i = 0; while (i < 1) { console.log(i); i++; }` necha marta ishlaydi?",
+      options: [
+        "0 marta",
+        "1 marta",
+        "Cheksiz",
+        "2 marta"
+      ],
+      correctAnswer: 1,
+      explanation: "Birinchi rost, keyin i 1 bo'lib shart yolg'on bo'ladi."
+    },
+    {
+      id: 11,
+      question: "while nimani takrorlaydi?",
+      options: [
+        "Shartni",
+        "Jingalak qavs ichidagi blokni",
+        "Faqat console.log ni",
+        "Hamma kodni"
+      ],
+      correctAnswer: 1,
+      explanation: "Faqat o'z blokidagi qatorlar takrorlanadi."
+    },
+    {
+      id: 12,
+      question: "`let n = 6; while (n > 0) { console.log(n); n -= 2; }` nima chiqaradi?",
+      options: [
+        "6, 5, 4, 3, 2, 1",
+        "6, 4, 2",
+        "6, 4, 2, 0",
+        "Cheksiz davom etadi"
+      ],
+      correctAnswer: 1,
+      explanation: "n 6, 4, 2 bo'lganda rost. 0 bo'lganda to'xtaydi."
     }
   ]
 };

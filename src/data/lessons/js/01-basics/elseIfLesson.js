@@ -4,148 +4,164 @@ export const elseIfLesson = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz chorrahadagi svetoforga qarab turibsiz:
-- Agar qizil chiroq yonsa — to'xtaysiz.
-- **Aks holda, agar** sariq chiroq yonsa — tayyorlanasiz.
-- **Aks holda, agar** yashil chiroq yonsa — harakatlanasiz.
+Tasavvur qiling, svetofor oldidasiz. Uchta rang bor:
+- Yashil bo'lsa — yuring.
+- Sariq bo'lsa — tayyorlaning.
+- Qizil bo'lsa — to'xtang.
 
-Bu yerda 2 ta emas, bir nechta holat bor va ulardan har safar faqat bittasi yonadi.
+Ikkita yo'l yetmaydi. Uchta holat bor. Har biriga alohida javob kerak.
 
-\`else if\` (aks holda, agar) — ikkitadan ko'p bo'lgan shartlarni ketma-ket tekshirish va ulardan birinchi to'g'ri chiqqanini ishga tushirish uchun ishlatiladigan operator.
+Dasturlashda \`else if\` xuddi shu ikkinchi, uchinchi belgi. Birinchi shart yolg'on bo'lsa, keyingi shart tekshiriladi.
+
+else if — oldingi shart bajarilmaganda, yangi shart tekshiradigan qo'shimcha yo'ldir.
 
 ---
 
 ## 2. Nega kerak?
 
-Hayotda va dasturlarda tanlov har doim ham faqat ikkita ("ha" yoki "yo'q") bo'lmaydi:
-- Imtihon ballari: 90 dan yuqori bo'lsa "A'lo", 70 dan yuqori bo'lsa "Yaxshi", 60 dan yuqori bo'lsa "Qoniqarli", aks holda "Qoniqarsiz".
-- Foydalanuvchi yoshi: bola, o'smir, katta yoshli yoki qariya.
+Baholash qoidasi bor: 90 dan yuqori — "A'lo", 70 dan yuqori — "Yaxshi", qolganlari — "Qoniqarsiz". Uchta holat.
 
-Oddiy \`if...else\` faqat ikkita yo'l bera oladi. \`else if\` yordamida esa biz istalgancha ko'p shartlarni ketma-ket zanjir qilib tekshirishimiz mumkin.
+Muammo shunda: \`if/else\` da faqat ikkita yo'l bor. Uchinchi holat sig'maydi. Yechim — \`else if\`:
+
+\`\`\`javascript
+let ball = 85;
+if (ball > 90) {
+  console.log("A'lo!");
+} else if (ball > 70) {
+  console.log("Yaxshi!");
+} else {
+  console.log("Qoniqarsiz!");
+}
+\`\`\`
+
+Ball 85. Birinchi shart yolg'on. Ikkinchi shart rost. "Yaxshi!" chiqadi.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod imtihon balliga qarab bahoni aniqlaydi.
+Bu kod ikkinchi yo'l ishlashini ko'rsatadi.
 
 \`\`\`javascript
-let score = 75;
-
-if (score >= 90) {
-  console.log("A'lo"); // 75 >= 90 yolg'on (false)
-} else if (score >= 70) {
-  console.log("Yaxshi"); // 75 >= 70 rost (true) -> shu ishlaydi!
-} else {
-  console.log("Qoniqarsiz"); // Bajarilmaydi
+let ball = 85; // Ball
+if (ball > 90) { // Birinchi savol
+  console.log("A'lo!");
+} else if (ball > 70) { // Ikkinchi savol
+  console.log("Yaxshi!");
+} else { // Qolgan holatlar
+  console.log("Qoniqarsiz!");
 }
 \`\`\`
 
 \`\`\`text
-// Natija: Yaxshi
+// Natija: Yaxshi!
 \`\`\`
 
 ---
 
 ## 4. Qator-baqator tahlil
 
-- \`if (score >= 90)\` — 1-shart tekshiriladi (\`75 >= 90\`), natija \`false\`. JavaScript keyingi shartga o'tadi.
-- \`else if (score >= 70)\` — 2-shart tekshiriladi (\`75 >= 70\`), natija \`true\`. Bu blok ichidagi \`console.log("Yaxshi");\` bajariladi.
-- \`else { ... }\` — bitta shart to'g'ri chiqqani sababli, undan keyingi barcha bloklar tekshirilmasdan darhol tashlab yuboriladi.
-- **Oltin qoida**: \`if ... else if ... else\` zanjirida shartlar yuqoridan pastga tekshiriladi va BIRINCHI to'g'ri chiqqan blok ishlab, butun zanjir to'xtaydi.
+- \`let ball = 85;\` — ball saqlandi.
+- \`if (ball > 90) {\` — birinchi savol. \`85 > 90\` yolg'on. Birinchi blok tashlandi.
+- \`else if (ball > 70) {\` — ikkinchi savol. \`85 > 70\` rost. Shu blokka kirildi.
+- \`console.log("Yaxshi!");\` — ikkinchi xabar chiqadi.
+- \`else {\` bloki bu safar tashlab ketildi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-Bajarilish ketma-ketligi:
+Kompyuter shartlarni ketma-ket tekshiradi. Birinchisi rost bo'lishi bilan to'xtaydi:
 
-| Qadam | Kod qatori | Shart tekshiruvi | Natija |
+| Qadam | Kod qatori | Tekshiruv | Natija |
 |---|---|---|---|
-| 1 | \`let score = 75;\` | \`score = 75\` | O'zgaruvchi yuklandi |
-| 2 | \`if (score >= 90)\` | \`75 >= 90\` → \`false\` | Bajarilmadi, keyingi shartga o'tildi |
-| 3 | \`else if (score >= 70)\` | \`75 >= 70\` → \`true\` | Shart bajarildi! Yaxshi konsolga chiqdi |
-| 4 | \`else\` | Tekshirilmaydi | Zanjir to'xtatildi |
+| 1 | \`let ball = 85;\` | — | \`ball\` 85 bo'ldi |
+| 2 | \`if (ball > 90) {\` | 85 > 90? Yo'q | Birinchi blok tashlandi |
+| 3 | \`else if (ball > 70) {\` | 85 > 70? Ha | Ikkinchi blokka kirildi |
+| 4 | \`console.log(...);\` | — | "Yaxshi!" chiqdi |
+
+Qolgan bloklar tekshirilmaydi. Har doim faqat bitta blok ishlaydi.
 
 ---
 
 ## 6. Yana bitta misol
 
-Bu kod svetofor chirog'iga qarab qilinadigan harakatni aniqlaydi.
+Bu kod birinchi yo'l ishlashini ko'rsatadi.
 
 \`\`\`javascript
-let light = "yellow";
-
-if (light === "red") {
-  console.log("To'xtang");
-} else if (light === "yellow") {
-  console.log("Tayyorlaning");
-} else if (light === "green") {
-  console.log("Yuring");
-} else {
-  console.log("Bunday chiroq yo'q");
+let ball = 95; // Ball yuqori
+if (ball > 90) { // Birinchi savol
+  console.log("A'lo!");
+} else if (ball > 70) { // Ikkinchi savol
+  console.log("Yaxshi!");
+} else { // Qolgan holatlar
+  console.log("Qoniqarsiz!");
 }
 \`\`\`
 
 \`\`\`text
-// Natija: Tayyorlaning
+// Natija: A'lo!
 \`\`\`
 
 Qator-baqator tahlil:
-- \`light === "red"\` tekshiriladi — \`false\`.
-- \`light === "yellow"\` tekshiriladi — \`true\`. Konsolga \`"Tayyorlaning"\` chiqadi.
-- Undan keyingi \`light === "green"\` va \`else\` bloklari tekshirilmaydi.
+- \`ball > 90\` — rost. Birinchi blok darhol ishladi.
+- Qolgan \`else if\` va \`else\` bloklari tekshirilmasdan tashlab ketildi.
 
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1. elseif deb qo'shib yozish
+### 1. else if ni yolg'iz yozish
 ❌ Xato kod:
 \`\`\`javascript
-if (score >= 90) {
-  console.log("A");
-} elseif (score >= 70) {
-  console.log("B");
+let a = 1;
+else if (a > 0) {
+  console.log("Musbat!");
 }
 \`\`\`
-Nima bo'ladi: \`SyntaxError: Unexpected token '{'\` xatoligi yuz beradi. JavaScript'da \`elseif\` degan bitta so'z yo'q, u doimo ikkita alohida so'z: \`else if\` ko'rinishida probel bilan yoziladi.
+Nima bo'ladi: \`SyntaxError: Unexpected token 'else'\` xatoligi yuz beradi. \`else if\` ham yolg'iz yasholmaydi. Oldida har doim \`if\` bloki bo'lishi shart.
 ✅ To'g'ri variant:
 \`\`\`javascript
-else if (score >= 70) {
-  console.log("B");
+let a = 1;
+if (a > 0) {
+  console.log("Musbat!");
+} else if (a < 0) {
+  console.log("Manfiy!");
 }
 \`\`\`
 
-### 2. Shartlar tartibini adashtirish (mantiqiy xato)
+### 2. elseif ni qo'shib yozish
 ❌ Xato kod:
 \`\`\`javascript
-let score = 95;
-if (score >= 70) {
-  console.log("Yaxshi"); // 95 >= 70 rost bo'lgani uchun shu ishlab ketadi!
-} else if (score >= 90) {
-  console.log("A'lo"); // Bu qatorga navbat HECH QACHON yetib kelmaydi
+let a = 1;
+if (a > 0) {
+  console.log("Musbat!");
+} elseif (a < 0) {
+  console.log("Manfiy!");
 }
 \`\`\`
-Nima bo'ladi: 95 ball olgan o'quvchiga ham "Yaxshi" chiqadi, chunki \`score >= 70\` yuqorida turibdi va u \`true\` bo'ladi.
-✅ To'g'ri variant: Chegarasi qat'iyroq (kattaroq) shartlar har doim yuqorida turishi kerak:
+Nima bo'ladi: \`SyntaxError: Unexpected token '{'\` xatoligi yuz beradi. \`elseif\` degan so'z yo'q. Ikkita alohida so'z yoziladi: \`else if\`.
+✅ To'g'ri variant:
 \`\`\`javascript
-if (score >= 90) {
-  console.log("A'lo");
-} else if (score >= 70) {
-  console.log("Yaxshi");
+let a = 1;
+if (a > 0) {
+  console.log("Musbat!");
+} else if (a < 0) {
+  console.log("Manfiy!");
 }
 \`\`\`
 
-### 3. else if da shart qavsini unutish
-❌ Xato kod:
-\`\`\`javascript
-else if score >= 70 { ... }
-\`\`\`
-Nima bo'ladi: \`SyntaxError\` xatoligi yuz beradi. \`if\` kabi \`else if\` dan keyin ham shart oddiy qavs \`(...)\` ichida bo'lishi shart.
+### 3. Bir nechta blok ishlaydi deb o'ylash
+❌ Xato tushuncha: ball 95 bo'lganda "A'lo!" ham, "Yaxshi!" ham chiqadi deb o'ylash.
+Nima bo'ladi: faqat "A'lo!" chiqadi. Birinchi rost shart topilishi bilan qolganlari tekshirilmaydi.
 ✅ To'g'ri variant:
 \`\`\`javascript
-else if (score >= 70) { ... }
+let ball = 95;
+if (ball > 90) {
+  console.log("A'lo!"); // Faqat shu chiqadi
+} else if (ball > 70) {
+  console.log("Yaxshi!"); // Bu ishlamaydi
+}
 \`\`\`
 
 ---
@@ -153,56 +169,46 @@ else if (score >= 70) { ... }
 ## 8. Tekshiruv
 
 ### 1-mashq (Oson)
-\`score = 92;\` berilgan. Agar \`score >= 90\` bo'lsa \`"A"\`, aks holda agar \`score >= 80\` bo'lsa \`"B"\`, qolgan hollarda \`"C"\` deb chiqaruvchi \`if...else if...else\` yozing (konsolga \`"A"\` chiqadi).
+\`ball\` ga \`85\` bering. Uch yo'lli tekshiruv yozing: \`> 90\` bo'lsa \`"A'lo!"\`, \`> 70\` bo'lsa \`"Yaxshi!"\`, aks holda \`"Past!"\` chiqsin.
 
 ### 2-mashq (O'rtacha)
-\`hour = 14;\` berilgan. Agar \`hour < 12\` bo'lsa \`"Xayrli tong"\`, aks holda agar \`hour < 18\` bo'lsa \`"Xayrli kun"\`, qolgan hollarda \`"Xayrli kech"\` deb chiqaruvchi kod yozing (konsolga \`"Xayrli kun"\` chiqadi).
+\`temp\` ga \`30\` bering. \`> 35\` bo'lsa \`"Issiq!"\`, \`> 20\` bo'lsa \`"Iliq!"\`, aks holda \`"Sovuq!"\` chiqsin.
 
-### 3-mashq (Xatoni topish)
-Quyidagi koddagi \`elseif\` xatosini to'g'rilang, toki konsolga \`"Baland"\` chiqsin:
-\`\`\`javascript
-let height = 185;
-if (height < 160) {
-  console.log("Past");
-} elseif (height >= 180) {
-  console.log("Baland");
-} else {
-  console.log("O'rtacha");
-}
-\`\`\`
+### 3-mashq (Chegara holat)
+\`n\` ga \`0\` bering. \`> 0\` bo'lsa \`"Musbat!"\`, \`0\` ga teng bo'lsa (\`n === 0\`) \`"Nol!"\`, aks holda \`"Manfiy!"\` chiqsin.
 
 ### Javoblar:
 1.
 \`\`\`javascript
-let score = 92;
-if (score >= 90) {
-  console.log("A");
-} else if (score >= 80) {
-  console.log("B");
+let ball = 85;
+if (ball > 90) {
+  console.log("A'lo!");
+} else if (ball > 70) {
+  console.log("Yaxshi!");
 } else {
-  console.log("C");
+  console.log("Past!");
 }
 \`\`\`
 2.
 \`\`\`javascript
-let hour = 14;
-if (hour < 12) {
-  console.log("Xayrli tong");
-} else if (hour < 18) {
-  console.log("Xayrli kun");
+let temp = 30;
+if (temp > 35) {
+  console.log("Issiq!");
+} else if (temp > 20) {
+  console.log("Iliq!");
 } else {
-  console.log("Xayrli kech");
+  console.log("Sovuq!");
 }
 \`\`\`
 3.
 \`\`\`javascript
-let height = 185;
-if (height < 160) {
-  console.log("Past");
-} else if (height >= 180) { // elseif o'rniga else if
-  console.log("Baland");
+let n = 0;
+if (n > 0) {
+  console.log("Musbat!");
+} else if (n === 0) {
+  console.log("Nol!");
 } else {
-  console.log("O'rtacha");
+  console.log("Manfiy!");
 }
 \`\`\`
 
@@ -210,74 +216,238 @@ if (height < 160) {
 
 ## 9. Xulosa
 
-1. \`else if\` ikkitadan ko'p shartlarni ketma-ket tekshirish uchun ishlatiladi.
-2. Shartlar yuqoridan pastga qarab tekshiriladi va BIRINCHI to'g'ri kelgan blok ishlaydi.
-3. JavaScript'da \`elseif\` emas, alohida ikkita so'z: \`else if\` deb yoziladi.
+1. \`else if\` — birinchi shart yolg'on bo'lganda tekshiriladigan qo'shimcha yo'l.
+2. \`else if\` yolg'iz yozilmaydi. Oldida \`if\` bo'lishi shart. Ikkita so'z ajratib yoziladi.
+3. Har doim faqat bitta blok ishlaydi — birinchi rost topilgan zahoti qolganlari tashlanadi.
 
-Keyingi darsda: Ko'p qiymatli tanlovlar uchun \`switch\` operatori bilan tanishamiz.
+Keyingi darsda: ko'p yo'lli tanlov — \`switch\` operatori bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Bahoni aniqlash",
-      instruction: "`let score = 92;` berilgan. Agar `score >= 90` bo'lsa `\"A\"`, aks holda agar `score >= 80` bo'lsa `\"B\"`, aks holda `\"C\"` deb chiqaring.",
-      startingCode: "let score = 92;\n// if...else if...else yozing\n",
-      hint: "if (score >= 90) {\n  console.log(\"A\");\n} else if (score >= 80) {\n  console.log(\"B\");\n} else {\n  console.log(\"C\");\n}",
-      test: "if (!code.includes('else if')) return 'else if ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('A'))) return null;\nreturn 'Kutilgan xabar konsolga chiqmadi';"
+      title: "Baho aniqlash",
+      instruction: "`ball` ga `85` bering. `> 90` bo'lsa `\"A'lo!\"`, `> 70` bo'lsa `\"Yaxshi!\"`, aks holda `\"Past!\"` chiqsin.",
+      startingCode: "let ball = 85;\n// if / else if / else yozing\n",
+      hint: "if (ball > 90) {\n  console.log(\"A'lo!\");\n} else if (ball > 70) {\n  console.log(\"Yaxshi!\");\n} else {\n  console.log(\"Past!\");\n}",
+      test: "if (!code.includes('if') || !code.includes('else if') || !code.includes('else')) return 'if, else if va else ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Yaxshi'))) return null;\nreturn 'Yaxshi xabari chiqmadi';"
     },
     {
       id: 2,
-      title: "Vaqtga qarab salomlashish",
-      instruction: "`let hour = 14;` berilgan. Agar `hour < 12` bo'lsa `\"Xayrli tong\"`, aks holda agar `hour < 18` bo'lsa `\"Xayrli kun\"`, qolgan hollarda `\"Xayrli kech\"` deb chiqaring.",
-      startingCode: "let hour = 14;\n// if...else if...else yozing\n",
-      hint: "if (hour < 12) {\n  console.log(\"Xayrli tong\");\n} else if (hour < 18) {\n  console.log(\"Xayrli kun\");\n} else {\n  console.log(\"Xayrli kech\");\n}",
-      test: "if (!code.includes('else if')) return 'else if ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes(\"Xayrli kun\"))) return null;\nreturn 'Kutilgan xabar konsolga chiqmadi';"
+      title: "Harorat holati",
+      instruction: "`temp` ga `30` bering. `> 35` bo'lsa `\"Issiq!\"`, `> 20` bo'lsa `\"Iliq!\"`, aks holda `\"Sovuq!\"` chiqsin.",
+      startingCode: "let temp = 30;\n// if / else if / else yozing\n",
+      hint: "if (temp > 35) {\n  console.log(\"Issiq!\");\n} else if (temp > 20) {\n  console.log(\"Iliq!\");\n} else {\n  console.log(\"Sovuq!\");\n}",
+      test: "if (!code.includes('else if')) return 'else if ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Iliq'))) return null;\nreturn 'Iliq xabari chiqmadi';"
     },
     {
       id: 3,
-      title: "elseif xatosini to'g'rilash",
-      instruction: "`elseif` dagi xatoni to'g'rilang (o'rniga `else if` ishlating), toki konsolga `\"Baland\"` chiqsin.",
-      startingCode: "let height = 185;\nif (height < 160) {\n  console.log(\"Past\");\n} elseif (height >= 180) {\n  console.log(\"Baland\");\n} else {\n  console.log(\"O'rtacha\");\n}\n",
-      hint: "else if (height >= 180) {\n  console.log(\"Baland\");\n}",
-      test: "if (code.includes('elseif')) return 'elseif o\\'rniga else if deb probel bilan yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes(\"Baland\"))) return null;\nreturn 'Kutilgan xabar konsolga chiqmadi';"
+      title: "Birinchi yo'l",
+      instruction: "`ball` ga `95` bering. Birinchi xabar chiqsin (`\"A'lo!\"`).",
+      startingCode: "let ball = 95;\n// if / else if / else yozing\n",
+      hint: "if (ball > 90) {\n  console.log(\"A'lo!\");\n} else if (ball > 70) {\n  console.log(\"Yaxshi!\");\n} else {\n  console.log(\"Past!\");\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 1) return 'Faqat BITTA xabar chiqishi kerak';\nif (out[0].includes(\"A'lo\")) return null;\nreturn 'A\\'lo xabari chiqmadi';"
+    },
+    {
+      id: 4,
+      title: "Oxirgi yo'l",
+      instruction: "`ball` ga `50` bering. Oxirgi xabar chiqsin (`\"Past!\"`).",
+      startingCode: "let ball = 50;\n// if / else if / else yozing\n",
+      hint: "if (ball > 90) {\n  console.log(\"A'lo!\");\n} else if (ball > 70) {\n  console.log(\"Yaxshi!\");\n} else {\n  console.log(\"Past!\");\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Past'))) return null;\nreturn 'Past xabari chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "Yolg'iz else if ni tuzatish",
+      instruction: "`else if` yolg'iz qolgan. Oldiga `if (a > 0)` qo'shing (`a = 1` berilgan). `\"Musbat!\"` chiqsin.",
+      startingCode: "let a = 1;\nelse if (a > 0) {\n  console.log(\"Musbat!\");\n}\n",
+      hint: "if (a > 0) {\n  console.log(\"Musbat!\");\n}",
+      test: "if (!code.includes('if (a > 0)')) return 'oldiga if qoshishingiz kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Musbat'))) return null;\nreturn 'Musbat xabari chiqmadi';"
+    },
+    {
+      id: 6,
+      title: "elseif ni tuzatish",
+      instruction: "`elseif` ni `else if` ga ajrating (`a = -5` berilgan, ikkinchi xabar chiqsin).",
+      startingCode: "let a = -5;\nif (a > 0) {\n  console.log(\"Musbat!\");\n} elseif (a < 0) {\n  console.log(\"Manfiy!\");\n}\n",
+      hint: "} else if (a < 0) {",
+      test: "if (code.includes('elseif')) return 'elseif ni else if deb ajrating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Manfiy'))) return null;\nreturn 'Manfiy xabari chiqmadi';"
+    },
+    {
+      id: 7,
+      title: "Nol holati",
+      instruction: "`n` ga `0` bering. `> 0` bo'lsa `\"Musbat!\"`, `=== 0` bo'lsa `\"Nol!\"`, aks holda `\"Manfiy!\"` chiqsin.",
+      startingCode: "let n = 0;\n// if / else if / else yozing\n",
+      hint: "if (n > 0) {\n  console.log(\"Musbat!\");\n} else if (n === 0) {\n  console.log(\"Nol!\");\n} else {\n  console.log(\"Manfiy!\");\n}",
+      test: "if (!code.includes('else if')) return 'else if ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Nol'))) return null;\nreturn 'Nol xabari chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Manfiy holat (chegara)",
+      instruction: "`n` ga `-3` bering. Uchinchi xabar chiqsin (`\"Manfiy!\"`).",
+      startingCode: "let n = -3;\n// if / else if / else yozing\n",
+      hint: "if (n > 0) {\n  console.log(\"Musbat!\");\n} else if (n === 0) {\n  console.log(\"Nol!\");\n} else {\n  console.log(\"Manfiy!\");\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Manfiy'))) return null;\nreturn 'Manfiy xabari chiqmadi';"
+    },
+    {
+      id: 9,
+      title: "Yosh toifasi (chegara)",
+      instruction: "`age = 10` berilgan. `>= 18` bo'lsa `\"Katta!\"`, `>= 7` bo'lsa `\"Bola!\"`, aks holda `\"Chaqaloq!\"` chiqsin.",
+      startingCode: "let age = 10;\n// if / else if / else yozing\n",
+      hint: "if (age >= 18) {\n  console.log(\"Katta!\");\n} else if (age >= 7) {\n  console.log(\"Bola!\");\n} else {\n  console.log(\"Chaqaloq!\");\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Bola'))) return null;\nreturn 'Bola xabari chiqmadi';"
+    },
+    {
+      id: 10,
+      title: "Bitta blok qoidasi (chegara)",
+      instruction: "`ball = 95` berilgan. Uch yo'l yozing. Faqat BITTA xabar chiqishini isbotlang (`\"A'lo!\"`).",
+      startingCode: "let ball = 95;\n// if / else if / else yozing\n",
+      hint: "if (ball > 90) {\n  console.log(\"A'lo!\");\n} else if (ball > 70) {\n  console.log(\"Yaxshi!\");\n} else {\n  console.log(\"Past!\");\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 1) return 'Faqat BITTA xabar chiqishi kerak';\nif (out[0].includes(\"A'lo\")) return null;\nreturn 'A\\'lo xabari chiqmadi';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "if ... else if ... else zanjirida nechta blok bir vaqtda ishlashi mumkin?",
+      question: "`let ball = 85; if (ball > 90) { console.log(\"A\"); } else if (ball > 70) { console.log(\"B\"); } else { console.log(\"C\"); }` nima chiqaradi?",
       options: [
-        "Faqat bittasi (birinchi to'g'ri kelgani)",
-        "Barcha to'g'ri kelgan bloklar",
-        "Ikkita blok",
-        "Hech biri ishlamaydi"
+        "A",
+        "B",
+        "C",
+        "Xatolik"
       ],
-      correctAnswer: 0,
-      explanation: "Zanjirda yuqoridan pastga tekshirilib, birinchi rost (true) chiqqan bitta blok ishlaydi va qolganlari tashlab yuboriladi."
+      correctAnswer: 1,
+      explanation: "Birinchi yolg'on, ikkinchi rost. B chiqadi."
     },
     {
       id: 2,
-      question: "JavaScript'da \"aks holda agar\" operatori qanday yoziladi?",
+      question: "`let ball = 95; if (ball > 90) { console.log(\"A\"); } else if (ball > 70) { console.log(\"B\"); } else { console.log(\"C\"); }` nima chiqaradi?",
       options: [
-        "elseif",
-        "else if",
-        "elif",
-        "else-if"
+        "B",
+        "A",
+        "A va B",
+        "C"
       ],
       correctAnswer: 1,
-      explanation: "JavaScript har doim ikkita alohida so'z: else if deb yoziladi."
+      explanation: "Birinchi rost bo'lishi bilan qolganlari tekshirilmaydi."
     },
     {
       id: 3,
-      question: "Quyidagi kod konsolga nima chiqaradi?\nlet speed = 70;\nif (speed > 100) {\n  console.log(\"Juda tez\");\n} else if (speed > 60) {\n  console.log(\"Me'yorda\");\n} else {\n  console.log(\"Sekin\");\n}",
+      question: "`let ball = 50; if (ball > 90) { console.log(\"A\"); } else if (ball > 70) { console.log(\"B\"); } else { console.log(\"C\"); }` nima chiqaradi?",
       options: [
-        "\"Juda tez\"",
-        "\"Me'yorda\"",
-        "\"Sekin\"",
-        "Hech narsa chiqmaydi"
+        "A",
+        "B",
+        "C",
+        "Hech narsa"
+      ],
+      correctAnswer: 2,
+      explanation: "Ikkalasi ham yolg'on, oxirgi blok ishlaydi."
+    },
+    {
+      id: 4,
+      question: "`else if` yolg'iz yozilsa nima bo'ladi?",
+      options: [
+        "Ishlaydi",
+        "SyntaxError beradi",
+        "Ogohlantirish beradi",
+        "Hech narsa bo'lmaydi"
       ],
       correctAnswer: 1,
-      explanation: "70 > 100 false, lekin 70 > 60 true bo'lgani uchun \"Me'yorda\" chiqadi."
+      explanation: "else if ham yolg'iz yasholmaydi. Oldida if shart."
+    },
+    {
+      id: 5,
+      question: "`} elseif (a < 0) {` yozilsa nima bo'ladi?",
+      options: [
+        "Ishlaydi",
+        "SyntaxError beradi",
+        "Ogohlantirish beradi",
+        "Shart tekshiriladi"
+      ],
+      correctAnswer: 1,
+      explanation: "elseif degan so'z yo'q. else if ajratib yoziladi."
+    },
+    {
+      id: 6,
+      question: "Nechta blok ishlaydi?",
+      options: [
+        "Hammasi",
+        "Faqat bittasi",
+        "Ikkita",
+        "Hech biri"
+      ],
+      correctAnswer: 1,
+      explanation: "Birinchi rost topilishi bilan qolganlari tashlanadi."
+    },
+    {
+      id: 7,
+      question: "`let temp = 30; if (temp > 35) { console.log(\"A\"); } else if (temp > 20) { console.log(\"B\"); } else { console.log(\"C\"); }` nima chiqaradi?",
+      options: [
+        "A",
+        "C",
+        "B",
+        "Xatolik"
+      ],
+      correctAnswer: 2,
+      explanation: "30 > 35 yolg'on, 30 > 20 rost. B chiqadi."
+    },
+    {
+      id: 8,
+      question: "`let n = 0; if (n > 0) { console.log(\"A\"); } else if (n === 0) { console.log(\"B\"); } else { console.log(\"C\"); }` nima chiqaradi?",
+      options: [
+        "A",
+        "C",
+        "B",
+        "Hech narsa"
+      ],
+      correctAnswer: 2,
+      explanation: "Birinchi yolg'on, ikkinchi rost (0 === 0). B chiqadi."
+    },
+    {
+      id: 9,
+      question: "`let n = -3; if (n > 0) { console.log(\"A\"); } else if (n === 0) { console.log(\"B\"); } else { console.log(\"C\"); }` nima chiqaradi?",
+      options: [
+        "A",
+        "B",
+        "C",
+        "Xatolik"
+      ],
+      correctAnswer: 2,
+      explanation: "Ikkalasi ham yolg'on, oxirgi C chiqadi."
+    },
+    {
+      id: 10,
+      question: "else if dagi if nimani bildiradi?",
+      options: [
+        "Yangi mustaqil shart",
+        "Oldingi shart takrori",
+        "Xatolik",
+        "Takrorlash"
+      ],
+      correctAnswer: 0,
+      explanation: "else if — yangi shartli qo'shimcha yo'l."
+    },
+    {
+      id: 11,
+      question: "`let age = 10; if (age >= 18) { console.log(\"A\"); } else if (age >= 7) { console.log(\"B\"); } else { console.log(\"C\"); }` nima chiqaradi?",
+      options: [
+        "A",
+        "C",
+        "B",
+        "10"
+      ],
+      correctAnswer: 2,
+      explanation: "10 >= 18 yolg'on, 10 >= 7 rost. B chiqadi."
+    },
+    {
+      id: 12,
+      question: "else if yozuvida nechta so'z bor?",
+      options: [
+        "Bitta (elseif)",
+        "Ikkita (else if)",
+        "Uchta",
+        "Farqi yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikkita alohida so'z: else if."
     }
   ]
 };

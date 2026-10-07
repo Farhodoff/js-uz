@@ -147,7 +147,7 @@ export default function QuizTab({ activeLesson, completedQuizzes, onCompleteQuiz
           ← Oldingi
         </button>
         
-        {answered && !isCompleted && selectedOption !== currentQuiz.correctAnswer ? (
+        {answered && !isCompleted && selectedOption !== correctIndex ? (
           <button
             className="btn btn-secondary"
             onClick={() => {

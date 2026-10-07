@@ -1,5 +1,5 @@
 export const mongoDbBasics = {
-  id: "mongodb_basics",
+  id: "mongoDbBasics",
   title: "MongoDB Asoslari (NoSQL)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish

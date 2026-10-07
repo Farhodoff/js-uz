@@ -1,5 +1,5 @@
 export const sqlTransactions = {
-  id: "sql_transactions",
+  id: "sqlTransactions",
   title: "SQL Transactions va ACID",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish
