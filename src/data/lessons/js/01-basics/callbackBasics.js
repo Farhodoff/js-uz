@@ -4,287 +4,454 @@ export const callbackBasics = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz ustaxonaga mashinangizni topshirdingiz va ustaga: "Mashinani tuzatib bo'lgach, menga qo'ng'iroq qiling" dedingiz. Siz ustaga tayyor natija emas, ish bitganda bajarishi kerak bo'lgan vazifani (yo'riqnomani) topshirasiz.
-JavaScript da ham xuddi shunday: biz bitta funksiyaga boshqa bir funksiyani topshiriq (vazifa) sifatida berib yuborishimiz mumkin.
+Tasavvur qiling, usta shogirdiga asbob qutisini beradi. Quti ichida bolg'a bor. Shogird qutini ochib, bolg'ani ishlatadi. Quti — tashuvchi. Bolg'a — ishchi.
 
-**Callback (qayta chaqiriluvchi funksiya)** — boshqa bir funksiyaga argument (qiymat) sifatida uzatiladigan va o'sha funksiya ichida chaqiriladigan funksiyadir.
+Dasturlashda funksiyani ham qiymat sifatida uzatish mumkin. O'zgaruvchiga yoziladi. Boshqa funksiyaga beriladi. U yerda chaqiriladi.
 
-*Yangi terminlar:*
-- **Callback (callback funksiya)** — boshqa funksiyaga argument sifatida beriladigan funksiya.
-- **Higher-order function (yuqori tartibli funksiya)** — o'ziga boshqa funksiyani parametr sifatida qabul qiluvchi funksiya.
+Callback — boshqa funksiyaga argument sifatida berilib, keyin chaqiriladigan funksiyadir.
 
 ---
 
 ## 2. Nega kerak?
 
-Agar funksiyamiz ichidagi harakat oldindan qotib qolgan bo'lsa, har bir yangi vazifa uchun qaytadan yangi funksiya yozishga to'g'ri kelardi:
+Ikkita ish bor: salom berish va xayrlashish. Ikkalasini ham "ikki marta takrorla" qoidasi bilan bajarish kerak:
 
 \`\`\`javascript
-// Muammo: Qat'iy yozilgan funksiyalar
-function doWorkWithHello() {
-  console.log("Ish bajarildi!");
+function salom() {
   console.log("Salom!");
 }
-
-function doWorkWithBye() {
-  console.log("Ish bajarildi!");
+function xayr() {
   console.log("Xayr!");
 }
+salom();
+salom();
+xayr();
+xayr();
 \`\`\`
 
-Callback yordamida biz asosiy jarayonni bitta umumiy funksiyada yozamiz, o'zgaruvchan qismini esa tashqaridan funksiya ko'rinishida uzatamiz. Bu kodni nihoyatda qisqa, moslashuvchan va toza qiladi.
+Takrorlash mantig'i ikki joyda yozildi.
+
+Muammo shunda: "takrorlash" ishini bir joyga yig'ish kerak. Yechim — funksiyani argument qilish:
+
+\`\`\`javascript
+function ikkiMarta(vazifa) {
+  vazifa();
+  vazifa();
+}
+ikkiMarta(salom);
+ikkiMarta(xayr);
+\`\`\`
+
+Bitta takrorlash qoidasi. Har xil ishlar.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod bitta funksiyaga boshqa funksiyani argument qilib berish va uni ichkarida chaqirishni ko'rsatadi.
+Bu kod funksiyani o'zgaruvchiga saqlaydi va chaqiradi.
 
 \`\`\`javascript
-function askUser(action) { // action — callback funksiya
-  action(); // parametr sifatida kelgan funksiyani chaqirish
+function salom() { // Asosiy funksiya
+  console.log("Salom!"); // Ichidagi ish
 }
-
-function sayHello() { // oddiy funksiya
-  console.log("Salom!");
-}
-
-askUser(sayHello); // sayHello ni argument sifatida berish (qavslarsiz!)
+let ish = salom; // Qavssiz saqlandi
+ish(); // Saqlangan nom bilan chaqirildi
 \`\`\`
 
 \`\`\`text
-// Natija:
-Salom!
+// Natija: Salom!
 \`\`\`
 
 ---
 
 ## 4. Qator-baqator tahlil
 
-- \`function askUser(action) {\` — \`askUser\` nomli funksiya e'lon qilindi. U \`action\` degan parametr qabul qiladi.
-- \`action();\` — kelgan \`action\` parametri oddiy son yoki matn emas, funksiya bo'lgani sababli uni qavslar \`()\` orqali ishga tushiramiz (chaqiramiz).
-- \`function sayHello() { console.log("Salom!"); }\` — oddiy funksiya yaratildi.
-- \`askUser(sayHello);\` — **Eng muhim joyi:** biz \`sayHello\` ni qavslarsiz (\`()\` qo'ymasdan) yozamiz! Chunki biz funksiyani darhol chaqirib natijasini emas, balki funksiyaning o'zini uzatyapmiz.
+- \`function salom() {\` ... — funksiya e'lon qilindi.
+- \`let ish = salom;\` — qavs YO'Q. Funksiya ishlamaydi. Uning o'zi saqlanadi. Endi \`ish\` ham o'sha funksiya.
+- \`ish();\` — qavs bor. Saqlangan funksiya chaqirildi. Natija chiqdi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-Bajarilish jarayoni jadvali:
+Nom qanday uzatiladi:
 
-| Qadam | Kod | Nima sodir bo'ladi? |
-|---|---|---|
-| 1 | \`function askUser(action) { ... }\` | \`askUser\` funksiyasi xotirada yaratildi |
-| 2 | \`function sayHello() { ... }\` | \`sayHello\` funksiyasi xotirada yaratildi |
-| 3 | \`askUser(sayHello);\` | \`askUser\` chaqirildi, \`action\` parametriga \`sayHello\` funksiyasi o'rnatildi |
-| 4 | \`action();\` | \`action\` chaqirilganda aslida \`sayHello()\` ishga tushadi |
-| 5 | \`console.log("Salom!");\` | Konsolga "Salom!" chiqadi |
+| Qadam | Kod qatori | Holat | Natija |
+|---|---|---|---|
+| 1 | \`function salom() {...}\` | E'lon | Saqlandi |
+| 2 | \`let ish = salom;\` | Saqlash | ish ham o'sha funksiya |
+| 3 | \`ish();\` | Chaqiruv | Salom! chiqdi |
 
 ---
 
 ## 6. Yana bitta misol
 
-1-misoldan farqi: Callback funksiyaga ichkaridan ma'lumot (argument) uzatish.
+Bu kod funksiyani boshqa funksiyaga beradi.
 
 \`\`\`javascript
-function processNumber(num, operation) {
-  let result = operation(num); // callback ga num uzatiladi
-  console.log(result);
+function bajar(vazifa) { // Parametr — funksiya
+  vazifa(); // Kelgan funksiya chaqirildi
 }
-
-function double(n) {
-  return n * 2;
+function salom() { // Beriladigan funksiya
+  console.log("Salom!");
 }
-
-processNumber(5, double); // 5 soni va double funksiyasi berildi
+bajar(salom); // Nomi bilan berildi
 \`\`\`
 
 \`\`\`text
-// Natija:
-10
+// Natija: Salom!
 \`\`\`
 
-Tahlil:
-- \`processNumber\` funksiyasi \`num = 5\` va \`operation = double\` qiymatlarini oladi.
-- Ichkarida \`operation(5)\` chaqiriladi, bu esa \`double(5)\` ni ishga tushirib \`10\` qaytaradi.
-- Natijada konsolga \`10\` chiqadi.
+Qator-baqator tahlil:
+- \`bajar(vazifa)\` — parametr oddiy nom. Lekin unga funksiya keladi.
+- \`bajar(salom);\` — qavs YO'Q. Funksiya ishlamaydi. Nomi uzatiladi.
+- \`vazifa();\` — ichkarida qavs bor. Kelgan funksiya chaqirildi.
 
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1-xato: Argument sifatida berayotganda qavslarni () qo'yib yuborish
-
+### 1. Berishda qavs qo'yish
+❌ Xato kod:
 \`\`\`javascript
-function run(action) {
-  action();
+function bajar(vazifa) {
+  vazifa();
 }
-
-function greet() {
-  console.log("Salom");
+function salom() {
+  console.log("Salom!");
 }
-
-run(greet()); // XATO: greet() chaqirilib ketadi!
+bajar(salom());
+\`\`\`
+Nima bo'ladi: avval "Salom!" chiqadi. Keyin \`TypeError: vazifa is not a function\` xatoligi yuz beradi. Sababi: \`salom()\` darhol ishlagan. Natijasi (\`undefined\`) uzatilgan. Ichkarida \`undefined()\` chaqirilmoqchi bo'lgan.
+✅ To'g'ri variant:
+\`\`\`javascript
+function bajar(vazifa) {
+  vazifa();
+}
+function salom() {
+  console.log("Salom!");
+}
+bajar(salom); // Qavssiz beriladi
 \`\`\`
 
-**Nima bo'ladi:** \`greet()\` funksiyasi uzatilishdan oldinoq darhol ishlab ketadi va \`undefined\` qaytaradi. \`run\` esa \`undefined()\` ni chaqirishga urinib \`TypeError: action is not a function\` xatosini beradi.
-**To'g'ri varianti:** Har doim qavslarsiz funksiya nomini yozing: \`run(greet);\`.
-
-### 2-xato: Callback ni funksiya ichida chaqirishda qavslarni () unutish
-
+### 2. Matn uzatish
+❌ Xato kod:
 \`\`\`javascript
-function execute(action) {
-  action; // XATO: qavslar unutilgan!
+function bajar(vazifa) {
+  vazifa();
 }
-
-function sayHi() {
-  console.log("Salom");
+bajar("salom");
+\`\`\`
+Nima bo'ladi: \`TypeError: vazifa is not a function\` xatoligi yuz beradi. Matnni chaqirib bo'lmaydi. Faqat funksiya chaqiriladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+function bajar(vazifa) {
+  vazifa();
 }
-
-execute(sayHi); // Hech qanday natija bo'lmaydi!
+function salom() {
+  console.log("Salom!");
+}
+bajar(salom);
 \`\`\`
 
-**Nima bo'ladi:** Funksiya shunchaki turadi, lekin chaqirilmaydi (ishga tushmaydi). Konsol bo'sh qoladi.
-**To'g'ri varianti:** Funksiyani ishlatish uchun doimo qavs qo'ying: \`action();\`.
-
-### 3-xato: Callback kutilgan parametrga oddiy qiymat berib yuborish
-
+### 3. Chaqirmasdan qoldirish
+❌ Xato tushuncha:
 \`\`\`javascript
-function doTask(callback) {
-  callback();
+function bajar(vazifa) {
+  console.log(vazifa);
 }
-
-doTask("Salom"); // XATO: TypeError: callback is not a function
+function salom() {
+  console.log("Salom!");
+}
+bajar(salom);
 \`\`\`
-
-**Nima bo'ladi:** Matn (string) chaqirib bo'ladigan funksiya emas, shu sababli dastur \`TypeError\` xatosi bilan to'xtaydi.
-**To'g'ri varianti:** Callback sifatida faqat funksiya uzatish lozim.
+Nima bo'ladi: xato bermaydi. Lekin funksiya kodi matn bo'lib chiqadi! Sababi: \`vazifa\` chaqirilmagan. Faqat ko'rsatilgan. Chaqirish uchun qavs shart.
+✅ To'g'ri variant:
+\`\`\`javascript
+function bajar(vazifa) {
+  vazifa(); // Qavs bilan chaqiriladi
+}
+\`\`\`
 
 ---
 
 ## 8. Tekshiruv
 
-### 1-mashq (oson)
-\`runTwice(action)\` nomli funksiya yozing. U berilgan \`action\` callback funksiyasini ketma-ket 2 marta chaqirsin (\`action(); action();\`). Konsolga \`"Salom"\` chiqaruvchi \`sayHi\` funksiyasini yozib, uni \`runTwice(sayHi)\` orqali ishga tushiring.
+### 1-mashq (Oson)
+\`salom\` funksiyasini e'lon qiling. Uni \`ish\` ga saqlang (qavssiz). \`ish()\` bilan chaqiring.
 
-### 2-mashq (o'rtacha)
-\`calculate(a, b, operation)\` nomli funksiya yozing. U \`operation(a, b)\` natijasini qaytarsin (\`return operation(a, b);\`). Ikkita sonni qo'shuvchi \`add(x, y)\` funksiyasini yozing (\`return x + y;\`). \`calculate(4, 6, add)\` orqali natijani hisoblab, konsolga chiqaring.
+### 2-mashq (O'rtacha)
+\`bajar(vazifa)\` funksiyasini e'lon qiling (ichida \`vazifa();\` bo'lsin). \`salom\` ni e'lon qiling. \`bajar(salom)\` bilan chaqiring.
 
-### 3-mashq (chegara holat)
-\`calculate\` funksiyasiga alohida nomli funksiya o'rniga to'g'ridan-to'g'ri arrow funksiyani callback qilib uzating: \`calculate(10, 2, (x, y) => { return x - y; })\` va natijani konsolga chiqaring.
+### 3-mashq (Chegara holat)
+Qavs xatosini toping: \`bajar(salom())\` dagi qavsni olib tashlang. Faqat bitta \`"Salom!"\` chiqsin (xatosiz).
 
----
-
-### Javoblar
-
-**1-mashq javobi:**
+### Javoblar:
+1.
 \`\`\`javascript
-function runTwice(action) {
-  action();
-  action();
+function salom() {
+  console.log("Salom!");
 }
-
-function sayHi() {
-  console.log("Salom");
-}
-
-runTwice(sayHi);
+let ish = salom;
+ish();
 \`\`\`
-
-**2-mashq javobi:**
+2.
 \`\`\`javascript
-function calculate(a, b, operation) {
-  return operation(a, b);
+function bajar(vazifa) {
+  vazifa();
 }
-
-function add(x, y) {
-  return x + y;
+function salom() {
+  console.log("Salom!");
 }
-
-let sum = calculate(4, 6, add);
-console.log(sum); // 10
+bajar(salom);
 \`\`\`
-
-**3-mashq javobi:**
+3.
 \`\`\`javascript
-let diff = calculate(10, 2, (x, y) => {
-  return x - y;
-});
-console.log(diff); // 8
+function bajar(vazifa) {
+  vazifa();
+}
+function salom() {
+  console.log("Salom!");
+}
+bajar(salom); // Qavssiz
 \`\`\`
 
 ---
 
 ## 9. Xulosa
 
-1. Callback — boshqa funksiyaga argument sifatida uzatiladigan va ichkarida chaqiriladigan funksiyadir.
-2. Callback uzatilganda qavslarsiz (\`nomi\`), chaqirilganda esa qavslar bilan (\`nomi()\`) yoziladi.
-3. Callback kodni takrorlamasdan, moslashuvchan va qayta ishlatiluvchan qilish imkonini beradi.
+1. Funksiya nomini qavssiz yozish — uni saqlash va uzatish. Qavs bilan yozish — chaqirish.
+2. Callback — boshqa funksiyaga berilib, ichkarida chaqiriladigan funksiya.
+3. Berishda qavs bo'lsa, funksiya darhol ishlaydi. Natijasi (\`undefined\`) uzatiladi.
 
-Keyingi darsda: Ichki funksiya tashqi o'zgaruvchilarni eslab qolishi — Closure (yopilish) mavzusi bilan tanishamiz.
+Keyingi darsda: o'zgaruvchini eslab qoladigan closure bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "runTwice callback funksiyasi",
-      instruction: "`runTwice(action)` nomli funksiya yozing: u berilgan `action` callback funksiyasini 2 marta ketma-ket chaqirsin (`action(); action();`). Konsolga `\"Salom\"` chiqaruvchi `sayHi` funksiyasini yozib, uni `runTwice(sayHi)` orqali ishga tushiring.",
-      startingCode: "// runTwice va sayHi funksiyalarini yozing\n",
-      hint: "function runTwice(action) {\n  action();\n  action();\n}\nfunction sayHi() {\n  console.log(\"Salom\");\n}\nrunTwice(sayHi);",
-      test: "if (!code.includes('runTwice')) return 'runTwice funksiyasi yaratilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nlet salomCount = out.filter(m => m.includes('Salom')).length;\nif (salomCount >= 2) return null;\nreturn 'Konsolga 2 marta \"Salom\" chiqmadi';"
+      title: "Nomni saqlash",
+      instruction: "`salom` funksiyasini e'lon qiling. Uni `ish` ga saqlang (qavssiz). `ish()` bilan chaqiring.",
+      startingCode: "function salom() {\n  console.log(\"Salom!\");\n}\n// ish ga saqlang va chaqiring\n",
+      hint: "let ish = salom;\nish();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'Salom chiqmadi';"
     },
     {
       id: 2,
-      title: "calculate va add callback",
-      instruction: "`calculate(a, b, operation)` funksiyasini yozing (`return operation(a, b);`). Ikkita sonni qo'shuvchi `add(x, y)` funksiyasini yozing (`return x + y;`). `calculate(4, 6, add)` orqali hisoblab, natijani konsolga chiqaring.",
-      startingCode: "// calculate va add funksiyalarini yozing\n",
-      hint: "function calculate(a, b, operation) {\n  return operation(a, b);\n}\nfunction add(x, y) {\n  return x + y;\n}\nconsole.log(calculate(4, 6, add));",
-      test: "if (!code.includes('calculate')) return 'calculate funksiyasi yaratilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('10'))) return null;\nreturn 'Konsolga 10 chiqmadi';"
+      title: "Funksiyaga berish",
+      instruction: "`bajar(vazifa)` ni e'lon qiling (ichida `vazifa();` bo'lsin). `salom` ni e'lon qiling. `bajar(salom)` bilan chaqiring.",
+      startingCode: "// bajar(vazifa) va salom ni e'lon qiling\n",
+      hint: "function bajar(vazifa) {\n  vazifa();\n}\nfunction salom() {\n  console.log(\"Salom!\");\n}\nbajar(salom);",
+      test: "if (!code.includes('bajar(salom)')) return 'bajar(salom) deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'Salom chiqmadi';"
     },
     {
       id: 3,
-      title: "Arrow funksiyani callback sifatida berish",
-      instruction: "`calculate(a, b, operation)` funksiyasidan foydalanib, unga uchinchi argument sifatida ayirmani hisoblovchi arrow funksiya bering: `calculate(10, 2, (x, y) => { return x - y; })`. Natijani konsolga chiqaring.",
-      startingCode: "function calculate(a, b, operation) {\n  return operation(a, b);\n}\n\n// calculate ga arrow funksiya berib natijani konsolga chiqaring\n",
-      hint: "console.log(calculate(10, 2, (x, y) => { return x - y; }));",
-      test: "if (!code.includes('=>')) return 'Arrow funksiya ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('8'))) return null;\nreturn 'Konsolga 8 chiqmadi';"
+      title: "Qavs xatosini tuzatish",
+      instruction: "`bajar(salom())` dagi qavsni olib tashlang. Faqat bitta `\"Salom!\"` chiqsin (xatosiz).",
+      startingCode: "function bajar(vazifa) {\n  vazifa();\n}\nfunction salom() {\n  console.log(\"Salom!\");\n}\nbajar(salom());\n",
+      hint: "bajar(salom); — qavssiz.",
+      test: "if (code.includes('bajar(salom())')) return 'Qavsni olib tashlang: bajar(salom)';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Salom!') return null;\nreturn 'Faqat bitta Salom! chiqishi kerak';"
+    },
+    {
+      id: 4,
+      title: "Matn uzatish xatosi",
+      instruction: "`bajar(\"salom\")` xato bermoqda. Haqiqiy funksiya uzating (`\"Salom!\"` chiqsin).",
+      startingCode: "function bajar(vazifa) {\n  vazifa();\n}\nbajar(\"salom\");\n",
+      hint: "function salom() {\n  console.log(\"Salom!\");\n}\nbajar(salom);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'Salom chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "Chaqiruv qo'shish",
+      instruction: "`vazifa` chaqirilmayapti (faqat ko'rsatilmoqda). `vazifa();` qilib tuzating.",
+      startingCode: "function bajar(vazifa) {\n  console.log(vazifa);\n}\nfunction salom() {\n  console.log(\"Salom!\");\n}\nbajar(salom);\n",
+      hint: "vazifa();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m === 'Salom!')) return null;\nreturn 'Aynan Salom! chiqishi kerak';"
+    },
+    {
+      id: 6,
+      title: "Ikki marta bajarish (chegara)",
+      instruction: "`ikki(vazifa)` ni e'lon qiling (ichida ikki marta `vazifa();` bo'lsin). `salom` bilan chaqiring (ikkita chiqsin).",
+      startingCode: "// ikki(vazifa) ni e'lon qiling\nfunction salom() {\n  console.log(\"Salom!\");\n}\n// ikki(salom) bilan chaqiring\n",
+      hint: "function ikki(vazifa) {\n  vazifa();\n  vazifa();\n}\nikki(salom);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikki marta chiqishi kerak';\nreturn null;"
+    },
+    {
+      id: 7,
+      title: "Xayr callback (chegara)",
+      instruction: "`xayr` funksiyasini e'lon qiling (`\"Xayr!\"` chiqsin). `bajar` orqali chaqiring.",
+      startingCode: "function bajar(vazifa) {\n  vazifa();\n}\n// xayr ni e'lon qiling va bajar(xayr) bilan chaqiring\n",
+      hint: "function xayr() {\n  console.log(\"Xayr!\");\n}\nbajar(xayr);",
+      test: "if (!code.includes('bajar(xayr)')) return 'bajar(xayr) deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Xayr'))) return null;\nreturn 'Xayr chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Saqlangan ikki chaqiruv (chegara)",
+      instruction: "`olqish` ni e'lon qiling. `ish` ga saqlang. Ikki marta chaqiring (`\"Zor!\"` ikki marta chiqsin).",
+      startingCode: "function olqish() {\n  console.log(\"Zor!\");\n}\n// ish ga saqlang va ikki marta chaqiring\n",
+      hint: "let ish = olqish;\nish();\nish();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikki marta chiqishi kerak';\nreturn null;"
+    },
+    {
+      id: 9,
+      title: "Qiymatli callback (chegara)",
+      instruction: "`yman` funksiyasini e'lon qiling (`\"Olma!\"` chiqsin). `bajar` orqali chaqiring.",
+      startingCode: "function bajar(vazifa) {\n  vazifa();\n}\n// yman ni e'lon qiling va bajar(yman) bilan chaqiring\n",
+      hint: "function yman() {\n  console.log(\"Olma!\");\n}\nbajar(yman);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Olma'))) return null;\nreturn 'Olma chiqmadi';"
+    },
+    {
+      id: 10,
+      title: "Zanjirli uzatish (chegara)",
+      instruction: "`salom` ni `a` ga, `a` ni `b` ga saqlang (qavssiz). `b()` bilan chaqiring.",
+      startingCode: "function salom() {\n  console.log(\"Salom!\");\n}\n// a ga, keyin b ga saqlang va b() bilan chaqiring\n",
+      hint: "let a = salom;\nlet b = a;\nb();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'Salom chiqmadi';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Callback funksiya nima?",
+      question: "`function salom() { console.log(\"S\"); } let ish = salom; ish();` nima chiqaradi?",
       options: [
-        "Boshqa bir funksiyaga argument sifatida uzatiladigan funksiya",
-        "Faqat xato berganda ishlaydigan funksiya",
-        "O'zini o'zi qayta chaqiradigan sikl",
-        "Faqat bitta son qaytaradigan funksiya"
+        "Hech narsa",
+        "S",
+        "ish",
+        "Xatolik"
       ],
-      correctAnswer: 0,
-      explanation: "Boshqa bir funksiyaga argument (qiymat) sifatida berilgan va o'sha funksiya ichida chaqiriladigan funksiya callback deyiladi."
+      correctAnswer: 1,
+      explanation: "ish ham o'sha funksiya. Chaqiruv ishladi."
     },
     {
       id: 2,
-      question: "Callback funksiya boshqa funksiyaga argument qilib berilayotganda qanday yoziladi?",
+      question: "Qavssiz yozish nimani bildiradi?",
       options: [
-        "Qavslarsiz, faqat funksiya nomi: doWork(myCallback)",
-        "Qavslar bilan: doWork(myCallback())",
-        "Qo'shtirnoq ichida: doWork(\"myCallback\")",
-        "Kvadrat qavsda: doWork([myCallback])"
+        "Chaqirish",
+        "Saqlash va uzatish",
+        "O'chirish",
+        "Hech narsani"
       ],
-      correctAnswer: 0,
-      explanation: "Funksiyaning o'zini uzatish uchun uni qavslarsiz yozish kerak. Agar qavs () qo'yilsa, u darhol bajarilib ketadi."
+      correctAnswer: 1,
+      explanation: "Qavs bo'lmasa, funksiya ishlamaydi. Uning o'zi uzatiladi."
     },
     {
       id: 3,
-      question: "Quyidagi kodda qanday xatolik yuz beradi?\nfunction test(fn) { fn(); }\ntest(123);",
+      question: "`function bajar(vazifa) { vazifa(); } function salom() { console.log(\"S\"); } bajar(salom());` nima qiladi?",
       options: [
-        "TypeError: fn is not a function",
-        "ReferenceError",
-        "SyntaxError",
-        "Hech qanday xato bo'lmaydi"
+        "Faqat S chiqaradi",
+        "S chiqaradi, keyin xato beradi",
+        "Hech narsa chiqarmaydi",
+        "Ikki marta S chiqaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "salom() darhol ishlaydi. Keyin undefined() chaqirilmoqchi bo'ladi."
+    },
+    {
+      id: 4,
+      question: "Callback nima?",
+      options: [
+        "Orqaga qaytadigan sikl",
+        "Boshqa funksiyaga berilib chaqiriladigan funksiya",
+        "Xato turi",
+        "O'zgaruvchi turi"
+      ],
+      correctAnswer: 1,
+      explanation: "Callback — uzatiladigan va keyin chaqiriladigan funksiya."
+    },
+    {
+      id: 5,
+      question: "`function bajar(vazifa) { vazifa(); } bajar(\"salom\");` nima qiladi?",
+      options: [
+        "salom chiqaradi",
+        "TypeError beradi",
+        "Hech narsa chiqarmaydi",
+        "Bo'sh qator chiqaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Matnni chaqirib bo'lmaydi. Faqat funksiya chaqiriladi."
+    },
+    {
+      id: 6,
+      question: "`function bajar(vazifa) { console.log(vazifa); } function salom() { console.log(\"S\"); } bajar(salom);` nima chiqaradi?",
+      options: [
+        "S",
+        "Funksiya matni",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Chaqiruv bo'lmagan. Funksiya ko'rsatildi, xolos."
+    },
+    {
+      id: 7,
+      question: "`function ikki(vazifa) { vazifa(); vazifa(); } function salom() { console.log(\"S\"); } ikki(salom);` nima chiqaradi?",
+      options: [
+        "S (bir marta)",
+        "S, S (ikki marta)",
+        "Xatolik",
+        "Hech narsa"
+      ],
+      correctAnswer: 1,
+      explanation: "Kelgan funksiya ikki marta chaqirildi."
+    },
+    {
+      id: 8,
+      question: "`let a = salom; let b = a; b();` (salom e'lon qilingan) nima qiladi?",
+      options: [
+        "Xatolik beradi",
+        "salom ichidagi kodni bajaradi",
+        "Hech narsa qilmaydi",
+        "a ni qaytaradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Nom zanjir bo'lib uzatiladi. Oxirgi chaqiruv ishlaydi."
+    },
+    {
+      id: 9,
+      question: "`bajar(salom)` da qavs qayerda bo'lishi kerak?",
+      options: [
+        "Berishda: bajar(salom())",
+        "Ichkarida: vazifa()",
+        "Hech qayerda",
+        "Ikkalasida ham"
+      ],
+      correctAnswer: 1,
+      explanation: "Berishda qavs bo'lmaydi. Chaqiruv ichkarida bo'ladi."
+    },
+    {
+      id: 10,
+      question: "`function xayr() { console.log(\"X\"); } function bajar(vazifa) { vazifa(); } bajar(xayr);` nima chiqaradi?",
+      options: [
+        "X",
+        "xayr",
+        "Xatolik",
+        "undefined"
       ],
       correctAnswer: 0,
-      explanation: "123 bu son, funksiya emas. Sonni esa qavslar bilan chaqirib bo'lmaydi, shuning uchun TypeError yuz beradi."
+      explanation: "xayr uzatildi va ichkarida chaqirildi."
+    },
+    {
+      id: 11,
+      question: "`let ish = salom;` qatoridan keyin `ish` nima?",
+      options: [
+        "Matn",
+        "Funksiya",
+        "Natija",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "ish endi funksiyaning o'zi. Chaqirsa bo'ladi."
+    },
+    {
+      id: 12,
+      question: "Nega funksiya uzatiladi?",
+      options: [
+        "Tezroq ishlashi uchun",
+        "Bir qoidani har xil ish bilan ishlatish uchun",
+        "Xatolar uchun",
+        "Hech qanday sababsiz"
+      ],
+      correctAnswer: 1,
+      explanation: "Bitta qoida (ikki marta takrorlash) har xil ish bilan ishlaydi."
     }
   ]
 };

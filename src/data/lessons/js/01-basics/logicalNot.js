@@ -4,36 +4,41 @@ export const logicalNot = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, uyingizdagi chiroq kaliti: siz uni bosganingizda, holat aynan teskarisiga o'zgaradi.
-- Agar yoqilgan bo'lsa — o'chadi.
-- Agar o'chirilgan bo'lsa — yonadi.
+Tasavvur qiling, eshikda teskari yozuv bor: "Kirmang!" Bu "Kiring!" ning teskarisi. Bitta belgi butun ma'noni aylantiradi.
 
-Yoki siz nima desangiz, ataylab teskarisini aytadigan qaysar do'stingiz kabi: siz "ha" desangiz, u "yo'q" deydi. Siz "yo'q" desangiz, u "ha" deydi.
+Dasturlashda undov belgisi (\`!\`) xuddi shu teskari yozuvga o'xshaydi. Oldiga qo'yilsa, mantiqiy qiymatni aylantiradi: \`true\` ni \`false\` ga, \`false\` ni \`true\` ga.
 
-Mantiqiy EMAS (\`!\`) operatori (inkor operatori) — mantiqiy qiymatni aynan teskarisiga aylantiradi: \`true\` ni \`false\` ga, \`false\` ni esa \`true\` ga o'zgartiradi.
+Mantiqiy EMAS (\`!\`) — qiymatni teskarisiga ayltiradigan operatordir.
 
 ---
 
 ## 2. Nega kerak?
 
-Dasturlarda ko'pincha qandaydir holatning bo'lmaganini yoki yo'qligini tekshirish kerak bo'ladi:
-- Foydalanuvchi tizimga kirmaganmi? (\`!isLoggedIn\`)
-- Forma to'ldirilmaganmi? (\`!isCompleted\`)
-- Mahsulot tugaganmi (omborda mavjud emasmi)? (\`!inStock\`)
+O'yinda qoida bor: yomg'ir yog'MAYOTGAN bo'lsa, sayrga chiqiladi. Dasturda saqlangan holat — teskari:
 
-\`!\` operatori har qanday mantiqiy qiymat oldiga qo'yilib, uning inkorini (teskarisini) bir zumda olish imkonini beradi.
+\`\`\`javascript
+let isRaining = true; // Yomg'ir yog'yapti
+\`\`\`
+
+Savol esa "yog'mayaptimi?" Bizda bor javob — "yog'yapti". Uni aylantirish kerak:
+
+\`\`\`javascript
+console.log(!isRaining);
+\`\`\`
+
+Natija \`false\`. Demak, sayrga chiqilmaydi.
+
+Muammo shunda: bor qiymatning teskarisi kerak bo'ladi. Yechim — \`!\` bilan aylantirish.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod \`!\` operatori orqali \`true\` qiymatini \`false\` ga aylantiradi.
+Bu kod \`true\` qiymatni teskarisiga aylantiradi.
 
 \`\`\`javascript
-let isOnline = true; // Tarmoqda (rost)
-let isOffline = !isOnline; // Teskarisi: false
-
-console.log(isOffline);
+let isOpen = true; // Do'kon ochiq
+console.log(!isOpen); // false chiqadi
 \`\`\`
 
 \`\`\`text
@@ -44,21 +49,19 @@ console.log(isOffline);
 
 ## 4. Qator-baqator tahlil
 
-- \`let isOnline = true;\` — o'zgaruvchiga \`true\` qiymati yuklandi.
-- \`!isOnline\` — \`!\` (undov belgisi) o'zgaruvchi oldiga qo'yilib, uning qiymatini teskarisiga aylantirdi (\`!true\` → \`false\`).
-- \`console.log(isOffline);\` — konsolga \`false\` chiqadi.
+- \`let isOpen = true;\` — holat saqlandi: do'kon ochiq.
+- \`!isOpen\` — savol: "teskarisi nima?" \`true\` ning teskarisi \`false\`.
+- \`console.log(!isOpen);\` — teskari javob (\`false\`) konsolga chiqadi.
 
 ---
 
 ## 5. Yana bitta misol
 
-Bu kod \`false\` qiymatini \`true\` ga aylantiradi.
+Bu kod \`false\` qiymatni teskarisiga aylantiradi.
 
 \`\`\`javascript
-let hasError = false; // Xatolik yo'q
-let isSuccess = !hasError; // Teskarisi: true
-
-console.log(isSuccess);
+let isClosed = false; // Do'kon yopiq emas
+console.log(!isClosed); // true chiqadi
 \`\`\`
 
 \`\`\`text
@@ -66,50 +69,71 @@ console.log(isSuccess);
 \`\`\`
 
 Qator-baqator tahlil:
-- \`!hasError\` — \`hasError\` qiymati \`false\` edi. Undov belgisi uni inkor qilib, \`true\` ga aylantirdi (\`!false\` → \`true\`).
-- \`console.log(isSuccess);\` — konsolga \`true\` chiqadi.
+- \`isClosed\` — \`false\`. Do'kon yopiq emas.
+- \`!isClosed\` — teskarisi so'raldi. \`false\` ning teskarisi \`true\`.
+- Natija \`true\` chiqadi.
 
-Inkor jadvali:
-- \`!true\` → \`false\`
-- \`!false\` → \`true\`
+---
+
+## 5.1. Ikki marta aylantirish
+
+\`!\` ni ikki marta yozilsa, qiymat ikki marta aylanadi — asl holiga qaytadi:
+
+\`\`\`javascript
+console.log(!!true); // true chiqadi
+console.log(!!false); // false chiqadi
+\`\`\`
+
+\`\`\`text
+// Natija:
+true
+false
+\`\`\`
+
+Qator-baqator tahlil:
+- \`!!true\` — birinchi \`!\` uni \`false\` qiladi. Ikkinchi \`!\` yana \`true\` qiladi.
+- Ikki marta aylantirish — asl qiymatning o'zi.
 
 ---
 
 ## 6. Ko'p uchraydigan xatolar
 
-### 1. Undov belgisini o'zgaruvchidan keyin qo'yish
+### 1. Bo'sh undov
 ❌ Xato kod:
 \`\`\`javascript
-let isReady = false;
-let isNotReady = isReady!;
+console.log(!);
 \`\`\`
-Nima bo'ladi: \`SyntaxError: Unexpected token '!'\` xatoligi yuz beradi. Inkor operatori har doim qiymat yoki o'zgaruvchining OLDIGA qo'yilishi shart: \`!isReady\`.
+Nima bo'ladi: \`SyntaxError: Unexpected token ')'\` xatoligi yuz beradi. \`!\` nimanidir ayltirishi kerak. Bo'sh qolishi mumkin emas.
 ✅ To'g'ri variant:
 \`\`\`javascript
-let isNotReady = !isReady;
+console.log(!true); // false chiqadi
 \`\`\`
 
-### 2. Ikkita inkor (!!) nima qilishini tushunmaslik
-❌ Xato tushuncha: \`!!\` belgisi xatolik beradi deb o'ylash.
-Nima bo'ladi: \`!!\` qiymatni ikki marta inkor qiladi va asl mantiqiy holatiga qaytaradi (masalan, \`!!true\` amali yana \`true\` bo'ladi).
-✅ To'g'ri tushuncha:
-\`\`\`javascript
-let isOnline = true;
-console.log(!isOnline);  // false
-console.log(!!isOnline); // true
-\`\`\`
-
-### 3. Taqqoslash ifodasini qavssiz inkor qilish
+### 2. Oddiy so'z bilan yozish
 ❌ Xato kod:
 \`\`\`javascript
-let age = 15;
-console.log(!age >= 18); // Kutilmagan natija: false
+let r = not true;
 \`\`\`
-Nima bo'ladi: \`!\` amali taqqoslashdan oldin bajariladi: \`!15\` avval \`false\` ga aylanadi, keyin esa \`false >= 18\` hisoblanib \`false\` chiqadi. Butun ifodani inkor qilish uchun qavs ishlatiladi: \`!(age >= 18)\`.
+Nima bo'ladi: \`SyntaxError: Unexpected token 'true'\` xatoligi yuz beradi. JavaScript inglizcha so'zlarni tushunmaydi. Faqat \`!\` belgisi ishlaydi.
 ✅ To'g'ri variant:
 \`\`\`javascript
-let age = 15;
-console.log(!(age >= 18)); // true (18 dan katta emas)
+let r = !true; // false bo'ladi
+console.log(r);
+\`\`\`
+
+### 3. Saqlanmasdan aylantirish
+❌ Xato kod:
+\`\`\`javascript
+let isVip = true;
+!isVip;
+console.log(isVip);
+\`\`\`
+Nima bo'ladi: \`true\` chiqadi! \`!isVip\` teskari qiymatni hisoblaydi, lekin uni hech qayerga yozmaydi. \`isVip\` ning o'zi o'zgarmaydi.
+✅ To'g'ri variant:
+\`\`\`javascript
+let isVip = true;
+isVip = !isVip; // Natija saqlanadi
+console.log(isVip); // false chiqadi
 \`\`\`
 
 ---
@@ -117,106 +141,268 @@ console.log(!(age >= 18)); // true (18 dan katta emas)
 ## 7. Tekshiruv
 
 ### 1-mashq (Oson)
-\`isLocked\` nomli o'zgaruvchi yarating (\`let isLocked = true;\`). Uning teskarisini \`!\` yordamida oling, \`isUnlocked\` ga saqlang va konsolga chiqaring (\`false\` chiqadi).
+\`isOpen\` ga \`true\` bering. Teskarisini chiqaring (\`false\` chiqishi kerak).
 
 ### 2-mashq (O'rtacha)
-\`hasFinished\` nomli o'zgaruvchi yarating (\`let hasFinished = false;\`). Uni \`!\` bilan inkor qilib, natijani \`isRunning\` ga saqlang va konsolga chiqaring (\`true\` chiqadi).
+\`isClosed\` ga \`false\` bering. Teskarisini chiqaring (\`true\` chiqishi kerak).
 
 ### 3-mashq (Chegara holat)
-\`userScore\` ga \`45\` sonini bering. U 50 dan katta yoki teng emasligini (\`!(userScore >= 50)\`) tekshiring, natijani \`isFailed\` ga saqlang va konsolga chiqaring (\`true\` chiqadi).
+\`isVip\` (\`true\`) ni teskarisiga aylantirib, O'ZIGA saqlang. Keyin chiqaring (\`false\` chiqishi kerak).
 
 ### Javoblar:
 1.
 \`\`\`javascript
-let isLocked = true;
-let isUnlocked = !isLocked;
-console.log(isUnlocked);
+let isOpen = true;
+console.log(!isOpen);
 \`\`\`
 2.
 \`\`\`javascript
-let hasFinished = false;
-let isRunning = !hasFinished;
-console.log(isRunning);
+let isClosed = false;
+console.log(!isClosed);
 \`\`\`
 3.
 \`\`\`javascript
-let userScore = 45;
-let isFailed = !(userScore >= 50);
-console.log(isFailed);
+let isVip = true;
+isVip = !isVip;
+console.log(isVip);
 \`\`\`
 
 ---
 
 ## 8. Xulosa
 
-1. \`!\` (mantiqiy EMAS) operatori Boolean qiymatini aynan teskarisiga aylantiradi (\`!true\` → \`false\`, \`!false\` → \`true\`).
-2. \`!\` belgisi har doim o'zgaruvchi yoki qiymatning OLDIGA qo'yiladi.
-3. Murakkab ifodalarni inkor qilish uchun ularni qavsga olish kerak: masalan, \`!(x >= 10)\`.
+1. \`!\` — mantiqiy EMAS. \`true\` ni \`false\` ga, \`false\` ni \`true\` ga aylantiradi.
+2. \`!\` dan keyin albatta qiymat bo'lishi kerak. Bo'sh qolmaydi.
+3. Aylantirish o'zgaruvchini o'zgartirmaydi. Saqlash uchun \`=\` bilan yoziladi.
 
-Keyingi darsda: Shart operatorlari: if va else bilan tanishamiz.
+Keyingi darsda: shart bo'yicha ish bajaradigan \`if\` operatori bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "true qiymatini inkor qilish",
-      instruction: "`isLocked` nomli o'zgaruvchi yarating (`let isLocked = true;`). `!isLocked` natijasini `isUnlocked` ga saqlab `console.log(isUnlocked);` orqali chiqaring.",
-      startingCode: "let isLocked = true;\n// isUnlocked ga !isLocked ni saqlang va chiqaring\n",
-      hint: "let isUnlocked = !isLocked;\nconsole.log(isUnlocked);",
-      test: "if (!code.includes('!')) return '! operatori ishlatilmadi';\nif (!code.includes('isUnlocked')) return 'isUnlocked o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('false'))) return null;\nreturn 'false natijasi konsolga chiqmadi';"
+      title: "Trueni aylantirish",
+      instruction: "`isOpen` ga `true` bering. Teskarisini (`!isOpen`) chiqaring (`false` chiqishi kerak).",
+      startingCode: "let isOpen = true;\n// !isOpen ni chiqaring\n",
+      hint: "console.log(!isOpen);",
+      test: "if (!code.includes('!')) return '! operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "false qiymatini inkor qilish",
-      instruction: "`hasFinished` nomli o'zgaruvchi yarating (`let hasFinished = false;`). Uni inkor qilib, `isRunning` ga saqlang va konsolga chiqaring.",
-      startingCode: "let hasFinished = false;\n// isRunning ga !hasFinished ni saqlang va chiqaring\n",
-      hint: "let isRunning = !hasFinished;\nconsole.log(isRunning);",
-      test: "if (!code.includes('!')) return '! operatori ishlatilmadi';\nif (!code.includes('isRunning')) return 'isRunning o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('true'))) return null;\nreturn 'true natijasi konsolga chiqmadi';"
+      title: "Falseni aylantirish",
+      instruction: "`isClosed` ga `false` bering. Teskarisini chiqaring (`true` chiqishi kerak).",
+      startingCode: "let isClosed = false;\n// !isClosed ni chiqaring\n",
+      hint: "console.log(!isClosed);",
+      test: "if (!code.includes('!')) return '! operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
     },
     {
       id: 3,
-      title: "Ifodani qavs bilan inkor qilish",
-      instruction: "`userScore = 45;` o'zgaruvchisi berilgan. `!(userScore >= 50)` ifodasini `isFailed` ga saqlang va konsolga chiqaring.",
-      startingCode: "let userScore = 45;\n// isFailed ga !(userScore >= 50) ni saqlang va chiqaring\n",
-      hint: "let isFailed = !(userScore >= 50);\nconsole.log(isFailed);",
-      test: "if (!code.includes('!')) return '! operatori ishlatilmadi';\nif (!code.includes('isFailed')) return 'isFailed o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('true'))) return null;\nreturn 'true natijasi konsolga chiqmadi';"
+      title: "Taqqoslashni aylantirish",
+      instruction: "`age = 20` berilgan. `!(age > 18)` ni chiqaring (`false` chiqishi kerak).",
+      startingCode: "let age = 20;\n// !(age > 18) ni chiqaring\n",
+      hint: "console.log(!(age > 18));",
+      test: "if (!code.includes('!')) return '! operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
+    },
+    {
+      id: 4,
+      title: "Bo'sh undovni tuzatish",
+      instruction: "`console.log(!);` xato bermoqda. `!true` qilib tuzating (`false` chiqsin).",
+      startingCode: "console.log(!);\n",
+      hint: "console.log(!true);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "not so'zini tuzatish",
+      instruction: "`not true` xato bermoqda. `!true` bilan tuzating.",
+      startingCode: "console.log(not true);\n",
+      hint: "console.log(!true);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
+    },
+    {
+      id: 6,
+      title: "Saqlab aylantirish",
+      instruction: "`isVip = true` berilgan. Teskarisini O'ZIGA saqlang (`isVip = !isVip;`) va chiqaring (`false` chiqishi kerak).",
+      startingCode: "let isVip = true;\n// Teskarisini oziga saqlang va chiqaring\n",
+      hint: "isVip = !isVip;\nconsole.log(isVip);",
+      test: "if (!code.includes('= !')) return 'isVip = !isVip deb saqlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
+    },
+    {
+      id: 7,
+      title: "Ikki marta aylantirish",
+      instruction: "`!!true` va `!!false` ni chiqaring (`true` va `false`).",
+      startingCode: "// !!true va !!false ni chiqaring\n",
+      hint: "console.log(!!true);\nconsole.log(!!false);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikkita qiymat chiqaring';\nif (out[0][0] !== true || out[1][0] !== false) return 'true va false chiqishi kerak';\nreturn null;"
+    },
+    {
+      id: 8,
+      title: "Tenglikni aylantirish (chegara)",
+      instruction: "`x = 5` berilgan. `!(x === 5)` ni chiqaring (`false` chiqishi kerak).",
+      startingCode: "let x = 5;\n// !(x === 5) ni chiqaring\n",
+      hint: "console.log(!(x === 5));",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
+    },
+    {
+      id: 9,
+      title: "Noto'g'rini to'g'rilash (chegara)",
+      instruction: "`isRaining = true` berilgan. `!isRaining` ni chiqaring (`false` — sayrga chiqilmaydi).",
+      startingCode: "let isRaining = true;\n// !isRaining ni chiqaring\n",
+      hint: "console.log(!isRaining);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
+    },
+    {
+      id: 10,
+      title: "Zanjirli aylantirish (chegara)",
+      instruction: "`a = false` berilgan. `b = !a` yarating. `!b` ni chiqaring (`false` chiqishi kerak: false→true→false).",
+      startingCode: "let a = false;\n// b = !a yarating va !b ni chiqaring\n",
+      hint: "let b = !a;\nconsole.log(!b);",
+      test: "if (!code.includes('!a') || !code.includes('!b')) return '!a va !b ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "`!true` ifodasi qanday natija beradi?",
+      question: "`console.log(!true);` nima chiqaradi?",
       options: [
         "true",
         "false",
-        "undefined",
-        "0"
+        "Xatolik",
+        "undefined"
       ],
       correctAnswer: 1,
-      explanation: "! (mantiqiy inkor) operatori true qiymatini aynan teskarisiga — false ga aylantiradi."
+      explanation: "! teskarisiga aylantiradi: true ning teskarisi false."
     },
     {
       id: 2,
-      question: "Mantiqiy inkor operatori (!) qanday vazifani bajaradi?",
-      options: [
-        "Qiymatni songa aylantiradi",
-        "Mantiqiy qiymatni aynan teskarisiga aylantiradi",
-        "O'zgaruvchini o'chiradi",
-        "Xatolik yuzaga keltiradi"
-      ],
-      correctAnswer: 1,
-      explanation: "! operatori true ni false ga, false ni esa true ga almashtiradi."
-    },
-    {
-      id: 3,
-      question: "`let isClosed = false; console.log(!isClosed);` kodi konsolga nima chiqaradi?",
+      question: "`console.log(!false);` nima chiqaradi?",
       options: [
         "false",
         "true",
-        "null",
-        "SyntaxError"
+        "Xatolik",
+        "0"
       ],
       correctAnswer: 1,
-      explanation: "!false ifodasi true qiymatini qaytaradi."
+      explanation: "false ning teskarisi true."
+    },
+    {
+      id: 3,
+      question: "`console.log(!);` qatorida nima bo'ladi?",
+      options: [
+        "false chiqadi",
+        "SyntaxError beradi",
+        "true chiqadi",
+        "Hech narsa bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "! nimanidir ayltirishi kerak. Bo'sh qolishi mumkin emas."
+    },
+    {
+      id: 4,
+      question: "`let r = not true;` qatorida nima bo'ladi?",
+      options: [
+        "false bo'ladi",
+        "SyntaxError beradi",
+        "true bo'ladi",
+        "Hech narsa bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript inglizcha so'zlarni tushunmaydi. Faqat ! ishlaydi."
+    },
+    {
+      id: 5,
+      question: "`let isVip = true; !isVip; console.log(isVip);` nima chiqaradi?",
+      options: [
+        "false",
+        "true",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Aylantirish saqlanmagan. isVip ning o'zi o'zgarmagan: true."
+    },
+    {
+      id: 6,
+      question: "`let isVip = true; isVip = !isVip; console.log(isVip);` nima chiqaradi?",
+      options: [
+        "true",
+        "false",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Teskari qiymat saqlangan: isVip endi false."
+    },
+    {
+      id: 7,
+      question: "`console.log(!!false);` nima chiqaradi?",
+      options: [
+        "true",
+        "false",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikki marta aylantirish asl holiga qaytaradi: false."
+    },
+    {
+      id: 8,
+      question: "`let age = 20; console.log(!(age > 18));` nima chiqaradi?",
+      options: [
+        "true",
+        "false",
+        "20",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "age > 18 true, uning teskarisi false."
+    },
+    {
+      id: 9,
+      question: "`let x = 5; console.log(!(x === 5));` nima chiqaradi?",
+      options: [
+        "true",
+        "false",
+        "5",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "x === 5 true, teskarisi false."
+    },
+    {
+      id: 10,
+      question: "`let a = false; let b = !a; console.log(!b);` nima chiqaradi?",
+      options: [
+        "true",
+        "false",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "b true bo'ladi. !b esa false."
+    },
+    {
+      id: 11,
+      question: "Mantiqiy EMAS belgisi qaysi?",
+      options: [
+        "not",
+        "!",
+        "~",
+        "¡"
+      ],
+      correctAnswer: 1,
+      explanation: "Faqat undov belgisi (!) mantiqiy EMAS."
+    },
+    {
+      id: 12,
+      question: "`console.log(!!true);` nima chiqaradi?",
+      options: [
+        "false",
+        "true",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikki marta aylantirish asl holiga qaytaradi: true."
     }
   ]
 };

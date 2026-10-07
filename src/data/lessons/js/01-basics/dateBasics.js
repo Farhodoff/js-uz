@@ -198,6 +198,62 @@ Keyingi darsda: Global obyektlar — takrorlanmas qiymatlar to'plami bo'lgan \`S
       startingCode: "const eventDate = new Date(\"2030-01-01\");\n// eventDate.getMonth() === 0 ekanligini tekshirib konsolga chiqaring\n",
       hint: "console.log(eventDate.getMonth() === 0);",
       test: "if (!code.includes('getMonth')) return 'getMonth ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('true')) return null;\nreturn 'true konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Oyning kunini aniqlash",
+      "instruction": "`const d = new Date(\"2024-05-17\");` sanasining kunini (`getDate()`) konsolga chiqaring (`17`).",
+      "startingCode": "const d = new Date(\"2024-05-17\");\n// getDate orqali kunni chiqaring\n",
+      "hint": "const d = new Date(\"2024-05-17\");\nconsole.log(d.getDate());",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"getDate\")) return \"getDate ishlatilmadi\";\nif (out.some((m) => m.trim() === \"17\")) return null;\nreturn \"Kun 17 konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Soatni aniqlash",
+      "instruction": "`const d = new Date(\"2024-05-17T14:30:00\");` sanasining soatini (`getHours()`) konsolga chiqaring (`14`).",
+      "startingCode": "const d = new Date(\"2024-05-17T14:30:00\");\n// getHours orqali soatni chiqaring\n",
+      "hint": "const d = new Date(\"2024-05-17T14:30:00\");\nconsole.log(d.getHours());",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"getHours\")) return \"getHours ishlatilmadi\";\nif (out.some((m) => m.trim() === \"14\")) return null;\nreturn \"Soat 14 konsolga chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "Ikki sana orasidagi kunlar farqi",
+      "instruction": "`const start = new Date(\"2024-01-01\");` va `const end = new Date(\"2024-01-11\");` orasidagi kunlar farqini hisoblab, konsolga chiqaring (`10`).",
+      "startingCode": "const start = new Date(\"2024-01-01\");\nconst end = new Date(\"2024-01-11\");\n// farqni kunlarda hisoblab chiqaring\n",
+      "hint": "const start = new Date(\"2024-01-01\");\nconst end = new Date(\"2024-01-11\");\nconst days = (end - start) / (1000 * 60 * 60 * 24);\nconsole.log(days);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"getTime\") && !code.includes(\"-\")) return \"Sanalar ayirilmadi\";\nif (out.some((m) => m.trim() === \"10\")) return null;\nreturn \"Kunlar farqi 10 konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "getMonth 0 dan boshlanishi",
+      "instruction": "`const d = new Date(\"2024-03-15\");` da `getMonth()` `2` qaytaradi. Haqiqiy oy raqamini (`3`) konsolga chiqaring.",
+      "startingCode": "const d = new Date(\"2024-03-15\");\n// getMonth ga 1 qo'shib haqiqiy oyni chiqaring\n",
+      "hint": "const d = new Date(\"2024-03-15\");\nconsole.log(d.getMonth() + 1);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"getMonth\")) return \"getMonth ishlatilmadi\";\nif (out.some((m) => m.trim() === \"3\")) return null;\nreturn \"Haqiqiy oy 3 konsolga chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "Sanani qo'lda formatlash",
+      "instruction": "`const d = new Date(\"2024-01-01\");` dan foydalanib, `\"2024-1-1\"` ko'rinishidagi matnni konsolga chiqaring (`yil-oy-kun`).",
+      "startingCode": "const d = new Date(\"2024-01-01\");\n// \"2024-1-1\" ko'rinishida chiqaring\n",
+      "hint": "const d = new Date(\"2024-01-01\");\nconsole.log(d.getFullYear() + \"-\" + (d.getMonth() + 1) + \"-\" + d.getDate());",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"getFullYear\")) return \"getFullYear ishlatilmadi\";\nif (out.some((m) => m.includes(\"2024-1-1\"))) return null;\nreturn \"2024-1-1 matni konsolga chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Yoshni hisoblash",
+      "instruction": "`const birth = new Date(\"2000-01-01\");` va `const now = new Date(\"2025-01-01\");` berilgan. Farqdan yoshni (yillarda) hisoblab, konsolga chiqaring (`25`).",
+      "startingCode": "const birth = new Date(\"2000-01-01\");\nconst now = new Date(\"2025-01-01\");\n// yoshni yillarda hisoblab chiqaring\n",
+      "hint": "const birth = new Date(\"2000-01-01\");\nconst now = new Date(\"2025-01-01\");\nconst years = (now - birth) / (1000 * 60 * 60 * 24 * 365);\nconsole.log(Math.round(years));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"25\")) return null;\nreturn \"Yosh 25 konsolga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Kun qo'shish va yil o'zgarishi (chegara)",
+      "instruction": "`const d = new Date(\"2024-12-31\");` ga `1` kun qo'shib (`setDate(getDate() + 1)`), yangi yilni (`2025`) konsolga chiqaring.",
+      "startingCode": "const d = new Date(\"2024-12-31\");\n// kunni 1 ga oshirib, yangi yilni chiqaring\n",
+      "hint": "const d = new Date(\"2024-12-31\");\nd.setDate(d.getDate() + 1);\nconsole.log(d.getFullYear());",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"setDate\")) return \"setDate ishlatilmadi\";\nif (out.some((m) => m.trim() === \"2025\")) return null;\nreturn \"Yangi yil 2025 konsolga chiqmadi\";"
     }
   ],
   quizzes: [
@@ -236,6 +292,114 @@ Keyingi darsda: Global obyektlar — takrorlanmas qiymatlar to'plami bo'lgan \`S
       ],
       correctAnswer: 0,
       explanation: "getDate() oyning sanasini (1-31) qaytaradi. getDay() esa haftaning kunini (0-6) qaytaradi."
+    },
+    {
+      "id": 4,
+      "question": "`getMonth()` Yanvar uchun qanday son qaytaradi?",
+      "options": [
+        "0",
+        "1",
+        "-1",
+        "12"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Oylar 0 dan boshlanadi: Yanvar = 0, Dekabr = 11."
+    },
+    {
+      "id": 5,
+      "question": "To'rt xonali yilni olish uchun qaysi metod ishlatiladi?",
+      "options": [
+        "getFullYear()",
+        "getYear()",
+        "getDate()",
+        "getCalendarYear()"
+      ],
+      "correctAnswer": 0,
+      "explanation": "getFullYear() to'rt xonali yilni qaytaradi; getYear() eskirgan."
+    },
+    {
+      "id": 6,
+      "question": "Oyning kunini (1 dan 31 gacha) qaysi metod beradi?",
+      "options": [
+        "getDate()",
+        "getDay()",
+        "getMonthDay()",
+        "getTime()"
+      ],
+      "correctAnswer": 0,
+      "explanation": "getDate() oyning kunini qaytaradi; getDay() esa hafta kunini beradi."
+    },
+    {
+      "id": 7,
+      "question": "`new Date()` argumentsiz chaqirilsa nima qaytaradi?",
+      "options": [
+        "Hozirgi sana va vaqt",
+        "1970-yil 1-yanvar",
+        "undefined",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "new Date() argumentsiz hozirgi sana-vaqtni oladi."
+    },
+    {
+      "id": 8,
+      "question": "`new Date(\"2024-06-15\").getMonth()` nima qaytaradi?",
+      "options": [
+        "5",
+        "6",
+        "15",
+        "2024"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Iyun — 5-indeks (0 dan hisoblanganda): Yanvar=0, Iyun=5."
+    },
+    {
+      "id": 9,
+      "question": "`getHours()` qanday oraliqda qiymat qaytaradi?",
+      "options": [
+        "0 dan 23 gacha",
+        "1 dan 24 gacha",
+        "0 dan 12 gacha",
+        "0 dan 60 gacha"
+      ],
+      "correctAnswer": 0,
+      "explanation": "getHours() 0 dan 23 gacha soatni qaytaradi."
+    },
+    {
+      "id": 10,
+      "question": "Ikki `Date` ni bir-biridan ayirsak natija qanday birlikda bo'ladi?",
+      "options": [
+        "Millisekund",
+        "Kun",
+        "Soat",
+        "Yil"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Date lar ayirilganda millisekund farqi olinadi; kunlarga aylantirish kerak."
+    },
+    {
+      "id": 11,
+      "question": "`toISOString()` nima qaytaradi?",
+      "options": [
+        "ISO 8601 standartidagi matn (masalan, 2024-01-01T00:00:00.000Z)",
+        "Faqat yil",
+        "Son",
+        "Kun indeksi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "toISOString() sanani ISO formatidagi matn sifatida qaytaradi."
+    },
+    {
+      "id": 12,
+      "question": "`new Date(\"noto'g'ri matn\")` nima qaytaradi?",
+      "options": [
+        "Invalid Date (yaroqsiz sana)",
+        "Hozirgi vaqt",
+        "undefined",
+        "0"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Yaroqsiz matn berilganda Invalid Date olinadi; getTime() esa NaN bo'ladi."
     }
   ]
 };

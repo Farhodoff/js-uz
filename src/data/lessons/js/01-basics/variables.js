@@ -172,6 +172,62 @@ Keyingi darsda: O'zgaruvchidagi qiymatni yangilash (qayta qiymat berish) bilan t
       startingCode: "let count = 42;\nconsole.log(\"count\");\n",
       hint: "let count = 42;\nconsole.log(count);",
       test: "if (code.includes('\"count\"') || code.includes(\"'count'\")) return 'count so\\'zidan qo\\'shtirnoqni olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('42'))) return null;\nreturn '42 soni konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Ikkinchi o'zgaruvchi",
+      "instruction": "`city` nomli yangi `let` o'zgaruvchi yarating va unga `Toshkent` qiymatini bering, keyin konsolga chiqaring.",
+      "startingCode": "// city o'zgaruvchisini yarating\n",
+      "hint": "let city = \"Toshkent\"; so'ng console.log(city);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Toshkent'))) return null;\nreturn 'Konsolga Toshkent chiqishi kerak';"
+    },
+    {
+      "id": 5,
+      "title": "Qiymatni o'qish",
+      "instruction": "`score` o'zgaruvchisiga `95` qiymatini bering va uni konsolga chiqaring. Konsolga faqat 95 chiqsin.",
+      "startingCode": "// score o'zgaruvchisi\n",
+      "hint": "let score = 95; console.log(score);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '95')) return null;\nreturn 'Konsolga 95 chiqishi kerak';"
+    },
+    {
+      "id": 6,
+      "title": "Ikkita o'zgaruvchi",
+      "instruction": "`firstName` va `lastName` o'zgaruvchilarini yarating (let bilan): mos ravishda `Ali` va `Valiyev`. Ikkalasini ham konsolga chiqaring.",
+      "startingCode": "// Ikkala o'zgaruvchini yarating\n",
+      "hint": "let firstName = \"Ali\"; let lastName = \"Valiyev\";",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst flat = out.join(' ');\nif (!flat.includes('Ali')) return 'Ali chiqmadi';\nif (!flat.includes('Valiyev')) return 'Valiyev chiqmadi';\nreturn null;"
+    },
+    {
+      "id": 7,
+      "title": "Noto'g'ri nomni topish",
+      "instruction": "Quyidagi kodda xato bor: `2name` nomi raqam bilan boshlanadi. O'zgaruvchini to'g'ri nomlang (masalan, `name2`).",
+      "startingCode": "let 2name = \"Ali\";\nconsole.log(2name);\n",
+      "hint": "O'zgaruvchi nomi raqam bilan boshlanmasligi kerak.",
+      "test": "if (/let\\s+2/.test(code)) return 'Nom hali raqam bilan boshlanmoqda';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'console.log Ali chiqishi kerak';"
+    },
+    {
+      "id": 8,
+      "title": "Nom qoidasiga rioya qilish",
+      "instruction": "`my score` nomini yarating — lekin bo'shliqsiz bitta so'z sifatida (`myscore` yoki `myScore`). console.log ichida ishlatsin.",
+      "startingCode": "// Nom bo'shliqsiz bo'lishi kerak\n",
+      "hint": "let myScore = ... — bitta so'z, bo'shliqsiz.",
+      "test": "if (/let\\s+my\\s+score/.test(code)) return 'Nom ichida bo\\'sliq bor';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length >= 1) return null;\nreturn 'console.log bir marta chaqirilishi kerak';"
+    },
+    {
+      "id": 9,
+      "title": "Qiymatni o'qib ishlatish (chegara)",
+      "instruction": "`temperature` o'zgaruvchisiga `36.6` bering. Uni konsolga emas, boshqa o'zgaruvchiga nusxa lang: `bodyTemp` ga. `console.log(bodyTemp);` bilan tugating.",
+      "startingCode": "let temperature = 36.6;\n// bodyTemp ni yarating\n",
+      "hint": "let bodyTemp = temperature; so'ng console.log(bodyTemp);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim().startsWith('36.6'))) return null;\nreturn 'Konsolga 36.6 chiqishi kerak';"
+    },
+    {
+      "id": 10,
+      "title": "Bir necha marta ishlatish",
+      "instruction": "`greeting` o'zgaruvchisiga `Salom` bering va uni ikki marta konsolga chiqaring (ikki alohida console.log bilan). Ikkala qatorda ham Salom bo'lsin.",
+      "startingCode": "// greeting o'zgaruvchisi va ikki console.log\n",
+      "hint": "let greeting = \"Salom\"; keyin ikki marta console.log(greeting);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst count = out.filter(m => m.includes('Salom')).length;\nif (count === 2) return null;\nreturn 'Salom ikki marta chiqishi kerak, hozir ' + count + ' marta';"
     }
   ],
   quizzes: [
@@ -210,6 +266,114 @@ Keyingi darsda: O'zgaruvchidagi qiymatni yangilash (qayta qiymat berish) bilan t
       ],
       correctAnswer: 1,
       explanation: "Qo'shtirnoq ichiga yozilgan \"score\" oddiy matn deb qabul qilinadi. O'zgaruvchi ichidagi 100 chiqishi uchun console.log(score) deb qo'shtirnoqsiz yozish kerak."
+    },
+    {
+      "id": 4,
+      "question": "O'zgaruvchi nima uchun qutiga o'xshatiladi?",
+      "options": [
+        "Ichiga qiymat solib, keyin nomi bilan olib bo'lgani uchun",
+        "Qutida faqat rasm saqlanadi",
+        "Quti yopiq bo'lgani uchun",
+        "Quti ko'r bo'lgani uchun"
+      ],
+      "correctAnswer": 0,
+      "explanation": "O'zgaruvchi — nomlangan quti: ichiga qiymat solasiz, keyin nomini aytsangiz, qiymat qaytadi."
+    },
+    {
+      "id": 5,
+      "question": "JavaScriptda yangi o'zgaruvchi yaratish uchun qaysi kalit so'z ishlatiladi (darsda o'rgatilgan)?",
+      "options": [
+        "var",
+        "let",
+        "define",
+        "new"
+      ],
+      "correctAnswer": 1,
+      "explanation": "let — zamonaviy JavaScript'da yangi o'zgaruvchi yaratishning asosiy usuli."
+    },
+    {
+      "id": 6,
+      "question": "let age = 25; kodida 25 nima?",
+      "options": [
+        "O'zgaruvchi nomi",
+        "Qiymat — qutiga solingan narsa",
+        "Xato",
+        "Operator"
+      ],
+      "correctAnswer": 1,
+      "explanation": "= belgisidan keyin turgan qiymat o'zgaruvchiga solinadi. Bu holatda qutiga 25 soni solindi."
+    },
+    {
+      "id": 7,
+      "question": "O'zgaruvchi nomini qanday yozish kerak?",
+      "options": [
+        "Raqam bilan boshlash",
+        "Bo'shliq bilan yozish",
+        "Ingliz tilida, bo'shliqsiz, harf bilan boshlab",
+        "Faqat katta harflar bilan"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Nomlar ingliz tilida, bo'shliqsiz yoziladi va harf (yoki _ yoki $) bilan boshlanadi."
+    },
+    {
+      "id": 8,
+      "question": "console.log(age) nima qiladi?",
+      "options": [
+        "age o'zgaruvchisini o'chiradi",
+        "age ichidagi qiymatni konsolga chiqaradi",
+        "Yangi o'zgaruvchi yaratadi",
+        "Kodni to'xtatadi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "O'zgaruvchi nomini yozsangiz, JavaScript uning ichidagi qiymatni oladi va console.log uni chiqaradi."
+    },
+    {
+      "id": 9,
+      "question": "let 2name = \"Ali\"; kodida xato qayerda?",
+      "options": [
+        "Qo'shtirnoq yopilmagan",
+        "Nom raqam bilan boshlangan",
+        "let noto'g'ri yozilgan",
+        "Xato yo'q"
+      ],
+      "correctAnswer": 1,
+      "explanation": "O'zgaruvchi nomi raqam bilan boshlanmasligi kerak — bu SyntaxError beradi."
+    },
+    {
+      "id": 10,
+      "question": "Bitta o'zgaruvchi ichiga nechta qiymat saqlash mumkin?",
+      "options": [
+        "Faqat bitta",
+        "Bir vaqtning o'zida bitta — let bilan keyin almashtirsa bo'ladi",
+        "Cheksiz",
+        "Ikkitadan"
+      ],
+      "correctAnswer": 1,
+      "explanation": "O'zgaruvchi qutisi bir vaqtda bitta qiymat saqlaydi. Yangi qiymat solsangiz, eski o'rinini egallaydi."
+    },
+    {
+      "id": 11,
+      "question": "console.log(25) va console.log(age) farqi nimada?",
+      "options": [
+        "Ikkalasi bir xil",
+        "Birinchisi raqamning o'zini, ikkinchisi o'zgaruvchi ichidagi qiymatni chiqaradi",
+        "Birinchisi xato beradi",
+        "Ikkinchisi faqat matn chiqaradi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "O'zgaruvchi nomi yozilganda JavaScript uning ichidagi qiymatni o'qiydi — xuddi qutining nomini aytagandek."
+    },
+    {
+      "id": 12,
+      "question": "let city = \"Toshkent\"; let city = \"Samarqand\"; ikkita e'lon bir xil blokda yozilsa nima bo'ladi?",
+      "options": [
+        "Ikkita alohida o'zgaruvchi bo'ladi",
+        "SyntaxError: city allaqachon e'lon qilingan",
+        "Qiymatlar qo'shiladi",
+        "Hech narsa bo'lmaydi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Bitta blokda bir xil nomni ikki marta e'lon qilish xato. Yangi qiymat berish uchun qayta e'lon emas, shunchaki = ishlatiladi."
     }
   ]
 };

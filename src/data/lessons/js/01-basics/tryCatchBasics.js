@@ -108,6 +108,7 @@ Tahlil:
 
 ### 1-xato: catch blokisiz faqat try yozish
 
+❌ Xato kod:
 \`\`\`javascript
 try { // XATO: SyntaxError: Missing catch or finally after try
   JSON.parse("abc");
@@ -134,10 +135,11 @@ console.log(error); // XATO: ReferenceError: error is not defined
 
 ### 3-xato: Sintaktik yozuv xatolarini ushlaydi deb o'ylash
 
+❌ Xato kod:
 \`\`\`javascript
 try {
   let a = ; // Sintaksis xatosi
-} catch (error) { ... }
+} catch (error) { /* xatolikni boshqarish */ }
 \`\`\`
 
 **Nima bo'ladi:** Kodning o'zi noto'g'ri yozilgan bo'lsa (SyntaxError), dastur umuman ishga tusha olmaydi. \`try...catch\` faqat dastur ishlayotgan paytda (runtime) yuz beradigan amaliy xatolarni ushlaydi.
@@ -228,6 +230,62 @@ Keyingi darsda: Global obyektlar — \`Math\` obyekti bilan tanishamiz.
       startingCode: "const validJson = '{\"count\":5}';\n// try...catch da parse qilib, item.count ni konsolga chiqaring\n",
       hint: "try {\n  const item = JSON.parse(validJson);\n  console.log(item.count);\n} catch (error) {\n  console.log(\"Xato\");\n}",
       test: "if (!code.includes('try') || !code.includes('catch')) return 'try...catch ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('5'))) return null;\nreturn '5 soni konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "throw bilan xato tashlash",
+      "instruction": "`try` blokida `throw new Error(\"Muammo\")` chaqiring va `catch (error)` da `error.message` ni konsolga chiqaring.",
+      "startingCode": "// try ichida throw qiling va catch da error.message ni chiqaring\n",
+      "hint": "try {\n  throw new Error(\"Muammo\");\n} catch (error) {\n  console.log(error.message);\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"try\") || !code.includes(\"catch\")) return \"try...catch ishlatilmadi\";\nif (out.some((m) => m.includes(\"Muammo\"))) return null;\nreturn \"error.message (Muammo) konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "finally bloki",
+      "instruction": "`try...catch...finally` yordamida xato ushlang va `finally` blokida `\"Tugadi\"` matnini konsolga chiqaring.",
+      "startingCode": "// try...catch...finally ishlatib finally da \"Tugadi\" chiqaring\n",
+      "hint": "try {\n  JSON.parse(\"x\");\n} catch (error) {\n  console.log(\"Xato ushlandi\");\n} finally {\n  console.log(\"Tugadi\");\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"finally\")) return \"finally bloki ishlatilmadi\";\nif (out.some((m) => m.includes(\"Tugadi\"))) return null;\nreturn \"finally dagi Tugadi matni chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "To'g'ri JSONni xavfsiz parse qilish",
+      "instruction": "`const json = '{\"a\": 1}';` ni `try...catch` ichida parse qilib, `a` qiymatini konsolga chiqaring.",
+      "startingCode": "const json = '{\"a\": 1}';\n// try...catch ichida parse qilib a ni chiqaring\n",
+      "hint": "const json = '{\"a\": 1}';\ntry {\n  const obj = JSON.parse(json);\n  console.log(obj.a);\n} catch (error) {\n  console.log(\"Xato\");\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"try\") || !code.includes(\"catch\")) return \"try...catch ishlatilmadi\";\nif (out.some((m) => m.trim() === \"1\")) return null;\nreturn \"a qiymati 1 konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "catch yetishmaganini tuzatish",
+      "instruction": "Quyidagi `try` bloki `catch`siz yozilgan — bu sintaksis xatosi. `catch (error) { console.log(\"Ushlandi\"); }` qo'shib, `Ushlandi` ni chiqaring.",
+      "startingCode": "try {\n  JSON.parse(\"abc\");\n}\n",
+      "hint": "try {\n  JSON.parse(\"abc\");\n} catch (error) {\n  console.log(\"Ushlandi\");\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"catch\")) return \"catch bloki qo'shilmadi\";\nif (out.some((m) => m.includes(\"Ushlandi\"))) return null;\nreturn \"Ushlandi matni chiqmadi (xato ushlanmadimi?)\";"
+    },
+    {
+      "id": 8,
+      "title": "error.message ni chiqarish",
+      "instruction": "Noto'g'ri JSON matnini (`\"{ x: 1 }\"`) `try...catch` da parse qilib, `catch (error)` ichida `error.message` ni konsolga chiqaring.",
+      "startingCode": "// noto'g'ri JSONni parse qilib error.message ni chiqaring\n",
+      "hint": "try {\n  JSON.parse(\"{ x: 1 }\");\n} catch (error) {\n  console.log(error.message);\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"catch (error)\") && !code.includes(\"catch(error)\")) return \"catch (error) shaklida yozilmadi\";\nif (out.some((m) => m.length > 3)) return null;\nreturn \"error.message konsolga chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Xavfsiz parse funksiyasi",
+      "instruction": "`safeParse` funksiyasi JSON matn qabul qilib, `try...catch` bilan parse qilsin; xato bo'lsa `null` qaytarsin. `safeParse(\"abc\")` natijasini konsolga chiqaring (`null`).",
+      "startingCode": "// safeParse(matn) funksiyasini yozing va natijani chiqaring\n",
+      "hint": "function safeParse(text) {\n  try {\n    return JSON.parse(text);\n  } catch (error) {\n    return null;\n  }\n}\nconsole.log(safeParse(\"abc\"));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"try\") || !code.includes(\"catch\")) return \"try...catch ishlatilmadi\";\nif (out.some((m) => m.includes(\"null\"))) return null;\nreturn \"safeParse(abc) natijasi null chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Nolga bo'lishni ushlash (chegara)",
+      "instruction": "`divide` funksiyasi: `b === 0` bo'lsa `throw new Error(\"Nolga bo'lish mumkin emas\")`, aks holda `a / b` qaytarsin. `try...catch` ichida `divide(10, 0)` ni chaqirib, xabar matnini konsolga chiqaring.",
+      "startingCode": "// divide(a, b) funksiyasini yozing va divide(10, 0) xatosini ushlang\n",
+      "hint": "function divide(a, b) {\n  if (b === 0) throw new Error(\"Nolga bo'lish mumkin emas\");\n  return a / b;\n}\ntry {\n  console.log(divide(10, 0));\n} catch (error) {\n  console.log(error.message);\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"throw\")) return \"throw ishlatilmadi\";\nif (out.some((m) => m.includes(\"Nolga\"))) return null;\nreturn \"Nolga bo'lish xabari konsolga chiqmadi\";"
     }
   ],
   quizzes: [
@@ -266,6 +324,114 @@ Keyingi darsda: Global obyektlar — \`Math\` obyekti bilan tanishamiz.
       ],
       correctAnswer: 0,
       explanation: "JavaScript da xatolik obyekti ichida xato sababini ifodalovchi error.message xususiyati mavjud."
+    },
+    {
+      "id": 4,
+      "question": "`try...catch` konstruksiyasining asosiy vazifasi nima?",
+      "options": [
+        "Xatoliklarni ushlab, dastur to'xtashining oldini olish",
+        "Kodni tezlashtirish",
+        "Obyektni massivga aylantirish",
+        "O'zgaruvchini global qilish"
+      ],
+      "correctAnswer": 0,
+      "explanation": "try...catch runtime xatolarni ushlaydi va dasturning qulashini oldini oladi."
+    },
+    {
+      "id": 5,
+      "question": "`try` blokida xato yuz bersa nima bo'ladi?",
+      "options": [
+        "try ichidagi keyingi qatorlar tashlanadi va catch ga o'tiladi",
+        "Dastur darhol o'chadi",
+        "try boshidan qayta boshlanadi",
+        "Xato e'tiborsiz qoldiriladi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Xato yuz berganda try blokining qolgan qismi bajarilmaydi, boshqaruv catch blokiga o'tadi."
+    },
+    {
+      "id": 6,
+      "question": "Xato tushuntirish matnini olish uchun qaysi xususiyat ishlatiladi?",
+      "options": [
+        "error.message",
+        "error.text",
+        "error.info",
+        "error.reason"
+      ],
+      "correctAnswer": 0,
+      "explanation": "error.message xato haqidagi matnni saqlaydi."
+    },
+    {
+      "id": 7,
+      "question": "`finally` bloki qachon ishlaydi?",
+      "options": [
+        "Har doim — xato bo'lsa ham, bo'lmasa ham",
+        "Faqat xato bo'lganda",
+        "Faqat xato bo'lmaganda",
+        "Hech qachon"
+      ],
+      "correctAnswer": 0,
+      "explanation": "finally bloki har qanday holatda bajariladi — resurslarni tozalash uchun qulay."
+    },
+    {
+      "id": 8,
+      "question": "Kodning o'zi noto'g'ri yozilgan (SyntaxError) bo'lsa, try...catch uni ushlaydimi?",
+      "options": [
+        "Yo'q, chunki bunday kod umuman ishga tushmaydi",
+        "Ha, har doim ushlaydi",
+        "Faqat brauzerda ushlaydi",
+        "Faqat finally bilan ushlaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "try...catch faqat ishlash vaqtidagi (runtime) xatolarni ushlaydi; sintaksis xatosi kod ishga tushmasidan oldin aniqlanadi."
+    },
+    {
+      "id": 9,
+      "question": "`throw` operatori nima qiladi?",
+      "options": [
+        "Xatoni qo'lda tashlaydi",
+        "Xatoni ushlaydi",
+        "Dasturni to'xtatadi (kill)",
+        "Konsolga chiqaradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "throw yordamida xatoni o'zimiz yaratib tashlaymiz, u catch tomonidan ushlanishi mumkin."
+    },
+    {
+      "id": 10,
+      "question": "`try` blokini `catch`siz va `finally`siz yozish mumkinmi?",
+      "options": [
+        "Yo'q, catch yoki finally bo'lishi shart",
+        "Ha, mumkin",
+        "Faqat funksiya ichida mumkin",
+        "Faqat sikl ichida mumkin"
+      ],
+      "correctAnswer": 0,
+      "explanation": "try dan keyin albatta catch yoki finally kelishi kerak, aks holda SyntaxError bo'ladi."
+    },
+    {
+      "id": 11,
+      "question": "`catch` blokida funksiyadan `return` qilinsa nima bo'ladi?",
+      "options": [
+        "Funksiya shu joyda tugaydi va qiymat qaytadi",
+        "Xato bo'ladi",
+        "finally ishlamaydi",
+        "try qayta ishlaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "catch ichidagi return funksiyani tugatadi (finally bajarilgach)."
+    },
+    {
+      "id": 12,
+      "question": "`try { throw new Error(\"X\") } catch (e) { console.log(\"Ushlandi\") }` natijasi?",
+      "options": [
+        "Ushlandi",
+        "X",
+        "Xato beradi",
+        "undefined"
+      ],
+      "correctAnswer": 0,
+      "explanation": "throw qilingan xato catch tomonidan ushlanadi va Ushlandi chiqadi."
     }
   ]
 };

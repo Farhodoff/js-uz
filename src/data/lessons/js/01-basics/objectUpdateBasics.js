@@ -189,7 +189,7 @@ Keyingi darsda: Obyekt kalitlari bo'ylab sikl aylanish — for...in sikli bilan 
       instruction: "`laptop = { brand: \"Lenovo\" }` obyektiga `ram: \"16GB\"` xususiyatini qo'shing va `laptop` ni konsolga chiqaring.",
       startingCode: "const laptop = { brand: \"Lenovo\" };\n// ram xususiyatini qo'shing va laptop ni chiqaring\n",
       hint: "laptop.ram = \"16GB\";\nconsole.log(laptop);",
-      test: "if (!code.includes('laptop')) return 'laptop obyekti ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('16GB'))) return null;\nreturn 'ram: \"16GB\" konsolga chiqmadi';"
+      test: "if (!code.includes('laptop')) return 'laptop obyekti ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((a) => (typeof a === \"object\" && a !== null ? JSON.stringify(a) : String(a))).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('16GB'))) return null;\nreturn 'ram: \"16GB\" konsolga chiqmadi';"
     },
     {
       id: 2,
@@ -197,7 +197,7 @@ Keyingi darsda: Obyekt kalitlari bo'ylab sikl aylanish — for...in sikli bilan 
       instruction: "`player = { score: 10, lives: 3 }` obyektining `score` qiymatini `25` ga yangilang, `lives` ni esa `delete` bilan o'chirib, `player` ni konsolga chiqaring.",
       startingCode: "const player = { score: 10, lives: 3 };\n// score ni 25 ga yangilang, lives ni delete qiling va player ni chiqaring\n",
       hint: "player.score = 25;\ndelete player.lives;\nconsole.log(player);",
-      test: "if (!code.includes('delete')) return 'delete operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('25') && !m.includes('lives'))) return null;\nreturn 'player to\\'g\\'ri yangilanmadi yoki lives o\\'chirilmadi';"
+      test: "if (!code.includes('delete')) return 'delete operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((a) => (typeof a === \"object\" && a !== null ? JSON.stringify(a) : String(a))).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('25') && !m.includes('lives'))) return null;\nreturn 'player to\\'g\\'ri yangilanmadi yoki lives o\\'chirilmadi';"
     },
     {
       id: 3,
@@ -205,7 +205,63 @@ Keyingi darsda: Obyekt kalitlari bo'ylab sikl aylanish — for...in sikli bilan 
       instruction: "`settings = { theme: \"light\" }` obyekti berilgan. `key = \"theme\"` o'zgaruvchisi orqali kvadrat qavsda mavzuni `\"dark\"` ga o'zgartiring va `settings` ni konsolga chiqaring.",
       startingCode: "const settings = { theme: \"light\" };\nlet key = \"theme\";\n// settings[key] orqali \"dark\" ga o'zgartiring va chiqaring\n",
       hint: "settings[key] = \"dark\";\nconsole.log(settings);",
-      test: "if (!code.includes('settings[key]')) return 'settings[key] orqali yangilanmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('dark'))) return null;\nreturn 'settings ichida dark chiqmadi';"
+      test: "if (!code.includes('settings[key]')) return 'settings[key] orqali yangilanmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((a) => (typeof a === \"object\" && a !== null ? JSON.stringify(a) : String(a))).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('dark'))) return null;\nreturn 'settings ichida dark chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Xususiyat qiymatini yangilash",
+      "instruction": "`const user = { name: \"Ali\", age: 20 };` obyektining `age` qiymatini `21` ga yangilab, `user` ni konsolga chiqaring.",
+      "startingCode": "const user = { name: \"Ali\", age: 20 };\n// age ni 21 ga yangilang va user ni chiqaring\n",
+      "hint": "user.age = 21;\nconsole.log(user);",
+      "test": "if (!code.includes(\"user\")) return \"user obyekti topilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((a) => (typeof a === \"object\" && a !== null ? JSON.stringify(a) : String(a))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"21\"))) return null;\nreturn \"Yangi qiymat 21 konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Xususiyatni delete bilan o'chirish",
+      "instruction": "`const car = { brand: \"BMW\", color: \"red\" };` obyektidan `color` xususiyatini `delete` bilan o'chirib, `car` ni konsolga chiqaring.",
+      "startingCode": "const car = { brand: \"BMW\", color: \"red\" };\n// color ni delete qiling va car ni chiqaring\n",
+      "hint": "delete car.color;\nconsole.log(car);",
+      "test": "if (!code.includes(\"delete\")) return \"delete operatori ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((a) => (typeof a === \"object\" && a !== null ? JSON.stringify(a) : String(a))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"BMW\") && !m.includes(\"red\"))) return null;\nreturn \"brand qoldi, color o'chirilishi kerak edi\";"
+    },
+    {
+      "id": 6,
+      "title": "Bo'sh obyektga xususiyat qo'shish",
+      "instruction": "`const config = {};` bo'sh obyektiga `host: \"localhost\"` va `port: 3000` xususiyatlarini qo'shib, `config` ni konsolga chiqaring.",
+      "startingCode": "const config = {};\n// host va port qo'shing va chiqaring\n",
+      "hint": "config.host = \"localhost\";\nconfig.port = 3000;\nconsole.log(config);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((a) => (typeof a === \"object\" && a !== null ? JSON.stringify(a) : String(a))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"localhost\") && m.includes(\"3000\"))) return null;\nreturn \"host va port konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "Boolean xususiyatni yangilash",
+      "instruction": "`const todo = { title: \"Ish\", done: false };` obyektining `done` qiymatini `true` ga o'zgartirib, `todo` ni konsolga chiqaring.",
+      "startingCode": "const todo = { title: \"Ish\", done: false };\n// done ni true qiling va chiqaring\n",
+      "hint": "todo.done = true;\nconsole.log(todo);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((a) => (typeof a === \"object\" && a !== null ? JSON.stringify(a) : String(a))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"true\"))) return null;\nreturn \"done qiymati true konsolga chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "const qayta tenglash xatosini tuzatish",
+      "instruction": "Quyidagi kodda `const` obyekt qayta tenglanmoqda — bu xato. Obyektning ichidagi xususiyatni o'zgartirib, `o.a` ni `2` ga yetkazing.",
+      "startingCode": "const o = { a: 1 };\no = { a: 2 };\nconsole.log(o.a);\n",
+      "hint": "o = {...} o'rniga o.a = 2; deb yozing.",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((a) => (typeof a === \"object\" && a !== null ? JSON.stringify(a) : String(a))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Hali xato bor: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"2\")) return null;\nreturn \"o.a qiymati 2 konsolga chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Qiymatni hisoblab yangilash",
+      "instruction": "`const inventory = { apples: 5 };` obyektidagi `apples` sonini `5` taga oshirib (`apples: 10`), `inventory` ni konsolga chiqaring.",
+      "startingCode": "const inventory = { apples: 5 };\n// apples ni 5 taga oshiring va chiqaring\n",
+      "hint": "inventory.apples = inventory.apples + 5;\nconsole.log(inventory);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((a) => (typeof a === \"object\" && a !== null ? JSON.stringify(a) : String(a))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"10\") && !m.includes(\"5 \"))) return null;\nreturn \"apples qiymati 10 konsolga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Ichki xususiyatni yangilash (chegara)",
+      "instruction": "`const user = { profile: { city: \"Nukus\" } };` obyektidagi ichki `city` qiymatini `\"Toshkent\"` ga o'zgartirib, `user` ni konsolga chiqaring.",
+      "startingCode": "const user = { profile: { city: \"Nukus\" } };\n// profile.city ni Toshkent ga o'zgartiring va chiqaring\n",
+      "hint": "user.profile.city = \"Toshkent\";\nconsole.log(user);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((a) => (typeof a === \"object\" && a !== null ? JSON.stringify(a) : String(a))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"Toshkent\") && !m.includes(\"Nukus\"))) return null;\nreturn \"city qiymati Toshkent konsolga chiqmadi\";"
     }
   ],
   quizzes: [
@@ -244,6 +300,114 @@ Keyingi darsda: Obyekt kalitlari bo'ylab sikl aylanish — for...in sikli bilan 
       ],
       correctAnswer: 0,
       explanation: "const bilan e'lon qilingan obyektning o'zini qayta tenglash mumkin emas, ammo uning ichidagi xususiyatlarini qo'shish, o'zgartirish va o'chirish mumkin."
+    },
+    {
+      "id": 4,
+      "question": "Obyektdan xususiyatni butunlay o'chirish uchun nima ishlatiladi?",
+      "options": [
+        "delete operatori",
+        "remove metodi",
+        "o.set(null)",
+        "o.clear()"
+      ],
+      "correctAnswer": 0,
+      "explanation": "delete operatori xususiyatni obyektdan butunlay olib tashlaydi: delete obj.key."
+    },
+    {
+      "id": 5,
+      "question": "`const o = { a: 1 }; o.a = 5; console.log(o.a);` nima chiqaradi?",
+      "options": [
+        "5",
+        "1",
+        "Xato beradi",
+        "undefined"
+      ],
+      "correctAnswer": 0,
+      "explanation": "const faqat o'zgaruvchini qayta tenglashni taqiqlaydi; obyekt ichidagi xususiyatni o'zgartirish mumkin, shuning uchun 5 chiqadi."
+    },
+    {
+      "id": 6,
+      "question": "`const o = { a: 1 }; delete o.a; console.log(o.a);` nima chiqaradi?",
+      "options": [
+        "undefined",
+        "1",
+        "null",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "a xususiyati o'chirilgach, unga murojaat mavjud bo'lmagan kalit kabi undefined qaytaradi."
+    },
+    {
+      "id": 7,
+      "question": "`const o = { a: 1 }; o.b = 2;` dan keyin o obyektida nechta xususiyat bor?",
+      "options": [
+        "Ikkita: a va b",
+        "Bitta: b",
+        "Bitta: a",
+        "Nol"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Yangi kalit qo'shilsa, mavjudlari saqlanadi — natijada ikkita xususiyat bo'ladi."
+    },
+    {
+      "id": 8,
+      "question": "Kalit o'zgaruvchida saqlanib, qiymatni yangilash kerak bo'lsa qaysi sintaksis ishlatiladi?",
+      "options": [
+        "`obj[key] = yangiQiymat;`",
+        "`obj.key = yangiQiymat;`",
+        "`obj.push(key, qiymat);`",
+        "`key = obj;`"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Kalit o'zgaruvchida bo'lsa, kvadrat qavs ishlatiladi: obj[key] = yangiQiymat."
+    },
+    {
+      "id": 9,
+      "question": "`const o = { a: { b: 1 } }; o.a.b = 5;` dan keyin o.a.b nima bo'ladi?",
+      "options": [
+        "5",
+        "1",
+        "undefined",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Ichki obyektning xususiyati nuqta orqali yangilanadi: o.a.b = 5."
+    },
+    {
+      "id": 10,
+      "question": "Mavjud bo'lmagan kalitni `delete` qilishga urinsak nima bo'ladi?",
+      "options": [
+        "Xato bermaydi, natija true bo'ladi",
+        "TypeError beradi",
+        "Obyekt o'chib ketadi",
+        "undefined qaytaradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Mavjud bo'lmagan xususiyatni delete qilish xato bermaydi; amal muvaffaqiyatli deb hisoblanadi."
+    },
+    {
+      "id": 11,
+      "question": "`const p = { x: 1, y: 2 };` da x va y qiymatlarini almashtirish uchun to'g'ri kod qaysi?",
+      "options": [
+        "`const t = p.x; p.x = p.y; p.y = t;`",
+        "`p.x = p.y; p.y = p.x;`",
+        "`p.swap();`",
+        "`p = [p.y, p.x];`"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Almashtirish uchun vaqtinchalik o'zgaruvchi kerak: aks holda birinchi qiymat yo'qoladi."
+    },
+    {
+      "id": 12,
+      "question": "`const o = { n: 1 }; o.n += 2; console.log(o.n);` nima chiqaradi?",
+      "options": [
+        "3",
+        "1",
+        "2",
+        "undefined"
+      ],
+      "correctAnswer": 0,
+      "explanation": "o.n += 2 — mavjud qiymatga 2 qo'shadi va natija 3 bo'ladi."
     }
   ]
 };

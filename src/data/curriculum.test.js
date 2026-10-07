@@ -39,3 +39,21 @@ describe("Curriculum Integrity", () => {
     }
   }, 120000);
 });
+
+
+describe("Curriculum tartibi (raqamlar)", () => {
+  it("har bir bo'limda raqamlar mavjud, noyob va ketma-ket", () => {
+    SECTIONS.forEach((key) => {
+      const lessons = curriculum[key].lessons;
+      const secIdx = SECTIONS.indexOf(key) + 1;
+      const nums = lessons.map((l) => l.number);
+      nums.forEach((n, i) => {
+        const label = key + "/" + lessons[i].id;
+        expect(typeof n, label + ": raqam string bo'lishi kerak").toBe("string");
+        expect(n && n.trim(), label + ": raqam bo'sh bo'lmasin").toBeTruthy();
+        expect(n, label + ": raqam ketma-ket bo'lishi kerak").toBe(secIdx + "." + (i + 1));
+      });
+      expect(new Set(nums).size, key + ": raqamlar takrorlanmasligi kerak").toBe(nums.length);
+    });
+  });
+});

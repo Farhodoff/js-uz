@@ -170,6 +170,62 @@ Keyingi darsda: JavaScript'da ma'lumot turlari (string va number) bilan tanisham
       startingCode: "var pi = 3.14;\nconsole.log(pi);\n",
       hint: "const pi = 3.14;\nconsole.log(pi);",
       test: "if (code.includes('var')) return 'var o\\'rniga const ishlating';\nif (!code.includes('const')) return 'const kalit so\\'zi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('3.14'))) return null;\nreturn '3.14 qiymati konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "var yozuvini let bilan almashtirish",
+      "instruction": "`var population = 35000000;` qatorini `let` bilan yozing va konsolga chiqaring.",
+      "startingCode": "var population = 35000000;\nconsole.log(population);\n",
+      "hint": "var o'rniga let yozing.",
+      "test": "if (/var\\s+population/.test(code)) return 'population hali var bilan yozilgan';\nif (!/let\\s+population/.test(code)) return 'population let bilan e\\'lon qilinmagan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('35000000'))) return null;\nreturn '35000000 chiqishi kerak';"
+    },
+    {
+      "id": 5,
+      "title": "Barcha varlarni modernizatsiya qilish",
+      "instruction": "Koddagi BARCHA `var` larni `let` ga almashtiring (ikkita qator bor). Ikkalasi ham ishlashi kerak.",
+      "startingCode": "var a = 1;\nvar b = 2;\nconsole.log(a);\nconsole.log(b);\n",
+      "hint": "Har ikkala var qatorini let qiling.",
+      "test": "if (/var\\s/.test(code)) return 'Hali var qolgan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst flat = out.join(' ');\nif (flat.includes('1') && flat.includes('2')) return null;\nreturn '1 va 2 chiqishi kerak';"
+    },
+    {
+      "id": 6,
+      "title": "O'zgarmas qiymatga const ishlatish",
+      "instruction": "`var taxRate = 0.15;` — bu qiymat hech qachon o'zgarmaydi. Uni eng to'g'ri kalit so'z (`const`) bilan qayta yozing.",
+      "startingCode": "var taxRate = 0.15;\nconsole.log(taxRate);\n",
+      "hint": "const taxRate = 0.15;",
+      "test": "if (/var\\s+taxRate/.test(code)) return 'taxRate hali var';\nif (!/const\\s+taxRate/.test(code)) return 'taxRate const bilan e\\'lon qilinmagan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('0.15'))) return null;\nreturn '0.15 chiqishi kerak';"
+    },
+    {
+      "id": 7,
+      "title": "var xatosini topish",
+      "instruction": "Kodda xato bor: `count` ikki marta `var` bilan e'lon qilingan. Ikkinchi `var` ni olib tashlang (faqat birinchi qolsin), lekin `console.log(count);` 10 chiqishi kerak.",
+      "startingCode": "var count = 5;\nvar count = 10;\nconsole.log(count);\n",
+      "hint": "Ikkinchi qatordagi var ni olib tashlang: count = 10; bo'lsin.",
+      "test": "if ((code.match(/var\\s+count/g) || []).length !== 1) return 'count bir marta var bilan e\\'lon qilinishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '10')) return null;\nreturn 'console.log 10 chiqishi kerak';"
+    },
+    {
+      "id": 8,
+      "title": "Kalit so'z tanlash mashqi",
+      "instruction": "Uchta qatordagi `var` larni to'g'ri kalit so'zga almashtiring: `version` (o'zgarmaydi -> const), `attempt` (o'zgaradi -> let), `title` (o'zgarmaydi -> const). console.log(attempt); qoldirilsin.",
+      "startingCode": "var version = 2;\nvar attempt = 1;\nvar title = \"Dastur\";\nconsole.log(attempt);\n",
+      "hint": "version va title uchun const, attempt uchun let.",
+      "test": "if (/var\\s/.test(code)) return 'Hali var qolgan';\nif (!/const\\s+version/.test(code)) return 'version const bo\\'lishi kerak';\nif (!/let\\s+attempt/.test(code)) return 'attempt let bo\\'lishi kerak';\nif (!/const\\s+title/.test(code)) return 'title const bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '1')) return null;\nreturn 'console.log(attempt) 1 chiqishi kerak';"
+    },
+    {
+      "id": 9,
+      "title": "Nima uchun eskirganini ko'rish",
+      "instruction": "`var` bilan yozilgan kodni `let` ga o'tkazing va natijani chiqaring. O'zgaruvchi nomi `temperature`, qiymati `22.5` bo'lsin.",
+      "startingCode": "// Let bilan qayta yozing\n",
+      "hint": "let temperature = 22.5; console.log(temperature);",
+      "test": "if (/var\\s/.test(code)) return 'var ishlatilgan';\nif (!/let\\s+temperature\\s*=\\s*22.5/.test(code)) return 'let temperature = 22.5 topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('22.5'))) return null;\nreturn '22.5 chiqishi kerak';"
+    },
+    {
+      "id": 10,
+      "title": "To'g'ri kalit so'zni tanlash (chegara)",
+      "instruction": "Bitta vazifa: `userName` (o'zgarmaydi, \"guest\"), `loginCount` (o'zgaradi, 0 dan boshlanadi) va `siteName` (o'zgarmaydi, \"JS Academy\"). Har biri uchun eng mos kalit so'zni tanlang va `console.log(loginCount);` bilan tugating.",
+      "startingCode": "// Uchalasi uchun eng mos kalit so'zni tanlang\n",
+      "hint": "O'zgarmaslar uchun const, o'zgaradigan uchun let.",
+      "test": "if (/var\\s/.test(code)) return 'var ishlatilgan — zamonaviy kalit so\\'zlar kerak';\nif (!/const\\s+userName/.test(code)) return 'userName const bo\\'lishi kerak';\nif (!/let\\s+loginCount/.test(code)) return 'loginCount let bo\\'lishi kerak';\nif (!/const\\s+siteName/.test(code)) return 'siteName const bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '0')) return null;\nreturn 'console.log(loginCount) 0 chiqishi kerak';"
     }
   ],
   quizzes: [
@@ -208,6 +264,114 @@ Keyingi darsda: JavaScript'da ma'lumot turlari (string va number) bilan tanisham
       ],
       correctAnswer: 1,
       explanation: "2015-yildan beri zamonaviy JavaScript standartida faqat let va const ishlatiladi."
+    },
+    {
+      "id": 4,
+      "question": "var nima uchun eskirgan deb hisoblanadi?",
+      "options": [
+        "Sekin ishlagani uchun",
+        "Ko'lami noto'g'ri boshqarilgani uchun — blok ichida ham butun funksiyaga tarqaladi",
+        "Raqam qabul qilmagani uchun",
+        "Faqat eski brauzerlarda ishlamaganligi uchun"
+      ],
+      "correctAnswer": 1,
+      "explanation": "var funksiya ko'lamida yashaydi, {} bloklarini e'tiborsiz o'tkazadi. Bu kutilmagan xatolarga sabab bo'ladi."
+    },
+    {
+      "id": 5,
+      "question": "Yangi kodda qaysi kalit so'zlar ishlatiladi?",
+      "options": [
+        "Faqat var",
+        "let va const",
+        "Faqat const",
+        "define"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Zamonaviy JavaScript'da var deyarli ishlatilmaydi. Odatiy qoida: const asos, o'zgarishi kerak bo'lsa let."
+    },
+    {
+      "id": 6,
+      "question": "let bilan var farqi nimada?",
+      "options": [
+        "Farq yo'q",
+        "let blok ko'lamida yashaydi va qayta e'lon qilishga yo'l qo'ymaydi",
+        "let sekinroq",
+        "var faqat matn oladi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "let {} bloki ichida cheklangan va bir xil nomni ikki marta e'lon qilib bo'lmaydi — bu xavfsizroq."
+    },
+    {
+      "id": 7,
+      "question": "var x = 1; var x = 2; kodida nima bo'ladi?",
+      "options": [
+        "SyntaxError beradi",
+        "Ikkinchi e'lon birinchisini bosib o'tadi — x endi 2",
+        "Xato yo'q, x = 3",
+        "Dastur to'xtaydi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "var takroriy e'longa yo'l qo'yadi — va bu jimjimadir: qiymat qanday o'zgarganini keyinroq topish qiyin."
+    },
+    {
+      "id": 8,
+      "question": "Qiymati hech qachon o'zgarmaydigan narsa uchun qaysi kalit so'z tanlanadi?",
+      "options": [
+        "var",
+        "let",
+        "const",
+        "Nimasi bo'lsa ham farqi yo'q"
+      ],
+      "correctAnswer": 2,
+      "explanation": "const — maqsadli tanlov: o'zgarmas qiymatni tasodifan o'zgarishdan himoya qiladi."
+    },
+    {
+      "id": 9,
+      "question": "Kodda avval \"o'zgaradi\" deb bilmasangiz qaysi kalit so'z bilan boshlanadi?",
+      "options": [
+        "let",
+        "const — o'zgarishi aniqlansa let ga o'tiladi",
+        "var",
+        "Har doim let"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Xavfsiz strategiya: avval const yozing. Qiymat o'zgarishi kerakligini ko'rganda let ga o'ting."
+    },
+    {
+      "id": 10,
+      "question": "var ko'lamidagi kod qaysi blokka ta'sir qiladi?",
+      "options": [
+        "Faqat {} ichiga",
+        "Butun funksiyaga yoki faylga — blok chegarasini e'tiborsiz o'tkazadi",
+        "Faqat birinchi qatorda",
+        "Hech qayerga"
+      ],
+      "correctAnswer": 1,
+      "explanation": "var ning asosiy muammosi shu: for yoki if blokida e'lon qilingan o'zgaruvchi tashqarida ham ko'rinaveradi."
+    },
+    {
+      "id": 11,
+      "question": "Kodni modernizatsiya qilish nimani anglatadi?",
+      "options": [
+        "Kodni o'chirish",
+        "Eskirgan var larni let/const ga almashtirish",
+        "Kodni uzaytirish",
+        "Faylni ko'paytirish"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Modernizatsiya — mavjud kodni zamonaviy va xavfsiz sintaksisga olib o'tish, mazmunini o'zgartirmasdan."
+    },
+    {
+      "id": 12,
+      "question": "var count = 5; let count = 10; — bir blokda yozilsa nima bo'ladi?",
+      "options": [
+        "Ikkala o'zgaruvchi ham bo'ladi",
+        "SyntaxError — let allaqachon mavjud nomni e'lon qilib bo'lmaydi",
+        "count = 15 bo'ladi",
+        "Hech narsa"
+      ],
+      "correctAnswer": 1,
+      "explanation": "var va let bir xil nomni blok ichida almashlab bo'lmaydi — bu xato (SyntaxError)."
     }
   ]
 };

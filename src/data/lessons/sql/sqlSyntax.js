@@ -1,5 +1,5 @@
 export const sqlSyntax = {
-  id: "sql_syntax",
+  id: "sqlSyntax",
   title: "SQL Sintaksis (Syntax)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish

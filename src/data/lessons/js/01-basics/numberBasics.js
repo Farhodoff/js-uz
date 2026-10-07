@@ -73,6 +73,26 @@ console.log(discount);
 
 ---
 
+---
+
+## 5.1. Juda katta sonlar: BigInt
+
+Oddiy \`number\` 2^53 dan katta sonni aniq saqlolmaydi — oxirgi raqamlar yashirin o'zgaradi:
+
+\`\`\`javascript
+console.log(9999999999999999);   // 10000000000000000 (xato!)
+console.log(9999999999999999n);  // 9999999999999999n (aniq!)
+\`\`\`
+
+Raqam oxiriga \`n\` qo'shsangiz — BigInt (butun sonlarning kengaytirilgan turi) bo'ladi. U faqat juda katta butun sonlar uchun ishlatiladi: bank hisoblari, kriptovalyuta, ilmiy hisob-kitoblar.
+
+\`\`\`javascript
+console.log(10n + 5n);  // 15n
+\`\`\`
+
+Muhim qoida: \`BigInt\` ni oddiy \`number\` bilan aralashtirib bo'lmaydi — \`10n + 5\` kabi yozsangiz xato beradi. Ikkalasini aralashtirish uchun maxsus aylantirish kerak.
+
+
 ## 6. Ko'p uchraydigan xatolar
 
 ### 1. O'nlik sonda nuqta o'rniga vergul ishlatish
@@ -178,6 +198,62 @@ Keyingi darsda: Sonlar ustida arifmetik amallar bilan tanishamiz.
       startingCode: "let weight = 65,5;\nconsole.log(weight);\n",
       hint: "let weight = 65.5;\nconsole.log(weight);",
       test: "if (code.includes('65,5')) return 'Vergul o\\'rniga nuqta qo\\'ying';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('65.5'))) return null;\nreturn '65.5 soni konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "BigInt yaratish",
+      "instruction": "`big` nomli o'zgaruvchiga `12345678901234567890n` qiymatli BigInt yozing va konsolga chiqaring.",
+      "startingCode": "// big o'zgaruvchisiga BigInt yozing\n",
+      "hint": "let big = 12345678901234567890n;\nconsole.log(big);",
+      "test": "if (!/\\d+n\\b/.test(code)) return 'Raqam oxiriga n qoshilmadi (BigInt emas)';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => typeof x[0] === 'bigint' && String(x[0]) === '12345678901234567890')) return null;\nreturn 'BigInt 12345678901234567890 konsolga chiqmadi';"
+    },
+    {
+      "id": 5,
+      "title": "Ikkita sonni bitta chiqarish",
+      "instruction": "`age = 20` va `price = 19.99` o'zgaruvchilari berilgan. Ikkalasini AYNAN BIRTA `console.log` bilan chiqaring (konsolda `20 19.99` ko'rinishida).",
+      "startingCode": "let age = 20;\nlet price = 19.99;\n// Ikkalasini bitta console.log bilan chiqaring\n",
+      "hint": "console.log(age, price);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 1) return 'BIRTA console.log bilan chiqaring';\nif (out[0].trim() === '20 19.99') return null;\nreturn \"Natija '20 19.99' bolishi kerak\";"
+    },
+    {
+      "id": 6,
+      "title": "Ikkinchi nuqta xatosini tuzatish",
+      "instruction": "`1.2.3` son sifatida yozilgan va SyntaxError bermoqda. Uni matn qiling: konsolga `1.2.3` chiqsin.",
+      "startingCode": "let version = 1.2.3;\nconsole.log(version);\n",
+      "hint": "let version = \"1.2.3\"; — qo'shtirnoqqa oling.",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '1.2.3')) return null;\nreturn \"Natija '1.2.3' bolishi kerak\";"
+    },
+    {
+      "id": 7,
+      "title": "Qo'shtirnoqdagi sonni songa aylantirish",
+      "instruction": "`score` hozir matn (`\"95\"`). Uni qo'shtirnoqsiz, haqiqiy son ko'rinishida yozing va konsolga chiqaring.",
+      "startingCode": "let score = \"95\";\nconsole.log(score);\n",
+      "hint": "let score = 95;",
+      "test": "if (code.includes('\"95\"') || code.includes(\"'95'\")) return \"Qo'shtirnoqni olib tashlang\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return 'Qiymat chiqmadi';\nconst v = out[out.length - 1][0];\nif (typeof v !== 'number') return 'Qiymat son (number) emas';\nif (v === 95) return null;\nreturn 'Natija 95 bolishi kerak';"
+    },
+    {
+      "id": 8,
+      "title": "Manfiy o'nlik son",
+      "instruction": "`delta` nomli o'zgaruvchi yarating, unga `-0.25` manfiy o'nlik sonini bering va konsolga chiqaring.",
+      "startingCode": "// delta o'zgaruvchisini yarating\n",
+      "hint": "let delta = -0.25;\nconsole.log(delta);",
+      "test": "if (!code.includes('delta')) return \"delta o'zgaruvchisi topilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return 'Qiymat chiqmadi';\nconst v = out[out.length - 1][0];\nif (typeof v !== 'number') return 'Qiymat son emas';\nif (v === -0.25) return null;\nreturn 'Natija -0.25 bolishi kerak';"
+    },
+    {
+      "id": 9,
+      "title": "BigInt bilan sonni aralashtirish xatosi",
+      "instruction": "`10n + 5` xato bermoqda — BigInt va oddiy son aralashtirib bo'lmaydi. Sonni `5n` ga o'zgartiring, konsolda `15` chiqsin.",
+      "startingCode": "console.log(10n + 5);\n",
+      "hint": "console.log(10n + 5n);",
+      "test": "if (!code.includes('10n') || !code.includes('5n')) return 'BigInt bilan yozing: 10n + 5n';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '15')) return null;\nreturn 'Natija 15 bolishi kerak';"
+    },
+    {
+      "id": 10,
+      "title": "Uchta xato bitta kodda (chegara)",
+      "instruction": "Uchta xato bor: `a` vergul bilan yozilgan (natija `1.5` bo'lsin), `b` ikkita nuqta bilan (natija matn `2.3.4` bo'lsin), `c` qo'shtirnoqda (natija son `7` bo'lsin). Hammasini tuzatib uchtasini ham chiqaring.",
+      "startingCode": "let a = 1,5;\nlet b = 2.3.4;\nlet c = \"7\";\nconsole.log(a);\nconsole.log(b);\nconsole.log(c);\n",
+      "hint": "a = 1.5, b = \"2.3.4\", c = 7 — shunday qiling.",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length < 3) return 'Uchala qiymatni ham chiqaring';\nconst vals = out.map(x => String(x[0])).join('|');\nconst types = out.map(x => typeof x[0]).join('|');\nif (types !== 'number|string|number') return 'a va c son, b matn bolishi kerak';\nif (vals !== '1.5|2.3.4|7') return \"Natija: 1.5, 2.3.4 va 7 bolishi kerak\";\nreturn null;"
     }
   ],
   quizzes: [
@@ -216,6 +292,114 @@ Keyingi darsda: Sonlar ustida arifmetik amallar bilan tanishamiz.
       ],
       correctAnswer: 1,
       explanation: "O'nlik sonlar butun va kasr qismi bitta nuqta bilan ajratilgan holda yoziladi: 12.50"
+    },
+    {
+      "id": 4,
+      "question": "BigInt son qanday yoziladi?",
+      "options": [
+        "Raqam oxiriga n qo'shiladi: 100n",
+        "Qo'shtirnoq ichida: \"100n\"",
+        "Vergul bilan: 100,0n",
+        "Raqam oxiriga z qo'shiladi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Raqam oxiriga `n` harfi qo'yiladi: `100n` — bu BigInt. Qo'shtirnoq ichidagi \"100n\" esa oddiy matn."
+    },
+    {
+      "id": 5,
+      "question": "`10n + 5` ifodasi nima qiladi?",
+      "options": [
+        "15 chiqadi",
+        "15n chiqadi",
+        "TypeError xatoligi beradi",
+        "105 chiqadi"
+      ],
+      "correctAnswer": 2,
+      "explanation": "BigInt (number) bilan aralashtirib bo'lmaydi — TypeError yuz beradi. Ikkalasi ham BigInt bo'lishi kerak: `10n + 5n`."
+    },
+    {
+      "id": 6,
+      "question": "`let x = -5; let y = 0.5;` haqida to'g'ri javob qaysi?",
+      "options": [
+        "Ikkalasi ham butun son",
+        "x manfiy butun son, y noldan kichik o'nlik son",
+        "x matn, y son",
+        "Ikkalasi ham yozuv xatosi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Manfiy belgi sonni butun qilib saqlaydi: -5 butun son. 0.5 esa nuqta bilan yozilgan o'nlik (kasr) son."
+    },
+    {
+      "id": 7,
+      "question": "`let price = 19,99;` kodida nima bo'ladi?",
+      "options": [
+        "19.99 o'nlik son hosil bo'ladi",
+        "Vergul operator sifatida talqin qilinadi, to'g'ri o'nlik son bo'lmaydi",
+        "price matn bo'lib qoladi",
+        "Qavs yopilmagan xatosi beriladi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "JavaScript'da vergul — boshqa ma'nosi bor maxsus belgi. O'nlik son uchun faqat nuqta ishlatiladi: `19.99`."
+    },
+    {
+      "id": 8,
+      "question": "`let version = 1.2.3;` qanday xato beradi?",
+      "options": [
+        "TypeError",
+        "SyntaxError: Unexpected number",
+        "ReferenceError",
+        "Hech qanday xato bermaydi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Sonda faqat bitta nuqta bo'lishi mumkin. Ikkinchi nuqta poydevor (syntax) xatosiga olib keladi — dars tuzatilguncha ishlamaydi."
+    },
+    {
+      "id": 9,
+      "question": "`let age = \"25\";` dan keyin `age` qanday turda bo'ladi?",
+      "options": [
+        "Number (son)",
+        "String (matn)",
+        "BigInt",
+        "Boolean"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Qo'shtirnoq ichidagi narsa har doim matn. `age` son emas, \"25\" matni bo'lib qoladi — son deb ishlab chiqarish uchun qo'shtirnoqsiz yozish kerak."
+    },
+    {
+      "id": 10,
+      "question": "JavaScript'da sonlar qanday yoziladi?",
+      "options": [
+        "Doim qo'shtirnoq ichida",
+        "Qo'shtirnoqsiz: let age = 20",
+        "Faqat backtick ichida",
+        "Raqam harflari bilan: yigirma"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Sonlar har doim qo'shtirnoqsiz yoziladi. Qo'shtirnoq yozsangiz, bu son emas, matn bo'lib qoladi."
+    },
+    {
+      "id": 11,
+      "question": "`let big = 9999999999999999n; console.log(big);` nima chiqadi?",
+      "options": [
+        "10000000000000000",
+        "9999999999999999 — to'liq, o'zgarmaydi",
+        "0",
+        "Xato beradi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "BigInt butun sonlarni aniq saqlaydi. Raqam oxiriga `n` qo'yilgani uchun yaxlitlash bo'lmaydi."
+    },
+    {
+      "id": 12,
+      "question": "`console.log(9999999999999999);` (n yo'q, oddiy number) nima chiqadi?",
+      "options": [
+        "9999999999999999",
+        "10000000000000000 — oxirgi raqamlar yashirin o'zgaradi",
+        "SyntaxError",
+        "Matn ko'rinishida chiqadi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Oddiy number juda katta sonlarni aniq saqlolmaydi (chegarasi 2^53). Shunday holatlarda `n` bilan BigInt ishlatiladi."
     }
   ]
 };

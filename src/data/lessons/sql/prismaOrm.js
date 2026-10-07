@@ -1,5 +1,5 @@
 export const prismaOrm = {
-  id: "prisma_orm",
+  id: "prismaOrm",
   title: "Prisma ORM bilan Ishlash",
   language: "javascript",
   theory: `## 1-Qism: Sodda Tushuntirish

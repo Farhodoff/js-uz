@@ -1,5 +1,5 @@
 export const sqlIndexes = {
-  id: "sql_indexes",
+  id: "sqlIndexes",
   title: "SQL Indexes (Indekslar)",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish

@@ -4,154 +4,165 @@ export const elseLesson = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz yo'l ayrilishidasiz (ikki yo'lli chorraha):
-Yo'l belgisi aytadi: "Agar ruxsatnomangiz bo'lsa — o'ngdagi to'g'ri yo'ldan yuring. **Aks holda** (ruxsatnoma bo'lmasa) — chapdagi aylanma yo'ldan yuring".
+Tasavvur qiling, yana chorrahadasiz. Belgida ikki yo'l yozilgan:
+- Yomg'ir yog'ayotgan bo'lsa — chapga.
+- AKS HOLDA — to'g'ri.
 
-Har qanday haydovchi ikkala yo'ldan birdaniga ketolmaydi — u faqat bitta yo'lni tanlashga majbur.
+Birinchi yo'l yopiq bo'lsa, ikkinchisi ochiq. Har doim bittasi ishlaydi. Sukunat yo'q.
 
-\`else\` (aks holda) — \`if\` sharti bajarilmaganda (\`false\` bo'lganda) muqobil kod blokini ishga tushiruvchi operator hisoblanadi.
+Dasturlashda \`else\` (aks holda) xuddi shu ikkinchi yo'l. \`if\` sharti yolg'on bo'lsa, \`else\` bloki ishlaydi.
+
+else — if sharti bajarilmaganda ishga tushadigan muqobil kod blokidir.
 
 ---
 
 ## 2. Nega kerak?
 
-Oldingi darsda o'rgangan \`if\` operatorimiz faqat shart \`true\` bo'lgandagina ishlar edi. Agar shart bajarilmasa, dastur shunchaki jim o'tib ketardi.
-Lekin real dasturlarda shart bajarilmagan holat uchun ham aniq biror narsa ko'rsatish zarur:
-- Parol to'g'ri bo'lsa — tizimga kiritish.
-- **Aks holda** — "Parol noto'g'ri!" deb ogohlantirish.
+O'yinda sovg'a qoidasi bor: ball yetgan oladi. Lekin ball yetmaganlar nima ko'radi? Hech narsa. Ular chalkashadi: "dastur buzildimi?"
 
-\`if ... else\` orqali biz dasturga ikkita aniq yo'ldan birini tanlash imkonini beramiz: shart to'g'ri bo'lsa \`if\`, noto'g'ri bo'lsa \`else\` ishlaydi.
+Muammo shunda: har ikkala holatda ham javob bo'lishi kerak. Yechim — \`else\`:
+
+\`\`\`javascript
+let ball = 60;
+if (ball > 100) {
+  console.log("Sovg'a sizniki!");
+} else {
+  console.log("Ball yetmadi!");
+}
+\`\`\`
+
+Ball kam. Shuning uchun ikkinchi xabar chiqadi. Foydalanuvchi nima bo'lganini tushunadi.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod shart \`true\` bo'lganda \`if\` bloki ishlab, \`else\` bloki tashlab ketilishini ko'rsatadi.
+Bu kod sovuq bo'lmaganda nima chiqishini ko'rsatadi.
 
 \`\`\`javascript
-let userAge = 20;
-
-if (userAge >= 18) {
-  console.log("Xush kelibsiz!"); // 20 >= 18 rost (true) bo'lgani uchun ishlaydi
-} else {
-  console.log("Kirish taqiqlangan!"); // Bu blok tashlab ketiladi
+let isCold = false; // Tashqarida sovuq emas
+if (isCold) { // Savol: sovuqmi?
+  console.log("Kurtka kiying!");
+} else { // Aks holda:
+  console.log("Kurtka kerak emas!");
 }
 \`\`\`
 
 \`\`\`text
-// Natija: Xush kelibsiz!
+// Natija: Kurtka kerak emas!
 \`\`\`
 
 ---
 
 ## 4. Qator-baqator tahlil
 
-- \`if (userAge >= 18)\` — shart tekshiriladi (\`20 >= 18\`), natija \`true\`.
-- \`{ console.log("Xush kelibsiz!"); }\` — shart \`true\` bo'lgani sababli \`if\` bloki bajariladi.
-- \`else { ... }\` — \`if\` ishlagani uchun \`else\` qismi butunlay e'tiborsiz qoldiriladi.
-- **Oltin qoida**: \`if\` va \`else\` bloklaridan har doim faqat BITTASI ishlaydi, ikkalasi bir vaqtda hech qachon ishlamaydi.
+- \`let isCold = false;\` — holat saqlandi: sovuq emas.
+- \`if (isCold) {\` — savol berildi. Javob \`false\`.
+- Birinchi blok tashlab ketildi. U faqat \`true\` da ishlaydi.
+- \`else {\` — "aks holda" bloki boshlandi. Birinchi savol yolg'on bo'lgani uchun shu blok ishlaydi.
+- \`console.log("Kurtka kerak emas!");\` — ikkinchi xabar chiqadi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-Shart \`true\` bo'lgandagi bajarilish jarayoni:
+Kompyuter qatorlarni qanday bosib o'tadi (\`isCold\` false bo'lganda):
 
-| Qadam | Kod qatori | Shart / Qiymat | Qaysi yo'l tanlandi? | Natija |
-|---|---|---|---|---|
-| 1 | \`let userAge = 20;\` | \`userAge = 20\` | — | O'zgaruvchi yaratildi |
-| 2 | \`if (userAge >= 18)\` | \`20 >= 18\` → \`true\` | \`if\` bloki tanlandi | \`else\` tashlab ketildi |
-| 3 | \`console.log("Xush kelibsiz!");\` | \`if\` ichidagi kod | Bajarildi | Xush kelibsiz! chiqdi |
+| Qadam | Kod qatori | Tekshiruv | Natija |
+|---|---|---|---|
+| 1 | \`let isCold = false;\` | — | \`isCold\` false bo'ldi |
+| 2 | \`if (isCold) {\` | \`isCold\` true mi? Yo'q | Birinchi blok tashlandi |
+| 3 | \`else {\` | Avvalgisi yolg'on | Ikkinchi blokka kirildi |
+| 4 | \`console.log(...);\` | — | "Kurtka kerak emas!" chiqdi |
+
+Agar \`isCold\` true bo'lsa, 2-qadamda birinchi blok ishlaydi. 3-4-qadamlar tashlab ketiladi.
 
 ---
 
 ## 6. Yana bitta misol
 
-Bu kod shart \`false\` bo'lganda \`else\` bloki qanday ishlashini ko'rsatadi.
+Bu kod ball yetganda birinchi xabar chiqishini ko'rsatadi.
 
 \`\`\`javascript
-let userAge = 15;
-
-if (userAge >= 18) {
-  console.log("Xush kelibsiz!"); // 15 >= 18 yolg'on (false), tashlab ketiladi
-} else {
-  console.log("Kirish taqiqlangan!"); // Shart false bo'lgani uchun shu blok ishlaydi
+let ball = 120; // Ball yetgan
+if (ball > 100) { // Savol: yuzdan kattami?
+  console.log("Sovg'a sizniki!");
+} else { // Aks holda:
+  console.log("Ball yetmadi!");
 }
 \`\`\`
 
 \`\`\`text
-// Natija: Kirish taqiqlangan!
+// Natija: Sovg'a sizniki!
 \`\`\`
 
 Qator-baqator tahlil:
-- \`userAge >= 18\` — \`15 >= 18\` sharti tekshiriladi va natija \`false\` bo'ladi.
-- Shart \`false\` bo'lgani sababli \`if\` bloki tashlab ketiladi va to'g'ridan-to'g'ri \`else\` blokiga o'tiladi.
-- \`else\` ichidagi \`console.log("Kirish taqiqlangan!");\` bajariladi.
-
-Shart \`false\` bo'lgandagi trace jadvali:
-| Qadam | Kod qatori | Shart qiymati | Tanlangan yo'l | Natija |
-|---|---|---|---|---|
-| 1 | \`let userAge = 15;\` | \`userAge = 15\` | — | O'zgaruvchi saqlandi |
-| 2 | \`if (userAge >= 18)\` | \`15 >= 18\` → \`false\` | \`if\` tashlandi, \`else\` tanlandi | \`else\` blokiga o'tildi |
-| 3 | \`console.log("Kirish taqiqlangan!");\` | \`else\` kodi | Bajarildi | Kirish taqiqlangan! chiqdi |
+- \`ball > 100\` — taqqoslash. Natijasi \`true\`.
+- Javob rost bo'lgani uchun birinchi blok ishladi.
+- \`else\` bloki bu safar tashlab ketildi.
 
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1. else dan keyin shart yozishga urinish
-❌ Xato kod:
-\`\`\`javascript
-let age = 15;
-if (age >= 18) {
-  console.log("Katta");
-} else (age < 18) {
-  console.log("Kichik");
-}
-\`\`\`
-Nima bo'ladi: \`SyntaxError: Unexpected token '{'\` xatoligi yuz beradi. \`else\` o'zidan keyin shart qabul qilmaydi! U "boshqa barcha holatlarda" degan ma'noni beradi.
-✅ To'g'ri variant:
-\`\`\`javascript
-if (age >= 18) {
-  console.log("Katta");
-} else {
-  console.log("Kichik");
-}
-\`\`\`
-
-### 2. else ni if siz yolg'iz ishlatish
+### 1. else ni yolg'iz yozish
 ❌ Xato kod:
 \`\`\`javascript
 else {
-  console.log("Xatolik");
+  console.log("Salom!");
 }
 \`\`\`
-Nima bo'ladi: \`SyntaxError: Unexpected token 'else'\` xatoligi yuz beradi. \`else\` yolg'iz ishlatilmaydi, u har doim o'zidan oldingi \`if\` ga bog'langan bo'lishi shart.
+Nima bo'ladi: \`SyntaxError: Unexpected token 'else'\` xatoligi yuz beradi. \`else\` yolg'iz yasholmaydi. Oldida har doim \`if\` bloki bo'lishi shart.
 ✅ To'g'ri variant:
 \`\`\`javascript
-if (shart) { ... } else { ... }
+let isCold = false;
+if (isCold) {
+  console.log("Kurtka!");
+} else {
+  console.log("Salom!");
+}
 \`\`\`
 
-### 3. if bilan else o'rtasiga begona kod qo'shib qo'yish
+### 2. else ni xato yozish
 ❌ Xato kod:
 \`\`\`javascript
-if (age >= 18) {
-  console.log("Katta");
-}
-console.log("Tekshirildi"); // Bu kod if va else bog'lanishini buzadi!
-else {
-  console.log("Kichik");
+let isCold = true;
+if (isCold) {
+  console.log("Kurtka!");
+} eles {
+  console.log("Salom!");
 }
 \`\`\`
-Nima bo'ladi: \`SyntaxError: Unexpected token 'else'\` xatoligi yuz beradi. \`else\` bevosita \`if\` blokining yopilish qavsidan keyin turishi shart.
+Nima bo'ladi: \`SyntaxError: Unexpected token '{'\` xatoligi yuz beradi. \`eles\` degan so'z yo'q. Faqat aniq \`else\` yoziladi.
 ✅ To'g'ri variant:
 \`\`\`javascript
-if (age >= 18) {
-  console.log("Katta");
+let isCold = true;
+if (isCold) {
+  console.log("Kurtka!");
 } else {
-  console.log("Kichik");
+  console.log("Salom!");
 }
-console.log("Tekshirildi");
+\`\`\`
+
+### 3. else ga shart yozish
+❌ Xato kod:
+\`\`\`javascript
+let isCold = true;
+if (isCold) {
+  console.log("Kurtka!");
+} else (isCold) {
+  console.log("Salom!");
+}
+\`\`\`
+Nima bo'ladi: \`SyntaxError\` xatoligi yuz beradi. \`else\` yoniga shart yozilmaydi. U shartsiz — "qolgan barcha holatlar" degani. (Shartli ikkinchi yo'l keyingi darsda.)
+✅ To'g'ri variant:
+\`\`\`javascript
+let isCold = true;
+if (isCold) {
+  console.log("Kurtka!");
+} else {
+  console.log("Salom!");
+}
 \`\`\`
 
 ---
@@ -159,48 +170,40 @@ console.log("Tekshirildi");
 ## 8. Tekshiruv
 
 ### 1-mashq (Oson)
-\`score = 65;\` o'zgaruvchisi berilgan. Agar \`score >= 70\` bo'lsa \`"O'tdingiz!"\`, aks holda (\`else\`) \`"Yiqildingiz!"\` deb chiqaruvchi \`if...else\` yozing (konsolga \`"Yiqildingiz!"\` chiqishi kerak).
+\`isCold\` ga \`false\` bering. \`if/else\` yozing: rost bo'lsa \`"Kurtka!"\`, aks holda \`"Salomat!"\` chiqsin.
 
 ### 2-mashq (O'rtacha)
-\`isLoggedIn = true;\` berilgan. Agar u \`true\` bo'lsa \`"Shaxsiy kabinet"\`, aks holda \`"Tizimga kiring"\` deb chiqaruvchi \`if...else\` yozing.
+\`ball\` ga \`60\` bering. \`ball > 100\` rost bo'lsa \`"Sovg'a!"\`, aks holda \`"Ball yetmadi!"\` chiqsin.
 
-### 3-mashq (Xatoni topish)
-Quyidagi koddagi \`else\` dan keyingi ortiqcha shartni olib tashlab, xatoni to'g'rilang:
-\`\`\`javascript
-let hasMoney = 50;
-if (hasMoney >= 100) {
-  console.log("Sotib olish");
-} else (hasMoney < 100) {
-  console.log("Mablag' yetarli emas");
-}
-\`\`\`
+### 3-mashq (Chegara holat)
+\`age\` ga \`20\` bering. \`age >= 18\` rost bo'lsa \`"Kattalar!"\`, aks holda \`"Bolalar!"\` chiqsin.
 
 ### Javoblar:
 1.
 \`\`\`javascript
-let score = 65;
-if (score >= 70) {
-  console.log("O'tdingiz!");
+let isCold = false;
+if (isCold) {
+  console.log("Kurtka!");
 } else {
-  console.log("Yiqildingiz!");
+  console.log("Salomat!");
 }
 \`\`\`
 2.
 \`\`\`javascript
-let isLoggedIn = true;
-if (isLoggedIn) {
-  console.log("Shaxsiy kabinet");
+let ball = 60;
+if (ball > 100) {
+  console.log("Sovg'a!");
 } else {
-  console.log("Tizimga kiring");
+  console.log("Ball yetmadi!");
 }
 \`\`\`
 3.
 \`\`\`javascript
-let hasMoney = 50;
-if (hasMoney >= 100) {
-  console.log("Sotib olish");
-} else { // (hasMoney < 100) olib tashlandi
-  console.log("Mablag' yetarli emas");
+let age = 20;
+if (age >= 18) {
+  console.log("Kattalar!");
+} else {
+  console.log("Bolalar!");
 }
 \`\`\`
 
@@ -208,74 +211,238 @@ if (hasMoney >= 100) {
 
 ## 9. Xulosa
 
-1. \`else\` (aks holda) — \`if\` sharti \`false\` bo'lganda muqobil kod blokini ishga tushiradi.
-2. \`if\` va \`else\` bloklaridan har doim faqat BITTASI ishlaydi.
-3. \`else\` o'zidan keyin shart qabul qilmaydi va yolg'iz o'zi ishlatilmaydi.
+1. \`else\` — if sharti yolg'on bo'lganda ishlaydigan ikkinchi blok.
+2. \`else\` yolg'iz yozilmaydi. Oldida \`if\` bloki bo'lishi shart.
+3. \`else\` yoniga shart yozilmaydi. U "qolgan barcha holatlar" degani.
 
-Keyingi darsda: Bir nechta shartlarni ketma-ket tekshirish uchun \`else if\` operatori bilan tanishamiz.
+Keyingi darsda: shartli ikkinchi yo'l — \`else if\` bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "if...else bilan natijani chiqarish",
-      instruction: "`let score = 65;` berilgan. Agar `score >= 70` bo'lsa `\"O'tdingiz!\"`, aks holda (`else`) `\"Yiqildingiz!\"` deb konsolga chiqaring.",
-      startingCode: "let score = 65;\n// if...else yozing\n",
-      hint: "if (score >= 70) {\n  console.log(\"O'tdingiz!\");\n} else {\n  console.log(\"Yiqildingiz!\");\n}",
-      test: "if (!code.includes('else')) return 'else ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes(\"Yiqildingiz!\"))) return null;\nreturn 'Kutilgan xabar konsolga chiqmadi';"
+      title: "Sovuq emas",
+      instruction: "`isCold` ga `false` bering. `if/else` yozing: rost bo'lsa `\"Kurtka!\"`, aks holda `\"Salomat!\"` chiqsin.",
+      startingCode: "let isCold = false;\n// if/else yozing\n",
+      hint: "if (isCold) {\n  console.log(\"Kurtka!\");\n} else {\n  console.log(\"Salomat!\");\n}",
+      test: "if (!code.includes('if') || !code.includes('else')) return 'if va else ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salomat'))) return null;\nreturn 'Salomat xabari chiqmadi';"
     },
     {
       id: 2,
-      title: "Tizimga kirish holatini tekshirish",
-      instruction: "`let isLoggedIn = true;` berilgan. Agar u rost bo'lsa `\"Shaxsiy kabinet\"`, aks holda `\"Tizimga kiring\"` deb chiqaring.",
-      startingCode: "let isLoggedIn = true;\n// if...else yozing\n",
-      hint: "if (isLoggedIn) {\n  console.log(\"Shaxsiy kabinet\");\n} else {\n  console.log(\"Tizimga kiring\");\n}",
-      test: "if (!code.includes('else')) return 'else ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes(\"Shaxsiy kabinet\"))) return null;\nreturn 'Kutilgan xabar konsolga chiqmadi';"
+      title: "Ball yetmadi",
+      instruction: "`ball` ga `60` bering. `ball > 100` rost bo'lsa `\"Sovg'a!\"`, aks holda `\"Yetmadi!\"` chiqsin.",
+      startingCode: "let ball = 60;\n// if/else yozing\n",
+      hint: "if (ball > 100) {\n  console.log(\"Sovg'a!\");\n} else {\n  console.log(\"Yetmadi!\");\n}",
+      test: "if (!code.includes('if') || !code.includes('else')) return 'if va else ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Yetmadi'))) return null;\nreturn 'Yetmadi xabari chiqmadi';"
     },
     {
       id: 3,
-      title: "else dagi sintaksis xatosini tuzatish",
-      instruction: "`else (hasMoney < 100)` dagi ortiqcha shartni olib tashlang, toki xato tuzatilsin.",
-      startingCode: "let hasMoney = 50;\nif (hasMoney >= 100) {\n  console.log(\"Sotib olish\");\n} else (hasMoney < 100) {\n  console.log(\"Mablag' yetarli emas\");\n}\n",
-      hint: "else {\n  console.log(\"Mablag' yetarli emas\");\n}",
-      test: "if (code.includes('else (')) return 'else dan keyin shart yozilmaydi, qavsni olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes(\"Mablag' yetarli emas\"))) return null;\nreturn 'Kutilgan xabar konsolga chiqmadi';"
+      title: "Ball yetdi",
+      instruction: "`ball` ga `150` bering. Birinchi xabar chiqsin (`\"Sovg'a!\"`).",
+      startingCode: "let ball = 150;\n// if/else yozing\n",
+      hint: "if (ball > 100) {\n  console.log(\"Sovg'a!\");\n} else {\n  console.log(\"Yetmadi!\");\n}",
+      test: "if (!code.includes('if') || !code.includes('else')) return 'if va else ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes(\"Sovg'a\"))) return null;\nreturn 'Sovg\\'a xabari chiqmadi';"
+    },
+    {
+      id: 4,
+      title: "Yolg'iz else ni tuzatish",
+      instruction: "`else` yolg'iz qolgan. Oldiga `if (isCold)` qo'shing (`isCold = false` berilgan). `\"Salomat!\"` chiqsin.",
+      startingCode: "let isCold = false;\nelse {\n  console.log(\"Salomat!\");\n}\n",
+      hint: "if (isCold) {\n  console.log(\"Kurtka!\");\n} else {\n  console.log(\"Salomat!\");\n}",
+      test: "if (!code.includes('if')) return 'oldiga if qoshishingiz kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salomat'))) return null;\nreturn 'Salomat xabari chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "eles ni tuzatish",
+      instruction: "`eles` ni `else` ga tuzating (`isCold = true` berilgan). `\"Kurtka!\"` chiqsin.",
+      startingCode: "let isCold = true;\nif (isCold) {\n  console.log(\"Kurtka!\");\n} eles {\n  console.log(\"Salomat!\");\n}\n",
+      hint: "} else {",
+      test: "if (code.includes('eles')) return 'eles ni else deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Kurtka'))) return null;\nreturn 'Kurtka xabari chiqmadi';"
+    },
+    {
+      id: 6,
+      title: "Shartli else ni tuzatish",
+      instruction: "`else (isCold)` dagi shartni olib tashlang. `\"Kurtka!\"` chiqsin (`isCold = true`).",
+      startingCode: "let isCold = true;\nif (isCold) {\n  console.log(\"Kurtka!\");\n} else (isCold) {\n  console.log(\"Salomat!\");\n}\n",
+      hint: "} else {",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Kurtka'))) return null;\nreturn 'Kurtka xabari chiqmadi';"
+    },
+    {
+      id: 7,
+      title: "Yosh tekshiruvi",
+      instruction: "`age = 20` berilgan. `age >= 18` rost bo'lsa `\"Kattalar!\"`, aks holda `\"Bolalar!\"` chiqsin.",
+      startingCode: "let age = 20;\n// if/else yozing\n",
+      hint: "if (age >= 18) {\n  console.log(\"Kattalar!\");\n} else {\n  console.log(\"Bolalar!\");\n}",
+      test: "if (!code.includes('if') || !code.includes('else')) return 'if va else ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Kattalar'))) return null;\nreturn 'Kattalar xabari chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Yosh yetmadi (chegara)",
+      instruction: "`age = 15` berilgan. Birinchi emas, ikkinchi xabar chiqsin (`\"Bolalar!\"`).",
+      startingCode: "let age = 15;\n// if/else yozing\n",
+      hint: "if (age >= 18) {\n  console.log(\"Kattalar!\");\n} else {\n  console.log(\"Bolalar!\");\n}",
+      test: "if (!code.includes('if') || !code.includes('else')) return 'if va else ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Bolalar'))) return null;\nreturn 'Bolalar xabari chiqmadi';"
+    },
+    {
+      id: 9,
+      title: "Tenglik sharti (chegara)",
+      instruction: "`x = 5` berilgan. `x === 5` rost bo'lsa `\"Teng!\"`, aks holda `\"Teng emas!\"` chiqsin.",
+      startingCode: "let x = 5;\n// if/else yozing\n",
+      hint: "if (x === 5) {\n  console.log(\"Teng!\");\n} else {\n  console.log(\"Teng emas!\");\n}",
+      test: "if (!code.includes('if') || !code.includes('else')) return 'if va else ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Teng!'))) return null;\nreturn 'Teng xabari chiqmadi';"
+    },
+    {
+      id: 10,
+      title: "Faqat bitta chiqadi (chegara)",
+      instruction: "`isRain = true` berilgan. Ikkala xabardan faqat bittasi chiqishini isbotlang: `\"Soyabon!\"` chiqsin, `\"Quyosh!\"` chiqmasin.",
+      startingCode: "let isRain = true;\n// if/else yozing\n",
+      hint: "if (isRain) {\n  console.log(\"Soyabon!\");\n} else {\n  console.log(\"Quyosh!\");\n}",
+      test: "if (!code.includes('if') || !code.includes('else')) return 'if va else ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 1) return 'Faqat BITTA xabar chiqishi kerak';\nif (out[0].includes('Soyabon')) return null;\nreturn 'Soyabon xabari chiqmadi';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "else blokidagi kod qachon ishga tushadi?",
+      question: "`let isCold = false; if (isCold) { console.log(\"A\"); } else { console.log(\"B\"); }` nima chiqaradi?",
       options: [
-        "Faqat if sharti false (yolg'on) bo'lganda",
-        "Har doim if dan keyin albatta ishlaydi",
-        "Faqat if sharti true bo'lganda",
-        "Dastur yakunlanganda"
+        "A",
+        "B",
+        "Hech narsa",
+        "Xatolik"
       ],
-      correctAnswer: 0,
-      explanation: "else bloki faqat va faqat if qavs ichidagi shart false bo'lgan taqdirdagina ishga tushadi."
+      correctAnswer: 1,
+      explanation: "Shart yolg'on, shuning uchun else bloki ishlaydi."
     },
     {
       id: 2,
-      question: "Quyidagi kod konsolga nima chiqaradi?\nlet temperature = 25;\nif (temperature < 20) {\n  console.log(\"Salqin\");\n} else {\n  console.log(\"Iliq\");\n}",
+      question: "`let isCold = true; if (isCold) { console.log(\"A\"); } else { console.log(\"B\"); }` nima chiqaradi?",
       options: [
-        "\"Salqin\"",
-        "\"Iliq\"",
-        "Ikkala so'z ham chiqadi",
-        "Hech narsa chiqmaydi"
+        "B",
+        "A",
+        "A va B",
+        "Xatolik"
       ],
       correctAnswer: 1,
-      explanation: "25 < 20 sharti false bo'lgani sababli if tashlab ketiladi va else dagi \"Iliq\" chiqadi."
+      explanation: "Shart rost, birinchi blok ishlaydi. else tashlab ketiladi."
     },
     {
       id: 3,
-      question: "else operatori haqida qaysi fikr to'g'ri?",
+      question: "`else { console.log(\"Hi\"); }` yolg'iz yozilsa nima bo'ladi?",
       options: [
-        "else dan keyin har doim qavsda shart yoziladi",
-        "else ni if siz yolg'iz ishlatish mumkin",
-        "else o'zidan keyin shart qabul qilmaydi, u faqat if noto'g'ri bo'lganda ishlaydi",
-        "else faqat sonlar bilan ishlaydi"
+        "Hi chiqadi",
+        "SyntaxError beradi",
+        "Hech narsa chiqmaydi",
+        "true chiqadi"
       ],
-      correctAnswer: 2,
-      explanation: "else o'zidan keyin shart qabul qilmaydi va faqat if sharti bajarilmaganda ishlaydi."
+      correctAnswer: 1,
+      explanation: "else yolg'iz yasholmaydi. Oldida if bo'lishi shart."
+    },
+    {
+      id: 4,
+      question: "`} eles {` yozilsa nima bo'ladi?",
+      options: [
+        "Ishlaydi",
+        "SyntaxError beradi",
+        "Ogohlantirish beradi",
+        "Hech narsa bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "eles degan so'z yo'q. Faqat aniq else yoziladi."
+    },
+    {
+      id: 5,
+      question: "`} else (isCold) {` yozilsa nima bo'ladi?",
+      options: [
+        "Ishlaydi",
+        "SyntaxError beradi",
+        "Ogohlantirish beradi",
+        "Shart tekshiriladi"
+      ],
+      correctAnswer: 1,
+      explanation: "else yoniga shart yozilmaydi. U shartsiz blok."
+    },
+    {
+      id: 6,
+      question: "`let ball = 60; if (ball > 100) { console.log(\"A\"); } else { console.log(\"B\"); }` nima chiqaradi?",
+      options: [
+        "A",
+        "B",
+        "A va B",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "60 > 100 false, shuning uchun else bloki ishlaydi."
+    },
+    {
+      id: 7,
+      question: "if/else juftligida nechta blok ishlaydi?",
+      options: [
+        "Ikkalasi ham",
+        "Faqat bittasi",
+        "Hech biri",
+        "Uchtasi"
+      ],
+      correctAnswer: 1,
+      explanation: "Har doim bittasi: rost bo'lsa birinchi, yolg'on bo'lsa ikkinchi."
+    },
+    {
+      id: 8,
+      question: "`let age = 20; if (age >= 18) { console.log(\"A\"); } else { console.log(\"B\"); }` nima chiqaradi?",
+      options: [
+        "B",
+        "A",
+        "A va B",
+        "20"
+      ],
+      correctAnswer: 1,
+      explanation: "20 >= 18 true, birinchi blok ishlaydi."
+    },
+    {
+      id: 9,
+      question: "`let age = 15; if (age >= 18) { console.log(\"A\"); } else { console.log(\"B\"); }` nima chiqaradi?",
+      options: [
+        "A",
+        "B",
+        "15",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "15 >= 18 false, ikkinchi blok ishlaydi."
+    },
+    {
+      id: 10,
+      question: "else bloki qachon tashlab ketiladi?",
+      options: [
+        "if sharti rost bo'lganda",
+        "if sharti yolg'on bo'lganda",
+        "Har doim",
+        "Hech qachon"
+      ],
+      correctAnswer: 0,
+      explanation: "Rost bo'lsa birinchi blok ishlaydi, else kerak emas."
+    },
+    {
+      id: 11,
+      question: "`let x = 5; if (x === 5) { console.log(\"A\"); } else { console.log(\"B\"); }` nima chiqaradi?",
+      options: [
+        "B",
+        "A",
+        "5",
+        "true"
+      ],
+      correctAnswer: 1,
+      explanation: "x === 5 true, birinchi blok ishlaydi."
+    },
+    {
+      id: 12,
+      question: "else nimani bildiradi?",
+      options: [
+        "Yangi shart",
+        "Aks holda (qolgan barcha holatlar)",
+        "Xatolik",
+        "Takrorlash"
+      ],
+      correctAnswer: 1,
+      explanation: "else — shart bajarilmaganda ishlaydigan muqobil blok."
     }
   ]
 };

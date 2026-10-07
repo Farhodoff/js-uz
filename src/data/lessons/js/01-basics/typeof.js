@@ -4,20 +4,33 @@ export const typeofLesson = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz supermarket kassasidasiz. Kassir mahsulotga skanerni to'g'irlaydi va ekran mahsulotning turini aytadi: "ichimlik", "meva" yoki "non". 
-Qutining tashqi ko'rinishidan nima ekanini bilolmasangiz ham, skaner uning ichida nima borligini aniq ko'rsatib beradi.
+Tasavvur qiling, supermarket kassasidasiz. Kassir mahsulotni skanerga tutadi. Ekranda uning turi chiqadi: "sut", "non" yoki "meva". Quti yopiq bo'lsa ham, skaner ichidagini aytadi.
 
-JavaScript'da \`typeof\` — o'zgaruvchi yoki qiymatning qaysi ma'lumot turiga tegishli ekanligini aniqlab beruvchi maxsus operatordir.
+Dasturlashda \`typeof\` xuddi shu skanerga o'xshaydi. Qiymatni bersangiz, uning turini aytadi.
+
+typeof — qiymat yoki o'zgaruvchining ma'lumot turini (data type) aniqlaydigan operatordir.
 
 ---
 
 ## 2. Nega kerak?
 
-Dasturlashda ba'zan o'zgaruvchida qanday turdagi ma'lumot turganini aniqlash zarur bo'ladi:
-- Masalan, \`"100"\` (matn) bilan \`100\` (son) ko'rinishidan bir xil raqamga o'xshaydi, lekin dastur uchun ular mutlaqo boshqa-boshqa narsalardir.
-- Agar biz matn ustida matematik amallar bajarmoqchi bo'lsak, xatolik yuz berishi mumkin.
+Dasturda shunday holat bo'ladi: ikkita yozuv ko'zga bir xil ko'rinadi.
 
-\`typeof\` o'zgaruvchining turini aniq ko'rsatib, bizni bunday chalkashliklardan qutqaradi.
+\`\`\`javascript
+let a = "100"; // Matn
+let b = 100; // Son
+\`\`\`
+
+Ikkalasi ham \`100\` ga o'xshaydi. Lekin biri matn, biri son. Qaysi ekanini ko'z bilan ajratib bo'lmaydi.
+
+Muammo shunda: turini bilmasdan ishlatsangiz, natija kutilmagan bo'ladi. Yechim — \`typeof\` bilan tekshirish:
+
+\`\`\`javascript
+console.log(typeof a); // string chiqadi
+console.log(typeof b); // number chiqadi
+\`\`\`
+
+Bir qarashda aniq javob: biri matn, biri son.
 
 ---
 
@@ -26,8 +39,8 @@ Dasturlashda ba'zan o'zgaruvchida qanday turdagi ma'lumot turganini aniqlash zar
 Bu kod sonli o'zgaruvchining turini aniqlaydi va konsolga chiqaradi.
 
 \`\`\`javascript
-let age = 25; // Sonli o'zgaruvchi
-console.log(typeof age); // Turini konsolga chiqarish
+let age = 25; // Son saqlandi
+console.log(typeof age); // number chiqadi
 \`\`\`
 
 \`\`\`text
@@ -38,76 +51,75 @@ console.log(typeof age); // Turini konsolga chiqarish
 
 ## 4. Qator-baqator tahlil
 
-- \`let age = 25;\` — \`age\` nomli o'zgaruvchiga \`25\` soni yuklandi.
-- \`typeof age\` — \`typeof\` operatori \`age\` o'zgaruvchisining ichidagi qiymatni tekshiradi va uning turi son (\`"number"\`) ekanligini qaytaradi.
-- \`console.log(typeof age);\` — topilgan tur nomi (\`number\`) konsolga chiqadi.
-- Eslatma: \`typeof\` natijasi har doim kichik harflar bilan yozilgan matn (string) bo'ladi.
+- \`let age = 25;\` — \`age\` nomli o'zgaruvchiga \`25\` soni berildi.
+- \`// Son saqlandi\` — izoh. O'zgaruvchida nima turganini eslatadi.
+- \`console.log(typeof age);\` — \`typeof\` turini tekshiradi. Natija (\`number\` so'zi) konsolga chiqadi.
 
 ---
 
 ## 5. Yana bitta misol
 
-Bu kod matnli o'zgaruvchining turini aniqlaydi va konsolga chiqaradi.
+Bu kod uch xil turdagi qiymatni tekshiradi. Har biri o'z nomini beradi.
 
 \`\`\`javascript
-let userName = "Ali"; // Matnli o'zgaruvchi
-console.log(typeof userName); // Turini konsolga chiqarish
+let ism = "Ali"; // Matn saqlandi
+let isVip = true; // Mantiqiy qiymat saqlandi
+let city; // Qiymat berilmadi
+console.log(typeof ism); // string chiqadi
+console.log(typeof isVip); // boolean chiqadi
+console.log(typeof city); // undefined chiqadi
 \`\`\`
 
 \`\`\`text
-// Natija: string
+// Natija:
+string
+boolean
+undefined
 \`\`\`
 
 Qator-baqator tahlil:
-- \`let userName = "Ali";\` — \`userName\` nomli o'zgaruvchiga \`"Ali"\` matni yuklandi.
-- \`console.log(typeof userName);\` — \`typeof\` matnli qiymatni tekshirib, konsolga \`string\` deb chiqaradi.
-
-Biz o'rgangan turlarning \`typeof\` natijalari:
-- \`typeof 42\` → \`"number"\`
-- \`typeof "Salom"\` → \`"string"\`
-- \`typeof true\` → \`"boolean"\`
-- \`typeof undefined\` → \`"undefined"\`
+- \`typeof ism\` — matn uchun \`string\` so'zini beradi.
+- \`typeof isVip\` — mantiqiy qiymat uchun \`boolean\` so'zini beradi.
+- \`typeof city\` — qiymatsiz o'zgaruvchi uchun \`undefined\` so'zini beradi.
+- Natija har doim kichik harfli matn bo'ladi.
 
 ---
 
 ## 6. Ko'p uchraydigan xatolar
 
-### 1. typeof ni katta harflar bilan yozish
+### 1. Typeof ni katta harf bilan yozish
 ❌ Xato kod:
 \`\`\`javascript
-let score = 50;
-console.log(typeOf(score));
+let ism = "Ali";
+console.log(Typeof(ism));
 \`\`\`
-Nima bo'ladi: \`ReferenceError: typeOf is not defined\` xatoligi yuz beradi. JavaScript harflar registriga sezgir, shuning uchun faqat kichik harflarda \`typeof\` deb yoziladi.
+Nima bo'ladi: \`ReferenceError: Typeof is not defined\` xatoligi yuz beradi. Faqat kichik harfdagi \`typeof\` to'g'ri.
 ✅ To'g'ri variant:
 \`\`\`javascript
-let score = 50;
-console.log(typeof score);
+let ism = "Ali";
+console.log(typeof ism); // string chiqadi
 \`\`\`
 
-### 2. typeof ni qo'shtirnoq ichiga olib yozish
+### 2. typeof ni ikki so'z qilib yozish
 ❌ Xato kod:
 \`\`\`javascript
-let score = 50;
-console.log("typeof score");
+console.log(type of "Ali");
 \`\`\`
-Nima bo'ladi: Konsolga tur nomi emas, balki shunchaki \`typeof score\` degan oddiy matn chiqadi. \`typeof\` operator bo'lgani uchun qo'shtirnoqsiz yoziladi.
+Nima bo'ladi: \`SyntaxError: missing ) after argument list\` xatoligi yuz beradi. \`typeof\` bitta so'z. Orasiga bo'sh joy qo'yilmaydi.
 ✅ To'g'ri variant:
 \`\`\`javascript
-console.log(typeof score);
+console.log(typeof "Ali"); // string chiqadi
 \`\`\`
 
-### 3. Qo'shtirnoqdagi sonni number deb o'ylash
-❌ Xato tushuncha:
+### 3. typeof dan keyin hech narsa yozmaslik
+❌ Xato kod:
 \`\`\`javascript
-let zipCode = "100000";
-console.log(typeof zipCode); // "string" chiqadi, "number" emas!
+console.log(typeof);
 \`\`\`
-Nima bo'ladi: Qo'shtirnoqqa olingan har qanday qiymat (ichida qanday raqamlar bo'lishidan qat'i nazar) har doim \`string\` hisoblanadi.
-✅ To'g'ri tushuncha:
+Nima bo'ladi: \`SyntaxError: Unexpected token ')'\` xatoligi yuz beradi. \`typeof\` nimanidir tekshirishi kerak. Bo'sh qolishi mumkin emas.
+✅ To'g'ri variant:
 \`\`\`javascript
-let zipCode = 100000;
-console.log(typeof zipCode); // "number"
+console.log(typeof "Ali"); // string chiqadi
 \`\`\`
 
 ---
@@ -115,103 +127,272 @@ console.log(typeof zipCode); // "number"
 ## 7. Tekshiruv
 
 ### 1-mashq (Oson)
-\`price\` nomli o'zgaruvchi yarating (\`let price = 99;\`) va uning turini \`typeof\` yordamida konsolga chiqaring.
+\`ism\` ga \`"Ali"\` bering. \`typeof\` bilan turini konsolga chiqaring. Natija \`string\` bo'lsin.
 
 ### 2-mashq (O'rtacha)
-\`isStudent\` nomli o'zgaruvchi yarating (\`let isStudent = true;\`) va uning turini \`typeof\` yordamida konsolga chiqaring.
+Uchta qiymat turini tekshiring: \`25\` (son), \`true\` (mantiqiy), \`nick\` (qiymatsiz o'zgaruvchi). Har birini alohida chiqaring. Natijalar \`number\`, \`boolean\`, \`undefined\` bo'lsin.
 
 ### 3-mashq (Chegara holat)
-\`pin\` nomli o'zgaruvchiga matn ko'rinishidagi son bering (\`let pin = "1234";\`). Uning turini \`typeof\` bilan konsolga chiqaring va natija \`string\` ekanligini ko'ring.
+E'lon qilinmagan nomni \`typeof\` bilan tekshiring:
+\`\`\`javascript
+console.log(typeof mehmon);
+\`\`\`
+Bu xato bermaydi. Natija \`undefined\` chiqadi. Sababi: \`typeof\` tekshirishdan oldin nom bor-yo'qligini o'zi biladi.
 
 ### Javoblar:
 1.
 \`\`\`javascript
-let price = 99;
-console.log(typeof price);
+let ism = "Ali";
+console.log(typeof ism);
 \`\`\`
 2.
 \`\`\`javascript
-let isStudent = true;
-console.log(typeof isStudent);
+console.log(typeof 25);
+console.log(typeof true);
+let nick;
+console.log(typeof nick);
 \`\`\`
 3.
 \`\`\`javascript
-let pin = "1234";
-console.log(typeof pin);
+console.log(typeof mehmon); // undefined chiqadi, xato bermaydi
 \`\`\`
 
 ---
 
 ## 8. Xulosa
 
-1. \`typeof\` — qiymat yoki o'zgaruvchining ma'lumot turini aniqlab beruvchi operatordir.
-2. \`typeof\` natijasi har doim kichik harfli matn bo'ladi (\`"number"\`, \`"string"\`, \`"boolean"\`, \`"undefined"\`).
-3. Qo'shtirnoq ichiga yozilgan har qanday qiymat \`string\` turiga kiradi.
+1. \`typeof\` — qiymat turini aniqlaydigan operator. Natija har doim kichik harfli matn.
+2. \`typeof\` bitta so'z bo'lib yoziladi. Katta harf yoki oraliq xato beradi.
+3. \`typeof\` dan keyin albatta tekshiriladigan qiymat bo'lishi kerak.
 
-Keyingi darsda: Ma'lumot turlarini bir-biriga aylantirish (Type Conversion) mavzusi bilan tanishamiz.
+Keyingi darsda: bir turni ikkinchisiga aylantirish (type conversion) bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Son turini aniqlash",
-      instruction: "`price` nomli o'zgaruvchi yarating (`let price = 99;`) va uning turini `typeof` yordamida `console.log(typeof price);` orqali chiqaring.",
-      startingCode: "let price = 99;\n// price ning turini konsolga chiqaring\n",
-      hint: "console.log(typeof price);",
-      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('number'))) return null;\nreturn 'Konsolga number chiqmadi';"
+      title: "Matn turini aniqlash",
+      instruction: "`\"Salom\"` matnining turini `typeof` bilan konsolga chiqaring. Natija `string` bo'lsin.",
+      startingCode: "// typeof bilan \"Salom\" turini chiqaring\n",
+      hint: "console.log(typeof \"Salom\");",
+      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'string')) return null;\nreturn 'string konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "Boolean turini aniqlash",
-      instruction: "`isStudent` nomli o'zgaruvchi yarating (`let isStudent = true;`) va uning turini `typeof` yordamida konsolga chiqaring.",
-      startingCode: "let isStudent = true;\n// isStudent ning turini konsolga chiqaring\n",
-      hint: "console.log(typeof isStudent);",
-      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('boolean'))) return null;\nreturn 'Konsolga boolean chiqmadi';"
+      title: "Son turini aniqlash",
+      instruction: "`100` sonining turini `typeof` bilan konsolga chiqaring. Natija `number` bo'lsin.",
+      startingCode: "// typeof bilan 100 turini chiqaring\n",
+      hint: "console.log(typeof 100);",
+      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'number')) return null;\nreturn 'number konsolga chiqmadi';"
     },
     {
       id: 3,
-      title: "Qo'shtirnoqdagi son turini aniqlash",
-      instruction: "`pin` nomli o'zgaruvchiga `\"1234\"` qiymatini bering va uning turini `typeof` bilan konsolga chiqaring.",
-      startingCode: "let pin = \"1234\";\n// pin ning turini konsolga chiqaring\n",
-      hint: "console.log(typeof pin);",
-      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('string'))) return null;\nreturn 'Konsolga string chiqmadi';"
+      title: "Mantiqiy turini aniqlash",
+      instruction: "`false` qiymatining turini `typeof` bilan konsolga chiqaring. Natija `boolean` bo'lsin.",
+      startingCode: "// typeof bilan false turini chiqaring\n",
+      hint: "console.log(typeof false);",
+      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'boolean')) return null;\nreturn 'boolean konsolga chiqmadi';"
+    },
+    {
+      id: 4,
+      title: "Qiymatsiz o'zgaruvchi turi",
+      instruction: "`nick` ni qiymatsiz e'lon qiling. `typeof` bilan turini chiqaring. Natija `undefined` bo'lsin.",
+      startingCode: "// nick ni e'lon qiling va turini chiqaring\n",
+      hint: "let nick;\nconsole.log(typeof nick);",
+      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nif (!code.includes('nick')) return 'nick o\\'zgaruvchisi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'undefined')) return null;\nreturn 'undefined konsolga chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "Ikkita tur bitta qatorda",
+      instruction: "`\"Ali\"` va `10` turlarini AYNAN BIRTA `console.log` bilan chiqaring: `string number` ko'rinsin.",
+      startingCode: "// Ikkala turni bitta console.log bilan chiqaring\n",
+      hint: "console.log(typeof \"Ali\", typeof 10);",
+      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 1) return 'BIRTA console.log bilan chiqaring';\nif (out[0].trim() === 'string number') return null;\nreturn \"Natija 'string number' bolishi kerak\";"
+    },
+    {
+      id: 6,
+      title: "Katta harf xatosini tuzatish",
+      instruction: "`console.log(Typeof(ism));` xato bermoqda. `ism = \"Ali\"` berilgan. Kichik harfga tuzating: `string` chiqsin.",
+      startingCode: "let ism = \"Ali\";\nconsole.log(Typeof(ism));\n",
+      hint: "Typeof o'rniga typeof yozing.",
+      test: "if (code.includes('Typeof')) return 'Typeof ni kichik harfda typeof deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'string')) return null;\nreturn 'string konsolga chiqmadi';"
+    },
+    {
+      id: 7,
+      title: "Oraliq xatosini tuzatish",
+      instruction: "`console.log(type of \"Ali\");` xato bermoqda. Bitta so'z qilib tuzating: `string` chiqsin.",
+      startingCode: "console.log(type of \"Ali\");\n",
+      hint: "type of o'rniga typeof yozing.",
+      test: "if (!code.includes('typeof')) return 'typeof deb bitta soz bilan yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'string')) return null;\nreturn 'string konsolga chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Qo'shtirnoqli son tuzog'i",
+      instruction: "`\"25\"` ning turini tekshiring. E'tibor bering: bu son emas, matn. Natija `string` bo'lsin.",
+      startingCode: "// \"25\" turini chiqaring\n",
+      hint: "console.log(typeof \"25\");",
+      test: "if (!code.includes('typeof')) return 'typeof operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'string')) return null;\nreturn 'string konsolga chiqmadi';"
+    },
+    {
+      id: 9,
+      title: "O'zgaruvchi orqali tekshirish",
+      instruction: "`isVip = true` berilgan. `typeof` bilan turini chiqaring: `boolean` chiqsin.",
+      startingCode: "let isVip = true;\n// typeof bilan turini chiqaring\n",
+      hint: "console.log(typeof isVip);",
+      test: "if (!code.includes('typeof isVip')) return 'typeof isVip deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'boolean')) return null;\nreturn 'boolean konsolga chiqmadi';"
+    },
+    {
+      id: 10,
+      title: "E'lon qilinmagan nom (chegara)",
+      instruction: "`mehmon` hech qayerda e'lon qilinmagan. Shunday bo'lsa ham `typeof` xato bermaydi. Tekshiring: `undefined` chiqsin.",
+      startingCode: "// mehmon ni typeof bilan tekshiring\n",
+      hint: "console.log(typeof mehmon);",
+      test: "if (!code.includes('typeof mehmon')) return 'typeof mehmon deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor (typeof xato bermasligi kerak): ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'undefined')) return null;\nreturn 'undefined konsolga chiqmadi';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "`typeof` operatori nima uchun ishlatiladi?",
+      question: "`console.log(typeof 25);` nima chiqaradi?",
       options: [
-        "O'zgaruvchining qiymatini o'chirish uchun",
-        "Qiymat yoki o'zgaruvchining ma'lumot turini aniqlash uchun",
-        "Matn uzunligini hisoblash uchun",
-        "Yangi o'zgaruvchi e'lon qilish uchun"
+        "25",
+        "number",
+        "string",
+        "Xatolik"
       ],
       correctAnswer: 1,
-      explanation: "typeof operatori har qanday qiymat yoki o'zgaruvchining qaysi ma'lumot turiga tegishli ekanligini qaytaradi."
+      explanation: "typeof qiymatning turini aytadi: 25 son, shuning uchun number."
     },
     {
       id: 2,
-      question: "`console.log(typeof \"42\");` kodi konsolga nima chiqaradi?",
+      question: "`console.log(typeof \"Ali\");` nima chiqaradi?",
       options: [
-        "\"number\"",
-        "\"string\"",
-        "42",
-        "\"undefined\""
+        "Ali",
+        "string",
+        "text",
+        "Xatolik"
       ],
       correctAnswer: 1,
-      explanation: "\"42\" qo'shtirnoq ichida yozilgani uchun uning turi son emas, balki string (matn) bo'ladi."
+      explanation: "Qo'shtirnoqdagi qiymat matn, shuning uchun string chiqadi."
     },
     {
       id: 3,
-      question: "Quyidagilardan qaysi biri `typeof true` natijasi bo'ladi?",
+      question: "`let a; console.log(typeof a);` nima chiqaradi?",
       options: [
-        "\"boolean\"",
-        "\"true\"",
-        "\"Number\"",
-        "true"
+        "Xatolik",
+        "undefined",
+        "null",
+        "Bo'sh qator"
       ],
-      correctAnswer: 0,
-      explanation: "true va false qiymatlarining turi har doim \"boolean\" bo'ladi."
+      correctAnswer: 1,
+      explanation: "Qiymatsiz o'zgaruvchining turi ham undefined deb ataladi."
+    },
+    {
+      id: 4,
+      question: "`console.log(Typeof(10));` qatorida nima bo'ladi?",
+      options: [
+        "number chiqadi",
+        "ReferenceError: Typeof is not defined",
+        "string chiqadi",
+        "Hech narsa bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript katta harfni tanimaydi: faqat kichik typeof to'g'ri."
+    },
+    {
+      id: 5,
+      question: "`console.log(type of 10);` qatorida nima bo'ladi?",
+      options: [
+        "number chiqadi",
+        "SyntaxError beradi",
+        "string chiqadi",
+        "undefined chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "typeof bitta so'z. Oraliq qo'yilsa, yozuv qoidasi buziladi."
+    },
+    {
+      id: 6,
+      question: "`console.log(typeof \"25\");` nima chiqaradi?",
+      options: [
+        "number (son bo'lgani uchun)",
+        "string (qo'shtirnoq bo'lgani uchun)",
+        "Xatolik",
+        "25"
+      ],
+      correctAnswer: 1,
+      explanation: "Qo'shtirnoq ichidagi raqam ham matn hisoblanadi."
+    },
+    {
+      id: 7,
+      question: "`console.log(typeof true);` nima chiqaradi?",
+      options: [
+        "true",
+        "boolean",
+        "1",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "true mantiqiy qiymat, uning turi boolean."
+    },
+    {
+      id: 8,
+      question: "`console.log(typeof);` qatorida nima bo'ladi?",
+      options: [
+        "undefined chiqadi",
+        "SyntaxError beradi",
+        "null chiqadi",
+        "Bo'sh qator chiqadi"
+      ],
+      correctAnswer: 1,
+      explanation: "typeof nimanidir tekshirishi shart. Bo'sh qolishi mumkin emas."
+    },
+    {
+      id: 9,
+      question: "E'lon qilinmagan `mehmon` uchun `console.log(typeof mehmon);` nima qiladi?",
+      options: [
+        "ReferenceError beradi",
+        "undefined chiqaradi, xato bermaydi",
+        "null chiqaradi",
+        "Dasturni to'xtatadi"
+      ],
+      correctAnswer: 1,
+      explanation: "typeof nom bor-yo'qligini o'zi tekshiradi, shuning uchun xato bermaydi."
+    },
+    {
+      id: 10,
+      question: "Qaysi yozuv turini to'g'ri aniqlaydi?",
+      options: [
+        "console.log(Typeof \"Ali\");",
+        "console.log(typeof \"Ali\");",
+        "console.log(type of \"Ali\");",
+        "console.log(typeof);"
+      ],
+      correctAnswer: 1,
+      explanation: "Faqat kichik harfli, bitta so'zli va qiymatli yozuv to'g'ri."
+    },
+    {
+      id: 11,
+      question: "`let x = \"5\"; console.log(typeof x);` nima chiqaradi?",
+      options: [
+        "number",
+        "string",
+        "5",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "x da matn turibdi, shuning uchun string chiqadi."
+    },
+    {
+      id: 12,
+      question: "typeof natijasi har doim qanday ko'rinishda bo'ladi?",
+      options: [
+        "Katta harfli matn",
+        "Kichik harfli matn",
+        "Son",
+        "Mantiqiy qiymat"
+      ],
+      correctAnswer: 1,
+      explanation: "Natija har doim kichik harflar bilan yozilgan matn: string, number, boolean, undefined."
     }
   ]
 };

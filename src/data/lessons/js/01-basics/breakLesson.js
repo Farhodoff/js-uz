@@ -4,81 +4,80 @@ export const breakLesson = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz do'kondan qizil olma qidiryapsiz. Savatda 10 ta olma bor. Siz ularni bittalab ko'ryapsiz: 1-olma yashil, 2-olma yashil, 3-olma esa qizil! Qizil olmani topganingizdan so'ng, qolgan 7 ta olmani qarab chiqishning hech qanday keragi yo'q. Qidirishni darhol to'xtatasiz.
-Yoki poyezddagi favqulodda to'xtatish (stop-kran): poyezd oxirgi bekatgacha borishi rejalashtirilgan, lekin kutilmagan holat yuz berganda stop-kran bosilsa, harakat o'sha zahoti butunlay to'xtaydi.
+Tasavvur qiling, poyezdda ketayapsiz. Birdan muhim qo'ng'iroq bo'ldi. Siz favqulodda tormozni tortasiz. Poyezd darhol to'xtaydi. Keyingi bekat kutilmaydi.
 
-\`break\` (to'xtatish / sindirish) — siklning asosiy sharti hali tugamagan bo'lsa ham, uni muddatidan oldin butunlay to'xtatib, sikldan darhol tashqariga chiqib ketish buyrug'idir.
+Dasturlashda \`break\` (to'xtatish) xuddi shu favqulodda tormoz. Sikl ichida uchrasa, sikl darhol to'xtaydi.
 
-*Yangi termin:* **Muddatidan oldin to'xtatish (premature termination)** — ma'lum bir shart bajarilganda (masalan, kerakli natija topilganda) siklni oxirigacha aylantirmasdan darhol yakunlash.
+break — siklni shart kutilmasdan darhol to'xtatadigan operatordir.
 
 ---
 
 ## 2. Nega kerak?
 
-Sikllar odatda o'z sharti \`false\` bo'lmaguncha to'xtovsiz aylanishda davom etadi.
-Masalan, 1 dan 1000 gacha sonlar orasidan kerakli bitta sonni qidirayotgan bo'lsak, u 5-qadamdayoq topilishi mumkin. Agar \`break\` bo'lmasa, dastur keraksiz ravishda qolgan 995 ta qadamni ham behuda bajarib chiqadi.
+Qidiruv bor: 1 dan 100 gacha sonlar ichidan 7 ga bo'linadigan birinchisini topish kerak. \`for\` bilan ham bo'ladi. Lekin topilgandan keyin ham sikl 100 gacha aylanadi. Bekor ish.
 
-\`break\` yordamida kerakli natija topilishi bilan siklni shu zahoti to'xtatish, kompyuter vaqti va resursini tejash mumkin.
+Muammo shunda: kerakli narsa topilishi bilan to'xtash kerak. Yechim — \`break\`:
+
+\`\`\`javascript
+for (let i = 1; i <= 100; i++) {
+  console.log(i);
+  break;
+}
+\`\`\`
+
+Faqat \`1\` chiqadi! Birinchi aylanishda \`break\` uchradi. Sikl to'xtadi.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod 1 dan 5 gacha sanashi kerak, lekin hisoblagich 3 ga teng bo'lganda \`break\` sababli sikldan chiqib ketadi.
+Bu kod shart bajarilishi bilan siklni to'xtatadi.
 
 \`\`\`javascript
-for (let i = 1; i <= 5; i++) {
-  if (i === 3) {
-    break; // i 3 ga teng bo'lganda sikl darhol to'xtaydi
-  }
-  console.log(i); // Joriy sonni chiqarish
+for (let i = 1; i <= 5; i++) { // 5 gacha mo'ljallangan
+  console.log(i); // Hozirgi qiymat chiqadi
+  break; // Darhol to'xtaydi
 }
 \`\`\`
 
 \`\`\`text
-// Natija:
-1
-2
+// Natija: 1
 \`\`\`
 
 ---
 
 ## 4. Qator-baqator tahlil
 
-- \`for (let i = 1; i <= 5; i++) {\` — 1 dan 5 gacha aylanadigan odatiy \`for\` sikli.
-- \`if (i === 3) {\` — har bir qadamda \`i\` qiymati 3 ga tengligi tekshiriladi.
-- \`break;\` — to'xtatish buyrug'i. JavaScript bu kalit so'zni ko'rishi bilan siklni darhol yakunlaydi va jingalak qavsdan tashqariga sakraydi. Qolgan takrorlanishlar (3, 4, 5) umuman bajarilmaydi.
-- \`console.log(i);\` — konsolga chiqarish qatori faqat \`break\` ishlamagan (1 va 2 bo'lgan) paytda bajariladi.
-- \`}\` — sikl bloki tugashi.
+- \`for (let i = 1; i <= 5; i++) {\` — sikl boshlandi. 5 gacha mo'ljallangan.
+- \`console.log(i);\` — birinchi aylanish. \`1\` chiqadi.
+- \`break;\` — tormoz tortildi. Sikl darhol to'xtaydi. Qolgan aylanishlar bo'lmaydi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-Jarayonni qadam-baqadam kuzatamiz:
+Kompyuter qanday harakat qiladi:
 
-| Qadam | i | Shart (\`i === 3\`) | \`break\` ishladimi? | \`console.log(i)\` | Natija / Izoh |
-|---|---|---|---|---|---|
-| 1 | 1 | 1 === 3 -> false | Yo'q | 1 chiqdi | Sikl davom etadi, i 2 bo'ladi |
-| 2 | 2 | 2 === 3 -> false | Yo'q | 2 chiqdi | Sikl davom etadi, i 3 bo'ladi |
-| 3 | 3 | 3 === 3 -> true | **HA** | — (ishlamaydi) | \`break\` ishladi! Sikl shu zahoti to'xtadi |
+| Qadam | Kod qatori | Holat | Natija |
+|---|---|---|---|
+| 1 | \`for (let i = 1; ...\` | i = 1, shart rost | Blok ichiga kirildi |
+| 2 | \`console.log(i);\` | — | 1 chiqdi |
+| 3 | \`break;\` | Tormoz! | Sikl to'xtadi |
 
-*Eslatma:* \`break\` faqat o'zi joylashgan siklni to'xtatadi. Sikldan keyin yozilgan boshqa kodlar odatdagidek ishlashda davom etadi.
+2, 3, 4, 5 sonlari hech qachon chiqmaydi.
 
 ---
 
 ## 6. Yana bitta misol
 
-1-misoldan farqi: \`break\` buyrug'ini \`while\` siklida ishlatamiz hamda \`console.log\` ni \`if\` dan oldin qo'yamiz.
+Bu kod topilgandan keyin to'xtashni ko'rsatadi.
 
 \`\`\`javascript
-let count = 1;
-while (count <= 10) {
-  console.log(count); // Joriy sonni chiqarish
-  if (count === 3) {
-    break; // 3 ga yetganda siklni to'xtatish
+for (let i = 1; i <= 10; i++) { // 10 gacha mo'ljallangan
+  console.log(i); // Hozirgi qiymat chiqadi
+  if (i === 3) { // 3 topildimi?
+    break; // Topildi — to'xtaydi
   }
-  count++;
 }
 \`\`\`
 
@@ -89,162 +88,331 @@ while (count <= 10) {
 3
 \`\`\`
 
-*(Farqiga e'tibor bering: bu yerda \`console.log\` \`if\` dan oldin turgani sababli \`3\` ham ekranga chiqadi, so'ngra \`break\` ishlab sikl to'xtaydi).*
+Qator-baqator tahlil:
+- Birinchi uch aylanish odatdagidek ishladi: \`1\`, \`2\`, \`3\` chiqdi.
+- \`i === 3\` rost bo'lganda \`break\` ishga tushdi.
+- Sikl to'xtadi. 4 dan 10 gacha hech narsa chiqmadi.
 
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1-xato: break buyrug'ini sikldan tashqarida ishlatish
-
+### 1. Sikldan tashqarida yozish
+❌ Xato kod:
 \`\`\`javascript
-let age = 20;
-if (age > 18) {
-  break; // XATO: bu yerda sikl yo'q!
-}
+break;
 \`\`\`
-
-**Nima bo'ladi:** \`SyntaxError: Illegal break statement\` xatosi yuz beradi. Chunki \`break\` faqat sikllar (\`for\`, \`while\`, \`do...while\`) yoki \`switch\` ichida ishlatilishi shart.
-**To'g'ri varianti:** \`break\` ni faqat sikl yoki \`switch\` bloki ichida ishlating.
-
-### 2-xato: break dan keyin kod yozish (bajarilmas kod)
-
+Nima bo'ladi: \`SyntaxError: Illegal break statement\` xatoligi yuz beradi. \`break\` faqat sikl ichida yashaydi. Tashqarida ma'nosiz.
+✅ To'g'ri variant:
 \`\`\`javascript
-for (let i = 1; i <= 3; i++) {
+for (let i = 1; i <= 5; i++) {
+  console.log(i);
   break;
-  console.log(i); // XATO: bu qator hech qachon ishlamaydi!
 }
 \`\`\`
 
-**Nima bo'ladi:** \`break\` darhol sikldan chiqib ketgani sababli, uning ostidagi qatorlarga navbat yetib bormaydi (unreachable code).
-**To'g'ri varianti:** \`break\` har doim ma'lum bir shart (\`if\`) ichida berilishi lozim: \`if (...) { break; }\`.
+### 2. Noto'g'ri yozish
+❌ Xato kod:
+\`\`\`javascript
+for (let i = 0; i < 5; i++) {
+  brake;
+  console.log(i);
+}
+\`\`\`
+Nima bo'ladi: \`ReferenceError: brake is not defined\` xatoligi yuz beradi. \`brake\` degan so'z yo'q. Faqat aniq \`break\` yoziladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+for (let i = 0; i < 5; i++) {
+  break;
+  console.log(i);
+}
+\`\`\`
 
-### 3-xato: break butun dasturni to'xtatadi deb o'ylash
-Ba'zi o'quvchilar \`break\` butun dasturni yopadi deb o'ylashadi. Unday emas: \`break\` faqat o'zi turgan siklni to'xtatadi, sikldan keyingi qatorlar esa o'z vaqtida bajariladi.
+### 3. Keyingi kod to'xtaydi deb o'ylash
+❌ Xato tushuncha: \`break\` dan keyingi hamma kod to'xtaydi deb o'ylash.
+Nima bo'ladi: xato. \`break\` faqat O'Z siklini to'xtatadi. Sikldan keyingi qatorlar odatdagidek ishlaydi.
+✅ To'g'ri variant:
+\`\`\`javascript
+for (let i = 1; i <= 5; i++) {
+  break;
+}
+console.log("Tugadi!"); // Bu chiqadi
+\`\`\`
 
 ---
 
 ## 8. Tekshiruv
 
-### 1-mashq (oson)
-1 dan 10 gacha bo'lgan sonlarni \`for\` siklida chiqaring, lekin \`i === 4\` bo'lganda \`break\` orqali siklni to'xtating (konsolga faqat 1, 2, 3 chiqsin).
+### 1-mashq (Oson)
+\`1\` dan \`5\` gacha sikl yozing. Ichiga darhol \`break\` qo'ying. Faqat \`1\` chiqsin.
 
-### 2-mashq (o'rtacha)
-Quyidagi kod ishlaganda konsolga nimalar chiqadi?
+### 2-mashq (O'rtacha)
+\`1\` dan \`10\` gacha sikl yozing. \`i === 3\` bo'lganda \`break\` bilan to'xtating. Natijalar \`1\`, \`2\`, \`3\` bo'lsin.
+
+### 3-mashq (Chegara holat)
+Sikldan keyin ham kod ishlashini isbotlang: sikl ichida \`break\`, sikldan keyin \`"Tugadi!"\` chiqsin.
+
+### Javoblar:
+1.
 \`\`\`javascript
 for (let i = 1; i <= 5; i++) {
   console.log(i);
-  if (i === 2) {
-    break;
-  }
+  break;
 }
-console.log("To'xtadi");
 \`\`\`
-
-### 3-mashq (chegara holat)
-Quyidagi kodda konsolga nimalar chiqadi?
-\`\`\`javascript
-for (let i = 1; i <= 5; i++) {
-  if (i > 0) {
-    break;
-  }
-  console.log(i);
-}
-console.log("Tugadi");
-\`\`\`
-
----
-
-### Javoblar
-
-**1-mashq javobi:**
+2.
 \`\`\`javascript
 for (let i = 1; i <= 10; i++) {
-  if (i === 4) {
+  console.log(i);
+  if (i === 3) {
     break;
   }
-  console.log(i);
 }
 \`\`\`
-
-**2-mashq javobi:**
-Konsolga ketma-ket \`1\`, \`2\` va \`"To'xtadi"\` chiqadi (chunki \`console.log\` \`break\` dan oldin chaqirilgan, \`i === 2\` bo'lganda 2 chiqib, keyin sikl to'xtaydi).
-
-**3-mashq javobi:**
-Konsolga faqat \`"Tugadi"\` chiqadi. Chunki birinchi qadamdayoq \`1 > 0\` sharti \`true\` bo'lib, \`break\` siklni darhol to'xtatadi. \`console.log(i)\` esa biror marta ham ishlamaydi.
+3.
+\`\`\`javascript
+for (let i = 1; i <= 5; i++) {
+  break;
+}
+console.log("Tugadi!");
+\`\`\`
 
 ---
 
 ## 9. Xulosa
 
-1. \`break\` buyrug'i siklni muddatidan oldin, darhol to'xtatib, undan chiqib ketish uchun ishlatiladi.
-2. \`break\` odatda \`if\` sharti ichida yoziladi va faqat o'zi joylashgan siklga ta'sir qiladi.
-3. Sikldan yoki \`switch\` dan tashqarida \`break\` ishlatilsa, \`SyntaxError: Illegal break statement\` xatosi yuzaga keladi.
+1. \`break\` — siklni darhol to'xtatadi. Qolgan aylanishlar bo'lmaydi.
+2. \`break\` faqat sikl ichida yoziladi. Tashqarida xato beradi.
+3. Sikldan keyingi kod to'xtamaydi. U odatdagidek ishlaydi.
 
-Keyingi darsda: Siklni butunlay to'xtatmasdan, faqat joriy bitta qadamni tashlab o'tish uchun \`continue\` buyrug'ini o'rganamiz.
+Keyingi darsda: qadamni tashlab ketadigan \`continue\` operatori bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Siklni 3 da to'xtatish",
-      instruction: "\`for (let i = 1; i <= 5; i++)\` sikli berilgan. Agar \`i === 3\` bo'lsa, \`break;\` orqali siklni to'xtating, qolgan hollarda \`console.log(i);\` chiqaring (faqat 1 va 2 chiqsin).",
-      startingCode: "for (let i = 1; i <= 5; i++) {\n  // if va break yozing\n  console.log(i);\n}\n",
-      hint: "if (i === 3) {\n  break;\n}\nconsole.log(i);",
-      test: "if (!code.includes('break')) return 'break ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2') return null;\nreturn 'Konsolga faqat 1, 2 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
+      title: "Darhol to'xtatish",
+      instruction: "`1` dan `5` gacha sikl yozing. Ichiga darhol `break` qo'ying. Faqat `1` chiqsin.",
+      startingCode: "// for va break yozing\n",
+      hint: "for (let i = 1; i <= 5; i++) {\n  console.log(i);\n  break;\n}",
+      test: "if (!code.includes('break')) return 'break operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1') return null;\nreturn 'Faqat 1 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
     },
     {
       id: 2,
-      title: "while siklida break",
-      instruction: "\`let count = 1;\` berilgan. \`while (count <= 10)\` siklida \`count\` qiymatini chiqaring va \`count === 4\` bo'lganda \`break;\` bilan to'xtating (1, 2, 3, 4 chiqsin).",
-      startingCode: "let count = 1;\nwhile (count <= 10) {\n  console.log(count);\n  // if va break yozing\n  count++;\n}\n",
-      hint: "console.log(count);\nif (count === 4) {\n  break;\n}\ncount++;",
-      test: "if (!code.includes('break')) return 'break ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3,4') return null;\nreturn 'Konsolga 1, 2, 3, 4 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
+      title: "3 da to'xtatish",
+      instruction: "`1` dan `10` gacha sikl yozing. `i === 3` bo'lganda to'xtating (`1`, `2`, `3` chiqishi kerak).",
+      startingCode: "// for, if va break yozing\n",
+      hint: "for (let i = 1; i <= 10; i++) {\n  console.log(i);\n  if (i === 3) {\n    break;\n  }\n}",
+      test: "if (!code.includes('break')) return 'break operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3') return null;\nreturn '1, 2, 3 chiqishi kerak';"
     },
     {
       id: 3,
-      title: "Cheksiz sikldan break bilan chiqish",
-      instruction: "Quyidagi \`while (true)\` sikli berilgan. \`step === 3\` bo'lganda \`break;\` bilan sikldan chiqib ketish shartini qo'shing.",
-      startingCode: "let step = 1;\nwhile (true) {\n  console.log(step);\n  // step 3 ga teng bo'lsa break qiling\n  step++;\n}\n",
-      hint: "if (step === 3) {\n  break;\n}",
-      test: "if (!code.includes('break')) return 'break ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3') return null;\nreturn 'Konsolga 1, 2, 3 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
+      title: "Tashqaridagi break ni tuzatish",
+      instruction: "`break;` yolg'iz qolgan. Uni `for` ichiga oling (`0`, `1`, `2` chiqishi kerak emas — faqat birinchi qiymat chiqsin).",
+      startingCode: "break;\n",
+      hint: "for (let i = 1; i <= 5; i++) {\n  console.log(i);\n  break;\n}",
+      test: "if (!code.includes('for') || !code.includes('break')) return 'for ichiga break yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length === 1) return null;\nreturn 'Faqat BITTA qiymat chiqishi kerak';"
+    },
+    {
+      id: 4,
+      title: "brake ni tuzatish",
+      instruction: "`brake` ni `break` ga tuzating (`i = 0` dan `5` gacha siklda). Faqat `0` chiqsin.",
+      startingCode: "for (let i = 0; i < 5; i++) {\n  console.log(i);\n  brake;\n}\n",
+      hint: "brake o'rniga break yozing.",
+      test: "if (code.includes('brake')) return 'brake ni break deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0') return null;\nreturn 'Faqat 0 chiqishi kerak';"
+    },
+    {
+      id: 5,
+      title: "Sikldan keyin davom etadi",
+      instruction: "Sikl ichida `break`, sikldan keyin `\"Tugadi!\"` chiqaring. Ikkalasi ham ko'rinsin.",
+      startingCode: "// for, break va oxirgi console.log yozing\n",
+      hint: "for (let i = 1; i <= 5; i++) {\n  break;\n}\nconsole.log(\"Tugadi!\");",
+      test: "if (!code.includes('break')) return 'break ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Tugadi'))) return null;\nreturn 'Tugadi xabari chiqmadi';"
+    },
+    {
+      id: 6,
+      title: "5 da to'xtatish (chegara)",
+      instruction: "`1` dan `100` gacha sikl yozing. `i === 5` bo'lganda to'xtating (`1`-`5` chiqishi kerak).",
+      startingCode: "// for, if va break yozing\n",
+      hint: "for (let i = 1; i <= 100; i++) {\n  console.log(i);\n  if (i === 5) {\n    break;\n  }\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3,4,5') return null;\nreturn '1 dan 5 gacha chiqishi kerak';"
+    },
+    {
+      id: 7,
+      title: "while da break (chegara)",
+      instruction: "`i = 1`, shart `true` bo'lgan `while` yozing. Ichida chiqaring va darhol `break` qiling (faqat `1` chiqsin).",
+      startingCode: "let i = 1;\n// while va break yozing\n",
+      hint: "while (true) {\n  console.log(i);\n  break;\n}",
+      test: "if (!code.includes('while') || !code.includes('break')) return 'while va break ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1') return null;\nreturn 'Faqat 1 chiqishi kerak';"
+    },
+    {
+      id: 8,
+      title: "Topilganda to'xtash (chegara)",
+      instruction: "`n = 1` dan boshlab chiqaring. `7` chiqqanda to'xtating (`1`-`7` chiqishi kerak).",
+      startingCode: "let n = 1;\n// while, if va break yozing\n",
+      hint: "while (true) {\n  console.log(n);\n  if (n === 7) {\n    break;\n  }\n  n++;\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3,4,5,6,7') return null;\nreturn '1 dan 7 gacha chiqishi kerak';"
+    },
+    {
+      id: 9,
+      title: "Ikkita to'xtash nuqtasi (chegara)",
+      instruction: "`i = 0` dan `10` gacha siklda `i === 2` bo'lganda to'xtating (`0`, `1`, `2` chiqishi kerak).",
+      startingCode: "// for, if va break yozing\n",
+      hint: "for (let i = 0; i <= 10; i++) {\n  console.log(i);\n  if (i === 2) {\n    break;\n  }\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2') return null;\nreturn '0, 1, 2 chiqishi kerak';"
+    },
+    {
+      id: 10,
+      title: "Qidiruv yakuni (chegara)",
+      instruction: "`q = 5` berilgan. `i = 1` dan `10` gacha qidiring: `i === q` bo'lganda to'xtating (`1`-`5` chiqishi kerak).",
+      startingCode: "let q = 5;\n// for, if va break yozing\n",
+      hint: "for (let i = 1; i <= 10; i++) {\n  console.log(i);\n  if (i === q) {\n    break;\n  }\n}",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3,4,5') return null;\nreturn '1 dan 5 gacha chiqishi kerak';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Sikl ichida break buyrug'i bajarilganda nima sodir bo'ladi?",
+      question: "`for (let i = 1; i <= 5; i++) { console.log(i); break; }` nima chiqaradi?",
       options: [
-        "Sikl muddatidan oldin darhol to'xtaydi va sikldan keyingi kodga o'tiladi",
-        "Butun dastur xato berib to'xtaydi",
-        "Faqat joriy qadam o'tkazib yuboriladi",
-        "Sikl boshidan qayta boshlanadi"
+        "1, 2, 3, 4, 5",
+        "1",
+        "Hech narsa",
+        "Xatolik"
       ],
-      correctAnswer: 0,
-      explanation: "break buyrug'i siklni to'liq to'xtatadi va boshqaruvni sikldan keyingi birinchi qatorga uzatadi."
+      correctAnswer: 1,
+      explanation: "Birinchi aylanishda break uchraydi. Sikl to'xtaydi."
     },
     {
       id: 2,
-      question: "Agar break buyrug'i hech qanday sikl yoki switch bo'lmagan oddiy joyda ishlatilsa, qanday xato chiqadi?",
+      question: "break nimani to'xtatadi?",
       options: [
-        "SyntaxError: Illegal break statement",
-        "TypeError",
-        "ReferenceError",
-        "Hech qanday xato chiqmaydi"
+        "Butun dasturni",
+        "O'z siklini",
+        "Faqat bir qatorni",
+        "Hech narsani"
       ],
-      correctAnswer: 0,
-      explanation: "JavaScript da break faqat sikllar yoki switch ichida ishlatilishi mumkin, aks holda sintaktik xato beradi."
+      correctAnswer: 1,
+      explanation: "break faqat o'z siklini to'xtatadi. Keyingi kod ishlaydi."
     },
     {
       id: 3,
-      question: "Quyidagi kod konsolga nima chiqaradi?\nfor (let i = 1; i <= 5; i++) {\n  if (i === 2) break;\n  console.log(i);\n}",
+      question: "`break;` yolg'iz yozilsa nima bo'ladi?",
       options: [
-        "1",
-        "1 va 2",
-        "1, 2, 3, 4, 5",
-        "Hech narsa chiqmaydi"
+        "Hech narsa bo'lmaydi",
+        "SyntaxError beradi",
+        "Dastur to'xtaydi",
+        "true qaytaradi"
       ],
-      correctAnswer: 0,
-      explanation: "1-qadamda 1 chiqadi. 2-qadamda i === 2 rost bo'lib break ishlaydi va sikldan chiqib ketiladi. Shuning uchun faqat 1 chiqadi."
+      correctAnswer: 1,
+      explanation: "break faqat sikl ichida yashaydi."
+    },
+    {
+      id: 4,
+      question: "`for (let i = 0; i < 5; i++) { brake; console.log(i); }` nima qiladi?",
+      options: [
+        "0 chiqaradi",
+        "ReferenceError beradi",
+        "0, 1, 2, 3, 4 chiqaradi",
+        "Hech narsa chiqarmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "brake degan so'z yo'q. Faqat aniq break yoziladi."
+    },
+    {
+      id: 5,
+      question: "`for (let i = 1; i <= 5; i++) { break; } console.log(\"Tugadi!\");` nima chiqaradi?",
+      options: [
+        "Hech narsa",
+        "Tugadi!",
+        "1, 2, 3, 4, 5",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "break siklni to'xtatadi. Keyingi qator ishlaydi."
+    },
+    {
+      id: 6,
+      question: "`for (let i = 1; i <= 10; i++) { console.log(i); if (i === 3) { break; } }` nima chiqaradi?",
+      options: [
+        "1 dan 10 gacha",
+        "1, 2, 3",
+        "3",
+        "Hech narsa"
+      ],
+      correctAnswer: 1,
+      explanation: "3 topilganda break ishlaydi. Qolgani chiqmaydi."
+    },
+    {
+      id: 7,
+      question: "break qayerda turishi kerak?",
+      options: [
+        "Sikldan tashqarida",
+        "Sikl ichida",
+        "Fayl boshida",
+        "Farqi yo'q"
+      ],
+      correctAnswer: 1,
+      explanation: "break faqat sikl ichida ma'noga ega."
+    },
+    {
+      id: 8,
+      question: "`let i = 1; while (true) { console.log(i); break; }` nima chiqaradi?",
+      options: [
+        "Cheksiz 1",
+        "1",
+        "Hech narsa",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Shart har doim rost. Lekin break birinchi aylanishda to'xtatadi."
+    },
+    {
+      id: 9,
+      question: "`for (let i = 0; i <= 10; i++) { console.log(i); if (i === 2) { break; } }` nima chiqaradi?",
+      options: [
+        "0 dan 10 gacha",
+        "0, 1, 2",
+        "2",
+        "Hech narsa"
+      ],
+      correctAnswer: 1,
+      explanation: "2 topilganda to'xtaydi."
+    },
+    {
+      id: 10,
+      question: "Topilgandan keyin to'xtash uchun nima kerak?",
+      options: [
+        "continue",
+        "break",
+        "if ning o'zi yetadi",
+        "Hech narsa"
+      ],
+      correctAnswer: 1,
+      explanation: "if topadi, break to'xtatadi."
+    },
+    {
+      id: 11,
+      question: "`for (let i = 1; i <= 100; i++) { console.log(i); if (i === 5) { break; } }` nechta qiymat chiqadi?",
+      options: [
+        "100 ta",
+        "5 ta",
+        "1 ta",
+        "Hech qanday"
+      ],
+      correctAnswer: 1,
+      explanation: "1 dan 5 gacha chiqadi. 5 da to'xtaydi."
+    },
+    {
+      id: 12,
+      question: "break dan keyingi qatorlar nima bo'ladi?",
+      options: [
+        "O'chib ketadi",
+        "Odatdagidek ishlaydi",
+        "Xato beradi",
+        "Takrorlanadi"
+      ],
+      correctAnswer: 1,
+      explanation: "break faqat siklni to'xtatadi. Keyingi kodga tegmaydi."
     }
   ]
 };
