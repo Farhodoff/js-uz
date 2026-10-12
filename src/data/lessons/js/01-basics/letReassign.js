@@ -166,28 +166,28 @@ Keyingi darsda: Qiymati hech qachon o'zgarmaydigan o'zgarmaslar (\`const\`) bila
 `,
   exercises: [
     {
-      id: 1,
-      title: "Sonni o'zgartirish",
-      instruction: "`level` nomli o'zgaruvchi yarating (qiymati `1`), keyingi qatorda uning qiymatini `2` ga o'zgartiring va konsolga chiqaring.",
-      startingCode: "let level = 1;\n// level qiymatini 2 ga o'zgartiring va chiqaring\n",
-      hint: "level = 2;\nconsole.log(level);",
-      test: "if (!code.includes('level = 2') && !code.includes('level=2')) return 'level qiymati 2 ga o\\'zgartirilmadi';\nif (code.match(/let\\s+level\\s*=\\s*2/)) return 'Qiymatni o\\'zgartirishda let qayta yozilmaydi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('2'))) return null;\nreturn '2 soni konsolga chiqmadi';"
+      "id": 1,
+      "title": "Sonni o'zgartirish",
+      "instruction": "`level` nomli o'zgaruvchi yarating (qiymati `1`), keyingi qatorda uning qiymatini `2` ga o'zgartiring va konsolga chiqaring.",
+      "startingCode": "let level = 1;\n// level qiymatini 2 ga o'zgartiring va chiqaring\n",
+      "hint": "level = 2;\nconsole.log(level);",
+      "test": "if (!code.includes('level = 2') && !code.includes('level=2')) return 'level qiymati 2 ga o\\'zgartirilmadi';\nif (code.match(/(?:let|var)\\s+level\\s*=\\s*2/)) return 'Qiymatni o\\'zgartirishda let qayta yozilmaydi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('2'))) return null;\nreturn '2 soni konsolga chiqmadi';"
     },
     {
-      id: 2,
-      title: "Matnni o'zgartirish",
-      instruction: "`status` nomli o'zgaruvchi qiymatini `\"kutish\"` dan `\"bajarildi\"` ga o'zgartiring va konsolga chiqaring.",
-      startingCode: "let status = \"kutish\";\n// status qiymatini \"bajarildi\" ga almashtiring va chiqaring\n",
-      hint: "status = \"bajarildi\";\nconsole.log(status);",
-      test: "if (!code.includes('\"bajarildi\"') && !code.includes('\"bajarildi\"')) return 'status qiymati \"bajarildi\" ga o\\'zgartirilmadi';\nif (code.match(/let\\s+status\\s*=\\s*[\"']bajarildi[\"']/)) return 'Qiymatni o\\'zgartirishda let qayta yozilmaydi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('bajarildi'))) return null;\nreturn '\"bajarildi\" matni konsolga chiqmadi';"
+      "id": 2,
+      "title": "Matnni o'zgartirish",
+      "instruction": "`status` nomli o'zgaruvchi qiymatini `\"kutish\"` dan `\"bajarildi\"` ga o'zgartiring va konsolga chiqaring.",
+      "startingCode": "let status = \"kutish\";\n// status qiymatini \"bajarildi\" ga almashtiring va chiqaring\n",
+      "hint": "status = \"bajarildi\";\nconsole.log(status);",
+      "test": "if (!code.includes('\"bajarildi\"') && !code.includes('\"bajarildi\"')) return 'status qiymati \"bajarildi\" ga o\\'zgartirilmadi';\nif (code.match(/(?:let|var)\\s+status\\s*=\\s*[\"']bajarildi[\"']/)) return 'Qiymatni o\\'zgartirishda let qayta yozilmaydi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('bajarildi'))) return null;\nreturn '\"bajarildi\" matni konsolga chiqmadi';"
     },
     {
-      id: 3,
-      title: "Qayta let xatosini tuzatish",
-      instruction: "Quyidagi koddagi `let` takrorlanish xatosini tuzating, toki ekranga `80` chiqsin.",
-      startingCode: "let speed = 60;\nlet speed = 80;\nconsole.log(speed);\n",
-      hint: "let speed = 60;\nspeed = 80;\nconsole.log(speed);",
-      test: "if (code.match(/let\\s+speed\\s*=\\s*80/)) return 'Ikkinchi qatordan let so\\'zini olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('80'))) return null;\nreturn '80 soni konsolga chiqmadi';"
+      "id": 3,
+      "title": "Qayta let xatosini tuzatish",
+      "instruction": "Quyidagi koddagi `let` takrorlanish xatosini tuzating, toki ekranga `80` chiqsin.",
+      "startingCode": "let speed = 60;\nlet speed = 80;\nconsole.log(speed);\n",
+      "hint": "let speed = 60;\nspeed = 80;\nconsole.log(speed);",
+      "test": "if (code.match(/(?:let|var)\\s+speed\\s*=\\s*80/)) return 'Ikkinchi qatordan let so\\'zini olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('80'))) return null;\nreturn '80 soni konsolga chiqmadi';"
     },
     {
       "id": 4,
@@ -219,7 +219,7 @@ Keyingi darsda: Qiymati hech qachon o'zgarmaydigan o'zgarmaslar (\`const\`) bila
       "instruction": "`const` bilan yozilgan o'zgaruvchini o'zgartirishga urinib ko'ring va xatoni tuzating — `speed` o'zgaruvchisi `let` bilan yozilishi kerak.",
       "startingCode": "const speed = 100;\nspeed = 120;\nconsole.log(speed);\n",
       "hint": "const o'rniga let yozing.",
-      "test": "if (/const\\s+speed/.test(code)) return 'speed hali const bilan yozilgan';\nif (!/let\\s+speed/.test(code)) return 'speed let bilan e\\'lon qilinmagan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '120')) return null;\nreturn 'console.log 120 chiqishi kerak';"
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message + ' - speed ni let bilan yozing'; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '120')) return null;\nreturn 'console.log 120 chiqishi kerak';"
     },
     {
       "id": 8,
@@ -235,7 +235,7 @@ Keyingi darsda: Qiymati hech qachon o'zgarmaydigan o'zgarmaslar (\`const\`) bila
       "instruction": "`pi` ni `const` bilan `3.14` ga tenglang. Keyin `pi = 3` yozing — buni qilmang, aksincha, uni to'g'rilang: const o'rniga let yozib, qiymatni keyin `3` ga o'zgartiring va konsolga chiqaring.",
       "startingCode": "const pi = 3.14;\npi = 3;\nconsole.log(pi);\n",
       "hint": "const ni let ga almashtiring.",
-      "test": "if (/const\\s+pi/.test(code)) return 'pi hali const — let kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '3')) return null;\nreturn 'console.log 3 chiqishi kerak';"
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '3')) return null;\nreturn 'console.log 3 chiqishi kerak';"
     },
     {
       "id": 10,

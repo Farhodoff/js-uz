@@ -1,239 +1,356 @@
 export const sqlTransactions = {
   id: "sqlTransactions",
-  title: "SQL Transactions va ACID",
-  language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  title: "Tranzaksiyalar (BEGIN, COMMIT, ROLLBACK)",
+  language: "sql",
+  dbSetup: "CREATE TABLE hisob (id INT, balans INT); INSERT INTO hisob VALUES (1,1000),(2,500);",
+  theory: `## 1. Bu nima?
 
-**Transaction (Tranzaksiya)** – bu bir nechta SQL buyruqlarni bitta bo'linmas (atomic) operatsiya sifatida guruhlash. Agar barcha buyruqlar muvaffaqiyatli yakunlansa, o'zgarishlar tasdiqlanadi (COMMIT). Agar bitta operatsiya xato qilsa ham, barcha o'zgarishlar bekor qilinib, baza dastlabki holatiga qaytadi (ROLLBACK).
+Tasavvur qiling, bankda pul o'tkazmasi bor. Ali 100 so'm yubormoqchi. Ikki ish bajarilishi kerak:
+- Ali hisobidan 100 ayirish.
+- Vali hisobiga 100 qo'shish.
 
-**Analogi:** Do'kondan xarid qilish. 
-Siz tovar uchun pul to'laysiz (sizning hisobingizdan pul yechiladi), do'kon egasi esa tovarni sizga beradi. Agar pul o'tsa-yu, tovar berilmasa (yoki aksincha), bu adolatsizlik bo'ladi. Tranzaksiya aynan shuni oldini oladi: yo ikkala amal ham to'liq bajariladi, yoki umuman hech qanday amal bajarilmaydi.
+Birinchisi bajarilib, ikkinchisi bajarilmasa-chi? Pul yo'qoladi! Ikkalasi bitta "paket" bo'lishi kerak.
 
-## 2. 🧠 Chuqur sho'ng'ish
+Dasturlashda tranzaksiya (transaction) xuddi shu paket. Bir nechta amal birgalikda bajariladi. Hammasi bo'ladi yoki hech biri bo'lmaydi.
 
-### ACID Tamoyillari
-1. **A - Atomicity (Bo'linmaslik):** "Hammasi yoki hech narsa". Tranzaksiya yarim-yorti bajarilmaydi. 
-2. **C - Consistency (Muvofiqlik):** Tranzaksiyadan so'ng barcha cheklovlar (constraints) qoidalari bajarilishi kerak (masalan, balans manfiy bo'lib qolmasligi).
-3. **I - Isolation (Izolyatsiya):** Bir vaqtda parallel ketayotgan tranzaksiyalar bir-biriga xalaqit bermaydi.
-4. **D - Durability (Chidamlilik):** COMMIT bo'lgan o'zgarishlar tizim qulasa ham yo'qolmaydi (diskka mustahkam yoziladi).
+---
 
-### MVCC (Multi-Version Concurrency Control) PostgreSQL'da
-PostgreSQL tranzaksiyalarni boshqarish uchun **MVCC** arxitekturasidan foydalanadi. Bu shuni anglatadiki, o'qish (SELECT) operatsiyalari yozish (UPDATE/DELETE) operatsiyalarini bloklamaydi va aksincha. Har bir tranzaksiya ma'lumotlarning o'ziga xos "snepshotini" (snapshot) ko'radi. UPDATE operatsiyasi eski qatorni o'chirmaydi, balki yangi versiyasini yaratadi (eski versiya VACUUM orqali tozalanmaguncha turadi).
+## 2. Nega kerak?
 
-### Isolation Levels (Izolyatsiya darajalari)
-SQL standarti 4 xil izolyatsiya darajasini belgilaydi:
-1. **Read Uncommitted:** Boshqa tranzaksiyadagi hali COMMIT qilinmagan o'zgarishlarni o'qish mumkin (Dirty Read).
-2. **Read Committed:** Faqat COMMIT qilingan o'zgarishlarni o'qish mumkin. PostgreSQL da bu standart daraja (default).
-3. **Repeatable Read:** Bitta tranzaksiya ichida bir xil qatorni qayta-qayta o'qish doim bir xil natija beradi (Non-repeatable read oldi olinadi).
-4. **Serializable:** Eng qat'iy daraja. Tranzaksiyalar go'yo ketma-ket bajarilayotgandek ishlaydi. Phantom read'ni ham oldini oladi.
+Pul o'tkazish dasturi ikkita alohida buyruq bilan yozilsa:
 
-### Qulflar (Locks)
-Tranzaksiyalar davomida qulflar avtomatik yoki qo'lda boshqarilishi mumkin.
-- **Row-level locks:** Masalan, \\\`SELECT * FROM accounts FOR UPDATE;\\\` bir qatorni boshqa tranzaksiyalar o'zgartirmasligi uchun qulflaydi.
-- **Deadlock:** Ikkita tranzaksiya bir-birini cheksiz kutib qoladigan holat. Buni oldini olish uchun resurslarni doim bir xil ketma-ketlikda qulflash tavsiya etiladi.
+\`\`\`sql
+UPDATE hisob SET balans = 900 WHERE id = 1;
+UPDATE hisob SET balans = 600 WHERE id = 2;
+\`\`\`
 
-## 3. ⚠️ Edge Caselar va Senior Intervyu Savollari
+Birinchisi ishladi. Ikkinchisi xato berdi. Natija: pul yo'qoldi.
 
-1. **Deadlock nima va uni qanday hal qilish mumkin?**
-   - *Javob:* Ikkita tranzaksiya o'zaro bir-birini bloklab qo'yishi. Hal qilish: Retry mantiqi (xatolik bo'lsa qaytadan urinish) yoki doim jadvallarga bir xil tartibda murojaat qilish. PostgreSQL avtomatik deadlocklarni aniqlab, bitta tranzaksiyani bekor qiladi.
+Muammo shunda: amallar yakka-yakka bajarilmoqda. Yechim — tranzaksiya paketi:
 
-2. **MVCC da "bloat" nima?**
-   - *Javob:* Ko'plab UPDATE/DELETE lar oqibatida o'lik qatorlar (dead tuples) ko'payib ketishi. Buni oldini olish uchun Autovacuum ishlaydi.
+\`\`\`sql
+BEGIN TRANSACTION;
+UPDATE hisob SET balans = 900 WHERE id = 1;
+UPDATE hisob SET balans = 600 WHERE id = 2;
+COMMIT TRANSACTION;
+\`\`\`
 
-3. **Dirty Read, Non-repeatable Read va Phantom Read farqlari?**
-   - *Dirty Read:* Hali commit bo'lmagan datani o'qish.
-   - *Non-repeatable Read:* Bitta tranzaksiya ichida 2 marta SELECT qilganda turli xil natija (commit bo'lgan update sababli).
-   - *Phantom Read:* Bitta tranzaksiya ichida 2 marta SELECT qilganda yangi qator qo'shilganini (commit bo'lgan insert sababli) ko'rish.
+Paket birgalikda tasdiqlanadi.
 
-## 📊 Jarayon (Mermaid Diagram)
+---
 
-\\\`\\\`\\\`mermaid
-graph TD
-    A[BEGIN TRANSACTION] --> B[Operation 1 - UPDATE]
-    B --> C[Operation 2 - INSERT]
-    C --> D{Xatolik bormi?}
-    D -- Yoq --> E[COMMIT]
-    D -- Ha --> F[ROLLBACK]
-    E --> G((Tugadi))
-    F --> G((Tugadi - O'zgarishlarsiz))
-\\\`\\\`\\\`
+## 3. Birinchi misol
+
+Bu kod ikkita yangilashni bitta paketda bajaradi.
+
+\`\`\`sql
+BEGIN TRANSACTION; -- Paket boshlandi
+UPDATE hisob SET balans = 900 WHERE id = 1; -- Birinchi amal
+UPDATE hisob SET balans = 600 WHERE id = 2; -- Ikkinchi amal
+COMMIT TRANSACTION; -- Paket tasdiqlandi
+SELECT * FROM hisob; -- Tekshirildi
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"id":1,"balans":900},{"id":2,"balans":600}]
+\`\`\`
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`BEGIN TRANSACTION;\` — paket ochildi. Keyingi amallar paketga yoziladi.
+- Ikkita \`UPDATE\` — paket ichida bajarildi.
+- \`COMMIT TRANSACTION;\` — paket tasdiqlandi. O'zgarishlar kuchga kirdi.
+- \`SELECT *\` — ikkalasi ham o'zgargan: 900 va 600.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod bekor qilish yozuvini ko'rsatadi.
+
+\`\`\`sql
+BEGIN TRANSACTION; -- Paket boshlandi
+UPDATE hisob SET balans = 0 WHERE id = 1; -- Sinov o'zgarishi
+ROLLBACK TRANSACTION; -- Paket bekor qilindi
+\`\`\`
+
+\`\`\`text
+// Natija: 1
+\`\`\`
+
+Qator-baqator tahlil:
+- \`ROLLBACK TRANSACTION\` — "bekor qilish" degani. Paket ichidagilar qo'llanilmaydi.
+- Haqiqiy bazalarda (PostgreSQL) ma'lumot eski holiga qaytadi.
+- Eslatma: bu mashq muhiti soddalashtirilgan. Bu yerda ROLLBACK yozuvi qabul qilinadi.
+
+---
+
+## 5.1. ACID qoidasi
+
+Tranzaksiyalar to'rtta kafolat beradi. Bosh harflaridan ACID so'zi chiqadi:
+
+- **Atomicity (Bo'linmaslik)** — hamma amal bajariladi yoki hech biri bajarilmaydi.
+- **Consistency (Muvofiqlik)** — baza har doim to'g'ri holatda qoladi.
+- **Isolation (Ajratilganlik)** — ikki paket bir-biriga xalaqit bermaydi.
+- **Durability (Bardoshlilik)** — tasdiqlangan paket o'chib ketmaydi.
+
+---
+
+## 6. Ko'p uchraydigan xatolar
+
+### 1. COMMIT ni unutish
+❌ Xato tushuncha:
+\`\`\`sql
+BEGIN TRANSACTION;
+UPDATE hisob SET balans = 900 WHERE id = 1;
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin paket ochiq qoladi. Tasdiqlanmagan o'zgarish boshqa ulanishlarga ko'rinmaydi. Har bir BEGIN ning COMMIT yoki ROLLBACK i bo'lishi kerak.
+✅ To'g'ri variant:
+\`\`\`sql
+BEGIN TRANSACTION;
+UPDATE hisob SET balans = 900 WHERE id = 1;
+COMMIT TRANSACTION;
+\`\`\`
+
+### 2. Qisqa COMMIT yozish
+❌ Xato kod:
+\`\`\`sql
+COMMIT;
+\`\`\`
+Nima bo'ladi: parse xatoligi yuz beradi. Bu muhitda to'liq yozuv kerak: \`COMMIT TRANSACTION\`.
+✅ To'g'ri variant:
+\`\`\`sql
+COMMIT TRANSACTION;
+\`\`\`
+
+### 3. Bitta amal uchun paket ochish
+❌ Xato tushuncha: har bir UPDATE uchun alohida BEGIN/COMMIT yozish kerak deb o'ylash.
+Nima bo'ladi: xato bermaydi. Lekin keraksiz. Bitta amal o'zi yaxlit. Paket ikki va undan ko'p bog'liq amal uchun kerak.
+✅ To'g'ri tushuncha: bog'liq amallar bitta paketda. Yakka amal paketsiz yoziladi.
+
+---
+
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+Tranzaksiya oching (\`BEGIN TRANSACTION;\`). Hech narsa o'zgartirmang. Yoping (\`COMMIT TRANSACTION;\`). Xato bermasligi kerak.
+
+### 2-mashq (O'rtacha)
+Paket ichida ikkita yangilash bajaring va tasdiqlang. Natijada 900 va 600 chiqishi kerak.
+
+### 3-mashq (Chegara holat)
+Paket oching, o'zgartiring, bekor qiling (\`ROLLBACK TRANSACTION;\`). Yozuv qabul qilinishi kerak.
+
+### Javoblar:
+1.
+\`\`\`sql
+BEGIN TRANSACTION;
+COMMIT TRANSACTION;
+\`\`\`
+2.
+\`\`\`sql
+BEGIN TRANSACTION;
+UPDATE hisob SET balans = 900 WHERE id = 1;
+UPDATE hisob SET balans = 600 WHERE id = 2;
+COMMIT TRANSACTION;
+SELECT * FROM hisob;
+\`\`\`
+3.
+\`\`\`sql
+BEGIN TRANSACTION;
+UPDATE hisob SET balans = 0 WHERE id = 1;
+ROLLBACK TRANSACTION;
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. Tranzaksiya — birgalikda bajariladigan amallar paketi.
+2. \`BEGIN TRANSACTION\` ochadi. \`COMMIT TRANSACTION\` tasdiqlaydi. \`ROLLBACK TRANSACTION\` bekor qiladi.
+3. ACID — bo'linmaslik, muvofiqlik, ajratilganlik, bardoshlilik kafolatlari.
+
+Keyingi darsda: shartli qiymat (CASE) bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Tranzaksiya boshlash",
-      instruction: "Yangi tranzaksiya boshlash so'rovini qaytaruvchi `beginTransaction` funksiyasini yozing.",
-      startingCode: "function beginTransaction() {\n  \n}",
-      hint: "BEGIN; dan foydalaning.",
-      solution: "function beginTransaction() {\n  return 'BEGIN;';\n}",
-      test: "const fn = new Function(code + '; return beginTransaction;')();\nif (fn().trim().toUpperCase() !== 'BEGIN;') throw new Error('BEGIN; qaytarilmadi');"
+      title: "1-Topshiriq: Paket ochish-yopish",
+      instruction: "Bo'sh tranzaksiya paketi oching va yoping (BEGIN/COMMIT TRANSACTION). Xato bermasligi kerak.",
+      startingCode: "BEGIN TRANSACTION;",
+      hint: "COMMIT TRANSACTION; qo'shing.",
+      solution: "BEGIN TRANSACTION; COMMIT TRANSACTION;",
+      test: "if (!/\\bBEGIN\\s+TRANSACTION\\b/i.test(code)) return 'BEGIN TRANSACTION yozing';\nif (!/\\bCOMMIT\\s+TRANSACTION\\b/i.test(code)) return 'COMMIT TRANSACTION yozing';\nreturn null;"
     },
     {
       id: 2,
-      title: "Tranzaksiyani tasdiqlash",
-      instruction: "Tranzaksiyani muvaffaqiyatli yakunlovchi so'rovni qaytaruvchi `commitTransaction` funksiyasini yozing.",
-      startingCode: "function commitTransaction() {\n  \n}",
-      hint: "COMMIT; buyrug'i kerak.",
-      solution: "function commitTransaction() {\n  return 'COMMIT;';\n}",
-      test: "const fn = new Function(code + '; return commitTransaction;')();\nif (fn().trim().toUpperCase() !== 'COMMIT;') throw new Error('COMMIT; qaytarilmadi');"
+      title: "2-Topshiriq: Ikkita yangilash",
+      instruction: "hisob jadvalidagi (id, balans) paket ichida yangilang: 1→900, 2→600. Tasdiqlang va o'qing.",
+      startingCode: "BEGIN TRANSACTION;",
+      hint: "UPDATE hisob SET balans = 900 WHERE id = 1;\nUPDATE hisob SET balans = 600 WHERE id = 2;\nCOMMIT TRANSACTION;\nSELECT * FROM hisob;",
+      solution: "BEGIN TRANSACTION; UPDATE hisob SET balans = 900 WHERE id = 1; UPDATE hisob SET balans = 600 WHERE id = 2; COMMIT TRANSACTION; SELECT * FROM hisob;",
+      test: "const m = {};\nresult.forEach(r => { m[r.id] = r.balans; });\nif (m[1] !== 900 || m[2] !== 600) return '900 va 600 chiqishi kerak';\nreturn null;"
     },
     {
       id: 3,
-      title: "Tranzaksiyani bekor qilish",
-      instruction: "Xatolik yuz berganda barcha amallarni ortga qaytaruvchi buyruqni qaytaruvchi `rollbackTransaction` funksiyasini yozing.",
-      startingCode: "function rollbackTransaction() {\n  \n}",
-      hint: "ROLLBACK; buyrug'idan foydalaning.",
-      solution: "function rollbackTransaction() {\n  return 'ROLLBACK;';\n}",
-      test: "const fn = new Function(code + '; return rollbackTransaction;')();\nif (fn().trim().toUpperCase() !== 'ROLLBACK;') throw new Error('ROLLBACK; qaytarilmadi');"
+      title: "3-Topshiriq: Bekor qilish",
+      instruction: "Paket oching, o'zgartiring, ROLLBACK TRANSACTION bilan bekor qiling. Yozuv qabul qilinishi kerak.",
+      startingCode: "BEGIN TRANSACTION;",
+      hint: "UPDATE hisob SET balans = 0 WHERE id = 1;\nROLLBACK TRANSACTION;",
+      solution: "BEGIN TRANSACTION; UPDATE hisob SET balans = 0 WHERE id = 1; ROLLBACK TRANSACTION;",
+      test: "if (!/\\bROLLBACK\\s+TRANSACTION\\b/i.test(code)) return 'ROLLBACK TRANSACTION yozing';\nreturn null;"
     },
     {
       id: 4,
-      title: "Pul yechish (UPDATE)",
-      instruction: "`withdrawMoney` funksiyasini yozing. U `accountId` va `amount` qabul qiladi. `accounts` jadvalidan (balance) berilgan miqdorni ayirib yozuvchi (UPDATE) so'rovni qaytarsin.",
-      startingCode: "function withdrawMoney(accountId, amount) {\n  \n}",
-      hint: "UPDATE accounts SET balance = balance - amount WHERE id = accountId;",
-      solution: "function withdrawMoney(accountId, amount) {\n  return `UPDATE accounts SET balance = balance - ${amount} WHERE id = ${accountId};`;\n}",
-      test: "const fn = new Function(code + '; return withdrawMoney;')();\nif (!fn(1, 100).toUpperCase().includes('BALANCE - 100')) throw new Error('Balansdan ayirish xato');"
+      title: "4-Topshiriq: Qisqa COMMIT xatosi",
+      instruction: "`COMMIT;` xato bermoqda. To'liq yozuvga tuzating (`COMMIT TRANSACTION;`).",
+      startingCode: "BEGIN TRANSACTION;\nUPDATE hisob SET balans = 900 WHERE id = 1;\nCOMMIT;",
+      hint: "COMMIT TRANSACTION;",
+      solution: "BEGIN TRANSACTION; UPDATE hisob SET balans = 900 WHERE id = 1; COMMIT TRANSACTION; SELECT * FROM hisob;",
+      test: "if (!/\\bCOMMIT\\s+TRANSACTION\\b/i.test(code)) return 'COMMIT TRANSACTION deb yozing';\nconst m = {};\nresult.forEach(r => { m[r.id] = r.balans; });\nif (m[1] !== 900) return '900 chiqishi kerak';\nreturn null;"
     },
     {
       id: 5,
-      title: "Pul tushirish (UPDATE)",
-      instruction: "`depositMoney` funksiyasini yozing. U `accountId` va `amount` qabul qiladi. Hisobga (balance) pul qoshuvchi UPDATE so'rovni qaytarsin.",
-      startingCode: "function depositMoney(accountId, amount) {\n  \n}",
-      hint: "UPDATE accounts SET balance = balance + amount WHERE id = accountId;",
-      solution: "function depositMoney(accountId, amount) {\n  return `UPDATE accounts SET balance = balance + ${amount} WHERE id = ${accountId};`;\n}",
-      test: "const fn = new Function(code + '; return depositMoney;')();\nif (!fn(2, 50).toUpperCase().includes('BALANCE + 50')) throw new Error('Balansga qoshish xato');"
+      title: "5-Topshiriq: Balans tekshiruvi (chegara)",
+      instruction: "Faqat 2-id ni 600 ga yangilang (paket ichida). 1-id 1000 ligicha qolishi kerak.",
+      startingCode: "BEGIN TRANSACTION;",
+      hint: "UPDATE hisob SET balans = 600 WHERE id = 2;\nCOMMIT TRANSACTION;\nSELECT * FROM hisob;",
+      solution: "BEGIN TRANSACTION; UPDATE hisob SET balans = 600 WHERE id = 2; COMMIT TRANSACTION; SELECT * FROM hisob;",
+      test: "const m = {};\nresult.forEach(r => { m[r.id] = r.balans; });\nif (m[1] !== 1000 || m[2] !== 600) return '1000 va 600 chiqishi kerak';\nreturn null;"
     },
     {
       id: 6,
-      title: "Savepoint yaratish",
-      instruction: "Tranzaksiya davomida qaytish nuqtasini belgilash uchun `createSavepoint` funksiyasini yozing. U parametr sifatida `name` qabul qiladi.",
-      startingCode: "function createSavepoint(name) {\n  \n}",
-      hint: "SAVEPOINT name;",
-      solution: "function createSavepoint(name) {\n  return `SAVEPOINT ${name};`;\n}",
-      test: "const fn = new Function(code + '; return createSavepoint;')();\nif (fn('sp1').toUpperCase() !== 'SAVEPOINT SP1;') throw new Error('SAVEPOINT xato');"
+      title: "6-Topshiriq: ACID harfi (chegara)",
+      instruction: "Tranzaksiya ichida ikkala qatorni o'qing. 1000 va 500 chiqishi kerak (o'zgarishsiz).",
+      startingCode: "BEGIN TRANSACTION;",
+      hint: "SELECT * FROM hisob;\nCOMMIT TRANSACTION;",
+      solution: "BEGIN TRANSACTION; SELECT * FROM hisob; COMMIT TRANSACTION;",
+      test: "if (!/\\bBEGIN\\s+TRANSACTION\\b/i.test(code)) return 'BEGIN TRANSACTION yozing';\nif (!/\\bCOMMIT\\s+TRANSACTION\\b/i.test(code)) return 'COMMIT TRANSACTION yozing';\nreturn null;"
     },
     {
       id: 7,
-      title: "Savepointga qaytish",
-      instruction: "Muayyan savepointga qaytish buyrug'ini qaytaruvchi `rollbackTo` funksiyasini yozing. U `name` argumentini oladi.",
-      startingCode: "function rollbackTo(name) {\n  \n}",
-      hint: "ROLLBACK TO name;",
-      solution: "function rollbackTo(name) {\n  return `ROLLBACK TO ${name};`;\n}",
-      test: "const fn = new Function(code + '; return rollbackTo;')();\nif (fn('sp1').toUpperCase() !== 'ROLLBACK TO SP1;') throw new Error('ROLLBACK TO xato');"
+      title: "7-Topshiriq: Ketma-ket paketlar (chegara)",
+      instruction: "Ikkita alohida paket bajaring: birinchida 1→900, ikkinchisida 2→600. Oxirida o'qing.",
+      startingCode: "BEGIN TRANSACTION;",
+      hint: "UPDATE hisob SET balans = 900 WHERE id = 1;\nCOMMIT TRANSACTION;\nBEGIN TRANSACTION;\nUPDATE hisob SET balans = 600 WHERE id = 2;\nCOMMIT TRANSACTION;\nSELECT * FROM hisob;",
+      solution: "BEGIN TRANSACTION; UPDATE hisob SET balans = 900 WHERE id = 1; COMMIT TRANSACTION; BEGIN TRANSACTION; UPDATE hisob SET balans = 600 WHERE id = 2; COMMIT TRANSACTION; SELECT * FROM hisob;",
+      test: "const m = {};\nresult.forEach(r => { m[r.id] = r.balans; });\nif (m[1] !== 900 || m[2] !== 600) return '900 va 600 chiqishi kerak';\nreturn null;"
     },
     {
       id: 8,
-      title: "Read Committed darajasi",
-      instruction: "Tranzaksiya izolyatsiya darajasini 'READ COMMITTED' qilib o'zgartiruvchi `setReadCommitted` funksiyasini yozing.",
-      startingCode: "function setReadCommitted() {\n  \n}",
-      hint: "SET TRANSACTION ISOLATION LEVEL READ COMMITTED;",
-      solution: "function setReadCommitted() {\n  return 'SET TRANSACTION ISOLATION LEVEL READ COMMITTED;';\n}",
-      test: "const fn = new Function(code + '; return setReadCommitted;')();\nif (!fn().toUpperCase().includes('READ COMMITTED')) throw new Error('Xato isolation level');"
+      title: "8-Topshiriq: O'qish paketi (chegara)",
+      instruction: "Faqat o'qishdan iborat paket yozing (BEGIN, SELECT, COMMIT). 2 qator chiqishi kerak.",
+      startingCode: "BEGIN TRANSACTION;",
+      hint: "SELECT * FROM hisob;\nCOMMIT TRANSACTION;",
+      solution: "BEGIN TRANSACTION; SELECT * FROM hisob; COMMIT TRANSACTION;",
+      test: "if (!/\\bBEGIN\\s+TRANSACTION\\b/i.test(code)) return 'BEGIN TRANSACTION yozing';\nif (!/\\bCOMMIT\\s+TRANSACTION\\b/i.test(code)) return 'COMMIT TRANSACTION yozing';\nreturn null;"
     },
     {
       id: 9,
-      title: "Serializable darajasi",
-      instruction: "Eng qat'iy izolyatsiya darajasiga sozlash so'rovini qaytaruvchi `setSerializable` funksiyasini yozing.",
-      startingCode: "function setSerializable() {\n  \n}",
-      hint: "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;",
-      solution: "function setSerializable() {\n  return 'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;';\n}",
-      test: "const fn = new Function(code + '; return setSerializable;')();\nif (!fn().toUpperCase().includes('SERIALIZABLE')) throw new Error('Xato so\\'rov');"
+      title: "9-Topshiriq: Bekor + o'qish (chegara)",
+      instruction: "Paketda o'zgartirib, bekor qiling. Keyin alohida o'qing (2 qator chiqishi kerak).",
+      startingCode: "BEGIN TRANSACTION;",
+      hint: "UPDATE hisob SET balans = 0 WHERE id = 1;\nROLLBACK TRANSACTION;\nSELECT * FROM hisob;",
+      solution: "BEGIN TRANSACTION; UPDATE hisob SET balans = 0 WHERE id = 1; ROLLBACK TRANSACTION; SELECT * FROM hisob;",
+      test: "if (result.length !== 2) return '2 qator chiqishi kerak';\nreturn null;"
     },
     {
       id: 10,
-      title: "Qatorni qulflash (Row-level lock)",
-      instruction: "`lockAccount` funksiyasini yozing. U `accountId` oladi va `SELECT * FROM accounts WHERE id = accountId FOR UPDATE;` qaytaradi.",
-      startingCode: "function lockAccount(accountId) {\n  \n}",
-      hint: "FOR UPDATE operatoridan foydalaning.",
-      solution: "function lockAccount(accountId) {\n  return `SELECT * FROM accounts WHERE id = ${accountId} FOR UPDATE;`;\n}",
-      test: "const fn = new Function(code + '; return lockAccount;')();\nif (!fn(5).toUpperCase().includes('FOR UPDATE')) throw new Error('FOR UPDATE yetishmayapti');"
+      title: "10-Topshiriq: To'liq pul o'tkazma (chegara)",
+      instruction: "1-id dan 100 ayirib, 2-id ga 100 qo'shing (900 va 600). Paketda bajaring.",
+      startingCode: "BEGIN TRANSACTION;",
+      hint: "UPDATE hisob SET balans = 900 WHERE id = 1;\nUPDATE hisob SET balans = 600 WHERE id = 2;\nCOMMIT TRANSACTION;\nSELECT * FROM hisob;",
+      solution: "BEGIN TRANSACTION; UPDATE hisob SET balans = 900 WHERE id = 1; UPDATE hisob SET balans = 600 WHERE id = 2; COMMIT TRANSACTION; SELECT * FROM hisob;",
+      test: "const m = {};\nresult.forEach(r => { m[r.id] = r.balans; });\nif (m[1] !== 900 || m[2] !== 600) return '900 va 600 chiqishi kerak';\nreturn null;"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Tranzaksiyaning ma'nosi nima?",
-      options: ["Ma'lumotlarni o'chirish vositasi", "Bir nechta amallarni yagona, bo'linmas blok sifatida bajarish", "Faqat SELECT so'rovlari uchun qilingan limit", "Bazani arxivlash jarayoni"],
+      question: "Tranzaksiya nima?",
+      options: ["Bitta so'rov", "Birgalikda bajariladigan amallar paketi", "Jadval turi", "Xato turi"],
       correctAnswer: 1,
-      explanation: "Tranzaksiya bir nechta mantiqiy bog'liq ishlarni bitta jarayon qilib o'raydi. Ular yo to'liq bajariladi, yo umuman bekor qilinadi."
+      explanation: "Hammasi bo'ladi yoki hech biri bo'lmaydi."
     },
     {
       id: 2,
-      question: "ACID qisqartmasi nimani anglatadi?",
-      options: ["Atomic, Consistent, Isolated, Durable", "Array, Class, Integer, Double", "Access, Control, Identify, Delete", "Auto, Catch, Ignore, Drop"],
-      correctAnswer: 0,
-      explanation: "ACID – Atomicity, Consistency, Isolation, Durability so'zlaridan tashkil topgan."
+      question: "Paket qanday ochiladi?",
+      options: ["OPEN", "BEGIN TRANSACTION", "START", "BEGIN"],
+      correctAnswer: 1,
+      explanation: "Paket BEGIN TRANSACTION bilan ochiladi."
     },
     {
       id: 3,
-      question: "COMMIT amali qanday vazifani bajaradi?",
-      options: ["Amallarni bekor qiladi", "So'rovdagi xatolarni to'g'rilaydi", "Tranzaksiya muvaffaqiyatli bo'lsa, o'zgarishlarni bazaga doimiy yozib qo'yadi", "Indeksni tozalaydi"],
-      correctAnswer: 2,
-      explanation: "COMMIT orqali qilingan barcha INSERT/UPDATE/DELETE o'zgarishlar rasman haqiqiy bazada saqlanadi."
+      question: "Paket qanday tasdiqlanadi?",
+      options: ["COMMIT", "COMMIT TRANSACTION", "END", "SAVE"],
+      correctAnswer: 1,
+      explanation: "Bu muhitda to'liq yozuv kerak."
     },
     {
       id: 4,
-      question: "ROLLBACK amali nima qiladi?",
-      options: ["Faqat so'nggi bitta yozuvni o'chiradi", "Tranzaksiya davomida qilingan barcha o'zgarishlarni bekor qilib, bazani dastlabki holatiga qaytaradi", "Tranzaksiyani davom ettiradi", "Barcha jadvallarni o'chirib yuboradi"],
+      question: "Paket qanday bekor qilinadi?",
+      options: ["CANCEL", "ROLLBACK TRANSACTION", "DELETE", "STOP"],
       correctAnswer: 1,
-      explanation: "ROLLBACK orqali xatolik bo'lgan paytda tranzaksiya ichidagi barcha o'zgarishlar ortga qaytariladi."
+      explanation: "Bekor qilish buyrug'i shu."
     },
     {
       id: 5,
-      question: "SAVEPOINT nima uchun ishlatiladi?",
-      options: ["Baza parolini saqlash uchun", "Baza ma'lumotlarini arxivlash (backup) uchun", "Tranzaksiya ichida qaytish nuqtasini belgilash uchun", "Boshqa bazaga ulanish uchun"],
-      correctAnswer: 2,
-      explanation: "SAVEPOINT yordamida uzun tranzaksiya ichida ma'lum nuqtalarni belgilab, faqat o'sha yergacha orqaga qaytish (ROLLBACK TO) mumkin."
+      question: "ACID dagi A nimani bildiradi?",
+      options: ["Tezlik", "Bo'linmaslik (Atomicity)", "Avtomatik", "Aloqa"],
+      correctAnswer: 1,
+      explanation: "Hamma amal yoki hech biri."
     },
     {
       id: 6,
-      question: "Atomicity (A) tamoyili nima?",
-      options: ["Bir vaqtda bir nechta foydalanuvchi ishlashi", "Tranzaksiyadagi barcha amallar yo to'liq bajarilishi, yoki umuman bajarilmasligi", "Ma'lumotlar turini avtomatik aniqlash", "Xatolarni log faylga yozish"],
+      question: "Nega pul o'tkazma paketda bajariladi?",
+      options: ["Tezroq bo'lgani uchun", "Yarim holatda pul yo'qolmasligi uchun", "Qisqaroq yozilgani uchun", "Hech qanday sababsiz"],
       correctAnswer: 1,
-      explanation: "Atomicity (Bo'linmaslik) - tranzaksiya qismlarga bo'linmaydi. Bitta xato bo'lsa, qolgan bajarilganlari ham bekor bo'ladi."
+      explanation: "Biri bajarilib, biri qolib ketsa pul yo'qoladi."
     },
     {
       id: 7,
-      question: "Isolation (I) tamoyili nima ma'no bildiradi?",
-      options: ["Jadvallar o'zaro bog'lanmasligi", "Parol bilan izolyatsiya qilish", "Bir-biriga parallel ketayotgan tranzaksiyalar biri ikkinchisiga xalaqit bermasligi", "Ma'lumotlarni shifrlash"],
-      correctAnswer: 2,
-      explanation: "Har bir tranzaksiya o'zini shunday tutishi kerakki, go'yo tizimda u o'zi yagona ishlagandek bo'lsin. (Isolation)"
+      question: "COMMIT unutilsa nima bo'ladi?",
+      options: ["Hammasi saqlanadi", "Paket ochiq qoladi", "Xatolik beradi", "Hech narsa bo'lmaydi"],
+      correctAnswer: 1,
+      explanation: "Tasdiqlanmagan paket yakunlanmaydi."
     },
     {
       id: 8,
-      question: "Durability (D) xususiyati nima?",
-      options: ["COMMIT qilinganidan so'ng bazaning serveri o'chib qolsa ham ma'lumot saqlanib qolishi", "Jadvallarning juda ko'p ma'lumot ololishi", "Turli OS larda ishlash", "Qattiq disklarni test qilish"],
-      correctAnswer: 0,
-      explanation: "Chidamlilik (Durability) — tizim ishdan chiqish holatlarida (masalan elektr o'chishi) ham commit bo'lgan ma'lumotlar diskda abadiy qolishini kafolatlaydi."
+      question: "Bitta yakka UPDATE uchun paket kerakmi?",
+      options: ["Ha, har doim", "Yo'q, o'zi yaxlit", "Faqat kechasi", "Hech qachon"],
+      correctAnswer: 1,
+      explanation: "Paket bog'liq amallar uchun."
     },
     {
       id: 9,
-      question: "Qaysi xolat `Dirty Read` deyiladi?",
-      options: ["Eskirgan va keraksiz ma'lumotlarni o'qish", "Hali COMMIT qilinmagan o'zgarishlarni boshqa tranzaksiya o'qib olishi", "Parolsiz bazani o'qish", "O'chirilgan (deleted) ma'lumotlarni o'qish"],
+      question: "ACID dagi D nimani bildiradi?",
+      options: ["Tezlik", "Bardoshlilik (Durability)", "Kattalik", "Davomiylik"],
       correctAnswer: 1,
-      explanation: "Bir tranzaksiya yozayotgan, lekin hali yakunlamagan ma'lumotni 2-tranzaksiya o'qib olsa, bu `Iflos o'qish` (Dirty read) deyiladi."
+      explanation: "Tasdiqlangan paket o'chib ketmaydi."
     },
     {
       id: 10,
-      question: "Eng qat'iy va sekin ishlaydigan Isolation Level qaysi?",
-      options: ["Read Uncommitted", "Read Committed", "Repeatable Read", "Serializable"],
-      correctAnswer: 3,
-      explanation: "Serializable eng xavfsiz va qat'iy izolyatsiya darajasidir, barcha tranzaksiyalarni to'liq navbat bilan (ketma-ket) bajarayotgandek cheklaydi, ammo ishlash tezligi (performance) tushib ketadi."
+      question: "`BEGIN TRANSACTION; UPDATE hisob SET balans = 900 WHERE id = 1; COMMIT TRANSACTION;` dan keyin 1-id balansi necha?",
+      options: ["1000", "900", "0", "Xatolik"],
+      correctAnswer: 1,
+      explanation: "Paket tasdiqlandi. O'zgarish kuchga kirdi."
     },
     {
       id: 11,
-      question: "Odatda ko'p RDBMS larda sukut bo'yicha (default) Isolation Level qaysi?",
-      options: ["Read Uncommitted", "Read Committed", "Serializable", "None"],
+      question: "Isolation (ajratilganlik) nimani bildiradi?",
+      options: ["Tezlikni", "Paketlar bir-biriga xalaqit bermasligini", "Kattalikni", "Hech narsani"],
       correctAnswer: 1,
-      explanation: "Ko'pchilik ma'lumotlar bazalarida (PostgreSQL, SQL Server, Oracle) default izolyatsiya - READ COMMITTED bo'ladi."
+      explanation: "Parallel paketlar ajratilgan ishlaydi."
     },
     {
       id: 12,
-      question: "Deadlock (O'zaro qulf) nima?",
-      options: ["Serverning internetdan uzilishi", "Ikkita tranzaksiya bir-birini kutib qolishi va jarayon to'xtab qolishi", "Ma'lumotni o'chirishning imkoni yo'qligi", "Commit qilishning man etilishi"],
+      question: "ROLLBACK qachon ishlatiladi?",
+      options: ["Har doim", "Xato bo'lganda bekor qilish uchun", "Tezlashtirish uchun", "Hech qachon"],
       correctAnswer: 1,
-      explanation: "Tranzaksiya A ni tugatish uchun B resurs kerak, Tranzaksiya B ni tugatish uchun esa A resurs kerak bo'lib, ikkisi bir-birini cheksiz kutib qolish holati Deadlock deyiladi."
+      explanation: "Muammo chiqsa, paket bekor qilinadi."
     }
   ]
 };

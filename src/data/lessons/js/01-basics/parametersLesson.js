@@ -208,84 +208,84 @@ Keyingi darsda: funksiyadan qiymat qaytaradigan \`return\` bilan tanishamiz.
 `,
   exercises: [
     {
-      id: 1,
-      title: "Bitta parametr",
-      instruction: "`salom(ism)` funksiyasini e'lon qiling (ichida `ism` chiqsin). `\"Ali\"` bilan chaqiring.",
-      startingCode: "// salom(ism) ni e'lon qiling va chaqiring\n",
-      hint: "function salom(ism) {\n  console.log(ism);\n}\nsalom(\"Ali\");",
-      test: "if (!code.includes('function salom')) return 'funksiyani elon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi';"
+      "id": 1,
+      "title": "Bitta parametr",
+      "instruction": "`salom(ism)` funksiyasini e'lon qiling (ichida `ism` chiqsin). `\"Ali\"` bilan chaqiring.",
+      "startingCode": "// salom(ism) ni e'lon qiling va chaqiring\n",
+      "hint": "function salom(ism) {\n  console.log(ism);\n}\nsalom(\"Ali\");",
+      "test": "if (!code.includes('function salom')) return 'funksiyani elon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi';"
     },
     {
-      id: 2,
-      title: "Boshqa argument",
-      instruction: "`salom(ism)` funksiyasini e'lon qiling. `\"Vali\"` bilan chaqiring.",
-      startingCode: "// salom(ism) ni e'lon qiling va Vali bilan chaqiring\n",
-      hint: "function salom(ism) {\n  console.log(ism);\n}\nsalom(\"Vali\");",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Vali'))) return null;\nreturn 'Vali chiqmadi';"
+      "id": 2,
+      "title": "Boshqa argument",
+      "instruction": "`salom(ism)` funksiyasini e'lon qiling. `\"Vali\"` bilan chaqiring.",
+      "startingCode": "// salom(ism) ni e'lon qiling va Vali bilan chaqiring\n",
+      "hint": "function salom(ism) {\n  console.log(ism);\n}\nsalom(\"Vali\");",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Vali'))) return null;\nreturn 'Vali chiqmadi';"
     },
     {
-      id: 3,
-      title: "Ikkita parametr",
-      instruction: "`tanish(ism, yosh)` ni e'lon qiling (ikkalsini chiqarsin). `\"Ali\"`, `20` bilan chaqiring.",
-      startingCode: "// tanish(ism, yosh) ni e'lon qiling va chaqiring\n",
-      hint: "function tanish(ism, yosh) {\n  console.log(ism);\n  console.log(yosh);\n}\ntanish(\"Ali\", 20);",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Ali,20') return null;\nreturn 'Ali va 20 chiqishi kerak';"
+      "id": 3,
+      "title": "Ikkita parametr",
+      "instruction": "`tanish(ism, yosh)` ni e'lon qiling (ikkalsini chiqarsin). `\"Ali\"`, `20` bilan chaqiring.",
+      "startingCode": "// tanish(ism, yosh) ni e'lon qiling va chaqiring\n",
+      "hint": "function tanish(ism, yosh) {\n  console.log(ism);\n  console.log(yosh);\n}\ntanish(\"Ali\", 20);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Ali,20') return null;\nreturn 'Ali va 20 chiqishi kerak';"
     },
     {
-      id: 4,
-      title: "let xatosini tuzatish",
-      instruction: "`function salom(let ism)` dagi `let` ni olib tashlang. `\"Ali\"` bilan chaqiring.",
-      startingCode: "function salom(let ism) {\n  console.log(ism);\n}\nsalom(\"Ali\");\n",
-      hint: "function salom(ism) {",
-      test: "if (code.includes('let ism')) return 'parametrda let yozilmaydi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi';"
+      "id": 4,
+      "title": "let xatosini tuzatish",
+      "instruction": "`function salom(let ism)` dagi `let` ni olib tashlang. `\"Ali\"` bilan chaqiring.",
+      "startingCode": "function salom(let ism) {\n  console.log(ism);\n}\nsalom(\"Ali\");\n",
+      "hint": "function salom(ism) {",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi';"
     },
     {
-      id: 5,
-      title: "Argument qo'shish",
-      instruction: "`salom();` bo'sh chaqirilmoqda. `\"Ali\"` argumentini qo'shing.",
-      startingCode: "function salom(ism) {\n  console.log(ism);\n}\nsalom();\n",
-      hint: "salom(\"Ali\");",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi';"
+      "id": 5,
+      "title": "Argument qo'shish",
+      "instruction": "`salom();` bo'sh chaqirilmoqda. `\"Ali\"` argumentini qo'shing.",
+      "startingCode": "function salom(ism) {\n  console.log(ism);\n}\nsalom();\n",
+      "hint": "salom(\"Ali\");",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'Ali chiqmadi';"
     },
     {
-      id: 6,
-      title: "Tartibni tuzatish (chegara)",
-      instruction: "`tanish(20, \"Ali\")` teskari yozilgan. To'g'rilang: `Ali` va `20` chiqsin.",
-      startingCode: "function tanish(ism, yosh) {\n  console.log(ism);\n  console.log(yosh);\n}\ntanish(20, \"Ali\");\n",
-      hint: "tanish(\"Ali\", 20);",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Ali,20') return null;\nreturn 'Ali va 20 (shu tartibda) chiqishi kerak';"
+      "id": 6,
+      "title": "Tartibni tuzatish (chegara)",
+      "instruction": "`tanish(20, \"Ali\")` teskari yozilgan. To'g'rilang: `Ali` va `20` chiqsin.",
+      "startingCode": "function tanish(ism, yosh) {\n  console.log(ism);\n  console.log(yosh);\n}\ntanish(20, \"Ali\");\n",
+      "hint": "tanish(\"Ali\", 20);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Ali,20') return null;\nreturn 'Ali va 20 (shu tartibda) chiqishi kerak';"
     },
     {
-      id: 7,
-      title: "Son argument (chegara)",
-      instruction: "`yosh(qiymat)` funksiyasini e'lon qiling (ichida `qiymat` chiqsin). `25` bilan chaqiring.",
-      startingCode: "// yosh(qiymat) ni e'lon qiling va 25 bilan chaqiring\n",
-      hint: "function yosh(qiymat) {\n  console.log(qiymat);\n}\nyosh(25);",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '25')) return null;\nreturn '25 chiqmadi';"
+      "id": 7,
+      "title": "Son argument (chegara)",
+      "instruction": "`yosh(qiymat)` funksiyasini e'lon qiling (ichida `qiymat` chiqsin). `25` bilan chaqiring.",
+      "startingCode": "// yosh(qiymat) ni e'lon qiling va 25 bilan chaqiring\n",
+      "hint": "function yosh(qiymat) {\n  console.log(qiymat);\n}\nyosh(25);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '25')) return null;\nreturn '25 chiqmadi';"
     },
     {
-      id: 8,
-      title: "Mantiqiy argument (chegara)",
-      instruction: "`holat(qiymat)` ni e'lon qiling. `true` bilan chaqiring.",
-      startingCode: "// holat(qiymat) ni e'lon qiling va true bilan chaqiring\n",
-      hint: "function holat(qiymat) {\n  console.log(qiymat);\n}\nholat(true);",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'true')) return null;\nreturn 'true chiqmadi';"
+      "id": 8,
+      "title": "Mantiqiy argument (chegara)",
+      "instruction": "`holat(qiymat)` ni e'lon qiling. `true` bilan chaqiring.",
+      "startingCode": "// holat(qiymat) ni e'lon qiling va true bilan chaqiring\n",
+      "hint": "function holat(qiymat) {\n  console.log(qiymat);\n}\nholat(true);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'true')) return null;\nreturn 'true chiqmadi';"
     },
     {
-      id: 9,
-      title: "Uchta parametr (chegara)",
-      instruction: "`info(a, b, c)` ni e'lon qiling (uchalasini chiqarsin). `\"X\"`, `\"Y\"`, `\"Z\"` bilan chaqiring.",
-      startingCode: "// info(a, b, c) ni e'lon qiling va chaqiring\n",
-      hint: "function info(a, b, c) {\n  console.log(a);\n  console.log(b);\n  console.log(c);\n}\ninfo(\"X\", \"Y\", \"Z\");",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'X,Y,Z') return null;\nreturn 'X, Y, Z chiqishi kerak';"
+      "id": 9,
+      "title": "Uchta parametr (chegara)",
+      "instruction": "`info(a, b, c)` ni e'lon qiling (uchalasini chiqarsin). `\"X\"`, `\"Y\"`, `\"Z\"` bilan chaqiring.",
+      "startingCode": "// info(a, b, c) ni e'lon qiling va chaqiring\n",
+      "hint": "function info(a, b, c) {\n  console.log(a);\n  console.log(b);\n  console.log(c);\n}\ninfo(\"X\", \"Y\", \"Z\");",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'X,Y,Z') return null;\nreturn 'X, Y, Z chiqishi kerak';"
     },
     {
-      id: 10,
-      title: "Ikki marta turli argument (chegara)",
-      instruction: "`salom(ism)` ni e'lon qiling. Avval `\"Ali\"`, keyin `\"Vali\"` bilan chaqiring (ikkalsi ham chiqsin).",
-      startingCode: "function salom(ism) {\n  console.log(ism);\n}\n// Ikki marta chaqiring\n",
-      hint: "salom(\"Ali\");\nsalom(\"Vali\");",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Ali,Vali') return null;\nreturn 'Ali va Vali chiqishi kerak';"
+      "id": 10,
+      "title": "Ikki marta turli argument (chegara)",
+      "instruction": "`salom(ism)` ni e'lon qiling. Avval `\"Ali\"`, keyin `\"Vali\"` bilan chaqiring (ikkalsi ham chiqsin).",
+      "startingCode": "function salom(ism) {\n  console.log(ism);\n}\n// Ikki marta chaqiring\n",
+      "hint": "salom(\"Ali\");\nsalom(\"Vali\");",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'Ali,Vali') return null;\nreturn 'Ali va Vali chiqishi kerak';"
     }
   ],
   quizzes: [

@@ -188,84 +188,84 @@ Keyingi darsda: taqqoslash operatorlari (>, <, >=, <=) bilan tanishamiz.
 `,
   exercises: [
     {
-      id: 1,
-      title: "+= bilan qo'shish",
-      instruction: "`coins` yarating (`let coins = 20;`). `+=` bilan `15` qo'shing va `console.log(coins);` orqali chiqaring.",
-      startingCode: "let coins = 20;\n// coins ga += bilan 15 qo'shing va chiqaring\n",
-      hint: "coins += 15;\nconsole.log(coins);",
-      test: "if (!code.includes('+=')) return '+= operatori ishlatilmadi';\nif (!code.includes('coins')) return 'coins topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '35')) return null;\nreturn '35 konsolga chiqmadi';"
+      "id": 1,
+      "title": "+= bilan qo'shish",
+      "instruction": "`coins` yarating (`let coins = 20;`). `+=` bilan `15` qo'shing va `console.log(coins);` orqali chiqaring.",
+      "startingCode": "let coins = 20;\n// coins ga += bilan 15 qo'shing va chiqaring\n",
+      "hint": "coins += 15;\nconsole.log(coins);",
+      "test": "if (!code.includes('+=')) return '+= operatori ishlatilmadi';\nif (!code.includes('coins')) return 'coins topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '35')) return null;\nreturn '35 konsolga chiqmadi';"
     },
     {
-      id: 2,
-      title: "-= bilan ayirish",
-      instruction: "`price` yarating (`let price = 50;`). `-=` bilan `20` ayiring va chiqaring (`30` chiqishi kerak).",
-      startingCode: "let price = 50;\n// price dan -= bilan 20 ayiring va chiqaring\n",
-      hint: "price -= 20;\nconsole.log(price);",
-      test: "if (!code.includes('-=')) return '-= operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '30')) return null;\nreturn '30 konsolga chiqmadi';"
+      "id": 2,
+      "title": "-= bilan ayirish",
+      "instruction": "`price` yarating (`let price = 50;`). `-=` bilan `20` ayiring va chiqaring (`30` chiqishi kerak).",
+      "startingCode": "let price = 50;\n// price dan -= bilan 20 ayiring va chiqaring\n",
+      "hint": "price -= 20;\nconsole.log(price);",
+      "test": "if (!code.includes('-=')) return '-= operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '30')) return null;\nreturn '30 konsolga chiqmadi';"
     },
     {
-      id: 3,
-      title: "++ bilan 3 marta oshirish",
-      instruction: "`steps` yarating (`let steps = 0;`). `++` bilan ketma-ket 3 marta oshiring va chiqaring.",
-      startingCode: "let steps = 0;\n// steps ni 3 marta ++ qiling va chiqaring\n",
-      hint: "steps++;\nsteps++;\nsteps++;\nconsole.log(steps);",
-      test: "if (!code.includes('++')) return '++ operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '3')) return null;\nreturn '3 konsolga chiqmadi';"
+      "id": 3,
+      "title": "++ bilan 3 marta oshirish",
+      "instruction": "`steps` yarating (`let steps = 0;`). `++` bilan ketma-ket 3 marta oshiring va chiqaring.",
+      "startingCode": "let steps = 0;\n// steps ni 3 marta ++ qiling va chiqaring\n",
+      "hint": "steps++;\nsteps++;\nsteps++;\nconsole.log(steps);",
+      "test": "if (!code.includes('++')) return '++ operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '3')) return null;\nreturn '3 konsolga chiqmadi';"
     },
     {
-      id: 4,
-      title: "-- bilan kamaytirish",
-      instruction: "`lives` yarating (`let lives = 3;`). `--` bilan 1 taga kamaytiring va chiqaring (`2` chiqishi kerak).",
-      startingCode: "let lives = 3;\n// lives ni -- bilan kamaytiring va chiqaring\n",
-      hint: "lives--;\nconsole.log(lives);",
-      test: "if (!code.includes('--')) return '-- operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2')) return null;\nreturn '2 konsolga chiqmadi';"
+      "id": 4,
+      "title": "-- bilan kamaytirish",
+      "instruction": "`lives` yarating (`let lives = 3;`). `--` bilan 1 taga kamaytiring va chiqaring (`2` chiqishi kerak).",
+      "startingCode": "let lives = 3;\n// lives ni -- bilan kamaytiring va chiqaring\n",
+      "hint": "lives--;\nconsole.log(lives);",
+      "test": "if (!code.includes('--')) return '-- operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2')) return null;\nreturn '2 konsolga chiqmadi';"
     },
     {
-      id: 5,
-      title: "TypeError ni tuzatish",
-      instruction: "`const balance = 25; balance -= 10;` xato bermoqda. `let` ga tuzating: `15` chiqsin.",
-      startingCode: "const balance = 25;\nbalance -= 10;\nconsole.log(balance);\n",
-      hint: "let balance = 25;\nbalance -= 10;\nconsole.log(balance);",
-      test: "if (code.includes('const')) return 'const orniga let ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '15')) return null;\nreturn '15 konsolga chiqmadi';"
+      "id": 5,
+      "title": "TypeError ni tuzatish",
+      "instruction": "`const balance = 25; balance -= 10;` xato bermoqda. `let` ga tuzating: `15` chiqsin.",
+      "startingCode": "const balance = 25;\nbalance -= 10;\nconsole.log(balance);\n",
+      "hint": "let balance = 25;\nbalance -= 10;\nconsole.log(balance);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '15')) return null;\nreturn '15 konsolga chiqmadi';"
     },
     {
-      id: 6,
-      title: "=+ xatosini tuzatish",
-      instruction: "`score =+ 5` o'rniga `+=` yozing (`let score = 10;` berilgan). `15` chiqishi kerak.",
-      startingCode: "let score = 10;\nscore =+ 5;\nconsole.log(score);\n",
-      hint: "score += 5;",
-      test: "if (!code.includes('+=')) return '+= bilan yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '15')) return null;\nreturn '15 konsolga chiqmadi';"
+      "id": 6,
+      "title": "=+ xatosini tuzatish",
+      "instruction": "`score =+ 5` o'rniga `+=` yozing (`let score = 10;` berilgan). `15` chiqishi kerak.",
+      "startingCode": "let score = 10;\nscore =+ 5;\nconsole.log(score);\n",
+      "hint": "score += 5;",
+      "test": "if (!code.includes('+=')) return '+= bilan yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '15')) return null;\nreturn '15 konsolga chiqmadi';"
     },
     {
-      id: 7,
-      title: "Probel xatosini tuzatish",
-      instruction: "`count + = 1` dagi probelni olib tashlang (`let count = 1;` berilgan). `2` chiqishi kerak.",
-      startingCode: "let count = 1;\ncount + = 1;\nconsole.log(count);\n",
-      hint: "count += 1;",
-      test: "if (!code.includes('+=')) return '+= ni bitta yaxlit yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2')) return null;\nreturn '2 konsolga chiqmadi';"
+      "id": 7,
+      "title": "Probel xatosini tuzatish",
+      "instruction": "`count + = 1` dagi probelni olib tashlang (`let count = 1;` berilgan). `2` chiqishi kerak.",
+      "startingCode": "let count = 1;\ncount + = 1;\nconsole.log(count);\n",
+      "hint": "count += 1;",
+      "test": "if (!code.includes('+=')) return '+= ni bitta yaxlit yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2')) return null;\nreturn '2 konsolga chiqmadi';"
     },
     {
-      id: 8,
-      title: "Ketma-ket uch amal",
-      instruction: "`score = 10` berilgan. `+= 5`, `-= 3`, `++` ni ketma-ket bajaring va chiqaring (`13` chiqishi kerak).",
-      startingCode: "let score = 10;\n// += 5, -= 3, ++ ni bajaring va chiqaring\n",
-      hint: "score += 5;\nscore -= 3;\nscore++;\nconsole.log(score);",
-      test: "if (!code.includes('+=') || !code.includes('-=') || !code.includes('++')) return '+=, -= va ++ ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '13')) return null;\nreturn '13 konsolga chiqmadi';"
+      "id": 8,
+      "title": "Ketma-ket uch amal",
+      "instruction": "`score = 10` berilgan. `+= 5`, `-= 3`, `++` ni ketma-ket bajaring va chiqaring (`13` chiqishi kerak).",
+      "startingCode": "let score = 10;\n// += 5, -= 3, ++ ni bajaring va chiqaring\n",
+      "hint": "score += 5;\nscore -= 3;\nscore++;\nconsole.log(score);",
+      "test": "if (!code.includes('+=') || !code.includes('-=') || !code.includes('++')) return '+=, -= va ++ ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '13')) return null;\nreturn '13 konsolga chiqmadi';"
     },
     {
-      id: 9,
-      title: "Har qadamni kuzatish (chegara)",
-      instruction: "`n = 0` berilgan. `++` qiling, chiqaring. Yana `++` qiling, chiqaring. Konsolda `1` va `2` ko'rinsin.",
-      startingCode: "let n = 0;\n// ++ qiling, chiqaring, yana ++ qiling, chiqaring\n",
-      hint: "n++;\nconsole.log(n);\nn++;\nconsole.log(n);",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikki marta chiqaring';\nif (out[0].trim() !== '1' || out[1].trim() !== '2') return 'Avval 1, keyin 2 chiqishi kerak';\nreturn null;"
+      "id": 9,
+      "title": "Har qadamni kuzatish (chegara)",
+      "instruction": "`n = 0` berilgan. `++` qiling, chiqaring. Yana `++` qiling, chiqaring. Konsolda `1` va `2` ko'rinsin.",
+      "startingCode": "let n = 0;\n// ++ qiling, chiqaring, yana ++ qiling, chiqaring\n",
+      "hint": "n++;\nconsole.log(n);\nn++;\nconsole.log(n);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikki marta chiqaring';\nif (out[0].trim() !== '1' || out[1].trim() !== '2') return 'Avval 1, keyin 2 chiqishi kerak';\nreturn null;"
     },
     {
-      id: 10,
-      title: "Noldan pastga (chegara)",
-      instruction: "`lives = 1` berilgan. `--` ni ikki marta bajaring va chiqaring (`-1` chiqadi — kamayish noldan ham o'tadi).",
-      startingCode: "let lives = 1;\n// -- ni ikki marta bajaring va chiqaring\n",
-      hint: "lives--;\nlives--;\nconsole.log(lives);",
-      test: "if (!code.includes('--')) return '-- operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '-1')) return null;\nreturn '-1 konsolga chiqmadi';"
+      "id": 10,
+      "title": "Noldan pastga (chegara)",
+      "instruction": "`lives = 1` berilgan. `--` ni ikki marta bajaring va chiqaring (`-1` chiqadi — kamayish noldan ham o'tadi).",
+      "startingCode": "let lives = 1;\n// -- ni ikki marta bajaring va chiqaring\n",
+      "hint": "lives--;\nlives--;\nconsole.log(lives);",
+      "test": "if (!code.includes('--')) return '-- operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '-1')) return null;\nreturn '-1 konsolga chiqmadi';"
     }
   ],
   quizzes: [

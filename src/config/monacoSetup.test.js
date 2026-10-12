@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { setupMonacoAmdProtection } from './monacoSetup.js';
+import { setupMonacoAmdProtection } from './monacoAmdProtection.js';
 
 describe('monacoSetup AMD protection', () => {
   it('should protect against "Can only have one anonymous define call per script file" errors', () => {

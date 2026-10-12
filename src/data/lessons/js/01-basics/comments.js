@@ -157,28 +157,28 @@ Keyingi darsda: Ma'lumotlarni xotirada saqlash uchun o'zgaruvchilar (\`let\`) bi
 `,
   exercises: [
     {
-      id: 1,
-      title: "Bir qatorli sharh",
-      instruction: "`console.log(\"Salom\");` qatori tepasiga `// Salomlashuv` sharhini yozing.",
-      startingCode: "console.log(\"Salom\");\n",
-      hint: "// Salomlashuv\nconsole.log(\"Salom\");",
-      test: "if (!code.includes('//')) return '// bir qatorli sharh yozilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'console.log(\"Salom\") ishlashi kerak';"
+      "id": 1,
+      "title": "Bir qatorli sharh",
+      "instruction": "`console.log(\"Salom\");` qatori tepasiga `// Salomlashuv` sharhini yozing.",
+      "startingCode": "console.log(\"Salom\");\n",
+      "hint": "// Salomlashuv\nconsole.log(\"Salom\");",
+      "test": "if (!code.includes('//')) return '// bir qatorli sharh yozilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Salom'))) return null;\nreturn 'console.log(\"Salom\") ishlashi kerak';"
     },
     {
-      id: 2,
-      title: "Ko'p qatorli sharh",
-      instruction: "`/*` va `*/` belgilaridan foydalanib ko'p qatorli sharh yozing va pastida `console.log(\"Tayyor\");` qoldiring.",
-      startingCode: "/* \n  Bu yerga izoh yozing\n*/\nconsole.log(\"Tayyor\");\n",
-      hint: "/* Izoh */\nconsole.log(\"Tayyor\");",
-      test: "if (!code.includes('/*') || !code.includes('*/')) return '/* */ ko\\'p qatorli sharh ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Tayyor'))) return null;\nreturn 'console.log(\"Tayyor\") ishlashi kerak';"
+      "id": 2,
+      "title": "Ko'p qatorli sharh",
+      "instruction": "`/*` va `*/` belgilaridan foydalanib ko'p qatorli sharh yozing va pastida `console.log(\"Tayyor\");` qoldiring.",
+      "startingCode": "/* \n  Bu yerga izoh yozing\n*/\nconsole.log(\"Tayyor\");\n",
+      "hint": "/* Izoh */\nconsole.log(\"Tayyor\");",
+      "test": "if (!code.includes('/*') || !code.includes('*/')) return '/* */ ko\\'p qatorli sharh ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Tayyor'))) return null;\nreturn 'console.log(\"Tayyor\") ishlashi kerak';"
     },
     {
-      id: 3,
-      title: "Kodni sharh bilan o'chirish",
-      instruction: "Quyidagi `console.log(100);` qatorini `//` bilan sharhga aylantiring, toki u ishlamasin (ekranga 100 chiqmasin).",
-      startingCode: "console.log(100);\n",
-      hint: "// console.log(100);",
-      test: "if (!code.includes('//') && !code.includes('/*')) return 'Sharh belgisi (//) qo\\'yilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return null;\nreturn 'console.log hali ham ishlayapti — uni // bilan sharhga aylantiring';"
+      "id": 3,
+      "title": "Kodni sharh bilan o'chirish",
+      "instruction": "Quyidagi `console.log(100);` qatorini `//` bilan sharhga aylantiring, toki u ishlamasin (ekranga 100 chiqmasin).",
+      "startingCode": "console.log(100);\n",
+      "hint": "// console.log(100);",
+      "test": "if (!code.includes('//') && !code.includes('/*')) return 'Sharh belgisi (//) qo\\'yilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return null;\nreturn 'console.log hali ham ishlayapti — uni // bilan sharhga aylantiring';"
     },
     {
       "id": 4,
@@ -218,7 +218,7 @@ Keyingi darsda: Ma'lumotlarni xotirada saqlash uchun o'zgaruvchilar (\`let\`) bi
       "instruction": "Kod ichidagi `let unused = 5;` qatorini sharhga aylantiring (kodni o'chirmasdan, faqat sharh qiling).",
       "startingCode": "let used = 10;\nlet unused = 5;\nconsole.log(used);\n",
       "hint": "let unused = 5; qatorini // bilan boshlang.",
-      "test": "if (!/^\\s*\\/\\/\\s*let unused = 5/m.test(code)) return 'let unused = 5 qatori sharhlangan bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '10')) return null;\nreturn 'console.log(used) 10 chiqishi kerak';"
+      "test": "if (!/^\\s*\\/\\/\\s*(?:let|var)\\s+unused = 5/m.test(code)) return 'let unused = 5 qatori sharhlangan bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '10')) return null;\nreturn 'console.log(used) 10 chiqishi kerak';"
     },
     {
       "id": 9,
@@ -226,7 +226,7 @@ Keyingi darsda: Ma'lumotlarni xotirada saqlash uchun o'zgaruvchilar (\`let\`) bi
       "instruction": "Ikki qatorda ham `//` bilan sharh yozing: birinchisida `Birinchi sharh`, ikkinchisida `Ikkinchi sharh`. Ikkalasi ham ishlashi kerak.",
       "startingCode": "// Ikkala qatorni ham sharh qiling\nlet a = 1;\nlet b = 2;\n",
       "hint": "let a va let b qatorlarini // bilan boshlang.",
-      "test": "if (!/^\\s*\\/\\/\\s*let a = 1/m.test(code)) return 'let a = 1 sharhlangan bo\\'lishi kerak';\nif (!/^\\s*\\/\\/\\s*let b = 2/m.test(code)) return 'let b = 2 sharhlangan bo\\'lishi kerak';\nif (!code.includes('Birinchi sharh') || !code.includes('Ikkinchi sharh')) return 'Ikkita sharh matni ham yozilishi kerak';\nreturn null;"
+      "test": "if (!/^\\s*\\/\\/\\s*(?:let|var)\\s+a = 1/m.test(code)) return 'let a = 1 sharhlangan bo\\'lishi kerak';\nif (!/^\\s*\\/\\/\\s*(?:let|var)\\s+b = 2/m.test(code)) return 'let b = 2 sharhlangan bo\\'lishi kerak';\nif (!code.includes('Birinchi sharh') || !code.includes('Ikkinchi sharh')) return 'Ikkita sharh matni ham yozilishi kerak';\nreturn null;"
     },
     {
       "id": 10,

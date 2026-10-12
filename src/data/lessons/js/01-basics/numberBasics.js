@@ -176,28 +176,28 @@ Keyingi darsda: Sonlar ustida arifmetik amallar bilan tanishamiz.
 `,
   exercises: [
     {
-      id: 1,
-      title: "Butun son yaratish",
-      instruction: "`year` nomli o'zgaruvchi yarating (`let` bilan), unga `2026` sonini bering va `console.log(year);` orqali chiqaring.",
-      startingCode: "// year o'zgaruvchisini yarating va chiqaring\n",
-      hint: "let year = 2026;\nconsole.log(year);",
-      test: "if (code.includes('\"2026\"') || code.includes(\"'2026'\")) return 'Sonni qo\\'shtirnoqsiz yozing';\nif (!code.includes('year')) return 'year nomli o\\'zgaruvchi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('2026'))) return null;\nreturn '2026 soni konsolga chiqmadi';"
+      "id": 1,
+      "title": "Butun son yaratish",
+      "instruction": "`year` nomli o'zgaruvchi yarating (`let` bilan), unga `2026` sonini bering va `console.log(year);` orqali chiqaring.",
+      "startingCode": "// year o'zgaruvchisini yarating va chiqaring\n",
+      "hint": "let year = 2026;\nconsole.log(year);",
+      "test": "if (code.includes('\"2026\"') || code.includes(\"'2026'\")) return 'Sonni qo\\'shtirnoqsiz yozing';\nif (!code.includes('year')) return 'year nomli o\\'zgaruvchi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('2026'))) return null;\nreturn '2026 soni konsolga chiqmadi';"
     },
     {
-      id: 2,
-      title: "O'nlik son yaratish",
-      instruction: "`pi` nomli `const` yarating, unga `3.14` o'nlik sonini bering va konsolga chiqaring.",
-      startingCode: "// pi nomli const yarating va chiqaring\n",
-      hint: "const pi = 3.14;\nconsole.log(pi);",
-      test: "if (code.includes('\"3.14\"') || code.includes(\"'3.14'\")) return 'Sonni qo\\'shtirnoqsiz yozing';\nif (code.includes('3,14')) return 'Vergul o\\'rniga nuqta ishlating: 3.14';\nif (!code.includes('const')) return 'const kalit so\\'zi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('3.14'))) return null;\nreturn '3.14 soni konsolga chiqmadi';"
+      "id": 2,
+      "title": "O'nlik son yaratish",
+      "instruction": "`pi` nomli `const` yarating, unga `3.14` o'nlik sonini bering va konsolga chiqaring.",
+      "startingCode": "// pi nomli const yarating va chiqaring\n",
+      "hint": "const pi = 3.14;\nconsole.log(pi);",
+      "test": "if (code.includes('\"3.14\"') || code.includes(\"'3.14'\")) return 'Sonni qo\\'shtirnoqsiz yozing';\nif (code.includes('3,14')) return 'Vergul o\\'rniga nuqta ishlating: 3.14';\nif (!/\\b(?:const|var)\\b/.test(code)) return 'const kalit so\\'zi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('3.14'))) return null;\nreturn '3.14 soni konsolga chiqmadi';"
     },
     {
-      id: 3,
-      title: "Vergul xatosini to'g'rilash",
-      instruction: "`weight = 65,5;` dagi vergulni nuqta bilan almashtiring, toki konsolga `65.5` chiqsin.",
-      startingCode: "let weight = 65,5;\nconsole.log(weight);\n",
-      hint: "let weight = 65.5;\nconsole.log(weight);",
-      test: "if (code.includes('65,5')) return 'Vergul o\\'rniga nuqta qo\\'ying';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('65.5'))) return null;\nreturn '65.5 soni konsolga chiqmadi';"
+      "id": 3,
+      "title": "Vergul xatosini to'g'rilash",
+      "instruction": "`weight = 65,5;` dagi vergulni nuqta bilan almashtiring, toki konsolga `65.5` chiqsin.",
+      "startingCode": "let weight = 65,5;\nconsole.log(weight);\n",
+      "hint": "let weight = 65.5;\nconsole.log(weight);",
+      "test": "if (code.includes('65,5')) return 'Vergul o\\'rniga nuqta qo\\'ying';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('65.5'))) return null;\nreturn '65.5 soni konsolga chiqmadi';"
     },
     {
       "id": 4,

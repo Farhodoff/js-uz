@@ -168,84 +168,84 @@ Keyingi darsda: Arifmetik operatorlar orqali sonlar ustida amallar bajarishni o'
 `,
   exercises: [
     {
-      id: 1,
-      title: "Matnni songa aylantirish",
-      instruction: "`priceText` berilgan (`let priceText = \"150\";`). Uni `Number()` orqali songa aylantirib, `realPrice` ga saqlang va `console.log(realPrice);` orqali chiqaring.",
-      startingCode: "let priceText = \"150\";\n// realPrice ga Number(priceText) ni saqlang va chiqaring\n",
-      hint: "let realPrice = Number(priceText);\nconsole.log(realPrice);",
-      test: "if (!code.includes('Number(')) return 'Number() funksiyasi ishlatilmadi';\nif (!code.includes('realPrice')) return 'realPrice o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '150')) return null;\nreturn '150 soni konsolga chiqmadi';"
+      "id": 1,
+      "title": "Matnni songa aylantirish",
+      "instruction": "`priceText` berilgan (`let priceText = \"150\";`). Uni `Number()` orqali songa aylantirib, `realPrice` ga saqlang va `console.log(realPrice);` orqali chiqaring.",
+      "startingCode": "let priceText = \"150\";\n// realPrice ga Number(priceText) ni saqlang va chiqaring\n",
+      "hint": "let realPrice = Number(priceText);\nconsole.log(realPrice);",
+      "test": "if (!code.includes('Number(')) return 'Number() funksiyasi ishlatilmadi';\nif (!code.includes('realPrice')) return 'realPrice o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '150')) return null;\nreturn '150 soni konsolga chiqmadi';"
     },
     {
-      id: 2,
-      title: "Sonni matnga aylantirish",
-      instruction: "`score` berilgan (`let score = 10;`). Uni `String()` bilan matnga aylantirib, `scoreText` ga saqlang va `console.log(typeof scoreText);` orqali turini chiqaring.",
-      startingCode: "let score = 10;\n// scoreText ga String(score) ni saqlang va typeof bilan chiqaring\n",
-      hint: "let scoreText = String(score);\nconsole.log(typeof scoreText);",
-      test: "if (!code.includes('String(')) return 'String() funksiyasi ishlatilmadi';\nif (!code.includes('scoreText')) return 'scoreText o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'string')) return null;\nreturn 'string turi konsolga chiqmadi';"
+      "id": 2,
+      "title": "Sonni matnga aylantirish",
+      "instruction": "`score` berilgan (`let score = 10;`). Uni `String()` bilan matnga aylantirib, `scoreText` ga saqlang va `console.log(typeof scoreText);` orqali turini chiqaring.",
+      "startingCode": "let score = 10;\n// scoreText ga String(score) ni saqlang va typeof bilan chiqaring\n",
+      "hint": "let scoreText = String(score);\nconsole.log(typeof scoreText);",
+      "test": "if (!code.includes('String(')) return 'String() funksiyasi ishlatilmadi';\nif (!code.includes('scoreText')) return 'scoreText o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'string')) return null;\nreturn 'string turi konsolga chiqmadi';"
     },
     {
-      id: 3,
-      title: "NaN natijasini olish",
-      instruction: "`word` da `\"kitob\"` matni berilgan. Uni `Number(word)` bilan songa aylantirib, `notANumber` ga saqlang va chiqaring (`NaN` chiqadi — bu xato emas).",
-      startingCode: "let word = \"kitob\";\n// notANumber ga Number(word) ni saqlang va chiqaring\n",
-      hint: "let notANumber = Number(word);\nconsole.log(notANumber);",
-      test: "if (!code.includes('Number(')) return 'Number() funksiyasi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'NaN')) return null;\nreturn 'NaN konsolga chiqmadi';"
+      "id": 3,
+      "title": "NaN natijasini olish",
+      "instruction": "`word` da `\"kitob\"` matni berilgan. Uni `Number(word)` bilan songa aylantirib, `notANumber` ga saqlang va chiqaring (`NaN` chiqadi — bu xato emas).",
+      "startingCode": "let word = \"kitob\";\n// notANumber ga Number(word) ni saqlang va chiqaring\n",
+      "hint": "let notANumber = Number(word);\nconsole.log(notANumber);",
+      "test": "if (!code.includes('Number(')) return 'Number() funksiyasi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'NaN')) return null;\nreturn 'NaN konsolga chiqmadi';"
     },
     {
-      id: 4,
-      title: "Birni true ga aylantirish",
-      instruction: "`one` da `1` soni berilgan. Uni `Boolean()` bilan mantiqiy turga aylantirib, `yes` ga saqlang va chiqaring (`true` chiqadi).",
-      startingCode: "let one = 1;\n// yes ga Boolean(one) ni saqlang va chiqaring\n",
-      hint: "let yes = Boolean(one);\nconsole.log(yes);",
-      test: "if (!code.includes('Boolean(')) return 'Boolean() funksiyasi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
+      "id": 4,
+      "title": "Birni true ga aylantirish",
+      "instruction": "`one` da `1` soni berilgan. Uni `Boolean()` bilan mantiqiy turga aylantirib, `yes` ga saqlang va chiqaring (`true` chiqadi).",
+      "startingCode": "let one = 1;\n// yes ga Boolean(one) ni saqlang va chiqaring\n",
+      "hint": "let yes = Boolean(one);\nconsole.log(yes);",
+      "test": "if (!code.includes('Boolean(')) return 'Boolean() funksiyasi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
     },
     {
-      id: 5,
-      title: "Nolni false ga aylantirish",
-      instruction: "`zero` da `0` soni berilgan. Uni `Boolean()` bilan aylantirib, `no` ga saqlang va chiqaring (`false` chiqadi).",
-      startingCode: "let zero = 0;\n// no ga Boolean(zero) ni saqlang va chiqaring\n",
-      hint: "let no = Boolean(zero);\nconsole.log(no);",
-      test: "if (!code.includes('Boolean(')) return 'Boolean() funksiyasi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
+      "id": 5,
+      "title": "Nolni false ga aylantirish",
+      "instruction": "`zero` da `0` soni berilgan. Uni `Boolean()` bilan aylantirib, `no` ga saqlang va chiqaring (`false` chiqadi).",
+      "startingCode": "let zero = 0;\n// no ga Boolean(zero) ni saqlang va chiqaring\n",
+      "hint": "let no = Boolean(zero);\nconsole.log(no);",
+      "test": "if (!code.includes('Boolean(')) return 'Boolean() funksiyasi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
     },
     {
-      id: 6,
-      title: "Kichik harf xatosini tuzatish",
-      instruction: "`let age = number(\"25\");` xato bermoqda. Katta harfga tuzating: `25` chiqsin.",
-      startingCode: "let age = number(\"25\");\nconsole.log(age);\n",
-      hint: "number o'rniga Number yozing.",
-      test: "if (code.includes('number(')) return 'number ni katta harfda Number deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '25')) return null;\nreturn '25 konsolga chiqmadi';"
+      "id": 6,
+      "title": "Kichik harf xatosini tuzatish",
+      "instruction": "`let age = number(\"25\");` xato bermoqda. Katta harfga tuzating: `25` chiqsin.",
+      "startingCode": "let age = number(\"25\");\nconsole.log(age);\n",
+      "hint": "number o'rniga Number yozing.",
+      "test": "if (code.includes('number(')) return 'number ni katta harfda Number deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '25')) return null;\nreturn '25 konsolga chiqmadi';"
     },
     {
-      id: 7,
-      title: "Ikkita aylantirish bitta qatorda",
-      instruction: "`String(20)` va `Boolean(1)` natijalarini AYNAN BIRTA `console.log` bilan chiqaring: `20 true` ko'rinsin.",
-      startingCode: "// String(20) va Boolean(1) ni bitta console.log bilan chiqaring\n",
-      hint: "console.log(String(20), Boolean(1));",
-      test: "if (!code.includes('String(') || !code.includes('Boolean(')) return 'String() va Boolean() ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 1) return 'BIRTA console.log bilan chiqaring';\nif (out[0].trim() === '20 true') return null;\nreturn \"Natija '20 true' bolishi kerak\";"
+      "id": 7,
+      "title": "Ikkita aylantirish bitta qatorda",
+      "instruction": "`String(20)` va `Boolean(1)` natijalarini AYNAN BIRTA `console.log` bilan chiqaring: `20 true` ko'rinsin.",
+      "startingCode": "// String(20) va Boolean(1) ni bitta console.log bilan chiqaring\n",
+      "hint": "console.log(String(20), Boolean(1));",
+      "test": "if (!code.includes('String(') || !code.includes('Boolean(')) return 'String() va Boolean() ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 1) return 'BIRTA console.log bilan chiqaring';\nif (out[0].trim() === '20 true') return null;\nreturn \"Natija '20 true' bolishi kerak\";"
     },
     {
-      id: 8,
-      title: "Turni tekshirib isbotlash",
-      instruction: "`t = String(50)` berilgan. `typeof` bilan turini chiqaring: `string` chiqsin.",
-      startingCode: "let t = String(50);\n// typeof bilan turini chiqaring\n",
-      hint: "console.log(typeof t);",
-      test: "if (!code.includes('typeof t')) return 'typeof t deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'string')) return null;\nreturn 'string konsolga chiqmadi';"
+      "id": 8,
+      "title": "Turni tekshirib isbotlash",
+      "instruction": "`t = String(50)` berilgan. `typeof` bilan turini chiqaring: `string` chiqsin.",
+      "startingCode": "let t = String(50);\n// typeof bilan turini chiqaring\n",
+      "hint": "console.log(typeof t);",
+      "test": "if (!code.includes('typeof t')) return 'typeof t deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'string')) return null;\nreturn 'string konsolga chiqmadi';"
     },
     {
-      id: 9,
-      title: "Bo'sh Number (chegara)",
-      instruction: "`Number()` ni hech narsasiz chaqiring va chiqaring. Kutilmagan `0` chiqadi — sababi: bo'sh chaqiruv natijasi `0`.",
-      startingCode: "// Number() ni bo'sh chaqirib chiqaring\n",
-      hint: "console.log(Number());",
-      test: "if (!code.includes('Number()')) return 'Number() ni bo\\'sh chaqiring';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === 0)) return null;\nreturn '0 konsolga chiqmadi';"
+      "id": 9,
+      "title": "Bo'sh Number (chegara)",
+      "instruction": "`Number()` ni hech narsasiz chaqiring va chiqaring. Kutilmagan `0` chiqadi — sababi: bo'sh chaqiruv natijasi `0`.",
+      "startingCode": "// Number() ni bo'sh chaqirib chiqaring\n",
+      "hint": "console.log(Number());",
+      "test": "if (!code.includes('Number()')) return 'Number() ni bo\\'sh chaqiring';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === 0)) return null;\nreturn '0 konsolga chiqmadi';"
     },
     {
-      id: 10,
-      title: "Ikki xato bitta kodda (chegara)",
-      instruction: "Ikki xato bor: `n` e'lon qilinmagan, `number` kichik harfda. Tuzating: `n = 40` chiqsin (`let n = Number(\"40\");`).",
-      startingCode: "n = number(\"40\");\nconsole.log(n);\n",
-      hint: "let n = Number(\"40\"); — let qo'shing, N ni kattalashtiring.",
-      test: "if (code.includes('number(')) return 'number ni katta harfda Number deb yozing';\nif (!code.includes('let n')) return 'let n deb e\\'lon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === 40)) return null;\nreturn '40 konsolga chiqmadi';"
+      "id": 10,
+      "title": "Ikki xato bitta kodda (chegara)",
+      "instruction": "Ikki xato bor: `n` e'lon qilinmagan, `number` kichik harfda. Tuzating: `n = 40` chiqsin (`let n = Number(\"40\");`).",
+      "startingCode": "n = number(\"40\");\nconsole.log(n);\n",
+      "hint": "let n = Number(\"40\"); — let qo'shing, N ni kattalashtiring.",
+      "test": "if (code.includes('number(')) return 'number ni katta harfda Number deb yozing';\nif (!/\\b(?:let|var)\\s+n\\b/.test(code)) return 'let n deb e\\'lon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === 40)) return null;\nreturn '40 konsolga chiqmadi';"
     }
   ],
   quizzes: [

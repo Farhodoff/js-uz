@@ -33,7 +33,12 @@ self.onmessage = async (e) => {
           const setupStmts = String(setup).split(';').map(s => s.trim()).filter(Boolean);
           for (const stmt of setupStmts) alasql(stmt);
         }
-        const result = alasql(code);
+        // O'quvchi kodi ham bir nechta operator bo'lishi mumkin — ketma-ket
+        // bajarib, test va ko'rsatish uchun OXIRGI natija olinadi.
+        // (String ichida nuqta-vergul bo'lmasligi kerak.)
+        const codeStmts = String(code).split(';').map(s => s.trim()).filter(Boolean);
+        let result = null;
+        for (const stmt of codeStmts) result = alasql(stmt);
 
         // Mashq testi code (so'rov matni) va result (qatorlar) bilan ishlaydi:
         // null/undefined = o'tdi, string = xato xabari

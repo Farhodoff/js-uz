@@ -178,84 +178,84 @@ Keyingi darsda: Elementni o'zgartirish — \`textContent\` va \`classList\` bila
 `,
   exercises: [
     {
-      id: 1,
-      title: "ID bo'yicha elementni tanlash",
-      instruction: "`document.getElementById(\"btn\")` yordamida elementni tanlang va `btn !== null` ekanligini konsolga chiqaring.",
-      startingCode: "// document.getElementById(\"btn\") qiling va btn !== null ni chiqaring\n",
-      hint: "const btn = document.getElementById(\"btn\");\nconsole.log(btn !== null);",
-      test: "if (!code.includes('getElementById')) return 'getElementById ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry {\n  const mockElements = { btn: { id: 'btn' } };\n  const mockDoc = { getElementById: id => mockElements[id] || null };\n  const doc = typeof document !== 'undefined' ? document : mockDoc;\n  new Function('document', code)(doc);\n} catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('true')) return null;\nreturn 'true konsolga chiqmadi';"
+      "id": 1,
+      "title": "ID bo'yicha elementni topish",
+      "instruction": "`findTitle()` funksiyasi `document.getElementById(\"title\")` bilan elementni topib, uni qaytarsin. Diqqat: metod ichida panjara (`#`) yozilmaydi.",
+      "startingCode": "function findTitle() {\n  // document.getElementById bilan toping\n}\n",
+      "hint": "function findTitle() {\n  return document.getElementById(\"title\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (code.includes(\"getElementById(\\\"#\")) return \"Panjara (#) kerak emas\";\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findTitle()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija && natija.id === \"title\") return null;\nreturn \"title elementi topilmadi\";"
     },
     {
-      id: 2,
-      title: "querySelector bilan klass tanlash",
-      instruction: "`document.querySelector(\".active\")` orqali elementni tanlang va `item !== null` ekanligini konsolga chiqaring.",
-      startingCode: "// document.querySelector(\".active\") qiling va item !== null ni chiqaring\n",
-      hint: "const item = document.querySelector(\".active\");\nconsole.log(item !== null);",
-      test: "if (!code.includes('querySelector')) return 'querySelector ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry {\n  const mockElements = { '.active': { className: 'active' } };\n  const mockDoc = { querySelector: sel => mockElements[sel] || null };\n  const doc = typeof document !== 'undefined' ? document : mockDoc;\n  new Function('document', code)(doc);\n} catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('true')) return null;\nreturn 'true konsolga chiqmadi';"
+      "id": 2,
+      "title": "Klass bo'yicha elementni topish",
+      "instruction": "`findSaveByClass()` funksiyasi `document.querySelector(\".btn\")` bilan elementni topib qaytarsin.",
+      "startingCode": "function findSaveByClass() {\n  // querySelector bilan .btn toping\n}\n",
+      "hint": "function findSaveByClass() {\n  return document.querySelector(\".btn\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"querySelector\") || !code.includes(\".btn\")) return \"querySelector(\\'.btn\\') ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findSaveByClass()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija && natija.id === \"save\") return null;\nreturn \"save elementi topilmadi\";"
     },
     {
-      id: 3,
-      title: "Topilmagan element (null)",
-      instruction: "`document.getElementById(\"not-found\")` deb qidiring va olingan natijani konsolga chiqaring (`null` chiqishi kerak).",
-      startingCode: "// document.getElementById(\"not-found\") ni oling va konsolga chiqaring\n",
-      hint: "const item = document.getElementById(\"not-found\");\nconsole.log(item);",
-      test: "if (!code.includes('getElementById')) return 'getElementById ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry {\n  const mockDoc = { getElementById: () => null };\n  const doc = typeof document !== 'undefined' ? document : mockDoc;\n  new Function('document', code)(doc);\n} catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('null')) return null;\nreturn 'null konsolga chiqmadi';"
+      "id": 3,
+      "title": "Topilmagan element: null",
+      "instruction": "`findMissing()` funksiyasi `document.getElementById(\"missing\")` natijasini qaytarsin — element yo'q bo'lgani uchun natija `null` bo'ladi.",
+      "startingCode": "function findMissing() {\n  // mavjud bo'lmagan elementni qidiring\n}\n",
+      "hint": "function findMissing() {\n  return document.getElementById(\"missing\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findMissing()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija === null) return null;\nreturn \"null qaytarilishi kerak\";"
     },
     {
       "id": 4,
       "title": "querySelector bilan ID tanlash",
-      "instruction": "`document.querySelector(\"#title\")` orqali elementni tanlang va `heading !== null` ekanligini konsolga chiqaring (`true`).",
-      "startingCode": "// querySelector(\"#title\") qiling va heading !== null ni chiqaring\n",
-      "hint": "const heading = document.querySelector(\"#title\");\nconsole.log(heading !== null);",
-      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"querySelector\") || !code.includes(\"#title\")) return \"querySelector('#title') ishlatilmadi\";\nif (out.includes(\"true\")) return null;\nreturn \"true konsolga chiqmadi\";"
+      "instruction": "`findByHash()` funksiyasi `document.querySelector(\"#title\")` bilan elementni topib qaytarsin (bu yerda panjara kerak!).",
+      "startingCode": "function findByHash() {\n  // querySelector(\"#title\") ishlating\n}\n",
+      "hint": "function findByHash() {\n  return document.querySelector(\"#title\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"#title\")) return \"\\\"#title\\\" selektori ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findByHash()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija && natija.id === \"title\") return null;\nreturn \"title elementi topilmadi\";"
     },
     {
       "id": 5,
       "title": "Teg nomi bo'yicha tanlash",
-      "instruction": "`document.querySelector(\"button\")` orqali sahifadagi `button` tegini tanlang va `btn !== null` ni konsolga chiqaring (`true`).",
-      "startingCode": "// querySelector(\"button\") qiling va btn !== null ni chiqaring\n",
-      "hint": "const btn = document.querySelector(\"button\");\nconsole.log(btn !== null);",
-      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"querySelector\") || !code.includes(\"button\")) return \"querySelector('button') ishlatilmadi\";\nif (out.includes(\"true\")) return null;\nreturn \"true konsolga chiqmadi\";"
+      "instruction": "`findButton()` funksiyasi `document.querySelector(\"button\")` bilan sahifadagi tugmani topib qaytarsin.",
+      "startingCode": "function findButton() {\n  // querySelector(\"button\") ishlating\n}\n",
+      "hint": "function findButton() {\n  return document.querySelector(\"button\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"button\")) return \"button selektori ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findButton()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija && natija.id === \"save\") return null;\nreturn \"button tegidagi element topilmadi\";"
     },
     {
       "id": 6,
-      "title": "Topilmagan selektor null qaytaradi",
-      "instruction": "Sahifada yo'q bo'lgan `.yoq` klassini `querySelector` bilan qidirib, natijani konsolga chiqaring (`null`).",
-      "startingCode": "// .yoq ni qidirib natijani konsolga chiqaring\n",
-      "hint": "const item = document.querySelector(\".yoq\");\nconsole.log(item);",
-      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"querySelector\")) return \"querySelector ishlatilmadi\";\nif (out.some((m) => m.trim() === \"null\")) return null;\nreturn \"null konsolga chiqmadi\";"
+      "title": "Mavjud bo'lmagan klass: null",
+      "instruction": "`missingClass()` funksiyasi `document.querySelector(\".yoq\")` natijasini qaytarsin (`null`).",
+      "startingCode": "function missingClass() {\n  // mavjud bo'lmagan klassni qidiring\n}\n",
+      "hint": "function missingClass() {\n  return document.querySelector(\".yoq\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\".yoq\")) return \"\\\".yoq\\\" selektori ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"missingClass()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija === null) return null;\nreturn \"null qaytarilishi kerak\";"
     },
     {
       "id": 7,
-      "title": "getElementById da panjara bo'lmasligi",
-      "instruction": "`getElementById(\"#title\")` xato yozilish ekan (panjara kerak emas). To'g'ri varianti bilan `title` elementini tanlab, `heading !== null` ni konsolga chiqaring (`true`).",
-      "startingCode": "// panjarasiz getElementById(\"title\") ishlatib, heading !== null ni chiqaring\n",
-      "hint": "const heading = document.getElementById(\"title\");\nconsole.log(heading !== null);",
-      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (code.includes(\"getElementById(\\\"#\")) return \"Panjara (#) qo'yilmasligi kerak\";\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nif (out.includes(\"true\")) return null;\nreturn \"true konsolga chiqmadi\";"
+      "title": "h1 tegini tanlash",
+      "instruction": "`findByTag()` funksiyasi `document.querySelector(\"h1\")` bilan sarlavha elementini topib qaytarsin.",
+      "startingCode": "function findByTag() {\n  // querySelector(\"h1\") ishlating\n}\n",
+      "hint": "function findByTag() {\n  return document.querySelector(\"h1\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"h1\")) return \"h1 selektori ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findByTag()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija && natija.id === \"title\") return null;\nreturn \"h1 elementi topilmadi\";"
     },
     {
       "id": 8,
-      "title": "Tanlash natijasini o'zgaruvchida saqlash",
-      "instruction": "`document.getElementById(\"title\")` natijasini `heading` o'zgaruvchisiga saqlang, so'ng `heading !== null` va `heading === document.getElementById(\"title\")` natijalarini konsolga chiqaring (true, true).",
-      "startingCode": "// heading ga saqlang, keyin ikki marta true chiqaring\n",
-      "hint": "const heading = document.getElementById(\"title\");\nconsole.log(heading !== null);\nconsole.log(heading === document.getElementById(\"title\"));",
-      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nif (out.filter((m) => m.trim() === \"true\").length >= 2) return null;\nreturn \"Ikki marta true konsolga chiqmadi\";"
+      "title": "Chegara: ikki xil yo'l bilan bir element",
+      "instruction": "`sameElement()` funksiyasi `document.querySelector(\".btn\") === document.getElementById(\"save\")` natijasini qaytarsin (`true`).",
+      "startingCode": "function sameElement() {\n  // ikkala usul bilan bir elementni topib solishtiring\n}\n",
+      "hint": "function sameElement() {\n  return document.querySelector(\".btn\") === document.getElementById(\"save\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"querySelector\") || !code.includes(\"getElementById\")) return \"Ikkala metod ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"sameElement()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija === true) return null;\nreturn \"true qaytarilishi kerak\";"
     },
     {
       "id": 9,
-      "title": "Chegara: ikki xil yo'l bilan bir element",
-      "instruction": "Sahifadagi tugmani ikki usulda tanlang: `document.querySelector(\".btn\")` va `document.getElementById(\"save\")`. Ularning bir xil elementligini (`===`) konsolga chiqaring (`true`).",
-      "startingCode": "// querySelector(\".btn\") va getElementById(\"save\") ni taqqoslang\n",
-      "hint": "const byClass = document.querySelector(\".btn\");\nconst byId = document.getElementById(\"save\");\nconsole.log(byClass === byId);",
-      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"querySelector\") || !code.includes(\"getElementById\")) return \"Ikkala metod ishlatilmadi\";\nif (out.includes(\"true\")) return null;\nreturn \"true konsolga chiqmadi\";"
+      "title": "Element borligini tekshirish",
+      "instruction": "`hasTitle()` funksiyasi `document.getElementById(\"title\") !== null` natijasini qaytarsin (`true`).",
+      "startingCode": "function hasTitle() {\n  // element null emasligini tekshiring\n}\n",
+      "hint": "function hasTitle() {\n  return document.getElementById(\"title\") !== null;\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"hasTitle()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija === true) return null;\nreturn \"true qaytarilishi kerak\";"
     },
     {
       "id": 10,
-      "title": "Chegara: topilmaganda shart bilan javob",
-      "instruction": "`document.getElementById(\"missing\")` natijasini `el` ga saqlang. Agar `el === null` bo'lsa `\"Element topilmadi\"`, aks holda `\"Topildi\"` deb konsolga chiqaring.",
-      "startingCode": "const el = document.getElementById(\"missing\");\n// if bilan el === null ni tekshirib, mos matn chiqaring\n",
-      "hint": "const el = document.getElementById(\"missing\");\n\nif (el === null) {\n  console.log(\"Element topilmadi\");\n} else {\n  console.log(\"Topildi\");\n}",
-      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry {\n  const titleEl = { id: \"title\", tagName: \"H1\" };\nconst saveEl = { id: \"save\", tagName: \"BUTTON\" };\nconst page = { \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => page[sel] || null\n};\nnew Function(\"document\", code)(mockDoc);\n} catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nif (!code.includes(\"if\")) return \"Shart (if) ishlatilmadi\";\nif (out.some((m) => m.includes(\"Element topilmadi\"))) return null;\nreturn \"\\\"Element topilmadi\\\" konsolga chiqmadi\";"
+      "title": "Chegara: xavfsiz qidiruv funksiyasi",
+      "instruction": "`safeFind(id)` funksiyasi `document.getElementById(id)` bilan qidirsin: element topilsa uning `id` sini, topilmasa `\"Element topilmadi\"` matnini qaytarsin.",
+      "startingCode": "function safeFind(id) {\n  // if bilan null ni tekshirib, id yoki xabar qaytaring\n}\n",
+      "hint": "function safeFind(id) {\n  const el = document.getElementById(id);\n  if (el === null) {\n    return \"Element topilmadi\";\n  }\n  return el.id;\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nif (!code.includes(\"if\")) return \"if bilan tekshirish kerak\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"[safeFind(\\\"title\\\"), safeFind(\\\"missing\\\")]\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (Array.isArray(natija) && natija[0] === \"title\" && natija[1] === \"Element topilmadi\") return null;\nreturn \"\\\"title\\\" va \\\"Element topilmadi\\\" kutilgan\";"
     }
   ],
   quizzes: [
