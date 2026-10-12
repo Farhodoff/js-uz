@@ -1,4 +1,7 @@
 import { useRef, useEffect, useCallback } from 'react';
+// Monaco lokal instance aynan editor kerak bo'lganda yuklanadi:
+// bu import asosiy bundle'ga 2.5MB qo'shmasligi uchun shu yerda turadi.
+import '../config/monacoSetup.js';
 import { registerUzbekMonacoProviders, updateUzbekMonacoMarkers } from '../utils/editorExtensions';
 
 // PracticeTab va Playground'dagi takroriy Monaco init mantiqini birlashtiradi:

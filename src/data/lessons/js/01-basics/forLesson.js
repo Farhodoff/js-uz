@@ -192,84 +192,84 @@ Keyingi darsda: kamida bir marta ishlaydigan \`do...while\` sikli bilan tanisham
 `,
   exercises: [
     {
-      id: 1,
-      title: "1 dan 3 gacha",
-      instruction: "`for` bilan `1` dan `3` gacha chiqaring (`1`, `2`, `3` chiqishi kerak).",
-      startingCode: "// for sikli yozing\n",
-      hint: "for (let i = 1; i <= 3; i++) {\n  console.log(i);\n}",
-      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3') return null;\nreturn '1, 2, 3 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
+      "id": 1,
+      "title": "1 dan 3 gacha",
+      "instruction": "`for` bilan `1` dan `3` gacha chiqaring (`1`, `2`, `3` chiqishi kerak).",
+      "startingCode": "// for sikli yozing\n",
+      "hint": "for (let i = 1; i <= 3; i++) {\n  console.log(i);\n}",
+      "test": "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3') return null;\nreturn '1, 2, 3 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
     },
     {
-      id: 2,
-      title: "0 dan 4 gacha",
-      instruction: "`for` bilan `0` dan `4` gacha chiqaring (`0`, `1`, `2`, `3`, `4`).",
-      startingCode: "// for sikli yozing\n",
-      hint: "for (let i = 0; i <= 4; i++) {\n  console.log(i);\n}",
-      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2,3,4') return null;\nreturn '0, 1, 2, 3, 4 chiqishi kerak';"
+      "id": 2,
+      "title": "0 dan 4 gacha",
+      "instruction": "`for` bilan `0` dan `4` gacha chiqaring (`0`, `1`, `2`, `3`, `4`).",
+      "startingCode": "// for sikli yozing\n",
+      "hint": "for (let i = 0; i <= 4; i++) {\n  console.log(i);\n}",
+      "test": "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2,3,4') return null;\nreturn '0, 1, 2, 3, 4 chiqishi kerak';"
     },
     {
-      id: 3,
-      title: "Teskari sanash",
-      instruction: "`n` bilan `3` dan `1` gacha chiqaring (`3`, `2`, `1`).",
-      startingCode: "// for sikli yozing\n",
-      hint: "for (let n = 3; n > 0; n--) {\n  console.log(n);\n}",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '3,2,1') return null;\nreturn '3, 2, 1 chiqishi kerak';"
+      "id": 3,
+      "title": "Teskari sanash",
+      "instruction": "`n` bilan `3` dan `1` gacha chiqaring (`3`, `2`, `1`).",
+      "startingCode": "// for sikli yozing\n",
+      "hint": "for (let n = 3; n > 0; n--) {\n  console.log(n);\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '3,2,1') return null;\nreturn '3, 2, 1 chiqishi kerak';"
     },
     {
-      id: 4,
-      title: "Vergul xatosini tuzatish",
-      instruction: "`for (let i = 0, i < 3, i++)` dagi vergullarni `;` ga tuzating. `0`, `1`, `2` chiqsin.",
-      startingCode: "for (let i = 0, i < 3, i++) {\n  console.log(i);\n}\n",
-      hint: "for (let i = 0; i < 3; i++) {",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2') return null;\nreturn '0, 1, 2 chiqishi kerak';"
+      "id": 4,
+      "title": "Vergul xatosini tuzatish",
+      "instruction": "`for (let i = 0, i < 3, i++)` dagi vergullarni `;` ga tuzating. `0`, `1`, `2` chiqsin.",
+      "startingCode": "for (let i = 0, i < 3, i++) {\n  console.log(i);\n}\n",
+      "hint": "for (let i = 0; i < 3; i++) {",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2') return null;\nreturn '0, 1, 2 chiqishi kerak';"
     },
     {
-      id: 5,
-      title: "let ni qo'shish",
-      instruction: "`for (i = 0; i < 3; i++)` ga `let` qo'shing. `0`, `1`, `2` chiqsin.",
-      startingCode: "for (i = 0; i < 3; i++) {\n  console.log(i);\n}\n",
-      hint: "for (let i = 0; i < 3; i++) {",
-      test: "if (!code.includes('let i')) return 'let qoshing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2') return null;\nreturn '0, 1, 2 chiqishi kerak';"
+      "id": 5,
+      "title": "let ni qo'shish",
+      "instruction": "`for (i = 0; i < 3; i++)` ga `let` qo'shing. `0`, `1`, `2` chiqsin.",
+      "startingCode": "for (i = 0; i < 3; i++) {\n  console.log(i);\n}\n",
+      "hint": "for (let i = 0; i < 3; i++) {",
+      "test": "if (!/\\b(?:let|var)\\s+i\\b/.test(code)) return 'let qoshing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,1,2') return null;\nreturn '0, 1, 2 chiqishi kerak';"
     },
     {
-      id: 6,
-      title: "Juft sonlar (chegara)",
-      instruction: "`0` dan `6` gacha juft sonlarni chiqaring (`i += 2` qadam bilan).",
-      startingCode: "// for sikli yozing\n",
-      hint: "for (let i = 0; i <= 6; i += 2) {\n  console.log(i);\n}",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,2,4,6') return null;\nreturn '0, 2, 4, 6 chiqishi kerak';"
+      "id": 6,
+      "title": "Juft sonlar (chegara)",
+      "instruction": "`0` dan `6` gacha juft sonlarni chiqaring (`i += 2` qadam bilan).",
+      "startingCode": "// for sikli yozing\n",
+      "hint": "for (let i = 0; i <= 6; i += 2) {\n  console.log(i);\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '0,2,4,6') return null;\nreturn '0, 2, 4, 6 chiqishi kerak';"
     },
     {
-      id: 7,
-      title: "5 dan 1 gacha (chegara)",
-      instruction: "`n` bilan `5` dan `1` gacha chiqaring.",
-      startingCode: "// for sikli yozing\n",
-      hint: "for (let n = 5; n > 0; n--) {\n  console.log(n);\n}",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '5,4,3,2,1') return null;\nreturn '5, 4, 3, 2, 1 chiqishi kerak';"
+      "id": 7,
+      "title": "5 dan 1 gacha (chegara)",
+      "instruction": "`n` bilan `5` dan `1` gacha chiqaring.",
+      "startingCode": "// for sikli yozing\n",
+      "hint": "for (let n = 5; n > 0; n--) {\n  console.log(n);\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '5,4,3,2,1') return null;\nreturn '5, 4, 3, 2, 1 chiqishi kerak';"
     },
     {
-      id: 8,
-      title: "Yig'indi (chegara)",
-      instruction: "`sum = 0` berilgan. `1` dan `5` gacha `sum` ga qo'shing (`sum += i`). Oxirida chiqaring (`15` chiqishi kerak).",
-      startingCode: "let sum = 0;\n// for sikli yozing\nconsole.log(sum);\n",
-      hint: "for (let i = 1; i <= 5; i++) {\n  sum += i;\n}",
-      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out[out.length - 1] === '15') return null;\nreturn 'Oxirgi natija 15 bolishi kerak';"
+      "id": 8,
+      "title": "Yig'indi (chegara)",
+      "instruction": "`sum = 0` berilgan. `1` dan `5` gacha `sum` ga qo'shing (`sum += i`). Oxirida chiqaring (`15` chiqishi kerak).",
+      "startingCode": "let sum = 0;\n// for sikli yozing\nconsole.log(sum);\n",
+      "hint": "for (let i = 1; i <= 5; i++) {\n  sum += i;\n}",
+      "test": "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out[out.length - 1] === '15') return null;\nreturn 'Oxirgi natija 15 bolishi kerak';"
     },
     {
-      id: 9,
-      title: "Bo'sh sikl (chegara)",
-      instruction: "`i = 5` dan boshlab `i < 3` sharti bilan yozing. Hech narsa chiqmasligi kerak.",
-      startingCode: "// for sikli yozing\n",
-      hint: "for (let i = 5; i < 3; i++) {\n  console.log(i);\n}",
-      test: "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return null;\nreturn 'Hech narsa chiqmasligi kerak';"
+      "id": 9,
+      "title": "Bo'sh sikl (chegara)",
+      "instruction": "`i = 5` dan boshlab `i < 3` sharti bilan yozing. Hech narsa chiqmasligi kerak.",
+      "startingCode": "// for sikli yozing\n",
+      "hint": "for (let i = 5; i < 3; i++) {\n  console.log(i);\n}",
+      "test": "if (!code.includes('for')) return 'for sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return null;\nreturn 'Hech narsa chiqmasligi kerak';"
     },
     {
-      id: 10,
-      title: "10 dan 0 gacha (chegara)",
-      instruction: "`n` bilan `10` dan `0` gacha `2` tadan kamaytirib chiqaring (`10`, `8`, `6`, `4`, `2`, `0`).",
-      startingCode: "// for sikli yozing\n",
-      hint: "for (let n = 10; n >= 0; n -= 2) {\n  console.log(n);\n}",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '10,8,6,4,2,0') return null;\nreturn '10, 8, 6, 4, 2, 0 chiqishi kerak';"
+      "id": 10,
+      "title": "10 dan 0 gacha (chegara)",
+      "instruction": "`n` bilan `10` dan `0` gacha `2` tadan kamaytirib chiqaring (`10`, `8`, `6`, `4`, `2`, `0`).",
+      "startingCode": "// for sikli yozing\n",
+      "hint": "for (let n = 10; n >= 0; n -= 2) {\n  console.log(n);\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '10,8,6,4,2,0') return null;\nreturn '10, 8, 6, 4, 2, 0 chiqishi kerak';"
     }
   ],
   quizzes: [

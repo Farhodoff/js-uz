@@ -152,28 +152,28 @@ Keyingi darsda: JavaScript'da asosiy ma'lumot turlari (string va number) bilan b
 `,
   exercises: [
     {
-      id: 1,
-      title: "Sonli const yaratish",
-      instruction: "`daysInWeek` nomli `const` yarating, unga `7` qiymatini bering va `console.log(daysInWeek);` orqali chiqaring.",
-      startingCode: "// daysInWeek nomli const yarating va chiqaring\n",
-      hint: "const daysInWeek = 7;\nconsole.log(daysInWeek);",
-      test: "if (!code.includes('const')) return 'const kalit so\\'zi ishlatilmadi';\nif (!code.includes('daysInWeek')) return 'daysInWeek nomli o\\'zgarmas topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('7'))) return null;\nreturn '7 soni konsolga chiqmadi';"
+      "id": 1,
+      "title": "Sonli const yaratish",
+      "instruction": "`daysInWeek` nomli `const` yarating, unga `7` qiymatini bering va `console.log(daysInWeek);` orqali chiqaring.",
+      "startingCode": "// daysInWeek nomli const yarating va chiqaring\n",
+      "hint": "const daysInWeek = 7;\nconsole.log(daysInWeek);",
+      "test": "if (!/\\b(?:const|var)\\b/.test(code)) return 'const kalit so\\'zi ishlatilmadi';\nif (!code.includes('daysInWeek')) return 'daysInWeek nomli o\\'zgarmas topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('7'))) return null;\nreturn '7 soni konsolga chiqmadi';"
     },
     {
-      id: 2,
-      title: "Matnli const yaratish",
-      instruction: "`planet` nomli `const` yarating, unga `\"Yer\"` matnini bering va konsolga chiqaring.",
-      startingCode: "// planet nomli const yarating va chiqaring\n",
-      hint: "const planet = \"Yer\";\nconsole.log(planet);",
-      test: "if (!code.includes('const')) return 'const kalit so\\'zi ishlatilmadi';\nif (!code.includes('planet')) return 'planet nomli o\\'zgarmas topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Yer'))) return null;\nreturn '\"Yer\" matni konsolga chiqmadi';"
+      "id": 2,
+      "title": "Matnli const yaratish",
+      "instruction": "`planet` nomli `const` yarating, unga `\"Yer\"` matnini bering va konsolga chiqaring.",
+      "startingCode": "// planet nomli const yarating va chiqaring\n",
+      "hint": "const planet = \"Yer\";\nconsole.log(planet);",
+      "test": "if (!/\\b(?:const|var)\\b/.test(code)) return 'const kalit so\\'zi ishlatilmadi';\nif (!code.includes('planet')) return 'planet nomli o\\'zgarmas topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Yer'))) return null;\nreturn '\"Yer\" matni konsolga chiqmadi';"
     },
     {
-      id: 3,
-      title: "TypeError xatosini tuzatish",
-      instruction: "`const score = 50;` kodida `score` keyinroq `100` ga o'zgarishi kerak. `TypeError` bermasligi uchun uni to'g'ri kalit so'z bilan e'lon qiling.",
-      startingCode: "const score = 50;\nscore = 100;\nconsole.log(score);\n",
-      hint: "let score = 50;\nscore = 100;\nconsole.log(score);",
-      test: "if (code.includes('const score')) return 'Qiymati o\\'zgaradigan o\\'zgaruvchiga const emas, let ishlatiladi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('100'))) return null;\nreturn '100 soni konsolga chiqmadi';"
+      "id": 3,
+      "title": "TypeError xatosini tuzatish",
+      "instruction": "`const score = 50;` kodida `score` keyinroq `100` ga o'zgarishi kerak. `TypeError` bermasligi uchun uni to'g'ri kalit so'z bilan e'lon qiling.",
+      "startingCode": "const score = 50;\nscore = 100;\nconsole.log(score);\n",
+      "hint": "let score = 50;\nscore = 100;\nconsole.log(score);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('100'))) return null;\nreturn '100 soni konsolga chiqmadi';"
     },
     {
       "id": 4,
@@ -181,7 +181,7 @@ Keyingi darsda: JavaScript'da asosiy ma'lumot turlari (string va number) bilan b
       "instruction": "`country` nomli `const` yarating, unga `\"O'zbekiston\"` matnini bering va konsolga chiqaring.",
       "startingCode": "// country constini yarating\n",
       "hint": "const country = \"O'zbekiston\"; console.log(country);",
-      "test": "if (!/const\\s+country/.test(code)) return 'country const bilan e\\'lon qilinmagan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes(\"O'zbekiston\"))) return null;\nreturn 'Ozbekiston matni chiqishi kerak';"
+      "test": "if (!/(?:const|var)\\s+country/.test(code)) return 'country const bilan e\\'lon qilinmagan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes(\"O'zbekiston\"))) return null;\nreturn 'Ozbekiston matni chiqishi kerak';"
     },
     {
       "id": 5,
@@ -189,7 +189,7 @@ Keyingi darsda: JavaScript'da asosiy ma'lumot turlari (string va number) bilan b
       "instruction": "`const year = 2026; year = 2027;` kodida xato bor — const o'zgarmaydi. Qiymat o'zgarishi kerak, shuning uchun kalit so'zni to'g'rilang.",
       "startingCode": "const year = 2026;\nyear = 2027;\nconsole.log(year);\n",
       "hint": "const o'rniga let yozing.",
-      "test": "if (/const\\s+year/.test(code)) return 'year hali const — let kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2027')) return null;\nreturn 'console.log 2027 chiqishi kerak';"
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2027')) return null;\nreturn 'console.log 2027 chiqishi kerak';"
     },
     {
       "id": 6,
@@ -197,7 +197,7 @@ Keyingi darsda: JavaScript'da asosiy ma'lumot turlari (string va number) bilan b
       "instruction": "`capital` (\"Toshkent\") va `area` (174000) constlarini yarating va ikkalasini ham konsolga chiqaring.",
       "startingCode": "// Ikkala constni yarating\n",
       "hint": "const capital = \"Toshkent\"; const area = 174000; so'ng ikkalasini chiqaring.",
-      "test": "if (!/const\\s+capital/.test(code)) return 'capital consti topilmadi';\nif (!/const\\s+area/.test(code)) return 'area consti topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst flat = out.join(' ');\nif (!flat.includes('Toshkent')) return 'Toshkent chiqmadi';\nif (!flat.includes('174000')) return '174000 chiqmadi';\nreturn null;"
+      "test": "if (!/(?:const|var)\\s+capital/.test(code)) return 'capital consti topilmadi';\nif (!/(?:const|var)\\s+area/.test(code)) return 'area consti topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst flat = out.join(' ');\nif (!flat.includes('Toshkent')) return 'Toshkent chiqmadi';\nif (!flat.includes('174000')) return '174000 chiqmadi';\nreturn null;"
     },
     {
       "id": 7,
@@ -205,7 +205,7 @@ Keyingi darsda: JavaScript'da asosiy ma'lumot turlari (string va number) bilan b
       "instruction": "`const 2nd = \"ikkinchi\";` kodida nom raqam bilan boshlangan. Nomni to'g'rilang (masalan, `second`) va konsolga chiqaring.",
       "startingCode": "const 2nd = \"ikkinchi\";\nconsole.log(2nd);\n",
       "hint": "Nom harf bilan boshlanishi kerak: const second = ...",
-      "test": "if (/const\\s+2/.test(code)) return 'Nom hali raqam bilan boshlanmoqda';\nif (!/const\\s+second/.test(code)) return 'second nomi bilan const e\\'lon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('ikkinchi'))) return null;\nreturn 'ikkinchi matni chiqishi kerak';"
+      "test": "if (/(?:const|var)\\s+2/.test(code)) return 'Nom hali raqam bilan boshlanmoqda';\nif (!/(?:const|var)\\s+second/.test(code)) return 'second nomi bilan const e\\'lon qiling';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('ikkinchi'))) return null;\nreturn 'ikkinchi matni chiqishi kerak';"
     },
     {
       "id": 8,
@@ -213,7 +213,7 @@ Keyingi darsda: JavaScript'da asosiy ma'lumot turlari (string va number) bilan b
       "instruction": "`const base = 10;` qiymatidan foydalanib, `copy` nomli `let` o'zgaruvchiga nusxa oling va `console.log(copy);` bilan chiqaring (10 chiqishi kerak).",
       "startingCode": "const base = 10;\n// copy o'zgaruvchisini yarating\n",
       "hint": "let copy = base; console.log(copy);",
-      "test": "if (!/let\\s+copy\\s*=\\s*base/.test(code)) return 'copy = base nusxasi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '10')) return null;\nreturn 'console.log 10 chiqishi kerak';"
+      "test": "if (!/(?:let|var)\\s+copy\\s*=\\s*base/.test(code)) return 'copy = base nusxasi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '10')) return null;\nreturn 'console.log 10 chiqishi kerak';"
     },
     {
       "id": 9,
@@ -221,7 +221,7 @@ Keyingi darsda: JavaScript'da asosiy ma'lumot turlari (string va number) bilan b
       "instruction": "`brand` constiga `\"Audi\"` bering va uni ikki alohida console.log bilan ikki marta chiqaring.",
       "startingCode": "// brand consti va ikki console.log\n",
       "hint": "const brand = \"Audi\"; keyin console.log(brand); ikki marta.",
-      "test": "if (!/const\\s+brand/.test(code)) return 'brand consti topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst count = out.filter(m => m.includes('Audi')).length;\nif (count === 2) return null;\nreturn 'Audi ikki marta chiqishi kerak, hozir ' + count + ' marta';"
+      "test": "if (!/(?:const|var)\\s+brand/.test(code)) return 'brand consti topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst count = out.filter(m => m.includes('Audi')).length;\nif (count === 2) return null;\nreturn 'Audi ikki marta chiqishi kerak, hozir ' + count + ' marta';"
     },
     {
       "id": 10,
@@ -229,7 +229,7 @@ Keyingi darsda: JavaScript'da asosiy ma'lumot turlari (string va number) bilan b
       "instruction": "Uchta o'zgaruvchi yarating: `const birthYear = 1990;` (o'zgarmaydi), `let age = 30;` (o'zgaradi), `const userName = \"Ali\";` (o'zgarmaydi). Ikkalasini ham konsolga chiqaring (age va userName).",
       "startingCode": "// Uchta o'zgaruvchi: birthYear, age, userName\n",
       "hint": "birthYear va userName const, age let bo'lsin.",
-      "test": "if (!/const\\s+birthYear\\s*=\\s*1990/.test(code)) return 'birthYear = 1990 const bo\\'lishi kerak';\nif (!/let\\s+age\\s*=\\s*30/.test(code)) return 'age = 30 let bo\\'lishi kerak';\nif (!/const\\s+userName\\s*=\\s*[\"\\']Ali[\"\\']/.test(code)) return 'userName const bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst flat = out.join(' ');\nif (!flat.includes('30')) return 'age (30) chiqmadi';\nif (!flat.includes('Ali')) return 'userName (Ali) chiqmadi';\nreturn null;"
+      "test": "if (!/(?:const|var)\\s+birthYear\\s*=\\s*1990/.test(code)) return 'birthYear = 1990 const bo\\'lishi kerak';\nif (!/(?:let|var)\\s+age\\s*=\\s*30/.test(code)) return 'age = 30 let bo\\'lishi kerak';\nif (!/(?:const|var)\\s+userName\\s*=\\s*[\"\\']Ali[\"\\']/.test(code)) return 'userName const bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst flat = out.join(' ');\nif (!flat.includes('30')) return 'age (30) chiqmadi';\nif (!flat.includes('Ali')) return 'userName (Ali) chiqmadi';\nreturn null;"
     }
   ],
   quizzes: [

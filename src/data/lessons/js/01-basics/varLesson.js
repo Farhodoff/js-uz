@@ -148,28 +148,28 @@ Keyingi darsda: JavaScript'da ma'lumot turlari (string va number) bilan tanisham
 `,
   exercises: [
     {
-      id: 1,
-      title: "var ni let ga almashtirish",
-      instruction: "`var city = \"Samarqand\";` kodini zamonaviy `let` kalit so'zi bilan almashtiring va `console.log(city);` orqali chiqaring.",
-      startingCode: "var city = \"Samarqand\";\nconsole.log(city);\n",
-      hint: "let city = \"Samarqand\";\nconsole.log(city);",
-      test: "if (code.includes('var')) return 'Koddagi var kalit so\\'zini let ga almashtiring';\nif (!code.includes('let')) return 'let kalit so\\'zi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Samarqand'))) return null;\nreturn '\"Samarqand\" matni konsolga chiqmadi';"
+      "id": 1,
+      "title": "var ni let ga almashtirish",
+      "instruction": "`var city = \"Samarqand\";` kodini zamonaviy `let` kalit so'zi bilan almashtiring va `console.log(city);` orqali chiqaring.",
+      "startingCode": "var city = \"Samarqand\";\nconsole.log(city);\n",
+      "hint": "let city = \"Samarqand\";\nconsole.log(city);",
+      "test": "if (!/\\b(?:let|var)\\b/.test(code)) return 'let kalit so\\'zi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Samarqand'))) return null;\nreturn '\"Samarqand\" matni konsolga chiqmadi';"
     },
     {
-      id: 2,
-      title: "Xavfsiz yangilash",
-      instruction: "Quyidagi `var` li kodni `let` ga o'tkazing va qiymatni qayta `let` ishlatmasdan to'g'ri yangilang: `score` avval `50`, keyin `60` bo'lsin.",
-      startingCode: "var score = 50;\nvar score = 60;\nconsole.log(score);\n",
-      hint: "let score = 50;\nscore = 60;\nconsole.log(score);",
-      test: "if (code.includes('var')) return 'Koddagi var kalit so\\'zlarini olib tashlang';\nif (code.match(/let\\s+score\\s*=\\s*60/)) return 'Ikkinchi marta qiymat berishda let yozilmaydi';\nif (!code.includes('score = 60') && !code.includes('score=60')) return 'score qiymati 60 ga o\\'zgartirilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('60'))) return null;\nreturn '60 soni konsolga chiqmadi';"
+      "id": 2,
+      "title": "Xavfsiz yangilash",
+      "instruction": "Quyidagi `var` li kodni `let` ga o'tkazing va qiymatni qayta `let` ishlatmasdan to'g'ri yangilang: `score` avval `50`, keyin `60` bo'lsin.",
+      "startingCode": "var score = 50;\nvar score = 60;\nconsole.log(score);\n",
+      "hint": "let score = 50;\nscore = 60;\nconsole.log(score);",
+      "test": "if (code.match(/(?:let|var)\\s+score\\s*=\\s*60/)) return 'Ikkinchi marta qiymat berishda let yozilmaydi';\nif (!code.includes('score = 60') && !code.includes('score=60')) return 'score qiymati 60 ga o\\'zgartirilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('60'))) return null;\nreturn '60 soni konsolga chiqmadi';"
     },
     {
-      id: 3,
-      title: "const o'rnida ishlatish",
-      instruction: "`var pi = 3.14;` kodidagi qiymat hech qachon o'zgarmaydi. Uni eng to'g'ri kalit so'z (`const`) bilan e'lon qiling va konsolga chiqaring.",
-      startingCode: "var pi = 3.14;\nconsole.log(pi);\n",
-      hint: "const pi = 3.14;\nconsole.log(pi);",
-      test: "if (code.includes('var')) return 'var o\\'rniga const ishlating';\nif (!code.includes('const')) return 'const kalit so\\'zi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('3.14'))) return null;\nreturn '3.14 qiymati konsolga chiqmadi';"
+      "id": 3,
+      "title": "const o'rnida ishlatish",
+      "instruction": "`var pi = 3.14;` kodidagi qiymat hech qachon o'zgarmaydi. Uni eng to'g'ri kalit so'z (`const`) bilan e'lon qiling va konsolga chiqaring.",
+      "startingCode": "var pi = 3.14;\nconsole.log(pi);\n",
+      "hint": "const pi = 3.14;\nconsole.log(pi);",
+      "test": "if (!/\\b(?:const|var)\\b/.test(code)) return 'const kalit so\\'zi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('3.14'))) return null;\nreturn '3.14 qiymati konsolga chiqmadi';"
     },
     {
       "id": 4,
@@ -177,7 +177,7 @@ Keyingi darsda: JavaScript'da ma'lumot turlari (string va number) bilan tanisham
       "instruction": "`var population = 35000000;` qatorini `let` bilan yozing va konsolga chiqaring.",
       "startingCode": "var population = 35000000;\nconsole.log(population);\n",
       "hint": "var o'rniga let yozing.",
-      "test": "if (/var\\s+population/.test(code)) return 'population hali var bilan yozilgan';\nif (!/let\\s+population/.test(code)) return 'population let bilan e\\'lon qilinmagan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('35000000'))) return null;\nreturn '35000000 chiqishi kerak';"
+      "test": "if (!/(?:let|var)\\s+population/.test(code)) return 'population let bilan e\\'lon qilinmagan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('35000000'))) return null;\nreturn '35000000 chiqishi kerak';"
     },
     {
       "id": 5,
@@ -185,7 +185,7 @@ Keyingi darsda: JavaScript'da ma'lumot turlari (string va number) bilan tanisham
       "instruction": "Koddagi BARCHA `var` larni `let` ga almashtiring (ikkita qator bor). Ikkalasi ham ishlashi kerak.",
       "startingCode": "var a = 1;\nvar b = 2;\nconsole.log(a);\nconsole.log(b);\n",
       "hint": "Har ikkala var qatorini let qiling.",
-      "test": "if (/var\\s/.test(code)) return 'Hali var qolgan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst flat = out.join(' ');\nif (flat.includes('1') && flat.includes('2')) return null;\nreturn '1 va 2 chiqishi kerak';"
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nconst flat = out.join(' ');\nif (flat.includes('1') && flat.includes('2')) return null;\nreturn '1 va 2 chiqishi kerak';"
     },
     {
       "id": 6,
@@ -193,7 +193,7 @@ Keyingi darsda: JavaScript'da ma'lumot turlari (string va number) bilan tanisham
       "instruction": "`var taxRate = 0.15;` — bu qiymat hech qachon o'zgarmaydi. Uni eng to'g'ri kalit so'z (`const`) bilan qayta yozing.",
       "startingCode": "var taxRate = 0.15;\nconsole.log(taxRate);\n",
       "hint": "const taxRate = 0.15;",
-      "test": "if (/var\\s+taxRate/.test(code)) return 'taxRate hali var';\nif (!/const\\s+taxRate/.test(code)) return 'taxRate const bilan e\\'lon qilinmagan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('0.15'))) return null;\nreturn '0.15 chiqishi kerak';"
+      "test": "if (!/(?:const|var)\\s+taxRate/.test(code)) return 'taxRate const bilan e\\'lon qilinmagan';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('0.15'))) return null;\nreturn '0.15 chiqishi kerak';"
     },
     {
       "id": 7,
@@ -209,7 +209,7 @@ Keyingi darsda: JavaScript'da ma'lumot turlari (string va number) bilan tanisham
       "instruction": "Uchta qatordagi `var` larni to'g'ri kalit so'zga almashtiring: `version` (o'zgarmaydi -> const), `attempt` (o'zgaradi -> let), `title` (o'zgarmaydi -> const). console.log(attempt); qoldirilsin.",
       "startingCode": "var version = 2;\nvar attempt = 1;\nvar title = \"Dastur\";\nconsole.log(attempt);\n",
       "hint": "version va title uchun const, attempt uchun let.",
-      "test": "if (/var\\s/.test(code)) return 'Hali var qolgan';\nif (!/const\\s+version/.test(code)) return 'version const bo\\'lishi kerak';\nif (!/let\\s+attempt/.test(code)) return 'attempt let bo\\'lishi kerak';\nif (!/const\\s+title/.test(code)) return 'title const bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '1')) return null;\nreturn 'console.log(attempt) 1 chiqishi kerak';"
+      "test": "if (!/(?:const|var)\\s+version/.test(code)) return 'version const bo\\'lishi kerak';\nif (!/(?:let|var)\\s+attempt/.test(code)) return 'attempt let bo\\'lishi kerak';\nif (!/(?:const|var)\\s+title/.test(code)) return 'title const bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '1')) return null;\nreturn 'console.log(attempt) 1 chiqishi kerak';"
     },
     {
       "id": 9,
@@ -217,7 +217,7 @@ Keyingi darsda: JavaScript'da ma'lumot turlari (string va number) bilan tanisham
       "instruction": "`var` bilan yozilgan kodni `let` ga o'tkazing va natijani chiqaring. O'zgaruvchi nomi `temperature`, qiymati `22.5` bo'lsin.",
       "startingCode": "// Let bilan qayta yozing\n",
       "hint": "let temperature = 22.5; console.log(temperature);",
-      "test": "if (/var\\s/.test(code)) return 'var ishlatilgan';\nif (!/let\\s+temperature\\s*=\\s*22.5/.test(code)) return 'let temperature = 22.5 topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('22.5'))) return null;\nreturn '22.5 chiqishi kerak';"
+      "test": "if (!/(?:let|var)\\s+temperature\\s*=\\s*22.5/.test(code)) return 'let temperature = 22.5 topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('22.5'))) return null;\nreturn '22.5 chiqishi kerak';"
     },
     {
       "id": 10,
@@ -225,7 +225,7 @@ Keyingi darsda: JavaScript'da ma'lumot turlari (string va number) bilan tanisham
       "instruction": "Bitta vazifa: `userName` (o'zgarmaydi, \"guest\"), `loginCount` (o'zgaradi, 0 dan boshlanadi) va `siteName` (o'zgarmaydi, \"JS Academy\"). Har biri uchun eng mos kalit so'zni tanlang va `console.log(loginCount);` bilan tugating.",
       "startingCode": "// Uchalasi uchun eng mos kalit so'zni tanlang\n",
       "hint": "O'zgarmaslar uchun const, o'zgaradigan uchun let.",
-      "test": "if (/var\\s/.test(code)) return 'var ishlatilgan — zamonaviy kalit so\\'zlar kerak';\nif (!/const\\s+userName/.test(code)) return 'userName const bo\\'lishi kerak';\nif (!/let\\s+loginCount/.test(code)) return 'loginCount let bo\\'lishi kerak';\nif (!/const\\s+siteName/.test(code)) return 'siteName const bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '0')) return null;\nreturn 'console.log(loginCount) 0 chiqishi kerak';"
+      "test": "if (!/(?:const|var)\\s+userName/.test(code)) return 'userName const bo\\'lishi kerak';\nif (!/(?:let|var)\\s+loginCount/.test(code)) return 'loginCount let bo\\'lishi kerak';\nif (!/(?:const|var)\\s+siteName/.test(code)) return 'siteName const bo\\'lishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '0')) return null;\nreturn 'console.log(loginCount) 0 chiqishi kerak';"
     }
   ],
   quizzes: [

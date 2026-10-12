@@ -28,6 +28,8 @@ export const reworkedLessons = [
   "ifStatement",
   "elseLesson",
   "elseIfLesson",
+  "stringMethods",
+  "dateObject",
   "switchLesson",
   "whileLesson",
   "forLesson",
@@ -66,4 +68,5 @@ export const reworkedLessons = [
   "strictMode",
   "jsGotchas",
   "cheat-sheet",
+  "miniProject",
 ];

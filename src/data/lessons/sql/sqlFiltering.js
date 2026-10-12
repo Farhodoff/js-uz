@@ -3,68 +3,165 @@ export const sqlFiltering = {
   title: "SQL Ma'lumotlarni Filtrlash",
   language: "sql",
   dbSetup: "CREATE TABLE users (id INT, name STRING, age INT, city STRING); INSERT INTO users VALUES (1,'Ali',25,'Toshkent'),(2,'Vali',17,'Samarqand'),(3,'Guli',30,'Toshkent'),(4,'Hasan',22,NULL),(5,'Malika',19,'Buxoro'),(6,'Jasur',35,'Samarqand'),(7,'Nodira',28,'Toshkent'),(8,'Otabek',16,'Buxoro'),(9,'Sanjar',40,'Xiva');",
-  theory: `## 1. 💡 Sodda Tushuntirish
-SQL da filtrlash (Filtering) xuddi onlayn do'konda qidiruv filtrlarini o'rnatishga o'xshaydi. Tasavvur qiling, sizga "Faqat qora rangli", "Narxi $1000 dan arzon", va "Apple yoki Samsung brendi" bo'lgan telefonlar kerak. Siz barcha millionlab telefonlarni bittalab qidirmaysiz, shunchaki filtrlarni belgilaysiz va tizim sizga faqat shartlarga mos keladiganlarni ko'rsatadi. SQL dagi \\\`WHERE\\\` operatori ham xuddi shunday ishlaydi - bazadagi millionlab qatorlardan faqat bizning shartlarimizga mos keladiganlarini filtrlab beradi.
+  theory: `## 1. Bu nima?
 
-Eng ko'p ishlatiladigan filter operatorlari:
-- **AND, OR, NOT:** Mantiqiy bog'lovchilar.
-- **IN:** Bir nechta variantlardan biriga mos kelishini tekshirish.
-- **BETWEEN:** Ikki qiymat oralig'ida ekanligini tekshirish.
-- **LIKE:** Matnning ma'lum bir qismiga o'xshashlikni qidirish.
+Tasavvur qiling, onlayn do'kondasiz. Chap tomonda filtrlar bor: narx, rang, brend. Bitta katakchani bossangiz, ro'yxat qisqaradi. Ikkitasini bossangiz, yanada qisqaradi.
 
-\\\`\\\`\\\`sql
--- AND (va): Yosh 18 dan katta VA shahri 'Toshkent' bo'lsa
+Dasturlashda WHERE (qayerda) xuddi shu filtr paneli. Shartga mos kelgan qatorlar qoladi. Qolgani ketadi.
+
+Filtrlash — WHERE sharti bilan kerakli qatorlarni ajratib olishdir. AND, OR, IN, BETWEEN, LIKE yordamida shartlar yoziladi.
+
+---
+
+## 2. Nega kerak?
+
+users jadvalida 9 kishi bor. Faqat Toshkentlik kattalar kerak. Hammasini olib, dasturda saralash mumkin. Lekin bu 9 ming, 9 million bo'lsa-chi?
+
+Muammo shunda: keraksiz ma'lumotni tashish isrof. Yechim — bazada filtrlash:
+
+\`\`\`sql
 SELECT * FROM users WHERE age > 18 AND city = 'Toshkent';
+\`\`\`
 
--- OR (yoki): Yosh 18 dan katta YOKI shahri 'Toshkent' bo'lsa
-SELECT * FROM users WHERE age > 18 OR city = 'Toshkent';
+Faqat mos kelganlar keladi.
 
--- IN: Shahar quyidagilardan biri bo'lsa
-SELECT * FROM users WHERE city IN ('Toshkent', 'Samarqand', 'Buxoro');
+---
 
--- BETWEEN: Yosh 18 va 30 orasida bo'lsa
+## 3. Birinchi misol
+
+Bu kod ikkita shart bilan filtrlaydi.
+
+\`\`\`sql
+SELECT * FROM users WHERE age > 18 AND city = 'Toshkent';
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"id":1,"name":"Ali","age":25,"city":"Toshkent"},{"id":3,"name":"Guli","age":30,"city":"Toshkent"},{"id":7,"name":"Nodira","age":28,"city":"Toshkent"}]
+\`\`\`
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`WHERE age > 18\` — birinchi filtr. Yosh kattalar qoladi.
+- \`AND city = 'Toshkent'\` — ikkinchi filtr. Faqat Toshkentliklar qoladi.
+- AND degani — ikkalasi ham shart. Bittasi buzilsa, qator ketadi.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod OR bilan filtrlaydi.
+
+\`\`\`sql
+SELECT * FROM users WHERE age < 18 OR city = 'Buxoro';
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"id":2,"name":"Vali","age":17,"city":"Samarqand"},{"id":5,"name":"Malika","age":19,"city":"Buxoro"},{"id":8,"name":"Otabek","age":16,"city":"Buxoro"}]
+\`\`\`
+
+Qator-baqator tahlil:
+- OR degani — bittasi yetadi. Yosh kichik YOKI shahar Buxoro.
+- Vali yosh bilan, Malika va Otabek shahar bilan o'tdi.
+
+---
+
+## 5.1. Ro'yxat va oraliq
+
+Ikkita qulay yozuv:
+
+\`\`\`sql
+SELECT * FROM users WHERE city IN ('Toshkent', 'Buxoro');
 SELECT * FROM users WHERE age BETWEEN 18 AND 30;
+\`\`\`
 
--- LIKE: Ismi 'A' harfidan boshlanadiganlarni topish
-SELECT * FROM users WHERE name LIKE 'A%';
-\\\`\\\`\\\`
+\`\`\`text
+// Natija (birinchi, 5 qator):
+// Ali, Guli, Nodira, Malika, Otabek
+// Natija (ikkinchi, 5 qator):
+// Ali, Guli, Hasan, Malika, Nodira
+\`\`\`
 
-## 2. 🧠 Chuqur Tahlil (Chuqurlashtirilgan o'rganish)
-**Ichki ishlash mexanizmi:**
-SQL dvigateli (Engine) \\\`WHERE\\\` shartini ko'rganda nima qiladi? Agar filtrlayotgan ustunimizda **Index** (B-Tree indeksi) bo'lmasa, ma'lumotlar bazasi **Full Table Scan (To'liq jadval skanerlashi)** ni amalga oshiradi. Bu degani jadvaldagi millionlab qatorlarni bittalab tekshirib chiqadi. Bu xotira (RAM) va vaqt jihatidan juda qimmat jarayon.
+Qator-baqator tahlil:
+- \`IN (...)\` — ro'yxatdagi birortasi bo'lsa yetadi.
+- \`BETWEEN 18 AND 30\` — oraliqqa kirsa yetadi. Chegaralar ham kiradi.
 
-Agar biz \\\`age\\\` yoki \\\`city\\\` ustuniga **B-Tree Index** o'rnatgan bo'lsak, ma'lumotlar bazasi indeks orqali barcha qatorlarni emas, faqat kerakli qatorlarni to'g'ridan-to'g'ri (Logarithmic vaqtda - O(log n)) topib oladi.
+---
 
-**Performance (Tezlik):**
-1. **IN vs OR:** Ko'p hollarda \\\`column IN (val1, val2)\\\` yozish \\\`column = val1 OR column = val2\\\` dan ko'ra tezroq ishlaydi, chunki SQL optimizatori \\\`IN\\\` dagi qiymatlarni binar qidiruv orqali tekshirish uchun tartiblashi mumkin.
-2. **LIKE '%text%':** LIKE operatorida qidiruvni \\\`%\\\` bilan boshlash (masalan, \\\`'%son'\\\`) Index ishlatilishini butunlay cheklaydi (Index Scan o'rniga Full Table Scan bo'ladi). Bunga sabab, B-Tree indekslari so'zlarning bosh harflariga qarab daraxt tuzadi. Faqat so'z boshi ma'lum bo'lsa (masalan \\\`'son%'\\\`) indeks ishlaydi.
+## 6. Ko'p uchraydigan xatolar
 
-## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
+### 1. Qo'shtirnoqsiz matn
+Xato kod:
+\`\`\`sql
+SELECT * FROM users WHERE city = Toshkent;
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin bo'sh natija chiqadi. Sababi: qo'shtirnoqsiz Toshkent ustun nomi deb tushuniladi. Bunday ustun yo'q — hech kim mos kelmaydi.
+Tog'ri variant:
+\`\`\`sql
+SELECT * FROM users WHERE city = 'Toshkent';
+\`\`\`
 
-1. **\\\`NULL\\\` bilan solishtirish muammosi:**
-   \\\`WHERE age != 25\\\` sharti \\\`age\\\` ustuni \\\`NULL\\\` bo'lgan qatorlarni qaytarmaydi! SQL da \\\`NULL\\\` noma'lum degani. Shuning uchun noma'lum narsa 25 ga teng yoki teng emasligini bilib bo'lmaydi. \\\`NULL\\\` ni tekshirish uchun har doim \\\`IS NULL\\\` yoki \\\`IS NOT NULL\\\` dan foydalanish kerak.
+### 2. Yolg'iz WHERE
+Xato kod:
+\`\`\`sql
+WHERE city = 'Toshkent';
+\`\`\`
+Nima bo'ladi: parse xatoligi yuz beradi. WHERE yolg'iz yasholmaydi. Oldida SELECT ... FROM bo'lishi shart.
+Tog'ri variant:
+\`\`\`sql
+SELECT * FROM users WHERE city = 'Toshkent';
+\`\`\`
 
-2. **\\\`AND\\\` va \\\`OR\\\` Prioriteti (Ustuvorligi):**
-   Mantiqiy ifodalarda \\\`AND\\\` har doim \\\`OR\\\` dan oldin bajariladi.
-   \\\`WHERE age > 18 OR role = 'admin' AND active = true\\\` bu shart aslida bunday ishlaydi:
-   \\\`WHERE age > 18 OR (role = 'admin' AND active = true)\\\`. Xatolarni oldini olish uchun doim qavslardan foydalaning!
+### 3. NULL ni tenglik bilan tekshirish
+Xato kod:
+\`\`\`sql
+SELECT * FROM users WHERE city = NULL;
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin bo'sh natija chiqadi. NULL oddiy qiymat emas. Uni \`=\` bilan tekshirib bo'lmaydi.
+Tog'ri variant:
+\`\`\`sql
+SELECT * FROM users WHERE city IS NULL;
+\`\`\`
 
-3. **\\\`BETWEEN\\\` va Sanalar (Dates):**
-   \\\`WHERE created_at BETWEEN '2023-01-01' AND '2023-01-31'\\\` so'rovi ba'zan '2023-01-31 15:00:00' dagi ma'lumotlarni olmay qoladi, chunki vaqt ko'rsatilmasa, u \\\`'2023-01-31 00:00:00'\\\` deb olinadi. Buning o'rniga \\\`>= '2023-01-01' AND < '2023-02-01'\\\` yozish to'g'riroq.
+---
 
-## 🛠️ Amaliy Topshiriqlar uchun Vizualizatsiya
-\\\`\\\`\\\`mermaid
-flowchart TD
-    A[WHERE Operatorlari] --> B(Mantiqiy)
-    A --> C(Kengaytirilgan)
-    B --> D[AND]
-    B --> E[OR]
-    B --> F[NOT]
-    C --> G[IN]
-    C --> H[BETWEEN]
-    C --> I[LIKE]
-    C --> J[IS NULL]
-\\\`\\\`\\\`
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+Yoshi 18 dan katta VA Toshkentliklarni chiqaring. 3 qator chiqishi kerak.
+
+### 2-mashq (O'rtacha)
+Yoshi 18 dan kichik YOKI Buxoroliklarni chiqaring. 3 qator chiqishi kerak.
+
+### 3-mashq (Chegara holat)
+Shahri NULL bo'lganlarni toping. Faqat Hasan chiqishi kerak.
+
+### Javoblar:
+1.
+\`\`\`sql
+SELECT * FROM users WHERE age > 18 AND city = 'Toshkent';
+\`\`\`
+2.
+\`\`\`sql
+SELECT * FROM users WHERE age < 18 OR city = 'Buxoro';
+\`\`\`
+3.
+\`\`\`sql
+SELECT * FROM users WHERE city IS NULL;
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. WHERE qatorlarni filtrlaydi. AND — ikkalasi ham, OR — bittasi yetadi.
+2. Matn qo'shtirnoqda yoziladi. Qo'shtirnoqsiz — bo'sh natija.
+3. NULL oddiy qiymat emas. U IS NULL bilan tekshiriladi.
+
+Keyingi darsda: jamlovchi funksiyalar (COUNT, SUM) bilan tanishamiz.
 `,
   exercises: [
     {

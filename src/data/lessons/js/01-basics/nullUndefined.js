@@ -160,84 +160,84 @@ Keyingi darsda: qiymatni ataylab bo'sh deb belgilaydigan \`null\` bilan tanisham
 `,
   exercises: [
     {
-      id: 1,
-      title: "Qiymatsiz o'zgaruvchini chiqarish",
-      instruction: "`phone` nomli o'zgaruvchi yarating (`let` bilan). Qiymat bermang. `console.log(phone);` orqali chiqaring.",
-      startingCode: "// phone o'zgaruvchisini yarating va chiqaring\n",
-      hint: "let phone;\nconsole.log(phone);",
-      test: "if (!code.includes('phone')) return 'phone nomli o\\'zgaruvchi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === undefined)) return null;\nreturn 'undefined konsolga chiqmadi';"
+      "id": 1,
+      "title": "Qiymatsiz o'zgaruvchini chiqarish",
+      "instruction": "`phone` nomli o'zgaruvchi yarating (`let` bilan). Qiymat bermang. `console.log(phone);` orqali chiqaring.",
+      "startingCode": "// phone o'zgaruvchisini yarating va chiqaring\n",
+      "hint": "let phone;\nconsole.log(phone);",
+      "test": "if (!code.includes('phone')) return 'phone nomli o\\'zgaruvchi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === undefined)) return null;\nreturn 'undefined konsolga chiqmadi';"
     },
     {
-      id: 2,
-      title: "Qiymatli va qiymatsiz yonma-yon",
-      instruction: "`age` ga `30` bering. `city` ni qiymatsiz e'lon qiling. Ikkalasini tartib bilan chiqaring: avval `30`, keyin `undefined`.",
-      startingCode: "// age ga 30 bering, city ni qiymatsiz e'lon qiling\n",
-      hint: "let age = 30;\nlet city;\nconsole.log(age);\nconsole.log(city);",
-      test: "if (!code.includes('age') || !code.includes('city')) return 'age va city o\\'zgaruvchilari kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikkala qiymat ham chiqishi kerak';\nif (out[0][0] !== 30) return 'Birinchi qiymat 30 bolishi kerak';\nif (out[1][0] !== undefined) return 'Ikkinchi qiymat undefined bolishi kerak';\nreturn null;"
+      "id": 2,
+      "title": "Qiymatli va qiymatsiz yonma-yon",
+      "instruction": "`age` ga `30` bering. `city` ni qiymatsiz e'lon qiling. Ikkalasini tartib bilan chiqaring: avval `30`, keyin `undefined`.",
+      "startingCode": "// age ga 30 bering, city ni qiymatsiz e'lon qiling\n",
+      "hint": "let age = 30;\nlet city;\nconsole.log(age);\nconsole.log(city);",
+      "test": "if (!code.includes('age') || !code.includes('city')) return 'age va city o\\'zgaruvchilari kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikkala qiymat ham chiqishi kerak';\nif (out[0][0] !== 30) return 'Birinchi qiymat 30 bolishi kerak';\nif (out[1][0] !== undefined) return 'Ikkinchi qiymat undefined bolishi kerak';\nreturn null;"
     },
     {
-      id: 3,
-      title: "Katta harf xatosini tuzatish",
-      instruction: "`let nickname = Undefined;` xato bermoqda. Katta harfni olib tashlang: `nickname` qiymatsiz e'lon qilinsin va konsolga `undefined` chiqsin.",
-      startingCode: "let nickname = Undefined;\nconsole.log(nickname);\n",
-      hint: "let nickname; — tenglik va qiymatni olib tashlang.",
-      test: "if (code.includes('Undefined')) return 'Undefined ni olib tashlang, let nickname; deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === undefined)) return null;\nreturn 'undefined konsolga chiqmadi';"
+      "id": 3,
+      "title": "Katta harf xatosini tuzatish",
+      "instruction": "`let nickname = Undefined;` xato bermoqda. Katta harfni olib tashlang: `nickname` qiymatsiz e'lon qilinsin va konsolga `undefined` chiqsin.",
+      "startingCode": "let nickname = Undefined;\nconsole.log(nickname);\n",
+      "hint": "let nickname; — tenglik va qiymatni olib tashlang.",
+      "test": "if (code.includes('Undefined')) return 'Undefined ni olib tashlang, let nickname; deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === undefined)) return null;\nreturn 'undefined konsolga chiqmadi';"
     },
     {
-      id: 4,
-      title: "Matn tuzog'ini tuzatish",
-      instruction: "`status` hozir matn (`\"undefined\"`). Qo'shtirnoqni olib tashlang: `status` qiymatsiz e'lon qilinsin.",
-      startingCode: "let status = \"undefined\";\nconsole.log(status);\n",
-      hint: "let status; — qo'shtirnoq ham, qiymat ham kerak emas.",
-      test: "if (code.includes('\"undefined\"') || code.includes(\"'undefined'\")) return 'Qo\\'shtirnoqni olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return 'Qiymat chiqmadi';\nconst v = out[out.length - 1][0];\nif (typeof v === 'string') return 'Bu hali matn, haqiqiy undefined emas';\nif (v === undefined) return null;\nreturn 'undefined bolishi kerak';"
+      "id": 4,
+      "title": "Matn tuzog'ini tuzatish",
+      "instruction": "`status` hozir matn (`\"undefined\"`). Qo'shtirnoqni olib tashlang: `status` qiymatsiz e'lon qilinsin.",
+      "startingCode": "let status = \"undefined\";\nconsole.log(status);\n",
+      "hint": "let status; — qo'shtirnoq ham, qiymat ham kerak emas.",
+      "test": "if (code.includes('\"undefined\"') || code.includes(\"'undefined'\")) return 'Qo\\'shtirnoqni olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return 'Qiymat chiqmadi';\nconst v = out[out.length - 1][0];\nif (typeof v === 'string') return 'Bu hali matn, haqiqiy undefined emas';\nif (v === undefined) return null;\nreturn 'undefined bolishi kerak';"
     },
     {
-      id: 5,
-      title: "E'lon qilinmagan nomni tuzatish",
-      instruction: "`console.log(orderId);` xato bermoqda. Oldiniga `let orderId;` qatorini qo'shing: konsolga `undefined` chiqsin.",
-      startingCode: "console.log(orderId);\n",
-      hint: "let orderId; — chiqarishdan oldin yozing.",
-      test: "if (!code.includes('let orderId')) return 'let orderId; qatorini qoshing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === undefined)) return null;\nreturn 'undefined konsolga chiqmadi';"
+      "id": 5,
+      "title": "E'lon qilinmagan nomni tuzatish",
+      "instruction": "`console.log(orderId);` xato bermoqda. Oldiniga `let orderId;` qatorini qo'shing: konsolga `undefined` chiqsin.",
+      "startingCode": "console.log(orderId);\n",
+      "hint": "let orderId; — chiqarishdan oldin yozing.",
+      "test": "if (!/\\b(?:let|var)\\s+orderId\\b/.test(code)) return 'let orderId; qatorini qoshing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === undefined)) return null;\nreturn 'undefined konsolga chiqmadi';"
     },
     {
-      id: 6,
-      title: "Qiymatsizni nusxalash",
-      instruction: "`a` qiymatsiz e'lon qilingan. `b` nomli yangi o'zgaruvchi yarating va unga `a` ning O'ZINI bering. Ikkalasini ham chiqaring.",
-      startingCode: "let a;\n// b ni yarating va a ni bering\nconsole.log(a);\nconsole.log(b);\n",
-      hint: "let b = a;",
-      test: "if (!code.includes('b = a')) return 'b = a deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikkala qiymat ham chiqishi kerak';\nif (out[0][0] !== undefined || out[1][0] !== undefined) return 'Ikkalasi ham undefined bolishi kerak';\nreturn null;"
+      "id": 6,
+      "title": "Qiymatsizni nusxalash",
+      "instruction": "`a` qiymatsiz e'lon qilingan. `b` nomli yangi o'zgaruvchi yarating va unga `a` ning O'ZINI bering. Ikkalasini ham chiqaring.",
+      "startingCode": "let a;\n// b ni yarating va a ni bering\nconsole.log(a);\nconsole.log(b);\n",
+      "hint": "let b = a;",
+      "test": "if (!code.includes('b = a')) return 'b = a deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 2) return 'Ikkala qiymat ham chiqishi kerak';\nif (out[0][0] !== undefined || out[1][0] !== undefined) return 'Ikkalasi ham undefined bolishi kerak';\nreturn null;"
     },
     {
-      id: 7,
-      title: "Matn ichida undefined",
-      instruction: "`ism` ga `\"Ali\"` bering. `familiya` ni qiymatsiz e'lon qiling. Template literal bilan chiqaring: konsolda `Ali undefined` ko'rinsin.",
-      startingCode: "let ism = \"Ali\";\n// familiya ni e'lon qiling va bitta matnda chiqaring\n",
-      hint: "let familiya;\nconsole.log(`${ism} ${familiya}`);",
-      test: "if (!code.includes('`') || !code.includes('${')) return 'Backtick va ${} ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'Ali undefined')) return null;\nreturn \"Natija 'Ali undefined' bolishi kerak\";"
+      "id": 7,
+      "title": "Matn ichida undefined",
+      "instruction": "`ism` ga `\"Ali\"` bering. `familiya` ni qiymatsiz e'lon qiling. Template literal bilan chiqaring: konsolda `Ali undefined` ko'rinsin.",
+      "startingCode": "let ism = \"Ali\";\n// familiya ni e'lon qiling va bitta matnda chiqaring\n",
+      "hint": "let familiya;\nconsole.log(`${ism} ${familiya}`);",
+      "test": "if (!code.includes('`') || !code.includes('${')) return 'Backtick va ${} ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'Ali undefined')) return null;\nreturn \"Natija 'Ali undefined' bolishi kerak\";"
     },
     {
-      id: 8,
-      title: "Keyin qiymat berish",
-      instruction: "`score` ni avval qiymatsiz e'lon qiling. Keyin unga `100` bering. Konsolga chiqaring: `100` chiqsin.",
-      startingCode: "let score;\n// score ga 100 bering va chiqaring\n",
-      hint: "score = 100;\nconsole.log(score);",
-      test: "if (!code.includes('score = 100')) return 'score = 100 deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return 'Qiymat chiqmadi';\nconst v = out[out.length - 1][0];\nif (typeof v !== 'number') return 'Qiymat son emas';\nif (v === 100) return null;\nreturn 'Natija 100 bolishi kerak';"
+      "id": 8,
+      "title": "Keyin qiymat berish",
+      "instruction": "`score` ni avval qiymatsiz e'lon qiling. Keyin unga `100` bering. Konsolga chiqaring: `100` chiqsin.",
+      "startingCode": "let score;\n// score ga 100 bering va chiqaring\n",
+      "hint": "score = 100;\nconsole.log(score);",
+      "test": "if (!code.includes('score = 100')) return 'score = 100 deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length === 0) return 'Qiymat chiqmadi';\nconst v = out[out.length - 1][0];\nif (typeof v !== 'number') return 'Qiymat son emas';\nif (v === 100) return null;\nreturn 'Natija 100 bolishi kerak';"
     },
     {
-      id: 9,
-      title: "Ataylab undefined yozish",
-      instruction: "`x` ga ataylab `undefined` yozing (`let x = undefined;`) va konsolga chiqaring. Bu ishlaydi, lekin keyingi safar shunchaki qiymat bermang.",
-      startingCode: "// x ga ataylab undefined bering va chiqaring\n",
-      hint: "let x = undefined;\nconsole.log(x);",
-      test: "if (!code.includes('undefined')) return 'undefined sozi qatnashishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === undefined)) return null;\nreturn 'undefined konsolga chiqmadi';"
+      "id": 9,
+      "title": "Ataylab undefined yozish",
+      "instruction": "`x` ga ataylab `undefined` yozing (`let x = undefined;`) va konsolga chiqaring. Bu ishlaydi, lekin keyingi safar shunchaki qiymat bermang.",
+      "startingCode": "// x ga ataylab undefined bering va chiqaring\n",
+      "hint": "let x = undefined;\nconsole.log(x);",
+      "test": "if (!code.includes('undefined')) return 'undefined sozi qatnashishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === undefined)) return null;\nreturn 'undefined konsolga chiqmadi';"
     },
     {
-      id: 10,
-      title: "Uch xil qiymat ketma-ket (chegara)",
-      instruction: "`count = 5`, `nick` (qiymatsiz), `isVip = true` berilgan. Uchalasini tartib bilan chiqaring: `5`, `undefined`, `true`.",
-      startingCode: "let count = 5;\nlet nick;\nlet isVip = true;\n// Uchalasini tartib bilan chiqaring\n",
-      hint: "console.log(count);\nconsole.log(nick);\nconsole.log(isVip);",
-      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 3) return 'Uchala qiymat ham chiqishi kerak';\nif (out[0][0] !== 5) return 'Birinchi qiymat 5 bolishi kerak';\nif (out[1][0] !== undefined) return 'Ikkinchi qiymat undefined bolishi kerak';\nif (out[2][0] !== true) return 'Uchinchi qiymat true bolishi kerak';\nreturn null;"
+      "id": 10,
+      "title": "Uch xil qiymat ketma-ket (chegara)",
+      "instruction": "`count = 5`, `nick` (qiymatsiz), `isVip = true` berilgan. Uchalasini tartib bilan chiqaring: `5`, `undefined`, `true`.",
+      "startingCode": "let count = 5;\nlet nick;\nlet isVip = true;\n// Uchalasini tartib bilan chiqaring\n",
+      "hint": "console.log(count);\nconsole.log(nick);\nconsole.log(isVip);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 3) return 'Uchala qiymat ham chiqishi kerak';\nif (out[0][0] !== 5) return 'Birinchi qiymat 5 bolishi kerak';\nif (out[1][0] !== undefined) return 'Ikkinchi qiymat undefined bolishi kerak';\nif (out[2][0] !== true) return 'Uchinchi qiymat true bolishi kerak';\nreturn null;"
     }
   ],
   quizzes: [

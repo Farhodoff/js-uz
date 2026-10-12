@@ -150,28 +150,28 @@ Keyingi darsda: O'zgaruvchidagi qiymatni yangilash (qayta qiymat berish) bilan t
 `,
   exercises: [
     {
-      id: 1,
-      title: "Sonli o'zgaruvchi yaratish",
-      instruction: "`score` nomli o'zgaruvchi yarating (`let` bilan), unga `50` qiymatini bering va `console.log(score);` orqali chiqaring.",
-      startingCode: "// score o'zgaruvchisini yarating va chiqaring\n",
-      hint: "let score = 50;\nconsole.log(score);",
-      test: "if (!code.includes('let')) return 'let kalit so\\'zi ishlatilmadi';\nif (!code.includes('score')) return 'score nomli o\\'zgaruvchi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('50'))) return null;\nreturn '50 soni konsolga chiqmadi';"
+      "id": 1,
+      "title": "Sonli o'zgaruvchi yaratish",
+      "instruction": "`score` nomli o'zgaruvchi yarating (`let` bilan), unga `50` qiymatini bering va `console.log(score);` orqali chiqaring.",
+      "startingCode": "// score o'zgaruvchisini yarating va chiqaring\n",
+      "hint": "let score = 50;\nconsole.log(score);",
+      "test": "if (!/\\b(?:let|var)\\b/.test(code)) return 'let kalit so\\'zi ishlatilmadi';\nif (!code.includes('score')) return 'score nomli o\\'zgaruvchi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('50'))) return null;\nreturn '50 soni konsolga chiqmadi';"
     },
     {
-      id: 2,
-      title: "Matnli o'zgaruvchi yaratish",
-      instruction: "`city` nomli o'zgaruvchi yarating (`let` bilan), unga `\"Toshkent\"` matnini soling va konsolga chiqaring.",
-      startingCode: "// city o'zgaruvchisini yarating va chiqaring\n",
-      hint: "let city = \"Toshkent\";\nconsole.log(city);",
-      test: "if (!code.includes('let')) return 'let kalit so\\'zi ishlatilmadi';\nif (!code.includes('city')) return 'city nomli o\\'zgaruvchi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Toshkent'))) return null;\nreturn '\"Toshkent\" matni konsolga chiqmadi';"
+      "id": 2,
+      "title": "Matnli o'zgaruvchi yaratish",
+      "instruction": "`city` nomli o'zgaruvchi yarating (`let` bilan), unga `\"Toshkent\"` matnini soling va konsolga chiqaring.",
+      "startingCode": "// city o'zgaruvchisini yarating va chiqaring\n",
+      "hint": "let city = \"Toshkent\";\nconsole.log(city);",
+      "test": "if (!/\\b(?:let|var)\\b/.test(code)) return 'let kalit so\\'zi ishlatilmadi';\nif (!code.includes('city')) return 'city nomli o\\'zgaruvchi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Toshkent'))) return null;\nreturn '\"Toshkent\" matni konsolga chiqmadi';"
     },
     {
-      id: 3,
-      title: "Qo'shtirnoq xatosini to'g'rilash",
-      instruction: "`console.log(\"count\");` qatoridagi qo'shtirnoqni olib tashlang, toki o'zgaruvchi nomi emas, uning ichidagi `42` qiymati chiqsin.",
-      startingCode: "let count = 42;\nconsole.log(\"count\");\n",
-      hint: "let count = 42;\nconsole.log(count);",
-      test: "if (code.includes('\"count\"') || code.includes(\"'count'\")) return 'count so\\'zidan qo\\'shtirnoqni olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('42'))) return null;\nreturn '42 soni konsolga chiqmadi';"
+      "id": 3,
+      "title": "Qo'shtirnoq xatosini to'g'rilash",
+      "instruction": "`console.log(\"count\");` qatoridagi qo'shtirnoqni olib tashlang, toki o'zgaruvchi nomi emas, uning ichidagi `42` qiymati chiqsin.",
+      "startingCode": "let count = 42;\nconsole.log(\"count\");\n",
+      "hint": "let count = 42;\nconsole.log(count);",
+      "test": "if (code.includes('\"count\"') || code.includes(\"'count'\")) return 'count so\\'zidan qo\\'shtirnoqni olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('42'))) return null;\nreturn '42 soni konsolga chiqmadi';"
     },
     {
       "id": 4,
@@ -203,7 +203,7 @@ Keyingi darsda: O'zgaruvchidagi qiymatni yangilash (qayta qiymat berish) bilan t
       "instruction": "Quyidagi kodda xato bor: `2name` nomi raqam bilan boshlanadi. O'zgaruvchini to'g'ri nomlang (masalan, `name2`).",
       "startingCode": "let 2name = \"Ali\";\nconsole.log(2name);\n",
       "hint": "O'zgaruvchi nomi raqam bilan boshlanmasligi kerak.",
-      "test": "if (/let\\s+2/.test(code)) return 'Nom hali raqam bilan boshlanmoqda';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'console.log Ali chiqishi kerak';"
+      "test": "if (/(?:let|var|const)\\s+2/.test(code)) return 'Nom hali raqam bilan boshlanmoqda';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Ali'))) return null;\nreturn 'console.log Ali chiqishi kerak';"
     },
     {
       "id": 8,
@@ -211,7 +211,7 @@ Keyingi darsda: O'zgaruvchidagi qiymatni yangilash (qayta qiymat berish) bilan t
       "instruction": "`my score` nomini yarating — lekin bo'shliqsiz bitta so'z sifatida (`myscore` yoki `myScore`). console.log ichida ishlatsin.",
       "startingCode": "// Nom bo'shliqsiz bo'lishi kerak\n",
       "hint": "let myScore = ... — bitta so'z, bo'shliqsiz.",
-      "test": "if (/let\\s+my\\s+score/.test(code)) return 'Nom ichida bo\\'sliq bor';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length >= 1) return null;\nreturn 'console.log bir marta chaqirilishi kerak';"
+      "test": "if (/(?:let|var)\\s+my\\s+score/.test(code)) return 'Nom ichida bo\\'sliq bor';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.length >= 1) return null;\nreturn 'console.log bir marta chaqirilishi kerak';"
     },
     {
       "id": 9,
