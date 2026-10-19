@@ -7,7 +7,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
   ],
   plugins: ['react-refresh'],
-  ignorePatterns: ['dist', 'node_modules'],
+  ignorePatterns: ['dist', 'coverage', 'node_modules', 'playwright-report', 'test-results'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
