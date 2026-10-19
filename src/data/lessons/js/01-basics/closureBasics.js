@@ -4,258 +4,372 @@ export const closureBasics = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz uydan ko'chaga chiqayotib, sevimli ryukzagingizni yelkangizga taqib oldingiz. Uyning eshigi qulflanib, siz undan uzoqlashgan bo'lsangiz ham, ryukzak ichidagi narsalaringiz doimo yoningizda qoladi va ulardan istalgan payt foydalanishingiz mumkin.
-JavaScript da funksiyalar ham xuddi shunday "ryukzak"ka ega: ichki funksiya tashqi funksiyaning o'zgaruvchilarini o'zi bilan olib ketadi va tashqi funksiya tugaganidan keyin ham ularni eslab qoladi.
+Tasavvur qiling, sumkangizda kundalik daftar bor. Daftar ichida kechagi yozuvlar saqlanadi. Sumkani yopsangiz ham, yozuvlar o'chmaydi. Ertaga ochsangiz — kechagi yozuvlar joyida.
 
-**Closure (yopilish / eslab qolish)** — ichki funksiyaning o'zidan tashqaridagi funksiyada yaratilgan o'zgaruvchilarni, hatto tashqi funksiya o'z ishini to'liq yakunlagan bo'lsa ham, eslab qolishi va ulardan foydalana olish xususiyatidir.
+Dasturlashda closure (yopilish) xuddi shu sumka. Ichki funksiya tashqi o'zgaruvchini "eslab qoladi". Tashqi funksiya tugagandan keyin ham qiymat o'chmaydi.
 
-*Yangi terminlar:*
-- **Closure (yopilish)** — ichki funksiya va u eslab qolgan tashqi muhit o'zgaruvchilari birikmasi.
-- **Ichki funksiya (inner function)** — boshqa bir funksiya tanasi ichida yaratilgan funksiya.
+Closure — tashqi o'zgaruvchini eslab qolgan ichki funksiyadir.
 
 ---
 
 ## 2. Nega kerak?
 
-Oldingi darsda ko'rganimizdek, odatda funksiya ishlab bo'lgach, uning ichidagi barcha lokal o'zgaruvchilar o'chib ketadi:
+Hisoblagich kerak: har chaqiruvda 1 taga oshsin. Oddiy o'zgaruvchi bilan bo'lmaydi:
 
 \`\`\`javascript
-// Muammo: Oddiy lokal o'zgaruvchi xotirada saqlanib qolmaydi
-function countUp() {
-  let count = 0;
-  count += 1;
-  return count;
+let son = 0;
+function qadam() {
+  son++;
+  console.log(son);
 }
-console.log(countUp()); // 1
-console.log(countUp()); // yana 1!
+qadam();
+qadam();
 \`\`\`
 
-Agar biz o'zgaruvchini global qilsak, butun dastur uni bexosdan buzib qo'yishi mumkin. Closure esa ma'lumotni tashqi muhitdan xavfsiz yashirgan (privat) holda saqlash va faqat maxsus ichki funksiya orqali uni boshqarish imkonini beradi.
+Ishlaydi: \`1\`, \`2\` chiqadi. Lekin \`son\` tashqarida, ochiq yotibdi. Har kim o'zgartirishi mumkin.
+
+Muammo shunda: hisobni himoyalash kerak. Tashqaridan ko'rinmasin, lekin esda qolsin. Yechim — closure:
+
+\`\`\`javascript
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+    console.log(son);
+  }
+  return qadam;
+}
+let birinchi = hisoblagich();
+birinchi();
+birinchi();
+\`\`\`
+
+Natija bir xil: \`1\`, \`2\`. Lekin \`son\` endi ichkarida. Tashqaridan tegib bo'lmaydi.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod tashqi funksiya tugagach ham, ichki funksiya tashqi o'zgaruvchini eslab qolishini ko'rsatadi.
+Bu kod eslab qoladigan hisoblagich yasaydi.
 
 \`\`\`javascript
-function createGreeting(name) { // tashqi funksiya
-  function greet() { // ichki funksiya
-    console.log("Salom, " + name); // tashqi name ni eslab qoladi
+function hisoblagich() { // Tashqi funksiya
+  let son = 0; // Ichki xotira
+  function qadam() { // Ichki funksiya
+    son++; // Xotirani oshiradi
+    console.log(son); // Chiqaradi
   }
-  return greet; // ichki funksiyaning o'zini qaytaramiz (qavslarsiz)
+  return qadam; // Ichki funksiya uzatiladi
 }
-
-const sayHelloToAli = createGreeting("Ali");
-sayHelloToAli(); // tashqi funksiya tugagan, lekin "Ali" eslab qolingan!
-\`\`\`
-
-\`\`\`text
-// Natija:
-Salom, Ali
-\`\`\`
-
----
-
-## 4. Qator-baqator tahlil
-
-- \`function createGreeting(name) {\` — tashqi funksiya \`name\` parametrini qabul qiladi.
-- \`function greet() {\` — tashqi funksiya ichida yangi ichki funksiya yaratildi.
-- \`console.log("Salom, " + name);\` — ichki funksiya o'zidan tashqaridagi \`name\` o'zgaruvchisiga murojaat qiladi.
-- \`return greet;\` — \`createGreeting\` o'z ichidagi \`greet\` funksiyasining o'zini qaytaradi (diqqat qiling: \`greet()\` emas, qavslarsiz \`greet\`!).
-- \`const sayHelloToAli = createGreeting("Ali");\` — \`createGreeting\` ishga tushdi va ishi tugadi. U qaytargan ichki funksiya \`sayHelloToAli\` o'zgaruvchisiga saqlandi.
-- \`sayHelloToAli();\` — bu funksiya chaqirilganda, u o'zi bilan birga olib chiqqan \`name = "Ali"\` o'zgaruvchisini xotiradan topadi va ekranga chiqaradi.
-
----
-
-## 5. Qadamma-qadam (trace)
-
-Bajarilish jarayoni jadvali:
-
-| Qadam | Kod | Tashqi funksiya holati | Ichki funksiya closure xotirasi | Natija |
-|---|---|---|---|---|
-| 1 | \`createGreeting("Ali")\` | Ishga tushdi, \`name = "Ali"\` | \`greet\` funksiyasi yaratildi | \`greet\` funksiyasi qaytarildi |
-| 2 | Tashqi funksiya yakunlandi | Ishini tugatdi (yopildi) | \`name = "Ali"\` o'chmadi, closure da qoldi | \`sayHelloToAli\` ga yuklandi |
-| 3 | \`sayHelloToAli()\` chaqirildi | Allaqachon yopiq | Closure dan \`name\` olindi | "Salom, Ali" chiqdi |
-
----
-
-## 6. Yana bitta misol
-
-1-misoldan farqi: O'zgaruvchi shunchaki o'qilmaydi, balki har chaqirilganda yangilanib boradi (shaxsiy hisoblagich — counter).
-
-\`\`\`javascript
-function createCounter() {
-  let count = 0; // xavfsiz, yashirin o'zgaruvchi
-  return function() { // anonim ichki funksiya qaytariladi
-    count += 1; // eslab qolingan count ni 1 ga oshiradi
-    return count;
-  };
-}
-
-const counter = createCounter();
-console.log(counter());
-console.log(counter());
-console.log(counter());
+let birinchi = hisoblagich(); // Tayyor hisoblagich olindi
+birinchi(); // 1 chiqadi
+birinchi(); // 2 chiqadi
 \`\`\`
 
 \`\`\`text
 // Natija:
 1
 2
-3
 \`\`\`
 
-Tahlil:
-- \`count\` o'zgaruvchisi global emas, uni to'g'ridan-to'g'ri tashqaridan o'zgartirib bo'lmaydi.
-- Har safar \`counter()\` chaqirilganda, u o'zining eslab qolingan \`count\` qiymatini 1 ga oshirib boradi.
+---
+
+## 4. Qator-baqator tahlil
+
+- \`function hisoblagich() {\` — tashqi funksiya. U "zavod". Hisoblagich yasaydi.
+- \`let son = 0;\` — ichki xotira. Tashqaridan ko'rinmaydi.
+- \`function qadam() {\` — ichki funksiya. Xotirani ishlatadi.
+- \`return qadam;\` — ichki funksiya tashqariga uzatildi. Xotirasi bilan birga.
+- \`let birinchi = hisoblagich();\` — tayyor hisoblagich olindi.
+- \`birinchi();\` — har chaqiruvda \`son\` esda qoladi. Birinchi marta \`1\`, ikkinchi marta \`2\`.
+
+---
+
+## 5. Qadamma-qadam (trace)
+
+Xotira qanday saqlanadi:
+
+| Qadam | Kod qatori | Xotira (son) | Natija |
+|---|---|---|---|
+| 1 | \`let birinchi = hisoblagich();\` | 0 yaratildi | Tayyor |
+| 2 | \`birinchi();\` | 0 + 1 = 1 | 1 chiqdi |
+| 3 | \`birinchi();\` | 1 + 1 = 2 | 2 chiqdi |
+
+Tashqi funksiya 1-qadamdayoq tugagan. Lekin xotira o'chmagan. Ichki funksiya uni eslab qolgan.
+
+---
+
+## 6. Yana bitta misol
+
+Bu kod ikkita mustaqil hisoblagich yasaydi.
+
+\`\`\`javascript
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+    console.log(son);
+  }
+  return qadam;
+}
+let birinchi = hisoblagich(); // Birinchi xotira
+let ikkinchi = hisoblagich(); // Ikkinchi xotira
+birinchi(); // 1 chiqadi
+birinchi(); // 2 chiqadi
+ikkinchi(); // 1 chiqadi
+\`\`\`
+
+\`\`\`text
+// Natija:
+1
+2
+1
+\`\`\`
+
+Qator-baqator tahlil:
+- Har chaqiruv yangi xotira ochadi. \`birinchi\` bilan \`ikkinchi\` alohida.
+- \`birinchi()\` ikki marta chaqirildi: \`1\` va \`2\` chiqdi.
+- \`ikkinchi()\` birinchi marta chaqirildi: o'z xotirasi \`0\` dan boshlangan. \`1\` chiqdi.
 
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1-xato: Ichki funksiyani qaytarishda qavslarni () qo'yib yuborish
-
+### 1. return ni unutish
+❌ Xato kod:
 \`\`\`javascript
-function makeGreeter(name) {
-  function greet() {
-    return "Salom, " + name;
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+    console.log(son);
   }
-  return greet(); // XATO: funksiya emas, uning natijasi qaytib qoladi!
 }
-
-const greeter = makeGreeter("Ali");
-greeter(); // XATO: TypeError: greeter is not a function
+let birinchi = hisoblagich();
+birinchi();
 \`\`\`
-
-**Nima bo'ladi:** \`makeGreeter\` funksiya o'rniga oddiy matn (\`"Salom, Ali"\`) qaytarib yuboradi. Matnni esa qavslar bilan chaqirib bo'lmaydi, natijada \`TypeError\` xatosi chiqadi.
-**To'g'ri varianti:** Har doim qavslarsiz funksiyaning o'zini qaytaring: \`return greet;\`.
-
-### 2-xato: Yangi nusxa olmasdan to'g'ridan-to'g'ri asosiy funksiyani qayta chaqirish
-
+Nima bo'ladi: \`TypeError: birinchi is not a function\` xatoligi yuz beradi. Ichki funksiya uzatilmagan. \`birinchi\` ga hech narsa (\`undefined\`) yozilgan. Uni chaqirib bo'lmaydi.
+✅ To'g'ri variant:
 \`\`\`javascript
-function createCounter() {
-  let count = 0;
-  return function() {
-    count += 1;
-    return count;
-  };
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+    console.log(son);
+  }
+  return qadam; // Uzatish shart
 }
-
-console.log(createCounter()()); // 1
-console.log(createCounter()()); // yana 1!
+let birinchi = hisoblagich();
+birinchi();
 \`\`\`
 
-**Nima bo'ladi:** Har safar \`createCounter()\` yangidan chaqirilganda, noldan yangi \`count = 0\` o'zgaruvchisi yaratiladi va u hech qachon 2 ga yetmaydi.
-**To'g'ri varianti:** Avval hisoblagichni bitta o'zgaruvchiga saqlang: \`const myCounter = createCounter();\`, keyin \`myCounter()\` deb chaqiring.
-
-### 3-xato: Ichki funksiyada tashqi o'zgaruvchini qayta let bilan yaratish
-
+### 2. Tashqaridan xotiraga tegish
+❌ Xato kod:
 \`\`\`javascript
-function createStep(step) {
-  return function() {
-    let step = 10; // XATO: tashqi step qiymati to'silib qoldi!
-    return step;
-  };
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+  }
+  return qadam;
 }
+let birinchi = hisoblagich();
+birinchi();
+console.log(son);
+\`\`\`
+Nima bo'ladi: \`ReferenceError: son is not defined\` xatoligi yuz beradi. Xotira himoyalangan. Unga faqat ichki funksiya orqali tegiladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+    console.log(son);
+  }
+  return qadam;
+}
+let birinchi = hisoblagich();
+birinchi(); // Faqat shu yo'l bilan
 \`\`\`
 
-**Nima bo'ladi:** Tashqaridan kelgan \`step\` e'tibordan chetda qolib, doimo ichkaridagi \`10\` qiymati ishlaydi.
-**To'g'ri varianti:** Ichki funksiyada \`let step\` deb qayta e'lon qilmang, to'g'ridan-to'g'ri mavjud o'zgaruvchidan foydalaning.
+### 3. Ichki nomni tashqarida chaqirish
+❌ Xato kod:
+\`\`\`javascript
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+    console.log(son);
+  }
+  return qadam;
+}
+qadam();
+\`\`\`
+Nima bo'ladi: \`ReferenceError: qadam is not defined\` xatoligi yuz beradi. Ichki nom tashqarida ko'rinmaydi. Faqat uzatilgan nom (\`birinchi\`) orqali chaqiriladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+    console.log(son);
+  }
+  return qadam;
+}
+let birinchi = hisoblagich();
+birinchi();
+\`\`\`
 
 ---
 
 ## 8. Tekshiruv
 
-### 1-mashq (oson)
-\`createPrefix(prefix)\` nomli funksiya yozing. U ichki funksiya qaytarsin. Ichki funksiya \`word\` parametrini qabul qilib, \`prefix + word\` ni qaytarsin. \`const addExclamation = createPrefix("!");\` orqali funksiya yaratib, \`addExclamation("Salom")\` natijasini konsolga chiqaring (\`"!Salom"\`).
+### 1-mashq (Oson)
+Hisoblagich yasang. Ikki marta chaqiring (\`1\` va \`2\` chiqishi kerak).
 
-### 2-mashq (o'rtacha)
-\`createCounter()\` funksiyasini yozing: ichida \`let count = 0;\` bo'lsin va chaqirilganda \`count += 1\` qilib yangi sonni qaytarsin. \`const myCounter = createCounter();\` yarating, uni 2 marta chaqiring va ikkinchi chaqiruv natijasini konsolga chiqaring (\`2\`).
+### 2-mashq (O'rtacha)
+Hisoblagichni uch marta chaqiring (\`1\`, \`2\`, \`3\` chiqishi kerak).
 
-### 3-mashq (chegara holat)
-Boshlang'ich qiymatdan boshlab hisoblaydigan hisoblagich yozing: \`createCounterFrom(start)\`. Ichidagi \`count\` dastlab \`start\` ga teng bo'lsin. Har chaqirilganda \`count += 1\` bo'lib qaytsin. \`const counterFrom5 = createCounterFrom(5);\` yarating va uni ketma-ket 2 marta chaqirib, oxirgi natijani konsolga chiqaring (\`7\`).
+### 3-mashq (Chegara holat)
+Ikkita mustaqil hisoblagich yasang. Birinchisini ikki marta, ikkinchisini bir marta chaqiring (\`1\`, \`2\`, \`1\` chiqishi kerak).
 
----
-
-### Javoblar
-
-**1-mashq javobi:**
+### Javoblar:
+1.
 \`\`\`javascript
-function createPrefix(prefix) {
-  return function(word) {
-    return prefix + word;
-  };
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+    console.log(son);
+  }
+  return qadam;
 }
-
-const addExclamation = createPrefix("!");
-console.log(addExclamation("Salom")); // !Salom
+let birinchi = hisoblagich();
+birinchi();
+birinchi();
 \`\`\`
-
-**2-mashq javobi:**
+2.
 \`\`\`javascript
-function createCounter() {
-  let count = 0;
-  return function() {
-    count += 1;
-    return count;
-  };
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+    console.log(son);
+  }
+  return qadam;
 }
-
-const myCounter = createCounter();
-myCounter();
-console.log(myCounter()); // 2
+let birinchi = hisoblagich();
+birinchi();
+birinchi();
+birinchi();
 \`\`\`
-
-**3-mashq javobi:**
+3.
 \`\`\`javascript
-function createCounterFrom(start) {
-  let count = start;
-  return function() {
-    count += 1;
-    return count;
-  };
+function hisoblagich() {
+  let son = 0;
+  function qadam() {
+    son++;
+    console.log(son);
+  }
+  return qadam;
 }
-
-const counterFrom5 = createCounterFrom(5);
-counterFrom5();
-console.log(counterFrom5()); // 7
+let birinchi = hisoblagich();
+let ikkinchi = hisoblagich();
+birinchi();
+birinchi();
+ikkinchi();
 \`\`\`
 
 ---
 
 ## 9. Xulosa
 
-1. Closure — ichki funksiyaning tashqi funksiyadagi o'zgaruvchilarni, hatto tashqi funksiya tugagan bo'lsa ham eslab qolishidir.
-2. Closure yordamida o'zgaruvchilarni global qilib qo'ymasdan, xavfsiz va xususiy holatda saqlash mumkin.
-3. Ichki funksiya qaytarilayotganda qavslarsiz (\`return innerFunction;\`) yoziladi.
+1. Closure — tashqi o'zgaruvchini eslab qolgan ichki funksiya.
+2. Xotira himoyalangan: unga faqat ichki funksiya orqali tegiladi.
+3. Har chaqiruv yangi xotira ochadi. Hisoblagichlar bir-biriga aralashmaydi.
 
-Keyingi darsda: Bir nechta ma'lumotlarni bitta ro'yxatda saqlash — Massivlar (Arrays) bilan tanishamiz.
+Keyingi darsda: bir nechta qiymatni saqlaydigan massivlar bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "createPrefix closure funksiyasi",
-      instruction: "`createPrefix(prefix)` nomli funksiya yozing: u `word` qabul qiluvchi va `prefix + word` qaytaruvchi ichki funksiya qaytarsin. `const addExclamation = createPrefix(\"!\");` qilib, `addExclamation(\"Salom\")` natijasini konsolga chiqaring.",
-      startingCode: "// createPrefix funksiyasini yozing\n",
-      hint: "function createPrefix(prefix) {\n  return function(word) {\n    return prefix + word;\n  };\n}\nconst addExclamation = createPrefix(\"!\");\nconsole.log(addExclamation(\"Salom\"));",
-      test: "if (!code.includes('createPrefix')) return 'createPrefix funksiyasi yaratilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('!Salom'))) return null;\nreturn 'Konsolga \"!Salom\" chiqmadi';"
+      title: "Birinchi hisoblagich",
+      instruction: "Hisoblagich yasang (`son = 0`, `qadam` ichida oshirib chiqarsin, `return qadam;` bo'lsin). Ikki marta chaqiring (`1` va `2` chiqishi kerak).",
+      startingCode: "// hisoblagich() ni yozing va ikki marta chaqiring\n",
+      hint: "function hisoblagich() {\n  let son = 0;\n  function qadam() {\n    son++;\n    console.log(son);\n  }\n  return qadam;\n}\nlet birinchi = hisoblagich();\nbirinchi();\nbirinchi();",
+      test: "if (!code.includes('return qadam')) return 'return qadam yozilishi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2') return null;\nreturn '1 va 2 chiqishi kerak. Chiqqan natija: ' + out.join(', ');"
     },
     {
       id: 2,
-      title: "createCounter hisoblagichi",
-      instruction: "`createCounter()` funksiyasini yozing: u har chaqirilganda `count` ni 1 ga oshirib qaytarsin (`let count = 0;`). `const myCounter = createCounter();` yarating, uni 2 marta chaqiring va ikkinchi natijani konsolga chiqaring (2).",
-      startingCode: "// createCounter funksiyasini yozing\n",
-      hint: "function createCounter() {\n  let count = 0;\n  return function() {\n    count += 1;\n    return count;\n  };\n}\nconst myCounter = createCounter();\nmyCounter();\nconsole.log(myCounter());",
-      test: "if (!code.includes('createCounter')) return 'createCounter funksiyasi yaratilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('2'))) return null;\nreturn 'Konsolga 2 chiqmadi';"
+      title: "Uch marta chaqirish",
+      instruction: "Hisoblagichni uch marta chaqiring (`1`, `2`, `3` chiqishi kerak).",
+      startingCode: "function hisoblagich() {\n  let son = 0;\n  function qadam() {\n    son++;\n    console.log(son);\n  }\n  return qadam;\n}\nlet birinchi = hisoblagich();\n// Uch marta chaqiring\n",
+      hint: "birinchi();\nbirinchi();\nbirinchi();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3') return null;\nreturn '1, 2, 3 chiqishi kerak';"
     },
     {
       id: 3,
-      title: "Boshlang'ich sondan sanovchi closure",
-      instruction: "`createCounterFrom(start)` funksiyasini yozing (`let count = start;`). `const counterFrom5 = createCounterFrom(5);` qilib, uni 2 marta chaqiring va ikkinchi natijani konsolga chiqaring (7).",
-      startingCode: "// createCounterFrom funksiyasini yozing\n",
-      hint: "function createCounterFrom(start) {\n  let count = start;\n  return function() {\n    count += 1;\n    return count;\n  };\n}\nconst counterFrom5 = createCounterFrom(5);\ncounterFrom5();\nconsole.log(counterFrom5());",
-      test: "if (!code.includes('createCounterFrom')) return 'createCounterFrom funksiyasi yaratilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('7'))) return null;\nreturn 'Konsolga 7 chiqmadi';"
+      title: "return ni qo'shish",
+      instruction: "`return qadam;` yozilmagan. Qo'shing (`1` va `2` chiqishi kerak).",
+      startingCode: "function hisoblagich() {\n  let son = 0;\n  function qadam() {\n    son++;\n    console.log(son);\n  }\n}\nlet birinchi = hisoblagich();\nbirinchi();\nbirinchi();\n",
+      hint: "return qadam;",
+      test: "if (!code.includes('return qadam')) return 'return qadam qoshing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2') return null;\nreturn '1 va 2 chiqishi kerak';"
+    },
+    {
+      id: 4,
+      title: "Xotirani yashirish",
+      instruction: "`son` ni tashqariga chiqarmang. Faqat ichki funksiya orqali chiqaring (`1` chiqsin).",
+      startingCode: "function hisoblagich() {\n  let son = 0;\n  function qadam() {\n    son++;\n    console.log(son);\n  }\n  return qadam;\n}\nlet birinchi = hisoblagich();\n// birinchi() bilan chaqiring\n",
+      hint: "birinchi();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1') return null;\nreturn '1 chiqishi kerak';"
+    },
+    {
+      id: 5,
+      title: "Ichki nom xatosi",
+      instruction: "`qadam();` tashqarida ishlamaydi. Uzatilgan nom bilan chaqiring (`1` chiqsin).",
+      startingCode: "function hisoblagich() {\n  let son = 0;\n  function qadam() {\n    son++;\n    console.log(son);\n  }\n  return qadam;\n}\nqadam();\n",
+      hint: "let birinchi = hisoblagich();\nbirinchi();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1') return null;\nreturn '1 chiqishi kerak';"
+    },
+    {
+      id: 6,
+      title: "Ikkita mustaqil xotira (chegara)",
+      instruction: "Ikkita hisoblagich yasang. Birinchisini ikki marta, ikkinchisini bir marta chaqiring (`1`, `2`, `1` chiqishi kerak).",
+      startingCode: "function hisoblagich() {\n  let son = 0;\n  function qadam() {\n    son++;\n    console.log(son);\n  }\n  return qadam;\n}\n// Ikkita yasang va chaqiring\n",
+      hint: "let birinchi = hisoblagich();\nlet ikkinchi = hisoblagich();\nbirinchi();\nbirinchi();\nikkinchi();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,1') return null;\nreturn '1, 2, 1 chiqishi kerak';"
+    },
+    {
+      id: 7,
+      title: "Kamayuvchi xotira (chegara)",
+      instruction: "`son = 10` dan boshlanadigan, har safar `2` taga kamayadigan hisoblagich yasang. Ikki marta chaqiring (`8` va `6` chiqishi kerak).",
+      startingCode: "// Kamayuvchi hisoblagich yozing\n",
+      hint: "function hisoblagich() {\n  let son = 10;\n  function qadam() {\n    son -= 2;\n    console.log(son);\n  }\n  return qadam;\n}\nlet birinchi = hisoblagich();\nbirinchi();\nbirinchi();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '8,6') return null;\nreturn '8 va 6 chiqishi kerak';"
+    },
+    {
+      id: 8,
+      title: "Matnli xotira (chegara)",
+      instruction: "`ism = \"A\"` dan boshlanadigan hisoblagich yasang. Har chaqiruvda `\"X\"` qo'shib chiqaring. Ikki marta chaqiring (`AX` va `AXX` chiqishi kerak).",
+      startingCode: "// Matnli hisoblagich yozing\n",
+      hint: "function hisoblagich() {\n  let ism = \"A\";\n  function qadam() {\n    ism += \"X\";\n    console.log(ism);\n  }\n  return qadam;\n}\nlet birinchi = hisoblagich();\nbirinchi();\nbirinchi();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === 'AX,AXX') return null;\nreturn 'AX va AXX chiqishi kerak';"
+    },
+    {
+      id: 9,
+      title: "Uchta mustaqil (chegara)",
+      instruction: "Bitta zavoddan uchta hisoblagich oling. Har birini bir martadan chaqiring (uchala `1` chiqishi kerak).",
+      startingCode: "function hisoblagich() {\n  let son = 0;\n  function qadam() {\n    son++;\n    console.log(son);\n  }\n  return qadam;\n}\n// Uchta oling va bittadan chaqiring\n",
+      hint: "let a = hisoblagich();\nlet b = hisoblagich();\nlet c = hisoblagich();\na();\nb();\nc();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,1,1') return null;\nreturn 'Uchala 1 chiqishi kerak';"
+    },
+    {
+      id: 10,
+      title: "Beshgacha sanash (chegara)",
+      instruction: "Hisoblagichni besh marta chaqiring (`1`-`5` chiqishi kerak).",
+      startingCode: "function hisoblagich() {\n  let son = 0;\n  function qadam() {\n    son++;\n    console.log(son);\n  }\n  return qadam;\n}\nlet birinchi = hisoblagich();\n// Besh marta chaqiring\n",
+      hint: "birinchi();\nbirinchi();\nbirinchi();\nbirinchi();\nbirinchi();",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.join(',') === '1,2,3,4,5') return null;\nreturn '1 dan 5 gacha chiqishi kerak';"
     }
   ],
   quizzes: [
@@ -263,37 +377,145 @@ Keyingi darsda: Bir nechta ma'lumotlarni bitta ro'yxatda saqlash — Massivlar (
       id: 1,
       question: "Closure nima?",
       options: [
-        "Ichki funksiyaning tashqi funksiyadagi o'zgaruvchilarni eslab qolishi",
-        "Funksiyani avtomatik yopib qo'yuvchi operator",
-        "Faqat xato berganda ishlaydigan blok",
-        "Global o'zgaruvchilarni o'chiruvchi mexanizm"
+        "Yopiq qavs",
+        "Tashqi o'zgaruvchini eslab qolgan ichki funksiya",
+        "Xato turi",
+        "Sikl turi"
       ],
-      correctAnswer: 0,
-      explanation: "Closure — ichki funksiya o'zining tashqi funksiyasidagi o'zgaruvchilarni tashqi funksiya tugagach ham eslab qolishidir."
+      correctAnswer: 1,
+      explanation: "Ichki funksiya tashqi xotirani eslab qoladi."
     },
     {
       id: 2,
-      question: "Tashqi funksiyadan ichki funksiyani qaytarayotganda qanday yozish kerak?",
+      question: "`return qadam;` yozilmasa nima bo'ladi?",
       options: [
-        "Qavslarsiz: return innerFunction;",
-        "Qavslar bilan: return innerFunction();",
-        "Qo'shtirnoqda: return \"innerFunction\";",
-        "new kalit so'zi bilan: return new innerFunction;"
+        "Hech narsa o'zgarmaydi",
+        "TypeError beradi (birinchi chaqiruvda)",
+        "0 chiqadi",
+        "Cheksiz ishlaydi"
       ],
-      correctAnswer: 0,
-      explanation: "Ichki funksiyaning o'zini qaytarish uchun uni qavslarsiz yozish kerak. Agar qavs qo'yilsa, u darhol chaqirilib uning natijasi qaytib qoladi."
+      correctAnswer: 1,
+      explanation: "Uzatish bo'lmasa, undefined chaqirilmoqchi bo'ladi."
     },
     {
       id: 3,
-      question: "Closure dan foydalanishning asosiy afzalligi nima?",
+      question: "Xotira qayerda yashaydi?",
       options: [
-        "O'zgaruvchilarni global qilmasdan, xavfsiz va yashirin holatda saqlash",
-        "Funksiya tezligini 10 barobar oshirish",
-        "Barcha xatolarni avtomatik tuzatish",
-        "O'zgaruvchi turini avtomatik o'zgartirish"
+        "Tashqarida",
+        "Ichkarida, himoyalangan",
+        "Konsolda",
+        "Hech qayerda"
       ],
-      correctAnswer: 0,
-      explanation: "Closure ma'lumotlarni tashqi muhitdan xavfsiz yashirgan holda saqlash va hisoblagichlarni xavfsiz boshqarish imkonini beradi."
+      correctAnswer: 1,
+      explanation: "Tashqaridan tegib bo'lmaydi. Faqat ichki funksiya orqali."
+    },
+    {
+      id: 4,
+      question: "`let birinchi = hisoblagich(); birinchi(); birinchi();` (son 0 dan) nima chiqaradi?",
+      options: [
+        "0, 0",
+        "1, 2",
+        "1, 1",
+        "2, 2"
+      ],
+      correctAnswer: 1,
+      explanation: "Har chaqiruvda xotira oshadi: 1, keyin 2."
+    },
+    {
+      id: 5,
+      question: "`console.log(son);` tashqarida yozilsa nima bo'ladi?",
+      options: [
+        "0 chiqadi",
+        "ReferenceError beradi",
+        "undefined chiqadi",
+        "Hech narsa bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Xotira himoyalangan. Tashqaridan ko'rinmaydi."
+    },
+    {
+      id: 6,
+      question: "`qadam();` tashqarida yozilsa nima bo'ladi?",
+      options: [
+        "Ishlaydi",
+        "ReferenceError beradi",
+        "0 chiqadi",
+        "Cheksiz ishlaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "Ichki nom tashqarida ko'rinmaydi."
+    },
+    {
+      id: 7,
+      question: "Ikkita hisoblagich xotirasi qanday bo'ladi?",
+      options: [
+        "Bitta umumiy",
+        "Alohida-alohida",
+        "Ikkinchisi birinchisini o'chiradi",
+        "Xatolik beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Har chaqiruv yangi xotira ochadi."
+    },
+    {
+      id: 8,
+      question: "`let birinchi = hisoblagich(); let ikkinchi = hisoblagich(); birinchi(); birinchi(); ikkinchi();` nima chiqaradi?",
+      options: [
+        "1, 2, 3",
+        "1, 2, 1",
+        "1, 1, 1",
+        "1, 1, 2"
+      ],
+      correctAnswer: 1,
+      explanation: "Birinchi ikki marta oshdi. Ikkinchi yangidan boshladi."
+    },
+    {
+      id: 9,
+      question: "Tashqi funksiya tugagandan keyin xotira nima bo'ladi?",
+      options: [
+        "O'chadi",
+        "Eslab qolinadi",
+        "Nolga aylanadi",
+        "Xatolik beradi"
+      ],
+      correctAnswer: 1,
+      explanation: "Ichki funksiya xotirani ushlab turadi."
+    },
+    {
+      id: 10,
+      question: "`son = 10` dan boshlanib, har safar 2 taga kamaysa, ikki chaqiruv nima chiqaradi?",
+      options: [
+        "10, 8",
+        "8, 6",
+        "9, 8",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "10 - 2 = 8, 8 - 2 = 6."
+    },
+    {
+      id: 11,
+      question: "`ism = \"A\"` dan boshlanib, har safar \"X\" qo'shilsa, ikki chaqiruv nima chiqaradi?",
+      options: [
+        "X, XX",
+        "AX, AXX",
+        "A, A",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "A + X = AX, keyin AX + X = AXX."
+    },
+    {
+      id: 12,
+      question: "Hisoblagich besh marta chaqirilsa nima chiqadi?",
+      options: [
+        "5, 5, 5, 5, 5",
+        "1, 2, 3, 4, 5",
+        "0, 1, 2, 3, 4",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Xotira har safar oshadi: 1 dan 5 gacha."
     }
   ]
 };

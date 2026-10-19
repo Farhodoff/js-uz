@@ -1,246 +1,342 @@
 export const sqlIndexes = {
-  id: "sql_indexes",
-  title: "SQL Indexes (Indekslar)",
-  language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  id: "sqlIndexes",
+  title: "Qidiruv Tezligi (INDEX)",
+  language: "sql",
+  dbSetup: "CREATE TABLE users (id INT, name STRING, age INT, city STRING); INSERT INTO users VALUES (1,'Ali',25,'Toshkent'),(2,'Vali',17,'Samarqand'),(3,'Guli',30,'Toshkent'),(4,'Hasan',22,'Buxoro');",
+  theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz 10,000 betlik ulkan ensiklopediyadan "Dasturlash" so'zini qidiryapsiz. Agar kitobda mundarija yoki indeks (ko'rsatkich) bo'lmasa, siz 1-betdan boshlab to 10,000-betgacha har bir sahifani birma-bir o'qib chiqishga majbur bo'lasiz. Bu ma'lumotlar bazasida **Full Table Scan** (Jadvalni to'liq skanerlash) deb ataladi va u sekin ishlaydi.
+Tasavvur qiling, qalin kitob bor. Oxirgi sahifada alfavit ko'rsatkichi bor: qaysi so'z qaysi sahifada. Ko'rsatkichsiz butun kitob varaqlanadi. Ko'rsatkich bilan darhol topiladi.
 
-Agar kitobning oxirida indeks bo'lsa (Masalan: D harfi -> Dasturlash -> 542-bet), siz to'g'ridan-to'g'ri 542-betni ochasiz va kerakli ma'lumotni darhol topasiz. Ma'lumotlar bazasidagi **Index** xuddi shunday ishlaydi — u qidiruvni keskin tezlashtiruvchi maxsus ma'lumotlar tuzilmasidir (**Index Scan / Index Seek**).
+Dasturlashda indeks (index) xuddi shu kitob oxiridagi ko'rsatkich. Ustun uchun alohida tez qidiruv yo'li yaratiladi.
 
-## 2. 🔬 Chuqur Tahlil (Ichki ishlash, Turlari)
+INDEX — ustun bo'yicha qidiruvni tezlashtiradigan yordamchi tuzilmadir.
 
-Indekslar qanday ishlaydi va ularning qanday turlari mavjud?
+---
 
-### B-Tree (Balanced Tree)
-Bu eng keng tarqalgan indeks turi hisoblanadi. Odatda \\\`CREATE INDEX\\\` buyrug'i berilganda sukut bo'yicha B-Tree yaratiladi. B-Tree ma'lumotlarni daraxtsimon ierarxiyada, muvozanatlashgan holatda saqlaydi. 
-- **Qanday ishlaydi:** Qidiruv vaqti $O(\\log N)$ ga teng. Tenglik (\\\`=\\\`) va oraliq (\\\`<\\\`, \\\`>\\\`, \\\`BETWEEN\\\`) qidiruvlari uchun juda samarali.
+## 2. Nega kerak?
 
-### Hash Index
-Hash indekslar faqat tenglik (\\\`=\\\`) sharti bilan qidirilganda ishlaydi. 
-- **Qachon ishlatish kerak:** Oraliq qidiruvlari kerak bo'lmaganda va ma'lumotlar ustuni faqat aniq tenglikka tekshirilganda. 
-- PostgreSQL misoli:
-\\\`\\\`\\\`sql
-CREATE INDEX idx_name ON table USING hash (column);
-\\\`\\\`\\\`
+users jadvalida million qator bor. \`WHERE city = 'Toshkent'\` so'rovi hamma qatorni bittalab tekshiradi. Sekin.
 
-### BRIN (Block Range INdex)
-Ayniqsa juda katta (Terabaytlab) jadvallar uchun mos. U har bir ma'lumotlar blokining minimum va maksimum qiymatlarini o'zida saqlaydi.
-- **Qachon ishlatish kerak:** Katta hajmdagi va vaqt o'tishi bilan o'sib boruvchi (masalan, logs, sensor data) jadvallarda xotirani tejash maqsadida.
+Muammo shunda: katta jadvallarda qidiruv sekinlashadi. Yechim — indeks:
 
-### Index Scan vs Bitmap Heap Scan
-- **Index Scan:** DB to'g'ridan-to'g'ri indeksni o'qiydi va u yerdagi ko'rsatkichlar yordamida diskdan faqat kerakli qatorlarni oladi. Agar indeks kerakli barcha ustunlarni o'zida saqlasa (**Covering Index**), faqat indeksning o'zi o'qiladi (**Index Only Scan**).
-- **Bitmap Heap Scan:** Agar so'rov natijasi ko'p qatorlarni qaytarishi kerak bo'lsa, avval indeksdan barcha mos keluvchi qatorlarning manzillari yig'iladi (Bitmap Index Scan) va keyin ular orqali xotira bloklari birgalikda optimal tartibda diskdan o'qiladi. Bu I/O samaradorligini oshiradi.
+\`\`\`sql
+CREATE INDEX idx_city ON users(city);
+\`\`\`
 
-## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
+Endi baza shahar bo'yicha tayyor ro'yxatdan qidiradi. Tez topiladi.
 
-**Indeks qachon ishlamaydi?**
-1. **Funksiyalar ishlatilganda:** Agar siz \\\`WHERE UPPER(email) = 'A@B.COM'\\\` deb yozsangiz, oddiy indeks ishlamaydi. Buning uchun **Expression Index** kerak:
-\\\`\\\`\\\`sql
-CREATE INDEX idx_email_upper ON users(UPPER(email));
-\\\`\\\`\\\`
-2. **LIKE '%word%'**: Agar izlash sharti \\\`%\\\` bilan boshlansa, B-Tree indeksi ishlamaydi va DB Full Table Scan qiladi. Lekin \\\`LIKE 'word%'\\\` indeksdan foydalanadi.
-3. **Data Type Mismatch:** Ustun tipi string bo'lsa-yu, siz unga son (\\\`123\\\`) bilan murojaat qilsangiz, indeks e'tiborsiz qoldirilishi mumkin.
-4. **Jadval juda kichik bo'lsa:** DB rejalashtiruvchisi kichik jadvallar uchun indeks o'rniga Full Table Scan ishlatishni afzal ko'radi.
+---
 
-**Senior Intervyu Savollari:**
-1. **Index qachon salbiy ta'sir ko'rsatadi?**
-   - *Javob:* Har bir \\\`INSERT\\\`, \\\`UPDATE\\\`, va \\\`DELETE\\\` amali vaqtida indekslar ham yangilanishi kerak. Juda ko'p indekslar yozish jarayonini sekinlashtiradi va diskda ortiqcha joy egallaydi.
-2. **Clustered va Non-Clustered Index farqi nimada?**
-   - *Javob:* Clustered Index jadvaldagi yozuvlarni jismonan tartiblaydi (faqat bitta bo'ladi). Non-Clustered Index esa mantiqiy ko'rsatkichlarni alohida tuzilmada saqlaydi.
-3. **Composite Index'dagi "Leftmost Prefix Rule" nima?**
-   - *Javob:* Agar \\\`(A, B, C)\\\` ustunlariga Composite Index yaratilgan bo'lsa, u faqat \\\`A\\\`, \\\`A, B\\\`, yoki \\\`A, B, C\\\` ustunlari bilan izlaganda to'liq ishlaydi. Faqat \\\`B\\\` yoki \\\`C\\\` bo'yicha qidirilsa, indeks umuman ishlamaydi.
+## 3. Birinchi misol
 
-## 4. 📊 Arxitektura va Ishlash Sxemasi
+Bu kod shahar ustuniga indeks yaratadi.
 
-\\\`\\\`\\\`mermaid
-graph TD
-    A[Foydalanuvchi Sorovi] --> B{Indeks bormi?}
-    B -- Yoq --> C[Full Table Scan]
-    B -- Ha --> D{Qidiruv sharti mosmi?}
-    D -- Yoq --> C
-    D -- Ha --> E[Index Scan / Bitmap Scan]
-    E --> F[Diskdan qatorlarni olish]
-    C --> G[Natijani qaytarish]
-    F --> G
-\\\`\\\`\\\`
+\`\`\`sql
+CREATE INDEX idx_city ON users(city); -- Tez qidiruv yo'li
+SELECT name FROM users WHERE city = 'Toshkent'; -- Indeks ishlaydi
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"name":"Ali"},{"name":"Guli"}]
+\`\`\`
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`CREATE INDEX idx_city ON users(city);\` — indeks yaratildi. Nomi \`idx_city\`. Qaysi jadval, qaysi ustun — qavsda aytiladi.
+- \`SELECT ... WHERE city = 'Toshkent';\` — oddiy so'rov. Baza endi indeksdan foydalanadi.
+- Natija o'zgarmaydi. Faqat tezlik oshadi.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod takrorlanmas ustunga noyob indeks yaratadi.
+
+\`\`\`sql
+CREATE UNIQUE INDEX idx_name ON users(name); -- Takror taqiqlanadi
+SELECT name FROM users WHERE name = 'Ali'; -- Tez topiladi
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"name":"Ali"}]
+\`\`\`
+
+Qator-baqator tahlil:
+- \`UNIQUE INDEX\` — ikki ish qiladi: tezlashtiradi VA takrorlanishni taqiqlaydi.
+- Ikkinchi "Ali" yozib bo'lmaydi. Baza rad etadi.
+
+---
+
+## 5.1. Indeksni o'chirish
+
+Keraksiz indeks o'chiriladi:
+
+\`\`\`sql
+DROP INDEX idx_city; -- O'chirildi
+\`\`\`
+
+\`\`\`text
+// Natija: 1
+\`\`\`
+
+Qator-baqator tahlil:
+- \`DROP INDEX\` — yordamchi tuzilma o'chiriladi. Asosiy jadvalga tegmaydi.
+- Natija \`1\` — buyruq bajarildi degani.
+
+---
+
+## 6. Ko'p uchraydigan xatolar
+
+### 1. ON ni unutish
+❌ Xato kod:
+\`\`\`sql
+CREATE INDEX idx_city users(city);
+\`\`\`
+Nima bo'ladi: parse xatoligi yuz beradi. Qaysi jadval ekanini \`ON\` aytadi. Tushib qolmasligi kerak.
+✅ To'g'ri variant:
+\`\`\`sql
+CREATE INDEX idx_city ON users(city);
+\`\`\`
+
+### 2. Takror yozishga urinish
+❌ Xato kod:
+\`\`\`sql
+CREATE UNIQUE INDEX idx_name ON users(name);
+INSERT INTO users VALUES (5, 'Ali', 40, 'Xiva');
+\`\`\`
+Nima bo'ladi: xatolik yuz beradi (bunday yozuv noyob indeksda allaqachon bor). \`UNIQUE\` nafaqat tezlashtiradi — takrorni ham taqiqlaydi.
+✅ To'g'ri variant:
+\`\`\`sql
+CREATE UNIQUE INDEX idx_name ON users(name);
+INSERT INTO users VALUES (5, 'Otabek', 40, 'Xiva');
+\`\`\`
+
+### 3. Har ustunga indeks
+❌ Xato tushuncha: tez bo'lishi uchun hamma ustunga indeks qo'yish kerak deb o'ylash.
+Nima bo'ladi: xato bermaydi. Lekin yozish (INSERT/UPDATE) sekinlashadi! Sababi: har yozishda indeks ham yangilanadi. Indeks faqat ko'p qidiriladigan ustunlarga qo'yiladi.
+✅ To'g'ri tushuncha: qidiruv ko'p bo'lgan ustunga — indeks. Kam ishlatiladiganga — kerak emas.
+
+---
+
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+\`city\` ustuniga indeks yarating (\`idx_city\`). So'rov bajaring: Toshkentliklar chiqsin (Ali, Guli).
+
+### 2-mashq (O'rtacha)
+\`name\` ustuniga noyob indeks yarating. So'rov bajaring: Ali chiqsin.
+
+### 3-mashq (Chegara holat)
+Indeksni yarating, keyin o'chiring. Xato bermasligi kerak.
+
+### Javoblar:
+1.
+\`\`\`sql
+CREATE INDEX idx_city ON users(city);
+SELECT name FROM users WHERE city = 'Toshkent';
+\`\`\`
+2.
+\`\`\`sql
+CREATE UNIQUE INDEX idx_name ON users(name);
+SELECT name FROM users WHERE name = 'Ali';
+\`\`\`
+3.
+\`\`\`sql
+CREATE INDEX idx_city ON users(city);
+DROP INDEX idx_city;
+SELECT name FROM users;
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. INDEX — qidiruvni tezlashtiradi. Natija o'zgarmaydi, tezlik oshadi.
+2. \`UNIQUE INDEX\` takrorni taqiqlaydi. \`DROP INDEX\` o'chiradi.
+3. Indeks faqat kerakli ustunga qo'yiladi. Ko'pi yozishni sekinlashtiradi.
+
+Keyingi darsda: birgalikda bajariladigan amallar — tranzaksiyalar bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Indeks yaratish",
-      instruction: "O'zgaruvchi orqali berilgan ustun nomiga asosan `users` jadvali uchun oddiy Non-Clustered Index yaratish so'rovini qaytaruvchi `createIndex` funksiyasini yozing. Indeks nomi: `idx_users_<ustun_nomi>` bo'lishi kerak.",
-      startingCode: "function createIndex(columnName) {\n  // return SQL query string\n}",
-      hint: "CREATE INDEX idx_users_... ON users(...); formatidan foydalaning.",
-      solution: "function createIndex(columnName) {\n  return `CREATE INDEX idx_users_${columnName} ON users(${columnName});`;\n}",
-      test: "const fn = new Function(code + '; return createIndex;')(); \nif (fn('email').trim().toUpperCase() !== 'CREATE INDEX IDX_USERS_EMAIL ON USERS(EMAIL);') throw new Error('email uchun noto\\'g\\'ri ishladi');\nif (fn('age').trim().toUpperCase() !== 'CREATE INDEX IDX_USERS_AGE ON USERS(AGE);') throw new Error('age uchun noto\\'g\\'ri ishladi');"
+      title: "1-Topshiriq: Indeks yaratish",
+      instruction: "`city` ustuniga `idx_city` indeksini yarating. Toshkentliklarni so'rang (Ali, Guli).",
+      startingCode: "CREATE INDEX idx_city ON users(city);",
+      hint: "SELECT name FROM users WHERE city = 'Toshkent';",
+      solution: "CREATE INDEX idx_city ON users(city); SELECT name FROM users WHERE city = 'Toshkent';",
+      test: "if (!/\\bCREATE\\s+(UNIQUE\\s+)?INDEX\\b/i.test(code)) return 'CREATE INDEX yozing';\nconst names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali', 'Guli'])) return 'Ali va Guli chiqishi kerak';\nreturn null;"
     },
     {
       id: 2,
-      title: "Unique Index yaratish",
-      instruction: "`products` jadvalidagi `sku` ustuniga unique (takrorlanmas) indeks yaratuvchi SQL so'rovni qaytaruvchi `createUniqueIndex` funksiyasini yozing.",
-      startingCode: "function createUniqueIndex() {\n  \n}",
-      hint: "CREATE UNIQUE INDEX indeks_nomi ON jadval(ustun);",
-      solution: "function createUniqueIndex() {\n  return `CREATE UNIQUE INDEX idx_products_sku ON products(sku);`;\n}",
-      test: "const fn = new Function(code + '; return createUniqueIndex;')(); \nif (!fn().trim().toUpperCase().includes('CREATE UNIQUE INDEX')) throw new Error('CREATE UNIQUE INDEX yetishmayapti');\nif (!fn().trim().toLowerCase().includes('products(sku)')) throw new Error('products(sku) qismi topilmadi');"
+      title: "2-Topshiriq: Noyob indeks",
+      instruction: "`name` ustuniga noyob indeks yarating. Ali ni so'rang.",
+      startingCode: "CREATE UNIQUE INDEX idx_name ON users(name);",
+      hint: "SELECT name FROM users WHERE name = 'Ali';",
+      solution: "CREATE UNIQUE INDEX idx_name ON users(name); SELECT name FROM users WHERE name = 'Ali';",
+      test: "if (!/\\bUNIQUE\\b/i.test(code)) return 'UNIQUE yozing';\nconst names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali'])) return 'Faqat Ali chiqishi kerak';\nreturn null;"
     },
     {
       id: 3,
-      title: "Composite Index yaratish",
-      instruction: "Bir nechta ustunlar asosida indeks yaratish. `employees` jadvalidagi `last_name` va `first_name` ustunlari uchun bitta birgalikdagi indeks yaratish so'rovini qaytaruvchi `createCompositeIndex` funksiyasini yozing. Indeks nomi: `idx_emp_name`.",
-      startingCode: "function createCompositeIndex() {\n  \n}",
-      hint: "CREATE INDEX idx_emp_name ON employees(last_name, first_name);",
-      solution: "function createCompositeIndex() {\n  return `CREATE INDEX idx_emp_name ON employees(last_name, first_name);`;\n}",
-      test: "const fn = new Function(code + '; return createCompositeIndex;')();\nconst q = fn().toLowerCase();\nif (!q.includes('idx_emp_name')) throw new Error('indeks nomi xato');\nif (!q.includes('employees(last_name, first_name)')) throw new Error('ustunlar ro\\'yxati xato');"
+      title: "3-Topshiriq: ON qo'shish",
+      instruction: "Quyidagi xatoni tuzating: `ON` so'zi tushib qolgan.",
+      startingCode: "CREATE INDEX idx_city users(city);",
+      hint: "CREATE INDEX idx_city ON users(city);",
+      solution: "CREATE INDEX idx_city ON users(city); SELECT name FROM users WHERE city = 'Toshkent';",
+      test: "if (!/\\bON\\b/i.test(code)) return 'ON qoshing';\nconst names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali', 'Guli'])) return 'Ali va Guli chiqishi kerak';\nreturn null;"
     },
     {
       id: 4,
-      title: "Indeksni o'chirish",
-      instruction: "Jadval nomini va indeks nomini argument sifatida olib, uni o'chiruvchi SQL so'rovni (DROP INDEX) qaytaruvchi `dropIndexQuery` funksiyasini yozing.",
-      startingCode: "function dropIndexQuery(tableName, indexName) {\n  \n}",
-      hint: "Odatda DROP INDEX indexName ON tableName; yoki shunchaki DROP INDEX indexName; bo'ladi. PostgreSQL da DROP INDEX indexName; yetarli. Iltimos PostgreSQL ga moslab yozing.",
-      solution: "function dropIndexQuery(tableName, indexName) {\n  return `DROP INDEX ${indexName};`;\n}",
-      test: "const fn = new Function(code + '; return dropIndexQuery;')(); \nif (fn('users', 'idx_email').trim().toUpperCase() !== 'DROP INDEX IDX_EMAIL;') throw new Error('Xato SQL so\\'rov qaytdi');"
+      title: "4-Topshiriq: O'chirish",
+      instruction: "`idx_city` ni yarating, keyin o'chiring. Xato bermasligi kerak.",
+      startingCode: "CREATE INDEX idx_city ON users(city);",
+      hint: "DROP INDEX idx_city;",
+      solution: "CREATE INDEX idx_city ON users(city); DROP INDEX idx_city; SELECT name FROM users;",
+      test: "if (!/\\bDROP\\s+INDEX\\b/i.test(code)) return 'DROP INDEX yozing';\nif (result.length !== 4) return '4 qator chiqishi kerak';\nreturn null;"
     },
     {
       id: 5,
-      title: "Clustered Index yondashuvi",
-      instruction: "Clustered Index odatda Primary Key bilan avtomat yaratiladi. Shuning uchun Primary Key yaratish so'rovini qaytaruvchi `addPrimaryKey` funksiyasini yozing. U `tableName` va `colName` ni qabul qilib: `ALTER TABLE {tableName} ADD PRIMARY KEY ({colName});` qaytarsin.",
-      startingCode: "function addPrimaryKey(tableName, colName) {\n  \n}",
-      hint: "ALTER TABLE tableName ADD PRIMARY KEY (colName);",
-      solution: "function addPrimaryKey(tableName, colName) {\n  return `ALTER TABLE ${tableName} ADD PRIMARY KEY (${colName});`;\n}",
-      test: "const fn = new Function(code + '; return addPrimaryKey;')(); \nif (fn('users', 'id').trim().toUpperCase() !== 'ALTER TABLE USERS ADD PRIMARY KEY (ID);') throw new Error('Noto\\'g\\'ri SQL so\\'rov');"
+      title: "5-Topshiriq: Yosh indeksi (chegara)",
+      instruction: "`age` ustuniga indeks yarating. 20 dan kattalarni so'rang (Ali, Guli, Hasan).",
+      startingCode: "CREATE INDEX idx_age ON users(age);",
+      hint: "SELECT name FROM users WHERE age > 20;",
+      solution: "CREATE INDEX idx_age ON users(age); SELECT name FROM users WHERE age > 20;",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali', 'Guli', 'Hasan'])) return '3 ta ism chiqishi kerak';\nreturn null;"
     },
     {
       id: 6,
-      title: "Partial Index",
-      instruction: "Qisman indekslash - ma'lum bir shartga javob beradigan qatorlargagina indeks o'rnatish. `users` jadvalida `status = 'active'` bo'lgan qatorlar uchun `created_at` ga qisman indeks (`idx_active_users`) yaratuvchi `createPartialIndex` funksiyasini yozing.",
-      startingCode: "function createPartialIndex() {\n  \n}",
-      hint: "CREATE INDEX idx_active_users ON users(created_at) WHERE status = 'active';",
-      solution: "function createPartialIndex() {\n  return `CREATE INDEX idx_active_users ON users(created_at) WHERE status = 'active';`;\n}",
-      test: "const fn = new Function(code + '; return createPartialIndex;')();\nconst q = fn().toLowerCase();\nif (!q.includes('where status') || !q.includes('active')) throw new Error(\"WHERE sharti noto'g'ri\");"
+      title: "6-Topshiriq: Noyoblik tekshiruvi",
+      instruction: "`name` ga noyob indeks yarating. Yangi ism yozing (5, 'Otabek', 40, 'Xiva'). Otabek chiqishi kerak.",
+      startingCode: "CREATE UNIQUE INDEX idx_name ON users(name);",
+      hint: "INSERT INTO users VALUES (5, 'Otabek', 40, 'Xiva');\nSELECT name FROM users WHERE name = 'Otabek';",
+      solution: "CREATE UNIQUE INDEX idx_name ON users(name); INSERT INTO users VALUES (5, 'Otabek', 40, 'Xiva'); SELECT name FROM users WHERE name = 'Otabek';",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Otabek'])) return 'Otabek chiqishi kerak';\nreturn null;"
     },
     {
       id: 7,
-      title: "Covering Index",
-      instruction: "SELECT ni tezlashtirish uchun INCLUDE (yoki shunchaki barcha kerakli ustunlarni indeksga qo'shish) yondashuvi. `orders` jadvalidagi `customer_id` ga indeks o'rnating va `total_amount` ni qo'shib qo'ying (Composite Index tarzida). `idx_orders_cust` deb nomlang.",
-      startingCode: "function createCoveringIndex() {\n  \n}",
-      hint: "CREATE INDEX idx_orders_cust ON orders(customer_id, total_amount);",
-      solution: "function createCoveringIndex() {\n  return `CREATE INDEX idx_orders_cust ON orders(customer_id, total_amount);`;\n}",
-      test: "const fn = new Function(code + '; return createCoveringIndex;')(); \nconst q = fn().toLowerCase();\nif(!q.includes('orders(customer_id, total_amount)')) throw new Error('xato ustunlar');"
+      title: "7-Topshiriq: Samarqand (chegara)",
+      instruction: "Indeks bilan Samarqandliklarni so'rang (Vali chiqishi kerak).",
+      startingCode: "CREATE INDEX idx_city ON users(city);",
+      hint: "SELECT name FROM users WHERE city = 'Samarqand';",
+      solution: "CREATE INDEX idx_city ON users(city); SELECT name FROM users WHERE city = 'Samarqand';",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Vali'])) return 'Faqat Vali chiqishi kerak';\nreturn null;"
     },
     {
       id: 8,
-      title: "Explain so'rovi",
-      instruction: "Indeksdan foydalanilayotganini tekshirish uchun EXPLAIN qilinadi. Argument sifatida sql query berilganda, uning oldiga EXPLAIN qo'shib qaytaruvchi `explainQuery` funksiyasini yozing.",
-      startingCode: "function explainQuery(sqlQuery) {\n  \n}",
-      hint: "EXPLAIN so'zidan keyin bo'sh joy qoldirib sqlQuery ni sring.",
-      solution: "function explainQuery(sqlQuery) {\n  return `EXPLAIN ${sqlQuery}`;\n}",
-      test: "const fn = new Function(code + '; return explainQuery;')(); \nif (fn('SELECT * FROM users').trim().toUpperCase() !== 'EXPLAIN SELECT * FROM USERS') throw new Error('EXPLAIN qo\\'shilmadi');"
+      title: "8-Topshiriq: Buxoro (chegara)",
+      instruction: "Indeks bilan Buxoroliklarni so'rang (Hasan chiqishi kerak).",
+      startingCode: "CREATE INDEX idx_city ON users(city);",
+      hint: "SELECT name FROM users WHERE city = 'Buxoro';",
+      solution: "CREATE INDEX idx_city ON users(city); SELECT name FROM users WHERE city = 'Buxoro';",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Hasan'])) return 'Faqat Hasan chiqishi kerak';\nreturn null;"
     },
     {
       id: 9,
-      title: "Index nomini aniqlash",
-      instruction: "Kodni o'qish orqali qaysi jadvalga tegishliligini bilish uchun yaxshi nabbing konvensiyasi muhimdir. `generateIndexName` funksiyasini yozing, u `tableName` va `colName` larni qabul qilib: `idx_tableName_colName` ni qaytarsin.",
-      startingCode: "function generateIndexName(tableName, colName) {\n  \n}",
-      hint: "return `idx_${tableName}_${colName}`;",
-      solution: "function generateIndexName(tableName, colName) {\n  return `idx_${tableName}_${colName}`;\n}",
-      test: "const fn = new Function(code + '; return generateIndexName;')(); \nif (fn('users', 'age') !== 'idx_users_age') throw new Error('Xato format');"
+      title: "9-Topshiriq: Ikkita indeks (chegara)",
+      instruction: "`city` va `age` ga alohida indekslar yarating. Keyin hammasini o'qing (4 qator chiqishi kerak).",
+      startingCode: "CREATE INDEX idx_city ON users(city);",
+      hint: "CREATE INDEX idx_age ON users(age);\nSELECT * FROM users;",
+      solution: "CREATE INDEX idx_city ON users(city); CREATE INDEX idx_age ON users(age); SELECT * FROM users;",
+      test: "if (result.length !== 4) return '4 qator chiqishi kerak';\nreturn null;"
     },
     {
       id: 10,
-      title: "Hash Index yaratish",
-      instruction: "PostgreSQL da HASH indeks ham bo'lishi mumkin. `CREATE INDEX index_name ON table_name USING hash (column_name);`. Ushbu qolipda `createHashIndex` funksiyasini yozing. Argumentlar: tableName, colName, indexName.",
-      startingCode: "function createHashIndex(tableName, colName, indexName) {\n  \n}",
-      hint: "using hash (colName) qismini unutmang.",
-      solution: "function createHashIndex(tableName, colName, indexName) {\n  return `CREATE INDEX ${indexName} ON ${tableName} USING hash (${colName});`;\n}",
-      test: "const fn = new Function(code + '; return createHashIndex;')();\nconst res = fn('users', 'email', 'idx_u_email').toLowerCase();\nif (!res.includes('using hash (email)')) throw new Error('USING hash yo\\'q');\nif (!res.includes('idx_u_email on users')) throw new Error('qolgan qismi noto\\'g\\'ri');"
+      title: "10-Topshiriq: To'liq sikl (chegara)",
+      instruction: "Indeks yarating, so'rang (Ali, Guli), o'chiring. Xato bermasligi kerak.",
+      startingCode: "CREATE INDEX idx_city ON users(city);",
+      hint: "SELECT name FROM users WHERE city = 'Toshkent';\nDROP INDEX idx_city;",
+      solution: "CREATE INDEX idx_city ON users(city); SELECT name FROM users WHERE city = 'Toshkent'; DROP INDEX idx_city;",
+      test: "if (!/\\bDROP\\s+INDEX\\b/i.test(code)) return 'DROP INDEX yozing';\nreturn null;"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Indeksning asosiy maqsadi nima?",
-      options: ["Jadvaldagi ma'lumotlarni shifrlash", "Ma'lumotlar bazasida xotira tejash", "SELECT so'rovlarini tezlashtirish", "INSERT/UPDATE amallarini tezlashtirish"],
-      correctAnswer: 2,
-      explanation: "Indekslar qidiruv (SELECT) va shartli filtrlash jarayonlarini tezlashtirish uchun foydalaniladi. INSERT va UPDATE esa sekinlashishi mumkin."
+      question: "INDEX nima qiladi?",
+      options: ["Ma'lumot qo'shadi", "Qidiruvni tezlashtiradi", "Jadval o'chiradi", "Hech narsa qilmaydi"],
+      correctAnswer: 1,
+      explanation: "Indeks natijani o'zgartirmaydi. Faqat tezlik oshadi."
     },
     {
       id: 2,
-      question: "Clustered Index va Non-Clustered Index ning asosiy farqi nimada?",
-      options: ["Clustered Index xotirada, Non-Clustered diskda saqlanadi", "Clustered Index ma'lumotlarni jismonan tartiblaydi, Non-Clustered esa faqat ko'rsatkich", "Non-Clustered Index Primary Key uchun majburiy", "Farqi yo'q, ikkisi ham bir xil ishlaydi"],
+      question: "`CREATE INDEX idx_city ON users(city);` da `idx_city` nima?",
+      options: ["Jadval nomi", "Indeks nomi", "Ustun nomi", "Baza nomi"],
       correctAnswer: 1,
-      explanation: "Clustered Index to'g'ridan-to'g'ri jadvalning o'zidagi ma'lumotlarni jismoniy ketma-ketlikda tartiblaydi. Bitta jadvalda faqat bitta Clustered Index bo'lishi mumkin."
+      explanation: "Har indeksning o'z nomi bo'ladi."
     },
     {
       id: 3,
-      question: "Ko'p indeks yaratish nima uchun salbiy oqibatlarga olib kelishi mumkin?",
-      options: ["Faqat xotirani to'ldiradi, boshqa zarari yo'q", "SELECT so'rovlari sekinlashadi", "INSERT, UPDATE va DELETE operatsiyalari sekinlashadi", "Jadvallar avtomatik ravishda qulflanadi"],
-      correctAnswer: 2,
-      explanation: "Har bir ma'lumot yozilganda, unga bog'langan indekslar ham qayta yozilishi/yangilanishi kerak. Bu yozish amallarini sekinlashtiradi."
+      question: "`CREATE INDEX idx_city users(city);` (ON siz) nima qiladi?",
+      options: ["Ishlaydi", "Parse xatoligi beradi", "Bo'sh yaratadi", "Ogohlantirish beradi"],
+      correctAnswer: 1,
+      explanation: "Qaysi jadval ekanini ON aytadi."
     },
     {
       id: 4,
-      question: "Qaysi ustunga albatta (ko'pincha) avtomatik indeks qo'yiladi?",
-      options: ["Primary Key", "Foreign Key", "String turidagi barcha ustunlarga", "Tarix (Date) tipidagi ustunlarga"],
-      correctAnswer: 0,
-      explanation: "Aksariyat RDBMS tizimlarda Primary Key ustuniga avtomatik ravishda (odatda Clustered) indeks o'rnatiladi."
+      question: "UNIQUE INDEX nimani taqiqlaydi?",
+      options: ["O'qishni", "Takrorlanishni", "O'chirishni", "Hech narsani"],
+      correctAnswer: 1,
+      explanation: "Bir xil qiymat ikki marta yozilmaydi."
     },
     {
       id: 5,
-      question: "Composite Index qachon to'liq kuch bilan ishlaydi?",
-      options: ["Faqat o'ngdan chapga qarab qidirilganda", "Faqat birinchi ustun ishlatilmasa", "Leftmost Prefix qoidasiga amal qilib, chapdagi birinchi ustundan boshlab qidiruv berilganda", "Barcha ustunlar faqat OR orqali qidirilganda"],
-      correctAnswer: 2,
-      explanation: "Composite (ko'p ustunli) indeks chapdan o'ngga mantiqi bilan ishlaydi (Leftmost Prefix Rule). Chapdagi birinchi ustun qatnashmasa, keyingilari indeksdan topila olmaydi."
+      question: "`DROP INDEX idx_city;` nimani o'chiradi?",
+      options: ["Jadvalni", "Indeksni (jadval qoladi)", "Bazani", "Hammasini"],
+      correctAnswer: 1,
+      explanation: "Faqat yordamchi tuzilma ketadi."
     },
     {
       id: 6,
-      question: "B-Tree nima?",
-      options: ["Jadvaldagi yozuvlarni Binary formatga o'tkazish", "Balanced Tree - indekslarni qidirish uchun ierarxik daraxt tuzilmasi", "Faqat boolean (True/False) qiymatlar indeksi", "Barcha yozuvlarni bir tekislikda saqlovchi format"],
+      question: "Noyob indeks bor ustunga takror yozilsa nima bo'ladi?",
+      options: ["Yoziladi", "Rad etiladi (xatolik)", "Almashtiriladi", "Hech narsa bo'lmaydi"],
       correctAnswer: 1,
-      explanation: "B-Tree (Balanced Tree) indekslarni samarali qidirish uchun moslashtirilgan o'zaro muvozanatlangan daraxt tuzilmasi hisoblanadi."
+      explanation: "UNIQUE buzilsa, baza yozuvni qabul qilmaydi."
     },
     {
       id: 7,
-      question: "Full Table Scan nimani anglatadi?",
-      options: ["Jadvaldagi ma'lumotlarni indeks yordamida tezkor topish", "Jadvaldagi barcha yozuvlarni boshidan oxirigacha bittalab o'qib chiqish", "Jadval strukturasini o'qish", "Jadvalni zaxiralash (backup)"],
+      question: "Hamma ustunga indeks qo'ysa nima bo'ladi?",
+      options: ["Juda tezlashadi", "Yozish sekinlashadi", "Hech narsa o'zgarmaydi", "Xatolik beradi"],
       correctAnswer: 1,
-      explanation: "Agar kerakli indeks bo'lmasa, ma'lumotlar bazasi qidirilayotgan yozuvni topish uchun jadvaldagi barcha qatorlarni o'qishga majbur (Full Table Scan)."
+      explanation: "Har yozishda indeks ham yangilanadi."
     },
     {
       id: 8,
-      question: "Index Seek nima?",
-      options: ["Indeksdan to'g'ridan-to'g'ri kerakli qatorga borish", "Barcha indekslarni bittalab o'qib chiqish", "Jadvalni boshidan oxirigacha ko'rish", "Yangi indeksni ro'yxatdan o'tkazish"],
-      correctAnswer: 0,
-      explanation: "Index Seek - bu to'g'ridan-to'g'ri indeks yordamida ma'lumot manzili (pointer) olinib, faqat kerakli qatordan ma'lumotlarni o'qish."
+      question: "Indeks qachon kerak?",
+      options: ["Har doim", "Ko'p qidiriladigan ustunga", "Hech qachon", "Faqat kichik jadvalga"],
+      correctAnswer: 1,
+      explanation: "Qidiruv ko'p bo'lgan joyga qo'yiladi."
     },
     {
       id: 9,
-      question: "Qaysi so'z indeksni tekshirish yoki ishlatilishini ko'rish uchun qo'llaniladi?",
-      options: ["CHECK", "EXAMINE", "EXPLAIN", "TEST"],
-      correctAnswer: 2,
-      explanation: "So'rov oldidan EXPLAIN (yoki EXPLAIN ANALYZE) yozish orqali DB ushbu so'rov uchun qaysi indeksni ishlataiyotganini va qanday plan tuzganini ko'rish mumkin."
+      question: "`SELECT name FROM users WHERE city = 'Toshkent';` (Ali, Guli) indeks bilan ham xuddi shunday chiqadimi?",
+      options: ["Yo'q, boshqacha", "Ha, bir xil", "Xatolik beradi", "Bo'sh chiqadi"],
+      correctAnswer: 1,
+      explanation: "Indeks natijani o'zgartirmaydi."
     },
     {
       id: 10,
-      question: "Unique Index haqida to'g'ri fikrni toping:",
-      options: ["Bitta ustunda bir xil qiymat takrorlanishiga yo'l qo'ymaydi va qidiruvni tezlashtiradi", "Faqat Primary Key uchun ishlaydi", "Indeks ichida faqat 1 ta yozuv turadi", "Sonli ustunlar uchun qo'llanilmaydi"],
-      correctAnswer: 0,
-      explanation: "Unique Index qidiruvni tezlashtirishdan tashqari ma'lumotlarning unikal bo'lishiga majbur qiladi."
+      question: "`CREATE UNIQUE INDEX idx_name ON users(name);` dan keyin ikkinchi 'Ali' yozilsa nima bo'ladi?",
+      options: ["Yoziladi", "Rad etiladi", "Almashtiriladi", "Hech narsa bo'lmaydi"],
+      correctAnswer: 1,
+      explanation: "Noyoblik buzilsa, baza qabul qilmaydi."
     },
     {
       id: 11,
-      question: "Partial Index (Qisman indeks) nima maqsadda ishlatiladi?",
-      options: ["Faqat jadvalning yarmini indekslaydi", "Faqat aniq shartga (WHERE) javob beradigan qatorlar uchungina indeks yaratib xotirani tejaydi", "Qidiruv sekin bo'lishi uchun maxsus o'ylab topilgan", "Katta ma'lumotlarni qisqartirish uchun"],
+      question: "Kitob oxiridagi ko'rsatkich nimaga o'xshaydi?",
+      options: ["Jadvalga", "Indeksga", "So'rovga", "Xatolikka"],
       correctAnswer: 1,
-      explanation: "Partial (Filtered) index faqat berilgan shartga javob beradigan qatorlargagina indeks yasab, xotira va yangilanish narxini kamaytiradi."
+      explanation: "Ikkalasi ham tez topish uchun."
     },
     {
       id: 12,
-      question: "Covering Index qanday muammoni hal qiladi?",
-      options: ["Indeksni bekitish (xavfsizlik uchun)", "Ma'lumotlar turini qoplash", "Barcha SELECT qilinadigan ustunlarni o'zida saqlab, jadvalga (heap) murojaat qilish ehtiyojini yo'qotadi", "Faqat bitta jadvalni qoplaydi"],
-      correctAnswer: 2,
-      explanation: "Agar so'rovdagi barcha ustunlar indeksning o'zida mavjud bo'lsa (Covering Index), DB haqiqiy jadval qatoriga murojaat qilmasdan tezda javob qaytaradi."
+      question: "`DROP INDEX` dan keyin so'rovlar ishlaydimi?",
+      options: ["Yo'q, to'xtaydi", "Ha, faqat sekinroq", "Xatolik beradi", "Jadval yo'qoladi"],
+      correctAnswer: 1,
+      explanation: "Indeks yordamchi. Yo'qolsa ham so'rov ishlaydi."
     }
   ]
 };

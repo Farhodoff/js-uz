@@ -2,28 +2,30 @@ export const dateObject = {
   id: "dateObjectLesson",
   title: "Date Obyekti va Vaqt Bilan Ishlash",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Bu nima?
 
 ### Date Obyekti nima?
 JavaScript-da vaqt va sanalar bilan ishlash uchun \\\`Date\\\` nomli maxsus obyektdan foydalaniladi. Date obyekti 1970-yil 1-yanvar yarim tundan boshlab hisoblangan millisekundlar asosida ishlaydi (bunga Unix Timestamp deyiladi).
 
 ---
 
-### Real hayotiy o'xshatish
+### Nega kerak? (real hayotiy o'xshatish)
 Tasavvur qiling, siz poyezdlar jadvalini tuzmoqchisiz:
 - \\\`new Date()\\\` — bu hozirgi vaqtni ko'rsatadigan stansiya soati.
 - \\\`setFullYear()\\\` yoki \\\`setMonth()\\\` — bu soatning faqat yilini yoki oyini burab to'g'rilaydigan murvat (nastroyka).
-- \\\`Date.now()\\\` — bu 1970-yildan beri sekundomerni to'xtatmay necha millisekund o'tganini ko'rsatib turuvchi elektron tablo.
+- \\\`Date.now()\\\` — bu 1970-yidan beri sekundomerni to'xtatmay necha millisekund o'tganini ko'rsatib turuvchi elektron tablo.
 
 ---
 
-## 2. 🔬 Chuqur Tahlil: Ichki ishlash (V8 dvigateli va xotira)
+## 2. 💡 Birinchi misol va Qator-baqator tahlil
 
-### V8 da Date obyekti qanday saqlanadi?
+### Chuqur tahlil: ichki ishlash (V8 dvigateli va xotira)
+
+### V8 da Date obyektini qanday saqlanadi?
 V8 dvigateli Date obyektlarini odatda to'g'ridan-to'g'ri bitta raqam – 64-bitlik o'zgaruvchan nuqtali (float) raqam sifatida xotirada saqlaydi. Bu raqam 1970-yil 1-yanvardan beri o'tgan millisekundlarni anglatadi.
 
 - **Xotira va Tezlik:** \\\`new Date()\\\` obyekti yaratish kompyuter uchun qimmat (heavy) operatsiya hisoblanadi. Agar sizga faqatgina kod qancha vaqt ishlaganini o'lchash (benchmark) kerak bo'lsa, \\\`Date.now()\\\` ishlatganingiz ma'qul, chunki u obyekt yaratmasdan to'g'ridan-to'g'ri raqam qaytaradi. Bunga V8 dvigatelida *Fast Path* deyiladi.
-- **Vaqt Mintaqalari (Timezones):** Date obyekti ichida time zone saqlamaydi. Obyekt faqatgina bitta timestampni saqlaydi va siz metodlarni chaqirganingizda, JS avtomatik tarzda uni operatsion tizimingizdagi joriy time zone ga qarab ko'rsatadi. 
+- **Vaqt Mintaqalari (Timezones):** Date obyekti ichida time zone saqlamaydi. Obyekt faqatgina bitta timestampni saqlaydi va siz metodlarni chaqirganingizda, JS avtomatik tarzda uni operatsion tizimingizdagi joriy time zone ga qarab ko'rsatadi.
 
 \\\`\\\`\\\`javascript
 // Performans o'lchash uchun YAXSHI:
@@ -38,7 +40,7 @@ const startBad = new Date().getTime();
 
 ---
 
-## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
+## 3. ⚠️ Ko'p uchraydigan xatolar (chekka holatlar va intervyu savollari)
 
 ### Chekka holatlar (Qiziq va Kutilmagan holatlar)
 1. **Oylarning 0 dan boshlanishi:** JavaScriptda oylar 0 (Yanvar) dan boshlab 11 (Dekabr) gacha bo'ladi. \\\`new Date(2024, 0, 1)\\\` bu 2024-yil 1-Yanvar.
@@ -49,12 +51,30 @@ const startBad = new Date().getTime();
 1. **Savol:** \\\`new Date('2024-01-01')\\\` va \\\`new Date(2024, 0, 1)\\\` o'rtasida TimeZone bo'yicha qanday farq bo'lishi mumkin?
    **Javob:** String orqali berilganda (ISO formatda \\\`YYYY-MM-DD\\\`), agar \\\`Z\\\` qo'shilmasa ham, ba'zi xalqaro standartlarga ko'ra u UTC deb tushunilishi mumkin. Raqamlar argumenti bilan (\\\`new Date(2024, 0, 1)\\\`) yaratganda, u qat'iy ravishda foydalanuvchining Local Time (mahalliy vaqt) iga qarab yaratiladi.
    
-2. **Savol:** Nega ikkita \\\`Date\\\` obyekti \\\`===\\\` orqali tekshirilganda teng bo'lmaydi?
+2. **Savol:** Neka ikkita \\\`Date\\\` obyekti \\\`===\\\` orqali tekshirilganda teng bo'lmaydi?
    **Javob:** \\\`Date\\\` bu JS da maxsus obyekt tipidir. Obyektlar o'zgaruvchilarda *reference* (xotira manzili) sifatida saqlanadi. \\\`new Date() === new Date()\\\` har doim \\\`false\\\` qaytaradi. To'g'ri solishtirish uchun ularning qiymatini olish kerak: \\\`date1.getTime() === date2.getTime()\\\`.
 
 ---
 
-## 4. 📊 Mermaid Diagrammasi
+## 4. 💡 Tekshiruv
+
+1. \`Date.now()\` nima qaytaradi va nega u \`new Date()\` dan tezroq?
+2. Nega \`new Date() === new Date()\` har doim \`false\` qaytaradi?
+3. Oylar nechidan boshlanadi va 32-yanvar bilan nima bo'ladi?
+
+Javoblar yuqoridagi chuqur tahlil va chekka holatlar bo'limida keltirilgan.
+
+---
+
+## 5. 💡 Xulosa
+
+- Date obyekti bitta timestamp saqlaydi; vaqt mintaqasi unda saqlanmaydi.
+- \`Date.now()\` obyekt yaratmaydi, shuning uchun o'lchashda tezroq.
+- Sanalarni \`===\` bilan emas, \`getTime()\` qiymatlari bilan solishtiring.
+
+---
+
+## 6. 📊 Mermaid Diagrammasi
 
 JavaScript-da Date klassining ishlash oqimi:
 
@@ -65,7 +85,7 @@ graph TD
     B -->|Timestamp| D[Date.now]
     B -->|Matn orqali| E[new Date - ISO string]
     C --> F[getFullyear / getMonth / getDate]
-    D --> G[Tezkor hisoblashlar va performans]
+    D --> G[Tezkor hisoblachlar va performans]
     E --> H[Backend bilan ishlash]
 \\\`\\\`\\\`
 `,
@@ -171,7 +191,7 @@ graph TD
       question: "Oydagi sanani (nechanchi kun ekanini) bilish uchu metod qaysi?",
       options: ["getDay()", "getDate()", "getMonth()", "getTime()"],
       correctAnswer: 1,
-      explanation: "getDate() metoddidan foydalanib oydagi sana (1-31) olinadi."
+      explanation: "getDate() metoddidan foydalanib oydana sana (1-31) olinadi."
     },
     {
       id: 4,
@@ -182,7 +202,7 @@ graph TD
     },
     {
       id: 5,
-      question: "Agar new Date(2024, 12, 1) deb bersak qaysi sana hosil bo'ladi?",
+      question: "Agar new Date(2024, 12, 1) deb Bersak qaysi sana hosil bo'ladi?",
       options: ["Xato beradi", "2024-yil Dekabr", "2025-yil 1-Yanvar", "2024-yil 1-Yanvar"],
       correctAnswer: 2,
       explanation: "Oylar 11 gacha bo'lgani uchun, 12 kiritilganda u avtomatik ravishda keyingi yilning 0-oyiga (Yanvarga) o'tib ketadi."
@@ -203,14 +223,14 @@ graph TD
     },
     {
       id: 8,
-      question: "Vaqt obyekti Date(0) nima qaytaradi?",
+      question: "Date(0) nima qaytaradi?",
       options: ["Hozirgi vaqtni", "0000-yilni", "Xatolikni", "1970-yil 1-Yanvar UTC ni"],
       correctAnswer: 3,
       explanation: "Parametr 0 bo'lsa, bu boshlang'ich Unix davri (1970-yil 1-yanvar 00:00:00 UTC) ni ifodalaydi."
     },
     {
       id: 9,
-      question: "Bir kunga ortga siljitish uchun to'g'ri yo'l qaysi?",
+      question: "Bir kunga ortga siljitish uchun to'g'liyo'l qaysi?",
       options: [
         "date.setDate(date.getDate() - 1)",
         "date.setDate(-1)",
@@ -229,7 +249,7 @@ graph TD
     },
     {
       id: 11,
-      question: "Ikkita sana obyekti === bilan solishtirilganda nima bo'ladi? (let a = new Date(); let b = new Date(); a===b)",
+      question: "Ikkita sana obyekti === bilan solishtirilganda nima bo'lida? (let a = new Date(); let b = new Date(); a===b)",
       options: ["true agar sani bir xil bo'lsa", "false", "Xato", "Doim true"],
       correctAnswer: 1,
       explanation: "Obyektlar qiymati emas, manzili (reference) tekshiriladi, shuning uchun === da har doim false bo'ladi."

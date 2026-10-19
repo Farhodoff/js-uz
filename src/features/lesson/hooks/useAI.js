@@ -28,7 +28,10 @@ ${activeCode}
 Savol: ${aiQuestion}`;
 
       // Dynamically find a valid model to avoid "not found" errors
-      const modelsRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+      // API kalit header orqali yuboriladi — URL query'da qoldirmaslik uchun
+      const modelsRes = await fetch('https://generativelanguage.googleapis.com/v1beta/models', {
+        headers: { 'x-goog-api-key': apiKey }
+      });
       const modelsData = await modelsRes.json();
       if (modelsData.error) throw new Error(modelsData.error.message);
       
@@ -39,9 +42,9 @@ Savol: ${aiQuestion}`;
       
       if (!selectedModel) throw new Error("Qo'llab-quvvatlanadigan model topilmadi.");
 
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/${selectedModel.name}:generateContent?key=${apiKey}`, {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/${selectedModel.name}:generateContent`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
         body: JSON.stringify({
           contents: [{ parts: [{ text: promptText }] }]
         })

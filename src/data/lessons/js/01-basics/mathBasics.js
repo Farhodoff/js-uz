@@ -199,6 +199,62 @@ Keyingi darsda: Vaqt va sana bilan ishlash — \`Date\` obyekti bilan tanishamiz
       startingCode: "// Math.floor(Math.random() * 10) qiling va oraliqni tekshirib chiqaring\n",
       hint: "const rand = Math.floor(Math.random() * 10);\nconsole.log(rand >= 0 && rand < 10);",
       test: "if (!code.includes('Math.random') || !code.includes('Math.floor')) return 'Math.random va Math.floor ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('true')) return null;\nreturn 'true konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Yuqoriga yaxlitlash (ceil)",
+      "instruction": "`const value = 4.2;` sonini `Math.ceil` yordamida yuqoriga yaxlitlab, natijani konsolga chiqaring (`5`).",
+      "startingCode": "const value = 4.2;\n// Math.ceil bilan yuqoriga yaxlitlab chiqaring\n",
+      "hint": "const value = 4.2;\nconsole.log(Math.ceil(value));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"Math.ceil\")) return \"Math.ceil ishlatilmadi\";\nif (out.some((m) => m.trim() === \"5\")) return null;\nreturn \"Natija 5 konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Modul (abs) qiymati",
+      "instruction": "`const diff = -15;` sonining modulini (`Math.abs`) konsolga chiqaring (`15`).",
+      "startingCode": "const diff = -15;\n// Math.abs bilan musbat qiymatni chiqaring\n",
+      "hint": "const diff = -15;\nconsole.log(Math.abs(diff));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"Math.abs\")) return \"Math.abs ishlatilmadi\";\nif (out.some((m) => m.trim() === \"15\")) return null;\nreturn \"Modul 15 konsolga chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "Kvadrat ildiz",
+      "instruction": "`Math.sqrt(144)` natijasini konsolga chiqaring (`12`).",
+      "startingCode": "// Math.sqrt(144) natijasini chiqaring\n",
+      "hint": "console.log(Math.sqrt(144));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"Math.sqrt\")) return \"Math.sqrt ishlatilmadi\";\nif (out.some((m) => m.trim() === \"12\")) return null;\nreturn \"Kvadrat ildiz 12 konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "Darajaga ko'tarish",
+      "instruction": "`Math.pow(2, 10)` natijasini konsolga chiqaring (`1024`).",
+      "startingCode": "// Math.pow(2, 10) natijasini chiqaring\n",
+      "hint": "console.log(Math.pow(2, 10));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"Math.pow\")) return \"Math.pow ishlatilmadi\";\nif (out.some((m) => m.trim() === \"1024\")) return null;\nreturn \"2^10 = 1024 konsolga chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "Math.max massiv xatosini tuzatish",
+      "instruction": "`Math.max([1, 2, 3])` massiv to'g'ridan-to'g'ri berilgani uchun `NaN` qaytaradi. Spread qo'shib (`Math.max(...[1, 2, 3])`) to'g'ri natijani (`3`) chiqaring.",
+      "startingCode": "// Math.max([1, 2, 3]) ni spread bilan tuzatib chiqaring\n",
+      "hint": "console.log(Math.max(...[1, 2, 3]));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"...\")) return \"Spread (...) qo'shilmadi\";\nif (out.some((m) => m.trim() === \"3\")) return null;\nreturn \"Natija 3 konsolga chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Ikki son orasidagi farq",
+      "instruction": "`const a = 20;` va `const b = 8;` berilgan. `Math.abs` yordamida ular orasidagi farqni (`12`) konsolga chiqaring.",
+      "startingCode": "const a = 20;\nconst b = 8;\n// Math.abs(a - b) ni chiqaring\n",
+      "hint": "const a = 20;\nconst b = 8;\nconsole.log(Math.abs(a - b));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"Math.abs\")) return \"Math.abs ishlatilmadi\";\nif (out.some((m) => m.trim() === \"12\")) return null;\nreturn \"Farq 12 konsolga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Zar tashlash (chegara)",
+      "instruction": "1 dan 6 gacha tasodifiy butun son hosil qiling (`Math.floor(Math.random() * 6) + 1`) va uning `1` dan `6` gacha oraliqda ekanini konsolga chiqaring.",
+      "startingCode": "// 1..6 oralig'ida tasodifiy son hosil qilib, oraliqni tekshiring\n",
+      "hint": "const dice = Math.floor(Math.random() * 6) + 1;\nconsole.log(dice >= 1 && dice <= 6);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"Math.random\") || !code.includes(\"Math.floor\")) return \"Math.random va Math.floor ishlatilmadi\";\nif (out.some((m) => m.includes(\"true\"))) return null;\nreturn \"true konsolga chiqmadi\";"
     }
   ],
   quizzes: [
@@ -237,6 +293,114 @@ Keyingi darsda: Vaqt va sana bilan ishlash — \`Date\` obyekti bilan tanishamiz
       ],
       correctAnswer: 0,
       explanation: "Math.max berilgan argumentlar ichidan eng kattasini qaytaradi, bu yerda 45 eng katta sondir."
+    },
+    {
+      "id": 4,
+      "question": "`Math.ceil(4.2)` natijasi nima?",
+      "options": [
+        "5",
+        "4",
+        "4.2",
+        "NaN"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Math.ceil eng yaqin katta butun songa yaxlitlaydi: 4.2 → 5."
+    },
+    {
+      "id": 5,
+      "question": "`Math.round(2.5)` natijasi nima?",
+      "options": [
+        "3",
+        "2",
+        "2.5",
+        "4"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Math.round yarim qiymatni yuqoriga yaxlitlaydi: 2.5 → 3."
+    },
+    {
+      "id": 6,
+      "question": "`Math.abs(-7)` natijasi nima?",
+      "options": [
+        "7",
+        "-7",
+        "0",
+        "NaN"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Math.abs modulni (ishorasiz qiymatni) qaytaradi: |-7| = 7."
+    },
+    {
+      "id": 7,
+      "question": "`Math.sqrt(81)` natijasi nima?",
+      "options": [
+        "9",
+        "8",
+        "81",
+        "40.5"
+      ],
+      "correctAnswer": 0,
+      "explanation": "81 ning kvadrat ildizi 9 ga teng."
+    },
+    {
+      "id": 8,
+      "question": "`Math.max()` argumentsiz chaqirilsa nima qaytaradi?",
+      "options": [
+        "-Infinity",
+        "0",
+        "undefined",
+        "NaN"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Math.max argumentsiz eng kichik mumkin bo'lgan qiymatni — -Infinity ni qaytaradi."
+    },
+    {
+      "id": 9,
+      "question": "`Math.random()` qanday oraliqda son qaytaradi?",
+      "options": [
+        "0 dan 1 gacha (1 kirmaydi)",
+        "1 dan 100 gacha",
+        "0 dan cheksizlikkacha",
+        "Faqat 0 yoki 1"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Math.random() 0 (kiradi) dan 1 (kirmaydi) gacha o'nlik son qaytaradi."
+    },
+    {
+      "id": 10,
+      "question": "`Math.floor(Math.random() * 10)` qanday oraliqda butun son beradi?",
+      "options": [
+        "0 dan 9 gacha",
+        "1 dan 10 gacha",
+        "0 dan 10 gacha",
+        "1 dan 9 gacha"
+      ],
+      "correctAnswer": 0,
+      "explanation": "random 0..1, *10 → 0..10, floor → 0..9 butun sonlar."
+    },
+    {
+      "id": 11,
+      "question": "`Math.pow(3, 2)` natijasi nima?",
+      "options": [
+        "9",
+        "6",
+        "5",
+        "8"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Math.pow(3, 2) = 3 ikkinchi daraja = 9."
+    },
+    {
+      "id": 12,
+      "question": "`Math.min(5, 2, 8)` natijasi nima?",
+      "options": [
+        "2",
+        "5",
+        "8",
+        "15"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Math.min berilgan sonlar orasidan eng kichigini qaytaradi: 2."
     }
   ]
 };

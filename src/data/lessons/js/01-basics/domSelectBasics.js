@@ -178,28 +178,84 @@ Keyingi darsda: Elementni o'zgartirish — \`textContent\` va \`classList\` bila
 `,
   exercises: [
     {
-      id: 1,
-      title: "ID bo'yicha elementni tanlash",
-      instruction: "`document.getElementById(\"btn\")` yordamida elementni tanlang va `btn !== null` ekanligini konsolga chiqaring.",
-      startingCode: "// document.getElementById(\"btn\") qiling va btn !== null ni chiqaring\n",
-      hint: "const btn = document.getElementById(\"btn\");\nconsole.log(btn !== null);",
-      test: "if (!code.includes('getElementById')) return 'getElementById ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry {\n  const mockElements = { btn: { id: 'btn' } };\n  const mockDoc = { getElementById: id => mockElements[id] || null };\n  const doc = typeof document !== 'undefined' ? document : mockDoc;\n  new Function('document', code)(doc);\n} catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('true')) return null;\nreturn 'true konsolga chiqmadi';"
+      "id": 1,
+      "title": "ID bo'yicha elementni topish",
+      "instruction": "`findTitle()` funksiyasi `document.getElementById(\"title\")` bilan elementni topib, uni qaytarsin. Diqqat: metod ichida panjara (`#`) yozilmaydi.",
+      "startingCode": "function findTitle() {\n  // document.getElementById bilan toping\n}\n",
+      "hint": "function findTitle() {\n  return document.getElementById(\"title\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (code.includes(\"getElementById(\\\"#\")) return \"Panjara (#) kerak emas\";\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findTitle()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija && natija.id === \"title\") return null;\nreturn \"title elementi topilmadi\";"
     },
     {
-      id: 2,
-      title: "querySelector bilan klass tanlash",
-      instruction: "`document.querySelector(\".active\")` orqali elementni tanlang va `item !== null` ekanligini konsolga chiqaring.",
-      startingCode: "// document.querySelector(\".active\") qiling va item !== null ni chiqaring\n",
-      hint: "const item = document.querySelector(\".active\");\nconsole.log(item !== null);",
-      test: "if (!code.includes('querySelector')) return 'querySelector ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry {\n  const mockElements = { '.active': { className: 'active' } };\n  const mockDoc = { querySelector: sel => mockElements[sel] || null };\n  const doc = typeof document !== 'undefined' ? document : mockDoc;\n  new Function('document', code)(doc);\n} catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('true')) return null;\nreturn 'true konsolga chiqmadi';"
+      "id": 2,
+      "title": "Klass bo'yicha elementni topish",
+      "instruction": "`findSaveByClass()` funksiyasi `document.querySelector(\".btn\")` bilan elementni topib qaytarsin.",
+      "startingCode": "function findSaveByClass() {\n  // querySelector bilan .btn toping\n}\n",
+      "hint": "function findSaveByClass() {\n  return document.querySelector(\".btn\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"querySelector\") || !code.includes(\".btn\")) return \"querySelector(\\'.btn\\') ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findSaveByClass()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija && natija.id === \"save\") return null;\nreturn \"save elementi topilmadi\";"
     },
     {
-      id: 3,
-      title: "Topilmagan element (null)",
-      instruction: "`document.getElementById(\"not-found\")` deb qidiring va olingan natijani konsolga chiqaring (`null` chiqishi kerak).",
-      startingCode: "// document.getElementById(\"not-found\") ni oling va konsolga chiqaring\n",
-      hint: "const item = document.getElementById(\"not-found\");\nconsole.log(item);",
-      test: "if (!code.includes('getElementById')) return 'getElementById ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry {\n  const mockDoc = { getElementById: () => null };\n  const doc = typeof document !== 'undefined' ? document : mockDoc;\n  new Function('document', code)(doc);\n} catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('null')) return null;\nreturn 'null konsolga chiqmadi';"
+      "id": 3,
+      "title": "Topilmagan element: null",
+      "instruction": "`findMissing()` funksiyasi `document.getElementById(\"missing\")` natijasini qaytarsin — element yo'q bo'lgani uchun natija `null` bo'ladi.",
+      "startingCode": "function findMissing() {\n  // mavjud bo'lmagan elementni qidiring\n}\n",
+      "hint": "function findMissing() {\n  return document.getElementById(\"missing\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findMissing()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija === null) return null;\nreturn \"null qaytarilishi kerak\";"
+    },
+    {
+      "id": 4,
+      "title": "querySelector bilan ID tanlash",
+      "instruction": "`findByHash()` funksiyasi `document.querySelector(\"#title\")` bilan elementni topib qaytarsin (bu yerda panjara kerak!).",
+      "startingCode": "function findByHash() {\n  // querySelector(\"#title\") ishlating\n}\n",
+      "hint": "function findByHash() {\n  return document.querySelector(\"#title\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"#title\")) return \"\\\"#title\\\" selektori ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findByHash()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija && natija.id === \"title\") return null;\nreturn \"title elementi topilmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Teg nomi bo'yicha tanlash",
+      "instruction": "`findButton()` funksiyasi `document.querySelector(\"button\")` bilan sahifadagi tugmani topib qaytarsin.",
+      "startingCode": "function findButton() {\n  // querySelector(\"button\") ishlating\n}\n",
+      "hint": "function findButton() {\n  return document.querySelector(\"button\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"button\")) return \"button selektori ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findButton()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija && natija.id === \"save\") return null;\nreturn \"button tegidagi element topilmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "Mavjud bo'lmagan klass: null",
+      "instruction": "`missingClass()` funksiyasi `document.querySelector(\".yoq\")` natijasini qaytarsin (`null`).",
+      "startingCode": "function missingClass() {\n  // mavjud bo'lmagan klassni qidiring\n}\n",
+      "hint": "function missingClass() {\n  return document.querySelector(\".yoq\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\".yoq\")) return \"\\\".yoq\\\" selektori ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"missingClass()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija === null) return null;\nreturn \"null qaytarilishi kerak\";"
+    },
+    {
+      "id": 7,
+      "title": "h1 tegini tanlash",
+      "instruction": "`findByTag()` funksiyasi `document.querySelector(\"h1\")` bilan sarlavha elementini topib qaytarsin.",
+      "startingCode": "function findByTag() {\n  // querySelector(\"h1\") ishlating\n}\n",
+      "hint": "function findByTag() {\n  return document.querySelector(\"h1\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"h1\")) return \"h1 selektori ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"findByTag()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija && natija.id === \"title\") return null;\nreturn \"h1 elementi topilmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "Chegara: ikki xil yo'l bilan bir element",
+      "instruction": "`sameElement()` funksiyasi `document.querySelector(\".btn\") === document.getElementById(\"save\")` natijasini qaytarsin (`true`).",
+      "startingCode": "function sameElement() {\n  // ikkala usul bilan bir elementni topib solishtiring\n}\n",
+      "hint": "function sameElement() {\n  return document.querySelector(\".btn\") === document.getElementById(\"save\");\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"querySelector\") || !code.includes(\"getElementById\")) return \"Ikkala metod ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"sameElement()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija === true) return null;\nreturn \"true qaytarilishi kerak\";"
+    },
+    {
+      "id": 9,
+      "title": "Element borligini tekshirish",
+      "instruction": "`hasTitle()` funksiyasi `document.getElementById(\"title\") !== null` natijasini qaytarsin (`true`).",
+      "startingCode": "function hasTitle() {\n  // element null emasligini tekshiring\n}\n",
+      "hint": "function hasTitle() {\n  return document.getElementById(\"title\") !== null;\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"hasTitle()\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (natija === true) return null;\nreturn \"true qaytarilishi kerak\";"
+    },
+    {
+      "id": 10,
+      "title": "Chegara: xavfsiz qidiruv funksiyasi",
+      "instruction": "`safeFind(id)` funksiyasi `document.getElementById(id)` bilan qidirsin: element topilsa uning `id` sini, topilmasa `\"Element topilmadi\"` matnini qaytarsin.",
+      "startingCode": "function safeFind(id) {\n  // if bilan null ni tekshirib, id yoki xabar qaytaring\n}\n",
+      "hint": "function safeFind(id) {\n  const el = document.getElementById(id);\n  if (el === null) {\n    return \"Element topilmadi\";\n  }\n  return el.id;\n}",
+      "test": "const titleEl = { id: \"title\" };\nconst saveEl = { id: \"save\" };\nconst mockDoc = {\n  getElementById: (id) => (id === \"title\" ? titleEl : id === \"save\" ? saveEl : null),\n  querySelector: (sel) => ({ \"#title\": titleEl, \".btn\": saveEl, \"button\": saveEl, \"h1\": titleEl }[sel] || null)\n};\nif (!code.includes(\"getElementById\")) return \"getElementById ishlatilmadi\";\nif (!code.includes(\"if\")) return \"if bilan tekshirish kerak\";\nlet natija;\ntry { natija = new Function(\"document\", code + \"; return \" + \"[safeFind(\\\"title\\\"), safeFind(\\\"missing\\\")]\" + \";\")(mockDoc); } catch (e) { return \"Xato: \" + e.message; }\nif (Array.isArray(natija) && natija[0] === \"title\" && natija[1] === \"Element topilmadi\") return null;\nreturn \"\\\"title\\\" va \\\"Element topilmadi\\\" kutilgan\";"
     }
   ],
   quizzes: [
@@ -238,6 +294,114 @@ Keyingi darsda: Elementni o'zgartirish — \`textContent\` va \`classList\` bila
       ],
       correctAnswer: 0,
       explanation: "Agar element HTML sahifada topilmasa, metod xato bermaydi, balki null qiymatini qaytaradi."
+    },
+    {
+      "id": 4,
+      "question": "`document.getElementById(\"#title\")` deb panjara bilan yozilsa nima bo'ladi?",
+      "options": [
+        "Element topiladi",
+        "null qaytadi, chunki u `#title` nomli ID ni qidiradi",
+        "Xatolik chiqadi",
+        "Sahifa yangilanadi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "getElementById faqat ID ning toza nomini oladi; panjara qo'yilsa mos element topilmaydi."
+    },
+    {
+      "id": 5,
+      "question": "`document.querySelector(\".menu\")` qanday elementni qidiradi?",
+      "options": [
+        "id=\"menu\" bo'lgan elementni",
+        "class=\"menu\" bo'lgan elementni",
+        "<menu> tegini",
+        "Faqat tugmalarni"
+      ],
+      "correctAnswer": 1,
+      "explanation": "querySelector CSS selektorlari bilan ishlaydi: nuqta (.) klass ma'nosini bildiradi."
+    },
+    {
+      "id": 6,
+      "question": "querySelector ga bir nechta element mos kelsa, qaysi biri tanlanadi?",
+      "options": [
+        "Eng birinchi uchragan element",
+        "Eng oxirgi element",
+        "Hammasi massiv bo'lib qaytadi",
+        "Hech biri, null qaytadi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "querySelector hujjat tartibida birinchi mos elementni oladi; hammasi kerak bo'lsa boshqa metod kerak."
+    },
+    {
+      "id": 7,
+      "question": "`getElementById` va `querySelector` orasidagi asosiy farq nima?",
+      "options": [
+        "getElementById faqat ID bo'yicha, querySelector esa har qanday CSS selektor bo'yicha qidiradi",
+        "querySelector faqat ID bo'yicha qidiradi",
+        "Ikkalasi faqat klass bo'yicha qidiradi",
+        "Farqi yo'q"
+      ],
+      "correctAnswer": 0,
+      "explanation": "getElementById faqat ID oladi (panjarasiz), querySelector esa #id, .klass va teg kabi selektorlarni tushunadi."
+    },
+    {
+      "id": 8,
+      "question": "Sahifada mos element bo'lmasa `querySelector` nima qaytaradi?",
+      "options": [
+        "undefined",
+        "false",
+        "null",
+        "Xatolik (Error)"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Elementni tanlash metodlari topilmasa xato bermaydi, null qaytaradi."
+    },
+    {
+      "id": 9,
+      "question": "`document.querySelector(\"h1\")` selektori nimani bildiradi?",
+      "options": [
+        "id=\"h1\" bo'lgan elementni",
+        "class=\"h1\" bo'lgan elementni",
+        "`<h1>` tegini",
+        "h1 nomli o'zgaruvchini"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Hech qanday belgi qo'yilmasa, selektor teg nomi sifatida o'qiladi."
+    },
+    {
+      "id": 10,
+      "question": "Tanlangan elementni o'zgaruvchiga saqlash nega foydali?",
+      "options": [
+        "Elementni bir marta topib, keyin bir necha marta ishlatish uchun",
+        "Faqat chiroyli ko'rinishi uchun",
+        "Elementni sahifadan o'chirish uchun",
+        "Saqlash shart emas, har doim qaytadan yozish kerak"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Bir marta tanlab o'zgaruvchiga olsak, keyingi qatorlarda uni qayta qidirmasdan ishlatamiz."
+    },
+    {
+      "id": 11,
+      "question": "`document.querySelector(\"#save\")` va `document.getElementById(\"save\")` bir xil elementni bersa, ularning taqqoslashi (`===`) qanday natija beradi?",
+      "options": [
+        "true — ikkalasi bir xil elementga havola qiladi",
+        "false — har safar yangi obyekt yaratiladi",
+        "undefined",
+        "Xatolik chiqadi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Ikki metod ham sahifadagi o'sha bir elementni qaytaradi, shuning uchun havolalar teng."
+    },
+    {
+      "id": 12,
+      "question": "Elementni tanlab olmasdan turib uni o'zgartirish mumkinmi?",
+      "options": [
+        "Ha, JavaScript elementni o'zi topadi",
+        "Yo'q, avval elementi tanlab olish kerak",
+        "Faqat CSS orqali mumkin",
+        "Ha, faqat tugmalar uchun mumkin"
+      ],
+      "correctAnswer": 1,
+      "explanation": "HTML va JavaScript o'rtasidagi ko'prik — elementni tanlash; usiz hech narsani boshqarib bo'lmaydi."
     }
   ]
 };

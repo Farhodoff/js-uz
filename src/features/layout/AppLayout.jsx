@@ -25,6 +25,7 @@ export default function AppLayout({
 
   return (
     <div className="app-layout">
+      <a href="#main-content" className="skip-link">Asosiy mazmunga o'tish</a>
       {/* Decorative Glows */}
       <div className="glow-circle glow-circle-1" />
       <div className="glow-circle glow-circle-2" />
@@ -45,7 +46,7 @@ export default function AppLayout({
         openLesson={openLesson}
       />
 
-      <div className="app-main">
+      <div className="app-main" id="main-content">
         <Header activeLesson={activeLesson} sec={sec} />
 
         {children}
@@ -69,6 +70,7 @@ export default function AppLayout({
           askAI={() => ai.askAI(activeLesson?.title, code)}
           aiLoading={ai.aiLoading}
           aiAnswer={ai.aiAnswer}
+          clearAnswer={ai.clearAnswer}
         />
 
         <SearchModal 

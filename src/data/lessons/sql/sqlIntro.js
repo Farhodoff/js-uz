@@ -1,140 +1,244 @@
 export const sqlIntro = {
-  id: "sql_intro",
-  title: "SQL Kirish (Introduction)",
-  language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-Tasavvur qiling, ma'lumotlar bazasi (Database) - bu ulkan va juda tartibli kutubxona. SQL (Structured Query Language) - bu kutubxonachiga nima qilish kerakligini aytadigan maxsus tildir.
+  id: "sqlIntro",
+  title: "SQL Kirish: Baza va So'rov Tili",
+  language: "sql",
+  dbSetup: "CREATE TABLE users (id INT, name STRING, age INT, city STRING); INSERT INTO users VALUES (1,'Ali',25,'Toshkent'),(2,'Vali',17,'Samarqand'),(3,'Guli',30,'Toshkent');",
+  theory: `## 1. Bu nima?
 
-Siz kutubxonachiga: "Menga 2020-yilda yozilgan va O'zbekiston haqidagi barcha kitoblarni olib kel", desangiz u sizga aynan shularni olib keladi. Agar siz SQL o'rniga JavaScript-da (yomon yondashuv bilan) ishlasangiz, siz kutubxonachiga: "Kutubxonadagi 10 millionta kitobni hammasini uyimga olib kel", deysiz va uyda o'zingiz ularni bitta-bitta qarab, keraklisini ajratasiz. Bu naqadar absurd bo'lsa, ma'lumotlar bazasidan hamma narsani yuklab olib keyin JavaScript-da \`filter\` qilish ham shunday absurd va xotira (RAM) uchun halokatlidir.
+Tasavvur qiling, ulkan kutubxona bor. Millionlab kitoblar javonlarda tartib bilan turibdi. Siz kutubxonachiga aytasiz: "Menga Toshkent haqidagi kitoblarni olib kel." U borib, aynan shularni topib keladi.
 
-SQL orqali biz asosan **CRUD** amallarini bajaramiz:
-- **C**reate - Yangi ma'lumot qo'shish (INSERT)
-- **R**ead - Ma'lumotni o'qish/olish (SELECT)
-- **U**pdate - Ma'lumotni yangilash (UPDATE)
-- **D**elete - Ma'lumotni o'chirish (DELETE)
+Dasturlashda bu kutubxona — ma'lumotlar bazasi (database). Kutubxonachi — SQL (Structured Query Language). Siz so'rov yozasiz. Baza javob qaytaradi.
 
-## 2. 🧠 Chuqur O'rganish
-### RDBMS Arxitekturasi va PostgreSQL Inernals
-RDBMS (Relational Database Management System) ma'lumotlarni qat'iy sxema asosida (jadvallar ko'rinishida) saqlaydi. Lekin bu jadvallar diskda qanday saqlanadi?
+SQL — ma'lumotlar bazasidan ma'lumot olish va boshqarish uchun ishlatiladigan so'rov tilidir.
 
-**Memory va Storage:**
-PostgreSQL kabi tizimlar ma'lumotlarni *Page* (sahifa) deb ataluvchi bloklarda (odatda 8KB) saqlaydi. So'rov berilganda, PostgreSQL kerakli *Page* ni diskdan xotiraga (Shared Buffers) yuklaydi. Disk I/O (kiritish/chiqarish) juda sekin jarayon bo'lgani uchun, bazani to'g'ri loyihalash (indekslar yaratish) orqali biz qaysi *Page* ni diskdan o'qishni oldindan aniqlab, qolgan keraksiz millionlab *Page* larni o'qishdan saqlanamiz.
+---
 
-**Query Execution (So'rov qanday ishlaydi):**
-1. **Parser:** Siz yozgan SQL so'rovni tahlil qilib, Syntax Tree yasaydi.
-2. **Analyzer:** Jadval nomi to'g'rimi, ustunlar bormi tekshiradi.
-3. **Planner/Optimizer:** Ma'lumotni qanday qilib eng tez olishni (qaysi indeksni ishlatishni) hisoblab chiqib, *Execution Plan* tuzadi. (Bunda Cost-based optimization qo'llaniladi).
-4. **Executor:** Planni ishga tushirib, natijani qaytaradi.
+## 2. Nega kerak?
 
-## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
+Saytda 10 ming foydalanuvchi bor. Bitta foydalanuvchi kerak: ismi Ali. JavaScript bilan bo'lmaydi:
 
-**Senior Intervyu Savoli 1:** "NoSQL (masalan, MongoDB) SQL (PostgreSQL) dan ko'ra tezroq degan fikrga qo'shilasizmi?"
-**Javob:** Yo'q, bu noto'g'ri tushuncha. Ikkisi turli xil muammolarni hal qilish uchun yaratilgan. Agar ma'lumotlar aniq sxemaga ega bo'lsa va ko'p 'JOIN' amallari kerak bo'lsa, yaxshi optimizatsiya qilingan PostgreSQL, MongoDB-dan ko'ra tezroq ishlaydi. NoSQL ko'proq sxemasiz, tez o'zgaruvchan yoki ierarxik tuzilmadagi ma'lumotlar (JSON) uchun qulay.
-
-**Senior Intervyu Savoli 2:** "Nima uchun \`SELECT *\` ishlatish ishlab chiqarish (production) muhitida yomon amaliyot hisoblanadi?"
-**Javob:** Ikkita sababi bor. 1) Xotira va Tarmoq: Bizga kerak bo'lmagan ustunlarni ham diskdan xotiraga, undan esa tarmoq orqali dasturimizga olib kelish ortiqcha resurs talab qiladi. 2) Index-only scan ishlamasligi: Agar so'rov aniq ustunlarni so'rasa, baza faqat indeksning o'zini o'qib javob qaytarishi mumkin (juda tez), \`SELECT *\` holatida esa doim jadvalga murojaat qilinadi.
-
-## 🛠️ Ma'lumotlar Bazasi va Dastur Munosabati
-
-\`\`\`mermaid
-graph TD
-    A[Node.js / Express Dastur] -->|1. SQL So'rov| B(PostgreSQL - Parser & Optimizer)
-    B -->|2. Execution Plan| C{Shared Buffers / RAM}
-    C -->|3. Cache Miss holatida| D[(Disk / SSD)]
-    D -->|4. Page larni yuklash| C
-    C -->|5. Tayyor Natija| A
+\`\`\`javascript
+// Hamma 10 mingtasini yuklab ol, keyin bittalab tekshir
 \`\`\`
+
+Bu 10 ming qatorni xotiraga tortadi. Sekin. Xavfli.
+
+Muammo shunda: kerakli ma'lumotni bazaning o'zida topish kerak. Yechim — SQL so'rov:
+
+\`\`\`sql
+SELECT * FROM users WHERE name = 'Ali';
+\`\`\`
+
+Baza o'zi qidiradi. Faqat topilgani keladi. Tez va tejamli.
+
+---
+
+## 3. Birinchi misol
+
+Bu kod users jadvalidagi hamma qatorni chiqaradi.
+
+\`\`\`sql
+SELECT * FROM users; -- Hamma ustun, hamma qator
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"id":1,"name":"Ali","age":25,"city":"Toshkent"},{"id":2,"name":"Vali","age":17,"city":"Samarqand"},{"id":3,"name":"Guli","age":30,"city":"Toshkent"}]
+\`\`\`
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`SELECT\` — "ol" degani. Qanday ustunlar kerakligini aytadi.
+- \`*\` — "hammasi" degani. Barcha ustunlar olinadi.
+- \`FROM users\` — "qayerdan" degani. users jadvalidan olinadi.
+- \`;\` — so'rov oxiri. Bitta so'rov bitta nuqta-vergul bilan tugaydi.
+- \`-- Hamma ustun, hamma qator\` — izoh. \`--\` dan keyingi matn ishlamaydi.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod faqat ismlarni chiqaradi.
+
+\`\`\`sql
+SELECT name FROM users; -- Faqat ism ustuni
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"name":"Ali"},{"name":"Vali"},{"name":"Guli"}]
+\`\`\`
+
+Qator-baqator tahlil:
+- \`SELECT name\` — faqat bitta ustun so'raldi. Qolganlari kelmaydi.
+- Natijada har qatorda faqat \`name\` bor.
+
+---
+
+## 6. Ko'p uchraydigan xatolar
+
+### 1. Kalit so'zni xato yozish
+❌ Xato kod:
+\`\`\`sql
+SELCT * FROM users;
+\`\`\`
+Nima bo'ladi: parse xatoligi yuz beradi (\`Parse error on line 1\`). Baza \`SELCT\` so'zini tanimaydi. Kalit so'zlar aniq yoziladi.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT * FROM users;
+\`\`\`
+
+### 2. SELECT siz FROM yozish
+❌ Xato kod:
+\`\`\`sql
+FROM users;
+\`\`\`
+Nima bo'ladi: parse xatoligi yuz beradi (\`Parse error on line 1\`). So'rov har doim \`SELECT\` bilan boshlanadi. \`FROM\` yolg'iz yasholmaydi.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT * FROM users;
+\`\`\`
+
+### 3. Kichik harfda yozish
+❌ Xato tushuncha:
+\`\`\`sql
+select * from users;
+\`\`\`
+Nima bo'ladi: xato bermaydi! So'rov ishlaydi. SQL kalit so'zlari katta-kichik harfga sezgir emas. Lekin odat bo'yicha katta harfda yoziladi — kod o'qilishi uchun.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT * FROM users; -- Katta harf odat
+\`\`\`
+
+---
+
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+users jadvalidagi hamma qatorni chiqaring (\`SELECT * FROM users;\`). Natijada 3 qator bo'lishi kerak.
+
+### 2-mashq (O'rtacha)
+Faqat ismlarni chiqaring (\`SELECT name FROM users;\`). Natijada Ali, Vali, Guli bo'lishi kerak.
+
+### 3-mashq (Chegara holat)
+Kichik harfda yozing (\`select * from users;\`). Ishlashini tasdiqlang (3 qator chiqishi kerak).
+
+### Javoblar:
+1.
+\`\`\`sql
+SELECT * FROM users;
+\`\`\`
+2.
+\`\`\`sql
+SELECT name FROM users;
+\`\`\`
+3.
+\`\`\`sql
+select * from users;
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. SQL — bazadan ma'lumot oladigan so'rov tili. Baza kutubxona, so'rov — buyurtma.
+2. Eng oddiy so'rov: \`SELECT * FROM users;\` (hamma ustun, hamma qator).
+3. Kalit so'zlar aniq yoziladi. Katta harf — odat, kichik harf ham ishlaydi.
+
+Keyingi darsda: jadval yaratadigan \`CREATE TABLE\` bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "1-Topshiriq: SQL So'rovni qaytarish",
-      instruction: "Quyidagi funksiya oddiy matn ('SELECT') qaytarishi kerak. SQL tili haqida gap ketganda eng ko'p ishlatiladigan so'zni qaytaring.",
-      startingCode: "function getSqlWord() {\n  // shu yerga yozing\n  return '';\n}",
-      hint: "Faqat 'SELECT' so'zini qaytaring",
-      solution: "function getSqlWord() {\n  return 'SELECT';\n}",
-      test: "const fn = new Function(code + '; return getSqlWord;')();\nconst res = fn();\nif (res !== 'SELECT') throw new Error(\"'SELECT' qaytarilmadi\");"
+      title: "1-Topshiriq: Hamma qator",
+      instruction: "users jadvalidagi (id, name, age, city) hamma qatorni chiqaring. 3 qator chiqishi kerak.",
+      startingCode: "SELECT id FROM users;",
+      hint: "SELECT * FROM users;",
+      solution: "SELECT * FROM users;",
+      test: "if (!/\\bSELECT\\b/i.test(code)) return 'SELECT yozing';\nif (!code.includes('*')) return '* belgisi kerak (hamma ustun)';\nif (result.length !== 3) return '3 qator chiqishi kerak. Chiqdi: ' + result.length;\nreturn null;"
     },
     {
       id: 2,
-      title: "2-Topshiriq: CRUD - Create",
-      instruction: "CRUD dagi Create amali uchun qaysi SQL buyrug'i ishlatiladi? Funksiya shu buyruqni string sifatida qaytarsin.",
-      startingCode: "function getCreateCommand() {\n  return '';\n}",
-      hint: "INSERT buyrug'ini qaytaring.",
-      solution: "function getCreateCommand() {\n  return 'INSERT';\n}",
-      test: "const fn = new Function(code + '; return getCreateCommand;')();\nconst res = fn();\nif (res !== 'INSERT') throw new Error(\"'INSERT' qaytarilmadi\");"
+      title: "2-Topshiriq: Faqat ismlar",
+      instruction: "users jadvalidan faqat name ustunini chiqaring. Ali, Vali, Guli chiqishi kerak.",
+      startingCode: "SELECT * FROM users;",
+      hint: "SELECT name FROM users;",
+      solution: "SELECT name FROM users;",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali', 'Vali', 'Guli'])) return 'Ali, Vali, Guli chiqishi kerak';\nreturn null;"
     },
     {
       id: 3,
-      title: "3-Topshiriq: CRUD - Read",
-      instruction: "CRUD dagi Read (o'qish) amali uchun SQL'da qaysi buyruq ishlatiladi?",
-      startingCode: "function getReadCommand() {\n  return '';\n}",
-      hint: "SELECT buyrug'ini qaytaring.",
-      solution: "function getReadCommand() {\n  return 'SELECT';\n}",
-      test: "const fn = new Function(code + '; return getReadCommand;')();\nconst res = fn();\nif (res !== 'SELECT') throw new Error(\"'SELECT' qaytarilmadi\");"
+      title: "3-Topshiriq: Faqat yoshlar",
+      instruction: "users jadvalidan faqat age ustunini chiqaring. 25, 17, 30 chiqishi kerak.",
+      startingCode: "SELECT * FROM users;",
+      hint: "SELECT age FROM users;",
+      solution: "SELECT age FROM users;",
+      test: "const ages = result.map(r => r.age);\nif (JSON.stringify(ages) !== JSON.stringify([25, 17, 30])) return '25, 17, 30 chiqishi kerak';\nreturn null;"
     },
     {
       id: 4,
-      title: "4-Topshiriq: CRUD - Update",
-      instruction: "CRUD dagi Update amali uchun SQL'da qaysi buyruq ishlatiladi?",
-      startingCode: "function getUpdateCommand() {\n  return '';\n}",
-      hint: "UPDATE buyrug'ini qaytaring.",
-      solution: "function getUpdateCommand() {\n  return 'UPDATE';\n}",
-      test: "const fn = new Function(code + '; return getUpdateCommand;')();\nconst res = fn();\nif (res !== 'UPDATE') throw new Error(\"'UPDATE' qaytarilmadi\");"
+      title: "4-Topshiriq: Faqat shaharlar",
+      instruction: "users jadvalidan faqat city ustunini chiqaring.",
+      startingCode: "SELECT * FROM users;",
+      hint: "SELECT city FROM users;",
+      solution: "SELECT city FROM users;",
+      test: "const cities = result.map(r => r.city);\nif (JSON.stringify(cities) !== JSON.stringify(['Toshkent', 'Samarqand', 'Toshkent'])) return 'Shaharlar chiqishi kerak';\nreturn null;"
     },
     {
       id: 5,
-      title: "5-Topshiriq: CRUD - Delete",
-      instruction: "CRUD dagi Delete amali uchun SQL'da qaysi buyruq ishlatiladi?",
-      startingCode: "function getDeleteCommand() {\n  return '';\n}",
-      hint: "DELETE buyrug'ini qaytaring.",
-      solution: "function getDeleteCommand() {\n  return 'DELETE';\n}",
-      test: "const fn = new Function(code + '; return getDeleteCommand;')();\nconst res = fn();\nif (res !== 'DELETE') throw new Error(\"'DELETE' qaytarilmadi\");"
+      title: "5-Topshiriq: Faqat id lar",
+      instruction: "users jadvalidan faqat id ustunini chiqaring. 1, 2, 3 chiqishi kerak.",
+      startingCode: "SELECT * FROM users;",
+      hint: "SELECT id FROM users;",
+      solution: "SELECT id FROM users;",
+      test: "const ids = result.map(r => r.id);\nif (JSON.stringify(ids) !== JSON.stringify([1, 2, 3])) return '1, 2, 3 chiqishi kerak';\nreturn null;"
     },
     {
       id: 6,
-      title: "6-Topshiriq: RDBMS ma'nosi",
-      instruction: "RDBMS so'zining kengaytmasini to'g'ri qaytaring. (Relational Database Management System)",
-      startingCode: "function getRDBMS() {\n  return '';\n}",
-      hint: "Katta harflar yoki kichik harflarda 'Relational Database Management System' deb qaytaring.",
-      solution: "function getRDBMS() {\n  return 'Relational Database Management System';\n}",
-      test: "const fn = new Function(code + '; return getRDBMS;')();\nconst res = fn().toLowerCase();\nif (res !== 'relational database management system') throw new Error(\"Noto'g'ri kengaytma\");"
+      title: "6-Topshiriq: Ism va yosh",
+      instruction: "users jadvalidan name va age ustunlarini chiqaring.",
+      startingCode: "SELECT * FROM users;",
+      hint: "SELECT name, age FROM users;",
+      solution: "SELECT name, age FROM users;",
+      test: "if (result.length !== 3) return '3 qator chiqishi kerak';\nif (!('name' in result[0] && 'age' in result[0])) return 'name va age ustunlari kerak';\nif ('city' in result[0]) return 'city chiqmasligi kerak';\nreturn null;"
     },
     {
       id: 7,
-      title: "7-Topshiriq: SQL kengaytmasi",
-      instruction: "SQL qanday so'zlarning qisqartmasi hisoblanadi? (Structured Query Language)",
-      startingCode: "function getSQLMeaning() {\n  return '';\n}",
-      hint: "Structured Query Language deb qaytaring.",
-      solution: "function getSQLMeaning() {\n  return 'Structured Query Language';\n}",
-      test: "const fn = new Function(code + '; return getSQLMeaning;')();\nif (fn().toLowerCase() !== 'structured query language') throw new Error(\"Xato ma'no!\");"
+      title: "7-Topshiriq: Yosh va shahar",
+      instruction: "users jadvalidan age va city ustunlarini chiqaring.",
+      startingCode: "SELECT * FROM users;",
+      hint: "SELECT age, city FROM users;",
+      solution: "SELECT age, city FROM users;",
+      test: "if (result.length !== 3) return '3 qator chiqishi kerak';\nif (!('age' in result[0] && 'city' in result[0])) return 'age va city ustunlari kerak';\nreturn null;"
     },
     {
       id: 8,
-      title: "8-Topshiriq: Ma'lumotlarni qanday formatda saqlaydi?",
-      instruction: "Relatsion bazalar ma'lumotlarni qanday saqlaydi? 'Tables' (Jadvallar) so'zini qaytaring.",
-      startingCode: "function getStorageFormat() {\n  return '';\n}",
-      hint: "'Tables' so'zini qaytaring.",
-      solution: "function getStorageFormat() {\n  return 'Tables';\n}",
-      test: "const fn = new Function(code + '; return getStorageFormat;')();\nif (fn().toLowerCase() !== 'tables') throw new Error(\"Tables deb qaytarilishi kerak\");"
+      title: "8-Topshiriq: Id va ism",
+      instruction: "users jadvalidan id va name ustunlarini chiqaring.",
+      startingCode: "SELECT * FROM users;",
+      hint: "SELECT id, name FROM users;",
+      solution: "SELECT id, name FROM users;",
+      test: "if (result.length !== 3) return '3 qator chiqishi kerak';\nif (!('id' in result[0] && 'name' in result[0])) return 'id va name ustunlari kerak';\nreturn null;"
     },
     {
       id: 9,
-      title: "9-Topshiriq: Ma'lumotlar bazasi sahifalari",
-      instruction: "PostgreSQL ma'lumotlarni diskda qanday ataluvchi bloklarda saqlaydi? 'Page' so'zini qaytaring.",
-      startingCode: "function getDbBlockName() {\n  return '';\n}",
-      hint: "'Page' so'zini qaytaring.",
-      solution: "function getDbBlockName() {\n  return 'Page';\n}",
-      test: "const fn = new Function(code + '; return getDbBlockName;')();\nif (fn().toLowerCase() !== 'page') throw new Error(\"Page deb qaytarilishi kerak\");"
+      title: "9-Topshiriq: Uchta ustun",
+      instruction: "users jadvalidan name, age va city ustunlarini chiqaring (id chiqmasligi kerak).",
+      startingCode: "SELECT * FROM users;",
+      hint: "SELECT name, age, city FROM users;",
+      solution: "SELECT name, age, city FROM users;",
+      test: "if (result.length !== 3) return '3 qator chiqishi kerak';\nif ('id' in result[0]) return 'id chiqmasligi kerak';\nreturn null;"
     },
     {
       id: 10,
-      title: "10-Topshiriq: Yomon amaliyot",
-      instruction: "Barcha ustunlarni tanlash uchun ishlatiladigan va production-da yomon amaliyot hisoblangan buyruqni qaytaring. ('SELECT *')",
-      startingCode: "function getBadPracticeCommand() {\n  return '';\n}",
-      hint: "'SELECT *' deb qaytaring.",
-      solution: "function getBadPracticeCommand() {\n  return 'SELECT *';\n}",
-      test: "const fn = new Function(code + '; return getBadPracticeCommand;')();\nif (fn() !== 'SELECT *') throw new Error(\"SELECT * kutilgandi\");"
+      title: "10-Topshiriq: Kichik harf",
+      instruction: "So'rovni kichik harfda yozing (select * from users;). 3 qator chiqishi kerak.",
+      startingCode: "SELECT id FROM users;",
+      hint: "select * from users;",
+      solution: "select * from users;",
+      test: "if (code !== code.toLowerCase()) return 'Hamma harf kichik bolsin';\nif (result.length !== 3) return '3 qator chiqishi kerak';\nreturn null;"
     }
   ],
   quizzes: [
@@ -150,7 +254,7 @@ graph TD
       question: "SQL nima uchun ishlatiladi?",
       options: ["Faqat veb sayt yaratish uchun", "Ma'lumotlar bazasi bilan aloqa qilish uchun", "Dasturni bezash uchun", "Video tahrirlash uchun"],
       correctAnswer: 1,
-      explanation: "SQL relatsion ma'lumotlar bazasini boshqarish va unga so'rov yuborish uchun ishlatiladi."
+      explanation: "SQL ma'lumotlar bazasini boshqarish va unga so'rov yuborish uchun ishlatiladi."
     },
     {
       id: 3,
@@ -161,66 +265,66 @@ graph TD
     },
     {
       id: 4,
-      question: "CRUD dagi 'C' nimani anglatadi?",
-      options: ["Connect", "Change", "Create", "Copy"],
-      correctAnswer: 2,
-      explanation: "CRUD dagi C - Create, ya'ni yangi ma'lumot yaratish (INSERT) ni bildiradi."
+      question: "Ma'lumotlar bazasini nima bilan taqqosladik?",
+      options: ["Do'kon", "Tartibli kutubxona", "Maktab", "Shifoxona"],
+      correctAnswer: 1,
+      explanation: "Baza — tartibli kutubxona. SQL — kutubxonachi."
     },
     {
       id: 5,
-      question: "CRUD dagi 'R' nimani anglatadi?",
-      options: ["Read", "Remove", "Replace", "Restore"],
-      correctAnswer: 0,
-      explanation: "R - Read, ya'ni ma'lumotlarni o'qish (SELECT) ni bildiradi."
+      question: "Nega ma'lumotni JavaScript'da emas, bazada filtrlash kerak?",
+      options: ["JS buni uddalay olmaydi", "Hamma ma'lumotni xotiraga tortish halokatli bo'lishi mumkin", "SQL qisqaroq yoziladi", "JS sekin til"],
+      correctAnswer: 1,
+      explanation: "Katta bazadan hammasini olib kelish xotirani to'ldirib, dasturni qulatishi mumkin."
     },
     {
       id: 6,
-      question: "Quyidagilardan qaysi biri NoSQL bazaga kiradi?",
-      options: ["PostgreSQL", "MySQL", "MongoDB", "SQLite"],
-      correctAnswer: 2,
-      explanation: "MongoDB hujjatlarga asoslangan (document-based) NoSQL baza hisoblanadi."
+      question: "`SELECT * FROM users;` da `*` nimani bildiradi?",
+      options: ["Faqat birinchi ustun", "Hamma ustun", "Hech narsa", "Xatolik"],
+      correctAnswer: 1,
+      explanation: "* — hamma ustun degani."
     },
     {
       id: 7,
-      question: "PostgreSQL ma'lumotlarni diskda asosan qanday o'lchamli bloklarda saqlaydi?",
-      options: ["1 MB fayllar", "8 KB Page'lar", "Bitta katta fayl", "Faqat RAM'da"],
+      question: "`SELECT * FROM users;` da `users` nima?",
+      options: ["Ustun nomi", "Jadval nomi", "Baza nomi", "Buyruq"],
       correctAnswer: 1,
-      explanation: "PostgreSQL ma'lumotlarni 8KB o'lchamdagi Page larda diskda saqlaydi."
+      explanation: "FROM dan keyin jadval nomi yoziladi."
     },
     {
       id: 8,
-      question: "Query Execution Plan nima?",
-      options: ["Dasturlash tili turi", "So'rovni eng optimal tarzda qanday bajarish strategiyasi", "Baza paroli", "Tarmoq xatosi"],
+      question: "So'rov oxirida nima turadi?",
+      options: ["Nuqta", "Nuqta-vergul (;)", "Vergul", "Hech narsa"],
       correctAnswer: 1,
-      explanation: "Optimizer SQL so'rovni tahlil qilib, uni eng kam xarajat bilan (tez) bajarish uchun Execution Plan tuzadi."
+      explanation: "Bitta so'rov bitta nuqta-vergul bilan tugaydi."
     },
     {
       id: 9,
-      question: "Nega 'SELECT *' production muhitida yomon amaliyot hisoblanadi?",
-      options: ["Sintaksis xato", "U hech qachon ishlamaydi", "Keraksiz ma'lumotlarni ham olib kelib xotira va tarmoqni band qiladi", "U SQL standartiga kirmaydi"],
-      correctAnswer: 2,
-      explanation: "Ortiqcha ustunlarni so'rash tarmoq, xotira va Disk I/O resurslarini behuda isrof qiladi."
+      question: "`SELECT name FROM users;` nima chiqaradi?",
+      options: ["Hamma ustun", "Faqat ismlar", "Hech narsa", "Xatolik"],
+      correctAnswer: 1,
+      explanation: "Faqat so'ralgan ustun keladi."
     },
     {
       id: 10,
-      question: "SQL so'rovi qayta ishlashning birinchi bosqichida qaysi qism ishlaydi?",
-      options: ["Parser", "Executor", "Cache", "SSD"],
-      correctAnswer: 0,
-      explanation: "Birinchi bo'lib Parser SQL so'rovini o'qib, uni kompyuter tushunadigan Syntax Tree'ga o'giradi."
+      question: "`--` belgisi SQL'da nima qiladi?",
+      options: ["So'rovni tugatadi", "Izoh boshlaydi (ishlamaydi)", "Xatolik beradi", "Jadval yaratadi"],
+      correctAnswer: 1,
+      explanation: "-- dan keyingi matn izoh. Baza uni o'qimaydi."
     },
     {
       id: 11,
-      question: "SQL dasturlash tilimi?",
-      options: ["Ha, u to'laqonli dasturlash tili", "Yo'q, u maxsus so'rov (query) tili", "U brauzer tili", "U faqat matematik tili"],
+      question: "Kichik harfdagi `select * from users;` ishlaydimi?",
+      options: ["Yo'q, xato beradi", "Ha, ishlaydi (odat katta harf)", "Faqat bazada ishlaydi", "Hech qachon"],
       correctAnswer: 1,
-      explanation: "SQL an'anaviy ma'noda (Turing complete) dasturlash tili emas, balki ma'lumotlar bilan ishlashga ixtisoslashgan so'rov tilidir."
+      explanation: "Kalit so'zlar harfga sezgir emas. Lekin katta harf odat."
     },
     {
       id: 12,
-      question: "Nima uchun ma'lumotlarni JavaScript-da emas, SQL-ning o'zida (WHERE orqali) filtrlash kerak?",
-      options: ["JS buni uddalay olmaydi", "JS juda sekin tillar qatoriga kiradi", "Barcha ma'lumotlarni RAM'ga tortish halokatli bo'lishi mumkin", "SQL qisqaroq yoziladi"],
-      correctAnswer: 2,
-      explanation: "Katta bazadan hamma ma'lumotni dasturga olib kelish xotira (RAM) ni to'ldirib, dasturni qulatishi mumkin. Shuning uchun filtrlash doim bazaning o'zida bo'lishi kerak."
+      question: "PostgreSQL va MySQL nima?",
+      options: ["Dasturlash tillari", "Ma'lumotlar bazasi tizimlari (RDBMS)", "Brauzerlar", "Operatsion tizimlar"],
+      correctAnswer: 1,
+      explanation: "Ikkalasi ham SQL bilan ishlaydigan mashhur baza tizimlari."
     }
   ]
 };

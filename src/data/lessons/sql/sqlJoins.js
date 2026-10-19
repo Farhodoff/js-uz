@@ -1,302 +1,343 @@
 export const sqlJoins = {
-  id: "sql_joins_1",
-  title: "SQL Joins (Jadvallarni Birlashtirish)",
-  language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
+  id: "sqlJoins",
+  title: "Jadvallarni Birlashtirish (JOIN)",
+  language: "sql",
+  dbSetup: "CREATE TABLE users (id INT, name STRING); INSERT INTO users VALUES (1,'Ali'),(2,'Vali'),(3,'Guli'); CREATE TABLE orders (id INT, user_id INT, amount INT); INSERT INTO orders VALUES (1,1,100),(2,1,200),(3,2,150),(4,99,500);",
+  theory: `## 1. Bu nima?
 
-**JOIN** - bu ma'lumotlar bazasidagi ikki yoki undan ortiq jadvallarni bir-biriga bog'lash usuli. 
-Tasavvur qiling, sizda ikkita ro'yxat bor:
-1. **O'quvchilar ro'yxati** (Ismi, ID si)
-2. **Kutubxonadan olingan kitoblar ro'yxati** (Kitob nomi, O'quvchi ID si)
+Tasavvur qiling, ikkita daftar bor. Birinchida o'quvchilar ro'yxati: Ali, Vali, Guli. Ikkinchisida to'lovlar: kim qancha to'lagan. Savol: "Har bir o'quvchi qancha to'lagan?" Javob ikkala daftarda — ularni yonma-yon qo'yish kerak.
 
-Siz qaysi o'quvchi qanday kitob olganini bilmoqchisiz. Buning uchun siz ikkala ro'yxatni **O'quvchi ID** si orqali yonma-yon qilib tikib chiqasiz. SQL dagi JOIN xuddi shu "tikish" amaliyotidir!
+Dasturlashda JOIN (birlashtirish) xuddi shu ikki daftarni yonma-yon qo'yish. Umumiy ustun orqali qatorlar ulanadi.
 
-Turlari:
-- **INNER JOIN**: Faqat ikkala ro'yxatda ham borlarni (ham o'quvchisi bor, ham kitobi borlarni) olib beradi.
-- **LEFT JOIN**: Chapdagi ro'yxatdan hamma o'quvchini oladi, kitob olgan bo'lsa kitobini yozadi, olmagan bo'lsa kitob o'rniga bo'sh (NULL) qoldiradi.
-- **RIGHT JOIN**: O'ngdagi ro'yxatdan hamma kitoblarni oladi, o'quvchisi topilsa yozadi, topilmasa NULL.
-- **FULL JOIN**: Ikkala ro'yxatdagi hamma narsani birlashtirib ko'rsatadi.
+JOIN — ikkita jadvalni umumiy ustun bo'yicha birlashtirib, bitta natija chiqaradigan operatordir.
 
-## 2. 🧠 Chuqur Tahlil
+---
 
-Keling, JOIN qanday ishlashini ma'lumotlar bazasi dvigateli (Database Engine) darajasida ko'rib chiqamiz. Jadvallarni birlashtirish xotirada qanday amalga oshadi?
-Asosan 3 xil algoritm mavjud:
+## 2. Nega kerak?
 
-1. **Nested Loop Join**
-Eng sodda algoritm. Dvigatel birinchi jadvalning har bir qatori uchun ikkinchi jadvalni to'liq aylanib chiqib mosini qidiradi.
-Xuddi ikkita \\\`for\\\` tsikli ichma-ich ishlaganidek:
-\\\`\\\`\\\`javascript
-for (let user of users) {
-  for (let order of orders) {
-    if (user.id === order.user_id) result.push({user, order});
-  }
-}
-\\\`\\\`\\\`
-Agar jadvallar kichik bo'lsa, bu tez ishlaydi. Ammo katta jadvallarda (O(N*M) vaqt ketadi) juda sekinlashib ketadi.
+users jadvalida ismlar bor. orders jadvalida summalar bor. Lekin qaysi summa kimniki — faqat raqamlar orqali bilinadi:
 
-2. **Hash Join**
-Agar birlashtirish sharti tenglik ( \\\`=\\\` ) bo'lsa, dvigatel **Hash Join** ishlatadi. Kichikroq jadvalni olib, xotirada (RAM) Hash Table (Obyekt yoki Map kabi) yaratadi. Keyin katta jadvalni bir marta aylanib, xotiradagi Hash Table dan O(1) vaqtda qidiradi. Bu juda tez ishlaydi! Lekin katta xotira talab qiladi.
+\`\`\`sql
+SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;
+\`\`\`
 
-3. **Merge Join (Sort-Merge Join)**
-Agar ikkala jadval ham JOIN qilinayotgan ustun bo'yicha oldindan tartiblangan (Indexed/Sorted) bo'lsa, Merge Join ishga tushadi. Dvigatel ikkala jadval ustidan bir vaqtda qadam tashlab (two pointers usuli) moslarni topib ketadi. Xotira ko'p yemaydi va juda tez (O(N+M) vaqtda) ishlaydi.
+Natijada ism yonida summasi turadi. Ikkita jadval bitta javob bo'ldi.
 
-## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
+Muammo shunda: ma'lumot ikki joyda saqlanadi. Yechim — umumiy ustun (\`id\` va \`user_id\`) orqali ulash.
 
-**Savol 1: N+1 problemi nima va uni JOIN yordamida qanday hal qilish mumkin?**
-*Javob*: Dasturlash tilida (masalan, ORM orqali) 1 ta so'rov bilan 100 ta foydalanuvchini olib kelib, keyin ularning har biri uchun alohida so'rov jo'natib (yana 100 ta so'rov) buyurtmalarni olish N+1 xatosi deyiladi. Buni JOIN orqali bitta SQL so'rovda hal qilish (Eager Loading) ma'lumotlar bazasiga tushadigan yukni keskin kamaytiradi.
+---
 
-**Savol 2: Ikki jadvalda ham bir xil nomli ustunlar bo'lsa, qanday yo'l tutiladi?**
-*Javob*: Bunday holatda noaniqlik (Ambiguous column name) xatosi yuz beradi. Buni oldini olish uchun jadvallarga Alias (taxallus) berish va ustunlarni \\\`table_alias.column_name\\\` shaklida aniq ko'rsatish shart.
+## 3. Birinchi misol
 
-**Savol 3: CROSS JOIN nima va qachon ishlatiladi?**
-*Javob*: CROSS JOIN - bu jadvallarning Dekart ko'paytmasi. 1-jadvaldagi har bir qator 2-jadvaldagi har bir qator bilan birlashadi. Agar ON sharti berilmasa shunday yuz beradi. Masalan, 3 xil o'lcham va 4 xil rang jadvallarini CROSS JOIN qilsak, barcha 12 xil kombinatsiyani hosil qilib beradi.
+Bu kod faqat ikkalasida ham bor qatorlarni chiqaradi.
 
-## 📊 Vizual Tuzilma
-\\\`\\\`\\\`mermaid
-graph LR
-    A[Users Jadvali] -->|ON users.id = orders.user_id| B[Orders Jadvali]
-    C[Hash Table in RAM] -.->|Tez qidiruv| B
-    style A fill:#4caf50,stroke:#388e3c,stroke-width:2px,color:#fff
-    style B fill:#2196f3,stroke:#1976d2,stroke-width:2px,color:#fff
-    style C fill:#ff9800,stroke:#f57c00,stroke-width:2px,color:#fff
-\\\`\\\`\\\`
+\`\`\`sql
+SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"name":"Ali","amount":100},{"name":"Ali","amount":200},{"name":"Vali","amount":150}]
+\`\`\`
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`FROM users INNER JOIN orders\` — ikkita jadval birlashtirilmoqda.
+- \`ON users.id = orders.user_id\` — ulanish sharti. Foydalanuvchi raqami buyurtmadagi raqamga teng bo'lsa, qatorlar yonma-yon qo'yiladi.
+- Ali ikki marta chiqdi. Chunki uning ikkita buyurtmasi bor.
+- Guli chiqmadi. Uning buyurtmasi yo'q. INNER faqat jufti borlarni oladi.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod buyurtmasizlarni ham chiqaradi.
+
+\`\`\`sql
+SELECT users.name, orders.amount FROM users LEFT JOIN orders ON users.id = orders.user_id;
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"name":"Ali","amount":100},{"name":"Ali","amount":200},{"name":"Vali","amount":150},{"name":"Guli"}]
+\`\`\`
+
+Qator-baqator tahlil:
+- \`LEFT JOIN\` — chap jadval (users) to'liq chiqadi. Hammasi saqlanadi.
+- Guli uchun buyurtma topilmadi. Uning \`amount\` qiymati bo'sh qoldi.
+- O'ng tomonda jufti yo'q bo'lsa ham, chap tomon yo'qolmaydi.
+
+---
+
+## 5.1. RIGHT va FULL
+
+Qolgan ikki tur:
+
+\`\`\`sql
+SELECT users.name, orders.amount FROM users RIGHT JOIN orders ON users.id = orders.user_id;
+SELECT users.name, orders.amount FROM users FULL OUTER JOIN orders ON users.id = orders.user_id;
+\`\`\`
+
+\`\`\`text
+// Natija (RIGHT, 4 qator — oxirgisi egasiz buyurtma):
+[{"name":"Ali","amount":100},{"name":"Ali","amount":200},{"name":"Vali","amount":150},{"amount":500}]
+// Natija (FULL, 5 qator — hammasi):
+// Yuqoridagi 4 ta + {"name":"Guli"}
+\`\`\`
+
+Qator-baqator tahlil:
+- \`RIGHT JOIN\` — o'ng jadval (orders) to'liq chiqadi. Egasiz buyurtma (500) ham chiqadi. Uning ismi bo'sh.
+- \`FULL OUTER JOIN\` — ikkala tomon to'liq chiqadi. 4 + 1 = 5 qator.
+
+---
+
+## 6. Ko'p uchraydigan xatolar
+
+### 1. ON ni unutish
+❌ Xato kod:
+\`\`\`sql
+SELECT users.name, orders.amount FROM users INNER JOIN orders;
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin har bir foydalanuvchi har bir buyurtma bilan ulanadi (3 x 4 = 12 qator). Bu "ko'paytma" deb ataladi. Kerakli javob emas.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;
+\`\`\`
+
+### 2. Noto'g'ri ustun bilan ulash
+❌ Xato kod:
+\`\`\`sql
+SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.id;
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin javob noto'g'ri: buyurtma raqami foydalanuvchi raqamiga teng bo'lganlar chiqadi (Ali-100, Vali-200). Ulanish ustuni xato tanlangan.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;
+\`\`\`
+
+### 3. LEFT o'rniga INNER kutish
+❌ Xato tushuncha: INNER yozib, buyurtmasiz Guli ham chiqadi deb o'ylash.
+Nima bo'ladi: Guli chiqmaydi. INNER faqat jufti borlarni oladi. Hamma foydalanuvchi kerak bo'lsa — LEFT JOIN yoziladi.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT users.name, orders.amount FROM users LEFT JOIN orders ON users.id = orders.user_id;
+\`\`\`
+
+---
+
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+users va orders ni INNER JOIN bilan ulang. 3 qator chiqishi kerak.
+
+### 2-mashq (O'rtacha)
+LEFT JOIN bilan ulang. 4 qator chiqishi kerak (Guli ham bor).
+
+### 3-mashq (Chegara holat)
+FULL OUTER JOIN bilan ulang. 5 qator chiqishi kerak.
+
+### Javoblar:
+1.
+\`\`\`sql
+SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;
+\`\`\`
+2.
+\`\`\`sql
+SELECT users.name, orders.amount FROM users LEFT JOIN orders ON users.id = orders.user_id;
+\`\`\`
+3.
+\`\`\`sql
+SELECT users.name, orders.amount FROM users FULL OUTER JOIN orders ON users.id = orders.user_id;
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. JOIN ikki jadvalni umumiy ustun orqali birlashtiradi. Shart \`ON\` bilan yoziladi.
+2. INNER — faqat jufti borlar. LEFT — chap to'liq. RIGHT — o'ng to'liq. FULL — hammasi.
+3. \`ON\` unutilsa, ko'paytma chiqadi (har biri har biri bilan).
+
+Keyingi darsda: so'rov ichida so'rov (subquery) bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Oddiy INNER JOIN",
-      instruction: "'users' jadvalini 'orders' jadvali bilan 'user_id' ustuni orqali INNER JOIN qilib barcha ma'lumotlarni oluvchi SQL yozing.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT * FROM users INNER JOIN orders ON users.id = orders.user_id",
-      solution: "function myFunction() {\n  return \"SELECT * FROM users INNER JOIN orders ON users.id = orders.user_id;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('INNER JOIN ORDERS') || !res.includes('ON USERS.ID')) throw new Error('Xato so\\'rov');"
+      title: "1-Topshiriq: INNER JOIN",
+      instruction: "users va orders ni INNER JOIN bilan ulang (ON users.id = orders.user_id). 3 qator chiqishi kerak.",
+      startingCode: "SELECT users.name, orders.amount FROM users INNER JOIN orders;",
+      hint: "Oxiriga ON users.id = orders.user_id qo'shing.",
+      solution: "SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;",
+      test: "if (!/\\bINNER\\s+JOIN\\b/i.test(code)) return 'INNER JOIN yozing';\nif (!/\\bON\\b/i.test(code)) return 'ON sharti kerak';\nif (result.length !== 3) return '3 qator chiqishi kerak. Chiqdi: ' + result.length;\nreturn null;"
     },
     {
       id: 2,
-      title: "Faqat ism va narx",
-      instruction: "'users' dan 'name', 'orders' dan 'price' ustunlarini olib INNER JOIN qiling.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT users.name, orders.price FROM ...",
-      solution: "function myFunction() {\n  return \"SELECT users.name, orders.price FROM users INNER JOIN orders ON users.id = orders.user_id;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('USERS.NAME') || !res.includes('ORDERS.PRICE')) throw new Error('Xato so\\'rov');"
+      title: "2-Topshiriq: LEFT JOIN",
+      instruction: "LEFT JOIN bilan ulang. 4 qator chiqishi kerak (Guli ham bor, summasi bo'sh).",
+      startingCode: "SELECT users.name, orders.amount FROM users LEFT JOIN orders ON users.id = orders.user_id;",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT users.name, orders.amount FROM users LEFT JOIN orders ON users.id = orders.user_id;",
+      test: "if (!/\\bLEFT\\s+JOIN\\b/i.test(code)) return 'LEFT JOIN yozing';\nif (result.length !== 4) return '4 qator chiqishi kerak';\nconst guli = result.filter(r => r.name === 'Guli');\nif (guli.length !== 1 || guli[0].amount !== undefined) return 'Guli summasiz chiqishi kerak';\nreturn null;"
     },
     {
       id: 3,
-      title: "LEFT JOIN",
-      instruction: "Barcha 'users' (chapda) va ularning 'orders' larini oling. Agar buyurtma qilmagan bo'lsa ham foydalanuvchi chiqishi kerak.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT * FROM users LEFT JOIN orders ...",
-      solution: "function myFunction() {\n  return \"SELECT * FROM users LEFT JOIN orders ON users.id = orders.user_id;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('LEFT JOIN ORDERS')) throw new Error('Xato so\\'rov');"
+      title: "3-Topshiriq: RIGHT JOIN",
+      instruction: "RIGHT JOIN bilan ulang. 4 qator chiqishi kerak (oxirgisi egasiz buyurtma: 500).",
+      startingCode: "SELECT users.name, orders.amount FROM users RIGHT JOIN orders ON users.id = orders.user_id;",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT users.name, orders.amount FROM users RIGHT JOIN orders ON users.id = orders.user_id;",
+      test: "if (!/\\bRIGHT\\s+JOIN\\b/i.test(code)) return 'RIGHT JOIN yozing';\nif (result.length !== 4) return '4 qator chiqishi kerak';\nif (!result.some(r => r.amount === 500)) return '500 lik buyurtma chiqishi kerak';\nreturn null;"
     },
     {
       id: 4,
-      title: "RIGHT JOIN",
-      instruction: "Barcha 'orders' (o'ngda) chiqishi shart bo'lgan so'rovni 'RIGHT JOIN' yordamida 'users' ga qo'shing.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT * FROM users RIGHT JOIN orders ...",
-      solution: "function myFunction() {\n  return \"SELECT * FROM users RIGHT JOIN orders ON users.id = orders.user_id;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('RIGHT JOIN ORDERS')) throw new Error('Xato so\\'rov');"
+      title: "4-Topshiriq: FULL JOIN",
+      instruction: "FULL OUTER JOIN bilan ulang. 5 qator chiqishi kerak.",
+      startingCode: "SELECT users.name, orders.amount FROM users FULL OUTER JOIN orders ON users.id = orders.user_id;",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT users.name, orders.amount FROM users FULL OUTER JOIN orders ON users.id = orders.user_id;",
+      test: "if (!/\\bFULL\\b/i.test(code)) return 'FULL OUTER JOIN yozing';\nif (result.length !== 5) return '5 qator chiqishi kerak. Chiqdi: ' + result.length;\nreturn null;"
     },
     {
       id: 5,
-      title: "FULL JOIN",
-      instruction: "Ikkala jadvallardagi (users, orders) barcha qatorlarni birlashtirib qaytaruvchi 'FULL OUTER JOIN' so'rovini yozing.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT * FROM users FULL OUTER JOIN orders ...",
-      solution: "function myFunction() {\n  return \"SELECT * FROM users FULL OUTER JOIN orders ON users.id = orders.user_id;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('FULL') && !res.includes('OUTER JOIN')) throw new Error('Xato so\\'rov');"
+      title: "5-Topshiriq: ON qo'shish",
+      instruction: "Quyidagi ko'paytmani tuzating: ON shartini qo'shing (3 qator chiqishi kerak).",
+      startingCode: "SELECT users.name, orders.amount FROM users INNER JOIN orders;",
+      hint: "ON users.id = orders.user_id",
+      solution: "SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;",
+      test: "if (!/\\bON\\b/i.test(code)) return 'ON shartini qoshing';\nif (result.length !== 3) return '3 qator chiqishi kerak';\nreturn null;"
     },
     {
       id: 6,
-      title: "Alias bilan ishlash (AS)",
-      instruction: "'users' ga 'u' va 'orders' ga 'o' deb qisqa nom (alias) berib INNER JOIN qiling (u.id = o.user_id).",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT * FROM users u INNER JOIN orders o ON ...",
-      solution: "function myFunction() {\n  return \"SELECT * FROM users u INNER JOIN orders o ON u.id = o.user_id;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('USERS U') || !res.includes('ORDERS O')) throw new Error('Xato so\\'rov');"
+      title: "6-Topshiriq: Noto'g'ri ustun",
+      instruction: "`ON users.id = orders.id` xato ulangan. To'g'rilang (`user_id` bo'lishi kerak). Ali ikki marta chiqishi kerak.",
+      startingCode: "SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.id;",
+      hint: "orders.user_id yozing.",
+      solution: "SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;",
+      test: "if (!/user_id/i.test(code)) return 'user_id ustuni kerak';\nconst ali = result.filter(r => r.name === 'Ali');\nif (ali.length !== 2) return 'Ali ikki marta chiqishi kerak';\nreturn null;"
     },
     {
       id: 7,
-      title: "Uchta jadvalni qo'shish",
-      instruction: "'users', 'orders' va 'products' jadvallarini INNER JOIN orqali birlashtiring. (orders.product_id = products.id)",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "FROM users INNER JOIN orders ON ... INNER JOIN products ON ...",
-      solution: "function myFunction() {\n  return \"SELECT * FROM users INNER JOIN orders ON users.id = orders.user_id INNER JOIN products ON orders.product_id = products.id;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('JOIN PRODUCTS') || !res.includes('ORDERS.PRODUCT_ID')) throw new Error('Xato so\\'rov');"
+      title: "7-Topshiriq: Faqat summalar",
+      instruction: "INNER JOIN bilan faqat amount ustunini chiqaring. 100, 200, 150 chiqishi kerak.",
+      startingCode: "SELECT orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;",
+      test: "const amounts = result.map(r => r.amount);\nif (JSON.stringify(amounts) !== JSON.stringify([100, 200, 150])) return '100, 200, 150 chiqishi kerak';\nreturn null;"
     },
     {
       id: 8,
-      title: "Faqat buyurtma qilmaganlar (LEFT JOIN + IS NULL)",
-      instruction: "Hali birorta ham order bermagan userlarni toping. ('orders.id IS NULL' dan foydalaning)",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT * FROM users LEFT JOIN orders ... WHERE orders.id IS NULL",
-      solution: "function myFunction() {\n  return \"SELECT * FROM users LEFT JOIN orders ON users.id = orders.user_id WHERE orders.id IS NULL;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('LEFT JOIN') || !res.includes('IS NULL')) throw new Error('Xato so\\'rov');"
+      title: "8-Topshiriq: Vali summasi (chegara)",
+      instruction: "INNER JOIN bilan Vali qatorini toping (amount 150 bo'lishi kerak).",
+      startingCode: "SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;",
+      hint: "Tayyor so'rovda Valini toping.",
+      solution: "SELECT users.name, orders.amount FROM users INNER JOIN orders ON users.id = orders.user_id;",
+      test: "const vali = result.filter(r => r.name === 'Vali');\nif (vali.length !== 1 || vali[0].amount !== 150) return 'Vali 150 bilan chiqishi kerak';\nreturn null;"
     },
     {
       id: 9,
-      title: "GROUP BY bilan JOIN",
-      instruction: "Har bir foydalanuvchining ismini (users.name) va uning jami xarajatini (SUM(orders.amount)) 'total' deb oluvchi JOIN so'rovi.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT users.name, SUM(...) FROM ... JOIN ... GROUP BY users.name",
-      solution: "function myFunction() {\n  return \"SELECT users.name, SUM(orders.amount) AS total FROM users INNER JOIN orders ON users.id = orders.user_id GROUP BY users.name;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('GROUP BY USERS.NAME') || !res.includes('SUM(ORDERS.AMOUNT)')) throw new Error('Xato so\\'rov');"
+      title: "9-Topshiriq: Egasiz buyurtma (chegara)",
+      instruction: "RIGHT JOIN bilan ismsiz qatorni toping (amount 500, name bo'sh bo'lishi kerak).",
+      startingCode: "SELECT users.name, orders.amount FROM users RIGHT JOIN orders ON users.id = orders.user_id;",
+      hint: "Tayyor so'rovda oxirgi qatorni tekshiring.",
+      solution: "SELECT users.name, orders.amount FROM users RIGHT JOIN orders ON users.id = orders.user_id;",
+      test: "const orphan = result.filter(r => r.amount === 500);\nif (orphan.length !== 1 || orphan[0].name !== undefined) return 'Ismsiz 500 lik qator kerak';\nreturn null;"
     },
     {
       id: 10,
-      title: "O'z-o'ziga qo'shish (Self Join)",
-      instruction: "'employees' jadvalini o'ziga JOIN qilib, xodim va uning menejerini oling (e1.manager_id = e2.id).",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT e1.name, e2.name FROM employees e1 INNER JOIN employees e2 ON ...",
-      solution: "function myFunction() {\n  return \"SELECT e1.name AS employee, e2.name AS manager FROM employees e1 INNER JOIN employees e2 ON e1.manager_id = e2.id;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('EMPLOYEES E1') || !res.includes('EMPLOYEES E2')) throw new Error('Xato so\\'rov');"
+      title: "10-Topshiriq: Guli summasi (chegara)",
+      instruction: "LEFT JOIN da Guli qatorining amount qiymati qanday? Javob: qiymat yo'q (bo'sh). So'rovni bajaring va tasdiqlang.",
+      startingCode: "SELECT users.name, orders.amount FROM users LEFT JOIN orders ON users.id = orders.user_id;",
+      hint: "Guli qatorini toping.",
+      solution: "SELECT users.name, orders.amount FROM users LEFT JOIN orders ON users.id = orders.user_id;",
+      test: "const guli = result.filter(r => r.name === 'Guli');\nif (guli.length !== 1 || guli[0].amount !== undefined) return 'Guli summasiz chiqishi kerak';\nreturn null;"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "JOIN qanday maqsadlar uchun ishlatiladi?",
-      options: [
-        "Jadvaldagi ma'lumotlarni o'chirish uchun",
-        "Ikki yoki undan ortiq jadvallardagi ma'lumotlarni birlashtirib ko'rish uchun",
-        "Ma'lumotlarni shifrlash uchun",
-        "Faqat yangi jadvallar yaratish uchun"
-      ],
+      question: "JOIN nimani birlashtiradi?",
+      options: ["Ustunlarni", "Ikkita jadval qatorlarini", "Bazalarni", "Hech narsani"],
       correctAnswer: 1,
-      explanation: "JOIN - ma'lumotlar bazasidagi o'zaro bog'langan jadvallarni bitta so'rovda ko'rish imkonini beradi."
+      explanation: "Umumiy ustun orqali ikki jadval qatorlari yonma-yon qo'yiladi."
     },
     {
       id: 2,
-      question: "INNER JOIN faqat nimani qaytaradi?",
-      options: [
-        "Ikkala jadvalda ham mavjud (mos kelgan) qatorlarni",
-        "Birinchi jadvaldagi barcha qatorlarni",
-        "Ikkinchi jadvaldagi barcha qatorlarni",
-        "Barcha ma'lumotlarni hech qanday filtrsiz"
-      ],
-      correctAnswer: 0,
-      explanation: "INNER JOIN shart bajarilgan (ON A.id = B.a_id) joydagina qatorni olib chiqadi, qolganini tushirib yuboradi."
+      question: "INNER JOIN kimlarni chiqaradi?",
+      options: ["Hammani", "Faqat jufti borlarni", "Faqat jufti yo'qlarni", "Birinchini"],
+      correctAnswer: 1,
+      explanation: "INNER faqat ikkala tomonda ham mos kelganlarni oladi."
     },
     {
       id: 3,
-      question: "Agar A jadvalda 5ta qator, B jadvalda 4ta qator bo'lsa va CROSS JOIN ishlatilsa natijada nechta qator chiqadi?",
-      options: [
-        "9",
-        "5",
-        "4",
-        "20"
-      ],
-      correctAnswer: 3,
-      explanation: "CROSS JOIN dekart ko'paytmasini beradi (5 x 4 = 20)."
+      question: "LEFT JOIN da qaysi tomon to'liq chiqadi?",
+      options: ["O'ng (ikkinchi)", "Chap (birinchi)", "Ikkalasi ham", "Hech biri"],
+      correctAnswer: 1,
+      explanation: "LEFT — chap jadval to'liq saqlanadi."
     },
     {
       id: 4,
-      question: "LEFT JOIN haqida qaysi biri to'g'ri?",
-      options: [
-        "Chap jadvaldagi hamma qatorlarni saqlaydi, o'ngda mos tushmasa bo'sh joy NULL bo'ladi",
-        "O'ng jadvaldagi hamma qatorlarni saqlaydi",
-        "Faqat mos tushganlarini saqlaydi",
-        "Xato beradi"
-      ],
-      correctAnswer: 0,
-      explanation: "LEFT JOIN - 'chapdagi hamma narsani ol, o'ngdagi bog'langani bo'lsa uni ham ol, bo'lmasa NULL qo'y' degani."
+      question: "ON yozilmasa nima bo'ladi?",
+      options: ["Xatolik beradi", "Ko'paytma chiqadi (har biri har biri bilan)", "Bo'sh chiqadi", "Faqat birinchisi chiqadi"],
+      correctAnswer: 1,
+      explanation: "Shartsiz birlashma ko'paytma beradi."
     },
     {
       id: 5,
-      question: "Ikki jadvalni qaysi kalitlar yordamida JOIN qilish to'g'ri amaliyot hisoblanadi?",
-      options: [
-        "Har qanday tasodifiy matnli ustunlar orqali",
-        "Primary Key va Foreign Key bog'liqliklari orqali",
-        "Sana ustunlari orqali",
-        "Boolean ustunlar orqali"
-      ],
+      question: "RIGHT JOIN kimlarni chiqaradi?",
+      options: ["Faqat chapdagilarni", "O'ngdagilarni to'liq (juftsiz ham)", "Faqat jufti borlarni", "Hech kimni"],
       correctAnswer: 1,
-      explanation: "Odatda jadvallar Primary Key (Asosiy kalit) va Foreign Key (Chet el kaliti) orqali ishonchli bog'lanadi."
+      explanation: "O'ng tomon to'liq chiqadi, jufti bo'lmasa ham."
     },
     {
       id: 6,
-      question: "Jadvallarga vaqtinchalik 'taxallus' berish qaysi kalit so'z orqali bajariladi?",
-      options: [
-        "ALIAS",
-        "NICKNAME",
-        "AS",
-        "RENAME"
-      ],
-      correctAnswer: 2,
-      explanation: "'AS' orqali yoziladi. Masalan: 'FROM users AS u'."
+      question: "FULL OUTER JOIN nimani chiqaradi?",
+      options: ["Faqat jufti borlarni", "Ikkala tomonni to'liq", "Faqat chapni", "Faqat o'ngni"],
+      correctAnswer: 1,
+      explanation: "FULL — ikkala tomonning hammasi."
     },
     {
       id: 7,
-      question: "O'z-o'ziga JOIN (Self Join) nima?",
-      options: [
-        "Jadval o'z ichidagi ma'lumotlar bilan o'zi birlashishi",
-        "Jadval o'chib ketishi",
-        "Xatolik",
-        "Tashqi kalit ishlatilmasligi"
-      ],
-      correctAnswer: 0,
-      explanation: "Self-Join'da bitta jadval 'A' va 'B' taxalluslari yordamida xuddi ikki xil jadval kabi o'z-o'ziga JOIN qilinadi (masalan boshliq-xodim munosabati)."
+      question: "`ON users.id = orders.user_id` nimani bildiradi?",
+      options: ["Ustun yaratishni", "Ulanish shartini", "Tartiblashni", "Filtrlashni"],
+      correctAnswer: 1,
+      explanation: "Qaysi qatorlar ulanishini ON aytadi."
     },
     {
       id: 8,
-      question: "FULL OUTER JOIN vazifasi nima?",
-      options: [
-        "Ikkala jadvaldagi barcha elementlarni va mos tushganlarini birlashtirib ko'rsatadi",
-        "Faqat chapni ko'rsatadi",
-        "Faqat o'ngni ko'rsatadi",
-        "CROSS JOIN bilan aynan bir xil"
-      ],
-      correctAnswer: 0,
-      explanation: "FULL OUTER JOIN bu asosan LEFT JOIN va RIGHT JOIN'ning yig'indisi desak bo'ladi."
+      question: "`ON users.id = orders.id` yozilsa nima bo'ladi?",
+      options: ["To'g'ri ishlaydi", "Xato ulanadi (noto'g'ri juftlar)", "Xatolik beradi", "Bo'sh chiqadi"],
+      correctAnswer: 1,
+      explanation: "Ustun xato tanlangan: raqamlar tasodifan mos keladi."
     },
     {
       id: 9,
-      question: "N+1 muammosi nima?",
-      options: [
-        "SQL serverda 1 ta so'rov oshib ketishi",
-        "Dasturda 1 marta so'rov o'rniga, tsikl ichida qayta-qayta bazaga murojaat qilib (masalan 100+1), sekinlashuvga olib kelish",
-        "Matematik hisob xatosi",
-        "LEFT JOIN xatosi"
-      ],
+      question: "Buyurtmasiz Guli qaysi JOIN da chiqadi?",
+      options: ["INNER", "LEFT", "Hech birida", "Ikkalasida ham"],
       correctAnswer: 1,
-      explanation: "Bu dasturlashda ko'p kuzatiladigan unumdorlik (performance) xatosi bo'lib, JOIN ishlatish orqali buning oldini olish mumkin."
+      explanation: "LEFT chap tomonni saqlaydi. INNER uni tashlaydi."
     },
     {
       id: 10,
-      question: "SQL so'rovini ixchamlash uchun 'AS' yozmasdan shunchaki bo'sh joy bilan taxallus ishlatsa bo'ladimi (users u)?",
-      options: [
-        "Yo'q, AS majburiy",
-        "Ha, ko'pchilik holatlarda AS kalit so'zi ixtiyoriy",
-        "Faqat INNER JOIN'da mumkin",
-        "Faqat qimmat SQL bazalarida mumkin"
-      ],
-      correctAnswer: 1,
-      explanation: "SQLda ko'pincha AS ixtiyoriy bo'lib, jadvallarga 'users u' deb nom bersangiz ham bo'ladi."
+      question: "Egasiz buyurtma (500) qaysi JOIN da chiqadi?",
+      options: ["INNER", "LEFT", "RIGHT", "Hech birida"],
+      correctAnswer: 2,
+      explanation: "RIGHT o'ng tomonni saqlaydi."
     },
     {
       id: 11,
-      question: "Chap jadvalda mavjud, lekin o'ng jadvalda bo'lmagan ma'lumotlarni topish uchun eng yaxshi usul:",
-      options: [
-        "INNER JOIN ishlatish",
-        "LEFT JOIN ishlatib, WHERE qismida o'ng jadval ID'sini IS NULL shartiga tekshirish",
-        "RIGHT JOIN ishlatish",
-        "FULL JOIN ishlatish"
-      ],
+      question: "3 foydalanuvchi va 4 buyurtma ON siz ulansa necha qator chiqadi?",
+      options: ["7 ta", "12 ta", "4 ta", "3 ta"],
       correctAnswer: 1,
-      explanation: "Bu 'LEFT Anti-Join' deb ataladi, va mosligi topilmaganlarni filtrlab beradi."
+      explanation: "Ko'paytma: 3 x 4 = 12."
     },
     {
       id: 12,
-      question: "Uchta jadvalni qo'shish (JOIN) jarayoni qanday ko'rinishda bo'ladi?",
-      options: [
-        "Birinchi ikkitasi qo'shiladi, so'ng natijaga uchinchi jadval JOIN orqali bog'lanadi",
-        "Uchalasi ham baravariga qo'shila olmaydi",
-        "Faqat CROSS JOIN qilish kerak",
-        "Faqat VIEW orqali mumkin"
-      ],
-      correctAnswer: 0,
-      explanation: "SQL avval 2 ta jadvalni ko'rsatilgan ON shartlariga binoan qo'shib oladi, va natijaviy setga 3-jadvalni yana ON sharti asosida biriktiradi."
+      question: "JOIN o'rniga nima ishlatsa bo'ladi (uzun yo'l)?",
+      options: ["Hech narsa", "Ko'p so'rov + dasturda ulash", "Faqat VIEW", "Faqat INDEX"],
+      correctAnswer: 1,
+      explanation: "Bazada ulash o'rniga dasturda ulash mumkin, lekin sekin."
     }
   ]
 };

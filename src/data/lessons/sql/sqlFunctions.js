@@ -1,292 +1,341 @@
 export const sqlFunctions = {
-  id: "sql_functions_1",
-  title: "SQL Functions (Funksiyalar)",
-  language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish: Oshxona Asboblari
+  id: "sqlFunctions",
+  title: "Agregat Funksiyalar (COUNT, SUM, AVG)",
+  language: "sql",
+  dbSetup: "CREATE TABLE hodimlar (id INT, ism STRING, bolim STRING, oylik INT); INSERT INTO hodimlar VALUES (1,'Ali','IT',500),(2,'Vali','IT',700),(3,'Guli','HR',400),(4,'Hasan','IT',600);",
+  theory: `## 1. Bu nima?
 
-Tasavvur qiling, sizning oshxonangizda turli xil asboblar bor.
-**Scalar (Skalyar) funksiyalar** - bu pichoq. U har bir olma yoki sabzini alohida kesadi. Ya'ni, har bir qator (row) uchun alohida bitta natija qaytaradi.
-Masalan: \\\`UPPER(name)\\\` har bir ismni katta harflarga o'tkazadi.
+Tasavvur qiling, savatda to'rtta olma bor. Sizni qiziqtirgani bitta savol: "Hammasi bo'lib nechta?" Bittalab sanash o'rniga taroziga qo'yasiz. Bitta raqam chiqadi.
 
-**Aggregate (Agregat) funksiyalar** - bu blender. Siz unga ko'plab mevalarni solasiz, u ularni aralashtirib, bitta sharbat (bitta umumiy natija) qilib beradi.
-Masalan: \\\`SUM(price)\\\` barcha narxlarni qo'shib, bitta jami summani qaytaradi.
+Dasturlashda agregat funksiyalar xuddi shu tarozi. Ko'p qator kiradi. Bitta jamlangan natija chiqadi.
 
-## 2. 🚀 Chuqur Tahlil: Ichki ishlash (Qanday Ishlaydi?)
+Agregat funksiya — ko'p qatorni bitta yakuniy qiymatga jamlaydigan buyruqdir. Eng asosiylari: \`COUNT\` (soni), \`SUM\` (yig'indi), \`AVG\` (o'rtacha), \`MIN\` (eng kichik), \`MAX\` (eng katta).
 
-SQL bazasi (Masalan PostgreSQL, MySQL) agregat funksiyalarni (\\\`SUM\\\`, \\\`AVG\\\`) bajarayotganda asosan 2 xil **Aggregation Pipeline** (guruhlash usuli) dan foydalanadi:
+---
 
-1. **HashAggregate**: 
-Xotirada (RAM) maxsus Hash-table yaratadi. Guruhning har bir kaliti (key) uchun qiymatlarni (masalan summa yoki sanoq) xotirada yangilab boradi. Agar ma'lumot xotiraga sig'masa, qolganini diskka yozishga majbur bo'ladi (Spilling to disk). Odatda HashAggregate juda tez ishlaydi, chunki ma'lumotlarni tartiblash (sorting) talab qilinmaydi.
+## 2. Nega kerak?
 
-2. **GroupAggregate (SortAggregate)**: 
-Avval barcha ma'lumotlarni guruhlanadigan ustun bo'yicha tartiblaydi (Sort), so'ngra qatorma-qator o'tib, guruhlarni hisoblaydi. Sorting (tartiblash) jarayoni CPU uchun og'ir va qimmat turadi. Shuning uchun ma'lumotlar bazasi asosan indekslangan ustunlar uchun yoki xotira (RAM) Hash-table uchun yetishmaganda GroupAggregate dan foydalanadi.
+Kompaniyada 4 xodim bor. Rahbar so'radi: "Jami oylik qancha? O'rtacha qancha?"
 
-**Performance (Tezlik) bo'yicha maslahat**:
-Barcha ma'lumotni JavaScript-ga \\\`SELECT *\\\` bilan tortib olib, Node.js da \\\`Array.reduce()\\\` orqali hisoblash qat'iyan man etiladi! DB-ning o'zi buni maxsus C/C++ tillarida yozilgan motor (engine) orqali va SIMD (Single Instruction, Multiple Data) ko'rsatmalaridan foydalanib, ancha tezroq bajaradi. Natijani tayyor holda (masalan \\\`SELECT SUM(price)\\\`) olish eng optimal yondashuvdir.
+Muammo shunda: har birini qo'lda qo'shib bo'lmaydi. Yuzlab qator bo'lsa-chi? Yechim — jamlovchi funksiyalar:
 
-## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
+\`\`\`sql
+SELECT COUNT(*) AS soni FROM hodimlar;
+SELECT SUM(oylik) AS jami FROM hodimlar;
+\`\`\`
 
-1. **\\\`COUNT(*)\\\` va \\\`COUNT(column_name)\\\` o'rtasidagi farq nimada?**
-   - \\\`COUNT(*)\\\` barcha qatorlarni, hatto qatordagi barcha ustunlar \\\`NULL\\\` bo'lsa ham sanaydi.
-   - \\\`COUNT(column_name)\\\` esa faqat ko'rsatilgan ustunda \\\`NULL\\\` bo'lmagan qatorlarni sanaydi. \\\`NULL\\\` qiymatlar hisobga olinmaydi.
+Bitta so'rov. Bitta javob. Qo'lda hisoblash shart emas.
 
-2. **Window Function va Aggregate Function ning farqi nimada?**
-   - Agregat funksiya ko'plab qatorlarni birlashtirib (guruhlab), guruh uchun bitta natija qaytaradi, ya'ni yakuniy qatorlar soni qisqaradi.
-   - Window function (masalan \\\`SUM(salary) OVER()\\\`) guruhlashni qatorlarni qisqartirmasdan amalga oshiradi. U har bir asl qatorni saqlab qoladi, lekin har bir qator yoniga umumiy natijani (masalan jami summani) yozib beradi.
+---
 
-3. **Agregat funksiyalar bilan \\\`WHERE\\\` ishlatish mumkinmi?**
-   - Yo'q. \\\`WHERE\\\` guruhlash jarayonidan oldin ishlaydi va faqat oddiy qatorlarni filtrlaydi.
-   - Agregat funksiyalar asosida filtrlash uchun (masalan jami summasi 100 dan katta bo'lgan guruhlar) \\\`HAVING\\\` ishlatiladi. \\\`HAVING\\\` doim guruhlash va hisoblash tugagandan so'ng ishga tushadi.
+## 3. Birinchi misol
 
-## 📊 Ma'lumotlarni Qayta ishlash Arxitekturasi
+Bu kod xodimlar sonini hisoblaydi.
 
-\\\`\\\`\\\`mermaid
-graph TD;
-    A[SQL So'rovi] --> B{Funksiya Turi};
-    B -->|Skalyar| C[Har bir qatorga qo'llanadi];
-    B -->|Agregat| D[Guruhlash / Aggregation Pipeline];
-    D --> E{Execution Plan};
-    E -->|Xotira yetarli| F[HashAggregate];
-    E -->|Xotira kam / Index bor| G[GroupAggregate / Sort];
-    F --> H[Umumiy Bitta Natija];
-    G --> H;
-\\\`\\\`\\\``,
+\`\`\`sql
+SELECT COUNT(*) AS soni FROM hodimlar; -- Nechta qator bor?
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"soni":4}]
+\`\`\`
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`COUNT(*)\` — qatorlarni sanaydi. Yulduzcha "hammasi" degani.
+- \`AS soni\` — natija ustuniga nom beradi.
+- Natijada bitta qator, bitta ustun: \`4\`.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod bo'limlar bo'yicha guruhlab sanaydi.
+
+\`\`\`sql
+SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim; -- Har bo'limda nechtadan?
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"bolim":"IT","soni":3},{"bolim":"HR","soni":1}]
+\`\`\`
+
+Qator-baqator tahlil:
+- \`GROUP BY bolim\` — qatorlarni bo'limlarga ajratadi. IT alohida, HR alohida.
+- \`COUNT(*)\` — har guruhni alohida sanaydi. IT da 3 ta, HR da 1 ta.
+- Natijada har guruh uchun bitta qator chiqadi.
+
+---
+
+## 5.1. Guruhni filtrlash
+
+Guruhlangan natijani ham filtrlash mumkin. Lekin \`WHERE\` bilan emas — \`HAVING\` bilan:
+
+\`\`\`sql
+SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim HAVING COUNT(*) > 1; -- 1 tadan ko'p bo'lganlar
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"bolim":"IT","soni":3}]
+\`\`\`
+
+Qator-baqator tahlil:
+- Avval guruhlash bajarildi: IT (3 ta), HR (1 ta).
+- \`HAVING COUNT(*) > 1\` — guruhlarni tekshirdi. Faqat IT shartga mos keldi.
+- \`WHERE\` qatorlarni, \`HAVING\` guruhlarni filtrlaydi.
+
+---
+
+## 6. Ko'p uchraydigan xatolar
+
+### 1. GROUP BY siz ustun qo'shish
+❌ Xato kod:
+\`\`\`sql
+SELECT bolim, COUNT(*) AS soni FROM hodimlar;
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin natijada \`bolim\` ustuni yo'qolib ketadi — faqat \`soni\` chiqadi. Qaysi guruh sanalgani bilinmaydi. Natija ishonchsiz.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim;
+\`\`\`
+
+### 2. Guruhga WHERE ishlatish
+❌ Xato kod:
+\`\`\`sql
+SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim WHERE COUNT(*) > 1;
+\`\`\`
+Nima bo'ladi: xatolik yuz beradi. \`WHERE\` guruhlashdan oldin ishlaydi. U hali guruhlarni ko'rmagan. Guruh sharti uchun faqat \`HAVING\` ishlatiladi.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim HAVING COUNT(*) > 1;
+\`\`\`
+
+### 3. COUNT(ustun) bilan COUNT(*) ni aralashtirish
+❌ Xato tushuncha:
+\`\`\`sql
+SELECT COUNT(bolim) AS soni FROM hodimlar;
+\`\`\`
+Nima bo'ladi: xato bermaydi. Lekin farq bor: \`COUNT(*)\` hamma qatorni sanaydi. \`COUNT(bolim)\` faqat bo'sh bo'lmaganlarini sanaydi. Hozirgi jadvalda farq chiqmaydi. Lekin esda tutish kerak.
+✅ To'g'ri tushuncha: hamma qator kerak bo'lsa — \`COUNT(*)\` yoziladi.
+
+---
+
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+hodimlar sonini chiqaring (\`COUNT(*)\` bilan). Natija \`4\` bo'lishi kerak.
+
+### 2-mashq (O'rtacha)
+Oyliklar yig'indisini chiqaring (\`SUM(oylik)\` bilan). Natija \`2200\` bo'lishi kerak.
+
+### 3-mashq (Chegara holat)
+Bo'limlar bo'yicha sanang. Faqat 1 tadan ko'p bo'lgan guruh chiqsin (\`HAVING\` bilan). Faqat IT chiqishi kerak.
+
+### Javoblar:
+1.
+\`\`\`sql
+SELECT COUNT(*) AS soni FROM hodimlar;
+\`\`\`
+2.
+\`\`\`sql
+SELECT SUM(oylik) AS jami FROM hodimlar;
+\`\`\`
+3.
+\`\`\`sql
+SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim HAVING COUNT(*) > 1;
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. Agregat funksiyalar ko'p qatorni bitta natijaga jamlaydi: \`COUNT\`, \`SUM\`, \`AVG\`, \`MIN\`, \`MAX\`.
+2. \`GROUP BY\` qatorlarni guruhlaydi. Har guruh alohida hisoblanadi.
+3. \`WHERE\` qatorlarni, \`HAVING\` guruhlarni filtrlaydi. Joyi almashmaydi.
+
+Keyingi darsda: mavjud qatorni yangilash va o'chirish (UPDATE, DELETE) bilan tanishamiz.
+`,
   exercises: [
     {
       id: 1,
-      title: "COUNT - Qatorlarni sanash",
-      instruction: "Barcha foydalanuvchilar (users) sonini sanaydigan SQL so'rovini qaytaruvchi funksiya yozing. Alias sifatida 'total_users' ishlating.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT COUNT(*) AS ...",
-      solution: "function myFunction() {\n  return \"SELECT COUNT(*) AS total_users FROM users;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('COUNT(*)') || !res.includes('TOTAL_USERS')) throw new Error('Xato so\\'rov');"
+      title: "1-Topshiriq: Sanoq",
+      instruction: "hodimlar jadvalidagi (id, ism, bolim, oylik) qatorlar sonini chiqaring. Natija 4 bo'lishi kerak.",
+      startingCode: "SELECT * FROM hodimlar;",
+      hint: "SELECT COUNT(*) AS soni FROM hodimlar;",
+      solution: "SELECT COUNT(*) AS soni FROM hodimlar;",
+      test: "if (!/\\bCOUNT\\b/i.test(code)) return 'COUNT yozing';\nif (result.length !== 1 || result[0].soni !== 4) return 'Natija 4 bolishi kerak';\nreturn null;"
     },
     {
       id: 2,
-      title: "SUM - Yig'indini hisoblash",
-      instruction: "'orders' jadvalidagi barcha 'amount' ustuni yig'indisini 'total_sales' aliasi bilan qaytaruvchi SQL yozing.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT SUM(...) AS ...",
-      solution: "function myFunction() {\n  return \"SELECT SUM(amount) AS total_sales FROM orders;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('SUM(AMOUNT)') || !res.includes('TOTAL_SALES')) throw new Error('Xato so\\'rov');"
+      title: "2-Topshiriq: Yig'indi",
+      instruction: "Oyliklar yig'indisini chiqaring. Natija 2200 bo'lishi kerak.",
+      startingCode: "SELECT * FROM hodimlar;",
+      hint: "SELECT SUM(oylik) AS jami FROM hodimlar;",
+      solution: "SELECT SUM(oylik) AS jami FROM hodimlar;",
+      test: "if (!/\\bSUM\\b/i.test(code)) return 'SUM yozing';\nif (result.length !== 1 || result[0].jami !== 2200) return 'Natija 2200 bolishi kerak';\nreturn null;"
     },
     {
       id: 3,
-      title: "AVG - O'rtacha qiymat",
-      instruction: "'products' jadvalidagi 'price' ustunining o'rtacha qiymatini 'avg_price' qilib qaytaring.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT AVG(...) AS ...",
-      solution: "function myFunction() {\n  return \"SELECT AVG(price) AS avg_price FROM products;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('AVG(PRICE)')) throw new Error('Xato so\\'rov');"
+      title: "3-Topshiriq: O'rtacha",
+      instruction: "O'rtacha oylikni chiqaring. Natija 550 bo'lishi kerak.",
+      startingCode: "SELECT * FROM hodimlar;",
+      hint: "SELECT AVG(oylik) AS ortacha FROM hodimlar;",
+      solution: "SELECT AVG(oylik) AS ortacha FROM hodimlar;",
+      test: "if (!/\\bAVG\\b/i.test(code)) return 'AVG yozing';\nif (result.length !== 1 || result[0].ortacha !== 550) return 'Natija 550 bolishi kerak';\nreturn null;"
     },
     {
       id: 4,
-      title: "MAX - Eng katta qiymat",
-      instruction: "'employees' jadvalidan eng yuqori maoshni (salary) 'highest_salary' qilib oling.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT MAX(...) AS ...",
-      solution: "function myFunction() {\n  return \"SELECT MAX(salary) AS highest_salary FROM employees;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('MAX(SALARY)')) throw new Error('Xato so\\'rov');"
+      title: "4-Topshiriq: Eng kichik va katta",
+      instruction: "Eng kichik va eng katta oylikni chiqaring (400 va 700).",
+      startingCode: "SELECT oylik FROM hodimlar;",
+      hint: "SELECT MIN(oylik) AS engkam, MAX(oylik) AS engkop FROM hodimlar;",
+      solution: "SELECT MIN(oylik) AS engkam, MAX(oylik) AS engkop FROM hodimlar;",
+      test: "if (!/\\bMIN\\b/i.test(code) || !/\\bMAX\\b/i.test(code)) return 'MIN va MAX yozing';\nif (result[0].engkam !== 400 || result[0].engkop !== 700) return '400 va 700 chiqishi kerak';\nreturn null;"
     },
     {
       id: 5,
-      title: "MIN - Eng kichik qiymat",
-      instruction: "'products' jadvalidan eng arzon mahsulot narxini (price) 'lowest_price' qilib oling.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT MIN(...) AS ...",
-      solution: "function myFunction() {\n  return \"SELECT MIN(price) AS lowest_price FROM products;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('MIN(PRICE)')) throw new Error('Xato so\\'rov');"
+      title: "5-Topshiriq: Guruhlash",
+      instruction: "Bo'limlar bo'yicha sanang (IT: 3, HR: 1). 2 qator chiqishi kerak.",
+      startingCode: "SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim;",
+      hint: "SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim;",
+      solution: "SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim;",
+      test: "if (!/\\bGROUP\\s+BY\\b/i.test(code)) return 'GROUP BY yozing';\nif (result.length !== 2) return '2 guruh chiqishi kerak';\nreturn null;"
     },
     {
       id: 6,
-      title: "UPPER - Katta harflarga o'tkazish",
-      instruction: "'users' jadvalidan 'name' ustunini barchasini katta harflarda 'upper_name' aliasi bilan oling.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT UPPER(name) AS ...",
-      solution: "function myFunction() {\n  return \"SELECT UPPER(name) AS upper_name FROM users;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('UPPER(NAME)')) throw new Error('Xato so\\'rov');"
+      title: "6-Topshiriq: Guruh filtri",
+      instruction: "Faqat 1 tadan ko'p xodimi bor bo'limni chiqaring (HAVING bilan). Faqat IT chiqishi kerak.",
+      startingCode: "SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim;",
+      hint: "Oxiriga HAVING COUNT(*) > 1 qo'shing.",
+      solution: "SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim HAVING COUNT(*) > 1;",
+      test: "if (!/\\bHAVING\\b/i.test(code)) return 'HAVING yozing';\nif (result.length !== 1 || result[0].bolim !== 'IT') return 'Faqat IT chiqishi kerak';\nreturn null;"
     },
     {
       id: 7,
-      title: "LOWER - Kichik harflarga o'tkazish",
-      instruction: "'users' jadvalidan 'email' ustunini to'liq kichik harflarda 'lower_email' qilib oling.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT LOWER(email) AS ...",
-      solution: "function myFunction() {\n  return \"SELECT LOWER(email) AS lower_email FROM users;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('LOWER(EMAIL)')) throw new Error('Xato so\\'rov');"
+      title: "7-Topshiriq: GROUP BY qo'shish",
+      instruction: "Quyidagi xatoni tuzating: `GROUP BY` qo'shing (IT: 3, HR: 1 chiqishi kerak).",
+      startingCode: "SELECT bolim, COUNT(*) AS soni FROM hodimlar;",
+      hint: "Oxiriga GROUP BY bolim qo'shing.",
+      solution: "SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim;",
+      test: "if (!/\\bGROUP\\s+BY\\b/i.test(code)) return 'GROUP BY qoshing';\nif (result.length !== 2) return '2 guruh chiqishi kerak';\nreturn null;"
     },
     {
       id: 8,
-      title: "ROUND - Yaxlitlash",
-      instruction: "'products' jadvalidan 'price' ustunini 2 xona aniqlikda yaxlitlab, 'rounded_price' qilib oling.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT ROUND(price, 2) AS ...",
-      solution: "function myFunction() {\n  return \"SELECT ROUND(price, 2) AS rounded_price FROM products;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('ROUND(PRICE, 2)') && !res.includes('ROUND(PRICE,2)')) throw new Error('Xato so\\'rov');"
+      title: "8-Topshiriq: WHERE o'rniga HAVING",
+      instruction: "Quyidagi xatoni tuzating: guruh sharti `WHERE` emas, `HAVING` bo'lishi kerak.",
+      startingCode: "SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim WHERE COUNT(*) > 1;",
+      hint: "WHERE ni HAVING ga almashtiring.",
+      solution: "SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim HAVING COUNT(*) > 1;",
+      test: "if (!/\\bHAVING\\b/i.test(code)) return 'HAVING yozing';\nif (result.length !== 1) return 'Faqat IT chiqishi kerak';\nreturn null;"
     },
     {
       id: 9,
-      title: "CONCAT - Birlashtirish",
-      instruction: "'users' jadvalidagi 'first_name' va 'last_name' ustunlarini orasida bo'sh joy qo'yib birlashtirib, 'full_name' qilib oling.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT CONCAT(first_name, ' ', last_name) ...",
-      solution: "function myFunction() {\n  return \"SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM users;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('CONCAT(FIRST_NAME')) throw new Error('Xato so\\'rov');"
+      title: "9-Topshiriq: IT yig'indi (chegara)",
+      instruction: "Faqat IT bo'limi oyliklari yig'indisini chiqaring (WHERE + SUM). Natija 1800 bo'lishi kerak.",
+      startingCode: "SELECT * FROM hodimlar;",
+      hint: "Oxiriga WHERE bolim = 'IT' qo'shing.",
+      solution: "SELECT SUM(oylik) AS jami FROM hodimlar WHERE bolim = 'IT';",
+      test: "if (!/\\bWHERE\\b/i.test(code)) return 'WHERE bilan filtrlang';\nif (result[0].jami !== 1800) return 'Natija 1800 bolishi kerak';\nreturn null;"
     },
     {
       id: 10,
-      title: "COALESCE - NULL o'rniga qiymat",
-      instruction: "'users' jadvalidan 'phone' ustunini oling, agar NULL bo'lsa 'No Phone' so'zini chiqaring (alias: user_phone).",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT COALESCE(phone, 'No Phone') AS ...",
-      solution: "function myFunction() {\n  return \"SELECT COALESCE(phone, 'No Phone') AS user_phone FROM users;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('COALESCE(PHONE') || !res.includes('NO PHONE')) throw new Error('Xato so\\'rov');"
+      title: "10-Topshiriq: Eng katta IT oylik (chegara)",
+      instruction: "IT bo'limidagi eng katta oylikni chiqaring. Natija 700 bo'lishi kerak.",
+      startingCode: "SELECT MAX(oylik) AS engkop FROM hodimlar;",
+      hint: "Oxiriga WHERE bolim = 'IT' qo'shing.",
+      solution: "SELECT MAX(oylik) AS engkop FROM hodimlar WHERE bolim = 'IT';",
+      test: "if (result[0].engkop !== 700) return 'Natija 700 bolishi kerak';\nreturn null;"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "SQL agregat funksiyalari qanday vazifani bajaradi?",
-      options: [
-        "Jadvaldagi barcha qatorlarni o'chiradi",
-        "Bir nechta qatorlardan bitta umumiy natija/xulosa hisoblaydi",
-        "Har bir qatorga alohida hisob-kitob qo'llaydi",
-        "Yangi ustun qo'shadi"
-      ],
+      question: "`SELECT COUNT(*) AS soni FROM hodimlar;` (4 qator) nima qaytaradi?",
+      options: ["4 ta qator", "Bitta qator: 4", "Xatolik", "Bo'sh natija"],
       correctAnswer: 1,
-      explanation: "Agregat funksiyalar (masalan SUM, AVG) ko'plab qatorlarni birlashtirib bitta qiymat beradi."
+      explanation: "COUNT hammasini sanab, bitta natija beradi."
     },
     {
       id: 2,
-      question: "Qaysi funksiya NULL qiymatlarni sanamaydi?",
-      options: [
-        "COUNT(*)",
-        "COUNT(1)",
-        "COUNT(column_name)",
-        "Yuqoridagilarning barchasi sanaydi"
-      ],
-      correctAnswer: 2,
-      explanation: "COUNT(column_name) ko'rsatilgan ustundagi faqat NULL bo'lmagan (mavjud) qiymatlarni sanaydi. COUNT(*) barchasini sanaydi."
+      question: "Yig'indi hisoblaydigan funksiya qaysi?",
+      options: ["COUNT", "SUM", "AVG", "MIN"],
+      correctAnswer: 1,
+      explanation: "SUM ustun qiymatlarini qo'shadi."
     },
     {
       id: 3,
-      question: "Ma'lumotlarni guruhlaganda (GROUP BY), agregat funksiyalar natijasi bo'yicha filtrlash uchun nima ishlatiladi?",
-      options: [
-        "WHERE",
-        "HAVING",
-        "FILTER",
-        "ORDER BY"
-      ],
+      question: "O'rtacha hisoblaydigan funksiya qaysi?",
+      options: ["SUM", "AVG", "MAX", "COUNT"],
       correctAnswer: 1,
-      explanation: "Agregat funksiyalar natijasi bo'yicha filtrlash faqat HAVING orqali qilinadi. WHERE esa oddiy qatorlarni guruhlashdan oldin filtrlaydi."
+      explanation: "AVG o'rtacha qiymatni hisoblaydi."
     },
     {
       id: 4,
-      question: "Matnni faqat kichik harflarga o'tkazuvchi skalyar SQL funksiyasi qaysi?",
-      options: [
-        "SMALLTEXT()",
-        "LOWER()",
-        "DOWN()",
-        "MIN()"
-      ],
+      question: "`SELECT bolim, COUNT(*) AS soni FROM hodimlar GROUP BY bolim;` nechta qator qaytaradi?",
+      options: ["1 ta", "2 ta (har bo'limga bitta)", "4 ta", "Xatolik"],
       correctAnswer: 1,
-      explanation: "LOWER() funksiyasi berilgan matndagi barcha harflarni kichik registrga o'tkazadi."
+      explanation: "Har guruh uchun bitta qator: IT va HR."
     },
     {
       id: 5,
-      question: "Qatorlar narxining o'rtacha qiymatini qanday topish mumkin?",
-      options: [
-        "SELECT MIDDLE(price)",
-        "SELECT AVG(price)",
-        "SELECT MEAN(price)",
-        "SELECT CENTER(price)"
-      ],
+      question: "Guruhlarni filtrlash uchun nima ishlatiladi?",
+      options: ["WHERE", "HAVING", "FILTER", "GROUP"],
       correctAnswer: 1,
-      explanation: "SQL da o'rtacha qiymat topish uchun AVG() (Average) agregat funksiyasi ishlatiladi."
+      explanation: "WHERE qatorlarni, HAVING guruhlarni filtrlaydi."
     },
     {
       id: 6,
-      question: "Agar qatorda NULL qiymat bo'lsa, o'rniga default qiymat qaytarish uchun qaysi funksiya ishlatiladi?",
-      options: [
-        "ISNULL()",
-        "NVL()",
-        "COALESCE()",
-        "IFNULL()"
-      ],
-      correctAnswer: 2,
-      explanation: "COALESCE() standart SQL funksiyasi bo'lib, o'z ro'yxatidagi birinchi NULL bo'lmagan qiymatni qaytaradi."
+      question: "`SELECT bolim, COUNT(*) AS soni FROM hodimlar;` (GROUP BY siz) nima qiladi?",
+      options: ["Ishlaydi", "Xatolik beradi", "Bo'sh qaytaradi", "Hammasini sanaydi"],
+      correctAnswer: 1,
+      explanation: "Guruhlanmagan ustun bilan jamlangan natija aralashib bo'lmaydi."
     },
     {
       id: 7,
-      question: "ROUND(45.926, 2) qanday natija beradi?",
-      options: [
-        "45",
-        "46",
-        "45.93",
-        "45.92"
-      ],
-      correctAnswer: 2,
-      explanation: "ROUND funksiyasi 2-xona aniqlikkacha yaxlitlaydi, 0.006 > 0.005 bo'lgani uchun natija 45.93 ga aylanadi."
+      question: "Eng kichik qiymatni topadigan funksiya qaysi?",
+      options: ["MAX", "MIN", "LOW", "SMALL"],
+      correctAnswer: 1,
+      explanation: "MIN eng kichikni, MAX eng kattani qaytaradi."
     },
     {
       id: 8,
-      question: "Qatorlardagi matnlarni bir-biriga yopishtirish (birlashtirish) uchun qaysi funksiyadan foydalaniladi?",
-      options: [
-        "JOIN()",
-        "MERGE()",
-        "CONCAT()",
-        "ADD()"
-      ],
-      correctAnswer: 2,
-      explanation: "CONCAT() funksiyasi 2 yoki undan ortiq matnlarni bir-biriga ulash/birlashtirish uchun ishlatiladi."
+      question: "`SELECT SUM(oylik) AS jami FROM hodimlar WHERE bolim = 'IT';` (500, 700, 600) nima qaytaradi?",
+      options: ["2200", "1800", "3", "Xatolik"],
+      correctAnswer: 1,
+      explanation: "Avval WHERE filtrlaydi (3 qator), keyin SUM qo'shadi."
     },
     {
       id: 9,
-      question: "HashAggregate ning GroupAggregate (SortAggregate) dan asosiy ustunligi nimada?",
-      options: [
-        "Index kerak emas va xotira(RAM) yetarli bo'lsa ma'lumotlarni tartiblamaydi (sorting qilinmaydi) shu sabab tezroq",
-        "Har doim disk(xotira) dan foydalanadi va xavfsizroq",
-        "Faqat kichik jadvallar bilan ishlaydi",
-        "HashAggregate umuman mavjud emas"
-      ],
-      correctAnswer: 0,
-      explanation: "HashAggregate ma'lumotlarni tartiblash(sorting)ga vaqt sarflamaydi va xotirada tezkor hash-table yaratish orqali natija beradi."
+      question: "HAVING qayerda yoziladi?",
+      options: ["WHERE dan oldin", "GROUP BY dan keyin", "SELECT dan oldin", "FROM dan oldin"],
+      correctAnswer: 1,
+      explanation: "Tartib: GROUP BY, keyin HAVING."
     },
     {
       id: 10,
-      question: "SUM va COUNT funksiyalarining maqsadi qanday farqlanadi?",
-      options: [
-        "SUM qatorlarni sanaydi, COUNT qo'shadi",
-        "SUM sonlarni bir-biriga qo'shib jami miqdorni hisoblaydi, COUNT esa qatorlar sonini sanaydi",
-        "Ikkalasi ham har qanday ma'lumotni hisoblaydi va bir xil ish qiladi",
-        "COUNT faqat sonlarda, SUM esa matnlarda ishlaydi"
-      ],
-      correctAnswer: 1,
-      explanation: "SUM matematik qo'shish jarayoni, COUNT esa ob'ekt(qator)lar sanog'ini chiqarish jarayoni hisoblanadi."
+      question: "`SELECT MAX(oylik) AS engkop FROM hodimlar WHERE bolim = 'IT';` (500, 700, 600) nima qaytaradi?",
+      options: ["700", "600", "500", "1800"],
+      correctAnswer: 0,
+      explanation: "IT ichidagi eng kattasi 700."
     },
     {
       id: 11,
-      question: "Window function agregat funksiyadan nima bilan farq qiladi?",
-      options: [
-        "O'rtasida hech qanday farq yo'q",
-        "Window function asl qatorlarni qisqartirib tashlaydi",
-        "Window function qatorlarni qisqartirmasdan har bir qator yoniga umumiy natija beradi",
-        "Window function faqat Windows operatsion tizimi serverlarida ishlaydi"
-      ],
-      correctAnswer: 2,
-      explanation: "Window function guruhlashda original qatorlar sonini o'zgartirmay, har bir qator ma'lumotini saqlab qoladi."
+      question: "COUNT(*) bilan COUNT(bolim) farqi nima?",
+      options: ["Farqi yo'q", "Birinchisi hamma qatorni, ikkinchisi bo'sh bo'lmaganlarni sanaydi", "Ikkinchisi tezroq", "Birinchisi xato beradi"],
+      correctAnswer: 1,
+      explanation: "COUNT(ustun) bo'sh (NULL) qiymatlarni sanamaydi."
     },
     {
       id: 12,
-      question: "Hisoblashlarni SQL o'zida amalga oshirish nima uchun frontend/backend da hisoblashdan (masalan Array.reduce) afzal?",
-      options: [
-        "C++ da yozilgan DB engine va SIMD imkoniyatlari sababli ishlash tezligi yuqori bo'ladi va tarmoq orqali ortiqcha data o'tmaydi",
-        "JavaScript hisoblashlarda xato qiladi",
-        "Ma'lumotlar bazasi ko'proq xotira egallaydi",
-        "Hech qachon afzal emas, doim Array.reduce ishlatish kerak"
-      ],
-      correctAnswer: 0,
-      explanation: "Katta hajmdagi ma'lumotni tarmoq orqali o'tkazmay, uni SQL orqali motorning o'zida hisoblash ancha samarali va tez."
+      question: "Agregat natijasi nechta qator bo'ladi (guruhsiz)?",
+      options: ["Qatorlar sonicha", "Bitta", "Nol", "Cheksiz"],
+      correctAnswer: 1,
+      explanation: "Guruhsiz jamlash har doim bitta qator qaytaradi."
     }
   ]
 };

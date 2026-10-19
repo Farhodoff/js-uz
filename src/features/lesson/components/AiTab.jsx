@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 
-export default function AiTab({ aiQuestion, setAiQuestion, askAI, aiLoading, aiAnswer }) {
+export default function AiTab({ aiQuestion, setAiQuestion, askAI, aiLoading, aiAnswer, clearAnswer }) {
   return (
     <div>
       <div className="ai-description">
@@ -42,11 +42,18 @@ export default function AiTab({ aiQuestion, setAiQuestion, askAI, aiLoading, aiA
           >
             {aiAnswer}
           </ReactMarkdown>
+          <button
+            className="btn btn-ghost"
+            onClick={clearAnswer}
+            aria-label="Javobni tozalash"
+            style={{ marginTop: 8 }}
+          >
+            🧹 Tozalash
+          </button>
         </div>
       )}
-      
-      {true && (
-        <div style={{ marginTop: 20, padding: 15, background: 'rgba(0,0,0,0.2)', borderRadius: 8, fontSize: 14 }}>
+
+      <div style={{ marginTop: 20, padding: 15, background: 'rgba(0,0,0,0.2)', borderRadius: 8, fontSize: 14 }}>
           <div style={{ marginBottom: 8, color: '#f1c40f', fontWeight: 'bold' }}>Gemini API Kaliti</div>
           <div style={{ color: 'var(--text-muted)', marginBottom: 10, fontSize: 12 }}>
             AIdan bepul foydalanish uchun o'zingizning Gemini API kalitingizni kiriting. U faqat shu brauzerda saqlanadi.
@@ -74,7 +81,6 @@ export default function AiTab({ aiQuestion, setAiQuestion, askAI, aiLoading, aiA
             >Saqlash</button>
           </div>
         </div>
-      )}
     </div>
   );
 }

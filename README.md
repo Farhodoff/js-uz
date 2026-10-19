@@ -8,7 +8,7 @@ JavaScript dasturlash tilini **o'zbek tilida** noldan boshlab bosqichma-bosqich 
 - 💻 **Live kod editor** — brauzerda kod yozib, avtomatik testlar bilan tekshirish
 - 📝 **Har bir darsda** — nazariya + 10 amaliy mashq + 12 test savoli
 - 🏆 **900+ challenges** — qo'shimcha mashq banki
-- 🤖 **AI yordamchi** — DeepSeek orqali o'zbek tilida javob olish
+- 🤖 **AI yordamchi** — o'z Gemini API kalitingiz bilan o'zbek tilida javob olish (kalit faqat brauzeringizda saqlanadi)
 - 📊 **Progress tracking** — har bir dars holati saqlanadi
 - 📱 **PWA + Responsive** — mobil qurilmalarda ham ishlaydi
 
@@ -23,7 +23,7 @@ JavaScript dasturlash tilini **o'zbek tilida** noldan boshlab bosqichma-bosqich 
 | ReactMarkdown | Markdown rendering |
 | Mermaid | Diagrammalar |
 | Zustand | State + progress (localStorage) |
-| DeepSeek API | AI yordamchi |
+| Gemini API | AI yordamchi (foydalanuvchi kaliti, brauzerda) |
 | Vercel | Hosting & Serverless |
 
 ## 🚀 O'rnatish
@@ -35,10 +35,6 @@ cd js-uz
 
 # Dependency'lar o'rnatish
 npm install
-
-# .env faylini yaratish
-cp .env.example .env
-# DEEPSEEK_API_KEY ni .env faylga yozing
 
 # Development serverni ishga tushirish
 npm run dev
@@ -67,8 +63,6 @@ src/
         ├── nodejs/, typescript/, sql/, algorithms/,
         │  system-design/, ecosystem/, soft-skills/,
         │  projects/, challenges/     # Qo'shimcha yo'nalishlar
-api/
-└── chat.js             # Vercel serverless (DeepSeek proxy)
 ```
 
 ## 📝 Litsenziya

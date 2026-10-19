@@ -214,6 +214,62 @@ Keyingi darsda: DOM olamiga kirish — \`window\` va \`document\` obyektlari bil
       startingCode: "const config = new Map();\n// set qiling, delete qiling va size ni chiqaring\n",
       hint: "config.set(\"theme\", \"dark\");\nconfig.delete(\"theme\");\nconsole.log(config.size);",
       test: "if (!code.includes('.delete') || !code.includes('.size')) return 'delete va size ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('0')) return null;\nreturn '0 soni konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Yo'q kalit: get() undefined, has() false",
+      "instruction": "`colors` Map to'plamiga `set(\"qizil\", \"#f00\")` qo'shilgan. Mavjud bo'lmagan `\"yashil\"` kaliti uchun `get()` va `has()` natijalarini konsolga chiqaring.",
+      "startingCode": "const colors = new Map();\ncolors.set(\"qizil\", \"#f00\");\n// yo'q kalit uchun get() va has() natijasini chiqaring\n",
+      "hint": "const colors = new Map();\ncolors.set(\"qizil\", \"#f00\");\nconsole.log(colors.get(\"yashil\"));\nconsole.log(colors.has(\"yashil\"));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\".get\") || !code.includes(\".has\")) return \"get() va has() ishlatilmadi\";\nif (out.some((m) => m.trim() === \"undefined\") && out.some((m) => m.trim() === \"false\")) return null;\nreturn \"undefined va false konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Kalit turi: son va matn alohida",
+      "instruction": "`price` Map to'plamiga `price.set(1, \"bir\")` va `price.set(\"1\", \"matn\")` qo'shing. `size` (2) va `get(1)` (\"bir\") natijalarini konsolga chiqaring.",
+      "startingCode": "const price = new Map();\n// son 1 va matn \"1\" kalitlarini qo'shing, size va get ni chiqaring\n",
+      "hint": "const price = new Map();\nprice.set(1, \"bir\");\nprice.set(\"1\", \"matn\");\nconsole.log(price.size);\nconsole.log(price.get(1));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\".set\")) return \"set() ishlatilmadi\";\nif (out.some((m) => m.trim() === \"2\") && out.some((m) => m.trim() === \"bir\")) return null;\nreturn \"2 va \\\"bir\\\" konsolga chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "delete() natijasi: true, keyin false",
+      "instruction": "`users` Map to'plamidan `delete(\"ali\")` natijasini, keyin yana bir marta `delete(\"ali\")` natijasini, so'ng `size` ni konsolga chiqaring (true, false, 0).",
+      "startingCode": "const users = new Map();\nusers.set(\"ali\", 25);\n// ikki marta delete qilib, so'ng size ni chiqaring\n",
+      "hint": "const users = new Map();\nusers.set(\"ali\", 25);\nconsole.log(users.delete(\"ali\"));\nconsole.log(users.delete(\"ali\"));\nconsole.log(users.size);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\".delete\")) return \"delete() ishlatilmadi\";\nconst hasTrue = out.some((m) => m.trim() === \"true\");\nconst hasFalse = out.some((m) => m.trim() === \"false\");\nif (hasTrue && hasFalse && out.some((m) => m.trim() === \"0\")) return null;\nreturn \"true, false va 0 konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "Bir kalitga qayta set: qiymat yangilanadi",
+      "instruction": "`stock` to'plamiga `set(\"olma\", 10)` va yana `set(\"olma\", 25)` qo'shing. Kalit takrorlanishi `size` ni oshirmasligini ko'rsating: `get(\"olma\")` (25) va `size` (1).",
+      "startingCode": "const stock = new Map();\n// bir kalitni ikki marta set qilib, get va size ni chiqaring\n",
+      "hint": "const stock = new Map();\nstock.set(\"olma\", 10);\nstock.set(\"olma\", 25);\nconsole.log(stock.get(\"olma\"));\nconsole.log(stock.size);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\".set\")) return \"set() ishlatilmadi\";\nif (out.some((m) => m.trim() === \"25\") && out.some((m) => m.trim() === \"1\")) return null;\nreturn \"25 va 1 konsolga chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "Boolean kalit bilan ishlash",
+      "instruction": "`flags` Map to'plamiga `set(true, \"yoqilgan\")` va `set(false, \"ochirilgan\")` qo'shib, `get(false)` qiymatini konsolga chiqaring.",
+      "startingCode": "const flags = new Map();\n// boolean kalitlar bilan ishlang va get(false) ni chiqaring\n",
+      "hint": "const flags = new Map();\nflags.set(true, \"yoqilgan\");\nflags.set(false, \"ochirilgan\");\nconsole.log(flags.get(false));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"set(true\") && !code.includes(\"set(false\")) return \"boolean kalit ishlatilmadi\";\nif (out.some((m) => m.trim() === \"ochirilgan\")) return null;\nreturn \"ochirilgan konsolga chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Obyekt kalit sifatida (chegara holat)",
+      "instruction": "`k1` va `k2` bir xil mazmundagi alohida obyektlar. `m.set(k1, \"birinchi\")` qilib, `m.get(k2)` (undefined) va `m.has(k1)` (true) natijalarini konsolga chiqaring.",
+      "startingCode": "const k1 = { id: 1 };\nconst k2 = { id: 1 };\nconst m = new Map();\n// k1 ni kalit qilib qo'ying, k2 bilan get va k1 bilan has ni chiqaring\n",
+      "hint": "const k1 = { id: 1 };\nconst k2 = { id: 1 };\nconst m = new Map();\nm.set(k1, \"birinchi\");\nconsole.log(m.get(k2));\nconsole.log(m.has(k1));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\".set\")) return \"set() ishlatilmadi\";\nif (out.some((m) => m.trim() === \"undefined\") && out.some((m) => m.trim() === \"true\")) return null;\nreturn \"undefined va true konsolga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Takrorlanishlarni sanash",
+      "instruction": "`[\"js\", \"css\", \"js\", \"js\", \"css\"]` massividagi har bir so'z necha marta uchraganini Map bilan sanab, `get(\"js\")` (3) va `size` (2) ni konsolga chiqaring.",
+      "startingCode": "const words = [\"js\", \"css\", \"js\", \"js\", \"css\"];\nconst counts = new Map();\n// har bir so'z uchun set/has/get bilan sanang\n",
+      "hint": "const words = [\"js\", \"css\", \"js\", \"js\", \"css\"];\nconst counts = new Map();\nfor (const w of words) {\n  if (counts.has(w)) {\n    counts.set(w, counts.get(w) + 1);\n  } else {\n    counts.set(w, 1);\n  }\n}\nconsole.log(counts.get(\"js\"));\nconsole.log(counts.size);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"new Map\")) return \"Map ishlatilmadi\";\nif (out.some((m) => m.trim() === \"3\") && out.some((m) => m.trim() === \"2\")) return null;\nreturn \"3 va 2 konsolga chiqmadi\";"
     }
   ],
   quizzes: [
@@ -252,6 +308,114 @@ Keyingi darsda: DOM olamiga kirish — \`window\` va \`document\` obyektlari bil
       ],
       correctAnswer: 0,
       explanation: "Set kabi Map to'plamida ham elementlar soni size xususiyati orqali olinadi."
+    },
+    {
+      "id": 4,
+      "question": "Map to'plamida mavjud bo'lmagan kalit bilan `get()` chaqirilsa nima qaytadi?",
+      "options": [
+        "Xatolik (Error) chiqadi",
+        "undefined",
+        "null",
+        "0"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Yo'q kalit uchun get() xato bermaydi, shunchaki undefined qaytaradi. Bor-yo'qligini bilish uchun has() ishlatiladi."
+    },
+    {
+      "id": 5,
+      "question": "`map.delete(key)` metodi nima qaytaradi?",
+      "options": [
+        "O'chirilgan qiymatni",
+        "true yoki false (o'chirildimi-yo'qmi)",
+        "To'plamning yangi size ini",
+        "undefined"
+      ],
+      "correctAnswer": 1,
+      "explanation": "delete() o'chirish muvaffaqiyatli bo'lganini boolean qiymat bilan aytadi."
+    },
+    {
+      "id": 6,
+      "question": "Map da mavjud kalitga `set()` bilan qayta yozilsa nima bo'ladi?",
+      "options": [
+        "Qiymat yangilanadi, size o'zgarmaydi",
+        "Ikkinchi juftlik yangi element bo'lib qo'shiladi va size 1 ga oshadi",
+        "Xatolik chiqadi",
+        "Kalit o'chib ketadi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Map da kalit takrorlanmaydi: bir xil kalitga set() qilinsa faqat qiymat almashtiriladi."
+    },
+    {
+      "id": 7,
+      "question": "`map[\"name\"] = \"Ali\"` kabi kvadrat qavs bilan yozilsa nima sodir bo'ladi?",
+      "options": [
+        "Qiymat Map ga qo'shiladi va size 1 bo'ladi",
+        "Qiymat Map ning ichki ro'yxatiga qo'shilmaydi, size o'zgarmaydi",
+        "Sintaksis xatosi chiqadi",
+        "get() bilan o'sha qiymat o'qiladi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Kvadrat qavs Map ning maxsus metodi emas, u oddiy obyekt xususiyati bo'lib qoladi. Shuning uchun size va get() unga ta'sir qilmaydi."
+    },
+    {
+      "id": 8,
+      "question": "`Map()` ni `new` so'zisiz chaqirsa qanday xato bo'ladi?",
+      "options": [
+        "TypeError: Constructor Map requires 'new'",
+        "ReferenceError: Map is not defined",
+        "Sintaksis xatosi",
+        "Xato bo'lmaydi, bo'sh Map qaytadi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Map konstruktor funksiya, u faqat new bilan chaqiriladi."
+    },
+    {
+      "id": 9,
+      "question": "`array.map(fn)` va `new Map()` bir xil narsami?",
+      "options": [
+        "Ha, ikkalasi ham kalit-qiymat saqlaydi",
+        "Yo'q: kichik `m` bilan yozilgan map() massiv metodi, katta `M` bilan yozilgan Map esa global to'plam obyekti",
+        "Yo'q: ular bir xil, faqat nomi boshqacha",
+        "Ha, ikkalasi ham faqat matnlar bilan ishlaydi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Katta-kichik harf va ishlatilish o'rni boshqacha: massiv metodi yangi massiv qaytaradi, Map to'plami esa kalit-qiymat saqlaydi."
+    },
+    {
+      "id": 10,
+      "question": "Map to'plamida kalit sifatida obyekt ishlatilsa, ikki xil obyekt kalitlari qanday hisoblanadi?",
+      "options": [
+        "Mazmuni bir xil bo'lsa, bitta kalit hisoblanadi",
+        "Har bir obyekt alohida havola bo'lgani uchun alohida kalit hisoblanadi",
+        "Obyektni kalit qilib bo'lmaydi, xato chiqadi",
+        "Obyekt avtomatik matnga aylanadi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Map kalitni havola bo'yicha saqlaydi: { id: 1 } ikki marta yozilsa ular ikki xil kalit bo'ladi."
+    },
+    {
+      "id": 11,
+      "question": "Map va Set to'plamlari orasidagi asosiy farq nima?",
+      "options": [
+        "Set kalit-qiymat juftliklarini, Map faqat qiymatlarni saqlaydi",
+        "Map kalit-qiymat juftliklarini, Set faqat qiymatlarni saqlaydi",
+        "Ikkalasi ham faqat sonlarni saqlaydi",
+        "Farqi yo'q, ikkalasi bir xil ishlaydi"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Set da faqat qiymat bor, Map da esa har bir qiymat kalit bilan bog'langan."
+    },
+    {
+      "id": 12,
+      "question": "Map to'plamidagi juftliklar sonini qanday olamiz?",
+      "options": [
+        "map.length",
+        "map.size",
+        "map.count",
+        "map.total()"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Map da length emas, size xususiyati ishlatiladi."
     }
   ]
 };

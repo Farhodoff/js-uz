@@ -4,38 +4,40 @@ export const logicalAnd = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz aeroportda samolyotga chiqish nazoratidasiz. Xodim sizdan ikkita narsani talab qiladi:
-1. Pasportingiz bo'lishi kerak **VA**
-2. Chiptangiz bo'lishi kerak.
+Tasavvur qiling, kinoteatrga kirmoqchisiz. Eshikda ikkita shart yozilgan:
+- Chipta bo'lishi kerak.
+- Yosh 12 dan katta bo'lishi kerak.
 
-Agar faqat pasport bo'lib, chipta bo'lmasa — sizni kiritishmaydi (\`false\`).
-Agar faqat chipta bo'lib, pasport bo'lmasa — ham kiritishmaydi (\`false\`).
-Faqat **ikkalasi ham** bor bo'lsagina samolyotga chiqishga ruxsat beriladi (\`true\`).
+Faqat bittasi bo'lsa, kirmaysiz. Ikkalasi ham bo'lsagina kirasiz. "VA" degani — ikkalasi ham shart.
 
-Mantiqiy VA (\`&&\`) operatori — ikkita shartni birlashtiradi va faqat ikkala tomon ham rost (\`true\`) bo'lgandagina \`true\` qaytaradi. Agar bittasi bo'lsa ham yolg'on (\`false\`) bo'lsa, butun natija \`false\` bo'ladi.
+Dasturlashda \`&&\` (mantiqiy VA) xuddi shu eshik nazoratchisiga o'xshaydi. Ikkala tomoni ham \`true\` bo'lsagina, natija \`true\` bo'ladi.
 
 ---
 
 ## 2. Nega kerak?
 
-Dasturlarda bir vaqtning o'zida bir nechta shart bajarilishini tekshirish juda ko'p uchraydi:
-- Foydalanuvchi tizimga kirishi uchun ham login, ham parol to'g'ri kiritilgan bo'lishi kerak.
-- Tovarni sotib olish uchun xaridorning yoshi yetarli bo'lishi VA hisobida yetarli pul bo'lishi kerak.
+O'yinda sovrin bor. Qoida: ball 100 dan katta VA jonlar 0 dan ko'p bo'lishi kerak. Bitta shartning o'zi yetmaydi.
 
-\`&&\` operatori barcha shartlar birgalikda to'g'ri kelganini bitta qatorda tekshirish imkonini beradi.
+Muammo shunda: ikkita savolni bitta javobda birlashtirish kerak. Yechim — \`&&\`:
+
+\`\`\`javascript
+let ball = 120;
+let jon = 3;
+console.log(ball > 100 && jon > 0);
+\`\`\`
+
+Ikkalasi ham \`true\`. Shuning uchun natija \`true\`. Sovrin beriladi.
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod ikkala shart ham \`true\` bo'lganda \`&&\` operatori qanday ishlashini ko'rsatadi.
+Bu kod ikkita to'g'ri shartni \`&&\` bilan birlashtiradi.
 
 \`\`\`javascript
-let hasPassport = true; // Pasporti bor
-let hasTicket = true; // Chiptasi bor
-
-let canBoard = hasPassport && hasTicket; // Ikkalasi ham true
-console.log(canBoard);
+let hasTicket = true; // Chipta bor
+let isOld = true; // Yoshi to'g'ri keladi
+console.log(hasTicket && isOld); // true chiqadi
 \`\`\`
 
 \`\`\`text
@@ -46,22 +48,20 @@ console.log(canBoard);
 
 ## 4. Qator-baqator tahlil
 
-- \`hasPassport && hasTicket\` — \`&&\` (ikkita ampersand belgisi) mantiqiy VA operatoridir.
-- Chapdagi qiymat (\`true\`) VA o'ngdagi qiymat (\`true\`) bo'lgani sababli, umumiy natija \`true\` bo'ladi.
-- \`console.log(canBoard);\` — konsolga \`true\` chiqadi.
+- \`let hasTicket = true;\` — birinchi shart tayyor: chipta bor.
+- \`let isOld = true;\` — ikkinchi shart tayyor: yosh to'g'ri.
+- \`hasTicket && isOld\` — savol: "ikkilasi ham to'g'rimi?" Ha va ha. Natija \`true\`.
 
 ---
 
 ## 5. Yana bitta misol
 
-Bu kod shartlardan biri \`false\` bo'lganda \`&&\` qanday ishlashini ko'rsatadi.
+Bu kod bittasi noto'g'ri bo'lgan holatni ko'rsatadi.
 
 \`\`\`javascript
-let userAge = 20;
-let hasMoney = false;
-
-let canBuy = (userAge >= 18) && hasMoney; // 20 >= 18 (true), lekin puli yo'q (false)
-console.log(canBuy);
+let hasTicket = true; // Chipta bor
+let isOld = false; // Yoshi to'g'ri kelmaydi
+console.log(hasTicket && isOld); // false chiqadi
 \`\`\`
 
 \`\`\`text
@@ -69,159 +69,332 @@ console.log(canBuy);
 \`\`\`
 
 Qator-baqator tahlil:
-- \`userAge >= 18\` — yoshi 18 dan katta yoki teng, bu qism \`true\`.
-- \`hasMoney\` — puli yo'qligi sababli bu qism \`false\`.
-- \`true && false\` — shartlardan biri \`false\` bo'lgani uchun umumiy natija \`false\` bo'ladi.
-- \`console.log(canBuy);\` — konsolga \`false\` chiqadi.
+- Birinchi shart \`true\`. Ikkinchi shart \`false\`.
+- \`&&\` qoidasi qattiq: bittasi ham \`false\` bo'lsa, natija \`false\`.
+- To'rt holatdan faqat bittasi \`true\` beradi: \`true && true\`. Qolgan uchtasi (\`true && false\`, \`false && true\`, \`false && false\`) — \`false\`.
 
-Mantiqiy VA (\`&&\`) natijalari:
-- \`true && true\` → \`true\`
-- \`true && false\` → \`false\`
-- \`false && true\` → \`false\`
-- \`false && false\` → \`false\`
+---
+
+## 5.1. Taqqoslash bilan birga
+
+\`&&\` ko'pincha taqqoslash natijalarini birlashtiradi:
+
+\`\`\`javascript
+let age = 20;
+console.log(age > 12 && age < 65); // true chiqadi
+\`\`\`
+
+\`\`\`text
+// Natija: true
+\`\`\`
+
+Qator-baqator tahlil:
+- \`age > 12\` — \`true\`. \`age < 65\` — \`true\`.
+- \`true && true\` — ikkalasi ham to'g'ri. Natija \`true\`.
 
 ---
 
 ## 6. Ko'p uchraydigan xatolar
 
-### 1. Bitta & belgisi yozib qo'yish
+### 1. Bitta & yozish
 ❌ Xato kod:
 \`\`\`javascript
-let canEnter = hasPassport & hasTicket;
+let r = true & true;
+console.log(r);
 \`\`\`
-Nima bo'ladi: Bitta \`&\` belgisi mantiqiy VA emas, balki "bit operatori" (bitwise) hisoblanadi va butunlay boshqacha ishlaydi. Mantiqiy VA uchun har doim ikkita \`&&\` yoziladi.
+Nima bo'ladi: \`true\` emas, \`1\` chiqadi! Bitta \`&\` — mantiqiy operator emas. U boshqa hisob (bitli amal) bajaradi va son qaytaradi.
 ✅ To'g'ri variant:
 \`\`\`javascript
-let canEnter = hasPassport && hasTicket;
+let r = true && true; // true chiqadi
+console.log(r);
 \`\`\`
 
-### 2. Belgilar orasiga probel qo'yish (& &)
+### 2. Oddiy so'z bilan yozish
 ❌ Xato kod:
 \`\`\`javascript
-let isAllowed = true & & false;
+let r = true and true;
 \`\`\`
-Nima bo'ladi: \`SyntaxError: Unexpected token '&'\` xatoligi yuz beradi. \`&&\` bitta yaxlit operator, uning o'rtasida probel bo'lmasligi kerak.
+Nima bo'ladi: \`SyntaxError: Unexpected identifier 'and'\` xatoligi yuz beradi. JavaScript inglizcha so'zlarni tushunmaydi. Faqat \`&&\` belgisi ishlaydi.
 ✅ To'g'ri variant:
 \`\`\`javascript
-let isAllowed = true && false;
+let r = true && true;
+console.log(r); // true chiqadi
 \`\`\`
 
-### 3. && bittagina true bilan ishlaydi deb o'ylash
-❌ Xato tushuncha: Shartlarning bittasi \`true\` bo'lsa kifoya deb o'ylash.
-Nima bo'ladi: \`&&\` juda qat'iy operator. Hatto bir nechta shartdan bittasi \`false\` bo'lsa ham, natija butunlay \`false\` bo'ladi.
-✅ To'g'ri tushuncha: \`&&\` faqat HAMMA shartlar \`true\` bo'lgandagina \`true\` qaytaradi.
+### 3. Bitta true ni yetarli deb o'ylash
+❌ Xato tushuncha: \`true && false\` ham \`true\` beradi deb o'ylash.
+Nima bo'ladi: konsolga \`false\` chiqadi. \`&&\` da bitta \`false\` butun natijani yiqitadi.
+✅ To'g'ri variant:
+\`\`\`javascript
+console.log(true && true); // true chiqadi
+\`\`\`
 
 ---
 
 ## 7. Tekshiruv
 
 ### 1-mashq (Oson)
-\`hasKey\` (\`true\`) va \`knowsCode\` (\`true\`) o'zgaruvchilarini yarating. Ikkala shart bajarilganligini (\`hasKey && knowsCode\`) tekshirib, natijani \`canOpen\` ga saqlang va konsolga chiqaring.
+\`hasTicket\` (\`true\`) va \`isOld\` (\`true\`) yarating. \`&&\` bilan birlashtirib chiqaring (\`true\` chiqishi kerak).
 
 ### 2-mashq (O'rtacha)
-\`balance\` (\`50\`), \`price\` (\`30\`) va \`isStoreOpen\` (\`false\`) o'zgaruvchilarini yarating. Xarid qilish uchun pul yetarlimi va do'kon ochiqmi (\`(balance >= price) && isStoreOpen\`) ekanini tekshirib, natijani \`canPurchase\` ga saqlang va konsolga chiqaring (\`false\` chiqadi).
+\`age\` ga \`20\` bering. \`age > 12 && age < 65\` ni chiqaring (\`true\` chiqishi kerak).
 
-### 3-mashq (Xatoni topish)
-Quyidagi koddagi sintaksis xatosini to'g'rilang, toki konsolga \`false\` chiqsin:
-\`\`\`javascript
-let isAvailable = true & & false;
-console.log(isAvailable);
-\`\`\`
+### 3-mashq (Chegara holat)
+Uchta shartni birlashtiring: \`true && true && false\`. Natija \`false\` bo'lishini tasdiqlang.
 
 ### Javoblar:
 1.
 \`\`\`javascript
-let hasKey = true;
-let knowsCode = true;
-let canOpen = hasKey && knowsCode;
-console.log(canOpen);
+let hasTicket = true;
+let isOld = true;
+console.log(hasTicket && isOld);
 \`\`\`
 2.
 \`\`\`javascript
-let balance = 50;
-let price = 30;
-let isStoreOpen = false;
-let canPurchase = (balance >= price) && isStoreOpen;
-console.log(canPurchase);
+let age = 20;
+console.log(age > 12 && age < 65);
 \`\`\`
 3.
 \`\`\`javascript
-let isAvailable = true && false; // & & o'rtasidagi probel olib tashlanadi
-console.log(isAvailable);
+console.log(true && true && false);
 \`\`\`
 
 ---
 
 ## 8. Xulosa
 
-1. \`&&\` (mantiqiy VA) operatori bir vaqtning o'zida bir nechta shartni tekshirish uchun ishlatiladi.
-2. Natija faqat barcha shartlar \`true\` bo'lgandagina \`true\` bo'ladi.
-3. Agar shartlardan bittasi bo'lsa ham \`false\` bo'lsa, \`&&\` natijasi darhol \`false\` bo'ladi.
+1. \`&&\` — mantiqiy VA. Ikkalasi ham \`true\` bo'lsagina natija \`true\`.
+2. Bitta \`false\` yetadi — natija darhol \`false\` bo'ladi.
+3. Bitta \`&\` boshqa operator (son qaytaradi). Har doim ikkita \`&&\` yoziladi.
 
-Keyingi darsda: Mantiqiy YOKI (||) operatori bilan tanishamiz.
+Keyingi darsda: mantiqiy YOKI (||) operatori bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "&& operatori bilan tekshirish",
-      instruction: "`hasKey` (`true`) va `knowsCode` (`true`) o'zgaruvchilarini yarating. `hasKey && knowsCode` natijasini `canOpen` ga saqlab `console.log(canOpen);` orqali chiqaring.",
-      startingCode: "let hasKey = true;\nlet knowsCode = true;\n// canOpen ga hasKey && knowsCode ni saqlang va chiqaring\n",
-      hint: "let canOpen = hasKey && knowsCode;\nconsole.log(canOpen);",
-      test: "if (!code.includes('&&')) return '&& operatori ishlatilmadi';\nif (!code.includes('canOpen')) return 'canOpen o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('true'))) return null;\nreturn 'true natijasi konsolga chiqmadi';"
+      title: "Ikkita true",
+      instruction: "`hasTicket` (`true`) va `isOld` (`true`) yarating. `&&` bilan chiqaring (`true` chiqishi kerak).",
+      startingCode: "// hasTicket va isOld ni yarating va && bilan chiqaring\n",
+      hint: "let hasTicket = true;\nlet isOld = true;\nconsole.log(hasTicket && isOld);",
+      test: "if (!code.includes('&&')) return '&& operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
     },
     {
       id: 2,
-      title: "Murakkab shartli && amali",
-      instruction: "`balance = 50;`, `price = 30;`, `isStoreOpen = false;` o'zgaruvchilarini yarating. `(balance >= price) && isStoreOpen` ifodasini `canPurchase` ga saqlang va konsolga chiqaring.",
-      startingCode: "let balance = 50;\nlet price = 30;\nlet isStoreOpen = false;\n// canPurchase ga shartni saqlang va chiqaring\n",
-      hint: "let canPurchase = (balance >= price) && isStoreOpen;\nconsole.log(canPurchase);",
-      test: "if (!code.includes('&&')) return '&& operatori ishlatilmadi';\nif (!code.includes('canPurchase')) return 'canPurchase o\\'zgaruvchisi topilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('false'))) return null;\nreturn 'false natijasi konsolga chiqmadi';"
+      title: "Bitta false",
+      instruction: "`a = true`, `b = false` berilgan. `a && b` ni chiqaring (`false` chiqishi kerak).",
+      startingCode: "let a = true;\nlet b = false;\n// a && b ni chiqaring\n",
+      hint: "console.log(a && b);",
+      test: "if (!code.includes('&&')) return '&& operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
     },
     {
       id: 3,
-      title: "SyntaxError ni to'g'rilash",
-      instruction: "`let isAvailable = true & & false;` dagi probel xatosini tuzating, toki konsolga `false` chiqsin.",
-      startingCode: "let isAvailable = true & & false;\nconsole.log(isAvailable);\n",
-      hint: "let isAvailable = true && false;\nconsole.log(isAvailable);",
-      test: "if (code.includes('& &')) return '& va & orasidagi probelni olib tashlang';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('false'))) return null;\nreturn 'false natijasi konsolga chiqmadi';"
+      title: "Taqqoslashlarni birlashtirish",
+      instruction: "`age = 20` berilgan. `age > 12 && age < 65` ni chiqaring (`true` chiqishi kerak).",
+      startingCode: "let age = 20;\n// age > 12 && age < 65 ni chiqaring\n",
+      hint: "console.log(age > 12 && age < 65);",
+      test: "if (!code.includes('&&')) return '&& operatori ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
+    },
+    {
+      id: 4,
+      title: "Bitta & xatosini tuzatish",
+      instruction: "`true & true` o'rniga `&&` yozing: `true` (mantiqiy) chiqsin, `1` (son) emas.",
+      startingCode: "console.log(true & true);\n",
+      hint: "console.log(true && true);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true (boolean) konsolga chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "and so'zini tuzatish",
+      instruction: "`true and true` xato bermoqda. `&&` bilan tuzating.",
+      startingCode: "console.log(true and true);\n",
+      hint: "console.log(true && true);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
+    },
+    {
+      id: 6,
+      title: "Tengliklarni birlashtirish",
+      instruction: "`x = 5` berilgan. `x === 5 && x > 3` ni chiqaring (`true` chiqishi kerak).",
+      startingCode: "let x = 5;\n// x === 5 && x > 3 ni chiqaring\n",
+      hint: "console.log(x === 5 && x > 3);",
+      test: "if (!code.includes('&&') || !code.includes('===')) return '=== va && ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === true)) return null;\nreturn 'true konsolga chiqmadi';"
+    },
+    {
+      id: 7,
+      title: "Ball va jon (chegara)",
+      instruction: "`ball = 120`, `jon = 0` berilgan. `ball > 100 && jon > 0` ni chiqaring (`false` — jon tugagan).",
+      startingCode: "let ball = 120;\nlet jon = 0;\n// ball > 100 && jon > 0 ni chiqaring\n",
+      hint: "console.log(ball > 100 && jon > 0);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Uchta shart",
+      instruction: "`true && true && false` ni chiqaring (`false` chiqishi kerak).",
+      startingCode: "// true && true && false ni chiqaring\n",
+      hint: "console.log(true && true && false);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
+    },
+    {
+      id: 9,
+      title: "To'rt holat jadvali (chegara)",
+      instruction: "To'rttala holatni chiqaring: `true && true`, `true && false`, `false && true`, `false && false` (`true`, `false`, `false`, `false`).",
+      startingCode: "// Tortala holatni chiqaring\n",
+      hint: "console.log(true && true);\nconsole.log(true && false);\nconsole.log(false && true);\nconsole.log(false && false);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.length !== 4) return 'Tortala holat chiqishi kerak';\nif (out[0][0] !== true || out[1][0] !== false || out[2][0] !== false || out[3][0] !== false) return 'true, false, false, false chiqishi kerak';\nreturn null;"
+    },
+    {
+      id: 10,
+      title: "O'zgaruvchilar zanjiri (chegara)",
+      instruction: "`a = true`, `b = true`, `c = false` berilgan. `a && b && c` ni chiqaring (`false` chiqishi kerak).",
+      startingCode: "let a = true;\nlet b = true;\nlet c = false;\n// a && b && c ni chiqaring\n",
+      hint: "console.log(a && b && c);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x);\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(x => x[0] === false)) return null;\nreturn 'false konsolga chiqmadi';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "`console.log(true && false);` kodi qanday natija beradi?",
+      question: "`console.log(true && true);` nima chiqaradi?",
       options: [
         "true",
         "false",
-        "undefined",
-        "NaN"
+        "1",
+        "Xatolik"
       ],
-      correctAnswer: 1,
-      explanation: "&& operatorida ikkala tomon ham true bo'lishi kerak; bittasi false bo'lsa natija false bo'ladi."
+      correctAnswer: 0,
+      explanation: "Ikkalasi ham true, shuning uchun natija true."
     },
     {
       id: 2,
-      question: "&& operatori qachon true natija qaytaradi?",
+      question: "`console.log(true && false);` nima chiqaradi?",
       options: [
-        "Faqat ikkala tomoni ham true bo'lganda",
-        "Tomonlardan bittasi true bo'lsa kifoya",
-        "Ikkala tomoni ham false bo'lganda",
-        "Har doim true qaytaradi"
+        "true",
+        "false",
+        "1",
+        "0"
       ],
-      correctAnswer: 0,
-      explanation: "Mantiqiy VA (&&) faqat barcha shartlar rost (true) bo'lgandagina true qaytaradi."
+      correctAnswer: 1,
+      explanation: "Bitta false butun natijani yiqitadi."
     },
     {
       id: 3,
-      question: "JavaScript'da mantiqiy VA operatori qaysi belgilar bilan yoziladi?",
+      question: "`console.log(false && false);` nima chiqaradi?",
       options: [
-        "AND",
+        "true",
+        "false",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikkalasi ham false. Natija false."
+    },
+    {
+      id: 4,
+      question: "`console.log(true & true);` nima chiqaradi?",
+      options: [
+        "true",
+        "1",
+        "false",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Bitta & mantiqiy operator emas. U son qaytaradi: 1."
+    },
+    {
+      id: 5,
+      question: "`let r = true and true;` qatorida nima bo'ladi?",
+      options: [
+        "true bo'ladi",
+        "SyntaxError beradi",
+        "false bo'ladi",
+        "Hech narsa bo'lmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "JavaScript inglizcha so'zlarni tushunmaydi. Faqat && ishlaydi."
+    },
+    {
+      id: 6,
+      question: "`let age = 20; console.log(age > 12 && age < 65);` nima chiqaradi?",
+      options: [
+        "false",
+        "true",
+        "20",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikkala taqqoslash ham true: true && true = true."
+    },
+    {
+      id: 7,
+      question: "Qachon && true beradi?",
+      options: [
+        "Bittasi true bo'lsa",
+        "Ikkalasi ham true bo'lsa",
+        "Bittasi false bo'lsa",
+        "Har doim"
+      ],
+      correctAnswer: 1,
+      explanation: "&& qattiq: faqat true && true true beradi."
+    },
+    {
+      id: 8,
+      question: "`console.log(false && true);` nima chiqaradi?",
+      options: [
+        "true",
+        "false",
+        "Xatolik",
+        "1"
+      ],
+      correctAnswer: 1,
+      explanation: "Birinchi tomoni false — natija darhol false."
+    },
+    {
+      id: 9,
+      question: "`let ball = 120; let jon = 0; console.log(ball > 100 && jon > 0);` nima chiqaradi?",
+      options: [
+        "true",
+        "false",
+        "120",
+        "0"
+      ],
+      correctAnswer: 1,
+      explanation: "Birinchi true, ikkinchi false. Natija false."
+    },
+    {
+      id: 10,
+      question: "`console.log(true && true && false);` nima chiqaradi?",
+      options: [
+        "true",
+        "false",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Oxirgi false butun zanjirni yiqitadi."
+    },
+    {
+      id: 11,
+      question: "`let x = 5; console.log(x === 5 && x > 3);` nima chiqaradi?",
+      options: [
+        "false",
+        "true",
+        "5",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Ikkalasi ham true: true && true = true."
+    },
+    {
+      id: 12,
+      question: "Mantiqiy VA belgisi qaysi?",
+      options: [
         "&",
         "&&",
-        "+"
+        "and",
+        "++"
       ],
-      correctAnswer: 2,
-      explanation: "JavaScript'da mantiqiy VA amali ikkita ampersand (&&) bilan yoziladi."
+      correctAnswer: 1,
+      explanation: "Faqat ikkita && mantiqiy VA. Bitta & boshqa operator."
     }
   ]
 };

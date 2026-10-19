@@ -212,6 +212,62 @@ Keyingi darsda: ES6 yangiliklari — massiv elementlarini qulay ajratib olish (D
       startingCode: "const items = [\"kitob\", \"qalam\"];\n// JSON.stringify va JSON.parse qo'llang va birinchi elementni chiqaring\n",
       hint: "const str = JSON.stringify(items);\nconst parsed = JSON.parse(str);\nconsole.log(parsed[0]);",
       test: "if (!code.includes('JSON.stringify') || !code.includes('JSON.parse')) return 'JSON.stringify va JSON.parse ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('kitob')) return null;\nreturn 'Massivning birinchi elementi (\"kitob\") chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Massivni JSON matniga aylantirish",
+      "instruction": "`const nums = [1, 2, 3];` massivini `JSON.stringify` yordamida JSON matniga aylantirib, natijani konsolga chiqaring.",
+      "startingCode": "const nums = [1, 2, 3];\n// JSON.stringify bilan matnga aylantiring va chiqaring\n",
+      "hint": "const json = JSON.stringify(nums);\nconsole.log(json);",
+      "test": "if (!code.includes(\"JSON.stringify\")) return \"JSON.stringify ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"[1,2,3]\"))) return null;\nreturn \"JSON matni [1,2,3] konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "JSON matnidan qiymat olish",
+      "instruction": "`const json = '{\"a\": 1, \"b\": 2}';` matnini `JSON.parse` yordamida obyektga aylantirib, `b` qiymatini konsolga chiqaring.",
+      "startingCode": "const json = '{\"a\": 1, \"b\": 2}';\n// JSON.parse qilib b qiymatini chiqaring\n",
+      "hint": "const obj = JSON.parse(json);\nconsole.log(obj.b);",
+      "test": "if (!code.includes(\"JSON.parse\")) return \"JSON.parse ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"2\")) return null;\nreturn \"b qiymati 2 konsolga chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "JSON massiv uzunligini olish",
+      "instruction": "`const json = '[10, 20, 30]';` matnini `JSON.parse` qilib, hosil bo'lgan massiv uzunligini konsolga chiqaring (`3`).",
+      "startingCode": "const json = '[10, 20, 30]';\n// JSON.parse qilib uzunlikni chiqaring\n",
+      "hint": "const arr = JSON.parse(json);\nconsole.log(arr.length);",
+      "test": "if (!code.includes(\"JSON.parse\")) return \"JSON.parse ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"3\")) return null;\nreturn \"Massiv uzunligi 3 konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "Yaroqsiz JSONni tuzatish",
+      "instruction": "`const bad = \"{name: 'Ali'}\";` matni yaroqli JSON emas (kalitlar qo'shtirnoqsiz). Uni to'g'ri JSON matniga `'{\"name\":\"Ali\"}'` o'zgartirib, `JSON.parse` qilib `name` ni chiqaring.",
+      "startingCode": "const bad = \"{name: 'Ali'}\";\n// bad ni to'g'ri JSON matniga o'zgartiring va name ni chiqaring\n",
+      "hint": "const json = '{\"name\":\"Ali\"}';\nconst obj = JSON.parse(json);\nconsole.log(obj.name);",
+      "test": "if (!code.includes(\"JSON.parse\")) return \"JSON.parse ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Hali xato bor: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"Ali\"))) return null;\nreturn \"name qiymati Ali konsolga chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "Obyektni JSON matniga aylantirish",
+      "instruction": "`const book = { title: \"Kitob\", pages: 100 };` obyektini `JSON.stringify` qilib, natijani konsolga chiqaring.",
+      "startingCode": "const book = { title: \"Kitob\", pages: 100 };\n// JSON.stringify natijasini chiqaring\n",
+      "hint": "console.log(JSON.stringify(book));",
+      "test": "if (!code.includes(\"JSON.stringify\")) return \"JSON.stringify ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nconst all = out.join(\"|\");\nif (all.includes(\"title\") && all.includes(\"100\")) return null;\nreturn \"JSON matnida title va 100 chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Parse qilib hisoblash",
+      "instruction": "`const json = '{\"x\": 5, \"y\": 3}';` matnini `JSON.parse` qilib, `x + y` natijasini konsolga chiqaring (`8`).",
+      "startingCode": "const json = '{\"x\": 5, \"y\": 3}';\n// parse qilib x + y ni chiqaring\n",
+      "hint": "const obj = JSON.parse(json);\nconsole.log(obj.x + obj.y);",
+      "test": "if (!code.includes(\"JSON.parse\")) return \"JSON.parse ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"8\")) return null;\nreturn \"Natija 8 konsolga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Massivni parse qilib yig'indi (chegara)",
+      "instruction": "`const json = '[1, 2, 3, 4]';` matnini `JSON.parse` qilib, massivdagi barcha sonlar yig'indisini konsolga chiqaring (`10`).",
+      "startingCode": "const json = '[1, 2, 3, 4]';\n// parse qilib yig'indini chiqaring\n",
+      "hint": "const arr = JSON.parse(json);\nlet sum = 0;\nfor (const n of arr) sum += n;\nconsole.log(sum);",
+      "test": "if (!code.includes(\"JSON.parse\")) return \"JSON.parse ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"10\")) return null;\nreturn \"Yig'indi 10 konsolga chiqmadi\";"
     }
   ],
   quizzes: [
@@ -250,6 +306,114 @@ Keyingi darsda: ES6 yangiliklari — massiv elementlarini qulay ajratib olish (D
       ],
       correctAnswer: 0,
       explanation: "JSON qat'iy standartiga ko'ra, barcha kalit nomlari va matnli qiymatlar faqat qo'shtirnoq (\") ichida yozilishi shart."
+    },
+    {
+      "id": 4,
+      "question": "JSON qanday ma'lumot turlarini saqlay oladi?",
+      "options": [
+        "String, number, boolean, null, massiv va obyekt",
+        "Faqat string va number",
+        "Funksiya va metodlar",
+        "Faqat massivlar"
+      ],
+      "correctAnswer": 0,
+      "explanation": "JSON string, number, boolean, null, massiv va obyektni qo'llab-quvvatlaydi; funksiya va undefined kirmaydi."
+    },
+    {
+      "id": 5,
+      "question": "`JSON.stringify([1, 2])` natijasi nima?",
+      "options": [
+        "\"[1,2]\" matni",
+        "[1, 2] massivi",
+        "1, 2",
+        "undefined"
+      ],
+      "correctAnswer": 0,
+      "explanation": "JSON.stringify massivni JSON matniga aylantiradi: [1,2]."
+    },
+    {
+      "id": 6,
+      "question": "`JSON.parse('{\"a\": 1}').a` natijasi nima?",
+      "options": [
+        "1",
+        "\"1\"",
+        "undefined",
+        "a"
+      ],
+      "correctAnswer": 0,
+      "explanation": "JSON.parse matnni obyektga aylantiradi; .a orqali uning qiymati — 1 raqami olinadi."
+    },
+    {
+      "id": 7,
+      "question": "JSON formatida kalit nomlari qanday yozilishi shart?",
+      "options": [
+        "Har doim qo'shtirnoq ichida",
+        "Tirnoqsiz bo'lishi mumkin",
+        "Faqat bittalik tirnoqda",
+        "Ixtiyoriy shaklda"
+      ],
+      "correctAnswer": 0,
+      "explanation": "JSON standartida kalitlar har doim qo'sh tirnoq ichida yoziladi; JavaScript obyektidagi tirnoqsiz kalitga yo'l qo'yilmaydi."
+    },
+    {
+      "id": 8,
+      "question": "Obyekt ichida funksiya (metod) bo'lsa, `JSON.stringify` uni qanday aks ettiradi?",
+      "options": [
+        "Funksiya matnga kiritilmaydi",
+        "Funksiya kodi matn bo'lib qo'shiladi",
+        "Xato beradi",
+        "null bo'lib qoladi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "JSON funksiyalarni qo'llab-quvvatlamaydi, shuning uchun JSON.stringify ularni natijaga kiritmaydi."
+    },
+    {
+      "id": 9,
+      "question": "`JSON.stringify(obj, null, 2)` dagi uchinchi argument nima vazifani bajaradi?",
+      "options": [
+        "Matnni chiroyli, bo'sh joy bilan formatlaydi",
+        "Obyektni o'chiradi",
+        "Kalitlarni teskari qiladi",
+        "Matnni parse qiladi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Uchinchi argument (indent) JSON natijasini o'qish uchun chiroyli bo'shliqlar bilan formatlaydi."
+    },
+    {
+      "id": 10,
+      "question": "`JSON.parse('[1, 2]').length` natijasi nima?",
+      "options": [
+        "2",
+        "1",
+        "[1, 2]",
+        "undefined"
+      ],
+      "correctAnswer": 0,
+      "explanation": "JSON.parse massivni qaytaradi, uning length xususiyati esa 2 ga teng."
+    },
+    {
+      "id": 11,
+      "question": "JSON va oddiy JavaScript obyekti o'rtasidagi asosiy farq nima?",
+      "options": [
+        "JSON kalitlari majburiy qo'shtirnoqda, izoh va funksiyaga yo'l qo'yilmaydi",
+        "Ularning farqi yo'q",
+        "JSON faqat sonlarni saqlaydi",
+        "JavaScript obyektida kalit bo'lmaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "JSON matn formatidir: kalitlar qo'shtirnoqda, izohlar va funksiyalar yo'q; JavaScript obyekti bularning barchasini qo'llab-quvvatlaydi."
+    },
+    {
+      "id": 12,
+      "question": "`const s = JSON.stringify({ a: 1 }); console.log(typeof s);` nima chiqaradi?",
+      "options": [
+        "string",
+        "object",
+        "number",
+        "undefined"
+      ],
+      "correctAnswer": 0,
+      "explanation": "JSON.stringify natijasi har doim matn (string) bo'ladi, hatto kiritilgan qiymat obyekt bo'lsa ham."
     }
   ]
 };

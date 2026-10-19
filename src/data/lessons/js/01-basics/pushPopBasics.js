@@ -4,254 +4,399 @@ export const pushPopBasics = {
   language: "javascript",
   theory: `## 1. Bu nima?
 
-Tasavvur qiling, siz kitoblarni ustma-ust taxlab bitta ustun hosil qildingiz. Yangi kitob kelsa, uni eng tepaga (oxiriga) qo'yasiz — bu \`push\`. Bitta kitob olmoqchi bo'lsangiz, yana eng tepadan (oxiridan) bitta kitobni sug'urib olasiz — bu \`pop\`.
-JavaScript da massiv bilan ishlashda ham eng ko'p bajariladigan amal — ro'yxatning oxiriga element qo'shish yoki oxirgi elementni olib tashlashdir.
+Tasavvur qiling, kitob javoni bor. Yangi kitob keldi — uni oxiriga qo'yasiz. Bitta kitob kerak bo'ldi — oxirgisini olasiz. O'rtalariga tegilmaydi. Hamma ish oxiridan bo'ladi.
 
-**push va pop** — massivning oxirgi qismi bilan ishlovchi maxsus metodlardir: \`push()\` oxiriga element qo'shadi, \`pop()\` esa eng oxirgi elementni sug'urib oladi.
+Dasturlashda massiv oxiri bilan ishlaydigan ikkita tayyor buyruq bor. Ular metod (massivga tegishli tayyor buyruq) deb ataladi.
 
-*Yangi terminlar:*
-- **push() metodi** — massivning oxiriga yangi element (yoki elementlar) qo'shuvchi buyruq.
-- **pop() metodi** — massivning eng oxiridagi elementini o'chirib, o'sha elementni qaytaruvchi buyruq.
+push — massiv oxiriga yangi qiymat qo'shadi. pop — massiv oxirgisini oladi.
 
 ---
 
 ## 2. Nega kerak?
 
-Massivga yangi ma'lumot qo'shish uchun uning indeksini qo'lda hisoblab yozish noqulay:
+Xarid ro'yxati bor: non, sut. Yana bitta narsa esga tushdi: tuxum. Ro'yxatni boshidan yozish shart emas. Oxiriga qo'shilsa bo'ladi:
 
 \`\`\`javascript
-// Noqulay usul: Indeksni qo'lda hisoblash
-const fruits = ["Olma", "Banan"];
-fruits[2] = "Gilos"; // massivda nechta element borligini eslab qolish kerak
+let royxat = ["non", "sut"];
+royxat.push("tuxum");
+console.log(royxat);
 \`\`\`
 
-Agar massivda yuzlab elementlar bo'lsa, oxirgi indeksni bilish qiyinlashadi. \`push\` va \`pop\` metodlari indekslarni o'ylamasdan, avtomatik ravishda ro'yxat oxiriga element qo'shish yoki oxirgisini xavfsiz sug'urib olish imkonini beradi.
+Ro'yxat yangilandi. Qolganlari joyida.
+
+Muammo shunda: massivni yangilash kerak, qayta yozmasdan. Yechim — \`push\` (qo'shish) va \`pop\` (olish).
 
 ---
 
 ## 3. Birinchi misol
 
-Bu kod massiv oxiriga yangi meva qo'shadi va keyin oxirgi mevani sug'urib olib tashlaydi.
+Bu kod massiv oxiriga bitta qiymat qo'shadi.
 
 \`\`\`javascript
-const fruits = ["Olma", "Banan"]; // boshlang'ich massiv
-
-fruits.push("Gilos"); // oxiriga "Gilos" qo'shildi
-console.log(fruits); // massiv tarkibi
-
-let removed = fruits.pop(); // oxiridagi element sug'urib olindi
-console.log(removed); // olib tashlangan element
-console.log(fruits); // qolgan massiv
+let mevalar = ["olma", "nok"]; // Ikkita qiymat
+mevalar.push("uzum"); // Oxiriga qo'shildi
+console.log(mevalar); // Uchtalik chiqadi
 \`\`\`
 
 \`\`\`text
-// Natija:
-[ 'Olma', 'Banan', 'Gilos' ]
-Gilos
-[ 'Olma', 'Banan' ]
+// Natija: [ 'olma', 'nok', 'uzum' ]
 \`\`\`
 
 ---
 
 ## 4. Qator-baqator tahlil
 
-- \`const fruits = ["Olma", "Banan"];\` — 2 ta elementdan iborat massiv. E'tibor bering: massiv \`const\` bilan yaratilgan bo'lsa ham, uning ichidagi elementlarni \`push\` va \`pop\` orqali bemalol o'zgartirish mumkin!
-- \`fruits.push("Gilos");\` — \`fruits\` massivining oxiriga \`"Gilos"\` qo'shildi va massiv uzunligi 3 ga aylandi.
-- \`let removed = fruits.pop();\` — massivning eng oxiridagi element ("Gilos") olib tashlandi va \`removed\` o'zgaruvchisiga saqlandi. Massivda esa faqat dastlabki 2 ta meva qoldi.
-- \`console.log(removed);\` — o'chirilgan \`"Gilos"\` konsolga chiqdi.
+- \`let mevalar = ["olma", "nok"];\` — massiv yaratildi. Ichida ikkita qiymat.
+- \`mevalar.push("uzum");\` — buyruq chaqirildi. \`"uzum"\` oxiriga qo'shildi. Endi uchta qiymat.
+- \`console.log(mevalar);\` — butun massiv chiqadi. Konsol uni kvadrat qavsda ko'rsatadi.
 
 ---
 
 ## 5. Qadamma-qadam (trace)
 
-Massiv holatining qadamma-qadam o'zgarishi:
+Massiv qanday o'zgaradi:
 
-| Qadam | Kod | Massiv tarkibi (\`fruits\`) | fruits.length | Qaytargan qiymati |
-|---|---|---|---|---|
-| 1 | \`const fruits = ["Olma", "Banan"];\` | \`["Olma", "Banan"]\` | 2 | — |
-| 2 | \`fruits.push("Gilos");\` | \`["Olma", "Banan", "Gilos"]\` | 3 | 3 (yangi uzunlik) |
-| 3 | \`let removed = fruits.pop();\` | \`["Olma", "Banan"]\` | 2 | "Gilos" (olib tashlangan element) |
+| Qadam | Kod qatori | Massiv holati | Uzunlik |
+|---|---|---|---|
+| 1 | \`let mevalar = ["olma", "nok"];\` | ["olma", "nok"] | 2 |
+| 2 | \`mevalar.push("uzum");\` | ["olma", "nok", "uzum"] | 3 bo'ldi |
+| 3 | \`console.log(mevalar);\` | — | Uchtalik chiqdi |
 
 ---
 
 ## 6. Yana bitta misol
 
-1-misoldan farqi: Bo'sh massiv yaratib, unga sonlarni ketma-ket \`push\` qilish va \`pop\` bilan chiqarib olish.
+Bu kod oxirgi qiymatni olib tashlaydi.
 
 \`\`\`javascript
-const numbers = []; // bo'sh massiv
-
-numbers.push(10);
-numbers.push(20);
-numbers.push(30);
-
-console.log(numbers); // [10, 20, 30]
-console.log(numbers.pop()); // 30 (oxirgi son sug'urib olindi)
-console.log(numbers.pop()); // 20 (keyingi oxirgi son)
-console.log(numbers); // [10]
+let mevalar = ["olma", "nok", "uzum"]; // Uchta qiymat
+let oxirgi = mevalar.pop(); // Oxirgisi olindi
+console.log(oxirgi); // uzum chiqadi
+console.log(mevalar); // Ikkitalik qoldi
 \`\`\`
 
 \`\`\`text
 // Natija:
-[ 10, 20, 30 ]
-30
-20
-[ 10 ]
+uzum
+[ 'olma', 'nok' ]
 \`\`\`
 
-Tahlil:
-- Har safar \`numbers.pop()\` chaqirilganda, o'sha paytdagi eng oxirgi son massivdan chiqib ketadi va konsolga chiqariladi.
-- Oxirida massivda faqat \`[10]\` qoladi.
+Qator-baqator tahlil:
+- \`mevalar.pop()\` — oxirgi qiymat olindi. Massivdan o'chirildi.
+- \`let oxirgi = ...\` — olingan qiymat saqlandi. \`pop\` olganini qaytaradi.
+- Massivda ikkita qiymat qoldi.
 
 ---
 
 ## 7. Ko'p uchraydigan xatolar
 
-### 1-xato: pop() metodiga argument berish
-
+### 1. Qavsni unutish
+❌ Xato kod:
 \`\`\`javascript
-const list = [1, 2, 3];
-list.pop(0); // XATO: pop hech qanday argument olmaydi!
-console.log(list); // [1, 2] (3 o'chib ketdi!)
+let m = [1, 2];
+m.push;
+console.log(m);
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin massiv o'zgarmaydi: \`[1, 2]\` chiqadi. Sababi: qavssiz buyruq chaqirilmaydi. Faqat ko'rsatiladi.
+✅ To'g'ri variant:
+\`\`\`javascript
+let m = [1, 2];
+m.push(3); // Qavs bilan chaqirildi
+console.log(m); // Uchtalik chiqadi
 \`\`\`
 
-**Nima bo'ladi:** \`pop()\` ichiga nima yozsangiz ham, u faqat eng oxirgi elementni olib tashlaydi. \`pop(0)\` birinchi elementni emas, oxirgi 3 ni o'chiradi.
-**To'g'ri varianti:** \`pop()\` har doim bo'sh qavslar bilan chaqiriladi: \`list.pop()\`.
-
-### 2-xato: Bo'sh massivdan pop() chaqirish
-
+### 2. Bo'sh massivdan olish
+❌ Xato kod:
 \`\`\`javascript
-const empty = [];
-let item = empty.pop();
-console.log(item); // undefined
+let m = [];
+console.log(m.pop());
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin \`undefined\` chiqadi. Sababi: olinadigan hech narsa yo'q. Bo'sh massivdan \`pop\` qilinganda JavaScript \`undefined\` beradi.
+✅ To'g'ri variant:
+\`\`\`javascript
+let m = [];
+console.log(m.length); // 0 chiqadi
 \`\`\`
 
-**Nima bo'ladi:** Bo'sh massivda element yo'qligi sababli \`pop()\` xatolik bermaydi, balki \`undefined\` qaytaradi.
-**To'g'ri varianti:** Element sug'urishdan oldin massiv bo'sh emasligiga (\`empty.length > 0\`) ishonch hosil qiling.
-
-### 3-xato: const bilan e'lon qilingan massiv o'zgaruvchisiga yangi massiv tenglash
-
+### 3. Boshiga qo'shadi deb o'ylash
+❌ Xato tushuncha: \`push\` boshiga qo'shadi deb o'ylash.
+Nima bo'ladi: xato. \`push\` har doim OXIRIGA qo'shadi. Boshiga emas.
+✅ To'g'ri variant:
 \`\`\`javascript
-const items = [1, 2];
-items.push(3); // To'g'ri: massiv ichidagi element o'zgardi
-items = [4, 5]; // XATO: TypeError: Assignment to constant variable.
+let m = [2, 3];
+m.push(4);
+console.log(m[0]); // 2 chiqadi (boshi o'zgarmagan)
+console.log(m[2]); // 4 chiqadi (oxiriga qo'shilgan)
 \`\`\`
-
-**Nima bo'ladi:** \`const\` o'zgaruvchisiga yangi qiymat berib bo'lmaydi. Lekin uning ichidagi ma'lumotlarni \`push\` va \`pop\` orqali yangilash mumkin.
-**To'g'ri varianti:** Massivni o'zgartirish uchun faqat metodlardan foydalaning, uni qayta tenglamang.
 
 ---
 
 ## 8. Tekshiruv
 
-### 1-mashq (oson)
-\`colors = ["Qizil", "Yashil"]\` massivi berilgan. \`push\` metodidan foydalanib uning oxiriga \`"Sariq"\` rangini qo'shing va \`colors\` massivini konsolga chiqaring.
+### 1-mashq (Oson)
+\`["olma", "nok"]\` massiviga \`"uzum"\` ni \`push\` bilan qo'shing. Butun massivni chiqaring.
 
-### 2-mashq (o'rtacha)
-\`tasks = ["Dars qilish", "Kitob o'qish", "Dam olish"]\` massivi berilgan. \`pop()\` yordamida oxirgi vazifani sug'urib oling va uni konsolga chiqaring (\`"Dam olish"\`).
+### 2-mashq (O'rtacha)
+\`["olma", "nok", "uzum"]\` dan \`pop\` bilan oxirgisini oling. Olinganni chiqaring (\`uzum\` chiqishi kerak).
 
-### 3-mashq (chegara holat)
-Bo'sh \`queue = []\` massivini yarating. \`push\` orqali unga ketma-ket \`1\` va \`2\` sonlarini qo'shing. So'ngra bitta \`pop()\` chaqiring. Massivning qolgan uzunligini (\`queue.length\`) konsolga chiqaring (\`1\`).
+### 3-mashq (Chegara holat)
+Bo'sh massivdan \`pop\` qiling. \`undefined\` chiqishini tasdiqlang (bu xato emas).
 
----
-
-### Javoblar
-
-**1-mashq javobi:**
+### Javoblar:
+1.
 \`\`\`javascript
-const colors = ["Qizil", "Yashil"];
-colors.push("Sariq");
-console.log(colors); // [ 'Qizil', 'Yashil', 'Sariq' ]
+let mevalar = ["olma", "nok"];
+mevalar.push("uzum");
+console.log(mevalar);
 \`\`\`
-
-**2-mashq javobi:**
+2.
 \`\`\`javascript
-const tasks = ["Dars qilish", "Kitob o'qish", "Dam olish"];
-let lastTask = tasks.pop();
-console.log(lastTask); // Dam olish
+let mevalar = ["olma", "nok", "uzum"];
+let oxirgi = mevalar.pop();
+console.log(oxirgi);
 \`\`\`
-
-**3-mashq javobi:**
+3.
 \`\`\`javascript
-const queue = [];
-queue.push(1);
-queue.push(2);
-queue.pop();
-console.log(queue.length); // 1
+let m = [];
+console.log(m.pop()); // undefined chiqadi
 \`\`\`
 
 ---
 
 ## 9. Xulosa
 
-1. \`push(element)\` — massiv oxiriga element qo'shadi va uning uzunligini oshiradi.
-2. \`pop()\` — massivning oxirgi elementini sug'urib olib tashlaydi va o'sha elementni qaytaradi.
-3. \`const\` bilan yaratilgan massivning ichki elementlarini \`push\` va \`pop\` orqali bemalol o'zgartirish mumkin.
+1. \`push\` — oxiriga qo'shadi. Qavs bilan chaqiriladi.
+2. \`pop\` — oxirgisini oladi va qaytaradi. Bo'sh massivdan \`undefined\` beradi.
+3. Metod — massiv nomidan keyin nuqta bilan chaqiriladigan tayyor buyruq.
 
-Keyingi darsda: Massiv elementlari bo'ylab sikl aylanish — for...of sikli bilan tanishamiz.
+Keyingi darsda: massivni aylantirib chiqadigan \`for...of\` sikli bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "colors massiviga push qilish",
-      instruction: "`colors = [\"Qizil\", \"Yashil\"]` massivining oxiriga `push` bilan `\"Sariq\"` rangini qo'shing va `colors` ni konsolga chiqaring.",
-      startingCode: "const colors = [\"Qizil\", \"Yashil\"];\n// \"Sariq\" rangini qo'shing va colors ni konsolga chiqaring\n",
-      hint: "colors.push(\"Sariq\");\nconsole.log(colors);",
-      test: "if (!code.includes('push')) return 'push metodi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Sariq'))) return null;\nreturn 'Konsolga \"Sariq\" qo\\'shilgan massiv chiqmadi';"
+      title: "Oxiriga qo'shish",
+      instruction: "`[\"olma\", \"nok\"]` ga `\"uzum\"` ni `push` bilan qo'shing. Butun massivni chiqaring.",
+      startingCode: "let mevalar = [\"olma\", \"nok\"];\n// push bilan qo'shing va chiqaring\n",
+      hint: "mevalar.push(\"uzum\");\nconsole.log(mevalar);",
+      test: "if (!code.includes('.push(')) return 'push() ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('uzum'))) return null;\nreturn 'uzum chiqmadi';"
     },
     {
       id: 2,
-      title: "tasks massividan pop qilish",
-      instruction: "`tasks` massividan `pop()` yordamida oxirgi vazifani sug'urib olib, uni konsolga chiqaring.",
-      startingCode: "const tasks = [\"Dars qilish\", \"Kitob o'qish\", \"Dam olish\"];\n// oxirgi vazifani pop qilib konsolga chiqaring\n",
-      hint: "let lastTask = tasks.pop();\nconsole.log(lastTask);",
-      test: "if (!code.includes('pop')) return 'pop metodi ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('Dam olish'))) return null;\nreturn 'Konsolga \"Dam olish\" chiqmadi';"
+      title: "Oxirgisini olish",
+      instruction: "`[\"olma\", \"nok\", \"uzum\"]` dan `pop` bilan oxirgisini oling va chiqaring (`uzum` chiqishi kerak).",
+      startingCode: "let mevalar = [\"olma\", \"nok\", \"uzum\"];\n// pop bilan oling va chiqaring\n",
+      hint: "let oxirgi = mevalar.pop();\nconsole.log(oxirgi);",
+      test: "if (!code.includes('.pop(')) return 'pop() ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'uzum')) return null;\nreturn 'uzum chiqmadi';"
     },
     {
       id: 3,
-      title: "queue massivi bilan ishlash",
-      instruction: "Bo'sh `queue` massiviga `push` bilan `1` va `2` ni qo'shing. Keyin bitta `pop()` chaqirib, qolgan massiv uzunligini (`queue.length`) konsolga chiqaring.",
-      startingCode: "const queue = [];\n// 1 va 2 ni qo'shing, 1 marta pop qiling va queue.length ni chiqaring\n",
-      hint: "queue.push(1);\nqueue.push(2);\nqueue.pop();\nconsole.log(queue.length);",
-      test: "if (!code.includes('push') || !code.includes('pop')) return 'push va pop metodlari ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('1'))) return null;\nreturn 'Konsolga 1 chiqmadi';"
+      title: "Qavsni qo'shish",
+      instruction: "`m.push;` ishlamayapti. Qavs qo'shing (`[1, 2]` ga `3` qo'shilsin).",
+      startingCode: "let m = [1, 2];\nm.push;\nconsole.log(m);\n",
+      hint: "m.push(3);",
+      test: "if (!code.includes('.push(')) return 'Qavs bilan chaqiring: push(3)';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('3'))) return null;\nreturn '3 chiqmadi';"
+    },
+    {
+      id: 4,
+      title: "Bo'shdan olish",
+      instruction: "`[]` dan `pop` qiling va chiqaring (`undefined` chiqadi — bu xato emas).",
+      startingCode: "let m = [];\n// pop bilan oling va chiqaring\n",
+      hint: "console.log(m.pop());",
+      test: "if (!code.includes('.pop(')) return 'pop() ishlating';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === 'undefined')) return null;\nreturn 'undefined chiqmadi';"
+    },
+    {
+      id: 5,
+      title: "Ikkita qo'shish (chegara)",
+      instruction: "`[1]` ga `2` va `3` ni alohida `push` bilan qo'shing. Butun massivni chiqaring.",
+      startingCode: "let m = [1];\n// Ikkita push yozing va chiqaring\n",
+      hint: "m.push(2);\nm.push(3);\nconsole.log(m);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.replace(/\\s/g, '') === '1,2,3')) return null;\nreturn '1, 2, 3 massivi chiqmadi';"
+    },
+    {
+      id: 6,
+      title: "Olib tashlashni kuzatish (chegara)",
+      instruction: "`[\"a\", \"b\", \"c\"]` dan `pop` qiling. Qolgan massivni chiqaring (`a` va `b` qolishi kerak).",
+      startingCode: "let m = [\"a\", \"b\", \"c\"];\n// pop qiling va massivni chiqaring\n",
+      hint: "m.pop();\nconsole.log(m);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => !m.includes('c') && m.includes('a'))) return null;\nreturn 'c ketib, a qolishi kerak';"
+    },
+    {
+      id: 7,
+      title: "Olinganni saqlash (chegara)",
+      instruction: "`[5, 9]` dan `pop` qilib, olinganni `oxirgi` ga saqlang. `oxirgi` ni chiqaring (`9` chiqishi kerak).",
+      startingCode: "let m = [5, 9];\n// pop qilib oxirgi ga saqlang va chiqaring\n",
+      hint: "let oxirgi = m.pop();\nconsole.log(oxirgi);",
+      test: "if (!code.includes('oxirgi = m.pop') && !code.includes('oxirgi=m.pop')) return 'let oxirgi = m.pop(); deb yozing';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '9')) return null;\nreturn '9 chiqmadi';"
+    },
+    {
+      id: 8,
+      title: "Boshiga emas (chegara)",
+      instruction: "`[2, 3]` ga `4` ni `push` qiling. `m[0]` ni chiqaring (`2` chiqishi kerak — boshi o'zgarmagan).",
+      startingCode: "let m = [2, 3];\n// push qiling va m[0] ni chiqaring\n",
+      hint: "m.push(4);\nconsole.log(m[0]);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2')) return null;\nreturn '2 chiqmadi';"
+    },
+    {
+      id: 9,
+      title: "Uzunlik oshishi (chegara)",
+      instruction: "`[1, 2]` ga `push` qiling. Keyin uzunlikni chiqaring (`3` chiqishi kerak).",
+      startingCode: "let m = [1, 2];\n// push qiling va length ni chiqaring\n",
+      hint: "m.push(3);\nconsole.log(m.length);",
+      test: "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '3')) return null;\nreturn '3 chiqmadi';"
+    },
+    {
+      id: 10,
+      title: "Qo'sh va ol (chegara)",
+      instruction: "`[1]` ga `2` ni qo'shing, keyin `pop` bilan oling. Olinganni chiqaring (`2` chiqishi kerak).",
+      startingCode: "let m = [1];\n// push qiling, pop qilib chiqaring\n",
+      hint: "m.push(2);\nlet oxirgi = m.pop();\nconsole.log(oxirgi);",
+      test: "if (!code.includes('.push(') || !code.includes('.pop(')) return 'push va pop ikkalasi kerak';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Hali xato bor: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.trim() === '2')) return null;\nreturn '2 chiqmadi';"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "push() metodi nima vazifani bajaradi?",
+      question: "`let m = [\"olma\", \"nok\"]; m.push(\"uzum\"); console.log(m);` nima chiqaradi?",
       options: [
-        "Massivning oxiriga yangi element qo'shadi",
-        "Massivning boshiga element qo'shadi",
-        "Massivning barcha elementlarini o'chiradi",
-        "Massiv uzunligini hisoblaydi"
+        "uzum",
+        "olma, nok, uzum massivi",
+        "Xatolik",
+        "Hech narsa"
       ],
-      correctAnswer: 0,
-      explanation: "push() metodi berilgan elementni massivning eng oxiriga qo'shadi."
+      correctAnswer: 1,
+      explanation: "uzum oxiriga qo'shildi. Massiv uchtalik bo'ldi."
     },
     {
       id: 2,
-      question: "pop() metodi massivning qaysi elementini olib tashlaydi?",
+      question: "push qayeriga qo'shadi?",
       options: [
-        "Eng oxirgi elementini",
-        "Eng birinchi elementini",
-        "Tasodifiy elementini",
-        "Barcha elementlarini"
+        "Boshiga",
+        "Oxiriga",
+        "O'rtasiga",
+        "Har joyiga"
       ],
-      correctAnswer: 0,
-      explanation: "pop() metodi massivning faqat eng oxirgi elementini sug'urib olib tashlaydi va o'sha elementni qaytaradi."
+      correctAnswer: 1,
+      explanation: "push har doim oxiriga qo'shadi."
     },
     {
       id: 3,
-      question: "Bo'sh massivda pop() chaqirilsa nima qaytadi?",
+      question: "`let m = [\"olma\", \"nok\", \"uzum\"]; let o = m.pop(); console.log(o);` nima chiqaradi?",
       options: [
+        "olma",
+        "uzum",
+        "nok",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "pop oxirgisini oladi va qaytaradi: uzum."
+    },
+    {
+      id: 4,
+      question: "`let m = [1, 2]; m.push; console.log(m);` nima chiqaradi?",
+      options: [
+        "1, 2, 3",
+        "1, 2 (o'zgarmagan)",
+        "Xatolik",
+        "undefined"
+      ],
+      correctAnswer: 1,
+      explanation: "Qavssiz buyruq chaqirilmaydi. Massiv o'zgarmaydi."
+    },
+    {
+      id: 5,
+      question: "`let m = []; console.log(m.pop());` nima chiqaradi?",
+      options: [
+        "Xatolik",
         "undefined",
         "null",
-        "0",
-        "Error beradi"
+        "0"
       ],
-      correctAnswer: 0,
-      explanation: "Bo'sh massivda element bo'lmaganligi sababli pop() hech qanday xato bermasdan undefined qaytaradi."
+      correctAnswer: 1,
+      explanation: "Olinadigan hech narsa yo'q. Natija undefined."
+    },
+    {
+      id: 6,
+      question: "`let m = [2, 3]; m.push(4); console.log(m[0]);` nima chiqaradi?",
+      options: [
+        "4",
+        "2",
+        "3",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Boshlanish o'zgarmagan. 0-katakda 2 turibdi."
+    },
+    {
+      id: 7,
+      question: "pop olgan qiymat bilan nima qiladi?",
+      options: [
+        "O'chirib tashlaydi",
+        "Qaytaradi (saqlasa bo'ladi)",
+        "Boshiga qo'yadi",
+        "Hech narsa qilmaydi"
+      ],
+      correctAnswer: 1,
+      explanation: "pop olganini qaytaradi. let bilan saqlansa bo'ladi."
+    },
+    {
+      id: 8,
+      question: "`let m = [5, 9]; let o = m.pop(); console.log(o);` nima chiqaradi?",
+      options: [
+        "5",
+        "9",
+        "5, 9",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Oxirgisi olindi va saqlandi: 9."
+    },
+    {
+      id: 9,
+      question: "`let m = [1, 2]; m.push(3); console.log(m.length);` nima chiqaradi?",
+      options: [
+        "2",
+        "3",
+        "3, 4",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Bitta qo'shildi. Uzunlik 3 bo'ldi."
+    },
+    {
+      id: 10,
+      question: "`let m = [1]; m.push(2); let o = m.pop(); console.log(o);` nima chiqaradi?",
+      options: [
+        "1",
+        "2",
+        "1, 2",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "2 qo'shildi, keyin olindi: 2 chiqadi."
+    },
+    {
+      id: 11,
+      question: "Metod nima?",
+      options: [
+        "O'zgaruvchi turi",
+        "Massivga tegishli tayyor buyruq",
+        "Xato turi",
+        "Sikl turi"
+      ],
+      correctAnswer: 1,
+      explanation: "Metod nuqta bilan chaqiriladi: m.push(3)."
+    },
+    {
+      id: 12,
+      question: "`let m = [\"a\", \"b\", \"c\"]; m.pop(); console.log(m);` nima chiqaradi?",
+      options: [
+        "a, b, c",
+        "a, b",
+        "c",
+        "Xatolik"
+      ],
+      correctAnswer: 1,
+      explanation: "Oxirgisi ketdi. a va b qoldi."
     }
   ]
 };

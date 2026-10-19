@@ -1,234 +1,347 @@
 export const sqlSyntax = {
-  id: "sql_syntax",
-  title: "SQL Sintaksis (Syntax)",
-  language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-SQL (Structured Query Language) tillar oilasiga kiradi, ammo u oddiy tillar (masalan ingliz tili) kabi ishlaydi. Unda biz buyruqlarni "gaplar" (statements) tarzida beramiz. 
-Tasavvur qiling, siz restoranda ofitsiantsiz va mijoz sizga buyurtma bermoqda: "Menga taomnoma ichidan 2 ta shirinlikni olib keling, narxi 10 dollardan arzon bo'lsin".
-SQL ham xuddi shunday ishlaydi: siz ma'lumotlar bazasiga qaysi ustunlar (SELECT), qaysi jadvaldan (FROM) va qanday shart asosida (WHERE) kerakligini aytasiz.
+  id: "sqlSyntax",
+  title: "SELECT Asoslari: Ustun, Tartib, Chegara",
+  language: "sql",
+  dbSetup: "CREATE TABLE users (id INT, name STRING, age INT, city STRING); INSERT INTO users VALUES (1,'Ali',25,'Toshkent'),(2,'Vali',17,'Samarqand'),(3,'Guli',30,'Toshkent'),(4,'Hasan',22,'Buxoro'),(5,'Malika',19,'Toshkent'),(6,'Jasur',35,'Samarqand');",
+  theory: `## 1. Bu nima?
 
-\\\`\\\`\\\`sql
-SELECT ism, familiya 
-FROM foydalanuvchilar 
-WHERE yosh > 18;
-\\\`\\\`\\\`
+Tasavvur qiling, restorandasiz. Ofitsiantga aytasiz: "Menga taomnomadan faqat sho'rvalar ro'yxatini keltiring. Narxi bo'yicha arzonidan boshlab. Faqat uchtasini."
 
-Bu yerda:
-- **SELECT** - Nima kerak? (ism, familiya)
-- **FROM** - Qayerdan olinadi? (foydalanuvchilar jadvali)
-- **WHERE** - Qanday shartga ko'ra? (18 yoshdan kattalar)
+Uchta istak: qaysi ustun, qanday tartib, nechta qator. SQL da har biri alohida so'z bilan aytiladi.
 
-## 2. 🔬 Chuqurroq Tahlil
-SQL ostida aslida nimalar sodir bo'ladi? Dastur so'rovni ko'rganda uni to'g'ridan-to'g'ri ishga tushirmaydi. Quyidagi bosqichlardan o'tadi:
-1. **Parsing (Tahlil qilinishi):** SQL dvigateli yozilgan kodni tekshiradi, sintaksis to'g'riligini aniqlaydi.
-2. **Planner (Rejalashtiruvchi):** Qanday qilib ma'lumotni tezroq va samaraliroq topish yo'lini tuzadi. Index'lardan foydalanish yoki to'liq qidirish kerakligini aniqlaydi.
-3. **Execution (Bajarish):** Reja bo'yicha bazaga borib, kerakli natijalarni qaytaradi.
+SELECT so'rovi — jadvaldan kerakli ustunlarni, kerakli tartibda, kerakli miqdorda oladigan buyruqdir.
 
-**Nima uchun \\\`SELECT *\\\` dan qochish kerak?**
-Ko'p dasturchilar oson yo'lni tanlab, barcha ustunlarni tanlash uchun yulduzchadan (\\\`*\\\`) foydalanadilar.
-\\\`\\\`\\\`sql
--- YOMON YONDASHUV
-SELECT * FROM xodimlar;
-\\\`\\\`\\\`
-Bu unumdorlik (performance) uchun zararlidir. Tarmoq orqali katta hajmdagi keraksiz ma'lumotlar (masalan, parollar, uzun matnlar) uzatiladi. Doimo faqat o'zingizga kerakli ustunlarni aniq yozing.
+---
 
-## 3. 🚧 Chekka Holatlar va Senior Intervyu Savollari 
-1. **SQL case-sensitive'mi (katta-kichik harfga sezgirmi)?**
-   SQL ning o'zi (kalit so'zlar kabi SELECT, FROM) sezgir emas. Ammo jadval ichidagi ma'lumotlar sezgir bo'lishi mumkin. Bu ma'lumotlar bazasining Collation (sozlamalari) turiga bog'liq.
-2. **Buyruqlar bajarilish ketma-ketligi qanday?**
-   Biz so'rovni \\\`SELECT\\\` dan boshlab yozamiz, lekin SQL dvigateli uni quyidagi ketma-ketlikda o'qiydi:
-   \\\`FROM\\\` ➡️ \\\`WHERE\\\` ➡️ \\\`GROUP BY\\\` ➡️ \\\`HAVING\\\` ➡️ \\\`SELECT\\\` ➡️ \\\`ORDER BY\\\` ➡️ \\\`LIMIT\\\`.
-   Bu degani \\\`SELECT\\\` da bergan yangi "alias" nomini \\\`WHERE\\\` shartida ishlata olmaysiz.
-3. **Nima uchun nuqtali vergul (;) muhim?**
-   Standart bo'yicha har bir SQL ifodasi (statement) nuqtali vergul bilan yakunlanadi. Bitta faylda bir nechta so'rovlarni alohida ishga tushirish uchun bu yagona ajratuvchidir.
+## 2. Nega kerak?
 
-## 📊 SQL So'rovi Qanday Tuziladi?
-\\\`\\\`\\\`mermaid
-flowchart LR
-    A[SELECT] -->|Qaysi ustunlar?| B(ustun_nomlari)
-    B --> C[FROM]
-    C -->|Qaysi jadval?| D(jadval_nomi)
-    D --> E[WHERE]
-    E -->|Qanday shart?| F(shartlar)
-    F --> G[;]
-\\\`\\\`\\\`
+users jadvalida 6 kishi bor. Sizga faqat ismlar ro'yxati kerak. Hammasi emas:
+
+\`\`\`sql
+SELECT name FROM users;
+\`\`\`
+
+Yoki yoshi kattadan kichikka, faqat ikkitasi:
+
+\`\`\`sql
+SELECT name, age FROM users ORDER BY age DESC LIMIT 2;
+\`\`\`
+
+Muammo shunda: har safar hamma ma'lumot kerak emas. Yechim — ustunni tanlash (\`SELECT name\`), tartiblash (\`ORDER BY\`) va cheklash (\`LIMIT\`).
+
+---
+
+## 3. Birinchi misol
+
+Bu kod faqat ismlarni chiqaradi.
+
+\`\`\`sql
+SELECT name FROM users; -- Faqat ism ustuni
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"name":"Ali"},{"name":"Vali"},{"name":"Guli"},{"name":"Hasan"},{"name":"Malika"},{"name":"Jasur"}]
+\`\`\`
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`SELECT name\` — faqat bitta ustun so'raldi. Qolganlari kelmaydi.
+- \`FROM users\` — users jadvalidan olinadi.
+- Natijada har qatorda faqat \`name\` bor.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod yosh bo'yicha kamayish tartibida ikkitasini chiqaradi.
+
+\`\`\`sql
+SELECT name, age FROM users ORDER BY age DESC LIMIT 2; -- Kattalar birinchi, 2 ta
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"name":"Jasur","age":35},{"name":"Guli","age":30}]
+\`\`\`
+
+Qator-baqator tahlil:
+- \`SELECT name, age\` — ikkita ustun so'raldi.
+- \`ORDER BY age DESC\` — yosh bo'yicha kamayish tartibi. Eng kattasi birinchi.
+- \`LIMIT 2\` — faqat ikkita qator olinadi.
+
+---
+
+## 5.1. Takrorni yo'qotish va nomlash
+
+Ikkita qo'shimcha so'z bor:
+
+\`\`\`sql
+SELECT DISTINCT city FROM users; -- Takrorlarsiz: 3 ta shahar
+SELECT name AS ism FROM users; -- Ustun nomi o'zgardi
+\`\`\`
+
+\`\`\`text
+// Natija (birinchi):
+[{"city":"Toshkent"},{"city":"Samarqand"},{"city":"Buxoro"}]
+\`\`\`
+
+Qator-baqator tahlil:
+- \`DISTINCT\` — takrorlangan qiymatlarni bitta qiladi. Toshkent ikki marta bo'lsa ham bir chiqadi.
+- \`AS ism\` — ustunga vaqtinchalik yangi nom beradi. Natijada kalit \`ism\` bo'ladi.
+
+---
+
+## 6. Ko'p uchraydigan xatolar
+
+### 1. Jadval nomini xato yozish
+❌ Xato kod:
+\`\`\`sql
+SELECT * FROM user;
+\`\`\`
+Nima bo'ladi: xatolik yuz beradi (\`Table does not exist: user\`). Jadval nomi aniq bo'lishi shart: \`users\` bilan \`user\` ikki xil nom.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT * FROM users;
+\`\`\`
+
+### 2. Mavjud bo'lmagan ustun
+❌ Xato kod:
+\`\`\`sql
+SELECT foo FROM users;
+\`\`\`
+Nima bo'ladi: xatolik yuz beradi (\`Column does not exist: foo\`). Avval jadvalda qanday ustunlar borligini bilish kerak.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT name FROM users;
+\`\`\`
+
+### 3. Tartib so'zini unutish
+❌ Xato tushuncha:
+\`\`\`sql
+SELECT name, age FROM users BY age DESC;
+\`\`\`
+Nima bo'ladi: xatolik yuz beradi. Tartiblash so'zi ikki qismli: \`ORDER BY\`. Faqat \`BY\` ning o'zi ishlamaydi.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT name, age FROM users ORDER BY age DESC;
+\`\`\`
+
+---
+
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+users dan faqat ismlarni chiqaring. 6 ta ism chiqishi kerak.
+
+### 2-mashq (O'rtacha)
+users dan yosh bo'yicha o'sish tartibida ism va yoshni chiqaring. Birinchi qator Vali (17) bo'lishi kerak.
+
+### 3-mashq (Chegara holat)
+users dan takrorlanmagan shaharlarni chiqaring. 3 qator chiqishi kerak.
+
+### Javoblar:
+1.
+\`\`\`sql
+SELECT name FROM users;
+\`\`\`
+2.
+\`\`\`sql
+SELECT name, age FROM users ORDER BY age;
+\`\`\`
+3.
+\`\`\`sql
+SELECT DISTINCT city FROM users;
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. \`SELECT\` — qaysi ustunlar, \`FROM\` — qaysi jadval, \`ORDER BY\` — qanday tartib, \`LIMIT\` — nechta qator.
+2. \`DISTINCT\` takrorni o'chiradi, \`AS\` ustunga yangi nom beradi.
+3. Jadval va ustun nomlari aniq yoziladi. Xato nom — xatolik.
+
+Keyingi darsda: jadval yaratadigan \`CREATE TABLE\` bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "1-Topshiriq: Barchasini tanlash",
-      instruction: "Barcha ustunlarni tanlash uchun SQL'da qaysi belgi ishlatiladi? Funksiya shu belgini qaytarsin.",
-      startingCode: "function getAllSymbol() {\n  return '';\n}",
-      hint: "Yulduzcha (*) belgisini qaytaring.",
-      solution: "function getAllSymbol() {\n  return '*';\n}",
-      test: "const fn = new Function(code + '; return getAllSymbol;')();\nif (fn() !== '*') throw new Error(\"'*' belgisi qaytarilmadi\");"
+      title: "1-Topshiriq: Faqat ismlar",
+      instruction: "users jadvalidan (id, name, age, city) faqat name ustunini chiqaring. 6 ta ism chiqishi kerak.",
+      startingCode: "SELECT * FROM users;",
+      hint: "SELECT name FROM users;",
+      solution: "SELECT name FROM users;",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali', 'Vali', 'Guli', 'Hasan', 'Malika', 'Jasur'])) return '6 ta ism chiqishi kerak';\nreturn null;"
     },
     {
       id: 2,
-      title: "2-Topshiriq: Qayerdan olish",
-      instruction: "Qaysi jadvaldan ma'lumot olishni ko'rsatish uchun qaysi kalit so'z (keyword) ishlatiladi?",
-      startingCode: "function getFromKeyword() {\n  return '';\n}",
-      hint: "FROM so'zini qaytaring.",
-      solution: "function getFromKeyword() {\n  return 'FROM';\n}",
-      test: "const fn = new Function(code + '; return getFromKeyword;')();\nif (fn().toUpperCase() !== 'FROM') throw new Error(\"'FROM' so'zi kutilgandi\");"
+      title: "2-Topshiriq: Ism va yosh",
+      instruction: "users dan name va age ustunlarini chiqaring. 6 qator chiqishi kerak.",
+      startingCode: "SELECT * FROM users;",
+      hint: "SELECT name, age FROM users;",
+      solution: "SELECT name, age FROM users;",
+      test: "if (result.length !== 6) return '6 qator chiqishi kerak';\nif (!('name' in result[0] && 'age' in result[0])) return 'name va age ustunlari kerak';\nif ('city' in result[0]) return 'city chiqmasligi kerak';\nreturn null;"
     },
     {
       id: 3,
-      title: "3-Topshiriq: Shart berish",
-      instruction: "Qatorlarni filtrlash (shart berish) uchun qaysi kalit so'z ishlatiladi?",
-      startingCode: "function getWhereKeyword() {\n  return '';\n}",
-      hint: "WHERE so'zini qaytaring.",
-      solution: "function getWhereKeyword() {\n  return 'WHERE';\n}",
-      test: "const fn = new Function(code + '; return getWhereKeyword;')();\nif (fn().toUpperCase() !== 'WHERE') throw new Error(\"'WHERE' so'zi kutilgandi\");"
+      title: "3-Topshiriq: O'sish tartibi",
+      instruction: "users dan name va age ni yosh bo'yicha O'SISH tartibida chiqaring. Birinchi qator Vali (17) bo'lishi kerak.",
+      startingCode: "SELECT name, age FROM users;",
+      hint: "SELECT name, age FROM users ORDER BY age;",
+      solution: "SELECT name, age FROM users ORDER BY age;",
+      test: "if (!/\\bORDER\\s+BY\\b/i.test(code)) return 'ORDER BY yozing';\nif (result[0].name !== 'Vali') return 'Birinchi Vali bolishi kerak. Chiqdi: ' + (result[0] || {}).name;\nif (result.length !== 6) return '6 qator chiqishi kerak';\nreturn null;"
     },
     {
       id: 4,
-      title: "4-Topshiriq: So'rov oxiri",
-      instruction: "Standart SQL so'rovlari qaysi belgi bilan tugashi kerak? (Nuqtali vergul)",
-      startingCode: "function getEndSymbol() {\n  return '';\n}",
-      hint: "Nuqtali vergul (;) belgisini qaytaring.",
-      solution: "function getEndSymbol() {\n  return ';';\n}",
-      test: "const fn = new Function(code + '; return getEndSymbol;')();\nif (fn() !== ';') throw new Error(\"';' belgisi kutilgandi\");"
+      title: "4-Topshiriq: Kamayish tartibi",
+      instruction: "users dan name va age ni yosh bo'yicha KAMAYISH tartibida chiqaring. Birinchi qator Jasur (35) bo'lishi kerak.",
+      startingCode: "SELECT name, age FROM users;",
+      hint: "SELECT name, age FROM users ORDER BY age DESC;",
+      solution: "SELECT name, age FROM users ORDER BY age DESC;",
+      test: "if (!/\\bDESC\\b/i.test(code)) return 'DESC yozing';\nif (result[0].name !== 'Jasur') return 'Birinchi Jasur bolishi kerak';\nreturn null;"
     },
     {
       id: 5,
-      title: "5-Topshiriq: Oddiy so'rov",
-      instruction: "'users' jadvalidan barcha ma'lumotlarni oluvchi SQL so'rovini yozing.",
-      startingCode: "function selectAllUsers() {\n  return '';\n}",
-      hint: "SELECT * FROM users; deb yozing.",
-      solution: "function selectAllUsers() {\n  return 'SELECT * FROM users;';\n}",
-      test: "const fn = new Function(code + '; return selectAllUsers;')();\nconst query = fn().trim().replace(/;$/, '').toUpperCase();\nif (query !== 'SELECT * FROM USERS') throw new Error(\"Xato SQL so'rovi\");"
+      title: "5-Topshiriq: Chegara (LIMIT)",
+      instruction: "users dan faqat 2 ta qator chiqaring (name ustuni). Ali va Vali chiqishi kerak.",
+      startingCode: "SELECT name FROM users;",
+      hint: "SELECT name FROM users LIMIT 2;",
+      solution: "SELECT name FROM users LIMIT 2;",
+      test: "if (!/\\bLIMIT\\b/i.test(code)) return 'LIMIT yozing';\nif (result.length !== 2) return '2 qator chiqishi kerak';\nreturn null;"
     },
     {
       id: 6,
-      title: "6-Topshiriq: Bitta ustun",
-      instruction: "'users' jadvalidan faqat 'email' ustunini tanlovchi so'rov yozing.",
-      startingCode: "function selectEmail() {\n  return '';\n}",
-      hint: "SELECT email FROM users;",
-      solution: "function selectEmail() {\n  return 'SELECT email FROM users;';\n}",
-      test: "const fn = new Function(code + '; return selectEmail;')();\nconst query = fn().trim().replace(/;$/, '').toLowerCase();\nif (query !== 'select email from users') throw new Error(\"Faqat email ustuni tanlanishi kerak\");"
+      title: "6-Topshiriq: Takrorsiz shaharlar",
+      instruction: "users dan takrorlanmagan city qiymatlarini chiqaring. 3 qator chiqishi kerak.",
+      startingCode: "SELECT city FROM users;",
+      hint: "SELECT DISTINCT city FROM users;",
+      solution: "SELECT DISTINCT city FROM users;",
+      test: "if (!/\\bDISTINCT\\b/i.test(code)) return 'DISTINCT yozing';\nif (result.length !== 3) return '3 ta shahar chiqishi kerak';\nreturn null;"
     },
     {
       id: 7,
-      title: "7-Topshiriq: Ikkita ustun",
-      instruction: "'users' jadvalidan 'name' va 'age' ustunlarini tanlang. Ustunlar orasiga vergul qo'yiladi.",
-      startingCode: "function selectTwo() {\n  return '';\n}",
-      hint: "SELECT name, age FROM users;",
-      solution: "function selectTwo() {\n  return 'SELECT name, age FROM users;';\n}",
-      test: "const fn = new Function(code + '; return selectTwo;')();\nconst query = fn().trim().replace(/;$/, '').toLowerCase().replace(/\\s+/g, ' ');\nif (!query.includes('select name, age from users') && !query.includes('select age, name from users')) throw new Error(\"Ikkita ustun tanlanishi kerak\");"
+      title: "7-Topshiriq: Yangi nom (AS)",
+      instruction: "name ustunini `ism` nomi bilan chiqaring (AS ishlating). Natija kaliti `ism` bo'lishi kerak.",
+      startingCode: "SELECT name FROM users;",
+      hint: "SELECT name AS ism FROM users;",
+      solution: "SELECT name AS ism FROM users;",
+      test: "if (!/\\bAS\\b/i.test(code)) return 'AS yozing';\nif (!('ism' in result[0])) return 'Kalit ism bolishi kerak';\nreturn null;"
     },
     {
       id: 8,
-      title: "8-Topshiriq: Shartli tanlash",
-      instruction: "'users' jadvalidan 'id' si 5 ga teng bo'lgan qatorning barcha ustunlarini tanlang.",
-      startingCode: "function selectWhere() {\n  return '';\n}",
-      hint: "SELECT * FROM users WHERE id = 5;",
-      solution: "function selectWhere() {\n  return 'SELECT * FROM users WHERE id = 5;';\n}",
-      test: "const fn = new Function(code + '; return selectWhere;')();\nconst query = fn().trim().replace(/;$/, '').toLowerCase().replace(/\\s+/g, ' ');\nif (query !== 'select * from users where id = 5') throw new Error(\"WHERE sharti noto'g'ri\");"
+      title: "8-Topshiriq: Tartib + chegara",
+      instruction: "Yoshi kattalaridan 2 tasini chiqaring (name, age; kamayish tartibida). Jasur va Guli chiqishi kerak.",
+      startingCode: "SELECT name, age FROM users;",
+      hint: "SELECT name, age FROM users ORDER BY age DESC LIMIT 2;",
+      solution: "SELECT name, age FROM users ORDER BY age DESC LIMIT 2;",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Jasur', 'Guli'])) return 'Jasur va Guli chiqishi kerak';\nreturn null;"
     },
     {
       id: 9,
-      title: "9-Topshiriq: Noyob ma'lumotlar",
-      instruction: "Takrorlanuvchi ma'lumotlarni bitta qilib chiqarish uchun SELECT dan keyin qaysi so'z ishlatiladi?",
-      startingCode: "function getDistinct() {\n  return '';\n}",
-      hint: "DISTINCT so'zini qaytaring.",
-      solution: "function getDistinct() {\n  return 'DISTINCT';\n}",
-      test: "const fn = new Function(code + '; return getDistinct;')();\nif (fn().toUpperCase() !== 'DISTINCT') throw new Error(\"'DISTINCT' kutilgandi\");"
+      title: "9-Topshiriq: Jadval nomi xatosi",
+      instruction: "Quyidagi xatoni tuzating: jadval nomi `users` bo'lishi kerak (`user` emas).",
+      startingCode: "SELECT * FROM user;",
+      hint: "SELECT * FROM users;",
+      solution: "SELECT * FROM users;",
+      test: "if (/user(?!s)/i.test(code)) return 'user emas, users deb yozing';\nif (!/\\busers\\b/i.test(code)) return 'users deb yozing';\nif (result.length !== 6) return '6 qator chiqishi kerak';\nreturn null;"
     },
     {
       id: 10,
-      title: "10-Topshiriq: Tartiblash (Oldindan ko'rish)",
-      instruction: "Ma'lumotlarni tartiblash uchun qaysi kalit so'z ishlatiladi? (Ikki so'z, bo'sh joy bilan)",
-      startingCode: "function getOrderBy() {\n  return '';\n}",
-      hint: "ORDER BY",
-      solution: "function getOrderBy() {\n  return 'ORDER BY';\n}",
-      test: "const fn = new Function(code + '; return getOrderBy;')();\nif (fn().toUpperCase().replace(/\\s+/g, ' ') !== 'ORDER BY') throw new Error(\"'ORDER BY' kutilgandi\");"
+      title: "10-Topshiriq: Ustun xatosi",
+      instruction: "Quyidagi xatoni tuzating: `foo` ustuni yo'q. `name` ga almashtiring.",
+      startingCode: "SELECT foo FROM users;",
+      hint: "SELECT name FROM users;",
+      solution: "SELECT name FROM users;",
+      test: "if (result.length !== 6) return '6 qator chiqishi kerak';\nif (!('name' in result[0])) return 'name ustuni kerak';\nreturn null;"
     }
   ],
   quizzes: [
     {
       id: 1,
-      question: "Barcha ustunlarni olish uchun qaysi belgi ishlatiladi?",
-      options: ["*", "%", "$", "#"],
-      correctAnswer: 0,
-      explanation: "* belgisi 'all columns' (barcha ustunlar) degan ma'noni bildiradi."
+      question: "`SELECT name FROM users;` nima chiqaradi?",
+      options: ["Hamma ustun", "Faqat ismlar", "Hech narsa", "Xatolik"],
+      correctAnswer: 1,
+      explanation: "Faqat so'ralgan ustun keladi."
     },
     {
       id: 2,
-      question: "Qaysi kalit so'z jadval nomini ko'rsatadi?",
-      options: ["SELECT", "FROM", "WHERE", "TABLE"],
+      question: "`ORDER BY age DESC` nimani bildiradi?",
+      options: ["Yosh bo'yicha o'sish", "Yosh bo'yicha kamayish", "Ism bo'yicha tartib", "Tartibsiz"],
       correctAnswer: 1,
-      explanation: "FROM so'zidan so'ng qaysi jadvaldan ma'lumot olinishi kerakligi ko'rsatiladi."
+      explanation: "DESC — kamayish (katta birinchi). Odatiy tartib o'sish."
     },
     {
       id: 3,
-      question: "Qaysi kalit so'z shart berish uchun ishlatiladi?",
-      options: ["CONDITION", "IF", "WHERE", "FILTER"],
-      correctAnswer: 2,
-      explanation: "WHERE yordamida faqat ma'lum bir shartga javob beradigan qatorlar tanlanadi."
+      question: "`LIMIT 2` nimani qiladi?",
+      options: ["2-qatordan boshlaydi", "Faqat 2 qator qaytaradi", "2-ustunni oladi", "Hech narsa qilmaydi"],
+      correctAnswer: 1,
+      explanation: "LIMIT natija sonini cheklaydi."
     },
     {
       id: 4,
-      question: "SQL so'rovlari qanday belgi bilan tugashi kerak?",
-      options: [".", ",", ":", ";"],
-      correctAnswer: 3,
-      explanation: "Standartga ko'ra har bir SQL statement nuqtali vergul (;) bilan tugashi kerak."
+      question: "`SELECT DISTINCT city FROM users;` nima chiqaradi?",
+      options: ["Hamma shahar (takror bilan)", "Takrorlanmagan shaharlar", "Faqat birinchi shahar", "Xatolik"],
+      correctAnswer: 1,
+      explanation: "DISTINCT takrorlarni bitta qiladi."
     },
     {
       id: 5,
-      question: "SELECT email, name FROM users; so'rovi qanday ishlaydi?",
-      options: ["Barcha ma'lumotni oladi", "Faqat email va name ustunlarini oladi", "Xato beradi", "Jadvalni o'chiradi"],
+      question: "`SELECT name AS ism FROM users;` da kalit nima bo'ladi?",
+      options: ["name", "ism", "users", "AS"],
       correctAnswer: 1,
-      explanation: "U faqat ko'rsatilgan ustunlarni (email va name) qaytaradi."
+      explanation: "AS ustunga vaqtinchalik yangi nom beradi."
     },
     {
       id: 6,
-      question: "Takrorlangan qatorlarni olib tashlab, faqat noyob (unique) qiymatlarni olish uchun nima ishlatiladi?",
-      options: ["SELECT UNIQUE", "SELECT DISTINCT", "SELECT SINGLE", "SELECT DIFFERENT"],
+      question: "`SELECT * FROM user;` (users emas) qatorida nima bo'ladi?",
+      options: ["Bo'sh natija", "Xatolik: jadval topilmadi", "Hamma qator", "Birinchi qator"],
       correctAnswer: 1,
-      explanation: "SELECT DISTINCT takrorlanishlarni olib tashlaydi."
+      explanation: "Jadval nomi aniq bo'lishi shart."
     },
     {
       id: 7,
-      question: "SQL kalit so'zlari katta-kichik harfga sezgirmi?",
-      options: ["Ha, doim", "Yo'q, SELECT va select bir xil ishlaydi", "Faqat PostgreSQL da sezgir", "Faqat FROM sezgir"],
+      question: "`SELECT foo FROM users;` qatorida nima bo'ladi?",
+      options: ["Bo'sh natija", "Xatolik: ustun topilmadi", "Hamma ustun", "null chiqadi"],
       correctAnswer: 1,
-      explanation: "SQL kalit so'zlari (keywords) katta-kichik harfga sezgir emas, lekin an'anaga ko'ra KATTA harflarda yoziladi."
+      explanation: "Mavjud bo'lmagan ustun so'ralsa xato beradi."
     },
     {
       id: 8,
-      question: "Jadvaldagi qatorlar sonini sanash uchun qaysi funksiya ishlatiladi?",
-      options: ["SUM()", "COUNT()", "TOTAL()", "ADD()"],
+      question: "`ORDER BY` da `BY` ni unutib `ORDER age` yozilsa nima bo'ladi?",
+      options: ["Ishlaydi", "Xatolik beradi", "Tartibsiz chiqaradi", "Faqat bitta chiqaradi"],
       correctAnswer: 1,
-      explanation: "COUNT() funksiyasi qatorlar sonini sanaydi."
+      explanation: "Tartib so'zi ikki qismli: ORDER BY."
     },
     {
       id: 9,
-      question: "Nima uchun SELECT * yomon amaliyot bo'lishi mumkin?",
-      options: ["Xato beradi", "Tarmoq trafigi va xotirani bekorga band qiladi", "Baza o'chib ketadi", "Jadvalni bloklaydi"],
+      question: "Eng katta yoshdagi 2 kishini qanday olamiz?",
+      options: ["SELECT name FROM users LIMIT 2", "SELECT name, age FROM users ORDER BY age DESC LIMIT 2", "SELECT name FROM users ORDER BY age LIMIT 2", "SELECT * FROM users"],
       correctAnswer: 1,
-      explanation: "Keraksiz ustunlarni olish ko'p resurs sarflaydi."
+      explanation: "Avval kamayish tartibi, keyin chegara."
     },
     {
       id: 10,
-      question: "WHERE sharti qachon bajariladi?",
-      options: ["Natija ekranga chiqqandan keyin", "Ma'lumotlarni tanlash vaqtida", "So'rov tugaganidan so'ng", "Baza yaratilayotganda"],
+      question: "`SELECT name, age FROM users;` nechta ustun qaytaradi?",
+      options: ["1 ta", "2 ta", "Hammasi", "0 ta"],
       correctAnswer: 1,
-      explanation: "WHERE sharti ma'lumotlar tanlab olinayotganda ishlaydi va noto'g'ri qatorlarni filtrlaydi."
+      explanation: "Vergul bilan ikkita ustun so'ralgan."
     },
     {
       id: 11,
-      question: "Bir nechta ustunlarni tanlashda ular nimaning yordamida ajratiladi?",
-      options: ["Nuqta", "Vergul", "Probel", "Tire"],
+      question: "O'sish tartibi uchun nima yoziladi?",
+      options: ["ORDER BY age DESC", "ORDER BY age", "SORT BY age", "GROUP BY age"],
       correctAnswer: 1,
-      explanation: "Vergul (,) orqali ustunlar nomlari ketma-ket sanaladi (SELECT a, b, c)."
+      explanation: "Qo'shimchasiz ORDER BY o'sish tartibida saralaydi."
     },
     {
       id: 12,
-      question: "So'rovda FROM so'zi qayerda joylashadi?",
-      options: ["SELECT dan oldin", "SELECT dan keyin va WHERE dan oldin", "Eng oxirida", "Istalgan joyda"],
+      question: "`SELECT * FROM users ORDER BY age DESC LIMIT 1;` nima qaytaradi?",
+      options: ["Eng yoshini", "Eng kattasini (bitta qator)", "Hammasi", "Xatolik"],
       correctAnswer: 1,
-      explanation: "Standart sintaksis: SELECT ... FROM ... WHERE ... ko'rinishida bo'ladi."
+      explanation: "Kamayish + 1 chegara = eng kattasi."
     }
   ]
 };

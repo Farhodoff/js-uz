@@ -55,6 +55,10 @@ export const pwaRuntimeCaching = [
     options: {
       cacheName: 'html-cache',
       networkTimeoutSeconds: 2,
+      expiration: {
+        maxEntries: 30,
+        maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+      },
       cacheableResponse: {
         statuses: [0, 200],
       },

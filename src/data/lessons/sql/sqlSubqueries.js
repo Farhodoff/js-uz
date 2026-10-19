@@ -1,283 +1,339 @@
 export const sqlSubqueries = {
-  id: "sql_subqueries_1",
-  title: "SQL Subqueries (Ichki So'rovlar)",
-  language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-**Subquery** (ichki yoki qism so'rov) - bu boshqa bir SQL so'rovining ichiga joylashtirilgan so'rov. Buni xuddi "Matryoshka" o'yinchog'iga o'xshatish mumkin: bitta katta so'rov o'z ichida kichikroq so'rovni tashiydi. 
-Asosiy so'rov ishlashi uchun avval ichki so'rov ma'lumot qidirib topib beradi.
+  id: "sqlSubqueries",
+  title: "Ichki So'rovlar (Subquery)",
+  language: "sql",
+  dbSetup: "CREATE TABLE users (id INT, name STRING, age INT); INSERT INTO users VALUES (1,'Ali',25),(2,'Vali',17),(3,'Guli',30); CREATE TABLE orders (id INT, user_id INT, amount INT); INSERT INTO orders VALUES (1,1,100),(2,2,150),(3,1,200);",
+  theory: `## 1. Bu nima?
 
-Masalan, do'kondan "Eng qimmat kompyuter"ni topmoqchisiz:
-1. Ichki so'rov (Subquery): Kompyuterlar ichidan eng maksimal narxni topadi (masalan $2000).
-2. Tashqi so'rov (Main query): Narxi $2000 bo'lgan barcha kompyuterlarni chiqarib beradi.
+Tasavvur qiling, matryoshka qo'g'irchog'i bor. Katta qo'g'irchoq ichida kichigi turibdi. Avval kichigi ochiladi. Keyin kattasi ishlatiladi.
 
-## 2. 🧠 Chuqur Tahlil (Ichki ishlash, xotira, Correlated vs CTE, unumdorlik)
-Subquery'lar asosan \`WHERE\`, \`FROM\` va \`SELECT\` qismlarida ishlatiladi. Ishlash mexanizmiga ko'ra ular ikkiga bo'linadi:
+Dasturlashda subquery (ichki so'rov) xuddi shu matryoshka. Bitta so'rov ikkinchisining ichida yoziladi. Avval ichkaridagisi bajariladi.
 
-1. **Uncorrelated (Mustaqil) Subquery**: Ichki so'rov tashqi so'rovga umuman bog'lanmagan. U avval bir marta ishga tushadi, o'z natijasini xotiraga oladi va tashqi so'rov undan tayyor foydalanadi.
-2. **Correlated (O'zaro bog'langan) Subquery**: Ichki so'rov tashqi so'rovning **har bir qatori uchun** qayta-qayta ishga tushadi. Agar tashqi so'rov 1 million qator qaytarsa, ichki so'rov ham 1 million marta ishlaydi! Bu ko'p hollarda \`O(N^2)\` vaqt murakkabligini yuzaga keltiradi.
+Subquery — boshqa so'rov ichiga yozilgan so'rovdir. Ichkarisi avval hisoblanadi, natijasi tashqariga beriladi.
 
-**Memory va Performance**:
-Correlated Subquery'lar juda og'ir va resurs talab qiluvchi bo'lishi mumkin. Katta ma'lumotlar bilan ishlaganda ularning o'rniga **JOIN** yoki **CTE** (\`WITH\` clause - vaqtinchalik xotira jadvallari) ishlatish samaraliroq. CTE yordamida natija xotiraga o'qiladi va qayta-qayta ishlatiladi.
-Lekin \`EXISTS\` ishlatiladigan holatlarda Correlated Subquery juda zo'r ishlaydi, chunki u "Short-circuit" baholash (birinchi mos kelgan ma'lumotni topishi bilanoq ishlashdan to'xtash) mexanizmiga ega.
+---
 
-## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
+## 2. Nega kerak?
 
-**Savol: \`IN\` va \`EXISTS\` ning farqi nimada va qaysi biri tezroq?**
-**Javob:** \`IN\` ichki so'rovdagi barcha ma'lumotlarni to'liq xotiraga yuklab olib ro'yxat yaratadi va qidiradi. Kichik ma'lumotlarda \`IN\` qulay. \`EXISTS\` esa natijani ko'rishi bilanoq qidiruvni to'xtatadi. Agar subquery millionlab qator qaytarsa, \`EXISTS\` keskin darajada tezroq ishlaydi!
+Savol: "150 dan katta buyurtma berganlar kim?" Javob ikki qadamda topiladi. Avval buyurtmalar qaraladi. Keyin ismlar topiladi.
 
-**Savol: \`NOT IN\` dagi "Null Trap" (Null tuzog'i) nima?**
-**Javob:** Agar \`WHERE id NOT IN (SELECT some_id FROM table)\` ishlatsangiz va ichki so'rov bitta bo'lsa ham \`NULL\` qiymat qaytarsa, tashqi so'rov UMUMAN natija qaytarmaydi (bo'sh ro'yxat). Sababi SQL da \`X != NULL\` mantiqiy jihatdan \`UNKNOWN\` hisoblanadi. Bunga tushmaslik uchun bunday holatda \`NOT EXISTS\` ishlatiladi.
+Muammo shunda: bitta so'rov bilan ikki jadvaldan natija olish kerak. Yechim — ichki so'rov:
 
-**Savol: Subquery o'rnida qachon Oyna (Window) funksiyalaridan foydalangan ma'qul?**
-**Javob:** Har bir qatorda umumiy agregat qiymatlarni (masalan, o'rtacha maosh) ko'rsatish uchun skalyar subquery ishlatish o'rniga \`AVG(salary) OVER()\` oynasidan foydalanish bir necha barobar tezroq ishlaydi, chunki oyna funksiyalari ma'lumotlarni qayta-qayta skaner qilmaydi.
-
-## 📊 Mantiqiy Diagramma
-\`\`\`mermaid
-graph TD;
-    A[Tashqi Asosiy So'rov] -->|O'z ichiga oladi| B[Ichki So'rov];
-    B --> C{Natija formati?};
-    C -->|Bitta yagona qiymat| D[Skalyar Subquery];
-    C -->|Qiymatlar ro'yxati| E[IN / ANY / ALL];
-    C -->|Mantiqiy holat| F[EXISTS / NOT EXISTS];
-    C -->|Vaqtinchalik jadval| G[Derived Table / FROM qismida];
+\`\`\`sql
+SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount > 120);
 \`\`\`
+
+Ichkarisi avval ishlaydi. Ro'yxat chiqadi. Tashqarisi shu ro'yxat bilan ishlaydi.
+
+---
+
+## 3. Birinchi misol
+
+Bu kod katta buyurtma berganlarni chiqaradi.
+
+\`\`\`sql
+SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount > 120);
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"name":"Ali"},{"name":"Vali"}]
+\`\`\`
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`(SELECT user_id FROM orders WHERE amount > 120)\` — ichki so'rov. Avval bajariladi. Natija: \`1\` va \`2\`.
+- \`WHERE id IN (...)\` — tashqi so'rov. \`id\` shu ro'yxatda bo'lganlar olinadi.
+- Natijada Ali va Vali chiqadi. Guli chiqmadi. Uning buyurtmasi yo'q.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod har birining buyurtma sonini chiqaradi.
+
+\`\`\`sql
+SELECT name, (SELECT COUNT(*) FROM orders WHERE orders.user_id = users.id) AS soni FROM users;
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"name":"Ali","soni":2},{"name":"Vali","soni":1},{"name":"Guli","soni":0}]
+\`\`\`
+
+Qator-baqator tahlil:
+- Ichki so'rov har qator uchun alohida ishlaydi. Ali uchun 2, Vali uchun 1, Guli uchun 0.
+- Natija ustun sifatida chiqadi (\`soni\`).
+- Bu "ustun ichidagi so'rov" deb ataladi.
+
+---
+
+## 5.1. EXISTS tekshiruvi
+
+Bor-yo'qlikni tekshirish uchun maxsus so'z bor:
+
+\`\`\`sql
+SELECT name FROM users WHERE EXISTS (SELECT * FROM orders WHERE orders.user_id = users.id);
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"name":"Ali"},{"name":"Vali"}]
+\`\`\`
+
+Qator-baqator tahlil:
+- \`EXISTS\` — "bormi?" degani. Ichkarida kamida bitta qator topilsa, javob ha.
+- Guli uchun hech narsa topilmadi. U chiqmadi.
+
+---
+
+## 6. Ko'p uchraydigan xatolar
+
+### 1. Qavsni unutish
+❌ Xato kod:
+\`\`\`sql
+SELECT name FROM users WHERE id IN SELECT user_id FROM orders;
+\`\`\`
+Nima bo'ladi: parse xatoligi yuz beradi. Ichki so'rov har doim qavs ichida yoziladi.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT name FROM users WHERE id IN (SELECT user_id FROM orders);
+\`\`\`
+
+### 2. Bitta ustundan ko'p so'rash
+❌ Xato kod:
+\`\`\`sql
+SELECT name FROM users WHERE id IN (SELECT user_id, amount FROM orders);
+\`\`\`
+Nima bo'ladi: xatolik yuz beradi. \`IN\` ro'yxati bitta ustundan iborat bo'lishi kerak. Ikkita ustun solishtirib bo'lmaydi.
+✅ To'g'ri variant:
+\`\`\`sql
+SELECT name FROM users WHERE id IN (SELECT user_id FROM orders);
+\`\`\`
+
+### 3. Bo'sh ro'yxat
+❌ Xato tushuncha:
+\`\`\`sql
+SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount > 1000);
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin bo'sh natija chiqadi. Ichki so'rov hech narsa topmagan. Bo'sh ro'yxat bilan hech kim mos kelmaydi.
+✅ To'g'ri tushuncha: avval ichki so'rovni alohida bajaring. Natija borligiga ishonch hosil qiling.
+
+---
+
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+150 dan katta buyurtma berganlarni chiqaring. Ali va Vali chiqishi kerak.
+
+### 2-mashq (O'rtacha)
+Har birining buyurtma sonini chiqaring (Ali: 2, Vali: 1, Guli: 0).
+
+### 3-mashq (Chegara holat)
+Buyurtmasi borlarni EXISTS bilan chiqaring. Ali va Vali chiqishi kerak.
+
+### Javoblar:
+1.
+\`\`\`sql
+SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount > 150);
+\`\`\`
+2.
+\`\`\`sql
+SELECT name, (SELECT COUNT(*) FROM orders WHERE orders.user_id = users.id) AS soni FROM users;
+\`\`\`
+3.
+\`\`\`sql
+SELECT name FROM users WHERE EXISTS (SELECT * FROM orders WHERE orders.user_id = users.id);
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. Subquery — so'rov ichidagi so'rov. Ichkarisi avval bajariladi.
+2. \`IN\` ro'yxat bilan, \`EXISTS\` bor-yo'qlik bilan ishlaydi.
+3. Ichki so'rov qavs ichida yoziladi va bitta ustun qaytaradi.
+
+Keyingi darsda: tayyor saqlangan so'rovlar — \`VIEW\` bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
-      title: "Oddiy Subquery (Eng arzon mahsulot)",
-      instruction: "'products' jadvalidan eng arzon (minimum 'price') mahsulotning 'name' ni oluvchi so'rov yozing.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT name FROM products WHERE price = (SELECT MIN(price) FROM products)",
-      solution: "function myFunction() {\n  return \"SELECT name FROM products WHERE price = (SELECT MIN(price) FROM products);\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('(SELECT MIN(PRICE)') || !res.includes('FROM PRODUCTS')) throw new Error('Xato so\\'rov');"
+      title: "1-Topshiriq: IN subquery",
+      instruction: "users (id, name, age) va orders (id, user_id, amount) jadvallaridan 120 dan katta buyurtma berganlarni chiqaring (Ali, Vali).",
+      startingCode: "SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount > 120);",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount > 120);",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali', 'Vali'])) return 'Ali va Vali chiqishi kerak';\nreturn null;"
     },
     {
       id: 2,
-      title: "IN kalit so'zi (To'plamda tekshirish)",
-      instruction: "IT bo'limiga ('name' = 'IT') tegishli barcha 'employees' larning ismini toping. 'departments' jadvalidan foydalanish uchun IN ishlating.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "WHERE department_id IN (SELECT id FROM departments WHERE name = 'IT')",
-      solution: "function myFunction() {\n  return \"SELECT name FROM employees WHERE department_id IN (SELECT id FROM departments WHERE name = 'IT');\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes(' IN (SELECT') || !res.includes(\"'IT'\")) throw new Error('Xato so\\'rov');"
+      title: "2-Topshiriq: Buyurtma soni",
+      instruction: "Har bir foydalanuvchining buyurtma sonini chiqaring (Ali: 2, Vali: 1, Guli: 0).",
+      startingCode: "SELECT name, (SELECT COUNT(*) FROM orders WHERE orders.user_id = users.id) AS soni FROM users;",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT name, (SELECT COUNT(*) FROM orders WHERE orders.user_id = users.id) AS soni FROM users;",
+      test: "const map = {};\nresult.forEach(r => { map[r.name] = r.soni; });\nif (map['Ali'] !== 2 || map['Vali'] !== 1 || map['Guli'] !== 0) return 'Ali:2, Vali:1, Guli:0 bolishi kerak';\nreturn null;"
     },
     {
       id: 3,
-      title: "NOT IN va xarid qilmaganlar",
-      instruction: "Hech qanday 'orders' (buyurtma) bermagan 'users' ismlarini toping. WHERE id NOT IN orqali yozing.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT name FROM users WHERE id NOT IN (SELECT user_id FROM orders)",
-      solution: "function myFunction() {\n  return \"SELECT name FROM users WHERE id NOT IN (SELECT user_id FROM orders);\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('NOT IN (SELECT USER_ID')) throw new Error('Xato so\\'rov');"
+      title: "3-Topshiriq: EXISTS",
+      instruction: "Buyurtmasi borlarni EXISTS bilan chiqaring (Ali, Vali).",
+      startingCode: "SELECT name FROM users WHERE EXISTS (SELECT * FROM orders WHERE orders.user_id = users.id);",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT name FROM users WHERE EXISTS (SELECT * FROM orders WHERE orders.user_id = users.id);",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali', 'Vali'])) return 'Ali va Vali chiqishi kerak';\nreturn null;"
     },
     {
       id: 4,
-      title: "EXISTS bilan tezkor izlash",
-      instruction: "Kamida bitta 'order' bergan 'users' larni topish uchun EXISTS ishlating.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT name FROM users u WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id)",
-      solution: "function myFunction() {\n  return \"SELECT name FROM users u WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('EXISTS (SELECT') || !res.includes('WHERE O.USER_ID = U.ID')) throw new Error('Xato so\\'rov');"
+      title: "4-Topshiriq: Qavs qo'shish",
+      instruction: "Quyidagi xatoni tuzating: ichki so'rov qavs ichida bo'lishi kerak.",
+      startingCode: "SELECT name FROM users WHERE id IN SELECT user_id FROM orders;",
+      hint: "(SELECT user_id FROM orders)",
+      solution: "SELECT name FROM users WHERE id IN (SELECT user_id FROM orders);",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali', 'Vali'])) return 'Ali va Vali chiqishi kerak (Guli yoq)';\nreturn null;"
     },
     {
       id: 5,
-      title: "NOT EXISTS (Yaxshiroq usul)",
-      instruction: "Buyurtma bermaganlarni topish uchun 'NOT EXISTS' ishlating.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id)",
-      solution: "function myFunction() {\n  return \"SELECT name FROM users u WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('NOT EXISTS (SELECT')) throw new Error('Xato so\\'rov');"
+      title: "5-Topshiriq: Yoshi kattalar",
+      instruction: "Yoshi 20 dan katta va buyurtmasi borlarni chiqaring (Ali).",
+      startingCode: "SELECT name FROM users WHERE age > 20 AND id IN (SELECT user_id FROM orders);",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT name FROM users WHERE age > 20 AND id IN (SELECT user_id FROM orders);",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali'])) return 'Faqat Ali chiqishi kerak';\nreturn null;"
     },
     {
       id: 6,
-      title: "Skalyar Subquery (SELECT ichida)",
-      instruction: "Har bir foydalanuvchining ismini (name) va uning umumiy buyurtmalari sonini ('total_orders') SELECT qismida subquery yozish orqali chiqaring.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT name, (SELECT COUNT(*) FROM orders WHERE orders.user_id = users.id) AS total_orders FROM users",
-      solution: "function myFunction() {\n  return \"SELECT name, (SELECT COUNT(*) FROM orders WHERE orders.user_id = users.id) AS total_orders FROM users;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('(SELECT COUNT(*) FROM ORDERS') || !res.includes('AS TOTAL_ORDERS')) throw new Error('Xato so\\'rov');"
+      title: "6-Topshiriq: FROM ichida (chegara)",
+      instruction: "Ichki so'rovni jadval sifatida ishlating: yoshi 18 dan kattalarni chiqaring (Ali, Guli).",
+      startingCode: "SELECT * FROM (SELECT name, age FROM users) AS k WHERE age > 18;",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT * FROM (SELECT name, age FROM users) AS k WHERE age > 18;",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali', 'Guli'])) return 'Ali va Guli chiqishi kerak';\nreturn null;"
     },
     {
       id: 7,
-      title: "FROM qismida Subquery (Derived Table)",
-      instruction: "Ichki so'rov orqali 'users' jadvalidan faqat id va name ni oling, uni 'sub' deb nomlang (alias) va asosiy so'rovda 'sub.name' ni tanlang.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT sub.name FROM (SELECT id, name FROM users) AS sub",
-      solution: "function myFunction() {\n  return \"SELECT sub.name FROM (SELECT id, name FROM users) AS sub;\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('FROM (SELECT') || !res.includes('AS SUB')) throw new Error('Xato so\\'rov');"
+      title: "7-Topshiriq: 100 dan kattalar (chegara)",
+      instruction: "100 dan katta buyurtma berganlarni chiqaring (Ali, Vali).",
+      startingCode: "SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount > 100);",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount > 100);",
+      test: "const names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Ali', 'Vali'])) return 'Ali va Vali chiqishi kerak';\nreturn null;"
     },
     {
       id: 8,
-      title: "Correlated Subquery (Maosh tekshiruvi)",
-      instruction: "'employees' orasidan, o'zi ishlaydigan bo'limning o'rtacha maoshidan (AVG(salary)) ko'proq oladigan xodimlarning ismini chiqaring.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "SELECT name FROM employees e1 WHERE salary > (SELECT AVG(salary) FROM employees e2 WHERE e1.dept_id = e2.dept_id)",
-      solution: "function myFunction() {\n  return \"SELECT name FROM employees e1 WHERE salary > (SELECT AVG(salary) FROM employees e2 WHERE e1.dept_id = e2.dept_id);\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('E1.DEPT_ID = E2.DEPT_ID') || !res.includes('AVG(SALARY)')) throw new Error('Xato so\\'rov');"
+      title: "8-Topshiriq: Bo'sh natija (chegara)",
+      instruction: "1000 dan katta buyurtma berganlarni so'rang. Bo'sh chiqishi kerak (xato emas!).",
+      startingCode: "SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount > 1000);",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount > 1000);",
+      test: "if (result.length !== 0) return 'Bosh chiqishi kerak';\nreturn null;"
     },
     {
       id: 9,
-      title: "ANY kalit so'zi",
-      instruction: "'products' jadvalidan electronics toifasidagi (category_id = 2) istalgan mahsulot narxidan arzonroq (price < ANY) bo'lgan boshqa mahsulotlar 'name' ini oling.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "WHERE price < ANY(SELECT price FROM products WHERE category_id = 2)",
-      solution: "function myFunction() {\n  return \"SELECT name FROM products WHERE price < ANY (SELECT price FROM products WHERE category_id = 2);\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('< ANY') && !res.includes('<ANY')) throw new Error('Xato so\\'rov');"
+      title: "9-Topshiriq: Guli yo'qligi (chegara)",
+      instruction: "Buyurtmasi borlarda Guli yo'qligini tasdiqlang (EXISTS so'rovida Guli chiqmasligi kerak).",
+      startingCode: "SELECT name FROM users WHERE EXISTS (SELECT * FROM orders WHERE orders.user_id = users.id);",
+      hint: "Natijada Gulini qidiring.",
+      solution: "SELECT name FROM users WHERE EXISTS (SELECT * FROM orders WHERE orders.user_id = users.id);",
+      test: "if (result.some(r => r.name === 'Guli')) return 'Guli chiqmasligi kerak';\nif (result.length !== 2) return '2 qator chiqishi kerak';\nreturn null;"
     },
     {
       id: 10,
-      title: "ALL kalit so'zi",
-      instruction: "'products' orasidan barcha toys toifasiga oid (category_id = 3) mahsulotlardan qimmatroq (price > ALL) bo'lgan mahsulotlar 'name' ini toping.",
-      startingCode: "function myFunction() {\n  return \"\";\n}",
-      hint: "WHERE price > ALL (SELECT price FROM products WHERE category_id = 3)",
-      solution: "function myFunction() {\n  return \"SELECT name FROM products WHERE price > ALL (SELECT price FROM products WHERE category_id = 3);\";\n}",
-      test: "const fn = new Function(code + '; return myFunction;')();\nconst res = fn().trim().toUpperCase();\nif (!res.includes('> ALL') && !res.includes('>ALL')) throw new Error('Xato so\\'rov');"
+      title: "10-Topshiriq: Yig'indi (chegara)",
+      instruction: "Ali buyurtmalari yig'indisini ichki so'rovsiz emas, to'g'ridan-to'g'ri hisoblang: orders dan user_id=1 summasi (300 chiqishi kerak).",
+      startingCode: "SELECT SUM(amount) AS jami FROM orders WHERE user_id = 1;",
+      hint: "Tayyor ko'rinadi — bajaring.",
+      solution: "SELECT SUM(amount) AS jami FROM orders WHERE user_id = 1;",
+      test: "if (result[0].jami !== 300) return 'Natija 300 bolishi kerak';\nreturn null;"
     }
   ],
   quizzes: [
     {
       id: 1,
       question: "Subquery nima?",
-      options: [
-        "Boshqa dasturlash tilidan chaqirilgan so'rov",
-        "Asosiy so'rovning ichida joylashgan qo'shimcha (ichki) so'rov",
-        "Ma'lumotlar bazasini o'chirib yuboruvchi buyruq",
-        "Faqat JOIN yordamida yoziladigan kod"
-      ],
+      options: ["Alohida baza", "So'rov ichidagi so'rov", "Jadval turi", "Xato turi"],
       correctAnswer: 1,
-      explanation: "Subquery - bu bitta asosiy SQL so'rovi ichidagi kichikroq, yordamchi so'rovdir."
+      explanation: "Ichki so'rov avval bajariladi, natijasi tashqariga beriladi."
     },
     {
       id: 2,
-      question: "Uncorrelated va Correlated Subquery ning farqi nimada?",
-      options: [
-        "Uncorrelated tez ishlaydi, chunki u faqat 1 marta bajariladi. Correlated esa har bir qator uchun qayta-qayta ishga tushadi.",
-        "Hech qanday farqi yo'q",
-        "Correlated subquery faqat SELECT qismida yoziladi",
-        "Uncorrelated faqat qizil rangda yozilishi kerak"
-      ],
-      correctAnswer: 0,
-      explanation: "Uncorrelated tashqi so'rovga bog'liq bo'lmagani uchun bir marta bajariladi. Correlated esa har bir qator uchun qayta ishlaydi."
+      question: "Qaysi biri avval bajariladi?",
+      options: ["Tashqi so'rov", "Ichki so'rov", "Ikkalasi birga", "Hech biri"],
+      correctAnswer: 1,
+      explanation: "Ichkarisi avval hisoblanadi."
     },
     {
       id: 3,
-      question: "Skalyar (Scalar) Subqueryning asosiy sharti nima?",
-      options: [
-        "Jadval qaytarishi shart",
-        "Eng kamida 5 ta ustun qaytarishi kerak",
-        "Roppa-rosa 1 ta qator va 1 ta ustun (yagona qiymat) qaytarishi majburiy",
-        "Unda GROUP BY ishlatib bo'lmaydi"
-      ],
-      correctAnswer: 2,
-      explanation: "Skalyar degani bitta son yoki matn (yagona qiymat) degani. Agar skalyar subquery birdan ko'p qator qaytarsa, xatolik beradi."
+      question: "Ichki so'rov qayerda yoziladi?",
+      options: ["Qavssiz", "Qavs ichida", "Alohida faylda", "Izohda"],
+      correctAnswer: 1,
+      explanation: "Qavs bo'lmasa parse xatoligi beradi."
     },
     {
       id: 4,
-      question: "Qachon IN o'rniga EXISTS ishlatgan ma'qul?",
-      options: [
-        "Agar subquery juda kam natija qaytarsa",
-        "Agar subquery millionlab qator natija qaytarsa (EXISTS short-circuit tufayli ancha tez ishlaydi)",
-        "Faqat Oracle bazasida ishlayotganda",
-        "IN va EXISTS tezligi doim bir xil"
-      ],
+      question: "`WHERE id IN (SELECT user_id FROM orders)` nimani bildiradi?",
+      options: ["Hammasi", "Ro'yxatdagilar", "Hech kim", "Birinchisi"],
       correctAnswer: 1,
-      explanation: "EXISTS mos keluvchi birinchi ma'lumotni topishi bilan tekshirishni to'xtatadi. Bu esa katta ma'lumotlarda resursni tejaydi."
+      explanation: "id ichki ro'yxatda bo'lganlar olinadi."
     },
     {
       id: 5,
-      question: "'Null Trap' (Null tuzog'i) nima bilan bog'liq?",
-      options: [
-        "NULL qiymatlarni o'chirib bo'lmaydi",
-        "NOT IN ishlatganda, ichki so'rovdan bitta bo'lsa ham NULL kelsa, tashqi so'rov hech qanday natija qaytarmasligi",
-        "Jadvallarda NULL ga ruxsat berish mumkin emasligi",
-        "EXISTS faqat NULL larga ishlaydi"
-      ],
+      question: "EXISTS nimani tekshiradi?",
+      options: ["Tenglikni", "Bor-yo'qlikni", "Turini", "Uzunlikni"],
       correctAnswer: 1,
-      explanation: "SQL da `X != NULL` qat'iy mantiqsiz (UNKNOWN) qiymat qaytaradi. Shuning uchun NOT IN da ehtiyot bo'lish kerak."
+      explanation: "Kamida bitta qator topilsa — ha."
     },
     {
       id: 6,
-      question: "Correlated Subquery ning asoratlarini (sekinlashishini) qanday bartaraf qilish mumkin?",
-      options: [
-        "Jadvallarni butunlay o'chirib tashlash orqali",
-        "Qo'shimcha JOIN, CTE yoki Oyna (Window) funksiyalaridan foydalanish orqali",
-        "Subquery'larni faqat SELECT da ishlatish orqali",
-        "Buni to'g'irlab bo'lmaydi"
-      ],
+      question: "`IN (SELECT user_id, amount FROM orders)` nima qiladi?",
+      options: ["Ishlaydi", "Xatolik beradi", "Birinchisini oladi", "Hammasini oladi"],
       correctAnswer: 1,
-      explanation: "Xotirani va tezlikni asrash uchun ko'pincha CTE va JOIN lar Correlated Subquery o'rnida ishlatiladi."
+      explanation: "IN ro'yxati bitta ustundan iborat bo'lishi kerak."
     },
     {
       id: 7,
-      question: "FROM qismida yoziladigan Subquerylarga (Derived tables) nima qo'shish qat'iy talab etiladi?",
-      options: [
-        "Hech narsa, xohlagancha yozaverasiz",
-        "GROUP BY sharti",
-        "Alias (Taxallus) - masalan `AS sub_table`",
-        "Faqat INNER JOIN so'zi"
-      ],
-      correctAnswer: 2,
-      explanation: "Vaqtinchalik xotiradagi jadvalga nomi yo'qligi uchun ko'pchilik RDBMS (masalan MySQL, Postgres) lar unga Alias berishni majburiy qilib qo'ygan."
+      question: "Bo'sh ichki natijada nima chiqadi?",
+      options: ["Xatolik", "Bo'sh natija", "Hammasi", "Birinchi qator"],
+      correctAnswer: 1,
+      explanation: "Bo'sh ro'yxat bilan hech kim mos kelmaydi."
     },
     {
       id: 8,
-      question: "Agar ichki so'rov bo'sh natija (0 qator) qaytarsa, EXISTS qanday ishlaydi?",
-      options: [
-        "Error (Xatolik) beradi",
-        "False (Yolg'on) qaytaradi va asosiy so'rov o'sha qatorni o'tkazib yuboradi",
-        "True (Rost) qaytaradi",
-        "Cheksiz tsiklga tushadi"
-      ],
+      question: "`(SELECT COUNT(*) FROM orders WHERE orders.user_id = users.id)` qayerda turibdi?",
+      options: ["WHERE da", "Ustun o'rnida (SELECT ro'yxatida)", "FROM da", "Tashqarida"],
       correctAnswer: 1,
-      explanation: "EXISTS nima bo'lsa ham qatorda ma'lumot bormi-yo'qmi tekshiradi. Agar topmasa, mantiqiy False beradi."
+      explanation: "Ustun ichidagi so'rov har qator uchun hisoblanadi."
     },
     {
       id: 9,
-      question: "ANY va ALL operatorlari qanday mantiq asosida ishlaydi?",
-      options: [
-        "ANY = Ro'yxatdagi ixtiyoriy bittasiga mos kelsa yetarli. ALL = Ro'yxatdagi barchasiga birdek mos kelishi shart.",
-        "ANY faqat sonlar bilan ishlaydi, ALL faqat matn bilan.",
-        "Ikkalasi ham bitta vazifani bajaradi",
-        "Faqat bitta jadval bo'lsa ishlaydi"
-      ],
-      correctAnswer: 0,
-      explanation: "Masalan `> ALL(1, 5, 10)` degani ham 1dan, ham 5dan, ham 10dan katta degani. `> ANY(1, 5, 10)` esa 1 dan katta bo'lsa kifoya."
+      question: "`SELECT * FROM (SELECT name, age FROM users) AS k WHERE age > 18;` da `k` nima?",
+      options: ["Jadval", "Vaqtinchalik nom (alias)", "Ustun", "Baza"],
+      correctAnswer: 1,
+      explanation: "Ichki natijaga nom berish shart."
     },
     {
       id: 10,
-      question: "Subquery ichida ORDER BY ishlatish kerakmi?",
-      options: [
-        "Doim yozish kerak, shart",
-        "Odatda IN ro'yxatlarida foydasiz, faqat Skalyar subqueryda (LIMIT 1 kabi) qaysi birinchi yoki oxirgi qatorni olish uchun kerak",
-        "SQL ruxsat bermaydi",
-        "Jadval o'lchamini kichraytiradi"
-      ],
-      correctAnswer: 1,
-      explanation: "IN yoki EXISTS kabi mantiqlarda qatorlarning tartibi umuman ahamiyatsiz, shuning uchun bazani bekorga ORDER BY bilan charchatish kerak emas."
+      question: "150 dan katta buyurtma berganlar kimlar? (Ali:100,200; Vali:150)",
+      options: ["Ali", "Ali va Vali", "Vali", "Hech kim"],
+      correctAnswer: 0,
+      explanation: "150 dan katta faqat 200 (Ali). 150 ning o'zi kirmaydi."
     },
     {
       id: 11,
-      question: "CTE (Common Table Expression) va Subquery o'rtasida qanday asosiy farq bor?",
-      options: [
-        "CTE faqat o'chirish (DELETE) uchun kerak",
-        "Subquery ba'zan kod o'qilishini qiyinlashtiradi (spaghetti). CTE esa WITH orqali kodni toza saqlaydi va bir necha marta murojaat qilish imkonini beradi.",
-        "CTE sekinroq ishlaydi",
-        "Farqi yo'q"
-      ],
+      question: "Subquery o'rniga nima ishlatsa bo'ladi (uzun yo'l)?",
+      options: ["Hech narsa", "JOIN", "Faqat VIEW", "Faqat INDEX"],
       correctAnswer: 1,
-      explanation: "CTE (WITH) kodni tepadanoq e'lon qilib, murakkab so'rovlarni bo'laklarga ajratib ishlashni osonlashtiradi."
+      explanation: "Ko'p subquery JOIN bilan ham yoziladi."
     },
     {
       id: 12,
-      question: "Nima uchun chuqur ichma-ich (nested) Subquery lardan qochish kerak?",
-      options: [
-        "Sababi ularni hech qaysi SQL tili qo'llab-quvvatlamaydi",
-        "Kod o'qilishi o'ta murakkablashadi, texnik xizmat ko'rsatish qiyinlashadi va so'rov rejalashtiruvchi (Query Optimizer) qiynalib ketib unumdorlik tushib ketadi",
-        "Dastur xotiradan toshib ketadi (OOM)",
-        "Natija har doim xato chiqadi"
-      ],
+      question: "`SELECT SUM(amount) AS jami FROM orders WHERE user_id = 1;` (100, 200) nima qaytaradi?",
+      options: ["2", "300", "100", "Xatolik"],
       correctAnswer: 1,
-      explanation: "Clean code (Toza kod) va yuqori tezlik uchun juda chuqur nested so'rovlarni JOIN yoki CTE bilan almashtirish tavsiya etiladi."
+      explanation: "100 + 200 = 300."
     }
   ]
 };

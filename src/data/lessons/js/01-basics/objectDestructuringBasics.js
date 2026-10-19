@@ -209,6 +209,62 @@ Keyingi darsda: Massiv va obyektlarni yoyish — Spread operatori (\`...\`) bila
       startingCode: "const player = { username: \"Sher\", score: 50 };\n// username va level ni ajrating hamda level ni chiqaring\n",
       hint: "const { username, level } = player;\nconsole.log(level);",
       test: "if (!code.includes('level')) return 'level o\\'zgaruvchisi ajratilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map(v => String(v)).join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('undefined')) return null;\nreturn 'undefined konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Standart qiymat (default)",
+      "instruction": "`const settings = { theme: \"dark\" };` obyektidan `{ theme, fontSize = 16 }` destructuring orqali ajratib, `fontSize` ni konsolga chiqaring (xususiyat yo'q, shuning uchun `16`).",
+      "startingCode": "const settings = { theme: \"dark\" };\n// { theme, fontSize = 16 } ajrating va fontSize ni chiqaring\n",
+      "hint": "const { theme, fontSize = 16 } = settings;\nconsole.log(fontSize);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => String(v)).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"16\")) return null;\nreturn \"Standart qiymat 16 konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Ichma-ich obyektni ajratish",
+      "instruction": "`const user = { name: \"Ali\", address: { city: \"Toshkent\" } };` obyektidan ichma-ich destructuring (`{ address: { city } }`) orqali `city` ni ajratib, konsolga chiqaring.",
+      "startingCode": "const user = { name: \"Ali\", address: { city: \"Toshkent\" } };\n// { address: { city } } orqali city ni chiqaring\n",
+      "hint": "const { address: { city } } = user;\nconsole.log(city);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => String(v)).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"Toshkent\"))) return null;\nreturn \"city qiymati Toshkent konsolga chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "Funksiya parametrida destructuring",
+      "instruction": "`greet` nomli funksiya yarating: obyekt qabul qilib (`{ name }` parametr), `\"Salom, \" + name` matnini qaytarsin. `greet({ name: \"Ali\" })` natijasini konsolga chiqaring.",
+      "startingCode": "// greet funksiyasini obyekt destructuring parametr bilan yozing\n",
+      "hint": "function greet({ name }) {\n  return \"Salom, \" + name;\n}\nconsole.log(greet({ name: \"Ali\" }));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => String(v)).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"Salom, Ali\"))) return null;\nreturn \"Salom, Ali matni konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "null xatosini tuzatish",
+      "instruction": "`const { theme } = null;` kodi `TypeError` beradi. O'ng tomonni obyektga (`{ theme: \"dark\" }`) o'zgartirib, `theme` ni konsolga chiqaring.",
+      "startingCode": "const { theme } = null;\nconsole.log(theme);\n",
+      "hint": "const { theme } = { theme: \"dark\" };\nconsole.log(theme);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => String(v)).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Hali xato bor: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"dark\"))) return null;\nreturn \"theme qiymati dark konsolga chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "Ichma-ich obyektni yangi nom bilan olish",
+      "instruction": "`const data = { user: { name: \"Ali\" } };` obyektidan `{ user: { name: userName } }` orqali `userName` o'zgaruvchisini oling va konsolga chiqaring.",
+      "startingCode": "const data = { user: { name: \"Ali\" } };\n// { user: { name: userName } } orqali userName ni chiqaring\n",
+      "hint": "const { user: { name: userName } } = data;\nconsole.log(userName);",
+      "test": "if (!code.includes(\"userName\")) return \"userName o'zgaruvchisi yaratilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => String(v)).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"Ali\"))) return null;\nreturn \"userName qiymati Ali konsolga chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Massiv ichidagi obyektni ajratish",
+      "instruction": "`const list = [{ name: \"Ali\" }, { name: \"Vali\" }];` massividan birinchi elementdagi `name` ni `const [{ name }] = list;` orqali ajratib, konsolga chiqaring.",
+      "startingCode": "const list = [{ name: \"Ali\" }, { name: \"Vali\" }];\n// [{ name }] orqali birinchi element nomini chiqaring\n",
+      "hint": "const [{ name }] = list;\nconsole.log(name);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => String(v)).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"Ali\")) return null;\nreturn \"name qiymati Ali konsolga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Ichma-ich parametr destructuring (chegara)",
+      "instruction": "`getCity` nomli funksiya yarating: `{ address: { city } }` parametr bilan shahar nomini qaytarsin. `getCity({ address: { city: \"Buxoro\" } })` natijasini konsolga chiqaring.",
+      "startingCode": "// getCity funksiyasini ichma-ich destructuring bilan yozing\n",
+      "hint": "function getCity({ address: { city } }) {\n  return city;\n}\nconsole.log(getCity({ address: { city: \"Buxoro\" } }));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => String(v)).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"Buxoro\"))) return null;\nreturn \"Buxoro konsolga chiqmadi\";"
     }
   ],
   quizzes: [
@@ -247,6 +303,114 @@ Keyingi darsda: Massiv va obyektlarni yoyish — Spread operatori (\`...\`) bila
       ],
       correctAnswer: 0,
       explanation: "Obyektda ajratilayotgan kalit mavjud bo'lmasa, dastur xato bermaydi, balki o'zgaruvchi undefined qiymatini oladi."
+    },
+    {
+      "id": 4,
+      "question": "`const { a, b } = { a: 1, b: 2, c: 3 };` dan keyin `a` va `b` nima?",
+      "options": [
+        "a = 1, b = 2",
+        "a = 1, b = 3",
+        "a = 2, b = 3",
+        "ikkalasi ham undefined"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Obyekt destructuring faqat ko'rsatilgan kalitlarni oladi: a = 1, b = 2."
+    },
+    {
+      "id": 5,
+      "question": "`const { x = 5 } = {};` dan keyin `x` qiymati nima?",
+      "options": [
+        "5",
+        "undefined",
+        "null",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Obyektda x kaliti yo'q, shuning uchun standart qiymat 5 ishlatiladi."
+    },
+    {
+      "id": 6,
+      "question": "Obyekt xususiyatini boshqa nomdagi o'zgaruvchiga olish sintaksisi qaysi?",
+      "options": [
+        "`const { title: bookTitle } = book;`",
+        "`const { title as bookTitle } = book;`",
+        "`const { title = bookTitle } = book;`",
+        "`const { bookTitle: title } = book;`"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Ikki nuqtadan keyin yangi nom yoziladi: { eskiKalit: yangiNom }."
+    },
+    {
+      "id": 7,
+      "question": "`const { age } = { name: \"Ali\" };` da `age` qiymati nima?",
+      "options": [
+        "undefined",
+        "null",
+        "0",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Obyektda age kaliti yo'q, shuning uchun undefined olinadi."
+    },
+    {
+      "id": 8,
+      "question": "`const { a: { b } } = { a: { b: 7 } };` dan keyin `b` nima?",
+      "options": [
+        "7",
+        "undefined",
+        "{ b: 7 }",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Ichma-ich obyekt ham ochiladi: a ning ichidagi b qiymati olinadi, natijada 7."
+    },
+    {
+      "id": 9,
+      "question": "Massiv ichidagi birinchi obyektning `name` xususiyatini qanday ajratib olinadi?",
+      "options": [
+        "`const [{ name }] = list;`",
+        "`const { name } = list[0];` faqat shu ishlaydi, boshqasi yo'q",
+        "`const [name] = list;`",
+        "`const list.name;`"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Massiv va obyekt destructuring aralashishi mumkin: const [{ name }] = list."
+    },
+    {
+      "id": 10,
+      "question": "`const { x } = null;` kodi nima qiladi?",
+      "options": [
+        "TypeError beradi",
+        "x = null bo'ladi",
+        "x = undefined bo'ladi",
+        "Xatosiz ishlaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "null yoki undefined dan destructuring qilishga urinilsa TypeError yuz beradi."
+    },
+    {
+      "id": 11,
+      "question": "`const { length } = \"abc\"; console.log(length);` nima chiqaradi?",
+      "options": [
+        "3",
+        "abc",
+        "undefined",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Matn ham length xususiyatiga ega, shuning uchun destructuring orqali 3 olinadi."
+    },
+    {
+      "id": 12,
+      "question": "Funksiya parametrida obyekt destructuring qanday ko'rinadi?",
+      "options": [
+        "`function f({ name }) { ... }`",
+        "`function f([name]) { ... }`",
+        "`function f(name.obj) { ... }`",
+        "`function f(name = { name }) { ... }`"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Parametr joyida jingalak qavs ichida kalit yoziladi: function f({ name }) { }."
     }
   ]
 };

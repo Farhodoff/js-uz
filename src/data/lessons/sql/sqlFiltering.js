@@ -1,160 +1,258 @@
 export const sqlFiltering = {
-  id: "sql_filtering",
+  id: "sqlFiltering",
   title: "SQL Ma'lumotlarni Filtrlash",
-  language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish
-SQL da filtrlash (Filtering) xuddi onlayn do'konda qidiruv filtrlarini o'rnatishga o'xshaydi. Tasavvur qiling, sizga "Faqat qora rangli", "Narxi $1000 dan arzon", va "Apple yoki Samsung brendi" bo'lgan telefonlar kerak. Siz barcha millionlab telefonlarni bittalab qidirmaysiz, shunchaki filtrlarni belgilaysiz va tizim sizga faqat shartlarga mos keladiganlarni ko'rsatadi. SQL dagi \\\`WHERE\\\` operatori ham xuddi shunday ishlaydi - bazadagi millionlab qatorlardan faqat bizning shartlarimizga mos keladiganlarini filtrlab beradi.
+  language: "sql",
+  dbSetup: "CREATE TABLE users (id INT, name STRING, age INT, city STRING); INSERT INTO users VALUES (1,'Ali',25,'Toshkent'),(2,'Vali',17,'Samarqand'),(3,'Guli',30,'Toshkent'),(4,'Hasan',22,NULL),(5,'Malika',19,'Buxoro'),(6,'Jasur',35,'Samarqand'),(7,'Nodira',28,'Toshkent'),(8,'Otabek',16,'Buxoro'),(9,'Sanjar',40,'Xiva');",
+  theory: `## 1. Bu nima?
 
-Eng ko'p ishlatiladigan filter operatorlari:
-- **AND, OR, NOT:** Mantiqiy bog'lovchilar.
-- **IN:** Bir nechta variantlardan biriga mos kelishini tekshirish.
-- **BETWEEN:** Ikki qiymat oralig'ida ekanligini tekshirish.
-- **LIKE:** Matnning ma'lum bir qismiga o'xshashlikni qidirish.
+Tasavvur qiling, onlayn do'kondasiz. Chap tomonda filtrlar bor: narx, rang, brend. Bitta katakchani bossangiz, ro'yxat qisqaradi. Ikkitasini bossangiz, yanada qisqaradi.
 
-\\\`\\\`\\\`sql
--- AND (va): Yosh 18 dan katta VA shahri 'Toshkent' bo'lsa
+Dasturlashda WHERE (qayerda) xuddi shu filtr paneli. Shartga mos kelgan qatorlar qoladi. Qolgani ketadi.
+
+Filtrlash — WHERE sharti bilan kerakli qatorlarni ajratib olishdir. AND, OR, IN, BETWEEN, LIKE yordamida shartlar yoziladi.
+
+---
+
+## 2. Nega kerak?
+
+users jadvalida 9 kishi bor. Faqat Toshkentlik kattalar kerak. Hammasini olib, dasturda saralash mumkin. Lekin bu 9 ming, 9 million bo'lsa-chi?
+
+Muammo shunda: keraksiz ma'lumotni tashish isrof. Yechim — bazada filtrlash:
+
+\`\`\`sql
 SELECT * FROM users WHERE age > 18 AND city = 'Toshkent';
+\`\`\`
 
--- OR (yoki): Yosh 18 dan katta YOKI shahri 'Toshkent' bo'lsa
-SELECT * FROM users WHERE age > 18 OR city = 'Toshkent';
+Faqat mos kelganlar keladi.
 
--- IN: Shahar quyidagilardan biri bo'lsa
-SELECT * FROM users WHERE city IN ('Toshkent', 'Samarqand', 'Buxoro');
+---
 
--- BETWEEN: Yosh 18 va 30 orasida bo'lsa
+## 3. Birinchi misol
+
+Bu kod ikkita shart bilan filtrlaydi.
+
+\`\`\`sql
+SELECT * FROM users WHERE age > 18 AND city = 'Toshkent';
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"id":1,"name":"Ali","age":25,"city":"Toshkent"},{"id":3,"name":"Guli","age":30,"city":"Toshkent"},{"id":7,"name":"Nodira","age":28,"city":"Toshkent"}]
+\`\`\`
+
+---
+
+## 4. Qator-baqator tahlil
+
+- \`WHERE age > 18\` — birinchi filtr. Yosh kattalar qoladi.
+- \`AND city = 'Toshkent'\` — ikkinchi filtr. Faqat Toshkentliklar qoladi.
+- AND degani — ikkalasi ham shart. Bittasi buzilsa, qator ketadi.
+
+---
+
+## 5. Yana bitta misol
+
+Bu kod OR bilan filtrlaydi.
+
+\`\`\`sql
+SELECT * FROM users WHERE age < 18 OR city = 'Buxoro';
+\`\`\`
+
+\`\`\`text
+// Natija:
+[{"id":2,"name":"Vali","age":17,"city":"Samarqand"},{"id":5,"name":"Malika","age":19,"city":"Buxoro"},{"id":8,"name":"Otabek","age":16,"city":"Buxoro"}]
+\`\`\`
+
+Qator-baqator tahlil:
+- OR degani — bittasi yetadi. Yosh kichik YOKI shahar Buxoro.
+- Vali yosh bilan, Malika va Otabek shahar bilan o'tdi.
+
+---
+
+## 5.1. Ro'yxat va oraliq
+
+Ikkita qulay yozuv:
+
+\`\`\`sql
+SELECT * FROM users WHERE city IN ('Toshkent', 'Buxoro');
 SELECT * FROM users WHERE age BETWEEN 18 AND 30;
+\`\`\`
 
--- LIKE: Ismi 'A' harfidan boshlanadiganlarni topish
-SELECT * FROM users WHERE name LIKE 'A%';
-\\\`\\\`\\\`
+\`\`\`text
+// Natija (birinchi, 5 qator):
+// Ali, Guli, Nodira, Malika, Otabek
+// Natija (ikkinchi, 5 qator):
+// Ali, Guli, Hasan, Malika, Nodira
+\`\`\`
 
-## 2. 🧠 Chuqur Tahlil (Chuqurlashtirilgan o'rganish)
-**Ichki ishlash mexanizmi:**
-SQL dvigateli (Engine) \\\`WHERE\\\` shartini ko'rganda nima qiladi? Agar filtrlayotgan ustunimizda **Index** (B-Tree indeksi) bo'lmasa, ma'lumotlar bazasi **Full Table Scan (To'liq jadval skanerlashi)** ni amalga oshiradi. Bu degani jadvaldagi millionlab qatorlarni bittalab tekshirib chiqadi. Bu xotira (RAM) va vaqt jihatidan juda qimmat jarayon.
+Qator-baqator tahlil:
+- \`IN (...)\` — ro'yxatdagi birortasi bo'lsa yetadi.
+- \`BETWEEN 18 AND 30\` — oraliqqa kirsa yetadi. Chegaralar ham kiradi.
 
-Agar biz \\\`age\\\` yoki \\\`city\\\` ustuniga **B-Tree Index** o'rnatgan bo'lsak, ma'lumotlar bazasi indeks orqali barcha qatorlarni emas, faqat kerakli qatorlarni to'g'ridan-to'g'ri (Logarithmic vaqtda - O(log n)) topib oladi.
+---
 
-**Performance (Tezlik):**
-1. **IN vs OR:** Ko'p hollarda \\\`column IN (val1, val2)\\\` yozish \\\`column = val1 OR column = val2\\\` dan ko'ra tezroq ishlaydi, chunki SQL optimizatori \\\`IN\\\` dagi qiymatlarni binar qidiruv orqali tekshirish uchun tartiblashi mumkin.
-2. **LIKE '%text%':** LIKE operatorida qidiruvni \\\`%\\\` bilan boshlash (masalan, \\\`'%son'\\\`) Index ishlatilishini butunlay cheklaydi (Index Scan o'rniga Full Table Scan bo'ladi). Bunga sabab, B-Tree indekslari so'zlarning bosh harflariga qarab daraxt tuzadi. Faqat so'z boshi ma'lum bo'lsa (masalan \\\`'son%'\\\`) indeks ishlaydi.
+## 6. Ko'p uchraydigan xatolar
 
-## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
+### 1. Qo'shtirnoqsiz matn
+Xato kod:
+\`\`\`sql
+SELECT * FROM users WHERE city = Toshkent;
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin bo'sh natija chiqadi. Sababi: qo'shtirnoqsiz Toshkent ustun nomi deb tushuniladi. Bunday ustun yo'q — hech kim mos kelmaydi.
+Tog'ri variant:
+\`\`\`sql
+SELECT * FROM users WHERE city = 'Toshkent';
+\`\`\`
 
-1. **\\\`NULL\\\` bilan solishtirish muammosi:**
-   \\\`WHERE age != 25\\\` sharti \\\`age\\\` ustuni \\\`NULL\\\` bo'lgan qatorlarni qaytarmaydi! SQL da \\\`NULL\\\` noma'lum degani. Shuning uchun noma'lum narsa 25 ga teng yoki teng emasligini bilib bo'lmaydi. \\\`NULL\\\` ni tekshirish uchun har doim \\\`IS NULL\\\` yoki \\\`IS NOT NULL\\\` dan foydalanish kerak.
+### 2. Yolg'iz WHERE
+Xato kod:
+\`\`\`sql
+WHERE city = 'Toshkent';
+\`\`\`
+Nima bo'ladi: parse xatoligi yuz beradi. WHERE yolg'iz yasholmaydi. Oldida SELECT ... FROM bo'lishi shart.
+Tog'ri variant:
+\`\`\`sql
+SELECT * FROM users WHERE city = 'Toshkent';
+\`\`\`
 
-2. **\\\`AND\\\` va \\\`OR\\\` Prioriteti (Ustuvorligi):**
-   Mantiqiy ifodalarda \\\`AND\\\` har doim \\\`OR\\\` dan oldin bajariladi.
-   \\\`WHERE age > 18 OR role = 'admin' AND active = true\\\` bu shart aslida bunday ishlaydi:
-   \\\`WHERE age > 18 OR (role = 'admin' AND active = true)\\\`. Xatolarni oldini olish uchun doim qavslardan foydalaning!
+### 3. NULL ni tenglik bilan tekshirish
+Xato kod:
+\`\`\`sql
+SELECT * FROM users WHERE city = NULL;
+\`\`\`
+Nima bo'ladi: xato bermaydi! Lekin bo'sh natija chiqadi. NULL oddiy qiymat emas. Uni \`=\` bilan tekshirib bo'lmaydi.
+Tog'ri variant:
+\`\`\`sql
+SELECT * FROM users WHERE city IS NULL;
+\`\`\`
 
-3. **\\\`BETWEEN\\\` va Sanalar (Dates):**
-   \\\`WHERE created_at BETWEEN '2023-01-01' AND '2023-01-31'\\\` so'rovi ba'zan '2023-01-31 15:00:00' dagi ma'lumotlarni olmay qoladi, chunki vaqt ko'rsatilmasa, u \\\`'2023-01-31 00:00:00'\\\` deb olinadi. Buning o'rniga \\\`>= '2023-01-01' AND < '2023-02-01'\\\` yozish to'g'riroq.
+---
 
-## 🛠️ Amaliy Topshiriqlar uchun Vizualizatsiya
-\\\`\\\`\\\`mermaid
-flowchart TD
-    A[WHERE Operatorlari] --> B(Mantiqiy)
-    A --> C(Kengaytirilgan)
-    B --> D[AND]
-    B --> E[OR]
-    B --> F[NOT]
-    C --> G[IN]
-    C --> H[BETWEEN]
-    C --> I[LIKE]
-    C --> J[IS NULL]
-\\\`\\\`\\\`
+## 7. Tekshiruv
+
+### 1-mashq (Oson)
+Yoshi 18 dan katta VA Toshkentliklarni chiqaring. 3 qator chiqishi kerak.
+
+### 2-mashq (O'rtacha)
+Yoshi 18 dan kichik YOKI Buxoroliklarni chiqaring. 3 qator chiqishi kerak.
+
+### 3-mashq (Chegara holat)
+Shahri NULL bo'lganlarni toping. Faqat Hasan chiqishi kerak.
+
+### Javoblar:
+1.
+\`\`\`sql
+SELECT * FROM users WHERE age > 18 AND city = 'Toshkent';
+\`\`\`
+2.
+\`\`\`sql
+SELECT * FROM users WHERE age < 18 OR city = 'Buxoro';
+\`\`\`
+3.
+\`\`\`sql
+SELECT * FROM users WHERE city IS NULL;
+\`\`\`
+
+---
+
+## 8. Xulosa
+
+1. WHERE qatorlarni filtrlaydi. AND — ikkalasi ham, OR — bittasi yetadi.
+2. Matn qo'shtirnoqda yoziladi. Qo'shtirnoqsiz — bo'sh natija.
+3. NULL oddiy qiymat emas. U IS NULL bilan tekshiriladi.
+
+Keyingi darsda: jamlovchi funksiyalar (COUNT, SUM) bilan tanishamiz.
 `,
   exercises: [
     {
       id: 1,
       title: "1-Topshiriq: VA (AND)",
-      instruction: "Ikkita shart ham bir vaqtda to'g'ri bo'lishi kerak bo'lganda qaysi mantiqiy operator ishlatiladi?",
-      startingCode: "function getAndOperator() {\n  return '';\n}",
-      hint: "AND so'zini qaytaring.",
-      solution: "function getAndOperator() {\n  return 'AND';\n}",
-      test: "const fn = new Function(code + '; return getAndOperator;')();\nif (fn().toUpperCase() !== 'AND') throw new Error(\"AND kutilgandi\");"
+      instruction: "users jadvalidan (id, name, age, city) yoshi 18 dan katta VA shahri Toshkent bo'lganlarni toping. Natijada Ali, Guli, Nodira chiqishi kerak.",
+      startingCode: "SELECT * FROM users;",
+      hint: "WHERE age > 18 AND city = 'Toshkent'",
+      solution: "SELECT * FROM users WHERE age > 18 AND city = 'Toshkent';",
+      test: "if (!/\\bAND\\b/i.test(code)) return 'AND operatorini ishlating';\nconst names = result.map(r => r.name).sort();\nconst exp = ['Ali', 'Guli', 'Nodira'];\nif (JSON.stringify(names) !== JSON.stringify(exp)) return 'Ali, Guli, Nodira chiqishi kerak. Chiqdi: ' + names.join(', ');\nreturn null;"
     },
     {
       id: 2,
       title: "2-Topshiriq: YOKI (OR)",
-      instruction: "Shartlardan bittasi to'g'ri bo'lsa ham qabul qilinishi uchun qaysi operator ishlatiladi?",
-      startingCode: "function getOrOperator() {\n  return '';\n}",
-      hint: "OR so'zini qaytaring.",
-      solution: "function getOrOperator() {\n  return 'OR';\n}",
-      test: "const fn = new Function(code + '; return getOrOperator;')();\nif (fn().toUpperCase() !== 'OR') throw new Error(\"OR kutilgandi\");"
+      instruction: "users jadvalidan yoshi 18 dan kichik YOKI shahri Buxoro bo'lganlarni toping. Natijada Vali, Malika, Otabek chiqishi kerak.",
+      startingCode: "SELECT * FROM users;",
+      hint: "WHERE age < 18 OR city = 'Buxoro'",
+      solution: "SELECT * FROM users WHERE age < 18 OR city = 'Buxoro';",
+      test: "if (!/\\bOR\\b/i.test(code)) return 'OR operatorini ishlating';\nconst names = result.map(r => r.name).sort();\nconst exp = ['Malika', 'Otabek', 'Vali'];\nif (JSON.stringify(names) !== JSON.stringify(exp)) return 'Vali, Malika, Otabek chiqishi kerak. Chiqdi: ' + names.join(', ');\nreturn null;"
     },
     {
       id: 3,
       title: "3-Topshiriq: IN operatori",
-      instruction: "Ko'p 'OR' larning o'rnini bosuvchi va qavslar ichidagi ro'yxatni tekshiruvchi operator qaysi?",
-      startingCode: "function getInOperator() {\n  return '';\n}",
-      hint: "IN so'zini qaytaring.",
-      solution: "function getInOperator() {\n  return 'IN';\n}",
-      test: "const fn = new Function(code + '; return getInOperator;')();\nif (fn().toUpperCase() !== 'IN') throw new Error(\"IN kutilgandi\");"
+      instruction: "users jadvalidan shahri Toshkent yoki Buxoro bo'lganlarni IN bilan toping. 5 qator chiqishi kerak (Ali, Guli, Malika, Nodira, Otabek).",
+      startingCode: "SELECT * FROM users;",
+      hint: "WHERE city IN ('Toshkent', 'Buxoro')",
+      solution: "SELECT * FROM users WHERE city IN ('Toshkent', 'Buxoro');",
+      test: "if (!/\\bIN\\b/i.test(code)) return 'IN operatorini ishlating';\nconst names = result.map(r => r.name).sort();\nconst exp = ['Ali', 'Guli', 'Malika', 'Nodira', 'Otabek'];\nif (JSON.stringify(names) !== JSON.stringify(exp)) return '5 qator chiqishi kerak. Chiqdi: ' + names.join(', ');\nreturn null;"
     },
     {
       id: 4,
       title: "4-Topshiriq: Oraliq (BETWEEN)",
-      instruction: "Ikkita raqam yoki sananing orasidagi ma'lumotlarni olish uchun qaysi operator ishlatiladi?",
-      startingCode: "function getBetweenOperator() {\n  return '';\n}",
-      hint: "BETWEEN",
-      solution: "function getBetweenOperator() {\n  return 'BETWEEN';\n}",
-      test: "const fn = new Function(code + '; return getBetweenOperator;')();\nif (fn().toUpperCase() !== 'BETWEEN') throw new Error(\"BETWEEN kutilgandi\");"
+      instruction: "users jadvalidan yoshi 18 dan 30 gacha bo'lganlarni BETWEEN bilan toping. 5 qator chiqishi kerak (Ali, Guli, Hasan, Malika, Nodira — shahar farqi yo'q).",
+      startingCode: "SELECT * FROM users;",
+      hint: "WHERE age BETWEEN 18 AND 30",
+      solution: "SELECT * FROM users WHERE age BETWEEN 18 AND 30;",
+      test: "if (!/\\bBETWEEN\\b/i.test(code)) return 'BETWEEN operatorini ishlating';\nconst names = result.map(r => r.name).sort();\nconst exp = ['Ali', 'Guli', 'Hasan', 'Malika', 'Nodira'];\nif (JSON.stringify(names) !== JSON.stringify(exp)) return '5 qator chiqishi kerak. Chiqdi: ' + names.join(', ');\nreturn null;"
     },
     {
       id: 5,
       title: "5-Topshiriq: O'xshashlik (LIKE)",
-      instruction: "Matnning ma'lum bir qismiga o'xshashlikni qidirish uchun (masalan '%son') qaysi operator ishlatiladi?",
-      startingCode: "function getLikeOperator() {\n  return '';\n}",
-      hint: "LIKE",
-      solution: "function getLikeOperator() {\n  return 'LIKE';\n}",
-      test: "const fn = new Function(code + '; return getLikeOperator;')();\nif (fn().toUpperCase() !== 'LIKE') throw new Error(\"LIKE kutilgandi\");"
+      instruction: "users jadvalidan ismida 'a' harfi qatnashganlarni LIKE bilan toping. 8 qator chiqishi kerak (faqat Guli qatnashmaydi).",
+      startingCode: "SELECT * FROM users;",
+      hint: "WHERE name LIKE '%a%'",
+      solution: "SELECT * FROM users WHERE name LIKE '%a%';",
+      test: "if (!/\\bLIKE\\b/i.test(code)) return 'LIKE operatorini ishlating';\nif (result.length !== 8) return '8 qator chiqishi kerak. Chiqdi: ' + result.length;\nif (result.some(r => r.name === 'Guli')) return 'Guli chiqmasligi kerak';\nreturn null;"
     },
     {
       id: 6,
       title: "6-Topshiriq: Inkor (NOT)",
-      instruction: "Shartning teskarisini bajarish uchun qaysi operator ishlatiladi? (Masalan null EMAS)",
-      startingCode: "function getNotOperator() {\n  return '';\n}",
-      hint: "NOT",
-      solution: "function getNotOperator() {\n  return 'NOT';\n}",
-      test: "const fn = new Function(code + '; return getNotOperator;')();\nif (fn().toUpperCase() !== 'NOT') throw new Error(\"NOT kutilgandi\");"
+      instruction: "users jadvalidan yoshi 18 dan kichik BO'LMAGANLARNI toping (NOT bilan). 7 qator chiqishi kerak (Vali va Otabek chiqmasligi kerak).",
+      startingCode: "SELECT * FROM users;",
+      hint: "WHERE NOT age < 18",
+      solution: "SELECT * FROM users WHERE NOT age < 18;",
+      test: "if (!/\\bNOT\\b/i.test(code)) return 'NOT operatorini ishlating';\nconst names = result.map(r => r.name).sort();\nif (names.length !== 7) return '7 qator chiqishi kerak. Chiqdi: ' + names.join(', ');\nif (names.includes('Vali') || names.includes('Otabek')) return 'Vali va Otabek chiqmasligi kerak';\nreturn null;"
     },
     {
       id: 7,
       title: "7-Topshiriq: Boshlanishni qidirish",
-      instruction: "'M' harfi bilan boshlanadigan ismlarni topish uchun LIKE operatoriga qanday qiymat beramiz? (Faqat matnni qaytaring)",
-      startingCode: "function getStartsWithM() {\n  return '';\n}",
-      hint: "M% deb qaytaring.",
-      solution: "function getStartsWithM() {\n  return 'M%';\n}",
-      test: "const fn = new Function(code + '; return getStartsWithM;')();\nif (fn() !== 'M%') throw new Error(\"M% kutilgandi\");"
+      instruction: "users jadvalidan ismi 'M' harfi bilan boshlanadiganlarni toping. Faqat Malika chiqishi kerak.",
+      startingCode: "SELECT * FROM users;",
+      hint: "WHERE name LIKE 'M%'",
+      solution: "SELECT * FROM users WHERE name LIKE 'M%';",
+      test: "if (!/\\bLIKE\\b/i.test(code)) return 'LIKE operatorini ishlating';\nconst names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Malika'])) return 'Faqat Malika chiqishi kerak. Chiqdi: ' + names.join(', ');\nreturn null;"
     },
     {
       id: 8,
       title: "8-Topshiriq: Oxirini qidirish",
-      instruction: "'son' so'zi bilan tugaydigan ismlarni topish uchun (masalan 'Jackson', 'Johnson') LIKE ga qanday qiymat beramiz?",
-      startingCode: "function getEndsWithSon() {\n  return '';\n}",
-      hint: "%son deb qaytaring.",
-      solution: "function getEndsWithSon() {\n  return '%son';\n}",
-      test: "const fn = new Function(code + '; return getEndsWithSon;')();\nif (fn() !== '%son') throw new Error(\"%son kutilgandi\");"
+      instruction: "users jadvalidan ismi 'ar' bilan tugaydiganlarni toping. Faqat Sanjar chiqishi kerak.",
+      startingCode: "SELECT * FROM users;",
+      hint: "WHERE name LIKE '%ar'",
+      solution: "SELECT * FROM users WHERE name LIKE '%ar';",
+      test: "if (!/\\bLIKE\\b/i.test(code)) return 'LIKE operatorini ishlating';\nconst names = result.map(r => r.name);\nif (JSON.stringify(names) === JSON.stringify(['Sanjar'])) return null;\nreturn 'Faqat Sanjar chiqishi kerak. Chiqdi: ' + names.join(', ');"
     },
     {
       id: 9,
-      title: "9-Topshiriq: O'rtasidan qidirish",
-      instruction: "Ismning qayeridadir 'a' harfi bo'lsa topish uchun LIKE ga qanday qiymat beramiz?",
-      startingCode: "function getContainsA() {\n  return '';\n}",
-      hint: "%a% deb qaytaring.",
-      solution: "function getContainsA() {\n  return '%a%';\n}",
-      test: "const fn = new Function(code + '; return getContainsA;')();\nif (fn() !== '%a%') throw new Error(\"%a% kutilgandi\");"
+      title: "9-Topshiriq: Bo'shliqni topish (IS NULL)",
+      instruction: "users jadvalidan shahri kiritilmagan (NULL) qatorni toping. Faqat Hasan chiqishi kerak.",
+      startingCode: "SELECT * FROM users;",
+      hint: "WHERE city IS NULL",
+      solution: "SELECT * FROM users WHERE city IS NULL;",
+      test: "if (!/\\bIS\\s+NULL\\b/i.test(code)) return 'IS NULL yozing';\nconst names = result.map(r => r.name);\nif (JSON.stringify(names) !== JSON.stringify(['Hasan'])) return 'Faqat Hasan chiqishi kerak. Chiqdi: ' + names.join(', ');\nreturn null;"
     },
     {
       id: 10,
       title: "10-Topshiriq: Bo'sh emaslik (IS NOT NULL)",
-      instruction: "Biror ustun bo'sh (NULL) emasligini tekshirish uchun IS NULL emas, qanday yoziladi? (IS NOT NULL)",
-      startingCode: "function getIsNotNull() {\n  return '';\n}",
-      hint: "IS NOT NULL",
-      solution: "function getIsNotNull() {\n  return 'IS NOT NULL';\n}",
-      test: "const fn = new Function(code + '; return getIsNotNull;')();\nif (fn().toUpperCase().replace(/\\s+/g, ' ') !== 'IS NOT NULL') throw new Error(\"IS NOT NULL kutilgandi\");"
+      instruction: "users jadvalidan shahri kiritilgan qatorlarni toping. 8 qator chiqishi kerak (faqat Hasan chiqmasligi kerak).",
+      startingCode: "SELECT * FROM users;",
+      hint: "WHERE city IS NOT NULL",
+      solution: "SELECT * FROM users WHERE city IS NOT NULL;",
+      test: "if (!/\\bIS\\s+NOT\\s+NULL\\b/i.test(code)) return 'IS NOT NULL yozing';\nif (result.length !== 8) return '8 qator chiqishi kerak. Chiqdi: ' + result.length;\nif (result.some(r => r.name === 'Hasan')) return 'Hasan chiqmasligi kerak';\nreturn null;"
     }
   ],
   quizzes: [

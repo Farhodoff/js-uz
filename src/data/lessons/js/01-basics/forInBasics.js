@@ -210,6 +210,62 @@ Keyingi darsda: Ma'lumotlarni almashish va saqlash formati — JSON bilan tanish
       startingCode: "const prices = { apple: 5000, banana: 12000, orange: 8000 };\nlet total = 0;\n// for...in orqali total ga qo'shing va chiqaring\n",
       hint: "for (let item in prices) {\n  total += prices[item];\n}\nconsole.log(total);",
       test: "if (!code.includes('for') || !code.includes('in')) return 'for...in sikli ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.some(m => m.includes('25000'))) return null;\nreturn 'Umumiy summa 25000 chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Kalit va qiymatni birga chiqarish",
+      "instruction": "`const car = { brand: \"BMW\", year: 2020 };` obyektining har bir kaliti va qiymatini `\"brand: BMW\"` ko'rinishida `for...in` yordamida konsolga chiqaring.",
+      "startingCode": "const car = { brand: \"BMW\", year: 2020 };\n// for...in bilan kalit: qiymat ko'rinishida chiqaring\n",
+      "hint": "for (const key in car) {\n  console.log(key + \": \" + car[key]);\n}",
+      "test": "if (!code.includes(\"for\") || !code.includes(\"in\")) return \"for...in sikli ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nconst all = out.join(\"|\");\nif (all.includes(\"brand: BMW\") && all.includes(\"year: 2020\")) return null;\nreturn \"brand: BMW va year: 2020 konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "Kalitlar sonini sanash",
+      "instruction": "`const obj = { a: 1, b: 2, c: 3 };` obyektidagi kalitlar sonini `for...in` yordamida sanab, konsolga chiqaring (`3`).",
+      "startingCode": "const obj = { a: 1, b: 2, c: 3 };\nlet count = 0;\n// for...in bilan kalitlarni sanang\n",
+      "hint": "for (const key in obj) {\n  count++;\n}\nconsole.log(count);",
+      "test": "if (!code.includes(\"in\")) return \"for...in ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"3\")) return null;\nreturn \"Kalitlar soni 3 konsolga chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "Eng katta qiymatni topish",
+      "instruction": "`const nums = { x: 2, y: 9, z: 4 };` obyektidagi eng katta qiymatni `for...in` yordamida topib, konsolga chiqaring.",
+      "startingCode": "const nums = { x: 2, y: 9, z: 4 };\nlet max = 0;\n// for...in bilan eng katta qiymatni toping\n",
+      "hint": "for (const key in nums) {\n  if (nums[key] > max) max = nums[key];\n}\nconsole.log(max);",
+      "test": "if (!code.includes(\"in\")) return \"for...in ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.trim() === \"9\")) return null;\nreturn \"Eng katta qiymat 9 konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "Shartga mos kalitlarni chiqarish",
+      "instruction": "`const inventory = { apples: 10, oranges: 5 };` obyektida qiymati `5` dan katta bo'lgan kalitlarni `for...in` bilan konsolga chiqaring.",
+      "startingCode": "const inventory = { apples: 10, oranges: 5 };\n// qiymati 5 dan katta kalitlarni chiqaring\n",
+      "hint": "for (const key in inventory) {\n  if (inventory[key] > 5) console.log(key);\n}",
+      "test": "if (!code.includes(\"in\")) return \"for...in ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (out.some((m) => m.includes(\"apples\")) && !out.some((m) => m.includes(\"oranges\"))) return null;\nreturn \"Faqat apples chiqishi kerak\";"
+    },
+    {
+      "id": 8,
+      "title": "for...of xatosini tuzatish",
+      "instruction": "Oddiy obyektda `for...of` ishlatilsa `TypeError` beradi. `for...of` ni `for...in` ga o'zgartirib, kalitlarni konsolga chiqaring.",
+      "startingCode": "const user = { name: \"Ali\", age: 20 };\nfor (const k of user) {\n  console.log(k);\n}\n",
+      "hint": "for (const k in user) {\n  console.log(k);\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Hali xato bor: \" + e.message; } finally { console.log = orig; }\nconst all = out.join(\"|\");\nif (all.includes(\"name\") && all.includes(\"age\")) return null;\nreturn \"name va age kalitlari konsolga chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "Kalitlarni katta harflarga o'girish",
+      "instruction": "`const flags = { on: true, off: false };` obyektining kalitlarini `for...in` va `toUpperCase()` yordamida katta harflarda konsolga chiqaring.",
+      "startingCode": "const flags = { on: true, off: false };\n// kalitlarni katta harflarda chiqaring\n",
+      "hint": "for (const key in flags) {\n  console.log(key.toUpperCase());\n}",
+      "test": "if (!code.includes(\"in\")) return \"for...in ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nconst all = out.join(\"|\");\nif (all.includes(\"ON\") && all.includes(\"OFF\")) return null;\nreturn \"ON va OFF konsolga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Shartli kalitlar (chegara)",
+      "instruction": "`const prices = { a: 500, b: 1500, c: 2000 };` obyektidan faqat `1000` dan katta narxlarning kalitlarini `for...in` bilan konsolga chiqaring (`b` va `c`).",
+      "startingCode": "const prices = { a: 500, b: 1500, c: 2000 };\n// faqat 1000 dan katta narx kalitlarini chiqaring\n",
+      "hint": "for (const key in prices) {\n  if (prices[key] > 1000) console.log(key);\n}",
+      "test": "if (!code.includes(\"in\")) return \"for...in ishlatilmadi\";\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nconst all = out.join(\"|\");\nif (all.includes(\"b\") && all.includes(\"c\") && !all.includes(\"a\")) return null;\nreturn \"Faqat b va c kalitlari chiqishi kerak\";"
     }
   ],
   quizzes: [
@@ -248,6 +304,114 @@ Keyingi darsda: Ma'lumotlarni almashish va saqlash formati — JSON bilan tanish
       ],
       correctAnswer: 0,
       explanation: "Oddiy obyektlar iterable (aylanuvchi) emas, shuning uchun for...of TypeError xatosini keltirib chiqaradi. Obyektlar uchun for...in ishlatiladi."
+    },
+    {
+      "id": 4,
+      "question": "`for...in` massivda ishlatilsa, o'zgaruvchiga nima yuklanadi?",
+      "options": [
+        "Indekslar (0, 1, 2...)",
+        "Element qiymatlari",
+        "Massiv uzunligi",
+        "Massiv nusxasi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "for...in massivda ham kalitlarni (indekslarni) beradi, qiymatlarni emas — massiv uchun for...of ishlatiladi."
+    },
+    {
+      "id": 5,
+      "question": "`for...in` siklida o'zgaruvchi obyektning qiymatini saqlaydimi?",
+      "options": [
+        "Yo'q, u faqat kalit (nom)ni saqlaydi",
+        "Ha, to'g'ridan-to'g'ri qiymatni beradi",
+        "Faqat sonli qiymatlarni beradi",
+        "Faqat massiv elementlarini beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "for...in kalitlarni beradi; qiymatni olish uchun obj[key] ishlatiladi."
+    },
+    {
+      "id": 6,
+      "question": "`const o = { a: 1, b: 2 }; for (const k in o) console.log(k);` nima chiqaradi?",
+      "options": [
+        "a, b",
+        "1, 2",
+        "a b (bitta qatorda)",
+        "undefined"
+      ],
+      "correctAnswer": 0,
+      "explanation": "for...in kalitlarni navbat bilan beradi, shuning uchun a va b chiqadi."
+    },
+    {
+      "id": 7,
+      "question": "for...in va for...of o'rtasidagi asosiy farq nima?",
+      "options": [
+        "for...in kalitlarni, for...of qiymatlarni beradi",
+        "Ikkalasi ham kalitlarni beradi",
+        "for...of faqat obyektlar bilan ishlaydi",
+        "for...in faqat sonlar bilan ishlaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "for...in kalit (indeks/nom) bo'ylab, for...of esa qiymat bo'ylab aylanadi."
+    },
+    {
+      "id": 8,
+      "question": "`const s = { math: 90 }; for (const k in s) console.log(s[k]);` nima chiqaradi?",
+      "options": [
+        "90",
+        "math",
+        "undefined",
+        "{ }"
+      ],
+      "correctAnswer": 0,
+      "explanation": "s[k] kalit orqali qiymatni oladi, shuning uchun 90 chiqadi."
+    },
+    {
+      "id": 9,
+      "question": "for...in orqali obyektdagi kalitlar sonini qanday sanash mumkin?",
+      "options": [
+        "Har aylanishda hisoblagichni (count++) oshirib",
+        "obj.length dan foydalanib",
+        "obj.size dan foydalanib",
+        "Sanab bo'lmaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Obyektda length yo'q, shuning uchun for...in ichida hisoblagichni oshirib sanaladi."
+    },
+    {
+      "id": 10,
+      "question": "`for...in` faqat obyektning o'z kalitlarini emas, prototipdan meros kalitlarni ham olishi mumkinmi?",
+      "options": [
+        "Ha, shuning uchun hasOwnProperty tekshiruvi tavsiya etiladi",
+        "Yo'q, hech qachon",
+        "Faqat massivlarda",
+        "Faqat const obyektlarda"
+      ],
+      "correctAnswer": 0,
+      "explanation": "for...in meros olingan kalitlarni ham aylanib chiqishi mumkin; faqat o'z kalitlarini olish uchun hasOwnProperty ishlatiladi."
+    },
+    {
+      "id": 11,
+      "question": "`const o = { a: { x: 1 } }; for (const k in o) console.log(k);` nima chiqaradi?",
+      "options": [
+        "a",
+        "x",
+        "{ x: 1 }",
+        "1"
+      ],
+      "correctAnswer": 0,
+      "explanation": "for...in faqat yuqori darajadagi kalitlarni beradi: a. Ichki kalitga alohida murojaat qilinadi."
+    },
+    {
+      "id": 12,
+      "question": "`const n = { a: 1, b: 2, c: 3 }; for (const k in n) console.log(n[k]);` natijasi qanday?",
+      "options": [
+        "1, 2, 3",
+        "a, b, c",
+        "3",
+        "undefined"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Har bir kalit orqali mos qiymat olinadi, natijada 1, 2, 3 chiqadi."
     }
   ]
 };

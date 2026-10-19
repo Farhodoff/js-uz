@@ -1,5 +1,5 @@
 export const sqlQueryOptimization = {
-  id: "sql_query_optimization",
+  id: "sqlQueryOptimization",
   title: "SQL Query Optimization",
   language: "javascript",
   theory: `## 1. 💡 Sodda Tushuntirish

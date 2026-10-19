@@ -210,6 +210,62 @@ Keyingi darsda: Global obyektlar — kalit-qiymat juftliklari bilan ishlovchi \`
       startingCode: "const scores = [5, 5, 4, 3, 4, 5];\n// Set yarating, 3 ni delete qiling va size ni chiqaring\n",
       hint: "const s = new Set(scores);\ns.delete(3);\nconsole.log(s.size);",
       test: "if (!code.includes('.delete') || !code.includes('.size')) return 'delete va size ishlatilmadi';\nlet out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.join(' '));\ntry { new Function(code)(); } catch (e) { return 'Xato: ' + e.message; } finally { console.log = orig; }\nif (out.includes('2')) return null;\nreturn '2 soni konsolga chiqmadi';"
+    },
+    {
+      "id": 4,
+      "title": "Massivdan takrorlanmaslar (unique)",
+      "instruction": "`const nums = [1, 1, 2, 3, 3];` massividan Set orqali takrorlanmas sonlar massivini (`[...new Set(nums)]`) yasab, konsolga chiqaring.",
+      "startingCode": "const nums = [1, 1, 2, 3, 3];\n// Set orqali unique massiv yasab chiqaring\n",
+      "hint": "const nums = [1, 1, 2, 3, 3];\nconst unique = [...new Set(nums)];\nconsole.log(unique);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : v instanceof Set ? JSON.stringify([...v]) : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"new Set\")) return \"Set ishlatilmadi\";\nif (out.some((m) => m.includes(\"[1,2,3]\") || m.includes(\"1,2,3\"))) return null;\nreturn \"Unique massiv [1, 2, 3] konsolga chiqmadi\";"
+    },
+    {
+      "id": 5,
+      "title": "To'plamni tozalash (clear)",
+      "instruction": "`const set = new Set([1, 2, 3]);` to'plamini `clear()` bilan tozalab, `size` ini konsolga chiqaring (`0`).",
+      "startingCode": "const set = new Set([1, 2, 3]);\n// clear qilib size ni chiqaring\n",
+      "hint": "const set = new Set([1, 2, 3]);\nset.clear();\nconsole.log(set.size);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : v instanceof Set ? JSON.stringify([...v]) : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"clear\")) return \"clear() ishlatilmadi\";\nif (out.some((m) => m.trim() === \"0\")) return null;\nreturn \"size 0 konsolga chiqmadi\";"
+    },
+    {
+      "id": 6,
+      "title": "Set bo'ylab aylanish (for...of)",
+      "instruction": "`const colors = new Set([\"red\", \"green\", \"blue\"]);` to'plamini `for...of` yordamida konsolga chiqaring.",
+      "startingCode": "const colors = new Set([\"red\", \"green\", \"blue\"]);\n// for...of bilan har bir rangni chiqaring\n",
+      "hint": "const colors = new Set([\"red\", \"green\", \"blue\"]);\nfor (const c of colors) {\n  console.log(c);\n}",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : v instanceof Set ? JSON.stringify([...v]) : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"for\")) return \"for...of ishlatilmadi\";\nconst all = out.join(\"|\");\nif (all.includes(\"red\") && all.includes(\"green\") && all.includes(\"blue\")) return null;\nreturn \"Ranglar konsolga chiqmadi\";"
+    },
+    {
+      "id": 7,
+      "title": "Set indeks orqali ishlamasligi",
+      "instruction": "`const s = new Set([\"a\", \"b\"]);` da `s[0]` `undefined` qaytaradi (Set indeksli emas). Spread bilan massivga aylantirib, birinchi elementni (`a`) konsolga chiqaring.",
+      "startingCode": "const s = new Set([\"a\", \"b\"]);\n// spread bilan massivga aylantirib birinchi elementni chiqaring\n",
+      "hint": "const s = new Set([\"a\", \"b\"]);\nconst arr = [...s];\nconsole.log(arr[0]);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : v instanceof Set ? JSON.stringify([...v]) : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"...\")) return \"Spread (...) ishlatilmadi\";\nif (out.some((m) => m.trim() === \"a\")) return null;\nreturn \"Birinchi element a konsolga chiqmadi\";"
+    },
+    {
+      "id": 8,
+      "title": "Dublikat emaillarni olib tashlash",
+      "instruction": "`const emails = [\"a@x\", \"b@x\", \"a@x\"];` massivdagi takrorlanmas emaillar sonini Set orqali hisoblab, konsolga chiqaring (`2`).",
+      "startingCode": "const emails = [\"a@x\", \"b@x\", \"a@x\"];\n// Set orqali unique sonini chiqaring\n",
+      "hint": "const emails = [\"a@x\", \"b@x\", \"a@x\"];\nconst unique = new Set(emails);\nconsole.log(unique.size);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : v instanceof Set ? JSON.stringify([...v]) : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"new Set\")) return \"Set ishlatilmadi\";\nif (out.some((m) => m.trim() === \"2\")) return null;\nreturn \"Unique soni 2 konsolga chiqmadi\";"
+    },
+    {
+      "id": 9,
+      "title": "has() bilan tekshirish",
+      "instruction": "`const visited = new Set([\"home\", \"about\"]);` to'plamida `\"about\"` borligini `has()` orqali tekshirib, natijani (`true`) konsolga chiqaring.",
+      "startingCode": "const visited = new Set([\"home\", \"about\"]);\n// has bilan about borligini tekshirib chiqaring\n",
+      "hint": "const visited = new Set([\"home\", \"about\"]);\nconsole.log(visited.has(\"about\"));",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : v instanceof Set ? JSON.stringify([...v]) : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\".has\")) return \"has() ishlatilmadi\";\nif (out.some((m) => m.includes(\"true\"))) return null;\nreturn \"true konsolga chiqmadi\";"
+    },
+    {
+      "id": 10,
+      "title": "Ikki to'plamni birlashtirish (chegara)",
+      "instruction": "`const a = new Set([1, 2]);` va `const b = new Set([2, 3]);` ni spread bilan birlashtirib, unique sonlar sonini konsolga chiqaring (`3`).",
+      "startingCode": "const a = new Set([1, 2]);\nconst b = new Set([2, 3]);\n// birlashtirib unique sonini chiqaring\n",
+      "hint": "const a = new Set([1, 2]);\nconst b = new Set([2, 3]);\nconst merged = new Set([...a, ...b]);\nconsole.log(merged.size);",
+      "test": "let out = [];\nconst orig = console.log;\nconsole.log = (...x) => out.push(x.map((v) => (v === null ? \"null\" : v instanceof Set ? JSON.stringify([...v]) : typeof v === \"object\" ? JSON.stringify(v) : String(v))).join(\" \"));\ntry { new Function(code)(); } catch (e) { return \"Xato: \" + e.message; } finally { console.log = orig; }\nif (!code.includes(\"...\")) return \"Spread (...) ishlatilmadi\";\nif (out.some((m) => m.trim() === \"3\")) return null;\nreturn \"Birlashgan unique soni 3 konsolga chiqmadi\";"
     }
   ],
   quizzes: [
@@ -248,6 +304,114 @@ Keyingi darsda: Global obyektlar — kalit-qiymat juftliklari bilan ishlovchi \`
       ],
       correctAnswer: 0,
       explanation: "Set to'plamida qiymat mavjudligini tekshirish uchun has(value) metodi ishlatiladi va u true yoki false qaytaradi."
+    },
+    {
+      "id": 4,
+      "question": "Set to'plamiga bir xil qiymat ikki marta qo'shilsa nima bo'ladi?",
+      "options": [
+        "Ikkinchisi qo'shilmaydi, faqat bitta nusxa qoladi",
+        "Xatolik yuz beradi",
+        "Eski qiymat o'chadi",
+        "Ikkalasi saqlanadi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Set faqat takrorlanmas qiymatlarni saqlaydi, shuning uchun dublikat qo'shilmaydi."
+    },
+    {
+      "id": 5,
+      "question": "Set dagi elementlar sonini qaysi xususiyat beradi?",
+      "options": [
+        "size",
+        "length",
+        "count",
+        "total"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Set uzunligi length emas, size xususiyati orqali olinadi."
+    },
+    {
+      "id": 6,
+      "question": "Set da qiymat borligini tekshirish uchun qaysi metod ishlatiladi?",
+      "options": [
+        "has(value)",
+        "includes(value)",
+        "find(value)",
+        "exists(value)"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Set includes emas, has(value) metodidan foydalanadi."
+    },
+    {
+      "id": 7,
+      "question": "Set ni oddiy massivga qanday aylantiramiz?",
+      "options": [
+        "[...set]",
+        "set.toArray()",
+        "set.array()",
+        "Array(set) faqat shunday"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Spread operatori Set ni massivga aylantiradi: [...set]."
+    },
+    {
+      "id": 8,
+      "question": "Set dagi elementga indeks orqali murojaat qilish mumkinmi?",
+      "options": [
+        "Yo'q, Set indekssiz to'plamdir",
+        "Ha, set[0]",
+        "Ha, set.get(0)",
+        "Faqat raqamli Set da"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Set da indeks yo'q; kerak bo'lsa massivga aylantirish kerak."
+    },
+    {
+      "id": 9,
+      "question": "`set.delete(value)` mavjud bo'lmagan qiymat uchun nima qaytaradi?",
+      "options": [
+        "false",
+        "true",
+        "undefined",
+        "Xato beradi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "delete mavjud bo'lmagan qiymat uchun false qaytaradi, mavjud bo'lsa true."
+    },
+    {
+      "id": 10,
+      "question": "`set.clear()` nima qiladi?",
+      "options": [
+        "To'plamdagi barcha elementlarni o'chiradi",
+        "Bitta element o'chiradi",
+        "To'plamni massivga aylantiradi",
+        "Element qo'shadi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "clear() barcha elementlarni olib tashlaydi va size 0 bo'ladi."
+    },
+    {
+      "id": 11,
+      "question": "`new Set([1, 1, 2]).size` natijasi nima?",
+      "options": [
+        "2",
+        "3",
+        "1",
+        "4"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Dublikat 1 tashlanadi, shuning uchun to'plamda 1 va 2 — size 2."
+    },
+    {
+      "id": 12,
+      "question": "Set massivdan nimasi bilan farq qiladi?",
+      "options": [
+        "Takrorlanmas qiymatlarni saqlaydi va indekssiz",
+        "Uzunligi bo'lmaydi",
+        "Faqat sonlarni saqlaydi",
+        "Tartibsiz ishlay olmaydi"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Set takrorlanmaslikni ta'minlaydi va elementlarga indeks orqali murojaat qilib bo'lmaydi."
     }
   ]
 };
