@@ -6,6 +6,20 @@ import { pwaGlobIgnores, pwaRuntimeCaching } from './src/config/pwaRuntimeCachin
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
+  test: {
+    exclude: ['**/node_modules/**', '**/dist/**', 'e2e/**'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+      include: ['src/utils/quizEngine.js', 'src/utils/quizUtils.js'],
+      thresholds: {
+        branches: 80,
+        functions: 80,
+        lines: 80,
+        statements: 80,
+      },
+    },
+  },
   build: {
     rollupOptions: {
       output: {
