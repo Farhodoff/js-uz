@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
-import { pwaGlobIgnores, pwaRuntimeCaching } from './src/config/pwaRuntimeCaching.js'
+import { pwaGlobIgnores } from './src/config/pwaRuntimeCaching.js'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,7 +11,12 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      include: ['src/utils/quizEngine.js', 'src/utils/quizUtils.js'],
+      include: [
+        'src/utils/quizEngine.js',
+        'src/utils/quizUtils.js',
+        'src/config/pwaOffline.js',
+        'src/config/pwaPrecache.js',
+      ],
       thresholds: {
         branches: 80,
         functions: 80,
@@ -42,14 +47,14 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.js',
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'maskable-icon.png'],
-      workbox: {
-        maximumFileSizeToCacheInBytes: 5000000,
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,svg,ico}'],
         globIgnores: pwaGlobIgnores,
-        runtimeCaching: pwaRuntimeCaching,
-        // SPA: offline'da navigatsiya so'rovlari index.html'ga tushsin
-        navigateFallback: 'index.html',
+        maximumFileSizeToCacheInBytes: 5000000,
       },
       manifest: {
         name: 'JS Academy Mastery',

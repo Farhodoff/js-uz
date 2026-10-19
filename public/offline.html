@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#534AB7" />
+    <title>Oflayn rejim — JS Academy</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top, #2b2547 0%, #12121a 60%);
+        color: #f4f4f5;
+      }
+
+      .offline-card {
+        width: 100%;
+        max-width: 520px;
+        text-align: center;
+        background: #1b1b25;
+        border: 1px solid #322c52;
+        border-radius: 20px;
+        padding: 40px 28px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+      }
+
+      .offline-icon {
+        font-size: 56px;
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 24px;
+        color: #ffffff;
+      }
+
+      p {
+        margin: 0 0 10px;
+        line-height: 1.6;
+        color: #b9b7c9;
+      }
+
+      .offline-actions {
+        margin-top: 26px;
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      button,
+      a.offline-link {
+        appearance: none;
+        border: none;
+        cursor: pointer;
+        border-radius: 10px;
+        padding: 12px 22px;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform 0.15s ease, background 0.15s ease;
+      }
+
+      button {
+        background: #534ab7;
+        color: #ffffff;
+      }
+
+      button:hover {
+        background: #6359d6;
+        transform: translateY(-1px);
+      }
+
+      a.offline-link {
+        background: transparent;
+        color: #d4af37;
+        border: 1px solid #4a4570;
+      }
+
+      .offline-status {
+        margin-top: 18px;
+        font-size: 13px;
+        color: #8a86a3;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="offline-card">
+      <div class="offline-icon" aria-hidden="true">📡</div>
+      <h1>Siz oflaynsiz</h1>
+      <p>
+        Internet aloqasi yo'q. Avval ochilgan darslar keshdan ishlaydi.
+      </p>
+      <p>
+        Aloqa tiklangach, bu sahifa avtomatik yangilanadi yoki quyidagi
+        tugma orqali qayta urinib ko'ring.
+      </p>
+      <div class="offline-actions">
+        <button type="button" id="retry-offline">Qayta urinish</button>
+        <a class="offline-link" href="/">Bosh sahifa</a>
+      </div>
+      <p class="offline-status" id="offline-status" role="status" aria-live="polite">
+        Oflayn rejim faol
+      </p>
+    </main>
+
+    <script>
+      (function () {
+        var status = document.getElementById('offline-status');
+        var retry = document.getElementById('retry-offline');
+
+        function goOnline() {
+          if (status) status.textContent = 'Aloqa tiklandi, yuklanmoqda...';
+          window.location.reload();
+        }
+
+        if (retry) {
+          retry.addEventListener('click', function () {
+            if (navigator.onLine) {
+              goOnline();
+            } else if (status) {
+              status.textContent = "Hali ham oflayn. Keyinroq qayta urinib ko'ring.";
+            }
+          });
+        }
+
+        window.addEventListener('online', goOnline);
+      })();
+    </script>
+  </body>
+</html>
