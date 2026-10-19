@@ -2,14 +2,14 @@ export const dateObject = {
   id: "dateObjectLesson",
   title: "Date Obyekti va Vaqt Bilan Ishlash",
   language: "javascript",
-  theory: `## 1. 💡 Sodda Tushuntirish va O'xshatish
+  theory: `## 1. 💡 Bu nima?
 
 ### Date Obyekti nima?
 JavaScript-da vaqt va sanalar bilan ishlash uchun \\\`Date\\\` nomli maxsus obyektdan foydalaniladi. Date obyekti 1970-yil 1-yanvar yarim tundan boshlab hisoblangan millisekundlar asosida ishlaydi (bunga Unix Timestamp deyiladi).
 
 ---
 
-### Real hayotiy o'xshatish
+### Nega kerak? (real hayotiy o'xshatish)
 Tasavvur qiling, siz poyezdlar jadvalini tuzmoqchisiz:
 - \\\`new Date()\\\` — bu hozirgi vaqtni ko'rsatadigan stansiya soati.
 - \\\`setFullYear()\\\` yoki \\\`setMonth()\\\` — bu soatning faqat yilini yoki oyini burab to'g'rilaydigan murvat (nastroyka).
@@ -17,7 +17,9 @@ Tasavvur qiling, siz poyezdlar jadvalini tuzmoqchisiz:
 
 ---
 
-## 2. 🔬 Chuqur Tahlil: Ichki ishlash (V8 dvigateli va xotira)
+## 2. 💡 Birinchi misol va Qator-baqator tahlil
+
+### Chuqur tahlil: ichki ishlash (V8 dvigateli va xotira)
 
 ### V8 da Date obyektini qanday saqlanadi?
 V8 dvigateli Date obyektlarini odatda to'g'ridan-to'g'ri bitta raqam – 64-bitlik o'zgaruvchan nuqtali (float) raqam sifatida xotirada saqlaydi. Bu raqam 1970-yil 1-yanvardan beri o'tgan millisekundlarni anglatadi.
@@ -38,7 +40,7 @@ const startBad = new Date().getTime();
 
 ---
 
-## 3. ⚠️ Chekka holatlar va Senior Intervyu Savollari
+## 3. ⚠️ Ko'p uchraydigan xatolar (chekka holatlar va intervyu savollari)
 
 ### Chekka holatlar (Qiziq va Kutilmagan holatlar)
 1. **Oylarning 0 dan boshlanishi:** JavaScriptda oylar 0 (Yanvar) dan boshlab 11 (Dekabr) gacha bo'ladi. \\\`new Date(2024, 0, 1)\\\` bu 2024-yil 1-Yanvar.
@@ -54,7 +56,25 @@ const startBad = new Date().getTime();
 
 ---
 
-## 4. 📊 Mermaid Diagrammasi
+## 4. 💡 Tekshiruv
+
+1. \`Date.now()\` nima qaytaradi va nega u \`new Date()\` dan tezroq?
+2. Nega \`new Date() === new Date()\` har doim \`false\` qaytaradi?
+3. Oylar nechidan boshlanadi va 32-yanvar bilan nima bo'ladi?
+
+Javoblar yuqoridagi chuqur tahlil va chekka holatlar bo'limida keltirilgan.
+
+---
+
+## 5. 💡 Xulosa
+
+- Date obyekti bitta timestamp saqlaydi; vaqt mintaqasi unda saqlanmaydi.
+- \`Date.now()\` obyekt yaratmaydi, shuning uchun o'lchashda tezroq.
+- Sanalarni \`===\` bilan emas, \`getTime()\` qiymatlari bilan solishtiring.
+
+---
+
+## 6. 📊 Mermaid Diagrammasi
 
 JavaScript-da Date klassining ishlash oqimi:
 
