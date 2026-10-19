@@ -15,6 +15,7 @@ export default defineConfig({
       include: [
         'src/utils/**/*.js',
         'src/store/**/*.js',
+        'src/hooks/**/*.js',
         'src/config/pwaOffline.js',
         'src/config/pwaPrecache.js',
         'src/config/monacoAmdProtection.js',
