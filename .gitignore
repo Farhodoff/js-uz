@@ -69,5 +69,11 @@ typings/
 dist
 .vercel
 
+# Playwright
+test-results
+playwright-report
+blob-report
+.playwright
+
 # macOS
 .DS_Store

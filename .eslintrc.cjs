@@ -23,6 +23,10 @@ module.exports = {
       files: ['scripts/**/*.js'],
       env: { node: true },
     },
+    {
+      files: ['e2e/**/*.js', 'playwright.config.js'],
+      env: { node: true, browser: true },
+    },
   ],
   rules: {
     'react/prop-types': 'off',
