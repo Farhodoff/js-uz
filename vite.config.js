@@ -1,11 +1,34 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
-import { pwaGlobIgnores, pwaRuntimeCaching } from './src/config/pwaRuntimeCaching.js'
+import { pwaGlobIgnores } from './src/config/pwaRuntimeCaching.js'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
+  test: {
+    exclude: ['**/node_modules/**', '**/dist/**', 'e2e/**'],
+    coverage: {
+      provider: 'v8',
+      all: true,
+      reporter: ['text', 'html', 'lcov', 'json-summary'],
+      include: [
+        'src/utils/**/*.js',
+        'src/store/**/*.js',
+        'src/hooks/**/*.js',
+        'src/config/pwaOffline.js',
+        'src/config/pwaPrecache.js',
+        'src/config/monacoAmdProtection.js',
+      ],
+      exclude: ['**/*.test.js'],
+      thresholds: {
+        branches: 70,
+        functions: 70,
+        lines: 70,
+        statements: 70,
+      },
+    },
+  },
   build: {
     rollupOptions: {
       output: {
@@ -28,14 +51,14 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.js',
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'maskable-icon.png'],
-      workbox: {
-        maximumFileSizeToCacheInBytes: 5000000,
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,svg,ico}'],
         globIgnores: pwaGlobIgnores,
-        runtimeCaching: pwaRuntimeCaching,
-        // SPA: offline'da navigatsiya so'rovlari index.html'ga tushsin
-        navigateFallback: 'index.html',
+        maximumFileSizeToCacheInBytes: 5000000,
       },
       manifest: {
         name: 'JS Academy Mastery',

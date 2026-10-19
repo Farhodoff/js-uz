@@ -7,7 +7,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
   ],
   plugins: ['react-refresh'],
-  ignorePatterns: ['dist', 'node_modules'],
+  ignorePatterns: ['dist', 'coverage', 'node_modules', 'playwright-report', 'test-results'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -22,6 +22,10 @@ module.exports = {
     {
       files: ['scripts/**/*.js'],
       env: { node: true },
+    },
+    {
+      files: ['e2e/**/*.js', 'playwright.config.js'],
+      env: { node: true, browser: true },
     },
   ],
   rules: {

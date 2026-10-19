@@ -2,6 +2,8 @@
 
 JavaScript dasturlash tilini **o'zbek tilida** noldan boshlab bosqichma-bosqich o'rganish uchun interaktiv platforma. [roadmap.sh/javascript](https://roadmap.sh/javascript) yo'l xaritasi asosida tuzilgan.
 
+[![Coverage](https://codecov.io/gh/Farhodoff/js-uz/branch/main/graph/badge.svg)](https://codecov.io/gh/Farhodoff/js-uz)
+
 ## ✨ Xususiyatlar
 
 - 📚 **280+ interaktiv dars** — JS asoslaridan Professional darajagacha, qo'shimcha React, Node.js, TypeScript, SQL, Algoritmlar, System Design yo'nalishlari
@@ -41,8 +43,12 @@ npm run dev
 
 # Testlar va build
 npm test
+npm run test:coverage   # minimal 70% qamrov, lcov + html hisobot
 npm run build
 ```
+
+Coverage hisoboti CI'da artifact sifatida saqlanadi (90 kun) va Codecov'da
+tarixiy trend hamda badge sifatida kuzatiladi.
 
 ## 📁 Loyiha Tuzilmasi
 
