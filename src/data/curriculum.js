@@ -361,7 +361,9 @@ export const curriculum = {
       { id: "leetcodeStrings", number: "13.28", title: "LeetCode: String (Satr) Algoritmlari", load: () => import("./lessons/algorithms/leetcodeStrings.js").then(m => m.leetcodeStrings) },
       { id: "leetcodeArrays", number: "13.29", title: "LeetCode: Array (Massiv) Algoritmlari", load: () => import("./lessons/algorithms/leetcodeArrays.js").then(m => m.leetcodeArrays) },
       { id: "leetcodeHashMaps", number: "13.30", title: "LeetCode: HashMap va Set Algoritmlari", load: () => import("./lessons/algorithms/leetcodeHashMaps.js").then(m => m.leetcodeHashMaps) },
-      { id: "dynamicProgrammingBasics", number: "13.31", title: "LeetCode: Dynamic Programming", load: () => import("./lessons/algorithms/dynamicProgrammingBasics.js").then(m => m.dynamicProgrammingBasics) }
+      { id: "dynamicProgrammingBasics", number: "13.31", title: "LeetCode: Dynamic Programming", load: () => import("./lessons/algorithms/dynamicProgrammingBasics.js").then(m => m.dynamicProgrammingBasics) },
+      { id: "advancedSorting", number: "13.32", title: "Murakkab Saralash Algoritmlari (Quick, Merge, Heap, Radix, Counting)", load: () => import("./lessons/algorithms/advancedSorting.js").then(m => m.advancedSorting) },
+      { id: "binarySearchBounds", number: "13.33", title: "Ikkilik Qidiruv Chegaralari (Lower Bound, Upper Bound)", load: () => import("./lessons/algorithms/binarySearchBounds.js").then(m => m.binarySearchBounds) }
     ]
   },
   systemDesign: {
