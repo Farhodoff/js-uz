@@ -286,6 +286,22 @@ Manfiy qiymatlar hisobga olinmaydi, natija noto'g'ri chiqadi. Yechim: eng kichik
     "startingCode": "function kthLargest(nums, k) {\n  // kodni yozing\n}",
     "solution": "function kthLargest(nums, k) {\n  const sorted = [...nums].sort((a, b) => b - a);\n  return sorted[k - 1];\n}",
     "test": "const __checks = [\n    () => { return kthLargest([3, 2, 1, 5, 6, 4], 2) === 5; },\n    () => { return kthLargest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4) === 4; },\n    () => { return kthLargest([1], 1) === 1; }\n];\nconst __desc = [\"Ikkinchi eng katta element 5\", \"Takrorlanishlar hisobga olinadi\", \"Bitta elementli massiv\"];\nfor (let i = 0; i < __checks.length; i++) {\n  if (!__checks[i]()) return 'Test ' + (i + 1) + ' muvaffaqiyatsiz: ' + __desc[i];\n}\nreturn null;"
+  },
+  {
+    "id": "adv-sort-9",
+    "title": "Ikki saralangan massivni birlashtirish",
+    "instruction": "Ikkala massiv ham o'sish tartibida saralangan. Ularni `sort` ishlatmasdan, bitta saralangan massivga birlashtiruvchi `mergeSorted(a, b)` funksiyasini yozing. Kirish massivlari o'zgarmasin.",
+    "startingCode": "function mergeSorted(a, b) {\n  // kodni yozing\n}",
+    "solution": "function mergeSorted(a, b) {\n  const result = [];\n  let i = 0, j = 0;\n  while (i < a.length && j < b.length) {\n    result.push(a[i] <= b[j] ? a[i++] : b[j++]);\n  }\n  return [...result, ...a.slice(i), ...b.slice(j)];\n}",
+    "test": "const __checks = [\n    () => { return JSON.stringify(mergeSorted([1, 4, 7], [2, 3, 9])) === \"[1,2,3,4,7,9]\"; },\n    () => { return JSON.stringify(mergeSorted([], [1, 2])) === \"[1,2]\"; },\n    () => { return JSON.stringify(mergeSorted([2, 2], [2])) === \"[2,2,2]\"; },\n    () => { const a = [1, 5]; const b = [2, 6]; mergeSorted(a, b); return JSON.stringify(a) === \"[1,5]\" && JSON.stringify(b) === \"[2,6]\"; }\n];\nconst __desc = [\"Ikki saralangan massiv birlashadi\", \"Bo'sh chap massiv\", \"Takrorlanuvchi qiymatlar\", \"Kirish massivlari o'zgarmaydi\"];\nfor (let i = 0; i < __checks.length; i++) {\n  if (!__checks[i]()) return 'Test ' + (i + 1) + ' muvaffaqiyatsiz: ' + __desc[i];\n}\nreturn null;"
+  },
+  {
+    "id": "adv-sort-10",
+    "title": "Quick Sort bo'linishi (partition)",
+    "instruction": "Quick Sortning bo'linish qadamini yozing: `partition(arr, low, high)` massivni `arr[high]` (pivot) atrofida qayta joylashtirsin — pivotdan kichiklari chapga, qolganlari o'ngga — va pivotning yakuniy indeksini qaytarsin. `low` dan chapdagi va `high` dan o'ngdagi elementlarga tegmasin.",
+    "startingCode": "function partition(arr, low, high) {\n  // kodni yozing\n}",
+    "solution": "function partition(arr, low, high) {\n  const pivot = arr[high];\n  let i = low;\n  for (let j = low; j < high; j++) {\n    if (arr[j] < pivot) {\n      [arr[i], arr[j]] = [arr[j], arr[i]];\n      i++;\n    }\n  }\n  [arr[i], arr[high]] = [arr[high], arr[i]];\n  return i;\n}",
+    "test": "function __check(arr, low, high) {\n  const copy = arr.slice();\n  const p = partition(copy, low, high);\n  const pivot = arr[high];\n  if (typeof p !== 'number' || p < low || p > high) return 'pivot indeksi oraliqdan tashqarida';\n  if (copy[p] !== pivot) return 'pivot o`z joyida turmagan';\n  for (let i = low; i < p; i++) if (copy[i] > pivot) return 'chapda pivotdan katta element qoldi';\n  for (let i = p + 1; i <= high; i++) if (copy[i] < pivot) return 'o`ngda pivotdan kichik element qoldi';\n  for (let i = 0; i < low; i++) if (copy[i] !== arr[i]) return 'chap chegara tashqarisidagi element o`zgardi';\n  for (let i = high + 1; i < arr.length; i++) if (copy[i] !== arr[i]) return 'o`ng chegara tashqarisidagi element o`zgardi';\n  return null;\n}\nconst __cases = [\n  [[5, 2, 8, 1, 7], 0, 4],\n  [[3], 0, 0],\n  [[2, 1], 0, 1],\n  [[4, 4, 2, 9], 0, 3],\n  [[9, 5, 1, 6], 1, 2]\n];\nfor (let i = 0; i < __cases.length; i++) {\n  const [arr, low, high] = __cases[i];\n  const err = __check(arr, low, high);\n  if (err) return 'Test ' + (i + 1) + ' muvaffaqiyatsiz: ' + err;\n}\nreturn null;"
   }
 ],
 
@@ -385,6 +401,49 @@ Manfiy qiymatlar hisobga olinmaydi, natija noto'g'ri chiqadi. Yechim: eng kichik
     ],
     "correctAnswer": 1,
     "explanation": "Agar bo'linishda hech bo'lmaganda bitta element pivotdan ajralmasa, rekursiya bir xil chegaralar bilan takrorlanib, stack overflow bo'lishi mumkin."
+  },
+  {
+    "id": "adv-sort-q9",
+    "question": "Merge Sort nega O(n) qo'shimcha xotira talab qiladi?",
+    "options": [
+      "Chunki u barqaror saralash",
+      "Chunki birlashtirishda yangi massiv yaratiladi",
+      "Chunki rekursiya chaqiruvlari saqlanadi",
+      "Chunki pivot uchun joy kerak"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Har bir birlashtirishda ikki bo'lak elementlari vaqtinchalik natija massiviga ko'chiriladi. Eng yuqori qavatda bu massiv n ta elementni sig'diradi."
+  },
+  {
+    "id": "adv-sort-q10",
+    "question": "`countingSort([4, 2, 0])` da hisoblagich massivining uzunligi nechchi bo'ladi?",
+    "options": ["3", "4", "5", "6"],
+    "correctAnswer": 2,
+    "explanation": "Hisoblagich 0 dan maksimal qiymatgacha indekslanadi. Maksimal qiymat 4, shuning uchun uzunlik 4 + 1 = 5."
+  },
+  {
+    "id": "adv-sort-q11",
+    "question": "`[170, 45, 75, 90, 802, 24, 2, 66]` da Radix Sortning birinchi o'tishi (birliklar raqami) qanday tartib beradi?",
+    "options": [
+      "[170, 90, 802, 2, 24, 45, 75, 66]",
+      "[2, 24, 45, 66, 75, 90, 170, 802]",
+      "[802, 170, 90, 75, 66, 45, 24, 2]",
+      "[170, 45, 75, 90, 802, 24, 2, 66]"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Har son birliklar raqami bo'yicha chelakka tashlanadi: 0 → 170, 90; 2 → 802, 2; 4 → 24; 5 → 45, 75; 6 → 66. Chelaklar tartibida yig'ilsa, shu natija chiqadi."
+  },
+  {
+    "id": "adv-sort-q12",
+    "question": "Qiymatlar oralig'i `k` elementlar sonidan juda katta bo'lsa, Counting Sort nega samarasiz?",
+    "options": [
+      "Chunki u solishtirishlarni ko'paytiradi",
+      "Chunki xotira va vaqt `k` ga proporsional o'sadi",
+      "Chunki u manfiy sonlar bilan ishlamaydi",
+      "Chunki u barqaror emas"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Hisoblagich massivi `k` ta katakni egallaydi va uni to'ldirish uchun `k` qadam kerak. n kichik, k juda katta bo'lsa, oddiy saralash tezroq bo'ladi."
   }
 ]
 };

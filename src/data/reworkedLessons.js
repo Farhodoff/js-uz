@@ -69,4 +69,9 @@ export const reworkedLessons = [
   "jsGotchas",
   "cheat-sheet",
   "miniProject",
+  "advancedSorting",
+  "binarySearchBounds",
+  "binarySearchOnAnswer",
+  "segmentTree",
+  "fenwickTree",
 ];

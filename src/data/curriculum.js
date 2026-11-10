@@ -363,7 +363,10 @@ export const curriculum = {
       { id: "leetcodeHashMaps", number: "13.30", title: "LeetCode: HashMap va Set Algoritmlari", load: () => import("./lessons/algorithms/leetcodeHashMaps.js").then(m => m.leetcodeHashMaps) },
       { id: "dynamicProgrammingBasics", number: "13.31", title: "LeetCode: Dynamic Programming", load: () => import("./lessons/algorithms/dynamicProgrammingBasics.js").then(m => m.dynamicProgrammingBasics) },
       { id: "advancedSorting", number: "13.32", title: "Murakkab Saralash Algoritmlari (Quick, Merge, Heap, Radix, Counting)", load: () => import("./lessons/algorithms/advancedSorting.js").then(m => m.advancedSorting) },
-      { id: "binarySearchBounds", number: "13.33", title: "Ikkilik Qidiruv Chegaralari (Lower Bound, Upper Bound)", load: () => import("./lessons/algorithms/binarySearchBounds.js").then(m => m.binarySearchBounds) }
+      { id: "binarySearchBounds", number: "13.33", title: "Ikkilik Qidiruv Chegaralari (Lower Bound, Upper Bound)", load: () => import("./lessons/algorithms/binarySearchBounds.js").then(m => m.binarySearchBounds) },
+      { id: "binarySearchOnAnswer", number: "13.34", title: "Javob Ustida Ikkilik Qidiruv (Binary Search on Answer)", load: () => import("./lessons/algorithms/binarySearchOnAnswer.js").then(m => m.binarySearchOnAnswer) },
+      { id: "segmentTree", number: "13.35", title: "Segment Tree: Oraliq So'rovlari Daraxti", load: () => import("./lessons/algorithms/segmentTree.js").then(m => m.segmentTree) },
+      { id: "fenwickTree", number: "13.36", title: "Fenwick Daraxti (Binary Indexed Tree)", load: () => import("./lessons/algorithms/fenwickTree.js").then(m => m.fenwickTree) }
     ]
   },
   systemDesign: {

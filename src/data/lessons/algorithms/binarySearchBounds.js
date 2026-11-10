@@ -304,6 +304,67 @@ for (let i = 0; i < cases.length; i++) {
   if (JSON.stringify(got) !== JSON.stringify(expected)) return 'Test ' + (i + 1) + ' xato: kutilgan ' + JSON.stringify(expected) + ', olindi ' + JSON.stringify(got);
 }
 return null;`
+    },
+    {
+      id: "bsb-8",
+      title: "Targetdan kichik oxirgi element",
+      instruction: "Saralangan massivda `target` dan qat'iy kichik bo'lgan **oxirgi** elementning indeksini qaytaruvchi `lastLess(arr, target)` funksiyasini yozing. Bunday element bo'lmasa, `-1` qaytsin.",
+      startingCode: "function lastLess(arr, target) {\n  // kodni yozing\n}",
+      solution: "function lastLess(arr, target) {\n  let left = 0, right = arr.length;\n  while (left < right) {\n    const mid = Math.floor((left + right) / 2);\n    if (arr[mid] < target) left = mid + 1;\n    else right = mid;\n  }\n  return left - 1 >= 0 ? left - 1 : -1;\n}",
+      test: `const cases = [
+  [[1, 3, 3, 7], 3, 0],
+  [[1, 3, 3, 7], 5, 2],
+  [[1, 3, 3, 7], 1, -1],
+  [[1, 3, 3, 7], 9, 3],
+  [[], 1, -1]
+];
+for (let i = 0; i < cases.length; i++) {
+  const [arr, target, expected] = cases[i];
+  const got = lastLess(arr, target);
+  if (got !== expected) return 'Test ' + (i + 1) + ' xato: kutilgan ' + expected + ', olindi ' + got;
+}
+return null;`
+    },
+    {
+      id: "bsb-9",
+      title: "Eng yaqin qiymat",
+      instruction: "Saralangan `arr` massivda `target` ga eng yaqin qiymatni qaytaruvchi `closestValue(arr, target)` funksiyasini yozing. Ikki qiymat teng uzoqlikda bo'lsa, kichigini qaytaring.",
+      startingCode: "function closestValue(arr, target) {\n  // kodni yozing\n}",
+      solution: "function closestValue(arr, target) {\n  let left = 0, right = arr.length;\n  while (left < right) {\n    const mid = Math.floor((left + right) / 2);\n    if (arr[mid] < target) left = mid + 1;\n    else right = mid;\n  }\n  if (left === 0) return arr[0];\n  if (left === arr.length) return arr[arr.length - 1];\n  const before = arr[left - 1];\n  const after = arr[left];\n  return target - before <= after - target ? before : after;\n}",
+      test: `const cases = [
+  [[1, 4, 7, 10], 6, 7],
+  [[1, 5], 3, 1],
+  [[10], 3, 10],
+  [[1, 2, 3], 0, 1],
+  [[1, 2, 3], 9, 3],
+  [[2, 2, 9], 5, 2]
+];
+for (let i = 0; i < cases.length; i++) {
+  const [arr, target, expected] = cases[i];
+  const got = closestValue(arr, target);
+  if (got !== expected) return 'Test ' + (i + 1) + ' xato: kutilgan ' + expected + ', olindi ' + got;
+}
+return null;`
+    },
+    {
+      id: "bsb-10",
+      title: "Oraliqdagi sonlar soni",
+      instruction: "Saralangan massivda `low` va `high` orasidagi (ikkalasi ham kiradi) elementlar sonini qaytaruvchi `countInRange(arr, low, high)` funksiyasini yozing. `low > high` bo'lsa, `0` qaytsin. Lower va upper bounddan foydalaning.",
+      startingCode: "function countInRange(arr, low, high) {\n  // kodni yozing\n}",
+      solution: "function countInRange(arr, low, high) {\n  if (low > high) return 0;\n  function bound(target, isUpper) {\n    let left = 0, right = arr.length;\n    while (left < right) {\n      const mid = Math.floor((left + right) / 2);\n      if (isUpper ? arr[mid] <= target : arr[mid] < target) left = mid + 1;\n      else right = mid;\n    }\n    return left;\n  }\n  return bound(high, true) - bound(low, false);\n}",
+      test: `const cases = [
+  [[1, 3, 3, 3, 7], 3, 7, 4],
+  [[1, 3, 3, 3, 7], 2, 4, 3],
+  [[1, 2, 3], 5, 1, 0],
+  [[], 1, 5, 0],
+  [[2, 2, 2], 2, 2, 3]
+];
+for (let i = 0; i < cases.length; i++) {
+  const [arr, low, high, expected] = cases[i];
+  const got = countInRange(arr, low, high);
+  if (got !== expected) return 'Test ' + (i + 1) + ' xato: kutilgan ' + expected + ', olindi ' + got;
+}
+return null;`
     }
   ],
 
@@ -388,6 +449,39 @@ return null;`
       ],
       correctAnswer: 1,
       explanation: "O'rtadagi element targetdan kichik bo'lsa, javob undan keyin turishi aniq. Shuning uchun chap chegara `mid + 1` ga suriladi."
+    },
+    {
+      id: "bsb-q9",
+      question: "`upperBound([1, 2, 2, 3], 2)` nima qaytaradi?",
+      options: ["1", "2", "3", "4"],
+      correctAnswer: 2,
+      explanation: "2 dan qat'iy katta birinchi element — 3, uning indeksi 3. Shuning uchun javob 3."
+    },
+    {
+      id: "bsb-q10",
+      question: "`[1, 3, 3, 3, 3]` massivda 3 necha marta uchraydi?",
+      options: ["2", "3", "4", "5"],
+      correctAnswer: 2,
+      explanation: "lowerBound = 1, upperBound = 5. Uchrashlar soni 5 - 1 = 4."
+    },
+    {
+      id: "bsb-q11",
+      question: "Kodda `arr[mid] <= target` sharti ishlatilsa, qaysi chegara hisoblanadi?",
+      options: [
+        "Lower bound",
+        "Upper bound",
+        "Ikkalasi ham bir xil",
+        "Oddiy binary search"
+      ],
+      correctAnswer: 1,
+      explanation: "`<=` teng elementlarni ham o'ngga suradi, ya'ni javob targetdan katta birinchi indeks bo'ladi — bu upper bound."
+    },
+    {
+      id: "bsb-q12",
+      question: "`[2, 4, 6]` massivga 5 ni tartibni buzmasdan qo'shish uchun indeks nechchi?",
+      options: ["0", "1", "2", "3"],
+      correctAnswer: 2,
+      explanation: "5 dan kichik bo'lmagan birinchi element — 6, uning indeksi 2. `lowerBound([2, 4, 6], 5) === 2`."
     }
   ]
 };
