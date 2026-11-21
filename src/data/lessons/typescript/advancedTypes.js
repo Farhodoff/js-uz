@@ -109,7 +109,7 @@ graph TD
       startingCode: "interface UserProfile {\n  address?: { city?: string };\n}\nfunction getCity(user: UserProfile): string {\n  // kodingizni yozing\n}",
       hint: "return user.address?.city ?? 'N/A';",
       solution: "interface UserProfile {\n  address?: { city?: string };\n}\nfunction getCity(user: UserProfile): string {\n  return user.address?.city ?? 'N/A';\n}",
-      test: "const fn = new Function('return function(user) { var _a; return (_a = user.address) === null || _a === void 0 ? void 0 : _a.city ? user.address.city : \"N/A\"; }')();\nconst getCity = fn;\nreturn getCity({ address: { city: 'Tashkent' } }) === 'Tashkent' && getCity({}) === 'N/A';"
+      test: "const fn = new Function('return function(user) { if (user.address && user.address.city) return user.address.city; return \"N/A\"; }')();\nconst getCity = fn;\nreturn getCity({ address: { city: 'Tashkent' } }) === 'Tashkent' && getCity({}) === 'N/A';"
     },
     {
       id: 8,

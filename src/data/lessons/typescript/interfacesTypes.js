@@ -56,7 +56,7 @@ flowchart TD
       startingCode: "// Car interfeysini yarating\n",
       hint: "interface Car { brand: string; year: number; }",
       solution: "interface Car {\n  brand: string;\n  year: number;\n}",
-      test: "return code.includes('interface Car') && code.includes('brand') && code.includes('year');"
+      test: "return rawCode.includes('interface Car') && rawCode.includes('brand') && rawCode.includes('year');"
     },
     {
       id: 2,
@@ -65,7 +65,7 @@ flowchart TD
       startingCode: "// Person interfeysini yarating\n",
       hint: "age xususiyati yoniga ? qo'ying",
       solution: "interface Person {\n  name: string;\n  age?: number;\n}",
-      test: "return code.includes('interface Person') && code.includes('age?:');"
+      test: "return rawCode.includes('interface Person') && rawCode.includes('age?:');"
     },
     {
       id: 3,
@@ -74,7 +74,7 @@ flowchart TD
       startingCode: "// Book interfeysini yarating\n",
       hint: "readonly isbn: string;",
       solution: "interface Book {\n  readonly isbn: string;\n}",
-      test: "return code.includes('interface Book') && code.includes('readonly isbn');"
+      test: "return rawCode.includes('interface Book') && rawCode.includes('readonly isbn');"
     },
     {
       id: 4,
@@ -92,7 +92,7 @@ flowchart TD
       startingCode: "// MathFunc interfeysini yarating\n",
       hint: "interface MathFunc {\n  (x: number, y: number): number;\n}",
       solution: "interface MathFunc {\n  (x: number, y: number): number;\n}",
-      test: "return code.includes('interface MathFunc') && code.includes('number');"
+      test: "return rawCode.includes('interface MathFunc') && rawCode.includes('number');"
     },
     {
       id: 6,
@@ -101,7 +101,7 @@ flowchart TD
       startingCode: "// ID type ni yarating\n",
       hint: "type ID = string | number;",
       solution: "type ID = string | number;",
-      test: "return code.includes('type ID') && code.includes('string') && code.includes('number');"
+      test: "return rawCode.includes('type ID') && rawCode.includes('string') && rawCode.includes('number');"
     },
     {
       id: 7,
@@ -110,7 +110,7 @@ flowchart TD
       startingCode: "type Admin = { role: string };\ntype Employee = { salary: number };\n\n// AdminEmployee type-ni yarating\n",
       hint: "type AdminEmployee = Admin & Employee;",
       solution: "type Admin = { role: string };\ntype Employee = { salary: number };\n\ntype AdminEmployee = Admin & Employee;",
-      test: "return code.includes('type AdminEmployee') && code.includes('Admin') && code.includes('&') && code.includes('Employee');"
+      test: "return rawCode.includes('type AdminEmployee') && rawCode.includes('Admin') && rawCode.includes('&') && rawCode.includes('Employee');"
     },
     {
       id: 8,
@@ -119,7 +119,7 @@ flowchart TD
       startingCode: "interface Animal {\n  name: string;\n}\n\n// Dog interfeysini yarating\n",
       hint: "interface Dog extends Animal { breed: string; }",
       solution: "interface Animal {\n  name: string;\n}\n\ninterface Dog extends Animal {\n  breed: string;\n}",
-      test: "return code.includes('interface Dog extends Animal') && code.includes('breed');"
+      test: "return rawCode.includes('interface Dog extends Animal') && rawCode.includes('breed');"
     },
     {
       id: 9,
@@ -128,7 +128,7 @@ flowchart TD
       startingCode: "// StringDictionary yarating\n",
       hint: "interface StringDictionary { [key: string]: string; }",
       solution: "interface StringDictionary {\n  [key: string]: string;\n}",
-      test: "return code.includes('interface StringDictionary') && code.includes('[key: string]: string');"
+      test: "return rawCode.includes('interface StringDictionary') && rawCode.includes('[key: string]: string');"
     },
     {
       id: 10,
@@ -137,7 +137,7 @@ flowchart TD
       startingCode: "// Logger interfeysini yarating\n",
       hint: "interface Logger { log(msg: string): void; }",
       solution: "interface Logger {\n  log(message: string): void;\n}",
-      test: "return code.includes('interface Logger') && code.includes('void');"
+      test: "return rawCode.includes('interface Logger') && rawCode.includes('void');"
     }
   ],
   quizzes: [

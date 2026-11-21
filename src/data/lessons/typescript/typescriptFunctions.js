@@ -59,7 +59,7 @@ flowchart TD
       startingCode: "// greet funksiyasini yozing\n",
       hint: "function greet(name: string): void { ... }",
       solution: "function greet(name: string): void {\n  console.log('Salom ' + name);\n}",
-      test: "return code.includes('void') && code.includes('greet');"
+      test: "return rawCode.includes('void') && rawCode.includes('greet');"
     },
     {
       id: 3,
@@ -104,7 +104,7 @@ flowchart TD
       startingCode: "// throwError funksiyasini yozing\n",
       hint: "function throwError(msg: string): never { throw new Error(msg); }",
       solution: "function throwError(msg: string): never {\n  throw new Error(msg);\n}",
-      test: "return code.includes('never') && code.includes('throwError');"
+      test: "return rawCode.includes('never') && rawCode.includes('throwError');"
     },
     {
       id: 8,
@@ -113,7 +113,7 @@ flowchart TD
       startingCode: "// execute funksiyasini yozing\n",
       hint: "function execute(callback: () => void) { callback(); }",
       solution: "function execute(callback: () => void): void {\n  callback();\n}",
-      test: "return code.includes('callback: () => void') || code.includes('callback: ()=>void');"
+      test: "return rawCode.includes('callback: () => void') || rawCode.includes('callback: ()=>void');"
     },
     {
       id: 9,
@@ -122,7 +122,7 @@ flowchart TD
       startingCode: "// printId funksiyasini yozing\n",
       hint: "function printId({ id }: { id: number }) { ... }",
       solution: "function printId({ id }: { id: number }): void {\n  console.log(id);\n}",
-      test: "return code.includes('{ id }: { id: number }') || code.includes('{id}: {id: number}');"
+      test: "return rawCode.includes('{ id }: { id: number }') || rawCode.includes('{id}: {id: number}');"
     },
     {
       id: 10,
@@ -131,7 +131,7 @@ flowchart TD
       startingCode: "// identity funksiyasini yozing\n",
       hint: "function identity<T>(arg: T): T { return arg; }",
       solution: "function identity<T>(arg: T): T {\n  return arg;\n}",
-      test: "return code.includes('identity<T>') && code.includes('arg: T');"
+      test: "return rawCode.includes('identity<T>') && rawCode.includes('arg: T');"
     }
   ],
   quizzes: [

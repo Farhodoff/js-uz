@@ -40,80 +40,88 @@ sequenceDiagram
     A-->>C: 200 OK (JSON)
 \`\`\`
 `,
-  exercises: `
-// Exercise 1: Asosiy mockFetchMovie funksiyasi
-function mockFetchMovie(title) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => resolve({ title, year: 2020 }), 500);
-  });
-}
-
-// Exercise 2: Debounce funksiyasini yozing
-function debounce(fn, delay) {
-  let timer;
-  return function(...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
-}
-
-// Exercise 3: API so'rovini async/await bilan yozing
-async function getMovieInfo(title) {
-  try {
-    const data = await mockFetchMovie(title);
-    return data;
-  } catch(e) {
-    console.error(e);
-  }
-}
-
-// Exercise 4: Promise.all orqali bir nechta filmni qidiring
-async function getMultipleMovies(titles) {
-  const promises = titles.map(mockFetchMovie);
-  return Promise.all(promises);
-}
-
-// Exercise 5: Kechikishni hisoblash (Latency)
-async function measureLatency(title) {
-  const start = performance.now();
-  await mockFetchMovie(title);
-  const end = performance.now();
-  return end - start;
-}
-
-// Exercise 6: Xatolikni maxsus class orqali boshqarish
-class APIError extends Error {
-  constructor(message, status) {
-    super(message);
-    this.status = status;
-  }
-}
-
-// Exercise 7: Cache tizimi (Memoization)
-const cache = {};
-async function fetchWithCache(title) {
-  if (cache[title]) return cache[title];
-  const res = await mockFetchMovie(title);
-  cache[title] = res;
-  return res;
-}
-
-// Exercise 8: Qidiruv tarixini saqlash
-const searchHistory = new Set();
-function addToHistory(title) {
-  searchHistory.add(title);
-}
-
-// Exercise 9: Pagination simulyatsiyasi (offset, limit)
-function paginate(array, limit, offset) {
-  return array.slice(offset, offset + limit);
-}
-
-// Exercise 10: Xavfsiz qidiruv (Sanitize input)
-function sanitizeInput(input) {
-  return input.replace(/[^a-zA-Z0-9 ]/g, "");
-}
-`,
+  exercises: [
+    {
+      id: 1,
+      title: "Mock so'rov yaratish",
+      instruction: "`mockFetchMovie(title)` funksiyasini `Promise` bilan yozing. 500 ms dan keyin `{ title, year: 2020 }` qaytarsin.",
+      startingCode: "function mockFetchMovie(title) {\n  // Promise yaratib, natijani qaytaring\n}\n",
+      hint: "return new Promise((resolve) => setTimeout(() => resolve({ title, year: 2020 }), 500));",
+      test: "if (!code.includes('Promise')) return 'Promise yaratish kerak';\nif (!code.includes('resolve')) return 'Natijani resolve orqali qaytaring';"
+    },
+    {
+      id: 2,
+      title: "Debounce funksiyasi",
+      instruction: "`debounce(fn, delay)` yozing: har chaqiruvda eski taymerni tozalab, yangisini o'rnating.",
+      startingCode: "function debounce(fn, delay) {\n  let timer;\n  return function(...args) {\n    // kodingizni yozing\n  };\n}\n",
+      hint: "clearTimeout(timer); timer = setTimeout(() => fn(...args), delay);",
+      test: "if (!code.includes('clearTimeout')) return 'Eski taymerni clearTimeout bilan tozalang';\nif (!code.includes('setTimeout')) return 'Yangi taymerni setTimeout bilan o\\'rnating';"
+    },
+    {
+      id: 3,
+      title: "Async/await bilan so'rov",
+      instruction: "`getMovieInfo(title)` ni async/await va try/catch bilan yozing. Xatolik konsolga chiqarilsin.",
+      startingCode: "async function getMovieInfo(title) {\n  // try/catch ichida await bilan natijani oling\n}\n",
+      hint: "try { const data = await mockFetchMovie(title); return data; } catch (e) { console.error(e); }",
+      test: "if (!code.includes('async') || !code.includes('await')) return 'async funksiya ichida await ishlating';\nif (!code.includes('catch')) return 'Xatolikni ushlash uchun catch qo\\'shing';"
+    },
+    {
+      id: 4,
+      title: "Bir nechta filmni qidirish",
+      instruction: "`getMultipleMovies(titles)` da barcha so'rovlarni `Promise.all` bilan parallel bajaring.",
+      startingCode: "async function getMultipleMovies(titles) {\n  // titles ni so'rovlarga aylantirib, Promise.all qaytaring\n}\n",
+      hint: "const promises = titles.map(mockFetchMovie); return Promise.all(promises);",
+      test: "if (!code.includes('Promise.all')) return 'Promise.all ishlating';\nif (!code.includes('.map')) return 'So\\'rovlarni .map bilan hosil qiling';"
+    },
+    {
+      id: 5,
+      title: "Kechikishni o'lchash",
+      instruction: "`measureLatency(title)` da so'rov oldidan va keyin `performance.now()` olib, farqni qaytaring.",
+      startingCode: "async function measureLatency(title) {\n  // boshlang'ich va oxirgi vaqtni olib, farqni qaytaring\n}\n",
+      hint: "const start = performance.now(); await mockFetchMovie(title); return performance.now() - start;",
+      test: "if (!code.includes('performance.now()')) return 'Vaqtni performance.now() bilan o\\'lchang';\nif (!code.includes('await')) return 'So\\'rovni await bilan kuting';"
+    },
+    {
+      id: 6,
+      title: "Maxsus xato klassi",
+      instruction: "`APIError` klassini `Error` dan meros olib, `status` xususiyatini saqlaydigan qiling.",
+      startingCode: "class APIError extends Error {\n  constructor(message, status) {\n    // kodingizni yozing\n  }\n}\n",
+      hint: "super(message); this.status = status;",
+      test: "if (!code.includes('extends Error')) return 'Klass Error dan meros olishi kerak';\nif (!code.includes('this.status')) return 'status xususiyatini saqlang';"
+    },
+    {
+      id: 7,
+      title: "Natijalarni keshda saqlash",
+      instruction: "`fetchWithCache(title)` da avval keshni tekshiring. Bor bo'lsa keshdan, yo'q bo'lsa so'rovdan qaytaring.",
+      startingCode: "const cache = {};\nasync function fetchWithCache(title) {\n  // kodingizni yozing\n}\n",
+      hint: "if (cache[title]) return cache[title]; const res = await mockFetchMovie(title); cache[title] = res; return res;",
+      test: "if (!code.includes('cache[')) return 'Keshga murojaat qiling';\nif (!code.includes('await')) return 'Keshda yo\\'q bo\\'lsa, so\\'rovni await bilan bajaring';"
+    },
+    {
+      id: 8,
+      title: "Qidiruv tarixi",
+      instruction: "`addToHistory(title)` funksiyasida `Set` ga yangi nom qo'shing.",
+      startingCode: "const searchHistory = new Set();\nfunction addToHistory(title) {\n  // kodingizni yozing\n}\n",
+      hint: "searchHistory.add(title);",
+      test: "if (!code.includes('new Set')) return 'Tarix uchun Set yarating';\nif (!code.includes('.add(')) return 'Nomni .add() bilan qo\\'shing';"
+    },
+    {
+      id: 9,
+      title: "Pagination",
+      instruction: "`paginate(array, limit, offset)` funksiyasida `slice` bilan kerakli qismni qaytaring.",
+      startingCode: "function paginate(array, limit, offset) {\n  // slice bilan qismni oling\n}\n",
+      hint: "return array.slice(offset, offset + limit);",
+      test: "if (!code.includes('.slice(')) return 'Massiv qismini .slice() bilan oling';"
+    },
+    {
+      id: 10,
+      title: "Xavfsiz qidiruv",
+      instruction: "`sanitizeInput(input)` da regex bilan faqat harflar, raqamlar va bo'shliq qoldiring.",
+      startingCode: "function sanitizeInput(input) {\n  // regex bilan keraksiz belgilarni olib tashlang\n}\n",
+      hint: "return input.replace(/[^a-zA-Z0-9 ]/g, '');",
+      test: "if (!code.includes('.replace(')) return 'Belgilarni .replace() bilan olib tashlang';\nif (!code.includes('[^a-zA-Z0-9 ]')) return 'Faqat harflar, raqamlar va bo\\'shliqqa ruxsat beruvchi regex ishlating';"
+    }
+  ],
   quizzes: [
     {
       question: "API nima?",

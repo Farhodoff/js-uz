@@ -20,10 +20,17 @@ const files = getJsFiles(lessonsDir);
 
 const lessonCache = new Map();
 
+// Vite'ning to'g'ri usuli: dinamik import o'rniga import.meta.glob.
+// dynamic-import-vars plagini `./${rel}` kabi naqshlarni noto'g'ri deb hisoblaydi.
+const lessonModules = import.meta.glob('./lessons/**/*.js');
+
 async function loadLesson(file) {
   if (lessonCache.has(file)) return lessonCache.get(file);
-  const rel = path.relative(__dirname, file);
-  const mod = await import(`./${rel}`);
+  // Windows path.sep ('\') ni '/' ga o'giramiz — glob kalitlari POSIX ko'rinishda.
+  const key = './' + path.relative(__dirname, file).split(path.sep).join('/');
+  const loader = lessonModules[key];
+  if (!loader) throw new Error(`Dars moduli topilmadi: ${key}`);
+  const mod = await loader();
   const lesson = mod[Object.keys(mod)[0]];
   lessonCache.set(file, lesson);
   return lesson;

@@ -18,6 +18,7 @@ export function useLesson() {
   const [activeLesson, setActiveLesson] = useState(null);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [code, setCode] = useState('');
+  const [loadError, setLoadError] = useState(null);
 
   // Initialize from URL params
   useEffect(() => {
@@ -26,6 +27,7 @@ export function useLesson() {
     const loadLesson = async () => {
       const secKey = currentSections.includes(urlSection) ? urlSection : currentSections[0];
       setActiveSectionState(secKey);
+      setLoadError(null);
 
       if (secKey === 'challenges') {
         setActiveLesson({ id: 'challenges', title: 'JS Challenges' });
@@ -57,6 +59,11 @@ export function useLesson() {
             }
           } catch (error) {
             console.error("Darsni yuklashda xatolik:", error);
+            // Chunk yuklanmasa (masalan, PWA oflayn), foydalanuvchi xato ko'rsin —
+            // aks holda sahifa cheksiz "Dars yuklanmoqda..." da qolib ketadi.
+            if (!isCancelled) {
+              setLoadError(error?.message || "Darsni yuklab bo'lmadi.");
+            }
           }
         }
       }
@@ -100,6 +107,7 @@ export function useLesson() {
     activeSection,
     setActiveSection,
     activeLesson,
+    loadError,
     openLesson,
     currentExerciseIndex,
     setCurrentExerciseIndex: goToExercise,

@@ -68,7 +68,7 @@ graph LR;
       startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
       hint: "\"strict\": true qilib yozing.",
       solution: "{\n  \"compilerOptions\": {\n    \"strict\": true\n  }\n}",
-      test: "return /\"strict\"\\s*:\\s*true/.test(code);"
+      test: "return /\"strict\"\\s*:\\s*true/.test(rawCode);"
     },
     {
       id: 2,
@@ -77,7 +77,7 @@ graph LR;
       startingCode: "{\n  \"compilerOptions\": {\n    \"strict\": true\n  }\n}",
       hint: "\"target\": \"ES6\" qilib yozing.",
       solution: "{\n  \"compilerOptions\": {\n    \"strict\": true,\n    \"target\": \"ES6\"\n  }\n}",
-      test: "return /\"target\"\\s*:\\s*\"ES6\"/.test(code);"
+      test: "return /\"target\"\\s*:\\s*\"ES6\"/.test(rawCode);"
     },
     {
       id: 3,
@@ -86,7 +86,7 @@ graph LR;
       startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
       hint: "\"module\": \"CommonJS\" qo'shing.",
       solution: "{\n  \"compilerOptions\": {\n    \"module\": \"CommonJS\"\n  }\n}",
-      test: "return /\"module\"\\s*:\\s*\"CommonJS\"/.test(code);"
+      test: "return /\"module\"\\s*:\\s*\"CommonJS\"/.test(rawCode);"
     },
     {
       id: 4,
@@ -95,7 +95,7 @@ graph LR;
       startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
       hint: "\"outDir\": \"./dist\" qo'shing.",
       solution: "{\n  \"compilerOptions\": {\n    \"outDir\": \"./dist\"\n  }\n}",
-      test: "return /\"outDir\"\\s*:\\s*\"\\.\\/dist\"/.test(code);"
+      test: "return /\"outDir\"\\s*:\\s*\"\\.\\/dist\"/.test(rawCode);"
     },
     {
       id: 5,
@@ -104,7 +104,7 @@ graph LR;
       startingCode: "{\n  \"compilerOptions\": {\n    \"outDir\": \"./dist\"\n  }\n}",
       hint: "\"rootDir\": \"./src\" yozing.",
       solution: "{\n  \"compilerOptions\": {\n    \"outDir\": \"./dist\",\n    \"rootDir\": \"./src\"\n  }\n}",
-      test: "return /\"rootDir\"\\s*:\\s*\"\\.\\/src\"/.test(code);"
+      test: "return /\"rootDir\"\\s*:\\s*\"\\.\\/src\"/.test(rawCode);"
     },
     {
       id: 6,
@@ -113,7 +113,7 @@ graph LR;
       startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
       hint: "\"allowJs\": true yozing.",
       solution: "{\n  \"compilerOptions\": {\n    \"allowJs\": true\n  }\n}",
-      test: "return /\"allowJs\"\\s*:\\s*true/.test(code);"
+      test: "return /\"allowJs\"\\s*:\\s*true/.test(rawCode);"
     },
     {
       id: 7,
@@ -122,7 +122,7 @@ graph LR;
       startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
       hint: "\"noImplicitAny\": true qilib yozing.",
       solution: "{\n  \"compilerOptions\": {\n    \"noImplicitAny\": true\n  }\n}",
-      test: "return /\"noImplicitAny\"\\s*:\\s*true/.test(code);"
+      test: "return /\"noImplicitAny\"\\s*:\\s*true/.test(rawCode);"
     },
     {
       id: 8,
@@ -131,7 +131,7 @@ graph LR;
       startingCode: "{\n  \"compilerOptions\": {\n    \n  }\n}",
       hint: "\"esModuleInterop\": true qilib yozing.",
       solution: "{\n  \"compilerOptions\": {\n    \"esModuleInterop\": true\n  }\n}",
-      test: "return /\"esModuleInterop\"\\s*:\\s*true/.test(code);"
+      test: "return /\"esModuleInterop\"\\s*:\\s*true/.test(rawCode);"
     },
     {
       id: 9,
@@ -140,7 +140,7 @@ graph LR;
       startingCode: "{\n  \"compilerOptions\": {\n    \"strict\": true\n  }\n}",
       hint: "Bosh obyekt ichida \"include\": [\"src/**/*\"] qo'shing.",
       solution: "{\n  \"compilerOptions\": {\n    \"strict\": true\n  },\n  \"include\": [\"src/**/*\"]\n}",
-      test: "return /\"include\"\\s*:\\s*\\[\\s*\"src\\/\\*\\*\\/\\*\"\\s*\\]/.test(code);"
+      test: "return /\"include\"\\s*:\\s*\\[\\s*\"src\\/\\*\\*\\/\\*\"\\s*\\]/.test(rawCode);"
     },
     {
       id: 10,
@@ -149,7 +149,7 @@ graph LR;
       startingCode: "{\n  \"compilerOptions\": {},\n  \"include\": [\"src/**/*\"]\n}",
       hint: "\"exclude\": [\"node_modules\"] ni kiriting.",
       solution: "{\n  \"compilerOptions\": {},\n  \"include\": [\"src/**/*\"],\n  \"exclude\": [\"node_modules\"]\n}",
-      test: "return /\"exclude\"\\s*:\\s*\\[\\s*\"node_modules\"\\s*\\]/.test(code);"
+      test: "return /\"exclude\"\\s*:\\s*\\[\\s*\"node_modules\"\\s*\\]/.test(rawCode);"
     }
   ],
   quizzes: [

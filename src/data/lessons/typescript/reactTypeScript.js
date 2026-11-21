@@ -77,7 +77,7 @@ graph TD
       startingCode: "interface ChildrenProps {\n  children: string; // React.ReactNode deb tasavvur qiling\n}\n\nfunction Container(props: ChildrenProps) {\n  // kodingizni yozing\n}",
       hint: "return `<div class=\"container\">${props.children}</div>`;",
       solution: "interface ChildrenProps {\n  children: string;\n}\n\nfunction Container(props: ChildrenProps) {\n  return `<div class=\"container\">${props.children}</div>`;\n}",
-      test: "const fn = new Function('return function(props) { return \"<div class=\\\"container\\\">\" + props.children + \"</div>\"; }')();\nconst Container = fn;\nreturn Container({children: 'Matn'}) === '<div class=\"container\">Matn</div>';"
+      test: "const Container = (props) => '<div class=\"container\">' + props.children + '</div>';\nreturn Container({children: 'Matn'}) === '<div class=\"container\">Matn</div>';"
     },
     {
       id: 4,

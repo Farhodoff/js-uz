@@ -50,12 +50,18 @@ export default function LessonPage() {
 
   const {
     activeSection, setActiveSection,
-    activeLesson, openLesson,
+    activeLesson, loadError, openLesson,
     currentExerciseIndex, setCurrentExerciseIndex,
     code, setCode, sec
   } = lesson;
 
   const [activeRightTab, setActiveRightTab] = useState("practice");
+
+  // Mashq o'zgarganda eski natija (output) ham tozalansin
+  const handleExerciseChange = React.useCallback((index) => {
+    setCurrentExerciseIndex(index);
+    resetOutput();
+  }, [setCurrentExerciseIndex, resetOutput]);
 
   useEffect(() => {
     if (activeLesson) {
@@ -125,12 +131,28 @@ export default function LessonPage() {
           <ChallengeTab />
         </div>
       ) : !activeLesson ? (
-        <div className="loading-container">
-          <div className="loading-dots">
-            <span></span><span></span><span></span>
+        loadError ? (
+          <div className="loading-container">
+            <p>❌ {loadError}</p>
+            <p style={{ opacity: 0.7, fontSize: "var(--text-sm)" }}>
+              Internet aloqasini tekshirib, qayta urinib ko'ring.
+            </p>
+            <button
+              className="btn btn-primary"
+              style={{ marginTop: "var(--space-3)" }}
+              onClick={() => window.location.reload()}
+            >
+              🔄 Qayta yuklash
+            </button>
           </div>
-          <p>Dars yuklanmoqda...</p>
-        </div>
+        ) : (
+          <div className="loading-container">
+            <div className="loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <p>Dars yuklanmoqda...</p>
+          </div>
+        )
       ) : (
         <div className="split-layout">
           {/* Left: Theory */}
@@ -207,7 +229,7 @@ export default function LessonPage() {
                 setShowHint={setShowHint}
                 activeLesson={activeLesson}
                 currentExerciseIndex={currentExerciseIndex}
-                setCurrentExerciseIndex={setCurrentExerciseIndex}
+                setCurrentExerciseIndex={handleExerciseChange}
                 output={output}
               />
             ) : activeRightTab === "quiz" ? (
@@ -229,7 +251,7 @@ export default function LessonPage() {
                 setShowHint={setShowHint}
                 activeLesson={activeLesson}
                 currentExerciseIndex={currentExerciseIndex}
-                setCurrentExerciseIndex={setCurrentExerciseIndex}
+                setCurrentExerciseIndex={handleExerciseChange}
                 output={output}
               />
             )}

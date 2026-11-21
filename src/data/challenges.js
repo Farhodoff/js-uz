@@ -3460,7 +3460,7 @@ Value: 42
       "undefined ReferenceError: Cannot access 'y' before initialization",
       "undefined undefined undefined declared block-scoped constant"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "undefined ReferenceError: Cannot access 'y' before initialization",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2931).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Cannot access 'y' before initialization\`.
@@ -4267,7 +4267,7 @@ undefined method\`.
       "ReferenceError: Cannot access 'myLet' before initialization",
       "function undefined ReferenceError ReferenceError hoisted hello"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "ReferenceError: Cannot access 'myLet' before initialization",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2809).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Cannot access 'myLet' before initialization\`.
@@ -4343,7 +4343,7 @@ true
       "SyntaxError number 2 {\"a\":null,\"b\":null,\"c\":0}",
       "ReferenceError number 2 {\"b\":null,\"c\":0}"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "SyntaxError number 2 {\"b\":null,\"c\":0}",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2786).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Unexpected token 'const'\`.
@@ -4380,7 +4380,7 @@ Welcome [Sarah], age: [28]!\`.
       "undefined false undefined",
       "0 true value2"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "TypeError: wm is not iterable",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2792).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: wm is not iterable\`.
@@ -5348,7 +5348,7 @@ Done\`.
       "1",
       "undefined"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "TypeError: Assignment to constant variable.",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2641).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Assignment to constant variable.\`.
@@ -6394,7 +6394,7 @@ Recovered\`.
       "{ map: true, weakMap: false }",
       "{ map: true, weakMap: true }"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "{ map: true, weakMap: true }",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2478).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Unexpected end of input\`.
@@ -6729,7 +6729,7 @@ number\`.
       "5 ReferenceError: x is not defined",
       "5 10"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "ReferenceError: Cannot access 'x' before initialization",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2447).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Cannot access 'x' before initialization\`.
@@ -7193,7 +7193,7 @@ D\`.
       "false 'CustomError' false",
       "true 'TypeError' true"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "true 'TypeError' true",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2357).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Unexpected end of input\`.
@@ -8089,7 +8089,7 @@ Property 'job' doesn't exist\`.
       "Error: Property 'email' does not exist on type 'User'",
       "undefined"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "undefined",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2232).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Unexpected identifier 'User'\`.
@@ -8161,7 +8161,7 @@ Property 'job' doesn't exist\`.
       "[{ id: 2 }, { id: 3 }]",
       "[{ id: 3 }, { id: 2 }]"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "TypeError: weakSet is not iterable",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2203).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: weakSet is not iterable\`.
@@ -8350,7 +8350,7 @@ Property 'job' doesn't exist\`.
       "User: John",
       "Admin: John"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "Admin: John",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2189).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Unexpected identifier 'User'\`.
@@ -8628,7 +8628,7 @@ undefined\`.
       "true, false",
       "true, TypeError"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "true, TypeError",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2115).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Assignment to constant variable.\`.
@@ -8742,7 +8742,7 @@ undefined\`.
       "20, 20, 30, 10",
       "10, 10, 30, 10"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "20, 10, 30, 10",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2093).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Unexpected end of input\`.
@@ -8814,7 +8814,7 @@ undefined\`.
       "1",
       "undefined"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "ReferenceError: Cannot access 'x' before initialization",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2106).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Cannot access 'x' before initialization\`.
@@ -8961,7 +8961,7 @@ undefined\`.
       "10",
       "Error: Cannot assign to undeclared variable 'undeclaredVariable'"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "Error: undeclaredVariable is not defined",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 2051).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: undeclaredVariable is not defined\`.
@@ -10293,7 +10293,7 @@ JavaScript\`.
       "[NaN, NaN, NaN]",
       "1"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "['a', 'b', 'c']",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 1845).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: 1 is not iterable\`.
@@ -10311,7 +10311,7 @@ JavaScript\`.
       "Error",
       "[2, 3, 1, undefined]"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "Error",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 1848).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Invalid or unexpected token\`.
@@ -13517,7 +13517,7 @@ End\`.
       "jacket",
       "undefined"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "undefined",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 1231).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Unexpected identifier 'clothes'\`.
@@ -13949,7 +13949,7 @@ End\`.
       "number, number",
       "number undefined"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "undefined, number",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 1155).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Unexpected identifier 'a'\`.
@@ -14094,7 +14094,7 @@ End\`.
       "true and false",
       "false and false"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "true and true",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 1139).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Unexpected token 'var'\`.
@@ -14369,7 +14369,7 @@ undefined\`.
       "Error: Cannot access 'this' before initialization at line 5",
       "No error"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "TypeError: rectangle.area is not a function at line 13",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 1068).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: rectangle.area is not a function\`.
@@ -14575,7 +14575,7 @@ undefined\`.
       "ReferenceError: name is not defined",
       "ReferenceError: person is not defined"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "TypeError: Cannot read property 'toUpperCase' of undefined",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 1062).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Cannot read properties of undefined (reading 'toUpperCase')\`.
@@ -15502,7 +15502,7 @@ End\`.
       "1",
       "undefined"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "TypeError: foo is not a function",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 872).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: foo is not a function\`.
@@ -15795,7 +15795,7 @@ End\`.
       "3, 2, 1",
       "3, 3, 3"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "3, 3, 3",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 806).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Unexpected identifier 'setTimeout'\`.
@@ -15813,7 +15813,7 @@ End\`.
       "1, 1",
       "1, 2"
 ],
-    correctAnswer: "TypeError",
+    correctAnswer: "1, 2",
     explanation: `**Qadam-baqadam tahlil:**
 1. Ushbu savol @javascript telegram kanalidan olindi (Post ID: 809).
 2. Kod bajarilganda konsolga quyidagicha natija chiqadi: \`Error: Invalid or unexpected token\`.

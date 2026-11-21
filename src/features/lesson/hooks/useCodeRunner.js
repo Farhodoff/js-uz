@@ -6,6 +6,15 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 export function useCodeRunner(activeLesson, currentExerciseIndex, onSuccess) {
   const [output, setOutput] = useState('');
   const workerRef = useRef(null);
+  const timeoutRef = useRef(null);
+
+  // Eski run'ning timeout'ini bekor qilish — yangi natijani nobut qilmasin
+  const clearTimeoutRef = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     // Initialize worker if not already running
@@ -14,14 +23,17 @@ export function useCodeRunner(activeLesson, currentExerciseIndex, onSuccess) {
     }
     return () => {
       // Cleanup worker on unmount
+      clearTimeoutRef();
       if (workerRef.current) {
         workerRef.current.terminate();
         workerRef.current = null;
       }
     };
-  }, []);
+  }, [clearTimeoutRef]);
 
   const runCode = useCallback((code) => {
+    // Oldingi timeout va worker tozalanadi — eskisi yangi natijani almashtirib yubormasin
+    clearTimeoutRef();
     setOutput('Kompilyatsiya qilinmoqda...');
 
     // Recreate worker to ensure a clean state
@@ -31,8 +43,9 @@ export function useCodeRunner(activeLesson, currentExerciseIndex, onSuccess) {
     workerRef.current = new Worker(new URL('../../../workers/codeRunner.worker.js', import.meta.url), { type: 'module' });
 
     workerRef.current.onmessage = (e) => {
+      clearTimeoutRef();
       const { type, output: workerOutput, error, isCorrect } = e.data;
-      
+
       if (type === 'SUCCESS') {
         setOutput(workerOutput);
         if (isCorrect && onSuccess) onSuccess();
@@ -42,13 +55,16 @@ export function useCodeRunner(activeLesson, currentExerciseIndex, onSuccess) {
     };
 
     workerRef.current.onerror = (e) => {
+      clearTimeoutRef();
       setOutput(`❌ Worker xatosi: ${e.message}`);
     };
 
     // Kill worker if it takes more than 5 seconds (prevents infinite loop freezing the worker forever)
-    const timeout = setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = null;
       if (workerRef.current) {
         workerRef.current.terminate();
+        workerRef.current = null;
         setOutput('❌ Kod ishlashi juda uzoq vaqt oldi (Timeout - ehtimol cheksiz sikl).');
       }
     }, 5000);
@@ -63,28 +79,16 @@ export function useCodeRunner(activeLesson, currentExerciseIndex, onSuccess) {
       testCode: testCode,
       dbSetup: currentExercise?.dbSetup || activeLesson?.dbSetup || null
     });
-
-    const originalOnMessage = workerRef.current.onmessage;
-    workerRef.current.onmessage = (e) => {
-      clearTimeout(timeout);
-      originalOnMessage(e);
-    };
-    
-    const originalOnError = workerRef.current.onerror;
-    workerRef.current.onerror = (e) => {
-      clearTimeout(timeout);
-      originalOnError(e);
-    };
-
-  }, [activeLesson, currentExerciseIndex, onSuccess]);
+  }, [activeLesson, currentExerciseIndex, onSuccess, clearTimeoutRef]);
 
   const resetOutput = useCallback(() => {
+    clearTimeoutRef();
     if (workerRef.current) {
       workerRef.current.terminate();
       workerRef.current = new Worker(new URL('../../../workers/codeRunner.worker.js', import.meta.url), { type: 'module' });
     }
     setOutput('');
-  }, []);
+  }, [clearTimeoutRef]);
 
   return { output, runCode, resetOutput };
 }

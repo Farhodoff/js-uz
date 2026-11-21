@@ -86,7 +86,7 @@ graph TD;
       startingCode: "interface User {\n  id: number;\n  name: string;\n}\n\nfunction updateUser(user: ___) {\n  return user;\n}",
       hint: "Parametr turini aniqlashda Partial<User> dan foydalaning.",
       solution: "interface User {\n  id: number;\n  name: string;\n}\n\nfunction updateUser(user: Partial<User>) {\n  return user;\n}",
-      test: "return /Partial\\s*<\\s*User\\s*>/.test(code);"
+      test: "return /Partial\\s*<\\s*User\\s*>/.test(rawCode);"
     },
     {
       id: 2,
@@ -95,7 +95,7 @@ graph TD;
       startingCode: "interface Config {\n  port?: number;\n  host?: string;\n}\n\ntype FullConfig = ___;\n",
       hint: "Required<Config> ishlating.",
       solution: "interface Config {\n  port?: number;\n  host?: string;\n}\n\ntype FullConfig = Required<Config>;\n",
-      test: "return /Required\\s*<\\s*Config\\s*>/.test(code);"
+      test: "return /Required\\s*<\\s*Config\\s*>/.test(rawCode);"
     },
     {
       id: 3,
@@ -104,7 +104,7 @@ graph TD;
       startingCode: "interface Settings {\n  theme: string;\n}\n\nconst mySettings: ___ = {\n  theme: 'dark'\n};",
       hint: "Readonly<Settings> yozing.",
       solution: "interface Settings {\n  theme: string;\n}\n\nconst mySettings: Readonly<Settings> = {\n  theme: 'dark'\n};",
-      test: "return /Readonly\\s*<\\s*Settings\\s*>/.test(code);"
+      test: "return /Readonly\\s*<\\s*Settings\\s*>/.test(rawCode);"
     },
     {
       id: 4,
@@ -113,7 +113,7 @@ graph TD;
       startingCode: "interface Product {\n  id: number;\n  name: string;\n  price: number;\n  desc: string;\n}\n\ntype ProductSummary = ___;\n",
       hint: "Pick<Product, 'id' | 'name'> ishlating.",
       solution: "interface Product {\n  id: number;\n  name: string;\n  price: number;\n  desc: string;\n}\n\ntype ProductSummary = Pick<Product, 'id' | 'name'>;\n",
-      test: "return /Pick\\s*<\\s*Product\\s*,\\s*(['\"]id['\"]\\s*\\|\\s*['\"]name['\"]|['\"]name['\"]\\s*\\|\\s*['\"]id['\"])\\s*>/.test(code);"
+      test: "return /Pick\\s*<\\s*Product\\s*,\\s*(['\"]id['\"]\\s*\\|\\s*['\"]name['\"]|['\"]name['\"]\\s*\\|\\s*['\"]id['\"])\\s*>/.test(rawCode);"
     },
     {
       id: 5,
@@ -122,7 +122,7 @@ graph TD;
       startingCode: "interface Product {\n  id: number;\n  name: string;\n  price: number;\n  desc: string;\n}\n\ntype ProductCard = ___;\n",
       hint: "Omit<Product, 'desc'> ishlating.",
       solution: "interface Product {\n  id: number;\n  name: string;\n  price: number;\n  desc: string;\n}\n\ntype ProductCard = Omit<Product, 'desc'>;\n",
-      test: "return /Omit\\s*<\\s*Product\\s*,\\s*['\"]desc['\"]\\s*>/.test(code);"
+      test: "return /Omit\\s*<\\s*Product\\s*,\\s*['\"]desc['\"]\\s*>/.test(rawCode);"
     },
     {
       id: 6,
@@ -131,7 +131,7 @@ graph TD;
       startingCode: "type StringNumberMap = ___;\n\nconst ages: StringNumberMap = {\n  ali: 25,\n  vali: 30\n};",
       hint: "Record<string, number> dan foydalaning.",
       solution: "type StringNumberMap = Record<string, number>;\n\nconst ages: StringNumberMap = {\n  ali: 25,\n  vali: 30\n};",
-      test: "return /Record\\s*<\\s*string\\s*,\\s*number\\s*>/.test(code);"
+      test: "return /Record\\s*<\\s*string\\s*,\\s*number\\s*>/.test(rawCode);"
     },
     {
       id: 7,
@@ -140,7 +140,7 @@ graph TD;
       startingCode: "type T0 = 'a' | 'b' | 'c';\n\ntype T1 = ___;\n",
       hint: "Exclude<T0, 'a'> ishlating.",
       solution: "type T0 = 'a' | 'b' | 'c';\n\ntype T1 = Exclude<T0, 'a'>;\n",
-      test: "return /Exclude\\s*<\\s*T0\\s*,\\s*['\"]a['\"]\\s*>/.test(code);"
+      test: "return /Exclude\\s*<\\s*T0\\s*,\\s*['\"]a['\"]\\s*>/.test(rawCode);"
     },
     {
       id: 8,
@@ -149,7 +149,7 @@ graph TD;
       startingCode: "type T0 = 'a' | 'b' | 'c';\n\ntype T1 = ___;\n",
       hint: "Extract<T0, 'a' | 'f'> ishlating.",
       solution: "type T0 = 'a' | 'b' | 'c';\n\ntype T1 = Extract<T0, 'a' | 'f'>;\n",
-      test: "return /Extract\\s*<\\s*T0\\s*,\\s*(['\"]a['\"]\\s*\\|\\s*['\"]f['\"]|['\"]f['\"]\\s*\\|\\s*['\"]a['\"])\\s*>/.test(code);"
+      test: "return /Extract\\s*<\\s*T0\\s*,\\s*(['\"]a['\"]\\s*\\|\\s*['\"]f['\"]|['\"]f['\"]\\s*\\|\\s*['\"]a['\"])\\s*>/.test(rawCode);"
     },
     {
       id: 9,
@@ -158,7 +158,7 @@ graph TD;
       startingCode: "type T0 = string | number | null | undefined;\n\ntype ValidTypes = ___;\n",
       hint: "NonNullable<T0> ishlating.",
       solution: "type T0 = string | number | null | undefined;\n\ntype ValidTypes = NonNullable<T0>;\n",
-      test: "return /NonNullable\\s*<\\s*T0\\s*>/.test(code);"
+      test: "return /NonNullable\\s*<\\s*T0\\s*>/.test(rawCode);"
     },
     {
       id: 10,
@@ -167,7 +167,7 @@ graph TD;
       startingCode: "function myFunction() {\n  return { name: 'Ali', age: 20 };\n}\n\ntype MyResult = ___;\n",
       hint: "ReturnType<typeof myFunction> ishlating.",
       solution: "function myFunction() {\n  return { name: 'Ali', age: 20 };\n}\n\ntype MyResult = ReturnType<typeof myFunction>;\n",
-      test: "return /ReturnType\\s*<\\s*typeof\\s+myFunction\\s*>/.test(code);"
+      test: "return /ReturnType\\s*<\\s*typeof\\s+myFunction\\s*>/.test(rawCode);"
     }
   ],
   quizzes: [

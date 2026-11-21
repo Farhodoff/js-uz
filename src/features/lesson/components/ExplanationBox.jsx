@@ -12,12 +12,23 @@ function parseExplanationMarkdown(md) {
   // Bold text: **text**
   html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
+  // Avval kod bloklarini ajratib olib, placeholder'ga aylantiramiz.
+  // Aks holda inline-code regex (```javascript dagi backticklarni ham
+  // `code` deb olib) fence'larni buzadi va blok <pre> bo'lmaydi.
+  const codeBlocks = [];
+  html = html.replace(/```(?:javascript|js)?\n?([\s\S]*?)```/g, (match, code) => {
+    codeBlocks.push(code);
+    return `@@CODEBLOCK${codeBlocks.length - 1}@@`;
+  });
+
   // Inline code: `code`
   html = html.replace(/`(.*?)`/g, "<code>$1</code>");
 
-  // Code blocks: ```javascript ... ```
-  html = html.replace(/```javascript([\s\S]*?)```/g, '<pre class="explanation-code-block">$1</pre>');
-  html = html.replace(/```([\s\S]*?)```/g, '<pre class="explanation-code-block">$1</pre>');
+  // Ajratilgan kod bloklarini qaytaramiz
+  html = html.replace(/@@CODEBLOCK(\d+)@@/g, (match, index) => {
+    const code = codeBlocks[Number(index)];
+    return `<pre class="explanation-code-block">${code}</pre>`;
+  });
 
   // Split into paragraphs/lists
   const lines = html.split("\n");

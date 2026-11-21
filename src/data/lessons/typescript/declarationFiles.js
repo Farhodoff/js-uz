@@ -55,7 +55,7 @@ graph TD;
       startingCode: "// PI ni e'lon qiling\n",
       hint: "declare var PI: number; yozing.",
       solution: "declare var PI: number;",
-      test: "return /declare\\s+var\\s+PI\\s*:\\s*number/.test(code);"
+      test: "return /declare\\s+var\\s+PI\\s*:\\s*number/.test(rawCode);"
     },
     {
       id: 2,
@@ -64,7 +64,7 @@ graph TD;
       startingCode: "// showAlert funksiyasini ta'riflang\n",
       hint: "declare function showAlert(msg: string): void;",
       solution: "declare function showAlert(msg: string): void;",
-      test: "return /declare\\s+function\\s+showAlert\\s*\\(\\s*msg\\s*:\\s*string\\s*\\)\\s*:\\s*void/.test(code);"
+      test: "return /declare\\s+function\\s+showAlert\\s*\\(\\s*msg\\s*:\\s*string\\s*\\)\\s*:\\s*void/.test(rawCode);"
     },
     {
       id: 3,
@@ -73,7 +73,7 @@ graph TD;
       startingCode: "// my-lib modulini declare qiling\n",
       hint: "declare module \"my-lib\" { }",
       solution: "declare module \"my-lib\" {\n\n}",
-      test: "return /declare\\s+module\\s+['\"]my-lib['\"]\\s*\\{/.test(code);"
+      test: "return /declare\\s+module\\s+['\"]my-lib['\"]\\s*\\{/.test(rawCode);"
     },
     {
       id: 4,
@@ -82,7 +82,7 @@ graph TD;
       startingCode: "interface Window {\n  // shu yerga yozing\n}",
       hint: "myPlugin: any; kiriting.",
       solution: "interface Window {\n  myPlugin: any;\n}",
-      test: "return /interface\\s+Window\\s*\\{\\s*myPlugin\\s*:\\s*any\\s*;?\\s*\\}/.test(code);"
+      test: "return /interface\\s+Window\\s*\\{\\s*myPlugin\\s*:\\s*any\\s*;?\\s*\\}/.test(rawCode);"
     },
     {
       id: 5,
@@ -91,7 +91,7 @@ graph TD;
       startingCode: "// Logger classini e'lon qiling\n",
       hint: "declare class Logger { ... }",
       solution: "declare class Logger {\n  log(message: string): void;\n}",
-      test: "return /declare\\s+class\\s+Logger\\s*\\{\\s*log\\s*\\(\\s*message\\s*:\\s*string\\s*\\)\\s*:\\s*void\\s*;?\\s*\\}/.test(code);"
+      test: "return /declare\\s+class\\s+Logger\\s*\\{\\s*log\\s*\\(\\s*message\\s*:\\s*string\\s*\\)\\s*:\\s*void\\s*;?\\s*\\}/.test(rawCode);"
     },
     {
       id: 6,
@@ -100,7 +100,7 @@ graph TD;
       startingCode: "declare module \"*.png\" {\n  const value: any;\n  // shu yerdan value ni export qiling (export default value)\n}",
       hint: "export default value; yozing.",
       solution: "declare module \"*.png\" {\n  const value: any;\n  export default value;\n}",
-      test: "return /declare\\s+module\\s+['\"]\\*\\.png['\"]\\s*\\{[^}]*export\\s+default\\s+value/.test(code);"
+      test: "return /declare\\s+module\\s+['\"]\\*\\.png['\"]\\s*\\{[^}]*export\\s+default\\s+value/.test(rawCode);"
     },
     {
       id: 7,
@@ -109,7 +109,7 @@ graph TD;
       startingCode: "// MathLib ni e'lon qiling\n",
       hint: "declare namespace MathLib { export function add(...) }",
       solution: "declare namespace MathLib {\n  export function add(a: number, b: number): number;\n}",
-      test: "return /declare\\s+namespace\\s+MathLib\\s*\\{[^}]*export\\s+function\\s+add\\s*\\(\\s*[ab]\\s*:\\s*number\\s*,\\s*[ab]\\s*:\\s*number\\s*\\)\\s*:\\s*number/.test(code);"
+      test: "return /declare\\s+namespace\\s+MathLib\\s*\\{[^}]*export\\s+function\\s+add\\s*\\(\\s*[ab]\\s*:\\s*number\\s*,\\s*[ab]\\s*:\\s*number\\s*\\)\\s*:\\s*number/.test(rawCode);"
     },
     {
       id: 8,
@@ -118,7 +118,7 @@ graph TD;
       startingCode: "// VERSION ni declare qiling\n",
       hint: "declare const VERSION: string;",
       solution: "declare const VERSION: string;",
-      test: "return /declare\\s+const\\s+VERSION\\s*:\\s*string/.test(code);"
+      test: "return /declare\\s+const\\s+VERSION\\s*:\\s*string/.test(rawCode);"
     },
     {
       id: 9,
@@ -127,7 +127,7 @@ graph TD;
       startingCode: "// User interfeysini e'lon qilib export qiling\n",
       hint: "export interface User { id: number; }",
       solution: "export interface User {\n  id: number;\n}",
-      test: "return /export\\s+interface\\s+User\\s*\\{\\s*id\\s*:\\s*number\\s*;?\\s*\\}/.test(code);"
+      test: "return /export\\s+interface\\s+User\\s*\\{\\s*id\\s*:\\s*number\\s*;?\\s*\\}/.test(rawCode);"
     },
     {
       id: 10,
@@ -136,7 +136,7 @@ graph TD;
       startingCode: "declare namespace NodeJS {\n  // ProcessEnv interfeysini yarating\n}",
       hint: "interface ProcessEnv { PORT: string; }",
       solution: "declare namespace NodeJS {\n  interface ProcessEnv {\n    PORT: string;\n  }\n}",
-      test: "return /declare\\s+namespace\\s+NodeJS\\s*\\{\\s*interface\\s+ProcessEnv\\s*\\{\\s*PORT\\s*:\\s*string\\s*;?\\s*\\}\\s*\\}/.test(code);"
+      test: "return /declare\\s+namespace\\s+NodeJS\\s*\\{\\s*interface\\s+ProcessEnv\\s*\\{\\s*PORT\\s*:\\s*string\\s*;?\\s*\\}\\s*\\}/.test(rawCode);"
     }
   ],
   quizzes: [

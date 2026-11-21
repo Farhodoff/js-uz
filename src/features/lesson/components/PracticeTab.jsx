@@ -122,6 +122,13 @@ export default function PracticeTab({
     }
   }, [output, showInlineOutput, editorRef, monacoRef]);
 
+  // Mashq almashganda oldingi mashqning natijasi editor ichida qolmasin
+  // (programmatic `setCode` Monaco onChange'ni chaqirmaydi — shu sababli alohida effect)
+  useEffect(() => {
+    if (editorRef.current) removeInlineOutput(editorRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentExerciseIndex]);
+
   useEffect(() => {
     refreshMarkers();
   }, [activeLesson?.language, currentExerciseIndex, refreshMarkers]);

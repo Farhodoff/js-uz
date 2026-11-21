@@ -68,7 +68,7 @@ classDiagram
       startingCode: "// Book class ini yarating\n",
       hint: "class Book { title: string; constructor(title: string) { this.title = title; } }",
       solution: "class Book {\n  title: string;\n  constructor(title: string) {\n    this.title = title;\n  }\n}",
-      test: "return code.includes('class Book') && code.includes('constructor');"
+      test: "return rawCode.includes('class Book') && rawCode.includes('constructor');"
     },
     {
       id: 2,
@@ -77,7 +77,7 @@ classDiagram
       startingCode: "// Account class ini yarating\n",
       hint: "private balance: number;",
       solution: "class Account {\n  private balance: number;\n  constructor(balance: number) {\n    this.balance = balance;\n  }\n}",
-      test: "return code.includes('private balance: number');"
+      test: "return rawCode.includes('private balance: number');"
     },
     {
       id: 3,
@@ -86,7 +86,7 @@ classDiagram
       startingCode: "// User class ini yarating\n",
       hint: "constructor(public username: string) {}",
       solution: "class User {\n  constructor(public username: string) {}\n}",
-      test: "return code.includes('constructor(public username: string)');"
+      test: "return rawCode.includes('constructor(public username: string)');"
     },
     {
       id: 4,
@@ -95,7 +95,7 @@ classDiagram
       startingCode: "// Device va Phone yarating\n",
       hint: "class Device { ... } class Phone extends Device { ... }",
       solution: "class Device {\n  protected power: number;\n  constructor(p: number) {\n    this.power = p;\n  }\n}\n\nclass Phone extends Device {\n  getPower(): number {\n    return this.power;\n  }\n}",
-      test: "return code.includes('protected power: number') && code.includes('Phone extends Device');"
+      test: "return rawCode.includes('protected power: number') && rawCode.includes('Phone extends Device');"
     },
     {
       id: 5,
@@ -104,7 +104,7 @@ classDiagram
       startingCode: "// Server class ini yarating\n",
       hint: "readonly ip: string;",
       solution: "class Server {\n  readonly ip: string;\n  constructor(ip: string) {\n    this.ip = ip;\n  }\n}",
-      test: "return code.includes('readonly ip: string');"
+      test: "return rawCode.includes('readonly ip: string');"
     },
     {
       id: 6,
@@ -113,7 +113,7 @@ classDiagram
       startingCode: "// Circle class ini yarating\n",
       hint: "get radius(): number { return this._radius; }",
       solution: "class Circle {\n  private _radius: number = 5;\n  get radius(): number {\n    return this._radius;\n  }\n}",
-      test: "return code.includes('get radius(): number') && code.includes('this._radius');"
+      test: "return rawCode.includes('get radius(): number') && rawCode.includes('this._radius');"
     },
     {
       id: 7,
@@ -122,7 +122,7 @@ classDiagram
       startingCode: "class Circle {\n  private _radius: number = 5;\n  // shu yerga setter yozing\n}\n",
       hint: "set radius(r: number) { if(r > 0) this._radius = r; }",
       solution: "class Circle {\n  private _radius: number = 5;\n  set radius(r: number) {\n    if (r > 0) {\n      this._radius = r;\n    }\n  }\n}",
-      test: "return code.includes('set radius(r: number)') && code.includes('r > 0');"
+      test: "return rawCode.includes('set radius(r: number)') && rawCode.includes('r > 0');"
     },
     {
       id: 8,
@@ -131,7 +131,7 @@ classDiagram
       startingCode: "// MathHelper yarating\n",
       hint: "static version: string = '1.0';",
       solution: "class MathHelper {\n  static version: string = '1.0';\n}",
-      test: "return code.includes('static version: string');"
+      test: "return rawCode.includes('static version: string');"
     },
     {
       id: 9,
@@ -140,7 +140,7 @@ classDiagram
       startingCode: "class MathHelper {\n  // static metod yozing\n}\n",
       hint: "static add(a: number, b: number): number { return a + b; }",
       solution: "class MathHelper {\n  static add(a: number, b: number): number {\n    return a + b;\n  }\n}",
-      test: "return code.includes('static add(a: number, b: number)');"
+      test: "return rawCode.includes('static add(a: number, b: number)');"
     },
     {
       id: 10,
@@ -149,7 +149,7 @@ classDiagram
       startingCode: "// Animal va Dog yarating\n",
       hint: "abstract class Animal { abstract makeSound(): void; }",
       solution: "abstract class Animal {\n  abstract makeSound(): void;\n}\n\nclass Dog extends Animal {\n  makeSound(): void {\n    console.log('Woof');\n  }\n}",
-      test: "return code.includes('abstract class Animal') && code.includes('abstract makeSound(): void');"
+      test: "return rawCode.includes('abstract class Animal') && rawCode.includes('abstract makeSound(): void');"
     }
   ],
   quizzes: [

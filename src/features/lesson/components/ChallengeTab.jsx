@@ -28,7 +28,9 @@ export default function ChallengeTab() {
       const savedChallenges = localStorage.getItem("js_challenges");
       if (savedChallenges) {
         const parsed = JSON.parse(savedChallenges);
-        if (Array.isArray(parsed) && parsed.length === seedChallenges.length) {
+        // Foydalanuvchi qo'shgan savollar saqlanishi uchun `>=` ishlatiladi:
+        // eski `===` sharti qo'shilgan savolni keyingi yuklashda o'chirib yuborgan.
+        if (Array.isArray(parsed) && parsed.length >= seedChallenges.length) {
           setChallenges(parsed);
         } else {
           setChallenges(seedChallenges);

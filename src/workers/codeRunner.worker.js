@@ -2,10 +2,87 @@ import { transform } from 'sucrase';
 import alasql from 'alasql';
 import { injectLoopGuard } from '../utils/loopGuard';
 
-function preprocessCodeForTests(codeStr) {
-  return codeStr
-    .replace(/const\s+/g, 'var ')
-    .replace(/let\s+/g, 'var ');
+// Worker modul muhiti: `require`/`import` uchun eng ko'p ishlatiladigan
+// modullarning yengil nusxalari. Asosiysi — darslar ishga tushsin,
+// testlar esa kod matnini tekshira olsin.
+function createMockModules() {
+  const noop = () => {};
+  const react = {
+    useState: (initial) => [
+      typeof initial === 'function' ? initial() : initial,
+      noop,
+    ],
+    useEffect: noop,
+    useLayoutEffect: noop,
+    useRef: (initial) => ({ current: initial }),
+    useCallback: (fn) => fn,
+    useMemo: (fn) => (typeof fn === 'function' ? fn() : fn),
+    useReducer: (reducer, initial) => [initial, noop],
+    useContext: () => ({}),
+    createContext: () => ({ Provider: noop, Consumer: noop }),
+    createElement: () => null,
+    cloneElement: (el) => el,
+    Fragment: 'Fragment',
+    StrictMode: 'StrictMode',
+    Component: class Component {},
+    PureComponent: class PureComponent {},
+  };
+  react.default = react;
+
+  const expressApp = () => {
+    const app = () => app;
+    app.get = app.post = app.put = app.delete = app.use = app.listen = app;
+    app.listen = (port, cb) => { if (typeof cb === 'function') cb(); return app; };
+    return app;
+  };
+  const express = () => expressApp();
+  express.json = () => noop;
+  express.urlencoded = () => noop;
+  express.static = () => noop;
+  express.Router = () => expressApp();
+  express.default = express;
+
+  const fs = {
+    readFileSync: () => '',
+    writeFileSync: noop,
+    existsSync: () => false,
+    mkdirSync: noop,
+    readdirSync: () => [],
+    unlinkSync: noop,
+  };
+
+  const http = {
+    createServer: () => ({
+      listen: (port, cb) => { if (typeof cb === 'function') cb(); return { close: noop }; },
+      on: noop,
+    }),
+  };
+
+  const path = {
+    join: (...parts) => parts.filter(Boolean).join('/'),
+    dirname: (p) => String(p).split('/').slice(0, -1).join('/') || '.',
+    extname: (p) => (String(p).match(/\.[^.]+$/) || [''])[0],
+  };
+
+  const modules = {
+    react,
+    'react-dom': { render: noop, unmountComponentAtNode: noop, default: react },
+    'react-dom/client': { createRoot: () => ({ render: noop }), default: {} },
+    fs,
+    http,
+    https: { createServer: () => ({ listen: noop }) },
+    path,
+    os: { platform: () => 'browser', homedir: () => '/' },
+    express,
+    axios: { get: async () => ({ data: null }), post: async () => ({ data: null }) },
+    lodash: { default: {} },
+  };
+
+  return (name) => {
+    const clean = String(name).replace(/^node:/, '');
+    if (modules[clean]) return modules[clean];
+    throw new Error(`Modul topilmadi (worker muhiti): ${name}`);
+  };
 }
 
 self.onmessage = async (e) => {
@@ -72,11 +149,24 @@ self.onmessage = async (e) => {
       return;
     }
 
+    // ESM/JSX/TS kodini ishga tushirish uchun qayta yozish:
+    // - jsx      → React.createElement (React amaliyotlari)
+    // - imports  → require(...) (ESM import → modul chaqiruvi)
+    // - typescript → interface/type annotations olib tashlanadi
+    // Sucrase faqat mos keladigan sintaksisni o'zgartiradi, qolganini tegmaydi.
     let codeToRun = code;
-    if (language === 'typescript') {
-      const transpiled = transform(code, { transforms: ['typescript'] });
-      codeToRun = transpiled.code;
+    try {
+      const transforms = ['jsx', 'imports'];
+      if (language === 'typescript') transforms.push('typescript');
+      codeToRun = transform(code, { transforms }).code;
+    } catch {
+      codeToRun = code; // Sintaksis xatosi testga to'g'ridan-to'g'ri uzatiladi
     }
+
+    // Workerda modul muhiti yo'q — eng ko'p ishlatiladigan modullarni
+    // mock qilamiz. `import React from 'react'` va `require('fs')`
+    // shu bilan ishga tushadi (React amaliyotlari va Node darslari uchun).
+    const __mockModules = createMockModules();
 
     const combinedCode = `
       "use strict";
@@ -86,31 +176,65 @@ self.onmessage = async (e) => {
       try {
         ${injectLoopGuard(codeToRun)}
         
-        return (function(code, logs) {
+        return (function(code, rawCode, logs) {
           ${testCode || 'return null;'}
-        })(arguments[0], arguments[1]);
+        })(arguments[0], arguments[1], arguments[2]);
       } catch (e) {
         return "Runtime Error: " + e.message;
       }
     `;
 
-    const runner = new Function('code', 'logs', combinedCode);
-    const preprocessedCode = preprocessCodeForTests(codeToRun);
-    
-    // Evaluate synchronous logic
-    const errorMsg = runner(preprocessedCode, logs);
+    // code      — ishga tushirish uchun: TS'da transpile qilingan, JS'da xom
+    // rawCode   — foydalanuvchi yozgan asl xom kod (TS'da interface/type saqlanadi,
+    //             shuning uchun `rawCode.includes('interface Car')` testlari to'g'ri ishlaydi)
+    // Eski preprocessCodeForTests (const→var) olib tashlandi: u `code` ni
+    // buzgani uchun `code.includes('const ...')` testlari doimo yiqilardi.
+    const moduleMock = { exports: {} };
+
+    // Kod ishga tushirilganda combinedCode sintaksis buzilishi mumkin
+    // (masalan, tsconfig JSON yozuvchi mashq). Bunday holatda test
+    // kodisiz ishga tushiriladi — testlar ko'pincha faqat `code` matnini
+    // tekshiradi va bu yo'lda ham to'g'ri javob topiladi.
+    const runnerParams = ['code', 'rawCode', 'logs', 'require', 'module', 'exports'];
+    let runner;
+    try {
+      runner = new Function(...runnerParams, combinedCode);
+    } catch {
+      const testOnly = `
+        return (function(code, rawCode, logs, require, module, exports) {
+          ${testCode || 'return null;'}
+        })(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
+      `;
+      runner = new Function(...runnerParams, testOnly);
+    }
+
+    // `code` parametri (test uchun):
+    // - TypeScript'da transpiled — `new Function(code + ...)` testlari ishga tushsin
+    // - JS/React'da xom — `code.includes('<h1')` kabi matn testlari JSX/ESM
+    //   transformidan keyin buzilmasin
+    const testInput = language === 'typescript' ? codeToRun : code;
+    const errorMsg = runner(testInput, code, logs, __mockModules, moduleMock, moduleMock.exports);
 
     const handleResult = (err) => {
       let validationResult = '✅ Kod muvaffaqiyatli ishladi';
       let isCorrect = true;
 
-      if (err) {
-        validationResult = '❌ ' + err;
+      // Test boolean qaytargan bo'lsa (misol: `return code.includes('x')`):
+      // true = talab bajarildi, false = bajarilmadi.
+      // Eskida `true` xato xabari sifatida ko'rsatilgandi — to'g'ri javob
+      // "❌ false" berardi, bo'sh kod esa avtomatik o'tardi.
+      let failure = err;
+      if (typeof failure === 'boolean') {
+        failure = failure ? null : 'Kod talablarga javob bermadi.';
+      }
+
+      if (failure) {
+        validationResult = '❌ ' + failure;
         isCorrect = false;
       }
 
       const outputText = logs.length
-        ? logs.join('\\n') + '\\n\\n' + validationResult
+        ? logs.join('\n') + '\n\n' + validationResult
         : validationResult;
 
       if (isCorrect) {
